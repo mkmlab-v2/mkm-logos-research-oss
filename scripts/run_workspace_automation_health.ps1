@@ -8,6 +8,7 @@ param(
     [switch]$IncludeCompressionKpi,
     # Optional: rebuild fallback trigger 24h summary (compression stub telemetry).
     [switch]$IncludeFallbackTriggerTelemetry,
+    [double]$FallbackPostCutoffWarnRate = 0.15,
     [switch]$IncludeLiteralTrack,
     [switch]$SkipHydrationMix,
     [switch]$SkipCompressionAlarm,
@@ -148,6 +149,38 @@ function Step([string]$Name, [scriptblock]$Block) {
     }
 }
 
+function Test-DecisionLoggedToday {
+    param(
+        [string]$DecisionsLogPath,
+        [string]$MissionId,
+        [string]$Stage,
+        [string]$Decision,
+        [string]$Actor
+    )
+    if (-not (Test-Path -LiteralPath $DecisionsLogPath)) {
+        return $false
+    }
+    $todayUtc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd")
+    try {
+        $lines = Get-Content -LiteralPath $DecisionsLogPath -Encoding UTF8
+        foreach ($line in $lines) {
+            if ([string]::IsNullOrWhiteSpace($line)) { continue }
+            $obj = $line | ConvertFrom-Json -ErrorAction SilentlyContinue
+            if ($null -eq $obj) { continue }
+            $ts = [string]$obj.timestamp
+            if ([string]::IsNullOrWhiteSpace($ts)) { continue }
+            if (-not $ts.StartsWith($todayUtc)) { continue }
+            if (($obj.mission_id -eq $MissionId) -and ($obj.stage -eq $Stage) -and ($obj.decision -eq $Decision) -and ($obj.actor -eq $Actor)) {
+                return $true
+            }
+        }
+    }
+    catch {
+        return $false
+    }
+    return $false
+}
+
 try {
     if ($IncludeGitSanity) {
         $gitSan = Join-Path $root "scripts\Verify-GitWorkspaceSanity.ps1"
@@ -282,12 +315,135 @@ try {
     if ($IncludeFallbackTriggerTelemetry -or $IncludeCompressionKpi) {
         $fb = Join-Path $root "scripts\build_fallback_trigger_daily_summary_v1.py"
         if (Test-Path -LiteralPath $fb) {
+            $fallbackProfile = Join-Path $root "docs\final\artifacts\fallback_trigger_threshold_profile_latest.json"
+            $prevCutoff = $env:FALLBACK_TRIGGER_CUTOFF_UTC
+            $cutoffApplied = $false
+            if (Test-Path -LiteralPath $fallbackProfile) {
+                try {
+                    $fp = Get-Content -LiteralPath $fallbackProfile -Raw -Encoding UTF8 | ConvertFrom-Json
+                    $cutoffRaw = [string]$fp.generated_at_utc
+                    if (-not [string]::IsNullOrWhiteSpace($cutoffRaw)) {
+                        $env:FALLBACK_TRIGGER_CUTOFF_UTC = $cutoffRaw
+                        $cutoffApplied = $true
+                    }
+                }
+                catch {
+                    Write-Host "WARN: fallback profile parse failed for cutoff propagation ($($_.Exception.Message))" -ForegroundColor Yellow
+                }
+            }
             Step "Fallback trigger telemetry (24h summary)" {
                 & py $fb
+            }
+            if ($cutoffApplied) {
+                if ([string]::IsNullOrWhiteSpace($prevCutoff)) {
+                    Remove-Item Env:FALLBACK_TRIGGER_CUTOFF_UTC -ErrorAction SilentlyContinue
+                }
+                else {
+                    $env:FALLBACK_TRIGGER_CUTOFF_UTC = $prevCutoff
+                }
             }
             $fbOut = Join-Path $root "docs\final\artifacts\fallback_trigger_daily_summary_latest.json"
             if (-not (Test-Path -LiteralPath $fbOut)) {
                 throw "missing $fbOut after build_fallback_trigger_daily_summary_v1.py"
+            }
+            try {
+                $fbDoc = Get-Content -LiteralPath $fbOut -Raw -Encoding UTF8 | ConvertFrom-Json
+                $pcs = $fbDoc.post_cutoff_summary
+                if ($null -ne $pcs) {
+                    $postWarnThresholdRaw = $env:FALLBACK_POST_CUTOFF_WARN_RATE
+                    $postWarnThreshold = $FallbackPostCutoffWarnRate
+                    if (-not [string]::IsNullOrWhiteSpace($postWarnThresholdRaw)) {
+                        try { $postWarnThreshold = [double]$postWarnThresholdRaw } catch { $postWarnThreshold = $FallbackPostCutoffWarnRate }
+                    }
+                    $postRate = [double]$pcs.fallback_trigger_rate
+                    if ($postRate -gt $postWarnThreshold) {
+                        Write-Host "WARN: post_cutoff fallback_trigger_rate high ($postRate > $postWarnThreshold)" -ForegroundColor Yellow
+                        $decisionLogger = Join-Path $root "scripts\log_agent_decision.py"
+                        $decisionsLog = Join-Path $root "reports\agent_decisions_log.jsonl"
+                        if ((Test-Path -LiteralPath $decisionLogger) -and -not (Test-DecisionLoggedToday -DecisionsLogPath $decisionsLog -MissionId "fallback_post_cutoff_watch_v1" -Stage "fallback_post_cutoff_watch" -Decision "WARN_POST_CUTOFF_RATE_HIGH" -Actor "workspace-health-runner")) {
+                            & py $decisionLogger --repo-root $root --mission-id "fallback_post_cutoff_watch_v1" --stage "fallback_post_cutoff_watch" --decision "WARN_POST_CUTOFF_RATE_HIGH" --evidence-path $fbOut --actor "workspace-health-runner" --risk-level "medium" --note ("post_cutoff_rate={0};threshold={1}" -f $postRate, $postWarnThreshold) | Out-Null
+                        }
+                    }
+                }
+            }
+            catch {
+                Write-Host "WARN: unable to parse fallback summary for post-cutoff warning ($($_.Exception.Message))" -ForegroundColor Yellow
+            }
+
+            $fallbackWatchReport = Join-Path $root "scripts\build_fallback_post_cutoff_watch_report_v1.py"
+            if (Test-Path -LiteralPath $fallbackWatchReport) {
+                $fallbackProfile = Join-Path $root "docs\final\artifacts\fallback_trigger_threshold_profile_latest.json"
+                $prevBaselineReset = $env:FALLBACK_POST_CUTOFF_BASELINE_RESET_UTC
+                $baselineResetApplied = $false
+                if (Test-Path -LiteralPath $fallbackProfile) {
+                    try {
+                        $fpWatch = Get-Content -LiteralPath $fallbackProfile -Raw -Encoding UTF8 | ConvertFrom-Json
+                        $baselineRaw = [string]$fpWatch.generated_at_utc
+                        if (-not [string]::IsNullOrWhiteSpace($baselineRaw)) {
+                            $env:FALLBACK_POST_CUTOFF_BASELINE_RESET_UTC = $baselineRaw
+                            $baselineResetApplied = $true
+                        }
+                    }
+                    catch {
+                        Write-Host "WARN: fallback profile parse failed for baseline reset propagation ($($_.Exception.Message))" -ForegroundColor Yellow
+                    }
+                }
+                & py $fallbackWatchReport | Out-Null
+                if ($baselineResetApplied) {
+                    if ([string]::IsNullOrWhiteSpace($prevBaselineReset)) {
+                        Remove-Item Env:FALLBACK_POST_CUTOFF_BASELINE_RESET_UTC -ErrorAction SilentlyContinue
+                    }
+                    else {
+                        $env:FALLBACK_POST_CUTOFF_BASELINE_RESET_UTC = $prevBaselineReset
+                    }
+                }
+                $watchJson = Join-Path $root "docs\final\artifacts\fallback_post_cutoff_watch_report_latest.json"
+                if (Test-Path -LiteralPath $watchJson) {
+                    try {
+                        $watch = Get-Content -LiteralPath $watchJson -Raw -Encoding UTF8 | ConvertFrom-Json
+                        $signal = [string](($watch.summary).signal)
+                        if ($signal -eq "CRITICAL") {
+                            Write-Host "WARN: fallback post-cutoff watch signal is CRITICAL - escalation recommended." -ForegroundColor Yellow
+                            $decisionLogger = Join-Path $root "scripts\log_agent_decision.py"
+                            $decisionsLog = Join-Path $root "reports\agent_decisions_log.jsonl"
+                            if ((Test-Path -LiteralPath $decisionLogger) -and -not (Test-DecisionLoggedToday -DecisionsLogPath $decisionsLog -MissionId "fallback_post_cutoff_watch_v1" -Stage "fallback_post_cutoff_escalation" -Decision "CRITICAL_SIGNAL_ESCALATION" -Actor "workspace-health-runner")) {
+                                & py $decisionLogger --repo-root $root --mission-id "fallback_post_cutoff_watch_v1" --stage "fallback_post_cutoff_escalation" --decision "CRITICAL_SIGNAL_ESCALATION" --evidence-path $watchJson --actor "workspace-health-runner" --risk-level "high" --note "signal=CRITICAL from fallback post-cutoff watch report" | Out-Null
+                            }
+                            $criticalFailRaw = [string]$env:FALLBACK_POST_CUTOFF_CRITICAL_FAIL
+                            if ($criticalFailRaw -match '^(1|true|yes)$') {
+                                throw "fallback post-cutoff signal is CRITICAL (FALLBACK_POST_CUTOFF_CRITICAL_FAIL=$criticalFailRaw)"
+                            }
+                        }
+                    }
+                    catch {
+                        Write-Host "WARN: fallback post-cutoff watch parse failed ($($_.Exception.Message))" -ForegroundColor Yellow
+                    }
+                }
+                $fallbackDiagnosis = Join-Path $root "scripts\build_fallback_post_cutoff_diagnosis_v1.py"
+                if (Test-Path -LiteralPath $fallbackDiagnosis) {
+                    & py $fallbackDiagnosis | Out-Null
+                }
+
+                $fallbackObservationStatus = Join-Path $root "scripts\build_fallback_post_cutoff_observation_status_v1.py"
+                if (Test-Path -LiteralPath $fallbackObservationStatus) {
+                    & py $fallbackObservationStatus | Out-Null
+                    $obsJson = Join-Path $root "docs\final\artifacts\fallback_post_cutoff_observation_status_latest.json"
+                    if (Test-Path -LiteralPath $obsJson) {
+                        try {
+                            $obs = Get-Content -LiteralPath $obsJson -Raw -Encoding UTF8 | ConvertFrom-Json
+                            $obsDecision = [string]$obs.decision
+                            if ($obsDecision -eq "GO_OBSERVATION_COMPLETE") {
+                                Write-Host "Fallback post-cutoff observation status: GO (observation complete)"
+                            }
+                            elseif ($obsDecision -eq "HOLD_OBSERVATION_CONTINUE") {
+                                Write-Host "WARN: fallback post-cutoff observation status is HOLD (observation continue)." -ForegroundColor Yellow
+                            }
+                        }
+                        catch {
+                            Write-Host "WARN: fallback post-cutoff observation status parse failed ($($_.Exception.Message))" -ForegroundColor Yellow
+                        }
+                    }
+                }
             }
         }
         else {

@@ -3,13 +3,15 @@
   Guard-driven daily 1-page ops brief: refresh independent-lens JSON, fusion stub, thin report, then materialize Markdown.
 
 .DESCRIPTION
-  0) (optional) Independent lens runners — `myeongni` / `sasang` / `market_sasang` / `logos` → `docs/final/artifacts/*_latest.json` (fusion stub reads these; daily brief §1c embeds the same files)
+  0) (optional) Independent lens runners — `myeongni` / `sasang` / `market_sasang` / `logos` → `docs/final/artifacts/*_latest.json`; optional `run_market_myeongni_lens_v1.py` after refresh writes `market_myeongni_lens_latest.json` (finance overlay; universal myeongni core unchanged)
   1) `report_independent_lens_fusion_stub_v0.py` — `independent_lens_fusion_stub_latest.json`
   2) (optional) Logos Track B commander deep report JSON + MD — separate from `run_lens_logos.py`
   2b) (optional) `emit_myeongni_thin_bridge_line_v1.py --calendar-date auto` — one-line myeongni JSONL aligned to the nearest `curated_dates_v1` day, then Thin uses `--myeongni-jsonl` (default on; `-SkipMyeongniThinBridge` restores stock overlap file)
   3) `eval_multilens_harness_v2_thin.py --populate-default-samples` — `multilens_eval_v2_thin_report_latest.json`
   3b) `myeongri_core_v2_upgrade.py` — `reports/myeongri_core_v2_upgrade_latest.json` (브리프 §1e; `-SkipMyeongriV2Upgrade` 생략)
   4) `build_daily_execution_insight_brief_v1.py` — `reports/daily_execution_insight_brief_latest.md`
+
+  Cross-lens optional notify: after fusion (+ HTML), `send_cross_lens_rag_alert_v1.py` posts webhook/Telegram when alert ts matches fusion ts (skips stale files). `-SkipCrossLensRagAlertNotify` to omit.
 
   Template (human): projects/bitcoin-trading/ops/windows-rehearsal/DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md
 #>
@@ -21,6 +23,10 @@ param(
     [switch]$SkipThinRefresh,
     [switch]$SkipMyeongniThinBridge,
     [switch]$SkipMyeongriV2Upgrade,
+    [switch]$SkipCrossLensRagFusion,
+    [switch]$SkipCrossLensRagHtmlDashboard,
+    [switch]$SkipCrossLensRagAlertNotify,
+    [switch]$SkipMarketMyeongniLens,
     [switch]$DatedCopy,
     [switch]$DryRun
 )
@@ -39,6 +45,10 @@ $logosMd = @('scripts\materialize_logos_track_b_commander_deep_report_v1.py')
 $thinOut = 'docs\final\artifacts\multilens_eval_v2_thin_report_latest.json'
 $myeongniBridgeOut = 'data\multilens_eval\myeongni_independent_lens_thin_bridge_latest.jsonl'
 $myeongriV2 = @('scripts\myeongri_core_v2_upgrade.py')
+$crossLensRagFusion = @('scripts\build_cross_lens_rag_fusion_v1.py')
+$crossLensRagHtml = @('scripts\build_cross_lens_rag_dashboard_html_v1.py')
+$crossLensRagNotify = @('scripts\send_cross_lens_rag_alert_v1.py')
+$marketMyeongniLens = @('scripts\run_market_myeongni_lens_v1.py')
 $briefArgs = @('scripts\build_daily_execution_insight_brief_v1.py')
 if ($DatedCopy) { $briefArgs += '--also-dated-copy' }
 
@@ -49,6 +59,7 @@ if ($DryRun) {
         Write-Host ('py ' + ($lensMarketSasang -join ' '))
         Write-Host ('py ' + ($lensLogos -join ' '))
     }
+    if (-not $SkipMarketMyeongniLens) { Write-Host ('py ' + ($marketMyeongniLens -join ' ')) }
     if (-not $SkipFusionRefresh) { Write-Host ('py ' + ($fusion -join ' ')) }
     if (-not $SkipLogosTrackBDeepReport) {
         Write-Host ('py ' + ($logosDeep -join ' '))
@@ -64,6 +75,9 @@ if ($DryRun) {
         Write-Host ('py ' + ($t -join ' '))
     }
         if (-not $SkipMyeongriV2Upgrade) { Write-Host ('py ' + ($myeongriV2 -join ' ')) }
+        if (-not $SkipCrossLensRagFusion) { Write-Host ('py ' + ($crossLensRagFusion -join ' ')) }
+        if (-not $SkipCrossLensRagHtmlDashboard) { Write-Host ('py ' + ($crossLensRagHtml -join ' ')) }
+        if (-not $SkipCrossLensRagAlertNotify) { Write-Host ('py ' + ($crossLensRagNotify -join ' ')) }
         Write-Host ('py ' + ($briefArgs -join ' '))
     exit 0
 }
@@ -78,6 +92,13 @@ if (-not $SkipIndependentLensRefresh) {
     if ($LASTEXITCODE -ne 0) { Write-Host 'WARN: run_market_sasang_lens_v1.py failed.' -ForegroundColor Yellow }
     & py @lensLogos
     if ($LASTEXITCODE -ne 0) { Write-Host 'WARN: run_lens_logos.py failed; logos independent lens JSON may be stale.' -ForegroundColor Yellow }
+}
+if (-not $SkipMarketMyeongniLens) {
+    Write-Host '== market myeongni overlay lens (finance weights on universal myeongni JSON) ==' -ForegroundColor Cyan
+    & py @marketMyeongniLens
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host 'WARN: run_market_myeongni_lens_v1.py failed; cross-lens fusion may omit market_myeongni.' -ForegroundColor Yellow
+    }
 }
 if (-not $SkipFusionRefresh) {
     Write-Host '== fusion stub refresh ==' -ForegroundColor Cyan
@@ -118,6 +139,24 @@ if (-not $SkipMyeongriV2Upgrade) {
     if ($LASTEXITCODE -ne 0) {
         Write-Host 'WARN: myeongri_core_v2_upgrade.py failed; brief §1e may show missing v2 JSON.' -ForegroundColor Yellow
     }
+}
+if (-not $SkipCrossLensRagFusion) {
+    Write-Host '== cross-lens RAG fusion dashboard (JSON + MD) ==' -ForegroundColor Cyan
+    & py @crossLensRagFusion
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host 'WARN: build_cross_lens_rag_fusion_v1.py failed; continue with daily brief.' -ForegroundColor Yellow
+    }
+}
+if (-not $SkipCrossLensRagHtmlDashboard) {
+    Write-Host '== cross-lens RAG HTML dashboard ==' -ForegroundColor Cyan
+    & py @crossLensRagHtml
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host 'WARN: build_cross_lens_rag_dashboard_html_v1.py failed; continue with daily brief.' -ForegroundColor Yellow
+    }
+}
+if (-not $SkipCrossLensRagAlertNotify) {
+    Write-Host '== cross-lens RAG alert notify (webhook/Telegram, optional) ==' -ForegroundColor Cyan
+    & py @crossLensRagNotify
 }
 Write-Host '== daily execution insight brief ==' -ForegroundColor Cyan
 & py @briefArgs

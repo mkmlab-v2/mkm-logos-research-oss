@@ -8,6 +8,7 @@
   Use -DryRun to print planned action and whether legacy/fusion tasks exist (no changes).
   Recommended unattended flags: -SkipGateAlert -SkipExodusSourceFetch (optional -SkipFailureAlert).
   Optional meta-layer gate after fusion: -MetaLayerEnvelopePath <json-or-md> (passed through to Invoke-TrackCMacroDailyFusion_v1.ps1).
+  Optional: -SkipRoleRouterShadowAdvisory to omit build_role_router_s1_shadow_advisory_v1.py (default runs; non-gating).
   After register: NOTE only if -UnregisterLegacyTasks; else one-line TIP (SSOT pointers).
 #>
 [CmdletBinding()]
@@ -25,6 +26,7 @@ param(
     [switch]$SkipGateAlert,
     [switch]$SkipFailureAlert,
     [switch]$SkipExodusSourceFetch,
+    [switch]$SkipRoleRouterShadowAdvisory,
 
     # Optional: forwarded to Invoke-TrackCMacroDailyFusion_v1.ps1 (see CONSTITUTION §1.3.1)
     [string]$MetaLayerEnvelopePath = "",
@@ -65,6 +67,7 @@ $argument += " -AssetScope `"$AssetScope`" -Horizon `"$Horizon`""
 if ($SkipGateAlert) { $argument += " -SkipGateAlert" }
 if ($SkipFailureAlert) { $argument += " -SkipFailureAlert" }
 if ($SkipExodusSourceFetch) { $argument += " -SkipExodusSourceFetch" }
+if ($SkipRoleRouterShadowAdvisory) { $argument += " -SkipRoleRouterShadowAdvisory" }
 $metaTrim = if ($null -eq $MetaLayerEnvelopePath) { "" } else { $MetaLayerEnvelopePath.Trim() }
 if ($metaTrim -ne "") {
     $argument += " -MetaLayerEnvelopePath `"$metaTrim`""
@@ -83,8 +86,8 @@ if ($DryRun) {
     Write-Output "would_run_daily_at=$RunAt"
     Write-Output ("would_prefer_fred={0}" -f [bool]$PreferFred)
     Write-Output "asset_scope=$AssetScope horizon=$Horizon"
-    Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2}" -f @(
-            [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch))
+    Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3}" -f @(
+            [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory))
     Write-Output ("meta_layer_envelope_path_set={0}" -f ($metaTrim -ne ""))
     if ($metaTrim -ne "") { Write-Output "meta_layer_envelope_path=$metaTrim" }
     Write-Output "working_directory=$repoRoot"
@@ -128,8 +131,8 @@ Write-Output "scheduled_task: REGISTERED ($TaskName)"
 Write-Output "run_at=$RunAt"
 Write-Output ("prefer_fred={0}" -f [bool]$PreferFred)
 Write-Output "asset_scope=$AssetScope horizon=$Horizon"
-Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2}" -f @(
-        [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch))
+Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3}" -f @(
+        [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory))
 Write-Output ("meta_layer_envelope_path_set={0}" -f ($metaTrim -ne ""))
 if ($metaTrim -ne "") { Write-Output "meta_layer_envelope_path=$metaTrim" }
 Write-Output "script=$fusionScript"

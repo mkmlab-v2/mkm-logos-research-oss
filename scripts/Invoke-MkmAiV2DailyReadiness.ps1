@@ -1,7 +1,12 @@
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$IncludeDualLegDashboardChain,
-    [int]$DualLegRecentTradingDays = 30
+    [int]$DualLegRecentTradingDays = 30,
+    [switch]$EnableFallbackPostCutoffCriticalFail,
+    [double]$FallbackPostCutoffWarnRate = 0.15,
+    [switch]$IncludeLgHSPersuasionBridge,
+    [ValidateSet("general", "performance", "safety", "schedule")]
+    [string]$LgHSPersuasionQuestionType = "general"
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,6 +53,38 @@ $row = [ordered]@{
     artifact_path   = $artifactPath
 }
 ($row | ConvertTo-Json -Compress) | Add-Content -LiteralPath $logPath -Encoding UTF8
+
+function Test-DecisionLoggedToday {
+    param(
+        [string]$DecisionsLogPath,
+        [string]$MissionId,
+        [string]$Stage,
+        [string]$Decision,
+        [string]$Actor
+    )
+    if (-not (Test-Path -LiteralPath $DecisionsLogPath)) {
+        return $false
+    }
+    $todayUtc = (Get-Date).ToUniversalTime().ToString("yyyy-MM-dd")
+    try {
+        $lines = Get-Content -LiteralPath $DecisionsLogPath -Encoding UTF8
+        foreach ($line in $lines) {
+            if ([string]::IsNullOrWhiteSpace($line)) { continue }
+            $obj = $line | ConvertFrom-Json -ErrorAction SilentlyContinue
+            if ($null -eq $obj) { continue }
+            $ts = [string]$obj.timestamp
+            if ([string]::IsNullOrWhiteSpace($ts)) { continue }
+            if (-not $ts.StartsWith($todayUtc)) { continue }
+            if (($obj.mission_id -eq $MissionId) -and ($obj.stage -eq $Stage) -and ($obj.decision -eq $Decision) -and ($obj.actor -eq $Actor)) {
+                return $true
+            }
+        }
+    }
+    catch {
+        return $false
+    }
+    return $false
+}
 
 # Refresh rolling 7-day readiness summary artifact.
 $weeklyBuilder = Join-Path $WorkspaceRoot "scripts\build_mkm_ai_v2_weekly_readiness_report.py"
@@ -109,6 +146,15 @@ if (Test-Path -LiteralPath $trackCClientHandoff) {
 $paddleStatus = Join-Path $WorkspaceRoot "scripts\build_paddle_onboarding_status_v1.py"
 if (Test-Path -LiteralPath $paddleStatus) {
     & py $paddleStatus --workspace-root $WorkspaceRoot
+}
+
+# Optional: refresh LG HS persuasion bridge artifact from latest emotion-reasoning state.
+$lgHSPersuasionBridge = Join-Path $WorkspaceRoot "scripts\build_lg_hs_persuasion_bridge_v1.py"
+if ($IncludeLgHSPersuasionBridge -and (Test-Path -LiteralPath $lgHSPersuasionBridge)) {
+    & py $lgHSPersuasionBridge --question-type $LgHSPersuasionQuestionType
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
 }
 
 # Optional: one-click dual-leg (KOSPI/BTC) -> Track C dashboard chain.
@@ -301,7 +347,32 @@ if (Test-Path -LiteralPath $sasangRuleResponseBuilder) {
 # BL-011: refresh compression API fallback trigger telemetry (24h window summary).
 $fallbackSummary = Join-Path $WorkspaceRoot "scripts\build_fallback_trigger_daily_summary_v1.py"
 if (Test-Path -LiteralPath $fallbackSummary) {
+    $fallbackProfile = Join-Path $WorkspaceRoot "docs\final\artifacts\fallback_trigger_threshold_profile_latest.json"
+    $prevCutoff = $env:FALLBACK_TRIGGER_CUTOFF_UTC
+    $cutoffApplied = $false
+    if (Test-Path -LiteralPath $fallbackProfile) {
+        try {
+            $fp = Get-Content -LiteralPath $fallbackProfile -Raw -Encoding UTF8 | ConvertFrom-Json
+            $cutoffRaw = [string]$fp.generated_at_utc
+            if (-not [string]::IsNullOrWhiteSpace($cutoffRaw)) {
+                $env:FALLBACK_TRIGGER_CUTOFF_UTC = $cutoffRaw
+                $cutoffApplied = $true
+            }
+        }
+        catch {
+            Write-Host "WARN: fallback profile parse failed for cutoff propagation ($($_.Exception.Message))" -ForegroundColor Yellow
+        }
+    }
+
     & py $fallbackSummary
+    if ($cutoffApplied) {
+        if ([string]::IsNullOrWhiteSpace($prevCutoff)) {
+            Remove-Item Env:FALLBACK_TRIGGER_CUTOFF_UTC -ErrorAction SilentlyContinue
+        }
+        else {
+            $env:FALLBACK_TRIGGER_CUTOFF_UTC = $prevCutoff
+        }
+    }
     if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
         $exitCode = $LASTEXITCODE
     }
@@ -310,21 +381,153 @@ if (Test-Path -LiteralPath $fallbackSummary) {
         try {
             $fb = Get-Content -LiteralPath $fbJson -Raw -Encoding UTF8 | ConvertFrom-Json
             $rate = [double]$fb.fallback_trigger_rate
+            $postWarnThresholdRaw = $env:FALLBACK_POST_CUTOFF_WARN_RATE
+            $postWarnThreshold = $FallbackPostCutoffWarnRate
+            if (-not [string]::IsNullOrWhiteSpace($postWarnThresholdRaw)) {
+                try {
+                    $postWarnThreshold = [double]$postWarnThresholdRaw
+                }
+                catch {
+                    Write-Host "WARN: invalid FALLBACK_POST_CUTOFF_WARN_RATE=$postWarnThresholdRaw (using $FallbackPostCutoffWarnRate)" -ForegroundColor Yellow
+                    $postWarnThreshold = $FallbackPostCutoffWarnRate
+                }
+            }
             if ($rate -gt 0.50) {
                 Write-Host "WARN: fallback_trigger_rate high ($rate) — review thresholds or traffic mix." -ForegroundColor Yellow
             }
             else {
                 Write-Host "Fallback telemetry summary: OK (fallback_trigger_rate=$rate)"
             }
+            $pcs = $fb.post_cutoff_summary
+            if ($null -ne $pcs) {
+                $postRate = [double]$pcs.fallback_trigger_rate
+                if ($postRate -gt $postWarnThreshold) {
+                    Write-Host "WARN: post_cutoff fallback_trigger_rate high ($postRate > $postWarnThreshold) — recalibration may be needed." -ForegroundColor Yellow
+                    $decisionLogger = Join-Path $WorkspaceRoot "scripts\log_agent_decision.py"
+                    $decisionsLog = Join-Path $WorkspaceRoot "reports\agent_decisions_log.jsonl"
+                    if ((Test-Path -LiteralPath $decisionLogger) -and -not (Test-DecisionLoggedToday -DecisionsLogPath $decisionsLog -MissionId "fallback_post_cutoff_watch_v1" -Stage "fallback_post_cutoff_watch" -Decision "WARN_POST_CUTOFF_RATE_HIGH" -Actor "daily-readiness-runner")) {
+                        & py $decisionLogger --repo-root $WorkspaceRoot --mission-id "fallback_post_cutoff_watch_v1" --stage "fallback_post_cutoff_watch" --decision "WARN_POST_CUTOFF_RATE_HIGH" --evidence-path (Join-Path $WorkspaceRoot "docs\final\artifacts\fallback_trigger_daily_summary_latest.json") --actor "daily-readiness-runner" --risk-level "medium" --note ("post_cutoff_rate={0};threshold={1}" -f $postRate, $postWarnThreshold) | Out-Null
+                    }
+                }
+                else {
+                    Write-Host "Post-cutoff telemetry summary: OK (fallback_trigger_rate=$postRate, threshold=$postWarnThreshold)"
+                }
+            }
         }
         catch {
             Write-Host "WARN: fallback summary parse check failed ($($_.Exception.Message))" -ForegroundColor Yellow
             if ($exitCode -eq 0) { $exitCode = 1 }
         }
+
+        $fallbackWatchReport = Join-Path $WorkspaceRoot "scripts\build_fallback_post_cutoff_watch_report_v1.py"
+        if (Test-Path -LiteralPath $fallbackWatchReport) {
+            $fallbackProfile = Join-Path $WorkspaceRoot "docs\final\artifacts\fallback_trigger_threshold_profile_latest.json"
+            $prevBaselineReset = $env:FALLBACK_POST_CUTOFF_BASELINE_RESET_UTC
+            $baselineResetApplied = $false
+            if (Test-Path -LiteralPath $fallbackProfile) {
+                try {
+                    $fpWatch = Get-Content -LiteralPath $fallbackProfile -Raw -Encoding UTF8 | ConvertFrom-Json
+                    $baselineRaw = [string]$fpWatch.generated_at_utc
+                    if (-not [string]::IsNullOrWhiteSpace($baselineRaw)) {
+                        $env:FALLBACK_POST_CUTOFF_BASELINE_RESET_UTC = $baselineRaw
+                        $baselineResetApplied = $true
+                    }
+                }
+                catch {
+                    Write-Host "WARN: fallback profile parse failed for baseline reset propagation ($($_.Exception.Message))" -ForegroundColor Yellow
+                }
+            }
+            & py $fallbackWatchReport | Out-Null
+            if ($baselineResetApplied) {
+                if ([string]::IsNullOrWhiteSpace($prevBaselineReset)) {
+                    Remove-Item Env:FALLBACK_POST_CUTOFF_BASELINE_RESET_UTC -ErrorAction SilentlyContinue
+                }
+                else {
+                    $env:FALLBACK_POST_CUTOFF_BASELINE_RESET_UTC = $prevBaselineReset
+                }
+            }
+            $watchJson = Join-Path $WorkspaceRoot "docs\final\artifacts\fallback_post_cutoff_watch_report_latest.json"
+            if (Test-Path -LiteralPath $watchJson) {
+                try {
+                    $watch = Get-Content -LiteralPath $watchJson -Raw -Encoding UTF8 | ConvertFrom-Json
+                    $signal = [string](($watch.summary).signal)
+                    if ($signal -eq "CRITICAL") {
+                        Write-Host "WARN: fallback post-cutoff watch signal is CRITICAL - escalation recommended." -ForegroundColor Yellow
+                        $decisionLogger = Join-Path $WorkspaceRoot "scripts\log_agent_decision.py"
+                        $decisionsLog = Join-Path $WorkspaceRoot "reports\agent_decisions_log.jsonl"
+                        if ((Test-Path -LiteralPath $decisionLogger) -and -not (Test-DecisionLoggedToday -DecisionsLogPath $decisionsLog -MissionId "fallback_post_cutoff_watch_v1" -Stage "fallback_post_cutoff_escalation" -Decision "CRITICAL_SIGNAL_ESCALATION" -Actor "daily-readiness-runner")) {
+                            & py $decisionLogger --repo-root $WorkspaceRoot --mission-id "fallback_post_cutoff_watch_v1" --stage "fallback_post_cutoff_escalation" --decision "CRITICAL_SIGNAL_ESCALATION" --evidence-path $watchJson --actor "daily-readiness-runner" --risk-level "high" --note "signal=CRITICAL from fallback post-cutoff watch report" | Out-Null
+                        }
+                        $criticalFailRaw = [string]$env:FALLBACK_POST_CUTOFF_CRITICAL_FAIL
+                        if (($EnableFallbackPostCutoffCriticalFail -or $criticalFailRaw -match '^(1|true|yes)$') -and $exitCode -eq 0) {
+                            $exitCode = 2
+                        }
+                    }
+                }
+                catch {
+                    Write-Host "WARN: fallback post-cutoff watch parse failed ($($_.Exception.Message))" -ForegroundColor Yellow
+                }
+            }
+
+            $fallbackDiagnosis = Join-Path $WorkspaceRoot "scripts\build_fallback_post_cutoff_diagnosis_v1.py"
+            if (Test-Path -LiteralPath $fallbackDiagnosis) {
+                & py $fallbackDiagnosis | Out-Null
+            }
+
+            $fallbackObservationStatus = Join-Path $WorkspaceRoot "scripts\build_fallback_post_cutoff_observation_status_v1.py"
+            if (Test-Path -LiteralPath $fallbackObservationStatus) {
+                & py $fallbackObservationStatus | Out-Null
+                $obsJson = Join-Path $WorkspaceRoot "docs\final\artifacts\fallback_post_cutoff_observation_status_latest.json"
+                if (Test-Path -LiteralPath $obsJson) {
+                    try {
+                        $obs = Get-Content -LiteralPath $obsJson -Raw -Encoding UTF8 | ConvertFrom-Json
+                        $obsDecision = [string]$obs.decision
+                        if ($obsDecision -eq "GO_OBSERVATION_COMPLETE") {
+                            Write-Host "Fallback post-cutoff observation status: GO (observation complete)"
+                        }
+                        elseif ($obsDecision -eq "HOLD_OBSERVATION_CONTINUE") {
+                            Write-Host "WARN: fallback post-cutoff observation status is HOLD (observation continue)." -ForegroundColor Yellow
+                        }
+                    }
+                    catch {
+                        Write-Host "WARN: fallback post-cutoff observation status parse failed ($($_.Exception.Message))" -ForegroundColor Yellow
+                    }
+                }
+            }
+        }
     }
     else {
         Write-Host "WARN: missing fallback_trigger_daily_summary_latest.json after builder" -ForegroundColor Yellow
         if ($exitCode -eq 0) { $exitCode = 1 }
+    }
+}
+
+# BL-012: refresh news-grade-plus scorecard and freeze timestamped snapshot.
+$newsScorecardBuilder = Join-Path $WorkspaceRoot "scripts\build_news_grade_plus_scorecard_v1.py"
+if (Test-Path -LiteralPath $newsScorecardBuilder) {
+    & py $newsScorecardBuilder | Out-Null
+    if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+        $exitCode = $LASTEXITCODE
+    }
+    $newsScorecardJson = Join-Path $WorkspaceRoot "docs\final\artifacts\news_grade_plus_scorecard_latest.json"
+    $newsScorecardMd = Join-Path $WorkspaceRoot "docs\final\artifacts\news_grade_plus_scorecard_latest.md"
+    if ((Test-Path -LiteralPath $newsScorecardJson) -and (Test-Path -LiteralPath $newsScorecardMd)) {
+        try {
+            $stamp = (Get-Date).ToUniversalTime().ToString("yyyyMMddTHHmmssZ")
+            $archiveDir = Join-Path $WorkspaceRoot "docs\final\artifacts\archive\news_grade_plus"
+            if (-not (Test-Path -LiteralPath $archiveDir)) {
+                New-Item -ItemType Directory -Path $archiveDir -Force | Out-Null
+            }
+            $snapJson = Join-Path $archiveDir ("news_grade_plus_scorecard_{0}.json" -f $stamp)
+            $snapMd = Join-Path $archiveDir ("news_grade_plus_scorecard_{0}.md" -f $stamp)
+            Copy-Item -LiteralPath $newsScorecardJson -Destination $snapJson -Force
+            Copy-Item -LiteralPath $newsScorecardMd -Destination $snapMd -Force
+            Write-Host ("News grade plus snapshot: {0}" -f $snapJson)
+        }
+        catch {
+            Write-Host "WARN: news grade plus snapshot freeze failed ($($_.Exception.Message))" -ForegroundColor Yellow
+            if ($exitCode -eq 0) { $exitCode = 1 }
+        }
     }
 }
 
