@@ -286,6 +286,8 @@ def main() -> int:
         _write_json(dest_dir / "trades_control_latest_24h.json", control.kept)
         _write_json(dest_dir / "trades_treatment_latest_24h.json", treatment.kept)
         _write_json(dest_dir / "all_trades_latest_24h.json", all_latest)
+        # SSOT pointer filename for downstream automations and dashboards.
+        _write_json(dest_dir / "cursor_trade_history_latest_24h.json", all_latest)
 
         log_row = {
             "event": "sync_cursor_trade_history_latest_window",
@@ -297,6 +299,7 @@ def main() -> int:
             "missing_optional_files": missing_optional_files,
             "counts": all_latest["counts"],
             "window_hours": args.hours,
+            "ssot_latest_file": str(dest_dir / "cursor_trade_history_latest_24h.json"),
         }
         _append_log(log_file, log_row)
 
