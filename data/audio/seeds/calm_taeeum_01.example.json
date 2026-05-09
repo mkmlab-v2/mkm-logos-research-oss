@@ -1,0 +1,13 @@
+{
+  "schema": "audio_bgm_seed_v1",
+  "seed_id": "calm_taeeum_01",
+  "bpm": 72,
+  "mood": "calm_warm",
+  "base_prompt": "soft pad bed, gentle motion, no percussion spike",
+  "lens": {
+    "tension": 0.22,
+    "sasang_bias": "taeeum"
+  },
+  "lufs_profile": "streaming_minus14_lufs_v1",
+  "target_loop_seconds": 48
+}

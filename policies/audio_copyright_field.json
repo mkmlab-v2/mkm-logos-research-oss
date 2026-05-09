@@ -1,0 +1,29 @@
+{
+  "schema": "audio_copyright_field_v1",
+  "version": "1.0.0",
+  "updated_note": "Human-maintained allow/deny lists. Does not guarantee platform Content ID outcomes.",
+  "commercial_model_allowlist": [
+    {
+      "id": "apache2_self_host_weights_v1",
+      "description": "Self-hosted inference using weights released under permissive OSI-approved license (verify per checkpoint).",
+      "requires_human_review": false
+    },
+    {
+      "id": "vendor_api_terms_v2026_05_commercial",
+      "description": "Third-party API explicitly permitting commercial use under current account tier.",
+      "requires_human_review": true
+    }
+  ],
+  "deny_patterns": [
+    "train_on_customer_audio_without_contract",
+    "output_claimed_public_domain_without_license_chain"
+  ],
+  "content_id_policy": {
+    "stance": "monitor_only",
+    "note": "Do not treat automated Content ID avoidance as a hard gate; use source provenance + human escalation."
+  },
+  "youtube_platform": {
+    "stance": "external_terms_dependent",
+    "reference_only": "https://www.youtube.com/t/terms"
+  }
+}

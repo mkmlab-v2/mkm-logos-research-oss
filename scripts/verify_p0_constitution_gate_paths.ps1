@@ -393,6 +393,7 @@ $required = @(
     "scripts\audio\tone_external_generator_v1.py",
     "scripts\audio\expand_tone_external_generator_v1.py",
     "scripts\audio\ffmpeg_bed_external_generator_v1.py",
+    "scripts\audio\check_audio_gate_optional_deps_v1.py",
     "scripts\Run-AudioBgmGeminiExternalChain_v1.ps1",
     "scripts\Run-AudioBgmEconomyChain_v1.ps1",
     "data\audio\seeds\tension_sasang_01.example.json",

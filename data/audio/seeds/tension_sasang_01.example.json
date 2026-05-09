@@ -1,0 +1,13 @@
+{
+  "schema": "audio_bgm_seed_v1",
+  "seed_id": "tension_sasang_01",
+  "bpm": 96,
+  "mood": "tense_neutral",
+  "base_prompt": "minimal underscore bed, low motion, no lead melody",
+  "lens": {
+    "tension": 0.72,
+    "sasang_bias": "soyang"
+  },
+  "lufs_profile": "streaming_minus14_lufs_v1",
+  "target_loop_seconds": 32
+}

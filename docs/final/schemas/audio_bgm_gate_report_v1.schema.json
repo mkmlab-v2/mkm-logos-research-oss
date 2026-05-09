@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/audio_bgm_gate_report_v1.schema.json",
+  "title": "MKM AI BGM gate report v1 (A-Track promotion contract)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "run_id",
+    "generated_at_utc",
+    "track",
+    "seed_id",
+    "lufs_profile",
+    "loop_join_policy",
+    "metrics",
+    "provenance",
+    "artifacts",
+    "decision"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "audio_bgm_gate_report_v1"
+    },
+    "version": {
+      "type": "string",
+      "description": "Report format semver (not model version).",
+      "pattern": "^1\\.\\d+\\.\\d+$"
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 8,
+      "maxLength": 128,
+      "description": "Unique batch/run id to avoid overwriting concurrent evaluations."
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "track": {
+      "type": "string",
+      "enum": ["A", "B"],
+      "description": "A = commercial promotion path; B = research/exploration."
+    },
+    "seed_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "seed_hash": {
+      "type": "string",
+      "description": "Optional hex/base64 hash of canonical seed JSON for reproducibility."
+    },
+    "lufs_profile": {
+      "type": "string",
+      "description": "Named loudness target bundle (platform-specific).",
+      "examples": ["streaming_minus14_lufs_v1", "broadcast_ebu_r128_v1", "game_dialog_safe_v1"]
+    },
+    "loop_join_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["crossfade_ms", "max_join_sample_jump", "eval_window_samples"],
+      "properties": {
+        "crossfade_ms": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Applied crossfade when exporting loop master (0 = cut join)."
+        },
+        "max_join_sample_jump": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Normalized [-1,1] float: max allowed |end_sample - start_sample| at seam."
+        },
+        "eval_window_samples": {
+          "type": "integer",
+          "minimum": 64,
+          "description": "Samples used for RMS/jump checks around loop boundary regions."
+        }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "loop_seamlessness_pass",
+        "lufs_target_match",
+        "commercial_license_verified",
+        "lens_alignment_pass"
+      ],
+      "properties": {
+        "loop_seamlessness_pass": { "type": "boolean" },
+        "lufs_target_match": { "type": "boolean" },
+        "commercial_license_verified": { "type": "boolean" },
+        "lens_alignment_pass": { "type": "boolean" },
+        "bpm_observed": {
+          "type": "number",
+          "description": "Optional detector output for audit."
+        },
+        "bpm_delta_pct": {
+          "type": "number",
+          "description": "Optional percent delta vs seed BPM."
+        },
+        "lufs_integrated": {
+          "type": "number",
+          "description": "Measured integrated LUFS when toolchain present."
+        },
+        "skipped_checks": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Human-readable reasons when metrics default false due to missing deps."
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model_id"],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "description": "API vendor or self_hosted.",
+          "examples": ["self_hosted", "google_vertex", "google_ai_studio", "third_party_api"]
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model_version": { "type": "string" },
+        "commercial_terms_tag": {
+          "type": "string",
+          "description": "Must match an entry in policies/audio_copyright_field.json allowlist when track=A."
+        },
+        "request_reference": {
+          "type": "string",
+          "description": "Opaque vendor request id / batch id when available."
+        },
+        "terms_checked_at_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        }
+      }
+    },
+    "tool_versions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Optional dependency fingerprint for reproducibility."
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["wav_path"],
+      "properties": {
+        "wav_path": { "type": "string", "minLength": 1 },
+        "stems_path": { "type": "string" },
+        "sidecar_path": {
+          "type": "string",
+          "description": "Optional JSON sidecar with extended provenance next to wav."
+        }
+      }
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["PASS", "FAIL"]
+    },
+    "failure_reasons": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Present when decision is FAIL or for audit trail."
+    }
+  }
+}

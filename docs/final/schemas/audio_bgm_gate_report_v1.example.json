@@ -1,0 +1,41 @@
+{
+  "schema": "audio_bgm_gate_report_v1",
+  "version": "1.0.0",
+  "run_id": "run_20260510_a1b2c3d4",
+  "generated_at_utc": "2026-05-10T12:00:00Z",
+  "track": "A",
+  "seed_id": "seed_sasang_tension_high_001",
+  "seed_hash": "sha256:placeholder",
+  "lufs_profile": "streaming_minus14_lufs_v1",
+  "loop_join_policy": {
+    "crossfade_ms": 12,
+    "max_join_sample_jump": 0.02,
+    "eval_window_samples": 2048
+  },
+  "metrics": {
+    "loop_seamlessness_pass": true,
+    "lufs_target_match": true,
+    "commercial_license_verified": true,
+    "lens_alignment_pass": true,
+    "bpm_observed": 120.0,
+    "bpm_delta_pct": 0.0,
+    "lufs_integrated": -14.1
+  },
+  "provenance": {
+    "provider": "self_hosted",
+    "model_id": "musicgen-small",
+    "model_version": "1.0",
+    "commercial_terms_tag": "apache2_self_host_weights_v1",
+    "request_reference": "job-0001",
+    "terms_checked_at_utc": "2026-05-10T11:59:00Z"
+  },
+  "tool_versions": {
+    "evaluate_audio_gate": "1.0.0"
+  },
+  "artifacts": {
+    "wav_path": "docs/final/artifacts/audio/bgm_out_042.wav",
+    "stems_path": "docs/final/artifacts/audio/stems/bgm_out_042/",
+    "sidecar_path": "docs/final/artifacts/audio/bgm_out_042.meta.json"
+  },
+  "decision": "PASS"
+}

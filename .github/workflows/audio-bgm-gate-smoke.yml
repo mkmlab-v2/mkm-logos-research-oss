@@ -1,0 +1,64 @@
+name: Audio BGM Gate v1 (Fact-Lock)
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/audio/**"
+      - "scripts/Run-AudioBgmGeminiExternalChain_v1.ps1"
+      - "scripts/Run-AudioBgmEconomyChain_v1.ps1"
+      - "data/audio/seeds/**"
+      - "policies/audio_copyright_field.json"
+      - "docs/final/schemas/audio_bgm_gate_report_v1.schema.json"
+      - "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      - "tests/test_audio_bgm_gate_report_v1.py"
+      - ".github/workflows/audio-bgm-gate-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/audio/**"
+      - "scripts/Run-AudioBgmGeminiExternalChain_v1.ps1"
+      - "scripts/Run-AudioBgmEconomyChain_v1.ps1"
+      - "data/audio/seeds/**"
+      - "policies/audio_copyright_field.json"
+      - "docs/final/schemas/audio_bgm_gate_report_v1.schema.json"
+      - "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      - "tests/test_audio_bgm_gate_report_v1.py"
+      - ".github/workflows/audio-bgm-gate-smoke.yml"
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install ffmpeg (lavfi regression)
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Install test deps
+        run: pip install pytest jsonschema numpy pyloudnorm
+      - name: Verify optional deps (--require-all)
+        run: python scripts/audio/check_audio_gate_optional_deps_v1.py --require-all
+      - name: Run audio BGM gate tests
+        run: python -m pytest tests/test_audio_bgm_gate_report_v1.py -q --tb=short
+      - name: External emit dry-run batch + gate (Count 2, no Gemini API)
+        env:
+          MKM_AUDIO_EXTERNAL_SCRIPT: scripts/audio/gemini_placeholder_external_generator_v1.py
+          MKM_AUDIO_EXPAND_DRY_RUN: "1"
+        run: |
+          set -e
+          mkdir -p /tmp/bgm_ci_smoke /tmp/bgm_ci_gate
+          python scripts/audio/run_bgm_generation_batch.py \
+            --seed-json data/audio/seeds/calm_taeeum_01.example.json \
+            --count 2 \
+            --output-dir /tmp/bgm_ci_smoke \
+            --emit external \
+            --placeholder-seconds 1.5 \
+            --run-gate \
+            --gate-waive-lufs \
+            --gate-waive-bpm-lens \
+            --gate-export-dir /tmp/bgm_ci_gate \
+            --gate-skip-latest-copy
