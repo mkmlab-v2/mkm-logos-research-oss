@@ -15,12 +15,20 @@
 
 .PARAMETER QuatSamplesPerCell
   Passed to B-track bundle when -IncludeBtrackBundle is set (default 12 for faster-than-default runs)
+
+.PARAMETER SkipBuildEvalInput
+  Skip build_general_compression_eval_input.py (use after promotion chain already built train eval input).
+
+.PARAMETER EvalManifest
+  When set (and SkipBuildEvalInput is not used), pass --manifest to build_general_compression_eval_input.py.
 #>
 param(
     [switch] $SkipBtrackMirror,
     [switch] $IncludeAnchor,
     [switch] $IncludeBtrackBundle,
-    [int] $QuatSamplesPerCell = 12
+    [int] $QuatSamplesPerCell = 12,
+    [switch] $SkipBuildEvalInput,
+    [string] $EvalManifest = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -35,7 +43,15 @@ function Invoke-Step([string]$Name, [scriptblock]$Block) {
     }
 }
 
-Invoke-Step "build_general_compression_eval_input" { py scripts/build_general_compression_eval_input.py }
+if (-not $SkipBuildEvalInput) {
+    Invoke-Step "build_general_compression_eval_input" {
+        if ($EvalManifest -ne "") {
+            py scripts/build_general_compression_eval_input.py --manifest $EvalManifest
+        } else {
+            py scripts/build_general_compression_eval_input.py
+        }
+    }
+}
 Invoke-Step "general_compression_ab baseline" {
     py scripts/run_general_compression_ab.py `
         --label baseline `

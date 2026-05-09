@@ -1,0 +1,93 @@
+{
+  "schema": "general_compression_benchmark_manifest_v1",
+  "created_at_utc": "2026-04-07T00:00:00Z",
+  "status": "draft_initialized",
+  "goal": "general_data_processing_pivot",
+  "rails": {
+    "trading_rail_unchanged": true,
+    "general_rail_isolated": true,
+    "auto_promotion_to_trading_forbidden": true
+  },
+  "corpus": {
+    "datasets": [
+      {
+        "domain": "meeting",
+        "dataset_id": "meeting_v1",
+        "source_path": "data/general_compression/splits_v1/r20_s42/holdout/meeting_v1.jsonl",
+        "license": "TBD",
+        "record_count": 2
+      },
+      {
+        "domain": "policy_legal_lite",
+        "dataset_id": "policy_legal_lite_v1",
+        "source_path": "data/general_compression/splits_v1/r20_s42/holdout/policy_legal_lite_v1.jsonl",
+        "license": "TBD",
+        "record_count": 3
+      },
+      {
+        "domain": "support_faq",
+        "dataset_id": "support_faq_v1",
+        "source_path": "data/general_compression/splits_v1/r20_s42/holdout/support_faq_v1.jsonl",
+        "license": "TBD",
+        "record_count": 3
+      }
+    ],
+    "common_schema_keys": [
+      "raw_text",
+      "domain",
+      "sensitivity_level",
+      "expected_key_terms"
+    ]
+  },
+  "holdout": {
+    "status": "planned",
+    "method": "fixed_seed_deidentified_eval_split",
+    "seed": 42,
+    "split_script": "scripts/split_general_compression_holdout_v1.py",
+    "split_report_path": "docs/final/artifacts/general_compression_holdout_split_report_v1.json",
+    "note": "Run split script after corpus changes; build eval input from train/* paths only for tuning; evaluate on holdout/* separately."
+  },
+  "experiment": {
+    "splits": {
+      "method": "walk_forward_or_fixed_split",
+      "seed": 42,
+      "timezone": "UTC"
+    },
+    "arms": [
+      {
+        "name": "baseline",
+        "description": "default compression profile"
+      },
+      {
+        "name": "treatment",
+        "description": "policy-updated profile"
+      }
+    ],
+    "target_compression_bands": [
+      0.7,
+      0.8,
+      0.9
+    ],
+    "cost_model": {
+      "token_pricing_version": "TBD",
+      "slippage_or_overhead_model": "TBD"
+    }
+  },
+  "evidence_bundle": {
+    "summary_json": "docs/final/artifacts/general_compression_ab_result_summary_v1.json",
+    "timeseries_csv": "docs/final/artifacts/general_compression_ab_result_timeseries_v1.csv",
+    "repro_command_txt": "docs/final/artifacts/general_compression_repro_command_v1.txt",
+    "kpi_gate_json": "docs/final/artifacts/general_compression_kpi_gate_v2.json",
+    "restore_stress_json": "docs/final/artifacts/general_compression_restore_stress_v1.json"
+  },
+  "commit": {
+    "workspace_commit_hash": "decf63190c"
+  },
+  "notes": [
+    "Do not claim 90% meaning preservation until statistically verified.",
+    "NO_GO remains valid output and must be published with rationale.",
+    "Derived manifest (holdout) from split report; tuning vs reporting should use train vs holdout respectively."
+  ],
+  "split_role": "holdout",
+  "split_key": "r20_s42"
+}
