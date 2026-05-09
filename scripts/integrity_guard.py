@@ -158,7 +158,8 @@ def main() -> int:
         return _fail(f"checks_total expected {exp_total}, got {checks_total}")
     if all_pass != mp["all_pass_expected"]:
         return _fail(f"all_pass expected {mp['all_pass_expected']}, got {all_pass}")
-    if proc.returncode != 0:
+    # verify_master_probe exits 1 when any check fails; allow non-zero when lock expects partial pass.
+    if proc.returncode != 0 and mp.get("all_pass_expected", True):
         return _fail(f"verify_master_probe exit {proc.returncode}")
 
     print(
