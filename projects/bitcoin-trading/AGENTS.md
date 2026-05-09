@@ -55,6 +55,15 @@
   `bash ops/v2/ssh/check_vps_deploy_files_vs_pointer.sh`  
   exit 0이면 필수 파일이 있다. MISSING이면 커밋이 **다른 원격/브랜치**에만 있는 것이니, 포인터의 `deploy_alignment`에 맞춰 pull 하거나 로컬에서 그 브랜치로 반영 후 다시 pull 한다.
 
+## Trading Guardian (Windows 로컬 자동화)
+
+모노레포 루트 기준: 보호 주문 커버리지·번들 헬스·정책 해시 드리프트·일일 드릴은 **`../../scripts/`** 아래 PS1·파이썬으로 돈다. 정책 템플릿은 **`../../scripts/data/trading_guardian_policy_template_v1.json`** — 최초에는 **`../../scripts/Ensure-TradingGuardianPolicyFromTemplate.ps1`** 로 `reports/trading_guardian_policy_latest.json`(루트 `reports/`, Git 무시)을 채운다.
+
+- 번들·커버리지·정책 감시·드릴 등록 예: `Register-TradingGuardianBundleTask.ps1`, `Register-ProtectiveCoverageGuardTask.ps1`, `Register-TradingGuardianPolicyWatchTask.ps1`, `Register-TradingGuardianDailyDrillTask.ps1`
+- 웹훅: `.env` 의 `TRADING_GUARDIAN_BUNDLE_WEBHOOK_URL`, `TRADING_GUARDIAN_POLICY_WEBHOOK_URL`(미설정 시 `OPS_ALARM_WEBHOOK_URL` 폴백 가능)
+
+실매매·메인넷 주문 경로(`execute_binance_usdm_protective_orders_v1.py` 등)는 **본 절의 실매매 체크리스트·승인 게이트**와 별도로 취급한다.
+
 ## 더 읽기
 
 - 루트: `../../AGENTS.md` · `../../docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`

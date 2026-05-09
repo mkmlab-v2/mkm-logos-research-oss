@@ -8,6 +8,8 @@ import sys
 import os
 import time
 import uuid
+import json
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
 import logging
@@ -487,9 +489,18 @@ class BinanceFuturesClient:
                 return True
             return True
         except Exception as e:
-            # 에러 코드 -4059는 "이미 설정됨"을 의미하므로 정상으로 처리
-            if hasattr(e, 'code') and e.code == -4059:
+            code = getattr(e, "code", None)
+            # -4059: 이미 목표 모드로 설정됨
+            if code == -4059:
                 logger.info(f"✅ 포지션 모드 이미 설정됨 (변경 불필요): {e}")
+                return True
+            # -4067: 미체결 주문/포지션 존재 시 모드 변경 불가
+            # 운영 중에는 흔한 상태 충돌이므로 치명 실패 대신 경고로 처리한다.
+            if code == -4067:
+                logger.warning(
+                    "⚠️ 포지션 모드 변경 보류(-4067): 오픈 오더/포지션 정리 후 재시도 필요 (%s)",
+                    e,
+                )
                 return True
             logger.error(f"❌ 포지션 모드 설정 실패: {e}")
             return False
@@ -671,6 +682,62 @@ class BinanceFuturesClient:
         tag = "".join(ch for ch in str(intent).lower() if ch.isalnum())[:8] or "order"
         return f"mkm{tag}{ts}{nonce}"[:36]
 
+    @staticmethod
+    def _workspace_root_path() -> Path:
+        # projects/bitcoin-trading/src/api/binance_client.py -> C:/workspace
+        return Path(__file__).resolve().parents[4]
+
+    def _execution_gate_allow(
+        self,
+        *,
+        symbol: str,
+        intent_type: str,
+        side: str,
+        quantity: float,
+        position_side: str,
+        extra: Optional[Dict[str, Any]] = None,
+    ) -> tuple[bool, str]:
+        """
+        Enforce centralized execution gate before any live order placement.
+        Returns (allow, reason).
+        """
+        workspace = self._workspace_root_path()
+        gate_script = workspace / "scripts" / "run_execution_gate_v1.py"
+        if not gate_script.exists():
+            return False, f"execution_gate_script_missing:{gate_script.as_posix()}"
+
+        out_dir = workspace / "reports" / "binance_usdm_single_order"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        intent_path = out_dir / "runtime_execution_intent_latest.json"
+        decision_path = out_dir / "runtime_execution_gate_decision_latest.json"
+        payload: Dict[str, Any] = {
+            "schema": "execution_intent_v1",
+            "request_id": f"{intent_type}-{symbol}-{int(time.time())}",
+            "symbol": symbol,
+            "side": side,
+            "qty": float(quantity),
+            "intent_type": intent_type,
+            "position_side": position_side,
+            "testnet": self.testnet,
+        }
+        if extra:
+            payload["extra"] = extra
+        intent_path.write_text(
+            json.dumps(payload, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+
+        proc = subprocess.run(
+            [sys.executable, str(gate_script), "--intent-path", str(intent_path), "--output-path", str(decision_path)],
+            cwd=str(workspace),
+            capture_output=True,
+            text=True,
+        )
+        if proc.returncode == 0:
+            return True, "allow"
+        reason = (proc.stderr or proc.stdout or f"execution_gate_blocked_exit:{proc.returncode}").strip()
+        return False, reason or "execution_gate_blocked"
+
     def open_long_position(
         self,
         symbol: str = "BTCUSDT",
@@ -689,6 +756,17 @@ class BinanceFuturesClient:
             if q_adj is None:
                 return None
             quantity = q_adj
+            allow, reason = self._execution_gate_allow(
+                symbol=symbol,
+                intent_type="open_long_position",
+                side="BUY",
+                quantity=quantity,
+                position_side="LONG",
+                extra={"maker_only": self.maker_only, "leverage": leverage},
+            )
+            if not allow:
+                logger.error("❌ 실행 게이트 차단(open_long_position): %s", reason)
+                return None
 
             if self.maker_only and not USE_CCXT:
                 best_bid, _ = self._get_order_book(symbol)
@@ -756,6 +834,17 @@ class BinanceFuturesClient:
             if q_adj is None:
                 return None
             quantity = q_adj
+            allow, reason = self._execution_gate_allow(
+                symbol=symbol,
+                intent_type="open_short_position",
+                side="SELL",
+                quantity=quantity,
+                position_side="SHORT",
+                extra={"maker_only": self.maker_only, "leverage": leverage},
+            )
+            if not allow:
+                logger.error("❌ 실행 게이트 차단(open_short_position): %s", reason)
+                return None
 
             if self.maker_only and not USE_CCXT:
                 _, best_ask = self._get_order_book(symbol)
@@ -862,6 +951,17 @@ class BinanceFuturesClient:
                             side = 'BUY'
                             close_position_side = 'SHORT'
                         qty = abs(position_amt)
+                        allow, reason = self._execution_gate_allow(
+                            symbol=symbol,
+                            intent_type="close_position",
+                            side=side,
+                            quantity=qty,
+                            position_side=close_position_side,
+                            extra={"requested_position_side": requested_side, "maker_only": self.maker_only},
+                        )
+                        if not allow:
+                            logger.error("❌ 실행 게이트 차단(close_position): %s", reason)
+                            return None
                         if self.maker_only:
                             best_bid, best_ask = self._get_order_book(symbol)
                             tick = self._get_tick_size(symbol)
@@ -1060,6 +1160,17 @@ class BinanceFuturesClient:
         q_adj = self._quantize_open_quantity(symbol, float(quantity))
         if q_adj is None:
             return None
+        allow, reason = self._execution_gate_allow(
+            symbol=symbol,
+            intent_type="place_stop_market_reduce_only",
+            side=close_side,
+            quantity=q_adj,
+            position_side=ps,
+            extra={"working_type": working_type, "stop_price": float(stop_price)},
+        )
+        if not allow:
+            logger.error("❌ 실행 게이트 차단(place_stop_market_reduce_only): %s", reason)
+            return None
         sp = self.round_protective_stop_price(symbol, ps, kind="sl", price=float(stop_price))
         try:
             self._check_rate_limit(weight=1, is_order=True)
@@ -1071,7 +1182,6 @@ class BinanceFuturesClient:
                     type="STOP_MARKET",
                     stopPrice=sp,
                     quantity=q_adj,
-                    reduceOnly=True,
                     workingType=working_type,
                     newClientOrderId=self._build_client_order_id("stopsl"),
                 )
@@ -1103,6 +1213,17 @@ class BinanceFuturesClient:
         q_adj = self._quantize_open_quantity(symbol, float(quantity))
         if q_adj is None:
             return None
+        allow, reason = self._execution_gate_allow(
+            symbol=symbol,
+            intent_type="place_take_profit_market_reduce_only",
+            side=close_side,
+            quantity=q_adj,
+            position_side=ps,
+            extra={"working_type": working_type, "stop_price": float(stop_price)},
+        )
+        if not allow:
+            logger.error("❌ 실행 게이트 차단(place_take_profit_market_reduce_only): %s", reason)
+            return None
         sp = self.round_protective_stop_price(symbol, ps, kind="tp", price=float(stop_price))
         try:
             self._check_rate_limit(weight=1, is_order=True)
@@ -1114,7 +1235,6 @@ class BinanceFuturesClient:
                     type="TAKE_PROFIT_MARKET",
                     stopPrice=sp,
                     quantity=q_adj,
-                    reduceOnly=True,
                     workingType=working_type,
                     newClientOrderId=self._build_client_order_id("stoptp"),
                 )
