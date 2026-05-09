@@ -22,6 +22,7 @@ import json
 import mimetypes
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable, List, Optional
 
@@ -31,16 +32,22 @@ from google.genai import types
 MAX_FILES = 10
 
 DEFAULT_MODEL_RESEARCH = "gemini-2.5-flash"
-DEFAULT_MODEL_IMAGE = "gemini-2.5-flash-image-preview"
+DEFAULT_MODEL_IMAGE = "gemini-2.5-flash-image"
 
 # HTTP 전체 타임아웃(초; 클라이언트에는 ms로 전달). 미설정 시 SDK 기본에 맡겨 장시간 대기처럼 보일 수 있음.
 DEFAULT_TIMEOUT_RESEARCH_S = 900
 DEFAULT_TIMEOUT_IMAGE_S = 300
 DEFAULT_TIMEOUT_CROSSCHECK_S = 900
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_USAGE_LOG = ROOT / "reports" / "gemini_batch" / "usage_log.jsonl"
 
 
 def _api_key() -> Optional[str]:
-    return os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    return (
+        os.getenv("GEMINI_API_KEY")
+        or os.getenv("GOOGLE_AI_STUDIO_API_KEY")
+        or os.getenv("GOOGLE_API_KEY")
+    )
 
 
 def _mime_for_path(path: Path) -> str:
@@ -89,7 +96,82 @@ def _make_client(api_key: str, timeout_sec: int) -> genai.Client:
     # google.genai HttpOptions.timeout is milliseconds; API minimum deadline is 10s.
     timeout_ms = max(10_000, int(timeout_sec) * 1000)
     http = types.HttpOptions(timeout=timeout_ms)
-    return genai.Client(api_key=api_key, http_options=http)
+    # Force AI Studio key route when API key is present.
+    # Some environments set GOOGLE_GENAI_USE_VERTEXAI=1 globally, which causes
+    # image generation to fail with 401 unless OAuth credentials are configured.
+    return genai.Client(api_key=api_key, vertexai=False, http_options=http)
+
+
+def _env_int(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw is None or str(raw).strip() == "":
+        return default
+    try:
+        return int(raw)
+    except ValueError:
+        return default
+
+
+def _usage_counts(log_path: Path) -> tuple[int, int]:
+    """Return (daily_count, monthly_count) for current UTC day/month."""
+    now = datetime.now(timezone.utc)
+    day_key = now.strftime("%Y-%m-%d")
+    month_key = now.strftime("%Y-%m")
+    daily = 0
+    monthly = 0
+    if not log_path.is_file():
+        return daily, monthly
+    for line in log_path.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        try:
+            row = json.loads(s)
+        except json.JSONDecodeError:
+            continue
+        ts = str(row.get("ts_utc") or "")
+        if ts.startswith(day_key):
+            daily += 1
+        if ts.startswith(month_key):
+            monthly += 1
+    return daily, monthly
+
+
+def _append_usage(log_path: Path, *, command: str, model: str | None) -> None:
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    row = {
+        "schema": "gemini_batch_usage_v1",
+        "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "command": command,
+        "model": model or "",
+    }
+    with log_path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+def _enforce_budget_guard(ns: argparse.Namespace) -> int:
+    """Return 0 when allowed; 3 when blocked by daily/monthly caps."""
+    if getattr(ns, "budget_bypass", False):
+        return 0
+    log_path = Path(ns.usage_log) if ns.usage_log else DEFAULT_USAGE_LOG
+    daily_cap = _env_int("GEMINI_BATCH_DAILY_MAX_CALLS", 25)
+    monthly_cap = _env_int("GEMINI_BATCH_MONTHLY_MAX_CALLS", 400)
+    daily, monthly = _usage_counts(log_path)
+    if daily_cap > 0 and daily >= daily_cap:
+        print(
+            f"예산 가드 차단: 일일 호출 상한 도달 ({daily}/{daily_cap}). "
+            f"--budget-bypass 또는 GEMINI_BATCH_DAILY_MAX_CALLS 조정 필요.",
+            file=sys.stderr,
+        )
+        return 3
+    if monthly_cap > 0 and monthly >= monthly_cap:
+        print(
+            f"예산 가드 차단: 월간 호출 상한 도달 ({monthly}/{monthly_cap}). "
+            f"--budget-bypass 또는 GEMINI_BATCH_MONTHLY_MAX_CALLS 조정 필요.",
+            file=sys.stderr,
+        )
+        return 3
+    return 0
 
 
 def _call_generate(client: genai.Client, **kwargs):
@@ -278,6 +360,16 @@ def _parser() -> argparse.ArgumentParser:
         metavar="SEC",
         help="HTTP 전체 타임아웃(초). 서브커맨드별 기본값 사용 시 생략 가능",
     )
+    common.add_argument(
+        "--usage-log",
+        default=str(DEFAULT_USAGE_LOG),
+        help="호출 카운트 JSONL 경로 (기본 reports/gemini_batch/usage_log.jsonl).",
+    )
+    common.add_argument(
+        "--budget-bypass",
+        action="store_true",
+        help="일일/월간 호출 상한 가드를 일시 우회.",
+    )
 
     p = argparse.ArgumentParser(
         description="Gemini 멀티모달 배치 (aistudio-mcp generate_content 전술 대응)",
@@ -371,8 +463,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.timeout is None:
         args.timeout = td
 
+    budget_rc = _enforce_budget_guard(args)
+    if budget_rc != 0:
+        return budget_rc
+
     try:
-        return int(args.func(args))
+        rc = int(args.func(args))
+        if rc == 0:
+            _append_usage(
+                Path(args.usage_log) if args.usage_log else DEFAULT_USAGE_LOG,
+                command=args.command,
+                model=getattr(args, "model", None),
+            )
+        return rc
     except KeyboardInterrupt:
         print("중단됨.", file=sys.stderr)
         return 130

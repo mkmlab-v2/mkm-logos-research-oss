@@ -57,7 +57,16 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
         "sasang_stream_outputs": {
             "mapping_target": "sideways",
             "regime_hypothesis": "phase_transition",
-            "machine_readables": {"heat_proxy": 0.5, "cold_proxy": 0.4},
+            "machine_readables": {"heat_proxy": 0.5, "cold_proxy": 0.4, "volatility_rarefaction_proxy": 0.55},
+        },
+        "b_track_axis_scores_v1": {
+            "schema": "sasang_b_track_axis_scores_v1",
+            "version": "0.1.0",
+            "heat_proxy": 0.5,
+            "cold_proxy": 0.4,
+            "volatility_rarefaction_proxy": 0.55,
+            "thermal_imbalance_proxy": 0.1,
+            "disclaimer_ko": "테스트용 면책",
         },
     }
     market_sasang = {
@@ -71,6 +80,19 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
         },
         "uncertainty": {"composite_uncertainty": 0.5, "entropy_norm_4way": 1.0},
         "veto": {"force_hold": True, "reason_codes": ["TEST"]},
+    }
+    market_myeongni = {
+        "schema": "market_myeongni_lens_v1",
+        "lens_id": "market_myeongni",
+        "ts_utc": "2099-01-01T00:00:00Z",
+        "direction_sign": "bullish_proxy",
+        "scores": {"direction_score": 0.11, "confidence": 0.55},
+        "overlay": {
+            "policy_path": "data/market_myeongni/market_myeongni_overlay_policy_v1.json",
+            "base_direction_score": 0.10,
+            "base_confidence": 0.50,
+            "applied": {"direction_score_scale": 1.1, "confidence_scale": 1.1},
+        },
     }
     logos_ind = {
         "ts_utc": "2099-01-01T00:00:00Z",
@@ -127,6 +149,8 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
         sasang_path=Path("/x/sasang.json"),
         market_sasang=market_sasang,
         market_sasang_path=Path("/x/market_sasang.json"),
+        market_myeongni=market_myeongni,
+        market_myeongni_path=Path("/x/market_myeongni.json"),
         logos_independent=logos_ind,
         logos_independent_path=Path("/x/logos.json"),
         myeongri_v2_upgrade=v2,
@@ -150,6 +174,13 @@ def test_build_markdown_embeds_fusion_and_snippet(tmp_path):
     assert "/x/myeongri_v2.json" in md
     assert "neutral.structural_tension_v1" in md
     assert "commander_overlay_multiplier" in md
+    assert "Market Myeongni" in md
+    assert "b_track_axis_scores_v1" in md
+    assert "thermal_imbalance_proxy" in md
+    assert "테스트용 면책" in md
+    assert '"market_myeongni": true' in md
+    assert "market_myeongni_overlay_policy_v1.json" in md
+    assert "0.11" in md
 
 
 def test_build_markdown_section_1c_missing_lens_files(tmp_path):
@@ -169,11 +200,14 @@ def test_build_markdown_section_1c_missing_lens_files(tmp_path):
         sasang_path=missing,
         market_sasang=None,
         market_sasang_path=missing,
+        market_myeongni=None,
+        market_myeongni_path=missing,
         logos_independent=None,
         logos_independent_path=missing,
     )
     assert "*(missing — `" in md
     assert '"myeongni": false' in md
+    assert '"market_myeongni": false' in md
     assert '"myeongri_v2_upgrade": false' in md
 
 

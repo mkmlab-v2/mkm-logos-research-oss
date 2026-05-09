@@ -422,6 +422,17 @@ on:
       - "tests/test_build_daily_execution_insight_brief_v1.py"
       - "scripts/build_daily_execution_insight_brief_v1.py"
       - "scripts/Run-DailyExecutionInsightBrief_v1.ps1"
+      - "scripts/send_cross_lens_rag_alert_v1.py"
+      - "tests/test_send_cross_lens_rag_alert_v1.py"
+      - "scripts/build_cross_lens_rag_fusion_v1.py"
+      - "tests/test_build_cross_lens_rag_fusion_v1.py"
+      - "scripts/run_market_myeongni_lens_v1.py"
+      - "scripts/market_myeongni_overlay_engine_v1.py"
+      - "data/market_myeongni/market_myeongni_overlay_policy_v1.json"
+      - "docs/final/artifacts/schemas/market_myeongni_lens_v1.schema.json"
+      - "docs/final/artifacts/MARKET_MYEONGNI_LENS_V1_CONTRACT.json"
+      - "tests/test_market_myeongni_overlay_v1.py"
+      - "tests/test_market_myeongni_lens_contract_v1.py"
       - "scripts/emit_myeongni_thin_bridge_line_v1.py"
       - "tests/test_emit_myeongni_thin_bridge_line_v1.py"
       - "scripts/validate_mkm_personal_briefing_guardrails_v1.py"
@@ -825,6 +836,15 @@ jobs:
 
       - name: Daily execution insight brief v1 (materializer contract)
         run: python -m pytest tests/test_build_daily_execution_insight_brief_v1.py -q --tb=short
+
+      - name: Cross-lens RAG fusion v1 (sasang axis block contract)
+        run: python -m pytest tests/test_build_cross_lens_rag_fusion_v1.py -q --tb=short
+
+      - name: Cross-lens RAG alert notify v1 (stale guard, Telegram min severity)
+        run: python -m pytest tests/test_send_cross_lens_rag_alert_v1.py -q --tb=short
+
+      - name: Market Myeongni overlay lens v1 (policy + CONTRACT paths + universal myeongni JSON)
+        run: python -m pytest tests/test_market_myeongni_overlay_v1.py tests/test_market_myeongni_lens_contract_v1.py -q --tb=short
 
       - name: Myeongni independent lens → Thin JSONL bridge v1
         run: python -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py -q --tb=short

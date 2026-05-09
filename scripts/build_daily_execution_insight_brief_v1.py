@@ -21,6 +21,7 @@ _ART = WORKSPACE_ROOT / "docs" / "final" / "artifacts"
 DEFAULT_MYEONGNI_LENS = _ART / "myeongni_independent_lens_latest.json"
 DEFAULT_SASANG_LENS = _ART / "sasang_independent_lens_latest.json"
 DEFAULT_MARKET_SASANG_LENS = _ART / "market_sasang_lens_latest.json"
+DEFAULT_MARKET_MYEONGNI_LENS = _ART / "market_myeongni_lens_latest.json"
 DEFAULT_LOGOS_INDEPENDENT_LENS = _ART / "logos_independent_lens_latest.json"
 DEFAULT_A_TRACK_GONOGO = _ART / "a_track_go_nogo_status_latest.json"
 DEFAULT_PROPHECY_MONTHLY = _ART / "prophecy_2026_monthly_kospi_btc_fact_safe_v1.json"
@@ -141,6 +142,63 @@ def _lines_sasang(doc: dict[str, Any] | None, path: Path) -> tuple[list[str], bo
     lines.append(f"| `confidence` | {_num_opt(scores.get('confidence'))} |")
     lines.append(f"| `heat_proxy` | {_num_opt(mr.get('heat_proxy'))} |")
     lines.append(f"| `cold_proxy` | {_num_opt(mr.get('cold_proxy'))} |")
+    lines.append(f"| `volatility_rarefaction_proxy` | {_num_opt(mr.get('volatility_rarefaction_proxy'))} |")
+    lines.append("")
+    ax = doc.get("b_track_axis_scores_v1")
+    if isinstance(ax, dict) and str(ax.get("schema")) == "sasang_b_track_axis_scores_v1":
+        lines.append("##### `b_track_axis_scores_v1` (동역학 프록시만; 보명·금화 본론 정량 아님)")
+        lines.append("")
+        lines.append("| field | value |")
+        lines.append("|-------|-------|")
+        lines.append(f"| `heat_proxy` | {_num_opt(ax.get('heat_proxy'))} |")
+        lines.append(f"| `cold_proxy` | {_num_opt(ax.get('cold_proxy'))} |")
+        lines.append(f"| `volatility_rarefaction_proxy` | {_num_opt(ax.get('volatility_rarefaction_proxy'))} |")
+        lines.append(f"| `thermal_imbalance_proxy` | {_num_opt(ax.get('thermal_imbalance_proxy'))} |")
+        dk = ax.get("disclaimer_ko")
+        if dk:
+            lines.append("")
+            lines.append(f"> {_md_cell(dk)}")
+    else:
+        lines.append("##### `b_track_axis_scores_v1`")
+        lines.append("")
+        lines.append(
+            f"*(block missing — regenerate with `scripts/run_lens_sasang.py`; lens file `{path.as_posix()}`)*"
+        )
+    lines.append("")
+    return lines, True
+
+
+def _lines_market_myeongni(doc: dict[str, Any] | None, path: Path) -> tuple[list[str], bool]:
+    """Finance overlay on universal myeongni JSON (Track B) — not a second calendar engine."""
+    lines: list[str] = []
+    lines.append("#### Market Myeongni (`market_myeongni_lens_latest`)")
+    lines.append("")
+    if not doc:
+        lines.append(f"*(missing — `{path.as_posix()}`)*")
+        lines.append("")
+        return lines, False
+    if str(doc.get("schema")) != "market_myeongni_lens_v1":
+        lines.append(
+            f"*(schema not `market_myeongni_lens_v1` — got `{_md_cell(doc.get('schema'))}`; `{path.as_posix()}`)*"
+        )
+        lines.append("")
+        return lines, False
+    scores = doc.get("scores") if isinstance(doc.get("scores"), dict) else {}
+    ov = doc.get("overlay") if isinstance(doc.get("overlay"), dict) else {}
+    ap = ov.get("applied") if isinstance(ov.get("applied"), dict) else {}
+    lines.append("| field | value |")
+    lines.append("|-------|-------|")
+    lines.append(f"| `ts_utc` | {_md_cell(doc.get('ts_utc'))} |")
+    lines.append(f"| `direction_score` (overlay) | {_num_opt(scores.get('direction_score'))} |")
+    lines.append(f"| `confidence` (overlay) | {_num_opt(scores.get('confidence'))} |")
+    lines.append(f"| `direction_sign` | {_md_cell(doc.get('direction_sign'))} |")
+    lines.append(f"| `base_direction_score` | {_num_opt(ov.get('base_direction_score'))} |")
+    lines.append(f"| `base_confidence` | {_num_opt(ov.get('base_confidence'))} |")
+    lines.append(f"| `direction_score_scale` | {_num_opt(ap.get('direction_score_scale'))} |")
+    lines.append(f"| `confidence_scale` | {_num_opt(ap.get('confidence_scale'))} |")
+    pol = str(ov.get("policy_path") or "")
+    if pol:
+        lines.append(f"| `policy_path` | `{pol}` |")
     lines.append("")
     return lines, True
 
@@ -421,6 +479,8 @@ def build_markdown(
     sasang_path: Path | None = None,
     market_sasang: dict[str, Any] | None = None,
     market_sasang_path: Path | None = None,
+    market_myeongni: dict[str, Any] | None = None,
+    market_myeongni_path: Path | None = None,
     logos_independent: dict[str, Any] | None = None,
     logos_independent_path: Path | None = None,
     a_track_gonogo: dict[str, Any] | None = None,
@@ -526,13 +586,16 @@ def build_markdown(
     lines.append("")
     mp = myeongni_path or DEFAULT_MYEONGNI_LENS
     sp = sasang_path or DEFAULT_SASANG_LENS
+    mmp = market_myeongni_path or DEFAULT_MARKET_MYEONGNI_LENS
     msp = market_sasang_path or DEFAULT_MARKET_SASANG_LENS
     lp = logos_independent_path or DEFAULT_LOGOS_INDEPENDENT_LENS
     lm, ok_m = _lines_myeongni(myeongni, mp)
+    lmm, ok_mm = _lines_market_myeongni(market_myeongni, mmp)
     ls, ok_s = _lines_sasang(sasang, sp)
     lms, ok_ms = _lines_market_sasang(market_sasang, msp)
     ll, ok_l = _lines_logos_independent(logos_independent, lp)
     lines.extend(lm)
+    lines.extend(lmm)
     lines.extend(ls)
     lines.extend(lms)
     lines.extend(ll)
@@ -574,7 +637,7 @@ def build_markdown(
     lines.append("| `final_action_label` | *(operator)* |")
     ev_paths = (
         f"`{thin_path.as_posix()}`; `{fusion_path.as_posix()}`; "
-        f"`{mp.as_posix()}`; `{sp.as_posix()}`; `{msp.as_posix()}`; `{lp.as_posix()}`; "
+        f"`{mp.as_posix()}`; `{mmp.as_posix()}`; `{sp.as_posix()}`; `{msp.as_posix()}`; `{lp.as_posix()}`; "
         f"`{atp.as_posix()}`; `{v2p.as_posix()}`"
     )
     lines.append(f"| `evidence_paths` | {ev_paths} |")
@@ -583,6 +646,7 @@ def build_markdown(
     lines.append("")
     ind_flags = {
         "myeongni": ok_m,
+        "market_myeongni": ok_mm,
         "sasang": ok_s,
         "market_sasang": ok_ms,
         "logos_independent": ok_l,
@@ -607,6 +671,7 @@ def main() -> None:
     p.add_argument("--myeongni-json", type=Path, default=DEFAULT_MYEONGNI_LENS)
     p.add_argument("--sasang-json", type=Path, default=DEFAULT_SASANG_LENS)
     p.add_argument("--market-sasang-json", type=Path, default=DEFAULT_MARKET_SASANG_LENS)
+    p.add_argument("--market-myeongni-json", type=Path, default=DEFAULT_MARKET_MYEONGNI_LENS)
     p.add_argument("--logos-independent-json", type=Path, default=DEFAULT_LOGOS_INDEPENDENT_LENS)
     p.add_argument("--a-track-gonogo-json", type=Path, default=DEFAULT_A_TRACK_GONOGO)
     p.add_argument("--prophecy-monthly-json", type=Path, default=DEFAULT_PROPHECY_MONTHLY)
@@ -647,6 +712,7 @@ def main() -> None:
     myeongni_path = _abs_under_root(root, args.myeongni_json)
     sasang_path = _abs_under_root(root, args.sasang_json)
     market_sasang_path = _abs_under_root(root, args.market_sasang_json)
+    market_myeongni_path = _abs_under_root(root, args.market_myeongni_json)
     logos_independent_path = _abs_under_root(root, args.logos_independent_json)
     a_track_gonogo_path = _abs_under_root(root, args.a_track_gonogo_json)
     prophecy_monthly_path = _abs_under_root(root, args.prophecy_monthly_json)
@@ -661,6 +727,7 @@ def main() -> None:
     myeongni = _read_json(myeongni_path)
     sasang = _read_json(sasang_path)
     market_sasang = _read_json(market_sasang_path)
+    market_myeongni = _read_json(market_myeongni_path)
     logos_independent = _read_json(logos_independent_path)
     a_track_gonogo = _read_json(a_track_gonogo_path)
     prophecy_monthly = _read_json(prophecy_monthly_path)
@@ -684,6 +751,8 @@ def main() -> None:
         sasang_path=sasang_path,
         market_sasang=market_sasang,
         market_sasang_path=market_sasang_path,
+        market_myeongni=market_myeongni,
+        market_myeongni_path=market_myeongni_path,
         logos_independent=logos_independent,
         logos_independent_path=logos_independent_path,
         a_track_gonogo=a_track_gonogo,

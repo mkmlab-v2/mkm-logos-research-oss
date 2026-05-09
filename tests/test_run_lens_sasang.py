@@ -17,6 +17,20 @@ def test_sideways_mapping_emits_micro_tilt_when_heat_cold_separated() -> None:
     assert score <= 0.18
 
 
+def test_b_track_axis_scores_v1_thermal_imbalance() -> None:
+    row = {
+        "machine_readables": {
+            "heat_proxy": 0.7,
+            "cold_proxy": 0.3,
+            "volatility_rarefaction_proxy": 0.5,
+        },
+    }
+    ax = mod._b_track_axis_scores_v1(row)
+    assert ax["schema"] == "sasang_b_track_axis_scores_v1"
+    assert ax["thermal_imbalance_proxy"] == 0.4
+    assert ax["heat_proxy"] == 0.7
+
+
 def test_confidence_boosted_for_clear_proxy_imbalance() -> None:
     row = {
         "machine_readables": {

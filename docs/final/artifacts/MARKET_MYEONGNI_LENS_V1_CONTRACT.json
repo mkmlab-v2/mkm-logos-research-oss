@@ -1,0 +1,18 @@
+{
+  "schema": "market_myeongni_lens_v1_contract_meta_v1",
+  "artifact_schema": "market_myeongni_lens_v1",
+  "artifact_json_schema": "docs/final/artifacts/schemas/market_myeongni_lens_v1.schema.json",
+  "engine_version": "1.0.0",
+  "purpose": "Market Myeongni: policy-weighted overlay on universal myeongni independent-lens JSON; market/finance interpretation layer; deterministic; does not replace calendar/manseryeok core.",
+  "policy_file": "data/market_myeongni/market_myeongni_overlay_policy_v1.json",
+  "engine_module": "scripts/market_myeongni_overlay_engine_v1.py",
+  "runner": "scripts/run_market_myeongni_lens_v1.py",
+  "default_output_path": "docs/final/artifacts/market_myeongni_lens_latest.json",
+  "required_upstream_artifact": "docs/final/artifacts/myeongni_independent_lens_latest.json",
+  "upstream_runner_hint": "scripts/run_lens_myeongni.py (or equivalent myeongni independent lens refresh)",
+  "forbidden": {
+    "a_track_auto_trigger": true,
+    "live_sizing_from_lens_alone": true,
+    "mutating_myeongni_core_engine": true
+  }
+}

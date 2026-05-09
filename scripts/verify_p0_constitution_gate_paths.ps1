@@ -31,6 +31,8 @@ param(
 # 2026-05-02: 압축 주간 거버넌스 체인 러너 복구 (run_compression_weekly_governance_chain.ps1 + P0 경로).
 # 2026-05-02: 명리 독립 렌즈 → Thin JSONL 브리지 v1 (emit 스크립트·pytest; §3.6).
 # 2026-05-07: GraphRAG pilot query router v1 (Track B/K observation-only; script+schema+test).
+# 2026-05-09: Market Myeongni overlay — P0에 회귀 pytest 추가(스키마·러너·정책은 기존 블록과 동일).
+# 2026-05-09: Market Myeongni — CONTRACT 메타(MARKET_MYEONGNI_LENS_V1_CONTRACT.json) + contract path pytest (3중: 스키마·CONTRACT·회귀).
 # 2026-05-09: Global orchestrator + GO stability cycle + accelerated burn-in + conditional GO+ report v2
 #   (scripts only; companion / mkm_global_orchestrator *_latest.json are regenerable and often gitignored).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
@@ -112,6 +114,9 @@ $required = @(
     "scripts\market_myeongni_overlay_engine_v1.py",
     "data\market_myeongni\market_myeongni_overlay_policy_v1.json",
     "docs\final\artifacts\schemas\market_myeongni_lens_v1.schema.json",
+    "docs\final\artifacts\MARKET_MYEONGNI_LENS_V1_CONTRACT.json",
+    "tests\test_market_myeongni_overlay_v1.py",
+    "tests\test_market_myeongni_lens_contract_v1.py",
     "tests\test_build_daily_execution_insight_brief_v1.py",
     "scripts\emit_myeongni_thin_bridge_line_v1.py",
     "tests\test_emit_myeongni_thin_bridge_line_v1.py",
@@ -172,6 +177,8 @@ $required = @(
     "data\myeongni\rule_school_mkm_4d_v1.json",
     "scripts\myeongri_rule_school_mkm_4d_v1.py",
     "tests\test_myeongri_rule_school_mkm_4d_v1.py",
+    "data\myeongni\myeongni_conflict_arbitration_v1.json",
+    "scripts\verify_myeongni_conflict_arbitration_edgecases_v1.py",
     "scripts\core\solar_term_jie_crossings_v1.py",
     "scripts\myeongri_qiyun_v1.py",
     "tests\test_myeongri_qiyun_v1.py",

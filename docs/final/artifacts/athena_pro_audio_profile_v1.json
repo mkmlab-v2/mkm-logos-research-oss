@@ -1,0 +1,22 @@
+{
+  "schema": "athena_pro_audio_profile_v1",
+  "loudnorm": {
+    "enabled": true,
+    "integrated_lufs": -16.0,
+    "true_peak_dbfs": -1.5,
+    "loudness_range": 11.0,
+    "linear": true
+  },
+  "sidechaincompress": {
+    "threshold": 0.06,
+    "ratio": 8,
+    "attack_ms": 20,
+    "release_ms": 280
+  },
+  "mix": {
+    "ducked_bgm_and_narr": [1.0, 1.0],
+    "clip_bed_vs_voice_bus": [0.2, 1.0],
+    "clip_bed_vs_narr_only": [0.2, 1.0],
+    "clip_bed_vs_bgm_only": [0.35, 1.0]
+  }
+}
