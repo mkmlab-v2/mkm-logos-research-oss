@@ -13,6 +13,7 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     chain = tmp_path / "chain.json"
     out = tmp_path / "overlay.json"
     state_path = tmp_path / "state.json"
+    smoke = tmp_path / "smoke.json"
     gov.write_text(
         json.dumps(
             {
@@ -40,6 +41,19 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
         + "\n",
         encoding="utf-8",
     )
+    smoke.write_text(
+        json.dumps(
+            {
+                "schema": "lens_music_prompt_smoke_eval_v1",
+                "state": "WATCH",
+                "style_match_rate": 0.2,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     r = subprocess.run(
         [
             sys.executable,
@@ -48,6 +62,8 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
             str(gov),
             "--chain-json",
             str(chain),
+            "--smoke-eval-json",
+            str(smoke),
             "--out",
             str(out),
             "--state-json",
@@ -63,5 +79,8 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     assert doc["global_state"]["state"] == "WATCH"
     assert doc["global_state"]["smoothed_bpm"] > 0
     assert doc["global_state"]["target_bpm_from_sasang"] > 0
+    assert doc["global_state"]["style"]["temperature_hint"] <= 0.45
     assert doc["control_plane_contract"]["control_plane_user_plane_separation"] is True
+    assert doc["auto_brake_m22"]["active"] is True
+    assert doc["auto_brake_m22"]["trigger_smoke_eval_watch"] is True
     assert "Governance=WATCH" in doc["system_instructions"]

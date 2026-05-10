@@ -17,6 +17,7 @@ DEFAULT_GOV = ROOT / "docs" / "final" / "artifacts" / "lens_music_audition_gover
 DEFAULT_CHAIN = ROOT / "reports" / "_tmp_m15_chain.json"
 DEFAULT_OUT = ROOT / "reports" / "lens_music_prompt_overlay_latest.json"
 DEFAULT_STATE = ROOT / "reports" / "lens_music_prompt_overlay_state_latest.json"
+DEFAULT_SMOKE_EVAL = ROOT / "reports" / "lens_music_prompt_smoke_eval_latest.json"
 
 
 def _utc_now() -> str:
@@ -57,6 +58,23 @@ def _pick_tone(tempo_bpm: float, valence: float, state: str) -> dict[str, Any]:
     }
 
 
+def _apply_m22_brake(style: dict[str, Any], *, governance_state: str, smoke_eval_state: str) -> tuple[dict[str, Any], dict[str, Any]]:
+    """M22: Auto brake policy when governance/smoke state is WATCH."""
+    out = dict(style)
+    active = governance_state == "WATCH" or smoke_eval_state == "WATCH"
+    if active:
+        out["temperature_hint"] = min(float(out.get("temperature_hint", 0.5)), 0.45)
+        out["sentence_length"] = "short_to_medium"
+        out["answer_style"] = "calm_guarded"
+    return out, {
+        "active": active,
+        "trigger_governance_watch": governance_state == "WATCH",
+        "trigger_smoke_eval_watch": smoke_eval_state == "WATCH",
+        "max_temperature_when_active": 0.45,
+        "non_blocking": True,
+    }
+
+
 def _lookup_sasang_target_bpm(sasang_key: str) -> float:
     table = {
         "taeyang": 130.0,
@@ -76,6 +94,7 @@ def build_overlay(
     governance: dict[str, Any],
     chain_doc: dict[str, Any],
     *,
+    smoke_eval: dict[str, Any] | None = None,
     prev_state: dict[str, Any] | None = None,
     ema_alpha: float = 0.4,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
@@ -92,6 +111,8 @@ def build_overlay(
     smoothed_bpm = _apply_ema(previous=previous_bpm, target=target_bpm, alpha=ema_alpha)
     tempo_bpm = round((smoothed_bpm + raw_tempo_bpm) / 2.0, 3)
     style = _pick_tone(tempo_bpm=tempo_bpm, valence=valence, state=state)
+    smoke_state = str((smoke_eval or {}).get("state") or "UNKNOWN")
+    style, m22 = _apply_m22_brake(style, governance_state=state, smoke_eval_state=smoke_state)
 
     global_state = {
         "schema": "lens_music_prompt_overlay_v1",
@@ -106,6 +127,7 @@ def build_overlay(
         "smoothed_bpm": round(smoothed_bpm, 3),
         "ema_alpha": float(ema_alpha),
         "style": style,
+        "smoke_eval_state": smoke_state,
     }
     system_instructions = (
         f"[Global State: BPM={tempo_bpm:.1f}, Valence={valence:.3f}, Arousal={arousal:.3f}, Governance={state}]\n"
@@ -128,7 +150,9 @@ def build_overlay(
         "references": {
             "governance_status_schema": governance.get("schema"),
             "chain_schema": chain_doc.get("schema"),
+            "smoke_eval_schema": (smoke_eval or {}).get("schema"),
         },
+        "auto_brake_m22": m22,
     }
     next_state = {
         "schema": "lens_music_prompt_overlay_state_v1",
@@ -144,6 +168,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--governance-json", type=Path, default=DEFAULT_GOV)
     ap.add_argument("--chain-json", type=Path, default=DEFAULT_CHAIN)
+    ap.add_argument("--smoke-eval-json", type=Path, default=DEFAULT_SMOKE_EVAL)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--state-json", type=Path, default=DEFAULT_STATE)
     ap.add_argument("--ema-alpha", type=float, default=0.4)
@@ -151,8 +176,15 @@ def main() -> int:
 
     gov = _read_json(args.governance_json)
     chain = _read_json(args.chain_json)
+    smoke_eval = _read_json(args.smoke_eval_json)
     prev_state = _read_json(args.state_json)
-    out_doc, next_state = build_overlay(gov, chain, prev_state=prev_state, ema_alpha=float(args.ema_alpha))
+    out_doc, next_state = build_overlay(
+        gov,
+        chain,
+        smoke_eval=smoke_eval,
+        prev_state=prev_state,
+        ema_alpha=float(args.ema_alpha),
+    )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     args.state_json.parent.mkdir(parents=True, exist_ok=True)
