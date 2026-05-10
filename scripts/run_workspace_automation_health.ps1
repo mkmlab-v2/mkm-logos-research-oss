@@ -27,7 +27,7 @@ param(
     # Optional: package_b chain smoke (v1 lens + v2 balanced/attack + margins summary).
     [switch]$IncludeMyeongniPackageBSmoke,
 
-    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly profiles).
+    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / McpHygieneProbeOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly profiles).
     [switch]$SkipNewsObservationContractSmoke,
 
     # Optional: bio PMID paper SNP sidecar join smoke (no network; sub-second).
@@ -106,7 +106,13 @@ param(
     # Optional: KM physician CDS assist envelope v1 pytest quartet (+ automation_registry MKM tasks; jsonschema; few seconds).
     [switch]$IncludeKmPhysicianCdsEnvelopeSmoke,
     # Shortcut profile: P0 paths + CDS envelope pytest pair only.
-    [switch]$KmPhysicianCdsEnvelopeSmokeOnly
+    [switch]$KmPhysicianCdsEnvelopeSmokeOnly,
+
+    # Optional: NotebookLM MCP hygiene probe (prereq + JSON; no MCP get_health in probe).
+    [switch]$IncludeMcpHygieneProbe,
+    [switch]$IncludeMcpHygieneProbeRepair,
+    # Shortcut profile: P0 + MCP probe only (skip vault/memory/phase1/news/reconcile by default).
+    [switch]$McpHygieneProbeOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -160,6 +166,14 @@ if ($MkmControlIntegritySmokeOnly) {
 
 if ($KmPhysicianCdsEnvelopeSmokeOnly) {
     $IncludeKmPhysicianCdsEnvelopeSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
+if ($McpHygieneProbeOnly) {
+    $IncludeMcpHygieneProbe = $true
     $SkipVaultMirror = $true
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
@@ -242,7 +256,36 @@ try {
         }
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly) {
+    if ($IncludeMcpHygieneProbe) {
+        $mcpProbe = Join-Path $root "scripts\Invoke-McpHygieneProbe.ps1"
+        $mcpOut = Join-Path $root "reports\mcp_hygiene_probe_latest.json"
+        if (Test-Path -LiteralPath $mcpProbe) {
+            $mcpLabel = "NotebookLM MCP hygiene probe (prereq JSON"
+            if ($IncludeMcpHygieneProbeRepair) { $mcpLabel += " + repair" }
+            $mcpLabel += ")"
+            Step $mcpLabel {
+                if ($IncludeMcpHygieneProbeRepair) {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpProbe -WorkspaceRoot $root -OutJson $mcpOut -Repair
+                }
+                else {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $mcpProbe -WorkspaceRoot $root -OutJson $mcpOut
+                }
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== NotebookLM MCP hygiene probe ===" -ForegroundColor Yellow
+            Write-Host "SKIP: Invoke-McpHygieneProbe.ps1 not found"
+        }
+    }
+
+    if ($McpHygieneProbeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] McpHygieneProbeOnly: finished after P0 + MCP probe." -ForegroundColor Green
+        exit 0
+    }
+
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -316,7 +359,7 @@ try {
         }
     }
 
-    if (-not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly) {
+    if (-not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly) {
         Write-Host ""
         Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
         $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"

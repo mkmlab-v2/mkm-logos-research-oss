@@ -50,6 +50,7 @@
 - **수동 점검·수리 (비용 낮음):** `scripts/check_notebooklm_mcp_prereqs.ps1` → `scripts/repair_notebooklm_mcp_auth_stuck.ps1` (또는 원클릭 `scripts/invoke_notebooklm_mcp_auth_recovery_v1.ps1`). **쿠키/로그인을 대체하지 않음** — 오래된 node·Chrome·lockfile만 정리.
 - **원샷 프로브 (자동화·암행어사용 JSON):** `scripts/Invoke-McpHygieneProbe.ps1` → 표준 출력 및 선택 `-OutJson` 경로에 **`mcp_hygiene_probe_notebooklm_v1`** 요약(prereq exit·stale 카운트·선택 `-Repair`). MCP `get_health`의 `authenticated`는 포함하지 않음(Cursor 전용).
 - **주간 자동 (권장):** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-NotebookLmMcpWeeklyHygieneTask.ps1` — 기본 **일요 07:00(로컬)** 에 stale 프로세스 정리. 제거: `-Remove`.
+- **일일 프로브 (선택, Repair 없음 기본):** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-McpHygieneProbeDailyTask.ps1` — 기본 **매일 08:30(로컬)** 에 `Invoke-McpHygieneProbe` → `reports/mcp_hygiene_probe_latest.json` 및 로그 `reports/mcp_hygiene_probe_daily.log`. 헬스 번들 수동: `scripts/run_workspace_automation_health.ps1 -IncludeMcpHygieneProbe` 또는 `-McpHygieneProbeOnly`.
 - **로그오프 시 자동 (선택):** `scripts/register_notebooklm_mcp_repair_logoff_task.ps1` — Winlogon 이벤트에 repair 연동.
 - **Cursor 재시작 뒤:** Settings → MCP에서 `notebooklm` **토글 off/on** 또는 **새 채팅** — 도구 목록이 세션 시작 시 고정되는 경우가 있어, **같은 채팅에서만** `Not connected`가 남을 수 있다(에이전트 규칙 `notebooklm-mcp-session-bridge.mdc`와 동일).
 
