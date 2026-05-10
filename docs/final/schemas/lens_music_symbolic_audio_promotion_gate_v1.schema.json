@@ -72,7 +72,28 @@
       "additionalProperties": false,
       "properties": {
         "track_c_section": { "type": "string" },
-        "compression_playbook_cross_ref": { "type": "string" }
+        "compression_playbook_cross_ref": { "type": "string" },
+        "track_c_section_3_10_emotion_va": { "type": "string" }
+      }
+    },
+    "emotion_va_overlay_ack": {
+      "type": "object",
+      "description": "§3.10 emotion VA is covered by the same pytest bundle; does not add a separate gate criterion.",
+      "additionalProperties": false,
+      "required": [
+        "pytest_includes_emotion_va_overlay_tests",
+        "does_not_gate_promotion_decision"
+      ],
+      "properties": {
+        "pytest_includes_emotion_va_overlay_tests": {
+          "type": "boolean",
+          "const": true
+        },
+        "does_not_gate_promotion_decision": {
+          "type": "boolean",
+          "const": true
+        },
+        "note": { "type": "string", "maxLength": 2000 }
       }
     }
   }

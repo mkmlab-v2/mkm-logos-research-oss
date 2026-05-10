@@ -5,6 +5,9 @@ Runs the consolidated pytest bundle for M0–M4. Exit 0 iff pytest passes.
 Writes JSON artifact; decision GO is **research lane only** — Track A commercial audio and
 Track C primary GTM remain blocked until separate human + metric gates (see track_wall).
 
+Payload includes ``emotion_va_overlay_ack`` for §3.10 traceability (same pytest bundle covers
+``--emotion-mapping-json``); it does **not** add a separate GO/HOLD criterion beyond M0–M4 green.
+
 Does not replace COMPRESSION §9 Track A promotion for the compression API lane.
 """
 
@@ -75,6 +78,18 @@ def build_payload(pytest_exit_code: int, log_tail: str) -> dict[str, Any]:
             "track_c_section": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.9–3.9.2",
             "compression_playbook_cross_ref": (
                 "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md §9"
+            ),
+            "track_c_section_3_10_emotion_va": (
+                "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.10 "
+                "(sasang_emotion_mapping_v1 · emotion_va_overlay_v1 overlay only)"
+            ),
+        },
+        "emotion_va_overlay_ack": {
+            "pytest_includes_emotion_va_overlay_tests": True,
+            "does_not_gate_promotion_decision": True,
+            "note": (
+                "tests/test_run_lens_music_gematria_v1.py exercises --emotion-mapping-json / "
+                "emotion_va_overlay_v1; GO/HOLD stay M0–M4 pytest bundle only (Track Wall unchanged)."
             ),
         },
     }

@@ -26,6 +26,12 @@
   },
   "references_ssot": {
     "track_c_section": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.9–3.9.2",
-    "compression_playbook_cross_ref": "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md §9 (different lane)"
+    "compression_playbook_cross_ref": "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md §9 (different lane)",
+    "track_c_section_3_10_emotion_va": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.10 (fixture text)"
+  },
+  "emotion_va_overlay_ack": {
+    "pytest_includes_emotion_va_overlay_tests": true,
+    "does_not_gate_promotion_decision": true,
+    "note": "Fixture shape only; regenerate via scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py."
   }
 }
