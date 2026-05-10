@@ -281,6 +281,7 @@ $required = @(
     "scripts\check_news_label_join_temporal_v1.py",
     "scripts\build_news_observation_jsonl_from_csv_v1.py",
     "scripts\Run-NewsObservationContractSmoke.ps1",
+    "scripts\Run-BTrackDomainFeedbackSmoke.ps1",
     "scripts\dump_mcp_tool_inventory.py",
     "scripts\mkm_unified_mcp.py",
     "rag_server\mcp_server.py",
