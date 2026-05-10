@@ -37,7 +37,7 @@ def _mean(vals: list[float]) -> float:
     return float(sum(vals) / len(vals))
 
 
-def build_summary(chain_paths: list[Path]) -> dict[str, Any]:
+def build_summary(chain_paths: list[Path], *, warn_ratio_threshold: float) -> dict[str, Any]:
     parsed = 0
     with_m13 = 0
     status_counts: Counter[str] = Counter()
@@ -63,6 +63,11 @@ def build_summary(chain_paths: list[Path]) -> dict[str, Any]:
         rms_vals.append(float(m13.get("rms_0_1", 0.0)))
         seconds_vals.append(float(m13.get("seconds", 0.0)))
 
+    warn_count = status_counts.get("WARN", 0)
+    denom = max(with_m13, 1)
+    warn_ratio = float(warn_count) / float(denom)
+    governance_state = "WATCH" if warn_ratio > warn_ratio_threshold else "GO"
+
     return {
         "schema": "lens_music_audition_qa_summary_v1",
         "generated_at_utc": _utc_now(),
@@ -77,6 +82,14 @@ def build_summary(chain_paths: list[Path]) -> dict[str, Any]:
             "peak_abs_max": round(max(peaks) if peaks else 0.0, 6),
             "rms_mean": round(_mean(rms_vals), 6),
             "duration_sec_mean": round(_mean(seconds_vals), 6),
+            "warn_ratio": round(warn_ratio, 6),
+        },
+        "governance_m16": {
+            "warn_ratio_threshold": warn_ratio_threshold,
+            "warn_count": int(warn_count),
+            "sample_count": int(with_m13),
+            "state": governance_state,
+            "note": "Advisory only; does not block promotion gate decision.",
         },
         "note": "Advisory summary only; non-blocking and track_wall unchanged.",
     }
@@ -86,6 +99,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--chain-json", action="append", type=Path, default=[])
     ap.add_argument("--glob", type=str, default=None, help="Optional ROOT-relative glob for chain JSON inputs.")
+    ap.add_argument(
+        "--warn-ratio-threshold",
+        type=float,
+        default=0.2,
+        help="WATCH if WARN ratio is above this threshold (default: 0.2).",
+    )
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -94,7 +113,7 @@ def main() -> int:
         print(json.dumps({"ok": False, "error": "no_input_chain_reports"}))
         return 2
 
-    summary = build_summary(chain_paths)
+    summary = build_summary(chain_paths, warn_ratio_threshold=float(args.warn_ratio_threshold))
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"ok": True, "out": str(args.out.resolve()), "audition_stage_count": summary["audition_stage_count"]}))

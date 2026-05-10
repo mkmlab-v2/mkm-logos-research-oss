@@ -57,6 +57,37 @@ def test_build_audition_qa_summary_from_chain_jsons(tmp_path):
     assert summary["sanity_status_counts"]["WARN"] == 1
     assert summary["sanity_note_counts"]["peak_near_clipping"] == 1
     assert summary["metrics"]["peak_abs_max"] >= 0.97
+    assert summary["metrics"]["warn_ratio"] == 0.5
+    assert summary["governance_m16"]["state"] == "WATCH"
+
+
+def test_build_audition_qa_summary_go_state_with_relaxed_threshold(tmp_path):
+    c1 = tmp_path / "chain_ok.json"
+    c2 = tmp_path / "chain_warn.json"
+    _write_chain(c1, peak=0.24, rms=0.11, status="OK", notes=[], seconds=8.0)
+    _write_chain(c2, peak=0.97, rms=0.005, status="WARN", notes=["peak_near_clipping"], seconds=7.5)
+
+    out = tmp_path / "summary_go.json"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/build_lens_music_audition_qa_summary_v1.py"),
+            "--chain-json",
+            str(c1),
+            "--chain-json",
+            str(c2),
+            "--warn-ratio-threshold",
+            "0.8",
+            "--out",
+            str(out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert r.returncode == 0, r.stdout + r.stderr
+    summary = json.loads(out.read_text(encoding="utf-8"))
+    assert summary["governance_m16"]["state"] == "GO"
 
 
 def test_build_audition_qa_summary_fails_without_inputs():
