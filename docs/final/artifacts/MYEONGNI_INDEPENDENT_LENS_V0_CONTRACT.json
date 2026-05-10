@@ -1,7 +1,7 @@
 {
   "schema": "myeongni_independent_lens_v0_contract_meta_v1",
   "artifact_schema": "myeongni_independent_lens_v0",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "purpose": "Single-lens numeric output from B-track 명리 inputs for later fusion; not a live trading trigger.",
   "constitution_ref": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §3.3",
   "fusion_stub_ref": "docs/final/MYEONGNI_FUSION_INTERFACE_STUB.json",
@@ -31,5 +31,10 @@
     }
   },
   "default_output_path": "docs/final/artifacts/myeongni_independent_lens_latest.json",
-  "runner": "scripts/run_lens_myeongni.py"
+  "runner": "scripts/run_lens_myeongni.py",
+  "optional_fields_v0_2": [
+    "advanced",
+    "myeongni_b_track_quant_block_v0"
+  ],
+  "quant_block_schema_ref": "docs/final/artifacts/schemas/myeongni_b_track_quant_block_v0.schema.json"
 }

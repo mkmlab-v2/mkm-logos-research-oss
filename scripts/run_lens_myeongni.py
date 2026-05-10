@@ -26,7 +26,7 @@ from myeongni_lens_v1.advanced_payload import (
     build_v1_payload,
     parse_advanced_input,
 )
-from myeongni_lens_v1.mkm_myeongni_math import compute_mkm_myeongni_math
+from myeongni_lens_v1.mkm_myeongni_math import compute_mkm_myeongni_math, compute_quant_profile_v0
 from myeongni_lens_v1.fusion_bridge import (
     build_advanced_input_from_fusion,
     unwrap_fusion_payload,
@@ -38,7 +38,7 @@ DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "myeongni_independent_lens
 
 ARTIFACT_SCHEMA = "myeongni_independent_lens_v0"
 ENGINE_ID = "independent_lens_v0"
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 # mapping_target (B-track 실험) → direction_score; 가설 티어 B 전용 휴리스틱
 _MAPPING_TO_SCORE: dict[str, float] = {
@@ -239,6 +239,16 @@ def _inject_coordinator_mkm_math_v0(payload: dict[str, Any]) -> None:
         )
 
 
+def _inject_quant_block_v0(payload: dict[str, Any]) -> None:
+    """오행·십성 정량 스냅샷 블록 (융합·관측용; A-track 트리거 아님)."""
+    try:
+        adv_raw, _ = _recommended_advanced_and_provenance_path()
+    except Exception:
+        adv_raw = None
+    adv_parsed = parse_advanced_input(adv_raw if isinstance(adv_raw, dict) else None)
+    payload["myeongni_b_track_quant_block_v0"] = compute_quant_profile_v0(adv_parsed)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description="Emit myeongni independent lens v0/v1 JSON from B-track experiment JSONL tail.",
@@ -381,6 +391,7 @@ def main() -> int:
     )
     if args.emit_schema == "v0":
         _inject_coordinator_mkm_math_v0(payload)
+        _inject_quant_block_v0(payload)
 
     if args.emit_schema == "v1":
         adv = parse_advanced_input(advanced_doc)

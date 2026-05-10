@@ -157,7 +157,45 @@ def main() -> int:
     signals = _load_genotype_signals(ns.genotype_csv, ns.sample_col, ns.genotype_col, labels)
     paired_ids = sorted(set(labels.keys()) & set(signals.keys()))
     if len(paired_ids) < 4:
-        raise SystemExit("Need at least 4 paired samples for holdout evaluation.")
+        # Not enough data to run holdout — still write an artifact and exit 0 so daily
+        # automation (e.g. MKM_AIV2_DailyReadiness) is not spuriously red.
+        payload_ins = {
+            "schema": "agct_sasang_holdout_eval_v1",
+            "generated_at_utc": _utc_now(),
+            "track": "B_TRACK",
+            "governance": {
+                "research_only": True,
+                "non_gating": True,
+                "human_review_required": True,
+            },
+            "inputs": {
+                "cohort_csv": str(ns.cohort_csv.resolve()),
+                "genotype_csv": str(ns.genotype_csv.resolve()),
+                "sample_col": ns.sample_col,
+                "label_col": ns.label_col,
+                "genotype_col": ns.genotype_col,
+                "holdout_ratio": float(ns.holdout_ratio),
+                "seed": int(ns.seed),
+                "permutation_repeats": int(ns.permutation_repeats),
+            },
+            "split": {
+                "paired_samples": len(paired_ids),
+                "train_n": 0,
+                "holdout_n": 0,
+            },
+            "results": {},
+            "summary": {
+                "status": "INSUFFICIENT_PAIRED_SAMPLES_HOLD",
+                "reason": "need_at_least_4_paired_samples",
+            },
+        }
+        ns.output_json.parent.mkdir(parents=True, exist_ok=True)
+        ns.output_json.write_text(json.dumps(payload_ins, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(
+            f"WROTE: {ns.output_json.resolve()} "
+            f"INSUFFICIENT_PAIRED_SAMPLES_HOLD paired={len(paired_ids)} (need 4+)"
+        )
+        return 0
 
     rng = random.Random(ns.seed)
     shuffled = paired_ids[:]

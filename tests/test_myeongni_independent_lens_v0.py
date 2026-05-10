@@ -48,6 +48,13 @@ def test_runner_emits_valid_payload(tmp_path: Path) -> None:
     prov = doc.get("provenance") or {}
     assert prov.get("source")
 
+    q = doc.get("myeongni_b_track_quant_block_v0") or {}
+    assert q.get("schema") == "myeongni_b_track_quant_block_v0"
+    assert q.get("status") in ("ok", "insufficient_day_stem")
+    mass = q.get("five_element_mass_vector_v0") or {}
+    assert len(mass) == 5
+    assert abs(sum(float(mass[k]) for k in mass) - 1.0) < 1e-4
+
 
 @pytest.mark.skipif(not _ARTIFACT.is_file(), reason="artifact not generated yet")
 def test_checked_in_artifact_matches_schema_if_present() -> None:

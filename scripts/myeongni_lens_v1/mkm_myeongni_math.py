@@ -191,3 +191,93 @@ def compute_mkm_myeongni_math(advanced: dict[str, Any]) -> dict[str, Any]:
         "arbitrated_confidence": round(c_out, 6),
         "formula": "d_out = clamp(d_school + 0.22*ten_god_balance - 0.18*jijangan_pressure), c_out = c_school*(1-0.35*disagreement)",
     }
+
+
+_EL_KO = {
+    "wood": "목",
+    "fire": "화",
+    "earth": "토",
+    "metal": "금",
+    "water": "수",
+}
+
+
+def compute_quant_profile_v0(advanced: dict[str, Any]) -> dict[str, Any]:
+    """B-track 정량 블록: 천간·지장간 근거 오행 분포·십성 분포 스냅샷(관측 전용, 비임상·비실매매)."""
+    disclaimer_ko = (
+        "B-track 정량 스냅샷; 임상·실거래·단일 방향 단정 아님."
+    )
+    pillars = advanced.get("pillars") if isinstance(advanced.get("pillars"), dict) else {}
+    sajeong = (
+        advanced.get("sajeong_interpolation")
+        if isinstance(advanced.get("sajeong_interpolation"), dict)
+        else {}
+    )
+    day_stem = _canonical_stem_char(_first_char(pillars.get("day")))
+    surface = _extract_surface_stems(pillars)
+    hidden = _extract_hidden_stems(sajeong)
+
+    elem_counts = {"목": 0, "화": 0, "토": 0, "금": 0, "수": 0}
+    for st in surface + hidden:
+        if st in STEM_META:
+            el_en = STEM_META[st][0]
+            ko = _EL_KO.get(el_en)
+            if ko:
+                elem_counts[ko] += 1
+
+    total_el = sum(elem_counts.values())
+    if total_el <= 0:
+        mass = {"목": 0.2, "화": 0.2, "토": 0.2, "금": 0.2, "수": 0.2}
+    else:
+        mass = {k: round(elem_counts[k] / float(total_el), 6) for k in elem_counts}
+
+    ps = [mass[k] for k in ("목", "화", "토", "금", "수")]
+    h = -sum(p * math.log(p + 1e-15) for p in ps)
+    h_max = math.log(5.0)
+    imbalance = round(1.0 - (h / h_max if h_max > 0 else 0.0), 6)
+    excess_deficit = {k: round(mass[k] - 0.2, 6) for k in mass}
+
+    ten_keys = [
+        "bi_gyeon",
+        "geop_jae",
+        "sik_sin",
+        "sang_gwan",
+        "pyeon_jae",
+        "jeong_jae",
+        "pyeon_gwan",
+        "jeong_gwan",
+        "pyeon_in",
+        "jeong_in",
+    ]
+    if day_stem not in STEM_META:
+        ten_norm = {k: 0.1 for k in ten_keys}
+        dominance = 0.1
+        tg_status = "insufficient_day_stem"
+    else:
+        surf_c = _count_ten_gods(day_stem, surface)
+        hid_c = _count_ten_gods(day_stem, hidden)
+        combined = {k: surf_c[k] + hid_c[k] for k in surf_c}
+        tot_tg = sum(combined.values()) or 1
+        ten_norm = {k: round(combined[k] / float(tot_tg), 6) for k in combined}
+        dominance = round(max(ten_norm.values()), 6)
+        tg_status = "ok"
+
+    return {
+        "schema": "myeongni_b_track_quant_block_v0",
+        "status": tg_status,
+        "disclaimer_ko": disclaimer_ko,
+        "five_element_mass_vector_v0": mass,
+        "five_element_imbalance_entropy_0_1": imbalance,
+        "five_element_excess_deficit_proxy_v0": excess_deficit,
+        "ten_god_strength_vector_v0": ten_norm,
+        "ten_god_dominance_index_0_1": dominance,
+        "stem_branch_element_lock_flags_v0": {},
+        "quant_provenance_v0": {
+            "normalization": (
+                "five_element_L1_from_stem_element_counts; "
+                "ten_god_L1_from_surface_plus_hidden_counts"
+            ),
+            "engine_component": "mkm_myeongni_math.compute_quant_profile_v0",
+            "schema_version": "0.1.0",
+        },
+    }
