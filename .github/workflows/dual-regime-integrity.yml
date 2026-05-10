@@ -245,6 +245,8 @@ on:
       - "tests/test_build_lens_music_prompt_runbook_webhook_health_summary_v1.py"
       - "tests/fixtures/lens_music_prompt_poc_pairs_sample_v1.jsonl"
       - "tests/fixtures/lens_music_prompt_runbook_webhook_history_sample_v1.jsonl"
+      - "scripts/run_btrack_logos_music_overlay_poc_v1.py"
+      - "tests/test_run_btrack_logos_music_overlay_poc_v1.py"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
@@ -914,6 +916,7 @@ jobs:
             tests/test_build_lens_music_prompt_poc_runbook_v1.py \
             tests/test_dispatch_lens_music_prompt_poc_runbook_webhook_v1.py \
             tests/test_build_lens_music_prompt_runbook_webhook_health_summary_v1.py \
+            tests/test_run_btrack_logos_music_overlay_poc_v1.py \
             tests/test_build_mkm_trackc_ops_dashboard_v1.py \
             -q --tb=short
 
