@@ -1,7 +1,7 @@
 {
   "schema": "mkm_promotion_gate_evidence_bundle_v1",
   "version": 1,
-  "generated_at_utc": "2026-05-10T07:32:45Z",
+  "generated_at_utc": "2026-05-10T07:39:08Z",
   "workspace_root_hint": "C:\\workspace",
   "gates": {
     "G0": {
