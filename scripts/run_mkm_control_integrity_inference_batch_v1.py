@@ -74,6 +74,24 @@ def _resolve_model_from_ssot(cli_model: str, ssot_path: Path | None, ssot_key: s
     return cli_model, False
 
 
+def _resolve_quantization_from_ssot(
+    ssot_path: Path | None,
+) -> tuple[bool, str]:
+    """Return (load_in_4bit, bnb_4bit_quant_type) from SSOT if available."""
+    if not ssot_path or not ssot_path.is_file():
+        return False, "nf4"
+    try:
+        doc = json.loads(ssot_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False, "nf4"
+    q = doc.get("quantization")
+    if not isinstance(q, dict):
+        return False, "nf4"
+    load_in_4bit = bool(q.get("load_in_4bit", False))
+    quant_type = str(q.get("bnb_4bit_quant_type", "nf4") or "nf4")
+    return load_in_4bit, quant_type
+
+
 def _percentiles_ms(lat_ms: list[float]) -> dict[str, float]:
     if not lat_ms:
         return {"mean_ms": 0.0, "p50_ms": 0.0, "p95_ms": 0.0, "p99_ms": 0.0, "count": 0}
@@ -101,21 +119,48 @@ def _build_prompt(instruction: str) -> str:
     return f"### Instruction:\n{instruction}\n### Response:\n"
 
 
-def _load_model_and_tokenizer(model_name: str, adapter_path: str):
-    from transformers import AutoModelForCausalLM, AutoTokenizer
+def _load_model_and_tokenizer(
+    model_name: str,
+    adapter_path: str,
+    load_in_4bit: bool,
+    bnb_4bit_quant_type: str,
+):
+    import torch
+    from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
 
     tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        trust_remote_code=True,
-        device_map="auto",
-    )
+    # PEFT + accelerate offload can fail on some Windows GPU layouts.
+    # For adapter inference, prefer a single-device map to avoid meta/offload mismatch.
+    if adapter_path and torch.cuda.is_available():
+        device_map: Any = {"": 0}
+    elif adapter_path:
+        device_map = "cpu"
+    else:
+        device_map = "auto"
+
+    model_kwargs: dict[str, Any] = {
+        "trust_remote_code": True,
+        "device_map": device_map,
+    }
+    if load_in_4bit:
+        model_kwargs["quantization_config"] = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_quant_type=bnb_4bit_quant_type,
+            bnb_4bit_compute_dtype=torch.float16,
+            bnb_4bit_use_double_quant=True,
+        )
+        model_kwargs["torch_dtype"] = torch.float16
+
+    model = AutoModelForCausalLM.from_pretrained(model_name, **model_kwargs)
     if adapter_path:
         from peft import PeftModel
 
-        model = PeftModel.from_pretrained(model, adapter_path)
+        model = PeftModel.from_pretrained(
+            model,
+            adapter_path,
+        )
     model.eval()
     return model, tokenizer
 
@@ -193,6 +238,8 @@ def main() -> int:
     else:
         resolved_model = args.model_name
         ssot_used = False
+
+    load_in_4bit, bnb_4bit_quant_type = _resolve_quantization_from_ssot(ssot_path)
     if not input_path.is_file():
         print(f"input not found: {input_path}")
         return 1
@@ -222,6 +269,7 @@ def main() -> int:
                 pred = str(row.get("output") or row.get("response") or "")
                 f.write(json.dumps({"id": rid, "prediction": pred}, ensure_ascii=False))
                 f.write("\n")
+                f.flush()
                 written += 1
                 latencies_ms.append((time.perf_counter() - t0) * 1000.0)
         print(f"mode=oracle rows={written}")
@@ -238,7 +286,12 @@ def main() -> int:
             print(f"timing_out={timing_out_path}")
         return 0
 
-    model, tokenizer = _load_model_and_tokenizer(resolved_model, args.adapter_path)
+    model, tokenizer = _load_model_and_tokenizer(
+        resolved_model,
+        args.adapter_path,
+        load_in_4bit=load_in_4bit,
+        bnb_4bit_quant_type=bnb_4bit_quant_type,
+    )
     with output_path.open("w", encoding="utf-8") as f:
         for i, row in enumerate(rows, start=1):
             rid = _row_id(row, i)
@@ -258,6 +311,7 @@ def main() -> int:
             latencies_ms.append((time.perf_counter() - t0) * 1000.0)
             f.write(json.dumps({"id": rid, "prediction": prediction}, ensure_ascii=False))
             f.write("\n")
+            f.flush()
             written += 1
 
     print(f"mode=model rows={written}")
