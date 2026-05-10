@@ -53,6 +53,12 @@ docs/final/artifacts/**
 !docs/final/artifacts/general_compression_token_loss_aggregate_v1.json
 !docs/final/artifacts/general_compression_eval_input_holdout_v1.json
 !docs/final/artifacts/general_compression_ab_holdout_result_summary_v1.json
+# Track C P1 sales kit SSOT (path lock; frozen via MKM_AI_SALES_KIT_STRUCTURE_V1.json when pilot locks)
+!docs/final/artifacts/mkm_ai_sales_kit_v1/
+!docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_LANDING_COPY_V1.md
+!docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_API_BRANDING_BRIDGE_V1.md
+!docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_FACTSAFE_NUMBERS_V1.md
+!docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_SALES_KIT_STRUCTURE_V1.json
 # Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
 reports/bio_sasang_nstates_*.json
 reports/mkm_orchestrator_poll.lock

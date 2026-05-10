@@ -84,7 +84,7 @@
 | S3 (권장) | `py -m pytest tests/test_bench_l1_api_load.py -q` | 부하 벤치 스크립트 회귀 시 |
 | S4 (권장) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_workspace_automation_health.ps1` (시간 여유 시 `-IncludeCompressionKpi`) | 스모크·정합 요약 확인 |
 
-**본 체크리스트 작성 시점 로컬 결과(참고, SSOT 아님):** S1 exit 0 (187 paths); S2 `28 passed`.
+**본 체크리스트 작성 시점 로컬 결과(참고, SSOT 아님):** S1 exit 0 (경로 개수는 `verify_p0_constitution_gate_paths.ps1` 출력 참조); S2 스텁 테스트 전부 통과.
 
 ---
 

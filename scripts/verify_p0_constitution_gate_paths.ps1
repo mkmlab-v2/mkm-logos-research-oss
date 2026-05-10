@@ -38,6 +38,7 @@ param(
 # 2026-05-10: AI BGM gate v1 (schema, policy, scripts/audio, pytest, CI audio-bgm-gate-smoke.yml).
 # 2026-05-10: MKM Control-Integrity Golden/LoRA (schema, profile SSOT, aggregate/gate/inference/eval PS1/py, smoke pytest).
 # 2026-05-10: General-rail compression benchmark (corpus JSONL, manifests, promotion chain scripts, SSOT artifacts, Multilens ultra anchor).
+# 2026-05-10: Track C P1 sales kit canonical paths (mkm_ai_sales_kit_v1).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -464,7 +465,13 @@ $required = @(
     "tests\test_split_general_compression_holdout_smoke_v1.py",
     "tests\test_build_general_compression_split_manifests_smoke_v1.py",
     "tests\fixtures\general_compression_bundle_minimal_v1\manifest_go.json",
-    "tests\fixtures\general_compression_bundle_minimal_v1\manifest_no_go.json"
+    "tests\fixtures\general_compression_bundle_minimal_v1\manifest_no_go.json",
+    "docs\final\artifacts\mkm_ai_sales_kit_v1\MKM_AI_LANDING_COPY_V1.md",
+    "docs\final\artifacts\mkm_ai_sales_kit_v1\MKM_AI_API_BRANDING_BRIDGE_V1.md",
+    "docs\final\artifacts\mkm_ai_sales_kit_v1\MKM_AI_FACTSAFE_NUMBERS_V1.md",
+    "docs\final\artifacts\mkm_ai_sales_kit_v1\MKM_AI_SALES_KIT_STRUCTURE_V1.json",
+    "scripts\core\state16_interface.py",
+    "docs\final\STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md"
 )
 
 $missing = @()

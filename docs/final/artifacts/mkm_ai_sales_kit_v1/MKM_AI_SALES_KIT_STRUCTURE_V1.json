@@ -1,0 +1,17 @@
+{
+  "schema": "mkm_ai_sales_kit_structure_v1",
+  "version": "1",
+  "frozen_pointer_utc": null,
+  "canonical_root": "docs/final/artifacts/mkm_ai_sales_kit_v1",
+  "upstream_docs": [
+    "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
+    "docs/final/P1_COMPRESSION_API_PILOT_TRANSITION_CHECKLIST_V1.md"
+  ],
+  "paths": {
+    "landing_copy_md": "MKM_AI_LANDING_COPY_V1.md",
+    "api_branding_bridge_md": "MKM_AI_API_BRANDING_BRIDGE_V1.md",
+    "factsafe_numbers_md": "MKM_AI_FACTSAFE_NUMBERS_V1.md",
+    "structure_registry_json": "MKM_AI_SALES_KIT_STRUCTURE_V1.json"
+  },
+  "notes": "Set frozen_pointer_utc when the pilot locks copy for external use; until then these files are SSOT placeholders only."
+}

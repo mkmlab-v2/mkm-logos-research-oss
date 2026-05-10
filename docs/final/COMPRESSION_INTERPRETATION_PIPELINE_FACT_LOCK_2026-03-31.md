@@ -47,6 +47,7 @@ Important: multi-lens is a quality microscope, not the primary compressor.
 
 - 16-state (`state_id 1..16`) is a separate state system used in myeongni/state analysis paths.
 - In current compression runtime, direct 16-state mapping is **not yet wired** as a mandatory normalization step.
+- **Phase A (noop, optional row):** `scripts/report_multilens_performance_eval.py` attaches a per-case `state16` object via `NoopState16Adapter` (`scripts/core/state16_interface.py`), default `STATE16_NOT_ENABLED`. This does **not** satisfy “full 12AI→16-state integration” claims.
 - Therefore claims like "12AI -> 16-state compression engine already integrated" are not fact-locked yet.
 - Implementation-ready insertion contract (no cutover): `docs/final/STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md`
 

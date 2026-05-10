@@ -159,13 +159,12 @@ No artifact, no claim.
 
 **CI vs local bundle:** GitHub `l1-inverse-decoder-smoke.yml` runs the **same pytest targets as below** and **adds** `python scripts/run_l1_inverse_decoder_spike_test.py --samples 24 …` (single-run spike). So: **local bundle ⊆ smoke**; passing locally is necessary but not sufficient for §9.1.
 
-**Local pytest bundle (Fact-Lock pre-flight, ~1s):** does not satisfy §9.1 alone; use before PRs that touch L1 wire / OpenAPI / summary SSOT.
+**Local pytest bundle (Fact-Lock pre-flight):** does not satisfy §9.1 alone; use before PRs that touch L1 wire / OpenAPI / summary SSOT. Token API stub coverage is also enforced in `dual-regime-integrity.yml` (split steps).
 
 ```bash
 pytest tests/test_l1_inverse_decoder_summary_schema.py \
   tests/test_l1_side_channel_wire_codec.py \
-  tests/test_compression_token_api_stub.py::test_openapi_includes_l1_side_channel_wire_path \
-  tests/test_compression_token_api_stub.py::test_l1_side_channel_wire_research_endpoint_roundtrip \
+  tests/test_compression_token_api_stub.py \
   -q --tb=short
 ```
 
