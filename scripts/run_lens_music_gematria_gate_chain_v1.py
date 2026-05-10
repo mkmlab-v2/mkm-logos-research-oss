@@ -13,6 +13,7 @@ import json
 import subprocess
 import sys
 import uuid
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -330,6 +331,52 @@ def build_m10_melody_sequence_stage(
     }
 
 
+@dataclass
+class _MidiEvent:
+    tick: int
+    data: bytes
+
+
+def _var_len(n: int) -> bytes:
+    if n < 0:
+        raise ValueError("negative delta not allowed")
+    out = bytearray([n & 0x7F])
+    n >>= 7
+    while n:
+        out.insert(0, (n & 0x7F) | 0x80)
+        n >>= 7
+    return bytes(out)
+
+
+def _build_midi_type0(events: list[_MidiEvent], *, ticks_per_beat: int = 480) -> bytes:
+    events = sorted(events, key=lambda e: e.tick)
+    track = bytearray()
+    last_tick = 0
+    for ev in events:
+        dt = ev.tick - last_tick
+        if dt < 0:
+            dt = 0
+        track.extend(_var_len(dt))
+        track.extend(ev.data)
+        last_tick = ev.tick
+    # End-of-track meta event.
+    track.extend(_var_len(0))
+    track.extend(b"\xFF\x2F\x00")
+
+    header = bytearray()
+    header.extend(b"MThd")
+    header.extend((6).to_bytes(4, "big"))
+    header.extend((0).to_bytes(2, "big"))  # format 0
+    header.extend((1).to_bytes(2, "big"))  # one track
+    header.extend(int(ticks_per_beat).to_bytes(2, "big"))
+
+    chunk = bytearray()
+    chunk.extend(b"MTrk")
+    chunk.extend(len(track).to_bytes(4, "big"))
+    chunk.extend(track)
+    return bytes(header + chunk)
+
+
 def evaluate_symbolic_safety(
     outputs: dict[str, Any],
     *,
@@ -428,6 +475,12 @@ def main() -> int:
         default=None,
         help="Optional path to export simple MIDI-event stub JSON from melody_stage_m10 notes.",
     )
+    ap.add_argument(
+        "--export-midi-binary",
+        type=Path,
+        default=None,
+        help="Optional path to write a binary MIDI (.mid) file from melody_stage_m10 notes.",
+    )
     ap.add_argument("--run-id", type=str, default="")
     args = ap.parse_args()
 
@@ -520,6 +573,22 @@ def main() -> int:
             json.dumps(midi_stub, indent=2, ensure_ascii=False) + "\n",
             encoding="utf-8",
         )
+    if args.export_midi_binary is not None and isinstance(m10, dict) and m10.get("enabled"):
+        notes = m10.get("notes") or []
+        ticks_per_beat = 480
+        beat_cursor = 0.0
+        midi_events: list[_MidiEvent] = []
+        for row in notes:
+            midi = int(row.get("midi", 60))
+            dur = float(row.get("dur_beats", 1.0))
+            on_tick = int(round(beat_cursor * ticks_per_beat))
+            off_tick = int(round((beat_cursor + dur) * ticks_per_beat))
+            midi_events.append(_MidiEvent(tick=on_tick, data=bytes([0x90, midi & 0x7F, 80])))
+            midi_events.append(_MidiEvent(tick=off_tick, data=bytes([0x80, midi & 0x7F, 0])))
+            beat_cursor += dur
+        payload = _build_midi_type0(midi_events, ticks_per_beat=ticks_per_beat)
+        args.export_midi_binary.parent.mkdir(parents=True, exist_ok=True)
+        args.export_midi_binary.write_bytes(payload)
 
     if sym_decision == "HOLD":
         chain["audio_gate"] = {"skipped": True, "reason": "symbolic_hold"}

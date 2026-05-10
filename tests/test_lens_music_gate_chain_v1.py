@@ -403,3 +403,57 @@ def test_chain_m11_exports_melody_and_midi_stub_json(tmp_path):
     assert melody["schema"] == "melody_sequence_stub_v1"
     assert midi_stub["schema"] == "melody_midi_event_stub_v1"
     assert len(midi_stub["events"]) >= 2
+
+
+def test_chain_m12_exports_binary_midi(tmp_path):
+    emo = ROOT / "docs/final/schemas/sasang_emotion_mapping_v1.example.json"
+    lens_out = tmp_path / "lens.json"
+    subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/run_lens_music_gematria.py"),
+            "--sasang-primary",
+            "taeeum",
+            "--emotion-mapping-json",
+            str(emo),
+            "--output",
+            str(lens_out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    chain_report = tmp_path / "chain.json"
+    audio_report = tmp_path / "gate.json"
+    midi_bin = tmp_path / "melody.mid"
+    env = os.environ.copy()
+    prev = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = str(ROOT) if not prev else f"{ROOT}{os.pathsep}{prev}"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/run_lens_music_gematria_gate_chain_v1.py"),
+            "--lens-json",
+            str(lens_out),
+            "--emotion-overlay-policy",
+            "apply",
+            "--export-chain",
+            str(chain_report),
+            "--export-audio-report",
+            str(audio_report),
+            "--export-midi-binary",
+            str(midi_bin),
+            "--commercial-terms-tag",
+            "apache2_self_host_weights_v1",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert r.returncode == 0, r.stderr + r.stdout
+    assert midi_bin.is_file()
+    blob = midi_bin.read_bytes()
+    assert blob[:4] == b"MThd"
+    assert b"MTrk" in blob
