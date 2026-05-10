@@ -29,6 +29,7 @@ on:
       - "scripts/build_mkm_promotion_gate_evidence_bundle_v1.py"
       - "docs/final/artifacts/mkm_promotion_gate_evidence_bundle_v1.json"
       - "docs/final/artifacts/MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json"
+      - "scripts/deploy/linux/run_bench_l1_api_load_vps_fixed_fields.sh"
       - "tests/test_mkm_promotion_gate_evidence_bundle_v1.py"
       - "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"
       - "scripts/build_trackc_evidence_rag_mvp_v1.py"

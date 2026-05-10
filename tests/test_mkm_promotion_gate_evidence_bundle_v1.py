@@ -24,3 +24,7 @@ def test_compression_pilot_report_paths_schema_v1() -> None:
     assert d.get("schema") == "mkm_ai_compression_pilot_report_paths_v1"
     assert "paths" in d
     assert "multilens_ultra_active_report" in d["paths"]
+    assert (
+        d["paths"].get("vps_bench_one_click_script")
+        == "scripts/deploy/linux/run_bench_l1_api_load_vps_fixed_fields.sh"
+    )

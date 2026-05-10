@@ -2,6 +2,14 @@ param(
     [string]$WorkspaceRoot = "C:\workspace"
 )
 
+try {
+    $WorkspaceRoot = (Resolve-Path -LiteralPath $WorkspaceRoot).Path
+}
+catch {
+    Write-Host "FAIL: WorkspaceRoot not found or not accessible: $WorkspaceRoot" -ForegroundColor Red
+    exit 1
+}
+
 # P0 path gate: every entry must exist in the workspace. Prune when files are not
 # in this clone; re-add from main when those scripts return. (Track A metering
 # multiline, kospi WF verify, etc. were removed 2026-04-18 for local pass.)
@@ -28,6 +36,7 @@ param(
 # 2026-05-05: 명리 daewoon timeline v1 schema/test (Sprint-2 time regime lock).
 # 2026-05-05: Yang(2015) 표면 8자 B-track 스키마·벤치·P0 경로 (btrack_yang / celebrity benchmark / saju birth / v2 upgrade).
 # 2026-05-02: 일일 실행 인사이트 브리프 v1 (§1c 독립 렌즈·CONSTITUTION §3.3 행; 산출 JSON은 게이트 목록 미포함).
+# 2026-05-10: VPS L1 bench one-click script (pair with BENCH_L1_API_LOAD_VPS_RUNBOOK.md).
 # 2026-05-02: 압축 주간 거버넌스 체인 러너 복구 (run_compression_weekly_governance_chain.ps1 + P0 경로).
 # 2026-05-02: 명리 독립 렌즈 → Thin JSONL 브리지 v1 (emit 스크립트·pytest; §3.6).
 # 2026-05-07: GraphRAG pilot query router v1 (Track B/K observation-only; script+schema+test).
@@ -51,6 +60,7 @@ $required = @(
     "docs\final\COMPRESSION_SLA_POLICY_V1.md",
     "docs\final\COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
     "docs\final\BENCH_L1_API_LOAD_VPS_RUNBOOK.md",
+    "scripts\deploy\linux\run_bench_l1_api_load_vps_fixed_fields.sh",
     "docs\NotebookLM_sources_manifest.md",
     ".cursor\rules\notebooklm-mcp-session-bridge.mdc",
     "scripts\check_notebooklm_mcp_prereqs.ps1",
