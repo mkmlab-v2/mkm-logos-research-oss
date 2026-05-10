@@ -512,3 +512,6 @@ def test_chain_m13_exports_audition_wav(tmp_path):
     assert blob[:4] == b"RIFF"
     chain = json.loads(chain_report.read_text(encoding="utf-8"))
     assert chain["melody_stage_m13"]["schema"] == "melody_audition_wav_v1"
+    assert chain["melody_stage_m13"]["peak_abs_0_1"] > 0.0
+    assert chain["melody_stage_m13"]["rms_0_1"] > 0.0
+    assert chain["melody_stage_m13"]["sanity_m14"]["non_blocking"] is True

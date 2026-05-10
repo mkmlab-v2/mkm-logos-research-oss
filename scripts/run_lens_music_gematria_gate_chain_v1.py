@@ -412,6 +412,13 @@ def write_melody_audition_wav(
             sample = amp * fade * math.sin(2.0 * math.pi * hz * t)
             pcm.append(max(-1.0, min(1.0, sample)))
 
+    if pcm:
+        peak = max(abs(x) for x in pcm)
+        rms = math.sqrt(sum(x * x for x in pcm) / len(pcm))
+    else:
+        peak = 0.0
+        rms = 0.0
+
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with wave.open(str(out_path), "wb") as wf:
         wf.setnchannels(1)
@@ -422,12 +429,27 @@ def write_melody_audition_wav(
             v = int(x * 32767.0)
             frames.extend(v.to_bytes(2, "little", signed=True))
         wf.writeframes(bytes(frames))
+    status = "OK"
+    sanity_notes = []
+    if peak > 0.95:
+        status = "WARN"
+        sanity_notes.append("peak_near_clipping")
+    if rms < 0.01:
+        status = "WARN"
+        sanity_notes.append("rms_too_low_for_audition")
     return {
         "schema": "melody_audition_wav_v1",
         "sample_rate": sample_rate,
         "seconds": round(len(pcm) / sample_rate, 4),
         "note_count": len(notes),
         "path": str(out_path.as_posix()),
+        "peak_abs_0_1": round(float(peak), 6),
+        "rms_0_1": round(float(rms), 6),
+        "sanity_m14": {
+            "status": status,
+            "notes": sanity_notes,
+            "non_blocking": True,
+        },
     }
 
 
