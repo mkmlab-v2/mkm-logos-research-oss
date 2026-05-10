@@ -1,11 +1,11 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-10 — **§3.9** 통제형 오디오·상징 라우팅(`[HYPO]` / B-track) 신설; **§3.9.1–3.9.2** M1–M4·**B-track 연구 승격 게이트**(번들 pytest·`check_lens_music_symbolic_audio_promotion_gate_v1.py`). **§3.10 (Draft)** 사상 기호→저차원 감정 연속축(VA)·`sasang_emotion_mapping_v1` 계약 초안 추가 — Neuro-symbolic 브리지·Track Wall·TOE 비단정 정렬. 사상·게마트리아 등 상징 입력을 **버전된 JSON 계약**으로 분해해 MIDI·화성·오디오 파라미터로 라우팅하고, 기존 **AI BGM 게이트**(`scripts/audio`·게이트 리포트 스키마)와 연결하는 실험 로드맵 및 대외 금지선(비임상·단일 TOE 금지) 명시. (이전: 2026-05-05 **§9A**·§3.4 포인터.)  
+Revised: 2026-05-11 — **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어 포지션·앵커 OEM 리스크·빅테크 내재화·수직 우선순위·대외 수치 Fact-Lock) 추가. (직전: 2026-05-10 — §3.9·§3.10·M0–M30 렌즈 음악·프롬프트 PoC 체인.)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
-**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-10 개정** 처리한다(§3.9·§3.10 추가). 2026-05-05 동결분(§9A 등)은 유지되며, 개정 범위는 본 개정 문단 및 §3.9–§3.10·§10 연동 항목이다. 이전 동결(2026-05-03) 대비 **§9A 신설**(핵심이론 보호·비공개 운영·계약/기술 통제), **§10** 실행항목에 보안 우선 액션 반영. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
+**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-11 개정** 처리한다(§3.11 추가). 2026-05-10 동결분(§3.9–§3.10·M-milestones 등)은 유지되며, 이번 개정 범위는 §3.11 및 상단 `Revised` 문단이다. 이전 동결(2026-05-03) 대비 **§9A 신설**(핵심이론 보호·비공개 운영·계약/기술 통제), **§10** 실행항목에 보안 우선 액션 반영. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
 
 ## 1) Fact-Locked Baseline
 
@@ -205,6 +205,14 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 | **M20 — Dynamic Prompt Overlay (Level 1)** | M19+ | **`완료(2026-05-11):** `build_lens_music_prompt_overlay_v1.py` 추가. M17 status + 체인 감정 맥락(BPM/valence/arousal)으로 system prompt 오버레이를 생성(`lens_music_prompt_overlay_v1`), control-plane/user-plane 분리 계약을 명시. |
 | **M21 — Prompt Overlay 3일 Smoke Eval (초기)** | M20+ | **`완료(2026-05-11):** `run_lens_music_prompt_smoke_eval_v1.py` 추가. 샘플 응답 JSONL에 대해 style/sentence-length 히ュー리스틱 일치율을 계산(`lens_music_prompt_smoke_eval_v1`)하고 GO/WATCH를 산출. advisory-only. |
 | **M22 — Prompt Auto-Brake (WATCH 연동)** | M21+ | **`완료(2026-05-11):** `build_lens_music_prompt_overlay_v1.py`가 governance 또는 smoke-eval이 WATCH일 때 `temperature_hint` 상한(0.45)·`calm_guarded` 스타일로 자동 완화(`auto_brake_m22`). 비차단 정책으로 유지. |
+| **M23 — Auto-Brake 이력 집계 리포트** | M22+ | **`완료(2026-05-11):** `build_lens_music_prompt_brake_history_summary_v1.py` 추가. prompt overlay history jsonl에서 브레이크 발동률/트리거 원인(governance/smoke) 집계(`lens_music_prompt_brake_history_summary_v1`). |
+| **M24 — Track C 대시보드 브레이크 통합** | M23+ | **`완료(2026-05-11):** `build_mkm_trackc_ops_dashboard_v1.py`가 M23 summary를 읽어 `trackc.lens_music_prompt_brake`(state/active_rate/count)를 운영판에 노출. |
+| **M25 — 브레이크 추세·원인 Top-N + 알림 브리지** | M24+ | **`완료(2026-05-11):** `build_lens_music_prompt_brake_trend_v1.py`로 일자별 추세(`daily_series`)·Top trigger를 집계하고, `dispatch_lens_music_prompt_brake_trend_webhook_v1.py`로 선택 webhook 알림(미설정 시 skipped) 지원. dashboard에 `trend_state/active_rate/top_trigger` 노출. |
+| **M26 — Prompt PoC 정량 지표 러너** | M25+ | **`완료(2026-05-11):** `run_lens_music_prompt_poc_metric_v1.py` 추가. baseline/overlay 응답쌍에서 `style_delta_rate`·`overlay_style_match_rate`를 계산하고 GO/WATCH를 산출(`lens_music_prompt_poc_metric_v1`). 기본 목표치 `style_delta>=0.30`, `style_match>=0.67`로 “주장”이 아닌 계량 검증으로 고정. |
+| **M27 — Track C 대시보드 PoC KPI 통합** | M26+ | **`완료(2026-05-11):** `build_mkm_trackc_ops_dashboard_v1.py`가 `reports/lens_music_prompt_poc_metric_latest.json`를 읽어 `trackc.lens_music_prompt_poc_metric`(state/passed/style_delta_rate/style_match_rate/samples_count)을 운영판에 노출. |
+| **M28 — PoC WATCH 대응 Runbook 자동 추천** | M27+ | **`완료(2026-05-11):** `build_lens_music_prompt_poc_runbook_v1.py` 추가. PoC KPI가 WATCH일 때 원인(style_delta/style_match 부족)별 권장 조치를 생성하고 dashboard에 `trackc.lens_music_prompt_poc_runbook`으로 브리지. GO일 때는 유지/모니터링 권고만 노출. |
+| **M29 — Runbook 조건부 웹훅 브리지** | M28+ | **`완료(2026-05-11):** `dispatch_lens_music_prompt_poc_runbook_webhook_v1.py` 추가. `--require-watch`·`--require-high-priority` 게이트를 통과할 때만 webhook 전달, 미충족 시 skipped reason 기록. dashboard에 dispatch 상태를 노출해 운영 추적 가능. |
+| **M30 — Runbook 웹훅 이력 헬스 요약** | M29+ | **`완료(2026-05-11):** dispatch 시 JSONL 이력 append, `build_lens_music_prompt_runbook_webhook_health_summary_v1.py`로 최근 창에서 sent/skipped/failed·skip reason Top-N 집계. `trackc.lens_music_prompt_runbook_webhook_health`로 운영판 브리지. |
 | **§3.10 — 사상→감정 연속축 계약 (Draft)** | 병행 | **`완료(2026-05-10):** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json`·example·회귀 `tests/test_sasang_emotion_mapping_schema_v1.py` — VA 앵커만; `sasang_music_mapping_v1`와 역할 분리(본 표 §3.10). 프로모션 M0–M5 번들(§3.9.2)로 추적 포함, 승격 결정식은 기존 pytest pass와 동일. |
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.
@@ -244,6 +252,39 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 - **오디오 게이트:** VA에서 유도한 파라미터가 극단 템포·청각 스트레스·게이트 상한을 벗어나면 **HOLD/클립/폴백** — 기존 `evaluate_audio_gate.py`·§3.9 M2 체인과 정렬.
 - **TOE 비단정:** “단일 매핑이 모든 감정·영성·도메인을 완비한다” 또는 “음악 결합으로 모델 자율 추론이 폭발한다” 유 **단일 불변 방정식** 서술 금지.
 - **로깅:** 기호 → VA → 오디오 파라미터 경로는 **추적 가능한 JSON/JSONL**(내부)로 남겨 A/B·청취 세션 스키마(`lens_music_internal_eval_session_v1`)와 연계 가능하게 한다 — 대외 반포는 §8·공개 체크리스트 준수.
+
+### 3.11 플랫폼 GTM · 밸류에이션 냉정 정렬 (2026-05-11)
+
+**목적:** “AI 안전·감성 미들웨어 / OS 레이어” 서사를 **투자·제안서·파트너 대화**에서 쓸 때, 감정적 유니콘 서사와 **검증 가능한 사업 조건**을 분리한다. 본 절은 **전략 메모**이며, 수치·구현·승률은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트·아티팩트로만 Fact-Lock한다.
+
+#### (1) 포지션 (인정하는 틀)
+
+- **가치 가설:** 엔터프라이즈는 “더 똑딱한 LLM”보다 **통제 가능·감사 가능·정책 일관**한 상층 레이어를 필요로 한다는 수요 구조는 방어 가능하다.
+- **역할 고정:** 모델 제조사가 아니라 **모델 교체에 덜 의존하는 제어·페르소나·게이트 레이어**(미들웨어/SDK)를 명시한다.
+
+#### (2) 밸류에이션을 분리하는 조건 (냉정)
+
+- 단일 앵커 OEM·단일 PoC만으로는 **“글로벌 레퍼런스 완성”을 단정하지 않는다.** 유료/반복 구매/확장 가능한 **두 번째 산업·두 번째 계약**이 나오기 전까지는 “스토리 + 단일 앵커” 리스크를 문서·내부 투자자용에 명시한다.
+- **지연·적중·스윕 횟수·P99** 등 성능 수치는 대외·IR에 쓰기 전 **재현 경로·조건·산출 JSON**이 있을 때만 사용한다. 없으면 “검증 예정/내부 측정”으로 쓰고 Fact-Lock 테이블을 갱신한다.
+
+#### (3) 경쟁·대응 (빅테크 내재화)
+
+- 모델 벤더가 내장 **safety / style API**를 강화하는 것은 **실제 대체 위협**이다. 대응은 “범용이 더 똑똑해졌다”와 경쟁하기보다 **도메인 결합(가전·운영 로그)·통합 난이도·계약·감사 로그**에서 반복 매출 구조를 만드는 쪽이 현실적이다.
+
+#### (4) 글로벌 카피 vs 규제 (사상·심리)
+
+- **사상·체질**은 내부·한국어 제품 언어로 유지하되, 글로벌 대외는 **아키타입·UX 페르소나** 등으로 **번역 레이어**를 둔다.  
+- **의료·심리·교육** 수직은 기술 전에 **규제·면책·근거**가 앞선다. MBTI/에니어그램 등 **마케팅 비유**와 **의학·효능 주장**을 혼동하지 않는다 — `§3.4`·`MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md`와 정렬.
+
+#### (5) 수직 우선순위 (실행 제안)
+
+- **단기 PoC 사이클이 짧은 축**(예: 게임 NPC 톤·에듀 튜터링 UX 보조 등)과 **계약·ROI가 선명한 B2B 도구**부터 파일럿 목록을 분리해 관리한다.
+- **규제 강한 축**(디지털 헬스 등)은 별 트랙으로 두고, 공통 게이트(WATCH/HOLD·아티팩트)는 유지하되 **합선·자동 승격 금지** 원칙은 §1·Track Wall과 동일한다.
+
+#### (6) NotebookLM · 장기기억 동기화 (운영 절차)
+
+- 브리핑·NL 아이디어는 **`docs/final/CENTRAL_AGENT_MEMORY_V1.md`에 압축 반영 후** Track C 본문을 고친다 — NL 출력 단독으로 SSOT를 바꾸지 않는다.
+- Vault 미러: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` — 매니페스트 `docs/NotebookLM_sources_manifest.md`에 본 파일 경로가 포함되어 있음.
 
 ---
 

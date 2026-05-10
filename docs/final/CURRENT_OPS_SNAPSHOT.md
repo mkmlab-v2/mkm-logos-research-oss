@@ -3,18 +3,20 @@
 <!-- AUTO_OPS_V1_START -->
 ## Auto Ops Handoff (v1)
 
-- `updated_at_utc:` 2026-05-10T18:20:00Z
-- `mission_id:` fact-lock-control-integrity-central-v1
-- `mission:` Fact-Lock 번들 녹색 확인 · Control-Integrity 스모크 · CENTRAL(`nl_sync`/체크포인트) · NotebookLM→Vault 미러(`copied=62`)
+- `updated_at_utc:` 2026-05-10T16:44:19Z
+- `mission_id:` notebooklm-b-channel-p0-followup-2026-05-10
+- `mission:` NotebookLM B채널(nlm): ATHENA_UPLOAD_ONEFILE_LATEST 푸시 완료 + 동일 세션 P0 경로 재검증(`verify_p0_constitution_gate_paths.ps1`, 454 checked)
 - `status:` slice_complete
-- `next_action:` `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1` — 변경 없으면 생략 가능; 헌법 경로 수정 후에는 `scripts\run_fact_lock_bundle.ps1`
+- `next_action:` 시간 여유 시 로컬 번들 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_fact_lock_bundle.ps1`(환경에 맞게 `-Skip*` 축소 가능). 3채널 재점검은 `scripts/Invoke-NotebookLmSyncTriage_v1.ps1`.
 <!-- AUTO_OPS_V1_END -->
 
-## Ops slice (2026-05-10)
+## Ops slice (2026-05-11)
 
-- **증거:** `integrity_guard` 149/149 · `run_fact_lock_bundle.ps1` exit 0 · `-MkmControlIntegritySmokeOnly` 녹색 · Vault `notebooklm_sources` 미러 exit 0 (`copied=62`, `skipped=136`).
-- **장기기억:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md`에 `nl_sync`·분기별 한 줄·체크포인트 반영(`last_updated_utc` 2026-05-10).
-- **경계:** NotebookLM UI 업로드(`source_add`)는 미실행; 구현 판정은 레포·스크립트·exit code(Fact-Lock).
+- **증거:** 스케줄 작업 3종 수동 트리거 성공(`schtasks /Run`) 후 `LastResult=0` 확인 — `MKM_NotebookLM_Vault_Sync`, `MKM_McpHygieneProbe_Daily`, `MKM_NotebookLmMcpWeeklyHygiene`.
+- **산출 갱신:** `reports/notebooklm_sync_triage_latest.json`, `reports/mcp_hygiene_probe_latest.json` 최신화; Vault `_LAST_SYNC.txt` 갱신 확인.
+- **B 채널(후속):** `scripts/Push-AthenaUploadOnefileToNotebooklm.ps1` exit 0 · NotebookLM 소스 `ATHENA_UPLOAD_ONEFILE_LATEST` 처리 완료(로그 `reports/athena_upload_onefile_push.log`). 일일 태스크 `AthenaUploadOnefileNotebooklmPushDaily` Ready·LastResult=0.
+- **안정 상태:** MCP prereq(핀 버전/HEADLESS/stale=0) 정상, `verify_p0_constitution_gate_paths.ps1` exit 0(454 checked, 본 슬라이스 재실행).
+- **경계:** Vault 미러(A)·클라우드 소스(B)·채팅 MCP(C)는 독립. 클라우드 인제스트(`source_add`/nlm)는 Vault 자동 미러와 별도 단계.
 
 ## Control Tower Update (2026-05-05)
 

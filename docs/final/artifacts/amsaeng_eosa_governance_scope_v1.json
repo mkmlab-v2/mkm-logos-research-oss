@@ -51,8 +51,19 @@
       "id": "monitoring_bundle",
       "tier": "automate_low_risk",
       "scripts": ["scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"],
-      "artifacts": ["reports/amsaeng_eosa_monitoring_heartbeat_latest.json", "reports/amsaeng_eosa_ops_snapshot_latest.json"],
-      "notes_ko": "보안·게이트·Fact-Lock 증거 번들·하트비트. 스케줄: Register-AmsaengEosaMonitoringBundleTask.ps1."
+      "artifacts": [
+        "reports/amsaeng_eosa_monitoring_heartbeat_latest.json",
+        "reports/amsaeng_eosa_ops_snapshot_latest.json",
+        "reports/amsaeng_eosa_bundle_cycle_latest.json"
+      ],
+      "notes_ko": "보안·게이트·Fact-Lock 증거 번들·하트비트; 번들은 단계별 duration이 reports/amsaeng_eosa_bundle_cycle_latest.json. 스케줄: Register-AmsaengEosaMonitoringBundleTask.ps1."
+    },
+    {
+      "id": "artifact_staleness_probe",
+      "tier": "observe",
+      "scripts": ["scripts/check_amsaeng_eosa_artifact_staleness_v1.py"],
+      "artifacts": ["reports/amsaeng_eosa_staleness_probe_latest.json"],
+      "notes_ko": "번들 밖에서 heartbeat/bundle_cycle JSON 신선도 검사(exit 0/1/2). 헬스: run_workspace_automation_health.ps1 -IncludeAmsaengArtifactStaleness. 임계: env AMSENG_HEARTBEAT_MAX_AGE_MINUTES / AMSENG_BUNDLE_CYCLE_MAX_AGE_MINUTES."
     },
     {
       "id": "workspace_health_bundle",
@@ -71,7 +82,8 @@
   ],
   "integration_entrypoints": [
     "scripts/Invoke-AmsaengEosaGovernanceCycle.ps1",
-    "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1 (-GovernanceSoftFail 선택)"
+    "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1 (-GovernanceSoftFail 선택)",
+    "scripts/check_amsaeng_eosa_artifact_staleness_v1.py (메타 신선도; 헬스 플래그로 선택)"
   ],
   "artifacts_optional": {
     "governance_alert_log_jsonl": "reports/amsaeng_eosa_governance_alert_log.jsonl",

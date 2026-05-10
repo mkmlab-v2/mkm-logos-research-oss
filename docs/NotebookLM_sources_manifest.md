@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-05-06 (Gemini 실사용 3종 표준 세트 고정: `00_MASTER_TRACKC_BOARD_2026Q2` + `10_OPS_MKM_CORE_INTELLIGENCE_2026Q2` + `03_P3P4_명리_성경_해설형_허브_2026Q2`; 숫자 접두 혼선 방지용 명명 규칙 추가) · 2026-05-06 (S2W 기사 체화 반영: `logos_symbolic_paid_user_brief_latest.md`의 `S2W 기사 기반 체화 팩` 기준으로 NotebookLM 브리핑 질문을 `문제 1개 -> 최소 온톨로지 -> 근거 추적(XAI) -> 행동 가이드` 순으로 고정) · 2026-05-05 (Track C agentic 방향성 고정: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §12 반영, NotebookLM 브리핑 질의 프레임을 `governance/authority/audit` 우선으로 통일) · 2026-05-02 (MCP `notebooklm-mcp` 전용 Chrome 프로필 vs 내장 브라우저 로그인 **비동기** 문서화) · 2026-04-23 (Vault 미러: 원어 특이점 글로스 v3·히브리 오버라이드·`master_codebook_lexicon_v1` **포인터** JSON 추가; 동기화 스크립트 `$SourceFiles` 반영) · 이전 갱신 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
+**작성일**: 2026-03-29 · **갱신**: 2026-05-11 (지휘부 동기화: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.11 플랫폼 GTM·밸류에이션 냉정 정렬 + `CENTRAL_AGENT_MEMORY_V1.md` 분기 표·nl_sync·M30 `lens_music_prompt_runbook_webhook_health` 경로; 레포 SSOT 우선·NL 단독 승격 금지) · 2026-05-06 (Gemini 실사용 3종 표준 세트 고정: `00_MASTER_TRACKC_BOARD_2026Q2` + `10_OPS_MKM_CORE_INTELLIGENCE_2026Q2` + `03_P3P4_명리_성경_해설형_허브_2026Q2`; 숫자 접두 혼선 방지용 명명 규칙 추가) · 2026-05-06 (S2W 기사 체화 반영: `logos_symbolic_paid_user_brief_latest.md`의 `S2W 기사 기반 체화 팩` 기준으로 NotebookLM 브리핑 질문을 `문제 1개 -> 최소 온톨로지 -> 근거 추적(XAI) -> 행동 가이드` 순으로 고정) · 2026-05-05 (Track C agentic 방향성 고정: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §12 반영, NotebookLM 브리핑 질의 프레임을 `governance/authority/audit` 우선으로 통일) · 2026-05-02 (MCP `notebooklm-mcp` 전용 Chrome 프로필 vs 내장 브라우저 로그인 **비동기** 문서화) · 2026-04-23 (Vault 미러: 원어 특이점 글로스 v3·히브리 오버라이드·`master_codebook_lexicon_v1` **포인터** JSON 추가; 동기화 스크립트 `$SourceFiles` 반영) · 이전 갱신 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -8,6 +8,35 @@
 **연구 서사 인덱스 (B, 비-SSOT):** `docs/final/RESEARCH_HISTORY_V1.md` — MCP `notebook_list`로 수집한 **노트북 제목·ID 스냅샷**(구현·게이트 팩트 아님). 갱신 시 이 파일을 먼저 고친 뒤 Vault 동기화.
 
 **Vault 동기화**: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`가 이 표를 `notebooklm_sources/`로 복사(SSOT 반영). 공유 Vault 루트는 환경의 `MKM_VAULT_ROOT` 또는 스크립트 `-VaultRoot`로 지정.
+
+### 동기화 오해 · 재발 방지 (2026-05-11)
+
+“NotebookLM 동기화”는 **한 줄 파이프가 아니라 서로 독립한 3채널**이다. 한쪽이 성공해도 다른 쪽은 실패할 수 있다 — 이걸 섞어 말하면 “자꾸 깨진다”로 느껴진다.
+
+| 채널 | 하는 일 | 성공 기준 | 자주 나는 착각 |
+|------|---------|-----------|----------------|
+| **A — Vault 미러** | 레포 파일 → `MKM_DATA_VAULT\vault\notebooklm_sources` 복사 | 스크립트 exit 0 · `_LAST_SYNC.txt` 갱신 | “G에 복사됐으니 NotebookLM 웹에 올라갔다” (**아님**) |
+| **B — Google NotebookLM (클라우드)** | 노트북에 소스 등록·인제스트 | 웹/API에서 해당 소스 보임 | “매니페스트만 고치면 클라우드가 따라온다” (**아님** · UI `source_add` 또는 전용 푸시 작업 별도) |
+| **C — Cursor MCP** | IDE 채팅에서 `notebooklm` 도구·세션 | 이 **채팅**의 도구 목록에 도구가 있고 `get_health` 성공 | “설정에 MCP 녹색 = 지금 채팅에서도 됨” (**아님** · 채팅 시작 시 도구 카탈로그 고정) |
+
+**원샷 점검 (로컬만, Google 호출 없음):** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-NotebookLmSyncTriage_v1.ps1` → 콘솔 요약 + `reports/notebooklm_sync_triage_latest.json`. Vault까지 실제 미러하려면 같은 스크립트에 `-RunMirror`.
+
+**MCP만 재발하면:** `scripts/check_notebooklm_mcp_prereqs.ps1` → `scripts/repair_notebooklm_mcp_auth_stuck.ps1` → Cursor Reload · 필요 시 **새 채팅**. 규칙: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`.
+
+### 지휘부 동기화 패킷 (2026-05-11)
+
+NotebookLM·지휘부 브리핑을 레포 Fact-Lock과 맞출 때 **아래를 한 세트**로 본다(구현 판정은 여전히 `CONSTITUTION_*`·스크립트).
+
+| 구분 | 경로 | 비고 |
+|------|------|------|
+| A | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.11 | 미들웨어 포지션·단일 앵커 리스크·2nd customer·빅테크 내재화·수직·대외 수치 Fact-Lock |
+| A | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` | 장기기억·`nl_sync`·분기별 한 줄·운영 체크포인트 |
+| A | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | M30 등 구현 경로·pytest |
+| B | `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json` | M30 헬스 집계(재생성: `scripts/build_lens_music_prompt_runbook_webhook_health_summary_v1.py`) |
+
+**NotebookLM 질의 스타터 (Creative-Lock, 본선 합선 금지):** “§3.11 기준으로 단일 앵커 리스크를 줄이기 위한 **다음 분기 파일럿 산업 2개**를 제안하라. 각안에 (i) PoC 주기 (ii) 규제 대비 (iii) 우리 레포에서 인용할 **아티팩트 경로** 후보를 한 줄씩 붙여라. 의료 효능·실매매·자동 승격 단정은 금지.”
+
+**운영:** 로컬에서 매니페스트 파일 갱신 후 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` 실행 → 공유 Vault `notebooklm_sources` 미러. 클라우드 노트북에 소스 추가(`source_add`)는 별도.
 
 ## Solo 운영 Quickstart (2026-05-03)
 
@@ -184,7 +213,7 @@ Gemini/NotebookLM이 "지금 개발이 어디까지 왔는지"를 빠르게 파�
 
 | 항목 | 경로 (또는 TBD) | 비고 |
 |------|------------------|------|
-| Track C IP 사업계획 (v1) | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` | B2B/IP 수익화 실행안; 비투자자문 문구·Track A/B/C 경계 포함 |
+| Track C IP 사업계획 (v2, §3.11 GTM) | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` | B2B/IP 수익화·§3.11 플랫폼 GTM 냉정 정렬; 비투자자문·Track A/B/C 경계·Fact-Lock 수치 |
 | DSS / Qumran | `docs/final/DSS_APOCRYPHA_FRONTLINE_CLOSEOUT_2026-03-27.md` | Creative-Lock; frontline closeout SSOT |
 | 명리·융합 의사결정 | `docs/final/MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json` | SSOT; B 노트북에는 동명 텍스트 소스로 반영(`MYEONGNI_FUSION_DECISION_JSON_SCHEMA.json`). A와 역할 분리 |
 | AI·명리·만세 외부 참조 | `docs/final/AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md` | 타 서비스·RAG·LLM 패턴 정리(참고만); 본선 OOF·A와 무단 합선 금지 |

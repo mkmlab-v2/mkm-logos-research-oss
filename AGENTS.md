@@ -208,7 +208,7 @@
 - **일반 예언(B 레일)**: 스키마·스크립트·월간 체인은 **저장소 루트**(`GENERAL_PROPHECY_SCHEMA_V1`, `scripts/generate_general_prophecy_v1.py` 등, `run_waiting_queue_monthly_check.ps1`) — **별도 서브트리에 복제본을 두지 않고** 루트 SSOT를 따른다. 실시간 운영 경로는 `eval_prophecy_hit_rate_v1.py`와 `run_prophecy_restoration_spike.py` 중심으로 유지하며, 비활성/미배포 체인은 SSOT 필수 경로로 고정하지 않는다.
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
-- **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. **내장 브라우저·Chrome 로그인 ≠ MCP 인증**(전용 Chrome 프로필). SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`(항상 적용), `docs/NotebookLM_sources_manifest.md`(MCP 인증 절), 점검 `scripts/check_notebooklm_mcp_prereqs.ps1`. 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.
+- **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. **내장 브라우저·Chrome 로그인 ≠ MCP 인증**(전용 Chrome 프로필). **동기화 ≠ 한 가지:** Vault 미러(A)·구글 노트북 소스(B)·채팅 MCP(C)는 독립 — 원샷 점검 `scripts/Invoke-NotebookLmSyncTriage_v1.ps1` · 표 `docs/NotebookLM_sources_manifest.md` 「동기화 오해 · 재발 방지」. SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`(항상 적용), `docs/NotebookLM_sources_manifest.md`(MCP 인증 절), 점검 `scripts/check_notebooklm_mcp_prereqs.ps1`. 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.
 - **NotebookLM 인증 복구 표준 3단계**: 문제가 나면 `scripts/repair_notebooklm_mcp_auth_stuck.ps1` -> MCP `setup_auth` -> MCP `get_health`(`authenticated=true` 확인) 순으로 고정.
 - **NotebookLM 세션 시작 게이트**: NotebookLM을 쓰는 턴의 첫 호출은 항상 MCP `get_health`; `authenticated=false`면 질의 전에 복구 3단계를 먼저 수행한다.
 

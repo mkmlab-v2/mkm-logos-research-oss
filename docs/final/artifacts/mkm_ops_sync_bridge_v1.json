@@ -1,58 +1,90 @@
 {
   "schema": "mkm_ops_sync_bridge_v1",
-  "title_ko": "운영·동기화 브리지 (NotebookLM / 장기기억 / VPS / 감찰) 단일 참조",
-  "fact_lock_note": "판정은 각 스크립트 exit·reports JSON. 본 파일은 포인터 모음.",
-  "notebooklm_three_channels_ref": "docs/NotebookLM_sources_manifest.md (A Vault / B 클라우드 / C Cursor MCP — 혼동 금지)",
-  "lanes": [
-    {
-      "id": "notebooklm_mcp_session",
-      "problem_ko": "설정 녹색인데 채팅에 MCP 없음 · 웹 로그인과 전용 Chrome 프로필 불일치",
-      "health": ["scripts/check_notebooklm_mcp_prereqs.ps1"],
-      "repair": ["scripts/repair_notebooklm_mcp_auth_stuck.ps1"],
-      "probe": ["scripts/Invoke-McpHygieneProbe.ps1"],
-      "triage_bundle": ["scripts/Invoke-NotebookLmSyncTriage_v1.ps1"],
-      "vault_mirror": ["scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1"],
-      "artifacts": ["reports/notebooklm_sync_triage_latest.json", "reports/amsaeng_eosa_mcp_hygiene_cycle_latest.json"],
-      "rules": [".cursor/rules/notebooklm-mcp-session-bridge.mdc"]
-    },
-    {
-      "id": "cross_chat_memory_ssot",
-      "problem_ko": "채팅 간 자동 병합 없음 — 디스크 SSOT만 신뢰",
-      "human_anchor": ["docs/final/CENTRAL_AGENT_MEMORY_V1.md"],
-      "checkpoint": ["scripts/athena_checkpoint.py"],
-      "handoff_optional": ["docs/final/CURRENT_OPS_SNAPSHOT.md"],
-      "note_ko": "다른 창에서 수정한 내용은 파일 커밋·pull 또는 @CENTRAL 로 재주입."
-    },
-    {
-      "id": "vps_live_sync",
-      "problem_ko": "로컬 운영 표면과 VPS 단절",
-      "pull": ["scripts/Invoke-LiveSyncHeartbeatPull.ps1"],
-      "deploy_remote_snippet": ["scripts/linux/live_sync_push_heartbeat_snippet.sh", "scripts/Deploy-LiveSyncHeartbeatToVps.ps1"],
-      "artifacts": ["reports/live_sync_pull_latest.json", "live_sync/incoming/daemon_alive_check.json"],
-      "smoke": ["scripts/Invoke-VpsOpsSmoke_v1.ps1"],
-      "env": ["MKM_VPS_HOST", "MKM_VPS_USER", "MKM_VPS_SSH_KEY_PATH", "MKM_LIVE_SYNC_REMOTE_PATH"]
-    },
-    {
-      "id": "governance_amsaeng_eosa",
-      "problem_ko": "백그라운드 청결·운영 표면 한 번에 보기",
-      "cycle": ["scripts/Invoke-AmsaengEosaGovernanceCycle.ps1"],
-      "monitoring_bundle": ["scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"],
-      "register_bundle": ["scripts/Register-AmsaengEosaMonitoringBundleTask.ps1"],
-      "safe_ops": ["scripts/Invoke-SafeOpsSurfaceCheck.ps1"],
-      "scope_registry": ["docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json"],
-      "artifacts": ["reports/amsaeng_eosa_governance_cycle_latest.json", "reports/amsaeng_eosa_governance_alert_log.jsonl", "reports/safe_ops_surface_check_latest.json"]
-    },
-    {
-      "id": "scheduled_tasks_workspace",
-      "problem_ko": "작업 스케줄러 과부하·실패 코드 추적",
-      "audit": ["scripts/audit_workspace_scheduled_tasks.ps1", "scripts/audit_workspace_scheduled_tasks_last_run.ps1", "scripts/audit_workspace_scheduled_tasks_triggers.ps1"],
-      "artifacts": ["reports/workspace_scheduled_tasks_audit_latest.csv", "reports/workspace_scheduled_tasks_last_run_latest.json", "reports/workspace_scheduled_tasks_triggers_latest.csv"],
-      "stagger_optional": ["scripts/plan_workspace_scheduled_task_stagger.ps1", "scripts/apply_workspace_scheduled_task_stagger.ps1"]
-    }
-  ],
-  "never_claim_ko": [
-    "NotebookLM Vault 미러 성공만으로 클라우드 노트북 인제스트 완료 단정",
-    "Cursor MCP UI 녹색만으로 이 채팅 세션에 도구 주입 단정",
-    "채팅 로그 자동 병합으로 CENTRAL 갱신 완료 단정"
-  ]
+  "generated_at_utc": "2026-05-11T02:15:00Z",
+  "truth_source": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+  "never_claim_ko": "본 파일은 경로·역할 교차참조용 포인터다. 구현 완료·게이트 통과·실매매 적합 단정은 각 스크립트 exit code·산출 JSON 필드·Human 승인 경로로만 한다. B 레일 산출물과 A 트랙(실거래·본선) 자동 합선 금지.",
+  "notebooklm_three_channel_note_ko": "MCP 세션·Vault 미러·클라우드 source_add는 서로 다른 채널이다. 동기화 절차는 docs/NotebookLM_sources_manifest.md.",
+  "central_memory_pointer": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+  "ops_automation_pointers": {
+    "live_sync_incoming_example": "live_sync/incoming/daemon_alive_check.json",
+    "amsaeng_eosa_bundle_ps1": "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1",
+    "amsaeng_eosa_governance_ps1": "scripts/Invoke-AmsaengEosaGovernanceCycle.ps1",
+    "scheduled_task_audit_ps1": "scripts/audit_workspace_scheduled_tasks.ps1",
+    "scheduled_task_last_run_ps1": "scripts/audit_workspace_scheduled_tasks_last_run.ps1",
+    "stagger_plan_ps1": "scripts/plan_workspace_scheduled_task_stagger.ps1"
+  },
+  "b_track_domain_feedback_loops": {
+    "purpose_ko": "비트코인 실매매와 격리된 채로 예측→실측→채점 루프를 돌리기 위한 Fact-Lock 앵커. 새 파이프라인을 만들기 전에 여기 나열한 기존 스크립트를 확장한다.",
+    "a_track_autotrade_decoupling_ko": "아래 도메인 산출물은 본선 주문·실거래 게이트에 자동 연결되지 않는다. 보조 렌즈·연구 전용.",
+    "domains": [
+      {
+        "id": "general_prophecy_b_rail",
+        "rail": "B",
+        "constitution_topics": [
+          "GENERAL_PROPHECY_SCHEMA_V1",
+          "general_prophecy_daily_queue",
+          "holdout_gate"
+        ],
+        "registry_schema": "docs/final/GENERAL_PROPHECY_SCHEMA_V1.json",
+        "scripts": [
+          "scripts/generate_general_prophecy_v1.py",
+          "scripts/build_general_prophecy_brief.py",
+          "scripts/eval_general_prophecy_brier_score.py",
+          "scripts/resolve_general_prophecy_question_v1.py",
+          "scripts/run_general_prophecy_daily_queue_refresh_v1.ps1",
+          "scripts/run_waiting_queue_monthly_check.ps1"
+        ],
+        "gate_scripts": [
+          "scripts/check_general_prophecy_explainability_holdout_gate_v1.py",
+          "scripts/alert_general_prophecy_holdout_gate_v1.py"
+        ]
+      },
+      {
+        "id": "weather_ground_truth_to_prophecy_triplet",
+        "rail": "B",
+        "hypothesis_tag": "[HYPO]",
+        "constitution_topics": [
+          "weather_ground_truth_row_v1",
+          "weather_calibration_v1"
+        ],
+        "schemas": [
+          "docs/final/schemas/weather_ground_truth_row_v1.schema.json"
+        ],
+        "scripts": [
+          "scripts/csv_to_weather_ground_truth_jsonl_v1.py",
+          "scripts/validate_weather_ground_truth_jsonl_v1.py",
+          "scripts/build_weather_triplet_registry_v1.py",
+          "scripts/run_weather_gt_to_prophecy_triplet_chain_v1.py",
+          "scripts/run_weather_synthetic_120d_chain_and_brier_v1.py"
+        ],
+        "regression_tests": [
+          "tests/test_weather_gt_triplet_chain_smoke.py"
+        ]
+      },
+      {
+        "id": "news_observation_point_in_time",
+        "rail": "B",
+        "hypothesis_tag": "[HYPO]",
+        "constitution_topics": [
+          "news_observation_v1",
+          "direction_label_bar_v1"
+        ],
+        "schemas": [
+          "docs/final/schemas/news_observation_v1.schema.json",
+          "docs/final/schemas/direction_label_bar_v1.schema.json"
+        ],
+        "scripts": [
+          "scripts/validate_news_observation_jsonl_v1.py",
+          "scripts/check_news_label_join_temporal_v1.py",
+          "scripts/join_news_observation_direction_labels_walkforward_v1.py"
+        ],
+        "smoke": [
+          "scripts/Run-NewsObservationContractSmoke.ps1"
+        ]
+      }
+    ],
+    "one_click_smoke_ps1": "scripts/Run-BTrackDomainFeedbackSmoke.ps1",
+    "one_click_smoke_note_ko": "일반예언·기상·뉴스 B 레일 회귀 스모크를 순차 실행(네트워크 불필요). -SkipNews / -SkipWeather / -SkipGeneralProphecy 로 부분 생략. Fact-Lock 번들에 포함하려면 scripts/run_fact_lock_bundle.ps1 -IncludeBTrackDomainFeedbackSmoke (기본 뉴스 스모크와 중복 방지 시 래퍼가 -SkipNews 사용).",
+    "extension_policy_ko": "새 도메인 추가 시: (1) outcome·resolution 스키마와 채점 CLI를 먼저 고정 (2) 기존 general_prophecy 또는 전용 JSONL+eval 패턴으로 합류 (3) A 트랙·실매매 트리거와의 직접 배선 금지."
+  }
 }
