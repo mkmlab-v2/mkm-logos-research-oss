@@ -21,17 +21,17 @@ function Write-Step([string]$msg) {
 
 Write-Step "=== Qwen strict chain v1 START adapter=$AdapterPath ==="
 
-$common = @(
-  "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
-  (Join-Path $root "scripts\Run-MkmControlIntegrityTrainInferEval.ps1"),
-  "-SkipPrep", "-SkipTrainDryRun",
-  "-ModelProfile", "a_qwen25_base",
-  "-AdapterPath", $AdapterPath
-)
+$trainInfer = Join-Path $root "scripts\Run-MkmControlIntegrityTrainInferEval.ps1"
 
 foreach ($split in @("test", "locked_eval")) {
   Write-Step "BEGIN split=$split"
-  & powershell @common @("-InferenceSplit", $split)
+  # Invoke in-process (no nested powershell.exe) so exit codes and logging stay coherent.
+  & $trainInfer `
+    -SkipPrep `
+    -SkipTrainDryRun `
+    -ModelProfile "a_qwen25_base" `
+    -AdapterPath $AdapterPath `
+    -InferenceSplit $split
   $ec = $LASTEXITCODE
   Write-Step "END split=$split exit=$ec"
   if ($ec -ne 0) {
