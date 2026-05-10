@@ -40,10 +40,18 @@
 
 ### MCP `notebooklm-mcp` 인증 — 웹 로그인과 자동 동기화되지 않음 (2026-05)
 
-- **원인:** Cursor 내장 브라우저·일반 Chrome에서 NotebookLM에 로그인한 것과, MCP 서버(`npx notebooklm-mcp@latest`)가 띄우는 자동화 브라우저는 **서로 다른 Chrome 프로필**이다. Windows에서는 통상 `%APPDATA%\notebooklm-mcp\chrome_profile\` 아래 **전용 프로필**에만 쿠키가 저장된다. 그래서 “이미 브라우저에서 로그인됨”이어도 **`get_health`의 `authenticated`는 false일 수 있다** — 오류가 아니라 **격리 설계**다.
+- **원인:** Cursor 내장 브라우저·일반 Chrome에서 NotebookLM에 로그인한 것과, MCP 서버가 띄우는 **자동화 Chrome**은 **서로 다른 Chrome 프로필**이다(레포는 `node`+고정 `dist/index.js`·`MKM_NOTEBOOKLM_MCP_PINNED_VERSION` 사용, `npx … @latest` 비권장). Windows에서는 통상 `%APPDATA%\notebooklm-mcp\chrome_profile\` 또는 LocalData 경로의 **전용 프로필**에만 쿠키가 저장된다. 그래서 “이미 브라우저에서 로그인됨”이어도 **`get_health`의 `authenticated`는 false일 수 있다** — 오류가 아니라 **격리 설계**다.
 - **완화(레포):** `.cursor/mcp.json`의 `notebooklm` 항목에 **`HEADLESS`=`false`** 를 두어 로그인 창이 보이게 한다(패키지 기본은 headless). MCP 프로세스를 **Reload Window / Cursor 재시작** 후에만 환경 변수가 반영된다.
 - **1회 설정:** MCP 도구 **`setup_auth`** 로 위 전용 프로필에 한 번 로그인하면 이후 같은 프로필을 재사용한다. 계정 전환·세션 꼬임 시 패키지 README의 **`re_auth`** / **`cleanup_data`** 절차를 따른다(`NOTEBOOKLM_PROFILE=full`일 때 정리 도구가 노출되는 경우가 있음).
 - **Fact-Lock:** NotebookLM 웹 UI 브리핑은 **참고**이며, 구현·게이트 확정은 여전히 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트·아티팩트만 SSOT다.
+
+#### MCP 재발 방지 (로컬 자동·수동, 2026-05)
+
+- **수동 점검·수리 (비용 낮음):** `scripts/check_notebooklm_mcp_prereqs.ps1` → `scripts/repair_notebooklm_mcp_auth_stuck.ps1` (또는 원클릭 `scripts/invoke_notebooklm_mcp_auth_recovery_v1.ps1`). **쿠키/로그인을 대체하지 않음** — 오래된 node·Chrome·lockfile만 정리.
+- **원샷 프로브 (자동화·암행어사용 JSON):** `scripts/Invoke-McpHygieneProbe.ps1` → 표준 출력 및 선택 `-OutJson` 경로에 **`mcp_hygiene_probe_notebooklm_v1`** 요약(prereq exit·stale 카운트·선택 `-Repair`). MCP `get_health`의 `authenticated`는 포함하지 않음(Cursor 전용).
+- **주간 자동 (권장):** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Register-NotebookLmMcpWeeklyHygieneTask.ps1` — 기본 **일요 07:00(로컬)** 에 stale 프로세스 정리. 제거: `-Remove`.
+- **로그오프 시 자동 (선택):** `scripts/register_notebooklm_mcp_repair_logoff_task.ps1` — Winlogon 이벤트에 repair 연동.
+- **Cursor 재시작 뒤:** Settings → MCP에서 `notebooklm` **토글 off/on** 또는 **새 채팅** — 도구 목록이 세션 시작 시 고정되는 경우가 있어, **같은 채팅에서만** `Not connected`가 남을 수 있다(에이전트 규칙 `notebooklm-mcp-session-bridge.mdc`와 동일).
 
 ### Vault 동기화 — 로컬 부재 Skip (정상, 2026-04)
 
