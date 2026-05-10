@@ -25,10 +25,20 @@ export async function POST(request: NextRequest) {
     const invalid = validateInput(body);
     if (invalid) return NextResponse.json({ success: false, error: invalid }, { status: 400 });
     const draft = await buildAdvancedConsultDraft(body);
+    const literatureInjectedCount = draft.citations.filter((c) => {
+      const idBased = c.citation_id.startsWith("lit_");
+      const refBased = c.source_ref.toLowerCase().startsWith("epmc:");
+      return idBased || refBased;
+    }).length;
     return NextResponse.json(
       {
         success: true,
         draft,
+        evidence_meta: {
+          literature_count_rule_version: "v2_id_or_epmc_ref",
+          citation_count: draft.citations.length,
+          literature_injected_count: literatureInjectedCount,
+        },
         guardrail: {
           lane_separation: true,
           citation_enforced: draft.citations.length > 0,

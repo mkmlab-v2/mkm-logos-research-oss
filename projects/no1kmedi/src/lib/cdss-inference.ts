@@ -6,6 +6,8 @@ import type {
   SasangType,
 } from "@/lib/cdss-contract";
 import { looksLikeIsoInstant } from "@/lib/global-birth-input";
+import { promises as fs } from "node:fs";
+import path from "node:path";
 
 type ManseryeokResult = { saju_label: string; source: "live" | "fallback" };
 type LlmReasoning = {
@@ -13,6 +15,32 @@ type LlmReasoning = {
   syndrome_hypothesis: string;
   care_direction: string;
   caution: string;
+};
+
+type LiteratureMemoryItem = {
+  evidence_id?: string;
+  title?: string;
+  snippet?: string;
+  source?: string;
+  source_id?: string;
+  snippet_hash?: string;
+  uri?: string;
+  title_terms?: string[];
+  snippet_terms?: string[];
+  search_terms?: string[];
+};
+
+type LiteratureSearchIndex = {
+  items: LiteratureMemoryItem[];
+  corpusMeta?: {
+    documentCount: number;
+    avgDocTerms: number;
+    tokenDocFreq: Record<string, number>;
+    avgTitleTerms?: number;
+    avgSnippetTerms?: number;
+    titleTokenDocFreq?: Record<string, number>;
+    snippetTokenDocFreq?: Record<string, number>;
+  };
 };
 
 const FALLBACK_SAJU: ManseryeokResult = {
@@ -57,6 +85,269 @@ const CANON_CITATION_MAP: Record<SasangType, CdssCitationV1> = {
     evidence_level: "B",
   },
 };
+
+const LITERATURE_SNAPSHOT_PATH = path.join(
+  process.cwd(),
+  "memory",
+  "literature",
+  "literature_memory_snapshot_latest.jsonl",
+);
+const LITERATURE_SEARCH_INDEX_PATH = path.join(
+  process.cwd(),
+  "memory",
+  "literature",
+  "literature_memory_search_index_latest.json",
+);
+
+/** Terms that strengthen ranking when present in red-flag notes (assistive, not clinical triage). */
+const EMERGENCY_LEXICON = new Set(
+  [
+    "응급",
+    "119",
+    "흉통",
+    "호흡곤란",
+    "실신",
+    "의식",
+    "저하",
+    "경련",
+    "발작",
+    "출혈",
+    "과다",
+    "중증",
+    "acute",
+    "emergency",
+    "dyspnea",
+    "chest",
+    "pain",
+    "stroke",
+    "unconscious",
+    "hemorrhage",
+    "seizure",
+  ].map((s) => s.toLowerCase()),
+);
+
+function tokenizeForMatch(text: string): string[] {
+  return (text || "")
+    .toLowerCase()
+    .split(/[^a-z0-9가-힣]+/g)
+    .map((x) => x.trim())
+    .filter((x) => x.length >= 2);
+}
+
+function bm25Idf(term: string, tokenDocFreq: Record<string, number>, n: number): number {
+  const df = Math.max(0, tokenDocFreq[term] || 0);
+  return Math.log(1 + (n - df + 0.5) / (df + 0.5));
+}
+
+function bm25IdfGlobal(term: string, corpusMeta?: LiteratureSearchIndex["corpusMeta"]): number {
+  if (!corpusMeta || !corpusMeta.documentCount) return 1;
+  const n = corpusMeta.documentCount;
+  return bm25Idf(term, corpusMeta.tokenDocFreq, n);
+}
+
+function scoreLiteratureMatch(
+  queryTokens: string[],
+  item: LiteratureMemoryItem,
+  corpusMeta?: LiteratureSearchIndex["corpusMeta"],
+  termWeightMultiplier?: Map<string, number>,
+): number {
+  const indexedTerms = (item.search_terms || []).map((t) => t.toLowerCase());
+  const titleTerms = (item.title_terms || []).map((t) => t.toLowerCase());
+  const snippetTerms = (item.snippet_terms || []).map((t) => t.toLowerCase());
+  const useIndexedTerms = indexedTerms.length > 0;
+  const hay = useIndexedTerms ? "" : `${item.title || ""} ${item.snippet || ""}`.toLowerCase();
+  if (!useIndexedTerms && !hay.trim()) return 0;
+  const docLength = useIndexedTerms ? indexedTerms.length : Math.max(1, tokenizeForMatch(hay).length);
+  const avgDocTerms = Math.max(1, corpusMeta?.avgDocTerms || 1);
+  const avgTitleTerms = Math.max(1, corpusMeta?.avgTitleTerms || avgDocTerms);
+  const avgSnippetTerms = Math.max(1, corpusMeta?.avgSnippetTerms || avgDocTerms);
+  const titleTokenDocFreq = corpusMeta?.titleTokenDocFreq || corpusMeta?.tokenDocFreq || {};
+  const snippetTokenDocFreq = corpusMeta?.snippetTokenDocFreq || corpusMeta?.tokenDocFreq || {};
+  const k1 = 1.2;
+  const b = 0.75;
+  const normDenominator = k1 * (1 - b + b * (docLength / avgDocTerms));
+  const titleNormDenominator = k1 * (1 - b + b * (Math.max(1, titleTerms.length) / avgTitleTerms));
+  const snippetNormDenominator = k1 * (1 - b + b * (Math.max(1, snippetTerms.length) / avgSnippetTerms));
+  let score = 0;
+  for (const t of queryTokens) {
+    const matched = useIndexedTerms ? indexedTerms.includes(t) : hay.includes(t);
+    if (!matched) continue;
+    const channelMul = termWeightMultiplier?.get(t) ?? 1;
+    const idf = bm25IdfGlobal(t, corpusMeta);
+    // Binary term presence with BM25-style length normalization.
+    const tfComponent = (1 * (k1 + 1)) / (1 + normDenominator);
+    score += idf * tfComponent * channelMul;
+    if (titleTerms.includes(t)) {
+      const titleTf = (1 * (k1 + 1)) / (1 + titleNormDenominator);
+      score += bm25Idf(t, titleTokenDocFreq, Math.max(1, corpusMeta?.documentCount || 1)) * titleTf * 0.35 * channelMul;
+    }
+    if (snippetTerms.includes(t)) {
+      const snippetTf = (1 * (k1 + 1)) / (1 + snippetNormDenominator);
+      score += bm25Idf(t, snippetTokenDocFreq, Math.max(1, corpusMeta?.documentCount || 1)) * snippetTf * 0.15 * channelMul;
+    }
+  }
+  return score;
+}
+
+/** Chief vs red-flag vs onset/severity channel weights; duplicates take max weight per token. */
+function buildLiteratureQueryChannels(input: PatientConsultInputV1): {
+  unionTokens: string[];
+  termWeights: Map<string, number>;
+} {
+  const chiefStr = (input.lane_b_clinical.chief_complaint || "").trim();
+  const chief = tokenizeForMatch(chiefStr);
+  const redRaw = (input.lane_b_clinical.health_survey?.red_flag_notes || "").trim();
+  const redFlag = tokenizeForMatch(redRaw);
+  const context = tokenizeForMatch(
+    [input.lane_b_clinical.onset, input.lane_b_clinical.severity].filter(Boolean).join(" "),
+  );
+  const medication = tokenizeForMatch(input.lane_b_clinical.medication || "");
+  const constitutionCore = tokenizeForMatch(
+    [input.lane_a_profile.constitution_survey?.digestion_pattern, input.lane_a_profile.constitution_survey?.sleep_pattern]
+      .filter(Boolean)
+      .join(" "),
+  );
+  const constitutionExtra = tokenizeForMatch(
+    [input.lane_a_profile.constitution_survey?.body_heat_preference, input.lane_a_profile.constitution_survey?.stress_reactivity]
+      .filter(Boolean)
+      .join(" "),
+  );
+  const constitutionFree = tokenizeForMatch(input.lane_a_profile.constitution_survey?.free_text || "");
+  const healthSurveyExtras = tokenizeForMatch(
+    [input.lane_b_clinical.health_survey?.appetite, input.lane_b_clinical.health_survey?.bowel_pattern]
+      .filter(Boolean)
+      .join(" "),
+  );
+
+  /** 주호소가 매우 짧을 때(레드플래그만 상대적으로 풍부한 입력) 발병·중증도 토큰을 더 신뢰 */
+  const chiefShortForLiterature =
+    chiefStr.length < 12 || chief.length <= 1;
+  const redFlagActive = redRaw.length > 0;
+  const contextWeight =
+    redFlagActive && chiefShortForLiterature && context.length > 0 ? 1.14 : 0.9;
+
+  const termWeights = new Map<string, number>();
+  const bump = (tokens: string[], w: number) => {
+    for (const tok of tokens) {
+      termWeights.set(tok, Math.max(termWeights.get(tok) ?? 0, w));
+    }
+  };
+
+  bump(chief, 1.22);
+  bump(redFlag, redRaw.length > 0 ? 1.58 : 1);
+  bump(context, contextWeight);
+  bump(medication, 1.1);
+  bump(constitutionCore, 0.85);
+  bump(constitutionExtra, 0.82);
+  bump(constitutionFree, 0.75);
+  bump(healthSurveyExtras, 0.82);
+
+  for (const tok of redFlag) {
+    if (EMERGENCY_LEXICON.has(tok)) {
+      termWeights.set(tok, Math.max(termWeights.get(tok) ?? 0, 1.88));
+    }
+  }
+
+  const unionSet = new Set<string>([
+    ...chief,
+    ...redFlag,
+    ...context,
+    ...medication,
+    ...constitutionCore,
+    ...constitutionExtra,
+    ...constitutionFree,
+    ...healthSurveyExtras,
+  ]);
+  return { unionTokens: [...unionSet], termWeights };
+}
+
+async function loadLiteratureSnapshot(): Promise<LiteratureSearchIndex> {
+  try {
+    const rawIndex = await fs.readFile(LITERATURE_SEARCH_INDEX_PATH, "utf8");
+    const parsed = JSON.parse(rawIndex) as {
+      items?: LiteratureMemoryItem[];
+      corpus_meta?: {
+        document_count?: number;
+        avg_doc_terms?: number;
+        avg_title_terms?: number;
+        avg_snippet_terms?: number;
+        token_doc_freq?: Record<string, number>;
+        title_token_doc_freq?: Record<string, number>;
+        snippet_token_doc_freq?: Record<string, number>;
+      };
+    };
+    if (Array.isArray(parsed?.items) && parsed.items.length > 0) {
+      return {
+        items: parsed.items,
+        corpusMeta: {
+          documentCount: Number(parsed.corpus_meta?.document_count || parsed.items.length),
+          avgDocTerms: Number(parsed.corpus_meta?.avg_doc_terms || 1),
+          tokenDocFreq: parsed.corpus_meta?.token_doc_freq || {},
+          avgTitleTerms: Number(parsed.corpus_meta?.avg_title_terms || parsed.corpus_meta?.avg_doc_terms || 1),
+          avgSnippetTerms: Number(parsed.corpus_meta?.avg_snippet_terms || parsed.corpus_meta?.avg_doc_terms || 1),
+          titleTokenDocFreq: parsed.corpus_meta?.title_token_doc_freq || parsed.corpus_meta?.token_doc_freq || {},
+          snippetTokenDocFreq: parsed.corpus_meta?.snippet_token_doc_freq || parsed.corpus_meta?.token_doc_freq || {},
+        },
+      };
+    }
+  } catch {
+    // Fallback to jsonl snapshot when index is unavailable.
+  }
+  try {
+    const raw = await fs.readFile(LITERATURE_SNAPSHOT_PATH, "utf8");
+    const items = raw
+      .split(/\r?\n/)
+      .map((line) => line.trim())
+      .filter(Boolean)
+      .map((line) => {
+        try {
+          return JSON.parse(line) as LiteratureMemoryItem;
+        } catch {
+          return null;
+        }
+      })
+      .filter((x): x is LiteratureMemoryItem => Boolean(x));
+    return { items };
+  } catch {
+    return { items: [] };
+  }
+}
+
+async function pickLiteratureCitations(input: PatientConsultInputV1, limit = 2): Promise<CdssCitationV1[]> {
+  const { unionTokens, termWeights } = buildLiteratureQueryChannels(input);
+  if (!unionTokens.length) return [];
+
+  const index = await loadLiteratureSnapshot();
+  const items = index.items;
+  if (!items.length) return [];
+
+  const ranked = items
+    .map((item) => ({
+      item,
+      score: scoreLiteratureMatch(unionTokens, item, index.corpusMeta, termWeights),
+    }))
+    .filter((x) => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
+
+  return ranked.map(({ item }, idx) => {
+    const evidenceId = (item.evidence_id || "").trim() || `literature_item_${idx + 1}`;
+    const sourceTitle = (item.title || "").trim() || "Literature snapshot item";
+    const excerptRaw = (item.snippet || "").trim() || sourceTitle;
+    const excerpt = excerptRaw.length > 220 ? `${excerptRaw.slice(0, 217)}...` : excerptRaw;
+    const snippetHash = (item.snippet_hash || "").trim();
+    const uri = (item.uri || "").trim();
+    const refBase = uri || `memory://literature/${evidenceId}`;
+    const sourceRef = snippetHash ? `${refBase}#snippet_hash=${snippetHash}` : refBase;
+    return {
+      citation_id: `lit_${evidenceId}`,
+      source_title: sourceTitle,
+      source_excerpt: excerpt,
+      source_ref: sourceRef,
+      evidence_level: "C",
+    };
+  });
+}
 
 function pickSasangCandidate(input: PatientConsultInputV1): SasangType {
   const survey = input.lane_a_profile.constitution_survey;
@@ -332,6 +623,7 @@ export async function buildAdvancedConsultDraft(input: PatientConsultInputV1): P
   const outcome = await generateReasoningWithRouter(input);
   const llmReasoning = outcome.ok ? outcome.reasoning : null;
   const fallback = buildFallbackDraftParts(input);
+  const literatureCitations = await pickLiteratureCitations(input, 2);
 
   const generation: ConsultDraftV1["generation"] = outcome.ok
     ? { llm_used: true }
@@ -348,7 +640,7 @@ export async function buildAdvancedConsultDraft(input: PatientConsultInputV1): P
       care_direction: llmReasoning?.care_direction || fallback.careDirection,
       caution: llmReasoning?.caution || fallback.caution,
     },
-    citations: [citation],
+    citations: [citation, ...literatureCitations],
     requires_physician_confirmation: true,
     non_medical_notice: "본 결과는 진료 보조 초안이며, 최종 진단·처방 판단은 한의사가 직접 확정해야 합니다.",
     generation,

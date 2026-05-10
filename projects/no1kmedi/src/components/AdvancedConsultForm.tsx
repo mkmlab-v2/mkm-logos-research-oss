@@ -122,6 +122,11 @@ type AdvancedConsultResponse = {
     citation_enforced: boolean;
     physician_confirmation_required: boolean;
   };
+  evidence_meta?: {
+    literature_count_rule_version?: string;
+    citation_count: number;
+    literature_injected_count: number;
+  };
 };
 
 type MemberAccessStatusResponse = {
@@ -173,6 +178,14 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
   const [medication, setMedication] = useState("");
   const [digestionPattern, setDigestionPattern] = useState("");
   const [sleepPattern, setSleepPattern] = useState("");
+  const [bodyHeatPreference, setBodyHeatPreference] = useState("");
+  const [stressReactivity, setStressReactivity] = useState("");
+  const [constitutionFreeText, setConstitutionFreeText] = useState("");
+  /** PIN 불러오기 시 문진 통증 척도와 동기화 가능 */
+  const [painScale0to10, setPainScale0to10] = useState("");
+  const [redFlagNotes, setRedFlagNotes] = useState("");
+  const [healthAppetite, setHealthAppetite] = useState("");
+  const [healthBowelPattern, setHealthBowelPattern] = useState("");
   const [lensMode, setLensMode] = useState<"neutral" | "integrated" | "compare">("neutral");
   const [includeScripture, setIncludeScripture] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -296,6 +309,9 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
             constitution_survey: {
               digestion_pattern: digestionPattern,
               sleep_pattern: sleepPattern,
+              ...(bodyHeatPreference.trim() ? { body_heat_preference: bodyHeatPreference.trim() } : {}),
+              ...(stressReactivity.trim() ? { stress_reactivity: stressReactivity.trim() } : {}),
+              ...(constitutionFreeText.trim() ? { free_text: constitutionFreeText.trim() } : {}),
             },
           },
           lane_b_clinical: {
@@ -313,6 +329,17 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
               : undefined,
             health_survey: {
               sleep_quality: sleepPattern,
+              ...(redFlagNotes.trim() ? { red_flag_notes: redFlagNotes.trim() } : {}),
+              ...(healthAppetite.trim() ? { appetite: healthAppetite.trim() } : {}),
+              ...(healthBowelPattern.trim() ? { bowel_pattern: healthBowelPattern.trim() } : {}),
+              ...(painScale0to10.trim() !== "" && !Number.isNaN(Number(painScale0to10))
+                ? {
+                    pain_scale_0_10: Math.min(
+                      10,
+                      Math.max(0, Math.round(Number(painScale0to10))),
+                    ),
+                  }
+                : {}),
             },
           },
         }),
@@ -365,6 +392,11 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
       setSeverity(`${json.survey.symptoms.pain_scale_0_10}/10`);
       setDigestionPattern(json.survey.constitution_survey.digestion_pattern || "");
       setSleepPattern(json.survey.constitution_survey.sleep_pattern || "");
+      setPainScale0to10(
+        typeof json.survey.symptoms.pain_scale_0_10 === "number"
+          ? String(json.survey.symptoms.pain_scale_0_10)
+          : "",
+      );
       setMedication("");
       setLoadedSurveyContext({
         surveyId: json.survey.survey_id,
@@ -528,8 +560,59 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
         <label>발현 시점/기간<input value={onset} onChange={(e) => setOnset(e.target.value)} required /></label>
         <label>중증도(주관 척도)<input value={severity} onChange={(e) => setSeverity(e.target.value)} required /></label>
         <label>현재 복약 정보<input value={medication} onChange={(e) => setMedication(e.target.value)} /></label>
-        <label>소화 패턴<input value={digestionPattern} onChange={(e) => setDigestionPattern(e.target.value)} /></label>
-        <label>수면 패턴<input value={sleepPattern} onChange={(e) => setSleepPattern(e.target.value)} /></label>
+        <label>소화 패턴 (레인 A 설문)<input value={digestionPattern} onChange={(e) => setDigestionPattern(e.target.value)} /></label>
+        <label>수면 패턴 (레인 A 설문)<input value={sleepPattern} onChange={(e) => setSleepPattern(e.target.value)} /></label>
+        <label>
+          한열·체온 느낌 (선택)
+          <input
+            value={bodyHeatPreference}
+            onChange={(e) => setBodyHeatPreference(e.target.value)}
+            placeholder="예: 더위 탐, 추위 탐"
+          />
+        </label>
+        <label>
+          스트레스 반응 (선택)
+          <input
+            value={stressReactivity}
+            onChange={(e) => setStressReactivity(e.target.value)}
+            placeholder="예: 긴장 시 소화 불편"
+          />
+        </label>
+        <label>
+          설문 기타 메모 (선택)
+          <textarea
+            value={constitutionFreeText}
+            onChange={(e) => setConstitutionFreeText(e.target.value)}
+            placeholder="체질·생활 관련 추가 설명"
+            rows={2}
+          />
+        </label>
+        <label>
+          통증 척도 0–10 (선택)
+          <input
+            value={painScale0to10}
+            onChange={(e) => setPainScale0to10(e.target.value.replace(/\D/g, "").slice(0, 2))}
+            placeholder="예: 7"
+            inputMode="numeric"
+          />
+        </label>
+        <label>
+          레드플래그·주의 소견 (선택)
+          <textarea
+            value={redFlagNotes}
+            onChange={(e) => setRedFlagNotes(e.target.value)}
+            placeholder="응급·악화 신호, 복합 증상 등"
+            rows={3}
+          />
+        </label>
+        <label>
+          식욕 (선택)
+          <input value={healthAppetite} onChange={(e) => setHealthAppetite(e.target.value)} placeholder="예: 저하" />
+        </label>
+        <label>
+          배변 (선택)
+          <input value={healthBowelPattern} onChange={(e) => setHealthBowelPattern(e.target.value)} placeholder="예: 변비 경향" />
+        </label>
         <label>
           분석 모드
           <select value={lensMode} onChange={(e) => setLensMode(e.target.value as "neutral" | "integrated" | "compare")}>
@@ -582,6 +665,10 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
                   <h3>안전 가드</h3>
                   <p>분리 해석: {result.guardrail?.lane_separation ? "적용" : "미적용"} / 근거 강제: {result.guardrail?.citation_enforced ? "적용" : "미적용"}</p>
                   <p>분석 모드: {result.draft?.lens_mode || "neutral"} / Logos 보조 맥락: {result.draft?.include_scripture ? "적용" : "미적용"}</p>
+                  <p>
+                    근거 주입: 전체 {result.evidence_meta?.citation_count ?? result.draft?.citations?.length ?? 0}건 / 문헌 스냅샷{" "}
+                    {result.evidence_meta?.literature_injected_count ?? 0}건
+                  </p>
                 </article>
               </div>
 

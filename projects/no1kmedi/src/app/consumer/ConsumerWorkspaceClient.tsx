@@ -10,6 +10,10 @@ import { JemaWorkspaceCommandPalette, type PaletteAction } from "@/components/Je
 import { PatientPreSurveyForm } from "@/components/PatientPreSurveyForm";
 import { useConsumerThreads } from "@/hooks/useConsumerThreads";
 import { siteCopy } from "@/content/siteCopy";
+import {
+  KM_CDS_UI_ANALYTICS_EVENTS_V1,
+  trackKmCdsUiEvent,
+} from "@/lib/km-cds-ui-analytics-events-v1";
 
 const NAV = [
   { id: "chat", label: "대화" },
@@ -57,6 +61,14 @@ export function ConsumerWorkspaceClient() {
   });
 
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const [publicDisclaimerAccepted, setPublicDisclaimerAccepted] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return window.localStorage.getItem("mkm_public_mode_disclaimer_ack_v1") === "1";
+    } catch {
+      return false;
+    }
+  });
 
   const smartfarmSource = searchParams.get("source") ?? "";
   const showSmartfarmSummary = smartfarmSource === "mkmlab_blueprint";
@@ -72,6 +84,32 @@ export function ConsumerWorkspaceClient() {
     const next = p === "survey" || p === "safety" ? p : "chat";
     setActiveId((cur) => (cur === next ? cur : next));
   }, [searchParams]);
+
+  useEffect(() => {
+    if (!ready || !activeThread) return;
+    try {
+      const k = "mkm_km_cds_public_workspace_mount_v1";
+      if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(k)) return;
+      if (typeof sessionStorage !== "undefined") sessionStorage.setItem(k, "1");
+      trackKmCdsUiEvent(KM_CDS_UI_ANALYTICS_EVENTS_V1.PUBLIC_WORKSPACE_MOUNT_V1, {
+        surface: "workspace",
+        locale: "ko-KR",
+        copy_bundle_id: "km_consumer_workspace_v1",
+      });
+    } catch {
+      // ignore
+    }
+  }, [ready, activeThread]);
+
+  useEffect(() => {
+    return () => {
+      trackKmCdsUiEvent(KM_CDS_UI_ANALYTICS_EVENTS_V1.PUBLIC_MODE_EXIT, {
+        surface: "workspace",
+        locale: "ko-KR",
+        copy_bundle_id: "km_consumer_workspace_v1",
+      });
+    };
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -99,6 +137,29 @@ export function ConsumerWorkspaceClient() {
     setActiveId("chat");
     router.replace("/consumer", { scroll: false });
   }, [createThread, router]);
+
+  const acceptPublicDisclaimer = useCallback(() => {
+    try {
+      window.localStorage.setItem("mkm_public_mode_disclaimer_ack_v1", "1");
+    } catch {
+      // ignore storage errors
+    }
+    setPublicDisclaimerAccepted(true);
+    trackKmCdsUiEvent(KM_CDS_UI_ANALYTICS_EVENTS_V1.PUBLIC_MODE_ENTER_ACK, {
+      surface: "modal",
+      locale: "ko-KR",
+      copy_bundle_id: "km_public_disclaimer_v1",
+    });
+  }, []);
+
+  const declinePublicDisclaimer = useCallback(() => {
+    trackKmCdsUiEvent(KM_CDS_UI_ANALYTICS_EVENTS_V1.PUBLIC_MODE_ENTER_DECLINED, {
+      surface: "modal",
+      locale: "ko-KR",
+      copy_bundle_id: "km_public_disclaimer_v1",
+    });
+    router.replace("/", { scroll: false });
+  }, [router]);
 
   const paletteActions: PaletteAction[] = useMemo(
     () => [
@@ -136,6 +197,28 @@ export function ConsumerWorkspaceClient() {
   return (
     <>
       <JemaWorkspaceCommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} actions={paletteActions} />
+      {!publicDisclaimerAccepted ? (
+        <div className="workspace-consent-overlay" role="dialog" aria-modal="true" aria-labelledby="public-consent-title">
+          <div className="workspace-consent-card">
+            <h2 id="public-consent-title">일반 안내 화면으로 전환합니다</h2>
+            <p>
+              이 화면의 내용은 참고·교육 용도이며 진단이나 치료를 대신하지 않습니다.
+              계속하려면 아래 안내에 동의해 주세요.
+            </p>
+            <p className="workspace-consent-check">
+              위 안내를 확인했으며, 표시 정보를 진료 결정에 단독으로 사용하지 않겠습니다.
+            </p>
+            <div className="workspace-consent-actions">
+              <button type="button" className="btn btn-primary" onClick={acceptPublicDisclaimer}>
+                동의하고 계속
+              </button>
+              <button type="button" className="btn btn-ghost" onClick={declinePublicDisclaimer}>
+                돌아가기
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
       <AppWorkspaceShell
         homeHref="/"
         roleLabel="일반인"

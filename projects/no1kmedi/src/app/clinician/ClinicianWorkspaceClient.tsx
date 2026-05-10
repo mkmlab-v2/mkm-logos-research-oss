@@ -5,6 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AppWorkspaceShell } from "@/components/AppWorkspaceShell";
 import { AdvancedConsultForm } from "@/components/AdvancedConsultForm";
 import { siteCopy } from "@/content/siteCopy";
+import {
+  KM_CDS_UI_ANALYTICS_EVENTS_V1,
+  trackKmCdsUiEvent,
+} from "@/lib/km-cds-ui-analytics-events-v1";
 
 const NAV = [
   { id: "assist", label: "임상 보조" },
@@ -43,6 +47,31 @@ export function ClinicianWorkspaceClient() {
     const next = p === "safety" ? "safety" : "assist";
     setActiveId((cur) => (cur === next ? cur : next));
   }, [searchParams]);
+
+  useEffect(() => {
+    try {
+      const k = "mkm_km_cds_clinician_workspace_mount_v1";
+      if (typeof sessionStorage !== "undefined" && sessionStorage.getItem(k)) return;
+      if (typeof sessionStorage !== "undefined") sessionStorage.setItem(k, "1");
+      trackKmCdsUiEvent(KM_CDS_UI_ANALYTICS_EVENTS_V1.CDS_MODE_ENTER, {
+        surface: "workspace",
+        locale: "ko-KR",
+        copy_bundle_id: "km_clinician_workspace_v1",
+      });
+    } catch {
+      // ignore storage / telemetry failures
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      trackKmCdsUiEvent(KM_CDS_UI_ANALYTICS_EVENTS_V1.CDS_MODE_EXIT, {
+        surface: "workspace",
+        locale: "ko-KR",
+        copy_bundle_id: "km_clinician_workspace_v1",
+      });
+    };
+  }, []);
 
   const onSelect = useCallback(
     (id: string) => {
