@@ -99,3 +99,19 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 ## 5. 한 줄 요약
 
 **jemaai.cloud = 전광판**, **실매매 = 조종실** — 공개 채널에는 **허용 필드만** 올린다.
+
+---
+
+## 6. Edge Zero-Trust (2026 권장): Tunnel + GET HMAC
+
+**목적:** Vercel(또는 기타 프런트) ↔ VPS 게이트웨이 사이를 **인바운드 포트 노출 없이** 연결하고, 터널 안에서도 **읽기 요청을 서명으로 한 번 더 증명**한다.
+
+| 레이어 | 권장 |
+|--------|------|
+| **네트워크** | Hostinger VPS에서 **Cloudflare Tunnel**(`cloudflared`)만 아웃바운드로 연결. 공인 IP에 `8788` 등을 직접 바인딩하지 않으면 스캐너의 표면이 줄어든다. nginx는 루프백 `127.0.0.1:8788`만 `proxy_pass`(기존 `nginx_public_event_gateway.conf.example`). |
+| **애플리케이션 (GET)** | VPS 프로세스에 `PUBLIC_EVENT_GATEWAY_GET_HMAC_SECRET`을 두면 `GET /api/public-events/latest`는 **`x-mkm-timestamp`(unix 초)** + **`x-mkm-signature`(hex HMAC-SHA256)** 필수. Canonical 문자열은 코드와 동일: `"{ts}\\nGET\\n/api/public-events/latest\\n"`. 허용 시각 편차는 `PUBLIC_EVENT_GATEWAY_HMAC_MAX_SKEW_SEC`(기본 300초). 비밀이 **비어 있으면** 기존과 같이 GET은 무인증(하위 호환). |
+| **쓰기 격벽** | 실매매·강제 조작은 이 게이트웨이로 **보내지 않는다**. `POST /ingest`는 기존대로 브릿지·n8n·토큰 경로만 사용하고, UI에서 **주문 ON/OFF** 같은 위험 액션은 SSH·내부 승인 경로로만 둔다(본 SPEC §1·루트 운영 원칙과 동일). |
+
+**로컬 서명 예시(비밀은 환경변수만):** `py scripts/sign_public_event_gateway_get_hmac_v1.py` — 출력 헤더를 curl에 붙여 검증.
+
+**Fact-Lock:** 구현·헤더 계약은 `public_event_gateway.py` · 회귀 `tests/test_public_event_gateway_get_hmac_v1.py` · `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` Public Event Gateway 행.

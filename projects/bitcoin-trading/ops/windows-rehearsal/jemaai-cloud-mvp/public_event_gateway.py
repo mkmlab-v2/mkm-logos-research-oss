@@ -10,9 +10,12 @@ Endpoints:
 
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
 import os
 import threading
+import time
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -23,6 +26,9 @@ HOST = os.getenv("PUBLIC_EVENT_GATEWAY_HOST", "0.0.0.0")
 PORT = int(os.getenv("PUBLIC_EVENT_GATEWAY_PORT", "8788"))
 API_TOKEN = os.getenv("PUBLIC_EVENT_GATEWAY_TOKEN", "").strip()
 ALLOW_ORIGIN = os.getenv("PUBLIC_EVENT_GATEWAY_ALLOW_ORIGIN", "*")
+# Optional: require HMAC-SHA256 on GET /api/public-events/latest (Vercel → Tunnel → localhost).
+GET_HMAC_SECRET = os.getenv("PUBLIC_EVENT_GATEWAY_GET_HMAC_SECRET", "").strip()
+HMAC_MAX_SKEW_SEC = int(os.getenv("PUBLIC_EVENT_GATEWAY_HMAC_MAX_SKEW_SEC", "300"))
 _ALLOWED_CHARACTER_IDS = {
     "rat_arbitrage",
     "ox_guard",
@@ -154,6 +160,49 @@ def _is_valid_event(payload: Dict[str, Any]) -> bool:
     return all(k in payload for k in required)
 
 
+def build_public_event_get_hmac_signature(secret: str, timestamp_str: str, method: str, path: str) -> str:
+    """Canonical string: timestamp\\nMETHOD\\nPATH\\n — same as Vercel server-side signer."""
+    msg = f"{timestamp_str}\n{method.upper()}\n{path}\n"
+    return hmac.new(secret.encode("utf-8"), msg.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def verify_public_event_get_hmac(
+    secret: str,
+    headers: Any,
+    method: str,
+    path: str,
+    *,
+    now_ts: int | None = None,
+    max_skew_sec: int | None = None,
+) -> bool:
+    """Validate x-mkm-timestamp + x-mkm-signature for read-only GET."""
+    if not secret:
+        return True
+    skew = int(max_skew_sec if max_skew_sec is not None else HMAC_MAX_SKEW_SEC)
+    now = int(now_ts if now_ts is not None else time.time())
+
+    def _hdr(name: str) -> str:
+        # http.client.HTTPMessage / email.message.Message: get() is case-insensitive for field names.
+        try:
+            v = headers.get(name)
+            return str(v).strip() if v is not None else ""
+        except Exception:
+            return ""
+
+    ts_raw = _hdr("x-mkm-timestamp")
+    sig_received = _hdr("x-mkm-signature").lower()
+    if not ts_raw or not sig_received:
+        return False
+    try:
+        ts_int = int(ts_raw)
+    except ValueError:
+        return False
+    if abs(now - ts_int) > skew:
+        return False
+    expected = build_public_event_get_hmac_signature(secret, ts_raw, method, path)
+    return hmac.compare_digest(expected.lower(), sig_received)
+
+
 def _sanitize_character_id(raw: Any) -> str:
     cid = str(raw or "").strip().lower()
     if not cid:
@@ -176,7 +225,10 @@ class PublicEventHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Access-Control-Allow-Origin", ALLOW_ORIGIN)
-        self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Public-Event-Token")
+        self.send_header(
+            "Access-Control-Allow-Headers",
+            "Content-Type, X-Public-Event-Token, X-Mkm-Timestamp, X-Mkm-Signature",
+        )
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.end_headers()
         self.wfile.write(body)
@@ -204,6 +256,14 @@ class PublicEventHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlparse(self.path)
         if parsed.path == "/api/public-events/latest":
+            if GET_HMAC_SECRET and not verify_public_event_get_hmac(
+                GET_HMAC_SECRET,
+                self.headers,
+                "GET",
+                parsed.path,
+            ):
+                self._send_json(401, {"ok": False, "error": "unauthorized"})
+                return
             with _state_lock:
                 payload = dict(_latest_event)
             self._send_json(200, payload)
@@ -241,6 +301,10 @@ def run() -> None:
     print(f"[public-event-gateway] listening on http://{HOST}:{PORT}")
     print("[public-event-gateway] GET  /api/public-events/latest")
     print("[public-event-gateway] POST /api/public-events/ingest")
+    if GET_HMAC_SECRET:
+        print("[public-event-gateway] GET HMAC auth: ENABLED (set PUBLIC_EVENT_GATEWAY_GET_HMAC_SECRET)")
+    else:
+        print("[public-event-gateway] GET HMAC auth: disabled (no PUBLIC_EVENT_GATEWAY_GET_HMAC_SECRET)")
     server.serve_forever()
 
 
