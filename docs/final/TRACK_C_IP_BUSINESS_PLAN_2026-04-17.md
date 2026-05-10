@@ -197,6 +197,7 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 | **M12 — 바이너리 MIDI(.mid) Export 옵션** | M11+ | **`완료(2026-05-10):** 체인 CLI에 `--export-midi-binary` 추가. `melody_stage_m10` note sequence를 format-0 `.mid`로 직렬화(내장 writer)해 저장. 오디오 렌더/상용 게이트와는 격리된 연구용 산출. |
 | **M13 — Audition WAV 청취 스텁** | M12+ | **`완료(2026-05-10):** 체인 CLI `--export-audition-wav` 추가. `melody_stage_m10` 노트를 단일 사인톤 합성으로 WAV 렌더(`melody_audition_wav_v1`)하여 내부 청취 루프 지원. 비차단·B-track 격리 유지. |
 | **M14 — Audition WAV sanity 요약(Advisory)** | M13+ | **`완료(2026-05-10):** `melody_stage_m13`에 `peak_abs_0_1`·`rms_0_1`·`sanity_m14(status/notes)` 자동 기록. 클리핑 근접/레벨 부족을 WARN으로 표시하되 차단하지 않음. |
+| **M15 — Audition QA 집계 리포트(Advisory)** | M14+ | **`완료(2026-05-10):** `scripts/build_lens_music_audition_qa_summary_v1.py`로 다중 체인 JSON의 M13/M14 지표(peak/rms/status/note)를 집계해 `lens_music_audition_qa_summary_v1` 생성. 운영 참고용 비차단 통계. |
 | **§3.10 — 사상→감정 연속축 계약 (Draft)** | 병행 | **`완료(2026-05-10):** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json`·example·회귀 `tests/test_sasang_emotion_mapping_schema_v1.py` — VA 앵커만; `sasang_music_mapping_v1`와 역할 분리(본 표 §3.10). 프로모션 M0–M5 번들(§3.9.2)로 추적 포함, 승격 결정식은 기존 pytest pass와 동일. |
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.
