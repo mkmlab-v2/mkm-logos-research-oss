@@ -469,7 +469,8 @@ $required = @(
 
 $missing = @()
 foreach ($rel in $required) {
-    $p = Join-Path $WorkspaceRoot $rel
+    $normRel = $rel.Replace('\', [System.IO.Path]::DirectorySeparatorChar)
+    $p = Join-Path $WorkspaceRoot $normRel
     if (-not (Test-Path -LiteralPath $p)) {
         $missing += $rel
     }
@@ -493,7 +494,8 @@ $optionalQualityArtifacts = @(
 )
 $missingOptional = @()
 foreach ($rel in $optionalQualityArtifacts) {
-    $p = Join-Path $WorkspaceRoot $rel
+    $normRel = $rel.Replace('\', [System.IO.Path]::DirectorySeparatorChar)
+    $p = Join-Path $WorkspaceRoot $normRel
     if (-not (Test-Path -LiteralPath $p)) {
         $missingOptional += $rel
     }

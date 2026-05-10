@@ -25,6 +25,7 @@ on:
       - "scripts/integrity_guard.py"
       - "scripts/sync_btrack_phase3_snapshot_json_fence.py"
       - "scripts/run_fact_lock_bundle.ps1"
+      - "scripts/verify_p0_constitution_gate_paths.ps1"
       - "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"
       - "scripts/build_trackc_evidence_rag_mvp_v1.py"
       - "scripts/run_p1_ab_bundle.ps1"
@@ -590,6 +591,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+
+      - name: P0 CONSTITUTION path gate (required file inventory)
+        shell: pwsh
+        run: ./scripts/verify_p0_constitution_gate_paths.ps1 -WorkspaceRoot $env:GITHUB_WORKSPACE
 
       - name: Setup Python
         uses: actions/setup-python@v6
