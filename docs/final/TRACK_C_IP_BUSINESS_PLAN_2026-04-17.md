@@ -1,11 +1,11 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-10 — **§3.9** 통제형 오디오·상징 라우팅(`[HYPO]` / B-track) 신설; **§3.9.1–3.9.2** M1–M3·**B-track 연구 승격 게이트**(번들 pytest·`check_lens_music_symbolic_audio_promotion_gate_v1.py`). 사상·게마트리아 등 상징 입력을 **버전된 JSON 계약**으로 분해해 MIDI·화성·오디오 파라미터로 라우팅하고, 기존 **AI BGM 게이트**(`scripts/audio`·게이트 리포트 스키마)와 연결하는 실험 로드맵 및 대외 금지선(비임상·단일 TOE 금지) 명시. (이전: 2026-05-05 **§9A**·§3.4 포인터.)  
+Revised: 2026-05-10 — **§3.9** 통제형 오디오·상징 라우팅(`[HYPO]` / B-track) 신설; **§3.9.1–3.9.2** M1–M4·**B-track 연구 승격 게이트**(번들 pytest·`check_lens_music_symbolic_audio_promotion_gate_v1.py`). **§3.10 (Draft)** 사상 기호→저차원 감정 연속축(VA)·`sasang_emotion_mapping_v1` 계약 초안 추가 — Neuro-symbolic 브리지·Track Wall·TOE 비단정 정렬. 사상·게마트리아 등 상징 입력을 **버전된 JSON 계약**으로 분해해 MIDI·화성·오디오 파라미터로 라우팅하고, 기존 **AI BGM 게이트**(`scripts/audio`·게이트 리포트 스키마)와 연결하는 실험 로드맵 및 대외 금지선(비임상·단일 TOE 금지) 명시. (이전: 2026-05-05 **§9A**·§3.4 포인터.)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
-**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-10 개정** 처리한다(§3.9 추가). 2026-05-05 동결분(§9A 등)은 유지되며, 개정 범위는 본 개정 문단 및 §3.9·§10 연동 항목이다. 이전 동결(2026-05-03) 대비 **§9A 신설**(핵심이론 보호·비공개 운영·계약/기술 통제), **§10** 실행항목에 보안 우선 액션 반영. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
+**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-10 개정** 처리한다(§3.9·§3.10 추가). 2026-05-05 동결분(§9A 등)은 유지되며, 개정 범위는 본 개정 문단 및 §3.9–§3.10·§10 연동 항목이다. 이전 동결(2026-05-03) 대비 **§9A 신설**(핵심이론 보호·비공개 운영·계약/기술 통제), **§10** 실행항목에 보안 우선 액션 반영. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
 
 ## 1) Fact-Locked Baseline
 
@@ -157,7 +157,7 @@ MKM AI가 제공하는 것은 **정답 생성기**가 아니라, 엔터프라이
 
 ### 3.9 통제형 오디오·상징 라우팅 (B-track / `[HYPO]`)
 
-**목적:** 사상(Sasang)·화성학(조·코드)·게마트리아 유도 정수 등 **상징 입력**을 단일 자연어 프롬프트로 압축하지 않고, **버전이 있는 매핑 스키마(JSON 계약)** 로 분해한 뒤 MIDI·템포·밴드·레벨 등 **설명 가능한 오디오 파라미터**로 변환한다. 출력은 기존 레포의 **AI BGM 기계적 게이트**(예: `scripts/audio/evaluate_audio_gate.py`, `audio_bgm_gate_report_v1`, 저작권 필드 정책)와 연결해 **PASS/HOLD/WATCH** 근거를 남긴다.
+**목적:** 사상(Sasang)·화성학(조·코드)·게마트리아 유도 정수 등 **상징 입력**을 단일 자연어 프롬프트로 압축하지 않고, **버전이 있는 매핑 스키마(JSON 계약)** 로 분해한 뒤 MIDI·템포·밴드·레벨 등 **설명 가능한 오디오 파라미터**로 변환한다. 출력은 기존 레포의 **AI BGM 기계적 게이트**(예: `scripts/audio/evaluate_audio_gate.py`, `audio_bgm_gate_report_v1`, 저작권 필드 정책)와 연결해 **PASS/HOLD/WATCH** 근거를 남긴다. **감정 연속축 오버레이**는 **§3.10**·`sasang_emotion_mapping_v1` 계약으로 분리한다(LLM 블랙박스 직접 주입 금지; 결정론적 룩업).
 
 **운영 등급 (Fact-Lock):**
 
@@ -187,6 +187,7 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 | **M2 — 안전 게이트 연결** | M1+2주 | **완료(2026-05-10):** `scripts/run_lens_music_gematria_gate_chain_v1.py` — 상징 `resolved_outputs`에 대한 velocity 대비 safety 상한 **HOLD/clip**, 통과 시 시드 BPM·`evaluate_audio_gate.py`·`policies/audio_copyright_field.json`·산출 `reports/lens_music_gate_chain_v1_latest.json`; 회귀 `tests/test_lens_music_gate_chain_v1.py`. WAV는 플레이스홀더로 기계 게이트만 연결(합성 렌더 없음). |
 | **M3 — 내부 평가 프로토콜** | 지속 | **초안 완료(2026-05-10):** `docs/final/schemas/lens_music_internal_eval_session_v1.schema.json`·example·`tests/test_lens_music_internal_eval_schema_v1.py` — 비임상 청취·재현성 메타만 구조화; 인간 라벨링 프로세스는 운영 정책으로 확장. 대외 “실험 중·아티팩트 기반”만. |
 | **M4 — 청취 로그 JSONL 배치 검증** | M3+ | **`완료(2026-05-10):** `scripts/validate_lens_music_internal_eval_jsonl_v1.py`·픽스처 `tests/fixtures/lens_music_internal_eval_sessions_sample_v1.jsonl`·회귀 `tests/test_validate_lens_music_internal_eval_jsonl_v1.py`; 프로모션 번들·§3.9.2에 포함. 배치 적재·외부 공유 없음. |
+| **§3.10 — 사상→감정 연속축 계약 (Draft)** | 병행 | **`완료(2026-05-10):** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json`·example·회귀 `tests/test_sasang_emotion_mapping_schema_v1.py` — VA 앵커만; `sasang_music_mapping_v1`와 역할 분리(본 표 §3.10). 프로모션 M0–M4 번들과 별도 회귀. |
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.
 
@@ -205,6 +206,24 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 **지휘관 진행 승인 (Fact-Lock, 2026-05-10):** 연구 번들·P0 검증이 녹색인 상태에서 **지휘관이 다음 단계 진행을 명시 승인**함 — 상징→오디오 축에 대한 **내부 기획·스테이징·대외 카피 초안 검수**(본 문서 §3.9·§8 한도) 및 **후속 마일스톤(M4+ 등) 로드맵 정리**. 본 승인은 레포 산출물의 기계적 **`track_wall`을 해제하거나 자동으로 Track A 상용 오디오·Track C 1차 GTM·압축 §9·실거래 게이트와 합선되지 않음**(자동 상용 승격 없음).
 
 **압축(Track A) §9 승격과의 관계:** 동 일(`COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9)과 **다른 레인**이다. 상징→오디오 승격 게이트 통과가 압축 상용 KPI를 대체하지 않는다.
+
+### 3.10 사상–감정 연속축 변환 및 오디오 라우팅 계약 (Draft / `[HYPO]`)
+
+**상태:** `[HYPO]` · B-track 연구 가설. **임상 체질 판정 아님** — 기호 집합은 **영문 키** `taeyang` / `soyang` / `taeeum` / `soeumin`(§3.9 `sasang_music_mapping_v1.inputs`와 동일 네임스페이스)으로만 취급한다.
+
+**목적:** 사상 기호를 LLM 내부 추론에 직접 맡기지 않고, **저차원 연속 공간**(Russell-style **정서가·각성**을 `[-1.0, 1.0]` 로 정규화한 VA 좌표; 향후 PAD 확장은 스키마 `emotion_model` 확장으로만)에 **결정론적 룩업**한 뒤, 오디오 파라미터로 이어지는 **Neuro-symbolic 브리지**를 문서·JSON 계약으로 고정한다.
+
+**계약 파일:** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json` · `sasang_emotion_mapping_v1.example.json`. 수치 앵커·실험 계열은 **예시 JSON에만** 두고, 본 절 본문은 원칙만 서술한다(문서–코드 단일 근원은 버전된 JSON).
+
+**`sasang_music_mapping_v1`와의 관계:** `sasang_emotion_mapping_v1`은 **감정 축 오버레이**만 담는다. **템포·조성·velocity·safety 한계** 등 오디오 `outputs`는 기존 **`sasang_music_mapping_v1`** 행 또는 게이트 체인(`run_lens_music_gematria_gate_chain_v1.py` 등)에서 유지한다. 파이프라인 예: 기호 → VA 앵커(본 계약) → (실험적으로) 음악 매핑 행과 합성 → 오디오 게이트.
+
+**Track Wall:** 본 계약은 **오디오/BGM·내부 로그·연구 산출**에 한한다. **범용 추론(General Reasoning) 자동 향상**, **A-track 실거래**, **Track C 1차 GTM 단일 트리거**, **임상·음악치료 효능** 주장과 **자동 합선되지 않는다** — §3.9.2 `track_wall`과 동일 정신.
+
+**안전·금지:**
+
+- **오디오 게이트:** VA에서 유도한 파라미터가 극단 템포·청각 스트레스·게이트 상한을 벗어나면 **HOLD/클립/폴백** — 기존 `evaluate_audio_gate.py`·§3.9 M2 체인과 정렬.
+- **TOE 비단정:** “단일 매핑이 모든 감정·영성·도메인을 완비한다” 또는 “음악 결합으로 모델 자율 추론이 폭발한다” 유 **단일 불변 방정식** 서술 금지.
+- **로깅:** 기호 → VA → 오디오 파라미터 경로는 **추적 가능한 JSON/JSONL**(내부)로 남겨 A/B·청취 세션 스키마(`lens_music_internal_eval_session_v1`)와 연계 가능하게 한다 — 대외 반포는 §8·공개 체크리스트 준수.
 
 ---
 

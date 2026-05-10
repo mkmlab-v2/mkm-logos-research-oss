@@ -1,0 +1,23 @@
+{
+  "schema": "sasang_emotion_mapping_v1",
+  "version": "1.0.0",
+  "mapping_version": "2026-05-10.emotion_hypo_seed_a",
+  "hypothesis_class": "HYPO",
+  "emotion_model": "circumplex_va_normalized",
+  "notes": "Illustrative VA anchors only — not clinical typing, not exhaustive emotion space. Replace mapping_version per sweep; coefficients for Tempo/Mode/Dynamics belong in sasang_music_mapping_v1 or gated scripts, not in this file.",
+  "anchors": {
+    "taeyang": { "valence": 0.35, "arousal": 0.55 },
+    "soyang": { "valence": 0.45, "arousal": 0.25 },
+    "taeeum": { "valence": 0.05, "arousal": -0.45 },
+    "soeumin": { "valence": -0.15, "arousal": -0.35 }
+  },
+  "relationship_to_music_mapping": {
+    "role": "emotion_axis_overlay",
+    "paired_schema": "sasang_music_mapping_v1",
+    "note": "Same sasang_primary keys as sasang_music_mapping_v1.inputs; audio P uses separate versioned row — compose pipeline: anchor lookup → (optional) blend with music row → gate chain."
+  },
+  "provenance": {
+    "source": "fixture",
+    "experiment_id": "sasang_emotion_mapping_v1_example"
+  }
+}

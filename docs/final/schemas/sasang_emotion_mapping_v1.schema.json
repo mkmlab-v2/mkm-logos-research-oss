@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/sasang_emotion_mapping_v1.schema.json",
+  "title": "MKM Sasang → emotion continuous-axis anchors v1 (B-track / [HYPO])",
+  "description": "Deterministic lookup table from Sasang axis labels to low-dimensional affect coordinates (valence/arousal in [-1,1]). Clinical constitution inference is out of scope. Not TOE; not universal emotion-space completion. Pair with sasang_music_mapping_v1 for audio parameter rows — numeric tempo/mode rules stay versioned there or in scripts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "mapping_version",
+    "hypothesis_class",
+    "emotion_model",
+    "anchors",
+    "relationship_to_music_mapping",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "sasang_emotion_mapping_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.\\d+\\.\\d+$"
+    },
+    "mapping_version": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 128
+    },
+    "hypothesis_class": {
+      "type": "string",
+      "enum": ["HYPO", "VISION"]
+    },
+    "emotion_model": {
+      "type": "string",
+      "enum": [
+        "circumplex_va_normalized",
+        "pad_compatible_placeholder"
+      ],
+      "description": "circumplex_va_normalized: Russell-style VA in [-1,1]; pad_compatible_placeholder reserved for future PAD extension without breaking v1 readers."
+    },
+    "notes": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "anchors": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["taeyang", "soyang", "taeeum", "soeumin"],
+      "properties": {
+        "taeyang": { "$ref": "#/definitions/va_point" },
+        "soyang": { "$ref": "#/definitions/va_point" },
+        "taeeum": { "$ref": "#/definitions/va_point" },
+        "soeumin": { "$ref": "#/definitions/va_point" }
+      }
+    },
+    "relationship_to_music_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "paired_schema"],
+      "properties": {
+        "role": {
+          "type": "string",
+          "enum": ["emotion_axis_overlay"]
+        },
+        "paired_schema": {
+          "type": "string",
+          "const": "sasang_music_mapping_v1"
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "experiment_id"],
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": ["manual_seed", "batch_generate", "fixture"]
+        },
+        "experiment_id": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 128
+        }
+      }
+    }
+  },
+  "definitions": {
+    "va_point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valence", "arousal"],
+      "properties": {
+        "valence": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1,
+          "description": "Negative unpleasant → positive pleasant (research heuristic)."
+        },
+        "arousal": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1,
+          "description": "Negative calm → positive activated (research heuristic)."
+        }
+      }
+    }
+  }
+}
