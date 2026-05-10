@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mkm12.local/schemas/lens_music_symbolic_audio_promotion_gate_v1.schema.json",
   "title": "Lens music symbolic audio — B-track research promotion gate v1",
-  "description": "Result of check_lens_music_symbolic_audio_promotion_gate_v1.py. GO means CI/pytest bundle passed (M0–M4) — research-ready within §3.9 only; not Track A commercial audio.",
+  "description": "Result of check_lens_music_symbolic_audio_promotion_gate_v1.py. GO means CI/pytest bundle passed (M0–M5) — research-ready within §3.9 only; not Track A commercial audio.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -58,13 +58,14 @@
     "milestones_ack": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["M0", "M1", "M2", "M3_schema", "M4_jsonl_batch"],
+      "required": ["M0", "M1", "M2", "M3_schema", "M4_jsonl_batch", "M5_emotion_va_overlay"],
       "properties": {
         "M0": { "type": "boolean" },
         "M1": { "type": "boolean" },
         "M2": { "type": "boolean" },
         "M3_schema": { "type": "boolean" },
-        "M4_jsonl_batch": { "type": "boolean" }
+        "M4_jsonl_batch": { "type": "boolean" },
+        "M5_emotion_va_overlay": { "type": "boolean" }
       }
     },
     "references_ssot": {

@@ -34,6 +34,7 @@ def test_promotion_gate_script_matches_live_pytest():
     doc = json.loads(out_path.read_text(encoding="utf-8"))
     assert doc["decision"] == "B_TRACK_RESEARCH_PROMOTION_READY"
     assert doc["track_wall"]["promotion_to_a_track_commercial_audio"] is False
+    assert doc["milestones_ack"]["M5_emotion_va_overlay"] is True
     assert doc["emotion_va_overlay_ack"]["pytest_includes_emotion_va_overlay_tests"] is True
     assert doc["emotion_va_overlay_ack"]["does_not_gate_promotion_decision"] is True
     assert "track_c_section_3_10_emotion_va" in doc["references_ssot"]

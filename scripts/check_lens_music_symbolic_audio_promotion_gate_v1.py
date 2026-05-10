@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """B-track research promotion gate for symbolic→audio pipeline (§3.9).
 
-Runs the consolidated pytest bundle for M0–M4. Exit 0 iff pytest passes.
+Runs the consolidated pytest bundle for M0–M5. Exit 0 iff pytest passes.
 Writes JSON artifact; decision GO is **research lane only** — Track A commercial audio and
 Track C primary GTM remain blocked until separate human + metric gates (see track_wall).
 
 Payload includes ``emotion_va_overlay_ack`` for §3.10 traceability (same pytest bundle covers
-``--emotion-mapping-json``); it does **not** add a separate GO/HOLD criterion beyond M0–M4 green.
+``--emotion-mapping-json``); it does **not** add a separate GO/HOLD criterion beyond M0–M5 green.
 
 Does not replace COMPRESSION §9 Track A promotion for the compression API lane.
 """
@@ -27,6 +27,7 @@ DEFAULT_OUT = ROOT / "reports" / "lens_music_symbolic_audio_promotion_gate_lates
 
 PYTEST_MODULES = [
     "tests/test_sasang_music_mapping_schema_v1.py",
+    "tests/test_sasang_emotion_mapping_schema_v1.py",
     "tests/test_run_lens_music_gematria_v1.py",
     "tests/test_lens_music_gate_chain_v1.py",
     "tests/test_lens_music_internal_eval_schema_v1.py",
@@ -63,7 +64,7 @@ def build_payload(pytest_exit_code: int, log_tail: str) -> dict[str, Any]:
             "promotion_to_track_c_primary_gtm": False,
             "human_review_required_for_any_public_claim": True,
             "note": (
-                "B_TRACK_RESEARCH_PROMOTION_READY = CI bundle green for §3.9 M0–M4 only. "
+                "B_TRACK_RESEARCH_PROMOTION_READY = CI bundle green for §3.9 M0–M5 only. "
                 "Not compression Track A §9; not automatic product claims."
             ),
         },
@@ -73,6 +74,7 @@ def build_payload(pytest_exit_code: int, log_tail: str) -> dict[str, Any]:
             "M2": True,
             "M3_schema": True,
             "M4_jsonl_batch": True,
+            "M5_emotion_va_overlay": True,
         },
         "references_ssot": {
             "track_c_section": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.9–3.9.2",
@@ -89,7 +91,7 @@ def build_payload(pytest_exit_code: int, log_tail: str) -> dict[str, Any]:
             "does_not_gate_promotion_decision": True,
             "note": (
                 "tests/test_run_lens_music_gematria_v1.py exercises --emotion-mapping-json / "
-                "emotion_va_overlay_v1; GO/HOLD stay M0–M4 pytest bundle only (Track Wall unchanged)."
+                "emotion_va_overlay_v1; GO/HOLD stay M0–M5 pytest bundle only (Track Wall unchanged)."
             ),
         },
     }
