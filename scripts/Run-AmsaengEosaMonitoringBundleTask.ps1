@@ -31,3 +31,11 @@ Invoke-PyScript -ScriptPath (Join-Path $PSScriptRoot "check_cursorrules_template
 Invoke-PyScript -ScriptPath (Join-Path $PSScriptRoot "build_fact_lock_evidence_bundle_v1.py") -ScriptArgs @("--append-agent-log")
 Invoke-PyScript -ScriptPath (Join-Path $PSScriptRoot "append_amsaeng_eosa_monitoring_heartbeat_v1.py")
 Invoke-PyScript -ScriptPath (Join-Path $PSScriptRoot "build_trackc_evidence_rag_mvp_v1.py")
+
+# VPS SSH disk smoke (optional env): never fails the bundle (-SoftFail).
+$smokePs1 = Join-Path $PSScriptRoot "Invoke-VpsOpsSmoke_v1.ps1"
+if (Test-Path -LiteralPath $smokePs1) {
+    Write-Host ""
+    Write-Host "=== VPS ops smoke (optional; SoftFail) ===" -ForegroundColor Cyan
+    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $smokePs1 -WorkspaceRoot $repoRoot -SoftFail
+}

@@ -418,6 +418,7 @@ $required = @(
     "scripts\check_lens_music_symbolic_audio_promotion_gate_v1.py",
     "scripts\validate_lens_music_internal_eval_jsonl_v1.py",
     "scripts\Invoke-McpHygieneProbe.ps1",
+    "scripts\Invoke-VpsOpsSmoke_v1.ps1",
     "scripts\Register-McpHygieneProbeDailyTask.ps1",
     "tests\test_audio_bgm_gate_report_v1.py",
     "tests\test_sasang_music_mapping_schema_v1.py",
