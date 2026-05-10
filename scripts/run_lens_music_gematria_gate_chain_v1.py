@@ -416,6 +416,18 @@ def main() -> int:
     )
     ap.add_argument("--export-chain", type=Path, default=ROOT / "reports/lens_music_gate_chain_v1_latest.json")
     ap.add_argument("--export-audio-report", type=Path, default=ROOT / "reports/audio_gate_lens_music_chain_latest.json")
+    ap.add_argument(
+        "--export-melody-json",
+        type=Path,
+        default=None,
+        help="Optional path to export melody_stage_m10 payload as standalone JSON.",
+    )
+    ap.add_argument(
+        "--export-midi-stub-json",
+        type=Path,
+        default=None,
+        help="Optional path to export simple MIDI-event stub JSON from melody_stage_m10 notes.",
+    )
     ap.add_argument("--run-id", type=str, default="")
     args = ap.parse_args()
 
@@ -482,6 +494,32 @@ def main() -> int:
         melody_stage_m9=m9 if isinstance(m9, dict) else {"enabled": False},
         root_pc=root_pc,
     )
+    m10 = chain["melody_stage_m10"]
+    if args.export_melody_json is not None and isinstance(m10, dict):
+        args.export_melody_json.parent.mkdir(parents=True, exist_ok=True)
+        args.export_melody_json.write_text(json.dumps(m10, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    if args.export_midi_stub_json is not None and isinstance(m10, dict) and m10.get("enabled"):
+        notes = m10.get("notes") or []
+        events: list[dict[str, Any]] = []
+        beat_cursor = 0.0
+        for row in notes:
+            midi = int(row.get("midi", 60))
+            dur = float(row.get("dur_beats", 1.0))
+            events.append({"type": "note_on", "beat": round(beat_cursor, 4), "midi": midi, "vel": 80})
+            events.append({"type": "note_off", "beat": round(beat_cursor + dur, 4), "midi": midi, "vel": 0})
+            beat_cursor += dur
+        midi_stub = {
+            "schema": "melody_midi_event_stub_v1",
+            "source": "melody_stage_m10",
+            "ticks_per_beat": 480,
+            "events": events,
+            "note": "Stub event list only (M11). No binary .mid rendering in this chain.",
+        }
+        args.export_midi_stub_json.parent.mkdir(parents=True, exist_ok=True)
+        args.export_midi_stub_json.write_text(
+            json.dumps(midi_stub, indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
 
     if sym_decision == "HOLD":
         chain["audio_gate"] = {"skipped": True, "reason": "symbolic_hold"}
