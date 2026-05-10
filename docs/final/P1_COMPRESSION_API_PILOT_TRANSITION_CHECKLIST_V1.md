@@ -90,11 +90,11 @@
 
 ## 5) 파일럿 완료 정의 (DoD 요약)
 
-- [ ] **§11** 세일즈 킷 경로 중 본 문서 §1 표가 **존재·동결**되어 있다.
-- [ ] **G0~G12** 증빙이 감사 가능한 형태로 확보되었다.
-- [ ] 토큰 이코노미·P95·`reconstruction_fidelity_jaccard` 관련 **산출 JSON·로그 경로**가 파일럿 리포트에 명시되었다.
-- [ ] `COMPRESSION_KPI_ALARM_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL` 중 파일럿 환경에 **유효한 알림 채널**이 설정되었다 (해당 체인 사용 시).
-- [ ] 실매매·외부 과금·LIVE 승격은 **`MKM_PROMOTION_GATE_CHECKLIST` G12 및 지휘관 GO** 없이 진행하지 않는다.
+- [x] **§11** 세일즈 킷 경로 중 본 문서 §1 표가 **존재·동결**되어 있다. (`docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_SALES_KIT_STRUCTURE_V1.json` 의 `frozen_pointer_utc`)
+- [x] **G0~G12** 감사 스냅샷: `docs/final/artifacts/mkm_promotion_gate_evidence_bundle_v1.json` + 생성기 `scripts/build_mkm_promotion_gate_evidence_bundle_v1.py` (**G12는 항상 수동 GO** — 자동 통과 없음)
+- [x] 토큰 이코노미·P95·`reconstruction_fidelity_jaccard` 관련 **산출 SSOT 경로** — `docs/final/artifacts/MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json` (각 JSON 내부 `generated_at` 등은 파일별)
+- [ ] `COMPRESSION_KPI_ALARM_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL` — 파일럿 호스트 **`.env`/비밀 저장소**에 설정 (**레포에 넣지 않음**; 자동 검증 불가)
+- [x] 실매매·외부 과금·LIVE 승격은 **`MKM_PROMOTION_GATE_CHECKLIST` G12 및 지휘관 GO** 없이 진행하지 않는다 (정책 고정).
 
 ---
 

@@ -59,6 +59,9 @@ docs/final/artifacts/**
 !docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_API_BRANDING_BRIDGE_V1.md
 !docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_FACTSAFE_NUMBERS_V1.md
 !docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_SALES_KIT_STRUCTURE_V1.json
+# Promotion gate audit snapshot + pilot report path index (P1 / G0-G11)
+!docs/final/artifacts/mkm_promotion_gate_evidence_bundle_v1.json
+!docs/final/artifacts/MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json
 # Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
 reports/bio_sasang_nstates_*.json
 reports/mkm_orchestrator_poll.lock

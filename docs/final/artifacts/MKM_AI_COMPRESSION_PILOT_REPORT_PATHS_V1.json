@@ -1,0 +1,18 @@
+{
+  "schema": "mkm_ai_compression_pilot_report_paths_v1",
+  "version": 1,
+  "purpose": "Pilot report must cite these SSOT paths for token economy, latency draft, reconstruction fidelity — not NotebookLM.",
+  "paths": {
+    "multilens_ultra_active_report": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "general_rail_kpi_gate": "docs/final/artifacts/general_compression_kpi_gate_v2.json",
+    "track_a_cost_simulation": "docs/final/artifacts/track_a_conversational_cost_simulation_latest.json",
+    "track_a_shadow_corpus_eval": "docs/final/artifacts/track_a_shadow_corpus_eval_latest.json",
+    "bench_l1_api_load_local": "docs/final/artifacts/bench_l1_api_load_latest.json",
+    "bench_l1_api_load_vps_summary": "docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json",
+    "metering_band_gate": "docs/final/artifacts/track_a_metering_band_gate_latest.json",
+    "multilens_performance_eval_report_v2": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_REPORT_V2.json",
+    "openapi_token_compression_stub": "docs/final/openapi_token_compression_stub_v1.yaml",
+    "promotion_gate_evidence_bundle": "docs/final/artifacts/mkm_promotion_gate_evidence_bundle_v1.json"
+  },
+  "notes": "Optional_missing regenerables (cost sim, shadow, bench) may be absent until pilot runs the linked scripts; cite existence + generated_at inside each JSON when present."
+}

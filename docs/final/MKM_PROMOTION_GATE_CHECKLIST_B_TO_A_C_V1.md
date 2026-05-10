@@ -40,4 +40,6 @@
 
 **개정:** SSOT 문서 경로 변경 시 본 표의 스크립트 열만 동기화한다. 정책 변경은 `CONSTITUTION`·`P0` 개정에 따른다.
 
+**감사 스냅샷(자동화 보조):** `scripts/build_mkm_promotion_gate_evidence_bundle_v1.py` → `docs/final/artifacts/mkm_promotion_gate_evidence_bundle_v1.json` — G0–G11 경로·스크립트 존재 및 G0 exit code 기록. CI `dual-regime-integrity`에서 P0 직후 실행. **G12 대체 불가.**
+
 **Frozen pointer:** 2026-05-02 초안 — 상위 문서 개정 시 본 파일 상단에 `Revised` 한 줄 추가.

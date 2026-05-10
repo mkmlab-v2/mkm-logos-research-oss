@@ -26,6 +26,10 @@ on:
       - "scripts/sync_btrack_phase3_snapshot_json_fence.py"
       - "scripts/run_fact_lock_bundle.ps1"
       - "scripts/verify_p0_constitution_gate_paths.ps1"
+      - "scripts/build_mkm_promotion_gate_evidence_bundle_v1.py"
+      - "docs/final/artifacts/mkm_promotion_gate_evidence_bundle_v1.json"
+      - "docs/final/artifacts/MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json"
+      - "tests/test_mkm_promotion_gate_evidence_bundle_v1.py"
       - "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"
       - "scripts/build_trackc_evidence_rag_mvp_v1.py"
       - "scripts/run_p1_ab_bundle.ps1"
@@ -607,6 +611,9 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: MKM promotion gate evidence bundle (G0-G11 audit JSON)
+        run: python scripts/build_mkm_promotion_gate_evidence_bundle_v1.py --workspace-root "${GITHUB_WORKSPACE}"
+
       - name: Install pytest and jsonschema
         run: python -m pip install --upgrade pip pytest jsonschema fastapi httpx pyyaml tiktoken scipy zstandard pyloudnorm
 
@@ -848,6 +855,9 @@ jobs:
 
       - name: MKM control-integrity pipeline smoke (aggregate, promotion gate, oracle inference timing)
         run: python -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py -q --tb=short
+
+      - name: MKM promotion gate evidence bundle (schema contract)
+        run: python -m pytest tests/test_mkm_promotion_gate_evidence_bundle_v1.py -q --tb=short
 
       # Athena §28: ECC launcher, doctor, JSONL audit helpers, HOLD deny path (smoke script).
       # Optional repo secret ATHENA_ECC_AUDIT_WEBHOOK_URL — not required here (tests/mocks + smoke use --no-audit-webhook).

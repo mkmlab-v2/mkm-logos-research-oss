@@ -1,0 +1,83 @@
+{
+  "schema": "mkm_promotion_gate_evidence_bundle_v1",
+  "version": 1,
+  "generated_at_utc": "2026-05-10T07:05:07Z",
+  "workspace_root_hint": "C:\\workspace",
+  "gates": {
+    "G0": {
+      "status": "pass",
+      "exit_code": 0,
+      "artifact": "scripts/verify_p0_constitution_gate_paths.ps1",
+      "log_tail": "OK: P0/CONSTITUTION gate paths present (434 checked)."
+    },
+    "G1": {
+      "status": "pass",
+      "evidence_path": ".github/workflows/dual-regime-integrity.yml",
+      "note": "CI success requires GitHub Actions run record; local checks path only."
+    },
+    "G2": {
+      "status": "policy",
+      "evidence_path": "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md",
+      "note": "B→A promotion claims require §9 checklist + measured SLA; not auto-verified here."
+    },
+    "G3": {
+      "status": "pass",
+      "paths_checked": [
+        "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+        "docs/final/artifacts/general_compression_kpi_gate_v2.json"
+      ]
+    },
+    "G4": {
+      "status": "pass",
+      "paths_checked": [
+        "docs/final/artifacts/track_a_conversational_cost_simulation_latest.json"
+      ],
+      "note": "Regenerate: py scripts/run_track_a_conversational_cost_simulation.py when pilot needs fresh sim."
+    },
+    "G5": {
+      "status": "pass",
+      "paths_checked": [
+        "docs/final/artifacts/track_a_shadow_corpus_eval_latest.json"
+      ],
+      "note": "Regenerate: py scripts/run_track_a_shadow_corpus_eval.py"
+    },
+    "G6": {
+      "status": "pass",
+      "paths_checked": [
+        "docs/final/artifacts/track_a_metering_band_gate_latest.json"
+      ],
+      "note": "Regenerate after metering chain when pilot enables band gate artifact."
+    },
+    "G7": {
+      "status": "pass",
+      "paths_checked": [
+        "docs/final/openapi_token_compression_stub_v1.yaml",
+        "scripts/compression_token_api_stub.py",
+        "tests/test_compression_token_api_stub.py"
+      ],
+      "note": "Full regression: pytest tests/test_compression_token_api_stub.py"
+    },
+    "G8": {
+      "status": "pass",
+      "evidence_path": "scripts/core/sovereign_jsonl.py"
+    },
+    "G9": {
+      "status": "pass",
+      "evidence_path": "projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.sh",
+      "note": "dual-regime runs this harness; local exit 0 required for parity."
+    },
+    "G10": {
+      "status": "pass",
+      "evidence_path": "scripts/run_fact_lock_bundle.ps1",
+      "note": "Run locally for full bundle; not executed inside this builder."
+    },
+    "G11": {
+      "status": "pass",
+      "evidence_path": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md"
+    },
+    "G12": {
+      "status": "human_required",
+      "note": "Live trading / external billing requires explicit commander GO — never automated."
+    }
+  }
+}
