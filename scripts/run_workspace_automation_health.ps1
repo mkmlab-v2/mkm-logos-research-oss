@@ -112,7 +112,12 @@ param(
     [switch]$IncludeMcpHygieneProbe,
     [switch]$IncludeMcpHygieneProbeRepair,
     # Shortcut profile: P0 + MCP probe only (skip vault/memory/phase1/news/reconcile by default).
-    [switch]$McpHygieneProbeOnly
+    [switch]$McpHygieneProbeOnly,
+
+    # Optional: VPS SSH disk smoke (Invoke-VpsOpsSmoke_v1.ps1; unset MKM_VPS_HOST = skip).
+    [switch]$IncludeVpsOpsSmoke,
+    # With IncludeVpsOpsSmoke: SSH failure fails health (default is SoftFail).
+    [switch]$IncludeVpsOpsSmokeHardFail
 )
 
 $ErrorActionPreference = "Stop"
@@ -279,9 +284,34 @@ try {
         }
     }
 
+    if ($IncludeVpsOpsSmoke) {
+        $vpsSmoke = Join-Path $root "scripts\Invoke-VpsOpsSmoke_v1.ps1"
+        if (Test-Path -LiteralPath $vpsSmoke) {
+            $vpsLabel = "VPS ops smoke (SSH disk JSON"
+            if (-not $IncludeVpsOpsSmokeHardFail) { $vpsLabel += "; SoftFail" }
+            $vpsLabel += ")"
+            Step $vpsLabel {
+                if ($IncludeVpsOpsSmokeHardFail) {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $vpsSmoke -WorkspaceRoot $root
+                }
+                else {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $vpsSmoke -WorkspaceRoot $root -SoftFail
+                }
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== VPS ops smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: Invoke-VpsOpsSmoke_v1.ps1 not found"
+        }
+    }
+
     if ($McpHygieneProbeOnly) {
+        $probeDone = "[run_workspace_automation_health] McpHygieneProbeOnly: finished after P0 + MCP probe"
+        if ($IncludeVpsOpsSmoke) { $probeDone += " + VPS ops smoke" }
+        $probeDone += "."
         Write-Host ""
-        Write-Host "[run_workspace_automation_health] McpHygieneProbeOnly: finished after P0 + MCP probe." -ForegroundColor Green
+        Write-Host $probeDone -ForegroundColor Green
         exit 0
     }
 
