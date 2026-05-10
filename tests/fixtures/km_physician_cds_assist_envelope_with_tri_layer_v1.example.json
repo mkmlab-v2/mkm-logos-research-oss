@@ -1,0 +1,122 @@
+{
+  "schema": "km_physician_cds_assist_envelope_v1",
+  "version": "1.0.0",
+  "intent": "physician_clinical_decision_support",
+  "boundary_ack": true,
+  "role_contract": {
+    "cds_only_not_standalone_diagnosis": true,
+    "physician_final_authority": true,
+    "not_emergency_disposition_final": true
+  },
+  "patient_context_summary": "[REDACTED] Demo-only structured summary for schema validation.",
+  "clinical_question": "Given documented pattern X, what guideline-backed considerations apply before modifying therapy?",
+  "evidence_assessment": "partial",
+  "evidence_gap_notes": "Institutional protocol for edge case Z not indexed in this corpus snapshot; verify locally.",
+  "evidence_items": [
+    {
+      "claim": "Example claim tied to retrieved passage.",
+      "evidence_grade": "guideline",
+      "citation": {
+        "source_id": "demo-guideline-001",
+        "chunk_ref": "sec-3.2",
+        "document_version": "2025-01",
+        "retrieved_at_utc": "2026-05-10T12:00:00Z"
+      },
+      "relevance": "high"
+    }
+  ],
+  "differential_framework": [
+    {
+      "label": "Illustrative differential label",
+      "hypothesis_only": true,
+      "supporting_points": ["Point A"],
+      "mitigating_or_contraindicating_points": ["Point B"]
+    }
+  ],
+  "red_flags_and_escalation": ["Escalate if acute red flag set per hospital policy."],
+  "suggested_next_steps_for_physician": ["Confirm labs per protocol", "Specialist consult if criteria met"],
+  "confidence": {
+    "overall_0_1": 0.55,
+    "rationale": "Partial corpus coverage; physician must reconcile with bedside data."
+  },
+  "human_physician_review_required": true,
+  "rag_manifest": [
+    {
+      "corpus_id": "demo-corpus",
+      "snapshot_version": "v1",
+      "chunk_ids": ["chunk-a"]
+    }
+  ],
+  "audit": {
+    "pipeline_run_id": "demo-run",
+    "generator_model": "demo-model-tag",
+    "deterministic_input_sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "disclaimer_ack": "This CDS artifact assists licensed physicians only; not a standalone diagnosis or prescription.",
+  "mkm_bianzheng_tri_layer": {
+    "schema": "mkm_bianzheng_tri_layer_v1",
+    "version": "1.0.0",
+    "layer_a_engine": {
+      "engine_id": "demo-km-engine",
+      "engine_version": "0.1.0",
+      "input_schema_id": "km_intake_v1",
+      "input_schema_version": "1.0.0",
+      "ruleset_id": "bianzheng_rules_demo",
+      "ruleset_version": "2026-05-10",
+      "run_id": "run-demo-001",
+      "generated_at_utc": "2026-05-10T12:00:00Z",
+      "deterministic_input_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "candidate_list": [
+        {
+          "candidate_id": "cand-001",
+          "kind": "syndrome_pattern",
+          "label": "Illustrative pattern label (hypothesis)",
+          "score_0_1": 0.42,
+          "rank": 0,
+          "hypothesis_scope": "engine_hypothesis_only"
+        }
+      ]
+    },
+    "layer_b_augmentation": {
+      "western_med_fallback": {
+        "binding": "reference_only_non_diagnostic",
+        "risk_gate": "WATCH",
+        "gate_rationale_ref": "demo://gate-notes/001",
+        "differential_hypotheses": [
+          {
+            "hypothesis_id": "wm-diff-001",
+            "label": "Illustrative western differential (non-final)",
+            "hypothesis_only": true,
+            "urgency": "routine"
+          }
+        ],
+        "contraindication_flags": [],
+        "escalation_prompts": ["Per hospital protocol if acute red flags."]
+      },
+      "literature_evidence": [
+        {
+          "evidence_id": "ev-001",
+          "corpus_id": "demo-lit-corpus",
+          "corpus_snapshot_version": "snap-2026-05-01",
+          "chunk_id": "chunk-abc",
+          "snippet_hash_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+          "evidence_grade": "primary_lit",
+          "claim_scope": "supporting",
+          "retrieved_at_utc": "2026-05-10T12:00:00Z"
+        }
+      ]
+    },
+    "layer_c_display_meta": {
+      "audience": "clinician_workstation",
+      "disclaimer_flags": {
+        "require_physician_review_banner": true,
+        "not_emergency_disposition": true,
+        "no_automatic_prescription": true,
+        "western_layer_non_gating": true,
+        "public_redaction_mode": false
+      },
+      "locale": "ko-KR",
+      "copy_safe_summary_ref": "demo://summaries/clinician-safe-001"
+    }
+  }
+}
