@@ -201,6 +201,8 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 
 **PASS 조건:** 스크립트 exit **0** → `decision=B_TRACK_RESEARCH_PROMOTION_READY`(연구 레인만). **항상** `track_wall.promotion_to_a_track_commercial_audio=false`, `promotion_to_track_c_primary_gtm=false`, 휴먼 리뷰 필요 플래그 유지.
 
+**지휘관 진행 승인 (Fact-Lock, 2026-05-10):** 연구 번들·P0 검증이 녹색인 상태에서 **지휘관이 다음 단계 진행을 명시 승인**함 — 상징→오디오 축에 대한 **내부 기획·스테이징·대외 카피 초안 검수**(본 문서 §3.9·§8 한도) 및 **후속 마일스톤(M4+ 등) 로드맵 정리**. 본 승인은 레포 산출물의 기계적 **`track_wall`을 해제하거나 자동으로 Track A 상용 오디오·Track C 1차 GTM·압축 §9·실거래 게이트와 합선되지 않음**(자동 상용 승격 없음).
+
 **압축(Track A) §9 승격과의 관계:** 동 일(`COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9)과 **다른 레인**이다. 상징→오디오 승격 게이트 통과가 압축 상용 KPI를 대체하지 않는다.
 
 ---
