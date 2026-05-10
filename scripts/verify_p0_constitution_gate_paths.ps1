@@ -49,6 +49,7 @@ catch {
 # 2026-05-10: General-rail compression benchmark (corpus JSONL, manifests, promotion chain scripts, SSOT artifacts, Multilens ultra anchor).
 # 2026-05-10: Track C P1 sales kit canonical paths (mkm_ai_sales_kit_v1).
 # 2026-05-10: MKM promotion gate evidence bundle + pilot report path index (G0-G11 audit JSON).
+# 2026-05-11: Lens music prompt PoC M26-M30 (metric, runbook, webhook, health, dashboard bridge tests).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -124,6 +125,9 @@ $required = @(
     "scripts\Run-DailyExecutionInsightBrief_v1.ps1",
     "scripts\Register-DailyExecutionInsightBriefTask.ps1",
     "scripts\Run-AmsaengEosaMonitoringBundleTask.ps1",
+    "scripts\Invoke-AmsaengEosaGovernanceCycle.ps1",
+    "docs\final\artifacts\amsaeng_eosa_governance_scope_v1.json",
+    "docs\final\artifacts\mkm_ops_sync_bridge_v1.json",
     "scripts\check_cross_lens_rag_notify_prereqs_v1.ps1",
     "scripts\send_cross_lens_rag_alert_v1.py",
     "scripts\build_trackc_evidence_rag_mvp_v1.py",
@@ -423,8 +427,22 @@ $required = @(
     "docs\final\schemas\lens_music_symbolic_audio_promotion_gate_v1.example.json",
     "scripts\check_lens_music_symbolic_audio_promotion_gate_v1.py",
     "scripts\validate_lens_music_internal_eval_jsonl_v1.py",
+    "scripts\run_lens_music_prompt_poc_metric_v1.py",
+    "scripts\build_lens_music_prompt_poc_runbook_v1.py",
+    "scripts\dispatch_lens_music_prompt_poc_runbook_webhook_v1.py",
+    "scripts\build_lens_music_prompt_runbook_webhook_health_summary_v1.py",
     "scripts\Invoke-McpHygieneProbe.ps1",
     "scripts\Invoke-VpsOpsSmoke_v1.ps1",
+    "scripts\Invoke-SafeOpsSurfaceCheck.ps1",
+    "scripts\Register-SafeOpsSurfaceCheckTask.ps1",
+    "scripts\Dedupe-MkmControlIntegrityInferenceBatch.ps1",
+    "scripts\Invoke-LiveSyncHeartbeatCheck.ps1",
+    "scripts\Invoke-LiveSyncHeartbeatPull.ps1",
+    "scripts\Register-LiveSyncHeartbeatPullTask.ps1",
+    "scripts\Deploy-LiveSyncHeartbeatToVps.ps1",
+    "scripts\linux\live_sync_push_heartbeat_snippet.sh",
+    "docs\final\artifacts\schemas\live_sync_heartbeat_v1.schema.json",
+    "docs\final\artifacts\fixtures\live_sync_heartbeat_v1.example.json",
     "scripts\Register-McpHygieneProbeDailyTask.ps1",
     "tests\test_audio_bgm_gate_report_v1.py",
     "tests\test_sasang_music_mapping_schema_v1.py",
@@ -435,6 +453,12 @@ $required = @(
     "tests\test_lens_music_gate_chain_v1.py",
     "tests\test_validate_lens_music_internal_eval_jsonl_v1.py",
     "tests\fixtures\lens_music_internal_eval_sessions_sample_v1.jsonl",
+    "tests\test_run_lens_music_prompt_poc_metric_v1.py",
+    "tests\test_build_lens_music_prompt_poc_runbook_v1.py",
+    "tests\test_dispatch_lens_music_prompt_poc_runbook_webhook_v1.py",
+    "tests\test_build_lens_music_prompt_runbook_webhook_health_summary_v1.py",
+    "tests\fixtures\lens_music_prompt_poc_pairs_sample_v1.jsonl",
+    "tests\fixtures\lens_music_prompt_runbook_webhook_history_sample_v1.jsonl",
     "docs\final\schemas\mkm_control_integrity_golden_set_v1.schema.json",
     "docs\final\artifacts\mkm_control_integrity_lora_model_profiles_v1.json",
     "scripts\aggregate_mkm_control_integrity_eval_holdout_v1.py",

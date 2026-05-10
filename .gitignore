@@ -24,6 +24,10 @@ logs/
 # 로컬 일회성 산출 (예: weather 체인 `-o out/reg.json`)
 /out/
 
+# VPS→local heartbeat mirror (sync daemon_alive_check.json here; keep folder only in Git)
+/live_sync/incoming/**
+!/live_sync/incoming/.gitkeep
+
 # MKM-Orchestrator — machine-local mutable queue & ephemeral locks (templates stay tracked)
 docs/final/artifacts/todo_queue_latest.json
 # Regenerable daily/B-track lens outputs: applies to **untracked** files only. Paths already tracked
@@ -62,6 +66,12 @@ docs/final/artifacts/**
 # Promotion gate audit snapshot + pilot report path index (P1 / G0-G11)
 !docs/final/artifacts/mkm_promotion_gate_evidence_bundle_v1.json
 !docs/final/artifacts/MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json
+# verify_p0 / ops gate SSOT (not *_latest; tracked for CI path checks)
+!docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json
+!docs/final/artifacts/mkm_ops_sync_bridge_v1.json
+!docs/final/artifacts/fixtures/
+!docs/final/artifacts/fixtures/live_sync_heartbeat_v1.example.json
+!docs/final/artifacts/schemas/live_sync_heartbeat_v1.schema.json
 # Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
 reports/bio_sasang_nstates_*.json
 reports/mkm_orchestrator_poll.lock

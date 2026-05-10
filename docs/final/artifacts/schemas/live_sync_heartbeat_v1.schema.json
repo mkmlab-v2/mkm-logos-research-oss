@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "live_sync_heartbeat_v1",
+  "title": "live_sync_heartbeat_v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "generated_at_utc"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "live_sync_heartbeat_v1"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "description": "ISO-8601 UTC timestamp when VPS wrote this file."
+    },
+    "source_host": {
+      "type": "string",
+      "description": "Hostname or Hostinger VPS id (informational)."
+    },
+    "role": {
+      "type": "string",
+      "description": "e.g. bitcoin_live_daemon, ops_mirror"
+    },
+    "pm2_status_excerpt": {
+      "type": "string",
+      "description": "Optional short text from pm2 jlist or describe (non-secret)."
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

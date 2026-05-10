@@ -1,0 +1,7 @@
+{
+  "schema": "live_sync_heartbeat_v1",
+  "generated_at_utc": "2026-05-10T16:00:00.0000000+00:00",
+  "source_host": "srv-example.hstgr.cloud",
+  "role": "bitcoin_live_daemon",
+  "notes": "Replace with cron/scp output; do not commit secrets."
+}

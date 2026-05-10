@@ -1,0 +1,58 @@
+{
+  "schema": "mkm_ops_sync_bridge_v1",
+  "title_ko": "운영·동기화 브리지 (NotebookLM / 장기기억 / VPS / 감찰) 단일 참조",
+  "fact_lock_note": "판정은 각 스크립트 exit·reports JSON. 본 파일은 포인터 모음.",
+  "notebooklm_three_channels_ref": "docs/NotebookLM_sources_manifest.md (A Vault / B 클라우드 / C Cursor MCP — 혼동 금지)",
+  "lanes": [
+    {
+      "id": "notebooklm_mcp_session",
+      "problem_ko": "설정 녹색인데 채팅에 MCP 없음 · 웹 로그인과 전용 Chrome 프로필 불일치",
+      "health": ["scripts/check_notebooklm_mcp_prereqs.ps1"],
+      "repair": ["scripts/repair_notebooklm_mcp_auth_stuck.ps1"],
+      "probe": ["scripts/Invoke-McpHygieneProbe.ps1"],
+      "triage_bundle": ["scripts/Invoke-NotebookLmSyncTriage_v1.ps1"],
+      "vault_mirror": ["scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1"],
+      "artifacts": ["reports/notebooklm_sync_triage_latest.json", "reports/amsaeng_eosa_mcp_hygiene_cycle_latest.json"],
+      "rules": [".cursor/rules/notebooklm-mcp-session-bridge.mdc"]
+    },
+    {
+      "id": "cross_chat_memory_ssot",
+      "problem_ko": "채팅 간 자동 병합 없음 — 디스크 SSOT만 신뢰",
+      "human_anchor": ["docs/final/CENTRAL_AGENT_MEMORY_V1.md"],
+      "checkpoint": ["scripts/athena_checkpoint.py"],
+      "handoff_optional": ["docs/final/CURRENT_OPS_SNAPSHOT.md"],
+      "note_ko": "다른 창에서 수정한 내용은 파일 커밋·pull 또는 @CENTRAL 로 재주입."
+    },
+    {
+      "id": "vps_live_sync",
+      "problem_ko": "로컬 운영 표면과 VPS 단절",
+      "pull": ["scripts/Invoke-LiveSyncHeartbeatPull.ps1"],
+      "deploy_remote_snippet": ["scripts/linux/live_sync_push_heartbeat_snippet.sh", "scripts/Deploy-LiveSyncHeartbeatToVps.ps1"],
+      "artifacts": ["reports/live_sync_pull_latest.json", "live_sync/incoming/daemon_alive_check.json"],
+      "smoke": ["scripts/Invoke-VpsOpsSmoke_v1.ps1"],
+      "env": ["MKM_VPS_HOST", "MKM_VPS_USER", "MKM_VPS_SSH_KEY_PATH", "MKM_LIVE_SYNC_REMOTE_PATH"]
+    },
+    {
+      "id": "governance_amsaeng_eosa",
+      "problem_ko": "백그라운드 청결·운영 표면 한 번에 보기",
+      "cycle": ["scripts/Invoke-AmsaengEosaGovernanceCycle.ps1"],
+      "monitoring_bundle": ["scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"],
+      "register_bundle": ["scripts/Register-AmsaengEosaMonitoringBundleTask.ps1"],
+      "safe_ops": ["scripts/Invoke-SafeOpsSurfaceCheck.ps1"],
+      "scope_registry": ["docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json"],
+      "artifacts": ["reports/amsaeng_eosa_governance_cycle_latest.json", "reports/amsaeng_eosa_governance_alert_log.jsonl", "reports/safe_ops_surface_check_latest.json"]
+    },
+    {
+      "id": "scheduled_tasks_workspace",
+      "problem_ko": "작업 스케줄러 과부하·실패 코드 추적",
+      "audit": ["scripts/audit_workspace_scheduled_tasks.ps1", "scripts/audit_workspace_scheduled_tasks_last_run.ps1", "scripts/audit_workspace_scheduled_tasks_triggers.ps1"],
+      "artifacts": ["reports/workspace_scheduled_tasks_audit_latest.csv", "reports/workspace_scheduled_tasks_last_run_latest.json", "reports/workspace_scheduled_tasks_triggers_latest.csv"],
+      "stagger_optional": ["scripts/plan_workspace_scheduled_task_stagger.ps1", "scripts/apply_workspace_scheduled_task_stagger.ps1"]
+    }
+  ],
+  "never_claim_ko": [
+    "NotebookLM Vault 미러 성공만으로 클라우드 노트북 인제스트 완료 단정",
+    "Cursor MCP UI 녹색만으로 이 채팅 세션에 도구 주입 단정",
+    "채팅 로그 자동 병합으로 CENTRAL 갱신 완료 단정"
+  ]
+}

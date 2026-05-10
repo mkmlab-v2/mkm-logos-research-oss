@@ -1,0 +1,70 @@
+{
+  "schema": "amsaeng_eosa_governance_scope_v1",
+  "title_ko": "암행어사 AI 감찰 범위·권한 경계 (선언적 매핑)",
+  "version": 1,
+  "fact_lock_note": "실행 경로·exit code는 호출 가능 스크립트가 SSOT. 본 파일은 역할 매핑·인간 게이트 표시용.",
+  "privilege_model": {
+    "observe": "읽기 전용 점검·리포트 JSON만 기록",
+    "automate_low_risk": "로컬 스크립트·스케줄 등록(저위험)·SoftFail SSH 스모크",
+    "human_gate": "실거래·파괴적 삭제·비가역 스키마·원격 강제 배포·비밀 평문 노출 — 루트 .cursorrules/TITAN 승인"
+  },
+  "domains": [
+    {
+      "id": "safe_ops_surface",
+      "tier": "observe",
+      "scripts": ["scripts/Invoke-SafeOpsSurfaceCheck.ps1"],
+      "artifacts": ["reports/safe_ops_surface_check_latest.json"],
+      "notes_ko": "RAM·추론 중복·daemon/risk/ops 신선도·live_sync 하트비트·Verify-TradingAutomationHealth."
+    },
+    {
+      "id": "vps_ssh_smoke",
+      "tier": "automate_low_risk",
+      "scripts": ["scripts/Invoke-VpsOpsSmoke_v1.ps1", "scripts/Invoke-LiveSyncHeartbeatPull.ps1", "scripts/Deploy-LiveSyncHeartbeatToVps.ps1"],
+      "artifacts": ["reports/vps_ops_smoke_latest.json", "reports/live_sync_pull_latest.json"],
+      "notes_ko": "MKM_VPS_*·키 기반 BatchMode SSH/SCP. 배포 스크립트는 인프라 변경이므로 수동 실행 권장."
+    },
+    {
+      "id": "mcp_notebooklm_hygiene",
+      "tier": "observe",
+      "scripts": ["scripts/Invoke-McpHygieneProbe.ps1", "scripts/check_notebooklm_mcp_prereqs.ps1"],
+      "artifacts": ["reports/amsaeng_eosa_mcp_hygiene_cycle_latest.json"],
+      "notes_ko": "Cursor 채팅 MCP 주입 여부와 무관하게 로컬 prereq 점검. get_health 인증은 세션별."
+    },
+    {
+      "id": "secrets_repo_hygiene",
+      "tier": "observe",
+      "scripts": ["scripts/Verify-MonorepoSecretHygiene.ps1"],
+      "artifacts": [],
+      "notes_ko": ".env 추적·gitignore만 검사. 값은 읽지 않음."
+    },
+    {
+      "id": "monitoring_bundle",
+      "tier": "automate_low_risk",
+      "scripts": ["scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"],
+      "artifacts": ["reports/amsaeng_eosa_monitoring_heartbeat_latest.json", "reports/amsaeng_eosa_ops_snapshot_latest.json"],
+      "notes_ko": "보안·게이트·Fact-Lock 증거 번들·하트비트. 스케줄: Register-AmsaengEosaMonitoringBundleTask.ps1."
+    },
+    {
+      "id": "workspace_health_bundle",
+      "tier": "observe",
+      "scripts": ["scripts/run_workspace_automation_health.ps1"],
+      "artifacts": [],
+      "notes_ko": "넓은 번들(시간 증가). 주간·수동 권장; Fact-Lock 번들과 역할 분리."
+    },
+    {
+      "id": "disk_cleanup_destructive",
+      "tier": "human_gate",
+      "scripts": ["scripts/Invoke-CWorkspaceSafeCleanup.ps1", "scripts/Invoke-WorkspaceDeepCleanup.ps1"],
+      "artifacts": [],
+      "notes_ko": "삭제·용량 회수는 자동 암행어사 기본 루프에서 제외."
+    }
+  ],
+  "integration_entrypoints": [
+    "scripts/Invoke-AmsaengEosaGovernanceCycle.ps1",
+    "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1 (-GovernanceSoftFail 선택)"
+  ],
+  "artifacts_optional": {
+    "governance_alert_log_jsonl": "reports/amsaeng_eosa_governance_alert_log.jsonl",
+    "note_ko": "worst_exit > 0 일 때 Append-only 한 줄 JSON(SkipAlertLog 로 끔)."
+  }
+}
