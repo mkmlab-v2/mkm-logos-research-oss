@@ -1,0 +1,66 @@
+{
+  "schema": "mkm_bianzheng_tri_layer_v1",
+  "version": "1.0.0",
+  "layer_a_engine": {
+    "engine_id": "demo-km-engine",
+    "engine_version": "0.1.0",
+    "input_schema_id": "km_intake_v1",
+    "input_schema_version": "1.0.0",
+    "ruleset_id": "bianzheng_rules_demo",
+    "ruleset_version": "2026-05-10",
+    "run_id": "run-demo-001",
+    "generated_at_utc": "2026-05-10T12:00:00Z",
+    "deterministic_input_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "candidate_list": [
+      {
+        "candidate_id": "cand-001",
+        "kind": "syndrome_pattern",
+        "label": "Illustrative pattern label (hypothesis)",
+        "score_0_1": 0.42,
+        "rank": 0,
+        "hypothesis_scope": "engine_hypothesis_only"
+      }
+    ]
+  },
+  "layer_b_augmentation": {
+    "western_med_fallback": {
+      "binding": "reference_only_non_diagnostic",
+      "risk_gate": "WATCH",
+      "gate_rationale_ref": "demo://gate-notes/001",
+      "differential_hypotheses": [
+        {
+          "hypothesis_id": "wm-diff-001",
+          "label": "Illustrative western differential (non-final)",
+          "hypothesis_only": true,
+          "urgency": "routine"
+        }
+      ],
+      "contraindication_flags": [],
+      "escalation_prompts": ["Per hospital protocol if acute red flags."]
+    },
+    "literature_evidence": [
+      {
+        "evidence_id": "ev-001",
+        "corpus_id": "demo-lit-corpus",
+        "corpus_snapshot_version": "snap-2026-05-01",
+        "chunk_id": "chunk-abc",
+        "snippet_hash_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "evidence_grade": "primary_lit",
+        "claim_scope": "supporting",
+        "retrieved_at_utc": "2026-05-10T12:00:00Z"
+      }
+    ]
+  },
+  "layer_c_display_meta": {
+    "audience": "clinician_workstation",
+    "disclaimer_flags": {
+      "require_physician_review_banner": true,
+      "not_emergency_disposition": true,
+      "no_automatic_prescription": true,
+      "western_layer_non_gating": true,
+      "public_redaction_mode": false
+    },
+    "locale": "ko-KR",
+    "copy_safe_summary_ref": "demo://summaries/clinician-safe-001"
+  }
+}
