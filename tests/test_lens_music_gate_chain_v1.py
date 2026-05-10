@@ -246,6 +246,9 @@ def test_chain_emotion_overlay_preview_mode_adds_stage_without_mutation(tmp_path
     assert chain["emotion_overlay_stage"]["would_apply"] is False
     # preview mode keeps symbolic outputs unchanged from original taeeum target.
     assert chain["symbolic_stage"]["effective_outputs"]["tempo_bpm"]["target"] == 72.0
+    assert chain["quality_guard_m7"]["enabled"] is True
+    assert chain["quality_guard_m7"]["status"] == "OK"
+    assert chain["quality_guard_m7"]["warn_count"] == 0
 
 
 def test_chain_emotion_overlay_apply_mode_mutates_effective_outputs(tmp_path):
@@ -316,3 +319,6 @@ def test_chain_emotion_overlay_apply_mode_mutates_effective_outputs(tmp_path):
     assert chain["emotion_overlay_stage"]["policy"] == "apply"
     assert chain["emotion_overlay_stage"]["would_apply"] is True
     assert chain["symbolic_stage"]["effective_outputs"]["tempo_bpm"]["target"] < 72.0
+    assert chain["quality_guard_m7"]["enabled"] is True
+    assert chain["quality_guard_m7"]["status"] == "OK"
+    assert chain["quality_guard_m7"]["warn_count"] == 0

@@ -110,6 +110,96 @@ def build_emotion_overlay_stage(
     }
 
 
+def build_m7_quality_guard(
+    *,
+    policy: str,
+    base_outputs: dict[str, Any],
+    effective_outputs: dict[str, Any],
+    overlay_stage: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """M7 advisory quality checks for emotion overlay application.
+
+    Non-blocking by design (research lane): emits WARN/OK markers only.
+    """
+    if policy == "off" or not isinstance(overlay_stage, dict) or not overlay_stage.get("enabled"):
+        return {"enabled": False, "status": "SKIPPED", "checks": []}
+
+    checks: list[dict[str, Any]] = []
+    base_tb = dict(base_outputs.get("tempo_bpm") or {})
+    eff_tb = dict(effective_outputs.get("tempo_bpm") or {})
+    base_dyn = dict(base_outputs.get("dynamics") or {})
+    eff_dyn = dict(effective_outputs.get("dynamics") or {})
+    safety = dict(effective_outputs.get("safety") or {})
+    proposed = dict(overlay_stage.get("proposed") or {})
+    h1 = dict(overlay_stage.get("heuristic_v1") or {})
+
+    base_t = float(base_tb.get("target", 120.0))
+    eff_t = float(eff_tb.get("target", base_t))
+    base_v = float(base_dyn.get("velocity_0_1", 0.0))
+    eff_v = float(eff_dyn.get("velocity_0_1", base_v))
+    cap_v = float(safety.get("max_velocity_0_1", 1.0))
+    tempo_delta = float(h1.get("tempo_delta_bpm", 0.0))
+    velocity_delta = float(h1.get("velocity_delta_0_1", 0.0))
+
+    # Research-advisory thresholds.
+    drift = abs(eff_t - base_t)
+    checks.append(
+        {
+            "id": "tempo_drift_cap_12bpm",
+            "status": "OK" if drift <= 12.0 else "WARN",
+            "value": drift,
+            "threshold": 12.0,
+            "note": "Absolute tempo shift after overlay should stay bounded.",
+        }
+    )
+    checks.append(
+        {
+            "id": "velocity_within_safety_cap",
+            "status": "OK" if eff_v <= cap_v + 1e-9 else "WARN",
+            "value": eff_v,
+            "cap": cap_v,
+            "note": "Effective velocity must respect safety max_velocity_0_1.",
+        }
+    )
+    if policy == "apply":
+        checks.append(
+            {
+                "id": "proposal_consistency_tempo",
+                "status": "OK"
+                if abs(float(proposed.get("tempo_target_bpm", eff_t)) - eff_t) < 1e-6
+                else "WARN",
+                "note": "Applied target should match proposed target in apply mode.",
+            }
+        )
+        checks.append(
+            {
+                "id": "proposal_consistency_velocity",
+                "status": "OK"
+                if abs(float(proposed.get("velocity_0_1", eff_v)) - eff_v) < 1e-6
+                else "WARN",
+                "note": "Applied velocity should match proposed velocity in apply mode.",
+            }
+        )
+    checks.append(
+        {
+            "id": "heuristic_bounds",
+            "status": "OK" if abs(tempo_delta) <= 12.0 and abs(velocity_delta) <= 0.2 else "WARN",
+            "tempo_delta_bpm": tempo_delta,
+            "velocity_delta_0_1": velocity_delta,
+            "note": "Heuristic deltas must remain within declared bounded ranges.",
+        }
+    )
+
+    warn_count = sum(1 for c in checks if c["status"] == "WARN")
+    return {
+        "enabled": True,
+        "status": "WARN" if warn_count else "OK",
+        "warn_count": warn_count,
+        "checks": checks,
+        "note": "Advisory only. Does not override symbolic/audio final decision.",
+    }
+
+
 def evaluate_symbolic_safety(
     outputs: dict[str, Any],
     *,
@@ -245,6 +335,12 @@ def main() -> int:
         emo_stage = dict(emo_stage)
         emo_stage.pop("applied_outputs", None)
         chain["emotion_overlay_stage"] = emo_stage
+    chain["quality_guard_m7"] = build_m7_quality_guard(
+        policy=args.emotion_overlay_policy,
+        base_outputs=raw_outputs,
+        effective_outputs=eff_outputs,
+        overlay_stage=emo_stage,
+    )
 
     if sym_decision == "HOLD":
         chain["audio_gate"] = {"skipped": True, "reason": "symbolic_hold"}
