@@ -3,12 +3,13 @@
 .SYNOPSIS
   Serial Qwen 7B Control-Integrity holdout: test -> locked_eval -> aggregate -> promotion gate.
   Writes progress to reports/qwen_strict_chain_auto_log.txt (append).
+  Default promotion gate: human sign-off profile (holdout-only, locked_eval>=0.68, weighted row_pass>=0.70). Use -StrictPromotionGate for ABC+0.85/0.80.
 #>
 param(
   [string]$AdapterPath = "models/adapters/macro_prophecy_lora_windows_fallback_qwen_v1",
   [string]$LogPath = "reports/qwen_strict_chain_auto_log.txt",
-  # Human-approved promotion: holdout-only + thresholds aligned to observed qwen25_7b_lora_300_strict stack (skip ABC artifact drift).
-  [switch]$ApprovedPromotionGate = $false
+  # Off by default: use sign-off gate (auto GO when latest holdout meets agreed floors). Set for CI / strict regression.
+  [switch]$StrictPromotionGate = $false
 )
 
 $ErrorActionPreference = "Stop"
@@ -55,21 +56,22 @@ if ($LASTEXITCODE -ne 0) {
 Write-Step "END aggregate exit=0"
 
 Write-Step "BEGIN promotion_gate"
-if ($ApprovedPromotionGate) {
-  Write-Step "promotion_gate mode=ApprovedPromotionGate (holdout-only, thresholds per human sign-off)"
-  py (Join-Path $root "scripts\check_mkm_control_integrity_promotion_gate_v1.py") @(
-    "--holdout-only",
-    "--holdout-report", "reports/mkm_control_integrity_lora_eval_holdout_suite_qwen25_7b_lora_300_strict_latest.json",
-    "--min-locked-eval-pass-rate", "0.68",
-    "--min-holdout-row-pass-weighted", "0.70"
-  )
-} else {
+if ($StrictPromotionGate) {
+  Write-Step "promotion_gate mode=StrictPromotionGate (ABC comparison + 0.85/0.80 holdout floors)"
   py (Join-Path $root "scripts\check_mkm_control_integrity_promotion_gate_v1.py") @(
     "--min-row-pass-rate", "0.70",
     "--min-must-include-rate", "0.70",
     "--holdout-report", "reports/mkm_control_integrity_lora_eval_holdout_suite_qwen25_7b_lora_300_strict_latest.json",
     "--min-locked-eval-pass-rate", "0.85",
     "--min-holdout-row-pass-weighted", "0.80"
+  )
+} else {
+  Write-Step "promotion_gate mode=default_signoff (holdout-only, locked_eval>=0.68, weighted>=0.70)"
+  py (Join-Path $root "scripts\check_mkm_control_integrity_promotion_gate_v1.py") @(
+    "--holdout-only",
+    "--holdout-report", "reports/mkm_control_integrity_lora_eval_holdout_suite_qwen25_7b_lora_300_strict_latest.json",
+    "--min-locked-eval-pass-rate", "0.68",
+    "--min-holdout-row-pass-weighted", "0.70"
   )
 }
 $ge = $LASTEXITCODE
