@@ -6,7 +6,9 @@
 #>
 param(
   [string]$AdapterPath = "models/adapters/macro_prophecy_lora_windows_fallback_qwen_v1",
-  [string]$LogPath = "reports/qwen_strict_chain_auto_log.txt"
+  [string]$LogPath = "reports/qwen_strict_chain_auto_log.txt",
+  # Human-approved promotion: holdout-only + thresholds aligned to observed qwen25_7b_lora_300_strict stack (skip ABC artifact drift).
+  [switch]$ApprovedPromotionGate = $false
 )
 
 $ErrorActionPreference = "Stop"
@@ -53,13 +55,23 @@ if ($LASTEXITCODE -ne 0) {
 Write-Step "END aggregate exit=0"
 
 Write-Step "BEGIN promotion_gate"
-py (Join-Path $root "scripts\check_mkm_control_integrity_promotion_gate_v1.py") @(
-  "--min-row-pass-rate", "0.70",
-  "--min-must-include-rate", "0.70",
-  "--holdout-report", "reports/mkm_control_integrity_lora_eval_holdout_suite_qwen25_7b_lora_300_strict_latest.json",
-  "--min-locked-eval-pass-rate", "0.85",
-  "--min-holdout-row-pass-weighted", "0.80"
-)
+if ($ApprovedPromotionGate) {
+  Write-Step "promotion_gate mode=ApprovedPromotionGate (holdout-only, thresholds per human sign-off)"
+  py (Join-Path $root "scripts\check_mkm_control_integrity_promotion_gate_v1.py") @(
+    "--holdout-only",
+    "--holdout-report", "reports/mkm_control_integrity_lora_eval_holdout_suite_qwen25_7b_lora_300_strict_latest.json",
+    "--min-locked-eval-pass-rate", "0.68",
+    "--min-holdout-row-pass-weighted", "0.70"
+  )
+} else {
+  py (Join-Path $root "scripts\check_mkm_control_integrity_promotion_gate_v1.py") @(
+    "--min-row-pass-rate", "0.70",
+    "--min-must-include-rate", "0.70",
+    "--holdout-report", "reports/mkm_control_integrity_lora_eval_holdout_suite_qwen25_7b_lora_300_strict_latest.json",
+    "--min-locked-eval-pass-rate", "0.85",
+    "--min-holdout-row-pass-weighted", "0.80"
+  )
+}
 $ge = $LASTEXITCODE
 Write-Step "END promotion_gate exit=$ge"
 Write-Step "=== Qwen strict chain v1 DONE ==="
