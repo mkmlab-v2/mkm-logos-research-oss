@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """B-track research promotion gate for symbolic→audio pipeline (§3.9).
 
-Runs the consolidated pytest bundle for M0–M3. Exit 0 iff pytest passes.
+Runs the consolidated pytest bundle for M0–M4. Exit 0 iff pytest passes.
 Writes JSON artifact; decision GO is **research lane only** — Track A commercial audio and
 Track C primary GTM remain blocked until separate human + metric gates (see track_wall).
 
@@ -27,6 +27,7 @@ PYTEST_MODULES = [
     "tests/test_run_lens_music_gematria_v1.py",
     "tests/test_lens_music_gate_chain_v1.py",
     "tests/test_lens_music_internal_eval_schema_v1.py",
+    "tests/test_validate_lens_music_internal_eval_jsonl_v1.py",
 ]
 
 
@@ -59,11 +60,17 @@ def build_payload(pytest_exit_code: int, log_tail: str) -> dict[str, Any]:
             "promotion_to_track_c_primary_gtm": False,
             "human_review_required_for_any_public_claim": True,
             "note": (
-                "B_TRACK_RESEARCH_PROMOTION_READY = CI bundle green for §3.9 M0–M3 only. "
+                "B_TRACK_RESEARCH_PROMOTION_READY = CI bundle green for §3.9 M0–M4 only. "
                 "Not compression Track A §9; not automatic product claims."
             ),
         },
-        "milestones_ack": {"M0": True, "M1": True, "M2": True, "M3_schema": True},
+        "milestones_ack": {
+            "M0": True,
+            "M1": True,
+            "M2": True,
+            "M3_schema": True,
+            "M4_jsonl_batch": True,
+        },
         "references_ssot": {
             "track_c_section": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.9–3.9.2",
             "compression_playbook_cross_ref": (

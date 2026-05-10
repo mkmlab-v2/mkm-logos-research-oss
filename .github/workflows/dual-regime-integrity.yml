@@ -224,6 +224,9 @@ on:
       - "scripts/run_lens_music_gematria.py"
       - "scripts/run_lens_music_gematria_gate_chain_v1.py"
       - "scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py"
+      - "scripts/validate_lens_music_internal_eval_jsonl_v1.py"
+      - "tests/test_validate_lens_music_internal_eval_jsonl_v1.py"
+      - "tests/fixtures/lens_music_internal_eval_sessions_sample_v1.jsonl"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
       - "scripts/run_compression_automation_chain.ps1"
       - "scripts/run_compression_weekly_governance_chain.ps1"
@@ -870,6 +873,9 @@ jobs:
 
       - name: Lens music internal eval session schema v1 ([HYPO] M3)
         run: python -m pytest tests/test_lens_music_internal_eval_schema_v1.py -q --tb=short
+
+      - name: Lens music internal eval JSONL batch validate v1 ([HYPO] M4)
+        run: python -m pytest tests/test_validate_lens_music_internal_eval_jsonl_v1.py -q --tb=short
 
       - name: Lens music symbolic audio B-track promotion gate v1 ([HYPO] §3.9.2)
         run: python -m pytest tests/test_lens_music_symbolic_audio_promotion_gate_v1.py -q --tb=short

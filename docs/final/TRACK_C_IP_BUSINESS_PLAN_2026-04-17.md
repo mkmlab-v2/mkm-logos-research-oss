@@ -186,10 +186,11 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 | **M1 — 렌즈 배치 스텁** | M0+2주 | **완료(2026-05-10):** `scripts/run_lens_music_gematria.py`(`--mapping-json`·`--sasang-primary`/`--gematria-total`)·봉투 `lens_music_gematria_v1`·`tests/test_run_lens_music_gematria_v1.py`·P0·헌법 보강; `run_lens_sasang.py`와 합선 없음. |
 | **M2 — 안전 게이트 연결** | M1+2주 | **완료(2026-05-10):** `scripts/run_lens_music_gematria_gate_chain_v1.py` — 상징 `resolved_outputs`에 대한 velocity 대비 safety 상한 **HOLD/clip**, 통과 시 시드 BPM·`evaluate_audio_gate.py`·`policies/audio_copyright_field.json`·산출 `reports/lens_music_gate_chain_v1_latest.json`; 회귀 `tests/test_lens_music_gate_chain_v1.py`. WAV는 플레이스홀더로 기계 게이트만 연결(합성 렌더 없음). |
 | **M3 — 내부 평가 프로토콜** | 지속 | **초안 완료(2026-05-10):** `docs/final/schemas/lens_music_internal_eval_session_v1.schema.json`·example·`tests/test_lens_music_internal_eval_schema_v1.py` — 비임상 청취·재현성 메타만 구조화; 인간 라벨링 프로세스는 운영 정책으로 확장. 대외 “실험 중·아티팩트 기반”만. |
+| **M4 — 청취 로그 JSONL 배치 검증** | M3+ | **`완료(2026-05-10):** `scripts/validate_lens_music_internal_eval_jsonl_v1.py`·픽스처 `tests/fixtures/lens_music_internal_eval_sessions_sample_v1.jsonl`·회귀 `tests/test_validate_lens_music_internal_eval_jsonl_v1.py`; 프로모션 번들·§3.9.2에 포함. 배치 적재·외부 공유 없음. |
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.
 
-#### 3.9.2 B-track 연구 승격 게이트 (M0–M3 번들)
+#### 3.9.2 B-track 연구 승격 게이트 (M0–M4 번들)
 
 **목적:** 상용·Track A 오디오와 **합선되지 않게**, 레포 내 회귀만으로 “§3.9 연구 파이프라인 준비 완료”를 한 줄로 판정한다.
 
