@@ -33,7 +33,8 @@
     "tiktoken_o200k_encoding": "o200k_base",
     "tiktoken_o200k_available": true,
     "tiktoken_o200k_unavailable_reason": null,
-    "emit_semantic_pointer": false
+    "emit_semantic_pointer": false,
+    "experimental_decoder_fidelity_for_baseline": false
   },
   "compression_metrics": {
     "case_count": 40,
@@ -43,6 +44,8 @@
     },
     "global_token_saving_rate": 0.23628691983122363,
     "avg_reconstruction_fidelity_jaccard": 0.9753949175824175,
+    "min_reconstruction_fidelity_jaccard": 0.8461538461538461,
+    "low_fidelity_case_count_lt_0_5": 0,
     "avg_sensitive_integrity": 1.0,
     "min_sensitive_integrity": 1.0,
     "sensitive_violation_count": 0,
@@ -119,8 +122,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -154,8 +157,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -264,8 +267,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -299,8 +302,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -402,8 +405,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -437,8 +440,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -539,8 +542,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -574,8 +577,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -679,8 +682,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -714,8 +717,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -821,8 +824,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -856,8 +859,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -960,8 +963,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -995,8 +998,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -1091,8 +1094,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -1126,8 +1129,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -1230,8 +1233,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -1265,8 +1268,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -1369,8 +1372,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -1404,8 +1407,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -1493,8 +1496,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -1528,8 +1531,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -1611,8 +1614,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -1646,8 +1649,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -1729,8 +1732,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -1764,8 +1767,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -1847,8 +1850,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -1882,8 +1885,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -1965,8 +1968,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2000,8 +2003,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -2083,8 +2086,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2118,8 +2121,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -2201,8 +2204,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2236,8 +2239,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -2319,8 +2322,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2354,8 +2357,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -2437,8 +2440,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2472,8 +2475,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -2555,8 +2558,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2590,8 +2593,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -2673,8 +2676,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2708,8 +2711,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -2791,8 +2794,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2826,8 +2829,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -2909,8 +2912,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -2944,8 +2947,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3027,8 +3030,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -3062,8 +3065,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3145,8 +3148,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -3180,8 +3183,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3263,8 +3266,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -3298,8 +3301,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3381,8 +3384,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -3416,8 +3419,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3499,8 +3502,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -3534,8 +3537,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3617,8 +3620,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -3652,8 +3655,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3735,8 +3738,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -3770,8 +3773,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3853,8 +3856,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -3888,8 +3891,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -3971,8 +3974,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4006,8 +4009,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -4089,8 +4092,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4124,8 +4127,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -4207,8 +4210,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4242,8 +4245,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -4325,8 +4328,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4360,8 +4363,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -4443,8 +4446,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4478,8 +4481,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -4561,8 +4564,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4596,8 +4599,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -4679,8 +4682,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4714,8 +4717,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -4797,8 +4800,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4832,8 +4835,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -4915,8 +4918,8 @@
             "K": 0.245,
             "M": 0.265
           },
-          "state16": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state16": 1,
+          "distance_to_state16": 0.01732050807568879,
           "probe_path": "C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json"
         },
         "gematria_4d_bridge_policy_applied": false,
@@ -4950,8 +4953,8 @@
           "vector_sum": 1.0,
           "sep_target": 0.25,
           "lambda_deviation": 0.007500000000000007,
-          "state_id": 3,
-          "distance_to_state16": 0.010000000000000009,
+          "state_id": 1,
+          "distance_to_state16": 0.01732050807568879,
           "metadata_post_it": {
             "lane": "A-track",
             "balance_band": "near_sep_0_25",
@@ -5076,7 +5079,7 @@
     "max_lambda_deviation": 0.007500000000000007,
     "min_lambda_deviation": 0.007500000000000007,
     "state16_distribution": {
-      "3": 40
+      "1": 40
     },
     "balance_band_distribution": {
       "near_sep_0_25": 40

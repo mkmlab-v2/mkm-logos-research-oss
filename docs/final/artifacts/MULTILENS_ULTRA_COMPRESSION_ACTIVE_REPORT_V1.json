@@ -5098,7 +5098,6 @@
     "sensitive_max_saving_rate": 0.3,
     "hangul_max_saving_rate": 0.6,
     "apply_gematria_4d_bridge_policy": false,
-    "apply_gematria_4d_bridge_policy_env": false,
-    "anchor_script": "scripts/apply_general_compression_sweep_anchor_to_ultra_decision_v1.py"
+    "apply_gematria_4d_bridge_policy_env": false
   }
 }
