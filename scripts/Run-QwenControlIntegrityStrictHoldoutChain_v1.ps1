@@ -63,7 +63,8 @@ if ($StrictPromotionGate) {
     "--min-must-include-rate", "0.70",
     "--holdout-report", "reports/mkm_control_integrity_lora_eval_holdout_suite_qwen25_7b_lora_300_strict_latest.json",
     "--min-locked-eval-pass-rate", "0.85",
-    "--min-holdout-row-pass-weighted", "0.80"
+    "--min-holdout-row-pass-weighted", "0.80",
+    "--report-out", "reports/mkm_control_integrity_promotion_gate_strict_latest.json"
   )
 } else {
   Write-Step "promotion_gate mode=default_signoff (holdout-only, locked_eval>=0.68, weighted>=0.70)"

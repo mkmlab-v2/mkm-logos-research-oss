@@ -48,6 +48,11 @@ def main() -> int:
         help="If >0, require merge report summary.row_pass_rate_weighted >= threshold",
     )
     ap.add_argument("--holdout-only", action="store_true", help="Only check holdout report thresholds")
+    ap.add_argument(
+        "--report-out",
+        default="reports/mkm_control_integrity_promotion_gate_latest.json",
+        help="Write gate JSON here (default: reports/mkm_control_integrity_promotion_gate_latest.json)",
+    )
     args = ap.parse_args()
 
     decision = "GO"
@@ -111,7 +116,7 @@ def main() -> int:
         },
     }
 
-    report_path = WORKSPACE_ROOT / "reports" / "mkm_control_integrity_promotion_gate_latest.json"
+    report_path = _as_abs(args.report_out)
     report_path.parent.mkdir(parents=True, exist_ok=True)
     with report_path.open("w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=2)
