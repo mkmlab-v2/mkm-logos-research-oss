@@ -85,6 +85,14 @@ function Save-State([string]$key) {
     @{ last_alert_key = $key } | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath $StatePath -Encoding UTF8
 }
 
+$fallbackCsv = "C:\workspace\research\market_data\btc_daily_external_yf.csv"
+if (-not (Test-Path -LiteralPath $InputCsv)) {
+    if (Test-Path -LiteralPath $fallbackCsv) {
+        Write-TaskLog "WARN primary CSV missing; using fallback: $fallbackCsv"
+        $InputCsv = $fallbackCsv
+    }
+}
+
 Write-TaskLog "RUN blind_replay_multi_seed start"
 $cmd = @(
     "C:\workspace\scripts\run_blind_replay_dataset_grid.py",

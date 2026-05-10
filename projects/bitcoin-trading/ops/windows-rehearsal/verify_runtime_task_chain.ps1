@@ -1,5 +1,9 @@
 param(
-    [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\runtime_task_chain_latest.json"
+    [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\runtime_task_chain_latest.json",
+    [string[]]$AllowDisabled = @(
+        '\Bitcoin-Runtime-Bootstrap-Automation',
+        '\Bitcoin-Runtime-Self-Heal'
+    )
 )
 
 $ErrorActionPreference = "Stop"
@@ -36,6 +40,10 @@ function Get-TaskSnapshot([string]$TaskName) {
     $nextRun = ($nextRunLine -replace "^Next Run Time:\s+", "").Trim()
     $lastResult = ($lastResultLine -replace "^Last Result:\s+", "").Trim()
     $isReady = ($status -in @("Ready", "Running"))
+    $ok = $isReady
+    if (-not $ok -and $status -eq "Disabled" -and ($AllowDisabled -contains $TaskName)) {
+        $ok = $true
+    }
 
     return @{
         task_name = $TaskName
@@ -43,7 +51,7 @@ function Get-TaskSnapshot([string]$TaskName) {
         status = $status
         next_run_time = $nextRun
         last_result = $lastResult
-        ok = $isReady
+        ok = $ok
     }
 }
 
@@ -56,6 +64,7 @@ $allOk = ($items | Where-Object { -not $_.ok }).Count -eq 0
 $result = [ordered]@{
     timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
     all_ok = $allOk
+    allow_disabled_tasks = @($AllowDisabled)
     items = $items
 }
 

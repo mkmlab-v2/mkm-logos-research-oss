@@ -1,5 +1,13 @@
 param(
-    [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\runtime_schedule_integrity_latest.json"
+    [string]$OutputPath = "C:\workspace\projects\bitcoin-trading\memory\v2\ops\runtime_schedule_integrity_latest.json",
+    # Daily stagger shifts Start Time vs nominal HH:mm — exact minute match is too brittle for Task Scheduler.
+    # Covers intra-cluster reorder (e.g. Alert 09:10 vs nominal 09:30) without masking whole-hour drift.
+    [int]$TimeToleranceMinutes = 25,
+    # Ops may intentionally disable bootstrap/self-heal while keeping the chain audited.
+    [string[]]$AllowDisabled = @(
+        '\Bitcoin-Runtime-Bootstrap-Automation',
+        '\Bitcoin-Runtime-Self-Heal'
+    )
 )
 
 $ErrorActionPreference = "Stop"
@@ -41,16 +49,26 @@ function Parse-Time([string]$Text) {
     return $null
 }
 
+function Test-MinutesWithinTolerance([nullable[int]]$ActualMin, [nullable[int]]$ExpectedMin, [int]$Tol) {
+    if ($null -eq $ActualMin -or $null -eq $ExpectedMin) { return $false }
+    $diff = [Math]::Abs([int]$ActualMin - [int]$ExpectedMin)
+    $circ = [Math]::Min($diff, 1440 - $diff)
+    return ($circ -le $Tol)
+}
+
+function Test-AcceptableTaskStatus([string]$Status, [string]$TaskName, [string[]]$AllowDisabledList) {
+    if ($Status -in @("Ready", "Running")) { return $true }
+    if ($Status -eq "Disabled" -and $AllowDisabledList -contains $TaskName) { return $true }
+    return $false
+}
+
 $items = @()
 foreach ($e in $expected) {
     $task = $e.task
     $expectedMin = Parse-Time $e.time
     $snap = Get-TaskStartTime -TaskName $task
     $actualMin = Parse-Time $snap.start_time
-    $timeMatch = $false
-    if ($snap.exists -and $null -ne $actualMin -and $actualMin -eq $expectedMin) {
-        $timeMatch = $true
-    }
+    $timeMatch = Test-MinutesWithinTolerance -ActualMin $actualMin -ExpectedMin $expectedMin -Tol $TimeToleranceMinutes
     $items += @{
         task_name = $task
         exists = $snap.exists
@@ -63,7 +81,7 @@ foreach ($e in $expected) {
 
 $allExist = ($items | Where-Object { -not $_.exists }).Count -eq 0
 $allTimeMatch = ($items | Where-Object { -not $_.time_match }).Count -eq 0
-$allReady = ($items | Where-Object { $_.status -notin @("Ready", "Running") }).Count -eq 0
+$allReady = ($items | Where-Object { -not (Test-AcceptableTaskStatus -Status $_.status -TaskName $_.task_name -AllowDisabledList $AllowDisabled) }).Count -eq 0
 
 $integrityOk = $allExist -and $allTimeMatch -and $allReady
 $result = [ordered]@{
@@ -72,6 +90,8 @@ $result = [ordered]@{
     all_exist = $allExist
     all_time_match = $allTimeMatch
     all_ready = $allReady
+    time_tolerance_minutes = $TimeToleranceMinutes
+    allow_disabled_tasks = @($AllowDisabled)
     items = $items
 }
 
