@@ -200,6 +200,71 @@ def build_m7_quality_guard(
     }
 
 
+def build_m9_melody_stage(
+    *,
+    effective_outputs: dict[str, Any],
+    overlay_stage: dict[str, Any] | None,
+    emotion_overlay: dict[str, Any] | None,
+) -> dict[str, Any]:
+    """M9 melody advisory stage.
+
+    Provides deterministic melody-theory suggestions (scale, pentatonic usage,
+    phrase constraints). Non-blocking: suggestions only.
+    """
+    harm = dict(effective_outputs.get("harmony") or {})
+    mode_hint = str(harm.get("mode_hint", "minor")).lower()
+    root_pc = int(harm.get("root_pc", 0))
+    tempo_target = float(dict(effective_outputs.get("tempo_bpm") or {}).get("target", 120.0))
+    evo = emotion_overlay or {}
+    valence = float(evo.get("valence", 0.0))
+    arousal = float(evo.get("arousal", 0.0))
+    applied = bool(isinstance(overlay_stage, dict) and overlay_stage.get("would_apply"))
+
+    if mode_hint in {"major", "mixolydian"}:
+        scale_family = "major_family"
+        default_scale = "major_pentatonic" if valence >= 0 else "mixolydian"
+    else:
+        scale_family = "minor_family"
+        default_scale = "minor_pentatonic" if valence <= 0 else "dorian"
+
+    # Melody contour and phrase constraints.
+    leap_max_semitones = 7 if abs(arousal) < 0.4 else 9
+    density_hint = "sparse" if tempo_target < 70 else "medium" if tempo_target < 105 else "dense"
+    contour_hint = "ascending" if valence > 0.2 else "descending" if valence < -0.2 else "arch"
+
+    return {
+        "enabled": True,
+        "schema": "melody_overlay_advisory_v1",
+        "input_snapshot": {
+            "mode_hint": mode_hint,
+            "root_pc": root_pc,
+            "tempo_target_bpm": tempo_target,
+            "valence": valence,
+            "arousal": arousal,
+            "emotion_overlay_applied": applied,
+        },
+        "theory_suggestion": {
+            "scale_family": scale_family,
+            "primary_scale": default_scale,
+            "allow_pentatonic": True,
+            "fallback_scales": (
+                ["major", "major_pentatonic", "mixolydian"]
+                if scale_family == "major_family"
+                else ["natural_minor", "minor_pentatonic", "dorian"]
+            ),
+        },
+        "phrase_constraints": {
+            "phrase_bars": 4,
+            "motif_repeat_rate": 0.35 if density_hint != "dense" else 0.25,
+            "max_leap_semitones": leap_max_semitones,
+            "contour_hint": contour_hint,
+            "density_hint": density_hint,
+            "cadence_hint": "strong_tonic" if valence >= 0 else "soft_tonic_or_fifth",
+        },
+        "note": "Melody theory advisory only (M9); does not mutate symbolic outputs.",
+    }
+
+
 def evaluate_symbolic_safety(
     outputs: dict[str, Any],
     *,
@@ -340,6 +405,11 @@ def main() -> int:
         base_outputs=raw_outputs,
         effective_outputs=eff_outputs,
         overlay_stage=emo_stage,
+    )
+    chain["melody_stage_m9"] = build_m9_melody_stage(
+        effective_outputs=eff_outputs,
+        overlay_stage=emo_stage if isinstance(emo_stage, dict) else None,
+        emotion_overlay=evo if isinstance(evo, dict) else None,
     )
 
     if sym_decision == "HOLD":

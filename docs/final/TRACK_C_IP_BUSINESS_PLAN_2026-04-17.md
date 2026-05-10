@@ -191,6 +191,7 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 | **M6 — 감정 오버레이 보정 프리뷰/적용(클램프)** | M5+ | **`완료(2026-05-10):** `run_lens_music_gematria_gate_chain_v1.py --emotion-overlay-policy off|preview|apply` — preview 기본, apply 시 tempo/velocity bounded heuristic 적용 후 symbolic safety 재평가. Track Wall·상용 자동 승격 없음. |
 | **M7 — 감정 오버레이 품질 가드(Advisory)** | M6+ | **`완료(2026-05-10):** 체인 산출 `quality_guard_m7` 추가(tempo drift/velocity cap/proposal consistency/heuristic bounds). WARN/OK는 **권고 정보만** 제공하며 `final_decision`을 덮어쓰지 않음(연구 레인). |
 | **M8 — 품질 가드 주간 집계 리포트(Advisory)** | M7+ | **`완료(2026-05-10):** `scripts/build_lens_music_quality_guard_m7_summary_v1.py` — 다중 체인 JSON 입력으로 WARN/OK 및 check별 비율 집계(`lens_music_quality_guard_m7_summary_v1`). 비차단 통계 리포트만 제공. |
+| **M9 — 멜로디 이론 제안 레이어(Advisory)** | M8+ | **`완료(2026-05-10):** 게이트 체인 산출에 `melody_stage_m9` 추가 — mode/root/VA 기반으로 스케일 패밀리·펜타토닉 허용·프레이즈 제약(도약 상한/컨투어/종지 힌트) 제안. 비차단 권고이며 기존 `final_decision` 비변경. |
 | **§3.10 — 사상→감정 연속축 계약 (Draft)** | 병행 | **`완료(2026-05-10):** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json`·example·회귀 `tests/test_sasang_emotion_mapping_schema_v1.py` — VA 앵커만; `sasang_music_mapping_v1`와 역할 분리(본 표 §3.10). 프로모션 M0–M5 번들(§3.9.2)로 추적 포함, 승격 결정식은 기존 pytest pass와 동일. |
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.

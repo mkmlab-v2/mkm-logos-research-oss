@@ -107,6 +107,8 @@ def test_chain_end_to_end_subprocess(tmp_path):
     assert chain["schema"] == "lens_music_gate_chain_v1"
     assert chain["symbolic_stage"]["decision"] == "PASS"
     assert chain["audio_gate"]["decision"] == "PASS"
+    assert chain["melody_stage_m9"]["enabled"] is True
+    assert chain["melody_stage_m9"]["schema"] == "melody_overlay_advisory_v1"
 
 
 def test_chain_includes_emotion_overlay_when_lens_has_it(tmp_path):
@@ -322,3 +324,8 @@ def test_chain_emotion_overlay_apply_mode_mutates_effective_outputs(tmp_path):
     assert chain["quality_guard_m7"]["enabled"] is True
     assert chain["quality_guard_m7"]["status"] == "OK"
     assert chain["quality_guard_m7"]["warn_count"] == 0
+    # M9 melody advisory should expose scale/pentatonic constraints.
+    m9 = chain["melody_stage_m9"]
+    assert m9["enabled"] is True
+    assert m9["theory_suggestion"]["allow_pentatonic"] is True
+    assert m9["phrase_constraints"]["max_leap_semitones"] >= 7
