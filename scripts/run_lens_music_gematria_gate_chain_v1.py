@@ -265,6 +265,71 @@ def build_m9_melody_stage(
     }
 
 
+def _scale_pcs_for_name(scale_name: str) -> list[int]:
+    table = {
+        "major": [0, 2, 4, 5, 7, 9, 11],
+        "major_pentatonic": [0, 2, 4, 7, 9],
+        "mixolydian": [0, 2, 4, 5, 7, 9, 10],
+        "natural_minor": [0, 2, 3, 5, 7, 8, 10],
+        "minor_pentatonic": [0, 3, 5, 7, 10],
+        "dorian": [0, 2, 3, 5, 7, 9, 10],
+    }
+    return table.get(scale_name, table["natural_minor"])
+
+
+def build_m10_melody_sequence_stage(
+    *,
+    melody_stage_m9: dict[str, Any],
+    root_pc: int,
+) -> dict[str, Any]:
+    """M10: convert M9 advisory into a deterministic sample melody sequence."""
+    if not melody_stage_m9.get("enabled"):
+        return {"enabled": False, "status": "SKIPPED"}
+
+    sugg = dict(melody_stage_m9.get("theory_suggestion") or {})
+    phr = dict(melody_stage_m9.get("phrase_constraints") or {})
+    scale_name = str(sugg.get("primary_scale", "minor_pentatonic"))
+    pcs_rel = _scale_pcs_for_name(scale_name)
+    pcs_abs = [((root_pc + p) % 12) for p in pcs_rel]
+    contour = str(phr.get("contour_hint", "arch"))
+    density = str(phr.get("density_hint", "medium"))
+
+    # Four-bar deterministic motif in MIDI note numbers (single octave anchor).
+    base_oct = 60  # C4 anchor
+    scale_midi = [base_oct + p for p in pcs_abs]
+    if contour == "ascending":
+        idx_seq = [0, 1, 2, 3, 2, 3, 4, 5]
+    elif contour == "descending":
+        idx_seq = [5, 4, 3, 2, 3, 2, 1, 0]
+    else:  # arch
+        idx_seq = [0, 1, 2, 3, 4, 3, 2, 1]
+
+    # Density controls duration.
+    dur = 0.5 if density == "dense" else 1.0 if density == "medium" else 2.0
+    notes = []
+    for i, idx in enumerate(idx_seq):
+        midi_note = scale_midi[idx % len(scale_midi)]
+        notes.append(
+            {
+                "step": i,
+                "midi": int(midi_note),
+                "dur_beats": dur,
+                "role": "motif",
+            }
+        )
+
+    return {
+        "enabled": True,
+        "schema": "melody_sequence_stub_v1",
+        "source": "melody_stage_m9",
+        "scale_name": scale_name,
+        "root_pc": root_pc,
+        "notes": notes,
+        "bars": 4,
+        "note": "M10 sample sequence only; no MIDI/WAV rendering, non-blocking.",
+    }
+
+
 def evaluate_symbolic_safety(
     outputs: dict[str, Any],
     *,
@@ -410,6 +475,12 @@ def main() -> int:
         effective_outputs=eff_outputs,
         overlay_stage=emo_stage if isinstance(emo_stage, dict) else None,
         emotion_overlay=evo if isinstance(evo, dict) else None,
+    )
+    m9 = chain["melody_stage_m9"]
+    root_pc = int(dict(eff_outputs.get("harmony") or {}).get("root_pc", 0))
+    chain["melody_stage_m10"] = build_m10_melody_sequence_stage(
+        melody_stage_m9=m9 if isinstance(m9, dict) else {"enabled": False},
+        root_pc=root_pc,
     )
 
     if sym_decision == "HOLD":

@@ -109,6 +109,9 @@ def test_chain_end_to_end_subprocess(tmp_path):
     assert chain["audio_gate"]["decision"] == "PASS"
     assert chain["melody_stage_m9"]["enabled"] is True
     assert chain["melody_stage_m9"]["schema"] == "melody_overlay_advisory_v1"
+    assert chain["melody_stage_m10"]["enabled"] is True
+    assert chain["melody_stage_m10"]["schema"] == "melody_sequence_stub_v1"
+    assert len(chain["melody_stage_m10"]["notes"]) == 8
 
 
 def test_chain_includes_emotion_overlay_when_lens_has_it(tmp_path):
@@ -329,3 +332,14 @@ def test_chain_emotion_overlay_apply_mode_mutates_effective_outputs(tmp_path):
     assert m9["enabled"] is True
     assert m9["theory_suggestion"]["allow_pentatonic"] is True
     assert m9["phrase_constraints"]["max_leap_semitones"] >= 7
+    m10 = chain["melody_stage_m10"]
+    assert m10["enabled"] is True
+    assert m10["scale_name"] in {
+        "major",
+        "major_pentatonic",
+        "mixolydian",
+        "natural_minor",
+        "minor_pentatonic",
+        "dorian",
+    }
+    assert all(isinstance(n["midi"], int) for n in m10["notes"])
