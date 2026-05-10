@@ -203,6 +203,7 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 | **M18 — Track C 대시보드 통합** | M17+ | **`완료(2026-05-11):** `build_mkm_trackc_ops_dashboard_v1.py`가 `lens_music_audition_governance_status_latest.json`을 읽어 `trackc.lens_music_audition_governance`에 노출. 운영판에서 GO/WATCH를 동일 화면에서 확인 가능. |
 | **M19 — Governance webhook/alert 브리지** | M18+ | **`완료(2026-05-11):** `dispatch_lens_music_audition_governance_webhook_v1.py` 추가. M17 status를 compliance-safe payload로 외부 webhook에 전달(미설정 시 skip 기록). 연구 레인 advisory-only 유지. |
 | **M20 — Dynamic Prompt Overlay (Level 1)** | M19+ | **`완료(2026-05-11):** `build_lens_music_prompt_overlay_v1.py` 추가. M17 status + 체인 감정 맥락(BPM/valence/arousal)으로 system prompt 오버레이를 생성(`lens_music_prompt_overlay_v1`), control-plane/user-plane 분리 계약을 명시. |
+| **M21 — Prompt Overlay 3일 Smoke Eval (초기)** | M20+ | **`완료(2026-05-11):** `run_lens_music_prompt_smoke_eval_v1.py` 추가. 샘플 응답 JSONL에 대해 style/sentence-length 히ュー리스틱 일치율을 계산(`lens_music_prompt_smoke_eval_v1`)하고 GO/WATCH를 산출. advisory-only. |
 | **§3.10 — 사상→감정 연속축 계약 (Draft)** | 병행 | **`완료(2026-05-10):** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json`·example·회귀 `tests/test_sasang_emotion_mapping_schema_v1.py` — VA 앵커만; `sasang_music_mapping_v1`와 역할 분리(본 표 §3.10). 프로모션 M0–M5 번들(§3.9.2)로 추적 포함, 승격 결정식은 기존 pytest pass와 동일. |
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.

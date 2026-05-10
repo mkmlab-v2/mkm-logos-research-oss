@@ -12,6 +12,7 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     gov = tmp_path / "gov.json"
     chain = tmp_path / "chain.json"
     out = tmp_path / "overlay.json"
+    state_path = tmp_path / "state.json"
     gov.write_text(
         json.dumps(
             {
@@ -49,6 +50,8 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
             str(chain),
             "--out",
             str(out),
+            "--state-json",
+            str(state_path),
         ],
         cwd=str(ROOT),
         capture_output=True,
@@ -58,5 +61,7 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["schema"] == "lens_music_prompt_overlay_v1"
     assert doc["global_state"]["state"] == "WATCH"
+    assert doc["global_state"]["smoothed_bpm"] > 0
+    assert doc["global_state"]["target_bpm_from_sasang"] > 0
     assert doc["control_plane_contract"]["control_plane_user_plane_separation"] is True
     assert "Governance=WATCH" in doc["system_instructions"]
