@@ -149,6 +149,9 @@ def main() -> int:
         },
         "audio_gate": {"skipped": True, "reason": None},
     }
+    evo = lens_doc.get("emotion_va_overlay_v1")
+    if isinstance(evo, dict):
+        chain["emotion_va_overlay_v1"] = evo
 
     if sym_decision == "HOLD":
         chain["audio_gate"] = {"skipped": True, "reason": "symbolic_hold"}

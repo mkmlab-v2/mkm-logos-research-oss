@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-10T18:35:00Z
+- **last_updated_utc:** 2026-05-10T14:30:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,7 +15,7 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-10T07:15:12Z** — integrity_lock aligned to verify_master_probe 85/partial; Fact-Lock+P1+TruthfulQA strict full pass
+- **2026-05-10T14:30:00Z** — §3.10 emotion VA overlay wired (lens gematria + gate chain) + commit push gitea
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -235,6 +235,7 @@
 | 2026-05-09 (NotebookLM MCP 빠른 복구 루틴 고정) | 자동 복구 실행: `check_notebooklm_mcp_prereqs.ps1`·`repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12`·MCP `get_health`/`ask_question` 스모크 **연속 성공**. 운영자가 즉시 복구할 수 있게 3줄 카드 `docs/final/artifacts/notebooklm_mcp_quick_recovery_3lines_2026-05-09.txt` 추가. 목표는 100% 무고장이 아니라 **실패 즉시 1~2분 복구**로 고정. |
 | 2026-05-10 (상징→오디오 M0–M4 + B-track 승격 게이트 `[HYPO]` §3.9.1–3.9.2) | M0–M4 스키마·렌즈·게이트·JSONL 검증·프로모션 게이트·`track_wall`(Track A·1차 GTM 자동 승격 금지)·압축 §9 레인 분리·pytest·P0·CI. |
 | 2026-05-10 (Track C §3.10 사상→감정 VA 연속축 계약 Draft `[HYPO]`) | `sasang_emotion_mapping_v1`·`sasang_music_mapping_v1` 역할 분리·결정론 룩업·TOE 금지 — `TRACK_C` §3.10·`CONSTITUTION`·회귀·P0; 범용 추론·실거래 자동 합선 없음. |
+| 2026-05-10 (§3.10 `emotion_va_overlay_v1` 렌즈·게이트체인 연동) | `run_lens_music_gematria.py --emotion-mapping-json` → `emotion_va_overlay_v1`(스키마 검증)·`run_lens_music_gematria_gate_chain_v1` 미러; 음악 `resolved_outputs`는 비변경·오버레이만; pytest·P0·TRACK_C/CONSTITUTION 동기화. |
 | 2026-05-10 (Track C §3.9 통제형 오디오·상징 라우팅 `[HYPO]`) | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.9에 매핑 스키마·M0~M4 로드맵·AI BGM 게이트 연계·비임상·TOE 금지 고정; 실행은 B-track. 구현 판정은 `CONSTITUTION`·스크립트·pytest. |
 | 2026-05-10 (Control-Integrity · Fact-Lock · Vault) | `integrity_guard` **149/149**·`run_fact_lock_bundle.ps1` **exit 0**; LoRA 골든·홀드아웃·프로모션 게이트 정합; `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62` `skipped=136` → 공유 Vault `notebooklm_sources`에 **헌법·Track C·운영 스냅샷** 등 매니페스트 원본 미러(지휘부 브리핑은 NL·Vault **참고**, 구현 판정은 레포·스크립트). |
 | 2026-05-10 (Control-Integrity · TinyLlama LoRA 300 · 승격 게이트 GO) | Windows fallback **300-step** 학습 → 어댑터 `models/adapters/macro_prophecy_lora_windows_fallback_tinyllama_v1` · 실추론 `Run-MkmControlIntegrityTrainInferEval` (`custom`, oracle=False) · 홀드아웃 `reports/mkm_control_integrity_lora_eval_holdout_suite_tinyllama_lora_300_latest.json` (가중 row_pass **0.800**=임계 동일선, locked_eval **0.94**) · `scripts/check_mkm_control_integrity_promotion_gate_v1.py` → `reports/mkm_control_integrity_promotion_gate_latest.json` **decision=GO** (셸 exit 0). |

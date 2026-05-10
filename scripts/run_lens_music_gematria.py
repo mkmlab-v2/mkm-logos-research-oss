@@ -4,6 +4,10 @@
 Does not generate audio. Does not claim clinical efficacy. Independent of `run_lens_sasang.py`
 (no shared state). Outputs envelope `lens_music_gematria_v1` with `resolved_outputs` compatible
 with `docs/final/schemas/sasang_music_mapping_v1.schema.json` outputs section.
+
+Optional `--emotion-mapping-json` loads `sasang_emotion_mapping_v1` and attaches deterministic
+VA anchors (`emotion_va_overlay_v1`) — audio numeric outputs are unchanged unless downstream
+code consumes the overlay (§3.10 TRACK_C).
 """
 from __future__ import annotations
 
@@ -59,6 +63,43 @@ def _validate_mapping_doc(doc: dict[str, Any]) -> None:
     schema_path = ROOT / "docs/final/schemas/sasang_music_mapping_v1.schema.json"
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     jsonschema.validate(instance=doc, schema=schema)
+
+
+def _validate_emotion_mapping_doc(doc: dict[str, Any]) -> None:
+    try:
+        import jsonschema  # type: ignore
+    except ImportError:
+        raise RuntimeError("jsonschema required for --emotion-mapping-json; pip install jsonschema")
+    schema_path = ROOT / "docs/final/schemas/sasang_emotion_mapping_v1.schema.json"
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    jsonschema.validate(instance=doc, schema=schema)
+
+
+def _build_emotion_va_overlay(
+    emotion_doc: dict[str, Any],
+    sasang_primary: str,
+    *,
+    source_path: str,
+) -> dict[str, Any]:
+    key = sasang_primary.strip().lower()
+    anchors = emotion_doc.get("anchors") or {}
+    if key not in anchors:
+        raise ValueError(
+            f"emotion anchors missing sasang_primary={key!r}; "
+            f"have {sorted(anchors)}"
+        )
+    pt = anchors[key]
+    return {
+        "schema": "emotion_va_overlay_v1",
+        "emotion_mapping_schema": "sasang_emotion_mapping_v1",
+        "mapping_version": emotion_doc["mapping_version"],
+        "emotion_model": emotion_doc["emotion_model"],
+        "sasang_primary": key,
+        "valence": float(pt["valence"]),
+        "arousal": float(pt["arousal"]),
+        "emotion_mapping_source": source_path,
+        "note": "VA lookup only; tempo/harmony unchanged unless a downstream step consumes this overlay.",
+    }
 
 
 def _apply_gematria_tempo_shift(outputs: dict[str, Any], gematria: int) -> None:
@@ -137,6 +178,12 @@ def main() -> int:
     )
     ap.add_argument("--experiment-id", type=str, default="lens_music_gematria_cli")
     ap.add_argument("--output", type=Path, default=None, help="Write JSON here; default stdout.")
+    ap.add_argument(
+        "--emotion-mapping-json",
+        type=Path,
+        default=None,
+        help="Optional sasang_emotion_mapping_v1 document; VA anchors merged into envelope as emotion_va_overlay_v1.",
+    )
     args = ap.parse_args()
 
     try:
@@ -173,6 +220,21 @@ def main() -> int:
                     "experiment_id": args.experiment_id,
                     "builtin_version": BUILTIN_TABLE_VERSION,
                 },
+            )
+
+        if args.emotion_mapping_json is not None:
+            edoc = json.loads(args.emotion_mapping_json.read_text(encoding="utf-8"))
+            _validate_emotion_mapping_doc(edoc)
+            sm = env.get("sasang_music_mapping_v1")
+            if not isinstance(sm, dict) or "inputs" not in sm:
+                raise ValueError("internal: missing sasang_music_mapping_v1.inputs for emotion overlay")
+            sk = str(sm["inputs"].get("sasang_primary", "")).strip().lower()
+            if not sk:
+                raise ValueError("sasang_primary missing in mapping envelope")
+            env["emotion_va_overlay_v1"] = _build_emotion_va_overlay(
+                edoc,
+                sk,
+                source_path=str(args.emotion_mapping_json.resolve()),
             )
 
         text = json.dumps(env, ensure_ascii=False, indent=2) + "\n"

@@ -54,6 +54,32 @@ def test_lens_music_gematria_mapping_json_example_file():
     assert env["resolved_outputs"]["tempo_bpm"]["target"] == 72.0
 
 
+def test_lens_music_gematria_emotion_mapping_overlay_builtin():
+    emo = ROOT / "docs/final/schemas/sasang_emotion_mapping_v1.example.json"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/run_lens_music_gematria.py"),
+            "--sasang-primary",
+            "taeeum",
+            "--emotion-mapping-json",
+            str(emo),
+            "--experiment-id",
+            "pytest_emotion_overlay",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert r.returncode == 0, r.stderr
+    env = json.loads(r.stdout)
+    ov = env["emotion_va_overlay_v1"]
+    assert ov["schema"] == "emotion_va_overlay_v1"
+    assert ov["valence"] == 0.05
+    assert ov["arousal"] == -0.45
+    assert env["resolved_outputs"]["tempo_bpm"]["target"] == 72.0
+
+
 def test_gematria_shift_deterministic():
     r1 = subprocess.run(
         [

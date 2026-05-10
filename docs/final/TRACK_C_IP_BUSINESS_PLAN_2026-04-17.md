@@ -215,6 +215,8 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 
 **계약 파일:** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json` · `sasang_emotion_mapping_v1.example.json`. 수치 앵커·실험 계열은 **예시 JSON에만** 두고, 본 절 본문은 원칙만 서술한다(문서–코드 단일 근원은 버전된 JSON).
 
+**레포 실행 (Fact-Lock):** `scripts/run_lens_music_gematria.py --emotion-mapping-json <path>` — `sasang_music_mapping_v1.inputs.sasang_primary`(내장·외부 매핑 공통)와 `anchors` 키가 일치해야 한다. 산출 봉투에 **`emotion_va_overlay_v1`**(VA 룩업·메타); **오디오 `resolved_outputs` 수치는 비변경**(오버레이만). `run_lens_music_gematria_gate_chain_v1.py`는 렌즈에 해당 필드가 있으면 **`lens_music_gate_chain_v1`** 산출에 동일 부착.
+
 **`sasang_music_mapping_v1`와의 관계:** `sasang_emotion_mapping_v1`은 **감정 축 오버레이**만 담는다. **템포·조성·velocity·safety 한계** 등 오디오 `outputs`는 기존 **`sasang_music_mapping_v1`** 행 또는 게이트 체인(`run_lens_music_gematria_gate_chain_v1.py` 등)에서 유지한다. 파이프라인 예: 기호 → VA 앵커(본 계약) → (실험적으로) 음악 매핑 행과 합성 → 오디오 게이트.
 
 **Track Wall:** 본 계약은 **오디오/BGM·내부 로그·연구 산출**에 한한다. **범용 추론(General Reasoning) 자동 향상**, **A-track 실거래**, **Track C 1차 GTM 단일 트리거**, **임상·음악치료 효능** 주장과 **자동 합선되지 않는다** — §3.9.2 `track_wall`과 동일 정신.
