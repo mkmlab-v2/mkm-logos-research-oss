@@ -56,10 +56,12 @@ function Read-Json([string]$Path) {
   catch { return $null }
 }
 
+# Core trading/security schedules. Do not list MKM-AmsaengEosa-Monitoring-Bundle-60min:
+# that bundle ends with Invoke-AmsaengEosaGovernanceCycle -> Invoke-SafeOpsSurfaceCheck ->
+# this script (LastTaskResult feedback loop / self-gate).
 $taskNames = @(
   "MKM-Trading-Observation-Loop-2H",
   "MKM-Trading-Execution-Readiness-Loop-2H",
-  "MKM-AmsaengEosa-Monitoring-Bundle-60min",
   "MKM-Security-Integrity-Check-5min"
 )
 

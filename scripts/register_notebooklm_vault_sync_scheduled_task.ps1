@@ -1,17 +1,18 @@
 # Register (or remove) a Windows Scheduled Task to run NotebookLM → MKM_DATA_VAULT mirror daily.
-# Uses run_notebooklm_sync.ps1 (scheduled_guard + manifest + maturity sync).
+# Runner: scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1 (SSOT; docs/NotebookLM_sources_manifest.md).
 # Requires: interactive user session for G: drive mapping; run once per user profile.
 
 param(
     [switch]$Remove,
     [string]$TaskName = "MKM_NotebookLM_Vault_Sync",
-    [string]$DailyAt = "07:00"
+    [string]$DailyAt = "07:15",
+    [string]$WorkspaceRoot = "C:\workspace"
 )
 
 $ErrorActionPreference = "Stop"
 
-$workspaceRoot = "C:\workspace"
-$runner = Join-Path $workspaceRoot "projects\bitcoin-trading\ops\v2\reports\run_notebooklm_sync.ps1"
+$workspaceRoot = $WorkspaceRoot.TrimEnd('\')
+$runner = Join-Path $workspaceRoot "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1"
 
 if ($Remove) {
     Unregister-ScheduledTask -TaskName $TaskName -Confirm:$false -ErrorAction SilentlyContinue
@@ -45,7 +46,7 @@ $settings = New-ScheduledTaskSettingsSet `
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
 
-$description = "Mirror NotebookLM SSOT + bot maturity to G:\ MKM_DATA_VAULT\vault (guarded min interval)."
+$description = "Mirror NotebookLM manifest paths to MKM_DATA_VAULT vault\notebooklm_sources (sync_notebooklm_sources_to_mkm_data_vault.ps1)."
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null

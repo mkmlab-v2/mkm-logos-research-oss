@@ -75,12 +75,14 @@ if (-not $SkipEval) {
     }
 
     if (-not $SkipDualLegCompare) {
+        # Forward slashes: avoids PowerShell backslash doubling breaking Python -c quoting.
+        $wsPy = ($WorkspaceRoot.TrimEnd('\') -replace '\\', '/')
         $splitScript = @'
 import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(r"__WORKSPACE_ROOT__")
+ROOT = Path("__WORKSPACE_ROOT__")
 src = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_latest.json"
 doc = json.loads(src.read_text(encoding="utf-8"))
 rows = doc.get("rows") or []
@@ -141,10 +143,17 @@ print(f"WROTE: {kospi_score}")
 print(f"WROTE: {btc_score}")
 print(f"WROTE: {cmp_json}")
 '@
-        $splitScript = $splitScript.Replace("__WORKSPACE_ROOT__", $WorkspaceRoot.Replace('\', '\\'))
-        & py "-c" $splitScript
-        if ($LASTEXITCODE -ne 0) {
-            throw "Dual-leg split/compare generation failed with exit $LASTEXITCODE"
+        $splitScriptResolved = $splitScript.Replace("__WORKSPACE_ROOT__", $wsPy)
+        $splitTmp = Join-Path $env:TEMP ("btrack_dual_leg_split_" + [guid]::NewGuid().ToString("n") + ".py")
+        try {
+            Set-Content -LiteralPath $splitTmp -Value $splitScriptResolved -Encoding UTF8
+            & py $splitTmp
+            if ($LASTEXITCODE -ne 0) {
+                throw "Dual-leg split/compare generation failed with exit $LASTEXITCODE"
+            }
+        }
+        finally {
+            Remove-Item -LiteralPath $splitTmp -Force -ErrorAction SilentlyContinue
         }
 
         Write-Host "==> eval_prophecy_hit_rate_v1.py --run-mode price (KOSPI-only)" -ForegroundColor Cyan
@@ -164,7 +173,7 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
-ROOT = Path(r"__WORKSPACE_ROOT__")
+ROOT = Path("__WORKSPACE_ROOT__")
 art = ROOT / "docs" / "final" / "artifacts"
 overall = json.loads((art / "prophecy_hit_rate_eval_latest.json").read_text(encoding="utf-8"))
 kospi = json.loads((art / "prophecy_hit_rate_eval_kospi_only_latest.json").read_text(encoding="utf-8"))
@@ -231,10 +240,17 @@ brief_md.write_text("\n".join(md) + "\n", encoding="utf-8")
 print(f"WROTE: {brief_json}")
 print(f"WROTE: {brief_md}")
 '@
-        $briefScript = $briefScript.Replace("__WORKSPACE_ROOT__", $WorkspaceRoot.Replace('\', '\\'))
-        & py "-c" $briefScript
-        if ($LASTEXITCODE -ne 0) {
-            throw "Dual-leg Track C brief generation failed with exit $LASTEXITCODE"
+        $briefScriptResolved = $briefScript.Replace("__WORKSPACE_ROOT__", $wsPy)
+        $briefTmp = Join-Path $env:TEMP ("btrack_dual_leg_brief_" + [guid]::NewGuid().ToString("n") + ".py")
+        try {
+            Set-Content -LiteralPath $briefTmp -Value $briefScriptResolved -Encoding UTF8
+            & py $briefTmp
+            if ($LASTEXITCODE -ne 0) {
+                throw "Dual-leg Track C brief generation failed with exit $LASTEXITCODE"
+            }
+        }
+        finally {
+            Remove-Item -LiteralPath $briefTmp -Force -ErrorAction SilentlyContinue
         }
     }
 }

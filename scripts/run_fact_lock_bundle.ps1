@@ -85,6 +85,9 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipNewsObservationContractSmoke
 
 .EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -IncludeBTrackDomainFeedbackSmoke
+
+.EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipMyeongniLensRecommendedStack
 
 .EXAMPLE
@@ -108,6 +111,9 @@
 .PARAMETER SkipKmPhysicianCdsEnvelope
   한의 의사 CDS assist envelope v1 회귀 3종 pytest + `tests/test_automation_registry_json_v1.py`(MKM 주간 태스크 SSOT; `dual-regime` 의「Myeongri AI interpretation + KM physician CDS」단계와 동일 목록)를 생략한다.
 
+.PARAMETER SkipSafeOpsSurfaceCheck
+  말미 권장 단계 `Invoke-SafeOpsSurfaceCheck.ps1`(운영 표면·신선도·Verify-Trading) 생략.
+
 .NOTES
   SSOT 순서: `.github/workflows/dual-regime-integrity.yml`
   pytest·`py` 규칙: `docs/final/P0_COMMERCIALIZATION_TRACKER.md`
@@ -129,6 +135,10 @@ param(
     # B-track news_observation JSONL contract smoke runs by default after prophecy alignment; use -Skip to omit.
     [switch]$SkipNewsObservationContractSmoke,
 
+    # Optional: general_prophecy registry/export pytest + weather triplet smoke (see scripts\Run-BTrackDomainFeedbackSmoke.ps1).
+    # When default news smoke ran above, invokes -SkipNews on that wrapper to avoid duplicate news steps.
+    [switch]$IncludeBTrackDomainFeedbackSmoke,
+
     # Myeongni / multilens recommended CI parity (9 pytests, excluding daily brief + thin bridge already run above)
     [switch]$SkipMyeongniLensRecommendedStack,
 
@@ -142,7 +152,10 @@ param(
     [switch]$SkipMkmControlIntegritySmoke,
 
     # KM physician CDS envelope v1 schema + builder pytest (dual-regime parity)
-    [switch]$SkipKmPhysicianCdsEnvelope
+    [switch]$SkipKmPhysicianCdsEnvelope,
+
+    # Recommended tail: Invoke-SafeOpsSurfaceCheck.ps1 after pytest bundle (exit 2 fails; exit 1 warns only).
+    [switch]$SkipSafeOpsSurfaceCheck
 )
 
 $ErrorActionPreference = 'Stop'
@@ -235,6 +248,24 @@ if (-not $SkipNewsObservationContractSmoke) {
     }
     Write-Host '== Fact-Lock: Run-NewsObservationContractSmoke.ps1 (default) ==' -ForegroundColor Cyan
     & powershell -NoProfile -ExecutionPolicy Bypass -File $newsSmoke
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeBTrackDomainFeedbackSmoke) {
+    $btrackSmoke = Join-Path $workspaceRoot 'scripts\Run-BTrackDomainFeedbackSmoke.ps1'
+    if (-not (Test-Path -LiteralPath $btrackSmoke)) {
+        throw "B-track domain feedback smoke script not found: $btrackSmoke"
+    }
+    if ($SkipNewsObservationContractSmoke) {
+        Write-Host '== Fact-Lock: Run-BTrackDomainFeedbackSmoke.ps1 (full; news smoke skipped above) ==' -ForegroundColor Cyan
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $btrackSmoke
+    }
+    else {
+        Write-Host '== Fact-Lock: Run-BTrackDomainFeedbackSmoke.ps1 (-SkipNews; news already ran) ==' -ForegroundColor Cyan
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $btrackSmoke -SkipNews
+    }
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }
@@ -543,6 +574,24 @@ if (-not $SkipCuratedJointStalenessCheck) {
         if ($LASTEXITCODE -ne 0) {
             Write-Host 'WARN: staleness check returned non-zero (use --strict on script only if you want CI fail).' -ForegroundColor Yellow
         }
+    }
+}
+
+if (-not $SkipSafeOpsSurfaceCheck) {
+    $safeOpsTail = Join-Path $workspaceRoot 'scripts\Invoke-SafeOpsSurfaceCheck.ps1'
+    if (Test-Path -LiteralPath $safeOpsTail) {
+        Write-Host '== Fact-Lock (recommended tail): Safe ops surface check ==' -ForegroundColor Cyan
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $safeOpsTail -WorkspaceRoot $workspaceRoot
+        $safeTailExit = $LASTEXITCODE
+        if ($safeTailExit -eq 2) {
+            Write-Host 'FAIL: Safe ops surface CRITICAL (exit 2). See reports/safe_ops_surface_check_latest.json' -ForegroundColor Red
+            exit 2
+        }
+        if ($safeTailExit -eq 1) {
+            Write-Host 'WARN: Safe ops surface degraded (exit 1); pytest Fact-Lock bundle succeeded.' -ForegroundColor Yellow
+        }
+    } else {
+        Write-Host "WARN: Invoke-SafeOpsSurfaceCheck.ps1 missing; skip tail: $safeOpsTail" -ForegroundColor Yellow
     }
 }
 

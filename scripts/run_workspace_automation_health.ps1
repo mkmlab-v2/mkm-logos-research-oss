@@ -30,6 +30,9 @@ param(
     # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / McpHygieneProbeOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly profiles).
     [switch]$SkipNewsObservationContractSmoke,
 
+    # Optional: Run-BTrackDomainFeedbackSmoke.ps1 — general_prophecy pytest + weather triplet + news (if default news smoke already ran in this session, wrapper uses -SkipNews).
+    [switch]$IncludeBTrackDomainFeedbackSmoke,
+
     # Optional: bio PMID paper SNP sidecar join smoke (no network; sub-second).
     [switch]$IncludeBioPaperSnpJoinSmoke,
     # Shortcut profile: run only P0 path gate + automation registry reconcile + Bio SNP smoke.
@@ -117,7 +120,15 @@ param(
     # Optional: VPS SSH disk smoke (Invoke-VpsOpsSmoke_v1.ps1; unset MKM_VPS_HOST = skip).
     [switch]$IncludeVpsOpsSmoke,
     # With IncludeVpsOpsSmoke: SSH failure fails health (default is SoftFail).
-    [switch]$IncludeVpsOpsSmokeHardFail
+    [switch]$IncludeVpsOpsSmokeHardFail,
+
+    # Safe ops surface (Invoke-SafeOpsSurfaceCheck.ps1): recommended ON for full runs (OFF for shortcut profiles). Use -SkipSafeOpsSurfaceCheck to omit. Use -IncludeSafeOpsSurfaceCheck / -IncludeSafeOpsSurfaceCheckWithVps to force from ProbeOnly or add VPS.
+    [switch]$SkipSafeOpsSurfaceCheck,
+    [switch]$IncludeSafeOpsSurfaceCheck,
+    [switch]$IncludeSafeOpsSurfaceCheckWithVps,
+
+    # Optional: heartbeat / bundle-cycle JSON staleness (runs outside bundle success tail; see scripts/check_amsaeng_eosa_artifact_staleness_v1.py).
+    [switch]$IncludeAmsaengArtifactStaleness
 )
 
 $ErrorActionPreference = "Stop"
@@ -183,6 +194,24 @@ if ($McpHygieneProbeOnly) {
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
     $SkipNewsObservationContractSmoke = $true
+    $IncludeBTrackDomainFeedbackSmoke = $false
+}
+
+# Recommended default: run SafeOps on full health runs; shortcut profiles skip unless explicit Include* / IncludeWithVps.
+$shortcutForSafeOps = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly
+$runSafeOps = $false
+$runSafeOpsWithVps = $false
+if (-not $SkipSafeOpsSurfaceCheck) {
+    if ($IncludeSafeOpsSurfaceCheckWithVps) {
+        $runSafeOps = $true
+        $runSafeOpsWithVps = $true
+    }
+    elseif ($IncludeSafeOpsSurfaceCheck) {
+        $runSafeOps = $true
+    }
+    elseif (-not $shortcutForSafeOps -and -not $McpHygieneProbeOnly) {
+        $runSafeOps = $true
+    }
 }
 
 function Step([string]$Name, [scriptblock]$Block) {
@@ -306,9 +335,58 @@ try {
         }
     }
 
+    if ($runSafeOps) {
+        $safeOps = Join-Path $root "scripts\Invoke-SafeOpsSurfaceCheck.ps1"
+        if (Test-Path -LiteralPath $safeOps) {
+            Write-Host ""
+            $safeLabel = "Safe ops surface (verify + staleness + reports/safe_ops_surface_check_latest.json"
+            if ($runSafeOpsWithVps) { $safeLabel += "; +VPS smoke" }
+            $safeLabel += ")"
+            Write-Host "=== $safeLabel ===" -ForegroundColor Cyan
+            if ($runSafeOpsWithVps) {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $safeOps -WorkspaceRoot $root -IncludeVpsSmoke
+            }
+            else {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $safeOps -WorkspaceRoot $root
+            }
+            $safeExit = $LASTEXITCODE
+            if ($safeExit -eq 2) {
+                throw "Safe ops surface CRITICAL (exit 2). See reports/safe_ops_surface_check_latest.json"
+            }
+            if ($safeExit -eq 1) {
+                Write-Host "WARN: Safe ops surface degraded (exit 1). See reports/safe_ops_surface_check_latest.json" -ForegroundColor Yellow
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "SKIP: Invoke-SafeOpsSurfaceCheck.ps1 not found" -ForegroundColor Yellow
+        }
+    }
+
+    if ($IncludeAmsaengArtifactStaleness) {
+        $stalenessPy = Join-Path $root "scripts\check_amsaeng_eosa_artifact_staleness_v1.py"
+        if (Test-Path -LiteralPath $stalenessPy) {
+            Write-Host ""
+            Write-Host "=== Amsaeng-Eosa artifact staleness probe (heartbeat / bundle cycle JSON) ===" -ForegroundColor Cyan
+            & py $stalenessPy --workspace-root $root
+            $stExit = $LASTEXITCODE
+            if ($stExit -eq 2) {
+                throw "Amsaeng artifact staleness CRITICAL (exit 2). See reports/amsaeng_eosa_staleness_probe_latest.json"
+            }
+            if ($stExit -eq 1) {
+                Write-Host "WARN: Amsaeng artifacts stale or degraded (exit 1). See reports/amsaeng_eosa_staleness_probe_latest.json" -ForegroundColor Yellow
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "SKIP: check_amsaeng_eosa_artifact_staleness_v1.py not found" -ForegroundColor Yellow
+        }
+    }
+
     if ($McpHygieneProbeOnly) {
         $probeDone = "[run_workspace_automation_health] McpHygieneProbeOnly: finished after P0 + MCP probe"
         if ($IncludeVpsOpsSmoke) { $probeDone += " + VPS ops smoke" }
+        if ($runSafeOps) { $probeDone += " + Safe ops surface" }
         $probeDone += "."
         Write-Host ""
         Write-Host $probeDone -ForegroundColor Green
@@ -326,6 +404,29 @@ try {
             Write-Host ""
             Write-Host "=== News observation contract smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: Run-NewsObservationContractSmoke.ps1 not found"
+        }
+    }
+
+    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly
+    if ($IncludeBTrackDomainFeedbackSmoke -and -not $btProfileSkip) {
+        $bt = Join-Path $root "scripts\Run-BTrackDomainFeedbackSmoke.ps1"
+        if (Test-Path -LiteralPath $bt) {
+            $newsRanThisSession = (-not $SkipNewsObservationContractSmoke) -and (-not $btProfileSkip)
+            if ($newsRanThisSession) {
+                Step "B-track domain feedback smoke (general_prophecy + weather; news covered above)" {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $bt -SkipNews
+                }
+            }
+            else {
+                Step "B-track domain feedback smoke (full)" {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $bt
+                }
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== B-track domain feedback smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: Run-BTrackDomainFeedbackSmoke.ps1 not found"
         }
     }
 
