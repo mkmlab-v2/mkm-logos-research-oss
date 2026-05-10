@@ -13,6 +13,7 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     chain = tmp_path / "chain.json"
     out = tmp_path / "overlay.json"
     state_path = tmp_path / "state.json"
+    hist = tmp_path / "hist.jsonl"
     smoke = tmp_path / "smoke.json"
     gov.write_text(
         json.dumps(
@@ -68,6 +69,8 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
             str(out),
             "--state-json",
             str(state_path),
+            "--history-log-jsonl",
+            str(hist),
         ],
         cwd=str(ROOT),
         capture_output=True,
@@ -84,3 +87,8 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     assert doc["auto_brake_m22"]["active"] is True
     assert doc["auto_brake_m22"]["trigger_smoke_eval_watch"] is True
     assert "Governance=WATCH" in doc["system_instructions"]
+    lines = [x for x in hist.read_text(encoding="utf-8").splitlines() if x.strip()]
+    assert len(lines) == 1
+    row = json.loads(lines[0])
+    assert row["schema"] == "lens_music_prompt_overlay_history_row_v1"
+    assert row["auto_brake_active"] is True

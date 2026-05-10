@@ -28,6 +28,8 @@ DEFAULT_HISTORY_JSONL = ROOT / "reports" / "cross_lens_rag_fusion_history.jsonl"
 DEFAULT_ALERT_JSON = ROOT / "docs" / "final" / "artifacts" / "cross_lens_rag_alert_latest.json"
 DEFAULT_ALERT_LOG_JSONL = ROOT / "reports" / "cross_lens_rag_alert_log.jsonl"
 
+LENS_MUSIC_GATE_CHAIN_SCHEMA = "lens_music_gate_chain_v1"
+
 
 def _read_json(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
@@ -102,6 +104,36 @@ def _market_myeongni_lens_snapshot(path: Path) -> dict[str, Any]:
             "note": "schema mismatch",
         }
     return _lens_snapshot("market_myeongni", path)
+
+
+def _lens_music_gate_chain_passthrough(path: Path | None, *, enabled: bool) -> dict[str, Any] | None:
+    """Optional symbolic-audio gate chain JSON — 관측 패스스루; cross-lens 합의 행렬에 포함하지 않음."""
+    if not enabled or path is None:
+        return None
+    doc = _read_json(path)
+    if not doc:
+        return {
+            "schema": "cross_lens_lens_music_passthrough_v1",
+            "available": False,
+            "artifact_path": str(path.resolve()),
+            "non_gating": True,
+            "note": "file missing or invalid JSON",
+        }
+    schema_ok = str(doc.get("schema") or "") == LENS_MUSIC_GATE_CHAIN_SCHEMA
+    out: dict[str, Any] = {
+        "schema": "cross_lens_lens_music_passthrough_v1",
+        "available": schema_ok,
+        "upstream_schema": doc.get("schema"),
+        "artifact_path": str(path.resolve()),
+        "artifact_ts_utc": doc.get("ts_utc"),
+        "non_gating": True,
+        "passthrough": {
+            "final_decision": doc.get("final_decision"),
+            "emotion_overlay_stage": doc.get("emotion_overlay_stage"),
+            "quality_guard_m7": doc.get("quality_guard_m7"),
+        },
+    }
+    return out
 
 
 def _market_sasang_snapshot(path: Path) -> dict[str, Any]:
@@ -260,6 +292,24 @@ def _write_markdown(path: Path, payload: dict[str, Any]) -> None:
         lines.append(
             "_No `b_track_axis_scores_v1` in `sasang_independent_lens_latest.json` — run `scripts/run_lens_sasang.py` (v0.2.0+)._"
         )
+        lines.append("")
+    lm = payload.get("lens_music_symbolic_passthrough_v1")
+    lines += ["", "## Lens music (symbolic gate chain, passthrough)", ""]
+    if isinstance(lm, dict) and lm.get("available"):
+        pd = lm.get("passthrough") if isinstance(lm.get("passthrough"), dict) else {}
+        lines.append(
+            f"- upstream_schema={lm.get('upstream_schema')}, ts={lm.get('artifact_ts_utc')}, "
+            f"final_decision={pd.get('final_decision')}"
+        )
+        lines.append("")
+        lines.append(
+            "_Passthrough only; excluded from cross-lens agreement matrix. Track B / non-gating._"
+        )
+    elif isinstance(lm, dict):
+        lines.append(f"- path={lm.get('artifact_path')}, available=false ({lm.get('note', 'schema or parse')})")
+        lines.append("")
+    else:
+        lines.append("_No lens music gate-chain JSON supplied (`--lens-music-gate-chain-json`)._")
         lines.append("")
     lines += ["", "## Theme Retrieval Summary", ""]
     for th in themes:
@@ -427,6 +477,18 @@ def main() -> int:
         default=None,
         help="Override computed signal_light.status for CI/manual verification (sets signal_light.forced=true).",
     )
+    ap.add_argument(
+        "--lens-music-gate-chain-json",
+        type=Path,
+        default=None,
+        metavar="PATH",
+        help="Optional lens_music_gate_chain_v1 JSON (observation passthrough; not merged into agreement matrix).",
+    )
+    ap.add_argument(
+        "--no-lens-music",
+        action="store_true",
+        help="Ignore --lens-music-gate-chain-json even if set.",
+    )
     args = ap.parse_args()
 
     themes = [
@@ -466,9 +528,14 @@ def main() -> int:
         if isinstance(raw_ax, dict) and str(raw_ax.get("schema")) == "sasang_b_track_axis_scores_v1":
             sasang_axis = raw_ax
 
+    music_pt = _lens_music_gate_chain_passthrough(
+        args.lens_music_gate_chain_json,
+        enabled=not args.no_lens_music,
+    )
+
     payload = {
         "schema": "cross_lens_rag_fusion_v1",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
         "boundary_ack": True,
@@ -477,6 +544,7 @@ def main() -> int:
         "themes": themes,
         "lens_snapshots": lens_snapshots,
         "sasang_b_track_axis_scores_v1": sasang_axis,
+        "lens_music_symbolic_passthrough_v1": music_pt,
         "cross_lens_conflict_matrix": conflict,
         "final_gate_panel": _build_final_gate(conflict, fusion_stub),
         "delta_from_prev": {

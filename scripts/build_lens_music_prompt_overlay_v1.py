@@ -18,6 +18,7 @@ DEFAULT_CHAIN = ROOT / "reports" / "_tmp_m15_chain.json"
 DEFAULT_OUT = ROOT / "reports" / "lens_music_prompt_overlay_latest.json"
 DEFAULT_STATE = ROOT / "reports" / "lens_music_prompt_overlay_state_latest.json"
 DEFAULT_SMOKE_EVAL = ROOT / "reports" / "lens_music_prompt_smoke_eval_latest.json"
+DEFAULT_HISTORY_LOG = ROOT / "reports" / "lens_music_prompt_overlay_history_log.jsonl"
 
 
 def _utc_now() -> str:
@@ -164,6 +165,12 @@ def build_overlay(
     return overlay, next_state
 
 
+def _append_jsonl(path: Path, row: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--governance-json", type=Path, default=DEFAULT_GOV)
@@ -172,6 +179,7 @@ def main() -> int:
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--state-json", type=Path, default=DEFAULT_STATE)
     ap.add_argument("--ema-alpha", type=float, default=0.4)
+    ap.add_argument("--history-log-jsonl", type=Path, default=DEFAULT_HISTORY_LOG)
     args = ap.parse_args()
 
     gov = _read_json(args.governance_json)
@@ -189,6 +197,25 @@ def main() -> int:
     args.out.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     args.state_json.parent.mkdir(parents=True, exist_ok=True)
     args.state_json.write_text(json.dumps(next_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    _append_jsonl(
+        args.history_log_jsonl,
+        {
+            "ts_utc": _utc_now(),
+            "schema": "lens_music_prompt_overlay_history_row_v1",
+            "governance_state": out_doc["global_state"]["state"],
+            "smoke_eval_state": out_doc["global_state"]["smoke_eval_state"],
+            "smoothed_bpm": out_doc["global_state"]["smoothed_bpm"],
+            "answer_style": out_doc["global_state"]["style"]["answer_style"],
+            "temperature_hint": out_doc["global_state"]["style"]["temperature_hint"],
+            "auto_brake_active": bool((out_doc.get("auto_brake_m22") or {}).get("active", False)),
+            "trigger_governance_watch": bool(
+                (out_doc.get("auto_brake_m22") or {}).get("trigger_governance_watch", False)
+            ),
+            "trigger_smoke_eval_watch": bool(
+                (out_doc.get("auto_brake_m22") or {}).get("trigger_smoke_eval_watch", False)
+            ),
+        },
+    )
     print(
         json.dumps(
             {
