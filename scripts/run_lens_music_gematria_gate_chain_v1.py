@@ -10,9 +10,11 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import subprocess
 import sys
 import uuid
+import wave
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -377,6 +379,58 @@ def _build_midi_type0(events: list[_MidiEvent], *, ticks_per_beat: int = 480) ->
     return bytes(header + chunk)
 
 
+def _midi_to_freq(midi: int) -> float:
+    return 440.0 * (2.0 ** ((int(midi) - 69) / 12.0))
+
+
+def write_melody_audition_wav(
+    *,
+    notes: list[dict[str, Any]],
+    tempo_bpm: float,
+    out_path: Path,
+    sample_rate: int = 24000,
+) -> dict[str, Any]:
+    """Render a lightweight mono sine audition WAV from melody notes."""
+    spb = 60.0 / max(tempo_bpm, 1.0)
+    pcm = []
+    amp = 0.18
+    for row in notes:
+        midi = int(row.get("midi", 60))
+        dur_beats = float(row.get("dur_beats", 1.0))
+        dur_sec = max(dur_beats * spb, 0.02)
+        n = int(dur_sec * sample_rate)
+        hz = _midi_to_freq(midi)
+        for i in range(n):
+            t = i / sample_rate
+            # simple fade-in/out to reduce clicks
+            fade = 1.0
+            fade_len = min(0.01, dur_sec / 4.0)
+            if t < fade_len:
+                fade = t / fade_len
+            elif t > dur_sec - fade_len:
+                fade = max(0.0, (dur_sec - t) / fade_len)
+            sample = amp * fade * math.sin(2.0 * math.pi * hz * t)
+            pcm.append(max(-1.0, min(1.0, sample)))
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    with wave.open(str(out_path), "wb") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(sample_rate)
+        frames = bytearray()
+        for x in pcm:
+            v = int(x * 32767.0)
+            frames.extend(v.to_bytes(2, "little", signed=True))
+        wf.writeframes(bytes(frames))
+    return {
+        "schema": "melody_audition_wav_v1",
+        "sample_rate": sample_rate,
+        "seconds": round(len(pcm) / sample_rate, 4),
+        "note_count": len(notes),
+        "path": str(out_path.as_posix()),
+    }
+
+
 def evaluate_symbolic_safety(
     outputs: dict[str, Any],
     *,
@@ -480,6 +534,12 @@ def main() -> int:
         type=Path,
         default=None,
         help="Optional path to write a binary MIDI (.mid) file from melody_stage_m10 notes.",
+    )
+    ap.add_argument(
+        "--export-audition-wav",
+        type=Path,
+        default=None,
+        help="Optional path to render a simple audition WAV from melody_stage_m10 notes (M13).",
     )
     ap.add_argument("--run-id", type=str, default="")
     args = ap.parse_args()
@@ -589,6 +649,14 @@ def main() -> int:
         payload = _build_midi_type0(midi_events, ticks_per_beat=ticks_per_beat)
         args.export_midi_binary.parent.mkdir(parents=True, exist_ok=True)
         args.export_midi_binary.write_bytes(payload)
+    if args.export_audition_wav is not None and isinstance(m10, dict) and m10.get("enabled"):
+        notes = list(m10.get("notes") or [])
+        tempo = float(dict(eff_outputs.get("tempo_bpm") or {}).get("target", 120.0))
+        chain["melody_stage_m13"] = write_melody_audition_wav(
+            notes=notes,
+            tempo_bpm=tempo,
+            out_path=args.export_audition_wav,
+        )
 
     if sym_decision == "HOLD":
         chain["audio_gate"] = {"skipped": True, "reason": "symbolic_hold"}

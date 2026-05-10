@@ -457,3 +457,58 @@ def test_chain_m12_exports_binary_midi(tmp_path):
     blob = midi_bin.read_bytes()
     assert blob[:4] == b"MThd"
     assert b"MTrk" in blob
+
+
+def test_chain_m13_exports_audition_wav(tmp_path):
+    emo = ROOT / "docs/final/schemas/sasang_emotion_mapping_v1.example.json"
+    lens_out = tmp_path / "lens.json"
+    subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/run_lens_music_gematria.py"),
+            "--sasang-primary",
+            "taeeum",
+            "--emotion-mapping-json",
+            str(emo),
+            "--output",
+            str(lens_out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    chain_report = tmp_path / "chain.json"
+    audio_report = tmp_path / "gate.json"
+    wav_out = tmp_path / "audition.wav"
+    env = os.environ.copy()
+    prev = env.get("PYTHONPATH", "")
+    env["PYTHONPATH"] = str(ROOT) if not prev else f"{ROOT}{os.pathsep}{prev}"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/run_lens_music_gematria_gate_chain_v1.py"),
+            "--lens-json",
+            str(lens_out),
+            "--emotion-overlay-policy",
+            "apply",
+            "--export-chain",
+            str(chain_report),
+            "--export-audio-report",
+            str(audio_report),
+            "--export-audition-wav",
+            str(wav_out),
+            "--commercial-terms-tag",
+            "apache2_self_host_weights_v1",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert r.returncode == 0, r.stderr + r.stdout
+    assert wav_out.is_file()
+    blob = wav_out.read_bytes()
+    assert blob[:4] == b"RIFF"
+    chain = json.loads(chain_report.read_text(encoding="utf-8"))
+    assert chain["melody_stage_m13"]["schema"] == "melody_audition_wav_v1"
