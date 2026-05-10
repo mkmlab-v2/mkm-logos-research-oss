@@ -37,6 +37,7 @@ param(
 #   (scripts only; companion / mkm_global_orchestrator *_latest.json are regenerable and often gitignored).
 # 2026-05-10: AI BGM gate v1 (schema, policy, scripts/audio, pytest, CI audio-bgm-gate-smoke.yml).
 # 2026-05-10: MKM Control-Integrity Golden/LoRA (schema, profile SSOT, aggregate/gate/inference/eval PS1/py, smoke pytest).
+# 2026-05-10: General-rail compression benchmark (corpus JSONL, manifests, promotion chain scripts, SSOT artifacts, Multilens ultra anchor).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -423,7 +424,47 @@ $required = @(
     "scripts\Run-MkmControlIntegrityHoldoutEvalSuite.ps1",
     "scripts\Run-MkmControlIntegrityModelProfileABC.ps1",
     "scripts\build_mkm_control_integrity_model_profile_abc_comparison_v1.py",
-    "tests\test_mkm_control_integrity_pipeline_smoke_v1.py"
+    "tests\test_mkm_control_integrity_pipeline_smoke_v1.py",
+    "scripts\build_general_compression_eval_input.py",
+    "scripts\run_general_compression_ab.py",
+    "scripts\run_general_compression_sweep.py",
+    "scripts\validate_general_compression_bundle.py",
+    "scripts\report_general_compression_kpi_gate.py",
+    "scripts\report_general_compression_failure_taxonomy.py",
+    "scripts\report_general_compression_domain_guard_gate.py",
+    "scripts\report_general_compression_token_loss_aggregate.py",
+    "scripts\split_general_compression_holdout_v1.py",
+    "scripts\build_general_compression_split_manifests_v1.py",
+    "scripts\apply_general_compression_sweep_anchor_to_ultra_decision_v1.py",
+    "scripts\Run-GeneralCompressionChain.ps1",
+    "scripts\Run-GeneralCompressionPromotionChain.ps1",
+    "data\general_compression\meeting_v1.jsonl",
+    "data\general_compression\policy_legal_lite_v1.jsonl",
+    "data\general_compression\support_faq_v1.jsonl",
+    "docs\final\artifacts\general_compression_benchmark_manifest_v1.json",
+    "docs\final\artifacts\general_compression_benchmark_manifest_train_v1.json",
+    "docs\final\artifacts\general_compression_benchmark_manifest_holdout_v1.json",
+    "docs\final\artifacts\general_compression_holdout_split_report_v1.json",
+    "docs\final\artifacts\general_compression_restore_stress_v1.json",
+    "docs\final\artifacts\general_compression_repro_command_v1.txt",
+    "docs\final\artifacts\general_compression_eval_input_v1.json",
+    "docs\final\artifacts\general_compression_eval_input_holdout_v1.json",
+    "docs\final\artifacts\general_compression_sweep_result_v1.json",
+    "docs\final\artifacts\general_compression_ab_result_summary_v1.json",
+    "docs\final\artifacts\general_compression_ab_holdout_result_summary_v1.json",
+    "docs\final\artifacts\general_compression_kpi_gate_v2.json",
+    "docs\final\artifacts\general_compression_90pct_failure_taxonomy_v1.json",
+    "docs\final\artifacts\general_compression_domain_guard_gate_v1.json",
+    "docs\final\artifacts\general_compression_token_loss_aggregate_v1.json",
+    "docs\final\artifacts\general_compression_ab_result_timeseries_v1.csv",
+    "docs\final\artifacts\MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+    "docs\final\artifacts\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "tests\test_build_general_compression_eval_input_smoke_v1.py",
+    "tests\test_validate_general_compression_bundle_v1.py",
+    "tests\test_split_general_compression_holdout_smoke_v1.py",
+    "tests\test_build_general_compression_split_manifests_smoke_v1.py",
+    "tests\fixtures\general_compression_bundle_minimal_v1\manifest_go.json",
+    "tests\fixtures\general_compression_bundle_minimal_v1\manifest_no_go.json"
 )
 
 $missing = @()
