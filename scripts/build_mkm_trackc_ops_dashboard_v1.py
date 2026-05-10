@@ -113,6 +113,7 @@ def main() -> int:
     forward_prereg = _read_json(art / "macro_risk_forward_preregister_lock_latest.json")
     forward_latest = _read_json(art / "macro_risk_forward_log_latest.json")
     forward_weekly = _read_json(art / "macro_risk_forward_weekly_report_latest.json")
+    lens_music_audition_governance = _read_json(art / "lens_music_audition_governance_status_latest.json")
     forward_health = _forward_pipeline_health(
         prereg=forward_prereg,
         latest=forward_latest,
@@ -164,6 +165,14 @@ def main() -> int:
                 "days_with_warn": ((fallback_watch.get("summary") or {}).get("days_with_warn")),
             },
             "forward_pipeline_health": forward_health,
+            "lens_music_audition_governance": {
+                "state": _status_or_default(lens_music_audition_governance.get("state"), "UNKNOWN"),
+                "warn_ratio": lens_music_audition_governance.get("warn_ratio"),
+                "warn_ratio_threshold": lens_music_audition_governance.get("warn_ratio_threshold"),
+                "warn_count": lens_music_audition_governance.get("warn_count"),
+                "sample_count": lens_music_audition_governance.get("sample_count"),
+                "generated_at_utc": lens_music_audition_governance.get("generated_at_utc"),
+            },
             "logos_shadow": {
                 "grade": ((logos_shadow.get("promotion") or {}).get("to")),
                 "approved": ((logos_shadow.get("promotion") or {}).get("approved")),
@@ -239,6 +248,7 @@ def main() -> int:
             "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
             "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
             "forward_weekly_report": "docs/final/artifacts/macro_risk_forward_weekly_report_latest.json",
+            "lens_music_audition_governance_status": "docs/final/artifacts/lens_music_audition_governance_status_latest.json",
         },
     }
 
@@ -279,6 +289,11 @@ def main() -> int:
         f"- forward_pipeline_reason_codes: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('reason_codes')}`",
         f"- forward_pipeline_rows_total: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_total')}`",
         f"- forward_pipeline_rows_in_window_7d: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_in_window_7d')}`",
+        f"- lens_music_audition_governance_state: `{(dashboard['trackc']['lens_music_audition_governance'] or {}).get('state')}`",
+        f"- lens_music_audition_warn_ratio: `{(dashboard['trackc']['lens_music_audition_governance'] or {}).get('warn_ratio')}`",
+        f"- lens_music_audition_warn_ratio_threshold: `{(dashboard['trackc']['lens_music_audition_governance'] or {}).get('warn_ratio_threshold')}`",
+        f"- lens_music_audition_warn_count: `{(dashboard['trackc']['lens_music_audition_governance'] or {}).get('warn_count')}`",
+        f"- lens_music_audition_sample_count: `{(dashboard['trackc']['lens_music_audition_governance'] or {}).get('sample_count')}`",
         "",
         "## [SHADOW_INSIGHT]",
         f"- shadow_grade: `{((dashboard['trackc']['logos_shadow'] or {}).get('grade'))}`",
@@ -352,6 +367,7 @@ def main() -> int:
         "- `docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_log_latest.json`",
         "- `docs/final/artifacts/macro_risk_forward_weekly_report_latest.json`",
+        "- `docs/final/artifacts/lens_music_audition_governance_status_latest.json`",
     ]
     out_md.write_text("\n".join(md) + "\n", encoding="utf-8")
 
