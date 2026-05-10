@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getReservations, saveReservations } from "@/app/api/intake/_store";
+import { hasAdminTokenAccess } from "@/lib/internal-api-auth";
 
 type ReservationStatus = "requested" | "contacted" | "booked" | "closed";
 
@@ -7,22 +8,6 @@ const ALLOWED: ReservationStatus[] = ["requested", "contacted", "booked", "close
 
 function isAllowedStatus(value: unknown): value is ReservationStatus {
   return typeof value === "string" && ALLOWED.includes(value as ReservationStatus);
-}
-
-function hasAdminTokenAccess(request: NextRequest): boolean {
-  const configured = process.env.NO1KMEDI_ADMIN_TOKEN?.trim();
-  if (!configured) return true;
-
-  const headerToken = request.headers.get("x-no1kmedi-admin-token")?.trim();
-  if (headerToken && headerToken === configured) return true;
-
-  const bearer = request.headers.get("authorization");
-  if (bearer?.startsWith("Bearer ")) {
-    const token = bearer.slice("Bearer ".length).trim();
-    if (token === configured) return true;
-  }
-
-  return false;
 }
 
 export async function GET(request: NextRequest) {

@@ -14,7 +14,7 @@
       "tier": "observe",
       "scripts": ["scripts/Invoke-SafeOpsSurfaceCheck.ps1"],
       "artifacts": ["reports/safe_ops_surface_check_latest.json"],
-      "notes_ko": "RAM·추론 중복·daemon/risk/ops 신선도·live_sync 하트비트·Verify-TradingAutomationHealth."
+      "notes_ko": "RAM·추론 중복·daemon/risk/ops 신선도·live_sync 하트비트·Verify-TradingAutomationHealth(거래/보안 루프만; 암행어사 번들 작업은 순환 방지로 제외)."
     },
     {
       "id": "vps_ssh_smoke",
@@ -36,6 +36,16 @@
       "scripts": ["scripts/Verify-MonorepoSecretHygiene.ps1"],
       "artifacts": [],
       "notes_ko": ".env 추적·gitignore만 검사. 값은 읽지 않음."
+    },
+    {
+      "id": "no1kmedi_internal_api_contract",
+      "tier": "observe",
+      "scripts": [
+        "scripts/check_no1kmedi_internal_api_security_contract_v1.py",
+        "scripts/Invoke-No1kmediInternalApiSecurityProbe_v1.ps1"
+      ],
+      "artifacts": [],
+      "notes_ko": "jema-ai(no1kmedi) 내부 API 규격: internal-api-auth.ts·.env.example 통신 계약 정적 검사. 선택적 Security Agent(DPAPI) 프로브는 환경 AMSAENG_NO1KMEDI_SECURITY_AGENT_PROBE=1 일 때만 거버넌스 주기에서 활성."
     },
     {
       "id": "monitoring_bundle",

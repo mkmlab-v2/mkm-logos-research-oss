@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { hasAdminTokenAccessWithOptionalBodyToken } from "@/lib/internal-api-auth";
 import { getVerifications, saveVerifications } from "../../../payment/payapp/_store";
 
 export const runtime = "nodejs";
@@ -58,14 +59,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const expected = process.env.NO1KMEDI_ADMIN_TOKEN;
-    const headerToken =
-      request.headers.get("x-no1kmedi-admin-token") ||
-      request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ||
-      "";
-    const providedToken = headerToken || admin_token || "";
-
-    if (expected && providedToken !== expected) {
+    if (!hasAdminTokenAccessWithOptionalBodyToken(request, typeof admin_token === "string" ? admin_token : null)) {
       return NextResponse.json({ success: false, error: "unauthorized" }, { status: 401 });
     }
 

@@ -1,0 +1,47 @@
+# Build literature snapshot, start Next dev, run advanced-consult smoke with --require-literature.
+name: no1kmedi-advanced-consult-literature-smoke
+
+on:
+  push:
+    paths:
+      - "projects/no1kmedi/scripts/smoke-advanced-consult.mjs"
+      - "projects/no1kmedi/scripts/run-advanced-consult-literature-smoke.ps1"
+      - "projects/no1kmedi/scripts/build-literature-memory-snapshot.mjs"
+      - "projects/no1kmedi/memory/literature/**"
+      - "projects/no1kmedi/src/app/api/cdss/advanced-consult/**"
+      - "projects/no1kmedi/package.json"
+      - "projects/no1kmedi/package-lock.json"
+      - ".github/workflows/no1kmedi-advanced-consult-literature-smoke.yml"
+  pull_request:
+    paths:
+      - "projects/no1kmedi/**"
+      - ".github/workflows/no1kmedi-advanced-consult-literature-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  literature-smoke:
+    if: ${{ github.event_name == 'pull_request' || vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: projects/no1kmedi
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: projects/no1kmedi/package-lock.json
+      - name: Install
+        run: npm ci
+      - name: Literature smoke (fixed port 3020, no auto-scan)
+        run: ./scripts/run-advanced-consult-literature-smoke.ps1 -NoAutoPort

@@ -126,6 +126,8 @@ $required = @(
     "scripts\Register-DailyExecutionInsightBriefTask.ps1",
     "scripts\Run-AmsaengEosaMonitoringBundleTask.ps1",
     "scripts\Invoke-AmsaengEosaGovernanceCycle.ps1",
+    "scripts\check_no1kmedi_internal_api_security_contract_v1.py",
+    "scripts\Invoke-No1kmediInternalApiSecurityProbe_v1.ps1",
     "docs\final\artifacts\amsaeng_eosa_governance_scope_v1.json",
     "docs\final\artifacts\mkm_ops_sync_bridge_v1.json",
     "scripts\check_cross_lens_rag_notify_prereqs_v1.ps1",

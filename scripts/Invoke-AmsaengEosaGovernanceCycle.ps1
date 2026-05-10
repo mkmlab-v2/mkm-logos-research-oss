@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  암행어사 거버넌스 단일 주기: SafeOps 표면 + NotebookLM MCP 위생 + 레포 비밀 위생(읽기 전용).
+  암행어사 거버넌스 단일 주기: SafeOps 표면 + NotebookLM MCP 위생 + 레포 비밀 위생 + no1kmedi 내부 API 규격 점검(읽기 전용).
 
 .DESCRIPTION
   docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json 과 정합. 고위험 청소·실매매·비밀 평문 처리는 포함하지 않음.
@@ -12,7 +12,7 @@
 .PARAMETER SoftFail
   최종 exit 0 (reports JSON 에 would_exit 기록). 번들 말단 연동용.
 
-.PARAMETER SkipSafeOps / SkipMcpHygiene / SkipSecretHygiene
+.PARAMETER SkipSafeOps / SkipMcpHygiene / SkipSecretHygiene / SkipNo1kmediApiProbe
   단계 생략.
 
 .PARAMETER SkipAlertLog
@@ -24,6 +24,7 @@ param(
     [switch]$SkipSafeOps,
     [switch]$SkipMcpHygiene,
     [switch]$SkipSecretHygiene,
+    [switch]$SkipNo1kmediApiProbe,
     [switch]$SoftFail,
     [switch]$SkipAlertLog,
     [string]$OutJson = ""
@@ -89,6 +90,22 @@ if (-not $SkipSecretHygiene) {
     }
     else {
         Add-Phase "repo_secret_hygiene" -1
+    }
+}
+
+if (-not $SkipNo1kmediApiProbe) {
+    $n1p = Join-Path $WorkspaceRoot "scripts\Invoke-No1kmediInternalApiSecurityProbe_v1.ps1"
+    $saProbe = ($env:AMSAENG_NO1KMEDI_SECURITY_AGENT_PROBE -eq "1")
+    if (Test-Path -LiteralPath $n1p) {
+        $probeCli = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $n1p, "-WorkspaceRoot", $WorkspaceRoot)
+        if ($saProbe) {
+            $probeCli += "-SecurityAgentProbe"
+        }
+        & powershell.exe @probeCli
+        Add-Phase "no1kmedi_internal_api_contract" $LASTEXITCODE
+    }
+    else {
+        Add-Phase "no1kmedi_internal_api_contract" -1
     }
 }
 

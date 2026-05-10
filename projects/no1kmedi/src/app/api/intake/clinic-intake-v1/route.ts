@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { hasAdminTokenAccess } from "@/lib/internal-api-auth";
 import { getPreSurveys, savePreSurveys, type PatientPreSurveyRecord } from "@/app/api/intake/_store";
 import {
   buildKakaoSummary,
@@ -106,19 +107,6 @@ export async function POST(request: NextRequest) {
     const message = error instanceof Error ? error.message : "unknown_error";
     return NextResponse.json({ success: false, error: `clinic_intake_v1_failed:${message}` }, { status: 500 });
   }
-}
-
-function hasAdminTokenAccess(request: NextRequest): boolean {
-  const configured = process.env.NO1KMEDI_ADMIN_TOKEN?.trim();
-  if (!configured) return true;
-  const headerToken = request.headers.get("x-no1kmedi-admin-token")?.trim();
-  if (headerToken && headerToken === configured) return true;
-  const bearer = request.headers.get("authorization");
-  if (bearer?.startsWith("Bearer ")) {
-    const token = bearer.slice("Bearer ".length).trim();
-    if (token === configured) return true;
-  }
-  return false;
 }
 
 export async function GET(request: NextRequest) {
