@@ -199,6 +199,7 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 | **M14 — Audition WAV sanity 요약(Advisory)** | M13+ | **`완료(2026-05-10):** `melody_stage_m13`에 `peak_abs_0_1`·`rms_0_1`·`sanity_m14(status/notes)` 자동 기록. 클리핑 근접/레벨 부족을 WARN으로 표시하되 차단하지 않음. |
 | **M15 — Audition QA 집계 리포트(Advisory)** | M14+ | **`완료(2026-05-10):** `scripts/build_lens_music_audition_qa_summary_v1.py`로 다중 체인 JSON의 M13/M14 지표(peak/rms/status/note)를 집계해 `lens_music_audition_qa_summary_v1` 생성. 운영 참고용 비차단 통계. |
 | **M16 — QA 경고비율 상태(GO/WATCH) 추가** | M15+ | **`완료(2026-05-10):** 같은 summary에 `governance_m16`(warn_ratio_threshold, warn_count, sample_count, state) 추가. 기본 임계치 0.2 초과 시 WATCH. advisory-only이며 승격 결정식은 불변. |
+| **M17 — QA governance chain 운영 연결** | M16+ | **`완료(2026-05-11):** `scripts/run_lens_music_audition_governance_chain_v1.py` 추가. M15/M16 summary 생성→`lens_music_audition_governance_status_v1` 최신 상태 아티팩트(`state`, `warn_ratio`)를 운영 소비용으로 출력. 비차단 유지. |
 | **§3.10 — 사상→감정 연속축 계약 (Draft)** | 병행 | **`완료(2026-05-10):** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json`·example·회귀 `tests/test_sasang_emotion_mapping_schema_v1.py` — VA 앵커만; `sasang_music_mapping_v1`와 역할 분리(본 표 §3.10). 프로모션 M0–M5 번들(§3.9.2)로 추적 포함, 승격 결정식은 기존 pytest pass와 동일. |
 
 **레포 연계 (Fact-Lock):** 구현 경로·판정은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·pytest로만 확정한다. 본 절은 사업·연구 방향 SSOT이며, 코드 존재 여부는 해당 문서와 동기화된다.

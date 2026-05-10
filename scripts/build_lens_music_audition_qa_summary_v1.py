@@ -7,6 +7,7 @@ Advisory only; does not alter promotion decisions.
 from __future__ import annotations
 
 import argparse
+import glob
 import json
 from collections import Counter
 from datetime import datetime, timezone
@@ -24,7 +25,11 @@ def _utc_now() -> str:
 def _collect_inputs(paths: list[Path], glob_pattern: str | None) -> list[Path]:
     out: list[Path] = [p for p in paths if p.is_file()]
     if glob_pattern:
-        out.extend([p for p in ROOT.glob(glob_pattern) if p.is_file()])
+        gp = str(glob_pattern)
+        if Path(gp).is_absolute():
+            out.extend([Path(p) for p in glob.glob(gp) if Path(p).is_file()])
+        else:
+            out.extend([p for p in ROOT.glob(gp) if p.is_file()])
     uniq: dict[str, Path] = {}
     for p in out:
         uniq[str(p.resolve())] = p
