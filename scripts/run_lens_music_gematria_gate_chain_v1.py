@@ -40,6 +40,76 @@ def _resolve_outputs(doc: dict[str, Any]) -> dict[str, Any]:
     return ro
 
 
+def _clamp(v: float, lo: float, hi: float) -> float:
+    return max(lo, min(hi, v))
+
+
+def build_emotion_overlay_stage(
+    outputs: dict[str, Any],
+    overlay: dict[str, Any],
+    *,
+    policy: str,
+) -> dict[str, Any]:
+    """Compute optional M6 preview/apply adjustments from emotion VA overlay.
+
+    Policy:
+      - off: no adjustment payload
+      - preview: emit proposed adjustment only, do not modify outputs
+      - apply: apply bounded adjustment before symbolic safety evaluation
+    """
+    if policy == "off":
+        return {"enabled": False, "policy": "off"}
+
+    valence = float(overlay.get("valence", 0.0))
+    arousal = float(overlay.get("arousal", 0.0))
+    # Deterministic bounded heuristics (research lane only).
+    tempo_delta = _clamp(round(arousal * 8.0 + valence * 2.0, 3), -12.0, 12.0)
+    velocity_delta = _clamp(round(arousal * 0.12 + valence * 0.04, 4), -0.2, 0.2)
+
+    out = json.loads(json.dumps(outputs))
+    tb = dict(out.get("tempo_bpm") or {})
+    dyn = dict(out.get("dynamics") or {})
+    safety = dict(out.get("safety") or {})
+    t_target = float(tb.get("target", 120.0))
+    t_min = float(tb.get("min", 20.0))
+    t_max = float(tb.get("max", 300.0))
+    vel = float(dyn.get("velocity_0_1", 0.0))
+    vel_cap = float(safety.get("max_velocity_0_1", 1.0))
+    adjusted_target = _clamp(t_target + tempo_delta, t_min, t_max)
+    adjusted_vel = _clamp(vel + velocity_delta, 0.0, vel_cap)
+
+    would_apply = policy == "apply"
+    if would_apply:
+        tb["target"] = adjusted_target
+        dyn["velocity_0_1"] = adjusted_vel
+        out["tempo_bpm"] = tb
+        out["dynamics"] = dyn
+
+    return {
+        "enabled": True,
+        "policy": policy,
+        "input": {
+            "valence": valence,
+            "arousal": arousal,
+        },
+        "heuristic_v1": {
+            "tempo_delta_bpm": tempo_delta,
+            "velocity_delta_0_1": velocity_delta,
+            "mode_bias_hint": "brighten" if valence >= 0 else "darken",
+        },
+        "proposed": {
+            "tempo_target_bpm": adjusted_target,
+            "velocity_0_1": adjusted_vel,
+        },
+        "would_apply": would_apply,
+        "note": (
+            "M6 research heuristic only. track_wall unchanged; "
+            "no direct commercial/Track-A promotion."
+        ),
+        "applied_outputs": out if would_apply else None,
+    }
+
+
 def evaluate_symbolic_safety(
     outputs: dict[str, Any],
     *,
@@ -101,6 +171,12 @@ def main() -> int:
     ap.add_argument("--wav", type=Path, default=None, help="16-bit mono WAV for mechanical gate.")
     ap.add_argument("--emit-placeholder-wav", type=Path, default=None, help="Write silence WAV here if --wav missing.")
     ap.add_argument("--field-policy", type=Path, default=ROOT / "policies/audio_copyright_field.json")
+    ap.add_argument(
+        "--emotion-overlay-policy",
+        choices=("off", "preview", "apply"),
+        default="preview",
+        help="M6 emotion overlay handling: off|preview|apply (bounded heuristic).",
+    )
     ap.add_argument("--track", choices=("A", "B"), default="B")
     ap.add_argument(
         "--commercial-terms-tag",
@@ -132,8 +208,21 @@ def main() -> int:
         print(f"error: invalid lens document: {e}", file=sys.stderr)
         return 2
 
+    inputs_for_safety = raw_outputs
+    evo = lens_doc.get("emotion_va_overlay_v1")
+    emo_stage: dict[str, Any] | None = None
+    if isinstance(evo, dict):
+        emo_stage = build_emotion_overlay_stage(
+            raw_outputs,
+            evo,
+            policy=args.emotion_overlay_policy,
+        )
+        applied = emo_stage.get("applied_outputs")
+        if isinstance(applied, dict):
+            inputs_for_safety = applied
+
     sym_decision, eff_outputs, sym_reasons, clip_notes = evaluate_symbolic_safety(
-        raw_outputs,
+        inputs_for_safety,
         policy=args.symbolic_policy,
     )
 
@@ -149,9 +238,13 @@ def main() -> int:
         },
         "audio_gate": {"skipped": True, "reason": None},
     }
-    evo = lens_doc.get("emotion_va_overlay_v1")
     if isinstance(evo, dict):
         chain["emotion_va_overlay_v1"] = evo
+    if isinstance(emo_stage, dict):
+        # Drop heavy copy from persisted report; keep deterministic proposed outputs.
+        emo_stage = dict(emo_stage)
+        emo_stage.pop("applied_outputs", None)
+        chain["emotion_overlay_stage"] = emo_stage
 
     if sym_decision == "HOLD":
         chain["audio_gate"] = {"skipped": True, "reason": "symbolic_hold"}
