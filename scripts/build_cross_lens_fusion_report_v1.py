@@ -18,6 +18,8 @@ DEFAULT_STUB = ROOT / "tests" / "fixtures" / "cross_lens_fusion_candidates_sampl
 DEFAULT_OUT = ROOT / "reports" / "cross_lens_fusion_report_latest.json"
 
 POLICY_ID = "va_tag_boost_v1"
+# When VA cooldown fired for high arousal, damp joy/energy boosts in fusion (B-track integrity).
+COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL = 0.85
 
 
 def _utc_now() -> str:
@@ -70,6 +72,30 @@ def fusion_multiplier(v: float, a: float, tags: list[str]) -> tuple[float, list[
     return round(m, 6), seen
 
 
+def _fusion_cooldown_damp(
+    cooldown_control: dict[str, Any] | None,
+    *,
+    base_multiplier: float,
+    tags_matched: list[str],
+) -> tuple[float, float, bool]:
+    """Return (final_multiplier, damp_factor, damp_applied_row)."""
+    cc = cooldown_control or {}
+    if not bool(cc.get("applied")):
+        return round(float(base_multiplier), 6), 1.0, False
+    reasons = cc.get("reasons")
+    if not isinstance(reasons, list):
+        reasons = []
+    rset = {str(x) for x in reasons}
+    tl = {t.lower() for t in tags_matched}
+    damp = 1.0
+    if "high_arousal" in rset and ({"joy", "energy"} & tl):
+        damp *= float(COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL)
+    if damp >= 0.999999:
+        return round(float(base_multiplier), 6), 1.0, False
+    final = round(float(base_multiplier) * damp, 6)
+    return final, round(damp, 6), True
+
+
 def build_report(
     va_doc: dict[str, Any],
     stub_path: Path,
@@ -85,6 +111,8 @@ def build_report(
     cur = dict(traj.get("current_va") or {})
     v = float(cur.get("valence", 0.0))
     a = float(cur.get("arousal", 0.0))
+    cc = va_doc.get("cooldown_control")
+    cc_dict = cc if isinstance(cc, dict) else None
 
     enriched: list[dict[str, Any]] = []
     for row in cands:
@@ -94,13 +122,17 @@ def build_report(
         base = float(row.get("base_score") or 0.0)
         ftags = row.get("fusion_tags")
         tags = [str(x) for x in ftags] if isinstance(ftags, list) else []
-        mult, matched = fusion_multiplier(v, a, tags)
+        mult_pre, matched = fusion_multiplier(v, a, tags)
+        mult, damp_f, damp_row = _fusion_cooldown_damp(cc_dict, base_multiplier=mult_pre, tags_matched=matched)
         fw = round(base * mult, 6)
         enriched.append(
             {
                 "verse_id": vid,
                 "base_score": base,
                 "fusion_tags": tags,
+                "fusion_multiplier_pre_damp": mult_pre,
+                "cooldown_damp_factor": damp_f,
+                "cooldown_fusion_damp_applied": damp_row,
                 "fusion_multiplier": mult,
                 "fusion_weight": fw,
                 "tags_matched": matched,
@@ -118,6 +150,9 @@ def build_report(
             {
                 "verse_id": vid,
                 "base_score": float(row["base_score"]),
+                "fusion_multiplier_pre_damp": float(row["fusion_multiplier_pre_damp"]),
+                "cooldown_damp_factor": float(row["cooldown_damp_factor"]),
+                "cooldown_fusion_damp_applied": bool(row["cooldown_fusion_damp_applied"]),
                 "fusion_multiplier": float(row["fusion_multiplier"]),
                 "fusion_weight": float(row["fusion_weight"]),
                 "rank_before": int(rank_before.get(vid, 99)),
@@ -127,10 +162,19 @@ def build_report(
             }
         )
 
+    reasons_out: list[str] = []
+    if cc_dict and isinstance(cc_dict.get("reasons"), list):
+        reasons_out = [str(x) for x in cc_dict["reasons"]]
+
+    damp_note = (
+        f"Cooldown fusion damp (B-track): if cooldown_control.applied and high_arousal in reasons, "
+        f"joy|energy tag matches multiply fusion_multiplier by {COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL} after base rules."
+    )
     notes = policy_notes or (
         "Low valence: first matching peace|comfort|hope ×1.18. "
         "High valence: joy|energy ×1.08. High arousal: caution|temperance ×1.12. "
-        "Very high arousal: calm|peace cooldown ×1.15. Multipliers stack."
+        "Very high arousal: calm|peace cooldown ×1.15. Multipliers stack. "
+        + damp_note
     )
 
     return {
@@ -143,6 +187,9 @@ def build_report(
         "va_snapshot": {
             "session_id": str(va_doc.get("session_id") or ""),
             "turn_index": int(va_doc.get("turn_index") or 0),
+            "cooldown_applied": bool(((va_doc.get("cooldown_control") or {}).get("applied"))),
+            "cooldown_policy_id": str((va_doc.get("cooldown_control") or {}).get("policy_id") or ""),
+            **({"cooldown_reasons": reasons_out} if reasons_out else {}),
             "current_va": {"valence": v, "arousal": a},
         },
         "inputs": {

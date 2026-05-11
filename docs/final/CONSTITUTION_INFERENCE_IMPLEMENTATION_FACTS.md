@@ -462,6 +462,25 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 
 **정책 (`va_tag_boost_v1`):** 스크립트 docstring·`policy_notes` — 저발화(low valence)에서 peace·comfort·hope, 고발화에서 joy·energy, 고각성에서 caution·temperance, 극각성 완화용 calm·peace 등 태그 매칭 시 multiplier 스택(결정론).
 
+**퓨전 쿨다운 감쇠 (§3.8.2 연동):** `cooldown_control.applied` 이고 `reasons`에 `high_arousal`이 있으면, 베이스 규칙으로 `joy` 또는 `energy`가 매칭된 후보에 한해 `fusion_multiplier`에 **0.85**를 추가 곱한다. 행별 `fusion_multiplier_pre_damp`, `cooldown_damp_factor`, `cooldown_fusion_damp_applied`로 추적한다.
+
+### 3.8.2 [B-track] VA cooldown control loop (safety integrity)
+
+**목적:** VA 상태가 운영상 허용치 밖으로 이탈하려 할 때, 가중치 적용 이전에 **결정론적 쿨다운 제어**를 수행해 `current_va`를 안정 구간으로 되돌린다. “감정 강화”가 아니라 **통제 가능성 증명**이 목적이다.
+
+**Track wall:** `[HYPO]`, `[NON_GATING]`, `[ADVISORY_ONLY]` — 본선 트리거·실매매 엔진 자동 바인딩 금지.
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 쿨다운 실행 | `scripts/build_lens_emotion_va_trajectory_v1.py --enable-cooldown` | EMA 산출 후 적용; `high_arousal`/`low_valence` 이유 기록 |
+| 정책 스키마 | `docs/final/schemas/va_cooldown_policy_v1.schema.json` | 예시 `docs/final/schemas/va_cooldown_policy_v1.example.json` |
+| 이벤트 스키마 | `docs/final/schemas/va_cooldown_event_v1.schema.json` | 예시 `docs/final/schemas/va_cooldown_event_v1.example.json` |
+| 이벤트 산출 (latest) | `reports/va_cooldown_event_log_latest.json` | `schema: va_cooldown_event_v1` |
+| 이벤트 시계열 (선택) | `reports/va_cooldown_event_log.jsonl` | `--cooldown-event-jsonl` 사용 시 append |
+| 회귀 | `tests/test_va_trajectory_log_v1.py`, `tests/test_va_cooldown_schema_v1.py` | 임계 돌파 시 개입 + schema 검증 |
+
+**초기 정책 (`va_cooldown_control_v1`):** `high_arousal_cut=0.9`, `low_valence_cut=-0.9`, `arousal_decay_step=0.2`, `valence_recovery_step=0.15`. 개입 시 `status=COOLDOWN_ACTIVE`로 승격해 후속 퓨전에 전달.
+
 ---
 
 ## 4. Multi-Corpus Isolation Policy (평행 코퍼스)

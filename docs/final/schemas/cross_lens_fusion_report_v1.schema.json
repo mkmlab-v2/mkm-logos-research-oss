@@ -52,6 +52,13 @@
       "properties": {
         "session_id": { "type": "string" },
         "turn_index": { "type": "integer", "minimum": 0 },
+        "cooldown_applied": { "type": "boolean" },
+        "cooldown_policy_id": { "type": "string", "maxLength": 128 },
+        "cooldown_reasons": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["high_arousal", "low_valence"] },
+          "maxItems": 4
+        },
         "current_va": {
           "type": "object",
           "additionalProperties": false,
@@ -85,6 +92,9 @@
         "required": [
           "verse_id",
           "base_score",
+          "fusion_multiplier_pre_damp",
+          "cooldown_damp_factor",
+          "cooldown_fusion_damp_applied",
           "fusion_multiplier",
           "fusion_weight",
           "rank_before",
@@ -94,6 +104,9 @@
         "properties": {
           "verse_id": { "type": "string" },
           "base_score": { "type": "number" },
+          "fusion_multiplier_pre_damp": { "type": "number", "minimum": 0 },
+          "cooldown_damp_factor": { "type": "number", "minimum": 0, "maximum": 1 },
+          "cooldown_fusion_damp_applied": { "type": "boolean" },
           "fusion_multiplier": { "type": "number", "minimum": 0 },
           "fusion_weight": { "type": "number" },
           "rank_before": { "type": "integer", "minimum": 1 },
