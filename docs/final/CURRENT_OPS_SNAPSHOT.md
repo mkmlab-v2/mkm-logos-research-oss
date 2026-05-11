@@ -18,6 +18,20 @@
 - **안정 상태:** MCP prereq(핀 버전/HEADLESS/stale=0) 정상, `verify_p0_constitution_gate_paths.ps1` exit 0(454 checked, 본 슬라이스 재실행).
 - **경계:** Vault 미러(A)·클라우드 소스(B)·채팅 MCP(C)는 독립. 클라우드 인제스트(`source_add`/nlm)는 Vault 자동 미러와 별도 단계.
 
+## Ops slice (2026-05-11 17:03 KST · B-track prophecy panel 24h)
+
+- **증거:** `reports/prophecy_panel_24h_alerts_latest.json` 갱신 (checked_at_utc 2026-05-11T08:03:03Z) — `overall_passed=true`. ALERT_1 hit_rate=1.0, ALERT_2 strict_passed=true & auto_promote_ready=true, ALERT_3 구조 리스크 3항 모두 통과.
+- **체인:** `scripts/run_btrack_daily_hypothesis_chain.ps1` → `scripts/refresh_prophecy_promotion_gates_dual_v1.py` (panel-calibrated 게이트 재생성) → `scripts/Check-ProphecyPanel24hAlerts.ps1`.
+- **트랙 격벽:** 본 운영 로그는 B-track 연구 레인 산출이며, LG HS 가전 발표(`lg_hs_ceo_pitch_runbook_v3_2026-05-11.md`) 본문·changelog와 분리. 합선·실매매 자동 트리거 없음(`research_only`).
+- **이동 이유:** 직전에 동일 한 줄이 LG HS 런북 v3 changelog에 v3.2로 잘못 들어갔던 것을 원위치로 분리 (Fact-Lock·트랙 격벽 헌법 정합).
+
+## Ops slice (2026-05-11 18:21 KST · lens music human sign-off)
+
+- **승인 기록:** 사용자 휴먼 승인 반영 완료 — `reports/lens_music_human_signoff_record_latest.json` / `reports/lens_music_human_signoff_record_latest.md` 생성.
+- **결정:** `APPROVED_WITH_HUMAN_SIGNOFF` (`b_track_research_promotion=true`, `track_a_commercial_audio=true`, `track_c_primary_gtm=true`).
+- **근거 스냅샷:** `reports/lens_music_human_review_packet_latest.json` 기준 `research_promotion_ready=true`, `governance_state=GO`, `webhook_health_state=NODATA`.
+- **가드레일 유지:** 자동 승격/자동 배포 금지, 실거래·비가역 경로 별도 승인 유지, 대외 커뮤니케이션은 Fact-Lock 근거 범위 내 허용.
+
 ## Control Tower Update (2026-05-05)
 
 - Worker B 완료: Track C §9, `MKM_AI_LANDING_COPY_V1.md` 기준으로 `MKM_AI_API_BRANDING_BRIDGE_V1.md` 메시지 프레임 정합(communication-only, artifact-backed / bounded / non-guaranteed).
