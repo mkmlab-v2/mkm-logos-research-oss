@@ -111,3 +111,40 @@ def test_build_no_go_when_approval_missing(tmp_path: Path) -> None:
     assert doc["go_no_go"] == "NO_GO"
     assert "missing_or_invalid_human_approval" in doc["reasons"]
 
+
+def test_exit_zero_on_no_go_flag(tmp_path: Path) -> None:
+    gate = tmp_path / "gate.json"
+    risk = tmp_path / "risk.json"
+    out = tmp_path / "status.json"
+    _write(gate, {"gate_ok": True})
+    _write(
+        risk,
+        {
+            "expires_at": "2099-12-31T23:59:59Z",
+            "trinity_governor": {"mode": "ACTIVE_MODE"},
+            "governance_bridge": {"final_action_allowed": True},
+        },
+    )
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--gate-summary",
+            str(gate),
+            "--approval-json",
+            str(tmp_path / "missing.json"),
+            "--risk-json",
+            str(risk),
+            "--out",
+            str(out),
+            "--exit-zero-on-no-go",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["go_no_go"] == "NO_GO"
+

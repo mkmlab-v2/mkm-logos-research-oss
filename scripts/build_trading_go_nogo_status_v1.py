@@ -144,6 +144,14 @@ def main() -> int:
     ap.add_argument("--approval-json", type=Path, default=DEFAULT_APPROVAL)
     ap.add_argument("--risk-json", type=Path, default=DEFAULT_RISK)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--exit-zero-on-no-go",
+        action="store_true",
+        help=(
+            "Exit 0 after writing JSON even when verdict is NO_GO. "
+            "Default remains exit 1 on NO_GO for fail-closed execution chains."
+        ),
+    )
     args = ap.parse_args()
 
     gate_path = args.gate_summary if args.gate_summary.is_absolute() else (ROOT / args.gate_summary)
@@ -172,7 +180,9 @@ def main() -> int:
     out_path.write_text(json.dumps(checks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {out_path}")
     print(f"GO_NO_GO={checks['go_no_go']}")
-    return 0 if overall else 1
+    if overall or args.exit_zero_on_no_go:
+        return 0
+    return 1
 
 
 if __name__ == "__main__":
