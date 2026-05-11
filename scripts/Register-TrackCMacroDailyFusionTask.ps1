@@ -89,8 +89,8 @@ if ($DryRun) {
     Write-Output "would_run_daily_at=$RunAt"
     Write-Output ("would_prefer_fred={0}" -f [bool]$PreferFred)
     Write-Output "asset_scope=$AssetScope horizon=$Horizon"
-    Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3}" -f @(
-            [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory))
+    Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3} skip_lens_music_hormone_trend={4}" -f @(
+            [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory, [bool]$SkipLensMusicHormoneTrend))
     Write-Output ("meta_layer_envelope_path_set={0}" -f ($metaTrim -ne ""))
     if ($metaTrim -ne "") { Write-Output "meta_layer_envelope_path=$metaTrim" }
     Write-Output "working_directory=$repoRoot"
@@ -134,8 +134,8 @@ Write-Output "scheduled_task: REGISTERED ($TaskName)"
 Write-Output "run_at=$RunAt"
 Write-Output ("prefer_fred={0}" -f [bool]$PreferFred)
 Write-Output "asset_scope=$AssetScope horizon=$Horizon"
-Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3}" -f @(
-        [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory))
+Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3} skip_lens_music_hormone_trend={4}" -f @(
+        [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory, [bool]$SkipLensMusicHormoneTrend))
 Write-Output ("meta_layer_envelope_path_set={0}" -f ($metaTrim -ne ""))
 if ($metaTrim -ne "") { Write-Output "meta_layer_envelope_path=$metaTrim" }
 Write-Output "script=$fusionScript"
