@@ -8,7 +8,7 @@
 #>
 param(
     [switch]$Remove,
-    [string]$TaskName = 'MKM_VaFusionControlIntegrityDaily',
+    [string]$TaskName = 'MKM-VaFusionControlIntegrity-Daily',
     [string]$DailyAt = '07:35',
     [switch]$EnableCooldown,
     [switch]$WriteState

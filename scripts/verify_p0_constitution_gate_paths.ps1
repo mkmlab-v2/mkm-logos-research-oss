@@ -449,6 +449,8 @@ $required = @(
     "tests\fixtures\fusion_control_integrity_fusion_report_sample_v1.json",
     "tests\test_fusion_control_integrity_audit_v1.py",
     "tests\test_va_fusion_control_integrity_chain_v1.py",
+    "tests\test_va_fusion_policy_golden_v1.py",
+    "tests\fixtures\va_fusion_policy_golden_v1.json",
     "scripts\Run-VaFusionControlIntegrityChain_v1.ps1",
     "scripts\Register-VaFusionControlIntegrityDailyTask.ps1",
     "docs\final\schemas\lens_music_internal_eval_session_v1.schema.json",

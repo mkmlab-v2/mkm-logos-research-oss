@@ -1,6 +1,6 @@
 {
   "schema": "automation_registry_v1",
-  "version": "2026-05-10",
+  "version": "2026-05-11",
   "description": "Single source of truth for core runtime tasks and expected state.",
   "tasks": [
     {
@@ -80,6 +80,12 @@
       "expected_status": "Ready",
       "owner": "btrack_research",
       "criticality": "medium"
+    },
+    {
+      "name": "\\MKM-VaFusionControlIntegrity-Daily",
+      "expected_status": "Ready",
+      "owner": "btrack_research",
+      "criticality": "low"
     }
   ]
 }

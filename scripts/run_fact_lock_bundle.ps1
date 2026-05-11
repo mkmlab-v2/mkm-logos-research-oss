@@ -16,6 +16,7 @@
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
   5c. `py -m pytest tests/test_run_graphrag_pilot_router_v1.py` — GraphRAG 파일럿 라우터(Track B/K 관측 전용, GO 게이트·한글 별칭·brief fallback) 회귀.
   5d. `py -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py` — Control-Integrity Golden/LoRA 파이프라인 스모크(aggregate·프로모션 게이트·오라클 추론 타이밍; GPU 불필요). `-SkipMkmControlIntegritySmoke` 로 생략.
+  5d2. `py -m pytest tests/test_va_fusion_control_integrity_chain_v1.py tests/test_va_fusion_policy_golden_v1.py` — VA→fusion→감사 체인 + `va_tag_boost_v1` 정책 골든(CONSTITUTION §3.8.4). `-SkipVaFusionControlIntegritySmoke` 로 생략.
   5e. 사상–사주 조인트 문헌·큐레이트 회귀 **9**개 파일(Europe PMC 픽스처·오프라인 **7** + 인제스트 **1** + staleness **1**; CONSTITUTION §3.3 표「사상체질↔문헌↔사주 조인트」). `-SkipSasangSajuJointLiteraturePipeline` 로 생략.
   6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 **15**개 pytest 파일(선행: 일일 브리프 1 + Thin 브리지 1; 이어 배치 13에 Yang 2015 B-track 스키마·벤치 포함). `-SkipMyeongniLensRecommendedStack` 로 생략.
 
@@ -108,6 +109,9 @@
 .PARAMETER SkipMkmControlIntegritySmoke
   `tests/test_mkm_control_integrity_pipeline_smoke_v1.py`(Golden Set·홀드아웃 집계·게이트 CLI 회귀)를 생략한다.
 
+.PARAMETER SkipVaFusionControlIntegritySmoke
+  VA→fusion→감사 체인 pytest(`test_va_fusion_control_integrity_chain_v1`) 및 정책 골든(`test_va_fusion_policy_golden_v1`)을 생략한다.
+
 .PARAMETER SkipKmPhysicianCdsEnvelope
   한의 의사 CDS assist envelope v1 회귀 3종 pytest + `tests/test_automation_registry_json_v1.py`(MKM 주간 태스크 SSOT; `dual-regime` 의「Myeongri AI interpretation + KM physician CDS」단계와 동일 목록)를 생략한다.
 
@@ -151,6 +155,9 @@ param(
     # Control-Integrity LoRA / Golden pipeline CLI smoke (dual-regime parity step)
     [switch]$SkipMkmControlIntegritySmoke,
 
+    # VA trajectory -> fusion stub -> integrity audit chain + policy golden (B-track §3.8.4)
+    [switch]$SkipVaFusionControlIntegritySmoke,
+
     # KM physician CDS envelope v1 schema + builder pytest (dual-regime parity)
     [switch]$SkipKmPhysicianCdsEnvelope,
 
@@ -182,6 +189,10 @@ $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thi
 $mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
 $graphragPilotRouterTest = Join-Path $workspaceRoot 'tests\test_run_graphrag_pilot_router_v1.py'
 $mkmControlIntegrityPipelineSmokeTest = Join-Path $workspaceRoot 'tests\test_mkm_control_integrity_pipeline_smoke_v1.py'
+$vaFusionControlIntegritySmokeTests = @(
+    (Join-Path $workspaceRoot 'tests\test_va_fusion_control_integrity_chain_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_va_fusion_policy_golden_v1.py')
+)
 $kmPhysicianCdsEnvelopeTests = @(
     (Join-Path $workspaceRoot 'tests\test_km_physician_cds_assist_envelope_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_build_km_physician_cds_assist_envelope_v1.py'),
@@ -438,6 +449,19 @@ if (-not $SkipMkmControlIntegritySmoke) {
     }
     Write-Host '== Fact-Lock: test_mkm_control_integrity_pipeline_smoke_v1.py ==' -ForegroundColor Cyan
     & py -m pytest $mkmControlIntegrityPipelineSmokeTest -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if (-not $SkipVaFusionControlIntegritySmoke) {
+    foreach ($t in $vaFusionControlIntegritySmokeTests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "VA fusion control-integrity smoke pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: VA fusion control-integrity chain + policy golden (§3.8.4) ==' -ForegroundColor Cyan
+    & py -m pytest @vaFusionControlIntegritySmokeTests -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

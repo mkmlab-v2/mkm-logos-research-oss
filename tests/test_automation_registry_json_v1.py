@@ -12,6 +12,7 @@ MKM_REQUIRED_NAMES = frozenset(
     {
         "\\MKM-KmPhysician-CdsEnvelopeBatch-Weekly",
         "\\MKM-BTrack-BtcWeight-HitRateBundle-Weekly",
+        "\\MKM-VaFusionControlIntegrity-Daily",
     }
 )
 

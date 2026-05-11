@@ -906,8 +906,8 @@ jobs:
       - name: Fusion control integrity audit v1 (B-track, §3.8.3)
         run: python -m pytest tests/test_fusion_control_integrity_audit_v1.py -q --tb=short
 
-      - name: VA fusion control integrity chain v1 (B-track, §3.8.4)
-        run: python -m pytest tests/test_va_fusion_control_integrity_chain_v1.py -q --tb=short
+      - name: VA fusion control integrity chain + policy golden v1 (B-track, §3.8.4)
+        run: python -m pytest tests/test_va_fusion_control_integrity_chain_v1.py tests/test_va_fusion_policy_golden_v1.py -q --tb=short
 
       - name: Music/Gematria lens stub v1 ([HYPO] M1)
         run: python -m pytest tests/test_run_lens_music_gematria_v1.py -q --tb=short

@@ -505,8 +505,11 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 항목 | 경로 | 비고 |
 |------|------|------|
 | 원클릭 (Windows) | `scripts/Run-VaFusionControlIntegrityChain_v1.ps1` | 기본 `--no-write-state`(상태 파일 생략); `-WriteState`로 `lens_emotion_va_trajectory_state_latest.json` 갱신 |
-| 일일 작업 등록 | `scripts/Register-VaFusionControlIntegrityDailyTask.ps1` | 기본 작업명 `MKM_VaFusionControlIntegrityDaily`, 시각 `07:35` |
+| 일일 작업 등록 | `scripts/Register-VaFusionControlIntegrityDailyTask.ps1` | 기본 작업명 `MKM-VaFusionControlIntegrity-Daily`, 시각 `07:35`; `automation_registry.json` 항목명 `\\MKM-VaFusionControlIntegrity-Daily`(reconcile SSOT) |
+| Fact-Lock 번들 (기본 포함) | `scripts/run_fact_lock_bundle.ps1` | 체인 pytest + `tests/test_va_fusion_policy_golden_v1.py`; 생략: `-SkipVaFusionControlIntegritySmoke` |
+| 정책 골든 픽스처 | `tests/fixtures/va_fusion_policy_golden_v1.json` | `va_tag_boost_v1` 결정론 스냅샷 |
 | 회귀 (크로스플랫폼) | `tests/test_va_fusion_control_integrity_chain_v1.py` | trajectory→fusion→audit, `summary.all_pass` |
+| 회귀 (정책 단위) | `tests/test_va_fusion_policy_golden_v1.py` | fixture 행 vs `fusion_multiplier` |
 
 ---
 
