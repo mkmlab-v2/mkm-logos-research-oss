@@ -32,6 +32,30 @@
 - **근거 스냅샷:** `reports/lens_music_human_review_packet_latest.json` 기준 `research_promotion_ready=true`, `governance_state=GO`, `webhook_health_state=NODATA`.
 - **가드레일 유지:** 자동 승격/자동 배포 금지, 실거래·비가역 경로 별도 승인 유지, 대외 커뮤니케이션은 Fact-Lock 근거 범위 내 허용.
 
+## Ops slice (2026-05-11 19:06 KST · lens music promotion push-through)
+
+- **승격 라인 재확인:** `check_lens_music_symbolic_audio_promotion_gate_v1.py` 재실행 결과 `B_TRACK_RESEARCH_PROMOTION_READY` 유지, `run_lens_music_audition_governance_chain_v1.py` 결과 `state=GO` 유지.
+- **후속 체인 완료:** PoC metric/runbook/trend/webhook health/dashboard를 순차 실행해 D+2~D+7 성격 운영 루틴 선반영(웹훅 dispatch는 미설정 환경으로 `skipped` 기록).
+- **휴먼 승인 동기화:** `reports/lens_music_human_signoff_record_latest.json` 기준 `decision=APPROVED_WITH_HUMAN_SIGNOFF` 유지, `basis.webhook_health_state`는 최신 `WATCH`로 동기화 완료.
+
+## Ops slice (Lens Music · D1~D7 next dev schedule)
+
+- **D1(기준선 고정):** `verify_p0_constitution_gate_paths.ps1` -> `check_lens_music_symbolic_audio_promotion_gate_v1.py` -> `run_lens_music_audition_governance_chain_v1.py` 순서로 실행하고 상태 1줄 기록.
+- **D2(프롬프트 품질 루프):** `run_lens_music_prompt_poc_metric_v1.py` + `build_lens_music_prompt_poc_runbook_v1.py`; GO/WATCH 원인 Top1만 기록.
+- **D3(브레이크/트렌드):** `build_lens_music_prompt_brake_trend_v1.py` + `build_lens_music_prompt_runbook_webhook_health_summary_v1.py`; WATCH 지속 시 임계/룰 조정 후보 1개 선정.
+- **D4(대시보드):** `build_mkm_trackc_ops_dashboard_v1.py` 재생성 후 lens_music 섹션만 점검(타 레인 미확장).
+- **D5(승인 경계 재검토):** `reports/lens_music_human_signoff_record_latest.json` 기준 track wall/가드레일 이탈 여부 점검.
+- **D6(통합 리허설):** D1~D5 핵심 스크립트 재실행; 실패 1건이라도 있으면 HOLD 기록.
+- **D7(주간 마감):** 본 파일에 주간 결론 1블록 추가 후 코드/런타임 산출물 분리 정리.
+- **매일 공통 규칙:** 자동 승격/자동 배포 금지, 실거래/비가역 경로 별도 승인 유지, 코드 변경과 `reports/*`/`*_latest.json` 혼합 커밋 금지.
+
+## Ops slice (2026-05-11 20:00 KST · D7 weekly close, lens music)
+
+- **통합 리허설 결과:** D6 체인 재실행 기준 PASS (`verify_p0_constitution_gate_paths` OK 498, `B_TRACK_RESEARCH_PROMOTION_READY`, governance/metric/runbook GO).
+- **관측 상태:** `brake_trend`/`webhook_health_summary`는 `WATCH` 유지(운영 모니터링 대상), 차단/격하 이벤트 없음.
+- **승인 상태:** `reports/lens_music_human_signoff_record_latest.json`는 `APPROVED_WITH_HUMAN_SIGNOFF` 유지, scope(`track_a_commercial_audio=true`, `track_c_primary_gtm=true`)와 가드레일(자동 승격/자동 배포 금지) 불변.
+- **주간 결론:** 승격 라인은 현 시점에서 가능한 범위까지 완료. 다음 사이클은 WATCH 2항목 추세 관찰 + webhook 구성 여부 결정 + Fact-Lock 범위 내 커뮤니케이션 유지.
+
 ## Control Tower Update (2026-05-05)
 
 - Worker B 완료: Track C §9, `MKM_AI_LANDING_COPY_V1.md` 기준으로 `MKM_AI_API_BRANDING_BRIDGE_V1.md` 메시지 프레임 정합(communication-only, artifact-backed / bounded / non-guaranteed).
