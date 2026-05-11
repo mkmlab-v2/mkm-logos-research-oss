@@ -40,7 +40,14 @@ def _load_close_map(path: Path) -> dict[str, float]:
     with path.open("r", encoding="utf-8-sig", newline="") as f:
         rd = csv.DictReader(f)
         for r in rd:
-            out[str(r["Date"])[:10]] = float(r["Close"])
+            d = str(r.get("Date") or "")[:10]
+            raw_close = str(r.get("Close") or "").strip()
+            if not d or not raw_close:
+                continue
+            try:
+                out[d] = float(raw_close)
+            except ValueError:
+                continue
     return out
 
 
