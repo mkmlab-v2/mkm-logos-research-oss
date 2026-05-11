@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/va_cooldown_policy_v1.schema.json",
+  "title": "VA cooldown policy v1 (B-track, NON_GATING)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "policy_id",
+    "enabled",
+    "high_arousal_cut",
+    "low_valence_cut",
+    "arousal_decay_step",
+    "valence_recovery_step",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "va_cooldown_policy_v1" },
+    "policy_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "enabled": { "type": "boolean" },
+    "high_arousal_cut": { "type": "number", "minimum": -1, "maximum": 1 },
+    "low_valence_cut": { "type": "number", "minimum": -1, "maximum": 1 },
+    "arousal_decay_step": { "type": "number", "minimum": 0, "maximum": 2 },
+    "valence_recovery_step": { "type": "number", "minimum": 0, "maximum": 2 },
+    "track_wall": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"] },
+      "minItems": 1
+    }
+  }
+}

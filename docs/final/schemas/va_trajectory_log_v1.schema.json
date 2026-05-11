@@ -69,6 +69,47 @@
     "note": {
       "type": "string",
       "maxLength": 4000
+    },
+    "cooldown_control": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "policy_id",
+        "enabled",
+        "applied",
+        "reasons",
+        "before_va",
+        "after_va",
+        "thresholds"
+      ],
+      "properties": {
+        "policy_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "enabled": { "type": "boolean" },
+        "applied": { "type": "boolean" },
+        "reasons": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["high_arousal", "low_valence"] },
+          "maxItems": 4
+        },
+        "before_va": { "$ref": "#/definitions/va_point" },
+        "after_va": { "$ref": "#/definitions/va_point" },
+        "thresholds": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "high_arousal_cut",
+            "low_valence_cut",
+            "arousal_decay_step",
+            "valence_recovery_step"
+          ],
+          "properties": {
+            "high_arousal_cut": { "type": "number", "minimum": -1, "maximum": 1 },
+            "low_valence_cut": { "type": "number", "minimum": -1, "maximum": 1 },
+            "arousal_decay_step": { "type": "number", "minimum": 0, "maximum": 2 },
+            "valence_recovery_step": { "type": "number", "minimum": 0, "maximum": 2 }
+          }
+        }
+      }
     }
   },
   "definitions": {

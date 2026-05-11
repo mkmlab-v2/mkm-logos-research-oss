@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/va_cooldown_event_v1.schema.json",
+  "title": "VA cooldown event log v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "policy_id",
+    "session_id",
+    "turn_index",
+    "timestamp_utc",
+    "applied",
+    "reasons",
+    "thresholds",
+    "before_va",
+    "after_va",
+    "status_in",
+    "status_out",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "va_cooldown_event_v1" },
+    "policy_id": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "session_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "turn_index": { "type": "integer", "minimum": 0 },
+    "timestamp_utc": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$" },
+    "applied": { "type": "boolean" },
+    "reasons": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["high_arousal", "low_valence"] },
+      "maxItems": 4
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["high_arousal_cut", "low_valence_cut", "arousal_decay_step", "valence_recovery_step"],
+      "properties": {
+        "high_arousal_cut": { "type": "number", "minimum": -1, "maximum": 1 },
+        "low_valence_cut": { "type": "number", "minimum": -1, "maximum": 1 },
+        "arousal_decay_step": { "type": "number", "minimum": 0, "maximum": 2 },
+        "valence_recovery_step": { "type": "number", "minimum": 0, "maximum": 2 }
+      }
+    },
+    "before_va": { "$ref": "#/definitions/va_point" },
+    "after_va": { "$ref": "#/definitions/va_point" },
+    "status_in": { "type": "string", "enum": ["TRACKING_ACTIVE", "TRACKING_HOLD", "COOLDOWN_ACTIVE"] },
+    "status_out": { "type": "string", "enum": ["TRACKING_ACTIVE", "TRACKING_HOLD", "COOLDOWN_ACTIVE"] },
+    "track_wall": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"] },
+      "minItems": 1
+    }
+  },
+  "definitions": {
+    "va_point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["valence", "arousal"],
+      "properties": {
+        "valence": { "type": "number", "minimum": -1, "maximum": 1 },
+        "arousal": { "type": "number", "minimum": -1, "maximum": 1 }
+      }
+    }
+  }
+}

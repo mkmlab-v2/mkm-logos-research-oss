@@ -1,0 +1,10 @@
+{
+  "schema": "va_cooldown_policy_v1",
+  "policy_id": "va_cooldown_control_v1",
+  "enabled": true,
+  "high_arousal_cut": 0.9,
+  "low_valence_cut": -0.9,
+  "arousal_decay_step": 0.2,
+  "valence_recovery_step": 0.15,
+  "track_wall": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"]
+}

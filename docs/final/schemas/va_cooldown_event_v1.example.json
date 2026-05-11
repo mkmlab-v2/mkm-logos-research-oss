@@ -1,0 +1,26 @@
+{
+  "schema": "va_cooldown_event_v1",
+  "policy_id": "va_cooldown_control_v1",
+  "session_id": "sess_20260511_alpha_001",
+  "turn_index": 4,
+  "timestamp_utc": "2026-05-11T01:18:00Z",
+  "applied": true,
+  "reasons": ["high_arousal"],
+  "thresholds": {
+    "high_arousal_cut": 0.9,
+    "low_valence_cut": -0.9,
+    "arousal_decay_step": 0.2,
+    "valence_recovery_step": 0.15
+  },
+  "before_va": {
+    "valence": 0.33,
+    "arousal": 0.97
+  },
+  "after_va": {
+    "valence": 0.33,
+    "arousal": 0.77
+  },
+  "status_in": "TRACKING_ACTIVE",
+  "status_out": "COOLDOWN_ACTIVE",
+  "track_wall": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"]
+}
