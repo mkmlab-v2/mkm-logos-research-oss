@@ -34,5 +34,24 @@
     "pytest_includes_emotion_va_overlay_tests": true,
     "does_not_gate_promotion_decision": true,
     "note": "Fixture shape only; regenerate via scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py."
+  },
+  "m31_hormone_guard": {
+    "input_present": true,
+    "guard_mode": "soft",
+    "passed": true,
+    "reason": "ok",
+    "trend_state": "GO",
+    "high_stress_rate": 0.12,
+    "max_consecutive_high_stress": 1,
+    "checks": {
+      "rate_pass": true,
+      "consecutive_pass": true,
+      "trend_state_pass": true
+    },
+    "thresholds": {
+      "max_high_stress_rate": 0.25,
+      "max_consecutive_high_stress": 3
+    },
+    "non_biological_notice": "metaphor_only_advisory_controller"
   }
 }

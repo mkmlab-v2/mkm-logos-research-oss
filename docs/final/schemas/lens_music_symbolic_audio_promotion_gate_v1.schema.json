@@ -38,7 +38,11 @@
     },
     "decision": {
       "type": "string",
-      "enum": ["B_TRACK_RESEARCH_PROMOTION_READY", "HOLD_PYTEST_FAILED"]
+      "enum": [
+        "B_TRACK_RESEARCH_PROMOTION_READY",
+        "HOLD_PYTEST_FAILED",
+        "HOLD_M31_HORMONE_GUARD"
+      ]
     },
     "track_wall": {
       "type": "object",
@@ -95,6 +99,39 @@
           "const": true
         },
         "note": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "m31_hormone_guard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["input_present", "guard_mode", "passed", "reason", "trend_state", "thresholds"],
+      "properties": {
+        "input_present": { "type": "boolean" },
+        "guard_mode": { "type": "string", "enum": ["soft", "required"] },
+        "passed": { "type": "boolean" },
+        "reason": { "type": "string" },
+        "trend_state": { "type": "string" },
+        "high_stress_rate": { "type": ["number", "null"] },
+        "max_consecutive_high_stress": { "type": ["integer", "null"] },
+        "checks": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "rate_pass": { "type": "boolean" },
+            "consecutive_pass": { "type": "boolean" },
+            "trend_state_pass": { "type": "boolean" }
+          }
+        },
+        "thresholds": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["max_high_stress_rate", "max_consecutive_high_stress"],
+          "properties": {
+            "max_high_stress_rate": { "type": "number" },
+            "max_consecutive_high_stress": { "type": "integer" }
+          }
+        },
+        "non_biological_notice": { "type": "string" }
       }
     }
   }

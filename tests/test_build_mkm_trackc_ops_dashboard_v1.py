@@ -31,6 +31,18 @@ def test_trackc_dashboard_includes_lens_music_governance_fields():
     assert "state" in pp
     assert "style_delta_rate" in pp
     assert "overlay_style_match_rate" in pp
+    hs = (doc.get("trackc") or {}).get("lens_music_hormone_state") or {}
+    assert "state" in hs
+    assert "stress_index_0_1" in hs
+    assert "recovery_buffer_0_1" in hs
+    assert "inertia_index_0_1" in hs
+    ht = (doc.get("trackc") or {}).get("lens_music_hormone_trend") or {}
+    assert "state" in ht
+    assert "high_stress_rate" in ht
+    assert "max_consecutive_high_stress" in ht
+    htw = (doc.get("trackc") or {}).get("lens_music_hormone_trend_webhook") or {}
+    assert "dispatch_status" in htw
+    assert "dispatch_only_on_watch" in htw
     rb = (doc.get("trackc") or {}).get("lens_music_prompt_poc_runbook") or {}
     assert "state" in rb
     assert "recommendation_count" in rb

@@ -17,6 +17,7 @@ DEFAULT_GOV = ROOT / "docs" / "final" / "artifacts" / "lens_music_audition_gover
 DEFAULT_CHAIN = ROOT / "reports" / "_tmp_m15_chain.json"
 DEFAULT_OUT = ROOT / "reports" / "lens_music_prompt_overlay_latest.json"
 DEFAULT_STATE = ROOT / "reports" / "lens_music_prompt_overlay_state_latest.json"
+DEFAULT_HORMONE_STATE = ROOT / "reports" / "lens_music_hormone_state_latest.json"
 DEFAULT_SMOKE_EVAL = ROOT / "reports" / "lens_music_prompt_smoke_eval_latest.json"
 DEFAULT_HISTORY_LOG = ROOT / "reports" / "lens_music_prompt_overlay_history_log.jsonl"
 
@@ -91,14 +92,74 @@ def _apply_ema(previous: float, target: float, alpha: float) -> float:
     return (a * target) + ((1.0 - a) * previous)
 
 
+def _clamp01(x: float) -> float:
+    return max(0.0, min(1.0, float(x)))
+
+
+def _compute_hormone_state(
+    *,
+    valence: float,
+    arousal: float,
+    governance_state: str,
+    smoke_eval_state: str,
+    prev_hormone: dict[str, Any] | None,
+    alpha: float = 0.35,
+) -> tuple[dict[str, Any], dict[str, Any]]:
+    """M31: hormone-like control state (advisory-only, non-biological metaphor).
+
+    We intentionally avoid biological claims. This is a bounded dynamic controller
+    that mimics stress/recovery inertia for prompt style guidance.
+    """
+    prev = prev_hormone or {}
+    prev_stress = _clamp01(prev.get("stress_index_0_1", 0.35))
+    prev_recovery = _clamp01(prev.get("recovery_buffer_0_1", 0.45))
+
+    stress_target = _clamp01((max(arousal, 0.0) * 0.7) + (max(-valence, 0.0) * 0.3))
+    recovery_target = _clamp01((max(valence, 0.0) * 0.6) + ((1.0 - max(arousal, 0.0)) * 0.4))
+
+    watch_boost = 0.1 if governance_state == "WATCH" else 0.0
+    smoke_boost = 0.08 if smoke_eval_state == "WATCH" else 0.0
+    stress_target = _clamp01(stress_target + watch_boost + smoke_boost)
+    recovery_target = _clamp01(recovery_target - (watch_boost * 0.5) - (smoke_boost * 0.5))
+
+    stress = _clamp01(_apply_ema(previous=prev_stress, target=stress_target, alpha=alpha))
+    recovery = _clamp01(_apply_ema(previous=prev_recovery, target=recovery_target, alpha=alpha))
+    inertia = _clamp01((stress * 0.6) + ((1.0 - recovery) * 0.4))
+
+    state = "STABLE"
+    if stress >= 0.68:
+        state = "HIGH_STRESS"
+    elif inertia >= 0.6:
+        state = "ELEVATED"
+
+    current = {
+        "schema": "lens_music_hormone_state_v1",
+        "generated_at_utc": _utc_now(),
+        "state": state,
+        "stress_index_0_1": round(stress, 4),
+        "recovery_buffer_0_1": round(recovery, 4),
+        "inertia_index_0_1": round(inertia, 4),
+        "non_biological_notice": "metaphor_only_advisory_controller",
+    }
+    next_state = {
+        "schema": "lens_music_hormone_state_v1",
+        "generated_at_utc": _utc_now(),
+        "stress_index_0_1": round(stress, 4),
+        "recovery_buffer_0_1": round(recovery, 4),
+        "inertia_index_0_1": round(inertia, 4),
+    }
+    return current, next_state
+
+
 def build_overlay(
     governance: dict[str, Any],
     chain_doc: dict[str, Any],
     *,
     smoke_eval: dict[str, Any] | None = None,
     prev_state: dict[str, Any] | None = None,
+    prev_hormone: dict[str, Any] | None = None,
     ema_alpha: float = 0.4,
-) -> tuple[dict[str, Any], dict[str, Any]]:
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
     state = str(governance.get("state") or "UNKNOWN")
     m9 = dict(chain_doc.get("melody_stage_m9") or {})
     snapshot = dict(m9.get("input_snapshot") or {})
@@ -114,6 +175,13 @@ def build_overlay(
     style = _pick_tone(tempo_bpm=tempo_bpm, valence=valence, state=state)
     smoke_state = str((smoke_eval or {}).get("state") or "UNKNOWN")
     style, m22 = _apply_m22_brake(style, governance_state=state, smoke_eval_state=smoke_state)
+    hormone_current, hormone_next = _compute_hormone_state(
+        valence=valence,
+        arousal=arousal,
+        governance_state=state,
+        smoke_eval_state=smoke_state,
+        prev_hormone=prev_hormone,
+    )
 
     global_state = {
         "schema": "lens_music_prompt_overlay_v1",
@@ -129,6 +197,7 @@ def build_overlay(
         "ema_alpha": float(ema_alpha),
         "style": style,
         "smoke_eval_state": smoke_state,
+        "hormone_like_state": hormone_current,
     }
     system_instructions = (
         f"[Global State: BPM={tempo_bpm:.1f}, Valence={valence:.3f}, Arousal={arousal:.3f}, Governance={state}]\n"
@@ -136,6 +205,7 @@ def build_overlay(
         f"- Keep sentence length {style['sentence_length']}.\n"
         "- Maintain factual caution when governance is WATCH.\n"
         "- Do not claim biological equivalence; describe as high-fidelity emulation only.\n"
+        f"- Hormone-like control state={hormone_current['state']} (metaphor-only advisory).\n"
         "- Keep control parameters separate from user message content."
     )
     overlay = {
@@ -162,7 +232,7 @@ def build_overlay(
         "sasang_primary": sasang or "unknown",
         "ema_alpha": float(ema_alpha),
     }
-    return overlay, next_state
+    return overlay, next_state, hormone_next
 
 
 def _append_jsonl(path: Path, row: dict[str, Any]) -> None:
@@ -178,6 +248,7 @@ def main() -> int:
     ap.add_argument("--smoke-eval-json", type=Path, default=DEFAULT_SMOKE_EVAL)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--state-json", type=Path, default=DEFAULT_STATE)
+    ap.add_argument("--hormone-state-json", type=Path, default=DEFAULT_HORMONE_STATE)
     ap.add_argument("--ema-alpha", type=float, default=0.4)
     ap.add_argument("--history-log-jsonl", type=Path, default=DEFAULT_HISTORY_LOG)
     args = ap.parse_args()
@@ -186,17 +257,21 @@ def main() -> int:
     chain = _read_json(args.chain_json)
     smoke_eval = _read_json(args.smoke_eval_json)
     prev_state = _read_json(args.state_json)
-    out_doc, next_state = build_overlay(
+    prev_hormone = _read_json(args.hormone_state_json)
+    out_doc, next_state, hormone_next = build_overlay(
         gov,
         chain,
         smoke_eval=smoke_eval,
         prev_state=prev_state,
+        prev_hormone=prev_hormone,
         ema_alpha=float(args.ema_alpha),
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     args.state_json.parent.mkdir(parents=True, exist_ok=True)
     args.state_json.write_text(json.dumps(next_state, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    args.hormone_state_json.parent.mkdir(parents=True, exist_ok=True)
+    args.hormone_state_json.write_text(json.dumps(hormone_next, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     _append_jsonl(
         args.history_log_jsonl,
         {
@@ -214,6 +289,9 @@ def main() -> int:
             "trigger_smoke_eval_watch": bool(
                 (out_doc.get("auto_brake_m22") or {}).get("trigger_smoke_eval_watch", False)
             ),
+            "hormone_state": out_doc["global_state"]["hormone_like_state"]["state"],
+            "stress_index_0_1": out_doc["global_state"]["hormone_like_state"]["stress_index_0_1"],
+            "recovery_buffer_0_1": out_doc["global_state"]["hormone_like_state"]["recovery_buffer_0_1"],
         },
     )
     print(

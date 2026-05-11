@@ -38,3 +38,7 @@ def test_promotion_gate_script_matches_live_pytest():
     assert doc["emotion_va_overlay_ack"]["pytest_includes_emotion_va_overlay_tests"] is True
     assert doc["emotion_va_overlay_ack"]["does_not_gate_promotion_decision"] is True
     assert "track_c_section_3_10_emotion_va" in doc["references_ssot"]
+    m31 = doc.get("m31_hormone_guard") or {}
+    assert "input_present" in m31
+    assert "guard_mode" in m31
+    assert "passed" in m31

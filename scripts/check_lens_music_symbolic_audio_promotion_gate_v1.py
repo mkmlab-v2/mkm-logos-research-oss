@@ -24,6 +24,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 
 DEFAULT_OUT = ROOT / "reports" / "lens_music_symbolic_audio_promotion_gate_latest.json"
+DEFAULT_HORMONE_TREND = ROOT / "docs" / "final" / "artifacts" / "lens_music_hormone_trend_latest.json"
 
 PYTEST_MODULES = [
     "tests/test_sasang_music_mapping_schema_v1.py",
@@ -48,9 +49,105 @@ def run_pytest_bundle() -> tuple[int, str]:
     return r.returncode, tail
 
 
-def build_payload(pytest_exit_code: int, log_tail: str) -> dict[str, Any]:
+def _read_json(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        return {}
+    try:
+        obj = json.loads(path.read_text(encoding="utf-8-sig"))
+    except json.JSONDecodeError:
+        return {}
+    return obj if isinstance(obj, dict) else {}
+
+
+def _compute_m31_guard(
+    *,
+    hormone_trend: dict[str, Any],
+    max_high_stress_rate: float,
+    max_consecutive_high_stress: int,
+    require_input: bool,
+) -> tuple[bool, dict[str, Any]]:
+    input_present = bool(hormone_trend and str(hormone_trend.get("schema") or "").strip())
+    hs_rate = hormone_trend.get("high_stress_rate")
+    hs_consecutive = hormone_trend.get("max_consecutive_high_stress")
+    trend_state = str(hormone_trend.get("state") or "UNKNOWN").strip().upper()
+
+    if not input_present:
+        passed = not require_input
+        detail = {
+            "input_present": False,
+            "guard_mode": "required" if require_input else "soft",
+            "passed": passed,
+            "reason": "missing_hormone_trend_input",
+            "trend_state": "UNKNOWN",
+            "high_stress_rate": None,
+            "max_consecutive_high_stress": None,
+            "thresholds": {
+                "max_high_stress_rate": float(max_high_stress_rate),
+                "max_consecutive_high_stress": int(max_consecutive_high_stress),
+            },
+            "non_biological_notice": "metaphor_only_advisory_controller",
+        }
+        return passed, detail
+
+    try:
+        hs_rate_f = float(hs_rate)
+    except (TypeError, ValueError):
+        hs_rate_f = 0.0
+    try:
+        hs_cons_i = int(hs_consecutive)
+    except (TypeError, ValueError):
+        hs_cons_i = 0
+    rate_pass = hs_rate_f <= float(max_high_stress_rate)
+    consecutive_pass = hs_cons_i <= int(max_consecutive_high_stress)
+    trend_state_pass = trend_state != "WATCH"
+    passed = bool(rate_pass and consecutive_pass and trend_state_pass)
+
+    detail = {
+        "input_present": True,
+        "guard_mode": "required" if require_input else "soft",
+        "passed": passed,
+        "reason": "ok" if passed else "hormone_trend_watch_or_threshold_exceeded",
+        "trend_state": trend_state,
+        "high_stress_rate": hs_rate_f,
+        "max_consecutive_high_stress": hs_cons_i,
+        "checks": {
+            "rate_pass": rate_pass,
+            "consecutive_pass": consecutive_pass,
+            "trend_state_pass": trend_state_pass,
+        },
+        "thresholds": {
+            "max_high_stress_rate": float(max_high_stress_rate),
+            "max_consecutive_high_stress": int(max_consecutive_high_stress),
+        },
+        "non_biological_notice": str(
+            hormone_trend.get("non_biological_notice") or "metaphor_only_advisory_controller"
+        ),
+    }
+    return passed, detail
+
+
+def build_payload(
+    pytest_exit_code: int,
+    log_tail: str,
+    *,
+    hormone_trend: dict[str, Any],
+    max_high_stress_rate: float,
+    max_consecutive_high_stress: int,
+    require_m31_input: bool,
+) -> dict[str, Any]:
     ok = pytest_exit_code == 0
-    decision = "B_TRACK_RESEARCH_PROMOTION_READY" if ok else "HOLD_PYTEST_FAILED"
+    m31_pass, m31_detail = _compute_m31_guard(
+        hormone_trend=hormone_trend,
+        max_high_stress_rate=max_high_stress_rate,
+        max_consecutive_high_stress=max_consecutive_high_stress,
+        require_input=require_m31_input,
+    )
+    if not ok:
+        decision = "HOLD_PYTEST_FAILED"
+    elif not m31_pass:
+        decision = "HOLD_M31_HORMONE_GUARD"
+    else:
+        decision = "B_TRACK_RESEARCH_PROMOTION_READY"
     out: dict[str, Any] = {
         "schema": "lens_music_symbolic_audio_promotion_gate_v1",
         "generated_at_utc": _utc_now(),
@@ -94,6 +191,7 @@ def build_payload(pytest_exit_code: int, log_tail: str) -> dict[str, Any]:
                 "emotion_va_overlay_v1; GO/HOLD stay M0–M5 pytest bundle only (Track Wall unchanged)."
             ),
         },
+        "m31_hormone_guard": m31_detail,
     }
     return out
 
@@ -101,10 +199,22 @@ def build_payload(pytest_exit_code: int, log_tail: str) -> dict[str, Any]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument("--hormone-trend-json", type=Path, default=DEFAULT_HORMONE_TREND)
+    ap.add_argument("--m31-max-high-stress-rate", type=float, default=0.25)
+    ap.add_argument("--m31-max-consecutive-high-stress", type=int, default=3)
+    ap.add_argument("--require-m31-hormone-input", action="store_true")
     args = ap.parse_args()
 
     code, tail = run_pytest_bundle()
-    payload = build_payload(code, tail)
+    hormone_trend = _read_json(args.hormone_trend_json)
+    payload = build_payload(
+        code,
+        tail,
+        hormone_trend=hormone_trend,
+        max_high_stress_rate=float(args.m31_max_high_stress_rate),
+        max_consecutive_high_stress=int(args.m31_max_consecutive_high_stress),
+        require_m31_input=bool(args.require_m31_hormone_input),
+    )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(

@@ -13,6 +13,7 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     chain = tmp_path / "chain.json"
     out = tmp_path / "overlay.json"
     state_path = tmp_path / "state.json"
+    hormone_state_path = tmp_path / "hormone_state.json"
     hist = tmp_path / "hist.jsonl"
     smoke = tmp_path / "smoke.json"
     gov.write_text(
@@ -69,6 +70,8 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
             str(out),
             "--state-json",
             str(state_path),
+            "--hormone-state-json",
+            str(hormone_state_path),
             "--history-log-jsonl",
             str(hist),
         ],
@@ -83,6 +86,12 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     assert doc["global_state"]["smoothed_bpm"] > 0
     assert doc["global_state"]["target_bpm_from_sasang"] > 0
     assert doc["global_state"]["style"]["temperature_hint"] <= 0.45
+    hormone = doc["global_state"]["hormone_like_state"]
+    assert hormone["schema"] == "lens_music_hormone_state_v1"
+    assert hormone["state"] in {"STABLE", "ELEVATED", "HIGH_STRESS"}
+    assert 0.0 <= float(hormone["stress_index_0_1"]) <= 1.0
+    assert 0.0 <= float(hormone["recovery_buffer_0_1"]) <= 1.0
+    assert "metaphor_only" in hormone["non_biological_notice"]
     assert doc["control_plane_contract"]["control_plane_user_plane_separation"] is True
     assert doc["auto_brake_m22"]["active"] is True
     assert doc["auto_brake_m22"]["trigger_smoke_eval_watch"] is True
@@ -92,3 +101,4 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     row = json.loads(lines[0])
     assert row["schema"] == "lens_music_prompt_overlay_history_row_v1"
     assert row["auto_brake_active"] is True
+    assert row["hormone_state"] in {"STABLE", "ELEVATED", "HIGH_STRESS"}
