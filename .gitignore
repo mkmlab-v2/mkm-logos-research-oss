@@ -27,6 +27,11 @@ logs/
 # VPS→local heartbeat mirror (sync daemon_alive_check.json here; keep folder only in Git)
 /live_sync/incoming/**
 !/live_sync/incoming/.gitkeep
+/live_sync/**
+!/live_sync/incoming/.gitkeep
+
+# Local office docs (not source of truth)
+*.hwpx
 
 # MKM-Orchestrator — machine-local mutable queue & ephemeral locks (templates stay tracked)
 docs/final/artifacts/todo_queue_latest.json
