@@ -721,7 +721,7 @@ try {
     if ($IncludeVaFusionControlIntegritySmoke) {
         $vaChain = Join-Path $root "tests\test_va_fusion_control_integrity_chain_v1.py"
         if (Test-Path -LiteralPath $vaChain) {
-            Step "VA->fusion->control-integrity chain smoke (B-track, §3.8.4)" {
+            Step "VA->fusion->control-integrity chain smoke (B-track, CONSTITUTION 3.8.4)" {
                 & py -m pytest $vaChain -q --tb=short
             }
         }
