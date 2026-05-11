@@ -31,6 +31,12 @@ DEFAULT_BLOCKED_ADJUSTMENTS_REGISTRY = ROOT / "docs" / "final" / "artifacts" / "
 DEFAULT_EFFECTIVE_ADJUSTMENTS_REGISTRY = ROOT / "docs" / "final" / "artifacts" / "effective_adjustments_registry_v1.jsonl"
 
 SCHEMA_ID = "btrack_hypothesis_prophecy_v1"
+FALLBACK_ENSEMBLE_WEIGHTS = {
+    "price": 0.65,
+    "macro": 0.2,
+    "news": 0.1,
+    "myeongni_sasang": 0.05,
+}
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -138,6 +144,15 @@ def _safe_float(v: Any, default: float = 0.0) -> float:
         return float(v)
     except (TypeError, ValueError):
         return default
+
+
+def _resolve_weights(raw_weights: dict[str, Any]) -> tuple[dict[str, float], str]:
+    """Return non-degenerate weights and source label for diagnostics."""
+    resolved = {k: _safe_float(raw_weights.get(k), 0.0) for k in FALLBACK_ENSEMBLE_WEIGHTS}
+    total_abs = sum(abs(v) for v in resolved.values())
+    if total_abs > 1e-12:
+        return resolved, "config"
+    return dict(FALLBACK_ENSEMBLE_WEIGHTS), "fallback_default"
 
 
 def _sgn_to_dir(v: float) -> str:
@@ -373,7 +388,8 @@ def _build_ensemble_from_bundle(
 ) -> dict[str, Any]:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     compression_bridge = _extract_compression_bridge_meta(bundle)
-    weights = ensemble_cfg.get("weights") if isinstance(ensemble_cfg.get("weights"), dict) else {}
+    raw_weights = ensemble_cfg.get("weights") if isinstance(ensemble_cfg.get("weights"), dict) else {}
+    weights, weights_source = _resolve_weights(raw_weights)
     rules = ensemble_cfg.get("rules") if isinstance(ensemble_cfg.get("rules"), dict) else {}
 
     price_instrument = str(rules.get("price_instrument") or "btc").strip().lower()
@@ -513,6 +529,7 @@ def _build_ensemble_from_bundle(
                 "news": w("news"),
                 "myeongni_sasang": w("myeongni_sasang"),
             },
+            "weights_source": weights_source,
             "weighted_score_raw": round(weighted_raw, 6),
             "tie_break_min_margin_raw": margin_raw,
             "neutral_penalty_raw": neutral_penalty_raw,
@@ -819,6 +836,15 @@ def main() -> int:
     ap.add_argument("--effective-adjustments-registry", type=Path, default=DEFAULT_EFFECTIVE_ADJUSTMENTS_REGISTRY)
     ap.add_argument("--effective-seed-top-k", type=int, default=5)
     ap.add_argument("--effective-min-accuracy-delta", type=float, default=0.0001)
+    ap.add_argument(
+        "--research-evaluation-instrument",
+        choices=("btc", "kospi", "multi"),
+        default="btc",
+        help=(
+            "B-track OHLCV backtest only: after the BTC-only guard, set prediction.instrument for "
+            "build_btrack_prophecy_score_from_ohlcv (kospi / both legs / btc). Default btc."
+        ),
+    )
     args = ap.parse_args()
 
     if args.llm_backend is not None:
@@ -882,6 +908,17 @@ def main() -> int:
         cfg = _load_json(args.ensemble_config)
         rules = cfg.get("rules") if isinstance(cfg.get("rules"), dict) else {}
     doc = _enforce_btc_only_trading_guard(doc, bundle, rules if isinstance(rules, dict) else {})
+
+    if args.research_evaluation_instrument != "btc":
+        pred = doc.get("prediction")
+        if isinstance(pred, dict):
+            pred["instrument"] = args.research_evaluation_instrument
+        rm = doc.setdefault("runtime_meta", {})
+        if isinstance(rm, dict):
+            rm["research_evaluation_instrument"] = args.research_evaluation_instrument
+            rm["research_evaluation_instrument_note"] = (
+                "OHLCV score split only; execution scope remains BTC-only per btc_only_guard."
+            )
 
     errs = _validate_hypothesis(doc)
     js_errs = _try_jsonschema(doc, args.schema)
