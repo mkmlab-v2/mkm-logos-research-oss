@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Single daily entrypoint: Fragility+macro smoke (with weekly + webhooks) → forward log chain → Logos 4D X/Y → Track C ops dashboard.
+  Single daily entrypoint: Fragility+macro smoke (with weekly + webhooks) → forward log chain → Logos 4D X/Y → lens music M31 hormone trend (optional) → Track C ops dashboard.
 
 .DESCRIPTION
   Avoids duplicate fragility runs: Invoke-FragilityMacroRiskDaily runs the full chain once; forward and logos chains use -SkipFragilityChain.
@@ -33,6 +33,9 @@ param(
     [switch]$SkipForwardChain,
     [switch]$SkipLogosChain,
     [switch]$SkipOpsDashboard,
+
+    # Skip M31 hormone trend + WATCH-only webhook before ops dashboard (default: run when dashboard runs).
+    [switch]$SkipLensMusicHormoneTrend,
 
     # Role-router multiscenario opt vs lens S1 shadow gate (append-only log; non-gating).
     [switch]$SkipRoleRouterShadowAdvisory,
@@ -74,6 +77,8 @@ $logosShadowKpiProgress = Join-Path $PSScriptRoot "build_logos_shadow_promotion_
 $logosResponsePolicyCheck = Join-Path $PSScriptRoot "build_logos_response_policy_check_v1.py"
 $logosS1ShadowReviewPacket = Join-Path $PSScriptRoot "build_logos_s1_shadow_promotion_review_packet_v1.py"
 $roleRouterS1ShadowAdvisory = Join-Path $PSScriptRoot "build_role_router_s1_shadow_advisory_v1.py"
+$hormoneTrend = Join-Path $PSScriptRoot "build_lens_music_hormone_trend_v1.py"
+$hormoneTrendWebhook = Join-Path $PSScriptRoot "dispatch_lens_music_hormone_trend_webhook_v1.py"
 $opsDashboard = Join-Path $PSScriptRoot "build_mkm_trackc_ops_dashboard_v1.py"
 
 $required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck, $logosS1ShadowReviewPacket)
@@ -82,6 +87,10 @@ if (-not $SkipRoleRouterShadowAdvisory) {
 }
 if (-not $SkipOpsDashboard) {
     $required += $opsDashboard
+    if (-not $SkipLensMusicHormoneTrend) {
+        $required += $hormoneTrend
+        $required += $hormoneTrendWebhook
+    }
 }
 foreach ($p in $required) {
     if (-not (Test-Path -LiteralPath $p)) {
@@ -206,8 +215,22 @@ else {
     Write-Host "[trackc-macro-fusion] skip role router S1 shadow advisory (SkipRoleRouterShadowAdvisory)"
 }
 
-# 7) Ops dashboard JSON (local artifacts)
+# 7) Lens music M31 hormone trend + optional WATCH webhook (before ops dashboard reads those artifacts)
 if (-not $SkipOpsDashboard) {
+    if (-not $SkipLensMusicHormoneTrend) {
+        Invoke-FusionStep -Name "build_lens_music_hormone_trend_v1.py" -Action {
+            Set-Location -LiteralPath $repoRoot
+            py $hormoneTrend
+        }
+        Invoke-FusionStep -Name "dispatch_lens_music_hormone_trend_webhook_v1.py" -Action {
+            Set-Location -LiteralPath $repoRoot
+            py $hormoneTrendWebhook
+        }
+    }
+    else {
+        Write-Host "[trackc-macro-fusion] skip lens music hormone trend + webhook (SkipLensMusicHormoneTrend)"
+    }
+
     Invoke-FusionStep -Name "build_mkm_trackc_ops_dashboard_v1.py" -Action {
         Set-Location -LiteralPath $repoRoot
         py $opsDashboard
@@ -257,4 +280,6 @@ Write-Host "[trackc-macro-fusion] logos_shadow_kpi_progress=$repoRoot/docs/final
 Write-Host "[trackc-macro-fusion] logos_response_policy_check=$repoRoot/docs/final/artifacts/logos_response_policy_check_latest.json"
 Write-Host "[trackc-macro-fusion] logos_s1_shadow_promotion_review_packet=$repoRoot/docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json"
 Write-Host "[trackc-macro-fusion] role_router_s1_shadow_advisory=$repoRoot/docs/final/artifacts/role_router_s1_shadow_advisory_latest.json"
+Write-Host "[trackc-macro-fusion] lens_music_hormone_trend=$repoRoot/docs/final/artifacts/lens_music_hormone_trend_latest.json"
+Write-Host "[trackc-macro-fusion] lens_music_hormone_trend_webhook_dispatch=$repoRoot/docs/final/artifacts/lens_music_hormone_trend_webhook_dispatch_latest.json"
 Write-Host "[trackc-macro-fusion] ops_dashboard=$repoRoot/docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json"

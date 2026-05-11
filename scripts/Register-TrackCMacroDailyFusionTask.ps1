@@ -9,6 +9,7 @@
   Recommended unattended flags: -SkipGateAlert -SkipExodusSourceFetch (optional -SkipFailureAlert).
   Optional meta-layer gate after fusion: -MetaLayerEnvelopePath <json-or-md> (passed through to Invoke-TrackCMacroDailyFusion_v1.ps1).
   Optional: -SkipRoleRouterShadowAdvisory to omit build_role_router_s1_shadow_advisory_v1.py (default runs; non-gating).
+  Optional: -SkipLensMusicHormoneTrend to omit M31 hormone trend + webhook before ops dashboard (default runs when dashboard runs).
   After register: NOTE only if -UnregisterLegacyTasks; else one-line TIP (SSOT pointers).
 #>
 [CmdletBinding()]
@@ -27,6 +28,7 @@ param(
     [switch]$SkipFailureAlert,
     [switch]$SkipExodusSourceFetch,
     [switch]$SkipRoleRouterShadowAdvisory,
+    [switch]$SkipLensMusicHormoneTrend,
 
     # Optional: forwarded to Invoke-TrackCMacroDailyFusion_v1.ps1 (see CONSTITUTION §1.3.1)
     [string]$MetaLayerEnvelopePath = "",
@@ -68,6 +70,7 @@ if ($SkipGateAlert) { $argument += " -SkipGateAlert" }
 if ($SkipFailureAlert) { $argument += " -SkipFailureAlert" }
 if ($SkipExodusSourceFetch) { $argument += " -SkipExodusSourceFetch" }
 if ($SkipRoleRouterShadowAdvisory) { $argument += " -SkipRoleRouterShadowAdvisory" }
+if ($SkipLensMusicHormoneTrend) { $argument += " -SkipLensMusicHormoneTrend" }
 $metaTrim = if ($null -eq $MetaLayerEnvelopePath) { "" } else { $MetaLayerEnvelopePath.Trim() }
 if ($metaTrim -ne "") {
     $argument += " -MetaLayerEnvelopePath `"$metaTrim`""
