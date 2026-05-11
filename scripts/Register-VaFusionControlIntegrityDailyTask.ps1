@@ -60,7 +60,7 @@ $settings = New-ScheduledTaskSettingsSet `
     -ExecutionTimeLimit (New-TimeSpan -Minutes 15)
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
-$description = 'B-track VA trajectory, cross-lens fusion stub, fusion control integrity audit (Run-VaFusionControlIntegrityChain_v1.ps1).'
+$description = 'B-track VA trajectory, cross-lens fusion stub, fusion control integrity audit (Run-VaFusionControlIntegrityChain_v1.ps1). Optional failure webhook: FUSION_CONTROL_INTEGRITY_AUDIT_WEBHOOK_URL or OPS_ALARM_WEBHOOK_URL.'
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null

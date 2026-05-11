@@ -504,7 +504,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 
 | 항목 | 경로 | 비고 |
 |------|------|------|
-| 원클릭 (Windows) | `scripts/Run-VaFusionControlIntegrityChain_v1.ps1` | 기본 `--no-write-state`(상태 파일 생략); `-WriteState`로 `lens_emotion_va_trajectory_state_latest.json` 갱신 |
+| 원클릭 (Windows) | `scripts/Run-VaFusionControlIntegrityChain_v1.ps1` | 기본 `--no-write-state`(상태 파일 생략); `-WriteState`로 `lens_emotion_va_trajectory_state_latest.json` 갱신. **감사 실패 시 선택 웹훅:** User `FUSION_CONTROL_INTEGRITY_AUDIT_WEBHOOK_URL`, 미설정 시 `OPS_ALARM_WEBHOOK_URL`; 없으면 stdout만. CI·로컬(시크릿 없음)에서는 `-SkipWebhook` |
 | 일일 작업 등록 | `scripts/Register-VaFusionControlIntegrityDailyTask.ps1` | 기본 작업명 `MKM-VaFusionControlIntegrity-Daily`, 시각 `07:35`; `automation_registry.json` 항목명 `\\MKM-VaFusionControlIntegrity-Daily`(reconcile SSOT) |
 | Fact-Lock 번들 (기본 포함) | `scripts/run_fact_lock_bundle.ps1` | 체인 pytest + `tests/test_va_fusion_policy_golden_v1.py`; 생략: `-SkipVaFusionControlIntegritySmoke` |
 | 정책 골든 픽스처 | `tests/fixtures/va_fusion_policy_golden_v1.json` | `va_tag_boost_v1` 결정론 스냅샷 |
@@ -884,7 +884,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 퓨전 사이클 상태 검증 | `projects/bitcoin-trading/ops/windows-rehearsal/verify_ops_fusion_cycle_status.ps1` | `docs/final/artifacts/ops_fusion_cycle_status_latest.json`의 `overall_ok` 또는 C2/Trinity 보조 판정 |
 | 융합 사이클 러너 | `projects/bitcoin-trading/ops/windows-rehearsal/run_ops_fusion_cycle.ps1` | 산출 `ops_fusion_cycle_status_latest.json`(`schema ops_fusion_cycle_status_v2`, `overall_ok`·`overall_ok_reason`) 후 **showroom 번들 생성·검증**(`build_showroom_display_bundle.ps1`, `validate_showroom_public_bundle.py`: Track C **원클릭**은 `build_showroom_track_c_bundle_chain_v1.ps1`로 대체 가능) |
 | 올그린 게이트 | `projects/bitcoin-trading/ops/windows-rehearsal/verify_all_green.ps1` | 단계에 `verify_ops_fusion_cycle_status` 포함 후 `reconcile_automation_registry` |
-| 레지스트리 reconcile | `projects/bitcoin-trading/ops/windows-rehearsal/reconcile_automation_registry.ps1` | 기본 콘솔은 한 줄 요약만; 전체 JSON은 `automation_registry_reconcile_latest.json`. 디버그 시 `-ShowJson` |
+| 레지스트리 reconcile | `projects/bitcoin-trading/ops/windows-rehearsal/reconcile_automation_registry.ps1` | 기본 콘솔은 한 줄 요약만; 전체 JSON은 `projects/bitcoin-trading/memory/v2/ops/automation_registry_reconcile_latest.json`(루트 `.gitignore`의 `projects/bitcoin-trading/memory/` 하위로 **로컬 비추적**·커밋 잡음 방지). 디버그 시 `-ShowJson` |
 | Phase 1 운영 준비 점검 | `projects/bitcoin-trading/ops/windows-rehearsal/verify_ops_phase1_operational_readiness.ps1` | 태스크 존재·`Task To Run`에 `IncludeConstitutionGates`·리포트 신선도·`OPS_ALARM_WEBHOOK_URL`; 산출 `ops_phase1_readiness_latest.json`; 엄격 시 `-Strict` |
 | OPS 알림 웹훅 스모크 | `projects/bitcoin-trading/ops/windows-rehearsal/smoke_ops_phase1_webhook.ps1` | User `OPS_ALARM_WEBHOOK_URL`로 `kind=smoke_test` POST(미설정 시 exit 0 스킵) |
 | 자동화 레지스트리 | `projects/bitcoin-trading/ops/windows-rehearsal/automation_registry.json` | `\Bitcoin-Ops-Fusion-Cycle-Auto` 등 Task Scheduler 기대 상태; `reconcile_automation_registry.ps1 -Enforce` |

@@ -16,6 +16,13 @@
 
 .PARAMETER DryRun
   Prints the planned py commands only.
+
+.PARAMETER SkipWebhook
+  Do not POST on audit failure (CI / local runs without secrets).
+
+.NOTES
+  On audit failure only: User env FUSION_CONTROL_INTEGRITY_AUDIT_WEBHOOK_URL, else OPS_ALARM_WEBHOOK_URL.
+  If both unset, failure is stdout-only (same pattern as Check-ProphecyPanel24hAlerts.ps1).
 #>
 param(
     [string]$WorkspaceRoot = 'C:\workspace',
@@ -27,7 +34,8 @@ param(
     [string]$CandidatesStubJson = 'tests\fixtures\cross_lens_fusion_candidates_sample_v1.json',
     [switch]$EnableCooldown,
     [switch]$WriteState,
-    [switch]$DryRun
+    [switch]$DryRun,
+    [switch]$SkipWebhook
 )
 
 $ErrorActionPreference = 'Stop'
@@ -61,8 +69,63 @@ function Invoke-PyArgs {
     }
 }
 
+function Send-FusionControlIntegrityAuditFailureWebhook {
+    param([string]$RootPath)
+    $webhook = $env:FUSION_CONTROL_INTEGRITY_AUDIT_WEBHOOK_URL
+    if ([string]::IsNullOrWhiteSpace($webhook)) {
+        $webhook = $env:OPS_ALARM_WEBHOOK_URL
+    }
+    if ([string]::IsNullOrWhiteSpace($webhook)) {
+        Write-Host 'Webhook alert skipped: no FUSION_CONTROL_INTEGRITY_AUDIT_WEBHOOK_URL or OPS_ALARM_WEBHOOK_URL' -ForegroundColor DarkGray
+        return
+    }
+    $auditPath = Join-Path $RootPath 'reports\fusion_control_integrity_audit_latest.json'
+    $summary = $null
+    $checks = $null
+    if (Test-Path -LiteralPath $auditPath) {
+        try {
+            $doc = Get-Content -LiteralPath $auditPath -Raw -Encoding UTF8 | ConvertFrom-Json
+            $summary = $doc.summary
+            $checks = $doc.checks
+        }
+        catch {
+            Write-Warning "Could not parse audit JSON for webhook payload: $($_.Exception.Message)"
+        }
+    }
+    $payload = [ordered]@{
+        event = 'fusion_control_integrity_audit_failed'
+        ts_utc = (Get-Date).ToUniversalTime().ToString('o')
+        workspace = $RootPath
+        audit_path = $auditPath
+        summary = $summary
+        checks = $checks
+    }
+    $body = $payload | ConvertTo-Json -Depth 12 -Compress
+    try {
+        $null = Invoke-RestMethod -Uri $webhook -Method Post -Body $body -ContentType 'application/json; charset=utf-8' -TimeoutSec 30
+        Write-Host 'Webhook alert sent: fusion_control_integrity_audit_failed' -ForegroundColor Yellow
+    }
+    catch {
+        Write-Warning "Webhook alert failed: $($_.Exception.Message)"
+    }
+}
+
 Invoke-PyArgs -PyArgs $trajArgs
 Invoke-PyArgs -PyArgs $fusionArgs
-Invoke-PyArgs -PyArgs $auditArgs
+
+Write-Host ('py ' + ($auditArgs -join ' '))
+if (-not $DryRun) {
+    & py @auditArgs
+    $auditExit = $LASTEXITCODE
+    if ($auditExit -ne 0) {
+        if (-not $SkipWebhook) {
+            Send-FusionControlIntegrityAuditFailureWebhook -RootPath $root
+        }
+        else {
+            Write-Host 'SKIP: audit failure webhook suppressed (-SkipWebhook)' -ForegroundColor DarkGray
+        }
+        throw "fusion control integrity audit failed (exit $auditExit)."
+    }
+}
 
 Write-Host 'OK: VA fusion control integrity chain finished.' -ForegroundColor Green
