@@ -30,9 +30,8 @@ $taskRunParts = @("powershell -NoProfile -ExecutionPolicy Bypass -File `"$script
 if ($HoldoutGateProfile -ne "research") {
     $taskRunParts += "-HoldoutGateProfile $HoldoutGateProfile"
 }
-if ($IncludeLogosV2 -ne "true") {
-    $taskRunParts += "-IncludeLogosV2 $IncludeLogosV2"
-}
+# Always emit explicit token so check_general_prophecy_task_profile_guard_v1.py can verify scheduled intent.
+$taskRunParts += "-IncludeLogosV2 $IncludeLogosV2"
 if ($EnableLogosResponseV1Retry -ne "false") {
     $taskRunParts += "-EnableLogosResponseV1Retry $EnableLogosResponseV1Retry"
 }

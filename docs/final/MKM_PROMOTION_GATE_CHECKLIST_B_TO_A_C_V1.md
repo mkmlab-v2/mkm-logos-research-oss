@@ -27,6 +27,19 @@
 
 ---
 
+## B-track 가격 방향 예언 레일 — 자동 vs 휴먼 (v1, 2026-05-12)
+
+**범위:** 일일 가설·스코어·히트레이트·`eval_prophecy_promotion_gates`·패널 24h·진화 워치독 등 **관측·연구** 산출. 압축 §9 (`docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9)·실매매·Track A 상용·대외 계약 주장과 **합선 금지**; JSON의 `track_wall`·HITL 필드는 해당 산출 SSOT를 따른다.
+
+| 단계 | 자동으로 밀 수 있음 | 사람·고정 정책(자동 합선 금지) | 대표 경로·산출 |
+|------|---------------------|-------------------------------|----------------|
+| **0 일일 관측** | 가설 번들·OHLCV·`eval_prophecy_promotion_gates_v1`·`fast_promotion_gate_v1`·헬스·proxy streak·`Check-ProphecyPanel24hAlerts`·`check_prophecy_evolution_watchdog_v1` | 스케줄·`-Strict*`·임계·웹훅 env | `scripts/run_btrack_daily_hypothesis_chain.ps1`; `docs/final/artifacts/*prophecy*latest*.json`; `reports/prophecy_*` |
+| **1 연구 품질 신호** | pytest·CI·`run_workspace_automation_health.ps1 -IncludeProphecyEvolutionWatchdogSmoke` | 워치독 인자(연령·스트릭·EMA) 합의 후 스케줄에 반영 | `.github/workflows/dual-regime-integrity.yml`; `Register-ProphecyEvolutionWatchdogTask.ps1` |
+| **2 게이트 JSON 라벨** | 게이트 스크립트가 `strict_passed`·`auto_promote_ready` 등 **표시만** 기록 | 동 필드만으로 **실매매·본선 설정 자동 변경 없음** | `prophecy_promotion_gates_v1_panel_calibrated_latest.json` 등 |
+| **3 Track A·실매매·대외** | — (자동 승격 없음) | 본 문서 **G2·G12**·`projects/bitcoin-trading/docs/final/STAGING_TO_PRODUCTION_PROMOTION_CHECKLIST_2026-03-25.md`·휴먼 승인 JSON | `P0_COMMERCIALIZATION_TRACKER.md`; `scripts/validate_trading_human_execution_approval_v1.py` |
+
+**한 줄 원칙:** 0–2는 매일 스크립트가 증거를 쌓고; **3은 지휘관 GO·법무·스테이징 이후에만** 진행한다.
+
 ## 보조 참조(승격과 동일하지 않음)
 
 | 항목 | 경로 | 비고 |
