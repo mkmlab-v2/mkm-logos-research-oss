@@ -334,6 +334,10 @@ on:
       - "tests/test_b_track_hypothesis_inventory.py"
       - "tests/test_generate_btrack_hypothesis_prophecy_v1.py"
       - "tests/test_eval_prophecy_hit_rate_v1.py"
+      - "tests/test_check_prophecy_evolution_watchdog_v1.py"
+      - "scripts/check_prophecy_evolution_watchdog_v1.py"
+      - "scripts/Invoke-ProphecyEvolutionWatchdog_v1.ps1"
+      - "scripts/Register-ProphecyEvolutionWatchdogTask.ps1"
       - "tests/test_build_btrack_prophecy_score_from_ohlcv.py"
       - "scripts/run_truthfulqa_ab_benchmark_v1.py"
       - "scripts/check_truthfulqa_ab_gate_v1.py"
@@ -719,6 +723,9 @@ jobs:
 
       - name: B-Track hypothesis + dawn-score + prophecy hit-rate eval smoke
         run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_build_btrack_prophecy_score_from_ohlcv.py tests/test_eval_prophecy_hit_rate_v1.py -q --tb=short
+
+      - name: Prophecy evolution watchdog (staleness + tail streak/EMA contract)
+        run: python -m pytest tests/test_check_prophecy_evolution_watchdog_v1.py -q --tb=short
 
       - name: B-track news_observation JSONL schema + validator CLI smoke
         run: |

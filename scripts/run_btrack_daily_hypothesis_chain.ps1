@@ -10,6 +10,8 @@
 #   Working directory: C:\workspace
 # Recommended registrar:
 #   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:40"
+# Panel 24h ALERT 1-3: default runs Check-ProphecyPanel24hAlerts.ps1 at end (writes reports/prophecy_panel_24h_alerts_latest.json,
+# appends reports/prophecy_panel_24h_alerts_log.jsonl; failure webhook via .env / User env). Use -SkipPanel24hAlertsCheck to skip.
 # Market bootstrap (default ON): runs fetch_kospi_yfinance_csv.py + fetch_btc_yfinance_csv.py first
 # so stale/missing CSV does not silently force proxy hit-rate mode. Use -SkipMarketDataRefresh for offline/CI.
 # News/macro lens JSON: use -SkipNewsMacroAdapter to skip build_btrack_news_macro_lens_adapters_v1.py (reuse prior lens files).
@@ -68,7 +70,11 @@ param(
   [double]$LogosMinHoldoutHitRate = 0.5,
   [int]$LogosMinNonSyntheticSamples = 10,
   [switch]$EnableLogosSymbolicHumanReviewQueue,
-  [string]$LogosSymbolicHumanReviewQueueOutJson = "docs\final\artifacts\logos_symbolic_human_review_queue_latest.json"
+  [string]$LogosSymbolicHumanReviewQueueOutJson = "docs\final\artifacts\logos_symbolic_human_review_queue_latest.json",
+  [ValidateSet("btc", "kospi", "multi")]
+  [string]$ResearchEvaluationInstrument = "btc",
+  [switch]$SkipPanel24hAlertsCheck,
+  [double]$Panel24hMinHitRate = 0.60
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -295,6 +301,9 @@ if ($useGemini) {
   Write-Host "==> generate_btrack_hypothesis_prophecy_v1.py (local ensemble default; no Gemini API)"
 }
 $hypGenArgs = @("scripts/generate_btrack_hypothesis_prophecy_v1.py")
+if ($ResearchEvaluationInstrument -ne "btc") {
+  $hypGenArgs += @("--research-evaluation-instrument", $ResearchEvaluationInstrument)
+}
 if ($useGemini) {
   $hypGenArgs += "--use-cloud-gemini"
   $gm = [string]$GeminiModel
@@ -373,6 +382,24 @@ if (-not $SkipHitRate) {
 }
 
 if (-not $SkipFastPromotionGate) {
+  Write-Host "==> run_prophecy_per_date_combo_walkforward_v1.py (refresh per-date WF on latest score)"
+  py scripts/run_prophecy_per_date_combo_walkforward_v1.py --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json"
+  if ($LASTEXITCODE -ne 0) {
+    if ($StrictFastPromotionGate) {
+      throw "run_prophecy_per_date_combo_walkforward_v1 exit $LASTEXITCODE"
+    }
+    Write-Host "WARN: per-date walkforward refresh failed; promotion gate may use stale artifact." -ForegroundColor Yellow
+  }
+
+  Write-Host "==> run_prophecy_instrument_combo_walkforward_v1.py (refresh instrument WF on latest score)"
+  py scripts/run_prophecy_instrument_combo_walkforward_v1.py --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json"
+  if ($LASTEXITCODE -ne 0) {
+    if ($StrictFastPromotionGate) {
+      throw "run_prophecy_instrument_combo_walkforward_v1 exit $LASTEXITCODE"
+    }
+    Write-Host "WARN: instrument walkforward refresh failed; promotion gate may use stale artifact." -ForegroundColor Yellow
+  }
+
   Write-Host "==> eval_prophecy_promotion_gates_v1.py (numeric promotion gates, mode=$PromotionTrackMode)"
   py scripts/eval_prophecy_promotion_gates_v1.py --promotion-track-mode $PromotionTrackMode
   if ($LASTEXITCODE -ne 0) {
@@ -517,6 +544,22 @@ if ($IncludeLogosSymbolicPromotionChain) {
       --output-json $LogosSymbolicHumanReviewQueueOutJson
     if ($LASTEXITCODE -ne 0) { throw "build_logos_symbolic_human_review_queue_v1 exit $LASTEXITCODE" }
   }
+}
+
+if (-not $SkipPanel24hAlertsCheck) {
+  $panelScript = Join-Path $WorkspaceRoot "scripts\Check-ProphecyPanel24hAlerts.ps1"
+  if (Test-Path -LiteralPath $panelScript) {
+    Write-Host "==> Check-ProphecyPanel24hAlerts.ps1 (panel 24h ALERT 1-3; SSOT + optional webhook on failure)" -ForegroundColor Cyan
+    $panelOutJson = Join-Path $WorkspaceRoot "reports\prophecy_panel_24h_alerts_latest.json"
+    & $panelScript -WorkspaceRoot $WorkspaceRoot -MinHitRate $Panel24hMinHitRate -OutJson $panelOutJson -AppendLog
+    if ($LASTEXITCODE -ne 0) {
+      throw "Check-ProphecyPanel24hAlerts exit $LASTEXITCODE"
+    }
+  } else {
+    Write-Host "WARN: Skip panel 24h check (missing script): $panelScript" -ForegroundColor Yellow
+  }
+} else {
+  Write-Host "Skip panel 24h alerts check (-SkipPanel24hAlertsCheck)." -ForegroundColor DarkYellow
 }
 
 Write-Host "OK: B-Track daily hypothesis chain finished. Bundle: docs/final/artifacts/btrack_llm_input_bundle_latest.json"

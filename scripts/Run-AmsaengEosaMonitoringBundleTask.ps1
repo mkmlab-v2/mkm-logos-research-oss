@@ -117,6 +117,20 @@ try {
     }
 
     Invoke-BundleGovernance -Root $repoRoot -SoftFail:$GovernanceSoftFail
+
+    $watchdogPy = Join-Path $PSScriptRoot "check_prophecy_evolution_watchdog_v1.py"
+    if (Test-Path -LiteralPath $watchdogPy) {
+        Write-Host ""
+        Write-Host "=== Prophecy evolution watchdog (staleness; bundle soft / AllowNonZero) ===" -ForegroundColor Cyan
+        $watchdogArgs = @(
+            "--workspace-root", $repoRoot,
+            "--allow-missing-ablation",
+            "--allow-missing-hit-rate",
+            "--max-ablation-age-hours", "96",
+            "--max-hit-rate-age-hours", "96"
+        )
+        Invoke-BundlePyStep -StepId "prophecy_evolution_watchdog_bundle" -ScriptPath $watchdogPy -ScriptArgs $watchdogArgs -AllowNonZero
+    }
 }
 catch {
     $bundleOverallStatus = "failed"

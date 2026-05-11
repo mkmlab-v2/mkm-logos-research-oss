@@ -24,6 +24,9 @@ param(
     # Optional: fast pytest subset for weather B-track triplet + fusion-search-json (not run by default; ~tens of seconds).
     [switch]$IncludeWeatherPipelineSmoke,
 
+    # Optional: prophecy evolution watchdog pytest (staleness + JSONL tail streak/EMA; few hundred ms).
+    [switch]$IncludeProphecyEvolutionWatchdogSmoke,
+
     # Optional: package_b chain smoke (v1 lens + v2 balanced/attack + margins summary).
     [switch]$IncludeMyeongniPackageBSmoke,
 
@@ -684,6 +687,20 @@ try {
             Write-Host ""
             Write-Host "=== Weather pipeline smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: test_weather_gt_triplet_chain_smoke.py not found"
+        }
+    }
+
+    if ($IncludeProphecyEvolutionWatchdogSmoke) {
+        $wd = Join-Path $root "tests\test_check_prophecy_evolution_watchdog_v1.py"
+        if (Test-Path -LiteralPath $wd) {
+            Step "Prophecy evolution watchdog smoke (check_prophecy_evolution_watchdog_v1 contract)" {
+                & py -m pytest $wd -q --tb=short
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Prophecy evolution watchdog smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: test_check_prophecy_evolution_watchdog_v1.py not found"
         }
     }
 
