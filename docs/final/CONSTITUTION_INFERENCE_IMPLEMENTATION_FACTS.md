@@ -475,7 +475,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 쿨다운 실행 | `scripts/build_lens_emotion_va_trajectory_v1.py --enable-cooldown` | EMA 산출 후 적용; `high_arousal`/`low_valence` 이유 기록 |
 | 정책 스키마 | `docs/final/schemas/va_cooldown_policy_v1.schema.json` | 예시 `docs/final/schemas/va_cooldown_policy_v1.example.json` |
 | 이벤트 스키마 | `docs/final/schemas/va_cooldown_event_v1.schema.json` | 예시 `docs/final/schemas/va_cooldown_event_v1.example.json` |
-| 이벤트 산출 (latest) | `reports/va_cooldown_event_log_latest.json` | `schema: va_cooldown_event_v1` |
+| 이벤트 산출 (latest) | `reports/va_cooldown_event_log_latest.json` | `schema: va_cooldown_event_v1` — **쿨다운 플래그가 꺼져 있어도** 매 턴 `applied:false` noop 이벤트를 동일 경로에 기록(§3.8.3 감사 입력 정합) |
 | 이벤트 시계열 (선택) | `reports/va_cooldown_event_log.jsonl` | `--cooldown-event-jsonl` 사용 시 append |
 | 회귀 | `tests/test_va_trajectory_log_v1.py`, `tests/test_va_cooldown_schema_v1.py` | 임계 돌파 시 개입 + schema 검증 |
 
@@ -495,6 +495,18 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 회귀 | `tests/test_fusion_control_integrity_audit_v1.py` | 스키마 + pass bundle + turn mismatch fail |
 
 **핵심 체크:** `schema_contracts`, `session_turn_alignment`, `cooldown_state_alignment`, `cooldown_policy_alignment`, `cooldown_reasons_alignment`, `fusion_rule_application`.
+
+### 3.8.4 [B-track] VA→fusion→integrity one-click chain (Windows + CI 스모크)
+
+**목적:** §3.8→§3.8.1→§3.8.3 를 **한 번에** 갱신해 운영자가 `reports/*_latest.json` 네 장을 동기화할 수 있게 한다. Linux CI는 PowerShell 대신 pytest 서브프로세스 체인으로 동일 계약을 검증한다.
+
+**Track wall:** `[HYPO]`, `[NON_GATING]`, `[ADVISORY_ONLY]`.
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 원클릭 (Windows) | `scripts/Run-VaFusionControlIntegrityChain_v1.ps1` | 기본 `--no-write-state`(상태 파일 생략); `-WriteState`로 `lens_emotion_va_trajectory_state_latest.json` 갱신 |
+| 일일 작업 등록 | `scripts/Register-VaFusionControlIntegrityDailyTask.ps1` | 기본 작업명 `MKM_VaFusionControlIntegrityDaily`, 시각 `07:35` |
+| 회귀 (크로스플랫폼) | `tests/test_va_fusion_control_integrity_chain_v1.py` | trajectory→fusion→audit, `summary.all_pass` |
 
 ---
 

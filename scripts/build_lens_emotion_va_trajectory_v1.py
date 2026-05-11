@@ -16,6 +16,8 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT = ROOT / "reports" / "va_trajectory_log_latest.json"
 DEFAULT_STATE = ROOT / "reports" / "lens_emotion_va_trajectory_state_latest.json"
 DEFAULT_JSONL = ROOT / "reports" / "va_trajectory_log.jsonl"
+DEFAULT_COOLDOWN_EVENT_OUT = ROOT / "reports" / "va_cooldown_event_log_latest.json"
+DEFAULT_COOLDOWN_EVENT_JSONL = ROOT / "reports" / "va_cooldown_event_log.jsonl"
 
 
 def _utc_now() -> str:
@@ -111,6 +113,33 @@ def _append_jsonl(path: Path, row: dict[str, Any]) -> None:
         f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def _apply_cooldown(
+    *,
+    valence: float,
+    arousal: float,
+    high_arousal_cut: float,
+    low_valence_cut: float,
+    arousal_decay_step: float,
+    valence_recovery_step: float,
+) -> dict[str, Any]:
+    before_v, before_a = _clip_va(valence, arousal)
+    after_v, after_a = before_v, before_a
+    reasons: list[str] = []
+    if after_a > float(high_arousal_cut):
+        after_a = max(0.0, after_a - max(0.0, float(arousal_decay_step)))
+        reasons.append("high_arousal")
+    if after_v < float(low_valence_cut):
+        after_v = min(0.0, after_v + max(0.0, float(valence_recovery_step)))
+        reasons.append("low_valence")
+    after_v, after_a = _clip_va(after_v, after_a)
+    return {
+        "applied": len(reasons) > 0,
+        "reasons": reasons,
+        "before_va": {"valence": before_v, "arousal": before_a},
+        "after_va": {"valence": after_v, "arousal": after_a},
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--session-id", type=str, default="local_session_v1")
@@ -126,6 +155,20 @@ def main() -> int:
     ap.add_argument("--state-json", type=Path, default=DEFAULT_STATE)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--jsonl-log", type=Path, nargs="?", const=DEFAULT_JSONL, default=None)
+    ap.add_argument("--enable-cooldown", action="store_true")
+    ap.add_argument("--cooldown-policy-id", type=str, default="va_cooldown_control_v1")
+    ap.add_argument("--high-arousal-cut", type=float, default=0.9)
+    ap.add_argument("--low-valence-cut", type=float, default=-0.9)
+    ap.add_argument("--arousal-decay-step", type=float, default=0.2)
+    ap.add_argument("--valence-recovery-step", type=float, default=0.15)
+    ap.add_argument("--cooldown-event-out", type=Path, default=DEFAULT_COOLDOWN_EVENT_OUT)
+    ap.add_argument(
+        "--cooldown-event-jsonl",
+        type=Path,
+        nargs="?",
+        const=DEFAULT_COOLDOWN_EVENT_JSONL,
+        default=None,
+    )
     ap.add_argument("--no-write-state", action="store_true")
     args = ap.parse_args()
 
@@ -151,6 +194,69 @@ def main() -> int:
         status=args.status,
         note=args.note,
     )
+    thresholds_obj = {
+        "high_arousal_cut": float(args.high_arousal_cut),
+        "low_valence_cut": float(args.low_valence_cut),
+        "arousal_decay_step": float(args.arousal_decay_step),
+        "valence_recovery_step": float(args.valence_recovery_step),
+    }
+    cooldown_event: dict[str, Any]
+    if args.enable_cooldown:
+        current = dict(row.get("trajectory", {}).get("current_va") or {})
+        cooldown = _apply_cooldown(
+            valence=float(current.get("valence", 0.0)),
+            arousal=float(current.get("arousal", 0.0)),
+            high_arousal_cut=float(args.high_arousal_cut),
+            low_valence_cut=float(args.low_valence_cut),
+            arousal_decay_step=float(args.arousal_decay_step),
+            valence_recovery_step=float(args.valence_recovery_step),
+        )
+        row["cooldown_control"] = {
+            "policy_id": args.cooldown_policy_id,
+            "enabled": True,
+            **cooldown,
+            "thresholds": dict(thresholds_obj),
+        }
+        row["trajectory"]["current_va"] = dict(cooldown["after_va"])
+        next_state["current_va"] = dict(cooldown["after_va"])
+        next_state["cooldown_last_applied"] = bool(cooldown["applied"])
+        status_in = str(row.get("status") or "TRACKING_ACTIVE")
+        status_out = "COOLDOWN_ACTIVE" if bool(cooldown["applied"]) else status_in
+        row["status"] = status_out
+        cooldown_event = {
+            "schema": "va_cooldown_event_v1",
+            "policy_id": args.cooldown_policy_id,
+            "session_id": row["session_id"],
+            "turn_index": row["turn_index"],
+            "timestamp_utc": row["timestamp_utc"],
+            "applied": bool(cooldown["applied"]),
+            "reasons": list(cooldown["reasons"]),
+            "thresholds": dict(thresholds_obj),
+            "before_va": dict(cooldown["before_va"]),
+            "after_va": dict(cooldown["after_va"]),
+            "status_in": status_in,
+            "status_out": status_out,
+            "track_wall": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"],
+        }
+    else:
+        cur = dict(row.get("trajectory", {}).get("current_va") or {})
+        cv, ca = _clip_va(float(cur.get("valence", 0.0)), float(cur.get("arousal", 0.0)))
+        status_line = str(row.get("status") or "TRACKING_ACTIVE")
+        cooldown_event = {
+            "schema": "va_cooldown_event_v1",
+            "policy_id": str(args.cooldown_policy_id),
+            "session_id": row["session_id"],
+            "turn_index": row["turn_index"],
+            "timestamp_utc": row["timestamp_utc"],
+            "applied": False,
+            "reasons": [],
+            "thresholds": dict(thresholds_obj),
+            "before_va": {"valence": cv, "arousal": ca},
+            "after_va": {"valence": cv, "arousal": ca},
+            "status_in": status_line,
+            "status_out": status_line,
+            "track_wall": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"],
+        }
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(row, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -161,6 +267,10 @@ def main() -> int:
 
     if args.jsonl_log is not None:
         _append_jsonl(args.jsonl_log, row)
+    args.cooldown_event_out.parent.mkdir(parents=True, exist_ok=True)
+    args.cooldown_event_out.write_text(json.dumps(cooldown_event, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    if args.cooldown_event_jsonl is not None:
+        _append_jsonl(args.cooldown_event_jsonl, cooldown_event)
 
     print(json.dumps({"ok": True, "out": str(args.out), "current_va": row["trajectory"]["current_va"]}, indent=2))
     return 0
