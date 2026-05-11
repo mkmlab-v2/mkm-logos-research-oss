@@ -54,9 +54,44 @@ def _load_prices(path: Path) -> list[tuple[str, float]]:
     with path.open("r", encoding="utf-8-sig", newline="") as f:
         rd = csv.DictReader(f)
         for r in rd:
-            rows.append((str(r["Date"])[:10], float(r["Close"])))
+            d = str(r.get("Date") or "")[:10]
+            raw = str(r.get("Close") or "").strip()
+            if not d or not raw:
+                continue
+            try:
+                rows.append((d, float(raw)))
+            except ValueError:
+                continue
     rows.sort(key=lambda x: x[0])
     return rows
+
+
+def _load_close_map(path: Path) -> dict[str, float]:
+    out: dict[str, float] = {}
+    with path.open("r", encoding="utf-8-sig", newline="") as f:
+        rd = csv.DictReader(f)
+        for r in rd:
+            d = str(r.get("Date") or "")[:10]
+            raw = str(r.get("Close") or "").strip()
+            if not d or not raw:
+                continue
+            try:
+                out[d] = float(raw)
+            except ValueError:
+                continue
+    return out
+
+
+def _align_series_by_dates(dates: list[str], close_map: dict[str, float]) -> list[float]:
+    """Last-known carry for missing dates (same convention as cross-asset scripts)."""
+    last = 0.0
+    out: list[float] = []
+    for d in dates:
+        c = close_map.get(d)
+        if c is not None and c > 0:
+            last = float(c)
+        out.append(last)
+    return out
 
 
 def _mean_abs_return(closes: list[float], i: int, k: int) -> float:
@@ -81,12 +116,15 @@ def _ret(closes: list[float], i: int, lag: int) -> float:
     return (c1 - c0) / c0
 
 
-def _build_features(closes: list[float]) -> list[list[float]]:
+def _build_features(closes: list[float], aux: list[float] | None = None) -> list[list[float]]:
+    """BTC momentum/vol/MA features; optional aux series (e.g. VIX) same length as closes."""
+    extra = 3 if aux is not None else 0
+    dim = 9 + extra
     n = len(closes)
     feats: list[list[float]] = []
     for i in range(n):
         if i < 25:
-            feats.append([0.0] * 9)
+            feats.append([0.0] * dim)
             continue
         r1 = _ret(closes, i, 1)
         r3 = _ret(closes, i, 3)
@@ -97,7 +135,16 @@ def _build_features(closes: list[float]) -> list[list[float]]:
         v10 = _mean_abs_return(closes, i, 10)
         ma50 = sum(closes[i - 50 : i]) / 50.0 if i >= 50 else closes[i]
         ma_ratio = (closes[i - 1] / ma50 - 1.0) if ma50 != 0 else 0.0
-        feats.append([r1, r3, r5, r10, r20, v5, v10, ma_ratio, r10 - r3])
+        row = [r1, r3, r5, r10, r20, v5, v10, ma_ratio, r10 - r3]
+        if aux is not None:
+            row.extend(
+                [
+                    _ret(aux, i, 1),
+                    _ret(aux, i, 5),
+                    _mean_abs_return(aux, i, 10),
+                ]
+            )
+        feats.append(row)
     return feats
 
 
@@ -212,6 +259,12 @@ def main() -> int:
         default=100,
         help="For --classifier hgb: max boosting iterations (lower = faster).",
     )
+    ap.add_argument(
+        "--vix-csv",
+        type=Path,
+        default=None,
+        help="Optional YFinance-style CSV (Date,Close). When set, appends VIX r1/r5/vol10 to features.",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -219,7 +272,14 @@ def main() -> int:
     prices = _load_prices(btc_path)
     dates = [d for d, _ in prices]
     closes = [c for _, c in prices]
-    feats = _build_features(closes)
+    aux_series: list[float] | None = None
+    vix_rel: str | None = None
+    if args.vix_csv is not None:
+        vix_path = args.vix_csv if args.vix_csv.is_absolute() else (ROOT / args.vix_csv)
+        vix_map = _load_close_map(vix_path)
+        aux_series = _align_series_by_dates(dates, vix_map)
+        vix_rel = _rel_to_root(vix_path)
+    feats = _build_features(closes, aux_series)
     labels = [_label_future(closes, i, int(args.horizon_days), float(args.neutral_bps)) for i in range(len(closes))]
 
     rows: list[dict[str, Any]] = []
@@ -269,6 +329,8 @@ def main() -> int:
             ),
             "classifier": str(args.classifier),
             "hgb_max_iter": int(args.hgb_max_iter) if args.classifier == "hgb" else None,
+            "vix_csv": vix_rel,
+            "feature_dim": 12 if aux_series is not None else 9,
         },
         "rows": rows,
     }
