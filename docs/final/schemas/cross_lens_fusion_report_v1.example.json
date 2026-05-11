@@ -19,7 +19,7 @@
   "inputs": {
     "candidates_stub_path": "tests/fixtures/cross_lens_fusion_candidates_sample_v1.json"
   },
-  "policy_notes": "Low valence: first matching peace|comfort|hope ×1.18. High valence: joy|energy ×1.08. High arousal: caution|temperance ×1.12. Very high arousal: calm|peace cooldown ×1.15. Multipliers stack. Cooldown fusion damp (B-track): if cooldown_control.applied and high_arousal in reasons, joy|energy tag matches multiply fusion_multiplier by 0.85 after base rules.",
+  "policy_notes": "Low valence: first matching peace|comfort|hope ×1.18. High valence: joy|energy ×1.08. High arousal: caution|temperance ×1.12. Very high arousal: calm|peace cooldown ×1.15. Multipliers stack. Cooldown fusion damp (B-track): high_arousal+joy|energy => ×0.85; low_valence+caution|temperance => ×0.9 after base rules.",
   "candidates_ranked": [
     {
       "verse_id": "STUB.PEACE.01",
@@ -27,6 +27,7 @@
       "fusion_multiplier_pre_damp": 1.357,
       "cooldown_damp_factor": 1.0,
       "cooldown_fusion_damp_applied": false,
+      "cooldown_damp_rules_applied": [],
       "fusion_multiplier": 1.357,
       "fusion_weight": 0.97704,
       "rank_before": 2,
@@ -40,6 +41,7 @@
       "fusion_multiplier_pre_damp": 1.0,
       "cooldown_damp_factor": 1.0,
       "cooldown_fusion_damp_applied": false,
+      "cooldown_damp_rules_applied": [],
       "fusion_multiplier": 1.0,
       "fusion_weight": 0.81,
       "rank_before": 1,
@@ -53,6 +55,7 @@
       "fusion_multiplier_pre_damp": 1.357,
       "cooldown_damp_factor": 1.0,
       "cooldown_fusion_damp_applied": false,
+      "cooldown_damp_rules_applied": [],
       "fusion_multiplier": 1.357,
       "fusion_weight": 0.78706,
       "rank_before": 4,
@@ -66,6 +69,7 @@
       "fusion_multiplier_pre_damp": 1.12,
       "cooldown_damp_factor": 1.0,
       "cooldown_fusion_damp_applied": false,
+      "cooldown_damp_rules_applied": [],
       "fusion_multiplier": 1.12,
       "fusion_weight": 0.728,
       "rank_before": 3,
@@ -75,3 +79,4 @@
     }
   ]
 }
+

@@ -95,6 +95,7 @@
           "fusion_multiplier_pre_damp",
           "cooldown_damp_factor",
           "cooldown_fusion_damp_applied",
+          "cooldown_damp_rules_applied",
           "fusion_multiplier",
           "fusion_weight",
           "rank_before",
@@ -107,6 +108,17 @@
           "fusion_multiplier_pre_damp": { "type": "number", "minimum": 0 },
           "cooldown_damp_factor": { "type": "number", "minimum": 0, "maximum": 1 },
           "cooldown_fusion_damp_applied": { "type": "boolean" },
+          "cooldown_damp_rules_applied": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "high_arousal_joy_energy_damp",
+                "low_valence_caution_temperance_damp"
+              ]
+            },
+            "maxItems": 4
+          },
           "fusion_multiplier": { "type": "number", "minimum": 0 },
           "fusion_weight": { "type": "number" },
           "rank_before": { "type": "integer", "minimum": 1 },

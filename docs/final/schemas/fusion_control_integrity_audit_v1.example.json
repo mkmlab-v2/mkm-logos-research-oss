@@ -1,0 +1,19 @@
+{
+  "schema": "fusion_control_integrity_audit_v1",
+  "generated_at_utc": "2026-05-11T02:10:00Z",
+  "track_wall": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"],
+  "sources": {
+    "va_trajectory_json": "tests/fixtures/fusion_control_integrity_va_sample_v1.json",
+    "cooldown_event_json": "tests/fixtures/fusion_control_integrity_cooldown_event_sample_v1.json",
+    "fusion_report_json": "tests/fixtures/fusion_control_integrity_fusion_report_sample_v1.json"
+  },
+  "checks": [
+    { "name": "schema_contracts", "pass": true, "detail": "va/cooldown/fusion schemas verified" },
+    { "name": "session_turn_alignment", "pass": true, "detail": "all docs share session_id=sess_audit turn_index=7" },
+    { "name": "cooldown_state_alignment", "pass": true, "detail": "cooldown applied across all docs" },
+    { "name": "cooldown_policy_alignment", "pass": true, "detail": "policy_id consistent (va_cooldown_control_v1)" },
+    { "name": "cooldown_reasons_alignment", "pass": true, "detail": "reasons match" },
+    { "name": "fusion_rule_application", "pass": true, "detail": "required damp rules present and damp factors < 1" }
+  ],
+  "summary": { "all_pass": true, "passed": 6, "failed": 0 }
+}

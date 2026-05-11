@@ -897,8 +897,14 @@ jobs:
       - name: VA trajectory log v1 (B-track EMA state machine, §3.8)
         run: python -m pytest tests/test_va_trajectory_log_v1.py -q --tb=short
 
+      - name: VA cooldown control schemas v1 (B-track safety integrity, §3.8.2)
+        run: python -m pytest tests/test_va_cooldown_schema_v1.py -q --tb=short
+
       - name: Cross-lens VA→Logos fusion report v1 (B-track PoC, §3.8.1)
         run: python -m pytest tests/test_cross_lens_fusion_report_v1.py -q --tb=short
+
+      - name: Fusion control integrity audit v1 (B-track, §3.8.3)
+        run: python -m pytest tests/test_fusion_control_integrity_audit_v1.py -q --tb=short
 
       - name: Music/Gematria lens stub v1 ([HYPO] M1)
         run: python -m pytest tests/test_run_lens_music_gematria_v1.py -q --tb=short

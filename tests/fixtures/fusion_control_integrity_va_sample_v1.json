@@ -1,0 +1,28 @@
+{
+  "schema": "va_trajectory_log_v1",
+  "hypothesis_class": "HYPO",
+  "session_id": "sess_audit",
+  "turn_index": 7,
+  "timestamp_utc": "2026-05-11T02:00:00Z",
+  "parameters": { "ema_alpha": 0.3 },
+  "trajectory": {
+    "previous_va": { "valence": 0.2, "arousal": 0.9 },
+    "target_va": { "valence": 0.6, "arousal": 1.0 },
+    "current_va": { "valence": 0.6, "arousal": 0.8 }
+  },
+  "status": "COOLDOWN_ACTIVE",
+  "cooldown_control": {
+    "policy_id": "va_cooldown_control_v1",
+    "enabled": true,
+    "applied": true,
+    "reasons": ["high_arousal"],
+    "before_va": { "valence": 0.6, "arousal": 1.0 },
+    "after_va": { "valence": 0.6, "arousal": 0.8 },
+    "thresholds": {
+      "high_arousal_cut": 0.9,
+      "low_valence_cut": -0.9,
+      "arousal_decay_step": 0.2,
+      "valence_recovery_step": 0.15
+    }
+  }
+}

@@ -462,7 +462,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 
 **정책 (`va_tag_boost_v1`):** 스크립트 docstring·`policy_notes` — 저발화(low valence)에서 peace·comfort·hope, 고발화에서 joy·energy, 고각성에서 caution·temperance, 극각성 완화용 calm·peace 등 태그 매칭 시 multiplier 스택(결정론).
 
-**퓨전 쿨다운 감쇠 (§3.8.2 연동):** `cooldown_control.applied` 이고 `reasons`에 `high_arousal`이 있으면, 베이스 규칙으로 `joy` 또는 `energy`가 매칭된 후보에 한해 `fusion_multiplier`에 **0.85**를 추가 곱한다. 행별 `fusion_multiplier_pre_damp`, `cooldown_damp_factor`, `cooldown_fusion_damp_applied`로 추적한다.
+**퓨전 쿨다운 감쇠 (§3.8.2 연동):** `cooldown_control.applied` 이면 쿨다운 사유별 감쇠를 추가한다. `high_arousal` + `joy|energy` 매칭 시 **0.85**, `low_valence` + `caution|temperance` 매칭 시 **0.9**를 `fusion_multiplier`에 후적용한다. 행별 `fusion_multiplier_pre_damp`, `cooldown_damp_factor`, `cooldown_damp_rules_applied`, `cooldown_fusion_damp_applied`로 추적한다.
 
 ### 3.8.2 [B-track] VA cooldown control loop (safety integrity)
 
@@ -480,6 +480,21 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 회귀 | `tests/test_va_trajectory_log_v1.py`, `tests/test_va_cooldown_schema_v1.py` | 임계 돌파 시 개입 + schema 검증 |
 
 **초기 정책 (`va_cooldown_control_v1`):** `high_arousal_cut=0.9`, `low_valence_cut=-0.9`, `arousal_decay_step=0.2`, `valence_recovery_step=0.15`. 개입 시 `status=COOLDOWN_ACTIVE`로 승격해 후속 퓨전에 전달.
+
+### 3.8.3 [B-track] Fusion control integrity audit (VA ↔ cooldown ↔ fusion)
+
+**목적:** `va_trajectory_log_v1`, `va_cooldown_event_v1`, `cross_lens_fusion_report_v1` 3개 산출물의 **세션/턴·쿨다운 상태·사유·감쇠 규칙 적용 여부**를 단일 보고서에서 교차 검증한다.
+
+**Track wall:** `[HYPO]`, `[NON_GATING]`, `[ADVISORY_ONLY]` — 운영 트리거가 아니라 무결성 감사용.
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 감사 빌더 CLI | `scripts/build_fusion_control_integrity_audit_v1.py` | 입력: `--va-trajectory-json`, `--cooldown-event-json`, `--fusion-report-json` |
+| 감사 산출 (latest) | `reports/fusion_control_integrity_audit_latest.json` | `schema: fusion_control_integrity_audit_v1` |
+| JSON Schema | `docs/final/schemas/fusion_control_integrity_audit_v1.schema.json` | 예시 `docs/final/schemas/fusion_control_integrity_audit_v1.example.json` |
+| 회귀 | `tests/test_fusion_control_integrity_audit_v1.py` | 스키마 + pass bundle + turn mismatch fail |
+
+**핵심 체크:** `schema_contracts`, `session_turn_alignment`, `cooldown_state_alignment`, `cooldown_policy_alignment`, `cooldown_reasons_alignment`, `fusion_rule_application`.
 
 ---
 

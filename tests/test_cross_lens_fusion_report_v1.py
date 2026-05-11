@@ -137,8 +137,60 @@ def test_high_arousal_cooldown_damps_joy_energy_multiplier():
     joy_cool = next(x for x in rep_cool["candidates_ranked"] if x["verse_id"] == "STUB.JOY.02")
     assert joy_cool["cooldown_fusion_damp_applied"] is True
     assert joy_cool["cooldown_damp_factor"] == pytest.approx(COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL, abs=1e-9)
+    assert joy_cool["cooldown_damp_rules_applied"] == ["high_arousal_joy_energy_damp"]
     assert joy_cool["fusion_multiplier"] == pytest.approx(1.08 * COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL, abs=1e-9)
     assert joy_cool["fusion_weight"] < joy_plain["fusion_weight"]
+
+
+def test_low_valence_cooldown_damps_caution_temperance_multiplier():
+    from scripts.build_cross_lens_fusion_report_v1 import COOLDOWN_CAUTION_TEMPERANCE_DAMP_LOW_VALENCE, build_report
+
+    stub = ROOT / "tests/fixtures/cross_lens_fusion_candidates_sample_v1.json"
+    base_va = {
+        "schema": "va_trajectory_log_v1",
+        "session_id": "t",
+        "turn_index": 0,
+        "timestamp_utc": "2026-05-11T00:00:00Z",
+        "parameters": {"ema_alpha": 0.3},
+        "trajectory": {
+            "previous_va": {"valence": 0.0, "arousal": 0.0},
+            "target_va": {"valence": 0.0, "arousal": 0.0},
+            "current_va": {"valence": -0.2, "arousal": 0.6},
+        },
+        "status": "TRACKING_ACTIVE",
+    }
+    rep_plain = build_report(base_va, stub)
+    caution_plain = next(x for x in rep_plain["candidates_ranked"] if x["verse_id"] == "STUB.CAUTION.03")
+    assert caution_plain["fusion_multiplier_pre_damp"] == pytest.approx(1.12, abs=1e-9)
+    assert caution_plain["cooldown_damp_factor"] == 1.0
+
+    va_cool = {
+        **base_va,
+        "status": "COOLDOWN_ACTIVE",
+        "cooldown_control": {
+            "policy_id": "va_cooldown_control_v1",
+            "enabled": True,
+            "applied": True,
+            "reasons": ["low_valence"],
+            "before_va": {"valence": -0.95, "arousal": 0.6},
+            "after_va": {"valence": -0.2, "arousal": 0.6},
+            "thresholds": {
+                "high_arousal_cut": 0.9,
+                "low_valence_cut": -0.9,
+                "arousal_decay_step": 0.2,
+                "valence_recovery_step": 0.15,
+            },
+        },
+    }
+    rep_cool = build_report(va_cool, stub)
+    caution_cool = next(x for x in rep_cool["candidates_ranked"] if x["verse_id"] == "STUB.CAUTION.03")
+    assert caution_cool["cooldown_fusion_damp_applied"] is True
+    assert caution_cool["cooldown_damp_factor"] == pytest.approx(COOLDOWN_CAUTION_TEMPERANCE_DAMP_LOW_VALENCE, abs=1e-9)
+    assert caution_cool["cooldown_damp_rules_applied"] == ["low_valence_caution_temperance_damp"]
+    assert caution_cool["fusion_multiplier"] == pytest.approx(
+        caution_plain["fusion_multiplier_pre_damp"] * COOLDOWN_CAUTION_TEMPERANCE_DAMP_LOW_VALENCE,
+        abs=1e-9,
+    )
 
 
 def test_cli_writes_valid_schema(tmp_path: Path):
@@ -185,3 +237,4 @@ def test_cli_writes_valid_schema(tmp_path: Path):
     )
     doc = json.loads(out.read_text(encoding="utf-8"))
     jsonschema.validate(instance=doc, schema=schema)
+

@@ -20,6 +20,8 @@ DEFAULT_OUT = ROOT / "reports" / "cross_lens_fusion_report_latest.json"
 POLICY_ID = "va_tag_boost_v1"
 # When VA cooldown fired for high arousal, damp joy/energy boosts in fusion (B-track integrity).
 COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL = 0.85
+# When VA cooldown fired for low valence, damp caution/temperance boosts (avoid over-harsh tone).
+COOLDOWN_CAUTION_TEMPERANCE_DAMP_LOW_VALENCE = 0.9
 
 
 def _utc_now() -> str:
@@ -77,23 +79,28 @@ def _fusion_cooldown_damp(
     *,
     base_multiplier: float,
     tags_matched: list[str],
-) -> tuple[float, float, bool]:
-    """Return (final_multiplier, damp_factor, damp_applied_row)."""
+) -> tuple[float, float, bool, list[str]]:
+    """Return (final_multiplier, damp_factor, damp_applied_row, damp_rules)."""
     cc = cooldown_control or {}
     if not bool(cc.get("applied")):
-        return round(float(base_multiplier), 6), 1.0, False
+        return round(float(base_multiplier), 6), 1.0, False, []
     reasons = cc.get("reasons")
     if not isinstance(reasons, list):
         reasons = []
     rset = {str(x) for x in reasons}
     tl = {t.lower() for t in tags_matched}
     damp = 1.0
+    rules: list[str] = []
     if "high_arousal" in rset and ({"joy", "energy"} & tl):
         damp *= float(COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL)
+        rules.append("high_arousal_joy_energy_damp")
+    if "low_valence" in rset and ({"caution", "temperance"} & tl):
+        damp *= float(COOLDOWN_CAUTION_TEMPERANCE_DAMP_LOW_VALENCE)
+        rules.append("low_valence_caution_temperance_damp")
     if damp >= 0.999999:
-        return round(float(base_multiplier), 6), 1.0, False
+        return round(float(base_multiplier), 6), 1.0, False, []
     final = round(float(base_multiplier) * damp, 6)
-    return final, round(damp, 6), True
+    return final, round(damp, 6), True, rules
 
 
 def build_report(
@@ -123,7 +130,9 @@ def build_report(
         ftags = row.get("fusion_tags")
         tags = [str(x) for x in ftags] if isinstance(ftags, list) else []
         mult_pre, matched = fusion_multiplier(v, a, tags)
-        mult, damp_f, damp_row = _fusion_cooldown_damp(cc_dict, base_multiplier=mult_pre, tags_matched=matched)
+        mult, damp_f, damp_row, damp_rules = _fusion_cooldown_damp(
+            cc_dict, base_multiplier=mult_pre, tags_matched=matched
+        )
         fw = round(base * mult, 6)
         enriched.append(
             {
@@ -133,6 +142,7 @@ def build_report(
                 "fusion_multiplier_pre_damp": mult_pre,
                 "cooldown_damp_factor": damp_f,
                 "cooldown_fusion_damp_applied": damp_row,
+                "cooldown_damp_rules_applied": damp_rules,
                 "fusion_multiplier": mult,
                 "fusion_weight": fw,
                 "tags_matched": matched,
@@ -153,6 +163,7 @@ def build_report(
                 "fusion_multiplier_pre_damp": float(row["fusion_multiplier_pre_damp"]),
                 "cooldown_damp_factor": float(row["cooldown_damp_factor"]),
                 "cooldown_fusion_damp_applied": bool(row["cooldown_fusion_damp_applied"]),
+                "cooldown_damp_rules_applied": list(row["cooldown_damp_rules_applied"]),
                 "fusion_multiplier": float(row["fusion_multiplier"]),
                 "fusion_weight": float(row["fusion_weight"]),
                 "rank_before": int(rank_before.get(vid, 99)),
@@ -167,8 +178,8 @@ def build_report(
         reasons_out = [str(x) for x in cc_dict["reasons"]]
 
     damp_note = (
-        f"Cooldown fusion damp (B-track): if cooldown_control.applied and high_arousal in reasons, "
-        f"joy|energy tag matches multiply fusion_multiplier by {COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL} after base rules."
+        f"Cooldown fusion damp (B-track): high_arousal+joy|energy => ×{COOLDOWN_JOY_ENERGY_DAMP_HIGH_AROUSAL}; "
+        f"low_valence+caution|temperance => ×{COOLDOWN_CAUTION_TEMPERANCE_DAMP_LOW_VALENCE} after base rules."
     )
     notes = policy_notes or (
         "Low valence: first matching peace|comfort|hope ×1.18. "

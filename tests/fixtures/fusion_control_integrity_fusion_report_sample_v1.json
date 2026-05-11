@@ -1,0 +1,50 @@
+{
+  "schema": "cross_lens_fusion_report_v1",
+  "hypothesis_class": "HYPO",
+  "generated_at_utc": "2026-05-11T02:00:01Z",
+  "track_wall": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"],
+  "fusion_policy_id": "va_tag_boost_v1",
+  "va_trajectory_source": "tests/fixtures/fusion_control_integrity_va_sample_v1.json",
+  "va_snapshot": {
+    "session_id": "sess_audit",
+    "turn_index": 7,
+    "cooldown_applied": true,
+    "cooldown_policy_id": "va_cooldown_control_v1",
+    "cooldown_reasons": ["high_arousal"],
+    "current_va": { "valence": 0.6, "arousal": 0.8 }
+  },
+  "inputs": {
+    "candidates_stub_path": "tests/fixtures/cross_lens_fusion_candidates_sample_v1.json"
+  },
+  "policy_notes": "sample",
+  "candidates_ranked": [
+    {
+      "verse_id": "STUB.JOY.02",
+      "base_score": 0.81,
+      "fusion_multiplier_pre_damp": 1.08,
+      "cooldown_damp_factor": 0.85,
+      "cooldown_fusion_damp_applied": true,
+      "cooldown_damp_rules_applied": ["high_arousal_joy_energy_damp"],
+      "fusion_multiplier": 0.918,
+      "fusion_weight": 0.74358,
+      "rank_before": 1,
+      "rank_after": 1,
+      "fusion_tags": ["joy", "energy"],
+      "tags_matched": ["joy"]
+    },
+    {
+      "verse_id": "STUB.PEACE.01",
+      "base_score": 0.72,
+      "fusion_multiplier_pre_damp": 1.0,
+      "cooldown_damp_factor": 1.0,
+      "cooldown_fusion_damp_applied": false,
+      "cooldown_damp_rules_applied": [],
+      "fusion_multiplier": 1.0,
+      "fusion_weight": 0.72,
+      "rank_before": 2,
+      "rank_after": 2,
+      "fusion_tags": ["peace", "comfort"],
+      "tags_matched": []
+    }
+  ]
+}
