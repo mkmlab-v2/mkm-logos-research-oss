@@ -15,13 +15,13 @@ Write-Host "Stale node cutoff : ${StaleNodeMaxHours}h"
 if (-not (Test-Path $profileRoot)) {
     Write-Host "Profile root does not exist yet. Skipping chrome scan." -ForegroundColor Yellow
 } else {
-    $chromeTargets = Get-CimInstance Win32_Process |
+    $chromeTargets = @(Get-CimInstance Win32_Process |
         Where-Object {
             $_.Name -eq "chrome.exe" -and
             $_.CommandLine -match "notebooklm-mcp\\Data\\chrome_profile"
-        }
+        })
 
-    if ($chromeTargets.Count -gt 0) {
+    if (@($chromeTargets).Count -gt 0) {
         $ids = $chromeTargets | Select-Object -ExpandProperty ProcessId
         Write-Host ("Detected NotebookLM MCP Chrome processes: " + ($ids -join ", ")) -ForegroundColor Yellow
         if (-not $WhatIfOnly) {
@@ -58,13 +58,13 @@ if (-not (Test-Path $profileRoot)) {
 
 # --- 2) Stop stale notebooklm-mcp NODE / parent CMD processes (>= StaleNodeMaxHours) ---
 $cutoff = (Get-Date).AddHours(-1 * $StaleNodeMaxHours)
-$serverTargets = Get-CimInstance Win32_Process | Where-Object {
+$serverTargets = @(Get-CimInstance Win32_Process | Where-Object {
     $_.CommandLine -like '*notebooklm-mcp*' -and
     ($_.Name -in @('node.exe','cmd.exe')) -and
     ($_.CreationDate -lt $cutoff)
-}
+})
 
-if ($serverTargets.Count -gt 0) {
+if (@($serverTargets).Count -gt 0) {
     $ids = $serverTargets | ForEach-Object { "$($_.ProcessId)/$($_.Name)" }
     Write-Host ("Detected stale notebooklm-mcp processes (>${StaleNodeMaxHours}h): " + ($ids -join ", ")) -ForegroundColor Yellow
     if (-not $WhatIfOnly) {
