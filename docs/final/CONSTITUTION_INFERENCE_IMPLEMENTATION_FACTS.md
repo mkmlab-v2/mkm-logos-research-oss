@@ -429,6 +429,39 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 
 - B-track 결과를 A-track에 반영하려면 §8 Promotion Loop(지휘관 승인 + PR + 경로/테스트 갱신)를 통과해야 한다.
 
+### 3.8 [B-track] Emotion VA trajectory state machine (M20 extension, [HYPO])
+
+**목적:** 대화 턴(Turn)에 따른 감정(Valence–Arousal)의 지수이동평균(EMA) 기반 관성 궤적을 한 턴 단위로 기록한다. **정적 매핑 한 스냅샷**이 아니라 **이전 `current_va` → 타깃 `target_va` → 새 `current_va`** 를 스키마에 박제해 시계열·회귀 테스트가 가능하게 한다.
+
+**Track wall:** `[HYPO]`, `[NON_GATING]`, `[ADVISORY_ONLY]` — 본선 실매매·게이트웨이 최종 트리거와 물리 분리. 임상·체질 단정 금지.
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 빌더 CLI | `scripts/build_lens_emotion_va_trajectory_v1.py` | `--target-valence`/`--target-arousal` 또는 `--chain-json`(lens-music 체인에서 스냅샷 VA 읽기); `--ema-alpha`; `--state-json`로 턴 간 `current_va` 연속 |
+| 단일 턴 SSOT (latest) | `reports/va_trajectory_log_latest.json` | `schema: va_trajectory_log_v1` |
+| (선택) 시계열 append | `reports/va_trajectory_log.jsonl` | `--jsonl-log` 시 한 줄 append |
+| 연속 상태 (기본 갱신) | `reports/lens_emotion_va_trajectory_state_latest.json` | `schema: lens_emotion_va_trajectory_state_v1`; 다음 턴의 `previous_va` 입력; `--no-write-state` 로 단발만 가능 |
+| JSON Schema | `docs/final/schemas/va_trajectory_log_v1.schema.json` | 예시 `docs/final/schemas/va_trajectory_log_v1.example.json` |
+| 회귀 | `tests/test_va_trajectory_log_v1.py` | 스키마 + EMA 결정론 |
+
+**의존성:** M20 동적 프롬프트 오버레이(`scripts/build_lens_music_prompt_overlay_v1.py`)와 동일한 `_apply_ema` 형태 \(`current = alpha * target + (1-alpha) * previous` per axis\).
+
+### 3.8.1 [B-track] Cross-lens VA→Logos fusion report (PoC, white-box)
+
+**목적:** `va_trajectory_log_v1` 의 `current_va` 를 입력으로, **스텁 후보 구절 목록**에 결정론적 태그 가중을 적용해 순위가 어떻게 바뀌는지 JSON 한 장에 남긴다. 실제 임베딩 RAG 인덱스가 아니라 **회귀 가능한 PoC**이며, 단일 신경망 융합이 아니라 **정책 ID + 후보 행별 multiplier** 로 추적 가능하게 한다.
+
+**Track wall:** `[HYPO]`, `[NON_GATING]`, `[ADVISORY_ONLY]` — Logos 정경 코어와의 identity merge 금지; 본선 트리거 금지.
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 빌더 CLI | `scripts/build_cross_lens_fusion_report_v1.py` | `--va-trajectory-json`(기본 `reports/va_trajectory_log_latest.json`), `--candidates-stub-json`(기본 `tests/fixtures/cross_lens_fusion_candidates_sample_v1.json`) |
+| 산출 (latest) | `reports/cross_lens_fusion_report_latest.json` | `schema: cross_lens_fusion_report_v1` |
+| 스텁 후보 | `tests/fixtures/cross_lens_fusion_candidates_sample_v1.json` | `verse_id`, `base_score`, `fusion_tags` |
+| JSON Schema | `docs/final/schemas/cross_lens_fusion_report_v1.schema.json` | 예시 `docs/final/schemas/cross_lens_fusion_report_v1.example.json` |
+| 회귀 | `tests/test_cross_lens_fusion_report_v1.py` | 스키마 + 순위 변화 + CLI |
+
+**정책 (`va_tag_boost_v1`):** 스크립트 docstring·`policy_notes` — 저발화(low valence)에서 peace·comfort·hope, 고발화에서 joy·energy, 고각성에서 caution·temperance, 극각성 완화용 calm·peace 등 태그 매칭 시 multiplier 스택(결정론).
+
 ---
 
 ## 4. Multi-Corpus Isolation Policy (평행 코퍼스)

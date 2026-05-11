@@ -1,0 +1,27 @@
+{
+  "schema": "va_trajectory_log_v1",
+  "hypothesis_class": "HYPO",
+  "session_id": "sess_20260511_alpha_001",
+  "turn_index": 3,
+  "timestamp_utc": "2026-05-11T01:15:00Z",
+  "parameters": {
+    "ema_alpha": 0.3,
+    "sasang_base": "soeumin"
+  },
+  "trajectory": {
+    "previous_va": {
+      "valence": -0.2,
+      "arousal": -0.4
+    },
+    "target_va": {
+      "valence": 0.5,
+      "arousal": 0.8
+    },
+    "current_va": {
+      "valence": 0.01,
+      "arousal": -0.04
+    }
+  },
+  "status": "TRACKING_ACTIVE",
+  "note": "[HYPO] EMA step: current = alpha*target + (1-alpha)*previous per axis (same pattern as M20 BPM EMA)."
+}

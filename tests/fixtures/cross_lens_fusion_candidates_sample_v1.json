@@ -1,0 +1,27 @@
+{
+  "schema": "cross_lens_fusion_candidates_stub_v1",
+  "hypothesis_class": "HYPO",
+  "description": "Deterministic stub candidates for B-track VA→Logos fusion PoC (not live RAG index).",
+  "candidates": [
+    {
+      "verse_id": "STUB.PEACE.01",
+      "base_score": 0.72,
+      "fusion_tags": ["peace", "comfort"]
+    },
+    {
+      "verse_id": "STUB.JOY.02",
+      "base_score": 0.81,
+      "fusion_tags": ["joy", "energy"]
+    },
+    {
+      "verse_id": "STUB.CAUTION.03",
+      "base_score": 0.65,
+      "fusion_tags": ["caution", "temperance"]
+    },
+    {
+      "verse_id": "STUB.CALM.04",
+      "base_score": 0.58,
+      "fusion_tags": ["calm", "peace"]
+    }
+  ]
+}

@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/cross_lens_fusion_report_v1.schema.json",
+  "title": "Cross-lens fusion report v1 (VA snapshot → Logos candidate re-rank, B-track)",
+  "description": "White-box trace: how VA state adjusts deterministic fusion weights over stub RAG candidates. NON_GATING; no merged neural black box.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "hypothesis_class",
+    "generated_at_utc",
+    "track_wall",
+    "fusion_policy_id",
+    "va_snapshot",
+    "inputs",
+    "candidates_ranked"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "cross_lens_fusion_report_v1"
+    },
+    "hypothesis_class": {
+      "type": "string",
+      "enum": ["HYPO"]
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "track_wall": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["NON_GATING", "ADVISORY_ONLY", "B_TRACK_RESEARCH"]
+      },
+      "minItems": 1
+    },
+    "fusion_policy_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "va_trajectory_source": {
+      "type": "string",
+      "maxLength": 1024
+    },
+    "va_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["session_id", "turn_index", "current_va"],
+      "properties": {
+        "session_id": { "type": "string" },
+        "turn_index": { "type": "integer", "minimum": 0 },
+        "current_va": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["valence", "arousal"],
+          "properties": {
+            "valence": { "type": "number", "minimum": -1, "maximum": 1 },
+            "arousal": { "type": "number", "minimum": -1, "maximum": 1 }
+          }
+        }
+      }
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["candidates_stub_path"],
+      "properties": {
+        "candidates_stub_path": { "type": "string" },
+        "note": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "policy_notes": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "candidates_ranked": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "verse_id",
+          "base_score",
+          "fusion_multiplier",
+          "fusion_weight",
+          "rank_before",
+          "rank_after",
+          "fusion_tags"
+        ],
+        "properties": {
+          "verse_id": { "type": "string" },
+          "base_score": { "type": "number" },
+          "fusion_multiplier": { "type": "number", "minimum": 0 },
+          "fusion_weight": { "type": "number" },
+          "rank_before": { "type": "integer", "minimum": 1 },
+          "rank_after": { "type": "integer", "minimum": 1 },
+          "fusion_tags": {
+            "type": "array",
+            "items": { "type": "string" },
+            "maxItems": 32
+          },
+          "tags_matched": {
+            "type": "array",
+            "items": { "type": "string" },
+            "maxItems": 32
+          }
+        }
+      }
+    }
+  }
+}
