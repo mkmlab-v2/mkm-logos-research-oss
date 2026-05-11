@@ -460,7 +460,7 @@ if (-not $SkipVaFusionControlIntegritySmoke) {
             throw "VA fusion control-integrity smoke pytest not found: $t"
         }
     }
-    Write-Host '== Fact-Lock: VA fusion control-integrity chain + policy golden (§3.8.4) ==' -ForegroundColor Cyan
+    Write-Host '== Fact-Lock: VA fusion control-integrity chain + policy golden (CONSTITUTION 3.8.4) ==' -ForegroundColor Cyan
     & py -m pytest @vaFusionControlIntegritySmokeTests -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
