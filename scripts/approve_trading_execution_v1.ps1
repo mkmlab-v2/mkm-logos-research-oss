@@ -22,7 +22,8 @@ if (-not (Test-Path -LiteralPath $ProposalJson)) {
 }
 
 $proposalRaw = Get-Content -LiteralPath $ProposalJson -Encoding UTF8 -Raw
-$proposal = $proposalRaw | ConvertFrom-Json -Depth 12
+# Windows PowerShell 5.1: ConvertFrom-Json has no -Depth; deep nesting is uncommon for proposal v1.
+$proposal = $proposalRaw | ConvertFrom-Json
 if ($proposal.schema -ne "trading_execution_proposal_v1") {
   throw "Proposal schema mismatch: expected trading_execution_proposal_v1, got '$($proposal.schema)'."
 }
@@ -34,13 +35,20 @@ $sha = (Get-FileHash -LiteralPath $ProposalJson -Algorithm SHA256).Hash.ToLowerI
 $now = [DateTimeOffset]::UtcNow
 $validUntil = if ($Decision -eq "GO") { $now.AddHours([double]$ValidHours) } else { $now.AddHours(1) }
 
+$wr = ([string]$WorkspaceRoot).TrimEnd('\')
+$pr = [string]$ProposalJson
+if (-not $pr.StartsWith($wr, [StringComparison]::OrdinalIgnoreCase)) {
+  throw "Proposal path must be under WorkspaceRoot. root=$wr proposal=$pr"
+}
+$artifactRel = $pr.Substring($wr.Length).TrimStart('\').Replace('\', '/')
+
 $approval = [ordered]@{
   schema = "trading_human_execution_approval_v1"
   domain = "trading"
   track = "A"
   proposal_id = [string]$proposal.proposal_id
   proposal_ref = @{
-    artifact_path = [IO.Path]::GetRelativePath($WorkspaceRoot, $ProposalJson).Replace("\","/")
+    artifact_path = $artifactRel
     source_rail = "A"
   }
   proposal_body_sha256 = $sha
