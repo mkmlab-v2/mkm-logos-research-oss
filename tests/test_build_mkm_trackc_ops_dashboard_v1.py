@@ -60,3 +60,11 @@ def test_trackc_dashboard_includes_lens_music_governance_fields():
     assert "tail_line_budget" in tail
     assert "entries" in tail
     assert isinstance(tail.get("entries"), list)
+    ck = doc.get("commercial_kpi_pointers") or {}
+    assert ck.get("role") == "pointer_only"
+    assert "boundary_note" in ck
+    assert "ssot" in ck
+    assert "ssot_present" in ck
+    assert "artifact_present" in ck
+    assert "snapshots" in ck
+    assert isinstance((ck.get("snapshots") or {}).get("track_a_metering_weekly"), dict)

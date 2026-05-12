@@ -84,6 +84,85 @@ def _forward_pipeline_health(
     }
 
 
+def _build_commercial_kpi_pointers(*, root: Path, art: Path) -> Dict[str, Any]:
+    """Lightweight pointers to Track A / P0 commercial SSOT — no revenue math here (Fact-Lock boundary)."""
+    ssot_rel = {
+        "p0_commercialization_tracker_md": "docs/final/P0_COMMERCIALIZATION_TRACKER.md",
+        "track_a_sla_draft_md": "docs/final/TRACK_A_SLA_DRAFT.md",
+        "metering_log_jsonl": "reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl",
+        "commercialization_daily_log_jsonl": "reports/track_a_commercialization_daily_log.jsonl",
+    }
+    art_inputs: Dict[str, Path] = {
+        "track_a_metering_summary_latest": art / "track_a_metering_summary_latest.json",
+        "track_a_metering_weekly_report_latest": art / "track_a_metering_weekly_report_latest.json",
+        "track_a_metering_band_gate_latest": art / "track_a_metering_band_gate_latest.json",
+        "track_a_conversational_cost_simulation_latest": art / "track_a_conversational_cost_simulation_latest.json",
+        "track_a_shadow_corpus_eval_latest": art / "track_a_shadow_corpus_eval_latest.json",
+        "track_a_shadow_corpus_eval_jsonl_sample_latest": art / "track_a_shadow_corpus_eval_jsonl_sample_latest.json",
+    }
+    ssot_present = {k: (root / v).is_file() for k, v in ssot_rel.items()}
+    artifact_present = {k: p.is_file() for k, p in art_inputs.items()}
+
+    weekly = _read_json(art_inputs["track_a_metering_weekly_report_latest"])
+    summary = _read_json(art_inputs["track_a_metering_summary_latest"])
+    gate = _read_json(art_inputs["track_a_metering_band_gate_latest"])
+    cost_sim = _read_json(art_inputs["track_a_conversational_cost_simulation_latest"])
+    shadow = _read_json(art_inputs["track_a_shadow_corpus_eval_latest"])
+
+    weekly_snap: Dict[str, Any] = {}
+    if weekly:
+        weekly_snap = {
+            "generated_at_utc": weekly.get("generated_at_utc"),
+            "target_band_hit_rate": weekly.get("target_band_hit_rate"),
+            "events_in_window": weekly.get("events_in_window"),
+        }
+    summary_snap: Dict[str, Any] = {}
+    if summary:
+        summary_snap = {
+            "generated_at_utc": summary.get("generated_at_utc"),
+            "events_total": summary.get("events_total"),
+            "rows": summary.get("rows"),
+        }
+    gate_snap: Dict[str, Any] = {}
+    if gate:
+        gate_snap = {
+            "generated_at_utc": gate.get("generated_at_utc"),
+            "decision": gate.get("decision") or gate.get("status"),
+            "gate_mode": gate.get("gate_mode") or gate.get("mode"),
+        }
+    cost_snap: Dict[str, Any] = {}
+    if cost_sim:
+        cost_snap = {
+            "generated_at_utc": cost_sim.get("generated_at_utc"),
+            "status": cost_sim.get("status"),
+        }
+    shadow_snap: Dict[str, Any] = {}
+    if shadow:
+        shadow_snap = {
+            "generated_at_utc": shadow.get("generated_at_utc"),
+            "status": shadow.get("status"),
+        }
+
+    return {
+        "role": "pointer_only",
+        "boundary_note": (
+            "Track A commercial KPI evidence lives in P0 paths + artifacts below; "
+            "not merged into Track C promotion or B-track lens gates."
+        ),
+        "ssot": ssot_rel,
+        "ssot_present": ssot_present,
+        "artifact_paths": {k: str(Path("docs/final/artifacts") / p.name).replace("\\", "/") for k, p in art_inputs.items()},
+        "artifact_present": artifact_present,
+        "snapshots": {
+            "track_a_metering_weekly": weekly_snap,
+            "track_a_metering_summary": summary_snap,
+            "track_a_metering_band_gate": gate_snap,
+            "track_a_conversational_cost_simulation": cost_snap,
+            "track_a_shadow_corpus_eval": shadow_snap,
+        },
+    }
+
+
 def _tail_agent_decisions_jsonl(path: Path, *, line_tail_budget: int) -> Dict[str, Any]:
     """Last N non-empty lines from append-only agent decisions log (compact fields for dashboard)."""
     rel = "reports/agent_decisions_log.jsonl"
@@ -208,6 +287,7 @@ def main() -> int:
         root / "reports" / "agent_decisions_log.jsonl",
         line_tail_budget=_tail_n,
     )
+    commercial_kpi_pointers = _build_commercial_kpi_pointers(root=root, art=art)
 
     rr_row = role_router_s1_shadow.get("last_row") if isinstance(role_router_s1_shadow.get("last_row"), dict) else {}
     rr_metrics = rr_row.get("metrics") if isinstance(rr_row.get("metrics"), dict) else {}
@@ -434,6 +514,7 @@ def main() -> int:
                 "router_artifact": rr_row.get("router_artifact"),
             },
         },
+        "commercial_kpi_pointers": commercial_kpi_pointers,
         "evidence": {
             "status_pointer": "docs/final/artifacts/mkm_ai_status_pointer_latest.json",
             "promotion_decision": "docs/final/artifacts/mkm_ai_v2_promotion_decision_latest.json",
@@ -486,6 +567,20 @@ def main() -> int:
             "lens_music_prompt_poc_runbook": "docs/final/artifacts/lens_music_prompt_poc_runbook_latest.json",
             "lens_music_prompt_poc_runbook_webhook_dispatch": "docs/final/artifacts/lens_music_prompt_poc_runbook_webhook_dispatch_latest.json",
             "lens_music_prompt_runbook_webhook_health": "docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json",
+            "p0_commercialization_tracker": "docs/final/P0_COMMERCIALIZATION_TRACKER.md",
+            "track_a_sla_draft": "docs/final/TRACK_A_SLA_DRAFT.md",
+            "track_a_metering_log": "reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl",
+            "track_a_commercialization_daily_log": "reports/track_a_commercialization_daily_log.jsonl",
+            "track_a_metering_summary_latest": "docs/final/artifacts/track_a_metering_summary_latest.json",
+            "track_a_metering_weekly_report_latest": "docs/final/artifacts/track_a_metering_weekly_report_latest.json",
+            "track_a_metering_band_gate_latest": "docs/final/artifacts/track_a_metering_band_gate_latest.json",
+            "track_a_conversational_cost_simulation_latest": (
+                "docs/final/artifacts/track_a_conversational_cost_simulation_latest.json"
+            ),
+            "track_a_shadow_corpus_eval_latest": "docs/final/artifacts/track_a_shadow_corpus_eval_latest.json",
+            "track_a_shadow_corpus_eval_jsonl_sample_latest": (
+                "docs/final/artifacts/track_a_shadow_corpus_eval_jsonl_sample_latest.json"
+            ),
         },
     }
 
@@ -526,6 +621,14 @@ def main() -> int:
         f"- forward_pipeline_reason_codes: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('reason_codes')}`",
         f"- forward_pipeline_rows_total: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_total')}`",
         f"- forward_pipeline_rows_in_window_7d: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_in_window_7d')}`",
+        "",
+        "## Commercial KPI pointers (Track A / P0 SSOT)",
+        f"- role: `{(dashboard.get('commercial_kpi_pointers') or {}).get('role')}`",
+        f"- p0_tracker_present: `{(dashboard.get('commercial_kpi_pointers') or {}).get('ssot_present', {}).get('p0_commercialization_tracker_md')}`",
+        f"- track_a_metering_weekly_present: `{(dashboard.get('commercial_kpi_pointers') or {}).get('artifact_present', {}).get('track_a_metering_weekly_report_latest')}`",
+        f"- weekly_target_band_hit_rate: `{((dashboard.get('commercial_kpi_pointers') or {}).get('snapshots') or {}).get('track_a_metering_weekly', {}).get('target_band_hit_rate')}`",
+        f"- weekly_events_in_window: `{((dashboard.get('commercial_kpi_pointers') or {}).get('snapshots') or {}).get('track_a_metering_weekly', {}).get('events_in_window')}`",
+        f"- band_gate_decision: `{((dashboard.get('commercial_kpi_pointers') or {}).get('snapshots') or {}).get('track_a_metering_band_gate', {}).get('decision')}`",
         "",
         "## Governance audit tail (`reports/agent_decisions_log.jsonl`)",
         f"- path_exists: `{(dashboard['trackc'].get('governance_agent_decisions_tail') or {}).get('path_exists')}`",
@@ -698,6 +801,16 @@ def main() -> int:
         "- `docs/final/artifacts/lens_music_prompt_poc_runbook_webhook_dispatch_latest.json`",
         "- `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`",
         "- `reports/agent_decisions_log.jsonl`",
+        "- `docs/final/P0_COMMERCIALIZATION_TRACKER.md`",
+        "- `docs/final/TRACK_A_SLA_DRAFT.md`",
+        "- `reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl`",
+        "- `reports/track_a_commercialization_daily_log.jsonl`",
+        "- `docs/final/artifacts/track_a_metering_summary_latest.json`",
+        "- `docs/final/artifacts/track_a_metering_weekly_report_latest.json`",
+        "- `docs/final/artifacts/track_a_metering_band_gate_latest.json`",
+        "- `docs/final/artifacts/track_a_conversational_cost_simulation_latest.json`",
+        "- `docs/final/artifacts/track_a_shadow_corpus_eval_latest.json`",
+        "- `docs/final/artifacts/track_a_shadow_corpus_eval_jsonl_sample_latest.json`",
         ]
     )
     out_md.write_text("\n".join(md) + "\n", encoding="utf-8")
