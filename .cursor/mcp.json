@@ -89,7 +89,7 @@
         "C:/Users/PRO/AppData/Roaming/npm/node_modules/notebooklm-mcp/dist/index.js"
       ],
       "env": {
-        "NOTEBOOKLM_PROFILE": "standard",
+        "NOTEBOOKLM_PROFILE": "full",
         "HEADLESS": "false",
         "MKM_NOTEBOOKLM_MCP_PINNED_VERSION": "2.0.0"
       }
