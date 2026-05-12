@@ -19,7 +19,7 @@ import json
 import warnings
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 import numpy as np
 
@@ -116,9 +116,38 @@ def _ret(closes: list[float], i: int, lag: int) -> float:
     return (c1 - c0) / c0
 
 
-def _build_features(closes: list[float], aux: list[float] | None = None) -> list[list[float]]:
-    """BTC momentum/vol/MA features; optional aux series (e.g. VIX) same length as closes."""
-    extra = 3 if aux is not None else 0
+def _rsi14_scaled(closes: list[float], i: int) -> float:
+    """RSI(14) from price changes ending at bar i-1; returns ~0..1 (0.5 = neutral). Research-only."""
+    period = 14
+    if i < period + 1:
+        return 0.5
+    gains = 0.0
+    losses = 0.0
+    for j in range(i - period, i):
+        d = closes[j] - closes[j - 1]
+        if d >= 0:
+            gains += d
+        else:
+            losses -= d
+    avg_g = gains / period
+    avg_l = losses / period
+    if avg_l == 0.0:
+        return 1.0 if avg_g > 0 else 0.5
+    rs = avg_g / avg_l
+    rsi = 100.0 - (100.0 / (1.0 + rs))
+    return max(0.0, min(1.0, rsi / 100.0))
+
+
+def _build_features(
+    closes: list[float],
+    aux_series: Sequence[list[float]] | None = None,
+    *,
+    append_rsi14: bool = False,
+) -> list[list[float]]:
+    """BTC momentum/vol/MA features; optional RSI14; optional aligned aux closes, 3 feats each."""
+    aux_list = list(aux_series) if aux_series else []
+    rsi_extra = 1 if append_rsi14 else 0
+    extra = 3 * len(aux_list) + rsi_extra
     dim = 9 + extra
     n = len(closes)
     feats: list[list[float]] = []
@@ -136,7 +165,9 @@ def _build_features(closes: list[float], aux: list[float] | None = None) -> list
         ma50 = sum(closes[i - 50 : i]) / 50.0 if i >= 50 else closes[i]
         ma_ratio = (closes[i - 1] / ma50 - 1.0) if ma50 != 0 else 0.0
         row = [r1, r3, r5, r10, r20, v5, v10, ma_ratio, r10 - r3]
-        if aux is not None:
+        if append_rsi14:
+            row.append(_rsi14_scaled(closes, i))
+        for aux in aux_list:
             row.extend(
                 [
                     _ret(aux, i, 1),
@@ -263,7 +294,18 @@ def main() -> int:
         "--vix-csv",
         type=Path,
         default=None,
-        help="Optional YFinance-style CSV (Date,Close). When set, appends VIX r1/r5/vol10 to features.",
+        help="Optional YFinance-style CSV (Date,Close). When set, appends r1/r5/vol10 on that series.",
+    )
+    ap.add_argument(
+        "--kospi-csv",
+        type=Path,
+        default=None,
+        help="Optional YFinance-style CSV (Date,Close). Same 3 features as --vix-csv; can combine.",
+    )
+    ap.add_argument(
+        "--append-rsi14",
+        action="store_true",
+        help="Append one column: RSI(14) scaled to ~0..1 from closes through bar i-1.",
     )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
@@ -272,14 +314,24 @@ def main() -> int:
     prices = _load_prices(btc_path)
     dates = [d for d, _ in prices]
     closes = [c for _, c in prices]
-    aux_series: list[float] | None = None
+    aux_blocks: list[list[float]] = []
     vix_rel: str | None = None
+    kospi_rel: str | None = None
     if args.vix_csv is not None:
         vix_path = args.vix_csv if args.vix_csv.is_absolute() else (ROOT / args.vix_csv)
         vix_map = _load_close_map(vix_path)
-        aux_series = _align_series_by_dates(dates, vix_map)
+        aux_blocks.append(_align_series_by_dates(dates, vix_map))
         vix_rel = _rel_to_root(vix_path)
-    feats = _build_features(closes, aux_series)
+    if args.kospi_csv is not None:
+        ko_path = args.kospi_csv if args.kospi_csv.is_absolute() else (ROOT / args.kospi_csv)
+        ko_map = _load_close_map(ko_path)
+        aux_blocks.append(_align_series_by_dates(dates, ko_map))
+        kospi_rel = _rel_to_root(ko_path)
+    feats = _build_features(
+        closes,
+        aux_blocks if aux_blocks else None,
+        append_rsi14=bool(args.append_rsi14),
+    )
     labels = [_label_future(closes, i, int(args.horizon_days), float(args.neutral_bps)) for i in range(len(closes))]
 
     rows: list[dict[str, Any]] = []
@@ -330,7 +382,9 @@ def main() -> int:
             "classifier": str(args.classifier),
             "hgb_max_iter": int(args.hgb_max_iter) if args.classifier == "hgb" else None,
             "vix_csv": vix_rel,
-            "feature_dim": 12 if aux_series is not None else 9,
+            "kospi_csv": kospi_rel,
+            "append_rsi14": bool(args.append_rsi14),
+            "feature_dim": 9 + (1 if args.append_rsi14 else 0) + 3 * len(aux_blocks),
         },
         "rows": rows,
     }

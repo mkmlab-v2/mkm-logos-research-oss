@@ -9,6 +9,7 @@
   eval alignment). Trading policy in-chain remains BTC-only for execution semantics; see chain header.
   The chain ends with Check-ProphecyPanel24hAlerts.ps1 (unless -SkipPanel24hAlertsCheck is added to args).
   Optional second daily run: Register-ProphecyPanel24hAlertsTask.ps1 (e.g. 09:05) for a later snapshot or if chain args skip the check.
+  Recommended split: register the chain with -SkipPanel24hAlertsCheck and register MKM-Prophecy-Panel-24h-Alerts separately so KPI failures do not mask chain success in Task Scheduler.
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35"
@@ -27,6 +28,9 @@ param(
     [ValidateSet("btc", "kospi", "multi")]
     [string]$ResearchEvaluationInstrument = "multi",
     [switch]$IncludeDawnScore,
+    # When set, chain skips Check-ProphecyPanel24hAlerts (exit 1 on KPI miss would mark the whole task failed).
+    # Prefer registering Register-ProphecyPanel24hAlertsTask.ps1 for a separate daily panel job.
+    [switch]$SkipPanel24hAlertsCheck,
     [switch]$RunWhenLoggedOff,
     [switch]$Remove
 )
@@ -47,6 +51,9 @@ if ($Remove) {
 $argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -WorkspaceRoot `"$WorkspaceRoot`" -ResearchEvaluationInstrument $ResearchEvaluationInstrument"
 if ($IncludeDawnScore) {
     $argLine += " -IncludeDawnScore"
+}
+if ($SkipPanel24hAlertsCheck) {
+    $argLine += " -SkipPanel24hAlertsCheck"
 }
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argLine -WorkingDirectory $WorkspaceRoot
 $trigger = New-ScheduledTaskTrigger -Daily -At $At
