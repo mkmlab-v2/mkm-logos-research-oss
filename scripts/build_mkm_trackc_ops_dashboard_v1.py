@@ -117,6 +117,7 @@ def main() -> int:
     lens_music_prompt_brake_summary = _read_json(art / "lens_music_prompt_brake_history_summary_latest.json")
     lens_music_prompt_brake_trend = _read_json(art / "lens_music_prompt_brake_trend_latest.json")
     lens_music_prompt_poc_metric = _read_json(root / "reports" / "lens_music_prompt_poc_metric_latest.json")
+    lens_music_prompt_poc_threshold_policy = _read_json(art / "lens_music_prompt_poc_threshold_policy_latest.json")
     lens_music_hormone_state = _read_json(root / "reports" / "lens_music_hormone_state_latest.json")
     lens_music_hormone_trend = _read_json(art / "lens_music_hormone_trend_latest.json")
     lens_music_hormone_trend_webhook = _read_json(art / "lens_music_hormone_trend_webhook_dispatch_latest.json")
@@ -201,6 +202,15 @@ def main() -> int:
                 "style_delta_rate": ((lens_music_prompt_poc_metric.get("kpi") or {}).get("style_delta_rate")),
                 "overlay_style_match_rate": ((lens_music_prompt_poc_metric.get("kpi") or {}).get("overlay_style_match_rate")),
                 "samples_count": lens_music_prompt_poc_metric.get("samples_count"),
+            },
+            "lens_music_prompt_poc_threshold_policy": {
+                "state": _status_or_default(lens_music_prompt_poc_threshold_policy.get("state"), "UNKNOWN"),
+                "min_samples": ((lens_music_prompt_poc_threshold_policy.get("policy_targets") or {}).get("min_samples")),
+                "style_delta_rate_min": ((lens_music_prompt_poc_threshold_policy.get("policy_targets") or {}).get("style_delta_rate_min")),
+                "overlay_style_match_rate_min": ((lens_music_prompt_poc_threshold_policy.get("policy_targets") or {}).get("overlay_style_match_rate_min")),
+                "samples_pass": ((lens_music_prompt_poc_threshold_policy.get("checks") or {}).get("samples_pass")),
+                "style_delta_pass": ((lens_music_prompt_poc_threshold_policy.get("checks") or {}).get("style_delta_pass")),
+                "style_match_pass": ((lens_music_prompt_poc_threshold_policy.get("checks") or {}).get("style_match_pass")),
             },
             "lens_music_hormone_state": {
                 "state": _status_or_default(lens_music_hormone_state.get("state"), "UNKNOWN"),
@@ -333,6 +343,7 @@ def main() -> int:
             "lens_music_prompt_brake_history_summary": "docs/final/artifacts/lens_music_prompt_brake_history_summary_latest.json",
             "lens_music_prompt_brake_trend": "docs/final/artifacts/lens_music_prompt_brake_trend_latest.json",
             "lens_music_prompt_poc_metric": "reports/lens_music_prompt_poc_metric_latest.json",
+            "lens_music_prompt_poc_threshold_policy": "docs/final/artifacts/lens_music_prompt_poc_threshold_policy_latest.json",
             "lens_music_symbolic_audio_promotion_gate": "reports/lens_music_symbolic_audio_promotion_gate_latest.json",
             "lens_music_hormone_state": "reports/lens_music_hormone_state_latest.json",
             "lens_music_hormone_trend": "docs/final/artifacts/lens_music_hormone_trend_latest.json",
@@ -396,6 +407,13 @@ def main() -> int:
         f"- lens_music_prompt_poc_passed: `{(dashboard['trackc']['lens_music_prompt_poc_metric'] or {}).get('passed')}`",
         f"- lens_music_prompt_poc_style_delta_rate: `{(dashboard['trackc']['lens_music_prompt_poc_metric'] or {}).get('style_delta_rate')}`",
         f"- lens_music_prompt_poc_style_match_rate: `{(dashboard['trackc']['lens_music_prompt_poc_metric'] or {}).get('overlay_style_match_rate')}`",
+        f"- lens_music_prompt_poc_threshold_policy_state: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('state')}`",
+        f"- lens_music_prompt_poc_threshold_min_samples: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('min_samples')}`",
+        f"- lens_music_prompt_poc_threshold_style_delta_min: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('style_delta_rate_min')}`",
+        f"- lens_music_prompt_poc_threshold_style_match_min: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('overlay_style_match_rate_min')}`",
+        f"- lens_music_prompt_poc_threshold_samples_pass: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('samples_pass')}`",
+        f"- lens_music_prompt_poc_threshold_style_delta_pass: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('style_delta_pass')}`",
+        f"- lens_music_prompt_poc_threshold_style_match_pass: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('style_match_pass')}`",
         f"- lens_music_hormone_state: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('state')}`",
         f"- lens_music_hormone_stress_index_0_1: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('stress_index_0_1')}`",
         f"- lens_music_hormone_recovery_buffer_0_1: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('recovery_buffer_0_1')}`",

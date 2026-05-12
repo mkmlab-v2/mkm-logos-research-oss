@@ -82,6 +82,7 @@ $roleRouterS1ShadowAdvisory = Join-Path $PSScriptRoot "build_role_router_s1_shad
 $hormoneTrend = Join-Path $PSScriptRoot "build_lens_music_hormone_trend_v1.py"
 $hormoneTrendWebhook = Join-Path $PSScriptRoot "dispatch_lens_music_hormone_trend_webhook_v1.py"
 $lensMusicPromotionGate = Join-Path $PSScriptRoot "check_lens_music_symbolic_audio_promotion_gate_v1.py"
+$lensMusicPromptPocThresholdPolicy = Join-Path $PSScriptRoot "build_lens_music_prompt_poc_threshold_policy_v1.py"
 $opsDashboard = Join-Path $PSScriptRoot "build_mkm_trackc_ops_dashboard_v1.py"
 
 $required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck, $logosS1ShadowReviewPacket)
@@ -93,6 +94,7 @@ if (-not $SkipOpsDashboard) {
     if (-not $SkipLensMusicHormoneTrend) {
         $required += $hormoneTrend
         $required += $hormoneTrendWebhook
+        $required += $lensMusicPromptPocThresholdPolicy
         if (-not $SkipLensMusicPromotionGate) {
             $required += $lensMusicPromotionGate
         }
@@ -244,6 +246,10 @@ if (-not $SkipOpsDashboard) {
         }
         else {
             Write-Host "[trackc-macro-fusion] skip lens music promotion gate (SkipLensMusicPromotionGate)"
+        }
+        Invoke-FusionStep -Name "build_lens_music_prompt_poc_threshold_policy_v1.py" -Action {
+            Set-Location -LiteralPath $repoRoot
+            py $lensMusicPromptPocThresholdPolicy
         }
     }
     else {
