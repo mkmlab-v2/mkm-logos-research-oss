@@ -1,17 +1,18 @@
 {
   "schema": "prophecy_hit_rate_eval_report_v2",
-  "generated_at_utc": "2026-05-05T00:15:13Z",
+  "generated_at_utc": "2026-05-12T18:00:27Z",
   "run_mode": "price",
-  "status": "no_data",
-  "zeroing_note": "No comparable direction pairs in score-json.",
+  "status": "ok",
+  "zeroing_note": "price: directional match rate over provided rows.",
   "inputs": {
     "run_mode": "price",
-    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "score_json": "docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
     "registry_glob": null
   },
   "metrics": {
-    "price_directional_hit_rate": null,
-    "n_evaluated": 0
+    "price_directional_hit_rate": 0.2,
+    "n_evaluated": 10,
+    "price_hits": 2
   },
   "sources": {
     "oracle_path": null,
