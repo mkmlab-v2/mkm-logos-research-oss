@@ -1,7 +1,7 @@
 {
   "schema": "automation_registry_v1",
   "version": "2026-05-12",
-  "description": "Single source of truth for core runtime tasks and expected state.",
+  "description": "Single source of truth for core runtime tasks and expected state. Athena automation (owner=athena_automation): tasks default optional=true so reconcile stays green until you register them; remove optional or set false on a row to enforce that task on this machine. Register scripts: C:\\workspace\\scripts\\Register-*.ps1.",
   "tasks": [
     {
       "name": "\\Bitcoin-Fused-QuantPixel-SOP-Strict-Check",
@@ -92,6 +92,90 @@
       "expected_status": "Ready",
       "owner": "ops_sync",
       "criticality": "low"
+    },
+    {
+      "name": "\\MKM-Trading-Automation-Health-30min",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "high",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-Trading-Observation-Loop-2H",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "high",
+      "optional": true
+    },
+    {
+      "name": "\\MKM_SafeOpsSurfaceCheck_Daily",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "medium",
+      "optional": true
+    },
+    {
+      "name": "\\MKM_CoreTask_ConsecutiveFailure_Alert_15min",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "medium",
+      "optional": true
+    },
+    {
+      "name": "\\MKM_Sentinel_TaskHealth_Monitor_15m",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "medium",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-AmsaengEosa-Monitoring-Bundle-60min",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "medium",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-AmsaengEosa-Weekly-Audit-Packet",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "low",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-Trading-Execution-Readiness-Loop-2H",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "medium",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-BTrack-DailyHypothesis-Chain",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "medium",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-Prophecy-Panel-24h-Alerts",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "medium",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-Prophecy-Evolution-Watchdog",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "medium",
+      "optional": true
+    },
+    {
+      "name": "\\GeneralProphecyDailyQueueV1",
+      "expected_status": "Ready",
+      "owner": "athena_automation",
+      "criticality": "low",
+      "optional": true
     }
   ]
 }
