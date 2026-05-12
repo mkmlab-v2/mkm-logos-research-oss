@@ -175,8 +175,8 @@ async def main():
 
     dotenv = _read_dotenv_map(_monorepo_dotenv_path())
 
-    # Optional tuning keys (singular core / risk gate / futures engine): workspace `.env` → process env when empty.
-    for optional_key in (
+    # 프로젝트 `.env` → PM2에 없을 때만 os.environ에 반영 (Binance + 런타임 플래그).
+    for env_key in (
         "MKM_SINGULAR_CORE_THRESHOLD",
         "MKM_SINGULAR_CORE_GRID",
         "MKM_MIN_CONFIDENCE",
@@ -186,10 +186,18 @@ async def main():
         "AROON_POLL_SEC",
         "AROON_ORDER_QTY",
         "AROON_MIN_CROSS_GAP",
+        "BINANCE_API_KEY",
+        "BINANCE_API_SECRET",
+        "BINANCE_KEY_SOURCE_MODE",
+        "TESTNET",
+        "ENABLE_TRADING",
+        "SYMBOL",
+        "INITIAL_CAPITAL",
+        "LEVERAGE",
     ):
-        if optional_key in dotenv and str(dotenv.get(optional_key, "")).strip():
-            if not os.environ.get(optional_key, "").strip():
-                os.environ[optional_key] = str(dotenv[optional_key]).strip()
+        if env_key in dotenv and str(dotenv.get(env_key, "")).strip():
+            if not os.environ.get(env_key, "").strip():
+                os.environ[env_key] = str(dotenv[env_key]).strip()
 
     symbol = os.getenv("SYMBOL", str(cfg_symbol))
     testnet_raw = os.getenv("TESTNET")

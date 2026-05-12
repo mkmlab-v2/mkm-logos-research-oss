@@ -175,7 +175,8 @@ def get_binance_api_keys() -> tuple[str, str]:
     if not env_only:
         try:
             dotenv_candidates = [
-                Path(__file__).resolve().parents[4] / ".env",  # C:/workspace/.env
+                Path(__file__).resolve().parents[2] / ".env",  # projects/bitcoin-trading/.env (단독 배포)
+                Path(__file__).resolve().parents[4] / ".env",  # 모노레포 루트 .env
                 Path.cwd() / ".env",
             ]
             for dotenv in dotenv_candidates:
