@@ -9,6 +9,7 @@
   eval alignment). Trading policy in-chain remains BTC-only for execution semantics; see chain header.
   Prophecy contemplation pre-gate: **default ON** for the BTC research lane only (`-ResearchEvaluationInstrument btc`);
   use env MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=0 to opt out. For multi/kospi scheduled runs the gate is skipped.
+  When contemplation runs with MKM_BTRACK_CONTEMPLATION_USE_GEMINI=1 in .env, pass -SkipProphecyContemplationGemini on the chain to force `--skip-gemini-reflect` (local guards only; no API spend).
   The chain ends with Check-ProphecyPanel24hAlerts.ps1 (unless -SkipPanel24hAlertsCheck is added to args).
   Optional second daily run: Register-ProphecyPanel24hAlertsTask.ps1 (e.g. 09:05) for a later snapshot or if chain args skip the check.
   Recommended split: register the chain with -SkipPanel24hAlertsCheck and register MKM-Prophecy-Panel-24h-Alerts separately so KPI failures do not mask chain success in Task Scheduler.
@@ -25,6 +26,10 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -IncludeDawnScore
 
 .EXAMPLE
+  BTC lane but skip paid Gemini reflect on contemplation (keep local guards; .env may still set USE_GEMINI=1):
+  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -ResearchEvaluationInstrument btc -SkipProphecyContemplationGemini
+
+.EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -Remove
 #>
 param(
@@ -37,6 +42,7 @@ param(
     # When set, chain skips Check-ProphecyPanel24hAlerts (exit 1 on KPI miss would mark the whole task failed).
     # Prefer registering Register-ProphecyPanel24hAlertsTask.ps1 for a separate daily panel job.
     [switch]$SkipPanel24hAlertsCheck,
+    [switch]$SkipProphecyContemplationGemini,
     [switch]$RunWhenLoggedOff,
     [switch]$Remove
 )
@@ -60,6 +66,9 @@ if ($IncludeDawnScore) {
 }
 if ($SkipPanel24hAlertsCheck) {
     $argLine += " -SkipPanel24hAlertsCheck"
+}
+if ($SkipProphecyContemplationGemini) {
+    $argLine += " -SkipProphecyContemplationGemini"
 }
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argLine -WorkingDirectory $WorkspaceRoot
 $trigger = New-ScheduledTaskTrigger -Daily -At $At

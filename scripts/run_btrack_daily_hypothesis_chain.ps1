@@ -31,6 +31,7 @@
 # Opt-out only: set MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=0 (or false) to skip run_btrack_prophecy_contemplation_v1.
 # multi/kospi lanes never run this gate.
 # Optional cost step: MKM_BTRACK_CONTEMPLATION_USE_GEMINI=1 (+ API key) runs a short Gemini JSON reflect after local pass; raise MKM_BTRACK_CONTEMPLATION_TIMEOUT_SEC if needed.
+# Force local-only reflect: -SkipProphecyContemplationGemini passes --skip-gemini-reflect to run_btrack_prophecy_contemplation_v1.py (overrides env even when USE_GEMINI=1).
 # Naver OpenAPI: default OFF (no network call). Use -IncludeNaverOpenApiRefresh when Client ID/Secret and app APIs are ready. -SkipNaverOpenApiRefresh is legacy no-op unless you need explicit "skip" in wrappers.
 # Yang(2015) B-track surface metrics + celebrity benchmark: use -IncludeYang2015SurfaceMetrics (off by default; needs commander JSON for first step).
 # Logos symbolic event promotion chain: use -IncludeLogosSymbolicPromotionChain (research-only; fixture defaults unless explicit JSONL paths provided).
@@ -77,6 +78,7 @@ param(
   [string]$LogosSymbolicHumanReviewQueueOutJson = "docs\final\artifacts\logos_symbolic_human_review_queue_latest.json",
   [ValidateSet("btc", "kospi", "multi")]
   [string]$ResearchEvaluationInstrument = "btc",
+  [switch]$SkipProphecyContemplationGemini,
   [switch]$SkipPanel24hAlertsCheck,
   [double]$Panel24hMinHitRate = 0.60
 )
@@ -301,7 +303,12 @@ $contemplationOptOut = ($contemplationEnv -eq "0" -or $contemplationEnv -ieq "fa
 $contemplationOn = ($ResearchEvaluationInstrument -eq "btc") -and (-not $contemplationOptOut)
 if ($contemplationOn) {
   Write-Host "==> run_btrack_prophecy_contemplation_v1.py (BTC lane pre-gate; opt-out: MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=0)" -ForegroundColor Cyan
-  py scripts/run_btrack_prophecy_contemplation_v1.py
+  $contemplPyArgs = @("scripts/run_btrack_prophecy_contemplation_v1.py")
+  if ($SkipProphecyContemplationGemini) {
+    $contemplPyArgs += "--skip-gemini-reflect"
+    Write-Host "  (Gemini reflect skipped: -SkipProphecyContemplationGemini)" -ForegroundColor DarkYellow
+  }
+  py @contemplPyArgs
   if ($LASTEXITCODE -ne 0) { throw "run_btrack_prophecy_contemplation_v1 exit $LASTEXITCODE" }
   $contemplationJsonArg = "docs/final/artifacts/btrack_prophecy_contemplation_v1_latest.json"
 }
