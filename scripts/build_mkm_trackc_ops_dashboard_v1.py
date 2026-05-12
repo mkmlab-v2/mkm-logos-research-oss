@@ -17,6 +17,28 @@ def _read_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def _lens_music_m32_dashboard_fields(*, hormone_doc: Dict[str, Any], overlay_doc: Dict[str, Any]) -> Dict[str, Any]:
+    """Compact M31/M32 audit slice for Track C ops (B-track advisory; no prophecy merge)."""
+    ht = hormone_doc.get("gematria_seed_trace")
+    ht = ht if isinstance(ht, dict) else {}
+    og = (overlay_doc.get("global_state") or {}).get("gematria_seed_trace")
+    og = og if isinstance(og, dict) else {}
+    present = ht.get("present")
+    if present is None:
+        present = og.get("present")
+    return {
+        "gematria_trace_present": bool(present) if present is not None else False,
+        "gematria_numeric_value": ht.get("numeric_value", og.get("numeric_value")),
+        "gematria_verse_or_token_ref": og.get("verse_or_token_ref") or ht.get("verse_or_token_ref"),
+        "gematria_applied_ema_alpha_multiplier": ht.get(
+            "applied_ema_alpha_multiplier", og.get("applied_ema_alpha_multiplier")
+        ),
+        "gematria_effective_hormone_ema_alpha": ht.get(
+            "effective_hormone_ema_alpha", og.get("effective_hormone_ema_alpha")
+        ),
+    }
+
+
 def _status_or_default(value: Any, default: str = "UNKNOWN") -> Any:
     if value is None:
         return default
@@ -267,9 +289,15 @@ def main() -> int:
     mkm_approval_ticket_preflight = _read_json(art / "mkm_approval_ticket_preflight_latest.json")
     lens_music_prompt_poc_threshold_policy = _read_json(art / "lens_music_prompt_poc_threshold_policy_latest.json")
     lens_music_hormone_state = _read_json(root / "reports" / "lens_music_hormone_state_latest.json")
+    lens_music_prompt_overlay_latest = _read_json(root / "reports" / "lens_music_prompt_overlay_latest.json")
     lens_music_hormone_trend = _read_json(art / "lens_music_hormone_trend_latest.json")
     lens_music_hormone_trend_webhook = _read_json(art / "lens_music_hormone_trend_webhook_dispatch_latest.json")
     lens_music_promotion_gate = _read_json(root / "reports" / "lens_music_symbolic_audio_promotion_gate_latest.json")
+    lens_music_promotion_process = (
+        lens_music_promotion_gate["promotion_process"]
+        if isinstance(lens_music_promotion_gate.get("promotion_process"), dict)
+        else {}
+    )
     lens_music_prompt_poc_runbook = _read_json(art / "lens_music_prompt_poc_runbook_latest.json")
     lens_music_prompt_poc_runbook_webhook = _read_json(art / "lens_music_prompt_poc_runbook_webhook_dispatch_latest.json")
     lens_music_prompt_runbook_webhook_health = _read_json(art / "lens_music_prompt_runbook_webhook_health_latest.json")
@@ -291,6 +319,10 @@ def main() -> int:
 
     rr_row = role_router_s1_shadow.get("last_row") if isinstance(role_router_s1_shadow.get("last_row"), dict) else {}
     rr_metrics = rr_row.get("metrics") if isinstance(rr_row.get("metrics"), dict) else {}
+    lens_music_m32 = _lens_music_m32_dashboard_fields(
+        hormone_doc=lens_music_hormone_state,
+        overlay_doc=lens_music_prompt_overlay_latest,
+    )
 
     dashboard = {
         "schema": "mkm_trackc_ops_dashboard_v1",
@@ -422,6 +454,7 @@ def main() -> int:
                 "inertia_index_0_1": lens_music_hormone_state.get("inertia_index_0_1"),
                 "generated_at_utc": lens_music_hormone_state.get("generated_at_utc"),
                 "non_biological_notice": lens_music_hormone_state.get("non_biological_notice"),
+                **lens_music_m32,
             },
             "lens_music_hormone_trend": {
                 "state": _status_or_default(lens_music_hormone_trend.get("state"), "UNKNOWN"),
@@ -429,6 +462,7 @@ def main() -> int:
                 "high_stress_rate": lens_music_hormone_trend.get("high_stress_rate"),
                 "max_consecutive_high_stress": lens_music_hormone_trend.get("max_consecutive_high_stress"),
                 "watch_thresholds": lens_music_hormone_trend.get("watch_thresholds"),
+                "operator_hint": lens_music_hormone_trend.get("operator_hint"),
             },
             "lens_music_hormone_trend_webhook": {
                 "dispatch_status": ((lens_music_hormone_trend_webhook.get("dispatch") or {}).get("status")),
@@ -445,6 +479,12 @@ def main() -> int:
                 "m31_guard_passed": ((lens_music_promotion_gate.get("m31_hormone_guard") or {}).get("passed")),
                 "commercial_unlock_requested": ((lens_music_promotion_gate.get("commercial_unlock_gate") or {}).get("unlock_requested")),
                 "commercial_unlock_applied": ((lens_music_promotion_gate.get("commercial_unlock_gate") or {}).get("unlock_applied")),
+                "promotion_process_pass": lens_music_promotion_process.get("process_pass"),
+                "promotion_process_exit_code": lens_music_promotion_process.get("process_exit_code"),
+                "promotion_gate_m31_profile": (
+                    lens_music_promotion_process.get("m31_profile")
+                    or ((lens_music_promotion_gate.get("m31_hormone_guard") or {}).get("invocation") or {}).get("profile")
+                ),
             },
             "lens_music_prompt_poc_runbook": {
                 "state": _status_or_default(lens_music_prompt_poc_runbook.get("state"), "UNKNOWN"),
@@ -562,6 +602,7 @@ def main() -> int:
             "lens_music_prompt_poc_threshold_policy": "docs/final/artifacts/lens_music_prompt_poc_threshold_policy_latest.json",
             "lens_music_symbolic_audio_promotion_gate": "reports/lens_music_symbolic_audio_promotion_gate_latest.json",
             "lens_music_hormone_state": "reports/lens_music_hormone_state_latest.json",
+            "lens_music_prompt_overlay_latest": "reports/lens_music_prompt_overlay_latest.json",
             "lens_music_hormone_trend": "docs/final/artifacts/lens_music_hormone_trend_latest.json",
             "lens_music_hormone_trend_webhook_dispatch": "docs/final/artifacts/lens_music_hormone_trend_webhook_dispatch_latest.json",
             "lens_music_prompt_poc_runbook": "docs/final/artifacts/lens_music_prompt_poc_runbook_latest.json",
@@ -697,9 +738,15 @@ def main() -> int:
         f"- lens_music_hormone_stress_index_0_1: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('stress_index_0_1')}`",
         f"- lens_music_hormone_recovery_buffer_0_1: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('recovery_buffer_0_1')}`",
         f"- lens_music_hormone_inertia_index_0_1: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('inertia_index_0_1')}`",
+        f"- lens_music_gematria_trace_present: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('gematria_trace_present')}`",
+        f"- lens_music_gematria_verse_or_token_ref: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('gematria_verse_or_token_ref')}`",
+        f"- lens_music_gematria_numeric_value: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('gematria_numeric_value')}`",
+        f"- lens_music_gematria_applied_ema_alpha_multiplier: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('gematria_applied_ema_alpha_multiplier')}`",
+        f"- lens_music_gematria_effective_hormone_ema_alpha: `{(dashboard['trackc']['lens_music_hormone_state'] or {}).get('gematria_effective_hormone_ema_alpha')}`",
         f"- lens_music_hormone_trend_state: `{(dashboard['trackc']['lens_music_hormone_trend'] or {}).get('state')}`",
         f"- lens_music_hormone_trend_high_stress_rate: `{(dashboard['trackc']['lens_music_hormone_trend'] or {}).get('high_stress_rate')}`",
         f"- lens_music_hormone_trend_max_consecutive_high_stress: `{(dashboard['trackc']['lens_music_hormone_trend'] or {}).get('max_consecutive_high_stress')}`",
+        f"- lens_music_hormone_trend_operator_hint: `{(dashboard['trackc']['lens_music_hormone_trend'] or {}).get('operator_hint')}`",
         f"- lens_music_hormone_trend_webhook_status: `{(dashboard['trackc']['lens_music_hormone_trend_webhook'] or {}).get('dispatch_status')}`",
         f"- lens_music_hormone_trend_webhook_reason: `{(dashboard['trackc']['lens_music_hormone_trend_webhook'] or {}).get('dispatch_reason')}`",
         f"- lens_music_hormone_trend_webhook_skip_classification: `{(dashboard['trackc']['lens_music_hormone_trend_webhook'] or {}).get('skip_classification')}`",
@@ -710,6 +757,9 @@ def main() -> int:
         f"- lens_music_m31_guard_passed: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('m31_guard_passed')}`",
         f"- lens_music_commercial_unlock_requested: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('commercial_unlock_requested')}`",
         f"- lens_music_commercial_unlock_applied: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('commercial_unlock_applied')}`",
+        f"- lens_music_promotion_process_pass: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('promotion_process_pass')}`",
+        f"- lens_music_promotion_process_exit_code: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('promotion_process_exit_code')}`",
+        f"- lens_music_promotion_gate_m31_profile: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('promotion_gate_m31_profile')}`",
         f"- lens_music_prompt_poc_runbook_state: `{(dashboard['trackc']['lens_music_prompt_poc_runbook'] or {}).get('state')}`",
         f"- lens_music_prompt_poc_runbook_recommendation_count: `{(dashboard['trackc']['lens_music_prompt_poc_runbook'] or {}).get('recommendation_count')}`",
         f"- lens_music_prompt_poc_runbook_top_cause: `{(dashboard['trackc']['lens_music_prompt_poc_runbook'] or {}).get('top_recommendation_cause')}`",

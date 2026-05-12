@@ -36,10 +36,13 @@ def test_trackc_dashboard_includes_lens_music_governance_fields():
     assert "stress_index_0_1" in hs
     assert "recovery_buffer_0_1" in hs
     assert "inertia_index_0_1" in hs
+    assert "gematria_trace_present" in hs
+    assert "gematria_applied_ema_alpha_multiplier" in hs
     ht = (doc.get("trackc") or {}).get("lens_music_hormone_trend") or {}
     assert "state" in ht
     assert "high_stress_rate" in ht
     assert "max_consecutive_high_stress" in ht
+    assert "operator_hint" in ht
     htw = (doc.get("trackc") or {}).get("lens_music_hormone_trend_webhook") or {}
     assert "dispatch_status" in htw
     assert "dispatch_only_on_watch" in htw
@@ -68,3 +71,7 @@ def test_trackc_dashboard_includes_lens_music_governance_fields():
     assert "artifact_present" in ck
     assert "snapshots" in ck
     assert isinstance((ck.get("snapshots") or {}).get("track_a_metering_weekly"), dict)
+    lmg = (doc.get("trackc") or {}).get("lens_music_promotion_gate") or {}
+    assert "promotion_process_pass" in lmg
+    assert "promotion_process_exit_code" in lmg
+    assert "promotion_gate_m31_profile" in lmg

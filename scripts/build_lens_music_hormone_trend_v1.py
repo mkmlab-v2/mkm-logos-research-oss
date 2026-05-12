@@ -104,8 +104,13 @@ def main() -> int:
             }
         )
 
+    operator_hint = None
     if n == 0:
         state = "NODATA"
+        operator_hint = (
+            "rows_scanned==0: append history via scripts/build_lens_music_prompt_overlay_v1.py "
+            "(default reports/lens_music_prompt_overlay_history_log.jsonl), then re-run this trend builder."
+        )
     elif high_stress_rate > float(args.high_stress_rate_watch_threshold) or (
         max_consecutive_high_stress >= int(args.high_stress_consecutive_watch_threshold)
     ):
@@ -133,6 +138,8 @@ def main() -> int:
         "track": "B",
         "non_biological_notice": "metaphor_only_advisory_controller",
     }
+    if operator_hint:
+        out["operator_hint"] = operator_hint
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mkm12.local/schemas/lens_music_symbolic_audio_promotion_gate_v1.schema.json",
   "title": "Lens music symbolic audio — B-track research promotion gate v1",
-  "description": "Result of check_lens_music_symbolic_audio_promotion_gate_v1.py. GO means CI/pytest bundle passed (M0–M5) — research-ready within §3.9 only; not Track A commercial audio.",
+  "description": "Result of check_lens_music_symbolic_audio_promotion_gate_v1.py. GO decision means CI/pytest bundle passed (M0–M5) and M31 guard did not emit HOLD under the active profile — research-ready within §3.9 only; not Track A commercial audio. Optional promotion_process mirrors shell exit (strict + HOLD_M31 => process_exit_code 1).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -131,7 +131,38 @@
             "max_consecutive_high_stress": { "type": "integer" }
           }
         },
-        "non_biological_notice": { "type": "string" }
+        "non_biological_notice": { "type": "string" },
+        "invocation": {
+          "type": "object",
+          "description": "W3 audit: CLI profile and thresholds used for m31_hormone_guard.",
+          "additionalProperties": false,
+          "required": [
+            "profile",
+            "require_m31_input",
+            "m31_max_high_stress_rate",
+            "m31_max_consecutive_high_stress",
+            "hormone_trend_json"
+          ],
+          "properties": {
+            "profile": { "type": "string", "enum": ["strict", "soft"] },
+            "require_m31_input": { "type": "boolean" },
+            "m31_max_high_stress_rate": { "type": "number" },
+            "m31_max_consecutive_high_stress": { "type": "integer" },
+            "hormone_trend_json": { "type": "string", "maxLength": 4096 }
+          }
+        }
+      }
+    },
+    "promotion_process": {
+      "type": "object",
+      "description": "Shell exit alignment: strict + HOLD_M31 => process_exit_code 1; pytest_pass mirrors pytest only.",
+      "additionalProperties": false,
+      "required": ["m31_profile", "process_exit_code", "process_pass", "pytest_pass"],
+      "properties": {
+        "m31_profile": { "type": "string", "enum": ["strict", "soft"] },
+        "process_exit_code": { "type": "integer", "minimum": 0, "maximum": 1 },
+        "process_pass": { "type": "boolean" },
+        "pytest_pass": { "type": "boolean" }
       }
     }
   }

@@ -52,6 +52,19 @@
       "max_high_stress_rate": 0.25,
       "max_consecutive_high_stress": 3
     },
-    "non_biological_notice": "metaphor_only_advisory_controller"
+    "non_biological_notice": "metaphor_only_advisory_controller",
+    "invocation": {
+      "profile": "soft",
+      "require_m31_input": false,
+      "m31_max_high_stress_rate": 0.25,
+      "m31_max_consecutive_high_stress": 3,
+      "hormone_trend_json": "docs/final/artifacts/lens_music_hormone_trend_latest.json"
+    }
+  },
+  "promotion_process": {
+    "m31_profile": "soft",
+    "process_exit_code": 0,
+    "process_pass": true,
+    "pytest_pass": true
   }
 }

@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/lens_music_gematria_seed_trace_v1.schema.json",
+  "title": "Lens music gematria seed trace v1 (audit, B-track)",
+  "description": "Auditable bridge from lens_music_gematria_v1 / gate chain to prompt overlay. Downstream may apply a bounded deterministic multiplier to M31 hormone EMA alpha only; separate from tempo/BPM smoothing and from general prophecy (B-rail).",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "seed_source"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "lens_music_gematria_seed_trace_v1"
+    },
+    "seed_source": {
+      "type": "string",
+      "enum": ["lens_music_gematria_v1", "chain_doc"]
+    },
+    "present": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string",
+      "maxLength": 512
+    },
+    "verse_or_token_ref": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "numeric_value": {
+      "type": ["integer", "null"]
+    },
+    "lens_resolution": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "lens_ts_utc": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "lens_provenance": {
+      "type": "object"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "maxLength": 16
+    },
+    "applied_ema_alpha_multiplier": {
+      "type": "number",
+      "minimum": 0.85,
+      "maximum": 1.15
+    },
+    "base_hormone_ema_alpha": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "effective_hormone_ema_alpha": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

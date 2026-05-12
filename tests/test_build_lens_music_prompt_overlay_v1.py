@@ -92,6 +92,12 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     assert 0.0 <= float(hormone["stress_index_0_1"]) <= 1.0
     assert 0.0 <= float(hormone["recovery_buffer_0_1"]) <= 1.0
     assert "metaphor_only" in hormone["non_biological_notice"]
+    gtr = doc["global_state"]["gematria_seed_trace"]
+    assert gtr["schema"] == "lens_music_gematria_seed_trace_v1"
+    assert gtr["present"] is False
+    assert gtr["applied_ema_alpha_multiplier"] == 1.0
+    assert float(gtr["effective_hormone_ema_alpha"]) == 0.4
+    assert hormone["gematria_seed_trace"]["applied_ema_alpha_multiplier"] == 1.0
     assert doc["control_plane_contract"]["control_plane_user_plane_separation"] is True
     assert doc["auto_brake_m22"]["active"] is True
     assert doc["auto_brake_m22"]["trigger_smoke_eval_watch"] is True
@@ -102,3 +108,57 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     assert row["schema"] == "lens_music_prompt_overlay_history_row_v1"
     assert row["auto_brake_active"] is True
     assert row["hormone_state"] in {"STABLE", "ELEVATED", "HIGH_STRESS"}
+    assert row["gematria_present"] is False
+    assert row["gematria_applied_ema_alpha_multiplier"] == 1.0
+    assert row["gematria_effective_hormone_ema_alpha"] == 0.4
+
+
+def test_build_overlay_gematria_trace_m32_multiplier_on_hormone_ema():
+    from scripts.build_lens_music_prompt_overlay_v1 import build_overlay
+
+    gov = {"schema": "lens_music_audition_governance_status_v1", "state": "GO"}
+    chain = {
+        "schema": "lens_music_gate_chain_v1",
+        "gematria_seed_trace": {
+            "schema": "lens_music_gematria_seed_trace_v1",
+            "seed_source": "lens_music_gematria_v1",
+            "present": True,
+            "verse_or_token_ref": "taeeum",
+            "numeric_value": 207,
+        },
+        "melody_stage_m9": {
+            "input_snapshot": {"tempo_target_bpm": 90.0, "valence": 0.0, "arousal": 0.0}
+        },
+    }
+    doc, _, _ = build_overlay(
+        gov,
+        chain,
+        smoke_eval={"schema": "lens_music_prompt_smoke_eval_v1", "state": "GO"},
+        prev_hormone=None,
+        ema_alpha=0.4,
+    )
+    gt = doc["global_state"]["gematria_seed_trace"]
+    assert gt["numeric_value"] == 207
+    assert gt["applied_ema_alpha_multiplier"] == 1.024
+    assert abs(float(gt["effective_hormone_ema_alpha"]) - 0.4096) < 1e-9
+    h = doc["global_state"]["hormone_like_state"]
+    assert h["gematria_seed_trace"]["applied_ema_alpha_multiplier"] == 1.024
+
+
+def test_build_gematria_seed_trace_from_lens_doc():
+    from scripts.run_lens_music_gematria_gate_chain_v1 import build_gematria_seed_trace_from_lens_doc
+
+    lens_doc = {
+        "schema": "lens_music_gematria_v1",
+        "resolution": "builtin_sasang_table_v1",
+        "ts_utc": "2026-05-12T00:00:00Z",
+        "hypothesis_tier": "B",
+        "provenance": {"source": "builtin_table", "experiment_id": "x"},
+        "sasang_music_mapping_v1": {
+            "inputs": {"sasang_primary": "taeeum", "gematria_total_optional": 33},
+        },
+    }
+    t = build_gematria_seed_trace_from_lens_doc(lens_doc)
+    assert t["present"] is True
+    assert t["numeric_value"] == 33
+    assert t["verse_or_token_ref"] == "taeeum"

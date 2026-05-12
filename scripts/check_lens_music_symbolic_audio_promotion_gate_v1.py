@@ -1,13 +1,19 @@
 #!/usr/bin/env python3
 """B-track research promotion gate for symbolic→audio pipeline (§3.9).
 
-Runs the consolidated pytest bundle (M0–M5 schema/gematria/gate chain/internal-eval plus M31
-hormone trend webhook dispatch smoke). Exit 0 iff pytest passes.
+Runs the consolidated pytest bundle (M0–M5 schema/gematria/gate chain/M32 seed trace/overlay/M31,
+internal-eval plus M31 hormone trend webhook dispatch smoke). **Process exit 0** iff pytest passes
+**and** (when ``--m31-profile`` is **strict**, the synthesized ``decision`` is not
+``HOLD_M31_HORMONE_GUARD``). **Soft** profile keeps exit code pytest-only for cold-start hosts.
+
 Writes JSON artifact; decision GO is **research lane only** — Track A commercial audio and
 Track C primary GTM remain blocked until separate human + metric gates (see track_wall).
 
 Payload includes ``emotion_va_overlay_ack`` for §3.10 traceability (same pytest bundle covers
 ``--emotion-mapping-json``); it does **not** add a separate GO/HOLD criterion beyond the pytest bundle green.
+
+``m31_hormone_guard.invocation`` records ``--m31-profile`` / thresholds / trend JSON path for audit
+(W3). Stdout JSON ``ok`` matches process exit (strict M31 HOLD → exit 1); ``pytest_ok`` mirrors pytest only.
 
 Does not replace COMPRESSION §9 Track A promotion for the compression API lane.
 """
@@ -33,6 +39,8 @@ PYTEST_MODULES = [
     "tests/test_sasang_emotion_mapping_schema_v1.py",
     "tests/test_run_lens_music_gematria_v1.py",
     "tests/test_lens_music_gate_chain_v1.py",
+    "tests/test_lens_music_gematria_seed_trace_schema_v1.py",
+    "tests/test_build_lens_music_prompt_overlay_v1.py",
     "tests/test_lens_music_internal_eval_schema_v1.py",
     "tests/test_validate_lens_music_internal_eval_jsonl_v1.py",
     "tests/test_dispatch_lens_music_hormone_trend_webhook_v1.py",
@@ -41,6 +49,20 @@ PYTEST_MODULES = [
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def promotion_gate_process_exit_code(
+    pytest_exit_code: int,
+    decision: str,
+    *,
+    m31_profile: str,
+) -> int:
+    """Shell exit for automation: pytest failure always 1; strict + M31 HOLD also 1."""
+    if pytest_exit_code != 0:
+        return 1
+    if m31_profile == "strict" and decision == "HOLD_M31_HORMONE_GUARD":
+        return 1
+    return 0
 
 
 def run_pytest_bundle() -> tuple[int, str]:
@@ -181,6 +203,7 @@ def build_payload(
     max_high_stress_rate: float,
     max_consecutive_high_stress: int,
     require_m31_input: bool,
+    m31_invocation: dict[str, Any],
 ) -> dict[str, Any]:
     ok = pytest_exit_code == 0
     m31_pass, m31_detail = _compute_m31_guard(
@@ -189,6 +212,7 @@ def build_payload(
         max_consecutive_high_stress=max_consecutive_high_stress,
         require_input=require_m31_input,
     )
+    m31_detail = {**m31_detail, "invocation": m31_invocation}
     unlock = _compute_commercial_unlock(signoff=human_signoff, allow_unlock=allow_commercial_unlock)
     if not ok:
         decision = "HOLD_PYTEST_FAILED"
@@ -242,6 +266,14 @@ def build_payload(
         },
         "m31_hormone_guard": m31_detail,
     }
+    profile = str(m31_invocation.get("profile") or "strict")
+    proc_exit = promotion_gate_process_exit_code(pytest_exit_code, decision, m31_profile=profile)
+    out["promotion_process"] = {
+        "m31_profile": profile,
+        "process_exit_code": proc_exit,
+        "process_pass": proc_exit == 0,
+        "pytest_pass": ok,
+    }
     return out
 
 
@@ -254,7 +286,13 @@ def main() -> int:
     ap.add_argument(
         "--allow-soft-m31",
         action="store_true",
-        help="Opt out of default hard-lock. By default M31 hormone input is required.",
+        help="Alias for --m31-profile soft (trend JSON may be absent without failing M31 guard).",
+    )
+    ap.add_argument(
+        "--m31-profile",
+        choices=("strict", "soft"),
+        default="strict",
+        help="strict: require hormone trend input for M31 pass when empty. soft: allow missing input.",
     )
     ap.add_argument("--human-signoff-json", type=Path, default=DEFAULT_HUMAN_SIGNOFF)
     ap.add_argument("--allow-commercial-unlock", action="store_true")
@@ -263,6 +301,16 @@ def main() -> int:
     code, tail = run_pytest_bundle()
     hormone_trend = _read_json(args.hormone_trend_json)
     human_signoff = _read_json(args.human_signoff_json)
+    profile: str = "soft" if args.allow_soft_m31 else str(args.m31_profile)
+    require_m31_input = profile != "soft"
+    trend_path = args.hormone_trend_json.resolve()
+    m31_invocation: dict[str, Any] = {
+        "profile": profile,
+        "require_m31_input": require_m31_input,
+        "m31_max_high_stress_rate": float(args.m31_max_high_stress_rate),
+        "m31_max_consecutive_high_stress": int(args.m31_max_consecutive_high_stress),
+        "hormone_trend_json": str(trend_path),
+    }
     payload = build_payload(
         code,
         tail,
@@ -271,17 +319,27 @@ def main() -> int:
         allow_commercial_unlock=bool(args.allow_commercial_unlock),
         max_high_stress_rate=float(args.m31_max_high_stress_rate),
         max_consecutive_high_stress=int(args.m31_max_consecutive_high_stress),
-        require_m31_input=not bool(args.allow_soft_m31),
+        require_m31_input=require_m31_input,
+        m31_invocation=m31_invocation,
+    )
+    exit_code = promotion_gate_process_exit_code(
+        code, str(payload["decision"]), m31_profile=profile
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(
         json.dumps(
-            {"ok": code == 0, "decision": payload["decision"], "report": str(args.out.resolve())},
+            {
+                "ok": exit_code == 0,
+                "pytest_ok": code == 0,
+                "m31_profile": profile,
+                "decision": payload["decision"],
+                "report": str(args.out.resolve()),
+            },
             ensure_ascii=False,
         )
     )
-    return 0 if code == 0 else 1
+    return exit_code
 
 
 if __name__ == "__main__":

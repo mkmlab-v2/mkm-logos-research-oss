@@ -31,6 +31,8 @@ on:
       - "docs/final/artifacts/MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json"
       - "scripts/deploy/linux/run_bench_l1_api_load_vps_fixed_fields.sh"
       - "tests/test_mkm_promotion_gate_evidence_bundle_v1.py"
+      - "scripts/build_mkm_trackc_ops_dashboard_v1.py"
+      - "tests/test_build_mkm_trackc_ops_dashboard_v1.py"
       - "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"
       - "scripts/build_trackc_evidence_rag_mvp_v1.py"
       - "scripts/run_p1_ab_bundle.ps1"
@@ -229,6 +231,11 @@ on:
       - "tests/test_lens_music_symbolic_audio_promotion_gate_v1.py"
       - "tests/test_run_lens_music_gematria_v1.py"
       - "tests/test_lens_music_gate_chain_v1.py"
+      - "docs/final/schemas/lens_music_gematria_seed_trace_v1.schema.json"
+      - "docs/final/schemas/lens_music_gematria_seed_trace_v1.example.json"
+      - "scripts/build_lens_music_prompt_overlay_v1.py"
+      - "tests/test_build_lens_music_prompt_overlay_v1.py"
+      - "tests/test_lens_music_gematria_seed_trace_schema_v1.py"
       - "scripts/run_lens_music_gematria.py"
       - "scripts/run_lens_music_gematria_gate_chain_v1.py"
       - "scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py"
@@ -510,6 +517,7 @@ on:
       - "docs/final/artifacts/fixtures/mkm_meta_layer_turn_envelope_v1.example.json"
       - "scripts/Invoke-TrackCMacroDailyFusion_v1.ps1"
       - "scripts/Register-TrackCMacroDailyFusionTask.ps1"
+      - "scripts/Run-LensMusicPromotionGateStagingStrict_v1.ps1"
       - "scripts/build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py"
       - "tests/test_build_daily_execution_insight_brief_v1.py"
       - "scripts/build_daily_execution_insight_brief_v1.py"
@@ -932,6 +940,12 @@ jobs:
 
       - name: Lens music gate chain v1 ([HYPO] M2)
         run: python -m pytest tests/test_lens_music_gate_chain_v1.py -q --tb=short
+
+      - name: Lens music gematria seed trace schema M32 ([HYPO] audit)
+        run: python -m pytest tests/test_lens_music_gematria_seed_trace_schema_v1.py -q --tb=short
+
+      - name: Lens music prompt overlay M20+M31+M32 ([HYPO] advisory)
+        run: python -m pytest tests/test_build_lens_music_prompt_overlay_v1.py -q --tb=short
 
       - name: Lens music internal eval session schema v1 ([HYPO] M3)
         run: python -m pytest tests/test_lens_music_internal_eval_schema_v1.py -q --tb=short

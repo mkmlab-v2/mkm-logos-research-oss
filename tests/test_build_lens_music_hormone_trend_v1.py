@@ -43,3 +43,28 @@ def test_build_lens_music_hormone_trend_watch(tmp_path):
     assert doc["high_stress_count"] == 3
     assert doc["max_consecutive_high_stress"] == 3
     assert doc["state"] == "WATCH"
+
+
+def test_build_lens_music_hormone_trend_nodata_sets_operator_hint(tmp_path):
+    hist = tmp_path / "hist.jsonl"
+    hist.write_text('{"ts_utc": "2026-05-10T10:00:00Z", "note": "no hormone_state"}\n', encoding="utf-8")
+    out = tmp_path / "trend.json"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/build_lens_music_hormone_trend_v1.py"),
+            "--history-log-jsonl",
+            str(hist),
+            "--out",
+            str(out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert r.returncode == 0, r.stdout + r.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["state"] == "NODATA"
+    assert doc["rows_scanned"] == 0
+    assert "operator_hint" in doc
+    assert "build_lens_music_prompt_overlay_v1.py" in doc["operator_hint"]

@@ -96,6 +96,30 @@ def _clamp01(x: float) -> float:
     return max(0.0, min(1.0, float(x)))
 
 
+def _gematria_ema_alpha_multiplier(numeric_value: Any) -> float:
+    """Deterministic bounded tweak for M31 hormone EMA alpha only (B-track advisory)."""
+    if numeric_value is None:
+        return 1.0
+    try:
+        n = int(numeric_value)
+    except (TypeError, ValueError):
+        return 1.0
+    delta = ((n % 11) - 5) * 0.006
+    return round(float(max(0.85, min(1.15, 1.0 + delta))), 4)
+
+
+def _chain_gematria_seed_trace(chain_doc: dict[str, Any]) -> dict[str, Any]:
+    raw = chain_doc.get("gematria_seed_trace")
+    if isinstance(raw, dict) and raw.get("schema") == "lens_music_gematria_seed_trace_v1":
+        return dict(raw)
+    return {
+        "schema": "lens_music_gematria_seed_trace_v1",
+        "present": False,
+        "seed_source": "chain_doc",
+        "reason": "legacy_chain_without_gematria_seed_trace",
+    }
+
+
 def _compute_hormone_state(
     *,
     valence: float,
@@ -103,7 +127,7 @@ def _compute_hormone_state(
     governance_state: str,
     smoke_eval_state: str,
     prev_hormone: dict[str, Any] | None,
-    alpha: float = 0.35,
+    alpha: float,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """M31: hormone-like control state (advisory-only, non-biological metaphor).
 
@@ -175,13 +199,35 @@ def build_overlay(
     style = _pick_tone(tempo_bpm=tempo_bpm, valence=valence, state=state)
     smoke_state = str((smoke_eval or {}).get("state") or "UNKNOWN")
     style, m22 = _apply_m22_brake(style, governance_state=state, smoke_eval_state=smoke_state)
+    trace_base = _chain_gematria_seed_trace(chain_doc)
+    mult = (
+        _gematria_ema_alpha_multiplier(trace_base.get("numeric_value"))
+        if trace_base.get("present") is True
+        else 1.0
+    )
+    base_hormone_alpha = float(ema_alpha)
+    eff_hormone_alpha = max(0.15, min(0.55, base_hormone_alpha * mult))
     hormone_current, hormone_next = _compute_hormone_state(
         valence=valence,
         arousal=arousal,
         governance_state=state,
         smoke_eval_state=smoke_state,
         prev_hormone=prev_hormone,
+        alpha=eff_hormone_alpha,
     )
+    trace_audit = {
+        **trace_base,
+        "applied_ema_alpha_multiplier": mult,
+        "base_hormone_ema_alpha": base_hormone_alpha,
+        "effective_hormone_ema_alpha": round(eff_hormone_alpha, 4),
+    }
+    hormone_current["gematria_seed_trace"] = trace_audit
+    hormone_next["gematria_seed_trace"] = {
+        "present": trace_audit.get("present"),
+        "numeric_value": trace_audit.get("numeric_value"),
+        "applied_ema_alpha_multiplier": mult,
+        "effective_hormone_ema_alpha": round(eff_hormone_alpha, 4),
+    }
 
     global_state = {
         "schema": "lens_music_prompt_overlay_v1",
@@ -197,6 +243,7 @@ def build_overlay(
         "ema_alpha": float(ema_alpha),
         "style": style,
         "smoke_eval_state": smoke_state,
+        "gematria_seed_trace": trace_audit,
         "hormone_like_state": hormone_current,
     }
     system_instructions = (
@@ -292,6 +339,18 @@ def main() -> int:
             "hormone_state": out_doc["global_state"]["hormone_like_state"]["state"],
             "stress_index_0_1": out_doc["global_state"]["hormone_like_state"]["stress_index_0_1"],
             "recovery_buffer_0_1": out_doc["global_state"]["hormone_like_state"]["recovery_buffer_0_1"],
+            "gematria_present": bool(
+                (out_doc["global_state"].get("gematria_seed_trace") or {}).get("present", False)
+            ),
+            "gematria_numeric_value": (out_doc["global_state"].get("gematria_seed_trace") or {}).get(
+                "numeric_value"
+            ),
+            "gematria_applied_ema_alpha_multiplier": (
+                out_doc["global_state"].get("gematria_seed_trace") or {}
+            ).get("applied_ema_alpha_multiplier"),
+            "gematria_effective_hormone_ema_alpha": (
+                out_doc["global_state"].get("gematria_seed_trace") or {}
+            ).get("effective_hormone_ema_alpha"),
         },
     )
     print(

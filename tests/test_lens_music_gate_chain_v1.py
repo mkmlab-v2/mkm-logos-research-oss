@@ -105,6 +105,11 @@ def test_chain_end_to_end_subprocess(tmp_path):
 
     chain = json.loads(chain_report.read_text(encoding="utf-8"))
     assert chain["schema"] == "lens_music_gate_chain_v1"
+    gt = chain["gematria_seed_trace"]
+    assert gt["schema"] == "lens_music_gematria_seed_trace_v1"
+    assert gt["present"] is True
+    assert gt["verse_or_token_ref"] == "taeeum"
+    assert gt.get("numeric_value") is None
     assert chain["symbolic_stage"]["decision"] == "PASS"
     assert chain["audio_gate"]["decision"] == "PASS"
     assert chain["melody_stage_m9"]["enabled"] is True

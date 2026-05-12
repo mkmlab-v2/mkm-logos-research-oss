@@ -43,6 +43,46 @@ def _resolve_outputs(doc: dict[str, Any]) -> dict[str, Any]:
     return ro
 
 
+def build_gematria_seed_trace_from_lens_doc(lens_doc: dict[str, Any]) -> dict[str, Any]:
+    """Auditable bridge from lens envelope to gate-chain / overlay (B-track, non-prophecy).
+
+    Downstream may apply a bounded deterministic multiplier to M31 hormone EMA alpha only;
+    tempo/BPM smoothing in the overlay uses a separate knob.
+    """
+    base: dict[str, Any] = {
+        "schema": "lens_music_gematria_seed_trace_v1",
+        "seed_source": "lens_music_gematria_v1",
+    }
+    if lens_doc.get("schema") != "lens_music_gematria_v1":
+        return {**base, "present": False, "reason": "envelope_schema_mismatch"}
+    sm = lens_doc.get("sasang_music_mapping_v1")
+    token = ""
+    numeric: int | None = None
+    if isinstance(sm, dict):
+        inp = sm.get("inputs")
+        if isinstance(inp, dict):
+            token = str(inp.get("sasang_primary") or "").strip()
+            g = inp.get("gematria_total_optional")
+            if g is not None:
+                try:
+                    numeric = int(g)
+                except (TypeError, ValueError):
+                    numeric = None
+    if not token:
+        return {**base, "present": False, "reason": "missing_sasang_primary_in_mapping_inputs"}
+    prov = lens_doc.get("provenance") if isinstance(lens_doc.get("provenance"), dict) else {}
+    return {
+        **base,
+        "present": True,
+        "verse_or_token_ref": token,
+        "numeric_value": numeric,
+        "lens_resolution": str(lens_doc.get("resolution") or ""),
+        "lens_ts_utc": str(lens_doc.get("ts_utc") or ""),
+        "lens_provenance": prov,
+        "hypothesis_tier": str(lens_doc.get("hypothesis_tier") or ""),
+    }
+
+
 def _clamp(v: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, v))
 
@@ -596,6 +636,7 @@ def main() -> int:
     chain: dict[str, Any] = {
         "schema": CHAIN_SCHEMA,
         "version": CHAIN_VERSION,
+        "gematria_seed_trace": build_gematria_seed_trace_from_lens_doc(lens_doc),
         "symbolic_stage": {
             "decision": sym_decision,
             "policy": args.symbolic_policy,

@@ -10,6 +10,7 @@
   Optional meta-layer gate after fusion: -MetaLayerEnvelopePath <json-or-md> (passed through to Invoke-TrackCMacroDailyFusion_v1.ps1).
   Optional: -SkipRoleRouterShadowAdvisory to omit build_role_router_s1_shadow_advisory_v1.py (default runs; non-gating).
   Optional: -SkipLensMusicHormoneTrend to omit M31 hormone trend + webhook before ops dashboard (default runs when dashboard runs).
+  Optional: -LensMusicPromotionGateSoftM31 forwards to Invoke (promotion gate --allow-soft-m31; cold-start hosts).
   After register: NOTE only if -UnregisterLegacyTasks; else one-line TIP (SSOT pointers).
 #>
 [CmdletBinding()]
@@ -29,6 +30,7 @@ param(
     [switch]$SkipExodusSourceFetch,
     [switch]$SkipRoleRouterShadowAdvisory,
     [switch]$SkipLensMusicHormoneTrend,
+    [switch]$LensMusicPromotionGateSoftM31,
 
     # Optional: forwarded to Invoke-TrackCMacroDailyFusion_v1.ps1 (see CONSTITUTION §1.3.1)
     [string]$MetaLayerEnvelopePath = "",
@@ -71,6 +73,7 @@ if ($SkipFailureAlert) { $argument += " -SkipFailureAlert" }
 if ($SkipExodusSourceFetch) { $argument += " -SkipExodusSourceFetch" }
 if ($SkipRoleRouterShadowAdvisory) { $argument += " -SkipRoleRouterShadowAdvisory" }
 if ($SkipLensMusicHormoneTrend) { $argument += " -SkipLensMusicHormoneTrend" }
+if ($LensMusicPromotionGateSoftM31) { $argument += " -LensMusicPromotionGateSoftM31" }
 $metaTrim = if ($null -eq $MetaLayerEnvelopePath) { "" } else { $MetaLayerEnvelopePath.Trim() }
 if ($metaTrim -ne "") {
     $argument += " -MetaLayerEnvelopePath `"$metaTrim`""
@@ -89,8 +92,8 @@ if ($DryRun) {
     Write-Output "would_run_daily_at=$RunAt"
     Write-Output ("would_prefer_fred={0}" -f [bool]$PreferFred)
     Write-Output "asset_scope=$AssetScope horizon=$Horizon"
-    Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3} skip_lens_music_hormone_trend={4}" -f @(
-            [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory, [bool]$SkipLensMusicHormoneTrend))
+    Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3} skip_lens_music_hormone_trend={4} lens_music_promotion_gate_soft_m31={5}" -f @(
+            [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory, [bool]$SkipLensMusicHormoneTrend, [bool]$LensMusicPromotionGateSoftM31))
     Write-Output ("meta_layer_envelope_path_set={0}" -f ($metaTrim -ne ""))
     if ($metaTrim -ne "") { Write-Output "meta_layer_envelope_path=$metaTrim" }
     Write-Output "working_directory=$repoRoot"
@@ -152,8 +155,8 @@ Write-Output "scheduled_task: REGISTERED ($TaskName)"
 Write-Output "run_at=$RunAt"
 Write-Output ("prefer_fred={0}" -f [bool]$PreferFred)
 Write-Output "asset_scope=$AssetScope horizon=$Horizon"
-Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3} skip_lens_music_hormone_trend={4}" -f @(
-        [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory, [bool]$SkipLensMusicHormoneTrend))
+Write-Output ("skip_gate_alert={0} skip_failure_alert={1} skip_exodus_source_fetch={2} skip_role_router_shadow_advisory={3} skip_lens_music_hormone_trend={4} lens_music_promotion_gate_soft_m31={5}" -f @(
+        [bool]$SkipGateAlert, [bool]$SkipFailureAlert, [bool]$SkipExodusSourceFetch, [bool]$SkipRoleRouterShadowAdvisory, [bool]$SkipLensMusicHormoneTrend, [bool]$LensMusicPromotionGateSoftM31))
 Write-Output ("meta_layer_envelope_path_set={0}" -f ($metaTrim -ne ""))
 if ($metaTrim -ne "") { Write-Output "meta_layer_envelope_path=$metaTrim" }
 Write-Output "script=$fusionScript"

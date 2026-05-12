@@ -1,0 +1,17 @@
+{
+  "schema": "lens_music_gematria_seed_trace_v1",
+  "seed_source": "lens_music_gematria_v1",
+  "present": true,
+  "verse_or_token_ref": "taeeum",
+  "numeric_value": 207,
+  "lens_resolution": "builtin_sasang_table_v1",
+  "lens_ts_utc": "2026-05-12T12:00:00Z",
+  "lens_provenance": {
+    "source": "builtin_table",
+    "experiment_id": "lens_music_gematria_cli"
+  },
+  "hypothesis_tier": "B",
+  "applied_ema_alpha_multiplier": 1.024,
+  "base_hormone_ema_alpha": 0.4,
+  "effective_hormone_ema_alpha": 0.4096
+}

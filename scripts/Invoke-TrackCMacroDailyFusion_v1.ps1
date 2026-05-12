@@ -17,7 +17,7 @@
 .NOTES
   Scheduled task: Register-TrackCMacroDailyFusionTask.ps1 (use -UnregisterLegacyTasks when replacing
   MKM-Fragility-MacroRisk-Daily + MacroRiskForwardDailyChain). Re-register with the same -TaskName to
-  change flags (e.g. -SkipExodusSourceFetch). Spot-check: Verify-TrackCMacroDailyFusionScheduledTask_v1.ps1.
+  change flags (e.g. -SkipExodusSourceFetch, -LensMusicPromotionGateSoftM31 for cold-start M31). Spot-check: Verify-TrackCMacroDailyFusionScheduledTask_v1.ps1.
 #>
 [CmdletBinding()]
 param(
@@ -37,6 +37,8 @@ param(
     # Skip M31 hormone trend + WATCH-only webhook before ops dashboard (default: run when dashboard runs).
     [switch]$SkipLensMusicHormoneTrend,
     [switch]$SkipLensMusicPromotionGate,
+    # Staging / cold-start: pass --allow-soft-m31 to promotion gate (see check_lens_music_symbolic_audio_promotion_gate_v1.py).
+    [switch]$LensMusicPromotionGateSoftM31,
     [switch]$AllowCommercialUnlockInFusion,
 
     # Role-router multiscenario opt vs lens S1 shadow gate (append-only log; non-gating).
@@ -255,9 +257,17 @@ if (-not $SkipOpsDashboard) {
             py $hormoneTrendWebhook
         }
         if (-not $SkipLensMusicPromotionGate) {
-            Invoke-FusionStep -Name "check_lens_music_symbolic_audio_promotion_gate_v1.py (hard-lock)" -Action {
+            $gateLabel = if ($LensMusicPromotionGateSoftM31) {
+                "check_lens_music_symbolic_audio_promotion_gate_v1.py (m31-profile=soft)"
+            } else {
+                "check_lens_music_symbolic_audio_promotion_gate_v1.py (m31-profile=strict)"
+            }
+            Invoke-FusionStep -Name $gateLabel -Action {
                 Set-Location -LiteralPath $repoRoot
                 $gateArgs = @($lensMusicPromotionGate)
+                if ($LensMusicPromotionGateSoftM31) {
+                    $gateArgs += "--allow-soft-m31"
+                }
                 if ($AllowCommercialUnlockInFusion) {
                     $gateArgs += "--allow-commercial-unlock"
                 }
