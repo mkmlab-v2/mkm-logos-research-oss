@@ -54,3 +54,9 @@ def test_trackc_dashboard_includes_lens_music_governance_fields():
     assert "samples_in_window" in wh
     assert "sent_rate" in wh
     assert "top_skip_reason" in wh
+    tail = (doc.get("trackc") or {}).get("governance_agent_decisions_tail") or {}
+    assert tail.get("source_rel") == "reports/agent_decisions_log.jsonl"
+    assert "path_exists" in tail
+    assert "tail_line_budget" in tail
+    assert "entries" in tail
+    assert isinstance(tail.get("entries"), list)

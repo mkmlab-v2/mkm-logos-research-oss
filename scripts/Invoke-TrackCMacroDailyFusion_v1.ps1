@@ -82,8 +82,14 @@ $roleRouterS1ShadowAdvisory = Join-Path $PSScriptRoot "build_role_router_s1_shad
 $hormoneTrend = Join-Path $PSScriptRoot "build_lens_music_hormone_trend_v1.py"
 $hormoneTrendWebhook = Join-Path $PSScriptRoot "dispatch_lens_music_hormone_trend_webhook_v1.py"
 $lensMusicPromotionGate = Join-Path $PSScriptRoot "check_lens_music_symbolic_audio_promotion_gate_v1.py"
+$lensMusicPromptPocThresholdSweep = Join-Path $PSScriptRoot "sweep_lens_music_prompt_poc_thresholds_v1.py"
+$lensMusicPromptPocThresholdApply = Join-Path $PSScriptRoot "apply_lens_music_prompt_poc_threshold_recommendation_v1.py"
+$lensMusicPromptPocThresholdDrift = Join-Path $PSScriptRoot "check_lens_music_prompt_poc_threshold_recommendation_drift_v1.py"
+$lensMusicPromptPocThresholdDriftWebhook = Join-Path $PSScriptRoot "dispatch_lens_music_prompt_poc_threshold_drift_webhook_v1.py"
 $lensMusicPromptPocThresholdPolicy = Join-Path $PSScriptRoot "build_lens_music_prompt_poc_threshold_policy_v1.py"
 $opsDashboard = Join-Path $PSScriptRoot "build_mkm_trackc_ops_dashboard_v1.py"
+$approvalTicketPreflight = Join-Path $PSScriptRoot "check_mkm_approval_ticket_preflight_v1.py"
+$approvalTicketBump = Join-Path $PSScriptRoot "bump_mkm_approval_ticket_run_count_v1.py"
 
 $required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck, $logosS1ShadowReviewPacket)
 if (-not $SkipRoleRouterShadowAdvisory) {
@@ -94,10 +100,16 @@ if (-not $SkipOpsDashboard) {
     if (-not $SkipLensMusicHormoneTrend) {
         $required += $hormoneTrend
         $required += $hormoneTrendWebhook
+        $required += $lensMusicPromptPocThresholdSweep
+        $required += $lensMusicPromptPocThresholdApply
+        $required += $lensMusicPromptPocThresholdDrift
+        $required += $lensMusicPromptPocThresholdDriftWebhook
         $required += $lensMusicPromptPocThresholdPolicy
         if (-not $SkipLensMusicPromotionGate) {
             $required += $lensMusicPromotionGate
         }
+        $required += $approvalTicketPreflight
+        $required += $approvalTicketBump
     }
 }
 foreach ($p in $required) {
@@ -225,7 +237,15 @@ else {
 
 # 7) Lens music M31 hormone trend + optional WATCH webhook (before ops dashboard reads those artifacts)
 if (-not $SkipOpsDashboard) {
+    $ticketReqFusion = $env:MKM_APPROVAL_TICKET_REQUIRED
+    $ticketGateFusion = ($ticketReqFusion -eq "1" -or $ticketReqFusion -ieq "true")
     if (-not $SkipLensMusicHormoneTrend) {
+        if ($ticketGateFusion) {
+            Invoke-FusionStep -Name "check_mkm_approval_ticket_preflight_v1.py (trackc_macro_daily_fusion_lens_music_threshold)" -Action {
+                Set-Location -LiteralPath $repoRoot
+                py $approvalTicketPreflight --execution-tag trackc_macro_daily_fusion_lens_music_threshold
+            }
+        }
         Invoke-FusionStep -Name "build_lens_music_hormone_trend_v1.py" -Action {
             Set-Location -LiteralPath $repoRoot
             py $hormoneTrend
@@ -249,7 +269,17 @@ if (-not $SkipOpsDashboard) {
         }
         Invoke-FusionStep -Name "build_lens_music_prompt_poc_threshold_policy_v1.py" -Action {
             Set-Location -LiteralPath $repoRoot
+            py $lensMusicPromptPocThresholdSweep
+            py $lensMusicPromptPocThresholdApply
+            py $lensMusicPromptPocThresholdDrift
+            py $lensMusicPromptPocThresholdDriftWebhook
             py $lensMusicPromptPocThresholdPolicy
+        }
+        if ($ticketGateFusion) {
+            Invoke-FusionStep -Name "bump_mkm_approval_ticket_run_count_v1.py (lens-music fusion)" -Action {
+                Set-Location -LiteralPath $repoRoot
+                py $approvalTicketBump
+            }
         }
     }
     else {

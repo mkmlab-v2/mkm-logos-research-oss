@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 
 def _utc_now() -> str:
@@ -83,6 +84,61 @@ def _forward_pipeline_health(
     }
 
 
+def _tail_agent_decisions_jsonl(path: Path, *, line_tail_budget: int) -> Dict[str, Any]:
+    """Last N non-empty lines from append-only agent decisions log (compact fields for dashboard)."""
+    rel = "reports/agent_decisions_log.jsonl"
+    base: Dict[str, Any] = {
+        "source_rel": rel,
+        "path_exists": path.is_file(),
+        "tail_line_budget": max(0, int(line_tail_budget)),
+        "raw_nonempty_lines_in_tail": 0,
+        "parsed_ok": 0,
+        "parse_errors_in_tail": 0,
+        "entries": [],
+    }
+    if not path.is_file() or base["tail_line_budget"] <= 0:
+        return base
+    try:
+        text = path.read_text(encoding="utf-8-sig", errors="replace")
+    except OSError:
+        base["read_error"] = True
+        return base
+    nonempty = [ln for ln in text.splitlines() if ln.strip()]
+    tail = nonempty[-base["tail_line_budget"] :]
+    base["raw_nonempty_lines_in_tail"] = len(tail)
+    entries: List[Dict[str, Any]] = []
+    parse_err = 0
+    for line in tail:
+        try:
+            obj = json.loads(line)
+        except json.JSONDecodeError:
+            parse_err += 1
+            continue
+        if not isinstance(obj, dict):
+            parse_err += 1
+            continue
+        ev = obj.get("evidence_path")
+        ev_s = None
+        if ev is not None:
+            ev_s = str(ev).replace("\\", "/")
+            if len(ev_s) > 160:
+                ev_s = ev_s[:157] + "..."
+        entries.append(
+            {
+                "timestamp": obj.get("timestamp"),
+                "mission_id": obj.get("mission_id"),
+                "stage": obj.get("stage"),
+                "decision": obj.get("decision"),
+                "evidence_path": ev_s,
+                "actor": obj.get("actor"),
+            }
+        )
+    base["parse_errors_in_tail"] = parse_err
+    base["parsed_ok"] = len(entries)
+    base["entries"] = entries
+    return base
+
+
 def main() -> int:
     root = Path("C:/workspace")
     art = root / "docs" / "final" / "artifacts"
@@ -144,6 +200,14 @@ def main() -> int:
         weekly=forward_weekly,
         now=now,
     )
+    try:
+        _tail_n = int(os.environ.get("MKM_AGENT_DECISIONS_LOG_TAIL_N", "24"))
+    except ValueError:
+        _tail_n = 24
+    governance_agent_tail = _tail_agent_decisions_jsonl(
+        root / "reports" / "agent_decisions_log.jsonl",
+        line_tail_budget=_tail_n,
+    )
 
     rr_row = role_router_s1_shadow.get("last_row") if isinstance(role_router_s1_shadow.get("last_row"), dict) else {}
     rr_metrics = rr_row.get("metrics") if isinstance(rr_row.get("metrics"), dict) else {}
@@ -189,6 +253,7 @@ def main() -> int:
                 "days_with_warn": ((fallback_watch.get("summary") or {}).get("days_with_warn")),
             },
             "forward_pipeline_health": forward_health,
+            "governance_agent_decisions_tail": governance_agent_tail,
             "lens_music_audition_governance": {
                 "state": _status_or_default(lens_music_audition_governance.get("state"), "UNKNOWN"),
                 "warn_ratio": lens_music_audition_governance.get("warn_ratio"),
@@ -397,6 +462,7 @@ def main() -> int:
             "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
             "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
             "forward_weekly_report": "docs/final/artifacts/macro_risk_forward_weekly_report_latest.json",
+            "agent_decisions_log": "reports/agent_decisions_log.jsonl",
             "lens_music_audition_governance_status": "docs/final/artifacts/lens_music_audition_governance_status_latest.json",
             "lens_music_prompt_brake_history_summary": "docs/final/artifacts/lens_music_prompt_brake_history_summary_latest.json",
             "lens_music_prompt_brake_trend": "docs/final/artifacts/lens_music_prompt_brake_trend_latest.json",
@@ -460,6 +526,23 @@ def main() -> int:
         f"- forward_pipeline_reason_codes: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('reason_codes')}`",
         f"- forward_pipeline_rows_total: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_total')}`",
         f"- forward_pipeline_rows_in_window_7d: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_in_window_7d')}`",
+        "",
+        "## Governance audit tail (`reports/agent_decisions_log.jsonl`)",
+        f"- path_exists: `{(dashboard['trackc'].get('governance_agent_decisions_tail') or {}).get('path_exists')}`",
+        f"- tail_line_budget: `{(dashboard['trackc'].get('governance_agent_decisions_tail') or {}).get('tail_line_budget')}`",
+        f"- parsed_ok: `{(dashboard['trackc'].get('governance_agent_decisions_tail') or {}).get('parsed_ok')}`",
+        f"- parse_errors_in_tail: `{(dashboard['trackc'].get('governance_agent_decisions_tail') or {}).get('parse_errors_in_tail')}`",
+    ]
+    _gtail = dashboard["trackc"].get("governance_agent_decisions_tail") or {}
+    _gentries = list(_gtail.get("entries") or [])
+    for row in _gentries[-8:]:
+        ts = row.get("timestamp")
+        mid = row.get("mission_id")
+        dec = row.get("decision")
+        stg = row.get("stage")
+        md.append(f"- `{ts}` | `{mid}` | `{stg}` | `{dec}`")
+    md.extend(
+        [
         f"- lens_music_audition_governance_state: `{(dashboard['trackc']['lens_music_audition_governance'] or {}).get('state')}`",
         f"- lens_music_audition_warn_ratio: `{(dashboard['trackc']['lens_music_audition_governance'] or {}).get('warn_ratio')}`",
         f"- lens_music_audition_warn_ratio_threshold: `{(dashboard['trackc']['lens_music_audition_governance'] or {}).get('warn_ratio_threshold')}`",
@@ -614,7 +697,9 @@ def main() -> int:
         "- `docs/final/artifacts/lens_music_prompt_poc_runbook_latest.json`",
         "- `docs/final/artifacts/lens_music_prompt_poc_runbook_webhook_dispatch_latest.json`",
         "- `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`",
-    ]
+        "- `reports/agent_decisions_log.jsonl`",
+        ]
+    )
     out_md.write_text("\n".join(md) + "\n", encoding="utf-8")
 
     print(f"dashboard json written: {out_json}")
