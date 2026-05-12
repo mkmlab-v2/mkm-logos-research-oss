@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -107,6 +109,46 @@ def _increment_run_count(state_path: Path, ticket_id: str) -> int:
     return n
 
 
+def _append_audit(
+    repo: Path,
+    *,
+    execution_tag: str,
+    decision: str,
+    reasons: list[str],
+    ticket_id: str | None,
+    out_path: Path,
+    skip: bool,
+) -> None:
+    if skip:
+        return
+    audit_py = repo / "scripts" / "mkm_append_governance_audit_log_v1.py"
+    if not audit_py.is_file():
+        return
+    dec = "approval_ticket_preflight_v1_go" if decision == "GO" else "approval_ticket_preflight_v1_no_go"
+    note_obj = {"execution_tag": execution_tag, "ticket_id": ticket_id, "reasons": reasons[:12]}
+    note = json.dumps(note_obj, ensure_ascii=False)[:3800]
+    risk = "low" if decision == "GO" else "elevated"
+    cmd = [
+        sys.executable,
+        str(audit_py),
+        "--mission-id",
+        "mkm_approval_ticket_v1",
+        "--stage",
+        "preflight",
+        "--decision",
+        dec,
+        "--evidence-path",
+        str(out_path).replace("\\", "/"),
+        "--actor",
+        "check_mkm_approval_ticket_preflight_v1.py",
+        "--note",
+        note,
+        "--risk-level",
+        risk,
+    ]
+    subprocess.run(cmd, cwd=str(repo), capture_output=True, text=True, check=False)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--ticket-json", type=Path, default=DEFAULT_TICKET)
@@ -119,6 +161,11 @@ def main() -> int:
         help="Runner-declared scope tag (must match scope_allow).",
     )
     ap.add_argument("--runs-state-json", type=Path, default=DEFAULT_RUN_COUNTS)
+    ap.add_argument(
+        "--skip-audit-log",
+        action="store_true",
+        help="Do not append to reports/agent_decisions_log.jsonl (tests / CI).",
+    )
     args = ap.parse_args()
 
     ticket = _read_json(args.ticket_json)
@@ -201,6 +248,16 @@ def main() -> int:
     args.out.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     print(json.dumps({"ok": decision == "GO", "decision": decision, "out": str(args.out.resolve())}, ensure_ascii=False))
+
+    _append_audit(
+        ROOT,
+        execution_tag=tag,
+        decision=decision,
+        reasons=reasons,
+        ticket_id=str(ticket.get("ticket_id") or "") or None,
+        out_path=args.out,
+        skip=bool(args.skip_audit_log),
+    )
 
     if decision != "GO":
         return 2
