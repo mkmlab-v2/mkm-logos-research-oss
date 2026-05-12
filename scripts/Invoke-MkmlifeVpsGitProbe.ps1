@@ -5,25 +5,29 @@
 .DESCRIPTION
   Windows PowerShell에서 흔한 실수를 막는다:
   - VPS_HOST에 예시 문자열·플레이스홀더가 들어간 경우
-  - VPS_SSH_KEY 비어 있음 → ssh가 `Identity file @` 같은 인자로 깨지는 경우
+  - VPS_SSH_KEY / MKM_VPS_SSH_KEY_PATH 비어 있음 → ssh가 `Identity file @` 같은 인자로 깨지는 경우
   - 큰따옴표 안에 원격 `&&`를 넣어 호스트명이 깨지는 경우
 
   원격 명령은 항상 단일 인자(작은따옴표 문자열)로 전달한다.
 
 .PARAMETER VpsHostname
-  VPS 호스트(IP 또는 DNS). 미지정 시 환경변수 VPS_HOST. (이름을 Host로 두면 PowerShell 자동 변수 $Host와 충돌한다.)
+  VPS 호스트(IP 또는 DNS). 미지정 시 VPS_HOST, 없으면 MKM_VPS_HOST (Invoke-VpsOpsSmoke_v1.ps1 과 동일 규약).
 
 .PARAMETER SshUser
-  SSH 사용자. 미지정 시 환경변수 VPS_USER (필수).
+  SSH 사용자. 미지정 시 VPS_USER, 없으면 MKM_VPS_USER (필수).
 
 .PARAMETER IdentityPath
-  개인키 경로. 미지정 시 VPS_SSH_KEY, 없으면 F:\workspace\.ssh\hostinger_mkmlife (SSOT 기본).
+  개인키 경로. 미지정 시 VPS_SSH_KEY, MKM_VPS_SSH_KEY_PATH, SSH_KEY_PATH 순, 없으면 SSOT 기본 경로 후보(존재하는 첫 파일).
 
 .PARAMETER RemoteRepoPath
   원격에서 cd할 경로 (기본 /var/www/mkmlife_runtime/mkm-life).
 
 .EXAMPLE
   $env:VPS_HOST = '203.0.113.10'; $env:VPS_USER = 'root'
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmlifeVpsGitProbe.ps1
+
+.EXAMPLE
+  $env:MKM_VPS_HOST = '203.0.113.10'; $env:MKM_VPS_USER = 'ubuntu'; $env:MKM_VPS_SSH_KEY_PATH = 'C:\Users\YOU\.ssh\id_ed25519_mkm'
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmlifeVpsGitProbe.ps1
 #>
 param(
@@ -59,12 +63,46 @@ function Test-PlaceholderHost([string]$h) {
     return $false
 }
 
-$vpsHost = if ($PSBoundParameters.ContainsKey("VpsHostname") -and -not [string]::IsNullOrWhiteSpace($VpsHostname)) { $VpsHostname } else { $env:VPS_HOST }
-$vpsUser = if ($PSBoundParameters.ContainsKey("SshUser") -and -not [string]::IsNullOrWhiteSpace($SshUser)) { $SshUser } else { $env:VPS_USER }
+$workspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
+
+$vpsHost = if ($PSBoundParameters.ContainsKey("VpsHostname") -and -not [string]::IsNullOrWhiteSpace($VpsHostname)) {
+    $VpsHostname
+}
+else {
+    $h = $env:VPS_HOST
+    if ([string]::IsNullOrWhiteSpace($h)) { $h = $env:MKM_VPS_HOST }
+    $h
+}
+
+$vpsUser = if ($PSBoundParameters.ContainsKey("SshUser") -and -not [string]::IsNullOrWhiteSpace($SshUser)) {
+    $SshUser
+}
+else {
+    $u = $env:VPS_USER
+    if ([string]::IsNullOrWhiteSpace($u)) { $u = $env:MKM_VPS_USER }
+    $u
+}
 
 $key = $IdentityPath
 if ([string]::IsNullOrWhiteSpace($key)) {
-    $key = $env:VPS_SSH_KEY
+    foreach ($p in @($env:VPS_SSH_KEY, $env:MKM_VPS_SSH_KEY_PATH, $env:SSH_KEY_PATH)) {
+        if (-not [string]::IsNullOrWhiteSpace($p)) {
+            $key = $p
+            break
+        }
+    }
+}
+if ([string]::IsNullOrWhiteSpace($key)) {
+    foreach ($c in @(
+            "F:\workspace\.ssh\hostinger_mkmlife",
+            (Join-Path $workspaceRoot '.ssh\hostinger_mkmlife'),
+            (Join-Path $env:USERPROFILE '.ssh\hostinger_mkmlife')
+        )) {
+        if (Test-Path -LiteralPath $c) {
+            $key = $c
+            break
+        }
+    }
 }
 if ([string]::IsNullOrWhiteSpace($key)) {
     $key = "F:\workspace\.ssh\hostinger_mkmlife"
@@ -72,19 +110,19 @@ if ([string]::IsNullOrWhiteSpace($key)) {
 
 if (Test-PlaceholderHost $vpsHost) {
     throw @"
-VPS_HOST is missing or looks like a placeholder ('$vpsHost').
+VPS host is missing or looks like a placeholder ('$vpsHost').
 Set a real public IP or SSH hostname (Hostinger dashboard / your ~/.ssh/config / deploy script), e.g.:
-  `$env:VPS_HOST = '203.0.113.10'
+  `$env:VPS_HOST = '203.0.113.10'   or   `$env:MKM_VPS_HOST = '203.0.113.10'
 See docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md (section 2.2)
 "@
 }
 
 if ([string]::IsNullOrWhiteSpace($vpsUser)) {
-    throw "VPS_USER is not set. Example: `$env:VPS_USER = 'root'"
+    throw "SSH user is not set. Set `$env:VPS_USER or `$env:MKM_VPS_USER (e.g. 'root' or 'ubuntu')."
 }
 
 if (-not (Test-Path -LiteralPath $key)) {
-    throw "SSH key file not found: $key`nSet VPS_SSH_KEY to your key path or place the default key (SSOT: F:\workspace\.ssh\hostinger_mkmlife)."
+    throw "SSH key file not found: $key`nSet VPS_SSH_KEY, MKM_VPS_SSH_KEY_PATH, or SSH_KEY_PATH; or place hostinger_mkmlife under workspace .ssh or USERPROFILE\.ssh\ (see Invoke-VpsOpsSmoke_v1.ps1)."
 }
 
 $ssh = Get-Command ssh.exe -ErrorAction SilentlyContinue
