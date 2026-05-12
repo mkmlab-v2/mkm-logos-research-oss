@@ -71,6 +71,7 @@ NotebookLM·지휘부 브리핑을 레포 Fact-Lock과 맞출 때 **아래를 �
 ### MCP `notebooklm-mcp` 인증 — 웹 로그인과 자동 동기화되지 않음 (2026-05)
 
 - **원인:** Cursor 내장 브라우저·일반 Chrome에서 NotebookLM에 로그인한 것과, MCP 서버가 띄우는 **자동화 Chrome**은 **서로 다른 Chrome 프로필**이다(레포는 `node`+고정 `dist/index.js`·`MKM_NOTEBOOKLM_MCP_PINNED_VERSION` 사용, `npx … @latest` 비권장). Windows에서는 통상 `%APPDATA%\notebooklm-mcp\chrome_profile\` 또는 LocalData 경로의 **전용 프로필**에만 쿠키가 저장된다. 그래서 “이미 브라우저에서 로그인됨”이어도 **`get_health`의 `authenticated`는 false일 수 있다** — 오류가 아니라 **격리 설계**다.
+- **조직 기본 계정(고정):** NotebookLM·MCP 자동화에는 **`admin@no1kmedi.com`(Google Workspace)** 만 사용한다. 다른 Google 계정이 보이면 MCP에서 **`re_auth`**(계정 전환 권장) 또는 **`setup_auth`**로 전용 프로필에 `admin@no1kmedi.com`으로 재로그인한다.
 - **완화(레포):** `.cursor/mcp.json`의 `notebooklm` 항목에 **`HEADLESS`=`false`** 를 두어 로그인 창이 보이게 한다(패키지 기본은 headless). MCP 프로세스를 **Reload Window / Cursor 재시작** 후에만 환경 변수가 반영된다.
 - **1회 설정:** MCP 도구 **`setup_auth`** 로 위 전용 프로필에 한 번 로그인하면 이후 같은 프로필을 재사용한다. 계정 전환·세션 꼬임 시 패키지 README의 **`re_auth`** / **`cleanup_data`** 절차를 따른다(`NOTEBOOKLM_PROFILE=full`일 때 정리 도구가 노출되는 경우가 있음).
 - **Fact-Lock:** NotebookLM 웹 UI 브리핑은 **참고**이며, 구현·게이트 확정은 여전히 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트·아티팩트만 SSOT다.
