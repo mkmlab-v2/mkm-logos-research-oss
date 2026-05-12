@@ -1,0 +1,304 @@
+{
+  "schema": "mkm_ops_ring_classification_v1",
+  "version": 1,
+  "title_ko": "MKM 운영 링 A/B/C 한장표 (SSOT)",
+  "fact_lock_note": "구현 여부·exit code·필수 게이트 판정은 docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md 및 호출 가능 스크립트·pytest가 우선이다. 본 파일은 운영 도메인을 Ring A(관측), Ring B(저위험 자동), Ring C(인간 게이트)로 묶는 선언적 매핑이며 docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json 의 privilege_model(observe / automate_low_risk / human_gate)과 정합한다.",
+  "aligns_with": {
+    "amsaeng_eosa_governance_scope_v1": "docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json",
+    "constitution": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+    "titan": "루트 .cursorrules (고위험 승인·Command-by-Negation)"
+  },
+  "webhook_umbrella_env_keys": [
+    "OPS_ALARM_WEBHOOK_URL"
+  ],
+  "rings": [
+    {
+      "ring": "A",
+      "tier": "observe",
+      "definition_ko": "무인 관측·읽기·헬스·JSON 산출. 파괴적 변경·실거래·비밀 값 읽기 없음. 이상은 스크립트별 webhook env 또는 OPS 우산으로 보고.",
+      "domains": [
+        {
+          "id": "constitution_path_gate",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+          ],
+          "primary_scripts": [
+            "scripts/verify_p0_constitution_gate_paths.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "P0 필수 경로 존재 확인. 실패 시 exit 비0 — CI 및 로컬 사전 점검."
+        },
+        {
+          "id": "workspace_health_bundle",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+          ],
+          "primary_scripts": [
+            "scripts/run_workspace_automation_health.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "넓은 번들·시간 증가. 주간·수동 권장. 플래그는 CONSTITUTION 및 AGENTS.md 로컬 검증 절 참조."
+        },
+        {
+          "id": "safe_ops_surface",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            "reports/safe_ops_surface_check_latest.json"
+          ],
+          "primary_scripts": [
+            "scripts/Invoke-SafeOpsSurfaceCheck.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "daemon/risk/ops 신선도 등. 암행어사 번들과 순환 방지로 TradingAutomationHealth 전체는 번들 정책에 따름."
+        },
+        {
+          "id": "mcp_notebooklm_hygiene",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            "reports/amsaeng_eosa_mcp_hygiene_cycle_latest.json",
+            "docs/NotebookLM_sources_manifest.md"
+          ],
+          "primary_scripts": [
+            "scripts/Invoke-McpHygieneProbe.ps1",
+            "scripts/check_notebooklm_mcp_prereqs.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "로컬 prereq·좀비 정리. Cursor 채팅 MCP 주입 여부와 별개."
+        },
+        {
+          "id": "secrets_repo_hygiene",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            ".env.example"
+          ],
+          "primary_scripts": [
+            "scripts/Verify-MonorepoSecretHygiene.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": ".env 추적·gitignore 검사. 비밀 값은 읽지 않음."
+        },
+        {
+          "id": "no1kmedi_internal_api_contract",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+          ],
+          "primary_scripts": [
+            "scripts/check_no1kmedi_internal_api_security_contract_v1.py",
+            "scripts/Invoke-No1kmediInternalApiSecurityProbe_v1.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "정적 계약 검사. 선택 DPAPI 프로브는 AMSAENG_NO1KMEDI_SECURITY_AGENT_PROBE=1 일 때만."
+        },
+        {
+          "id": "artifact_staleness_probe",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            "reports/amsaeng_eosa_staleness_probe_latest.json"
+          ],
+          "primary_scripts": [
+            "scripts/check_amsaeng_eosa_artifact_staleness_v1.py"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "번들 밖 신선도. 임계: AMSENG_HEARTBEAT_MAX_AGE_MINUTES / AMSENG_BUNDLE_CYCLE_MAX_AGE_MINUTES."
+        },
+        {
+          "id": "git_workspace_sanity",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            "AGENTS.md"
+          ],
+          "primary_scripts": [
+            "scripts/Verify-GitWorkspaceSanity.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "exclude·origin 등 조기 점검. 헬스 번들에 -IncludeGitSanity 로 선택 포함 가능."
+        },
+        {
+          "id": "athena_execution_governance_smoke",
+          "ring": "A",
+          "tier": "observe",
+          "ssot_paths": [
+            "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+          ],
+          "primary_scripts": [
+            "scripts/check_athena_execution_governance_smoke_v1.py",
+            "scripts/athena_doctor_v1.py"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [
+            "ATHENA_ECC_AUDIT_WEBHOOK_URL"
+          ],
+          "notes_ko": "§28 스모크·doctor. 실거래 자식 실행 아님. ECC 웹훅은 선택."
+        }
+      ]
+    },
+    {
+      "ring": "B",
+      "tier": "automate_low_risk",
+      "definition_ko": "등록된 스크립트·스케줄 한정. 로컬 또는 SoftFail SSH. 파괴적 삭제·실거래·비밀 평문 노출 없음.",
+      "domains": [
+        {
+          "id": "amsaeng_monitoring_bundle",
+          "ring": "B",
+          "tier": "automate_low_risk",
+          "ssot_paths": [
+            "reports/amsaeng_eosa_bundle_cycle_latest.json",
+            "reports/amsaeng_eosa_monitoring_heartbeat_latest.json",
+            "reports/amsaeng_eosa_ops_snapshot_latest.json"
+          ],
+          "primary_scripts": [
+            "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"
+          ],
+          "schedule_registration_script": "scripts/Register-AmsaengEosaMonitoringBundleTask.ps1",
+          "webhook_env_keys": [],
+          "notes_ko": "GovernanceSoftFail 등 번들 정책은 스크립트 헬프 참조. 실패 시 governance_alert_log_jsonl 경로는 amseng 스코프 JSON 참조."
+        },
+        {
+          "id": "amsaeng_governance_cycle",
+          "ring": "B",
+          "tier": "automate_low_risk",
+          "ssot_paths": [
+            "docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json"
+          ],
+          "primary_scripts": [
+            "scripts/Invoke-AmsaengEosaGovernanceCycle.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "SafeOps + MCP 위생 + 레포 비밀 위생 + no1kmedi 프로브(조건) 단일 주기."
+        },
+        {
+          "id": "vps_ops_smoke",
+          "ring": "B",
+          "tier": "automate_low_risk",
+          "ssot_paths": [
+            "reports/vps_ops_smoke_latest.json",
+            "reports/live_sync_pull_latest.json"
+          ],
+          "primary_scripts": [
+            "scripts/Invoke-VpsOpsSmoke_v1.ps1",
+            "scripts/Invoke-LiveSyncHeartbeatPull.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "BatchMode SSH. Deploy-LiveSyncHeartbeatToVps.ps1 는 인프라 변경이므로 기본은 수동 실행 권장(암행어사 스코프 notes와 동일)."
+        },
+        {
+          "id": "fact_lock_bundle",
+          "ring": "B",
+          "tier": "automate_low_risk",
+          "ssot_paths": [
+            "docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md"
+          ],
+          "primary_scripts": [
+            "scripts/run_fact_lock_bundle.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "시간·부하 큼. 스케줄에 넣을 경우 플래그로 범위 제한(Skip* 스위치). 주간·야간 슬롯 권장."
+        }
+      ]
+    },
+    {
+      "ring": "C",
+      "tier": "human_gate",
+      "definition_ko": "실거래·상용 배포·파괴적 삭제·비가역 스키마·원격 강제 푸시·비밀 회전. 스크립트는 지원하나 실행·승인은 지휘관.",
+      "domains": [
+        {
+          "id": "execution_governance_ecc",
+          "ring": "C",
+          "tier": "human_gate",
+          "ssot_paths": [
+            "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+            "docs/final/artifacts/ecc_execution_clearance_latest.json",
+            "reports/athena_ecc_audit.jsonl"
+          ],
+          "primary_scripts": [
+            "scripts/athena_run_v1.py",
+            "scripts/athena_ecc_logs_v1.py"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [
+            "ATHENA_ECC_AUDIT_WEBHOOK_URL"
+          ],
+          "notes_ko": "동일 호스트에서 athena_run_v1 없이 자식을 직접 실행하면 ECC를 경유하지 않음(헌법 §28 명시 한계)."
+        },
+        {
+          "id": "remote_publication_github",
+          "ring": "C",
+          "tier": "human_gate",
+          "ssot_paths": [
+            "AGENTS.md"
+          ],
+          "primary_scripts": [
+            "scripts/Push-GitHub-Explicit.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "예외 공개 푸시. internal/gitea 기본 정책과 병행."
+        },
+        {
+          "id": "live_trading_and_vps_deploy",
+          "ring": "C",
+          "tier": "human_gate",
+          "ssot_paths": [
+            "docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",
+            "projects/bitcoin-trading/AGENTS.md"
+          ],
+          "primary_scripts": [
+            "projects/bitcoin-trading/start_live_trading.py"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "실주문 ON/OFF·PM2 재시작·VPS 반영은 지휘관 런북. 레포는 로컬 편집 후 pull."
+        },
+        {
+          "id": "disk_cleanup_destructive",
+          "ring": "C",
+          "tier": "human_gate",
+          "ssot_paths": [
+            "docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json"
+          ],
+          "primary_scripts": [
+            "scripts/Invoke-CWorkspaceSafeCleanup.ps1",
+            "scripts/Invoke-WorkspaceDeepCleanup.ps1"
+          ],
+          "schedule_registration_script": null,
+          "webhook_env_keys": [],
+          "notes_ko": "암행어사 스코프에 도메인으로 선언됨. 현재 워크스페이스에 해당 .ps1 파일이 없을 수 있음 — 구현 시 경로 정합·P0 갱신 필요. 자동 암행어사 기본 루프에서 제외."
+        }
+      ]
+    }
+  ],
+  "integration_entrypoints": [
+    "scripts/Invoke-AmsaengEosaGovernanceCycle.ps1",
+    "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1",
+    "scripts/run_workspace_automation_health.ps1",
+    "scripts/verify_p0_constitution_gate_paths.ps1"
+  ],
+  "todo_domains_ko": [
+    "Windows 작업 스케줄 등록 스크립트(Register-*.ps1)와 Ring B 도메인 1:1 행 추가",
+    "Track C 일일 융합(Invoke-TrackCMacroDailyFusion_v1.ps1)을 Ring B 관측 산출 위주 vs Ring C 승인 필요 단계로 분리",
+    "bitcoin-trading Phase1 일일 체인(bootstrap_ops_phase1_daily.ps1 등)과 본 표 정렬",
+    "Invoke-CWorkspaceSafeCleanup.ps1 / Invoke-WorkspaceDeepCleanup.ps1 실제 추가 또는 amseng 스코프에서 경로 정리"
+  ]
+}

@@ -3,6 +3,7 @@
   "title_ko": "암행어사 AI 감찰 범위·권한 경계 (선언적 매핑)",
   "version": 1,
   "fact_lock_note": "실행 경로·exit code는 호출 가능 스크립트가 SSOT. 본 파일은 역할 매핑·인간 게이트 표시용.",
+  "companion_ssot": "docs/final/artifacts/mkm_ops_ring_classification_v1.json",
   "privilege_model": {
     "observe": "읽기 전용 점검·리포트 JSON만 기록",
     "automate_low_risk": "로컬 스크립트·스케줄 등록(저위험)·SoftFail SSH 스모크",
