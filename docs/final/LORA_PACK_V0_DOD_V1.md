@@ -1,6 +1,6 @@
-# LoRA 1팩 v0 — Definition of Done (DoD) v1.4
+# LoRA 1팩 v0 — Definition of Done (DoD) v1.5
 
-**상태:** v1.4 — **§2.3** 프로파일(`myeongri_deterministic_lora_model_profiles_v1.json`)·`eval_myeongri_deterministic_lora_golden_fit_v1.py`·어댑터 SSOT `storage/adapters/myeongri_deterministic_lora_v0/`(레포 `models/**`는 gitignore)·pytest 추가. **bulk**·**N/K 전량 JSONL**은 기존과 같이 로컬 `data/training/...` 재생성(비추적).  
+**상태:** v1.5 — **§2.4** Pack 0-B 기계 대면 경로 카피 가드 회귀 `tests/test_myeongri_deterministic_lora_pack_copy_guardrails_v1.py`·`MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1`·`PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1` 정렬. v1.4 이하 Pack 0-B 기술 산출 동일.  
 **Fact-Lock:** 구현·경로·통과 여부는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·호출 가능 스크립트·`pytest` exit code·산출 JSON만 근거로 한다.
 
 ---
@@ -69,7 +69,7 @@
 
 ### 2.4 서술·대외 (Copy / risk)
 
-- [ ] 대외·내부 브리프에 **“뇌신경·장내미생물·호르몬 치료 효능”** 단정 없음 — `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md`·`PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` 정렬.
+- [x] Pack 0-B **기계 대면 경로**(스키마·prep·bulk·eval·프로파일·픽스처·어댑터 마커)에 **뇌신경·장내미생물·호르몬 치료 효능**류 **단정** 한글·영문 고위험 구절 미삽입 — `tests/test_myeongri_deterministic_lora_pack_copy_guardrails_v1.py` 회귀. 정책 SSOT: `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md`·`docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`. **대외 마케·UI 최종 문구**는 별도 법무 검토(본 테스트는 레포 내 Pack 0-B 산출물만 스캔).
 
 ---
 
@@ -80,7 +80,7 @@
 
 ---
 
-## 4. 다음 액션 (v1.4 이후)
+## 4. 다음 액션 (v1.5 이후)
 
 1. Architect: 실제 LoRA 학습 실행·가중치를 `storage/adapters/myeongri_deterministic_lora_v0/`에 두고(비추적)·프로파일 `train_default`로 재현 문서화.  
 2. Sentinel: 대용량 JSONL **Vault 미러** 여부만 정책 확정(레포 미포함 유지 시 매니페스트만 공유).  
@@ -92,9 +92,9 @@
 
 ```json
 {
-  "evidence_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §1.2.1·Pack 0-B 보강; docs/final/LORA_PACK_V0_DOD_V1.md; docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json; docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json; scripts/prep_myeongri_deterministic_lora_golden_v1.py; scripts/eval_myeongri_deterministic_lora_golden_fit_v1.py; storage/adapters/myeongri_deterministic_lora_v0/.gitkeep; tests/test_myeongri_deterministic_lora_golden_set_schema_v1.py; tests/test_eval_myeongri_deterministic_lora_golden_fit_v1.py",
+  "evidence_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §1.2.1·Pack 0-B 보강; docs/final/LORA_PACK_V0_DOD_V1.md; docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json; docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json; scripts/prep_myeongri_deterministic_lora_golden_v1.py; scripts/eval_myeongri_deterministic_lora_golden_fit_v1.py; storage/adapters/myeongri_deterministic_lora_v0/.gitkeep; tests/test_myeongri_deterministic_lora_golden_set_schema_v1.py; tests/test_eval_myeongri_deterministic_lora_golden_fit_v1.py; tests/test_myeongri_deterministic_lora_pack_copy_guardrails_v1.py; docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md",
   "validated_at": "2026-05-13",
   "confidence_level": "A",
-  "note": "N/K 전량 JSONL·실학습 가중치는 로컬/비추적; §2.3 스키마·프로파일·eval 회귀는 CI·P0에 포함."
+  "note": "N/K 전량 JSONL·실학습 가중치는 로컬/비추적; §2.3·§2.4 회귀는 CI·P0에 포함. 대외 카피는 법무 검토 전제."
 }
 ```
