@@ -1,0 +1,33 @@
+{
+  "schema": "philosophy_lane_rag_pilot_forbidden_substrings_v1",
+  "version": "1.0.0",
+  "substrings": [
+    "btcusdt",
+    "binance",
+    "주식",
+    "투자",
+    "매매",
+    "비트코인",
+    "선물",
+    "옵션",
+    "날씨",
+    "기상",
+    "진단",
+    "처방",
+    "약물",
+    "암 ",
+    "암이",
+    "수술",
+    "정치",
+    "선거",
+    "투표",
+    "stock",
+    "invest",
+    "etf",
+    "forex",
+    "weather forecast",
+    "diagnos",
+    "prescription",
+    "election"
+  ]
+}

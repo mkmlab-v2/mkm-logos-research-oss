@@ -40,6 +40,7 @@ catch {
 # 2026-05-02: 압축 주간 거버넌스 체인 러너 복구 (run_compression_weekly_governance_chain.ps1 + P0 경로).
 # 2026-05-02: 명리 독립 렌즈 → Thin JSONL 브리지 v1 (emit 스크립트·pytest; §3.6).
 # 2026-05-07: GraphRAG pilot query router v1 (Track B/K observation-only; script+schema+test).
+# 2026-05-12: Philosophy lane RAG pilot v1 (Track B; forbidden-substrings SSOT + CLI + pytest + Fact-Lock bundle 5c2).
 # 2026-05-09: Market Myeongni overlay — P0에 회귀 pytest 추가(스키마·러너·정책은 기존 블록과 동일).
 # 2026-05-09: Market Myeongni — CONTRACT 메타(MARKET_MYEONGNI_LENS_V1_CONTRACT.json) + contract path pytest (3중: 스키마·CONTRACT·회귀).
 # 2026-05-09: Global orchestrator + GO stability cycle + accelerated burn-in + conditional GO+ report v2
@@ -400,6 +401,10 @@ $required = @(
     "scripts\run_graphrag_pilot_router_v1.py",
     "docs\final\schemas\graphrag_pilot_router_v1.schema.json",
     "tests\test_run_graphrag_pilot_router_v1.py",
+    "scripts\philosophy_lane_rag_pilot_v1.py",
+    "scripts\run_philosophy_lane_rag_pilot_v1.ps1",
+    "docs\final\artifacts\schemas\philosophy_lane_rag_pilot_forbidden_substrings_v1.json",
+    "tests\test_philosophy_lane_rag_pilot_v1.py",
     "scripts\Invoke-LabVpsBtrackM31Smoke_v1.ps1",
     "scripts\vps_bitcoin_live_hygiene_reset_v1.sh",
     "scripts\vps_mkm_lab_hygiene_reset_v1.sh",
