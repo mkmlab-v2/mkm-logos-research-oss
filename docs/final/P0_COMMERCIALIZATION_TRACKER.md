@@ -135,6 +135,8 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | `tests/test_track_a_metering_chain_smoke.py` | 동일(위 하네스에 흡수) |
 | `tests/test_autonomous_evolution_loop_draft_smoke.py` | 레포에 대응 스크립트·테스트 미존재(MISSION_LOG 템플릿만 선행 언급) — 목록에서 제거; 구현 시 **스크립트 + 테스트 + 본 표 갱신**. |
 
+- **크로스 플랫폼 패리티 (2026-05-13)**: `run_prophecy_alignment_pytest.sh`의 워크스페이스 2단계 `tests/test_*.py` 목록은 **`run_prophecy_alignment_pytest.ps1`과 동일 경로·순서**를 유지한다(예: `test_emit_myeongni_thin_bridge_line_v1.py`). 목록 변경 시 **`.ps1`과 `.sh`를 한 커밋에서 함께** 수정한다.
+
 - **수집 건수 예시(2026-04-02 로컬, 참고용)**: 1단계 19개·2단계 75개 — 목록 변경 시 달라지므로 **고정 수치로 SSOT 삼지 말고** 실행 로그로 확인한다.
 - 프로젝트 루트에서 무분별 `py -m pytest -q` 시, `scripts/run_forced_watch_alert_test.py` 등이 수집되어 **수집 단계에서 실패**할 수 있다. 게이트 실행은 **정렬 스크립트 또는 문서에 명시된 파일 목록**으로 제한한다.
 
