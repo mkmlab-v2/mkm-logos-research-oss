@@ -23,8 +23,9 @@ $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 function Get-CloudflareToken {
+    # Prefer User (sync_required_env_to_user.ps1) over Process — IDE shells often keep a stale Process token.
     foreach ($k in @("CLOUDFLARE_API_TOKEN", "CF_API_TOKEN")) {
-        foreach ($scope in @("Process", "User", "Machine")) {
+        foreach ($scope in @("User", "Machine", "Process")) {
             $v = [Environment]::GetEnvironmentVariable($k, $scope)
             if (-not [string]::IsNullOrWhiteSpace($v)) { return @{ Token = $v.Trim(); Var = $k } }
         }
@@ -89,9 +90,10 @@ if (-not $SkipDnsProbe) {
             $zw = Invoke-WebRequest -Uri $zurl -Method GET -Headers $headers -UseBasicParsing
             $row.zone_list_http = [int]$zw.StatusCode
             $zj = $zw.Content | ConvertFrom-Json
-            if ($zj.success -and $zj.result -and $zj.result.Count -gt 0) {
+            # API returns result as a single object when count==1; scalar .Count is unreliable in Windows PowerShell 5.1.
+            if ($zj.success -and @($zj.result).Count -gt 0) {
                 $row.zone_found = $true
-                $zid = [string]$zj.result[0].id
+                $zid = [string](@($zj.result)[0].id)
                 $row.zone_id = $zid
                 $durl = "$base/zones/$zid/dns_records?per_page=1"
                 try {

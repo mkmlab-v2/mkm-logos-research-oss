@@ -49,10 +49,10 @@ $ProgressPreference = "SilentlyContinue"
 
 function Get-CloudflareToken {
     foreach ($k in @("CLOUDFLARE_API_TOKEN", "CF_API_TOKEN")) {
-        $v = [Environment]::GetEnvironmentVariable($k, "Process")
-        if ([string]::IsNullOrWhiteSpace($v)) { $v = [Environment]::GetEnvironmentVariable($k, "User") }
-        if ([string]::IsNullOrWhiteSpace($v)) { $v = [Environment]::GetEnvironmentVariable($k, "Machine") }
-        if (-not [string]::IsNullOrWhiteSpace($v)) { return @{ Token = $v.Trim(); Var = $k } }
+        foreach ($scope in @("User", "Machine", "Process")) {
+            $v = [Environment]::GetEnvironmentVariable($k, $scope)
+            if (-not [string]::IsNullOrWhiteSpace($v)) { return @{ Token = $v.Trim(); Var = $k } }
+        }
     }
     return $null
 }
@@ -145,10 +145,10 @@ if ([string]::IsNullOrWhiteSpace($zoneId)) {
     if (-not $zr.Ok) { throw "Zone list failed HTTP $($zr.Status): $($zr.Text)" }
     $zj = $zr.Text | ConvertFrom-Json
     if (-not $zj.success) { throw "Cloudflare zones API success=false: $($zr.Text)" }
-    if (-not $zj.result -or $zj.result.Count -lt 1) {
+    if (@($zj.result).Count -lt 1) {
         throw "No Cloudflare zone named '$ZoneName'. Add the zone in Cloudflare first, then point registrar NS to Cloudflare."
     }
-    $zoneId = [string]$zj.result[0].id
+    $zoneId = [string](@($zj.result)[0].id)
 }
 
 $listUri = "$base/zones/$zoneId/dns_records?type=CNAME&name=$([uri]::EscapeDataString($fqdnWww))"
@@ -177,8 +177,8 @@ if (-not $lr.Ok -or ($null -eq $lj) -or (-not $lj.success)) {
 if (-not $lj.success) { throw "Cloudflare dns_records list success=false: $($lr.Text)" }
 
 $existing = $null
-if ($lj.result -and $lj.result.Count -gt 0) {
-    $existing = $lj.result[0]
+if (@($lj.result).Count -gt 0) {
+    $existing = @($lj.result)[0]
 }
 
 $plan = [ordered]@{
