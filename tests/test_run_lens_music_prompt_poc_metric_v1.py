@@ -26,7 +26,9 @@ def test_run_lens_music_prompt_poc_metric_sample_fixture(tmp_path):
     assert r.returncode == 0, r.stdout + r.stderr
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["schema"] == "lens_music_prompt_poc_metric_v1"
-    assert doc["samples_count"] == 3
+    assert doc["samples_count"] >= 30
     assert doc["kpi"]["style_delta_rate"] >= 0.30
     assert doc["kpi"]["overlay_style_match_rate"] >= 0.67
+    assert doc["result"]["sample_gate_pass"] is True
+    assert doc["result"]["metric_gate_pass"] is True
     assert doc["result"]["state"] == "GO"

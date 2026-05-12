@@ -1,3 +1,36 @@
 {"id":"poc_001","baseline_response_text":"좋습니다. 먼저 현황을 공유하겠습니다. 다음 단계 후보를 비교하겠습니다. 이어서 리스크를 설명하겠습니다. 마지막으로 실행 순서를 제안하겠습니다.","overlay_response_text":"주의 상태라 보수적으로 진행합니다.","expected_overlay_style":"calm_guarded"}
 {"id":"poc_002","baseline_response_text":"요청하신 내용을 단계별로 정리하겠습니다. 현재 제약을 먼저 확인하겠습니다. 가능한 옵션을 설명하겠습니다. 마지막으로 권장안을 제시하겠습니다.","overlay_response_text":"차분히 가겠습니다. 핵심 두 가지만 제안합니다.","expected_overlay_style":"calm_guarded"}
 {"id":"poc_003","baseline_response_text":"해당 기능은 구현 가능합니다. 전제 조건을 점검하겠습니다. 검증 포인트를 분리하겠습니다. 마지막으로 테스트 절차를 안내하겠습니다.","overlay_response_text":"보수 모드입니다. 안전한 범위만 유지합니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_004","baseline_response_text":"현재 상태를 먼저 설명드리겠습니다. 성공 기준을 다시 맞추겠습니다. 리스크를 유형별로 나누겠습니다. 실행 가능 경로를 순서대로 안내하겠습니다.","overlay_response_text":"주의 신호가 있어 차분하게 진행합니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_005","baseline_response_text":"요구사항을 다시 확인하겠습니다. 영향을 받는 범위를 정리하겠습니다. 예상 실패 지점을 짚겠습니다. 마지막으로 대응안을 제시하겠습니다.","overlay_response_text":"보수적으로 접근합니다. 안정성 우선으로 정리합니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_006","baseline_response_text":"먼저 데이터 상태를 확인하겠습니다. 다음으로 정책 조건을 확인하겠습니다. 이어서 변경 가능 영역을 구분하겠습니다. 마지막으로 실행 계획을 제안하겠습니다.","overlay_response_text":"차분히 갑니다. 위험 구간은 건드리지 않겠습니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_007","baseline_response_text":"현재 로그를 기준으로 판단하겠습니다. 이상 징후를 분리하겠습니다. 우선순위를 재정렬하겠습니다. 마무리로 검증 절차를 확정하겠습니다.","overlay_response_text":"주의 단계입니다. 보수적으로 두 단계만 실행합니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_008","baseline_response_text":"요청하신 항목은 가능합니다. 다만 제약을 먼저 점검하겠습니다. 실패 조건을 명확히 하겠습니다. 마지막으로 복구 경로를 제시하겠습니다.","overlay_response_text":"차분히 진행합니다. 안전 범위만 허용합니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_009","baseline_response_text":"상태를 요약하겠습니다. 영향도를 산정하겠습니다. 선택지를 비교하겠습니다. 실행 순서를 제안하겠습니다.","overlay_response_text":"보수 모드 유지합니다. 핵심만 짧게 처리합니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_010","baseline_response_text":"지표를 확인하겠습니다. 임계치를 점검하겠습니다. 알림 조건을 재검토하겠습니다. 최종적으로 조정안을 안내하겠습니다.","overlay_response_text":"주의 신호로 판단해 차분하게 제한 실행합니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_011","baseline_response_text":"먼저 현재 결정을 설명하겠습니다. 다음으로 근거를 정리하겠습니다. 추가 리스크를 점검하겠습니다. 마지막으로 실행안을 정리하겠습니다.","overlay_response_text":"보수적으로 진행합니다. 안전 확인 후 다음 단계로 갑니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_012","baseline_response_text":"요청 범위를 확인하겠습니다. 의존성을 점검하겠습니다. 회귀 가능성을 살피겠습니다. 최종 작업 순서를 제시하겠습니다.","overlay_response_text":"차분하게 가겠습니다. 위험 항목은 보류합니다.","expected_overlay_style":"calm_guarded"}
+{"id":"poc_013","baseline_response_text":"요청을 접수했습니다. 범위를 재확인하겠습니다. 선택지를 비교하겠습니다. 권장 순서를 제시하겠습니다.","overlay_response_text":"핵심만 바로 정리합니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_014","baseline_response_text":"현재 조건을 확인하겠습니다. 제약을 점검하겠습니다. 가능한 방법을 정리하겠습니다. 실행안을 제안하겠습니다.","overlay_response_text":"결론부터 말하면 진행 가능합니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_015","baseline_response_text":"상태 요약을 먼저 드리겠습니다. 문제 원인을 분리하겠습니다. 우선순위를 정하겠습니다. 실행 순서를 안내하겠습니다.","overlay_response_text":"지금은 2단계로 처리하겠습니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_016","baseline_response_text":"목표를 다시 맞추겠습니다. 영향 범위를 확인하겠습니다. 실패 가능성을 점검하겠습니다. 대응안을 제시하겠습니다.","overlay_response_text":"핵심 지표만 빠르게 보겠습니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_017","baseline_response_text":"데이터를 점검하겠습니다. 정책 조건을 확인하겠습니다. 위험 구간을 표시하겠습니다. 최종 권고를 정리하겠습니다.","overlay_response_text":"바로 실행 가능한 항목부터 갑니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_018","baseline_response_text":"요청 사항을 구조화하겠습니다. 병목 지점을 찾겠습니다. 우회 경로를 검토하겠습니다. 최종 플랜을 제시하겠습니다.","overlay_response_text":"지금은 이 경로가 최단입니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_019","baseline_response_text":"현황을 먼저 설명하겠습니다. 기준값을 점검하겠습니다. 조건별 결과를 비교하겠습니다. 마지막 권고안을 드리겠습니다.","overlay_response_text":"바로 적용하고 결과를 확인합니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_020","baseline_response_text":"현재 로그를 보겠습니다. 이상 신호를 분리하겠습니다. 회복 경로를 정하겠습니다. 실행 순서를 확정하겠습니다.","overlay_response_text":"핵심만 요약해 진행하겠습니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_021","baseline_response_text":"요구사항을 확인하겠습니다. 의존성을 점검하겠습니다. 위험도를 산정하겠습니다. 실행안을 안내하겠습니다.","overlay_response_text":"우선순위 1번부터 처리하겠습니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_022","baseline_response_text":"문제를 정의하겠습니다. 영향 범위를 표시하겠습니다. 선택지를 비교하겠습니다. 권장 경로를 확정하겠습니다.","overlay_response_text":"짧게 말하면 지금 진행해도 됩니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_023","baseline_response_text":"입력 조건을 정리하겠습니다. 실패 케이스를 점검하겠습니다. 보완안을 제안하겠습니다. 실행 계획을 마무리하겠습니다.","overlay_response_text":"핵심 2가지만 실행합니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_024","baseline_response_text":"현 상태를 점검하겠습니다. 기준선을 비교하겠습니다. 차이를 분석하겠습니다. 조치안을 제시하겠습니다.","overlay_response_text":"결론은 유지입니다.","expected_overlay_style":"bright_concise"}
+{"id":"poc_025","baseline_response_text":"요청 의도를 확인하겠습니다. 현재 상태를 정리하겠습니다. 리스크를 설명하겠습니다. 다음 행동을 제안하겠습니다.","overlay_response_text":"지금 상황을 정리하면 안정이 우선입니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_026","baseline_response_text":"우선 현황을 공유하겠습니다. 문제를 유형별로 분리하겠습니다. 선택지를 제시하겠습니다. 마지막으로 실행 순서를 안내하겠습니다.","overlay_response_text":"단계적으로 정리해서 안정적으로 진행하겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_027","baseline_response_text":"상태를 점검하겠습니다. 영향도를 판단하겠습니다. 대응 옵션을 설명하겠습니다. 권고안을 드리겠습니다.","overlay_response_text":"현재는 안정 중심으로 단계별로 가겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_028","baseline_response_text":"요청 내용을 확인하겠습니다. 제약을 점검하겠습니다. 위험을 분리하겠습니다. 마지막으로 실행안을 제시하겠습니다.","overlay_response_text":"먼저 안정 구간부터 정리하겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_029","baseline_response_text":"현황을 설명드리겠습니다. 지표를 확인하겠습니다. 이상 징후를 점검하겠습니다. 대응 순서를 제시하겠습니다.","overlay_response_text":"지금은 단계별로 정리하고 안정성을 확보하겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_030","baseline_response_text":"요구사항을 재확인하겠습니다. 영향 범위를 정리하겠습니다. 실패 가능성을 검토하겠습니다. 실행 계획을 제안하겠습니다.","overlay_response_text":"차분히 단계로 정리해 안정적으로 반영하겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_031","baseline_response_text":"현재 조건을 먼저 확인하겠습니다. 리스크를 분리하겠습니다. 우선순위를 정하겠습니다. 실행안을 마무리하겠습니다.","overlay_response_text":"핵심을 단계로 정리해 안정적으로 처리합니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_032","baseline_response_text":"상태를 요약하겠습니다. 제약을 확인하겠습니다. 가능한 경로를 비교하겠습니다. 권장안을 안내하겠습니다.","overlay_response_text":"우선 안정 확보를 중심으로 단계별 정리하겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_033","baseline_response_text":"요청을 분석하겠습니다. 현재 기준을 확인하겠습니다. 위험 항목을 점검하겠습니다. 다음 행동을 제시하겠습니다.","overlay_response_text":"지금은 단계적으로 정리하며 안정을 유지하겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_034","baseline_response_text":"문제를 정리하겠습니다. 영향도를 산정하겠습니다. 대응안을 분류하겠습니다. 실행 순서를 정하겠습니다.","overlay_response_text":"안정 중심으로 정리한 뒤 단계적으로 반영하겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_035","baseline_response_text":"현황을 공유하겠습니다. 원인을 점검하겠습니다. 옵션을 비교하겠습니다. 권고 경로를 제시하겠습니다.","overlay_response_text":"차분히 단계로 정리해 안정적으로 진행하겠습니다.","expected_overlay_style":"empathetic_reflective"}
+{"id":"poc_036","baseline_response_text":"입력 조건을 확인하겠습니다. 리스크를 점검하겠습니다. 실행 가능안을 고르겠습니다. 최종 플랜을 확정하겠습니다.","overlay_response_text":"현재는 안정 우선으로 단계 정리 후 진행하겠습니다.","expected_overlay_style":"empathetic_reflective"}

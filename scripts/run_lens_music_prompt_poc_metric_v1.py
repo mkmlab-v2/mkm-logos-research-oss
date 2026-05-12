@@ -49,6 +49,7 @@ def main() -> int:
     ap.add_argument("--pairs-jsonl", type=Path, default=DEFAULT_PAIRS)
     ap.add_argument("--target-style-delta", type=float, default=0.30)
     ap.add_argument("--target-overlay-style-match", type=float, default=0.67)
+    ap.add_argument("--min-samples", type=int, default=30)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -85,7 +86,9 @@ def main() -> int:
     # Positive means overlay got shorter than baseline.
     style_delta = ((base_avg - overlay_avg) / base_avg) if base_avg > 0 else 0.0
     overlay_style_match_rate = (overlay_style_hit / n) if n else 0.0
-    passed = style_delta >= float(args.target_style_delta) and overlay_style_match_rate >= float(args.target_overlay_style_match)
+    sample_gate_pass = n >= int(args.min_samples)
+    metric_gate_pass = style_delta >= float(args.target_style_delta) and overlay_style_match_rate >= float(args.target_overlay_style_match)
+    passed = bool(sample_gate_pass and metric_gate_pass)
 
     out = {
         "schema": "lens_music_prompt_poc_metric_v1",
@@ -100,10 +103,13 @@ def main() -> int:
         "targets": {
             "style_delta_rate_min": float(args.target_style_delta),
             "overlay_style_match_rate_min": float(args.target_overlay_style_match),
+            "min_samples": int(args.min_samples),
         },
         "result": {
             "passed": passed,
             "state": "GO" if passed else "WATCH",
+            "sample_gate_pass": sample_gate_pass,
+            "metric_gate_pass": metric_gate_pass,
         },
         "rows": pair_rows,
         "note": "M26 PoC metric report for prompt-overlay style control. Advisory-only.",
