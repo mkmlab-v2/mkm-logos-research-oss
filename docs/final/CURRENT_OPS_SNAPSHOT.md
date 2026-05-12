@@ -2,9 +2,9 @@
 
 ## Ops slice (2026-05-12 · Action 4 complete)
 
-- **Fact-Lock:** `internal/main` / `gitea/main` at **`dabcd63089`** — philosophy RAG on main + `mkm-life` submodule `545cad7`; `verify_p0` **521** checked; `py -m pytest tests/test_philosophy_lane_rag_pilot_v1.py` 3 passed.
+- **Fact-Lock:** `internal/main` / `gitea/main` at **`579cf92ef2`** — `mkm-life` submodule **`27baaa4`** (`origin/main`, philosophy RAG route merged); `verify_p0` **521** checked; `py -m pytest tests/test_philosophy_lane_rag_pilot_v1.py` 3 passed.
 - **Remotes:** `gitea` and `internal` share the same bare repo; `git fetch gitea` confirms `gitea/main` matches `internal/main`.
-- **mkm-life:** submodule **`545cad7`** — `app/api/v1/study/philosophy/rag-pilot/route.ts` on branch **`feat/philosophy-rag-pilot-route-v1`** (merged with `origin/main`); PR to `mkmlife-com` main when deploy-ready. Env: `PHILOSOPHY_RAG_*` / `SAJU_VERIFY_PYTHON` per `CONSTITUTION` row.
+- **mkm-life:** `mkmlife-com` **`main` @ `27baaa4`** — `app/api/v1/study/philosophy/rag-pilot/route.ts` merged from `feat/philosophy-rag-pilot-route-v1`. Env: `PHILOSOPHY_RAG_*` / `SAJU_VERIFY_PYTHON` per `CONSTITUTION` row.
 
 <!-- AUTO_OPS_V1_START -->
 ## Auto Ops Handoff (v1)
