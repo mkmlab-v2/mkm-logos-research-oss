@@ -10,6 +10,7 @@
   - Default score: docs/final/artifacts/btrack_prophecy_score_latest.json
   - Default hit-rate report: docs/final/artifacts/prophecy_hit_rate_eval_latest.json
   - Default BTC CSV (when present or after -FetchMarketData): research/market_data/btc_daily_external_yf.csv
+  When --recent-trading-days N is greater than 1, the Python builder uses the last N KOSPI trading dates from the CSV (batch mode); --eval-date is still required by the CLI but the batch loop selects dates from OHLCV (see build_btrack_prophecy_score_from_ohlcv.py).
 
 .PARAMETER Profile
   Lite: skip market CSV fetch inside daily chain, skip in-chain hit-rate, skip Gemini contemplation, skip panel 24h alerts.
@@ -26,6 +27,12 @@
 
 .PARAMETER SkipMarketDataRefreshInChain
   When Profile=Full, pass -SkipMarketDataRefresh into the daily chain (use with -FetchMarketData to avoid double fetch).
+
+.PARAMETER RecentTradingDays
+  Passed to build_btrack_prophecy_score_from_ohlcv.py --recent-trading-days. N>1 emits one row per leg per past KOSPI trading day (last N from CSV), enabling walkforward scripts that need 2+ distinct eval_dates. Default 5. Use 1 for a single-day score only (WF refresh may WARN).
+
+.PARAMETER SkipWalkforwardRefresh
+  When set, do not re-run run_prophecy_per_date_combo_walkforward_v1 / instrument combo after the score build (default: run when RecentTradingDays >= 2).
 #>
 param(
     [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
@@ -33,11 +40,13 @@ param(
     [string]$Profile = "Lite",
     [string]$OhlcvEvalDate = "",
     [string]$BtcCsv = "",
+    [int]$RecentTradingDays = 5,
     [switch]$FetchMarketData,
     [switch]$StubGeneralProphecyForecasts,
     [switch]$SkipDailyChain,
     [switch]$AllowGeminiContemplation,
-    [switch]$SkipMarketDataRefreshInChain
+    [switch]$SkipMarketDataRefreshInChain,
+    [switch]$SkipWalkforwardRefresh
 )
 
 $ErrorActionPreference = "Stop"
@@ -45,6 +54,9 @@ Set-Location $WorkspaceRoot
 
 if (-not $OhlcvEvalDate) {
     $OhlcvEvalDate = (Get-Date).AddDays(-1).ToString("yyyy-MM-dd")
+}
+if ($RecentTradingDays -lt 1) {
+    throw "RecentTradingDays must be >= 1 (got $RecentTradingDays)."
 }
 
 $defaultBtc = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
@@ -56,7 +68,7 @@ function Write-Step([string]$msg) {
     Write-Host "[MaxProphecyBurst] $msg" -ForegroundColor Cyan
 }
 
-Write-Step "Workspace=$WorkspaceRoot Profile=$Profile OhlcvEvalDate=$OhlcvEvalDate FetchMarketData=$FetchMarketData"
+Write-Step "Workspace=$WorkspaceRoot Profile=$Profile OhlcvEvalDate=$OhlcvEvalDate RecentTradingDays=$RecentTradingDays FetchMarketData=$FetchMarketData"
 
 if ($FetchMarketData) {
     Write-Step "0 fetch_kospi_yfinance_csv.py + fetch_btc_yfinance_csv.py (yfinance)"
@@ -67,7 +79,7 @@ if ($FetchMarketData) {
 }
 
 # 1) General prophecy registry pass-through
-Write-Step "1/3 generate_general_prophecy_v1.py -> $generalOut"
+Write-Step "1/4 generate_general_prophecy_v1.py -> $generalOut"
 $genArgs = @("scripts/generate_general_prophecy_v1.py")
 if ($StubGeneralProphecyForecasts) { $genArgs += "--stub-forecasts" }
 & py @genArgs
@@ -75,7 +87,7 @@ if ($LASTEXITCODE -ne 0) { throw "generate_general_prophecy_v1.py exit $LASTEXIT
 
 # 2) Daily B-track hypothesis chain (optional)
 if (-not $SkipDailyChain) {
-    Write-Step "2/3 run_btrack_daily_hypothesis_chain.ps1"
+    Write-Step "2/4 run_btrack_daily_hypothesis_chain.ps1"
     $chain = Join-Path $WorkspaceRoot "scripts\run_btrack_daily_hypothesis_chain.ps1"
     if ($Profile -eq "Lite") {
         $chainArgs = @{
@@ -98,7 +110,7 @@ if (-not $SkipDailyChain) {
     if ($LASTEXITCODE -ne 0) { throw "run_btrack_daily_hypothesis_chain.ps1 exit $LASTEXITCODE" }
 }
 else {
-    Write-Step "2/3 SKIP daily chain (-SkipDailyChain)"
+    Write-Step "2/4 SKIP daily chain (-SkipDailyChain)"
 }
 
 $resolvedBtc = $BtcCsv
@@ -107,14 +119,12 @@ if (-not $resolvedBtc) {
 }
 
 # 3) OHLCV score + eval
-Write-Step "3/3 build_btrack_prophecy_score_from_ohlcv.py --eval-date $OhlcvEvalDate -> $scoreJson"
+Write-Step "3/4 build_btrack_prophecy_score_from_ohlcv.py (eval-date=$OhlcvEvalDate recent-trading-days=$RecentTradingDays) -> $scoreJson"
 $buildArgs = @(
     "scripts/build_btrack_prophecy_score_from_ohlcv.py",
-    "--eval-date", $OhlcvEvalDate
+    "--eval-date", $OhlcvEvalDate,
+    "--recent-trading-days", "$RecentTradingDays"
 )
-if ($Profile -eq "Full") {
-    $buildArgs += "--recent-trading-days", "30"
-}
 if ($resolvedBtc) {
     $buildArgs += "--btc-csv", $resolvedBtc
     Write-Step "Using --btc-csv $resolvedBtc"
@@ -126,7 +136,20 @@ else {
 & py @buildArgs
 if ($LASTEXITCODE -ne 0) { throw "build_btrack_prophecy_score_from_ohlcv.py exit $LASTEXITCODE" }
 
-Write-Step "eval_prophecy_hit_rate_v1.py --run-mode price --score-json -> $hitRateOut"
+# 3b) Re-run walkforward on the freshly written score (chain step 2 ran WF before this score existed)
+if ($RecentTradingDays -ge 2 -and -not $SkipWalkforwardRefresh) {
+    Write-Step "3b/4 walkforward refresh (per-date + instrument combo) on $scoreJson"
+    & py scripts/run_prophecy_per_date_combo_walkforward_v1.py --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: run_prophecy_per_date_combo_walkforward_v1.py exit $LASTEXITCODE" -ForegroundColor Yellow
+    }
+    & py scripts/run_prophecy_instrument_combo_walkforward_v1.py --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: run_prophecy_instrument_combo_walkforward_v1.py exit $LASTEXITCODE" -ForegroundColor Yellow
+    }
+}
+
+Write-Step "4/4 eval_prophecy_hit_rate_v1.py --run-mode price --score-json -> $hitRateOut"
 & py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json $scoreJson --output $hitRateOut
 if ($LASTEXITCODE -ne 0) { throw "eval_prophecy_hit_rate_v1.py exit $LASTEXITCODE" }
 
