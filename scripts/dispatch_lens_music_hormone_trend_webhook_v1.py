@@ -34,11 +34,17 @@ def main() -> int:
     ap.add_argument("--trend-json", type=Path, default=DEFAULT_TREND)
     ap.add_argument("--output-json", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--webhook-env", type=str, default="LENS_MUSIC_HORMONE_WEBHOOK_URL")
+    ap.add_argument(
+        "--webhook-url",
+        type=str,
+        default="",
+        help="Optional POST target override (non-empty wins over env). For CI/local smoke; prefer env in ops.",
+    )
     args = ap.parse_args()
 
     trend = _read_json(args.trend_json)
     has_core = bool(trend and str(trend.get("schema", "")).strip())
-    webhook = str(os.environ.get(args.webhook_env, "")).strip()
+    webhook = str(args.webhook_url or "").strip() or str(os.environ.get(args.webhook_env, "")).strip()
     trend_state = str(trend.get("state") or "UNKNOWN").strip().upper()
     should_dispatch = has_core and bool(webhook) and trend_state == "WATCH"
 
@@ -65,6 +71,7 @@ def main() -> int:
         "inputs": {
             "trend_json": str(args.trend_json).replace("\\", "/"),
             "webhook_env": args.webhook_env,
+            "webhook_url_override": bool(str(args.webhook_url or "").strip()),
         },
         "decision": {
             "has_core_inputs": has_core,
