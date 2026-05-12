@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """B-track research promotion gate for symbolic→audio pipeline (§3.9).
 
-Runs the consolidated pytest bundle for M0–M5. Exit 0 iff pytest passes.
+Runs the consolidated pytest bundle (M0–M5 schema/gematria/gate chain/internal-eval plus M31
+hormone trend webhook dispatch smoke). Exit 0 iff pytest passes.
 Writes JSON artifact; decision GO is **research lane only** — Track A commercial audio and
 Track C primary GTM remain blocked until separate human + metric gates (see track_wall).
 
 Payload includes ``emotion_va_overlay_ack`` for §3.10 traceability (same pytest bundle covers
-``--emotion-mapping-json``); it does **not** add a separate GO/HOLD criterion beyond M0–M5 green.
+``--emotion-mapping-json``); it does **not** add a separate GO/HOLD criterion beyond the pytest bundle green.
 
 Does not replace COMPRESSION §9 Track A promotion for the compression API lane.
 """
@@ -33,6 +34,7 @@ PYTEST_MODULES = [
     "tests/test_lens_music_gate_chain_v1.py",
     "tests/test_lens_music_internal_eval_schema_v1.py",
     "tests/test_validate_lens_music_internal_eval_jsonl_v1.py",
+    "tests/test_dispatch_lens_music_hormone_trend_webhook_v1.py",
 ]
 
 
@@ -161,7 +163,7 @@ def build_payload(
             "promotion_to_track_c_primary_gtm": False,
             "human_review_required_for_any_public_claim": True,
             "note": (
-                "B_TRACK_RESEARCH_PROMOTION_READY = CI bundle green for §3.9 M0–M5 only. "
+                "B_TRACK_RESEARCH_PROMOTION_READY = CI bundle green for §3.9 (M0–M5 + M31 dispatch smoke). "
                 "Not compression Track A §9; not automatic product claims."
             ),
         },
