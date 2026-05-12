@@ -107,6 +107,24 @@ if ($DryRun) {
     exit 0
 }
 
+function Test-IsCurrentProcessElevatedAdmin {
+    $principal = [Security.Principal.WindowsPrincipal]::new([Security.Principal.WindowsIdentity]::GetCurrent())
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+if (-not (Test-IsCurrentProcessElevatedAdmin)) {
+    Write-Host ""
+    Write-Host "Register-ScheduledTask requires an elevated PowerShell session (Run as administrator)." -ForegroundColor Yellow
+    Write-Host "Right-click PowerShell -> Run as administrator, then re-run this script from repo root." -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "If MKM-TrackC-MacroDailyFusion already exists, you usually do NOT need to re-register after git pull;" -ForegroundColor DarkYellow
+    Write-Host "the task runs the script files on disk under:" -ForegroundColor DarkYellow
+    Write-Host "  $repoRoot" -ForegroundColor DarkYellow
+    Write-Host "Verify: .\scripts\Verify-TrackCMacroDailyFusionScheduledTask_v1.ps1" -ForegroundColor DarkYellow
+    Write-Host ""
+    exit 1
+}
+
 if ($UnregisterLegacyTasks) {
     foreach ($legacyName in @($LegacyFragilityTaskName, $LegacyForwardTaskName)) {
         if ([string]::IsNullOrWhiteSpace($legacyName)) { continue }
