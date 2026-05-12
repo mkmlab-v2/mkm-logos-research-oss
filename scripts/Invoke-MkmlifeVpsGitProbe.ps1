@@ -86,26 +86,26 @@ else {
 $key = $IdentityPath
 if ([string]::IsNullOrWhiteSpace($key)) {
     foreach ($p in @($env:VPS_SSH_KEY, $env:MKM_VPS_SSH_KEY_PATH, $env:SSH_KEY_PATH)) {
-        if (-not [string]::IsNullOrWhiteSpace($p)) {
-            $key = $p
+        if ([string]::IsNullOrWhiteSpace($p)) { continue }
+        $cand = $p.Trim()
+        if (Test-Path -LiteralPath $cand) {
+            $key = $cand
             break
         }
     }
 }
 if ([string]::IsNullOrWhiteSpace($key)) {
+    # Prefer user profile (typical Hostinger deploy key), then repo .ssh, then legacy F: path.
     foreach ($c in @(
-            "F:\workspace\.ssh\hostinger_mkmlife",
+            (Join-Path $env:USERPROFILE '.ssh\hostinger_mkmlife'),
             (Join-Path $workspaceRoot '.ssh\hostinger_mkmlife'),
-            (Join-Path $env:USERPROFILE '.ssh\hostinger_mkmlife')
+            "F:\workspace\.ssh\hostinger_mkmlife"
         )) {
         if (Test-Path -LiteralPath $c) {
             $key = $c
             break
         }
     }
-}
-if ([string]::IsNullOrWhiteSpace($key)) {
-    $key = "F:\workspace\.ssh\hostinger_mkmlife"
 }
 
 if (Test-PlaceholderHost $vpsHost) {
