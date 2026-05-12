@@ -161,7 +161,7 @@ if ($UnregisterLegacyTasks) {
     Write-Output "NOTE: Legacy daily task names were unregistered above; confirm no duplicate Fragility schedulers remain."
 }
 else {
-    Write-Output "TIP: Avoid parallel legacy Fragility+Forward daily tasks (see AGENTS.md Track C fusion, CONSTITUTION §1.3.1)."
+    Write-Output "TIP: Avoid parallel legacy Fragility+Forward daily tasks (see AGENTS.md Track C fusion, CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md 1.3.1)."
 }
 
 if ($StartNow) {
