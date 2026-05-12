@@ -23,7 +23,7 @@
 
 **MCP만 재발하면:** `scripts/check_notebooklm_mcp_prereqs.ps1` → `scripts/repair_notebooklm_mcp_auth_stuck.ps1` → Cursor Reload · 필요 시 **새 채팅**. 규칙: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`.
 
-### 지휘부 동기화 패킷 (2026-05-11)
+### 지휘부 동기화 패킷 (2026-05-12)
 
 NotebookLM·지휘부 브리핑을 레포 Fact-Lock과 맞출 때 **아래를 한 세트**로 본다(구현 판정은 여전히 `CONSTITUTION_*`·스크립트).
 
@@ -31,7 +31,8 @@ NotebookLM·지휘부 브리핑을 레포 Fact-Lock과 맞출 때 **아래를 �
 |------|------|------|
 | A | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.11 | 미들웨어 포지션·단일 앵커 리스크·2nd customer·빅테크 내재화·수직·대외 수치 Fact-Lock |
 | A | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` | 장기기억·`nl_sync`·분기별 한 줄·운영 체크포인트 |
-| A | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | M30 등 구현 경로·pytest |
+| A | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` | M30·**M31** 등 구현 경로·pytest |
+| A | `docs/final/NOTEBOOKLM_OPS_COMMAND_BRIEF_LENSMUSIC_M31_TRACKC_2026-05-12.md` | **Lens music M31·§3.9 번들·Track C fusion·CI** 핸드오프(NotebookLM `source_add` 1파일용) |
 | B | `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json` | M30 헬스 집계(재생성: `scripts/build_lens_music_prompt_runbook_webhook_health_summary_v1.py`) |
 
 **NotebookLM 질의 스타터 (Creative-Lock, 본선 합선 금지):** “§3.11 기준으로 단일 앵커 리스크를 줄이기 위한 **다음 분기 파일럿 산업 2개**를 제안하라. 각안에 (i) PoC 주기 (ii) 규제 대비 (iii) 우리 레포에서 인용할 **아티팩트 경로** 후보를 한 줄씩 붙여라. 의료 효능·실매매·자동 승격 단정은 금지.”
