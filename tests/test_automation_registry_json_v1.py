@@ -30,6 +30,8 @@ def test_automation_registry_json_contract() -> None:
         assert isinstance(row, dict)
         missing = REQUIRED_TASK_KEYS - set(row.keys())
         assert not missing, f"task missing keys {sorted(missing)}: {row!r}"
+        if "optional" in row:
+            assert isinstance(row["optional"], bool), f"optional must be bool: {row!r}"
         names.add(str(row["name"]))
 
     missing_names = MKM_REQUIRED_NAMES - names

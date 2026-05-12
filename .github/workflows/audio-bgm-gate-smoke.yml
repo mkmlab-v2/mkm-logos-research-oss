@@ -32,6 +32,10 @@ on:
       - "tests/test_lens_music_gate_chain_v1.py"
       - "scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py"
       - "tests/test_lens_music_symbolic_audio_promotion_gate_v1.py"
+      - "scripts/build_lens_music_hormone_trend_v1.py"
+      - "scripts/dispatch_lens_music_hormone_trend_webhook_v1.py"
+      - "tests/test_build_lens_music_hormone_trend_v1.py"
+      - "tests/test_dispatch_lens_music_hormone_trend_webhook_v1.py"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
   pull_request:
     paths:
@@ -60,6 +64,10 @@ on:
       - "tests/test_lens_music_gate_chain_v1.py"
       - "scripts/check_lens_music_symbolic_audio_promotion_gate_v1.py"
       - "tests/test_lens_music_symbolic_audio_promotion_gate_v1.py"
+      - "scripts/build_lens_music_hormone_trend_v1.py"
+      - "scripts/dispatch_lens_music_hormone_trend_webhook_v1.py"
+      - "tests/test_build_lens_music_hormone_trend_v1.py"
+      - "tests/test_dispatch_lens_music_hormone_trend_webhook_v1.py"
       - ".github/workflows/audio-bgm-gate-smoke.yml"
 
 jobs:
