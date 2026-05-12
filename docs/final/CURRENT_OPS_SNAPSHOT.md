@@ -1,5 +1,11 @@
 # Current ops snapshot (ephemeral handoff)
 
+## Ops slice (2026-05-12 · Action 4 complete)
+
+- **Fact-Lock:** `internal/main` / `gitea/main` at **`8cd5a61c18`** — philosophy lane RAG pilot merged; `verify_p0` restored (520 checked) + tracked `philosophy_lane_rag_pilot_forbidden_substrings_v1.json`; `py -m pytest tests/test_philosophy_lane_rag_pilot_v1.py` 3 passed.
+- **Remotes:** `gitea` and `internal` share the same bare repo; `git fetch gitea` confirms `gitea/main` matches `internal/main`.
+- **mkm-life:** `projects/mkm/mkm-life` philosophy API route remains **untracked / out of main** until an explicit product decision (no UI–backend auto-merge).
+
 <!-- AUTO_OPS_V1_START -->
 ## Auto Ops Handoff (v1)
 
