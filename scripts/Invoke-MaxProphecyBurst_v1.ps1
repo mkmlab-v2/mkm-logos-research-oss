@@ -11,7 +11,7 @@
   - Default hit-rate report: docs/final/artifacts/prophecy_hit_rate_eval_latest.json
   - Default BTC CSV (when present or after -FetchMarketData): research/market_data/btc_daily_external_yf.csv
   When --recent-trading-days N is greater than 1, the Python builder uses the last N KOSPI trading dates from the CSV (batch mode); --eval-date is still required by the CLI but the batch loop selects dates from OHLCV (see build_btrack_prophecy_score_from_ohlcv.py).
-  When RecentTradingDays >= 2 and a BTC CSV path is resolved, the score build passes --force-dual-leg-panel so each eval_date has both KOSPI and BTC rows (instrument-combo walkforward feed); declared hypothesis instrument stays in score inputs.
+  When RecentTradingDays >= 2 and both default KOSPI SSOT CSV and a resolved BTC CSV exist, the score build passes --force-dual-leg-panel so each eval_date has both KOSPI and BTC rows (instrument-combo walkforward feed); declared hypothesis instrument stays in score inputs.
 
 .PARAMETER Profile
   Lite: skip market CSV fetch inside daily chain, skip in-chain hit-rate, skip Gemini contemplation, skip panel 24h alerts.
@@ -30,7 +30,7 @@
   When Profile=Full, pass -SkipMarketDataRefresh into the daily chain (use with -FetchMarketData to avoid double fetch).
 
 .PARAMETER RecentTradingDays
-  Passed to build_btrack_prophecy_score_from_ohlcv.py --recent-trading-days. N>1 emits one row per leg per past KOSPI trading day (last N from CSV), enabling walkforward scripts that need 2+ distinct eval_dates. Default 5. Use 1 for a single-day score only (WF refresh may WARN).
+  Passed to build_btrack_prophecy_score_from_ohlcv.py --recent-trading-days. N>1 emits one row per leg per past KOSPI trading day (last N from CSV), enabling walkforward scripts that need 2+ distinct eval_dates. Default 5. Use 1 for a single-day score only (WF refresh may WARN). When N>=2, --force-dual-leg-panel is added only if both default KOSPI SSOT CSV and a resolved BTC CSV exist (instrument-combo walkforward feed).
 
 .PARAMETER SkipWalkforwardRefresh
   When set, do not re-run run_prophecy_per_date_combo_walkforward_v1 / instrument combo after the score build (default: run when RecentTradingDays >= 2).
@@ -61,6 +61,7 @@ if ($RecentTradingDays -lt 1) {
 }
 
 $defaultBtc = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
+$defaultKospi = Join-Path $WorkspaceRoot "research\market_data\kospi_daily_external_yf.csv"
 $scoreJson = Join-Path $WorkspaceRoot "docs\final\artifacts\btrack_prophecy_score_latest.json"
 $hitRateOut = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_hit_rate_eval_latest.json"
 $generalOut = Join-Path $WorkspaceRoot "docs\final\artifacts\general_prophecy_latest.json"
@@ -134,7 +135,16 @@ else {
     Write-Host "[MaxProphecyBurst] WARN: no BTC CSV resolved; score rows may be empty for BTC hypothesis." -ForegroundColor Yellow
 }
 
-if ($RecentTradingDays -ge 2 -and $resolvedBtc) {
+if ($RecentTradingDays -ge 2) {
+    if (-not $resolvedBtc) {
+        Write-Host "[MaxProphecyBurst] WARN: RecentTradingDays>=2 but no BTC CSV (--force-dual-leg-panel skipped). Instrument-combo walkforward needs both legs; use -FetchMarketData or -BtcCsv." -ForegroundColor Yellow
+    }
+    elseif (-not (Test-Path -LiteralPath $defaultKospi)) {
+        Write-Host "[MaxProphecyBurst] WARN: KOSPI SSOT CSV missing at $defaultKospi (--force-dual-leg-panel skipped; build may fail)." -ForegroundColor Yellow
+    }
+}
+
+if ($RecentTradingDays -ge 2 -and $resolvedBtc -and (Test-Path -LiteralPath $defaultKospi)) {
     $buildArgs += "--force-dual-leg-panel"
     Write-Step "Using --force-dual-leg-panel (dual-leg score for instrument-combo walkforward)"
 }
