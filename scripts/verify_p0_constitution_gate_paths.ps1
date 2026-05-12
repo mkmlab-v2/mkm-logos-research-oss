@@ -405,6 +405,7 @@ $required = @(
     "scripts\run_philosophy_lane_rag_pilot_v1.ps1",
     "docs\final\artifacts\schemas\philosophy_lane_rag_pilot_forbidden_substrings_v1.json",
     "tests\test_philosophy_lane_rag_pilot_v1.py",
+    "scripts\Invoke-MaxProphecyBurst_v1.ps1",
     "scripts\Invoke-LabVpsBtrackM31Smoke_v1.ps1",
     "scripts\vps_bitcoin_live_hygiene_reset_v1.sh",
     "scripts\vps_mkm_lab_hygiene_reset_v1.sh",
