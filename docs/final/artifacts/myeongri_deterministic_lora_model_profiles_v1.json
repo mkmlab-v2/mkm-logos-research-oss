@@ -1,0 +1,36 @@
+{
+  "schema": "myeongri_deterministic_lora_model_profiles_v1",
+  "pack": "0-B",
+  "description": "Pack 0-B (myeongri deterministic JSON) LoRA training defaults — **not** Control-Integrity (`mkm_control_integrity_lora_model_profiles_v1.json`). `models/**` is gitignored in this repo; adapter output SSOT uses `adapter_repo_relative` under `storage/`.",
+  "golden_row_schema": "docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json",
+  "adapter_repo_relative": "storage/adapters/myeongri_deterministic_lora_v0",
+  "quantization": {
+    "load_in_4bit": true,
+    "bnb_4bit_quant_type": "nf4",
+    "notes": "Optional; align with host GPU training script when wired."
+  },
+  "profiles": {
+    "golden_fit_smoke": {
+      "model_id": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "max_seq_length": 4096,
+      "batch_size": 1,
+      "grad_accum": 4,
+      "lora_r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "learning_rate": 0.00015,
+      "role": "schema_fit_and_jsonl_smoke_only"
+    },
+    "train_default": {
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "max_seq_length": 4096,
+      "batch_size": 1,
+      "grad_accum": 8,
+      "lora_r": 16,
+      "lora_alpha": 32,
+      "lora_dropout": 0.05,
+      "learning_rate": 0.0001,
+      "role": "planned_full_train_host"
+    }
+  }
+}

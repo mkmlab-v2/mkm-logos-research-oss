@@ -1,0 +1,4 @@
+# Pack 0-B trained adapter directory (tracked placeholder only)
+
+Large adapter weights stay **untracked** beside this marker. SSOT path: see
+`docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json` → `adapter_repo_relative`.

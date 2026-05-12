@@ -1,6 +1,6 @@
-# LoRA 1팩 v0 — Definition of Done (DoD) v1.2
+# LoRA 1팩 v0 — Definition of Done (DoD) v1.4
 
-**상태:** v1.3 — **bulk 생성기**(`build_myeongri_deterministic_lora_golden_bulk_v1.py`)·CI 스모크 추가; **N/K 전량 JSONL**은 로컬 `data/training/...` 재생성(비추적).  
+**상태:** v1.4 — **§2.3** 프로파일(`myeongri_deterministic_lora_model_profiles_v1.json`)·`eval_myeongri_deterministic_lora_golden_fit_v1.py`·어댑터 SSOT `storage/adapters/myeongri_deterministic_lora_v0/`(레포 `models/**`는 gitignore)·pytest 추가. **bulk**·**N/K 전량 JSONL**은 기존과 같이 로컬 `data/training/...` 재생성(비추적).  
 **Fact-Lock:** 구현·경로·통과 여부는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·호출 가능 스크립트·`pytest` exit code·산출 JSON만 근거로 한다.
 
 ---
@@ -63,9 +63,9 @@
 
 ### 2.3 학습·산출 (Train / Artifacts)
 
-- [ ] **프로파일**: Pack 0-B 전용 profile 키 또는 별도 profiles JSON 존재 (**Pack 0-A JSON을 복제해 키만 바꾸는 것은 금지** — 합선 위험).
-- [ ] **어댑터 경로·이름**이 한 줄 SSOT로 기록됨 (실제 경로는 PR에서 확정).
-- [ ] **평가 리포트** JSON이 `reports/` 규약에 남고, **K 세트**에 대한 스키마·필드 정합 지표가 재현 가능.
+- [x] **프로파일**: Pack 0-B 전용 **`docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json`** (`schema`·`pack: "0-B"`·Control-Integrity 파일과 분리).
+- [x] **어댑터 경로·이름** SSOT: profiles의 **`adapter_repo_relative`** → **`storage/adapters/myeongri_deterministic_lora_v0/`** (트래킹 `.gitkeep`; 가중치는 비추적).
+- [x] **평가 리포트**: **`scripts/eval_myeongri_deterministic_lora_golden_fit_v1.py`** → 기본 **`reports/myeongri_deterministic_lora_golden_fit_latest.json`** (스키마·금지 토큰·`calculated_at` 금지; GPU 없음). **K 세트** 전량 수치는 bulk+학습 후 동 스크립트로 동일 계약 확장.
 
 ### 2.4 서술·대외 (Copy / risk)
 
@@ -80,9 +80,9 @@
 
 ---
 
-## 4. 다음 액션 (v1.2 이후)
+## 4. 다음 액션 (v1.4 이후)
 
-1. Architect: **LoRA 학습 프로파일**·어댑터 경로 SSOT.  
+1. Architect: 실제 LoRA 학습 실행·가중치를 `storage/adapters/myeongri_deterministic_lora_v0/`에 두고(비추적)·프로파일 `train_default`로 재현 문서화.  
 2. Sentinel: 대용량 JSONL **Vault 미러** 여부만 정책 확정(레포 미포함 유지 시 매니페스트만 공유).  
 3. 지휘관: N/K 변경 시 **§0.1만** 개정 후 커밋.
 
@@ -92,9 +92,9 @@
 
 ```json
 {
-  "evidence_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §1.2.1·Pack 0-B 보강; docs/final/LORA_PACK_V0_DOD_V1.md; docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json; scripts/prep_myeongri_deterministic_lora_golden_v1.py; tests/test_myeongri_deterministic_lora_golden_set_schema_v1.py",
+  "evidence_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §1.2.1·Pack 0-B 보강; docs/final/LORA_PACK_V0_DOD_V1.md; docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json; docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json; scripts/prep_myeongri_deterministic_lora_golden_v1.py; scripts/eval_myeongri_deterministic_lora_golden_fit_v1.py; storage/adapters/myeongri_deterministic_lora_v0/.gitkeep; tests/test_myeongri_deterministic_lora_golden_set_schema_v1.py; tests/test_eval_myeongri_deterministic_lora_golden_fit_v1.py",
   "validated_at": "2026-05-13",
   "confidence_level": "A",
-  "note": "N/K bulk 미달 — 샘플·게이트만 충족."
+  "note": "N/K 전량 JSONL·실학습 가중치는 로컬/비추적; §2.3 스키마·프로파일·eval 회귀는 CI·P0에 포함."
 }
 ```
