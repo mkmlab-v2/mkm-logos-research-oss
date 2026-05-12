@@ -28,6 +28,42 @@ def _exists(root: Path, rel: str) -> bool:
     return (root / rel.replace("/", os.sep)).is_file()
 
 
+def _track_a_gate(
+    root: Path,
+    gate_id: str,
+    artifact_paths: list[str],
+    producer_rel: str,
+) -> dict:
+    """G4–G6: artifact path checks are not a substitute for a missing producer script."""
+    producer_present = _exists(root, producer_rel)
+    artifacts_present = all(_exists(root, p) for p in artifact_paths)
+    if producer_present and artifacts_present:
+        status = "pass"
+    elif producer_present and not artifacts_present:
+        status = "optional_missing"
+    elif not producer_present and artifacts_present:
+        status = "stale_snapshot"
+    else:
+        status = "producer_gap"
+    notes = {
+        "G4": "Regenerate when producer exists: py scripts/run_track_a_conversational_cost_simulation.py",
+        "G5": "Regenerate when producer exists: py scripts/run_track_a_shadow_corpus_eval.py",
+        "G6": "Regenerate when producer exists: py scripts/check_track_a_metering_band_gate.py (after metering inputs)",
+    }
+    return {
+        "status": status,
+        "gate": gate_id,
+        "producer_script": producer_rel,
+        "producer_present": producer_present,
+        "artifact_paths_present": artifacts_present,
+        "paths_checked": artifact_paths,
+        "note": notes.get(
+            gate_id,
+            "Track A Phase2 harness — see CONSTITUTION 보강 (2026-05-13) producer drift.",
+        ),
+    }
+
+
 def run_verify_p0(root: Path) -> tuple[int, str]:
     ps1 = root / "scripts" / "verify_p0_constitution_gate_paths.ps1"
     if not ps1.is_file():
@@ -94,30 +130,36 @@ def main() -> int:
         "paths_checked": g3_paths,
     }
 
-    g4_paths = [
-        "docs/final/artifacts/track_a_conversational_cost_simulation_latest.json",
-    ]
-    gates["G4"] = {
-        "status": "pass" if all(_exists(root, p) for p in g4_paths) else "optional_missing",
-        "paths_checked": g4_paths,
-        "note": "Regenerate: py scripts/run_track_a_conversational_cost_simulation.py when pilot needs fresh sim.",
-    }
+    gates["G4"] = _track_a_gate(
+        root,
+        "G4",
+        ["docs/final/artifacts/track_a_conversational_cost_simulation_latest.json"],
+        "scripts/run_track_a_conversational_cost_simulation.py",
+    )
 
-    g5_paths = [
-        "docs/final/artifacts/track_a_shadow_corpus_eval_latest.json",
-    ]
-    gates["G5"] = {
-        "status": "pass" if all(_exists(root, p) for p in g5_paths) else "optional_missing",
-        "paths_checked": g5_paths,
-        "note": "Regenerate: py scripts/run_track_a_shadow_corpus_eval.py",
-    }
+    gates["G5"] = _track_a_gate(
+        root,
+        "G5",
+        ["docs/final/artifacts/track_a_shadow_corpus_eval_latest.json"],
+        "scripts/run_track_a_shadow_corpus_eval.py",
+    )
 
-    g6_paths = ["docs/final/artifacts/track_a_metering_band_gate_latest.json"]
-    gates["G6"] = {
-        "status": "pass" if all(_exists(root, p) for p in g6_paths) else "optional_missing",
-        "paths_checked": g6_paths,
-        "note": "Regenerate after metering chain when pilot enables band gate artifact.",
-    }
+    gates["G6"] = _track_a_gate(
+        root,
+        "G6",
+        ["docs/final/artifacts/track_a_metering_band_gate_latest.json"],
+        "scripts/check_track_a_metering_band_gate.py",
+    )
+
+    ta_statuses = [gates["G4"]["status"], gates["G5"]["status"], gates["G6"]["status"]]
+    if all(s == "pass" for s in ta_statuses):
+        ta_worst = "ok"
+    elif "stale_snapshot" in ta_statuses:
+        ta_worst = "stale_snapshot_risk"
+    elif "producer_gap" in ta_statuses:
+        ta_worst = "producer_gap"
+    else:
+        ta_worst = "regeneration_optional"
 
     g7_ok = _exists(root, "docs/final/openapi_token_compression_stub_v1.yaml") and _exists(
         root, "scripts/compression_token_api_stub.py"
@@ -164,6 +206,13 @@ def main() -> int:
         "version": 1,
         "generated_at_utc": _utc_now_iso(),
         "workspace_root_hint": str(root),
+        "track_a_regeneration_integrity": {
+            "worst_case": ta_worst,
+            "G4_status": gates["G4"]["status"],
+            "G5_status": gates["G5"]["status"],
+            "G6_status": gates["G6"]["status"],
+            "interpretation": "G4–G6 pass only when both producer script and artifact exist on disk; stale_snapshot means artifact without producer — do not treat as fresh run.",
+        },
         "gates": gates,
     }
 

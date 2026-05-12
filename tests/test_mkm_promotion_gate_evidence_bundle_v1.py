@@ -14,6 +14,18 @@ def test_promotion_gate_evidence_bundle_schema_v1() -> None:
     assert d.get("schema") == "mkm_promotion_gate_evidence_bundle_v1"
     assert "gates" in d
     assert d["gates"].get("G12", {}).get("status") == "human_required"
+    integ = d.get("track_a_regeneration_integrity") or {}
+    assert integ.get("worst_case") in {
+        "ok",
+        "stale_snapshot_risk",
+        "producer_gap",
+        "regeneration_optional",
+    }
+    for gid in ("G4", "G5", "G6"):
+        g = d["gates"].get(gid) or {}
+        assert g.get("producer_script")
+        assert "producer_present" in g
+        assert g.get("status") in ("pass", "optional_missing", "stale_snapshot", "producer_gap")
 
 
 def test_compression_pilot_report_paths_schema_v1() -> None:
