@@ -583,6 +583,7 @@ $required = @(
     "docs\final\LORA_PACK_V0_DOD_V1.md",
     "docs\final\schemas\myeongri_deterministic_lora_golden_set_v1.schema.json",
     "scripts\prep_myeongri_deterministic_lora_golden_v1.py",
+    "scripts\build_myeongri_deterministic_lora_golden_bulk_v1.py",
     "tests\fixtures\myeongri_deterministic_lora_golden_sample_v1.jsonl",
     "scripts\run_track_a_conversational_cost_simulation.py",
     "scripts\run_track_a_shadow_corpus_eval.py",
