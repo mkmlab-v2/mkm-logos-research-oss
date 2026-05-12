@@ -65,7 +65,7 @@
 - **`C:\workspace` 트리 안에는 없음.** (Glob·검색으로 확인.)
 - **역할:** mkmlife.com Hostinger VPS 배포 v2 스크립트. **수동 실행**(자동 배포 아님).
 - **디스크 실측(레거시):** `E:\workspace\mkm-life\deploy-to-hostinger.ps1` — **백업 드라이브에 보관된 복제본**에 둔 경우가 많다. 기본 `$PSScriptRoot`·상위 `E:\workspace\.env`의 `GEMINI_API_KEY` 등을 참조할 수 있다. **일상 개발·편집 루트로 쓰지 않는다**(§2.1b).
-- **SSH 키 기본값**: 스크립트가 User 환경변수 `VPS_SSH_KEY` 미설정 시 `F:\workspace\.ssh\hostinger_mkmlife`를 본다. 키·호스트는 **본인 환경변수(`VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`) 우선**.
+- **SSH 키 기본값**: 스크립트가 User 환경변수 `VPS_SSH_KEY` 미설정 시 `F:\workspace\.ssh\hostinger_mkmlife`를 본다. 키·호스트는 **본인 환경변수(`VPS_HOST`, `VPS_USER`, `VPS_SSH_KEY`) 우선**. 모노레포 `scripts/Invoke-MkmlifeVpsGitProbe.ps1`·`Invoke-VpsOpsSmoke_v1.ps1`는 동일 목적에 **`MKM_VPS_HOST` / `MKM_VPS_USER` / `MKM_VPS_SSH_KEY_PATH`(및 `SSH_KEY_PATH`)** 도 읽는다(레포 루트 `.env.example` VPS 절).
 - **스크립트의 원격 배포 루트**: 스크립트 내 `$VPS_PATH = /var/www/mkmlife` (frontend/backend 등 하위 구조). 이 값과 §3 PM2 잠금 경로(`/var/www/mkmlife_runtime/mkm-life`)는 **문자열이 다를 수 있다.** 운영·헬스 판정은 항상 **`pm2 describe` 실측** 우선.
 - **Hostinger API MCP(레포)**: `scripts/run_hostinger_mcp.ps1` — 배포 스크립트와 **역할 다름**(MCP 러너).
 
@@ -74,10 +74,10 @@
 ```powershell
 Set-Location E:\workspace\mkm-life
 powershell -NoProfile -ExecutionPolicy Bypass -File .\deploy-to-hostinger.ps1 -DryRun
-# 실제 반영 시에만 -DryRun 제거. 사전: User 환경변수 VPS_HOST / VPS_USER / VPS_SSH_KEY 및 SSH 키 파일 존재 확인.
+# 실제 반영 시에만 -DryRun 제거. 사전: VPS_HOST / VPS_USER / VPS_SSH_KEY 또는 MKM_VPS_HOST / MKM_VPS_USER / MKM_VPS_SSH_KEY_PATH 및 SSH 키 파일 존재 확인.
 ```
 
-**SSH 한 줄·따옴표 실수 방지(모노레포, 배포 아님):** `C:\workspace`에서 `scripts/Invoke-MkmlifeVpsGitProbe.ps1` — `VPS_HOST` 플레이스홀더·빈 키 경로를 사전에 거부하고, 원격 `cd … && git …`를 **단일 인자**로 `ssh`에 넘긴다 (`VPS_HOST`/`VPS_USER`는 **실제 IP·호스트명·계정**만).
+**SSH 한 줄·따옴표 실수 방지(모노레포, 배포 아님):** `C:\workspace`에서 `scripts/Invoke-MkmlifeVpsGitProbe.ps1` — `VPS_HOST` 또는 `MKM_VPS_HOST` 플레이스홀더·빈 키 경로를 사전에 거부하고, 원격 `cd … && git …`를 **단일 인자**로 `ssh`에 넘긴다 (**실제 IP·호스트명·계정**만; 사용자명은 `VPS_USER` 또는 `MKM_VPS_USER`).
 
 - **스크립트 위치 정리(권장):** `deploy-to-hostinger.ps1` 를 모노레포 `scripts/` 등으로 옮기면 **E:로 `cd` 할 필요가 사라진다**. 옮긴 뒤에는 이 절의 예시 경로를 실제 경로로 갱신한다.
 

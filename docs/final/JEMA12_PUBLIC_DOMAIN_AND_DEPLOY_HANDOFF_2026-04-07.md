@@ -12,6 +12,37 @@
 | `jema12.com` | 브랜드 허브; CTA·임베드는 `docs/final/artifacts/jema12_live_portal_cta_snippet.html` 참고 |
 | `jema12.cloud` | **DNS/용도가 api와 동일하지 않을 수 있음**. 클라이언트·스크립트는 **`api.jemaai.cloud`로 고정**하고, 별도 호스트명이 필요하면 DNS 확정 후에만 사용한다. |
 
+### 1.1) `jemaai.cloud` — Cloudflare에서 apex / `www` / `api` 정렬
+
+**전제:** 레지스트라(또는 현재 DNS 호스트)에서 **`jemaai.cloud` 존의 NS가 Cloudflare가 배정한 NS**여야 한다. NS가 Cloudflare가 아니면 대시보드에 만든 레코드는 공용 리졸버에 반영되지 않는다.
+
+**존 활성화 후 권장 패턴(예시 — 오리진 IP는 호스트 실측으로 교체):**
+
+| 유형 | 이름 | 대상 | 프록시(주황 구름) |
+|------|------|------|---------------------|
+| A | `@` (apex) | 공인 IP (예: VPS) | 정책에 따라 켬/끔 |
+| CNAME | `www` | `jemaai.cloud` | **켬** 권장 — 에지에서 `www` TLS SNI를 정리하기 쉽다 |
+| CNAME 또는 A | `api` | 동일 오리진 또는 API 전용 호스트 | 스펙상 `https://api.jemaai.cloud` SSOT 유지 |
+
+**`https://www.jemaai.cloud`만 SSL 실패하는 경우:** apex 인증서에 `www` SAN이 없고, DNS만 `www`→같은 IP로 붙어 있으면 **SNI 불일치**로 실패할 수 있다. 위처럼 **Cloudflare `www` CNAME + 프록시**로 해결하거나, 오리진 nginx의 `server_name`·인증서에 `www.jemaai.cloud`를 포함한다.
+
+**SSL/TLS 모드:** 오리진이 유효한 풀체인 HTTPS면 **Full (strict)**. 오리진 정리 전에는 임시로 낮은 모드를 쓰지 말고 오리진을 먼저 맞춘다.
+
+**전환·스모크:**
+
+```powershell
+nslookup -type=NS jemaai.cloud 1.1.1.1
+curl -sSI "https://jemaai.cloud/" | Select-Object -First 6
+curl -sSI "https://www.jemaai.cloud/" | Select-Object -First 6
+curl -sSI "https://api.jemaai.cloud/" | Select-Object -First 6
+```
+
+**토큰 진단(자동, 읽기 전용):** `scripts/Invoke-CloudflareApiTokenVerify_v1.ps1` → `reports/cloudflare_api_token_verify_latest.json` (`dns_probes`에 `dns_list_error` 403이면 Tunnel 전용 토큰일 가능성이 큼 — DNS용 토큰을 새로 발급해 `CLOUDFLARE_API_TOKEN`에 넣을 것).
+
+**권장 저장·전파:** 루트 `.env`에만 `CLOUDFLARE_API_TOKEN`(또는 `CF_API_TOKEN`)을 두고, `powershell -NoProfile -ExecutionPolicy Bypass -File projects/bitcoin-trading/ops/windows-rehearsal/sync_required_env_to_user.ps1`로 **Windows User 환경 변수**에 복사한다(스크립트 키 목록에 포함됨). **같은 터미널에 예전 Process 값이 남아 있으면** 새 터미널·Cursor 재시작 후 검증하거나, Process의 `CLOUDFLARE_API_TOKEN`을 비운 뒤 `Invoke-CloudflareApiTokenVerify_v1.ps1`를 실행한다.
+
+**자동(로컬, 토큰 필요):** `CLOUDFLARE_API_TOKEN`(또는 `CF_API_TOKEN`)에 **Zone.DNS:Read + Zone.DNS:Edit**(해당 존 또는 계정 범위)이 있어야 한다. `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-JemaaiCloudCloudflareDnsEnsure_v1.ps1` — 단일 존 `www` CNAME(기본 존 이름은 매개변수). 멀티 존: `scripts/Run-CloudflareDnsEnsureChain_v1.ps1`(기본 `jema-ai.com`,`no1kmedi.com`; `jemaai.cloud`는 Cloudflare에 존 추가 후 `-ZoneNames`에 포함). `-AllowDeleteConflictingWwwHost`: `www`에 **A/AAAA만** 있을 때 삭제 후 CNAME 재시도(파괴적). 먼저 `-WhatIf` 권장. 요약: `reports/cloudflare_dns_ensure_chain_latest.json`, 존별: `reports/cloudflare_dns_ensure_<zonename>.json`.
+
 ## 2. GO JSON 3종 (레포 SSOT)
 
 매니페스트: `docs/final/artifacts/war_prolongation_go_bundle_manifest_v1.json`
