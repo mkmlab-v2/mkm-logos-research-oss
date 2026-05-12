@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/mkm_approval_ticket_v1.schema.json",
+  "title": "MKM approval-gated autonomy boundary ticket v1",
+  "description": "Human-issued execution boundary for unmanned automation. Machine runners must pass preflight against this ticket before acting when MKM_APPROVAL_TICKET_REQUIRED=1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "ticket_id",
+    "title",
+    "valid_from_utc",
+    "valid_until_utc",
+    "approved",
+    "approved_by",
+    "approved_at_utc",
+    "scope_allow",
+    "scope_deny",
+    "execution_caps"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "mkm_approval_ticket_v1"
+    },
+    "ticket_id": {
+      "type": "string",
+      "minLength": 4,
+      "description": "Stable id (slug or UUID)."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "string",
+      "description": "Human narrative; runners must not parse for execution logic."
+    },
+    "valid_from_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+      "description": "Inclusive start (ISO-8601, Z recommended)."
+    },
+    "valid_until_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+      "description": "Exclusive or inclusive end per runner contract; preflight treats as inclusive end-of-day if date-only."
+    },
+    "approved": {
+      "type": "boolean",
+      "enum": [true],
+      "description": "Must be true for preflight GO."
+    },
+    "approved_by": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Operator id (email or handle)."
+    },
+    "approved_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+      "description": "When human approved (ISO-8601)."
+    },
+    "scope_allow": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Execution tags permitted. Use '*' only for emergency local dev."
+    },
+    "scope_deny": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Substring or tag prefixes explicitly forbidden."
+    },
+    "execution_caps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "allow_live_trading",
+        "allow_github_push",
+        "allow_cost_incurring_api",
+        "max_runs_per_day"
+      ],
+      "properties": {
+        "allow_live_trading": { "type": "boolean" },
+        "allow_github_push": { "type": "boolean" },
+        "allow_cost_incurring_api": { "type": "boolean" },
+        "max_runs_per_day": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "0 means unlimited for batch chains that self-limit elsewhere."
+        }
+      }
+    }
+  }
+}

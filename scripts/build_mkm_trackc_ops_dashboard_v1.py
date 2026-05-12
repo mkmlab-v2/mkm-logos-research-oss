@@ -117,6 +117,19 @@ def main() -> int:
     lens_music_prompt_brake_summary = _read_json(art / "lens_music_prompt_brake_history_summary_latest.json")
     lens_music_prompt_brake_trend = _read_json(art / "lens_music_prompt_brake_trend_latest.json")
     lens_music_prompt_poc_metric = _read_json(root / "reports" / "lens_music_prompt_poc_metric_latest.json")
+    lens_music_prompt_poc_threshold_recommended = _read_json(
+        art / "lens_music_prompt_poc_threshold_recommended_latest.json"
+    )
+    lens_music_prompt_poc_threshold_drift = _read_json(
+        art / "lens_music_prompt_poc_threshold_recommendation_drift_state_latest.json"
+    )
+    lens_music_prompt_poc_threshold_drift_webhook = _read_json(
+        art / "lens_music_prompt_poc_threshold_recommendation_drift_webhook_dispatch_latest.json"
+    )
+    lens_music_prompt_poc_threshold_watch_rehearsal = _read_json(
+        art / "lens_music_prompt_poc_threshold_watch_rehearsal_latest.json"
+    )
+    mkm_approval_ticket_preflight = _read_json(art / "mkm_approval_ticket_preflight_latest.json")
     lens_music_prompt_poc_threshold_policy = _read_json(art / "lens_music_prompt_poc_threshold_policy_latest.json")
     lens_music_hormone_state = _read_json(root / "reports" / "lens_music_hormone_state_latest.json")
     lens_music_hormone_trend = _read_json(art / "lens_music_hormone_trend_latest.json")
@@ -202,6 +215,51 @@ def main() -> int:
                 "style_delta_rate": ((lens_music_prompt_poc_metric.get("kpi") or {}).get("style_delta_rate")),
                 "overlay_style_match_rate": ((lens_music_prompt_poc_metric.get("kpi") or {}).get("overlay_style_match_rate")),
                 "samples_count": lens_music_prompt_poc_metric.get("samples_count"),
+            },
+            "lens_music_prompt_poc_threshold_recommended": {
+                "decision": _status_or_default(lens_music_prompt_poc_threshold_recommended.get("decision"), "UNKNOWN"),
+                "min_samples": ((lens_music_prompt_poc_threshold_recommended.get("policy_targets") or {}).get("min_samples")),
+                "style_delta_rate_min": (
+                    (lens_music_prompt_poc_threshold_recommended.get("policy_targets") or {}).get("style_delta_rate_min")
+                ),
+                "overlay_style_match_rate_min": (
+                    (lens_music_prompt_poc_threshold_recommended.get("policy_targets") or {}).get("overlay_style_match_rate_min")
+                ),
+            },
+            "lens_music_prompt_poc_threshold_drift": {
+                "state": _status_or_default(lens_music_prompt_poc_threshold_drift.get("state"), "UNKNOWN"),
+                "reason": lens_music_prompt_poc_threshold_drift.get("reason"),
+                "min_samples_delta": ((lens_music_prompt_poc_threshold_drift.get("deltas") or {}).get("min_samples_delta")),
+                "style_delta_rate_min_delta": (
+                    (lens_music_prompt_poc_threshold_drift.get("deltas") or {}).get("style_delta_rate_min_delta")
+                ),
+                "overlay_style_match_rate_min_delta": (
+                    (lens_music_prompt_poc_threshold_drift.get("deltas") or {}).get("overlay_style_match_rate_min_delta")
+                ),
+            },
+            "lens_music_prompt_poc_threshold_drift_webhook": {
+                "dispatch_status": ((lens_music_prompt_poc_threshold_drift_webhook.get("dispatch") or {}).get("status")),
+                "dispatch_reason": ((lens_music_prompt_poc_threshold_drift_webhook.get("dispatch") or {}).get("reason")),
+                "skip_classification": (
+                    (lens_music_prompt_poc_threshold_drift_webhook.get("dispatch") or {}).get("skip_classification")
+                ),
+                "webhook_policy_mode": ((lens_music_prompt_poc_threshold_drift_webhook.get("decision") or {}).get("webhook_policy_mode")),
+                "should_dispatch": ((lens_music_prompt_poc_threshold_drift_webhook.get("decision") or {}).get("should_dispatch")),
+            },
+            "lens_music_prompt_poc_threshold_watch_rehearsal": {
+                "strict_mode": lens_music_prompt_poc_threshold_watch_rehearsal.get("strict_mode"),
+                "drift_state": lens_music_prompt_poc_threshold_watch_rehearsal.get("drift_state"),
+                "dispatch_status": lens_music_prompt_poc_threshold_watch_rehearsal.get("dispatch_status"),
+                "dispatch_reason": lens_music_prompt_poc_threshold_watch_rehearsal.get("dispatch_reason"),
+                "dispatch_exit_code": lens_music_prompt_poc_threshold_watch_rehearsal.get("dispatch_exit_code"),
+            },
+            "mkm_approval_ticket_preflight": {
+                "decision": _status_or_default(mkm_approval_ticket_preflight.get("decision"), "UNKNOWN"),
+                "execution_tag": ((mkm_approval_ticket_preflight.get("inputs") or {}).get("execution_tag")),
+                "ticket_id": mkm_approval_ticket_preflight.get("ticket_id"),
+                "valid_window_ok": mkm_approval_ticket_preflight.get("valid_window_ok"),
+                "reason_count": len(list(mkm_approval_ticket_preflight.get("reasons") or [])),
+                "top_reason": (list(mkm_approval_ticket_preflight.get("reasons") or [])[:1] or [None])[0],
             },
             "lens_music_prompt_poc_threshold_policy": {
                 "state": _status_or_default(lens_music_prompt_poc_threshold_policy.get("state"), "UNKNOWN"),
@@ -343,6 +401,17 @@ def main() -> int:
             "lens_music_prompt_brake_history_summary": "docs/final/artifacts/lens_music_prompt_brake_history_summary_latest.json",
             "lens_music_prompt_brake_trend": "docs/final/artifacts/lens_music_prompt_brake_trend_latest.json",
             "lens_music_prompt_poc_metric": "reports/lens_music_prompt_poc_metric_latest.json",
+            "lens_music_prompt_poc_threshold_recommended": "docs/final/artifacts/lens_music_prompt_poc_threshold_recommended_latest.json",
+            "lens_music_prompt_poc_threshold_recommendation_drift_state": (
+                "docs/final/artifacts/lens_music_prompt_poc_threshold_recommendation_drift_state_latest.json"
+            ),
+            "lens_music_prompt_poc_threshold_recommendation_drift_webhook_dispatch": (
+                "docs/final/artifacts/lens_music_prompt_poc_threshold_recommendation_drift_webhook_dispatch_latest.json"
+            ),
+            "lens_music_prompt_poc_threshold_watch_rehearsal": (
+                "docs/final/artifacts/lens_music_prompt_poc_threshold_watch_rehearsal_latest.json"
+            ),
+            "mkm_approval_ticket_preflight": "docs/final/artifacts/mkm_approval_ticket_preflight_latest.json",
             "lens_music_prompt_poc_threshold_policy": "docs/final/artifacts/lens_music_prompt_poc_threshold_policy_latest.json",
             "lens_music_symbolic_audio_promotion_gate": "reports/lens_music_symbolic_audio_promotion_gate_latest.json",
             "lens_music_hormone_state": "reports/lens_music_hormone_state_latest.json",
@@ -407,6 +476,30 @@ def main() -> int:
         f"- lens_music_prompt_poc_passed: `{(dashboard['trackc']['lens_music_prompt_poc_metric'] or {}).get('passed')}`",
         f"- lens_music_prompt_poc_style_delta_rate: `{(dashboard['trackc']['lens_music_prompt_poc_metric'] or {}).get('style_delta_rate')}`",
         f"- lens_music_prompt_poc_style_match_rate: `{(dashboard['trackc']['lens_music_prompt_poc_metric'] or {}).get('overlay_style_match_rate')}`",
+        f"- lens_music_prompt_poc_threshold_recommended_decision: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_recommended'] or {}).get('decision')}`",
+        f"- lens_music_prompt_poc_threshold_recommended_min_samples: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_recommended'] or {}).get('min_samples')}`",
+        f"- lens_music_prompt_poc_threshold_recommended_style_delta_min: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_recommended'] or {}).get('style_delta_rate_min')}`",
+        f"- lens_music_prompt_poc_threshold_recommended_style_match_min: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_recommended'] or {}).get('overlay_style_match_rate_min')}`",
+        f"- lens_music_prompt_poc_threshold_drift_state: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift'] or {}).get('state')}`",
+        f"- lens_music_prompt_poc_threshold_drift_reason: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift'] or {}).get('reason')}`",
+        f"- lens_music_prompt_poc_threshold_drift_min_samples_delta: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift'] or {}).get('min_samples_delta')}`",
+        f"- lens_music_prompt_poc_threshold_drift_style_delta_min_delta: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift'] or {}).get('style_delta_rate_min_delta')}`",
+        f"- lens_music_prompt_poc_threshold_drift_style_match_min_delta: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift'] or {}).get('overlay_style_match_rate_min_delta')}`",
+        f"- lens_music_prompt_poc_threshold_drift_webhook_status: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift_webhook'] or {}).get('dispatch_status')}`",
+        f"- lens_music_prompt_poc_threshold_drift_webhook_reason: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift_webhook'] or {}).get('dispatch_reason')}`",
+        f"- lens_music_prompt_poc_threshold_drift_webhook_skip_classification: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift_webhook'] or {}).get('skip_classification')}`",
+        f"- lens_music_prompt_poc_threshold_drift_webhook_policy_mode: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift_webhook'] or {}).get('webhook_policy_mode')}`",
+        f"- lens_music_prompt_poc_threshold_drift_webhook_should_dispatch: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_drift_webhook'] or {}).get('should_dispatch')}`",
+        f"- lens_music_prompt_poc_threshold_watch_rehearsal_strict_mode: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_watch_rehearsal'] or {}).get('strict_mode')}`",
+        f"- lens_music_prompt_poc_threshold_watch_rehearsal_drift_state: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_watch_rehearsal'] or {}).get('drift_state')}`",
+        f"- lens_music_prompt_poc_threshold_watch_rehearsal_dispatch_status: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_watch_rehearsal'] or {}).get('dispatch_status')}`",
+        f"- lens_music_prompt_poc_threshold_watch_rehearsal_dispatch_reason: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_watch_rehearsal'] or {}).get('dispatch_reason')}`",
+        f"- lens_music_prompt_poc_threshold_watch_rehearsal_dispatch_exit_code: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_watch_rehearsal'] or {}).get('dispatch_exit_code')}`",
+        f"- mkm_approval_ticket_preflight_decision: `{(dashboard['trackc']['mkm_approval_ticket_preflight'] or {}).get('decision')}`",
+        f"- mkm_approval_ticket_preflight_execution_tag: `{(dashboard['trackc']['mkm_approval_ticket_preflight'] or {}).get('execution_tag')}`",
+        f"- mkm_approval_ticket_preflight_ticket_id: `{(dashboard['trackc']['mkm_approval_ticket_preflight'] or {}).get('ticket_id')}`",
+        f"- mkm_approval_ticket_preflight_valid_window_ok: `{(dashboard['trackc']['mkm_approval_ticket_preflight'] or {}).get('valid_window_ok')}`",
+        f"- mkm_approval_ticket_preflight_top_reason: `{(dashboard['trackc']['mkm_approval_ticket_preflight'] or {}).get('top_reason')}`",
         f"- lens_music_prompt_poc_threshold_policy_state: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('state')}`",
         f"- lens_music_prompt_poc_threshold_min_samples: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('min_samples')}`",
         f"- lens_music_prompt_poc_threshold_style_delta_min: `{(dashboard['trackc']['lens_music_prompt_poc_threshold_policy'] or {}).get('style_delta_rate_min')}`",

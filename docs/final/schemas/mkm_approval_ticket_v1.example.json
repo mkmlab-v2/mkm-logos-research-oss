@@ -1,0 +1,26 @@
+{
+  "schema": "mkm_approval_ticket_v1",
+  "ticket_id": "example-lens-music-weekly-2026-05-12",
+  "title": "Example: lens music prompt PoC weekly threshold automation (B-track)",
+  "notes": "Copy to docs/final/artifacts/mkm_approval_ticket_v1_latest.json and set approved_by / times before enabling MKM_APPROVAL_TICKET_REQUIRED=1.",
+  "valid_from_utc": "2026-05-12T00:00:00Z",
+  "valid_until_utc": "2026-05-19T23:59:59Z",
+  "approved": true,
+  "approved_by": "commander@example.invalid",
+  "approved_at_utc": "2026-05-12T10:00:00Z",
+  "scope_allow": [
+    "lens_music_prompt_poc_weekly_threshold",
+    "lens_music_prompt_poc_threshold_governance_drills"
+  ],
+  "scope_deny": [
+    "live_trading",
+    "github_push_explicit",
+    "production_deploy"
+  ],
+  "execution_caps": {
+    "allow_live_trading": false,
+    "allow_github_push": false,
+    "allow_cost_incurring_api": false,
+    "max_runs_per_day": 4
+  }
+}
