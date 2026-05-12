@@ -4,6 +4,9 @@
 Writes docs/final/artifacts/btrack_prophecy_contemplation_v1_latest.json.
 No cloud LLM in v1; budgets are recorded for audit and future Gemini/thinking paths.
 
+Invoked from run_btrack_daily_hypothesis_chain.ps1 when -ResearchEvaluationInstrument is btc unless
+MKM_BTRACK_PROPHECY_CONTEMPLATION_V1 is 0 or false (opt-out).
+
 Env (optional):
   MKM_BTRACK_CONTEMPLATION_TIMEOUT_SEC  (default 30, wall-clock ceiling for future I/O)
   MKM_BTRACK_CONTEMPLATION_MAX_OUTPUT_TOKENS (default 0 = not used for local route)

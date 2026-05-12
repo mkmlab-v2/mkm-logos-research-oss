@@ -7,12 +7,18 @@
   Runs scripts/run_btrack_daily_hypothesis_chain.ps1 with -WindowStyle Hidden.
   Default scheduled args use -ResearchEvaluationInstrument multi (research tagging / dual-leg
   eval alignment). Trading policy in-chain remains BTC-only for execution semantics; see chain header.
+  Prophecy contemplation pre-gate: **default ON** for the BTC research lane only (`-ResearchEvaluationInstrument btc`);
+  use env MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=0 to opt out. For multi/kospi scheduled runs the gate is skipped.
   The chain ends with Check-ProphecyPanel24hAlerts.ps1 (unless -SkipPanel24hAlertsCheck is added to args).
   Optional second daily run: Register-ProphecyPanel24hAlertsTask.ps1 (e.g. 09:05) for a later snapshot or if chain args skip the check.
   Recommended split: register the chain with -SkipPanel24hAlertsCheck and register MKM-Prophecy-Panel-24h-Alerts separately so KPI failures do not mask chain success in Task Scheduler.
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35"
+
+.EXAMPLE
+  BTC research lane (contemplation pre-gate on by default; set MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=0 in .env to opt out):
+  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -ResearchEvaluationInstrument btc
 
 .EXAMPLE
   Include 30 trading-day OHLCV score rows in the same chain (heavier):
