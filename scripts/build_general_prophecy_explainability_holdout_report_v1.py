@@ -73,11 +73,21 @@ def main() -> int:
         if not isinstance(r, dict):
             continue
         qid = str(r.get("question_id", ""))
+        # Backward-compat: quality rows historically did not emit evidence_match_type.
+        # In that case we treat coverage_ok=True as a direct match proxy.
+        raw_match_type = str(r.get("evidence_match_type", "")).strip().lower()
+        coverage_ok = bool(r.get("coverage_ok"))
+        if raw_match_type in {"direct", "fallback"}:
+            match_type = raw_match_type
+        elif coverage_ok:
+            match_type = "direct"
+        else:
+            match_type = "none"
         normalized.append(
             {
                 "question_id": qid,
                 "cohort": _cohort_for_question(qid),
-                "evidence_match_type": str(r.get("evidence_match_type", "none")),
+                "evidence_match_type": match_type,
                 "reproducible_evidence_ok": bool(r.get("reproducible_evidence_ok")),
                 "biblical_keyword_coverage": float(r.get("biblical_keyword_coverage", 0.0) or 0.0),
             }

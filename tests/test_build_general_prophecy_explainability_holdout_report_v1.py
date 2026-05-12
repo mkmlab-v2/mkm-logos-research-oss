@@ -29,5 +29,7 @@ def test_holdout_report_smoke(tmp_path: Path):
     doc = json.loads(holdout.read_text(encoding="utf-8"))
     assert doc["schema"] == "general_prophecy_explainability_holdout_report_v1"
     assert doc["overall"]["n_questions"] >= 1
+    assert doc["overall"]["direct_match_rate"] is not None
+    assert doc["overall"]["direct_match_rate"] > 0.0
     assert "holdout_core" in doc
     assert isinstance(doc.get("cohorts"), dict)
