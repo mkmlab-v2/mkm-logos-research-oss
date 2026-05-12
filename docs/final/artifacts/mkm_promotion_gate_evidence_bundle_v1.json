@@ -1,13 +1,13 @@
 {
   "schema": "mkm_promotion_gate_evidence_bundle_v1",
   "version": 1,
-  "generated_at_utc": "2026-05-12T17:53:08Z",
+  "generated_at_utc": "2026-05-12T18:01:17Z",
   "workspace_root_hint": "C:\\workspace",
   "track_a_regeneration_integrity": {
-    "worst_case": "stale_snapshot_risk",
-    "G4_status": "stale_snapshot",
-    "G5_status": "stale_snapshot",
-    "G6_status": "stale_snapshot",
+    "worst_case": "ok",
+    "G4_status": "pass",
+    "G5_status": "pass",
+    "G6_status": "pass",
     "interpretation": "G4–G6 pass only when both producer script and artifact exist on disk; stale_snapshot means artifact without producer — do not treat as fresh run."
   },
   "gates": {
@@ -15,7 +15,7 @@
       "status": "pass",
       "exit_code": 0,
       "artifact": "scripts/verify_p0_constitution_gate_paths.ps1",
-      "log_tail": "OK: P0/CONSTITUTION gate paths present (525 checked)."
+      "log_tail": "OK: P0/CONSTITUTION gate paths present (536 checked)."
     },
     "G1": {
       "status": "pass",
@@ -35,10 +35,10 @@
       ]
     },
     "G4": {
-      "status": "stale_snapshot",
+      "status": "pass",
       "gate": "G4",
       "producer_script": "scripts/run_track_a_conversational_cost_simulation.py",
-      "producer_present": false,
+      "producer_present": true,
       "artifact_paths_present": true,
       "paths_checked": [
         "docs/final/artifacts/track_a_conversational_cost_simulation_latest.json"
@@ -46,10 +46,10 @@
       "note": "Regenerate when producer exists: py scripts/run_track_a_conversational_cost_simulation.py"
     },
     "G5": {
-      "status": "stale_snapshot",
+      "status": "pass",
       "gate": "G5",
       "producer_script": "scripts/run_track_a_shadow_corpus_eval.py",
-      "producer_present": false,
+      "producer_present": true,
       "artifact_paths_present": true,
       "paths_checked": [
         "docs/final/artifacts/track_a_shadow_corpus_eval_latest.json"
@@ -57,10 +57,10 @@
       "note": "Regenerate when producer exists: py scripts/run_track_a_shadow_corpus_eval.py"
     },
     "G6": {
-      "status": "stale_snapshot",
+      "status": "pass",
       "gate": "G6",
       "producer_script": "scripts/check_track_a_metering_band_gate.py",
-      "producer_present": false,
+      "producer_present": true,
       "artifact_paths_present": true,
       "paths_checked": [
         "docs/final/artifacts/track_a_metering_band_gate_latest.json"

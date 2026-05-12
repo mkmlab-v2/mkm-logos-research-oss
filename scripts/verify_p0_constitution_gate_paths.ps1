@@ -580,6 +580,17 @@ $required = @(
     "docs\final\STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md",
     "scripts\build_mkm_promotion_gate_evidence_bundle_v1.py",
     "docs\final\artifacts\mkm_promotion_gate_evidence_bundle_v1.json",
+    "scripts\run_track_a_conversational_cost_simulation.py",
+    "scripts\run_track_a_shadow_corpus_eval.py",
+    "scripts\run_track_a_metering_summary.py",
+    "scripts\run_track_a_metering_weekly_report.py",
+    "scripts\check_track_a_metering_band_gate.py",
+    "scripts\build_track_a_signal_light_report.py",
+    "scripts\run_track_a_commercialization_daily_chain.ps1",
+    "scripts\Run-TrackAShadowJsonlSample.ps1",
+    "scripts\Run-TrackAMeteringSummary.ps1",
+    "scripts\Run-TrackAMeteringWeeklyReport.ps1",
+    "tests\fixtures\track_a_metering_log_smoke_v1.jsonl",
     "docs\final\artifacts\MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json"
 )
 

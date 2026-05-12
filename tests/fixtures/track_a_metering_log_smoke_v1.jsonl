@@ -1,0 +1,3 @@
+{"meter_schema":"track_a_metering_log_v1","ts_utc":"2026-04-10T12:00:00Z","sla_track":"A","tokens_before":1000,"tokens_after":520}
+{"meter_schema":"track_a_metering_log_v1","ts_utc":"2026-04-11T12:00:00Z","sla_track":"A","tokens_before":800,"tokens_after":400}
+{"meter_schema":"track_a_metering_log_v1","ts_utc":"2026-04-12T12:00:00Z","sla_track":"A","tokens_before":500,"tokens_after":250}
