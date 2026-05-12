@@ -251,7 +251,11 @@ def main() -> int:
     ap.add_argument("--hormone-trend-json", type=Path, default=DEFAULT_HORMONE_TREND)
     ap.add_argument("--m31-max-high-stress-rate", type=float, default=0.25)
     ap.add_argument("--m31-max-consecutive-high-stress", type=int, default=3)
-    ap.add_argument("--require-m31-hormone-input", action="store_true")
+    ap.add_argument(
+        "--allow-soft-m31",
+        action="store_true",
+        help="Opt out of default hard-lock. By default M31 hormone input is required.",
+    )
     ap.add_argument("--human-signoff-json", type=Path, default=DEFAULT_HUMAN_SIGNOFF)
     ap.add_argument("--allow-commercial-unlock", action="store_true")
     args = ap.parse_args()
@@ -267,7 +271,7 @@ def main() -> int:
         allow_commercial_unlock=bool(args.allow_commercial_unlock),
         max_high_stress_rate=float(args.m31_max_high_stress_rate),
         max_consecutive_high_stress=int(args.m31_max_consecutive_high_stress),
-        require_m31_input=bool(args.require_m31_hormone_input),
+        require_m31_input=not bool(args.allow_soft_m31),
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

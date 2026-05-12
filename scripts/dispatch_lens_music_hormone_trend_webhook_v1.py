@@ -35,6 +35,12 @@ def main() -> int:
     ap.add_argument("--output-json", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--webhook-env", type=str, default="LENS_MUSIC_HORMONE_WEBHOOK_URL")
     ap.add_argument(
+        "--strict-mode-env",
+        type=str,
+        default="ENABLE_WEBHOOK_STRICT_MODE",
+        help="When true and webhook is missing, fail with exit 1.",
+    )
+    ap.add_argument(
         "--webhook-url",
         type=str,
         default="",
@@ -45,6 +51,8 @@ def main() -> int:
     trend = _read_json(args.trend_json)
     has_core = bool(trend and str(trend.get("schema", "")).strip())
     webhook = str(args.webhook_url or "").strip() or str(os.environ.get(args.webhook_env, "")).strip()
+    strict_raw = str(os.environ.get(args.strict_mode_env, "")).strip().lower()
+    strict_mode = strict_raw in {"1", "true", "yes", "on"}
     trend_state = str(trend.get("state") or "UNKNOWN").strip().upper()
     should_dispatch = has_core and bool(webhook) and trend_state == "WATCH"
 
@@ -77,6 +85,7 @@ def main() -> int:
             "has_core_inputs": has_core,
             "trend_state": trend_state,
             "webhook_configured": bool(webhook),
+            "webhook_policy_mode": "strict" if strict_mode else "best_effort",
             "dispatch_only_on_watch": True,
             "should_dispatch": should_dispatch,
         },
@@ -100,8 +109,17 @@ def main() -> int:
         out["dispatch"] = {"status": "skipped", "reason": "missing_trend_input"}
     elif not webhook:
         out["dispatch"] = {"status": "skipped", "reason": "webhook_not_configured"}
+        out["dispatch"]["skip_classification"] = "config_missing_intent_unknown"
     else:
         out["dispatch"] = {"status": "skipped", "reason": "trend_state_not_watch"}
+        out["dispatch"]["skip_classification"] = "policy_expected_not_watch"
+
+    if strict_mode and not webhook:
+        out["dispatch"] = {
+            "status": "failed",
+            "reason": "webhook_required_but_missing",
+            "policy_mode": "strict",
+        }
 
     args.output_json.parent.mkdir(parents=True, exist_ok=True)
     args.output_json.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -115,7 +133,7 @@ def main() -> int:
             ensure_ascii=False,
         )
     )
-    return 0
+    return 1 if strict_mode and not webhook else 0
 
 
 if __name__ == "__main__":

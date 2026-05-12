@@ -36,6 +36,8 @@ param(
 
     # Skip M31 hormone trend + WATCH-only webhook before ops dashboard (default: run when dashboard runs).
     [switch]$SkipLensMusicHormoneTrend,
+    [switch]$SkipLensMusicPromotionGate,
+    [switch]$AllowCommercialUnlockInFusion,
 
     # Role-router multiscenario opt vs lens S1 shadow gate (append-only log; non-gating).
     [switch]$SkipRoleRouterShadowAdvisory,
@@ -79,6 +81,7 @@ $logosS1ShadowReviewPacket = Join-Path $PSScriptRoot "build_logos_s1_shadow_prom
 $roleRouterS1ShadowAdvisory = Join-Path $PSScriptRoot "build_role_router_s1_shadow_advisory_v1.py"
 $hormoneTrend = Join-Path $PSScriptRoot "build_lens_music_hormone_trend_v1.py"
 $hormoneTrendWebhook = Join-Path $PSScriptRoot "dispatch_lens_music_hormone_trend_webhook_v1.py"
+$lensMusicPromotionGate = Join-Path $PSScriptRoot "check_lens_music_symbolic_audio_promotion_gate_v1.py"
 $opsDashboard = Join-Path $PSScriptRoot "build_mkm_trackc_ops_dashboard_v1.py"
 
 $required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck, $logosS1ShadowReviewPacket)
@@ -90,6 +93,9 @@ if (-not $SkipOpsDashboard) {
     if (-not $SkipLensMusicHormoneTrend) {
         $required += $hormoneTrend
         $required += $hormoneTrendWebhook
+        if (-not $SkipLensMusicPromotionGate) {
+            $required += $lensMusicPromotionGate
+        }
     }
 }
 foreach ($p in $required) {
@@ -225,6 +231,19 @@ if (-not $SkipOpsDashboard) {
         Invoke-FusionStep -Name "dispatch_lens_music_hormone_trend_webhook_v1.py" -Action {
             Set-Location -LiteralPath $repoRoot
             py $hormoneTrendWebhook
+        }
+        if (-not $SkipLensMusicPromotionGate) {
+            Invoke-FusionStep -Name "check_lens_music_symbolic_audio_promotion_gate_v1.py (hard-lock)" -Action {
+                Set-Location -LiteralPath $repoRoot
+                $gateArgs = @($lensMusicPromotionGate)
+                if ($AllowCommercialUnlockInFusion) {
+                    $gateArgs += "--allow-commercial-unlock"
+                }
+                py @gateArgs
+            }
+        }
+        else {
+            Write-Host "[trackc-macro-fusion] skip lens music promotion gate (SkipLensMusicPromotionGate)"
         }
     }
     else {

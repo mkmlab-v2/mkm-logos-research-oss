@@ -120,6 +120,7 @@ def main() -> int:
     lens_music_hormone_state = _read_json(root / "reports" / "lens_music_hormone_state_latest.json")
     lens_music_hormone_trend = _read_json(art / "lens_music_hormone_trend_latest.json")
     lens_music_hormone_trend_webhook = _read_json(art / "lens_music_hormone_trend_webhook_dispatch_latest.json")
+    lens_music_promotion_gate = _read_json(root / "reports" / "lens_music_symbolic_audio_promotion_gate_latest.json")
     lens_music_prompt_poc_runbook = _read_json(art / "lens_music_prompt_poc_runbook_latest.json")
     lens_music_prompt_poc_runbook_webhook = _read_json(art / "lens_music_prompt_poc_runbook_webhook_dispatch_latest.json")
     lens_music_prompt_runbook_webhook_health = _read_json(art / "lens_music_prompt_runbook_webhook_health_latest.json")
@@ -219,8 +220,18 @@ def main() -> int:
             "lens_music_hormone_trend_webhook": {
                 "dispatch_status": ((lens_music_hormone_trend_webhook.get("dispatch") or {}).get("status")),
                 "dispatch_reason": ((lens_music_hormone_trend_webhook.get("dispatch") or {}).get("reason")),
+                "skip_classification": ((lens_music_hormone_trend_webhook.get("dispatch") or {}).get("skip_classification")),
+                "webhook_policy_mode": ((lens_music_hormone_trend_webhook.get("decision") or {}).get("webhook_policy_mode")),
                 "dispatch_only_on_watch": ((lens_music_hormone_trend_webhook.get("decision") or {}).get("dispatch_only_on_watch")),
                 "should_dispatch": ((lens_music_hormone_trend_webhook.get("decision") or {}).get("should_dispatch")),
+            },
+            "lens_music_promotion_gate": {
+                "decision": _status_or_default(lens_music_promotion_gate.get("decision"), "UNKNOWN"),
+                "m31_required_mode": (((lens_music_promotion_gate.get("m31_hormone_guard") or {}).get("guard_mode")) == "required"),
+                "m31_guard_mode": ((lens_music_promotion_gate.get("m31_hormone_guard") or {}).get("guard_mode")),
+                "m31_guard_passed": ((lens_music_promotion_gate.get("m31_hormone_guard") or {}).get("passed")),
+                "commercial_unlock_requested": ((lens_music_promotion_gate.get("commercial_unlock_gate") or {}).get("unlock_requested")),
+                "commercial_unlock_applied": ((lens_music_promotion_gate.get("commercial_unlock_gate") or {}).get("unlock_applied")),
             },
             "lens_music_prompt_poc_runbook": {
                 "state": _status_or_default(lens_music_prompt_poc_runbook.get("state"), "UNKNOWN"),
@@ -322,6 +333,7 @@ def main() -> int:
             "lens_music_prompt_brake_history_summary": "docs/final/artifacts/lens_music_prompt_brake_history_summary_latest.json",
             "lens_music_prompt_brake_trend": "docs/final/artifacts/lens_music_prompt_brake_trend_latest.json",
             "lens_music_prompt_poc_metric": "reports/lens_music_prompt_poc_metric_latest.json",
+            "lens_music_symbolic_audio_promotion_gate": "reports/lens_music_symbolic_audio_promotion_gate_latest.json",
             "lens_music_hormone_state": "reports/lens_music_hormone_state_latest.json",
             "lens_music_hormone_trend": "docs/final/artifacts/lens_music_hormone_trend_latest.json",
             "lens_music_hormone_trend_webhook_dispatch": "docs/final/artifacts/lens_music_hormone_trend_webhook_dispatch_latest.json",
@@ -393,6 +405,14 @@ def main() -> int:
         f"- lens_music_hormone_trend_max_consecutive_high_stress: `{(dashboard['trackc']['lens_music_hormone_trend'] or {}).get('max_consecutive_high_stress')}`",
         f"- lens_music_hormone_trend_webhook_status: `{(dashboard['trackc']['lens_music_hormone_trend_webhook'] or {}).get('dispatch_status')}`",
         f"- lens_music_hormone_trend_webhook_reason: `{(dashboard['trackc']['lens_music_hormone_trend_webhook'] or {}).get('dispatch_reason')}`",
+        f"- lens_music_hormone_trend_webhook_skip_classification: `{(dashboard['trackc']['lens_music_hormone_trend_webhook'] or {}).get('skip_classification')}`",
+        f"- lens_music_hormone_trend_webhook_policy_mode: `{(dashboard['trackc']['lens_music_hormone_trend_webhook'] or {}).get('webhook_policy_mode')}`",
+        f"- lens_music_promotion_gate_decision: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('decision')}`",
+        f"- lens_music_m31_required_mode: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('m31_required_mode')}`",
+        f"- lens_music_m31_guard_mode: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('m31_guard_mode')}`",
+        f"- lens_music_m31_guard_passed: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('m31_guard_passed')}`",
+        f"- lens_music_commercial_unlock_requested: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('commercial_unlock_requested')}`",
+        f"- lens_music_commercial_unlock_applied: `{(dashboard['trackc']['lens_music_promotion_gate'] or {}).get('commercial_unlock_applied')}`",
         f"- lens_music_prompt_poc_runbook_state: `{(dashboard['trackc']['lens_music_prompt_poc_runbook'] or {}).get('state')}`",
         f"- lens_music_prompt_poc_runbook_recommendation_count: `{(dashboard['trackc']['lens_music_prompt_poc_runbook'] or {}).get('recommendation_count')}`",
         f"- lens_music_prompt_poc_runbook_top_cause: `{(dashboard['trackc']['lens_music_prompt_poc_runbook'] or {}).get('top_recommendation_cause')}`",
