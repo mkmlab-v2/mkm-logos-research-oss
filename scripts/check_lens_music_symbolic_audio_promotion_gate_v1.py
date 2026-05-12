@@ -26,6 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 DEFAULT_OUT = ROOT / "reports" / "lens_music_symbolic_audio_promotion_gate_latest.json"
 DEFAULT_HORMONE_TREND = ROOT / "docs" / "final" / "artifacts" / "lens_music_hormone_trend_latest.json"
+DEFAULT_HUMAN_SIGNOFF = ROOT / "reports" / "lens_music_human_signoff_record_latest.json"
 
 PYTEST_MODULES = [
     "tests/test_sasang_music_mapping_schema_v1.py",
@@ -128,11 +129,55 @@ def _compute_m31_guard(
     return passed, detail
 
 
+def _compute_commercial_unlock(
+    *,
+    signoff: dict[str, Any],
+    allow_unlock: bool,
+) -> dict[str, Any]:
+    scope = signoff.get("scope") if isinstance(signoff, dict) else {}
+    basis = signoff.get("basis") if isinstance(signoff, dict) else {}
+    decision = str(signoff.get("decision") or "").strip().upper() if isinstance(signoff, dict) else ""
+    approved_by = str(signoff.get("approved_by") or "").strip() if isinstance(signoff, dict) else ""
+    scope_track_a = bool(isinstance(scope, dict) and scope.get("track_a_commercial_audio"))
+    scope_track_c = bool(isinstance(scope, dict) and scope.get("track_c_primary_gtm"))
+    basis_ready = bool(isinstance(basis, dict) and basis.get("research_promotion_ready"))
+    has_signoff = bool(signoff)
+    valid_signoff = bool(
+        has_signoff
+        and decision in {"APPROVED_WITH_HUMAN_SIGNOFF", "APPROVED"}
+        and approved_by
+        and basis_ready
+        and scope_track_a
+        and scope_track_c
+    )
+    unlocked = bool(allow_unlock and valid_signoff)
+    return {
+        "unlock_requested": bool(allow_unlock),
+        "unlock_applied": unlocked,
+        "signoff_path_expected": str(DEFAULT_HUMAN_SIGNOFF),
+        "signoff_present": has_signoff,
+        "signoff_valid": valid_signoff,
+        "checks": {
+            "decision_approved": decision in {"APPROVED_WITH_HUMAN_SIGNOFF", "APPROVED"},
+            "approved_by_present": bool(approved_by),
+            "basis_research_ready": basis_ready,
+            "scope_track_a_commercial_audio": scope_track_a,
+            "scope_track_c_primary_gtm": scope_track_c,
+        },
+        "note": (
+            "Commercial unlock is opt-in. Requires --allow-commercial-unlock plus a valid "
+            "human signoff artifact with both Track A/Track C scopes."
+        ),
+    }
+
+
 def build_payload(
     pytest_exit_code: int,
     log_tail: str,
     *,
     hormone_trend: dict[str, Any],
+    human_signoff: dict[str, Any],
+    allow_commercial_unlock: bool,
     max_high_stress_rate: float,
     max_consecutive_high_stress: int,
     require_m31_input: bool,
@@ -144,6 +189,7 @@ def build_payload(
         max_consecutive_high_stress=max_consecutive_high_stress,
         require_input=require_m31_input,
     )
+    unlock = _compute_commercial_unlock(signoff=human_signoff, allow_unlock=allow_commercial_unlock)
     if not ok:
         decision = "HOLD_PYTEST_FAILED"
     elif not m31_pass:
@@ -159,14 +205,15 @@ def build_payload(
         "pytest_log_tail": log_tail,
         "decision": decision,
         "track_wall": {
-            "promotion_to_a_track_commercial_audio": False,
-            "promotion_to_track_c_primary_gtm": False,
+            "promotion_to_a_track_commercial_audio": bool(unlock["unlock_applied"]),
+            "promotion_to_track_c_primary_gtm": bool(unlock["unlock_applied"]),
             "human_review_required_for_any_public_claim": True,
             "note": (
-                "B_TRACK_RESEARCH_PROMOTION_READY = CI bundle green for §3.9 (M0–M5 + M31 dispatch smoke). "
-                "Not compression Track A §9; not automatic product claims."
+                "Default remains B-track research-only. Track wall can be unlocked only when a valid "
+                "human signoff artifact exists and --allow-commercial-unlock is explicitly set."
             ),
         },
+        "commercial_unlock_gate": unlock,
         "milestones_ack": {
             "M0": True,
             "M1": True,
@@ -205,14 +252,19 @@ def main() -> int:
     ap.add_argument("--m31-max-high-stress-rate", type=float, default=0.25)
     ap.add_argument("--m31-max-consecutive-high-stress", type=int, default=3)
     ap.add_argument("--require-m31-hormone-input", action="store_true")
+    ap.add_argument("--human-signoff-json", type=Path, default=DEFAULT_HUMAN_SIGNOFF)
+    ap.add_argument("--allow-commercial-unlock", action="store_true")
     args = ap.parse_args()
 
     code, tail = run_pytest_bundle()
     hormone_trend = _read_json(args.hormone_trend_json)
+    human_signoff = _read_json(args.human_signoff_json)
     payload = build_payload(
         code,
         tail,
         hormone_trend=hormone_trend,
+        human_signoff=human_signoff,
+        allow_commercial_unlock=bool(args.allow_commercial_unlock),
         max_high_stress_rate=float(args.m31_max_high_stress_rate),
         max_consecutive_high_stress=int(args.m31_max_consecutive_high_stress),
         require_m31_input=bool(args.require_m31_hormone_input),
