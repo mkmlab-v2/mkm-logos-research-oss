@@ -466,3 +466,30 @@ def test_downside_force_bear_overrides_neutral_default() -> None:
         downside_force_bear_min_cum_down_pct=3.0,
     )
     assert rows[0]["predicted_direction"] == "bear"
+
+
+def test_build_rows_inst_multi_emits_kospi_and_btc_for_btc_only_hypothesis() -> None:
+    """Same row emission as CLI --force-dual-leg-panel (effective inst=multi)."""
+    from scripts.build_btrack_prophecy_score_from_ohlcv import _build_rows
+
+    hyp = {"prediction": {"instrument": "btc", "direction": "bear"}}
+    kospi = [
+        {"date": "2000-01-01", "close": 100.0, "open": 1, "high": 1, "low": 1, "volume": 1},
+        {"date": "2000-01-02", "close": 99.0, "open": 1, "high": 1, "low": 1, "volume": 1},
+    ]
+    btc = [
+        {"date": "2000-01-01", "close": 50.0, "open": 1, "high": 1, "low": 1, "volume": 1},
+        {"date": "2000-01-02", "close": 49.0, "open": 1, "high": 1, "low": 1, "volume": 1},
+    ]
+    rows, _meta = _build_rows(
+        hypothesis=hyp,
+        eval_date="2000-01-02",
+        neutral_bps=5.0,
+        kospi_rows=kospi,
+        btc_rows=btc,
+        inst="multi",
+        predicted="bear",
+    )
+    assert len(rows) == 2
+    assert {r["instrument"] for r in rows} == {"kospi", "btc"}
+    assert all(r["predicted_direction"] == "bear" for r in rows)

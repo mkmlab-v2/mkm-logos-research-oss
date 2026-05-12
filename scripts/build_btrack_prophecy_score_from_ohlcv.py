@@ -1016,6 +1016,15 @@ def main() -> int:
         help="Single-writer lock file for btrack score artifact updates.",
     )
     ap.add_argument("--stdout-only", action="store_true")
+    ap.add_argument(
+        "--force-dual-leg-panel",
+        action="store_true",
+        help=(
+            "Emit both KOSPI and BTC rows for each eval_date (same as prediction.instrument=multi) "
+            "even when the hypothesis declares btc or kospi only. Use for "
+            "run_prophecy_instrument_combo_walkforward_v1 dual-leg panel. Requires both CSV legs."
+        ),
+    )
     args = ap.parse_args()
 
     hyp = _load_hypothesis(args.hypothesis_json)
@@ -1044,7 +1053,16 @@ def main() -> int:
     except Exception:
         wf, wi, wp = 0.5, 0.4, 0.1
 
-    inst = _instrument(hyp)
+    inst_declared = _instrument(hyp)
+    inst = inst_declared
+    if args.force_dual_leg_panel:
+        if btc_rows and kospi_rows:
+            inst = "multi"
+        else:
+            print(
+                "WARN: --force-dual-leg-panel ignored (need both KOSPI and BTC OHLCV rows).",
+                file=sys.stderr,
+            )
     predicted = _predicted_direction(hyp)
     per_date_dir_path = args.per_date_direction_json
     if per_date_dir_path and not per_date_dir_path.is_absolute():
@@ -1209,6 +1227,9 @@ def main() -> int:
         "hypothesis_path": _rel_to_root(args.hypothesis_json),
         "hypothesis_ts_utc": hyp.get("ts_utc"),
         "inputs": {
+            "hypothesis_instrument_declared": inst_declared,
+            "effective_instrument": inst,
+            "force_dual_leg_panel": bool(args.force_dual_leg_panel),
             "kospi_csv": _rel_to_root(args.kospi_csv),
             "btc_csv": str(args.btc_csv) if args.btc_csv else None,
             "per_date_direction_json": _rel_to_root(per_date_dir_path) if per_date_dir_path and per_date_dir_path.is_file() else None,

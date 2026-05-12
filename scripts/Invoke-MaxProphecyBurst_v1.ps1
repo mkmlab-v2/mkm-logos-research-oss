@@ -11,6 +11,7 @@
   - Default hit-rate report: docs/final/artifacts/prophecy_hit_rate_eval_latest.json
   - Default BTC CSV (when present or after -FetchMarketData): research/market_data/btc_daily_external_yf.csv
   When --recent-trading-days N is greater than 1, the Python builder uses the last N KOSPI trading dates from the CSV (batch mode); --eval-date is still required by the CLI but the batch loop selects dates from OHLCV (see build_btrack_prophecy_score_from_ohlcv.py).
+  When RecentTradingDays >= 2 and a BTC CSV path is resolved, the score build passes --force-dual-leg-panel so each eval_date has both KOSPI and BTC rows (instrument-combo walkforward feed); declared hypothesis instrument stays in score inputs.
 
 .PARAMETER Profile
   Lite: skip market CSV fetch inside daily chain, skip in-chain hit-rate, skip Gemini contemplation, skip panel 24h alerts.
@@ -133,6 +134,10 @@ else {
     Write-Host "[MaxProphecyBurst] WARN: no BTC CSV resolved; score rows may be empty for BTC hypothesis." -ForegroundColor Yellow
 }
 
+if ($RecentTradingDays -ge 2 -and $resolvedBtc) {
+    $buildArgs += "--force-dual-leg-panel"
+    Write-Step "Using --force-dual-leg-panel (dual-leg score for instrument-combo walkforward)"
+}
 & py @buildArgs
 if ($LASTEXITCODE -ne 0) { throw "build_btrack_prophecy_score_from_ohlcv.py exit $LASTEXITCODE" }
 
