@@ -79,6 +79,10 @@ $keys = @(
   # Hostinger MCP / API
   "HOSTINGER_API_TOKEN",
   "API_TOKEN",
+  # Cloudflare API (DNS ensure / token verify; SSOT = workspace .env → sync to User)
+  "CLOUDFLARE_API_TOKEN",
+  "CF_API_TOKEN",
+  "CLOUDFLARE_ZONE_ID",
   # Kakao
   "KAKAO_REST_API_KEY",
   "KAKAO_ADMIN_KEY",
@@ -156,14 +160,23 @@ foreach ($k in $keys) {
   }
 }
 
-# Bluesky / ATProto: scheduled tasks and some paths expect User-scope BSKY_*.
-# Mirror from BLUESKY_* when BSKY_* is absent in .env (same value, canonical name).
 function Get-DotenvVal([string]$key) {
   if ($map.ContainsKey($key) -and -not [string]::IsNullOrWhiteSpace($map[$key])) {
     return $map[$key].Trim()
   }
   return $null
 }
+
+# Cloudflare: scripts prefer CLOUDFLARE_API_TOKEN; allow CF_API_TOKEN-only in .env.
+$cfMain = Get-DotenvVal "CLOUDFLARE_API_TOKEN"
+$cfAlt = Get-DotenvVal "CF_API_TOKEN"
+if ([string]::IsNullOrWhiteSpace($cfMain) -and -not [string]::IsNullOrWhiteSpace($cfAlt)) {
+  [Environment]::SetEnvironmentVariable("CLOUDFLARE_API_TOKEN", $cfAlt, "User")
+  Write-Host "SET_USER:CLOUDFLARE_API_TOKEN (mirrored from CF_API_TOKEN)"
+}
+
+# Bluesky / ATProto: scheduled tasks and some paths expect User-scope BSKY_*.
+# Mirror from BLUESKY_* when BSKY_* is absent in .env (same value, canonical name).
 $bskyH = Get-DotenvVal "BSKY_HANDLE"
 if (-not $bskyH) { $bskyH = Get-DotenvVal "BLUESKY_HANDLE" }
 $bskyP = Get-DotenvVal "BSKY_APP_PASSWORD"
