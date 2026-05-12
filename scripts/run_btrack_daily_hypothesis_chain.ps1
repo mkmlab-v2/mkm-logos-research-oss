@@ -27,6 +27,8 @@
 # Promotion gates: use -PromotionTrackMode dual to evaluate instrument-combo WF + panel-style shared gates (match eval_prophecy_promotion_gates_v1.py).
 # Hypothesis LLM: default local ensemble (no API). Use -UseCloudGemini or env MKM_BTRACK_USE_CLOUD_GEMINI=1 for Gemini (--use-cloud-gemini).
 # Optional model: -GeminiModel or env MKM_BTRACK_GEMINI_MODEL.
+# Contemplation pilot (BTC research lane only): set MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=1 to run
+#   run_btrack_prophecy_contemplation_v1.py after the bundle step and pass --contemplation-json into hypothesis generation.
 # Naver OpenAPI: default OFF (no network call). Use -IncludeNaverOpenApiRefresh when Client ID/Secret and app APIs are ready. -SkipNaverOpenApiRefresh is legacy no-op unless you need explicit "skip" in wrappers.
 # Yang(2015) B-track surface metrics + celebrity benchmark: use -IncludeYang2015SurfaceMetrics (off by default; needs commander JSON for first step).
 # Logos symbolic event promotion chain: use -IncludeLogosSymbolicPromotionChain (research-only; fixture defaults unless explicit JSONL paths provided).
@@ -291,6 +293,14 @@ Write-Host "==> build_btrack_llm_input_bundle.py"
 py scripts/build_btrack_llm_input_bundle.py
 if ($LASTEXITCODE -ne 0) { throw "bundle exit $LASTEXITCODE" }
 
+$contemplationJsonArg = $null
+if (($env:MKM_BTRACK_PROPHECY_CONTEMPLATION_V1 -eq "1") -and ($ResearchEvaluationInstrument -eq "btc")) {
+  Write-Host "==> run_btrack_prophecy_contemplation_v1.py (pilot pre-gate; MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=1)" -ForegroundColor Cyan
+  py scripts/run_btrack_prophecy_contemplation_v1.py
+  if ($LASTEXITCODE -ne 0) { throw "run_btrack_prophecy_contemplation_v1 exit $LASTEXITCODE" }
+  $contemplationJsonArg = "docs/final/artifacts/btrack_prophecy_contemplation_v1_latest.json"
+}
+
 $useGemini = [bool]$UseCloudGemini
 if (-not $useGemini -and ($env:MKM_BTRACK_USE_CLOUD_GEMINI -eq "1")) {
   $useGemini = $true
@@ -303,6 +313,9 @@ if ($useGemini) {
 $hypGenArgs = @("scripts/generate_btrack_hypothesis_prophecy_v1.py")
 if ($ResearchEvaluationInstrument -ne "btc") {
   $hypGenArgs += @("--research-evaluation-instrument", $ResearchEvaluationInstrument)
+}
+if ($null -ne $contemplationJsonArg) {
+  $hypGenArgs += @("--contemplation-json", $contemplationJsonArg)
 }
 if ($useGemini) {
   $hypGenArgs += "--use-cloud-gemini"

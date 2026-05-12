@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm12.local/schemas/btrack_prophecy_contemplation_v1.schema.json",
+  "title": "B-Track prophecy contemplation pilot (pre-generation gate + audit payload)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "pilot_lane",
+    "budget",
+    "inputs_digest",
+    "model_route",
+    "review",
+    "approved_hypothesis_payload",
+    "downstream"
+  ],
+  "properties": {
+    "schema": { "const": "btrack_prophecy_contemplation_v1" },
+    "generated_at_utc": { "type": "string" },
+    "pilot_lane": { "type": "string" },
+    "budget": {
+      "type": "object",
+      "required": ["max_output_tokens", "timeout_sec", "max_rounds"],
+      "properties": {
+        "max_output_tokens": { "type": "integer", "minimum": 0 },
+        "timeout_sec": { "type": "integer", "minimum": 1 },
+        "max_rounds": { "type": "integer", "minimum": 1, "maximum": 8 }
+      },
+      "additionalProperties": false
+    },
+    "inputs_digest": {
+      "type": "object",
+      "required": ["bundle_path", "bundle_sha256"],
+      "properties": {
+        "bundle_path": { "type": "string" },
+        "bundle_sha256": { "type": "string", "minLength": 64, "maxLength": 64 }
+      },
+      "additionalProperties": false
+    },
+    "model_route": { "type": "string" },
+    "review": {
+      "type": "object",
+      "required": ["status", "checks", "redacted_reasoning_summary", "reasoning_digest_sha256"],
+      "properties": {
+        "status": { "type": "string", "enum": ["pass", "fail", "hold"] },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "ok"],
+            "properties": {
+              "id": { "type": "string" },
+              "ok": { "type": "boolean" },
+              "detail": { "type": ["string", "null"] }
+            },
+            "additionalProperties": true
+          }
+        },
+        "redacted_reasoning_summary": { "type": "string", "maxLength": 500 },
+        "reasoning_digest_sha256": { "type": "string", "minLength": 64, "maxLength": 64 }
+      },
+      "additionalProperties": false
+    },
+    "approved_hypothesis_payload": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "downstream": {
+      "type": "object",
+      "required": ["compatible_with"],
+      "properties": {
+        "compatible_with": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

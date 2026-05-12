@@ -9,11 +9,15 @@ Modes:
 
   --llm-backend {ensemble|stub|gemini}  Explicit backend (overrides --gemini/--stub booleans when set).
 
+  Optional --contemplation-json  btrack_prophecy_contemplation_v1 artifact; requires review.status=pass and
+  bundle_sha256 matching the current --bundle file bytes (see run_btrack_prophecy_contemplation_v1.py).
+
 Output: docs/final/artifacts/btrack_hypothesis_prophecy_latest.json
 """
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -41,6 +45,12 @@ FALLBACK_ENSEMBLE_WEIGHTS = {
 
 def _load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _file_sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    h.update(path.read_bytes())
+    return h.hexdigest()
 
 
 def _validate_hypothesis(doc: dict[str, Any]) -> list[str]:
@@ -845,6 +855,15 @@ def main() -> int:
             "build_btrack_prophecy_score_from_ohlcv (kospi / both legs / btc). Default btc."
         ),
     )
+    ap.add_argument(
+        "--contemplation-json",
+        type=Path,
+        default=None,
+        help=(
+            "Optional path to btrack_prophecy_contemplation_v1_latest.json; must review.status=pass "
+            "and bundle_sha256 must match --bundle file bytes."
+        ),
+    )
     args = ap.parse_args()
 
     if args.llm_backend is not None:
@@ -875,6 +894,38 @@ def main() -> int:
         return 1
 
     bundle = _load_json(args.bundle)
+    contemplation_meta: dict[str, Any] | None = None
+    if args.contemplation_json is not None:
+        if not args.contemplation_json.is_file():
+            print(f"error: --contemplation-json not found: {args.contemplation_json}", file=sys.stderr)
+            return 1
+        cdoc = _load_json(args.contemplation_json)
+        if cdoc.get("schema") != "btrack_prophecy_contemplation_v1":
+            print("error: contemplation schema mismatch", file=sys.stderr)
+            return 1
+        review = cdoc.get("review") if isinstance(cdoc.get("review"), dict) else {}
+        if str(review.get("status") or "") != "pass":
+            print(f"error: contemplation review.status must be pass (got {review.get('status')!r})", file=sys.stderr)
+            return 1
+        dig = cdoc.get("inputs_digest") if isinstance(cdoc.get("inputs_digest"), dict) else {}
+        expected_sha = str(dig.get("bundle_sha256") or "")
+        actual_sha = _file_sha256(args.bundle)
+        if not expected_sha or expected_sha != actual_sha:
+            print(
+                "error: contemplation bundle_sha256 mismatch (re-run run_btrack_prophecy_contemplation_v1.py "
+                f"after bundle refresh). expected={expected_sha!r} actual={actual_sha!r}",
+                file=sys.stderr,
+            )
+            return 1
+        try:
+            carel = str(args.contemplation_json.resolve().relative_to(ROOT)).replace("\\", "/")
+        except ValueError:
+            carel = str(args.contemplation_json).replace("\\", "/")
+        contemplation_meta = {
+            "artifact": carel,
+            "review_status": "pass",
+            "reasoning_digest_sha256": review.get("reasoning_digest_sha256"),
+        }
 
     if args.gemini:
         doc = _run_gemini(args.bundle, model=args.model, timeout=args.timeout, bundle=bundle)
@@ -919,6 +970,12 @@ def main() -> int:
             rm["research_evaluation_instrument_note"] = (
                 "OHLCV score split only; execution scope remains BTC-only per btc_only_guard."
             )
+
+    if contemplation_meta is not None:
+        doc.setdefault("provenance", {})
+        prov = doc["provenance"]
+        if isinstance(prov, dict):
+            prov["btrack_prophecy_contemplation_v1"] = contemplation_meta
 
     errs = _validate_hypothesis(doc)
     js_errs = _try_jsonschema(doc, args.schema)
