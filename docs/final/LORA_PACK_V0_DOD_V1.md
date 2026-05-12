@@ -1,6 +1,6 @@
-# LoRA 1팩 v0 — Definition of Done (DoD) v1.1
+# LoRA 1팩 v0 — Definition of Done (DoD) v1.2
 
-**상태:** v1.1 — Pack 0-B **상수·스키마 파일명** 지휘관 확정 (구현·prep·pytest는 후속 PR)  
+**상태:** v1.2 — Pack 0-B **스키마·prep CLI·축소 픽스처·pytest·P0·CI** 앵커 완료; **N=1000 / K=100 전량 JSONL**은 bulk 생성 PR로 잔여.  
 **Fact-Lock:** 구현·경로·통과 여부는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·호출 가능 스크립트·`pytest` exit code·산출 JSON만 근거로 한다.
 
 ---
@@ -17,9 +17,9 @@
 
 | 키 | 값 | 의미 |
 |----|-----|------|
-| **스키마 파일명 (SSOT)** | `docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json` | JSONL **한 행(row)** 검증용 스키마. 파일 본문은 prep PR에서 추가·`verify_p0` 반영. |
-| **N** | **1000** | **학습에 사용하는** 결정론적 골든 Input–Output 쌍의 **최소 행 수**(`split=train` 또는 동등 디렉터리 규약). |
-| **K** | **100** | 학습 파이프라인에 **절대 혼입하지 않는** 홀드아웃·`locked_eval`(또는 동등) **최소 행 수** — 학습 후 JSON 스키마 준수·필드 정합 채점용. (N의 10%와 동일 비율이나, 수치는 **K=100 고정**.) |
+| **스키마 파일명 (SSOT)** | `docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json` | JSONL **한 행(row)** 검증용 스키마 (**디스크 존재**, `verify_p0` 포함). |
+| **N** | **1000** | **학습에 사용하는** 결정론적 골든 Input–Output 쌍의 **최소 행 수**(`split=train` 또는 동등 디렉터리 규약). **현재 레포 샘플은 1행(train)만 — bulk 미달**. |
+| **K** | **100** | 학습 파이프라인에 **절대 혼입하지 않는** 홀드아웃·`locked_eval` **최소 행 수**. **현재 샘플은 1행(locked_eval)만 — bulk 미달**. |
 
 **split 메모:** `train`(≥N) / `validation`·`test`(prep PR에서 비율·seed 고정) / 홀드아웃(≥K) — 전체 행 수는 prep이 정의하되, **출하 DoD 최소선은 N·K만 채우면 됨**.
 
@@ -32,7 +32,7 @@
 | 구분 | 식별명 | SSOT | 비고 |
 |------|--------|------|------|
 | **Pack 0-A (기존·디스크 팩트)** | Control-Integrity LoRA | `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.2.1** | Golden 행은 `mkm_control_integrity_golden_set_v1` 스키마(`prompt` / `expected_response` 등). **명리 JSON·M31과 무관한 지시 준수 벤치**. |
-| **Pack 0-B (본 DoD의 v0 신규 축)** | Myeongri deterministic LoRA v0 | **본 문서** + `myeongri_deterministic_lora_golden_set_v1.schema.json`(추가 예정) | 정답=§0 고정, 상수=§0.1. Prep/게이트는 §1.2.1과 **합선하지 않음**. |
+| **Pack 0-B (본 DoD의 v0 신규 축)** | Myeongri deterministic LoRA v0 | **본 문서** + `myeongri_deterministic_lora_golden_set_v1.schema.json` | 정답=§0 고정, 상수=§0.1. Prep: `scripts/prep_myeongri_deterministic_lora_golden_v1.py`. |
 
 **Pack 0-A 출하(이미 문서화된 최소 DoD):**
 
@@ -46,21 +46,19 @@
 
 ## 2. Pack 0-B — LoRA v0 (명리 결정론 JSON) DoD 체크리스트
 
-아래는 **prep·스키마·게이트가 레포에 생긴 뒤** 채점 가능한 항목이다.
-
 ### 2.1 데이터 (Data)
 
-- [ ] **입력 계약**이 한 줄로 고정됨: 예) `birth_instant_utc` + `iana_tz` (또는 동등 SSOT; `AGENTS.md` 만세력 절 참고).
-- [ ] **정답 계약**이 JSON Schema로 고정됨: **`docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json`** (본 v1.1에서 파일명 확정).
-- [ ] **JSONL** 생성 파이프라인이 스크립트로 재현됨 (수동 편집본만 있으면 불합격).
-- [ ] **split**이 결정론적: `train` / `validation` / `test` / `locked_eval`(또는 동등) — seed·행 수·버전 필드가 산출물에 기록됨.
-- [ ] **규모 DoD:** `train` **≥ 1000**행, 홀드아웃·`locked_eval`(학습 비사용) **≥ 100**행 — §0.1.
+- [x] **입력 계약**이 한 줄로 고정됨: `birth_instant_utc` + `iana_tz` (+ 선택 `is_male`) — 스키마·`prep_myeongri_deterministic_lora_golden_v1.py`·`run_saju_global_birth_v1.py`와 동일 계열.
+- [x] **정답 계약**이 JSON Schema로 고정됨: **`docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json`**.
+- [x] **JSONL** 생성 파이프라인이 스크립트로 재현됨: **`scripts/prep_myeongri_deterministic_lora_golden_v1.py`** (`full_saju`에서 `calculated_at` 제거).
+- [ ] **split**이 결정론적이며 **전 split**이 bulk로 기록됨 — 샘플 픽스처만 존재; seed·버전 필드는 bulk PR에서 필수.
+- [ ] **규모 DoD:** `train` **≥ 1000**행, 홀드아웃·`locked_eval` **≥ 100**행 — §0.1 (**현재 미달**).
 
 ### 2.2 게이트 (Gate / pytest)
 
-- [ ] **스키마 검증**: JSONL 각 행이 `myeongri_deterministic_lora_golden_set_v1` 스키마를 통과 (CI 또는 로컬 `pytest` 한 개 이상).
-- [ ] **엔진 회귀**: 동일 입력에 대해 prep 단계 출력이 엔진 스모크와 충돌 없음 (`run_manseryeok_validation_smoke_v1.py` / `run_saju_global_birth_v1.py` 등 문서화된 스크립트와 정합; 경로는 PR에서 `CONSTITUTION`·본 문서에 포인터).
-- [ ] **합선 금지 테스트**(권장): Pack 0-B 데이터에 M31·렌즈 뮤직 raw가 **정답 필드**로 끼어들지 않음을 검사하는 소형 assert.
+- [x] **스키마 검증**: `py -m pytest tests/test_myeongri_deterministic_lora_golden_set_schema_v1.py` — 픽스처 +`build_golden_row_dict` 정합.
+- [x] **엔진 정합**: 픽스처 1행과 `build_golden_row_dict` 재계산의 `expected_result` 동일.
+- [x] **합선 금지 테스트**: 픽스처에 M31류 키워드 부재(`test_forbidden_supervision_keys_absent`).
 
 ### 2.3 학습·산출 (Train / Artifacts)
 
@@ -77,15 +75,15 @@
 ## 3. “언제 끝나나”에 대한 유일한 답 (일정이 아니라 DoD)
 
 **캘린더 날짜는 SSOT가 아니다.** 진도는 **§2 체크박스가 true가 되는 순서**로만 측정한다.  
-우선순위: **Pack 0-A 회귀가 항상 녹색** → **Pack 0-B 스키마+prep+pytest 최소 세트** → 학습·평가·(선택) 프로모션 게이트.
+우선순위: **Pack 0-A 회귀가 항상 녹색** → **Pack 0-B 스키마+prep+pytest 최소 세트** → **N/K bulk** → 학습·평가·(선택) 프로모션 게이트.
 
 ---
 
-## 4. 다음 액션 (v1.1 이후)
+## 4. 다음 액션 (v1.2 이후)
 
-1. Architect: **`myeongri_deterministic_lora_golden_set_v1.schema.json`** 초안 + prep 스크립트 + `pytest` 1개.  
-2. Sentinel: 스키마·prep 경로를 `verify_p0`·CI에 **파일 존재 후** 최소 추가.  
-3. 지휘관: N/K 변경 시 **본 문서 §0.1만** 개정하고 커밋(일정표가 아닌 유일한 상수 SSOT).
+1. Architect: **seed 고정 bulk JSONL** 생성( train≥1000 · locked_eval≥100 ) + `split`·`dataset_version` 메타.  
+2. Sentinel: 대용량 JSONL은 `.gitignore` 또는 Vault 규약에 맞추고, 레포에는 **생성 스크립트·소표본·해시 매니페스트**만 유지할지 정책 확정.  
+3. 지휘관: N/K 변경 시 **§0.1만** 개정 후 커밋.
 
 ---
 
@@ -93,9 +91,9 @@
 
 ```json
 {
-  "evidence_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §1.2.1·Pack 0-B 보강; docs/final/LORA_PACK_V0_DOD_V1.md",
+  "evidence_path": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §1.2.1·Pack 0-B 보강; docs/final/LORA_PACK_V0_DOD_V1.md; docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json; scripts/prep_myeongri_deterministic_lora_golden_v1.py; tests/test_myeongri_deterministic_lora_golden_set_schema_v1.py",
   "validated_at": "2026-05-13",
   "confidence_level": "A",
-  "note": "스키마 디스크 파일은 다음 PR; 상수·파일명은 v1.1에서 확정."
+  "note": "N/K bulk 미달 — 샘플·게이트만 충족."
 }
 ```

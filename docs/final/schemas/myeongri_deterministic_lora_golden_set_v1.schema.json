@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json",
+  "title": "Myeongri deterministic LoRA golden set v1 (JSONL row)",
+  "description": "One JSONL row: birth_instant_utc + iana_tz inputs and expected saju_global_birth_result_v1 output (deterministic; full_saju must omit calculated_at). Pack 0-B only — not Control-Integrity.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "sample_id",
+    "split",
+    "birth_instant_utc",
+    "iana_tz",
+    "expected_result"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "myeongri_deterministic_lora_golden_set_v1"
+    },
+    "sample_id": {
+      "type": "string",
+      "pattern": "^mdl-gs-v1-[0-9]{4}$"
+    },
+    "split": {
+      "type": "string",
+      "enum": ["train", "validation", "test", "locked_eval"]
+    },
+    "birth_instant_utc": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+    },
+    "iana_tz": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "is_male": {
+      "type": "boolean",
+      "description": "Optional; defaults false in engine if omitted in prep."
+    },
+    "prompt_stub": {
+      "type": "string",
+      "description": "Optional instruction hint for LoRA; not validated against engine."
+    },
+    "expected_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "version", "resolution", "full_saju"],
+      "properties": {
+        "schema": {
+          "type": "string",
+          "const": "saju_global_birth_result_v1"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "resolution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "birth_instant_utc",
+            "iana_tz",
+            "local_iso",
+            "engine_inputs",
+            "warnings",
+            "meta"
+          ],
+          "properties": {
+            "birth_instant_utc": { "type": "string" },
+            "iana_tz": { "type": "string" },
+            "local_iso": { "type": "string" },
+            "engine_inputs": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["year", "month", "day", "hour"],
+              "properties": {
+                "year": { "type": "integer" },
+                "month": { "type": "integer" },
+                "day": { "type": "integer" },
+                "hour": { "type": "integer" }
+              }
+            },
+            "warnings": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "meta": { "type": "object" }
+          }
+        },
+        "full_saju": {
+          "type": "object",
+          "description": "PerfectManseryeok.calculate_full_saju_perfect output without calculated_at (determinism).",
+          "additionalProperties": true,
+          "required": [
+            "birth_info",
+            "saju",
+            "ilgan",
+            "daewoon",
+            "daewoon_qiyun_v1",
+            "verification",
+            "calculation_method",
+            "note"
+          ],
+          "properties": {
+            "birth_info": { "type": "object" },
+            "saju": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["year", "month", "day", "hour"],
+              "properties": {
+                "year": { "type": "string" },
+                "month": { "type": "string" },
+                "day": { "type": "string" },
+                "hour": { "type": "string" }
+              }
+            },
+            "ilgan": { "type": "string" },
+            "daewoon": { "type": "array", "minItems": 1 },
+            "daewoon_qiyun_v1": { "type": "object" },
+            "verification": { "type": "object" },
+            "calculation_method": { "type": "string" },
+            "note": { "type": "string" }
+          }
+        }
+      }
+    }
+  }
+}
