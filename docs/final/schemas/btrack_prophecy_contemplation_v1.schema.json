@@ -73,6 +73,23 @@
         "compatible_with": { "type": "string" }
       },
       "additionalProperties": false
+    },
+    "gemini_review": {
+      "type": "object",
+      "required": ["used", "model", "thinking_budget", "contemplation_ok", "risk_flags"],
+      "properties": {
+        "used": { "type": "boolean" },
+        "model": { "type": ["string", "null"] },
+        "thinking_budget": { "type": ["integer", "null"] },
+        "contemplation_ok": { "type": ["boolean", "null"] },
+        "risk_flags": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 200 },
+          "maxItems": 24
+        },
+        "error": { "type": ["string", "null"], "maxLength": 2000 }
+      },
+      "additionalProperties": false
     }
   }
 }

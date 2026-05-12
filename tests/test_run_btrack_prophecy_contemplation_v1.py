@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -30,6 +31,7 @@ def test_contemplation_passes_minimal_bundle(tmp_path: Path) -> None:
             "--output",
             str(out),
             "--skip-audit-log",
+            "--skip-gemini-reflect",
         ],
         cwd=str(_ROOT),
         capture_output=True,
@@ -59,7 +61,16 @@ def test_contemplation_fails_on_btc_scope_violation(tmp_path: Path) -> None:
     )
     out = tmp_path / "contemplation_bad.json"
     cp = subprocess.run(
-        [sys.executable, str(_SCRIPT), "--bundle", str(b), "--output", str(out), "--skip-audit-log"],
+        [
+            sys.executable,
+            str(_SCRIPT),
+            "--bundle",
+            str(b),
+            "--output",
+            str(out),
+            "--skip-audit-log",
+            "--skip-gemini-reflect",
+        ],
         cwd=str(_ROOT),
         capture_output=True,
         text=True,
@@ -74,7 +85,16 @@ def test_generator_rejects_contemplation_bundle_sha_mismatch(tmp_path: Path) -> 
     b.write_text(json.dumps({"schema": "btrack_llm_input_bundle_v1", "artifacts": {}}, indent=2), encoding="utf-8")
     out_c = tmp_path / "contemplation.json"
     cp1 = subprocess.run(
-        [sys.executable, str(_SCRIPT), "--bundle", str(b), "--output", str(out_c), "--skip-audit-log"],
+        [
+            sys.executable,
+            str(_SCRIPT),
+            "--bundle",
+            str(b),
+            "--output",
+            str(out_c),
+            "--skip-audit-log",
+            "--skip-gemini-reflect",
+        ],
         cwd=str(_ROOT),
         capture_output=True,
         text=True,
@@ -110,7 +130,16 @@ def test_generator_stub_includes_contemplation_provenance_when_aligned(tmp_path:
     b.write_text(json.dumps({"schema": "btrack_llm_input_bundle_v1", "artifacts": {}}, indent=2), encoding="utf-8")
     out_c = tmp_path / "contemplation.json"
     cp1 = subprocess.run(
-        [sys.executable, str(_SCRIPT), "--bundle", str(b), "--output", str(out_c), "--skip-audit-log"],
+        [
+            sys.executable,
+            str(_SCRIPT),
+            "--bundle",
+            str(b),
+            "--output",
+            str(out_c),
+            "--skip-audit-log",
+            "--skip-gemini-reflect",
+        ],
         cwd=str(_ROOT),
         capture_output=True,
         text=True,
@@ -138,3 +167,32 @@ def test_generator_stub_includes_contemplation_provenance_when_aligned(tmp_path:
     prov = hyp.get("provenance") if isinstance(hyp.get("provenance"), dict) else {}
     assert "btrack_prophecy_contemplation_v1" in prov
     assert prov["btrack_prophecy_contemplation_v1"].get("review_status") == "pass"
+
+
+def test_contemplation_gemini_requested_without_api_key_fails(tmp_path: Path) -> None:
+    b = tmp_path / "bundle.json"
+    b.write_text(json.dumps({"schema": "btrack_llm_input_bundle_v1", "artifacts": {}}, indent=2), encoding="utf-8")
+    out = tmp_path / "contemplation.json"
+    env = os.environ.copy()
+    for k in ("GEMINI_API_KEY", "GOOGLE_API_KEY", "GOOGLE_AI_STUDIO_API_KEY"):
+        env.pop(k, None)
+    env["MKM_BTRACK_CONTEMPLATION_USE_GEMINI"] = "1"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_SCRIPT),
+            "--bundle",
+            str(b),
+            "--output",
+            str(out),
+            "--skip-audit-log",
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        env=env,
+    )
+    assert cp.returncode == 1, cp.stderr + cp.stdout
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("review", {}).get("status") == "fail"
+    assert doc.get("model_route") == "local_bundle_guard_v1+gemini_reflect_v1"

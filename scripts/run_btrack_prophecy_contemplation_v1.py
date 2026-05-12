@@ -2,15 +2,21 @@
 """B-track prophecy pilot: pre-generation contemplation gate (local bundle guards + digest).
 
 Writes docs/final/artifacts/btrack_prophecy_contemplation_v1_latest.json.
-No cloud LLM in v1; budgets are recorded for audit and future Gemini/thinking paths.
+
+1) Local bundle guards (always): BTC scope, artifacts shape.
+2) Optional Gemini reflect (cost): MKM_BTRACK_CONTEMPLATION_USE_GEMINI=1 and API key; JSON-only contract.
 
 Invoked from run_btrack_daily_hypothesis_chain.ps1 when -ResearchEvaluationInstrument is btc unless
 MKM_BTRACK_PROPHECY_CONTEMPLATION_V1 is 0 or false (opt-out).
 
 Env (optional):
-  MKM_BTRACK_CONTEMPLATION_TIMEOUT_SEC  (default 30, wall-clock ceiling for future I/O)
-  MKM_BTRACK_CONTEMPLATION_MAX_OUTPUT_TOKENS (default 0 = not used for local route)
-  MKM_BTRACK_CONTEMPLATION_MAX_ROUNDS (default 1)
+  MKM_BTRACK_CONTEMPLATION_TIMEOUT_SEC — wall-clock cap for the whole script (default 30; raise for Gemini).
+  MKM_BTRACK_CONTEMPLATION_MAX_OUTPUT_TOKENS — recorded in budget JSON (default 0).
+  MKM_BTRACK_CONTEMPLATION_MAX_ROUNDS — recorded (default 1).
+  MKM_BTRACK_CONTEMPLATION_USE_GEMINI — truthy to run Gemini after local pass (strict fail if no API key).
+  MKM_BTRACK_CONTEMPLATION_GEMINI_MODEL — default gemini-2.5-flash
+  MKM_BTRACK_CONTEMPLATION_THINKING_BUDGET — passed to ThinkingConfig; 0 disables thinking budget.
+  MKM_BTRACK_CONTEMPLATION_GEMINI_TIMEOUT_SEC — HTTP-ish ceiling for the Gemini call (default 120).
 """
 from __future__ import annotations
 
@@ -18,6 +24,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 import time
@@ -44,6 +51,45 @@ def _file_sha256(path: Path) -> str:
     h = hashlib.sha256()
     h.update(path.read_bytes())
     return h.hexdigest()
+
+
+def _env_truthy(name: str) -> bool:
+    v = str(os.environ.get(name) or "").strip().lower()
+    return v in ("1", "true", "yes", "on")
+
+
+def _env_int(name: str, default: int) -> int:
+    raw = os.environ.get(name)
+    if raw is None or str(raw).strip() == "":
+        return default
+    try:
+        return int(raw)
+    except ValueError:
+        return default
+
+
+def _gemini_api_key() -> str | None:
+    return (
+        os.getenv("GEMINI_API_KEY")
+        or os.getenv("GOOGLE_AI_STUDIO_API_KEY")
+        or os.getenv("GOOGLE_API_KEY")
+    )
+
+
+def _extract_json_blob(text: str) -> dict[str, Any] | None:
+    text = (text or "").strip()
+    m = re.search(r"```(?:json)?\s*([\s\S]*?)```", text)
+    if m:
+        try:
+            o = json.loads(m.group(1).strip())
+            return o if isinstance(o, dict) else None
+        except json.JSONDecodeError:
+            pass
+    try:
+        o = json.loads(text)
+        return o if isinstance(o, dict) else None
+    except json.JSONDecodeError:
+        return None
 
 
 def _collect_btc_scope_violations(bundle: dict[str, Any]) -> list[str]:
@@ -122,6 +168,70 @@ def _append_audit(
     subprocess.run(cmd, cwd=str(repo), capture_output=True, text=True, check=False)
 
 
+def _run_gemini_reflect(
+    bundle: dict[str, Any],
+    *,
+    model: str,
+    thinking_budget: int,
+    timeout_sec: int,
+) -> dict[str, Any]:
+    """Call Gemini; return dict with contemplation_ok, risk_flags, redacted_summary or raises."""
+    key = _gemini_api_key()
+    if not key:
+        raise RuntimeError("missing_gemini_api_key")
+
+    from google import genai
+    from google.genai import types
+
+    bundle_text = json.dumps(bundle, ensure_ascii=False, indent=2)[:80_000]
+    prompt = f"""You are a B-track research-only pre-flight reviewer (not live trading, not medical).
+Read the JSON bundle snapshot. Reply with a single JSON object only (no markdown fences).
+
+Required JSON shape:
+{{
+  "contemplation_ok": true or false,
+  "risk_flags": ["short snake_case strings, max 12 items"],
+  "redacted_summary": "one or two English sentences; no dollar amounts, no trade instructions"
+}}
+
+Set contemplation_ok=false if the bundle suggests non-BTC execution gating, medical claims, or contradictions
+with a strict BTC-only research lane. Otherwise true.
+
+Bundle JSON:
+{bundle_text}
+"""
+    timeout_ms = max(10_000, int(timeout_sec) * 1000)
+    client = genai.Client(api_key=key, vertexai=False, http_options=types.HttpOptions(timeout=timeout_ms))
+    cfg_kw: dict[str, Any] = {"temperature": 0.2}
+    if thinking_budget > 0:
+        cfg_kw["thinking_config"] = types.ThinkingConfig(thinking_budget=int(thinking_budget))
+    config = types.GenerateContentConfig(**cfg_kw)
+    resp = client.models.generate_content(
+        model=model,
+        contents=[types.Part.from_text(text=prompt)],
+        config=config,
+    )
+    raw = (resp.text or "").strip()
+    blob = _extract_json_blob(raw)
+    if not blob:
+        raise RuntimeError(f"unparseable_gemini_json:{raw[:800]!r}")
+    ok = bool(blob.get("contemplation_ok"))
+    flags = blob.get("risk_flags")
+    if not isinstance(flags, list):
+        flags = []
+    clean_flags: list[str] = []
+    for x in flags[:24]:
+        if isinstance(x, str) and x.strip():
+            clean_flags.append(x.strip()[:200])
+    summary = blob.get("redacted_summary")
+    summary_s = str(summary).strip()[:400] if summary is not None else ""
+    return {
+        "contemplation_ok": ok,
+        "risk_flags": clean_flags,
+        "redacted_summary": summary_s,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--bundle", type=Path, default=DEFAULT_BUNDLE)
@@ -129,21 +239,20 @@ def main() -> int:
     ap.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
     ap.add_argument("--repo-root", type=Path, default=ROOT)
     ap.add_argument("--skip-audit-log", action="store_true")
+    ap.add_argument(
+        "--skip-gemini-reflect",
+        action="store_true",
+        help="Skip optional Gemini reflect even if MKM_BTRACK_CONTEMPLATION_USE_GEMINI is set (tests/offline).",
+    )
     args = ap.parse_args()
 
     t0 = time.monotonic()
-    try:
-        timeout_sec = max(1, int(os.environ.get("MKM_BTRACK_CONTEMPLATION_TIMEOUT_SEC", "30")))
-    except ValueError:
-        timeout_sec = 30
-    try:
-        max_out = max(0, int(os.environ.get("MKM_BTRACK_CONTEMPLATION_MAX_OUTPUT_TOKENS", "0")))
-    except ValueError:
-        max_out = 0
-    try:
-        max_rounds = max(1, min(8, int(os.environ.get("MKM_BTRACK_CONTEMPLATION_MAX_ROUNDS", "1"))))
-    except ValueError:
-        max_rounds = 1
+    timeout_sec = max(1, _env_int("MKM_BTRACK_CONTEMPLATION_TIMEOUT_SEC", 30))
+    max_out = max(0, _env_int("MKM_BTRACK_CONTEMPLATION_MAX_OUTPUT_TOKENS", 0))
+    max_rounds = max(1, min(8, _env_int("MKM_BTRACK_CONTEMPLATION_MAX_ROUNDS", 1)))
+    gemini_timeout = max(10, _env_int("MKM_BTRACK_CONTEMPLATION_GEMINI_TIMEOUT_SEC", 120))
+    gemini_model = (os.environ.get("MKM_BTRACK_CONTEMPLATION_GEMINI_MODEL") or "gemini-2.5-flash").strip()
+    thinking_budget = max(0, _env_int("MKM_BTRACK_CONTEMPLATION_THINKING_BUDGET", 2048))
 
     if not args.bundle.is_file():
         print(f"error: bundle missing: {args.bundle}", file=sys.stderr)
@@ -169,11 +278,70 @@ def main() -> int:
         }
     )
 
+    local_ok = all(bool(c.get("ok")) for c in checks)
+    gemini_review: dict[str, Any] | None = None
+    gr_summary: str | None = None
+    model_route = "local_bundle_guard_v1"
+
+    use_gemini = _env_truthy("MKM_BTRACK_CONTEMPLATION_USE_GEMINI") and not args.skip_gemini_reflect
+    if use_gemini and local_ok:
+        model_route = "local_bundle_guard_v1+gemini_reflect_v1"
+        api_key = _gemini_api_key()
+        if not api_key:
+            checks.append(
+                {
+                    "id": "gemini_api_key_present",
+                    "ok": False,
+                    "detail": "MKM_BTRACK_CONTEMPLATION_USE_GEMINI set but no GEMINI_API_KEY/GOOGLE_API_KEY",
+                }
+            )
+        else:
+            try:
+                gr = _run_gemini_reflect(
+                    bundle,
+                    model=gemini_model,
+                    thinking_budget=thinking_budget,
+                    timeout_sec=gemini_timeout,
+                )
+                gr_summary = str(gr.get("redacted_summary") or "").strip() or None
+                gemini_review = {
+                    "used": True,
+                    "model": gemini_model,
+                    "thinking_budget": thinking_budget if thinking_budget > 0 else None,
+                    "contemplation_ok": gr.get("contemplation_ok"),
+                    "risk_flags": gr.get("risk_flags") or [],
+                    "error": None,
+                }
+                checks.append({"id": "gemini_reflect_json_contract", "ok": True, "detail": None})
+                checks.append(
+                    {
+                        "id": "gemini_reflect_contemplation_ok",
+                        "ok": bool(gr.get("contemplation_ok")),
+                        "detail": None if gr.get("contemplation_ok") else "llm_flagged_contemplation_ok_false",
+                    }
+                )
+            except Exception as e:  # noqa: BLE001
+                gemini_review = {
+                    "used": True,
+                    "model": gemini_model,
+                    "thinking_budget": thinking_budget if thinking_budget > 0 else None,
+                    "contemplation_ok": None,
+                    "risk_flags": [],
+                    "error": str(e)[:2000],
+                }
+                checks.append(
+                    {
+                        "id": "gemini_reflect_call_ok",
+                        "ok": False,
+                        "detail": str(e)[:500],
+                    }
+                )
+
     elapsed = time.monotonic() - t0
     wall_ok = elapsed <= float(timeout_sec)
     checks.append(
         {
-            "id": "wall_clock_within_timeout_sec",
+            "id": "total_wall_clock_within_timeout_sec",
             "ok": wall_ok,
             "detail": f"elapsed_sec={elapsed:.3f}" if wall_ok else f"elapsed_sec={elapsed:.3f}>cap={timeout_sec}",
         }
@@ -181,17 +349,31 @@ def main() -> int:
 
     all_ok = all(bool(c.get("ok")) for c in checks)
     status = "pass" if all_ok else "fail"
-    digest_src = json.dumps(
-        {"bundle_sha256": bundle_sha, "checks": checks, "violations": violations},
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-    )
+    digest_src_obj: dict[str, Any] = {
+        "bundle_sha256": bundle_sha,
+        "checks": checks,
+        "violations": violations,
+    }
+    if gemini_review is not None:
+        digest_src_obj["gemini_review"] = gemini_review
+    digest_src = json.dumps(digest_src_obj, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     digest = hashlib.sha256(digest_src.encode("utf-8")).hexdigest()
-    summary = (
-        f"local_bundle_guard_v1 model_route=local_bundle_guard_v1 status={status} "
+
+    local_summary = (
+        f"local_bundle_guard_v1 status_local={'pass' if local_ok else 'fail'} "
         f"checks_ok={sum(1 for c in checks if c.get('ok'))}/{len(checks)} violations_n={len(violations)}"
-    )[:500]
+    )
+    if gemini_review and gemini_review.get("used"):
+        if gemini_review.get("error"):
+            llm_s = f"gemini_err:{str(gemini_review.get('error'))[:80]}"
+        elif gr_summary:
+            llm_s = f"gemini:{gr_summary[:220]}"
+        else:
+            llm_s = "gemini_ok" if gemini_review.get("contemplation_ok") else "gemini_flagged"
+        tail = f" | {llm_s}"
+        summary = (local_summary + tail)[:500]
+    else:
+        summary = local_summary[:500]
 
     doc: dict[str, Any] = {
         "schema": SCHEMA_ID,
@@ -206,7 +388,7 @@ def main() -> int:
             "bundle_path": bundle_rel,
             "bundle_sha256": bundle_sha,
         },
-        "model_route": "local_bundle_guard_v1",
+        "model_route": model_route,
         "review": {
             "status": status,
             "checks": checks,
@@ -216,6 +398,8 @@ def main() -> int:
         "approved_hypothesis_payload": {},
         "downstream": {"compatible_with": "btrack_hypothesis_prophecy_v1"},
     }
+    if gemini_review is not None:
+        doc["gemini_review"] = gemini_review
 
     schema_errs = _try_jsonschema(doc, args.schema)
     if schema_errs:

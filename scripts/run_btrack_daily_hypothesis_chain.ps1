@@ -30,6 +30,7 @@
 # Contemplation pilot (BTC research lane): **ON by default** when -ResearchEvaluationInstrument is btc.
 # Opt-out only: set MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=0 (or false) to skip run_btrack_prophecy_contemplation_v1.
 # multi/kospi lanes never run this gate.
+# Optional cost step: MKM_BTRACK_CONTEMPLATION_USE_GEMINI=1 (+ API key) runs a short Gemini JSON reflect after local pass; raise MKM_BTRACK_CONTEMPLATION_TIMEOUT_SEC if needed.
 # Naver OpenAPI: default OFF (no network call). Use -IncludeNaverOpenApiRefresh when Client ID/Secret and app APIs are ready. -SkipNaverOpenApiRefresh is legacy no-op unless you need explicit "skip" in wrappers.
 # Yang(2015) B-track surface metrics + celebrity benchmark: use -IncludeYang2015SurfaceMetrics (off by default; needs commander JSON for first step).
 # Logos symbolic event promotion chain: use -IncludeLogosSymbolicPromotionChain (research-only; fixture defaults unless explicit JSONL paths provided).
