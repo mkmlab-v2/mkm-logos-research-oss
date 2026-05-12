@@ -23,12 +23,28 @@ def test_build_lens_music_prompt_poc_threshold_policy_v1(tmp_path):
         encoding="utf-8",
     )
     out = tmp_path / "policy.json"
+    rec = tmp_path / "recommended.json"
+    rec.write_text(
+        json.dumps(
+            {
+                "schema": "lens_music_prompt_poc_threshold_recommended_v1",
+                "policy_targets": {
+                    "min_samples": 36,
+                    "style_delta_rate_min": 0.5,
+                    "overlay_style_match_rate_min": 0.85,
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
     r = subprocess.run(
         [
             sys.executable,
             str(ROOT / "scripts/build_lens_music_prompt_poc_threshold_policy_v1.py"),
             "--poc-json",
             str(metric_json),
+            "--recommended-json",
+            str(rec),
             "--out",
             str(out),
         ],
@@ -40,6 +56,7 @@ def test_build_lens_music_prompt_poc_threshold_policy_v1(tmp_path):
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["schema"] == "lens_music_prompt_poc_threshold_policy_v1"
     assert doc["state"] == "GO"
+    assert doc["policy_targets"]["min_samples"] == 36
     assert doc["checks"]["samples_pass"] is True
     assert doc["checks"]["style_delta_pass"] is True
     assert doc["checks"]["style_match_pass"] is True

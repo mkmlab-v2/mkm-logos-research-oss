@@ -11,6 +11,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_POC = ROOT / "reports" / "lens_music_prompt_poc_metric_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "lens_music_prompt_poc_threshold_policy_latest.json"
+DEFAULT_RECOMMENDED = ROOT / "docs" / "final" / "artifacts" / "lens_music_prompt_poc_threshold_recommended_latest.json"
 
 
 def _utc_now() -> str:
@@ -30,6 +31,7 @@ def _read_json(path: Path) -> dict[str, Any]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--poc-json", type=Path, default=DEFAULT_POC)
+    ap.add_argument("--recommended-json", type=Path, default=DEFAULT_RECOMMENDED)
     ap.add_argument("--out", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--min-samples-floor", type=int, default=30)
     ap.add_argument("--style-delta-floor", type=float, default=0.30)
@@ -37,6 +39,7 @@ def main() -> int:
     args = ap.parse_args()
 
     poc = _read_json(args.poc_json)
+    rec = _read_json(args.recommended_json)
     kpi = dict(poc.get("kpi") or {})
     targets = dict(poc.get("targets") or {})
     result = dict(poc.get("result") or {})
@@ -45,9 +48,22 @@ def main() -> int:
     style_delta = float(kpi.get("style_delta_rate") or 0.0)
     style_match = float(kpi.get("overlay_style_match_rate") or 0.0)
 
-    effective_min_samples = max(int(args.min_samples_floor), int(targets.get("min_samples") or 0))
-    effective_style_delta = max(float(args.style_delta_floor), float(targets.get("style_delta_rate_min") or 0.0))
-    effective_style_match = max(float(args.style_match_floor), float(targets.get("overlay_style_match_rate_min") or 0.0))
+    rec_targets = dict(rec.get("policy_targets") or {})
+    effective_min_samples = max(
+        int(args.min_samples_floor),
+        int(targets.get("min_samples") or 0),
+        int(rec_targets.get("min_samples") or 0),
+    )
+    effective_style_delta = max(
+        float(args.style_delta_floor),
+        float(targets.get("style_delta_rate_min") or 0.0),
+        float(rec_targets.get("style_delta_rate_min") or 0.0),
+    )
+    effective_style_match = max(
+        float(args.style_match_floor),
+        float(targets.get("overlay_style_match_rate_min") or 0.0),
+        float(rec_targets.get("overlay_style_match_rate_min") or 0.0),
+    )
 
     checks = {
         "samples_pass": samples >= effective_min_samples,
@@ -61,6 +77,7 @@ def main() -> int:
         "schema": "lens_music_prompt_poc_threshold_policy_v1",
         "generated_at_utc": _utc_now(),
         "source_poc_metric_json": str(args.poc_json).replace("\\", "/"),
+        "source_recommended_json": str(args.recommended_json).replace("\\", "/"),
         "policy_targets": {
             "min_samples": effective_min_samples,
             "style_delta_rate_min": round(effective_style_delta, 6),
