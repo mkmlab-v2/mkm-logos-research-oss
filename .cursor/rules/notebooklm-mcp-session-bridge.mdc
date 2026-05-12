@@ -1,0 +1,30 @@
+---
+title: NotebookLM MCP — 세션·UI·인증 브릿지 (재발방지)
+alwaysApply: true
+priority: 5
+---
+
+## ALWAYS (에이전트)
+
+- **도구 주입:** Cursor Settings에서 NotebookLM MCP가 **녹색**이어도, **이 채팅에 MCP 도구가 주입되지 않으면** `call_mcp_tool` / NotebookLM 도구는 **사용 불가**다. “UI 연결됨”만으로 단정하지 말고, **도구 목록·호출 성공**으로만 본다.
+- **첫 턴 자가진단(재발 즉시 감지):** NotebookLM이 필요한 **첫 호출**에 `notebooklm.get_health`(또는 `server_info`)를 시도한다. `tool_not_found`/timeout이면 **그 턴 안에 사용자에게 보고**(서버는 살아있어도 채팅 카탈로그 미주입 가능)하고, **로컬 SSOT(`CONSTITUTION_*`·디스크 산출물) 폴백**으로 전환한다. 추측·"이미 인증된 것처럼" 서술 금지.
+- **버전 핀(재발 방지 v1):** `.cursor/mcp.json`의 `notebooklm`은 **`npx -y …@latest` 금지**. `node` 직접 실행 + 글로벌 핀 버전(`%APPDATA%\npm\node_modules\notebooklm-mcp\dist\index.js`, env `MKM_NOTEBOOKLM_MCP_PINNED_VERSION`로 표기)을 쓴다. 매 채팅 시작 때 npm 다운로드/버전 변동에 의한 핸드셰이크 실패를 제거한다.
+- **좀비 정리:** 12시간 이상 살아있는 `notebooklm-mcp` node/cmd 프로세스는 새 핸드셰이크를 막을 수 있다. **로그오프 시 자동 정리** 작업 `MKM_RepairNotebookLmMcpStale_OnLogoff`(`scripts/register_notebooklm_mcp_repair_logoff_task.ps1`)·**주간 자동 정리** `MKM_NotebookLmMcpWeeklyHygiene`(`scripts/Register-NotebookLmMcpWeeklyHygieneTask.ps1`)이 운영. 수동: `scripts/repair_notebooklm_mcp_auth_stuck.ps1 [-StaleNodeMaxHours <h>] [-WhatIfOnly]`.
+- **웹 로그인 ≠ MCP 인증 [FACT]:** 지휘관이 **내장 브라우저·일반 Chrome**에서 NotebookLM에 로그인한 것과, MCP가 쓰는 **자동화 Chrome**은 **서로 다른 프로필**이다(Windows: 통상 `%APPDATA%\notebooklm-mcp\chrome_profile\`). 그래서 화면에 로그인돼 있어도 `get_health`의 `authenticated`가 **false**일 수 있다 — **정상일 수 있음(격리)**.
+- **완화(레포):** `.cursor/mcp.json` → `notebooklm` → `env`에 **`HEADLESS`=`false`** (로그인 창 표시). 설정 변경 후 **MCP/Cursor Reload** 없으면 이전 프로세스가 옛 env를 쓴다.
+- **1회 수동:** 라이브 질의·자동화가 필요하면 MCP **`setup_auth`**로 전용 프로필에 로그인(최초/세션 꼬임 시). 이후 판정은 **`get_health`**.
+- **조직 기본 Google 계정 (NotebookLM·MCP):** MKM/운영 노트북·`notebooklm-mcp` **자동화 Chrome**에는 **`admin@no1kmedi.com`(Workspace)** 만 쓴다. 개인 Gmail 등 다른 계정이 남아 있으면 **`re_auth`(계정 전환·쿼터 잠금 복구)** 또는 **`setup_auth`**로 전용 프로필에서 `admin@no1kmedi.com`으로 다시 로그인한다. Cursor **내장 브라우저·일반 Chrome**은 별 프로필이므로, 지휘관이 UI로 NotebookLM을 볼 때도 **동일 계정으로 맞추는 것은 수동**이다(레포가 이메일을 주입하지 않음).
+- **SSOT:** `docs/NotebookLM_sources_manifest.md` — “MCP `notebooklm-mcp` 인증” 절. 구현·게이트는 여전히 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트.
+
+## NEVER
+
+- NotebookLM UI 또는 브리핑만으로 **“MCP도 이미 인증됨”**을 단정하지 않는다.
+- 웹과 동일 세션을 **자동으로 공유**하는 것처럼 서술하지 않는다(구조상 기본 비공유).
+
+## OPTIONAL
+
+- **3채널 동기화 오해 방지 (Vault ≠ 클라우드 ≠ MCP):** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-NotebookLmSyncTriage_v1.ps1` — 한 화면에 A/B/C 상태 요약 + `reports/notebooklm_sync_triage_latest.json`; Vault까지 돌리려면 `-RunMirror`. 상세 표는 `docs/NotebookLM_sources_manifest.md` 「동기화 오해 · 재발 방지」.
+- 로컬 점검: `powershell -File scripts/check_notebooklm_mcp_prereqs.ps1` (글로벌 설치/버전 핀/좀비 수까지 게이트)
+- 좀비 강제 정리: `powershell -File scripts/repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12`
+- 로그오프 자동 정리 작업 등록/제거: `powershell -File scripts/register_notebooklm_mcp_repair_logoff_task.ps1 [-Remove]`
+- 원샷 프로브(JSON): `powershell -File scripts/Invoke-McpHygieneProbe.ps1 [-Repair] [-OutJson reports/mcp_hygiene_probe_latest.json]`

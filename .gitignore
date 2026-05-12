@@ -2,6 +2,8 @@
 .cursor/**
 !.cursor/current_work_status.md
 !.cursor/mcp.json
+# Org NotebookLM account policy (alwaysApply rule; share across clones)
+!.cursor/rules/notebooklm-mcp-session-bridge.mdc
 
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)
