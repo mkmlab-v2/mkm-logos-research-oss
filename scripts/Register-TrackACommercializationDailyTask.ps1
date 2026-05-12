@@ -10,6 +10,7 @@
 .NOTES
   Default GateMode is warning (band gate exit 3 does not fail the task).
   Register-ScheduledTask may require an elevated PowerShell on some hosts; use -DryRun to inspect.
+  After register: Verify-TrackACommercializationDailyScheduledTask_v1.ps1 (-Strict optional).
 #>
 param(
     [switch]$Remove,

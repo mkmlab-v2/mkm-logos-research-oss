@@ -591,6 +591,7 @@ $required = @(
     "scripts\Run-TrackAMeteringSummary.ps1",
     "scripts\Run-TrackAMeteringWeeklyReport.ps1",
     "scripts\Register-TrackACommercializationDailyTask.ps1",
+    "scripts\Verify-TrackACommercializationDailyScheduledTask_v1.ps1",
     "tests\fixtures\track_a_metering_log_smoke_v1.jsonl",
     "docs\final\artifacts\MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json"
 )
