@@ -77,10 +77,6 @@ $executionIssueCount = 0
 foreach ($t in $registry.tasks) {
     $name = [string]$t.name
     $expected = Normalize-Status ([string]$t.expected_status)
-    $optional = $false
-    if ($t.PSObject.Properties.Name -contains "optional") {
-        $optional = [bool]$t.optional
-    }
     $snap = Get-TaskSnapshot -TaskName $name
     $actual = Normalize-Status ([string]$snap.status)
     $drift = $true
@@ -88,15 +84,9 @@ foreach ($t in $registry.tasks) {
         $drift = $false
     }
 
-    $skippedOptionalMissing = ($optional -and (-not $snap.exists))
-    if ($skippedOptionalMissing) {
-        # Optional deck: missing task is not drift (machine may not have registered extended automation).
-        $drift = $false
-    }
-
     $action = "none"
     $enforcedOk = $null
-    if ($Enforce -and $snap.exists -and $drift -and -not $skippedOptionalMissing) {
+    if ($Enforce -and $snap.exists -and $drift) {
         if ($expected -eq "Disabled") {
             schtasks /Change /TN $name /DISABLE > $null 2>&1
             $action = "disable"
@@ -133,9 +123,6 @@ foreach ($t in $registry.tasks) {
             $executionHealthy = Is-LastResultSuccess -value ([string]$snap.last_result)
         }
     }
-    if ($skippedOptionalMissing) {
-        $executionHealthy = $true
-    }
     if (-not $executionHealthy) { $executionIssueCount += 1 }
     $items += [ordered]@{
         task_name = $name
@@ -147,8 +134,6 @@ foreach ($t in $registry.tasks) {
         enforce_ok = $enforcedOk
         owner = [string]$t.owner
         criticality = [string]$t.criticality
-        optional = [bool]$optional
-        skipped_optional_missing = [bool]$skippedOptionalMissing
         next_run_time = $snap.next_run_time
         last_result = $snap.last_result
         execution_healthy = $executionHealthy
@@ -157,7 +142,6 @@ foreach ($t in $registry.tasks) {
 
 $criticalDrift = @($items | Where-Object { $_.drift -and $_.criticality -eq "critical" }).Count
 $executionCriticalIssueCount = @($items | Where-Object { -not $_.execution_healthy -and $_.criticality -eq "critical" }).Count
-$optionalSkippedMissingCount = @($items | Where-Object { $_.skipped_optional_missing }).Count
 $allOk = ($driftCount -eq 0 -and $executionCriticalIssueCount -eq 0)
 
 $payload = [ordered]@{
@@ -168,7 +152,6 @@ $payload = [ordered]@{
     all_ok = $allOk
     drift_count = $driftCount
     critical_drift_count = $criticalDrift
-    optional_skipped_missing_count = $optionalSkippedMissingCount
     fixed_count = $fixedCount
     ignore_execution_health = [bool]$IgnoreExecutionHealth
     execution_issue_count = $executionIssueCount
@@ -185,7 +168,7 @@ Set-Content -LiteralPath $OutputPath -Value $json -Encoding UTF8
 if ($ShowJson) {
     Write-Host $json
 }
-Write-Host ("[reconcile] all_ok={0} drift_count={1} critical_drift={2} execution_issues={3} optional_missing_skipped={4} saved={5}" -f $allOk, $driftCount, $criticalDrift, $executionIssueCount, $optionalSkippedMissingCount, $OutputPath)
+Write-Host ("[reconcile] all_ok={0} drift_count={1} critical_drift={2} execution_issues={3} saved={4}" -f $allOk, $driftCount, $criticalDrift, $executionIssueCount, $OutputPath)
 
 if (-not $allOk) { exit 1 }
 exit 0
