@@ -552,8 +552,19 @@ $scoreJson = Join-Path $workspace "docs\final\artifacts\btrack_prophecy_score_la
 if ((Test-Path -LiteralPath $kospiCsv) -and (Test-Path -LiteralPath $hypoJson)) {
     Write-Host "[waiting-queue-check] B-Track OHLCV score + prophecy hit-rate eval (price mode, last 30 trading days)..."
     $buildBtrackArgs = @("scripts/build_btrack_prophecy_score_from_ohlcv.py", "--recent-trading-days", "30")
+    $btcCsvResolved = $null
     if (-not [string]::IsNullOrWhiteSpace([string]$env:MKM_BTC_DAILY_CSV) -and (Test-Path -LiteralPath $env:MKM_BTC_DAILY_CSV)) {
-        $buildBtrackArgs += @("--btc-csv", $env:MKM_BTC_DAILY_CSV)
+        $btcCsvResolved = $env:MKM_BTC_DAILY_CSV
+    } else {
+        $btcCsvDefault = Join-Path $workspace "research\market_data\btc_daily_external_yf.csv"
+        if (Test-Path -LiteralPath $btcCsvDefault) {
+            $btcCsvResolved = $btcCsvDefault
+        }
+    }
+    if ($btcCsvResolved) {
+        $buildBtrackArgs += @("--btc-csv", $btcCsvResolved)
+        # Align with burst/Invoke-MaxProphecyBurst: dual-leg rows per eval_date when both OHLCV legs exist (instrument-combo walkforward input).
+        $buildBtrackArgs += "--force-dual-leg-panel"
     }
     py @buildBtrackArgs
     if ($LASTEXITCODE -ne 0) {
