@@ -119,6 +119,8 @@
 | 회귀 | `tests/test_mkm_control_integrity_pipeline_smoke_v1.py` | `run_fact_lock_bundle.ps1`(기본; `-SkipMkmControlIntegritySmoke` 생략)·CI `dual-regime-integrity.yml` |
 | 로컬 헬스 (선택) | `scripts/run_workspace_automation_health.ps1` `-IncludeMkmControlIntegritySmoke` | 단축: `-MkmControlIntegritySmokeOnly`(P0+pytest·뉴스 스모크 생략) |
 
+**보강 (2026-05-13 — Pack 0-B 명리 결정론 LoRA v0 DoD·상수):** 출하 조건·합선 금지·**N=1000**·**K=100**·행 스키마 파일명 **`docs/final/schemas/myeongri_deterministic_lora_golden_set_v1.schema.json`** — SSOT **`docs/final/LORA_PACK_V0_DOD_V1.md`** v1.1. **Pack 0-A(위 표)와 Pack 0-B는 데이터·스키마·prep 경로를 물리 분리**; M31 등 메타포 지표는 Pack 0-B **학습 라벨로 채택하지 않음**(동 DoD §0).
+
 **격벽:** 지시 준수·제어 무결성 **벤치**이며 실매매·A-track 자동 트리거와 **합선 없음**.
 
 ### 1.1 엔지니어링 정체성 (Multi-Lens · 단일 방정식 비단정)

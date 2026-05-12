@@ -580,6 +580,7 @@ $required = @(
     "docs\final\STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md",
     "scripts\build_mkm_promotion_gate_evidence_bundle_v1.py",
     "docs\final\artifacts\mkm_promotion_gate_evidence_bundle_v1.json",
+    "docs\final\LORA_PACK_V0_DOD_V1.md",
     "scripts\run_track_a_conversational_cost_simulation.py",
     "scripts\run_track_a_shadow_corpus_eval.py",
     "scripts\run_track_a_metering_summary.py",
