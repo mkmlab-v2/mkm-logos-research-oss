@@ -343,6 +343,8 @@ on:
       - "scripts/Invoke-ProphecyEvolutionWatchdog_v1.ps1"
       - "scripts/Register-ProphecyEvolutionWatchdogTask.ps1"
       - "tests/test_build_btrack_prophecy_score_from_ohlcv.py"
+      - "tests/test_run_btrack_prophecy_contemplation_v1.py"
+      - "tests/test_btrack_daily_hypothesis_chain_contemplation_contract_v1.py"
       - "scripts/run_truthfulqa_ab_benchmark_v1.py"
       - "scripts/check_truthfulqa_ab_gate_v1.py"
       - "scripts/Run-TruthfulQAReproBundleV1.ps1"
@@ -384,6 +386,11 @@ on:
       - "tests/test_run_survivor_resonance_operational_bundle_v1.py"
       - "scripts/build_btrack_llm_input_bundle.py"
       - "scripts/run_btrack_daily_hypothesis_chain.ps1"
+      - "scripts/run_btrack_prophecy_contemplation_v1.py"
+      - "docs/final/schemas/btrack_prophecy_contemplation_v1.schema.json"
+      - "tests/test_run_btrack_prophecy_contemplation_v1.py"
+      - "tests/test_btrack_daily_hypothesis_chain_contemplation_contract_v1.py"
+      - "scripts/Register-BTrackDailyHypothesisTask.ps1"
       - "scripts/append_btrack_insight_observation.py"
       - "docs/final/BTRACK_HYPOTHESIS_PROPHECY_V1.schema.json"
       - "docs/final/artifacts/btrack_llm_input_bundle_latest.json"
@@ -726,7 +733,7 @@ jobs:
         run: python -m pytest tests/test_b_track_hypothesis_inventory.py -q --tb=short
 
       - name: B-Track hypothesis + dawn-score + prophecy hit-rate eval smoke
-        run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_build_btrack_prophecy_score_from_ohlcv.py tests/test_eval_prophecy_hit_rate_v1.py -q --tb=short
+        run: python -m pytest tests/test_generate_btrack_hypothesis_prophecy_v1.py tests/test_build_btrack_prophecy_score_from_ohlcv.py tests/test_eval_prophecy_hit_rate_v1.py tests/test_run_btrack_prophecy_contemplation_v1.py tests/test_btrack_daily_hypothesis_chain_contemplation_contract_v1.py -q --tb=short
 
       - name: Prophecy evolution watchdog (staleness + tail streak/EMA contract)
         run: python -m pytest tests/test_check_prophecy_evolution_watchdog_v1.py -q --tb=short
