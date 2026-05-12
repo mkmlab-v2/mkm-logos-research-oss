@@ -98,6 +98,8 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     assert gtr["applied_ema_alpha_multiplier"] == 1.0
     assert float(gtr["effective_hormone_ema_alpha"]) == 0.4
     assert hormone["gematria_seed_trace"]["applied_ema_alpha_multiplier"] == 1.0
+    assert doc["global_state"]["m31_audit_trail"]["schema"] == "lens_music_m31_audit_trail_v1"
+    assert doc["global_state"]["m31_audit_trail"]["rag_metabolism_drift"]["source"] == "synthetic_baseline"
     assert doc["control_plane_contract"]["control_plane_user_plane_separation"] is True
     assert doc["auto_brake_m22"]["active"] is True
     assert doc["auto_brake_m22"]["trigger_smoke_eval_watch"] is True
@@ -111,6 +113,9 @@ def test_build_prompt_overlay_from_governance_and_chain(tmp_path):
     assert row["gematria_present"] is False
     assert row["gematria_applied_ema_alpha_multiplier"] == 1.0
     assert row["gematria_effective_hormone_ema_alpha"] == 0.4
+    assert row["rag_metabolism_source"] == "synthetic_baseline"
+    assert isinstance(row["rag_metabolism_bounded_drift_0_1"], float)
+    assert 0.0 <= float(row["rag_metabolism_bounded_drift_0_1"]) <= 0.25
 
 
 def test_build_overlay_gematria_trace_m32_multiplier_on_hormone_ema():
@@ -143,6 +148,37 @@ def test_build_overlay_gematria_trace_m32_multiplier_on_hormone_ema():
     assert abs(float(gt["effective_hormone_ema_alpha"]) - 0.4096) < 1e-9
     h = doc["global_state"]["hormone_like_state"]
     assert h["gematria_seed_trace"]["applied_ema_alpha_multiplier"] == 1.024
+    trail = doc["global_state"]["m31_audit_trail"]
+    assert trail["schema"] == "lens_music_m31_audit_trail_v1"
+    assert trail["rag_metabolism_drift"]["source"] == "synthetic_baseline"
+
+
+def test_build_overlay_rag_digest_override_chain_doc() -> None:
+    from scripts.build_lens_music_prompt_overlay_v1 import build_overlay
+
+    gov = {"schema": "lens_music_audition_governance_status_v1", "state": "GO"}
+    chain = {
+        "schema": "lens_music_gate_chain_v1",
+        "rag_metabolism_digest_v1": {
+            "bounded_drift_0_1": 0.12,
+            "source": "chain_doc_rag_digest",
+            "digest_fingerprint": "unit_test_fp",
+        },
+        "melody_stage_m9": {
+            "input_snapshot": {"tempo_target_bpm": 90.0, "valence": 0.0, "arousal": 0.0}
+        },
+    }
+    doc, _, _ = build_overlay(
+        gov,
+        chain,
+        smoke_eval={"schema": "lens_music_prompt_smoke_eval_v1", "state": "GO"},
+        prev_hormone=None,
+        ema_alpha=0.4,
+    )
+    drift = doc["global_state"]["m31_audit_trail"]["rag_metabolism_drift"]
+    assert drift["source"] == "chain_doc_rag_digest"
+    assert drift["bounded_drift_0_1"] == 0.12
+    assert drift["digest_fingerprint"] == "unit_test_fp"
 
 
 def test_build_gematria_seed_trace_from_lens_doc():

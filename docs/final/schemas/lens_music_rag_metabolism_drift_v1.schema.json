@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/lens_music_rag_metabolism_drift_v1.schema.json",
+  "title": "Lens music RAG metabolism drift v1 (audit metaphor, B-track)",
+  "description": "Bounded advisory scalar only. Names evoke digestion/metabolism of retrieved context; not clinical gut flora, hormones, or infant microbiome. Downstream must keep non_biological_notice visible in UX copy.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "bounded_drift_0_1", "source", "metaphor_notice"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "lens_music_rag_metabolism_drift_v1"
+    },
+    "bounded_drift_0_1": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 0.25
+    },
+    "source": {
+      "type": "string",
+      "enum": ["chain_doc_rag_digest", "synthetic_baseline"]
+    },
+    "digest_fingerprint": {
+      "type": ["string", "null"],
+      "maxLength": 64
+    },
+    "metaphor_notice": {
+      "type": "string",
+      "const": "rag_digestion_metaphor_not_biological_gut_flora"
+    }
+  }
+}

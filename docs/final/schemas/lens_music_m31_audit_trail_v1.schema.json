@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/lens_music_m31_audit_trail_v1.schema.json",
+  "title": "Lens music M31 audit trail v1 (thin tags, B-track)",
+  "description": "Optional additive envelope: points auditors at gematria influence path and RAG metabolism drift metaphor. Does not introduce new control signals beyond existing M31 hormone + gematria contracts.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "version", "gematria_influence", "rag_metabolism_drift"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "lens_music_m31_audit_trail_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.\\d+$"
+    },
+    "gematria_influence": {
+      "type": "object",
+      "required": ["summary", "detail_path"],
+      "properties": {
+        "summary": {
+          "type": "string",
+          "maxLength": 256
+        },
+        "detail_path": {
+          "type": "string",
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": true
+    },
+    "rag_metabolism_drift": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["schema", "bounded_drift_0_1", "source", "metaphor_notice"],
+      "properties": {
+        "schema": {
+          "type": "string",
+          "const": "lens_music_rag_metabolism_drift_v1"
+        },
+        "bounded_drift_0_1": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.25
+        },
+        "source": {
+          "type": "string",
+          "enum": ["chain_doc_rag_digest", "synthetic_baseline"]
+        },
+    "digest_fingerprint": {
+      "type": ["string", "null"],
+      "maxLength": 64
+    },
+        "metaphor_notice": {
+          "type": "string",
+          "const": "rag_digestion_metaphor_not_biological_gut_flora"
+        }
+      }
+    }
+  }
+}

@@ -7,6 +7,7 @@ User content and control parameters remain separated by contract.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -106,6 +107,56 @@ def _gematria_ema_alpha_multiplier(numeric_value: Any) -> float:
         return 1.0
     delta = ((n % 11) - 5) * 0.006
     return round(float(max(0.85, min(1.15, 1.0 + delta))), 4)
+
+
+def _compute_rag_metabolism_drift(chain_doc: dict[str, Any]) -> dict[str, Any]:
+    """Bounded RAG 'digestion' metaphor for M31 audit only (not biological)."""
+    notice = "rag_digestion_metaphor_not_biological_gut_flora"
+    raw = chain_doc.get("rag_metabolism_digest_v1")
+    if isinstance(raw, dict):
+        try:
+            d = float(raw.get("bounded_drift_0_1"))
+            d = max(0.0, min(0.25, d))
+            fp = str(raw.get("digest_fingerprint") or "").strip()[:64] or None
+            src = str(raw.get("source") or "").strip()
+            if src == "chain_doc_rag_digest":
+                out: dict[str, Any] = {
+                    "schema": "lens_music_rag_metabolism_drift_v1",
+                    "bounded_drift_0_1": round(d, 6),
+                    "source": "chain_doc_rag_digest",
+                    "metaphor_notice": notice,
+                }
+                if fp:
+                    out["digest_fingerprint"] = fp
+                return out
+        except (TypeError, ValueError):
+            pass
+
+    payload = json.dumps(chain_doc, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    h = hashlib.sha256(payload.encode("utf-8")).hexdigest()
+    fp16 = h[:16]
+    n = int(h[:8], 16)
+    drift = round((n % 2500) / 25000.0, 6)
+    return {
+        "schema": "lens_music_rag_metabolism_drift_v1",
+        "bounded_drift_0_1": drift,
+        "source": "synthetic_baseline",
+        "digest_fingerprint": fp16,
+        "metaphor_notice": notice,
+    }
+
+
+def _build_m31_audit_trail(*, chain_doc: dict[str, Any]) -> dict[str, Any]:
+    rag = _compute_rag_metabolism_drift(chain_doc)
+    return {
+        "schema": "lens_music_m31_audit_trail_v1",
+        "version": "1.0.0",
+        "gematria_influence": {
+            "summary": "ema_alpha_multiplier_applied_to_hormone_controller_only",
+            "detail_path": "hormone_like_state.gematria_seed_trace",
+        },
+        "rag_metabolism_drift": rag,
+    }
 
 
 def _chain_gematria_seed_trace(chain_doc: dict[str, Any]) -> dict[str, Any]:
@@ -229,6 +280,10 @@ def build_overlay(
         "effective_hormone_ema_alpha": round(eff_hormone_alpha, 4),
     }
 
+    m31_audit = _build_m31_audit_trail(chain_doc=chain_doc)
+    hormone_current["m31_audit_trail"] = m31_audit
+    hormone_next["m31_audit_trail"] = json.loads(json.dumps(m31_audit))
+
     global_state = {
         "schema": "lens_music_prompt_overlay_v1",
         "generated_at_utc": _utc_now(),
@@ -245,6 +300,7 @@ def build_overlay(
         "smoke_eval_state": smoke_state,
         "gematria_seed_trace": trace_audit,
         "hormone_like_state": hormone_current,
+        "m31_audit_trail": m31_audit,
     }
     system_instructions = (
         f"[Global State: BPM={tempo_bpm:.1f}, Valence={valence:.3f}, Arousal={arousal:.3f}, Governance={state}]\n"
@@ -351,6 +407,12 @@ def main() -> int:
             "gematria_effective_hormone_ema_alpha": (
                 out_doc["global_state"].get("gematria_seed_trace") or {}
             ).get("effective_hormone_ema_alpha"),
+            "rag_metabolism_bounded_drift_0_1": (
+                (out_doc["global_state"].get("m31_audit_trail") or {}).get("rag_metabolism_drift") or {}
+            ).get("bounded_drift_0_1"),
+            "rag_metabolism_source": (
+                (out_doc["global_state"].get("m31_audit_trail") or {}).get("rag_metabolism_drift") or {}
+            ).get("source"),
         },
     )
     print(

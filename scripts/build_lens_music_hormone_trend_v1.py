@@ -91,6 +91,17 @@ def main() -> int:
     max_consecutive_high_stress = _max_consecutive(high_stress_flags)
     mean_stress_index = round((sum(stress_samples) / len(stress_samples)) if stress_samples else 0.0, 6)
 
+    drift_samples: list[float] = []
+    for r in hormone_rows:
+        v = r.get("rag_metabolism_bounded_drift_0_1")
+        if v is None:
+            continue
+        try:
+            drift_samples.append(float(v))
+        except (TypeError, ValueError):
+            continue
+    drift_mean = round(sum(drift_samples) / len(drift_samples), 6) if drift_samples else None
+
     daily_series = []
     for d in sorted(daily.keys()):
         rows_n = daily[d]["rows"]
@@ -138,6 +149,13 @@ def main() -> int:
         "track": "B",
         "non_biological_notice": "metaphor_only_advisory_controller",
     }
+    if drift_mean is not None:
+        out["audit_digest_summary"] = {
+            "schema": "lens_music_hormone_trend_audit_digest_v1",
+            "rows_with_rag_drift": len(drift_samples),
+            "mean_rag_metabolism_bounded_drift_0_1": drift_mean,
+            "metaphor_notice": "rag_digestion_metaphor_not_biological_gut_flora",
+        }
     if operator_hint:
         out["operator_hint"] = operator_hint
 

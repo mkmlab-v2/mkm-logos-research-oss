@@ -43,6 +43,8 @@ def test_trackc_dashboard_includes_lens_music_governance_fields():
     assert "high_stress_rate" in ht
     assert "max_consecutive_high_stress" in ht
     assert "operator_hint" in ht
+    assert "mean_rag_metabolism_bounded_drift_0_1" in ht
+    assert "rows_with_rag_drift" in ht
     htw = (doc.get("trackc") or {}).get("lens_music_hormone_trend_webhook") or {}
     assert "dispatch_status" in htw
     assert "dispatch_only_on_watch" in htw

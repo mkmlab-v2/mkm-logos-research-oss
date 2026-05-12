@@ -1,0 +1,15 @@
+{
+  "schema": "lens_music_m31_audit_trail_v1",
+  "version": "1.0.0",
+  "gematria_influence": {
+    "summary": "ema_alpha_multiplier_applied_to_hormone_controller",
+    "detail_path": "hormone_like_state.gematria_seed_trace"
+  },
+  "rag_metabolism_drift": {
+    "schema": "lens_music_rag_metabolism_drift_v1",
+    "bounded_drift_0_1": 0.0314,
+    "source": "synthetic_baseline",
+    "digest_fingerprint": "a1b2c3d4e5f67890",
+    "metaphor_notice": "rag_digestion_metaphor_not_biological_gut_flora"
+  }
+}

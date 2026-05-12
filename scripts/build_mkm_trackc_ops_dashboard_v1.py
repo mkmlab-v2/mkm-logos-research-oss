@@ -463,6 +463,10 @@ def main() -> int:
                 "max_consecutive_high_stress": lens_music_hormone_trend.get("max_consecutive_high_stress"),
                 "watch_thresholds": lens_music_hormone_trend.get("watch_thresholds"),
                 "operator_hint": lens_music_hormone_trend.get("operator_hint"),
+                "mean_rag_metabolism_bounded_drift_0_1": (
+                    (lens_music_hormone_trend.get("audit_digest_summary") or {}).get("mean_rag_metabolism_bounded_drift_0_1")
+                ),
+                "rows_with_rag_drift": (lens_music_hormone_trend.get("audit_digest_summary") or {}).get("rows_with_rag_drift"),
             },
             "lens_music_hormone_trend_webhook": {
                 "dispatch_status": ((lens_music_hormone_trend_webhook.get("dispatch") or {}).get("status")),
