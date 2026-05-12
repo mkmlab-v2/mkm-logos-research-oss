@@ -28,6 +28,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from src.daemon.bitcoin_trading_daemon import BitcoinTradingDaemon
 from src.config.config_loader import load_config
+from src.futures_engine import futures_engine_mode
 
 
 def _parse_bool(value: Any, default: bool) -> bool:
@@ -56,6 +57,18 @@ def _read_dotenv_map(path: Path) -> dict[str, str]:
         if key:
             env_map[key] = value
     return env_map
+
+
+def _monorepo_dotenv_path() -> Path:
+    """Prefer project root .env, then workspace root .env, then parent fallback."""
+    project_candidate = PROJECT_ROOT / ".env"
+    if project_candidate.is_file():
+        return project_candidate
+    workspace = Path(__file__).resolve().parent.parent.parent.parent
+    workspace_candidate = workspace / ".env"
+    if workspace_candidate.is_file():
+        return workspace_candidate
+    return PROJECT_ROOT.parent / ".env"
 
 
 def _pid_is_running(pid: int) -> bool:
@@ -160,7 +173,31 @@ async def main():
         False,
     )
 
-    dotenv = _read_dotenv_map(PROJECT_ROOT.parent / ".env")
+    dotenv = _read_dotenv_map(_monorepo_dotenv_path())
+
+    # 프로젝트 `.env` → PM2에 없을 때만 os.environ에 반영 (Binance + 런타임 플래그).
+    for env_key in (
+        "MKM_SINGULAR_CORE_THRESHOLD",
+        "MKM_SINGULAR_CORE_GRID",
+        "MKM_MIN_CONFIDENCE",
+        "BTC_FUTURES_ENGINE",
+        "AROON_PERIOD",
+        "AROON_KLINE_INTERVAL",
+        "AROON_POLL_SEC",
+        "AROON_ORDER_QTY",
+        "AROON_MIN_CROSS_GAP",
+        "BINANCE_API_KEY",
+        "BINANCE_API_SECRET",
+        "BINANCE_KEY_SOURCE_MODE",
+        "TESTNET",
+        "ENABLE_TRADING",
+        "SYMBOL",
+        "INITIAL_CAPITAL",
+        "LEVERAGE",
+    ):
+        if env_key in dotenv and str(dotenv.get(env_key, "")).strip():
+            if not os.environ.get(env_key, "").strip():
+                os.environ[env_key] = str(dotenv[env_key]).strip()
 
     symbol = os.getenv("SYMBOL", str(cfg_symbol))
     testnet_raw = os.getenv("TESTNET")
@@ -184,6 +221,7 @@ async def main():
     print(f"   - 초기 자본: {initial_capital:.2f} USDT")
     print(f"   - 레버리지: {leverage}배")
     print(f"   - 거래: {'활성화' if enable_trading else '비활성화 (모니터링만)'}")
+    print(f"   - 선물 엔진: {futures_engine_mode()} (BTC_FUTURES_ENGINE; legacy=통합엔진 / aroon_v1=아론)")
     print("   - 자동 재시작: 활성화")
     print()
     if not testnet and enable_trading:

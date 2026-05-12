@@ -846,6 +846,13 @@ class UnifiedTradingMonitor:
         integrated_signal = strategy_signal
         integrated_confidence = strategy_confidence
         
+        divine_distance_text = f"{float(divine_distance):.4f}" if divine_distance is not None else "N/A"
+        target_multiplier_text = (
+            f"{float(bitcoin_target_multiplier):.1f}x"
+            if bitcoin_target_multiplier is not None
+            else "N/A"
+        )
+
         # 🏛️ Canvas 아키텍처 예언 결과 반영
         if apocalypse_confidence_boost != 0.0:
             integrated_confidence = min(1.0, integrated_confidence + apocalypse_confidence_boost)
@@ -858,7 +865,7 @@ class UnifiedTradingMonitor:
             integrated_signal = apocalypse_signal_adjustment
             logger.info(
                 f"🏛️ Canvas 예언 신호 조정: {apocalypse_signal_adjustment} "
-                f"(Divine Distance: {divine_distance:.4f if divine_distance else 'N/A'})"
+                f"(Divine Distance: {divine_distance_text})"
             )
         
         # 🏛️ Canvas + Logos 필터 기반 포지션 크기 조정 (실전 투입 전, 백테스트로 충분히 검증 필요)
@@ -870,14 +877,14 @@ class UnifiedTradingMonitor:
                 f"Canvas 타겟 승수 계수={position_size_multiplier:.2f}x, "
                 f"Logos 리스크 계수={logos_risk_multiplier:.2f}x → "
                 f"통합 계수={effective_position_multiplier:.2f}x "
-                f"(타겟 승수: {bitcoin_target_multiplier:.1f}x if bitcoin_target_multiplier else 'N/A')"
+                f"(타겟 승수: {target_multiplier_text})"
             )
         
         if asset_allocation_strategy:
             btc_allocation = asset_allocation_strategy.get("BTC", 0.5)
             logger.info(
                 f"🏛️ Canvas 자산 배분 전략: BTC {btc_allocation:.1%} "
-                f"(Divine Distance: {divine_distance:.4f if divine_distance else 'N/A'})"
+                f"(Divine Distance: {divine_distance_text})"
             )
         
         # 모니터링 결과가 있으면 조정
@@ -1058,7 +1065,10 @@ class UnifiedTradingMonitor:
                     current_divine_distance = temporal_sovereignty.get("current_distance")
                     crisis_timeline = temporal_sovereignty.get("crisis_timeline", {})
                     
-                    logger.info(f"🏛️ Canvas Divine Distance (현재): {current_divine_distance:.4f if current_divine_distance else 'N/A'}")
+                    current_divine_distance_text = (
+                        f"{float(current_divine_distance):.4f}" if current_divine_distance is not None else "N/A"
+                    )
+                    logger.info(f"🏛️ Canvas Divine Distance (현재): {current_divine_distance_text}")
                     logger.info("📊 Canvas 위기 타임라인 (2027-2030):")
                     for year in sorted(crisis_timeline.keys()):
                         distance = crisis_timeline[year]
