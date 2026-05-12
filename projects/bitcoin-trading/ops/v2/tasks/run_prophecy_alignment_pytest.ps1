@@ -43,15 +43,14 @@ $workspaceTests = @(
     'tests/test_gematria_myeongri_spike_smoke.py',
     'tests/test_myeongri_fusion_scripts_smoke.py',
     'tests/test_spike_4grid_myeongri_compression_v1.py',
-    'tests/test_spike_kospi_structural_entropy_v1.py',
-    'tests/test_spike_kospi_structural_entropy_compare_v1.py',
+    # KOSPI structural-entropy spike tests: add paths here when `tests/test_spike_kospi_structural_entropy_*.py` exist (see P0 tracker table).
     'tests/test_track_source_guard.py',
     'tests/test_sovereign_jsonl.py',
     'tests/test_spike_sovereign_token_saving_v1.py',
     'tests/test_sovereign_efficiency.py',
-    'tests/test_track_a_shadow_corpus_eval_smoke.py',
-    'tests/test_track_a_metering_chain_smoke.py',
-    'tests/test_autonomous_evolution_loop_draft_smoke.py',
+    # Track A metering + shadow corpus: single harness (replaces legacy split smoke files that were never added).
+    'tests/test_track_a_harness_smoke_v1.py',
+    # Autonomous evolution draft: add when `tests/test_autonomous_evolution_loop_draft_smoke.py` + script land (P0 table).
     'tests/test_hypothesis_insight_batch_v1_sample.py',
     'tests/test_eval_prophecy_hit_rate_v1.py',
     'tests/test_generate_btrack_hypothesis_prophecy_v1.py',

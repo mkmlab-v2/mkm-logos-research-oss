@@ -125,6 +125,16 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 다음은 **이 트래커 작성 시점**에 로컬 트리를 점검한 결과다. 브랜치·동기화 후에는 다시 확인한다.
 
 - **Step 4 스크립트** `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`: (1) `bitcoin-trading`에서 `test_dual_regime_api_smoke.py` + `test_multilens_marginal_utility_harness_v1.py` → 실패 시 종료; (2) 워크스페이스 루트에서 Step 4에 명시된 `tests/test_*.py` 목록만 실행(logos snapshot·CROSS_REF·ENTRY16·명리·만세 포인터·multilens Thin 등). `test_fusion_slice_gate.py` 등 문서·SITREP 전용 경로는 스크립트에 없으면 게이트에 포함되지 않는다.
+- **정렬 번들 — 예전 `skip missing` 다섯 경로 (2026-05-13 Fact-Lock)**: 아래는 **레포에 파일이 없어** 스크립트가 조용히 건너뛰던 이름이었다. 격벽 때문이 아니라 **미작성·레거시 목록 잔재**가 원인이므로, SSOT에서 의미를 고정한다. 스크립트 동위체: `run_prophecy_alignment_pytest.sh`.
+
+| 목록에 있던 경로 | 현재 조치 |
+|------------------|-----------|
+| `tests/test_spike_kospi_structural_entropy_v1.py` | 레포 미구현 — 스크립트 목록에서 제거; 스파이크 테스트·스크립트 추가 시 **목록에 재등록**. |
+| `tests/test_spike_kospi_structural_entropy_compare_v1.py` | 동일 |
+| `tests/test_track_a_shadow_corpus_eval_smoke.py` | 파일 없음 — **`tests/test_track_a_harness_smoke_v1.py`** 한 건으로 미터링·섀도 코퍼스·시그널 라이트 등 Track A Phase2 하네스를 커버하도록 목록 교체. |
+| `tests/test_track_a_metering_chain_smoke.py` | 동일(위 하네스에 흡수) |
+| `tests/test_autonomous_evolution_loop_draft_smoke.py` | 레포에 대응 스크립트·테스트 미존재(MISSION_LOG 템플릿만 선행 언급) — 목록에서 제거; 구현 시 **스크립트 + 테스트 + 본 표 갱신**. |
+
 - **수집 건수 예시(2026-04-02 로컬, 참고용)**: 1단계 19개·2단계 75개 — 목록 변경 시 달라지므로 **고정 수치로 SSOT 삼지 말고** 실행 로그로 확인한다.
 - 프로젝트 루트에서 무분별 `py -m pytest -q` 시, `scripts/run_forced_watch_alert_test.py` 등이 수집되어 **수집 단계에서 실패**할 수 있다. 게이트 실행은 **정렬 스크립트 또는 문서에 명시된 파일 목록**으로 제한한다.
 
