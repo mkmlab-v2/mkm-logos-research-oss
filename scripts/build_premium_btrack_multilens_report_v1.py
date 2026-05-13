@@ -4,7 +4,8 @@ Premium B-track multi-lens report packager (v0 / v0.5).
 
 Sync-only: stub lens workers from schema example; optional `--mode best-effort`
 ingests independent-lens JSON from disk; optional tracked **offline RAG bundle**
-(keyword hits over `tests/fixtures/premium_multilens_rag_corpus_bundle_v1.json`, no API).
+(keyword hits over bundle + optional `--rag-corpus-scan-dir`; no API). Optional `--async-simulate`
+fills `async_job` for queue-shaped handoff (sync single-shot, no Redis).
 
 Structural coordinator join, disk MD + JSON matching premium_btrack_multilens_report_v1 schema.
 """
@@ -106,12 +107,54 @@ def _score_doc(tokens: list[str], text: str) -> int:
     return sum(1 for t in tokens if t in tl)
 
 
-def _build_rag_from_bundle_entries(
+def scan_rag_corpus_documents(scan_dir: Path, root: Path, *, max_files: int = 48, max_total_bytes: int = 200_000) -> list[dict[str, Any]]:
+    """Shallow scan of *.txt / *.md / *.json in a directory into excerpt docs (B-track, local only)."""
+    if not scan_dir.is_dir():
+        return []
+    per_cap = max(4096, max_total_bytes // max(1, max_files))
+    docs: list[dict[str, Any]] = []
+    total = 0
+    try:
+        candidates = sorted(
+            p for p in scan_dir.iterdir() if p.is_file() and p.suffix.lower() in (".txt", ".md", ".json")
+        )
+    except OSError:
+        return []
+    for p in candidates[:max_files]:
+        try:
+            raw = p.read_bytes()
+        except OSError:
+            continue
+        chunk = raw[:per_cap]
+        try:
+            text = chunk.decode("utf-8", errors="replace")
+        except Exception:
+            continue
+        try:
+            rel = _posix_under_root(p, root)
+        except Exception:
+            rel = p.as_posix()
+        docs.append(
+            {
+                "source_id": f"scan:{rel}"[:512],
+                "uri": p.resolve().as_posix()[:2048],
+                "license_note": "Scanned from --rag-corpus-scan-dir (local excerpt; B-track).",
+                "text": text,
+            }
+        )
+        total += len(chunk)
+        if total >= max_total_bytes:
+            break
+    return docs
+
+
+def _build_rag_from_entries(
     *,
     lens_id: str,
     disk_blob: dict[str, Any],
     entries: list[dict[str, Any]],
     max_hits: int = 5,
+    corpus_id: str = "premium_multilens_rag_offline_v1",
 ) -> dict[str, Any] | None:
     q_line = _rag_query_chunks_from_blob(lens_id, disk_blob)[:4000]
     tokens = _rag_query_tokens(q_line)
@@ -122,11 +165,10 @@ def _build_rag_from_bundle_entries(
         if not isinstance(doc, dict):
             continue
         text = str(doc.get("text", ""))
-        sid = str(doc.get("source_id", "unknown"))
         sc = _score_doc(tokens, text)
         if sc > 0:
             scored.append((sc, doc))
-    scored.sort(key=lambda x: (-x[0], x[1].get("source_id", "")))
+    scored.sort(key=lambda x: (-x[0], str(x[1].get("source_id", ""))))
     if not scored:
         scored = [(0, e) for e in entries if isinstance(e, dict)][:max_hits]
     if not scored:
@@ -148,7 +190,7 @@ def _build_rag_from_bundle_entries(
             hit["license_note"] = lic[:2000]
         hits.append(hit)
     return {
-        "corpus_id": "premium_multilens_rag_disk_bundle_v1",
+        "corpus_id": corpus_id[:256],
         "retrieval_runs": [
             {
                 "run_id": f"disk_kw_{lens_id}_v1",
@@ -159,6 +201,64 @@ def _build_rag_from_bundle_entries(
     }
 
 
+def enrich_lenses_rag_offline(
+    *,
+    mode: Mode,
+    root: Path,
+    lenses: list[dict[str, Any]],
+    disk_blobs: dict[str, dict[str, Any] | None],
+    bundle_path: Path | None,
+    scan_dir: Path | None,
+) -> str | None:
+    """Merge bundle + optional scan-dir excerpts into lens rag. Returns caveat note or None."""
+    if mode != "best-effort":
+        return None
+    scan_docs = scan_rag_corpus_documents(scan_dir, root) if scan_dir else []
+    bundle: dict[str, Any] | None = None
+    ent_root: dict[str, Any] | None = None
+    if bundle_path is not None and bundle_path.is_file():
+        bundle = _load_rag_bundle(bundle_path)
+        er = bundle.get("entries") if isinstance(bundle, dict) else None
+        ent_root = er if isinstance(er, dict) else None
+
+    if not scan_docs and not ent_root:
+        return None
+
+    used = False
+    parts: list[str] = []
+    if bundle_path is not None and bundle_path.is_file() and ent_root:
+        parts.append(f"bundle=`{_posix_under_root(bundle_path, root)}`")
+    if scan_dir is not None:
+        try:
+            srel = _posix_under_root(scan_dir, root)
+        except Exception:
+            srel = scan_dir.resolve().as_posix()
+        parts.append(f"scan_dir=`{srel}`")
+
+    for lens in lenses:
+        if not isinstance(lens, dict):
+            continue
+        lid = str(lens.get("lens_id", ""))
+        blob = (disk_blobs or {}).get(lid)
+        if not isinstance(blob, dict):
+            continue
+        raw: list[dict[str, Any]] = []
+        if ent_root:
+            br = ent_root.get(lid)
+            if isinstance(br, list):
+                raw.extend([x for x in br if isinstance(x, dict)])
+        raw.extend(scan_docs)
+        if not raw:
+            continue
+        rag = _build_rag_from_entries(lens_id=lid, disk_blob=blob, entries=raw, max_hits=5)
+        if rag and isinstance(rag.get("retrieval_runs"), list) and rag["retrieval_runs"]:
+            lens["rag"] = rag
+            used = True
+    if not used:
+        return None
+    return "offline RAG: " + "; ".join(parts) if parts else "offline RAG: scan/bundle"
+
+
 def enrich_lenses_rag_from_disk_bundle(
     *,
     mode: Mode,
@@ -167,33 +267,15 @@ def enrich_lenses_rag_from_disk_bundle(
     disk_blobs: dict[str, dict[str, Any] | None],
     bundle_path: Path | None,
 ) -> str | None:
-    """Replace lens['rag'] with offline keyword retrieval when bundle loads. Returns relative bundle path or None."""
-    if mode != "best-effort" or bundle_path is None or not bundle_path.is_file():
-        return None
-    bundle = _load_rag_bundle(bundle_path)
-    if not bundle:
-        return None
-    ent_root = bundle.get("entries")
-    if not isinstance(ent_root, dict):
-        return None
-    used = False
-    for lens in lenses:
-        if not isinstance(lens, dict):
-            continue
-        lid = str(lens.get("lens_id", ""))
-        blob = (disk_blobs or {}).get(lid)
-        if not isinstance(blob, dict):
-            continue
-        raw = ent_root.get(lid)
-        if not isinstance(raw, list) or not raw:
-            continue
-        rag = _build_rag_from_bundle_entries(lens_id=lid, disk_blob=blob, entries=raw, max_hits=5)
-        if rag and isinstance(rag.get("retrieval_runs"), list) and rag["retrieval_runs"]:
-            lens["rag"] = rag
-            used = True
-    if not used:
-        return None
-    return _posix_under_root(bundle_path, root)
+    """Backward-compatible wrapper: bundle only, no scan dir."""
+    return enrich_lenses_rag_offline(
+        mode=mode,
+        root=root,
+        lenses=lenses,
+        disk_blobs=disk_blobs,
+        bundle_path=bundle_path,
+        scan_dir=None,
+    )
 
 
 def default_independent_lens_paths(root: Path) -> dict[str, Path]:
@@ -387,14 +469,14 @@ def render_lens_slice_md(lens: dict[str, Any], disk_blob: dict[str, Any] | None)
         lines.append("### Disk engine snapshot (best-effort, independent-lens JSON)")
         lines.extend(disk_snapshot_lines(lid, disk_blob))
     lines.append("")
-    if corpus_id == "premium_multilens_rag_disk_bundle_v1":
+    if corpus_id == "premium_multilens_rag_offline_v1":
         lines.append(
-            "_RAG hits above: offline keyword bundle over tracked fixtures / optional `--rag-bundle`; "
+            "_RAG hits above: offline keyword retrieval (`--rag-bundle`, `--rag-corpus-scan-dir`, or both); "
             "not live corpus or embedding search._"
         )
     else:
         lines.append(
-            "_RAG rows above: schema-example stubs unless `--mode best-effort` with a valid `--rag-bundle`._"
+            "_RAG rows above: schema-example stubs unless `--mode best-effort` with bundle and/or scan dir._"
         )
     lines.append("")
     return "\n".join(lines)
@@ -526,13 +608,38 @@ def _maybe_validate(instance: dict[str, Any], schema_path: Path) -> None:
     jsonschema.validate(instance=instance, schema=schema)
 
 
+def _build_async_job_payload(*, async_job_id: str | None, async_simulate: bool) -> dict[str, Any] | None:
+    """Optional queue-shaped handoff for the sync builder (no worker attached)."""
+    if not async_simulate and not (async_job_id and str(async_job_id).strip()):
+        return None
+    queued = _utc_z()
+    if async_job_id and str(async_job_id).strip():
+        raw = str(async_job_id).strip()
+        job_id = raw[:128]
+        if len(job_id) < 8:
+            job_id = hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12]
+        return {
+            "job_id": job_id,
+            "status": "queued",
+            "queued_at_utc": queued,
+            "note": "async_job from --async-job-id; sync builder only — attach worker separately.",
+        }
+    digest = hashlib.sha256(queued.encode("utf-8")).hexdigest()[:16]
+    return {
+        "job_id": f"sim_premium_{digest}",
+        "status": "queued",
+        "queued_at_utc": queued,
+        "note": "Simulated handoff (--async-simulate); no queue worker in sync v0.",
+    }
+
+
 def _insert_best_effort_caveat(
     *,
     mode: Mode,
     coord: dict[str, Any],
     lenses: list[dict[str, Any]],
     disk_blobs: dict[str, dict[str, Any] | None],
-    rag_bundle_rel: str | None = None,
+    rag_offline_note: str | None = None,
 ) -> None:
     if mode != "best-effort":
         return
@@ -557,9 +664,9 @@ def _insert_best_effort_caveat(
         caveats = []
         coord["caveats"] = caveats
     caveats.insert(0, line)
-    if rag_bundle_rel:
+    if rag_offline_note:
         rag_line = (
-            f"RAG (offline keyword bundle): `{rag_bundle_rel}` — "
+            f"RAG (offline keyword, B-track): {rag_offline_note} — "
             "not neural/API RAG; ranked by token overlap with disk lens blob text."
         )
         if len(rag_line) > 1950:
@@ -623,6 +730,9 @@ def build_report(
     mode: Mode = "stub",
     artifact_overrides: dict[str, Path] | None = None,
     rag_bundle_path: Path | None = None,
+    rag_corpus_scan_dir: Path | None = None,
+    async_simulate: bool = False,
+    async_job_id: str | None = None,
 ) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     main_md_path = out_dir / "premium_btrack_multilens_report_v1.md"
@@ -635,19 +745,27 @@ def build_report(
     overrides = artifact_overrides or {}
     disk_blobs = attach_disk_engine_paths(root=root, lenses=lenses, mode=mode, overrides=overrides)
 
-    rag_bundle_rel = enrich_lenses_rag_from_disk_bundle(
+    scan_dir = rag_corpus_scan_dir
+    if scan_dir is not None and not scan_dir.is_absolute():
+        scan_dir = (root / scan_dir).resolve()
+    if scan_dir is not None and not scan_dir.is_dir():
+        print(f"WARN: --rag-corpus-scan-dir not a directory, skipping scan: {scan_dir}", file=sys.stderr)
+        scan_dir = None
+
+    rag_offline_note = enrich_lenses_rag_offline(
         mode=mode,
         root=root,
         lenses=lenses,
         disk_blobs=disk_blobs,
         bundle_path=rag_bundle_path,
+        scan_dir=scan_dir,
     )
     _insert_best_effort_caveat(
         mode=mode,
         coord=coord,
         lenses=lenses,
         disk_blobs=disk_blobs,
-        rag_bundle_rel=rag_bundle_rel,
+        rag_offline_note=rag_offline_note,
     )
 
     lens_ids = [str(x.get("lens_id", "")) for x in lenses if isinstance(x, dict)]
@@ -677,6 +795,9 @@ def build_report(
     report = copy.deepcopy(example)
     report["generated_at_utc"] = _utc_z()
     report.pop("async_job", None)
+    aj = _build_async_job_payload(async_job_id=async_job_id, async_simulate=async_simulate)
+    if aj is not None:
+        report["async_job"] = aj
     report["lenses"] = lenses
     report["coordinator"] = coord
 
@@ -736,6 +857,23 @@ def main() -> int:
         default=None,
         help="Offline keyword RAG corpus bundle JSON (default: tests/fixtures/premium_multilens_rag_corpus_bundle_v1.json if present).",
     )
+    ap.add_argument(
+        "--rag-corpus-scan-dir",
+        type=Path,
+        default=None,
+        help="Optional directory of .txt/.md/.json excerpts merged into offline RAG (best-effort).",
+    )
+    ap.add_argument(
+        "--async-simulate",
+        action="store_true",
+        help="Emit schema async_job with queued status (sync builder placeholder; no worker).",
+    )
+    ap.add_argument(
+        "--async-job-id",
+        type=str,
+        default=None,
+        help="Use this job_id in async_job (min 8 chars recommended; shorter values are hashed).",
+    )
     ap.add_argument("--no-validate", action="store_true", help="Skip jsonschema validation when available")
     args = ap.parse_args()
 
@@ -779,6 +917,14 @@ def main() -> int:
         if cand.is_file():
             rag_bundle = cand
 
+    scan_arg = args.rag_corpus_scan_dir
+    rag_scan: Path | None = None
+    if scan_arg is not None:
+        rs = Path(scan_arg)
+        if not rs.is_absolute():
+            rs = (root / rs).resolve()
+        rag_scan = rs
+
     return build_report(
         root=root,
         out_dir=out_dir,
@@ -787,6 +933,9 @@ def main() -> int:
         mode=mode,
         artifact_overrides=overrides or None,
         rag_bundle_path=rag_bundle,
+        rag_corpus_scan_dir=rag_scan,
+        async_simulate=bool(args.async_simulate),
+        async_job_id=(str(args.async_job_id).strip() if args.async_job_id else None),
     )
 
 
