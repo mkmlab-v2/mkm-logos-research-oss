@@ -12,6 +12,7 @@
   3c. `py -m pytest tests/test_mkm_trinity_index_v1.py` — MKM Trinity 인덱스 JSON·스키마 계약(CONSTITUTION §1 렌즈 인덱스 bullet)
   3d. `py -m pytest tests/test_mkm_meta_layer_envelope_v1.py` — 메타 인지 봉투 v1·킬 스위치 정규화·`AthenaValidator`(CONSTITUTION §1.3.1 보강 2026-05-05)
   3d2. `py -m pytest tests/test_athena_checkpoint.py` — CENTRAL `athena_checkpoint.py` prepend·`--max-checkpoints`(CI `Athena execution governance` 스텝에 포함된 동일 테스트)
+  3d2b. `py -m pytest …` — Aramaic B-track graph pipeline smoke **23**개 파일(CI `dual-regime-integrity.yml` `Aramaic B-track graph pipeline smoke` 단계와 동일 목록: 코퍼스·audit trend·alert·threshold sweep/apply·MVP audit PS1 passthrough·그래프·점수·시맨틱·bridge·Bible meaning graph·insight survivor·cap bucket·weight/shadow·bridge coef). `-SkipAramaicBtrackGraphPipelineSmoke` 로 생략.
   3d3. `py -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py` — Logos insight bundle v1 스키마·빌더·non-degraded 예시(CI `Logos insight bundle v1` 스텝과 동일 테스트)
   3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
@@ -26,7 +27,7 @@
   5e. 사상–사주 조인트 문헌·큐레이트 회귀 **9**개 파일(Europe PMC 픽스처·오프라인 **7** + 인제스트 **1** + staleness **1**; CONSTITUTION §3.3 표「사상체질↔문헌↔사주 조인트」). `-SkipSasangSajuJointLiteraturePipeline` 로 생략.
   6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 **15**개 pytest 파일(선행: 일일 브리프 1 + Thin 브리지 1; 이어 배치 13에 Yang 2015 B-track 스키마·벤치 포함). `-SkipMyeongniLensRecommendedStack` 로 생략.
 
-  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·3d·3d2·3d3·3e·4·4b·5·5b·5c·5d·5e·6단계는 본 스크립트에서 직접 실행합니다.
+  테스트 파일 목록 이중 관리를 피하기 위해 2단계는 기존 PS1에 위임합니다. 3·3b·3c·3d·3d2·3d2b·3d3·3e·4·4b·5·5b·5c·5d·5e·6단계는 본 스크립트에서 직접 실행합니다.
 
 .PARAMETER SkipIntegrityGuard
   `integrity_guard.py` 생략(빠른 확인용). CI와 완전 동치가 아님.
@@ -103,6 +104,12 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipKmPhysicianCdsEnvelope
 
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipAramaicBtrackGraphPipelineSmoke
+
+.PARAMETER SkipAramaicBtrackGraphPipelineSmoke
+  Aramaic B-track graph pipeline smoke pytest **23**개(CI `dual-regime-integrity.yml` Aramaic 단계와 동일 목록)를 생략한다.
+
 .PARAMETER SkipMyeongniLensRecommendedStack
   명리 독립 렌즈 v0/v1·융합 브리지·봇 체인·융합 스텁 등 9종 멀티렌즈 pytest(권장 CI 패리티)를 생략한다.
 
@@ -171,6 +178,9 @@ param(
     # KM physician CDS envelope v1 schema + builder pytest (dual-regime parity)
     [switch]$SkipKmPhysicianCdsEnvelope,
 
+    # Aramaic B-track graph pipeline smoke (23 pytests; dual-regime `Aramaic B-track graph pipeline smoke` step)
+    [switch]$SkipAramaicBtrackGraphPipelineSmoke,
+
     # Recommended tail: Invoke-SafeOpsSurfaceCheck.ps1 after pytest bundle (exit 2 fails; exit 1 warns only).
     [switch]$SkipSafeOpsSurfaceCheck,
 
@@ -198,6 +208,32 @@ $bioSasangNstatesRehydrateTest = Join-Path $workspaceRoot 'tests\test_bio_sasang
 $mkmTrinityIndexTest = Join-Path $workspaceRoot 'tests\test_mkm_trinity_index_v1.py'
 $mkmMetaLayerEnvelopeTest = Join-Path $workspaceRoot 'tests\test_mkm_meta_layer_envelope_v1.py'
 $athenaCheckpointTest = Join-Path $workspaceRoot 'tests\test_athena_checkpoint.py'
+# CI `dual-regime-integrity.yml` — name: Aramaic B-track graph pipeline smoke (single-line pytest list; keep in sync)
+$aramaicBtrackGraphPipelineSmokePytests = @(
+    (Join-Path $workspaceRoot 'tests\test_extract_aramaic_core_corpus_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_report_aramaic_mvp_audit_trend_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_alert_aramaic_mvp_trend_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_sweep_aramaic_mvp_alert_thresholds_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_apply_aramaic_mvp_alert_threshold_recommendation_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_run_aramaic_mvp_now_with_audit_passthrough_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_aramaic_graph_schema_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_aramaic_edge_builder_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_score_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_aramaic_semantic_edge_quality_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_aramaic_cross_corpus_bridge_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_bible_meaning_graph_schema_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_bible_meaning_graph_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_extract_bible_meaning_insight_candidates_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_insight_survivor_eval_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_select_insight_survivor_candidates_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_report_aramaic_insight_cap_threshold_history_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_alert_aramaic_insight_cap_threshold_drift_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_weight_sweep_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_shadow_compare_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py')
+)
 $logosInsightBundlePytests = @(
     (Join-Path $workspaceRoot 'tests\test_logos_insight_bundle_schema_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_build_logos_insight_bundle_v1.py')
@@ -431,6 +467,19 @@ Write-Host '== Fact-Lock: test_athena_checkpoint.py (CENTRAL checkpoint prepend)
 & py -m pytest $athenaCheckpointTest -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
+}
+
+if (-not $SkipAramaicBtrackGraphPipelineSmoke) {
+    foreach ($t in $aramaicBtrackGraphPipelineSmokePytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "Aramaic B-track graph pipeline pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: Aramaic B-track graph pipeline smoke (dual-regime parity; 23 pytest files) ==' -ForegroundColor Cyan
+    & py -m pytest @aramaicBtrackGraphPipelineSmokePytests -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 foreach ($t in $logosInsightBundlePytests) {
