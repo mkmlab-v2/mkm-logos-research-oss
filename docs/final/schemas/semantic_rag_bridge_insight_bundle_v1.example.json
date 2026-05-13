@@ -1,0 +1,41 @@
+{
+  "schema": "semantic_rag_bridge_insight_bundle_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-05-14T12:00:00Z",
+  "lens_route": {
+    "lens_id": "logos",
+    "route_confidence_0_1": 0.72
+  },
+  "rag_evidence": [
+    {
+      "source_id": "fixture_logos_snippet_01",
+      "snippet": "Example verse-aligned snippet for schema validation only.",
+      "confidence_band": "A"
+    }
+  ],
+  "calibration_reference": {
+    "kind": "logos_4d_state_v1",
+    "artifact_path_rel": "docs/final/artifacts/logos_4d_state_v1_latest.json",
+    "summary_line": "Macro/exodus-fragility quadrant snapshot; not Hebrew gematria."
+  },
+  "structured_insight_slots": [
+    {
+      "slot_id": "intent.one_line",
+      "text": "User asked for a guarded narrative summary with citations.",
+      "evidence_index": 0
+    },
+    {
+      "slot_id": "tone.hint",
+      "text": "Prefer neutral advisory tone; avoid price and clinical claims."
+    }
+  ],
+  "policy": {
+    "track": "B-track",
+    "gating": "NON_GATING",
+    "hypothesis_label": "[HYPO]"
+  },
+  "bridge_meta": {
+    "validation_ok": true,
+    "validation_errors": []
+  }
+}

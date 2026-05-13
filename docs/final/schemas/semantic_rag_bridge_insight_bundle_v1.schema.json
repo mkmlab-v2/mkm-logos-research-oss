@@ -1,0 +1,148 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json",
+  "title": "Semantic+RAG bridge insight bundle v1 (internal, B-track)",
+  "description": "Structured slots passed to orchestration/LLM after RAG retrieval. Calibration pointer disambiguates which '4D' family applies. Not clinical, not price gating, not Track A promotion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "rag_evidence",
+    "calibration_reference",
+    "structured_insight_slots",
+    "policy"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "semantic_rag_bridge_insight_bundle_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.\\d+$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 40
+    },
+    "lens_route": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "lens_id": {
+          "type": "string",
+          "maxLength": 64,
+          "pattern": "^[a-z0-9_]+$"
+        },
+        "route_confidence_0_1": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "rag_evidence": {
+      "type": "array",
+      "maxItems": 24,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "snippet", "confidence_band"],
+        "properties": {
+          "source_id": { "type": "string", "maxLength": 512 },
+          "snippet": { "type": "string", "maxLength": 8000 },
+          "confidence_band": {
+            "type": "string",
+            "enum": ["A", "B", "C"]
+          },
+          "uri": { "type": "string", "maxLength": 2048 }
+        }
+      }
+    },
+    "calibration_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": [
+            "none",
+            "myeongri_vector_4d",
+            "logos_4d_state_v1",
+            "prism_slkm_pointer",
+            "compression_seed_slkm",
+            "market_sasang_lens_snapshot"
+          ]
+        },
+        "artifact_path_rel": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Repo-relative path to snapshot JSON if kind != none"
+        },
+        "summary_line": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "One-line human/audit summary; no secrets"
+        }
+      }
+    },
+    "structured_insight_slots": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["slot_id", "text"],
+        "properties": {
+          "slot_id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[a-z0-9][a-z0-9_.-]*$"
+          },
+          "text": { "type": "string", "maxLength": 4000 },
+          "evidence_index": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Optional index into rag_evidence array"
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["track", "gating"],
+      "properties": {
+        "track": {
+          "type": "string",
+          "enum": ["B-track", "internal_lab", "Track_C_advisory"]
+        },
+        "gating": {
+          "type": "string",
+          "enum": ["NON_GATING", "advisory", "hold_candidate"]
+        },
+        "hypothesis_label": {
+          "type": ["string", "null"],
+          "maxLength": 32
+        }
+      }
+    },
+    "bridge_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "validation_ok": { "type": "boolean" },
+        "validation_errors": {
+          "type": "array",
+          "maxItems": 32,
+          "items": { "type": "string", "maxLength": 512 }
+        }
+      }
+    }
+  }
+}

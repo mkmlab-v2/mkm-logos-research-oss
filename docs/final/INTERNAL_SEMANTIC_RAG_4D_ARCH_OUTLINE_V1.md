@@ -1,4 +1,4 @@
-# 내부 전용 — 시맨틱 · RAG · 4D 보정 3단 아키텍처 설계도 (목차 SSOT v0.1)
+# 내부 전용 — 시맨틱 · RAG · 4D 보정 3단 아키텍처 설계도 (목차 SSOT v0.2)
 
 **분류:** 내부 엔지니어링 메모 · **B-track·연구·품질 설계** — 대외 제안서·상용 주장·임상·실매매 트리거와 **합선 금지**.  
 **목적:** “의도 → 근거 → 맥락 보정” 파이프라인을 **동일 어휘**로 고정하고, 구현·평가·로그를 맞출 **목차·체크리스트**를 제공한다.  
@@ -6,16 +6,16 @@
 
 **연계:** 출원 전 1p 요약 준비 `docs/final/B2G_TECH_DISCLOSURE_ONEPAGER_PREP_V1.md` · 제안 복붙 부록 `docs/final/B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md` — 역할이 다르며 본문 **이중 기술 금지**.
 
-**문서 버전:** v0.1 · **작성일:** 2026-05-14
+**문서 버전:** v0.2 · **갱신:** 2026-05-14 — 「4D」분리 표 확정·번역 브리지 JSON 스키마 `semantic_rag_bridge_insight_bundle_v1`·회귀 pytest 추가
 
 ---
 
 ## 1. 문서 범위 (DoD)
 
-- [ ] 아래 **용어 표**가 팀 리뷰에서 수정 없이 통과한다.
-- [ ] **데이터 플로우**에 등장하는 각 박스가 레포 내 **스크립트 또는 스키마 파일** 하나 이상과 매핑된다(없으면 “미구현”으로 표기).
-- [ ] **베이스라인 대비 지표** 한 줄이 정의되고, 최소 1회 오프라인 평가 결과가 남는다(내부만).
-- [ ] **4D** 라벨이 두 개 이상의 다른 의미로 쓰이는 구간이 표에 **명시적으로 분리**된다.
+- [x] **4D** 라벨 분리 표(2.1) 및 용어 표(2) 초안 확정 — 팀 리뷰 시 수정 가능
+- [x] **번역 브리지** 출력 계약: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` + 예시 + `tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py`
+- [ ] **데이터 플로우** 각 박스가 구현 스크립트와 **전부** 매핑(번역 브리지 **빌더 CLI**는 미구현 → 후속)
+- [ ] **베이스라인 대비 지표** 오프라인 1회 수치 기록
 
 ---
 
@@ -27,6 +27,17 @@
 | **RAG** | **승인된 코퍼스**에서 청크를 가져와 생성·판단에 **근거로 붙이는** 층 | NotebookLM UI·MCP만을 지칭하지 않음 |
 | **4D 보정** | **구조화된 상태 벡터·메타데이터**를 프롬프트·정책·게이트에 주입해 톤·경로·위험도를 조정하는 층 | (1) 명리 `vector_4d` 계열 (2) `logos_4d_state_v1`(거시 입력 기반 좌표) (3) 압축 시드 S,L,K,M (4) Prism 분류 라벨 — **동일 호출명 금지** |
 | **번역 브리지** | 수치·그래프·엣지 결과를 **스키마화된 JSON·짧은 자연어 슬롯**으로 변환하는 전용 모듈 | LLM에게 원시 로그를 통째로 넣는 것과 구분 |
+
+### 2.1 「4D」레포 고정명 분리 (혼동 시 설계 오류)
+
+| 고정명 | 의미(한 줄) | 대표 산출·스크립트(예) | 본 3단 설계에서의 역할 |
+|--------|-------------|------------------------|-------------------------|
+| **명리 `vector_4d` 계열** | 만세력·지장간·학파 블렌드 등 **명리 렌즈 수치 벡터** | `scripts/myeongri_complete_fusion.py`, `rule_school_mkm_4d_v1` | 보정층: **개인·시점** 기반 calibration |
+| **`logos_4d_state_v1`** | 출애굽·거시 스모크에서 온 **좌표·사분면**(스키마명 4D, 실질 2축+X) | `scripts/build_logos_4d_state_v1.py` → `logos_4d_state_v1_latest.json` | 보정층: **거시 내러티브** advisory, 원어 게마트리아와 무관 |
+| **압축 시드 S,L,K,M** | Track A/B 압축 파이프라인 **시드 축** | `CONSTITUTION` 헤더·압축 러너 | **코드 4D 벡터**; Prism·명리 벡터와 **혼동 금지** |
+| **Prism S/L/K/M** | Grand Indexing **파일·경로 분류 라벨** | `MKM12_PRISM_INDEX_REGISTRY_V1.json` | 인덱스·온보딩; **역학 수치 아님** |
+| **렌즈 뮤직 `gematria_seed_trace`** | 상징→오디오 B-track **감사 꼬리표** | `run_lens_music_gematria_gate_chain_v1.py` 등 | **사상·심볼 레인**; Logos 본문 해석 엔진 아님 |
+| **`vector_4d` in Logos batch** | `run_lens_logos.py` 배치 JSON에 실린 **절별 수치 필드** | `data/logos/4lens_batch_sample.json` 등 | 렌즈 배치 입력; 일일 `logos_4d_state`와 **동명이의 별개** |
 
 ---
 
@@ -56,9 +67,11 @@
 |------|----------|---------------------------|---------------------------|
 | 시맨틱 | raw query, session meta | `query_plan_v1`, `lens_route` | 렌즈 라우팅·파일럿: CONSTITUTION 표 `philosophy_lane_rag_pilot_v1` 등 |
 | RAG | query_plan, corpus_id | `retrieval_runs[]`, `hits[]` | `build_premium_btrack_multilens_report_v1.py` 오프라인 RAG, 기타 `build_cross_lens_rag_fusion_v1.py` |
-| 번역 브리지 | hits + 도메인 규칙 | `insight_bundle_v1` (가칭) | **미구현 시 행 전체 “TBD”** |
-| 4D 보정 | 도메인별 상태 JSON | `calibration_overlay_v1` | 명리: `myeongri_complete_fusion`·`rule_school_mkm_4d_v1`; Logos 일일 상태: `build_logos_4d_state_v1.py` 산출 |
+| 번역 브리지 | hits + 도메인 규칙 + calibration 포인터 | **`semantic_rag_bridge_insight_bundle_v1`** | 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` · 예시 동 디렉터리 · **빌더 스크립트는 후속(미구현)** |
+| 4D 보정 | `calibration_reference.kind`에 맞는 스냅샷 | 동 번들 내 `calibration_reference` + 후속 `calibration_overlay` | 2.1 표 참조; 명리·`logos_4d_state_v1`·시장 사상 스냅샷 등 |
 | 통제 | 위 산출물 | exit code, `audit.jsonl` | `athena_run_v1.py`·CONSTITUTION §28 요지 |
+
+**번역 브리지 계약 요약:** `rag_evidence[]` + `structured_insight_slots[]` + `calibration_reference` + `policy`(track/gating). LLM에는 **이 번들만** 주입하는 것을 목표로 한다.
 
 ---
 
@@ -134,15 +147,17 @@
 - `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — 렌즈 격벽·NON_GATING
 - 오프라인 멀티렌즈 RAG: CONSTITUTION 표 `build_premium_btrack_multilens_report_v1.py` 행
 - 철학 파일럿: 동 표 `philosophy_lane_rag_pilot_v1.py` 행
+- 번역 브리지 번들 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` (내부 v0.2)
 
 ---
 
 ## 10. 다음 액션 (우선순위)
 
-1. **표 2장**에 팀이 쓰는 “4D” 후보를 전부 나열하고 **이름 분리** 확정.
-2. **번역 브리지** 출력 스키마 초안(JSON Schema 파일 여부) 결정.
-3. **한 도메인**(예: 정책자금 초안 또는 B-track 리포트)만 골라 **A~D 지표** 1회 측정.
-4. 대외 문서·제안서에는 **본 파일 링크 금지**(내부 경로).
+1. ~~**4D** 분리 표 확정~~ → v0.2 **2.1** (리뷰만 남음).
+2. ~~**번역 브리지** JSON Schema v1~~ → `semantic_rag_bridge_insight_bundle_v1` + pytest.
+3. **`build_semantic_rag_bridge_insight_bundle_v1.py`** (가칭): RAG hits + 스냅샷 경로 → 번들 JSON 생성 CLI.
+4. **한 도메인**만 골라 **A~D 지표** 1회 측정 후 본 문서 6절에 숫자 기록.
+5. 대외 문서·제안서에는 **본 파일·스키마 경로 링크 금지**(내부 전용).
 
 ---
 
