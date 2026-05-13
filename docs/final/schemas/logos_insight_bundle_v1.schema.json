@@ -1,0 +1,193 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_insight_bundle_v1.schema.json",
+  "title": "Logos insight bundle v1 (B-track, observational)",
+  "description": "Structured bundle aggregating low-level Logos pipeline metrics (morphology coverage, cross-corpus scores, insight-candidate digests) for downstream LLM injection. No doctrinal labels: tension_hypotheses use neutral axes and evidence_refs only. NON_GATING research_only.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "schema_version",
+    "generated_at_utc",
+    "generator",
+    "policy",
+    "hypothesis_tier",
+    "upstream_artifacts",
+    "query",
+    "aggregation",
+    "tension_hypotheses",
+    "citation_pack",
+    "audit",
+    "uncertainty",
+    "gating"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "logos_insight_bundle_v1"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.\\d+$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["script", "version"],
+      "properties": {
+        "script": { "type": "string", "maxLength": 256 },
+        "version": { "type": "string", "maxLength": 64 }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["research_only", "non_gating", "no_doctrinal_labels"],
+      "properties": {
+        "research_only": { "type": "boolean", "const": true },
+        "non_gating": { "type": "boolean", "const": true },
+        "no_doctrinal_labels": { "type": "boolean", "const": true }
+      }
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "enum": ["[HYPO]"]
+    },
+    "upstream_artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path"],
+        "properties": {
+          "path": { "type": "string", "maxLength": 512 },
+          "sha256": { "type": ["string", "null"], "maxLength": 128 }
+        }
+      }
+    },
+    "degraded": { "type": "boolean" },
+    "missing_upstream": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 }
+    },
+    "query": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["query_fingerprint"],
+      "properties": {
+        "query_fingerprint": { "type": "string", "maxLength": 256 },
+        "scope": { "type": ["object", "null"], "additionalProperties": true },
+        "corpus_revision": { "type": ["string", "null"], "maxLength": 256 }
+      }
+    },
+    "aggregation": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "morphology_summary": { "type": ["object", "null"], "additionalProperties": true },
+        "cross_corpus_bridge_summary": { "type": ["object", "null"], "additionalProperties": true },
+        "insight_candidates_digest": { "type": ["object", "null"], "additionalProperties": true },
+        "semantic_edge_quality_digest": { "type": ["object", "null"], "additionalProperties": true },
+        "regime_shift_shadow": { "type": ["object", "null"], "additionalProperties": true }
+      }
+    },
+    "tension_hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "tension_axis_id",
+          "description_neutral",
+          "confidence_0_1",
+          "evidence_refs"
+        ],
+        "properties": {
+          "tension_axis_id": { "type": "string", "maxLength": 128 },
+          "description_neutral": { "type": "string", "maxLength": 2000 },
+          "confidence_0_1": { "type": "number", "minimum": 0, "maximum": 1 },
+          "evidence_refs": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/evidence_ref_v1" }
+          },
+          "supporting_metrics": { "type": "object", "additionalProperties": true },
+          "counter_evidence_refs": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/evidence_ref_v1" }
+          }
+        }
+      }
+    },
+    "citation_pack": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["snippet", "quote_hash"],
+        "properties": {
+          "verse_id": { "type": ["string", "null"], "maxLength": 256 },
+          "quote_hash": { "type": "string", "maxLength": 128 },
+          "snippet": { "type": "string", "maxLength": 8000 },
+          "source_track": { "type": ["string", "null"], "maxLength": 32 }
+        }
+      }
+    },
+    "audit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["inputs_hash", "ruleset_id", "ruleset_version", "determinism_note"],
+      "properties": {
+        "inputs_hash": { "type": "string", "maxLength": 128 },
+        "ruleset_id": { "type": "string", "maxLength": 128 },
+        "ruleset_version": { "type": "string", "maxLength": 64 },
+        "determinism_note": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "uncertainty": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["uncertainty_band", "unknown_fraction_0_1"],
+      "properties": {
+        "uncertainty_band": {
+          "type": "string",
+          "enum": ["low", "mid", "high"]
+        },
+        "unknown_fraction_0_1": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "gating": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pastoral_and_trading"],
+      "properties": {
+        "pastoral_and_trading": {
+          "type": "string",
+          "const": "non_gating"
+        }
+      }
+    },
+    "human_review_hint": { "type": "string", "maxLength": 2000 },
+    "llm_injection_whitelist": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 128 }
+    },
+    "forbidden_patterns_ref": { "type": "string", "maxLength": 512 }
+  },
+  "definitions": {
+    "evidence_ref_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quote_hash"],
+      "properties": {
+        "verse_id": { "type": ["string", "null"], "maxLength": 256 },
+        "quote_hash": { "type": "string", "maxLength": 128 },
+        "edge_type": { "type": ["string", "null"], "maxLength": 128 },
+        "source_track": { "type": ["string", "null"], "maxLength": 32 }
+      }
+    }
+  }
+}

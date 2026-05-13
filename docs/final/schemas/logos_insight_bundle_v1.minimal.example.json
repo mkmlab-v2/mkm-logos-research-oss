@@ -1,0 +1,57 @@
+{
+  "schema": "logos_insight_bundle_v1",
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-05-14T00:00:00Z",
+  "generator": {
+    "script": "fixture:logos_insight_bundle_v1.minimal",
+    "version": "0.0.0"
+  },
+  "policy": {
+    "research_only": true,
+    "non_gating": true,
+    "no_doctrinal_labels": true
+  },
+  "hypothesis_tier": "[HYPO]",
+  "upstream_artifacts": [],
+  "degraded": true,
+  "missing_upstream": [
+    "morphology_registry",
+    "cross_corpus_bridge",
+    "insight_candidates",
+    "semantic_edge_quality"
+  ],
+  "query": {
+    "query_fingerprint": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "scope": null,
+    "corpus_revision": null
+  },
+  "aggregation": {},
+  "tension_hypotheses": [],
+  "citation_pack": [],
+  "audit": {
+    "inputs_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ruleset_id": "logos_insight_bundle_rules_v0",
+    "ruleset_version": "0.0.0",
+    "determinism_note": "minimal_v1 fixture: no upstream inputs; empty aggregation and tension_hypotheses by design."
+  },
+  "uncertainty": {
+    "uncertainty_band": "high",
+    "unknown_fraction_0_1": 1.0
+  },
+  "gating": {
+    "pastoral_and_trading": "non_gating"
+  },
+  "human_review_hint": "Upstream observational layers absent; do not infer doctrine or pastoral action from this bundle.",
+  "llm_injection_whitelist": [
+    "policy",
+    "hypothesis_tier",
+    "aggregation",
+    "tension_hypotheses",
+    "citation_pack",
+    "uncertainty",
+    "gating",
+    "missing_upstream",
+    "degraded"
+  ],
+  "forbidden_patterns_ref": "scripts/logos_response_validator_v1.py"
+}
