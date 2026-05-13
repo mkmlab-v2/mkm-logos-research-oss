@@ -22,3 +22,15 @@ def test_register_btrack_task_supports_skip_prophecy_contemplation_gemini() -> N
     text = _REGISTER.read_text(encoding="utf-8")
     assert "[switch]$SkipProphecyContemplationGemini" in text
     assert '+= " -SkipProphecyContemplationGemini"' in text
+
+
+def test_register_btrack_task_defaults_skip_panel_in_scheduled_chain_args() -> None:
+    text = _REGISTER.read_text(encoding="utf-8")
+    assert "[switch]$IncludePanel24hAlertsCheck" in text
+    assert "if (-not $IncludePanel24hAlertsCheck)" in text
+    assert '$argLine += " -SkipPanel24hAlertsCheck"' in text
+
+
+def test_register_btrack_task_rejects_include_and_skip_panel_together() -> None:
+    text = _REGISTER.read_text(encoding="utf-8")
+    assert "IncludePanel24hAlertsCheck -and $SkipPanel24hAlertsCheck" in text

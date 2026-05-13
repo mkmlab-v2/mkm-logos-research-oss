@@ -979,6 +979,8 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | `-SkipProphecyContemplationGemini` | BTC 묵상 단계에서 `run_btrack_prophecy_contemplation_v1.py`에 **`--skip-gemini-reflect`** 전달(`MKM_BTRACK_CONTEMPLATION_USE_GEMINI=1`이어도 Gemini 반성만 끔; 로컬 가드는 유지). |
 | `-SkipPanel24hAlertsCheck` | 종단 `Check-ProphecyPanel24hAlerts.ps1` 생략. |
 
+**스케줄 등록(`Register-BTrackDailyHypothesisTask.ps1`)**: 기본으로 등록되는 Task Scheduler 인자에 위 `-SkipPanel24hAlertsCheck`를 **자동 포함**한다(패널 KPI 실패·`no_data`가 체인 전체 스케줄 실패로 가리지 않게). 같은 Task 안에서 종단 패널까지 돌리려면 `-IncludePanel24hAlertsCheck`(비권장; `Register-ProphecyPanel24hAlertsTask.ps1` 분리 권장).
+
 **운영 명시성 (`Skip*` vs `Strict*`)**: **`-Skip*`** 는 해당 단계를 생략·경고(WARN) 후 진행할 수 있어 **로컬·오프라인·복구 루틴**에 맞춘 유연 모드다. **`-Strict*`** 는 동일 구간에서 exit≠0(또는 streak breach 등)이면 **체인을 즉시 중단**해, CI·감사·“성공으로 위장된 실패”(부분 실패를 전체 OK로 읽는 오류)를 막는 **강제 모드**다. 운영자는 스케줄·수동 실행 시 **어느 모드를 택했는지**가 곧 리스크 수용 수준이다.
 
 **체인 무결성(종단 봉인)**: 가설 JSON만 갱신되었다고 **관측 체인 전체가 유효**한 것으로 단정하지 않는다. 동일 실행의 **마지막**에 `build_prophecy_health_status_v1.py`로 `prophecy_health_status_latest.json`을 남기고, `check_prophecy_proxy_streak_gate_v1.py`로 proxy/eval 누락 연속일을 점검한다. **`-StrictProphecyProxyStreakGate`** 가 없으면 streak breach는 WARN일 수 있으므로, “헬스·스트릭까지 통과한 관측”을 운영 기본값으로 삼으려면 **Strict** 또는 별도 알람 절차를 택한다.

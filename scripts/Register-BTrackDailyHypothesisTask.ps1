@@ -10,9 +10,11 @@
   Prophecy contemplation pre-gate: **default ON** for the BTC research lane only (`-ResearchEvaluationInstrument btc`);
   use env MKM_BTRACK_PROPHECY_CONTEMPLATION_V1=0 to opt out. For multi/kospi scheduled runs the gate is skipped.
   When contemplation runs with MKM_BTRACK_CONTEMPLATION_USE_GEMINI=1 in .env, pass -SkipProphecyContemplationGemini on the chain to force `--skip-gemini-reflect` (local guards only; no API spend).
-  The chain ends with Check-ProphecyPanel24hAlerts.ps1 (unless -SkipPanel24hAlertsCheck is added to args).
-  Optional second daily run: Register-ProphecyPanel24hAlertsTask.ps1 (e.g. 09:05) for a later snapshot or if chain args skip the check.
-  Recommended split: register the chain with -SkipPanel24hAlertsCheck and register MKM-Prophecy-Panel-24h-Alerts separately so KPI failures do not mask chain success in Task Scheduler.
+  By default the registered task passes -SkipPanel24hAlertsCheck to the chain so Check-ProphecyPanel24hAlerts.ps1
+  (exit 1 on KPI miss / no_data) does not mark the whole scheduled job failed. Use -IncludePanel24hAlertsCheck only
+  if you want the legacy single-task behavior (panel inside the same run).
+  Optional second daily run: Register-ProphecyPanel24hAlertsTask.ps1 (e.g. 09:05) for panel snapshot / alerts after the chain.
+  -SkipPanel24hAlertsCheck may still be passed for documentation parity with the chain script; it is redundant with the new default.
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35"
@@ -30,6 +32,10 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -ResearchEvaluationInstrument btc -SkipProphecyContemplationGemini
 
 .EXAMPLE
+  Legacy: run the panel check inside the same task (not recommended; prefer Register-ProphecyPanel24hAlertsTask.ps1):
+  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -IncludePanel24hAlertsCheck
+
+.EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -Remove
 #>
 param(
@@ -39,8 +45,10 @@ param(
     [ValidateSet("btc", "kospi", "multi")]
     [string]$ResearchEvaluationInstrument = "multi",
     [switch]$IncludeDawnScore,
-    # When set, chain skips Check-ProphecyPanel24hAlerts (exit 1 on KPI miss would mark the whole task failed).
-    # Prefer registering Register-ProphecyPanel24hAlertsTask.ps1 for a separate daily panel job.
+    # Opt in to running Check-ProphecyPanel24hAlerts inside the same scheduled task (legacy). Default omits it
+    # (chain gets -SkipPanel24hAlertsCheck; use Register-ProphecyPanel24hAlertsTask.ps1 for a separate panel job).
+    [switch]$IncludePanel24hAlertsCheck,
+    # Legacy / explicit: default registration already skips the panel in-chain; do not combine with -IncludePanel24hAlertsCheck.
     [switch]$SkipPanel24hAlertsCheck,
     [switch]$SkipProphecyContemplationGemini,
     [switch]$RunWhenLoggedOff,
@@ -60,11 +68,15 @@ if ($Remove) {
     exit 0
 }
 
+if ($IncludePanel24hAlertsCheck -and $SkipPanel24hAlertsCheck) {
+    throw "Use only one of -IncludePanel24hAlertsCheck or -SkipPanel24hAlertsCheck."
+}
+
 $argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -WorkspaceRoot `"$WorkspaceRoot`" -ResearchEvaluationInstrument $ResearchEvaluationInstrument"
 if ($IncludeDawnScore) {
     $argLine += " -IncludeDawnScore"
 }
-if ($SkipPanel24hAlertsCheck) {
+if (-not $IncludePanel24hAlertsCheck) {
     $argLine += " -SkipPanel24hAlertsCheck"
 }
 if ($SkipProphecyContemplationGemini) {
