@@ -9,6 +9,10 @@
 
   Does NOT modify schtasks-based GeneralProphecy tasks; see NOTES.
 
+  **Invocation:** This file is not on PATH. From repo root use `.\scripts\Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1`
+  (same shell) or `powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1`.
+  Typing only `Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1` causes CommandNotFoundException.
+
 .EXAMPLE
   # Right-click PowerShell -> Run as administrator, then:
   Set-Location C:\workspace
