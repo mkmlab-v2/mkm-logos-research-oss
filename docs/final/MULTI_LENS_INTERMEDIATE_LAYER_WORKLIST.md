@@ -89,7 +89,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 
 MKM Control-Integrity Golden/LoRA 파이프라인 스모크(`tests/test_mkm_control_integrity_pipeline_smoke_v1.py`)는 `run_fact_lock_bundle.ps1` **기본**에 포함된다(번들 주석 5d). 로컬만 생략: `-SkipMkmControlIntegritySmoke`. SSOT: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.2.1.
 
-Premium B-track multi-lens report v1(스키마 + `build_premium_btrack_multilens_report_v1` 서브프로세스 회귀 2종)은 `run_fact_lock_bundle.ps1` **기본** 단계 4b(일일 실행 인사이트 브리프 pytest 직후). CI `dual-regime-integrity.yml`과 동일 목록. SSOT: `CONSTITUTION` 표「Premium B-track multi-lens report v1」.
+Premium B-track multi-lens report v1(스키마 + `build_premium_btrack_multilens_report_v1` 서브프로세스 회귀 2종)은 `run_fact_lock_bundle.ps1` **기본** 단계 4b(일일 실행 인사이트 브리프 pytest 직후). CI `dual-regime-integrity.yml`과 동일 목록. SSOT: `CONSTITUTION` 표「Premium B-track multi-lens report v1」. 헬스 체인에서만 돌릴 때: `scripts/run_workspace_automation_health.ps1 -IncludePremiumBtrackMultilensReportSmoke` 또는 `-PremiumBtrackMultilensReportSmokeOnly`.
 
 B-track 세션 시각 명리 패널·날씨/OHLCV 조인·상관 회귀(4 pytest, CI `dual-regime-integrity` General prophecy 직후 단계와 동일)는 **`projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`**·`.sh` 워크스페이스 번들(번들 2단계)에 포함된다. `run_fact_lock_bundle.ps1`는 해당 스크립트를 선행 호출하므로 **중복 실행 없이** 동일 회귀가 돈다.
 

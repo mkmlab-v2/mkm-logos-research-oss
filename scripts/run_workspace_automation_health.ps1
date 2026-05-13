@@ -30,7 +30,7 @@ param(
     # Optional: package_b chain smoke (v1 lens + v2 balanced/attack + margins summary).
     [switch]$IncludeMyeongniPackageBSmoke,
 
-    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / McpHygieneProbeOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly / VaFusionControlIntegritySmokeOnly profiles).
+    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / McpHygieneProbeOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly / VaFusionControlIntegritySmokeOnly / PremiumBtrackMultilensReportSmokeOnly profiles).
     [switch]$SkipNewsObservationContractSmoke,
 
     # Optional: Run-BTrackDomainFeedbackSmoke.ps1 — general_prophecy pytest + weather triplet + news (if default news smoke already ran in this session, wrapper uses -SkipNews).
@@ -119,6 +119,11 @@ param(
     # Shortcut profile: P0 paths + VA fusion control-integrity chain smoke only.
     [switch]$VaFusionControlIntegritySmokeOnly,
 
+    # Optional: Premium B-track multi-lens report v1 (schema + builder subprocess pytest; dual-regime / Fact-Lock bundle 4b parity).
+    [switch]$IncludePremiumBtrackMultilensReportSmoke,
+    # Shortcut profile: P0 paths + premium multilens report pytest only.
+    [switch]$PremiumBtrackMultilensReportSmokeOnly,
+
     # Optional: NotebookLM MCP hygiene probe (prereq + JSON; no MCP get_health in probe).
     [switch]$IncludeMcpHygieneProbe,
     [switch]$IncludeMcpHygieneProbeRepair,
@@ -204,6 +209,14 @@ if ($VaFusionControlIntegritySmokeOnly) {
     $SkipNewsObservationContractSmoke = $true
 }
 
+if ($PremiumBtrackMultilensReportSmokeOnly) {
+    $IncludePremiumBtrackMultilensReportSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
 if ($McpHygieneProbeOnly) {
     $IncludeMcpHygieneProbe = $true
     $SkipVaultMirror = $true
@@ -214,7 +227,7 @@ if ($McpHygieneProbeOnly) {
 }
 
 # Recommended default: run SafeOps on full health runs; shortcut profiles skip unless explicit Include* / IncludeWithVps.
-$shortcutForSafeOps = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly
+$shortcutForSafeOps = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly
 $runSafeOps = $false
 $runSafeOpsWithVps = $false
 if (-not $SkipSafeOpsSurfaceCheck) {
@@ -409,7 +422,7 @@ try {
         exit 0
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly) {
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -423,7 +436,7 @@ try {
         }
     }
 
-    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly
+    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly
     if ($IncludeBTrackDomainFeedbackSmoke -and -not $btProfileSkip) {
         $bt = Join-Path $root "scripts\Run-BTrackDomainFeedbackSmoke.ps1"
         if (Test-Path -LiteralPath $bt) {
@@ -746,6 +759,21 @@ try {
             Write-Host ""
             Write-Host "=== VA->fusion->control-integrity chain smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: test_va_fusion_control_integrity_chain_v1.py not found"
+        }
+    }
+
+    if ($IncludePremiumBtrackMultilensReportSmoke) {
+        $prSchema = Join-Path $root "tests\test_premium_btrack_multilens_report_schema_v1.py"
+        $prBuild = Join-Path $root "tests\test_build_premium_btrack_multilens_report_v1.py"
+        if ((Test-Path -LiteralPath $prSchema) -and (Test-Path -LiteralPath $prBuild)) {
+            Step "Premium B-track multi-lens report v1 (schema + builder subprocess; dual-regime / Fact-Lock bundle 4b parity)" {
+                & py -m pytest $prSchema $prBuild -q --tb=short
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Premium B-track multilens report smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: premium multilens pytest file(s) missing"
         }
     }
 
