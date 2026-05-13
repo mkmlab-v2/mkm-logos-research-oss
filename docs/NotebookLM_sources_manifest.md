@@ -1,6 +1,6 @@
 # NotebookLM 소스 매니페스트 (A/B 이원)
 
-**작성일**: 2026-03-29 · **갱신**: 2026-05-13 (A 표·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles: MSME **AI+ OpenData 제2026-327** 과제① SSOT 4파일 + `business_registration_plan_v1.md`) · 2026-05-12 (Lens music M31·§3.9·Track C fusion·CI 브리프 `NOTEBOOKLM_OPS_COMMAND_BRIEF_LENSMUSIC_M31_TRACKC_2026-05-12.md` + 매니페스트 지휘부 패킷 표) · 2026-05-11 (지휘부 동기화: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.11 플랫폼 GTM·밸류에이션 냉정 정렬 + `CENTRAL_AGENT_MEMORY_V1.md` 분기 표·nl_sync·M30 `lens_music_prompt_runbook_webhook_health` 경로; 레포 SSOT 우선·NL 단독 승격 금지) · 2026-05-06 (Gemini 실사용 3종 표준 세트 고정: `00_MASTER_TRACKC_BOARD_2026Q2` + `10_OPS_MKM_CORE_INTELLIGENCE_2026Q2` + `03_P3P4_명리_성경_해설형_허브_2026Q2`; 숫자 접두 혼선 방지용 명명 규칙 추가) · 2026-05-06 (S2W 기사 체화 반영: `logos_symbolic_paid_user_brief_latest.md`의 `S2W 기사 기반 체화 팩` 기준으로 NotebookLM 브리핑 질문을 `문제 1개 -> 최소 온톨로지 -> 근거 추적(XAI) -> 행동 가이드` 순으로 고정) · 2026-05-05 (Track C agentic 방향성 고정: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §12 반영, NotebookLM 브리핑 질의 프레임을 `governance/authority/audit` 우선으로 통일) · 2026-05-02 (MCP `notebooklm-mcp` 전용 Chrome 프로필 vs 내장 브라우저 로그인 **비동기** 문서화) · 2026-04-23 (Vault 미러: 원어 특이점 글로스 v3·히브리 오버라이드·`master_codebook_lexicon_v1` **포인터** JSON 추가; 동기화 스크립트 `$SourceFiles` 반영) · 이전 갱신 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
+**작성일**: 2026-03-29 · **갱신**: 2026-05-14 (**렌즈별 RAG 맵** 미니멀 v1 — 노트북 1목적·Core 혼입 금지) · 2026-05-13 (A 표·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles: MSME **AI+ OpenData 제2026-327** 과제① SSOT 4파일 + `business_registration_plan_v1.md`) · 2026-05-12 (Lens music M31·§3.9·Track C fusion·CI 브리프 `NOTEBOOKLM_OPS_COMMAND_BRIEF_LENSMUSIC_M31_TRACKC_2026-05-12.md` + 매니페스트 지휘부 패킷 표) · 2026-05-11 (지휘부 동기화: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.11 플랫폼 GTM·밸류에이션 냉정 정렬 + `CENTRAL_AGENT_MEMORY_V1.md` 분기 표·nl_sync·M30 `lens_music_prompt_runbook_webhook_health` 경로; 레포 SSOT 우선·NL 단독 승격 금지) · 2026-05-06 (Gemini 실사용 3종 표준 세트 고정: `00_MASTER_TRACKC_BOARD_2026Q2` + `10_OPS_MKM_CORE_INTELLIGENCE_2026Q2` + `03_P3P4_명리_성경_해설형_허브_2026Q2`; 숫자 접두 혼선 방지용 명명 규칙 추가) · 2026-05-06 (S2W 기사 체화 반영: `logos_symbolic_paid_user_brief_latest.md`의 `S2W 기사 기반 체화 팩` 기준으로 NotebookLM 브리핑 질문을 `문제 1개 -> 최소 온톨로지 -> 근거 추적(XAI) -> 행동 가이드` 순으로 고정) · 2026-05-05 (Track C agentic 방향성 고정: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §12 반영, NotebookLM 브리핑 질의 프레임을 `governance/authority/audit` 우선으로 통일) · 2026-05-02 (MCP `notebooklm-mcp` 전용 Chrome 프로필 vs 내장 브라우저 로그인 **비동기** 문서화) · 2026-04-23 (Vault 미러: 원어 특이점 글로스 v3·히브리 오버라이드·`master_codebook_lexicon_v1` **포인터** JSON 추가; 동기화 스크립트 `$SourceFiles` 반영) · 이전 갱신 2026-04-12 (A 표: `MKM_CORE_THEORY_V1` · 압축·복원·예언 **통합 노트** `MKM_CORE_INTELLIGENCE_V1` · `COMPRESSION_EVALUATE_REPORT_DATA_FLOW_V1`·`MKM_LESSONS_LEARNED_V1`·`COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1` · **LOG_METABOLISM 전용** `MKM_LOG_METABOLISM_REFINERY_V1` · **CORE↔Refinery 격벽 포인터** `NOTEBOOKLM_LOG_METABOLISM_CORE_BRIDGE_POINTER_V1.md` · 보조 NotebookLM 앵커 2건 · Vault 미러에 `CURRENT_OPS_SNAPSHOT` 포함)  
 **정의**: **A = Fact-Lock(팩트 고정)**, **B = Creative-Lock(통찰·가설)**. B는 본선 OOF·실매매 트리거와 A를 혼선 없이 적용.
 
 **Cursor 3.0 (2026-04)**: NotebookLM과 동일하게 **브리핑·질의·소스 아카이브** 레이어다. **에이전트 병렬(Agents Window)·Design Mode**는 제품 기능이며, **압축 엔진·헌법·실매매 SSOT는 여전히 레포의 `.py`/JSON**이다(`AGENTS.md`, `COMPRESSION_SLA_POLICY_V1.md`).
@@ -18,6 +18,35 @@
 | **A — Vault 미러** | 레포 파일 → `MKM_DATA_VAULT\vault\notebooklm_sources` 복사 | 스크립트 exit 0 · `_LAST_SYNC.txt` 갱신 | “G에 복사됐으니 NotebookLM 웹에 올라갔다” (**아님**) |
 | **B — Google NotebookLM (클라우드)** | 노트북에 소스 등록·인제스트 | 웹/API에서 해당 소스 보임 | “매니페스트만 고치면 클라우드가 따라온다” (**아님** · UI `source_add` 또는 전용 푸시 작업 별도) |
 | **C — Cursor MCP** | IDE 채팅에서 `notebooklm` 도구·세션 | 이 **채팅**의 도구 목록에 도구가 있고 `get_health` 성공 | “설정에 MCP 녹색 = 지금 채팅에서도 됨” (**아님** · 채팅 시작 시 도구 카탈로그 고정) |
+
+### 렌즈별 RAG — 노트북 1목적 매핑 (미니멀 v1, 2026-05-14)
+
+**문제:** 한 노트(예: MKM Core)에 **압축·사업·명리·이벤트** 소스를 한꺼번에 넣으면, NotebookLM이 **질문과 무관한 문단을 인용**해 답하는 경우가 생긴다(Fact-Lock 위반에 가까운 “근거 있는 착시”).
+
+**원칙 (3줄)**  
+1. **Google NL 노트북 1개 = RAG 코퍼스 1목적** — 렌즈·이벤트·Ops를 **섞지 않는다**.  
+2. **구현·수치·경로**는 항상 Git의 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트·`artifacts` — NL은 **B/Creative-Lock·브리핑**만.  
+3. **장기기억 체화**는 `docs/final/CENTRAL_AGENT_MEMORY_V1.md` + 커밋; NL 출력은 **이관·검증 후**에만 본 파일에 쓴다.
+
+| 구분 | 노트북 이름 권장 (Google에서 생성·이름 맞춤) | 인제스트할 소스 (아래는 **시작 세트**; 늘리면 같은 목적 안에서만) | `ask_question` 용도 |
+|------|----------------------------------------------|-------------------------------------------------------------------|---------------------|
+| **Ops / Fact 앵커** | `OPS_COMMAND_ANCHOR` | `CURRENT_OPS_SNAPSHOT.md`, `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`(또는 §1.1~§2 요약 1파일), `P0_COMMERCIALIZATION_TRACKER.md` | 경로·게이트·우선순위 |
+| **Track C / 사업** | `TRACKC_BIZ` | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`, `artifacts/business_registration_plan_v1.md`, `artifacts/ai_opendata_challenge_2026_327_business_plan_overview_v1.md`, `artifacts/ai_opendata_challenge_2026_327_market_expansion_summary_v1.md`, `artifacts/moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md` | 사업·GTM·대외 수치 경계 |
+| **명리 Myeongni (B)** | `LENS_MYEONGNI` | `CONSTITUTION` **§3.3** 표·절, `MYEONGRI_INSIGHT_SSOT.md`, `MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md`, `artifacts/MANSE_SAJU_STAGE_LAW_CONTRACT_V0.json`, `data/myeongni/16_STATE_MASTER_PROBE_v1.json` | `[HYPO]`·교육 자문; **개인 사주·실명·주민번호는 업로드 금지**(질문 본문에만 최소 입력) |
+| **사상 Sasang (B)** | `LENS_SASANG` | `docs/final/schemas/sasang_emotion_mapping_v1.schema.json` + `CONSTITUTION` **§3.8**·§3.10 인접 절(스키마만 단정 금지 문구 포함) | 체질·감정 VA `[HYPO]` |
+| **성경 Logos (B, NON_GATING)** | `LENS_LOGOS` | 루트 `AGENTS.md` **렌즈 역할 계약** 절, `CONSTITUTION` 중 Logos·`[NON_GATING]` 관련 절 요약 1파일 | 해설·운영 비게이트 |
+| **압축·예언 허브 (A)** | `MKM_CORE_FACT` | `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`, `MKM_LESSONS_LEARNED_V1.md`, `MKM_CORE_THEORY_V1.md`, `COMPRESSION_SLA_POLICY_V1.md` | 압축·예언·교훈 인덱스 |
+| **이벤트 한정** | `EVENT_<slug>` | 해당 이벤트 소스 **1~3개만** (예: 발표 스크립트 단일 진본) | 기간 끝나면 소스 정리·아카이브 |
+
+**금지:** `MKM_CORE_FACT`에 명리·사업·이벤트 원본을 **추가로** 섞어 넣기.
+
+**실행:** Vault 미러 → `sync_notebooklm_sources_to_mkm_data_vault.ps1` → NL 웹 **`source_add`**(행별 소스만; MCP `add_source` 실패 시 한국 UI 앵커: `scripts/apply_notebooklm_mcp_ko_selectors_patch_v1.py` + Reload) → MCP 질의 시 **`notebook_id` 고정**.
+
+**자동(로컬):** `py scripts/build_notebooklm_lens_source_packs_v1.py` → `reports/notebooklm_lens_packs_v1/<렌즈>/`에 매니페스트 행 기준 파일 복사 + `index.json` — 이후 NL 웹에서 **렌즈별 노트**에 폴더 단위 업로드. 원클릭: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-NotebookLmLensPacksAndVaultMirror_v1.ps1` (Vault 없으면 팩만 생성).
+
+**교차 브리핑:** 여러 렌즈를 한 번에 묻지 말고, **질문마다 노트를 바꾸거나** 문서의 **Fusion Hub** 노트를 쓸 경우에도 **소스 폴더/태그로 렌즈 분리**를 유지한다(아래 URL 노트는 “허브”일 뿑, 만능 RAG 아님).
+
+**기존 노트 정리:** `MKM_CORE_INTELLIGENCE_V1`(URL `aba1f8b1-…`)은 **본 표의 `MKM_CORE_FACT` 행과 동일 역할**로만 유지하고, 명리·사업·이벤트 원본이 섞여 있으면 **`LENS_MYEONGNI` / `TRACKC_BIZ` / `EVENT_*`로 이관**한다.
 
 **원샷 점검 (로컬만, Google 호출 없음):** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-NotebookLmSyncTriage_v1.ps1` → 콘솔 요약 + `reports/notebooklm_sync_triage_latest.json`. Vault까지 실제 미러하려면 같은 스크립트에 `-RunMirror`.
 

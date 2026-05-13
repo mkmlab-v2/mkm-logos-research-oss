@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+"""Build per-lens NotebookLM upload packs (local disk, deterministic).
+
+Copies a minimal allowlist of repo files into reports/notebooklm_lens_packs_v1/<LENS>/
+for Google NotebookLM manual source_add (or MCP add_source type=text in batches).
+
+SSOT layout: docs/NotebookLM_sources_manifest.md — «렌즈별 RAG — 노트북 1목적 매핑»
+"""
+from __future__ import annotations
+
+import hashlib
+import json
+import shutil
+import sys
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "reports" / "notebooklm_lens_packs_v1"
+
+# Lens id -> list of paths relative to ROOT (skip silently if missing)
+PACKS: dict[str, list[str]] = {
+    "OPS_COMMAND_ANCHOR": [
+        "docs/NotebookLM_sources_manifest.md",
+        "docs/final/CURRENT_OPS_SNAPSHOT.md",
+        "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+        "docs/final/P0_COMMERCIALIZATION_TRACKER.md",
+    ],
+    "TRACKC_BIZ": [
+        "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
+        "docs/final/artifacts/business_registration_plan_v1.md",
+        "docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_overview_v1.md",
+        "docs/final/artifacts/ai_opendata_challenge_2026_327_market_expansion_summary_v1.md",
+        "docs/final/artifacts/moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md",
+    ],
+    "LENS_MYEONGNI": [
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+        "docs/final/MYEONGRI_INSIGHT_SSOT.md",
+        "docs/final/MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md",
+        "docs/final/artifacts/MANSE_SAJU_STAGE_LAW_CONTRACT_V0.json",
+        "data/myeongni/16_STATE_MASTER_PROBE_v1.json",
+    ],
+    "LENS_SASANG": [
+        "docs/final/schemas/sasang_emotion_mapping_v1.schema.json",
+        "docs/final/schemas/sasang_emotion_mapping_v1.example.json",
+    ],
+    "LENS_LOGOS": [
+        "AGENTS.md",
+        "docs/final/LOGOS_NOTEBOOK_META_GUIDE.md",
+    ],
+    "MKM_CORE_FACT": [
+        "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
+        "docs/final/MKM_LESSONS_LEARNED_V1.md",
+        "docs/final/MKM_CORE_THEORY_V1.md",
+        "docs/final/COMPRESSION_SLA_POLICY_V1.md",
+    ],
+}
+
+
+def _sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def main() -> int:
+    if OUT.exists():
+        shutil.rmtree(OUT)
+    OUT.mkdir(parents=True, exist_ok=True)
+
+    index: dict[str, Any] = {
+        "schema": "notebooklm_lens_packs_v1",
+        "version": "1.0.0",
+        "root": str(OUT),
+        "packs": {},
+    }
+
+    for lens, rels in PACKS.items():
+        lens_dir = OUT / lens
+        lens_dir.mkdir(parents=True, exist_ok=True)
+        files_out: list[dict[str, Any]] = []
+        for rel in rels:
+            src = ROOT / rel.replace("\\", "/")
+            if not src.is_file():
+                files_out.append({"rel": rel, "status": "missing"})
+                continue
+            dest = lens_dir / rel.replace("/", "__")
+            shutil.copy2(src, dest)
+            files_out.append(
+                {
+                    "rel": rel,
+                    "status": "copied",
+                    "dest": str(dest.relative_to(OUT)),
+                    "bytes": dest.stat().st_size,
+                    "sha256": _sha256(dest),
+                }
+            )
+        index["packs"][lens] = {"files": files_out}
+
+    readme = OUT / "README.md"
+    readme.write_text(
+        """# NotebookLM lens packs (auto-generated)
+
+Run from repo root:
+
+```bash
+py scripts/build_notebooklm_lens_source_packs_v1.py
+```
+
+Then in Google NotebookLM: create one notebook per lens (see `docs/NotebookLM_sources_manifest.md`), and **source_add** each file under the matching folder (`LENS_MYEONGNI/`, …). Do not upload personal birth data as files; keep `[HYPO]` in prompts only.
+
+""",
+        encoding="utf-8",
+    )
+
+    (OUT / "index.json").write_text(json.dumps(index, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"WROTE: {OUT}", file=sys.stderr)
+    print(json.dumps({"pack_root": str(OUT), "lenses": list(PACKS)}, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
