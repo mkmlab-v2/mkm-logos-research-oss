@@ -352,9 +352,13 @@ on:
       - "scripts/extract_aramaic_core_corpus_v1.py"
       - "scripts/report_aramaic_mvp_audit_trend_v1.py"
       - "scripts/alert_aramaic_mvp_trend_v1.py"
+      - "scripts/sweep_aramaic_mvp_alert_thresholds_v1.py"
+      - "scripts/apply_aramaic_mvp_alert_threshold_recommendation_v1.py"
       - "tests/test_extract_aramaic_core_corpus_v1.py"
       - "tests/test_report_aramaic_mvp_audit_trend_v1.py"
       - "tests/test_alert_aramaic_mvp_trend_v1.py"
+      - "tests/test_sweep_aramaic_mvp_alert_thresholds_v1.py"
+      - "tests/test_apply_aramaic_mvp_alert_threshold_recommendation_v1.py"
       - "tests/fixtures/track_a_metering_log_smoke_v1.jsonl"
       - "data/track_a_shadow/conversations_sample_v1.jsonl"
       - "tests/test_multilens_sensitive_integrity_gate.py"
@@ -1195,7 +1199,7 @@ jobs:
             -q --tb=short
 
       - name: Aramaic B-track graph pipeline smoke (corpus, audit, schemas, edges, score, semantic quality, cross-corpus bridge)
-        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py tests/test_report_aramaic_mvp_audit_trend_v1.py tests/test_alert_aramaic_mvp_trend_v1.py tests/test_aramaic_graph_schema_v1.py tests/test_aramaic_edge_builder_v1.py tests/test_aramaic_regime_shift_score_v1.py tests/test_aramaic_semantic_edge_quality_v1.py tests/test_build_aramaic_cross_corpus_bridge_v1.py -q --tb=short
+        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py tests/test_report_aramaic_mvp_audit_trend_v1.py tests/test_alert_aramaic_mvp_trend_v1.py tests/test_sweep_aramaic_mvp_alert_thresholds_v1.py tests/test_apply_aramaic_mvp_alert_threshold_recommendation_v1.py tests/test_aramaic_graph_schema_v1.py tests/test_aramaic_edge_builder_v1.py tests/test_aramaic_regime_shift_score_v1.py tests/test_aramaic_semantic_edge_quality_v1.py tests/test_build_aramaic_cross_corpus_bridge_v1.py -q --tb=short
 
       - name: Logos insight bundle v1 (schema + build CLI)
         run: python -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py -q --tb=short
