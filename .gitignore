@@ -28,6 +28,10 @@ logs/
 # 로컬 일회성 산출 (예: weather 체인 `-o out/reg.json`)
 /out/
 
+# bitcoin-trading runtime risk + human-in-the-loop receipts (regenerate: sync_fact_safe_risk_profile.py, approve_trading_execution_v1.ps1)
+/projects/bitcoin-trading/memory/v2/risk/risk_profile_fact_safe_latest.json
+/reports/trading_human_execution_approval_latest.json
+
 # VPS→local heartbeat mirror (sync daemon_alive_check.json here; keep folder only in Git)
 /live_sync/incoming/**
 !/live_sync/incoming/.gitkeep
