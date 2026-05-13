@@ -376,6 +376,85 @@ def _maybe_validate(instance: dict[str, Any], schema_path: Path) -> None:
     jsonschema.validate(instance=instance, schema=schema)
 
 
+def _insert_best_effort_caveat(
+    *,
+    mode: Mode,
+    coord: dict[str, Any],
+    lenses: list[dict[str, Any]],
+    disk_blobs: dict[str, dict[str, Any] | None],
+) -> None:
+    if mode != "best-effort":
+        return
+    trace_parts: list[str] = []
+    for lens in lenses:
+        if not isinstance(lens, dict):
+            continue
+        lid = str(lens.get("lens_id", ""))
+        if disk_blobs.get(lid) is None:
+            trace_parts.append(f"{lid}=MISSING")
+            continue
+        paths = lens.get("engine_artifact_paths")
+        if isinstance(paths, list) and paths:
+            trace_parts.append(f"{lid}={' '.join(str(p) for p in paths)}")
+        else:
+            trace_parts.append(f"{lid}=LOADED_NO_PATH")
+    line = "Fact-Lock trace (best-effort disk ingest): " + " | ".join(trace_parts)
+    if len(line) > 1950:
+        line = line[:1947] + "..."
+    caveats = coord.get("caveats")
+    if not isinstance(caveats, list):
+        caveats = []
+        coord["caveats"] = caveats
+    caveats.insert(0, line)
+
+
+def _finalize_pipeline_outputs(
+    pipeline: list[Any],
+    *,
+    mode: Mode,
+    root: Path,
+    slice_paths: dict[str, Path],
+    synthesis_path: Path,
+    main_json_path: Path,
+    main_md_path: Path,
+) -> None:
+    """Point pipeline steps at real on-disk outputs; step 1 script_ref gets mode tag in best-effort."""
+    if not isinstance(pipeline, list):
+        return
+
+    owner_outputs: dict[str, list[str]] = {}
+    for lid, pth in slice_paths.items():
+        owner_outputs[lid] = [_posix_under_root(pth, root)]
+    owner_outputs["coordinator"] = [_posix_under_root(synthesis_path, root)]
+
+    for step in pipeline:
+        if not isinstance(step, dict):
+            continue
+        own = step.get("owner")
+        if own in owner_outputs:
+            step["outputs"] = list(owner_outputs[str(own)])
+        if mode == "best-effort" and step.get("step") == 1 and own == "orchestrator":
+            prev = str(step.get("script_ref", "")).strip()
+            tag = " [actual_mode=best-effort]"
+            merged = (prev + tag).strip()
+            if len(merged) > 1024:
+                merged = merged[:1021] + "..."
+            step["script_ref"] = merged
+
+        outs = step.get("outputs")
+        if not isinstance(outs, list):
+            continue
+        new_outs: list[str] = []
+        for o in outs:
+            if isinstance(o, str) and o.endswith("premium_btrack_multilens_report_v1.json"):
+                new_outs.append(_posix_under_root(main_json_path, root))
+            elif isinstance(o, str) and o.endswith("premium_btrack_multilens_report_v1.md"):
+                new_outs.append(_posix_under_root(main_md_path, root))
+            else:
+                new_outs.append(str(o))
+        step["outputs"] = new_outs
+
+
 def build_report(
     *,
     root: Path,
@@ -386,6 +465,9 @@ def build_report(
     artifact_overrides: dict[str, Path] | None = None,
 ) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
+    main_md_path = out_dir / "premium_btrack_multilens_report_v1.md"
+    main_json_path = out_dir / "premium_btrack_multilens_report_v1.json"
+
     example = _load_example(example_path)
     lenses = stub_lens_workers(example)
     coord = stub_coordinator_block(example)
@@ -412,8 +494,10 @@ def build_report(
             if isinstance(sec0, dict):
                 sec0["markdown_path"] = _posix_under_root(p, root)
 
-    synthesis_text = render_synthesis_md(coord, lens_ids, disk_blobs if mode == "best-effort" else None)
+    _insert_best_effort_caveat(mode=mode, coord=coord, lenses=lenses, disk_blobs=disk_blobs)
+
     synthesis_path = out_dir / "premium_multilens_synthesis_v0.md"
+    synthesis_text = render_synthesis_md(coord, lens_ids, disk_blobs if mode == "best-effort" else None)
     synthesis_path.write_text(synthesis_text, encoding="utf-8")
     coord["synthesis_markdown_path"] = _posix_under_root(synthesis_path, root)
 
@@ -422,9 +506,6 @@ def build_report(
     report.pop("async_job", None)
     report["lenses"] = lenses
     report["coordinator"] = coord
-
-    main_md_path = out_dir / "premium_btrack_multilens_report_v1.md"
-    main_json_path = out_dir / "premium_btrack_multilens_report_v1.json"
 
     package_md = render_package_md(report, slice_contents, synthesis_text, mode=mode)
     main_md_path.write_text(package_md, encoding="utf-8")
@@ -438,21 +519,15 @@ def build_report(
 
     pl = report.get("pipeline")
     if isinstance(pl, list):
-        for step in pl:
-            if not isinstance(step, dict):
-                continue
-            outs = step.get("outputs")
-            if not isinstance(outs, list):
-                continue
-            new_outs: list[str] = []
-            for o in outs:
-                if o.endswith("premium_btrack_multilens_report_v1.json"):
-                    new_outs.append(_posix_under_root(main_json_path, root))
-                elif o.endswith("premium_btrack_multilens_report_v1.md"):
-                    new_outs.append(_posix_under_root(main_md_path, root))
-                else:
-                    new_outs.append(str(o))
-            step["outputs"] = new_outs
+        _finalize_pipeline_outputs(
+            pl,
+            mode=mode,
+            root=root,
+            slice_paths=slice_paths,
+            synthesis_path=synthesis_path,
+            main_json_path=main_json_path,
+            main_md_path=main_md_path,
+        )
 
     main_json_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
