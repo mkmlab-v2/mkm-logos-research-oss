@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Assemble internal semantic+RAG bridge insight bundle v1 (B-track / lab).
 
-Reads optional RAG hit JSON and optional calibration artifact path, emits JSON matching
+Reads optional RAG hit JSON, optional `philosophy_lane_rag_pilot_v1` JSON (`blocks[]`),
+and optional calibration artifact path; emits JSON matching
 docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json.
 """
 
@@ -16,8 +17,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_NAME = "build_semantic_rag_bridge_insight_bundle_v1.py"
-SCRIPT_VERSION = "1.0.0"
-BUNDLE_VERSION = "1.0.0"
+SCRIPT_VERSION = "1.0.1"
+BUNDLE_VERSION = "1.0.1"
 SCHEMA_ID = "semantic_rag_bridge_insight_bundle_v1"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "semantic_rag_bridge_insight_bundle_v1_latest.json"
 SCHEMA_PATH = ROOT / "docs" / "final" / "schemas" / f"{SCHEMA_ID}.schema.json"
@@ -92,6 +93,37 @@ def _normalize_rag_evidence(raw: Any, *, max_items: int = 24) -> list[dict[str, 
         uri = row.get("uri")
         if isinstance(uri, str) and uri.strip():
             item["uri"] = uri.strip()[:2048]
+        out.append(item)
+    return out
+
+
+def rag_evidence_from_philosophy_pilot_v1(doc: Any, *, max_items: int = 24) -> list[dict[str, Any]]:
+    """Map `philosophy_lane_rag_pilot_v1` `blocks[]` into `rag_evidence`-shaped rows (B-band)."""
+    if not isinstance(doc, dict):
+        return []
+    blocks = doc.get("blocks")
+    if not isinstance(blocks, list):
+        return []
+    out: list[dict[str, Any]] = []
+    for i, b in enumerate(blocks):
+        if len(out) >= max_items:
+            break
+        if not isinstance(b, dict):
+            continue
+        rail = str(b.get("source_rail") or "block").replace(" ", "_")[:120]
+        summary = str(b.get("summary") or "").strip()
+        detail = str(b.get("detail") or "").strip()
+        snippet = summary if not detail else f"{summary}\n{detail}"
+        if not snippet:
+            continue
+        item: dict[str, Any] = {
+            "source_id": f"philosophy_lane_rag_pilot:{rail}:{i}"[:512],
+            "snippet": snippet[:8000],
+            "confidence_band": "B",
+        }
+        ep = b.get("evidence_path")
+        if isinstance(ep, str) and ep.strip():
+            item["uri"] = ep.strip()[:2048]
         out.append(item)
     return out
 
@@ -231,6 +263,15 @@ def main() -> int:
         help="JSON file: list of hits or {rag_evidence:[...]} / {hits:[...]}",
     )
     ap.add_argument(
+        "--philosophy-pilot-json",
+        type=Path,
+        default=None,
+        help=(
+            "Optional philosophy_lane_rag_pilot_v1 artifact; `blocks[]` appended to "
+            "rag_evidence after --rag-json (cap 24 total)."
+        ),
+    )
+    ap.add_argument(
         "--slots-json",
         type=Path,
         default=None,
@@ -267,6 +308,21 @@ def main() -> int:
         print(json.dumps({"ok": False, "error": "rag_json_unreadable"}, ensure_ascii=False), file=sys.stderr)
         return 1
     rag_evidence = _normalize_rag_evidence(rag_raw if rag_raw is not None else [])
+    if args.philosophy_pilot_json:
+        pj = (
+            args.philosophy_pilot_json
+            if args.philosophy_pilot_json.is_absolute()
+            else ROOT / args.philosophy_pilot_json
+        )
+        pilot_doc = _read_json(pj)
+        if pilot_doc is None:
+            print(
+                json.dumps({"ok": False, "error": "philosophy_pilot_json_unreadable"}, ensure_ascii=False),
+                file=sys.stderr,
+            )
+            return 1
+        extra = rag_evidence_from_philosophy_pilot_v1(pilot_doc, max_items=24)
+        rag_evidence = (rag_evidence + extra)[:24]
 
     slots_raw = _read_json(args.slots_json) if args.slots_json else None
     if args.slots_json and slots_raw is None:
