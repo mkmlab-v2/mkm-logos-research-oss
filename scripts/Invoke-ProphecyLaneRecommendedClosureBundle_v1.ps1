@@ -136,7 +136,7 @@ try {
 catch {
     $closureOk = $false
     $failureMessage = $_.Exception.Message
-    Write-Error $failureMessage
+    Write-Warning "prophecy lane closure failed: $failureMessage"
 }
 
 $safe = $null
