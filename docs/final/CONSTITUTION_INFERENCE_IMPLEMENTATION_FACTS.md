@@ -627,11 +627,8 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 일일 스케줄 등록·readiness | _(레포에 `register_aramaic_mvp_daily_task.ps1` / `verify_aramaic_mvp_daily_task_readiness.ps1` 없음 — Task Scheduler 수동 등록)_ | Action에 `scripts/run_aramaic_mvp_now_with_audit.ps1` 지정; `-NoWebhook`·**`-SkipLogosInsightBundle`**(콜드 호스트) 등은 즉시실행 스크립트 인자로 전달. Aramaic 전용 태스크는 로컬 `Get-ScheduledTask`로 확인. Track C 매크로 퓨전 태스크(`MKM-TrackC-MacroDailyFusion`) 진단·힌트: `scripts/build_trackc_macro_fusion_failure_diagnosis_v1.py` |
 | 즉시 실행 + 감사 로그 | `scripts/run_aramaic_mvp_now_with_audit.ps1` → `reports/ops/aramaic_mvp_run_audit_log.jsonl` | 즉시 체인 실행 후 readiness 갱신·점수 델타 로그 append (`-NoWebhook`로 알림 전송 차단; **`-SkipLogosInsightBundle`**은 `run_aramaic_mvp_chain_v1.ps1`로 전달) |
 | Raw OOS 실측 누적 배치 러너 | `scripts/run_aramaic_raw_oos_audit_accumulator_v1.ps1` | `run_aramaic_mvp_now_with_audit.ps1`를 반복 실행해 audit run을 목표치(`TargetAuditRuns`)까지 누적하고, 각 반복마다 raw OOS ingest/readiness를 재계산한다. **`-SkipLogosInsightBundle`**은 러너에 전달되면 즉시실행 스크립트·체인으로 이어진다. |
-| 감사 추세 리포트 | `scripts/report_aramaic_mvp_audit_trend_v1.py` → `docs/final/artifacts/aramaic_mvp_audit_trend_latest.json` | 최근 실행 창 평균/최대/최소/라벨 히스토그램 요약 |
-| 추세 경보 규칙 | `scripts/alert_aramaic_mvp_trend_v1.py` → `docs/final/artifacts/aramaic_mvp_trend_alert_latest.json` | 연속 `alert/critical` streak 평가 후 웹훅(`ARAMAIC_MVP_ALERT_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`) 전송 |
-| 경보 임계값 스윕 | `scripts/sweep_aramaic_mvp_alert_thresholds_v1.py` → `docs/final/artifacts/aramaic_mvp_alert_threshold_sweep_latest.json` | streak(예: 3/4/5)별 trigger rate 비교 |
-| 추천 임계값 적용 | `scripts/apply_aramaic_mvp_alert_threshold_recommendation_v1.py` → `docs/final/artifacts/aramaic_mvp_alert_threshold_recommended_latest.json` | 스윕 결과의 추천 streak를 활성 아티팩트로 승격 |
-| 임계값 주간 스케줄 등록·readiness | _(레포에 `register_aramaic_mvp_threshold_weekly_task.ps1` / `verify_aramaic_mvp_threshold_weekly_task_readiness.ps1` 없음 — Task Scheduler 수동 등록)_ | 주간 Action은 동 표 **「경보 임계값 스윕」→「추천 임계값 적용」**에 적힌 경로가 실제 `scripts/`에 있을 때만 연속 실행으로 묶어 등록; 없으면 `CONSTITUTION`과 디스크를 대조해 확인. 태스크 확인은 로컬 `Get-ScheduledTask` |
+| 감사 추세·추세 경보·경보 임계값 스윕·추천 임계값 적용 (스크립트 미배치) | _(의도 경로 — `scripts/`에 아직 없음)_ `scripts/report_aramaic_mvp_audit_trend_v1.py` → `docs/final/artifacts/aramaic_mvp_audit_trend_latest.json`; `scripts/alert_aramaic_mvp_trend_v1.py` → `docs/final/artifacts/aramaic_mvp_trend_alert_latest.json`; `scripts/sweep_aramaic_mvp_alert_thresholds_v1.py` → `docs/final/artifacts/aramaic_mvp_alert_threshold_sweep_latest.json`; `scripts/apply_aramaic_mvp_alert_threshold_recommendation_v1.py` → `docs/final/artifacts/aramaic_mvp_alert_threshold_recommended_latest.json` | 입력: `reports/ops/aramaic_mvp_run_audit_log.jsonl`. 웹훅: `ARAMAIC_MVP_ALERT_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`. **현재 실행 SSOT:** `run_aramaic_mvp_now_with_audit.ps1`/체인 + 표 상단 통찰 캡·가중치·shadow 등 이미 배치된 스크립트 |
+| 임계값 주간 스케줄 등록·readiness | _(레포에 `register_aramaic_mvp_threshold_weekly_task.ps1` / `verify_aramaic_mvp_threshold_weekly_task_readiness.ps1` 없음 — Task Scheduler 수동 등록)_ | 위 **「스크립트 미배치」** 행의 4개 `.py`가 `scripts/`에 생기면 스윕→적용 순으로 주간 등록; 미배치면 생략. 태스크 확인은 로컬 `Get-ScheduledTask` |
 
 **격벽 규칙:** 본 절 산출물은 `research_only=true`, `promotion_required=true`, `source_track=B`를 유지하며 A-track·실매매 자동 트리거 경로로 합선하지 않는다.
 
@@ -662,27 +659,8 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 사상 벤치(SASANG ↔ 명리 앵커) | `tests/test_sasang_cross_ref_draft.py` |
 | §3.3 명리 통찰 관측 JSONL·융합 스텁 | `tests/test_myeongni_insight_observation_log.py` |
 | §3.3 명리 퓨전 스크립트 스모크 | `tests/test_myeongri_fusion_scripts_smoke.py` |
-| Aramaic 그래프 스키마 계약 | `tests/test_aramaic_graph_schema_v1.py` |
-| Aramaic 엣지 생성기 스모크 | `tests/test_aramaic_edge_builder_v1.py` |
-| Aramaic 레짐 점수 계약 | `tests/test_aramaic_regime_shift_score_v1.py` |
-| Aramaic 의미 연결 품질 리포트 계약 | `tests/test_aramaic_semantic_edge_quality_v1.py` |
-| Aramaic 교차 코퍼스 브리지 계약 | `tests/test_build_aramaic_cross_corpus_bridge_v1.py` |
-| Bible 의미 그래프 스키마 계약 | `tests/test_bible_meaning_graph_schema_v1.py` |
-| Bible 의미 그래프 빌더 계약 | `tests/test_build_bible_meaning_graph_v1.py` |
-| Bible 의미 통찰 후보 추출 계약 | `tests/test_extract_bible_meaning_insight_candidates_v1.py` |
-| 통찰 생존 평가 계약 | `tests/test_build_insight_survivor_eval_v1.py` |
-| 통찰 생존 선발 계약 | `tests/test_select_insight_survivor_candidates_v1.py` |
-| 통찰 캡 버킷 임계치 스윕 계약 | `tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py` |
-| 통찰 캡 버킷 임계치 적용 계약 | `tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py` |
-| 통찰 캡 임계치 히스토리 계약 | `tests/test_report_aramaic_insight_cap_threshold_history_v1.py` |
-| 통찰 캡 임계치 드리프트 경보 계약 | `tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py` |
-| Aramaic 가중치 스윕 계약 | `tests/test_aramaic_regime_shift_weight_sweep_v1.py` |
-| Aramaic shadow 비교 계약 | `tests/test_aramaic_regime_shift_shadow_compare_v1.py` |
-| Aramaic 감사 추세 리포트 계약 | `tests/test_report_aramaic_mvp_audit_trend_v1.py` |
-| Aramaic 추세 경보 계약 | `tests/test_alert_aramaic_mvp_trend_v1.py` |
-| Aramaic 즉시실행 no-webhook 패스스루 | `tests/test_run_aramaic_mvp_now_with_audit_passthrough_v1.py` |
-| Aramaic 경보 임계값 스윕 계약 | `tests/test_aramaic_mvp_alert_threshold_sweep_v1.py` |
-| Aramaic 브리지 계수 추천 적용 계약 | `tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py` |
+| Aramaic 코퍼스 추출 v1 계약 | `tests/test_extract_aramaic_core_corpus_v1.py` |
+| Aramaic §4.7·Bible 의미·통찰 생존·캡·가중치·shadow·MVP 감사·경보 pytest | _(레포 미배치)_ §4.7 표 스크립트와 짝지을 아래 파일은 아직 없음 — 구현 후 행 단위로 복원: `tests/test_aramaic_graph_schema_v1.py`, `tests/test_aramaic_edge_builder_v1.py`, `tests/test_aramaic_regime_shift_score_v1.py`, `tests/test_aramaic_semantic_edge_quality_v1.py`, `tests/test_build_aramaic_cross_corpus_bridge_v1.py`, `tests/test_bible_meaning_graph_schema_v1.py`, `tests/test_build_bible_meaning_graph_v1.py`, `tests/test_extract_bible_meaning_insight_candidates_v1.py`, `tests/test_build_insight_survivor_eval_v1.py`, `tests/test_select_insight_survivor_candidates_v1.py`, `tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py`, `tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py`, `tests/test_report_aramaic_insight_cap_threshold_history_v1.py`, `tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py`, `tests/test_aramaic_regime_shift_weight_sweep_v1.py`, `tests/test_aramaic_regime_shift_shadow_compare_v1.py`, `tests/test_report_aramaic_mvp_audit_trend_v1.py`, `tests/test_alert_aramaic_mvp_trend_v1.py`, `tests/test_run_aramaic_mvp_now_with_audit_passthrough_v1.py`, `tests/test_aramaic_mvp_alert_threshold_sweep_v1.py`, `tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py` |
 | 다중 렌즈 중간 레이어 절차 | `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` |
 | AI BGM 승격 게이트 v1 (스키마·기계적 평가·저작권 Field) | `tests/test_audio_bgm_gate_report_v1.py` |
 | 상징→오디오 매핑 계약 v1 ([HYPO] M0, 비임상) | `tests/test_sasang_music_mapping_schema_v1.py` |
