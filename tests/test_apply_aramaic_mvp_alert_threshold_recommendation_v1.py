@@ -7,6 +7,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+import pytest
+
 ROOT = Path(__file__).resolve().parents[1]
 SWEEP = ROOT / "scripts" / "sweep_aramaic_mvp_alert_thresholds_v1.py"
 APPLY = ROOT / "scripts" / "apply_aramaic_mvp_alert_threshold_recommendation_v1.py"
