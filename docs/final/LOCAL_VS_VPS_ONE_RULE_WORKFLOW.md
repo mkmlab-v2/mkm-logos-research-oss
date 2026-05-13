@@ -46,7 +46,7 @@
 | **VPS (대개 Linux)** | **DPAPI 스토어에 의존하지 않음.** `/etc/mkm/` 등 **레포 밖** 파일(`chmod 600`) 또는 **systemd `EnvironmentFile=`**, 또는 호스트 시크릿 관리. | **키 이름**은 `.env.example`과 맞추고, **저장 위치만 OS별**로 둔다. |
 | **공통** | `.env` **커밋 금지**; 점검: `scripts/Verify-MonorepoSecretHygiene.ps1` — 원클릭 준비도: `scripts/Invoke-MkmSecretsHybridReadiness_v1.ps1`. | 엄격 서베이(선택): `run_workspace_automation_health.ps1 -IncludeSecretExposureSurvey`. |
 
-**VPS env 템플릿(주석만):** `scripts/deploy/linux/mkm-monorepo-vps.env.example` — 채운 뒤 서버 경로에 두고 systemd/PM2가 `EnvironmentFile` 또는 `dotenv` 경로로 읽게 맞춘다.
+**VPS env 템플릿(주석만):** `scripts/deploy/linux/mkm-monorepo-vps.env.example` — 채운 뒤 서버 경로에 두고 systemd/PM2가 `EnvironmentFile` 또는 `dotenv` 경로로 읽게 맞춘다. **첫 설치(루트 1회):** 레포 루트에서 `sudo bash scripts/deploy/linux/bootstrap_mkm_monorepo_host_env_v1.sh` → 기본 `/etc/mkm/mkm-monorepo.env` 생성(이미 있으면 변경 없음).
 
 ---
 
