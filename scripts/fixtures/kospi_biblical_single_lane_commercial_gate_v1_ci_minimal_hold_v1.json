@@ -1,0 +1,9 @@
+{
+  "_fixture": "ci_minimal_hold_v1",
+  "precommercial_ready": false,
+  "current_metrics": {
+    "external_active_for_gate": {
+      "accuracy": 0.0
+    }
+  }
+}

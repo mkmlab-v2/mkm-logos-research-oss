@@ -1,0 +1,7 @@
+{
+  "_fixture": "ci_minimal_hold_v1",
+  "standalone_commercial_ready": false,
+  "metrics": {
+    "accuracy": 0.0
+  }
+}

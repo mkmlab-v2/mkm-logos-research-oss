@@ -220,6 +220,9 @@ on:
       - "scripts/check_athena_execution_governance_smoke_v1.py"
       - "scripts/trade_dummy.py"
       - "scripts/fixtures/integrated_governance_v1_hold.json"
+      - "scripts/fixtures/kospi_biblical_single_lane_commercial_gate_v1_ci_minimal_hold_v1.json"
+      - "scripts/fixtures/kospi_myeongri_standalone_commercial_gate_v1_ci_minimal_hold_v1.json"
+      - "scripts/fixtures/kospi_sasang_single_lane_commercial_gate_v1_ci_minimal_hold_v1.json"
       - "tests/test_athena_run_v1.py"
       - "tests/test_athena_doctor_v1.py"
       - "tests/test_build_integrated_governance_m31_digest_v1.py"
@@ -936,8 +939,18 @@ jobs:
             tests/test_check_athena_execution_governance_smoke_v1.py \
             -q --tb=short
 
-      - name: Integrated governance v1 builder (deps-gated; CI skips if KOSPI gates absent)
-        run: python scripts/invoke_build_integrated_governance_if_deps_present_v1.py
+      - name: Integrated governance v1 builder (CI minimal HOLD fixtures → invoker RUN)
+        run: |
+          set -euo pipefail
+          mkdir -p docs/final/artifacts
+          cp scripts/fixtures/kospi_biblical_single_lane_commercial_gate_v1_ci_minimal_hold_v1.json \
+            docs/final/artifacts/kospi_biblical_single_lane_commercial_gate_v1_latest.json
+          cp scripts/fixtures/kospi_myeongri_standalone_commercial_gate_v1_ci_minimal_hold_v1.json \
+            docs/final/artifacts/kospi_myeongri_standalone_commercial_gate_v1_latest.json
+          cp scripts/fixtures/kospi_sasang_single_lane_commercial_gate_v1_ci_minimal_hold_v1.json \
+            docs/final/artifacts/kospi_sasang_single_lane_commercial_gate_v1_latest.json
+          python scripts/invoke_build_integrated_governance_if_deps_present_v1.py
+          test -f docs/final/artifacts/integrated_governance_v1_latest.json
 
       - name: AI BGM gate v1 (schema, batch+gate wiring)
         run: python -m pytest tests/test_audio_bgm_gate_report_v1.py -q --tb=short
