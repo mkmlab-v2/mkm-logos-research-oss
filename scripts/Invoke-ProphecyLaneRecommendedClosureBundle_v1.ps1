@@ -29,7 +29,8 @@ param(
     [string]$WorkspaceRoot = "",
     [switch]$StrictPrereqs,
     [switch]$SkipLiveSyncPull,
-    [switch]$SkipGoNoGoRefresh
+    [switch]$SkipGoNoGoRefresh,
+    [switch]$SkipWebhook
 )
 
 $ErrorActionPreference = "Stop"
@@ -42,6 +43,8 @@ Set-Location -LiteralPath $WorkspaceRoot
 $reportPath = Join-Path $WorkspaceRoot "reports\prophecy_lane_closure_bundle_v1_latest.json"
 $steps = [System.Collections.Generic.List[object]]::new()
 $ts = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+$closureOk = $false
+$failureMessage = $null
 
 function Add-Step([string]$Name, $ExitCode) {
     $script:steps.Add([ordered]@{ name = $Name; exit_code = $ExitCode }) | Out-Null
@@ -57,48 +60,83 @@ function Invoke-BundleScript([string]$RelPath, [string[]]$Args) {
     return [int]$p.ExitCode
 }
 
-$e0 = Invoke-BundleScript "scripts\verify_p0_constitution_gate_paths.ps1" @()
-Add-Step "verify_p0" $e0
-if ($e0 -ne 0) { throw "verify_p0 failed exit $e0" }
-
-$prArgs = @("scripts\check_btrack_prophecy_chain_prereqs_v1.py", "--stdout-only")
-if ($StrictPrereqs) { $prArgs += "--strict" }
-& py @prArgs
-$e1 = $LASTEXITCODE
-Add-Step "check_btrack_prophecy_chain_prereqs" $e1
-if ($e1 -ne 0) { throw "check_btrack_prophecy_chain_prereqs failed exit $e1" }
-
-$e2 = Invoke-BundleScript "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1" @()
-Add-Step "run_prophecy_alignment_pytest" $e2
-if ($e2 -ne 0) { throw "run_prophecy_alignment_pytest failed exit $e2" }
-
-if (-not $SkipLiveSyncPull) {
-    $e3 = Invoke-BundleScript "scripts\Invoke-LiveSyncHeartbeatPull.ps1" @("-SoftFail")
-    Add-Step "Invoke_LiveSyncHeartbeatPull_SoftFail" $e3
-    if ($e3 -ne 0) { throw "Invoke-LiveSyncHeartbeatPull failed exit $e3" }
-}
-else {
-    Add-Step "Invoke_LiveSyncHeartbeatPull_SoftFail_skipped" $null
-}
-
-$e4 = Invoke-BundleScript "scripts\Invoke-SafeOpsSurfaceCheck.ps1" @()
-Add-Step "Invoke_SafeOpsSurfaceCheck" $e4
-if ($e4 -ne 0) { throw "Invoke-SafeOpsSurfaceCheck failed exit $e4" }
-
-if (-not $SkipGoNoGoRefresh) {
-    Push-Location $WorkspaceRoot
+function Send-ClosureAlert([object]$ResultObject) {
+    if ($SkipWebhook) { return }
+    $webhook = $env:PROPHECY_LANE_CLOSURE_WEBHOOK_URL
+    if ([string]::IsNullOrWhiteSpace($webhook)) {
+        $webhook = $env:OPS_ALARM_WEBHOOK_URL
+    }
+    if ([string]::IsNullOrWhiteSpace($webhook)) {
+        Write-Host "Webhook alert skipped: no PROPHECY_LANE_CLOSURE_WEBHOOK_URL or OPS_ALARM_WEBHOOK_URL" -ForegroundColor DarkGray
+        return
+    }
+    $payload = [ordered]@{
+        event = "prophecy_lane_closure_failed"
+        ts_utc = (Get-Date).ToUniversalTime().ToString("o")
+        workspace = $WorkspaceRoot
+        closure_ok = $false
+        closure = ($ResultObject | ConvertTo-Json -Depth 12 | ConvertFrom-Json)
+    }
+    $body = $payload | ConvertTo-Json -Depth 12 -Compress
     try {
-        & py "scripts\build_trading_go_nogo_status_v1.py" "--exit-zero-on-no-go"
-        $e5 = $LASTEXITCODE
+        $null = Invoke-RestMethod -Uri $webhook -Method Post -Body $body -ContentType "application/json; charset=utf-8" -TimeoutSec 30
+        Write-Host "Webhook alert sent: prophecy_lane_closure_failed" -ForegroundColor Yellow
     }
-    finally {
-        Pop-Location
+    catch {
+        Write-Warning "Webhook alert failed: $($_.Exception.Message)"
     }
-    Add-Step "build_trading_go_nogo_status_v1" $e5
-    if ($e5 -ne 0) { throw "build_trading_go_nogo_status_v1 failed exit $e5" }
 }
-else {
-    Add-Step "build_trading_go_nogo_status_v1_skipped" $null
+
+try {
+    $e0 = Invoke-BundleScript "scripts\verify_p0_constitution_gate_paths.ps1" @()
+    Add-Step "verify_p0" $e0
+    if ($e0 -ne 0) { throw "verify_p0 failed exit $e0" }
+
+    $prArgs = @("scripts\check_btrack_prophecy_chain_prereqs_v1.py", "--stdout-only")
+    if ($StrictPrereqs) { $prArgs += "--strict" }
+    & py @prArgs
+    $e1 = $LASTEXITCODE
+    Add-Step "check_btrack_prophecy_chain_prereqs" $e1
+    if ($e1 -ne 0) { throw "check_btrack_prophecy_chain_prereqs failed exit $e1" }
+
+    $e2 = Invoke-BundleScript "projects\bitcoin-trading\ops\v2\tasks\run_prophecy_alignment_pytest.ps1" @()
+    Add-Step "run_prophecy_alignment_pytest" $e2
+    if ($e2 -ne 0) { throw "run_prophecy_alignment_pytest failed exit $e2" }
+
+    if (-not $SkipLiveSyncPull) {
+        $e3 = Invoke-BundleScript "scripts\Invoke-LiveSyncHeartbeatPull.ps1" @("-SoftFail")
+        Add-Step "Invoke_LiveSyncHeartbeatPull_SoftFail" $e3
+        if ($e3 -ne 0) { throw "Invoke-LiveSyncHeartbeatPull failed exit $e3" }
+    }
+    else {
+        Add-Step "Invoke_LiveSyncHeartbeatPull_SoftFail_skipped" $null
+    }
+
+    $e4 = Invoke-BundleScript "scripts\Invoke-SafeOpsSurfaceCheck.ps1" @()
+    Add-Step "Invoke_SafeOpsSurfaceCheck" $e4
+    if ($e4 -ne 0) { throw "Invoke-SafeOpsSurfaceCheck failed exit $e4" }
+
+    if (-not $SkipGoNoGoRefresh) {
+        Push-Location $WorkspaceRoot
+        try {
+            & py "scripts\build_trading_go_nogo_status_v1.py" "--exit-zero-on-no-go"
+            $e5 = $LASTEXITCODE
+        }
+        finally {
+            Pop-Location
+        }
+        Add-Step "build_trading_go_nogo_status_v1" $e5
+        if ($e5 -ne 0) { throw "build_trading_go_nogo_status_v1 failed exit $e5" }
+    }
+    else {
+        Add-Step "build_trading_go_nogo_status_v1_skipped" $null
+    }
+    $closureOk = $true
+}
+catch {
+    $closureOk = $false
+    $failureMessage = $_.Exception.Message
+    Write-Error $failureMessage
 }
 
 $safe = $null
@@ -113,11 +151,12 @@ $out = [ordered]@{
     schema              = "prophecy_lane_closure_bundle_v1"
     generated_at_utc    = $ts
     workspace_root      = $WorkspaceRoot
-    closure_ok          = $true
+    closure_ok          = $closureOk
     recommended_scope   = "ops_mainline_observability_only_no_orders"
     steps               = $steps
     safe_ops_status     = if ($safe) { $safe.status } else { $null }
     safe_ops_overall_safe = if ($safe) { $safe.overall_safe } else { $null }
+    failure_message     = $failureMessage
     manual_remainder    = @(
         "GeneralProphecyDailyQueueV1 and GeneralProphecyHoldoutEvolutionWeeklyV1 (schtasks): configure logon+credentials in Task Scheduler if logoff execution is required."
         "Track A commercial promotion and live execution remain separate human-gated workflows per P0_COMMERCIALIZATION_TRACKER.md."
@@ -130,4 +169,8 @@ if (-not (Test-Path -LiteralPath (Split-Path -Parent $reportPath))) {
 }
 $out | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $reportPath -Encoding UTF8
 Write-Host "[DONE] Wrote $reportPath" -ForegroundColor Green
+if (-not $closureOk) {
+    Send-ClosureAlert -ResultObject $out
+    exit 1
+}
 exit 0
