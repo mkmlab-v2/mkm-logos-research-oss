@@ -2,7 +2,7 @@
 
 **목적:** 사업서·영문 부록에 **복붙 가능한 단일 원본**을 둔다. 외부 인용은 각주로만 쓰고, 구현·수치·경로 확정은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트·exit code가 우선(Fact-Lock).
 
-**문서 버전:** v0.1 · **고정일:** 2026-05-13 (UTC 기준 제출 전 재확인 권장)
+**문서 버전:** v0.1.1 · **고정일:** 2026-05-13 — §8 URL 실측 표·DoD 체크 반영 (UTC 기준 제출 전 재확인 권장)
 
 ---
 
@@ -66,5 +66,16 @@ Public research shows that behaviors inconsistent with intended safety objective
 
 - [ ] 제안서 원고에 §2 또는 §3 반영 + §4 각주 2개 연결
 - [ ] 법무·입찰 담당: 과장·단정 표현 검토
-- [ ] 제출 직전: §4 URL HTTP 200·제목 일치 확인
-- [ ] (선택) `CENTRAL_AGENT_MEMORY_V1.md` 분기별 한 줄에 반영 여부 확인
+- [x] §4 URL 로드 확인(에이전트 실측, 제출 직전 재확인 권장) — **§8**
+- [x] (선택) `CENTRAL_AGENT_MEMORY_V1.md` 분기별 한 줄 — **2026-05-13 B2G 부록 행 반영됨**
+
+---
+
+## 8. §4 URL 실측 기록 (자동·Fact-Lock)
+
+| 각주 | URL | 실측 시각(UTC) | 관측 |
+|------|-----|----------------|------|
+| [1] | `https://www.anthropic.com/research/sleeper-agents-training-deceptive-llms-that-persist-through-safety-training` | 2026-05-13 | 페이지 로드·제목 *Sleeper Agents…* · 날짜 Jan 14, 2024 확인 |
+| [2] | `https://www.anthropic.com/research/alignment-faking` | 2026-05-13 | 페이지 로드·제목 *Alignment faking in large language models* · Dec 18, 2024 확인 |
+
+**주의:** 링크 구조 변경 가능. **제출 직전** 지휘관 브라우저에서 한 번 더 연다.
