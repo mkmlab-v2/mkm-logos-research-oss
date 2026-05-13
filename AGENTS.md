@@ -25,6 +25,7 @@
 ## 중앙 메모리 (크로스 채팅 정체성)
 
 - **지속 SSOT:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — Athena 정체성·격벽·Fact-Lock·「분기별 한 줄」.
+- **질문 라우팅(복붙 템플릿):** 동 파일 「질문 유형별 답변 라우팅 (권장 · 지휘관·에이전트 복붙)」— 운영·경로·게이트(A)는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·호출 가능 스크립트·exit code·pytest 우선; 연구·내러티브(B)는 RAG·NotebookLM·채팅을 보조로만, `[FACT]` / `[HYPO]` / `research_only`·실매매·Track A 자동 합선 금지 한 줄을 템플릿과 동일하게 둔다(본문 이중 전개는 CENTRAL만).
 - **자동 주입:** `.cursor/rules/central-agent-memory.mdc` (`alwaysApply`)에 **SSOT 핵심 5줄**이 매 에이전트 턴 컨텍스트에 포함된다. `@` 없이도 원칙 정렬은 가능하다.
 - **한계:** 채팅 로그는 세션 간 공유되지 않는다. “지난 작업” 맥락은 **본 파일·커밋**으로 누적한다. 표 전체·깊은 동기화가 필요하면 작업 시작 시 **`@CENTRAL.md`**(루트 바로가기) 또는 `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` 또는 에이전트 `Read`를 쓴다.
 
