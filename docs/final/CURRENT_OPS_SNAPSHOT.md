@@ -17,17 +17,19 @@
 
 **판정:** 채팅 요약이 아니라 **exit code + 아래 JSON 필드**만으로 GO/HOLD를 쓴다. `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 일일 B-track·패널·히트레이트 절과 동일 선상.
 
+**체인 exit 0 vs 패널(9):** 히트레이트가 `no_data`이거나 패널이 exit 1이면 **기본 체인은 throw로 중단**될 수 있다. 스케줄에서 렌즈·가설·헬스까지는 매일 돌리고 패널만 분리하려면 **6**에 `-SkipPanel24hAlertsCheck`를 넘기고, **9**는 직후 `Check-ProphecyPanel24hAlerts.ps1`로 단독 실행·로그를 남긴다. (유료 반성 생략: `-SkipProphecyContemplationGemini`.)
+
 | 단계 | 체크 | 최소 명령 (저장소 루트 `C:\workspace` 가정) |
 |------|------|-----------------------------------------------|
 | 0 (선행) | [ ] 사전 조건 스캔 | `py scripts/check_btrack_prophecy_chain_prereqs_v1.py --stdout-only` (엄격 운영: `--strict`) |
-| 6 | [ ] 일일 B-track 번들 완주 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_btrack_daily_hypothesis_chain.ps1` (`-Skip*` 사용 시 **의도·로그** 남김) |
+| 6 | [ ] 일일 B-track 번들 완주 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_btrack_daily_hypothesis_chain.ps1` — 기본은 패널 포함; **스케줄용 완주만** 필요하면 `-SkipProphecyContemplationGemini -SkipPanel24hAlertsCheck` (위 단락). `-Skip*` 사용 시 **의도·로그** 남김. |
 | 7 | [ ] 가설·스코어·히트레이트 산출물 존재·스키마 | `docs/final/artifacts/btrack_hypothesis_prophecy_latest.json`, `docs/final/artifacts/btrack_prophecy_score_latest.json`, `docs/final/artifacts/prophecy_hit_rate_eval_latest.json` — 타임스탬프·`schema`·`[HYPO]` 표기 훼손 없음 (`P0_COMMERCIALIZATION_TRACKER.md` 월간 표와 동일 계약) |
 | 9 | [ ] 24h 패널 알림 | 체인 종단과 동일 실행 맥락에서 `scripts/Check-ProphecyPanel24hAlerts.ps1` → `reports/prophecy_panel_24h_alerts_latest.json`의 `overall_passed`·ALERT 1–3 필드만 인용; **exit 1 = 등록 실패 아님**(직전 실행 KPI/정책 종료 코드일 수 있음) |
 
 체크박스(일일 복붙용):
 
 - [ ] **0** — `py scripts/check_btrack_prophecy_chain_prereqs_v1.py --stdout-only` (필요 시 `--strict`)
-- [ ] **6** — `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_btrack_daily_hypothesis_chain.ps1`
+- [ ] **6** — `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_btrack_daily_hypothesis_chain.ps1` (필요 시 `-SkipProphecyContemplationGemini -SkipPanel24hAlertsCheck`로 완주·패널 분리)
 - [ ] **7** — `btrack_hypothesis_prophecy_latest.json` / `btrack_prophecy_score_latest.json` / `prophecy_hit_rate_eval_latest.json` 필드 확인
 - [ ] **9** — `reports/prophecy_panel_24h_alerts_latest.json`만으로 패널 판정(exit 코드 ≠ 작업 등록 상태)
 
