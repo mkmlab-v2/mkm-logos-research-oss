@@ -41,3 +41,91 @@ def test_build_premium_v0_writes_md_and_json_validates(tmp_path: Path) -> None:
 
     for lid in ("myeongni", "sasang", "logos"):
         assert (out / f"lens_{lid}_premium_slice_v0.md").is_file()
+
+
+def test_build_premium_best_effort_uses_fixture_json(tmp_path: Path) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    art = tmp_path / "artifacts"
+    art.mkdir(parents=True, exist_ok=True)
+    (art / "myeongni_independent_lens_latest.json").write_text(
+        json.dumps(
+            {
+                "schema": "myeongni_independent_lens_v0",
+                "version": "0.1.0",
+                "lens_id": "myeongni",
+                "ts_utc": "2026-01-01T00:00:00Z",
+                "scores": {"direction_score": 0.1, "confidence": 0.5},
+                "myeongri_stream_outputs": {"state_id": 1, "rationale": "fixture"},
+                "provenance": {"source": "test"},
+                "note": "fixture",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (art / "sasang_independent_lens_latest.json").write_text(
+        json.dumps(
+            {
+                "schema": "sasang_independent_lens_v0",
+                "version": "0.2.0",
+                "lens_id": "sasang",
+                "ts_utc": "2026-01-01T00:00:00Z",
+                "scores": {"direction_score": 0.2, "confidence": 0.6},
+                "sasang_stream_outputs": {
+                    "regime_hypothesis": "x",
+                    "mapping_target": "y",
+                    "rationale": "fixture",
+                },
+                "provenance": {"source": "test"},
+                "note": "fixture",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (art / "logos_independent_lens_latest.json").write_text(
+        json.dumps(
+            {
+                "schema": "logos_independent_lens_v0",
+                "version": "0.2.0",
+                "lens_id": "logos",
+                "ts_utc": "2026-01-01T00:00:00Z",
+                "scores": {"direction_score": -0.1, "confidence": 0.4},
+                "evidence_refs": [],
+                "provenance": {"source": "test"},
+                "note": "fixture",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    out = tmp_path / "out"
+    cmd = [
+        sys.executable,
+        str(SCRIPT),
+        "--mode",
+        "best-effort",
+        "--myeongni-json",
+        str(art / "myeongni_independent_lens_latest.json"),
+        "--sasang-json",
+        str(art / "sasang_independent_lens_latest.json"),
+        "--logos-json",
+        str(art / "logos_independent_lens_latest.json"),
+        "--out-dir",
+        str(out),
+        "--example-path",
+        str(EXAMPLE),
+    ]
+    r = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, check=False)
+    assert r.returncode == 0, r.stdout + r.stderr
+
+    md = out / "premium_btrack_multilens_report_v1.md"
+    text = md.read_text(encoding="utf-8")
+    assert "Disk engine snapshot" in text
+    assert "Numeric alignment" in text
+    assert "v0.5 best-effort disk" in text
+
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    instance = json.loads((out / "premium_btrack_multilens_report_v1.json").read_text(encoding="utf-8"))
+    jsonschema.validate(instance=instance, schema=schema)

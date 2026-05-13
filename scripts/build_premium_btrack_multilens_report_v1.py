@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-Premium B-track multi-lens report packager (v0).
+Premium B-track multi-lens report packager (v0 / v0.5).
 
-Sync-only, stub lens workers (example JSON), structural coordinator join,
-disk MD + JSON matching premium_btrack_multilens_report_v1 schema.
+Sync-only: stub lens workers from schema example; optional `--mode best-effort`
+ingests existing independent-lens JSON artifacts from disk (no RAG API yet).
+
+Structural coordinator join, disk MD + JSON matching premium_btrack_multilens_report_v1 schema.
 """
 from __future__ import annotations
 
@@ -15,7 +17,9 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
+
+Mode = Literal["stub", "best-effort"]
 
 
 def _repo_root() -> Path:
@@ -47,6 +51,140 @@ def _load_example(example_path: Path) -> dict[str, Any]:
     return json.loads(example_path.read_text(encoding="utf-8"))
 
 
+def default_independent_lens_paths(root: Path) -> dict[str, Path]:
+    art = root / "docs" / "final" / "artifacts"
+    return {
+        "myeongni": art / "myeongni_independent_lens_latest.json",
+        "sasang": art / "sasang_independent_lens_latest.json",
+        "logos": art / "logos_independent_lens_latest.json",
+    }
+
+
+def attach_disk_engine_paths(
+    *,
+    root: Path,
+    lenses: list[dict[str, Any]],
+    mode: Mode,
+    overrides: dict[str, Path],
+) -> dict[str, dict[str, Any] | None]:
+    """When mode=best-effort, set engine_artifact_paths from disk and return blobs per lens_id."""
+    blobs: dict[str, dict[str, Any] | None] = {}
+    if mode != "best-effort":
+        for lens in lenses:
+            if isinstance(lens, dict) and lens.get("lens_id"):
+                blobs[str(lens["lens_id"])] = None
+        return blobs
+
+    defaults = default_independent_lens_paths(root)
+    for lens in lenses:
+        if not isinstance(lens, dict):
+            continue
+        lid = str(lens.get("lens_id", ""))
+        if lid not in defaults:
+            blobs[lid] = None
+            continue
+        path = overrides.get(lid) or defaults[lid]
+        path = path.resolve()
+        if not path.is_file():
+            print(f"WARN: best-effort missing artifact for lens={lid}: {path}", file=sys.stderr)
+            blobs[lid] = None
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as e:
+            print(f"WARN: best-effort failed to read JSON lens={lid}: {e}", file=sys.stderr)
+            blobs[lid] = None
+            continue
+        lens["engine_artifact_paths"] = [_posix_under_root(path, root)]
+        blobs[lid] = data
+    return blobs
+
+
+def _disk_snapshot_lines_myeongni(blob: dict[str, Any]) -> list[str]:
+    lines: list[str] = [
+        f"- artifact.schema: `{blob.get('schema')}` version=`{blob.get('version')}` ts=`{blob.get('ts_utc')}`",
+    ]
+    sc = blob.get("scores")
+    if isinstance(sc, dict):
+        lines.append(f"- scores.direction_score: {sc.get('direction_score')}")
+        lines.append(f"- scores.confidence: {sc.get('confidence')}")
+    mso = blob.get("myeongri_stream_outputs")
+    if isinstance(mso, dict):
+        lines.append(f"- myeongri_stream_outputs.state_id: {mso.get('state_id')}")
+        rat = str(mso.get("rationale", ""))[:520]
+        if rat:
+            lines.append(f"- myeongri_stream_outputs.rationale (trim): {rat}")
+    prov = blob.get("provenance")
+    if isinstance(prov, dict):
+        lines.append(f"- provenance.source: `{prov.get('source')}`")
+    note = blob.get("note")
+    if note:
+        lines.append(f"- engine.note: {note}")
+    return lines
+
+
+def _disk_snapshot_lines_sasang(blob: dict[str, Any]) -> list[str]:
+    lines: list[str] = [
+        f"- artifact.schema: `{blob.get('schema')}` version=`{blob.get('version')}` ts=`{blob.get('ts_utc')}`",
+    ]
+    sc = blob.get("scores")
+    if isinstance(sc, dict):
+        lines.append(f"- scores.direction_score: {sc.get('direction_score')}")
+        lines.append(f"- scores.confidence: {sc.get('confidence')}")
+    sso = blob.get("sasang_stream_outputs")
+    if isinstance(sso, dict):
+        lines.append(f"- sasang_stream_outputs.regime_hypothesis: `{sso.get('regime_hypothesis')}`")
+        lines.append(f"- sasang_stream_outputs.mapping_target: `{sso.get('mapping_target')}`")
+        rat = str(sso.get("rationale", ""))[:520]
+        if rat:
+            lines.append(f"- sasang_stream_outputs.rationale (trim): {rat}")
+    prov = blob.get("provenance")
+    if isinstance(prov, dict):
+        lines.append(f"- provenance.source: `{prov.get('source')}`")
+    note = blob.get("note")
+    if note:
+        lines.append(f"- engine.note: {note}")
+    return lines
+
+
+def _disk_snapshot_lines_logos(blob: dict[str, Any]) -> list[str]:
+    lines: list[str] = [
+        f"- artifact.schema: `{blob.get('schema')}` version=`{blob.get('version')}` ts=`{blob.get('ts_utc')}`",
+    ]
+    sc = blob.get("scores")
+    if isinstance(sc, dict):
+        lines.append(f"- scores.direction_score: {sc.get('direction_score')}")
+        lines.append(f"- scores.confidence: {sc.get('confidence')}")
+    refs = blob.get("evidence_refs")
+    if isinstance(refs, list):
+        lines.append(f"- evidence_refs.count: {len(refs)}")
+    nsg = blob.get("narrative_snippet_guarded")
+    if isinstance(nsg, str) and nsg:
+        lines.append(f"- narrative_snippet_guarded (trim): {nsg[:400]}")
+    lso = blob.get("logos_stream_outputs")
+    if isinstance(lso, dict):
+        rat = str(lso.get("rationale", ""))[:520]
+        if rat:
+            lines.append(f"- logos_stream_outputs.rationale (trim): {rat}")
+    prov = blob.get("provenance")
+    if isinstance(prov, dict):
+        lines.append(f"- provenance.source: `{prov.get('source')}`")
+    note = blob.get("note")
+    if note:
+        lines.append(f"- engine.note: {note}")
+    return lines
+
+
+def disk_snapshot_lines(lens_id: str, blob: dict[str, Any]) -> list[str]:
+    if lens_id == "myeongni":
+        return _disk_snapshot_lines_myeongni(blob)
+    if lens_id == "sasang":
+        return _disk_snapshot_lines_sasang(blob)
+    if lens_id == "logos":
+        return _disk_snapshot_lines_logos(blob)
+    return [f"- (no summarizer for lens_id={lens_id!r})"]
+
+
 def stub_lens_workers(example: dict[str, Any]) -> list[dict[str, Any]]:
     """v0: return lens blocks from packaged example (no network / no engines)."""
     lenses = example.get("lenses")
@@ -62,10 +200,11 @@ def stub_coordinator_block(example: dict[str, Any]) -> dict[str, Any]:
     return copy.deepcopy(coord)
 
 
-def render_lens_slice_md(lens: dict[str, Any]) -> str:
+def render_lens_slice_md(lens: dict[str, Any], disk_blob: dict[str, Any] | None) -> str:
     lid = str(lens.get("lens_id", "unknown"))
+    mode_label = "stub + disk snapshot" if disk_blob is not None else "v0 stub / example-backed"
     lines: list[str] = [
-        f"## Lens `{lid}` (v0 stub / example-backed)",
+        f"## Lens `{lid}` ({mode_label})",
         "",
     ]
     tags = lens.get("hypothesis_tags")
@@ -97,13 +236,25 @@ def render_lens_slice_md(lens: dict[str, Any]) -> str:
                         band = hit.get("confidence_band", "")
                         snip = str(hit.get("snippet", ""))[:400]
                         lines.append(f"    - `{sid}` band={band} snippet: {snip}")
+    if disk_blob is not None:
+        lines.append("")
+        lines.append("### Disk engine snapshot (best-effort, independent-lens JSON)")
+        lines.extend(disk_snapshot_lines(lid, disk_blob))
     lines.append("")
-    lines.append("_This slice is v0 stub content copied from schema example hits._")
+    lines.append(
+        "_RAG rows above are still schema-example stubs until per-lens RAG workers are wired._"
+        if disk_blob is None
+        else "_RAG rows above remain example-backed; disk block is live artifact JSON (B-track, not RAG)._"
+    )
     lines.append("")
     return "\n".join(lines)
 
 
-def render_synthesis_md(coordinator: dict[str, Any], lens_ids: list[str]) -> str:
+def render_synthesis_md(
+    coordinator: dict[str, Any],
+    lens_ids: list[str],
+    disk_blobs: dict[str, dict[str, Any] | None] | None,
+) -> str:
     lines: list[str] = [
         "## Coordinator synthesis (v0 structural join)",
         "",
@@ -111,6 +262,24 @@ def render_synthesis_md(coordinator: dict[str, Any], lens_ids: list[str]) -> str
         f"- lens_order: {', '.join(lens_ids)}",
         "",
     ]
+    if disk_blobs:
+        rows: list[str] = []
+        for lid in lens_ids:
+            b = disk_blobs.get(lid)
+            if not isinstance(b, dict):
+                rows.append(f"| `{lid}` | (no disk) | (no disk) |")
+                continue
+            sc = b.get("scores") if isinstance(b.get("scores"), dict) else {}
+            d = sc.get("direction_score")
+            c = sc.get("confidence")
+            rows.append(f"| `{lid}` | {d} | {c} |")
+        if any("no disk" not in r for r in rows):
+            lines.append("### Numeric alignment (disk `scores`, B-track)")
+            lines.append("")
+            lines.append("| lens | direction_score | confidence |")
+            lines.append("| --- | ---: | ---: |")
+            lines.extend(rows)
+            lines.append("")
     conflicts = coordinator.get("conflicts")
     if isinstance(conflicts, list):
         for row in conflicts:
@@ -139,6 +308,8 @@ def render_package_md(
     report: dict[str, Any],
     slice_contents: dict[str, str],
     synthesis_text: str,
+    *,
+    mode: Mode,
 ) -> str:
     tw = report.get("track_wall", [])
     tw_s = ", ".join(str(x) for x in tw) if isinstance(tw, list) else str(tw)
@@ -146,7 +317,7 @@ def render_package_md(
     lines: list[str] = [
         "<!-- premium_btrack_multilens_report_v0 -->",
         "",
-        "# Premium B-track multi-lens report (v0)",
+        f"# Premium B-track multi-lens report ({'v0.5 best-effort disk' if mode == 'best-effort' else 'v0 stub'})",
         "",
         "> **Track**: B-track research / `[HYPO]`",
         f"> **track_wall**: `{tw_s}`",
@@ -184,7 +355,13 @@ def render_package_md(
     lines.append("")
     lines.append("---")
     lines.append("")
-    lines.append("_End of report. v0 uses example-backed RAG stubs; replace workers incrementally._")
+    if mode == "best-effort":
+        lines.append(
+            "_End of report. v0.5: independent-lens JSON on disk merged into MD; "
+            "RAG/API workers and async queue still TBD._"
+        )
+    else:
+        lines.append("_End of report. v0 uses example-backed RAG stubs; replace workers incrementally._")
     lines.append("")
     return "\n".join(lines)
 
@@ -205,11 +382,16 @@ def build_report(
     out_dir: Path,
     example_path: Path,
     validate_schema: bool,
+    mode: Mode = "stub",
+    artifact_overrides: dict[str, Path] | None = None,
 ) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     example = _load_example(example_path)
     lenses = stub_lens_workers(example)
     coord = stub_coordinator_block(example)
+
+    overrides = artifact_overrides or {}
+    disk_blobs = attach_disk_engine_paths(root=root, lenses=lenses, mode=mode, overrides=overrides)
 
     lens_ids = [str(x.get("lens_id", "")) for x in lenses if isinstance(x, dict)]
 
@@ -219,7 +401,8 @@ def build_report(
         if not isinstance(lens, dict):
             continue
         lid = str(lens.get("lens_id", "unknown"))
-        body = render_lens_slice_md(lens)
+        blob = disk_blobs.get(lid) if disk_blobs else None
+        body = render_lens_slice_md(lens, blob)
         slice_contents[lid] = body
         p = out_dir / f"lens_{lid}_premium_slice_v0.md"
         p.write_text(body, encoding="utf-8")
@@ -229,7 +412,7 @@ def build_report(
             if isinstance(sec0, dict):
                 sec0["markdown_path"] = _posix_under_root(p, root)
 
-    synthesis_text = render_synthesis_md(coord, lens_ids)
+    synthesis_text = render_synthesis_md(coord, lens_ids, disk_blobs if mode == "best-effort" else None)
     synthesis_path = out_dir / "premium_multilens_synthesis_v0.md"
     synthesis_path.write_text(synthesis_text, encoding="utf-8")
     coord["synthesis_markdown_path"] = _posix_under_root(synthesis_path, root)
@@ -243,7 +426,7 @@ def build_report(
     main_md_path = out_dir / "premium_btrack_multilens_report_v1.md"
     main_json_path = out_dir / "premium_btrack_multilens_report_v1.json"
 
-    package_md = render_package_md(report, slice_contents, synthesis_text)
+    package_md = render_package_md(report, slice_contents, synthesis_text, mode=mode)
     main_md_path.write_text(package_md, encoding="utf-8")
     md_hash = _sha256_bytes(main_md_path.read_bytes())
 
@@ -290,6 +473,15 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Build premium B-track multi-lens report package (v0 stub).")
     ap.add_argument("--out-dir", type=Path, default=default_out, help="Output directory (default: reports/)")
     ap.add_argument("--example-path", type=Path, default=default_example, help="Stub source JSON (default: schema example)")
+    ap.add_argument(
+        "--mode",
+        choices=("stub", "best-effort"),
+        default="stub",
+        help="stub=example only; best-effort=attach independent-lens JSON from disk (defaults under docs/final/artifacts/).",
+    )
+    ap.add_argument("--myeongni-json", type=Path, default=None, help="Override myeongni independent-lens JSON path")
+    ap.add_argument("--sasang-json", type=Path, default=None, help="Override sasang independent-lens JSON path")
+    ap.add_argument("--logos-json", type=Path, default=None, help="Override logos independent-lens JSON path")
     ap.add_argument("--no-validate", action="store_true", help="Skip jsonschema validation when available")
     args = ap.parse_args()
 
@@ -305,11 +497,28 @@ def main() -> int:
         print(f"ERROR: example not found: {example_path}", file=sys.stderr)
         return 2
 
+    overrides: dict[str, Path] = {}
+    for key, arg in (
+        ("myeongni", args.myeongni_json),
+        ("sasang", args.sasang_json),
+        ("logos", args.logos_json),
+    ):
+        if arg is None:
+            continue
+        p = Path(arg)
+        if not p.is_absolute():
+            p = (root / p).resolve()
+        overrides[key] = p
+
+    mode: Mode = "best-effort" if args.mode == "best-effort" else "stub"
+
     return build_report(
         root=root,
         out_dir=out_dir,
         example_path=example_path,
         validate_schema=not args.no_validate,
+        mode=mode,
+        artifact_overrides=overrides or None,
     )
 
 
