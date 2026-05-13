@@ -1,0 +1,25 @@
+{
+  "schema": "hostinger_full_exit_monitor_targets_v1",
+  "note": "Owned apex = Hostinger Domains list; external_fqdns = hPanel External domains (DNS only). https_gate_exclusions: still probed but do not fail HTTPS exit gate.",
+  "domains": [
+    "jema12.com",
+    "jema-ai.com",
+    "personadiary.com",
+    "jemaai.cloud",
+    "a-codeai.com",
+    "mkmlife.com",
+    "mkmlab.space",
+    "no1kmedi.com"
+  ],
+  "external_fqdns": [
+    "api.no1kmedi.com",
+    "asset.jemaai.cloud",
+    "assets.jemaai.cloud",
+    "eno.no1kmedi.com",
+    "saju-api.no1kmedi.com"
+  ],
+  "https_gate_exclusions": [
+    "a-codeai.com"
+  ],
+  "https_gate_exclusions_note": "Remove a host from https_gate_exclusions once https://<host> HEAD returns 2xx."
+}

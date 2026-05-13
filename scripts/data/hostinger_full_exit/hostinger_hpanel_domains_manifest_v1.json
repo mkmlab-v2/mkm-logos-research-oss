@@ -1,0 +1,21 @@
+{
+  "schema": "hostinger_hpanel_domains_manifest_v1",
+  "source": "User paste hPanel Domains 2026-05-12; reconcile in Hostinger UI if changed.",
+  "owned_domains": [
+    { "domain": "jema12.com", "status": "Active", "expires": "2028-12-02" },
+    { "domain": "jema-ai.com", "status": "Active", "expires": "2028-11-25" },
+    { "domain": "personadiary.com", "status": "Active", "expires": "2028-11-23" },
+    { "domain": "jemaai.cloud", "status": "Active", "expires": "2026-11-03" },
+    { "domain": "a-codeai.com", "status": "Active", "expires": "2028-11-01" },
+    { "domain": "mkmlife.com", "status": "Active", "expires": "2026-09-03" },
+    { "domain": "mkmlab.space", "status": "Active", "expires": "2026-06-20" },
+    { "domain": "no1kmedi.com", "status": "Active", "expires": "2026-12-17" }
+  ],
+  "external_managed_fqdns": [
+    { "fqdn": "api.no1kmedi.com", "h_panel": "Connected services; Manage DNS" },
+    { "fqdn": "asset.jemaai.cloud", "h_panel": "Connected services; Manage DNS" },
+    { "fqdn": "assets.jemaai.cloud", "h_panel": "Connected services; Manage DNS" },
+    { "fqdn": "eno.no1kmedi.com", "h_panel": "Connected services; Manage DNS" },
+    { "fqdn": "saju-api.no1kmedi.com", "h_panel": "Connected services; Manage DNS" }
+  ]
+}

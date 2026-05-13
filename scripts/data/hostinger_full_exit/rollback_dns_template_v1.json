@@ -1,0 +1,14 @@
+{
+  "schema": "hostinger_exit_rollback_dns_template_v1",
+  "note": "Keys under domains are apex hostnames. Fill apex_a and www_cname_target with last-known-good values before rollback rehearsal; empty values skip that check in dry-run.",
+  "domains": {
+    "jema12.com": { "apex_a": "", "www_cname_target": "" },
+    "jema-ai.com": { "apex_a": "", "www_cname_target": "" },
+    "personadiary.com": { "apex_a": "", "www_cname_target": "" },
+    "jemaai.cloud": { "apex_a": "", "www_cname_target": "" },
+    "a-codeai.com": { "apex_a": "", "www_cname_target": "" },
+    "mkmlife.com": { "apex_a": "", "www_cname_target": "" },
+    "mkmlab.space": { "apex_a": "", "www_cname_target": "" },
+    "no1kmedi.com": { "apex_a": "", "www_cname_target": "" }
+  }
+}

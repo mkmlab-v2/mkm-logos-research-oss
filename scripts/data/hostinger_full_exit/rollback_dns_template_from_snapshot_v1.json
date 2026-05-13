@@ -1,0 +1,93 @@
+﻿{
+    "schema":  "hostinger_exit_rollback_dns_template_from_snapshot_v1",
+    "generated_at_utc":  "2026-05-12T18:49:02.9955523Z",
+    "snapshot_source":  "C:\\workspace\\reports\\hostinger_exit_dns_snapshot_latest.json",
+    "note":  "Auto-generated from public DNS snapshot; review before using as rollback authority.",
+    "domains":  {
+                    "jema12.com":  {
+                                       "apex_a":  "148.230.97.246",
+                                       "apex_a_list":  [
+                                                           "148.230.97.246"
+                                                       ],
+                                       "www_cname_target":  "",
+                                       "www_cname_list":  [
+
+                                                          ]
+                                   },
+                    "jema-ai.com":  {
+                                        "apex_a":  "104.21.58.241",
+                                        "apex_a_list":  [
+                                                            "104.21.58.241",
+                                                            "172.67.166.69"
+                                                        ],
+                                        "www_cname_target":  "",
+                                        "www_cname_list":  [
+
+                                                           ]
+                                    },
+                    "personadiary.com":  {
+                                             "apex_a":  "148.230.97.246",
+                                             "apex_a_list":  [
+                                                                 "148.230.97.246"
+                                                             ],
+                                             "www_cname_target":  "personadiary.com",
+                                             "www_cname_list":  [
+                                                                    "personadiary.com"
+                                                                ]
+                                         },
+                    "jemaai.cloud":  {
+                                         "apex_a":  "104.21.89.150",
+                                         "apex_a_list":  [
+                                                             "104.21.89.150",
+                                                             "172.67.161.38"
+                                                         ],
+                                         "www_cname_target":  "",
+                                         "www_cname_list":  [
+
+                                                            ]
+                                     },
+                    "a-codeai.com":  {
+                                         "apex_a":  "148.230.97.246",
+                                         "apex_a_list":  [
+                                                             "148.230.97.246"
+                                                         ],
+                                         "www_cname_target":  "a-codeai.com",
+                                         "www_cname_list":  [
+                                                                "a-codeai.com"
+                                                            ]
+                                     },
+                    "mkmlife.com":  {
+                                        "apex_a":  "104.21.6.92",
+                                        "apex_a_list":  [
+                                                            "104.21.6.92",
+                                                            "172.67.154.215"
+                                                        ],
+                                        "www_cname_target":  "",
+                                        "www_cname_list":  [
+
+                                                           ]
+                                    },
+                    "mkmlab.space":  {
+                                         "apex_a":  "147.93.77.162",
+                                         "apex_a_list":  [
+                                                             "147.93.77.162",
+                                                             "213.210.57.102"
+                                                         ],
+                                         "www_cname_target":  "www.mkmlab.space.cdn.hstgr.net",
+                                         "www_cname_list":  [
+                                                                "www.mkmlab.space.cdn.hstgr.net"
+                                                            ]
+                                     },
+                    "no1kmedi.com":  {
+                                         "apex_a":  "104.21.88.108",
+                                         "apex_a_list":  [
+                                                             "104.21.88.108",
+                                                             "172.67.176.230"
+                                                         ],
+                                         "www_cname_target":  "",
+                                         "www_cname_list":  [
+
+                                                            ]
+                                     }
+                }
+}

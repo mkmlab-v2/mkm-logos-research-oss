@@ -1,0 +1,15 @@
+{
+  "schema": "hostinger_registrar_transfer_tracker_v1",
+  "target_registrar": "Cloudflare Registrar",
+  "note": "Do not store EPP/auth codes in this file. Update booleans only after human steps complete.",
+  "domains": [
+    { "apex": "jema12.com", "lock_released": false, "epp_received": false, "transfer_submitted": false, "transfer_completed": false },
+    { "apex": "jema-ai.com", "lock_released": false, "epp_received": false, "transfer_submitted": false, "transfer_completed": false },
+    { "apex": "personadiary.com", "lock_released": false, "epp_received": false, "transfer_submitted": false, "transfer_completed": false },
+    { "apex": "jemaai.cloud", "lock_released": false, "epp_received": false, "transfer_submitted": false, "transfer_completed": false },
+    { "apex": "a-codeai.com", "lock_released": false, "epp_received": false, "transfer_submitted": false, "transfer_completed": false },
+    { "apex": "mkmlife.com", "lock_released": false, "epp_received": false, "transfer_submitted": false, "transfer_completed": false },
+    { "apex": "mkmlab.space", "lock_released": false, "epp_received": false, "transfer_submitted": false, "transfer_completed": false },
+    { "apex": "no1kmedi.com", "lock_released": false, "epp_received": false, "transfer_submitted": false, "transfer_completed": false }
+  ]
+}
