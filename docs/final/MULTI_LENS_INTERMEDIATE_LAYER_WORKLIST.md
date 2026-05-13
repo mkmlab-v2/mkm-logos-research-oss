@@ -78,6 +78,8 @@
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fact_lock_bundle.ps1
 ```
 
+**통합 거버넌스 v1:** `run_fact_lock_bundle.ps1` 말미(Safe ops 전)에 `scripts/invoke_build_integrated_governance_if_deps_present_v1.py`가 기본 실행된다(KOSPI 게이트·`integrated_governance_config_v1.json`이 모두 있을 때만 실제 빌드·`--validate-digest-schema`; 없으면 SKIP exit 0). 생략: `-SkipIntegratedGovernanceBuild`. 동일 invoker는 `Invoke-TrackCMacroDailyFusion_v1.ps1`(ops 대시보드 직전)·`Invoke-MkmAiV2DailyReadiness.ps1`에도 연결된다.
+
 번들만(스모크+Fact-Lock, integrity 생략 시 `-SkipIntegrityGuard`):  
 `Set-Location C:\workspace\projects\bitcoin-trading` 후 `.\ops\v2\tasks\run_prophecy_alignment_pytest.ps1`.
 

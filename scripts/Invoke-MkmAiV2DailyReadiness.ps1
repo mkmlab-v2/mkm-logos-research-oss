@@ -6,7 +6,10 @@ param(
     [double]$FallbackPostCutoffWarnRate = 0.15,
     [switch]$IncludeLgHSPersuasionBridge,
     [ValidateSet("general", "performance", "safety", "schedule")]
-    [string]$LgHSPersuasionQuestionType = "general"
+    [string]$LgHSPersuasionQuestionType = "general",
+
+    # Skip integrated governance rebuild (default: Invoke-BuildIntegratedGovernanceIfDepsPresent_v1 when deps exist).
+    [switch]$SkipIntegratedGovernanceBuild
 )
 
 $ErrorActionPreference = "Stop"
@@ -120,6 +123,16 @@ if (Test-Path -LiteralPath $statusBrief) {
 $opsBundle = Join-Path $WorkspaceRoot "scripts\build_mkm_ai_final_ops_bundle.py"
 if (Test-Path -LiteralPath $opsBundle) {
     & py $opsBundle --workspace-root $WorkspaceRoot
+}
+
+if (-not $SkipIntegratedGovernanceBuild) {
+    $igInvoker = Join-Path $WorkspaceRoot "scripts\invoke_build_integrated_governance_if_deps_present_v1.py"
+    if (Test-Path -LiteralPath $igInvoker) {
+        & py $igInvoker --workspace-root $WorkspaceRoot
+        if ($LASTEXITCODE -ne 0 -and $exitCode -eq 0) {
+            $exitCode = $LASTEXITCODE
+        }
+    }
 }
 
 # Refresh Track C commercial delivery artifacts.

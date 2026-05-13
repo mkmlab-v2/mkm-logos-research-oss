@@ -7,6 +7,7 @@
   (default legacy names: MKM-Fragility-MacroRisk-Daily, MacroRiskForwardDailyChain).
   Use -DryRun to print planned action and whether legacy/fusion tasks exist (no changes).
   Recommended unattended flags: -SkipGateAlert -SkipExodusSourceFetch (optional -SkipFailureAlert).
+  Optional: -SkipIntegratedGovernanceBuild to omit Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1 (default runs when ops dashboard runs).
   Optional meta-layer gate after fusion: -MetaLayerEnvelopePath <json-or-md> (passed through to Invoke-TrackCMacroDailyFusion_v1.ps1).
   Optional: -SkipRoleRouterShadowAdvisory to omit build_role_router_s1_shadow_advisory_v1.py (default runs; non-gating).
   Optional: -SkipLensMusicHormoneTrend to omit M31 hormone trend + webhook before ops dashboard (default runs when dashboard runs).
@@ -31,6 +32,7 @@ param(
     [switch]$SkipRoleRouterShadowAdvisory,
     [switch]$SkipLensMusicHormoneTrend,
     [switch]$LensMusicPromotionGateSoftM31,
+    [switch]$SkipIntegratedGovernanceBuild,
 
     # Optional: forwarded to Invoke-TrackCMacroDailyFusion_v1.ps1 (see CONSTITUTION §1.3.1)
     [string]$MetaLayerEnvelopePath = "",
@@ -74,6 +76,7 @@ if ($SkipExodusSourceFetch) { $argument += " -SkipExodusSourceFetch" }
 if ($SkipRoleRouterShadowAdvisory) { $argument += " -SkipRoleRouterShadowAdvisory" }
 if ($SkipLensMusicHormoneTrend) { $argument += " -SkipLensMusicHormoneTrend" }
 if ($LensMusicPromotionGateSoftM31) { $argument += " -LensMusicPromotionGateSoftM31" }
+if ($SkipIntegratedGovernanceBuild) { $argument += " -SkipIntegratedGovernanceBuild" }
 $metaTrim = if ($null -eq $MetaLayerEnvelopePath) { "" } else { $MetaLayerEnvelopePath.Trim() }
 if ($metaTrim -ne "") {
     $argument += " -MetaLayerEnvelopePath `"$metaTrim`""

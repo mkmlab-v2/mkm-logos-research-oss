@@ -119,8 +119,12 @@
 .PARAMETER SkipSafeOpsSurfaceCheck
   말미 권장 단계 `Invoke-SafeOpsSurfaceCheck.ps1`(운영 표면·신선도·Verify-Trading) 생략.
 
+.PARAMETER SkipIntegratedGovernanceBuild
+  `Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1` 생략(기본: KOSPI 게이트·config가 모두 있으면 `--validate-digest-schema`로 갱신).
+
 .NOTES
   SSOT 순서: `.github/workflows/dual-regime-integrity.yml`
+  말미 권장: KOSPI 게이트·config가 모두 있으면 `Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1`로 통합 거버넌스 갱신(`--validate-digest-schema`). `-SkipIntegratedGovernanceBuild` 로 생략.
   pytest·`py` 규칙: `docs/final/P0_COMMERCIALIZATION_TRACKER.md`
 #>
 param(
@@ -163,7 +167,10 @@ param(
     [switch]$SkipKmPhysicianCdsEnvelope,
 
     # Recommended tail: Invoke-SafeOpsSurfaceCheck.ps1 after pytest bundle (exit 2 fails; exit 1 warns only).
-    [switch]$SkipSafeOpsSurfaceCheck
+    [switch]$SkipSafeOpsSurfaceCheck,
+
+    # Integrated governance rebuild when deps exist (see Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1).
+    [switch]$SkipIntegratedGovernanceBuild
 )
 
 $ErrorActionPreference = 'Stop'
@@ -233,6 +240,7 @@ $truthfulQaBenchmarkEvalGateScript = Join-Path $workspaceRoot 'scripts\check_tru
 $truthfulQaMcBenchmarkArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_ab_benchmark_latest.json'
 $truthfulQaGenerationBenchmarkArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_generation_ab_benchmark_latest.json'
 $truthfulQaGateArtifact = Join-Path $workspaceRoot 'docs\final\artifacts\truthfulqa_ab_gate_latest.json'
+$igGovernanceInvoker = Join-Path $workspaceRoot 'scripts\invoke_build_integrated_governance_if_deps_present_v1.py'
 
 if (-not (Test-Path -LiteralPath $prophecyBundle)) {
     throw "Bundle script not found: $prophecyBundle"
@@ -608,6 +616,19 @@ if (-not $SkipCuratedJointStalenessCheck) {
         & py $curatedJointStalenessScript
         if ($LASTEXITCODE -ne 0) {
             Write-Host 'WARN: staleness check returned non-zero (use --strict on script only if you want CI fail).' -ForegroundColor Yellow
+        }
+    }
+}
+
+if (-not $SkipIntegratedGovernanceBuild) {
+    if (-not (Test-Path -LiteralPath $igGovernanceInvoker)) {
+        Write-Host "WARN: integrated governance invoker missing; skip: $igGovernanceInvoker" -ForegroundColor Yellow
+    }
+    else {
+        Write-Host '== Fact-Lock (recommended): integrated governance v1 (deps-gated + digest schema) ==' -ForegroundColor Cyan
+        & py $igGovernanceInvoker --workspace-root $workspaceRoot
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
         }
     }
 }

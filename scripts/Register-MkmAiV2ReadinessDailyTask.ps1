@@ -15,7 +15,8 @@ param(
     [double]$FallbackPostCutoffWarnRate = 0.15,
     [switch]$IncludeLgHSPersuasionBridge,
     [ValidateSet("general", "performance", "safety", "schedule")]
-    [string]$LgHSPersuasionQuestionType = "safety"
+    [string]$LgHSPersuasionQuestionType = "safety",
+    [switch]$SkipIntegratedGovernanceBuild
 )
 
 $ErrorActionPreference = "Stop"
@@ -59,6 +60,9 @@ if ($IncludeLgHSPersuasionBridge) {
     $runnerArgs += "-IncludeLgHSPersuasionBridge"
     $runnerArgs += @("-LgHSPersuasionQuestionType", "$LgHSPersuasionQuestionType")
 }
+if ($SkipIntegratedGovernanceBuild) {
+    $runnerArgs += "-SkipIntegratedGovernanceBuild"
+}
 $argLine = $runnerArgs -join " "
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
@@ -75,7 +79,7 @@ $settings = New-ScheduledTaskSettingsSet `
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
 
-$description = "Daily MKM AI v2 readiness gate; writes readiness artifacts/log. Optional dual-leg and LG HS persuasion bridge artifacts can be refreshed."
+$description = "Daily MKM AI v2 readiness gate; writes readiness artifacts/log. Optional dual-leg, LG HS bridge, and integrated governance invoker (deps-gated)."
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null

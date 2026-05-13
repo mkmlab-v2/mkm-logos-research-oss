@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Single daily entrypoint: Fragility+macro smoke (with weekly + webhooks) → forward log chain → Logos 4D X/Y → lens music M31 hormone trend (optional) → Track C ops dashboard.
+  Single daily entrypoint: Fragility+macro smoke (with weekly + webhooks) → forward log chain → Logos 4D X/Y → lens music M31 hormone trend (optional) → integrated governance v1 snapshot when KOSPI deps exist → Track C ops dashboard.
 
 .DESCRIPTION
   Avoids duplicate fragility runs: Invoke-FragilityMacroRiskDaily runs the full chain once; forward and logos chains use -SkipFragilityChain.
@@ -10,6 +10,9 @@
 
   Optional: skip Role Router vs S1 shadow advisory append (non-gating):
     ... -SkipRoleRouterShadowAdvisory
+
+  Optional: skip integrated governance rebuild (default runs before ops dashboard when deps exist):
+    ... -SkipIntegratedGovernanceBuild
 
   Optional meta-layer audit (after fusion steps): pass a JSON file or a markdown file containing a ```json envelope block.
     -File ... -MetaLayerEnvelopePath C:\path\envelope.json
@@ -43,6 +46,9 @@ param(
 
     # Role-router multiscenario opt vs lens S1 shadow gate (append-only log; non-gating).
     [switch]$SkipRoleRouterShadowAdvisory,
+
+    # Integrated governance v1 rebuild (deps present only; see Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1).
+    [switch]$SkipIntegratedGovernanceBuild,
 
     # Optional: run mkm_meta_layer_envelope_v1.py after fusion (JSON path or markdown with ```json envelope).
     [string]$MetaLayerEnvelopePath = ""
@@ -92,12 +98,15 @@ $lensMusicPromptPocThresholdPolicy = Join-Path $PSScriptRoot "build_lens_music_p
 $opsDashboard = Join-Path $PSScriptRoot "build_mkm_trackc_ops_dashboard_v1.py"
 $approvalTicketPreflight = Join-Path $PSScriptRoot "check_mkm_approval_ticket_preflight_v1.py"
 $approvalTicketBump = Join-Path $PSScriptRoot "bump_mkm_approval_ticket_run_count_v1.py"
+$invokeIntegratedGovernance = Join-Path $PSScriptRoot "invoke_build_integrated_governance_if_deps_present_v1.py"
 
 $required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck, $logosS1ShadowReviewPacket)
 if (-not $SkipRoleRouterShadowAdvisory) {
     $required += $roleRouterS1ShadowAdvisory
 }
 if (-not $SkipOpsDashboard) {
+    $required += $invokeIntegratedGovernance
+    $required += (Join-Path $PSScriptRoot "build_integrated_governance_v1.py")
     $required += $opsDashboard
     if (-not $SkipLensMusicHormoneTrend) {
         $required += $hormoneTrend
@@ -296,6 +305,16 @@ if (-not $SkipOpsDashboard) {
         Write-Host "[trackc-macro-fusion] skip lens music hormone trend + webhook (SkipLensMusicHormoneTrend)"
     }
 
+    if (-not $SkipIntegratedGovernanceBuild) {
+        Invoke-FusionStep -Name "invoke_build_integrated_governance_if_deps_present_v1.py" -Action {
+            Set-Location -LiteralPath $repoRoot
+            py (Join-Path $repoRoot "scripts\invoke_build_integrated_governance_if_deps_present_v1.py") --workspace-root $repoRoot
+        }
+    }
+    else {
+        Write-Host "[trackc-macro-fusion] skip integrated governance rebuild (SkipIntegratedGovernanceBuild)"
+    }
+
     Invoke-FusionStep -Name "build_mkm_trackc_ops_dashboard_v1.py" -Action {
         Set-Location -LiteralPath $repoRoot
         py $opsDashboard
@@ -346,5 +365,6 @@ Write-Host "[trackc-macro-fusion] logos_response_policy_check=$repoRoot/docs/fin
 Write-Host "[trackc-macro-fusion] logos_s1_shadow_promotion_review_packet=$repoRoot/docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json"
 Write-Host "[trackc-macro-fusion] role_router_s1_shadow_advisory=$repoRoot/docs/final/artifacts/role_router_s1_shadow_advisory_latest.json"
 Write-Host "[trackc-macro-fusion] lens_music_hormone_trend=$repoRoot/docs/final/artifacts/lens_music_hormone_trend_latest.json"
+Write-Host "[trackc-macro-fusion] integrated_governance_v1=$repoRoot/docs/final/artifacts/integrated_governance_v1_latest.json"
 Write-Host "[trackc-macro-fusion] lens_music_hormone_trend_webhook_dispatch=$repoRoot/docs/final/artifacts/lens_music_hormone_trend_webhook_dispatch_latest.json"
 Write-Host "[trackc-macro-fusion] ops_dashboard=$repoRoot/docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json"
