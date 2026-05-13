@@ -593,6 +593,7 @@ $required = @(
     "docs\final\LORA_PACK_V0_DOD_V1.md",
     "docs\final\schemas\myeongri_deterministic_lora_golden_set_v1.schema.json",
     "scripts\prep_myeongri_deterministic_lora_golden_v1.py",
+    "scripts\convert_myeongri_golden_to_sft_instruction_jsonl_v1.py",
     "scripts\build_myeongri_deterministic_lora_golden_bulk_v1.py",
     "tests\fixtures\myeongri_deterministic_lora_golden_sample_v1.jsonl",
     "docs\final\artifacts\myeongri_deterministic_lora_model_profiles_v1.json",

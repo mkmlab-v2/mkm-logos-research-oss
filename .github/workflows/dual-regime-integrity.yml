@@ -89,6 +89,8 @@ on:
       - "scripts/eval_myeongri_deterministic_lora_golden_fit_v1.py"
       - "tests/test_eval_myeongri_deterministic_lora_golden_fit_v1.py"
       - "tests/test_myeongri_deterministic_lora_pack_copy_guardrails_v1.py"
+      - "tests/test_convert_myeongri_golden_to_sft_instruction_jsonl_v1.py"
+      - "scripts/convert_myeongri_golden_to_sft_instruction_jsonl_v1.py"
       - "storage/adapters/myeongri_deterministic_lora_v0/.gitkeep"
       - "scripts/spike_log_myeongri_correlation_v1.py"
       - "scripts/convert_log_metabolism_to_myeongri_correlation_input_v1.py"
@@ -922,7 +924,7 @@ jobs:
         run: python -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py -q --tb=short
 
       - name: Pack 0-B myeongri deterministic LoRA golden set (schema + prep + eval + copy guard)
-        run: python -m pytest tests/test_myeongri_deterministic_lora_golden_set_schema_v1.py tests/test_build_myeongri_deterministic_lora_golden_bulk_v1.py tests/test_eval_myeongri_deterministic_lora_golden_fit_v1.py tests/test_myeongri_deterministic_lora_pack_copy_guardrails_v1.py -q --tb=short
+        run: python -m pytest tests/test_myeongri_deterministic_lora_golden_set_schema_v1.py tests/test_build_myeongri_deterministic_lora_golden_bulk_v1.py tests/test_eval_myeongri_deterministic_lora_golden_fit_v1.py tests/test_myeongri_deterministic_lora_pack_copy_guardrails_v1.py tests/test_convert_myeongri_golden_to_sft_instruction_jsonl_v1.py -q --tb=short
 
       - name: MKM promotion gate evidence bundle (schema contract)
         run: python -m pytest tests/test_mkm_promotion_gate_evidence_bundle_v1.py -q --tb=short
