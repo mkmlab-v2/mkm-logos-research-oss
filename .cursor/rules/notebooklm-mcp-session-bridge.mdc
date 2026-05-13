@@ -31,3 +31,4 @@ priority: 5
 - 좀비 강제 정리: `powershell -File scripts/repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12`
 - 로그오프 자동 정리 작업 등록/제거: `powershell -File scripts/register_notebooklm_mcp_repair_logoff_task.ps1 [-Remove]`
 - 원샷 프로브(JSON): `powershell -File scripts/Invoke-McpHygieneProbe.ps1 [-Repair] [-OutJson reports/mcp_hygiene_probe_latest.json]`
+- **한국어 UI에서 `add_source` 실패 시:** `notebooklm-mcp` 글로벌 `selectors.js`에 한국어 앵커가 없으면 `Could not open the "Add source" dialog`가 난다. `py scripts/apply_notebooklm_mcp_ko_selectors_patch_v1.py` 실행 후 **Reload Window**·**새 채팅**·`.cursor/mcp.json`의 `STEALTH_ENABLED=false` 등(이미 반영됨) 확인.

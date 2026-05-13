@@ -92,6 +92,18 @@ if (-not (Test-Path -LiteralPath $globalPkg)) {
     if (-not (Test-Path -LiteralPath $globalEntry)) {
         Add-Warn "Global entry missing: $globalEntry (reinstall recommended)"
     }
+    # (5b) Korean UI selectors for add_source (upstream notebooklm-mcp 2.0.0 omits ko)
+    $selJs = Join-Path $env:APPDATA "npm\node_modules\notebooklm-mcp\dist\notebooklm\selectors.js"
+    if (Test-Path -LiteralPath $selJs) {
+        try {
+            $selRaw = Get-Content -LiteralPath $selJs -Raw -Encoding UTF8
+            if ($selRaw -notmatch 'KO selectors \(MKM patch\)' -and $selRaw -notmatch 'Korean \(ko\)') {
+                Add-Warn "notebooklm-mcp selectors.js may be missing Korean add_source anchors. Run: py scripts/apply_notebooklm_mcp_ko_selectors_patch_v1.py then Reload Window + new chat."
+            }
+        } catch {
+            Add-Warn "Could not read selectors.js for KO patch check: $($_.Exception.Message)"
+        }
+    }
     # If command targets a path, ensure it exists
     if ($cmd -eq 'node' -and $args.Count -ge 1) {
         $target = $args[0]
