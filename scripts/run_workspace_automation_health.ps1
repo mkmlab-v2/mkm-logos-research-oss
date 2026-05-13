@@ -765,9 +765,23 @@ try {
     if ($IncludePremiumBtrackMultilensReportSmoke) {
         $prSchema = Join-Path $root "tests\test_premium_btrack_multilens_report_schema_v1.py"
         $prBuild = Join-Path $root "tests\test_build_premium_btrack_multilens_report_v1.py"
-        if ((Test-Path -LiteralPath $prSchema) -and (Test-Path -LiteralPath $prBuild)) {
-            Step "Premium B-track multi-lens report v1 (schema + builder subprocess; dual-regime / Fact-Lock bundle 4b parity)" {
-                & py -m pytest $prSchema $prBuild -q --tb=short
+        $prQueue = Join-Path $root "tests\test_premium_multilens_job_queue_stub_v1.py"
+        $prGate = Join-Path $root "tests\test_build_premium_multilens_queue_promotion_gate_v1.py"
+        if ((Test-Path -LiteralPath $prSchema) -and (Test-Path -LiteralPath $prBuild) -and (Test-Path -LiteralPath $prQueue) -and (Test-Path -LiteralPath $prGate)) {
+            Step "Premium B-track multi-lens report v1 (schema + builder subprocess + queue stub; dual-regime / Fact-Lock bundle 4b parity)" {
+                & py -m pytest $prSchema $prBuild $prQueue $prGate -q --tb=short
+            }
+            $stub = Join-Path $root "scripts\premium_multilens_job_queue_stub_v1.py"
+            $gate = Join-Path $root "scripts\build_premium_multilens_queue_promotion_gate_v1.py"
+            if (Test-Path -LiteralPath $stub) {
+                Step "Premium multilens queue drain v0 (dry-run; allow-missing-queue)" {
+                    & py $stub drain --root $root --allow-missing-queue --max-jobs 25
+                }
+            }
+            if (Test-Path -LiteralPath $gate) {
+                Step "Premium multilens queue promotion gate v1 (S1 shadow; --skip-pytest)" {
+                    & py $gate --skip-pytest --root $root
+                }
             }
         }
         else {

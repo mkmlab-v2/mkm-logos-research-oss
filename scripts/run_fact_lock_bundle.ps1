@@ -12,7 +12,7 @@
   3d. `py -m pytest tests/test_mkm_meta_layer_envelope_v1.py` — 메타 인지 봉투 v1·킬 스위치 정규화·`AthenaValidator`(CONSTITUTION §1.3.1 보강 2026-05-05)
   3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
-  4b. `py -m pytest tests/test_premium_btrack_multilens_report_schema_v1.py tests/test_build_premium_btrack_multilens_report_v1.py` — Premium B-track multi-lens report v1(스키마·동기 빌더 subprocess; `dual-regime-integrity.yml` 동일 단계)
+  4b. `py -m pytest tests/test_premium_btrack_multilens_report_schema_v1.py tests/test_build_premium_btrack_multilens_report_v1.py tests/test_premium_multilens_job_queue_stub_v1.py tests/test_build_premium_multilens_queue_promotion_gate_v1.py` — Premium B-track multi-lens report v1(스키마·동기 빌더 subprocess·파일 큐 스텁·S1 승격 게이트 회귀); 직후 **`py scripts/premium_multilens_job_queue_stub_v1.py drain --allow-missing-queue`**(큐 없으면 SKIP·exit 0)·**`py scripts/build_premium_multilens_queue_promotion_gate_v1.py --skip-pytest`**(S1_SHADOW 승격 게이트 산출); 일상 원클릭은 **`scripts/Invoke-PremiumMultilensQueueRoutine_v1.ps1`**; `dual-regime-integrity.yml` 동일 pytest+drain+gate 단계
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
   5c. `py -m pytest tests/test_run_graphrag_pilot_router_v1.py` — GraphRAG 파일럿 라우터(Track B/K 관측 전용, GO 게이트·한글 별칭·brief fallback) 회귀.
@@ -196,7 +196,9 @@ $mkmMetaLayerEnvelopeTest = Join-Path $workspaceRoot 'tests\test_mkm_meta_layer_
 $dailyExecutionInsightBriefTest = Join-Path $workspaceRoot 'tests\test_build_daily_execution_insight_brief_v1.py'
 $premiumBtrackMultilensReportPytests = @(
     (Join-Path $workspaceRoot 'tests\test_premium_btrack_multilens_report_schema_v1.py'),
-    (Join-Path $workspaceRoot 'tests\test_build_premium_btrack_multilens_report_v1.py')
+    (Join-Path $workspaceRoot 'tests\test_build_premium_btrack_multilens_report_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_premium_multilens_job_queue_stub_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_premium_multilens_queue_promotion_gate_v1.py')
 )
 $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thin_bridge_line_v1.py'
 $mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
@@ -440,6 +442,23 @@ Write-Host '== Fact-Lock: premium_btrack_multilens_report_v1 (schema + builder; 
 & py -m pytest @premiumBtrackMultilensReportPytests -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
+}
+
+$premiumQueueStub = Join-Path $workspaceRoot 'scripts\premium_multilens_job_queue_stub_v1.py'
+$premiumQueuePromotionGate = Join-Path $workspaceRoot 'scripts\build_premium_multilens_queue_promotion_gate_v1.py'
+if (Test-Path -LiteralPath $premiumQueueStub) {
+    Write-Host '== Fact-Lock: premium_multilens queue drain v0 (dry-run; allow-missing-queue) ==' -ForegroundColor Cyan
+    & py $premiumQueueStub drain --root $workspaceRoot --allow-missing-queue --max-jobs 25
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+if (Test-Path -LiteralPath $premiumQueuePromotionGate) {
+    Write-Host '== Fact-Lock: premium_multilens queue promotion gate v1 (S1 shadow; --skip-pytest) ==' -ForegroundColor Cyan
+    & py $premiumQueuePromotionGate --skip-pytest --root $workspaceRoot
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 if (-not (Test-Path -LiteralPath $myeongniThinBridgeTest)) {

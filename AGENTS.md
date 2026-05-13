@@ -170,14 +170,17 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 구분자(트리거 예) | 한 줄 역할 | 고정 명령 (저장소 루트) |
 |-------------------|------------|-------------------------|
 | 【아테나 점검】 | Fact-Lock 번들 (`run_fact_lock_bundle.ps1`, CI에 가까운 순서) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` |
+| 【프리미엄 큐 권장】 | 프리미엄 멀티렌즈 pytest 4종 + `drain --allow-missing-queue` + S1 승격 게이트(번들 4b·헬스 Premium과 동선) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona PremiumMultilensQueue` |
 | 【암행어사 점검】 | 자동화 헬스 기본 실행 (`run_workspace_automation_health.ps1` 기본 스위치) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AmsaengHealth` |
 | 【빠른 헌법 점검】 | P0 필수 경로 존재만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` |
 | 【예언 레일 일단락】 | 예언 본선 클로저(P0·B-track 정렬 pytest·safe ops·GO/NO_GO 갱신). 통과 판정은 `reports/prophecy_lane_closure_bundle_v1_latest.json`의 **`closure_ok: true`** 및 `manual_remainder`(Windows `schtasks` 일반예언·Track A 실매매는 수동 잔여) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` |
 
 ### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
 
-- **주간·넓게(기본 권장):** 【아테나 점검】→ `Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` → `run_fact_lock_bundle.ps1`에 **프리미엄 멀티렌즈 pytest(단계 4b)**가 포함되며, CI `dual-regime-integrity.yml`과 동일 2종이다.
-- **가볍게 프리미엄만:** `pwsh scripts/run_workspace_automation_health.ps1 -PremiumBtrackMultilensReportSmokeOnly` (P0·reconcile·해당 pytest).
+- **주간·넓게(기본 권장):** 【아테나 점검】→ `Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` → `run_fact_lock_bundle.ps1`에 **프리미엄 멀티렌즈 pytest(단계 4b)+`drain --allow-missing-queue`**가 포함되며, CI `dual-regime-integrity.yml`과 동일 **3종 pytest + drain**이다.
+- **프리미엄·큐만 좁게:** 【프리미엄 큐 권장】→ `Invoke-MkmPersonaHealth_v1.ps1 -Persona PremiumMultilensQueue`(내부적으로 `Invoke-PremiumMultilensQueueRoutine_v1.ps1`).
+- **가볍게 프리미엄만:** `pwsh scripts/run_workspace_automation_health.ps1 -PremiumBtrackMultilensReportSmokeOnly` (P0·reconcile·pytest 4종 + drain + S1 gate).
+- **파일 큐(v0):** `py scripts/premium_multilens_job_queue_stub_v1.py` — `enqueue` / **`drain`**(`--allow-missing-queue` 권장) / **`export-pending --out-json …`**(대기 목록+렌즈 스크립트 포인터, 비실행). 원클릭: `Invoke-PremiumMultilensQueueRoutine_v1.ps1`(`-ExportPendingJson` 선택; 말단 S1 승격 게이트 기본, `-SkipPromotionGate`로 생략).
 - **암행어사 기본:** `AmsaengHealth`는 **프리미엄을 기본 포함하지 않는다**(실행 시간·역할 분리). 전체 헬스에 함께 돌리려면 `run_workspace_automation_health.ps1`에 **`-IncludePremiumBtrackMultilensReportSmoke`**를 별도로 넘긴다.
 - **경로 존재만:** 【빠른 헌법 점검】(`Persona P0`) — pytest는 실행하지 않는다.
 

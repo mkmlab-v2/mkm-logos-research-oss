@@ -5,7 +5,8 @@ Premium B-track multi-lens report packager (v0 / v0.5).
 Sync-only: stub lens workers from schema example; optional `--mode best-effort`
 ingests independent-lens JSON from disk; optional tracked **offline RAG bundle**
 (keyword hits over bundle + optional `--rag-corpus-scan-dir`; no API). Optional `--async-simulate`
-fills `async_job` for queue-shaped handoff (sync single-shot, no Redis).
+fills `async_job` for queue-shaped handoff (sync single-shot, no Redis). Optional `--async-queue-enqueue`
+appends one line to `premium_multilens_job_queue_stub_v1.py` JSONL (v0 file queue, no worker).
 
 Structural coordinator join, disk MD + JSON matching premium_btrack_multilens_report_v1 schema.
 """
@@ -14,6 +15,7 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import importlib.util
 import json
 import os
 import re
@@ -31,6 +33,17 @@ def _repo_root() -> Path:
     if raw:
         return Path(raw).resolve()
     return env
+
+
+def _load_premium_multilens_queue_stub_v1() -> Any:
+    stub_path = Path(__file__).resolve().parent / "premium_multilens_job_queue_stub_v1.py"
+    name = "_premium_multilens_queue_stub_v1"
+    spec = importlib.util.spec_from_file_location(name, stub_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"cannot load queue stub module: {stub_path}")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
 
 
 def _utc_z() -> str:
@@ -733,6 +746,8 @@ def build_report(
     rag_corpus_scan_dir: Path | None = None,
     async_simulate: bool = False,
     async_job_id: str | None = None,
+    async_queue_enqueue: bool = False,
+    async_queue_path: Path | None = None,
 ) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     main_md_path = out_dir / "premium_btrack_multilens_report_v1.md"
@@ -825,6 +840,35 @@ def build_report(
 
     main_json_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+    if async_queue_enqueue:
+        aj = report.get("async_job")
+        if not isinstance(aj, dict) or not str(aj.get("job_id", "")).strip():
+            print(
+                "WARN: --async-queue-enqueue skipped (async_job missing or empty job_id); "
+                "use --async-simulate and/or --async-job-id.",
+                file=sys.stderr,
+            )
+        else:
+            qp = async_queue_path
+            if qp is None:
+                qp = (root / "reports" / "premium_multilens_job_queue_v0.jsonl").resolve()
+            else:
+                qp = qp.resolve() if qp.is_absolute() else (root / qp).resolve()
+            try:
+                mod = _load_premium_multilens_queue_stub_v1()
+                ent = mod.build_queue_entry_v0(
+                    job_id=str(aj["job_id"]),
+                    queued_at_utc=str(aj.get("queued_at_utc") or _utc_z()),
+                    status=str(aj.get("status") or "queued"),
+                    report_json_path=main_json_path,
+                    mode=mode,
+                    root=root,
+                )
+                mod.append_queue_line_v0(qp, ent)
+                print(f"OK: queue append {_posix_under_root(qp, root)}")
+            except Exception as exc:  # noqa: BLE001 — best-effort enqueue must not fail the packager
+                print(f"WARN: queue stub append failed: {exc}", file=sys.stderr)
+
     schema_path = root / "docs" / "final" / "schemas" / "premium_btrack_multilens_report_v1.schema.json"
     if validate_schema:
         _maybe_validate(report, schema_path)
@@ -873,6 +917,17 @@ def main() -> int:
         type=str,
         default=None,
         help="Use this job_id in async_job (min 8 chars recommended; shorter values are hashed).",
+    )
+    ap.add_argument(
+        "--async-queue-enqueue",
+        action="store_true",
+        help="When async_job is present, append one JSONL line via premium_multilens_job_queue_stub_v1 (v0 file queue).",
+    )
+    ap.add_argument(
+        "--async-queue-path",
+        type=Path,
+        default=None,
+        help="Queue JSONL path (default: reports/premium_multilens_job_queue_v0.jsonl under workspace root).",
     )
     ap.add_argument("--no-validate", action="store_true", help="Skip jsonschema validation when available")
     args = ap.parse_args()
@@ -936,6 +991,8 @@ def main() -> int:
         rag_corpus_scan_dir=rag_scan,
         async_simulate=bool(args.async_simulate),
         async_job_id=(str(args.async_job_id).strip() if args.async_job_id else None),
+        async_queue_enqueue=bool(args.async_queue_enqueue),
+        async_queue_path=(Path(args.async_queue_path) if args.async_queue_path else None),
     )
 
 

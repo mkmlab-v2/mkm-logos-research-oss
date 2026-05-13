@@ -167,6 +167,36 @@ def test_async_simulate_emits_async_job(tmp_path: Path) -> None:
     jsonschema.validate(instance=instance, schema=schema)
 
 
+def test_async_simulate_with_queue_enqueue_writes_jsonl(tmp_path: Path) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    out = tmp_path / "out"
+    qpath = tmp_path / "premium_multilens_queue.jsonl"
+    cmd = [
+        sys.executable,
+        str(SCRIPT),
+        "--out-dir",
+        str(out),
+        "--example-path",
+        str(EXAMPLE),
+        "--async-simulate",
+        "--async-queue-enqueue",
+        "--async-queue-path",
+        str(qpath),
+    ]
+    r = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, check=False)
+    assert r.returncode == 0, r.stdout + r.stderr
+    instance = json.loads((out / "premium_btrack_multilens_report_v1.json").read_text(encoding="utf-8"))
+    schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
+    jsonschema.validate(instance=instance, schema=schema)
+    assert qpath.is_file()
+    lines = qpath.read_text(encoding="utf-8").strip().splitlines()
+    assert len(lines) == 1
+    row = json.loads(lines[0])
+    assert row.get("schema") == "premium_multilens_job_queue_entry_v0"
+    assert row.get("report_kind") == "premium_btrack_multilens_report_v1"
+    assert str(row.get("job_id", "")).startswith("sim_premium_")
+
+
 def test_rag_corpus_scan_dir_appears_in_caveats(tmp_path: Path) -> None:
     jsonschema = pytest.importorskip("jsonschema")
     art = tmp_path / "artifacts"
