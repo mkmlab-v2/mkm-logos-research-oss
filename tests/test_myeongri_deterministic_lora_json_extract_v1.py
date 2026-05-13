@@ -28,3 +28,17 @@ def test_extract_json_double_encoded_string() -> None:
     inner = {"schema": "saju_global_birth_result_v1", "k": 1}
     wrapped = json.dumps(json.dumps(inner, ensure_ascii=False), ensure_ascii=False)
     assert mod._extract_json_object(wrapped) == inner
+
+
+def test_extract_json_strips_human_leakage_after_object() -> None:
+    mod = _load_script()
+    inner = {"schema": "saju_global_birth_result_v1", "version": "1.0.0", "resolution": {}, "full_saju": {}}
+    blob = json.dumps(inner, ensure_ascii=False) + "\n\nHuman: follow-up\n"
+    assert mod._extract_json_object(blob) == inner
+
+
+def test_extract_json_strips_human_inline_no_newline() -> None:
+    mod = _load_script()
+    inner = {"schema": "saju_global_birth_result_v1", "version": "1.0.0"}
+    blob = json.dumps(inner, ensure_ascii=False) + "Human: \nGiven next"
+    assert mod._extract_json_object(blob) == inner

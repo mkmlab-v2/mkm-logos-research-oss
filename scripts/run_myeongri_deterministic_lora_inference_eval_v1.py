@@ -150,9 +150,33 @@ def _balanced_json_slice(s: str) -> str | None:
     return None
 
 
+def _strip_trailing_role_leakage(s: str) -> str:
+    """Drop common chat-template continuations after the JSON block (Qwen-style leaks)."""
+    for marker in (
+        "\n\nHuman:",
+        "\nHuman:",
+        "\n\nUser:",
+        "\nUser:",
+        "\n\nAssistant:",
+        "\nAssistant:",
+        "\n### Instruction:",
+        "\n### Response:",
+    ):
+        if marker in s:
+            s = s.split(marker, 1)[0].strip()
+    # Qwen may emit `...}Human:` immediately after the closing brace (no newline).
+    m = re.search(r"\bHuman:\s*", s)
+    if m:
+        s = s[: m.start()].strip()
+    m = re.search(r"\bAssistant:\s*", s)
+    if m:
+        s = s[: m.start()].strip()
+    return s
+
+
 def _extract_json_object(text: str) -> dict[str, Any] | None:
     """Parse first JSON object from model text (fences, full parse, balanced slice, string-wrapped JSON)."""
-    s = (text or "").strip()
+    s = _strip_trailing_role_leakage((text or "").strip())
     if not s:
         return None
     fence = re.search(r"```(?:json)?\s*([\s\S]*?)```", s, flags=re.IGNORECASE)
@@ -218,6 +242,36 @@ def _model_device(model: Any) -> Any:
     return next(model.parameters()).device
 
 
+def _chat_leak_stopping_criteria(tokenizer: Any, prompt_token_len: int):
+    """Stop generation when decoded new text contains common chat-template leaks."""
+    from transformers import StoppingCriteria
+
+    markers = (
+        "\nHuman:",
+        "Human:",
+        "\n### Instruction:",
+        "\n### Response:",
+        "Assistant:Human",
+        "Assistant:\nHuman",
+    )
+
+    class _LeakStop(StoppingCriteria):
+        def __call__(self, input_ids: Any, scores: Any, **kwargs: Any) -> bool:
+            row = input_ids[0]
+            if len(row) <= prompt_token_len:
+                return False
+            n_new = int(len(row) - prompt_token_len)
+            if n_new < 6:
+                return False
+            if n_new % 6 != 0:
+                return False
+            text = tokenizer.decode(row[prompt_token_len:], skip_special_tokens=True)
+            tail = text[-800:] if len(text) > 800 else text
+            return any(m in tail for m in markers)
+
+    return _LeakStop()
+
+
 def _load_model_and_tokenizer(
     model_name: str,
     adapter_path: str,
@@ -267,13 +321,16 @@ def _generate_one(
     top_p: float,
     *,
     repetition_penalty: float,
+    chat_leak_stop: bool,
 ) -> str:
     import torch
+    from transformers import StoppingCriteriaList
 
     prompt = _build_prompt(instruction)
     inputs = tokenizer(prompt, return_tensors="pt")
     dev = _model_device(model)
     inputs = {k: v.to(dev) for k, v in inputs.items()}
+    prompt_len = int(inputs["input_ids"].shape[1])
     gen_kw: dict[str, Any] = {
         "max_new_tokens": max_new_tokens,
         "temperature": temperature,
@@ -284,6 +341,8 @@ def _generate_one(
     }
     if repetition_penalty and repetition_penalty > 1.0:
         gen_kw["repetition_penalty"] = float(repetition_penalty)
+    if chat_leak_stop:
+        gen_kw["stopping_criteria"] = StoppingCriteriaList([_chat_leak_stopping_criteria(tokenizer, prompt_len)])
     with torch.no_grad():
         output_ids = model.generate(**inputs, **gen_kw)
     full = tokenizer.decode(output_ids[0], skip_special_tokens=True)
@@ -307,6 +366,11 @@ def main() -> int:
         type=float,
         default=1.15,
         help=">1.0 reduces degenerate repeats (0 disables).",
+    )
+    ap.add_argument(
+        "--no-chat-leak-stop",
+        action="store_true",
+        help="Disable stopping when Human:/Instruction: leaks into completion.",
     )
     ap.add_argument("--limit", type=int, default=0, help="Max rows (0 = all)")
     ap.add_argument("--split", default="", help="If set, only rows where golden.split equals this value")
@@ -405,6 +469,7 @@ def main() -> int:
                     temperature=float(args.temperature),
                     top_p=float(args.top_p),
                     repetition_penalty=float(args.repetition_penalty),
+                    chat_leak_stop=not bool(args.no_chat_leak_stop),
                 )
             latencies_ms.append((time.perf_counter() - t0) * 1000.0)
 
@@ -449,6 +514,7 @@ def main() -> int:
         "golden_jsonl": str(golden_path),
         "max_new_tokens": int(args.max_new_tokens),
         "repetition_penalty": float(args.repetition_penalty),
+        "chat_leak_stop": not bool(args.no_chat_leak_stop),
         "model_name": model_name,
         "adapter_path": adapter_path or None,
         "oracle_golden": bool(args.oracle_golden),

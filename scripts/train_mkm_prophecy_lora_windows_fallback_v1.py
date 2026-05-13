@@ -116,6 +116,9 @@ def main() -> int:
         task_type="CAUSAL_LM",
     )
     model = get_peft_model(model, lora)
+    # k-bit prep enables gradient checkpointing; align with Trainer + PyTorch 2.x (use_reentrant=False).
+    if getattr(model, "config", None) is not None:
+        model.config.use_cache = False
 
     ds = _build_dataset(rows, tokenizer, ns.max_seq_length)
 
@@ -132,6 +135,9 @@ def main() -> int:
         fp16=False,
         report_to=[],
         remove_unused_columns=False,
+        dataloader_num_workers=0,
+        gradient_checkpointing=True,
+        gradient_checkpointing_kwargs={"use_reentrant": False},
     )
     trainer = Trainer(model=model, args=args, train_dataset=ds)
 
