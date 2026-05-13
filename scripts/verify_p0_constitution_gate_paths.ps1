@@ -386,6 +386,7 @@ $required = @(
     "codebook\policies\slack_fact_safe_mention_routing_v1.json",
     "scripts\run_aramaic_mvp_chain_v1.ps1",
     "scripts\run_aramaic_mvp_now_with_audit.ps1",
+    "tests\test_run_aramaic_mvp_now_with_audit_passthrough_v1.py",
     "scripts\run_aramaic_raw_oos_audit_accumulator_v1.ps1",
     "scripts\report_aramaic_mvp_audit_trend_v1.py",
     "scripts\alert_aramaic_mvp_trend_v1.py",
