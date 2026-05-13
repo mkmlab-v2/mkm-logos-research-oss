@@ -20,6 +20,7 @@ _BRIER_SMOKE = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_brier_s
 _OFFICIAL_SEED = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_official_seed_v1.json"
 _MACRO_H2_PACK = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_macro_h2_2026_pack_v1.json"
 _PERSONALIZATION_SMOKE = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_personalization_smoke_v1.json"
+_AUX_COV = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_auxiliary_covariates_brier_smoke_v1.json"
 
 
 @pytest.fixture(scope="module")
@@ -30,6 +31,14 @@ def _validator():
     schema = json.loads(_SCHEMA_PATH.read_text(encoding="utf-8"))
     Draft202012Validator.check_schema(schema)
     return Draft202012Validator(schema)
+
+
+def test_general_prophecy_auxiliary_covariates_fixture_validates(_validator) -> None:
+    assert _AUX_COV.is_file(), f"missing {_AUX_COV}"
+    doc = json.loads(_AUX_COV.read_text(encoding="utf-8"))
+    errs = sorted(_validator.iter_errors(doc), key=lambda e: e.path)
+    assert not errs, "schema errors: " + "; ".join(f"{list(e.path)}: {e.message}" for e in errs[:12])
+    assert len(doc.get("questions") or []) == 4
 
 
 def test_general_prophecy_schema_file_exists() -> None:

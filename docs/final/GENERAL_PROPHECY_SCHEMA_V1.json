@@ -139,6 +139,10 @@
           "type": "string",
           "description": "Pointer only (path or notebook source id). No probabilities in this string."
         },
+        "auxiliary_covariates_v1": {
+          "$ref": "#/$defs/general_prophecy_auxiliary_covariates_v1",
+          "description": "Optional B-track covariates (M31/4AI metaphor, weather QA sidecars, etc.); must not replace forecasts[].probability_0_1."
+        },
         "epistemic_firewall": {
           "type": "object",
           "additionalProperties": false,
@@ -183,6 +187,29 @@
           "type": "array",
           "items": { "type": "string", "minLength": 2 },
           "description": "Allowed processing tags, e.g. l1_forecast, cohort_aggregate_only."
+        }
+      }
+    },
+    "general_prophecy_auxiliary_covariates_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "psychological_state_term": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Bounded advisory scalar from B-track metaphor pipelines (e.g. lens-music hormone overlay); never overwrites L1 probabilities."
+        },
+        "psychological_state_artifact_ref": {
+          "type": "string",
+          "minLength": 4,
+          "maxLength": 512,
+          "description": "Optional repo-relative or reports/* pointer for audit (e.g. lens_music_hormone_trend JSON)."
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Optional short provenance note; no secrets."
         }
       }
     },

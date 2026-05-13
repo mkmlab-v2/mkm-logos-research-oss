@@ -3,6 +3,10 @@
 
 Optional --ece-bins: equal-width [0,1] bins for binary ECE (metrics.ece_binary.weighted_ece).
 Per-domain_tag ECE: metrics.ece_binary_by_domain_tag when --ece-min-per-tag satisfied.
+
+Optional auxiliary_covariates_v1.psychological_state_term (0..1): when present on resolved
+rows, metrics.by_psychological_state_term_band splits at 0.5 (<= vs >), each band included
+only if n >= --psy-state-min-per-band (default 2). Advisory covariate; does not alter L1 p.
 """
 from __future__ import annotations
 
@@ -40,6 +44,16 @@ def _parse_utc(ts: str) -> datetime | None:
         return datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(timezone.utc)
     except Exception:
         return None
+
+
+def _psychological_state_term(q: dict[str, Any]) -> float | None:
+    aux = q.get("auxiliary_covariates_v1")
+    if not isinstance(aux, dict):
+        return None
+    v = aux.get("psychological_state_term")
+    if isinstance(v, bool) or not isinstance(v, (int, float)):
+        return None
+    return max(0.0, min(1.0, float(v)))
 
 
 def _median_int(vals: list[int]) -> float | None:
@@ -145,6 +159,13 @@ def main() -> int:
         metavar="M",
         help="With --ece-bins: include a domain_tag in ece_binary_by_domain_tag only if it has >= M (p,y) pairs (default 5).",
     )
+    ap.add_argument(
+        "--psy-state-min-per-band",
+        type=int,
+        default=2,
+        metavar="N",
+        help="Minimum resolved rows per band (psychological_state_term <=0.5 vs >0.5) to emit metrics.by_psychological_state_term_band.",
+    )
     ns = ap.parse_args()
     if not ns.input.is_file():
         print(f"missing {ns.input}", file=sys.stderr)
@@ -165,6 +186,8 @@ def main() -> int:
     now_utc = datetime.now(timezone.utc)
     ece_pairs: list[tuple[float, float]] = []
     ece_pairs_by_tag: dict[str, list[tuple[float, float]]] = defaultdict(list)
+    brier_by_psy_low: list[float] = []
+    brier_by_psy_high: list[float] = []
 
     for q in doc.get("questions") or []:
         if not isinstance(q, dict):
@@ -215,17 +238,24 @@ def main() -> int:
         resolved_at = res.get("resolved_at_utc")
         if isinstance(resolved_at, str) and len(resolved_at) >= 7 and resolved_at[4] == "-":
             by_resolved_month[resolved_at[:7]].append(b)
-        rows.append(
-            {
-                "question_id": q.get("question_id"),
-                "prophecy_track": track,
-                "domain_tags": [t for t in (tags or []) if isinstance(t, str)],
-                "issued_at_utc": issued_at,
-                "probability_0_1": p,
-                "outcome_binary": ob,
-                "brier_contribution": round(b, 6),
-            }
-        )
+        psy = _psychological_state_term(q)
+        if psy is not None:
+            if psy <= 0.5:
+                brier_by_psy_low.append(b)
+            else:
+                brier_by_psy_high.append(b)
+        row_out: dict[str, Any] = {
+            "question_id": q.get("question_id"),
+            "prophecy_track": track,
+            "domain_tags": [t for t in (tags or []) if isinstance(t, str)],
+            "issued_at_utc": issued_at,
+            "probability_0_1": p,
+            "outcome_binary": ob,
+            "brier_contribution": round(b, 6),
+        }
+        if psy is not None:
+            row_out["psychological_state_term"] = round(psy, 6)
+        rows.append(row_out)
 
     n = len(rows)
     mean_brier = round(sum(r["brier_contribution"] for r in rows) / n, 6) if n else None
@@ -276,12 +306,28 @@ def main() -> int:
                     by_tag_ece[tag] = ed
         if by_tag_ece:
             metrics["ece_binary_by_domain_tag"] = by_tag_ece
+    min_psy = max(1, int(ns.psy_state_min_per_band))
+    band_doc: dict[str, Any] = {}
+    if len(brier_by_psy_low) >= min_psy:
+        band_doc["psychological_state_term_le_0.5"] = {
+            "mean_brier_score": round(sum(brier_by_psy_low) / len(brier_by_psy_low), 6),
+            "n_evaluated": len(brier_by_psy_low),
+        }
+    if len(brier_by_psy_high) >= min_psy:
+        band_doc["psychological_state_term_gt_0.5"] = {
+            "mean_brier_score": round(sum(brier_by_psy_high) / len(brier_by_psy_high), 6),
+            "n_evaluated": len(brier_by_psy_high),
+        }
+    if band_doc:
+        band_doc["split_threshold"] = 0.5
+        band_doc["min_per_band"] = min_psy
+        metrics["by_psychological_state_term_band"] = band_doc
     out: dict[str, Any] = {
         "schema": SCHEMA,
         "generated_at_utc": _utc_now(),
         "inputs": {"registry_path": str(ns.input.resolve())},
         "metrics": metrics,
-        "note": "binary + resolved + last forecast only; void/categorical skipped; missing prophecy_track -> general",
+        "note": "binary + resolved + last forecast only; void/categorical skipped; missing prophecy_track -> general; optional auxiliary_covariates_v1.psychological_state_term -> metrics.by_psychological_state_term_band when per-band n>=min",
     }
     if not ns.no_rows:
         out["rows"] = rows

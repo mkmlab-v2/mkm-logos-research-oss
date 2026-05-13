@@ -182,3 +182,37 @@ def test_eval_general_prophecy_brier_on_merged_registry_stdout(tmp_path) -> None
     bt = out.get("metrics", {}).get("by_prophecy_track") or {}
     assert bt.get("general", {}).get("n_evaluated") == 3
     assert bt.get("general", {}).get("mean_brier_score") == pytest.approx(0.086133, abs=1e-5)
+
+
+def test_eval_general_prophecy_brier_psychological_state_term_bands(tmp_path) -> None:
+    fx = _ROOT / "tests" / "fixtures" / "general_prophecy_registry_auxiliary_covariates_brier_smoke_v1.json"
+    out = tmp_path / "brier_psy.json"
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(_ROOT / "scripts" / "eval_general_prophecy_brier_score.py"),
+            "-i",
+            str(fx),
+            "-o",
+            str(out),
+            "--psy-state-min-per-band",
+            "2",
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert r.returncode == 0, r.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    bands = doc.get("metrics", {}).get("by_psychological_state_term_band") or {}
+    assert bands.get("split_threshold") == 0.5
+    low = bands.get("psychological_state_term_le_0.5") or {}
+    high = bands.get("psychological_state_term_gt_0.5") or {}
+    assert low.get("n_evaluated") == 2
+    assert high.get("n_evaluated") == 2
+    assert low.get("mean_brier_score") == pytest.approx(0.26, abs=1e-5)
+    assert high.get("mean_brier_score") == pytest.approx(0.25, abs=1e-5)
+    rows = doc.get("rows") or []
+    assert len(rows) == 4
+    assert all("psychological_state_term" in row for row in rows)
