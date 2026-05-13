@@ -350,7 +350,9 @@ on:
       - "tests/test_multi_symbol_counterfactual_comparison_v1.py"
       - "tests/test_two_track_qa_overlay_counterfactual_v1.py"
       - "scripts/extract_aramaic_core_corpus_v1.py"
+      - "scripts/report_aramaic_mvp_audit_trend_v1.py"
       - "tests/test_extract_aramaic_core_corpus_v1.py"
+      - "tests/test_report_aramaic_mvp_audit_trend_v1.py"
       - "tests/fixtures/track_a_metering_log_smoke_v1.jsonl"
       - "data/track_a_shadow/conversations_sample_v1.jsonl"
       - "tests/test_multilens_sensitive_integrity_gate.py"
@@ -584,6 +586,10 @@ on:
       - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/insight_candidates.json"
       - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/bridge_edges.jsonl"
       - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/regime_shift.json"
+      - "docs/final/schemas/aramaic_graph_node_v1.schema.json"
+      - "docs/final/schemas/aramaic_graph_edge_v1.schema.json"
+      - "docs/final/schemas/aramaic_regime_shift_score_v1.schema.json"
+      - "tests/test_aramaic_graph_schema_v1.py"
       - "scripts/invoke_build_integrated_governance_if_deps_present_v1.py"
       - "scripts/Register-TrackCMacroDailyFusionTask.ps1"
       - "scripts/Run-LensMusicPromotionGateStagingStrict_v1.ps1"
@@ -1178,8 +1184,8 @@ jobs:
             tests/test_two_track_qa_overlay_counterfactual_v1.py \
             -q --tb=short
 
-      - name: Aramaic core corpus extraction (BH Aramaic window filter from verse JSONL)
-        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py -q --tb=short
+      - name: Aramaic core corpus extraction + MVP audit trend report (BH Aramaic window + audit JSONL trend)
+        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py tests/test_report_aramaic_mvp_audit_trend_v1.py -q --tb=short
 
       - name: Logos insight bundle v1 (schema + build CLI)
         run: python -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py -q --tb=short
