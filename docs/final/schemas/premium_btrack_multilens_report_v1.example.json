@@ -1,0 +1,201 @@
+{
+  "schema": "premium_btrack_multilens_report_v1",
+  "version": "1.0",
+  "generated_at_utc": "2026-05-13T12:00:00Z",
+  "hypothesis_tier": "B",
+  "hypothesis_class": "HYPO",
+  "boundary_ack": true,
+  "a_track_autotrigger_forbidden": true,
+  "track_wall": ["B_TRACK_RESEARCH", "ADVISORY_ONLY", "NON_GATING"],
+  "billing_product": "premium_btrack_multilens_v1",
+  "async_job": {
+    "job_id": "job_premium_demo_01",
+    "status": "succeeded",
+    "queued_at_utc": "2026-05-13T11:55:00Z",
+    "finished_at_utc": "2026-05-13T12:00:00Z",
+    "note": "Async queue + bounded retries; partial output forbidden for charge capture in v1."
+  },
+  "customer_prompt_digest": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "redacted_preview": "[REDACTED] 예: 다음 분기 방향성에 대한 조언을 원합니다.",
+    "locale": "ko-KR"
+  },
+  "pipeline": [
+    {
+      "step": 1,
+      "title": "Ingest prompt + policy gates (P0 paths, billing tier)",
+      "owner": "orchestrator",
+      "script_ref": "scripts/build_premium_btrack_multilens_report_v1.py --phase ingest",
+      "outputs": ["reports/tmp_premium_job_manifest.json"]
+    },
+    {
+      "step": 2,
+      "title": "Parallel lens workers: Myeongni engine facts + RAG",
+      "owner": "myeongni",
+      "depends_on": [1],
+      "script_ref": "scripts/run_myeongni_lens_chain_from_bot_v1.py (example)",
+      "outputs": ["reports/lens_myeongni_premium_slice.md"]
+    },
+    {
+      "step": 3,
+      "title": "Parallel lens workers: Sasang interpretive RAG",
+      "owner": "sasang",
+      "depends_on": [1],
+      "script_ref": "scripts/run_lens_sasang (example) + corpus graph RAG",
+      "outputs": ["reports/lens_sasang_premium_slice.md"]
+    },
+    {
+      "step": 4,
+      "title": "Parallel lens workers: Logos deep distill RAG (NON_GATING)",
+      "owner": "logos",
+      "depends_on": [1],
+      "script_ref": "scripts/build_logos_track_b_commander_deep_report_v1.py (example)",
+      "outputs": ["reports/lens_logos_premium_slice.md"]
+    },
+    {
+      "step": 5,
+      "title": "Coordinator synthesis (Absolute Balance coordination mode)",
+      "owner": "coordinator",
+      "depends_on": [2, 3, 4],
+      "script_ref": "scripts/build_premium_btrack_multilens_report_v1.py --phase fuse",
+      "outputs": ["reports/premium_multilens_synthesis.md"]
+    },
+    {
+      "step": 6,
+      "title": "Package JSON+MD+manifest checksums",
+      "owner": "packager",
+      "depends_on": [5],
+      "script_ref": "scripts/build_premium_btrack_multilens_report_v1.py --phase package",
+      "outputs": [
+        "reports/premium_btrack_multilens_report_v1.json",
+        "reports/premium_btrack_multilens_report_v1.md"
+      ]
+    }
+  ],
+  "lenses": [
+    {
+      "lens_id": "myeongni",
+      "hypothesis_tags": ["HYPO", "deterministic_engine"],
+      "engine_artifact_paths": [
+        "docs/final/artifacts/myeongni_independent_lens_from_chain_latest.json"
+      ],
+      "rag": {
+        "corpus_id": "myeongni_canon_v0",
+        "retrieval_runs": [
+          {
+            "run_id": "mq_01",
+            "query": "일간 갑목 + 월지 충 예시 (도메인 쿼리는 실제 코퍼스에 맞게 교체)",
+            "hits": [
+              {
+                "source_id": "canon:dummy_0001",
+                "uri": "vault://btrack/myeongni_refs/dummy_0001.md",
+                "license_note": "Internal curated excerpt only.",
+                "snippet": "…",
+                "confidence_band": "B"
+              }
+            ]
+          }
+        ]
+      },
+      "sections": [
+        {
+          "title": "명리 렌즈 — 엔진 팩트 + 고전 RAG 교차",
+          "markdown_path": "reports/lens_myeongni_premium_slice.md",
+          "fact_lock_refs": [
+            "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md#3.3"
+          ]
+        }
+      ]
+    },
+    {
+      "lens_id": "sasang",
+      "hypothesis_tags": ["HYPO", "interpretive_bundle"],
+      "rag": {
+        "corpus_id": "sasang_interpretive_v0",
+        "retrieval_runs": [
+          {
+            "run_id": "sq_01",
+            "query": "체질 편향 + 단기 스트레스 지표와의 정렬 (예시)",
+            "hits": [
+              {
+                "source_id": "sasang:insight_bundle_stub",
+                "snippet": "…",
+                "confidence_band": "C"
+              }
+            ]
+          }
+        ]
+      },
+      "sections": [
+        {
+          "title": "사상 렌즈 — 체질·정서 축 RAG",
+          "markdown_path": "reports/lens_sasang_premium_slice.md",
+          "fact_lock_refs": [
+            "docs/final/schemas/sasang_interpretive_insight_bundle_v1.schema.json"
+          ]
+        }
+      ]
+    },
+    {
+      "lens_id": "logos",
+      "hypothesis_tags": ["HYPO", "NON_GATING"],
+      "rag": {
+        "corpus_id": "logos_track_b_deep_v0",
+        "retrieval_runs": [
+          {
+            "run_id": "lq_01",
+            "query": "맥락 정렬용 구절 후보 (예시)",
+            "hits": [
+              {
+                "source_id": "logos:verse_stub",
+                "snippet": "…",
+                "confidence_band": "B"
+              }
+            ]
+          }
+        ]
+      },
+      "sections": [
+        {
+          "title": "성경(Logos) 렌즈 — RAG 근거 + 비게이팅 해설",
+          "markdown_path": "reports/lens_logos_premium_slice.md",
+          "fact_lock_refs": [
+            "docs/final/schemas/logos_track_b_commander_deep_report_v1.schema.json"
+          ]
+        }
+      ]
+    }
+  ],
+  "coordinator": {
+    "coordinator_mode_label": "absolute_balance_coordination",
+    "synthesis_markdown_path": "reports/premium_multilens_synthesis.md",
+    "conflicts": [
+      {
+        "topic": "단기 방향 vs 중기 방향",
+        "myeongni_note": "중기 코멘트 예시",
+        "sasang_note": "단기 강도 코멘트 예시",
+        "logos_note": "거시 비게이팅 코멘트 예시",
+        "resolution_advisory": "실행 확정 없음; 사용자 판단용 요약만 제시."
+      }
+    ],
+    "caveats": [
+      "본 패키지는 B-track 연구·자문 산출물이며, 실매매·의료행위를 대체하지 않습니다."
+    ]
+  },
+  "package_artifacts": {
+    "report_json_path": "reports/premium_btrack_multilens_report_v1.json",
+    "report_markdown_path": "reports/premium_btrack_multilens_report_v1.md",
+    "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  },
+  "disclaimers": [
+    "B-track / [HYPO] 산출물입니다. 채팅 UI에만 남지 않도록 디스크 리포트와 출처 목록을 함께 제공합니다.",
+    "성경(Logos) 렌즈는 NON_GATING 보조 해설입니다.",
+    "명리 수치는 엔진·입력 계약에 따른 결정론 결과이며, 그 외 서술은 연구적 해석입니다."
+  ],
+  "non_scope_ack": {
+    "not_clinical_diagnosis": true,
+    "not_live_trading": true,
+    "not_regime_autotrigger": true,
+    "logos_non_gating": true
+  }
+}

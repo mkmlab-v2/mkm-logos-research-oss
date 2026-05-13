@@ -1,0 +1,301 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/premium_btrack_multilens_report_v1.schema.json",
+  "title": "Premium B-track multi-lens report package v1 (draft)",
+  "description": "Disk-first bundle: per-lens independent RAG + optional engine facts, then coordinator synthesis. B-track only; advisory; not live trading or clinical diagnosis.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "hypothesis_tier",
+    "hypothesis_class",
+    "boundary_ack",
+    "a_track_autotrigger_forbidden",
+    "track_wall",
+    "billing_product",
+    "customer_prompt_digest",
+    "pipeline",
+    "lenses",
+    "coordinator",
+    "package_artifacts",
+    "disclaimers",
+    "non_scope_ack"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "premium_btrack_multilens_report_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\.(0|[1-9][0-9]*)$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "hypothesis_class": {
+      "type": "string",
+      "const": "HYPO"
+    },
+    "boundary_ack": {
+      "type": "boolean",
+      "const": true
+    },
+    "a_track_autotrigger_forbidden": {
+      "type": "boolean",
+      "const": true
+    },
+    "track_wall": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["B_TRACK_RESEARCH", "ADVISORY_ONLY", "NON_GATING"]
+      },
+      "minItems": 1
+    },
+    "billing_product": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "async_job": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["job_id", "status"],
+      "properties": {
+        "job_id": { "type": "string", "minLength": 8, "maxLength": 128 },
+        "status": {
+          "type": "string",
+          "enum": ["queued", "running", "succeeded", "failed", "partial"]
+        },
+        "queued_at_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "finished_at_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+        },
+        "note": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "customer_prompt_digest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "redacted_preview"],
+      "properties": {
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "redacted_preview": { "type": "string", "maxLength": 2000 },
+        "locale": { "type": "string", "maxLength": 32 }
+      }
+    },
+    "pipeline": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["step", "title", "owner"],
+        "properties": {
+          "step": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "owner": {
+            "type": "string",
+            "enum": ["orchestrator", "myeongni", "sasang", "logos", "coordinator", "packager"]
+          },
+          "script_ref": {
+            "type": "string",
+            "maxLength": 1024
+          },
+          "depends_on": {
+            "type": "array",
+            "items": { "type": "integer", "minimum": 1 },
+            "maxItems": 16
+          },
+          "outputs": {
+            "type": "array",
+            "items": { "type": "string", "maxLength": 1024 },
+            "maxItems": 32
+          }
+        }
+      }
+    },
+    "lenses": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": { "$ref": "#/definitions/lens_slice_v1" }
+    },
+    "coordinator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "coordinator_mode_label",
+        "synthesis_markdown_path",
+        "conflicts",
+        "caveats"
+      ],
+      "properties": {
+        "coordinator_mode_label": {
+          "type": "string",
+          "const": "absolute_balance_coordination"
+        },
+        "synthesis_markdown_path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "conflicts": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/conflict_row_v1" },
+          "maxItems": 64
+        },
+        "caveats": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2000 },
+          "maxItems": 32
+        }
+      }
+    },
+    "package_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["report_json_path", "report_markdown_path", "manifest_sha256"],
+      "properties": {
+        "report_json_path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "report_markdown_path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "report_pdf_path": { "type": "string", "maxLength": 2048 },
+        "manifest_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "attachments": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2048 },
+          "maxItems": 32
+        }
+      }
+    },
+    "disclaimers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1, "maxLength": 4000 },
+      "maxItems": 24
+    },
+    "non_scope_ack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "not_clinical_diagnosis",
+        "not_live_trading",
+        "not_regime_autotrigger",
+        "logos_non_gating"
+      ],
+      "properties": {
+        "not_clinical_diagnosis": { "type": "boolean", "const": true },
+        "not_live_trading": { "type": "boolean", "const": true },
+        "not_regime_autotrigger": { "type": "boolean", "const": true },
+        "logos_non_gating": { "type": "boolean", "const": true }
+      }
+    }
+  },
+  "definitions": {
+    "lens_slice_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lens_id", "hypothesis_tags", "sections"],
+      "properties": {
+        "lens_id": {
+          "type": "string",
+          "enum": ["myeongni", "sasang", "logos"]
+        },
+        "hypothesis_tags": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 64 },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "engine_artifact_paths": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 2048 },
+          "maxItems": 16
+        },
+        "rag": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["corpus_id", "retrieval_runs"],
+          "properties": {
+            "corpus_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+            "retrieval_runs": {
+              "type": "array",
+              "minItems": 1,
+              "items": { "$ref": "#/definitions/rag_retrieval_run_v1" },
+              "maxItems": 32
+            }
+          }
+        },
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/lens_section_v1" },
+          "maxItems": 32
+        }
+      }
+    },
+    "rag_retrieval_run_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "query", "hits"],
+      "properties": {
+        "run_id": { "type": "string", "minLength": 4, "maxLength": 128 },
+        "query": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "hits": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/rag_hit_v1" },
+          "maxItems": 64
+        }
+      }
+    },
+    "rag_hit_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "snippet", "confidence_band"],
+      "properties": {
+        "source_id": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "uri": { "type": "string", "maxLength": 2048 },
+        "license_note": { "type": "string", "maxLength": 2000 },
+        "snippet": { "type": "string", "minLength": 1, "maxLength": 8000 },
+        "confidence_band": {
+          "type": "string",
+          "enum": ["A", "B", "C"]
+        }
+      }
+    },
+    "lens_section_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "markdown_path", "fact_lock_refs"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "markdown_path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "fact_lock_refs": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 1024 },
+          "maxItems": 32
+        }
+      }
+    },
+    "conflict_row_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["topic", "resolution_advisory"],
+      "properties": {
+        "topic": { "type": "string", "minLength": 1, "maxLength": 512 },
+        "myeongni_note": { "type": "string", "maxLength": 4000 },
+        "sasang_note": { "type": "string", "maxLength": 4000 },
+        "logos_note": { "type": "string", "maxLength": 4000 },
+        "resolution_advisory": { "type": "string", "minLength": 1, "maxLength": 8000 }
+      }
+    }
+  }
+}
