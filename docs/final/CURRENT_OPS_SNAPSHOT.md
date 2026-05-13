@@ -13,6 +13,24 @@
 | Hostinger 퇴거(VPS만)·등록 → Cloudflare Registrar | `scripts/Invoke-HostingerFullExitAutomationChain_v1.ps1` → `reports/hostinger_decommission_gate_latest.json`(`go`) · `reports/hostinger_full_exit_automation_chain_latest.json` · 진행표 `scripts/data/hostinger_full_exit/registrar_transfer_tracker_v1.json` — 백업·hPanel 호스팅 해지·EPP/이전은 수동. |
 | Windows · B-track·패널·워치독·BTC 주간·헬스 (로그오프 후 실행) | 관리자: `scripts/Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1` — 아래 **5개** 작업이 `Principal.LogonType=S4U`로 재등록됨(로그오프 후에도 동일 사용자 컨텍스트). `MKM_BTrack_Automation_Health_Daily` 포함이 정상. **작업 스케줄러의 `Last Task Result` / `LastTaskResult` 값 1**은 등록 실패가 아니라 **직전 실행의 종료 코드**(예: 패널 24h 스크립트는 KPI 미달 시 **exit 1**이라 자주 1로 남음); 다음 성공 실행 후 바뀔 수 있음. **수동 유지:** `\GeneralProphecyDailyQueueV1`, `\GeneralProphecyHoldoutEvolutionWeeklyV1`는 `schtasks` 경로라 본 스크립트가 건드리지 않음 — 로그오프 후에도 돌리려면 해당 두 작업만 작업 스케줄러에서 **사용자 로그온 여부와 관계없이 실행** + 계정 비밀번호 저장(또는 `schtasks /RU`/`/RP`)으로 맞출 것. |
 
+### 일일 운영 1페이지 — B-track 시장 예언 (Fact-Lock 체크리스트 행 6·7·9 압축)
+
+**판정:** 채팅 요약이 아니라 **exit code + 아래 JSON 필드**만으로 GO/HOLD를 쓴다. `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 일일 B-track·패널·히트레이트 절과 동일 선상.
+
+| 단계 | 체크 | 최소 명령 (저장소 루트 `C:\workspace` 가정) |
+|------|------|-----------------------------------------------|
+| 0 (선행) | [ ] 사전 조건 스캔 | `py scripts/check_btrack_prophecy_chain_prereqs_v1.py --stdout-only` (엄격 운영: `--strict`) |
+| 6 | [ ] 일일 B-track 번들 완주 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_btrack_daily_hypothesis_chain.ps1` (`-Skip*` 사용 시 **의도·로그** 남김) |
+| 7 | [ ] 가설·스코어·히트레이트 산출물 존재·스키마 | `docs/final/artifacts/btrack_hypothesis_prophecy_latest.json`, `docs/final/artifacts/btrack_prophecy_score_latest.json`, `docs/final/artifacts/prophecy_hit_rate_eval_latest.json` — 타임스탬프·`schema`·`[HYPO]` 표기 훼손 없음 (`P0_COMMERCIALIZATION_TRACKER.md` 월간 표와 동일 계약) |
+| 9 | [ ] 24h 패널 알림 | 체인 종단과 동일 실행 맥락에서 `scripts/Check-ProphecyPanel24hAlerts.ps1` → `reports/prophecy_panel_24h_alerts_latest.json`의 `overall_passed`·ALERT 1–3 필드만 인용; **exit 1 = 등록 실패 아님**(직전 실행 KPI/정책 종료 코드일 수 있음) |
+
+체크박스(일일 복붙용):
+
+- [ ] **0** — `py scripts/check_btrack_prophecy_chain_prereqs_v1.py --stdout-only` (필요 시 `--strict`)
+- [ ] **6** — `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_btrack_daily_hypothesis_chain.ps1`
+- [ ] **7** — `btrack_hypothesis_prophecy_latest.json` / `btrack_prophecy_score_latest.json` / `prophecy_hit_rate_eval_latest.json` 필드 확인
+- [ ] **9** — `reports/prophecy_panel_24h_alerts_latest.json`만으로 패널 판정(exit 코드 ≠ 작업 등록 상태)
+
 **다음 작업 일정 (권장 순)**
 
 - **Hostinger / CF Registrar:** 새 세션에서는 위 표 한 줄만 `@`로 열고 체인 재실행; `go` 이후에도 해지·이전은 사람 확인.
