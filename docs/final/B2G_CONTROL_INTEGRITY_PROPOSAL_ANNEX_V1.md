@@ -4,6 +4,8 @@
 
 **문서 버전:** v0.1.1 · **고정일:** 2026-05-13 — §8 URL 실측 표·DoD 체크 반영 (UTC 기준 제출 전 재확인 권장)
 
+**연계 초안(동일 워크스페이스):** `docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_overview_v1.md` 상단 메타에 본 Annex 포인터 추가. `docs/final/artifacts/business_registration_plan_v1.md` 표(AI+OpenData 행)에 본 Annex 경로 추가. 위 두 경로는 `.gitignore`의 `docs/final/artifacts/**`에 해당할 수 있어 **Git 추적 여부는 브랜치별로 다를 수 있음**; 제출 패키지는 지휘관이 PDF·원본으로 별도 보관.
+
 ---
 
 ## 1. 제출물 분리 규칙 (권장)
