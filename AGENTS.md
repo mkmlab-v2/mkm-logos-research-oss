@@ -169,6 +169,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【아테나 점검】 | Fact-Lock 번들 (`run_fact_lock_bundle.ps1`, CI에 가까운 순서) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` |
 | 【암행어사 점검】 | 자동화 헬스 기본 실행 (`run_workspace_automation_health.ps1` 기본 스위치) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AmsaengHealth` |
 | 【빠른 헌법 점검】 | P0 필수 경로 존재만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` |
+| 【예언 레일 일단락】 | 예언 본선 클로저(P0·B-track 정렬 pytest·safe ops·GO/NO_GO 갱신). 통과 판정은 `reports/prophecy_lane_closure_bundle_v1_latest.json`의 **`closure_ok: true`** 및 `manual_remainder`(Windows `schtasks` 일반예언·Track A 실매매는 수동 잔여) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` |
 
 - **이름 충돌 주의:** `scripts/Invoke-AthenaAutomationRegistryCheck.ps1`의 Athena는 **태스크 스케줄 vs `automation_registry.json`** 전용이며, 위 표의 **AthenaBundle**과 **다르다.**
 - **좁은 암행어사 한 바퀴(SafeOps·MCP·비밀·no1kmedi API 등):** `scripts/Invoke-AmsaengEosaGovernanceCycle.ps1` — 범위는 `docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json`.
