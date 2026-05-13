@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import subprocess
 import sys
@@ -37,9 +38,28 @@ def _write_fixtures(tmp: Path) -> dict[str, Path]:
         "shared_token_mean": 1.5,
         "edge_type_histogram": {"cross_lens_confirm": 4},
     }
+    cand_snippet = "  foo   bar  "
+    cand_hash = "sha256:" + hashlib.sha256(b"foo bar").hexdigest()
     insight = {
         "schema": "bible_meaning_insight_candidates_v1",
-        "candidates": [],
+        "candidates": [
+            {
+                "candidate_id": "c1",
+                "snippet": cand_snippet,
+                "verse_id": "GEN.1.1",
+                "quote_hash": cand_hash,
+                "source_track": "B",
+            },
+            {
+                "candidate_id": "c2",
+                "snippet": "wrong hash must be dropped",
+                "quote_hash": "sha256:deadbeef",
+            },
+            {
+                "candidate_id": "c3",
+                "snippet": "  snippet only no declared hash  ",
+            },
+        ],
     }
     edge = {
         "schema": "aramaic_graph_edge_v1",
@@ -48,6 +68,7 @@ def _write_fixtures(tmp: Path) -> dict[str, Path]:
         "edge_type": "cross_lens_confirm",
         "weight": 0.82,
         "source_track": "B",
+        "evidence_snippet": "  bridge span text  ",
     }
     regime = {"schema": "aramaic_regime_shift_score_v1", "score_label": "shadow", "shadow_score_0_1": 0.4}
 
@@ -99,10 +120,18 @@ def test_build_logos_insight_bundle_cli_outputs_valid_schema(tmp_path: Path) -> 
     assert bundle["missing_upstream"] == []
     assert bundle["aggregation"]["morphology_summary"]["matched_hebrew_atoms"] == 80
     assert len(bundle["tension_hypotheses"]) >= 1
-    assert any(
-        h.get("tension_axis_id") == "bridge_edges_present_insight_candidates_absent_v0"
-        for h in bundle["tension_hypotheses"]
-    )
+    axis_ids = {h.get("tension_axis_id") for h in bundle["tension_hypotheses"]}
+    assert "semantic_overlap_below_half_with_bridge_v0" in axis_ids
+
+    pack = bundle["citation_pack"]
+    assert len(pack) == 3
+    snippets = {p["snippet"] for p in pack}
+    assert "foo bar" in snippets
+    assert "snippet only no declared hash" in snippets
+    assert "bridge span text" in snippets
+    for p in pack:
+        body = hashlib.sha256(p["snippet"].encode("utf-8")).hexdigest()
+        assert p["quote_hash"] == f"sha256:{body}"
 
 
 @pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
@@ -136,3 +165,60 @@ def test_build_logos_insight_bundle_all_missing_still_valid(tmp_path: Path) -> N
     assert len(bundle["missing_upstream"]) == 5
     assert bundle["aggregation"] == {}
     assert bundle["tension_hypotheses"] == []
+
+
+@pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
+def test_build_logos_insight_bundle_citation_pack_limit(tmp_path: Path) -> None:
+    paths = _write_fixtures(tmp_path)
+    out = tmp_path / "bundle_limit.json"
+    cmd = [
+        sys.executable,
+        str(ROOT / "scripts" / "build_logos_insight_bundle_v1.py"),
+        "--out",
+        str(out),
+        "--morphology-json",
+        str(paths["morph"]),
+        "--semantic-quality-json",
+        str(paths["sem"]),
+        "--insight-candidates-json",
+        str(paths["insight"]),
+        "--bridge-edges-jsonl",
+        str(paths["bridge"]),
+        "--regime-shift-json",
+        str(paths["regime"]),
+        "--citation-pack-limit",
+        "1",
+    ]
+    r = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, check=False)
+    assert r.returncode == 0, r.stderr + r.stdout
+    bundle = json.loads(out.read_text(encoding="utf-8"))
+    assert len(bundle["citation_pack"]) == 1
+    assert bundle["citation_pack"][0]["snippet"] == "foo bar"
+
+
+@pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
+def test_build_logos_insight_bundle_citation_pack_zero(tmp_path: Path) -> None:
+    paths = _write_fixtures(tmp_path)
+    out = tmp_path / "bundle_zero.json"
+    cmd = [
+        sys.executable,
+        str(ROOT / "scripts" / "build_logos_insight_bundle_v1.py"),
+        "--out",
+        str(out),
+        "--morphology-json",
+        str(paths["morph"]),
+        "--semantic-quality-json",
+        str(paths["sem"]),
+        "--insight-candidates-json",
+        str(paths["insight"]),
+        "--bridge-edges-jsonl",
+        str(paths["bridge"]),
+        "--regime-shift-json",
+        str(paths["regime"]),
+        "--citation-pack-limit",
+        "0",
+    ]
+    r = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, check=False)
+    assert r.returncode == 0, r.stderr + r.stdout
+    bundle = json.loads(out.read_text(encoding="utf-8"))
+    assert bundle["citation_pack"] == []

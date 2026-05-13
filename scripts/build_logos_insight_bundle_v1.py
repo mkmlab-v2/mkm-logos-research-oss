@@ -2,6 +2,11 @@
 """Assemble Logos observational insight_bundle v1 from upstream B-track artifacts.
 
 No doctrinal labels. Outputs JSON matching docs/final/schemas/logos_insight_bundle_v1.schema.json.
+
+citation_pack: populated only from insight candidates and bridge edges that carry a non-empty
+snippet (see _SNIPPET_KEYS). If quote_hash is present on the row, it must match sha256(utf-8)
+of the whitespace-normalized snippet (optional "sha256:" prefix); mismatches are dropped.
+Deduped by final quote_hash; order candidates first, then bridge rows, up to --citation-pack-limit.
 """
 
 from __future__ import annotations
@@ -15,9 +20,10 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_NAME = "build_logos_insight_bundle_v1.py"
-SCRIPT_VERSION = "1.0.0"
+SCRIPT_VERSION = "1.0.1"
 RULESET_ID = "logos_insight_bundle_rules_v0"
-RULESET_VERSION = "0.1.0"
+RULESET_VERSION = "0.2.0"
+MAX_CITATION_SNIPPET_LEN = 8000
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "logos_insight_bundle_v1_latest.json"
 DEFAULT_MORPH = ROOT / "docs" / "final" / "artifacts" / "logos_morphology_registry_v1_latest.json"
 DEFAULT_SEM = ROOT / "docs" / "final" / "artifacts" / "aramaic_semantic_edge_quality_latest.json"
@@ -75,6 +81,120 @@ def _load_jsonl_dicts(path: Path, *, limit: int = 500_000) -> list[dict[str, Any
         if isinstance(row, dict):
             out.append(row)
             n += 1
+    return out
+
+
+_SNIPPET_KEYS = ("snippet", "evidence_snippet", "verbatim_snippet", "quote_snippet", "text_span")
+_VERSE_KEYS = ("verse_id", "verse_ref", "source_verse_id")
+
+
+def _strip_sha256_prefix(h: str) -> str:
+    h = h.strip()
+    if h.lower().startswith("sha256:"):
+        return h[7:].strip()
+    return h
+
+
+def _prepare_snippet(raw: str) -> str:
+    """Normalize whitespace for display + hash (schema max length)."""
+    norm = " ".join(raw.strip().split())
+    if len(norm) > MAX_CITATION_SNIPPET_LEN:
+        norm = norm[: MAX_CITATION_SNIPPET_LEN - 3] + "..."
+    return norm
+
+
+def _verbatim_quote_hash(prepared_snippet: str) -> str:
+    body = hashlib.sha256(prepared_snippet.encode("utf-8")).hexdigest()
+    return f"sha256:{body}"
+
+
+def _snippet_and_verse_from_row(row: dict[str, Any]) -> tuple[str | None, str | None, str | None]:
+    """Return (raw_snippet_or_none, declared_quote_hash_or_none, verse_id_or_none)."""
+    snippet: str | None = None
+    for k in _SNIPPET_KEYS:
+        v = row.get(k)
+        if isinstance(v, str) and v.strip():
+            snippet = v
+            break
+    qh_raw = row.get("quote_hash")
+    declared = qh_raw.strip() if isinstance(qh_raw, str) and qh_raw.strip() else None
+    verse_id: str | None = None
+    for k in _VERSE_KEYS:
+        v = row.get(k)
+        if isinstance(v, str) and v.strip():
+            verse_id = v.strip()[:256]
+            break
+    return snippet, declared, verse_id
+
+
+def _maybe_citation_from_row(
+    row: dict[str, Any],
+    *,
+    default_source_track: str | None,
+) -> dict[str, Any] | None:
+    """One citation_pack item if snippet is non-empty and quote_hash matches (or absent)."""
+    raw_snippet, declared_hash, verse_id = _snippet_and_verse_from_row(row)
+    if not raw_snippet:
+        return None
+    prepared = _prepare_snippet(raw_snippet)
+    if not prepared:
+        return None
+    computed = _verbatim_quote_hash(prepared)
+    if declared_hash is not None:
+        if _strip_sha256_prefix(declared_hash).lower() != _strip_sha256_prefix(computed).lower():
+            return None
+    st = row.get("source_track")
+    source_track = st.strip() if isinstance(st, str) and st.strip() else default_source_track
+    if source_track is not None:
+        source_track = source_track[:32]
+    return {
+        "verse_id": verse_id,
+        "quote_hash": computed,
+        "snippet": prepared,
+        "source_track": source_track,
+    }
+
+
+def _build_citation_pack(
+    *,
+    ins_doc: dict[str, Any] | None,
+    bridge_edges: list[dict[str, Any]],
+    limit: int,
+) -> list[dict[str, Any]]:
+    """Only rows with non-empty snippet; quote_hash must match SHA256 of prepared snippet if present."""
+    out: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    if limit <= 0:
+        return out
+
+    def push(item: dict[str, Any]) -> None:
+        h = item.get("quote_hash")
+        if not isinstance(h, str) or h in seen:
+            return
+        seen.add(h)
+        out.append(item)
+
+    if ins_doc:
+        cands = ins_doc.get("candidates")
+        if isinstance(cands, list):
+            for c in cands:
+                if len(out) >= limit:
+                    return out
+                if not isinstance(c, dict):
+                    continue
+                item = _maybe_citation_from_row(c, default_source_track="B")
+                if item:
+                    push(item)
+
+    for e in bridge_edges:
+        if len(out) >= limit:
+            break
+        if not isinstance(e, dict):
+            continue
+        item = _maybe_citation_from_row(e, default_source_track=None)
+        if item:
+            push(item)
+
     return out
 
 
@@ -238,6 +358,7 @@ def build_bundle(
     bridge_path: Path,
     regime_path: Path,
     top_k: int,
+    citation_pack_limit: int,
 ) -> dict[str, Any]:
     missing: list[str] = []
     upstream: list[dict[str, Any]] = []
@@ -281,7 +402,11 @@ def build_bundle(
 
     tensions = _build_tensions(sem=sem_doc, bridge_edges=bridge_edges, insight_digest=insight_digest)
 
-    citation_pack: list[dict[str, Any]] = []
+    citation_pack = _build_citation_pack(
+        ins_doc=ins_doc,
+        bridge_edges=bridge_edges,
+        limit=max(0, min(256, int(citation_pack_limit))),
+    )
 
     degraded = len(missing) > 0
 
@@ -294,7 +419,11 @@ def build_bundle(
     band = "high" if unknown_frac >= 0.6 else ("mid" if unknown_frac >= 0.25 else "low")
 
     fp_src = json.dumps(
-        {"missing": sorted(missing), "upstream_sha": [u.get("sha256") for u in upstream]},
+        {
+            "missing": sorted(missing),
+            "upstream_sha": [u.get("sha256") for u in upstream],
+            "citation_hashes": sorted(str(c.get("quote_hash", "")) for c in citation_pack),
+        },
         sort_keys=True,
         ensure_ascii=False,
     )
@@ -325,7 +454,10 @@ def build_bundle(
             "determinism_note": (
                 f"bundle_v1 rules={RULESET_ID}@{RULESET_VERSION}; "
                 "tension rules: bridge_vs_insight_gap, overlap<0.5 with bridge; "
-                "no verbatim verse snippets unless future upstream provides them."
+                "citation_pack: only rows with non-empty snippet (keys "
+                f"{', '.join(_SNIPPET_KEYS)}); quote_hash must equal "
+                "sha256(utf-8) of whitespace-normalized snippet (prefix sha256: optional) "
+                "when quote_hash is set; else hash is computed; dedupe by quote_hash."
             ),
         },
         "uncertainty": {"uncertainty_band": band, "unknown_fraction_0_1": round(unknown_frac, 4)},
@@ -357,6 +489,12 @@ def main() -> int:
     ap.add_argument("--bridge-edges-jsonl", type=Path, default=DEFAULT_BRIDGE)
     ap.add_argument("--regime-shift-json", type=Path, default=DEFAULT_REGIME)
     ap.add_argument("--top-k", type=int, default=8)
+    ap.add_argument(
+        "--citation-pack-limit",
+        type=int,
+        default=16,
+        help="Max citation_pack items (non-empty snippet; declared quote_hash must match when set; 0 disables)",
+    )
     args = ap.parse_args()
 
     out_path = args.out if args.out.is_absolute() else ROOT / args.out
@@ -373,6 +511,7 @@ def main() -> int:
         bridge_path=bridge,
         regime_path=regime,
         top_k=max(1, min(32, int(args.top_k))),
+        citation_pack_limit=int(args.citation_pack_limit),
     )
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(bundle, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -54,6 +54,8 @@ catch {
 # 2026-05-13: Integrated governance deps-gated invoker (py + PS1 + pytest; Track C fusion / fact_lock / daily readiness).
 # 2026-05-13: B-track session instant Myeongni panel + weather/OHLCV join + correlate chain (py + PS1 + pytest + join fixtures).
 # 2026-05-13: Premium B-track multi-lens report v1 (builder, schema+example, offline RAG fixture, pytest; CI dual-regime + Fact-Lock bundle 4b).
+# 2026-05-13: Gematria–Myeongri deterministic math v1 (tools/myeongni module, spike delegate, pytest, isolation doc).
+# 2026-05-14: athena_checkpoint prepend-mode (--max-checkpoints) + pytest regression.
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -284,6 +286,13 @@ $required = @(
     "data\myeongni\myeongni_track_b_commander_report_envelope_v1.json",
     "scripts\build_myeongni_track_b_commander_report_v1.py",
     "tests\test_build_myeongni_track_b_commander_report_v1.py",
+    "tools\myeongni\gematria_myeongri_math_v1.py",
+    "scripts\spike_gematria_myeongri_blend_v0.py",
+    "tests\test_gematria_myeongri_math_v1.py",
+    "tests\test_gematria_myeongri_spike_smoke.py",
+    "scripts\athena_checkpoint.py",
+    "tests\test_athena_checkpoint.py",
+    "docs\final\BTRACK_GEMATRIA_MYEONGRI_MATH_ISOLATION_V1.md",
     "scripts\core\track_source_guard.py",
     "scripts\core\sovereign_jsonl.py",
     "scripts\spike_sovereign_token_saving.py",

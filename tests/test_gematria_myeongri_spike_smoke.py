@@ -27,3 +27,6 @@ def test_spike_gematria_myeongri_blend_stdout_only() -> None:
     assert doc.get("schema") == "gematria_myeongri_spike_blend_v0"
     assert doc.get("hypothesis_tier") == "B"
     assert doc.get("boundary_ack") is True
+    fl = doc.get("fact_lock") or {}
+    assert fl.get("gematria_myeongri_math_module") == "gematria_myeongri_math_v1"
+    assert fl.get("gematria_myeongri_math_version") == "1.0.0"

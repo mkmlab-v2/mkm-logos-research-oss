@@ -6,7 +6,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-14T15:00:00Z
+- **last_updated_utc:** 2026-05-14T17:00:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -15,8 +15,9 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-05-14T12:05:00Z** — CENTRAL: NL RAG 절에 `NotebookLM_sources_manifest` 「외부 플로우 참고」·LLM Wiki·렌즈 팩 포인터 병기
 - **2026-05-13T16:58:28Z** — CENTRAL: 질문 라우팅 복붙 블록 추가(last_updated 2026-05-15Z)
-- **2026-05-14** — 내부 시맨틱+RAG+4D 설계도 **v0.2**(`INTERNAL_SEMANTIC_RAG_4D_ARCH_OUTLINE_V1.md`)·번역 브리지 스키마 `semantic_rag_bridge_insight_bundle_v1`·pytest·`verify_p0` 경로·**빌더** `scripts/build_semantic_rag_bridge_insight_bundle_v1.py`·6절 A-pilot KPI(스키마 검증 통과율 1.0) 반영.
+- **2026-05-14** — 내부 시맨틱+RAG+4D 설계도 **v0.2.1**(`INTERNAL_SEMANTIC_RAG_4D_ARCH_OUTLINE_V1.md` §4.1 매핑)·번들 빌더 **`--philosophy-pilot-json`**·CONSTITUTION 동명 행.
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -52,7 +53,7 @@
 
 **가능하다.** 단, **에이전트가 장기기억으로 쓰는 것은 NotebookLM이 아니라 이 파일(및 Git)**이다. NotebookLM은 **참고·요약 원천**이고, 그대로 두면 세션·채팅마다 달라질 수 있으므로 **압축·검증 후 여기에만 반영**해야 **체화**된다.
 
-**NL RAG — 렌즈 분리(2026-05-14, 미니멀):** Google NL은 **노트북 1개 = 코퍼스 1목적**(Ops / TrackC / 명리 / 사상 / Logos / 압축·예언 / 이벤트). `MKM_CORE`류에 소스를 한꺼번에 넣지 말 것 — 인용 착시·질문 무관 스니펫 재발 방지. **표·경로 SSOT:** `docs/NotebookLM_sources_manifest.md` 「렌즈별 RAG — 노트북 1목적 매핑」.
+**NL RAG — 렌즈 분리(2026-05-14, 미니멀):** Google NL은 **노트북 1개 = 코퍼스 1목적**(Ops / TrackC / 명리 / 사상 / Logos / 압축·예언 / 이벤트). `MKM_CORE`류에 소스를 한꺼번에 넣지 말 것 — 인용 착시·질문 무관 스니펫 재발 방지. **표·경로 SSOT:** `docs/NotebookLM_sources_manifest.md` 「렌즈별 RAG — 노트북 1목적 매핑」·「외부 플로우 참고」(커뮤니티 NL→CLI→Obsidian 흐름 vs MCP·`docs/final/LLM_WIKI_SCHEMA.md`·로컬 렌즈 팩 `scripts/build_notebooklm_lens_source_packs_v1.py`; 서드파티 NL CLI·영상은 비-SSOT·합선 금지).
 
 | 단계 | 내용 |
 |------|------|
@@ -244,6 +245,7 @@
 | 2026-05-13 (B2G 통제 무결성 부록 v0.2.1) | 부록 `B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md`(§1.1~동결)·내부 `B2G_TECH_DISCLOSURE_ONEPAGER_PREP_V1.md` 출원 전 1p 목차. |
 | 2026-05-13 ((주)목소리네트워크 · AI+ OpenData 제2026-327호) | 신청 주체 **주식회사 목소리네트워크**(사업자등록번호 628-86-01742)·대표 **이기륜**·소재 경기도 광명시 광명로 880·**1인기업**; **금융·신용·연체 모델 등 인접 실무경력 없음**(Fact-Lock). 중기부 「AI+ OpenData 챌린지」는 **과제①**(정책자금 융자 신청서 자동 생성, **계약 연계형**)으로 확정·**과제② 비선택**; 접수 시 **K-Startup 온라인 + 나라장터 입찰** 공고 기한(~2026-06-05 18:00) 내 병행 필수. |
 | 2026-05-11 (Track C GTM · lens M30) | `TRACK_C` §3.11: 미들웨어 포지션·단일 앵커 리스크·2nd customer·빅테크 내재화·수직 분리·대외 수치 Fact-Lock; 상징→텍스트 M30 webhook health 집계·대시보드 필드 반영(B-track advisory). |
+| 2026-05-13 (게마트리아–명리 4D 기하 격리 v1) | `tools/myeongni/gematria_myeongri_math_v1.py`로 블렌드·L2/cosine **결정론 수학만** 분리; `spike_gematria_myeongri_blend_v0.py`가 상류 벡터 조립 후 호출; SSOT `docs/final/BTRACK_GEMATRIA_MYEONGRI_MATH_ISOLATION_V1.md`·`CONSTITUTION`·`verify_p0`·pytest(`test_gematria_myeongri_math_v1`·스파이크 스모크). |
 | 2026-05-13 (M31 lens-music thin audit trail) | RAG 대사 drift 은유 스키마·`m31_audit_trail` 오버레이·히스토리·호르몬 트렌드 `audit_digest_summary`·Track C 대시보드 `mean_rag_metabolism_bounded_drift_0_1`/`rows_with_rag_drift`·`CONSTITUTION` 보강·`verify_p0`·pytest·프로모션 게이트; **비임상·은유 경계** Fact-Lock. 커밋 `2e7ca59ddb`·브랜치 `workspace/wip-cursor-20260512`·`internal` 푸시. |
 | 2026-05-13 (B-track 예언·VPS·격벽) | VPS `mkm-destiny` 번들 sync·실행 게이트(시큐리티·레버리지) 진단; `sync_biblical_lane_hook_to_bitcoin_trading.py`로 `general_prophecy_explainable` 훅(reference_only·비트리거); 동결 180일 mild+`neutral-bps` 2–3 스윕 적중 약 0.486; 권장 측정 **`run_prophecy_btrack_recommended_eval_chain_v1.py`** → `reports/prophecy_*_recommended_chain_*`; dual 승격 게이트 `combined_all_passed=false`·`promotion_recommendation=defer`(렌즈 mean_test 적중 약 0.517, 임계 0.55 미만). |
 | 2026-Q1 (NL 코퍼스) | NotebookLM MKM·Ops·Fusion 등 15노트 교차 질의 → 본 파일 **NL 이관 압축** 반영 (레포 SSOT와 병용). |

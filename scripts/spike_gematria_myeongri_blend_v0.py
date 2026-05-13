@@ -11,11 +11,10 @@ from __future__ import annotations
 
 import argparse
 import json
-import math
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, Mapping
+from typing import Any, Dict
 
 _WS = Path(__file__).resolve().parent.parent
 if str(_WS) not in sys.path:
@@ -24,40 +23,13 @@ if str(_WS) not in sys.path:
 from scripts.core.gematria_engine import build_gematria_metadata
 from scripts.core.gematria_to_4d_bridge import build_gematria_4d_bridge
 from scripts.myeongri_complete_fusion import MyeongriCompleteFusion
-
-_AXES = ("S", "L", "K", "M")
-
-
-def _vec(d: Mapping[str, Any]) -> Dict[str, float]:
-    return {k: float(d[k]) for k in _AXES}
-
-
-def _renorm(v: Dict[str, float]) -> Dict[str, float]:
-    s = sum(v[k] for k in _AXES)
-    if s <= 0.0:
-        return {k: 0.25 for k in _AXES}
-    return {k: v[k] / s for k in _AXES}
-
-
-def _l2(a: Dict[str, float], b: Dict[str, float]) -> float:
-    return math.sqrt(sum((a[k] - b[k]) ** 2 for k in _AXES))
-
-
-def _cosine(a: Dict[str, float], b: Dict[str, float]) -> float:
-    dot = sum(a[k] * b[k] for k in _AXES)
-    na = math.sqrt(sum(a[k] ** 2 for k in _AXES))
-    nb = math.sqrt(sum(b[k] ** 2 for k in _AXES))
-    if na <= 0.0 or nb <= 0.0:
-        return 0.0
-    return float(dot / (na * nb))
-
-
-def _blend(
-    vanilla: Dict[str, float], myeongri: Dict[str, float], weight_myeongri: float
-) -> Dict[str, float]:
-    w = max(0.0, min(1.0, float(weight_myeongri)))
-    raw = {k: (1.0 - w) * vanilla[k] + w * myeongri[k] for k in _AXES}
-    return _renorm(raw)
+from tools.myeongni.gematria_myeongri_math_v1 import (
+    MATH_MODULE_ID,
+    MATH_MODULE_VERSION,
+    blend_convex_renorm,
+    coerce_4d,
+    geometric_metrics,
+)
 
 
 def run_spike(
@@ -77,7 +49,7 @@ def run_spike(
         reconstructed_text=hebrew_text,
     )
     bridge = build_gematria_4d_bridge(gematria_metadata=meta)
-    vanilla = _vec(bridge["vector_4d"])  # type: ignore[index]
+    vanilla = coerce_4d(bridge["vector_4d"])  # type: ignore[index]
     fusion = MyeongriCompleteFusion().calculate_complete_fusion(
         birth_year,
         birth_month,
@@ -86,8 +58,9 @@ def run_spike(
         is_solar=is_solar,
         is_male=is_male,
     )
-    myeongri = _vec(fusion["vector_4d"])
-    hybrid = _blend(vanilla, myeongri, blend_weight_myeongri)
+    myeongri = coerce_4d(fusion["vector_4d"])
+    hybrid = blend_convex_renorm(vanilla, myeongri, blend_weight_myeongri)
+    metrics = geometric_metrics(vanilla, myeongri, hybrid)
 
     return {
         "schema": "gematria_myeongri_spike_blend_v0",
@@ -96,8 +69,8 @@ def run_spike(
         "hypothesis_tier": "B",
         "boundary_ack": True,
         "label": (
-            "[HYPO][NON-DETERMINISTIC][NON-MEDICAL] Gematria–Myeongri 4D blend spike; "
-            "geometric metrics only."
+            "[HYPO][NON-MEDICAL] Gematria–Myeongri 4D blend spike; deterministic geometry "
+            f"({MATH_MODULE_ID} v{MATH_MODULE_VERSION}); not trading or doctrinal accuracy."
         ),
         "disclaimer": (
             "Geometric distances in 4D only; not accuracy, not trading, not doctrinal claim. "
@@ -120,13 +93,10 @@ def run_spike(
             "myeongri": myeongri,
             "hybrid": hybrid,
         },
-        "metrics": {
-            "l2_vanilla_myeongri": round(_l2(vanilla, myeongri), 8),
-            "l2_vanilla_hybrid": round(_l2(vanilla, hybrid), 8),
-            "cosine_vanilla_myeongri": round(_cosine(vanilla, myeongri), 8),
-            "cosine_vanilla_hybrid": round(_cosine(vanilla, hybrid), 8),
-        },
+        "metrics": metrics,
         "fact_lock": {
+            "gematria_myeongri_math_module": MATH_MODULE_ID,
+            "gematria_myeongri_math_version": MATH_MODULE_VERSION,
             "independent_lens_fusion_stub_has_consistency_rate": False,
             "consistency_rate_where_defined": (
                 "docs/final/MYEONGNI_16_STATE_EXPERIMENT_JSON_SCHEMA.json (16-state experiment ledger)"

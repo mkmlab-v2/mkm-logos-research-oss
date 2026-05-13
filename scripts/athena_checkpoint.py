@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Append/replace a one-line operational checkpoint in CENTRAL_AGENT_MEMORY_V1.md.
+"""Append a one-line operational checkpoint in CENTRAL_AGENT_MEMORY_V1.md.
 
-Updates ``last_updated_utc`` in the ## 메타 block and maintains a delimited one-liner
-between ``<!-- ATHENA_CHECKPOINT_V1_START -->`` and ``<!-- ATHENA_CHECKPOINT_V1_END -->``.
+Updates ``last_updated_utc`` in the ## 메타 block and **prepends** a new bullet
+between ``<!-- ATHENA_CHECKPOINT_V1_START -->`` and ``<!-- ATHENA_CHECKPOINT_V1_END -->``,
+keeping prior checkpoint lines up to ``--max-checkpoints`` (oldest dropped when over).
+
 On first run, inserts that section after the meta bullets (before the first ``---``).
 
 This is a **low-risk file edit**: run directly::
@@ -17,6 +19,7 @@ Usage:
   py scripts/athena_checkpoint.py "message"
   py scripts/athena_checkpoint.py --dry-run "message"
   py scripts/athena_checkpoint.py --path docs/final/CENTRAL_AGENT_MEMORY_V1.md "message"
+  py scripts/athena_checkpoint.py --replace-all "only this line remains"
 """
 
 from __future__ import annotations
@@ -35,6 +38,8 @@ MARK_END = "<!-- ATHENA_CHECKPOINT_V1_END -->"
 
 SECTION_HEADER = "## 운영 체크포인트 (자동, 1줄)"
 
+DEFAULT_MAX_CHECKPOINTS = 20
+
 
 def _utc_now_z() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -51,9 +56,33 @@ def _replace_last_updated(content: str, stamp: str) -> str:
     )
 
 
-def _checkpoint_body(stamp: str, message: str) -> str:
+def _checkpoint_body_single(stamp: str, message: str) -> str:
     line = f"- **{stamp}** — {message.strip()}"
     return f"{MARK_START}\n{line}\n{MARK_END}"
+
+
+def _checkpoint_bullets_from_inner(inner: str) -> list[str]:
+    bullets: list[str] = []
+    for line in inner.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("- **"):
+            bullets.append(line.rstrip())
+    return bullets
+
+
+def _merge_checkpoint_inner(
+    inner_between_markers: str,
+    stamp: str,
+    message: str,
+    max_lines: int,
+) -> str:
+    """Build inner body (no MARK_* lines): new line first, then previous bullets, capped."""
+    new_line = f"- **{stamp}** — {message.strip()}"
+    prev = _checkpoint_bullets_from_inner(inner_between_markers)
+    merged = [new_line] + prev
+    if len(merged) > max_lines:
+        merged = merged[:max_lines]
+    return "\n".join(merged)
 
 
 def _insert_section_if_missing(content: str, stamp: str, message: str) -> str:
@@ -71,7 +100,7 @@ def _insert_section_if_missing(content: str, stamp: str, message: str) -> str:
             + "\n"
             + SECTION_HEADER
             + "\n\n"
-            + _checkpoint_body(stamp, message)
+            + _checkpoint_body_single(stamp, message)
             + m.group(2)
         )
 
@@ -84,20 +113,32 @@ def _insert_section_if_missing(content: str, stamp: str, message: str) -> str:
     )
 
 
-def _replace_checkpoint(content: str, stamp: str, message: str) -> str:
-    inner = _checkpoint_body(stamp, message)
-    if MARK_START in content and MARK_END in content:
-        return re.sub(
-            re.escape(MARK_START) + r"[\s\S]*?" + re.escape(MARK_END),
-            inner,
-            content,
-            count=1,
-        )
-    return _insert_section_if_missing(content, stamp, message)
+def _replace_checkpoint(
+    content: str,
+    stamp: str,
+    message: str,
+    *,
+    replace_all: bool,
+    max_checkpoints: int,
+) -> str:
+    if MARK_START not in content or MARK_END not in content:
+        return _insert_section_if_missing(content, stamp, message)
+
+    m = re.search(re.escape(MARK_START) + r"([\s\S]*?)" + re.escape(MARK_END), content)
+    if not m:
+        return _insert_section_if_missing(content, stamp, message)
+
+    inner = m.group(1)
+    if replace_all:
+        inner_body = f"- **{stamp}** — {message.strip()}"
+    else:
+        inner_body = _merge_checkpoint_inner(inner, stamp, message, max_checkpoints)
+    replacement = f"{MARK_START}\n{inner_body}\n{MARK_END}"
+    return content[: m.start()] + replacement + content[m.end() :]
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(description="Update CENTRAL one-line checkpoint + last_updated_utc.")
+    p = argparse.ArgumentParser(description="Update CENTRAL checkpoint (prepend) + last_updated_utc.")
     p.add_argument(
         "message",
         nargs="?",
@@ -106,6 +147,18 @@ def main(argv: list[str] | None = None) -> int:
     )
     p.add_argument("--path", type=Path, default=DEFAULT_CENTRAL, help="Path to CENTRAL_AGENT_MEMORY_V1.md")
     p.add_argument("--dry-run", action="store_true", help="Print actions; do not write")
+    p.add_argument(
+        "--replace-all",
+        action="store_true",
+        help="Replace entire checkpoint block with a single line (legacy behavior).",
+    )
+    p.add_argument(
+        "--max-checkpoints",
+        type=int,
+        default=DEFAULT_MAX_CHECKPOINTS,
+        metavar="N",
+        help=f"Max bullet lines to keep after prepend (default {DEFAULT_MAX_CHECKPOINTS}).",
+    )
     args = p.parse_args(argv)
 
     msg = (args.message or "").strip()
@@ -118,10 +171,20 @@ def main(argv: list[str] | None = None) -> int:
         print(f"error: file not found: {path}", file=sys.stderr)
         return 1
 
+    if args.max_checkpoints < 1:
+        print("error: --max-checkpoints must be >= 1", file=sys.stderr)
+        return 1
+
     stamp = _utc_now_z()
     raw = path.read_text(encoding="utf-8")
     updated = _replace_last_updated(raw, stamp)
-    updated = _replace_checkpoint(updated, stamp, msg)
+    updated = _replace_checkpoint(
+        updated,
+        stamp,
+        msg,
+        replace_all=args.replace_all,
+        max_checkpoints=args.max_checkpoints,
+    )
 
     if args.dry_run:
         print(f"Would write: {path}")
