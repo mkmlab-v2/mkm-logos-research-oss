@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -14,11 +15,15 @@ AUDIT_PS1 = ROOT / "scripts" / "run_aramaic_mvp_now_with_audit.ps1"
 
 
 def _powershell() -> list[str]:
-    for exe in ("powershell.exe", "powershell", "pwsh.exe", "pwsh"):
+    if sys.platform == "win32":
+        order = ("powershell.exe", "powershell", "pwsh.exe", "pwsh")
+    else:
+        order = ("pwsh", "pwsh.exe", "powershell", "powershell.exe")
+    for exe in order:
         p = shutil.which(exe)
         if p:
             return [p, "-NoProfile", "-ExecutionPolicy", "Bypass"]
-    pytest.skip("PowerShell not found on PATH")
+    pytest.skip("PowerShell / pwsh not found on PATH")
 
 
 def _write_stub_chain(scripts_dir: Path) -> None:
