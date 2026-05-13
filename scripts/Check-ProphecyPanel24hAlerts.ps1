@@ -14,6 +14,9 @@
     1 = one or more alerts failed
 
   Webhook (failure only): PROPHECY_PANEL_24H_ALERT_WEBHOOK_URL, else OPS_ALARM_WEBHOOK_URL.
+  Default routing: POST only when ALERT_1 (hit rate) or ALERT_3 (structural shared gates) fails —
+  ALERT_2-only failure (strict_passed / auto_promote_ready) does not POST (reduces noise; exit code still 1).
+  Use -IncludeAlert2InWebhook to restore legacy "webhook on any alert failure".
   Use -SkipWebhook to suppress POST (e.g. CI without secrets).
 #>
 param(
@@ -21,7 +24,8 @@ param(
     [double]$MinHitRate = 0.60,
     [string]$OutJson = "",
     [switch]$AppendLog,
-    [switch]$SkipWebhook
+    [switch]$SkipWebhook,
+    [switch]$IncludeAlert2InWebhook
 )
 
 $ErrorActionPreference = "Stop"
@@ -69,6 +73,10 @@ $result = [ordered]@{
         hit_rate_path = $hitPath
         panel_gate_path = $panelPath
         min_hit_rate = $MinHitRate
+        webhook_routing = [ordered]@{
+            mode = $(if ($IncludeAlert2InWebhook) { "all_alerts" } else { "performance_and_structural_only" })
+            posts_when = $(if ($IncludeAlert2InWebhook) { "any_alert_failed" } else { "alert1_or_alert3_failed" })
+        }
     }
     alerts = [ordered]@{
         ALERT_1_PERFORMANCE = [ordered]@{
@@ -120,25 +128,38 @@ if ($allPass) {
 }
 
 if (-not $SkipWebhook) {
+    $webhookPost = $false
+    if ($IncludeAlert2InWebhook) {
+        $webhookPost = $true
+    }
+    else {
+        $webhookPost = (-not $a1Pass) -or (-not $a3Pass)
+    }
+
     $webhook = $env:PROPHECY_PANEL_24H_ALERT_WEBHOOK_URL
     if ([string]::IsNullOrWhiteSpace($webhook)) {
         $webhook = $env:OPS_ALARM_WEBHOOK_URL
     }
     if (-not [string]::IsNullOrWhiteSpace($webhook)) {
-        $payload = [ordered]@{
-            event = "prophecy_panel_24h_alert_check_failed"
-            ts_utc = (Get-Date).ToUniversalTime().ToString("o")
-            workspace = $WorkspaceRoot
-            overall_passed = $false
-            check = ($result | ConvertTo-Json -Depth 10 | ConvertFrom-Json)
+        if ($webhookPost) {
+            $payload = [ordered]@{
+                event = "prophecy_panel_24h_alert_check_failed"
+                ts_utc = (Get-Date).ToUniversalTime().ToString("o")
+                workspace = $WorkspaceRoot
+                overall_passed = $false
+                check = ($result | ConvertTo-Json -Depth 10 | ConvertFrom-Json)
+            }
+            $body = $payload | ConvertTo-Json -Depth 12 -Compress
+            try {
+                $null = Invoke-RestMethod -Uri $webhook -Method Post -Body $body -ContentType "application/json; charset=utf-8" -TimeoutSec 30
+                Write-Host "Webhook alert sent: prophecy_panel_24h_alert_check_failed" -ForegroundColor Yellow
+            }
+            catch {
+                Write-Warning "Webhook alert failed: $($_.Exception.Message)"
+            }
         }
-        $body = $payload | ConvertTo-Json -Depth 12 -Compress
-        try {
-            $null = Invoke-RestMethod -Uri $webhook -Method Post -Body $body -ContentType "application/json; charset=utf-8" -TimeoutSec 30
-            Write-Host "Webhook alert sent: prophecy_panel_24h_alert_check_failed" -ForegroundColor Yellow
-        }
-        catch {
-            Write-Warning "Webhook alert failed: $($_.Exception.Message)"
+        else {
+            Write-Host "Webhook alert skipped: only ALERT_2 failed (strict_passed / auto_promote_ready). Exit code remains 1. Use -IncludeAlert2InWebhook to POST." -ForegroundColor DarkCyan
         }
     }
     else {
