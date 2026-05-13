@@ -125,13 +125,19 @@ def test_build_premium_best_effort_uses_fixture_json(tmp_path: Path) -> None:
     assert "Disk engine snapshot" in text
     assert "Numeric alignment" in text
     assert "v0.5 best-effort disk" in text
+    assert "offline keyword bundle" in text.lower()
 
     schema = json.loads(SCHEMA.read_text(encoding="utf-8"))
     instance = json.loads((out / "premium_btrack_multilens_report_v1.json").read_text(encoding="utf-8"))
     jsonschema.validate(instance=instance, schema=schema)
 
     caveats = instance.get("coordinator", {}).get("caveats", [])
-    assert caveats and "Fact-Lock trace (best-effort disk ingest)" in caveats[0]
+    assert any("Fact-Lock trace (best-effort disk ingest)" in str(c) for c in caveats[:5])
+    assert any("RAG (offline keyword bundle)" in str(c) for c in caveats[:5])
+    assert any(
+        isinstance(l, dict) and l.get("rag", {}).get("corpus_id") == "premium_multilens_rag_disk_bundle_v1"
+        for l in instance.get("lenses", [])
+    )
     owners = {s.get("owner"): s for s in instance.get("pipeline", []) if isinstance(s, dict)}
     assert "lens_myeongni_premium_slice_v0.md" in str(owners.get("myeongni", {}).get("outputs"))
     assert "premium_multilens_synthesis_v0.md" in str(owners.get("coordinator", {}).get("outputs"))

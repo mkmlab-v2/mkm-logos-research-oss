@@ -1,0 +1,49 @@
+{
+  "schema": "premium_multilens_rag_corpus_bundle_v1",
+  "version": "1.0.0",
+  "note": "B-track offline bundle for premium multilens report v0.6; keyword retrieval only.",
+  "entries": {
+    "myeongni": [
+      {
+        "source_id": "corpus:myeongni_stub_reference_v1",
+        "uri": "fixture://premium_multilens_rag_corpus_bundle_v1/myeongni/01",
+        "license_note": "Synthetic excerpt for CI/offline retrieval smoke.",
+        "text": "명리 독립 렌즈 B-track: state_id와 ten_god_balance, jijangan_pressure 등 수치 스텁이 rationale에 요약될 수 있다. fixture 키워드로 매칭 검증."
+      },
+      {
+        "source_id": "corpus:myeongni_stub_reference_v2",
+        "uri": "fixture://premium_multilens_rag_corpus_bundle_v1/myeongni/02",
+        "license_note": "Synthetic excerpt for CI/offline retrieval smoke.",
+        "text": "만세력 결정론 엔진 산출은 입력 계약(birth_instant_utc, IANA TZ)에 따르며 채팅 단문과 자동 합선되지 않는다."
+      }
+    ],
+    "sasang": [
+      {
+        "source_id": "corpus:sasang_stub_reference_v1",
+        "uri": "fixture://premium_multilens_rag_corpus_bundle_v1/sasang/01",
+        "license_note": "Synthetic excerpt for CI/offline retrieval smoke.",
+        "text": "사상 렌즈 regime_hypothesis와 mapping_target은 machine_readables 프록시에서 온 B-track 관측이다. fixture 키워드."
+      },
+      {
+        "source_id": "corpus:sasang_stub_reference_v2",
+        "uri": "fixture://premium_multilens_rag_corpus_bundle_v1/sasang/02",
+        "license_note": "Synthetic excerpt for CI/offline retrieval smoke.",
+        "text": "체질·단기 강도는 연구 레일이며 실매매 트리거와 격리된다."
+      }
+    ],
+    "logos": [
+      {
+        "source_id": "corpus:logos_stub_reference_v1",
+        "uri": "fixture://premium_multilens_rag_corpus_bundle_v1/logos/01",
+        "license_note": "Synthetic excerpt for CI/offline retrieval smoke.",
+        "text": "성경 Logos 렌즈는 NON_GATING 해설용이며 evidence_refs와 hash-tagged 스니펫 정책을 따른다. fixture 키워드."
+      },
+      {
+        "source_id": "corpus:logos_stub_reference_v2",
+        "uri": "fixture://premium_multilens_rag_corpus_bundle_v1/logos/02",
+        "license_note": "Synthetic excerpt for CI/offline retrieval smoke.",
+        "text": "verse_id 배치 샘플과 narrative_snippet_guarded는 배치 JSON에서만 기계적으로 유도된다."
+      }
+    ]
+  }
+}

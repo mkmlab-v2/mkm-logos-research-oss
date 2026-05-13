@@ -3,7 +3,8 @@
 Premium B-track multi-lens report packager (v0 / v0.5).
 
 Sync-only: stub lens workers from schema example; optional `--mode best-effort`
-ingests existing independent-lens JSON artifacts from disk (no RAG API yet).
+ingests independent-lens JSON from disk; optional tracked **offline RAG bundle**
+(keyword hits over `tests/fixtures/premium_multilens_rag_corpus_bundle_v1.json`, no API).
 
 Structural coordinator join, disk MD + JSON matching premium_btrack_multilens_report_v1 schema.
 """
@@ -14,6 +15,7 @@ import copy
 import hashlib
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -49,6 +51,149 @@ def _sha256_bytes(data: bytes) -> str:
 
 def _load_example(example_path: Path) -> dict[str, Any]:
     return json.loads(example_path.read_text(encoding="utf-8"))
+
+
+def _load_rag_bundle(path: Path) -> dict[str, Any] | None:
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def _rag_query_chunks_from_blob(lens_id: str, blob: dict[str, Any]) -> str:
+    chunks: list[str] = []
+    note = blob.get("note")
+    if note:
+        chunks.append(str(note))
+    sc = blob.get("scores")
+    if isinstance(sc, dict):
+        chunks.append(json.dumps(sc, ensure_ascii=False))
+    mso = blob.get("myeongri_stream_outputs")
+    if isinstance(mso, dict):
+        chunks.append(str(mso.get("rationale", "")))
+    sso = blob.get("sasang_stream_outputs")
+    if isinstance(sso, dict):
+        chunks.append(str(sso.get("rationale", "")))
+    lso = blob.get("logos_stream_outputs")
+    if isinstance(lso, dict):
+        chunks.append(str(lso.get("rationale", "")))
+    nsg = blob.get("narrative_snippet_guarded")
+    if nsg:
+        chunks.append(str(nsg))
+    q = " ".join(chunks).strip()
+    return q if q else f"{lens_id} B-track offline RAG query"
+
+
+def _rag_query_tokens(q: str) -> list[str]:
+    tokens = re.findall(r"[\w가-힣]{3,}", q.lower())
+    seen: set[str] = set()
+    uniq: list[str] = []
+    for t in tokens:
+        if t in seen:
+            continue
+        seen.add(t)
+        uniq.append(t)
+        if len(uniq) >= 24:
+            break
+    return uniq
+
+
+def _score_doc(tokens: list[str], text: str) -> int:
+    tl = text.lower()
+    return sum(1 for t in tokens if t in tl)
+
+
+def _build_rag_from_bundle_entries(
+    *,
+    lens_id: str,
+    disk_blob: dict[str, Any],
+    entries: list[dict[str, Any]],
+    max_hits: int = 5,
+) -> dict[str, Any] | None:
+    q_line = _rag_query_chunks_from_blob(lens_id, disk_blob)[:4000]
+    tokens = _rag_query_tokens(q_line)
+    if not entries:
+        return None
+    scored: list[tuple[int, dict[str, Any]]] = []
+    for doc in entries:
+        if not isinstance(doc, dict):
+            continue
+        text = str(doc.get("text", ""))
+        sid = str(doc.get("source_id", "unknown"))
+        sc = _score_doc(tokens, text)
+        if sc > 0:
+            scored.append((sc, doc))
+    scored.sort(key=lambda x: (-x[0], x[1].get("source_id", "")))
+    if not scored:
+        scored = [(0, e) for e in entries if isinstance(e, dict)][:max_hits]
+    if not scored:
+        return None
+    hits: list[dict[str, Any]] = []
+    for i, (_sc, doc) in enumerate(scored[:max_hits]):
+        band = "A" if i == 0 else ("B" if i < 3 else "C")
+        text = str(doc.get("text", ""))
+        hit: dict[str, Any] = {
+            "source_id": str(doc.get("source_id", "unknown"))[:512],
+            "snippet": (text[:7800] if text else "(empty)")[:8000],
+            "confidence_band": band,
+        }
+        uri = doc.get("uri")
+        if isinstance(uri, str) and uri.strip():
+            hit["uri"] = uri[:2048]
+        lic = doc.get("license_note")
+        if isinstance(lic, str) and lic.strip():
+            hit["license_note"] = lic[:2000]
+        hits.append(hit)
+    return {
+        "corpus_id": "premium_multilens_rag_disk_bundle_v1",
+        "retrieval_runs": [
+            {
+                "run_id": f"disk_kw_{lens_id}_v1",
+                "query": q_line,
+                "hits": hits,
+            }
+        ],
+    }
+
+
+def enrich_lenses_rag_from_disk_bundle(
+    *,
+    mode: Mode,
+    root: Path,
+    lenses: list[dict[str, Any]],
+    disk_blobs: dict[str, dict[str, Any] | None],
+    bundle_path: Path | None,
+) -> str | None:
+    """Replace lens['rag'] with offline keyword retrieval when bundle loads. Returns relative bundle path or None."""
+    if mode != "best-effort" or bundle_path is None or not bundle_path.is_file():
+        return None
+    bundle = _load_rag_bundle(bundle_path)
+    if not bundle:
+        return None
+    ent_root = bundle.get("entries")
+    if not isinstance(ent_root, dict):
+        return None
+    used = False
+    for lens in lenses:
+        if not isinstance(lens, dict):
+            continue
+        lid = str(lens.get("lens_id", ""))
+        blob = (disk_blobs or {}).get(lid)
+        if not isinstance(blob, dict):
+            continue
+        raw = ent_root.get(lid)
+        if not isinstance(raw, list) or not raw:
+            continue
+        rag = _build_rag_from_bundle_entries(lens_id=lid, disk_blob=blob, entries=raw, max_hits=5)
+        if rag and isinstance(rag.get("retrieval_runs"), list) and rag["retrieval_runs"]:
+            lens["rag"] = rag
+            used = True
+    if not used:
+        return None
+    return _posix_under_root(bundle_path, root)
 
 
 def default_independent_lens_paths(root: Path) -> dict[str, Path]:
@@ -216,9 +361,10 @@ def render_lens_slice_md(lens: dict[str, Any], disk_blob: dict[str, Any] | None)
         for p in eng:
             lines.append(f"  - `{p}`")
     rag = lens.get("rag")
+    corpus_id = ""
     if isinstance(rag, dict):
-        cid = rag.get("corpus_id", "")
-        lines.append(f"- rag.corpus_id: `{cid}`")
+        corpus_id = str(rag.get("corpus_id", "") or "")
+        lines.append(f"- rag.corpus_id: `{corpus_id}`")
         runs = rag.get("retrieval_runs")
         if isinstance(runs, list):
             for run in runs:
@@ -241,11 +387,15 @@ def render_lens_slice_md(lens: dict[str, Any], disk_blob: dict[str, Any] | None)
         lines.append("### Disk engine snapshot (best-effort, independent-lens JSON)")
         lines.extend(disk_snapshot_lines(lid, disk_blob))
     lines.append("")
-    lines.append(
-        "_RAG rows above are still schema-example stubs until per-lens RAG workers are wired._"
-        if disk_blob is None
-        else "_RAG rows above remain example-backed; disk block is live artifact JSON (B-track, not RAG)._"
-    )
+    if corpus_id == "premium_multilens_rag_disk_bundle_v1":
+        lines.append(
+            "_RAG hits above: offline keyword bundle over tracked fixtures / optional `--rag-bundle`; "
+            "not live corpus or embedding search._"
+        )
+    else:
+        lines.append(
+            "_RAG rows above: schema-example stubs unless `--mode best-effort` with a valid `--rag-bundle`._"
+        )
     lines.append("")
     return "\n".join(lines)
 
@@ -382,6 +532,7 @@ def _insert_best_effort_caveat(
     coord: dict[str, Any],
     lenses: list[dict[str, Any]],
     disk_blobs: dict[str, dict[str, Any] | None],
+    rag_bundle_rel: str | None = None,
 ) -> None:
     if mode != "best-effort":
         return
@@ -390,7 +541,7 @@ def _insert_best_effort_caveat(
         if not isinstance(lens, dict):
             continue
         lid = str(lens.get("lens_id", ""))
-        if disk_blobs.get(lid) is None:
+        if (disk_blobs or {}).get(lid) is None:
             trace_parts.append(f"{lid}=MISSING")
             continue
         paths = lens.get("engine_artifact_paths")
@@ -406,6 +557,14 @@ def _insert_best_effort_caveat(
         caveats = []
         coord["caveats"] = caveats
     caveats.insert(0, line)
+    if rag_bundle_rel:
+        rag_line = (
+            f"RAG (offline keyword bundle): `{rag_bundle_rel}` — "
+            "not neural/API RAG; ranked by token overlap with disk lens blob text."
+        )
+        if len(rag_line) > 1950:
+            rag_line = rag_line[:1947] + "..."
+        caveats.insert(1, rag_line)
 
 
 def _finalize_pipeline_outputs(
@@ -463,6 +622,7 @@ def build_report(
     validate_schema: bool,
     mode: Mode = "stub",
     artifact_overrides: dict[str, Path] | None = None,
+    rag_bundle_path: Path | None = None,
 ) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     main_md_path = out_dir / "premium_btrack_multilens_report_v1.md"
@@ -474,6 +634,21 @@ def build_report(
 
     overrides = artifact_overrides or {}
     disk_blobs = attach_disk_engine_paths(root=root, lenses=lenses, mode=mode, overrides=overrides)
+
+    rag_bundle_rel = enrich_lenses_rag_from_disk_bundle(
+        mode=mode,
+        root=root,
+        lenses=lenses,
+        disk_blobs=disk_blobs,
+        bundle_path=rag_bundle_path,
+    )
+    _insert_best_effort_caveat(
+        mode=mode,
+        coord=coord,
+        lenses=lenses,
+        disk_blobs=disk_blobs,
+        rag_bundle_rel=rag_bundle_rel,
+    )
 
     lens_ids = [str(x.get("lens_id", "")) for x in lenses if isinstance(x, dict)]
 
@@ -493,8 +668,6 @@ def build_report(
             sec0 = lens["sections"][0]
             if isinstance(sec0, dict):
                 sec0["markdown_path"] = _posix_under_root(p, root)
-
-    _insert_best_effort_caveat(mode=mode, coord=coord, lenses=lenses, disk_blobs=disk_blobs)
 
     synthesis_path = out_dir / "premium_multilens_synthesis_v0.md"
     synthesis_text = render_synthesis_md(coord, lens_ids, disk_blobs if mode == "best-effort" else None)
@@ -557,6 +730,12 @@ def main() -> int:
     ap.add_argument("--myeongni-json", type=Path, default=None, help="Override myeongni independent-lens JSON path")
     ap.add_argument("--sasang-json", type=Path, default=None, help="Override sasang independent-lens JSON path")
     ap.add_argument("--logos-json", type=Path, default=None, help="Override logos independent-lens JSON path")
+    ap.add_argument(
+        "--rag-bundle",
+        type=Path,
+        default=None,
+        help="Offline keyword RAG corpus bundle JSON (default: tests/fixtures/premium_multilens_rag_corpus_bundle_v1.json if present).",
+    )
     ap.add_argument("--no-validate", action="store_true", help="Skip jsonschema validation when available")
     args = ap.parse_args()
 
@@ -587,6 +766,19 @@ def main() -> int:
 
     mode: Mode = "best-effort" if args.mode == "best-effort" else "stub"
 
+    rag_bundle: Path | None = None
+    if args.rag_bundle is not None:
+        rb = Path(args.rag_bundle)
+        if not rb.is_absolute():
+            rb = (root / rb).resolve()
+        rag_bundle = rb if rb.is_file() else None
+        if args.rag_bundle is not None and rag_bundle is None:
+            print(f"WARN: --rag-bundle not found, skipping offline RAG: {rb}", file=sys.stderr)
+    else:
+        cand = root / "tests" / "fixtures" / "premium_multilens_rag_corpus_bundle_v1.json"
+        if cand.is_file():
+            rag_bundle = cand
+
     return build_report(
         root=root,
         out_dir=out_dir,
@@ -594,6 +786,7 @@ def main() -> int:
         validate_schema=not args.no_validate,
         mode=mode,
         artifact_overrides=overrides or None,
+        rag_bundle_path=rag_bundle,
     )
 
 
