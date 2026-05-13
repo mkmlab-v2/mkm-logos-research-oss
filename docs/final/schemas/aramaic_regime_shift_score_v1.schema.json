@@ -1,0 +1,80 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/aramaic_regime_shift_score_v1.schema.json",
+  "title": "Aramaic regime shift score v1 (B-track single JSON)",
+  "description": "Single JSON document written by scripts/score_aramaic_regime_shift_v1.py.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "promotion_required",
+    "source_track",
+    "edge_count",
+    "conflict_ratio",
+    "insight_signal",
+    "insight_signal_applied",
+    "insight_delta_applied",
+    "insight_cap_bucket",
+    "shift_score",
+    "signal_label"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "aramaic_regime_shift_score_v1"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "research_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "promotion_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "source_track": {
+      "type": "string",
+      "const": "B"
+    },
+    "edge_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "conflict_ratio": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "insight_signal": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "insight_signal_applied": {
+      "type": "boolean"
+    },
+    "insight_delta_applied": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "insight_cap_bucket": {
+      "type": "string",
+      "enum": ["high_vol", "mid_vol", "low_vol"]
+    },
+    "shift_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "signal_label": {
+      "type": "string",
+      "enum": ["alert", "watch", "stable"]
+    }
+  }
+}

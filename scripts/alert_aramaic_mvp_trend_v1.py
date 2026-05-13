@@ -82,6 +82,31 @@ def _streak_from_newest(levels_newest_first: list[int]) -> tuple[int, int]:
     return streak, max_lv
 
 
+def evaluate_audit_tail_for_thresholds(
+    tail: list[dict[str, Any]],
+    *,
+    alert_thr: float,
+    critical_thr: float,
+    streak_min: int,
+) -> dict[str, Any]:
+    """Same streak/severity rules as CLI; `tail` is chronological (oldest first)."""
+    if critical_thr <= alert_thr:
+        raise ValueError("conflict-critical must be > conflict-alert")
+    sm = max(1, int(streak_min))
+    levels = [_row_level(r, alert_thr, critical_thr) for r in reversed(tail)]
+    streak_len, max_in_streak = _streak_from_newest(levels)
+    severity = "ok"
+    if streak_len >= sm and max_in_streak >= 2:
+        severity = "critical"
+    elif streak_len >= sm:
+        severity = "alert"
+    return {
+        "severity": severity,
+        "streak_len": streak_len,
+        "max_level_in_streak": max_in_streak,
+    }
+
+
 def _post_webhook(url: str, payload: dict[str, Any]) -> tuple[bool, str]:
     body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
     req = urllib.request.Request(url, data=body, headers={"Content-Type": "application/json"}, method="POST")
@@ -150,17 +175,15 @@ def main() -> int:
 
     all_rows = _load_audit_rows(audit_path)
     tail = all_rows[-window_n:] if all_rows else []
-    # newest first for streak walk
-    levels: list[int] = []
-    for r in reversed(tail):
-        levels.append(_row_level(r, alert_thr, critical_thr))
-
-    streak_len, max_in_streak = _streak_from_newest(levels)
-    severity = "ok"
-    if streak_len >= streak_min and max_in_streak >= 2:
-        severity = "critical"
-    elif streak_len >= streak_min:
-        severity = "alert"
+    ev = evaluate_audit_tail_for_thresholds(
+        tail,
+        alert_thr=alert_thr,
+        critical_thr=critical_thr,
+        streak_min=streak_min,
+    )
+    streak_len = int(ev["streak_len"])
+    max_in_streak = int(ev["max_level_in_streak"])
+    severity = str(ev["severity"])
 
     trend_meta = _load_json(trend_path)
     trend_ref = {
