@@ -118,6 +118,8 @@ storage/MKM_ARCHIVE_FROM_F/
 .venv_lora/
 .venv_lora_local128/
 unsloth_compiled_cache/
+# Deterministic LoRA Pack0b timestamped run dirs under workspace storage (regenerable; not SSOT)
+storage/adapters/myeongri_deterministic_lora_v0/run_*/
 
 # Python bytecode (VPS pull 시 .pyc 커밋 방지)
 __pycache__/
