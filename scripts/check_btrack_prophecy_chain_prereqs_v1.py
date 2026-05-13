@@ -108,6 +108,7 @@ def main() -> int:
         "scripts/run_btrack_prophecy_contemplation_v1.py",
         "scripts/run_prophecy_restoration_spike.py",
         "scripts/eval_btrack_prophecy_post_mortem_v1.py",
+        "scripts/run_prophecy_btrack_recommended_eval_chain_v1.py",
         "scripts/Invoke-MaxProphecyBurst_v1.ps1",
     ]
 
@@ -139,6 +140,16 @@ def main() -> int:
     for name, _ in artifacts:
         checks.append(_check_path("artifact", art_dir / name, False))
 
+    reports_dir = root / "reports"
+    reports_optional = [
+        "prophecy_btrack_recommended_eval_chain_summary_v1_latest.json",
+        "prophecy_promotion_gates_recommended_chain_v1_latest.json",
+        "prophecy_btrack_recommended_nbps_sweep_v1_latest.json",
+        "btrack_prophecy_score_recommended_eval_chain_v1_latest.json",
+    ]
+    for name in reports_optional:
+        checks.append(_check_path("artifact_reports", reports_dir / name, False))
+
     checks.append(
         {
             "kind": "artifact_monthly",
@@ -160,6 +171,10 @@ def main() -> int:
         "btc_csv_ok": btc.is_file(),
         "artifacts_present": sum(1 for c in checks if c["kind"] == "artifact" and c["ok"]),
         "artifacts_total": sum(1 for c in checks if c["kind"] == "artifact"),
+        "recommended_chain_reports_present": sum(
+            1 for c in checks if c["kind"] == "artifact_reports" and c["ok"]
+        ),
+        "recommended_chain_reports_total": sum(1 for c in checks if c["kind"] == "artifact_reports"),
     }
 
     payload: dict[str, Any] = {

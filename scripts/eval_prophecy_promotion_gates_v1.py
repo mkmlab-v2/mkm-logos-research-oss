@@ -23,6 +23,11 @@ Shared checks on ``btrack_prophecy_score_latest.json``:
 If the instrument walk-forward file is missing, the instrument track is **not** satisfied
 (combined fails) so operators must run ``run_prophecy_instrument_combo_walkforward_v1.py``.
 
+In ``dual`` mode, ``soft_passed`` requires **both** walk-forward aggregates to satisfy the
+``--soft-*`` thresholds plus shared gates (when not skipped). When strict fails but that dual
+soft band passes, ``promotion_recommendation`` is ``soft_band_review`` (calibration / human
+review; not auto-promote).
+
 Use ``--fail-on-gate`` in CI to exit 1 when ``combined_all_passed`` is false.
 """
 
@@ -381,7 +386,25 @@ def main() -> int:
                 min_worst_fold=float(soft_thresholds["min_min_test_accuracy_across_folds"]),
             )
         )
-    soft_passed = bool(soft_lens_passed and shared_ok)
+    soft_inst_passed = False
+    if args.promotion_track_mode == "dual" and inst_ok:
+        soft_inst_passed = _all_true(
+            _walkforward_gates(
+                inst_wf,
+                track_id="instrument_soft_tmp",
+                min_mean=float(soft_thresholds["min_mean_test_accuracy"]),
+                max_stdev=float(soft_thresholds["max_stdev_test_accuracy"]),
+                min_beat_frac=float(soft_thresholds["min_fraction_test_beats_always_bull"]),
+                min_worst_fold=float(soft_thresholds["min_min_test_accuracy_across_folds"]),
+            )
+        )
+    elif args.promotion_track_mode != "dual":
+        soft_inst_passed = True
+
+    if args.promotion_track_mode == "dual":
+        soft_passed = bool(soft_lens_passed and soft_inst_passed and shared_ok)
+    else:
+        soft_passed = bool(soft_lens_passed and shared_ok)
 
     h = _load_history(args.streak_history_json)
     runs = list(h["runs"])
@@ -401,7 +424,14 @@ def main() -> int:
     streak = _strict_streak(runs)
     auto_promote_ready = strict_passed and streak >= max(1, int(args.strict_streak_required))
 
-    recommendation = "auto_promote_ready" if auto_promote_ready else ("manual_review_candidate" if strict_passed else "defer")
+    if auto_promote_ready:
+        recommendation = "auto_promote_ready"
+    elif strict_passed:
+        recommendation = "manual_review_candidate"
+    elif soft_passed:
+        recommendation = "soft_band_review"
+    else:
+        recommendation = "defer"
 
     out: dict[str, Any] = {
         "schema": SCHEMA,
@@ -448,6 +478,8 @@ def main() -> int:
         "all_gates_passed": combined_all_passed,
         "strict_passed": strict_passed,
         "soft_passed": soft_passed,
+        "lens_soft_passed": soft_lens_passed,
+        "instrument_soft_passed": soft_inst_passed if args.promotion_track_mode == "dual" else None,
         "strict_pass_streak": streak,
         "auto_promote_ready": auto_promote_ready,
         "promotion_recommendation": recommendation,

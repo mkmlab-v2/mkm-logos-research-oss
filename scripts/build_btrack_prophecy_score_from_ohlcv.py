@@ -7,8 +7,8 @@ BTC: pass --btc-csv when hypothesis instrument is btc or multi (optional file).
 
 When ``--recent-trading-days N`` is greater than 1, the **same** hypothesis ``prediction.direction``
 is applied to each of the last N eval dates (frozen prediction). For **per-day** predictions
-mapped 1:1 to OHLCV without that freeze, use ``eval_prophecy_walk_forward_v1.py`` with a JSONL of
-``eval_date`` + direction rows instead.
+mapped 1:1 to OHLCV without that freeze, use ``--per-date-direction-json`` or the walk-forward
+chain ``run_prophecy_btrack_recommended_eval_chain_v1.py`` / ``run_prophecy_per_date_combo_walkforward_v1.py``.
 
 Does not fetch live APIs. B-Track / [HYPO] only — not a live trading trigger.
 """
@@ -404,6 +404,28 @@ def _last_n_trading_dates(rows: list[dict[str, Any]], n: int) -> list[str]:
     if n < 1:
         return []
     past = _past_sorted_unique_dates(rows)
+    if not past:
+        return []
+    return past[-n:] if len(past) >= n else past
+
+
+def _past_sorted_intersection_dates(
+    kospi_rows: list[dict[str, Any]], btc_rows: list[dict[str, Any]]
+) -> list[str]:
+    """Past calendar dates present in both OHLCV series (sorted)."""
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    dk = {str(r.get("date", "")) for r in kospi_rows if str(r.get("date", "")) < today}
+    db = {str(r.get("date", "")) for r in btc_rows if str(r.get("date", "")) < today}
+    return sorted(dk & db)
+
+
+def _last_n_intersection_trading_dates(
+    kospi_rows: list[dict[str, Any]], btc_rows: list[dict[str, Any]], n: int
+) -> list[str]:
+    """Last N past dates where both KOSPI and BTC have a bar (dual-leg panel safe)."""
+    if n < 1 or not btc_rows:
+        return []
+    past = _past_sorted_intersection_dates(kospi_rows, btc_rows)
     if not past:
         return []
     return past[-n:] if len(past) >= n else past
@@ -1071,12 +1093,24 @@ def main() -> int:
     year_rebound_overrides = _parse_year_rebound_overrides(str(args.year_rebound_overrides))
     year_default_overrides = _parse_year_default_overrides(str(args.year_default_overrides))
 
+    batch_dual_calendar_intersection = False
     n_batch = max(1, int(args.recent_trading_days))
     if n_batch > 1:
-        dates_to_use = _last_n_trading_dates(kospi_rows, n_batch)
-        if not dates_to_use:
-            print("Could not resolve trading dates for --recent-trading-days (empty CSV or no past dates).", file=sys.stderr)
-            return 2
+        if args.force_dual_leg_panel and btc_rows:
+            batch_dual_calendar_intersection = True
+            dates_to_use = _last_n_intersection_trading_dates(kospi_rows, btc_rows, n_batch)
+            if not dates_to_use:
+                print(
+                    "Could not resolve trading dates for --recent-trading-days with "
+                    "--force-dual-leg-panel (no past dates overlap KOSPI and BTC).",
+                    file=sys.stderr,
+                )
+                return 2
+        else:
+            dates_to_use = _last_n_trading_dates(kospi_rows, n_batch)
+            if not dates_to_use:
+                print("Could not resolve trading dates for --recent-trading-days (empty CSV or no past dates).", file=sys.stderr)
+                return 2
         rows_out: list[dict[str, Any]] = []
         wmeta: dict[str, Any] = {"warnings": []}
         for ed in dates_to_use:
@@ -1285,6 +1319,10 @@ def main() -> int:
         "meta": wmeta,
         "rows": rows_out,
     }
+    if n_batch > 1:
+        payload["inputs"]["batch_calendar_mode"] = (
+            "kospi_btc_intersection" if batch_dual_calendar_intersection else "kospi_only"
+        )
 
     # Top-level aliases for single-row eval_prophecy_hit_rate convenience
     if len(rows_out) == 1:

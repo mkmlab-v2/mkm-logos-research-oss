@@ -17,6 +17,7 @@ REPO = Path(__file__).resolve().parents[1]
 ART = REPO / "docs" / "final" / "artifacts"
 DEFAULT_PROPHECY = ART / "kospi_biblical_prophecy_output_v2_latest.json"
 DEFAULT_STATUS = ART / "kospi_biblical_single_lane_stability_status_latest.json"
+DEFAULT_EXPLAINABLE = ART / "general_prophecy_explainable_latest.json"
 DEFAULT_OUT = REPO / "projects" / "bitcoin-trading" / "memory" / "v2" / "ops" / "biblical_single_lane_trading_hook_v1_latest.json"
 
 
@@ -34,6 +35,39 @@ def _artifact_rel_path(p: Path) -> str:
         return p.resolve().relative_to(REPO.resolve()).as_posix()
     except ValueError:
         return p.as_posix()
+
+
+def merge_general_prophecy_explainable_hook(
+    hook: dict[str, Any],
+    explainable_json: Path,
+    *,
+    repo_root: Path | None = None,
+) -> dict[str, Any]:
+    """
+    Inject reference_only_extensions.general_prophecy_explainable for crypto_nitro_live_trader
+    (_compute_general_explainable_soft_influence). Hard gates unchanged; caps only when enabled.
+    """
+    root = repo_root or REPO
+    explainable_json = explainable_json.resolve()
+    if not explainable_json.is_file():
+        return hook
+    try:
+        rel = explainable_json.relative_to(root.resolve()).as_posix()
+    except ValueError:
+        rel = explainable_json.as_posix()
+
+    sa = dict(hook.get("source_artifacts") or {})
+    sa["general_prophecy_explainable"] = rel
+    hook["source_artifacts"] = sa
+    ref_ext = dict(hook.get("reference_only_extensions") or {})
+    ref_ext["general_prophecy_explainable"] = {
+        "enabled": True,
+        "reference_only": True,
+        "must_not_trigger_orders": True,
+        "source_artifact": rel,
+    }
+    hook["reference_only_extensions"] = ref_ext
+    return hook
 
 
 def build_hook(
@@ -90,6 +124,20 @@ def main() -> int:
         default=os.getenv("BIBLICAL_LANE_INSTRUMENT", "BTCUSDT"),
         help="Trading symbol label for the hook (default BTCUSDT or env BIBLICAL_LANE_INSTRUMENT)",
     )
+    ap.add_argument(
+        "--explainable-json",
+        type=Path,
+        default=None,
+        help=(
+            "General prophecy explainable artifact (default: docs/final/artifacts/general_prophecy_explainable_latest.json "
+            "when present). Ignored with --no-explainable-extension."
+        ),
+    )
+    ap.add_argument(
+        "--no-explainable-extension",
+        action="store_true",
+        help="Do not inject reference_only_extensions.general_prophecy_explainable.",
+    )
     args = ap.parse_args()
 
     if not args.prophecy_json.is_file():
@@ -103,9 +151,31 @@ def main() -> int:
     status = _load(args.status_json)
     hook = build_hook(prophecy, status, str(args.instrument).strip() or "BTCUSDT")
 
+    explainable_merge_info: dict[str, Any] = {"applied": False}
+    if not args.no_explainable_extension:
+        cand = args.explainable_json if args.explainable_json is not None else DEFAULT_EXPLAINABLE
+        cand = cand.resolve()
+        explicit = args.explainable_json is not None
+        if explicit and not cand.is_file():
+            print(json.dumps({"ok": False, "error": f"missing explainable-json: {cand}"}, ensure_ascii=False))
+            return 2
+        if cand.is_file():
+            merge_general_prophecy_explainable_hook(hook, cand)
+            explainable_merge_info = {"applied": True, "path": str(cand)}
+
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(hook, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"ok": True, "out": str(args.out.resolve()), "allowed": hook["live_trading"]["allowed"]}, ensure_ascii=False))
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "out": str(args.out.resolve()),
+                "allowed": hook["live_trading"]["allowed"],
+                "general_prophecy_explainable": explainable_merge_info,
+            },
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 

@@ -218,3 +218,89 @@ def test_btc_only_mode_ignores_dual_leg_panel_gate(tmp_path: Path) -> None:
     assert doc.get("tracks", {}).get("shared", {}).get("all_gates_passed") is True
     assert doc.get("instrument_combo_all_gates_passed") is None
     assert doc.get("combined_all_passed") is True
+
+
+def test_dual_soft_band_review_when_strict_fails(tmp_path: Path) -> None:
+    ws = Path(__file__).resolve().parents[1]
+    streak = tmp_path / "streak_sb.json"
+    streak.write_text(json.dumps({"schema": "prophecy_promotion_strict_streak_v1", "runs": []}), encoding="utf-8")
+    lens = tmp_path / "lens_sb.json"
+    inst = tmp_path / "inst_sb.json"
+    lw = _lens_wf_passing()
+    lw["aggregate"]["mean_test_accuracy"] = 0.50
+    iw = _instrument_wf_passing()
+    iw["aggregate"]["mean_test_accuracy"] = 0.50
+    iw["aggregate"]["fraction_test_beats_always_bull"] = 0.30
+    lens.write_text(json.dumps(lw), encoding="utf-8")
+    inst.write_text(json.dumps(iw), encoding="utf-8")
+    out = tmp_path / "gates_sb.json"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ws / "scripts" / "eval_prophecy_promotion_gates_v1.py"),
+            "--lens-walkforward-json",
+            str(lens),
+            "--instrument-walkforward-json",
+            str(inst),
+            "--promotion-track-mode",
+            "dual",
+            "--skip-shared-gates",
+            "--streak-history-json",
+            str(streak),
+            "--output",
+            str(out),
+        ],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("combined_all_passed") is False
+    assert doc.get("lens_soft_passed") is True
+    assert doc.get("instrument_soft_passed") is True
+    assert doc.get("soft_passed") is True
+    assert doc.get("promotion_recommendation") == "soft_band_review"
+
+
+def test_dual_soft_fails_when_instrument_below_soft_beat_bull(tmp_path: Path) -> None:
+    ws = Path(__file__).resolve().parents[1]
+    streak = tmp_path / "streak_sb2.json"
+    streak.write_text(json.dumps({"schema": "prophecy_promotion_strict_streak_v1", "runs": []}), encoding="utf-8")
+    lens = tmp_path / "lens_sb2.json"
+    inst = tmp_path / "inst_sb2.json"
+    lw = _lens_wf_passing()
+    lw["aggregate"]["mean_test_accuracy"] = 0.50
+    iw = _instrument_wf_passing()
+    iw["aggregate"]["mean_test_accuracy"] = 0.50
+    iw["aggregate"]["fraction_test_beats_always_bull"] = 0.10
+    lens.write_text(json.dumps(lw), encoding="utf-8")
+    inst.write_text(json.dumps(iw), encoding="utf-8")
+    out = tmp_path / "gates_sb2.json"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ws / "scripts" / "eval_prophecy_promotion_gates_v1.py"),
+            "--lens-walkforward-json",
+            str(lens),
+            "--instrument-walkforward-json",
+            str(inst),
+            "--promotion-track-mode",
+            "dual",
+            "--skip-shared-gates",
+            "--streak-history-json",
+            str(streak),
+            "--output",
+            str(out),
+        ],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("instrument_soft_passed") is False
+    assert doc.get("soft_passed") is False
+    assert doc.get("promotion_recommendation") == "defer"

@@ -128,3 +128,61 @@ def test_force_dual_leg_cli_btc_hypothesis_emits_multi_inputs_and_dual_rows_per_
         by_date.setdefault(ed, set()).add(ins)
     assert len(by_date) == 2
     assert all(legs == {"kospi", "btc"} for legs in by_date.values())
+
+
+def test_force_dual_leg_batch_uses_kospi_btc_date_intersection(tmp_path) -> None:
+    """When BTC OHLCV lags KOSPI by one calendar row, batch dates must still be dual-complete."""
+    if not _VIX.is_file():
+        return
+    full_text = _VIX.read_text(encoding="utf-8")
+    lines = full_text.strip().splitlines()
+    assert len(lines) >= 5
+    kcsv = tmp_path / "kospi_full.csv"
+    bcsv = tmp_path / "btc_trim.csv"
+    kcsv.write_text(full_text, encoding="utf-8")
+    # Same as kospi but drop last data row so the latest KOSPI-only date cannot appear in batch.
+    bcsv.write_text("\n".join(lines[:-1]) + "\n", encoding="utf-8")
+    hypo = {
+        "schema": "btrack_hypothesis_prophecy_v1",
+        "boundary_ack": True,
+        "ts_utc": "2020-01-01T00:00:00Z",
+        "prediction": {"instrument": "btc", "direction": "bear"},
+    }
+    hyp_path = tmp_path / "hyp.json"
+    hyp_path.write_text(json.dumps(hypo), encoding="utf-8")
+    out_score = tmp_path / "score.json"
+
+    r = subprocess.run(
+        [
+            sys.executable,
+            str(_BUILD),
+            "--hypothesis-json",
+            str(hyp_path),
+            "--kospi-csv",
+            str(kcsv),
+            "--btc-csv",
+            str(bcsv),
+            "--recent-trading-days",
+            "5",
+            "--force-dual-leg-panel",
+            "--output",
+            str(out_score),
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    assert r.returncode == 0, r.stderr
+    doc = json.loads(out_score.read_text(encoding="utf-8"))
+    assert doc.get("inputs", {}).get("batch_calendar_mode") == "kospi_btc_intersection"
+    rows = doc.get("rows") or []
+    assert len(rows) == 10
+    by_date: dict[str, set[str]] = {}
+    for row in rows:
+        ed = row.get("eval_date")
+        ins = row.get("instrument")
+        assert ed and ins
+        by_date.setdefault(ed, set()).add(ins)
+    assert len(by_date) == 5
+    assert all(legs == {"kospi", "btc"} for legs in by_date.values())
