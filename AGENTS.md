@@ -60,6 +60,7 @@
 - **명리 주간 최소 루프(원클릭):** `scripts/Run-MyeongniWeeklyOpsSummary_v1.ps1` → `reports/myeongni_weekly_ops_summary_latest.md`(비권위); KPI는 `independent_lens_shadow_gate_latest.json`(§3.3 표); 선택 `-Include16StateProbe`.
 - **시장 단기 × 명리(권장 고정 · 3층):** (1) **시장 축** — 지수·선물·수급·매크로 및 B-track 가설·채점 체인; 단기 방향 단정은 이 축 또는 `[HYPO]` 근거로만. (2) **명리 축** — **한 프로필(출생·IANA TZ) 결정론**: `run_manseryeok_bot_v1` → `MyeongriCompleteFusion` → `run_lens_myeongni` → 산출 JSON·보조 해석(`MYEONGRI_AI_*`); **내일 장 일주로 사주를 자동 치환하는 경로는 없음**(현행 `market_myeongni`는 상류 렌즈 점수에 정책 오버레이만). (3) **Track A** — 실매매·주문은 실물 레짐·운영 게이트·휴먼; 명리·시장 B-track과 **자동 합선 금지**.
 - **명리·시장 체인(선택 실행 순서):** `scripts/run_myeongni_lens_chain_from_bot_v1.py`(`--profile-json` 또는 `--demo-smoke`) → `scripts/run_market_myeongni_lens_v1.py --upstream docs/final/artifacts/myeongni_independent_lens_from_chain_latest.json`(또는 동일 세션에서 쓴 상류 렌즈 경로). 계약·표: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §3.3, `docs/final/artifacts/MARKET_MYEONGNI_LENS_V1_CONTRACT.json`.
+- **B-track 세션 시각 패널(CSV, 정량):** `scripts/build_btrack_session_instant_myeongni_panel_v1.py` — 날짜 구간·로컬 개장 시각(기본 09:00, `Asia/Seoul`, `--calendar-mode krx_weekdays`)마다 만세력 **四柱** + `mkm_myeongni_math.compute_quant_profile_v0` 오행 질량·불균형 지표를 CSV(+`.meta.json`)로 출력; **擇日/日課 전 학파를 대변하지 않음**(동일 엔진을 세션 벽시계에 적용). OHLCV 조인·상관은 별 스크립트. 회귀: `tests/test_build_btrack_session_instant_myeongni_panel_v1.py`.
 - **금지:** "성경 렌즈가 하락을 예언했다"처럼 결정론적 가격 단정 문구 사용 금지. 성경은 `[NON_GATING]` 보조 해설로만 표기한다.
 
 ## MKM AI 아키텍처 명명 계약 (4AI 고정)
