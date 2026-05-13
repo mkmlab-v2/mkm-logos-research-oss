@@ -350,6 +350,12 @@ on:
       - "tests/fixtures/track_a_metering_log_smoke_v1.jsonl"
       - "data/track_a_shadow/conversations_sample_v1.jsonl"
       - "tests/test_multilens_sensitive_integrity_gate.py"
+      - "scripts/build_premium_btrack_multilens_report_v1.py"
+      - "tests/test_build_premium_btrack_multilens_report_v1.py"
+      - "tests/test_premium_btrack_multilens_report_schema_v1.py"
+      - "docs/final/schemas/premium_btrack_multilens_report_v1.schema.json"
+      - "docs/final/schemas/premium_btrack_multilens_report_v1.example.json"
+      - "tests/fixtures/premium_multilens_rag_corpus_bundle_v1.json"
       - "tests/test_ultra_compression_artifacts.py"
       - "tests/test_compression_weekly_governance_report.py"
       - "tests/test_external_anchor_governance_scripts_smoke_v1.py"
@@ -1091,6 +1097,13 @@ jobs:
 
       - name: Cross-lens RAG fusion v1 (sasang axis block contract)
         run: python -m pytest tests/test_build_cross_lens_rag_fusion_v1.py -q --tb=short
+
+      - name: Premium B-track multi-lens report v1 (schema + sync packager subprocess)
+        run: |
+          python -m pytest \
+            tests/test_premium_btrack_multilens_report_schema_v1.py \
+            tests/test_build_premium_btrack_multilens_report_v1.py \
+            -q --tb=short
 
       - name: Cross-lens RAG alert notify v1 (stale guard, Telegram min severity)
         run: python -m pytest tests/test_send_cross_lens_rag_alert_v1.py -q --tb=short
