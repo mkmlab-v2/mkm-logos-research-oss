@@ -190,6 +190,8 @@ on:
       - "scripts/report_compression_jaccard_loss_patterns.py"
       - "scripts/report_ultra_compression_kpi_summary.py"
       - "scripts/run_workspace_automation_health.ps1"
+      - ".env.example"
+      - "projects/bitcoin-trading/ops/windows-rehearsal/sync_required_env_to_user.ps1"
       - "scripts/validate_news_observation_jsonl_v1.py"
       - "scripts/build_direction_label_bar_jsonl_from_ohlcv_v1.py"
       - "scripts/join_news_observation_direction_labels_walkforward_v1.py"
