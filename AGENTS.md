@@ -160,6 +160,20 @@
 
 ## 로컬 검증 진입점 (개발·PR 전 권장)
 
+### 페르소나 단축 호출 (SSOT · 채팅 트리거 → 고정 스크립트)
+
+Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 요약보다** 아래 **래퍼 한 줄**을 실행하고 **exit code**를 보고한다. 추가 `-Include*` 등은 래퍼가 아니라 **각 하위 `.ps1`에 직접** 넘긴다.
+
+| 구분자(트리거 예) | 한 줄 역할 | 고정 명령 (저장소 루트) |
+|-------------------|------------|-------------------------|
+| 【아테나 점검】 | Fact-Lock 번들 (`run_fact_lock_bundle.ps1`, CI에 가까운 순서) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` |
+| 【암행어사 점검】 | 자동화 헬스 기본 실행 (`run_workspace_automation_health.ps1` 기본 스위치) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AmsaengHealth` |
+| 【빠른 헌법 점검】 | P0 필수 경로 존재만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` |
+
+- **이름 충돌 주의:** `scripts/Invoke-AthenaAutomationRegistryCheck.ps1`의 Athena는 **태스크 스케줄 vs `automation_registry.json`** 전용이며, 위 표의 **AthenaBundle**과 **다르다.**
+- **좁은 암행어사 한 바퀴(SafeOps·MCP·비밀·no1kmedi API 등):** `scripts/Invoke-AmsaengEosaGovernanceCycle.ps1` — 범위는 `docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json`.
+- **비밀 키 하이브리드 권장(로컬 DPAPI / VPS env):** `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` 「비밀 키」절 · `scripts/Invoke-MkmSecretsHybridReadiness_v1.ps1`(레포 위생 + Windows DPAPI 스토어 존재·키 개수만) · VPS 템플릿 `scripts/deploy/linux/mkm-monorepo-vps.env.example`.
+
 - **만세력 Phase B 스모크 (Meeus vs Swiss 立春 Reference B + 59-case ganji 코호트 + 충돌 사전 네이티브 검증):** `python scripts/run_manseryeok_validation_smoke_v1.py` (B-2만: `--skip-ephemeris`; 충돌 생략: `--skip-collision-dict`). 단독: `python scripts/validate_collision_dictionary_v1.py`. CI: **`main` 푸시마다** + 경로 맞는 PR + 수동 — `.github/workflows/manseryeok-validation-smoke.yml`. 대조 템플릿·채집 절차: `docs/final/artifacts/manseryeok_collision_dictionary_v1.json` (`collection_howto`, **`ssot_policy`**). **회귀·본선 기준은 `pillars_native`(엔진)**; `pillars_external`은 외부 UI 스냅샷. 엔진 변경 후 네이티브 동기화: `python scripts/collision_dict_refresh_native_v1.py --write`. 코호트 행 추가(네이티브만): `python scripts/sync_collision_dict_cohort_entries_v1.py --case-id <id> --write`.
 - **전 세계 사용자 출생 입력 (IANA TZ, DST 안전 권장):** `scripts/saju_birth_resolver_v1.py` — 절대시각 **`birth_instant_utc`(ISO Z) + `iana_tz`** 가 1순위; 로컬 벽시계만 쓸 때는 DST 겉넘김 구간 에러 처리. CLI 예: `python scripts/run_saju_global_birth_v1.py --utc-instant 1992-03-12T17:00:00Z --iana-tz Asia/Seoul`. Pack 0-B(명리 결정론 LoRA 골든 JSONL 한 행): `scripts/prep_myeongri_deterministic_lora_golden_v1.py` — 대량·시드·매니페스트: `scripts/build_myeongri_deterministic_lora_golden_bulk_v1.py` — DoD **`docs/final/LORA_PACK_V0_DOD_V1.md`**. `scripts/saju_dual_verify.py`에도 동일 계약: `--birth-instant-utc` + `--tz` IANA. **mkm-life** `POST /api/v1/saju/verify` 는 `birth_instant_utc` + `tz` 를 그대로 전달(서버 `zoneinfo` 정규화, 기존 y/m/d/h/mi 본문은 계속 지원). **jema-ai.com** (소스만 `projects/no1kmedi`): CDSS `lane_a_profile` 및 `ATHENA_MANSERYEOK_API_URL` 호출 시 동일 키(`birth_instant_utc`, `iana_tz`; 레거시 `birth_datetime` 선택). **엔진 직접 프록시(로컬/동일 배포):** `POST /api/manseryeok/reference` → `run_saju_global_birth_v1.py`(`MKM_WORKSPACE_ROOT`); `npm run smoke:manseryeok-reference` (서버 기동 후). 계약 스키마: `docs/final/artifacts/schemas/saju_global_birth_request_v1.schema.json`.
 - **구현 판정**은 (3)의 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능 스크립트·테스트로만 한다. 브리핑·노트만으로 경로를 확정하지 않는다.

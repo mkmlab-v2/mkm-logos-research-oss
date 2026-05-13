@@ -36,6 +36,20 @@
 
 ---
 
+## 비밀 키 (로컬 Windows / Linux VPS) — 권장 고정
+
+**Fact-Lock:** 압축(Track A/B) 파이프라인은 **API 키 암·복호화 계약이 아님** — `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`(Security Agent / API 키 보강)와 혼동 금지.
+
+| 환경 | 권장 저장 | 앱이 값을 읽는 순서(요지) |
+|------|-----------|---------------------------|
+| **로컬 Windows** | 민감값은 **`scripts/Invoke-EncryptedSecretStore.ps1`** 로 `%APPDATA%\MKM\secret_store_v1.json`(DPAPI)에 `set`; 개발 편의용은 **루트 `.env`(비추적)**. 브리지: `scripts/security_agent_manager.py`. | 스토어 → 환경 변수 → 루트 `.env` → JSON 폴백(CONSTITUTION §1.1.2 요지). |
+| **VPS (대개 Linux)** | **DPAPI 스토어에 의존하지 않음.** `/etc/mkm/` 등 **레포 밖** 파일(`chmod 600`) 또는 **systemd `EnvironmentFile=`**, 또는 호스트 시크릿 관리. | **키 이름**은 `.env.example`과 맞추고, **저장 위치만 OS별**로 둔다. |
+| **공통** | `.env` **커밋 금지**; 점검: `scripts/Verify-MonorepoSecretHygiene.ps1` — 원클릭 준비도: `scripts/Invoke-MkmSecretsHybridReadiness_v1.ps1`. | 엄격 서베이(선택): `run_workspace_automation_health.ps1 -IncludeSecretExposureSurvey`. |
+
+**VPS env 템플릿(주석만):** `scripts/deploy/linux/mkm-monorepo-vps.env.example` — 채운 뒤 서버 경로에 두고 systemd/PM2가 `EnvironmentFile` 또는 `dotenv` 경로로 읽게 맞춘다.
+
+---
+
 ## 단일 운영 표준표 (충돌 방지)
 
 | 구분 | 기본값 | 예외/승인 |
@@ -112,5 +126,7 @@ VPS에 **비트코인만 잘린 폴더**만 두지 말고, **모노레포 전체
 - [ ] VPS에서 `git status`가 깨끗한가 (또는 의도된 변경만 있는가).
 - [ ] 로컬에서 푸시한 브랜치와 VPS가 같은가.
 - [ ] `.env`는 여전히 Git에 안 올라가 있는가.
+- [ ] (Windows 로컬) `scripts/Invoke-MkmSecretsHybridReadiness_v1.ps1` exit 0 — DPAPI 스토어는 키가 필요할 때만 `Invoke-EncryptedSecretStore.ps1 -Action set` 으로 채운다.
+- [ ] (Linux VPS) 레포 밖 비밀 파일 경로·`EnvironmentFile=` 이 `pm2 show` / 런북과 일치하는가(`scripts/deploy/linux/mkm-monorepo-vps.env.example` 참고).
 
 이 네 가지만 지키면 “로컬 Cursor vs SSH Cursor 맞추기”는 **Git 한 줄**로 줄어든다.
