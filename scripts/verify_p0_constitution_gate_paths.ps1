@@ -528,6 +528,8 @@ $required = @(
     "docs\final\schemas\logos_insight_bundle_v1.schema.json",
     "docs\final\schemas\logos_insight_bundle_v1.minimal.example.json",
     "docs\final\schemas\logos_insight_bundle_v1.non_degraded.example.json",
+    "docs\final\schemas\bible_meaning_graph_node_v1.schema.json",
+    "docs\final\schemas\bible_meaning_graph_edge_v1.schema.json",
     "docs\final\schemas\aramaic_graph_node_v1.schema.json",
     "docs\final\schemas\aramaic_graph_edge_v1.schema.json",
     "docs\final\schemas\aramaic_regime_shift_score_v1.schema.json",

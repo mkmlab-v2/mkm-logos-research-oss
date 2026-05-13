@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/bible_meaning_graph_edge_v1.schema.json",
+  "title": "Bible meaning graph edge v1 (B-track JSONL row)",
+  "description": "Theme/regime projection edges emitted by scripts/build_bible_meaning_graph_v1.py alongside merged verse/bridge edges.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "src_node_id", "dst_node_id", "edge_type", "weight"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "bible_meaning_graph_edge_v1"
+    },
+    "src_node_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "dst_node_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "edge_type": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "weight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    }
+  }
+}

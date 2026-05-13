@@ -594,6 +594,8 @@ on:
       - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/bridge_edges.jsonl"
       - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/regime_shift.json"
       - "docs/final/schemas/aramaic_graph_node_v1.schema.json"
+      - "docs/final/schemas/bible_meaning_graph_node_v1.schema.json"
+      - "docs/final/schemas/bible_meaning_graph_edge_v1.schema.json"
       - "docs/final/schemas/aramaic_graph_edge_v1.schema.json"
       - "docs/final/schemas/aramaic_regime_shift_score_v1.schema.json"
       - "scripts/build_aramaic_graph_edges_v1.py"
