@@ -15,6 +15,12 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1
 
 .NOTES
+  Re-registers five cmdlet-based tasks with S4U (LogonType=S4U): MKM_BTrack_Automation_Health_Daily,
+  MKM-BTrack-DailyHypothesis-Chain, MKM-Prophecy-Panel-24h-Alerts, MKM-Prophecy-Evolution-Watchdog,
+  MKM-BTrack-BtcWeight-HitRateBundle-Weekly. After registration, Task Scheduler "Last Task Result" / LastTaskResult
+  is the *last run exit code*, not registration health (e.g. panel chain may exit 1 on KPI miss; next successful run
+  can show 0).
+
   GeneralProphecyDailyQueueV1 / GeneralProphecyHoldoutEvolutionWeeklyV1 use schtasks.exe.
   For "run whether user is logged on or not", use Task Scheduler GUI on those two tasks
   or recreate them with stored credentials (schtasks /RU /RP) — not automated here.
