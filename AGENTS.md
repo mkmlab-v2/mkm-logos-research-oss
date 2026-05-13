@@ -14,6 +14,8 @@
 - **템플릿(추적):** `docs/final/LOCAL_MACHINE_POINTER_V1.template.md` — bare·클론·Vault 마운트 등 **한 대 PC만** 쓰는 경로를 적는 절차.
 - **실제 파일(비추적):** `docs/final/LOCAL_MACHINE_POINTER_V1.md` — 템플릿을 복사해 채움. `.gitignore`로 **원격에 푸시되지 않음**. `CONSTITUTION`에 절대 경로를 박지 않을 때의 대안.
 - **MKM Trinity 인덱스(목차·포인터만):** `docs/final/MKM_TRINITY_INDEX_V1.json` — 렌즈 키 `sasang` / `logos` / `myeongni`(표시 `label_ko`). `_meta.truth_source`는 헌법; FACT 판정은 인덱스가 아니라 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 각 스크립트·테스트.
+- **Windows C: 루트 정리 (관리자 PowerShell, 채팅 간 공유용):** `scripts/Invoke-CRootInstallerLeftoversCleanup_v1.ps1`(VS/인스톨러 잔재)·`scripts/Invoke-CRootAmdInstallerCacheCleanup_v1.ps1`(`C:\AMD` 캐시). 삭제 대상은 각 스크립트 본문이 SSOT. **일시 핸드오프·다음 일정 한 줄:** `docs/final/CURRENT_OPS_SNAPSHOT.md` 상단 **Ops slice · Cross-chat SSOT** 표.
+- **Ollama 모델/캐시 경로:** 레포 공통으로 고정하지 않음 — 비추적 `docs/final/LOCAL_MACHINE_POINTER_V1.md`(아래 템플릿에서 복사)에 본인 PC의 모델 루트(예: F: 정션)만 적고, 런타임은 루트 `.env`의 `OLLAMA_HOST` / `OLLAMA_MODEL`(`.env.example`·`CLAUDE.md` 참고).
 
 ## 로컬 재생성 산출물 (`*_latest` 등) — Git 정책
 

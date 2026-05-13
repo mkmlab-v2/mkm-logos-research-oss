@@ -8,9 +8,12 @@
 |------|-------------|
 | C: 인스톨러 잔재 정리 | `scripts/Invoke-CRootInstallerLeftoversCleanup_v1.ps1` |
 | C: AMD 인스톨러 캐시 | `scripts/Invoke-CRootAmdInstallerCacheCleanup_v1.ps1` |
-| Ollama·대용량 모델 | **F:** 정션 + 로컬 `docs/final/LOCAL_MACHINE_POINTER_V1.md`(비추적 템플릿: `LOCAL_MACHINE_POINTER_V1.template.md`)·`C:\workspace\.env` 정합. Cursor **User Rules**는 레포와 자동 동기화되지 않음. |
+| Ollama·대용량 모델 | **F:** 정션(또는 본인 PC 실경로)은 비추적 `docs/final/LOCAL_MACHINE_POINTER_V1.md`의 `ollama_models_dir`에만 기록. 런타임 태그는 루트 `.env`의 `OLLAMA_HOST` / `OLLAMA_MODEL`(`.env.example`·`CLAUDE.md`). Cursor **User Rules**는 레포와 자동 동기화되지 않음. |
+| Hostinger 퇴거(VPS만)·등록 → Cloudflare Registrar | `scripts/Invoke-HostingerFullExitAutomationChain_v1.ps1` → `reports/hostinger_decommission_gate_latest.json`(`go`) · `reports/hostinger_full_exit_automation_chain_latest.json` · 진행표 `scripts/data/hostinger_full_exit/registrar_transfer_tracker_v1.json` — 백업·hPanel 호스팅 해지·EPP/이전은 수동. |
 
 **다음 작업 일정 (권장 순)**
+
+- **Hostinger / CF Registrar:** 새 세션에서는 위 표 한 줄만 `@`로 열고 체인 재실행; `go` 이후에도 해지·이전은 사람 확인.
 
 1. **P0 — 워킹트리 WIP:** `git status`로 스테이징/수정 분리 → 의도 없는 아티팩트는 `git restore`, 소스·테스트는 **한 커밋** 또는 분기.
 2. **P1 — 예언 정렬 회귀:** 주 1회 `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`(exit 0) 또는 시간 여유 시 `scripts/run_fact_lock_bundle.ps1`(`-Skip*`로 조절).

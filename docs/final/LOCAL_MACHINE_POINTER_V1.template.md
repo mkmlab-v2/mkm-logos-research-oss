@@ -28,6 +28,8 @@ copy docs\final\LOCAL_MACHINE_POINTER_V1.template.md docs\final\LOCAL_MACHINE_PO
 | `git_remote_internal_name` | 예: `internal` / `gitea` |
 | `extra_clone_roots` | 여러 줄: 다른 worktree·클론 루트 |
 | `mkm_data_vault` | 예: `G:\공유 드라이브\MKM_DATA_VAULT` — 미마운트면 비움 |
+| `ollama_models_dir` | Ollama blobs가 실제로 있는 디렉터리(예: `F:\…` 또는 `C:\Users\…\.ollama`를 정션으로 옮긴 **실타겟**). 레포·CI에는 넣지 말 것. |
+| `windows_c_cleanup_note` | 선택: C: 루트 잔재 정리는 레포 스크립트 `scripts/Invoke-CRootInstallerLeftoversCleanup_v1.ps1` / `scripts/Invoke-CRootAmdInstallerCacheCleanup_v1.ps1`(관리자) — 실행 일시·결과만 여기 한 줄로 적어도 됨. |
 | `notes` | 한 줄 메모 (선택) |
 
 ---
