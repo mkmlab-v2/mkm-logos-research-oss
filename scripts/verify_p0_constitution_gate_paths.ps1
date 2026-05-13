@@ -477,6 +477,8 @@ $required = @(
     "docs\final\schemas\logos_insight_bundle_v1.schema.json",
     "docs\final\schemas\logos_insight_bundle_v1.minimal.example.json",
     "tests\test_logos_insight_bundle_schema_v1.py",
+    "scripts\build_logos_insight_bundle_v1.py",
+    "tests\test_build_logos_insight_bundle_v1.py",
     "docs\final\schemas\semantic_rag_bridge_insight_bundle_v1.schema.json",
     "docs\final\schemas\semantic_rag_bridge_insight_bundle_v1.example.json",
     "tests\test_semantic_rag_bridge_insight_bundle_schema_v1.py",
