@@ -482,6 +482,8 @@ $required = @(
     "docs\final\schemas\semantic_rag_bridge_insight_bundle_v1.schema.json",
     "docs\final\schemas\semantic_rag_bridge_insight_bundle_v1.example.json",
     "tests\test_semantic_rag_bridge_insight_bundle_schema_v1.py",
+    "scripts\build_semantic_rag_bridge_insight_bundle_v1.py",
+    "tests\test_build_semantic_rag_bridge_insight_bundle_v1.py",
     "docs\final\schemas\sasang_emotion_mapping_v1.schema.json",
     "docs\final\schemas\sasang_emotion_mapping_v1.example.json",
     "docs\final\schemas\va_trajectory_log_v1.schema.json",

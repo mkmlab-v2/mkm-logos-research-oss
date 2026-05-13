@@ -14,8 +14,8 @@
 
 - [x] **4D** 라벨 분리 표(2.1) 및 용어 표(2) 초안 확정 — 팀 리뷰 시 수정 가능
 - [x] **번역 브리지** 출력 계약: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` + 예시 + `tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py`
-- [ ] **데이터 플로우** 각 박스가 구현 스크립트와 **전부** 매핑(번역 브리지 **빌더 CLI**는 미구현 → 후속)
-- [ ] **베이스라인 대비 지표** 오프라인 1회 수치 기록
+- [ ] **데이터 플로우** 각 박스가 구현 스크립트와 **전부** 매핑(번역 브리지 **빌더 CLI**는 `scripts/build_semantic_rag_bridge_insight_bundle_v1.py`로 조립·검증 가능; 상위 RAG 검색기와의 고정 연결·E2E는 후속)
+- [x] **베이스라인 대비 지표** 오프라인 1회 수치 기록 (6절 **A-pilot** 행; RAG 미연결 비율 본측정은 후속)
 
 ---
 
@@ -67,7 +67,7 @@
 |------|----------|---------------------------|---------------------------|
 | 시맨틱 | raw query, session meta | `query_plan_v1`, `lens_route` | 렌즈 라우팅·파일럿: CONSTITUTION 표 `philosophy_lane_rag_pilot_v1` 등 |
 | RAG | query_plan, corpus_id | `retrieval_runs[]`, `hits[]` | `build_premium_btrack_multilens_report_v1.py` 오프라인 RAG, 기타 `build_cross_lens_rag_fusion_v1.py` |
-| 번역 브리지 | hits + 도메인 규칙 + calibration 포인터 | **`semantic_rag_bridge_insight_bundle_v1`** | 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` · 예시 동 디렉터리 · **빌더 스크립트는 후속(미구현)** |
+| 번역 브리지 | hits + 도메인 규칙 + calibration 포인터 | **`semantic_rag_bridge_insight_bundle_v1`** | 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` · 예시 동 디렉터리 · 빌더: **`scripts/build_semantic_rag_bridge_insight_bundle_v1.py`** (기본 산출 `docs/final/artifacts/semantic_rag_bridge_insight_bundle_v1_latest.json`) |
 | 4D 보정 | `calibration_reference.kind`에 맞는 스냅샷 | 동 번들 내 `calibration_reference` + 후속 `calibration_overlay` | 2.1 표 참조; 명리·`logos_4d_state_v1`·시장 사상 스냅샷 등 |
 | 통제 | 위 산출물 | exit code, `audit.jsonl` | `athena_run_v1.py`·CONSTITUTION §28 요지 |
 
@@ -113,6 +113,7 @@
 | 구분 | 지표(예) | 비고 |
 |------|-----------|------|
 | A | 근거 청크 미연결 단정 비율 | RAG 게이트 |
+| A-pilot (2026-05-14) | 스키마·빌더 검증 통과율 (로컬) | 1.0 — `py -m pytest tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py tests/test_build_semantic_rag_bridge_insight_bundle_v1.py -q` exit 0 |
 | B | 인용 위반·금지어 히트 | 정책·validator |
 | C | 톤·분류 일치율(소형 분류기 또는 human spot) | 4D 보정 전후 |
 | D | 지연·토큰·비용 | 운영 |
@@ -155,7 +156,7 @@
 
 1. ~~**4D** 분리 표 확정~~ → v0.2 **2.1** (리뷰만 남음).
 2. ~~**번역 브리지** JSON Schema v1~~ → `semantic_rag_bridge_insight_bundle_v1` + pytest.
-3. **`build_semantic_rag_bridge_insight_bundle_v1.py`** (가칭): RAG hits + 스냅샷 경로 → 번들 JSON 생성 CLI.
+3. ~~**`build_semantic_rag_bridge_insight_bundle_v1.py`**~~ → `scripts/build_semantic_rag_bridge_insight_bundle_v1.py` (`--calibration-kind`, `--rag-json`, `--slots-json`, `--strict`). 상위 검색/RAG 러너에서 이 CLI로 고정 연결하는 작업은 후속.
 4. **한 도메인**만 골라 **A~D 지표** 1회 측정 후 본 문서 6절에 숫자 기록.
 5. 대외 문서·제안서에는 **본 파일·스키마 경로 링크 금지**(내부 전용).
 
