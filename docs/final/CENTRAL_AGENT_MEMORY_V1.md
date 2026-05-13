@@ -6,16 +6,16 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-12T22:00:00Z
+- **last_updated_utc:** 2026-05-13T18:30:00Z
 - **owner:** (선택)
-- **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK**
+- **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
 - **external_briefing_ref_v2:** `athena_memory_bank_v2.md` (time-series partition + firewall)
 
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-12T22:00:00Z** — Pack 0-B §2.4: copy-guard pytest on schema/prep/eval surfaces + DoD v1.5 + P0/CI
+- **2026-05-13T11:24:07Z** — NotebookLM MCP: authenticated=true; ask_question OK; add_source still fails (Add source dialog). OpenData SSOT remains repo+Vault.
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -226,8 +226,10 @@
 
 | 기간 | 핵심 한 줄 (무엇을 확정/중단/승격했는지) |
 |------|----------------------------------------|
+| 2026-05-13 ((주)목소리네트워크 · AI+ OpenData 제2026-327호) | 신청 주체 **주식회사 목소리네트워크**(사업자등록번호 628-86-01742)·대표 **이기륜**·소재 경기도 광명시 광명로 880·**1인기업**; **금융·신용·연체 모델 등 인접 실무경력 없음**(Fact-Lock). 중기부 「AI+ OpenData 챌린지」는 **과제①**(정책자금 융자 신청서 자동 생성, **계약 연계형**)으로 확정·**과제② 비선택**; 접수 시 **K-Startup 온라인 + 나라장터 입찰** 공고 기한(~2026-06-05 18:00) 내 병행 필수. |
 | 2026-05-11 (Track C GTM · lens M30) | `TRACK_C` §3.11: 미들웨어 포지션·단일 앵커 리스크·2nd customer·빅테크 내재화·수직 분리·대외 수치 Fact-Lock; 상징→텍스트 M30 webhook health 집계·대시보드 필드 반영(B-track advisory). |
 | 2026-05-13 (M31 lens-music thin audit trail) | RAG 대사 drift 은유 스키마·`m31_audit_trail` 오버레이·히스토리·호르몬 트렌드 `audit_digest_summary`·Track C 대시보드 `mean_rag_metabolism_bounded_drift_0_1`/`rows_with_rag_drift`·`CONSTITUTION` 보강·`verify_p0`·pytest·프로모션 게이트; **비임상·은유 경계** Fact-Lock. 커밋 `2e7ca59ddb`·브랜치 `workspace/wip-cursor-20260512`·`internal` 푸시. |
+| 2026-05-13 (B-track 예언·VPS·격벽) | VPS `mkm-destiny` 번들 sync·실행 게이트(시큐리티·레버리지) 진단; `sync_biblical_lane_hook_to_bitcoin_trading.py`로 `general_prophecy_explainable` 훅(reference_only·비트리거); 동결 180일 mild+`neutral-bps` 2–3 스윕 적중 약 0.486; 권장 측정 **`run_prophecy_btrack_recommended_eval_chain_v1.py`** → `reports/prophecy_*_recommended_chain_*`; dual 승격 게이트 `combined_all_passed=false`·`promotion_recommendation=defer`(렌즈 mean_test 적중 약 0.517, 임계 0.55 미만). |
 | 2026-Q1 (NL 코퍼스) | NotebookLM MKM·Ops·Fusion 등 15노트 교차 질의 → 본 파일 **NL 이관 압축** 반영 (레포 SSOT와 병용). |
 | 2026-Q2 (AutoEvo) | 조사→큐→스캐폴드→실행→제안→승인→결정 적용 + 연구 레인 승격 실행계획(`autoevo_research_promotion_plan_latest.json`) 생성. |
 | 2026-Q2 (Hybrid Pointer Router) | `GO/WATCH/HOLD` 라벨링·runtime config·shadow 리포트·alert·guard·강등 드릴까지 연결해 “조건부 고효율 + 자동 하방보호”를 아티팩트 체인으로 고정(무조건 99/100 수사 금지). |
@@ -411,17 +413,17 @@
 | 명리 | **고도화 v1:** 본 파일 「명리 렌즈 고도화 v1」— 삼고·만세력·§3.3 스택·날씨 원리 격리. 체인: `run_myeongni_lens_chain_from_bot_v1.py`/`Run-MyeongniLensChainFromBot_v1.ps1`; 단일 렌즈 `--recommended` 또는 브리지. | §3.3·`tests/test_myeongni_lens_chain_from_bot_v1.py` |
 | 사상 | 사상 4-Agent는 A-Track 승격 유지 상태이며 모니터 정책에서 `geumhwa_transition_threshold=0.58`로 상향해 과민 자동주입을 완화했다. | `docs/final/artifacts/sasang_4agent_monitor_policy_v1.json` |
 | 퓨전 | `보명지주/성정불변/병증약리/금화교역` 융합 게이트는 `FUSION_GATE_PASS`로 고정되어 승격 체인 체크에 결합됨. **B-track VA 교차감사:** `Run-VaFusionControlIntegrityChain_v1.ps1`·일일 `MKM-VaFusionControlIntegrity-Daily`·감사 실패 시 선택 웹훅(Fact-Lock: `CONSTITUTION` §3.8.4·`.env.example`). | `docs/final/artifacts/sasang_4agent_fusion_gate_latest.json` · `reports/fusion_control_integrity_audit_latest.json` |
+| 예언(B-track) | 권장 측정: `py scripts/run_prophecy_btrack_recommended_eval_chain_v1.py` 또는 원클릭 `py … --auto-sweep-and-apply` / `scripts/Run-BtrackRecommendedEvalAutoSweep_v1.ps1`(주간 등록 `Register-BtrackRecommendedEvalAutoSweepWeeklyTask.ps1`; S4U 묶음 `Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1`). dual 게이트: **`combined_all_passed=false`**, 최근 권고 **`promotion_recommendation=soft_band_review`**(렌즈·instrument 소프트+공유 통과, 엄격 승격은 아님). | `reports/prophecy_btrack_recommended_eval_chain_summary_v1_latest.json` · `reports/prophecy_promotion_gates_recommended_chain_v1_latest.json` |
 
 ## 지금 막힌 것 (있을 때만)
 
-- 
+- **B-track 예언 숫자 승격(dual WF):** 엄격(`combined_all_passed`) 미충족 — 렌즈/콤보 mean·임계·WF 입력 재검; 자동 스윕은 `*_latest` 갱신만 하며 A-track·실매매 자동 합선 없음.
 
 ## 다음에 할 일 (최대 3개)
 
-1. **디스크 동기화가 장기기억의 본체:** 세션 끝마다 의미 있는 전환만 **본 파일·커밋**으로 남기고, NotebookLM·채팅 요약은 **검증 후 한 줄 이관**만(Fact-Lock·표 프로토콜 유지).
-2. **일인 개발 Git 고정:** 일상 저장은 `scripts/push-internal.ps1`; `gitea/main`에 합칠 때는 워킹 트리 clean 후 `scripts/SoloDev-MergeFeatureToGiteaMain.ps1`(먼저 `-DryRun`). GitHub는 예외 시만 `Push-GitHub-Explicit.ps1 -Acknowledge`.
-3. **게이트 리듬:** `scripts/verify_p0_constitution_gate_paths.ps1`를 주기 점검으로 두고, 시간 허용 시 `scripts/run_fact_lock_bundle.ps1` — B→A 자동 합선·실매매 자동 트리거 없음 전제 유지.
-4. **내부 브리핑 95+ 모드:** 질의는 내부적으로 `intent/scope/constraints/output/evidence/uncertainty`로 표준화 후 응답하고, 결과는 `Field→Lens→Conflict→Final Action→Evidence` 순서를 고정한다.
+1. **예언(B-track) 연속:** `reports/prophecy_promotion_gates_recommended_chain_v1_latest.json`의 `promotion_recommendation`·`combined_all_passed`·렌즈 mean 대 임계부터 재개; 주기 갱신은 `--auto-sweep-and-apply` 또는 주간 태스크.
+2. **디스크 동기화·Git:** 세션 끝 의미 전환만 **본 파일·커밋**; 일상 `scripts/push-internal.ps1`, `gitea/main`은 `SoloDev-MergeFeatureToGiteaMain.ps1 -DryRun` 선행; GitHub는 `Push-GitHub-Explicit.ps1 -Acknowledge` 예외만.
+3. **게이트·브리핑:** `verify_p0_constitution_gate_paths.ps1` 주기 점검·여유 시 `run_fact_lock_bundle.ps1`; 내부 응답은 `Field→Lens→Conflict→Final Action→Evidence` 고정(B→A 자동 합선 없음).
 
 ## 동기화 루틴
 
