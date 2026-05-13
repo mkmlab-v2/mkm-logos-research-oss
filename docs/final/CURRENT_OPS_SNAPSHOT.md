@@ -1,5 +1,24 @@
 # Current ops snapshot (ephemeral handoff)
 
+## Ops slice (2026-05-13 · Cross-chat SSOT + next schedule)
+
+**채팅은 서로 기억을 공유하지 않는다.** C: 정리·Ollama 경로 등은 **레포 경로만** 새 세션에서 `@docs/final/CURRENT_OPS_SNAPSHOT.md` 또는 아래 스크립트를 연다(말로만 다른 창에 전달해도 재현 불안정).
+
+| 주제 | 레포 포인터 |
+|------|-------------|
+| C: 인스톨러 잔재 정리 | `scripts/Invoke-CRootInstallerLeftoversCleanup_v1.ps1` |
+| C: AMD 인스톨러 캐시 | `scripts/Invoke-CRootAmdInstallerCacheCleanup_v1.ps1` |
+| Ollama·대용량 모델 | **F:** 정션 + 로컬 `docs/final/LOCAL_MACHINE_POINTER_V1.md`(비추적 템플릿: `LOCAL_MACHINE_POINTER_V1.template.md`)·`C:\workspace\.env` 정합. Cursor **User Rules**는 레포와 자동 동기화되지 않음. |
+
+**다음 작업 일정 (권장 순)**
+
+1. **P0 — 워킹트리 WIP:** `git status`로 스테이징/수정 분리 → 의도 없는 아티팩트는 `git restore`, 소스·테스트는 **한 커밋** 또는 분기.
+2. **P1 — 예언 정렬 회귀:** 주 1회 `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`(exit 0) 또는 시간 여유 시 `scripts/run_fact_lock_bundle.ps1`(`-Skip*`로 조절).
+3. **P2 — 월간 러너:** `scripts/run_waiting_queue_monthly_check.ps1` — BTC 기본 CSV·듀얼 레그는 스크립트에 반영됨; Slack/게이트는 환경에 맞게 `-Skip*` 최소화.
+4. **P3 — 정렬 목록 lockstep:** `run_prophecy_alignment_pytest.ps1` / `run_prophecy_alignment_pytest.sh` **동일 커밋에서 함께 수정**(`docs/final/P0_COMMERCIALIZATION_TRACKER.md` 해당 절).
+
+`internal/main` 최신 커밋은 매번 `git rev-parse internal/main`(본 파일에 SHA 박제 금지).
+
 ## Ops slice (2026-05-12 · Action 4 complete)
 
 - **Fact-Lock:** `internal/main` / `gitea/main` at **`579cf92ef2`** — `mkm-life` submodule **`27baaa4`** (`origin/main`, philosophy RAG route merged); `verify_p0` **521** checked; `py -m pytest tests/test_philosophy_lane_rag_pilot_v1.py` 3 passed.
