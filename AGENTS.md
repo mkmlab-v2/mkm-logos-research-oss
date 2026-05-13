@@ -254,6 +254,9 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - **금지**: B-track 실험 결과를 승인 없이 실거래/프로덕션 게이트에 자동 반영하지 않는다.
 - **승격 (압축·복원 연구 → 상용/프로덕션 주장):** `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 + `docs/final/P0_COMMERCIALIZATION_TRACKER.md` — `projects/bitcoin-trading/docs/final/STAGING_TO_PRODUCTION_PROMOTION_CHECKLIST_2026-03-25.md`(거래 스테이징)와 **절차·범위 혼동 금지**.
 - **Track B 주간 메트릭·게이트(연구 레인, 압축 엔진과 별도)**: `scripts/Run-TrackBWeeklyRefresh.ps1` — 도메인 쌍·semantic(Jaccard/cosine_tokens)·`build_trackb_semantic_eval_by_domain.py`·OOV 스윕·action layer·결정성·선택 상태 시뮬·`trackb_weekly_gate_recheck_latest.json` 등. `-SkipSsmSmoke` / `-SkipCosine` / `-IncludeExtendedStressGrid`(확장 Length/OOV 스트레스, 시간 증가) 선택; 요약 MD 예시 `docs/final/artifacts/trackb_weekly_formula_utility_report_2026-04-08.md`.
+- **에이전트·채팅에서 Track B 명시 시:** 가설·멀티렌스·메타포 등 **탐색 서술을 넓힌다**. 답변·산출 끝에 **B-track·`[HYPO]`·Track A·실매매와 자동 합선되지 않음**을 한 줄로 남긴다(대외 주장·운영 트리거로 격상 금지).
+- **“무제한”이 아닌 제약:** 가설 JSON은 `py scripts/generate_btrack_hypothesis_prophecy_v1.py` 및 `docs/final/BTRACK_HYPOTHESIS_PROPHECY_V1.schema.json` 기준으로 **`hypothesis_tier=B`·`boundary_ack`·라벨 `[HYPO]`** 등 필드·경계를 지킨다. 클라우드 Gemini·유료 API는 **명시 플래그·환경·비용 상한** 하에서만.
+- **가격 적중 채점 체인(팩트 포인터):** 일일 번들 `scripts/run_btrack_daily_hypothesis_chain.ps1`이 (기본) `generate_btrack_hypothesis_prophecy_v1` → `build_btrack_prophecy_score_from_ohlcv.py` → `eval_prophecy_hit_rate_v1.py --run-mode price` 경로를 포함한다(`-SkipHitRate`로 생략 가능). 표·분기·proxy 분기는 **`docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`** 일일 B-Track 번들·Prophecy Hit Rate 절.
 
 ## 12AI vs 코드북 도메인
 
