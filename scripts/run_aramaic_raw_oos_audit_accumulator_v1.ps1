@@ -1,4 +1,5 @@
 # Run Aramaic MVP now+audit in a loop until target audit runs are reached.
+# Optional -SkipLogosInsightBundle forwards to run_aramaic_mvp_now_with_audit.ps1 (same as chain [14b] skip).
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [string]$AuditLogJsonl = "reports/ops/aramaic_mvp_run_audit_log.jsonl",
@@ -7,7 +8,8 @@ param(
     [int]$SleepSecondsBetweenRuns = 0,
     [switch]$StrictReadiness,
     [switch]$NoWebhook,
-    [switch]$SkipIngestAndReadiness
+    [switch]$SkipIngestAndReadiness,
+    [switch]$SkipLogosInsightBundle
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,6 +50,7 @@ for ($i = 1; $i -le $MaxIterations; $i++) {
     $args = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $runnerScript, "-WorkspaceRoot", $WorkspaceRoot, "-AuditLogJsonl", $logPath)
     if ($StrictReadiness) { $args += "-StrictReadiness" }
     if ($NoWebhook) { $args += "-NoWebhook" }
+    if ($SkipLogosInsightBundle) { $args += "-SkipLogosInsightBundle" }
     & powershell @args
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 

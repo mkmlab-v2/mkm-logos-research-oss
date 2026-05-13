@@ -3,6 +3,11 @@
 
 No doctrinal labels. Outputs JSON matching docs/final/schemas/logos_insight_bundle_v1.schema.json.
 
+Committed **non-degraded** schema example + upstream JSON: see
+``docs/final/schemas/logos_insight_bundle_v1.non_degraded.example.json`` and
+``docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/``;
+regenerate the example with ``py scripts/materialize_logos_insight_bundle_non_degraded_example_v1.py``.
+
 citation_pack: populated only from insight candidates and bridge edges that carry a non-empty
 snippet (see _SNIPPET_KEYS). If quote_hash is present on the row, it must match sha256(utf-8)
 of the whitespace-normalized snippet (optional "sha256:" prefix); mismatches are dropped.

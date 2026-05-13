@@ -16,6 +16,17 @@ except ImportError:  # pragma: no cover
 
 
 @pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
+def test_logos_insight_bundle_non_degraded_example_validates() -> None:
+    schema_path = ROOT / "docs/final/schemas/logos_insight_bundle_v1.schema.json"
+    example_path = ROOT / "docs/final/schemas/logos_insight_bundle_v1.non_degraded.example.json"
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    example = json.loads(example_path.read_text(encoding="utf-8"))
+    jsonschema.validate(instance=example, schema=schema)
+    assert example.get("degraded") is False
+    assert example.get("missing_upstream") == []
+
+
+@pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
 def test_logos_insight_bundle_minimal_example_validates() -> None:
     schema_path = ROOT / "docs/final/schemas/logos_insight_bundle_v1.schema.json"
     example_path = ROOT / "docs/final/schemas/logos_insight_bundle_v1.minimal.example.json"

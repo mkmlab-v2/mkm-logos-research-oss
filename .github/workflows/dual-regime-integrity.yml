@@ -231,6 +231,8 @@ on:
       - "docs/final/schemas/lens_music_m31_operational_digest_v1.example.json"
       - "docs/final/artifacts/integrated_governance_config_v1.json"
       - "tests/test_check_athena_execution_governance_smoke_v1.py"
+      - "scripts/athena_checkpoint.py"
+      - "tests/test_athena_checkpoint.py"
       - "scripts/audio/**"
       - "scripts/Run-AudioBgmGeminiExternalChain_v1.ps1"
       - "scripts/Run-AudioBgmEconomyChain_v1.ps1"
@@ -565,6 +567,19 @@ on:
       - "docs/final/artifacts/schemas/mkm_meta_layer_turn_envelope_v1.schema.json"
       - "docs/final/artifacts/fixtures/mkm_meta_layer_turn_envelope_v1.example.json"
       - "scripts/Invoke-TrackCMacroDailyFusion_v1.ps1"
+      - "scripts/build_logos_insight_bundle_v1.py"
+      - "scripts/run_aramaic_mvp_chain_v1.ps1"
+      - "tests/test_build_logos_insight_bundle_v1.py"
+      - "tests/test_logos_insight_bundle_schema_v1.py"
+      - "docs/final/schemas/logos_insight_bundle_v1.schema.json"
+      - "docs/final/schemas/logos_insight_bundle_v1.minimal.example.json"
+      - "docs/final/schemas/logos_insight_bundle_v1.non_degraded.example.json"
+      - "scripts/materialize_logos_insight_bundle_non_degraded_example_v1.py"
+      - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/morphology_registry.json"
+      - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/semantic_edge_quality.json"
+      - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/insight_candidates.json"
+      - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/bridge_edges.jsonl"
+      - "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/regime_shift.json"
       - "scripts/invoke_build_integrated_governance_if_deps_present_v1.py"
       - "scripts/Register-TrackCMacroDailyFusionTask.ps1"
       - "scripts/Run-LensMusicPromotionGateStagingStrict_v1.ps1"
@@ -970,6 +985,7 @@ jobs:
           python -m pytest \
             tests/test_athena_run_v1.py \
             tests/test_athena_doctor_v1.py \
+            tests/test_athena_checkpoint.py \
             tests/test_build_integrated_governance_m31_digest_v1.py \
             tests/test_invoke_build_integrated_governance_if_deps_present_v1.py \
             tests/test_check_athena_execution_governance_smoke_v1.py \
@@ -1160,6 +1176,9 @@ jobs:
 
       - name: Aramaic core corpus extraction (BH Aramaic window filter from verse JSONL)
         run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py -q --tb=short
+
+      - name: Logos insight bundle v1 (schema + build CLI)
+        run: python -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py -q --tb=short
 
       - name: Bio PMID paper SNP sidecar join smoke (§8.1, no network)
         run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py tests/test_check_bio_genotype_paper_snp_overlap_v1.py -q --tb=short

@@ -14,6 +14,9 @@
   Optional: skip integrated governance rebuild (default runs before ops dashboard when deps exist):
     ... -SkipIntegratedGovernanceBuild
 
+  Optional: skip Logos insight_bundle v1 aggregation (default runs after semantic query smoke):
+    ... -SkipLogosInsightBundle
+
   Optional meta-layer audit (after fusion steps): pass a JSON file or a markdown file containing a ```json envelope block.
     -File ... -MetaLayerEnvelopePath C:\path\envelope.json
 
@@ -50,6 +53,9 @@ param(
     # Integrated governance v1 rebuild (deps present only; see Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1).
     [switch]$SkipIntegratedGovernanceBuild,
 
+    # Logos insight_bundle v1 (B-track digest; py exits 0 even when upstream degraded).
+    [switch]$SkipLogosInsightBundle,
+
     # Optional: run mkm_meta_layer_envelope_v1.py after fusion (JSON path or markdown with ```json envelope).
     [string]$MetaLayerEnvelopePath = ""
 )
@@ -76,6 +82,7 @@ $forwardDaily = Join-Path $PSScriptRoot "run_macro_risk_forward_daily_chain_v1.p
 $logosChain = Join-Path $PSScriptRoot "run_logos_4d_state_chain_v1.ps1"
 $logosRegimeResonanceShadow = Join-Path $PSScriptRoot "build_logos_regime_resonance_shadow_signal_v1.py"
 $logosQuerySuite = Join-Path $PSScriptRoot "run_logos_semantic_query_smoke_suite_v1.py"
+$logosInsightBundle = Join-Path $PSScriptRoot "build_logos_insight_bundle_v1.py"
 $logosShadowPromotion = Join-Path $PSScriptRoot "promote_logos_to_shadow_live_v1.py"
 $logosShadowInsight = Join-Path $PSScriptRoot "build_logos_shadow_insight_report_v1.py"
 $logosShadowDailyMetrics = Join-Path $PSScriptRoot "append_logos_shadow_daily_metrics_v1.py"
@@ -100,7 +107,7 @@ $approvalTicketPreflight = Join-Path $PSScriptRoot "check_mkm_approval_ticket_pr
 $approvalTicketBump = Join-Path $PSScriptRoot "bump_mkm_approval_ticket_run_count_v1.py"
 $invokeIntegratedGovernance = Join-Path $PSScriptRoot "invoke_build_integrated_governance_if_deps_present_v1.py"
 
-$required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck, $logosS1ShadowReviewPacket)
+$required = @($fragilityDaily, $forwardDaily, $logosChain, $logosRegimeResonanceShadow, $logosQuerySuite, $logosInsightBundle, $logosShadowPromotion, $logosShadowInsight, $logosShadowDailyMetrics, $logosShadowWeeklyGate, $logosShadowWeeklyGateBootstrap, $logosShadowWeeklyTrend, $logosShadowAlertDecision, $logosShadowKpiProgress, $logosResponsePolicyCheck, $logosS1ShadowReviewPacket)
 if (-not $SkipRoleRouterShadowAdvisory) {
     $required += $roleRouterS1ShadowAdvisory
 }
@@ -189,6 +196,16 @@ Invoke-FusionStep -Name "build_logos_regime_resonance_shadow_signal_v1.py" -Acti
 Invoke-FusionStep -Name "run_logos_semantic_query_smoke_suite_v1.py" -Action {
     Set-Location -LiteralPath $repoRoot
     py $logosQuerySuite --query-set-json "docs/final/artifacts/logos_semantic_query_set_v3.json"
+}
+
+if (-not $SkipLogosInsightBundle) {
+    Invoke-FusionStep -Name "build_logos_insight_bundle_v1.py" -Action {
+        Set-Location -LiteralPath $repoRoot
+        py $logosInsightBundle
+    }
+}
+else {
+    Write-Host "[trackc-macro-fusion] skip logos insight bundle (SkipLogosInsightBundle)"
 }
 
 # 5) Logos shadow promotion artifacts (daily non-gating)
@@ -353,6 +370,7 @@ else {
 Write-Host "[trackc-macro-fusion] PASS"
 Write-Host "[trackc-macro-fusion] fragility_daily_json=$repoRoot/reports/fragility_macro_risk_daily_latest.json"
 Write-Host "[trackc-macro-fusion] logos4d=$repoRoot/docs/final/artifacts/logos_4d_state_v1_latest.json"
+Write-Host "[trackc-macro-fusion] logos_insight_bundle_v1=$repoRoot/docs/final/artifacts/logos_insight_bundle_v1_latest.json"
 Write-Host "[trackc-macro-fusion] logos_regime_resonance_shadow=$repoRoot/docs/final/artifacts/logos_regime_resonance_shadow_signal_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_promotion=$repoRoot/docs/final/artifacts/logos_shadow_promotion_status_latest.json"
 Write-Host "[trackc-macro-fusion] logos_shadow_insight=$repoRoot/docs/final/artifacts/logos_shadow_insight_latest.json"

@@ -36,6 +36,8 @@
 # Force local-only reflect: -SkipProphecyContemplationGemini passes --skip-gemini-reflect to run_btrack_prophecy_contemplation_v1.py (overrides env even when USE_GEMINI=1).
 # Naver OpenAPI: default OFF (no network call). Use -IncludeNaverOpenApiRefresh when Client ID/Secret and app APIs are ready. -SkipNaverOpenApiRefresh is legacy no-op unless you need explicit "skip" in wrappers.
 # Yang(2015) B-track surface metrics + celebrity benchmark: use -IncludeYang2015SurfaceMetrics (off by default; needs commander JSON for first step).
+# Logos insight bundle v1: default runs build_logos_insight_bundle_v1.py after Logos commander materialize (WARN on failure).
+#   Skip with -SkipLogosInsightBundle when artifacts are known absent.
 # Logos symbolic event promotion chain: use -IncludeLogosSymbolicPromotionChain (research-only; fixture defaults unless explicit JSONL paths provided).
 # Logos symbolic fixture fallback: default OFF (operational-safe). Enable only for test/dev.
 # Logos blind split + holdout gate: optionally build blind-split news JSONL first, then pass holdout thresholds.
@@ -82,7 +84,9 @@ param(
   [string]$ResearchEvaluationInstrument = "btc",
   [switch]$SkipProphecyContemplationGemini,
   [switch]$SkipPanel24hAlertsCheck,
-  [double]$Panel24hMinHitRate = 0.60
+  [double]$Panel24hMinHitRate = 0.60,
+  # Logos B-track observational bundle (upstream JSON/JSONL may be absent; non-blocking WARN).
+  [switch]$SkipLogosInsightBundle
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -279,6 +283,14 @@ if ($LASTEXITCODE -ne 0) { throw "logos track b commander deep report exit $LAST
 Write-Host "==> materialize_logos_track_b_commander_deep_report_v1.py"
 py scripts/materialize_logos_track_b_commander_deep_report_v1.py
 if ($LASTEXITCODE -ne 0) { throw "materialize logos track b commander deep report exit $LASTEXITCODE" }
+
+if (-not $SkipLogosInsightBundle) {
+  Write-Host "==> build_logos_insight_bundle_v1.py (Logos upstream digest; best-effort if Aramaic/morphology artifacts missing)"
+  py scripts/build_logos_insight_bundle_v1.py
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: build_logos_insight_bundle_v1 failed; chain continues." -ForegroundColor Yellow
+  }
+}
 
 $minorityMonthly = Join-Path $WorkspaceRoot "scripts\report_independent_lens_shadow_minority_monthly_v1.py"
 if (Test-Path -LiteralPath $minorityMonthly) {

@@ -12,82 +12,31 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 
+LOGOS_INSIGHT_ND_FIXTURE_ROOT = (
+    ROOT / "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream"
+)
+
+
+def _non_degraded_upstream_paths() -> dict[str, Path]:
+    r = LOGOS_INSIGHT_ND_FIXTURE_ROOT
+    return {
+        "morph": r / "morphology_registry.json",
+        "sem": r / "semantic_edge_quality.json",
+        "insight": r / "insight_candidates.json",
+        "bridge": r / "bridge_edges.jsonl",
+        "regime": r / "regime_shift.json",
+    }
+
+
 try:
     import jsonschema
 except ImportError:  # pragma: no cover
     jsonschema = None  # type: ignore[assignment]
 
 
-def _write_fixtures(tmp: Path) -> dict[str, Path]:
-    morph = {
-        "schema": "logos_morphology_registry_v1",
-        "morphology_layer": {
-            "registry_id": "morphhb_hebrew_core_v1",
-            "hebrew_atoms_total": 100,
-            "matched_hebrew_atoms": 80,
-            "unmatched_hebrew_atoms": 20,
-            "coverage_ratio_0_1": 0.8,
-            "sampled_matched_rows": 10,
-            "sampled_scanned_lines": 50,
-        },
-    }
-    sem = {
-        "schema": "aramaic_semantic_edge_quality_v1",
-        "edge_count": 4,
-        "semantic_overlap_mean": 0.35,
-        "shared_token_mean": 1.5,
-        "edge_type_histogram": {"cross_lens_confirm": 4},
-    }
-    cand_snippet = "  foo   bar  "
-    cand_hash = "sha256:" + hashlib.sha256(b"foo bar").hexdigest()
-    insight = {
-        "schema": "bible_meaning_insight_candidates_v1",
-        "candidates": [
-            {
-                "candidate_id": "c1",
-                "snippet": cand_snippet,
-                "verse_id": "GEN.1.1",
-                "quote_hash": cand_hash,
-                "source_track": "B",
-            },
-            {
-                "candidate_id": "c2",
-                "snippet": "wrong hash must be dropped",
-                "quote_hash": "sha256:deadbeef",
-            },
-            {
-                "candidate_id": "c3",
-                "snippet": "  snippet only no declared hash  ",
-            },
-        ],
-    }
-    edge = {
-        "schema": "aramaic_graph_edge_v1",
-        "src_node_id": "aramaic::dan_1_1",
-        "dst_node_id": "hebrew::dan_1_1",
-        "edge_type": "cross_lens_confirm",
-        "weight": 0.82,
-        "source_track": "B",
-        "evidence_snippet": "  bridge span text  ",
-    }
-    regime = {"schema": "aramaic_regime_shift_score_v1", "score_label": "shadow", "shadow_score_0_1": 0.4}
-
-    p_m = tmp / "morph.json"
-    p_s = tmp / "sem.json"
-    p_i = tmp / "insight.json"
-    p_b = tmp / "bridge.jsonl"
-    p_r = tmp / "regime.json"
-    p_m.write_text(json.dumps(morph, ensure_ascii=False), encoding="utf-8")
-    p_s.write_text(json.dumps(sem, ensure_ascii=False), encoding="utf-8")
-    p_i.write_text(json.dumps(insight, ensure_ascii=False), encoding="utf-8")
-    p_b.write_text(json.dumps(edge, ensure_ascii=False) + "\n", encoding="utf-8")
-    p_r.write_text(json.dumps(regime, ensure_ascii=False), encoding="utf-8")
-    return {"morph": p_m, "sem": p_s, "insight": p_i, "bridge": p_b, "regime": p_r}
-
-
 @pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
 def test_build_logos_insight_bundle_cli_outputs_valid_schema(tmp_path: Path) -> None:
-    paths = _write_fixtures(tmp_path)
+    paths = _non_degraded_upstream_paths()
     out = tmp_path / "bundle.json"
     cmd = [
         sys.executable,
@@ -169,7 +118,7 @@ def test_build_logos_insight_bundle_all_missing_still_valid(tmp_path: Path) -> N
 
 @pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
 def test_build_logos_insight_bundle_citation_pack_limit(tmp_path: Path) -> None:
-    paths = _write_fixtures(tmp_path)
+    paths = _non_degraded_upstream_paths()
     out = tmp_path / "bundle_limit.json"
     cmd = [
         sys.executable,
@@ -198,7 +147,7 @@ def test_build_logos_insight_bundle_citation_pack_limit(tmp_path: Path) -> None:
 
 @pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
 def test_build_logos_insight_bundle_citation_pack_zero(tmp_path: Path) -> None:
-    paths = _write_fixtures(tmp_path)
+    paths = _non_degraded_upstream_paths()
     out = tmp_path / "bundle_zero.json"
     cmd = [
         sys.executable,

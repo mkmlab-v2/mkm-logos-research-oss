@@ -1,0 +1,175 @@
+{
+  "schema": "logos_insight_bundle_v1",
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-05-14T00:00:00Z",
+  "generator": {
+    "script": "build_logos_insight_bundle_v1.py",
+    "version": "1.0.1"
+  },
+  "policy": {
+    "research_only": true,
+    "non_gating": true,
+    "no_doctrinal_labels": true
+  },
+  "hypothesis_tier": "[HYPO]",
+  "upstream_artifacts": [
+    {
+      "path": "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/morphology_registry.json",
+      "sha256": "f0fa3a2977108fa67d37c7f56616e6946d4ba74763002b8f55058676b6f53822"
+    },
+    {
+      "path": "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/semantic_edge_quality.json",
+      "sha256": "b66e3ebb778d2552a22070dc5df181c81a96854359d440af07220d66d1f1b0ac"
+    },
+    {
+      "path": "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/insight_candidates.json",
+      "sha256": "5973fcf0f2206cf43a0c89e10d50b947f3f0410aba6e41af4d46edd595e941dd"
+    },
+    {
+      "path": "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/bridge_edges.jsonl",
+      "sha256": "fafd3b4c8e3549f395ec3f9d9fe523d62d99f05fba69149072da7d4287767534"
+    },
+    {
+      "path": "docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/regime_shift.json",
+      "sha256": "0271444c2befabcfd7b360eba0c47bd92c8350c6ef62d635b956d15eee401aff"
+    }
+  ],
+  "degraded": false,
+  "missing_upstream": [],
+  "query": {
+    "query_fingerprint": "sha256:6fe0725ac88dacbd2ee853c2988059827e8121c70114c370cc52d5c6e825b587",
+    "scope": null,
+    "corpus_revision": null
+  },
+  "aggregation": {
+    "morphology_summary": {
+      "registry_id": "morphhb_hebrew_core_v1",
+      "hebrew_atoms_total": 100,
+      "matched_hebrew_atoms": 80,
+      "unmatched_hebrew_atoms": 20,
+      "coverage_ratio_0_1": 0.8,
+      "sampled_matched_rows": 10,
+      "sampled_scanned_lines": 50
+    },
+    "semantic_edge_quality_digest": {
+      "schema": "aramaic_semantic_edge_quality_v1",
+      "edge_count": 4,
+      "semantic_overlap_mean": 0.35,
+      "shared_token_mean": 1.5,
+      "edge_type_histogram": {
+        "cross_lens_confirm": 4
+      }
+    },
+    "insight_candidates_digest": {
+      "candidate_count": 3,
+      "top_k": 4,
+      "top": [
+        {
+          "rank": 1,
+          "candidate_id": "c1",
+          "source_node_id": "",
+          "hub_score": 0.0,
+          "path_score": 0.0,
+          "cluster_size": 0,
+          "regime_tag": ""
+        },
+        {
+          "rank": 2,
+          "candidate_id": "c2",
+          "source_node_id": "",
+          "hub_score": 0.0,
+          "path_score": 0.0,
+          "cluster_size": 0,
+          "regime_tag": ""
+        },
+        {
+          "rank": 3,
+          "candidate_id": "c3",
+          "source_node_id": "",
+          "hub_score": 0.0,
+          "path_score": 0.0,
+          "cluster_size": 0,
+          "regime_tag": ""
+        }
+      ]
+    },
+    "cross_corpus_bridge_summary": {
+      "edge_count": 1,
+      "edge_type_histogram": {
+        "cross_lens_confirm": 1
+      }
+    },
+    "regime_shift_shadow": {
+      "schema": "aramaic_regime_shift_score_v1",
+      "score_label": "shadow",
+      "shadow_score_0_1": 0.4
+    }
+  },
+  "tension_hypotheses": [
+    {
+      "tension_axis_id": "semantic_overlap_below_half_with_bridge_v0",
+      "description_neutral": "Mean semantic overlap across scored edges is below 0.5 while bridge edges are present (observational; not a textual claim).",
+      "confidence_0_1": 0.5,
+      "evidence_refs": [
+        {
+          "verse_id": null,
+          "quote_hash": "9cfd5fe493cf98efa3008a2df9160457c94b398976a4163dabc6e2e6e5b94563",
+          "edge_type": "cross_lens_confirm",
+          "source_track": "B"
+        }
+      ],
+      "supporting_metrics": {
+        "semantic_overlap_mean": 0.35,
+        "semantic_edge_count": 4,
+        "bridge_edge_count": 1
+      },
+      "counter_evidence_refs": []
+    }
+  ],
+  "citation_pack": [
+    {
+      "verse_id": "GEN.1.1",
+      "quote_hash": "sha256:fbc1a9f858ea9e177916964bd88c3d37b91a1e84412765e29950777f265c4b75",
+      "snippet": "foo bar",
+      "source_track": "B"
+    },
+    {
+      "verse_id": null,
+      "quote_hash": "sha256:91a83a08ace9155f0a2a44c0019e62b481042b27b7683a3beae50649823c8637",
+      "snippet": "snippet only no declared hash",
+      "source_track": "B"
+    },
+    {
+      "verse_id": null,
+      "quote_hash": "sha256:a1be88a5b5a8716d16f6e1de28ed497e83a38bf05a8d772f6af30df580c2b8b5",
+      "snippet": "bridge span text",
+      "source_track": "B"
+    }
+  ],
+  "audit": {
+    "inputs_hash": "sha256:1707e640159ca1fa81278d54dd166028257410b405e98e825ea30ea7e51c9c4e",
+    "ruleset_id": "logos_insight_bundle_rules_v0",
+    "ruleset_version": "0.2.0",
+    "determinism_note": "bundle_v1 rules=logos_insight_bundle_rules_v0@0.2.0; tension rules: bridge_vs_insight_gap, overlap<0.5 with bridge; citation_pack: only rows with non-empty snippet (keys snippet, evidence_snippet, verbatim_snippet, quote_snippet, text_span); quote_hash must equal sha256(utf-8) of whitespace-normalized snippet (prefix sha256: optional) when quote_hash is set; else hash is computed; dedupe by quote_hash. | committed non_degraded example: generated_at_utc=2026-05-14T00:00:00Z; upstream: docs/final/artifacts/fixtures/logos_insight_bundle_non_degraded_upstream/"
+  },
+  "uncertainty": {
+    "uncertainty_band": "low",
+    "unknown_fraction_0_1": 0.0
+  },
+  "gating": {
+    "pastoral_and_trading": "non_gating"
+  },
+  "human_review_hint": "Observational metrics only; pastoral or trading decisions are out of scope.",
+  "llm_injection_whitelist": [
+    "policy",
+    "hypothesis_tier",
+    "aggregation",
+    "tension_hypotheses",
+    "citation_pack",
+    "uncertainty",
+    "gating",
+    "missing_upstream",
+    "degraded"
+  ],
+  "forbidden_patterns_ref": "scripts/logos_response_validator_v1.py"
+}

@@ -2,7 +2,9 @@ param(
     [string]$WorkspaceRoot = "C:\workspace",
     [string]$AuditLogJsonl = "reports/ops/aramaic_mvp_run_audit_log.jsonl",
     [switch]$StrictReadiness,
-    [switch]$NoWebhook
+    [switch]$NoWebhook,
+    # Forwards to run_aramaic_mvp_chain_v1.ps1 (omit [14b] insight bundle when upstream artifacts absent).
+    [switch]$SkipLogosInsightBundle
 )
 
 $ErrorActionPreference = "Stop"
@@ -21,7 +23,9 @@ if (-not (Test-Path -LiteralPath $auditDir)) {
     New-Item -ItemType Directory -Path $auditDir -Force | Out-Null
 }
 
-& powershell -NoProfile -ExecutionPolicy Bypass -File $chainScript
+$chainArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $chainScript)
+if ($SkipLogosInsightBundle) { $chainArgs += "-SkipLogosInsightBundle" }
+& powershell @chainArgs
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 $scorePath = Join-Path $WorkspaceRoot "docs\final\artifacts\aramaic_regime_shift_score_latest.json"

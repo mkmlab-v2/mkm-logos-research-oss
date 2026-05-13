@@ -1,4 +1,4 @@
-# Run Aramaic MVP B-track chain (extract -> normalize -> nodes -> edges -> semantic quality -> score -> weight sweep -> bridge coef apply -> score refresh -> shadow compare -> meaning graph -> insight candidates -> insight-reflected score/shadow).
+# Run Aramaic MVP B-track chain (extract through Two-Track; includes [14b] logos_insight_bundle_v1 after insight-rescored shadow compare unless -SkipLogosInsightBundle).
 param(
     [string]$InputJsonl = "data/logos/verse_decoded_v2.jsonl",
     [string]$CorpusOutJsonl = "reports/constitution/btrack_pilot/aramaic_core_corpus_v1.jsonl",
@@ -14,6 +14,9 @@ param(
     [string]$MeaningGraphNodesOutJsonl = "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl",
     [string]$MeaningGraphEdgesOutJsonl = "docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl",
     [string]$MeaningInsightOutJson = "docs/final/artifacts/bible_meaning_insight_candidates_latest.json",
+    [string]$LogosMorphologyRegistryJson = "docs/final/artifacts/logos_morphology_registry_v1_latest.json",
+    [string]$LogosInsightBundleOutJson = "docs/final/artifacts/logos_insight_bundle_v1_latest.json",
+    [switch]$SkipLogosInsightBundle,
     [string]$SymbolicTopologyInsightOutJson = "docs/final/artifacts/symbolic_topology_insight_latest.json",
     [string]$SymbolAtomMappingOutJson = "docs/final/artifacts/symbol_atom_mapping_latest.json",
     [string]$AtomResonanceOutJson = "docs/final/artifacts/atom_resonance_report_latest.json",
@@ -182,6 +185,20 @@ $highCap = [double]$rec.insight_max_delta_high_vol
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & py "scripts/run_aramaic_regime_shift_shadow_compare_v1.py" "--edges-jsonl" $EdgesOutJsonl "--bridge-edges-jsonl" $BridgeEdgesOutJsonl "--include-bridge-edges" "--insight-json" $MeaningInsightOutJson "--survivor-json" $SurvivorCandidatesOutJson "--include-insight-signal" "--mid-vol-threshold" $midVol "--high-vol-threshold" $highVol "--insight-max-delta-low-vol" $lowCap "--insight-max-delta-mid-vol" $midCap "--insight-max-delta-high-vol" $highCap
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+if (-not $SkipLogosInsightBundle) {
+    Write-Host "[14b] Assemble logos_insight_bundle_v1 (morphology + Aramaic upstream digest)" -ForegroundColor Cyan
+    & py "scripts/build_logos_insight_bundle_v1.py" `
+        "--morphology-json" $LogosMorphologyRegistryJson `
+        "--semantic-quality-json" $SemanticQualityOutJson `
+        "--insight-candidates-json" $MeaningInsightOutJson `
+        "--bridge-edges-jsonl" $BridgeEdgesOutJsonl `
+        "--regime-shift-json" $ScoreOutJson `
+        "--out" $LogosInsightBundleOutJson
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: build_logos_insight_bundle_v1 exit $LASTEXITCODE (non-blocking)" -ForegroundColor Yellow
+    }
+}
 
 Write-Host "[15/17] Append insight cap threshold history" -ForegroundColor Cyan
 & py "scripts/report_aramaic_insight_cap_threshold_history_v1.py" "--recommended-json" $InsightCapThresholdRecommendedJson
