@@ -2,7 +2,8 @@ param(
     [switch]$Remove,
     [string]$TaskName = "MKM_BTrack_Automation_Health_Daily",
     [string]$DailyAt = "01:20",
-    [switch]$IncludeAlert
+    [switch]$IncludeAlert,
+    [switch]$RunWhenLoggedOff
 )
 
 $ErrorActionPreference = "Stop"
@@ -38,7 +39,8 @@ $argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command `"$r
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argLine -WorkingDirectory $workspaceRoot
 $trigger = New-ScheduledTaskTrigger -Daily -At $at
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 30)
-$principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
+$logonType = if ($RunWhenLoggedOff) { "S4U" } else { "Interactive" }
+$principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType $logonType -RunLevel Limited
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Description "Daily B-track automation health snapshot." -Force | Out-Null
 
