@@ -210,6 +210,7 @@ on:
       - "tests/fixtures/join_walkforward_smoke_v1.labels.jsonl"
       - "research/market_data/kospi_daily_external_yf.csv"
       - "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+      - "scripts/build_integrated_governance_v1.py"
       - "scripts/athena_run_v1.py"
       - "scripts/athena_doctor_v1.py"
       - "scripts/athena_ecc_logs_v1.py"
@@ -218,6 +219,7 @@ on:
       - "scripts/fixtures/integrated_governance_v1_hold.json"
       - "tests/test_athena_run_v1.py"
       - "tests/test_athena_doctor_v1.py"
+      - "tests/test_build_integrated_governance_m31_digest_v1.py"
       - "tests/test_check_athena_execution_governance_smoke_v1.py"
       - "scripts/audio/**"
       - "scripts/Run-AudioBgmGeminiExternalChain_v1.ps1"
@@ -921,6 +923,7 @@ jobs:
           python -m pytest \
             tests/test_athena_run_v1.py \
             tests/test_athena_doctor_v1.py \
+            tests/test_build_integrated_governance_m31_digest_v1.py \
             tests/test_check_athena_execution_governance_smoke_v1.py \
             -q --tb=short
 
