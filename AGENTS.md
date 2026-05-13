@@ -322,3 +322,13 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - **Ollama (VPS/본선)**: `gemma4:e2b` 등 최신 모델 풀 시 구버전은 레지스트리 **412** 가능 → **Ollama 업그레이드** 후 `ollama pull`. 로컬 `C:\workspace` Cursor 세션은 **VPS 셸이 아님**; 업그레이드·모델 설치는 **서버 셸(또는 SSH Cursor가 연 그 호스트)** 에서 수행. 태그 정렬: **`OLLAMA_MODEL=gemma4:e2b`**(로컬 `.env` 등).
 - 로컬 **SITREP → 공유 Vault 보급**(Windows, G: 마운트 시): `scripts/titan-sync.ps1` — **VPS 실매매 배포와는 별 작업**이다.
 - **리스크 프로필 소스 고정(n8n 등):** Windows 사용자 환경변수 `RISK_PROFILE_SOURCE_NAME` / `RISK_PROFILE_MODE_NAME`을 설정하면 `projects/bitcoin-trading/ops/windows-rehearsal/ensure_daemon_running.ps1`의 Fact-Safe 동기화가 매 기동 시 동일 라벨을 넘긴다(미설정 시 기존 `memory/v2/risk/risk_profile_fact_safe_latest.json`의 source/mode를 보존).
+
+## 예언 레일 운영 요약 (7줄)
+
+- 클로저 실행: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1`
+- 통과 판정: `reports/prophecy_lane_closure_bundle_v1_latest.json`의 `closure_ok: true` + `steps[*].exit_code==0`
+- 수동 잔여: `manual_remainder` 기준으로 `schtasks` 자격/로그온 정책과 Track A 승격·실매매 인간 게이트를 분리 유지
+- 일반예언 스케줄: `\GeneralProphecyDailyQueueV1`, `\GeneralProphecyHoldoutEvolutionWeeklyV1`를 Task Scheduler에서 `Ready` 확인
+- 소프트 인플루언스 갱신(선택): `build_general_prophecy_explainable_v1.py` -> `report_general_prophecy_explainability_quality_v1.py` -> `sync_biblical_lane_hook_to_bitcoin_trading.py`
+- 경계선 고정: B-track 산출은 `[HYPO]`/관측 레일이며 Track A 실거래로 자동 합선되지 않음
+- 운영 기본: 실패·경고는 아티팩트 JSON과 exit code로 보고하고, 실거래 활성화는 별도 승인 절차를 따른다
