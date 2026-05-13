@@ -1,10 +1,10 @@
-# B2G / 금융권 제안 — 통제 무결성 부록 (Annex SSOT v0.2)
+# B2G / 금융권 제안 — 통제 무결성 부록 (Annex SSOT v0.2.1)
 
 **목적:** 사업서·영문 부록에 **복붙 가능한 단일 원본**을 둔다. 외부 인용은 각주로만 쓰고, 구현·수치·경로 확정은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트·exit code가 우선(Fact-Lock).
 
-**문서 버전:** v0.2 · **고정일(Freeze):** 2026-05-13 — §1.1 Fact-Lock 교정: 과장 삭제·니치(전통의학 등) 실증 후 CDSS·일반 의료 확장 로드맵·SaMD·규제 종속 명시 (§2~§8·DoD 유지)
+**문서 버전:** v0.2.1 · **고정일:** 2026-05-13 — v0.2 본문 동결 유지; 연계 절에 내부 1p 기술요약 준비 목차 포인터만 추가
 
-**연계 초안(동일 워크스페이스):** `docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_overview_v1.md` 상단 메타에 본 Annex 포인터 추가. `docs/final/artifacts/business_registration_plan_v1.md` 표(AI+OpenData 행)에 본 Annex 경로 추가. 위 두 경로는 `.gitignore`의 `docs/final/artifacts/**`에 해당할 수 있어 **Git 추적 여부는 브랜치별로 다를 수 있음**; 제출 패키지는 지휘관이 PDF·원본으로 별도 보관.
+**연계 초안(동일 워크스페이스):** `docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_overview_v1.md` 상단 메타에 본 Annex 포인터 추가. `docs/final/artifacts/business_registration_plan_v1.md` 표(AI+OpenData 행)에 본 Annex 경로 추가. **내부(제안 본문과 별도):** 공개 직전 1페이지 기술요약 준비 목차 `docs/final/B2G_TECH_DISCLOSURE_ONEPAGER_PREP_V1.md`. 위 artifacts 경로는 `.gitignore`의 `docs/final/artifacts/**`에 해당할 수 있어 **Git 추적 여부는 브랜치별로 다를 수 있음**; 제출 패키지는 지휘관이 PDF·원본으로 별도 보관.
 
 ---
 
