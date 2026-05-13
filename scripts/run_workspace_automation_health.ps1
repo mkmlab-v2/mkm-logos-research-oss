@@ -84,6 +84,9 @@ param(
 
     # Optional: run full Track C macro fusion chain (network for Fragility/exodus proxy legs; ~1–3+ min). Uses -SkipGateAlert -SkipExodusSourceFetch.
     [switch]$IncludeTrackCMacroFusionSmoke,
+    # Optional: when fusion smoke runs (-IncludeTrackCMacroFusionSmoke or -TrackCMacroFusionSmokeOnly), pass -SkipLogosInsightBundle to Invoke-TrackCMacroDailyFusion_v1.ps1.
+    # Same effect via User/machine env MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE=1 (truthy: 1,true,yes,on) when this switch is omitted.
+    [switch]$SkipLogosInsightBundle,
 
     # Optional: Operational readiness checklist builder (Judge-ready done-condition snapshot).
     [switch]$IncludeOperationalReadinessChecklist,
@@ -1020,8 +1023,26 @@ try {
     if ($IncludeTrackCMacroFusionSmoke) {
         $fusionSmoke = Join-Path $root "scripts\Invoke-TrackCMacroDailyFusion_v1.ps1"
         if (Test-Path -LiteralPath $fusionSmoke) {
-            Step "Track C macro daily fusion smoke (Invoke-TrackCMacroDailyFusion_v1 -SkipGateAlert -SkipExodusSourceFetch)" {
-                & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $fusionSmoke -SkipGateAlert -SkipExodusSourceFetch
+            $skipLogosBundle = [bool]$SkipLogosInsightBundle
+            if (-not $skipLogosBundle) {
+                $envSkip = $env:MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE
+                if (-not [string]::IsNullOrWhiteSpace($envSkip)) {
+                    $envTrim = $envSkip.Trim()
+                    if ($envTrim -match '^(1|true|yes|on)$') {
+                        $skipLogosBundle = $true
+                        Write-Host "[run_workspace_automation_health] MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE=$envTrim -> fusion will use -SkipLogosInsightBundle" -ForegroundColor DarkGray
+                    }
+                }
+            }
+            $fusionLabel = "Track C macro daily fusion smoke (Invoke-TrackCMacroDailyFusion_v1 -SkipGateAlert -SkipExodusSourceFetch"
+            $fusionArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $fusionSmoke, "-SkipGateAlert", "-SkipExodusSourceFetch")
+            if ($skipLogosBundle) {
+                $fusionLabel += " -SkipLogosInsightBundle"
+                $fusionArgs += "-SkipLogosInsightBundle"
+            }
+            $fusionLabel += ")"
+            Step $fusionLabel {
+                & powershell.exe @fusionArgs
             }
         }
         else {
