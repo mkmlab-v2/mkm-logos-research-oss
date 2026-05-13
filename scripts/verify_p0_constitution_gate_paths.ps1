@@ -53,6 +53,7 @@ catch {
 # 2026-05-11: Lens music prompt PoC M26-M30 (metric, runbook, webhook, health, dashboard bridge tests).
 # 2026-05-13: Integrated governance deps-gated invoker (py + PS1 + pytest; Track C fusion / fact_lock / daily readiness).
 # 2026-05-13: B-track session instant Myeongni panel + weather/OHLCV join + correlate chain (py + PS1 + pytest + join fixtures).
+# 2026-05-13: Premium B-track multi-lens report v1 (builder, schema+example, offline RAG fixture, pytest; CI dual-regime + Fact-Lock bundle 4b).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -159,6 +160,12 @@ $required = @(
     "tests\fixtures\btrack_join_weather_smoke_v1.csv",
     "tests\fixtures\btrack_join_ohlcv_smoke_v1.csv",
     "tests\test_build_daily_execution_insight_brief_v1.py",
+    "scripts\build_premium_btrack_multilens_report_v1.py",
+    "docs\final\schemas\premium_btrack_multilens_report_v1.schema.json",
+    "docs\final\schemas\premium_btrack_multilens_report_v1.example.json",
+    "tests\fixtures\premium_multilens_rag_corpus_bundle_v1.json",
+    "tests\test_premium_btrack_multilens_report_schema_v1.py",
+    "tests\test_build_premium_btrack_multilens_report_v1.py",
     "tests\test_build_trackc_evidence_rag_mvp_v1.py",
     "scripts\build_mkm_trackc_ops_dashboard_v1.py",
     "tests\test_build_mkm_trackc_ops_dashboard_v1.py",
