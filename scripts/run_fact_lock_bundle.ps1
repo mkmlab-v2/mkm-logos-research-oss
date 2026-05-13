@@ -1,8 +1,9 @@
 <#
 .SYNOPSIS
-  로컬 Fact-Lock 번들 — GitHub Actions `dual-regime-integrity.yml` 핵심 검증과 동일 순서(Windows).
+  로컬 Fact-Lock 번들 — GitHub Actions `dual-regime-integrity.yml`과 **동일 pytest·스크립트 집합**을 Windows에서 회귀한다.
 
 .DESCRIPTION
+  CI `dual-regime-integrity.yml` 단일 잡에는 토큰 API·렌즈 뮤직·Athena §28 블록 등 **긴 전제 단계**가 끼어 로컬 번들의 **상대 순서**(예: meta 봉투 vs `test_athena_checkpoint` vs Logos)와 1:1로 같지 않을 수 있다. **동일 회귀 케이스 커버**가 목적이며, 라인 단위 동시 실행 순서 동치는 보장하지 않는다.
   1. `py scripts/integrity_guard.py` (CI 첫 단계)
   2. `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`
      — dual-regime 스모크 + multilens marginal(V1) 후 워크스페이스 루트 Fact-Lock(Thin V2·시장 어댑터·일반예언·**B-track 세션 패널→조인→상관 4 pytest** 등 명시 목록)
@@ -10,8 +11,8 @@
   3b. `py -m pytest tests/test_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` — Bio n-state strict JSON 재수화 계약(CONSTITUTION §3.5)
   3c. `py -m pytest tests/test_mkm_trinity_index_v1.py` — MKM Trinity 인덱스 JSON·스키마 계약(CONSTITUTION §1 렌즈 인덱스 bullet)
   3d. `py -m pytest tests/test_mkm_meta_layer_envelope_v1.py` — 메타 인지 봉투 v1·킬 스위치 정규화·`AthenaValidator`(CONSTITUTION §1.3.1 보강 2026-05-05)
-  3d2. `py -m pytest tests/test_athena_checkpoint.py` — CENTRAL `athena_checkpoint.py` prepend·`--max-checkpoints`(dual-regime Athena §28 단계와 동일)
-  3d3. `py -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py` — Logos insight bundle v1 스키마·빌더·non-degraded 예시(dual-regime Logos 단계와 동일)
+  3d2. `py -m pytest tests/test_athena_checkpoint.py` — CENTRAL `athena_checkpoint.py` prepend·`--max-checkpoints`(CI `Athena execution governance` 스텝에 포함된 동일 테스트)
+  3d3. `py -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py` — Logos insight bundle v1 스키마·빌더·non-degraded 예시(CI `Logos insight bundle v1` 스텝과 동일 테스트)
   3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   4b. `py -m pytest tests/test_premium_btrack_multilens_report_schema_v1.py tests/test_build_premium_btrack_multilens_report_v1.py tests/test_premium_multilens_job_queue_stub_v1.py tests/test_build_premium_multilens_queue_promotion_gate_v1.py` — Premium B-track multi-lens report v1(스키마·동기 빌더 subprocess·파일 큐 스텁·S1 승격 게이트 회귀); 직후 **`py scripts/premium_multilens_job_queue_stub_v1.py drain --allow-missing-queue`**(큐 없으면 SKIP·exit 0)·**`py scripts/build_premium_multilens_queue_promotion_gate_v1.py --skip-pytest`**(S1_SHADOW 승격 게이트 산출); 일상 원클릭은 **`scripts/Invoke-PremiumMultilensQueueRoutine_v1.ps1`**; `dual-regime-integrity.yml` 동일 pytest+drain+gate 단계
@@ -199,7 +200,7 @@ $mkmMetaLayerEnvelopeTest = Join-Path $workspaceRoot 'tests\test_mkm_meta_layer_
 $athenaCheckpointTest = Join-Path $workspaceRoot 'tests\test_athena_checkpoint.py'
 $logosInsightBundlePytests = @(
     (Join-Path $workspaceRoot 'tests\test_logos_insight_bundle_schema_v1.py'),
-    (Join-Path $workspaceRoot 'tests\test_build_logos_insight_bundle_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_logos_insight_bundle_v1.py')
 )
 $dailyExecutionInsightBriefTest = Join-Path $workspaceRoot 'tests\test_build_daily_execution_insight_brief_v1.py'
 $premiumBtrackMultilensReportPytests = @(
@@ -572,7 +573,7 @@ if (-not $SkipSasangSajuJointLiteraturePipeline) {
             throw "Sasang-saju joint literature pytest not found: $t"
         }
     }
-    Write-Host '== Fact-Lock: Sasang–saju joint pipeline (dual-regime parity: 7 literature + 1 ingest + 1 staleness pytest files) ==' -ForegroundColor Cyan
+    Write-Host '== Fact-Lock: Sasang-saju joint pipeline (dual-regime parity: 7 literature + 1 ingest + 1 staleness pytest files) ==' -ForegroundColor Cyan
     & py -m pytest @sasangSajuJointLiteraturePytests -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
