@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "hostinger_exit_rollback_dns_template_from_snapshot_v1",
-    "generated_at_utc":  "2026-05-12T18:49:02.9955523Z",
+    "generated_at_utc":  "2026-05-13T03:07:25.5730660Z",
     "snapshot_source":  "C:\\workspace\\reports\\hostinger_exit_dns_snapshot_latest.json",
     "note":  "Auto-generated from public DNS snapshot; review before using as rollback authority.",
     "domains":  {
@@ -20,9 +20,9 @@
                                                             "104.21.58.241",
                                                             "172.67.166.69"
                                                         ],
-                                        "www_cname_target":  "",
+                                        "www_cname_target":  "app.jema-ai.com",
                                         "www_cname_list":  [
-
+                                                               "app.jema-ai.com"
                                                            ]
                                     },
                     "personadiary.com":  {
@@ -68,10 +68,10 @@
                                                            ]
                                     },
                     "mkmlab.space":  {
-                                         "apex_a":  "147.93.77.162",
+                                         "apex_a":  "147.93.77.246",
                                          "apex_a_list":  [
-                                                             "147.93.77.162",
-                                                             "213.210.57.102"
+                                                             "147.93.77.246",
+                                                             "213.210.57.141"
                                                          ],
                                          "www_cname_target":  "www.mkmlab.space.cdn.hstgr.net",
                                          "www_cname_list":  [

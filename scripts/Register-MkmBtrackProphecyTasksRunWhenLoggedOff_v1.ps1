@@ -19,9 +19,9 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1
 
 .NOTES
-  Re-registers five cmdlet-based tasks with S4U (LogonType=S4U): MKM_BTrack_Automation_Health_Daily,
+  Re-registers six cmdlet-based tasks with S4U (LogonType=S4U): MKM_BTrack_Automation_Health_Daily,
   MKM-BTrack-DailyHypothesis-Chain, MKM-Prophecy-Panel-24h-Alerts, MKM-Prophecy-Evolution-Watchdog,
-  MKM-BTrack-BtcWeight-HitRateBundle-Weekly. After registration, Task Scheduler "Last Task Result" / LastTaskResult
+  MKM-BTrack-BtcWeight-HitRateBundle-Weekly, MKM-BTrack-RecommendedEval-AutoSweep-Weekly. After registration, Task Scheduler "Last Task Result" / LastTaskResult
   is the *last run exit code*, not registration health (e.g. panel chain may exit 1 on KPI miss; next successful run
   can show 0).
 
@@ -51,6 +51,7 @@ Write-Host "[OK] Elevated shell detected. Re-registering tasks with -RunWhenLogg
 & (Join-Path $root "scripts\Register-ProphecyPanel24hAlertsTask.ps1") -At "09:05" -RunWhenLoggedOff
 & (Join-Path $root "scripts\Register-ProphecyEvolutionWatchdogTask.ps1") -At "10:15" -RunWhenLoggedOff
 & (Join-Path $root "scripts\Register-BtcWeightHitRateBundleWeeklyTask.ps1") -SundayAt "09:15" -RunWhenLoggedOff
+& (Join-Path $root "scripts\Register-BtrackRecommendedEvalAutoSweepWeeklyTask.ps1") -SundayAt "09:45" -RunWhenLoggedOff
 
 Write-Host ""
 Write-Host "[NEXT] Verify LogonType (expect S4U for cmdlet-registered tasks):" -ForegroundColor Cyan
@@ -59,7 +60,8 @@ Get-ScheduledTask -TaskName @(
     "MKM-BTrack-DailyHypothesis-Chain",
     "MKM-Prophecy-Panel-24h-Alerts",
     "MKM-Prophecy-Evolution-Watchdog",
-    "MKM-BTrack-BtcWeight-HitRateBundle-Weekly"
+    "MKM-BTrack-BtcWeight-HitRateBundle-Weekly",
+    "MKM-BTrack-RecommendedEval-AutoSweep-Weekly"
 ) -ErrorAction SilentlyContinue | ForEach-Object {
     "{0}  LogonType={1}" -f $_.TaskName, $_.Principal.LogonType
 }
