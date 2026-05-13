@@ -491,6 +491,7 @@ $required = @(
     "tests\test_invoke_build_integrated_governance_if_deps_present_v1.py",
     "docs\final\schemas\lens_music_m31_operational_digest_v1.schema.json",
     "docs\final\schemas\lens_music_m31_operational_digest_v1.example.json",
+    "docs\final\artifacts\integrated_governance_config_v1.json",
     "scripts\dispatch_lens_music_hormone_trend_webhook_v1.py",
     "scripts\validate_lens_music_internal_eval_jsonl_v1.py",
     "scripts\run_lens_music_prompt_poc_metric_v1.py",

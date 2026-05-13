@@ -1,0 +1,12 @@
+{
+  "schema": "integrated_governance_config_v1",
+  "description": "Static weights and policy for scripts/build_integrated_governance_v1.py. Edit weights only with governance review; gate readiness still comes from the three KOSPI *_latest.json inputs.",
+  "weights": {
+    "biblical_core": 0.34,
+    "myeongri_v4_1": 0.33,
+    "sasang_strict": 0.33
+  },
+  "policy": {
+    "require_biblical_stability": false
+  }
+}

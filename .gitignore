@@ -78,6 +78,7 @@ docs/final/artifacts/**
 # verify_p0 / ops gate SSOT (not *_latest; tracked for CI path checks)
 !docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json
 !docs/final/artifacts/mkm_ops_sync_bridge_v1.json
+!docs/final/artifacts/integrated_governance_config_v1.json
 !docs/final/artifacts/fixtures/
 !docs/final/artifacts/fixtures/live_sync_heartbeat_v1.example.json
 !docs/final/artifacts/schemas/live_sync_heartbeat_v1.schema.json

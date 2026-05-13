@@ -226,6 +226,7 @@ on:
       - "tests/test_invoke_build_integrated_governance_if_deps_present_v1.py"
       - "docs/final/schemas/lens_music_m31_operational_digest_v1.schema.json"
       - "docs/final/schemas/lens_music_m31_operational_digest_v1.example.json"
+      - "docs/final/artifacts/integrated_governance_config_v1.json"
       - "tests/test_check_athena_execution_governance_smoke_v1.py"
       - "scripts/audio/**"
       - "scripts/Run-AudioBgmGeminiExternalChain_v1.ps1"
