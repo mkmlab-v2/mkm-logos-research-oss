@@ -12,6 +12,10 @@ It uses three engine gate artifacts:
 Optional (B-track advisory only, does **not** change ``final_regime`` / ``final_action_allowed``):
   - ``lens_music_hormone_trend_latest.json`` + ``reports/lens_music_symbolic_audio_promotion_gate_latest.json``
     → embedded as ``lens_music_m31_operational_digest_v1`` for disk / morning audit snapshots.
+
+CLI: pass ``--validate-digest-schema`` to assert the digest matches
+``docs/final/schemas/lens_music_m31_operational_digest_v1.schema.json`` before write
+(requires ``jsonschema``).
 """
 
 from __future__ import annotations
@@ -68,6 +72,21 @@ def _digest_lens_music_m31(
             trend.get("non_biological_notice") or "metaphor_only_advisory_controller"
         ),
     }
+
+
+def validate_lens_music_m31_digest_v1(digest: dict[str, Any], *, schema_path: Path) -> None:
+    """Validate ``digest`` against the JSON Schema at ``schema_path``.
+
+    Raises ``ValueError`` with a short message if validation fails.
+    Raises ``ModuleNotFoundError`` if ``jsonschema`` is not installed.
+    """
+    import jsonschema
+
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    try:
+        jsonschema.validate(instance=digest, schema=schema)
+    except jsonschema.ValidationError as e:
+        raise ValueError(f"digest schema validation failed: {e.message}") from e
 
 
 def _pick_biblical_score(doc: dict[str, Any]) -> float:
@@ -213,6 +232,16 @@ def main() -> int:
         help="Optional promotion gate output (advisory digest only).",
     )
     ap.add_argument("--out-json", default=str(default_art / "integrated_governance_v1_latest.json"))
+    ap.add_argument(
+        "--digest-schema-json",
+        default=str(root / "docs" / "final" / "schemas" / "lens_music_m31_operational_digest_v1.schema.json"),
+        help="JSON Schema path for lens_music_m31_operational_digest_v1 (used with --validate-digest-schema).",
+    )
+    ap.add_argument(
+        "--validate-digest-schema",
+        action="store_true",
+        help="Validate digest sub-object against --digest-schema-json before writing (requires jsonschema).",
+    )
     args = ap.parse_args()
 
     config_path = Path(args.config_json)
@@ -252,6 +281,23 @@ def main() -> int:
         lens_music_hormone_trend=trend_doc or None,
         lens_music_promotion_gate=gate_doc or None,
     )
+    if args.validate_digest_schema:
+        schema_path = Path(args.digest_schema_json)
+        if not schema_path.is_file():
+            raise SystemExit(f"missing digest schema file: {schema_path}")
+        digest = payload.get("lens_music_m31_operational_digest_v1")
+        if not isinstance(digest, dict):
+            raise SystemExit("internal error: lens_music_m31_operational_digest_v1 missing or not an object")
+        try:
+            validate_lens_music_m31_digest_v1(digest, schema_path=schema_path)
+        except ModuleNotFoundError:
+            raise SystemExit(
+                "build_integrated_governance_v1: --validate-digest-schema requires the "
+                "`jsonschema` package (e.g. pip install jsonschema)."
+            ) from None
+        except ValueError as e:
+            raise SystemExit(str(e)) from e
+
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(str(out_path))

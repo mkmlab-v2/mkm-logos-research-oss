@@ -9,7 +9,7 @@
 | C: 인스톨러 잔재 정리 | `scripts/Invoke-CRootInstallerLeftoversCleanup_v1.ps1` |
 | C: AMD 인스톨러 캐시 | `scripts/Invoke-CRootAmdInstallerCacheCleanup_v1.ps1` |
 | Ollama·대용량 모델 | **F:** 정션(또는 본인 PC 실경로)은 비추적 `docs/final/LOCAL_MACHINE_POINTER_V1.md`의 `ollama_models_dir`에만 기록. 런타임 태그는 루트 `.env`의 `OLLAMA_HOST` / `OLLAMA_MODEL`(`.env.example`·`CLAUDE.md`). Cursor **User Rules**는 레포와 자동 동기화되지 않음. |
-| 통합 거버넌스 + M31 스냅 | `scripts/build_integrated_governance_v1.py` → `docs/final/artifacts/integrated_governance_v1_latest.json`에 **`lens_music_m31_operational_digest_v1`**(트렌드·승격 게이트 JSON이 있으면). 스키마 `docs/final/schemas/lens_music_m31_operational_digest_v1.schema.json`·예시 `.example.json`. **3엔진 `final_regime` 합선 없음** — `tests/test_build_integrated_governance_m31_digest_v1.py`·`verify_p0_constitution_gate_paths.ps1` 경로 포함. |
+| 통합 거버넌스 + M31 스냅 | `scripts/build_integrated_governance_v1.py` → `docs/final/artifacts/integrated_governance_v1_latest.json`에 **`lens_music_m31_operational_digest_v1`**(트렌드·승격 게이트 JSON이 있으면). 스키마 `docs/final/schemas/lens_music_m31_operational_digest_v1.schema.json`·예시 `.example.json`·선택 **`--validate-digest-schema`**. **3엔진 `final_regime` 합선 없음** — `tests/test_build_integrated_governance_m31_digest_v1.py`·`verify_p0_constitution_gate_paths.ps1` 경로 포함. |
 | Hostinger 퇴거(VPS만)·등록 → Cloudflare Registrar | `scripts/Invoke-HostingerFullExitAutomationChain_v1.ps1` → `reports/hostinger_decommission_gate_latest.json`(`go`) · `reports/hostinger_full_exit_automation_chain_latest.json` · 진행표 `scripts/data/hostinger_full_exit/registrar_transfer_tracker_v1.json` — 백업·hPanel 호스팅 해지·EPP/이전은 수동. |
 
 **다음 작업 일정 (권장 순)**

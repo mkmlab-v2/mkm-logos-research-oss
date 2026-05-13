@@ -7,16 +7,15 @@ from pathlib import Path
 
 import pytest
 
-from scripts.build_integrated_governance_v1 import build_payload
+from scripts.build_integrated_governance_v1 import build_payload, validate_lens_music_m31_digest_v1
 
 _REPO = Path(__file__).resolve().parents[1]
 _DIGEST_SCHEMA = _REPO / "docs" / "final" / "schemas" / "lens_music_m31_operational_digest_v1.schema.json"
 
 
 def _validate_digest(instance: dict) -> None:
-    jsonschema = pytest.importorskip("jsonschema")
-    schema = json.loads(_DIGEST_SCHEMA.read_text(encoding="utf-8"))
-    jsonschema.validate(instance=instance, schema=schema)
+    pytest.importorskip("jsonschema")
+    validate_lens_music_m31_digest_v1(instance, schema_path=_DIGEST_SCHEMA)
 
 
 def _minimal_cfg() -> dict:
@@ -32,6 +31,13 @@ def _hold_engines() -> tuple[dict, dict, dict]:
     mye = {"standalone_commercial_ready": False, "_path": "mye.json"}
     sas = {"commercial_ready": False, "_path": "sas.json"}
     return bib, mye, sas
+
+
+def test_validate_digest_rejects_invalid_instance() -> None:
+    pytest.importorskip("jsonschema")
+    bad = {"schema": "lens_music_m31_operational_digest_v1", "present": True}
+    with pytest.raises(ValueError, match="digest schema validation failed"):
+        validate_lens_music_m31_digest_v1(bad, schema_path=_DIGEST_SCHEMA)
 
 
 def test_digest_absent_inputs_still_emits_digest_block() -> None:
