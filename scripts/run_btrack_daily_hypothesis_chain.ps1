@@ -17,6 +17,8 @@
 # News/macro lens JSON: use -SkipNewsMacroAdapter to skip build_btrack_news_macro_lens_adapters_v1.py (reuse prior lens files).
 # Hit-rate: when research/market_data/kospi_daily_external_yf.csv exists, the chain runs
 #   build_btrack_prophecy_score_from_ohlcv.py -> eval_prophecy_hit_rate_v1 --run-mode price
+# When BTC CSV resolves, build passes --force-dual-leg-panel (KOSPI∩BTC calendar + both legs per eval_date)
+# so instrument_combo walkforward is not skipped as "need at least 2 distinct eval_dates with both kospi+btc legs".
 # BTC dual-leg: --btc-csv when resolved path exists. Resolution order (same idea as Run-BTrackOhlcvScoreAndEval.ps1):
 #   1) -BtcCsv parameter  2) env MKM_BTC_DAILY_CSV  3) research/market_data/btc_daily_external_yf.csv
 # (B-track [HYPO] only; not live trading). Without CSV, hit-rate eval is skipped with a note.
@@ -379,13 +381,14 @@ if (-not $SkipHitRate) {
     }
     $buildArgs = @("scripts/build_btrack_prophecy_score_from_ohlcv.py")
     if ($IncludeDawnScore) {
-      Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (--recent-trading-days 30) + eval_prophecy_hit_rate_v1 price"
+      Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (--recent-trading-days 30, --force-dual-leg-panel when BTC CSV) + eval_prophecy_hit_rate_v1 price"
       $buildArgs += @("--recent-trading-days", "30")
     } else {
-      Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (default 1d) + eval_prophecy_hit_rate_v1 price"
+      Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (default 1d, --force-dual-leg-panel when BTC CSV) + eval_prophecy_hit_rate_v1 price"
     }
     if (-not [string]::IsNullOrWhiteSpace($btcResolved)) {
       $buildArgs += @("--btc-csv", $btcResolved)
+      $buildArgs += "--force-dual-leg-panel"
     } else {
       Write-Host "WARN: BTC CSV missing; score will be KOSPI-only. Set -BtcCsv, MKM_BTC_DAILY_CSV, or add $btcDefault" -ForegroundColor Yellow
     }

@@ -18,6 +18,15 @@ def test_daily_chain_declares_skip_prophecy_contemplation_gemini_and_passes_flag
     assert "$SkipProphecyContemplationGemini" in text
 
 
+def test_daily_chain_passes_force_dual_leg_panel_with_btc_csv() -> None:
+    text = _CHAIN.read_text(encoding="utf-8")
+    assert "--force-dual-leg-panel" in text
+    assert '$buildArgs += "--force-dual-leg-panel"' in text
+    idx_btc = text.find('$buildArgs += @("--btc-csv", $btcResolved)')
+    idx_force = text.find('$buildArgs += "--force-dual-leg-panel"')
+    assert idx_btc != -1 and idx_force != -1 and idx_force > idx_btc
+
+
 def test_register_btrack_task_supports_skip_prophecy_contemplation_gemini() -> None:
     text = _REGISTER.read_text(encoding="utf-8")
     assert "[switch]$SkipProphecyContemplationGemini" in text
