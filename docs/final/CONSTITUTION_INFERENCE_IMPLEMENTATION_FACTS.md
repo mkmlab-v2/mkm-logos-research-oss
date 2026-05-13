@@ -673,7 +673,18 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | Aramaic 레짐 쉬프트 점수 CLI 스모크 | `tests/test_aramaic_regime_shift_score_v1.py` |
 | Aramaic 의미 연결 품질 리포트 CLI 스모크 | `tests/test_aramaic_semantic_edge_quality_v1.py` |
 | Aramaic 교차 코퍼스 브리지 빌더 CLI 스모크 | `tests/test_build_aramaic_cross_corpus_bridge_v1.py` |
-| Aramaic §4.7·Bible 의미·통찰 생존·캡·가중치·shadow·MVP 감사·경보 pytest | _(레포 미배치)_ §4.7 표 스크립트와 짝지을 아래 파일은 아직 없음 — 구현 후 행 단위로 복원: `tests/test_bible_meaning_graph_schema_v1.py`, `tests/test_build_bible_meaning_graph_v1.py`, `tests/test_extract_bible_meaning_insight_candidates_v1.py`, `tests/test_build_insight_survivor_eval_v1.py`, `tests/test_select_insight_survivor_candidates_v1.py`, `tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py`, `tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py`, `tests/test_report_aramaic_insight_cap_threshold_history_v1.py`, `tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py`, `tests/test_aramaic_regime_shift_weight_sweep_v1.py`, `tests/test_aramaic_regime_shift_shadow_compare_v1.py`, `tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py` |
+| Bible 의미 그래프 노드·엣지 행 스키마 계약 (별도 schema 파일 없음) | `tests/test_bible_meaning_graph_schema_v1.py` |
+| Bible 의미 그래프 빌더 CLI 스모크 | `tests/test_build_bible_meaning_graph_v1.py` |
+| Bible 의미 통찰 후보 추출기 CLI 스모크 | `tests/test_extract_bible_meaning_insight_candidates_v1.py` |
+| 통찰 생존 평가 빌더 CLI 스모크 | `tests/test_build_insight_survivor_eval_v1.py` |
+| 통찰 생존 선발 CLI 스모크 | `tests/test_select_insight_survivor_candidates_v1.py` |
+| 통찰 캡 버킷 임계치 스윕 CLI 스모크 | `tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py` |
+| 통찰 캡 버킷 임계치 추천 적용 CLI 스모크 | `tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py` |
+| 통찰 캡 임계치 히스토리 append CLI 스모크 | `tests/test_report_aramaic_insight_cap_threshold_history_v1.py` |
+| 통찰 캡 임계치 드리프트 경보 CLI 스모크 | `tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py` |
+| 레짐 쉬프트 가중치 스윕 CLI 스모크 | `tests/test_aramaic_regime_shift_weight_sweep_v1.py` |
+| 레짐 쉬프트 shadow 비교 CLI 스모크 | `tests/test_aramaic_regime_shift_shadow_compare_v1.py` |
+| 레짐 쉬프트 브리지 계수 추천 적용 CLI 스모크 | `tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py` |
 | 다중 렌즈 중간 레이어 절차 | `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` |
 | AI BGM 승격 게이트 v1 (스키마·기계적 평가·저작권 Field) | `tests/test_audio_bgm_gate_report_v1.py` |
 | 상징→오디오 매핑 계약 v1 ([HYPO] M0, 비임상) | `tests/test_sasang_music_mapping_schema_v1.py` |
