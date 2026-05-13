@@ -93,6 +93,7 @@ def _artifact_health(workspace: Path) -> dict[str, Any]:
         "fragility_daily": workspace / "reports" / "fragility_macro_risk_daily_latest.json",
         "forward_log": art / "macro_risk_forward_log_latest.json",
         "logos_4d": art / "logos_4d_state_v1_latest.json",
+        "logos_insight_bundle": art / "logos_insight_bundle_v1_latest.json",
         "ops_dashboard": art / "mkm_trackc_ops_dashboard_latest.json",
     }
     now = datetime.now(timezone.utc)
@@ -161,6 +162,11 @@ def main() -> int:
             "exists": script_exists,
         },
         "artifacts": artifacts,
+        "operator_hints": [
+            "Scheduled task re-register (same -TaskName overwrites): scripts/Register-TrackCMacroDailyFusionTask.ps1 -SkipLogosInsightBundle when Aramaic/morphology inputs are absent on this host.",
+            "Health fusion smoke only: scripts/run_workspace_automation_health.ps1 -IncludeTrackCMacroFusionSmoke or -TrackCMacroFusionSmokeOnly; add -SkipLogosInsightBundle or set User env MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE truthy (1,true,yes,on). SSOT: CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §1.3.1.",
+            "Verify task action: scripts/Verify-TrackCMacroDailyFusionScheduledTask_v1.ps1",
+        ],
         "diagnosis": {
             "status": "PASS" if category == "OK" and script_exists else "FAIL",
             "reason_codes": reason_codes,
@@ -177,6 +183,9 @@ def main() -> int:
         f"- result_category: `{category}`",
         f"- last_task_result: `{last_result}`",
         f"- reason_codes: `{reason_codes}`",
+        "",
+        "## Operator hints",
+        *(f"- {h}" for h in diagnosis["operator_hints"]),
         "",
         "## Artifact Health",
         *(f"- {k}: exists=`{v.get('exists')}`, stale_over_48h=`{v.get('stale_over_48h', False)}`" for k, v in artifacts.items()),
