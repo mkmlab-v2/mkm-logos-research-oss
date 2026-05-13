@@ -506,6 +506,7 @@ $required = @(
     "scripts\Dedupe-MkmControlIntegrityInferenceBatch.ps1",
     "scripts\Invoke-LiveSyncHeartbeatCheck.ps1",
     "scripts\Invoke-LiveSyncHeartbeatPull.ps1",
+    "scripts\Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1",
     "scripts\Register-LiveSyncHeartbeatPullTask.ps1",
     "scripts\Deploy-LiveSyncHeartbeatToVps.ps1",
     "scripts\linux\live_sync_push_heartbeat_snippet.sh",

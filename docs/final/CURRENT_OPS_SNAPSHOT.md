@@ -33,6 +33,18 @@
 - [ ] **7** — `btrack_hypothesis_prophecy_latest.json` / `btrack_prophecy_score_latest.json` / `prophecy_hit_rate_eval_latest.json` 필드 확인
 - [ ] **9** — `reports/prophecy_panel_24h_alerts_latest.json`만으로 패널 판정(exit 코드 ≠ 작업 등록 상태)
 
+### 예언 레일 일단락 (권장 방안 · 운영 본선만)
+
+**정의:** “일단락” = **관측·스케줄·정렬·Safe ops 표면**까지 권장 순서가 **exit 0**으로 닫힌 상태. **상용 Track A 승격·실매매·`schtasks` 일반예언 두 작업**은 이 블록 밖(별도 인간 게이트·수동 설정).
+
+| 단계 | 내용 |
+|------|------|
+| A | **원클릭 검증+리포트:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` → `reports/prophecy_lane_closure_bundle_v1_latest.json`에 단계별 exit·`safe_ops` 요약·수동 잔여 2줄 기록. 엄격 선행: `-StrictPrereqs`. live_sync 생략: `-SkipLiveSyncPull`. GO/NO_GO만 생략: `-SkipGoNoGoRefresh`. |
+| B | **주간:** `run_prophecy_alignment_pytest.ps1` 또는 `run_fact_lock_bundle.ps1`(시간 여유). |
+| C | **월간:** `run_waiting_queue_monthly_check.ps1`(`-SkipBundle`는 정렬 중복 생략용). |
+| D | **스케줄:** 관리자 `Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1`(경로 필수: `.\scripts\...`). |
+| E | **수동 고정:** `\GeneralProphecyDailyQueueV1`, `\GeneralProphecyHoldoutEvolutionWeeklyV1` — 로그오프 실행·자격 증명. |
+
 **다음 작업 일정 (권장 순)**
 
 - **Hostinger / CF Registrar:** 새 세션에서는 위 표 한 줄만 `@`로 열고 체인 재실행; `go` 이후에도 해지·이전은 사람 확인.
