@@ -174,6 +174,13 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【빠른 헌법 점검】 | P0 필수 경로 존재만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` |
 | 【예언 레일 일단락】 | 예언 본선 클로저(P0·B-track 정렬 pytest·safe ops·GO/NO_GO 갱신). 통과 판정은 `reports/prophecy_lane_closure_bundle_v1_latest.json`의 **`closure_ok: true`** 및 `manual_remainder`(Windows `schtasks` 일반예언·Track A 실매매는 수동 잔여) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` |
 
+### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
+
+- **주간·넓게(기본 권장):** 【아테나 점검】→ `Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` → `run_fact_lock_bundle.ps1`에 **프리미엄 멀티렌즈 pytest(단계 4b)**가 포함되며, CI `dual-regime-integrity.yml`과 동일 2종이다.
+- **가볍게 프리미엄만:** `pwsh scripts/run_workspace_automation_health.ps1 -PremiumBtrackMultilensReportSmokeOnly` (P0·reconcile·해당 pytest).
+- **암행어사 기본:** `AmsaengHealth`는 **프리미엄을 기본 포함하지 않는다**(실행 시간·역할 분리). 전체 헬스에 함께 돌리려면 `run_workspace_automation_health.ps1`에 **`-IncludePremiumBtrackMultilensReportSmoke`**를 별도로 넘긴다.
+- **경로 존재만:** 【빠른 헌법 점검】(`Persona P0`) — pytest는 실행하지 않는다.
+
 - **이름 충돌 주의:** `scripts/Invoke-AthenaAutomationRegistryCheck.ps1`의 Athena는 **태스크 스케줄 vs `automation_registry.json`** 전용이며, 위 표의 **AthenaBundle**과 **다르다.**
 - **좁은 암행어사 한 바퀴(SafeOps·MCP·비밀·no1kmedi API 등):** `scripts/Invoke-AmsaengEosaGovernanceCycle.ps1` — 범위는 `docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json`.
 - **비밀 키 하이브리드 권장(로컬 DPAPI / VPS env):** `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` 「비밀 키」절 · `scripts/Invoke-MkmSecretsHybridReadiness_v1.ps1`(레포 위생 + Windows DPAPI 스토어 존재·키 개수만) · VPS 템플릿 `scripts/deploy/linux/mkm-monorepo-vps.env.example`.

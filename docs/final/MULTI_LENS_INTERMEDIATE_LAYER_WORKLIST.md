@@ -74,7 +74,7 @@
 저장소 루트에서:
 
 ```powershell
-# CI와 유사 순서(Windows): integrity_guard → prophecy 번들 → … → 메타 인지 봉투 pytest → **한의 의사 CDS 봉투 v1 pytest 2종(3e)** → … → 사상 통찰 번들 pytest → Bio n-states 재수화 pytest → MKM Trinity 인덱스(jsonschema) pytest → 일일 실행 인사이트 브리프 pytest (dual-regime 정렬)
+# 단계 순서·4b(Premium multilens) 등은 `scripts/run_fact_lock_bundle.ps1` 상단 `.DESCRIPTION` 주석이 SSOT(아래 한 줄은 진입점만).
 powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fact_lock_bundle.ps1
 ```
 
