@@ -11,7 +11,7 @@ It uses three engine gate artifacts:
 
 Optional (B-track advisory only, does **not** change ``final_regime`` / ``final_action_allowed``):
   - ``lens_music_hormone_trend_latest.json`` + ``reports/lens_music_symbolic_audio_promotion_gate_latest.json``
-    → embedded as ``lens_music_m31_operational_digest_v1`` for morning / audit snapshots.
+    → embedded as ``lens_music_m31_operational_digest_v1`` for disk / morning audit snapshots.
 """
 
 from __future__ import annotations
@@ -243,10 +243,6 @@ def main() -> int:
     gate_path = Path(args.lens_music_promotion_gate_json)
     trend_doc = _safe_json(trend_path)
     gate_doc = _safe_json(gate_path)
-    if trend_doc:
-        trend_doc["_path"] = str(trend_path)
-    if gate_doc:
-        gate_doc["_path"] = str(gate_path)
 
     payload = build_payload(
         cfg,

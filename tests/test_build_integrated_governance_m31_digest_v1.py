@@ -2,7 +2,21 @@
 
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
+import pytest
+
 from scripts.build_integrated_governance_v1 import build_payload
+
+_REPO = Path(__file__).resolve().parents[1]
+_DIGEST_SCHEMA = _REPO / "docs" / "final" / "schemas" / "lens_music_m31_operational_digest_v1.schema.json"
+
+
+def _validate_digest(instance: dict) -> None:
+    jsonschema = pytest.importorskip("jsonschema")
+    schema = json.loads(_DIGEST_SCHEMA.read_text(encoding="utf-8"))
+    jsonschema.validate(instance=instance, schema=schema)
 
 
 def _minimal_cfg() -> dict:
@@ -26,6 +40,7 @@ def test_digest_absent_inputs_still_emits_digest_block() -> None:
     d = p.get("lens_music_m31_operational_digest_v1") or {}
     assert d.get("schema") == "lens_music_m31_operational_digest_v1"
     assert d.get("present") is False
+    _validate_digest(d)
 
 
 def test_digest_reflects_trend_and_gate_advisory_fields() -> None:
@@ -55,6 +70,13 @@ def test_digest_reflects_trend_and_gate_advisory_fields() -> None:
     assert d["trend_rows_with_rag_drift"] == 3
     assert d["promotion_decision"] == "GO"
     assert d["m31_hormone_guard_passed"] is True
+    _validate_digest(d)
+
+
+def test_digest_example_json_validates_against_schema() -> None:
+    ex = _REPO / "docs" / "final" / "schemas" / "lens_music_m31_operational_digest_v1.example.json"
+    inst = json.loads(ex.read_text(encoding="utf-8"))
+    _validate_digest(inst)
 
 
 def test_digest_does_not_change_three_engine_hold() -> None:
@@ -68,5 +90,7 @@ def test_digest_does_not_change_three_engine_hold() -> None:
     }
     gate = {"decision": "HOLD_M31_HORMONE_GUARD", "m31_hormone_guard": {"passed": False, "reason": "threshold"}}
     rich = build_payload(_minimal_cfg(), bib, mye, sas, lens_music_hormone_trend=trend, lens_music_promotion_gate=gate)
+    _validate_digest(base["lens_music_m31_operational_digest_v1"])
+    _validate_digest(rich["lens_music_m31_operational_digest_v1"])
     for k in ("final_regime", "final_action_allowed", "final_score", "veto_reason_codes", "engine_status"):
         assert base[k] == rich[k]

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/lens_music_m31_operational_digest_v1.schema.json",
+  "title": "Lens music M31 operational digest v1 (advisory, integrated governance sidecar)",
+  "description": "Thin snapshot embedded under integrated_governance_v1.lens_music_m31_operational_digest_v1. Advisory only; must not drive final_regime / final_action_allowed.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "present",
+    "trend_schema",
+    "trend_state",
+    "trend_high_stress_rate",
+    "trend_max_consecutive_high_stress",
+    "trend_mean_rag_metabolism_bounded_drift_0_1",
+    "trend_rows_with_rag_drift",
+    "promotion_decision",
+    "m31_hormone_guard_passed",
+    "m31_hormone_guard_reason",
+    "non_biological_notice"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "lens_music_m31_operational_digest_v1"
+    },
+    "present": {
+      "type": "boolean"
+    },
+    "trend_schema": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "trend_state": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "trend_high_stress_rate": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "trend_max_consecutive_high_stress": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "trend_mean_rag_metabolism_bounded_drift_0_1": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "trend_rows_with_rag_drift": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "promotion_decision": {
+      "type": "string",
+      "maxLength": 128
+    },
+    "m31_hormone_guard_passed": {
+      "type": ["boolean", "null"]
+    },
+    "m31_hormone_guard_reason": {
+      "type": ["string", "null"],
+      "maxLength": 512
+    },
+    "non_biological_notice": {
+      "type": "string",
+      "maxLength": 256
+    }
+  }
+}

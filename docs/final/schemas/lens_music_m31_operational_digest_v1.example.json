@@ -1,0 +1,14 @@
+{
+  "schema": "lens_music_m31_operational_digest_v1",
+  "present": true,
+  "trend_schema": "lens_music_hormone_trend_v1",
+  "trend_state": "WATCH",
+  "trend_high_stress_rate": 0.4,
+  "trend_max_consecutive_high_stress": 2,
+  "trend_mean_rag_metabolism_bounded_drift_0_1": 0.12,
+  "trend_rows_with_rag_drift": 3,
+  "promotion_decision": "GO",
+  "m31_hormone_guard_passed": true,
+  "m31_hormone_guard_reason": "ok",
+  "non_biological_notice": "metaphor_only_advisory_controller"
+}

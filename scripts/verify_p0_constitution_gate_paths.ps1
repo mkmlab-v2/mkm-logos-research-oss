@@ -51,6 +51,7 @@ catch {
 # 2026-05-10: Track C P1 sales kit canonical paths (mkm_ai_sales_kit_v1).
 # 2026-05-10: MKM promotion gate evidence bundle + pilot report path index (G0-G11 audit JSON).
 # 2026-05-11: Lens music prompt PoC M26-M30 (metric, runbook, webhook, health, dashboard bridge tests).
+# 2026-05-13: Integrated governance v1 builder + M31 advisory digest schema + pytest (P0 existence gate).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -483,6 +484,10 @@ $required = @(
     "scripts\check_lens_music_symbolic_audio_promotion_gate_v1.py",
     "scripts\Run-LensMusicPromotionGateStagingStrict_v1.ps1",
     "scripts\build_lens_music_hormone_trend_v1.py",
+    "scripts\build_integrated_governance_v1.py",
+    "tests\test_build_integrated_governance_m31_digest_v1.py",
+    "docs\final\schemas\lens_music_m31_operational_digest_v1.schema.json",
+    "docs\final\schemas\lens_music_m31_operational_digest_v1.example.json",
     "scripts\dispatch_lens_music_hormone_trend_webhook_v1.py",
     "scripts\validate_lens_music_internal_eval_jsonl_v1.py",
     "scripts\run_lens_music_prompt_poc_metric_v1.py",
