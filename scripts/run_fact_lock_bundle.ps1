@@ -17,6 +17,7 @@
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
   5c. `py -m pytest tests/test_run_graphrag_pilot_router_v1.py` — GraphRAG 파일럿 라우터(Track B/K 관측 전용, GO 게이트·한글 별칭·brief fallback) 회귀.
   5c2. `py -m pytest tests/test_philosophy_lane_rag_pilot_v1.py` — 철학·상담 레인 RAG 파일럿(금지어 JSON·ANN-lite 스킵 계약).
+  5c3. `py -m pytest tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py tests/test_build_semantic_rag_bridge_insight_bundle_v1.py` — 내부 시맨틱+RAG 번역 브리지 번들 v1(스키마·Premium/철학 병합 CLI; `dual-regime-integrity.yml` 동일 단계).
   5d. `py -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py` — Control-Integrity Golden/LoRA 파이프라인 스모크(aggregate·프로모션 게이트·오라클 추론 타이밍; GPU 불필요). `-SkipMkmControlIntegritySmoke` 로 생략.
   5d2. `py -m pytest tests/test_va_fusion_control_integrity_chain_v1.py tests/test_va_fusion_policy_golden_v1.py` — VA→fusion→감사 체인 + `va_tag_boost_v1` 정책 골든(CONSTITUTION §3.8.4). `-SkipVaFusionControlIntegritySmoke` 로 생략.
   5e. 사상–사주 조인트 문헌·큐레이트 회귀 **9**개 파일(Europe PMC 픽스처·오프라인 **7** + 인제스트 **1** + staleness **1**; CONSTITUTION §3.3 표「사상체질↔문헌↔사주 조인트」). `-SkipSasangSajuJointLiteraturePipeline` 로 생략.
@@ -204,6 +205,10 @@ $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thi
 $mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
 $graphragPilotRouterTest = Join-Path $workspaceRoot 'tests\test_run_graphrag_pilot_router_v1.py'
 $philosophyLaneRagPilotTest = Join-Path $workspaceRoot 'tests\test_philosophy_lane_rag_pilot_v1.py'
+$semanticRagBridgeBundlePytests = @(
+    (Join-Path $workspaceRoot 'tests\test_semantic_rag_bridge_insight_bundle_schema_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_semantic_rag_bridge_insight_bundle_v1.py')
+)
 $mkmControlIntegrityPipelineSmokeTest = Join-Path $workspaceRoot 'tests\test_mkm_control_integrity_pipeline_smoke_v1.py'
 $vaFusionControlIntegritySmokeTests = @(
     (Join-Path $workspaceRoot 'tests\test_va_fusion_control_integrity_chain_v1.py'),
@@ -493,6 +498,17 @@ if (-not (Test-Path -LiteralPath $philosophyLaneRagPilotTest)) {
 }
 Write-Host '== Fact-Lock: test_philosophy_lane_rag_pilot_v1.py ==' -ForegroundColor Cyan
 & py -m pytest $philosophyLaneRagPilotTest -q --tb=short
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
+foreach ($t in $semanticRagBridgeBundlePytests) {
+    if (-not (Test-Path -LiteralPath $t)) {
+        throw "Semantic RAG bridge bundle pytest not found: $t"
+    }
+}
+Write-Host '== Fact-Lock: semantic_rag_bridge_insight_bundle_v1 (schema + builder; dual-regime parity) ==' -ForegroundColor Cyan
+& py -m pytest @semanticRagBridgeBundlePytests -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }

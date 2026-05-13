@@ -360,6 +360,11 @@ on:
       - "tests/test_build_premium_multilens_queue_promotion_gate_v1.py"
       - "docs/final/schemas/premium_btrack_multilens_report_v1.schema.json"
       - "docs/final/schemas/premium_btrack_multilens_report_v1.example.json"
+      - "scripts/build_semantic_rag_bridge_insight_bundle_v1.py"
+      - "docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json"
+      - "docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.example.json"
+      - "tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py"
+      - "tests/test_build_semantic_rag_bridge_insight_bundle_v1.py"
       - "tests/fixtures/premium_multilens_rag_corpus_bundle_v1.json"
       - "tests/test_ultra_compression_artifacts.py"
       - "tests/test_compression_weekly_governance_report.py"
@@ -1117,6 +1122,13 @@ jobs:
 
       - name: Premium multilens queue promotion gate v1 (S1 shadow; skip-pytest)
         run: python scripts/build_premium_multilens_queue_promotion_gate_v1.py --skip-pytest --root .
+
+      - name: Semantic RAG bridge insight bundle v1 (schema + premium/philosophy merge CLI)
+        run: |
+          python -m pytest \
+            tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py \
+            tests/test_build_semantic_rag_bridge_insight_bundle_v1.py \
+            -q --tb=short
 
       - name: Cross-lens RAG alert notify v1 (stale guard, Telegram min severity)
         run: python -m pytest tests/test_send_cross_lens_rag_alert_v1.py -q --tb=short

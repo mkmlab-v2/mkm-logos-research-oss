@@ -6,7 +6,7 @@
 
 **연계:** 출원 전 1p 요약 준비 `docs/final/B2G_TECH_DISCLOSURE_ONEPAGER_PREP_V1.md` · 제안 복붙 부록 `docs/final/B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md` — 역할이 다르며 본문 **이중 기술 금지**.
 
-**문서 버전:** v0.2.2 · **갱신:** 2026-05-14 — Premium multi-lens 리포트 → 번들 `--premium-multilens-report-json`·병합 순서·CONSTITUTION 갱신
+**문서 버전:** v0.2.3 · **갱신:** 2026-05-14 — Fact-Lock 번들·`dual-regime-integrity`에 브리지 pytest 단계 고정
 
 ---
 
@@ -164,7 +164,7 @@
 - `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — 렌즈 격벽·NON_GATING
 - 오프라인 멀티렌즈 RAG: CONSTITUTION 표 `build_premium_btrack_multilens_report_v1.py` 행
 - 철학 파일럿: 동 표 `philosophy_lane_rag_pilot_v1.py` 행
-- 번역 브리지 번들 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` · 빌더 `scripts/build_semantic_rag_bridge_insight_bundle_v1.py` (내부 v0.2.2 / CONSTITUTION 동명 행; `--premium-multilens-report-json`)
+- 번역 브리지 번들 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` · 빌더 `scripts/build_semantic_rag_bridge_insight_bundle_v1.py` (내부 v0.2.3 / CONSTITUTION 동명 행; Fact-Lock 번들 5c3·`dual-regime-integrity` pytest)
 
 ---
 
@@ -172,7 +172,7 @@
 
 1. ~~**4D** 분리 표 확정~~ → v0.2 **2.1** (리뷰만 남음).
 2. ~~**번역 브리지** JSON Schema v1~~ → `semantic_rag_bridge_insight_bundle_v1` + pytest.
-3. ~~**빌더 CLI**~~ → `rag-json` → **`premium-multilens-report-json`** → `philosophy-pilot-json` (24 cap). CI·일일 체인에 고정 삽입은 후속.
+3. ~~**빌더 CLI**~~ → `rag-json` → **`premium-multilens-report-json`** → `philosophy-pilot-json` (24 cap). **`run_fact_lock_bundle.ps1` 5c3 + `dual-regime-integrity.yml`**에 pytest 고정.
 4. ~~**A~D 지표 1회**~~ → 6절 **A-pilot** 완료; RAG 미연결 비율 등 **본측정**은 후속.
 5. 대외 문서·제안서에는 **본 파일·스키마 경로 링크 금지**(내부 전용).
 
