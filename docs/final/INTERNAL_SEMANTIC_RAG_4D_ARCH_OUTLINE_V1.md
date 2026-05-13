@@ -6,7 +6,7 @@
 
 **연계:** 출원 전 1p 요약 준비 `docs/final/B2G_TECH_DISCLOSURE_ONEPAGER_PREP_V1.md` · 제안 복붙 부록 `docs/final/B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md` — 역할이 다르며 본문 **이중 기술 금지**.
 
-**문서 버전:** v0.2.1 · **갱신:** 2026-05-14 — §4.1 파이프라인↔스크립트 매핑·철학 파일럿→번들 `--philosophy-pilot-json`·CONSTITUTION 행 추가
+**문서 버전:** v0.2.2 · **갱신:** 2026-05-14 — Premium multi-lens 리포트 → 번들 `--premium-multilens-report-json`·병합 순서·CONSTITUTION 갱신
 
 ---
 
@@ -14,7 +14,7 @@
 
 - [x] **4D** 라벨 분리 표(2.1) 및 용어 표(2) 초안 확정 — 팀 리뷰 시 수정 가능
 - [x] **번역 브리지** 출력 계약: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` + 예시 + `tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py`
-- [x] **데이터 플로우** 각 박스가 구현 스크립트와 **전부** 매핑(**§4.1** 표; Premium multi-lens JSON hits→`rag_evidence` 자동 변환기는 미구현·호출측 또는 후속)
+- [x] **데이터 플로우** 각 박스가 구현 스크립트와 **전부** 매핑(**§4.1** 표; Premium → `rag_evidence`: **`--premium-multilens-report-json`**)
 - [x] **베이스라인 대비 지표** 오프라인 1회 수치 기록 (6절 **A-pilot** 행; RAG 미연결 비율 본측정은 후속)
 
 ---
@@ -67,7 +67,7 @@
 |------|----------|---------------------------|---------------------------|
 | 시맨틱 | raw query, session meta | `query_plan_v1`, `lens_route` | 렌즈 라우팅·파일럿: CONSTITUTION 표 `philosophy_lane_rag_pilot_v1` 등 |
 | RAG | query_plan, corpus_id | `retrieval_runs[]`, `hits[]` | `build_premium_btrack_multilens_report_v1.py` 오프라인 RAG, 기타 `build_cross_lens_rag_fusion_v1.py` |
-| 번역 브리지 | hits + 도메인 규칙 + calibration 포인터 | **`semantic_rag_bridge_insight_bundle_v1`** | 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` · 예시 동 디렉터리 · 빌더: **`scripts/build_semantic_rag_bridge_insight_bundle_v1.py`** (기본 산출 `docs/final/artifacts/semantic_rag_bridge_insight_bundle_v1_latest.json`) |
+| 번역 브리지 | hits + 도메인 규칙 + calibration 포인터 | **`semantic_rag_bridge_insight_bundle_v1`** | 스키마·예시 `docs/final/schemas/` · 빌더 **`scripts/build_semantic_rag_bridge_insight_bundle_v1.py`** (`--rag-json`, `--premium-multilens-report-json`, `--philosophy-pilot-json`) → `docs/final/artifacts/semantic_rag_bridge_insight_bundle_v1_latest.json` |
 | 4D 보정 | `calibration_reference.kind`에 맞는 스냅샷 | 동 번들 내 `calibration_reference` + 후속 `calibration_overlay` | 2.1 표 참조; 명리·`logos_4d_state_v1`·시장 사상 스냅샷 등 |
 | 통제 | 위 산출물 | exit code, `audit.jsonl` | `athena_run_v1.py`·CONSTITUTION §28 요지 |
 
@@ -80,14 +80,14 @@
 | 사용자/배치 입력 | 각 도메인 CLI·HTTP 라우트 | 예: `philosophy_lane_rag_pilot_v1.py --user-query …`, `build_premium_btrack_multilens_report_v1.py` 플래그 |
 | 1 시맨틱·라우팅 | `scripts/philosophy_lane_rag_pilot_v1.py` → `docs/final/artifacts/philosophy_lane_rag_pilot_v1_latest.json`; `scripts/run_graphrag_pilot_router_v1.py`; Premium 리포트 내 질의·렌즈 메타(`build_premium_btrack_multilens_report_v1.py`) | 금지어·메뉴 ID·ANN 스킵 사유는 파일럿 JSON |
 | 2 RAG 검색·재순위 | `scripts/query_logos_vector_index_ann_lite_v1.py`(파일럿 상류); `scripts/build_premium_btrack_multilens_report_v1.py`(오프라인 RAG 번들); `scripts/build_cross_lens_rag_fusion_v1.py` → `docs/final/artifacts/cross_lens_rag_fusion_latest.json` | hits 스키마는 경로별 상이; 번들 `--rag-json`은 호출측 정규화 |
-| 번역 브리지 | `scripts/build_semantic_rag_bridge_insight_bundle_v1.py`(`--rag-json`, **`--philosophy-pilot-json`** → `blocks[]`를 `rag_evidence`로 병합) → `docs/final/artifacts/semantic_rag_bridge_insight_bundle_v1_latest.json` | `semantic_rag_bridge_insight_bundle_v1`; 회귀 pytest |
+| 번역 브리지 | `scripts/build_semantic_rag_bridge_insight_bundle_v1.py`(`--rag-json`, **`--premium-multilens-report-json`**, **`--philosophy-pilot-json`**; 병합 순서 고정) → `docs/final/artifacts/semantic_rag_bridge_insight_bundle_v1_latest.json` | `semantic_rag_bridge_insight_bundle_v1`; 회귀 pytest |
 | 3 4D·상태 보정 | `scripts/build_logos_4d_state_v1.py`; `scripts/myeongri_complete_fusion.py`; `scripts/run_market_sasang_lens_v1.py`; `scripts/run_market_myeongni_lens_v1.py`; 압축·Prism은 CONSTITUTION 표·`scripts/run_ultra_compression_default.py` 등 | `calibration_reference.kind`로 단일 4D 패밀리만 표기 |
 | 생성/오케스트레이션 | `scripts/athena_run_v1.py` 래핑·수동 LLM; `projects/mkm/mkm-life/.../philosophy/rag-pilot/route.ts` | 본 설계도 범위 밖 다수 |
 | 통제·감사 | `scripts/athena_run_v1.py`; `scripts/log_agent_decision.py` → `reports/agent_decisions_log.jsonl` | CONSTITUTION 실행 거버넌스 절 |
 
-**원클릭(로컬, 선택):** 파일럿 산출이 있을 때  
-`py scripts/build_semantic_rag_bridge_insight_bundle_v1.py --calibration-kind logos_4d_state_v1 --calibration-artifact docs/final/artifacts/logos_4d_state_v1_latest.json --philosophy-pilot-json docs/final/artifacts/philosophy_lane_rag_pilot_v1_latest.json --strict`  
-(캘리브레이션 JSON 없으면 `--calibration-kind none`으로 완화.)
+**원클릭(로컬, 선택):** Premium 예시 또는 실제 리포트 JSON이 있을 때  
+`py scripts/build_semantic_rag_bridge_insight_bundle_v1.py --calibration-kind logos_4d_state_v1 --calibration-artifact docs/final/artifacts/logos_4d_state_v1_latest.json --premium-multilens-report-json docs/final/schemas/premium_btrack_multilens_report_v1.example.json --philosophy-pilot-json docs/final/artifacts/philosophy_lane_rag_pilot_v1_latest.json --strict`  
+(후자·캘리브레이션 파일 없으면 해당 인자 생략 또는 `--calibration-kind none`.)
 
 ---
 
@@ -164,7 +164,7 @@
 - `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — 렌즈 격벽·NON_GATING
 - 오프라인 멀티렌즈 RAG: CONSTITUTION 표 `build_premium_btrack_multilens_report_v1.py` 행
 - 철학 파일럿: 동 표 `philosophy_lane_rag_pilot_v1.py` 행
-- 번역 브리지 번들 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` · 빌더 `scripts/build_semantic_rag_bridge_insight_bundle_v1.py` (내부 v0.2.1 / CONSTITUTION 동명 행)
+- 번역 브리지 번들 스키마: `docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json` · 빌더 `scripts/build_semantic_rag_bridge_insight_bundle_v1.py` (내부 v0.2.2 / CONSTITUTION 동명 행; `--premium-multilens-report-json`)
 
 ---
 
@@ -172,7 +172,7 @@
 
 1. ~~**4D** 분리 표 확정~~ → v0.2 **2.1** (리뷰만 남음).
 2. ~~**번역 브리지** JSON Schema v1~~ → `semantic_rag_bridge_insight_bundle_v1` + pytest.
-3. ~~**`build_semantic_rag_bridge_insight_bundle_v1.py`**~~ → … + **`--philosophy-pilot-json`**(철학 파일럿 `blocks[]`→`rag_evidence`). Premium 리포트 hits 자동 변환·CI 고정 체인은 후속.
+3. ~~**빌더 CLI**~~ → `rag-json` → **`premium-multilens-report-json`** → `philosophy-pilot-json` (24 cap). CI·일일 체인에 고정 삽입은 후속.
 4. ~~**A~D 지표 1회**~~ → 6절 **A-pilot** 완료; RAG 미연결 비율 등 **본측정**은 후속.
 5. 대외 문서·제안서에는 **본 파일·스키마 경로 링크 금지**(내부 전용).
 

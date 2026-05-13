@@ -155,3 +155,66 @@ def test_philosophy_pilot_json_merges_blocks(tmp_path: Path) -> None:
     written = json.loads(out_path.read_text(encoding="utf-8"))
     assert len(written["rag_evidence"]) == 1
     assert written["rag_evidence"][0]["source_id"].startswith("philosophy_lane_rag_pilot:")
+
+
+@pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
+def test_rag_evidence_from_premium_example_json() -> None:
+    from scripts.build_semantic_rag_bridge_insight_bundle_v1 import (
+        build_bundle,
+        rag_evidence_from_premium_multilens_report_v1,
+    )
+
+    ex_path = ROOT / "docs/final/schemas/premium_btrack_multilens_report_v1.example.json"
+    doc = json.loads(ex_path.read_text(encoding="utf-8"))
+    rows = rag_evidence_from_premium_multilens_report_v1(doc)
+    assert len(rows) == 3
+    assert all(r["source_id"].startswith("premium_ml:") for r in rows)
+    assert rows[0]["confidence_band"] in ("A", "B", "C")
+
+    bundle = build_bundle(
+        calibration_kind="none",
+        calibration_artifact=None,
+        summary_line="Premium fixture smoke.",
+        rag_evidence=rows,
+        structured_slots=[{"slot_id": "intent.stub", "text": "From premium example.", "evidence_index": 0}],
+        lens_id=None,
+        route_confidence=None,
+        track="B-track",
+        gating="NON_GATING",
+        hypothesis_label="[HYPO]",
+    )
+    schema = json.loads(
+        (ROOT / "docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    jsonschema.validate(instance=bundle, schema=schema)
+
+
+@pytest.mark.skipif(jsonschema is None, reason="jsonschema not installed")
+def test_cli_premium_multilens_flag_writes_bundle(tmp_path: Path) -> None:
+    ex_path = ROOT / "docs/final/schemas/premium_btrack_multilens_report_v1.example.json"
+    out_path = tmp_path / "bridge_from_premium.json"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "build_semantic_rag_bridge_insight_bundle_v1.py"),
+            "--calibration-kind",
+            "none",
+            "--summary-line",
+            "premium example fixture",
+            "--premium-multilens-report-json",
+            str(ex_path),
+            "--out",
+            str(out_path),
+            "--strict",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=60,
+    )
+    assert proc.returncode == 0, proc.stderr
+    written = json.loads(out_path.read_text(encoding="utf-8"))
+    assert len(written["rag_evidence"]) == 3
+    assert written["version"] == "1.0.2"

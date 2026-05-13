@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 """Assemble internal semantic+RAG bridge insight bundle v1 (B-track / lab).
 
-Reads optional RAG hit JSON, optional `philosophy_lane_rag_pilot_v1` JSON (`blocks[]`),
-and optional calibration artifact path; emits JSON matching
+Reads optional RAG hit JSON, optional `premium_btrack_multilens_report_v1` JSON
+(`lenses[].rag.retrieval_runs[].hits`), optional `philosophy_lane_rag_pilot_v1`
+JSON (`blocks[]`), and optional calibration artifact path; emits JSON matching
 docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json.
+
+Merge order (total cap 24): ``--rag-json`` → ``--premium-multilens-report-json`` →
+``--philosophy-pilot-json``.
 """
 
 from __future__ import annotations
@@ -17,8 +21,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT_NAME = "build_semantic_rag_bridge_insight_bundle_v1.py"
-SCRIPT_VERSION = "1.0.1"
-BUNDLE_VERSION = "1.0.1"
+SCRIPT_VERSION = "1.0.2"
+BUNDLE_VERSION = "1.0.2"
 SCHEMA_ID = "semantic_rag_bridge_insight_bundle_v1"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "semantic_rag_bridge_insight_bundle_v1_latest.json"
 SCHEMA_PATH = ROOT / "docs" / "final" / "schemas" / f"{SCHEMA_ID}.schema.json"
@@ -94,6 +98,68 @@ def _normalize_rag_evidence(raw: Any, *, max_items: int = 24) -> list[dict[str, 
         if isinstance(uri, str) and uri.strip():
             item["uri"] = uri.strip()[:2048]
         out.append(item)
+    return out
+
+
+def rag_evidence_from_premium_multilens_report_v1(doc: Any, *, max_items: int = 24) -> list[dict[str, Any]]:
+    """Extract RAG hits from ``premium_btrack_multilens_report_v1`` lenses into bridge ``rag_evidence`` rows."""
+    if not isinstance(doc, dict):
+        return []
+    lenses = doc.get("lenses")
+    if not isinstance(lenses, list):
+        return []
+    out: list[dict[str, Any]] = []
+    for lens in lenses:
+        if len(out) >= max_items:
+            break
+        if not isinstance(lens, dict):
+            continue
+        lens_id = str(lens.get("lens_id") or "lens").strip() or "lens"
+        rag = lens.get("rag")
+        if not isinstance(rag, dict):
+            continue
+        runs = rag.get("retrieval_runs")
+        if not isinstance(runs, list):
+            continue
+        for run in runs:
+            if len(out) >= max_items:
+                break
+            if not isinstance(run, dict):
+                continue
+            run_id = str(run.get("run_id") or "run").strip() or "run"
+            hits = run.get("hits")
+            if not isinstance(hits, list):
+                continue
+            for hit in hits:
+                if len(out) >= max_items:
+                    break
+                if not isinstance(hit, dict):
+                    continue
+                orig_sid = str(hit.get("source_id") or "").strip()
+                if not orig_sid:
+                    orig_sid = "unknown_hit"
+                sid = f"premium_ml:{lens_id}:{run_id}:{orig_sid}"
+                snippet = str(hit.get("snippet") or "").strip()
+                if not snippet:
+                    snippet = "(empty)"
+                lic = hit.get("license_note")
+                if isinstance(lic, str) and lic.strip():
+                    extra = f"\n---\nlicense_note: {lic.strip()[:1800]}"
+                    snippet = (snippet + extra)[:8000]
+                else:
+                    snippet = snippet[:8000]
+                band = str(hit.get("confidence_band") or "B").strip().upper()
+                if band not in CONFIDENCE_ENUM:
+                    band = "B"
+                row: dict[str, Any] = {
+                    "source_id": sid[:512],
+                    "snippet": snippet,
+                    "confidence_band": band,
+                }
+                uri = hit.get("uri")
+                if isinstance(uri, str) and uri.strip():
+                    row["uri"] = uri.strip()[:2048]
+                out.append(row)
     return out
 
 
@@ -263,12 +329,21 @@ def main() -> int:
         help="JSON file: list of hits or {rag_evidence:[...]} / {hits:[...]}",
     )
     ap.add_argument(
+        "--premium-multilens-report-json",
+        type=Path,
+        default=None,
+        help=(
+            "Optional premium_btrack_multilens_report_v1 JSON; per-lens "
+            "`rag.retrieval_runs[].hits[]` appended after --rag-json (cap 24 total)."
+        ),
+    )
+    ap.add_argument(
         "--philosophy-pilot-json",
         type=Path,
         default=None,
         help=(
             "Optional philosophy_lane_rag_pilot_v1 artifact; `blocks[]` appended to "
-            "rag_evidence after --rag-json (cap 24 total)."
+            "rag_evidence after --rag-json and --premium-multilens-report-json (cap 24 total)."
         ),
     )
     ap.add_argument(
@@ -308,6 +383,23 @@ def main() -> int:
         print(json.dumps({"ok": False, "error": "rag_json_unreadable"}, ensure_ascii=False), file=sys.stderr)
         return 1
     rag_evidence = _normalize_rag_evidence(rag_raw if rag_raw is not None else [])
+    if args.premium_multilens_report_json:
+        pr = (
+            args.premium_multilens_report_json
+            if args.premium_multilens_report_json.is_absolute()
+            else ROOT / args.premium_multilens_report_json
+        )
+        premium_doc = _read_json(pr)
+        if premium_doc is None:
+            print(
+                json.dumps({"ok": False, "error": "premium_multilens_report_json_unreadable"}, ensure_ascii=False),
+                file=sys.stderr,
+            )
+            return 1
+        extra_p = rag_evidence_from_premium_multilens_report_v1(
+            premium_doc, max_items=max(0, 24 - len(rag_evidence))
+        )
+        rag_evidence = (rag_evidence + extra_p)[:24]
     if args.philosophy_pilot_json:
         pj = (
             args.philosophy_pilot_json
@@ -321,7 +413,7 @@ def main() -> int:
                 file=sys.stderr,
             )
             return 1
-        extra = rag_evidence_from_philosophy_pilot_v1(pilot_doc, max_items=24)
+        extra = rag_evidence_from_philosophy_pilot_v1(pilot_doc, max_items=max(0, 24 - len(rag_evidence)))
         rag_evidence = (rag_evidence + extra)[:24]
 
     slots_raw = _read_json(args.slots_json) if args.slots_json else None
