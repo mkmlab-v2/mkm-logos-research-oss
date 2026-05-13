@@ -4,6 +4,8 @@
 !.cursor/mcp.json
 # Org NotebookLM account policy (alwaysApply rule; share across clones)
 !.cursor/rules/notebooklm-mcp-session-bridge.mdc
+# Cross-chat SSOT: resume/save triggers (alwaysApply; share across clones)
+!.cursor/rules/central-agent-memory.mdc
 
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)

@@ -110,7 +110,14 @@
 
 ## [MKM AI Operating Protocol] — 장기기억 / 이어서
 
-When the user signals resume-from-disk SSOT (examples: **장기기억 토대로**, **MKM 장기기억**, **이어서**, **CENTRAL 기준**), **before coding or claiming implementation**:
+**동등 재개 트리거(tie / same protocol):** 아래 **두 줄은 우선순위가 같다** — 어느 한쪽만 나와도 동일하게 디스크 SSOT에서 맥락을 이은 뒤 진행한다.
+
+- **맥락 이어:** **장기기억 맥락이어라**, **장기기억 맥락 이어** (지휘관 고정 대표어 계열).
+- **토대로:** **장기기억 토대로**, **장기기억 토대로 진행해** (기존 고정 호칭 계열).
+
+추가로 동일 프로토콜: **MKM 장기기억**, **이어서**, **CENTRAL 기준**, **CENTRAL 기준으로 진행해**, **팩트락 기준으로 자동 처리해**.
+
+When the user signals resume-from-disk SSOT via **any** of the above (or clearly synonymous), **before coding or claiming implementation**:
 
 1. **Read first** (workspace tools / `Read`):  
    - `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — identity, lanes, **운영 체크포인트**, 다음 할 일.  
@@ -122,7 +129,7 @@ This replaces mandatory `@` mentions for those phrases when working in this repo
 
 ### Checkpoint save — “장기기억 저장”
 
-When the user says **장기기억 저장해**, **장기기억에 저장**, **체크포인트**, **CENTRAL에 저장** (or similar), **write disk SSOT** by running from repo root:
+When the user says **장기기억 저장하라**, **장기기억 저장해**, **장기기억에 저장**, **장기기억 저장해줘**, **체크포인트**, **CENTRAL에 저장** (or similar), **write disk SSOT** by running from repo root:
 
 `py scripts/athena_checkpoint.py "<one-line summary>"`
 
