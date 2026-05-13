@@ -16,7 +16,7 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 - **2026-05-13T16:58:28Z** — CENTRAL: 질문 라우팅 복붙 블록 추가(last_updated 2026-05-15Z)
-- **2026-05-14** — 내부 시맨틱+RAG+4D 설계도 **v0.2**(`INTERNAL_SEMANTIC_RAG_4D_ARCH_OUTLINE_V1.md`)·번역 브리지 스키마 `semantic_rag_bridge_insight_bundle_v1`·pytest·`verify_p0_constitution_gate_paths` 경로 추가.
+- **2026-05-14** — 내부 시맨틱+RAG+4D 설계도 **v0.2**(`INTERNAL_SEMANTIC_RAG_4D_ARCH_OUTLINE_V1.md`)·번역 브리지 스키마 `semantic_rag_bridge_insight_bundle_v1`·pytest·`verify_p0` 경로·**빌더** `scripts/build_semantic_rag_bridge_insight_bundle_v1.py`·6절 A-pilot KPI(스키마 검증 통과율 1.0) 반영.
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
