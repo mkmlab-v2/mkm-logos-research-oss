@@ -91,7 +91,12 @@
       "env": {
         "NOTEBOOKLM_PROFILE": "full",
         "HEADLESS": "false",
-        "MKM_NOTEBOOKLM_MCP_PINNED_VERSION": "2.0.0"
+        "MKM_NOTEBOOKLM_MCP_PINNED_VERSION": "2.0.0",
+        "STEALTH_ENABLED": "false",
+        "STEALTH_RANDOM_DELAYS": "false",
+        "STEALTH_HUMAN_TYPING": "false",
+        "STEALTH_MOUSE_MOVEMENTS": "false",
+        "BROWSER_TIMEOUT": "60000"
       }
     }
   }
