@@ -569,6 +569,8 @@ on:
       - "scripts/Invoke-TrackCMacroDailyFusion_v1.ps1"
       - "scripts/build_logos_insight_bundle_v1.py"
       - "scripts/run_aramaic_mvp_chain_v1.ps1"
+      - "scripts/run_aramaic_mvp_now_with_audit.ps1"
+      - "scripts/run_aramaic_raw_oos_audit_accumulator_v1.ps1"
       - "tests/test_build_logos_insight_bundle_v1.py"
       - "tests/test_logos_insight_bundle_schema_v1.py"
       - "docs/final/schemas/logos_insight_bundle_v1.schema.json"

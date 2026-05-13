@@ -385,6 +385,8 @@ $required = @(
     "scripts\run_bio_dna_promotion_threshold_sweep_v1.py",
     "codebook\policies\slack_fact_safe_mention_routing_v1.json",
     "scripts\run_aramaic_mvp_chain_v1.ps1",
+    "scripts\run_aramaic_mvp_now_with_audit.ps1",
+    "scripts\run_aramaic_raw_oos_audit_accumulator_v1.ps1",
     "scripts\run_two_track_submission_pack_v1.ps1",
     "scripts\build_two_track_submission_evidence_bundle_v1.py",
     "scripts\build_two_track_submission_draft_v1.py",
