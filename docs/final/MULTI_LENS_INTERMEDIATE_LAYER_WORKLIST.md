@@ -89,6 +89,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 
 MKM Control-Integrity Golden/LoRA 파이프라인 스모크(`tests/test_mkm_control_integrity_pipeline_smoke_v1.py`)는 `run_fact_lock_bundle.ps1` **기본**에 포함된다(번들 주석 5d). 로컬만 생략: `-SkipMkmControlIntegritySmoke`. SSOT: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.2.1.
 
+B-track 세션 시각 명리 패널·날씨/OHLCV 조인·상관 회귀(4 pytest, CI `dual-regime-integrity` General prophecy 직후 단계와 동일)는 **`projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`**·`.sh` 워크스페이스 번들(번들 2단계)에 포함된다. `run_fact_lock_bundle.ps1`는 해당 스크립트를 선행 호출하므로 **중복 실행 없이** 동일 회귀가 돈다.
+
 한의 의사 CDS assist envelope v1·자동화 레지스트리(회귀 4파일: CDS 3종 + `tests/test_automation_registry_json_v1.py`)은 `run_fact_lock_bundle.ps1` **기본** 단계 3e. 로컬만 생략: `-SkipKmPhysicianCdsEnvelope`. 빠른 점검: `scripts/run_workspace_automation_health.ps1 -IncludeKmPhysicianCdsEnvelopeSmoke` 또는 P0+해당 pytest만 `-KmPhysicianCdsEnvelopeSmokeOnly`. 배치 실행: `py scripts/run_km_physician_cds_assist_envelope_batch_v1.py --in tests/fixtures/km_physician_cds_assist_payload_batch_v1.example.jsonl --out reports/km_physician_cds_envelope_batch_latest.jsonl`.
 
 등록한 Windows 주간 작업(`MKM-KmPhysician-CdsEnvelopeBatch-Weekly`, `MKM-BTrack-BtcWeight-HitRateBundle-Weekly`)은 `projects/bitcoin-trading/ops/windows-rehearsal/automation_registry.json` 기대 목록과 맞추고, 워크스페이스 헬스의 `reconcile_automation_registry.ps1` 단계로 drift를 본다.

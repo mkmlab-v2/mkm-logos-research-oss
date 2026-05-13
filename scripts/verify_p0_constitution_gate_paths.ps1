@@ -52,6 +52,7 @@ catch {
 # 2026-05-10: MKM promotion gate evidence bundle + pilot report path index (G0-G11 audit JSON).
 # 2026-05-11: Lens music prompt PoC M26-M30 (metric, runbook, webhook, health, dashboard bridge tests).
 # 2026-05-13: Integrated governance deps-gated invoker (py + PS1 + pytest; Track C fusion / fact_lock / daily readiness).
+# 2026-05-13: B-track session instant Myeongni panel + weather/OHLCV join + correlate chain (py + PS1 + pytest + join fixtures).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -145,6 +146,18 @@ $required = @(
     "docs\final\artifacts\MARKET_MYEONGNI_LENS_V1_CONTRACT.json",
     "tests\test_market_myeongni_overlay_v1.py",
     "tests\test_market_myeongni_lens_contract_v1.py",
+    "scripts\build_btrack_session_instant_myeongni_panel_v1.py",
+    "scripts\join_btrack_session_panel_weather_ohlcv_v1.py",
+    "scripts\correlate_btrack_joined_wide_csv_v1.py",
+    "scripts\run_btrack_session_panel_weather_corr_chain_v1.py",
+    "scripts\Run-BtrackSessionPanelWeatherCorrChain_v1.ps1",
+    "tests\test_build_btrack_session_instant_myeongni_panel_v1.py",
+    "tests\test_join_btrack_session_panel_weather_ohlcv_v1.py",
+    "tests\test_correlate_btrack_joined_wide_csv_v1.py",
+    "tests\test_run_btrack_session_panel_weather_corr_chain_v1.py",
+    "tests\fixtures\btrack_join_panel_smoke_v1.csv",
+    "tests\fixtures\btrack_join_weather_smoke_v1.csv",
+    "tests\fixtures\btrack_join_ohlcv_smoke_v1.csv",
     "tests\test_build_daily_execution_insight_brief_v1.py",
     "tests\test_build_trackc_evidence_rag_mvp_v1.py",
     "scripts\build_mkm_trackc_ops_dashboard_v1.py",

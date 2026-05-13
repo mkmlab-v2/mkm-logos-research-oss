@@ -9,6 +9,7 @@ $btRoot = (Get-Item -LiteralPath $PSScriptRoot).Parent.Parent.Parent.FullName
 $workspaceRoot = (Get-Item -LiteralPath $btRoot).Parent.Parent.FullName
 
 # Fact-Lock SSOT: dual-regime smoke + multilens marginal harness V1 (bitcoin-trading/). CI: .github/workflows/dual-regime-integrity.yml
+# Workspace bundle includes B-track session Myeongni panel + weather/OHLCV join + correlate chain (4 pytest; CONSTITUTION §3.3).
 Set-Location -LiteralPath $btRoot
 & py -m pytest 'tests/test_dual_regime_api_smoke.py' 'tests/test_multilens_marginal_utility_harness_v1.py' -v --tb=short
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
@@ -57,7 +58,11 @@ $workspaceTests = @(
     'tests/test_general_prophecy_schema_v1.py',
     'tests/test_general_prophecy_chain_smoke.py',
     'tests/test_resolve_general_prophecy_question_v1.py',
-    'tests/test_export_general_prophecy_to_jsonl.py'
+    'tests/test_export_general_prophecy_to_jsonl.py',
+    'tests/test_build_btrack_session_instant_myeongni_panel_v1.py',
+    'tests/test_join_btrack_session_panel_weather_ohlcv_v1.py',
+    'tests/test_correlate_btrack_joined_wide_csv_v1.py',
+    'tests/test_run_btrack_session_panel_weather_corr_chain_v1.py'
 )
 
 $existingWorkspaceTests = @()

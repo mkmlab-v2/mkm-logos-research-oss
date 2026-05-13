@@ -442,6 +442,17 @@ on:
       - "docs/final/GENERAL_PROPHECY_SCHEMA_V1.json"
       - "tests/test_general_prophecy_schema_v1.py"
       - "tests/test_general_prophecy_chain_smoke.py"
+      - "scripts/build_btrack_session_instant_myeongni_panel_v1.py"
+      - "scripts/join_btrack_session_panel_weather_ohlcv_v1.py"
+      - "scripts/correlate_btrack_joined_wide_csv_v1.py"
+      - "scripts/run_btrack_session_panel_weather_corr_chain_v1.py"
+      - "tests/test_build_btrack_session_instant_myeongni_panel_v1.py"
+      - "tests/test_join_btrack_session_panel_weather_ohlcv_v1.py"
+      - "tests/test_correlate_btrack_joined_wide_csv_v1.py"
+      - "tests/test_run_btrack_session_panel_weather_corr_chain_v1.py"
+      - "tests/fixtures/btrack_join_panel_smoke_v1.csv"
+      - "tests/fixtures/btrack_join_weather_smoke_v1.csv"
+      - "tests/fixtures/btrack_join_ohlcv_smoke_v1.csv"
       - "scripts/csv_to_weather_ground_truth_jsonl_v1.py"
       - "scripts/weather_csv_sniff_v1.py"
       - "scripts/validate_weather_ground_truth_jsonl_v1.py"
@@ -828,6 +839,15 @@ jobs:
             tests/test_resolve_general_prophecy_question_v1.py \
             tests/test_export_general_prophecy_to_jsonl.py \
             tests/test_weather_gt_triplet_chain_smoke.py \
+            -q --tb=short
+
+      - name: B-track session Myeongni panel + weather/OHLCV join + correlate chain
+        run: |
+          python -m pytest \
+            tests/test_build_btrack_session_instant_myeongni_panel_v1.py \
+            tests/test_join_btrack_session_panel_weather_ohlcv_v1.py \
+            tests/test_correlate_btrack_joined_wide_csv_v1.py \
+            tests/test_run_btrack_session_panel_weather_corr_chain_v1.py \
             -q --tb=short
 
       - name: Weather synthetic 120d E2E (full chain + Brier, temp outputs)
