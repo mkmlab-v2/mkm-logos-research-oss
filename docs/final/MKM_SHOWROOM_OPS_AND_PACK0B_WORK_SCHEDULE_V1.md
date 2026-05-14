@@ -30,9 +30,9 @@
 
 **목표:** 로컬에서 번들·검증 일관성 확인.
 
-- [ ] `pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/build_showroom_track_c_bundle_chain_v1.ps1` → exit 0  
-- [ ] 산출 확인: `docs/final/artifacts/showroom_public_bundle_v1.json` 내 `observability.topology_radar_snapshot_present` 등  
-- [ ] (선택) **Visualization v0 thin:** 체인 **(5/5)**가 `showroom_trust_visualization_slice_v0.json`을 갱신 — 동 폴더 `public_showroom_trust_visualization_v0.html`은 HTTP로 JSON fetch( `file://` 제한 참고 )  
+- [x] `pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/build_showroom_track_c_bundle_chain_v1.ps1` → exit 0  
+- [x] 산출 확인: `docs/final/artifacts/showroom_public_bundle_v1.json` 내 `observability.topology_radar_snapshot_present` 등  
+- [x] (선택) **Visualization v0 thin:** 체인 **(5/5)**가 `showroom_trust_visualization_slice_v0.json`을 갱신 — 동 폴더 `public_showroom_trust_visualization_v0.html`은 HTTP로 JSON fetch( `file://` 제한 참고 )  
 
 **참조:** `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` (Track C 원클릭 체인 절).
 
