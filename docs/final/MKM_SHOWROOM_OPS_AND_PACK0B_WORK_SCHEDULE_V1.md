@@ -120,6 +120,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 | 2026-05-14 | 1 | 예: 로컬 체인 exit 0, topology ref_count=5 |
 | 2026-05-14 | 2 | `sync_showroom_to_vps.ps1` scp OK; `Test-HasIdentityArgs` `$args`→`$ScpLeadingArgs` fix; `https://jemaai.cloud/public_showroom_poll.html` HEAD 200 |
 | 2026-05-14 | 2 | 재실행: `build_showroom_track_c_bundle_chain_v1.ps1` exit 0 → `deploy_showroom_static.ps1 -WorkspaceRoot c:\workspace` → `.showroom_staging/` 8파일; bundle JSON 파싱 OK; `data-disclaimer-ref="jemaai_showroom_v1"`; `pytest tests/test_validate_showroom_public_bundle.py` 12 pass |
+| 2026-05-14 | 2 | 권장 자동 루프: `scripts/sync_showroom_to_vps.ps1 -RefreshStaging -SkipDotenvUserSync` exit 0 (체인+deploy+`scp` → `/var/www/jemaai/`); 이어 `verify_p0` 719 OK; `pytest` `test_mkm_control_integrity_pipeline_smoke_v1`+`test_validate_showroom_public_bundle` 19 pass |
 | 2026-05-14 | 3 | 권장=문서 수동 루틴: 주 1회 `sync_showroom_to_vps.ps1 -RefreshStaging`(Phase 3 DoD) |
 | 2026-05-16 | 0 | Control-Integrity smoke 7 passed; `verify_p0` 719 OK; 워킹트리 쇼룸 스테이징 추적 파일은 HEAD 기준 복원(로컬 체인 잡음 제거) |
 
