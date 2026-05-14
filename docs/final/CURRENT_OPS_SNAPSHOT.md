@@ -6,7 +6,7 @@
 
 **Thread:** Cursor — 지휘관 **「진행해」** → **Trust Visualization v0** 로드맵을 스냅샷에 장전(서브에이전트·**별 브랜치** 병렬 가이드 포함).
 
-- **완료:** Stream **2** — `append_stt_routing_audit_log_v1.py` / `summarize_stt_routing_audit_log_v1.py`·롤업 필드·`verify_p0`·`dual-regime`·`tests/test_append_stt_routing_audit_log_v1.py`·`tests/test_stt_routing_audit_log_schema_v1.py`. Stream **3** — `build_showroom_trust_visualization_slice_v1.py`·`public_showroom_trust_visualization_v0.html`·체인 **(5/5)**·`deploy_showroom_static.ps1`·`.gitignore` 생성 JSON; **`gitea/main`** 반영(Visualization v0 + STT 롤업 + 쇼룸 thin 커밋선).
+- **완료:** Stream **1** — `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`(§3.6)·`PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`(§3)에 **Visualization v0** Fact-Lock·`[NON_GATING]`·아티팩트 근거형 역참조; `CENTRAL_AGENT_MEMORY_V1.md` 체크포인트. Stream **2** — `append_stt_routing_audit_log_v1.py` / `summarize_stt_routing_audit_log_v1.py`·롤업 필드·`verify_p0`·`dual-regime`·`tests/test_append_stt_routing_audit_log_v1.py`·`tests/test_stt_routing_audit_log_schema_v1.py`. Stream **3** — `build_showroom_trust_visualization_slice_v1.py`·`public_showroom_trust_visualization_v0.html`·체인 **(5/5)**·`deploy_showroom_static.ps1`·`.gitignore` 생성 JSON; **`gitea/main`** 반영(Visualization v0 + STT 롤업 + 쇼룸 thin 커밋선).
 - **막힘:** 없음.
 - **`[목표]` Visualization v0:** 파이프 **1사이클**(COGS·감사·법무 게이트) **재현 후**, `Field→Lens(사상/명리/Logos)→Conflict→Final` 조율을 **감사 로그에 정렬된 읽기 전용 패널**로 시각화(Logos는 **`[NON_GATING]`** 해설 레이어). **Track C 쇼룸**은 **동일 스키마의 thin 시연 슬롯**만 연계(**본선·연구 격벽 유지**).
 - **Streams (병렬 권장 / 직렬):**
@@ -53,7 +53,7 @@
 | 항목 | 레포 포인터 |
 |------|-------------|
 | Track C 실버 `[DRAFT]` | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** — **(B)** `PUBLIC_FACING` **§3** Silver / senior-care 불릿 **필수** + **(D)** 면책 초안 이중 정합. **Revised / SSOT** 2026-05-14. |
-| 대외 카피 헌법 | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.3** — §3 불릿 + Silver SSOT freeze policy(지휘관 2026-05-15); 앵커에 §3.7.2 `(B)` 역포인터. |
+| 대외 카피 헌법 | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.4** — §3 + Silver freeze(v1.3)·Trust Visualization v0(2026-05-16); 앵커에 §3.7.2 `(B)` 역포인터. |
 | 연구 큐 | `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** — 근거 열·「왜 열려 있는가」에 엔지니어링 진척 반영, **메타 `last_reviewed_utc: 2026-05-14`**, 상태 `OPEN` 유지. `MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` Phase 4 표 아래 **연구·정책 큐** 단락 교차. |
 | CENTRAL | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — `nl_sync`·체크포인트(실버·PUBLIC 교차). |
 | 로컬 일기(비추적) | `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md` — `memory/`는 `.gitignore`. |

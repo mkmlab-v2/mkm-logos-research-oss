@@ -1,11 +1,11 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
+Revised: 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a). (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
-**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-15 개정** 처리한다(§3.7.2 민감 액션 **구조 Lock** + KPI·면책 **동결 지연**). **2026-05-14** 개정분(§3.7.2 `[DRAFT]`·RQ-009·`PUBLIC_FACING` §3 역참조) 및 **2026-05-11** 동결분(§3.11 등)·**2026-05-10** 동결분(§3.9–§3.10·M-milestones 등)은 유지된다. **2026-05-15** 한정 추가 범위: §3.7.2 **(B)** 민감 외부 액션에 **자동 단독 실행 불가 + 휴먼 게이트**를 SSOT 전제로 명시; §3.7.2 **(C)** 파일럿 KPI **수치**는 대외 본문·동 체크리스트에 **박지 않음**(내부 R&D·실측·법무 후 승격). 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
+**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-16 개정** 처리한다(§3.6 Visualization v0 **역참조** + 이전 2026-05-15 §3.7.2 민감 액션 **구조 Lock** + KPI·면책 **동결 지연**). **2026-05-15** 개정분(§3.7.2 **(B)/(C)**·RQ-009·`PUBLIC_FACING` §3 역참조) 및 **2026-05-14** 개정분(§3.7.2 `[DRAFT]`·RQ-009) 및 **2026-05-11** 동결분(§3.11 등)·**2026-05-10** 동결분(§3.9–§3.10·M-milestones 등)은 유지된다. **2026-05-15** 한정 추가 범위: §3.7.2 **(B)** 민감 외부 액션에 **자동 단독 실행 불가 + 휴먼 게이트**를 SSOT 전제로 명시; §3.7.2 **(C)** 파일럿 KPI **수치**는 대외 본문·동 체크리스트에 **박지 않음**(내부 R&D·실측·법무 후 승격). 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
 
 ## 1) Fact-Locked Baseline
 
@@ -93,6 +93,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - `a-codeai.com` 배포는 **정적 랜딩(`/`)과 API(`/v1`, `/health`)를 nginx에서 분리**한다. 운영 예시는 `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example`를 기준으로 한다.
   - **허브→쇼룸 CTA 문구(초안)·분기 SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b — `jema-ai.com` Next 공개 카피 원천은 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`). 공개 보드 **권장 진입**은 `hub_links.showroom_jemaai` → `api.jemaai.cloud` 경로의 `public_showroom_board_minimal.html`(미니멀 정적 보드; `CONSTITUTION`·`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`).
   - **쇼룸 1p 청사진(초안, DRAFT):** `docs/final/TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md` — 대외 카피·수익 타겟·면책 블록을 **Track C §3.6과 동일 프레임**으로 고정; 배포 전 `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` 및 법무 검토. **구현 계약:** `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §4.4, `showroom_topology_radar_snapshot_v1` 스키마·`tests/test_showroom_topology_radar_snapshot_schema_v1.py`.
+  - **Trust Visualization v0 (STT 감사 JSONL + 쇼룸 thin, 읽기 전용):** 구현·스키마·회귀 3종·`dual-regime-integrity.yml`·`run_fact_lock_bundle.ps1` **3d3a**는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` Visualization v0 보강 절이 SSOT다. 대외 카피는 본 절 **§3 금지 서술**·성경(Logos) 레이어 **`[NON_GATING]`**·아티팩트 근거형만 유지한다(A-track 실매매·자동 합선 금지는 헌법·`AGENTS.md`와 동일).
 
 ### 3.7 MKM AI — 고신뢰 R&D 검증·가속 인프라 (Value Proposition 전환, 2026-05)
 
