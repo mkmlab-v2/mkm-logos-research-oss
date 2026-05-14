@@ -53,6 +53,9 @@ docs/final/artifacts/**
 !docs/final/artifacts/schemas/**
 !docs/final/artifacts/schemas/*.json
 !docs/final/artifacts/schemas/*.schema.json
+# Ops snapshot body + NotebookLM research index archives (split from docs/final/*.md; Vault sync targets)
+!docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md
+!docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md
 # B-track ensemble baseline (not regenerable *_latest; scripts default to this path)
 !docs/final/artifacts/btrack_lens_ensemble_v1.json
 # General-rail: tracked bundle inputs (validate_general_compression_bundle / holdout report)
