@@ -29,10 +29,11 @@
 - **질문 라우팅(복붙 템플릿):** 동 파일 「질문 유형별 답변 라우팅 (권장 · 지휘관·에이전트 복붙)」— 운영·경로·게이트(A)는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·호출 가능 스크립트·exit code·pytest 우선; 연구·내러티브(B)는 RAG·NotebookLM·채팅을 보조로만, `[FACT]` / `[HYPO]` / `research_only`·실매매·Track A 자동 합선 금지 한 줄을 템플릿과 동일하게 둔다(본문 이중 전개는 CENTRAL만).
 - **자동 주입:** `.cursor/rules/central-agent-memory.mdc` (`alwaysApply`)에 **SSOT 핵심 5줄**이 매 에이전트 턴 컨텍스트에 포함된다. `@` 없이도 원칙 정렬은 가능하다.
 - **한계:** 채팅 로그는 세션 간 공유되지 않는다. “지난 작업” 맥락은 **본 파일·커밋**으로 누적한다. 표 전체·깊은 동기화가 필요하면 작업 시작 시 **`@CENTRAL.md`**(루트 바로가기) 또는 `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` 또는 에이전트 `Read`를 쓴다.
+- **연구·아이디어 인박스(심사 전):** `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` — `[OPEN]` 등; **Fact-Lock·구현 완료 단정 아님.** 승격 시 `CENTRAL`·`MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md`·`CONSTITUTION`·스크립트·PR로 이관.
 
 ### MKM 초간결 운영 프로토콜 (크로스 채팅 최소 부하)
 
-1. **Cursor User Rules (지휘관 PC, 선택):** Settings → Rules for AI에 예: `새 세션에서는 docs/final/CENTRAL_AGENT_MEMORY_V1.md를 읽고 현재 진행 단계·Fact-Lock을 파악한 뒤 짧게 브리핑한다.` — 레포와 자동 동기화되지 않으므로 본 절은 **복붙용 안내**다.
+1. **Cursor User Rules (지휘관 PC, 선택):** Settings → Rules for AI에 예: `새 세션에서는 docs/final/CENTRAL_AGENT_MEMORY_V1.md를 읽고 현재 진행 단계·Fact-Lock을 파악한 뒤 짧게 브리핑한다.` — 레포와 자동 동기화되지 않으므로 본 절은 **복붙용 안내**다. **Ops 핸드오프 전용 복붙 블록:** 아래 **「Recommended Cursor User Rules — Ops handoff」** 코드 펜스 전체.
 2. **시작:** 말 한 줄만으로도 됨 — **고정 재개 트리거(동등·한쪽만 있어도 동일):** (A) 「**장기기억 맥락이어라**」「**장기기억 맥락 이어**」 (B) 「**장기기억 토대로**」「**장기기억 토대로 진행해**」 — **A와 B는 같은 우선순위**로 취급한다. 추가 동일 프로토콜: 「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」「MKM 장기기억」「이어서」「CENTRAL 기준」. 에이전트는 위 **어느 것이든** 받으면 레포 `.cursorrules` **[MKM AI Operating Protocol]** 에 따라 **다른 답변·코딩보다 먼저** `CENTRAL`·`AGENTS`·(필요 시)`CONSTITUTION_*`를 읽고, 운영 체크포인트·분기 한 줄을 근거로 짧게 브리핑한 뒤 작업한다. 또는 `@CENTRAL.md` / `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` + 질문.
 3. **종료 1초 체크포인트:** `py scripts/athena_checkpoint.py "완료/다음 한 줄"` — `CENTRAL`의 **운영 체크포인트** 마커와 `last_updated_utc` 갱신(기본: **새 bullet을 맨 위에 추가**하고 이전 줄은 유지·상한 `--max-checkpoints` 기본 20; 예전처럼 **한 줄만** 남기려면 `--replace-all`). **저위험 MD 편집**이므로 `athena_run_v1.py`로 감쌀 필요 없음(ECC·실거래 경로와 무관). 말로 **「장기기억 저장하라」「장기기억 저장해」「장기기억 저장해줘」「체크포인트」**만 해도 레포 `.cursorrules`에 따라 에이전트가 같은 명령을 실행하도록 고정됨(요약 한 줄은 채팅에 같이 주면 확실).
 4. **재개 팩(선택):** `py scripts/build_mkm_chat_resume_pack_v1.py` → `docs/final/artifacts/mkm_chat_resume_pack_latest.md` 등 기존 산출과 병용 가능.
@@ -42,7 +43,7 @@
 
 - **대화 내용은 복사되지 않는다.** 새 세션에서도 동일한 안내를 쓰려면, 일정·운영·Remote Publication 등 **반복 안내를 레포 파일에 적어 두고 커밋**한다. 같은 워크스페이스의 다른 채팅에서는 파일을 열거나 **`@AGENTS.md`**(필요 시 `@CLAUDE.md`·중앙 메모리)로 한 번 참조하면 갱신된 본문이 보인다.
 - **다른 PC/클론**에서는 그쪽에서 **`git pull`** 후 동일하다.
-- **중앙 규칙:** 루트 **`.cursorrules`**, **`.cursor/rules/*.mdc`** 도 레포에 있으면 **파일이 최신인 저장소**에서 Cursor가 적용한다.
+- **다중 채팅 작업 일기(Ops slice):** 하루 **한 파일**에 Thread 1–10 섹션으로 요약을 쌓는다. 기본 경로 `reports/daily_thread_work_YYYY-MM-DD.md`(통상 `reports/**` 비추적). 동기화: `py scripts/athena_daily_thread_log_sync_v1.py --thread N --bullet "…"`(반복). 옵시디언 등 **전체 경로**는 User 환경 `MKM_DAILY_THREAD_LOG_PATH`(파일 또는 디렉터리). 템플릿 `docs/final/templates/DAILY_THREAD_WORK_LOG.template.md` · 에이전트 규칙 `@.cursor/rules/daily-thread-diary-sync.mdc`(또는 Rules에서 해당 규칙 활성화). 트리거 예: 「오늘 일기 동기화」「일기 반영」. 장기 정책은 여전히 `CENTRAL`·체크포인트가 SSOT.
 - **Cursor Settings → User Rules**만으로 팀·본선 기준을 두지 않는다 — 레포와 **자동 동기화되지 않는다**. 본선·팀 합의 문구는 **`AGENTS.md`·`CLAUDE.md`·`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 등 SSOT**에 둔다(요지는 아래 **「Cursor 3.0 · 규칙 스택」**의 User Rules 한 줄과 동일 선상).
 
 | 반영되는 것 | 설명 |
@@ -51,6 +52,26 @@
 | **중앙 규칙** | 루트 `.cursorrules`, `.cursor/rules/*.mdc` — 레포 파일이 최신이면 Cursor가 적용한다. |
 | **Cursor Settings → User Rules만** | 레포와 **자동 동기화되지 않음**. 팀·본선 기준은 SSOT에 둔다. |
 | **정리** | 세션 간 **대화 내용이 복사되는 것은 아니다**. 반복 안내·운영 메모는 레포에 커밋해 두고, 새 세션에서는 `@AGENTS.md`(필요 시 `@CLAUDE.md`·중앙 메모리)로 동일하게 따라간다. |
+
+### Recommended Cursor User Rules — Ops handoff (복붙)
+
+Cursor **Settings → Rules for AI**에 아래 블록을 그대로 붙인다(로컬 설정이라 **레포와 자동 동기화되지 않음**; 본 절은 복붙용 SSOT). 장기 정책 문단은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md` **「다중 채팅 핸드오프」**와 동일 선상.
+
+**트리거:** 메시지에 **핸드오프** 또는 **옵스 스냅샷**이 포함되고(동의어: `CURRENT_OPS 핸드오프`, `스냅샷 갱신`), 사용자가 그 턴에서 스냅샷 갱신을 요청한 경우.
+
+```
+사용자가 같은 턴에서 스냅샷·핸드오프 갱신을 요청했고, 메시지에 "핸드오프" 또는 "옵스 스냅샷" 또는 "CURRENT_OPS 핸드오프" 또는 "스냅샷 갱신"이 포함되면:
+
+1. 이 목적으로는 `MISSION_LOG.md`를 수정하지 않는다.
+2. 반드시 docs/final/CURRENT_OPS_SNAPSHOT.md 만 Read 후 수정(Apply)한다.
+3. 파일 상단(첫 번째 # 직후)에 가장 최근이 되도록 "## Ops slice (YYYY-MM-DD · Session handoff)" 블록을 하나 둔다. 이미 당일·동일 Thread 제목이 있으면 그 블록만 갱신한다. 각 블록에 다음 세 줄을 채운다:
+   - 완료: …
+   - 막힘: … (없으면 없음)
+   - 다음: …
+4. 다른 MD 신규 생성·장문 장황 서술 금지. 응답은 한 줄 확인으로 끝낸다.
+
+배제: "일기 반영" 또는 "오늘 일기 동기화"만 있는 메시지는 본 규칙을 적용하지 않고, AGENTS.md 「다중 채팅 작업 일기」절의 athena_daily_thread_log_sync_v1.py 경로를 따른다. 두 요청이 한 턴에 섞이면 사용자에게 어느 쪽인지 한 번만 묻는다.
+```
 
 ## 렌즈 역할 계약 (모든 채팅 공통 · 혼동 금지)
 
@@ -121,6 +142,7 @@
 - **정리 규칙:** PR merge 후 원격 브랜치와 임시 worktree를 즉시 정리해 다음 작업의 분기 오염을 방지한다.
 - **우선순위 고정:** Git hygiene 규칙이 다른 문서와 상충하면 항상 루트 `.cursorrules`의 "Git Hygiene 고정 (세션 종료 후에도 유지)" 4줄을 우선 적용한다.
 - **로컬 개발서버 정리(선택):** 수동은 `scripts/stop_local_dev_servers.ps1` (`-DryRun` / `-IncludeNpxMcp`); 로그오프 시 자동 실행 작업 등록은 `scripts/register_local_dev_server_stop_logoff_task.ps1` (`-IncludeNpxMcp`로 MCP 브리지까지).
+- **사상 PR 미러(`_pr_sasang_promotion`) 갱신:** 루트 SSOT 문서·워크플로·규칙을 미러로 복사할 때 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Sync-PrSasangPromotionMirror_v1.ps1` (선택 `-WhatIf`로 계획만 확인). **헬스 체인에 끼울 때:** `pwsh scripts/run_workspace_automation_health.ps1 -IncludePrSasangPromotionMirrorSync`(전체 헬스 중 P0 직후 1회) 또는 **`-PrSasangPromotionMirrorSyncOnly`**(P0+미러만 후 종료).
 
 ### Remote Publication 운영 기본값 (모든 채팅 공통)
 
@@ -194,7 +216,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - **만세력 Phase B 스모크 (Meeus vs Swiss 立春 Reference B + 59-case ganji 코호트 + 충돌 사전 네이티브 검증):** `python scripts/run_manseryeok_validation_smoke_v1.py` (B-2만: `--skip-ephemeris`; 충돌 생략: `--skip-collision-dict`). 단독: `python scripts/validate_collision_dictionary_v1.py`. CI: **`main` 푸시마다** + 경로 맞는 PR + 수동 — `.github/workflows/manseryeok-validation-smoke.yml`. 대조 템플릿·채집 절차: `docs/final/artifacts/manseryeok_collision_dictionary_v1.json` (`collection_howto`, **`ssot_policy`**). **회귀·본선 기준은 `pillars_native`(엔진)**; `pillars_external`은 외부 UI 스냅샷. 엔진 변경 후 네이티브 동기화: `python scripts/collision_dict_refresh_native_v1.py --write`. 코호트 행 추가(네이티브만): `python scripts/sync_collision_dict_cohort_entries_v1.py --case-id <id> --write`.
 - **전 세계 사용자 출생 입력 (IANA TZ, DST 안전 권장):** `scripts/saju_birth_resolver_v1.py` — 절대시각 **`birth_instant_utc`(ISO Z) + `iana_tz`** 가 1순위; 로컬 벽시계만 쓸 때는 DST 겉넘김 구간 에러 처리. CLI 예: `python scripts/run_saju_global_birth_v1.py --utc-instant 1992-03-12T17:00:00Z --iana-tz Asia/Seoul`. Pack 0-B(명리 결정론 LoRA 골든 JSONL 한 행): `scripts/prep_myeongri_deterministic_lora_golden_v1.py` — 대량·시드·매니페스트: `scripts/build_myeongri_deterministic_lora_golden_bulk_v1.py` — DoD **`docs/final/LORA_PACK_V0_DOD_V1.md`**. `scripts/saju_dual_verify.py`에도 동일 계약: `--birth-instant-utc` + `--tz` IANA. **mkm-life** `POST /api/v1/saju/verify` 는 `birth_instant_utc` + `tz` 를 그대로 전달(서버 `zoneinfo` 정규화, 기존 y/m/d/h/mi 본문은 계속 지원). **jema-ai.com** (소스만 `projects/no1kmedi`): CDSS `lane_a_profile` 및 `ATHENA_MANSERYEOK_API_URL` 호출 시 동일 키(`birth_instant_utc`, `iana_tz`; 레거시 `birth_datetime` 선택). **엔진 직접 프록시(로컬/동일 배포):** `POST /api/manseryeok/reference` → `run_saju_global_birth_v1.py`(`MKM_WORKSPACE_ROOT`); `npm run smoke:manseryeok-reference` (서버 기동 후). 계약 스키마: `docs/final/artifacts/schemas/saju_global_birth_request_v1.schema.json`.
 - **구현 판정**은 (3)의 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능 스크립트·테스트로만 한다. 브리핑·노트만으로 경로를 확정하지 않는다.
-- **번들 한 방**: `scripts/run_fact_lock_bundle.ps1` — 루트에서 실행; 맥락·완료 정의는 `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단. 기본에 CI `dual-regime-integrity.yml`과 동일 **Two-track submission + Multi-symbol**(pytest 6종, **3d2a**; 생략 `-SkipTwoTrackSubmissionAndMultiSymbolSmoke`)·**Aramaic B-track graph pipeline smoke**(pytest 27종, **3d2b**; 생략 `-SkipAramaicBtrackGraphPipelineSmoke`)·B-track **§3.8.4** VA→fusion→감사 체인 + `va_tag_boost_v1` 정책 골든 pytest가 포함되며, VA 생략은 `-SkipVaFusionControlIntegritySmoke`.
+- **번들 한 방**: `scripts/run_fact_lock_bundle.ps1` — 루트에서 실행; 맥락·완료 정의는 `docs/final/MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단. Athena checkpoint 직후 로컬 전용 **3d2c**(Vertex Agent Search 명시적 RAG 오프라인 pytest; `-SkipVertexAgentSearchContextUnit`)·**3d2d**(다중 채팅 일기 병합 pytest; `-SkipDailyThreadWorkLogUnit`). 이어 CI `dual-regime-integrity.yml`과 동일 **Two-track submission + Multi-symbol**(pytest 6종, **3d2a**; 생략 `-SkipTwoTrackSubmissionAndMultiSymbolSmoke`)·**Aramaic B-track graph pipeline smoke**(pytest 27종, **3d2b**; 생략 `-SkipAramaicBtrackGraphPipelineSmoke`)·B-track **§3.8.4** VA→fusion→감사 체인 + `va_tag_boost_v1` 정책 골든 pytest가 포함되며, VA 생략은 `-SkipVaFusionControlIntegritySmoke`.
 - **Bio 논문 SNP 사이드카 조인(§8.1, 선택):** `pwsh scripts/run_workspace_automation_health.ps1 -IncludeBioPaperSnpJoinSmoke` — pytest 스모크만(네트워크 없음; join/apply + sidecar chain CLI + EPMC CLI 3종). 빠른 단축: `-BioSnpOnly`(P0 경로 + reconcile + Bio 스모크). CI: `.github/workflows/bio-paper-snp-sidecar-smoke.yml`. v3→JSON→코호트 일괄: `scripts/Run-BioPaperSnpSidecarExportAndApply.ps1`.
 - **Control-Integrity Golden/LoRA 파이프라인(선택, GPU 불필요):** `pwsh scripts/run_workspace_automation_health.ps1 -IncludeMkmControlIntegritySmoke` — aggregate·프로모션 게이트·오라클 추론 타이밍 회귀. 빠른 단축: `-MkmControlIntegritySmokeOnly`. Fact-Lock 표: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.2.1.
 - **VA→fusion→control-integrity 체인(선택, B-track §3.8.4):** `pwsh scripts/run_workspace_automation_health.ps1 -IncludeVaFusionControlIntegritySmoke` — `va_trajectory_log`→`cross_lens_fusion_report`→`fusion_control_integrity_audit` 계약 회귀. 빠른 단축: `-VaFusionControlIntegritySmokeOnly`(P0 + reconcile + 체인 스모크). Windows 원클릭 `Run-VaFusionControlIntegrityChain_v1.ps1`는 감사 실패 시 선택 웹훅(`FUSION_CONTROL_INTEGRITY_AUDIT_WEBHOOK_URL` → `OPS_ALARM_WEBHOOK_URL`); 비밀 없는 실행은 `-SkipWebhook`.
@@ -205,7 +227,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - **렌즈 뮤직 M31 트렌드·웹훅·대시보드(W2 운영):** `build_lens_music_hormone_trend_v1`는 히스토리 JSONL에 `hormone_state` 행이 없으면 `state=NODATA` 및 `operator_hint`(오버레이 실행으로 히스토리 적재 안내). `dispatch_lens_music_hormone_trend_webhook_v1`는 트렌드 **WATCH일 때만** POST(`LENS_MUSIC_HORMONE_WEBHOOK_URL` 미설정 시 skipped). `build_mkm_trackc_ops_dashboard_v1`의 `trackc.lens_music_hormone_state`에 M32 요약(`gematria_trace_present` 등), `trackc.lens_music_hormone_trend.operator_hint`를 노출(소스: `reports/lens_music_hormone_state_latest.json`, `reports/lens_music_prompt_overlay_latest.json`, `docs/final/artifacts/lens_music_hormone_trend_latest.json`).
 - **렌즈 뮤직 W3 (M31 게이트 프로필·감사):** `check_lens_music_symbolic_audio_promotion_gate_v1.py`가 `m31_hormone_guard.invocation`에 `profile`(strict|soft)·임계·`hormone_trend_json` 경로를 기록; `--m31-profile` 또는 `--allow-soft-m31`(동치 soft). 산출 JSON에 **`promotion_process`**(W5: `process_exit_code`·`process_pass`·`pytest_pass`와 대시보드 노출). 일일 퓨전은 기본 strict — M31 HOLD 시 **exit 1**로 단계 실패; 콜드스타트만 `Invoke-TrackCMacroDailyFusion_v1.ps1 -LensMusicPromotionGateSoftM31`(등록 스크립트 동명 스위치) 또는 `scripts/Run-LensMusicPromotionGateStagingStrict_v1.ps1`로 명시 strict 재실행.
 - **사상→감정 VA 연속축 계약 §3.10 (Draft, 스키마만):** `docs/final/schemas/sasang_emotion_mapping_v1.schema.json` · example · `tests/test_sasang_emotion_mapping_schema_v1.py` — `sasang_music_mapping_v1`와 분리; 상용·실거래·범용 추론 자동 향상 단정 금지.
-- **보조**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` (bitcoin-trading 디렉터리에서). CI 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6.
+- **보조**: `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1` (bitcoin-trading 디렉터리에서). CI 정합은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6 표·**CI tail 포인터**(브리핑 가드 다음 ~ job 끝은 `.github/workflows/dual-regime-integrity.yml` 순서 SSOT).
 - **예언 오버레이 AB 스파이크(§1.1.1)**: `py -m pytest tests/test_prophecy_restoration_spike.py` — GitHub `.github/workflows/prophecy-restoration-spike-smoke.yml` (스크립트·테스트 변경 시). 임계값 스윕 산출(로컬 재생성): `docs/final/artifacts/prophecy_prior_threshold_sweep_v1_latest.json`.
 - **LLM 검증 티어:** 기본은 **로컬·자체 호스팅 모델**로 게이트·벤치; 상용·대외 품질 확정 전에만 **고급 클라우드 모델 소표본 섀도우**(드리프트 방지). 상세: `docs/final/P0_COMMERCIALIZATION_TRACKER.md` **「LLM 검증 티어」**.
 - **MKM-Orchestrator (bounded `todo_queue_v1`):** `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.4 · `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json` · 로컬 스모크 `scripts/run_mkm_orchestrator_smoke_v1.ps1`(기본 `pip install -q jsonschema`) · 경로 점검 `scripts/verify_mkm_orchestrator_bundle_v1.py` · 큐 생성 `scripts/bootstrap_mkm_orchestrator_queue_v1.ps1`(`-Profile TrackCFromBridge` = 사업계획 브릿지 JSON 적용) · 상태 요약 `scripts/show_mkm_orchestrator_queue_status_v1.py` · 연속 루프(선택) `scripts/run_mkm_continuous_daemon.ps1`/`Register-MkmOrchestratorDaemonTask.ps1`. B→A·실매매 자동 합선 없음.
@@ -246,6 +268,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - **일반 예언(B 레일)**: 스키마·스크립트·월간 체인은 **저장소 루트**(`GENERAL_PROPHECY_SCHEMA_V1`, `scripts/generate_general_prophecy_v1.py` 등, `run_waiting_queue_monthly_check.ps1`) — **별도 서브트리에 복제본을 두지 않고** 루트 SSOT를 따른다. 실시간 운영 경로는 `eval_prophecy_hit_rate_v1.py`와 `run_prophecy_restoration_spike.py` 중심으로 유지하며, 비활성/미배포 체인은 SSOT 필수 경로로 고정하지 않는다.
 - **B-track 가격 예언 체인(사전 점검)**: `py scripts/check_btrack_prophecy_chain_prereqs_v1.py` — 일일 체인에 쓰는 스크립트·KOSPI/BTC 기본 CSV·주요 `*_latest` 존재·`btrack_prophecy_score_latest.json` 기준 instrument 듀얼 레그 요약; `--stdout-only`·`--strict`. 상세·`--force-dual-leg-panel`은 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` Prophecy Hit Rate 절.
 - 한의 원전·코호트: `docs/final/KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md` (라벨 A vs 원전 B 혼선 금지).
+- **환자 통합 번들 v1 (SOAP + MKM 렌즈 슬롯, Fact-Lock):** 스키마 `docs/final/schemas/patient_care_bundle_v1.schema.json` · §9 표 · 원클릭 `scripts/Invoke-PatientCareBundleAssemblePatientFacing_v1.ps1`(템플릿+정책+MD 고정) · `scripts/assemble_patient_care_bundle_with_myeongni_v1.py`(`--apply-slot-templates`·`--validate-policy`·`--render-md-out` 선택) · CDS 선행 시 `scripts/build_patient_care_bundle_from_km_cds_chain_v1.py` · 슬롯 템플릿/정책/렌더 `docs/final/artifacts/patient_care_bundle_slot_templates_ko_v1.json` 등 + `apply_*` / `validate_*` / `render_*` 스크립트 — 명리·Logos는 [HYPO]/[NON_GATING]; 임상 게이팅·임신 예후 예측 합선 금지.
 - NotebookLM 소스: `docs/NotebookLM_sources_manifest.md`.
 - **NotebookLM MCP (재발방지)**: Settings에서 녹색·N tools여도 **현재 채팅에 도구가 주입되지 않으면** 에이전트는 호출 불가 — UI 연결 ≠ 세션 사용 가능. **내장 브라우저·Chrome 로그인 ≠ MCP 인증**(전용 Chrome 프로필). **동기화 ≠ 한 가지:** Vault 미러(A)·구글 노트북 소스(B)·채팅 MCP(C)는 독립 — 원샷 점검 `scripts/Invoke-NotebookLmSyncTriage_v1.ps1` · 표 `docs/NotebookLM_sources_manifest.md` 「동기화 오해 · 재발 방지」. SSOT: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`(항상 적용), `docs/NotebookLM_sources_manifest.md`(MCP 인증 절), 점검 `scripts/check_notebooklm_mcp_prereqs.ps1`. 스킬 `.cursor/skills/notebooklm-refresh/SKILL.md` §세션 vs UI.
 - **NotebookLM 인증 복구 표준 3단계**: 문제가 나면 `scripts/repair_notebooklm_mcp_auth_stuck.ps1` -> MCP `setup_auth` -> MCP `get_health`(`authenticated=true` 확인) 순으로 고정.
