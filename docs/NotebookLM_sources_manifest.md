@@ -184,7 +184,7 @@ NotebookLM·지휘부 브리핑을 레포 Fact-Lock과 맞출 때 **아래를 �
   - `978ab6ca-d069-4a78-8916-30c7844c4fa6` — https://notebooklm.google.com/notebook/978ab6ca-d069-4a78-8916-30c7844c4fa6  
   - `d193d8d4-5678-4cc7-8eb6-7046a9a3b16d` — https://notebooklm.google.com/notebook/d193d8d4-5678-4cc7-8eb6-7046a9a3b16d  
   - **로컬 대응(참고):** `H:\workspace\docs\` — 레포 `docs\final` SSOT와 **경로·동일성 보장 없음**; 필요 시 해당 MD를 `@` 첨부.  
-- **Vault**: `sync_notebooklm_sources_to_mkm_data_vault.ps1`가 레포 SSOT를 `notebooklm_sources/`로 미러할 때, 에페메럴 핸드오프 `docs/final/CURRENT_OPS_SNAPSHOT.md`도 함께 복사되어 **Hub B / 오프라인 RAG**와 날짜를 맞추기 쉽다.
+- **Vault**: `sync_notebooklm_sources_to_mkm_data_vault.ps1`가 레포 SSOT를 `notebooklm_sources/`로 미러할 때, 에페메럴 핸드오프 `docs/final/CURRENT_OPS_SNAPSHOT.md`와 스크립트 `$SourceFiles`에 적힌 **분리 아카이브**(예: `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md`, `docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`)도 함께 복사되어 **Hub B / 오프라인 RAG**와 날짜를 맞추기 쉽다.
 
 ---
 
