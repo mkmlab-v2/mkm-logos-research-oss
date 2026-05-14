@@ -2,13 +2,13 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
-## Ops slice (2026-05-15 · 채팅 종료 — 스냅샷)
+## Ops slice (2026-05-15 · 세션 종료 — 다른 작업 전환)
 
-**Thread:** Cursor — 지휘관 요청: 스냅샷 기록 후 대화 종료.
+**Thread:** Cursor — 스냅샷 후 대화 종료(지휘관).
 
-- **완료:** `CURRENT_OPS_SNAPSHOT.md` 본 슬라이스 추가·`CENTRAL_AGENT_MEMORY_V1.md` 체크포인트 1줄(아래).
+- **완료:** `py scripts/athena_checkpoint.py` — 세션 종료·핸드오프 한 줄(`CENTRAL` 운영 체크포인트). 바로 아래 `2026-05-15 · Silver` 슬라이스에 COGS·STT·RQ-009 포인터 유지.
 - **막힘:** 없음.
-- **다음:** 새 세션에서 `@docs/final/CURRENT_OPS_SNAPSHOT.md` · `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` — 실버·STT·RQ-009 잔여는 바로 아래 슬라이스·`docs/research/silver_tech_cogs_unit_economics_template_v1.md` 참고.
+- **다음:** 지휘관 — **다른 작업**; 재개 시 `@docs/final/CURRENT_OPS_SNAPSHOT.md`(맨 위 2개 `2026-05-15`) · `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` · `docs/research/silver_tech_cogs_unit_economics_template_v1.md`.
 
 ## Ops slice (2026-05-15 · Silver — COGS·STT·RQ-009·장기기억 동기)
 
