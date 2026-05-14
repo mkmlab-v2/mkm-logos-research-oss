@@ -1,0 +1,16 @@
+{
+  "schema_version": "stt_routing_audit_log_v1",
+  "event_id": "aaaaaaaa-bbbb-4ccc-dddd-eeeeeeeeeeee",
+  "occurred_at_utc": "2026-05-15T10:00:00Z",
+  "session_id": "sess_sha256_01",
+  "route": "local",
+  "provider": null,
+  "audio_duration_ms": 4200,
+  "latency_ms": null,
+  "error_code": null,
+  "confidence": 0.82,
+  "chars_out": 120,
+  "billing_unit": null,
+  "pii_redaction": "redacted_partial",
+  "hypothesis_tag": "[HYPO]"
+}

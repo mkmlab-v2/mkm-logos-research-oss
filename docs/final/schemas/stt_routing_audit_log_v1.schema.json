@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/stt_routing_audit_log_v1.schema.json",
+  "title": "Silver / hybrid STT routing audit log row v1",
+  "description": "One append-only audit row for local vs vendor STT routing, latency, and errors. Contract only: no COGS amounts or vendor quotes. Aligns with docs/research/silver_tech_cogs_unit_economics_template_v1.md (table is informative; this schema is normative). B-track / research until product wiring exists.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "occurred_at_utc",
+    "route",
+    "audio_duration_ms",
+    "pii_redaction"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "stt_routing_audit_log_v1"
+    },
+    "event_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Idempotent row id for dedup and trace."
+    },
+    "occurred_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Event clock (client or server receipt), ISO-8601 with Z preferred."
+    },
+    "session_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Opaque session or device bucket id; no raw PII in this field."
+    },
+    "route": {
+      "type": "string",
+      "enum": ["local", "vendor", "rejected"],
+      "description": "rejected = gated before vendor call (e.g. low confidence)."
+    },
+    "provider": {
+      "type": ["string", "null"],
+      "description": "Vendor id when route=vendor (e.g. gcp_speech_v2); null for local/rejected."
+    },
+    "audio_duration_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Input audio length for normalization and COGS rollups (no pricing here)."
+    },
+    "latency_ms": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Round-trip latency for vendor path; null if local or rejected before vendor."
+    },
+    "error_code": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "description": "Stable machine code when failed; null or omit when success."
+    },
+    "confidence": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Gate input when present."
+    },
+    "chars_out": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Transcript length hint for downstream caps (optional at emit time)."
+    },
+    "billing_unit": {
+      "type": ["string", "null"],
+      "minLength": 1,
+      "description": "Optional invoice key hint (e.g. per_minute); no amounts in this row."
+    },
+    "pii_redaction": {
+      "type": "string",
+      "enum": ["redacted_full", "redacted_partial", "not_applicable", "unknown"],
+      "description": "Redaction posture applied to this log row."
+    },
+    "hypothesis_tag": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Boundary tag (e.g. [HYPO]) for research pilots."
+    }
+  }
+}
