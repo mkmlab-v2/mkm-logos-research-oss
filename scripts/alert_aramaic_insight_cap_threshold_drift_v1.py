@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
+"""Compare last two insight-cap threshold snapshots; write drift alert JSON; optional webhook."""
+
 from __future__ import annotations
 
 import argparse
 import json
+import os
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -66,7 +70,11 @@ def _compare_last_two(
     max_abs = 0.0
     keys = [k for k in RECOMMENDED_KEYS if k in prev and k in curr]
     if not keys:
-        keys = [k for k in set(prev) & set(curr) if isinstance(prev.get(k), (int, float)) and isinstance(curr.get(k), (int, float))]
+        keys = [
+            k
+            for k in set(prev) & set(curr)
+            if isinstance(prev.get(k), (int, float)) and isinstance(curr.get(k), (int, float))
+        ]
     for k in keys:
         try:
             a = float(prev[k])
@@ -81,10 +89,29 @@ def _compare_last_two(
     return (len(drifted) > 0, max_abs, drifted, deltas)
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(
-        description="Compare last two insight-cap threshold snapshots in history JSONL and emit drift alert JSON."
+def _post_webhook(url: str, payload: dict[str, Any]) -> tuple[bool, str]:
+    body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    req = urllib.request.Request(
+        url, data=body, headers={"Content-Type": "application/json"}, method="POST"
     )
+    try:
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            code = int(getattr(resp, "status", 0) or 0)
+            return 200 <= code < 300, f"http_status={code}"
+    except Exception as exc:  # noqa: BLE001
+        return False, str(exc)
+
+
+def _webhook_url(cli_url: str) -> str:
+    return (
+        (cli_url or "").strip()
+        or (os.getenv("ARAMAIC_INSIGHT_CAP_DRIFT_ALERT_WEBHOOK_URL") or "").strip()
+        or (os.getenv("OPS_ALARM_WEBHOOK_URL") or "").strip()
+    )
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument(
         "--history-jsonl",
         default="reports/ops/aramaic_insight_cap_bucket_threshold_history.jsonl",
@@ -101,6 +128,16 @@ def main() -> int:
         default=1e-4,
         help="Absolute delta above which a numeric recommended field counts as drift (default: 1e-4).",
     )
+    ap.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Never POST webhook even if URL is set.",
+    )
+    ap.add_argument(
+        "--webhook-url",
+        default="",
+        help="Override webhook URL (default: ARAMAIC_INSIGHT_CAP_DRIFT_ALERT_WEBHOOK_URL then OPS_ALARM_WEBHOOK_URL).",
+    )
     a = ap.parse_args()
     hp = resolve_under_root(Path(a.history_jsonl))
     op = resolve_under_root(Path(a.output_json))
@@ -111,7 +148,7 @@ def main() -> int:
     rows = _load_history_rows(hp)
     recs = _recommended_snapshots(rows)
 
-    base = {
+    base: dict[str, Any] = {
         "schema": "aramaic_insight_cap_threshold_drift_alert_v1",
         "generated_at_utc": now(),
         "research_only": True,
@@ -141,6 +178,27 @@ def main() -> int:
         else:
             base["should_alert"] = False
             base["reason"] = "stable_below_threshold"
+
+    wh_url = _webhook_url(a.webhook_url)
+    if a.dry_run:
+        base["webhook"] = {"sent": False, "status": "skipped_dry_run"}
+    elif base["reason"] == "insufficient_history":
+        base["webhook"] = {"sent": False, "status": "skipped_insufficient_history"}
+    elif not base["should_alert"]:
+        base["webhook"] = {"sent": False, "status": "skipped_should_false"}
+    elif not wh_url:
+        base["webhook"] = {"sent": False, "status": "skipped_no_url"}
+    else:
+        payload = {
+            "event": "aramaic_insight_cap_threshold_drift_alert_v1",
+            "generated_at_utc": base["generated_at_utc"],
+            "reason": base["reason"],
+            "drifted_keys": base["drifted_keys"],
+            "max_abs_delta": base["max_abs_delta"],
+            "history_jsonl": str(hp),
+        }
+        ok, status = _post_webhook(wh_url, payload)
+        base["webhook"] = {"sent": ok, "status": status, "url_present": True}
 
     op.parent.mkdir(parents=True, exist_ok=True)
     op.write_text(json.dumps(base, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
