@@ -46,7 +46,7 @@
 
 - [x] 로컬 스테이징: `pwsh … -File projects/bitcoin-trading/ops/windows-rehearsal/deploy_showroom_static.ps1` (또는 `-WebRoot` / `JEMAAI_WEB_ROOT`) — **2026-05-16** `-WorkspaceRoot c:\workspace` 실행 **exit 0** → 기본 `projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/` 에 8파일(폴·미니멀 보드·`showroom_public_bundle_v1.json`·topology·Trust viz HTML/JSON·사주 HTML/JSON).
 - [x] (본선) `scripts/sync_showroom_to_vps.ps1` → **2026-05-14** `scp` exit 0 (`/var/www/jemaai/`). 비대화형 키 검증 버그 수정: `Test-HasIdentityArgs` 매개변수명이 PowerShell 자동 `$args`와 충돌해 `-i`가 무시되던 문제 → `$ScpLeadingArgs`로 변경(`sync_showroom_to_vps.ps1`).  
-- [x] SPEC(로컬 분기): 스테이징 `showroom_public_bundle_v1.json` **JSON 파싱 OK**; `public_showroom_board_minimal.html`에 `data-disclaimer-ref="jemaai_showroom_v1"` 존재(`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §3·§4 정합). **§4.1** `curl` `public-events/ingest` 스모크는 **`127.0.0.1:8788` 게이트웨이 기동 + `PUBLIC_EVENT_GATEWAY_TOKEN`** 전제로 운영 호스트 또는 로컬 E2E에서 수행.
+- [x] SPEC(로컬 분기): 스테이징 `showroom_public_bundle_v1.json` **JSON 파싱 OK**; `public_showroom_board_minimal.html`에 `data-disclaimer-ref="jemaai_showroom_v1"` 존재(`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §3·§4 정합). **§4.1 ingest(2026-05-16, Fact-Lock):** 로컬 `http://127.0.0.1:8788`에서 `POST /api/public-events/ingest` + `GET /api/public-events/latest` 확인(User `PUBLIC_EVENT_GATEWAY_TOKEN` + 헤더 `X-Public-Event-Token`; 본문은 `jemaai-cloud-mvp/examples/public_event_ingest_minimal.v1.json` 패턴, `event_id`·`timestamp`만 스모크용 갱신). SPEC §4.1 `curl` 예와 동일 계약(포트·토큰은 환경에 맞출 것). 추가 격리: 임시 `PUBLIC_EVENT_GATEWAY_PORT=18788`로 동일 바이너리 `public_event_gateway.py` 기동 후 POST/GET 회귀.
 
 **완료 조건:** 대상 URL 또는 호스트에서 `200` + 캐시 정책 확인(가능한 범위) 한 줄. — **2026-05-14:** `https://jemaai.cloud/public_showroom_poll.html` HEAD **200** (VPS `scp` 직후).
 
@@ -123,6 +123,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 | 2026-05-14 | 2 | 권장 자동 루프: `scripts/sync_showroom_to_vps.ps1 -RefreshStaging -SkipDotenvUserSync` exit 0 (체인+deploy+`scp` → `/var/www/jemaai/`); 이어 `verify_p0` 719 OK; `pytest` `test_mkm_control_integrity_pipeline_smoke_v1`+`test_validate_showroom_public_bundle` 19 pass |
 | 2026-05-14 | 3 | 권장=문서 수동 루틴: 주 1회 `sync_showroom_to_vps.ps1 -RefreshStaging`(Phase 3 DoD) |
 | 2026-05-16 | 0 | Control-Integrity smoke 7 passed; `verify_p0` 719 OK; 워킹트리 쇼룸 스테이징 추적 파일은 HEAD 기준 복원(로컬 체인 잡음 제거) |
+| 2026-05-16 | 2 | §4.1: `POST/GET` localhost `8788` ingest+latest(User token); 격리 포트 `18788` 동 바이너리 스모크 |
 
 ---
 
