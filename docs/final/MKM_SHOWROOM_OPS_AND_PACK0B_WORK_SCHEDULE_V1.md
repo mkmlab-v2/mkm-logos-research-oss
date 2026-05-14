@@ -100,10 +100,10 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 
 **목표:** 프로파일·어댑터 경로 SSOT 준수 후 학습 및 (정책대로) 프로모션 게이트.
 
-- [ ] `docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json` 확인 (`pack: "0-B"`)  
-- [ ] (선택) 학습 호스트에서 어댑터 산출·`check_mkm_*promotion*` 계열 게이트 — 경로는 CONSTITUTION §1.2.1 인근 및 `LORA_PACK_V0_DOD_V1.md`  
+- [x] `docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json` 확인 (`pack: "0-B"`, `adapter_repo_relative`, `golden_row_schema`) — **2026-05-14** `py -c` 로드 검증.  
+- [x] (로컬 가능 범위) **소표본** `run_pack0b_deterministic_lora_pipeline_v1.py` — `tests/fixtures/myeongri_deterministic_lora_golden_sample_v1.jsonl` → convert + `eval_myeongri_deterministic_lora_golden_fit_v1.py` + **`--print-train-config --profile golden_fit_smoke`** exit 0(TinyLlama 프로파일 해석). **전량 `train.jsonl` `--run-train`·어댑터 산출·프로모션 `decision=GO`는 GPU 호스트 미실행 → 의도적 보류.** 증거 번들 회귀: `py -m pytest` `test_myeongri_deterministic_lora_golden_set_schema_v1`·`test_build_myeongri_deterministic_lora_golden_bulk_v1`·`test_eval_myeongri_deterministic_lora_golden_fit_v1`·`test_myeongri_deterministic_lora_pack_copy_guardrails_v1`·`test_mkm_promotion_gate_evidence_bundle_v1` **12 passed** (CONSTITUTION Pack 0-B·`mkm_promotion_gate_evidence_bundle_v1` 행 정합).
 
-**완료 조건:** 게이트 `decision=GO` 또는 “의도적 보류” 사유 한 줄.
+**완료 조건:** 게이트 `decision=GO` 또는 “의도적 보류” 사유 한 줄. — **의도적 보류:** 전량 학습·프로모션 GO는 GPU/학습 호스트 미가동; 로컬은 프로파일·스키마·증거 번들·소표본 파이프라인으로 선행 게이트만 녹색.
 
 ---
 
@@ -126,6 +126,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 | 2026-05-16 | 2 | §4.1: `POST/GET` localhost `8788` ingest+latest(User token); 격리 포트 `18788` 동 바이너리 스모크 |
 | 2026-05-14 | 4 | Pack 0-B bulk: `build_myeongri_deterministic_lora_golden_bulk_v1.py` N=1000 K=100 `dataset_version=v1-2026-05-16`; manifest+sha256 |
 | 2026-05-14 | 5 | `eval_myeongri_deterministic_lora_golden_fit_v1.py` on 1100 rows → `reports/myeongri_deterministic_lora_golden_fit_latest.json` ok |
+| 2026-05-14 | 6 | 프로파일 SSOT 확인; pytest 12(0-B+promotion bundle); `run_pack0b…` fixture convert/eval+`golden_fit_smoke` train config — 전량 학습 GO 보류 |
 
 ---
 
