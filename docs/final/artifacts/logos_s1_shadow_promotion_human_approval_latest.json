@@ -1,0 +1,32 @@
+{
+  "schema": "logos_s1_shadow_promotion_human_approval_v1",
+  "generated_at_utc": "2026-05-14T14:09:47Z",
+  "decision": "ACK_NEXT_STAGE_PLANNING",
+  "reviewer_label": "commander",
+  "notes": "Chat approval 2026-05-16: promotion gate evidence bundle refreshed (G0-G11); no A-track auto-merge or live trading.",
+  "kpi_progress_snapshot": {
+    "status": "READY_FOR_REVIEW",
+    "passed": true,
+    "checks": {
+      "strict_go_consecutive_2w": true,
+      "strict_samples_ge_7": true,
+      "trend_mean_top1_cosine_ge_0_10": true,
+      "trend_query_error_rate_le_0_05": true,
+      "trend_low_conf_rate_le_0_30": true,
+      "alert_should_alert_false": true
+    },
+    "consecutive_strict_go_windows": 14
+  },
+  "track_wall": {
+    "shadow_only": true,
+    "promotion_to_a_track_allowed": false,
+    "auto_trade_enable": false,
+    "live_trading_enabled_by_this_artifact": false
+  },
+  "limitations": "This artifact records human acknowledgment for next-stage planning only. It does not modify exchange credentials, order routers, or A-track gates.",
+  "evidence_paths": {
+    "kpi_progress_json": "C:\\workspace\\docs\\final\\artifacts\\logos_shadow_promotion_kpi_progress_latest.json",
+    "human_approval_json": "C:\\workspace\\docs\\final\\artifacts\\logos_s1_shadow_promotion_human_approval_latest.json"
+  },
+  "kpi_gate_bypassed": false
+}

@@ -1,7 +1,7 @@
 {
   "schema": "mkm_promotion_gate_evidence_bundle_v1",
   "version": 1,
-  "generated_at_utc": "2026-05-12T18:01:17Z",
+  "generated_at_utc": "2026-05-14T14:09:04Z",
   "workspace_root_hint": "C:\\workspace",
   "track_a_regeneration_integrity": {
     "worst_case": "ok",
@@ -15,7 +15,7 @@
       "status": "pass",
       "exit_code": 0,
       "artifact": "scripts/verify_p0_constitution_gate_paths.ps1",
-      "log_tail": "OK: P0/CONSTITUTION gate paths present (536 checked)."
+      "log_tail": "OK: P0/CONSTITUTION gate paths present (719 checked)."
     },
     "G1": {
       "status": "pass",
