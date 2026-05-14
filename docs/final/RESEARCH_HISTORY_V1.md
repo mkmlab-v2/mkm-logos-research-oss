@@ -20,6 +20,10 @@
 | MKM Core Intelligence (Fact Focus) | `mkm-core-intelligence-fact-foc` | `aba1f8b1-be62-4367-ac7f-b1a997bb77d4` | **10** | 압축·SLA·코어 이론 중심 + `RESEARCH_HISTORY_V1.md`(B 인덱스) 포함 — `NotebookLM_sources_manifest.md` 기준 **유지 vs 별 노트** 검토만 권장. |
 | SBA 2026 모두의 챌린지 발표평가 준비 | `sba-2026` | `b25977f3-1f92-4075-8dfe-d4074ca708a7` | **21** | OD327 청크·LG HS 자료·PPTX 등 — 이벤트·사업 브리핑 축; 종료 후 소스 정리·아카이브 후보. |
 
+**웹 전용(미등록 · MCP `search_notebooks` TRACKC/MASTER 빈 결과, 2026-05-14):** `00_MASTER_TRACKC_BOARD_2026Q2` — 웹에서 Track C 보드로 운영 중이나 **MCP 로컬 라이브러리에는 없음**; 공유 URL 확보 후 `add_notebook` 권장.
+
+**Ops MCP `ask_question` 타임아웃(2026-05-14):** `select_notebook` → Ops 활성화 후 `browser_options.timeout_ms=120000`에도 `Timeout waiting for response from NotebookLM` 재현 — 웹 UI에서 동일 노트 채팅 정상 여부·소스 수 확인 후 재시도.
+
 ---
 
 ## 2) 로컬·Vault (노트북과 자동 동일 아님)
