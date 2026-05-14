@@ -38,6 +38,8 @@ param(
     [string]$KnowledgeIpReportOutJson = "docs/final/artifacts/bible_meaning_knowledge_ip_report_latest.json",
     [string]$KnowledgeIpVizOutJson = "docs/final/artifacts/bible_meaning_knowledge_ip_viz_latest.json",
     [string]$SurvivorHealthAlertOutJson = "docs/final/artifacts/insight_survivor_health_alert_latest.json",
+    [string]$SurvivorHealthHistoryOutJsonl = "reports/ops/insight_survivor_health_history.jsonl",
+    [switch]$SurvivorHealthAlertDryRun,
     [string]$TwoTrackFusionReportOutJson = "docs/final/artifacts/two_track_fusion_report_latest.json",
     [string]$TwoTrackFusionBriefOutJson = "docs/final/artifacts/two_track_fusion_brief_latest.json",
     [string]$TwoTrackFusionPresentationBriefOutJson = "docs/final/artifacts/two_track_fusion_presentation_brief_latest.json",
@@ -66,6 +68,21 @@ param(
 $ErrorActionPreference = "Stop"
 $workspaceRoot = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot "..")).Path
 Set-Location -LiteralPath $workspaceRoot
+
+$survivorHealthDryRunEffective = [bool]$SurvivorHealthAlertDryRun
+if (-not $survivorHealthDryRunEffective) {
+    $ev = [System.Environment]::GetEnvironmentVariable("MKM_ARAMAIC_SURVIVOR_HEALTH_ALERT_DRY_RUN", "Process")
+    if ([string]::IsNullOrWhiteSpace($ev)) {
+        $ev = [System.Environment]::GetEnvironmentVariable("MKM_ARAMAIC_SURVIVOR_HEALTH_ALERT_DRY_RUN", "User")
+    }
+    if ([string]::IsNullOrWhiteSpace($ev)) {
+        $ev = [System.Environment]::GetEnvironmentVariable("MKM_ARAMAIC_SURVIVOR_HEALTH_ALERT_DRY_RUN", "Machine")
+    }
+    if (-not [string]::IsNullOrWhiteSpace($ev)) {
+        $v = $ev.Trim().ToLowerInvariant()
+        if (@("1", "true", "yes") -contains $v) { $survivorHealthDryRunEffective = $true }
+    }
+}
 
 Write-Host "[1/5] Extract Aramaic core corpus" -ForegroundColor Cyan
 & py "scripts/extract_aramaic_core_corpus_v1.py" "--input-jsonl" $InputJsonl "--output-jsonl" $CorpusOutJsonl
@@ -216,7 +233,15 @@ Write-Host "[18/20] Build Track-K knowledge IP report + viz payload" -Foreground
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[19/20] Evaluate Track-T survivor health alert" -ForegroundColor Cyan
-& py "scripts/alert_insight_survivor_health_v1.py" "--survivor-json" $SurvivorCandidatesOutJson "--output-json" $SurvivorHealthAlertOutJson
+$survivorHealthArgs = @(
+    "scripts/alert_insight_survivor_health_v1.py",
+    "--survivor-json", $SurvivorCandidatesOutJson,
+    "--output-json", $SurvivorHealthAlertOutJson,
+    "--history-jsonl", $SurvivorHealthHistoryOutJsonl,
+    "--append-history"
+)
+if ($survivorHealthDryRunEffective) { $survivorHealthArgs += "--dry-run" }
+& py @survivorHealthArgs
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[20/20] Build two-track fusion report" -ForegroundColor Cyan

@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/insight_survivor_candidates_v1.schema.json",
+  "title": "Insight survivor candidates v1",
+  "description": "scripts/select_insight_survivor_candidates_v1.py output.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "promotion_required",
+    "source_track",
+    "survivor_count",
+    "survivors"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "insight_survivor_candidates_v1" },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "research_only": { "type": "boolean", "const": true },
+    "promotion_required": { "type": "boolean", "const": true },
+    "source_track": { "type": "string", "const": "T" },
+    "survivor_count": { "type": "integer", "minimum": 0 },
+    "survivors": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    }
+  }
+}

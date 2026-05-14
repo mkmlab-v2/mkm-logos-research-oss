@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/bible_meaning_insight_candidates_v1.schema.json",
+  "title": "Bible meaning insight candidates v1",
+  "description": "scripts/extract_bible_meaning_insight_candidates_v1.py output.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "promotion_required",
+    "source_track",
+    "candidates"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "bible_meaning_insight_candidates_v1" },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "research_only": { "type": "boolean", "const": true },
+    "promotion_required": { "type": "boolean", "const": true },
+    "source_track": { "type": "string", "const": "B" },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "candidate_id",
+          "source_node_id",
+          "hub_score",
+          "path_score",
+          "cluster_size",
+          "regime_tag"
+        ],
+        "properties": {
+          "candidate_id": { "type": "string" },
+          "source_node_id": { "type": "string" },
+          "hub_score": { "type": "number" },
+          "path_score": { "type": "number" },
+          "cluster_size": { "type": "integer", "minimum": 1 },
+          "regime_tag": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "automation_registry_v1",
-  "version": "2026-05-12",
+  "version": "2026-05-14",
   "description": "Single source of truth for core runtime tasks and expected state. Athena automation (owner=athena_automation): tasks default optional=true so reconcile stays green until you register them; remove optional or set false on a row to enforce that task on this machine. Register scripts: C:\\workspace\\scripts\\Register-*.ps1.",
   "tasks": [
     {
@@ -80,6 +80,27 @@
       "expected_status": "Ready",
       "owner": "btrack_research",
       "criticality": "medium"
+    },
+    {
+      "name": "\\MKM-AramaicMvp-DailyAudit",
+      "expected_status": "Ready",
+      "owner": "btrack_research",
+      "criticality": "low",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-AramaicMvp-Threshold-Weekly",
+      "expected_status": "Ready",
+      "owner": "btrack_research",
+      "criticality": "low",
+      "optional": true
+    },
+    {
+      "name": "\\MKM-AramaicMvp-BridgeCoef-Weekly",
+      "expected_status": "Ready",
+      "owner": "btrack_research",
+      "criticality": "low",
+      "optional": true
     },
     {
       "name": "\\MKM-VaFusionControlIntegrity-Daily",

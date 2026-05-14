@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/insight_survivor_eval_v1.schema.json",
+  "title": "Insight survivor eval v1",
+  "description": "scripts/build_insight_survivor_eval_v1.py output.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "promotion_required",
+    "source_track",
+    "rows"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "insight_survivor_eval_v1" },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "research_only": { "type": "boolean", "const": true },
+    "promotion_required": { "type": "boolean", "const": true },
+    "source_track": { "type": "string", "const": "T" },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "candidate_id",
+          "source_node_id",
+          "drawdown_avoidance_score",
+          "false_positive_cost",
+          "walkforward_repro_score",
+          "ci_low_defense_contrib",
+          "fusion_candidate_score",
+          "source_summary"
+        ]
+      }
+    }
+  }
+}

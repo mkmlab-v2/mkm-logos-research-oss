@@ -89,7 +89,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 
 MKM Control-Integrity Golden/LoRA 파이프라인 스모크(`tests/test_mkm_control_integrity_pipeline_smoke_v1.py`)는 `run_fact_lock_bundle.ps1` **기본**에 포함된다(번들 주석 5d). 로컬만 생략: `-SkipMkmControlIntegritySmoke`. SSOT: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.2.1.
 
-**Athena CENTRAL 체크포인트·Two-track/Multi-symbol·Aramaic·Logos insight bundle v1:** `tests/test_athena_checkpoint.py` 다음에 CI `dual-regime-integrity.yml`과 동일 **Two-track submission pack**(pytest 3)·**Multi-symbol gates**(pytest 3) — `scripts/run_fact_lock_bundle.ps1` 기본 **3d2a**(생략 `-SkipTwoTrackSubmissionAndMultiSymbolSmoke`)·이어 Aramaic 단계와 동일 **24**개 pytest(**3d2b**; 생략 `-SkipAramaicBtrackGraphPipelineSmoke`)·`tests/test_logos_insight_bundle_schema_v1.py`·`tests/test_build_logos_insight_bundle_v1.py`(**3d3**). CI Athena §28·Two-track·Multi-symbol·Aramaic·Logos 단계와 정합. non-degraded 스키마 예: `docs/final/schemas/logos_insight_bundle_v1.non_degraded.example.json`, 재생성 `py scripts/materialize_logos_insight_bundle_non_degraded_example_v1.py`.
+**Athena CENTRAL 체크포인트·Two-track/Multi-symbol·Aramaic·Logos insight bundle v1:** `tests/test_athena_checkpoint.py` 다음에 CI `dual-regime-integrity.yml`과 동일 **Two-track submission pack**(pytest 3)·**Multi-symbol gates**(pytest 3) — `scripts/run_fact_lock_bundle.ps1` 기본 **3d2a**(생략 `-SkipTwoTrackSubmissionAndMultiSymbolSmoke`)·이어 Aramaic 단계와 동일 **27**개 pytest(**3d2b**; 생략 `-SkipAramaicBtrackGraphPipelineSmoke`)·`tests/test_logos_insight_bundle_schema_v1.py`·`tests/test_build_logos_insight_bundle_v1.py`(**3d3**). CI Athena §28·Two-track·Multi-symbol·Aramaic·Logos 단계와 정합. **dual-regime PR paths:** Aramaic 블록에 Windows 일일 예약 래퍼 `scripts/Register-AramaicMvpDailyTask.ps1`·`scripts/Verify-AramaicMvpDailyTaskReadiness.ps1` 포함(Track T survivor dry-run 인자·readiness 출력 변경 시 CI 재실행). non-degraded 스키마 예: `docs/final/schemas/logos_insight_bundle_v1.non_degraded.example.json`, 재생성 `py scripts/materialize_logos_insight_bundle_non_degraded_example_v1.py`.
 
 **Track C macro fusion smoke (헬스 전용, 번들 밖):** `scripts/run_workspace_automation_health.ps1 -IncludeTrackCMacroFusionSmoke` 또는 `-TrackCMacroFusionSmokeOnly` — Invoke에 `-SkipGateAlert -SkipExodusSourceFetch` 고정. Logos `build_logos_insight_bundle_v1.py` 생략: **`-SkipLogosInsightBundle`** 또는 User/머신 **`MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE`** truthy. SSOT: `CONSTITUTION` §1.3.1 표.
 
@@ -101,6 +101,38 @@ B-track 세션 시각 명리 패널·날씨/OHLCV 조인·상관 회귀(4 pytest
 한의 의사 CDS assist envelope v1·자동화 레지스트리(회귀 4파일: CDS 3종 + `tests/test_automation_registry_json_v1.py`)은 `run_fact_lock_bundle.ps1` **기본** 단계 3e. 로컬만 생략: `-SkipKmPhysicianCdsEnvelope`. 빠른 점검: `scripts/run_workspace_automation_health.ps1 -IncludeKmPhysicianCdsEnvelopeSmoke` 또는 P0+해당 pytest만 `-KmPhysicianCdsEnvelopeSmokeOnly`. 배치 실행: `py scripts/run_km_physician_cds_assist_envelope_batch_v1.py --in tests/fixtures/km_physician_cds_assist_payload_batch_v1.example.jsonl --out reports/km_physician_cds_envelope_batch_latest.jsonl`.
 
 등록한 Windows 주간 작업(`MKM-KmPhysician-CdsEnvelopeBatch-Weekly`, `MKM-BTrack-BtcWeight-HitRateBundle-Weekly`)은 `projects/bitcoin-trading/ops/windows-rehearsal/automation_registry.json` 기대 목록과 맞추고, 워크스페이스 헬스의 `reconcile_automation_registry.ps1` 단계로 drift를 본다.
+
+---
+
+## CI 잡(`dual-regime-integrity`) vs Fact-Lock 번들 격차 로드맵 [VISION]
+
+`scripts/run_fact_lock_bundle.ps1` 상단 `.DESCRIPTION`이 범위 SSOT다. 아래는 **1:1 동치를 목표로 하지 않는** 나머지를 주차 단위로 밀어붙일 때의 고정 분해다(날짜는 달력 아닌 **상대 순서**).
+
+| Phase | 목표 주차(권장) | 범위 | 완료 정의 |
+|-------|------------------|------|-----------|
+| A | W0(완료) | `dual-regime-integrity`에 이미 포함된 Aramaic·Two-track·Multi-symbol pytest 블록 | CI 녹색 + CONSTITUTION 테스트 표·워크플로 행 정합 |
+| B | W1(완료) | Windows Task Scheduler **등록/검증 스크립트**를 레포에 두고 P0 경로에 포함 | `Register-AramaicMvp*` / `Verify-AramaicMvp*` / `Run-AramaicMvp*WeeklyChain_v1.ps1` 존재 + `verify_p0_constitution_gate_paths.ps1` 통과 |
+| C | W2–W3(진행·CONSTITUTION 비고·§6 서문·MULTI_LENS 단일 태그 표에 **서피스 태그** 반영) | **장시간·외부 비용** 후보를 CI·번들·헬스에 **단일 태그**로 고정(아래 표) | 표의 각 행이 SSOT 한 곳에만 기술되고 중복 주장 없음; **dual-regime job tail**은 §6 포인터 + 워크플로 YAML만 전개 |
+| D | W4+(부분 완료) | `automation_registry.json`·표준 Task 이름 | Aramaic 3태스크 행 추가 + `tests/test_automation_registry_json_v1.py` `MKM_REQUIRED_NAMES` 정합; 미등록 호스트는 `optional: true`로 reconcile 녹색 |
+
+**단일 태그 표 (Phase C 앵커):** 세부 경로·스위치는 `scripts/run_fact_lock_bundle.ps1` 상단 `.DESCRIPTION`·`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·`AGENTS.md`가 우선한다.
+
+| 항목 | CI 포함 (`dual-regime-integrity`) | Fact-Lock 번들 기본 | 헬스/선택 전용 |
+|------|-----------------------------------|----------------------|----------------|
+| integrity_guard + prophecy alignment PS1 + 대부분 pytest 스택 | 예 | 예(동일 케이스 커버 목표) | — |
+| TruthfulQA pytest·gate·repro·번들-gate 회귀 | **예**(CI TruthfulQA 단계) | `run_fact_lock_bundle` 기본은 생략; `-IncludeTruthfulQa*`로 정렬 | — |
+| TruthfulQA MC/Generation 벤치 산출·eval 게이트 **본실행** | 아니오 | **번들 선택**(`-IncludeTruthfulQa*`) / `Run-TruthfulQAReproBundleV1.ps1` | 외부 비용·시간 상한 별도 |
+| B-track·뉴스·Logos·Survivor·일반예언·세션·날씨120d·Lexicon·L1·토큰·압축·LoRA·Athena (`dual-regime`, TruthfulQA 직후 연속 스텝) | **예** | 번들과 부분 중복 | §6 표 복합 행·CI 순서 정렬 |
+| MKM meta-layer envelope·Token API hydration trend (`dual-regime`, 렌즈 PoC 묶음 직후) | **예** | 생략 가능 | — |
+| B-track 표면·Track C/Cross-lens RAG·프리미엄·브리핑 가드 (Token API hydration trend pytest 직후) | **예** | 생략 가능 | §6 표 복합 행 |
+| Token API `live_ratio` + Integrated governance invoker + **CI tail** (브리핑 가드 다음 ~ job 끝) | **예** | — | §6 **포인터 행** + `.github/workflows/dual-regime-integrity.yml` SSOT |
+| Track A Phase2 하네스 **pytest 스모크** (`test_track_a_harness_smoke_v1`) | **예** | `run_fact_lock_bundle` 기본 생략 가능 | 헬스 `-Include*` |
+| Track A 미터링·상용 일일 산출 루프 (`run_track_a_commercialization_daily_chain.ps1` 등) | 아니오 | **번들 선택** / Windows `Register-TrackACommercializationDailyTask` | 헬스·스케줄 |
+| AI BGM·상징/감정 M0·VA·fusion §3.8·렌즈 뮤직 분할 pytest(M1–M5·M32 시드·M20 오버레이·M26–M30 PoC 묶음 등) | **예** | `run_fact_lock_bundle` 기본에 전부 포함은 아님; CI `dual-regime-integrity` 오디오·VA·렌즈 뮤직 스텝과 정렬 | 헬스 `-Include*` |
+| 렌즈 뮤직 M31 **strict** 프로세스 exit·일일 퓨전 말단 | 아니오 | **번들 선택**·`Invoke-TrackCMacroDailyFusion_v1.ps1` | `Run-LensMusicPromotionGateStagingStrict_v1.ps1` 등 |
+| Aramaic MVP 일일·주간 **스케줄 실행 본체** | 아니오(Windows 스케줄) | 아니오 | **스케줄 + `Run-*WeeklyChain` 수동**; 레지스트리 `optional: true` |
+
+**Aramaic MVP 운영 진입점(요약):** 일일 `scripts/Register-AramaicMvpDailyTask.ps1` · 임계 주간 `scripts/Register-AramaicMvpThresholdWeeklyTask.ps1` · 브리지 주간 `scripts/Register-AramaicMvpBridgeCoefWeeklyTask.ps1` — 상세 태스크명·시각은 `CONSTITUTION` Aramaic 표 해당 행. 레지스트리 행: `projects/bitcoin-trading/ops/windows-rehearsal/automation_registry.json`.
 
 ---
 

@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/insight_survivor_health_history_row_v1.schema.json",
+  "title": "Insight survivor health history row v1",
+  "description": "One JSONL line appended by scripts/alert_insight_survivor_health_v1.py --append-history.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "generated_at_utc", "latest"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "insight_survivor_health_history_row_v1"
+    },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "latest": {
+      "type": "object",
+      "required": ["survivor_count", "survivor_mean_score"],
+      "properties": {
+        "survivor_count": { "type": "integer", "minimum": 0 },
+        "survivor_mean_score": { "type": "number" }
+      },
+      "additionalProperties": true
+    }
+  }
+}

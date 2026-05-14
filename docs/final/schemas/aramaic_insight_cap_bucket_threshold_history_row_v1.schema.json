@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/aramaic_insight_cap_bucket_threshold_history_row_v1.schema.json",
+  "title": "Aramaic insight cap bucket threshold history row v1 (JSONL line)",
+  "description": "One line written by scripts/report_aramaic_insight_cap_threshold_history_v1.py.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema", "recorded_at_utc", "recommended"],
+  "properties": {
+    "schema": { "type": "string", "const": "aramaic_insight_cap_bucket_threshold_history_row_v1" },
+    "recorded_at_utc": { "type": "string", "minLength": 10 },
+    "recommended": { "type": "object", "additionalProperties": true }
+  }
+}

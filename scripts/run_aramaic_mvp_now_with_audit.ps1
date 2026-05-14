@@ -4,7 +4,8 @@ param(
     [switch]$StrictReadiness,
     [switch]$NoWebhook,
     # Forwards to run_aramaic_mvp_chain_v1.ps1 (omit [14b] insight bundle when upstream artifacts absent).
-    [switch]$SkipLogosInsightBundle
+    [switch]$SkipLogosInsightBundle,
+    [switch]$SurvivorHealthAlertDryRun
 )
 
 $ErrorActionPreference = "Stop"
@@ -25,6 +26,7 @@ if (-not (Test-Path -LiteralPath $auditDir)) {
 
 $chainArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $chainScript)
 if ($SkipLogosInsightBundle) { $chainArgs += "-SkipLogosInsightBundle" }
+if ($SurvivorHealthAlertDryRun) { $chainArgs += "-SurvivorHealthAlertDryRun" }
 & powershell @chainArgs
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 

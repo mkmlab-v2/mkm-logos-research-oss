@@ -132,7 +132,7 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 | `tests/test_spike_kospi_structural_entropy_v1.py` | 레포 미구현 — 스크립트 목록에서 제거; 스파이크 테스트·스크립트 추가 시 **목록에 재등록**. |
 | `tests/test_spike_kospi_structural_entropy_compare_v1.py` | 동일 |
 | `tests/test_track_a_shadow_corpus_eval_smoke.py` | 파일 없음 — **`tests/test_track_a_harness_smoke_v1.py`** 한 건으로 미터링·섀도 코퍼스·시그널 라이트 등 Track A Phase2 하네스를 커버하도록 목록 교체. |
-| `tests/test_track_a_metering_chain_smoke.py` | 동일(위 하네스에 흡수) |
+| `tests/test_track_a_metering_chain_smoke.py` | **삭제·비사용** — SSOT·CI는 `tests/test_track_a_harness_smoke_v1.py`만 참조한다. |
 | `tests/test_autonomous_evolution_loop_draft_smoke.py` | 레포에 대응 스크립트·테스트 미존재(MISSION_LOG 템플릿만 선행 언급) — 목록에서 제거; 구현 시 **스크립트 + 테스트 + 본 표 갱신**. |
 
 - **크로스 플랫폼 패리티 (2026-05-13)**: `run_prophecy_alignment_pytest.sh`의 워크스페이스 2단계 `tests/test_*.py` 목록은 **`run_prophecy_alignment_pytest.ps1`과 동일 경로·순서**를 유지한다(예: `test_emit_myeongni_thin_bridge_line_v1.py`). 목록 변경 시 **`.ps1`과 `.sh`를 한 커밋에서 함께** 수정한다.

@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/aramaic_insight_cap_bucket_threshold_sweep_v1.schema.json",
+  "title": "Aramaic insight cap bucket threshold sweep v1",
+  "description": "scripts/sweep_aramaic_insight_cap_bucket_thresholds_v1.py output.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "promotion_required",
+    "source_track",
+    "rows"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "aramaic_insight_cap_bucket_threshold_sweep_v1" },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "research_only": { "type": "boolean", "const": true },
+    "promotion_required": { "type": "boolean", "const": true },
+    "source_track": { "type": "string", "const": "B" },
+    "rows": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "required": [
+          "mid_vol_threshold",
+          "high_vol_threshold",
+          "insight_max_delta_low_vol",
+          "insight_max_delta_mid_vol",
+          "insight_max_delta_high_vol",
+          "score_proxy"
+        ],
+        "properties": {
+          "mid_vol_threshold": { "type": "number" },
+          "high_vol_threshold": { "type": "number" },
+          "insight_max_delta_low_vol": { "type": "number" },
+          "insight_max_delta_mid_vol": { "type": "number" },
+          "insight_max_delta_high_vol": { "type": "number" },
+          "score_proxy": { "type": "number" }
+        }
+      }
+    }
+  }
+}

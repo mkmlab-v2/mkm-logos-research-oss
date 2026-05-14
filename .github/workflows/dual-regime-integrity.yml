@@ -328,7 +328,7 @@ on:
       - "tests/test_multilens_performance_eval_report.py"
       - "tests/test_multilens_performance_eval_report_v2.py"
       - "tests/test_track_a_shadow_corpus_eval_smoke.py"
-      - "tests/test_track_a_metering_chain_smoke.py"
+      - "tests/test_track_a_harness_smoke_v1.py"
       - "tests/test_autonomous_evolution_loop_draft_smoke.py"
       - "scripts/build_two_track_submission_evidence_bundle_v1.py"
       - "scripts/build_two_track_submission_draft_v1.py"
@@ -582,6 +582,8 @@ on:
       - "scripts/run_aramaic_mvp_chain_v1.ps1"
       - "scripts/run_aramaic_mvp_now_with_audit.ps1"
       - "scripts/run_aramaic_raw_oos_audit_accumulator_v1.ps1"
+      - "scripts/Register-AramaicMvpDailyTask.ps1"
+      - "scripts/Verify-AramaicMvpDailyTaskReadiness.ps1"
       - "tests/test_build_logos_insight_bundle_v1.py"
       - "tests/test_logos_insight_bundle_schema_v1.py"
       - "docs/final/schemas/logos_insight_bundle_v1.schema.json"
@@ -600,6 +602,12 @@ on:
       - "docs/final/schemas/aramaic_regime_shift_score_v1.schema.json"
       - "docs/final/schemas/aramaic_insight_cap_threshold_drift_alert_v1.schema.json"
       - "docs/final/schemas/aramaic_insight_cap_threshold_drift_alert_v1.example.json"
+      - "docs/final/schemas/bible_meaning_insight_candidates_v1.schema.json"
+      - "docs/final/schemas/insight_survivor_eval_v1.schema.json"
+      - "docs/final/schemas/insight_survivor_candidates_v1.schema.json"
+      - "docs/final/schemas/aramaic_insight_cap_bucket_threshold_sweep_v1.schema.json"
+      - "docs/final/schemas/aramaic_insight_cap_bucket_threshold_recommendation_v1.schema.json"
+      - "docs/final/schemas/aramaic_insight_cap_bucket_threshold_history_row_v1.schema.json"
       - "scripts/build_aramaic_graph_edges_v1.py"
       - "scripts/score_aramaic_regime_shift_v1.py"
       - "scripts/report_aramaic_semantic_edge_quality_v1.py"
@@ -612,6 +620,10 @@ on:
       - "scripts/apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py"
       - "scripts/report_aramaic_insight_cap_threshold_history_v1.py"
       - "scripts/alert_aramaic_insight_cap_threshold_drift_v1.py"
+      - "docs/final/schemas/insight_survivor_health_alert_v1.schema.json"
+      - "docs/final/schemas/insight_survivor_health_alert_v1.example.json"
+      - "docs/final/schemas/insight_survivor_health_history_row_v1.schema.json"
+      - "scripts/alert_insight_survivor_health_v1.py"
       - "scripts/run_aramaic_regime_shift_weight_sweep_v1.py"
       - "scripts/run_aramaic_regime_shift_shadow_compare_v1.py"
       - "scripts/apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py"
@@ -630,6 +642,9 @@ on:
       - "tests/test_report_aramaic_insight_cap_threshold_history_v1.py"
       - "tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py"
       - "tests/test_aramaic_insight_cap_threshold_drift_alert_schema_v1.py"
+      - "tests/test_bible_meaning_insight_survivor_and_cap_bucket_schemas_v1.py"
+      - "tests/test_insight_survivor_health_alert_v1.py"
+      - "tests/test_insight_survivor_health_alert_schema_v1.py"
       - "tests/test_aramaic_regime_shift_weight_sweep_v1.py"
       - "tests/test_aramaic_regime_shift_shadow_compare_v1.py"
       - "tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py"
@@ -1227,8 +1242,8 @@ jobs:
             tests/test_two_track_qa_overlay_counterfactual_v1.py \
             -q --tb=short
 
-      - name: Aramaic B-track graph pipeline smoke (corpus, audit, alerts, threshold sweep/apply, audit PS1 passthrough, graph, score, semantic, bridge, meaning graph, insight survivor, cap bucket, drift alert schema, weight/shadow, bridge coef)
-        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py tests/test_report_aramaic_mvp_audit_trend_v1.py tests/test_alert_aramaic_mvp_trend_v1.py tests/test_sweep_aramaic_mvp_alert_thresholds_v1.py tests/test_apply_aramaic_mvp_alert_threshold_recommendation_v1.py tests/test_run_aramaic_mvp_now_with_audit_passthrough_v1.py tests/test_aramaic_graph_schema_v1.py tests/test_aramaic_edge_builder_v1.py tests/test_aramaic_regime_shift_score_v1.py tests/test_aramaic_semantic_edge_quality_v1.py tests/test_build_aramaic_cross_corpus_bridge_v1.py tests/test_bible_meaning_graph_schema_v1.py tests/test_build_bible_meaning_graph_v1.py tests/test_extract_bible_meaning_insight_candidates_v1.py tests/test_build_insight_survivor_eval_v1.py tests/test_select_insight_survivor_candidates_v1.py tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py tests/test_report_aramaic_insight_cap_threshold_history_v1.py tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py tests/test_aramaic_insight_cap_threshold_drift_alert_schema_v1.py tests/test_aramaic_regime_shift_weight_sweep_v1.py tests/test_aramaic_regime_shift_shadow_compare_v1.py tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py -q --tb=short
+      - name: Aramaic B-track graph pipeline smoke (corpus, audit, alerts, threshold sweep/apply, audit PS1 passthrough, graph, score, semantic, bridge, meaning graph, insight survivor, cap bucket, drift alert schema, insight/cap jsonschema chain, Track T survivor health + schema, weight/shadow, bridge coef)
+        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py tests/test_report_aramaic_mvp_audit_trend_v1.py tests/test_alert_aramaic_mvp_trend_v1.py tests/test_sweep_aramaic_mvp_alert_thresholds_v1.py tests/test_apply_aramaic_mvp_alert_threshold_recommendation_v1.py tests/test_run_aramaic_mvp_now_with_audit_passthrough_v1.py tests/test_aramaic_graph_schema_v1.py tests/test_aramaic_edge_builder_v1.py tests/test_aramaic_regime_shift_score_v1.py tests/test_aramaic_semantic_edge_quality_v1.py tests/test_build_aramaic_cross_corpus_bridge_v1.py tests/test_bible_meaning_graph_schema_v1.py tests/test_build_bible_meaning_graph_v1.py tests/test_extract_bible_meaning_insight_candidates_v1.py tests/test_build_insight_survivor_eval_v1.py tests/test_select_insight_survivor_candidates_v1.py tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py tests/test_report_aramaic_insight_cap_threshold_history_v1.py tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py tests/test_aramaic_insight_cap_threshold_drift_alert_schema_v1.py tests/test_bible_meaning_insight_survivor_and_cap_bucket_schemas_v1.py tests/test_insight_survivor_health_alert_v1.py tests/test_insight_survivor_health_alert_schema_v1.py tests/test_aramaic_regime_shift_weight_sweep_v1.py tests/test_aramaic_regime_shift_shadow_compare_v1.py tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py -q --tb=short
 
       - name: Logos insight bundle v1 (schema + build CLI)
         run: python -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py -q --tb=short
@@ -1323,13 +1338,8 @@ jobs:
             echo "SKIP: track_a shadow corpus eval smoke test is not tracked in this branch."
           fi
 
-      - name: Track A metering chain + conversational cost simulation smoke
-        run: |
-          if [[ -f tests/test_track_a_metering_chain_smoke.py ]]; then
-            python -m pytest tests/test_track_a_metering_chain_smoke.py -q --tb=short
-          else
-            echo "SKIP: track_a metering chain smoke test is not tracked in this branch."
-          fi
+      - name: Track A Phase2 harness smoke (metering + shadow corpus + signal light)
+        run: python -m pytest tests/test_track_a_harness_smoke_v1.py -q --tb=short
 
       - name: Autonomous evolution loop draft v1 smoke
         run: |

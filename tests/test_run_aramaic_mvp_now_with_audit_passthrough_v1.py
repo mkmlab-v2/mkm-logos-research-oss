@@ -28,13 +28,17 @@ def _powershell() -> list[str]:
 
 def _write_stub_chain(scripts_dir: Path) -> None:
     stub = r"""param(
-    [switch]$SkipLogosInsightBundle
+    [switch]$SkipLogosInsightBundle,
+    [switch]$SurvivorHealthAlertDryRun
 )
 $ErrorActionPreference = "Stop"
 $probeDir = Join-Path (Split-Path $PSScriptRoot -Parent) "_chain_probe"
 New-Item -ItemType Directory -Force -Path $probeDir | Out-Null
 $log = Join-Path $probeDir "invocation.json"
-$o = @{ SkipLogosInsightBundlePresent = [bool]$SkipLogosInsightBundle }
+$o = @{
+  SkipLogosInsightBundlePresent = [bool]$SkipLogosInsightBundle
+  SurvivorHealthAlertDryRunPresent = [bool]$SurvivorHealthAlertDryRun
+}
 [System.IO.File]::WriteAllText($log, ($o | ConvertTo-Json -Compress -Depth 4), [System.Text.UTF8Encoding]::new($false))
 exit 0
 """
@@ -79,6 +83,7 @@ def test_skip_logos_insight_bundle_passthrough_to_chain(tmp_path: Path) -> None:
     assert probe.is_file(), proc.stdout + proc.stderr
     inv = json.loads(probe.read_text(encoding="utf-8"))
     assert inv.get("SkipLogosInsightBundlePresent") is True
+    assert inv.get("SurvivorHealthAlertDryRunPresent") is False
 
 
 def test_no_skip_switch_absent_on_chain(tmp_path: Path) -> None:
@@ -102,6 +107,7 @@ def test_no_skip_switch_absent_on_chain(tmp_path: Path) -> None:
     assert proc.returncode == 0, proc.stdout + proc.stderr
     inv = json.loads(probe.read_text(encoding="utf-8"))
     assert inv.get("SkipLogosInsightBundlePresent") is False
+    assert inv.get("SurvivorHealthAlertDryRunPresent") is False
 
 
 def test_no_webhook_sets_audit_row_flag(tmp_path: Path) -> None:
@@ -128,3 +134,27 @@ def test_no_webhook_sets_audit_row_flag(tmp_path: Path) -> None:
     assert lines, "audit log should have one line"
     row = json.loads(lines[-1])
     assert row.get("webhook_disabled") is True
+
+
+def test_survivor_health_alert_dry_run_passthrough_to_chain(tmp_path: Path) -> None:
+    ws = tmp_path / "fixture_dry"
+    (ws / "scripts").mkdir(parents=True)
+    _write_stub_chain(ws / "scripts")
+    _write_min_score(ws / "docs" / "final" / "artifacts")
+    (ws / "reports" / "ops").mkdir(parents=True, exist_ok=True)
+    audit_rel = "reports/ops/audit_dry.jsonl"
+    probe = ws / "_chain_probe" / "invocation.json"
+
+    cmd = _powershell() + [
+        "-File",
+        str(AUDIT_PS1),
+        "-WorkspaceRoot",
+        str(ws),
+        "-AuditLogJsonl",
+        audit_rel,
+        "-SurvivorHealthAlertDryRun",
+    ]
+    proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, check=False)
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    inv = json.loads(probe.read_text(encoding="utf-8"))
+    assert inv.get("SurvivorHealthAlertDryRunPresent") is True

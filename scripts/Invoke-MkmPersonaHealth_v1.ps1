@@ -11,6 +11,7 @@
   PremiumMultilensQueue = Invoke-PremiumMultilensQueueRoutine_v1.ps1 (pytest 4 + drain allow-missing + S1 promotion gate --skip-pytest)
   AmsaengHealth = run_workspace_automation_health.ps1 (기본 인자만)
   P0 = verify_p0_constitution_gate_paths.ps1
+  AramaicDailyReadiness = Verify-AramaicMvpDailyTaskReadiness.ps1 (Windows Task Scheduler; 미등록 시 실패)
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle
@@ -23,10 +24,13 @@
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0
+
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AramaicDailyReadiness
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness')]
     [string]$Persona
 )
 
@@ -69,6 +73,12 @@ try {
         }
         'P0' {
             $script = Join-Path $PSScriptRoot 'verify_p0_constitution_gate_paths.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script
+            exit $LASTEXITCODE
+        }
+        'AramaicDailyReadiness' {
+            $script = Join-Path $PSScriptRoot 'Verify-AramaicMvpDailyTaskReadiness.ps1'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
             & $ps @common $script
             exit $LASTEXITCODE

@@ -13,7 +13,7 @@
   3d. `py -m pytest tests/test_mkm_meta_layer_envelope_v1.py` — 메타 인지 봉투 v1·킬 스위치 정규화·`AthenaValidator`(CONSTITUTION §1.3.1 보강 2026-05-05)
   3d2. `py -m pytest tests/test_athena_checkpoint.py` — CENTRAL `athena_checkpoint.py` prepend·`--max-checkpoints`(CI `Athena execution governance` 스텝에 포함된 동일 테스트)
   3d2a. `py -m pytest …` — CI `dual-regime-integrity.yml`에서 Aramaic 직전의 **Two-track submission pack**(pytest **3**) + **Multi-symbol gates and counterfactual QA**(pytest **3**)를 **동일 순서**로 한 번에 실행(총 **6**개 파일). `-SkipTwoTrackSubmissionAndMultiSymbolSmoke` 로 생략.
-  3d2b. `py -m pytest …` — Aramaic B-track graph pipeline smoke **24**개 파일(CI `dual-regime-integrity.yml` `Aramaic B-track graph pipeline smoke` 단계와 동일 목록: 코퍼스·audit trend·alert·threshold sweep/apply·MVP audit PS1 passthrough·그래프·점수·시맨틱·bridge·Bible meaning graph·insight survivor·cap bucket·drift alert schema·weight/shadow·bridge coef). `-SkipAramaicBtrackGraphPipelineSmoke` 로 생략.
+  3d2b. `py -m pytest …` — Aramaic B-track graph pipeline smoke **27**개 파일(CI `dual-regime-integrity.yml` `Aramaic B-track graph pipeline smoke` 단계와 동일 목록: 코퍼스·audit trend·alert·threshold sweep/apply·MVP audit PS1 passthrough·그래프·점수·시맨틱·bridge·Bible meaning graph·insight survivor·cap bucket·drift alert schema·insight/cap CLI 연쇄 jsonschema·Track T survivor health·survivor health alert schema·weight/shadow·bridge coef). `-SkipAramaicBtrackGraphPipelineSmoke` 로 생략.
   3d3. `py -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py` — Logos insight bundle v1 스키마·빌더·non-degraded 예시(CI `Logos insight bundle v1` 스텝과 동일 테스트)
   3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
@@ -115,7 +115,7 @@
   CI `dual-regime-integrity.yml`의 **Two-track submission pack**(pytest 3) + **Multi-symbol gates**(pytest 3) — 총 **6**개 파일을 생략한다(Aramaic 3d2b 직전 단계).
 
 .PARAMETER SkipAramaicBtrackGraphPipelineSmoke
-  Aramaic B-track graph pipeline smoke pytest **24**개(CI `dual-regime-integrity.yml` Aramaic 단계와 동일 목록)를 생략한다.
+  Aramaic B-track graph pipeline smoke pytest **27**개(CI `dual-regime-integrity.yml` Aramaic 단계와 동일 목록)를 생략한다.
 
 .PARAMETER SkipMyeongniLensRecommendedStack
   명리 독립 렌즈 v0/v1·융합 브리지·봇 체인·융합 스텁 등 9종 멀티렌즈 pytest(권장 CI 패리티)를 생략한다.
@@ -188,7 +188,7 @@ param(
     # Two-track submission + multi-symbol gates (6 pytests; dual-regime steps immediately before Aramaic)
     [switch]$SkipTwoTrackSubmissionAndMultiSymbolSmoke,
 
-    # Aramaic B-track graph pipeline smoke (24 pytests; dual-regime `Aramaic B-track graph pipeline smoke` step)
+    # Aramaic B-track graph pipeline smoke (27 pytests; dual-regime `Aramaic B-track graph pipeline smoke` step)
     [switch]$SkipAramaicBtrackGraphPipelineSmoke,
 
     # Recommended tail: Invoke-SafeOpsSurfaceCheck.ps1 after pytest bundle (exit 2 fails; exit 1 warns only).
@@ -252,6 +252,9 @@ $aramaicBtrackGraphPipelineSmokePytests = @(
     (Join-Path $workspaceRoot 'tests\test_report_aramaic_insight_cap_threshold_history_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_alert_aramaic_insight_cap_threshold_drift_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_aramaic_insight_cap_threshold_drift_alert_schema_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_bible_meaning_insight_survivor_and_cap_bucket_schemas_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_insight_survivor_health_alert_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_insight_survivor_health_alert_schema_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_weight_sweep_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_shadow_compare_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py')
@@ -520,7 +523,7 @@ if (-not $SkipAramaicBtrackGraphPipelineSmoke) {
             throw "Aramaic B-track graph pipeline pytest not found: $t"
         }
     }
-    Write-Host '== Fact-Lock: Aramaic B-track graph pipeline smoke (dual-regime parity; 24 pytest files) ==' -ForegroundColor Cyan
+    Write-Host '== Fact-Lock: Aramaic B-track graph pipeline smoke (dual-regime parity; 27 pytest files) ==' -ForegroundColor Cyan
     & py -m pytest @aramaicBtrackGraphPipelineSmokePytests -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE

@@ -1,5 +1,5 @@
 # Run Aramaic MVP now+audit in a loop until target audit runs are reached.
-# Optional -SkipLogosInsightBundle forwards to run_aramaic_mvp_now_with_audit.ps1 (same as chain [14b] skip).
+# Optional -SkipLogosInsightBundle / -SurvivorHealthAlertDryRun forward to run_aramaic_mvp_now_with_audit.ps1.
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [string]$AuditLogJsonl = "reports/ops/aramaic_mvp_run_audit_log.jsonl",
@@ -9,7 +9,8 @@ param(
     [switch]$StrictReadiness,
     [switch]$NoWebhook,
     [switch]$SkipIngestAndReadiness,
-    [switch]$SkipLogosInsightBundle
+    [switch]$SkipLogosInsightBundle,
+    [switch]$SurvivorHealthAlertDryRun
 )
 
 $ErrorActionPreference = "Stop"
@@ -51,6 +52,7 @@ for ($i = 1; $i -le $MaxIterations; $i++) {
     if ($StrictReadiness) { $args += "-StrictReadiness" }
     if ($NoWebhook) { $args += "-NoWebhook" }
     if ($SkipLogosInsightBundle) { $args += "-SkipLogosInsightBundle" }
+    if ($SurvivorHealthAlertDryRun) { $args += "-SurvivorHealthAlertDryRun" }
     & powershell @args
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
