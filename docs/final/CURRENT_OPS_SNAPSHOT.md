@@ -14,7 +14,7 @@
 
 **Thread:** Cursor — STT COGS·Fact-Lock 실행 순서·내부 단가표 초안 경로 동결.
 
-- **완료:** (1)~(5) 동일 + **RQ-009**·`RESEARCH_OPEN_QUESTIONS` 근거·`last_reviewed_utc` 동기 · **CENTRAL** `nl_sync`/체크포인트(실버 COGS `[HYPO]` 템플릿) · **MISSION_LOG** Evidence·다음 할 일 `[ ]` COGS 채움.
+- **완료:** (1)~(5) 동일 + **RQ-009**·`RESEARCH_OPEN_QUESTIONS` 근거·`last_reviewed_utc` 동기 · **CENTRAL** `nl_sync`/체크포인트(실버 COGS `[HYPO]` 템플릿) · **MISSION_LOG** Evidence·다음 할 일 `[ ]` COGS 채움. **추가:** `silver_tech_cogs_unit_economics_template_v1.md` — 공개 가격표 URL(단가 미기재)·하이브리드 STT **이벤트 로그 필드 표** 초안.
 - **막힘:** 없음.
 - **다음:** 표에 **실측·견적 링크** 채움 → RQ-009 토의 → 법무 후 Track C §3.7.2 수치 문장은 **별첨 또는 artifacts**만 검토.
 
