@@ -31,7 +31,8 @@ After import + engine (ADC + APIs enabled): smoke query
   ``py scripts/query_agent_search_engine_v1.py --project … --engine-id …``;
 explicit RAG + Vertex Gemini (or ``--skip-gemini``)
   ``py scripts/run_vertex_gemini_agent_search_context_v1.py``;
-Windows wrapper ``scripts/Run-VertexGeminiAgentSearchContextSmoke_v1.ps1``.
+Windows wrapper ``scripts/Run-VertexGeminiAgentSearchContextSmoke_v1.ps1``
+  (optional ``-ImportDocumentsFirst`` runs this script with ``--skip-create`` first when new PDFs were uploaded to GCS only).
 """
 
 from __future__ import annotations
