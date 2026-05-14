@@ -10,7 +10,7 @@ Externally safe summary grounded in current Fact-Lock artifacts, with explicit s
 - `promotion_gate`: `human_signoff_required`
 
 ## As-Of Anchor
-- `as_of_utc`: `2026-05-06T23:16:25Z`
+- `as_of_utc`: `2026-05-07T23:42:58Z`
 - `artifact_scope`: `docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json`
 - `long_horizon_gate`: `docs/final/artifacts/prophecy_lens_combo_backtest_30y_latest.json` (`status=INSUFFICIENT_HISTORY_HOLD`, `available_years=4.9993`)
 - `scope_note`: "Results are valid for the observed v1 horizon only; long-horizon generalization requires separate validation."

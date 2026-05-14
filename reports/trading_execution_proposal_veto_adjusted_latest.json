@@ -1,6 +1,6 @@
 {
   "schema": "trading_execution_proposal_veto_adjusted_v1",
-  "generated_at_utc": "2026-05-09T15:30:02Z",
+  "generated_at_utc": "2026-05-14T21:30:02Z",
   "base_proposal_ref": "C:/workspace/reports/trading_execution_proposal_latest.json",
   "veto_config_ref": "C:/workspace/docs/final/artifacts/sasang_veto_only_active_config_latest.json",
   "veto_applied": true,

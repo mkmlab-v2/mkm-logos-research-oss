@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_runtime_health_guard_v1",
-  "generated_at_utc": "2026-05-04T21:30:04Z",
+  "generated_at_utc": "2026-05-14T21:30:04Z",
   "status": "red",
   "should_pause_trading": true,
   "summary": {

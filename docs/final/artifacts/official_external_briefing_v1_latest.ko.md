@@ -10,7 +10,7 @@
 - `promotion_gate`: `human_signoff_required`
 
 ## 기준 시점(As-Of Anchor)
-- `as_of_utc`: `2026-05-06T23:16:25Z`
+- `as_of_utc`: `2026-05-07T23:42:58Z`
 - `artifact_scope`: `docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json`
 - `long_horizon_gate`: `docs/final/artifacts/prophecy_lens_combo_backtest_30y_latest.json` (`status=INSUFFICIENT_HISTORY_HOLD`, `available_years=4.9993`)
 - `scope_note`: "본 결과는 v1 관측 구간에 한정되며, 장기 구간 일반화는 별도 검증이 필요합니다."

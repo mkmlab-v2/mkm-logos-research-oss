@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_weekly_audit_bundle_v1",
-  "generated_at_utc": "2026-05-04T21:30:05Z",
+  "generated_at_utc": "2026-05-14T21:30:06Z",
   "inputs": {
     "weekly_report_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_report_latest.json",
     "policy_audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
@@ -11,32 +11,28 @@
     "holdout_lock_json": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_lock_manifest_v1.json"
   },
   "weekly_report": {
-    "generated_at_utc": "2026-05-04T21:30:05Z",
+    "generated_at_utc": "2026-05-14T21:30:05Z",
     "risk_summary": "LOW: resonance stage is stable and no health alerts detected.",
     "metrics": {
       "top_stage_change_rate": 0.0,
       "top_stage_current_primary": "full_canon",
-      "top_stage_previous_primary": null,
+      "top_stage_previous_primary": "full_canon",
       "top_stage_drift": false,
       "health_alert_count_7d": 0,
-      "holdout_verified_stage_count": 2,
+      "holdout_verified_stage_count": 3,
       "holdout_min_cases_per_stage": 2,
-      "promoted_stage_count": 1,
-      "rejected_stage_count": 0
+      "promoted_stage_count": 0,
+      "rejected_stage_count": 1
     },
     "promotion_gate": {
-      "enabled": true,
+      "enabled": false,
       "rule": "only stages with holdout top_resonance count >= required threshold (stage override or default) are promoted",
       "holdout_dataset_lock_enforced": true,
-      "holdout_dataset_lock_ok": true,
-      "holdout_dataset_expected_sha256": "f0ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
-      "holdout_dataset_actual_sha256": "f0ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
+      "holdout_dataset_lock_ok": false,
+      "holdout_dataset_expected_sha256": null,
+      "holdout_dataset_actual_sha256": null,
       "min_holdout_cases_per_stage": 2,
-      "stage_min_holdout_cases": {
-        "full_canon": 5,
-        "prophets": 3,
-        "gospels": 3
-      },
+      "stage_min_holdout_cases": {},
       "holdout_top_stage_counts": {
         "full_canon": 14,
         "prophets": 2,
@@ -44,12 +40,13 @@
       },
       "holdout_verified_stages": [
         "full_canon",
-        "gospels"
+        "gospels",
+        "prophets"
       ]
     }
   },
   "policy_audit_summary": {
-    "generated_at_utc": "2026-05-04T21:30:05Z",
+    "generated_at_utc": "2026-05-14T21:30:05Z",
     "metrics": {
       "change_count_window": 2,
       "change_count_total": 2,
@@ -59,28 +56,31 @@
   },
   "policy_governance_alert": {
     "schema": "pre_news_shadow_policy_governance_alert_v1",
-    "generated_at_utc": "2026-05-04T21:30:05Z",
+    "generated_at_utc": "2026-05-14T21:30:06Z",
     "audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
-    "has_alert": false,
-    "severity": "none",
+    "has_alert": true,
+    "severity": "warning",
     "change_count_window": 2,
     "change_count_threshold": 2,
-    "has_policy_metadata_gap": false,
-    "has_two_person_approval": true,
-    "reasons": [],
-    "notified": false,
-    "notify_status": "skipped_no_alert"
+    "has_policy_metadata_gap": true,
+    "has_two_person_approval": false,
+    "reasons": [
+      "policy governance metadata incomplete",
+      "two-person approval missing"
+    ],
+    "notified": true,
+    "notify_status": "http_status=200"
   },
   "policy_state": {
     "schema": "pre_news_shadow_stage_threshold_policy_state_v1",
-    "updated_at_utc": "2026-05-04T21:30:05Z",
+    "updated_at_utc": "2026-05-14T21:30:05Z",
     "policy_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_v1.json",
-    "policy_fingerprint_sha256": "b5d02b32833d4f7e6c19e3cb514a7d70cccdf42ad569694f085eaf41d20518fe",
-    "policy_version": "v1.1",
-    "approved_by": "athena-core",
-    "approved_by_1": "athena-core",
-    "approved_by_2": "athena-sentinel",
-    "effective_from_utc": "2026-04-28T00:00:00Z"
+    "policy_fingerprint_sha256": "",
+    "policy_version": null,
+    "approved_by": null,
+    "approved_by_1": null,
+    "approved_by_2": null,
+    "effective_from_utc": null
   },
   "policy_change_log_tail": [
     {
@@ -112,10 +112,5 @@
       "gospels": 4
     }
   },
-  "holdout_lock_manifest": {
-    "schema": "global_atom_news_holdout_dataset_lock_manifest_v1",
-    "generated_at_utc": "2026-04-28T12:42:16Z",
-    "dataset_path": "C:\\workspace\\docs\\final\\artifacts\\global_atom_news_holdout_dataset_v1.jsonl",
-    "dataset_sha256": "f0ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb"
-  }
+  "holdout_lock_manifest": {}
 }

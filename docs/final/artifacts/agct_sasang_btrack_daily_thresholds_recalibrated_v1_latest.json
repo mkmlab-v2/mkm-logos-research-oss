@@ -4,8 +4,8 @@
   "decision_profile": "aggressive",
   "thresholds": {
     "external_accuracy_min": 0.31,
-    "external_risk_corr_min": 0.170232,
-    "stability_std_max": 0.059029,
+    "external_risk_corr_min": 0.18,
+    "stability_std_max": 0.054852,
     "time_split_gap_max": 0.1,
     "robustness_min": 0.13
   },

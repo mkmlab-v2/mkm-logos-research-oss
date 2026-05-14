@@ -4,7 +4,7 @@
 
 ## 0) Meta
 
-| `brief_date_utc` | 2026-05-09 |
+| `brief_date_utc` | 2026-05-14 |
 | `workspace_anchor` | BTC spot / operator anchor — set via CLI if needed |
 | `mode` | `OBSERVATION_ONLY` |
 
@@ -41,7 +41,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-06T00:33:42Z |
+| `ts_utc` | 2026-05-14T22:20:02Z |
 | `schema` | myeongni_independent_lens_v0 |
 | `direction_score` | 0.08 |
 | `confidence` | 0.6855 |
@@ -52,7 +52,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-09T01:06:15Z |
+| `ts_utc` | 2026-05-14T22:20:03Z |
 | `direction_score` (overlay) | 0.0536 |
 | `confidence` (overlay) | 0.6033 |
 | `direction_sign` | neutral |
@@ -68,17 +68,17 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `mode` | aggressive |
+| `mode` | neutral |
 | `verification_pass` | True |
-| `policy_hash` | `14edd9bd1e2b…` |
-| `generated_at_utc` | 2026-05-09T00:44:22Z |
+| `policy_hash` | `e3b54f77be6e…` |
+| `generated_at_utc` | 2026-05-14T21:00:02Z |
 | `policy_path` | `C:\workspace\data\myeongni\myeongni_conflict_arbitration_v1.json` |
 
 #### Sasang (`sasang_independent_lens_latest`)
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-09T01:55:32Z |
+| `ts_utc` | 2026-05-14T22:20:02Z |
 | `mapping_target` | sideways |
 | `regime_hypothesis` | phase_transition |
 | `direction_score` | 0.17 |
@@ -102,7 +102,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-05T08:27:56Z |
+| `ts_utc` | 2026-05-14T22:20:02Z |
 
 - **human_commander banner:** [TRACK B / HYPO] 연구용·비자동 — 최종 채택은 지휘관 판단 대기
 - **`veto.force_hold`:** `True` · `reason_codes` = `["HIGH_ENTROPY_SOFTMAX"]`
@@ -119,7 +119,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-05T08:27:57Z |
+| `ts_utc` | 2026-05-14T22:20:02Z |
 | `direction_score` | -0.3233 |
 | `confidence` | 0.2 |
 | `evidence_refs_count` | 3 |
@@ -146,7 +146,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 | `best_strategy.metrics.n_days` | `29` | `C:/workspace/docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json` |
 | `best_strategy.metrics.mdd` | `-0.0363` | `C:/workspace/docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json` |
 | `best_strategy.metrics.sharpe` | `5.838` | `C:/workspace/docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json` |
-| `16state.states_with_audit` | `11` | `C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json` |
+| `16state.states_with_audit` | `16` | `C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json` |
 | `16state.states_total` | `16` | `C:/workspace/data/myeongni/16_STATE_MASTER_PROBE_v1.json` |
 | `commander.scores.confidence` | `0.6767` | `C:/workspace/reports/commander_myeongni_lens_latest.json` |
 | `commander.scores.direction_score` | `0.1051` | `C:/workspace/reports/commander_myeongni_lens_latest.json` |

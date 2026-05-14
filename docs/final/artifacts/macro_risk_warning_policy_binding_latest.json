@@ -1,6 +1,6 @@
 {
   "schema": "macro_risk_warning_policy_binding_v1",
-  "ts_utc": "2026-05-04T22:28:06.094370Z",
+  "ts_utc": "2026-05-14T22:28:04.241176Z",
   "input_refs": {
     "matrix": "C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_decision_action_matrix_v1.json",
     "response": "C:\\workspace\\docs\\final\\artifacts\\macro_risk_warning_api_smoke_latest.json"

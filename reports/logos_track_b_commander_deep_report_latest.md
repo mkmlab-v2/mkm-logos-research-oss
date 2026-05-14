@@ -14,7 +14,7 @@
 
 - source JSON: `C:\workspace\docs\final\artifacts\logos_track_b_commander_deep_report_latest.json`
 - schema: `logos_track_b_commander_deep_report_v1` version `1.1.0`
-- ts_utc: `2026-05-05T08:27:57Z`
+- ts_utc: `2026-05-14T22:20:03Z`
 
 ## 기계 역할
 

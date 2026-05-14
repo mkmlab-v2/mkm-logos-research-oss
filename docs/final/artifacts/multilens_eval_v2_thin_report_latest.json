@@ -466,7 +466,7 @@
           "independent_lens_snapshot": {
             "direction_score": 0.08,
             "confidence": 0.68552,
-            "lens_ts_utc": "2026-05-04T22:20:01Z",
+            "lens_ts_utc": "2026-05-14T22:20:02Z",
             "provenance_input_path": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl"
           }
         },

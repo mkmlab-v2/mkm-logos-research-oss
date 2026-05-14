@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_stage_threshold_policy_audit_summary_v1",
-  "generated_at_utc": "2026-05-04T21:30:05Z",
+  "generated_at_utc": "2026-05-14T21:30:05Z",
   "window_days": 30,
   "change_log_jsonl": "C:\\workspace\\reports\\pre_news_shadow_stage_threshold_policy_change_log.jsonl",
   "state_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_state_latest.json",
@@ -20,13 +20,13 @@
     "effective_from_utc": "2026-04-28T00:00:00Z"
   },
   "current_policy_state": {
-    "policy_version": "v1.1",
-    "approved_by": "athena-core",
-    "approved_by_1": "athena-core",
-    "approved_by_2": "athena-sentinel",
-    "effective_from_utc": "2026-04-28T00:00:00Z",
-    "policy_fingerprint_sha256": "b5d02b32833d4f7e6c19e3cb514a7d70cccdf42ad569694f085eaf41d20518fe",
-    "has_two_person_approval": true
+    "policy_version": null,
+    "approved_by": null,
+    "approved_by_1": null,
+    "approved_by_2": null,
+    "effective_from_utc": null,
+    "policy_fingerprint_sha256": "",
+    "has_two_person_approval": false
   },
   "risk_summary": "MEDIUM: 2 policy change(s) in last 30 days."
 }

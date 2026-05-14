@@ -1,7 +1,7 @@
 {
   "schema": "myeongri_core_v2_upgrade_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-05-04T22:26:35.655978+00:00",
+  "generated_at_utc": "2026-05-14T22:20:03.847293+00:00",
   "labels": {
     "fact": "[FACT]",
     "hypothesis": "[HYPOTHESIS]",
@@ -130,14 +130,9 @@
   "myeongni_16state_probe_nearest_v1": {
     "contract": "btrack_16state_master_probe_nearest_v1",
     "probe_path": "data/myeongni/16_STATE_MASTER_PROBE_v1.json",
-    "nearest_state_id": 12,
-    "l2_distance": 0.207847,
+    "nearest_state_id": 1,
+    "l2_distance": 0.22897,
     "status": "ok",
     "vector_layout": "[wood,fire,earth,metal+water]_normalized vs probe vector_4d S,L,K,M"
-  },
-  "schema_validation": {
-    "ok": true,
-    "message": "ok",
-    "schema_path": "C:\\workspace\\docs\\final\\artifacts\\schemas\\myeongri_core_v2_upgrade_v1.schema.json"
   }
 }

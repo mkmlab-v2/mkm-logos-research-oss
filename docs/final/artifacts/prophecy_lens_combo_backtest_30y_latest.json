@@ -1,12 +1,12 @@
 {
   "schema": "prophecy_lens_combo_backtest_30y_guard_v1",
-  "generated_at_utc": "2026-05-07T12:19:57Z",
+  "generated_at_utc": "2026-05-14T22:10:08Z",
   "research_only": true,
   "source_backtest_v1_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_lens_combo_backtest_v1_latest.json",
   "source_btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
   "coverage": {
-    "csv_date_start": "2021-05-05",
-    "csv_date_end": "2026-05-05",
+    "csv_date_start": "2021-05-13",
+    "csv_date_end": "2026-05-13",
     "csv_row_count": 1827,
     "available_years": 4.9993,
     "required_years_for_30y_claim": 30.0,

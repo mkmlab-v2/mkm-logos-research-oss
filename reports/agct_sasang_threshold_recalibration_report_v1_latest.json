@@ -1,6 +1,6 @@
 {
   "schema": "agct_sasang_threshold_recalibration_report_v1",
-  "generated_at_utc": "2026-05-07T12:27:13Z",
+  "generated_at_utc": "2026-05-14T22:10:09Z",
   "base_thresholds_json": "C:\\workspace\\docs\\final\\artifacts\\agct_sasang_btrack_daily_thresholds_v1.json",
   "go_watch_json": "C:\\workspace\\reports\\agct_sasang_go_watch_pack_v1_latest.json",
   "base_thresholds": {
@@ -12,18 +12,18 @@
   },
   "recalibrated_thresholds": {
     "external_accuracy_min": 0.31,
-    "external_risk_corr_min": 0.170232,
-    "stability_std_max": 0.059029,
+    "external_risk_corr_min": 0.18,
+    "stability_std_max": 0.054852,
     "time_split_gap_max": 0.1,
     "robustness_min": 0.13
   },
   "observed_window": {
     "run_count": 5,
-    "min_external_risk_corr_observed": 0.170232,
-    "max_stability_std_observed": 0.059029
+    "min_external_risk_corr_observed": 0.191011,
+    "max_stability_std_observed": 0.054852
   },
   "simulation": {
-    "review_required_count": 1,
+    "review_required_count": 0,
     "runs": [
       {
         "seed": 20260505,
@@ -38,11 +38,11 @@
       },
       {
         "seed": 20260506,
-        "simulated_decision": "REVIEW_REQUIRED",
+        "simulated_decision": "GO_BTRACK",
         "simulated_checks": {
           "external_accuracy_min_ok": true,
-          "external_risk_corr_min_ok": false,
-          "stability_std_ok": false,
+          "external_risk_corr_min_ok": true,
+          "stability_std_ok": true,
           "time_split_gap_ok": true,
           "robustness_min_ok": true
         }

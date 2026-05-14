@@ -1,10 +1,10 @@
 {
   "schema": "pre_news_shadow_ops_status_v1",
-  "generated_at_utc": "2026-05-04T21:30:05Z",
+  "generated_at_utc": "2026-05-14T21:30:07Z",
   "summary": {
-    "promotion_gate_enabled": true,
-    "holdout_dataset_lock_ok": true,
-    "policy_governance_has_alert": false,
+    "promotion_gate_enabled": false,
+    "holdout_dataset_lock_ok": false,
+    "policy_governance_has_alert": true,
     "task_health_has_alert": false,
     "weekly_sample_count": null,
     "recent_projection_rows": 5,
@@ -13,18 +13,14 @@
   },
   "gate_status": {
     "promotion_gate": {
-      "enabled": true,
+      "enabled": false,
       "rule": "only stages with holdout top_resonance count >= required threshold (stage override or default) are promoted",
       "holdout_dataset_lock_enforced": true,
-      "holdout_dataset_lock_ok": true,
-      "holdout_dataset_expected_sha256": "f0ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
-      "holdout_dataset_actual_sha256": "f0ebdd1123f07ac8897aed6ba31fbba2e46e922a20b5100c7cb8482172ec15bb",
+      "holdout_dataset_lock_ok": false,
+      "holdout_dataset_expected_sha256": null,
+      "holdout_dataset_actual_sha256": null,
       "min_holdout_cases_per_stage": 2,
-      "stage_min_holdout_cases": {
-        "full_canon": 5,
-        "prophets": 3,
-        "gospels": 3
-      },
+      "stage_min_holdout_cases": {},
       "holdout_top_stage_counts": {
         "full_canon": 14,
         "prophets": 2,
@@ -32,40 +28,44 @@
       },
       "holdout_verified_stages": [
         "full_canon",
-        "gospels"
+        "gospels",
+        "prophets"
       ]
     },
     "weekly_metrics": {
       "top_stage_change_rate": 0.0,
       "top_stage_current_primary": "full_canon",
-      "top_stage_previous_primary": null,
+      "top_stage_previous_primary": "full_canon",
       "top_stage_drift": false,
       "health_alert_count_7d": 0,
-      "holdout_verified_stage_count": 2,
+      "holdout_verified_stage_count": 3,
       "holdout_min_cases_per_stage": 2,
-      "promoted_stage_count": 1,
-      "rejected_stage_count": 0
+      "promoted_stage_count": 0,
+      "rejected_stage_count": 1
     },
     "risk_summary": "LOW: resonance stage is stable and no health alerts detected."
   },
   "latest_alerts": {
     "policy_governance_alert": {
       "schema": "pre_news_shadow_policy_governance_alert_v1",
-      "generated_at_utc": "2026-05-04T21:30:05Z",
+      "generated_at_utc": "2026-05-14T21:30:06Z",
       "audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
-      "has_alert": false,
-      "severity": "none",
+      "has_alert": true,
+      "severity": "warning",
       "change_count_window": 2,
       "change_count_threshold": 2,
-      "has_policy_metadata_gap": false,
-      "has_two_person_approval": true,
-      "reasons": [],
-      "notified": false,
-      "notify_status": "skipped_no_alert"
+      "has_policy_metadata_gap": true,
+      "has_two_person_approval": false,
+      "reasons": [
+        "policy governance metadata incomplete",
+        "two-person approval missing"
+      ],
+      "notified": true,
+      "notify_status": "http_status=200"
     },
     "task_health_alert": {
       "schema": "pre_news_shadow_task_health_alert_v1",
-      "generated_at_utc": "2026-05-02T21:50:03Z",
+      "generated_at_utc": "2026-05-04T21:50:03Z",
       "health_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_task_health_latest.json",
       "task_name": "MKM-PreNews-Shadow-Daily",
       "healthy": true,
@@ -93,38 +93,62 @@
         ],
         "notified": true,
         "notify_status": "http_status=200"
+      },
+      {
+        "schema": "pre_news_shadow_policy_governance_alert_v1",
+        "generated_at_utc": "2026-05-07T21:38:22Z",
+        "audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
+        "has_alert": true,
+        "severity": "warning",
+        "change_count_window": 2,
+        "change_count_threshold": 2,
+        "has_policy_metadata_gap": true,
+        "has_two_person_approval": false,
+        "reasons": [
+          "policy governance metadata incomplete",
+          "two-person approval missing"
+        ],
+        "notified": true,
+        "notify_status": "http_status=200"
+      },
+      {
+        "schema": "pre_news_shadow_policy_governance_alert_v1",
+        "generated_at_utc": "2026-05-08T21:30:05Z",
+        "audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
+        "has_alert": true,
+        "severity": "warning",
+        "change_count_window": 2,
+        "change_count_threshold": 2,
+        "has_policy_metadata_gap": true,
+        "has_two_person_approval": false,
+        "reasons": [
+          "policy governance metadata incomplete",
+          "two-person approval missing"
+        ],
+        "notified": true,
+        "notify_status": "http_status=200"
+      },
+      {
+        "schema": "pre_news_shadow_policy_governance_alert_v1",
+        "generated_at_utc": "2026-05-14T21:30:06Z",
+        "audit_summary_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_audit_summary_latest.json",
+        "has_alert": true,
+        "severity": "warning",
+        "change_count_window": 2,
+        "change_count_threshold": 2,
+        "has_policy_metadata_gap": true,
+        "has_two_person_approval": false,
+        "reasons": [
+          "policy governance metadata incomplete",
+          "two-person approval missing"
+        ],
+        "notified": true,
+        "notify_status": "http_status=200"
       }
     ],
     "task_health": []
   },
   "recent_projection_log_tail": [
-    {
-      "generated_at_utc": "2026-04-28T13:13:31Z",
-      "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
-      "rows": 1,
-      "primary_top_stage": "full_canon",
-      "top_stage_counts": {
-        "full_canon": 1
-      }
-    },
-    {
-      "generated_at_utc": "2026-04-28T21:30:04Z",
-      "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
-      "rows": 1,
-      "primary_top_stage": "full_canon",
-      "top_stage_counts": {
-        "full_canon": 1
-      }
-    },
-    {
-      "generated_at_utc": "2026-04-30T04:06:23Z",
-      "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
-      "rows": 1,
-      "primary_top_stage": "full_canon",
-      "top_stage_counts": {
-        "full_canon": 1
-      }
-    },
     {
       "generated_at_utc": "2026-05-02T21:30:05Z",
       "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
@@ -136,6 +160,33 @@
     },
     {
       "generated_at_utc": "2026-05-04T21:30:04Z",
+      "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
+      "rows": 1,
+      "primary_top_stage": "full_canon",
+      "top_stage_counts": {
+        "full_canon": 1
+      }
+    },
+    {
+      "generated_at_utc": "2026-05-07T21:38:20Z",
+      "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
+      "rows": 1,
+      "primary_top_stage": "full_canon",
+      "top_stage_counts": {
+        "full_canon": 1
+      }
+    },
+    {
+      "generated_at_utc": "2026-05-08T21:30:04Z",
+      "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
+      "rows": 1,
+      "primary_top_stage": "full_canon",
+      "top_stage_counts": {
+        "full_canon": 1
+      }
+    },
+    {
+      "generated_at_utc": "2026-05-14T21:30:04Z",
       "output_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_projection_latest.json",
       "rows": 1,
       "primary_top_stage": "full_canon",
@@ -165,8 +216,8 @@
     "weekly_audit_bundle_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_latest.json",
     "weekly_audit_bundle_hash_manifest_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_hash_manifest_latest.json",
     "latest_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_latest.json",
-    "dated_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_2026-05-04.json",
-    "weekly_audit_bundle_generated_at_utc": "2026-05-04T21:30:05Z"
+    "dated_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_2026-05-14.json",
+    "weekly_audit_bundle_generated_at_utc": "2026-05-14T21:30:06Z"
   },
   "sources": {
     "weekly_report_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_report_latest.json",
