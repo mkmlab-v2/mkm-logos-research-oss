@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/aramaic_insight_cap_threshold_drift_alert_v1.schema.json",
+  "title": "Aramaic insight cap threshold drift alert v1",
+  "description": "Single JSON document written by scripts/alert_aramaic_insight_cap_threshold_drift_v1.py.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "promotion_required",
+    "source_track",
+    "history_rows",
+    "history_recommended_snapshots",
+    "drift_threshold",
+    "should_alert",
+    "reason",
+    "max_abs_delta",
+    "drifted_keys",
+    "deltas"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "aramaic_insight_cap_threshold_drift_alert_v1"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "minLength": 10
+    },
+    "research_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "promotion_required": {
+      "type": "boolean",
+      "const": true
+    },
+    "source_track": {
+      "type": "string",
+      "const": "B"
+    },
+    "history_rows": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "history_recommended_snapshots": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "drift_threshold": {
+      "type": "number",
+      "minimum": 0
+    },
+    "should_alert": {
+      "type": "boolean"
+    },
+    "reason": {
+      "type": "string",
+      "enum": ["insufficient_history", "stable_below_threshold", "threshold_drift"]
+    },
+    "max_abs_delta": {
+      "type": "number",
+      "minimum": 0
+    },
+    "drifted_keys": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deltas": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number"
+      }
+    },
+    "webhook": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["sent", "status"],
+      "properties": {
+        "sent": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

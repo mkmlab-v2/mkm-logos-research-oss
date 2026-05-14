@@ -1,0 +1,19 @@
+{
+  "schema": "aramaic_insight_cap_threshold_drift_alert_v1",
+  "generated_at_utc": "2026-05-13T12:00:00Z",
+  "research_only": true,
+  "promotion_required": true,
+  "source_track": "B",
+  "history_rows": 2,
+  "history_recommended_snapshots": 2,
+  "drift_threshold": 0.0001,
+  "should_alert": false,
+  "reason": "stable_below_threshold",
+  "max_abs_delta": 0.0,
+  "drifted_keys": [],
+  "deltas": {},
+  "webhook": {
+    "sent": false,
+    "status": "skipped_should_false"
+  }
+}
