@@ -2,6 +2,19 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-16 · Visualization v0 — 목표·작업 분해)
+
+**Thread:** Cursor — 지휘관 **「진행해」** → **Trust Visualization v0** 로드맵을 스냅샷에 장전(서브에이전트·**별 브랜치** 병렬 가이드 포함).
+
+- **완료:** 아래 `[목표]` 한 줄 + Streams 불릿을 **재개 시 DoD**로 고정.
+- **막힘:** 없음.
+- **`[목표]` Visualization v0:** 파이프 **1사이클**(COGS·감사·법무 게이트) **재현 후**, `Field→Lens(사상/명리/Logos)→Conflict→Final` 조율을 **감사 로그에 정렬된 읽기 전용 패널**로 시각화(Logos는 **`[NON_GATING]`** 해설 레이어). **Track C 쇼룸**은 **동일 스키마의 thin 시연 슬롯**만 연계(**본선·연구 격벽 유지**).
+- **Streams (병렬 권장 / 직렬):**
+  1. **직렬·SSOT** — `CURRENT_OPS` / `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` / `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` 문구·DoD 한 줄; `CENTRAL` 체크포인트(`py scripts/athena_checkpoint.py "…"`). **한 채팅** 권장.
+  2. **병렬 A·감사** — `stt_routing_audit_log_v1` 실측 append·집계 스크립트 초안; `docs/final/schemas/`·`tests/test_stt_routing_audit_log_schema_v1.py` 회귀 유지. **별 브랜치** (`1작업=1PR`).
+  3. **병렬 B·쇼룸** — Track C thin 패널(정적 JSON/HTML); **실버·법무 PR과 분리**. 쇼룸 Phase·Pack 0-A/0-B 순서는 **`docs/final/MKM_SHOWROOM_OPS_AND_PACK0B_WORK_SCHEDULE_V1.md`** 참고(레포 추적 필요 시 `git add` 검토).
+  4. **통합·게이트** — `scripts/verify_p0_constitution_gate_paths.ps1`·선택 `Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1`·관련 pytest. **머지 직전** 한 채널에서만 실행.
+
 ## Ops slice (2026-05-15 · 채팅 종료 스냅샷 — 본 스레드)
 
 **Thread:** Cursor — 지휘관 **스냅샷 후 이 대화 종료**.
