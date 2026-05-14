@@ -1,6 +1,6 @@
 {
   "schema": "trackb_quaternion_two_stage_gate_v2",
-  "generated_at_utc": "2026-05-14T14:52:54Z",
+  "generated_at_utc": "2026-05-14T15:00:18Z",
   "gate_profile": "trackb_quaternion_restore_research_v2",
   "research_only": true,
   "not_billing_claim": true,
