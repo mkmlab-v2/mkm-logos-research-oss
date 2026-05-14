@@ -1,7 +1,7 @@
 # MKM — 쇼룸 운영 마감 + Pack 0-B 작업 일정 v1
 
 **schema:** `mkm_showroom_ops_and_pack0b_work_schedule_v1`  
-**last_updated_utc:** 2026-05-14  
+**last_updated_utc:** 2026-05-16  
 **목적:** Track C 공개 쇼룸 파이프라인(로컬 개통 이후)과 **Pack 0-A/0-B** LoRA 전선을 **순서·DoD**로 고정한다.  
 **채팅창·임무 추적:** 루트 **`MISSION_LOG.md`**(로컬 비추적)에 Phase 완료·Evidence 한 줄씩 남긴다. **옵시디언**은 개인용·그래프용으로만 쓰고 Fact-Lock SSOT로 자동 승격하지 않는다(`AGENTS.md`·`CENTRAL` 동일 방향). (선택) Ops 한 줄 요약만 `reports/daily_thread_work_YYYY-MM-DD.md` + `athena_daily_thread_log_sync_v1.py`. **CENTRAL에는 본 일정 본문을 올리지 않는다.**
 
@@ -19,8 +19,8 @@
 
 **목표:** 0-A 기준선 확인 후 일정 착수.
 
-- [ ] `py -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py -q` → exit 0  
-- [ ] (선택) `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1` → exit 0  
+- [x] `py -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py -q` → exit 0 — **2026-05-16** 7 passed  
+- [x] (선택) `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1` → exit 0 — **2026-05-16** 719 paths  
 
 **완료 조건:** 위 최소 1종 통과 기록(날짜·명령 한 줄을 본 문서 하단 Log에 남김).
 
@@ -119,7 +119,9 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 |------------|-------|------|
 | 2026-05-14 | 1 | 예: 로컬 체인 exit 0, topology ref_count=5 |
 | 2026-05-14 | 2 | `sync_showroom_to_vps.ps1` scp OK; `Test-HasIdentityArgs` `$args`→`$ScpLeadingArgs` fix; `https://jemaai.cloud/public_showroom_poll.html` HEAD 200 |
+| 2026-05-14 | 2 | 재실행: `build_showroom_track_c_bundle_chain_v1.ps1` exit 0 → `deploy_showroom_static.ps1 -WorkspaceRoot c:\workspace` → `.showroom_staging/` 8파일; bundle JSON 파싱 OK; `data-disclaimer-ref="jemaai_showroom_v1"`; `pytest tests/test_validate_showroom_public_bundle.py` 12 pass |
 | 2026-05-14 | 3 | 권장=문서 수동 루틴: 주 1회 `sync_showroom_to_vps.ps1 -RefreshStaging`(Phase 3 DoD) |
+| 2026-05-16 | 0 | Control-Integrity smoke 7 passed; `verify_p0` 719 OK; 워킹트리 쇼룸 스테이징 추적 파일은 HEAD 기준 복원(로컬 체인 잡음 제거) |
 
 ---
 
