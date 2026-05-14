@@ -35,5 +35,5 @@
 ## 메타
 
 - **schema:** `research_open_questions_v1`
-- **last_reviewed_utc:** 2026-05-14 — 자동 권장 번들 재실행(STT append+summarize·`verify_p0`·pytest·예언 클로저 `closure_ok`); **2026-05-16** RQ-009 내부 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 추가(KR/EN 초안·법무 인테이크 체크리스트). **2026-05-15** 지휘관 승인(동결 지연·구조 Lock) 본문 유지. RQ-009 **`OPEN` 유지**(법무 (D) 확정·실측 KPI·COGS 월소계 잔여). **2026-05-17** RQ-010 추가(B2B 컨텍스트 API·초개인화 에이전트 비전 큐; IR/연구 전용, Fact-Lock 본문 이관 전). **세션** RQ-010 하단 IR·제안서 한 줄 초안(KO/EN, `[HYPO]`) 블록 추가.
+- **last_reviewed_utc:** 2026-05-14 — 자동 권장 번들 재실행(STT append+summarize·`verify_p0`·pytest·예언 클로저 `closure_ok`); **2026-05-16** RQ-009 내부 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 추가(KR/EN 초안·법무 인테이크 체크리스트). **2026-05-15** 지휘관 승인(동결 지연·구조 Lock) 본문 유지. RQ-009 **`OPEN` 유지**(법무 (D) 확정·실측 KPI·COGS 월소계 잔여). **2026-05-17** RQ-010 추가(B2B 컨텍스트 API·초개인화 에이전트 비전 큐; IR/연구 전용, Fact-Lock 본문 이관 전). **세션** RQ-010 하단 IR·제안서 한 줄 초안(KO/EN, `[HYPO]`) 블록 추가. **2026-05-17** `TRACK_C` §3.7.2 **(C)**·`PUBLIC_FACING` §3 — 실버 **동결 게이트** 표는 `silver_tech_cogs_unit_economics_template_v1.md`만 SSOT(정책 문장 역참조).
 - **mirror (optional):** 로컬 그래프용 `memory/obsidian_vault/UNIVERSE_MKm/INBOX_연구_토의큐.md` — Git과 자동 동기화하지 않는다.
