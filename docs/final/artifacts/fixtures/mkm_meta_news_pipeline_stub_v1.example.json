@@ -1,0 +1,53 @@
+{
+  "schema": "mkm_meta_news_pipeline_stub_v1",
+  "hypothesis_tier": "B",
+  "boundary_ack": "research_only; not medical, legal, or investment advice; no live trading or Track A coupling; Logos lens is interpretive only (NON_GATING).",
+  "field": {
+    "ingest": {
+      "channel": "fixture_manual",
+      "provider_candidates": [
+        "licensed_news_api",
+        "partner_feed",
+        "public_rss_with_tos_review"
+      ],
+      "headline_ko": "[FIXTURE] 정책 발표에 따른 시장 심리 변동 (가상 사례)",
+      "locale": "ko-KR",
+      "published_at": "2026-05-15T09:00:00+09:00"
+    },
+    "raw_excerpt": "플레이스홀더: 원문 인용은 라이선스·저작권 검토 후에만 실제 기사로 교체한다."
+  },
+  "lenses": {
+    "logos": {
+      "role": "NON_GATING",
+      "summary_ko": "플레이스홀더: 가치 프레임(예: 공정 vs 안정) 해설 — 단정 아님.",
+      "confidence_level": "C"
+    },
+    "myeongni": {
+      "summary_ko": "플레이스홀더: 거시 에너지/주기 언어는 [HYPO]이며 가격·정책 결과를 예언하지 않음.",
+      "confidence_level": "C"
+    },
+    "sasang": {
+      "summary_ko": "플레이스홀더: 군중 심리/체질 역학 은유 — 임상·매매 신호 아님.",
+      "confidence_level": "C"
+    }
+  },
+  "conflict": {
+    "tension_axes": ["policy_surprise_vs_short_term_sentiment"],
+    "notes_ko": "렌즈 간 불일치 시 상위 게이트는 운영 Field + 휴먼; 본 픽스처는 구조 샘플만."
+  },
+  "final": {
+    "decision_label": "WATCH",
+    "one_line_ko": "에너지 충돌은 관측 구간; 자동 액션 없음.",
+    "disclaimer_ko": "본 JSON은 파이프라인 형태 스파이크이며 실서비스 산출물이 아님."
+  },
+  "audit": {
+    "weights": {
+      "logos": 0.2,
+      "myeongni": 0.4,
+      "sasang": 0.4
+    },
+    "model_route": "local_stub_no_llm",
+    "evidence_path": "docs/final/artifacts/fixtures/mkm_meta_news_pipeline_stub_v1.example.json",
+    "validated_at": "2026-05-15T00:00:00Z"
+  }
+}

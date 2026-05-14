@@ -22,6 +22,7 @@
 | RQ-008 | OPEN | **옵시디언 UNIVERSE** 그래프와 Git SSOT의 **이중 관리**를 줄일지 (인박스만 Git, 그래프는 로컬 유지 등) | CENTRAL에 볼트 격벽 이미 있음 | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` 옵시디언 절 · 로컬 `memory/obsidian_vault/UNIVERSE_MKm/` | 주 1회 동기화 의식으로 충분한지, 끌어올릴 노트 화이트리스트가 필요한지 |
 | RQ-009 | OPEN | **실버 테크(시니어 음성·돌봄 UX)** 에 MKM **격벽·조율 상태·Fact-Lock** 패턴을 이식할 때 제품 경계·규제(B2G/B2B2C·보호자 동의·비의료 면책)를 어디까지 SSOT에 동결할지 | **2026-05-15 지휘관 승인:** `TRACK_C` §3.7.2 **(B)** 민감 외부 액션에 **구조적 휴먼 게이트**(자동 단독 실행 불가 전제, 알림·승인·차단·감사 로그) **SSOT 동결**. **파일럿 KPI 수치·마진·최종 면책 문구**는 Git SSOT 본문·동 §3 체크리스트에 **동결 지연** — 내부 R&D·제안 별첨·`silver_tech_cogs_unit_economics_template_v1.md` 등 `[HYPO]`. **(D)** 면책 초안·관할별 문구는 **법무 확정 후** 최종 반영. **2026-05-16:** 내부 면책·경계 **확장 초안 패킷** `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 추가(대외 최종 아님). | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 · `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3 **(v1.4)** · `docs/final/schemas/patient_care_bundle_v1.schema.json` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §9 표(`patient_care_bundle_v1`) · `scripts/Invoke-PatientCareBundleAssemblePatientFacing_v1.ps1` · `docs/research/silver_tech_cogs_unit_economics_template_v1.md` · `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` | 법무 (D) 확정문을 `PUBLIC`·Track C에 넣을 일정·파일럿 실측 후 KPI 수치를 SSOT 본문에 승격할지 별첨만 유지할지? |
 | RQ-010 | OPEN | **초개인화 에이전트 / B2B 컨텍스트 API**(구조화 MKM·렌즈 프로필 JSON을 타사 앱·에이전트에 공급) 비전을 **IR·제안서 한 줄**로 열어두되, **제품·데이터·규제 SSOT**와 어떻게 분리할지 | 내부 운영(핸드오프·CONSTITUTION)과 **외부 결합**은 동의·TOS·데이터 최소화·의료·지식재산 경계가 다름; 명리·사상·Logos는 **렌즈 계약·격벽** 유지, 임상·실거래·본선 자동 합선 금지 전제와 정합 필요 | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §3.3·§9 · `docs/final/P0_COMMERCIALIZATION_TRACKER.md` · `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` · RQ-009 행 | 1차 파일럿 세그먼트(웰니스 코칭 vs 개발자 도구)·**사용자 동의·감사 로그**를 어디에 고정할지; LoRA 대량 개인화 vs **API+동적 컨텍스트** 운영 한도선은 어디로 둘지 |
+| RQ-011 | OPEN | **미래 GTM: MKM 메타-뉴스**(사건 인제스트 Field → 사상·명리·Logos 렌즈 → Conflict/Final 인사이트; “편향 없음” 대신 **투명한 좌표계·감사 JSON** 선언) | 대량 뉴스×LLM은 **COGS·토큰 폭발**; **Phase 3(스케일업)** 전 본선 스위치 금지 가정과 정합. 구현·경로는 미확정 — 연구·GTM 가설만 큐에 봉인 | 루트 `AGENTS.md` 렌즈·Field→Lens→Final 출력 고정 · `docs/final/CENTRAL_AGENT_MEMORY_V1.md` · `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.1·§3.3(Logos 보조·실전 트리거 격벽) · `docs/final/artifacts/fixtures/mkm_meta_news_pipeline_stub_v1.example.json` · `tests/test_mkm_meta_news_pipeline_stub_v1.py` · RQ-010 행 | 1차 MVP는 **엔터프라이즈 인지 보조** vs **소비자 메타-뉴스** 중 어디인지; 인제스트·랭킹·로컬/하이브리드 라우팅·감사 스키마를 **어느 PR/절**로 이관할 타이밍인지 |
 
 ## IR·제안서 한 줄 초안 ([HYPO] · RQ-010)
 
@@ -30,10 +31,19 @@
 - **KO:** 동의·감사·데이터 최소화 전제의 MKM 구조화 프로필 API로, 파트너 AI가 사용자 톤·우선순위를 잃지 않게 돕습니다. (의료 진단·투자·실거래 신호 아님.)
 - **EN:** With consent, auditability, and data minimization, MKM’s structured profile API helps partner AIs stay aligned to each user’s tone and priorities—without claiming medical diagnosis, investment advice, or live trading signals.
 
+### 메타-뉴스 스파이크 ([HYPO] · RQ-011)
+
+**구현·API·크롤 없음.** Field→Lens→Final **JSON 형태**만 레포에 고정한다. 대량 인제스트·LLM 라우팅은 Phase 3·COGS 설계 후 `CONSTITUTION`/스크립트로 이관할 때 `CLOSED` 처리.
+
+- **픽스처:** `docs/final/artifacts/fixtures/mkm_meta_news_pipeline_stub_v1.example.json` — `hypothesis_tier: B`, `boundary_ack`, `lenses.logos.role: NON_GATING`, `audit.weights`·`model_route`·`evidence_path`.
+- **인제스트 후보(라이선스·ToS·저작권 선행):** 상용 뉴스 API, 파트너 전용 피드, 공개 RSS(약관 검토) 등 — **코드 연결 금지**까지는 아니나 본 큐에서는 후보명만 유지.
+- **감사 JSON 최소 필드(초안):** `field.id`/`published_at`, 렌즈별 `confidence_level`, **Logos `NON_GATING`**, `audit.weights`, `model_route`, `evidence_path`, `validated_at`(로컬 ISO), `boundary_ack`.
+- **회귀:** `tests/test_mkm_meta_news_pipeline_stub_v1.py` — 픽스처 키·Logos 역할만 검증(스키마 jsonschema 단계는 승격 시).
+
 ---
 
 ## 메타
 
 - **schema:** `research_open_questions_v1`
-- **last_reviewed_utc:** 2026-05-14 — 자동 권장 번들 재실행(STT append+summarize·`verify_p0`·pytest·예언 클로저 `closure_ok`); **2026-05-16** RQ-009 내부 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 추가(KR/EN 초안·법무 인테이크 체크리스트). **2026-05-15** 지휘관 승인(동결 지연·구조 Lock) 본문 유지. RQ-009 **`OPEN` 유지**(법무 (D) 확정·실측 KPI·COGS 월소계 잔여). **2026-05-17** RQ-010 추가(B2B 컨텍스트 API·초개인화 에이전트 비전 큐; IR/연구 전용, Fact-Lock 본문 이관 전). **세션** RQ-010 하단 IR·제안서 한 줄 초안(KO/EN, `[HYPO]`) 블록 추가. **2026-05-17** `TRACK_C` §3.7.2 **(C)**·`PUBLIC_FACING` §3 — 실버 **동결 게이트** 표는 `silver_tech_cogs_unit_economics_template_v1.md`만 SSOT(정책 문장 역참조).
+- **last_reviewed_utc:** 2026-05-14 — 자동 권장 번들 재실행(STT append+summarize·`verify_p0`·pytest·예언 클로저 `closure_ok`); **2026-05-16** RQ-009 내부 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 추가(KR/EN 초안·법무 인테이크 체크리스트). **2026-05-15** 지휘관 승인(동결 지연·구조 Lock) 본문 유지. RQ-009 **`OPEN` 유지**(법무 (D) 확정·실측 KPI·COGS 월소계 잔여). **2026-05-17** RQ-010 추가(B2B 컨텍스트 API·초개인화 에이전트 비전 큐; IR/연구 전용, Fact-Lock 본문 이관 전). **세션** RQ-010 하단 IR·제안서 한 줄 초안(KO/EN, `[HYPO]`) 블록 추가. **2026-05-17** `TRACK_C` §3.7.2 **(C)**·`PUBLIC_FACING` §3 — 실버 **동결 게이트** 표는 `silver_tech_cogs_unit_economics_template_v1.md`만 SSOT(정책 문장 역참조). **2026-05-15** RQ-011 추가(MKM 메타-뉴스·Field→Lens→Final 미래 GTM; COGS·Phase 3 전제, 구현 미단정). **2026-05-15** RQ-011 스파이크: 픽스처 `mkm_meta_news_pipeline_stub_v1.example.json` + `tests/test_mkm_meta_news_pipeline_stub_v1.py`.
 - **mirror (optional):** 로컬 그래프용 `memory/obsidian_vault/UNIVERSE_MKm/INBOX_연구_토의큐.md` — Git과 자동 동기화하지 않는다.
