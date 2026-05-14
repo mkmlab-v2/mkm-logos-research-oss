@@ -61,6 +61,7 @@ $staging = Join-Path $here ".showroom_staging"
 $html = Join-Path $staging "public_showroom_poll.html"
 $htmlMinimal = Join-Path $staging "public_showroom_board_minimal.html"
 $json = Join-Path $staging "showroom_public_bundle_v1.json"
+$jsonTopology = Join-Path $staging "showroom_topology_radar_snapshot_v1_latest.json"
 
 if ($RefreshStaging) {
     Write-Host "[showroom-vps-sync] RefreshStaging: track_c chain -> deploy_showroom_static" -ForegroundColor Cyan
@@ -77,7 +78,7 @@ if ($RefreshStaging) {
         $psExe = if (Get-Command pwsh -ErrorAction SilentlyContinue) { "pwsh" } else { "powershell.exe" }
         & $psExe -NoProfile -ExecutionPolicy Bypass -File $chain -WorkspaceRoot $WorkspaceRoot
         if ($LASTEXITCODE -ne 0) { throw "build_showroom_track_c_bundle_chain_v1.ps1 failed: $LASTEXITCODE" }
-        powershell -NoProfile -ExecutionPolicy Bypass -File $deploy
+        powershell -NoProfile -ExecutionPolicy Bypass -File $deploy -WorkspaceRoot $WorkspaceRoot
         if ($LASTEXITCODE -ne 0) { throw "deploy_showroom_static.ps1 failed: $LASTEXITCODE" }
     }
 }
@@ -128,6 +129,11 @@ function Invoke-ScpShowroomPair {
     $argv += $html
     $argv += $htmlMinimal
     $argv += $json
+    if (Test-Path -LiteralPath $jsonTopology) {
+        $argv += $jsonTopology
+    } else {
+        Write-Host "[showroom-vps-sync] topology snapshot not in staging (optional): $jsonTopology" -ForegroundColor DarkGray
+    }
     $argv += $remoteDir
     if ($DryRun) {
         Write-Host "[showroom-vps-sync] DRYRUN scp $($argv -join ' ')"

@@ -38,6 +38,11 @@ location = /showroom_public_bundle_v1.json {
     add_header Cache-Control "no-store" always;
 }
 
+location = /showroom_topology_radar_snapshot_v1_latest.json {
+    alias /var/www/jemaai/showroom_topology_radar_snapshot_v1_latest.json;
+    add_header Cache-Control "no-store" always;
+}
+
 # Probabilistic Saju (hour uncertainty demo — saju_hour_uncertainty_v1)
 location = /public_showroom_probabilistic_saju_v1.html {
     alias /var/www/jemaai/public_showroom_probabilistic_saju_v1.html;

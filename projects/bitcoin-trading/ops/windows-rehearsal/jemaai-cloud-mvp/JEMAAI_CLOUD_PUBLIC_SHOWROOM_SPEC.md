@@ -85,8 +85,8 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 - **검증:** `scripts/validate_showroom_public_bundle.py` — 필수 키·면책 ref·공개 레인 민감 토큰 차단.
 - **퓨전 사이클:** `run_ops_fusion_cycle.ps1` 종료 시 빌드·검증을 함께 수행한다.
 - **게이트웨이 반영(선택):** `publish_showroom_public_event.ps1`로 ingest POST. 퓨전 사이클과 함께 쓰려면 `SHOWROOM_PUBLISH_INGEST=1`(User/Process).
-- **정적 파일 복사(선택):** `deploy_showroom_static.ps1` — `-WebRoot` 또는 `JEMAAI_WEB_ROOT`에 HTML·JSON 복사 후 본선에서 nginx reload. 둘 다 비어 있으면 기본으로 `ops/windows-rehearsal/.showroom_staging/`(gitignore)에 복사해 로컬 확인·rsync 소스로 사용.
-- **VPS scp 원클릭:** 루트 `scripts/sync_showroom_to_vps.ps1` → `projects/bitcoin-trading/ops/windows-rehearsal/sync_showroom_to_vps.ps1`. `.showroom_staging`의 정적 2파일을 `MKM_VPS_HOST`/`MKM_VPS_USER` 및 `JEMAAI_VPS_SHOWROOM_ROOT`(기본 `/var/www/jemaai`)로 전송; **`-RefreshStaging`은 Track C 체인(`build_showroom_track_c_bundle_chain_v1.ps1`) + `deploy_showroom_static.ps1` 후 scp.**
+- **정적 파일 복사(선택):** `deploy_showroom_static.ps1` — `-WebRoot` 또는 `JEMAAI_WEB_ROOT`에 HTML·JSON 복사 후 본선에서 nginx reload. 둘 다 비어 있으면 기본으로 `ops/windows-rehearsal/.showroom_staging/`(gitignore)에 복사해 로컬 확인·rsync 소스로 사용. **Topology Radar 스냅샷** `showroom_topology_radar_snapshot_v1_latest.json`은 `docs/final/artifacts`에 있으면 동명으로 스테이징에 복사(없으면 경고 후 생략).
+- **VPS scp 원클릭:** 루트 `scripts/sync_showroom_to_vps.ps1` → `projects/bitcoin-trading/ops/windows-rehearsal/sync_showroom_to_vps.ps1`. `.showroom_staging`의 정적 파일(HTML·번들·**선택: topology 스냅샷**)을 `MKM_VPS_HOST`/`MKM_VPS_USER` 및 `JEMAAI_VPS_SHOWROOM_ROOT`(기본 `/var/www/jemaai`)로 전송; **`-RefreshStaging`은 Track C 체인(`build_showroom_track_c_bundle_chain_v1.ps1`) + `deploy_showroom_static.ps1` 후 scp.**
 - **`public_ui` (`showroom_public_ui_v1`):** ASCII 기계값만(방향·램프·융합·수익률 유무). 한글 카피는 `public_showroom_poll.html`에서 매핑한다(PS 인코딩 이슈 회피).
 - **방향 소스:** 환경 `SHOWROOM_DIRECTION_SOURCE=c2|account` 미설정 시 **auto** — `public_trading_metrics_latest.json`에 `position_side`가 있으면 `account`(롱/숏 추상만), 없으면 `c2`.
 

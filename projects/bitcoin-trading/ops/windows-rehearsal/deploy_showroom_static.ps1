@@ -13,10 +13,12 @@
 #   public_showroom_poll.html
 #   public_showroom_board_minimal.html  (다크·미니멀 정적 보드; 동일 API 폴링)
 #   showroom_public_bundle_v1.json  (from jemaai-cloud-mvp; run scripts/build_showroom_track_c_bundle_chain_v1.ps1 or build_showroom_display_bundle.ps1 first)
+#   showroom_topology_radar_snapshot_v1_latest.json  (optional; from docs/final/artifacts after topology emit chain step)
 #   public_showroom_probabilistic_saju_v1.html + showroom_saju_hour_bundle_demo_v1.json  (see scripts/run_saju_hour_candidate_bundle_v1.py)
 
 param(
     [string]$WebRoot = "",
+    [string]$WorkspaceRoot = "",
     [switch]$WhatIf,
     [switch]$NoDefaultStaging
 )
@@ -26,10 +28,17 @@ $ErrorActionPreference = "Stop"
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $mvp = Join-Path $here "jemaai-cloud-mvp"
 $defaultStaging = Join-Path $here ".showroom_staging"
+$wsRoot = if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
+    (Resolve-Path (Join-Path $here "..\..\..\..")).Path
+} else {
+    (Resolve-Path -LiteralPath $WorkspaceRoot).Path
+}
+$topologyArtifact = Join-Path $wsRoot "docs\final\artifacts\showroom_topology_radar_snapshot_v1_latest.json"
 $files = @(
     @{ Name = "public_showroom_poll.html"; Src = Join-Path $mvp "public_showroom_poll.html" },
     @{ Name = "public_showroom_board_minimal.html"; Src = Join-Path $mvp "public_showroom_board_minimal.html" },
     @{ Name = "showroom_public_bundle_v1.json"; Src = Join-Path $mvp "showroom_public_bundle_v1.json" },
+    @{ Name = "showroom_topology_radar_snapshot_v1_latest.json"; Src = $topologyArtifact; Optional = $true },
     @{ Name = "public_showroom_probabilistic_saju_v1.html"; Src = Join-Path $mvp "public_showroom_probabilistic_saju_v1.html" },
     @{ Name = "showroom_saju_hour_bundle_demo_v1.json"; Src = Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json" }
 )
@@ -60,7 +69,11 @@ if (-not (Test-Path -LiteralPath $destRoot)) {
 
 foreach ($f in $files) {
     if (-not (Test-Path -LiteralPath $f.Src)) {
-        Write-Warning "[deploy-showroom] missing source: $($f.Src) — run build_showroom_display_bundle.ps1"
+        if ($f.Optional) {
+            Write-Warning "[deploy-showroom] optional source missing (skipped): $($f.Name)"
+        } else {
+            Write-Warning "[deploy-showroom] missing source: $($f.Src) — run build_showroom_display_bundle.ps1"
+        }
         continue
     }
     $out = Join-Path $destRoot $f.Name

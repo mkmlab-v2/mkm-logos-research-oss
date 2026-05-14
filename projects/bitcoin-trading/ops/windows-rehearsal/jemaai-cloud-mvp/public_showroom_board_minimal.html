@@ -293,6 +293,7 @@
   document.getElementById("base").value = defaultBase;
 
   let cachedBundleEvent = null;
+  let cachedBundle = null;
 
   const SHOWROOM_TICKER_KO = {
     "S_ONLINE_R_INFO_PSD_HOLD_DA_FLAT": "알고 예능장 ON · 관망 모드 · 방향 중립(추상) · 연출만",
@@ -359,7 +360,20 @@
     return "상태 " + sys + " · 리스크 " + risk + " · 방향 " + dir + delay;
   }
 
-  function riskPillClass(risk) {
+  function topologyStripHtml() {
+    const ob = cachedBundle && cachedBundle.observability;
+    if (!ob || ob.topology_radar_snapshot_present !== true) return "";
+    const stub = ob.topology_radar_snapshot_stub === true;
+    const n = (typeof ob.topology_radar_snapshot_artifact_ref_count === "number") ? ob.topology_radar_snapshot_artifact_ref_count : "—";
+    const gen = ob.topology_radar_snapshot_generated_at_utc ? String(ob.topology_radar_snapshot_generated_at_utc) : "—";
+    const stale = ob.topology_radar_snapshot_stale_after_utc ? String(ob.topology_radar_snapshot_stale_after_utc) : "—";
+    const badge = stub ? "warn" : "ok";
+    const badgeT = stub ? "Stub" : "Live";
+    const line = "참조 " + n + "건 · 생성 " + gen + " · 만료 " + stale + (stub ? " · 스텁" : "");
+    return '<div class="cell cell-full"><p class="k">Topology Radar <span class="pill pill-' + badge + '">' + badgeT + '</span></p>'
+      + '<p class="v sub">' + escapeHtml(line) + '</p>'
+      + '<p class="v sub">[HYPO] · 비매매 · 정적 스냅샷 JSON 동시 배포 권장</p></div>';
+  }
     const u = String(risk || "").toUpperCase();
     if (u === "INFO" || u === "SAFE") return "pill pill-ok";
     if (u === "WARNING") return "pill pill-warn";
@@ -414,7 +428,8 @@
       '<div class="cell"><p class="k">마지막 정상 수신</p><p class="v sub">' + escapeHtml(String(lastOk)) + '</p></div>' +
       '<div class="cell"><p class="k">이벤트 ID</p><p class="v sub mono">' + escapeHtml(String(eid)) + '</p></div>' +
       '<div class="cell"><p class="k">면책 참조</p><p class="v sub mono">' + escapeHtml(String(disc)) + '</p></div>' +
-      '<div class="cell cell-full"><p class="k">추상 사유</p><p class="v sub">' + escapeHtml(String(reason)) + '</p></div>';
+      '<div class="cell cell-full"><p class="k">추상 사유</p><p class="v sub">' + escapeHtml(String(reason)) + '</p></div>' +
+      topologyStripHtml();
 
     document.getElementById("tickerLine").textContent = tickerLine(obj);
     renderReactions(obj);
@@ -429,6 +444,7 @@
         const r = await fetch(u, { cache: "no-store" });
         if (!r.ok) continue;
         const bundle = await r.json();
+        cachedBundle = bundle;
         const pe = bundle.public_event_v1;
         if (pe && typeof pe === "object") {
           cachedBundleEvent = pe;
