@@ -374,6 +374,8 @@
       + '<p class="v sub">' + escapeHtml(line) + '</p>'
       + '<p class="v sub">[HYPO] · 비매매 · 정적 스냅샷 JSON 동시 배포 권장</p></div>';
   }
+
+  function riskPillClass(risk) {
     const u = String(risk || "").toUpperCase();
     if (u === "INFO" || u === "SAFE") return "pill pill-ok";
     if (u === "WARNING") return "pill pill-warn";

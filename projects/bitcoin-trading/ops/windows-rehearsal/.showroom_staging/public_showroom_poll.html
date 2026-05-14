@@ -2568,6 +2568,17 @@
             const integratedConf = (typeof sg.integrated_confidence === "number") ? Number(sg.integrated_confidence).toFixed(2) : "—";
             const logosLine = SHOWROOM_UI_KO.logosSummary(dm, pui);
             const graphRow = SHOWROOM_UI_KO.logosGraphBundleRow(dm, o);
+            const topoRow = (function () {
+              if (!o || o.topology_radar_snapshot_present !== true) return null;
+              const stub = o.topology_radar_snapshot_stub === true;
+              const n = (typeof o.topology_radar_snapshot_artifact_ref_count === "number") ? o.topology_radar_snapshot_artifact_ref_count : "—";
+              const gen = o.topology_radar_snapshot_generated_at_utc ? String(o.topology_radar_snapshot_generated_at_utc) : "—";
+              const stale = o.topology_radar_snapshot_stale_after_utc ? String(o.topology_radar_snapshot_stale_after_utc) : "—";
+              return {
+                online: !stub,
+                text: "참조 " + n + "건 · 생성 " + gen + " · 만료 " + stale + (stub ? " · 스텁" : ""),
+              };
+            })();
             let uTint = "";
             if (typeof uPct === "number") {
               uTint = uPct < 0 ? " snap-return-neg" : (uPct > 0 ? " snap-return-pos" : "");
@@ -2618,6 +2629,14 @@
                   + "<span class=\"badge " + (graphRow.online ? "ok" : "warn") + "\">" + (graphRow.online ? "Online" : "Offline") + "</span>"
                   + "<span class=\"snap-val small\">" + escapeHtml(graphRow.text) + "</span>"
                   + "<span class=\"snap-sub\">원문 노드/엣지 JSON 미포함 · 비매매 · 비게이팅</span>"
+                  + "</div>")
+                : "")
+              + (topoRow
+                ? ("<div class=\"snap-cell snap-span\">"
+                  + "<span class=\"snap-label\">Topology Radar (읽기 전용 스냅샷)</span>"
+                  + "<span class=\"badge " + (topoRow.online ? "ok" : "warn") + "\">" + (topoRow.online ? "Live" : "Stub") + "</span>"
+                  + "<span class=\"snap-val small\">" + escapeHtml(topoRow.text) + "</span>"
+                  + "<span class=\"snap-sub\">[HYPO] · no_trade_signals · 전체 JSON은 동일 디렉터리 정적 파일</span>"
                   + "</div>")
                 : "");
           } else {
