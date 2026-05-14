@@ -33,7 +33,7 @@
 
 ### MKM 초간결 운영 프로토콜 (크로스 채팅 최소 부하)
 
-1. **Cursor User Rules (지휘관 PC, 선택):** Settings → Rules for AI에 예: `새 세션에서는 docs/final/CENTRAL_AGENT_MEMORY_V1.md를 읽고 현재 진행 단계·Fact-Lock을 파악한 뒤 짧게 브리핑한다.` — 레포와 자동 동기화되지 않으므로 본 절은 **복붙용 안내**다. **Ops 핸드오프 전용 복붙 블록:** 아래 **「Recommended Cursor User Rules — Ops handoff」** 코드 펜스 전체.
+1. **Cursor User Rules (지휘관 PC, 선택):** Settings → Rules for AI(**User** 탭)에 아래 **「Recommended Cursor User Rules — User 탭 합본」** 코드 펜스 **안의 전체**를 붙인다(레포와 자동 동기화되지 않음). 기존 규칙을 지웠다면 이 합본 **한 번에** 복구 가능.
 2. **시작:** 말 한 줄만으로도 됨 — **고정 재개 트리거(동등·한쪽만 있어도 동일):** (A) 「**장기기억 맥락이어라**」「**장기기억 맥락 이어**」 (B) 「**장기기억 토대로**」「**장기기억 토대로 진행해**」 — **A와 B는 같은 우선순위**로 취급한다. 추가 동일 프로토콜: 「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」「MKM 장기기억」「이어서」「CENTRAL 기준」. 에이전트는 위 **어느 것이든** 받으면 레포 `.cursorrules` **[MKM AI Operating Protocol]** 에 따라 **다른 답변·코딩보다 먼저** `CENTRAL`·`AGENTS`·(필요 시)`CONSTITUTION_*`를 읽고, 운영 체크포인트·분기 한 줄을 근거로 짧게 브리핑한 뒤 작업한다. 또는 `@CENTRAL.md` / `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` + 질문.
 3. **종료 1초 체크포인트:** `py scripts/athena_checkpoint.py "완료/다음 한 줄"` — `CENTRAL`의 **운영 체크포인트** 마커와 `last_updated_utc` 갱신(기본: **새 bullet을 맨 위에 추가**하고 이전 줄은 유지·상한 `--max-checkpoints` 기본 20; 예전처럼 **한 줄만** 남기려면 `--replace-all`). **저위험 MD 편집**이므로 `athena_run_v1.py`로 감쌀 필요 없음(ECC·실거래 경로와 무관). 말로 **「장기기억 저장하라」「장기기억 저장해」「장기기억 저장해줘」「체크포인트」**만 해도 레포 `.cursorrules`에 따라 에이전트가 같은 명령을 실행하도록 고정됨(요약 한 줄은 채팅에 같이 주면 확실).
 4. **재개 팩(선택):** `py scripts/build_mkm_chat_resume_pack_v1.py` → `docs/final/artifacts/mkm_chat_resume_pack_latest.md` 등 기존 산출과 병용 가능.
@@ -53,24 +53,33 @@
 | **Cursor Settings → User Rules만** | 레포와 **자동 동기화되지 않음**. 팀·본선 기준은 SSOT에 둔다. |
 | **정리** | 세션 간 **대화 내용이 복사되는 것은 아니다**. 반복 안내·운영 메모는 레포에 커밋해 두고, 새 세션에서는 `@AGENTS.md`(필요 시 `@CLAUDE.md`·중앙 메모리)로 동일하게 따라간다. |
 
-### Recommended Cursor User Rules — Ops handoff (복붙)
+### Recommended Cursor User Rules — User 탭 합본 (최종 복붙)
 
-Cursor **Settings → Rules for AI**에 아래 블록을 그대로 붙인다(로컬 설정이라 **레포와 자동 동기화되지 않음**; 본 절은 복붙용 SSOT). 장기 정책 문단은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md` **「다중 채팅 핸드오프」**와 동일 선상.
-
-**트리거:** 메시지에 **핸드오프** 또는 **옵스 스냅샷**이 포함되고(동의어: `CURRENT_OPS 핸드오프`, `스냅샷 갱신`), 사용자가 그 턴에서 스냅샷 갱신을 요청한 경우.
+Cursor **Settings → Rules for AI**(**User** 탭)에 **아래 코드 펜스 안 전체**를 그대로 붙인다(로컬 설정·**레포와 자동 동기화 없음**). 내용: Fact-Lock·사실 확인·최소 변경·세션 시작 권장·`CURRENT_OPS_SNAPSHOT.md` 핸드오프. 장기 정책 문단은 `docs/final/CENTRAL_AGENT_MEMORY_V1.md` **「다중 채팅 핸드오프」**와 동일 선상.
 
 ```
-사용자가 같은 턴에서 스냅샷·핸드오프 갱신을 요청했고, 메시지에 "핸드오프" 또는 "옵스 스냅샷" 또는 "CURRENT_OPS 핸드오프" 또는 "스냅샷 갱신"이 포함되면:
+MKM / Athena — User Rules (최종 합본)
 
-1. 이 목적으로는 `MISSION_LOG.md`를 수정하지 않는다.
-2. 반드시 docs/final/CURRENT_OPS_SNAPSHOT.md 만 Read 후 수정(Apply)한다.
-3. 파일 상단(첫 번째 # 직후)에 가장 최근이 되도록 "## Ops slice (YYYY-MM-DD · Session handoff)" 블록을 하나 둔다. 이미 당일·동일 Thread 제목이 있으면 그 블록만 갱신한다. 각 블록에 다음 세 줄을 채운다:
-   - 완료: …
-   - 막힘: … (없으면 없음)
-   - 다음: …
-4. 다른 MD 신규 생성·장문 장황 서술 금지. 응답은 한 줄 확인으로 끝낸다.
+SSOT·Fact-Lock
+- 구현 여부·경로·통과 여부는 docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md 와 호출 가능한 스크립트·pytest·exit code·아티팩트로만 말한다. 기획·NotebookLM·채팅 요약만으로 "이미 구현·통과"라고 단정하지 않는다.
+- 배포 URL·API·환경 변수·실서비스 상태는 추측하지 말고, 확인·실측·레포 경로 근거를 남긴 뒤 보고한다.
 
-배제: "일기 반영" 또는 "오늘 일기 동기화"만 있는 메시지는 본 규칙을 적용하지 않고, AGENTS.md 「다중 채팅 작업 일기」절의 athena_daily_thread_log_sync_v1.py 경로를 따른다. 두 요청이 한 턴에 섞이면 사용자에게 어느 쪽인지 한 번만 묻는다.
+최소 변경
+- 요청 범위 밖 리팩터·문서 남발 금지. 사용자가 문서/Markdown 생성을 명시적으로 요청하지 않으면 새 .md 파일을 만들지 않는다.
+
+세션 시작(권장)
+- 작업이 크거나 방향을 맞출 때는 docs/final/CENTRAL_AGENT_MEMORY_V1.md 를 읽고 진행 단계·Fact-Lock을 짧게 맞춘 뒤 작업한다.
+
+Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
+- 사용자가 같은 턴에서 스냅샷·핸드오프 갱신을 요청했고, 메시지에 "핸드오프" 또는 "옵스 스냅샷" 또는 "CURRENT_OPS 핸드오프" 또는 "스냅샷 갱신"이 포함되면:
+  1. 이 목적으로는 MISSION_LOG.md 를 수정하지 않는다.
+  2. 반드시 docs/final/CURRENT_OPS_SNAPSHOT.md 만 Read 후 수정(Apply)한다.
+  3. 파일 상단(첫 번째 # 직후)에 가장 최근이 되도록 "## Ops slice (YYYY-MM-DD · Session handoff)" 블록을 하나 둔다. 이미 당일·동일 Thread 제목이 있으면 그 블록만 갱신한다. 각 블록에 다음 세 줄을 채운다:
+     - 완료: …
+     - 막힘: … (없으면 없음)
+     - 다음: …
+  4. 다른 MD 신규 생성·장문 장황 서술 금지. 응답은 한 줄 확인으로 끝낸다.
+- 배제: "일기 반영" 또는 "오늘 일기 동기화"만 있는 메시지는 이 핸드오프 규칙을 적용하지 않고, AGENTS.md 「다중 채팅 작업 일기」절의 athena_daily_thread_log_sync_v1.py 경로를 따른다. 두 요청이 한 턴에 섞이면 사용자에게 어느 쪽인지 한 번만 묻는다.
 ```
 
 ## 렌즈 역할 계약 (모든 채팅 공통 · 혼동 금지)
