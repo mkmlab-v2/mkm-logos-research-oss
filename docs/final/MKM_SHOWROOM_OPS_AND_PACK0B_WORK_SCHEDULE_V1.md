@@ -101,9 +101,12 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 **목표:** 프로파일·어댑터 경로 SSOT 준수 후 학습 및 (정책대로) 프로모션 게이트.
 
 - [x] `docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json` 확인 (`pack: "0-B"`, `adapter_repo_relative`, `golden_row_schema`) — **2026-05-14** `py -c` 로드 검증.  
-- [x] (로컬 가능 범위) **소표본** `run_pack0b_deterministic_lora_pipeline_v1.py` — `tests/fixtures/myeongri_deterministic_lora_golden_sample_v1.jsonl` → convert + `eval_myeongri_deterministic_lora_golden_fit_v1.py` + **`--print-train-config --profile golden_fit_smoke`** exit 0(TinyLlama 프로파일 해석). **전량 `train.jsonl` `--run-train`·어댑터 산출·프로모션 `decision=GO`는 GPU 호스트 미실행 → 의도적 보류.** 증거 번들 회귀: `py -m pytest` `test_myeongri_deterministic_lora_golden_set_schema_v1`·`test_build_myeongri_deterministic_lora_golden_bulk_v1`·`test_eval_myeongri_deterministic_lora_golden_fit_v1`·`test_myeongri_deterministic_lora_pack_copy_guardrails_v1`·`test_mkm_promotion_gate_evidence_bundle_v1` **12 passed** (CONSTITUTION Pack 0-B·`mkm_promotion_gate_evidence_bundle_v1` 행 정합).
+- [x] (로컬 가능 범위) **소표본** `run_pack0b_deterministic_lora_pipeline_v1.py` — `tests/fixtures/myeongri_deterministic_lora_golden_sample_v1.jsonl` → convert + `eval_myeongri_deterministic_lora_golden_fit_v1.py` + **`--print-train-config --profile golden_fit_smoke`** exit 0(TinyLlama 프로파일 해석).  
+- [x] **2026-05-14** 동 픽스처 **`--run-train --train-steps 2 --profile golden_fit_smoke`** → 어댑터 `storage/adapters/myeongri_deterministic_lora_v0/pack0b_fixture_smoke_latest`(CUDA 로컬).  
+- [x] **2026-05-14** **`--run-inference-eval`** — 베이스 정합을 위해 **`--inference-profile-key golden_fit_smoke`** 필수(기본 `train_default`는 `model_id` 불일치로 LoRA 로드 실패). 산출 `reports/myeongri_deterministic_lora_locked_eval_inference_eval_latest.json` `ok=true`, `alignment_pass_rate=0.0`(2-step 스모크·품질 판정 아님).  
+- [x] 회귀: `pytest tests/test_run_pack0b_deterministic_lora_pipeline_v1.py`·`tests/test_myeongri_deterministic_lora_pack_copy_guardrails_v1.py` **6 passed**(기존 12종 Pack0-B 번들과 병행 가능). **전량 `train.jsonl` 장시간 학습·`check_mkm_*promotion* decision=GO`는 별 호스트·의도적 보류.**
 
-**완료 조건:** 게이트 `decision=GO` 또는 “의도적 보류” 사유 한 줄. — **의도적 보류:** 전량 학습·프로모션 GO는 GPU/학습 호스트 미가동; 로컬은 프로파일·스키마·증거 번들·소표본 파이프라인으로 선행 게이트만 녹색.
+**완료 조건:** 게이트 `decision=GO` 또는 “의도적 보류” 사유 한 줄. — **의도적 보류:** N=1000 본학습·프로모션 GO는 별도 GPU 일정; 로컬는 **프로파일·스키마·픽스처 train+inference 파이프·카피 가드**까지 녹색.
 
 ---
 
@@ -127,6 +130,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 | 2026-05-14 | 4 | Pack 0-B bulk: `build_myeongri_deterministic_lora_golden_bulk_v1.py` N=1000 K=100 `dataset_version=v1-2026-05-14`; manifest+sha256 |
 | 2026-05-14 | 5 | `eval_myeongri…` train→`myeongri_deterministic_lora_golden_fit_latest.json`; locked→`myeongri_deterministic_lora_golden_fit_locked_eval_latest.json` 각 ok |
 | 2026-05-14 | 6 | 프로파일 SSOT 확인; pytest 12(0-B+promotion bundle); `run_pack0b…` fixture convert/eval+`golden_fit_smoke` train config — 전량 학습 GO 보류 |
+| 2026-05-14 | 6 | 픽스처 `--run-train` 2step TinyLlama→`pack0b_fixture_smoke_latest`; `--run-inference-eval --inference-profile-key golden_fit_smoke` ok(`alignment_pass_rate=0` 스모크); pytest pack0b+copy_guard 6 pass |
 
 ---
 
