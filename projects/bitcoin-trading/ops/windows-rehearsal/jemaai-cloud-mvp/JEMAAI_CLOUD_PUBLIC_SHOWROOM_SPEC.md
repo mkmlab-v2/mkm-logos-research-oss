@@ -94,6 +94,20 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 
 `GEMINI_API_KEY`만 쓸 때 사용자 환경의 **`GOOGLE_API_KEY`** 가 남아 있으면 중복 경고가 날 수 있다 → 사용자 환경에서 제거. 힌트: `scripts/print_gemini_env_hygiene_hint.ps1` (레포 루트 `scripts`).
 
+### 4.4 Topology Radar / Meaning-graph 슬롯 (Track C §3.6 확장, 2026-05)
+
+**목적:** `docs/final/TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md` 청사진과 동일 프레임으로, **다차원 텍스트 위상 관측**을 공개 쇼룸에 **읽기 전용**으로 붙인다. 성경·Logos 축은 **해설·가설(`[HYPO]`)**이며 **실매매·주문·실키와 합선하지 않는다** (`AGENTS.md` 렌즈 계약, Track C §1·§9).
+
+| 차원 | 규칙 |
+|------|------|
+| **입력** | Track B·로컬 체인이 이미 기록한 **경로 고지 산출물**만(예: `logos_corpus_graph_bundle_v1_latest.json`, Logos 신선도 사이드카, Aramaic MVP 체인의 **공개 가능 메타**). 원문 코퍼스·전체 파이프라인·가중치는 **공개면에 올리지 않는다**. |
+| **스냅샷 계약** | `docs/final/schemas/showroom_topology_radar_snapshot_v1.schema.json` + example — 필수 `no_trade_signals: true`, `disclaimer_ref`는 §3 표와 동일 계열(`jemaai_showroom_v1` 등)로 맞춘다. |
+| **출력** | 정적 HTML·폴링 JSON 또는 `public-event.v1` **선택 확장 필드**로만 반영한다. **매수·매도·레버리지·실행 지시** 문구·필드 **금지**. |
+| **금지 응답** | “내일 오른다/내린다”, 확정 예언, 알파 보장, 의료·종교 단정, NotebookLM·채팅 브리핑만의 구현 완료 주장. |
+| **배선** | 1차: `build_showroom_track_c_bundle_chain_v1.ps1` → `showroom_public_bundle_v1.json` 경로와 병행해 스냅샷만 별도 정적 자산으로 두어도 된다(게이트웨이와 **직접 주문 결합 금지**는 본 SPEC §1·§6과 동일). |
+
+**Fact-Lock:** 구현·게이트 경로는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 `scripts/verify_p0_constitution_gate_paths.ps1`와 동기 후 확장한다.
+
 ---
 
 ## 5. 한 줄 요약

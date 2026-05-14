@@ -1,0 +1,13 @@
+{
+  "schema_version": "showroom_topology_radar_snapshot_v1",
+  "generated_at_utc": "2026-05-13T12:00:00Z",
+  "stale_after_utc": "2026-05-14T00:00:00Z",
+  "hypo_banner": "[HYPO] Meaning-graph drift snapshot (read-only)",
+  "summary_one_line": "Logos graph bundle vs macro sidecar: structural proximity shift within tolerance band; not investment advice.",
+  "artifact_refs": [
+    "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json",
+    "docs/final/artifacts/logos_track_c_freshness_sidecar_v1_latest.json"
+  ],
+  "disclaimer_ref": "jemaai_showroom_v1",
+  "no_trade_signals": true
+}

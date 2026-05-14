@@ -30,7 +30,7 @@ catch {
 # 2026-05-05: MKM_DOMAIN_PORTFOLIO_POINTER_V1.md (도메인×역할×쇼룸 배치 §1.1; P0 존재 게이트).
 # 2026-05-05: TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md (Track C 상용·법무·IP 경계 SSOT; P0 존재 게이트).
 # 2026-05-05: PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md (대외 문서·홈·쇼룸 보안·IP 카피 체크리스트; P0 존재 게이트).
-# 2026-05-13: TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md (§3.6 쇼룸 1p 청사진 DRAFT; P0 존재 게이트).
+# 2026-05-13: TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md + showroom_topology_radar_snapshot_v1 schema/example/pytest + JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC §4.4.
 # 2026-05-05: MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md (KR 건강·웰빙 대외 카피 가드레일; P0 존재 게이트).
 # 2026-05-05: CENTRAL_AGENT_MEMORY_V1.md (명리 렌즈 고도화 v1 등 장기기억 지문; P0 존재 게이트).
 # 2026-05-05: 명리 core vector v1 schema/test (지장간 배율 엔진 Sprint-1 base vector lock).
@@ -57,7 +57,6 @@ catch {
 # 2026-05-13: Premium B-track multi-lens report v1 (builder, schema+example, offline RAG fixture, pytest; CI dual-regime + Fact-Lock bundle 4b).
 # 2026-05-13: Gematria–Myeongri deterministic math v1 (tools/myeongni module, spike delegate, pytest, isolation doc).
 # 2026-05-14: athena_checkpoint prepend-mode (--max-checkpoints) + pytest regression.
-# 2026-05-14: Sync-PrSasangPromotionMirror_v1.ps1 (PR pack _pr_sasang_promotion mirror from root SSOT).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -333,6 +332,10 @@ $required = @(
     "scripts\Start-CompressionV2ExplorerDemo.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\compression_v2_explorer.html",
     "projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\public_showroom_board_minimal.html",
+    "projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md",
+    "docs\final\schemas\showroom_topology_radar_snapshot_v1.schema.json",
+    "docs\final\schemas\showroom_topology_radar_snapshot_v1.example.json",
+    "tests\test_showroom_topology_radar_snapshot_schema_v1.py",
     "docs\final\schemas\mkm_user_context_v1.schema.json",
     "docs\final\schemas\mkm_compressed_payload_v1.schema.json",
     "scripts\check_news_label_join_temporal_v1.py",

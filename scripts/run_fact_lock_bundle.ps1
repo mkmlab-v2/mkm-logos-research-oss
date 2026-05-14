@@ -15,7 +15,7 @@
   3d2a. `py -m pytest …` — CI `dual-regime-integrity.yml`에서 Aramaic 직전의 **Two-track submission pack**(pytest **3**) + **Multi-symbol gates and counterfactual QA**(pytest **3**)를 **동일 순서**로 한 번에 실행(총 **6**개 파일). `-SkipTwoTrackSubmissionAndMultiSymbolSmoke` 로 생략.
   3d2b. `py -m pytest …` — Aramaic B-track graph pipeline smoke **27**개 파일(CI `dual-regime-integrity.yml` `Aramaic B-track graph pipeline smoke` 단계와 동일 목록: 코퍼스·audit trend·alert·threshold sweep/apply·MVP audit PS1 passthrough·그래프·점수·시맨틱·bridge·Bible meaning graph·insight survivor·cap bucket·drift alert schema·insight/cap CLI 연쇄 jsonschema·Track T survivor health·survivor health alert schema·weight/shadow·bridge coef). `-SkipAramaicBtrackGraphPipelineSmoke` 로 생략.
   3d3. `py -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py` — Logos insight bundle v1 스키마·빌더·non-degraded 예시(CI `Logos insight bundle v1` 스텝과 동일 테스트)
-  3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
+  3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + 환자 통합 번들(`patient_care_bundle_v1`) 스키마·assemble 래퍼 + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   4b. `py -m pytest tests/test_premium_btrack_multilens_report_schema_v1.py tests/test_build_premium_btrack_multilens_report_v1.py tests/test_premium_multilens_job_queue_stub_v1.py tests/test_build_premium_multilens_queue_promotion_gate_v1.py` — Premium B-track multi-lens report v1(스키마·동기 빌더 subprocess·파일 큐 스텁·S1 승격 게이트 회귀); 직후 **`py scripts/premium_multilens_job_queue_stub_v1.py drain --allow-missing-queue`**(큐 없으면 SKIP·exit 0)·**`py scripts/build_premium_multilens_queue_promotion_gate_v1.py --skip-pytest`**(S1_SHADOW 승격 게이트 산출); 일상 원클릭은 **`scripts/Invoke-PremiumMultilensQueueRoutine_v1.ps1`**; `dual-regime-integrity.yml` 동일 pytest+drain+gate 단계
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
@@ -255,6 +255,7 @@ $aramaicBtrackGraphPipelineSmokePytests = @(
     (Join-Path $workspaceRoot 'tests\test_bible_meaning_insight_survivor_and_cap_bucket_schemas_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_insight_survivor_health_alert_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_insight_survivor_health_alert_schema_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_showroom_topology_radar_snapshot_schema_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_weight_sweep_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_shadow_compare_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py')
@@ -287,6 +288,8 @@ $kmPhysicianCdsEnvelopeTests = @(
     (Join-Path $workspaceRoot 'tests\test_km_physician_cds_assist_envelope_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_build_km_physician_cds_assist_envelope_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_run_km_physician_cds_assist_envelope_batch_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_patient_care_bundle_v1_schema.py'),
+    (Join-Path $workspaceRoot 'tests\test_assemble_patient_care_bundle_with_myeongni_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_automation_registry_json_v1.py')
 )
 $myeongniLensRecommendedPytests = @(

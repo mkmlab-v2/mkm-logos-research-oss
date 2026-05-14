@@ -39,18 +39,33 @@
 
 ---
 
-## 5. 롤아웃 작업 일정 (권장)
+## 5. 롤아웃 작업 일정 (권장 · 진행 상태)
 
-| 단계 | 기간(가이드) | 산출 / 완료 조건 |
-|------|----------------|------------------|
-| **P0 — 문구 동결** | 0.5일 | 본 청사진 §4 면책 + Track C §1·§9 문구 **한 줄 차이 없이** 정합 확인; 필요 시 법무 코멘트 반영. |
-| **P1 — SSOT 연결** | 0.5일 | `TRACK_C_IP_BUSINESS_PLAN` §3.6 포인터·본 파일 상호 링크 유지; `PUBLIC_FACING` 앵커 목록에 본 문서 추가(완료 시 커밋). |
-| **P2 — 쇼룸 SPEC 정합** | 1~2일 | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`에 “Topology Radar” 슬롯(입력·출력·금지 응답) **한 절** 반영; 정적 프로토타입은 `public_showroom_board_minimal.html` 등 기존 경로만 확장. |
-| **P3 — 데이터 파이프라인** | 1~2주 | Logos·Aramaic 체인 산출 JSON을 쇼룸이 읽는 **읽기 전용 스냅샷** 계약(필드명·stale 정책); **Track A·실키·주문 경로와 물리 분리**. |
-| **P4 — B2B 패키징** | 병행 | §3.8 매크로 경보 리포트와 **동일 면책·아티팩트 링크** 정책으로 PDF/대시보드 샘플 1종; 가격·SLA는 계약서 초안(법무). |
+| 단계 | 기간(가이드) | 산출 / 완료 조건 | 상태 |
+|------|----------------|------------------|------|
+| **P0 — 문구 동결** | 0.5일 | 본 청사진 §4 면책 + Track C §1·§9 문구 **한 줄 차이 없이** 정합 확인; 필요 시 법무 코멘트 반영. | **법무 전제·DRAFT** (레포 문구 동결 완료; 법무 승인은 외부 게이트) |
+| **P1 — SSOT 연결** | 0.5일 | `TRACK_C_IP_BUSINESS_PLAN` §3.6 포인터·`PUBLIC_FACING` 앵커·`verify_p0` 경로. | **완료** |
+| **P2 — 쇼룸 SPEC 정합** | 1~2일 | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §4.4 Topology Radar 슬롯. | **완료** |
+| **P3 — 데이터 파이프라인** | 1~2주 | Logos·Aramaic 산출 → 쇼룸 **읽기 전용 스냅샷** 계약; Track A·실키·주문 경로와 물리 분리. | **계약 v1 반영**(스키마·예시·pytest; 런타임 빌더는 기존 `build_showroom_track_c_bundle_chain_v1.ps1` 등으로 점진 연결) |
+| **P4 — B2B 패키징** | 병행 | §3.8 매크로 경보 리포트와 **동일 면책·아티팩트 링크** 정책으로 PDF/대시보드 샘플 1종; 가격·SLA는 계약서 초안(법무). | **SSOT 포인터만**(아래 §7) |
 
-**전체 리드 타임:** 문서·SPEC만이면 **약 2~4일**, 읽기 전용 데이터 배선까지면 **약 2~3주**(인력·법무 병목 제외).
+**전체 리드 타임:** 문서·SPEC·스키마까지 **본 턴 기준 착수 완료**; 런타임 자동 빌드·법무 승인·상용 PDF는 병렬 트랙.
 
 ---
 
-**Revision:** 2026-05-13 — v1 초안(Track C §3.6 확장, Fact-Lock·면책 정렬).
+## 6. P3 읽기 전용 스냅샷 계약 (v1)
+
+- **스키마:** `docs/final/schemas/showroom_topology_radar_snapshot_v1.schema.json`  
+- **예시:** `docs/final/schemas/showroom_topology_radar_snapshot_v1.example.json`  
+- **회귀:** `tests/test_showroom_topology_radar_snapshot_schema_v1.py` (`jsonschema` 설치 시)  
+- **의미:** `artifact_refs`는 **이미 디스크에 존재하는** Logos·Track C 보조 산출물 경로만 나열한다. 스냅샷은 **`no_trade_signals: true`** 고정. 실매매 엔진·주문 API와 **동일 프로세스 합선 금지** (`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §1·§4.4).
+
+---
+
+## 7. P4 B2B 패키징 (SSOT 포인터)
+
+- **동결 뼈대(목차·면책 톤):** `docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md` — Topology Radar 리포트는 동 파일의 **Executive Summary / 근거 경로** 패턴을 재사용하고, 본 청사진 §4 면책 블록을 **표지 또는 각주**로 반드시 포함한다.
+
+---
+
+**Revision:** 2026-05-13 — v1 초안(Track C §3.6 확장, Fact-Lock·면책 정렬). **2026-05-13 v1.1** — P2 SPEC §4.4, P3 스키마·pytest, P4 MVP 포인터 반영.
