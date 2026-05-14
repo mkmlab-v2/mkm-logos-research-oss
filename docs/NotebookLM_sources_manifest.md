@@ -42,7 +42,7 @@
 
 **실행:** Vault 미러 → `sync_notebooklm_sources_to_mkm_data_vault.ps1` → NL 웹 **`source_add`**(행별 소스만; MCP `add_source` 실패 시 한국 UI 앵커: `scripts/apply_notebooklm_mcp_ko_selectors_patch_v1.py` + Reload) → MCP 질의 시 **`notebook_id` 고정**.
 
-**자동(로컬):** `py scripts/build_notebooklm_lens_source_packs_v1.py` → `reports/notebooklm_lens_packs_v1/<렌즈>/`에 매니페스트 행 기준 파일 복사 + `index.json` — 이후 NL 웹에서 **렌즈별 노트**에 폴더 단위 업로드. 원클릭: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-NotebookLmLensPacksAndVaultMirror_v1.ps1` (Vault 없으면 팩만 생성).
+**자동(로컬):** `py scripts/build_notebooklm_lens_source_packs_v1.py` → `reports/notebooklm_lens_packs_v1/<렌즈>/`에 매니페스트 행 기준 파일 복사 + `index.json` — 이후 NL 웹에서 **렌즈별 노트**에 폴더 단위 업로드. 원클릭: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-NotebookLmLensPacksAndVaultMirror_v1.ps1` (Vault 없으면 팩만 생성). **권장 하이브리드(팩+Vault + 수동 NL/MCP + 선택 레포 퓨전 스모크 + 체크리스트 JSON):** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-NotebookLmMkmHybridRecommendedRoutine_v1.ps1` (`-SkipVaultMirror`, `-SkipLocalDeterministic`, `-IncludeTrackCMacroFusionSmoke` 등 상단 `.SYNOPSIS` 참고).
 
 **교차 브리핑:** 여러 렌즈를 한 번에 묻지 말고, **질문마다 노트를 바꾸거나** 문서의 **Fusion Hub** 노트를 쓸 경우에도 **소스 폴더/태그로 렌즈 분리**를 유지한다(아래 URL 노트는 “허브”일 뿑, 만능 RAG 아님).
 
