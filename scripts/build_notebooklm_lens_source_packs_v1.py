@@ -112,6 +112,12 @@ py scripts/build_notebooklm_lens_source_packs_v1.py
 
 Then in Google NotebookLM: create one notebook per lens (see `docs/NotebookLM_sources_manifest.md`), and **source_add** each file under the matching folder (`LENS_MYEONGNI/`, …). Do not upload personal birth data as files; keep `[HYPO]` in prompts only.
 
+**Optional — `nlm` CLI batch push (same stack as `Push-NotebooklmFusionHubBulk.ps1`):**
+
+1. `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Push-NotebooklmLensPacks_v1.ps1 -InitMap` → creates `reports/notebooklm_lens_packs_v1/notebook_ids.json` from `docs/final/notebooklm_lens_pack_push_map_v1.template.json` (edit UUIDs per your NL notebooks).
+2. `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Push-NotebooklmLensPacks_v1.ps1 -DryRun` (plan only; no `nlm` required).
+3. `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Push-NotebooklmLensPacks_v1.ps1` (requires `nlm` on PATH + Google auth for that CLI profile).
+
 """,
         encoding="utf-8",
     )

@@ -2,6 +2,15 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-15 · Silver COGS / Hybrid STT — 세션 종료·핸드오프)
+
+**Thread:** Cursor — 실버 COGS·Hybrid STT 로그 그릇만 선반영; 섣부른 가정 숫자 없음.
+
+- **완료:** `silver_tech_cogs_unit_economics_template_v1.md` — 공개 벤더 문서 링크·이벤트 필드 표(`route`·`vendor_latency_ms`·`billing_unit` 등)·체크리스트 갱신; `RESEARCH_OPEN_QUESTIONS_V1.md` 메타 한 줄; 아래 RQ-009·Silver five-step 슬라이스와 정합.
+- **막힘:** 없음.
+- **다음(재개 조건):** 오프라인 **텔레메트리**·**견적서**·법무 **(D)** 확정문 — 충족 전까지 레포 **수치 동결 유지**, 코드 선행 불필요.
+- **세션 상태:** 실버 테크/COGS 셋업 **종료**. Track C 쇼룸 UI·금산 스마트팜(농업회사법인) 문서 등은 **새 채팅**에서 `@docs/final/CURRENT_OPS_SNAPSHOT.md` 상단 슬라이스부터 이어가면 됨.
+
 ## Ops slice (2026-05-15 · RQ-009 지휘관 승인 — R&D 분리 + 민감 액션 구조 Lock)
 
 **Thread:** Cursor — 실버 정책 방향 레포 반영.

@@ -103,6 +103,7 @@ $SourceFiles = @(
     "docs\final\COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md",
     "docs\final\MKM_CORE_THEORY_V1.md",
     "docs\final\RESEARCH_HISTORY_V1.md",
+    "docs\final\notebooklm_lens_pack_push_map_v1.template.json",
     "docs\final\artifacts\research_history_notebooklm_snapshot_2026-04-12.md",
     "docs\final\openapi_token_compression_stub_v1.yaml",
     "docs\final\STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md",
