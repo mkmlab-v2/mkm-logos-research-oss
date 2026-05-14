@@ -79,6 +79,77 @@ def _collect_keys(obj: Any, prefix: str, keys: Set[str]) -> None:
             _collect_keys(v, f"{prefix}[{i}]", keys)
 
 
+_TOPOLOGY_RADAR_OBS_KEYS = frozenset(
+    {
+        "topology_radar_snapshot_present",
+        "topology_radar_snapshot_generated_at_utc",
+        "topology_radar_snapshot_stale_after_utc",
+        "topology_radar_snapshot_hypo_banner",
+        "topology_radar_snapshot_artifact_ref_count",
+        "topology_radar_snapshot_no_trade_signals",
+        "topology_radar_snapshot_disclaimer_ref",
+        "topology_radar_snapshot_stub",
+    }
+)
+
+
+def _validate_topology_radar_fields(obs: Dict[str, Any]) -> List[str]:
+    errs: List[str] = []
+    keys = [k for k in obs if isinstance(k, str) and k.startswith("topology_radar_snapshot_")]
+    if not keys:
+        return errs
+    for k in keys:
+        if k not in _TOPOLOGY_RADAR_OBS_KEYS:
+            errs.append(f"observability unknown topology key: {k}")
+    present = obs.get("topology_radar_snapshot_present")
+    if present is None:
+        errs.append("topology_radar_snapshot_* set but topology_radar_snapshot_present is missing")
+        return errs
+    if present is False:
+        for k in keys:
+            if k != "topology_radar_snapshot_present":
+                errs.append(f"observability.{k} must not be set when topology_radar_snapshot_present is false")
+        return errs
+    if present is not True:
+        errs.append("observability.topology_radar_snapshot_present must be boolean")
+        return errs
+
+    gen = obs.get("topology_radar_snapshot_generated_at_utc")
+    if not isinstance(gen, str) or not _TS_UTC_RE.match(gen):
+        errs.append(
+            "observability.topology_radar_snapshot_generated_at_utc must match YYYY-MM-DDTHH:MM:SSZ when present=true"
+        )
+    stale = obs.get("topology_radar_snapshot_stale_after_utc")
+    if not isinstance(stale, str) or not _TS_UTC_RE.match(stale):
+        errs.append(
+            "observability.topology_radar_snapshot_stale_after_utc must match YYYY-MM-DDTHH:MM:SSZ when present=true"
+        )
+    hypo = obs.get("topology_radar_snapshot_hypo_banner")
+    if not isinstance(hypo, str) or len(hypo) < 8:
+        errs.append("observability.topology_radar_snapshot_hypo_banner must be a non-trivial string when present=true")
+    elif not hypo.lstrip().upper().startswith("[HYPO]"):
+        errs.append("observability.topology_radar_snapshot_hypo_banner must start with [HYPO]")
+    elif len(hypo) > 512:
+        errs.append("observability.topology_radar_snapshot_hypo_banner max length 512")
+
+    arc = obs.get("topology_radar_snapshot_artifact_ref_count")
+    if not isinstance(arc, int) or arc < 1 or arc > 32:
+        errs.append("observability.topology_radar_snapshot_artifact_ref_count must be int 1..32 when present=true")
+
+    if obs.get("topology_radar_snapshot_no_trade_signals") is not True:
+        errs.append("observability.topology_radar_snapshot_no_trade_signals must be true when present=true")
+
+    disc = obs.get("topology_radar_snapshot_disclaimer_ref")
+    if disc != "jemaai_showroom_v1":
+        errs.append("observability.topology_radar_snapshot_disclaimer_ref must be jemaai_showroom_v1 when present=true")
+
+    stub = obs.get("topology_radar_snapshot_stub")
+    if stub is not None and not isinstance(stub, bool):
+        errs.append("observability.topology_radar_snapshot_stub must be boolean if set")
+
+    return errs
+
+
 def _validate_logos_graph_meta(meta: Any, prefix: str) -> List[str]:
     errs: List[str] = []
     if meta is None:
@@ -129,6 +200,7 @@ def validate_bundle(path: Path) -> List[str]:
 
     obs = doc.get("observability")
     if isinstance(obs, dict):
+        errors.extend(_validate_topology_radar_fields(obs))
         if "logos_graph_meta" in obs:
             errors.extend(_validate_logos_graph_meta(obs.get("logos_graph_meta"), "observability.logos_graph_meta"))
             if obs.get("track_b_non_gating") is not True:

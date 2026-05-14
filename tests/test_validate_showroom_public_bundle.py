@@ -312,3 +312,96 @@ def test_validate_rejects_balance_leak(tmp_path: Path) -> None:
     p.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
     errs = validate_bundle(p)
     assert any("forbidden token" in e for e in errs)
+
+
+def _minimal_public_event() -> dict:
+    return {
+        "timestamp": "2026-04-03T12:00:00+00:00",
+        "active_character_id": "dragon_quant",
+        "risk_level": "INFO",
+        "public_signal_direction": "HOLD",
+        "abstract_reason": "C2=GREEN_HOLD · no investment advice.",
+        "schema_version": "public-event.v1",
+        "event_id": "showroom-topology-001",
+        "source": "ops_showroom_bundle_v1",
+        "system_status": "online",
+        "active_strategies_count": 1,
+        "delayed_metrics": {"delay_seconds": 180, "as_of_utc": "2026-04-03T11:57:00+00:00"},
+        "direction_abstract": "flat",
+        "disclaimer_ref": "jemaai_showroom_v1",
+        "last_ok_utc": "2026-04-03T12:00:00+00:00",
+    }
+
+
+def test_validate_accepts_topology_radar_observability(tmp_path: Path) -> None:
+    p = tmp_path / "topology_ok.json"
+    doc = {
+        "schema": "showroom_public_bundle_v1",
+        "generated_at_utc": "2026-04-03T12:00:00+00:00",
+        "observability": {
+            "topology_radar_snapshot_present": True,
+            "topology_radar_snapshot_generated_at_utc": "2026-05-13T12:00:00Z",
+            "topology_radar_snapshot_stale_after_utc": "2026-05-14T00:00:00Z",
+            "topology_radar_snapshot_hypo_banner": "[HYPO] Meaning-graph drift snapshot (read-only)",
+            "topology_radar_snapshot_artifact_ref_count": 2,
+            "topology_radar_snapshot_no_trade_signals": True,
+            "topology_radar_snapshot_disclaimer_ref": "jemaai_showroom_v1",
+            "topology_radar_snapshot_stub": False,
+        },
+        "public_ui": {
+            "schema": "showroom_public_ui_v1",
+            "direction_abstract": "flat",
+            "direction_source": "c2",
+            "c2_lamp": "GREEN",
+            "ops_fusion_ok": True,
+            "return_pct_vs_baseline": None,
+            "has_return_pct": False,
+            "unrealized_pnl_pct_of_equity": None,
+            "has_unrealized_pct": False,
+            "baseline_mode": "none",
+            "unified_score_balanced": 0.4,
+        },
+        "public_event_v1": _minimal_public_event(),
+    }
+    p.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    assert validate_bundle(p) == []
+
+
+def test_validate_rejects_topology_radar_bad_disclaimer(tmp_path: Path) -> None:
+    p = tmp_path / "topology_bad_disc.json"
+    doc = {
+        "schema": "showroom_public_bundle_v1",
+        "generated_at_utc": "2026-04-03T12:00:00+00:00",
+        "observability": {
+            "topology_radar_snapshot_present": True,
+            "topology_radar_snapshot_generated_at_utc": "2026-05-13T12:00:00Z",
+            "topology_radar_snapshot_stale_after_utc": "2026-05-14T00:00:00Z",
+            "topology_radar_snapshot_hypo_banner": "[HYPO] x",
+            "topology_radar_snapshot_artifact_ref_count": 1,
+            "topology_radar_snapshot_no_trade_signals": True,
+            "topology_radar_snapshot_disclaimer_ref": "wrong_ref",
+            "topology_radar_snapshot_stub": True,
+        },
+        "public_ui": {"schema": "showroom_public_ui_v1"},
+        "public_event_v1": _minimal_public_event(),
+    }
+    p.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    errs = validate_bundle(p)
+    assert any("topology_radar_snapshot_disclaimer_ref" in e for e in errs)
+
+
+def test_validate_rejects_topology_radar_present_false_with_extra_keys(tmp_path: Path) -> None:
+    p = tmp_path / "topology_false_extra.json"
+    doc = {
+        "schema": "showroom_public_bundle_v1",
+        "generated_at_utc": "2026-04-03T12:00:00+00:00",
+        "observability": {
+            "topology_radar_snapshot_present": False,
+            "topology_radar_snapshot_stub": False,
+        },
+        "public_ui": {"schema": "showroom_public_ui_v1"},
+        "public_event_v1": _minimal_public_event(),
+    }
+    p.write_text(json.dumps(doc, ensure_ascii=False), encoding="utf-8")
+    errs = validate_bundle(p)
+    assert any("must not be set when topology_radar_snapshot_present is false" in e for e in errs)

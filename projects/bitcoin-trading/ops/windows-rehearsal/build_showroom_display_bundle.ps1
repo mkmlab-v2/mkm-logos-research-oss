@@ -140,6 +140,7 @@ $autoBaselinePath = Join-Path $root "projects\bitcoin-trading\memory\v2\ops\show
 $logos4dStatePath = Join-Path $root "docs\final\artifacts\logos_4d_state_v1_latest.json"
 $logosGraphBundlePath = Join-Path $root "docs\final\artifacts\logos_corpus_graph_bundle_v1_latest.json"
 $logosFreshnessSidecarPath = Join-Path $root "docs\final\artifacts\logos_track_c_freshness_sidecar_v1_latest.json"
+$topologySnapshotPath = Join-Path $root "docs\final\artifacts\showroom_topology_radar_snapshot_v1_latest.json"
 $exodusPressurePath = Join-Path $root "docs\final\artifacts\exodus_pressure_v1_latest.json"
 
 $c2 = Read-JsonFile -Path $c2Path
@@ -152,6 +153,7 @@ $tradingState = Read-JsonFile -Path $tradingStatePath
 $logos4d = Read-JsonFile -Path $logos4dStatePath
 $logosGraphDoc = Read-JsonFile -Path $logosGraphBundlePath
 $freshnessDoc = Read-JsonFile -Path $logosFreshnessSidecarPath
+$topologyDoc = Read-JsonFile -Path $topologySnapshotPath
 
 $logosGraphBundlePresent = $false
 $logosGraphNlc = $null
@@ -217,6 +219,50 @@ if ($freshnessDoc -and [string]$freshnessDoc.schema -eq "logos_track_c_freshness
         } else {
             $freshnessGeneratedAtUtc = [string]$rawFg
         }
+    }
+}
+
+function Format-TopologyUtcString {
+    param($Raw)
+    if ($null -eq $Raw) { return $null }
+    if ($Raw -is [DateTime]) {
+        $dt = [DateTime]$Raw
+        if ($dt.Kind -eq [DateTimeKind]::Unspecified) {
+            $dt = [DateTime]::SpecifyKind($dt, [DateTimeKind]::Utc)
+        }
+        return $dt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    }
+    if ($Raw -is [DateTimeOffset]) {
+        return $Raw.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    }
+    return [string]$Raw
+}
+
+$topologyRadarPresent = $false
+$topologyRadarGenAt = $null
+$topologyRadarStaleAfter = $null
+$topologyRadarHypo = $null
+$topologyRadarRefCount = $null
+$topologyRadarNoTrade = $null
+$topologyRadarDisclaimer = $null
+$topologyRadarStub = $false
+if ($topologyDoc -and [string]$topologyDoc.schema_version -eq "showroom_topology_radar_snapshot_v1" -and ($topologyDoc.no_trade_signals -eq $true)) {
+    $topologyRadarPresent = $true
+    $topologyRadarGenAt = Format-TopologyUtcString -Raw $topologyDoc.generated_at_utc
+    $topologyRadarStaleAfter = Format-TopologyUtcString -Raw $topologyDoc.stale_after_utc
+    if ($topologyDoc.hypo_banner) {
+        $topologyRadarHypo = [string]$topologyDoc.hypo_banner
+        if ($topologyRadarHypo.Length -gt 480) { $topologyRadarHypo = $topologyRadarHypo.Substring(0, 480) }
+        if ($topologyRadarHypo -match "(?i)stub") { $topologyRadarStub = $true }
+    }
+    if ($topologyDoc.artifact_refs) {
+        try { $topologyRadarRefCount = @($topologyDoc.artifact_refs).Count } catch { $topologyRadarRefCount = $null }
+    }
+    if ($topologyDoc.no_trade_signals -ne $null) {
+        $topologyRadarNoTrade = [bool]$topologyDoc.no_trade_signals
+    }
+    if ($topologyDoc.disclaimer_ref) {
+        $topologyRadarDisclaimer = [string]$topologyDoc.disclaimer_ref
     }
 }
 
@@ -569,6 +615,9 @@ if ($null -ne $logosXBand -and -not [string]::IsNullOrWhiteSpace($logosQuad)) {
 if ($logosGraphBundlePresent) {
     $abstract = "$abstract | logos_graph_bundle=B [NON_GATING]"
 }
+if ($topologyRadarPresent) {
+    $abstract = "$abstract | topology_radar_snapshot=B [NON_GATING]"
+}
 
 $sys = Get-SystemStatus -RuntimeOk $runtimeOk -FusionOk $fusionOk
 if ($contextStale) { $sys = "degraded" }
@@ -627,23 +676,7 @@ foreach ($k in $delayed.Keys) {
     $publicEvent.delayed_metrics[$k] = $delayed[$k]
 }
 
-$bundle = [ordered]@{
-    schema               = "showroom_public_bundle_v1"
-    generated_at_utc     = $generatedUtc
-    runner               = "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1"
-    sources              = @{
-        c2_guardrail_status = $c2Path
-        ops_fusion_status     = $fusionPath
-        runtime_health        = $runtimePath
-        trade_window_24h      = $tradeWindowPath
-        daemon_status         = $daemonStatusPath
-        trading_state         = $tradingStatePath
-        logos_4d_state_v1          = $logos4dStatePath
-        logos_corpus_graph_bundle_v1 = $logosGraphBundlePath
-        logos_track_c_freshness_sidecar_v1 = $logosFreshnessSidecarPath
-        exodus_pressure_v1    = $exodusPressurePath
-    }
-    observability        = @{
+$observability = [ordered]@{
         unified_score_balanced = $score
         c2_status               = $c2Status
         c2_signal_lamp          = $lamp
@@ -665,7 +698,36 @@ $bundle = [ordered]@{
         logos_freshness_sidecar_present   = $freshnessSidecarPresent
         logos_freshness_staleness_seconds  = $freshnessStalenessSec
         logos_freshness_generated_at_utc   = $freshnessGeneratedAtUtc
+}
+if ($topologyRadarPresent) {
+    $observability["topology_radar_snapshot_present"] = $true
+    $observability["topology_radar_snapshot_generated_at_utc"] = $topologyRadarGenAt
+    $observability["topology_radar_snapshot_stale_after_utc"] = $topologyRadarStaleAfter
+    $observability["topology_radar_snapshot_hypo_banner"] = $topologyRadarHypo
+    $observability["topology_radar_snapshot_artifact_ref_count"] = $topologyRadarRefCount
+    $observability["topology_radar_snapshot_no_trade_signals"] = $topologyRadarNoTrade
+    $observability["topology_radar_snapshot_disclaimer_ref"] = $topologyRadarDisclaimer
+    $observability["topology_radar_snapshot_stub"] = $topologyRadarStub
+}
+
+$bundle = [ordered]@{
+    schema               = "showroom_public_bundle_v1"
+    generated_at_utc     = $generatedUtc
+    runner               = "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1"
+    sources              = @{
+        c2_guardrail_status = $c2Path
+        ops_fusion_status     = $fusionPath
+        runtime_health        = $runtimePath
+        trade_window_24h      = $tradeWindowPath
+        daemon_status         = $daemonStatusPath
+        trading_state         = $tradingStatePath
+        logos_4d_state_v1          = $logos4dStatePath
+        logos_corpus_graph_bundle_v1 = $logosGraphBundlePath
+        logos_track_c_freshness_sidecar_v1 = $logosFreshnessSidecarPath
+        showroom_topology_radar_snapshot_v1 = $topologySnapshotPath
+        exodus_pressure_v1    = $exodusPressurePath
     }
+    observability        = $observability
     public_ui            = $publicUi
     public_event_v1      = $publicEvent
 }

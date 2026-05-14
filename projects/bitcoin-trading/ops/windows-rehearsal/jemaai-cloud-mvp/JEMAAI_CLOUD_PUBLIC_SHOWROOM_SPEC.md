@@ -80,7 +80,7 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 ### 4.2 Showroom bundle (레포 자동화, v1)
 
 - **Track C 원클릭 체인 (권장):** `scripts/build_showroom_track_c_bundle_chain_v1.ps1` — (1) `build_logos_track_c_freshness_sidecar_v1.py`로 신선도 사이드카 갱신 → (2) `build_showroom_topology_radar_snapshot_v1.py`로 Topology Radar 스냅샷(`docs/final/artifacts/showroom_topology_radar_snapshot_v1_latest.json`; 기본 스텁 ref 허용, 엄격 모드 `-TopologyRadarSnapshotStrict`) → (3) `build_showroom_display_bundle.ps1` → (4) `validate_showroom_public_bundle.py`. 선택: `-SkipFreshnessSidecar`, `-SkipTopologyRadarSnapshot`, `-SkipValidate`.
-- **빌더 (단독):** `projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1` — C2·퓨전·런타임 헬스에서 `public-event.v1` 페이로드 + `observability` 메타를 합성한다(Logos 그래프 메타·신선도 필드는 디스크의 최신 아티팩트를 읽음).
+- **빌더 (단독):** `projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1` — C2·퓨전·런타임 헬스에서 `public-event.v1` 페이로드 + `observability` 메타를 합성한다(Logos 그래프 메타·신선도 필드는 디스크의 최신 아티팩트를 읽음). **Topology Radar:** `showroom_topology_radar_snapshot_v1_latest.json`이 계약을 만족하면(`no_trade_signals: true`) `observability.topology_radar_snapshot_*` 요약을 병합한다(경로만 `sources`에 기록).
 - **산출:** `docs/final/artifacts/showroom_public_bundle_v1.json` (SSOT), `jemaai-cloud-mvp/showroom_public_bundle_v1.json` (웹 루트 배포본과 동기화).
 - **검증:** `scripts/validate_showroom_public_bundle.py` — 필수 키·면책 ref·공개 레인 민감 토큰 차단.
 - **퓨전 사이클:** `run_ops_fusion_cycle.ps1` 종료 시 빌드·검증을 함께 수행한다.
