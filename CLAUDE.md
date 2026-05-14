@@ -5,7 +5,7 @@
 ## 에이전트 동작
 
 - **TITAN**: 루트 `.cursorrules` 최상단 — 자율 기동, **이항 선택([A]/[B]) 강요 금지**, 고위험만 승인 요청.
-- **세션 핸드오프 (선택):** 새 채팅에서 직전 작전 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. 불변 SSOT가 아니며 압축 파이프라인(A/B Track)과 역할을 섞지 않는다. **종료 조건·로컬 체크리스트**만 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(비추적); 스냅샷과 동일 내용 이중 기술 금지. 상세: 루트 `AGENTS.md` 동명 절.
+- **세션 핸드오프 (선택):** 새 채팅에서 직전 작전 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. 불변 SSOT가 아니며 압축 파이프라인(A/B Track)과 역할을 섞지 않는다. **종료 조건·로컬 체크리스트**만 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(비추적); 스냅샷과 동일 내용 이중 기술 금지. **채팅창 일정·MISSION·Phase 표** 역할 분리 표는 템플릿 상단 「채팅창 작업일정 앵커」. 상세: 루트 `AGENTS.md` 동명 절.
 - **병렬 작전:** 사업·공고 / B-track / 레포 편집은 **채팅·브랜치를 나눌 것** — 루트 `AGENTS.md` **「병렬 작전 권장」**.
 - **원격 게시 기본값:** internal-first. `origin`/`hq`(GitHub)는 `no_push` 기본 차단을 유지하고, 예외 공개는 명시 승인형 스크립트(`scripts/Push-GitHub-Explicit.ps1 -Acknowledge`)로만 수행한다.
 - **크로스 채팅 정체성:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md`(지속 SSOT) · `.cursor/rules/central-agent-memory.mdc`(핵심 5줄 `alwaysApply`). 세션 로그 자동 병합 없음. 상세: 루트 `AGENTS.md` 「중앙 메모리」. **질문 유형별 답변 라우팅(권장 복붙)**은 동 CENTRAL 파일 본문 절을 SSOT로 둔다.

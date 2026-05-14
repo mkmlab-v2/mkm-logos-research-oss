@@ -12,7 +12,7 @@
 2. **하이브리드 STT:** 로컬/온디바이스 1차 → 게이트 통과 시만 상용 API.
 3. 소규모 실측 → 월 COGS **구간** → 그다음에만 대외·Track C 본문 수치 검토.
 
-**체크리스트:** [~] COGS 출처 URL(공개 가격표만; 단가·월액 미기재) · [x] STT 감사 로그 **jsonschema v1** (`stt_routing_audit_log_v1`·예시·pytest) · [ ] 월 합계 시나리오 **S-CONS / S-BASE / S-STRESS** 이름으로 2~3벌 저장.
+**체크리스트:** [x] COGS 출처 URL(공개 가격표만; 단가·월액 미기재) — 아래 표 **근거·출처** 열에 링크·경로 고정 · [x] STT 감사 로그 **jsonschema v1** (`stt_routing_audit_log_v1`·예시·pytest) · [x] 월 합계 시나리오 **S-CONS / S-BASE / S-STRESS** 이름·정의 고정(수치는 실측·견적 후 같은 표 복제 권장).
 
 **공개 참고 링크:** [Speech-to-Text pricing](https://cloud.google.com/speech-to-text/pricing) · [Vertex Gemini pricing 개요](https://cloud.google.com/vertex-ai/generative-ai/pricing) (본 레포 비용 아님).
 
@@ -22,17 +22,25 @@
 
 | 라인 | 단가/월상한 | 단위 | 월사용량 | 월소계 | 근거·출처 | 비고 |
 |------|-------------|------|----------|--------|-----------|------|
-| STT 로컬/자체 | | | | | | GPU·VPS·전력 |
-| STT 상용(업그레이드 경로) | | | | | 위 공개 링크(견적·발주로 교체) | 트리거 % 별도 |
-| LLM·요약 | | | | | | |
-| 푸시/SMS/통화 | | | | | | |
-| 스토리지·백업 | | | | | | |
-| 서버·대역 | | | | | | |
-| 운영(FTE 환산) | | | | | | |
-| 법무·감사 보관 | | | | | | |
-| **합계** | — | — | — | | | 시나리오 라벨: |
+| STT 로컬/자체 | — | — | — | — | `docs/final/schemas/stt_routing_audit_log_v1.schema.json` (`route=local`); 호스트 단가·전력은 비추적 `docs/final/LOCAL_MACHINE_POINTER_V1.md`·`docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`(VPS 역할) | GPU·VPS·전력은 **실측·청구서**로만 채움 |
+| STT 상용(업그레이드 경로) | — | — | — | — | [Google Speech-to-Text pricing](https://cloud.google.com/speech-to-text/pricing); 감사 집계 의도는 본 문서 §하이브리드 STT | 견적·발주서로 교체 시 URL 대체 |
+| LLM·요약 | — | — | — | — | `docs/final/P0_COMMERCIALIZATION_TRACKER.md`(Track A·계량)·`CLAUDE.md` 「Gemini 멀티모달: MCP vs 배치 CLI」; 배치 `scripts/gemini_multimodal_batch.py` | 키·단가는 `.env`/벤더 콘솔; 레포에 비밀 미기재 |
+| 푸시/SMS/통화 | — | — | — | — | `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`(웹훅·알람 행 검색)·루트 `.env.example` 변수명만 | 실제 과금은 공급사 계약 |
+| 스토리지·백업 | — | — | — | — | `scripts/bootstrap_agent_search_datastore_gcs_v1.py`(문서·CONSTITUTION GCS/Agent Search 절); Vault 경로는 `AGENTS.md`·`docs/NotebookLM_sources_manifest.md` | G: Vault 마운트 시에만 공유 SSOT |
+| 서버·대역 | — | — | — | — | `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` · `projects/bitcoin-trading/AGENTS.md`(PM2·cwd) | 대역·트래픽은 호스트 모니터링 |
+| 운영(FTE 환산) | — | — | — | — | 내부 인건비; 레포 SSOT 아님 | 제안서·조달에는 **FTE 단가 미기재** 권장 |
+| 법무·감사 보관 | — | — | — | — | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3 · `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 · `RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** | **(D)** 법무 확정 전 본문 수치·면책 동결 금지 |
+| **합계** | — | — | — | — | 아래 **시나리오** 라벨 붙여 동일 표 2~3벌 복제 후 월소계만 채움 | 시나리오 라벨: |
 
 **시나리오:** `S-CONS`(보수) · `S-BASE`(기준) · `S-STRESS`(피크) — 동일 표 복제 2~3벌.
+
+### 시나리오 정의 (v0 · 수치 TBD)
+
+| 라벨 | 정의 (한 줄) | COGS에 반영할 가정 축 |
+|------|----------------|------------------------|
+| **S-CONS** | 상용 STT·클라우드 LLM 호출을 **최소**로 두었을 때 | `route=local` 비중↑, 벤더 분·토큰 상한 보수값 |
+| **S-BASE** | 제품 기본 경로·현재 게이트를 그대로 탔을 때 | 실측 30일 평균(또는 파일럿) 기준 |
+| **S-STRESS** | 피크일·장애 시 백업 라우트까지 켰을 때 | `route=vendor`·재시도·대용량 오디오 피크 |
 
 ---
 
@@ -42,7 +50,7 @@
 
 요약: 필수 `schema_version`, `event_id`, `occurred_at_utc`, `route`(`local`|`vendor`|`rejected`), `audio_duration_ms`, `pii_redaction`. 선택 `session_id`, `provider`, `latency_ms`, `error_code`, `confidence`, `chars_out`, `billing_unit`, `hypothesis_tag`.
 
-**집계 의도(예):** 월별 `route='vendor'` 건수·`sum(audio_duration_ms)`·`p95(latency_ms)`.
+**집계 의도(예):** `py scripts/summarize_stt_routing_audit_log_v1.py` → `reports/stt_routing_audit_log_v1_summary_latest.json` — `vendor_share_by_event_pct`, `vendor_latency_ms_avg`, `vendor_latency_ms_p95`, `route_counts`, `audio_duration_ms_sum` / `audio_duration_ms_by_route`, `occurred_at_utc_earliest`·`latest`. 월별 창은 요약 JSON을 주기적으로 덮어쓰거나(전체 JSONL 롤업) 별도 월 필터 스크립트로 확장.
 
 ---
 
@@ -50,13 +58,13 @@
 
 | 지표 | 목표/구간 | 측정 | 근거 |
 |------|-----------|------|------|
-| 상용 STT 비율 % | | 로그 카운트 | |
-| 평균 지연 ms | | | |
-| 저신호·사투리 품질 | | WER 또는 주관 | |
+| 상용 STT 비율 % | — (법무·제품 합의 후) | 월별 `stt_routing_audit_log`에서 `route=vendor` / 전체 건수; 집계 스크립트는 레포 미고정 시 수동 CSV | §하이브리드 STT 집계 의도 · `TRACK_C` §3.7.2 **파일럿 KPI 동결 지연** |
+| 평균 지연 ms | — | 동일 로그 `latency_ms` 평균·p95 | `stt_routing_audit_log_v1.schema.json` 필드명 고정 |
+| 저신호·사투리 품질 | — | WER 벤치 또는 휴먼 샘플링; **대외 단정 금지** | `[HYPO]`; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3 경계 |
 
 ---
 
 ## 메타
 
 - **schema:** `silver_tech_cogs_unit_economics_template_v1`
-- **last_updated_utc:** 2026-05-15 — 본문 슬림; STT 필드는 **스키마**가 단일 진실.
+- **last_updated_utc:** 2026-05-14 — COGS·KPI **근거·출처** 열·시나리오 라벨 정의 채움; 금액·목표 수치는 실측·법무(RQ-009) 후.

@@ -41,19 +41,41 @@ def _rollup(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         if r.get("route") == "vendor" and isinstance(r.get("latency_ms"), int)
     ]
     audio_sum = sum(int(r.get("audio_duration_ms") or 0) for r in rows)
+    audio_by_route: Dict[str, int] = {}
+    for r in rows:
+        rt = str(r.get("route") or "")
+        audio_by_route[rt] = audio_by_route.get(rt, 0) + int(r.get("audio_duration_ms") or 0)
     p95: float | None = None
+    vendor_latency_ms_avg: float | None = None
     if vendor_latencies:
         vendor_latencies.sort()
         idx = max(0, int(round(0.95 * (len(vendor_latencies) - 1))))
         p95 = float(vendor_latencies[idx])
+        vendor_latency_ms_avg = round(sum(vendor_latencies) / len(vendor_latencies), 3)
+    n = len(rows)
+    vendor_events = int(by_route.get("vendor", 0))
+    vendor_share_by_event_pct: float | None = None
+    if n > 0:
+        vendor_share_by_event_pct = round(100.0 * vendor_events / n, 4)
+    times: List[str] = []
+    for r in rows:
+        t = r.get("occurred_at_utc")
+        if isinstance(t, str) and t.strip():
+            times.append(t.strip())
     return {
         "schema": "stt_routing_audit_log_v1_summary",
         "generated_at_utc": _utc_now_z(),
         "source_jsonl_rel": None,
-        "rows_total": len(rows),
+        "rows_total": n,
         "route_counts": dict(by_route),
         "audio_duration_ms_sum": audio_sum,
+        "audio_duration_ms_by_route": audio_by_route,
+        "vendor_rows": vendor_events,
+        "vendor_share_by_event_pct": vendor_share_by_event_pct,
+        "vendor_latency_ms_avg": vendor_latency_ms_avg,
         "vendor_latency_ms_p95": p95,
+        "occurred_at_utc_earliest": min(times) if times else None,
+        "occurred_at_utc_latest": max(times) if times else None,
     }
 
 

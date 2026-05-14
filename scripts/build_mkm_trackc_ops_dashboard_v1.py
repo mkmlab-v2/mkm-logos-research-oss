@@ -66,7 +66,13 @@ def _stt_routing_audit_slice(root: Path) -> Dict[str, Any]:
             "state": "OK",
             "rows_total": s.get("rows_total"),
             "route_counts": s.get("route_counts"),
+            "vendor_rows": s.get("vendor_rows"),
+            "vendor_share_by_event_pct": s.get("vendor_share_by_event_pct"),
+            "vendor_latency_ms_avg": s.get("vendor_latency_ms_avg"),
             "vendor_latency_ms_p95": s.get("vendor_latency_ms_p95"),
+            "audio_duration_ms_by_route": s.get("audio_duration_ms_by_route"),
+            "occurred_at_utc_earliest": s.get("occurred_at_utc_earliest"),
+            "occurred_at_utc_latest": s.get("occurred_at_utc_latest"),
             "generated_at_utc": s.get("generated_at_utc"),
             "role": "silver_stt_audit_summary_v0",
         }

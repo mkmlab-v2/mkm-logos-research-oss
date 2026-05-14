@@ -120,8 +120,9 @@
 When the user signals resume-from-disk SSOT via **any** of the above (or clearly synonymous), **before coding or claiming implementation**:
 
 1. **Read first** (workspace tools / `Read`):  
-   - `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — identity, lanes, **운영 체크포인트**, 다음 할 일.  
+   - `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — identity, lanes, **운영 체크포인트**, 다음 할 일 (**일정·MISSION·Phase 표 본문은 여기 두지 않음** — 앵커는 루트 `MISSION_LOG.md` / 표 SSOT는 `MISSION_LOG.template.md` 「채팅창 작업일정 앵커」).  
    - `AGENTS.md` — entry pointers, ops protocol, Git/remotes discipline.
+   - (다단계 임무·채팅창 체크리스트가 주제일 때) `MISSION_LOG.template.md` — `MISSION_LOG.md`(비추적)와 `reports/daily_thread_work_*.md`(Ops 한 줄) 역할 분리.
 2. **`docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`** — large SSOT: read **§1 / table of paths / sections relevant to the task**, not necessarily the whole file every turn. Use it for **implementation paths, gates, and Fact-Lock** when answering “does this exist?” or changing prod-facing behavior.
 3. **Brief** the user in a few sentences: last checkpoint (from CENTRAL if present), current focus, Fact-Lock reminder — then proceed.
 

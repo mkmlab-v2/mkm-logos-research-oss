@@ -80,3 +80,9 @@ def test_summarize_rollup_counts(tmp_path: Path) -> None:
     assert doc["route_counts"]["vendor"] == 2
     assert doc["route_counts"]["local"] == 1
     assert doc["vendor_latency_ms_p95"] is not None
+    assert doc.get("vendor_rows") == 2
+    assert doc.get("vendor_share_by_event_pct") == pytest.approx(200.0 / 3.0, rel=1e-3)
+    assert doc.get("vendor_latency_ms_avg") == pytest.approx(210.0, rel=1e-3)
+    assert doc["audio_duration_ms_by_route"]["vendor"] == 2500
+    assert doc["audio_duration_ms_by_route"]["local"] == 1000
+    assert doc.get("occurred_at_utc_earliest") and doc.get("occurred_at_utc_latest")

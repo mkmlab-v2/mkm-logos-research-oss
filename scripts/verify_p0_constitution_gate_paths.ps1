@@ -119,6 +119,7 @@ $required = @(
     "scripts\run_fact_lock_bundle.ps1",
     "projects\bitcoin-trading\AGENTS.md",
     "CLAUDE.md",
+    "MISSION_LOG.template.md",
     "docs\final\LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",
     "docs\final\LOCAL_MACHINE_POINTER_V1.template.md",
     "docs\final\MKM_TRINITY_INDEX_V1.json",

@@ -43,7 +43,7 @@
 
 - **대화 내용은 복사되지 않는다.** 새 세션에서도 동일한 안내를 쓰려면, 일정·운영·Remote Publication 등 **반복 안내를 레포 파일에 적어 두고 커밋**한다. 같은 워크스페이스의 다른 채팅에서는 파일을 열거나 **`@AGENTS.md`**(필요 시 `@CLAUDE.md`·중앙 메모리)로 한 번 참조하면 갱신된 본문이 보인다.
 - **다른 PC/클론**에서는 그쪽에서 **`git pull`** 후 동일하다.
-- **다중 채팅 작업 일기(Ops slice):** 하루 **한 파일**에 Thread 1–10 섹션으로 요약을 쌓는다. 기본 경로 `reports/daily_thread_work_YYYY-MM-DD.md`(통상 `reports/**` 비추적). 동기화: `py scripts/athena_daily_thread_log_sync_v1.py --thread N --bullet "…"`(반복). 옵시디언 등 **전체 경로**는 User 환경 `MKM_DAILY_THREAD_LOG_PATH`(파일 또는 디렉터리). 템플릿 `docs/final/templates/DAILY_THREAD_WORK_LOG.template.md` · 에이전트 규칙 `@.cursor/rules/daily-thread-diary-sync.mdc`(또는 Rules에서 해당 규칙 활성화). 트리거 예: 「오늘 일기 동기화」「일기 반영」. 장기 정책은 여전히 `CENTRAL`·체크포인트가 SSOT.
+- **다중 채팅 작업 일기(Ops slice):** 하루 **한 파일**에 Thread 1–10 섹션으로 요약을 쌓는다. 기본 경로 `reports/daily_thread_work_YYYY-MM-DD.md`(통상 `reports/**` 비추적). 동기화: `py scripts/athena_daily_thread_log_sync_v1.py --thread N --bullet "…"`(반복). 옵시디언 등 **전체 경로**는 User 환경 `MKM_DAILY_THREAD_LOG_PATH`(파일 또는 디렉터리). 템플릿 `docs/final/templates/DAILY_THREAD_WORK_LOG.template.md` · 에이전트 규칙 `@.cursor/rules/daily-thread-diary-sync.mdc`(또는 Rules에서 해당 규칙 활성화). 트리거 예: 「오늘 일기 동기화」「일기 반영」. **임무·MISSION·Phase 표**는 루트 **`MISSION_LOG.md`** + **`MISSION_LOG.template.md`** 「채팅창 작업일정 앵커」가 SSOT(일기 파일로 대체하지 않음). 장기 정책·정체성 한 줄은 여전히 `CENTRAL`·체크포인트가 SSOT.
 - **Cursor Settings → User Rules**만으로 팀·본선 기준을 두지 않는다 — 레포와 **자동 동기화되지 않는다**. 본선·팀 합의 문구는 **`AGENTS.md`·`CLAUDE.md`·`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 등 SSOT**에 둔다(요지는 아래 **「Cursor 3.0 · 규칙 스택」**의 User Rules 한 줄과 동일 선상).
 
 | 반영되는 것 | 설명 |
@@ -68,7 +68,7 @@ SSOT·Fact-Lock
 - 요청 범위 밖 리팩터·문서 남발 금지. 사용자가 문서/Markdown 생성을 명시적으로 요청하지 않으면 새 .md 파일을 만들지 않는다.
 
 세션 시작(권장)
-- 작업이 크거나 방향을 맞출 때는 docs/final/CENTRAL_AGENT_MEMORY_V1.md 를 읽고 진행 단계·Fact-Lock을 짧게 맞춘 뒤 작업한다.
+- 작업이 크거나 방향을 맞출 때는 docs/final/CENTRAL_AGENT_MEMORY_V1.md 를 읽고 진행 단계·Fact-Lock을 짧게 맞춘 뒤 작업한다. 다단계 DoD·**MISSION·Phase 표**는 루트 `MISSION_LOG.md`(템플릿 `MISSION_LOG.template.md` §채팅창 작업일정 앵커)를 유지한다.
 
 Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 - 사용자가 같은 턴에서 스냅샷·핸드오프 갱신을 요청했고, 메시지에 "핸드오프" 또는 "옵스 스냅샷" 또는 "CURRENT_OPS 핸드오프" 또는 "스냅샷 갱신"이 포함되면:
@@ -127,7 +127,7 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 
 새 채팅에서 직전 작전의 팩트만 이어 붙일 때 `@docs/final/CURRENT_OPS_SNAPSHOT.md`를 첨부한다. **불변 SSOT가 아니며** 필요 시 갱신·비운다. 압축 파이프라인(A/B Track)과 역할을 섞지 않는다.
 
-다단계 임무의 **종료 조건·로컬 체크리스트**만 디스크에 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(로컬 전용,`.gitignore`). **채팅창 작업일정·MISSION·Phase 표**의 앵커도 **`MISSION_LOG.md`**로 고정한다(`reports/daily_thread_work_*.md`는 **Ops 한 줄·「일기 반영」**용이며 일정 본문 앵커로 대체하지 않음). **작전 요약·세션 핸드오프**는 `docs/final/CURRENT_OPS_SNAPSHOT.md`가 우선이며, 동일 SSOT를 스냅샷과 `MISSION_LOG`에 **이중 서술하지 않는다**. `CENTRAL_AGENT_MEMORY_V1.md`에는 **일정·체크리스트 표를 올리지 않는다**(정체성·분기 한 줄만). 옵시디언은 개인용·자동 SSOT 승격 없음. 순서·상용 게이트 SSOT는 `P0_COMMERCIALIZATION_TRACKER.md`이다. 자율 의사결정 감사 로그는 `reports/agent_decisions_log.jsonl`에 append-only로 남긴다. **한 파일에 두 형식이 공존할 수 있다:** (1) `scripts/log_agent_decision.py`가 쓰는 일반 결정 한 줄(`timestamp`·`mission_id`·`stage`·`decision`·`evidence_path`·`actor` 등). (2) 메타 인지 봉투 적재 시 `decision=meta_layer_envelope_v1`와 `meta_layer_envelope` 객체(CONSTITUTION §1.3.1). 집계·파서는 `decision`(및 존재 시 `meta_layer_envelope`)으로 분기한다.
+다단계 임무의 **종료 조건·로컬 체크리스트**만 디스크에 남길 때는 `MISSION_LOG.template.md` → **`MISSION_LOG.md`**(로컬 전용,`.gitignore`). **채팅창 작업일정·MISSION·Phase 표**의 앵커도 **`MISSION_LOG.md`**로 고정한다(`reports/daily_thread_work_*.md`는 **Ops 한 줄·「일기 반영」**용이며 일정 본문 앵커로 대체하지 않음). **작전 요약·세션 핸드오프**는 `docs/final/CURRENT_OPS_SNAPSHOT.md`가 우선이며, 동일 SSOT를 스냅샷과 `MISSION_LOG`에 **이중 서술하지 않는다**. `CENTRAL_AGENT_MEMORY_V1.md`에는 **일정·체크리스트 표를 올리지 않는다**(정체성·분기 한 줄만). 옵시디언은 개인용·자동 SSOT 승격 없음. **역할 분리 단일 표 SSOT:** `MISSION_LOG.template.md` 「채팅창 작업일정 앵커」. 순서·상용 게이트 SSOT는 `P0_COMMERCIALIZATION_TRACKER.md`이다. 자율 의사결정 감사 로그는 `reports/agent_decisions_log.jsonl`에 append-only로 남긴다. **한 파일에 두 형식이 공존할 수 있다:** (1) `scripts/log_agent_decision.py`가 쓰는 일반 결정 한 줄(`timestamp`·`mission_id`·`stage`·`decision`·`evidence_path`·`actor` 등). (2) 메타 인지 봉투 적재 시 `decision=meta_layer_envelope_v1`와 `meta_layer_envelope` 객체(CONSTITUTION §1.3.1). 집계·파서는 `decision`(및 존재 시 `meta_layer_envelope`)으로 분기한다.
 
 ## 병렬 작전 권장 (다중 채팅·서브에이전트)
 

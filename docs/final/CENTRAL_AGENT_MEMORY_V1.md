@@ -492,7 +492,7 @@
 ## 동기화 루틴
 
 - **자기점검(시작 1줄):** "CENTRAL_AGENT_MEMORY_V1 + athena_memory_bank 참조 완료, Fact-Lock 우선."
-- **트리거 자동기동:** 사용자가 「장기기억 토대로 진행해」「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」라고 말하면, 에이전트는 먼저 `CENTRAL`·`AGENTS`·`CONSTITUTION_*`를 읽고 관련 `_latest` 아티팩트/체크리스트를 갱신한 뒤 판정(HOLD/GO)까지 진행한다.
+- **트리거 자동기동:** 사용자가 「장기기억 토대로 진행해」「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」라고 말하면, 에이전트는 먼저 `CENTRAL`·`AGENTS`·`CONSTITUTION_*`를 읽고 관련 `_latest` 아티팩트·엔진/게이트 체크리스트를 갱신한 뒤 판정(HOLD/GO)까지 진행한다(다단계 **임무·MISSION·Phase 표**는 루트 `MISSION_LOG.md`·`MISSION_LOG.template.md` §채팅창 작업일정 앵커 — CENTRAL 본문에 일정 표를 두지 않음).
 - **대외 발표/피치 요청 시:** `lg_hs_persuasion_module_v1_2026-05-08` 기준 템플릿을 먼저 적용하고, 수치·상태는 최신 아티팩트(`*_latest.json`)로만 채운다.
 - **시작:** 이 파일 **전체** 훑고(특히 **이론 압축 표**) 오늘 작업과 충돌 여부 확인.
 - **끝:** 분기 한 줄 / 레인 표 / 막힘만 갱신. 이론 표는 **헌법 변경 시에만** 수정.
