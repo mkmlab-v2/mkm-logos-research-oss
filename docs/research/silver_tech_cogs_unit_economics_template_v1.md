@@ -6,6 +6,19 @@
 
 ---
 
+## 동결 게이트 (RQ-009 · 팀 내부만)
+
+**아직 `[HYPO]`** — 아래는 **본 문서 표에 금액을 넣기 전**·**대외 본문에 수치·면책을 올리기 전**에 거치는 순서만 고정한다. **(B)** 민감 외부 액션 휴먼 게이트는 `TRACK_C` §3.7.2 SSOT. **(D)** 면책·관할·최종 KPI 수치는 **법무 확정 후**에만 `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3 · `TRACK_C` 본문으로 **승격**한다.
+
+| 순서 | 채울 것 | 근거·산출 |
+|------|---------|-----------|
+| 1 | 내부 면책·제품 경계 초안(대외 최종 아님) | `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` |
+| 2 | COGS 표 **근거·출처** 열(공개 가격표·견적·청구서·자체 벤치) | 본 문서 표; 금액·월소계는 **실측 확보 후** `S-CONS` / `S-BASE` / `S-STRESS` **표 복제본**에만 |
+| 3 | 파일럿 KPI **측정 창**·호스트(로컬/VPS) 합의 | `stt_routing_audit_log_v1` 집계·§Stream 2; 운영 JSONL 경로는 `LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` |
+| 4 | 법무 **(D)** 확정문 | RQ-009 `CLOSED` 처리 후 `PUBLIC`·`TRACK_C`에 반영 |
+
+---
+
 ## Fact-Lock 순서
 
 1. 아래 **COGS 표** 채움 + **근거·출처** 열 (벤더 콘솔·견적·자체 벤치).
@@ -83,4 +96,4 @@ py scripts/summarize_stt_routing_audit_log_v1.py
 ## 메타
 
 - **schema:** `silver_tech_cogs_unit_economics_template_v1`
-- **last_updated_utc:** 2026-05-14 — §Stream 2 로컬 append×2 + summarize 재실행; **운영 JSONL**은 레포 밖·COGS 숫자는 청구서 후 동일 표 복제본에만; COGS·KPI **금액·목표 수치**는 실측·법무(RQ-009) 후.
+- **last_updated_utc:** 2026-05-17 — **동결 게이트** 표 추가(RQ-009 (B)/(D)·법무 초안 아티팩트 링크). §Stream 2·COGS 숫자·KPI 목표는 여전히 실측·법무 후; RQ-009 **OPEN** 유지.
