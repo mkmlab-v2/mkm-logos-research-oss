@@ -29,6 +29,20 @@ def _run(cmd: list[str], *, cwd: Path) -> int:
     return int(proc.returncode)
 
 
+def resolve_inference_profile_key(
+    train_profile: str, inference_profile_key: str | None
+) -> str:
+    """Pick inference eval profile-key so base model matches the trained adapter.
+
+    When ``--inference-profile-key`` is omitted, reuse ``--profile`` if set;
+    otherwise fall back to ``train_default`` (CLI-only train without profile JSON).
+    """
+    if inference_profile_key is not None:
+        return inference_profile_key
+    p = (train_profile or "").strip()
+    return p if p else "train_default"
+
+
 def _resolve_profile(profile_json: Path, profile_key: str) -> dict[str, str]:
     obj = json.loads(profile_json.read_text(encoding="utf-8"))
     prof = ((obj.get("profiles") or {}).get(profile_key) or {})
@@ -111,8 +125,11 @@ def main() -> int:
     )
     ap.add_argument(
         "--inference-profile-key",
-        default="train_default",
-        help="Profile key passed to inference eval for default model_id",
+        default=None,
+        help=(
+            "Profile key for inference eval base model. "
+            "Omitted: same as --profile when set, else train_default"
+        ),
     )
     ap.add_argument(
         "--inference-predictions-jsonl",
@@ -125,6 +142,9 @@ def main() -> int:
         default=ROOT / "reports/myeongri_deterministic_lora_locked_eval_inference_eval_latest.json",
     )
     args = ap.parse_args()
+    args.inference_profile_key = resolve_inference_profile_key(
+        args.profile, args.inference_profile_key
+    )
 
     if not args.golden_jsonl.is_file():
         raise SystemExit(f"missing golden jsonl: {args.golden_jsonl}")
