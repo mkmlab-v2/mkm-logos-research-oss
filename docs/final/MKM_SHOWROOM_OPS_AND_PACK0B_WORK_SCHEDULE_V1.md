@@ -77,7 +77,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 
 **목표:** `LORA_PACK_V0_DOD_V1.md` §0.1 — train ≥ **1000**, locked_eval ≥ **100**.
 
-- [x] `scripts/build_myeongri_deterministic_lora_golden_bulk_v1.py` — **2026-05-14** `py … --seed 42 --train-n 1000 --locked-eval-n 100 --dataset-version v1-2026-05-16 --iana-tz Asia/Seoul` **exit 0** (~49s); 산출 `data/training/myeongri_deterministic_lora_golden_bulk_v1/`(`train.jsonl` 1000행·`locked_eval.jsonl` 100행·`myeongri_deterministic_lora_golden_bulk_manifest_v1.json`; train `sha256=38b01a3e…`).  
+- [x] `scripts/build_myeongri_deterministic_lora_golden_bulk_v1.py` — **2026-05-14** `py … --seed 42 --train-n 1000 --locked-eval-n 100 --dataset-version v1-2026-05-14 --iana-tz Asia/Seoul` **exit 0** (~55s); 산출 `data/training/myeongri_deterministic_lora_golden_bulk_v1/`(`train.jsonl` 1000행·`locked_eval.jsonl` 100행·`myeongri_deterministic_lora_golden_bulk_manifest_v1.json`; train `sha256=38b01a3e…`).  
 - [x] 대량 JSONL·매니페스트는 **`data/training/`** 비추적 경로에만 두고 **Git 커밋 대상 아님**(`data/training/*.jsonl` 정책).
 
 **참조:** `docs/final/LORA_PACK_V0_DOD_V1.md`, `scripts/prep_myeongri_deterministic_lora_golden_v1.py`  
@@ -90,7 +90,7 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 
 **목표:** 골든 핏 리포트 산출.
 
-- [x] `scripts/eval_myeongri_deterministic_lora_golden_fit_v1.py` — **2026-05-14** `train.jsonl`+`locked_eval.jsonl` 결합 입력(1100행) → **`reports/myeongri_deterministic_lora_golden_fit_latest.json`** `ok=true`, `rows_by_split` train 1000 / locked_eval 100, exit 0.  
+- [x] `scripts/eval_myeongri_deterministic_lora_golden_fit_v1.py` — **2026-05-14** `train.jsonl`(1000행) → **`reports/myeongri_deterministic_lora_golden_fit_latest.json`**; `locked_eval.jsonl`(100행) → **`reports/myeongri_deterministic_lora_golden_fit_locked_eval_latest.json`**; 각 `ok=true`·exit 0.  
 
 **완료 조건:** 스크립트 exit 0 + 리포트 경로 기록.
 
@@ -124,8 +124,8 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 | 2026-05-14 | 3 | 권장=문서 수동 루틴: 주 1회 `sync_showroom_to_vps.ps1 -RefreshStaging`(Phase 3 DoD) |
 | 2026-05-16 | 0 | Control-Integrity smoke 7 passed; `verify_p0` 719 OK; 워킹트리 쇼룸 스테이징 추적 파일은 HEAD 기준 복원(로컬 체인 잡음 제거) |
 | 2026-05-16 | 2 | §4.1: `POST/GET` localhost `8788` ingest+latest(User token); 격리 포트 `18788` 동 바이너리 스모크 |
-| 2026-05-14 | 4 | Pack 0-B bulk: `build_myeongri_deterministic_lora_golden_bulk_v1.py` N=1000 K=100 `dataset_version=v1-2026-05-16`; manifest+sha256 |
-| 2026-05-14 | 5 | `eval_myeongri_deterministic_lora_golden_fit_v1.py` on 1100 rows → `reports/myeongri_deterministic_lora_golden_fit_latest.json` ok |
+| 2026-05-14 | 4 | Pack 0-B bulk: `build_myeongri_deterministic_lora_golden_bulk_v1.py` N=1000 K=100 `dataset_version=v1-2026-05-14`; manifest+sha256 |
+| 2026-05-14 | 5 | `eval_myeongri…` train→`myeongri_deterministic_lora_golden_fit_latest.json`; locked→`myeongri_deterministic_lora_golden_fit_locked_eval_latest.json` 각 ok |
 | 2026-05-14 | 6 | 프로파일 SSOT 확인; pytest 12(0-B+promotion bundle); `run_pack0b…` fixture convert/eval+`golden_fit_smoke` train config — 전량 학습 GO 보류 |
 
 ---

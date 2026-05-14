@@ -48,6 +48,8 @@
 
 산출 기본 경로는 루트 **`reports/`** (`.gitignore`의 `reports/**` — 로컬·재현용; 본선 동결 아티팩트와 혼동 금지).
 
+**운영(프로덕션) 적재:** 호스트별 JSONL 경로·월 롤업은 **레포 밖** 운영 규약으로 둔다(`docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`·`AGENTS.md`). 이 문서의 **COGS 월소계**는 벤더 청구서·운영 집계가 확보된 뒤 같은 표를 S-CONS/BASE/STRESS 복제본에만 숫자로 채운다.
+
 ```text
 py scripts/append_stt_routing_audit_log_v1.py --route local --audio-ms 1200 --pii-redaction not_applicable --hypothesis-tag "[HYPO]"
 py scripts/append_stt_routing_audit_log_v1.py --route vendor --audio-ms 3400 --provider google_stt --latency-ms 420 --pii-redaction redacted_full --hypothesis-tag "[HYPO]"
@@ -81,4 +83,4 @@ py scripts/summarize_stt_routing_audit_log_v1.py
 ## 메타
 
 - **schema:** `silver_tech_cogs_unit_economics_template_v1`
-- **last_updated_utc:** 2026-05-16 — §Stream 2 로컬 append×2 + summarize 루프 명령 고정; COGS·KPI **금액·목표 수치**는 실측·법무(RQ-009) 후.
+- **last_updated_utc:** 2026-05-14 — §Stream 2 로컬 append×2 + summarize 재실행; **운영 JSONL**은 레포 밖·COGS 숫자는 청구서 후 동일 표 복제본에만; COGS·KPI **금액·목표 수치**는 실측·법무(RQ-009) 후.

@@ -2,6 +2,14 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-14 · Autonomous ops chain — STT·gates·예언 클로저)
+
+**Thread:** Cursor — 지휘관 **「순서대로·권장안으로 쭉 밀어」** → 로컬 잡음 정리 후 권장 검증 번들.
+
+- **완료:** `git fetch gitea --prune`; 스케줄로 흔들린 추적 `*_latest`·`CENTRAL` 잡음은 **HEAD `git restore`**로 정리; STT `append_stt_routing_audit_log_v1`×2 + `summarize_stt_routing_audit_log_v1` → `reports/stt_routing_audit_log_v1.jsonl`·`reports/stt_routing_audit_log_v1_summary_latest.json`(비추적); `verify_p0_constitution_gate_paths.ps1` **719** OK; `pytest` `test_append_stt_routing_audit_log_v1`+`test_stt_routing_audit_log_schema_v1`+`test_validate_showroom_public_bundle` **17** pass, 이어 `test_mkm_control_integrity_pipeline_smoke_v1`+`test_validate_showroom_public_bundle` **19** pass; `Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` `-SkipLiveSyncPull -SkipGoNoGoRefresh -SkipWebhook` → `reports/prophecy_lane_closure_bundle_v1_latest.json` **`closure_ok: true`**(번들 내 pytest **137** passed, 3 skipped).
+- **막힘:** 없음.
+- **다음:** 인간·운영 — **프로덕션 JSONL** 적재 경로·호스트별 **COGS 월소계**(청구서)·**법무 (D)**; RQ-009는 **OPEN** 유지(수치·최종 면책 Git 동결 전). 선택 — `scripts/run_fact_lock_bundle.ps1` 전체; 쇼룸 VPS는 `MKM_SHOWROOM_OPS_AND_PACK0B_WORK_SCHEDULE_V1.md`·호스트 확정 후.
+
 ## Ops slice (2026-05-16 · Visualization v0 — 목표·작업 분해)
 
 **Thread:** Cursor — 지휘관 **「진행해」** → **Trust Visualization v0** 로드맵을 스냅샷에 장전(서브에이전트·**별 브랜치** 병렬 가이드 포함).
