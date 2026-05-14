@@ -34,7 +34,12 @@ on:
       - "scripts/deploy/linux/run_bench_l1_api_load_vps_fixed_fields.sh"
       - "tests/test_mkm_promotion_gate_evidence_bundle_v1.py"
       - "scripts/build_mkm_trackc_ops_dashboard_v1.py"
+      - "scripts/append_stt_routing_audit_log_v1.py"
+      - "scripts/summarize_stt_routing_audit_log_v1.py"
+      - "docs/final/schemas/stt_routing_audit_log_v1.schema.json"
+      - "docs/final/schemas/trust_visualization_panel_v0.example.json"
       - "tests/test_build_mkm_trackc_ops_dashboard_v1.py"
+      - "tests/test_append_stt_routing_audit_log_v1.py"
       - "scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"
       - "scripts/build_trackc_evidence_rag_mvp_v1.py"
       - "scripts/run_p1_ab_bundle.ps1"
@@ -1149,6 +1154,9 @@ jobs:
             tests/test_run_btrack_logos_music_overlay_poc_v1.py \
             tests/test_build_mkm_trackc_ops_dashboard_v1.py \
             -q --tb=short
+
+      - name: STT routing audit log v1 (append + summarize)
+        run: python -m pytest tests/test_append_stt_routing_audit_log_v1.py -q --tb=short
 
       - name: MKM meta-layer envelope v1 (schema + kill-switch coherence)
         run: python -m pytest tests/test_mkm_meta_layer_envelope_v1.py -q --tb=short

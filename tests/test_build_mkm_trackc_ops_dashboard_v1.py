@@ -77,3 +77,12 @@ def test_trackc_dashboard_includes_lens_music_governance_fields():
     assert "promotion_process_pass" in lmg
     assert "promotion_process_exit_code" in lmg
     assert "promotion_gate_m31_profile" in lmg
+    tv = (doc.get("trackc") or {}).get("trust_visualization_v0") or {}
+    assert tv.get("role") == "trust_visualization_read_only_v0"
+    assert tv.get("state") in ("OK", "NODATA")
+    if tv.get("state") == "OK":
+        assert tv.get("final_action") == "WATCH"
+        assert tv.get("logos_non_gating") is True
+    stt = (doc.get("trackc") or {}).get("stt_routing_audit_log_slice") or {}
+    assert stt.get("role") == "silver_stt_audit_summary_v0"
+    assert stt.get("state") in ("OK", "NODATA")

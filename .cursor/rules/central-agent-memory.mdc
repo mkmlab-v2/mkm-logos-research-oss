@@ -36,6 +36,7 @@ priority: 4
 ## NEVER
 
 - 본 파일 내용만으로 “이미 구현”을 단정하지 않는다.
+- **채팅창 작업일정·MISSION·다단계 Phase 체크리스트 표**를 본 파일(`CENTRAL_AGENT_MEMORY_V1.md`)에 넣지 않는다. 앵커는 루트 **`MISSION_LOG.md`**(로컬 비추적, `MISSION_LOG.template.md` 참고). Ops 한 줄만 `reports/daily_thread_work_*.md` + `athena_daily_thread_log_sync_v1.py`.
 - `CURRENT_OPS_SNAPSHOT.md`와 **동일 문단 이중 기술**을 하지 않는다. 스냅샷은 일시 핸드오프, 중앙 메모리는 지속 동기화.
 - `CENTRAL_AGENT_MEMORY_V1.md` 「VPS · 비트코인 본선」에 **기본 SSH 호스트(`vps-mkmlife`)·PM2 후보**가 있는 한, 사용자에게 **SSH 호스트명을 알려달라**·**다음 턴에 호스트만 주세요**처럼 **기본 대상을 재질문하지 않는다**(사용자가 **다른 호스트를 명시**한 경우만 예외). 확인 명령 초안은 그 기본 호스트 기준으로 제시한다.
 

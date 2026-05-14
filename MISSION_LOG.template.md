@@ -6,9 +6,19 @@
 
 **병렬 세션**: Agents Window 등에서 동시에 `MISSION_LOG.md`를 쓰면 파일 경합이 날 수 있으니, 한 번에 한 에이전트(또는 한 채팅)만 이 파일을 갱신하는 것을 권장한다.
 
+## 채팅창 작업일정 앵커 (에이전트 고정 · SSOT)
+
+| 대상 | 파일 | 금지 |
+|------|------|------|
+| **임무·MISSION·다단계 Phase 체크리스트·채팅창 일정** | 루트 **`MISSION_LOG.md`** (본 템플릿에서 복사) | `reports/daily_thread_work_*.md`를 **일정 본문 앵커**로 쓰지 않음 |
+| **Ops 한 줄·「일기 반영」** | `reports/daily_thread_work_YYYY-MM-DD.md` + `athena_daily_thread_log_sync_v1.py` | MISSION_LOG와 **동일 표 이중 기술** 금지(역할 분리) |
+| **일시 핸드오프 문단** | `docs/final/CURRENT_OPS_SNAPSHOT.md` | MISSION_LOG·스냅샷 **이중 서술** 금지(루트 `.cursorrules`·`AGENTS.md` 동일) |
+| **장기 정체성·분기 한 줄** | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` | **일정 표·Phase 체크리스트 전체**를 CENTRAL에 올리지 않음 |
+| **옵시디언** | 개인 볼트(선택) | 레포 SSOT·에이전트 장기기억으로 **자동 승격 없음** |
+
 PowerShell 예: `Copy-Item -Path MISSION_LOG.template.md -Destination MISSION_LOG.md`
 
-**역할**: 채팅 컨텍스트와 무관하게 **임무 단위 종료 조건**을 남긴다. 구현 경로·게이트 순서의 SSOT는 `docs/final/P0_COMMERCIALIZATION_TRACKER.md`, 구현 팩트는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`이다.
+**역할:** 세션마다 리셋되는 채팅 UI 대신, **동일 지휘관 PC의 디스크**에서 크로스 채팅 **임무·종료 조건·작업일정(표)**를 맞춘다. 구현 경로·게이트 순서의 SSOT는 `docs/final/P0_COMMERCIALIZATION_TRACKER.md`, 구현 팩트는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`이다.
 
 ## Active
 

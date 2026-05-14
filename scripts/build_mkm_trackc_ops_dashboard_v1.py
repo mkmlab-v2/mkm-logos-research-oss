@@ -39,6 +39,45 @@ def _lens_music_m32_dashboard_fields(*, hormone_doc: Dict[str, Any], overlay_doc
     }
 
 
+def _trust_visualization_v0_slice(root: Path) -> Dict[str, Any]:
+    rel = Path("docs/final/schemas/trust_visualization_panel_v0.example.json")
+    p = root / rel
+    if not p.exists():
+        return {"state": "NODATA", "path": str(rel).replace("\\", "/"), "role": "trust_visualization_read_only_v0"}
+    d = _read_json(p)
+    fin = d.get("final") if isinstance(d.get("final"), dict) else {}
+    logos = ((d.get("lenses") or {}).get("logos")) if isinstance(d.get("lenses"), dict) else {}
+    logos = logos if isinstance(logos, dict) else {}
+    return {
+        "state": "OK",
+        "schema": d.get("schema"),
+        "final_action": fin.get("action"),
+        "logos_non_gating": logos.get("non_gating"),
+        "role": "trust_visualization_read_only_v0",
+    }
+
+
+def _stt_routing_audit_slice(root: Path) -> Dict[str, Any]:
+    summary_p = root / "reports" / "stt_routing_audit_log_v1_summary_latest.json"
+    jsonl_p = root / "reports" / "stt_routing_audit_log_v1.jsonl"
+    if summary_p.exists():
+        s = _read_json(summary_p)
+        return {
+            "state": "OK",
+            "rows_total": s.get("rows_total"),
+            "route_counts": s.get("route_counts"),
+            "vendor_latency_ms_p95": s.get("vendor_latency_ms_p95"),
+            "generated_at_utc": s.get("generated_at_utc"),
+            "role": "silver_stt_audit_summary_v0",
+        }
+    return {
+        "state": "NODATA",
+        "summary_path": "reports/stt_routing_audit_log_v1_summary_latest.json",
+        "jsonl_exists": jsonl_p.exists(),
+        "role": "silver_stt_audit_summary_v0",
+    }
+
+
 def _status_or_default(value: Any, default: str = "UNKNOWN") -> Any:
     if value is None:
         return default
@@ -323,6 +362,8 @@ def main() -> int:
         hormone_doc=lens_music_hormone_state,
         overlay_doc=lens_music_prompt_overlay_latest,
     )
+    trust_v0_slice = _trust_visualization_v0_slice(root)
+    stt_audit_slice = _stt_routing_audit_slice(root)
 
     dashboard = {
         "schema": "mkm_trackc_ops_dashboard_v1",
@@ -557,6 +598,8 @@ def main() -> int:
                 "false_intervention_proxy": rr_metrics.get("false_intervention_proxy"),
                 "router_artifact": rr_row.get("router_artifact"),
             },
+            "trust_visualization_v0": trust_v0_slice,
+            "stt_routing_audit_log_slice": stt_audit_slice,
         },
         "commercial_kpi_pointers": commercial_kpi_pointers,
         "evidence": {
@@ -584,6 +627,9 @@ def main() -> int:
             "logos_s1_shadow_promotion_review_packet": "docs/final/artifacts/logos_s1_shadow_promotion_review_packet_latest.json",
             "logos_s1_shadow_promotion_human_approval": "docs/final/artifacts/logos_s1_shadow_promotion_human_approval_latest.json",
             "role_router_s1_shadow_advisory": "docs/final/artifacts/role_router_s1_shadow_advisory_latest.json",
+            "trust_visualization_panel_v0_example": "docs/final/schemas/trust_visualization_panel_v0.example.json",
+            "stt_routing_audit_log_summary": "reports/stt_routing_audit_log_v1_summary_latest.json",
+            "stt_routing_audit_log_jsonl": "reports/stt_routing_audit_log_v1.jsonl",
             "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
             "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
             "forward_weekly_report": "docs/final/artifacts/macro_risk_forward_weekly_report_latest.json",

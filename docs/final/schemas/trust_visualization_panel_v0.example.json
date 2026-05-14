@@ -1,0 +1,26 @@
+{
+  "schema": "trust_visualization_panel_v0",
+  "version": "0.1.0",
+  "hypothesis_tag": "[HYPO]",
+  "field": {
+    "label": "regime_field_stub",
+    "note": "1차 실물 레짐·운영 게이트 입력 요약(플레이스홀더)."
+  },
+  "lenses": {
+    "sasang": { "summary": "단기 강도·체질 축 스텁", "confidence_0_1": 0.42 },
+    "myeongni": { "summary": "중기 방향 스텁", "confidence_0_1": 0.55 },
+    "logos": {
+      "summary": "거시 해설 스텁",
+      "non_gating": true,
+      "note": "[NON_GATING] — 실전 트리거 아님."
+    }
+  },
+  "conflict": {
+    "detected": false,
+    "notes": "렌즈 간 충돌 없음(예시)."
+  },
+  "final": {
+    "action": "WATCH",
+    "rationale": "감사 로그·COGS·법무 게이트 한 사이클 재현 전 읽기 전용 패널 예시."
+  }
+}
