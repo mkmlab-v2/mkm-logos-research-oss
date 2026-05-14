@@ -27,9 +27,9 @@ def _approx_equal(actual_ratio: float, target_ratio: float, tol: float) -> bool:
 
 
 def _response_type_from_context(ctx: str) -> str:
-    token = "response_type="
-    if token in ctx:
-        return ctx.split(token, 1)[1].strip()
+    marker = "response_type="
+    if marker in ctx:
+        return ctx.split(marker, 1)[1].strip()
     return "unknown"
 
 
