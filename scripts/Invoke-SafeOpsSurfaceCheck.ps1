@@ -9,6 +9,7 @@
   - MCP 미주입·채팅 유무와 무관하게 동일 명령으로 재현 가능.
 
   - live_sync/incoming/daemon_alive_check.json 이 신선하면 daemon_continuity 경고를 생략한다 (Invoke-LiveSyncHeartbeatCheck.ps1).
+  - -IgnoreLiveSync: 하트비트 검사·live_sync stale 경고·(로컬이 VPS 미러일 때의) daemon_continuity 지연 경고를 생략한다. Invoke-ProphecyLaneRecommendedClosureBundle -SkipLiveSyncPull 과 짝으로 쓴다.
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-SafeOpsSurfaceCheck.ps1
@@ -105,7 +106,7 @@ if ($null -ne $daemonAge -and $StrictDaemonCritical -and ($daemonAge -gt $Daemon
     $critMsgs.Add("daemon_continuity older than ${DaemonCriticalHours}h ($daemonAge h) [StrictDaemonCritical]")
 }
 
-if (-not $liveSyncFresh) {
+if (-not $IgnoreLiveSync -and -not $liveSyncFresh) {
     if ($null -ne $daemonAge) {
         $daemonCrit = $StrictDaemonCritical -and ($daemonAge -gt $DaemonCriticalHours)
         if (-not $daemonCrit -and ($daemonAge -gt $DaemonWarnHours)) {

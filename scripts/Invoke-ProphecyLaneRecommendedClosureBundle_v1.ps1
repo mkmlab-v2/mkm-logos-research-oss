@@ -12,7 +12,7 @@
   2) check_btrack_prophecy_chain_prereqs_v1.py (--stdout-only; -StrictPrereqs 시 --strict)
   3) run_prophecy_alignment_pytest.ps1 (bitcoin-trading 경로)
   4) (선택) Invoke-LiveSyncHeartbeatPull.ps1 -SoftFail — VPS 미설정 시 skipped여도 번들은 계속
-  5) Invoke-SafeOpsSurfaceCheck.ps1 — overall_safe·verify_exit 0 기대
+  5) Invoke-SafeOpsSurfaceCheck.ps1 — verify_exit 0 기대; -SkipLiveSyncPull 이면 SafeOps에 -IgnoreLiveSync 전달(로컬 미러 지연으로 degraded 방지)
   6) build_trading_go_nogo_status_v1.py --exit-zero-on-no-go — 디스크 SSOT 갱신(판정은 JSON 참조)
 
 .PARAMETER SkipLiveSyncPull
@@ -51,10 +51,11 @@ function Add-Step([string]$Name, $ExitCode) {
 }
 
 # Use call operator with argument array
-function Invoke-BundleScript([string]$RelPath, [string[]]$Args) {
+# Second parameter must not be named $Args (conflicts with PowerShell automatic variable).
+function Invoke-BundleScript([string]$RelPath, [string[]]$ScriptArguments) {
     $full = Join-Path $WorkspaceRoot $RelPath
     if (-not (Test-Path -LiteralPath $full)) { throw "Missing script: $full" }
-    $argList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $full) + $Args
+    $argList = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $full) + $ScriptArguments
     $p = Start-Process -FilePath "powershell.exe" -ArgumentList $argList -WorkingDirectory $WorkspaceRoot `
         -Wait -PassThru -NoNewWindow
     return [int]$p.ExitCode
@@ -112,7 +113,11 @@ try {
         Add-Step "Invoke_LiveSyncHeartbeatPull_SoftFail_skipped" $null
     }
 
-    $e4 = Invoke-BundleScript "scripts\Invoke-SafeOpsSurfaceCheck.ps1" @()
+    $safeOpsArgs = @()
+    if ($SkipLiveSyncPull) {
+        $safeOpsArgs += "-IgnoreLiveSync"
+    }
+    $e4 = Invoke-BundleScript "scripts\Invoke-SafeOpsSurfaceCheck.ps1" $safeOpsArgs
     Add-Step "Invoke_SafeOpsSurfaceCheck" $e4
     if ($e4 -ne 0) { throw "Invoke-SafeOpsSurfaceCheck failed exit $e4" }
 
