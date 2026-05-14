@@ -89,6 +89,7 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 - **VPS scp 원클릭:** 루트 `scripts/sync_showroom_to_vps.ps1` → `projects/bitcoin-trading/ops/windows-rehearsal/sync_showroom_to_vps.ps1`. `.showroom_staging`의 정적 파일(HTML·번들·**선택: topology 스냅샷**)을 `MKM_VPS_HOST`/`MKM_VPS_USER` 및 `JEMAAI_VPS_SHOWROOM_ROOT`(기본 `/var/www/jemaai`)로 전송; **`-RefreshStaging`은 Track C 체인(`build_showroom_track_c_bundle_chain_v1.ps1`) + `deploy_showroom_static.ps1` 후 scp.**
 - **`public_ui` (`showroom_public_ui_v1`):** ASCII 기계값만(방향·램프·융합·수익률 유무). 한글 카피는 `public_showroom_poll.html`에서 매핑한다(PS 인코딩 이슈 회피).
 - **방향 소스:** 환경 `SHOWROOM_DIRECTION_SOURCE=c2|account` 미설정 시 **auto** — `public_trading_metrics_latest.json`에 `position_side`가 있으면 `account`(롱/숏 추상만), 없으면 `c2`.
+- **본선 nginx 반영(권장 체크리스트, 호스트 수동):** (1) `jemaai-cloud-mvp/nginx_snippets/jemaai_showroom_ui.conf`를 해당 `server { ... }` 안에 `include`(경로는 배포 표준에 맞게 조정). (2) 스니펫에 **`location = /showroom_topology_radar_snapshot_v1_latest.json`** 블록이 포함돼 있는지 확인(없으면 동 파일 기준으로 추가). (3) 정적 파일을 `/var/www/jemaai/` 등 웹 루트에 배치한 뒤 `sudo nginx -t && sudo systemctl reload nginx`. (4) 검증: `curl -sSI https://<공개호스트>/showroom_topology_radar_snapshot_v1_latest.json` → `200` 및 `cache-control: no-store`(또는 동등) 권장; 동일 방식으로 `showroom_public_bundle_v1.json` 확인.
 
 ### 4.3 Gemini 환경 (GOOGLE_API_KEY 레거시 경고 정리)
 

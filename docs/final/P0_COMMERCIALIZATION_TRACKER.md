@@ -10,7 +10,7 @@
 
 ### 권장 작업 순서 (압축·예언·합선 — 기억용)
 
-1. **먼저 (호출 가능 경로·격벽 유지):** P0 경로 게이트 `scripts/verify_p0_constitution_gate_paths.ps1`; 압축 자동화 `run_compression_automation_chain.ps1`(V2 Trust Packet pytest 포함); CI `dual-regime-integrity.yml`. 일반 예언(B 레일) 최소 체인: `generate_general_prophecy_v1.py` → `build_general_prophecy_brief.py` → `eval_general_prophecy_brier_score.py` → `export_general_prophecy_to_jsonl.py`(LoRA용 JSONL; `data/training/*.jsonl` `.gitignore`) — **압축 엔진·토큰 스텁과 레지스트리를 코드에서 자동 합선하지 않음**(`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 다중 렌즈·비단정과 동일 선상).
+1. **먼저 (호출 가능 경로·격벽 유지):** P0 경로 게이트 `scripts/verify_p0_constitution_gate_paths.ps1`; 압축 자동화 `run_compression_automation_chain.ps1`(V2 Trust Packet pytest 포함); CI `dual-regime-integrity.yml`(워크스페이스 job **tail** 스텝 순서는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6 **CI tail 포인터** + 동 워크플로 YAML SSOT — §6 표에 1:1 전개 강제 안 함; `MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 「CI 잡」절). 일반 예언(B 레일) 최소 체인: `generate_general_prophecy_v1.py` → `build_general_prophecy_brief.py` → `eval_general_prophecy_brier_score.py` → `export_general_prophecy_to_jsonl.py`(LoRA용 JSONL; `data/training/*.jsonl` `.gitignore`) — **압축 엔진·토큰 스텁과 레지스트리를 코드에서 자동 합선하지 않음**(`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 다중 렌즈·비단정과 동일 선상).
 2. **다음 (승격·연구):** B-track → Track A·대외 주장은 `COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 + 본 문서 증거 표. 16-state ↔ 압축 런타임 필수 배선은 `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`(현재 미연동)·`STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md` 로드맵 반영 후 연구 레인.
 3. **나중·금지 서술:** 단일 TOE·완성 통일장·예언-압축 단일 두뇌 비유 — `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.1에서 선언·단정 금지.
 
@@ -227,6 +227,7 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
   - `py scripts/build_track_c_evidence_pack_v1.py`
   - `py scripts/check_track_c_copy_guard_v1.py docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`
   - `py scripts/validate_track_c_landing_claims_v1.py`
+- **Topology Radar 쇼룸 파이프라인(레포, 2026-05 권장 고정):** 스냅샷 emit → `showroom_public_bundle_v1`에 `observability.topology_radar_snapshot_*` 병합 → `validate_showroom_public_bundle.py` → `deploy_showroom_static.ps1`(스냅샷 JSON 동시 복사, 선택) → `sync_showroom_to_vps.ps1 -RefreshStaging`(선택) → 정적 HTML에서 번들 요약 표시. **게이트웨이 `latest` 본문에 스냅샷을 직접 넣지 않음**(경로·정적 JSON로 격리). 본선 nginx는 `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §4.2 본선 체크리스트.
 
 ### 90일 유료 파일럿 계약 템플릿 v1 (Risk Warning SaaS)
 
