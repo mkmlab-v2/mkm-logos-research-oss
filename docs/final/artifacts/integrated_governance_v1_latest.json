@@ -1,6 +1,6 @@
 {
   "schema": "integrated_governance_v1",
-  "generated_at_utc": "2026-05-14T15:02:08Z",
+  "generated_at_utc": "2026-05-14T15:08:28Z",
   "input_artifacts": {
     "config": "C:\\workspace\\docs\\final\\artifacts\\integrated_governance_config_v1.json",
     "biblical_core_gate": "C:\\workspace\\docs\\final\\artifacts\\kospi_biblical_single_lane_commercial_gate_v1_latest.json",
