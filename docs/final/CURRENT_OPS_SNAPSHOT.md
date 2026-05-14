@@ -6,9 +6,9 @@
 
 **Thread:** Cursor — 지휘관 **스냅샷 후 이 대화 종료**.
 
-- **완료:** 권장 한 사이클 — P0 경로(707)·비밀 스캔 strict OK·`Invoke-ProphecyLaneRecommendedClosureBundle_v1` → `reports/prophecy_lane_closure_bundle_v1_latest.json` **`closure_ok: true`**(pytest 137 passed 등); 브랜치 **`dev` = `gitea/main` = `27cfcc48a3`** 전제·워킹트리 clean 유지; `CENTRAL` 에디터 잡음(체크포인트 삭제·`last_updated`만 변경 등)은 **`git restore docs/final/CENTRAL_AGENT_MEMORY_V1.md`**.
+- **완료:** 권장 한 사이클 — P0(707)·비밀 스캔 strict OK·예언 클로저 **`closure_ok: true`**; **실버·본 스냅샷·`CENTRAL`**은 레포 **`dev` = `gitea/main` = `e82d64bbd1`** 기준으로 반영·워킹트리 **clean** 목표; `CENTRAL` 에디터 잡음은 **`git restore docs/final/CENTRAL_AGENT_MEMORY_V1.md`**.
 - **막힘:** 없음.
-- **다음(재개):** 바로 아래 **2026-05-15 · Silver** 슬라이스 표·`docs/research/silver_tech_cogs_unit_economics_template_v1.md`; 인간 — COGS **출처·시나리오**·법무 **(D)**·RQ-009 `CLOSED` 조건부. 선택 — `_pr_sasang_promotion` **stash** 정리·`git push gitea --delete dev`. (선택) `py scripts/athena_checkpoint.py "…한 줄"`로 `CENTRAL` 체크포인트 append.
+- **다음(재개):** 아래 **Silver** 표·`docs/research/silver_tech_cogs_unit_economics_template_v1.md`; 인간 — COGS 출처·시나리오·법무(D)·RQ-009 `CLOSED` 조건. **쇼룸 스테이징 3파일**(`.showroom_staging/public_showroom_board_minimal.html`·`…_poll.html`·`jemaai-cloud-mvp/showroom_public_bundle_v1.json`) — **실버와 무관**이면 의도 없을 때 **`git restore`(3경로)**로 끝, 쇼룸 작업이면 **별 커밋/PR**(실버와 섞지 않음). 선택 — `_pr_sasang_promotion` stash·`git push gitea --delete dev`·`py scripts/athena_checkpoint.py "…한 줄"` .
 
 ## Ops slice (2026-05-15 · Silver — COGS·STT·RQ-009·장기기억 동기)
 
