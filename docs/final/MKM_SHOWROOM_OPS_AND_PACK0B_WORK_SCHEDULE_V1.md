@@ -44,9 +44,9 @@
 
 **목표:** 로컬을 넘어 **스테이징 또는 VPS 웹 루트**에 정적 자산 반영 및 HTTP 확인.
 
-- [ ] 로컬 스테이징: `pwsh … -File projects/bitcoin-trading/ops/windows-rehearsal/deploy_showroom_static.ps1` (또는 `-WebRoot` / `JEMAAI_WEB_ROOT`)  
+- [x] 로컬 스테이징: `pwsh … -File projects/bitcoin-trading/ops/windows-rehearsal/deploy_showroom_static.ps1` (또는 `-WebRoot` / `JEMAAI_WEB_ROOT`) — **2026-05-16** `-WorkspaceRoot c:\workspace` 실행 **exit 0** → 기본 `projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/` 에 8파일(폴·미니멀 보드·`showroom_public_bundle_v1.json`·topology·Trust viz HTML/JSON·사주 HTML/JSON).
 - [ ] (본선) `scripts/sync_showroom_to_vps.ps1` 등 **지휘관 확정 호스트·경로**로 동기 — 레포는 절차만 고정, 비밀·SSH는 각 호스트  
-- [ ] SPEC 체크리스트: 동 SPEC의 nginx 스니펫·`curl` 검증 항목( `showroom_public_bundle_v1.json` , `showroom_topology_radar_snapshot_v1_latest.json` )  
+- [x] SPEC(로컬 분기): 스테이징 `showroom_public_bundle_v1.json` **JSON 파싱 OK**; `public_showroom_board_minimal.html`에 `data-disclaimer-ref="jemaai_showroom_v1"` 존재(`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §3·§4 정합). **§4.1** `curl` `public-events/ingest` 스모크는 **`127.0.0.1:8788` 게이트웨이 기동 + `PUBLIC_EVENT_GATEWAY_TOKEN`** 전제로 운영 호스트 또는 로컬 E2E에서 수행.
 
 **완료 조건:** 대상 URL 또는 호스트에서 `200` + 캐시 정책 확인(가능한 범위) 한 줄.
 
