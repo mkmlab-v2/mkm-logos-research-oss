@@ -2,13 +2,13 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
-## Ops slice (2026-05-15 · 세션 종료 — 다른 작업 전환)
+## Ops slice (2026-05-15 · 채팅 종료 스냅샷 — 본 스레드)
 
-**Thread:** Cursor — 스냅샷 후 대화 종료(지휘관).
+**Thread:** Cursor — 지휘관 **스냅샷 후 이 대화 종료**.
 
-- **완료:** `py scripts/athena_checkpoint.py` — 세션 종료·핸드오프 한 줄(`CENTRAL` 운영 체크포인트). 바로 아래 `2026-05-15 · Silver` 슬라이스에 COGS·STT·RQ-009 포인터 유지.
+- **완료:** 권장 한 사이클 — P0 경로(707)·비밀 스캔 strict OK·`Invoke-ProphecyLaneRecommendedClosureBundle_v1` → `reports/prophecy_lane_closure_bundle_v1_latest.json` **`closure_ok: true`**(pytest 137 passed 등); 브랜치 **`dev` = `gitea/main` = `27cfcc48a3`** 전제·워킹트리 clean 유지; `CENTRAL` 에디터 잡음(체크포인트 삭제·`last_updated`만 변경 등)은 **`git restore docs/final/CENTRAL_AGENT_MEMORY_V1.md`**.
 - **막힘:** 없음.
-- **다음:** 지휘관 — **다른 작업**; 재개 시 `@docs/final/CURRENT_OPS_SNAPSHOT.md`(맨 위 2개 `2026-05-15`) · `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` · `docs/research/silver_tech_cogs_unit_economics_template_v1.md`.
+- **다음(재개):** 바로 아래 **2026-05-15 · Silver** 슬라이스 표·`docs/research/silver_tech_cogs_unit_economics_template_v1.md`; 인간 — COGS **출처·시나리오**·법무 **(D)**·RQ-009 `CLOSED` 조건부. 선택 — `_pr_sasang_promotion` **stash** 정리·`git push gitea --delete dev`. (선택) `py scripts/athena_checkpoint.py "…한 줄"`로 `CENTRAL` 체크포인트 append.
 
 ## Ops slice (2026-05-15 · Silver — COGS·STT·RQ-009·장기기억 동기)
 
