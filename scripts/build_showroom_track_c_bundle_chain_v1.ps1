@@ -1,4 +1,4 @@
-# Track C public showroom: freshness sidecar -> topology radar snapshot -> showroom bundle -> validate (Fact-Lock).
+# Track C public showroom: freshness sidecar -> topology radar snapshot -> showroom bundle -> validate -> trust viz thin slice (Fact-Lock).
 # Does not scp/VPS — use scripts/sync_showroom_to_vps.ps1 -RefreshStaging after this, or deploy_showroom_static.ps1.
 #
 # Usage (repo root):
@@ -32,18 +32,18 @@ if (-not (Get-Command $py -ErrorAction SilentlyContinue)) {
 Write-Host "=== build_showroom_track_c_bundle_chain_v1 (WorkspaceRoot=$root) ===" -ForegroundColor Cyan
 
 if (-not $SkipFreshnessSidecar) {
-    Write-Host "[chain] (1/4) logos_track_c_freshness_sidecar" -ForegroundColor Cyan
+    Write-Host "[chain] (1/5) logos_track_c_freshness_sidecar" -ForegroundColor Cyan
     & $py (Join-Path $root "scripts\build_logos_track_c_freshness_sidecar_v1.py")
     if ($LASTEXITCODE -ne 0) {
         Write-Error "build_logos_track_c_freshness_sidecar_v1.py failed: $LASTEXITCODE"
         exit $LASTEXITCODE
     }
 } else {
-    Write-Host "[chain] (1/4) SKIP freshness sidecar" -ForegroundColor Yellow
+    Write-Host "[chain] (1/5) SKIP freshness sidecar" -ForegroundColor Yellow
 }
 
 if (-not $SkipTopologyRadarSnapshot) {
-    Write-Host "[chain] (2/4) showroom_topology_radar_snapshot_v1 emit" -ForegroundColor Cyan
+    Write-Host "[chain] (2/5) showroom_topology_radar_snapshot_v1 emit" -ForegroundColor Cyan
     $snapArgs = @(
         (Join-Path $root "scripts\build_showroom_topology_radar_snapshot_v1.py"),
         "--workspace-root",
@@ -58,11 +58,11 @@ if (-not $SkipTopologyRadarSnapshot) {
         exit $LASTEXITCODE
     }
 } else {
-    Write-Host "[chain] (2/4) SKIP topology radar snapshot" -ForegroundColor Yellow
+    Write-Host "[chain] (2/5) SKIP topology radar snapshot" -ForegroundColor Yellow
 }
 
 $buildPs1 = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\build_showroom_display_bundle.ps1"
-Write-Host "[chain] (3/4) build_showroom_display_bundle" -ForegroundColor Cyan
+Write-Host "[chain] (3/5) build_showroom_display_bundle" -ForegroundColor Cyan
 $psExe = if (Get-Command pwsh -ErrorAction SilentlyContinue) { "pwsh" } else { "powershell.exe" }
 & $psExe -NoProfile -ExecutionPolicy Bypass -File $buildPs1 -WorkspaceRoot $root
 if ($LASTEXITCODE -ne 0) {
@@ -72,15 +72,22 @@ if ($LASTEXITCODE -ne 0) {
 
 $bundleOut = Join-Path $root "docs\final\artifacts\showroom_public_bundle_v1.json"
 if (-not $SkipValidate) {
-    Write-Host "[chain] (4/4) validate_showroom_public_bundle" -ForegroundColor Cyan
+    Write-Host "[chain] (4/5) validate_showroom_public_bundle" -ForegroundColor Cyan
     & $py (Join-Path $root "scripts\validate_showroom_public_bundle.py") $bundleOut
     if ($LASTEXITCODE -ne 0) {
         Write-Error "validate_showroom_public_bundle.py failed: $LASTEXITCODE"
         exit $LASTEXITCODE
     }
 } else {
-    Write-Host "[chain] (4/4) SKIP validate" -ForegroundColor Yellow
+    Write-Host "[chain] (4/5) SKIP validate" -ForegroundColor Yellow
 }
 
-Write-Host "[chain] OK -> $bundleOut" -ForegroundColor Green
+Write-Host "[chain] (5/5) showroom trust visualization thin slice (dashboard -> JSON)" -ForegroundColor Cyan
+& $py (Join-Path $root "scripts\build_showroom_trust_visualization_slice_v1.py")
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "build_showroom_trust_visualization_slice_v1.py failed: $LASTEXITCODE"
+    exit $LASTEXITCODE
+}
+
+Write-Host "[chain] OK -> $bundleOut (+ jemaai-cloud-mvp/showroom_trust_visualization_slice_v0.json)" -ForegroundColor Green
 exit 0

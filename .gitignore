@@ -368,6 +368,8 @@ reports/workspace_scheduled_tasks_triggers_latest.csv
 
 # Local showroom deploy staging (verify_showroom_bundle_chain.ps1 -WithStagingCopy)
 projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/
+# Generated from Track C ops dashboard (build_showroom_trust_visualization_slice_v1.py / chain step 5)
+projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/showroom_trust_visualization_slice_v0.json
 
 # no1kmedi Next.js App Router: ensure API routes stay tracked if a broad `api/` rule exists
 !projects/no1kmedi/src/app/api/

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · Trust visualization v0 (read-only)</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --surface: #12151a;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #e8eaef;
+      --muted: #8b919d;
+      --accent: #c5a057;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .wrap { max-width: 48rem; margin: 0 auto; padding: 1.5rem 1.1rem 2.5rem; }
+    h1 { font-size: 1.15rem; margin: 0 0 0.35rem; }
+    .lede { margin: 0 0 1.25rem; font-size: 0.8125rem; color: var(--muted); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1rem 0.9rem;
+      margin-bottom: 0.85rem;
+    }
+    .card h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0 0 0.5rem; }
+    pre { margin: 0; font-size: 0.75rem; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .tag { display: inline-block; font-size: 0.68rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(197, 160, 87, 0.15); color: var(--accent); margin-bottom: 0.5rem; }
+    .err { color: #c97a6d; font-size: 0.85rem; }
+    a { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="tag">[HYPO] · read-only · not a trading signal</span>
+    <h1>Trust visualization v0</h1>
+    <p class="lede">
+      Loads <code>showroom_trust_visualization_slice_v0.json</code> (build:
+      <code>py scripts/build_showroom_trust_visualization_slice_v1.py</code>).
+      Serve this folder over HTTP so fetch works; <code>file://</code> may block JSON.
+      Logos layer is <strong>non-gating</strong> advisory only.
+    </p>
+    <p class="lede"><a href="public_showroom_board_minimal.html">← Minimal public board</a></p>
+    <div id="root"></div>
+  </div>
+  <script>
+    (function () {
+      var root = document.getElementById("root");
+      function esc(s) {
+        if (s === null || s === undefined) return "";
+        return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      }
+      function card(title, bodyHtml) {
+        return '<div class="card"><h2>' + esc(title) + "</h2>" + bodyHtml + "</div>";
+      }
+      fetch("showroom_trust_visualization_slice_v0.json", { cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        })
+        .then(function (doc) {
+          var tv = doc.trust_visualization_v0 || {};
+          var st = doc.stt_routing_audit_log_slice || {};
+          var html = "";
+          html += card("Slice meta", "<pre>" + esc(JSON.stringify({
+            schema: doc.schema,
+            hypothesis_tag: doc.hypothesis_tag,
+            generated_at_utc: doc.generated_at_utc,
+            source: doc.source_dashboard_rel
+          }, null, 2)) + "</pre>");
+          html += card("Field → Lenses → Final (trust_visualization_v0)", "<pre>" + esc(JSON.stringify(tv, null, 2)) + "</pre>");
+          html += card("STT routing audit (summary slice)", "<pre>" + esc(JSON.stringify(st, null, 2)) + "</pre>");
+          if (doc.boundary_note) {
+            html += card("Boundary", "<p class=\"lede\" style=\"margin:0\">" + esc(doc.boundary_note) + "</p>");
+          }
+          root.innerHTML = html;
+        })
+        .catch(function (e) {
+          root.innerHTML = '<div class="err">Could not load JSON: ' + esc(e.message) + "</div>";
+        });
+    })();
+  </script>
+</body>
+</html>

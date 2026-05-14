@@ -14,6 +14,7 @@
 #   public_showroom_board_minimal.html  (다크·미니멀 정적 보드; 동일 API 폴링)
 #   showroom_public_bundle_v1.json  (from jemaai-cloud-mvp; run scripts/build_showroom_track_c_bundle_chain_v1.ps1 or build_showroom_display_bundle.ps1 first)
 #   showroom_topology_radar_snapshot_v1_latest.json  (optional; from docs/final/artifacts after topology emit chain step)
+#   public_showroom_trust_visualization_v0.html + showroom_trust_visualization_slice_v0.json (optional; from build_showroom_trust_visualization_slice_v1.py, also invoked at end of build_showroom_track_c_bundle_chain_v1.ps1)
 #   public_showroom_probabilistic_saju_v1.html + showroom_saju_hour_bundle_demo_v1.json  (see scripts/run_saju_hour_candidate_bundle_v1.py)
 
 param(
@@ -39,6 +40,8 @@ $files = @(
     @{ Name = "public_showroom_board_minimal.html"; Src = Join-Path $mvp "public_showroom_board_minimal.html" },
     @{ Name = "showroom_public_bundle_v1.json"; Src = Join-Path $mvp "showroom_public_bundle_v1.json" },
     @{ Name = "showroom_topology_radar_snapshot_v1_latest.json"; Src = $topologyArtifact; Optional = $true },
+    @{ Name = "public_showroom_trust_visualization_v0.html"; Src = Join-Path $mvp "public_showroom_trust_visualization_v0.html" },
+    @{ Name = "showroom_trust_visualization_slice_v0.json"; Src = Join-Path $mvp "showroom_trust_visualization_slice_v0.json"; Optional = $true },
     @{ Name = "public_showroom_probabilistic_saju_v1.html"; Src = Join-Path $mvp "public_showroom_probabilistic_saju_v1.html" },
     @{ Name = "showroom_saju_hour_bundle_demo_v1.json"; Src = Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json" }
 )
