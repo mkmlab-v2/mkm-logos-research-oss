@@ -2,6 +2,20 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-15 · Silver — hybrid STT + COGS five-step)
+
+**Thread:** Cursor — STT COGS·Fact-Lock 실행 순서·내부 단가표 초안 경로 동결.
+
+- **완료:** (1) COGS는 STT만이 아님 — **표로 분해 후 출처 열** 채우기. (2) **하이브리드 STT** = 로컬/자체 1차 → 모호·위급·저신뢰만 상용 API (**Coordinator·게이트**와 동일 패턴). (3) **원·%·마진**은 실측·견적 전 **`[HYPO]`**; `TRACK_C`·`PUBLIC` 본문에 섣부른 수치 고정 금지. (4) **RQ-009**에 COGS 상한·STT 업그레이드 비율·개인정보 동선을 파일럿 목표로 유지(**OPEN**). (5) **내부 단가표 뼈대:** `docs/research/silver_tech_cogs_unit_economics_template_v1.md` 생성(빈 표 + 파일럿 KPI 표).
+- **막힘:** 없음.
+- **다음:** 표에 **실측·견적 링크** 채움 → RQ-009 토의 → 법무 후 Track C §3.7.2 수치 문장은 **별첨 또는 artifacts**만 검토.
+
+| 항목 | 레포 포인터 |
+|------|-------------|
+| COGS 템플릿 `[HYPO]` | `docs/research/silver_tech_cogs_unit_economics_template_v1.md` |
+| 실버 정책·대외 | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 · `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.2 §3 |
+| 연구 큐 | `RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** |
+
 ## Ops slice (2026-05-14 · Session handoff — User Rules·채팅 종료)
 
 **Thread:** Cursor — 핸드오프 규칙·User Rules 복붙·창 종료.
