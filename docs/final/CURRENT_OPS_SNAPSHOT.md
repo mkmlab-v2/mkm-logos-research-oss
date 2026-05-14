@@ -2,36 +2,28 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
-## Ops slice (2026-05-15 · Silver COGS / Hybrid STT — 세션 종료·핸드오프)
+## Ops slice (2026-05-15 · 채팅 종료 — 스냅샷)
 
-**Thread:** Cursor — 실버 COGS·Hybrid STT 로그 그릇만 선반영; 섣부른 가정 숫자 없음.
+**Thread:** Cursor — 지휘관 요청: 스냅샷 기록 후 대화 종료.
 
-- **완료:** `silver_tech_cogs_unit_economics_template_v1.md` — 공개 벤더 문서 링크·이벤트 필드 표(`route`·`vendor_latency_ms`·`billing_unit` 등)·체크리스트 갱신; `RESEARCH_OPEN_QUESTIONS_V1.md` 메타 한 줄; 아래 RQ-009·Silver five-step 슬라이스와 정합.
+- **완료:** `CURRENT_OPS_SNAPSHOT.md` 본 슬라이스 추가·`CENTRAL_AGENT_MEMORY_V1.md` 체크포인트 1줄(아래).
 - **막힘:** 없음.
-- **다음(재개 조건):** 오프라인 **텔레메트리**·**견적서**·법무 **(D)** 확정문 — 충족 전까지 레포 **수치 동결 유지**, 코드 선행 불필요.
-- **세션 상태:** 실버 테크/COGS 셋업 **종료**. Track C 쇼룸 UI·금산 스마트팜(농업회사법인) 문서 등은 **새 채팅**에서 `@docs/final/CURRENT_OPS_SNAPSHOT.md` 상단 슬라이스부터 이어가면 됨.
+- **다음:** 새 세션에서 `@docs/final/CURRENT_OPS_SNAPSHOT.md` · `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` — 실버·STT·RQ-009 잔여는 바로 아래 슬라이스·`docs/research/silver_tech_cogs_unit_economics_template_v1.md` 참고.
 
-## Ops slice (2026-05-15 · RQ-009 지휘관 승인 — R&D 분리 + 민감 액션 구조 Lock)
+## Ops slice (2026-05-15 · Silver — COGS·STT·RQ-009·장기기억 동기)
 
-**Thread:** Cursor — 실버 정책 방향 레포 반영.
+**Thread:** Cursor — 실버 `[HYPO]`·Hybrid STT·지휘관 승인 구조·NotebookLM `nlm` 푸시 경로·템플릿 슬림.
 
-- **완료:** 지휘관 승인 반영 — (1) **파일럿 KPI 수치·마진·최종 면책**은 Git SSOT 본문·`PUBLIC_FACING` §3에 **동결 지연**, 내부 R&D·`silver_tech_cogs_unit_economics_template_v1.md` 등 **`[HYPO]`**. (2) **민감 외부 액션**은 `TRACK_C` §3.7.2 **(B)**에 **자동 단독 실행 불가 + 휴먼 게이트** 구조 **SSOT 동결**. (3) `RESEARCH_OPEN_QUESTIONS_V1.md` RQ-009·`PUBLIC` **v1.3**·`CURRENT_OPS` 본 슬라이스.
+- **완료:** (1) RQ-009·`PUBLIC` v1.3·`TRACK_C` §3.7.2 **(B)/(D)** — KPI·마진·면책 Git 동결 지연; 민감 외부 액션 **휴먼 게이트** SSOT. (2) `silver_tech_cogs_unit_economics_template_v1.md` **압축**(COGS·시나리오·공개 링크; STT는 **jsonschema만 SSOT** `latency_ms` 등 필드명은 `stt_routing_audit_log_v1.schema.json` 준수). (3) `RESEARCH_OPEN_QUESTIONS`·MISSION_LOG·**CENTRAL** 체크포인트/`nl_sync`. (4) NotebookLM: `RESEARCH_HISTORY`·렌즈 팩·`Push-NotebooklmLensPacks_v1.ps1`·`notebooklm_lens_pack_push_map_v1.template.json`·하이브리드 `-PushLensPacksToNotebookLm`; **Vault≠NL** 자동 합선 없음.
 - **막힘:** 없음.
-- **다음:** 법무 (D) 확정문 반영 일정·파일럿 실측 후 RQ-009 **`CLOSED`/이관** 여부.
-
-## Ops slice (2026-05-15 · Silver — hybrid STT + COGS five-step)
-
-**Thread:** Cursor — STT COGS·Fact-Lock 실행 순서·내부 단가표 초안 경로 동결.
-
-- **완료:** (1)~(5) 동일 + **RQ-009**·`RESEARCH_OPEN_QUESTIONS` 근거·`last_reviewed_utc` 동기 · **CENTRAL** `nl_sync`/체크포인트(실버 COGS `[HYPO]` 템플릿) · **MISSION_LOG** Evidence·다음 할 일 `[ ]` COGS 채움. **추가:** `silver_tech_cogs_unit_economics_template_v1.md` — 공개 가격표 URL(단가 미기재)·하이브리드 STT **이벤트 로그 필드 표** 초안.
-- **막힘:** 없음.
-- **다음:** 표에 **실측·견적 링크** 채움 → RQ-009 토의 → 법무 후 Track C §3.7.2 수치 문장은 **별첨 또는 artifacts**만 검토.
+- **다음:** COGS **출처·시나리오(S-CONS/BASE/STRESS)** 채움; 텔레메트리·견적·법무(D) 확정문 후 RQ-009 **CLOSED**·Track C 수치 문장은 **artifacts/별첨**만. 쇼룸·스마트팜 내러티브는 **새 채팅** 권장.
 
 | 항목 | 레포 포인터 |
 |------|-------------|
-| COGS 템플릿 `[HYPO]` | `docs/research/silver_tech_cogs_unit_economics_template_v1.md` |
-| 실버 정책·대외 | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 · `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.3 §3 |
-| 연구 큐 | `RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** |
+| COGS `[HYPO]` | `docs/research/silver_tech_cogs_unit_economics_template_v1.md` |
+| STT 감사 v1 | `docs/final/schemas/stt_routing_audit_log_v1.schema.json` · `…minimal.example.json` · `tests/test_stt_routing_audit_log_schema_v1.py` |
+| Track C / 대외 | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 · `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3 |
+| 연구 | `RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** |
 
 ## Ops slice (2026-05-14 · Session handoff — User Rules·채팅 종료)
 
