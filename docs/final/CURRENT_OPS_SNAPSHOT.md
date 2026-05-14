@@ -1,5 +1,13 @@
 # Current ops snapshot (ephemeral handoff)
 
+## Ops slice (2026-05-14 · Session handoff)
+
+**Thread:** Cursor — `핸드오프` 운영 규칙 `CENTRAL_AGENT_MEMORY_V1.md` 반영 후 기록.
+
+- **완료:** 금산 스마트팜 농업법인 설립 전략 수립, 실버 테크(시니어 AI) 사업 파이프라인 및 규제 방어 로직 설계, 레포 내 핸드오프(Handoff) 운영 체계 확정 및 `CENTRAL` 반영.
+- **막힘:** 없음. (농업인 자격증 발급 기간은 행정적 대기 시간으로 분류)
+- **다음:** `CENTRAL_AGENT_MEMORY_V1.md` 커밋 완료 후, 실버 테크 관련 구체적 1페이지 기획안(Track C §3.7.2) 초안 작성 및 연구 큐 등록.
+
 ## Ops slice (2026-05-13 · Cross-chat SSOT + next schedule)
 
 **채팅은 서로 기억을 공유하지 않는다.** C: 정리·Ollama 경로 등은 **레포 경로만** 새 세션에서 `@docs/final/CURRENT_OPS_SNAPSHOT.md` 또는 아래 스크립트를 연다(말로만 다른 창에 전달해도 재현 불안정).
@@ -2076,7 +2084,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File projects/bitcoin-trading/ops
 - **NotebookLM 소스 Vault 미러:** `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources\` — 레포 SSOT를 반영하려면 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` (마지막 동기 시각은 `vault\notebooklm_sources\_LAST_SYNC.txt`). 옵시디언 맥락까지 복사할 때 `-IncludeObsidianContext`. **권장 리듬:** 작전 전·주 1회 이상(스냅샷·매니페스트 갱신 후).
 - **NotebookLM MCP:** Cursor에 `project-0-workspace-notebooklm-mcp`가 등록되어 있어도 **이 채팅에 도구가 주입되지 않으면** 호출 불가 — `.cursor/rules/notebooklm-mcp-session-bridge.mdc`. 로컬 MCP 툴 디스크립터는 `mcps/project-0-workspace-notebooklm-mcp/tools/` (`source_list`, `notebook_list`, `note`, `source_get_content` 등).
 - **노트북 앵커·소스 목록:** `docs/NotebookLM_sources_manifest.md` 및 본 파일 하단「NotebookLM + Gemini」URL(메인 + **보조 2개**). **클라우드 노트북 안에만 있는 요약**은 이 레포가 자동으로 대체하지 않는다 — 필요 시 NotebookLM에서 소스로 유지하거나, 내보낸 파일을 레포/`notebooklm_sources` 경로에 두고 동기 스크립트로 미러한다。
-- **노트북 전체 목록(서사 정비):** `docs/final/RESEARCH_HISTORY_V1.md` — 계정 소유 노트북 **제목·ID·소스 개수** 스냅샷(MCP `notebook_list`); 구현 SSOT 아님, 갱신 시 재수집。
+- **노트북 목록(서사 정비):** `docs/final/RESEARCH_HISTORY_V1.md` — **현행** MCP 라이브러리 노트·ID·소스 프로브; 2026-04-12 전량(41개) 아카이브는 `docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`. 구현 SSOT 아님, 갱신 시 재수집.
 
 
 ## 코드북 / 코드팩 확장 분기 목표 (SLA 초안 · 자동 삽입)

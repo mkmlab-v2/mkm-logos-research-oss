@@ -3,18 +3,32 @@
 **목적:** 채팅은 맥락을 공유하지 않는다. 본 파일은 **Athena 정체성 + 이론 지문(고효율 압축) + 최소 진행 표**만 둔다.  
 **구분:** `CURRENT_OPS_SNAPSHOT.md` = 일시 핸드오프 · 본 파일 = **지속·정체성 SSOT**(짧게 유지).
 
+### 다중 채팅 핸드오프 (고정, 2026-05-13)
+
+- **Git 누적판(크로스 채팅·머신):** `docs/final/CURRENT_OPS_SNAPSHOT.md` — User Rules 트리거 `핸드오프`/`스냅샷` 시 **이 파일만** 갱신(완료·막힘·다음 3줄 권장); 파일 비대 시 **상단·당일 블록만** 슬림 유지.
+- **로컬 volatile:** `MISSION_LOG.md`(비추적) — DoD·임시; **스냅샷·본 파일과 장문 이중 기술 금지**(역할 분리).
+- **옵시디언:** Fact-Lock·핸드오프 체인에 **필수 아님** — 개인 보조·그래프; 레포 SSOT로 올릴 때만 `CENTRAL`/`CONSTITUTION`/`docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` 등으로 **수동 승격·압축 한 줄**(아래 「옵시디언 볼트 vs 본 파일」절과 동일).
+
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-13T12:00:00Z
+- **last_updated_utc:** 2026-05-14T07:15:07Z
 - **owner:** (선택)
-- **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변)
+- **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`)
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
 - **external_briefing_ref_v2:** `athena_memory_bank_v2.md` (time-series partition + firewall)
 
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-05-14T07:15:07Z** — 핸드오프 SOP CENTRAL 고정: CURRENT_OPS=단일 누적판, MISSION_LOG=로컬 volatile; 옵시디언은 Fact-Lock 필수 아님(개인·수동 승격만).
+- **2026-05-14T06:59:33Z** — Track C §3.7.2 실버 `[DRAFT]` + RQ-009 레포·CENTRAL nl_sync·MISSION_LOG Evidence; 옵시디언 로컬 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`; 다음: 법무 면책·파일럿 KPI·`PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1` 교차
+- **2026-05-14T06:45:44Z** — NotebookLM RESEARCH_HISTORY 현행/아카이브 분리; CENTRAL nl_sync·체크포인트; 매니페스트·MULTI_LENS 4.3·OPS 렌즈 팩·Vault SourceFiles·_pr_sasang_promotion 미러 동기
+- **2026-05-14T06:43:44Z** — Agent Search: query 스크립트 docstring 수정·1-hit 라이브 스모크 OK; 일지 스레드1 반영
+- **2026-05-14T06:42:45Z** — 다중 채팅 일기 파이프+Agent Search 쿼리 snippet 기본화 반영(자동 진행)
+- **2026-05-14T18:00:00Z** — NotebookLM 서사 인덱스 권장안: `RESEARCH_HISTORY_V1.md` **현행**(MCP 라이브러리)·`artifacts/research_history_notebooklm_snapshot_2026-04-12.md` **아카이브**(41); 매니페스트 OPS 행·Vault `$SourceFiles`·`build_notebooklm_lens_source_packs_v1` OPS 팩 동기. 에이전트 출발점은 **현행 파일**만.
+- **2026-05-14T05:00:00Z** — Phase C 권장 고정: `dual-regime-integrity` job **tail**(브리핑 가드 다음~끝) + `live_ratio`/governance invoker 순서는 **CONSTITUTION** §6 **CI tail 포인터** + 워크플로 YAML SSOT; `MULTI_LENS`「CI 잡」·`AGENTS`/`CLAUDE` 보조 번들·`P0_COMMERCIALIZATION_TRACKER` 권장 순서 1)·`mkm-automation-gate` 앵커 동문.
+- **2026-05-14T04:13:04Z** — 연구 인박스: docs/research/RESEARCH_OPEN_QUESTIONS_V1.md 추가, CENTRAL·AGENTS·MULTI_LENS 포인터, 옵시디언 INBOX 노트
 - **2026-05-13T12:00:00Z** — `Invoke-MkmPersonaHealth_v1.ps1 -Persona AramaicDailyReadiness` → `Verify-AramaicMvpDailyTaskReadiness.ps1`; `AGENTS` 페르소나 표·`mkm-automation-gate` Aramaic 점검 한 줄에 페르소나 래퍼 동기.
 - **2026-05-14T04:30:00Z** — CONSTITUTION §6 Aramaic graph pipeline 행·`MULTI_LENS` 번들 절에 dual-regime PR paths(Register/Verify daily) 서술 동기.
 - **2026-05-14T04:15:00Z** — `dual-regime-integrity.yml` paths: `Register-AramaicMvpDailyTask.ps1`·`Verify-AramaicMvpDailyTaskReadiness.ps1` 포함(Aramaic/Track T 스케줄 래퍼 변경 시 CI 재실행).
@@ -27,21 +41,6 @@
 - **2026-05-13T19:00:00Z** — Track T survivor health: `alert_insight_survivor_health_v1` 선택 POST(`INSIGHT_SURVIVOR_HEALTH_ALERT_WEBHOOK_URL`→`OPS_ALARM`)·`--dry-run`·산출 `webhook` 필드·스키마/회귀 보강.
 - **2026-05-14T00:48:42Z** — AGENTS.md: B-track 심층 서술 트리거 + 채점·LoRA 경계 불릿, 커밋 dev f257feb
 - **2026-05-13T18:45:00Z** — Track T `alert_insight_survivor_health_v1`: 히스토리 대비 drift·`--append-history`·스키마 2종·pytest `test_insight_survivor_health_alert_v1`; Aramaic CI/번들 **26**종(이후 **27**으로 확장·스키마 테스트 추가).
-- **2026-05-13T18:30:00Z** — Aramaic §4.7: `tests/test_bible_meaning_insight_survivor_and_cap_bucket_schemas_v1.py`(extract→survivor→cap sweep→history jsonschema)·6 스키마 `verify_p0`·`dual-regime` paths; Fact-Lock 3d2b Aramaic pytest 번들에 포함(CONSTITUTION §6·`run_fact_lock_bundle` 동기).
-- **2026-05-14T00:43:48Z** — Phase C/D: automation_registry Aramaic 3 optional rows + MKM_REQUIRED_NAMES; MULTI_LENS single-tag table; CONSTITUTION drift SSOT row; pytest test_automation_registry_json_v1 OK.
-- **2026-05-14T00:41:24Z** — Aramaic MVP: Register-AramaicMvp* 3 tasks registered on host; Verify-* exit 0 (Ready, correct args).
-- **2026-05-13T20:00:00Z** — Aramaic MVP Windows: `Register-AramaicMvpDailyTask` / `Register-AramaicMvpThresholdWeeklyTask` / `Register-AramaicMvpBridgeCoefWeeklyTask` + `Verify-*` + `Run-AramaicMvp*WeeklyChain_v1.ps1`; CONSTITUTION 표·P0 paths·MULTI_LENS CI-vs-bundle 로드맵(Phase B 완료).
-- **2026-05-14T00:31:45Z** — Fact-Lock dual-regime parity: 3d2a Two-track+Multi-symbol (6), 3d2b Aramaic graph pipeline pytest 세트 확장(이후 25→26종 등으로 갱신); CI+P0+CONSTITUTION+env.example aligned; gitea main pushed (bd94636).
-- **2026-05-13T18:17:55Z** — Aramaic MVP: run_aramaic_mvp_now_with_audit passthrough pytest + CI/P0/CONSTITUTION
-- **2026-05-13T18:13:14Z** — Aramaic MVP: sweep+apply alert thresholds + evaluate_audit_tail helper
-- **2026-05-13T18:06:13Z** — Aramaic MVP: alert_aramaic_mvp_trend_v1 streak + webhook contract
-- **2026-05-13T18:00:42Z** — Aramaic MVP: report_aramaic_mvp_audit_trend_v1.py + pytest + CI/P0
-- **2026-05-13T17:52:03Z** — CONSTITUTION Aramaic MVP: 미배치 스크립트·pytest 표를 디스크와 정합
-- **2026-05-13T17:49:07Z** — 브랜치 workspace-sync로 자동 정리(gitea/main 추적); internal 원격 피처 브랜치는 이미 없음.
-- **2026-05-13T17:29:12Z** — Fact-Lock 번들 3d2·3d3: athena_checkpoint·Logos insight bundle pytest를 meta 봉투 직후에 고정(MULTI_LENS 동기); internal 푸시 d4e93e.
-- **2026-05-13T17:28:04Z** — Logos insight_bundle v1: Track C fusion·Aramaic[14b]·B-track 배선, dual-regime pytest+P0, non_degraded 예시·materialize; internal 푸시 ed65d97.
-- **2026-05-13T17:24:03Z** — internal 푸시·Fact-Lock 번들 exit 0(말미 safe_ops degraded 경고)·MULTI_LENS 브리지 문단 오타 수정 푸시 완료.
-- **2026-05-13T17:19:00Z** — 시맨틱+RAG 번역 브리지 v1: Fact-Lock run_fact_lock_bundle 5c3·dual-regime-integrity CI에 schema+builder pytest 고정; CONSTITUTION 동명 행·INTERNAL v0.2.3·MULTI_LENS worklist 정렬.
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -102,6 +101,13 @@
 | **Cursor `@` (세션 격벽)** | 매매·시장 가설(B-track)·실행 코드 논의 세션에서는 **`SPIRIT/10_Daily_Log`·재무 등 사생활 문서를 `@`로 끌어오지 않는다.** 반면 `OPS/`·`CODING/`·`30_Resources/` 류 **운영·코드 메모**는 동일 세션에서 `@` 참조 가능. |
 
 **안 A 경로 고정(한 볼트):** `memory/obsidian_vault/00_Inbox/` · `SPIRIT/10_Daily_Log/` · `20_Projects/` · `30_Resources/` · `SPIRIT/40_Review/` — 상세 표는 지휘관 확정본을 따른다.
+
+### 연구·아이디어 인박스 (심사·토의 전용)
+
+**목적:** 아직 `CONSTITUTION`·워크리스트·코드에 **고정하지 않은** 열린 주제를 한곳에 모아, 지휘관이 심사한 뒤 채팅에서 토의한다. **인박스 표만으로 구현·통과·본선 반영을 단정하지 않는다.**
+
+- **Git 추적 큐:** `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` — 상태 `OPEN`/`HOLD`/`CLOSED`; 승격 시 `MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md`·`CONSTITUTION`·스크립트·PR로 이관 후 행을 닫거나 삭제한다.
+- **옵시디언(선택):** `memory/obsidian_vault/UNIVERSE_MKm/INBOX_연구_토의큐.md` — 그래프·개인 메모; 레포 큐와 **자동 동기화 없음** (`옵시디언 볼트 vs 본 파일` 절과 동일).
 
 ---
 
