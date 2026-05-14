@@ -7,6 +7,7 @@
 
 - `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — implementation facts; agents must not claim “shipped” from copy alone.
 - `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` — commercialization guardrails (e.g. core-theory protection, public vs private field boundaries, legal copy baselines).
+- `docs/final/TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md` — Topology Radar / Resonance 쇼룸 **1p 청사진**(DRAFT; §3.6 확장; 대외 시 `PUBLIC_FACING`·법무 검토 병행).
 - `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — public billboard vs private cockpit; `public-event.v1` semantics.
 - `docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md` — outward-facing engineering vocabulary for Myeongri; **do not rename code identifiers**.
 - `docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` — section 10–11: mkmlife.com / no1kmedi UI badges, disclaimer IDs, product UX locks; deployment paths Hostinger/VPS are in sections 1–9 of that file (do not mix with jema12 deploy runbooks).

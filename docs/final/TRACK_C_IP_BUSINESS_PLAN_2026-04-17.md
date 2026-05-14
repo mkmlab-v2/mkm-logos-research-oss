@@ -1,7 +1,7 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-11 — **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어 포지션·앵커 OEM 리스크·빅테크 내재화·수직 우선순위·대외 수치 Fact-Lock) 추가. (직전: 2026-05-10 — §3.9·§3.10·M0–M30 렌즈 음악·프롬프트 PoC 체인.)  
+Revised: 2026-05-13 — §3.6 Topology Radar / Resonance 쇼룸 **1p 청사진** SSOT 연결(`docs/final/TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md`). (직전: 2026-05-11 — §3.11 플랫폼 GTM·밸류에이션 냉정 정렬; 2026-05-10 — §3.9·§3.10·M-milestones.)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
@@ -92,6 +92,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - 브랜드 허브/설명 페이지는 `jema-ai.com`에서 연결하되, 실시간성/쇼룸 UI는 `jemaai.cloud`로 집중.
   - `a-codeai.com` 배포는 **정적 랜딩(`/`)과 API(`/v1`, `/health`)를 nginx에서 분리**한다. 운영 예시는 `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example`를 기준으로 한다.
   - **허브→쇼룸 CTA 문구(초안)·분기 SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b — `jema-ai.com` Next 공개 카피 원천은 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`). 공개 보드 **권장 진입**은 `hub_links.showroom_jemaai` → `api.jemaai.cloud` 경로의 `public_showroom_board_minimal.html`(미니멀 정적 보드; `CONSTITUTION`·`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`).
+  - **쇼룸 1p 청사진(초안, DRAFT):** `docs/final/TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md` — 대외 카피·수익 타겟·면책 블록을 **Track C §3.6과 동일 프레임**으로 고정; 배포 전 `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` 및 법무 검토.
 
 ### 3.7 MKM AI — 고신뢰 R&D 검증·가속 인프라 (Value Proposition 전환, 2026-05)
 

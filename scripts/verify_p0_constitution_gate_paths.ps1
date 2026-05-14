@@ -30,6 +30,7 @@ catch {
 # 2026-05-05: MKM_DOMAIN_PORTFOLIO_POINTER_V1.md (도메인×역할×쇼룸 배치 §1.1; P0 존재 게이트).
 # 2026-05-05: TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md (Track C 상용·법무·IP 경계 SSOT; P0 존재 게이트).
 # 2026-05-05: PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md (대외 문서·홈·쇼룸 보안·IP 카피 체크리스트; P0 존재 게이트).
+# 2026-05-13: TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md (§3.6 쇼룸 1p 청사진 DRAFT; P0 존재 게이트).
 # 2026-05-05: MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md (KR 건강·웰빙 대외 카피 가드레일; P0 존재 게이트).
 # 2026-05-05: CENTRAL_AGENT_MEMORY_V1.md (명리 렌즈 고도화 v1 등 장기기억 지문; P0 존재 게이트).
 # 2026-05-05: 명리 core vector v1 schema/test (지장간 배율 엔진 Sprint-1 base vector lock).
@@ -56,6 +57,7 @@ catch {
 # 2026-05-13: Premium B-track multi-lens report v1 (builder, schema+example, offline RAG fixture, pytest; CI dual-regime + Fact-Lock bundle 4b).
 # 2026-05-13: Gematria–Myeongri deterministic math v1 (tools/myeongni module, spike delegate, pytest, isolation doc).
 # 2026-05-14: athena_checkpoint prepend-mode (--max-checkpoints) + pytest regression.
+# 2026-05-14: Sync-PrSasangPromotionMirror_v1.ps1 (PR pack _pr_sasang_promotion mirror from root SSOT).
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 
@@ -110,6 +112,7 @@ $required = @(
     "docs\final\MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
     "docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
     "docs\final\PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+    "docs\final\TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md",
     "docs\final\MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md",
     "docs\final\CENTRAL_AGENT_MEMORY_V1.md",
     "README.md",
@@ -124,6 +127,7 @@ $required = @(
     "tests\test_mkm_trinity_index_v1.py",
     "docs\final\NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md",
     "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1",
+    "scripts\Sync-PrSasangPromotionMirror_v1.ps1",
     "scripts\run_multilens_v2_bridge_policy_snapshot.py",
     "scripts\run_waiting_queue_monthly_check.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md",
@@ -265,6 +269,12 @@ $required = @(
     "tests\fixtures\km_physician_cds_assist_payload_batch_v1.example.jsonl",
     "tests\test_build_km_physician_cds_assist_envelope_v1.py",
     "tests\test_run_km_physician_cds_assist_envelope_batch_v1.py",
+    "docs\final\schemas\patient_care_bundle_v1.schema.json",
+    "docs\final\schemas\patient_care_bundle_v1.minimal.example.json",
+    "tests\fixtures\patient_care_bundle_soap_stub_v1.example.json",
+    "scripts\assemble_patient_care_bundle_with_myeongni_v1.py",
+    "tests\test_patient_care_bundle_v1_schema.py",
+    "tests\test_assemble_patient_care_bundle_with_myeongni_v1.py",
     "scripts\run_myeongri_ai_interpretation_pack_v1.py",
     "scripts\eval_myeongri_rule_school_macro_stub_v1.py",
     "tests\test_eval_myeongri_rule_school_macro_stub_v1.py",
