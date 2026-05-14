@@ -1,8 +1,8 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mkm12.local/schemas/bible_meaning_graph_node_v1.schema.json",
-  "title": "Bible meaning graph node v1 (B-track JSONL row)",
-  "description": "Synthetic theme/regime nodes appended by scripts/build_bible_meaning_graph_v1.py. Verse rows in the same JSONL may remain aramaic_graph_node_v1; this schema applies only to rows with schema bible_meaning_graph_node_v1.",
+  "title": "Bible meaning graph node v1 (JSONL row)",
+  "description": "Theme/regime projection nodes from scripts/build_bible_meaning_graph_v1.py (verse nodes may use aramaic_graph_node_v1 and are not validated by this schema).",
   "type": "object",
   "additionalProperties": true,
   "required": ["schema", "node_id", "kind", "label"],
@@ -18,13 +18,12 @@
     },
     "kind": {
       "type": "string",
-      "minLength": 1,
-      "maxLength": 64
+      "enum": ["theme", "regime", "verse"]
     },
     "label": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 512
+      "maxLength": 256
     }
   }
 }

@@ -12,6 +12,11 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "build_bible_meaning_graph_v1.py"
 
+try:
+    import jsonschema
+except ImportError:  # pragma: no cover
+    jsonschema = None  # type: ignore[assignment]
+
 
 def _verse_node() -> dict:
     return {
@@ -68,3 +73,17 @@ def test_build_bible_meaning_graph_cli_smoke(tmp_path: Path) -> None:
     assert len(elines) >= 2
     kinds = {json.loads(ln).get("kind") for ln in nlines if json.loads(ln).get("schema") == "bible_meaning_graph_node_v1"}
     assert "theme" in kinds and "regime" in kinds
+    if jsonschema is not None:
+        ns = json.loads(
+            (ROOT / "docs/final/schemas/bible_meaning_graph_node_v1.schema.json").read_text(encoding="utf-8")
+        )
+        es = json.loads(
+            (ROOT / "docs/final/schemas/bible_meaning_graph_edge_v1.schema.json").read_text(encoding="utf-8")
+        )
+        for ln in nlines:
+            o = json.loads(ln)
+            sch = o.get("schema")
+            if sch == "bible_meaning_graph_node_v1":
+                jsonschema.validate(instance=o, schema=ns)
+            elif sch == "bible_meaning_graph_edge_v1":
+                jsonschema.validate(instance=o, schema=es)
