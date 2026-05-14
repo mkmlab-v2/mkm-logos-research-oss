@@ -256,6 +256,7 @@ $aramaicBtrackGraphPipelineSmokePytests = @(
     (Join-Path $workspaceRoot 'tests\test_insight_survivor_health_alert_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_insight_survivor_health_alert_schema_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_showroom_topology_radar_snapshot_schema_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_showroom_topology_radar_snapshot_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_weight_sweep_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_aramaic_regime_shift_shadow_compare_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py')
@@ -290,6 +291,7 @@ $kmPhysicianCdsEnvelopeTests = @(
     (Join-Path $workspaceRoot 'tests\test_run_km_physician_cds_assist_envelope_batch_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_patient_care_bundle_v1_schema.py'),
     (Join-Path $workspaceRoot 'tests\test_assemble_patient_care_bundle_with_myeongni_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_patient_care_bundle_from_km_cds_chain_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_automation_registry_json_v1.py')
 )
 $myeongniLensRecommendedPytests = @(

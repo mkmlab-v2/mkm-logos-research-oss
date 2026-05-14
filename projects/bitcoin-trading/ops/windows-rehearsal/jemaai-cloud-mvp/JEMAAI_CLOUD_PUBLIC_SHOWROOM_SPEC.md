@@ -79,7 +79,7 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 
 ### 4.2 Showroom bundle (레포 자동화, v1)
 
-- **Track C 원클릭 체인 (권장):** `scripts/build_showroom_track_c_bundle_chain_v1.ps1` — (1) `build_logos_track_c_freshness_sidecar_v1.py`로 신선도 사이드카 갱신 → (2) `build_showroom_display_bundle.ps1` → (3) `validate_showroom_public_bundle.py`. 선택: `-SkipFreshnessSidecar`, `-SkipValidate`.
+- **Track C 원클릭 체인 (권장):** `scripts/build_showroom_track_c_bundle_chain_v1.ps1` — (1) `build_logos_track_c_freshness_sidecar_v1.py`로 신선도 사이드카 갱신 → (2) `build_showroom_topology_radar_snapshot_v1.py`로 Topology Radar 스냅샷(`docs/final/artifacts/showroom_topology_radar_snapshot_v1_latest.json`; 기본 스텁 ref 허용, 엄격 모드 `-TopologyRadarSnapshotStrict`) → (3) `build_showroom_display_bundle.ps1` → (4) `validate_showroom_public_bundle.py`. 선택: `-SkipFreshnessSidecar`, `-SkipTopologyRadarSnapshot`, `-SkipValidate`.
 - **빌더 (단독):** `projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1` — C2·퓨전·런타임 헬스에서 `public-event.v1` 페이로드 + `observability` 메타를 합성한다(Logos 그래프 메타·신선도 필드는 디스크의 최신 아티팩트를 읽음).
 - **산출:** `docs/final/artifacts/showroom_public_bundle_v1.json` (SSOT), `jemaai-cloud-mvp/showroom_public_bundle_v1.json` (웹 루트 배포본과 동기화).
 - **검증:** `scripts/validate_showroom_public_bundle.py` — 필수 키·면책 ref·공개 레인 민감 토큰 차단.
@@ -104,7 +104,7 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 | **스냅샷 계약** | `docs/final/schemas/showroom_topology_radar_snapshot_v1.schema.json` + example — 필수 `no_trade_signals: true`, `disclaimer_ref`는 §3 표와 동일 계열(`jemaai_showroom_v1` 등)로 맞춘다. |
 | **출력** | 정적 HTML·폴링 JSON 또는 `public-event.v1` **선택 확장 필드**로만 반영한다. **매수·매도·레버리지·실행 지시** 문구·필드 **금지**. |
 | **금지 응답** | “내일 오른다/내린다”, 확정 예언, 알파 보장, 의료·종교 단정, NotebookLM·채팅 브리핑만의 구현 완료 주장. |
-| **배선** | 1차: `build_showroom_track_c_bundle_chain_v1.ps1` → `showroom_public_bundle_v1.json` 경로와 병행해 스냅샷만 별도 정적 자산으로 두어도 된다(게이트웨이와 **직접 주문 결합 금지**는 본 SPEC §1·§6과 동일). |
+| **배선** | 1차: `build_showroom_track_c_bundle_chain_v1.ps1`가 `showroom_topology_radar_snapshot_v1_latest.json`을 emit한 뒤 `showroom_public_bundle_v1.json` 경로와 병행해 스냅샷만 별도 정적 자산으로 두어도 된다(게이트웨이와 **직접 주문 결합 금지**는 본 SPEC §1·§6과 동일). |
 
 **Fact-Lock:** 구현·게이트 경로는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 `scripts/verify_p0_constitution_gate_paths.ps1`와 동기 후 확장한다.
 

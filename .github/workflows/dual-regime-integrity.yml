@@ -649,6 +649,8 @@ on:
       - "docs/final/schemas/showroom_topology_radar_snapshot_v1.schema.json"
       - "docs/final/schemas/showroom_topology_radar_snapshot_v1.example.json"
       - "tests/test_showroom_topology_radar_snapshot_schema_v1.py"
+      - "scripts/build_showroom_topology_radar_snapshot_v1.py"
+      - "tests/test_build_showroom_topology_radar_snapshot_v1.py"
       - "tests/test_aramaic_regime_shift_weight_sweep_v1.py"
       - "tests/test_aramaic_regime_shift_shadow_compare_v1.py"
       - "tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py"
@@ -706,8 +708,10 @@ on:
       - "docs/final/schemas/patient_care_bundle_v1.minimal.example.json"
       - "tests/fixtures/patient_care_bundle_soap_stub_v1.example.json"
       - "scripts/assemble_patient_care_bundle_with_myeongni_v1.py"
+      - "scripts/build_patient_care_bundle_from_km_cds_chain_v1.py"
       - "tests/test_patient_care_bundle_v1_schema.py"
       - "tests/test_assemble_patient_care_bundle_with_myeongni_v1.py"
+      - "tests/test_build_patient_care_bundle_from_km_cds_chain_v1.py"
       - "tests/test_automation_registry_json_v1.py"
       - "scripts/run_myeongri_ai_interpretation_pack_v1.py"
       - "scripts/eval_myeongri_rule_school_macro_stub_v1.py"
@@ -1256,7 +1260,7 @@ jobs:
             -q --tb=short
 
       - name: Aramaic B-track graph pipeline smoke (corpus, audit, alerts, threshold sweep/apply, audit PS1 passthrough, graph, score, semantic, bridge, meaning graph, insight survivor, cap bucket, drift alert schema, insight/cap jsonschema chain, Track T survivor health + schema, Topology Radar showroom snapshot schema, weight/shadow, bridge coef)
-        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py tests/test_report_aramaic_mvp_audit_trend_v1.py tests/test_alert_aramaic_mvp_trend_v1.py tests/test_sweep_aramaic_mvp_alert_thresholds_v1.py tests/test_apply_aramaic_mvp_alert_threshold_recommendation_v1.py tests/test_run_aramaic_mvp_now_with_audit_passthrough_v1.py tests/test_aramaic_graph_schema_v1.py tests/test_aramaic_edge_builder_v1.py tests/test_aramaic_regime_shift_score_v1.py tests/test_aramaic_semantic_edge_quality_v1.py tests/test_build_aramaic_cross_corpus_bridge_v1.py tests/test_bible_meaning_graph_schema_v1.py tests/test_build_bible_meaning_graph_v1.py tests/test_extract_bible_meaning_insight_candidates_v1.py tests/test_build_insight_survivor_eval_v1.py tests/test_select_insight_survivor_candidates_v1.py tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py tests/test_report_aramaic_insight_cap_threshold_history_v1.py tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py tests/test_aramaic_insight_cap_threshold_drift_alert_schema_v1.py tests/test_bible_meaning_insight_survivor_and_cap_bucket_schemas_v1.py tests/test_insight_survivor_health_alert_v1.py tests/test_insight_survivor_health_alert_schema_v1.py tests/test_showroom_topology_radar_snapshot_schema_v1.py tests/test_aramaic_regime_shift_weight_sweep_v1.py tests/test_aramaic_regime_shift_shadow_compare_v1.py tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py -q --tb=short
+        run: python -m pytest tests/test_extract_aramaic_core_corpus_v1.py tests/test_report_aramaic_mvp_audit_trend_v1.py tests/test_alert_aramaic_mvp_trend_v1.py tests/test_sweep_aramaic_mvp_alert_thresholds_v1.py tests/test_apply_aramaic_mvp_alert_threshold_recommendation_v1.py tests/test_run_aramaic_mvp_now_with_audit_passthrough_v1.py tests/test_aramaic_graph_schema_v1.py tests/test_aramaic_edge_builder_v1.py tests/test_aramaic_regime_shift_score_v1.py tests/test_aramaic_semantic_edge_quality_v1.py tests/test_build_aramaic_cross_corpus_bridge_v1.py tests/test_bible_meaning_graph_schema_v1.py tests/test_build_bible_meaning_graph_v1.py tests/test_extract_bible_meaning_insight_candidates_v1.py tests/test_build_insight_survivor_eval_v1.py tests/test_select_insight_survivor_candidates_v1.py tests/test_sweep_aramaic_insight_cap_bucket_thresholds_v1.py tests/test_apply_aramaic_insight_cap_bucket_threshold_recommendation_v1.py tests/test_report_aramaic_insight_cap_threshold_history_v1.py tests/test_alert_aramaic_insight_cap_threshold_drift_v1.py tests/test_aramaic_insight_cap_threshold_drift_alert_schema_v1.py tests/test_bible_meaning_insight_survivor_and_cap_bucket_schemas_v1.py tests/test_insight_survivor_health_alert_v1.py tests/test_insight_survivor_health_alert_schema_v1.py tests/test_showroom_topology_radar_snapshot_schema_v1.py tests/test_build_showroom_topology_radar_snapshot_v1.py tests/test_aramaic_regime_shift_weight_sweep_v1.py tests/test_aramaic_regime_shift_shadow_compare_v1.py tests/test_apply_aramaic_regime_shift_bridge_coef_recommendation_v1.py -q --tb=short
 
       - name: Logos insight bundle v1 (schema + build CLI)
         run: python -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py -q --tb=short
@@ -1299,6 +1303,7 @@ jobs:
             tests/test_run_km_physician_cds_assist_envelope_batch_v1.py \
             tests/test_patient_care_bundle_v1_schema.py \
             tests/test_assemble_patient_care_bundle_with_myeongni_v1.py \
+            tests/test_build_patient_care_bundle_from_km_cds_chain_v1.py \
             tests/test_automation_registry_json_v1.py \
             -q --tb=short
 

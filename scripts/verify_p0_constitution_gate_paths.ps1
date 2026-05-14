@@ -30,7 +30,7 @@ catch {
 # 2026-05-05: MKM_DOMAIN_PORTFOLIO_POINTER_V1.md (도메인×역할×쇼룸 배치 §1.1; P0 존재 게이트).
 # 2026-05-05: TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md (Track C 상용·법무·IP 경계 SSOT; P0 존재 게이트).
 # 2026-05-05: PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md (대외 문서·홈·쇼룸 보안·IP 카피 체크리스트; P0 존재 게이트).
-# 2026-05-13: TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md + showroom_topology_radar_snapshot_v1 schema/example/pytest + JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC §4.4.
+# 2026-05-13: TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md + showroom_topology_radar_snapshot_v1 schema/example/pytest + emit CLI + JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC §4.4.
 # 2026-05-05: MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md (KR 건강·웰빙 대외 카피 가드레일; P0 존재 게이트).
 # 2026-05-05: CENTRAL_AGENT_MEMORY_V1.md (명리 렌즈 고도화 v1 등 장기기억 지문; P0 존재 게이트).
 # 2026-05-05: 명리 core vector v1 schema/test (지장간 배율 엔진 Sprint-1 base vector lock).
@@ -272,8 +272,10 @@ $required = @(
     "docs\final\schemas\patient_care_bundle_v1.minimal.example.json",
     "tests\fixtures\patient_care_bundle_soap_stub_v1.example.json",
     "scripts\assemble_patient_care_bundle_with_myeongni_v1.py",
+    "scripts\build_patient_care_bundle_from_km_cds_chain_v1.py",
     "tests\test_patient_care_bundle_v1_schema.py",
     "tests\test_assemble_patient_care_bundle_with_myeongni_v1.py",
+    "tests\test_build_patient_care_bundle_from_km_cds_chain_v1.py",
     "scripts\run_myeongri_ai_interpretation_pack_v1.py",
     "scripts\eval_myeongri_rule_school_macro_stub_v1.py",
     "tests\test_eval_myeongri_rule_school_macro_stub_v1.py",
@@ -336,6 +338,8 @@ $required = @(
     "docs\final\schemas\showroom_topology_radar_snapshot_v1.schema.json",
     "docs\final\schemas\showroom_topology_radar_snapshot_v1.example.json",
     "tests\test_showroom_topology_radar_snapshot_schema_v1.py",
+    "scripts\build_showroom_topology_radar_snapshot_v1.py",
+    "tests\test_build_showroom_topology_radar_snapshot_v1.py",
     "docs\final\schemas\mkm_user_context_v1.schema.json",
     "docs\final\schemas\mkm_compressed_payload_v1.schema.json",
     "scripts\check_news_label_join_temporal_v1.py",
