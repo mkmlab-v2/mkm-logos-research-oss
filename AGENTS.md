@@ -362,7 +362,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - **하이브리드 대시보드 스펙(SSOT):** `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — 공개(전광판) vs 비공개(조종실), `public-event.v1` 필드·경계선.
 - **MVP 게이트웨이:** `public_event_gateway.py` — `GET/POST` 경로·토큰은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 동 디렉터리 nginx 예시 참고.
 - **로컬 융합 점검 (비배포):** `scripts/run_jemaai_cloud_completion_chain.ps1` — Fact-Lock·Thin·BTC 앵커·P1(기본)·MVP 파일 존재 확인; `-SkipP1AB`로 P1 생략. VPS/nginx 반영은 본선 일정에서 수동.
-- **쇼룸 정적 → VPS (워크스페이스 루트에서):** `pwsh .\scripts\sync_showroom_to_vps.ps1 -RefreshStaging` — 래퍼가 `projects/bitcoin-trading/ops/windows-rehearsal/sync_showroom_to_vps.ps1`로 위임. `sync_showroom_to_vps.ps1`만 입력하면 PATH에 없어 실패할 수 있음. scp 비밀번호 반복 완화: User 환경에 `MKM_VPS_SCP_EXTRA_ARGS`(예: `-i` 키경로); 업로드 후 nginx 자동 reload는 `JEMAAI_VPS_RELOAD_NGINX=1`일 때만(의도 확인 후). 상세 표: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`(Showroom VPS 전송 행).
+- **쇼룸 정적 → VPS (워크스페이스 루트에서):** `pwsh .\scripts\sync_showroom_to_vps.ps1 -RefreshStaging` — 래퍼가 `projects/bitcoin-trading/ops/windows-rehearsal/sync_showroom_to_vps.ps1`로 위임. `sync_showroom_to_vps.ps1`만 입력하면 PATH에 없어 실패할 수 있음. scp 비밀번호 반복 완화: User 환경에 `MKM_VPS_SCP_EXTRA_ARGS`(예: `-i` 키경로); 업로드 후 nginx 자동 reload는 `JEMAAI_VPS_RELOAD_NGINX=1`일 때만(의도 확인 후). 상세 표: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`(Showroom VPS 전송 행). **주간 권장(수동, Task Scheduler 생략 기본):** `docs/final/MKM_SHOWROOM_OPS_AND_PACK0B_WORK_SCHEDULE_V1.md` Phase 3 한 줄 블록.
 
 ## SSH Cursor · VPS 실매매 (전제)
 

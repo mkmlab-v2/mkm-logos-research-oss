@@ -56,10 +56,20 @@
 
 **목표:** 주간/일일로 체인만 재실행해도 되도록 **스케줄 또는 문서상 루틴** 고정.
 
-- [ ] Task Scheduler 등록 여부 결정(등록 시 작업명·인자 `build_showroom_track_c_bundle_chain_v1.ps1` 기록)  
-- [ ] 또는: `AGENTS.md` / 본 문서에 **수동 루틴 요일**만 고정  
+- [ ] Task Scheduler: **미등록 기본(권장)** — 필요 시에만 등록(작업명·인자 `build_showroom_track_c_bundle_chain_v1.ps1` 또는 아래 원클릭과 동일 동작인 `sync_showroom_to_vps.ps1 -RefreshStaging` 기록).  
+- [x] 문서상 **권장 수동 루틴** 고정(본 절 아래 블록).
 
-**완료 조건:** “누가 언제 어떤 명령”이 한 블록으로 적힘.
+**완료 조건:** “누가 언제 어떤 명령”이 한 블록으로 적힘。
+
+**권장 루틴 v1 (수동, 주 1회):** **운영자(지휘관 PC)** · **매주 월요일 로컬 작업 시작 시**(또는 Track C 공개면 갱신 직전) · 모노레포 루트 `C:\workspace`에서 **한 줄**:
+
+```text
+pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -WorkspaceRoot c:\workspace -RefreshStaging -SkipDotenvUserSync
+```
+
+- `-RefreshStaging`: `build_showroom_track_c_bundle_chain_v1.ps1` → `deploy_showroom_static.ps1` → `scp`까지 연쇄(`sync_showroom_to_vps.ps1` 본문 SSOT).  
+- `-SkipDotenvUserSync`: User 환경에 `MKM_VPS_*`·`MKM_VPS_SCP_EXTRA_ARGS`가 이미 맞춰진 PC 기본. **`.env`에서 VPS 관련 키를 바꾼 직후**에는 생략하지 말고(동 스크립트 기본 선행) `sync_required_env_to_user.ps1` 한 번 또는 본 명령에서 `-SkipDotenvUserSync` 제거.  
+- 점검: `Invoke-WebRequest -Uri "https://jemaai.cloud/public_showroom_poll.html" -Method Head` → **200**(도메인·경로는 배포 SSOT와 정합 시).
 
 ---
 
@@ -109,6 +119,7 @@
 |------------|-------|------|
 | 2026-05-14 | 1 | 예: 로컬 체인 exit 0, topology ref_count=5 |
 | 2026-05-14 | 2 | `sync_showroom_to_vps.ps1` scp OK; `Test-HasIdentityArgs` `$args`→`$ScpLeadingArgs` fix; `https://jemaai.cloud/public_showroom_poll.html` HEAD 200 |
+| 2026-05-14 | 3 | 권장=문서 수동 루틴: 주 1회 `sync_showroom_to_vps.ps1 -RefreshStaging`(Phase 3 DoD) |
 
 ---
 
