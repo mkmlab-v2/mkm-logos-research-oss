@@ -127,6 +127,9 @@ pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/sync_showroom_to_vps.ps1 -
 | 2026-05-14 | 3 | 권장=문서 수동 루틴: 주 1회 `sync_showroom_to_vps.ps1 -RefreshStaging`(Phase 3 DoD) |
 | 2026-05-16 | 0 | Control-Integrity smoke 7 passed; `verify_p0` 719 OK; 워킹트리 쇼룸 스테이징 추적 파일은 HEAD 기준 복원(로컬 체인 잡음 제거) |
 | 2026-05-16 | 2 | §4.1: `POST/GET` localhost `8788` ingest+latest(User token); 격리 포트 `18788` 동 바이너리 스모크 |
+| 2026-05-14 | 2 | 융합: `sync_showroom_to_vps` exit 0 → `/var/www/jemaai/`(poll·board_minimal·bundle·topology); nginx reload 생략(`JEMAAI_VPS_RELOAD_NGINX` 미설정); prod `board_minimal?nocache=1` QA 그리드 OK(degraded/WARNING/HOLD·Radar·요약, `riskPillClass` 수정본 확인); **소액 매매 VPS 설정 변경 없음**; nginx 변경 시 env=1 후 재동기 권장 |
+| 2026-05-14 | 2 | Process `JEMAAI_VPS_RELOAD_NGINX=1` + `sync_showroom_to_vps` (staging만): scp OK → `ssh` `sudo nginx -t && systemctl reload nginx` **exit 0**; `nginx: syntax is ok` / `test is successful` — 사이트별 기존 `protocol options redefined for :443` **warn** 다수(치명 아님); `jemaai.cloud` poll **HEAD 200** |
+| 2026-05-14 | 2 | `sync_showroom_to_vps.ps1` 개선: 단일 `scp`에 **Trust viz HTML/JSON + probabilistic saju HTML + saju hour bundle JSON** 포함(staging에 있을 때, `deploy_showroom_static` 8파일과 정합); `-RefreshStaging`+reload 실행 **exit 0**; `jemaai.cloud` 위 4경로 + poll 각 **HEAD 200** |
 | 2026-05-14 | 4 | Pack 0-B bulk: `build_myeongri_deterministic_lora_golden_bulk_v1.py` N=1000 K=100 `dataset_version=v1-2026-05-14`; manifest+sha256 |
 | 2026-05-14 | 5 | `eval_myeongri…` train→`myeongri_deterministic_lora_golden_fit_latest.json`; locked→`myeongri_deterministic_lora_golden_fit_locked_eval_latest.json` 각 ok |
 | 2026-05-14 | 6 | 프로파일 SSOT 확인; pytest 12(0-B+promotion bundle); `run_pack0b…` fixture convert/eval+`golden_fit_smoke` train config — 전량 학습 GO 보류 |

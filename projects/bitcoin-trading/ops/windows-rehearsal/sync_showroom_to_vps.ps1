@@ -1,4 +1,4 @@
-# Push local showroom static assets (poll + minimal board + bundle JSON) to VPS web root via scp (OpenSSH).
+# Push local showroom static assets (full `deploy_showroom_static` staging set when present) to VPS web root via scp (OpenSSH).
 #
 # Prereq: Windows OpenSSH Client (scp/ssh on PATH).
 #
@@ -62,6 +62,10 @@ $html = Join-Path $staging "public_showroom_poll.html"
 $htmlMinimal = Join-Path $staging "public_showroom_board_minimal.html"
 $json = Join-Path $staging "showroom_public_bundle_v1.json"
 $jsonTopology = Join-Path $staging "showroom_topology_radar_snapshot_v1_latest.json"
+$htmlTrust = Join-Path $staging "public_showroom_trust_visualization_v0.html"
+$jsonTrust = Join-Path $staging "showroom_trust_visualization_slice_v0.json"
+$htmlSaju = Join-Path $staging "public_showroom_probabilistic_saju_v1.html"
+$jsonSaju = Join-Path $staging "showroom_saju_hour_bundle_demo_v1.json"
 
 if ($RefreshStaging) {
     Write-Host "[showroom-vps-sync] RefreshStaging: track_c chain -> deploy_showroom_static" -ForegroundColor Cyan
@@ -134,6 +138,18 @@ function Invoke-ScpShowroomPair {
         $argv += $jsonTopology
     } else {
         Write-Host "[showroom-vps-sync] topology snapshot not in staging (optional): $jsonTopology" -ForegroundColor DarkGray
+    }
+    foreach ($pair in @(
+            @{ Path = $htmlTrust; Label = "trust viz HTML" },
+            @{ Path = $jsonTrust; Label = "trust viz JSON" },
+            @{ Path = $htmlSaju; Label = "probabilistic saju HTML" },
+            @{ Path = $jsonSaju; Label = "saju hour bundle JSON" }
+        )) {
+        if (Test-Path -LiteralPath $pair.Path) {
+            $argv += $pair.Path
+        } else {
+            Write-Host "[showroom-vps-sync] $($pair.Label) not in staging (optional): $($pair.Path)" -ForegroundColor DarkGray
+        }
     }
     $argv += $remoteDir
     if ($DryRun) {
