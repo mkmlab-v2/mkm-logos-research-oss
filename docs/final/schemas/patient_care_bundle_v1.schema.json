@@ -1,0 +1,259 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/patient_care_bundle_v1.schema.json",
+  "title": "Patient-facing care bundle with clinical SOAP and MKM lens slots v1",
+  "description": "Physician-final opinion drives clinical_soap_v1 and patient_slots. Lens slots (sasang, myeongni, logos) are reference-only and must not gate clinical conclusions. Aligns with AGENTS lens contract: sasang short rhythm, myeongni mid-term [HYPO], logos [NON_GATING].",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "bundle_id",
+    "generated_at_utc",
+    "boundary_contract",
+    "clinical_soap_v1",
+    "patient_slots",
+    "disclaimers"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "patient_care_bundle_v1"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^1\\."
+    },
+    "bundle_id": {
+      "type": "string",
+      "minLength": 8,
+      "description": "Stable id for this bundle (UUID or institution encounter key)."
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "generator_id": { "type": "string", "maxLength": 256 },
+        "generator_version": { "type": "string", "maxLength": 64 },
+        "physician_opinion_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Optional: hash of UTF-8 physician final text fed to AI."
+        },
+        "encounter_ref": { "type": "string", "maxLength": 256 },
+        "myeongni_report_path": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Optional filesystem or vault pointer to myeongni_full_report_v1 JSON."
+        },
+        "km_cds_envelope_path": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Optional workspace-relative path to km_physician_cds_assist_envelope_v1 JSON used upstream."
+        },
+        "km_cds_envelope_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$",
+          "description": "Optional SHA-256 of the CDS envelope JSON file bytes."
+        },
+        "slot_templates_applied_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+          "description": "When --apply-slot-templates ran successfully on this bundle."
+        },
+        "slot_templates_json_path": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Workspace-relative path to slot templates JSON used."
+        },
+        "generation_policy_validated_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+          "description": "When validate_patient_care_bundle_against_policy_v1 passed."
+        },
+        "generation_policy_json_path": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Workspace-relative path to generation policy JSON used."
+        },
+        "patient_facing_markdown_written_utc": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T",
+          "description": "When render_patient_care_bundle_markdown_v1 wrote the MD file."
+        },
+        "patient_facing_markdown_path": {
+          "type": "string",
+          "maxLength": 512,
+          "description": "Workspace-relative path to rendered patient-facing Markdown."
+        }
+      }
+    },
+    "boundary_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "physician_final_authority",
+        "clinical_slots_separate_from_lens",
+        "myeongni_hypo_only",
+        "logos_non_gating_only"
+      ],
+      "properties": {
+        "physician_final_authority": { "type": "boolean", "const": true },
+        "clinical_slots_separate_from_lens": { "type": "boolean", "const": true },
+        "myeongni_hypo_only": { "type": "boolean", "const": true },
+        "logos_non_gating_only": { "type": "boolean", "const": true }
+      }
+    },
+    "clinical_soap_v1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjective", "objective", "assessment", "plan"],
+      "properties": {
+        "subjective": { "$ref": "#/definitions/soap_field" },
+        "objective": { "$ref": "#/definitions/soap_field" },
+        "assessment": { "$ref": "#/definitions/soap_field" },
+        "plan": { "$ref": "#/definitions/soap_field" }
+      }
+    },
+    "patient_slots": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "Exactly four items: slot_id core, sasang, myeongni_ref, logos_opt each once; slot_order 0..3 matches display order.",
+      "items": { "$ref": "#/definitions/patient_slot" },
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": ["slot_id"],
+            "properties": { "slot_id": { "const": "core" } }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["slot_id"],
+            "properties": { "slot_id": { "const": "sasang" } }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["slot_id"],
+            "properties": { "slot_id": { "const": "myeongni_ref" } }
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["slot_id"],
+            "properties": { "slot_id": { "const": "logos_opt" } }
+          }
+        }
+      ]
+    },
+    "disclaimers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 16, "maxLength": 2000 }
+    }
+  },
+  "definitions": {
+    "soap_field": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text"],
+      "properties": {
+        "text": { "type": "string", "maxLength": 16000 }
+      }
+    },
+    "patient_slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot_order",
+        "slot_id",
+        "trust_tier",
+        "included",
+        "title",
+        "body_markdown"
+      ],
+      "properties": {
+        "slot_order": { "type": "integer", "minimum": 0, "maximum": 3 },
+        "slot_id": {
+          "type": "string",
+          "enum": ["core", "sasang", "myeongni_ref", "logos_opt"]
+        },
+        "trust_tier": {
+          "type": "string",
+          "enum": ["clinical_reference", "hypo_reference", "non_gating_symbolic"]
+        },
+        "included": { "type": "boolean" },
+        "title": { "type": "string", "maxLength": 200 },
+        "body_markdown": { "type": "string", "maxLength": 12000 },
+        "non_gating_ack": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Required when slot_id=logos_opt and included=true."
+        },
+        "hypo_ack": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "Required when slot_id=myeongni_ref and included=true."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "slot_id": { "const": "logos_opt" }, "included": { "const": true } },
+            "required": ["slot_id", "included"]
+          },
+          "then": { "required": ["non_gating_ack"] }
+        },
+        {
+          "if": {
+            "properties": { "slot_id": { "const": "myeongni_ref" }, "included": { "const": true } },
+            "required": ["slot_id", "included"]
+          },
+          "then": { "required": ["hypo_ack"] }
+        },
+        {
+          "if": {
+            "properties": { "slot_id": { "const": "core" } },
+            "required": ["slot_id"]
+          },
+          "then": {
+            "properties": {
+              "trust_tier": { "const": "clinical_reference" },
+              "included": { "const": true }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": { "slot_id": { "const": "sasang" } },
+            "required": ["slot_id"]
+          },
+          "then": { "properties": { "trust_tier": { "const": "clinical_reference" } } }
+        },
+        {
+          "if": {
+            "properties": { "slot_id": { "const": "myeongni_ref" } },
+            "required": ["slot_id"]
+          },
+          "then": { "properties": { "trust_tier": { "const": "hypo_reference" } } }
+        },
+        {
+          "if": {
+            "properties": { "slot_id": { "const": "logos_opt" } },
+            "required": ["slot_id"]
+          },
+          "then": { "properties": { "trust_tier": { "const": "non_gating_symbolic" } } }
+        }
+      ]
+    }
+  }
+}

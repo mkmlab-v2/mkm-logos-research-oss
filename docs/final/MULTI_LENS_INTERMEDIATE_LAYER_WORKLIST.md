@@ -49,7 +49,7 @@
 |---|------|------|------|
 | 4.1 | B-track `note`·`[HYPO]` — ENTRY_11 패턴 유지 | [x] | `CROSS_REF`·NL 반증 박제 |
 | 4.2 | A-track·실매매·트레이딩 로더 — **본 경로 기본 로드 금지** (CONSTITUTION §4·§8) | [x] | 정책 문서; 승격 시 PR |
-| 4.3 | NotebookLM / vault — **중복 소스 제거**, `docs/NotebookLM_sources_manifest.md` 준수 | [x] | `-WhatIf` 점검: 중복 0건 (2026-03-30) |
+| 4.3 | NotebookLM / vault — **중복 소스 제거**, `docs/NotebookLM_sources_manifest.md` 준수 | [x] | `-WhatIf` 점검: 중복 0건 (2026-03-30). **2026-05-14:** 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`=MCP **현행**만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault sync·OPS 렌즈 팩에 현행 인덱스 반영. |
 | 4.4 | `ENTRY_07/08/16` 외부 판본 대기 큐 운영 전환 | [x] | `docs/final/CROSS_REF_CITATION_ANCHOR_EVIDENCE_CHECKLIST_2026-03-30.md`의 "외부 판본 대기 큐" 섹션 참조 |
 | 4.5 | 대기 큐 모니터링 주기 고정(월 1회/소스 공지 이벤트) | [x] | 대기 큐 재시도는 신규 근거 소스 등장 시에만 실행 |
 | 4.6 | 월간 점검 명령 템플릿 고정 | [x] | 체크리스트에 Windows 실행 템플릿 추가 |
@@ -57,6 +57,8 @@
 | 4.8 | 월간 점검 실행 로그(JSONL) 누적 운영 | [x] | `docs/final/artifacts/waiting_queue_monthly_check_log.jsonl`에 skip/full 1회 이상 기록 |
 | 4.9 | 월간 점검 후 ENTRY16 summary 계약 테스트 유지 | [x] | `tests/test_entry16_source_hunt_summary.py`로 출력 계약 고정 |
 | 4.10 | ENTRY16 승격 게이트 리포트/계약 테스트 유지 (Direct + Proxy Manual 경로) | [x] | `scripts/evaluate_entry16_promotion_gate.py` + `tests/test_entry16_promotion_gate.py` |
+
+**연구·정책 큐(Phase 4 밖):** Track C 실버 UX·면책·B2G 경계는 `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (`OPEN`). `patient_care_bundle_v1`(CONSTITUTION §9)은 **엔지니어링** 템플릿·정책·MD·P0·`PUBLIC_FACING` §3 cross-check까지 배선; **법무·파일럿 KPI 동결**은 RQ-009 토의 후 `CLOSED`/이관.
 
 ---
 
@@ -83,13 +85,13 @@ powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\run_fac
 번들만(스모크+Fact-Lock, integrity 생략 시 `-SkipIntegrityGuard`):  
 `Set-Location C:\workspace\projects\bitcoin-trading` 후 `.\ops\v2\tasks\run_prophecy_alignment_pytest.ps1`.
 
-`dual-regime-integrity`와 동일한 워크스페이스 테스트를 포함하려면 위 스크립트가 **최신**인지 확인한다 (`CONSTITUTION` §6 표).
+`dual-regime-integrity`와 동일한 워크스페이스 테스트를 포함하려면 위 스크립트가 **최신**인지 확인한다 (`CONSTITUTION` §6 표·**CI tail 포인터 행** + `.github/workflows/dual-regime-integrity.yml` 순서 SSOT). **`_pr_sasang_promotion` 미러**를 루트와 맞출 때는 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Sync-PrSasangPromotionMirror_v1.ps1`(루트 `AGENTS.md` 등 고정 목록 복사; P0 경로에 스크립트 포함). 선택: `run_workspace_automation_health.ps1 -IncludePrSasangPromotionMirrorSync` 또는 `-PrSasangPromotionMirrorSyncOnly`.
 
 사상–사주 조인트 문헌·큐레이트 파이프라인(Europe PMC 픽스처·오프라인 회귀 7 + **승인 출처** `data/myeongni/curated_saju_joint_v1.jsonl` 인제스트 1)은 `run_fact_lock_bundle.ps1` **기본**에 포함된다. 생략: **로컬 번들만** `-SkipSasangSajuJointLiteraturePipeline`(GitHub `dual-regime-integrity.yml` CI 단계에는 해당 스킵 플래그 없음·전체 회귀 고정). **끝단 staleness(선택 생략):** `-SkipCuratedJointStalenessCheck` — 큐레이트 시각(`ingest_at_utc`·행 없으면 파일 mtime) vs `docs/final/artifacts/myeongni_celebrity_hit_rate_v1.json` `generated_at_utc` 24h 초과 시 `STALE` 기록 · `scripts/check_curated_saju_joint_staleness_v1.py`·`reports/curated_saju_joint_staleness_v1_latest.json`. 스크립트·데이터·pytest는 `CONSTITUTION` 표 **「사상체질↔문헌↔사주 조인트」**·동 워크플로를 본다.
 
 MKM Control-Integrity Golden/LoRA 파이프라인 스모크(`tests/test_mkm_control_integrity_pipeline_smoke_v1.py`)는 `run_fact_lock_bundle.ps1` **기본**에 포함된다(번들 주석 5d). 로컬만 생략: `-SkipMkmControlIntegritySmoke`. SSOT: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.2.1.
 
-**Athena CENTRAL 체크포인트·Two-track/Multi-symbol·Aramaic·Logos insight bundle v1:** `tests/test_athena_checkpoint.py` 다음에 CI `dual-regime-integrity.yml`과 동일 **Two-track submission pack**(pytest 3)·**Multi-symbol gates**(pytest 3) — `scripts/run_fact_lock_bundle.ps1` 기본 **3d2a**(생략 `-SkipTwoTrackSubmissionAndMultiSymbolSmoke`)·이어 Aramaic 단계와 동일 **27**개 pytest(**3d2b**; 생략 `-SkipAramaicBtrackGraphPipelineSmoke`)·`tests/test_logos_insight_bundle_schema_v1.py`·`tests/test_build_logos_insight_bundle_v1.py`(**3d3**). CI Athena §28·Two-track·Multi-symbol·Aramaic·Logos 단계와 정합. **dual-regime PR paths:** Aramaic 블록에 Windows 일일 예약 래퍼 `scripts/Register-AramaicMvpDailyTask.ps1`·`scripts/Verify-AramaicMvpDailyTaskReadiness.ps1` 포함(Track T survivor dry-run 인자·readiness 출력 변경 시 CI 재실행). non-degraded 스키마 예: `docs/final/schemas/logos_insight_bundle_v1.non_degraded.example.json`, 재생성 `py scripts/materialize_logos_insight_bundle_non_degraded_example_v1.py`.
+**Athena CENTRAL 체크포인트·Two-track/Multi-symbol·Aramaic·Logos insight bundle v1:** `tests/test_athena_checkpoint.py` 직후 로컬 번들 전용 **3d2c**(`test_run_vertex_gemini_agent_search_context_v1.py`; Vertex Agent Search 명시적 RAG 헬퍼·오프라인; `-SkipVertexAgentSearchContextUnit`·GitHub `dual-regime-integrity.yml` 미포함)·**3d2d**(`test_athena_daily_thread_log_sync_v1.py`; 다중 채팅 일기 MD 병합·오프라인; `-SkipDailyThreadWorkLogUnit`)·이어 CI `dual-regime-integrity.yml`과 동일 **Two-track submission pack**(pytest 3)·**Multi-symbol gates**(pytest 3) — `scripts/run_fact_lock_bundle.ps1` 기본 **3d2a**(생략 `-SkipTwoTrackSubmissionAndMultiSymbolSmoke`)·이어 Aramaic 단계와 동일 **27**개 pytest(**3d2b**; 생략 `-SkipAramaicBtrackGraphPipelineSmoke`)·`tests/test_logos_insight_bundle_schema_v1.py`·`tests/test_build_logos_insight_bundle_v1.py`(**3d3**). CI Athena §28·Two-track·Multi-symbol·Aramaic·Logos 단계와 정합. **dual-regime PR paths:** Aramaic 블록에 Windows 일일 예약 래퍼 `scripts/Register-AramaicMvpDailyTask.ps1`·`scripts/Verify-AramaicMvpDailyTaskReadiness.ps1` 포함(Track T survivor dry-run 인자·readiness 출력 변경 시 CI 재실행). non-degraded 스키마 예: `docs/final/schemas/logos_insight_bundle_v1.non_degraded.example.json`, 재생성 `py scripts/materialize_logos_insight_bundle_non_degraded_example_v1.py`.
 
 **Track C macro fusion smoke (헬스 전용, 번들 밖):** `scripts/run_workspace_automation_health.ps1 -IncludeTrackCMacroFusionSmoke` 또는 `-TrackCMacroFusionSmokeOnly` — Invoke에 `-SkipGateAlert -SkipExodusSourceFetch` 고정. Logos `build_logos_insight_bundle_v1.py` 생략: **`-SkipLogosInsightBundle`** 또는 User/머신 **`MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE`** truthy. SSOT: `CONSTITUTION` §1.3.1 표.
 
@@ -105,6 +107,8 @@ B-track 세션 시각 명리 패널·날씨/OHLCV 조인·상관 회귀(4 pytest
 ---
 
 ## CI 잡(`dual-regime-integrity`) vs Fact-Lock 번들 격차 로드맵 [VISION]
+
+**CI tail (Phase C 권장):** `MKM personal briefing guardrails` **다음** 스텝부터 job 끝까지의 **순서·묶음**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6 **CI tail 포인터 행**과 `.github/workflows/dual-regime-integrity.yml`만 전개 SSOT로 둔다(§6 표에 tail 전 스텝을 1:1 나열하지 않음).
 
 `scripts/run_fact_lock_bundle.ps1` 상단 `.DESCRIPTION`이 범위 SSOT다. 아래는 **1:1 동치를 목표로 하지 않는** 나머지를 주차 단위로 밀어붙일 때의 고정 분해다(날짜는 달력 아닌 **상대 순서**).
 
@@ -150,3 +154,9 @@ B-track 세션 시각 명리 패널·날씨/OHLCV 조인·상관 회귀(4 pytest
 | `[NON-MEDICAL]` | 비의료 고지 | 명리·사상·체질 문맥이 Phase 표에 포함되므로, 대외 인용 시 의료 효능·진단 주장과 분리 |
 
 본 작업 리스트의 Phase 표는 위 라벨로 읽는다: `[x]` 체크와 테스트·경로가 붙은 행은 `[FACT]`에 가깝고, 격벽·승격 경계 문장은 `[VISION]`, 위성 코퍼스·테이블 미기입은 `[HYPO]`다.
+
+---
+
+## 연구·아이디어 인박스 (심사·토의 전용)
+
+Phase 표·본 문서의 **잠금 완료 범위와 혼동 금지.** 아직 표에 올리지 않은 가설·정책·우선순위 토의는 `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md`에만 적고, 합의 후 이 워크리스트·`CONSTITUTION`·코드로 **승격**한다.

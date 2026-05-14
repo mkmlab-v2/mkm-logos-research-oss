@@ -1,0 +1,62 @@
+{
+  "schema": "patient_care_bundle_v1",
+  "version": "1.0.0",
+  "bundle_id": "00000000-0000-4000-8000-000000000001",
+  "generated_at_utc": "2026-05-14T12:00:00Z",
+  "provenance": {
+    "generator_id": "km_ai_stub",
+    "generator_version": "0.0.0"
+  },
+  "boundary_contract": {
+    "physician_final_authority": true,
+    "clinical_slots_separate_from_lens": true,
+    "myeongni_hypo_only": true,
+    "logos_non_gating_only": true
+  },
+  "clinical_soap_v1": {
+    "subjective": { "text": "주관: 환자 주소 및 증상 요약(한의사 확정)." },
+    "objective": { "text": "객관: 진찰·맥진·설문 등 관찰(한의사 확정)." },
+    "assessment": { "text": "평가: 변증·소견(한의사 확정)." },
+    "plan": { "text": "계획: 처방·침구·생활지도·재방문(한의사 확정)." }
+  },
+  "patient_slots": [
+    {
+      "slot_order": 0,
+      "slot_id": "core",
+      "trust_tier": "clinical_reference",
+      "included": true,
+      "title": "진료 요약 및 생활 안내",
+      "body_markdown": "한의사 소견을 바탕으로 한 쉬운 말 요약입니다. 복약·식이·운동·재방문은 담당 한의사 지시를 따르십시오."
+    },
+    {
+      "slot_order": 1,
+      "slot_id": "sasang",
+      "trust_tier": "clinical_reference",
+      "included": true,
+      "title": "체질·생활 리듬 (사상의학)",
+      "body_markdown": "한의사가 승인한 체질별 일상 조절(수면·식사·운동 강도)만 기재합니다."
+    },
+    {
+      "slot_order": 2,
+      "slot_id": "myeongni_ref",
+      "trust_tier": "hypo_reference",
+      "included": true,
+      "title": "일정·마음 참고 [HYPO]",
+      "hypo_ack": "[HYPO] 명리는 임상 예후·임신 성공을 예측하지 않습니다. 캘린더·심리 정리용입니다.",
+      "body_markdown": "[HYPO] 세운·월운 표는 `build_myeongni_full_report_v1` 산출을 인용할 수 있습니다."
+    },
+    {
+      "slot_order": 3,
+      "slot_id": "logos_opt",
+      "trust_tier": "non_gating_symbolic",
+      "included": false,
+      "title": "선택 해설 (Logos)",
+      "non_gating_ack": "[NON_GATING] 임상 결정을 바꾸지 않는 상징적·가치 정렬 문구만 허용.",
+      "body_markdown": ""
+    }
+  ],
+  "disclaimers": [
+    "본 문서는 참고용이며 응급 처치를 대체하지 않습니다. 증상 악화 시 의료기관에 내원하십시오.",
+    "명리·Logos 슬롯은 [HYPO]/[NON_GATING]이며 진단·치료·임신 시기 예측 근거가 될 수 없습니다."
+  ]
+}

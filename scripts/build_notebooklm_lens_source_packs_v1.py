@@ -25,6 +25,7 @@ PACKS: dict[str, list[str]] = {
         "docs/final/CURRENT_OPS_SNAPSHOT.md",
         "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
         "docs/final/P0_COMMERCIALIZATION_TRACKER.md",
+        "docs/final/RESEARCH_HISTORY_V1.md",
     ],
     "TRACKC_BIZ": [
         "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",

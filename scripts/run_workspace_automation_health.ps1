@@ -30,7 +30,7 @@ param(
     # Optional: package_b chain smoke (v1 lens + v2 balanced/attack + margins summary).
     [switch]$IncludeMyeongniPackageBSmoke,
 
-    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / McpHygieneProbeOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly / VaFusionControlIntegritySmokeOnly / PremiumBtrackMultilensReportSmokeOnly profiles).
+    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / McpHygieneProbeOnly / PrSasangPromotionMirrorSyncOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly / VaFusionControlIntegritySmokeOnly / PremiumBtrackMultilensReportSmokeOnly profiles).
     [switch]$SkipNewsObservationContractSmoke,
 
     # Optional: Run-BTrackDomainFeedbackSmoke.ps1 — general_prophecy pytest + weather triplet + news (if default news smoke already ran in this session, wrapper uses -SkipNews).
@@ -133,6 +133,11 @@ param(
     # Shortcut profile: P0 + MCP probe only (skip vault/memory/phase1/news/reconcile by default).
     [switch]$McpHygieneProbeOnly,
 
+    # Optional: copy root SSOT slice into _pr_sasang_promotion (Sync-PrSasangPromotionMirror_v1.ps1; runs after P0).
+    [switch]$IncludePrSasangPromotionMirrorSync,
+    # Shortcut profile: P0 + _pr_sasang_promotion mirror only (then exit 0).
+    [switch]$PrSasangPromotionMirrorSyncOnly,
+
     # Optional: VPS SSH disk smoke (Invoke-VpsOpsSmoke_v1.ps1; unset MKM_VPS_HOST = skip).
     [switch]$IncludeVpsOpsSmoke,
     # With IncludeVpsOpsSmoke: SSH failure fails health (default is SoftFail).
@@ -229,8 +234,17 @@ if ($McpHygieneProbeOnly) {
     $IncludeBTrackDomainFeedbackSmoke = $false
 }
 
+if ($PrSasangPromotionMirrorSyncOnly) {
+    $IncludePrSasangPromotionMirrorSync = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $IncludeBTrackDomainFeedbackSmoke = $false
+}
+
 # Recommended default: run SafeOps on full health runs; shortcut profiles skip unless explicit Include* / IncludeWithVps.
-$shortcutForSafeOps = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly
+$shortcutForSafeOps = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $PrSasangPromotionMirrorSyncOnly
 $runSafeOps = $false
 $runSafeOpsWithVps = $false
 if (-not $SkipSafeOpsSurfaceCheck) {
@@ -241,7 +255,7 @@ if (-not $SkipSafeOpsSurfaceCheck) {
     elseif ($IncludeSafeOpsSurfaceCheck) {
         $runSafeOps = $true
     }
-    elseif (-not $shortcutForSafeOps -and -not $McpHygieneProbeOnly) {
+    elseif (-not $shortcutForSafeOps -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly) {
         $runSafeOps = $true
     }
 }
@@ -320,6 +334,26 @@ try {
         Step "P0 / CONSTITUTION paths" {
             & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
         }
+    }
+
+    if ($IncludePrSasangPromotionMirrorSync) {
+        $mirrorSync = Join-Path $root "scripts\Sync-PrSasangPromotionMirror_v1.ps1"
+        if (Test-Path -LiteralPath $mirrorSync) {
+            Step "_pr_sasang_promotion SSOT mirror (Sync-PrSasangPromotionMirror_v1)" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $mirrorSync -WorkspaceRoot $root
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== _pr_sasang_promotion SSOT mirror ===" -ForegroundColor Yellow
+            Write-Host "SKIP: Sync-PrSasangPromotionMirror_v1.ps1 not found"
+        }
+    }
+
+    if ($PrSasangPromotionMirrorSyncOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] PrSasangPromotionMirrorSyncOnly: finished after P0 + mirror sync." -ForegroundColor Green
+        exit 0
     }
 
     if ($IncludeMcpHygieneProbe) {
@@ -425,7 +459,7 @@ try {
         exit 0
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly) {
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -439,7 +473,7 @@ try {
         }
     }
 
-    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly
+    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly
     if ($IncludeBTrackDomainFeedbackSmoke -and -not $btProfileSkip) {
         $bt = Join-Path $root "scripts\Run-BTrackDomainFeedbackSmoke.ps1"
         if (Test-Path -LiteralPath $bt) {
@@ -522,7 +556,7 @@ try {
         }
     }
 
-    if (-not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly) {
+    if (-not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly) {
         Write-Host ""
         Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
         $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"
@@ -738,10 +772,14 @@ try {
         $cds1 = Join-Path $root "tests\test_km_physician_cds_assist_envelope_v1.py"
         $cds2 = Join-Path $root "tests\test_build_km_physician_cds_assist_envelope_v1.py"
         $cds3 = Join-Path $root "tests\test_run_km_physician_cds_assist_envelope_batch_v1.py"
-        $cds4 = Join-Path $root "tests\test_automation_registry_json_v1.py"
-        if ((Test-Path -LiteralPath $cds1) -and (Test-Path -LiteralPath $cds2) -and (Test-Path -LiteralPath $cds3) -and (Test-Path -LiteralPath $cds4)) {
-            Step "KM physician CDS assist envelope v1 (schema + builder + JSONL batch + automation registry pytest; dual-regime / fact-lock parity)" {
-                & py -m pytest $cds1 $cds2 $cds3 $cds4 -q --tb=short
+        $cds4 = Join-Path $root "tests\test_patient_care_bundle_v1_schema.py"
+        $cds5 = Join-Path $root "tests\test_assemble_patient_care_bundle_with_myeongni_v1.py"
+        $cds6 = Join-Path $root "tests\test_build_patient_care_bundle_from_km_cds_chain_v1.py"
+        $cds7 = Join-Path $root "tests\test_patient_care_bundle_templates_policy_render_v1.py"
+        $cds8 = Join-Path $root "tests\test_automation_registry_json_v1.py"
+        if ((Test-Path -LiteralPath $cds1) -and (Test-Path -LiteralPath $cds2) -and (Test-Path -LiteralPath $cds3) -and (Test-Path -LiteralPath $cds4) -and (Test-Path -LiteralPath $cds5) -and (Test-Path -LiteralPath $cds6) -and (Test-Path -LiteralPath $cds7) -and (Test-Path -LiteralPath $cds8)) {
+            Step "KM physician CDS assist envelope v1 (schema + builder + JSONL batch + patient_care_bundle_v1 + CDS chain + automation registry pytest; dual-regime / fact-lock parity)" {
+                & py -m pytest $cds1 $cds2 $cds3 $cds4 $cds5 $cds6 $cds7 $cds8 -q --tb=short
             }
         }
         else {

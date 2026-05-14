@@ -27,6 +27,7 @@ on:
       - "scripts/run_fact_lock_bundle.ps1"
       - "scripts/invoke_build_integrated_governance_if_deps_present_v1.py"
       - "scripts/verify_p0_constitution_gate_paths.ps1"
+      - "scripts/Sync-PrSasangPromotionMirror_v1.ps1"
       - "scripts/build_mkm_promotion_gate_evidence_bundle_v1.py"
       - "docs/final/artifacts/mkm_promotion_gate_evidence_bundle_v1.json"
       - "docs/final/artifacts/MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json"
@@ -708,10 +709,17 @@ on:
       - "docs/final/schemas/patient_care_bundle_v1.minimal.example.json"
       - "tests/fixtures/patient_care_bundle_soap_stub_v1.example.json"
       - "scripts/assemble_patient_care_bundle_with_myeongni_v1.py"
+      - "scripts/Invoke-PatientCareBundleAssemblePatientFacing_v1.ps1"
       - "scripts/build_patient_care_bundle_from_km_cds_chain_v1.py"
       - "tests/test_patient_care_bundle_v1_schema.py"
       - "tests/test_assemble_patient_care_bundle_with_myeongni_v1.py"
       - "tests/test_build_patient_care_bundle_from_km_cds_chain_v1.py"
+      - "docs/final/artifacts/patient_care_bundle_slot_templates_ko_v1.json"
+      - "docs/final/artifacts/patient_care_bundle_generation_policy_v1.default.json"
+      - "scripts/apply_patient_care_bundle_slot_templates_v1.py"
+      - "scripts/validate_patient_care_bundle_against_policy_v1.py"
+      - "scripts/render_patient_care_bundle_markdown_v1.py"
+      - "tests/test_patient_care_bundle_templates_policy_render_v1.py"
       - "tests/test_automation_registry_json_v1.py"
       - "scripts/run_myeongri_ai_interpretation_pack_v1.py"
       - "scripts/eval_myeongri_rule_school_macro_stub_v1.py"
@@ -1242,6 +1250,7 @@ jobs:
 
       # Doc: steps from the next job through workflow end are summarized as the "CI tail" pointer row in
       # docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §6 (order SSOT remains this file).
+      # Note: _pr_sasang_promotion SSOT mirror (Sync-PrSasangPromotionMirror_v1.ps1, run_workspace_automation_health -IncludePrSasangPromotionMirrorSync) is Windows/local health only — not a step here.
 
       - name: Two-track submission pack (evidence bundle + draft + camera-ready JSON builders)
         run: |
@@ -1304,6 +1313,7 @@ jobs:
             tests/test_patient_care_bundle_v1_schema.py \
             tests/test_assemble_patient_care_bundle_with_myeongni_v1.py \
             tests/test_build_patient_care_bundle_from_km_cds_chain_v1.py \
+            tests/test_patient_care_bundle_templates_policy_render_v1.py \
             tests/test_automation_registry_json_v1.py \
             -q --tb=short
 

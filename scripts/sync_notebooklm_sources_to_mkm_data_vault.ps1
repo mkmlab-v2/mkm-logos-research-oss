@@ -92,6 +92,7 @@ if (-not $WhatIf) {
 $SourceFiles = @(
     "docs\NotebookLM_sources_manifest.md",
     "docs\final\CURRENT_OPS_SNAPSHOT.md",
+    "docs\final\artifacts\ops_snapshot_body_archive_2026-05-15.md",
     "docs\final\AI_MYEONGNI_MANSE_EXTERNAL_REFERENCE_LANDSCAPE_2026-03-29.md",
     "docs\final\CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
     "docs\final\MKM12_PRISM_INDEX_REGISTRY_V1.json",
@@ -102,6 +103,7 @@ $SourceFiles = @(
     "docs\final\COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md",
     "docs\final\MKM_CORE_THEORY_V1.md",
     "docs\final\RESEARCH_HISTORY_V1.md",
+    "docs\final\artifacts\research_history_notebooklm_snapshot_2026-04-12.md",
     "docs\final\openapi_token_compression_stub_v1.yaml",
     "docs\final\STATE16_INTERFACE_INSERTION_CONTRACT_2026-03-31.md",
     "docs\final\MASTER_Linguistic_Contract_2026.md",
