@@ -6,12 +6,12 @@
 
 **Thread:** Cursor — 지휘관 **「진행해」** → **Trust Visualization v0** 로드맵을 스냅샷에 장전(서브에이전트·**별 브랜치** 병렬 가이드 포함).
 
-- **완료:** Stream **1** — `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`(§3.6)·`PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`(§3)에 **Visualization v0** Fact-Lock·`[NON_GATING]`·아티팩트 근거형 역참조; `CENTRAL_AGENT_MEMORY_V1.md` 체크포인트. Stream **2** — `append_stt_routing_audit_log_v1.py` / `summarize_stt_routing_audit_log_v1.py`·롤업 필드·`verify_p0`·`dual-regime`·`tests/test_append_stt_routing_audit_log_v1.py`·`tests/test_stt_routing_audit_log_schema_v1.py`. Stream **3** — `build_showroom_trust_visualization_slice_v1.py`·`public_showroom_trust_visualization_v0.html`·체인 **(5/5)**·`deploy_showroom_static.ps1`·`.gitignore` 생성 JSON; **`gitea/main`** 반영(Visualization v0 + STT 롤업 + 쇼룸 thin 커밋선).
+- **완료:** Stream **1** — `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`(§3.6)·`PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`(§3)에 **Visualization v0** Fact-Lock·`[NON_GATING]`·아티팩트 근거형 역참조; `CENTRAL_AGENT_MEMORY_V1.md` 체크포인트. Stream **2** — `append_stt_routing_audit_log_v1.py` / `summarize_stt_routing_audit_log_v1.py`·롤업 필드·`verify_p0`·`dual-regime`·`tests/test_append_stt_routing_audit_log_v1.py`·`tests/test_stt_routing_audit_log_schema_v1.py`·**로컬** `reports/stt_routing_audit_log_v1.jsonl` 샘플 2행 append + `stt_routing_audit_log_v1_summary_latest.json` 갱신(비추적). Stream **3** — `build_showroom_trust_visualization_slice_v1.py`·`public_showroom_trust_visualization_v0.html`·체인 **(5/5)**·`deploy_showroom_static.ps1`·`.gitignore` 생성 JSON; **`gitea/main`** 반영(Visualization v0 + STT 롤업 + 쇼룸 thin 커밋선).
 - **막힘:** 없음.
 - **`[목표]` Visualization v0:** 파이프 **1사이클**(COGS·감사·법무 게이트) **재현 후**, `Field→Lens(사상/명리/Logos)→Conflict→Final` 조율을 **감사 로그에 정렬된 읽기 전용 패널**로 시각화(Logos는 **`[NON_GATING]`** 해설 레이어). **Track C 쇼룸**은 **동일 스키마의 thin 시연 슬롯**만 연계(**본선·연구 격벽 유지**).
 - **Streams (병렬 권장 / 직렬):**
   1. **직렬·SSOT** — `CURRENT_OPS` / `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` / `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` 문구·DoD 한 줄; `CENTRAL` 체크포인트(`py scripts/athena_checkpoint.py "…"`). **한 채팅** 권장.
-  2. **병렬 A·감사** — STT 경로 **상륙 완료**; 남은 인간 과제: 실측 append·운영 JSONL·COGS 출처(실버 템플릿 `docs/research/silver_tech_cogs_unit_economics_template_v1.md`).
+  2. **병렬 A·감사** — STT 경로 **상륙 완료**; **로컬** `append`×2 + `summarize` 루프는 실측 샘플로 재현 가능(`silver_tech_cogs…` §Stream 2). **잔여(인간·운영):** 프로덕션 JSONL 적재·호스트별 청구서 기반 **COGS 표 월소계**·법무(D).
   3. **병렬 B·쇼룸** — thin HTML/슬라이스·배포 스크립트 **상륙 완료**; Phase 2 스테이징·VPS는 **`MKM_SHOWROOM_OPS_AND_PACK0B_WORK_SCHEDULE_V1.md`**·지휘관 확정 호스트로 수동.
   4. **통합·게이트** — `verify_p0`·`dual-regime`에 STT+스키마+쇼룸 pytest **3파일**·`run_fact_lock_bundle.ps1` **3d3a** 정합; 선택 `Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1`.
 

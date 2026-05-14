@@ -44,6 +44,20 @@
 
 ---
 
+## Stream 2 — 로컬 실측 루프 (감사 JSONL, 비커밋)
+
+산출 기본 경로는 루트 **`reports/`** (`.gitignore`의 `reports/**` — 로컬·재현용; 본선 동결 아티팩트와 혼동 금지).
+
+```text
+py scripts/append_stt_routing_audit_log_v1.py --route local --audio-ms 1200 --pii-redaction not_applicable --hypothesis-tag "[HYPO]"
+py scripts/append_stt_routing_audit_log_v1.py --route vendor --audio-ms 3400 --provider google_stt --latency-ms 420 --pii-redaction redacted_full --hypothesis-tag "[HYPO]"
+py scripts/summarize_stt_routing_audit_log_v1.py
+```
+
+스키마만 확인할 때는 각 행 앞에 `--dry-run`으로 stdout 한 줄 JSON 검증. **COGS 표의 월소계·금액**은 여전히 청구서·실측 후에만 채움(위 루프는 **감사 필드·집계 파이프** 검증용).
+
+---
+
 ## 하이브리드 STT — 감사 로그 (SSOT)
 
 **Normative:** `docs/final/schemas/stt_routing_audit_log_v1.schema.json` · `docs/final/schemas/stt_routing_audit_log_v1.minimal.example.json` · `tests/test_stt_routing_audit_log_schema_v1.py`. **금액·견적은 로그에 넣지 않음.**
@@ -67,4 +81,4 @@
 ## 메타
 
 - **schema:** `silver_tech_cogs_unit_economics_template_v1`
-- **last_updated_utc:** 2026-05-14 — COGS·KPI **근거·출처** 열·시나리오 라벨 정의 채움; 금액·목표 수치는 실측·법무(RQ-009) 후.
+- **last_updated_utc:** 2026-05-16 — §Stream 2 로컬 append×2 + summarize 루프 명령 고정; COGS·KPI **금액·목표 수치**는 실측·법무(RQ-009) 후.

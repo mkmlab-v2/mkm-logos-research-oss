@@ -1,7 +1,7 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a). (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
+Revised: 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
@@ -166,6 +166,7 @@ MKM AI가 제공하는 것은 **정답 생성기**가 아니라, 엔터프라이
 
 본 서비스가 제공하는 일일 요약·건강·감정 브리핑은 **참고용 비임상 관측**이며, 의료법상 **진단·치료·처방을 대체하지 않는다**. 위급 상황에 대한 최종 판단과 법적 책임은 **이용자 및 보호자**에게 있다.
 
+- **내부 확장 초안 패킷 (`[DRAFT]`):** `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` — KR/EN 복붙·법무 인테이크 체크리스트; 법무 확정 전 **대외 최종 문구로 단정 사용 금지**.
 - **법무 후 동결:** 최종 대외 복붙 문구는 **법무 검토 확정 후**에만 “최종 SSOT”로 취급한다; 검토 전에는 **`[DRAFT]`** 유지.
 
 ### 3.8 B2B 우선 상용화 · 기업용 매크로 조기 경보 구독 (2026-05)
