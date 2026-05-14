@@ -105,13 +105,14 @@ if (-not [string]::IsNullOrWhiteSpace($extraRaw)) {
     $extraArgs = $extraRaw -split "\s+" | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
 }
 
-function Test-HasIdentityArgs([string[]]$args) {
-    for ($i = 0; $i -lt $args.Count; $i++) {
-        $arg = $args[$i]
+# Do not name the parameter $args — it collides with PowerShell's automatic $args and breaks -args binding.
+function Test-HasIdentityArgs([string[]]$ScpLeadingArgs) {
+    for ($i = 0; $i -lt $ScpLeadingArgs.Count; $i++) {
+        $arg = $ScpLeadingArgs[$i]
         if ($arg -eq "-i") { return $true }
         if ($arg -like "-i*") { return $true }
-        if ($arg -eq "-o" -and ($i + 1) -lt $args.Count) {
-            $next = $args[$i + 1]
+        if ($arg -eq "-o" -and ($i + 1) -lt $ScpLeadingArgs.Count) {
+            $next = $ScpLeadingArgs[$i + 1]
             if ($next -like "IdentityFile=*") { return $true }
         }
         if ($arg -like "IdentityFile=*") { return $true }
@@ -139,7 +140,7 @@ function Invoke-ScpShowroomPair {
         Write-Host "[showroom-vps-sync] DRYRUN scp $($argv -join ' ')"
         return
     }
-    $hasIdentity = Test-HasIdentityArgs -args $extraArgs
+    $hasIdentity = Test-HasIdentityArgs -ScpLeadingArgs $extraArgs
     if (-not $AllowPasswordPrompt -and -not $hasIdentity) {
         throw "[showroom-vps-sync] blocked: non-interactive mode requires key auth. Set MKM_VPS_SCP_EXTRA_ARGS (e.g. '-i C:\Users\<user>\.ssh\id_ed25519') or re-run with -AllowPasswordPrompt."
     }
