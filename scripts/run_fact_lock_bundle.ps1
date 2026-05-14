@@ -70,6 +70,9 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1
 
 .EXAMPLE
+  원클릭 Ops(본 번들 + 예언 클로저 + VPS 쇼룸 + pytest·Pack0-B·체크포인트): `pwsh -NoProfile -ExecutionPolicy Bypass -File scripts\Run-MkmOpsFullPush_v1.ps1` (빠른 스모크: `-SkipFactLock`)
+
+.EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_fact_lock_bundle.ps1 -SkipIntegrityGuard
 
 .EXAMPLE
@@ -159,6 +162,9 @@
 .PARAMETER SkipSafeOpsSurfaceCheck
   말미 권장 단계 `Invoke-SafeOpsSurfaceCheck.ps1`(운영 표면·신선도·Verify-Trading) 생략.
 
+.PARAMETER SafeOpsIgnoreLiveSync
+  말미 SafeOps 호출에 `-IgnoreLiveSync`를 넘긴다(VPS live_sync 미러 없는 로컬에서 stale 경고만 억제; 예언 클로저 `-SkipLiveSyncPull`과 동일 선상).
+
 .PARAMETER SkipIntegratedGovernanceBuild
   `Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1` 생략(기본: KOSPI 게이트·config가 모두 있으면 `--validate-digest-schema`로 갱신).
 
@@ -223,6 +229,9 @@ param(
 
     # Recommended tail: Invoke-SafeOpsSurfaceCheck.ps1 after pytest bundle (exit 2 fails; exit 1 warns only).
     [switch]$SkipSafeOpsSurfaceCheck,
+
+    # Pass -IgnoreLiveSync to SafeOps tail (pairs with prophecy closure -SkipLiveSyncPull; avoids local stale live_sync/daemon WARN).
+    [switch]$SafeOpsIgnoreLiveSync,
 
     # Integrated governance rebuild when deps exist (see Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1).
     [switch]$SkipIntegratedGovernanceBuild
@@ -891,7 +900,9 @@ if (-not $SkipSafeOpsSurfaceCheck) {
     $safeOpsTail = Join-Path $workspaceRoot 'scripts\Invoke-SafeOpsSurfaceCheck.ps1'
     if (Test-Path -LiteralPath $safeOpsTail) {
         Write-Host '== Fact-Lock (recommended tail): Safe ops surface check ==' -ForegroundColor Cyan
-        & powershell -NoProfile -ExecutionPolicy Bypass -File $safeOpsTail -WorkspaceRoot $workspaceRoot
+        $safeOpsCli = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $safeOpsTail, '-WorkspaceRoot', $workspaceRoot)
+        if ($SafeOpsIgnoreLiveSync) { $safeOpsCli += '-IgnoreLiveSync' }
+        & powershell @safeOpsCli
         $safeTailExit = $LASTEXITCODE
         if ($safeTailExit -eq 2) {
             Write-Host 'FAIL: Safe ops surface CRITICAL (exit 2). See reports/safe_ops_surface_check_latest.json' -ForegroundColor Red

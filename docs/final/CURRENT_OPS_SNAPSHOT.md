@@ -2,6 +2,14 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-17 · Session handoff — RQ-010·원격 동기·채팅 종료)
+
+**Thread:** Cursor — 지휘관 **스냅샷 후 채팅 종료** 여부.
+
+- **완료:** `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-010** 행 + **IR·제안서 한 줄 초안**(KO/EN, `[HYPO]`); `git push gitea dev:main`으로 **`gitea/main`** 최신선 동기(로컬 `dev`와 동일 커밋).
+- **막힘:** 없음.
+- **다음:** 선택 — 워킹트리만 더러운 `docs/final/artifacts/logos_s1_shadow_promotion_human_approval_latest.json`·`reports/agent_decisions_log.jsonl`는 의도 없으면 `git restore`; **GPU** Pack0-B 실학습·**RQ-009** 법무(D)·실측 KPI는 휴먼 게이트.
+
 ## Ops slice (2026-05-14 · Autonomous ops chain — STT·gates·예언 클로저)
 
 **Thread:** Cursor — 지휘관 **「순서대로·권장안으로 쭉 밀어」** → 로컬 잡음 정리 후 권장 검증 번들.
