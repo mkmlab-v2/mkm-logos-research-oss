@@ -1,6 +1,6 @@
 {
   "schema": "integrated_governance_v1",
-  "generated_at_utc": "2026-04-28T19:35:03Z",
+  "generated_at_utc": "2026-05-14T14:40:41Z",
   "input_artifacts": {
     "config": "C:\\workspace\\docs\\final\\artifacts\\integrated_governance_config_v1.json",
     "biblical_core_gate": "C:\\workspace\\docs\\final\\artifacts\\kospi_biblical_single_lane_commercial_gate_v1_latest.json",
@@ -30,5 +30,19 @@
   "final_action_allowed": true,
   "is_fallback": false,
   "final_score": 0.50023,
-  "veto_reason_codes": []
+  "veto_reason_codes": [],
+  "lens_music_m31_operational_digest_v1": {
+    "schema": "lens_music_m31_operational_digest_v1",
+    "present": true,
+    "trend_schema": "lens_music_hormone_trend_v1",
+    "trend_state": "GO",
+    "trend_high_stress_rate": 0.0,
+    "trend_max_consecutive_high_stress": 0,
+    "trend_mean_rag_metabolism_bounded_drift_0_1": null,
+    "trend_rows_with_rag_drift": null,
+    "promotion_decision": "B_TRACK_RESEARCH_PROMOTION_READY",
+    "m31_hormone_guard_passed": true,
+    "m31_hormone_guard_reason": "ok",
+    "non_biological_notice": "metaphor_only_advisory_controller"
+  }
 }

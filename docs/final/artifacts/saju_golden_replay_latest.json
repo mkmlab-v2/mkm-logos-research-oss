@@ -1,6 +1,6 @@
 {
   "schema": "saju_golden_replay_report_v1",
-  "generated_at_utc": "2026-05-05T05:10:16Z",
+  "generated_at_utc": "2026-05-14T14:38:51Z",
   "fixture_path": "C:\\workspace\\tests\\fixtures\\saju_golden_cases_v1.json",
   "summary": {
     "total": 6,
@@ -89,12 +89,26 @@
     {
       "id": "kr_confirmed_zi23_policy_1973_1210_2331",
       "expected": {
-        "status": "CONFIRMED"
+        "status": "REVIEW",
+        "reasons_contains": [
+          "pillar_mismatch_between_engines"
+        ]
       },
       "actual": {
-        "status": "CONFIRMED",
-        "reasons": [],
-        "pillar_diffs": {}
+        "status": "REVIEW",
+        "reasons": [
+          "pillar_mismatch_between_engines"
+        ],
+        "pillar_diffs": {
+          "day": {
+            "primary": "신사",
+            "secondary": "경진"
+          },
+          "hour": {
+            "primary": "무자",
+            "secondary": "병자"
+          }
+        }
       },
       "pass": true
     }
