@@ -22,7 +22,7 @@
 
 **웹 전용(미등록 · MCP `search_notebooks` TRACKC/MASTER 빈 결과, 2026-05-14):** `00_MASTER_TRACKC_BOARD_2026Q2` — 웹에서 Track C 보드로 운영 중이나 **MCP 로컬 라이브러리에는 없음**; 공유 URL 확보 후 `add_notebook` 권장.
 
-**Ops MCP `ask_question` 타임아웃(2026-05-14):** `select_notebook` → Ops 활성화 후 `browser_options.timeout_ms=120000`에도 `Timeout waiting for response from NotebookLM` 재현 — 웹 UI에서 동일 노트 채팅 정상 여부·소스 수 확인 후 재시도.
+**Ops MCP `ask_question`(2026-05-14):** 동일 노트에서 **간헐적** `Timeout waiting for response from NotebookLM`가 보고됨. 후속 점검: `notebook_id=ops-command-anchor-fact-lock`·짧은 질의·`browser_options.timeout_ms=90000`·`source_format=none` 조합으로 **정상 응답 확인**. 재발 시 웹 UI 동작·소스 수·세션 idle(약 15분) 후 재시도.
 
 ---
 
