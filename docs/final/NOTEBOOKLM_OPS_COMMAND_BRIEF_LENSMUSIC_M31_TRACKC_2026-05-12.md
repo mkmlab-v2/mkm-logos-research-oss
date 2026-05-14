@@ -29,7 +29,7 @@
 
 ## 3. NotebookLM에 올리는 방법 (클라우드 B채널)
 
-1. 노트북: **`작전지휘부 Ops20260318`** 또는 라이브러리의 **Ops Command Anchor (Fact-Lock)** (`347e5cbe-0ade-4615-9aac-8747d4fa644e` 등 매니페스트 URL 기준).
+1. 노트북: **`00_MASTER_TRACKC_BOARD_2026Q2`** (UUID `347e5cbe-0ade-4615-9aac-8747d4fa644e`; MCP id `ops-command-anchor-fact-lock`) — 구명 **`작전지휘부 Ops20260318`** / **`Ops Command Anchor (Fact-Lock)`** 과 동일 URL 기준.
 2. **소스 추가**: 이 파일을 웹 UI에서 업로드하거나, MCP 인증 후 **`add_source`**(도구가 채팅에 주입된 경우에만)로 텍스트/경로 반영.
 3. **MCP 인증**: `get_health`에서 `authenticated=false`면 `setup_auth` → 전용 Chrome 프로필 로그인(내장 브라우저 로그인과 **비동기**).
 

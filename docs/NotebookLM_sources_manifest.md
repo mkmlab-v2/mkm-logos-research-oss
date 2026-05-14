@@ -166,7 +166,7 @@ NotebookLM·지휘부 브리핑을 레포 Fact-Lock과 맞출 때 **아래를 �
 
 - **역할**: 브리핑·질의·소스 아카이브 레이어. **구현 여부·수치·경로의 단일 진실**은 여전히 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·호출 가능 스크립트·JSON 산출물(`AGENTS.md` 동일).
 - **작전 지휘 참조 노트북 (NotebookLM URL)**  
-  - `작전지휘부 Ops20260318` (`347e5cbe-0ade-4615-9aac-8747d4fa644e`) — https://notebooklm.google.com/notebook/347e5cbe-0ade-4615-9aac-8747d4fa644e  
+  - `작전지휘부 Ops20260318` (`347e5cbe-0ade-4615-9aac-8747d4fa644e`) — https://notebooklm.google.com/notebook/347e5cbe-0ade-4615-9aac-8747d4fa644e — **NL·MCP 표시명:** `00_MASTER_TRACKC_BOARD_2026Q2` (동일 UUID; MCP 라이브러리 id `ops-command-anchor-fact-lock`).  
   - `Fusion Insight Hub - Bible x Myeongri x Sasang (2026-04-01)` (`71f55a03-09d0-411f-b365-0ce2a2064c24`) — https://notebooklm.google.com/notebook/71f55a03-09d0-411f-b365-0ce2a2064c24  
 - **압축·복원·예언 통합 (FACT 중심, 작전/성경/명리 제외)** — 브리핑·RAG 보조 전용; SSOT는 여전히 레포·`CONSTITUTION`·`artifacts`.  
   - `aba1f8b1-be62-4367-ac7f-b1a997bb77d4` — https://notebooklm.google.com/notebook/aba1f8b1-be62-4367-ac7f-b1a997bb77d4 — 제목: **MKM_CORE_INTELLIGENCE_V1** (MCP `notebook_create` + `source_add`; `.json` 단일 파일 업로드는 도구 제한 시 텍스트 요약·포인터로 대체)
@@ -174,6 +174,7 @@ NotebookLM·지휘부 브리핑을 레포 Fact-Lock과 맞출 때 **아래를 �
   - `00_MASTER_TRACKC_BOARD_2026Q2` — Track C 전황 보드(마스터 컨텍스트)
   - `10_OPS_MKM_CORE_INTELLIGENCE_2026Q2` — Ops/Core intelligence 중심 지휘
   - `03_P3P4_명리_성경_해설형_허브_2026Q2` — 멀티렌즈 해설 허브(P3/P4)
+  - **UUID 정렬:** `00_MASTER_TRACKC_BOARD_2026Q2` 는 위 **작전 지휘 참조** URL `347e5cbe-0ade-4615-9aac-8747d4fa644e` 와 **동일 노트**(NL에서 노트북 제목만 변경한 경우). 별도 UUID가 아니다.
 - **명명 규칙 (혼선 방지)** — 새 노트북을 만들 때는 숫자만 앞세우지 말고, `영역_우선순위_역할_분기` 순서를 권장한다.
   - 권장 예: `OPS_00_MASTER_TRACKC_BOARD_2026Q2`, `OPS_01_MKM_CORE_INTELLIGENCE_2026Q2`, `FUSION_02_P3P4_MYEONGNI_LOGOS_HUB_2026Q2`
   - 운영 원칙: 브리핑·지휘는 **역할명(OPS/FUSION + 역할)**으로 고르고, 숫자 접두(`00/03/10`)는 보조 정렬키로만 쓴다.
