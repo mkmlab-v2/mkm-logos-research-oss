@@ -1,7 +1,7 @@
 # MKM — 쇼룸 운영 마감 + Pack 0-B 작업 일정 v1
 
 **schema:** `mkm_showroom_ops_and_pack0b_work_schedule_v1`  
-**last_updated_utc:** 2026-05-14  
+**last_updated_utc:** 2026-05-16  
 **목적:** Track C 공개 쇼룸 파이프라인(로컬 개통 이후)과 **Pack 0-A/0-B** LoRA 전선을 **순서·DoD**로 고정한다.  
 **채팅창·임무 추적:** 루트 **`MISSION_LOG.md`**(로컬 비추적)에 Phase 완료·Evidence 한 줄씩 남긴다. **옵시디언**은 개인용·그래프용으로만 쓰고 Fact-Lock SSOT로 자동 승격하지 않는다(`AGENTS.md`·`CENTRAL` 동일 방향). (선택) Ops 한 줄 요약만 `reports/daily_thread_work_YYYY-MM-DD.md` + `athena_daily_thread_log_sync_v1.py`. **CENTRAL에는 본 일정 본문을 올리지 않는다.**
 

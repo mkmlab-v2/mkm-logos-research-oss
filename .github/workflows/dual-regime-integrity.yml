@@ -40,6 +40,7 @@ on:
       - "docs/final/schemas/trust_visualization_panel_v0.example.json"
       - "tests/test_build_mkm_trackc_ops_dashboard_v1.py"
       - "tests/test_append_stt_routing_audit_log_v1.py"
+      - "tests/test_stt_routing_audit_log_schema_v1.py"
       - "scripts/build_showroom_trust_visualization_slice_v1.py"
       - "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_trust_visualization_v0.html"
       - "tests/test_build_showroom_trust_visualization_slice_v1.py"
@@ -1162,7 +1163,7 @@ jobs:
             -q --tb=short
 
       - name: STT routing audit log v1 + showroom trust viz thin slice
-        run: python -m pytest tests/test_append_stt_routing_audit_log_v1.py tests/test_build_showroom_trust_visualization_slice_v1.py -q --tb=short
+        run: python -m pytest tests/test_stt_routing_audit_log_schema_v1.py tests/test_append_stt_routing_audit_log_v1.py tests/test_build_showroom_trust_visualization_slice_v1.py -q --tb=short
 
       - name: MKM meta-layer envelope v1 (schema + kill-switch coherence)
         run: python -m pytest tests/test_mkm_meta_layer_envelope_v1.py -q --tb=short
