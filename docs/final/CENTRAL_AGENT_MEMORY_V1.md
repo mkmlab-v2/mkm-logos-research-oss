@@ -12,7 +12,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-14T18:01:21Z
+- **last_updated_utc:** 2026-05-14T18:06:24Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -21,6 +21,9 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-05-14T18:06:24Z** — TRACK_C §3.7.2 (C)+PUBLIC §3: 실버 동결 게이트 표는 silver_tech 템플릿만 SSOT; 정책·동결 지연은 TRACK_C; 대외 표 중복 금지. P0 719 OK. push-internal.
+- **2026-05-14T18:06:17Z** — Ops 2026-05-14: P0+Git+FactLock+Prophecy+VPS nginx+pytest26+Pack0B+drain+jemaai UA200
+- **2026-05-14T18:03:32Z** — VPS PM2 error.log: binance_client 포지션 진입·청산 로 다수(0.001 1x) — 실거래소 API 경로 관측; ccxt=False는 USE_CCXT; YAML 없음·.env ENABLE_TRADING·TESTNET
 - **2026-05-14T18:01:21Z** — 실버 COGS 템플릿: RQ-009 동결 게이트 표(법무 초안·COGS·KPI·D) 추가; 수치 본문 승격 전제 명시
 - **2026-05-14T18:00:46Z** — Premium queue enqueue+drain+export OK; jemaai HEAD with browser UA
 - **2026-05-14T16:06:19Z** — Ops seq 2026-05-14: P0+Git+FactLock+ProphecyClosure+VPS nginx+pytest26+Pack0B convert+fit+premium+HEAD200
@@ -38,9 +41,6 @@
 - **2026-05-14T15:23:32Z** — 권장안 이어서: PremiumMultilensQueue+AmsaengHealth exit0; automation_registry reconcile drift=4(WARN); 다음은 COGS/법무/schtasks
 - **2026-05-14T15:22:59Z** — A09 done: sync_showroom_to_vps -RefreshStaging scp srv1101456 /var/www/jemaai; MISSION_LOG A09+ops-a09+Evidence; HEAD jemaai.cloud poll
 - **2026-05-14T15:16:15Z** — MISSION_LOG: Ops A01-A10 anchor + Evidence line; Explore subagents draft+role split; Active rows ops-a01..a10; A09 pending A10 deferred
-- **2026-05-14T15:11:39Z** — NotebookLM 순서 밀기: get_health OK, vault sync 69/136, lens packs OK, triage OK; Ops ask_question 짧은 질의로 성공. **정정(이후 세션):** `00_MASTER_TRACKC_BOARD_2026Q2`(웹 제목) = UUID `347e5cbe…` 동일 노트 — MCP 라이브러리 표시명만 구명일 수 있음.
-- **2026-05-14T15:08:50Z** — NotebookLM: select_notebook Ops; ask_question Ops 간헐 타임아웃(120s); Vault+lens+triage OK. **정정:** `search_notebooks` 미매칭 ≠ 별도 노트 미등록(제목 변경·MCP 캐시 혼선).
-- **2026-05-14T15:04:45Z** — Ops chain: P0+Git→fact_lock_bundle exit0→prophecy closure_ok→showroom chain+deploy staging→pytest 26→premium queue enqueue+drain ok
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -122,6 +122,7 @@
 | **devops-mcp 실측 호스트(2026-05-04)** | `148.230.97.246` (`root`) — `project-0-workspace-devops-mcp`의 `check_vps_health`·`execute_vps_command` 성공. `pm2 list/show`는 기본 timeout(60초)에서 지연될 수 있어 `timeout=180`로 호출. |
 | **실전 런타임 경로 (2026-05-14 SSH 실측)** | PM2 `bitcoin-live-small-24h`: **`status=online`**, `exec cwd` **`/opt/mkm-destiny-ai-41e38ec6`**, `script path` **`/opt/mkm-destiny-ai-41e38ec6/projects/bitcoin-trading/start_live_trading.py`** (`python3`). **2026-05-04**에 기록한 `/opt/bitcoin-trading-live` 트리는 **과거 실측**; 현재 본선 PM2는 **모노레포 루트 cwd**와 정합. |
 | **VPS 설정 소스 (2026-05-14 SSH)** | `…/projects/bitcoin-trading/config/` 및 **`trading_config.yaml` 미존재**(해당 트리 `find`·`ls` 실측). 루트 **`/opt/mkm-destiny-ai-41e38ec6/.env`**에는 키 **`ENABLE_TRADING`**, **`TESTNET`** 존재 확인(값은 채팅에 미기록). `projects/bitcoin-trading/.env`는 **미존재**. 런타임 합성 우선순위는 `projects/bitcoin-trading/scripts/start_24h_daemon.py` 주석·코드와 동일(YAML→프로젝트·모노레포 `.env`→`os.environ`). |
+| **거래 경로 관측 (2026-05-14, 로그 샘플)** | PM2 **`bitcoin-live-small-24h-error.log`**에 `src.api.binance_client`의 **포지션 청산·진입·레버리지 설정**(예: BTCUSDT, 수량 0.001, 1배) INFO가 다수 존재 — **관측상 실거래소 API 호출 경로가 활성**이었음(테스트넷 여부는 `.env`의 `TESTNET`/`TESTNET=` 실값 또는 거래소 응답으로 별도 확인). 아론 루프 로그의 **`ccxt=False`**는 코드 상 **`USE_CCXT` 상수**(CCXT 라이브러리 사용 여부)이며, **주문 비활성과 동치 아님**. |
 | **보조 모노레포 경로(자동화/준비)** | `/opt/mkm-lab-workspace-v2` — `ship_to_vps.ps1` 기본값(`-VpsRepoPath`). **24h 본선 PM2 cwd는 위 행을 따른다**(이 트리와 자동 동일 아님). |
 | **PM2 앱 이름 (실측)** | **온라인 24h:** `bitcoin-live-small-24h` — 동일 호스트에서 `bitcoin-live` 앱은 없음. 이름 변경 가능성이 있으므로 항상 `pm2 list`/`pm2 show` 실측이 우선. |
 | **트리 정합** | **2026-05-14 실측:** `bitcoin-live-small-24h` uptime ~32h·restarts 18·`unstable restarts=0`. `/opt/bitcoin-trading-live`·별도 클론 `git` HEAD 브리핑은 **레거시 참고**; **재시작·설정·코드 동기 판단은 항상 `pm2 show`의 `exec cwd`·`script path`를 1순위**로 본다. |
