@@ -1,6 +1,6 @@
-# Public-facing security, IP, and copy checklist (v1.2)
+# Public-facing security, IP, and copy checklist (v1.3)
 
-**Status:** policy SSOT for **websites, landing pages, proposals, and static showroom** (not a runtime contract).  
+**Status:** policy SSOT for **websites, landing pages, proposals, and static showroom** (not a runtime contract). **v1.3** adds Silver SSOT freeze policy (pilot KPI / final liability deferred; structural human gates per Track C §3.7.2 `(B)`).  
 **Supersedes:** nothing; align with repo SSOT below.
 
 **Anchor documents (read in this order for full rules):**
@@ -34,10 +34,11 @@
 - Health-adjacent surfaces: avoid diagnostic/treatment/prescription language unless separately validated for that jurisdiction and product; 용어 표는 `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md`.
 - **Silver Tech / senior-care surfaces:** mandatory **non-clinical, non-emergency** framing in copy: daily logs and emotional summaries are **observational only** and do **not** replace medical diagnosis. Do **not** depict or promise automated medical prescribing or emergency dispatch **without explicit human verification** and product/legal clearance for that jurisdiction. Mechanically align with `patient_care_bundle` anti–short-circuit posture (`docs/final/schemas/patient_care_bundle_v1.schema.json`; Track C draft `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2).
 - **Engineering cross-check (not legal sign-off):** reviewers may spot-check repo gates that mirror the same posture: `scripts/verify_p0_constitution_gate_paths.ps1` (includes bundle scripts), generation policy `docs/final/artifacts/patient_care_bundle_generation_policy_v1.default.json`, and `scripts/Invoke-PatientCareBundleAssemblePatientFacing_v1.ps1` (`-DryRun` prints the `py` argv). This does **not** replace **`docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` RQ-009** (legal / pilot KPI freeze).
+- **Silver Tech — SSOT freeze policy (commander 2026-05-15):** Do **not** embed pilot KPI counts, margin targets, or **final** jurisdiction-specific liability copy into this checklist (or other repo “truth” pages) until **pilot evidence + legal review**; keep those in internal R&D annexes and hypothesis-tagged research files (e.g. `docs/research/silver_tech_cogs_unit_economics_template_v1.md`). **Structural** safety: no solo autopilot for **sensitive external actions** (payments, calls, account changes) — align with `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 `(B)` (human-in-the-loop gates: notify, approve, block, audit log).
 - **Lens/regime contract:** use fixed lens names (`사상`, `명리`, `성경/Logos`) and operational layers (`Macro`, `regime`) as in `AGENTS.md`; do not imply a single unified physical theory “completed” in marketing copy.
 
 ## 4) Repository hygiene
 
 - Large binaries and one-off exports belong out of Git default scope per `AGENTS.md` remote publication rules; promote intentionally (`git add -f`) only when intended.
 
-**Revision:** 2026-05-14 — v1.2; anchor list: Track C **§3.7.2** `(B)` ↔ this file **§3** Silver Tech cross-lock; §3 engineering cross-check bullet vs RQ-009 (pre-legal only). (v1.1 same day: §3 non-clinical mandate; v1 initial: 2026-05-05 — health/wellness KR guardrails pointer.)
+**Revision:** 2026-05-15 — v1.3; §3 Silver SSOT freeze policy (pilot KPI / final liability deferred; structural human gates per Track C §3.7.2 `(B)`). (v1.2 2026-05-14: Track C §3.7.2 `(B)` ↔ §3 cross-lock; engineering cross-check vs RQ-009; v1.1: §3 non-clinical mandate; v1: 2026-05-05 — KR guardrails pointer.)

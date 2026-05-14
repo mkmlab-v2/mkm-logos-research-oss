@@ -2,18 +2,26 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-15 · RQ-009 지휘관 승인 — R&D 분리 + 민감 액션 구조 Lock)
+
+**Thread:** Cursor — 실버 정책 방향 레포 반영.
+
+- **완료:** 지휘관 승인 반영 — (1) **파일럿 KPI 수치·마진·최종 면책**은 Git SSOT 본문·`PUBLIC_FACING` §3에 **동결 지연**, 내부 R&D·`silver_tech_cogs_unit_economics_template_v1.md` 등 **`[HYPO]`**. (2) **민감 외부 액션**은 `TRACK_C` §3.7.2 **(B)**에 **자동 단독 실행 불가 + 휴먼 게이트** 구조 **SSOT 동결**. (3) `RESEARCH_OPEN_QUESTIONS_V1.md` RQ-009·`PUBLIC` **v1.3**·`CURRENT_OPS` 본 슬라이스.
+- **막힘:** 없음.
+- **다음:** 법무 (D) 확정문 반영 일정·파일럿 실측 후 RQ-009 **`CLOSED`/이관** 여부.
+
 ## Ops slice (2026-05-15 · Silver — hybrid STT + COGS five-step)
 
 **Thread:** Cursor — STT COGS·Fact-Lock 실행 순서·내부 단가표 초안 경로 동결.
 
-- **완료:** (1) COGS는 STT만이 아님 — **표로 분해 후 출처 열** 채우기. (2) **하이브리드 STT** = 로컬/자체 1차 → 모호·위급·저신뢰만 상용 API (**Coordinator·게이트**와 동일 패턴). (3) **원·%·마진**은 실측·견적 전 **`[HYPO]`**; `TRACK_C`·`PUBLIC` 본문에 섣부른 수치 고정 금지. (4) **RQ-009**에 COGS 상한·STT 업그레이드 비율·개인정보 동선을 파일럿 목표로 유지(**OPEN**). (5) **내부 단가표 뼈대:** `docs/research/silver_tech_cogs_unit_economics_template_v1.md` 생성(빈 표 + 파일럿 KPI 표).
+- **완료:** (1)~(5) 동일 + **RQ-009**·`RESEARCH_OPEN_QUESTIONS` 근거·`last_reviewed_utc` 동기 · **CENTRAL** `nl_sync`/체크포인트(실버 COGS `[HYPO]` 템플릿) · **MISSION_LOG** Evidence·다음 할 일 `[ ]` COGS 채움.
 - **막힘:** 없음.
 - **다음:** 표에 **실측·견적 링크** 채움 → RQ-009 토의 → 법무 후 Track C §3.7.2 수치 문장은 **별첨 또는 artifacts**만 검토.
 
 | 항목 | 레포 포인터 |
 |------|-------------|
 | COGS 템플릿 `[HYPO]` | `docs/research/silver_tech_cogs_unit_economics_template_v1.md` |
-| 실버 정책·대외 | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 · `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.2 §3 |
+| 실버 정책·대외 | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 · `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.3 §3 |
 | 연구 큐 | `RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** |
 
 ## Ops slice (2026-05-14 · Session handoff — User Rules·채팅 종료)
@@ -31,7 +39,7 @@
 | 항목 | 레포 포인터 |
 |------|-------------|
 | Track C 실버 `[DRAFT]` | `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** — **(B)** `PUBLIC_FACING` **§3** Silver / senior-care 불릿 **필수** + **(D)** 면책 초안 이중 정합. **Revised / SSOT** 2026-05-14. |
-| 대외 카피 헌법 | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.2** — §3 불릿 + 앵커에 §3.7.2 `(B)` 역포인터. |
+| 대외 카피 헌법 | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.3** — §3 불릿 + Silver SSOT freeze policy(지휘관 2026-05-15); 앵커에 §3.7.2 `(B)` 역포인터. |
 | 연구 큐 | `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** — 근거 열·「왜 열려 있는가」에 엔지니어링 진척 반영, **메타 `last_reviewed_utc: 2026-05-14`**, 상태 `OPEN` 유지. `MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` Phase 4 표 아래 **연구·정책 큐** 단락 교차. |
 | CENTRAL | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — `nl_sync`·체크포인트(실버·PUBLIC 교차). |
 | 로컬 일기(비추적) | `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md` — `memory/`는 `.gitignore`. |

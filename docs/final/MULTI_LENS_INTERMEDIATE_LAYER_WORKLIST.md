@@ -58,7 +58,7 @@
 | 4.9 | 월간 점검 후 ENTRY16 summary 계약 테스트 유지 | [x] | `tests/test_entry16_source_hunt_summary.py`로 출력 계약 고정 |
 | 4.10 | ENTRY16 승격 게이트 리포트/계약 테스트 유지 (Direct + Proxy Manual 경로) | [x] | `scripts/evaluate_entry16_promotion_gate.py` + `tests/test_entry16_promotion_gate.py` |
 
-**연구·정책 큐(Phase 4 밖):** Track C 실버 UX·면책·B2G 경계는 `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (`OPEN`). `patient_care_bundle_v1`(CONSTITUTION §9)은 **엔지니어링** 템플릿·정책·MD·P0·`PUBLIC_FACING` §3 cross-check까지 배선; **법무·파일럿 KPI 동결**은 RQ-009 토의 후 `CLOSED`/이관.
+**연구·정책 큐(Phase 4 밖):** Track C 실버 UX·면책·B2G 경계는 `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (`OPEN`). `patient_care_bundle_v1`(CONSTITUTION §9)은 **엔지니어링** 템플릿·정책·MD·P0·`PUBLIC_FACING` §3 cross-check까지 배선. **2026-05-15 지휘관 승인:** 민감 외부 액션 **구조 Lock**은 Track C §3.7.2 `(B)`에 반영; **파일럿 KPI 수치·최종 면책**은 SSOT 동결 지연(`PUBLIC` v1.3). 잔여: 법무·실측 후 RQ-009 `CLOSED`/이관.
 
 ---
 
