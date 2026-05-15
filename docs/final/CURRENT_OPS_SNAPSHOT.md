@@ -2,6 +2,14 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-15 UTC · 채팅 종료 — Fact-Safe·KOSPI·main 동기)
+
+**Thread:** Cursor — 지휘관 **스냅샷 후 채팅 종료**.
+
+- **완료:** Fact-Safe `MKM-FactSafe-RiskProfile-Sync-4H` **Last Result 0** 경로(`run_conditional_action_gate_v1.py` **`--dry-run-exit-zero-on-block`**, `Run-FactSafeRiskProfileSyncChain_v1.ps1` **`-ExitZeroOnNoGo`**, 등록 스크립트 기본); **`7fe9c1a`**(스케줄 위생) + **`5cd2259654`**(KOSPI stress 관측 v1·B-track 체인·`-StrictTradingGoNoGo`·렌즈 웹훅 테스트 격리) **`gitea/main`** fast-forward; 원격 **`dev` 유지** 합의; 마지막 루프 **P0**·예언 클로저(스킵 4종)·`run_fact_lock_bundle.ps1 -SafeOpsIgnoreLiveSync` **exit 0**·추적 `*_latest` **restore**·워킹트리 **clean**·`dev`/`gitea/main` **0/0**.
+- **막힘:** 없음.
+- **다음(채팅 밖):** RQ-012 n8n 인프라 철거/유지 **운영 결정**; RQ-009 **OPEN**·법무(D)·실측; 실매매 **`LOCKED_MODE`** 해제는 **거버넌스·실측 입력** 후 동일 체인으로 재검증.
+
 ## Ops slice (2026-05-15 UTC · 채팅 종료 — 스냅샷·체크포인트)
 
 **Thread:** Cursor — 지휘관 **「진행해」** → 핸드오프만 갱신하고 창 종료.
