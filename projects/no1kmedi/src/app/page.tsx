@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import { resolveHomepagePresetClass } from "@/lib/homepagePreset";
 import { siteCopy } from "@/content/siteCopy";
 import { SiteHeader } from "@/components/SiteHeader";
 import { FreeValidationLeadForm } from "@/components/FreeValidationLeadForm";
@@ -13,11 +14,6 @@ type HomePageProps = {
     preset?: string;
   };
 };
-
-const homepagePresetMap = {
-  "stripe-linear": "preset-stripe-linear",
-  "apple-notion": "preset-apple-notion",
-} as const;
 
 export default function HomePage({ searchParams }: HomePageProps) {
   const c = siteCopy;
@@ -54,11 +50,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
     publicSolutionSecondary: c.links.contact,
   } as const;
 
-  const presetKey = searchParams?.preset;
-  const homepagePresetClass =
-    presetKey && presetKey in homepagePresetMap
-      ? homepagePresetMap[presetKey as keyof typeof homepagePresetMap]
-      : "";
+  const homepagePresetClass = resolveHomepagePresetClass(searchParams?.preset);
 
   return (
     <div className={homepagePresetClass}>
