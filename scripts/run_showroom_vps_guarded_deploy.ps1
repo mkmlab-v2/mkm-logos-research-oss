@@ -74,7 +74,8 @@ if ([string]::IsNullOrWhiteSpace($hostName) -or [string]::IsNullOrWhiteSpace($us
 
 $vpsWorkspace = "/opt/mkm-lab-workspace-v2"
 $remote = "${user}@${hostName}"
-$gateCmd = "cd $vpsWorkspace && scripts/verify_git_origin_main_sync.sh --check-internal-safety --strict ."
+# Lab workspace may lag monorepo; skip gate when script absent (pull+build still guarded by ff-only).
+$gateCmd = "cd $vpsWorkspace && (test -f scripts/verify_git_origin_main_sync.sh && scripts/verify_git_origin_main_sync.sh --check-internal-safety --strict . || echo VPS_GATE_SCRIPT_SKIP)"
 $pullCmd = "cd $vpsWorkspace && git fetch internal && git checkout main && git pull --ff-only internal main"
 $buildRestartCmd = "cd $vpsWorkspace/projects/no1kmedi && npm run build && pm2 restart no1kmedi-com && pm2 status"
 

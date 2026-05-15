@@ -8,7 +8,15 @@
 
 - **완료:** `no1kmedi` — `src/lib/homepagePreset.ts` 기본 **`stripe-linear`** · `sync:marketing-copy`·`check:marketing-copy`·`check:trackc-claims` · `check_track_c_copy_guard_v1.py` **exit 0** · `npm run gate:fast` **exit 0** · `internal` **`831e9baf3c`**. Vault — `RULE_격벽_장뇌축_Logos_합선금지.md`(로컬 `memory/`, Git 미추적). **P0** 725 OK · `Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` `-SkipLiveSyncPull -SkipGoNoGoRefresh -SkipWebhook` → `reports/prophecy_lane_closure_bundle_v1_latest.json` **`closure_ok: true`** · SafeOps **ok**.
 - **막힘:** 없음.
-- **다음(인간):** jema-ai **Hostinger/VPS 배포**는 §2.2 `deploy-to-hostinger.ps1` 또는 본선 런북 수동; 예언 승격·실매매는 `combined_all_passed`·`LOCKED_MODE` **별도** — `trading_go_no_go`와 합선 금지.
+- **다음(인간):** 예언 승격·실매매는 `combined_all_passed`·`LOCKED_MODE` **별도** — `trading_go_no_go`와 합선 금지.
+
+## Ops slice (2026-05-15 · VPS jema-ai 자동 배포)
+
+**Thread:** Cursor — 지휘관 **「자동 진행해」**.
+
+- **완료:** `SoloDev-MergeFeatureToGiteaMain` → **gitea/main `37b9263`**. `Invoke-VpsDestinyBundleSync` (ff9262→37b9263) → `/opt/mkm-destiny-ai-41e38ec6`. **rsync** `projects/no1kmedi` → `/opt/mkm-lab-workspace-v2` · `npm ci` · `npm run build` · **`pm2 restart no1kmedi-com`** online. `https://jema-ai.com` smoke **301** (리다이렉트 정상).
+- **막힘:** `run_showroom_vps_guarded_deploy.ps1` 게이트 스크립트는 lab 경로에 없음 → **번들+rsync 경로**로 우회. 장기: lab↔destiny 단일 SSOT 정리 권장.
+- **다음:** `mkmlife` Hostinger는 §2.2 `deploy-to-hostinger.ps1` 별도; lab `git pull`만으로는 **hq GitHub**라 monorepo `internal`과 **분리** 유지.
 
 ## Ops slice (2026-05-15 UTC · 채팅 종료 — Fact-Safe·KOSPI·main 동기)
 
