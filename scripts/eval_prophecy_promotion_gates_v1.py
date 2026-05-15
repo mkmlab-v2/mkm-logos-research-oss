@@ -128,6 +128,58 @@ def _hypothesis_non_stub_gate(hypo_path: Path) -> dict[str, Any]:
     }
 
 
+def _gate_passed(gates: list[dict[str, Any]], gate_id: str) -> bool | None:
+    for g in gates:
+        if g.get("gate_id") == gate_id:
+            return bool(g.get("passed"))
+    return None
+
+
+def _outcome_class(
+    recommendation: str,
+    *,
+    shared_gates: list[dict[str, Any]],
+) -> str:
+    """Internal ops taxonomy (B-track only; not clinical; not A-track routing).
+
+    Maps promotion_recommendation + shared gates to a four-bucket label used by
+    dashboards and evidence packs. Pedagogical microbiome names live only in
+    gate_taxonomy.microbiome_metaphor_map — never in CONSTITUTION.
+    """
+    if recommendation in ("auto_promote_ready", "manual_review_candidate"):
+        return "pass_candidate"
+    if recommendation == "soft_band_review":
+        return "opportunistic"
+    if recommendation == "defer":
+        if _gate_passed(shared_gates, "score_neutral_ratio_cap") is False:
+            return "neutral_bucket"
+        return "reject"
+    return "reject"
+
+
+def _build_gate_taxonomy(
+    recommendation: str,
+    *,
+    shared_gates: list[dict[str, Any]],
+) -> dict[str, Any]:
+    oc = _outcome_class(recommendation, shared_gates=shared_gates)
+    return {
+        "schema": "prophecy_gate_taxonomy_v1",
+        "outcome_class": oc,
+        "promotion_recommendation": recommendation,
+        "microbiome_metaphor_map": {
+            "pass_candidate": "beneficial_signal_analog",
+            "reject": "harmful_noise_analog",
+            "opportunistic": "opportunistic_hold_analog",
+            "neutral_bucket": "neutral_defer_analog",
+        },
+        "note": (
+            "Internal B-track classification only; not neuroscience or clinical claims. "
+            "Pedagogical narrative: memory/obsidian_vault/UNIVERSE_MKm/CONCEPT_장뇌축_미생물_발효_아키텍처.md"
+        ),
+    }
+
+
 def _score_neutral_bias_gate(score_path: Path, *, max_neutral_ratio: float) -> dict[str, Any]:
     doc = _load_json(score_path) or {}
     rows = doc.get("rows") if isinstance(doc.get("rows"), list) else []
@@ -433,6 +485,8 @@ def main() -> int:
     else:
         recommendation = "defer"
 
+    gate_taxonomy = _build_gate_taxonomy(recommendation, shared_gates=shared_gates)
+
     out: dict[str, Any] = {
         "schema": SCHEMA,
         "generated_at_utc": _utc_now(),
@@ -483,6 +537,8 @@ def main() -> int:
         "strict_pass_streak": streak,
         "auto_promote_ready": auto_promote_ready,
         "promotion_recommendation": recommendation,
+        "outcome_class": gate_taxonomy["outcome_class"],
+        "gate_taxonomy": gate_taxonomy,
         "note": (
             "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. "
             "Human sign-off still required before A-track or live routing."

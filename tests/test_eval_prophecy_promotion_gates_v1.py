@@ -304,3 +304,71 @@ def test_dual_soft_fails_when_instrument_below_soft_beat_bull(tmp_path: Path) ->
     assert doc.get("instrument_soft_passed") is False
     assert doc.get("soft_passed") is False
     assert doc.get("promotion_recommendation") == "defer"
+    assert doc.get("outcome_class") == "reject"
+    tax = doc.get("gate_taxonomy") or {}
+    assert tax.get("schema") == "prophecy_gate_taxonomy_v1"
+    assert tax.get("outcome_class") == "reject"
+
+
+def test_outcome_class_neutral_bucket_on_defer_and_high_neutral(tmp_path: Path) -> None:
+    ws = Path(__file__).resolve().parents[1]
+    lens = tmp_path / "lens_nb.json"
+    inst = tmp_path / "inst_nb.json"
+    score = tmp_path / "score_nb.json"
+    streak = tmp_path / "streak_nb.json"
+    streak.write_text(json.dumps({"schema": "prophecy_promotion_strict_streak_v1", "runs": []}), encoding="utf-8")
+    lw = _lens_wf_passing()
+    lw["aggregate"]["mean_test_accuracy"] = 0.40
+    iw = _instrument_wf_passing()
+    iw["aggregate"]["mean_test_accuracy"] = 0.40
+    lens.write_text(json.dumps(lw), encoding="utf-8")
+    inst.write_text(json.dumps(iw), encoding="utf-8")
+    score.write_text(
+        json.dumps(
+            {
+                "rows": [
+                    {"predicted_direction": "neutral", "actual_direction": "bull"},
+                    {"predicted_direction": "neutral", "actual_direction": "bear"},
+                    {"predicted_direction": "bull", "actual_direction": "bull"},
+                ],
+                "inputs": {"btc_csv": "research/market_data/btc.csv"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    hypo = tmp_path / "hypo.json"
+    hypo.write_text(
+        json.dumps({"provenance": {"model": "test", "stub": False}}),
+        encoding="utf-8",
+    )
+    out = tmp_path / "gates_nb.json"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ws / "scripts" / "eval_prophecy_promotion_gates_v1.py"),
+            "--lens-walkforward-json",
+            str(lens),
+            "--instrument-walkforward-json",
+            str(inst),
+            "--score-json",
+            str(score),
+            "--hypothesis-json",
+            str(hypo),
+            "--promotion-track-mode",
+            "dual",
+            "--max-neutral-ratio",
+            "0.5",
+            "--streak-history-json",
+            str(streak),
+            "--output",
+            str(out),
+        ],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("promotion_recommendation") == "defer"
+    assert doc.get("outcome_class") == "neutral_bucket"
