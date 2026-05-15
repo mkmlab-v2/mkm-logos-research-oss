@@ -1,7 +1,7 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
+Revised: 2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
@@ -18,6 +18,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - `Final decisions remain with client operators`
 - **대외 단정 금지:** 관할·업종·표현에 따라 규제 해석이 달라질 수 있으므로 **「규제 회피 완료」「법적 리스크 제로」** 등 절대화 표현을 마케팅·제안서에 쓰지 않는다. 계약·랜딩 전 **법무 검토**를 절차로 둔다.
 - **Evidence pack lock (검증 스크립트 정합):** `Not investment advice; final decisions remain with client operators.`
+- **대외 카피 규율 (웹·PDF·랜딩·제안서·정적 쇼룸):** `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **전 절(특히 §3)**을 Track C 대외 표면의 **최소 준수 SSOT**로 따른다 — 본 문서 §3.5–3.6 부록과 **양방 정렬**; 세부 금지 예시·버전은 동 체크리스트가 우선한다.
 
 ## 2) NotebookLM + 장기기억 연계 점검 결과
 
@@ -94,6 +95,12 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - **허브→쇼룸 CTA 문구(초안)·분기 SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b — `jema-ai.com` Next 공개 카피 원천은 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`). 공개 보드 **권장 진입**은 `hub_links.showroom_jemaai` → `api.jemaai.cloud` 경로의 `public_showroom_board_minimal.html`(미니멀 정적 보드; `CONSTITUTION`·`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`).
   - **쇼룸 1p 청사진(초안, DRAFT):** `docs/final/TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md` — 대외 카피·수익 타겟·면책 블록을 **Track C §3.6과 동일 프레임**으로 고정; 배포 전 `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` 및 법무 검토. **구현 계약:** `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §4.4, `showroom_topology_radar_snapshot_v1` 스키마·`tests/test_showroom_topology_radar_snapshot_schema_v1.py`.
   - **Trust Visualization v0 (STT 감사 JSONL + 쇼룸 thin, 읽기 전용):** 구현·스키마·회귀 3종·`dual-regime-integrity.yml`·`run_fact_lock_bundle.ps1` **3d3a**는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` Visualization v0 보강 절이 SSOT다. 대외 카피는 본 절 **§3 금지 서술**·성경(Logos) 레이어 **`[NON_GATING]`**·아티팩트 근거형만 유지한다(A-track 실매매·자동 합선 금지는 헌법·`AGENTS.md`와 동일).
+
+#### §3.5–3.6 부록 — 대외 카피: 뇌·신경·장-뇌 은유 (뉴스·쇼룸 인접)
+
+- **허용 범위:** 주의 전환·인지 부하 관리·프레이밍 등은 **커뮤니케이션 설계**로 서술할 수 있다(과학 단정·규제 주장의 근거가 되지 않음).
+- **금지:** 뇌과학·신경과학 **입증**·**성과 보장**·의료·투자 **결과 단정**과 은유를 합치지 않는다. 예: 「신경과학적으로 증명」, 「뇌 기반으로 수익 보장」, 「장-뇌 리듬 = 매매/치료 결정」, 「뇌파/호르몬으로 자동 투자/자동 처방」.
+- **SSOT:** 루트 `AGENTS.md` 홍보 프레이밍 계약, `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3 **v1.7** 동명 불릿, `docs/final/MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md`(웰니스 인접).
 
 ### 3.7 MKM AI — 고신뢰 R&D 검증·가속 인프라 (Value Proposition 전환, 2026-05)
 
