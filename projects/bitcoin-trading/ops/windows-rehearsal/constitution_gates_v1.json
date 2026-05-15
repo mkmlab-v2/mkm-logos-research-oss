@@ -1,8 +1,10 @@
 {
   "schema": "constitution_gates_v1",
-  "version": "2026-04-03",
-  "description": "Allowed risk profile source/mode pairs for no-short-circuit gate (research vs live). Edit allowed_risk_combinations when policy changes.",
+  "version": "2026-05-15",
+  "description": "Allowed risk profile source/mode pairs for no-short-circuit gate (research vs live). Edit allowed_risk_combinations when policy changes. repo.* = Git-scheduled Fact-Safe sync; n8n.* = legacy external workflow tag.",
   "allowed_risk_combinations": [
-    { "source": "n8n.regime_watch.v5", "mode": "n8n_shadow" }
+    { "source": "repo.fact_safe_sync.v1", "mode": "repo_shadow" },
+    { "source": "n8n.regime_watch.v5", "mode": "n8n_shadow" },
+    { "source": "fact_safe_prophecy.trinity_governor", "mode": "shadow" }
   ]
 }

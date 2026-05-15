@@ -311,7 +311,12 @@ def main() -> int:
     ap.add_argument(
         "--n8n-source",
         action="store_true",
-        help="Shortcut for source=n8n.regime_watch.v5 and mode=n8n_shadow",
+        help="Shortcut for source=n8n.regime_watch.v5 and mode=n8n_shadow (legacy; prefer --repo-source for Git-SSOT sync).",
+    )
+    ap.add_argument(
+        "--repo-source",
+        action="store_true",
+        help="Shortcut for source=repo.fact_safe_sync.v1 and mode=repo_shadow (scheduled Fact-Safe sync; no n8n workflow).",
     )
     ap.add_argument(
         "--allow-metadata-downgrade",
@@ -383,6 +388,9 @@ def main() -> int:
         print("SKIP: MKM_WORKSPACE_MAINTENANCE active; not writing risk profile.")
         return 0
 
+    if args.n8n_source and args.repo_source:
+        raise SystemExit("Use only one of --n8n-source or --repo-source (mutually exclusive).")
+
     doc = _safe_json(Path(args.prophecy))
     risk_profile = doc.get("risk_profile") if isinstance(doc.get("risk_profile"), dict) else {}
     if not risk_profile:
@@ -394,6 +402,9 @@ def main() -> int:
     if args.n8n_source:
         source_name = "n8n.regime_watch.v5"
         mode_name = "n8n_shadow"
+    elif args.repo_source:
+        source_name = "repo.fact_safe_sync.v1"
+        mode_name = "repo_shadow"
 
     out_path = Path(args.output)
     existing_out = _safe_json(out_path)
@@ -402,7 +413,8 @@ def main() -> int:
             "Refusing to overwrite n8n-tagged risk profile with non-n8n source/mode "
             f"(existing source={existing_out.get('source')!r}, new source={source_name!r}). "
             "Use --n8n-source or pass --source/--mode under the n8n.* namespace, "
-            "or pass --allow-metadata-downgrade to force."
+            "use --repo-source (repo.*) with --allow-metadata-downgrade for intentional migration, "
+            "or pass --allow-metadata-downgrade alone to force."
         )
 
     governance_doc: dict[str, Any] | None = None
