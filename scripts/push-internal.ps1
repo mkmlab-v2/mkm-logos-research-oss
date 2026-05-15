@@ -1,6 +1,9 @@
 #Requires -Version 5.1
 param(
-    [switch]$SetUpstream
+    [switch]$SetUpstream,
+    # When false (default), after a successful push (or already-up-to-date), run
+    # scripts/Invoke-GiteaRedundantDevBranchPrune_v1.ps1 if remote "gitea" exists.
+    [switch]$NoAutoPruneRedundantDev
 )
 
 $ErrorActionPreference = "Stop"
@@ -36,6 +39,17 @@ Write-Host "[INFO] Repo:   $repoRoot" -ForegroundColor Cyan
 Write-Host "[INFO] Branch: $branch" -ForegroundColor Cyan
 Write-Host "[INFO] Push -> $remoteName ($remoteUrl)" -ForegroundColor Cyan
 
+function Invoke-PostPushGiteaRedundantDevPrune {
+    if ($NoAutoPruneRedundantDev) { return }
+    $pruneScript = Join-Path $PSScriptRoot "Invoke-GiteaRedundantDevBranchPrune_v1.ps1"
+    if (-not (Test-Path $pruneScript)) { return }
+    try {
+        & $pruneScript
+    } catch {
+        Write-Warning "Post-push redundant dev prune skipped: $($_.Exception.Message)"
+    }
+}
+
 function Set-UpstreamIfRequested {
     param(
         [string]$BranchName,
@@ -59,6 +73,7 @@ if ($remoteLine) {
 if ($remoteSha -and $remoteSha -eq $localSha) {
     Set-UpstreamIfRequested -BranchName $branch -RemoteName $remoteName
     Write-Host "[DONE] $remoteName already up-to-date (same commit)." -ForegroundColor Green
+    Invoke-PostPushGiteaRedundantDevPrune
     exit 0
 }
 
@@ -83,6 +98,7 @@ if ($LASTEXITCODE -ne 0) {
         if ($remoteShaAfter -and $remoteShaAfter -eq $localSha) {
             Set-UpstreamIfRequested -BranchName $branch -RemoteName $remoteName
             Write-Host "[DONE] $remoteName already had the same branch ref." -ForegroundColor Green
+            Invoke-PostPushGiteaRedundantDevPrune
             exit 0
         }
         throw "Push rejected: branch ref exists with different state. Inspect $remoteName/$branch and resolve divergence."
@@ -94,3 +110,4 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Host "[DONE] Pushed to $remoteName only." -ForegroundColor Green
+Invoke-PostPushGiteaRedundantDevPrune

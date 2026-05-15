@@ -159,6 +159,7 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 - **GitHub 비사용 기본:** 일반 작업에서는 GitHub를 쓰지 않는다(기본은 internal/gitea only).
 - **GitHub push:** 기본 차단(`origin`/`hq` push URL=`no_push`)을 유지하고, 사용자 명시 승인 없이는 해제/우회하지 않는다.
 - **권장 명령:** `scripts/Show-RemotePublicationMode.ps1`(상태 점검), `scripts/push-internal.ps1`(기본 push), `scripts/Push-GitHub-Explicit.ps1 -Acknowledge`(예외 공개).
+- **중복 `gitea/dev`:** `push-internal.ps1`가 푸시(또는 이미 최신)로 끝나면, 원격 `gitea`에 `main`과 `dev`가 **동일 SHA**일 때 **`dev`를 자동 삭제**한다(끄려면 `-NoAutoPruneRedundantDev`). 단독 실행: `scripts/Invoke-GiteaRedundantDevBranchPrune_v1.ps1` (`-WhatIf` 가능).
 - **대용량/민감 산출물:** GitHub 기본 제외. 특히 `docs/final/artifacts/global_atom_full_canon/*`는 최신 consolidated manifest만 추적한다.
 - **GitHub 푸시 거절(GH001 등):** 브랜치 히스토리에 **100MB 초과** Git 객체(예: 위 `global_atom_full_canon` 대용량 JSON/JSONL)가 포함되면 원격이 받지 않는다. 이 경우 **GitHub PR 없이 `internal`/`gitea`에서 머지**하거나, LFS·히스토리 정리 후 예외 푸시(`Push-GitHub-Explicit.ps1`)를 별도 검토한다.
 
