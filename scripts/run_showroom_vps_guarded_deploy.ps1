@@ -16,13 +16,19 @@
 .PARAMETER SkipBuildRestart
   Run git gate/pull and smoke checks without build + PM2 restart.
 
+.PARAMETER UseDestinyNo1kmediBuild
+  Build/restart jema-ai from /opt/mkm-destiny-ai-41e38ec6 (not mkm-lab-workspace-v2). Use when lab workspace main lags or npm build fails there.
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_showroom_vps_guarded_deploy.ps1
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\run_showroom_vps_guarded_deploy.ps1 -UseDestinyNo1kmediBuild -SkipBuildRestart:$false
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$DryRun,
     [switch]$SkipBuildRestart,
+    [switch]$UseDestinyNo1kmediBuild,
     [switch]$AllowPasswordPrompt,
     [string]$SshIdentityFile = ""
 )
@@ -73,11 +79,18 @@ if ([string]::IsNullOrWhiteSpace($hostName) -or [string]::IsNullOrWhiteSpace($us
 }
 
 $vpsWorkspace = "/opt/mkm-lab-workspace-v2"
+$vpsDestinyRepo = "/opt/mkm-destiny-ai-41e38ec6"
+$vpsNo1kmediDestiny = "$vpsDestinyRepo/projects/no1kmedi"
 $remote = "${user}@${hostName}"
 # Lab workspace may lag monorepo; skip gate when script absent (pull+build still guarded by ff-only).
 $gateCmd = "cd $vpsWorkspace && (test -f scripts/verify_git_origin_main_sync.sh && scripts/verify_git_origin_main_sync.sh --check-internal-safety --strict . || echo VPS_GATE_SCRIPT_SKIP)"
 $pullCmd = "cd $vpsWorkspace && git fetch internal && git checkout main && git pull --ff-only internal main"
 $buildRestartCmd = "cd $vpsWorkspace/projects/no1kmedi && npm run build && pm2 restart no1kmedi-com && pm2 status"
+if ($UseDestinyNo1kmediBuild) {
+    $buildRestartCmd = @"
+cd $vpsNo1kmediDestiny && npm ci && npm run build && pm2 delete no1kmedi-com 2>/dev/null || true && pm2 start npm --name no1kmedi-com --cwd $vpsNo1kmediDestiny -- start && pm2 save && pm2 describe no1kmedi-com | grep -E 'exec cwd|status'
+"@
+}
 
 $smokeUrls = @(
     "https://api.jemaai.cloud/public_showroom_board_minimal.html",

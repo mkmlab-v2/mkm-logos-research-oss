@@ -1,5 +1,6 @@
 /* jema-ai.com public marketing — calm clinical; hero uses restrained depth, not generic template-style gradients */
 /* Homepage preset SSOT: src/lib/homepagePreset.ts (default stripe-linear). Token overrides: .preset-stripe-linear / .preset-apple-notion below. */
+/* Role split (MKM_DOMAIN §1.1): hub palette = :root here (clinical green). jemaai.cloud showroom = separate static HTML (gold accent). Do not merge --accent across domains. */
 :root {
   --bg: #0a1210;
   --surface: #121c19;
