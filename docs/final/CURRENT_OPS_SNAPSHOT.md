@@ -2,6 +2,14 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-15 UTC · 채팅 종료 — 스냅샷·체크포인트)
+
+**Thread:** Cursor — 지휘관 **「진행해」** → 핸드오프만 갱신하고 창 종료.
+
+- **완료:** 본 파일 **상단 Ops slice** 추가; `py scripts/athena_checkpoint.py`로 `CENTRAL_AGENT_MEMORY_V1.md` **last_updated_utc**·체크포인트 1줄 갱신. 권장안(직전 세션): `dev`/`gitea/main` 동일선·SoloDev **Already up-to-date**·`verify_p0` OK.
+- **막힘:** 없음.
+- **다음:** `git status`에 남은 `CONSTITUTION`·`PUBLIC_FACING`·`silver_tech_cogs*`·`*_latest.json`·`blind_replay*`·`trading_execution*`·`sync_latest_24h.log.jsonl` 등은 **의도 확인 후** 커밋 또는 `git restore`; 재개 시 `@docs/final/CURRENT_OPS_SNAPSHOT.md`. 인간 게이트(COGS·법무 D·RQ-009·GPU Pack0-B)는 아래 **2026-05-17** 슬라이스·`AGENTS.md`와 동일.
+
 ## Ops slice (2026-05-17 · Session handoff — RQ-010·원격 동기·채팅 종료)
 
 **Thread:** Cursor — 지휘관 **스냅샷 후 채팅 종료** 여부.
