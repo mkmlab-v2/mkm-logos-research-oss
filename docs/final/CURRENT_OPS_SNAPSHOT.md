@@ -2,6 +2,14 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-15 · 순서 마감 — AthenaBundle + VPS 재동기)
+
+**Thread:** Cursor — 지휘관 **「순서대로 쭉 밀어」**.
+
+- **완료:** **gitea/main `f1c9957859`**. **AthenaBundle** exit 0 (~3m, prophecy 137 pass, premium queue GO shadow, tail SafeOps ok). **AmsaengHealth** exit 0 (일간). jema-ai VPS **destiny 번들+lab rsync** (이전 턴). ML-DEV-4 표면·P0 725.
+- **막힘:** 없음(자동).
+- **다음(인간):** 예언 **승격**·실매매·RQ-009 법무·GPU Pack0-B — `combined_all_passed`·`LOCKED_MODE`·`trading_go_no_go` **합선 금지**. mkmlife `deploy-to-hostinger.ps1` 별도.
+
 ## Ops slice (2026-05-15 · ML-DEV-4 + 권장 검증 번들)
 
 **Thread:** Cursor — 지휘관 **「권장안으로 쭉 밀어」** (Track C 표면 + Ops 게이트).
