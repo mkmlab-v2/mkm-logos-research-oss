@@ -204,3 +204,60 @@ def test_cli_market_pulse_overrides_are_applied(minimal_prophecy_path: Path, tmp
     assert proc.returncode == 0, proc.stderr + proc.stdout
     written = json.loads(out_path.read_text(encoding="utf-8"))
     assert written["market_pulse"]["theme_leadership_score"] == pytest.approx(0.92)
+
+
+def test_cli_repo_source_sets_repo_tags(minimal_prophecy_path: Path, tmp_path: Path) -> None:
+    out_path = tmp_path / "risk_repo.json"
+    proc = _run_sync_cli(
+        [
+            "--prophecy",
+            str(minimal_prophecy_path),
+            "--output",
+            str(out_path),
+            "--repo-source",
+        ]
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    written = json.loads(out_path.read_text(encoding="utf-8"))
+    assert written["source"] == "repo.fact_safe_sync.v1"
+    assert written["mode"] == "repo_shadow"
+
+
+def test_cli_mutex_n8n_and_repo_source(minimal_prophecy_path: Path, tmp_path: Path) -> None:
+    out_path = tmp_path / "risk_mutex.json"
+    proc = _run_sync_cli(
+        [
+            "--prophecy",
+            str(minimal_prophecy_path),
+            "--output",
+            str(out_path),
+            "--n8n-source",
+            "--repo-source",
+        ]
+    )
+    assert proc.returncode != 0
+    assert "mutually exclusive" in (proc.stderr or "")
+
+
+def test_cli_repo_source_migrates_from_n8n_with_downgrade_flag(
+    minimal_prophecy_path: Path, tmp_path: Path
+) -> None:
+    out_path = tmp_path / "risk_migrate.json"
+    out_path.write_text(
+        json.dumps({"source": "n8n.regime_watch.v5", "mode": "n8n_shadow"}),
+        encoding="utf-8",
+    )
+    proc = _run_sync_cli(
+        [
+            "--prophecy",
+            str(minimal_prophecy_path),
+            "--output",
+            str(out_path),
+            "--repo-source",
+            "--allow-metadata-downgrade",
+        ]
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    written = json.loads(out_path.read_text(encoding="utf-8"))
+    assert written["source"] == "repo.fact_safe_sync.v1"
+    assert written["mode"] == "repo_shadow"

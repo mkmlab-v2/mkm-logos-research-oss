@@ -9,6 +9,8 @@
 .EXAMPLE
   pwsh -File scripts/Register-FactSafeRiskProfileSyncTask.ps1 -RunNow
   pwsh -File scripts/Register-FactSafeRiskProfileSyncTask.ps1 -Remove
+.EXAMPLE
+  pwsh -File scripts/Register-FactSafeRiskProfileSyncTask.ps1 -Force -UseN8nSourceInTask
 #>
 param(
     [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
@@ -17,7 +19,8 @@ param(
     [int]$IntervalHours = 4,
     [switch]$Force,
     [switch]$RunNow,
-    [switch]$Remove
+    [switch]$Remove,
+    [switch]$UseN8nSourceInTask
 )
 
 $ErrorActionPreference = "Stop"
@@ -39,7 +42,8 @@ if ($Force) {
 }
 
 $startTime = (Get-Date).AddMinutes(1).ToString("HH:mm")
-$action = "pwsh -NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$n8nArg = if ($UseN8nSourceInTask) { " -UseN8nSource" } else { "" }
+$action = "pwsh -NoProfile -ExecutionPolicy Bypass -File `"$runner`"$n8nArg"
 $user = "$env:USERDOMAIN\$env:USERNAME"
 
 schtasks /Create /TN $TaskName /SC HOURLY /MO $IntervalHours /ST $startTime /TR $action /RU $user /RL LIMITED /F | Out-Null

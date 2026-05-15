@@ -4,14 +4,19 @@
   Fact-Safe 리스크 프로필 동기화 → 조건부 게이트 요약(dry-run) → trading GO/NO_GO 재빌드.
 
 .DESCRIPTION
-  주문·실매매 없음. n8n 메타데이터 유지(--n8n-source). MKM_WORKSPACE_MAINTENANCE 활성 시 sync는 스킵(exit 0)될 수 있음.
+  주문·실매매 없음. 기본은 Git·예약 작업 SSOT용 `sync_fact_safe_risk_profile.py --repo-source`.
+  레거시 n8n 메타데이터 태그가 필요하면 `-UseN8nSource`로 `--n8n-source` 전환.
+  MKM_WORKSPACE_MAINTENANCE 활성 시 sync는 스킵(exit 0)될 수 있음.
 
 .EXAMPLE
   pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/Run-FactSafeRiskProfileSyncChain_v1.ps1
+.EXAMPLE
+  pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/Run-FactSafeRiskProfileSyncChain_v1.ps1 -UseN8nSource
 #>
 [CmdletBinding()]
 param(
-    [string]$WorkspaceRoot = ""
+    [string]$WorkspaceRoot = "",
+    [switch]$UseN8nSource
 )
 
 Set-StrictMode -Version Latest
@@ -35,8 +40,10 @@ foreach ($p in @($sync, $gate, $status)) {
     if (-not (Test-Path -LiteralPath $p)) { throw "Missing: $p" }
 }
 
-Write-Host "==> 1/3 sync_fact_safe_risk_profile (--n8n-source)" -ForegroundColor Cyan
-& $py $sync --n8n-source
+$syncFlag = if ($UseN8nSource) { "--n8n-source" } else { "--repo-source" }
+$syncLabel = if ($UseN8nSource) { "n8n-source (legacy)" } else { "repo-source (default)" }
+Write-Host "==> 1/3 sync_fact_safe_risk_profile ($syncLabel)" -ForegroundColor Cyan
+& $py $sync $syncFlag
 if ($LASTEXITCODE -ne 0) { throw "sync_fact_safe_risk_profile exit $LASTEXITCODE" }
 
 Write-Host "==> 2/3 conditional_action_gate (api dry-run, no backend)" -ForegroundColor Cyan

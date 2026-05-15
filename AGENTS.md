@@ -374,7 +374,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - 질문·답변에서 **로컬만**인지 **배포(VPS) 후**인지 구분한다. VPS 경로·PM2 앱 이름 등은 **지휘관이 확정한 값**으로만 서술하고, 미확인이면 “확인 필요”로 표기한다.
 - **Ollama (VPS/본선)**: `gemma4:e2b` 등 최신 모델 풀 시 구버전은 레지스트리 **412** 가능 → **Ollama 업그레이드** 후 `ollama pull`. 로컬 `C:\workspace` Cursor 세션은 **VPS 셸이 아님**; 업그레이드·모델 설치는 **서버 셸(또는 SSH Cursor가 연 그 호스트)** 에서 수행. 태그 정렬: **`OLLAMA_MODEL=gemma4:e2b`**(로컬 `.env` 등).
 - 로컬 **SITREP → 공유 Vault 보급**(Windows, G: 마운트 시): `scripts/titan-sync.ps1` — **VPS 실매매 배포와는 별 작업**이다.
-- **리스크 프로필 소스 고정(n8n 등):** Windows 사용자 환경변수 `RISK_PROFILE_SOURCE_NAME` / `RISK_PROFILE_MODE_NAME`을 설정하면 `projects/bitcoin-trading/ops/windows-rehearsal/ensure_daemon_running.ps1`의 Fact-Safe 동기화가 매 기동 시 동일 라벨을 넘긴다(미설정 시 기존 `memory/v2/risk/risk_profile_fact_safe_latest.json`의 source/mode를 보존).
+- **리스크 프로필 소스 고정:** Windows 사용자 환경변수 `RISK_PROFILE_SOURCE_NAME` / `RISK_PROFILE_MODE_NAME`을 설정하면 `projects/bitcoin-trading/ops/windows-rehearsal/ensure_daemon_running.ps1`의 Fact-Safe 동기화가 매 기동 시 동일 라벨을 넘긴다(미설정 시 기존 `memory/v2/risk/risk_profile_fact_safe_latest.json`의 source/mode를 보존). **예약 Fact-Safe 체인 기본값**은 `sync_fact_safe_risk_profile.py --repo-source`(`repo.fact_safe_sync.v1` / `repo_shadow`); 레거시 n8n 태그만 쓸 때는 `--n8n-source` 또는 `Run-FactSafeRiskProfileSyncChain_v1.ps1 -UseN8nSource`(SSOT: `CONSTITUTION` §13.1·§13.1.b).
 
 ## 예언 레일 운영 요약 (7줄)
 

@@ -6,7 +6,7 @@
 .DESCRIPTION
   Skips: git fetch / origin-main sync, Vault mirror, git push.
   Runs: security check (snapshot+recheck only if RED), Git snapshot JSON in reports/,
-        fact-safe risk profile TTL refresh (n8n source, default; before health+trading),
+        fact-safe risk profile TTL refresh (repo source, default; before health+trading),
         workspace health (light), trading observation, B-track weekly + 1 autopush,
         protective guard, unified snapshot, Athena smoke, agent decision log.
 #>
@@ -53,8 +53,8 @@ New-Item -ItemType Directory -Force -Path (Join-Path $WorkspaceRoot "reports") |
 Write-Host "WROTE reports/ops_sequential_run_checkpoint_v1.json"
 
 if (-not $SkipRiskProfileSync) {
-    Write-Host "==> 3/11 sync fact-safe risk profile (n8n TTL; before health + GO/NO_GO)" -ForegroundColor Cyan
-    py scripts/sync_fact_safe_risk_profile.py --n8n-source
+    Write-Host "==> 3/11 sync fact-safe risk profile (repo TTL; before health + GO/NO_GO)" -ForegroundColor Cyan
+    py scripts/sync_fact_safe_risk_profile.py --repo-source
     if ($LASTEXITCODE -ne 0) { throw "sync_fact_safe_risk_profile exit $LASTEXITCODE" }
 } else {
     Write-Host "==> 3/11 sync fact-safe risk profile [skipped -SkipRiskProfileSync]" -ForegroundColor Yellow
@@ -95,7 +95,7 @@ py scripts/log_agent_decision.py `
     --evidence-path reports/ops_sequential_run_checkpoint_v1.json `
     --actor cursor-agent `
     --risk-level low `
-    --note "run_sequential_ops_other_chat_safe_v1.ps1: no fetch/vault/push; n8n_risk_sync+health+trading+btrack+protective+unified+athena (-SkipRiskProfileSync omits sync)"
+    --note "run_sequential_ops_other_chat_safe_v1.ps1: no fetch/vault/push; repo_risk_sync+health+trading+btrack+protective+unified+athena (-SkipRiskProfileSync omits sync)"
 
 Write-Host "[ok] sequential other-chat-safe bundle complete" -ForegroundColor Green
 exit 0
