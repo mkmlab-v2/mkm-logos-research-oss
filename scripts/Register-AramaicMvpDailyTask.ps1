@@ -5,7 +5,8 @@
 
 .DESCRIPTION
   Invokes scripts/run_aramaic_mvp_now_with_audit.ps1 with -NoWebhook and -SkipLogosInsightBundle (cold-host default).
-  Optional -SurvivorHealthAlertDryRun forwards to the chain so Track T survivor health alert skips POST (see alert_insight_survivor_health_v1 --dry-run).
+  By default appends -SurvivorHealthAlertDryRun so scheduled runs skip survivor-health POST (--dry-run).
+  Use -OmitSurvivorHealthAlertDryRun to register without that flag (live webhook path; operator choice).
   Direct chain-only runs: env MKM_ARAMAIC_SURVIVOR_HEALTH_ALERT_DRY_RUN=1|true|yes (Process/User/Machine) is read by run_aramaic_mvp_chain_v1.ps1 without this register script.
   Re-register with the same -TaskName overwrites. SSOT: CONSTITUTION Aramaic MVP ops table.
 
@@ -18,7 +19,9 @@ param(
     [string]$DailyAt = "06:15",
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$RunWhenLoggedOff,
-    [switch]$SurvivorHealthAlertDryRun
+    # Back-compat: previously required to append -SurvivorHealthAlertDryRun; now default-on (ignored if passed).
+    [switch]$SurvivorHealthAlertDryRun,
+    [switch]$OmitSurvivorHealthAlertDryRun
 )
 
 $ErrorActionPreference = "Stop"
@@ -44,7 +47,7 @@ $base = Get-Date
 $atToday = Get-Date -Year $base.Year -Month $base.Month -Day $base.Day -Hour $hour -Minute $minute -Second 0
 
 $argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -WorkspaceRoot `"$WorkspaceRoot`" -NoWebhook -SkipLogosInsightBundle"
-if ($SurvivorHealthAlertDryRun) {
+if (-not $OmitSurvivorHealthAlertDryRun) {
     $argLine += " -SurvivorHealthAlertDryRun"
 }
 
@@ -60,7 +63,7 @@ $settings = New-ScheduledTaskSettingsSet `
 
 $logonType = if ($RunWhenLoggedOff) { "S4U" } else { "Interactive" }
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType $logonType -RunLevel Limited
-$dry = if ($SurvivorHealthAlertDryRun) { " -SurvivorHealthAlertDryRun." } else { "." }
+$dry = if ($OmitSurvivorHealthAlertDryRun) { " (survivor health: live POST allowed)." } else { " -SurvivorHealthAlertDryRun (Track T survivor POST skipped)." }
 $desc = "Daily Aramaic MVP chain + audit log append (B-track; not trading). -NoWebhook -SkipLogosInsightBundle$dry"
 
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Description $desc -Force | Out-Null

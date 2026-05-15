@@ -9,6 +9,10 @@
   2) panel strict_passed && auto_promote_ready == true
   3) shared safety gates passed (btc_csv/model/non-neutral-cap)
 
+  Gate resolution: rows are matched in tracks.shared.gates then root gates[]. If a gate_id is
+  absent (e.g. btc_only_crossassist emits only score_btc_csv in the shared slice) but
+  shared_all_gates_passed is true, that gate is treated as passed via aggregate (not missing=false).
+
   Exit code:
     0 = all pass
     1 = one or more alerts failed
@@ -44,6 +48,12 @@ $panelPath = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_promotion_g
 $hit = Read-JsonFile -Path $hitPath
 $panel = Read-JsonFile -Path $panelPath
 
+if (-not $hit.metrics) {
+    throw "prophecy_hit_rate_eval_latest.json missing metrics (required for ALERT_1)"
+}
+if ($null -eq $hit.metrics.price_directional_hit_rate) {
+    throw "prophecy_hit_rate_eval_latest.json missing metrics.price_directional_hit_rate"
+}
 $hitRate = [double]($hit.metrics.price_directional_hit_rate)
 $a1Pass = $hitRate -ge $MinHitRate
 
@@ -51,18 +61,49 @@ $strictPassed = [bool]$panel.strict_passed
 $autoReady = [bool]$panel.auto_promote_ready
 $a2Pass = $strictPassed -and $autoReady
 
-$sharedGates = @()
+$sharedGatesList = @()
 if ($panel.tracks -and $panel.tracks.shared -and $panel.tracks.shared.gates) {
-    $sharedGates = @($panel.tracks.shared.gates)
+    $sharedGatesList = @($panel.tracks.shared.gates)
+}
+$rootGatesList = @()
+if (($panel.PSObject.Properties.Name -contains 'gates') -and $panel.gates) {
+    $rootGatesList = @($panel.gates)
+}
+$mergedGates = [System.Collections.Generic.List[object]]::new()
+foreach ($g in $sharedGatesList) { [void]$mergedGates.Add($g) }
+foreach ($g in $rootGatesList) { [void]$mergedGates.Add($g) }
+
+$sharedAllPassed = $false
+if ($null -ne $panel.shared_all_gates_passed) {
+    $sharedAllPassed = [bool]$panel.shared_all_gates_passed
+}
+$trackSharedAllPassed = $false
+if ($panel.tracks -and $panel.tracks.shared -and ($null -ne $panel.tracks.shared.all_gates_passed)) {
+    $trackSharedAllPassed = [bool]$panel.tracks.shared.all_gates_passed
 }
 
-function Gate-Passed([string]$GateId) {
-    $g = $sharedGates | Where-Object { $_.gate_id -eq $GateId } | Select-Object -First 1
-    if (-not $g) { return $false }
-    return [bool]$g.passed
+function Resolve-StructuralGate {
+    param([Parameter(Mandatory = $true)][string]$GateId)
+    foreach ($x in $mergedGates) {
+        if ("$($x.gate_id)" -ne $GateId) { continue }
+        return @{
+            passed = [bool]$x.passed
+            mode   = "row"
+        }
+    }
+    if ($sharedAllPassed -and $trackSharedAllPassed) {
+        return @{ passed = $true; mode = "aggregate_tracks_shared" }
+    }
+    if ($sharedAllPassed) {
+        return @{ passed = $true; mode = "aggregate_shared_all" }
+    }
+    return @{ passed = $false; mode = "missing" }
 }
 
-$a3Pass = (Gate-Passed "score_neutral_ratio_cap") -and (Gate-Passed "hypothesis_non_stub_model") -and (Gate-Passed "score_btc_csv_input_present")
+$rNeutral = Resolve-StructuralGate "score_neutral_ratio_cap"
+$rModel = Resolve-StructuralGate "hypothesis_non_stub_model"
+$rBtcCsv = Resolve-StructuralGate "score_btc_csv_input_present"
+$a3Pass = $rNeutral.passed -and $rModel.passed -and $rBtcCsv.passed
 
 $allPass = $a1Pass -and $a2Pass -and $a3Pass
 
@@ -91,9 +132,12 @@ $result = [ordered]@{
         }
         ALERT_3_STRUCTURAL_RISK = [ordered]@{
             passed = $a3Pass
-            score_neutral_ratio_cap_passed = (Gate-Passed "score_neutral_ratio_cap")
-            hypothesis_non_stub_model_passed = (Gate-Passed "hypothesis_non_stub_model")
-            score_btc_csv_input_present_passed = (Gate-Passed "score_btc_csv_input_present")
+            score_neutral_ratio_cap_passed = $rNeutral.passed
+            score_neutral_ratio_cap_resolution = $rNeutral.mode
+            hypothesis_non_stub_model_passed = $rModel.passed
+            hypothesis_non_stub_model_resolution = $rModel.mode
+            score_btc_csv_input_present_passed = $rBtcCsv.passed
+            score_btc_csv_input_present_resolution = $rBtcCsv.mode
         }
     }
     overall_passed = $allPass
