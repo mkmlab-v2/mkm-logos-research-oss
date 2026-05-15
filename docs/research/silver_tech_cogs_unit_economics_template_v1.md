@@ -2,7 +2,7 @@
 
 **역할:** 내부 단가·부하 **가정만** 담는 표. `TRACK_C`·`PUBLIC_FACING` 본문에 **숫자 올리기 전** 여기서 채우고, 출처·실측 붙으면 승격. 대외·조달에는 **견적·로그·계약 인용 없이** 단가 문구 금지.
 
-**연계:** `RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** · `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2.
+**연계:** `RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** · `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.7.2 · `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3 (v1.5+).
 
 ---
 
@@ -55,6 +55,19 @@
 | **S-BASE** | 제품 기본 경로·현재 게이트를 그대로 탔을 때 | 실측 30일 평균(또는 파일럿) 기준 |
 | **S-STRESS** | 피크일·장애 시 백업 라우트까지 켰을 때 | `route=vendor`·재시도·대용량 오디오 피크 |
 
+### S-CONS / S-BASE / S-STRESS — 실측 기준 (v1 · 수치 전제)
+
+**원칙:** 아래가 채워지기 전에는 위 **COGS 표**의 금액·`월소계`·`합계` 칸을 **쓰지 않는다**(동일 표를 복제한 `[HYPO]` 사본에만 숫자 기입).
+
+| 항목 | S-CONS | S-BASE | S-STRESS |
+|------|--------|--------|----------|
+| **집계 창** | 보수 가정 시트(월 1회 갱신 가능) | **연속 30일** 롤링(또는 파일럿 합의 기간 N일) | 피크 주간 **7일** 또는 장애 드릴 **재현 24h** (둘 중 운영에서 택일·문서에 기록) |
+| **STT 증빙** | `stt_routing_audit_log` 요약 + `route` 비율 가정 명시 | 동 JSONL·`summarize_stt_routing_audit_log_v1.py` 산출 경로·기간 UTC 한 줄 | `route=vendor`·재시도·`audio_duration_ms` 상위 분위(예 p95) **실측 로그** 첨부 |
+| **LLM·요약** | 토큰/요청 **상한 가정**만(견적서 없으면 URL+가정식) | 벤더 콘솔 CSV 또는 **청구서 1건** (레포 비배치; 경로·기간 메타만 기록) | 스트레스 시나리오별 **피크 1일** 스냅샷 |
+| **승격 게이트** | RQ-009 **(D) 전** 내부 시트만 | **(D) 후** 또는 법무 서면 “수치 인용 허용” 분기 명시 | 법무+SRE 합의 후에만 대외·Track C 본문 인용 |
+
+**오너(내부):** 집계 창·증빙 번들을 누가 보관하는지 한 줄(`운영`/ `제품`/ `재무`) — 레포 SSOT 아님, 위 표 옆 메모로 충분.
+
 ---
 
 ## Stream 2 — 로컬 실측 루프 (감사 JSONL, 비커밋)
@@ -96,4 +109,4 @@ py scripts/summarize_stt_routing_audit_log_v1.py
 ## 메타
 
 - **schema:** `silver_tech_cogs_unit_economics_template_v1`
-- **last_updated_utc:** 2026-05-17 — **동결 게이트** 표 추가(RQ-009 (B)/(D)·법무 초안 아티팩트 링크). §Stream 2·COGS 숫자·KPI 목표는 여전히 실측·법무 후; RQ-009 **OPEN** 유지.
+- **last_updated_utc:** 2026-05-15 — **S-CONS/BASE/STRESS 실측 창·증빙** 표 추가(수치 칸은 여전히 실측·법무 (D) 후). RQ-009 **OPEN** 유지.
