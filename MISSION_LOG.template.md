@@ -37,6 +37,32 @@ PowerShell 예: `Copy-Item -Path MISSION_LOG.template.md -Destination MISSION_LO
 - [ ] **Exit:** (예) `py -m pytest tests/test_example.py -q` → exit 0
 - [ ] **Evidence:** (예) 로그 / `docs/final/artifacts/...`
 
+## Automation Frontline — 일간·주간 (고정 2줄 + 선택 1줄)
+
+**역할:** 기계 영역은 **계산·검증·`*_latest.json` 산출**까지. 실행 스위치·도장·커밋·푸시·실매매는 **인간 성역**(산출물만으로 자동 연결되지 않음). 상세 트리거 표는 루트 `AGENTS.md` 「페르소나 단축 호출」.
+
+**저장소 루트 `C:\workspace`에서 실행(Windows).** 완료 시 Active 표 또는 아래 Evidence에 **exit 0 한 줄**을 남긴다.
+
+| 리듬 | 한 줄 (복사) | Evidence (예시) |
+|------|----------------|------------------|
+| **일간** | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AmsaengHealth` | 터미널 exit 0 · 헬스 로그에 `overall_ok` 등(해당 스크립트 출력) |
+| **주간** | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` | exit 0 · `run_fact_lock_bundle.ps1`에 포함된 pytest·게이트 범위는 `AGENTS.md`·`MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 하단 |
+| **선택(초경량)** | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` | `scripts\verify_p0_constitution_gate_paths.ps1` exit 0 |
+
+**연속(이미 등록한 PC):** Task Scheduler 작업 `\MKM-Trading-Automation-Health-30min`은 `scripts\Register-TradingAutomationHealthTask.ps1` 기본값으로 **`scripts\Run-TradingAutomationHealthTask.ps1`**를 주기 실행한다. 수동 1회: `schtasks /Run /TN "\MKM-Trading-Automation-Health-30min"`. 일간 한 줄과 **중복이면** 지휘관 PC 부하에 맞게 하나만 유지해도 된다.
+
+**Completed 규칙:** 위 리듬 행을 돌린 날짜·exit 0를 **Completed**에 한 줄 남기거나, Active 표의 해당 행 Evidence만 갱신한다(스냅샷·CENTRAL과 동일 문단 이중 기술 금지).
+
+### 서브에이전트 복붙 브리프 (메인 채팅이 MISSION_LOG 소유)
+
+아래를 서브 세션 첫 메시지에 붙인다. **서브는 `MISSION_LOG.md`를 수정하지 않는다.**
+
+1. **범위:** (디렉터리 또는 브랜치 한 줄, 예: `scripts/…`만 / `tests/…`만)
+2. **금지:** `MISSION_LOG.md`·`docs/final/CURRENT_OPS_SNAPSHOT.md`·`docs/final/CENTRAL_AGENT_MEMORY_V1.md`·실매래·`git push`·비밀 커밋
+3. **DoD:** (exit 0 명령 한 줄, 예: `py -m pytest tests/test_….py -q`)
+4. **증거:** (산출 경로 또는 로그 한 줄)
+5. **완료 후:** 메인 채팅에 **diff 요약 + DoD 달성 여부**만 보고(메인이 MISSION_LOG·승인 게이트 갱신)
+
 ## Autonomous evolution loop (draft v1)
 
 **정의**: [측정 → 제안 → 검증 → 결정]의 **유한** 루프. 무한 최적화·무승인 커밋·이론 상수 임의 변경 **금지**.
