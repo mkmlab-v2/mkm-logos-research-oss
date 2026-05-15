@@ -64,7 +64,7 @@ class VPSHealthMonitor:
         check_interval: int = 60,  # 헬스체크 간격 (초)
         max_restart_attempts: int = 5,  # 최대 재시작 시도 횟수
         restart_delay: int = 30,  # 재시작 대기 시간 (초)
-        pm2_process_name: str = "bitcoin-trading-24h-daemon"  # PM2 프로세스 이름 통일
+        pm2_process_name: str = "bitcoin-live-small-24h"  # VPS 본선 PM2 앱 (destiny)
     ):
         """
         Args:
@@ -686,14 +686,26 @@ class VPSHealthMonitor:
 
 
 async def main():
-    """메인 함수 (독립 실행용)"""
+    """메인 함수 (독립 실행용). Env: PM2_PROCESS_NAME, VPS_HEALTH_CHECK_INTERVAL."""
+    import argparse
+
+    default_pm2 = os.environ.get("PM2_PROCESS_NAME", "bitcoin-live-small-24h")
+    default_interval = int(os.environ.get("VPS_HEALTH_CHECK_INTERVAL", "60"))
+
+    parser = argparse.ArgumentParser(description="VPS health monitor (PM2 live app watchdog)")
+    parser.add_argument("--pm2-process-name", default=default_pm2)
+    parser.add_argument("--check-interval", type=int, default=default_interval)
+    parser.add_argument("--max-restart-attempts", type=int, default=5)
+    parser.add_argument("--restart-delay", type=int, default=30)
+    args = parser.parse_args()
+
     monitor = VPSHealthMonitor(
-        check_interval=60,  # 1분마다 체크
-        max_restart_attempts=5,
-        restart_delay=30,
-        pm2_process_name="bitcoin-trading"
+        check_interval=args.check_interval,
+        max_restart_attempts=args.max_restart_attempts,
+        restart_delay=args.restart_delay,
+        pm2_process_name=args.pm2_process_name,
     )
-    
+
     await monitor.monitor_loop()
 
 

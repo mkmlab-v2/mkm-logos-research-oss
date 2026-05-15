@@ -2,13 +2,13 @@
 # One-click PM2 health snapshot for bitcoin live app (VPS / Linux).
 # Usage:
 #   bash vps_pm2_bitcoin_live_health_snapshot.sh
-#   PM2_APP_NAME=bitcoin-live-small-24h EXPECT_CWD_PREFIX=/opt/bitcoin-trading-live bash ...
+#   PM2_APP_NAME=bitcoin-live-small-24h EXPECT_CWD_PREFIX=/opt/mkm-destiny-ai-41e38ec6 bash ...
 # Optional: LOG_LINES=80 to tail recent logs; HEALTH_LOG=/path/to.log to append JSONL.
 
 set -euo pipefail
 
 PM2_APP_NAME="${PM2_APP_NAME:-bitcoin-live-small-24h}"
-EXPECT_CWD_PREFIX="${EXPECT_CWD_PREFIX:-/opt/bitcoin-trading-live}"
+EXPECT_CWD_PREFIX="${EXPECT_CWD_PREFIX:-/opt/mkm-destiny-ai-41e38ec6}"
 LOG_LINES="${LOG_LINES:-80}"
 HEALTH_LOG="${HEALTH_LOG:-}"
 

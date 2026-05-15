@@ -74,7 +74,16 @@ bash projects/bitcoin-trading/ops/v2/ssh/vps_pm2_bitcoin_live_health_snapshot.sh
 - **기대:** 마지막에 `verdict: GO` / `VERDICT=GO`, 종료 코드 `0` (`echo $?` → 0).
 - PM2 앱 이름이 다르면: `PM2_APP_NAME=실제이름` 붙여 실행.
 
-**스크립트와 변수 이름:** 배포본은 **`LIVE_ROOT`(기본 `/opt/bitcoin-trading-live`)** 와 `readlink -f`로 캐논 경로를 맞춰 검사합니다. 런타임이 그 트리(또는 동일 inode의 심볼릭 해석 결과)면 **추가 env 없이 GO**가 일반적입니다. 예전 단계에서 문서에만 나오던 `EXPECT_CWD_PREFIX` 는 **현재 스크립트에 없을 수 있으니**, 비표준 루트만 쓸 때는 `vps_pm2_bitcoin_live_health_snapshot.sh` 상단 주석·환경 변수를 따르세요.
+**스크립트와 변수 이름:** `vps_pm2_bitcoin_live_health_snapshot.sh`는 **`EXPECT_CWD_PREFIX`(기본 `/opt/mkm-destiny-ai-41e38ec6`)** 와 **`PM2_APP_NAME`(기본 `bitcoin-live-small-24h`)** 로 `pm2 describe`의 cwd·script path를 검사합니다. 레거시 `/opt/bitcoin-trading-live` 트리만 쓸 때는 env로 prefix를 덮어씁니다.
+
+**Destiny 헬스 모니터 PM2 등록:**
+
+```bash
+cd /opt/mkm-destiny-ai-41e38ec6
+bash projects/bitcoin-trading/ops/v2/ssh/register_destiny_vps_health_monitor.sh
+```
+
+레거시 `bitcoin-trading-health-monitor`·`bitcoin-live-watchdog`(`/opt/bitcoin-trading`)는 기동하지 않습니다.
 
 ---
 
