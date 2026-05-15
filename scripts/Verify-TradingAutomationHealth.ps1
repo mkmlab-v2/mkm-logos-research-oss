@@ -2,7 +2,10 @@
 param(
   [string]$WorkspaceRoot = "",
   [int]$MaxGoNoGoAgeHours = 3,
-  [switch]$AllowExpectedSecurityDrift
+  [switch]$AllowExpectedSecurityDrift,
+  # When set: trading_go_no_go_latest.json may read NO_GO while gate_reason/risk_mode are
+  # trinity_governor / LOCKED_MODE only (expected policy posture). Still requires fresh generated_at_utc.
+  [switch]$AllowPolicyLockedGoNoGo
 )
 
 $ErrorActionPreference = "Stop"
@@ -56,6 +59,24 @@ function Read-Json([string]$Path) {
   catch { return $null }
 }
 
+function Test-GoNoGoPolicyOnlyLock([object]$Doc) {
+  if (-not $Doc) { return $false }
+  if ("$($Doc.go_no_go)" -ne "NO_GO") { return $false }
+  if ("$($Doc.gate_reason)" -ne "trinity_governor_LOCKED_MODE") { return $false }
+  if ("$($Doc.risk_mode)" -ne "LOCKED_MODE") { return $false }
+  $rs = [System.Collections.Generic.List[string]]::new()
+  if ($Doc.reasons) {
+    foreach ($x in @($Doc.reasons)) { $rs.Add("$x") }
+  }
+  $got = @($rs | Sort-Object)
+  $want = @("gate_not_ok", "risk_locked_mode") | Sort-Object
+  if ($got.Count -ne $want.Count) { return $false }
+  for ($i = 0; $i -lt $got.Count; $i++) {
+    if ($got[$i] -ne $want[$i]) { return $false }
+  }
+  return $true
+}
+
 # Core trading/security schedules. Do not list MKM-AmsaengEosa-Monitoring-Bundle-60min:
 # that bundle ends with Invoke-AmsaengEosaGovernanceCycle -> Invoke-SafeOpsSurfaceCheck ->
 # this script (LastTaskResult feedback loop / self-gate).
@@ -77,11 +98,16 @@ $sec = Read-Json -Path $secPath
 
 $goNoGoOk = $false
 $goNoGoAgeHours = $null
+$goNoGoPolicyLockedBypass = $false
 if ($goNoGo -and $goNoGo.generated_at_utc) {
   $generated = [datetimeoffset]::Parse("$($goNoGo.generated_at_utc)")
   $age = [datetimeoffset]::UtcNow - $generated.ToUniversalTime()
   $goNoGoAgeHours = [math]::Round($age.TotalHours, 3)
   $goNoGoOk = ($goNoGo.go_no_go -eq "GO") -and ($age.TotalHours -le $MaxGoNoGoAgeHours)
+  if (-not $goNoGoOk -and $AllowPolicyLockedGoNoGo -and (Test-GoNoGoPolicyOnlyLock $goNoGo)) {
+    $goNoGoOk = ($age.TotalHours -le $MaxGoNoGoAgeHours)
+    $goNoGoPolicyLockedBypass = $true
+  }
 }
 
 $securityOk = $false
@@ -122,6 +148,7 @@ $report = [ordered]@{
   security_ok = $securityOk
   security_reason = $securityReason
   go_no_go_ok = $goNoGoOk
+  go_no_go_policy_locked_bypass = $goNoGoPolicyLockedBypass
   go_no_go_age_hours = $goNoGoAgeHours
   max_go_no_go_age_hours = $MaxGoNoGoAgeHours
   go_no_go = if ($goNoGo) { $goNoGo.go_no_go } else { $null }

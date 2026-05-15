@@ -23,6 +23,8 @@
 #   1) -BtcCsv parameter  2) env MKM_BTC_DAILY_CSV  3) research/market_data/btc_daily_external_yf.csv
 # (B-track [HYPO] only; not live trading). Without CSV, hit-rate eval is skipped with a note.
 # Longer window: -IncludeDawnScore (30 trading days for score rows).
+# KOSPI stress observation (default ON): build_kospi_stress_observation_hypothesis_v1.py after prophecy_health_status
+# (5d vol + monthly foreign_net_buy proxy; observation_only). Use -SkipKospiStressObservation to omit.
 # Manual one-offs:
 #   py scripts/build_btrack_prophecy_score_from_ohlcv.py
 #   py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json docs/final/artifacts/btrack_prophecy_score_latest.json
@@ -85,6 +87,7 @@ param(
   [switch]$SkipProphecyContemplationGemini,
   [switch]$SkipPanel24hAlertsCheck,
   [double]$Panel24hMinHitRate = 0.60,
+  [switch]$SkipKospiStressObservation,
   # Logos B-track observational bundle (upstream JSON/JSONL may be absent; non-blocking WARN).
   [switch]$SkipLogosInsightBundle
 )
@@ -462,6 +465,14 @@ if (-not $SkipFastPromotionGate) {
 Write-Host "==> build_prophecy_health_status_v1.py (prophecy_health_status_latest.json)"
 py scripts/build_prophecy_health_status_v1.py
 if ($LASTEXITCODE -ne 0) { throw "build_prophecy_health_status_v1 exit $LASTEXITCODE" }
+
+if (-not $SkipKospiStressObservation) {
+  Write-Host "==> build_kospi_stress_observation_hypothesis_v1.py (B-track [HYPO] KOSPI vol + monthly flow proxy; observation_only)"
+  py scripts/build_kospi_stress_observation_hypothesis_v1.py --append-log
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: build_kospi_stress_observation_hypothesis_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+  }
+}
 
 Write-Host "==> check_prophecy_proxy_streak_gate_v1.py (streak + optional webhook; threshold env MKM_PROPHECY_PROXY_STREAK_THRESHOLD default 3)"
 $streakArgs = @("scripts/check_prophecy_proxy_streak_gate_v1.py")

@@ -147,6 +147,8 @@ param(
     [switch]$SkipSafeOpsSurfaceCheck,
     [switch]$IncludeSafeOpsSurfaceCheck,
     [switch]$IncludeSafeOpsSurfaceCheckWithVps,
+    # Pass -StrictTradingGoNoGo into SafeOps (Trinity LOCKED disk NO_GO fails verify; audit-only).
+    [switch]$SafeOpsStrictTradingGoNoGo,
 
     # Optional: heartbeat / bundle-cycle JSON staleness (runs outside bundle success tail; see scripts/check_amsaeng_eosa_artifact_staleness_v1.py).
     [switch]$IncludeAmsaengArtifactStaleness
@@ -409,12 +411,10 @@ try {
             if ($runSafeOpsWithVps) { $safeLabel += "; +VPS smoke" }
             $safeLabel += ")"
             Write-Host "=== $safeLabel ===" -ForegroundColor Cyan
-            if ($runSafeOpsWithVps) {
-                & powershell -NoProfile -ExecutionPolicy Bypass -File $safeOps -WorkspaceRoot $root -IncludeVpsSmoke
-            }
-            else {
-                & powershell -NoProfile -ExecutionPolicy Bypass -File $safeOps -WorkspaceRoot $root
-            }
+            $safeOpsCli = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $safeOps, "-WorkspaceRoot", $root)
+            if ($runSafeOpsWithVps) { $safeOpsCli += "-IncludeVpsSmoke" }
+            if ($SafeOpsStrictTradingGoNoGo) { $safeOpsCli += "-StrictTradingGoNoGo" }
+            & powershell @safeOpsCli
             $safeExit = $LASTEXITCODE
             if ($safeExit -eq 2) {
                 throw "Safe ops surface CRITICAL (exit 2). See reports/safe_ops_surface_check_latest.json"

@@ -4,6 +4,7 @@
 
 .DESCRIPTION
   - Verify-TradingAutomationHealth.ps1 를 포함 실행한다.
+  - 기본으로 `-AllowPolicyLockedGoNoGo`를 넘겨, `trading_go_no_go_latest.json`이 Trinity **LOCKED_MODE**로만 `NO_GO`인 경우(정책상 정상)를 **자동화 건강 실패로 취급하지 않는다**. 엄격히 보려면 `-StrictTradingGoNoGo`.
   - daemon_continuity / risk_profile / ops_phase1 의 타임스탬프 나이를 초과 시 기본은 warning(VPS 미러 전 로컬 표본 지연 허용). RAM 부족·추론 중복만 기본 critical.
   - run_mkm_control_integrity_inference_batch_v1 프로세스가 2개 이상이면 critical (RAM 폭주 재발 방지).
   - MCP 미주입·채팅 유무와 무관하게 동일 명령으로 재현 가능.
@@ -14,6 +15,7 @@
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-SafeOpsSurfaceCheck.ps1
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-SafeOpsSurfaceCheck.ps1 -IncludeVpsSmoke
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-SafeOpsSurfaceCheck.ps1 -StrictTradingGoNoGo
 #>
 [CmdletBinding()]
 param(
@@ -27,7 +29,10 @@ param(
     [int]$OpsPhase1WarnHours = 72,
     [double]$MinFreeRamGb = 1.5,
     [int]$LiveSyncMaxAgeSeconds = 600,
-    [switch]$IgnoreLiveSync
+    [switch]$IgnoreLiveSync,
+    # When false (default): pass -AllowPolicyLockedGoNoGo to Verify-TradingAutomationHealth so expected
+    # Trinity LOCKED_MODE NO_GO does not fail the whole safe-ops tail (disk policy, not broken automation).
+    [switch]$StrictTradingGoNoGo
 )
 
 Set-StrictMode -Version Latest
@@ -146,6 +151,9 @@ if (Test-Path -LiteralPath $verifyScript) {
     $verifyArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $verifyScript, "-WorkspaceRoot", $WorkspaceRoot)
     if (-not $StrictSecurity) {
         $verifyArgs += "-AllowExpectedSecurityDrift"
+    }
+    if (-not $StrictTradingGoNoGo) {
+        $verifyArgs += "-AllowPolicyLockedGoNoGo"
     }
     & powershell.exe @verifyArgs
     $verifyExit = $LASTEXITCODE

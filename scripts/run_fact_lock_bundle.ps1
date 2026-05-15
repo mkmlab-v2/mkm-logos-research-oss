@@ -165,6 +165,9 @@
 .PARAMETER SafeOpsIgnoreLiveSync
   말미 SafeOps 호출에 `-IgnoreLiveSync`를 넘긴다(VPS live_sync 미러 없는 로컬에서 stale 경고만 억제; 예언 클로저 `-SkipLiveSyncPull`과 동일 선상).
 
+.PARAMETER SafeOpsStrictTradingGoNoGo
+  말미 SafeOps 호출에 `-StrictTradingGoNoGo`를 넘긴다(기본은 Trinity LOCKED `NO_GO`를 헬스 실패로 취급하지 않음; 감사용으로만 사용).
+
 .PARAMETER SkipIntegratedGovernanceBuild
   `Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1` 생략(기본: KOSPI 게이트·config가 모두 있으면 `--validate-digest-schema`로 갱신).
 
@@ -232,6 +235,9 @@ param(
 
     # Pass -IgnoreLiveSync to SafeOps tail (pairs with prophecy closure -SkipLiveSyncPull; avoids local stale live_sync/daemon WARN).
     [switch]$SafeOpsIgnoreLiveSync,
+
+    # Pass -StrictTradingGoNoGo to SafeOps tail (audit: policy LOCKED NO_GO fails verify).
+    [switch]$SafeOpsStrictTradingGoNoGo,
 
     # Integrated governance rebuild when deps exist (see Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1).
     [switch]$SkipIntegratedGovernanceBuild
@@ -902,6 +908,7 @@ if (-not $SkipSafeOpsSurfaceCheck) {
         Write-Host '== Fact-Lock (recommended tail): Safe ops surface check ==' -ForegroundColor Cyan
         $safeOpsCli = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $safeOpsTail, '-WorkspaceRoot', $workspaceRoot)
         if ($SafeOpsIgnoreLiveSync) { $safeOpsCli += '-IgnoreLiveSync' }
+        if ($SafeOpsStrictTradingGoNoGo) { $safeOpsCli += '-StrictTradingGoNoGo' }
         & powershell @safeOpsCli
         $safeTailExit = $LASTEXITCODE
         if ($safeTailExit -eq 2) {

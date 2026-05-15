@@ -40,6 +40,9 @@ def test_dispatch_hormone_trend_skips_without_webhook(tmp_path):
             str(out),
             "--webhook-env",
             "MISSING_TEST_WEBHOOK",
+            # Isolate from host ENABLE_WEBHOOK_STRICT_MODE=1 (otherwise exit 1 on missing webhook).
+            "--strict-mode-env",
+            "__PYTEST_LENS_DISPATCH_STRICT_OFF__",
         ],
         cwd=str(ROOT),
         capture_output=True,

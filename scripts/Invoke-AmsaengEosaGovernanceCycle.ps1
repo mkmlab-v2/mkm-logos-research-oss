@@ -9,6 +9,9 @@
 .PARAMETER IncludeVpsSmoke
   Invoke-SafeOpsSurfaceCheck 에 전달(VPS SSH 스모크 SoftFail은 SafeOps 내부).
 
+.PARAMETER StrictTradingGoNoGo
+  Invoke-SafeOpsSurfaceCheck 에 `-StrictTradingGoNoGo` 전달(Trinity LOCKED disk NO_GO를 verify 실패로; 감사용).
+
 .PARAMETER SoftFail
   최종 exit 0 (reports JSON 에 would_exit 기록). 번들 말단 연동용.
 
@@ -21,6 +24,7 @@
 param(
     [string]$WorkspaceRoot = "",
     [switch]$IncludeVpsSmoke,
+    [switch]$StrictTradingGoNoGo,
     [switch]$SkipSafeOps,
     [switch]$SkipMcpHygiene,
     [switch]$SkipSecretHygiene,
@@ -62,6 +66,7 @@ if (-not $SkipSafeOps) {
     if (Test-Path -LiteralPath $safe) {
         $safeCli = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $safe, "-WorkspaceRoot", $WorkspaceRoot)
         if ($IncludeVpsSmoke) { $safeCli += "-IncludeVpsSmoke" }
+        if ($StrictTradingGoNoGo) { $safeCli += "-StrictTradingGoNoGo" }
         & powershell.exe @safeCli
         Add-Phase "safe_ops_surface" $LASTEXITCODE
     }

@@ -22,7 +22,7 @@ if (-not (Test-Path -LiteralPath $verify)) { throw "Missing script: $verify" }
 if (-not (Test-Path -LiteralPath $alert)) { throw "Missing script: $alert" }
 
 # Health check exit code reflects service health and is expected to be non-zero during incidents.
-pwsh -NoProfile -ExecutionPolicy Bypass -File $verify -AllowExpectedSecurityDrift
+pwsh -NoProfile -ExecutionPolicy Bypass -File $verify -AllowExpectedSecurityDrift -AllowPolicyLockedGoNoGo
 $verifyExit = $LASTEXITCODE
 
 py $alert

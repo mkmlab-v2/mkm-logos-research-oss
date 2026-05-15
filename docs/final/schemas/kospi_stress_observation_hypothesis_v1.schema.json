@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm12.local/schemas/kospi_stress_observation_hypothesis_v1.schema.json",
+  "title": "KOSPI stress observation hypothesis (B-track, observation_only)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "hypothesis_tier",
+    "boundary_ack",
+    "observation_only",
+    "ts_utc",
+    "label",
+    "as_of_trade_date",
+    "inputs",
+    "metrics",
+    "gates"
+  ],
+  "properties": {
+    "schema": { "const": "kospi_stress_observation_hypothesis_v1" },
+    "hypothesis_tier": { "const": "B" },
+    "boundary_ack": { "const": true },
+    "observation_only": { "const": true },
+    "ts_utc": { "type": "string" },
+    "label": { "type": "string" },
+    "as_of_trade_date": { "type": ["string", "null"] },
+    "inputs": { "type": "object" },
+    "metrics": { "type": "object" },
+    "gates": { "type": "object" },
+    "composite_stress_ease_candidate": { "type": ["boolean", "null"] },
+    "disclaimers": { "type": "array", "items": { "type": "string" } },
+    "ok": { "type": "boolean" },
+    "error": { "type": "string" }
+  }
+}
