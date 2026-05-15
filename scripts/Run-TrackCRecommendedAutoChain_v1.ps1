@@ -1,9 +1,11 @@
 # Track C / MKM 권장 자동 루틴 (v1)
-# n8n 매크로 점검(실패해도 계속) -> MVP+B2B 아티팩트 갱신 -> copy guard -> 오케스트레이터 번들·noop 스모크
+# 기본: n8n 생략(로컬 n8n 인프라 제거 2026-05-15). -IncludeN8nCheck 시에만 레거시 일일 점검.
+# MVP+B2B 아티팩트 갱신 -> copy guard -> 오케스트레이터 번들·noop 스모크
 # Usage (repo root):  powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-TrackCRecommendedAutoChain_v1.ps1
 
 [CmdletBinding()]
 param(
+    [switch]$IncludeN8nCheck,
     [switch]$SkipN8nCheck,
     [switch]$SkipOrchestrator
 )
@@ -22,8 +24,11 @@ function Write-Step {
 
 $failed = $false
 
-if (-not $SkipN8nCheck) {
-    Write-Step "1) Macro risk n8n daily check (continues on non-zero exit)"
+if ($SkipN8nCheck -and $IncludeN8nCheck) {
+    throw "Use only one of -IncludeN8nCheck or -SkipN8nCheck (legacy alias)."
+}
+if ($IncludeN8nCheck) {
+    Write-Step "1) Macro risk n8n daily check (legacy; continues on non-zero exit)"
     $n8nScript = Join-Path $PSScriptRoot "Run-MacroRiskN8nDailyCheck.ps1"
     if (-not (Test-Path -LiteralPath $n8nScript)) {
         Write-Warning "Missing: $n8nScript"
@@ -36,7 +41,8 @@ if (-not $SkipN8nCheck) {
     }
 }
 else {
-    Write-Host "Skip: n8n daily check (-SkipN8nCheck)" -ForegroundColor DarkGray
+    $legacyNote = if ($SkipN8nCheck) { " (-SkipN8nCheck is default since 2026-05-15)" } else { "" }
+    Write-Host "Skip: n8n daily check (default; use -IncludeN8nCheck for legacy)$legacyNote" -ForegroundColor DarkGray
 }
 
 Write-Step "2) build_track_c_macro_risk_mvp_filled_v1 (MVP §2 + B2B one-pager)"

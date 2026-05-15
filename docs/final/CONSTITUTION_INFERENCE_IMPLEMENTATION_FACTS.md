@@ -180,11 +180,13 @@
 | 명리 대외 공학 어휘(코드 명칭 불변) | `docs/final/MYEONGRI_EXTERNAL_ENGINEERING_LEXICON_V1.md` |
 | 예언·국방 등 대외 서사 격리 | §1.1.1 `[VISION]` |
 
-### 1.3 Track C — Macro Risk 메일 온보딩 (Windows / n8n, 로컬 운영)
+### 1.3 Track C — Macro Risk 메일 온보딩 (Windows / n8n, 로컬 운영) — **[DEPRECATED 2026-05-15]**
+
+**운영 기본값:** 로컬 n8n 서비스·`MKM-MacroRisk-N8n-DailyCheck` 예약은 제거됨. Track C 권장 체인 `Run-TrackCRecommendedAutoChain_v1.ps1`은 **기본 n8n 생략**; 레거리 스크립트만 `-IncludeN8nCheck`로 호출. Fact-Safe·GO/NO_GO는 **§13.1.b** `repo-source` SSOT.
 
 | 항목 | 경로 | 비고 |
 |------|------|------|
-| 일일 점검 | `scripts/Run-MacroRiskN8nDailyCheck.ps1` | 산출 `reports/macro_risk_n8n_daily_check_latest.json`; 실패 시 `reports/macro_risk_n8n_daily_check_failures.jsonl` append·선택 웹훅 POST(`MKM_DAILY_CHECK_FAILURE_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`; 루트 `.env`에서 Process 보강 가능). 체크 실패 시 exit **1**. |
+| 일일 점검 | `scripts/Run-MacroRiskN8nDailyCheck.ps1` | **[DEPRECATED]** 산출 `reports/macro_risk_n8n_daily_check_latest.json`; 실패 시 `reports/macro_risk_n8n_daily_check_failures.jsonl` append·선택 웹훅 POST(`MKM_DAILY_CHECK_FAILURE_WEBHOOK_URL` 또는 `OPS_ALARM_WEBHOOK_URL`; 루트 `.env`에서 Process 보강 가능). 체크 실패 시 exit **1**. |
 | Quick ops | `scripts/Run-MacroRiskN8nOpsQuick.ps1` | `-Action health|approve|pending|reject|status|taillog`; 승인류는 선행 `health`. |
 | Approval webhook 호출 | `scripts/trigger_macro_risk_mail_approval_webhook.ps1` | 기본 URL `http://127.0.0.1:5678/webhook/macro-risk-mail-approval`; `MKM_MACRO_RISK_APPROVAL_TOKEN`(`.env`/User/Machine) → 헤더 `x-mkm-approval-token`; 감사 append `reports/macro_risk_approval_webhook_audit.jsonl`. |
 | 일일 스케줄 등록 | `scripts/Register-MacroRiskN8nDailyCheckTask.ps1` | 기본 작업명 `MKM-MacroRisk-N8n-DailyCheck`; 저장소 루트 `WorkingDirectory`(지원 시). |
