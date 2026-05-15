@@ -7,6 +7,7 @@ type Nav = {
   service_consumer: string;
   service_clinician: string;
   service_reception: string;
+  service_enterprise?: string;
   service_developer?: string;
   about_group: string;
   about: string;
@@ -15,7 +16,13 @@ type Nav = {
   contact: string;
 };
 type Brand = { brand_name: string; brand_tagline: string };
-type Links = { consumer: string; clinician: string; reception: string; contact: string };
+type Links = {
+  consumer: string;
+  clinician: string;
+  reception: string;
+  enterprise?: string;
+  contact: string;
+};
 
 export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; links: Links }) {
   const [open, setOpen] = useState(false);
@@ -62,6 +69,11 @@ export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; link
           <a href={links.reception} onClick={() => setOpen(false)}>
             {nav.service_reception}
           </a>
+          {nav.service_enterprise && links.enterprise ? (
+            <a href={links.enterprise} onClick={() => setOpen(false)}>
+              {nav.service_enterprise}
+            </a>
+          ) : null}
           <a href="/developer/graph-insights" onClick={() => setOpen(false)}>
             {nav.service_developer ?? "개발자 그래프 인사이트"}
           </a>

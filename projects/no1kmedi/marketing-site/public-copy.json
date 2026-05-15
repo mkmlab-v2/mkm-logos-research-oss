@@ -37,6 +37,7 @@
     "service_consumer": "일반인 상담",
     "service_clinician": "한의사 보조",
     "service_reception": "접수대 PIN",
+    "service_enterprise": "기업·파트너",
     "about_group": "소개",
     "about": "서비스",
     "safety": "안전·고지",
@@ -47,6 +48,7 @@
     "consumer": "/consumer",
     "clinician": "/clinician",
     "reception": "/reception",
+    "enterprise": "/enterprise",
     "contact": "#contact"
   },
   "hero": {
@@ -235,11 +237,121 @@
     "section_lead": "로그인·결제·기관 인증 등 운영 기능은 별도 관리 화면에서 제공됩니다. 공개 페이지에서는 도입 상담 문의를 안내합니다.",
     "email_label": "이메일"
   },
+  "enterprise": {
+    "seo": {
+      "title": "JEMA AI | 기업·파트너 — 운영 안전 게이트",
+      "description": "자동화·AI 제어의 안전 운영 계층. Fact-Lock 게이트·관측 보드·B2B API. 투자·의료 조언·실매매 연동이 아닙니다."
+    },
+    "nav": {
+      "brand_tagline": "기업 · 파트너",
+      "back_home": "임상·소비자 허브",
+      "pillars": "핵심 가치",
+      "proof": "확인 경로",
+      "research": "연구",
+      "contact": "문의"
+    },
+    "hero": {
+      "eyebrow": "B2B · 운영 안전",
+      "title": "자동화와 AI 제어가 위험해질 때, 먼저 멈추는 운영 게이트",
+      "subtitle": "제조·스마트홈·엔터프라이즈 API에 단계적으로 도입할 수 있는 Fact-Lock 기반 안전·관측 계층입니다. 성능 과시가 아니라 운영 리스크 통제를 우선합니다.",
+      "cta_primary": "공개 관측 보드",
+      "cta_secondary": "B2B API · 문서"
+    },
+    "principles": [
+      {
+        "title": "게이트 우선",
+        "body": "WATCH · HOLD로 급진 실행을 보류합니다."
+      },
+      {
+        "title": "근거 고정",
+        "body": "주장은 아티팩트·exit code와 맞춥니다."
+      },
+      {
+        "title": "단계 도입",
+        "body": "로컬 기준선 → 실측 전환 순서를 고정합니다."
+      }
+    ],
+    "composition": {
+      "title": "페이지 구성",
+      "items": [
+        { "share": "70%", "label": "운영 안전", "detail": "제어·자동화 리스크 통제" },
+        { "share": "20%", "label": "교차 검증", "detail": "다른 도메인 스트레스(공개 면 최소)" },
+        { "share": "10%", "label": "기초 연구", "detail": "B-track · 상용 자동 합선 없음" }
+      ]
+    },
+    "pillars": {
+      "section_label": "핵심",
+      "title": "운영 리스크를 먼저 통제합니다",
+      "lead": "오작동 전이·지연 스파이크·양산 정합성을 게이트와 재현 가능한 산출물로 관리합니다.",
+      "cards": [
+        {
+          "title": "WATCH · HOLD 선제 차단",
+          "body": "위험 신호가 커지면 실행을 감쇠하거나 보류합니다. 급진 자동화보다 단계적 진입을 기본값으로 둡니다."
+        },
+        {
+          "title": "Fact-Lock · 재현 가능한 근거",
+          "body": "주장은 아티팩트·게이트·exit code에 맞춥니다. 브리핑만으로 “이미 완성”을 말하지 않습니다."
+        },
+        {
+          "title": "단계 도입 · 실측 전환",
+          "body": "로컬 기준선과 스트레스 검증 후, 타깃 환경 실측으로 확정합니다. PoC는 범위·면책을 문서로 고정합니다."
+        }
+      ]
+    },
+    "breadth": {
+      "section_label": "보조",
+      "title": "동일한 안전 원칙, 다른 도메인 스트레스",
+      "body": "자본 시장·관측 파이프라인에서도 동일한 게이트·관측 원칙을 스트레스 테스트합니다. 공개 면에는 투자 권유·실매매·주문 연동을 두지 않습니다."
+    },
+    "applications": {
+      "title": "적용 예 (카테고리)",
+      "lead": "특정 고객·로고·트로피 문구를 전면에 내세우지 않습니다. 분야 단위로만 안내합니다.",
+      "items": [
+        {
+          "title": "스마트홈 · 제조 IoT",
+          "body": "물리 제어·자동화 실증 PoC 논의 중. 제품 책임·오작동 리스크를 우선하는 파트너와 맞춥니다."
+        },
+        {
+          "title": "엔터프라이즈 API",
+          "body": "정적 랜딩과 API 경로를 분리해 연동합니다. 개발자 문서·키 정책은 a-codeai.com 축입니다."
+        }
+      ]
+    },
+    "research": {
+      "section_label": "연구",
+      "title": "기초 연구 · 다중 렌즈 (10%)",
+      "body": "다중 렌즈·관측 연구는 B-track 레일에 두며, 상용 트리거·실거래와 자동 합선하지 않습니다.",
+      "link_label": "개발자 · 그래프 인사이트",
+      "link_href": "/developer/graph-insights"
+    },
+    "proof": {
+      "title": "말보다 먼저 확인하세요",
+      "lead": "지연·스냅샷 기반 관측입니다. “실시간 무지연”·수익 보장 표현을 쓰지 않습니다."
+    },
+    "contact": {
+      "label": "도입·파트너 문의",
+      "email": "support@mkmlife.com"
+    },
+    "footer": {
+      "legal_entity": "주식회사 목소리네트워크",
+      "brand_line": "MKMLAB · JEMA AI",
+      "rights": "© 2026 주식회사 목소리네트워크. 무단 복제를 금지합니다."
+    },
+    "disclaimer": {
+      "title": "고지",
+      "items": [
+        "본 페이지는 투자·의료·임상 조언이 아닙니다.",
+        "관측·데모는 교육·검증 목적이며, 주문·체결·실키를 공개하지 않습니다.",
+        "성능·정확도 수치는 동결된 sales kit·아티팩트 없이 단정하지 않습니다."
+      ]
+    }
+  },
   "footer": {
-    "company_line": "광명백제한의원",
-    "address": "경기도 광명시 광명로 880",
-    "email": "gmbaekje@naver.com",
-    "biz_reg": "140-90-26241",
-    "rights": "© 2026 광명백제한의원. 무단 복제를 금지합니다."
+    "company_line": "주식회사 목소리네트워크",
+    "brand_subline": "MKMLAB · JEMA AI",
+    "address": "경기도 광명시 디지털로 24, 102동 2301호",
+    "email": "support@mkmlife.com",
+    "biz_reg": "628-86-01742",
+    "rights": "© 2026 주식회사 목소리네트워크. 무단 복제를 금지합니다."
   }
 }

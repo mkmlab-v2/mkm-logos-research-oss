@@ -414,6 +414,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
         <div className="footer-inner">
           <div className="footer-brand">{c.footer.company_line}</div>
           <div className="footer-meta">
+            <p>{c.footer.brand_subline}</p>
             <p>주소: {c.footer.address}</p>
             <p>사업자등록번호: {c.footer.biz_reg}</p>
           </div>

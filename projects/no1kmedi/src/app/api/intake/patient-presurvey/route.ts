@@ -199,13 +199,6 @@ async function recordIpFailureAndMaybeAlert(request: NextRequest): Promise<numbe
 
 const PARTNER_CLINICS: PartnerClinic[] = [
   {
-    id: "clinic_gwangmyeong_baekje",
-    name: "광명백제한의원",
-    region: "광명",
-    specialties: ["pain", "digestive", "sleep"],
-    available_times: ["weekday_morning", "weekday_afternoon", "weekday_evening", "weekend"],
-  },
-  {
     id: "clinic_gangnam_mkm",
     name: "강남MKM한의원",
     region: "강남",
