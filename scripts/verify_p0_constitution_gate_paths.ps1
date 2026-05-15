@@ -137,6 +137,7 @@ $required = @(
     "scripts\Run-AmsaengEosaMonitoringBundleTask.ps1",
     "scripts\check_amsaeng_eosa_artifact_staleness_v1.py",
     "scripts\Invoke-AmsaengEosaGovernanceCycle.ps1",
+    "scripts\Invoke-MkmSchedulerLaneMap_v1.ps1",
     "scripts\check_no1kmedi_internal_api_security_contract_v1.py",
     "scripts\Invoke-No1kmediInternalApiSecurityProbe_v1.ps1",
     "scripts\sign_public_event_gateway_get_hmac_v1.py",
