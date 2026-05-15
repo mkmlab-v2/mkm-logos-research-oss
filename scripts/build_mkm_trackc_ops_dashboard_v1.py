@@ -39,6 +39,32 @@ def _lens_music_m32_dashboard_fields(*, hormone_doc: Dict[str, Any], overlay_doc
     }
 
 
+def _prophecy_gate_taxonomy_slice(art: Path) -> Dict[str, Any]:
+    """B-track promotion gate taxonomy (internal ops; not A-track routing)."""
+    gates = _read_json(art / "prophecy_promotion_gates_v1_latest.json")
+    if not gates:
+        return {"state": "NODATA", "source": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json"}
+    tax = gates.get("gate_taxonomy") if isinstance(gates.get("gate_taxonomy"), dict) else {}
+    shared = (gates.get("tracks") or {}).get("shared") or {}
+    shared_gates = shared.get("gates") if isinstance(shared.get("gates"), list) else []
+    neutral_gate = next((g for g in shared_gates if isinstance(g, dict) and g.get("gate_id") == "score_neutral_ratio_cap"), {})
+    neutral_detail = neutral_gate.get("detail") if isinstance(neutral_gate.get("detail"), dict) else {}
+    return {
+        "state": "OK",
+        "source": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
+        "outcome_class": gates.get("outcome_class") or tax.get("outcome_class"),
+        "promotion_recommendation": gates.get("promotion_recommendation"),
+        "combined_all_passed": gates.get("combined_all_passed"),
+        "strict_passed": gates.get("strict_passed"),
+        "auto_promote_ready": gates.get("auto_promote_ready"),
+        "neutral_ratio": neutral_detail.get("neutral_ratio"),
+        "max_neutral_ratio": neutral_detail.get("max_neutral_ratio"),
+        "neutral_ratio_cap_passed": neutral_gate.get("passed"),
+        "microbiome_metaphor_map": tax.get("microbiome_metaphor_map"),
+        "research_only": gates.get("research_only"),
+    }
+
+
 def _trust_visualization_v0_slice(root: Path) -> Dict[str, Any]:
     rel = Path("docs/final/schemas/trust_visualization_panel_v0.example.json")
     p = root / rel
@@ -299,6 +325,7 @@ def main() -> int:
     drill = _read_json(art / "mkm_trackc_guard_recovery_drill_latest.json")
     paddle = _read_json(art / "paddle_onboarding_status_latest.json")
     dual_leg_brief = _read_json(art / "trackc_prophecy_dual_leg_brief_latest.json")
+    prophecy_gate_taxonomy = _prophecy_gate_taxonomy_slice(art)
     logos_shadow = _read_json(art / "logos_shadow_promotion_status_latest.json")
     logos_insight = _read_json(art / "logos_shadow_insight_latest.json")
     logos_drift = _read_json(art / "logos_semantic_drift_monitor_latest.json")
@@ -403,6 +430,7 @@ def main() -> int:
             "dual_leg_kospi_hit_rate": ((dual_leg_brief.get("legs") or {}).get("kospi") or {}).get("price_directional_hit_rate"),
             "dual_leg_btc_hit_rate": ((dual_leg_brief.get("legs") or {}).get("btc") or {}).get("price_directional_hit_rate"),
             "dual_leg_btc_minus_kospi_hit_rate": (dual_leg_brief.get("delta") or {}).get("btc_minus_kospi_hit_rate"),
+            "prophecy_gate_taxonomy": prophecy_gate_taxonomy,
             "fallback_post_cutoff_watch": {
                 "warn_count": ((fallback_watch.get("summary") or {}).get("warn_count")),
                 "warn_rate_7d": ((fallback_watch.get("summary") or {}).get("warn_rate_7d")),
@@ -707,6 +735,8 @@ def main() -> int:
         f"- paddle_onboarding_status: `{dashboard['trackc']['paddle_onboarding_status']}`",
         f"- dual_leg_recent_trading_days: `{dashboard['trackc']['dual_leg_recent_trading_days']}`",
         f"- dual_leg_kospi_hit_rate: `{dashboard['trackc']['dual_leg_kospi_hit_rate']}`",
+        f"- prophecy_gate_outcome_class: `{dashboard['trackc']['prophecy_gate_taxonomy'].get('outcome_class')}`",
+        f"- prophecy_gate_promotion_recommendation: `{dashboard['trackc']['prophecy_gate_taxonomy'].get('promotion_recommendation')}`",
         f"- dual_leg_btc_hit_rate: `{dashboard['trackc']['dual_leg_btc_hit_rate']}`",
         f"- dual_leg_btc_minus_kospi_hit_rate: `{dashboard['trackc']['dual_leg_btc_minus_kospi_hit_rate']}`",
         f"- fallback_post_cutoff_warn_count: `{(dashboard['trackc']['fallback_post_cutoff_watch'] or {}).get('warn_count')}`",
