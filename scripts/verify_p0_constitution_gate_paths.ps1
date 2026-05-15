@@ -114,6 +114,7 @@ $required = @(
     "docs\final\TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md",
     "docs\final\MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md",
     "docs\final\CENTRAL_AGENT_MEMORY_V1.md",
+    "docs\final\LOGOS_SYMBOLIC_INTERPRETATION_LAYER_MAP_V1.md",
     "README.md",
     "scripts\run_workspace_automation_health.ps1",
     "scripts\run_fact_lock_bundle.ps1",

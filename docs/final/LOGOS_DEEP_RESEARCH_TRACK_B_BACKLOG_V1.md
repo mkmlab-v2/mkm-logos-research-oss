@@ -4,6 +4,8 @@
 **last_updated_utc:** 2026-05-02  
 **Fact-Lock:** 구현 범위·경로는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 호출 가능 스크립트·exit code로만 확정한다.
 
+**조감도(레이어 맵):** `docs/final/LOGOS_SYMBOLIC_INTERPRETATION_LAYER_MAP_V1.md` — L0–L10 배관·격벽·대외 추출구 한 화면 SSOT.
+
 ---
 
 ## 지휘관 전용 심층 리포트 — 핵심 축 (Track B)
