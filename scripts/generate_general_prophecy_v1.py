@@ -25,6 +25,7 @@ DEFAULT_MERGE_PATHS: tuple[Path, ...] = (
     ROOT / "tests" / "fixtures" / "general_prophecy_registry_brier_smoke_v1.json",
     ROOT / "tests" / "fixtures" / "general_prophecy_registry_live_resolved_bootstrap_v1.json",
     ROOT / "tests" / "fixtures" / "general_prophecy_registry_macro_h2_2026_pack_v1.json",
+    ROOT / "tests" / "fixtures" / "general_prophecy_registry_multidomain_seed_v1.json",
 )
 
 

@@ -211,6 +211,7 @@ $required = @(
     "tests\fixtures\general_prophecy_registry_brier_smoke_v1.json",
     "tests\fixtures\general_prophecy_registry_official_seed_v1.json",
     "tests\fixtures\general_prophecy_registry_macro_h2_2026_pack_v1.json",
+    "tests\fixtures\general_prophecy_registry_multidomain_seed_v1.json",
     "tests\test_export_general_prophecy_to_jsonl.py",
     "tests\test_apply_general_prophecy_registry_patches_v1.py",
     "tests\fixtures\general_prophecy_registry_patch_sample_v1.json",

@@ -30,7 +30,7 @@ def test_generate_general_prophecy_dry_run_with_official_seed_merge() -> None:
     )
     assert r.returncode == 0, r.stderr
     assert "ok" in r.stdout
-    assert r.stdout.strip().split()[-1] == "15"
+    assert r.stdout.strip().split()[-1] == "18"
 
 
 def test_generate_general_prophecy_dry_run() -> None:
@@ -43,8 +43,8 @@ def test_generate_general_prophecy_dry_run() -> None:
     )
     assert r.returncode == 0, r.stderr
     assert "ok" in r.stdout
-    # default merge: sample (1) + seed_5 (5) + brier_smoke (1) + live_resolved_bootstrap (2) + macro_h2_2026_pack (5)
-    assert r.stdout.strip().split()[-1] == "14"
+    # default merge: sample (1) + seed_5 (5) + brier_smoke (1) + live_resolved_bootstrap (2) + macro_h2_2026_pack (5) + multidomain_seed (3)
+    assert r.stdout.strip().split()[-1] == "17"
 
 
 def test_generate_general_prophecy_dry_run_no_default_merge() -> None:
@@ -156,7 +156,7 @@ def test_eval_general_prophecy_brier_on_merged_registry_stdout(tmp_path) -> None
     assert gen.returncode == 0, gen.stderr
     reg = json.loads(gen.stdout)
     assert reg.get("schema") == "general_prophecy_registry_v1"
-    assert len(reg.get("questions") or []) == 14
+    assert len(reg.get("questions") or []) == 17
 
     merged_path = tmp_path / "merged_registry.json"
     merged_path.write_text(gen.stdout, encoding="utf-8")

@@ -1,0 +1,103 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-05-15T12:00:00Z",
+  "git_commit_hint": "fixture:multidomain_seed_v1_weather_equities_macro_calendar",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "seed.weather.seoul_kma_daily_ge1mm_20260518",
+      "question_text": "Will the Korea Meteorological Administration (KMA) ASOS daily climate table for Seoul surface station 108 report total daily precipitation of 1.0 mm or greater for the Asia/Seoul calendar date 2026-05-18?",
+      "domain_tags": ["weather", "korea", "seoul", "observation"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2026-05-25T06:00:00Z",
+      "resolution_criteria": "TRUE if the authoritative KMA-published row for station 108 and local date 2026-05-18 shows daily precipitation >= 1.0 mm. FALSE if the published value is 0.0 mm or trace-only below 1.0 mm. VOID if the row is missing, revised without a final value before deadline, or the table is unreachable for 72+ consecutive hours before deadline.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "precip_ge_1mm",
+        "false_label": "precip_lt_1mm"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-05-15T12:01:00Z",
+          "probability_0_1": 0.35,
+          "source_kind": "baseline",
+          "source_detail": "multidomain_seed_v1_stub_panel",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:multidomain_seed_weather_seoul_20260518",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "seed.fin.ndx_wow_positive_20260523",
+      "question_text": "Will the official cash closing level of the Nasdaq-100 Index (^NDX) for the 2026-05-23 US trading session be strictly greater than its official cash closing level for the 2026-05-16 US trading session?",
+      "domain_tags": ["equities", "us", "indices", "macro"],
+      "prophecy_track": "financial",
+      "resolution_deadline_utc": "2026-05-26T21:00:00Z",
+      "resolution_criteria": "TRUE if both closing levels are published by Nasdaq or a primary consolidated tape vendor and the May 23 close exceeds the May 16 close. FALSE if either close is missing, equal, or May 23 is lower. VOID if either session is cancelled or official final prints remain unavailable through deadline.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "ndx_close_up_wow",
+        "false_label": "ndx_close_not_up_wow"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-05-15T12:02:00Z",
+          "probability_0_1": 0.52,
+          "source_kind": "baseline",
+          "source_detail": "multidomain_seed_v1_stub_panel",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:multidomain_seed_ndx_wow_20260523",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "seed.macro.us_bls_unrate_gt_43_20260606",
+      "question_text": "In the U.S. Bureau of Labor Statistics Employment Situation news release for the reference month of May 2026 (typically published the first week of June 2026), will the seasonally adjusted national unemployment rate be strictly greater than 4.3 percent?",
+      "domain_tags": ["macro", "us", "labor", "news_calendar"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2026-06-10T20:00:00Z",
+      "resolution_criteria": "TRUE if the BLS news release table A-15 (or successor table carrying the headline unemployment rate) reports seasonally adjusted U.S. unemployment strictly above 4.3 for May 2026. FALSE if reported at or below 4.3. VOID if the May 2026 release is delayed past deadline, withdrawn without replacement, or the headline rate is undefined.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "unrate_gt_43",
+        "false_label": "unrate_le_43"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-05-15T12:03:00Z",
+          "probability_0_1": 0.28,
+          "source_kind": "baseline",
+          "source_detail": "multidomain_seed_v1_stub_panel",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:multidomain_seed_us_bls_unrate_202606",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    }
+  ]
+}
