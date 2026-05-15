@@ -82,7 +82,7 @@ py @pulseArgs
 if ($LASTEXITCODE -ne 0) { throw "build market pulse failed: $LASTEXITCODE" }
 
 Write-Host "==> Sync Fact-Safe risk profile (repo source)" -ForegroundColor Cyan
-py $syncRisk --repo-source --output $OutRiskJson --market-pulse-json $OutMarketPulse
+py $syncRisk --repo-source --allow-metadata-downgrade --output $OutRiskJson --market-pulse-json $OutMarketPulse
 if ($LASTEXITCODE -ne 0) { throw "sync risk profile failed: $LASTEXITCODE" }
 
 $doLoopMatrix = $RunLoopIntervalMatrix

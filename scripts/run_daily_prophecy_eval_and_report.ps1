@@ -528,8 +528,8 @@ if (-not $SkipTrinityEvolution) {
 
 $riskProfilePath = Join-Path $WorkspaceRoot "projects\bitcoin-trading\memory\v2\risk\risk_profile_fact_safe_latest.json"
 if (-not $SkipRiskProfileSync) {
-    Write-Host "==> sync_fact_safe_risk_profile.py (--repo-source)"
-    & py $riskSyncScript --repo-source
+    Write-Host "==> sync_fact_safe_risk_profile.py (--repo-source + --allow-metadata-downgrade)"
+    & py $riskSyncScript --repo-source --allow-metadata-downgrade
     if ($LASTEXITCODE -ne 0) {
         throw "sync_fact_safe_risk_profile.py exit $LASTEXITCODE"
     }

@@ -54,7 +54,7 @@ Write-Host "WROTE reports/ops_sequential_run_checkpoint_v1.json"
 
 if (-not $SkipRiskProfileSync) {
     Write-Host "==> 3/11 sync fact-safe risk profile (repo TTL; before health + GO/NO_GO)" -ForegroundColor Cyan
-    py scripts/sync_fact_safe_risk_profile.py --repo-source
+    py scripts/sync_fact_safe_risk_profile.py --repo-source --allow-metadata-downgrade
     if ($LASTEXITCODE -ne 0) { throw "sync_fact_safe_risk_profile exit $LASTEXITCODE" }
 } else {
     Write-Host "==> 3/11 sync fact-safe risk profile [skipped -SkipRiskProfileSync]" -ForegroundColor Yellow

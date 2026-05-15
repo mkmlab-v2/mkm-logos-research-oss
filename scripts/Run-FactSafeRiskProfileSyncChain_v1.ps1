@@ -4,7 +4,7 @@
   Fact-Safe 리스크 프로필 동기화 → 조건부 게이트 요약(dry-run) → trading GO/NO_GO 재빌드.
 
 .DESCRIPTION
-  주문·실매매 없음. 기본은 Git·예약 작업 SSOT용 `sync_fact_safe_risk_profile.py --repo-source`.
+  주문·실매매 없음. 기본은 Git·예약 작업 SSOT용 `sync_fact_safe_risk_profile.py --repo-source --allow-metadata-downgrade`(기존 `n8n.*` 디스크 태그 이전 허용).
   레거시 n8n 메타데이터 태그가 필요하면 `-UseN8nSource`로 `--n8n-source` 전환.
   MKM_WORKSPACE_MAINTENANCE 활성 시 sync는 스킵(exit 0)될 수 있음.
 
@@ -40,10 +40,13 @@ foreach ($p in @($sync, $gate, $status)) {
     if (-not (Test-Path -LiteralPath $p)) { throw "Missing: $p" }
 }
 
-$syncFlag = if ($UseN8nSource) { "--n8n-source" } else { "--repo-source" }
 $syncLabel = if ($UseN8nSource) { "n8n-source (legacy)" } else { "repo-source (default)" }
 Write-Host "==> 1/3 sync_fact_safe_risk_profile ($syncLabel)" -ForegroundColor Cyan
-& $py $sync $syncFlag
+if ($UseN8nSource) {
+    & $py $sync --n8n-source
+} else {
+    & $py $sync --repo-source --allow-metadata-downgrade
+}
 if ($LASTEXITCODE -ne 0) { throw "sync_fact_safe_risk_profile exit $LASTEXITCODE" }
 
 Write-Host "==> 2/3 conditional_action_gate (api dry-run, no backend)" -ForegroundColor Cyan
