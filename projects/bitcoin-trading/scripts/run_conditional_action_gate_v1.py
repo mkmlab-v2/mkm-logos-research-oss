@@ -256,6 +256,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--ignore-expiry", action="store_true")
     ap.add_argument("--allow-unknown-gate", action="store_true")
     ap.add_argument("--dry-run", action="store_true", help="Evaluate gate only; do not run backend.")
+    ap.add_argument(
+        "--dry-run-exit-zero-on-block",
+        action="store_true",
+        help="With --dry-run only: still write gate summary but exit 0 when gate blocks (scheduled Fact-Safe hygiene).",
+    )
     ap.add_argument("--gate-summary", type=Path, default=SUMMARY_DEFAULT)
 
     # webhook backend
@@ -333,6 +338,10 @@ def main(argv: list[str] | None = None) -> int:
 
     args = ap.parse_args(argv)
 
+    if bool(args.dry_run_exit_zero_on_block) and not bool(args.dry_run):
+        print("--dry-run-exit-zero-on-block requires --dry-run", file=sys.stderr)
+        return 2
+
     risk_path = args.risk_json
     if not risk_path.is_file():
         print(f"Missing risk profile: {risk_path}", file=sys.stderr)
@@ -392,6 +401,8 @@ def main(argv: list[str] | None = None) -> int:
 
     if not ok:
         print(f"[gate:block] {reason} summary={args.gate_summary}", file=sys.stderr)
+        if bool(args.dry_run) and bool(args.dry_run_exit_zero_on_block):
+            return 0
         return 3
 
     print(f"[gate:pass] {reason} summary={args.gate_summary}")

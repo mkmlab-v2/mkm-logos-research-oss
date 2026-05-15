@@ -1,0 +1,7 @@
+{
+  "schema_hint": "risk_profile_fact_safe_minimal_fixture_v1",
+  "expires_at": "2030-12-31T23:59:59Z",
+  "trinity_governor": { "mode": "LOCKED_MODE" },
+  "governance_bridge": { "final_action_allowed": true },
+  "notes": "tests/fixtures only — not a production risk feed"
+}

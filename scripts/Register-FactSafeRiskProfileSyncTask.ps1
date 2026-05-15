@@ -11,6 +11,8 @@
   pwsh -File scripts/Register-FactSafeRiskProfileSyncTask.ps1 -Remove
 .EXAMPLE
   pwsh -File scripts/Register-FactSafeRiskProfileSyncTask.ps1 -Force -UseN8nSourceInTask
+.EXAMPLE
+  수동 체인과 동일하게 `NO_GO`에서 exit 1을 유지하려면 `-StrictGoNoGoExit`.
 #>
 param(
     [string]$WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path,
@@ -20,7 +22,9 @@ param(
     [switch]$Force,
     [switch]$RunNow,
     [switch]$Remove,
-    [switch]$UseN8nSourceInTask
+    [switch]$UseN8nSourceInTask,
+    # Default: pass `-ExitZeroOnNoGo` to the runner so Task Scheduler Last Result is 0 on legitimate NO_GO.
+    [switch]$StrictGoNoGoExit
 )
 
 $ErrorActionPreference = "Stop"
@@ -43,7 +47,8 @@ if ($Force) {
 
 $startTime = (Get-Date).AddMinutes(1).ToString("HH:mm")
 $n8nArg = if ($UseN8nSourceInTask) { " -UseN8nSource" } else { "" }
-$action = "pwsh -NoProfile -ExecutionPolicy Bypass -File `"$runner`"$n8nArg"
+$exitArg = if (-not $StrictGoNoGoExit) { " -ExitZeroOnNoGo" } else { "" }
+$action = "pwsh -NoProfile -ExecutionPolicy Bypass -File `"$runner`"$n8nArg$exitArg"
 $user = "$env:USERDOMAIN\$env:USERNAME"
 
 schtasks /Create /TN $TaskName /SC HOURLY /MO $IntervalHours /ST $startTime /TR $action /RU $user /RL LIMITED /F | Out-Null

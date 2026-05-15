@@ -12,11 +12,15 @@
   pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/Run-FactSafeRiskProfileSyncChain_v1.ps1
 .EXAMPLE
   pwsh -NoProfile -ExecutionPolicy Bypass -File scripts/Run-FactSafeRiskProfileSyncChain_v1.ps1 -UseN8nSource
+.EXAMPLE
+  예약 작업(스케줄러): `NO_GO`여도 동기화·게이트·아티팩트 갱신은 성공으로 남기려면 `-ExitZeroOnNoGo`.
 #>
 [CmdletBinding()]
 param(
     [string]$WorkspaceRoot = "",
-    [switch]$UseN8nSource
+    [switch]$UseN8nSource,
+    # When set, `build_trading_go_nogo_status_v1.py --exit-zero-on-no-go` so exit 0 on legitimate NO_GO (scheduled hygiene).
+    [switch]$ExitZeroOnNoGo
 )
 
 Set-StrictMode -Version Latest
@@ -49,12 +53,18 @@ if ($UseN8nSource) {
 }
 if ($LASTEXITCODE -ne 0) { throw "sync_fact_safe_risk_profile exit $LASTEXITCODE" }
 
-Write-Host "==> 2/3 conditional_action_gate (api dry-run, no backend)" -ForegroundColor Cyan
-& $py $gate --backend api --dry-run --skip-human-approval --skip-frame-payload
+Write-Host "==> 2/3 conditional_action_gate (api dry-run, no backend)$(if ($ExitZeroOnNoGo) { ' (--dry-run-exit-zero-on-block)' })" -ForegroundColor Cyan
+$gateArgs = @("--backend", "api", "--dry-run", "--skip-human-approval", "--skip-frame-payload")
+if ($ExitZeroOnNoGo) { $gateArgs += "--dry-run-exit-zero-on-block" }
+& $py $gate @gateArgs
 if ($LASTEXITCODE -ne 0) { throw "run_conditional_action_gate_v1 exit $LASTEXITCODE" }
 
-Write-Host "==> 3/3 build_trading_go_nogo_status" -ForegroundColor Cyan
-& $py $status
+Write-Host "==> 3/3 build_trading_go_nogo_status$(if ($ExitZeroOnNoGo) { ' (--exit-zero-on-no-go)' })" -ForegroundColor Cyan
+if ($ExitZeroOnNoGo) {
+    & $py $status --exit-zero-on-no-go
+} else {
+    & $py $status
+}
 if ($LASTEXITCODE -ne 0) { throw "build_trading_go_nogo_status_v1 exit $LASTEXITCODE (NO_GO or error)" }
 
 Write-Host "[ok] Fact-Safe risk sync chain complete." -ForegroundColor Green

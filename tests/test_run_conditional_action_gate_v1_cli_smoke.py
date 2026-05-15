@@ -10,6 +10,7 @@ from pathlib import Path
 _ROOT = Path(__file__).resolve().parents[1]
 _GATE = _ROOT / "projects" / "bitcoin-trading" / "scripts" / "run_conditional_action_gate_v1.py"
 _FIXTURE = _ROOT / "tests" / "fixtures" / "risk_profile_fact_safe_gate_pass_minimal_v1.json"
+_LOCKED_FIXTURE = _ROOT / "tests" / "fixtures" / "risk_profile_fact_safe_gate_locked_minimal_v1.json"
 _TACTICAL_FIXTURE = _ROOT / "tests" / "fixtures" / "risk_profile_fact_safe_locked_tactical_pass_v1.json"
 _HUMAN_GO = _ROOT / "tests" / "fixtures" / "trading_human_execution_approval_gate_fixture_GO.json"
 _HUMAN_BAD = _ROOT / "tests" / "fixtures" / "trading_human_execution_approval_gate_fixture_BAD_HASH.json"
@@ -161,6 +162,51 @@ def test_gate_api_dry_run_tactical_override_on_locked_mode_exits_zero() -> None:
     ]
     proc = subprocess.run(cmd, cwd=str(_ROOT), capture_output=True, text=True, check=False)
     assert proc.returncode == 0, proc.stderr + proc.stdout
+
+
+def test_gate_api_dry_run_locked_fixture_exit_3() -> None:
+    assert _LOCKED_FIXTURE.is_file()
+    cmd = [
+        sys.executable,
+        str(_GATE),
+        "--backend",
+        "api",
+        "--dry-run",
+        "--risk-json",
+        str(_LOCKED_FIXTURE),
+        "--symbol",
+        "BTCUSDT",
+        "--side",
+        "BUY",
+        "--qty",
+        "0.001",
+    ]
+    proc = subprocess.run(cmd, cwd=str(_ROOT), capture_output=True, text=True, check=False)
+    assert proc.returncode == 3, proc.stderr + proc.stdout
+
+
+def test_gate_api_dry_run_locked_fixture_exit_zero_on_block_flag(tmp_path: Path) -> None:
+    assert _LOCKED_FIXTURE.is_file()
+    summary = tmp_path / "conditional_gate_test.json"
+    cmd = [
+        sys.executable,
+        str(_GATE),
+        "--backend",
+        "api",
+        "--dry-run",
+        "--dry-run-exit-zero-on-block",
+        "--risk-json",
+        str(_LOCKED_FIXTURE),
+        "--gate-summary",
+        str(summary),
+        "--skip-human-approval",
+        "--skip-frame-payload",
+    ]
+    proc = subprocess.run(cmd, cwd=str(_ROOT), capture_output=True, text=True, check=False)
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads(summary.read_text(encoding="utf-8"))
+    assert doc.get("gate_ok") is False
+    assert doc.get("gate_reason") == "trinity_governor_LOCKED_MODE"
 
 
 def test_gate_api_dry_run_tactical_override_qty_cap_fail_exit_3() -> None:
