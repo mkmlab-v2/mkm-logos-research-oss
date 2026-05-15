@@ -53,6 +53,19 @@ def test_macro_empty_feed_zero(mod, tmp_path: Path) -> None:
     feed.write_text(json.dumps({"schema": "external_feed_drop_v1", "data": []}), encoding="utf-8")
     pre = tmp_path / "pre.json"
     pre.write_text(json.dumps({"schema": "pre_news_shadow_input_v1", "rows": []}), encoding="utf-8")
+    # CLI defaults point at repo `*_latest.json` seeds; override every optional input so macro is feed-only (empty).
+    naver_sig = tmp_path / "naver_signals.json"
+    naver_sig.write_text(json.dumps({"schema": "naver_openapi_signals_v1", "datalab_search_trend": {}}), encoding="utf-8")
+    naver_news = tmp_path / "naver_news.json"
+    naver_news.write_text(json.dumps({"schema": "naver_news_feed_v1", "data": []}), encoding="utf-8")
+    ext_news = tmp_path / "ext_news.json"
+    ext_news.write_text(json.dumps({"schema": "external_news_feed_v1", "data": []}), encoding="utf-8")
+    ext_macro = tmp_path / "ext_macro.json"
+    ext_macro.write_text(json.dumps({"schema": "external_macro_signals_v1"}), encoding="utf-8")
+    btc_m = tmp_path / "btc_m.json"
+    btc_m.write_text(json.dumps({"schema": "btc_market_signals_v1"}), encoding="utf-8")
+    btc_a = tmp_path / "btc_a.json"
+    btc_a.write_text(json.dumps({"schema": "btc_alt_public_signals_v1"}), encoding="utf-8")
     nout = tmp_path / "news.json"
     mout = tmp_path / "macro.json"
     assert (
@@ -62,6 +75,18 @@ def test_macro_empty_feed_zero(mod, tmp_path: Path) -> None:
                 str(pre),
                 "--external-feed",
                 str(feed),
+                "--naver-signals",
+                str(naver_sig),
+                "--naver-news-feed",
+                str(naver_news),
+                "--external-news-feed",
+                str(ext_news),
+                "--external-macro-signals",
+                str(ext_macro),
+                "--btc-market-signals",
+                str(btc_m),
+                "--btc-alt-public-signals",
+                str(btc_a),
                 "--news-out",
                 str(nout),
                 "--macro-out",
