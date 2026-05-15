@@ -6,6 +6,8 @@
 
 **병렬 세션**: Agents Window 등에서 동시에 `MISSION_LOG.md`를 쓰면 파일 경합이 날 수 있으니, 한 번에 한 에이전트(또는 한 채팅)만 이 파일을 갱신하는 것을 권장한다.
 
+**에이전트 주도 (권장):** 메인 에이전트가 `MISSION_LOG.md`를 **생성·갱신**하고, 임무를 쪼개 **서브에이전트**(`Task` 등)에 파견한 뒤 결과를 **Evidence·Completed**로 수합한다. 지휘관은 **방향·고위험 승인·STOP**만 주면 된다(매 스텝 `OK` 필수 아님). 서브 세션은 본 파일을 수정하지 않는다.
+
 ## 채팅창 작업일정 앵커 (에이전트 고정 · SSOT)
 
 | 대상 | 파일 | 금지 |
@@ -19,6 +21,19 @@
 PowerShell 예: `Copy-Item -Path MISSION_LOG.template.md -Destination MISSION_LOG.md`
 
 **역할:** 세션마다 리셋되는 채팅 UI 대신, **동일 지휘관 PC의 디스크**에서 크로스 채팅 **임무·종료 조건·작업일정(표)**를 맞춘다. 구현 경로·게이트 순서의 SSOT는 `docs/final/P0_COMMERCIALIZATION_TRACKER.md`, 구현 팩트는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`이다.
+
+## Ops lane — 관리 전용 채팅 (개발 채팅과 분리, 선택)
+
+**목적:** 채팅 하나를 **Cursor·Windows·스케줄·보안 위생** 전용으로 두고, 피처·버그·리뷰는 **다른 채팅**에서만 진행하면 컨텍스트가 분리된다.
+
+| 구분 | 관리 채팅에서 다룸 | 개발 채팅에 두지 않음(권장) |
+|------|---------------------|-----------------------------|
+| Cursor / IDE | `.vscode/settings.json`, `tasks.json`, `keybindings.json`; `.cursor/rules`, `hooks.json` (레포에 둘 때는 PR·커밋 범위를 작게) | 동일 PR에 대형 코드 변경과 섞지 않기 |
+| 스케줄 | `schtasks`, `scripts/Register-*Task.ps1`, `Invoke-MkmPersonaHealth_v1.ps1` 페르소나 (`AGENTS.md` 「페르소나 단축 호출」) | |
+| 보안·거버넌스 | `Invoke-AmsaengEosaGovernanceCycle.ps1`, `Invoke-SafeOpsSurfaceCheck.ps1`, `Show-RemotePublicationMode.ps1` — **절차·exit·산출 경로만** | API 키·웹훅 URL·`.env` 내용·비밀 평문 채팅·커밋 **금지** |
+| 비밀 | User 환경 변수, 루트 `.env`(비추적), `LOCAL_VS_VPS`·`Invoke-MkmSecretsHybridReadiness_v1.ps1` 런북만 안내 | 값 붙여넣기 금지 |
+
+**개발 채팅으로 넘길 때:** 관리 채팅에서 확정한 **한 줄 DoD + 변경 경로**만 복붙한다.
 
 ## Active
 
@@ -55,10 +70,10 @@ PowerShell 예: `Copy-Item -Path MISSION_LOG.template.md -Destination MISSION_LO
 
 ### 서브에이전트 복붙 브리프 (메인 채팅이 MISSION_LOG 소유)
 
-아래를 서브 세션 첫 메시지에 붙인다. **서브는 `MISSION_LOG.md`를 수정하지 않는다.**
+**메인이 브리프 문안을 생성**해 서브 첫 메시지에 붙여도 된다. **서브는 `MISSION_LOG.md`를 수정하지 않는다.**
 
 1. **범위:** (디렉터리 또는 브랜치 한 줄, 예: `scripts/…`만 / `tests/…`만)
-2. **금지:** `MISSION_LOG.md`·`docs/final/CURRENT_OPS_SNAPSHOT.md`·`docs/final/CENTRAL_AGENT_MEMORY_V1.md`·실매래·`git push`·비밀 커밋
+2. **금지:** `MISSION_LOG.md`·`docs/final/CURRENT_OPS_SNAPSHOT.md`·`docs/final/CENTRAL_AGENT_MEMORY_V1.md`·실매매·`git push`·비밀 커밋
 3. **DoD:** (exit 0 명령 한 줄, 예: `py -m pytest tests/test_….py -q`)
 4. **증거:** (산출 경로 또는 로그 한 줄)
 5. **완료 후:** 메인 채팅에 **diff 요약 + DoD 달성 여부**만 보고(메인이 MISSION_LOG·승인 게이트 갱신)
