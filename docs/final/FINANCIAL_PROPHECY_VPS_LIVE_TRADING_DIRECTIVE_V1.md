@@ -99,7 +99,7 @@ python3 scripts/sync_fact_safe_risk_profile.py \
 
 - **거버넌스 브리지 끄기:** `--integrated-governance ""`
 - **메타데이터:** 기본 `--mode shadow`, `--source fact_safe_prophecy.trinity_governor` — 운영 정책에 맞게 조정.
-- **n8n 태그 충돌:** 기존 프로파일이 `n8n.*`인데 Fact-Safe로 덮을 때 거부되면 `--allow-metadata-downgrade` 또는 n8n 규약(`--n8n-source` 등)을 런북과 맞춘다.
+- **n8n 태그 충돌:** 기존 프로파일이 `n8n.*`인데 Fact-Safe로 덮을 때 거부되면 `--allow-metadata-downgrade` 또는 레거시 규약(`--n8n-source`)·**기본 Git SSOT**(`--repo-source`)를 런북과 맞춘다.
 
 ### 3.4 반영 확인
 
