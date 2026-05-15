@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-05-04T17:23:27Z",
+  "generated_at_utc": "2026-05-15T08:15:25Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -38,41 +38,41 @@
             "min_mean_test_accuracy": 0.55
           },
           "observed": {
-            "mean_test_accuracy": 0.504529
+            "mean_test_accuracy": 0.25
           }
         },
         {
           "gate_id": "lens_wf_stdev_test_accuracy",
-          "passed": true,
+          "passed": false,
           "threshold": {
             "op": "<=",
             "max_stdev_test_accuracy": 0.15
           },
           "observed": {
-            "stdev_test_accuracy": 0.079064
+            "stdev_test_accuracy": 0.433013
           }
         },
         {
           "gate_id": "lens_wf_fraction_folds_beat_always_bull",
-          "passed": true,
+          "passed": false,
           "threshold": {
             "op": ">=",
             "min_fraction_test_beats_always_bull": 0.5
           },
           "observed": {
-            "fraction_test_beats_always_bull": 0.5,
+            "fraction_test_beats_always_bull": 0.25,
             "n_folds": 4
           }
         },
         {
           "gate_id": "lens_wf_min_fold_test_accuracy",
-          "passed": true,
+          "passed": false,
           "threshold": {
             "op": ">=",
             "min_min_test_accuracy_across_folds": 0.4
           },
           "observed": {
-            "min_test_accuracy": 0.416667
+            "min_test_accuracy": 0.0
           }
         }
       ]
@@ -107,7 +107,7 @@
           "detail": {
             "neutral_ratio": 0.0,
             "neutral_count": 0,
-            "row_count": 1,
+            "row_count": 30,
             "max_neutral_ratio": 0.7
           }
         }
@@ -123,41 +123,41 @@
         "min_mean_test_accuracy": 0.55
       },
       "observed": {
-        "mean_test_accuracy": 0.504529
+        "mean_test_accuracy": 0.25
       }
     },
     {
       "gate_id": "lens_wf_stdev_test_accuracy",
-      "passed": true,
+      "passed": false,
       "threshold": {
         "op": "<=",
         "max_stdev_test_accuracy": 0.15
       },
       "observed": {
-        "stdev_test_accuracy": 0.079064
+        "stdev_test_accuracy": 0.433013
       }
     },
     {
       "gate_id": "lens_wf_fraction_folds_beat_always_bull",
-      "passed": true,
+      "passed": false,
       "threshold": {
         "op": ">=",
         "min_fraction_test_beats_always_bull": 0.5
       },
       "observed": {
-        "fraction_test_beats_always_bull": 0.5,
+        "fraction_test_beats_always_bull": 0.25,
         "n_folds": 4
       }
     },
     {
       "gate_id": "lens_wf_min_fold_test_accuracy",
-      "passed": true,
+      "passed": false,
       "threshold": {
         "op": ">=",
         "min_min_test_accuracy_across_folds": 0.4
       },
       "observed": {
-        "min_test_accuracy": 0.416667
+        "min_test_accuracy": 0.0
       }
     },
     {
@@ -183,7 +183,7 @@
       "detail": {
         "neutral_ratio": 0.0,
         "neutral_count": 0,
-        "row_count": 1,
+        "row_count": 30,
         "max_neutral_ratio": 0.7
       }
     }
@@ -194,9 +194,24 @@
   "combined_all_passed": false,
   "all_gates_passed": false,
   "strict_passed": false,
-  "soft_passed": true,
+  "soft_passed": false,
+  "lens_soft_passed": false,
+  "instrument_soft_passed": null,
   "strict_pass_streak": 0,
   "auto_promote_ready": false,
   "promotion_recommendation": "defer",
+  "outcome_class": "reject",
+  "gate_taxonomy": {
+    "schema": "prophecy_gate_taxonomy_v1",
+    "outcome_class": "reject",
+    "promotion_recommendation": "defer",
+    "microbiome_metaphor_map": {
+      "pass_candidate": "beneficial_signal_analog",
+      "reject": "harmful_noise_analog",
+      "opportunistic": "opportunistic_hold_analog",
+      "neutral_bucket": "neutral_defer_analog"
+    },
+    "note": "Internal B-track classification only; not neuroscience or clinical claims. Pedagogical narrative: memory/obsidian_vault/UNIVERSE_MKm/CONCEPT_장뇌축_미생물_발효_아키텍처.md"
+  },
   "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing."
 }

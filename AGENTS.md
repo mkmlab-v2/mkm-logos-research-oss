@@ -115,6 +115,16 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 - **핵심 답변 구조:** `결론 -> 근거(아티팩트) -> 제한사항(로컬 기준선/실측 전환)` 순서를 고정한다.
 - **금지:** 경쟁사 비방, 시장 서열 단정(예: "삼성급으로 점프"), 과학 단정형 수사(예: "뇌과학이 보장") 사용 금지.
 
+## 장-뇌 은유 · B-track 게이트 분류 (에이전트 승격 v1)
+
+- **역할:** 장(Gut)=B-track `[HYPO]`·상징 입력, 뇌(Brain)=렌즈·음악 이론 조율, 미주(Vagus)=Fact-Lock·P0·`eval_prophecy_promotion_gates_v1` — **교육용 동형이상**이며 생리학·신경과학 증명이 아니다.
+- **대외 SSOT:** `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.7 §3; Track C 부록 `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.5–3.6.
+- **운영 분류:** `docs/final/artifacts/prophecy_promotion_gates_v1_latest.json`의 `outcome_class`·`gate_taxonomy` (`pass_candidate` | `reject` | `opportunistic` | `neutral_bucket`) — **숫자 승격 판정은 `combined_all_passed` + 휴먼**; 은유만으로 A-track·실매매 합선 금지.
+- **Cursor:** `.cursor/rules/gut-brain-metaphor-agent-v1.mdc` (`alwaysApply`); Track C 카피 초안 `.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md`.
+- **증거 팩:** `py scripts/build_prophecy_gate_evidence_pack_v1.py` → `docs/final/artifacts/prophecy_gate_evidence_pack_v1_latest.json`.
+- **승격 상태 요약:** `docs/final/artifacts/gut_brain_agent_constitution_promotion_v1_latest.json` (에이전트 규칙 vs B-track→A-track 구분).
+- **금지:** `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 본문에 미생물·장뇌 **온톨로지** 삽입; P0 exit 0을 예측 품질 통과로 서술.
+
 ## Athena 실행 거버넌스 (§28 · 선택 일상 점검)
 
 - **헌법:** `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §28 — `scripts/athena_run_v1.py`(ECC·`--target`/DPAPI·감사 JSONL·선택 `ATHENA_ECC_AUDIT_WEBHOOK_URL`).

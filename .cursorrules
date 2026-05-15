@@ -101,6 +101,12 @@
 - Keep output order:
   - Field(Regime) -> Lens(3) -> Conflict Resolver -> Final Action
 
+## Gut–brain metaphor (comms only)
+
+- Pedagogical frame for Track C / internal ops — not CONSTITUTION law or neuroscience proof.
+- Policy: `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.7; agent rule `.cursor/rules/gut-brain-metaphor-agent-v1.mdc`.
+- B-track gate taxonomy: `prophecy_promotion_gates_v1_latest.json` (`outcome_class`); no auto bridge B→A or live trade.
+
 ## Scope Guard
 
 - This file stores enforceable behavior policy only.

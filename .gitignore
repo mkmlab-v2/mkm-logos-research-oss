@@ -6,6 +6,11 @@
 !.cursor/rules/notebooklm-mcp-session-bridge.mdc
 # Cross-chat SSOT: resume/save triggers (alwaysApply; share across clones)
 !.cursor/rules/central-agent-memory.mdc
+# Gut-brain metaphor + B-track gate taxonomy (alwaysApply; share across clones)
+!.cursor/rules/gut-brain-metaphor-agent-v1.mdc
+!.cursor/skills/
+!.cursor/skills/mkm-gut-brain-trackc-comms/
+!.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md
 
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)
@@ -85,6 +90,7 @@ docs/final/artifacts/**
 # Pack 0-B LoRA v0 profiles (separate from Control-Integrity; P0 + eval script default)
 !docs/final/artifacts/myeongri_deterministic_lora_model_profiles_v1.json
 # verify_p0 / ops gate SSOT (not *_latest; tracked for CI path checks)
+!docs/final/artifacts/gut_brain_agent_constitution_promotion_v1_latest.json
 !docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json
 !docs/final/artifacts/mkm_ops_sync_bridge_v1.json
 !docs/final/artifacts/integrated_governance_config_v1.json

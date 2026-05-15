@@ -1,0 +1,54 @@
+{
+  "schema": "gut_brain_agent_constitution_promotion_v1",
+  "generated_at_utc": "2026-05-15T08:15:25Z",
+  "research_only": true,
+  "promotion_layers": {
+    "agent_constitution": {
+      "status": "promoted",
+      "paths": [
+        ".cursor/rules/gut-brain-metaphor-agent-v1.mdc",
+        ".cursor/rules/central-agent-memory.mdc",
+        ".cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md",
+        "AGENTS.md",
+        "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+        ".cursorrules",
+        "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+        "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md"
+      ],
+      "note": "Pedagogical gut-brain frame + outcome_class operator language; not CONSTITUTION ontology."
+    },
+    "btrack_numeric_to_track_a": {
+      "status": "blocked",
+      "evidence_path": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json",
+      "observed": {
+        "combined_all_passed": false,
+        "outcome_class": "reject",
+        "promotion_recommendation": "defer",
+        "auto_promote_ready": false
+      },
+      "required_for_promotion": [
+        "combined_all_passed true",
+        "human sign-off",
+        "no automatic live routing"
+      ]
+    },
+    "constitution_body": {
+      "status": "explicitly_excluded",
+      "note": "No microbiome/gut-brain ontology in CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md per Fact-Lock."
+    }
+  },
+  "reproduce": [
+    "py scripts/eval_prophecy_promotion_gates_v1.py",
+    "py scripts/build_prophecy_gate_evidence_pack_v1.py",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1",
+    "py -m pytest tests/test_eval_prophecy_promotion_gates_v1.py -q"
+  ],
+  "vault_concepts_untracked": [
+    "memory/obsidian_vault/UNIVERSE_MKm/CONCEPT_장뇌축_아키텍처.md",
+    "memory/obsidian_vault/UNIVERSE_MKm/CONCEPT_장뇌축_미생물_발효_아키텍처.md"
+  ],
+  "research_drafts_untracked": [
+    "docs/research/TRACK_C_B2B_GUT_BRAIN_METAPHOR_ONEPAGER_DRAFT_V1.md",
+    "docs/research/SILVER_POC_DRY_RUN_CHECKLIST_V1.md"
+  ]
+}

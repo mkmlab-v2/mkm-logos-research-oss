@@ -1,0 +1,39 @@
+---
+title: 장-뇌 은유 · B-track 게이트 분류 (에이전트)
+alwaysApply: true
+priority: 3
+---
+
+# Gut–brain metaphor + prophecy gate taxonomy (agent v1)
+
+**Purpose:** Pedagogical isomorphism for Track C / B2B copy and **internal** operator language. **Not** runtime ontology, neuroscience proof, or CONSTITUTION law.
+
+## Pedagogical map (internal only)
+
+| Layer | MKM role | Metaphor (non-literal) |
+| --- | --- | --- |
+| Gut | B-track symbolic / gematria / hypothesis fermentation | Input diversity, `[HYPO]` |
+| Brain | Music-theory / lens orchestration | Structured interpretation |
+| Vagus | Fact-Lock, P0 paths, `eval_prophecy_promotion_gates_v1`, ops gates | Gating between layers |
+
+## `outcome_class` (B-track, from gates JSON)
+
+Read `docs/final/artifacts/prophecy_promotion_gates_v1_latest.json` — fields `outcome_class`, `gate_taxonomy`. Values: `pass_candidate` | `reject` | `opportunistic` | `neutral_bucket`. **Do not** treat metaphor labels as clinical or market truth.
+
+## ALWAYS
+
+- 대외·제안서·쇼룸: `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7** §3 (metaphor guardrail) + root `AGENTS.md` 홍보 프레이밍.
+- Track C narrative pointer: `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.5–3.6; evidence: `py scripts/build_prophecy_gate_evidence_pack_v1.py`.
+- Vault concepts (personal, non-SSOT): `memory/obsidian_vault/UNIVERSE_MKm/CONCEPT_장뇌축_*.md` — reference only; Fact-Lock remains `CONSTITUTION_*` + scripts.
+
+## NEVER
+
+- Put microbiome / gut–brain **ontology** in `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` body.
+- Claim neuroscience proof, 0% liability, physiology % marketing, or “hallucination eradication” from this metaphor.
+- Auto-promote B-track to Track A or live trading from `outcome_class` or metaphor alone — `combined_all_passed` + human sign-off required.
+- Use `verify_p0_constitution_gate_paths.ps1` exit 0 as **prediction quality** proof (path existence only).
+
+## OPTIONAL
+
+- Track C / B2B copy draft workflow: `.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md`
+- Promotion manifest: `docs/final/artifacts/gut_brain_agent_constitution_promotion_v1_latest.json`
