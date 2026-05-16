@@ -2,17 +2,33 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-16 · jema-ai /clinician 본선)
+
+**Thread:** Cursor — **한의사 채팅·CDSS·환자 번들 VPS 반영**
+
+- **완료:** `Deploy-No1kmediDestinyTarball_v1.ps1 -RunApiSmoke` **OK** · `app.jema-ai.com/clinician` **200** · CDSS envelope `validation.ok` · bundle MD ~1.9k · `dev` 커밋·**internal push**
+- **막힘:** Pro 게이트는 payapp 결제+승인 또는 **`KM_CLINICIAN_PRO_EMAIL_ALLOWLIST`** 필요(운영 이메일 배포 예정)
+- **다음:** VPS `.env.local`에 allowlist 반영 후 재배포 · 선택 `dev`→`main` 머지(VPS `git pull` 정합)
+
+## Ops slice (2026-05-16 · Session handoff · LG 용어 정정)
+
+**Thread:** Cursor — **LG 화요일=결과 발표만 (미팅 없음)**
+
+- **완료:** SSOT 정정 — **5/20(화)=심사 결과 발표·통지** (`is_meeting: false`) · 제출 자료 동결 · factcheck·덱·`internal` push.
+- **막힘:** **C-S3** outcome **pending** · 대외 send **false**(법무).
+- **다음:** **화요일 결과 통지** 수신 시 `lg_hs_meeting_followup_v1.json` **한 줄만** 기록(미팅 준비·재발송 X) · **hold/reject** → 폴백 `LANE-TRACKC-B2B`.
+
 ## Ops slice (2026-05-16 · Session handoff · 채팅 종료 · 권장안 확정)
 
-**Thread:** Cursor — **LG 5/20 대기 · Track C B2B 주력 · dev 커밋·internal push**
+**Thread:** Cursor — **LG 5/20 결과 발표 대기 · Track C B2B 주력**
 
-- **완료:** **권장안** — LG **5/20(화) 전 추가 영업·대외 send 없음** · hold/reject 시 **`LANE-TRACKC-B2B`**(`deliverable_status` 선행 완료) · OpenData 327은 **목소리네트워크 병행(~6/5)** 법인 분리 · `check_lg_hs_fallback_two_week_pipeline_v1.py` **ok** · `dev` 커밋 **`d67f152`**(LG/RQ-017·018·쇼룸 trust·SSOT 58 files).
+- **완료:** **권장안** — **5/20(화) 전 LG 추가 연락·대외 send 없음** (화요일은 **발표일**이지 **미팅 아님**) · hold/reject 시 **`LANE-TRACKC-B2B`** · OpenData 327 병행(~6/5) 법인 분리.
 - **막힘:** **C-S3** `outcome_record_template` **pending** · **C-A2** `ready_for_external_send` **false**(법무).
-- **다음:** **5/20** outcome 한 줄만 `lg_hs_meeting_followup_v1.json` · **pass/follow_up** → 법무 후 재발송 · **hold/reject** → 폴백 W2-A1(이미 B2B 산출 있음) · 재개: `장기기억 맥락이어라` + `@CURRENT_OPS_SNAPSHOT.md` + `@lg_hs_meeting_followup_v1.json`.
+- **다음:** **5/20** 통지 outcome 한 줄 → `lg_hs_meeting_followup_v1.json` · 재개: `@lg_hs_meeting_followup_v1.json` + factcheck MD.
 
 ## Ops slice (2026-05-16 · Session handoff · LG·압축·종료 완료)
 
-**Thread:** Cursor — **LG 미팅 후속 · RQ-017 · 폴백 SSOT · Track C B2B 선행 산출**
+**Thread:** Cursor — **LG 제출·결과 대기 · RQ-017 · 폴백 SSOT · Track C B2B 선행 산출**
 
 - **완료:** RQ-017 VPS triplet+페이로드 스윕+쇼룸 sync · `lg_hs_fallback_two_week_pipeline_v1`(**`LANE-TRACKC-B2B`**) · **선행:** `build_track_c_macro_risk_mvp_filled_v1` → macro MVP+`track_c_b2b_macro_alert_offer_onepager_latest.md` · readiness **internal meeting OK** / compression **internal OEM draft OK** · CENTRAL checkpoint.
 - **막힘:** **C-S3** LG **2026-05-20(화) 대기** · **대외 send=false**(법무).

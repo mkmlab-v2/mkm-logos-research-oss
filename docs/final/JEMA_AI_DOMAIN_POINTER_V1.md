@@ -12,7 +12,9 @@
 |------|-----|
 | **레포 내 전용 앱 경로 (워크스페이스 후보)** | **`jema-ai.com` 제품 소스:** 모노레포 `projects/no1kmedi` (Next.js; `metadataBase`·canonical 은 **`https://jema-ai.com`**). 폴더명 `no1kmedi` ≠ 공개 브랜드명. **배포·PM2·nginx 본선 경로는 별도 확정 문서로만 판정**(`NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` 등과 혼동 금지). |
 | **전용 런북·배포 스크립트** | 전용 단독 런북은 아직 없음. 다만 실측 운영 경로는 아래 PM2/nginx 항목으로 고정한다(타 도메인 런북 복붙 금지). |
-| **PM2 앱 이름 / `exec cwd` (2026-05-09 실측)** | `no1kmedi-com`, `no1kmedi` / `exec cwd=/opt/mkm-lab-workspace-v2/projects/no1kmedi` |
+| **PM2 앱 이름 / `exec cwd` (2026-05-15 실측)** | `no1kmedi-com` / `exec cwd=/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi` (lab-workspace-v2 경로와 **다름** — 배포·`pm2 describe` 우선) |
+| **기업·파트너 경로** | `https://app.jema-ai.com/enterprise` (소스 `projects/no1kmedi/src/app/enterprise/`) |
+| **한의사 보조 (채팅 UI)** | `https://app.jema-ai.com/clinician` — Pro 게이트: payapp 결제+검증 또는 `KM_CLINICIAN_PRO_EMAIL_ALLOWLIST` |
 | **nginx 라우팅 (2026-05-09 실측)** | `app.jema-ai.com` → `proxy_pass http://127.0.0.1:3010`; `jema-ai.com`/`www.jema-ai.com` → `301 https://app.jema-ai.com$request_uri` |
 | **VPS 호스트 (2026-05-09 실측)** | `148.230.97.246` (`srv1101456`) |
 
@@ -29,7 +31,9 @@
 ## 3) 운영 체크리스트 (실측 반영)
 
 - [x] 로컬/레포 작업 디렉터리: `projects/no1kmedi`
-- [x] PM2 프로세스 이름 · `pm2 describe` 실측: `no1kmedi-com`, `no1kmedi` / `exec cwd=/opt/mkm-lab-workspace-v2/projects/no1kmedi`
+- [x] PM2 프로세스 이름 · `pm2 describe` 실측: `no1kmedi-com` / `exec cwd=/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi` (2026-05-15)
+- [x] `/enterprise` 배포 스모크: `https://app.jema-ai.com/enterprise` **200**
+- [x] `/clinician` + CDSS·환자 번들 API 스모크: `Deploy-No1kmediDestinyTarball_v1.ps1 -RunApiSmoke` **OK** (2026-05-16)
 - [x] nginx 설정 실측: `/etc/nginx/sites-enabled/app.jema-ai.com`, `/etc/nginx/sites-enabled/jema-ai.com`
 - [x] `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` 표 갱신 (v1 표의 jema-ai 열에 실측 메모 추가)
 
