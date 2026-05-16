@@ -20,7 +20,7 @@ def _utc_now() -> str:
 
 
 def main() -> int:
-    root = Path("C:/workspace")
+    root = Path(__file__).resolve().parents[1]
     artifacts = root / "docs" / "final" / "artifacts"
 
     status = _read_json(artifacts / "mkm_ai_status_pointer_latest.json")
@@ -44,6 +44,12 @@ def main() -> int:
         "macro_risk_api": macro_smoke if macro_smoke else {"note": "missing artifact"},
         "macro_risk_policy": macro_policy if macro_policy else {"note": "missing artifact"},
         "showroom": showroom if showroom else {"note": "missing artifact"},
+        "public_demo_urls": {
+            "topology_radar_v1": "https://api.jemaai.cloud/public_showroom_topology_radar_v1.html",
+            "board_minimal": "https://api.jemaai.cloud/public_showroom_board_minimal.html",
+            "logos_research_v1": "https://api.jemaai.cloud/public_showroom_logos_research_v1.html",
+            "note": "observational_only · NON_GATING · no_trade_signals · not investment advice",
+        },
         "evidence": {
             "status_pointer": "docs/final/artifacts/mkm_ai_status_pointer_latest.json",
             "macro_risk_api_smoke": "docs/final/artifacts/macro_risk_warning_api_smoke_latest.json",
