@@ -118,7 +118,8 @@ def _derive_profile(
             "expires_at": (now + timedelta(hours=12)).isoformat(timespec="seconds"),
             "source": source_name,
             "mode": mode_name,
-            "max_trades_per_day": 5,
+            # Tight cap under LOCKED / core-HOLD: reduces fee bleed vs high-frequency scalps.
+            "max_trades_per_day": 4,
             "max_position_size": 0.03,
             "maker_only_level": "strict",
             "slippage_cap_bps": 4,

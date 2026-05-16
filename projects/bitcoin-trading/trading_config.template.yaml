@@ -1,12 +1,16 @@
+# Template: copy to config/trading_config.yaml and tune. See repo config/trading_config.yaml for fee-aware defaults.
+trading:
+  check_interval_seconds: 600
+  max_trades_per_day: 8
 strategy:
-  min_confidence: 0.64
+  min_confidence: 0.66
   min_consecutive_signals: 2
-  min_signal_bars: 14
+  min_signal_bars: 16
   use_short_horizon_profile: false
   short_horizon_profile:
-    min_confidence: 0.58
-    min_consecutive_signals: 1
-    min_signal_bars: 5
+    min_confidence: 0.62
+    min_consecutive_signals: 2
+    min_signal_bars: 10
     max_position_size: 0.22
     fallback_min_diff_ratio: 0.0005
     fallback_leverage_multiplier: 0.4
@@ -25,4 +29,4 @@ risk_management:
   risk_multiplier_max: 1.2
   max_daily_loss: 0.05
   stop_loss_ratio: 0.02
-  take_profit_ratio: 0.04
+  take_profit_ratio: 0.06

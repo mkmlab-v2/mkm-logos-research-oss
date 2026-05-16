@@ -31,7 +31,7 @@ def test_derive_profile_locked_mode_enforces_hard_limits():
         source_name="fact_safe_prophecy.trinity_governor",
         mode_name="shadow",
     )
-    assert out["max_trades_per_day"] == 5
+    assert out["max_trades_per_day"] == 4
     assert out["max_position_size"] == 0.03
     assert out["maker_only_level"] == "strict"
     assert out["kill_switch_threshold"] == 0.015
@@ -71,7 +71,7 @@ def test_derive_profile_forces_lock_when_core_hold():
         source_name="fact_safe_prophecy.trinity_governor",
         mode_name="shadow",
     )
-    assert out["max_trades_per_day"] == 5
+    assert out["max_trades_per_day"] == 4
     assert out["max_position_size"] == 0.03
 
 
