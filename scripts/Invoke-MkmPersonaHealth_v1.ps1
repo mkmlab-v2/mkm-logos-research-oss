@@ -12,6 +12,7 @@
   AmsaengHealth = run_workspace_automation_health.ps1 (기본 인자만)
   P0 = verify_p0_constitution_gate_paths.ps1
   AramaicDailyReadiness = Verify-AramaicMvpDailyTaskReadiness.ps1 (Windows Task Scheduler; 미등록 시 실패)
+  GpuRecommendedBundle = run_workspace_automation_health.ps1 -MkmGpuRecommendedBundleOnly (P0 + reconcile + Run-MkmGpuRecommendedBundle_v1)
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle
@@ -27,10 +28,13 @@
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AramaicDailyReadiness
+
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona GpuRecommendedBundle
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle')]
     [string]$Persona
 )
 
@@ -81,6 +85,12 @@ try {
             $script = Join-Path $PSScriptRoot 'Verify-AramaicMvpDailyTaskReadiness.ps1'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
             & $ps @common $script
+            exit $LASTEXITCODE
+        }
+        'GpuRecommendedBundle' {
+            $script = Join-Path $PSScriptRoot 'run_workspace_automation_health.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot -MkmGpuRecommendedBundleOnly
             exit $LASTEXITCODE
         }
         default {

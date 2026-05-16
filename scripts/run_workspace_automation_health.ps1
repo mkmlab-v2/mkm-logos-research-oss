@@ -30,7 +30,7 @@ param(
     # Optional: package_b chain smoke (v1 lens + v2 balanced/attack + margins summary).
     [switch]$IncludeMyeongniPackageBSmoke,
 
-    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / McpHygieneProbeOnly / PrSasangPromotionMirrorSyncOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly / VaFusionControlIntegritySmokeOnly / PremiumBtrackMultilensReportSmokeOnly profiles).
+    # B-track news_observation contract smoke: on by default after P0 (skip with -SkipNewsObservationContractSmoke; auto-skipped for BioSnpOnly / Otel-smoke-only / TrackCMacroFusionSmokeOnly / McpHygieneProbeOnly / PrSasangPromotionMirrorSyncOnly / MkmControlIntegritySmokeOnly / KmPhysicianCdsEnvelopeSmokeOnly / VaFusionControlIntegritySmokeOnly / PremiumBtrackMultilensReportSmokeOnly / MkmGpuRecommendedBundleOnly profiles).
     [switch]$SkipNewsObservationContractSmoke,
 
     # Optional: Run-BTrackDomainFeedbackSmoke.ps1 — general_prophecy pytest + weather triplet + news (if default news smoke already ran in this session, wrapper uses -SkipNews).
@@ -126,6 +126,11 @@ param(
     [switch]$IncludePremiumBtrackMultilensReportSmoke,
     # Shortcut profile: P0 paths + premium multilens report pytest only.
     [switch]$PremiumBtrackMultilensReportSmokeOnly,
+
+    # Optional: GPU-adjacent recommended bundle (Control-Integrity oracle chain + Pack 0-B pytest); CONSTITUTION §1.2.1.
+    [switch]$IncludeMkmGpuRecommendedBundle,
+    # Shortcut profile: P0 + automation registry reconcile + Run-MkmGpuRecommendedBundle_v1.ps1, then exit 0.
+    [switch]$MkmGpuRecommendedBundleOnly,
 
     # Optional: NotebookLM MCP hygiene probe (prereq + JSON; no MCP get_health in probe).
     [switch]$IncludeMcpHygieneProbe,
@@ -227,6 +232,14 @@ if ($PremiumBtrackMultilensReportSmokeOnly) {
     $SkipNewsObservationContractSmoke = $true
 }
 
+if ($MkmGpuRecommendedBundleOnly) {
+    $IncludeMkmGpuRecommendedBundle = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
 if ($McpHygieneProbeOnly) {
     $IncludeMcpHygieneProbe = $true
     $SkipVaultMirror = $true
@@ -246,7 +259,7 @@ if ($PrSasangPromotionMirrorSyncOnly) {
 }
 
 # Recommended default: run SafeOps on full health runs; shortcut profiles skip unless explicit Include* / IncludeWithVps.
-$shortcutForSafeOps = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $PrSasangPromotionMirrorSyncOnly
+$shortcutForSafeOps = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmGpuRecommendedBundleOnly
 $runSafeOps = $false
 $runSafeOpsWithVps = $false
 if (-not $SkipSafeOpsSurfaceCheck) {
@@ -459,7 +472,7 @@ try {
         exit 0
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly) {
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly -and -not $MkmGpuRecommendedBundleOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -473,7 +486,7 @@ try {
         }
     }
 
-    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly
+    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $MkmGpuRecommendedBundleOnly
     if ($IncludeBTrackDomainFeedbackSmoke -and -not $btProfileSkip) {
         $bt = Join-Path $root "scripts\Run-BTrackDomainFeedbackSmoke.ps1"
         if (Test-Path -LiteralPath $bt) {
@@ -567,6 +580,26 @@ try {
             if ($StrictReconcile) { throw $msg }
             Write-Host "WARN: $msg" -ForegroundColor Yellow
         }
+    }
+
+    if ($IncludeMkmGpuRecommendedBundle) {
+        $gpuB = Join-Path $root "scripts\Run-MkmGpuRecommendedBundle_v1.ps1"
+        if (Test-Path -LiteralPath $gpuB) {
+            Step "MKM GPU recommended bundle (Control-Integrity oracle + Pack 0-B pytest)" {
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $gpuB
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== MKM GPU recommended bundle ===" -ForegroundColor Yellow
+            Write-Host "SKIP: Run-MkmGpuRecommendedBundle_v1.ps1 not found"
+        }
+    }
+
+    if ($MkmGpuRecommendedBundleOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] MkmGpuRecommendedBundleOnly: finished after P0 + reconcile + GPU recommended bundle." -ForegroundColor Green
+        exit 0
     }
 
     if ($IncludeCompressionKpi) {

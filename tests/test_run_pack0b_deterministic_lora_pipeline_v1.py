@@ -19,10 +19,14 @@ def _load_pack0b_module(repo: Path):
 def test_resolve_inference_profile_key_defaults() -> None:
     repo = Path(__file__).resolve().parents[1]
     mod = _load_pack0b_module(repo)
-    assert mod.resolve_inference_profile_key("", None) == "train_default"
-    assert mod.resolve_inference_profile_key("  ", None) == "train_default"
-    assert mod.resolve_inference_profile_key("golden_fit_smoke", None) == "golden_fit_smoke"
-    assert mod.resolve_inference_profile_key("golden_fit_smoke", "train_default") == "train_default"
+    assert mod.resolve_inference_profile_key("", None, "") == "train_default"
+    assert mod.resolve_inference_profile_key("  ", None, "") == "train_default"
+    assert (
+        mod.resolve_inference_profile_key("", None, "TinyLlama/TinyLlama-1.1B-Chat-v1.0")
+        == "golden_fit_smoke"
+    )
+    assert mod.resolve_inference_profile_key("golden_fit_smoke", None, "") == "golden_fit_smoke"
+    assert mod.resolve_inference_profile_key("golden_fit_smoke", "train_default", "") == "train_default"
 
 
 def test_pack0b_pipeline_convert_eval_smoke(tmp_path: Path) -> None:

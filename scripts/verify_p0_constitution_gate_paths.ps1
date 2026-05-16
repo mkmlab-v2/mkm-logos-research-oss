@@ -59,6 +59,7 @@ catch {
 # 2026-05-14: athena_checkpoint prepend-mode (--max-checkpoints) + pytest regression.
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
+# 2026-05-16: saju_birth_resolver_v1 + MANSE_PRECISION_RUNTIME_POINTER_V1 + pytest (intake fusion birth gate).
 
 $ErrorActionPreference = "Stop"
 $required = @(
@@ -297,6 +298,14 @@ $required = @(
     "scripts\validate_patient_care_bundle_against_policy_v1.py",
     "scripts\render_patient_care_bundle_markdown_v1.py",
     "tests\test_patient_care_bundle_templates_policy_render_v1.py",
+    "docs\final\schemas\patient_intake_fusion_draft_input_v1.schema.json",
+    "tests\fixtures\patient_intake_fusion_draft_v1.example.json",
+    "scripts\build_patient_intake_fusion_draft_v1.py",
+    "scripts\saju_birth_resolver_v1.py",
+    "docs\final\MANSE_PRECISION_RUNTIME_POINTER_V1.json",
+    "scripts\Invoke-PatientIntakeFusionDraft_v1.ps1",
+    "tests\test_build_patient_intake_fusion_draft_v1.py",
+    "tests\test_saju_birth_resolver_v1.py",
     "tests\test_stt_routing_audit_log_schema_v1.py",
     "scripts\run_myeongri_ai_interpretation_pack_v1.py",
     "scripts\eval_myeongri_rule_school_macro_stub_v1.py",
@@ -709,6 +718,8 @@ $required = @(
     "scripts\run_mkm_control_integrity_inference_batch_v1.py",
     "scripts\evaluate_mkm_control_integrity_lora_predictions_v1.py",
     "scripts\Run-MkmControlIntegrityTrainInferEval.ps1",
+    "scripts\Run-MkmGpuRecommendedBundle_v1.ps1",
+    "scripts\Register-MkmGpuRecommendedBundleWeeklyTask.ps1",
     "scripts\Run-MkmControlIntegrityHoldoutEvalSuite.ps1",
     "scripts\Run-MkmControlIntegrityModelProfileABC.ps1",
     "scripts\build_mkm_control_integrity_model_profile_abc_comparison_v1.py",

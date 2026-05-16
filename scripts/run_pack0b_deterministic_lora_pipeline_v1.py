@@ -30,17 +30,26 @@ def _run(cmd: list[str], *, cwd: Path) -> int:
 
 
 def resolve_inference_profile_key(
-    train_profile: str, inference_profile_key: str | None
+    train_profile: str,
+    inference_profile_key: str | None,
+    train_model_name: str = "",
 ) -> str:
     """Pick inference eval profile-key so base model matches the trained adapter.
 
     When ``--inference-profile-key`` is omitted, reuse ``--profile`` if set;
-    otherwise fall back to ``train_default`` (CLI-only train without profile JSON).
+    otherwise if ``train_model_name`` is TinyLlama-shaped (case-insensitive),
+    use ``golden_fit_smoke`` so inference matches the CLI default trainer base model.
+    Fall back to ``train_default``.
     """
     if inference_profile_key is not None:
         return inference_profile_key
     p = (train_profile or "").strip()
-    return p if p else "train_default"
+    if p:
+        return p
+    mn = (train_model_name or "").strip().lower()
+    if "tinyllama" in mn:
+        return "golden_fit_smoke"
+    return "train_default"
 
 
 def _resolve_profile(profile_json: Path, profile_key: str) -> dict[str, str]:
@@ -128,7 +137,8 @@ def main() -> int:
         default=None,
         help=(
             "Profile key for inference eval base model. "
-            "Omitted: same as --profile when set, else train_default"
+            "Omitted: same as --profile when set; else TinyLlama-like --model-name "
+            "=> golden_fit_smoke; else train_default"
         ),
     )
     ap.add_argument(
@@ -143,7 +153,7 @@ def main() -> int:
     )
     args = ap.parse_args()
     args.inference_profile_key = resolve_inference_profile_key(
-        args.profile, args.inference_profile_key
+        args.profile, args.inference_profile_key, args.model_name
     )
 
     if not args.golden_jsonl.is_file():

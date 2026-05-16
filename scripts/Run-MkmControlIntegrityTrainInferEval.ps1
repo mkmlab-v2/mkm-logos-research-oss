@@ -11,6 +11,9 @@
 .EXAMPLE
   # Model inference on test split with fallback train dry-run
   .\scripts\Run-MkmControlIntegrityTrainInferEval.ps1 -TrainDryRun -InferenceSplit test
+
+.PARAMETER StrictGoldenEval
+  예측 누락(id 없음)도 평가 오류로 처리합니다. 생략 시 -AdapterPath + 비-oracle이면 --allow-missing-predictions 로 완화합니다.
 #>
 param(
   [switch]$UseGoldenSet = $true,
@@ -28,7 +31,9 @@ param(
   [string]$ModelName = 'TinyLlama/TinyLlama-1.1B-Chat-v1.0',
   [string]$AdapterPath = '',
   [switch]$OracleInference,
-  [int]$InferenceLimit = 0
+  [int]$InferenceLimit = 0,
+  # Fail eval on missing predictions even when using an adapter (default: allow gaps when not oracle).
+  [switch]$StrictGoldenEval
 )
 
 $ErrorActionPreference = "Stop"
@@ -130,6 +135,9 @@ $evalArgs = @(
   "--report-out", $evalOut
 )
 if ($InferenceLimit -gt 0) {
+  $evalArgs += "--allow-missing-predictions"
+}
+elseif ((-not $OracleInference) -and $AdapterPath -and (-not $StrictGoldenEval)) {
   $evalArgs += "--allow-missing-predictions"
 }
 py @evalArgs
