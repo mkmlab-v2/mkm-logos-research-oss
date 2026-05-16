@@ -198,9 +198,13 @@ foreach ($entUrl in $smokeUrls) {
 
 if ($RunApiSmoke) {
     Write-Host "[no1kmedi-tarball] smoke POST advanced-consult (validate envelope)" -ForegroundColor Cyan
-    $consultJson = '{"schema":"patient_consult_input_v1","request_id":"deploy_smoke","actor_id":"deploy","lane_a_profile":{"birth_instant_utc":"1987-12-31T15:00:00Z","iana_tz":"Asia/Seoul","constitution_survey":{"digestion_pattern":"식후 더부룩함"}},"lane_b_clinical":{"chief_complaint":"만성 피로","onset":"6개월","severity":"중등도","medication":"없음","health_survey":{"sleep_quality":"입면 지연"}}}'
+    $consultJson = @'
+{"schema":"patient_consult_input_v1","request_id":"deploy_smoke","actor_id":"deploy","lane_a_profile":{"birth_instant_utc":"1987-12-31T15:00:00Z","iana_tz":"Asia/Seoul","constitution_survey":{"digestion_pattern":"post-meal bloating"}},"lane_b_clinical":{"chief_complaint":"chronic fatigue","onset":"6mo","severity":"moderate","medication":"none","health_survey":{"sleep_quality":"delayed sleep onset"}}}
+'@
+    $consultBody = Join-Path $env:TEMP "no1kmedi-deploy-consult-body-$stamp.json"
+    [System.IO.File]::WriteAllText($consultBody, $consultJson.Trim(), [System.Text.UTF8Encoding]::new($false))
     $consultOut = Join-Path $env:TEMP "no1kmedi-deploy-consult-$stamp.json"
-    $consultCode = (& curl.exe -s -o $consultOut -w "%{http_code}" --max-time 60 -X POST "https://app.jema-ai.com/api/cdss/advanced-consult?validate_km_cds_envelope=1" -H "Content-Type: application/json" -H "Origin: https://app.jema-ai.com" -d $consultJson)
+    $consultCode = (& curl.exe -s -o $consultOut -w "%{http_code}" --max-time 60 -X POST "https://app.jema-ai.com/api/cdss/advanced-consult?validate_km_cds_envelope=1" -H "Content-Type: application/json; charset=utf-8" -H "Origin: https://app.jema-ai.com" --data-binary "@$consultBody")
     if ($consultCode -ne "200") { throw "advanced-consult smoke failed http $consultCode" }
     $consult = Get-Content $consultOut -Raw -Encoding UTF8 | ConvertFrom-Json
     if (-not $consult.km_cds.validation.ok) {
@@ -214,10 +218,10 @@ if ($RunApiSmoke) {
         iana_tz = "Asia/Seoul"
         cds_envelope = $consult.km_cds.envelope
         soap = @{
-            subjective = @{ text = "만성 피로" }
-            objective = @{ text = "미기재" }
-            assessment = @{ text = "예비" }
-            plan = @{ text = "확인" }
+            subjective = @{ text = "chronic fatigue (deploy smoke)" }
+            objective = @{ text = "not recorded" }
+            assessment = @{ text = "preliminary hypothesis" }
+            plan = @{ text = "physician confirmation" }
         }
         options = @{
             apply_slot_templates = $true
