@@ -41,10 +41,14 @@ def _load_env_from_dotenv(path: Path) -> None:
 
 
 def _webhook() -> str:
+    # Dedicated Night Watchman URL first; then generic Slack; then PIN lookup
+    # (same Incoming Webhook JSON body) so scheduled SOP can succeed when only
+    # PIN_LOOKUP_ALERT_WEBHOOK_URL is configured in .env.
     return (
         os.getenv("NIGHT_WATCHMAN_WEBHOOK_URL", "").strip()
         or os.getenv("FACT_SAFE_SLACK_WEBHOOK_URL", "").strip()
         or os.getenv("SLACK_WEBHOOK_URL", "").strip()
+        or os.getenv("PIN_LOOKUP_ALERT_WEBHOOK_URL", "").strip()
     )
 
 
@@ -104,7 +108,7 @@ def main() -> None:
     wh = _webhook()
     if not wh:
         raise SystemExit(
-            "NIGHT_WATCHMAN_WEBHOOK_URL (or FACT_SAFE_SLACK_WEBHOOK_URL / SLACK_WEBHOOK_URL) required for live alert"
+            "NIGHT_WATCHMAN_WEBHOOK_URL (or FACT_SAFE_SLACK_WEBHOOK_URL / SLACK_WEBHOOK_URL / PIN_LOOKUP_ALERT_WEBHOOK_URL) required for live alert"
         )
     _post_slack(wh, text)
     record["webhook_sent"] = True

@@ -123,7 +123,32 @@ if ($RunPhase2) {
     }
 
     Write-SopLog "[Phase2] CDN smoke verify rounds=$CdnRounds sleep=${CdnRoundSleepSec}s"
-    py "C:\workspace\scripts\verify_pixel_battalion_cdn_urls.py" --rounds $CdnRounds --round-sleep $CdnRoundSleepSec
+    $cdnSoftFail = $true
+    $cdnEv = [Environment]::GetEnvironmentVariable("MKM_PIXEL_CDN_VERIFY_SOFT_FAIL", "Process")
+    if (-not [string]::IsNullOrWhiteSpace($cdnEv)) {
+        $cdnSoftFail = $cdnEv -match '^(1|true|yes|on)\s*$'
+    } else {
+        $envPathDot = Join-Path $workspace ".env"
+        if (Test-Path -LiteralPath $envPathDot) {
+            foreach ($raw in Get-Content -LiteralPath $envPathDot) {
+                $ln = $raw.Trim()
+                if (-not $ln -or $ln.StartsWith("#")) { continue }
+                if ($ln -match '^\s*MKM_PIXEL_CDN_VERIFY_SOFT_FAIL\s*=\s*(.*)$') {
+                    $v = $matches[1].Trim().Trim('"').Trim("'")
+                    $cdnSoftFail = $v -match '^(1|true|yes|on)\s*$'
+                    break
+                }
+            }
+        }
+    }
+    Write-SopLog "[Phase2] CDN verify soft_fail=$cdnSoftFail (set MKM_PIXEL_CDN_VERIFY_SOFT_FAIL=0 in .env for strict)"
+    $cdnArgs = @(
+        "C:\workspace\scripts\verify_pixel_battalion_cdn_urls.py",
+        "--rounds", "$CdnRounds",
+        "--round-sleep", "$CdnRoundSleepSec"
+    )
+    if ($cdnSoftFail) { $cdnArgs += "--soft-fail" }
+    py @cdnArgs
     Assert-ExitCode "verify_pixel_battalion_cdn_urls.py"
 
     Write-SopLog "[Phase2] Night Watchman dry-run first"

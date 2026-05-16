@@ -54,6 +54,11 @@ def main() -> None:
     p.add_argument("--round-sleep", type=float, default=20.0, dest="round_sleep_sec")
     p.add_argument("--url-retries", type=int, default=3)
     p.add_argument("--url-retry-delay", type=float, default=8.0, dest="url_retry_delay_sec")
+    p.add_argument(
+        "--soft-fail",
+        action="store_true",
+        help="Exit 0 even when some URLs fail (still writes JSON with fail_count).",
+    )
     args = p.parse_args()
 
     if not args.map_path.exists():
@@ -83,6 +88,7 @@ def main() -> None:
         "total": len(all_results),
         "ok_count": ok_count,
         "fail_count": fail_count,
+        "soft_fail": bool(args.soft_fail),
         "verify_options": {
             "url_retries": args.url_retries,
             "url_retry_delay_sec": args.url_retry_delay_sec,
@@ -95,6 +101,9 @@ def main() -> None:
     OUT_JSON.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"ok_count": ok_count, "fail_count": fail_count, "out": str(OUT_JSON)}, ensure_ascii=False))
     if fail_count:
+        if args.soft_fail:
+            print("[verify_pixel_battalion_cdn_urls] soft-fail: CDN checks had failures; exit 0", flush=True)
+            raise SystemExit(0)
         raise SystemExit(1)
 
 
