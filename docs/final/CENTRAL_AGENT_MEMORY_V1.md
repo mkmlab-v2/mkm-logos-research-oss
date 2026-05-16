@@ -12,35 +12,36 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-15T10:00:23Z
+- **last_updated_utc:** 2026-05-16T05:29:58Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
 - **external_briefing_ref_v2:** `athena_memory_bank_v2.md` (time-series partition + firewall)
+- **지휘관 보좌 프로필 (초개인화 v1):** `docs/final/schemas/commander_profile_v1.schema.json` · `docs/final/artifacts/commander_profile_v1.example.json` — `birth_anchor`·`myeongni_fact_ref`=엔진 Fact; `cognition_hypothesis`·`assist_coaching_v1`=`[HYPO]`·격벽만. 사주로 GTM·실매매·임상 단정 금지. 가족 앵커는 `family_anchors_ref`(딸 등).
 
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-15T10:00:23Z** — 순서 마감: AthenaBundle+VPS f1c995 bundle, jema-ai 200, closure_ok, P0 725
-- **2026-05-15T09:59:49Z** — ML-DEV-8: showroom hub CTA lede+pytest+VPS sync; app preset=stripe-linear E2E OK; jema-ai.com→app apex routing 확인 필요
-- **2026-05-15T09:55:41Z** — AthenaBundle: fact_lock exit0, prophecy 137 pass, premium queue GO, SafeOps ok
-- **2026-05-15T09:48:46Z** — AmsaengHealth: P0 725, SafeOps ok, automation ALL OK, security GREEN
-- **2026-05-15T09:46:47Z** — ML-DEV-4 VPS: no1kmedi-com on destiny path, app.jema-ai.com 200, stripe-linear live
-- **2026-05-15T09:45:50Z** — VPS: destiny bundle+lab no1kmedi build+pm2 restart; gitea/main 37b9263
-- **2026-05-15T09:37:38Z** — ML-DEV-4+closure: stripe-linear default, no1kmedi gate:fast, P0 725, closure_ok true
-- **2026-05-15T09:36:15Z** — ML-DEV-4 verify: jema-ai stripe-linear default + no1kmedi build exit 0
-- **2026-05-15T09:28:51Z** — GitHub-minimal: gitea main 77c0857 + VPS bundle sync + n8n tasks removed
-- **2026-05-15T08:39:54Z** — ML-DEV-1~3 완료: copy guard·dual-leg score·Track C evidence E2E
-- **2026-05-15T08:14:14Z** — ML-007: prophecy closure_ok+GO; amsaeng governance worst_exit=0; P0 721
-- **2026-05-15T05:18:41Z** — Fact-Safe 스케줄 0·KOSPI stress v1 main 반영·dev 유지; 번들 녹색·워킹트리 clean
-- **2026-05-15T05:01:25Z** — 옵시디언 RESEARCH_과제_마스터_인덱스 전조사 반영+P0 719 OK
-- **2026-05-15T02:10:15Z** — 자동: P0+예언클로저(SafeOpsSkip)+fact_lock_bundle exit0; go_no_go degraded WARN 동일; 워킹트리 clean
-- **2026-05-15T01:54:56Z** — 자동: 예언 클로저 closure_ok(SafeOps 생략)+fact_lock_bundle exit0(~3m); go_no_go 로컬 degraded는 잔여; 번들 *_latest restore
-- **2026-05-15T01:39:02Z** — Track C: PUBLIC v1.5 + RQ-009 CLOSED-prep 표 + silver S-CONS/BASE/STRESS 커밋 fd70141; gitea/main FF·push OK; blind_replay·trading·integrated_governance_latest·cursor log는 restore로 clean
-- **2026-05-15T01:33:57Z** — 채팅 종료 핸드오프: CURRENT_OPS 상단 2026-05-15 UTC 슬라이스 + 스냅샷 커밋 예정; 워킹트리 CONSTITUTION/PUBLIC/silver/blind_replay/trading 산출은 의도 확인 후 커밋 또는 restore
-- **2026-05-14T21:21:38Z** — Git: push-internal 후 중복 gitea/dev 재생성→동일 SHA면 delete+prune 반복; P0 719 OK; artifacts restore로 clean
-- **2026-05-14T21:13:23Z** — jemaai completion_chain full (+P1 A/B) exit0; P1 balanced winner; SafeOps still degraded (live_sync+daemon continuity)
-- **2026-05-14T21:10:45Z** — Git: gitea 원격 dev 삭제(=main 동일 SHA)·fetch --prune; refs/heads/dev 없음
+- **2026-05-16T05:29:58Z** — VPS showroom scp OK api.jemaai.cloud minimal+poll 200
+- **2026-05-16T05:27:29Z** — commander_profile_v1: schema+example+pytest; 보좌=Fact앵커+assist_coaching(HYPO)·일출력1채널·Track격벽; 경로 docs/final/artifacts/commander_profile_v1.example.json
+- **2026-05-16T05:27:06Z** — Showroom chain OK: dashboard+brief+bundle+trust slice; VPS deploy manual
+- **2026-05-16T05:20:56Z** — 지휘관(남) 사주 앵커: 1973-12-10 04:30 Asia/Seoul, 임진·갑자·경진·무인, 일간 경(금陽), 엔진 중약·school hybrid_guarded, yongsin_hypothesis [HYPO] 화→토…; 태양인은 사상 체질 참조·사주 자동합선 금지; 2026 만53 대운 기미(남·역행)
+- **2026-05-16T05:17:06Z** — Trading comfort 3-tier brief; LOCKED=LOW prophecy by design
+- **2026-05-16T05:16:07Z** — 딸(소음인·참조) 사주 앵커: 2012-03-28 10:30 Asia/Seoul 여, 임진·계묘·무자·정사, 일간 무(토), 엔진 중강·school hybrid_guarded, yongsin_hypothesis [HYPO] 금→수…; 구내염·수면·화장 성향은 의료·육아와 분리; 2026-05-18~31 일진 메모는 연구·재미용 [HYPO]
+- **2026-05-16T05:08:32Z** — Trading: 30d chunked fee metrics+test; VPS live_sync heartbeat deploy+5m pull task; snapshot handoff
+- **2026-05-15T15:27:11Z** — Wave3: mkmlife.com CF 등록 활성(만료 2027-09-03) 확인·트래커 완료. 전송 진행중 0건. 잔여 a-codeai.com·mkmlab.space 미시작.
+- **2026-05-15T15:15:13Z** — mkmlife.com CF 이전 4/5단계(현재 등록기관 해제 대기); personadiary 완료. Hostinger 승인 이메일 확인 필요
+- **2026-05-15T14:31:41Z** — personadiary.com CF Registrar transfer_completed=true (등록 목록 활성·만료 2029-11-23); mkmlife.com 전송 보류 중
+- **2026-05-15T14:25:15Z** — personadiary.com transfer email approval done by user; CF still in-progress pending registry completion
+- **2026-05-15T14:08:50Z** — personadiary.com CF transfer submitted but registry rejected: domain still transfer-locked at Hostinger; unlock in hPanel then retry
+- **2026-05-15T14:01:40Z** — personadiary Wave3 auto: NS+zone Active; CF transfer at auth-code step — EPP paste+payment manual
+- **2026-05-15T13:54:19Z** — personadiary Wave3: hPanel NS saved sarah/sullivan; public DNS OK; delegation_evidence_ok — CF zone active+EPP+transfer pending
+- **2026-05-15T13:52:19Z** — personadiary Wave3: CF zone+Free plan via dashboard; NS sarah/sullivan — Hostinger API NS 422, hPanel NS cutover pending
+- **2026-05-15T13:11:47Z** — 진행해: Fact-Safe GO·VPS aligned·SafeOps ok·closure ok·승인~05-17·risk TTL~05-16 01:10
+- **2026-05-15T13:06:06Z** — 진행해 2회차: GO·VPS aligned·closure_ok; risk ~5/16 01:04; Hostinger CF대기
+- **2026-05-15T13:03:37Z** — 융합루틴: Fact-Safe+GO48h+VPS aligned+Amsaeng OK; Hostinger CF대기·Wave1메일=지휘관
+- **2026-05-15T12:58:19Z** — 융합: Hostinger 5건 전송중+jema12승인, Ops closure_ok, CF transfer_completed만 대기
+- **2026-05-15T12:56:31Z** — Hostinger exit: jema12 이체승인·Wave1+2 CF 전송 중; 다음 채팅=CF 완료 모니터·Wave1 메일승인·tracker transfer_completed
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 

@@ -1,0 +1,108 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/commander_profile_v1.schema.json",
+  "title": "commander_profile_v1",
+  "description": "MKM commander (operator) assist profile: birth/myeongni Fact anchors + coaching prefs. Not clinical PHI. cognition_hypothesis is [HYPO] only — never auto-merge to trading or patient gating.",
+  "type": "object",
+  "required": ["schema", "version", "subject", "birth_anchor", "myeongni_fact_ref", "assist_coaching_v1"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "type": "string", "const": "commander_profile_v1" },
+    "version": { "type": "string", "pattern": "^1\\." },
+    "updated_at_utc": { "type": "string", "minLength": 10 },
+    "subject": {
+      "type": "object",
+      "required": ["role"],
+      "additionalProperties": true,
+      "properties": {
+        "role": { "type": "string", "const": "commander" },
+        "gender": { "type": "string", "enum": ["male", "female", "unspecified"] },
+        "display_label": { "type": "string", "maxLength": 64 }
+      }
+    },
+    "birth_anchor": {
+      "type": "object",
+      "required": ["birth_instant_utc", "iana_tz"],
+      "additionalProperties": true,
+      "properties": {
+        "birth_instant_utc": { "type": "string", "minLength": 12 },
+        "iana_tz": { "type": "string", "minLength": 3 },
+        "local_label": { "type": "string", "maxLength": 128 },
+        "is_male": { "type": "boolean" }
+      }
+    },
+    "myeongni_fact_ref": {
+      "type": "object",
+      "required": ["pillars", "day_master_stem"],
+      "additionalProperties": true,
+      "properties": {
+        "pillars": {
+          "type": "object",
+          "required": ["year", "month", "day", "hour"],
+          "properties": {
+            "year": { "type": "string" },
+            "month": { "type": "string" },
+            "day": { "type": "string" },
+            "hour": { "type": "string" }
+          }
+        },
+        "day_master_stem": { "type": "string", "maxLength": 4 },
+        "day_master_element_hint": { "type": "string" },
+        "strength_label_engine": { "type": "string" },
+        "school_decision_engine": { "type": "string" },
+        "element_counts_visible": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "daewoon_pillar_ref_year": { "type": "integer" },
+        "daewoon_pillar_label": { "type": "string" },
+        "engine_regenerate_cli": { "type": "string" }
+      }
+    },
+    "sasang_reference": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "label": { "type": "string" },
+        "rail": { "type": "string" },
+        "auto_merge_with_myeongni": { "type": "boolean", "const": false }
+      }
+    },
+    "cognition_hypothesis": {
+      "type": "object",
+      "required": ["rail"],
+      "additionalProperties": true,
+      "properties": {
+        "rail": { "type": "string", "const": "Track_B_HYPO" },
+        "patterns": { "type": "array", "items": { "type": "string" } },
+        "forbidden_uses": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "assist_coaching_v1": {
+      "type": "object",
+      "required": ["default_output_channels_per_day", "track_wall"],
+      "additionalProperties": true,
+      "properties": {
+        "default_output_channels_per_day": { "type": "integer", "minimum": 1, "maximum": 3 },
+        "preferred_briefing_style": { "type": "string" },
+        "energy_preservation": { "type": "array", "items": { "type": "string" } },
+        "track_wall": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        }
+      }
+    },
+    "family_anchors_ref": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "relation": { "type": "string" },
+          "birth_local": { "type": "string" },
+          "pillars_summary": { "type": "string" }
+        }
+      }
+    }
+  }
+}

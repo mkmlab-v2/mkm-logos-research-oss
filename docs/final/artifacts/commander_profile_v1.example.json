@@ -1,0 +1,82 @@
+{
+  "schema": "commander_profile_v1",
+  "version": "1.0.0",
+  "updated_at_utc": "2026-05-16T14:30:00Z",
+  "subject": {
+    "role": "commander",
+    "gender": "male",
+    "display_label": "지휘관"
+  },
+  "birth_anchor": {
+    "birth_instant_utc": "1973-12-09T19:30:00Z",
+    "iana_tz": "Asia/Seoul",
+    "local_label": "1973-12-10 04:30 Asia/Seoul (양력)",
+    "is_male": true
+  },
+  "myeongni_fact_ref": {
+    "pillars": {
+      "year": "계축",
+      "month": "갑자",
+      "day": "경진",
+      "hour": "무인"
+    },
+    "day_master_stem": "경",
+    "day_master_element_hint": "금(陽)",
+    "strength_label_engine": "중약",
+    "school_decision_engine": "hybrid_guarded",
+    "element_counts_visible": {
+      "목": 2,
+      "화": 0,
+      "토": 3,
+      "금": 1,
+      "수": 2
+    },
+    "daewoon_pillar_ref_year": 2026,
+    "daewoon_pillar_label": "기미",
+    "engine_regenerate_cli": "py scripts/run_saju_global_birth_v1.py --local 1973 12 10 4 30 0 --iana-tz Asia/Seoul --is-male"
+  },
+  "sasang_reference": {
+    "label": "태양인",
+    "rail": "clinical_reference_only",
+    "auto_merge_with_myeongni": false,
+    "note": "사상의학 체질 참조; 사주·GTM·실매매와 자동 합선 금지"
+  },
+  "cognition_hypothesis": {
+    "rail": "Track_B_HYPO",
+    "archetype_ko": "아키텍트형·결단·규격 정리",
+    "patterns": [
+      "상관 다빈도 → 규격 파괴·기획·카피 에너지 [HYPO]",
+      "편인 강 → 연구·코퍼스·직관 [HYPO]",
+      "중약 경금 → 지속 에너지·체력 아끼기 [HYPO]"
+    ],
+    "forbidden_uses": [
+      "GTM_우선순위_사주_단정",
+      "실매매_자동_승인_또는_브레이크_해제",
+      "임상_진단·처방_근거",
+      "오행_산업_1대1_필수_매핑"
+    ]
+  },
+  "assist_coaching_v1": {
+    "default_output_channels_per_day": 1,
+    "preferred_briefing_style": "Fact-Lock_first_then_HYPO_labeled",
+    "energy_preservation": [
+      "설계·판단·Fact-Lock 검증에 집중; 배포·반복 실행은 스크립트·파이프라인 우선",
+      "아이디어 다발 시 채널 1개로 수렴 (NotebookLM 렌즈 분리와 동형) [HYPO]",
+      "미니멀 기술 쇼룸 톤 선호 (PUBLIC_FACING 정합)"
+    ],
+    "track_wall": {
+      "track_a_trading": "LOCKED/NO_GO·휴먼 게이트 유지; 사주로 브레이크 풀지 않음",
+      "track_b_research": "HYPO·연구 레일 허용",
+      "track_c_b2b": "증거·게이트·계약; 사주 순위 단정 금지",
+      "b2c_clinical": "원장 확정·SaaS/규격화; 환자 수량 경쟁 금지"
+    }
+  },
+  "family_anchors_ref": [
+    {
+      "relation": "daughter",
+      "birth_local": "2012-03-28 10:30 Asia/Seoul",
+      "pillars_summary": "임진·계묘·무자·정사 (일간 무)",
+      "sasang_ref": "소음인 (참조만)"
+    }
+  ]
+}
