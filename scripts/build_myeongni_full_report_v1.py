@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import statistics
 import subprocess
@@ -20,6 +21,7 @@ if str(ROOT) not in sys.path:
 from scripts.manseryeok_perfect_final import PerfectManseryeok
 
 SCHOOL_RESOLVER_PATH = ROOT / "data" / "myeongni" / "myeongni_school_conflict_resolver_v1.json"
+YONGSIN_HYPOTHESIS_FORMULA_VERSION = "yongsin_hypothesis_v1.0.0-heuristic"
 RUNTIME_MODE_PATH = ROOT / "reports" / "myeongni_conflict_arbitration_runtime_mode_latest.json"
 PRESET_AUDIT_LOG_PATH = ROOT / "reports" / "myeongni_conflict_arbitration_preset_apply_log.jsonl"
 STAGE2_OVERRIDE_PATH = ROOT / "docs" / "final" / "artifacts" / "myeongni_stage2_threshold_override_latest.json"
@@ -345,6 +347,138 @@ def _school_conflict_resolution(
     }
 
 
+_SHENG_NEXT = {"목": "화", "화": "토", "토": "금", "금": "수", "수": "목"}
+_KE_TARGET = {"목": "토", "화": "금", "토": "수", "금": "목", "수": "화"}
+_OHENG_ORDER = ("목", "화", "토", "금", "수")
+
+
+def _school_conflict_policy_file_sha256() -> str:
+    try:
+        raw = SCHOOL_RESOLVER_PATH.read_bytes()
+    except OSError:
+        return ""
+    return hashlib.sha256(raw).hexdigest()
+
+
+def _yongsin_derivation_fingerprint(
+    *,
+    formula_version: str,
+    element_counts_visible: dict[str, int],
+    school_resolution: dict[str, Any],
+    strength_label: str,
+    day_master_element: str,
+    policy_file_sha256: str,
+) -> str:
+    cnt = {k: int(element_counts_visible.get(k, 0) or 0) for k in _OHENG_ORDER}
+    payload = {
+        "formula_version": formula_version,
+        "element_counts_visible": cnt,
+        "school_decision": school_resolution.get("decision"),
+        "school_confidence": school_resolution.get("confidence"),
+        "policy_schema": school_resolution.get("policy_schema"),
+        "policy_version": school_resolution.get("policy_version"),
+        "strength_label": strength_label,
+        "day_master_element": day_master_element or "",
+        "school_resolver_file_sha256": policy_file_sha256,
+    }
+    blob = json.dumps(payload, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def _yongsin_hypothesis_candidates_v1(
+    day_master_element: str,
+    element_counts_visible: dict[str, int],
+    school_resolution: dict[str, Any],
+    strength_label: str,
+) -> dict[str, Any]:
+    """B-track ranked element axes — not classical yongsin, not clinical adjudication."""
+    cnt = {e: int(element_counts_visible.get(e, 0) or 0) for e in _OHENG_ORDER}
+    tot = sum(cnt.values())
+    if tot <= 0:
+        tot = 1
+    min_c = min(cnt.values())
+    max_c = max(cnt.values())
+    spread = max_c > min_c
+    decision = str(school_resolution.get("decision") or "hybrid_guarded")
+    sch_conf = float(school_resolution.get("confidence") or 0.0)
+    de = day_master_element if day_master_element in _OHENG_ORDER else ""
+
+    scores: dict[str, float] = {e: 0.0 for e in _OHENG_ORDER}
+    signals: dict[str, list[str]] = {e: [] for e in _OHENG_ORDER}
+
+    for e in _OHENG_ORDER:
+        s = 0.22 * (cnt[e] / tot)
+        if spread:
+            if cnt[e] == min_c:
+                s += 0.28
+                signals[e].append("low_visible_count_relative")
+            if cnt[e] == max_c:
+                s += 0.10
+                signals[e].append("high_visible_count_relative")
+        if decision == "balance_centered" and spread and cnt[e] == min_c:
+            s += 0.18
+            signals[e].append("school_balance_centered_tilt")
+        if decision == "flow_centered" and de:
+            if e == _SHENG_NEXT.get(de, ""):
+                s += 0.16
+                signals[e].append("school_flow_sheng_of_day_master")
+            if e == _KE_TARGET.get(de, ""):
+                s += 0.08
+                signals[e].append("school_flow_ke_from_day_master")
+        if decision == "hybrid_guarded":
+            signals[e].append("school_hybrid_guarded_uncertainty")
+        scores[e] = round(s, 6)
+
+    ranked = sorted(_OHENG_ORDER, key=lambda x: (-scores[x], _OHENG_ORDER.index(x)))
+    candidates: list[dict[str, Any]] = []
+    for rank, e in enumerate(ranked, start=1):
+        candidates.append(
+            {
+                "rank": rank,
+                "element_oheng": e,
+                "hypothesis_score": scores[e],
+                "signals_used": signals[e],
+                "hypothesis_label_ko": "[HYPO] 용신 단정 아님 · 오행 후보 축(연구)",
+            }
+        )
+
+    policy_sha = _school_conflict_policy_file_sha256()
+    fp = _yongsin_derivation_fingerprint(
+        formula_version=YONGSIN_HYPOTHESIS_FORMULA_VERSION,
+        element_counts_visible=dict(cnt),
+        school_resolution=school_resolution,
+        strength_label=strength_label,
+        day_master_element=de,
+        policy_file_sha256=policy_sha,
+    )
+
+    return {
+        "schema": "myeongni_yongsin_hypothesis_candidates_v1",
+        "version": "1.0.0",
+        "formula_version": YONGSIN_HYPOTHESIS_FORMULA_VERSION,
+        "evidence_tier": "heuristic_only",
+        "derivation_fingerprint": fp,
+        "rail": "Track_B",
+        "research_only": True,
+        "machine_final_yongsin": "forbidden",
+        "manual_final_required": True,
+        "school_context_ref": "structure_analysis.school_conflict_resolution_v1",
+        "school_decision_echo": decision,
+        "school_confidence_echo": round(sch_conf, 6),
+        "strength_label_echo": strength_label,
+        "day_master_element_echo": de or None,
+        "candidates": candidates,
+        "disclaimer_ko": (
+            "[HYPO] 위 후보는 가시 오행 개수·학파 조정(`school_conflict_resolution_v1`)을 반영한 "
+            "연구용 휴리스틱 순위일 뿐이다. 임상 처방·진단명·전통 의미의 용신 확정으로 사용할 수 없으며 "
+            "원장(인간) 최종 판단만 유효하다."
+        ),
+        "implementation_note": (
+            "MKM B-track material only; not a substitute for classical yongsin derivation or physician adjudication."
+        ),
+    }
+
+
 def _build_annual_fortune(
     birth_year: int,
     annual_start_year: int,
@@ -440,6 +574,12 @@ def _build_report(
         ten_god.get("ten_god_counts_combined") or {},
         elem_profile.get("element_counts_visible") or {},
     )
+    yongsin_hypothesis = _yongsin_hypothesis_candidates_v1(
+        str(strength.get("day_master_element") or ELEMENT_ONLY.get(stem, "") or ""),
+        elem_profile.get("element_counts_visible") or {},
+        school_resolution,
+        str(strength.get("strength_label") or ""),
+    )
     dw_list = full.get("daewoon") or []
     cycles = []
     for row in dw_list:
@@ -527,6 +667,7 @@ def _build_report(
             "ten_god_profile": ten_god,
             "day_master_strength_hint": strength,
             "school_conflict_resolution_v1": school_resolution,
+            "yongsin_hypothesis_candidates_v1": yongsin_hypothesis,
         },
         "daewoon": {
             "direction": direction,
@@ -560,6 +701,7 @@ def _build_report(
             "본 리포트의 사주 간지·대운 표는 로컬 엔진(saju_global_birth_result_v1) 산출을 그대로 옮긴 것이며, 의료·법률·투자 행위의 근거가 될 수 없다.",
             "해석 문단은 전통 명리의 상징적 프레임일 뿐, 검증된 예측 정확도를 주장하지 않는다.",
             "PerfectManseryeok의 표준 DB 미사용·fallback 경로일 경우 verification.reason을 확인한다.",
+            "`structure_analysis.yongsin_hypothesis_candidates_v1`는 Track B 연구용 오행 후보 축이며 임상·처방·용신 확정 근거로 사용할 수 없다.",
         ],
     }
 
@@ -618,6 +760,18 @@ def _markdown(r: dict[str, Any]) -> str:
             f"- 일간 강약 힌트: `{sh.get('strength_label')}` (월지={sh.get('month_branch')}, 계절={sh.get('season_element_hint')}, 일간오행={sh.get('day_master_element')})"
         )
         lines.append(f"- 강약 산정 메모: {sh.get('note')}")
+    yh = sa.get("yongsin_hypothesis_candidates_v1") or {}
+    if isinstance(yh, dict) and yh.get("candidates"):
+        lines.append("")
+        lines.append("### 용신 후보 축 [HYPO] (연구·비임상)")
+        lines.append(f"- {yh.get('disclaimer_ko', '')}")
+        for c in (yh.get("candidates") or [])[:5]:
+            if not isinstance(c, dict):
+                continue
+            lines.append(
+                f"  - rank {c.get('rank')}: **{c.get('element_oheng')}** "
+                f"(score={c.get('hypothesis_score')}, signals={c.get('signals_used')})"
+            )
     lines.append("")
     lines.append("## 4. 대운 (엔진 순서 그대로)")
     dw = r.get("daewoon") or {}

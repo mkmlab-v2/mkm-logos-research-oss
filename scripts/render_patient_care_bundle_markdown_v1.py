@@ -8,6 +8,12 @@ import argparse
 import json
 from pathlib import Path
 
+PATIENT_FACING_TRACK_B_BARRIER_KO = (
+    "> **Track B · 학술 가설:** 본 문서에 포함된 알고리즘·수치·명리 표기는 연구·교육 목적의 휴리스틱일 수 있으며, "
+    "임상 진단·처방·응급 처치의 근거로 사용될 수 없습니다. "
+    "대외 노출·카피는 `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` 정합을 따릅니다.\n\n"
+)
+
 
 def _md_escape_title(s: str) -> str:
     return s.replace("\n", " ").strip()
@@ -21,6 +27,7 @@ def render_bundle_markdown(bundle: dict) -> str:
         f"# 환자 안내 번들\n\n- **bundle_id:** `{_md_escape_title(str(bid))}`\n"
         f"- **generated_at_utc:** `{_md_escape_title(str(gen))}`\n"
     )
+    lines.append(PATIENT_FACING_TRACK_B_BARRIER_KO)
     prov = bundle.get("provenance") or {}
     if prov:
         lines.append("## 출처\n\n")

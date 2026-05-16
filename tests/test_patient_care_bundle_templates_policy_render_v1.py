@@ -171,6 +171,8 @@ def test_render_markdown_cli(tmp_path: Path) -> None:
     assert cp.returncode == 0, cp.stderr + cp.stdout
     text = out_md.read_text(encoding="utf-8")
     assert "# 환자 안내 번들" in text
+    assert "Track B · 학술 가설" in text
+    assert "PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1" in text
     assert "## SOAP" in text or "SOAP (임상 기록 요약)" in text
     assert "진료 요약 및 생활 안내" in text or "core" in text
 
@@ -187,4 +189,5 @@ def test_render_markdown_importable() -> None:
     doc = json.loads(MINIMAL.read_text(encoding="utf-8-sig"))
     md = mod.render_bundle_markdown(doc)
     assert "bundle_id" in md
+    assert "Track B · 학술 가설" in md
     assert "[HYPO]" in md or "명리" in md
