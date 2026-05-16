@@ -2,13 +2,13 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
-## Ops slice (2026-05-16 · Session handoff · 채팅 종료)
+## Ops slice (2026-05-16 · Session handoff · 채팅 종료 · 권장안 확정)
 
-**Thread:** Cursor — **LG C-S3 심사결과 대기 · Trust viz · Fact-Lock**
+**Thread:** Cursor — **LG 5/20 대기 · Track C B2B 주력 · dev 커밋·internal push**
 
-- **완료:** **5/20(화)=심사 결과 발표일**(브리핑 아님) 합의 · `lg_hs_before_after_factcheck_v1_latest` · Trust viz **nginx location+reload** · 공개 URL **200** · `check_showroom_trust_viz_public_chain_v1.py` smoke · `lg_hs_fallback_two_week_pipeline_v1`(hold/reject 시) · CENTRAL checkpoint 반영.
-- **막힘:** **C-S3** `outcome_record_template` **pending** · **C-A2** 대외 send **false**(법무).
-- **다음:** **5/20** 결과 한 줄 → `lg_hs_meeting_followup_v1.json` · **pass/follow_up(PoC)** → 법무 후 재발송+일정 · **hold/reject** → 2주 폴백 `LANE-TRACKC-B2B` · 재개: `장기기억 맥락이어라` + `@CURRENT_OPS_SNAPSHOT.md` + `@lg_hs_meeting_followup_v1.json`.
+- **완료:** **권장안** — LG **5/20(화) 전 추가 영업·대외 send 없음** · hold/reject 시 **`LANE-TRACKC-B2B`**(`deliverable_status` 선행 완료) · OpenData 327은 **목소리네트워크 병행(~6/5)** 법인 분리 · `check_lg_hs_fallback_two_week_pipeline_v1.py` **ok** · `dev` 커밋 **`d67f152`**(LG/RQ-017·018·쇼룸 trust·SSOT 58 files).
+- **막힘:** **C-S3** `outcome_record_template` **pending** · **C-A2** `ready_for_external_send` **false**(법무).
+- **다음:** **5/20** outcome 한 줄만 `lg_hs_meeting_followup_v1.json` · **pass/follow_up** → 법무 후 재발송 · **hold/reject** → 폴백 W2-A1(이미 B2B 산출 있음) · 재개: `장기기억 맥락이어라` + `@CURRENT_OPS_SNAPSHOT.md` + `@lg_hs_meeting_followup_v1.json`.
 
 ## Ops slice (2026-05-16 · Session handoff · LG·압축·종료 완료)
 
