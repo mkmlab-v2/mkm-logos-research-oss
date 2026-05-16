@@ -24,6 +24,7 @@ param(
     [switch]$DryRun,
     [switch]$SkipLocalBuild,
     [switch]$SkipMonorepoSync,
+    [switch]$SkipMonorepoPathsFromLocal,
     [switch]$RunApiSmoke
 )
 
@@ -69,30 +70,71 @@ $monorepoRequiredPaths = @(
 )
 
 if (-not $SkipMonorepoSync) {
-    $pathList = ($monorepoRequiredPaths | ForEach-Object { "'$_'" }) -join " "
-    $syncCmd = (@"
-set -e
+    $pullCmd = (@"
 cd $vpsDestinyRepo
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  git fetch $MonorepoRemote $MonorepoBranch
-  git pull --ff-only $MonorepoRemote $MonorepoBranch
+  git fetch $MonorepoRemote $MonorepoBranch && git pull --ff-only $MonorepoRemote $MonorepoBranch || echo '[no1kmedi-tarball] WARN: git pull failed (will try local path sync)'
 else
   echo '[no1kmedi-tarball] WARN: monorepo not a git checkout — skip pull'
 fi
+"@).Replace("`r`n", "`n").Replace("`r", "`n").TrimEnd() + "`n"
+
+    Write-Host "[no1kmedi-tarball] VPS monorepo: git pull $MonorepoRemote/$MonorepoBranch (best-effort)" -ForegroundColor Cyan
+    if (-not $DryRun) {
+        & ssh @($sshArgs + @($remote, $pullCmd))
+    }
+}
+
+if (-not $SkipMonorepoPathsFromLocal) {
+    $localMono = $WorkspaceRoot
+    $relFiles = @(
+        "scripts/build_km_physician_cds_assist_envelope_v1.py",
+        "scripts/build_patient_care_bundle_from_km_cds_chain_v1.py",
+        "scripts/assemble_patient_care_bundle_with_myeongni_v1.py",
+        "scripts/build_myeongni_full_report_v1.py",
+        "scripts/run_saju_global_birth_v1.py",
+        "scripts/saju_birth_resolver_v1.py",
+        "scripts/apply_patient_care_bundle_slot_templates_v1.py",
+        "scripts/validate_patient_care_bundle_against_policy_v1.py",
+        "scripts/render_patient_care_bundle_markdown_v1.py",
+        "docs/final/schemas/km_physician_cds_assist_envelope_v1.schema.json",
+        "docs/final/schemas/mkm_bianzheng_tri_layer_v1.schema.json",
+        "docs/final/schemas/patient_care_bundle_v1.schema.json",
+        "docs/final/artifacts/patient_care_bundle_slot_templates_ko_v1.json",
+        "docs/final/artifacts/patient_care_bundle_generation_policy_v1.default.json",
+        "tests/fixtures/patient_care_bundle_soap_stub_v1.example.json"
+    )
+    Write-Host "[no1kmedi-tarball] scp monorepo CDS/bundle paths from local" -ForegroundColor Cyan
+    if (-not $DryRun) {
+        & ssh @($sshArgs + @($remote, "mkdir -p $vpsDestinyRepo/scripts $vpsDestinyRepo/docs/final/schemas $vpsDestinyRepo/docs/final/artifacts $vpsDestinyRepo/tests/fixtures $vpsDestinyRepo/data/myeongni"))
+        foreach ($rel in $relFiles) {
+            $localPath = Join-Path $localMono $rel
+            if (-not (Test-Path $localPath)) { throw "missing local monorepo file: $localPath" }
+            $remoteDir = "$vpsDestinyRepo/" + ($rel -replace "/[^/]+$", "" -replace "\\", "/")
+            & scp @($sshArgs + @($localPath, "${remote}:${remoteDir}/"))
+            if ($LASTEXITCODE -ne 0) { throw "scp failed: $rel" }
+        }
+        $myeongniLocal = Join-Path $localMono "data\myeongni"
+        if (Test-Path $myeongniLocal) {
+            & scp @($sshArgs + @("-r", $myeongniLocal, "${remote}:$vpsDestinyRepo/data/"))
+            if ($LASTEXITCODE -ne 0) { throw "scp data/myeongni failed" }
+        }
+    }
+}
+
+if (-not $SkipMonorepoSync -or -not $SkipMonorepoPathsFromLocal) {
+    $pathList = ($monorepoRequiredPaths | ForEach-Object { "'$_'" }) -join " "
+    $gateCmd = (@"
+set -e
 for f in $pathList; do
   test -f "`$f" || { echo "missing: `$f"; exit 1; }
 done
-echo '[no1kmedi-tarball] monorepo sync OK'
+echo '[no1kmedi-tarball] monorepo path gate OK'
 "@).Replace("`r`n", "`n").Replace("`r", "`n").TrimEnd() + "`n"
-
-    Write-Host "[no1kmedi-tarball] VPS monorepo: git pull $MonorepoRemote/$MonorepoBranch + path gate" -ForegroundColor Cyan
-    if ($DryRun) {
-        Write-Host "DRY-RUN: ssh monorepo sync"
-    } else {
-        & ssh @($sshArgs + @($remote, $syncCmd))
-        if ($LASTEXITCODE -ne 0) {
-            throw "VPS monorepo sync failed (push internal first, or use -SkipMonorepoSync)"
-        }
+    Write-Host "[no1kmedi-tarball] monorepo path gate" -ForegroundColor Cyan
+    if (-not $DryRun) {
+        & ssh @($sshArgs + @($remote, $gateCmd))
+        if ($LASTEXITCODE -ne 0) { throw "monorepo path gate failed on VPS" }
     }
 }
 
