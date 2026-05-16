@@ -60,10 +60,13 @@ Assert-Command -name "ssh"
 $staging = Join-Path $here ".showroom_staging"
 $html = Join-Path $staging "public_showroom_poll.html"
 $htmlMinimal = Join-Path $staging "public_showroom_board_minimal.html"
+$htmlTopologyRadar = Join-Path $staging "public_showroom_topology_radar_v1.html"
 $json = Join-Path $staging "showroom_public_bundle_v1.json"
 $jsonTopology = Join-Path $staging "showroom_topology_radar_snapshot_v1_latest.json"
 $htmlTrust = Join-Path $staging "public_showroom_trust_visualization_v0.html"
 $jsonTrust = Join-Path $staging "showroom_trust_visualization_slice_v0.json"
+$htmlLogos = Join-Path $staging "public_showroom_logos_research_v1.html"
+$jsonLogos = Join-Path $staging "showroom_logos_research_slice_v0.json"
 $htmlSaju = Join-Path $staging "public_showroom_probabilistic_saju_v1.html"
 $jsonSaju = Join-Path $staging "showroom_saju_hour_bundle_demo_v1.json"
 
@@ -133,6 +136,11 @@ function Invoke-ScpShowroomPair {
     foreach ($a in $extraArgs) { $argv += $a }
     $argv += $html
     $argv += $htmlMinimal
+    if (Test-Path -LiteralPath $htmlTopologyRadar) {
+        $argv += $htmlTopologyRadar
+    } else {
+        Write-Host "[showroom-vps-sync] topology radar HTML not in staging (optional): $htmlTopologyRadar" -ForegroundColor DarkGray
+    }
     $argv += $json
     if (Test-Path -LiteralPath $jsonTopology) {
         $argv += $jsonTopology
@@ -142,6 +150,8 @@ function Invoke-ScpShowroomPair {
     foreach ($pair in @(
             @{ Path = $htmlTrust; Label = "trust viz HTML" },
             @{ Path = $jsonTrust; Label = "trust viz JSON" },
+            @{ Path = $htmlLogos; Label = "logos research HTML" },
+            @{ Path = $jsonLogos; Label = "logos research JSON" },
             @{ Path = $htmlSaju; Label = "probabilistic saju HTML" },
             @{ Path = $jsonSaju; Label = "saju hour bundle JSON" }
         )) {

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · Risk Topology Radar</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --surface: #12151a;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #e8eaef;
+      --muted: #8b919d;
+      --accent: #c5a057;
+      --calm: #8fbc8f;
+      --watch: #d4a574;
+      --critical: #c97a6d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+      background:
+        radial-gradient(900px 480px at 50% -10%, rgba(197, 160, 87, 0.07), transparent 55%),
+        var(--bg);
+    }
+    .wrap { max-width: 44rem; margin: 0 auto; padding: 1.75rem 1.15rem 2.5rem; }
+    header { margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.15rem; font-weight: 650; margin: 0 0 0.35rem; letter-spacing: -0.02em; }
+    .lede { margin: 0; font-size: 0.8125rem; color: var(--muted); max-width: 38rem; }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0 0; }
+    .badge {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .badge-warn { border-color: rgba(212, 165, 116, 0.45); color: var(--watch); }
+    .radar-panel {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(180deg, #151922 0%, #12151a 100%);
+      padding: 1.5rem 1rem 1.25rem;
+      margin-bottom: 1rem;
+      text-align: center;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    }
+    .radar-panel.state-calm { --pulse: var(--calm); }
+    .radar-panel.state-watch { --pulse: var(--watch); }
+    .radar-panel.state-critical { --pulse: var(--critical); }
+    .radar-svg { width: min(100%, 320px); height: auto; display: block; margin: 0 auto; }
+    .ring {
+      fill: none;
+      stroke: rgba(255, 255, 255, 0.08);
+      stroke-width: 1;
+    }
+    .ring-pulse {
+      fill: none;
+      stroke: var(--pulse);
+      stroke-width: 1.5;
+      opacity: 0.55;
+      transform-origin: 160px 160px;
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    .sweep {
+      fill: none;
+      stroke: var(--pulse);
+      stroke-width: 1;
+      opacity: 0.35;
+      transform-origin: 160px 160px;
+      animation: sweep 6s linear infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.35; stroke-width: 1; }
+      50% { opacity: 0.85; stroke-width: 2; }
+    }
+    @keyframes sweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .core-dot {
+      fill: var(--pulse);
+      filter: drop-shadow(0 0 12px var(--pulse));
+      cursor: pointer;
+    }
+    .core-dot:focus { outline: 2px solid var(--accent); outline-offset: 4px; }
+    .state-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--pulse);
+      margin: 0.75rem 0 0.25rem;
+    }
+    .summary { font-size: 0.875rem; margin: 0; color: var(--text); max-width: 28rem; margin-left: auto; margin-right: auto; }
+    .meta { font-size: 0.75rem; color: var(--muted); margin: 0.5rem 0 0; }
+    .grid {
+      display: grid;
+      gap: 0.65rem 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+      margin-bottom: 1rem;
+    }
+    .cell { min-width: 0; }
+    .k { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 0 0 0.15rem; }
+    .v { margin: 0; font-size: 0.8125rem; }
+    .mono { font-family: ui-monospace, monospace; font-size: 0.75rem; }
+    .deep-dive {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem;
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      text-align: left;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .deep-dive.open { display: block; }
+    .deep-dive a { color: var(--accent); }
+    .err { color: var(--critical); }
+    .footer-links { font-size: 0.8125rem; margin-top: 1.25rem; }
+    .footer-links a { color: var(--accent); }
+    #status { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Risk Topology Radar</h1>
+      <p class="lede">
+        관측·게이트·지연 메타만 표시합니다. 매매 지시·투자 권유·성과 보장이 아닙니다.
+      </p>
+      <div class="badges" aria-label="Boundary badges">
+        <span class="badge badge-warn">[HYPO] read-only</span>
+        <span class="badge">NON_GATING</span>
+        <span class="badge">no_trade_signals</span>
+        <span class="badge mono" id="disclaimerBadge">disclaimer_ref=—</span>
+      </div>
+    </header>
+
+    <p id="status">데이터 로드 중…</p>
+
+    <section class="radar-panel state-calm" id="radarPanel" aria-label="Topology radar visualization">
+      <svg class="radar-svg" viewBox="0 0 320 320" role="img" aria-labelledby="radarTitle">
+        <title id="radarTitle">Risk topology radar — observational only</title>
+        <circle class="ring" cx="160" cy="160" r="140" />
+        <circle class="ring" cx="160" cy="160" r="105" />
+        <circle class="ring" cx="160" cy="160" r="70" />
+        <circle class="ring" cx="160" cy="160" r="35" />
+        <line class="sweep" x1="160" y1="160" x2="160" y2="24" />
+        <circle class="ring-pulse" cx="160" cy="160" r="118" />
+        <circle class="core-dot" id="coreDot" cx="160" cy="160" r="10" tabindex="0" role="button"
+          aria-label="Open Logos research deep dive (non-gating)" />
+      </svg>
+      <p class="state-label" id="stateLabel">CALM · OBSERVE</p>
+      <p class="summary" id="summaryLine">—</p>
+      <p class="meta" id="metaLine">—</p>
+      <div class="deep-dive" id="deepDive" aria-live="polite">
+        <p class="k">Deep dive (Phase 2.2 preview)</p>
+        <p class="v">레이더 중심은 <strong>Logos·의미 그래프 해설</strong>로 이어집니다. 운영 게이트·실매매 트리거가 아닙니다.</p>
+        <p class="v"><a href="public_showroom_logos_research_v1.html">Logos 연구 슬라이스 (스냅샷 · NON_GATING)</a></p>
+      </div>
+    </section>
+
+    <div class="grid" id="factGrid"></div>
+
+    <p class="footer-links">
+      <a href="public_showroom_board_minimal.html">← 검증 공개 보드</a>
+      ·
+      <a href="public_showroom_poll.html">전체 데모 UI</a>
+      ·
+      <a href="public_showroom_trust_visualization_v0.html">Trust viz v0</a>
+    </p>
+  </div>
+
+  <script>
+(function () {
+  "use strict";
+
+  const POLL_MS = 30000;
+  const params = new URLSearchParams(location.search);
+  const apiBase = (params.get("api") || "https://api.jemaai.cloud").replace(/\/$/, "");
+
+  let snapshot = null;
+  let bundleEvent = null;
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function resolveRadarState(ev) {
+    const mode = String((ev && ev.showroom_display_mode) || "idle").toLowerCase();
+    const risk = String((ev && ev.risk_level) || "INFO").toUpperCase();
+    if (risk === "CRITICAL" || mode === "attack") return "critical";
+    if (risk === "WARNING" || mode === "defend") return "watch";
+    return "calm";
+  }
+
+  function stateLabel(state) {
+    if (state === "critical") return "ELEVATED · GATE AWARE";
+    if (state === "watch") return "WATCH · OBSERVE";
+    return "CALM · OBSERVE";
+  }
+
+  function applyRadar(state) {
+    const panel = document.getElementById("radarPanel");
+    panel.classList.remove("state-calm", "state-watch", "state-critical");
+    panel.classList.add("state-" + state);
+    document.getElementById("stateLabel").textContent = stateLabel(state);
+  }
+
+  function renderFacts(ev, snap) {
+    const grid = document.getElementById("factGrid");
+    const ob = (window.__cachedBundle && window.__cachedBundle.observability) || {};
+    const rows = [
+      ["연출 모드", ev && ev.showroom_display_mode ? ev.showroom_display_mode : "—"],
+      ["리스크 레벨", ev && ev.risk_level ? ev.risk_level : "—"],
+      ["시스템", ev && ev.system_status ? ev.system_status : "—"],
+      ["지연 (s)", ev && ev.delayed_metrics && ev.delayed_metrics.delay_seconds != null ? ev.delayed_metrics.delay_seconds : "—"],
+      ["스냅샷 생성", snap && snap.generated_at_utc ? snap.generated_at_utc : "—"],
+      ["만료", snap && snap.stale_after_utc ? snap.stale_after_utc : "—"],
+      ["Topology refs", typeof ob.topology_radar_snapshot_artifact_ref_count === "number" ? ob.topology_radar_snapshot_artifact_ref_count : "—"],
+    ];
+    grid.innerHTML = rows.map(function (r) {
+      return '<div class="cell"><p class="k">' + esc(r[0]) + '</p><p class="v">' + esc(r[1]) + '</p></div>';
+    }).join("");
+  }
+
+  function updateUi() {
+    const snap = snapshot || {};
+    const ev = bundleEvent || {};
+    const state = resolveRadarState(ev);
+    applyRadar(state);
+    const sum = snap.summary_one_line || (snap.hypo_banner ? String(snap.hypo_banner) : "—");
+    document.getElementById("summaryLine").textContent = sum;
+    const disc = snap.disclaimer_ref || ev.disclaimer_ref || "jemaai_showroom_v1";
+    document.getElementById("disclaimerBadge").textContent = "disclaimer_ref=" + disc;
+    document.getElementById("metaLine").textContent =
+      (snap.hypo_banner ? snap.hypo_banner + " · " : "") +
+      "API " + apiBase + " · 갱신 " + new Date().toISOString();
+    renderFacts(ev, snap);
+  }
+
+  async function fetchJson(urls) {
+    for (const u of urls) {
+      try {
+        const r = await fetch(u, { cache: "no-store" });
+        if (!r.ok) continue;
+        return await r.json();
+      } catch (e) { /* next */ }
+    }
+    return null;
+  }
+
+  async function loadStatic() {
+    const snapUrls = [];
+    const bundleUrls = [];
+    try { snapUrls.push(new URL("showroom_topology_radar_snapshot_v1_latest.json", location.href).href); } catch (e) {}
+    try { bundleUrls.push(new URL("showroom_public_bundle_v1.json", location.href).href); } catch (e) {}
+    snapUrls.push("https://jemaai.cloud/showroom_topology_radar_snapshot_v1_latest.json");
+    bundleUrls.push("https://jemaai.cloud/showroom_public_bundle_v1.json");
+
+    snapshot = await fetchJson(snapUrls);
+    const bundle = await fetchJson(bundleUrls);
+    window.__cachedBundle = bundle;
+    if (bundle && bundle.public_event_v1) bundleEvent = bundle.public_event_v1;
+  }
+
+  async function pollApi() {
+    const st = document.getElementById("status");
+    try {
+      const r = await fetch(apiBase + "/api/public-events/latest", { cache: "no-store" });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      bundleEvent = await r.json();
+      st.innerHTML = '<span style="color:var(--calm)">API 연결</span> · ' + apiBase;
+    } catch (e) {
+      st.innerHTML = '<span class="err">API 오류</span> · ' + esc(e.message || e) + " · 정적 번들 사용";
+    }
+    updateUi();
+  }
+
+  document.getElementById("coreDot").addEventListener("click", function () {
+    document.getElementById("deepDive").classList.toggle("open");
+  });
+  document.getElementById("coreDot").addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      document.getElementById("deepDive").classList.toggle("open");
+    }
+  });
+
+  loadStatic().then(function () {
+    updateUi();
+    return pollApi();
+  }).then(function () {
+    setInterval(pollApi, POLL_MS);
+  });
+})();
+  </script>
+</body>
+</html>

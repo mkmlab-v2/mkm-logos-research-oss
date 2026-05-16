@@ -109,6 +109,26 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 
 **Fact-Lock:** 구현·게이트 경로는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 및 `scripts/verify_p0_constitution_gate_paths.ps1`와 동기 후 확장한다.
 
+### 4.5 Phase 2.1 — Risk Topology Radar UI (Showroom, 2026-05-16)
+
+**페이지:** `public_showroom_topology_radar_v1.html` — 정적 JSON + 선택 API 폴링. **매매·투자 권유·실행 지시 금지.**
+
+| 입력 | 필드 / 소스 | UI 매핑 |
+|------|-------------|---------|
+| Topology 스냅샷 | `showroom_topology_radar_snapshot_v1_latest.json` (`summary_one_line`, `hypo_banner`, `disclaimer_ref`, `no_trade_signals`) | 요약·배지·면책 |
+| 공개 번들 | `showroom_public_bundle_v1.json` → `public_event_v1` | `showroom_display_mode`, `risk_level`, `system_status`, `delayed_metrics` |
+| (선택) 라이브 | `GET {api}/api/public-events/latest` | 번들 이벤트와 동일 화이트리스트 필드만 |
+
+| 레이더 상태 | 조건 (우선순위) | 시각 |
+|-------------|-------------------|------|
+| **calm** | `risk_level` ∈ {INFO, SAFE} · `showroom_display_mode` = idle | 녹색/은은 맥동 |
+| **watch** | `risk_level` = WARNING · 또는 `showroom_display_mode` = defend | amber 맥동 |
+| **critical** | `risk_level` = CRITICAL · 또는 `showroom_display_mode` = attack | red 맥동 (관측·게이트 인지, 매매 신호 아님) |
+
+**Phase 2.2 (예정):** 레이더 중심 클릭 → Logos 연구 슬라이스 / `logos_insight_bundle` 슬라이스 패널 — **NON_GATING · `[HYPO]`** 고정.
+
+**배포:** `deploy_showroom_static.ps1` · nginx `location = /public_showroom_topology_radar_v1.html` (`nginx_snippets/jemaai_showroom_ui.conf`).
+
 ---
 
 ## 5. 한 줄 요약
