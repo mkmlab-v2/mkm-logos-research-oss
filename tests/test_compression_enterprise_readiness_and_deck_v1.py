@@ -21,7 +21,9 @@ def test_build_lg_compression_deck() -> None:
     out = ROOT / "docs/final/artifacts/lg_hs_compression_discipline_deck_v1_latest.json"
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc.get("schema") == "lg_hs_compression_discipline_deck_v1"
-    assert len(doc.get("slides") or []) >= 5
+    assert len(doc.get("slides") or []) >= 7
+    forbidden = doc.get("forbidden_phrases") or []
+    assert "17/17 passed" in forbidden
 
 
 def test_readiness_check_runs() -> None:

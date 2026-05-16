@@ -11,6 +11,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 KPI = ROOT / "reports" / "constitution" / "btrack_pilot" / "ultra_compression_kpi_summary_latest.json"
+ACTIVE = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+FACTCHECK = ROOT / "docs" / "final" / "artifacts" / "lg_hs_before_after_factcheck_v1_latest.json"
 OUT_MD = ROOT / "docs" / "final" / "artifacts" / "lg_hs_compression_discipline_deck_v1_latest.md"
 OUT_JSON = ROOT / "docs" / "final" / "artifacts" / "lg_hs_compression_discipline_deck_v1_latest.json"
 
@@ -27,6 +29,25 @@ def _pct(x: float | None) -> str:
     return f"{x * 100:.1f}%"
 
 
+def _shard_bullets(factcheck: dict[str, Any]) -> list[str]:
+    rows = factcheck.get("frozen_bench_shard_jaccard") or []
+    bullets = [
+        "40-case frozen bench — **token saving is global only** (~47.1%); shard rows are Jaccard only.",
+        "Jaccard = overlap proxy; not semantic meaning %.",
+    ]
+    for row in rows:
+        sid = row.get("shard_id", "")
+        n = row.get("case_count")
+        avg_j = row.get("avg_jaccard")
+        min_j = row.get("min_jaccard")
+        if isinstance(avg_j, (int, float)) and isinstance(min_j, (int, float)):
+            bullets.append(f"`{sid}` (n={n}): avg **{avg_j:.3f}**, min **{min_j:.3f}**")
+    g = factcheck.get("frozen_bench_global") or {}
+    if isinstance(g.get("min_reconstruction_fidelity_jaccard"), (int, float)):
+        bullets.append(f"Global min Jaccard **{g['min_reconstruction_fidelity_jaccard']:.3f}** (worst case on bench).")
+    return bullets
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--out-md", type=Path, default=OUT_MD)
@@ -39,6 +60,18 @@ def main() -> int:
     saving = active.get("global_token_saving_rate")
     jaccard = active.get("avg_reconstruction_fidelity_jaccard")
     policy_ok = active.get("ultra_saving_policy_ok")
+    factcheck = _read(FACTCHECK) if FACTCHECK.is_file() else {}
+    if not factcheck and ACTIVE.is_file():
+        # Regenerate factcheck if deck runs standalone
+        import subprocess
+        import sys
+
+        subprocess.run(
+            [sys.executable, str(ROOT / "scripts/build_lg_hs_before_after_factcheck_v1.py")],
+            cwd=str(ROOT),
+            check=False,
+        )
+        factcheck = _read(FACTCHECK)
 
     slides = [
         {
@@ -75,6 +108,29 @@ def main() -> int:
         },
         {
             "n": 4,
+            "title": "Shard Jaccard (frozen bench — not per-shard saving)",
+            "bullets": _shard_bullets(factcheck) if factcheck else ["Run `build_lg_hs_before_after_factcheck_v1.py` first."],
+            "evidence": [
+                "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json",
+                "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+            ],
+        },
+        {
+            "n": 5,
+            "title": "Governance proofs (accurate)",
+            "bullets": [
+                "Lexicon **41,775** terms — deterministic must_keep join path.",
+                "Shadow Auditor: **4** artifact contract pytest passes + frozen KPI scan (not **17/17**).",
+                "Full 40-case re-bench: optional `--refresh-bench` (weekly chain), not every nightly default.",
+                "RTT: VPS same-host p95 **~665–847 ms** (2026-05-16); loopback conc10 is smoke only — **no ms↔saving causality**.",
+            ],
+            "evidence": [
+                "reports/constitution/btrack_pilot/compression_shadow_auditor_latest.json",
+                "docs/final/artifacts/compression_board_ms_correlation_report_v1_latest.json",
+            ],
+        },
+        {
+            "n": 6,
             "title": "Kill-Matrix (대외 금지)",
             "bullets": [
                 "환각 제거 · 리콜 0% · Zero-Liability",
@@ -84,7 +140,7 @@ def main() -> int:
             ],
         },
         {
-            "n": 5,
+            "n": 7,
             "title": "클로징 — 다음 단계",
             "bullets": [
                 "로컬 벤치 기준선 → 타깃 보드 실측(RQ-017, [HYPO]) → 월간 Go/No-Go.",
@@ -105,7 +161,14 @@ def main() -> int:
             "리콜 0%",
             "Zero-Liability",
             "세계 유일",
+            "의미 89% 복원",
+            "17/17 passed",
+            "샤드별 47% 절약",
+            "SCM 평균 0.667",
+            "Timing 0.910",
+            "conc10 = 양산 SLA",
         ],
+        "factcheck_pointer": "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.md",
         "pointers": {
             "persuasion_module": "docs/final/artifacts/lg_hs_persuasion_module_v1_2026-05-08.md",
             "executive_summary": "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",

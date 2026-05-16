@@ -2,7 +2,7 @@
 
 **Status:** `[DRAFT]` — slides only; not legal-approved external send.
 
-**Generated:** 2026-05-16T06:33:09.118532Z
+**Generated:** 2026-05-16T11:06:51.033794Z
 
 **Tone:** 70/20/10 · manufacturing language · `lg_hs_persuasion_module_v1_2026-05-08.md`
 
@@ -31,14 +31,40 @@ Evidence:
 - `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`
 - `docs/final/artifacts/compression_enterprise_executive_summary_v1.md`
 
-## Slide 4: Kill-Matrix (대외 금지)
+## Slide 4: Shard Jaccard (frozen bench — not per-shard saving)
+
+- 40-case frozen bench — **token saving is global only** (~47.1%); shard rows are Jaccard only.
+- Jaccard = overlap proxy; not semantic meaning %.
+- `zone_a_scm` (n=12): avg **0.866**, min **0.667**
+- `zone_b_timing` (n=2): avg **0.845**, min **0.786**
+- `zone_c_hangul` (n=14): avg **0.903**, min **0.750**
+- `zone_d_ssot` (n=8): avg **0.875**, min **0.714**
+- `zone_g_health` (n=4): avg **0.922**, min **0.875**
+- Global min Jaccard **0.667** (worst case on bench).
+
+Evidence:
+- `docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json`
+- `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`
+
+## Slide 5: Governance proofs (accurate)
+
+- Lexicon **41,775** terms — deterministic must_keep join path.
+- Shadow Auditor: **4** artifact contract pytest passes + frozen KPI scan (not **17/17**).
+- Full 40-case re-bench: optional `--refresh-bench` (weekly chain), not every nightly default.
+- RTT: VPS same-host p95 **~665–847 ms** (2026-05-16); loopback conc10 is smoke only — **no ms↔saving causality**.
+
+Evidence:
+- `reports/constitution/btrack_pilot/compression_shadow_auditor_latest.json`
+- `docs/final/artifacts/compression_board_ms_correlation_report_v1_latest.json`
+
+## Slide 6: Kill-Matrix (대외 금지)
 
 - 환각 제거 · 리콜 0% · Zero-Liability
 - 7,680 하드웨어 스윕(레포 SSOT 없으면)
 - 하루 만에 자동차/로봇 이식 · 8.2ms(아티팩트 없으면)
 - MMLU 점수만으로 양산 승인
 
-## Slide 5: 클로징 — 다음 단계
+## Slide 7: 클로징 — 다음 단계
 
 - 로컬 벤치 기준선 → 타깃 보드 실측(RQ-017, [HYPO]) → 월간 Go/No-Go.
 - 산출: 코드북·게이트 기준·실측 리포트·운영 가이드.

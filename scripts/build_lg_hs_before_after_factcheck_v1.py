@@ -4,14 +4,16 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
+from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
-REPORTS = ROOT / "reports" / "constitution" / "btrack_pilot"
+REPORTS = ROOT / "reports" / "btrack_pilot"
 
 
 def _walk_lexicon_blocks(obj: Any, hits: list[dict[str, Any]]) -> None:
@@ -24,6 +26,58 @@ def _walk_lexicon_blocks(obj: Any, hits: list[dict[str, Any]]) -> None:
     elif isinstance(obj, list):
         for v in obj:
             _walk_lexicon_blocks(v, hits)
+
+
+def _per_shard_jaccard(active_path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    data = json.loads(active_path.read_text(encoding="utf-8"))
+    metrics = data.get("compression_metrics") or {}
+    cases = metrics.get("cases") or []
+    by_shard: dict[str, list[float]] = defaultdict(list)
+    for case in cases:
+        if not isinstance(case, dict):
+            continue
+        route = case.get("route") or {}
+        sid = str(route.get("shard_id") or "unknown")
+        jac = case.get("reconstruction_fidelity_jaccard")
+        if isinstance(jac, (int, float)):
+            by_shard[sid].append(float(jac))
+    global_saving = metrics.get("global_token_saving_rate")
+    rows: list[dict[str, Any]] = []
+    for sid in sorted(by_shard):
+        vals = by_shard[sid]
+        rows.append(
+            {
+                "shard_id": sid,
+                "case_count": len(vals),
+                "avg_jaccard": sum(vals) / len(vals) if vals else None,
+                "min_jaccard": min(vals) if vals else None,
+                "note": "token_saving_rate is global-only on this bench; do not repeat per shard.",
+            }
+        )
+    globals_block = {
+        "case_count": metrics.get("case_count"),
+        "global_token_saving_rate": global_saving,
+        "avg_reconstruction_fidelity_jaccard": metrics.get("avg_reconstruction_fidelity_jaccard"),
+        "min_reconstruction_fidelity_jaccard": metrics.get("min_reconstruction_fidelity_jaccard"),
+    }
+    return rows, globals_block
+
+
+def _pytest_ultra_artifact_count() -> dict[str, Any]:
+    cmd = [sys.executable, "-m", "pytest", "tests/test_ultra_compression_artifacts.py", "-q", "--tb=no"]
+    proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
+    tail = (proc.stdout or "").strip()
+    passed = None
+    for line in tail.splitlines():
+        if "passed" in line:
+            parts = line.split()
+            for i, p in enumerate(parts):
+                if p == "passed" and i > 0:
+                    try:
+                        passed = int(parts[i - 1])
+                    except ValueError:
+                        pass
+    return {"exit_code": proc.returncode, "pytest_tail": tail, "passed_count": passed}
 
 
 def _scan_report(name: str) -> dict[str, Any]:
@@ -66,6 +120,20 @@ def main() -> int:
         if case.get("id") == "cmp2_014":
             cmp2_014_before = case.get("reconstruction_fidelity_jaccard")
             break
+
+    active_path = ART / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+    shard_rows, global_metrics = _per_shard_jaccard(active_path)
+
+    shadow_path = REPORTS / "compression_shadow_auditor_latest.json"
+    shadow = json.loads(shadow_path.read_text(encoding="utf-8")) if shadow_path.is_file() else {}
+    pytest_meta = _pytest_ultra_artifact_count()
+
+    conc10_path = ART / "bench_l1_api_load_conc10_latest.json"
+    conc10 = json.loads(conc10_path.read_text(encoding="utf-8")) if conc10_path.is_file() else {}
+    vps_summary_path = ART / "bench_l1_api_load_summary_vps_latest.json"
+    vps_summary = json.loads(vps_summary_path.read_text(encoding="utf-8")) if vps_summary_path.is_file() else {}
+    corr_path = ART / "compression_board_ms_correlation_report_v1_latest.json"
+    corr = json.loads(corr_path.read_text(encoding="utf-8")) if corr_path.is_file() else {}
 
     out = {
         "schema": "lg_hs_before_after_factcheck_v1",
@@ -117,7 +185,76 @@ def main() -> int:
                 "pointer": "docs/final/artifacts/runtime_assurance_safety_plc_executive_summary_v1.md",
                 "note": "Reference architecture + ECC PoC; not IEC/ISO certified product.",
             },
+            "domain_table_per_shard_saving": {
+                "verdict": "FAIL_DO_NOT_USE",
+                "fact": "global_token_saving_rate applies to full 40-case bench only; repeating ~47% on each shard row misleads.",
+                "global_token_saving_rate": global_metrics.get("global_token_saving_rate"),
+            },
+            "domain_table_scm_avg_067": {
+                "verdict": "FAIL_DO_NOT_USE",
+                "fact": "SCM shard avg_jaccard ~0.866; min_jaccard 0.667 is worst-case within scm cases / global min — not domain average headline.",
+                "scm_shard": next((r for r in shard_rows if r["shard_id"] == "zone_a_scm"), None),
+            },
+            "domain_table_timing_091": {
+                "verdict": "FAIL_DO_NOT_USE",
+                "fact": "zone_b_timing avg_jaccard ~0.845 on frozen bench (2 cases), not ~0.910.",
+                "timing_shard": next((r for r in shard_rows if r["shard_id"] == "zone_b_timing"), None),
+            },
+            "shadow_auditor_17_of_17": {
+                "verdict": "FAIL_DO_NOT_USE",
+                "fact": "tests/test_ultra_compression_artifacts.py is 4 contract tests; not 17/17.",
+                "pytest": pytest_meta,
+                "shadow_auditor": {
+                    "audit_ok": shadow.get("audit_ok"),
+                    "pytest_target": (shadow.get("pytest") or {}).get("target"),
+                },
+                "accurate_wording": (
+                    "Nightly Shadow Auditor: frozen KPI/active-report contract pytest + loss-pattern queue; "
+                    "full 40-case re-bench only with --refresh-bench (weekly governance optional)."
+                ),
+            },
+            "bench_conc10_as_production_sla": {
+                "verdict": "PARTIAL_TRUE_REWORD_REQUIRED",
+                "conc10": {
+                    "bench_environment": conc10.get("bench_environment"),
+                    "max_concurrent": conc10.get("max_concurrent"),
+                    "approx_word_tokens": conc10.get("approx_word_tokens"),
+                    "latency_ms": conc10.get("latency_ms"),
+                    "pass_p95_vs_target": (conc10.get("draft_targets_comparison") or {}).get("pass_p95_vs_target"),
+                },
+                "vps_same_host_summary": {
+                    "bench_environment": vps_summary.get("bench_environment"),
+                    "latency_ms": vps_summary.get("latency_ms"),
+                },
+                "correlation_claim_allowed": (corr.get("derived") or {}).get("correlation_claim_allowed"),
+                "note": "Do not cite loopback conc10 p95 as token-saving proof; separate RTT layer from bench saving.",
+            },
+            "jaccard_equals_meaning_percent": {
+                "verdict": "FAIL_DO_NOT_USE",
+                "fact": "Jaccard is token/word overlap proxy on 40-case bench; not semantic meaning %.",
+            },
         },
+        "frozen_bench_shard_jaccard": shard_rows,
+        "frozen_bench_global": global_metrics,
+        "lg_safe_domain_table": [
+            {
+                "label": "Global (40-case bench)",
+                "case_count": global_metrics.get("case_count"),
+                "avg_jaccard": global_metrics.get("avg_reconstruction_fidelity_jaccard"),
+                "min_jaccard": global_metrics.get("min_reconstruction_fidelity_jaccard"),
+                "token_saving_rate": global_metrics.get("global_token_saving_rate"),
+            },
+            *[
+                {
+                    "label": row["shard_id"],
+                    "case_count": row["case_count"],
+                    "avg_jaccard": row["avg_jaccard"],
+                    "min_jaccard": row["min_jaccard"],
+                    "token_saving_rate": "(global only — not per-shard)",
+                }
+                for row in shard_rows
+            ],
+        ],
         "safe_before_after_table": [
             {
                 "axis": "Bench cases",
@@ -177,11 +314,44 @@ def _render_md(doc: dict[str, Any]) -> str:
     lines.extend(
         [
             "",
+            "## LG-safe shard Jaccard (frozen active report)",
+            "",
+            "| Label | n | avg Jaccard | min Jaccard | token saving |",
+            "|-------|---|-------------|-------------|--------------|",
+        ]
+    )
+    for row in doc.get("lg_safe_domain_table") or []:
+        saving = row.get("token_saving_rate")
+        if isinstance(saving, (int, float)):
+            saving_s = f"{float(saving) * 100:.2f}%"
+        else:
+            saving_s = str(saving)
+        avg_j = row.get("avg_jaccard")
+        min_j = row.get("min_jaccard")
+        avg_s = f"{avg_j:.3f}" if isinstance(avg_j, (int, float)) else str(avg_j)
+        min_s = f"{min_j:.3f}" if isinstance(min_j, (int, float)) else str(min_j)
+        lines.append(f"| {row.get('label')} | {row.get('case_count')} | {avg_s} | {min_s} | {saving_s} |")
+
+    lines.extend(
+        [
+            "",
+            "## Governance proofs (accurate wording)",
+            "",
+            "- **Lexicon:** 41,775 terms frozen (`master_codebook_lexicon_v1_41775_rows_latest.json`).",
+            "- **Shadow Auditor:** artifact contract pytest (**4 tests**, not 17/17) + KPI/active scan; optional `--refresh-bench` for full re-run.",
+            "- **Latency:** `bench_l1_api_load_conc10` = local loopback, conc10, ~500 words — **not** production SLA; VPS p95 ~665–847 ms (2026-05-16 triplet). **Do not** link ms to token saving (`correlation_claim_allowed: false`).",
+            "",
             "## Do not say externally",
             "",
             "- 7,680 hardware sweeps (use round2 grid **332** / evaluated **108** if needed)",
             "- export_not_found **80 cases** (say **40-case bench** or **codebook export was missing**)",
             "- Safety PLC certified / legal alibi complete / already won",
+            "- **Per-shard 47% saving** (saving is global on 40-case bench only)",
+            "- **SCM domain average 0.667** (use: scm min ~0.667, scm avg ~0.866, global min 0.667)",
+            "- **Timing ~0.910** (use ~0.845 on 2 timing cases)",
+            "- **Shadow Auditor 17/17 passed** (use **4 contract tests passed**)",
+            "- **의미 89% 복원** (use **avg Jaccard ~0.885 proxy**)",
+            "- **conc10 45/980 ms = 양산 보드 SLA** (cite environment + fail vs 200ms target; prefer VPS triplet for external RTT)",
             "",
             f"JSON SSOT: `docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json`",
             "",

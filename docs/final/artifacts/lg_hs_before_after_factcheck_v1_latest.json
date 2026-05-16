@@ -1,6 +1,6 @@
 {
   "schema": "lg_hs_before_after_factcheck_v1",
-  "generated_at_utc": "2026-05-16T06:54:50Z",
+  "generated_at_utc": "2026-05-16T11:06:50Z",
   "claims": {
     "export_not_found_80": {
       "verdict": "PARTIAL_TRUE_REWORD_REQUIRED",
@@ -19,15 +19,15 @@
     },
     "lexicon_41775": {
       "verdict": "FACT",
-      "lexicon_term_count": 41775,
-      "path": "reports/constitution/btrack_pilot/master_codebook_lexicon_v1_41775_rows_latest.json"
+      "lexicon_term_count": null,
+      "path": null
     },
     "policy_floor_047": {
       "verdict": "FACT",
-      "global_token_saving_rate": 0.47116736990154706,
-      "avg_jaccard": 0.885430029636686,
-      "ultra_saving_policy_min": 0.47,
-      "ultra_saving_policy_ok": true,
+      "global_token_saving_rate": null,
+      "avg_jaccard": null,
+      "ultra_saving_policy_min": null,
+      "ultra_saving_policy_ok": null,
       "decision": "docs/final/artifacts/track_a_policy_floor_decision_v1.json"
     },
     "cmp2_014_health": {
@@ -39,16 +39,174 @@
     "simulation_7680": {
       "verdict": "FAIL_DO_NOT_USE",
       "fact": "No 7680-run artifact in repo SSOT.",
-      "round2_full_grid_count": 332,
-      "round2_evaluated_count": 108,
+      "round2_full_grid_count": null,
+      "round2_evaluated_count": null,
       "track_c_forbidden": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.1.2"
     },
     "safety_plc_complete": {
       "verdict": "HYPO_DRAFT_ONLY",
       "pointer": "docs/final/artifacts/runtime_assurance_safety_plc_executive_summary_v1.md",
       "note": "Reference architecture + ECC PoC; not IEC/ISO certified product."
+    },
+    "domain_table_per_shard_saving": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "global_token_saving_rate applies to full 40-case bench only; repeating ~47% on each shard row misleads.",
+      "global_token_saving_rate": 0.47116736990154706
+    },
+    "domain_table_scm_avg_067": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "SCM shard avg_jaccard ~0.866; min_jaccard 0.667 is worst-case within scm cases / global min — not domain average headline.",
+      "scm_shard": {
+        "shard_id": "zone_a_scm",
+        "case_count": 12,
+        "avg_jaccard": 0.8659245642701525,
+        "min_jaccard": 0.6666666666666666,
+        "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
+      }
+    },
+    "domain_table_timing_091": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "zone_b_timing avg_jaccard ~0.845 on frozen bench (2 cases), not ~0.910.",
+      "timing_shard": {
+        "shard_id": "zone_b_timing",
+        "case_count": 2,
+        "avg_jaccard": 0.8452380952380952,
+        "min_jaccard": 0.7857142857142857,
+        "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
+      }
+    },
+    "shadow_auditor_17_of_17": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "tests/test_ultra_compression_artifacts.py is 4 contract tests; not 17/17.",
+      "pytest": {
+        "exit_code": 0,
+        "pytest_tail": "....                                                                     [100%]\n4 passed in 0.23s",
+        "passed_count": 4
+      },
+      "shadow_auditor": {
+        "audit_ok": null,
+        "pytest_target": null
+      },
+      "accurate_wording": "Nightly Shadow Auditor: frozen KPI/active-report contract pytest + loss-pattern queue; full 40-case re-bench only with --refresh-bench (weekly governance optional)."
+    },
+    "bench_conc10_as_production_sla": {
+      "verdict": "PARTIAL_TRUE_REWORD_REQUIRED",
+      "conc10": {
+        "bench_environment": "local_loopback_conc10",
+        "max_concurrent": 10,
+        "approx_word_tokens": 500,
+        "latency_ms": {
+          "p50": 44.5,
+          "p95": 979.839,
+          "p99": 990.007,
+          "max": 990.034
+        },
+        "pass_p95_vs_target": false
+      },
+      "vps_same_host_summary": {
+        "bench_environment": "vps_same_host",
+        "latency_ms": {
+          "p50": 281.461,
+          "p95": 665.083,
+          "p99": 766.855,
+          "max": 846.222
+        }
+      },
+      "correlation_claim_allowed": false,
+      "note": "Do not cite loopback conc10 p95 as token-saving proof; separate RTT layer from bench saving."
+    },
+    "jaccard_equals_meaning_percent": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "Jaccard is token/word overlap proxy on 40-case bench; not semantic meaning %."
     }
   },
+  "frozen_bench_shard_jaccard": [
+    {
+      "shard_id": "zone_a_scm",
+      "case_count": 12,
+      "avg_jaccard": 0.8659245642701525,
+      "min_jaccard": 0.6666666666666666,
+      "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
+    },
+    {
+      "shard_id": "zone_b_timing",
+      "case_count": 2,
+      "avg_jaccard": 0.8452380952380952,
+      "min_jaccard": 0.7857142857142857,
+      "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
+    },
+    {
+      "shard_id": "zone_c_hangul",
+      "case_count": 14,
+      "avg_jaccard": 0.9033747709610161,
+      "min_jaccard": 0.75,
+      "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
+    },
+    {
+      "shard_id": "zone_d_ssot",
+      "case_count": 8,
+      "avg_jaccard": 0.8751104287868994,
+      "min_jaccard": 0.7142857142857143,
+      "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
+    },
+    {
+      "shard_id": "zone_g_health",
+      "case_count": 4,
+      "avg_jaccard": 0.921875,
+      "min_jaccard": 0.875,
+      "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
+    }
+  ],
+  "frozen_bench_global": {
+    "case_count": 40,
+    "global_token_saving_rate": 0.47116736990154706,
+    "avg_reconstruction_fidelity_jaccard": 0.885430029636686,
+    "min_reconstruction_fidelity_jaccard": 0.6666666666666666
+  },
+  "lg_safe_domain_table": [
+    {
+      "label": "Global (40-case bench)",
+      "case_count": 40,
+      "avg_jaccard": 0.885430029636686,
+      "min_jaccard": 0.6666666666666666,
+      "token_saving_rate": 0.47116736990154706
+    },
+    {
+      "label": "zone_a_scm",
+      "case_count": 12,
+      "avg_jaccard": 0.8659245642701525,
+      "min_jaccard": 0.6666666666666666,
+      "token_saving_rate": "(global only — not per-shard)"
+    },
+    {
+      "label": "zone_b_timing",
+      "case_count": 2,
+      "avg_jaccard": 0.8452380952380952,
+      "min_jaccard": 0.7857142857142857,
+      "token_saving_rate": "(global only — not per-shard)"
+    },
+    {
+      "label": "zone_c_hangul",
+      "case_count": 14,
+      "avg_jaccard": 0.9033747709610161,
+      "min_jaccard": 0.75,
+      "token_saving_rate": "(global only — not per-shard)"
+    },
+    {
+      "label": "zone_d_ssot",
+      "case_count": 8,
+      "avg_jaccard": 0.8751104287868994,
+      "min_jaccard": 0.7142857142857143,
+      "token_saving_rate": "(global only — not per-shard)"
+    },
+    {
+      "label": "zone_g_health",
+      "case_count": 4,
+      "avg_jaccard": 0.921875,
+      "min_jaccard": 0.875,
+      "token_saving_rate": "(global only — not per-shard)"
+    }
+  ],
   "safe_before_after_table": [
     {
       "axis": "Bench cases",

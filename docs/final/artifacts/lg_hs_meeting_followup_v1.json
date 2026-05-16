@@ -14,7 +14,14 @@
     "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",
     "docs/final/artifacts/lg_hs_persuasion_module_v1_2026-05-08.md",
     "docs/final/artifacts/runtime_assurance_safety_plc_executive_summary_v1.md",
-    "docs/final/artifacts/lg_hs_followup_email_draft_ko_v1.md"
+    "docs/final/artifacts/lg_hs_followup_email_draft_ko_v1.md",
+    "docs/final/artifacts/track_c_enterprise_licensing_term_sheet_v1_latest.md",
+    "docs/final/artifacts/track_c_enterprise_licensing_term_sheet_v1_latest.json",
+    "docs/final/artifacts/track_c_enterprise_poc_sow_90d_v1_latest.md",
+    "docs/final/artifacts/track_c_enterprise_poc_sow_90d_v1_latest.json",
+    "docs/final/artifacts/lg_hs_pass_internal_pack_v1_latest.md",
+    "docs/final/artifacts/lg_hs_pass_internal_pack_v1_latest.json",
+    "docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json"
   ],
   "showroom_public_urls": {
     "board_minimal": "https://api.jemaai.cloud/public_showroom_board_minimal.html",
@@ -33,7 +40,18 @@
     "ssot_md": "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.md",
     "regenerate": "py scripts/build_lg_hs_before_after_factcheck_v1.py",
     "export_not_found_note": "40-case bench; 80 = lexicon blocks in report tree (2 per case). Current frozen report: 0 export_not_found.",
-    "forbidden_external": ["7680 sweeps", "export_not_found 80 cases", "Safety PLC certified"]
+    "forbidden_external": [
+      "7680 sweeps",
+      "export_not_found 80 cases",
+      "Safety PLC certified",
+      "per-shard 47% saving",
+      "SCM average 0.667",
+      "timing 0.910",
+      "shadow auditor 17/17",
+      "meaning 89% restoration",
+      "conc10 loopback as production SLA"
+    ],
+    "lg_safe_domain_table_ssot": "lg_hs_before_after_factcheck_v1_latest.json#lg_safe_domain_table"
   },
   "evidence_bundle_paths": [
     "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json",
@@ -68,7 +86,9 @@
     "If hold or reject: run lg_hs_fallback_two_week_pipeline_v1 (5 actions / 14d) — do not open new LG deck until follow_up names PoC owner",
     "Fill outcome_record_template when LG feedback arrives; set result_expected.status to received",
     "Record outcome_class with evidence_path only — no contract language in this file",
-    "If positive: legal review C-A2 before any external resend (compression_enterprise_summary_readiness)",
+    "If positive: legal review C-A2 before any external resend (compression_enterprise_summary_readiness); use track_c_enterprise_licensing_term_sheet_v1 branch playbook (pass=follow_up)",
+    "If pass or follow_up with PoC owner: open lg_hs_pass_internal_pack_v1 (send order); MSA Layer A+B; PoC SOW after legal; Layer C gated (RQ-013)",
+    "Do not run LogosThemeUnattendedLoop or touch logos_theme_run_state — MKM-LogosThemeRunContinuous task owns theme pipeline (other chat)",
     "If technical questions: cite ultra_compression_kpi_summary_latest.json + compression_domain_bridge_sweep_v1_latest.json (scm bridge raises Jaccard but breaks 0.47 floor — baseline kept)",
     "If LG asks scm/quality tradeoff: cite compression_scm_cap_tune_sweep_v1_latest.json — no profile beats baseline on saving floor + scm min Jaccard together",
     "If LG asks API latency: cite compression_board_ms_vps_bench_triplet_v1_latest.json (2026-05-16, 3 runs) — do not cite 2026-04-10 ~293ms snapshot without same load profile; correlation_claim_allowed remains false",

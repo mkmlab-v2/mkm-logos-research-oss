@@ -1,7 +1,7 @@
 {
   "schema": "lg_hs_compression_discipline_deck_v1",
   "status": "[DRAFT]",
-  "generated_at_utc": "2026-05-16T06:33:09.118532Z",
+  "generated_at_utc": "2026-05-16T11:06:51.033794Z",
   "tone_ratio": "70/20/10",
   "slides": [
     {
@@ -38,6 +38,38 @@
     },
     {
       "n": 4,
+      "title": "Shard Jaccard (frozen bench — not per-shard saving)",
+      "bullets": [
+        "40-case frozen bench — **token saving is global only** (~47.1%); shard rows are Jaccard only.",
+        "Jaccard = overlap proxy; not semantic meaning %.",
+        "`zone_a_scm` (n=12): avg **0.866**, min **0.667**",
+        "`zone_b_timing` (n=2): avg **0.845**, min **0.786**",
+        "`zone_c_hangul` (n=14): avg **0.903**, min **0.750**",
+        "`zone_d_ssot` (n=8): avg **0.875**, min **0.714**",
+        "`zone_g_health` (n=4): avg **0.922**, min **0.875**",
+        "Global min Jaccard **0.667** (worst case on bench)."
+      ],
+      "evidence": [
+        "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json",
+        "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Governance proofs (accurate)",
+      "bullets": [
+        "Lexicon **41,775** terms — deterministic must_keep join path.",
+        "Shadow Auditor: **4** artifact contract pytest passes + frozen KPI scan (not **17/17**).",
+        "Full 40-case re-bench: optional `--refresh-bench` (weekly chain), not every nightly default.",
+        "RTT: VPS same-host p95 **~665–847 ms** (2026-05-16); loopback conc10 is smoke only — **no ms↔saving causality**."
+      ],
+      "evidence": [
+        "reports/constitution/btrack_pilot/compression_shadow_auditor_latest.json",
+        "docs/final/artifacts/compression_board_ms_correlation_report_v1_latest.json"
+      ]
+    },
+    {
+      "n": 6,
       "title": "Kill-Matrix (대외 금지)",
       "bullets": [
         "환각 제거 · 리콜 0% · Zero-Liability",
@@ -47,7 +79,7 @@
       ]
     },
     {
-      "n": 5,
+      "n": 7,
       "title": "클로징 — 다음 단계",
       "bullets": [
         "로컬 벤치 기준선 → 타깃 보드 실측(RQ-017, [HYPO]) → 월간 Go/No-Go.",
@@ -60,8 +92,15 @@
     "환각 제거",
     "리콜 0%",
     "Zero-Liability",
-    "세계 유일"
+    "세계 유일",
+    "의미 89% 복원",
+    "17/17 passed",
+    "샤드별 47% 절약",
+    "SCM 평균 0.667",
+    "Timing 0.910",
+    "conc10 = 양산 SLA"
   ],
+  "factcheck_pointer": "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.md",
   "pointers": {
     "persuasion_module": "docs/final/artifacts/lg_hs_persuasion_module_v1_2026-05-08.md",
     "executive_summary": "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",
