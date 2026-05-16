@@ -1,0 +1,167 @@
+{
+  "schema": "lg_hs_fallback_two_week_pipeline_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-05-16",
+  "status": "ready_when_lg_hold_or_reject",
+  "hypothesis_tier": "B",
+  "track_wall": "commercial_planning_not_auto_promote",
+  "trigger": {
+    "when": "lg_hs_meeting_followup_v1.outcome_record_template.outcome_class in [hold, reject]",
+    "also_consider": "follow_up with no PoC path within 30d → treat as soft reject for channel priority",
+    "do_not_trigger_on": ["pass", "pending"],
+    "lg_result_ssot": "docs/final/artifacts/lg_hs_meeting_followup_v1.json",
+    "result_expected_date": "2026-05-20",
+    "timezone": "Asia/Seoul"
+  },
+  "principles": [
+    "LG OEM PoC is one channel; rejection is not product invalidation.",
+    "No external resend or SLA/ms claims before legal on C-A2.",
+    "Bench saving ~47% @ floor 0.47 is 40-case bench only; VPS p95 is RTT layer — correlation_claim_allowed false.",
+    "Defense narratives stay research_only unless a specific RFP matches artifacts."
+  ],
+  "two_week_actions": [
+    {
+      "week": 1,
+      "day_range": "D0-D3",
+      "id": "W1-A1",
+      "action": "Record LG outcome one line in lg_hs_meeting_followup_v1.json; stop LG-specific outreach until classified.",
+      "owner": "human",
+      "evidence_out": "outcome_record_template filled"
+    },
+    {
+      "week": 1,
+      "day_range": "D1-D5",
+      "id": "W1-A2",
+      "action": "Build program shortlist (3–5 rows): deadline, legal entity, ask vs our artifact paths, gap one line each.",
+      "owner": "human+agent",
+      "evidence_out": "program_candidates rows with gap_note filled",
+      "pointers": [
+        "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.1.3",
+        "docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_overview_v1.md"
+      ]
+    },
+    {
+      "week": 1,
+      "day_range": "D3-D7",
+      "id": "W1-A3",
+      "action": "Pick ONE non-LG primary lane for 14d (B2B Track C macro/compression OR OpenData 327 OR defense research brief only).",
+      "owner": "human",
+      "evidence_out": "primary_lane_selected field set below"
+    },
+    {
+      "week": 2,
+      "day_range": "D8-D10",
+      "id": "W2-A1",
+      "action": "Execute primary lane minimum deliverable only (1-pager, annex section, or internal brief — no new public MD spam).",
+      "owner": "human+agent",
+      "evidence_out": "path under deliverable_by_lane"
+    },
+    {
+      "week": 2,
+      "day_range": "D11-D14",
+      "id": "W2-A2",
+      "action": "Go/no-go review: continue lane vs pivot; do not reopen LG unless follow_up with named PoC owner.",
+      "owner": "human",
+      "evidence_out": "review_note one line in lg_hs_meeting_followup or MISSION_LOG"
+    }
+  ],
+  "primary_lane_selected": "LANE-TRACKC-B2B",
+  "primary_lane_selected_note": "권장: LG hold/reject 시 Track C B2B(매크로 오퍼+압축 [DRAFT]) 우선; OpenData 327은 목소리네트워크 병행(마감 ~2026-06-05) — 법인 분리.",
+  "deliverable_status": {
+    "LANE-TRACKC-B2B": {
+      "status": "pre_completed_2026-05-16",
+      "artifacts": [
+        "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md",
+        "docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md",
+        "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",
+        "reports/compression_enterprise_summary_readiness_v1_latest.json",
+        "reports/track_c_b2b_meeting_pack_readiness_v1_latest.json"
+      ],
+      "note": "MVP/onepager refreshed before LG outcome; external send still false."
+    }
+  },
+  "program_candidates": [
+    {
+      "id": "LANE-LG-PAUSE",
+      "name": "LG HS compression / OEM PoC",
+      "legal_entity": "MKM stack (meeting materials only)",
+      "deadline_utc": null,
+      "status": "paused_after_outcome",
+      "fit_artifacts": [
+        "docs/final/artifacts/lg_hs_compression_discipline_deck_v1_latest.md",
+        "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",
+        "reports/compression_enterprise_summary_readiness_v1_latest.json"
+      ],
+      "gap_note": "Use only if follow_up; legal before external send.",
+      "priority_if_reject": "low_unless_follow_up"
+    },
+    {
+      "id": "LANE-TRACKC-B2B",
+      "name": "Track C B2B — macro risk alert + compression discipline SaaS narrative",
+      "legal_entity": "Track C commercial (check contract entity per deal)",
+      "deadline_utc": null,
+      "status": "always_on_research",
+      "fit_artifacts": [
+        "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md",
+        "docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md",
+        "docs/final/artifacts/compression_enterprise_executive_summary_v1.md"
+      ],
+      "gap_note": "No live trading coupling; PUBLIC_FACING v1.7 + ready_for_external_send false until legal.",
+      "priority_if_reject": "high_default"
+    },
+    {
+      "id": "LANE-OPENDATA-327",
+      "name": "중기부 AI+ OpenData 제2026-327 — 과제① (정책자금 신청서 자동 생성)",
+      "legal_entity": "주식회사 목소리네트워크 (628-86-01742) — NOT same as LG thread",
+      "deadline_utc": "2026-06-05T09:00:00+09:00",
+      "status": "parallel_eligible",
+      "fit_artifacts": [
+        "docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_overview_v1.md",
+        "docs/final/B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md",
+        "docs/final/artifacts/business_registration_plan_v1.md"
+      ],
+      "gap_note": "K-Startup + 나라장터 병행; do not merge compression OEM claims into 과제① body.",
+      "priority_if_reject": "high_if_moksori_active"
+    },
+    {
+      "id": "LANE-DEFENSE-RESEARCH",
+      "name": "국방·실증 RFP (research_only packaging)",
+      "legal_entity": "per RFP",
+      "deadline_utc": null,
+      "status": "scan_only",
+      "fit_artifacts": [
+        "docs/final/artifacts/defense_hybrid_compression_bench_v0.json",
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §1.1.1"
+      ],
+      "gap_note": "No TOE, no spoofing/coord error superiority, no IEC cert claims; gap matrix when published in repo.",
+      "priority_if_reject": "medium_if_rfp_deadline_near"
+    },
+    {
+      "id": "LANE-SHOWROOM-OPS",
+      "name": "Public showroom / api.jemaai.cloud (trust, not sales contract)",
+      "legal_entity": "ops",
+      "deadline_utc": null,
+      "status": "maintenance",
+      "fit_artifacts": [
+        "docs/final/artifacts/showroom_public_bundle_v1.json",
+        "https://api.jemaai.cloud/public_showroom_trust_visualization_v0.html"
+      ],
+      "gap_note": "Artifact-bound panels only; not LG replacement.",
+      "priority_if_reject": "low_background"
+    }
+  ],
+  "deliverable_by_lane": {
+    "LANE-TRACKC-B2B": "Refresh track_c_b2b_macro_alert_offer_onepager + 1 internal OEM email using compression_enterprise_executive_summary [DRAFT]",
+    "LANE-OPENDATA-327": "Finalize 과제① PDF sections from ai_opendata_challenge_2026_327_business_plan_overview_v1.md; K-Startup + G2B register",
+    "LANE-DEFENSE-RESEARCH": "1-page internal brief: defense_hybrid_compression_bench_v0.json bullets only",
+    "LANE-LG-PAUSE": "None unless follow_up questionnaire — answer from evidence_bundle_paths only"
+  },
+  "forbidden_if_reject": [
+    "Declare product failure or 0% liability",
+    "Auto-enable Track A live trading",
+    "Cite VPS p95 as token-saving proof",
+    "Resend compression enterprise summary without legal (C-A2)"
+  ],
+  "regenerate": null,
+  "human_sign_off_required": true
+}

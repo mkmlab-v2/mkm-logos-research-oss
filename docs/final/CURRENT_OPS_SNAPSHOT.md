@@ -2,6 +2,30 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-16 · Session handoff · 채팅 종료)
+
+**Thread:** Cursor — **LG C-S3 심사결과 대기 · Trust viz · Fact-Lock**
+
+- **완료:** **5/20(화)=심사 결과 발표일**(브리핑 아님) 합의 · `lg_hs_before_after_factcheck_v1_latest` · Trust viz **nginx location+reload** · 공개 URL **200** · `check_showroom_trust_viz_public_chain_v1.py` smoke · `lg_hs_fallback_two_week_pipeline_v1`(hold/reject 시) · CENTRAL checkpoint 반영.
+- **막힘:** **C-S3** `outcome_record_template` **pending** · **C-A2** 대외 send **false**(법무).
+- **다음:** **5/20** 결과 한 줄 → `lg_hs_meeting_followup_v1.json` · **pass/follow_up(PoC)** → 법무 후 재발송+일정 · **hold/reject** → 2주 폴백 `LANE-TRACKC-B2B` · 재개: `장기기억 맥락이어라` + `@CURRENT_OPS_SNAPSHOT.md` + `@lg_hs_meeting_followup_v1.json`.
+
+## Ops slice (2026-05-16 · Session handoff · LG·압축·종료 완료)
+
+**Thread:** Cursor — **LG 미팅 후속 · RQ-017 · 폴백 SSOT · Track C B2B 선행 산출**
+
+- **완료:** RQ-017 VPS triplet+페이로드 스윕+쇼룸 sync · `lg_hs_fallback_two_week_pipeline_v1`(**`LANE-TRACKC-B2B`**) · **선행:** `build_track_c_macro_risk_mvp_filled_v1` → macro MVP+`track_c_b2b_macro_alert_offer_onepager_latest.md` · readiness **internal meeting OK** / compression **internal OEM draft OK** · CENTRAL checkpoint.
+- **막힘:** **C-S3** LG **2026-05-20(화) 대기** · **대외 send=false**(법무).
+- **다음:** LG outcome 한 줄만 기록 → **hold/reject** 시 폴백 W1-A1부터(선행 B2B는 `deliverable_status` 참고) · 재개: `장기기억 맥락이어라` + `@docs/final/CURRENT_OPS_SNAPSHOT.md`.
+
+## Ops slice (2026-05-16 · Session handoff · 채팅 종료 · 쇼룸 레이더)
+
+**Thread:** Cursor — **쇼룸 레이더 S2.1–2.2 + B2B 미팅 팩 + Lane E 운영 점검**
+
+- **완료:** Phase **2.1** 레이더 UI·VPS **200** (`7754f8b`) · Phase **2.2** Logos 패널·`showroom_logos_research_slice_v0.json` (`c24139957e`) · **B2B** `Invoke-TrackCB2bMeetingPack_v1`(+commander) · readiness `ready_for_internal_meeting=true` · **Lane E** AmsaengHealth+AthenaBundle+reconcile **all_ok** · `sync_showroom_to_vps`+nginx 스니펫 · `dev` **internal push**.
+- **막힘:** `ready_for_external_send` **false**(법무 전 고정) · CDN `assets.jemaai.cloud` PNG **404**(SOP는 soft-fail) · **LOGOS-THEME-RUN** 테마 **61+** 미완(active).
+- **다음:** 내부 미팅: `docs/final/artifacts/track_c_b2b_meeting_pack_index_v1_latest.md` · 테마 확장 시 `계속` / 중단 시 `테마 확장 중단`.
+
 ## Ops slice (2026-05-16 · Session handoff)
 
 **Thread:** Cursor — **명리 거버넌스 + 초개인화 보좌 프로필**

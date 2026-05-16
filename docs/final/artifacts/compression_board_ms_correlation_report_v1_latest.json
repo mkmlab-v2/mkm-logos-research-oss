@@ -1,0 +1,99 @@
+{
+  "schema": "compression_board_ms_correlation_report_v1",
+  "generated_at_utc": "2026-05-16T06:54:23.514207Z",
+  "status": "[HYPO]",
+  "hypothesis_tier": "B",
+  "track_wall": "b_track_research_only",
+  "rq": "RQ-017",
+  "protocol_ref": "docs/final/artifacts/compression_board_ms_correlation_protocol_v1.json",
+  "compression_kpi": {
+    "source": "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json",
+    "global_token_saving_rate": 0.47116736990154706,
+    "ultra_saving_policy_ok": true,
+    "ultra_saving_policy_min": 0.47,
+    "avg_reconstruction_fidelity_jaccard": 0.885430029636686,
+    "ts_utc": "2026-05-16T06:45:53.068782+00:00"
+  },
+  "latency_layers": {
+    "local_loopback": {
+      "generated_at_utc": "2026-05-16T06:42:22+00:00",
+      "bench_environment": "local_loopback_refresh",
+      "research_only": true,
+      "error_rate": 0.0,
+      "p50_ms": 199.166,
+      "p95_ms": 220.267,
+      "p99_ms": 241.985,
+      "path": "/v1/compress"
+    },
+    "vps_same_host_snapshot": {
+      "generated_at_utc": "2026-05-16T06:52:46+00:00",
+      "bench_environment": "vps_same_host",
+      "research_only": true,
+      "error_rate": 0.0,
+      "p50_ms": 281.461,
+      "p95_ms": 665.083,
+      "p99_ms": 766.855,
+      "path": "/v1/compress"
+    }
+  },
+  "derived": {
+    "local_p95_over_vps_p95_ratio": 0.331,
+    "correlation_claim_allowed": false,
+    "correlation_claim_note": "Token saving (bench JSONL) and API RTT (HTTP load) are different layers; no causal join without controlled A/B payload sweep on same host."
+  },
+  "findings": [
+    "Bench compression policy floor 0.47 met (global saving ~47.1%).",
+    "Loopback p95 is not VPS/edge SLA; use bench_environment=vps_same_host runs for external narrative.",
+    "VPS same-host triplet met (3 runs); p95 median ~709.606 ms (range 665.083–847.132)."
+  ],
+  "next_steps": [
+    "Human sign-off before OEM cites any ms figure",
+    "Human sign-off before OEM cites any ms figure",
+    "Refresh VPS benches (3+ runs) on same host"
+  ],
+  "vps_bench_triplet_ref": "docs/final/artifacts/compression_board_ms_vps_bench_triplet_v1_latest.json",
+  "vps_bench_triplet": {
+    "triplet_ok": true,
+    "run_count": 3,
+    "p95_ms_median": 709.606,
+    "p95_ms_min": 665.083,
+    "p95_ms_max": 847.132
+  },
+  "payload_sweep_ref": "docs/final/artifacts/compression_board_ms_payload_sweep_v1_latest.json",
+  "payload_sweep": {
+    "sweep_ok": true,
+    "runs": [
+      {
+        "approx_words": 500,
+        "exit_code": 0,
+        "bench_out": "docs/final/artifacts/_tmp_bench_payload_500.json",
+        "error_rate": 0.0,
+        "p50_ms": 55.922,
+        "p95_ms": 75.417,
+        "p99_ms": 82.264,
+        "generated_at_utc": "2026-05-16T06:46:14+00:00"
+      },
+      {
+        "approx_words": 1000,
+        "exit_code": 0,
+        "bench_out": "docs/final/artifacts/_tmp_bench_payload_1000.json",
+        "error_rate": 0.0,
+        "p50_ms": 90.782,
+        "p95_ms": 124.171,
+        "p99_ms": 136.001,
+        "generated_at_utc": "2026-05-16T06:46:15+00:00"
+      },
+      {
+        "approx_words": 2000,
+        "exit_code": 0,
+        "bench_out": "docs/final/artifacts/_tmp_bench_payload_2000.json",
+        "error_rate": 0.0,
+        "p50_ms": 153.991,
+        "p95_ms": 199.528,
+        "p99_ms": 228.731,
+        "generated_at_utc": "2026-05-16T06:46:15+00:00"
+      }
+    ],
+    "generated_at_utc": "2026-05-16T06:46:16.025388Z"
+  }
+}

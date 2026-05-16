@@ -216,6 +216,68 @@ def _b2b_onepager_md(*, generated_at: str) -> str:
 """
 
 
+def _logos_module_md(
+    *,
+    generated_at: str,
+    bundle: dict[str, Any] | None,
+    commander: dict[str, Any] | None,
+) -> str:
+    lines: list[str] = []
+    lines.append(
+        f"_본 절은 `build_track_c_macro_risk_mvp_filled_v1.py`가 Logos 아티팩트에서 생성했습니다. "
+        f"UTC `{generated_at}`._"
+    )
+    lines.append("")
+    lines.append(
+        "**포지션:** §3.8 매크로 경보 구독의 **프리미엄 모듈** — 고전/철학 코퍼스(Logos) **스트레스 테스트·심층 리스크 내러티브**. "
+        "예언·종교·매매 지시 아님. 성경/Logos 렌즈는 **`[NON_GATING]`** — 최종 포즈는 Field(실물 레짐)+운영 게이트."
+    )
+    lines.append("")
+    lines.append("| 항목 | 값 |")
+    lines.append("|------|-----|")
+    if bundle:
+        pol = bundle.get("policy") if isinstance(bundle.get("policy"), dict) else {}
+        lines.append(
+            f"| Logos insight bundle | `generated_at_utc={_fmt_ts(bundle.get('generated_at_utc'))}`, "
+            f"`research_only={pol.get('research_only')}`, `non_gating={pol.get('non_gating')}`, "
+            f"`degraded={bundle.get('degraded')}` |"
+        )
+        q = bundle.get("query")
+        if isinstance(q, dict) and q.get("query_fingerprint"):
+            fp = str(q.get("query_fingerprint"))
+            lines.append(f"| Query fingerprint | `{fp[:48]}…` |")
+    else:
+        lines.append("| Logos insight bundle | `logos_insight_bundle_v1_latest.json` 없음 — `build_logos_insight_bundle_v1.py` |")
+
+    if commander:
+        cmd_ts = commander.get("generated_at_utc") or commander.get("ts_utc")
+        lines.append(
+            f"| Commander deep report | `snapshot_utc={_fmt_ts(cmd_ts)}`, "
+            f"`schema={_fmt_ts(commander.get('schema'))}` |"
+        )
+        summary = commander.get("executive_summary")
+        if isinstance(summary, str) and summary.strip():
+            short = summary.strip().replace("\n", " ")
+            if len(short) > 200:
+                short = short[:197] + "…"
+            lines.append(f"| Executive summary (excerpt) | {short} |")
+    else:
+        lines.append(
+            "| Commander deep report | `logos_track_b_commander_deep_report_latest.json` 없음 — "
+            "`run_logos_track_b_commander_deep_report_v1.py` |"
+        )
+
+    lines.append("")
+    lines.append(
+        "**대외 1-pager:** `docs/final/artifacts/track_c_logos_deep_risk_narrative_offer_onepager_v1_latest.md` "
+        "(재생성: `py scripts/build_track_c_logos_b2b_offer_onepager_v1.py`). "
+        "**합본:** `track_c_combined_b2b_offer_onepager_v1_latest.md`."
+    )
+    lines.append("")
+    lines.append("**금지:** “성경이 시장을 예측”, 실시간 신탁, Logos 단독 시그널 상품 포장.")
+    return "\n".join(lines)
+
+
 def _patch_mvp_header_status(text: str, generated_at: str) -> str:
     """Set status line to show last auto-fill time."""
     line_pat = r"^- \*\*status:\*\* `[^`]+` —[^\n]*"
@@ -244,6 +306,10 @@ def main() -> int:
     n8n = _load_json(n8n_path)
     health = _load_json(health_path)
     weekly = _load_json(weekly_path)
+    logos_bundle_path = root / "docs/final/artifacts/logos_insight_bundle_v1_latest.json"
+    logos_commander_path = root / "docs/final/artifacts/logos_track_b_commander_deep_report_latest.json"
+    logos_bundle = _load_json(logos_bundle_path)
+    logos_commander = _load_json(logos_commander_path)
 
     new_section2 = _exec_summary_md(
         generated_at=generated_at,
@@ -281,6 +347,26 @@ def main() -> int:
 
     replacement = f"{mark_begin}\n{new_section2}\n{mark_end}"
     new_text = block_pat.sub(replacement, text, count=1)
+
+    logos_begin = "<!-- track_c_mvp_logos_module_auto_v1 -->"
+    logos_end = "<!-- /track_c_mvp_logos_module_auto_v1 -->"
+    logos_pat = re.compile(
+        re.escape(logos_begin) + r"[\s\S]*?" + re.escape(logos_end),
+        flags=re.DOTALL,
+    )
+    new_logos = _logos_module_md(
+        generated_at=generated_at,
+        bundle=logos_bundle if isinstance(logos_bundle, dict) else None,
+        commander=logos_commander if isinstance(logos_commander, dict) else None,
+    )
+    if logos_pat.search(new_text):
+        new_text = logos_pat.sub(f"{logos_begin}\n{new_logos}\n{logos_end}", new_text, count=1)
+    else:
+        print(
+            "build_track_c_macro_risk_mvp_filled_v1: WARN logos markers not found; "
+            "skipped §2b Logos module patch"
+        )
+
     new_text = _patch_mvp_header_status(new_text, generated_at)
     mvp_path.write_text(new_text, encoding="utf-8", newline="\n")
 

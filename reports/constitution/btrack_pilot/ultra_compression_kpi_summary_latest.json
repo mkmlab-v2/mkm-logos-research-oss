@@ -1,6 +1,6 @@
 {
   "schema": "ultra_compression_kpi_summary_v1",
-  "ts_utc": "2026-05-02T22:00:03.188001+00:00",
+  "ts_utc": "2026-05-16T06:45:53.068782+00:00",
   "sources": {
     "round2": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json",
     "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
@@ -11,25 +11,25 @@
   },
   "decision": {
     "go_no_go": "GO",
-    "rollout_policy": "domain_variable_cap",
+    "rollout_policy": "global_default",
     "selected_candidate": {
       "strategy": "A",
       "intensity": "extreme",
-      "global_token_saving_rate": 0.5274261603375527,
-      "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
-      "avg_sensitive_integrity": 0.9916666666666668,
+      "global_token_saving_rate": 0.47538677918424754,
+      "avg_reconstruction_fidelity_jaccard": 0.882305029636686,
+      "avg_sensitive_integrity": 1.0,
       "jaccard_drop_pp": 0.0
     }
   },
   "active_kpi": {
-    "global_token_saving_rate": 0.4683544303797469,
-    "avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
+    "global_token_saving_rate": 0.47116736990154706,
+    "avg_reconstruction_fidelity_jaccard": 0.885430029636686,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
     "ultra_saving_50_ok": false,
-    "ultra_saving_policy_ok": false,
-    "ultra_saving_policy_min": 0.49,
+    "ultra_saving_policy_ok": true,
+    "ultra_saving_policy_min": 0.47,
     "sensitive_integrity_ok": true
   },
   "literal_kpi": {
@@ -44,8 +44,8 @@
     "sensitive_integrity_ok": true
   },
   "ultra_literal_kpi": {
-    "global_token_saving_rate": 0.13220815752461323,
-    "avg_reconstruction_fidelity_jaccard": 0.9917661801562729,
+    "global_token_saving_rate": 0.1378340365682138,
+    "avg_reconstruction_fidelity_jaccard": 0.9988095238095237,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
@@ -55,7 +55,7 @@
     "sensitive_integrity_ok": true
   },
   "performance": {
-    "bench_total_elapsed_ms": 7972.044,
+    "bench_total_elapsed_ms": 12044.72,
     "round2_elapsed_ms": 6639.684,
     "round2_full_grid_count": 332,
     "round2_evaluated_count": 108,

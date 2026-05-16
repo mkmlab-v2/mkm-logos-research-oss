@@ -1,0 +1,81 @@
+{
+  "schema": "lg_hs_meeting_followup_v1",
+  "meeting_status": "completed",
+  "meeting_completed_note_utc": "2026-05-16",
+  "result_expected": {
+    "label": "LG 심사/피드백 결과",
+    "target_date": "2026-05-20",
+    "target_weekday": "Tuesday",
+    "timezone": "Asia/Seoul",
+    "status": "pending"
+  },
+  "materials_used": [
+    "docs/final/artifacts/lg_hs_compression_discipline_deck_v1_latest.md",
+    "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",
+    "docs/final/artifacts/lg_hs_persuasion_module_v1_2026-05-08.md",
+    "docs/final/artifacts/runtime_assurance_safety_plc_executive_summary_v1.md",
+    "docs/final/artifacts/lg_hs_followup_email_draft_ko_v1.md"
+  ],
+  "showroom_public_urls": {
+    "board_minimal": "https://api.jemaai.cloud/public_showroom_board_minimal.html",
+    "poll": "https://api.jemaai.cloud/public_showroom_poll.html",
+    "trust_viz": "https://api.jemaai.cloud/public_showroom_trust_visualization_v0.html",
+    "trust_viz_json": "https://api.jemaai.cloud/showroom_trust_visualization_slice_v0.json",
+    "trust_viz_http_status": "200",
+    "trust_viz_public_smoke": "reports/showroom_trust_viz_public_chain_smoke_latest.json",
+    "trust_viz_smoke_command": "py scripts/check_showroom_trust_viz_public_chain_v1.py",
+    "nginx_snippet": "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/nginx_snippets/jemaai_showroom_ui.conf",
+    "last_vps_sync_utc": "2026-05-16",
+    "last_nginx_reload_utc": "2026-05-16"
+  },
+  "before_after_factcheck": {
+    "ssot_json": "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json",
+    "ssot_md": "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.md",
+    "regenerate": "py scripts/build_lg_hs_before_after_factcheck_v1.py",
+    "export_not_found_note": "40-case bench; 80 = lexicon blocks in report tree (2 per case). Current frozen report: 0 export_not_found.",
+    "forbidden_external": ["7680 sweeps", "export_not_found 80 cases", "Safety PLC certified"]
+  },
+  "evidence_bundle_paths": [
+    "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json",
+    "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json",
+    "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "docs/final/artifacts/track_a_policy_floor_decision_v1.json",
+    "docs/final/artifacts/compression_domain_bridge_sweep_v1_latest.json",
+    "docs/final/artifacts/compression_shadow_auditor_latest.json",
+    "reports/compression_enterprise_summary_readiness_v1_latest.json",
+    "docs/final/artifacts/compression_board_ms_correlation_report_v1_latest.json",
+    "docs/final/artifacts/compression_board_ms_payload_sweep_v1_latest.json",
+    "docs/final/artifacts/compression_board_ms_vps_bench_triplet_v1_latest.json",
+    "docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json"
+  ],
+  "outcome_record_template": {
+    "received_at_utc": null,
+    "outcome_class": "pending|pass|follow_up|hold|reject",
+    "lg_contact_role": null,
+    "summary_one_line": null,
+    "technical_questions": [],
+    "evidence_cited": [],
+    "next_action": null,
+    "legal_review_required_before_resend": true,
+    "human_sign_off_required": true
+  },
+  "fallback_two_week_pipeline": {
+    "ssot": "docs/final/artifacts/lg_hs_fallback_two_week_pipeline_v1.json",
+    "check": "py scripts/check_lg_hs_fallback_two_week_pipeline_v1.py",
+    "activate_when": "outcome_class is hold or reject"
+  },
+  "post_result_actions": [
+    "If hold or reject: run lg_hs_fallback_two_week_pipeline_v1 (5 actions / 14d) — do not open new LG deck until follow_up names PoC owner",
+    "Fill outcome_record_template when LG feedback arrives; set result_expected.status to received",
+    "Record outcome_class with evidence_path only — no contract language in this file",
+    "If positive: legal review C-A2 before any external resend (compression_enterprise_summary_readiness)",
+    "If technical questions: cite ultra_compression_kpi_summary_latest.json + compression_domain_bridge_sweep_v1_latest.json (scm bridge raises Jaccard but breaks 0.47 floor — baseline kept)",
+    "If LG asks scm/quality tradeoff: cite compression_scm_cap_tune_sweep_v1_latest.json — no profile beats baseline on saving floor + scm min Jaccard together",
+    "If LG asks API latency: cite compression_board_ms_vps_bench_triplet_v1_latest.json (2026-05-16, 3 runs) — do not cite 2026-04-10 ~293ms snapshot without same load profile; correlation_claim_allowed remains false",
+    "If architecture/Safety PLC: cite runtime_assurance_safety_plc_executive_summary_v1.md — not certified IEC/ISO product",
+    "If Before/After or export_not_found: cite lg_hs_before_after_factcheck_v1_latest.md — never say 80 independent failures; use round2 grid 332 not 7680",
+    "Do not auto-promote to Track A live or contract language without human sign-off"
+  ],
+  "hypothesis_tier": "B",
+  "track_wall": "commercial_follow_up_not_auto_promote"
+}

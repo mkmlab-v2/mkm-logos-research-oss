@@ -1,0 +1,75 @@
+{
+  "schema": "compression_scm_cap_tune_sweep_v1",
+  "generated_at_utc": "2026-05-16T06:39:34.839192Z",
+  "hypothesis_tier": "B",
+  "track_wall": "b_track_research_only",
+  "rq": "RQ-016",
+  "policy_floor": 0.47,
+  "profile": {
+    "strategy": "A",
+    "intensity": "extreme"
+  },
+  "variants": [
+    {
+      "id": "baseline",
+      "global_token_saving_rate": 0.47116736990154706,
+      "ultra_saving_policy_ok": true,
+      "avg_jaccard": 0.885430029636686,
+      "scm_min_jaccard": 0.6666666666666666,
+      "scm_by_id": {
+        "cmp2_015": 0.6666666666666666,
+        "cmp2_023": 0.6666666666666666,
+        "cmp2_028": 0.7333333333333333
+      }
+    },
+    {
+      "id": "scm_allowlist_only",
+      "global_token_saving_rate": 0.3938115330520394,
+      "ultra_saving_policy_ok": false,
+      "avg_jaccard": 0.9256526603556402,
+      "scm_min_jaccard": 1.0,
+      "scm_by_id": {
+        "cmp2_015": 1.0,
+        "cmp2_023": 1.0,
+        "cmp2_028": 1.0
+      }
+    },
+    {
+      "id": "scm_bridge_default",
+      "global_token_saving_rate": 0.3938115330520394,
+      "ultra_saving_policy_ok": false,
+      "avg_jaccard": 0.9256526603556402,
+      "scm_min_jaccard": 1.0,
+      "scm_by_id": {
+        "cmp2_015": 1.0,
+        "cmp2_023": 1.0,
+        "cmp2_028": 1.0
+      }
+    },
+    {
+      "id": "scm_bridge_saving_heavy",
+      "global_token_saving_rate": 0.4331926863572433,
+      "ultra_saving_policy_ok": false,
+      "avg_jaccard": 0.9117045394406075,
+      "scm_min_jaccard": 1.0,
+      "scm_by_id": {
+        "cmp2_015": 1.0,
+        "cmp2_023": 1.0,
+        "cmp2_028": 1.0
+      }
+    },
+    {
+      "id": "scm_bridge_balanced",
+      "global_token_saving_rate": 0.40225035161744027,
+      "ultra_saving_policy_ok": false,
+      "avg_jaccard": 0.9240901603556402,
+      "scm_min_jaccard": 1.0,
+      "scm_by_id": {
+        "cmp2_015": 1.0,
+        "cmp2_023": 1.0,
+        "cmp2_028": 1.0
+      }
+    }
+  ],
+  "recommendation": "keep_baseline"
+}

@@ -80,6 +80,27 @@
           }, null, 2)) + "</pre>");
           html += card("Field → Lenses → Final (trust_visualization_v0)", "<pre>" + esc(JSON.stringify(tv, null, 2)) + "</pre>");
           html += card("STT routing audit (summary slice)", "<pre>" + esc(JSON.stringify(st, null, 2)) + "</pre>");
+          var cg = doc.compression_governance_v0 || {};
+          if (cg && Object.keys(cg).length) {
+            var pct = cg.global_token_saving_rate != null ? (Number(cg.global_token_saving_rate) * 100).toFixed(1) + "%" : "—";
+            var jac = cg.avg_reconstruction_fidelity_jaccard != null ? Number(cg.avg_reconstruction_fidelity_jaccard).toFixed(3) : "—";
+            var summary =
+              "<p class=\"lede\" style=\"margin:0 0 0.5rem\">Policy floor <strong>" + esc(cg.policy_floor) + "</strong> · " +
+              "saving <strong>" + esc(pct) + "</strong> · avg Jaccard <strong>" + esc(jac) + "</strong> · " +
+              "policy_ok <strong>" + esc(cg.ultra_saving_policy_ok) + "</strong></p>" +
+              "<pre>" + esc(JSON.stringify(cg, null, 2)) + "</pre>";
+            html += card("Compression governance (read-only · artifact-bound)", summary);
+          }
+          var bm = doc.compression_board_ms_v0 || {};
+          if (bm && Object.keys(bm).length) {
+            var bmSummary =
+              "<p class=\"lede\" style=\"margin:0 0 0.5rem\">[HYPO] local p95 <strong>" + esc(bm.local_p95_ms) + " ms</strong> · " +
+              "VPS latest p95 <strong>" + esc(bm.vps_p95_ms) + " ms</strong> · " +
+              "triplet median <strong>" + esc(bm.vps_p95_ms_triplet_median) + " ms</strong> · " +
+              "causal claim <strong>" + esc(bm.correlation_claim_allowed) + "</strong></p>" +
+              "<pre>" + esc(JSON.stringify(bm, null, 2)) + "</pre>";
+            html += card("Compression latency research (RQ-017 · no SLA)", bmSummary);
+          }
           if (doc.boundary_note) {
             html += card("Boundary", "<p class=\"lede\" style=\"margin:0\">" + esc(doc.boundary_note) + "</p>");
           }

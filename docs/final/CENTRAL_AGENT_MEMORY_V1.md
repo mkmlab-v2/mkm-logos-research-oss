@@ -12,7 +12,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-16T05:34:51Z
+- **last_updated_utc:** 2026-05-16T07:05:57Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -22,26 +22,26 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-05-16T07:05:57Z** — Track C B2B onepager+MVP 선행 갱신; LG 5/20 대기·채팅 종료
+- **2026-05-16T07:05:35Z** — LG C-S3: 5/20 심사결과 발표일(브리핑 아님)·결과 전 LG 추가발송 없음·Trust viz/nginx 200·before_after factcheck SSOT·화요 outcome_record_template 분기 후 pass=법무+PoC / hold·reject=2주 폴백 B2B
+- **2026-05-16T07:02:29Z** — Trust viz 시각적 핏줄 완료: nginx location+reload, HTML/JSON 200, 브라우저 fetch·compression 0.47 렌더 확인, public smoke 스크립트
+- **2026-05-16T07:01:27Z** — LG 5/20 대기·reject 시 Track C B2B 폴백 SSOT; RQ-017 VPS triplet+쇼룸 sync 완료
+- **2026-05-16T07:00:15Z** — Trust viz 404 해결: nginx 스니펫 location 추가+VPS reload, api.jemaai.cloud 200 확인
+- **2026-05-16T06:55:05Z** — LG Before/After 팩트체크 SSOT 생성·export_not_found 80=40케이스×2블록·7680 금지 반영
+- **2026-05-16T06:48:35Z** — 채팅 종료: S2.1-2.2 쇼룸+B2B팩+Lane E Done; LOGOS-THEME-RUN 61+ pending; external_send false
+- **2026-05-16T06:45:44Z** — Lane E done: commander meeting pack + Amsaeng + AthenaBundle + reconcile all_ok
+- **2026-05-16T06:45:10Z** — 권장안 C: VPS scp OK+showroom 200; LG 메일 초안 ko; compression 0.47 trust viz
+- **2026-05-16T06:42:26Z** — P0: Safety PLC 1p+LG followup template; showroom chain 6/6 compression_governance 0.47; C-A2 ready_internal
+- **2026-05-16T06:40:35Z** — Lane D Done: B2B meeting pack ready_for_internal_meeting; external_send false
+- **2026-05-16T06:33:28Z** — S2.2 Done: radar Logos panel + logos JSON 200 on api.jemaai.cloud
+- **2026-05-16T06:23:38Z** — S2.1 Done: api.jemaai.cloud topology radar 200; sync+nginx snippet
+- **2026-05-16T05:55:26Z** — Phase 2.1 topology radar: chain+pytest+staging HTTP200; VPS sync pending
+- **2026-05-16T05:50:06Z** — MISSION_LOG: 쇼룸 Phase2.1 토폴로지 레이더 상용화 순서 고정; Lane A(ops/SOP/reconcile) 완료
 - **2026-05-16T05:34:51Z** — 세션 마감: 명리 용신 거버넌스+commander_profile_v1 dev 푸시·CONSTITUTION§9·Ops스냅샷·지휘관·딸 사주 CENTRAL; 다음=맥락이어라 또는 commander_profile
 - **2026-05-16T05:33:05Z** — Daily check: go_no_go GO, SafeOps ok, showroom 200
 - **2026-05-16T05:29:58Z** — VPS showroom scp OK api.jemaai.cloud minimal+poll 200
 - **2026-05-16T05:27:29Z** — commander_profile_v1: schema+example+pytest; 보좌=Fact앵커+assist_coaching(HYPO)·일출력1채널·Track격벽; 경로 docs/final/artifacts/commander_profile_v1.example.json
 - **2026-05-16T05:27:06Z** — Showroom chain OK: dashboard+brief+bundle+trust slice; VPS deploy manual
-- **2026-05-16T05:20:56Z** — 지휘관(남) 사주 앵커: 1973-12-10 04:30 Asia/Seoul, 임진·갑자·경진·무인, 일간 경(금陽), 엔진 중약·school hybrid_guarded, yongsin_hypothesis [HYPO] 화→토…; 태양인은 사상 체질 참조·사주 자동합선 금지; 2026 만53 대운 기미(남·역행)
-- **2026-05-16T05:17:06Z** — Trading comfort 3-tier brief; LOCKED=LOW prophecy by design
-- **2026-05-16T05:16:07Z** — 딸(소음인·참조) 사주 앵커: 2012-03-28 10:30 Asia/Seoul 여, 임진·계묘·무자·정사, 일간 무(토), 엔진 중강·school hybrid_guarded, yongsin_hypothesis [HYPO] 금→수…; 구내염·수면·화장 성향은 의료·육아와 분리; 2026-05-18~31 일진 메모는 연구·재미용 [HYPO]
-- **2026-05-16T05:08:32Z** — Trading: 30d chunked fee metrics+test; VPS live_sync heartbeat deploy+5m pull task; snapshot handoff
-- **2026-05-15T15:27:11Z** — Wave3: mkmlife.com CF 등록 활성(만료 2027-09-03) 확인·트래커 완료. 전송 진행중 0건. 잔여 a-codeai.com·mkmlab.space 미시작.
-- **2026-05-15T15:15:13Z** — mkmlife.com CF 이전 4/5단계(현재 등록기관 해제 대기); personadiary 완료. Hostinger 승인 이메일 확인 필요
-- **2026-05-15T14:31:41Z** — personadiary.com CF Registrar transfer_completed=true (등록 목록 활성·만료 2029-11-23); mkmlife.com 전송 보류 중
-- **2026-05-15T14:25:15Z** — personadiary.com transfer email approval done by user; CF still in-progress pending registry completion
-- **2026-05-15T14:08:50Z** — personadiary.com CF transfer submitted but registry rejected: domain still transfer-locked at Hostinger; unlock in hPanel then retry
-- **2026-05-15T14:01:40Z** — personadiary Wave3 auto: NS+zone Active; CF transfer at auth-code step — EPP paste+payment manual
-- **2026-05-15T13:54:19Z** — personadiary Wave3: hPanel NS saved sarah/sullivan; public DNS OK; delegation_evidence_ok — CF zone active+EPP+transfer pending
-- **2026-05-15T13:52:19Z** — personadiary Wave3: CF zone+Free plan via dashboard; NS sarah/sullivan — Hostinger API NS 422, hPanel NS cutover pending
-- **2026-05-15T13:11:47Z** — 진행해: Fact-Safe GO·VPS aligned·SafeOps ok·closure ok·승인~05-17·risk TTL~05-16 01:10
-- **2026-05-15T13:06:06Z** — 진행해 2회차: GO·VPS aligned·closure_ok; risk ~5/16 01:04; Hostinger CF대기
-- **2026-05-15T13:03:37Z** — 융합루틴: Fact-Safe+GO48h+VPS aligned+Amsaeng OK; Hostinger CF대기·Wave1메일=지휘관
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -289,6 +289,7 @@
 
 | 기간 | 핵심 한 줄 (무엇을 확정/중단/승격했는지) |
 |------|----------------------------------------|
+| 2026-05-16 (LG HS · 압축 상용 후속) | LG 미팅 **완료**·**5/20(화) 심사결과 대기**; RQ-017 VPS triplet(~710ms p95)·인과 주장 금지; hold/reject 시 **2주 폴백** `lg_hs_fallback_two_week_pipeline_v1`·주력 **Track C B2B**(onepager 선행); OpenData 327은 **목소리네트워크** 별도(~6/5). |
 | 2026-05-14 (퓨전 헬스 Logos insight skip — env 자동) | `run_workspace_automation_health.ps1` 퓨전 스모크: **`MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE`** truthy 시 Invoke **`-SkipLogosInsightBundle`** 자동 전달; `.env.example`·`sync_required_env_to_user.ps1`·CONSTITUTION §1.3.1·`AGENTS.md`·`CLAUDE.md`·`MULTI_LENS`…한 번에 돌리는 명령·`dual-regime-integrity` PR paths(`.env.example`·동 sync 스크립트) 정렬. |
 | 2026-05-13 (B2G 통제 무결성 부록 v0.2.1) | 부록 `B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md`(§1.1~동결)·내부 `B2G_TECH_DISCLOSURE_ONEPAGER_PREP_V1.md` 출원 전 1p 목차. |
 | 2026-05-13 ((주)목소리네트워크 · AI+ OpenData 제2026-327호) | 신청 주체 **주식회사 목소리네트워크**(사업자등록번호 628-86-01742)·대표 **이기륜**·소재 경기도 광명시 광명로 880·**1인기업**; **금융·신용·연체 모델 등 인접 실무경력 없음**(Fact-Lock). 중기부 「AI+ OpenData 챌린지」는 **과제①**(정책자금 융자 신청서 자동 생성, **계약 연계형**)으로 확정·**과제② 비선택**; 접수 시 **K-Startup 온라인 + 나라장터 입찰** 공고 기한(~2026-06-05 18:00) 내 병행 필수. |

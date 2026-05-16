@@ -1,0 +1,43 @@
+{
+  "schema": "compression_board_ms_payload_sweep_v1",
+  "generated_at_utc": "2026-05-16T06:46:16.025388Z",
+  "status": "[HYPO]",
+  "hypothesis_tier": "B",
+  "track_wall": "b_track_research_only",
+  "rq": "RQ-017",
+  "base_url": "http://127.0.0.1:8010",
+  "runs": [
+    {
+      "approx_words": 500,
+      "exit_code": 0,
+      "bench_out": "docs/final/artifacts/_tmp_bench_payload_500.json",
+      "error_rate": 0.0,
+      "p50_ms": 55.922,
+      "p95_ms": 75.417,
+      "p99_ms": 82.264,
+      "generated_at_utc": "2026-05-16T06:46:14+00:00"
+    },
+    {
+      "approx_words": 1000,
+      "exit_code": 0,
+      "bench_out": "docs/final/artifacts/_tmp_bench_payload_1000.json",
+      "error_rate": 0.0,
+      "p50_ms": 90.782,
+      "p95_ms": 124.171,
+      "p99_ms": 136.001,
+      "generated_at_utc": "2026-05-16T06:46:15+00:00"
+    },
+    {
+      "approx_words": 2000,
+      "exit_code": 0,
+      "bench_out": "docs/final/artifacts/_tmp_bench_payload_2000.json",
+      "error_rate": 0.0,
+      "p50_ms": 153.991,
+      "p95_ms": 199.528,
+      "p99_ms": 228.731,
+      "generated_at_utc": "2026-05-16T06:46:15+00:00"
+    }
+  ],
+  "sweep_ok": true,
+  "note": "Payload size vs RTT on same host; not joined to bench token-saving without controlled A/B."
+}

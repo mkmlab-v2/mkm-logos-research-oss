@@ -1,0 +1,74 @@
+{
+  "schema": "lg_hs_before_after_factcheck_v1",
+  "generated_at_utc": "2026-05-16T06:54:50Z",
+  "claims": {
+    "export_not_found_80": {
+      "verdict": "PARTIAL_TRUE_REWORD_REQUIRED",
+      "fact": "Frozen MULTILENS reports embed 80 master_codebook_lexicon_v1 blocks for 40 bench cases (2 nested copies per case in JSON). Current snapshots: export_not_found=0, ok=80.",
+      "before_inference": "When use_master_codebook_lexicon_v1=true and resolve_latest_codebook_path() returns None, each case records reason=export_not_found once per eval (40 cases/run). Do not say '80 independent cases' — say '40-case bench; codebook export missing' or '80 lexicon slots in report tree'.",
+      "code_pointer": "scripts/report_multilens_performance_eval.py (export_not_found branch)",
+      "evidence_current": {
+        "path": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+        "case_count": 40,
+        "lexicon_blocks_in_json_tree": 80,
+        "export_not_found": 0,
+        "skipped": 0,
+        "ok": 80,
+        "ok_hit_count_zero": 60
+      }
+    },
+    "lexicon_41775": {
+      "verdict": "FACT",
+      "lexicon_term_count": 41775,
+      "path": "reports/constitution/btrack_pilot/master_codebook_lexicon_v1_41775_rows_latest.json"
+    },
+    "policy_floor_047": {
+      "verdict": "FACT",
+      "global_token_saving_rate": 0.47116736990154706,
+      "avg_jaccard": 0.885430029636686,
+      "ultra_saving_policy_min": 0.47,
+      "ultra_saving_policy_ok": true,
+      "decision": "docs/final/artifacts/track_a_policy_floor_decision_v1.json"
+    },
+    "cmp2_014_health": {
+      "verdict": "FACT_WITH_BASELINE_LABEL",
+      "before_jaccard_bridge_policy_report": 0.625,
+      "after_jaccard_baseline_sweep_health_case": 0.875,
+      "note": "Before = ACTIVE_REPORT_BRIDGE_POLICY (pre-pinpoint). After = domain_bridge_sweep baseline health_case (cmp2_014)."
+    },
+    "simulation_7680": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "No 7680-run artifact in repo SSOT.",
+      "round2_full_grid_count": 332,
+      "round2_evaluated_count": 108,
+      "track_c_forbidden": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §3.1.2"
+    },
+    "safety_plc_complete": {
+      "verdict": "HYPO_DRAFT_ONLY",
+      "pointer": "docs/final/artifacts/runtime_assurance_safety_plc_executive_summary_v1.md",
+      "note": "Reference architecture + ECC PoC; not IEC/ISO certified product."
+    }
+  },
+  "safe_before_after_table": [
+    {
+      "axis": "Bench cases",
+      "before": "40-case eval; codebook export often missing → export_not_found per case path",
+      "after": "40-case eval; lexicon 41775 terms; 0 export_not_found in frozen active report"
+    },
+    {
+      "axis": "Policy floor",
+      "before": "0.49 floor chase; many HOLD experiments (W4–W9 archive)",
+      "after": "0.47 published floor; ~47.1% saving; avg Jaccard ~0.885"
+    },
+    {
+      "axis": "cmp2_014 (health)",
+      "before": "Jaccard 0.625 (bridge policy report snapshot)",
+      "after": "Jaccard 0.875 (baseline sweep health_case)"
+    },
+    {
+      "axis": "Governance narrative",
+      "before": "Compression tool framing",
+      "after": "Artifact-bound discipline + optional Safety PLC narrative [DRAFT]"
+    }
+  ]
+}

@@ -111,6 +111,8 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 ## 발표 설득 모듈 계약 (LG/대외 공통)
 
 - **기본 모듈:** 대외 발표·Q&A 초안은 `docs/final/artifacts/lg_hs_persuasion_module_v1_2026-05-08.md`의 4단 구조(오프닝/본문/Q&A/클로징)를 기본 템플릿으로 사용한다.
+- **LG 미팅 후속:** `docs/final/artifacts/lg_hs_meeting_followup_v1.json` — **5/20(화)** outcome 한 줄; **hold/reject** 시 `lg_hs_fallback_two_week_pipeline_v1.json`(기본 주력 Track C B2B). 법무 전 대외 send 금지(`compression_enterprise_summary_readiness`).
+- **RQ-017 (ms·절감):** `compression_board_ms_correlation_report_v1_latest.json` — **`correlation_claim_allowed: false`**; VPS triplet `Run-CompressionBoardMsVpsBenchTriplet_v1.ps1`.
 - **톤 비율:** `70/20/10` 고정(과제 직결 70, 운영 성숙도 20, 장기 비전 힌트 10). 비전 비율이 과제 본문을 넘지 않게 유지한다.
 - **핵심 답변 구조:** `결론 -> 근거(아티팩트) -> 제한사항(로컬 기준선/실측 전환)` 순서를 고정한다.
 - **금지:** 경쟁사 비방, 시장 서열 단정(예: "삼성급으로 점프"), 과학 단정형 수사(예: "뇌과학이 보장") 사용 금지.

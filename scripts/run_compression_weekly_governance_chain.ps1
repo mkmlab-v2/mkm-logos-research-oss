@@ -12,7 +12,8 @@
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$SkipLiteralTrack,
-    [switch]$SkipCompressionAlarm
+    [switch]$SkipCompressionAlarm,
+    [switch]$IncludeShadowAuditor
 )
 
 $ErrorActionPreference = "Stop"
@@ -51,6 +52,12 @@ $line = (@{
 } | ConvertTo-Json -Compress -Depth 4)
 Add-Content -LiteralPath $logPath -Value $line -Encoding utf8
 Write-Host "Appended: $logPath" -ForegroundColor DarkGray
+
+if ($IncludeShadowAuditor) {
+    Write-Host "=== run_compression_shadow_auditor_v1.py ===" -ForegroundColor Cyan
+    & py (Join-Path $WorkspaceRoot "scripts\run_compression_shadow_auditor_v1.py") --refresh-loss-patterns
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
 
 Write-Host "[run_compression_weekly_governance_chain] OK" -ForegroundColor Green
 exit 0

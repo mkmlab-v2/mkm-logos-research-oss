@@ -1,7 +1,7 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
+Revised: 2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
@@ -42,6 +42,67 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - 제품: 토큰 절감 API + 비용 리포트 + 품질·복원 투명성 보고서.
 - 핵심 가치: 비용 절감, 지연 안정화, 산출물 재현성.
 - 금지: “무조건 100% 복원” 같은 과장 주장.
+
+#### 3.1.1 압축 거버넌스 — 대외 서사 (artifact-bound, 2026-05-16)
+
+**상태:** `[DRAFT]` 복붙용. 수치·통과 여부는 아래 아티팩트만 SSOT; 본 절만으로 구현·상용 승격을 단정하지 않는다. 면책·금지 표현은 `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3.
+
+- **포지션:** “더 큰 모델”이 아니라 **좁은 통로(정책 하한 0.47) + 벤치 게이트 + 동결 JSON** — 엔터프라이즈 리스크·감사 관점의 **압축 거버넌스 레이어**.
+- **현행 벤치 스냅샷 (재현 전제):** Track A 전역 절감 **~47.1%**, `ultra_saving_policy_ok` @ **0.47**, 평균 Jaccard **~0.89**, 민감어 무결성 **1.0** (40건) — `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`, `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`.
+- **금지 대외 단정:** Jaccard를 “의미 N%”, LLM 할루시네이션 제거, NPU/BOM 절감 **입증 완료**, “세계 유일 OS”로 서술하지 않는다.
+- **1-Pager SSOT:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` (EN/KO 복붙 단락·면책 포함).
+- **정책 기록:** 하한 0.49→0.47 — `docs/final/artifacts/track_a_policy_floor_decision_v1.json` · 운영 `docs/final/COMPRESSION_SLA_POLICY_V1.md`.
+- **연구 로드맵 (`[HYPO]`):** 도메인 Meta-Policy, 보드 ms 상관, Shadow Auditor — `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-016–RQ-018** (B-track; 본선·실매매 자동 합선 금지).
+
+#### 3.1.2 글로벌 포지셔닝 — 제조업형 디시플린 (Fact-Lock, 2026-05-16)
+
+**상태:** 내부·IR·OEM 미팅용. **대외 본문에 “글로벌 0.1%”“S급 독보”“리콜 0%”“8.2ms” 등 미검증 수치·절대 보장을 박지 않는다** — `PUBLIC_FACING` §3·본 절 §8.
+
+**우리가 판매하는 것 (조건부):** LLM **성능 점수**가 아니라, **벤치·정책·동결 아티팩트·exit code로 재현 가능한 운영 거버넌스** — 압축·게이트·감사 체인에 한정. “AI 전체의 신뢰성”·“산업 안전 OS 완성”으로 확장 단정 금지.
+
+| 레이어 | 대표 플레이어 | MKM 위치 (Fact-Lock) |
+|--------|---------------|----------------------|
+| Foundation | OpenAI, Google, Anthropic | **비경쟁·소비** — 모델 위 **규율·측정·잠금** 레이어 |
+| Orchestration | LangChain, LangSmith, NeMo | **부분 겹침** — 범용 워크플로가 아니라 **벤치+KPI+주간 거버넌스** 체인 |
+| Safety / Guardrails | NeMo Guardrails, Llama Guard | **부분 겹침** — 프롬프트 필터를 넘어 **정책 하한·loss-pattern·pytest** (도메인: 텍스트 압축·운영 게이트) |
+| Industrial / OEM | Siemens, Palantir, OEM 자체 | **`[HYPO]` 지향** — 가전·차량 **실기 인터록·인증** SSOT 없음(RQ-013). PoC·쇼룸·B2B 파일럿 전제 |
+
+**회의론(“별거 아닌데?”)에 대한 엔지니어링 답:** 맞다 — 단일 breakthrough 알고리즘이 아니라 **검증된 SWE 관행을 AI 운영 레일에 이식**한 것이다. 차별은 “발명”보다 **한 레포 안에서 아티팩트·스케줄·게이트가 끊기지 않게 묶인 실행 디시플린**이다. 대기업이 카피하기 어려운 이유는 능력 부족만이 아니라 **조직 파편화 + 검증 고통 회피** — 우리는 그 고통을 **스크립트·CI·Shadow Auditor**로 일부 자동화했을 뿐, 완료가 아니다.
+
+**대외 한 줄 (제조업 언어, 복붙용 · 면책 병행 필수):**
+
+`We do not sell the flashiest model scores. We sell artifact-bound discipline for enterprise AI operations: published policy floors, reproducible bench KPIs, and audit logs—so operators can defend decisions without claiming hallucination-free magic.`
+
+**금지 대외 문구 (참모 브리핑 정리):** “환각 제거”, “리콜 0%”, “Zero-Liability”, “하루 만에 자동차 이식”, “7,680회 하드웨어 스윕 완료”(레포 SSOT 없으면), “세탁기 도메인 완성”, “8.2ms Fact-Lock”(아티팩트 없으면).
+
+**근거 번들:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` · `compression_shadow_auditor_latest.json` · `COMPRESSION_SLA_POLICY_V1.md` · §3.7 Stage A–C 표.
+
+#### 3.1.3 통합 실행 일정 — 압축·쇼룸·B2B (2026-05, SSOT)
+
+**역할:** §6 `30-60-90`과 **병행**한다. 본 표는 **2026-05-16 기준** 압축 거버넌스·쇼룸·Track C 영업의 **단기 실행 SSOT**이다. 통과 여부는 **exit code·아티팩트 경로**로만 기록한다.
+
+| ID | 기간 | 상태 | 산출 / DoD | 명령·경로 |
+|----|------|------|------------|-----------|
+| **C-A1** | 2026-05-16 | **완료** | policy floor **0.47**, bench saving **~47.1%**, avg Jaccard **~0.89**, cmp2_014 **0.875**, Shadow Auditor **exit 0** | `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, `ultra_compression_kpi_summary_latest.json`, `track_a_policy_floor_decision_v1.json` |
+| **C-A2** | 2026-05-16 | **내부 OK** | 1-Pager 내부 OEM 초안 통과(`ready_for_internal_oem_draft`); **대외 send=false** 법무 대기 | `check_compression_enterprise_summary_readiness_v1.py` → `reports/compression_enterprise_summary_readiness_v1_latest.json` |
+| **C-A3** | 2026-05-16 | **완료** | 쇼룸 Trust viz에 **compression_governance_v0** (policy **0.47**, saving/Jaccard, artifact paths) | `build_showroom_track_c_bundle_chain_v1.ps1` → `showroom_trust_visualization_slice_v0.json` · `public_showroom_trust_visualization_v0.html` |
+| **C-A4** | 2026-05-16 | **완료(주간 1회)** | 거버넌스 리포트 + Shadow Auditor + KPI 알람 OK | `compression_weekly_governance_report_latest.json` · `run_compression_weekly_governance_chain.ps1 -IncludeShadowAuditor` |
+| **C-A5** | 2026-05-16 | **완료** | Shadow Auditor 일일 **02:30** (`MKM_Compression_ShadowAuditor_Daily`) | `Register-CompressionShadowAuditorDailyTask.ps1` · `compression_shadow_auditor_latest.json` |
+| **C-B1** | 2026-05-16 | **실험 기록** | bridge·soft-term·cap-weight 튜닝 모두 **floor 0.47 동시 충족 없음** → **baseline 유지** | `compression_domain_bridge_sweep_v1_latest.json` · `compression_scm_cap_tune_sweep_v1_latest.json` |
+| **C-B2** | 2026-05-16 | **VPS 3회** | `vps-mkmlife` 동일 호스트 벤치 **3회** pull · p95 **665–847ms** (median **~710ms**); 2026-04-10 스냅샷(~293ms)과 **동일 조건 아님** | `Run-CompressionBoardMsVpsBenchTriplet_v1.ps1` · `compression_board_ms_vps_bench_triplet_v1_latest.json` · `bench_l1_api_load_summary_vps_latest.json` |
+| **C-S1** | 2026-05-16 | **갱신** | §2·Logos·B2B 1p 오퍼 아티팩트 재생성 | `build_track_c_macro_risk_mvp_filled_v1.py` → `track_c_2026_h2_macro_risk_alert_report_mvp_v1.md` |
+| **C-S2** | 2026-05-16 | **완료** | LG 압축·디시플린 덱 아웃라인 5장 + Kill-Matrix | `build_lg_hs_compression_discipline_deck_v1.py` → `lg_hs_compression_discipline_deck_v1_latest.md` |
+| **C-S3** | 미팅 완료 → **2026-05-20(화) 결과 대기** | **대기** | LG 결과 한 줄 기록; **hold/reject 시** 2주 폴백 파이프라인 | `lg_hs_meeting_followup_v1.json` · `lg_hs_fallback_two_week_pipeline_v1.json` · 법무 전 재발송 금지 |
+
+**승격 경계:** 위 일정의 **완료**는 Track A 상용·실매매·OEM 계약 **자동 승격이 아님** — `COMPRESSION_12M_LEARNINGS` §9·`MKM_PROMOTION_GATE_CHECKLIST_B_TO_A_C_V1.md`·휴먼 승인 병행.
+
+#### 3.1.4 Runtime Assurance — Safety PLC narrative (DRAFT, 2026-05-16)
+
+**상태:** `[DRAFT]` 내부·OEM 아키텍처 미팅용. **압축 1-Pager(`compression_enterprise_executive_summary_v1.md`)와 분리** — 본 절은 **참조 아키텍처·감사·Pre-authorization** 서사만; IEC/ISO 인증·BOM·실기 인터록 완료 단정 금지 (`RQ-013`).
+
+- **SSOT:** `docs/final/artifacts/runtime_assurance_safety_plc_executive_summary_v1.md`
+- **LG 후속:** `docs/final/artifacts/lg_hs_meeting_followup_v1.json` — 화요일 결과는 `outcome_record_template`만 채움
+- **대외 send:** 법무·`PUBLIC_FACING` 통과 전 **압축 1-Pager 우선**; Safety PLC 문서는 follow-up 첨부 권장
 
 ### 3.2 축 B — 초고난도 비정형 텍스트 기반 사업 (고급 해설형)
 
@@ -419,6 +480,12 @@ Short copy:
 - Token Efficiency + Risk Posture, with Reproducible Evidence.
 - Governance-driven, Artifact-backed, Operator-in-the-loop.
 
+Manufacturing-discipline add-on (P1 / OEM meetings, 2026-05-16):
+
+`MKM applies manufacturing-style QA to AI operations: frozen benchmarks, policy floors, and gate logs—not a claim that models never fail, but that failures are measured, bounded, and auditable before they reach production narratives.`
+
+**P1 evidence pointer (conditional numbers only):** global token saving **~47%** at policy floor **0.47**, avg bench Jaccard **~0.89** (40-case eval set)—sources in `§3.1.1`. Do not cite as “meaning %” or BOM savings without separate hardware study (RQ-017).
+
 ## 9A) Core Theory Protection (Commercial Security Gate, 2026-05)
 
 **원칙:** Track C는 고객에게 "원시 이론/내부 파라미터"를 판매하지 않는다.  
@@ -463,14 +530,17 @@ Short copy:
 
 ## 10) Immediate Next Actions
 
+0. **§3.1.3 일정:** LG 미팅 **완료**; **C-S3** **2026-05-20(화)** 대기(결과 전 추가 발송 없음). **RQ-017** VPS triplet+페이로드 스윕 완료; **hold/reject** 시 `lg_hs_fallback_two_week_pipeline_v1.json`(주력 `LANE-TRACKC-B2B`, B2B onepager 선행 갱신됨). **RQ-016** baseline 유지 · **C-A4** 주간 거버넌스.
 1. **§3.8 MVP:** `2026 H2 매크로 리스크 경보 리포트` — **목차·Executive Summary 1p·근거 아티팩트 경로 표**는 `docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md`에 동결; 본문 수치는 해당 경로의 JSON·로그로 채운다.
 2. **B2B 오퍼:** 구독 범위(주기·대시보드·이메일)·면책·신뢰 KPI를 넣은 **1페이지 세일즈 시트** 초안을 Track C 공통 문구(§9)와 함께 고정한다. **자동 생성 초안:** `docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md` (`py scripts/build_track_c_macro_risk_mvp_filled_v1.py` 실행 시 MVP와 함께 갱신).
-3. 이 문서를 기준으로 `P1(압축)` 세일즈 원페이지와 파일럿 제안서 버전을 동결한다.
-4. `P2(신시장지표)` 관측형 주간 리포트 템플릿을 추가하고, 경보 KPI를 명시한다(B2B 브리프와 중복 시 하나의 납기 템플릿으로 통합 검토).
-5. `P4/P5/P6(명리/초고난도 비정형 텍스트/사상의학)`은 비자문·비의료·비결정론 고정 문구를 포함한 실험형 패키지로만 운영한다.
-6. Topology Radar 쇼룸은 **JSON 계약(허용 필드/금지 필드) -> 와이어프레임 -> 카피라이팅** 순서로 고정해 환각·컴플라이언스 리스크를 선제 차단한다.
-7. `§9A` 보안 게이트에 따라 API/대시보드 응답에서 내부 산식·가중치·중간 피처를 제거하고, 계약서(NDA+역공학 금지)와 기술 설정(키·워터마크·감사로그)을 동시 적용한다.
-8. **`§3.9` B-track:** 상징→오디오 매핑(M0)·렌즈 스텁(M1)·게이트 체인(M2)·내부 비임상 청취 세션 로그 스키마 초안(M3)은 **연구·pytest·아티팩트**로만 진행; 상용 카피·제안서에는 **§3.9 대외 한 문단**과 게이트·아티팩트 한정 문구만 사용. 임상·치료 단정 금지(`§8`).
+3. **P1(압축) 세일즈:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` **`[DRAFT]`** — §3.1.2 Kill-Matrix·금지 문구와 함께 OEM/IR에 사용; 법무 통과 전 `[DRAFT]` 유지.
+4. **Shadow Auditor:** 등록됨 `MKM_Compression_ShadowAuditor_Daily` (02:30). 수동: `Run-CompressionShadowAuditor_v1.ps1`; 주간 체인 `-IncludeShadowAuditor`. VPS 반영 전 로컬: `sync_showroom_to_vps.ps1 -RefreshStaging` (쇼룸 JSON/HTML).
+5. 이 문서를 기준으로 `P1(압축)` 파일럿 제안서 버전을 동결한다(§3.1.1 수치만 인용).
+6. `P2(신시장지표)` 관측형 주간 리포트 템플릿을 추가하고, 경보 KPI를 명시한다(B2B 브리프와 중복 시 하나의 납기 템플릿으로 통합 검토).
+7. `P4/P5/P6(명리/초고난도 비정형 텍스트/사상의학)`은 비자문·비의료·비결정론 고정 문구를 포함한 실험형 패키지로만 운영한다.
+8. Topology Radar 쇼룸은 **JSON 계약(허용 필드/금지 필드) -> 와이어프레임 -> 카피라이팅** 순서로 고정해 환각·컴플라이언스 리스크를 선제 차단한다(**§3.1.3 C-A3**).
+9. `§9A` 보안 게이트에 따라 API/대시보드 응답에서 내부 산식·가중치·중간 피처를 제거하고, 계약서(NDA+역공학 금지)와 기술 설정(키·워터마크·감사로그)을 동시 적용한다.
+10. **`§3.9` B-track:** 상징→오디오 매핑(M0)·렌즈 스텁(M1)·게이트 체인(M2)·내부 비임상 청취 세션 로그 스키마 초안(M3)은 **연구·pytest·아티팩트**로만 진행; 상용 카피·제안서에는 **§3.9 대외 한 문단**과 게이트·아티팩트 한정 문구만 사용. 임상·치료 단정 금지(`§8`).
 
 ### 10.1 운영 스냅샷 동기화 (2026-05-09 실측)
 

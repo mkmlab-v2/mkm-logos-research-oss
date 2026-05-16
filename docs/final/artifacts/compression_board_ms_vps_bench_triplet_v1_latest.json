@@ -1,0 +1,47 @@
+{
+  "schema": "compression_board_ms_vps_bench_triplet_v1",
+  "generated_at_utc": "2026-05-16T06:54:23.430691Z",
+  "status": "[HYPO]",
+  "hypothesis_tier": "B",
+  "track_wall": "b_track_research_only",
+  "rq": "RQ-017",
+  "runs": [
+    {
+      "run_file": "docs/final/artifacts/bench_runs/bench_l1_api_load_vps_20260516T065220Z.json",
+      "generated_at_utc": "2026-05-16T06:52:23+00:00",
+      "bench_environment": "vps_same_host",
+      "error_rate": 0.0,
+      "p50_ms": 285.231,
+      "p95_ms": 847.132,
+      "p99_ms": 925.139
+    },
+    {
+      "run_file": "docs/final/artifacts/bench_runs/bench_l1_api_load_vps_20260516T065240Z.json",
+      "generated_at_utc": "2026-05-16T06:52:42+00:00",
+      "bench_environment": "vps_same_host",
+      "error_rate": 0.0,
+      "p50_ms": 260.373,
+      "p95_ms": 709.606,
+      "p99_ms": 782.811
+    },
+    {
+      "run_file": "docs/final/artifacts/bench_runs/bench_l1_api_load_vps_20260516T065244Z.json",
+      "generated_at_utc": "2026-05-16T06:52:46+00:00",
+      "bench_environment": "vps_same_host",
+      "error_rate": 0.0,
+      "p50_ms": 281.461,
+      "p95_ms": 665.083,
+      "p99_ms": 766.855
+    }
+  ],
+  "derived": {
+    "run_count": 3,
+    "min_runs_required": 3,
+    "triplet_ok": true,
+    "p95_ms_median": 709.606,
+    "p95_ms_min": 665.083,
+    "p95_ms_max": 847.132
+  },
+  "summary_vps_latest": "docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json",
+  "note": "Use generated_at_utc on each run for OEM citations; not comparable to 2026-04-10 snapshot without same load profile."
+}

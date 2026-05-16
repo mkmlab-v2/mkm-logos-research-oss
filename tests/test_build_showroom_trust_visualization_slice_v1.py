@@ -54,6 +54,9 @@ def test_build_slice_from_dashboard(tmp_path: Path) -> None:
     assert doc.get("hypothesis_tag") == "[HYPO]"
     assert doc["trust_visualization_v0"].get("final_action") == "WATCH"
     assert doc["stt_routing_audit_log_slice"].get("vendor_share_by_event_pct") == 50.0
+    assert "compression_governance_v0" in doc
+    assert doc["compression_governance_v0"].get("role") == "compression_governance_read_only_v0"
+    assert doc["compression_board_ms_v0"].get("role") == "compression_board_ms_research_read_only_v0"
 
 
 def test_build_slice_missing_dashboard_writes_nodata(tmp_path: Path) -> None:
@@ -76,3 +79,6 @@ def test_build_slice_missing_dashboard_writes_nodata(tmp_path: Path) -> None:
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["trust_visualization_v0"].get("state") == "NODATA"
     assert doc["stt_routing_audit_log_slice"].get("state") == "NODATA"
+    # Compression slice reads frozen KPI/policy artifacts, not the dashboard path.
+    assert doc["compression_governance_v0"].get("role") == "compression_governance_read_only_v0"
+    assert doc["compression_board_ms_v0"].get("role") == "compression_board_ms_research_read_only_v0"

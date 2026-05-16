@@ -1,0 +1,68 @@
+{
+  "schema": "compression_board_ms_correlation_protocol_v1",
+  "status": "[HYPO]",
+  "hypothesis_tier": "B",
+  "track_wall": "b_track_research_only",
+  "rq": "RQ-017",
+  "purpose": "Correlate bench token-saving proxies with measured API latency on target hardware — not loopback-only claims.",
+  "forbidden_claims": [
+    "BOM savings proven from Jaccard alone",
+    "8.2ms or single RTT as production SLA without run JSON",
+    "Loopback bench_l1_api_load_summary_latest.json as VPS/edge truth"
+  ],
+  "measurement_layers": {
+    "layer_a_bench": {
+      "artifact": "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json",
+      "fields": ["active_kpi.global_token_saving_rate", "active_kpi.avg_reconstruction_fidelity_jaccard"],
+      "role": "Compression quality/cost proxy only"
+    },
+    "layer_b_local_rtt": {
+      "artifact": "docs/final/artifacts/bench_l1_api_load_summary_latest.json",
+      "role": "Draft HTTP load — loopback; research_only"
+    },
+    "layer_c_vps_rtt": {
+      "artifact": "docs/final/artifacts/bench_l1_api_load_summary_vps_latest.json",
+      "runbook": "docs/final/BENCH_L1_API_LOAD_VPS_RUNBOOK.md",
+      "role": "Production-path RTT candidate; tag bench_environment"
+    }
+  },
+  "pilot_protocol_steps": [
+    {
+      "step": 1,
+      "action": "Freeze bench snapshot",
+      "command": "py scripts/run_ultra_compression_default.py && py scripts/report_ultra_compression_kpi_summary.py",
+      "record": ["global_token_saving_rate", "ultra_saving_policy_min", "generated_at from KPI JSON"]
+    },
+    {
+      "step": 2,
+      "action": "Run L1 load on target host (VPS same-host recommended)",
+      "command": "BASE_URL=http://127.0.0.1:8010 bash scripts/deploy/linux/run_bench_l1_api_load_vps_fixed_fields.sh",
+      "record": ["p50_ms", "p95_ms", "error_rate", "bench_environment", "generated_at_utc"]
+    },
+    {
+      "step": 3,
+      "action": "Payload size sweep (same host)",
+      "command": "py scripts/run_compression_board_ms_payload_sweep_v1.py --base-url http://127.0.0.1:8010",
+      "output": "docs/final/artifacts/compression_board_ms_payload_sweep_v1_latest.json",
+      "note": "Vary approx_words 500/1000/2000; RTT only — no causal join to bench saving without controlled A/B",
+      "hypothesis_only": true
+    },
+    {
+      "step": 4,
+      "action": "Join report",
+      "command": "py scripts/build_compression_board_ms_correlation_report_v1.py",
+      "output": "docs/final/artifacts/compression_board_ms_correlation_report_v1_latest.json",
+      "join_keys": ["run_id", "generated_at_utc", "bench_environment"]
+    }
+  ],
+  "acceptance_criteria_hypo": {
+    "min_vps_runs": 3,
+    "max_error_rate": 0.01,
+    "document_research_only": true,
+    "human_signoff_before_oem": true
+  },
+  "pointers": {
+    "p0_tracker": "docs/final/P0_COMMERCIALIZATION_TRACKER.md",
+    "fact_lock_compression": "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md"
+  }
+}
