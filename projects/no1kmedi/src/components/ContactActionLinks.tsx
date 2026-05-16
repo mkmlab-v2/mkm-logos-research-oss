@@ -32,7 +32,7 @@ export function ContactActionLinks({ email, label }: ContactActionLinksProps) {
     <p>
       {label}:{" "}
       <a
-        href={`mailto:${email}?subject=%5BCompany%5D%20book%20intro%20call`}
+        href={`mailto:${email}?subject=%5BB2B%5D%20%EC%86%8C%EA%B8%B0%EC%9E%90%20%EB%AC%B8%EC%9D%98`}
         onClick={() => trackEvent("book_call", { channel: "mailto_contact" })}
       >
         {email}

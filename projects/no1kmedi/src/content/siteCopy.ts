@@ -95,6 +95,12 @@ export type SiteCopy = {
       variant: "primary" | "ghost";
     }[];
   };
+  app_entry: {
+    title: string;
+    lead: string;
+    consumer: { title: string; body: string; cta: string; href: string };
+    clinician: { title: string; body: string; cta: string; href: string };
+  };
   trust: { items: { label: string; value: string }[]; note: string };
   public_solution: {
     title: string;

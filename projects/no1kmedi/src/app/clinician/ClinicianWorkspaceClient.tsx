@@ -1,19 +1,35 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppWorkspaceShell } from "@/components/AppWorkspaceShell";
-import { AdvancedConsultForm } from "@/components/AdvancedConsultForm";
+import { ClinicianConsultContextPanel } from "@/components/ClinicianConsultContextPanel";
+import { ClinicianPersistedChat } from "@/components/ClinicianPersistedChat";
+import { ClinicianThreadRail } from "@/components/ClinicianThreadRail";
+import { JemaWorkspaceCommandPalette, type PaletteAction } from "@/components/JemaWorkspaceCommandPalette";
+import { PatientCareBundlePreview } from "@/components/PatientCareBundlePreview";
 import { siteCopy } from "@/content/siteCopy";
+import { useClinicianThreads } from "@/hooks/useClinicianThreads";
+import type { ClinicianThreadContext } from "@/lib/clinician-chat-types";
 import {
   KM_CDS_UI_ANALYTICS_EVENTS_V1,
   trackKmCdsUiEvent,
 } from "@/lib/km-cds-ui-analytics-events-v1";
 
 const NAV = [
-  { id: "assist", label: "임상 보조" },
+  { id: "chat", label: "대화" },
+  { id: "patient", label: "환자·설정" },
+  { id: "bundle", label: "환자 번들" },
   { id: "safety", label: "안전·고지" },
 ] as const;
+
+type MemberAccessStatusResponse = {
+  success: boolean;
+  error?: string;
+  payment_status?: string;
+  verification_status?: string;
+  can_use_pro_clinical_assist?: boolean;
+};
 
 function ClinicianSafetyPanel() {
   return (
@@ -27,7 +43,7 @@ function ClinicianSafetyPanel() {
         </ul>
       </div>
       <p className="workspace-muted">
-        CDSS 초안은 근거 매핑을 전제로 하며, 최종 진단·처방·기록은 반드시 의료진이 확정합니다.
+        CDSS는 보조 도구입니다. 최종 진단·처방·기록은 한의사가 확정합니다. 명리·보조 슬롯은 [HYPO] 참고용입니다.
       </p>
     </div>
   );
@@ -36,15 +52,24 @@ function ClinicianSafetyPanel() {
 export function ClinicianWorkspaceClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [assistSessionKey, setAssistSessionKey] = useState(0);
+  const { ready, threads, activeThreadId, setActiveThreadId, activeThread, createThread, deleteThread, commitThread } =
+    useClinicianThreads();
+
   const [activeId, setActiveId] = useState<string>(() => {
     const p = searchParams.get("panel");
-    return p === "safety" ? "safety" : "assist";
+    if (p === "patient" || p === "bundle" || p === "safety") return p;
+    return "chat";
   });
+  const [paletteOpen, setPaletteOpen] = useState(false);
+  const [accessEmail, setAccessEmail] = useState("");
+  const [accessBusy, setAccessBusy] = useState(false);
+  const [accessStatus, setAccessStatus] = useState<MemberAccessStatusResponse | null>(null);
+
+  const canUseAdvancedConsult = accessStatus?.success === true && accessStatus?.can_use_pro_clinical_assist === true;
 
   useEffect(() => {
     const p = searchParams.get("panel");
-    const next = p === "safety" ? "safety" : "assist";
+    const next = p === "patient" || p === "bundle" || p === "safety" ? p : "chat";
     setActiveId((cur) => (cur === next ? cur : next));
   }, [searchParams]);
 
@@ -59,56 +84,166 @@ export function ClinicianWorkspaceClient() {
         copy_bundle_id: "km_clinician_workspace_v1",
       });
     } catch {
-      // ignore storage / telemetry failures
+      // ignore
     }
   }, []);
 
   useEffect(() => {
-    return () => {
-      trackKmCdsUiEvent(KM_CDS_UI_ANALYTICS_EVENTS_V1.CDS_MODE_EXIT, {
-        surface: "workspace",
-        locale: "ko-KR",
-        copy_bundle_id: "km_clinician_workspace_v1",
-      });
+    const onKey = (e: KeyboardEvent) => {
+      const isMac = navigator.platform.toLowerCase().includes("mac");
+      if ((isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setPaletteOpen((v) => !v);
+      }
     };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
   const onSelect = useCallback(
     (id: string) => {
       setActiveId(id);
-      const path = id === "assist" ? "/clinician" : `/clinician?panel=${encodeURIComponent(id)}`;
+      const path = id === "chat" ? "/clinician" : `/clinician?panel=${encodeURIComponent(id)}`;
       router.replace(path, { scroll: false });
     },
     [router],
   );
 
-  const resetAssistForm = useCallback(() => {
-    setAssistSessionKey((k) => k + 1);
-    if (activeId !== "assist") {
-      setActiveId("assist");
-      router.replace("/clinician", { scroll: false });
+  const startNewConsult = useCallback(() => {
+    createThread();
+    setActiveId("chat");
+    router.replace("/clinician", { scroll: false });
+  }, [createThread, router]);
+
+  const checkAccessStatus = useCallback(async () => {
+    const email = accessEmail.trim().toLowerCase();
+    if (!email) {
+      setAccessStatus({ success: false, error: "이메일을 입력해 주세요." });
+      return;
     }
-  }, [activeId, router]);
+    setAccessBusy(true);
+    try {
+      const res = await fetch(`/api/member/access-status?email=${encodeURIComponent(email)}`);
+      setAccessStatus((await res.json()) as MemberAccessStatusResponse);
+    } catch {
+      setAccessStatus({ success: false, error: "권한 정보를 가져오지 못했습니다." });
+    } finally {
+      setAccessBusy(false);
+    }
+  }, [accessEmail]);
+
+  const patchContext = useCallback(
+    (patch: Partial<ClinicianThreadContext>) => {
+      if (!activeThread) return;
+      commitThread({
+        id: activeThread.id,
+        context: { ...activeThread.context, ...patch },
+      });
+    },
+    [activeThread, commitThread],
+  );
+
+  const paletteActions: PaletteAction[] = useMemo(
+    () => [
+      { id: "chat", label: "대화", hint: "panel", run: () => onSelect("chat") },
+      { id: "patient", label: "환자·설정", hint: "panel", run: () => onSelect("patient") },
+      { id: "bundle", label: "환자 번들", hint: "panel", run: () => onSelect("bundle") },
+      { id: "safety", label: "안전·고지", hint: "panel", run: () => onSelect("safety") },
+      { id: "new", label: "새 상담", hint: "스레드", run: () => startNewConsult() },
+      { id: "home", label: "랜딩으로", hint: "/", run: () => router.push("/") },
+    ],
+    [onSelect, router, startNewConsult],
+  );
+
+  const sidebarBody =
+    ready && threads.length ? (
+      <ClinicianThreadRail
+        threads={threads}
+        activeId={activeThreadId}
+        onSelect={(id) => {
+          setActiveThreadId(id);
+          setActiveId("chat");
+          router.replace("/clinician", { scroll: false });
+        }}
+        onDelete={deleteThread}
+      />
+    ) : null;
+
+  if (!ready || !activeThread) {
+    return (
+      <div className="workspace-fallback" role="status">
+        상담 기록을 불러오는 중…
+      </div>
+    );
+  }
+
+  const draftForBundle = activeThread.lastCds
+    ? {
+        request_id: activeThread.lastCds.requestId,
+        clinical_summary: activeThread.lastCds.clinicalSummary,
+        reasoning: activeThread.lastCds.reasoning,
+      }
+    : null;
 
   return (
-    <AppWorkspaceShell
-      homeHref="/"
-      roleLabel="한의사"
-      nav={[...NAV]}
-      activeId={activeId}
-      onSelect={onSelect}
-      sidebarFooter={
-        <button type="button" className="workspace-secondary-btn" onClick={resetAssistForm}>
-          입력 초기화
-        </button>
-      }
-    >
-      {activeId === "assist" ? (
-        <div className="workspace-scroll-panel">
-          <AdvancedConsultForm key={assistSessionKey} />
-        </div>
-      ) : null}
-      {activeId === "safety" ? <ClinicianSafetyPanel /> : null}
-    </AppWorkspaceShell>
+    <>
+      <JemaWorkspaceCommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} actions={paletteActions} />
+      <AppWorkspaceShell
+        homeHref="/"
+        roleLabel="한의사"
+        nav={[...NAV]}
+        activeId={activeId}
+        onSelect={onSelect}
+        sidebarBody={sidebarBody}
+        sidebarFooter={
+          <button type="button" className="workspace-secondary-btn" onClick={startNewConsult}>
+            새 상담
+          </button>
+        }
+      >
+        {activeId === "chat" ? (
+          <div className="workspace-chat-column">
+            <ClinicianPersistedChat
+              thread={activeThread}
+              onCommit={commitThread}
+              canUseAdvancedConsult={canUseAdvancedConsult}
+              onOpenPatientSettings={() => onSelect("patient")}
+              onOpenBundle={() => onSelect("bundle")}
+            />
+          </div>
+        ) : null}
+        {activeId === "patient" ? (
+          <div className="workspace-scroll-panel">
+            <ClinicianConsultContextPanel
+              context={activeThread.context}
+              onContextChange={patchContext}
+              accessEmail={accessEmail}
+              onAccessEmailChange={setAccessEmail}
+              accessBusy={accessBusy}
+              accessStatus={accessStatus}
+              onCheckAccess={() => void checkAccessStatus()}
+            />
+          </div>
+        ) : null}
+        {activeId === "bundle" ? (
+          <div className="workspace-scroll-panel">
+            {draftForBundle && activeThread.lastCds?.envelope ? (
+              <PatientCareBundlePreview
+                enabled={canUseAdvancedConsult}
+                formState={activeThread.context}
+                draft={draftForBundle}
+                cdsEnvelope={activeThread.lastCds.envelope}
+                kmCdsValidationOk={activeThread.lastCds.validationOk}
+              />
+            ) : (
+              <div className="workspace-panel notice-box">
+                <p>먼저 「대화」에서 진료 보조 초안을 생성한 뒤, SSOT 봉투가 준비되면 번들을 만들 수 있습니다.</p>
+              </div>
+            )}
+          </div>
+        ) : null}
+        {activeId === "safety" ? <ClinicianSafetyPanel /> : null}
+      </AppWorkspaceShell>
+    </>
   );
 }

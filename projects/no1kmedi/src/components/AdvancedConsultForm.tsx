@@ -2,7 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import type { CdssGenerationReason } from "@/lib/cdss-contract";
+import { buildClinicianConsultPayload, type ClinicianConsultFormState } from "@/lib/clinician-consult-payload-v1";
 import { getConfidenceThresholds } from "@/lib/confidence-thresholds";
+import { PatientCareBundlePreview } from "@/components/PatientCareBundlePreview";
 
 function formatIntakePinInput(value: string): string {
   const normalized = value.replace(/[^A-Z0-9]/gi, "").toUpperCase().slice(0, 6);
@@ -126,6 +128,12 @@ type AdvancedConsultResponse = {
     literature_count_rule_version?: string;
     citation_count: number;
     literature_injected_count: number;
+  };
+  km_cds?: {
+    payload?: unknown;
+    envelope?: Record<string, unknown>;
+    tri_layer?: unknown;
+    validation?: { ok: boolean; method: string; error?: string };
   };
 };
 
@@ -260,6 +268,47 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
   const canUseAdvancedConsult = accessStatus?.success === true && accessStatus?.can_use_pro_clinical_assist === true;
   const needsUpgradeCta = accessStatus?.success === true && !canUseAdvancedConsult;
 
+  const consultFormState = useMemo<ClinicianConsultFormState>(
+    () => ({
+      actorId,
+      birthInstantUtc,
+      ianaTz,
+      chiefComplaint,
+      onset,
+      severity,
+      medication,
+      digestionPattern,
+      sleepPattern,
+      bodyHeatPreference,
+      stressReactivity,
+      constitutionFreeText,
+      painScale0to10,
+      redFlagNotes,
+      healthAppetite,
+      healthBowelPattern,
+      loadedSurveyContext,
+    }),
+    [
+      actorId,
+      birthInstantUtc,
+      ianaTz,
+      chiefComplaint,
+      onset,
+      severity,
+      medication,
+      digestionPattern,
+      sleepPattern,
+      bodyHeatPreference,
+      stressReactivity,
+      constitutionFreeText,
+      painScale0to10,
+      redFlagNotes,
+      healthAppetite,
+      healthBowelPattern,
+      loadedSurveyContext,
+    ],
+  );
+
   async function checkAccessStatus() {
     const email = accessEmail.trim().toLowerCase();
     if (!email) {
@@ -288,13 +337,13 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
     setResult(null);
     setSelectedCitationId(null);
     try {
-      const res = await fetch("/api/cdss/advanced-consult", {
+      const requestId = `req_${Date.now()}`;
+      const consultPayload = buildClinicianConsultPayload(consultFormState, requestId);
+      const res = await fetch("/api/cdss/advanced-consult?validate_km_cds_envelope=1", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          schema: "patient_consult_input_v1",
-          request_id: `req_${Date.now()}`,
-          actor_id: actorId,
+          ...consultPayload,
           lens_mode: lensMode,
           include_scripture: includeScripture,
           external_context: {
@@ -302,45 +351,6 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
             budget_krw: 1000,
             kpi_targets: ["answer_depth", "actionability", "safety_guardrail_pass"],
             contract_constraints: ["no medical diagnosis", "no prescription replacement"],
-          },
-          lane_a_profile: {
-            birth_instant_utc: birthInstantUtc.trim(),
-            iana_tz: ianaTz.trim(),
-            constitution_survey: {
-              digestion_pattern: digestionPattern,
-              sleep_pattern: sleepPattern,
-              ...(bodyHeatPreference.trim() ? { body_heat_preference: bodyHeatPreference.trim() } : {}),
-              ...(stressReactivity.trim() ? { stress_reactivity: stressReactivity.trim() } : {}),
-              ...(constitutionFreeText.trim() ? { free_text: constitutionFreeText.trim() } : {}),
-            },
-          },
-          lane_b_clinical: {
-            chief_complaint: chiefComplaint,
-            onset,
-            severity,
-            medication,
-            patient_intake_context: loadedSurveyContext
-              ? {
-                  survey_id: loadedSurveyContext.surveyId,
-                  intake_pin: loadedSurveyContext.intakePin,
-                  patient_name: loadedSurveyContext.patientName,
-                  triage_level: loadedSurveyContext.triageLevel,
-                }
-              : undefined,
-            health_survey: {
-              sleep_quality: sleepPattern,
-              ...(redFlagNotes.trim() ? { red_flag_notes: redFlagNotes.trim() } : {}),
-              ...(healthAppetite.trim() ? { appetite: healthAppetite.trim() } : {}),
-              ...(healthBowelPattern.trim() ? { bowel_pattern: healthBowelPattern.trim() } : {}),
-              ...(painScale0to10.trim() !== "" && !Number.isNaN(Number(painScale0to10))
-                ? {
-                    pain_scale_0_10: Math.min(
-                      10,
-                      Math.max(0, Math.round(Number(painScale0to10))),
-                    ),
-                  }
-                : {}),
-            },
           },
         }),
       });
@@ -637,6 +647,12 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
             <p className="consult-error">오류: {result.error || "확인되지 않은 오류"}</p>
           ) : (
             <>
+              {result.km_cds?.validation ? (
+                <p className="consult-source-chip" role="status" style={{ marginBottom: "0.75rem" }}>
+                  SSOT 봉투 검증: {result.km_cds.validation.ok ? "통과 (Python)" : `미통과 · ${result.km_cds.validation.method}`}
+                  {result.km_cds.validation.error ? ` — ${result.km_cds.validation.error}` : ""}
+                </p>
+              ) : null}
               {result.draft?.generation?.llm_used === true ? (
                 <p className="consult-source-chip" role="status" style={{ marginBottom: "0.75rem" }}>
                   생성형 CDSS 초안 적용 (이번 응답에 모델 추론 포함)
@@ -786,6 +802,20 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
               ) : null}
 
               <p className="consult-notice">{result.draft?.non_medical_notice}</p>
+
+              {result.draft ? (
+                <PatientCareBundlePreview
+                  enabled={canUseAdvancedConsult}
+                  formState={consultFormState}
+                  draft={{
+                    request_id: result.draft.request_id,
+                    clinical_summary: result.draft.clinical_summary,
+                    reasoning: result.draft.reasoning,
+                  }}
+                  cdsEnvelope={result.km_cds?.envelope}
+                  kmCdsValidationOk={result.km_cds?.validation?.ok === true}
+                />
+              ) : null}
             </>
           )}
         </div>

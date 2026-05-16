@@ -5,6 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 import { FreeValidationLeadForm } from "@/components/FreeValidationLeadForm";
 import { ContactActionLinks } from "@/components/ContactActionLinks";
 import { BasicHealthChatCard } from "@/components/BasicHealthChatCard";
+import { HomepageAppEntry } from "@/components/HomepageAppEntry";
 import { PaddleCheckoutButton } from "@/components/PaddleCheckoutButton";
 
 export const dynamic = "force-dynamic";
@@ -127,6 +128,8 @@ export default function HomePage({ searchParams }: HomePageProps) {
           </div>
         </section>
 
+        <HomepageAppEntry copy={c.app_entry} />
+
         <section id="feature-triad" className="feature-triad" aria-labelledby="feature-triad-heading">
           <h2 id="feature-triad-heading" className="sr-only">
             핵심 역량
@@ -206,6 +209,9 @@ export default function HomePage({ searchParams }: HomePageProps) {
             </a>
             <a className="btn btn-ghost" href="/consumer">
               간단 건강상담 먼저 해보기
+            </a>
+            <a className="btn btn-ghost" href={c.links.clinician}>
+              한의사 보조 열기
             </a>
           </div>
         </section>

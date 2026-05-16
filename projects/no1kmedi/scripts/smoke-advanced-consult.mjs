@@ -105,16 +105,29 @@ function assertConsultContract(consult) {
   if (requireLive) {
     assert(source === "live", "saju_source must be live in --require-live mode");
   }
+  const km = consult.json?.km_cds;
+  assert(km && typeof km === "object", "km_cds block required");
+  assert(typeof km.payload?.clinical_question === "string" && km.payload.clinical_question.length >= 4, "km_cds.payload.clinical_question");
+  assert(
+    ["sufficient", "partial", "insufficient"].includes(km.payload?.evidence_assessment),
+    "km_cds.payload.evidence_assessment enum",
+  );
+  assert(km.validation && typeof km.validation.ok === "boolean", "km_cds.validation.ok");
+  if (process.env.NO1KMEDI_REQUIRE_KM_CDS_VALIDATE === "1") {
+    assert(km.validation.ok === true, `km_cds.validation.ok required: ${km.validation.error || km.validation.method}`);
+    assert(km.envelope?.schema === "km_physician_cds_assist_envelope_v1", "km_cds.envelope when validate required");
+  }
 }
 
 async function main() {
-  const consultWithRedFlags = await request("/api/cdss/advanced-consult", {
+  const validateQuery = "?validate_km_cds_envelope=1";
+  const consultWithRedFlags = await request(`/api/cdss/advanced-consult${validateQuery}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(buildConsultPayload({ withRedFlags: true })),
   });
 
-  const consultWithoutRedFlags = await request("/api/cdss/advanced-consult", {
+  const consultWithoutRedFlags = await request(`/api/cdss/advanced-consult${validateQuery}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(buildConsultPayload({ withRedFlags: false })),

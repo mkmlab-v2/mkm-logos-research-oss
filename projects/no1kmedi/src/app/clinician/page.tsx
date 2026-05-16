@@ -3,8 +3,9 @@ import { Suspense } from "react";
 import { ClinicianWorkspaceClient } from "./ClinicianWorkspaceClient";
 
 export const metadata: Metadata = {
-  title: "한의사 임상 보조 · JEMA AI",
-  description: "근거 기반 진료 준비 초안과 안전 고지를 제공하는 보조 화면입니다. 최종 진단·처방은 의료진이 확정합니다.",
+  title: "한의사 보조 · JEMA AI",
+  description:
+    "대화 중심 CDSS·SOAP 초안·환자 번들 보조 화면입니다. 참고·초안용이며 최종 진단·처방은 한의사가 확정합니다.",
   alternates: { canonical: "/clinician" },
 };
 

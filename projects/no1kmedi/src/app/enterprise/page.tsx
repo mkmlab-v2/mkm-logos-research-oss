@@ -204,12 +204,13 @@ export default function EnterprisePage() {
 
       <footer className="site-footer enterprise-footer">
         <p>
-          <a href="/">jema-ai.com</a> · <a href="/company">Company</a>
+          <a href="/">jema-ai.com</a> · <a href="/company">회사 소개</a> ·{" "}
+          <a href={`mailto:${c.footer.email}`}>{c.footer.email}</a>
         </p>
         <p className="footer-muted">
-          {e.footer.legal_entity} · {e.footer.brand_line}
+          {c.footer.company_line} · {c.footer.brand_subline}
         </p>
-        <p className="footer-muted">{e.footer.rights}</p>
+        <p className="footer-muted">{c.footer.rights}</p>
       </footer>
     </div>
   );

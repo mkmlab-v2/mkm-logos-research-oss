@@ -27,6 +27,8 @@ export const KM_CDS_UI_ANALYTICS_EVENTS_V1 = {
   /** HOLD priority action exposure/click tracking. */
   ADMIN_KPI_PRIORITY_ACTION_SHOW_V1: "admin_kpi_priority_action_show_v1",
   ADMIN_KPI_PRIORITY_ACTION_CLICK_V1: "admin_kpi_priority_action_click_v1",
+  /** Clinician workspace: patient_care_bundle from CDS envelope. */
+  CDS_BUNDLE_GENERATE_V1: "cds_bundle_generate_v1",
 } as const;
 
 export type KmCdsUiAnalyticsEventNameV1 =

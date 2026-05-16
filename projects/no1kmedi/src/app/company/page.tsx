@@ -1,12 +1,12 @@
 export const metadata = {
-  title: "Company | JEMA AI",
-  description: "Company information for Moksori Network Co., Ltd.",
+  title: "회사 소개 | JEMA AI",
+  description: "주식회사 목소리네트워크 법적 고지 및 연락처.",
 };
 
 export default function CompanyPage() {
   return (
     <main style={{ maxWidth: "900px", margin: "0 auto", padding: "2rem 1.25rem 3rem" }}>
-      <h1>Company</h1>
+      <h1>회사 소개</h1>
       <p>Moksori Network Co., Ltd. (Sub-brand: MKMLAB)</p>
       <ul>
         <li>CEO: Ki-ryun Lee</li>
@@ -17,7 +17,7 @@ export default function CompanyPage() {
         <li>Support Email: support@mkmlife.com</li>
       </ul>
       <p>
-        <a href="/">Back to Home</a>
+        <a href="/">홈으로</a>
       </p>
     </main>
   );

@@ -1,0 +1,73 @@
+# Offline + HTTP: jema-ai CDSS envelope validate → patient_care_bundle (MKM Python chain).
+name: no1kmedi-clinician-cds-bundle-smoke
+
+on:
+  push:
+    paths:
+      - "projects/no1kmedi/src/app/api/cdss/**"
+      - "projects/no1kmedi/src/lib/km-cds-*.ts"
+      - "projects/no1kmedi/src/lib/km-patient-care-bundle-*.ts"
+      - "projects/no1kmedi/src/lib/clinician-consult-payload-v1.ts"
+      - "projects/no1kmedi/src/components/PatientCareBundlePreview.tsx"
+      - "projects/no1kmedi/src/components/AdvancedConsultForm.tsx"
+      - "projects/no1kmedi/scripts/smoke-*cds*.mjs"
+      - "projects/no1kmedi/scripts/smoke-*bundle*.mts"
+      - "projects/no1kmedi/scripts/run-clinician-cds-bundle-smoke.ps1"
+      - "projects/no1kmedi/package.json"
+      - "projects/no1kmedi/package-lock.json"
+      - "scripts/build_km_physician_cds_assist_envelope_v1.py"
+      - "scripts/build_patient_care_bundle_from_km_cds_chain_v1.py"
+      - "docs/final/schemas/km_physician_cds_assist_envelope_v1.schema.json"
+      - "docs/final/schemas/patient_care_bundle_v1.schema.json"
+      - "docs/final/schemas/mkm_bianzheng_tri_layer_v1.schema.json"
+      - ".github/workflows/no1kmedi-clinician-cds-bundle-smoke.yml"
+  pull_request:
+    paths:
+      - "projects/no1kmedi/**"
+      - "scripts/build_km_physician_cds_assist_envelope_v1.py"
+      - "scripts/build_patient_care_bundle_from_km_cds_chain_v1.py"
+      - "docs/final/schemas/km_physician_cds_assist_envelope_v1.schema.json"
+      - "docs/final/schemas/patient_care_bundle_v1.schema.json"
+      - ".github/workflows/no1kmedi-clinician-cds-bundle-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  clinician-cds-bundle-smoke:
+    if: ${{ github.event_name == 'pull_request' || vars.ENABLE_GH_ACTIONS_RUNNERS == 'true' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps (CDS/bundle schema validate)
+        run: pip install jsonschema
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: projects/no1kmedi/package-lock.json
+
+      - name: Install no1kmedi
+        working-directory: projects/no1kmedi
+        run: npm ci
+
+      - name: Clinician CDS bundle smoke (offline + HTTP)
+        env:
+          MKM_WORKSPACE_ROOT: ${{ github.workspace }}
+        working-directory: projects/no1kmedi
+        run: pwsh -NoProfile -File ./scripts/run-clinician-cds-bundle-smoke.ps1 -NoAutoPort

@@ -152,6 +152,9 @@ try {
     for (const phrase of lgBan) {
       assert(!blob.includes(phrase), `enterprise copy must not include trophy phrase: ${phrase}`, errors);
     }
+    for (const banned of ["gmbaekje@naver.com", "광명백제"]) {
+      assert(!blob.includes(banned), `enterprise copy must not include ${banned}`, errors);
+    }
   }
 
   const foot = parsed.footer;

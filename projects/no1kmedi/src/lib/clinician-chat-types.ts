@@ -1,0 +1,31 @@
+import type { ClinicianConsultFormState } from "@/lib/clinician-consult-payload-v1";
+
+export type ClinicianChatRole = "user" | "assistant";
+
+export type ClinicianChatTurn = {
+  role: ClinicianChatRole;
+  message: string;
+};
+
+export type ClinicianThreadContext = ClinicianConsultFormState & {
+  lensMode: "neutral" | "integrated" | "compare";
+  includeScripture: boolean;
+};
+
+export type ClinicianCdsSnapshot = {
+  requestId: string;
+  clinicalSummary: string;
+  reasoning: { syndrome_hypothesis: string; care_direction: string; caution: string };
+  envelope?: Record<string, unknown>;
+  validationOk: boolean;
+};
+
+export type ClinicianChatThread = {
+  id: string;
+  title: string;
+  createdAt: number;
+  updatedAt: number;
+  turns: ClinicianChatTurn[];
+  context: ClinicianThreadContext;
+  lastCds?: ClinicianCdsSnapshot;
+};

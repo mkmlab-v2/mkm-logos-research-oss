@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import type { PatientConsultInputV1 } from "@/lib/cdss-contract";
 import { buildAdvancedConsultDraft } from "@/lib/cdss-inference";
 import { validateLaneABirth } from "@/lib/global-birth-input";
+import { buildKmCdsEnvelopePipeline } from "@/lib/km-cds-envelope-pipeline-v1";
+import { shouldValidateKmCdsEnvelopeViaPython } from "@/lib/km-cds-envelope-python-bridge-v1";
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
@@ -30,6 +32,11 @@ export async function POST(request: NextRequest) {
       const refBased = c.source_ref.toLowerCase().startsWith("epmc:");
       return idBased || refBased;
     }).length;
+
+    const validateEnvelope =
+      request.nextUrl.searchParams.get("validate_km_cds_envelope") === "1" || shouldValidateKmCdsEnvelopeViaPython();
+    const kmPipeline = buildKmCdsEnvelopePipeline(body, draft, { skipPython: !validateEnvelope });
+
     return NextResponse.json(
       {
         success: true,
@@ -43,6 +50,18 @@ export async function POST(request: NextRequest) {
           lane_separation: true,
           citation_enforced: draft.citations.length > 0,
           physician_confirmation_required: draft.requires_physician_confirmation === true,
+        },
+        km_cds: {
+          payload: kmPipeline.payload,
+          envelope: kmPipeline.ok ? kmPipeline.envelope : undefined,
+          tri_layer: kmPipeline.tri_layer,
+          validation: validateEnvelope
+            ? {
+                ok: kmPipeline.ok,
+                method: kmPipeline.ok ? "python" : "python",
+                error: kmPipeline.ok ? undefined : kmPipeline.error,
+              }
+            : { ok: false, method: "skipped", error: "validation not requested" },
         },
       },
       { status: 200, headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
