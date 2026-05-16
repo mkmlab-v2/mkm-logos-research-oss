@@ -2,13 +2,190 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-16 · Session handoff)
+
+**Thread:** Cursor — **명리 거버넌스 + 초개인화 보좌 프로필**
+
+- **완료:** `yongsin_hypothesis_candidates_v1`+SHA-256 fingerprint·환자 MD 격벽(`render_patient_care_bundle_markdown_v1`) · `commander_profile_v1` schema+example+pytest · CENTRAL 지휘관·딸 사주 앵커 · `dev` 커밋 `1d9e28b460`·`b1524152a8` · **internal push** · CONSTITUTION §9 포인터 2행.
+- **막힘:** 없음(본 작전 범위).
+- **다음:** 새 채팅 `장기기억 맥락이어라` 또는 `@commander_profile_v1.example.json`; 선택 `dev`→`main` 머지.
+
+## Ops slice (2026-05-16 · 일일 3분 체크 실행)
+
+**Thread:** Cursor — **`Invoke-MkmDailyShowroomTradingCheck_v1` 동등 루틴**
+
+- **완료:** Fact-Safe sync 후 **gate ACTIVE** · `trading_go_no_go` **GO** · observation brief **GO** · live_sync **fresh** · SafeOps **overall_safe=True** · 쇼룸 URL **200**.
+- **주의:** `promotion_ready=false`(전략 승격 별도) · 휴먼 승인 TTL ~**5/17** — `trading_human_execution_approval_latest.json` 확인.
+- **다음:** 원클릭 `pwsh -File scripts/Invoke-MkmDailyShowroomTradingCheck_v1.ps1` · 쇼룸만 재배포 시 `sync_showroom_to_vps.ps1 -RefreshStaging`.
+
+## Ops slice (2026-05-16 · 쇼룸 VPS 배포 승인 반영)
+
+**Thread:** Cursor — **`sync_showroom_to_vps.ps1 -RefreshStaging`**
+
+- **완료:** 체인 재실행(5/5) · `deploy_showroom_static` 8종 스테이징 · **scp OK** → `root@srv1101456.hstgr.cloud:/var/www/jemaai/` (nginx reload는 미실행 — `JEMAAI_VPS_RELOAD_NGINX=1` 시에만).
+- **공개 URL(확인용):** `https://api.jemaai.cloud/public_showroom_board_minimal.html` · `…/public_showroom_poll.html` (예능 레이어) · trust viz HTML 동일 루트.
+- **막힘:** 없음(배포 exit 0). DNS/SSL이 다르면 Hostinger/nginx 경로만 실측 확인.
+- **다음:** 브라우저에서 위 URL 열기; 필요 시 VPS에서 `JEMAAI_VPS_RELOAD_NGINX=1` 후 재배포.
+
+## Ops slice (2026-05-16 · 쇼룸 SSOT 갱신 — 관측·과시 라인)
+
+**Thread:** Cursor — **디스크 SSOT → Track C 대시보드 → 쇼룸 번들**
+
+- **완료:** `build_mkm_trackc_ops_dashboard_v1` · `trading_observation_brief` · `build_showroom_track_c_bundle_chain_v1` **(5/5 OK)** → `showroom_public_bundle_v1.json` · `showroom_trust_visualization_slice_v0.json`(trust/STT **OK**) · topology radar **신규 emit**.
+- **관측:** `GO_NO_GO=NO_GO`(LOCKED 정책) · brief `52/52` trades24h · public bundle `context_stale=true`(context TTL) — **과시면 면책·지연 표기 유지**.
+- **다음:** 브라우저 확인 `public_showroom_board_minimal.html` / `public_showroom_poll.html`(예능 레이어) — **VPS 반영은** `sync_showroom_to_vps.ps1 -RefreshStaging`(SSH·의도 확인 후).
+
+## Ops slice (2026-05-16 · Trading comfort — GO/NO_GO 정렬)
+
+**Thread:** Cursor — **안심 매매 3단계 체크리스트 실행**
+
+- **완료:** `Invoke-TradingComfortReadinessBrief_v1.ps1` → `reports/trading_comfort_readiness_brief_latest.json` · Fact-Safe chain · preflight(메인넷+거래 ON 경고) · **원인:** prophecy `reliability_badge=LOW`·`HOLD` → `risk_profile.mode=LOCKED_MODE` → gate/risk **NO_GO**(휴먼 GO와 별축).
+- **막힘:** 디스크 **전체 GO**는 **의도적 LOCKED** 해제 전 불가 — `ACTIVE_MODE`는 예언 품질·hold 게이트 개선·**휴먼 승격** 후.
+- **다음:** **Tier A** 일상: SafeOps(기본)·`Verify-TradingAutomationHealth -AllowPolicyLockedGoNoGo`·5분 live_sync pull · **Tier B/C**는 승인 후만.
+
+## Ops slice (2026-05-16 · Trading ops — 선택 항목 마감)
+
+**Thread:** Cursor — **30d 청크 수수료·VPS 하트비트·스냅샷·채팅 종료**
+
+- **완료:** `build_trading_fee_metrics_chunked_v1.py` 30d 실행·`reports/trading_window_metrics_chunked_30d_v1.json` · `tests/test_build_trading_fee_metrics_chunked_v1.py` · `Deploy-LiveSyncHeartbeatToVps.ps1 -SoftFail` → `reports/live_sync_vps_deploy_latest.json` **ok**, pull **fresh** · `Register-LiveSyncHeartbeatPullTask.ps1` **MKM-LiveSync-Heartbeat-Pull** 5분·SoftFail · `Verify-GitWorkspaceSanity.ps1` **OK** · `athena_checkpoint.py` 한 줄 반영.
+- **막힘:** 없음.
+- **다음:** `.git/info/exclude` 54행 `config/`가 `projects/bitcoin-trading/config/trading_config.yaml`까지 `git check-ignore`됨 — **비밀·환경별 값**이면 의도 유지; **추적이 필요하면** `config/` 축소 또는 `!projects/bitcoin-trading/config/…` **선별 부정**(템플릿·비밀 분리 후)만 검토. `trading_go_no_go`/Trinity·실주문은 기존 **휴먼·정책** 축.
+
+## Ops slice (2026-05-16 · Session handoff)
+
+**Thread:** Cursor — **스냅샷 저장 + 한의사 홈·차트보조 AI 컨셉 질의**
+
+- **완료:** `CURRENT_OPS_SNAPSHOT.md` 본 블록 갱신. 한의·차트 축은 레포에서 **별축(의료 격벽)**·`km_physician_cds_assist_envelope_v1`(의사결정 **보조** 봉투, 최종 진단·처방 대체 아님)로 고정됨을 SSOT로 정리해 답변 예정.
+- **막힘:** 없음.
+- **다음:** 한의 CDS는 `run_fact_lock_bundle.ps1` 3e·`CONSTITUTION` 표 유지; 상용 **한의원 전용 홈** 단일 URL은 SSOT 표에 **미배치** — NotebookLM·구기획 “B2B 한의원”은 `JEMA_AI_DOMAIN_POINTER_V1.md`대로 **참고만**, 본선 역할은 `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md`·Track C §3.4와 정합 재확인.
+
+## Ops slice (2026-05-15 · ML-CORP-WEB-1 · 잔여 정리)
+
+**Thread:** Cursor Ops — **「남은 문제 다 해결해」**
+
+- **완료:** `/enterprise` 배포·스모크 **200** (`app.jema-ai.com`) · 푸터 **목소리네트워크**·`support@mkmlife.com` · 클리닉 브랜딩 제거 · `ML-CORP-WEB-1` **DONE** · PM2 경로 문서 **destiny** 반영 · 배포 스크립트 기본 destiny · `Deploy-No1kmediDestinyTarball_v1.ps1` 추가.
+- **CF Registrar:** 7/8 apex `transfer_completed` (`registrar_transfer_tracker_v1.json`; `mkmlab.space` 보류).
+- **막힘 (API 토큰 zone 미가시):** `mkmlife.com` Email Routing · `jema12.com` 301 — 대시보드에서 zone 추가/확인 후 `Invoke-CloudflareEmailRoutingSetup_v1.ps1` · `Invoke-CloudflareJema12RedirectSetup_v1.ps1 -ZoneId <id>` (또는 Redirect Rules 수동).
+- **다음:** `ML-TTL-1` Fact-Safe TTL · 주간 AthenaBundle · jema12/mkmlife zone을 동일 CF 계정·토큰에 연결.
+
+## Ops slice (2026-05-15 · MISSION Phase 2)
+
+**Thread:** Cursor Ops — **MISSION_LOG Active 리셋** (Phase 1 클리어).
+
+- **완료:** Phase 1 ML-DEV/OPS **전부 DONE** → `MISSION_LOG.md` Completed 「Phase-1 클리어」.
+- **다음:** `ML-TTL-1` Fact-Safe/승인 TTL · 일간 `AmsaengHealth` / 주간 `AthenaBundle`.
+- **보류:** LG 결과 · 예언 승격 · RQ-013 자율주행(연구 큐만).
+
+## Ops slice (2026-05-15 · 진행해 — 루틴 2회차)
+
+**Thread:** Cursor Ops — **「진행해」** (이 채팅 자율).
+
+- **완료:** Fact-Safe **GO** · VPS **aligned** · live_sync **fresh** · Observation **0** · SafeOps **ok** · 클로저 **closure_ok** · `app.jema-ai.com` **200**.
+- **TTL:** 승인 ~**5/17 13:02 UTC** · 리스크 ~**5/16 01:04 UTC** (4h sync; **01:04 전** Fact-Safe 한 번 더 권장).
+- **Hostinger:** 5건 CF **완료 대기** · Wave 1 메일 = **지휘관**.
+- **보류:** 예언 승격·실주문 확대.
+
+## Ops slice (2026-05-15 · 융합 SSOT — 우선순위 + 「진행해」 루틴)
+
+**Thread:** Cursor Ops — 지휘관 **「이것도 융합해서 계속 진행해」** · **이 채팅에서 쭉 진행 OK**.
+
+### 자동·루틴 (방금 실행)
+
+| # | 할 일 | 결과 |
+|---|--------|------|
+| A | **4h Fact-Safe** `\MKM-FactSafe-RiskProfile-Sync-4H` | 다음 예약 **2026-05-16 00:10** · 방금 chain **GO** |
+| B | **타이머 B 선연장** | `Run-TradingExecutionChainOnce` **GO 48h** (proposal+approve; **주문 없음**) |
+| C | **VPS GO 동기화** | `Invoke-VpsTradingGoReadinessSync` **aligned=true** · local/VPS **GO** |
+| D | **【암행어사】** | `AmsaengHealth` **ALL OK** (~52s) |
+| E | live_sync | **fresh** |
+
+**TTL:** `approval_valid_until_utc`·`risk_expires_at`는 `trading_human_execution_approval_latest.json`·`risk_profile_fact_safe_latest.json` 참조. **만료 ≠ PM2 종료.**
+
+### Hostinger exit (백로그 #1–3 · 지휘관 손)
+
+| 우선 | 할 일 | 상태 |
+|------|--------|------|
+| **1** | CF 이전 5건 `transfer_completed` | **대기** — `jema-ai.com`, `jemaai.cloud`, `no1kmedi.com`, `mkmlife.com`, `jema12.com` |
+| **2** | Wave 1 **이체 승인** 메일 | **지휘관** (거절 금지) |
+| **3** | Wave 3 (`personadiary`, `a-codeai`, `mkmlab.space`) | **미착수** |
+
+**SSOT:** `registrar_transfer_tracker_v1.json` · `hostinger_registrar_transfer_playbook_latest.json` · EPP **레포·채팅 금지**.
+
+### Ops 백로그 (보류)
+
+| 우선 | 항목 | 정책 |
+|------|------|------|
+| **4** | 예언 Track A 승격 | `combined_all_passed=false` — **명시 승인 전** |
+| **5** | n8n 레거시 문서 | 낮음 |
+
+### 개발 채팅으로 넘김
+
+- aroon × Fact-Safe TTL 코드 정합 · VPS health monitor bundle · RQ-009~011
+
+**재개 (복붙):**
+
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+융합 SSOT — Hostinger 5건 CF 대기·Wave1 메일·GO 48h·VPS aligned·Amsaeng OK·승격 보류.
+```
+
+## Ops slice (2026-05-15 · 진행 — TTL·클로저)
+
+**Thread:** Cursor Ops — 지휘관 **「진행해」**.
+
+- **완료:** `Run-FactSafeRiskProfileSyncChain` **GO** · live_sync **fresh** · Observation **Last Result 0** · 클로저 **full** `closure_ok: true`·SafeOps **ok**. 예언 승격 **combined=false** 유지.
+- **TTL(로컬):** `approval_valid_until` ~**2026-05-16** UTC · `risk_expires_at`는 sync 후 `build_trading_go_nogo`·`risk_profile_fact_safe_latest.json` 참조(짧은 TTL이면 2번에서 재sync).
+- **막힘:** 없음(자동).
+- **다음(1번):** Wave 2 — `jema12.com`·`mkmlife`(zone active 확인) 등 playbook wave2; Wave 1 CF 전송 모니터.
+
+## Ops slice (2026-05-15 · 권장 Ops 레인 — 유지)
+
+**Thread:** Cursor Ops — 지휘관 **「권장으로 해」**.
+
+- **완료:** P0 **725** · TrackC auto chain+copy guard **DONE** · evidence pack·dashboard 갱신 · SSOT: 클로저 **closure_ok**·SafeOps **ok**·예언 승격 **combined=false**(보류). **미실행:** Wave 2(1번)·VPS GO 동기화·승격·mkmlife 실배포.
+- **막힘:** 없음.
+- **다음:** **1번** Wave 1/2 레지스트라 · **2번** TTL·VPS parity(필요 시) · 승격은 **명시 승인** 전까지 보류.
+
+## Ops slice (2026-05-15 · SafeOps 복구 + 클로저 full)
+
+**Thread:** Cursor Ops — 지휘관 **「진행해」**.
+
+- **완료:** `Invoke-LiveSyncHeartbeatPull` **fresh** · `Run-TradingObservationLoop` + `schtasks` Observation **Last Result 0** · `Invoke-SafeOpsSurfaceCheck` **ok** · 예언 클로저 **full** `closure_ok: true`·`go_no_go: GO`·pytest 137 pass. 예언 승격은 여전히 **combined=false**(보류).
+- **막힘:** 없음(자동).
+- **다음(인간):** **1번** Wave 1 메일·CF·Wave 2. 승인 TTL은 `approval_valid_until_utc`·`risk_expires_at` 모니터(2번과 공유 가능).
+
+## Ops slice (2026-05-15 · 3채팅 분리 권장 — Ops 레인만)
+
+**Thread:** Cursor Ops — 지휘관 **「권장으로 해」** (채팅 역할 고정).
+
+- **완료(이 채팅):** P0 **725** OK · 예언 게이트 **opportunistic/soft_band_review/combined=false**(승격 안 함) · TrackC auto chain DONE · 예언 클로저 **pytest·prereqs OK** (`-SkipSafeOpsSurfaceCheck`·`-SkipGoNoGoRefresh` — **2번 채팅 담당**).
+- **막힘(2번으로):** ~~SafeOps degraded~~ → **아래 슬라이스에서 복구**.
+- **막힘(1번으로):** Wave 2 레지스트라(`jema12.com` 등) — **미착수**(1번 채팅).
+- **다음:** **1번** Hostinger 메일 승인·CF 전송 상태·Wave 2. **2번** live_sync·Observation 루프·`go_no_go` TTL. **이 채팅** 예언/TrackC만.
+
+## Ops slice (2026-05-15 · 순서 밀기 — sweep·VPS GO·mkmlife DryRun)
+
+**Thread:** Cursor — 지휘관 **「순서대로 밀어」**.
+
+- **완료:** (1) `run_prophecy_btrack_recommended_eval_chain_v1.py --auto-sweep-and-apply` exit 0 (~39s) → **best `neutral_bps=2.0`**·`reports/prophecy_promotion_gates_recommended_chain_v1_latest.json` **`outcome_class: opportunistic`**, `soft_band_review`, `combined_all_passed: false`(렌즈 mean ~0.486·instrument ~0.535) → **승격 안 함**. (2) 로컬·VPS `trading_go_no_go` **GO** · `Invoke-VpsTradingGoReadinessSync_v1.ps1` **`aligned=true`**. (3) mkmlife `deploy-to-hostinger.ps1 -DryRun` OK(SSH/배포 미실행). **예언 클로저** `closure_ok: true`·safe_ops ok.
+- **막힘:** strict/combined 승격 게이트 **미통과**(수치).
+- **다음(인간):** Track A 승격·실주문은 **명시 승인**; mkmlife **실배포**는 `-DryRun` 없이 지휘관 실행; RQ-009·GPU Pack0-B.
+
+## Ops slice (2026-05-15 · 권장안 마감 — 승격 보류·관측 유지)
+
+**Thread:** Cursor — 지휘관 **「권장 방안으로 해봐」**.
+
+- **완료:** **예언** `recommended_chain`·`dual` 재평가 → `reports/prophecy_promotion_gates_human_gate_check_latest.json` **`outcome_class: opportunistic`**, `promotion_recommendation: soft_band_review`, `combined_all_passed: false` → **Track A 승격 안 함(권장 준수)**. **P0** 725 OK. **예언 클로저** `closure_ok: true`·`ops_mainline_observability_only_no_orders`. **Track C** `Run-TrackCRecommendedAutoChain_v1.ps1` DONE(copy guard PASS)·`track_c_evidence_pack_latest.json`·`mkm_trackc_ops_dashboard_latest.json`. **실매매** `trading_go_no_go` **GO**·`ACTIVE_MODE`·지휘관 승인 유효(`trading_human_execution_approval_latest.json` **GO**, ~2026-05-16 UTC) — **주문 자동 없음**.
+- **막힘:** 없음(자동).
+- **다음(인간):** **RQ-009** OPEN(법무 D·COGS 실측)·**GPU Pack0-B**·**mkmlife** `deploy-to-hostinger.ps1` — 에이전트 미실행. 예언 **strict 승격** 원하면 `run_prophecy_btrack_recommended_eval_chain_v1.py --auto-sweep-and-apply` 후 재평가·**명시 승인**.
+
 ## Ops slice (2026-05-15 · 순서 마감 — AthenaBundle + VPS 재동기)
 
 **Thread:** Cursor — 지휘관 **「순서대로 쭉 밀어」**.
 
 - **완료:** **gitea/main `f1c9957859`**. **AthenaBundle** exit 0 (~3m, prophecy 137 pass, premium queue GO shadow, tail SafeOps ok). **AmsaengHealth** exit 0 (일간). jema-ai VPS **destiny 번들+lab rsync** (이전 턴). ML-DEV-4 표면·P0 725.
 - **막힘:** 없음(자동).
-- **다음(인간):** 예언 **승격**·실매매·RQ-009 법무·GPU Pack0-B — `combined_all_passed`·`LOCKED_MODE`·`trading_go_no_go` **합선 금지**. mkmlife `deploy-to-hostinger.ps1` 별도.
+- **다음(인간):** 예언 **승격**·실매매·RQ-009 법무·GPU Pack0-B — `combined_all_passed`·`LOCKED_MODE`·`trading_go_no_go` **합선 금지**. mkmlife `deploy-to-hostinger.ps1` 별도. VPS 재기동 직후 **502** 가능 → 수 초 후 **200** 정상(실측).
 
 ## Ops slice (2026-05-15 · ML-DEV-4 + 권장 검증 번들)
 
