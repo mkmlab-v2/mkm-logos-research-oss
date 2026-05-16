@@ -125,7 +125,18 @@ curl -sS -X POST "http://127.0.0.1:8788/api/public-events/ingest" -H "Content-Ty
 | **watch** | `risk_level` = WARNING · 또는 `showroom_display_mode` = defend | amber 맥동 |
 | **critical** | `risk_level` = CRITICAL · 또는 `showroom_display_mode` = attack | red 맥동 (관측·게이트 인지, 매매 신호 아님) |
 
-**Phase 2.2 (예정):** 레이더 중심 클릭 → Logos 연구 슬라이스 / `logos_insight_bundle` 슬라이스 패널 — **NON_GATING · `[HYPO]`** 고정.
+### 4.6 Phase 2.2 — Logos deep dive panel (Showroom, 2026-05-16)
+
+**트리거:** `public_showroom_topology_radar_v1.html` 레이더 **중심(core)** 또는 **WATCH/critical 링(ring-pulse)** 클릭·키보드(Enter/Space).
+
+| 입력 | 소스 | 패널 |
+|------|------|------|
+| 연구 슬라이스 | `showroom_logos_research_slice_v0.json` (동 디렉터리 · `api.jemaai.cloud` · 빌드: `build_showroom_logos_research_slice_v1.py`) | 테마 1건 + semantic nodes 최대 4 · commander insight 요약 |
+| 레이더 상태 → 테마 | `critical` → `theme_08_seal_mark` · `watch` → `theme_02_fact_lock_gate` · `calm` → `theme_06_exodus_regime_passover` | 상태별 상징 해설 (운영 매핑 아님) |
+
+**고정 배지:** `[HYPO]` · `research_only` · `NON_GATING` · 전체 목록 링크 `public_showroom_logos_research_v1.html`.
+
+**금지:** 패널·링크 copy를 실매매·Track A 게이트·매수/매도 신호로 읽히게 표기하지 않는다.
 
 **배포:** `deploy_showroom_static.ps1` · nginx `location = /public_showroom_topology_radar_v1.html` (`nginx_snippets/jemaai_showroom_ui.conf`).
 

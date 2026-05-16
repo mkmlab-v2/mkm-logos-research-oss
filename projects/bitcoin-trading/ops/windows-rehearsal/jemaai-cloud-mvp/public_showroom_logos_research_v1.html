@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · Logos research slice (read-only)</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --surface: #12151a;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #e8eaef;
+      --muted: #8b919d;
+      --accent: #c5a057;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .wrap { max-width: 48rem; margin: 0 auto; padding: 1.5rem 1.1rem 2.5rem; }
+    h1 { font-size: 1.15rem; margin: 0 0 0.35rem; }
+    .lede { margin: 0 0 1.25rem; font-size: 0.8125rem; color: var(--muted); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1rem 0.9rem;
+      margin-bottom: 0.85rem;
+    }
+    .card h2 { font-size: 0.95rem; margin: 0 0 0.5rem; color: var(--text); }
+    .card h3 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 0.75rem 0 0.35rem; }
+    pre { margin: 0; font-size: 0.72rem; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .tag { display: inline-block; font-size: 0.68rem; padding: 0.15rem 0.45rem; border-radius: 4px; background: rgba(197, 160, 87, 0.15); color: var(--accent); margin-bottom: 0.5rem; margin-right: 0.35rem; }
+    .err { color: #c97a6d; font-size: 0.85rem; }
+    a { color: var(--accent); }
+    ul { margin: 0.25rem 0 0.5rem; padding-left: 1.1rem; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="tag">[HYPO]</span><span class="tag">NON_GATING</span><span class="tag">snapshot</span>
+    <h1>Logos research · symbolic network (demo)</h1>
+    <p class="lede">
+      Loads <code>showroom_logos_research_slice_v0.json</code> (build:
+      <code>py scripts/build_showroom_logos_research_slice_v1.py</code>).
+      Artifact snapshot only — not live, not a trading or clinical signal.
+      <code>research_metaphor_*</code> labels are educational metaphors only.
+    </p>
+    <p class="lede">
+      <a href="public_showroom_topology_radar_v1.html">Risk topology radar</a>
+      · <a href="public_showroom_board_minimal.html">← Minimal public board</a>
+      · <a href="public_showroom_trust_visualization_v0.html">Trust visualization v0</a>
+    </p>
+    <div id="disclaimer"></div>
+    <div id="root"></div>
+  </div>
+  <script>
+    (function () {
+      var root = document.getElementById("root");
+      var disclaimerEl = document.getElementById("disclaimer");
+      function esc(s) {
+        if (s === null || s === undefined) return "";
+        return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+      }
+      function card(title, bodyHtml) {
+        return '<div class="card"><h2>' + esc(title) + "</h2>" + bodyHtml + "</div>";
+      }
+      fetch("showroom_logos_research_slice_v0.json", { cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status);
+          return r.json();
+        })
+        .then(function (doc) {
+          var d = doc.disclaimer || {};
+          disclaimerEl.innerHTML = card("Disclaimer", "<p class=\"lede\" style=\"margin:0\">" + esc(d.note_ko || "") + "</p>");
+          var html = "";
+          html += card("Slice meta", "<pre>" + esc(JSON.stringify({
+            schema_version: doc.schema_version,
+            generated_at_utc: doc.generated_at_utc,
+            theme_count: doc.theme_count,
+            source_db_dir: doc.source_db_dir
+          }, null, 2)) + "</pre>");
+          (doc.themes || []).forEach(function (t) {
+            var anchor = t.golden_anchor || {};
+            var nodes = t.semantic_nodes || [];
+            var body = "<p><strong>" + esc(anchor.ref) + "</strong> — " + esc(anchor.text) + "</p>";
+            body += "<h3>Nodes (" + nodes.length + ")</h3><ul>";
+            nodes.forEach(function (n) {
+              body += "<li><code>" + esc(n.node_id) + "</code> " + esc(n.ref) + " (w=" + esc(n.impact_weight) + ")</li>";
+            });
+            body += "</ul><h3>Governance mapping (research only)</h3><pre>" + esc(JSON.stringify(t.governance_mapping, null, 2)) + "</pre>";
+            body += "<h3>Commander insight</h3><p style=\"font-size:0.85rem\">" + esc(t.commander_insight) + "</p>";
+            html += card(anchor.theme || t.theme_id, body);
+          });
+          root.innerHTML = html;
+        })
+        .catch(function (e) {
+          root.innerHTML = '<div class="err">Could not load JSON: ' + esc(e.message) + "</div>";
+        });
+    })();
+  </script>
+</body>
+</html>

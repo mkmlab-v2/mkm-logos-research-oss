@@ -114,14 +114,22 @@
     .deep-dive {
       display: none;
       margin-top: 1rem;
-      padding: 1rem;
-      border: 1px dashed var(--border);
+      padding: 1rem 1.1rem;
+      border: 1px dashed rgba(197, 160, 87, 0.35);
       border-radius: 8px;
       text-align: left;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.28);
     }
     .deep-dive.open { display: block; }
     .deep-dive a { color: var(--accent); }
+    .deep-dive .panel-tags { margin-bottom: 0.65rem; }
+    .deep-dive .panel-tags .badge { margin-right: 0.25rem; }
+    .deep-dive h2 { font-size: 0.9rem; margin: 0 0 0.5rem; font-weight: 600; }
+    .deep-dive .anchor { font-size: 0.8125rem; margin: 0 0 0.65rem; color: var(--text); }
+    .deep-dive ul.nodes { margin: 0.35rem 0 0.75rem; padding-left: 1.1rem; font-size: 0.78rem; color: var(--muted); }
+    .deep-dive .insight { font-size: 0.78rem; color: var(--muted); margin: 0.5rem 0 0; line-height: 1.45; }
+    .deep-dive .panel-foot { font-size: 0.75rem; margin-top: 0.75rem; padding-top: 0.65rem; border-top: 1px solid var(--border); }
+    .ring-pulse.hotspot { cursor: pointer; }
     .err { color: var(--critical); }
     .footer-links { font-size: 0.8125rem; margin-top: 1.25rem; }
     .footer-links a { color: var(--accent); }
@@ -153,7 +161,8 @@
         <circle class="ring" cx="160" cy="160" r="70" />
         <circle class="ring" cx="160" cy="160" r="35" />
         <line class="sweep" x1="160" y1="160" x2="160" y2="24" />
-        <circle class="ring-pulse" cx="160" cy="160" r="118" />
+        <circle class="ring-pulse" id="watchRing" cx="160" cy="160" r="118"
+          tabindex="0" role="button" aria-label="Open Logos research panel for current watch level (non-gating)" />
         <circle class="core-dot" id="coreDot" cx="160" cy="160" r="10" tabindex="0" role="button"
           aria-label="Open Logos research deep dive (non-gating)" />
       </svg>
@@ -161,9 +170,17 @@
       <p class="summary" id="summaryLine">—</p>
       <p class="meta" id="metaLine">—</p>
       <div class="deep-dive" id="deepDive" aria-live="polite">
-        <p class="k">Deep dive (Phase 2.2 preview)</p>
-        <p class="v">레이더 중심은 <strong>Logos·의미 그래프 해설</strong>로 이어집니다. 운영 게이트·실매매 트리거가 아닙니다.</p>
-        <p class="v"><a href="public_showroom_logos_research_v1.html">Logos 연구 슬라이스 (스냅샷 · NON_GATING)</a></p>
+        <div class="panel-tags" aria-label="Research boundary">
+          <span class="badge badge-warn">[HYPO]</span>
+          <span class="badge">research_only</span>
+          <span class="badge">NON_GATING</span>
+        </div>
+        <h2 class="k">Logos deep dive · snapshot</h2>
+        <div id="logosPanelBody"><p class="v">중심 또는 WATCH 링을 눌러 연구 슬라이스를 불러옵니다.</p></div>
+        <p class="panel-foot">
+          <a href="public_showroom_logos_research_v1.html">전체 테마 목록 (별도 페이지)</a>
+          · 운영 게이트·실매매 트리거 아님
+        </p>
       </div>
     </section>
 
@@ -186,8 +203,17 @@
   const params = new URLSearchParams(location.search);
   const apiBase = (params.get("api") || "https://api.jemaai.cloud").replace(/\/$/, "");
 
+  const THEME_BY_STATE = {
+    critical: "theme_08_seal_mark",
+    watch: "theme_02_fact_lock_gate",
+    calm: "theme_06_exodus_regime_passover",
+  };
+  const MAX_NODES = 4;
+
   let snapshot = null;
   let bundleEvent = null;
+  let logosSlice = null;
+  let logosLoadPromise = null;
 
   function esc(s) {
     return String(s)
@@ -216,6 +242,81 @@
     panel.classList.remove("state-calm", "state-watch", "state-critical");
     panel.classList.add("state-" + state);
     document.getElementById("stateLabel").textContent = stateLabel(state);
+    const ring = document.getElementById("watchRing");
+    if (state === "watch" || state === "critical") {
+      ring.classList.add("hotspot");
+    } else {
+      ring.classList.remove("hotspot");
+    }
+  }
+
+  function pickTheme(slice, state) {
+    if (!slice || !slice.themes || !slice.themes.length) return null;
+    const want = THEME_BY_STATE[state] || THEME_BY_STATE.calm;
+    for (let i = 0; i < slice.themes.length; i++) {
+      if (slice.themes[i].theme_id === want) return slice.themes[i];
+    }
+    return slice.themes[0];
+  }
+
+  function renderLogosPanel(theme, slice) {
+    const body = document.getElementById("logosPanelBody");
+    if (!theme) {
+      body.innerHTML = '<p class="err v">연구 슬라이스를 불러오지 못했습니다.</p>';
+      return;
+    }
+    const anchor = theme.golden_anchor || {};
+    const nodes = (theme.semantic_nodes || []).slice(0, MAX_NODES);
+    const disc = (slice && slice.disclaimer) || {};
+    let html = "";
+    if (disc.note_ko) {
+      html += '<p class="insight">' + esc(disc.note_ko) + "</p>";
+    }
+    html += '<p class="anchor"><strong>' + esc(anchor.theme || theme.theme_id) + "</strong><br />";
+    html += esc(anchor.ref) + " — " + esc(anchor.text) + "</p>";
+    html += '<p class="k">Semantic nodes (max ' + MAX_NODES + ")</p><ul class=\"nodes\">";
+    nodes.forEach(function (n) {
+      html += "<li><code>" + esc(n.node_id) + "</code> " + esc(n.ref) + " · w=" + esc(n.impact_weight) + "</li>";
+    });
+    html += "</ul>";
+    if (theme.commander_insight) {
+      const insight = String(theme.commander_insight);
+      html += '<p class="k">Commander insight</p><p class="insight">' + esc(insight.length > 320 ? insight.slice(0, 317) + "…" : insight) + "</p>";
+    }
+    body.innerHTML = html;
+  }
+
+  async function loadLogosSlice() {
+    if (logosSlice) return logosSlice;
+    if (logosLoadPromise) return logosLoadPromise;
+    const urls = [];
+    try { urls.push(new URL("showroom_logos_research_slice_v0.json", location.href).href); } catch (e) {}
+    urls.push(apiBase + "/showroom_logos_research_slice_v0.json");
+    urls.push("https://jemaai.cloud/showroom_logos_research_slice_v0.json");
+    logosLoadPromise = fetchJson(urls).then(function (doc) {
+      logosSlice = doc;
+      return doc;
+    });
+    return logosLoadPromise;
+  }
+
+  async function openDeepDive() {
+    const panel = document.getElementById("deepDive");
+    const isOpen = panel.classList.contains("open");
+    if (isOpen) {
+      panel.classList.remove("open");
+      return;
+    }
+    panel.classList.add("open");
+    document.getElementById("logosPanelBody").innerHTML = '<p class="v">슬라이스 로드 중…</p>';
+    const ev = bundleEvent || {};
+    const state = resolveRadarState(ev);
+    try {
+      const slice = await loadLogosSlice();
+      renderLogosPanel(pickTheme(slice, state), slice);
+    } catch (e) {
+      document.getElementById("logosPanelBody").innerHTML = '<p class="err v">' + esc(e.message || e) + "</p>";
+    }
   }
 
   function renderFacts(ev, snap) {
@@ -288,15 +389,17 @@
     updateUi();
   }
 
-  document.getElementById("coreDot").addEventListener("click", function () {
-    document.getElementById("deepDive").classList.toggle("open");
-  });
-  document.getElementById("coreDot").addEventListener("keydown", function (e) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      document.getElementById("deepDive").classList.toggle("open");
-    }
-  });
+  function bindDeepDive(el) {
+    el.addEventListener("click", function () { openDeepDive(); });
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        openDeepDive();
+      }
+    });
+  }
+  bindDeepDive(document.getElementById("coreDot"));
+  bindDeepDive(document.getElementById("watchRing"));
 
   loadStatic().then(function () {
     updateUi();
