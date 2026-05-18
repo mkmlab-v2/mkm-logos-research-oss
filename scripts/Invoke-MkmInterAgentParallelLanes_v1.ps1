@@ -8,7 +8,9 @@
 #>
 param(
     [switch]$SkipSweep,
-    [switch]$SkipDialogueCompare
+    [switch]$SkipDialogueCompare,
+    [switch]$SkipCmp2011Ab,
+    [switch]$SkipHealthSignoffCandidate
 )
 
 $ErrorActionPreference = "Stop"
@@ -26,6 +28,18 @@ if (-not $SkipDialogueCompare) {
     $jobs += Start-Job -ScriptBlock {
         Set-Location $using:root
         py scripts/run_mkm_inter_agent_dialogue_routing_compare_v1.py --scenario health --turns 4
+    }
+}
+if (-not $SkipCmp2011Ab) {
+    $jobs += Start-Job -ScriptBlock {
+        Set-Location $using:root
+        py scripts/run_mkm_cmp2_011_v2_routing_ab_v1.py
+    }
+}
+if (-not $SkipHealthSignoffCandidate) {
+    $jobs += Start-Job -ScriptBlock {
+        Set-Location $using:root
+        py scripts/build_mkm_inter_agent_health_signoff_candidate_v1.py
     }
 }
 
