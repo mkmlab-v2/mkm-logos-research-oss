@@ -811,6 +811,8 @@ $required = @(
     "docs\final\artifacts\compression_low_saving_local_cap_sweep_v1_latest.json",
     "tests\test_run_ultra_compression_ssot_relaxed_cap_pinpoint_v1.py",
     "tests\test_run_compression_low_saving_local_cap_sweep_v1.py",
+    "scripts\build_compression_b_track_evidence_summary_v1.py",
+    "tests\test_build_compression_b_track_evidence_summary_v1.py",
     "tests\test_build_general_compression_eval_input_smoke_v1.py",
     "tests\test_validate_general_compression_bundle_v1.py",
     "tests\test_split_general_compression_holdout_smoke_v1.py",
