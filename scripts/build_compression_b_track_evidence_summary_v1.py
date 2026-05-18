@@ -23,6 +23,10 @@ HEALTH_PIN = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_HEALTH_BRI
 SSOT_PIN = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_SSOT_RELAXED_CAP_PINPOINT_V1.json"
 LOW_SAVING_SWEEP = ROOT / "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json"
 SSOT_MICROGRID = ROOT / "docs/final/artifacts/compression_ssot_relaxed_cap_microgrid_v1_latest.json"
+PROMOTION_SIGNOFF = (
+    ROOT / "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json"
+)
+PROMOTION_CANDIDATE = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_PROMOTION_CANDIDATE_V1.json"
 OUT_DEFAULT = ROOT / "docs/final/artifacts/compression_b_track_bridge_evidence_summary_v1.json"
 POLICY_FLOOR = 0.47
 HEALTH_CASE = "cmp2_014"
@@ -218,12 +222,29 @@ def main() -> int:
             }
         )
 
+    promotion_signoff = _load(PROMOTION_SIGNOFF)
+    promotion_applied: dict[str, Any] | None = None
+    if promotion_signoff:
+        promotion_applied = {
+            "signoff_path": str(PROMOTION_SIGNOFF.relative_to(ROOT)).replace("\\", "/"),
+            "selected_variant_id": promotion_signoff.get("selected_variant_id"),
+            "selected_run_config": promotion_signoff.get("selected_run_config"),
+            "promotion_gates_at_apply": promotion_signoff.get("promotion_gates_at_apply"),
+            "approved_at_utc": promotion_signoff.get("approved_at_utc"),
+        }
+
     floor_pass_ssot = bool(ssot_a_plan and ssot_a_plan.get("ultra_saving_policy_ok"))
     min_j_ok = bool(
         ssot_a_plan
         and (ssot_a_plan.get("promotion_gates") or {}).get("min_jaccard_not_below_track_a")
     )
-    if floor_pass_ssot and not min_j_ok:
+    if promotion_applied:
+        recommendation = (
+            "track_a_promoted_top5_ssot_cap_0.45_allowlist; "
+            "regenerate via run_ultra_compression_default.py domain-relaxed flags; "
+            "rollback from .pre_promotion_backup if needed"
+        )
+    elif floor_pass_ssot and not min_j_ok:
         recommendation = (
             "freeze_track_a_baseline; b_track_ssot_relaxed_cap_0.45_passes_floor_but_min_j_regresses; "
             "human_review_before_track_a; health_pin_case_only_not_global"
@@ -259,6 +280,7 @@ def main() -> int:
         "b_track_ssot_relaxed_cap_a_plan": ssot_a_plan,
         "low_saving_local_cap_sweep": low_saving_sweep,
         "ssot_relaxed_cap_microgrid": ssot_microgrid,
+        "track_a_promotion_applied": promotion_applied,
         "scm_bridge_outcome": {
             "scm_min_jaccard_achieved": 1.0,
             "global_token_saving_rate_typical": 0.3938115330520394,

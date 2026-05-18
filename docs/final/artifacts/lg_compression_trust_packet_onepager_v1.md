@@ -16,20 +16,23 @@
 
 ---
 
-## 1) Track A — 운영 동결 베이스라인
+## 1) Track A — 승격 운영 베이스라인 (2026-05-18)
 
-`frozen_operational_baseline` · MULTILENS ultra, bridge OFF
+`promoted_operational_baseline` · MULTILENS ultra, bridge OFF, **Top5 ssot cap only**
 
 **주장**
-- 동결: `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, bridge OFF.
-- V2 벤치 **~46.84%** 토큰 절감, Jaccard **~0.899**; 바닥 **0.47** 참조, `ultra_saving_policy_ok=false` (측정 그대로).
+- Active SSOT: `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` — variant `ssot_cap_0.45_top5_allowlist`.
+- V2 벤치 **~47.54%** global token saving, avg Jaccard **~0.890**, min Jaccard **~0.714** (동결 대비 min J 유지).
+- RQ-016 **bench floor 0.47** 참조 **통과** (`bench_saving_floor_ok` in KPI summary); `ultra_saving_policy_ok`는 decision **0.49** 축 별도(혼용 금지).
+- 국소 정책: `domain_relaxed_max_saving_overrides {ssot:0.45}` on case allowlist `cmp2_002,004,005,006,009` only — lexicon·bridge 변경 없음.
 
 **주장하지 않음**
-- 99%/100%·바닥 **보장**; B-track **Track A 자동 승격**; 벤치만으로 **프로덕션 SaaS SLA**.
+- 99%/100%·**고객/LG 47% 보장**; 전역 ssot 0.45(48.38% / min J 붕괴) 채택 주장; 벤치만 **프로덕션 SaaS SLA**.
 
 **근거**
 - `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`
-- `docs/final/artifacts/compression_b_track_bridge_evidence_summary_v1.json`
+- `docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json`
+- `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`
 
 ---
 
@@ -66,22 +69,22 @@
 
 ---
 
-## 4) B-track A-plan — ssot 국소 cap 연구 (동결 Track A 미대체)
+## 4) B-track A-plan — 연구 이력 (승격 전후 구분)
 
-`research_pinpoint_not_track_a` · `[HYPO]`
+`research_archive_plus_promotion_sweep` · `[HYPO]` for global pin only
 
-**주장**
-- `domain_relaxed_max_saving_overrides: {ssot: 0.45}` — **41k lexicon 미수정**, bridge OFF.
-- V2 벤치 pinpoint **~48.38%** 절감 — **내부 floor 0.47 참조 통과**(pinpoint JSON만).
-- `promotion_gates`: **human_review_required**, **auto_track_a_promotion_allowed=false**.
+**주장 (연구·아카이브)**
+- 전역 ssot 0.45 pinpoint **~48.38%** — floor 0.47 통과 but **min J 회귀** → Track A **미채택**(아카이브).
+- 승격 스윕 winner: **Top5 case allowlist** only → bench **~47.54%**, min J **~0.714** → **2026-05-18 human apply** to active.
+- `run_ultra_compression_promotion_sweep_v1.py` / `apply_multilens_ultra_compression_track_a_promotion_v1.py` — signoff on disk.
 
 **주장하지 않음**
-- Track A active **대체·자동 승격**; 고객/LG **47% 보장**; frozen **min Jaccard(0.714)** 유지.
+- 전역 48.38%를 **현재 Track A**로 서술; 고객/LG **47% 보장**; Top5 내부 **미세 Jaccard 회귀**(4 cases) 무시.
 
 **근거**
-- `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_SSOT_RELAXED_CAP_PINPOINT_V1.json`
-- `docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json`
-- `docs/final/artifacts/compression_ssot_relaxed_cap_microgrid_v1_latest.json`
+- `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_SSOT_RELAXED_CAP_PINPOINT_V1.json` (global pin archive)
+- `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_PROMOTION_CANDIDATE_V1.json`
+- `docs/final/artifacts/compression_b_track_bridge_evidence_summary_v1.json`
 
 ---
 

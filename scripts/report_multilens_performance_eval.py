@@ -984,6 +984,8 @@ def evaluate_report(
     experimental_decoder_fidelity_for_baseline: bool = False,
     domain_min_saving_floor_overrides: dict[str, float] | None = None,
     domain_relaxed_max_saving_overrides: dict[str, float] | None = None,
+    domain_relaxed_max_saving_case_allowlist: frozenset[str] | None = None,
+    domain_relaxed_max_saving_exclude_case_ids: frozenset[str] | None = None,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
@@ -1019,6 +1021,7 @@ def evaluate_report(
     )
     state16_adapter = NoopState16Adapter()
     for c in comp_cases:
+        case_id = str(c.get("id", ""))
         raw = str(c.get("raw_text", ""))
         source_comp = str(c.get("compressed_text", ""))
         source_rec = str(c.get("reconstructed_text", ""))
@@ -1165,7 +1168,11 @@ def evaluate_report(
             if domain_relaxed_max_saving_overrides:
                 relaxed = domain_relaxed_max_saving_overrides.get(case_domain)
                 if relaxed is not None:
-                    cap = max(float(cap) if cap is not None else 0.0, float(relaxed))
+                    skip_relaxed = case_id in (domain_relaxed_max_saving_exclude_case_ids or frozenset())
+                    if domain_relaxed_max_saving_case_allowlist is not None:
+                        skip_relaxed = skip_relaxed or case_id not in domain_relaxed_max_saving_case_allowlist
+                    if not skip_relaxed:
+                        cap = max(float(cap) if cap is not None else 0.0, float(relaxed))
             comp = _apply_max_saving_cap(raw, comp, max_saving_rate=cap)
             if apply_bridge_case and bridge_meta is not None:
                 comp = _bridge_aware_candidate_select(
@@ -1503,6 +1510,16 @@ def evaluate_report(
             "enable_router_blend_candidate": enable_router_blend_candidate,
             "domain_min_saving_floor_overrides": domain_min_saving_floor_overrides,
             "domain_relaxed_max_saving_overrides": domain_relaxed_max_saving_overrides,
+            "domain_relaxed_max_saving_case_allowlist": (
+                sorted(domain_relaxed_max_saving_case_allowlist)
+                if domain_relaxed_max_saving_case_allowlist is not None
+                else None
+            ),
+            "domain_relaxed_max_saving_exclude_case_ids": (
+                sorted(domain_relaxed_max_saving_exclude_case_ids)
+                if domain_relaxed_max_saving_exclude_case_ids is not None
+                else None
+            ),
         },
         "compression_metrics": {
             "case_count": len(comp_rows),

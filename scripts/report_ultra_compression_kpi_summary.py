@@ -16,6 +16,8 @@ ACTIVE_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRE
 ACTIVE_ULTRA_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json"
 HYDRATION_MIX = ROOT / "reports" / "constitution" / "btrack_pilot" / "token_api_hydration_mix_latest.json"
 OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "ultra_compression_kpi_summary_latest.json"
+# RQ-016 internal V2 bench reference (distinct from ULTRA_TOKEN_SAVING_POLICY_MIN=0.49 in evaluate_report).
+BENCH_SAVING_FLOOR_REF = 0.47
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -27,8 +29,12 @@ def _load(path: Path) -> dict[str, Any]:
 def _kpi_from_report(report: dict[str, Any]) -> dict[str, Any]:
     active_metrics = report.get("compression_metrics", {}) if isinstance(report, dict) else {}
     quality = report.get("quality_gate", {}) if isinstance(report, dict) else {}
+    saving = active_metrics.get("global_token_saving_rate")
+    bench_floor_ok = (
+        float(saving) >= BENCH_SAVING_FLOOR_REF if saving is not None else None
+    )
     return {
-        "global_token_saving_rate": active_metrics.get("global_token_saving_rate"),
+        "global_token_saving_rate": saving,
         "avg_reconstruction_fidelity_jaccard": active_metrics.get("avg_reconstruction_fidelity_jaccard"),
         "avg_sensitive_integrity": active_metrics.get("avg_sensitive_integrity"),
         "jaccard_drop_pp": quality.get("jaccard_drop_pp"),
@@ -36,6 +42,8 @@ def _kpi_from_report(report: dict[str, Any]) -> dict[str, Any]:
         "ultra_saving_50_ok": quality.get("ultra_saving_50_ok"),
         "ultra_saving_policy_ok": quality.get("ultra_saving_policy_ok"),
         "ultra_saving_policy_min": quality.get("ultra_saving_policy_min"),
+        "bench_saving_floor_min": BENCH_SAVING_FLOOR_REF,
+        "bench_saving_floor_ok": bench_floor_ok,
         "sensitive_integrity_ok": quality.get("sensitive_integrity_ok"),
     }
 

@@ -164,6 +164,8 @@ on:
       - "scripts/report_multilens_performance_eval.py"
       - "scripts/run_ultra_compression_bench.py"
       - "scripts/run_ultra_compression_default.py"
+      - "scripts/run_ultra_compression_promotion_sweep_v1.py"
+      - "scripts/apply_multilens_ultra_compression_track_a_promotion_v1.py"
       - "scripts/build_general_compression_eval_input.py"
       - "scripts/validate_general_compression_bundle.py"
       - "scripts/split_general_compression_holdout_v1.py"
@@ -1401,7 +1403,7 @@ jobs:
         run: |
           python -m pytest tests/test_ultra_compression_artifacts.py -q --tb=short
           python -m pytest tests/test_master_codebook_lexicon_v1_bridge.py -q --tb=short
-          python -m pytest tests/test_run_ultra_compression_health_bridge_pinpoint_v1.py tests/test_run_compression_health_bridge_floor_microgrid_v1.py tests/test_run_ultra_compression_ssot_relaxed_cap_pinpoint_v1.py tests/test_run_compression_low_saving_local_cap_sweep_v1.py tests/test_run_compression_ssot_relaxed_cap_microgrid_v1.py tests/test_build_compression_b_track_evidence_summary_v1.py -q --tb=short
+          python -m pytest tests/test_run_ultra_compression_health_bridge_pinpoint_v1.py tests/test_run_compression_health_bridge_floor_microgrid_v1.py tests/test_run_ultra_compression_ssot_relaxed_cap_pinpoint_v1.py tests/test_run_compression_low_saving_local_cap_sweep_v1.py tests/test_run_compression_ssot_relaxed_cap_microgrid_v1.py tests/test_build_compression_b_track_evidence_summary_v1.py tests/test_ultra_compression_promotion_sweep_v1.py -q --tb=short
 
       - name: General compression eval input + bundle hard-lock contract
         run: |

@@ -7,6 +7,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
+from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
@@ -22,6 +23,17 @@ DECISION = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_
 ACTIVE_REPORT = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 ACTIVE_REPORT_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_LITERAL_V1.json"
 ACTIVE_REPORT_ULTRA_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json"
+PROMOTION_SIGNOFF = (
+    ROOT / "docs" / "final" / "artifacts" / "multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json"
+)
+
+
+def _promotion_signoff_run_config() -> dict[str, Any] | None:
+    if not PROMOTION_SIGNOFF.is_file():
+        return None
+    doc = json.loads(PROMOTION_SIGNOFF.read_text(encoding="utf-8"))
+    cfg = doc.get("selected_run_config")
+    return cfg if isinstance(cfg, dict) else None
 
 # Track B (literal-priority): conservative caps — see docs/final/COMPRESSION_SLA_POLICY_V1.md
 LITERAL_STRATEGY = "C"
@@ -110,6 +122,29 @@ def main() -> int:
         default=None,
         help="Optional output path for the report JSON (default: Track A/B active report paths by --mode).",
     )
+    ap.add_argument(
+        "--domain-relaxed-max-saving-overrides",
+        default="",
+        metavar="SPEC",
+        help="Comma-separated domain:cap pairs (e.g. ssot:0.45). RQ-016 promotion profile.",
+    )
+    ap.add_argument(
+        "--domain-relaxed-max-saving-case-allowlist",
+        default="",
+        metavar="IDS",
+        help="Comma-separated case ids; relaxed caps apply only on these cases when set.",
+    )
+    ap.add_argument(
+        "--domain-relaxed-max-saving-exclude-case-ids",
+        default="",
+        metavar="IDS",
+        help="Comma-separated case ids never receiving domain relaxed caps.",
+    )
+    ap.add_argument(
+        "--ignore-promotion-signoff",
+        action="store_true",
+        help="Do not load domain-relaxed caps from multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json.",
+    )
     args = ap.parse_args()
     sla_track = str(args.mode)
     apply_bridge_policy = bool(args.apply_gematria_4d_bridge_policy) or env_apply_gematria_4d_bridge_policy()
@@ -119,6 +154,47 @@ def main() -> int:
         bridge_policy_domain_allowlist = frozenset(
             d.strip() for d in selective_domains_raw.split(",") if d.strip()
         )
+
+    domain_relaxed: dict[str, float] = {}
+    for part in str(args.domain_relaxed_max_saving_overrides or "").split(","):
+        part = part.strip()
+        if not part or ":" not in part:
+            continue
+        dom, cap = part.split(":", 1)
+        domain_relaxed[dom.strip()] = float(cap.strip())
+    relaxed_case_allowlist: frozenset[str] | None = None
+    allow_raw = str(args.domain_relaxed_max_saving_case_allowlist or "").strip()
+    if allow_raw:
+        relaxed_case_allowlist = frozenset(i.strip() for i in allow_raw.split(",") if i.strip())
+    relaxed_case_exclude: frozenset[str] | None = None
+    exclude_raw = str(args.domain_relaxed_max_saving_exclude_case_ids or "").strip()
+    if exclude_raw:
+        relaxed_case_exclude = frozenset(i.strip() for i in exclude_raw.split(",") if i.strip())
+
+    promotion_signoff_applied: dict[str, Any] | None = None
+    if (
+        sla_track == "universal"
+        and not args.ignore_promotion_signoff
+        and not domain_relaxed
+        and relaxed_case_allowlist is None
+        and relaxed_case_exclude is None
+    ):
+        signoff_doc = json.loads(PROMOTION_SIGNOFF.read_text(encoding="utf-8"))
+        signoff_cfg = signoff_doc.get("selected_run_config")
+        if isinstance(signoff_cfg, dict):
+            overrides = signoff_cfg.get("domain_relaxed_max_saving_overrides") or {}
+            if isinstance(overrides, dict):
+                domain_relaxed = {str(k): float(v) for k, v in overrides.items()}
+            allow_list = signoff_cfg.get("domain_relaxed_max_saving_case_allowlist")
+            if isinstance(allow_list, list) and allow_list:
+                relaxed_case_allowlist = frozenset(str(x) for x in allow_list)
+            exclude_list = signoff_cfg.get("domain_relaxed_max_saving_exclude_case_ids")
+            if isinstance(exclude_list, list) and exclude_list:
+                relaxed_case_exclude = frozenset(str(x) for x in exclude_list)
+            promotion_signoff_applied = {
+                "path": str(PROMOTION_SIGNOFF.relative_to(ROOT)).replace("\\", "/"),
+                "selected_variant_id": signoff_doc.get("selected_variant_id"),
+            }
 
     src_doc = json.loads(INPUT_V2.read_text(encoding="utf-8"))
     baseline_doc = json.loads(BASELINE_V2.read_text(encoding="utf-8"))
@@ -172,6 +248,9 @@ def main() -> int:
         include_gematria_4d_bridge=True,
         apply_gematria_4d_bridge_policy=apply_bridge_policy,
         bridge_policy_domain_allowlist=bridge_policy_domain_allowlist,
+        domain_relaxed_max_saving_overrides=domain_relaxed or None,
+        domain_relaxed_max_saving_case_allowlist=relaxed_case_allowlist,
+        domain_relaxed_max_saving_exclude_case_ids=relaxed_case_exclude,
         include_cee_core=True,
     )
     report["active_profile"] = {
@@ -189,6 +268,14 @@ def main() -> int:
             if bridge_policy_domain_allowlist is not None
             else None
         ),
+        "domain_relaxed_max_saving_overrides": domain_relaxed or None,
+        "domain_relaxed_max_saving_case_allowlist": (
+            sorted(relaxed_case_allowlist) if relaxed_case_allowlist is not None else None
+        ),
+        "domain_relaxed_max_saving_exclude_case_ids": (
+            sorted(relaxed_case_exclude) if relaxed_case_exclude is not None else None
+        ),
+        "promotion_signoff_applied": promotion_signoff_applied,
     }
     if sla_track == "ultra-literal":
         cases = (report.get("compression_metrics") or {}).get("cases") or []

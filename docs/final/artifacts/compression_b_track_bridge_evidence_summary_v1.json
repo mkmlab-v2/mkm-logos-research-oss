@@ -1,0 +1,228 @@
+{
+  "schema": "compression_b_track_bridge_evidence_summary_v1",
+  "generated_at_utc": "2026-05-18T20:12:22.292185Z",
+  "hypothesis_tier": "B",
+  "track_wall": "b_track_research_only",
+  "rq": "RQ-016",
+  "policy_floor": 0.47,
+  "track_a_frozen": {
+    "path": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "apply_gematria_4d_bridge_policy": false,
+    "global_token_saving_rate": 0.47538677918424754,
+    "avg_reconstruction_fidelity_jaccard": 0.8904921794966301,
+    "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
+    "ultra_saving_policy_ok": true,
+    "scm_min_jaccard": 0.7333333333333333,
+    "health_jaccard": 0.875
+  },
+  "b_track_health_pin_winner": {
+    "id": "health_bridge_saving_heavy",
+    "regenerate_script": "scripts/run_ultra_compression_health_bridge_pinpoint_v1.py",
+    "artifact_pinpoint": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_HEALTH_BRIDGE_PINPOINT_V1.json",
+    "bridge_policy_domain_allowlist": [
+      "health"
+    ],
+    "bridge_score_weights": {
+      "fidelity": 1.0,
+      "guard": 0.4,
+      "saving": 0.65,
+      "distance_penalty": 1.5
+    },
+    "global_token_saving_rate": 0.4627285513361463,
+    "avg_reconstruction_fidelity_jaccard": 0.9018883629700193,
+    "health_jaccard": 1.0,
+    "scm_min_jaccard": 0.7333333333333333,
+    "ultra_saving_policy_ok": false,
+    "delta_saving_vs_track_a": -0.012658,
+    "delta_avg_jaccard_vs_track_a": 0.011396
+  },
+  "b_track_ssot_relaxed_cap_a_plan": {
+    "id": "ssot_relaxed_cap_0.45",
+    "regenerate_script": "scripts/run_ultra_compression_ssot_relaxed_cap_pinpoint_v1.py",
+    "artifact_pinpoint": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_SSOT_RELAXED_CAP_PINPOINT_V1.json",
+    "pin_config": {
+      "domain_relaxed_max_saving_overrides": {
+        "ssot": 0.45
+      },
+      "apply_gematria_4d_bridge_policy": false,
+      "bridge_policy_domain_allowlist": null
+    },
+    "global_token_saving_rate": 0.4838255977496484,
+    "delta_global_saving_vs_track_a": 0.015471,
+    "ultra_saving_policy_ok": true,
+    "avg_reconstruction_fidelity_jaccard": 0.8795031685076191,
+    "min_reconstruction_fidelity_jaccard": 0.5714285714285714,
+    "promotion_gates": {
+      "ultra_saving_policy_ok": true,
+      "jaccard_drop_pp_vs_v2_baseline": 0.0,
+      "jaccard_drop_within_decision_threshold": true,
+      "min_jaccard_pin": 0.5714285714285714,
+      "min_jaccard_not_below_track_a": false,
+      "cases_with_jaccard_regression_count": 7,
+      "auto_track_a_promotion_allowed": false,
+      "human_review_required": true
+    },
+    "ssot_domain_diff_summary": {
+      "case_count": 8,
+      "avg_delta_saving": 0.0844545,
+      "avg_delta_jaccard": -0.09630100000000001,
+      "min_jaccard_pin_among_ssot": 0.5714285714285714
+    },
+    "top5_low_saving_diff_summary": {
+      "case_count": 5,
+      "avg_delta_saving": 0.060804199999999996,
+      "avg_delta_jaccard": -0.06616960000000001,
+      "min_delta_jaccard": -0.142857
+    },
+    "worst_jaccard_case": {
+      "id": "cmp2_003",
+      "jaccard_pin": 0.5714285714285714,
+      "delta_jaccard": -0.142857
+    },
+    "jaccard_regression_case_ids": [
+      "cmp2_002",
+      "cmp2_003",
+      "cmp2_004",
+      "cmp2_005",
+      "cmp2_006",
+      "cmp2_008",
+      "cmp2_010"
+    ],
+    "delta_saving_vs_track_a": 0.015471
+  },
+  "low_saving_local_cap_sweep": {
+    "regenerate_script": "scripts/run_compression_low_saving_local_cap_sweep_v1.py",
+    "artifact": "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json",
+    "variant_count": 10,
+    "floor_pass_count": 4,
+    "best_variant_id": "ssot_relaxed_cap_0.45",
+    "best_global_saving_rate": 0.4838255977496484,
+    "audit_note": "Top-N low saving on V2 bench often routes to ssot (lexicon hits present). hit_count=0 clusters on health/hangul/scm — use domain_relaxed caps / hangul_max, not lexicon edits."
+  },
+  "ssot_relaxed_cap_microgrid": {
+    "regenerate_script": "scripts/run_compression_ssot_relaxed_cap_microgrid_v1.py",
+    "artifact": "docs/final/artifacts/compression_ssot_relaxed_cap_microgrid_v1_latest.json",
+    "joint_floor_and_min_j_pass_count": 0,
+    "key_finding": "No cap in grid achieves floor>=0.47 AND min_j>=track_a simultaneously",
+    "best_by_rank": {
+      "id": "ssot_relaxed_cap_0_47",
+      "ssot_relaxed_cap": 0.47,
+      "delta_global_saving_vs_track_a": 0.016878,
+      "global_token_saving_rate": 0.4852320675105485,
+      "distance_to_policy_floor": 0.015232,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8775800915845421,
+      "min_reconstruction_fidelity_jaccard": 0.5384615384615384,
+      "min_jaccard_not_below_track_a": false,
+      "cases_with_jaccard_regression_count": 7,
+      "regression_watch_cases": [
+        {
+          "id": "cmp2_003",
+          "delta_jaccard": -0.142857,
+          "jaccard_pin": 0.5714285714285714
+        },
+        {
+          "id": "cmp2_005",
+          "delta_jaccard": -0.142857,
+          "jaccard_pin": 0.7142857142857143
+        },
+        {
+          "id": "cmp2_008",
+          "delta_jaccard": -0.142857,
+          "jaccard_pin": 0.6428571428571429
+        },
+        {
+          "id": "cmp2_010",
+          "delta_jaccard": -0.230769,
+          "jaccard_pin": 0.5384615384615384
+        }
+      ]
+    }
+  },
+  "track_a_promotion_applied": {
+    "signoff_path": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
+    "selected_variant_id": "ssot_cap_0.45_top5_allowlist",
+    "selected_run_config": {
+      "domain_relaxed_max_saving_overrides": {
+        "ssot": 0.45
+      },
+      "domain_relaxed_max_saving_case_allowlist": [
+        "cmp2_002",
+        "cmp2_004",
+        "cmp2_005",
+        "cmp2_006",
+        "cmp2_009"
+      ],
+      "domain_relaxed_max_saving_exclude_case_ids": null,
+      "apply_gematria_4d_bridge_policy": false
+    },
+    "promotion_gates_at_apply": {
+      "ultra_saving_policy_ok": true,
+      "jaccard_drop_pp_vs_v2_baseline": 0.0,
+      "jaccard_drop_within_decision_threshold": true,
+      "min_jaccard_pin": 0.7142857142857143,
+      "min_jaccard_not_below_track_a": true,
+      "cases_with_jaccard_regression_count": 4,
+      "regressing_case_ids": [
+        "cmp2_002",
+        "cmp2_004",
+        "cmp2_005",
+        "cmp2_006"
+      ],
+      "regression_confined_to_top5_low_saving": true,
+      "bench_promotion_eligible": true,
+      "auto_track_a_promotion_allowed": true,
+      "human_review_required": false,
+      "commander_waiver_eligible": false
+    },
+    "approved_at_utc": "2026-05-18T20:10:38.681077Z"
+  },
+  "scm_bridge_outcome": {
+    "scm_min_jaccard_achieved": 1.0,
+    "global_token_saving_rate_typical": 0.3938115330520394,
+    "joint_floor_and_scm_pareto": false,
+    "recommendation": "scm_only_not_viable_for_track_a_floor"
+  },
+  "comparison_rows": [
+    {
+      "variant": "track_a_active_frozen",
+      "saving_pct": 47.54,
+      "avg_jaccard": 0.89,
+      "scm_min": 0.7333333333333333,
+      "health_jaccard": 0.875,
+      "floor_ok": true
+    },
+    {
+      "variant": "health_bridge_saving_heavy",
+      "saving_pct": 46.27,
+      "avg_jaccard": 0.902,
+      "scm_min": 0.7333333333333333,
+      "health_jaccard": 1.0,
+      "floor_ok": false
+    },
+    {
+      "variant": "ssot_relaxed_cap_0.45",
+      "saving_pct": 48.38,
+      "avg_jaccard": 0.88,
+      "min_jaccard": 0.5714285714285714,
+      "floor_ok": true,
+      "auto_track_a_promotion_allowed": false
+    }
+  ],
+  "health_floor_microgrid": {
+    "regenerate_script": "scripts/run_compression_health_bridge_floor_microgrid_v1.py",
+    "artifact": "docs/final/artifacts/compression_health_bridge_floor_microgrid_v1_latest.json",
+    "key_finding": "no joint floor_pass and health_jaccard=1.0"
+  },
+  "evidence_refs": [
+    "docs/final/artifacts/compression_domain_bridge_sweep_v1_latest.json",
+    "docs/final/artifacts/compression_scm_cap_tune_sweep_v1_latest.json",
+    "docs/final/artifacts/compression_scm_bridge_weight_grid_v2_latest.json",
+    "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_HEALTH_BRIDGE_PINPOINT_V1.json",
+    "docs/final/artifacts/compression_health_bridge_floor_microgrid_v1_latest.json",
+    "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_SSOT_RELAXED_CAP_PINPOINT_V1.json",
+    "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json",
+    "docs/final/artifacts/compression_ssot_relaxed_cap_microgrid_v1_latest.json"
+  ],
+  "recommendation": "track_a_promoted_top5_ssot_cap_0.45_allowlist; regenerate via run_ultra_compression_default.py domain-relaxed flags; rollback from .pre_promotion_backup if needed"
+}

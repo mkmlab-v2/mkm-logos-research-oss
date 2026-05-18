@@ -1,0 +1,47 @@
+{
+  "schema": "multilens_ultra_compression_track_a_promotion_signoff_v1",
+  "approved_at_utc": "2026-05-18T20:10:38.681077Z",
+  "reviewer": "commander",
+  "note": "RQ-016 top5 ssot cap 0.45 bench promotion",
+  "candidate_path": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_PROMOTION_CANDIDATE_V1.json",
+  "selected_variant_id": "ssot_cap_0.45_top5_allowlist",
+  "selected_run_config": {
+    "domain_relaxed_max_saving_overrides": {
+      "ssot": 0.45
+    },
+    "domain_relaxed_max_saving_case_allowlist": [
+      "cmp2_002",
+      "cmp2_004",
+      "cmp2_005",
+      "cmp2_006",
+      "cmp2_009"
+    ],
+    "domain_relaxed_max_saving_exclude_case_ids": null,
+    "apply_gematria_4d_bridge_policy": false
+  },
+  "promotion_gates_at_apply": {
+    "ultra_saving_policy_ok": true,
+    "jaccard_drop_pp_vs_v2_baseline": 0.0,
+    "jaccard_drop_within_decision_threshold": true,
+    "min_jaccard_pin": 0.7142857142857143,
+    "min_jaccard_not_below_track_a": true,
+    "cases_with_jaccard_regression_count": 4,
+    "regressing_case_ids": [
+      "cmp2_002",
+      "cmp2_004",
+      "cmp2_005",
+      "cmp2_006"
+    ],
+    "regression_confined_to_top5_low_saving": true,
+    "bench_promotion_eligible": true,
+    "auto_track_a_promotion_allowed": true,
+    "human_review_required": false,
+    "commander_waiver_eligible": false
+  },
+  "human_approval": {
+    "commander_approve_promotion": true,
+    "accept_min_j_waiver": false,
+    "auto_track_a_promotion_allowed_at_apply": true
+  },
+  "active_report_path": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+}

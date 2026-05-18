@@ -28,6 +28,8 @@ def test_ultra_compression_kpi_summary_contract() -> None:
     assert 0.0 <= float(active.get("global_token_saving_rate", -1)) <= 1.0
     assert 0.0 <= float(active.get("avg_reconstruction_fidelity_jaccard", -1)) <= 1.0
     assert 0.0 <= float(active.get("avg_sensitive_integrity", -1)) <= 1.0
+    assert active.get("bench_saving_floor_min") == 0.47
+    assert isinstance(active.get("bench_saving_floor_ok"), bool)
     lit = d.get("literal_kpi")
     if lit is not None and isinstance(lit, dict):
         assert 0.0 <= float(lit.get("global_token_saving_rate") or 0.0) <= 1.0

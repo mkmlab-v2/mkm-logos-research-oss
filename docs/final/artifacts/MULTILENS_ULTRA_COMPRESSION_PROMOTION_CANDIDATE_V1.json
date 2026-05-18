@@ -5103,31 +5103,225 @@
     },
     "note": "Shadow-mode telemetry only; does not change compression gate decisions."
   },
-  "active_profile": {
-    "sla_track": "universal",
-    "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
-    "strategy": "A",
-    "intensity": "extreme",
-    "general_max_saving_rate": 0.35,
-    "sensitive_max_saving_rate": 0.3,
-    "hangul_max_saving_rate": 0.6,
-    "apply_gematria_4d_bridge_policy": false,
-    "apply_gematria_4d_bridge_policy_env": false,
-    "bridge_policy_domain_allowlist": null,
-    "domain_relaxed_max_saving_overrides": {
-      "ssot": 0.45
+  "promotion_candidate_envelope": {
+    "schema": "multilens_ultra_compression_promotion_candidate_envelope_v1",
+    "generated_at_utc": "2026-05-18T20:10:38.513205Z",
+    "hypothesis_tier": "B",
+    "track_wall": "promotion_candidate_not_active_until_apply",
+    "rq": "RQ-016-promotion-sweep",
+    "policy_floor": 0.47,
+    "selected_variant_id": "ssot_cap_0.45_top5_allowlist",
+    "selected_run_config": {
+      "domain_relaxed_max_saving_overrides": {
+        "ssot": 0.45
+      },
+      "domain_relaxed_max_saving_case_allowlist": [
+        "cmp2_002",
+        "cmp2_004",
+        "cmp2_005",
+        "cmp2_006",
+        "cmp2_009"
+      ],
+      "domain_relaxed_max_saving_exclude_case_ids": null,
+      "apply_gematria_4d_bridge_policy": false
     },
-    "domain_relaxed_max_saving_case_allowlist": [
-      "cmp2_002",
-      "cmp2_004",
-      "cmp2_005",
-      "cmp2_006",
-      "cmp2_009"
+    "selected_metrics": {
+      "global_token_saving_rate": 0.47538677918424754,
+      "avg_reconstruction_fidelity_jaccard": 0.8904921794966301,
+      "min_reconstruction_fidelity_jaccard": 0.7142857142857143
+    },
+    "selected_promotion_gates": {
+      "ultra_saving_policy_ok": true,
+      "jaccard_drop_pp_vs_v2_baseline": 0.0,
+      "jaccard_drop_within_decision_threshold": true,
+      "min_jaccard_pin": 0.7142857142857143,
+      "min_jaccard_not_below_track_a": true,
+      "cases_with_jaccard_regression_count": 4,
+      "regressing_case_ids": [
+        "cmp2_002",
+        "cmp2_004",
+        "cmp2_005",
+        "cmp2_006"
+      ],
+      "regression_confined_to_top5_low_saving": true,
+      "bench_promotion_eligible": true,
+      "auto_track_a_promotion_allowed": true,
+      "human_review_required": false,
+      "commander_waiver_eligible": false
+    },
+    "sweep_ranking": [
+      {
+        "variant_id": "ssot_cap_0.45_top5_allowlist",
+        "metrics": {
+          "global_token_saving_rate": 0.47538677918424754,
+          "avg_reconstruction_fidelity_jaccard": 0.8904921794966301,
+          "min_reconstruction_fidelity_jaccard": 0.7142857142857143
+        },
+        "promotion_gates": {
+          "ultra_saving_policy_ok": true,
+          "jaccard_drop_pp_vs_v2_baseline": 0.0,
+          "jaccard_drop_within_decision_threshold": true,
+          "min_jaccard_pin": 0.7142857142857143,
+          "min_jaccard_not_below_track_a": true,
+          "cases_with_jaccard_regression_count": 4,
+          "regressing_case_ids": [
+            "cmp2_002",
+            "cmp2_004",
+            "cmp2_005",
+            "cmp2_006"
+          ],
+          "regression_confined_to_top5_low_saving": true,
+          "bench_promotion_eligible": true,
+          "auto_track_a_promotion_allowed": true,
+          "human_review_required": false,
+          "commander_waiver_eligible": false
+        }
+      },
+      {
+        "variant_id": "ssot_cap_0.45_exclude_regression_watch",
+        "metrics": {
+          "global_token_saving_rate": 0.47257383966244726,
+          "avg_reconstruction_fidelity_jaccard": 0.8940636080680585,
+          "min_reconstruction_fidelity_jaccard": 0.7142857142857143
+        },
+        "promotion_gates": {
+          "ultra_saving_policy_ok": true,
+          "jaccard_drop_pp_vs_v2_baseline": 0.0,
+          "jaccard_drop_within_decision_threshold": true,
+          "min_jaccard_pin": 0.7142857142857143,
+          "min_jaccard_not_below_track_a": true,
+          "cases_with_jaccard_regression_count": 3,
+          "regressing_case_ids": [
+            "cmp2_002",
+            "cmp2_004",
+            "cmp2_006"
+          ],
+          "regression_confined_to_top5_low_saving": true,
+          "bench_promotion_eligible": true,
+          "auto_track_a_promotion_allowed": true,
+          "human_review_required": false,
+          "commander_waiver_eligible": false
+        }
+      },
+      {
+        "variant_id": "ssot_cap_0.45_top5_and_exclude_watch",
+        "metrics": {
+          "global_token_saving_rate": 0.47257383966244726,
+          "avg_reconstruction_fidelity_jaccard": 0.8940636080680585,
+          "min_reconstruction_fidelity_jaccard": 0.7142857142857143
+        },
+        "promotion_gates": {
+          "ultra_saving_policy_ok": true,
+          "jaccard_drop_pp_vs_v2_baseline": 0.0,
+          "jaccard_drop_within_decision_threshold": true,
+          "min_jaccard_pin": 0.7142857142857143,
+          "min_jaccard_not_below_track_a": true,
+          "cases_with_jaccard_regression_count": 3,
+          "regressing_case_ids": [
+            "cmp2_002",
+            "cmp2_004",
+            "cmp2_006"
+          ],
+          "regression_confined_to_top5_low_saving": true,
+          "bench_promotion_eligible": true,
+          "auto_track_a_promotion_allowed": true,
+          "human_review_required": false,
+          "commander_waiver_eligible": false
+        }
+      },
+      {
+        "variant_id": "ssot_cap_0.40_top5_allowlist",
+        "metrics": {
+          "global_token_saving_rate": 0.47257383966244726,
+          "avg_reconstruction_fidelity_jaccard": 0.8937484820176385,
+          "min_reconstruction_fidelity_jaccard": 0.7142857142857143
+        },
+        "promotion_gates": {
+          "ultra_saving_policy_ok": true,
+          "jaccard_drop_pp_vs_v2_baseline": 0.0,
+          "jaccard_drop_within_decision_threshold": true,
+          "min_jaccard_pin": 0.7142857142857143,
+          "min_jaccard_not_below_track_a": true,
+          "cases_with_jaccard_regression_count": 3,
+          "regressing_case_ids": [
+            "cmp2_004",
+            "cmp2_005",
+            "cmp2_006"
+          ],
+          "regression_confined_to_top5_low_saving": true,
+          "bench_promotion_eligible": true,
+          "auto_track_a_promotion_allowed": true,
+          "human_review_required": false,
+          "commander_waiver_eligible": false
+        }
+      },
+      {
+        "variant_id": "ssot_cap_0.45_global",
+        "metrics": {
+          "global_token_saving_rate": 0.4838255977496484,
+          "avg_reconstruction_fidelity_jaccard": 0.8795031685076191,
+          "min_reconstruction_fidelity_jaccard": 0.5714285714285714
+        },
+        "promotion_gates": {
+          "ultra_saving_policy_ok": true,
+          "jaccard_drop_pp_vs_v2_baseline": 0.0,
+          "jaccard_drop_within_decision_threshold": true,
+          "min_jaccard_pin": 0.5714285714285714,
+          "min_jaccard_not_below_track_a": false,
+          "cases_with_jaccard_regression_count": 7,
+          "regressing_case_ids": [
+            "cmp2_002",
+            "cmp2_003",
+            "cmp2_004",
+            "cmp2_005",
+            "cmp2_006",
+            "cmp2_008",
+            "cmp2_010"
+          ],
+          "regression_confined_to_top5_low_saving": false,
+          "bench_promotion_eligible": false,
+          "auto_track_a_promotion_allowed": false,
+          "human_review_required": true,
+          "commander_waiver_eligible": true
+        }
+      },
+      {
+        "variant_id": "ssot_cap_0.42_global",
+        "metrics": {
+          "global_token_saving_rate": 0.4796061884669479,
+          "avg_reconstruction_fidelity_jaccard": 0.8848603113647618,
+          "min_reconstruction_fidelity_jaccard": 0.6153846153846154
+        },
+        "promotion_gates": {
+          "ultra_saving_policy_ok": true,
+          "jaccard_drop_pp_vs_v2_baseline": 0.0,
+          "jaccard_drop_within_decision_threshold": true,
+          "min_jaccard_pin": 0.6153846153846154,
+          "min_jaccard_not_below_track_a": false,
+          "cases_with_jaccard_regression_count": 7,
+          "regressing_case_ids": [
+            "cmp2_002",
+            "cmp2_003",
+            "cmp2_004",
+            "cmp2_005",
+            "cmp2_006",
+            "cmp2_008",
+            "cmp2_010"
+          ],
+          "regression_confined_to_top5_low_saving": false,
+          "bench_promotion_eligible": false,
+          "auto_track_a_promotion_allowed": false,
+          "human_review_required": true,
+          "commander_waiver_eligible": true
+        }
+      }
     ],
-    "domain_relaxed_max_saving_exclude_case_ids": null,
-    "promotion_signoff_applied": {
-      "path": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
-      "selected_variant_id": "ssot_cap_0.45_top5_allowlist"
-    }
+    "apply_script": "scripts/apply_multilens_ultra_compression_track_a_promotion_v1.py",
+    "promotion_note": "Candidate only. Run apply script with --human-approve-promotion after commander sign-off. Use --accept-min-j-waiver when auto_track_a_promotion_allowed is false but floor passes."
+  },
+  "active_profile": {
+    "sla_track": "track_a_promotion_candidate",
+    "selected_variant_id": "ssot_cap_0.45_top5_allowlist",
+    "must_apply_via": "scripts/apply_multilens_ultra_compression_track_a_promotion_v1.py"
   }
 }
