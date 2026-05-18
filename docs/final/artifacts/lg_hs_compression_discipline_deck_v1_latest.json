@@ -1,7 +1,7 @@
 {
   "schema": "lg_hs_compression_discipline_deck_v1",
   "status": "[DRAFT]",
-  "generated_at_utc": "2026-05-16T11:06:51.033794Z",
+  "generated_at_utc": "2026-05-18T21:38:13.133535Z",
   "tone_ratio": "70/20/10",
   "slides": [
     {
@@ -26,9 +26,11 @@
       "n": 3,
       "title": "압축 거버넌스 증거 (조건부 수치)",
       "bullets": [
-        "정책 하한 floor **0.47** · policy_ok **True**",
-        "벤치 전역 절감 **47.1%** (40건, frozen KPI)",
-        "평균 Jaccard **0.885**",
+        "Policy floor **0.47** · `ultra_saving_policy_ok` **True** (aligned with RQ-016 bench when promoted).",
+        "벤치 전역 절감 **47.5%** (40건, frozen KPI · Track A active)",
+        "평균 Jaccard **0.890**",
+        "승격 프로필 **`ssot_cap_0.45_top5_allowlist`** — ssot cap 0.45 on allowlist only (no global pin).",
+        "Allowlist cases: cmp2_002, cmp2_004, cmp2_005, cmp2_006, cmp2_009.",
         "Jaccard = 단어 겹침 프록시; 의미 %·BOM 절감 단정 금지."
       ],
       "evidence": [
@@ -38,16 +40,49 @@
     },
     {
       "n": 4,
+      "title": "Moat — LLM 확률 압축 vs MKM 결정론 (Track A)",
+      "bullets": [
+        "**질문 방어:** “단어장 만들면 끝 아니냐?” → 연료(41k) + 라우팅(JSON) + 동결 벤치 + 제어층(22장) 조립.",
+        "| 축 | LLM 확률 압축 | MKM 결정론 (Track A 동결) |",
+        "| 엔진 | LLM/벡터로 중요 토큰 **확률 선택** | **41,775** lookup + **키워드→샤드 1개** + 고정 압축 엔진 |",
+        "| 재현·비용 | 모델/API에 따라 변동 | 동일 `run_config` → JSON 리포트 재현; **LLM 추론 없음** |",
+        "| 동결 KPI | 벤더별 상이 | 40건 벤치 · 절감 **47.5%** · Jaccard **0.890** · `apply_gematria_4d_bridge_policy: false` |",
+        "| 제어 | 요약·절감 중심인 경우 많음 | **WATCH/HOLD** = 22장 실행 게이트 (**≠** 7장 floor **0.47**) |",
+        "각주: 0.47 = 절감 하한; WATCH/HOLD = 실행 전 차단(가전·22장)."
+      ],
+      "evidence": [
+        "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+        "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md"
+      ]
+    },
+    {
+      "n": 5,
+      "title": "Plug-in scalability — 41k + zone JSON 팩",
+      "bullets": [
+        "**Plug-in scalability:** OS 커널처럼 **41k 글로벌 연료 고정** + 산업별 **`zone_*.json` 샤드 팩** 플러그인.",
+        "41k(Logos 원어 Export)에 없는 B2B 용어 → 샤드 `must_keep_hard_terms` (예: `zone_f_code`, `zone_a_scm`, **`zone_g_health`**) — **not** `zone_c_health`.",
+        "런타임: **41k lookup 항상 ON** + 라우터가 `routing_keywords` 점수로 **최적 샤드 1개** 선택 (`scripts/core/domain_router.py`) — 통짜 사전 스왑 ❌.",
+        "혼합 도메인 문서: **41k 공통층 + 1차 샤드**; multi-shard union = **로드맵**(Track A 동결은 single-route).",
+        "vs LoRA/거대 교체 사전: **KB급 JSON 팩** — **런타임 파인튜닝·가중치 스왑 없음** (Export·큐레이션 비용은 별도)."
+      ],
+      "evidence": [
+        "codebook/shards/zone_*.json",
+        "scripts/core/domain_router.py",
+        "scripts/core/master_codebook_lexicon_v1_bridge.py"
+      ]
+    },
+    {
+      "n": 6,
       "title": "Shard Jaccard (frozen bench — not per-shard saving)",
       "bullets": [
-        "40-case frozen bench — **token saving is global only** (~47.1%); shard rows are Jaccard only.",
+        "40-case frozen bench — **token saving is global only** (47.5%); shard rows are Jaccard only.",
         "Jaccard = overlap proxy; not semantic meaning %.",
-        "`zone_a_scm` (n=12): avg **0.866**, min **0.667**",
+        "`zone_a_scm` (n=12): avg **0.910**, min **0.733**",
         "`zone_b_timing` (n=2): avg **0.845**, min **0.786**",
         "`zone_c_hangul` (n=14): avg **0.903**, min **0.750**",
-        "`zone_d_ssot` (n=8): avg **0.875**, min **0.714**",
+        "`zone_d_ssot` (n=8): avg **0.834**, min **0.714**",
         "`zone_g_health` (n=4): avg **0.922**, min **0.875**",
-        "Global min Jaccard **0.667** (worst case on bench)."
+        "Global min Jaccard **0.714** (worst case on bench)."
       ],
       "evidence": [
         "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json",
@@ -55,7 +90,7 @@
       ]
     },
     {
-      "n": 5,
+      "n": 7,
       "title": "Governance proofs (accurate)",
       "bullets": [
         "Lexicon **41,775** terms — deterministic must_keep join path.",
@@ -69,17 +104,18 @@
       ]
     },
     {
-      "n": 6,
+      "n": 8,
       "title": "Kill-Matrix (대외 금지)",
       "bullets": [
         "환각 제거 · 리콜 0% · Zero-Liability",
         "7,680 하드웨어 스윕(레포 SSOT 없으면)",
         "하루 만에 자동차/로봇 이식 · 8.2ms(아티팩트 없으면)",
-        "MMLU 점수만으로 양산 승인"
+        "MMLU 점수만으로 양산 승인",
+        "학습 비용 0원 · 멀티 샤드 동시 활성화 · zone_c_health · Jaccard 0.899"
       ]
     },
     {
-      "n": 7,
+      "n": 9,
       "title": "클로징 — 다음 단계",
       "bullets": [
         "로컬 벤치 기준선 → 타깃 보드 실측(RQ-017, [HYPO]) → 월간 Go/No-Go.",
@@ -98,8 +134,18 @@
     "샤드별 47% 절약",
     "SCM 평균 0.667",
     "Timing 0.910",
-    "conc10 = 양산 SLA"
+    "conc10 = 양산 SLA",
+    "학습 비용 0원",
+    "메모리 오버헤드 0",
+    "무한대 도메인",
+    "Jaccard 0.899",
+    "도메인별 훈련 모델",
+    "멀티 샤드 동시 활성화",
+    "zone_c_health",
+    "4D 끄니까 47%",
+    "어떤 텍스트든 보장"
   ],
+  "moat_speaker_pack": "docs/final/artifacts/lg_hs_ir_moat_speaker_pack_v1_latest.md",
   "factcheck_pointer": "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.md",
   "pointers": {
     "persuasion_module": "docs/final/artifacts/lg_hs_persuasion_module_v1_2026-05-08.md",

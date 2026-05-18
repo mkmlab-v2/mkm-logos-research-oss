@@ -1,6 +1,6 @@
 {
   "schema": "ultra_compression_kpi_summary_v1",
-  "ts_utc": "2026-05-18T18:27:48.099393+00:00",
+  "ts_utc": "2026-05-18T20:23:39.833806+00:00",
   "sources": {
     "round2": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json",
     "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
@@ -22,14 +22,16 @@
     }
   },
   "active_kpi": {
-    "global_token_saving_rate": 0.4683544303797469,
-    "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+    "global_token_saving_rate": 0.47538677918424754,
+    "avg_reconstruction_fidelity_jaccard": 0.8904921794966301,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
     "ultra_saving_50_ok": false,
     "ultra_saving_policy_ok": false,
     "ultra_saving_policy_min": 0.49,
+    "bench_saving_floor_min": 0.47,
+    "bench_saving_floor_ok": true,
     "sensitive_integrity_ok": true
   },
   "literal_kpi": {
@@ -41,6 +43,8 @@
     "ultra_saving_50_ok": false,
     "ultra_saving_policy_ok": false,
     "ultra_saving_policy_min": 0.49,
+    "bench_saving_floor_min": 0.47,
+    "bench_saving_floor_ok": false,
     "sensitive_integrity_ok": true
   },
   "ultra_literal_kpi": {
@@ -52,6 +56,8 @@
     "ultra_saving_50_ok": false,
     "ultra_saving_policy_ok": false,
     "ultra_saving_policy_min": 0.49,
+    "bench_saving_floor_min": 0.47,
+    "bench_saving_floor_ok": false,
     "sensitive_integrity_ok": true
   },
   "performance": {

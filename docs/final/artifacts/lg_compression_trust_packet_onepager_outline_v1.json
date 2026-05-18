@@ -1,0 +1,91 @@
+{
+  "schema": "lg_compression_trust_packet_onepager_outline_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-05-19T12:00:00Z",
+  "hypothesis_tier": "B",
+  "hypothesis_tier_note": "Research lanes (B-track bridge, L1, v2 draft) are observation-tier unless labeled Track A frozen.",
+  "korean_title": "MKM 압축 3층 신뢰 구조 — Track A 운영·v2 Trust Packet 초안·L1 연구 (LG HS 원페이저)",
+  "audience": "LG HS internal — pre-legal-send; artifact-bound only",
+  "three_layers": {
+    "track_a_operational": {
+      "status": "promoted_operational_baseline_2026_05_18",
+      "what_we_claim": [
+        "Active SSOT: MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json — ssot_cap_0.45_top5_allowlist, bridge OFF.",
+        "Measured ~47.54% global token saving, ~0.890 avg Jaccard, ~0.714 min Jaccard on V2 bench.",
+        "RQ-016 bench floor 0.47 pass (bench_saving_floor_ok); ultra_saving_policy_ok uses separate 0.49 decision axis."
+      ],
+      "what_we_do_not_claim": [
+        "No 99%/100% compression or guaranteed floor attainment.",
+        "No auto-promotion of B-track bridge to Track A without human review.",
+        "No production SaaS SLA from bench JSON alone."
+      ],
+      "evidence_paths": [
+        "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+        "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
+        "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json"
+      ]
+    },
+    "v2_trust_packet_draft": {
+      "hypothesis_tier": "B",
+      "status": "openapi_draft_plus_experimental_stub",
+      "what_we_claim": [
+        "compression_packet = compressed_text + residual_meta (Trust Packet draft).",
+        "loss_profile separates token savings from code-equivalence intent.",
+        "Stub: scripts/compression_token_api_v2_stub.py; v1 remains pilot default."
+      ],
+      "what_we_do_not_claim": [
+        "Not production SLA, auth, rate limits, or retention commitment.",
+        "Not v2 cutover replacing v1 without deprecation policy."
+      ],
+      "evidence_paths": [
+        "docs/final/openapi_token_compression_v2_draft.yaml",
+        "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md"
+      ]
+    },
+    "l1_research_side_channel": {
+      "hypothesis_tier": "B",
+      "status": "research_only_spike",
+      "what_we_claim": [
+        "L1 legacy beam spike avg_exact_restore_rate ~57.87% (research_only JSON).",
+        "Side-channel wire routes are research lane, not commercial compress SLA."
+      ],
+      "what_we_do_not_claim": [
+        "Not Track A KPI or customer restoration guarantee.",
+        "Not 99% or production-grade inverse decoding."
+      ],
+      "evidence_paths": [
+        "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json"
+      ]
+    },
+    "b_track_ssot_relaxed_cap_a_plan": {
+      "hypothesis_tier": "B",
+      "status": "research_archive_global_pin_promoted_top5_allowlist",
+      "what_we_claim": [
+        "Global ssot 0.45 pinpoint ~48.38% archived — min J regression, not promoted.",
+        "Promotion sweep winner: top5 case allowlist only ~47.54% with min J ~0.714 — applied to Track A 2026-05-18."
+      ],
+      "what_we_do_not_claim": [
+        "Not claiming global 48.38% as current Track A.",
+        "Not guaranteed 47% for customers or LG headline without legal review.",
+        "Not hiding micro Jaccard regression on top5 drag cases (4 cases, confined to allowlist)."
+      ],
+      "evidence_paths": [
+        "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_SSOT_RELAXED_CAP_PINPOINT_V1.json",
+        "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json",
+        "docs/final/artifacts/compression_ssot_relaxed_cap_microgrid_v1_latest.json"
+      ]
+    }
+  },
+  "disclaimers": [
+    "No 99% or guaranteed 47% floor attainment headline.",
+    "v2 Trust Packet: draft stub only — no production SLA.",
+    "L1 ~57.87%: research_only — not operational guarantee.",
+    "B-track health pin: [HYPO] — does not replace Track A active report.",
+    "B-track ssot 48.38%: [HYPO] pinpoint only — not Track A frozen baseline; min-J regression vs active.",
+    "Metaphors: pedagogical only per PUBLIC_FACING v1.7 §3."
+  ],
+  "supporting_policy_paths": [
+    "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+    "docs/final/artifacts/lg_hs_persuasion_module_v1_2026-05-08.md"
+  ]
+}

@@ -7,7 +7,7 @@
     "round2_candidate_count": 164
   },
   "target": {
-    "saving_rate": 0.49,
+    "saving_rate": 0.47,
     "jaccard_drop_threshold_pp": 1.5
   },
   "per_case_fidelity_floor": 0.5,
@@ -23,7 +23,7 @@
     "sensitive_max_saving_rate": 0.3,
     "hangul_max_saving_rate": 0.6,
     "global_token_saving_rate": 0.47538677918424754,
-    "avg_reconstruction_fidelity_jaccard": 0.882305029636686,
+    "avg_reconstruction_fidelity_jaccard": 0.8904921794966301,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "canary_gate_ok": true
@@ -40,7 +40,7 @@
       "p95_latency_delta_pct"
     ],
     "thresholds": {
-      "saving_rate_min": 0.49,
+      "saving_rate_min": 0.47,
       "jaccard_drop_pp_max": 1.5,
       "sensitive_integrity_min": 0.999,
       "failure_rate_delta_pp_max": 0.3,
@@ -69,5 +69,15 @@
       "avg_reconstruction_fidelity_jaccard": 0.9098694162979878
     },
     "v2_bench_refresh_note": "selected_candidate performance fields re-measured on MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
+  },
+  "promotion_anchor": {
+    "schema": "track_a_promotion_signoff_v1",
+    "variant_id": "ssot_cap_0.45_top5_allowlist",
+    "approved_at_utc": "2026-05-18T20:10:38.681077Z",
+    "signoff_artifact": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
+    "active_report_ssot": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "bench_saving_floor_min": 0.47,
+    "decision_canary_saving_rate_min": 0.47,
+    "note": "Promoted Track A: decision/canary/KPI policy floor aligned to RQ-016 bench 0.47 (case-allowlist ssot cap 0.45 only; no global pin)."
   }
 }

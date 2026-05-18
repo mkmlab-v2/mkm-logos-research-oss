@@ -1,0 +1,29 @@
+{
+  "schema": "mkm_inter_agent_dialogue_routing_compare_v1",
+  "generated_at_utc": "2026-05-18T21:30:20Z",
+  "classification": "INTERNAL_ONLY",
+  "hypothesis_tier": "B",
+  "scenario": "health",
+  "boundary_ack": "Dialogue-turn avg savings only — not Track A 40-case bench. b_track_domain_relax is research_only.",
+  "profiles_compared": [
+    "track_a_promoted",
+    "b_track_domain_relax"
+  ],
+  "runs": [
+    {
+      "routing_profile": "track_a_promoted",
+      "all_compress_ok": true,
+      "all_expand_ok": true,
+      "avg_savings_ratio": 0.37977941176470587,
+      "transcript_turn_count": 4
+    },
+    {
+      "routing_profile": "b_track_domain_relax",
+      "all_compress_ok": true,
+      "all_expand_ok": true,
+      "avg_savings_ratio": 0.37977941176470587,
+      "transcript_turn_count": 4
+    }
+  ],
+  "avg_savings_delta_b_track_minus_track_a": 0.0
+}

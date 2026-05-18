@@ -33,6 +33,11 @@ from scripts.compression_token_api_stub import (  # noqa: E402
     _baseline_avg_jaccard,
     _decision_selected_profile,
 )
+from scripts.compression_v2_routing_profile_v1 import (  # noqa: E402
+    RoutingProfile,
+    resolve_v2_case_id,
+    routing_profile_kwargs,
+)
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
 from scripts.report_multilens_performance_eval import _jaccard, evaluate_report  # noqa: E402
@@ -79,6 +84,7 @@ class CompressRequestV2(BaseModel):
     client_request_id: str | None = None
     notes: str | None = None
     emit_semantic_pointer: bool = False
+    routing_profile: RoutingProfile = "track_a_promoted"
 
 
 class CompressionPacket(BaseModel):
@@ -103,13 +109,18 @@ class CompressResponseV2(BaseModel):
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
+DecodeMode = Literal["stub", "l1_experimental"]
+
+
 class ExpandRequestV2(BaseModel):
     compression_packet: CompressionPacket
+    decode_mode: DecodeMode = "stub"
 
 
 class ExpandResponseV2(BaseModel):
     text: str
     api_contract_version: str = API_CONTRACT_VERSION
+    decode_mode: DecodeMode = "stub"
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -137,7 +148,12 @@ def _apply_v2_trust_restoration(
 
 
 def _run_evaluate_for_packet(
-    text: str, loss_profile: LossProfile, *, emit_semantic_pointer: bool = False
+    text: str,
+    loss_profile: LossProfile,
+    *,
+    emit_semantic_pointer: bool = False,
+    client_request_id: str | None = None,
+    routing_profile: RoutingProfile = "track_a_promoted",
 ) -> dict[str, Any]:
     """Run evaluate_report and return payload for Trust Packet fields."""
     selected = _decision_selected_profile()
@@ -146,11 +162,12 @@ def _run_evaluate_for_packet(
     general_cap = selected.get("general_max_saving_rate")
     sensitive_cap = selected.get("sensitive_max_saving_rate")
     hangul_cap = selected.get("hangul_max_saving_rate")
+    case_id = resolve_v2_case_id(client_request_id)
     t0 = perf_counter()
     doc = {
         "compression_cases": [
             {
-                "id": "v2-trust-packet",
+                "id": case_id,
                 "raw_text": text,
                 "compressed_text": "",
                 "reconstructed_text": "",
@@ -159,6 +176,21 @@ def _run_evaluate_for_packet(
         "fusion_answer_cases": [],
     }
     _bp = env_apply_gematria_4d_bridge_policy()
+    route_kw = routing_profile_kwargs(routing_profile)
+    eval_extra = {
+        k: v
+        for k, v in route_kw.items()
+        if k
+        not in (
+            "routing_profile",
+            "promotion_signoff_path",
+            "sweep_pointer",
+            "note",
+            "hypothesis_tier",
+            "research_only",
+            "routing_profile_degraded",
+        )
+    }
     report = evaluate_report(
         doc,
         source_input="api:v2_trust_packet",
@@ -178,6 +210,7 @@ def _run_evaluate_for_packet(
         include_cee_core=_bp,
         apply_gematria_4d_bridge_policy=_bp,
         emit_semantic_pointer=emit_semantic_pointer,
+        **eval_extra,
     )
     elapsed_ms = round((perf_counter() - t0) * 1000.0, 3)
     comp_block = report.get("compression_metrics", {})
@@ -358,9 +391,20 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
             )
 
         ev = _run_evaluate_for_packet(
-            body.text, body.loss_profile, emit_semantic_pointer=bool(body.emit_semantic_pointer)
+            body.text,
+            body.loss_profile,
+            emit_semantic_pointer=bool(body.emit_semantic_pointer),
+            client_request_id=body.client_request_id,
+            routing_profile=body.routing_profile,
         )
         flags["evaluate_report_ms"] = ev.get("elapsed_ms")
+        flags["routing_profile"] = body.routing_profile
+        flags["v2_case_id"] = resolve_v2_case_id(body.client_request_id)
+        route_meta = routing_profile_kwargs(body.routing_profile)
+        if route_meta.get("research_only"):
+            flags["routing_research_only"] = True
+        if route_meta.get("promotion_signoff_path"):
+            flags["promotion_signoff_path"] = route_meta["promotion_signoff_path"]
         if not ev.get("ok"):
             flags["evaluate_report_degraded"] = True
         gr = ev.get("global_ratio")
@@ -434,13 +478,36 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
 @app.post("/v2/expand", response_model=ExpandResponseV2)
 def expand_v2(body: ExpandRequestV2) -> ExpandResponseV2:
     pkt = body.compression_packet
-    flags: dict[str, Any] = {"stub_v2": True, "reassembly": "residual_meta"}
+    mode = body.decode_mode
+    flags: dict[str, Any] = {"stub_v2": True, "decode_mode": mode}
+
+    if mode == "l1_experimental":
+        from scripts.mkm_inter_agent_l1_decode_experimental_v1 import (  # noqa: WPS433
+            decode_compressed_observation_experimental,
+        )
+
+        l1 = decode_compressed_observation_experimental(pkt.compressed_text, beam_size=4)
+        flags["research_only"] = True
+        flags["reassembly"] = "l1_experimental_beam"
+        flags["l1_decode"] = {k: v for k, v in l1.items() if k != "decoded_text"}
+        if not l1.get("ok"):
+            flags["l1_decode_failed"] = True
+            text = pkt.compressed_text
+            flags["reassembly"] = "l1_experimental_degraded_compressed_text"
+        else:
+            text = str(l1.get("decoded_text") or pkt.compressed_text)
+        return ExpandResponseV2(
+            text=text,
+            decode_mode=mode,
+            integrity_flags=flags,
+        )
+
+    flags["reassembly"] = "residual_meta"
     meta = pkt.residual_meta or {}
     stub = meta.get(RESIDUAL_STUB_KEY) if isinstance(meta, dict) else None
     if isinstance(stub, dict) and "reconstructed_text" in stub:
         text = str(stub["reconstructed_text"])
         flags["source"] = RESIDUAL_STUB_KEY
-        return ExpandResponseV2(text=text, integrity_flags=flags)
-    # Degraded: return compressed_text with warning (no v1-style original echo field).
+        return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
     flags["reassembly"] = "degraded_compressed_text_only"
-    return ExpandResponseV2(text=pkt.compressed_text, integrity_flags=flags)
+    return ExpandResponseV2(text=pkt.compressed_text, decode_mode=mode, integrity_flags=flags)

@@ -1,0 +1,158 @@
+{
+  "schema": "mkm_inter_agent_v2_routing_rebench_v1",
+  "generated_at_utc": "2026-05-18T20:59:23Z",
+  "classification": "INTERNAL_ONLY",
+  "hypothesis_tier": "B",
+  "boundary_ack": "Per-request v2 compress samples only — not full 40-case Track A bench. track_a_promoted uses signoff allowlist when client_request_id matches cmp2_*.",
+  "profiles": [
+    "default",
+    "track_a_promoted",
+    "b_track_domain_relax"
+  ],
+  "rows": [
+    {
+      "sample_id": "inter_agent_demo",
+      "routing_profile": "default",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 7,
+      "savings_ratio": 0.6111111111111112,
+      "shard_id": "zone_a_scm",
+      "domain": "scm",
+      "v2_case_id": "inter_agent_demo",
+      "routing_research_only": null
+    },
+    {
+      "sample_id": "inter_agent_demo",
+      "routing_profile": "track_a_promoted",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 7,
+      "savings_ratio": 0.6111111111111112,
+      "shard_id": "zone_a_scm",
+      "domain": "scm",
+      "v2_case_id": "inter_agent_demo",
+      "routing_research_only": null
+    },
+    {
+      "sample_id": "inter_agent_demo",
+      "routing_profile": "b_track_domain_relax",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 7,
+      "savings_ratio": 0.6111111111111112,
+      "shard_id": "zone_a_scm",
+      "domain": "scm",
+      "v2_case_id": "inter_agent_demo",
+      "routing_research_only": true
+    },
+    {
+      "sample_id": "cmp2_004",
+      "routing_profile": "default",
+      "http_status": 200,
+      "token_in": 16,
+      "token_out": 14,
+      "savings_ratio": 0.125,
+      "shard_id": "zone_d_ssot",
+      "domain": "ssot",
+      "v2_case_id": "cmp2_004",
+      "routing_research_only": null
+    },
+    {
+      "sample_id": "cmp2_004",
+      "routing_profile": "track_a_promoted",
+      "http_status": 200,
+      "token_in": 16,
+      "token_out": 13,
+      "savings_ratio": 0.1875,
+      "shard_id": "zone_d_ssot",
+      "domain": "ssot",
+      "v2_case_id": "cmp2_004",
+      "routing_research_only": null
+    },
+    {
+      "sample_id": "cmp2_004",
+      "routing_profile": "b_track_domain_relax",
+      "http_status": 200,
+      "token_in": 16,
+      "token_out": 13,
+      "savings_ratio": 0.1875,
+      "shard_id": "zone_d_ssot",
+      "domain": "ssot",
+      "v2_case_id": "cmp2_004",
+      "routing_research_only": true
+    },
+    {
+      "sample_id": "cmp2_006",
+      "routing_profile": "default",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 16,
+      "savings_ratio": 0.11111111111111116,
+      "shard_id": "zone_d_ssot",
+      "domain": "ssot",
+      "v2_case_id": "cmp2_006",
+      "routing_research_only": null
+    },
+    {
+      "sample_id": "cmp2_006",
+      "routing_profile": "track_a_promoted",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 15,
+      "savings_ratio": 0.16666666666666663,
+      "shard_id": "zone_d_ssot",
+      "domain": "ssot",
+      "v2_case_id": "cmp2_006",
+      "routing_research_only": null
+    },
+    {
+      "sample_id": "cmp2_006",
+      "routing_profile": "b_track_domain_relax",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 15,
+      "savings_ratio": 0.16666666666666663,
+      "shard_id": "zone_d_ssot",
+      "domain": "ssot",
+      "v2_case_id": "cmp2_006",
+      "routing_research_only": true
+    },
+    {
+      "sample_id": "cmp2_011",
+      "routing_profile": "default",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 8,
+      "savings_ratio": 0.5555555555555556,
+      "shard_id": "zone_g_health",
+      "domain": "health",
+      "v2_case_id": "cmp2_011",
+      "routing_research_only": null
+    },
+    {
+      "sample_id": "cmp2_011",
+      "routing_profile": "track_a_promoted",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 8,
+      "savings_ratio": 0.5555555555555556,
+      "shard_id": "zone_g_health",
+      "domain": "health",
+      "v2_case_id": "cmp2_011",
+      "routing_research_only": null
+    },
+    {
+      "sample_id": "cmp2_011",
+      "routing_profile": "b_track_domain_relax",
+      "http_status": 200,
+      "token_in": 18,
+      "token_out": 8,
+      "savings_ratio": 0.5555555555555556,
+      "shard_id": "zone_g_health",
+      "domain": "health",
+      "v2_case_id": "cmp2_011",
+      "routing_research_only": true
+    }
+  ]
+}

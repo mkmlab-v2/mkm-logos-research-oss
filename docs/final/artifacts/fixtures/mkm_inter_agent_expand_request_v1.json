@@ -1,0 +1,21 @@
+{
+  "compression_packet": {
+    "packet_format_version": "trust_packet.0.1",
+    "api_contract_version": "2.0.0-draft",
+    "loss_profile": "semantic_general",
+    "compressed_text": "사상의학 체질 message sasang myeongri MKM rail soeum",
+    "residual_meta": {
+      "mk_stub_v2": {
+        "reconstructed_text": "사상의학 체질 분류 예시 MKM inter agent message rail demo sasang taeeum soeum myeongri logos",
+        "global_token_saving_rate": 0.6190476190476191,
+        "reconstruction_fidelity_jaccard": 0.8823529411764706
+      },
+      "placeholder_map": {}
+    },
+    "router_meta": {
+      "shard_id": "zone_a_scm",
+      "domain": "scm"
+    },
+    "content_fingerprint": "b3cec1bac0ef573a2b7e07ce21612f9e"
+  }
+}

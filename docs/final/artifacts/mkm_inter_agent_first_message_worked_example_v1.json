@@ -1,0 +1,93 @@
+{
+  "schema": "mkm_inter_agent_first_message_worked_example_v1",
+  "generated_at_utc": "2026-05-18T20:45:42Z",
+  "classification": "INTERNAL_ONLY",
+  "boundary_ack": "Machine roundtrip (v2 packet-only expand) is not human lossless decode. No production SLA. Not industry interoperability proof.",
+  "sample_input": "사상의학 체질 분류 예시. MKM inter-agent message rail demo. sasang taeeum soeum myeongri logos atom_id trust_packet.",
+  "compress": {
+    "http_status": 200,
+    "request": {
+      "loss_profile": "semantic_general"
+    },
+    "response_packet_redacted": {
+      "packet_format_version": "trust_packet.0.1",
+      "api_contract_version": "2.0.0-draft",
+      "loss_profile": "semantic_general",
+      "compressed_text": "사상의학 체질 message sasang myeongri MKM rail soeum",
+      "residual_meta": {
+        "mk_stub_v2": {
+          "reconstructed_text": "사상의학 체질 분류 예시 MKM inter agent message rail demo sasang taeeum soeum myeongri logos",
+          "global_token_saving_rate": 0.6190476190476191,
+          "reconstruction_fidelity_jaccard": 0.8823529411764706
+        },
+        "placeholder_map": {}
+      },
+      "router_meta": {
+        "shard_id": "zone_a_scm",
+        "domain": "scm"
+      },
+      "content_fingerprint": "b3cec1bac0ef573a2b7e07ce21612f9e"
+    },
+    "compression_metrics": {
+      "token_in": 21,
+      "token_out": 8,
+      "savings_ratio": 0.6190476190476191
+    },
+    "integrity_flags": {
+      "stub_v2": true,
+      "hangul_principle": true,
+      "loss_profile": "semantic_general",
+      "tracka_profile_meta": {
+        "profile": "c3_domain_gated_default",
+        "source": "default_promoted",
+        "override_env": {
+          "phrase_first": "unset",
+          "phrase_first_value": "none",
+          "force_off": "unset",
+          "force_off_value": "none"
+        }
+      },
+      "tracka_profile_deprecations": {
+        "removed_flat_keys": [
+          "tracka_profile",
+          "tracka_profile_source",
+          "tracka_profile_override_env"
+        ],
+        "replacement": "tracka_profile_meta",
+        "status": "legacy_flat_keys_removed"
+      },
+      "evaluate_report_ms": 617.058,
+      "jaccard_proxy": 0.8823529411764706
+    }
+  },
+  "expand_packet_only": {
+    "http_status": 200,
+    "response_text_preview": "사상의학 체질 분류 예시 MKM inter agent message rail demo sasang taeeum soeum myeongri logos",
+    "machine_roundtrip": {
+      "expand_equals_stub_reconstructed": true,
+      "jaccard_input_vs_expanded": 0.8823529411764706,
+      "jaccard_input_vs_stub_reconstructed": 0.8823529411764706,
+      "original_text_on_expand_request": false
+    }
+  },
+  "human_decode_research_only": {
+    "source": "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json",
+    "research_only": true,
+    "aggregate": {
+      "min_exact_restore_rate": 0.5388888888888889,
+      "max_exact_restore_rate": 0.6166666666666667,
+      "avg_exact_restore_rate": 0.5787037037037037,
+      "min_recovery_rate": 0.55,
+      "avg_recovery_rate": 0.5925925925925926,
+      "determinism_delta": 0.04166666666666674
+    },
+    "public_copy_ko": "역복원 게이트(연구 스파이크) 기준 exact 복원률은 약 57.9%이며, 무손실 통역·100% 복원을 주장하지 않습니다."
+  },
+  "evidence_paths": [
+    "scripts/compression_token_api_v2_stub.py",
+    "docs/final/openapi_token_compression_v2_draft.yaml",
+    "tests/test_compression_token_api_v2_stub.py",
+    "docs/final/artifacts/mkm_inter_agent_wire_profile_v0.json",
+    "docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json"
+  ]
+}

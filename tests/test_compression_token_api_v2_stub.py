@@ -165,6 +165,30 @@ def test_v2_compress_emit_semantic_pointer_in_residual():
     assert stub["semantic_pointer"].get("schema") == "semantic_pointer_v1"
 
 
+@pytest.mark.slow
+def test_v2_expand_l1_experimental_mode_research_only():
+    """L1 beam on compressed_text only — not default stub path; research_only flags."""
+    sample = "오늘 팀이 BTCUSDT 신호를 보수적으로 분석했다"
+    cr = client.post(
+        "/v2/compress",
+        json={"text": sample, "loss_profile": "semantic_general"},
+    )
+    assert cr.status_code == 200
+    pkt = cr.json()["compression_packet"]
+    er = client.post(
+        "/v2/expand",
+        json={"compression_packet": pkt, "decode_mode": "l1_experimental"},
+    )
+    assert er.status_code == 200
+    ej = er.json()
+    assert ej.get("decode_mode") == "l1_experimental"
+    flags = ej.get("integrity_flags") or {}
+    assert flags.get("research_only") is True
+    assert flags.get("decode_mode") == "l1_experimental"
+    assert flags.get("reassembly") == "l1_experimental_beam"
+    assert isinstance(ej.get("text"), str) and ej["text"]
+
+
 def test_v2_expand_accepts_trust_packet_only():
     """Expand caller sends only ``compression_packet`` (no v1-style ``original_text`` field)."""
     sample = "사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference."
