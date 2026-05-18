@@ -233,6 +233,42 @@ def main() -> int:
                 "verdict": "FAIL_DO_NOT_USE",
                 "fact": "Jaccard is token/word overlap proxy on 40-case bench; not semantic meaning %.",
             },
+            "multi_shard_simultaneous_activation": {
+                "verdict": "FAIL_DO_NOT_USE",
+                "fact": (
+                    "Track A compress path selects one winning shard per document via keyword score "
+                    "(scripts/core/domain_router.py). Not multi-shard overlay on a single pass."
+                ),
+                "code_pointer": "scripts/core/domain_router.py · scripts/report_multilens_performance_eval.py",
+                "accurate_wording": (
+                    "41k lexicon always ON + best-fit zone_*.json shard; multi-shard union = roadmap only."
+                ),
+            },
+            "plugin_lora_zero_training_cost": {
+                "verdict": "FAIL_DO_NOT_USE",
+                "fact": (
+                    "No runtime weight LoRA on Track A compress path; JSON shard packs are KB-scale. "
+                    "Export/curation and bench signoff still have engineering cost."
+                ),
+                "accurate_wording": "Runtime fine-tuning not required; not 'training cost $0 forever'.",
+            },
+            "zone_c_health_filename": {
+                "verdict": "FAIL_DO_NOT_USE",
+                "fact": "Health shard file is codebook/shards/zone_g_health.json (not zone_c_health).",
+                "path": "codebook/shards/zone_g_health.json",
+            },
+            "plugin_shard_single_route": {
+                "verdict": "FACT",
+                "fact": (
+                    "use_domain_router=True loads zone_*.json; route() picks max routing_keywords hit; "
+                    "must_keep from that shard unions with master_codebook_lexicon_v1 when enabled."
+                ),
+                "shard_count_loaded": len(
+                    list((ROOT / "codebook" / "shards").glob("zone_*.json"))
+                )
+                if (ROOT / "codebook" / "shards").is_dir()
+                else None,
+            },
         },
         "frozen_bench_shard_jaccard": shard_rows,
         "frozen_bench_global": global_metrics,

@@ -287,19 +287,6 @@ def main() -> int:
                 lines.append(f"- `{e}`")
         lines.append("")
 
-    lines.extend(
-        [
-            "---",
-            "",
-            "## Speaker note (one line)",
-            "",
-            "> We sell artifact-bound discipline—not flashiest model scores.",
-            "",
-            "Moat slides 4–5 full scripts: `lg_hs_ir_moat_speaker_pack_v1_latest.md`.",
-            "",
-        ]
-    )
-
     speaker_lines = [
         "# LG HS IR — Moat speaker pack (v1)",
         "",
@@ -340,6 +327,18 @@ def main() -> int:
         "- `zone_c_health` · 도메인별 훈련 ML 모델",
         "",
     ]
+
+    lines.extend(
+        [
+            "---",
+            "",
+            "## Speaker note (one line)",
+            "",
+            "> We sell artifact-bound discipline—not flashiest model scores.",
+            "",
+        ]
+    )
+    lines.extend(speaker_lines[7:])  # moat speaker pack appendix (skip duplicate H1)
 
     args.out_md.parent.mkdir(parents=True, exist_ok=True)
     args.out_md.write_text("\n".join(lines), encoding="utf-8")

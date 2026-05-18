@@ -91,6 +91,7 @@ MKM does not sell “a smarter model.” We sell a **governed compression layer*
 | Runtime flow | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` |
 | Active / KPI | `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, `ultra_compression_kpi_summary_latest.json` |
 | Terminology guard | `docs/final/COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md` §5 (H: “압축” ≠ 멀티렌즈 엔진 혼동 방지) |
+| IR deck (v1.1 · 9 slides) | `docs/final/artifacts/lg_hs_compression_discipline_deck_v1_latest.md` — Slide 4–5 Moat + Plug-in; speaker scripts in same file appendix |
 
 ---
 

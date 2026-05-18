@@ -2,7 +2,7 @@
 
 **Status:** `[DRAFT]` — slides only; not legal-approved external send.
 
-**Generated:** 2026-05-18T21:07:47.322596Z
+**Generated:** 2026-05-18T21:35:58.193063Z
 
 **Tone:** 70/20/10 · manufacturing language · `lg_hs_persuasion_module_v1_2026-05-08.md`
 
@@ -64,12 +64,12 @@ Evidence:
 
 - 40-case frozen bench — **token saving is global only** (47.5%); shard rows are Jaccard only.
 - Jaccard = overlap proxy; not semantic meaning %.
-- `zone_a_scm` (n=12): avg **0.866**, min **0.667**
+- `zone_a_scm` (n=12): avg **0.910**, min **0.733**
 - `zone_b_timing` (n=2): avg **0.845**, min **0.786**
 - `zone_c_hangul` (n=14): avg **0.903**, min **0.750**
-- `zone_d_ssot` (n=8): avg **0.875**, min **0.714**
+- `zone_d_ssot` (n=8): avg **0.834**, min **0.714**
 - `zone_g_health` (n=4): avg **0.922**, min **0.875**
-- Global min Jaccard **0.667** (worst case on bench).
+- Global min Jaccard **0.714** (worst case on bench).
 
 Evidence:
 - `docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json`
@@ -106,4 +106,32 @@ Evidence:
 
 > We sell artifact-bound discipline—not flashiest model scores.
 
-Moat slides 4–5 full scripts: `lg_hs_ir_moat_speaker_pack_v1_latest.md`.
+
+---
+
+## Slide 4 — LLM vs MKM (45초)
+
+> 시장에는 LLM으로 텍스트를 줄이는 화려한 스택이 많습니다. 엔터프라이즈 B2B에서는 매번 결과가 널뛰는 확률적 마법을 양산 기본값으로 쓰기 어렵습니다.
+> 우리는 Logos 원어에서 Export한 **41,775종 전역 렉시콘**을 lookup하고, **키워드 라우터가 최적 JSON 샤드 1개**의 must_keep을 더한 뒤, **동결 40건 벤치**에서 **약 47.5% 절감·Jaccard 0.890**를 JSON으로 재현합니다. 상용 동결은 **4D bridge policy OFF**입니다.
+> **0.47**은 7장 절감 하한이고, **WATCH/HOLD**는 22장 실행 전 제어층입니다 — 한 문장에 섞지 않습니다.
+
+## Slide 5 — Plug-in scalability (45초)
+
+> 도메인 확장마다 LoRA·파인튜닝을 하지 않습니다. **41k 글로벌 뼈대는 고정**하고, IT·SCM·헬스 등은 **`zone_*.json` KB급 팩**을 플러그인합니다.
+> 런타임은 **41k lookup 항상 ON** + **키워드 점수로 샤드 1개** — 통짜 사전 스왑이 아닙니다. 혼합 문서는 **41k 공통층 + 최적 샤드**이며, multi-shard union은 **로드맵**입니다.
+
+## Q&A — “단어장이면 끝 아니냐?” (20초)
+
+> 단어장 아이디어는 흔합니다. 우리 해자는 **Export 연료 + 샤드 라우팅 + 동결 AB + 제어 포장**의 **시스템 조립**입니다.
+
+## Q&A — “도메인마다 재학습?” (20초)
+
+> **런타임 재학습 없음.** 새 산업은 **`zone_*.json` 팩 추가**로 확장합니다. 의료 팩 파일명은 **`zone_g_health`** 입니다.
+
+---
+
+## Kill-Matrix (이 팩에서도 금지)
+
+- 학습 비용 0원 · 메모리 0 · 무한대 도메인 · Jaccard 0.899
+- 멀티 샤드 3개 동시 활성화 (Track A 미구현)
+- `zone_c_health` · 도메인별 훈련 ML 모델
