@@ -1,0 +1,63 @@
+# MKM Inter-Agent Encoding (RQ-019) — pytest smoke, no live HTTP / no secrets.
+name: Inter-Agent Encoding Smoke
+
+on:
+  push:
+    branches: [main, master, develop, dev]
+    paths:
+      - "scripts/compression_token_api_v2_stub.py"
+      - "scripts/build_mkm_inter_agent_encoding_status_v1.py"
+      - "scripts/emit_mkm_inter_agent_first_message_worked_example_v1.py"
+      - "tests/test_compression_token_api_v2_stub.py"
+      - "tests/test_build_mkm_inter_agent_encoding_status_v1.py"
+      - "tests/test_emit_mkm_inter_agent_first_message_worked_example_v1.py"
+      - "docs/final/openapi_token_compression_v2_draft.yaml"
+      - "docs/final/artifacts/mkm_inter_agent_*"
+      - "docs/final/artifacts/fixtures/mkm_inter_agent_*"
+      - ".github/workflows/inter-agent-encoding-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/compression_token_api_v2_stub.py"
+      - "scripts/build_mkm_inter_agent_encoding_status_v1.py"
+      - "scripts/emit_mkm_inter_agent_first_message_worked_example_v1.py"
+      - "tests/test_compression_token_api_v2_stub.py"
+      - "tests/test_build_mkm_inter_agent_encoding_status_v1.py"
+      - "tests/test_emit_mkm_inter_agent_first_message_worked_example_v1.py"
+      - "docs/final/openapi_token_compression_v2_draft.yaml"
+      - "docs/final/artifacts/mkm_inter_agent_*"
+      - "docs/final/artifacts/fixtures/mkm_inter_agent_*"
+      - ".github/workflows/inter-agent-encoding-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install test deps
+        run: pip install pytest fastapi httpx pydantic uvicorn
+
+      - name: Inter-agent encoding tests
+        run: |
+          pytest \
+            tests/test_compression_token_api_v2_stub.py \
+            tests/test_build_mkm_inter_agent_encoding_status_v1.py \
+            tests/test_emit_mkm_inter_agent_first_message_worked_example_v1.py \
+            -q
+
+      - name: Status builder (strict)
+        run: python scripts/build_mkm_inter_agent_encoding_status_v1.py --strict-exit

@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_encoding_status_v1",
-  "generated_at_utc": "2026-05-18T20:34:42Z",
+  "generated_at_utc": "2026-05-18T20:45:41Z",
   "rq_019": "OPEN",
   "rq_019_milestones_core_ready": true,
   "research_only_components": [
@@ -14,7 +14,7 @@
         "exit_code": 0,
         "passed": true,
         "test_file": "tests/test_compression_token_api_v2_stub.py",
-        "stdout_tail": ".................                                                        [100%]\n17 passed in 1.43s\n",
+        "stdout_tail": ".................                                                        [100%]\n17 passed in 1.22s\n",
         "stderr_tail": ""
       },
       "inprocess_roundtrip": {
@@ -53,7 +53,8 @@
   "pointers": {
     "sota_map": "docs/final/artifacts/mkm_inter_agent_encoding_sota_map_v1.md",
     "trust_packet_onepager": "docs/final/artifacts/lg_compression_trust_packet_onepager_v1.md",
-    "first_message_worked_example": "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md"
+    "first_message_worked_example": "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md",
+    "first_message_live_http": "docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json"
   },
   "boundary_ack": "Not a finished MKM Language / Lingua Franca standard. No production SLA. No beats-SOTA-papers claim."
 }

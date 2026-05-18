@@ -30,7 +30,7 @@
 | RQ-016 | OPEN | **압축 Meta-Policy** — 도메인 유입 시 lexicon·shard 자동 정렬(수동 핀포인트 축소) | 2026-05-16 sweep: **scm/health selective bridge** → scm Jaccard **1.0** 가능하나 **global saving < 0.47**; soft-term 핀도 동일 tradeoff → **baseline 유지** | `compression_domain_bridge_sweep_v1_latest.json` · `compression_scm_shard_pin_experimental_v1.json` · `run_compression_domain_bridge_sweep_v1.py` | Per-domain **cap tuning** 또는 literal 프로필 분기; Track A opt-in은 floor 통과 실험 후 |
 | RQ-017 | OPEN | **토큰 절감 ↔ 보드 실측 지연(ms)** 상관 — edge/NPU 하드웨어에서 입증 | **2026-05-16:** 로컬 페이로드 스윕 + **VPS triplet OK** (p95 median **~710ms**); **인과 주장 금지** | `compression_board_ms_vps_bench_triplet_v1_latest.json` · `Run-CompressionBoardMsVpsBenchTriplet_v1.ps1` · `compression_board_ms_correlation_report_v1_latest.json` | edge/NPU·페이로드–절감 A/B; LG **C-S3 2026-05-20**; OEM ms **휴먼** |
 | RQ-018 | OPEN | **Shadow Auditor** — 야간 `test_ultra_compression_artifacts` + loss-pattern → research 큐 자동 적재 | **2026-05-16 구현:** `run_compression_shadow_auditor_v1.py` · 일일 `Register-CompressionShadowAuditorDailyTask.ps1` · 주간 `-IncludeShadowAuditor` | `scripts/run_compression_shadow_auditor_v1.py` · `reports/constitution/btrack_pilot/compression_shadow_auditor_latest.json` · `compression_research_metaphor_debug_queue.jsonl` · `tests/test_run_compression_shadow_auditor_v1.py` | 웹훅·Track A 자동 승격 연결 여부; board ms(RQ-017) 상관 리포트 병합 |
-| RQ-019 | OPEN | **MKM Inter-Agent Encoding** (「MKM Language」/ Lingua Franca `[VISION]`) — SOTA 4축(시맨틱·신경압축·슈퍼토큰·프롬프트 경제)과 **레포 층** 정렬·승격 조건 | **2026-05-19:** `rq_019_milestones_core_ready: true` (M1 v2 packet-only expand + pytest 17 · M2 wire v0 · M3 L1 ~57.9% 대외 초안) · Lingua Franca·상용 SLA·4D 와이어 **미단정** | `docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json` · `mkm_inter_agent_encoding_sota_map_v1.md` · `mkm_inter_agent_wire_profile_v0.json` · `build_mkm_inter_agent_encoding_status_v1.py` | **CLOSED** = 법무 Sign-off + Whitepaper/IR 승격; RQ는 **OPEN** 유지 |
+| RQ-019 | OPEN | **MKM Inter-Agent Encoding** (「MKM Language」/ Lingua Franca `[VISION]`) — SOTA 4축(시맨틱·신경압축·슈퍼토큰·프롬프트 경제)과 **레포 층** 정렬·승격 조건 | **2026-05-19:** `core_ready` + **live HTTP curl** 박제 · CI `inter-agent-encoding-smoke.yml` · IR 스니펫 `mkm_inter_agent_ir_snippet_v1.md` · 법무 전 대외 **미승격** | `mkm_inter_agent_encoding_status_latest.json` · `mkm_inter_agent_first_message_live_http_v1.json` · `Invoke-MkmInterAgentEncodingSmoke_v1.ps1` | **CLOSED** = 법무 Sign-off + PUBLIC_FACING 이관; 기술·curl 증거는 **완료** |
 
 ### RQ-019 — `CLOSED` 이관 준비 (체크리스트 · **M1–M3·법무 전까지 `OPEN` 유지**)
 
@@ -38,8 +38,8 @@
 
 | # | 조건 | 근거·산출 |
 |---|------|-----------|
-| 1 | **M1** v2 Trust Packet **Phase 2** — expand = packet only, 재조립 라운드트립 | `openapi_token_compression_v2_draft.yaml` · `compression_token_api_v2_stub.py` · pytest |
-| 2 | **M2** Inter-agent **wire profile v0** + `research_only` 아닌 통합 active 리포트 1종 | `CONSTITUTION` 표 행 · `*_integrated_active_report_latest.json` (TBD) |
+| 1 | **M1** v2 Trust Packet **Phase 2** — expand = packet only, 재조립 라운드트립 | **`[FACT]`** pytest 17+3 · in-process + **live HTTP** `mkm_inter_agent_first_message_live_http_v1.json` |
+| 2 | **M2** Inter-agent **wire profile v0** + 통합 status 리포트 | **`[FACT]`** `mkm_inter_agent_wire_profile_v0.json` · `mkm_inter_agent_encoding_status_latest.json` |
 | 3 | **M3** Human decoder **게이트·한계** 대외 허용 문장 확정 | `l1_inverse_decoder_spike_test_summary_latest.json` · `PUBLIC_FACING` |
 | 4 | 대외 카피 **법무** — Lingua Franca 완성·토큰 0·100% 복원·4D 운영 와이어·학계 SOTA 우위 **없음** | `mkm_inter_agent_encoding_sota_map_v1.md` Kill-Matrix |
 
