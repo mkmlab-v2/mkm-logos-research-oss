@@ -23,7 +23,8 @@
 **주장**
 - Active SSOT: `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` — variant `ssot_cap_0.45_top5_allowlist`.
 - V2 벤치 **~47.54%** global token saving, avg Jaccard **~0.890**, min Jaccard **~0.714** (동결 대비 min J 유지).
-- RQ-016 **bench floor 0.47** 참조 **통과** (`bench_saving_floor_ok` in KPI summary); `ultra_saving_policy_ok`는 decision **0.49** 축 별도(혼용 금지).
+- RQ-016 **bench/policy floor 0.47** 참조 **통과** (`bench_saving_floor_ok`, `ultra_saving_policy_ok` on promoted Track A — 동일 축).
+- **도메인 확장:** `codebook/shards/zone_*.json` 정책 팩(가중치 LoRA 아님) — IR 불릿은 `compression_enterprise_executive_summary_v1.md` 「Plugin scalability IR」§.
 - 국소 정책: `domain_relaxed_max_saving_overrides {ssot:0.45}` on case allowlist `cmp2_002,004,005,006,009` only — lexicon·bridge 변경 없음.
 
 **주장하지 않음**

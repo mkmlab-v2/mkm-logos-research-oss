@@ -36,6 +36,64 @@ MKM does not sell “a smarter model.” We sell a **governed compression layer*
 
 ---
 
+## Plugin scalability IR — one-pager (70 / 20 / 10) · `[DRAFT]`
+
+**Tone:** 70% enterprise problem · 20% governed ops · 10% vision hint. **Legal:** `PUBLIC_FACING` v1.7 before external send.
+
+### 70% — Problem (manufacturing / platform language)
+
+- Enterprise LLM spend scales with **payload diversity** (SCM, finance, health-adjacent ops copy, code snippets)—not one static prompt.
+- **Weight fine-tuning per tenant** is slow, costly, and hard to audit; rollback and compliance reviews multiply.
+- Operators need **token economy without silent lexical drift**—measurable on frozen benches, not slide claims.
+
+### 20% — What MKM ships today (`[FACT]`)
+
+- **Domain policy packs (JSON):** `codebook/shards/zone_*.json` — routing keywords + `must_keep_hard_terms` / `must_keep_soft_terms` + hangul policy (~0.5–1 KB per shard; **8 core zones** a–h loaded by `scripts/core/domain_router.py`).
+- **Compress-time behavior:** one **winning shard per document** (keyword score), then must_keep union + optional **41,775-term** master lexicon join (`use_master_codebook_lexicon_v1`) — **not** multi-shard overlay on a single pass.
+- **No runtime weight LoRA swap** on Track A compress path — policy + lexicon rails only; separate **Pack 0-A/0-B LoRA** axes in repo are **other products** (`LORA_PACK_V0_DOD_V1.md`).
+- **Promoted Track A (2026-05-18):** ~**47.5%** global saving @ floor **0.47**, avg/min Jaccard **~0.89 / 0.71**, signoff profile `ssot_cap_0.45_top5_allowlist` (five cases only; **no** global ssot 0.45 pin).
+
+### 10% — Vision hint (`[HYPO]` — not shipped as auto-meta)
+
+- Toward **meta-policy** routing (less manual shard tuning per domain); see Roadmap table below.
+- New vertical (e.g. law, aviation): **add curated shard JSON + bench regression**—not “drop a file and forget.”
+
+### IR keyword (approved framing)
+
+| Use | Do not use alone |
+|-----|------------------|
+| **Zero weight-training plug-in domain policy** | “We are LoRA” / “zero-shot NLP magic” |
+| **LoRA-*inspired* domain packs (JSON)** | “GPU training cost $0 forever” |
+| **Artifact-bound governance** | “Unbeatable moat” / “perfect multi-domain fusion” |
+
+### Copy-paste bullets (EN, IR deck)
+
+- MKM scales enterprise compression by **plug-in domain policy packs** (`zone_*` JSON under `codebook/shards/`), not by re-training foundation weights for every new industry vertical.
+- At compress time we **select one domain policy** from text signals, **union** global must_keep and a **41k-term lexicon rail**—deterministic, auditable, KB-scale artifacts.
+- Track A on our **40-case frozen bench** shows **~47.5%** token reduction with **policy floor 0.47** met and Jaccard fidelity **~0.89** avg (lexical proxy—not semantic %).
+- New domains: **curate** keywords and must_keep, run bench gates, sign off—**no** mandatory GPU fine-tune on the compression hot path.
+- **Not claimed:** simultaneous multi-shard stack on one doc, clinical/trading guarantees, production SLA from bench alone.
+
+### Copy-paste bullets (KO, IR / OEM 초안)
+
+- MKM은 산업마다 **GPU 파인튜닝** 대신 **`zone_*.json` 도메인 정책 팩**(라우팅 키워드·must_keep)을 **플러그인**하는 **거버넌스형 압축**입니다.
+- 문서 1건당 **점수 최고 샤드 1개** + 글로벌 must_keep + **41k 렉시콘 조인** — “의료·SCM 팩을 한 텍스트에 동시에 겹친다”가 **아님**.
+- Track A(40건 동결 벤치): 전역 절감 **약 47.5%**, 정책·벤치 하한 **0.47** 충족, Jaccard avg/min **약 0.89 / 0.71** — **의미 N%·무손실 단정 금지**.
+- 신규 도메인은 **JSON 팩 + 큐레이션 + 벤치·승격** — 압축 런타임 **가중치 재학습 필수 아님**, **운영 비용 0원 아님**.
+- 레포 내 **명리/Control-Integrity LoRA 팩**(Pack 0-A·0-B)과 **압축 zone 팩**은 **별 축** — IR에서 혼용하지 않음.
+
+### Evidence pointers (reproduce)
+
+| Topic | Path |
+|-------|------|
+| Shard loader | `scripts/core/domain_router.py` |
+| Example shard | `codebook/shards/zone_g_health.json` |
+| Runtime flow | `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md` |
+| Active / KPI | `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, `ultra_compression_kpi_summary_latest.json` |
+| Terminology guard | `docs/final/COMPRESSION_RESTORATION_EVOLUTION_INDEX_V1.md` §5 (H: “압축” ≠ 멀티렌즈 엔진 혼동 방지) |
+
+---
+
 ## Copy-paste paragraph (EN, proposal body)
 
 > Our compression API is designed for enterprise operators who must cut LLM token spend without silent quality drift. On our current frozen benchmark (40 cases), Track A delivers approximately **47.5%** token reduction with `bench_saving_floor_ok` at published floor **0.47**, reconstruction fidelity avg Jaccard **~0.89** (min **~0.71**), and sensitive-term integrity **1.0** on that bench. Promotion uses a **case-allowlisted** ssot cap (five low-saving cases only), not a global domain blast. We ship decision JSON, KPI summaries, signoff records, and active reports so your team can reproduce results—not marketing slides alone. This is observability and governance for compression profiles; it is not a trading signal, clinical tool, or guarantee of lossless restoration in production.
@@ -81,4 +139,4 @@ Signoff auto-load: `multilens_ultra_compression_track_a_promotion_signoff_v1_lat
 Policy / tracks: `docs/final/COMPRESSION_SLA_POLICY_V1.md`  
 Track C business frame: `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.1.1–§3.1.3 (governance · global positioning · execution schedule)
 
-**Generated:** 2026-05-16 · schema `compression_enterprise_executive_summary_v1`
+**Generated:** 2026-05-19 · schema `compression_enterprise_executive_summary_v1` · plugin-scalability IR § added
