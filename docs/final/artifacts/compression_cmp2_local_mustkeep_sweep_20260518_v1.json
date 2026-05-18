@@ -1,0 +1,48 @@
+{
+  "schema": "compression_cmp2_local_mustkeep_sweep_v1",
+  "generated_at_utc": "2026-05-18T18:26:04.876617Z",
+  "hypothesis_tier": "B",
+  "track_wall": "compression_production_with_waiver",
+  "policy_floor_global_token_saving_rate": 0.47,
+  "target_case_ids": [
+    "cmp2_015",
+    "cmp2_023"
+  ],
+  "shard": "codebook/shards/zone_a_scm.json",
+  "baseline": {
+    "global_token_saving_rate": 0.4683544303797469,
+    "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+    "ultra_saving_policy_ok": false,
+    "cmp2_by_id": {
+      "cmp2_015": 0.9333333333333333,
+      "cmp2_023": 0.9333333333333333
+    },
+    "must_keep_soft_additions": []
+  },
+  "variants": [
+    {
+      "id": "cmp2_min_pair",
+      "must_keep_soft_additions": [
+        "일반화하면",
+        "손실되면"
+      ],
+      "global_token_saving_rate": 0.4683544303797469,
+      "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+      "ultra_saving_policy_ok": false,
+      "cmp2_by_id": {
+        "cmp2_015": 0.9333333333333333,
+        "cmp2_023": 0.9333333333333333
+      }
+    }
+  ],
+  "recommendation": {
+    "production_shard": "cmp2_min_pair",
+    "research_candidate_id": "cmp2_min_pair",
+    "applied_to_production": true,
+    "saving_floor_waiver": "docs/final/artifacts/compression_cmp2_min_pair_promotion_waiver_v1.json"
+  },
+  "pin_artifacts": {
+    "production": "docs/final/artifacts/compression_scm_shard_pin_v1.json",
+    "waiver": "docs/final/artifacts/compression_cmp2_min_pair_promotion_waiver_v1.json"
+  }
+}

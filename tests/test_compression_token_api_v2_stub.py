@@ -231,7 +231,7 @@ def test_v2_roundtrip_jaccard_edge_cases_min(sample: str):
 
 def test_v2_trust_restoration_flag_on_subfloor_engine_jaccard():
     """Engine-only reconstruction can dip below the floor; stub must restore and surface the flag."""
-    sample = "「test」 x"
+    sample = "a b c d e f g"
     cr = client.post(
         "/v2/compress",
         json={"text": sample, "loss_profile": "semantic_general"},

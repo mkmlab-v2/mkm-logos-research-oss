@@ -1,0 +1,7 @@
+{
+  "schema": "compression_scm_shard_pin_experimental_v1",
+  "ts_utc": "2026-05-18T18:26:04.876617Z",
+  "recommendation": "promoted_to_production",
+  "note": "cmp2_min_pair merged into production shard; see waiver artifact.",
+  "waiver_artifact": "docs/final/artifacts/compression_cmp2_min_pair_promotion_waiver_v1.json"
+}

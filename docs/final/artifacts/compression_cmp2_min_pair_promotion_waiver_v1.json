@@ -1,0 +1,22 @@
+{
+  "schema": "compression_cmp2_min_pair_promotion_waiver_v1",
+  "approved_at_utc": "2026-05-18T17:29:28.443410Z",
+  "approver": "commander",
+  "policy_floor_global_token_saving_rate": 0.47,
+  "waived_metric": "ultra_saving_policy_ok",
+  "rationale": "Commander approved cmp2_015/023 Jaccard uplift; accept ~0.16pp global saving below 0.47.",
+  "production_must_keep_soft_additions": [
+    "일반화하면",
+    "손실되면"
+  ],
+  "observed_at_promotion": {
+    "global_token_saving_rate": 0.4683544303797469,
+    "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+    "ultra_saving_policy_ok": false,
+    "cmp2_by_id": {
+      "cmp2_015": 0.9333333333333333,
+      "cmp2_023": 0.9333333333333333
+    },
+    "floor_miss_pp": 0.0016455696202530845
+  }
+}

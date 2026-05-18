@@ -2,6 +2,22 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-19 · M-COMP-A1 압축 밀기)
+
+**Thread:** Cursor — cmp2 min_pair 프로덕션 + 40건 벤치
+
+- **완료:** `Invoke-CompressionRecommendedPolicy_v1` + `run_compression_automation_chain.ps1` **exit 0** · cmp2_015/023 Jaccard **0.933** (shard `일반화하면`/`손실되면`) · active saving **46.84%** · avg Jaccard **0.899** · pytest v2 stub **17 passed** (trust-restoration 샘플 1건 수정)
+- **막힘:** `ultra_saving_policy_ok: false` — **waiver** 유지(0.47 미달 ~0.16pp) · 3벤치 한 슬라이드 합치기 금지
+- **다음:** (선택) `push-internal.ps1` · OpenData PDF/DEV-10 · 쇼룸 보류
+
+## Ops slice (2026-05-19 · 자동 실행 · NL·Slack·OpenData)
+
+**Thread:** Cursor — 권장안 자동화
+
+- **완료:** Slack `#project-mkmlife` **발송** · [DEV-12](https://giryun288.atlassian.net/browse/DEV-12) **완료** · MCP **`authenticated: true`** · `nlm` 렌즈 팩 **19 ok / 4 fail**(JSON) → `reports/notebooklm_lens_pack_push_latest.log` · OpenData 게이트 **PASS** · Part B 초안 HTML `reports/opendata_327_part_b_draft_v1.html`
+- **막힘:** Headless PDF 미생성(Chrome print) · K-Startup·나라장터 접수 · §4-1·§2-2 placeholder
+- **다음:** Word/브라우저로 HTML→PDF · merge guide 병합 · [DEV-10](https://giryun288.atlassian.net/browse/DEV-10) 6/5
+
 ## Ops slice (2026-05-18 · Cross-chat 종료 · 융합 재개용)
 
 **Thread:** Cursor 세션 종료 → **다른 채팅에서 `@` + 장기기억으로 재개**
