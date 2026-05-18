@@ -14,7 +14,15 @@
     },
     "routing": {
       "domain_router": "scripts/core/domain_router.py",
-      "shard_glob": "codebook/shards/zone_*.json"
+      "shard_glob": "codebook/shards/zone_*.json",
+      "v2_routing_profiles": "scripts/compression_v2_routing_profile_v1.py",
+      "compress_routing_profile_field": "routing_profile",
+      "profiles": [
+        "default",
+        "track_a_promoted",
+        "b_track_domain_relax"
+      ],
+      "rebench_script": "scripts/run_mkm_inter_agent_v2_routing_rebench_v1.py"
     },
     "packet": {
       "packet_format_version": "trust_packet.0.1",

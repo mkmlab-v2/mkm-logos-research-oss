@@ -14,6 +14,10 @@ on:
       - "tests/test_run_mkm_inter_agent_dialogue_mock_v1.py"
       - "scripts/run_mkm_inter_agent_dialogue_mock_v1.py"
       - "scripts/mkm_inter_agent_l1_decode_experimental_v1.py"
+      - "scripts/compression_v2_routing_profile_v1.py"
+      - "scripts/run_mkm_inter_agent_v2_routing_rebench_v1.py"
+      - "tests/test_compression_v2_routing_profile_v1.py"
+      - "codebook/shards/zone_g_health.json"
       - "docs/final/openapi_token_compression_v2_draft.yaml"
       - "docs/final/artifacts/mkm_inter_agent_*"
       - "docs/final/artifacts/fixtures/mkm_inter_agent_*"
@@ -29,6 +33,10 @@ on:
       - "tests/test_run_mkm_inter_agent_dialogue_mock_v1.py"
       - "scripts/run_mkm_inter_agent_dialogue_mock_v1.py"
       - "scripts/mkm_inter_agent_l1_decode_experimental_v1.py"
+      - "scripts/compression_v2_routing_profile_v1.py"
+      - "scripts/run_mkm_inter_agent_v2_routing_rebench_v1.py"
+      - "tests/test_compression_v2_routing_profile_v1.py"
+      - "codebook/shards/zone_g_health.json"
       - "docs/final/openapi_token_compression_v2_draft.yaml"
       - "docs/final/artifacts/mkm_inter_agent_*"
       - "docs/final/artifacts/fixtures/mkm_inter_agent_*"
@@ -64,6 +72,7 @@ jobs:
             tests/test_build_mkm_inter_agent_encoding_status_v1.py \
             tests/test_emit_mkm_inter_agent_first_message_worked_example_v1.py \
             tests/test_run_mkm_inter_agent_dialogue_mock_v1.py \
+            tests/test_compression_v2_routing_profile_v1.py \
             -q \
             -m "not slow"
 
