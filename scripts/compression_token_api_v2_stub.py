@@ -103,13 +103,18 @@ class CompressResponseV2(BaseModel):
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
+DecodeMode = Literal["stub", "l1_experimental"]
+
+
 class ExpandRequestV2(BaseModel):
     compression_packet: CompressionPacket
+    decode_mode: DecodeMode = "stub"
 
 
 class ExpandResponseV2(BaseModel):
     text: str
     api_contract_version: str = API_CONTRACT_VERSION
+    decode_mode: DecodeMode = "stub"
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -434,13 +439,36 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
 @app.post("/v2/expand", response_model=ExpandResponseV2)
 def expand_v2(body: ExpandRequestV2) -> ExpandResponseV2:
     pkt = body.compression_packet
-    flags: dict[str, Any] = {"stub_v2": True, "reassembly": "residual_meta"}
+    mode = body.decode_mode
+    flags: dict[str, Any] = {"stub_v2": True, "decode_mode": mode}
+
+    if mode == "l1_experimental":
+        from scripts.mkm_inter_agent_l1_decode_experimental_v1 import (  # noqa: WPS433
+            decode_compressed_observation_experimental,
+        )
+
+        l1 = decode_compressed_observation_experimental(pkt.compressed_text, beam_size=4)
+        flags["research_only"] = True
+        flags["reassembly"] = "l1_experimental_beam"
+        flags["l1_decode"] = {k: v for k, v in l1.items() if k != "decoded_text"}
+        if not l1.get("ok"):
+            flags["l1_decode_failed"] = True
+            text = pkt.compressed_text
+            flags["reassembly"] = "l1_experimental_degraded_compressed_text"
+        else:
+            text = str(l1.get("decoded_text") or pkt.compressed_text)
+        return ExpandResponseV2(
+            text=text,
+            decode_mode=mode,
+            integrity_flags=flags,
+        )
+
+    flags["reassembly"] = "residual_meta"
     meta = pkt.residual_meta or {}
     stub = meta.get(RESIDUAL_STUB_KEY) if isinstance(meta, dict) else None
     if isinstance(stub, dict) and "reconstructed_text" in stub:
         text = str(stub["reconstructed_text"])
         flags["source"] = RESIDUAL_STUB_KEY
-        return ExpandResponseV2(text=text, integrity_flags=flags)
-    # Degraded: return compressed_text with warning (no v1-style original echo field).
+        return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
     flags["reassembly"] = "degraded_compressed_text_only"
-    return ExpandResponseV2(text=pkt.compressed_text, integrity_flags=flags)
+    return ExpandResponseV2(text=pkt.compressed_text, decode_mode=mode, integrity_flags=flags)
