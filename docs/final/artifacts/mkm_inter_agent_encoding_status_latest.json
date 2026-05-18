@@ -1,21 +1,17 @@
 {
   "schema": "mkm_inter_agent_encoding_status_v1",
-  "generated_at_utc": "2026-05-18T21:49:06Z",
+  "generated_at_utc": "2026-05-18T21:56:00Z",
   "rq_019": "OPEN",
-  "rq_019_milestones_core_ready": true,
+  "rq_019_milestones_core_ready": false,
   "research_only_components": [
     "l1_side_channel_wire",
     "l1_inverse_decoder_spike"
   ],
   "milestones": {
     "m1_v2_phase2_packet_only_expand": {
-      "status": "pass",
+      "status": "fail",
       "pytest": {
-        "exit_code": 0,
-        "passed": true,
-        "test_file": "tests/test_compression_token_api_v2_stub.py",
-        "stdout_tail": "===================== warnings summary ===============================\ntests\\test_compression_token_api_v2_stub.py:168\n  C:\\workspace\\tests\\test_compression_token_api_v2_stub.py:168: PytestUnknownMarkWarning: Unknown pytest.mark.slow - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.slow\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n18 passed, 1 warning in 1.65s\n",
-        "stderr_tail": ""
+        "skipped": true
       },
       "inprocess_roundtrip": {
         "ok": true,

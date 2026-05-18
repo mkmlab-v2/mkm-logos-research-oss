@@ -1,0 +1,208 @@
+{
+  "schema": "mkm_inter_agent_dialogue_mock_summary_v1",
+  "generated_at_utc": "2026-05-18T21:56:39Z",
+  "classification": "INTERNAL_ONLY",
+  "hypothesis_tier": "B",
+  "boundary_ack": "Simulated agents; plaintext is logged for audit only. On-wire payload is Trust Packet only. Not production A2A. Not Track A trading trigger.",
+  "routing_profile": "b_track_domain_relax",
+  "scenario": "health",
+  "turns_requested": 4,
+  "turns_recorded": 4,
+  "all_compress_ok": true,
+  "all_expand_packet_only": true,
+  "all_expand_ok": true,
+  "transcript": [
+    {
+      "turn": 1,
+      "role": "agent_alpha_prophecy",
+      "internal_plaintext": "환자 건강 수면 식사 증상 호흡 피로 회복 체온 — 임상 진단 바이탈 Silver Tech 모니터링.",
+      "wire_only": true,
+      "compress": {
+        "http_status": 200,
+        "loss_profile": "semantic_general",
+        "routing_profile": "b_track_domain_relax",
+        "compression_metrics": {
+          "token_in": 17,
+          "token_out": 12,
+          "savings_ratio": 0.2941176470588235
+        },
+        "integrity_flags": {
+          "routing_research_only": true,
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        }
+      },
+      "trust_packet_redacted": {
+        "packet_format_version": "trust_packet.0.1",
+        "api_contract_version": "2.0.0-draft",
+        "loss_profile": "semantic_general",
+        "compressed_text": "환자 건강 수면 식사 증상 호흡 피로 Silver 임상 진단 체온 회복",
+        "residual_meta": {
+          "mk_stub_v2": {
+            "reconstructed_text": "환자 건강 수면 식사 증상 호흡 피로 회복 체온 임상 진단 바이탈 Silver Tech",
+            "global_token_saving_rate": 0.2941176470588235,
+            "reconstruction_fidelity_jaccard": 0.9333333333333333
+          },
+          "placeholder_map": {}
+        },
+        "router_meta": {
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        },
+        "content_fingerprint": "5a45235f2f275dab4abe70ba7cd2582e"
+      }
+    },
+    {
+      "turn": 2,
+      "role": "agent_beta_executor",
+      "internal_plaintext": "ACK: 환자 바이탈·증상 패킷 수신. 수면·식사 권고 유지, 임상 게이트 통과 전 조치 보류. [inferred_from_packet: 환자 건강 수면 식사 증상 호흡 피로 회복 체온 임상 진단 바이탈 Silver Tech]",
+      "wire_only": true,
+      "compress": {
+        "http_status": 200,
+        "loss_profile": "semantic_general",
+        "routing_profile": "b_track_domain_relax",
+        "compression_metrics": {
+          "token_in": 40,
+          "token_out": 17,
+          "savings_ratio": 0.575
+        },
+        "integrity_flags": {
+          "routing_research_only": true,
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        }
+      },
+      "trust_packet_redacted": {
+        "packet_format_version": "trust_packet.0.1",
+        "api_contract_version": "2.0.0-draft",
+        "loss_profile": "semantic_general",
+        "compressed_text": "환자 증상 수면 식사 임상 통과 환자 건강 수면 식사 증상 호흡 피로 회복 체온 Silver 진단",
+        "residual_meta": {
+          "mk_stub_v2": {
+            "reconstructed_text": "ACK 환자 바이탈 증상 패킷 수신 수면 식사 권고 유지 임상 게이트 통과 전 inferred_from_packet 환자 건강 수면 식사 증상 호흡 피로 회복 체온 임상 진단 바이탈 Silver Tech",
+            "global_token_saving_rate": 0.575,
+            "reconstruction_fidelity_jaccard": 0.92
+          },
+          "placeholder_map": {}
+        },
+        "router_meta": {
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        },
+        "content_fingerprint": "676adef80bcc84f0c67214744ff2d45a"
+      },
+      "expand_inbound_packet_only": {
+        "from_role": "agent_alpha_prophecy",
+        "to_role": "agent_beta_executor",
+        "http_status": 200,
+        "expanded_text_preview": "환자 건강 수면 식사 증상 호흡 피로 회복 체온 임상 진단 바이탈 Silver Tech",
+        "expand_equals_stub_reconstructed": true,
+        "jaccard_internal_vs_expanded": 0.56,
+        "original_text_on_request": false
+      }
+    },
+    {
+      "turn": 3,
+      "role": "agent_alpha_prophecy",
+      "internal_plaintext": "건강검진 회복률 주의: 수면 부족·식사 불균형 시 증상 악화 가능. 의료 팀 검토 요청.",
+      "wire_only": true,
+      "compress": {
+        "http_status": 200,
+        "loss_profile": "semantic_general",
+        "routing_profile": "b_track_domain_relax",
+        "compression_metrics": {
+          "token_in": 19,
+          "token_out": 19,
+          "savings_ratio": 0.0
+        },
+        "integrity_flags": {
+          "routing_research_only": true,
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        }
+      },
+      "trust_packet_redacted": {
+        "packet_format_version": "trust_packet.0.1",
+        "api_contract_version": "2.0.0-draft",
+        "loss_profile": "semantic_general",
+        "compressed_text": "건강검진 회복률 주의: 수면 부족·식사 불균형 시 증상 악화 가능. 의료 팀 검토 요청.",
+        "residual_meta": {
+          "mk_stub_v2": {
+            "reconstructed_text": "건강검진 회복률 주의: 수면 부족·식사 불균형 시 증상 악화 가능. 의료 팀 검토 요청.",
+            "global_token_saving_rate": 0.0,
+            "reconstruction_fidelity_jaccard": 1.0
+          },
+          "placeholder_map": {}
+        },
+        "router_meta": {
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        },
+        "content_fingerprint": "0f91d609da74f9d1f65147cd3f6253ee"
+      },
+      "expand_inbound_packet_only": {
+        "from_role": "agent_beta_executor",
+        "to_role": "agent_alpha_prophecy",
+        "http_status": 200,
+        "expanded_text_preview": "ACK 환자 바이탈 증상 패킷 수신 수면 식사 권고 유지 임상 게이트 통과 전 inferred_from_packet 환자 건강 수면 식사 증상 호흡 피로 회복 체온 임상 진단 바이탈 Silver Tech",
+        "expand_equals_stub_reconstructed": true,
+        "jaccard_internal_vs_expanded": 0.08571428571428572,
+        "original_text_on_request": false
+      }
+    },
+    {
+      "turn": 4,
+      "role": "agent_beta_executor",
+      "internal_plaintext": "ACK: 건강검진 브리프 반영. 회복 지표 모니터링 지속, 추가 증상 시 재패킷 요청. [inferred_from_packet: 건강검진 회복률 주의: 수면 부족·식사 불균형 시 증상 악화 가능. 의료 팀 검토 요청.]",
+      "wire_only": true,
+      "compress": {
+        "http_status": 200,
+        "loss_profile": "semantic_general",
+        "routing_profile": "b_track_domain_relax",
+        "compression_metrics": {
+          "token_in": 40,
+          "token_out": 14,
+          "savings_ratio": 0.65
+        },
+        "integrity_flags": {
+          "routing_research_only": true,
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        }
+      },
+      "trust_packet_redacted": {
+        "packet_format_version": "trust_packet.0.1",
+        "api_contract_version": "2.0.0-draft",
+        "loss_profile": "semantic_general",
+        "compressed_text": "회복 추가 증상 주의 수면 식사 증상 ACK 건강검진 요청 건강검진 불균형 가능 검토",
+        "residual_meta": {
+          "mk_stub_v2": {
+            "reconstructed_text": "ACK 건강검진 브리프 반영 회복 지표 모니터링 지속 추가 증상 시 재패킷 요청 inferred_from_packet 건강검진 회복률 주의 수면 부족 식사 불균형 시 증상 악화 가능 의료 팀 검토 요청",
+            "global_token_saving_rate": 0.65,
+            "reconstruction_fidelity_jaccard": 1.0
+          },
+          "placeholder_map": {}
+        },
+        "router_meta": {
+          "shard_id": "zone_g_health",
+          "domain": "health"
+        },
+        "content_fingerprint": "5e7f671d712fd4072560a8773f11edcb"
+      },
+      "expand_inbound_packet_only": {
+        "from_role": "agent_alpha_prophecy",
+        "to_role": "agent_beta_executor",
+        "http_status": 200,
+        "expanded_text_preview": "건강검진 회복률 주의: 수면 부족·식사 불균형 시 증상 악화 가능. 의료 팀 검토 요청.",
+        "expand_equals_stub_reconstructed": true,
+        "jaccard_internal_vs_expanded": 0.6,
+        "original_text_on_request": false
+      }
+    }
+  ],
+  "evidence_paths": [
+    "scripts/run_mkm_inter_agent_dialogue_mock_v1.py",
+    "scripts/compression_token_api_v2_stub.py",
+    "tests/test_run_mkm_inter_agent_dialogue_mock_v1.py"
+  ]
+}

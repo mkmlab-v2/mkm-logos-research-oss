@@ -1,0 +1,28 @@
+{
+  "schema": "mkm_inter_agent_post_commander_approval_bundle_v1",
+  "generated_at_utc": "2026-05-18T21:56:39Z",
+  "classification": "INTERNAL_ONLY",
+  "hypothesis_tier": "B",
+  "commander_approved": true,
+  "approval_pointer": "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json",
+  "approved_variant_id": "health_hangul_relaxed_cap_0.50",
+  "track_a_bench_promotion_approved": false,
+  "rq_019_external_closed": false,
+  "legal_signoff_required_for_rq019_closed": true,
+  "ops_ready": {
+    "b_track_health_dialogue": true,
+    "routing_profile": "b_track_domain_relax",
+    "dialogue_summary": "docs/final/artifacts/mkm_inter_agent_dialogue_health_approved_latest.json",
+    "avg_savings_ratio": 0.379779
+  },
+  "encoding_status": {
+    "rq_019_milestones_core_ready": false,
+    "health_domain_commander_approved": true
+  },
+  "boundary_ack": "Commander approved B-track inter-agent health caps only. Track A frozen bench unchanged. RQ-019 stays OPEN until legal on external copy.",
+  "recommended_next": [
+    "Legal review: mkm_inter_agent_ir_snippet_v1.md + PUBLIC_FACING v1.7",
+    "Optional: live HTTP demo for internal stakeholders (stub port 8011)",
+    "Do not promote health_hangul_relaxed_cap_0.50 to Track A without 0.47 floor re-sweep"
+  ]
+}
