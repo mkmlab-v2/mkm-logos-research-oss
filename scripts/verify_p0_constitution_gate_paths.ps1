@@ -798,6 +798,7 @@ $required = @(
     "scripts\Run-UltraCompressionHealthBridgePinpoint_v1.ps1",
     "docs\final\artifacts\MULTILENS_ULTRA_COMPRESSION_HEALTH_BRIDGE_PINPOINT_V1.json",
     "docs\final\artifacts\compression_b_track_bridge_evidence_summary_v1.json",
+    "docs\final\artifacts\compression_alarm_thresholds_v1.json",
     "scripts\run_compression_health_bridge_floor_microgrid_v1.py",
     "scripts\Run-CompressionHealthBridgeFloorMicrogrid_v1.ps1",
     "docs\final\artifacts\compression_health_bridge_floor_microgrid_v1_latest.json",

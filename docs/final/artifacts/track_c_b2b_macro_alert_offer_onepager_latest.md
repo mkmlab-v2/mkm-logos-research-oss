@@ -1,6 +1,6 @@
 # Track C — 기업용 매크로 조기 경보 구독 (세일즈 시트 초안)
 
-- **generated_at_utc:** `2026-05-16T07:05:35Z`
+- **generated_at_utc:** `2026-05-18T20:44:46Z`
 - **aligned_with:** `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.8 · §9 · §9A · §10 항목 2
 - **status:** `DRAFT_AUTO`
 

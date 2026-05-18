@@ -1,0 +1,15 @@
+{
+  "schema": "compression_alarm_thresholds_v1",
+  "version": "2026-05-18",
+  "description": "Active_kpi bounds for scripts/send_compression_kpi_alarm_if_needed.ps1. Bench floor 0.47 (RQ-016) is separate from decision/canary axis 0.49 (ultra_saving_policy_ok).",
+  "bench_aligned_field": "active_kpi.global_token_saving_rate",
+  "bench_saving_floor_min": 0.47,
+  "suggested_policy_floor_token_saving_rate": 0.49,
+  "min_avg_reconstruction_fidelity_jaccard": 0.4,
+  "min_global_token_saving_rate": 0.47,
+  "min_avg_sensitive_integrity": 0.8,
+  "alarm_if_jaccard_guardrail_false": true,
+  "alarm_if_sensitive_integrity_ok_false": false,
+  "alarm_if_go_no_go_no_go": false,
+  "alarm_if_bench_saving_floor_false": true
+}

@@ -12,6 +12,12 @@ if ($SkipCompressionAlarm) {
 $kpiPath = Join-Path $WorkspaceRoot "reports\constitution\btrack_pilot\ultra_compression_kpi_summary_latest.json"
 $thrPath = Join-Path $WorkspaceRoot "docs\final\artifacts\compression_alarm_thresholds_v1.json"
 
+$suppressKpi = [string]$env:MKM_WEBHOOK_SUPPRESS_COMPRESSION_KPI
+if ($suppressKpi -match '^(1|true|yes|on)$') {
+    Write-Host "[compression_kpi_alarm] SKIP: MKM_WEBHOOK_SUPPRESS_COMPRESSION_KPI=1" -ForegroundColor DarkGray
+    exit 0
+}
+
 $webhook = $env:COMPRESSION_KPI_ALARM_WEBHOOK_URL
 if ([string]::IsNullOrWhiteSpace($webhook)) {
     $webhook = $env:OPS_ALARM_WEBHOOK_URL
@@ -43,9 +49,11 @@ function Get-DefaultThresholds {
         min_avg_reconstruction_fidelity_jaccard = 0.4
         min_global_token_saving_rate            = $null
         min_avg_sensitive_integrity             = 0.8
+        bench_saving_floor_min                  = 0.47
         alarm_if_jaccard_guardrail_false        = $true
         alarm_if_sensitive_integrity_ok_false   = $false
         alarm_if_go_no_go_no_go                 = $false
+        alarm_if_bench_saving_floor_false       = $true
     }
 }
 
@@ -106,6 +114,15 @@ if (Thr-Bool "alarm_if_go_no_go_no_go") {
     $d = $kpi.decision
     if ($null -ne $d -and $d.go_no_go -eq "NO_GO") {
         [void]$reasons.Add("decision.go_no_go=NO_GO")
+    }
+}
+
+if (Thr-Bool "alarm_if_bench_saving_floor_false") {
+    if ($active.PSObject.Properties.Name -contains "bench_saving_floor_ok") {
+        if (-not [bool]$active.bench_saving_floor_ok) {
+            $floorMin = Thr-Num "bench_saving_floor_min"
+            [void]$reasons.Add("bench_saving_floor_ok=false (RQ-016 floor=$floorMin)")
+        }
     }
 }
 
