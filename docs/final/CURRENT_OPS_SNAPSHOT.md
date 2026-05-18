@@ -2,6 +2,36 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-18 · Cross-chat 종료 · 융합 재개용)
+
+**Thread:** Cursor 세션 종료 → **다른 채팅에서 `@` + 장기기억으로 재개**
+
+- **완료:** 압축 3벤치 모두 exit **0** (40건 **47.12%**/0.885 · general 43 **GO** · finance 65 **~70.2%**/0.645) · Logos→압축 실험 **41775 유지** · bridge AB **policy OFF** · 예언 BTC 30d **43.33%** · dual-leg **30/30** · holdout `advisory-sweep` 수정 · git `7247ce9fc2` internal pushed(이전 턴)
+- **막힘:** 3벤치·예언·압축 **한 슬라이드/헤드라인 합치기 금지** · 쇼룸·마중 **보류** · `combined_all_passed`≠완료 · Track A `ultra_saving_50_ok: false`
+- **다음 (권장):** 작업 축 한 줄 — **`압축만` → cmp2_015/023 scm 국소 보수 후 40건만 재벤치** (codebook hit 0; scm 캡/must_keep 우선) · 또는 `예언만` / `융합`(실행 병렬·보고 분리)
+
+**다른 채팅 붙여넣기:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+@docs/final/CENTRAL_AGENT_MEMORY_V1.md
+장기기억 맥락이어라
+압축만
+```
+(선택) `@docs/final/artifacts/mkm_chat_resume_pack_latest.md`
+
+**융합 OK:** 같은 날 압축 체인+예언 체인 **연속 실행** · **NO:** 47%+43% 한 성과, finance 70%를 Track A에, pooled 51.67%를 쇼룸 헤드라인에
+
+## Ops slice (2026-05-18 · 압축만 · 3벤치 갱신)
+
+**Thread:** Cursor — **Track A + general 43 + finance B2B 65 동시 SSOT 갱신**
+
+- **완료 (Track A 40건):** `run_compression_automation_chain.ps1` exit **0** · saving **47.12%** · Jaccard **0.885** · `ultra_saving_policy_ok: true` (floor 0.47) · pytest trust 17 passed · KPI alarm within thresholds
+- **완료 (general 43건, 별도):** `Run-GeneralCompressionChain.ps1` exit **0** · treatment saving **40.3%** · Jaccard **0.994** · `general_compression_kpi_gate_v2.json` **GO**
+- **완료 (finance B2B 65건, 별도):** `Run-FinanceMacroB2bCompressionEval_v1.ps1` exit **0** · saving **~70.2%** · Jaccard **~0.645**
+- **동결:** codebook **41775** · `apply_gematria_4d_bridge_policy: false` · 41658 승격 **없음**
+- **막힘:** `ultra_saving_50_ok: false` (50% 목표 아님) · 3벤치 **한 슬라이드 합치기 금지**
+- **다음:** loss 패턴(`compression_jaccard_loss_patterns_latest.json`)로 약한 cmp2 id 타겟 · (선택) `-IncludeLiteralTrack` 주간 거버넌스
+
 ## Ops slice (2026-05-18 · Solo parallel · holdout+dual-leg+recommended)
 
 **Thread:** Cursor — **1인 병렬 3갈래 완료 · push-internal 대상**
