@@ -1,17 +1,21 @@
 {
   "schema": "mkm_inter_agent_encoding_status_v1",
-  "generated_at_utc": "2026-05-18T21:56:00Z",
+  "generated_at_utc": "2026-05-18T22:00:42Z",
   "rq_019": "OPEN",
-  "rq_019_milestones_core_ready": false,
+  "rq_019_milestones_core_ready": true,
   "research_only_components": [
     "l1_side_channel_wire",
     "l1_inverse_decoder_spike"
   ],
   "milestones": {
     "m1_v2_phase2_packet_only_expand": {
-      "status": "fail",
+      "status": "pass",
       "pytest": {
-        "skipped": true
+        "exit_code": 0,
+        "passed": true,
+        "test_file": "tests/test_compression_token_api_v2_stub.py",
+        "stdout_tail": "..................                                                       [100%]\n18 passed in 1.79s\n",
+        "stderr_tail": ""
       },
       "inprocess_roundtrip": {
         "ok": true,

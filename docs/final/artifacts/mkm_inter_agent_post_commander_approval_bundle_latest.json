@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_post_commander_approval_bundle_v1",
-  "generated_at_utc": "2026-05-18T21:56:39Z",
+  "generated_at_utc": "2026-05-18T22:00:29Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
   "commander_approved": true,
