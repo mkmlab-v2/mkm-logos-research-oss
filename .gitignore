@@ -10,6 +10,11 @@
 !.cursor/rules/gut-brain-metaphor-agent-v1.mdc
 # PR Review Canvas internal-first (alwaysApply; share across clones)
 !.cursor/rules/pr-review-canvas-auto.mdc
+# Cloud Agent dev environment IaC (Cursor 3.4; share across clones)
+!.cursor/environment.json
+!.cursor/environment/
+!.cursor/environment/**
+!.cursor/rules/cursor-cloud-sandbox-boundary.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md

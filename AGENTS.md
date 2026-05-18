@@ -222,6 +222,8 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【아람 일일 준비】 | Aramaic MVP 일일 예약 작업 인자·Track T survivor dry-run 스위치 확인(`Verify-AramaicMvpDailyTaskReadiness.ps1`; 작업 미등록 시 실패) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AramaicDailyReadiness` |
 | 【GPU 권장 번들】 | Control-Integrity oracle + Pack 0-B pytest(CONSTITUTION §1.2.1); P0·reconcile 후 번들만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona GpuRecommendedBundle` |
 | 【예언 레일 일단락】 | 예언 본선 클로저(P0·B-track 정렬 pytest·safe ops·GO/NO_GO 갱신). 통과 판정은 `reports/prophecy_lane_closure_bundle_v1_latest.json`의 **`closure_ok: true`** 및 `manual_remainder`(Windows `schtasks` 일반예언·Track A 실매매는 수동 잔여) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` |
+| 【샌드박스 헬스】 | SANDBOX 예언 아티팩트 헬스(느슨·일상) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ProphecySandbox` |
+| 【샌드박스 헬스 strict】 | watchlist 게이트(`max_n_calendar_days>=3`, 주간·승격 전) | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ProphecySandboxStrict` |
 
 ### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
 
@@ -257,11 +259,25 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - **Track C 매크로·Logos 일일(융합 단일 진입점):** `scripts/Invoke-TrackCMacroDailyFusion_v1.ps1` — `Invoke-FragilityMacroRiskDaily` 한 번 후 `run_macro_risk_forward_daily_chain_v1.ps1 -SkipFragilityChain` · `run_logos_4d_state_chain_v1.ps1 -SkipFragilityChain` · `build_logos_regime_resonance_shadow_signal_v1.py` · `run_logos_semantic_query_smoke_suite_v1.py` · **`build_logos_insight_bundle_v1.py`**(기본; `-SkipLogosInsightBundle` 생략) · Logos 섀도우 일련(스크립트 본문) · **`build_role_router_s1_shadow_advisory_v1.py`**(기본, advisory_only·non-gating; `-SkipRoleRouterShadowAdvisory` 생략) · **렌즈 뮤직 M31** `build_lens_music_hormone_trend_v1.py`·`dispatch_lens_music_hormone_trend_webhook_v1.py`(대시보드 직전·기본; `-SkipLensMusicHormoneTrend`로 생략) · `build_mkm_trackc_ops_dashboard_v1.py`. 스케줄 등록: `scripts/Register-TrackCMacroDailyFusionTask.ps1` (**`-DryRun`**으로 변경 없이 점검; **`-UnregisterLegacyTasks`**로 기본 레거시 작업명 2개 제거 후 등록 권장). 무인 안정화 예: **`-SkipGateAlert -SkipExodusSourceFetch`**. 인사이트 번들 생략 등록: **`Register-TrackCMacroDailyFusionTask.ps1 -SkipLogosInsightBundle`**. 등록 후 인자 확인: `scripts/Verify-TrackCMacroDailyFusionScheduledTask_v1.ps1`. 헬스: `scripts/run_workspace_automation_health.ps1 -IncludeTrackCMacroFusionSmoke`(전체 헬스 안에서 느림) 또는 **`-TrackCMacroFusionSmokeOnly`**(P0+퓨전만; 선택 **`-SkipLogosInsightBundle`** 또는 User 환경 **`MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE=1`**는 Invoke 퓨전에 전달). (기존 Fragility/Forward 각각 등록 태스크와 **동시에 돌리면 Fragility 이중 실행**.) 로컬 웹훅 끄기: `-SkipGateAlert`; Exodus 공개 수집 생략: `-SkipExodusSourceFetch`. **선택 메타 인지 게이트:** `-MetaLayerEnvelopePath`(비면 미실행) — `scripts/mkm_meta_layer_envelope_v1.py`·스키마 `docs/final/artifacts/schemas/mkm_meta_layer_turn_envelope_v1.schema.json`·복붙 예시 `docs/final/artifacts/fixtures/mkm_meta_layer_turn_envelope_v1.example.json`·회귀 `tests/test_mkm_meta_layer_envelope_v1.py`; 상세 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §1.3.1.
 - **Track C B2B 미팅 팩(법무 Sign-off 전·내부 미팅 전용):** 원클릭 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-TrackCB2bMeetingPack_v1.ps1` — 순서 안내 `docs/final/artifacts/track_c_b2b_meeting_pack_index_v1_latest.md`; 발송 전 점검 `py scripts/check_track_c_b2b_meeting_pack_readiness_v1.py` → `reports/track_c_b2b_meeting_pack_readiness_v1_latest.json`(대외 **`ready_for_external_send`는 법무 통과 전 false 고정**). 사업 SSOT·카피: `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.8 · `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`. CI: `.github/workflows/track-c-b2b-meeting-pack-smoke.yml`.
 
-## Cursor 3.0 · 규칙 스택 (2026-04)
+## Cursor · 규칙 스택 (3.0–3.4 · 2026-04 → 2026-05)
 
-- **제품**: Cursor 3 — **Agents Window**(로컬·워크트리·클라우드·SSH 병렬 에이전트), **Design Mode**(브라우저 UI 타겟), **Agent Tabs**(다중 채팅). IDE 명령 팔레트에서 “Agents Window” 등(공식 Changelog 2026-04-02).
-- **워크스페이스 규칙(SSOT)**: 루트 `.cursorrules`, `.cursor/rules/*.mdc`, 본 `AGENTS.md`, `CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — **Git으로 버전 관리**.
-- **User Rules**: Cursor **Settings → Rules**에만 있는 문구는 **레포에 자동 동기화되지 않음**; 팀·본선 기준은 반드시 위 SSOT 파일에 반영한다.
+- **3.0 (2026-04):** **Agents Window**(로컬·워크트리·클라우드·SSH 병렬), **Design Mode**, **Agent Tabs**. Changelog 2026-04-02.
+- **3.3 (2026-05-07):** **PR 검토**(Reviews/Commits/Changes), 플랜 **「병렬로 빌드」**, 변경 **PR 분할**, 스킬 **빠른 실행 고정**, **컨텍스트 사용량 세부** — UX·생산성; MKM **Git hygiene**(`1작업=1브랜치=1PR`, `push-internal.ps1`)와 병행. PR/플랜만으로 Track A·실매매 승격 **금지**.
+- **3.4 (2026-05-13):** **클라우드 Agent 개발 환경** — 멀티 리포·Dockerfile IaC·빌드 시크릿(빌드 단계만)·환경 버전/롤백/감사·egress·환경별 시크릿 격리. **Teams @Cursor**·**Bugbot 추론 수준** — **Dashboard 통합(선택)**; 레포 SSOT 아님.
+- **MKM 경계 (항상):** Cloud Agent/Sandbox = **검증·병렬·PR 초안**; 실매매·프로덕션 쓰기·실키 = **로컬/VPS 본선**. 상세 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc` · 환경 IaC 포인터 `.cursor/environment/README.md`.
+- **Changelog → 스택 맵:** `projects/bitcoin-trading/ops/v2/CURSOR_CHANGELOG_INTEGRATION_PLAN_2026-03-24.md` §3.3–3.4.
+- **워크스페이스 규칙(SSOT):** 루트 `.cursorrules`, `.cursor/rules/*.mdc`, 본 `AGENTS.md`, `CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — **Git으로 버전 관리**.
+- **User Rules:** Cursor **Settings → Rules**에만 있는 문구는 **레포에 자동 동기화되지 않음**; 팀·본선 기준은 반드시 위 SSOT 파일에 반영한다.
+
+### Cursor Cloud specific instructions
+
+Cloud Agent VM은 **Ubuntu**이다. Windows 전용 `powershell … verify_p0_constitution_gate_paths.ps1` 대신 아래를 쓴다.
+
+- **환경 IaC (커밋됨):** `.cursor/environment.json` → `environment/Dockerfile` + `install` → `bash .cursor/environment/install.sh`
+- **부트스트랩 smoke:** `python3 scripts/verify_p0_constitution_gate_paths_cloud_v1.py` (PS1 `$required` 목록과 동기)
+- **Dashboard Secrets:** 연구용 API만; **실거래·VPS·DPAPI·루트 `.env` 내용**은 넣지 않는다
+- **판정:** Cloud pytest/스크립트 통과 ≠ Track A·live trading GO — `CONSTITUTION_*`·휴먼 게이트 유지
+- **상세:** `.cursor/environment/README.md` · `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`
 
 ## 로컬 Cursor vs SSH VPS (한 원칙)
 
