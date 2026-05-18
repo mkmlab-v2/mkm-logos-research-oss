@@ -17,13 +17,21 @@ if str(ROOT) not in sys.path:
 DEFAULT_JSONL = ROOT / "docs/final/artifacts/mkm_inter_agent_dialogue_mock_latest.jsonl"
 DEFAULT_SUMMARY = ROOT / "docs/final/artifacts/mkm_inter_agent_dialogue_mock_summary_latest.json"
 
-ALPHA_LINES = [
+ALPHA_LINES_TRADING = [
     "WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears.",
     "Prophecy lane B-track: dual-leg KOSPI/BTC divergence noted. Hold new longs; review at 09:00 KST.",
 ]
-BETA_LINES = [
+BETA_LINES_TRADING = [
     "ACK: exposure reduction logged. No new long orders until your next packet.",
     "ACK: dual-leg brief received. Executor standing by; risk profile unchanged.",
+]
+ALPHA_LINES_HEALTH = [
+    "환자 건강 수면 식사 증상 호흡 피로 회복 체온 — 임상 진단 바이탈 Silver Tech 모니터링.",
+    "건강검진 회복률 주의: 수면 부족·식사 불균형 시 증상 악화 가능. 의료 팀 검토 요청.",
+]
+BETA_LINES_HEALTH = [
+    "ACK: 환자 바이탈·증상 패킷 수신. 수면·식사 권고 유지, 임상 게이트 통과 전 조치 보류.",
+    "ACK: 건강검진 브리프 반영. 회복 지표 모니터링 지속, 추가 증상 시 재패킷 요청.",
 ]
 
 
@@ -43,7 +51,13 @@ def _redact_packet(pkt: dict[str, Any], max_len: int = 280) -> dict[str, Any]:
     return out
 
 
-def run_dialogue(*, turns: int = 4, loss_profile: str = "semantic_general") -> dict[str, Any]:
+def run_dialogue(
+    *,
+    turns: int = 4,
+    loss_profile: str = "semantic_general",
+    routing_profile: str = "track_a_promoted",
+    scenario: str = "trading",
+) -> dict[str, Any]:
     from fastapi.testclient import TestClient
 
     from scripts.compression_token_api_v2_stub import RESIDUAL_STUB_KEY, app
@@ -54,29 +68,41 @@ def run_dialogue(*, turns: int = 4, loss_profile: str = "semantic_general") -> d
     last_packet: dict[str, Any] | None = None
     all_packet_only = True
     all_expand_ok = True
+    if scenario == "health":
+        alpha_lines = ALPHA_LINES_HEALTH
+        beta_lines = BETA_LINES_HEALTH
+    else:
+        alpha_lines = ALPHA_LINES_TRADING
+        beta_lines = BETA_LINES_TRADING
 
     for turn in range(1, turns + 1):
         is_alpha = turn % 2 == 1
         role = "agent_alpha_prophecy" if is_alpha else "agent_beta_executor"
         line_idx = (turn - 1) // 2
         if is_alpha:
-            internal_plain = ALPHA_LINES[min(line_idx, len(ALPHA_LINES) - 1)]
+            internal_plain = alpha_lines[min(line_idx, len(alpha_lines) - 1)]
         else:
             expand_preview = ""
             if last_packet is not None:
                 er0 = client.post("/v2/expand", json={"compression_packet": last_packet})
                 if er0.status_code == 200:
                     expand_preview = (er0.json().get("text") or "")[:120]
-            internal_plain = BETA_LINES[min(line_idx, len(BETA_LINES) - 1)]
+            internal_plain = beta_lines[min(line_idx, len(beta_lines) - 1)]
             if expand_preview:
                 internal_plain = f"{internal_plain} [inferred_from_packet: {expand_preview}]"
 
         cr = client.post(
             "/v2/compress",
-            json={"text": internal_plain, "loss_profile": loss_profile},
+            json={
+                "text": internal_plain,
+                "loss_profile": loss_profile,
+                "routing_profile": routing_profile,
+                "client_request_id": f"a2a-{scenario}-turn-{turn}",
+            },
         )
         compress_ok = cr.status_code == 200
-        packet = cr.json().get("compression_packet") if compress_ok else None
+        cr_body = cr.json() if compress_ok else {}
+        packet = cr_body.get("compression_packet") if compress_ok else None
 
         expand_row: dict[str, Any] | None = None
         if last_packet is not None:
@@ -100,6 +126,7 @@ def run_dialogue(*, turns: int = 4, loss_profile: str = "semantic_general") -> d
                 "original_text_on_request": False,
             }
 
+        router_meta = (packet or {}).get("router_meta") if isinstance(packet, dict) else {}
         entry: dict[str, Any] = {
             "turn": turn,
             "role": role,
@@ -108,6 +135,15 @@ def run_dialogue(*, turns: int = 4, loss_profile: str = "semantic_general") -> d
             "compress": {
                 "http_status": cr.status_code,
                 "loss_profile": loss_profile,
+                "routing_profile": routing_profile,
+                "compression_metrics": cr_body.get("compression_metrics"),
+                "integrity_flags": {
+                    "routing_research_only": (cr_body.get("integrity_flags") or {}).get(
+                        "routing_research_only"
+                    ),
+                    "shard_id": router_meta.get("shard_id") if isinstance(router_meta, dict) else None,
+                    "domain": router_meta.get("domain") if isinstance(router_meta, dict) else None,
+                },
             },
             "trust_packet_redacted": _redact_packet(packet) if isinstance(packet, dict) else None,
         }
@@ -129,6 +165,8 @@ def run_dialogue(*, turns: int = 4, loss_profile: str = "semantic_general") -> d
             "Simulated agents; plaintext is logged for audit only. On-wire payload is Trust Packet only. "
             "Not production A2A. Not Track A trading trigger."
         ),
+        "routing_profile": routing_profile,
+        "scenario": scenario,
         "turns_requested": turns,
         "turns_recorded": len(transcript),
         "all_compress_ok": all(c.get("compress", {}).get("http_status") == 200 for c in transcript),
@@ -146,11 +184,17 @@ def run_dialogue(*, turns: int = 4, loss_profile: str = "semantic_general") -> d
 def main() -> int:
     ap = argparse.ArgumentParser(description="MKM inter-agent A2A dialogue mock (Trust Packet only).")
     ap.add_argument("--turns", type=int, default=4)
+    ap.add_argument("--routing-profile", default="track_a_promoted")
+    ap.add_argument("--scenario", choices=("trading", "health"), default="trading")
     ap.add_argument("--jsonl-out", type=Path, default=DEFAULT_JSONL)
     ap.add_argument("--summary-out", type=Path, default=DEFAULT_SUMMARY)
     args = ap.parse_args()
 
-    summary = run_dialogue(turns=max(2, args.turns))
+    summary = run_dialogue(
+        turns=max(2, args.turns),
+        routing_profile=args.routing_profile,
+        scenario=args.scenario,
+    )
     args.summary_out.parent.mkdir(parents=True, exist_ok=True)
     args.summary_out.write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 

@@ -1,0 +1,3084 @@
+{
+  "schema": "compression_low_saving_local_cap_sweep_v1",
+  "generated_at_utc": "2026-05-18T21:30:20.112267Z",
+  "hypothesis_tier": "B",
+  "track_wall": "b_track_research_only",
+  "rq": "RQ-016-A-plan",
+  "policy_floor": 0.47,
+  "audit_source_readonly": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+  "audit": {
+    "case_count": 40,
+    "top_n_low_saving": [
+      {
+        "id": "cmp2_006",
+        "token_saving_rate": 0.16666666666666663,
+        "reconstruction_fidelity_jaccard": 0.9375,
+        "domain": "ssot",
+        "shard_id": "zone_d_ssot",
+        "lexicon_hit_count": 13,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_004",
+        "token_saving_rate": 0.1875,
+        "reconstruction_fidelity_jaccard": 0.8666666666666667,
+        "domain": "ssot",
+        "shard_id": "zone_d_ssot",
+        "lexicon_hit_count": 11,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_002",
+        "token_saving_rate": 0.21052631578947367,
+        "reconstruction_fidelity_jaccard": 0.8823529411764706,
+        "domain": "ssot",
+        "shard_id": "zone_d_ssot",
+        "lexicon_hit_count": 12,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_009",
+        "token_saving_rate": 0.23809523809523814,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "ssot",
+        "shard_id": "zone_d_ssot",
+        "lexicon_hit_count": 14,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_001",
+        "token_saving_rate": 0.24,
+        "reconstruction_fidelity_jaccard": 0.9047619047619048,
+        "domain": "timing",
+        "shard_id": "zone_b_timing",
+        "lexicon_hit_count": 13,
+        "lexicon_status": "ok"
+      }
+    ],
+    "top_n_low_saving_ids": [
+      "cmp2_006",
+      "cmp2_004",
+      "cmp2_002",
+      "cmp2_009",
+      "cmp2_001"
+    ],
+    "lexicon_hit_count_zero_cases": [
+      {
+        "id": "cmp2_011",
+        "token_saving_rate": 0.5555555555555556,
+        "reconstruction_fidelity_jaccard": 0.9375,
+        "domain": "health",
+        "shard_id": "zone_g_health",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_012",
+        "token_saving_rate": 0.5294117647058824,
+        "reconstruction_fidelity_jaccard": 0.75,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_013",
+        "token_saving_rate": 0.5555555555555556,
+        "reconstruction_fidelity_jaccard": 0.8235294117647058,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_014",
+        "token_saving_rate": 0.3529411764705882,
+        "reconstruction_fidelity_jaccard": 0.875,
+        "domain": "health",
+        "shard_id": "zone_g_health",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_015",
+        "token_saving_rate": 0.5,
+        "reconstruction_fidelity_jaccard": 0.9333333333333333,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_016",
+        "token_saving_rate": 0.5882352941176471,
+        "reconstruction_fidelity_jaccard": 0.8666666666666667,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_017",
+        "token_saving_rate": 0.5555555555555556,
+        "reconstruction_fidelity_jaccard": 0.8823529411764706,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_018",
+        "token_saving_rate": 0.5294117647058824,
+        "reconstruction_fidelity_jaccard": 0.875,
+        "domain": "health",
+        "shard_id": "zone_g_health",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_019",
+        "token_saving_rate": 0.5555555555555556,
+        "reconstruction_fidelity_jaccard": 0.8235294117647058,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_020",
+        "token_saving_rate": 0.5294117647058824,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "health",
+        "shard_id": "zone_g_health",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_021",
+        "token_saving_rate": 0.55,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_022",
+        "token_saving_rate": 0.6,
+        "reconstruction_fidelity_jaccard": 0.8823529411764706,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_023",
+        "token_saving_rate": 0.5,
+        "reconstruction_fidelity_jaccard": 0.9333333333333333,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_024",
+        "token_saving_rate": 0.5555555555555556,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_025",
+        "token_saving_rate": 0.5555555555555556,
+        "reconstruction_fidelity_jaccard": 0.875,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_026",
+        "token_saving_rate": 0.5555555555555556,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_027",
+        "token_saving_rate": 0.5333333333333333,
+        "reconstruction_fidelity_jaccard": 0.7857142857142857,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_028",
+        "token_saving_rate": 0.5294117647058824,
+        "reconstruction_fidelity_jaccard": 0.7333333333333333,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_029",
+        "token_saving_rate": 0.5333333333333333,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_030",
+        "token_saving_rate": 0.5625,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_031",
+        "token_saving_rate": 0.5714285714285714,
+        "reconstruction_fidelity_jaccard": 0.9473684210526315,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_032",
+        "token_saving_rate": 0.5789473684210527,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_033",
+        "token_saving_rate": 0.6111111111111112,
+        "reconstruction_fidelity_jaccard": 0.8666666666666667,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_034",
+        "token_saving_rate": 0.5882352941176471,
+        "reconstruction_fidelity_jaccard": 0.8,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_035",
+        "token_saving_rate": 0.55,
+        "reconstruction_fidelity_jaccard": 0.8888888888888888,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_036",
+        "token_saving_rate": 0.5625,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_037",
+        "token_saving_rate": 0.5,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_038",
+        "token_saving_rate": 0.5,
+        "reconstruction_fidelity_jaccard": 0.8421052631578947,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_039",
+        "token_saving_rate": 0.55,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "domain": "hangul",
+        "shard_id": "zone_c_hangul",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      },
+      {
+        "id": "cmp2_040",
+        "token_saving_rate": 0.5555555555555556,
+        "reconstruction_fidelity_jaccard": 0.9375,
+        "domain": "scm",
+        "shard_id": "zone_a_scm",
+        "lexicon_hit_count": 0,
+        "lexicon_status": "ok"
+      }
+    ],
+    "lexicon_hit_count_zero_by_domain": {
+      "health": 4,
+      "hangul": 14,
+      "scm": 12
+    },
+    "note": "Top-N low saving on V2 bench often routes to ssot (lexicon hits present). hit_count=0 clusters on health/hangul/scm — use domain_relaxed caps / hangul_max, not lexicon edits."
+  },
+  "variant_count": 10,
+  "floor_pass_count": 4,
+  "best_by_floor_then_saving": {
+    "id": "ssot_relaxed_cap_0.45",
+    "knobs": {
+      "domain_relaxed_max_saving_overrides": {
+        "ssot": 0.45
+      }
+    },
+    "global_token_saving_rate": 0.4838255977496484,
+    "distance_to_policy_floor": 0.013826,
+    "ultra_saving_policy_ok": true,
+    "avg_reconstruction_fidelity_jaccard": 0.8795031685076191,
+    "min_reconstruction_fidelity_jaccard": 0.5714285714285714,
+    "top5_low_saving_subset": {
+      "case_count": 5,
+      "avg_token_saving_rate": 0.20855764411027566,
+      "avg_jaccard": 0.9182563025210083,
+      "min_jaccard": 0.8666666666666667,
+      "by_id": {
+        "cmp2_001": {
+          "token_saving_rate": 0.24,
+          "jaccard": 0.9047619047619048
+        },
+        "cmp2_002": {
+          "token_saving_rate": 0.21052631578947367,
+          "jaccard": 0.8823529411764706
+        },
+        "cmp2_004": {
+          "token_saving_rate": 0.1875,
+          "jaccard": 0.8666666666666667
+        },
+        "cmp2_006": {
+          "token_saving_rate": 0.16666666666666663,
+          "jaccard": 0.9375
+        },
+        "cmp2_009": {
+          "token_saving_rate": 0.23809523809523814,
+          "jaccard": 1.0
+        }
+      }
+    },
+    "lexicon_hit_zero_subset": {
+      "case_count": 30,
+      "avg_token_saving_rate": 0.5431552328533752,
+      "avg_jaccard": 0.9086391632676462,
+      "min_jaccard": 0.7333333333333333,
+      "by_id": {
+        "cmp2_011": {
+          "token_saving_rate": 0.5555555555555556,
+          "jaccard": 0.9375
+        },
+        "cmp2_012": {
+          "token_saving_rate": 0.5294117647058824,
+          "jaccard": 0.75
+        },
+        "cmp2_013": {
+          "token_saving_rate": 0.5555555555555556,
+          "jaccard": 0.8235294117647058
+        },
+        "cmp2_014": {
+          "token_saving_rate": 0.3529411764705882,
+          "jaccard": 0.875
+        },
+        "cmp2_015": {
+          "token_saving_rate": 0.5,
+          "jaccard": 0.9333333333333333
+        },
+        "cmp2_016": {
+          "token_saving_rate": 0.5882352941176471,
+          "jaccard": 0.8666666666666667
+        },
+        "cmp2_017": {
+          "token_saving_rate": 0.5555555555555556,
+          "jaccard": 0.8823529411764706
+        },
+        "cmp2_018": {
+          "token_saving_rate": 0.5294117647058824,
+          "jaccard": 0.875
+        },
+        "cmp2_019": {
+          "token_saving_rate": 0.5555555555555556,
+          "jaccard": 0.8235294117647058
+        },
+        "cmp2_020": {
+          "token_saving_rate": 0.5294117647058824,
+          "jaccard": 1.0
+        },
+        "cmp2_021": {
+          "token_saving_rate": 0.55,
+          "jaccard": 1.0
+        },
+        "cmp2_022": {
+          "token_saving_rate": 0.6,
+          "jaccard": 0.8823529411764706
+        },
+        "cmp2_023": {
+          "token_saving_rate": 0.5,
+          "jaccard": 0.9333333333333333
+        },
+        "cmp2_024": {
+          "token_saving_rate": 0.5555555555555556,
+          "jaccard": 1.0
+        },
+        "cmp2_025": {
+          "token_saving_rate": 0.5555555555555556,
+          "jaccard": 0.875
+        },
+        "cmp2_026": {
+          "token_saving_rate": 0.5555555555555556,
+          "jaccard": 1.0
+        },
+        "cmp2_027": {
+          "token_saving_rate": 0.5333333333333333,
+          "jaccard": 0.7857142857142857
+        },
+        "cmp2_028": {
+          "token_saving_rate": 0.5294117647058824,
+          "jaccard": 0.7333333333333333
+        },
+        "cmp2_029": {
+          "token_saving_rate": 0.5333333333333333,
+          "jaccard": 1.0
+        },
+        "cmp2_030": {
+          "token_saving_rate": 0.5625,
+          "jaccard": 1.0
+        },
+        "cmp2_031": {
+          "token_saving_rate": 0.5714285714285714,
+          "jaccard": 0.9473684210526315
+        },
+        "cmp2_032": {
+          "token_saving_rate": 0.5789473684210527,
+          "jaccard": 1.0
+        },
+        "cmp2_033": {
+          "token_saving_rate": 0.6111111111111112,
+          "jaccard": 0.8666666666666667
+        },
+        "cmp2_034": {
+          "token_saving_rate": 0.5882352941176471,
+          "jaccard": 0.8
+        },
+        "cmp2_035": {
+          "token_saving_rate": 0.55,
+          "jaccard": 0.8888888888888888
+        },
+        "cmp2_036": {
+          "token_saving_rate": 0.5625,
+          "jaccard": 1.0
+        },
+        "cmp2_037": {
+          "token_saving_rate": 0.5,
+          "jaccard": 1.0
+        },
+        "cmp2_038": {
+          "token_saving_rate": 0.5,
+          "jaccard": 0.8421052631578947
+        },
+        "cmp2_039": {
+          "token_saving_rate": 0.55,
+          "jaccard": 1.0
+        },
+        "cmp2_040": {
+          "token_saving_rate": 0.5555555555555556,
+          "jaccard": 0.9375
+        }
+      }
+    },
+    "delta_global_saving_vs_baseline": 0.015471
+  },
+  "top5_variants_by_rank": [
+    {
+      "id": "ssot_relaxed_cap_0.50",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "ssot": 0.5
+        }
+      },
+      "global_token_saving_rate": 0.49367088607594933,
+      "distance_to_policy_floor": 0.023671,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8676273604921052,
+      "min_reconstruction_fidelity_jaccard": 0.5,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.23971888053467003,
+        "avg_jaccard": 0.8814915966386554,
+        "min_jaccard": 0.8235294117647058,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.26315789473684215,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.1875,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.2222222222222222,
+            "jaccard": 0.875
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.2857142857142857,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.025316
+    },
+    {
+      "id": "ssot_combo_relaxed_0.50_floor_0.55",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "ssot": 0.5
+        },
+        "domain_min_saving_floor_overrides": {
+          "ssot": 0.55
+        }
+      },
+      "global_token_saving_rate": 0.4852320675105485,
+      "distance_to_policy_floor": 0.015232,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8777174542219048,
+      "min_reconstruction_fidelity_jaccard": 0.5,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.20855764411027566,
+        "avg_jaccard": 0.9182563025210083,
+        "min_jaccard": 0.8666666666666667,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.21052631578947367,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.1875,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.16666666666666663,
+            "jaccard": 0.9375
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.016878
+    },
+    {
+      "id": "ssot_combo_plus_hangul_router",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "ssot": 0.5,
+          "health": 0.5,
+          "hangul": 0.5
+        },
+        "domain_min_saving_floor_overrides": {
+          "ssot": 0.55
+        },
+        "hangul_max_saving_rate": 0.65,
+        "enable_router_blend_candidate": true,
+        "router_blend_allow_nonrisk_jaccard_drop_pp": 1.0,
+        "router_blend_min_saving_gain_pp": 2.0
+      },
+      "global_token_saving_rate": 0.4852320675105485,
+      "distance_to_policy_floor": 0.015232,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8777174542219048,
+      "min_reconstruction_fidelity_jaccard": 0.5,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.20855764411027566,
+        "avg_jaccard": 0.9182563025210083,
+        "min_jaccard": 0.8666666666666667,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.21052631578947367,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.1875,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.16666666666666663,
+            "jaccard": 0.9375
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.016878
+    },
+    {
+      "id": "ssot_relaxed_cap_0.45",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "ssot": 0.45
+        }
+      },
+      "global_token_saving_rate": 0.4838255977496484,
+      "distance_to_policy_floor": 0.013826,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8795031685076191,
+      "min_reconstruction_fidelity_jaccard": 0.5714285714285714,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.20855764411027566,
+        "avg_jaccard": 0.9182563025210083,
+        "min_jaccard": 0.8666666666666667,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.21052631578947367,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.1875,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.16666666666666663,
+            "jaccard": 0.9375
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.015471
+    },
+    {
+      "id": "baseline",
+      "knobs": {},
+      "global_token_saving_rate": 0.4683544303797469,
+      "distance_to_policy_floor": 0.001646,
+      "ultra_saving_policy_ok": false,
+      "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+      "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.17442021720969092,
+        "avg_jaccard": 0.9558543417366947,
+        "min_jaccard": 0.9047619047619048,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.1578947368421053,
+            "jaccard": 0.9411764705882353
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.125,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.11111111111111116,
+            "jaccard": 1.0
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.0
+    }
+  ],
+  "all_variants": [
+    {
+      "id": "baseline",
+      "knobs": {},
+      "global_token_saving_rate": 0.4683544303797469,
+      "distance_to_policy_floor": 0.001646,
+      "ultra_saving_policy_ok": false,
+      "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+      "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.17442021720969092,
+        "avg_jaccard": 0.9558543417366947,
+        "min_jaccard": 0.9047619047619048,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.1578947368421053,
+            "jaccard": 0.9411764705882353
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.125,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.11111111111111116,
+            "jaccard": 1.0
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.0
+    },
+    {
+      "id": "ssot_relaxed_cap_0.45",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "ssot": 0.45
+        }
+      },
+      "global_token_saving_rate": 0.4838255977496484,
+      "distance_to_policy_floor": 0.013826,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8795031685076191,
+      "min_reconstruction_fidelity_jaccard": 0.5714285714285714,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.20855764411027566,
+        "avg_jaccard": 0.9182563025210083,
+        "min_jaccard": 0.8666666666666667,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.21052631578947367,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.1875,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.16666666666666663,
+            "jaccard": 0.9375
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.015471
+    },
+    {
+      "id": "ssot_relaxed_cap_0.50",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "ssot": 0.5
+        }
+      },
+      "global_token_saving_rate": 0.49367088607594933,
+      "distance_to_policy_floor": 0.023671,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8676273604921052,
+      "min_reconstruction_fidelity_jaccard": 0.5,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.23971888053467003,
+        "avg_jaccard": 0.8814915966386554,
+        "min_jaccard": 0.8235294117647058,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.26315789473684215,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.1875,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.2222222222222222,
+            "jaccard": 0.875
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.2857142857142857,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.025316
+    },
+    {
+      "id": "ssot_min_floor_0.55",
+      "knobs": {
+        "domain_min_saving_floor_overrides": {
+          "ssot": 0.55
+        }
+      },
+      "global_token_saving_rate": 0.4641350210970464,
+      "distance_to_policy_floor": 0.005865,
+      "ultra_saving_policy_ok": false,
+      "avg_reconstruction_fidelity_jaccard": 0.9042578684645249,
+      "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.17442021720969092,
+        "avg_jaccard": 0.9558543417366947,
+        "min_jaccard": 0.9047619047619048,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.1578947368421053,
+            "jaccard": 0.9411764705882353
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.125,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.11111111111111116,
+            "jaccard": 1.0
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": -0.004219
+    },
+    {
+      "id": "ssot_combo_relaxed_0.50_floor_0.55",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "ssot": 0.5
+        },
+        "domain_min_saving_floor_overrides": {
+          "ssot": 0.55
+        }
+      },
+      "global_token_saving_rate": 0.4852320675105485,
+      "distance_to_policy_floor": 0.015232,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8777174542219048,
+      "min_reconstruction_fidelity_jaccard": 0.5,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.20855764411027566,
+        "avg_jaccard": 0.9182563025210083,
+        "min_jaccard": 0.8666666666666667,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.21052631578947367,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.1875,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.16666666666666663,
+            "jaccard": 0.9375
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.016878
+    },
+    {
+      "id": "health_hangul_relaxed_cap_0.50",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "health": 0.5,
+          "hangul": 0.5
+        }
+      },
+      "global_token_saving_rate": 0.4683544303797469,
+      "distance_to_policy_floor": 0.001646,
+      "ultra_saving_policy_ok": false,
+      "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+      "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.17442021720969092,
+        "avg_jaccard": 0.9558543417366947,
+        "min_jaccard": 0.9047619047619048,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.1578947368421053,
+            "jaccard": 0.9411764705882353
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.125,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.11111111111111116,
+            "jaccard": 1.0
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.0
+    },
+    {
+      "id": "hangul_max_plus_0.05",
+      "knobs": {
+        "hangul_max_saving_rate": 0.65
+      },
+      "global_token_saving_rate": 0.4683544303797469,
+      "distance_to_policy_floor": 0.001646,
+      "ultra_saving_policy_ok": false,
+      "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+      "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.17442021720969092,
+        "avg_jaccard": 0.9558543417366947,
+        "min_jaccard": 0.9047619047619048,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.1578947368421053,
+            "jaccard": 0.9411764705882353
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.125,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.11111111111111116,
+            "jaccard": 1.0
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.0
+    },
+    {
+      "id": "hangul_max_plus_0.10",
+      "knobs": {
+        "hangul_max_saving_rate": 0.7
+      },
+      "global_token_saving_rate": 0.4683544303797469,
+      "distance_to_policy_floor": 0.001646,
+      "ultra_saving_policy_ok": false,
+      "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+      "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.17442021720969092,
+        "avg_jaccard": 0.9558543417366947,
+        "min_jaccard": 0.9047619047619048,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.1578947368421053,
+            "jaccard": 0.9411764705882353
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.125,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.11111111111111116,
+            "jaccard": 1.0
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.0
+    },
+    {
+      "id": "router_blend_conservative",
+      "knobs": {
+        "enable_router_blend_candidate": true,
+        "router_blend_allow_nonrisk_jaccard_drop_pp": 1.0,
+        "router_blend_min_saving_gain_pp": 2.0
+      },
+      "global_token_saving_rate": 0.4683544303797469,
+      "distance_to_policy_floor": 0.001646,
+      "ultra_saving_policy_ok": false,
+      "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+      "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.17442021720969092,
+        "avg_jaccard": 0.9558543417366947,
+        "min_jaccard": 0.9047619047619048,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.1578947368421053,
+            "jaccard": 0.9411764705882353
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.125,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.11111111111111116,
+            "jaccard": 1.0
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.0
+    },
+    {
+      "id": "ssot_combo_plus_hangul_router",
+      "knobs": {
+        "domain_relaxed_max_saving_overrides": {
+          "ssot": 0.5,
+          "health": 0.5,
+          "hangul": 0.5
+        },
+        "domain_min_saving_floor_overrides": {
+          "ssot": 0.55
+        },
+        "hangul_max_saving_rate": 0.65,
+        "enable_router_blend_candidate": true,
+        "router_blend_allow_nonrisk_jaccard_drop_pp": 1.0,
+        "router_blend_min_saving_gain_pp": 2.0
+      },
+      "global_token_saving_rate": 0.4852320675105485,
+      "distance_to_policy_floor": 0.015232,
+      "ultra_saving_policy_ok": true,
+      "avg_reconstruction_fidelity_jaccard": 0.8777174542219048,
+      "min_reconstruction_fidelity_jaccard": 0.5,
+      "top5_low_saving_subset": {
+        "case_count": 5,
+        "avg_token_saving_rate": 0.20855764411027566,
+        "avg_jaccard": 0.9182563025210083,
+        "min_jaccard": 0.8666666666666667,
+        "by_id": {
+          "cmp2_001": {
+            "token_saving_rate": 0.24,
+            "jaccard": 0.9047619047619048
+          },
+          "cmp2_002": {
+            "token_saving_rate": 0.21052631578947367,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_004": {
+            "token_saving_rate": 0.1875,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_006": {
+            "token_saving_rate": 0.16666666666666663,
+            "jaccard": 0.9375
+          },
+          "cmp2_009": {
+            "token_saving_rate": 0.23809523809523814,
+            "jaccard": 1.0
+          }
+        }
+      },
+      "lexicon_hit_zero_subset": {
+        "case_count": 30,
+        "avg_token_saving_rate": 0.5431552328533752,
+        "avg_jaccard": 0.9086391632676462,
+        "min_jaccard": 0.7333333333333333,
+        "by_id": {
+          "cmp2_011": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          },
+          "cmp2_012": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.75
+          },
+          "cmp2_013": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_014": {
+            "token_saving_rate": 0.3529411764705882,
+            "jaccard": 0.875
+          },
+          "cmp2_015": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_016": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_017": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_018": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.875
+          },
+          "cmp2_019": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.8235294117647058
+          },
+          "cmp2_020": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 1.0
+          },
+          "cmp2_021": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_022": {
+            "token_saving_rate": 0.6,
+            "jaccard": 0.8823529411764706
+          },
+          "cmp2_023": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.9333333333333333
+          },
+          "cmp2_024": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_025": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.875
+          },
+          "cmp2_026": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 1.0
+          },
+          "cmp2_027": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 0.7857142857142857
+          },
+          "cmp2_028": {
+            "token_saving_rate": 0.5294117647058824,
+            "jaccard": 0.7333333333333333
+          },
+          "cmp2_029": {
+            "token_saving_rate": 0.5333333333333333,
+            "jaccard": 1.0
+          },
+          "cmp2_030": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_031": {
+            "token_saving_rate": 0.5714285714285714,
+            "jaccard": 0.9473684210526315
+          },
+          "cmp2_032": {
+            "token_saving_rate": 0.5789473684210527,
+            "jaccard": 1.0
+          },
+          "cmp2_033": {
+            "token_saving_rate": 0.6111111111111112,
+            "jaccard": 0.8666666666666667
+          },
+          "cmp2_034": {
+            "token_saving_rate": 0.5882352941176471,
+            "jaccard": 0.8
+          },
+          "cmp2_035": {
+            "token_saving_rate": 0.55,
+            "jaccard": 0.8888888888888888
+          },
+          "cmp2_036": {
+            "token_saving_rate": 0.5625,
+            "jaccard": 1.0
+          },
+          "cmp2_037": {
+            "token_saving_rate": 0.5,
+            "jaccard": 1.0
+          },
+          "cmp2_038": {
+            "token_saving_rate": 0.5,
+            "jaccard": 0.8421052631578947
+          },
+          "cmp2_039": {
+            "token_saving_rate": 0.55,
+            "jaccard": 1.0
+          },
+          "cmp2_040": {
+            "token_saving_rate": 0.5555555555555556,
+            "jaccard": 0.9375
+          }
+        }
+      },
+      "delta_global_saving_vs_baseline": 0.016878
+    }
+  ],
+  "promotion_note": "Does not replace MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json. Local cap / domain floor overrides only — no lexicon file edits."
+}

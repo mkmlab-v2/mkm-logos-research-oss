@@ -10,7 +10,8 @@ param(
     [switch]$SkipStatusBuild,
     [switch]$SkipWorkedExampleEmit,
     [switch]$SkipDialogueMock,
-    [switch]$SkipL1ExperimentalPytest
+    [switch]$SkipL1ExperimentalPytest,
+    [switch]$IncludeParallelLanes
 )
 
 $ErrorActionPreference = "Stop"
