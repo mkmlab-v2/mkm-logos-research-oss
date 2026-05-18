@@ -33,6 +33,7 @@ def _build_index(*, generated_at: str, steps: list[tuple[str, int]]) -> str:
         ("5 · Combined", "docs/final/artifacts/track_c_combined_b2b_offer_onepager_v1_latest.md"),
         ("6 · H2 MVP", "docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md"),
         ("7 · Logos appendix", "docs/final/artifacts/track_c_b2b_logos_lens_appendix_v1_latest.md"),
+        ("8 · Compression plugin IR", "docs/final/artifacts/track_c_b2b_compression_plugin_appendix_v1_latest.md"),
     ]
     rows = []
     for label, path in artifacts:
@@ -103,6 +104,7 @@ def main() -> int:
         ("logos_onepager", "scripts/build_track_c_logos_b2b_offer_onepager_v1.py", []),
         ("combined", "scripts/build_track_c_combined_b2b_offer_onepager_v1.py", ["--skip-rebuild"]),
         ("sales_collateral", "scripts/build_track_c_logos_b2b_sales_collateral_v1.py", []),
+        ("compression_appendix", "scripts/build_track_c_compression_b2b_appendix_v1.py", []),
     ]
     if args.include_track_b_pipeline:
         scripts.insert(
