@@ -22,6 +22,7 @@ TRACK_A_ACTIVE = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE
 HEALTH_PIN = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_HEALTH_BRIDGE_PINPOINT_V1.json"
 SSOT_PIN = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_SSOT_RELAXED_CAP_PINPOINT_V1.json"
 LOW_SAVING_SWEEP = ROOT / "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json"
+SSOT_MICROGRID = ROOT / "docs/final/artifacts/compression_ssot_relaxed_cap_microgrid_v1_latest.json"
 OUT_DEFAULT = ROOT / "docs/final/artifacts/compression_b_track_bridge_evidence_summary_v1.json"
 POLICY_FLOOR = 0.47
 HEALTH_CASE = "cmp2_014"
@@ -102,6 +103,7 @@ def main() -> int:
     health_pin_doc = _load(HEALTH_PIN)
     ssot_pin_doc = _load(SSOT_PIN)
     sweep_doc = _load(LOW_SAVING_SWEEP)
+    ssot_micro = _load(SSOT_MICROGRID)
 
     health_winner: dict[str, Any] | None = None
     if health_pin_doc:
@@ -157,6 +159,16 @@ def main() -> int:
         }
         if track_a_frozen.get("global_token_saving_rate") is not None:
             ssot_a_plan["delta_saving_vs_track_a"] = pm.get("delta_global_saving_vs_track_a")
+
+    ssot_microgrid: dict[str, Any] | None = None
+    if ssot_micro:
+        ssot_microgrid = {
+            "regenerate_script": "scripts/run_compression_ssot_relaxed_cap_microgrid_v1.py",
+            "artifact": str(SSOT_MICROGRID.relative_to(ROOT)).replace("\\", "/"),
+            "joint_floor_and_min_j_pass_count": ssot_micro.get("joint_floor_and_min_j_pass_count"),
+            "key_finding": ssot_micro.get("key_finding"),
+            "best_by_rank": ssot_micro.get("best_by_rank"),
+        }
 
     low_saving_sweep: dict[str, Any] | None = None
     if sweep_doc:
@@ -232,6 +244,7 @@ def main() -> int:
         "docs/final/artifacts/compression_health_bridge_floor_microgrid_v1_latest.json",
         str(SSOT_PIN.relative_to(ROOT)).replace("\\", "/"),
         str(LOW_SAVING_SWEEP.relative_to(ROOT)).replace("\\", "/"),
+        str(SSOT_MICROGRID.relative_to(ROOT)).replace("\\", "/"),
     ]
 
     doc = {
@@ -245,6 +258,7 @@ def main() -> int:
         "b_track_health_pin_winner": health_winner,
         "b_track_ssot_relaxed_cap_a_plan": ssot_a_plan,
         "low_saving_local_cap_sweep": low_saving_sweep,
+        "ssot_relaxed_cap_microgrid": ssot_microgrid,
         "scm_bridge_outcome": {
             "scm_min_jaccard_achieved": 1.0,
             "global_token_saving_rate_typical": 0.3938115330520394,
