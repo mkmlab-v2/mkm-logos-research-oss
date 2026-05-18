@@ -16,7 +16,9 @@
 2. Connect GitHub/GitLab and select **this monorepo** (single root is enough for `projects/bitcoin-trading` work).
 3. Cursor should pick up `.cursor/environment.json` from the branch you test.
 4. **Secrets tab:** add only non-production keys (e.g. research APIs). Never paste live trading or VPS SSH secrets.
-5. Run a test Cloud Agent; confirm **Environment ready** and install log ends with `OK: P0/CONSTITUTION gate paths present`.
+   - **Cloud Personal secrets hygiene:** prefer repo-scoped secrets for `mkmlab-v2/mkm-destiny-ai-41e38ec6` only; remove `OPENROUTER`/`GITHUB_TOKEN` from Cloud if unused. Never add `BINANCE_*`, `ENABLE_TRADING`, `NO1KMEDI_ADMIN_TOKEN`, or root `.env` copies.
+5. **Update script (Dashboard, after onboarding):** `bash .cursor/environment/install.sh` — do not auto-start Next.js/payapp in Cloud.
+6. Run a test Cloud Agent; confirm **Environment ready** and install log ends with `OK: P0/CONSTITUTION gate paths present`.
 
 ## Local verification (before pushing env changes)
 
