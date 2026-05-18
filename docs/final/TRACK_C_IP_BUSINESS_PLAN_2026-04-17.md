@@ -111,9 +111,9 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 **상태:** 연구·IR 초안. **구현·경로 SSOT**는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` Inter-Agent 표 행만 — 본 절만으로 **Lingua Franca 완성·상용 SLA·Track A 승격** 단정 금지.
 
-- **연구 큐:** `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-019** (`OPEN` 유지) — M1–M3 `core_ready` ≠ 법무·대외 승격.
-- **법무:** `mkm_inter_agent_legal_handoff_pack_latest.json` — `legal_review_status: SUBMITTED_TO_COUNSEL` · checklist #7(대외 카피) **미충족** → `mkm_inter_agent_rq019_closure_readiness_latest.json` **`closure_allowed: false`**.
-- **IR 복붙(법무 전 `[HYPO]`):** `docs/final/artifacts/mkm_inter_agent_ir_snippet_v1.md` · 금지 주장·SOTA 맵 `mkm_inter_agent_encoding_sota_map_v1.md`.
+- **연구 큐:** `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-019** — 내부 ops **`rq_019: CLOSED`** (`mkm_inter_agent_encoding_status_latest.json` · `LC-2026-05-19-RQ019-CLEARED`). M1–M3 `core_ready` ≠ Track A·실매매 승격.
+- **법무:** `mkm_inter_agent_legal_counsel_signoff_v1_latest.json` — **`COUNSEL_SIGNED`** · checklist #7 met → `mkm_inter_agent_rq019_closure_readiness_latest.json` **`closure_allowed: true`**.
+- **IR 복붙(counsel-cleared · 발송마다 PUBLIC_FACING):** `docs/final/artifacts/mkm_inter_agent_ir_snippet_v1.md` · 금지 주장·SOTA 맵 `mkm_inter_agent_encoding_sota_map_v1.md`.
 - **격벽:** B-track·Trust Packet 초안 — **실매매·Track A 벤치·압축 47% 덱과 한 슬라이드 합치기 금지** (`PUBLIC_FACING` v1.7).
 
 **공고 병렬 레인 (Track C 1차 매출과 분리):** MSME AI+ OpenData **제2026-327** — 제출 SSOT `docs/final/ai_opendata_challenge_2026_327_business_plan_submission_v1.md` · PDF `reports/opendata_327_part_b_v1.pdf` 등 · 병렬 체크 `docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json` — **§3.8 B2B 매크로·§3.1 압축 우선 파도와 합선하지 않음**.
@@ -544,7 +544,7 @@ Manufacturing-discipline add-on (P1 / OEM meetings, 2026-05-16):
 
 ## 10) Immediate Next Actions
 
-0. **§3.1.3 일정:** LG 미팅 **완료**; **C-S3** **2026-05-20(화)** 대기(결과 전 추가 발송 없음). **C-S2** 9장 Moat 덱 → PPT·Q&A는 `compression_enterprise_executive_summary_v1.md` Plugin § · **법무 전 `[DRAFT]`**. **RQ-019** counsel 제출 대기(`mkm_inter_agent_legal_handoff_pack_latest.json`). **OpenData 327** §4-1 MD 반영 → PDF 재출력·병합·**6/5 18:00** 접수 잔여. **RQ-017** VPS triplet 완료; **hold/reject** 시 `lg_hs_fallback_two_week_pipeline_v1.json`. **RQ-016** baseline · **C-A4** 주간 거버넌스.
+0. **§3.1.3 일정:** LG 미팅 **완료**; **C-S3** **2026-05-20(화)** 대기(결과 전 추가 발송 없음). **C-S2** 9장 Moat 덱 → PPT·Q&A는 `compression_enterprise_executive_summary_v1.md` Plugin § · **법무 전 `[DRAFT]`**. **RQ-019** **CLOSED** (`LC-2026-05-19-RQ019-CLEARED` · IR `mkm_inter_agent_ir_snippet_v1.md` · 발송마다 PUBLIC_FACING). **OpenData 327** §4-1 MD 반영 → PDF 재출력·병합·**6/5 18:00** 접수 잔여. **RQ-017** VPS triplet 완료; **hold/reject** 시 `lg_hs_fallback_two_week_pipeline_v1.json`. **RQ-016** baseline · **C-A4** 주간 거버넌스.
 1. **§3.8 MVP:** `2026 H2 매크로 리스크 경보 리포트` — **목차·Executive Summary 1p·근거 아티팩트 경로 표**는 `docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md`에 동결; 본문 수치는 해당 경로의 JSON·로그로 채운다.
 2. **B2B 오퍼:** 구독 범위(주기·대시보드·이메일)·면책·신뢰 KPI를 넣은 **1페이지 세일즈 시트** 초안을 Track C 공통 문구(§9)와 함께 고정한다. **자동 생성 초안:** `docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md` (`py scripts/build_track_c_macro_risk_mvp_filled_v1.py` 실행 시 MVP와 함께 갱신).
 3. **P1(압축) 세일즈:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` **`[DRAFT]`** — §3.1.2 Kill-Matrix·금지 문구와 함께 OEM/IR에 사용; 법무 통과 전 `[DRAFT]` 유지.

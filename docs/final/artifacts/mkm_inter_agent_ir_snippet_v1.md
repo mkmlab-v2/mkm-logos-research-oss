@@ -1,7 +1,7 @@
 # MKM Inter-Agent Message Rail — IR·과제용 스니펫 (v1)
 
-**INTERNAL ONLY · pre-legal-send** — 법무·`PUBLIC_FACING` v1.7 통과 전 **그대로 제출 금지**.  
-**근거:** `mkm_inter_agent_first_message_live_http_v1.json` · worked example MD · `mkm_inter_agent_encoding_status_latest.json`
+**INTERNAL ONLY · counsel-cleared (`LC-2026-05-19-RQ019-CLEARED`)** — 대외 **발송·게시마다** `PUBLIC_FACING` v1.7 금지어 체크 **필수** (법무 일괄 승인 ≠ 개별 채널 면책 생략).  
+**근거:** `mkm_inter_agent_first_message_live_http_v1.json` · worked example MD · `mkm_inter_agent_encoding_status_latest.json` (`rq_019: CLOSED`)
 
 ---
 
@@ -42,7 +42,7 @@ curl -s -X POST http://127.0.0.1:8011/v2/expand -H "Content-Type: application/js
 
 - Stub / draft contract — **not** production API or SLA.
 - **Not** TCP/IP, **not** a finished lingua franca, **not** beats-SOTA-papers claim.
-- RQ-019 remains **OPEN** until legal sign-off on external copy.
+- RQ-019 **CLOSED** (internal ops · `LC-2026-05-19-RQ019-CLEARED`) — **not** industry-standard adoption or production SLA.
 - Commander approved **B-track health/hangul caps** for inter-agent v2 routing only — **not** Track A bench replacement.
 
-**schema:** `mkm_inter_agent_ir_snippet_v1` · **generated:** 2026-05-18 · **approval wired:** 2026-05-18
+**schema:** `mkm_inter_agent_ir_snippet_v1` · **generated:** 2026-05-18 · **counsel:** LC-2026-05-19-RQ019-CLEARED · **rq_019:** CLOSED
