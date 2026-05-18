@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_encoding_status_v1",
-  "generated_at_utc": "2026-05-18T19:59:56Z",
+  "generated_at_utc": "2026-05-18T20:34:42Z",
   "rq_019": "OPEN",
   "rq_019_milestones_core_ready": true,
   "research_only_components": [
@@ -14,7 +14,7 @@
         "exit_code": 0,
         "passed": true,
         "test_file": "tests/test_compression_token_api_v2_stub.py",
-        "stdout_tail": ".................                                                        [100%]\n17 passed in 1.55s\n",
+        "stdout_tail": ".................                                                        [100%]\n17 passed in 1.43s\n",
         "stderr_tail": ""
       },
       "inprocess_roundtrip": {
@@ -46,7 +46,7 @@
     }
   },
   "track_a_compression_snapshot": {
-    "global_token_saving_rate": 0.4683544303797469,
+    "global_token_saving_rate": 0.47538677918424754,
     "avg_jaccard": null,
     "apply_gematria_4d_bridge_policy": null
   },

@@ -179,6 +179,7 @@ def build_status(*, run_pytest: bool = True) -> dict[str, Any]:
             "sota_map": "docs/final/artifacts/mkm_inter_agent_encoding_sota_map_v1.md",
             "trust_packet_onepager": "docs/final/artifacts/lg_compression_trust_packet_onepager_v1.md",
             "first_message_worked_example": "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md",
+            "first_message_live_http": "docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json",
         },
         "boundary_ack": (
             "Not a finished MKM Language / Lingua Franca standard. "
