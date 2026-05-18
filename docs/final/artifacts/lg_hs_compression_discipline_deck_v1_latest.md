@@ -2,7 +2,7 @@
 
 **Status:** `[DRAFT]` — slides only; not legal-approved external send.
 
-**Generated:** 2026-05-16T11:06:51.033794Z
+**Generated:** 2026-05-18T20:52:57.482881Z
 
 **Tone:** 70/20/10 · manufacturing language · `lg_hs_persuasion_module_v1_2026-05-08.md`
 
@@ -22,9 +22,11 @@
 
 ## Slide 3: 압축 거버넌스 증거 (조건부 수치)
 
-- 정책 하한 floor **0.47** · policy_ok **True**
-- 벤치 전역 절감 **47.1%** (40건, frozen KPI)
-- 평균 Jaccard **0.885**
+- RQ-016 bench floor **0.47** · bench_floor_ok **True** (≠ decision axis **0.49** · policy_ok **False**)
+- 벤치 전역 절감 **47.5%** (40건, frozen KPI · Track A active)
+- 평균 Jaccard **0.890**
+- 승격 프로필 **`ssot_cap_0.45_top5_allowlist`** — ssot cap 0.45 on allowlist only (no global pin).
+- Allowlist cases: cmp2_002, cmp2_004, cmp2_005, cmp2_006, cmp2_009.
 - Jaccard = 단어 겹침 프록시; 의미 %·BOM 절감 단정 금지.
 
 Evidence:
@@ -33,7 +35,7 @@ Evidence:
 
 ## Slide 4: Shard Jaccard (frozen bench — not per-shard saving)
 
-- 40-case frozen bench — **token saving is global only** (~47.1%); shard rows are Jaccard only.
+- 40-case frozen bench — **token saving is global only** (47.5%); shard rows are Jaccard only.
 - Jaccard = overlap proxy; not semantic meaning %.
 - `zone_a_scm` (n=12): avg **0.866**, min **0.667**
 - `zone_b_timing` (n=2): avg **0.845**, min **0.786**

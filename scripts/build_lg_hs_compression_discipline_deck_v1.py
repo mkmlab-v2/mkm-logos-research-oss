@@ -12,6 +12,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 KPI = ROOT / "reports" / "constitution" / "btrack_pilot" / "ultra_compression_kpi_summary_latest.json"
 ACTIVE = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+SIGNOFF = ROOT / "docs" / "final" / "artifacts" / "multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json"
 FACTCHECK = ROOT / "docs" / "final" / "artifacts" / "lg_hs_before_after_factcheck_v1_latest.json"
 OUT_MD = ROOT / "docs" / "final" / "artifacts" / "lg_hs_compression_discipline_deck_v1_latest.md"
 OUT_JSON = ROOT / "docs" / "final" / "artifacts" / "lg_hs_compression_discipline_deck_v1_latest.json"
@@ -29,10 +30,15 @@ def _pct(x: float | None) -> str:
     return f"{x * 100:.1f}%"
 
 
-def _shard_bullets(factcheck: dict[str, Any]) -> list[str]:
+def _shard_bullets(factcheck: dict[str, Any], *, global_saving: float | None) -> list[str]:
     rows = factcheck.get("frozen_bench_shard_jaccard") or []
+    saving_line = (
+        f"40-case frozen bench — **token saving is global only** ({_pct(global_saving)}); shard rows are Jaccard only."
+        if isinstance(global_saving, (int, float))
+        else "40-case frozen bench — **token saving is global only**; shard rows are Jaccard only."
+    )
     bullets = [
-        "40-case frozen bench — **token saving is global only** (~47.1%); shard rows are Jaccard only.",
+        saving_line,
         "Jaccard = overlap proxy; not semantic meaning %.",
     ]
     for row in rows:
@@ -57,9 +63,17 @@ def main() -> int:
     kpi = _read(KPI)
     active = kpi.get("active_kpi") if isinstance(kpi.get("active_kpi"), dict) else {}
     floor = active.get("ultra_saving_policy_min")
+    bench_floor = active.get("bench_saving_floor_min")
+    bench_floor_ok = active.get("bench_saving_floor_ok")
     saving = active.get("global_token_saving_rate")
     jaccard = active.get("avg_reconstruction_fidelity_jaccard")
     policy_ok = active.get("ultra_saving_policy_ok")
+    signoff = _read(SIGNOFF) if SIGNOFF.is_file() else {}
+    variant_id = signoff.get("selected_variant_id")
+    allowlist = None
+    rc = signoff.get("selected_run_config")
+    if isinstance(rc, dict):
+        allowlist = rc.get("domain_relaxed_max_saving_case_allowlist")
     factcheck = _read(FACTCHECK) if FACTCHECK.is_file() else {}
     if not factcheck and ACTIVE.is_file():
         # Regenerate factcheck if deck runs standalone
@@ -72,6 +86,21 @@ def main() -> int:
             check=False,
         )
         factcheck = _read(FACTCHECK)
+
+    slide3_bullets: list[str] = [
+        f"RQ-016 bench floor **{bench_floor}** · bench_floor_ok **{bench_floor_ok}** (≠ decision axis **{floor}** · policy_ok **{policy_ok}**)",
+        f"벤치 전역 절감 **{_pct(saving if isinstance(saving, (int, float)) else None)}** (40건, frozen KPI · Track A active)",
+        f"평균 Jaccard **{jaccard:.3f}**" if isinstance(jaccard, (int, float)) else "평균 Jaccard —",
+    ]
+    if variant_id:
+        slide3_bullets.append(
+            f"승격 프로필 **`{variant_id}`** — ssot cap 0.45 on allowlist only (no global pin)."
+        )
+    else:
+        slide3_bullets.append("승격 프로필 — see promotion signoff artifact.")
+    if isinstance(allowlist, list) and allowlist:
+        slide3_bullets.append(f"Allowlist cases: {', '.join(allowlist)}.")
+    slide3_bullets.append("Jaccard = 단어 겹침 프록시; 의미 %·BOM 절감 단정 금지.")
 
     slides = [
         {
@@ -95,12 +124,7 @@ def main() -> int:
         {
             "n": 3,
             "title": "압축 거버넌스 증거 (조건부 수치)",
-            "bullets": [
-                f"정책 하한 floor **{floor}** · policy_ok **{policy_ok}**",
-                f"벤치 전역 절감 **{_pct(saving if isinstance(saving, (int, float)) else None)}** (40건, frozen KPI)",
-                f"평균 Jaccard **{jaccard:.3f}**" if isinstance(jaccard, (int, float)) else "평균 Jaccard —",
-                "Jaccard = 단어 겹침 프록시; 의미 %·BOM 절감 단정 금지.",
-            ],
+            "bullets": slide3_bullets,
             "evidence": [
                 "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json",
                 "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",
@@ -109,7 +133,12 @@ def main() -> int:
         {
             "n": 4,
             "title": "Shard Jaccard (frozen bench — not per-shard saving)",
-            "bullets": _shard_bullets(factcheck) if factcheck else ["Run `build_lg_hs_before_after_factcheck_v1.py` first."],
+            "bullets": _shard_bullets(
+                factcheck,
+                global_saving=saving if isinstance(saving, (int, float)) else None,
+            )
+            if factcheck
+            else ["Run `build_lg_hs_before_after_factcheck_v1.py` first."],
             "evidence": [
                 "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json",
                 "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
@@ -192,7 +221,8 @@ def main() -> int:
         lines.append(f"## Slide {s['n']}: {s['title']}")
         lines.append("")
         for b in s["bullets"]:
-            lines.append(f"- {b}")
+            if b:
+                lines.append(f"- {b}")
         if s.get("evidence"):
             lines.append("")
             lines.append("Evidence:")
