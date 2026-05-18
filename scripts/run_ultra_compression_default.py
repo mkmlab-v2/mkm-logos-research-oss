@@ -96,6 +96,15 @@ def main() -> int:
         ),
     )
     ap.add_argument(
+        "--selective-bridge-policy-domains",
+        default="",
+        metavar="DOMAINS",
+        help=(
+            "Comma-separated domain ids (e.g. scm,health). When set, bridge policy runs only on those domains; "
+            "overrides global --apply-gematria-4d-bridge-policy for non-listed domains (RQ-016 selective pin)."
+        ),
+    )
+    ap.add_argument(
         "--out",
         type=Path,
         default=None,
@@ -104,6 +113,12 @@ def main() -> int:
     args = ap.parse_args()
     sla_track = str(args.mode)
     apply_bridge_policy = bool(args.apply_gematria_4d_bridge_policy) or env_apply_gematria_4d_bridge_policy()
+    selective_domains_raw = str(args.selective_bridge_policy_domains or "").strip()
+    bridge_policy_domain_allowlist: frozenset[str] | None = None
+    if selective_domains_raw:
+        bridge_policy_domain_allowlist = frozenset(
+            d.strip() for d in selective_domains_raw.split(",") if d.strip()
+        )
 
     src_doc = json.loads(INPUT_V2.read_text(encoding="utf-8"))
     baseline_doc = json.loads(BASELINE_V2.read_text(encoding="utf-8"))
@@ -156,6 +171,7 @@ def main() -> int:
         include_gematria_metadata=True,
         include_gematria_4d_bridge=True,
         apply_gematria_4d_bridge_policy=apply_bridge_policy,
+        bridge_policy_domain_allowlist=bridge_policy_domain_allowlist,
         include_cee_core=True,
     )
     report["active_profile"] = {
@@ -168,6 +184,11 @@ def main() -> int:
         "hangul_max_saving_rate": hangul_max_saving_rate,
         "apply_gematria_4d_bridge_policy": apply_bridge_policy,
         "apply_gematria_4d_bridge_policy_env": env_apply_gematria_4d_bridge_policy(),
+        "bridge_policy_domain_allowlist": (
+            sorted(bridge_policy_domain_allowlist)
+            if bridge_policy_domain_allowlist is not None
+            else None
+        ),
     }
     if sla_track == "ultra-literal":
         cases = (report.get("compression_metrics") or {}).get("cases") or []

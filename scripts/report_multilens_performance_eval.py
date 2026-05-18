@@ -687,6 +687,18 @@ def _apply_min_saving_floor(
     return " ".join(essential + optional[:needed])
 
 
+def _effective_bridge_policy_for_case(
+    case_domain: str,
+    *,
+    apply_gematria_4d_bridge_policy: bool,
+    bridge_policy_domain_allowlist: frozenset[str] | None,
+) -> bool:
+    """When allowlist is set, bridge policy applies only on listed domains (RQ-016 selective pin)."""
+    if bridge_policy_domain_allowlist is not None:
+        return case_domain in bridge_policy_domain_allowlist
+    return apply_gematria_4d_bridge_policy
+
+
 def _bridge_policy_terms_for_state(state16: int | None) -> set[str]:
     if state16 in {2, 8, 11, 14}:
         # Conservative states: preserve risk/traceability anchors.
@@ -949,6 +961,7 @@ def evaluate_report(
     include_gematria_4d_bridge: bool = False,
     include_cee_core: bool = False,
     apply_gematria_4d_bridge_policy: bool = False,
+    bridge_policy_domain_allowlist: frozenset[str] | None = None,
     bridge_score_weights: dict[str, float] | None = None,
     use_contextual_generator_v2: bool = False,
     use_contextual_generator_v3: bool = False,
@@ -1020,8 +1033,6 @@ def evaluate_report(
                 reconstructed_text=source_rec,
             )
             bridge_meta = build_gematria_4d_bridge(gematria_metadata=pre_gematria)
-            if apply_gematria_4d_bridge_policy and mode == "experimental":
-                effective_must_keep.update(_bridge_policy_terms_for_state(bridge_meta.get("state16")))
         if router is not None:
             natural_route = router.route(raw)
             if force_shard_id:
@@ -1062,16 +1073,30 @@ def evaluate_report(
                 hits, meta = lexicon_hits_for_text(raw, cb_path)
                 effective_must_keep.update(hits)
                 route_info["master_codebook_lexicon_v1"] = meta
+        case_domain = str(c.get("domain", "") or "").strip()
+        if route_info and route_info.get("domain"):
+            case_domain = str(route_info.get("domain") or case_domain).strip()
+        apply_bridge_case = _effective_bridge_policy_for_case(
+            case_domain,
+            apply_gematria_4d_bridge_policy=apply_gematria_4d_bridge_policy,
+            bridge_policy_domain_allowlist=bridge_policy_domain_allowlist,
+        )
+        if (
+            apply_bridge_case
+            and mode == "experimental"
+            and bridge_meta is not None
+        ):
+            effective_must_keep.update(_bridge_policy_terms_for_state(bridge_meta.get("state16")))
         if mode == "experimental":
             expanded_must_keep = _expand_must_keep_words(effective_must_keep)
-            if contextual_codec_v5 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
+            if contextual_codec_v5 is not None and apply_bridge_case and bridge_meta is not None:
                 comp = contextual_codec_v5.encode(
                     raw=raw,
                     state16=bridge_meta.get("state16"),
                     must_keep=expanded_must_keep,
                 )
                 codec_decoded = contextual_codec_v5.decode_hybrid(encoded=comp, raw=raw, max_tokens_ratio=0.52)
-            elif contextual_gen_v4 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
+            elif contextual_gen_v4 is not None and apply_bridge_case and bridge_meta is not None:
                 comp = contextual_gen_v4.generate(
                     raw=raw,
                     state16=bridge_meta.get("state16"),
@@ -1080,7 +1105,7 @@ def evaluate_report(
                     intensity=intensity,
                     use_hangul_principle=effective_hangul_principle,
                 )
-            elif contextual_gen_v3 is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
+            elif contextual_gen_v3 is not None and apply_bridge_case and bridge_meta is not None:
                 comp = contextual_gen_v3.generate(
                     raw=raw,
                     state16=bridge_meta.get("state16"),
@@ -1089,7 +1114,7 @@ def evaluate_report(
                     intensity=intensity,
                     use_hangul_principle=effective_hangul_principle,
                 )
-            elif contextual_gen is not None and apply_gematria_4d_bridge_policy and bridge_meta is not None:
+            elif contextual_gen is not None and apply_bridge_case and bridge_meta is not None:
                 comp = contextual_gen.generate(
                     raw=raw,
                     state16=bridge_meta.get("state16"),
@@ -1120,20 +1145,19 @@ def evaluate_report(
                 cap = hangul_max_saving_rate
             else:
                 cap = sensitive_max_saving_rate if is_sensitive else general_max_saving_rate
-            case_domain = str(c.get("domain", "") or "").strip()
             gmax = float(general_max_saving_rate) if general_max_saving_rate is not None else None
             if gmax is not None and gmax >= _HIGH_STRESS_GMAX_THRESHOLD:
                 dstress = _HIGH_STRESS_DOMAIN_MAX_SAVING.get(case_domain)
                 if dstress is not None:
                     cap = min(cap if cap is not None else 1.0, dstress)
-            if apply_gematria_4d_bridge_policy and bridge_meta is not None:
+            if apply_bridge_case and bridge_meta is not None:
                 state16 = bridge_meta.get("state16")
                 if state16 in {2, 8, 11, 14}:
                     cap = min(cap, 0.45) if cap is not None else 0.45
                 elif state16 in {1, 4, 7, 10, 13, 16}:
                     cap = min(cap, 0.50) if cap is not None else 0.50
             comp = _apply_max_saving_cap(raw, comp, max_saving_rate=cap)
-            if apply_gematria_4d_bridge_policy and bridge_meta is not None:
+            if apply_bridge_case and bridge_meta is not None:
                 comp = _bridge_aware_candidate_select(
                     raw=raw,
                     base_candidate=comp,
@@ -1338,7 +1362,7 @@ def evaluate_report(
             row["gematria_metadata"] = gematria_metadata
             if include_gematria_4d_bridge:
                 row["gematria_4d_bridge"] = build_gematria_4d_bridge(gematria_metadata=gematria_metadata)
-                row["gematria_4d_bridge_policy_applied"] = bool(apply_gematria_4d_bridge_policy and mode == "experimental")
+                row["gematria_4d_bridge_policy_applied"] = bool(apply_bridge_case and mode == "experimental")
         if include_cee_core:
             row["cee_core"] = run_cee_logic_core_v1(
                 CEEInput(
@@ -1449,6 +1473,11 @@ def evaluate_report(
             "include_gematria_4d_bridge": include_gematria_4d_bridge,
             "include_cee_core": include_cee_core,
             "apply_gematria_4d_bridge_policy": apply_gematria_4d_bridge_policy,
+            "bridge_policy_domain_allowlist": (
+                sorted(bridge_policy_domain_allowlist)
+                if bridge_policy_domain_allowlist is not None
+                else None
+            ),
             "bridge_score_weights": bridge_score_weights,
             "use_contextual_generator_v2": use_contextual_generator_v2,
             "use_contextual_generator_v3": use_contextual_generator_v3,

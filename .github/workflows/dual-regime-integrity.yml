@@ -1401,6 +1401,7 @@ jobs:
         run: |
           python -m pytest tests/test_ultra_compression_artifacts.py -q --tb=short
           python -m pytest tests/test_master_codebook_lexicon_v1_bridge.py -q --tb=short
+          python -m pytest tests/test_run_ultra_compression_health_bridge_pinpoint_v1.py tests/test_run_compression_health_bridge_floor_microgrid_v1.py -q --tb=short
 
       - name: General compression eval input + bundle hard-lock contract
         run: |
