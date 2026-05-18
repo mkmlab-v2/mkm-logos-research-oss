@@ -2,13 +2,147 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
-## Ops slice (2026-05-16 · jema-ai /clinician 본선)
+## Ops slice (2026-05-19 · M-COMP-A1 압축 밀기)
 
-**Thread:** Cursor — **한의사 채팅·CDSS·환자 번들 VPS 반영**
+**Thread:** Cursor — cmp2 min_pair 프로덕션 + 40건 벤치
 
-- **완료:** `Deploy-No1kmediDestinyTarball_v1.ps1 -RunApiSmoke` **OK** · `app.jema-ai.com/clinician` **200** · CDSS envelope `validation.ok` · bundle MD ~1.9k · `dev` 커밋·**internal push**
-- **막힘:** Pro 게이트는 payapp 결제+승인 또는 **`KM_CLINICIAN_PRO_EMAIL_ALLOWLIST`** 필요(운영 이메일 배포 예정)
-- **다음:** VPS `.env.local`에 allowlist 반영 후 재배포 · 선택 `dev`→`main` 머지(VPS `git pull` 정합)
+- **완료:** `Invoke-CompressionRecommendedPolicy_v1` + `run_compression_automation_chain.ps1` **exit 0** · cmp2_015/023 Jaccard **0.933** (shard `일반화하면`/`손실되면`) · active saving **46.84%** · avg Jaccard **0.899** · pytest v2 stub **17 passed** (trust-restoration 샘플 1건 수정)
+- **막힘:** `ultra_saving_policy_ok: false` — **waiver** 유지(0.47 미달 ~0.16pp) · 3벤치 한 슬라이드 합치기 금지
+- **다음:** (선택) `push-internal.ps1` · OpenData PDF/DEV-10 · 쇼룸 보류
+
+## Ops slice (2026-05-19 · 자동 실행 · NL·Slack·OpenData)
+
+**Thread:** Cursor — 권장안 자동화
+
+- **완료:** Slack `#project-mkmlife` **발송** · [DEV-12](https://giryun288.atlassian.net/browse/DEV-12) **완료** · MCP **`authenticated: true`** · `nlm` 렌즈 팩 **19 ok / 4 fail**(JSON) → `reports/notebooklm_lens_pack_push_latest.log` · OpenData 게이트 **PASS** · Part B 초안 HTML `reports/opendata_327_part_b_draft_v1.html`
+- **막힘:** Headless PDF 미생성(Chrome print) · K-Startup·나라장터 접수 · §4-1·§2-2 placeholder
+- **다음:** Word/브라우저로 HTML→PDF · merge guide 병합 · [DEV-10](https://giryun288.atlassian.net/browse/DEV-10) 6/5
+
+## Ops slice (2026-05-18 · Cross-chat 종료 · 융합 재개용)
+
+**Thread:** Cursor 세션 종료 → **다른 채팅에서 `@` + 장기기억으로 재개**
+
+- **완료:** 압축 3벤치 모두 exit **0** (40건 **47.12%**/0.885 · general 43 **GO** · finance 65 **~70.2%**/0.645) · Logos→압축 실험 **41775 유지** · bridge AB **policy OFF** · 예언 BTC 30d **43.33%** · dual-leg **30/30** · holdout `advisory-sweep` 수정 · git `7247ce9fc2` internal pushed(이전 턴)
+- **막힘:** 3벤치·예언·압축 **한 슬라이드/헤드라인 합치기 금지** · 쇼룸·마중 **보류** · `combined_all_passed`≠완료 · Track A `ultra_saving_50_ok: false`
+- **다음 (권장):** 작업 축 한 줄 — **`압축만` → cmp2_015/023 scm 국소 보수 후 40건만 재벤치** (codebook hit 0; scm 캡/must_keep 우선) · 또는 `예언만` / `융합`(실행 병렬·보고 분리)
+
+**다른 채팅 붙여넣기:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+@docs/final/CENTRAL_AGENT_MEMORY_V1.md
+장기기억 맥락이어라
+압축만
+```
+(선택) `@docs/final/artifacts/mkm_chat_resume_pack_latest.md`
+
+**융합 OK:** 같은 날 압축 체인+예언 체인 **연속 실행** · **NO:** 47%+43% 한 성과, finance 70%를 Track A에, pooled 51.67%를 쇼룸 헤드라인에
+
+## Ops slice (2026-05-18 · 압축만 · 3벤치 갱신)
+
+**Thread:** Cursor — **Track A + general 43 + finance B2B 65 동시 SSOT 갱신**
+
+- **완료 (Track A 40건):** `run_compression_automation_chain.ps1` exit **0** · saving **47.12%** · Jaccard **0.885** · `ultra_saving_policy_ok: true` (floor 0.47) · pytest trust 17 passed · KPI alarm within thresholds
+- **완료 (general 43건, 별도):** `Run-GeneralCompressionChain.ps1` exit **0** · treatment saving **40.3%** · Jaccard **0.994** · `general_compression_kpi_gate_v2.json` **GO**
+- **완료 (finance B2B 65건, 별도):** `Run-FinanceMacroB2bCompressionEval_v1.ps1` exit **0** · saving **~70.2%** · Jaccard **~0.645**
+- **동결:** codebook **41775** · `apply_gematria_4d_bridge_policy: false` · 41658 승격 **없음**
+- **막힘:** `ultra_saving_50_ok: false` (50% 목표 아님) · 3벤치 **한 슬라이드 합치기 금지**
+- **다음:** loss 패턴(`compression_jaccard_loss_patterns_latest.json`)로 약한 cmp2 id 타겟 · (선택) `-IncludeLiteralTrack` 주간 거버넌스
+
+## Ops slice (2026-05-18 · Solo parallel · holdout+dual-leg+recommended)
+
+**Thread:** Cursor — **1인 병렬 3갈래 완료 · push-internal 대상**
+
+- **완료 (holdout, 비게이팅):** `run_btrack_wrong_dir_holdout_v1.py` — `advisory-sweep` **NameError** 수정(`enrich_per_date_doc_btc` import) · repro exit **0** · pytest 4 passed
+- **완료 (예언 recommended):** `run_prophecy_btrack_recommended_eval_chain_v1.py --auto-sweep-and-apply` exit **0** · `neutral_bps=4.0` · `soft_band_review` / `opportunistic` · `combined_all_passed: false`
+- **완료 (dual-leg):** score rebuild **30/30** both legs (BTC+KOSPI CSV 명시) · `prophecy_hit_rate_eval_latest.json` — BTC **43.33%** · KOSPI **60%** · pooled **51.67%** (31/60) — **headline은 BTC만**; pooled를 쇼룸 헤드라인으로 쓰지 말 것
+- **완료 (압축, 동결):** Track A 40건 **47.12%** / Jaccard **~0.885** · codebook A/B → **41775 유지** (`logos_exp1_codebook_41658_vs_41775_latest.json`) · bridge AB ON=jaccard↑ saving↓ → **policy OFF 유지**
+- **막힘:** 쇼룸·마중 **보류** · 47% vs 43% **한 슬라이드 금지** · strict promotion 0.55 미달
+- **다음:** `장기기억 맥락이어라` + 작업 축 한 줄 · (선택) 일일 hypothesis 체인 스케줄 LastResult 확인 · Pack0-B interpret LoRA 로컬 PS
+
+**크로스 채팅 판정 SSOT (경로만, 숫자는 파일에서 읽기):**
+
+| 축 | 파일 |
+|----|------|
+| 압축 40건 | `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` · `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json` |
+| 압축 B2B | `docs/final/artifacts/finance_macro_b2b_compression_active_report_v1.json` |
+| 예언 hit | `docs/final/artifacts/prophecy_hit_rate_eval_latest.json` |
+| 예언 게이트 | `docs/final/artifacts/prophecy_promotion_gates_v1_latest.json` · `reports/prophecy_promotion_gates_recommended_chain_v1_latest.json` |
+| abstain | `reports/confidence_abstain_curve_windows_summary_v1_latest.json` |
+| Logos 주간 | `docs/final/artifacts/logos_symbolic_backtest_weekly_ops_reval_v1.md` |
+
+**융합 규칙:** 실행은 같은 날 병렬 OK · **보고·헤드라인·쇼룸 숫자는 축별 분리** · Mode B: 실매매·90%·backfill PnL 브리핑 금지
+
+## Ops slice (2026-05-18 · Session handoff · Abstain 동결 + Pack0-B eval)
+
+**Thread:** Cursor — **갈래 A 마무리 · 갈래 B eval (GPU 대기)**
+
+- **완료:** Abstain v1.1 **CENTRAL 체크포인트** (운영=KPI-B, 연구=P0, P1.5 보류) · `confidence_abstain_curve_v1_{30,60,90}d` + windows_summary · oracle interpret eval **envelope_match_rate=1.0** n=25 (`reports/myeongri_interpret_pivot_a_oracle_eval.json`, 파이프 상한만)
+- **막힘:** `run_pivot_a_s100_20260518` **어댑터 파일 0개** (`adapter_config.json` 없음) → **실 LoRA eval 불가** · GPU+25행 추론은 **수 분~수십 분**(Cursor 중단됨)
+- **다음:** 로컬 PS에서 `Invoke-MyeongriInterpretPivotA_v1.ps1`(학습 100step 완료 확인) 또는 `-SkipTrain` 전 `adapter_config.json` 존재 확인 후 eval · 빠른 확인만: `--oracle-sft` 또는 `--limit 3` GPU smoke
+
+## Ops slice (2026-05-18 · Session handoff · Pack0-B pivot A-path · 채팅 종료)
+
+**Thread:** Cursor — **tier-0 pillars 0% · A경로 interpret SFT · 로컬 interpret LoRA 100step**
+
+- **완료:** `field_diff_v1` + tier-0 **parse 100% / 4기둥 alignment 0%** (`reports/myeongri_pillars_only_tier0_s100_locked25_eval.json`) · **A경로 피벗** `docs/final/artifacts/myeongri_pack0b_tier0_pivot_interpret_a_v1_latest.json` · `Invoke-MyeongriInterpretPivotA_v1.ps1` · interpret SFT v2 **1000/100** (`data/training/myeongri_interpret_sft_v2/`) · oracle envelope **1.0** (25행) · `LORA_PACK_V0_DOD_V1.md` §2.5 · CENTRAL checkpoint
+- **막힘:** pillars-only·결정론 JSON LoRA **계산 주력 폐기** · Cursor 백그라운드 GPU 학습 **반복 abort** → **지휘관 로컬 PS**에서 `run_pivot_a_s100_20260518` 학습 진행/완료 확인 필요
+- **다음:** 학습 `saved=` 확인 후 `py scripts/run_myeongri_interpret_lora_inference_eval_v1.py` + `--adapter-path storage/adapters/myeongri_interpret_lora_v0/run_pivot_a_s100_20260518` · 지표 **`envelope_match_rate`**(간지 아님) · 재개: `장기기억 맥락이어라` + `@docs/final/CURRENT_OPS_SNAPSHOT.md` + `@docs/final/CENTRAL_AGENT_MEMORY_V1.md`
+
+## Ops slice (2026-05-17 · Session handoff · Model Swap PoC ACTIVE)
+
+**Thread:** Cursor — **frozen harness · model swap PoC 병렬 · LG pending**
+
+- **완료:** harness 30d+180d · 일일/주간 model-swap 연동 · Gemini **AI Studio** 라우트 수정(`vertexai=False`) · single-shot smoke **ok** · verdict=no_baseline_beat 유지
+- **막힘:** prod 승격·ensemble JSON **금지** · per-date Gemini 30d 패널 **v2** · LG **pending**
+- **다음:** `.env`에 AI Studio `GEMINI_API_KEY`만(채팅 노출 키는 로컬 교체·로테이션 권장) · LG outcome 1줄
+
+## Ops slice (2026-05-17 · Session handoff · B-track 관측 모드 동결)
+
+**Thread:** Cursor — **ALERT_1 승격 트랙 폐쇄 · Advisory 일일 갱신 · LG HS 대기**
+
+- **완료:** wrong_dir/aux/F2F3/CBO/Choice2 **승격 reject** · prod `min_conf=0.18` 유지 · advisory primary **`advisory_ovn_bull`**(holdout wrong **3/7**) · 일일 **`advisory-sweep`**(체인+패널) · `MKM-OBS-MODE`·`Verify-BtrackProphecyDailyOpsReadiness_v1.ps1` **ALL OK** · 태스크 **08:35/08:55/09:05** Ready
+- **막힘:** ALERT_1 headline **36.7%** (exit 1 **정상**) · 예언→실매매 **자동 합선 없음** · **5/20(화) LG HS** outcome **pending**
+- **다음:** Model swap PoC(본 slice 상단) · 패널 로그 누적 · 재개: `장기기억 맥락이어라` + `@docs/final/CURRENT_OPS_SNAPSHOT.md`
+
+## Ops slice (2026-05-16 · Session handoff · B-track 학습루프·Mode B)
+
+**Thread:** Cursor — **예언 파이프라인 수리·스케줄·레지스트리 · 세션 종료**
+
+- **완료:** `prophecy_hit_rate_eval_latest.json` **33.3% (n=60)** Fact-Lock · 스윕 best `neutral_bps` 예 **4.0** (`reports/prophecy_btrack_recommended_nbps_sweep_v1_latest.json`) · registry `docs/final/artifacts/effective_adjustments_registry_v1.jsonl` · 일 **08:35/08:55/09:05** 3태스크 · 일 **09:45 AutoSweep + 10:15 WeeklyLearning(-SkipAutoSweep)** Task 등록 · `auto_promote_ready: false` · CENTRAL 「B-track 예언·통찰 팩트록 배관」절 반영
+- **막힘:** 예언→`aroon_v1` 자동 합선 없음(의도) · BTC 실매매 수익은 본 작업과 **비직결** · `GeneralProphecyDailyQueueV1`은 별도 태스크(Mode B 번들 밖)
+- **다음:** **오늘 09:45** AutoSweep·**10:15** WeeklyLearning 자동 실행 후 `Last Result=0` 확인(관리자 UAC로 `Register-BtrackRecommendedEvalAutoSweepWeeklyTask`·`Register-MkmBtrackProphecyTasksRunWhenLoggedOff` 적용) · 수동 검증 `prophecy_hit_rate_eval_latest.json` **33.3% n=60** · 재개: `장기기억 맥락이어라` + `@docs/final/CURRENT_OPS_SNAPSHOT.md`
+
+## Ops slice (2026-05-16 · Session handoff · SINGLE-ANCHOR-21D 완료)
+
+**Thread:** Cursor — **단일 앵커 31k · reject 가정 실행**
+
+- **완료:** **SINGLE-ANCHOR S0–S9** — unified **31,102** · corpus/graph/lexicon · A vs U compare · regression **28** · VPS **200** · go/no-go JSON
+- **막힘:** **2,361** upstream 원어 없음(pipeline stub) · LG official **`pending`** · `ready_for_external_send` **false**
+- **다음:** 화요일 실제 outcome 1줄 · 장기 **external BHS ingest** for 2361 · 대외 「100% 해독」 금지
+
+## Ops slice (2026-05-16 · Session handoff · LG reject 가정 · TECH 14d)
+
+**Thread:** Cursor — **TECH-UPLIFT (선행 완료)**
+
+- **완료:** TECH P1–P8
+- **막힘:** —
+- **다음:** (상단 SINGLE-ANCHOR slice)
+
+## Ops slice (2026-05-16 · Session handoff · LOGOS union 31k)
+
+**Thread:** Cursor — **gap staging·union·4D 31,102 (LG outcome 보류)**
+
+- **완료:** gap staging **2,361** · union **31,102** · medoid **3John.1.14** · regression **28** · VPS **200**
+- **막힘:** gap BHS decode · 외부 send false
+- **다음:** (상단 TECH 14d slice로 이관)
+
+## Ops slice (2026-05-16 · Session handoff · jema-ai /clinician 종료)
+
+**Thread:** Cursor — **한의 CDSS·환자 번들·/clinician 채팅 본선 · 채팅 종료**
+
+- **완료:** VPS `Deploy-No1kmediDestinyTarball_v1.ps1 -RunApiSmoke` **OK** · `app.jema-ai.com/clinician` **200** · CDSS `validation.ok` · bundle MD ~1.9k · Pro allowlist `admin@no1kmedi.com` · **`dev`→`gitea/main` fast-forward `46a1186e2d`** · CENTRAL checkpoint
+- **막힘:** VPS `origin/main`(GitHub)은 **`f92b6c10b`** — `git pull`만으로 monorepo 한의 스크립트 미동기
+- **다음:** GitHub 정렬 시 `Push-GitHub-Explicit.ps1 -Acknowledge` 후 VPS pull, 또는 **타볼 재배포** · 재개: `장기기억 맥락이어라` + `@docs/final/CURRENT_OPS_SNAPSHOT.md`
 
 ## Ops slice (2026-05-16 · Session handoff · LG 용어 정정)
 

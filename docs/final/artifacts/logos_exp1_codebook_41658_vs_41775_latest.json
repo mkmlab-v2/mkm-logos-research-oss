@@ -1,0 +1,26 @@
+{
+  "schema": "logos_exp1_codebook_ab_v1",
+  "note": "After fetch_external_lexicons + map_master_atoms_lexicon_seed",
+  "generated_at_utc": "2026-05-18T13:04:00Z",
+  "arms": {
+    "41775_frozen": {
+      "path": "master_codebook_lexicon_v1_41775_rows_latest.json",
+      "global_token_saving_rate": 0.47257383966244726,
+      "avg_reconstruction_fidelity_jaccard": 0.8836443153509718,
+      "ultra_saving_policy_ok": true,
+      "case_count": 40
+    },
+    "41658_lexicon_seed": {
+      "path": "master_codebook_lexicon_v1_41658_rows_latest.json",
+      "global_token_saving_rate": 0.4796061884669479,
+      "avg_reconstruction_fidelity_jaccard": 0.8755044343985909,
+      "ultra_saving_policy_ok": true,
+      "case_count": 40
+    }
+  },
+  "delta_41658_minus_41775": {
+    "global_token_saving_rate": 0.007032348804500654,
+    "avg_jaccard": -0.008139880952380829
+  },
+  "recommendation": "keep_41775_frozen"
+}

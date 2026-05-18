@@ -8,6 +8,13 @@
 !.cursor/rules/central-agent-memory.mdc
 # Gut-brain metaphor + B-track gate taxonomy (alwaysApply; share across clones)
 !.cursor/rules/gut-brain-metaphor-agent-v1.mdc
+# PR Review Canvas internal-first (alwaysApply; share across clones)
+!.cursor/rules/pr-review-canvas-auto.mdc
+# Cloud Agent dev environment IaC (Cursor 3.4; share across clones)
+!.cursor/environment.json
+!.cursor/environment/
+!.cursor/environment/**
+!.cursor/rules/cursor-cloud-sandbox-boundary.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md
@@ -517,3 +524,8 @@ reports/mkm_ai_v2_readiness_log.jsonl
 reports/mkm_orchestrator_approval_backlog_latest.json
 reports/mkm_orchestrator_audit.jsonl
 reports/mkm_orchestrator_noop_smoke_latest.json
+
+# Logos TR / manuscript caches (local ingest; do not commit ~42MB honza cache or full NT JSONL)
+data/logos/manuscripts/cache/
+data/logos/manuscripts/tr_greek_by_verse_v1.full_nt.jsonl
+data/logos/manuscripts/dss_parsed_enriched.jsonl

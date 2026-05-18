@@ -12,6 +12,9 @@
 #   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:40"
 # Panel 24h ALERT 1-3: default runs Check-ProphecyPanel24hAlerts.ps1 at end (writes reports/prophecy_panel_24h_alerts_latest.json,
 # appends reports/prophecy_panel_24h_alerts_log.jsonl; failure webhook via .env / User env). Use -SkipPanel24hAlertsCheck to skip.
+# Advisory bear-trap (default ON): run_btrack_wrong_dir_holdout_v1.py advisory-sweep before panel (research_only; no ensemble write).
+#   Refreshes reports/btrack_advisory_bear_trap_manifest_v1_latest.json from latest per-date directions. Use -SkipAdvisoryBearTrapSweep to skip.
+# Model swap PoC harness (default ON): run_btrack_model_swap_harness_v1.py 30d frozen baseline (non-gating; no ensemble write). Use -SkipModelSwapHarness to skip.
 # Market bootstrap (default ON): runs fetch_kospi_yfinance_csv.py + fetch_btc_yfinance_csv.py first
 # so stale/missing CSV does not silently force proxy hit-rate mode. Use -SkipMarketDataRefresh for offline/CI.
 # News/macro lens JSON: use -SkipNewsMacroAdapter to skip build_btrack_news_macro_lens_adapters_v1.py (reuse prior lens files).
@@ -22,6 +25,11 @@
 # BTC dual-leg: --btc-csv when resolved path exists. Resolution order (same idea as Run-BTrackOhlcvScoreAndEval.ps1):
 #   1) -BtcCsv parameter  2) env MKM_BTC_DAILY_CSV  3) research/market_data/btc_daily_external_yf.csv
 # (B-track [HYPO] only; not live trading). Without CSV, hit-rate eval is skipped with a note.
+# Phase 3 leading sensors (default OFF): after OHLCV score + price hit-rate eval, optional
+#   join_btrack_phase3_leading_sensors_score_v1.py + build_btrack_prophecy_score_insight_sidecar_stub_v1.py
+#   (research_only; non-fatal WARN on failure). Use -IncludePhase3LeadingSensors to enable.
+#   -SkipPhase3NetworkFetch: skip Binance fetch prefetch (phase3 chain --skip-seed only, no --fetch-binance).
+#   -StrictPhase3LeadingSensors or env MKM_BTRACK_PHASE3_LEADING_SENSORS_STRICT=1 fails the chain on hook errors.
 # Longer window: -IncludeDawnScore (30 trading days for score rows).
 # KOSPI stress observation (default ON): build_kospi_stress_observation_hypothesis_v1.py after prophecy_health_status
 # (5d vol + monthly foreign_net_buy proxy; observation_only). Use -SkipKospiStressObservation to omit.
@@ -52,7 +60,10 @@ param(
   [string]$PromotionTrackMode = "btc_only_crossassist",
   [switch]$SkipInsightAppend,
   [switch]$SkipHitRate,
+  # KPI-B shadow eval (per-date WF on same panel; separate *_kpi_b_shadow_* artifacts only).
+  [switch]$SkipKpiBShadowEval,
   [switch]$IncludeDawnScore,
+  [switch]$SkipPerDateDirections,
   [switch]$SkipExternalFeedValidation,
   [switch]$StrictExternalFeedValidation,
   [switch]$SkipFastPromotionGate,
@@ -86,10 +97,18 @@ param(
   [string]$ResearchEvaluationInstrument = "btc",
   [switch]$SkipProphecyContemplationGemini,
   [switch]$SkipPanel24hAlertsCheck,
+  [switch]$SkipAdvisoryBearTrapSweep,
+  [switch]$SkipModelSwapHarness,
   [double]$Panel24hMinHitRate = 0.60,
   [switch]$SkipKospiStressObservation,
+  # Ensemble v2 recommended eval (strict 0.55 gates); also MKM_BTRACK_ENSEMBLE_V2_DAILY=1 in .env.
+  [switch]$IncludeEnsembleV2RecommendedEval,
   # Logos B-track observational bundle (upstream JSON/JSONL may be absent; non-blocking WARN).
-  [switch]$SkipLogosInsightBundle
+  [switch]$SkipLogosInsightBundle,
+  # Phase 3 leading-sensor join + insight sidecar after price hit-rate (research_only; default OFF).
+  [switch]$IncludePhase3LeadingSensors,
+  [switch]$SkipPhase3NetworkFetch,
+  [switch]$StrictPhase3LeadingSensors
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -374,6 +393,16 @@ if (-not $SkipInsightAppend) {
 if (-not $SkipHitRate) {
   $kospiCsv = Join-Path $WorkspaceRoot "research\market_data\kospi_daily_external_yf.csv"
   $scoreJsonRel = "docs\final\artifacts\btrack_prophecy_score_latest.json"
+  $kpiBApprovalPath = Join-Path $WorkspaceRoot "docs\final\artifacts\btrack_dual_kpi_headline_human_approval_v1_latest.json"
+  $kpiBApproved = $false
+  if (Test-Path -LiteralPath $kpiBApprovalPath) {
+    try {
+      $kpiBAp = Get-Content -LiteralPath $kpiBApprovalPath -Raw -Encoding UTF8 | ConvertFrom-Json
+      $kpiBApproved = ([string]$kpiBAp.decision -eq "APPROVED_KPI_B_OPERATIONAL_HEADLINE")
+    } catch {
+      Write-Host "WARN: could not read KPI-B approval JSON: $kpiBApprovalPath" -ForegroundColor Yellow
+    }
+  }
   if (Test-Path -LiteralPath $kospiCsv) {
     $btcDefault = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
     $btcResolved = ""
@@ -394,9 +423,30 @@ if (-not $SkipHitRate) {
     if ([string]::IsNullOrWhiteSpace($btcResolved) -and (Test-Path -LiteralPath $btcDefault)) {
       $btcResolved = $btcDefault
     }
+    $perDateDirsRel = "reports\btrack_ensemble_per_date_directions_v1_latest.json"
+    if ($kpiBApproved -and -not [string]::IsNullOrWhiteSpace($btcResolved)) {
+      Write-Host "==> KPI-B operational headline (commander approved): run_btrack_kpi_b_shadow_eval_v1.py --promote-to-operational-headline" -ForegroundColor Cyan
+      $kpiAArchiveRel = "docs\final\artifacts\prophecy_hit_rate_eval_kpi_a_frozen_archive_v1_latest.json"
+      $shadowArgs = @(
+        "scripts/run_btrack_kpi_b_shadow_eval_v1.py",
+        "--btc-csv", $btcResolved,
+        "--promote-to-operational-headline"
+      )
+      if (Test-Path -LiteralPath (Join-Path $WorkspaceRoot $kpiAArchiveRel)) {
+        $shadowArgs += @("--kpi-a-eval-json", $kpiAArchiveRel)
+      }
+      py @shadowArgs
+      if ($LASTEXITCODE -ne 0) { throw "run_btrack_kpi_b_shadow_eval promote exit $LASTEXITCODE" }
+    }
+    else {
+    if ($IncludeDawnScore -and -not $SkipPerDateDirections -and -not [string]::IsNullOrWhiteSpace($btcResolved)) {
+      Write-Host "==> build_btrack_ensemble_per_date_directions_v1.py (--recent-trading-days 30, target=btc)"
+      py scripts/build_btrack_ensemble_per_date_directions_v1.py --recent-trading-days 30 --target-instrument btc
+      if ($LASTEXITCODE -ne 0) { throw "build_btrack_ensemble_per_date_directions_v1 exit $LASTEXITCODE" }
+    }
     $buildArgs = @("scripts/build_btrack_prophecy_score_from_ohlcv.py")
     if ($IncludeDawnScore) {
-      Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (--recent-trading-days 30, --force-dual-leg-panel when BTC CSV) + eval_prophecy_hit_rate_v1 price"
+      Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (--recent-trading-days 30, per-date dirs when enabled, dual-leg panel) + eval"
       $buildArgs += @("--recent-trading-days", "30")
     } else {
       Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (default 1d, --force-dual-leg-panel when BTC CSV) + eval_prophecy_hit_rate_v1 price"
@@ -404,6 +454,14 @@ if (-not $SkipHitRate) {
     if (-not [string]::IsNullOrWhiteSpace($btcResolved)) {
       $buildArgs += @("--btc-csv", $btcResolved)
       $buildArgs += "--force-dual-leg-panel"
+      if ($IncludeDawnScore -and -not $SkipPerDateDirections) {
+        $perDateDirsPath = Join-Path $WorkspaceRoot $perDateDirsRel
+        if (Test-Path -LiteralPath $perDateDirsPath) {
+          $buildArgs += @("--per-date-direction-json", $perDateDirsRel)
+        } else {
+          Write-Host "WARN: per-date directions missing; score uses frozen hypothesis only: $perDateDirsPath" -ForegroundColor Yellow
+        }
+      }
     } else {
       Write-Host "WARN: BTC CSV missing; score will be KOSPI-only. Set -BtcCsv, MKM_BTC_DAILY_CSV, or add $btcDefault" -ForegroundColor Yellow
     }
@@ -411,6 +469,58 @@ if (-not $SkipHitRate) {
     if ($LASTEXITCODE -ne 0) { throw "build_btrack_prophecy_score exit $LASTEXITCODE" }
     py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json $scoreJsonRel
     if ($LASTEXITCODE -ne 0) { throw "eval_prophecy_hit_rate price exit $LASTEXITCODE" }
+    if ($IncludePhase3LeadingSensors) {
+      $scorePathAbs = Join-Path $WorkspaceRoot $scoreJsonRel
+      $strictPhase3Leading = $StrictPhase3LeadingSensors
+      if (-not $strictPhase3Leading) {
+        $p3StrictEnv = [string]$env:MKM_BTRACK_PHASE3_LEADING_SENSORS_STRICT
+        $strictPhase3Leading = $p3StrictEnv.Trim().ToLowerInvariant() -in @("1", "true", "yes", "on")
+      }
+      if (-not (Test-Path -LiteralPath $scorePathAbs)) {
+        $msg = "IncludePhase3LeadingSensors: score file missing: $scorePathAbs"
+        if ($strictPhase3Leading) { throw $msg }
+        Write-Host "WARN: $msg" -ForegroundColor Yellow
+      } else {
+        if (-not $SkipPhase3NetworkFetch) {
+          Write-Host "==> run_btrack_phase3_leading_sensors_chain_v1.py (--skip-seed --fetch-binance; skip join/sidecar prefetch)"
+          $phase3ChainArgs = @(
+            "scripts/run_btrack_phase3_leading_sensors_chain_v1.py",
+            "--skip-seed",
+            "--fetch-binance",
+            "--skip-auto-optimal",
+            "--skip-join",
+            "--skip-sidecar-refresh"
+          )
+          py @phase3ChainArgs
+          if ($LASTEXITCODE -ne 0) {
+            if ($strictPhase3Leading) { throw "run_btrack_phase3_leading_sensors_chain exit $LASTEXITCODE" }
+            Write-Host "WARN: Phase3 leading-sensors chain exit $LASTEXITCODE; continuing to join." -ForegroundColor Yellow
+          }
+        } else {
+          Write-Host "==> Phase3 network fetch skipped (-SkipPhase3NetworkFetch); join uses existing sensor stubs"
+        }
+        Write-Host "==> join_btrack_phase3_leading_sensors_score_v1.py (--instrument btc; research_only)"
+        py scripts/join_btrack_phase3_leading_sensors_score_v1.py --score-json $scoreJsonRel --instrument btc
+        if ($LASTEXITCODE -ne 0) {
+          if ($strictPhase3Leading) { throw "join_btrack_phase3_leading_sensors_score exit $LASTEXITCODE" }
+          Write-Host "WARN: join_btrack_phase3_leading_sensors_score exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+        }
+        Write-Host "==> build_btrack_prophecy_score_insight_sidecar_stub_v1.py (research_only)"
+        py scripts/build_btrack_prophecy_score_insight_sidecar_stub_v1.py
+        if ($LASTEXITCODE -ne 0) {
+          if ($strictPhase3Leading) { throw "build_btrack_prophecy_score_insight_sidecar_stub exit $LASTEXITCODE" }
+          Write-Host "WARN: build_btrack_prophecy_score_insight_sidecar_stub exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+        }
+      }
+    }
+    if (-not $SkipKpiBShadowEval -and -not [string]::IsNullOrWhiteSpace($btcResolved)) {
+      Write-Host "==> run_btrack_kpi_b_shadow_eval_v1.py (KPI-B shadow; prod headline unchanged)" -ForegroundColor Cyan
+      py scripts/run_btrack_kpi_b_shadow_eval_v1.py --score-json $scoreJsonRel --btc-csv $btcResolved
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: KPI-B shadow eval exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+      }
+    }
+    }
   } else {
     Write-Host "Skip OHLCV-backed hit rate (missing KOSPI CSV): $kospiCsv" -ForegroundColor Yellow
     Write-Host "==> eval_prophecy_hit_rate_v1.py (proxy; optional registry via env BTRACK_HIT_RATE_REGISTRY_GLOB)"
@@ -460,6 +570,19 @@ if (-not $SkipFastPromotionGate) {
     }
     Write-Host "WARN: fast promotion gate failed; continue (degraded)." -ForegroundColor Yellow
   }
+}
+
+$ensembleV2On = [bool]$IncludeEnsembleV2RecommendedEval
+if (-not $ensembleV2On) {
+  $ensEnv = [string]$env:MKM_BTRACK_ENSEMBLE_V2_DAILY
+  $ensembleV2On = ($ensEnv -eq "1" -or $ensEnv -ieq "true" -or $ensEnv -ieq "yes" -or $ensEnv -ieq "on")
+}
+if ($ensembleV2On) {
+  Write-Host "==> run_prophecy_btrack_recommended_eval_chain_v1.py (--ensemble-v2-lane; B-track risk SSOT, not Aroon orders)" -ForegroundColor Cyan
+  py scripts/run_prophecy_btrack_recommended_eval_chain_v1.py --ensemble-v2-lane --neutral-bps 0.8
+  if ($LASTEXITCODE -ne 0) { throw "ensemble v2 recommended eval exit $LASTEXITCODE" }
+  py scripts/refresh_gut_brain_btrack_promotion_status_v1.py
+  if ($LASTEXITCODE -ne 0) { throw "refresh_gut_brain_btrack_promotion_status_v1 exit $LASTEXITCODE" }
 }
 
 Write-Host "==> build_prophecy_health_status_v1.py (prophecy_health_status_latest.json)"
@@ -595,6 +718,77 @@ if ($IncludeLogosSymbolicPromotionChain) {
       --output-json $LogosSymbolicHumanReviewQueueOutJson
     if ($LASTEXITCODE -ne 0) { throw "build_logos_symbolic_human_review_queue_v1 exit $LASTEXITCODE" }
   }
+}
+
+if (-not $SkipAdvisoryBearTrapSweep) {
+  $perDateDirsPath = Join-Path $WorkspaceRoot "reports\btrack_ensemble_per_date_directions_v1_latest.json"
+  $btcDefault = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
+  if (-not (Test-Path -LiteralPath $perDateDirsPath) -and (Test-Path -LiteralPath $btcDefault)) {
+    Write-Host "==> build_btrack_ensemble_per_date_directions_v1.py (advisory prereq; 30d btc)" -ForegroundColor Cyan
+    py scripts/build_btrack_ensemble_per_date_directions_v1.py --recent-trading-days 30 --target-instrument btc
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: per-date directions build failed; skip advisory-sweep (exit $LASTEXITCODE)." -ForegroundColor Yellow
+    }
+  }
+  if (Test-Path -LiteralPath $perDateDirsPath) {
+    Write-Host "==> run_btrack_wrong_dir_holdout_v1.py advisory-sweep (primary advisory_ovn_bull; direction unchanged)" -ForegroundColor Cyan
+    py scripts/run_btrack_wrong_dir_holdout_v1.py advisory-sweep
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: advisory-sweep exit $LASTEXITCODE; continuing chain (non-gating)." -ForegroundColor Yellow
+    }
+    Write-Host "==> build_btrack_holdout_gate_candidate_manifest_v1.py (holdout_ovn_signed_bull; research_only)" -ForegroundColor Cyan
+    py scripts/build_btrack_holdout_gate_candidate_manifest_v1.py --skip-probe-refresh
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: holdout gate candidate manifest exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+    }
+    Write-Host "==> build_btrack_holdout_gate_oos_180d_eval_v1.py (holdout gate 180d OOS; research_only)" -ForegroundColor Cyan
+    py scripts/build_btrack_holdout_gate_oos_180d_eval_v1.py
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: holdout gate OOS 180d exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+    }
+    Write-Host "==> build_btrack_holdout_price_lens_cf_holdout7_v1.py (CF vs gate; research_only)" -ForegroundColor Cyan
+    py scripts/build_btrack_holdout_price_lens_cf_holdout7_v1.py
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: holdout price-lens CF summary exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+    }
+    Write-Host "==> build_btrack_holdout7_gate_research_pack_v1.py (holdout7 gate pack refresh)" -ForegroundColor Cyan
+    py scripts/build_btrack_holdout7_gate_research_pack_v1.py
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: holdout7 gate research pack exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+    }
+    Write-Host "==> build_btrack_train_wrong_pattern_summary_v1.py (180d train_wrong vs holdout7)" -ForegroundColor Cyan
+    py scripts/build_btrack_train_wrong_pattern_summary_v1.py
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: train_wrong pattern summary exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+    }
+    if ((Test-Path -LiteralPath (Join-Path $WorkspaceRoot "reports\btrack_wrong_dir_holdout_features_180d_v1_latest.json")) -and
+        (Test-Path -LiteralPath (Join-Path $WorkspaceRoot "reports\btrack_ensemble_per_date_directions_180d_v1_latest.json"))) {
+      Write-Host "==> run_btrack_wrong_dir_holdout_v1.py eval-grid-180 (aux sweep incl. holdout_ovn_signed_bull)" -ForegroundColor Cyan
+      py scripts/run_btrack_wrong_dir_holdout_v1.py eval-grid-180
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: eval-grid-180 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+      }
+    }
+    Write-Host "==> build_btrack_prophecy_observation_mode_status_v1.py (ops freeze snapshot)" -ForegroundColor Cyan
+    py scripts/build_btrack_prophecy_observation_mode_status_v1.py
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: observation mode status exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+    }
+  } else {
+    Write-Host "WARN: Skip advisory-sweep (missing per-date directions): $perDateDirsPath" -ForegroundColor Yellow
+  }
+} else {
+  Write-Host "Skip advisory bear-trap sweep (-SkipAdvisoryBearTrapSweep)." -ForegroundColor DarkYellow
+}
+
+if (-not $SkipModelSwapHarness) {
+  Write-Host "==> run_btrack_model_swap_harness_v1.py (30d frozen baseline; research_only)" -ForegroundColor Cyan
+  py scripts/run_btrack_model_swap_harness_v1.py
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: model swap harness exit $LASTEXITCODE; continuing chain (non-gating)." -ForegroundColor Yellow
+  }
+} else {
+  Write-Host "Skip model swap harness (-SkipModelSwapHarness)." -ForegroundColor DarkYellow
 }
 
 if (-not $SkipPanel24hAlertsCheck) {

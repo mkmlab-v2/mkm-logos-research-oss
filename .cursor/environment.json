@@ -1,0 +1,8 @@
+{
+  "name": "mkm-monorepo-fact-lock-v1",
+  "build": {
+    "dockerfile": "environment/Dockerfile",
+    "context": ".."
+  },
+  "install": "bash .cursor/environment/install.sh"
+}

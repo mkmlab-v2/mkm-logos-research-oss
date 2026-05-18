@@ -23,7 +23,6 @@
     "include_gematria_4d_bridge": true,
     "include_cee_core": true,
     "apply_gematria_4d_bridge_policy": false,
-    "bridge_policy_domain_allowlist": null,
     "bridge_score_weights": null,
     "use_contextual_generator_v2": false,
     "use_contextual_generator_v3": false,
@@ -43,9 +42,9 @@
       "schema": "semantic_pointer_v1",
       "enabled": false
     },
-    "global_token_saving_rate": 0.47116736990154706,
-    "avg_reconstruction_fidelity_jaccard": 0.885430029636686,
-    "min_reconstruction_fidelity_jaccard": 0.6666666666666666,
+    "global_token_saving_rate": 0.4683544303797469,
+    "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+    "min_reconstruction_fidelity_jaccard": 0.7142857142857143,
     "low_fidelity_case_count_lt_0_5": 0,
     "avg_sensitive_integrity": 1.0,
     "min_sensitive_integrity": 1.0,
@@ -1914,14 +1913,14 @@
       {
         "id": "cmp2_015",
         "raw_tokens": 16,
-        "compressed_tokens": 7,
-        "token_saving_rate": 0.5625,
-        "compression_ratio": 0.4375,
-        "reconstruction_fidelity_jaccard": 0.6666666666666666,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.9333333333333333,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "사상의학 해석에서는 같은 두통이라도 체질과 시간대가 축이",
-        "reconstructed_text_effective": "사상의학 해석에서는 같은 두통이라도 체질과 시간대가 다르면 원인 축이 달라지므로",
+        "compressed_text_effective": "사상의학 해석에서는 같은 두통이라도 체질과 시간대가 축이 일반화하면",
+        "reconstructed_text_effective": "사상의학 해석에서는 같은 두통이라도 체질과 시간대가 다르면 원인 축이 달라지므로 단일 처방을 일반화하면 안",
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm",
@@ -1940,11 +1939,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 38,
-        "o200k_compressed_tokens": 19,
-        "o200k_token_saving_rate": 0.5,
+        "o200k_compressed_tokens": 22,
+        "o200k_token_saving_rate": 0.42105263157894735,
         "o200k_tokens_before": 38,
-        "o200k_tokens_after": 19,
-        "o200k_saving_rate": 0.5,
+        "o200k_tokens_after": 22,
+        "o200k_saving_rate": 0.42105263157894735,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -2858,14 +2857,14 @@
       {
         "id": "cmp2_023",
         "raw_tokens": 16,
-        "compressed_tokens": 7,
-        "token_saving_rate": 0.5625,
-        "compression_ratio": 0.4375,
-        "reconstruction_fidelity_jaccard": 0.6666666666666666,
+        "compressed_tokens": 8,
+        "token_saving_rate": 0.5,
+        "compression_ratio": 0.5,
+        "reconstruction_fidelity_jaccard": 0.9333333333333333,
         "sensitive_integrity": 1.0,
         "sensitive_leak": false,
-        "compressed_text_effective": "사상의학 문맥에서 숫자와 단위는 축을 바꾸는 요소이므로",
-        "reconstructed_text_effective": "사상의학 문맥에서 숫자와 단위는 의미 축을 바꾸는 핵심 요소이므로 압축",
+        "compressed_text_effective": "사상의학 문맥에서 숫자와 단위는 축을 바꾸는 요소이므로 손실되면",
+        "reconstructed_text_effective": "사상의학 문맥에서 숫자와 단위는 의미 축을 바꾸는 핵심 요소이므로 압축 과정에서 절대 손실되면 안",
         "route": {
           "shard_id": "zone_a_scm",
           "domain": "scm",
@@ -2884,11 +2883,11 @@
           "error_message": "16-state runtime adapter disabled (Phase A noop)."
         },
         "o200k_raw_tokens": 36,
-        "o200k_compressed_tokens": 20,
-        "o200k_token_saving_rate": 0.4444444444444444,
+        "o200k_compressed_tokens": 24,
+        "o200k_token_saving_rate": 0.33333333333333337,
         "o200k_tokens_before": 36,
-        "o200k_tokens_after": 20,
-        "o200k_saving_rate": 0.4444444444444444,
+        "o200k_tokens_after": 24,
+        "o200k_saving_rate": 0.33333333333333337,
         "gematria_metadata": {
           "raw_combined_sum": 0,
           "compressed_combined_sum": 0,
@@ -4985,13 +4984,13 @@
       "available": true,
       "reason_unavailable": null,
       "tokens_raw_total": 1343,
-      "tokens_compressed_total": 759,
-      "global_token_saving_rate": 0.4348473566641846
+      "tokens_compressed_total": 766,
+      "global_token_saving_rate": 0.4296351451973194
     },
-    "o200k_token_saving_rate": 0.4348473566641846,
-    "o200k_saving_rate": 0.4348473566641846,
+    "o200k_token_saving_rate": 0.4296351451973194,
+    "o200k_saving_rate": 0.4296351451973194,
     "o200k_tokens_before": 1343,
-    "o200k_tokens_after": 759
+    "o200k_tokens_after": 766
   },
   "fusion_metrics": {
     "case_count": 10,
@@ -5065,8 +5064,8 @@
     "compression_ok": true,
     "fusion_ok": true,
     "ultra_saving_50_ok": false,
-    "ultra_saving_policy_ok": true,
-    "ultra_saving_policy_min": 0.47,
+    "ultra_saving_policy_ok": false,
+    "ultra_saving_policy_min": 0.49,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
     "sensitive_integrity_ok": true,
@@ -5099,7 +5098,6 @@
     "sensitive_max_saving_rate": 0.3,
     "hangul_max_saving_rate": 0.6,
     "apply_gematria_4d_bridge_policy": false,
-    "apply_gematria_4d_bridge_policy_env": false,
-    "bridge_policy_domain_allowlist": null
+    "apply_gematria_4d_bridge_policy_env": false
   }
 }

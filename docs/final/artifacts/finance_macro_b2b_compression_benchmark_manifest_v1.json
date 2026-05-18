@@ -1,0 +1,80 @@
+{
+  "schema": "finance_macro_b2b_compression_benchmark_manifest_v1",
+  "created_at_utc": "2026-05-18T00:00:00Z",
+  "status": "draft_initialized",
+  "goal": "Track C finance/macro B2B markdown corpus for compression eval input",
+  "rails": {
+    "trading_rail_unchanged": true,
+    "track_c_b2b_research_only": true,
+    "auto_promotion_to_trading_forbidden": true
+  },
+  "corpus": {
+    "format": "markdown",
+    "paragraph_rules": {
+      "split_on": "blank_lines",
+      "min_chars": 80,
+      "max_cases_default": 200
+    },
+    "domain_tag": "finance_macro_b2b",
+    "datasets": [
+      {
+        "domain": "finance_macro_b2b",
+        "dataset_id": "track_c_b2b_macro_alert_offer_onepager",
+        "source_path": "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md",
+        "license": "internal_track_c",
+        "format": "markdown"
+      },
+      {
+        "domain": "finance_macro_b2b",
+        "dataset_id": "track_c_b2b_macro_alert_offer_finance",
+        "source_path": "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_finance_latest.md",
+        "license": "internal_track_c",
+        "format": "markdown"
+      },
+      {
+        "domain": "finance_macro_b2b",
+        "dataset_id": "track_c_b2b_macro_alert_offer_manufacturing",
+        "source_path": "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_manufacturing_latest.md",
+        "license": "internal_track_c",
+        "format": "markdown"
+      },
+      {
+        "domain": "finance_macro_b2b",
+        "dataset_id": "track_c_b2b_macro_alert_offer_public",
+        "source_path": "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_public_latest.md",
+        "license": "internal_track_c",
+        "format": "markdown"
+      },
+      {
+        "domain": "finance_macro_b2b",
+        "dataset_id": "track_c_b2b_macro_alert_offer_en",
+        "source_path": "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_en_latest.md",
+        "license": "internal_track_c",
+        "format": "markdown"
+      },
+      {
+        "domain": "finance_macro_b2b",
+        "dataset_id": "track_c_b2b_meeting_pack_index",
+        "source_path": "docs/final/artifacts/track_c_b2b_meeting_pack_index_v1_latest.md",
+        "license": "internal_track_c",
+        "format": "markdown"
+      },
+      {
+        "domain": "finance_macro_b2b",
+        "dataset_id": "track_c_combined_b2b_offer_onepager",
+        "source_path": "docs/final/artifacts/track_c_combined_b2b_offer_onepager_v1_latest.md",
+        "license": "internal_track_c",
+        "format": "markdown"
+      }
+    ],
+    "builtin_default_glob": "docs/final/artifacts/track_c_b2b_macro*.md"
+  },
+  "evidence_bundle": {
+    "eval_input_json": "docs/final/artifacts/finance_macro_b2b_compression_eval_input_v1.json",
+    "build_script": "scripts/build_finance_macro_b2b_compression_eval_input_v1.py"
+  },
+  "notes": [
+    "Markdown sources are converted to multilens_performance_eval_input_v1 via paragraph extraction.",
+    "Do not use for live trading or Track A auto-promotion without human review."
+  ]
+}

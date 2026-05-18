@@ -15,6 +15,8 @@
   if you want the legacy single-task behavior (panel inside the same run).
   Optional second daily run: Register-ProphecyPanel24hAlertsTask.ps1 (e.g. 09:05) for panel snapshot / alerts after the chain.
   -SkipPanel24hAlertsCheck may still be passed for documentation parity with the chain script; it is redundant with the new default.
+  Phase3 leading sensors (research_only): pass -IncludePhase3LeadingSensors to forward the chain switch; add
+  -SkipPhase3NetworkFetch to skip Binance prefetch (join uses existing sensor stubs only).
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35"
@@ -36,6 +38,10 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -IncludePanel24hAlertsCheck
 
 .EXAMPLE
+  Phase3 leading-sensors join after hit-rate (no Binance prefetch):
+  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -IncludePhase3LeadingSensors -SkipPhase3NetworkFetch
+
+.EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -Remove
 #>
 param(
@@ -51,6 +57,9 @@ param(
     # Legacy / explicit: default registration already skips the panel in-chain; do not combine with -IncludePanel24hAlertsCheck.
     [switch]$SkipPanel24hAlertsCheck,
     [switch]$SkipProphecyContemplationGemini,
+    # Forward to run_btrack_daily_hypothesis_chain.ps1 (Phase3 leading-sensors hook; research_only).
+    [switch]$IncludePhase3LeadingSensors,
+    [switch]$SkipPhase3NetworkFetch,
     [switch]$RunWhenLoggedOff,
     [switch]$Remove
 )
@@ -81,6 +90,12 @@ if (-not $IncludePanel24hAlertsCheck) {
 }
 if ($SkipProphecyContemplationGemini) {
     $argLine += " -SkipProphecyContemplationGemini"
+}
+if ($IncludePhase3LeadingSensors) {
+    $argLine += " -IncludePhase3LeadingSensors"
+}
+if ($SkipPhase3NetworkFetch) {
+    $argLine += " -SkipPhase3NetworkFetch"
 }
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argLine -WorkingDirectory $WorkspaceRoot
 $trigger = New-ScheduledTaskTrigger -Daily -At $At

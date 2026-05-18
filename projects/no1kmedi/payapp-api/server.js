@@ -14,7 +14,7 @@ if (existsSync(packageEnv)) dotenv.config({ path: packageEnv });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const ADMIN_TOKEN = process.env.NO1KMEDI_ADMIN_TOKEN || "NO1KMEDI_2026_xF7pQ2mL9vR4kT8sW1dH6nC3bY5uJ0aZ";
+const ADMIN_TOKEN = String(process.env.NO1KMEDI_ADMIN_TOKEN || "").trim();
 const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL || "";
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY || "";
 const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || "openai/gpt-4.1-mini";
@@ -1502,7 +1502,7 @@ app.post("/api/member/verification/review", async (req, res) => {
     if (!verification_id || !decision) {
       return res.status(400).json({ success: false, error: "verification_id and decision are required." });
     }
-    if (admin_token !== ADMIN_TOKEN) {
+    if (!ADMIN_TOKEN || admin_token !== ADMIN_TOKEN) {
       return res.status(401).json({ success: false, error: "unauthorized" });
     }
     if (!["approved", "rejected"].includes(decision)) {

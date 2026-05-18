@@ -1,0 +1,22 @@
+{
+  "schema": "compression_scm_shard_pin_v1",
+  "ts_utc": "2026-05-18T18:26:04.876617Z",
+  "status": "production_cmp2_min_pair",
+  "recommendation": "promoted_with_saving_floor_waiver",
+  "production_shard": "codebook/shards/zone_a_scm.json",
+  "waiver_artifact": "docs/final/artifacts/compression_cmp2_min_pair_promotion_waiver_v1.json",
+  "cmp2_sweep_artifact": "docs/final/artifacts/compression_cmp2_local_mustkeep_sweep_20260518_v1.json",
+  "active_kpi": {
+    "global_token_saving_rate": 0.4683544303797469,
+    "avg_reconstruction_fidelity_jaccard": 0.8987633629700194,
+    "ultra_saving_policy_ok": false,
+    "cmp2_by_id": {
+      "cmp2_015": 0.9333333333333333,
+      "cmp2_023": 0.9333333333333333
+    },
+    "ultra_saving_policy_min": 0.47,
+    "ultra_saving_policy_waived": true,
+    "cmp2_015_jaccard": 0.9333333333333333,
+    "cmp2_023_jaccard": 0.9333333333333333
+  }
+}

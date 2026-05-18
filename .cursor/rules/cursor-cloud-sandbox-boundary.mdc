@@ -1,0 +1,51 @@
+---
+title: Cursor Cloud Agent · Sandbox · Dev Environment (MKM boundary v1)
+alwaysApply: true
+priority: 3
+---
+
+# Cursor Cloud / Sandbox / Agent dev environment — MKM boundary (v1)
+
+**Purpose:** Align Cursor **3.3–3.4** (Cloud Agent dev environments, multi-repo workspaces, Dockerfile IaC, PR/plan UX) with MKM **Fact-Lock**, **local/VPS 본선**, and **A/B track 격벽**. Product UI settings are configured in **Cursor Dashboard**; **operational law** for agents stays in this repo.
+
+**SSOT pointers:** `AGENTS.md` 「Cursor · 규칙 스택」· `projects/bitcoin-trading/ops/v2/CURSOR_CHANGELOG_INTEGRATION_PLAN_2026-03-24.md` §3.3–3.4 · `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`.
+
+## Role map (do not conflate)
+
+| Surface | MKM role | Secrets / writes |
+| --- | --- | --- |
+| **Local `C:\workspace` Cursor** | 편집·pytest·Fact-Lock 번들·헌법 경로 SSOT | `.env` 로컬만; Git push는 `internal`/`gitea` 기본 |
+| **Cloud Agent / Sandbox** | 검증·병렬 가속·PR 초안·연구 B-track | **실매매·VPS 본선·프로덕션 키 금지**; 환경별 시크릿은 Cursor가 격리(제품) — 레포에 실키 커밋 금지 |
+| **SSH VPS (`vps-mkmlife` 등)** | `git pull`·PM2·배포본 런타임 | 호스트 `.env`; **로컬에서 편집 후 push**만 |
+
+## Cursor 3.4 — Agent dev environment (product + MKM)
+
+- **Multi-repo / multi-root:** Agents Window에서 작업에 필요한 리포를 **한 환경**에 묶을 수 있음. MKM 모노레포 **`C:\workspace`** 가 주 루트; `projects/bitcoin-trading`·`projects/no1kmedi` 등은 **경로 SSOT**(`AGENTS.md` 도메인 핸드오프)를 따른다. 클라우드 환경에 **본선 `.env`·DPAPI·실거래 키**를 넣지 않는다.
+- **Dockerfile / environment IaC:** 팀이 Cursor Dashboard 또는 레포 **`.cursor/environment/`**(선택)로 정의. **빌드 시크릿**은 빌드 단계만 — 런타임 Agent env로 전달되지 않음(제품). MKM은 **의존성 설치·pytest·스크립트** 위주; private registry가 필요하면 **대시보드 시크릿**만.
+- **Fallback image:** 환경 빌드 실패 시 기본 이미지로 전환될 수 있음 — Agent는 **표시된 환경 버전**을 확인하고, Fact-Lock·P0 경로가 없으면 **“환경 미정렬”**로 보고한다.
+- **Governance (제품):** 환경 버전·롤백·감사 로그·egress·환경별 시크릿 — **Cursor 팀 설정**. MKM 레포는 **코드·규칙·스크립트 exit code**만 SSOT.
+
+## Cursor 3.3 — Workflow (product + MKM)
+
+- **PR review / split / parallel plan:** IDE·Cloud UX. MKM **Git hygiene**(`1작업=1브랜치=1PR`, `push-internal.ps1`)와 병행. **실매매·Track A 승격**은 PR 머지만으로 자동 확정하지 않음.
+- **Context usage breakdown:** 규칙·스킬·MCP 과다 시 **`.cursor/rules`·`alwaysApply` 축소** 검토 — NotebookLM MCP는 `notebooklm-mcp-session-bridge.mdc` 준수.
+- **Teams @Cursor / Bugbot inference:** **대시보드 통합**(선택). PR 리뷰 품질 ≠ `verify_p0_constitution_gate_paths.ps1` 통과.
+
+## ALWAYS
+
+- Cloud/Sandbox 작업 전: **로컬 vs 클라우드 vs VPS** 중 어디인지 한 줄로 명시.
+- 구현·통과 판정: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·호출 가능 `.py`·**exit code**·아티팩트만.
+- 병렬 Cloud Agent는 **읽기·테스트·PR 초안**에 쓰고, **본선 주문·`.env` 동기화·VPS PM2**는 로컬/승인 게이트.
+- Changelog·제품 기능 맵: `projects/bitcoin-trading/ops/v2/CURSOR_CHANGELOG_INTEGRATION_PLAN_2026-03-24.md` §3.3–3.4.
+
+## NEVER
+
+- Cloud Agent/Sandbox에 **실거래 API 키·DPAPI 복호화·VPS root 비밀** 주입·채팅 회수.
+- Sandbox pytest 통과만으로 **예언 품질·Track A·live trading GO** 단정.
+- Cloud에서 **`git push` GitHub 기본**·`Push-GitHub-Explicit.ps1` 없이 공개 push.
+- B-track·`[HYPO]` 산출을 Cloud PR 머지로 **Track A·실매매에 자동 합선**.
+
+## OPTIONAL
+
+- 로컬 Fact-Lock 번들: `scripts/run_fact_lock_bundle.ps1` · 페르소나 `Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle`.
+- Cloud 환경 IaC (커밋됨): `.cursor/environment.json` · `bash .cursor/environment/install.sh` · `python3 scripts/verify_p0_constitution_gate_paths_cloud_v1.py`.
