@@ -1,0 +1,59 @@
+{
+  "schema": "mkm_inter_agent_wire_profile_v0",
+  "version": "0.1.0",
+  "status": "draft_contract",
+  "research_only": false,
+  "boundary_ack": "Wire profile describes intended agent-to-agent envelope. Production SLA, lingua franca completion, and lossless human decode are not claimed.",
+  "layers": {
+    "lexicon": {
+      "symbol_key": "atom_id",
+      "export_script": "scripts/export_master_codebook_v1.py",
+      "bridge": "scripts/core/master_codebook_lexicon_v1_bridge.py",
+      "lexicon_row_count_ssot": 41775,
+      "lexicon_path_pattern": "reports/constitution/btrack_pilot/master_codebook_lexicon_v1_{row_count}_rows_latest.json"
+    },
+    "routing": {
+      "domain_router": "scripts/core/domain_router.py",
+      "shard_glob": "codebook/shards/zone_*.json"
+    },
+    "packet": {
+      "packet_format_version": "trust_packet.0.1",
+      "api_contract_version": "2.0.0-draft",
+      "openapi": "docs/final/openapi_token_compression_v2_draft.yaml",
+      "stub": "scripts/compression_token_api_v2_stub.py",
+      "required_fields": [
+        "packet_format_version",
+        "api_contract_version",
+        "loss_profile",
+        "compressed_text",
+        "residual_meta",
+        "content_fingerprint"
+      ],
+      "residual_meta_keys": {
+        "stub_block": "mk_stub_v2",
+        "stub_fields": [
+          "reconstructed_text",
+          "global_token_saving_rate",
+          "reconstruction_fidelity_jaccard",
+          "semantic_pointer"
+        ]
+      }
+    },
+    "side_channel": {
+      "research_only": true,
+      "wire_codec": "scripts/l1_side_channel_wire_codec.py",
+      "http_route": "POST /v1/research/l1_side_channel/wire",
+      "openapi_v1": "docs/final/openapi_token_compression_stub_v1.yaml"
+    }
+  },
+  "operations": {
+    "compress": "POST /v2/compress",
+    "expand_packet_only": "POST /v2/expand",
+    "expand_input_rule": "compression_packet only; no original_text field"
+  },
+  "human_decode": {
+    "research_only": true,
+    "spike_summary": "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json",
+    "public_copy_rule": "Never claim 100% lossless decode; cite measured exact_restore_rate from spike JSON"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "mkm_inter_agent_encoding_status_v1",
+  "generated_at_utc": "2026-05-18T19:59:56Z",
+  "rq_019": "OPEN",
+  "rq_019_milestones_core_ready": true,
+  "research_only_components": [
+    "l1_side_channel_wire",
+    "l1_inverse_decoder_spike"
+  ],
+  "milestones": {
+    "m1_v2_phase2_packet_only_expand": {
+      "status": "pass",
+      "pytest": {
+        "exit_code": 0,
+        "passed": true,
+        "test_file": "tests/test_compression_token_api_v2_stub.py",
+        "stdout_tail": ".................                                                        [100%]\n17 passed in 1.55s\n",
+        "stderr_tail": ""
+      },
+      "inprocess_roundtrip": {
+        "ok": true,
+        "expand_equals_stub_reconstructed": true,
+        "jaccard_original_vs_expanded": 0.6363636363636364,
+        "original_text_on_expand_body": false
+      },
+      "evidence_paths": [
+        "scripts/compression_token_api_v2_stub.py",
+        "docs/final/openapi_token_compression_v2_draft.yaml",
+        "tests/test_compression_token_api_v2_stub.py"
+      ]
+    },
+    "m2_wire_profile_v0": {
+      "status": "pass",
+      "artifact": "docs/final/artifacts/mkm_inter_agent_wire_profile_v0.json"
+    },
+    "m3_human_decoder_public_copy": {
+      "status": "documented",
+      "research_only": true,
+      "avg_exact_restore_rate": 0.5787037037037037,
+      "spike_path": "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json",
+      "public_copy_draft": {
+        "ko": "역복원 게이트(연구 스파이크) 기준 exact 복원률은 약 57.9%이며, 무손실 통역·100% 복원을 주장하지 않습니다.",
+        "en": "Measured exact-restore rate from the L1 inverse-decoder research spike is ~57.87%; we do not claim lossless human translation."
+      },
+      "pass": true
+    }
+  },
+  "track_a_compression_snapshot": {
+    "global_token_saving_rate": 0.4683544303797469,
+    "avg_jaccard": null,
+    "apply_gematria_4d_bridge_policy": null
+  },
+  "pointers": {
+    "sota_map": "docs/final/artifacts/mkm_inter_agent_encoding_sota_map_v1.md",
+    "trust_packet_onepager": "docs/final/artifacts/lg_compression_trust_packet_onepager_v1.md",
+    "first_message_worked_example": "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md"
+  },
+  "boundary_ack": "Not a finished MKM Language / Lingua Franca standard. No production SLA. No beats-SOTA-papers claim."
+}

@@ -30,6 +30,18 @@
 | RQ-016 | OPEN | **압축 Meta-Policy** — 도메인 유입 시 lexicon·shard 자동 정렬(수동 핀포인트 축소) | 2026-05-16 sweep: **scm/health selective bridge** → scm Jaccard **1.0** 가능하나 **global saving < 0.47**; soft-term 핀도 동일 tradeoff → **baseline 유지** | `compression_domain_bridge_sweep_v1_latest.json` · `compression_scm_shard_pin_experimental_v1.json` · `run_compression_domain_bridge_sweep_v1.py` | Per-domain **cap tuning** 또는 literal 프로필 분기; Track A opt-in은 floor 통과 실험 후 |
 | RQ-017 | OPEN | **토큰 절감 ↔ 보드 실측 지연(ms)** 상관 — edge/NPU 하드웨어에서 입증 | **2026-05-16:** 로컬 페이로드 스윕 + **VPS triplet OK** (p95 median **~710ms**); **인과 주장 금지** | `compression_board_ms_vps_bench_triplet_v1_latest.json` · `Run-CompressionBoardMsVpsBenchTriplet_v1.ps1` · `compression_board_ms_correlation_report_v1_latest.json` | edge/NPU·페이로드–절감 A/B; LG **C-S3 2026-05-20**; OEM ms **휴먼** |
 | RQ-018 | OPEN | **Shadow Auditor** — 야간 `test_ultra_compression_artifacts` + loss-pattern → research 큐 자동 적재 | **2026-05-16 구현:** `run_compression_shadow_auditor_v1.py` · 일일 `Register-CompressionShadowAuditorDailyTask.ps1` · 주간 `-IncludeShadowAuditor` | `scripts/run_compression_shadow_auditor_v1.py` · `reports/constitution/btrack_pilot/compression_shadow_auditor_latest.json` · `compression_research_metaphor_debug_queue.jsonl` · `tests/test_run_compression_shadow_auditor_v1.py` | 웹훅·Track A 자동 승격 연결 여부; board ms(RQ-017) 상관 리포트 병합 |
+| RQ-019 | OPEN | **MKM Inter-Agent Encoding** (「MKM Language」/ Lingua Franca `[VISION]`) — SOTA 4축(시맨틱·신경압축·슈퍼토큰·프롬프트 경제)과 **레포 층** 정렬·승격 조건 | **2026-05-19:** `rq_019_milestones_core_ready: true` (M1 v2 packet-only expand + pytest 17 · M2 wire v0 · M3 L1 ~57.9% 대외 초안) · Lingua Franca·상용 SLA·4D 와이어 **미단정** | `docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json` · `mkm_inter_agent_encoding_sota_map_v1.md` · `mkm_inter_agent_wire_profile_v0.json` · `build_mkm_inter_agent_encoding_status_v1.py` | **CLOSED** = 법무 Sign-off + Whitepaper/IR 승격; RQ는 **OPEN** 유지 |
+
+### RQ-019 — `CLOSED` 이관 준비 (체크리스트 · **M1–M3·법무 전까지 `OPEN` 유지**)
+
+아래 **전부** 충족·지휘관 합의 후: (a) RQ-019 **`CLOSED`**, (b) 대외 한 줄을 `TRACK_C` / `PUBLIC_FACING` / P0 중 **합의된 절**로만 이관. **부분 충족으로 `CLOSED` 금지.**
+
+| # | 조건 | 근거·산출 |
+|---|------|-----------|
+| 1 | **M1** v2 Trust Packet **Phase 2** — expand = packet only, 재조립 라운드트립 | `openapi_token_compression_v2_draft.yaml` · `compression_token_api_v2_stub.py` · pytest |
+| 2 | **M2** Inter-agent **wire profile v0** + `research_only` 아닌 통합 active 리포트 1종 | `CONSTITUTION` 표 행 · `*_integrated_active_report_latest.json` (TBD) |
+| 3 | **M3** Human decoder **게이트·한계** 대외 허용 문장 확정 | `l1_inverse_decoder_spike_test_summary_latest.json` · `PUBLIC_FACING` |
+| 4 | 대외 카피 **법무** — Lingua Franca 완성·토큰 0·100% 복원·4D 운영 와이어·학계 SOTA 우위 **없음** | `mkm_inter_agent_encoding_sota_map_v1.md` Kill-Matrix |
 
 ### RQ-009 — `CLOSED` 이관 준비 (체크리스트 · **법무·실측 전까지 `OPEN` 유지**)
 
@@ -78,10 +90,19 @@
 
 **금지 (대외):** “ISO 26262 certified,” “0.00% collision,” neuroscience-proven safety, gut–brain metaphor as vehicle physics.
 
+### Inter-agent encoding — IR 클로징 한 줄 ([HYPO] · RQ-019)
+
+**구현·표준·프로덕션 SLA 없음.** `mkm_inter_agent_encoding_sota_map_v1.md` §5와 동일. Whitepaper·투자 본문 **승격 전** `[HYPO]` 유지.
+
+- **KO:** LLM 간 통신 비용·지연 문제에, MKM은 **측정된 렉시콘·도메인 통제 압축**과 **Trust Packet 초안**으로 에이전트 인코딩 레이어를 쌓는 중입니다. 무손실 공통어·SLA 완성은 **주장하지 않습니다**.
+- **EN:** MKM is building a measured lexicon rail and governed compression baseline under a Trust Packet draft toward inter-agent encoding—not a finished lingua franca or production SLA.
+
+**금지 (대외):** “MKM Language shipped,” “token cost zero,” “100% lossless decode,” “semantic embedding wire in production,” “beats SOTA papers.”
+
 ---
 
 ## 메타
 
 - **schema:** `research_open_questions_v1`
-- **last_reviewed_utc:** 2026-05-16 — **RQ-015** 추가(Logos Track B 학술 확장을 Phase N으로 격리·증축 경계 동결). (이전: 2026-05-15 RQ-013 자율주행 safety governor 등.)
+- **last_reviewed_utc:** 2026-05-19 — **RQ-019** 추가(MKM Inter-Agent Encoding / SOTA 4축 맵·M1–M3 승격 체크리스트). (이전: 2026-05-16 RQ-015 Logos Phase N 등.)
 - **mirror (optional):** 로컬 그래프용 `memory/obsidian_vault/UNIVERSE_MKm/INBOX_연구_토의큐.md` — Git과 자동 동기화하지 않는다.
