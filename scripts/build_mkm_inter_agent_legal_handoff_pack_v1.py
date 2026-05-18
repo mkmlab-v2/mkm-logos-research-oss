@@ -24,6 +24,10 @@ PATHS = {
     "public_facing": ROOT / "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
     "live_http": ROOT / "docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json",
     "l1_spike": ROOT / "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json",
+    "submission": ROOT / "docs/final/artifacts/mkm_inter_agent_commander_legal_submission_v1_latest.json",
+    "manifest": ROOT / "docs/final/artifacts/mkm_inter_agent_counsel_export_manifest_v1_latest.json",
+    "counsel_signoff": ROOT / "docs/final/artifacts/mkm_inter_agent_legal_counsel_signoff_v1_latest.json",
+    "closure_readiness": ROOT / "docs/final/artifacts/mkm_inter_agent_rq019_closure_readiness_latest.json",
 }
 
 
@@ -97,25 +101,64 @@ def _checklist() -> list[dict[str, Any]]:
     ]
 
 
+def _legal_status() -> tuple[str, bool]:
+    signoff = _load(PATHS["counsel_signoff"])
+    if signoff and signoff.get("counsel_signoff"):
+        return str(signoff.get("legal_review_status") or "COUNSEL_SIGNED"), True
+    submission = _load(PATHS["submission"])
+    if submission and submission.get("commander_authorized_legal_submission"):
+        return str(submission.get("legal_review_status") or "SUBMITTED_TO_COUNSEL"), False
+    return "PENDING", False
+
+
 def build() -> dict[str, Any]:
     checklist = _checklist()
+    legal_status, item7_met = _legal_status()
+    if item7_met:
+        for row in checklist:
+            if row.get("id") == 7:
+                row["met"] = True
+                row["evidence"] = PATHS["counsel_signoff"].relative_to(ROOT).as_posix()
     tech_ready = all(c["met"] for c in checklist if c["id"] != 7)
     status = _load(PATHS["status"]) or {}
+    doc_paths = [p for p in PATHS.values() if p.is_file()]
+    manifest = _load(PATHS["manifest"])
+    if manifest:
+        for f in manifest.get("files") or []:
+            rel = f.get("path") if isinstance(f, dict) else None
+            if rel and (ROOT / str(rel)).is_file():
+                doc_paths.append(ROOT / str(rel))
+    seen: set[str] = set()
+    documents_for_counsel: list[str] = []
+    for p in sorted(doc_paths, key=lambda x: x.as_posix()):
+        rel = p.relative_to(ROOT).as_posix()
+        if rel not in seen:
+            seen.add(rel)
+            documents_for_counsel.append(rel)
 
     return {
         "schema": "mkm_inter_agent_legal_handoff_pack_v1",
         "generated_at_utc": _utc_now(),
         "classification": "INTERNAL_ONLY",
         "hypothesis_tier": "B",
-        "rq_019_status": "OPEN",
-        "legal_review_status": "PENDING",
+        "rq_019_status": "OPEN" if not item7_met else "READY_FOR_COMMANDER_CLOSE",
+        "legal_review_status": legal_status,
         "commander_ops_approved": True,
+        "commander_legal_submission": (_load(PATHS["submission"]) or {}).get(
+            "commander_authorized_legal_submission"
+        ),
         "technical_closure_ready": tech_ready,
         "rq_019_milestones_core_ready": status.get("rq_019_milestones_core_ready"),
         "checklist": checklist,
-        "documents_for_counsel": [
-            p.relative_to(ROOT).as_posix() for p in PATHS.values() if p.is_file()
-        ],
+        "documents_for_counsel": documents_for_counsel,
+        "counsel_export_manifest": (
+            PATHS["manifest"].relative_to(ROOT).as_posix() if PATHS["manifest"].is_file() else None
+        ),
+        "closure_readiness_pointer": (
+            PATHS["closure_readiness"].relative_to(ROOT).as_posix()
+            if PATHS["closure_readiness"].is_file()
+            else None
+        ),
         "forbidden_external_claims": [
             "MKM Language shipped / lingua franca complete",
             "Token cost zero / 100% lossless decode",

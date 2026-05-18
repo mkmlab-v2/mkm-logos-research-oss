@@ -27,7 +27,9 @@ $tests = @(
     "tests/test_compression_v2_routing_profile_v1.py",
     "tests/test_record_mkm_inter_agent_health_commander_approval_v1.py",
     "tests/test_mkm_cmp2_011_v2_routing_ab_v1.py",
-    "tests/test_build_mkm_inter_agent_health_signoff_candidate_v1.py"
+    "tests/test_build_mkm_inter_agent_health_signoff_candidate_v1.py",
+    "tests/test_mkm_inter_agent_counsel_submission_v1.py",
+    "tests/test_capture_mkm_inter_agent_first_message_live_http_v1.py"
 )
 Write-Host "== Inter-agent encoding pytest ==" -ForegroundColor Cyan
 py -m pytest @tests -q --tb=short

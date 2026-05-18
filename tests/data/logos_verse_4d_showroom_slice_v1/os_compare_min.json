@@ -1,0 +1,20 @@
+{
+  "schema": "logos_verse_4d_os_compare_v1",
+  "interpretation_note": "[HYPO] illustrative sample only.",
+  "build": { "sample_size": 30, "max_rows": 30, "full_graph": false },
+  "corpora": [
+    {
+      "label": "canon",
+      "mean_top1_cosine": 0.99,
+      "graph": {}
+    }
+  ],
+  "deltas_vs_canon": {
+    "null_char_shuffle": {
+      "delta_mean_top1_cosine": 0.001,
+      "delta_top_medoid_centrality": -0.1,
+      "delta_gini_centrality": -0.01,
+      "delta_mean_edge_weight": 0.008
+    }
+  }
+}

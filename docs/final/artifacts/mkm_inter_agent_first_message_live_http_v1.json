@@ -1,9 +1,10 @@
 {
   "schema": "mkm_inter_agent_first_message_live_http_v1",
-  "captured_at_utc": "2026-05-18T20:09:59Z",
+  "captured_at_utc": "2026-05-18T22:18:05Z",
   "classification": "INTERNAL_ONLY",
+  "capture_mode": "in_process_testclient",
   "stub": "scripts/compression_token_api_v2_stub.py",
-  "base_url": "http://127.0.0.1:8011",
+  "base_url": "in-process://testclient",
   "sample_input": "사상의학 체질 분류 예시. MKM inter-agent message rail demo. sasang taeeum soeum myeongri logos atom_id trust_packet.",
   "curl": {
     "start_stub": "py -m uvicorn scripts.compression_token_api_v2_stub:app --host 127.0.0.1 --port 8011",
@@ -47,18 +48,43 @@
         "stub_v2": true,
         "hangul_principle": true,
         "loss_profile": "semantic_general",
+        "tracka_profile_meta": {
+          "profile": "c3_domain_gated_default",
+          "source": "default_promoted",
+          "override_env": {
+            "phrase_first": "unset",
+            "phrase_first_value": "none",
+            "force_off": "unset",
+            "force_off_value": "none"
+          }
+        },
+        "tracka_profile_deprecations": {
+          "removed_flat_keys": [
+            "tracka_profile",
+            "tracka_profile_source",
+            "tracka_profile_override_env"
+          ],
+          "replacement": "tracka_profile_meta",
+          "status": "legacy_flat_keys_removed"
+        },
+        "evaluate_report_ms": 911.187,
+        "routing_profile": "track_a_promoted",
+        "v2_case_id": "v2-trust-packet",
+        "promotion_signoff_path": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
         "jaccard_proxy": 0.8823529411764706
       }
     },
     "expand": {
       "text": "사상의학 체질 분류 예시 MKM inter agent message rail demo sasang taeeum soeum myeongri logos",
       "api_contract_version": "2.0.0-draft",
+      "decode_mode": "stub",
       "integrity_flags": {
         "stub_v2": true,
+        "decode_mode": "stub",
         "reassembly": "residual_meta",
         "source": "mk_stub_v2"
       }
     }
   },
-  "boundary_ack": "Live HTTP on local stub. Not production SLA. expand uses packet only (no original_text). Human L1 decode ~58% is separate research_only path."
+  "boundary_ack": "In-process capture for CI reproducibility; optional manual curl on port 8011 for demos."
 }

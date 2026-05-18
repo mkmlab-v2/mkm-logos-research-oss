@@ -1,0 +1,21 @@
+{
+  "schema": "logos_verse_4d_v1_contract_meta_v1",
+  "subset_id": "v1_core_subset",
+  "boundary_sentences": {
+    "ko": "정경 31,102절 SSOT 대비 verse_decoded_v2(BHS+SBLGNT)에 없는 2,361절; Track B 구절 4D·그래프·렉시콘 백투영은 28,741행(v1_core_subset) 범위.",
+    "en": "MT canon 31,102-verse SSOT minus 2,361 verses absent from verse_decoded_v2 (BHS+SBLGNT) = 28,741-verse BHS+SBLGNT Track B map (v1_core_subset)."
+  },
+  "pipelines": {
+    "phase1_canonical_corpus": {
+      "description": "corpus",
+      "runner": "scripts/build_logos_verse_4d_corpus_v1.py"
+    },
+    "phase2_graph_and_medoid": {
+      "description": "graph",
+      "runner": "scripts/build_logos_verse_4d_graph_v1.py"
+    },
+    "phase4_external_proof": {
+      "forbidden_claims": ["proven_cosmic_os"]
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "logos_verse_4d_medoids_v1",
+  "global_medoids": [
+    { "rank": 1, "verse_id": "Gen.1.1", "centrality": 10.5, "lane": "canon", "book": "Gen" },
+    { "rank": 2, "verse_id": "John.3.16", "centrality": 9.2, "lane": "canon", "book": "John" }
+  ]
+}

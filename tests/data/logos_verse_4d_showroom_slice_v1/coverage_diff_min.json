@@ -1,0 +1,18 @@
+{
+  "schema": "logos_verse_canon_coverage_diff_v1",
+  "counts": {
+    "full_canon_verse_count": 31102,
+    "verse_decoded_v2_count": 28741,
+    "intersection_count": 28741,
+    "only_in_full_count": 2361,
+    "only_in_v2_count": 0,
+    "gap_count": 2361
+  },
+  "verse_decoded_v2_editions": { "BHS": 23011, "SBLGNT": 5730 },
+  "gap_by_testament": { "NT": 2227, "OT": 134 },
+  "interpretation": {
+    "phase1_logos_verse_4d_rows_dropped": 0,
+    "gap_cause": "upstream_coverage_not_phase1_filter",
+    "accurate_framing_ko": "정경 31,102절 SSOT 대비 verse_decoded_v2(BHS+SBLGNT)에 없는 2,361절; Track B 구절 4D/그래프는 28741행 범위."
+  }
+}

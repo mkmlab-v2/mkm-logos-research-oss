@@ -1,0 +1,33 @@
+{
+  "schema": "patient_intake_fusion_draft_v1",
+  "version": "1.0.0",
+  "meta": {
+    "purpose": "Fixture + operator guide. Do not put 실명·주민번호·전화 in this file.",
+    "phi_minimal": "Use encounter.ref_token for audit; birth is required for deterministic myeongni only."
+  },
+  "encounter": {
+    "ref_token": "ENC-DEMO-2026-0516-01"
+  },
+  "profile": {
+    "birth_instant_utc": "1990-05-15T05:30:00Z",
+    "iana_tz": "Asia/Seoul",
+    "is_male": true
+  },
+  "intake": {
+    "symptoms": ["불면", "피로", "소화불량"],
+    "situation": "업무 스트레스 증가, 야근 잦음",
+    "subjective_notes": "뜨거운 음식은 피하고 있음",
+    "objective_draft": "맥·설문 스태프 메모: 긴장 소견(초안) — 진찰 확정 전",
+    "sasang_estimate": {
+      "label": "태음인",
+      "source": "설문 추정"
+    }
+  },
+  "options": {
+    "include_logos_symbolic": true,
+    "annual_start_year": 2026,
+    "annual_years": 3,
+    "monthly_months_per_year": 12,
+    "apply_slot_templates_fill_empty_only": false
+  }
+}
