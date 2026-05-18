@@ -982,6 +982,8 @@ def evaluate_report(
     candidate_pool_min_integrity_for_greedy: float = 1.0,
     emit_semantic_pointer: bool = False,
     experimental_decoder_fidelity_for_baseline: bool = False,
+    domain_min_saving_floor_overrides: dict[str, float] | None = None,
+    domain_relaxed_max_saving_overrides: dict[str, float] | None = None,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
@@ -1132,6 +1134,10 @@ def evaluate_report(
                     use_hangul_principle=effective_hangul_principle,
                 )
             min_saving_floor = 0.50 if (strategy == "A" and intensity == "extreme") else None
+            if domain_min_saving_floor_overrides:
+                dom_floor = domain_min_saving_floor_overrides.get(case_domain)
+                if dom_floor is not None:
+                    min_saving_floor = float(dom_floor)
             comp = _apply_min_saving_floor(
                 raw,
                 comp,
@@ -1156,6 +1162,10 @@ def evaluate_report(
                     cap = min(cap, 0.45) if cap is not None else 0.45
                 elif state16 in {1, 4, 7, 10, 13, 16}:
                     cap = min(cap, 0.50) if cap is not None else 0.50
+            if domain_relaxed_max_saving_overrides:
+                relaxed = domain_relaxed_max_saving_overrides.get(case_domain)
+                if relaxed is not None:
+                    cap = max(float(cap) if cap is not None else 0.0, float(relaxed))
             comp = _apply_max_saving_cap(raw, comp, max_saving_rate=cap)
             if apply_bridge_case and bridge_meta is not None:
                 comp = _bridge_aware_candidate_select(
@@ -1490,6 +1500,9 @@ def evaluate_report(
             "tiktoken_o200k_unavailable_reason": o200k_err,
             "emit_semantic_pointer": emit_semantic_pointer,
             "experimental_decoder_fidelity_for_baseline": bool(experimental_decoder_fidelity_for_baseline),
+            "enable_router_blend_candidate": enable_router_blend_candidate,
+            "domain_min_saving_floor_overrides": domain_min_saving_floor_overrides,
+            "domain_relaxed_max_saving_overrides": domain_relaxed_max_saving_overrides,
         },
         "compression_metrics": {
             "case_count": len(comp_rows),
