@@ -12,7 +12,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-16T10:46:30Z
+- **last_updated_utc:** 2026-05-18T13:29:23Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -22,26 +22,26 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-16T10:46:30Z** — 권장안 확정: LG 5/20 대기, LANE-TRACKC-B2B 주력, dev d67f152 커밋·스냅샷·internal push
-- **2026-05-16T07:05:57Z** — Track C B2B onepager+MVP 선행 갱신; LG 5/20 대기·채팅 종료
-- **2026-05-16T07:05:35Z** — LG C-S3: 5/20 심사결과 발표일(브리핑 아님)·결과 전 LG 추가발송 없음·Trust viz/nginx 200·before_after factcheck SSOT·화요 outcome_record_template 분기 후 pass=법무+PoC / hold·reject=2주 폴백 B2B
-- **2026-05-16T07:02:29Z** — Trust viz 시각적 핏줄 완료: nginx location+reload, HTML/JSON 200, 브라우저 fetch·compression 0.47 렌더 확인, public smoke 스크립트
-- **2026-05-16T07:01:27Z** — LG 5/20 대기·reject 시 Track C B2B 폴백 SSOT; RQ-017 VPS triplet+쇼룸 sync 완료
-- **2026-05-16T07:00:15Z** — Trust viz 404 해결: nginx 스니펫 location 추가+VPS reload, api.jemaai.cloud 200 확인
-- **2026-05-16T06:55:05Z** — LG Before/After 팩트체크 SSOT 생성·export_not_found 80=40케이스×2블록·7680 금지 반영
-- **2026-05-16T06:48:35Z** — 채팅 종료: S2.1-2.2 쇼룸+B2B팩+Lane E Done; LOGOS-THEME-RUN 61+ pending; external_send false
-- **2026-05-16T06:45:44Z** — Lane E done: commander meeting pack + Amsaeng + AthenaBundle + reconcile all_ok
-- **2026-05-16T06:45:10Z** — 권장안 C: VPS scp OK+showroom 200; LG 메일 초안 ko; compression 0.47 trust viz
-- **2026-05-16T06:42:26Z** — P0: Safety PLC 1p+LG followup template; showroom chain 6/6 compression_governance 0.47; C-A2 ready_internal
-- **2026-05-16T06:40:35Z** — Lane D Done: B2B meeting pack ready_for_internal_meeting; external_send false
-- **2026-05-16T06:33:28Z** — S2.2 Done: radar Logos panel + logos JSON 200 on api.jemaai.cloud
-- **2026-05-16T06:23:38Z** — S2.1 Done: api.jemaai.cloud topology radar 200; sync+nginx snippet
-- **2026-05-16T05:55:26Z** — Phase 2.1 topology radar: chain+pytest+staging HTTP200; VPS sync pending
-- **2026-05-16T05:50:06Z** — MISSION_LOG: 쇼룸 Phase2.1 토폴로지 레이더 상용화 순서 고정; Lane A(ops/SOP/reconcile) 완료
-- **2026-05-16T05:34:51Z** — 세션 마감: 명리 용신 거버넌스+commander_profile_v1 dev 푸시·CONSTITUTION§9·Ops스냅샷·지휘관·딸 사주 CENTRAL; 다음=맥락이어라 또는 commander_profile
-- **2026-05-16T05:33:05Z** — Daily check: go_no_go GO, SafeOps ok, showroom 200
-- **2026-05-16T05:29:58Z** — VPS showroom scp OK api.jemaai.cloud minimal+poll 200
-- **2026-05-16T05:27:29Z** — commander_profile_v1: schema+example+pytest; 보좌=Fact앵커+assist_coaching(HYPO)·일출력1채널·Track격벽; 경로 docs/final/artifacts/commander_profile_v1.example.json
+- **2026-05-18T13:29:23Z** — Solo parallel: holdout advisory-sweep fix, dual-leg 30/30, recommended neutral_bps 4.0, snapshot+push
+- **2026-05-18T13:13:56Z** — Cross-chat: compression+prophecy loop done; showroom parked; SSOT paths in CURRENT_OPS_SNAPSHOT
+- **2026-05-18T12:36:24Z** — Pack0-B pivot 100-step: train ~28m loss~0.21; eval parse_ok=1.0 locked_eval n=25 — check envelope_match_rate in report
+- **2026-05-18T11:52:45Z** — Pack0-B pivot: 10-step LoRA smoke OK (~18s/step); eval parse/envelope 0% on 25 rows; 100-step train local next
+- **2026-05-18T11:14:38Z** — Abstain v1.1 동결: 운영=KPI-B; 연구 비교=P0; P1.5·P2 SKU 보류; windows_summary 수동만, 본선 eval 미합선
+- **2026-05-18T11:08:55Z** — Pack0-B tier-0 pillars 0%→A경로 interpret SFT v2·pivot 아티팩트·지휘관 로컬 interpret LoRA 100step 진행/완료 후 eval
+- **2026-05-18T11:04:43Z** — 채팅 종료: MCP정리·LoRA s100완료·locked25 베이스=어댑터 4주0%·엔진 SSOT 유지
+- **2026-05-18T09:55:23Z** — MCP 좀비 정리·hygiene repair·pycache 30폴더; Reload+setup_auth·RAM·VPS live_sync는 수동
+- **2026-05-18T08:38:47Z** — KPI-B 갱신 40%/30(바닥43%미달·패널 exit1); runtime red(live ON+게이트 fail); SANDBOX OK; 원클릭 `Invoke-MkmBtrackKpiBOperationalRefresh_v1.ps1`
+- **2026-05-18T08:34:51Z** — 패널 KPI-B ALERT_1(43%바닥|directional) exit0; OHLCV skip; S4U 재등록은 관리자 PS1
+- **2026-05-18T08:24:43Z** — KPI-B 헤드라인 승인·적용: 46.7% per-date 운영; frozen 43.3% 아카이브; live/Track A 자동 없음
+- **2026-05-18T08:20:48Z** — KPI-B shadow eval: 46.7%/30 vs frozen 43.3%; daily chain+panel+health; prod unchanged
+- **2026-05-18T08:14:28Z** — Dual-KPI: 09:05 panel+weekly 09:50 task, Verify readiness, alert_lines
+- **2026-05-18T07:54:41Z** — Dual-KPI: frozen 43.3% vs per-date WF 60%/20d·expanding 44%/27d·score체인 46.7%/30d; compare 스크립트+CENTRAL
+- **2026-05-18T06:24:44Z** — B-track guard amber(43% streak pending); panel 09:05 등록; readiness 리포트; SANDBOX day3 대기
+- **2026-05-18T05:46:22Z** — SANDBOX auto-ops: daily+weekly chain OK 27/27, days=2 until_wl=1, verify+health+thread sync
+- **2026-05-18T05:38:19Z** — Wave17 SANDBOX: verify requires sync+weekly entry, human_review next_milestone, ProphecySandboxChain+VerifyArtifacts, CI paths, chain OK
+- **2026-05-18T04:35:35Z** — Wave16 SANDBOX: next_milestone_ko, weekly_phase3 entry script, register+SyncDailyThreadLog, pre-gate webhook --notify-one-day-left, ProphecySandboxRegister persona
+- **2026-05-18T03:07:28Z** — Wave15 SANDBOX: scheduled verify JSON+weekly never-run OK, health artifacts_verify gate, daily SyncDailyThreadLog register, health smoke+manifest 18 files, weekly binance chain OK
+- **2026-05-18T02:49:28Z** — Wave14 SANDBOX: Register-ProphecySandboxScheduledTasks, verify_sandbox_prophecy_artifacts_v1, --sync-daily-thread-log, ProphecySandboxVerify persona
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -69,6 +69,7 @@
 | 로컬 검증 번들 | `scripts/verify_p0_constitution_gate_paths.ps1` → exit 0; 필요 시 `scripts/run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` |
 | 원격 반영 | 지휘관 네트워크·리모트만: `scripts/push-internal.ps1`, 쇼룸 VPS는 `scripts/sync_showroom_to_vps.ps1`(의도·SSH 확인 후) — 에이전트는 **명시 요청 시에만** 실행·실패 로그 보고 |
 | **Google Gen AI · GCP 크레딧·벤치** | 과금 표면 **둘**: (A) Developer API 키 — (B) **Vertex AI** = `GOOGLE_CLOUD_PROJECT` + ADC → **프로젝트 Billing**(프로모션 SKU 범위는 콘솔 확인). 확인 `scripts/check_google_genai_readiness_v1.py check|smoke-vertex`; 채팅 스모크 `scripts/run_gemini_chat_smoke_v1.py --vertex`; 배치·멀티모달 `scripts/gemini_multimodal_batch.py [--vertex]`; **FACTS 벤치 완결(단일 플래그십·Vertex):** `scripts/run_facts_vertex_benchmark_v1.py`(기본 모델 `gemini-2.5-pro`) → 산출 `docs/final/artifacts/facts_vertex_benchmark_latest.json`·원클릭 `scripts/run_facts_vertex_benchmark_e2e_v1.ps1`. 키: `scripts/security_agent_manager.py`의 `resolve_gemini_developer_api_key` — env 우선·동명 DPAPI. **혼동 금지:** AI Studio 키만으로 “크레딧 자동 차감” 단정 금지. |
+| **LG·압축·41k·이론** | **먼저** 「**41k·압축·LG — 통합 이해 한 장**」절 + factcheck. **6문장 검증**·**고정 응답 틀**만 사용. `이론 0%/100%`·NL 당선확률 **금지**. SSOT: `MULTILENS_*`·`original_language_master_atoms_summary_latest.json`(132万→41775). |
 | **NotebookLM MCP 사용 턴** | (재발 방지 v1, 2026-05-09) **첫 호출 자가진단**: `notebooklm.get_health` 시도 → `tool_not_found`/timeout이면 **그 턴 안에 보고**하고 로컬 SSOT 폴백. 사용자에게 안내할 복구 순서: ① `scripts/check_notebooklm_mcp_prereqs.ps1` ② `scripts/repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12` ③ Cursor Settings→MCP `notebooklm` toggle off/on ④ **새 채팅** 시작(도구 카탈로그는 채팅 시작 시 결정) ⑤ 그 채팅에서 `setup_auth`→`get_health`. `.cursor/mcp.json`은 **`npx -y …@latest` 금지**·**node + 핀버전 직접 실행** 고정(`MKM_NOTEBOOKLM_MCP_PINNED_VERSION` env). 로그오프 자동 정리: `MKM_RepairNotebookLmMcpStale_OnLogoff` (`scripts/register_notebooklm_mcp_repair_logoff_task.ps1`). |
 
 ---
@@ -283,12 +284,259 @@
 
 ---
 
+## LG HS · 에이전트 혼동 사태 재발방지 (2026-05-16 · 고정)
+
+**사건:** 채팅에서 「이론 0%」↔「100% 반영」·「거버넌스만」↔「시장 독점」 널뛰기 + **22장 PDF** 페이지와 **7장 압축 덱** 수치·페이지 **혼동**. 지휘관 인지 문제 아님 — **브리핑 수사 ≠ 디스크 SSOT**.
+
+**3층 (A–B–C, 채팅 전 필수):**
+
+| 층 | 내용 | SSOT |
+|----|------|------|
+| **A** | 철학·거버넌스 (Fact-Lock·외부 잠금·WATCH/HOLD) | 22장 PDF·`lg_hs_persuasion_module`·스크립트 |
+| **B** | 압축 엔진 (샤드·휴리스틱·41k 렉시콘) | `report_multilens_performance_eval.py`·동결 JSON |
+| **C** | 동결 수치 (~47.1%, floor 0.47, Jaccard ~0.885, 40건) | `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`·KPI summary |
+
+**두 문서 (절대 혼동 금지):** (1) **22장 PDF** = 리스크·철학 스토리 (2) **7장 압축 덱** `lg_hs_compression_discipline_deck_v1_latest.md` = 숫자 증명. **게마트리아 4D policy OFF** = 동결 C 측정값 — **「이론 전무」 아님**.
+
+**LG·압축 관련 답변 전 에이전트 필수 순서:** `lg_hs_before_after_factcheck_v1_latest.json` → `lg_hs_meeting_followup_v1.json` → (수치) `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` → 필요 시 압축 덱 MD. **채팅만으로 수치·반영 여부 단정 금지.**
+
+**금지 수사 (factcheck `FAIL_DO_NOT_USE`·지휘관 치트시트):** 7680 스윕·17/17·샤드마다 47%·Jaccard=의미%·「완벽 협업·사고 0%·10배 시장」.
+
+**보안·게이트와의 관계:** Fact-Lock·P0·pytest는 **코드·산출물·실거래 합선**을 막는다 — **채팅 과장·문서 뒤섞기**는 별도. 재발 방지 = **위 SSOT 선독 + 경로 인용**.
+
+**동결:** **5/20(화) 결과 발표 전** LG 재발송·덱·엔진 수정 없음 (`lg_hs_meeting_followup_v1.json`).
+
+**두 트랙 (절대 합치지 말 것):**
+
+| 트랙 | 문서·산출 | 숫자·게이트 | MKM 이론 |
+|------|-----------|-------------|----------|
+| **세탁기 LG 22장** | `lg_hs_ceo_final_22slides_script_v1_2026-05-11.md` | WATCH/HOLD·코드북·보드 실측 잠금·골든 **300**(합성 PoC, `synthetic_combinatorial_v1`) | **A(철학·거버넌스)** 가전 언어로 **번역해 사용** |
+| **압축 7장** | `lg_hs_compression_discipline_deck_v1_latest.md` | **47.1%**·floor **0.47**·Jaccard ~0.885·**40건** 벤치 | **B(엔진)** + **41k 렉시콘**; **`apply_gematria_4d_bridge_policy: false`** → 47%에 4D 정책 **미적용** |
+
+**0.47 ≠ WATCH/HOLD (오락가락 1순위 원인):** `0.47` = `ultra_saving_policy_min` (**토큰 절감률 하한**, Track A). 실크·90도·실행 보류 = **WATCH/HOLD** + 골든 `expected_action` — **별 게이트**.
+
+**에이전트 답변 전 4문장 검증:** ① 지금 말하는 건 **22장 세탁기**인가 **7장 47%**인가? ② **0.47**인가 **WATCH/HOLD**인가? ③ **40건**인가 **300건**인가? ④ **4D policy OFF**를 「이론 0%」로 말하는가(A는 씀)?
+
+**지휘관 확정 B2B 판정 (2026-05-16 · 채팅 SSOT 아님):** (1) **규칙·Fact-Lock·WATCH/HOLD·실측 잠금** = LG 포지션의 진짜 차별(알고리즘 신기술 주장 ❌). (2) **47.1% 압축** = MKM Track A **엔터프라이즈 조립**(샤드·41k·floor)이지 마법 코덱·게마트리아 KPI 아님. (3) **41,775 렉시콘** = MKM 코드북 데이터 자산(FACT). (4) **사기·개판 아님** = 타깃 패키징; **NotebookLM·채팅 「당선 확률 높음」** = 근거 없음. (5) **서울경제 AX 5/19 17:00+** 이메일 ≠ **LG 5/20** 결과 — 프로그램 분리.
+
+**Track A 압축 · 4D bridge policy 트레이드오프 (2026-05-16 · 혼동 재발방지):**
+
+| 질문 | 팩트 (레포 SSOT) |
+|------|------------------|
+| 동결 **47.1%** 조성 | **41k 렉시콘 ON** + **`apply_gematria_4d_bridge_policy: false`** — `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` |
+| `track_a_policy_floor_decision_v1.json` | 렉시콘 조인 후 saving **~47.5%** → floor **0.49→0.47**; **health/ssot만** selective bridge (`cmp2_014` Jaccard **0.625→0.875**) — **「41k+4D 100% 융합→floor 붕괴」 메모에 없음** |
+| bridge policy **ON** (40건 AB) | `MULTILENS_GEMATRIA_4D_UPLIFT_AB_V1.json`: saving **51.2%→36.8%** (Δ **−14.3pp**), Jaccard **0.801→0.917**, `ultra_saving_policy_ok: false` @0.49 · 보조 `MULTILENS_BRIDGE_POLICY_AB_ON/OFF_V1.json` |
+| 「융합=전 축 박살」 | ❌ 과장 — **절감·floor는 깨짐**, **Jaccard는 오히려 상승** |
+| 「융합=1초+ 지연」 | ❌ **이 AB 산출물에 latency 없음** — ms는 GPU 시뮬·API conc10 등 **별 층**; 인과 단정 금지 |
+| 「4D OFF=이론 0%」 | ❌ — **상용 KPI에서 4D policy 끔**; 연구·메타는 `include_gematria_*` 별도 |
+
+**압축 답변 전 5번째 검증:** ⑤ **bridge policy ON**을 말하는가 **OFF(동결 47%)**인가?
+
+**한 줄 (대외·내부 공통):** 같은 multilens 엔진에서 **4D bridge policy를 켜면 절감↓·Jaccard↑·floor 실패 가능** — 상용 동결 47%는 **렉시콘 켜고 4D policy 끈** 조합; 재현 `scripts/run_multilens_bridge_policy_ab.py` · SSOT `MULTILENS_GEMATRIA_4D_UPLIFT_AB_V1.json`.
+
+**41k 렉시콘 · 제작 시점 vs 구동 시점 (2026-05-16 · 혼동 재발방지):**
+
+| 시점 | 무엇이 들어가나 | 게마트리아 4D |
+|------|----------------|---------------|
+| **제작(오프라인 Export)** | `data/logos/` 원어 코퍼스 → `build_original_language_master_atoms.py` → Strong(`map_master_atoms_lexicon_seed.py`) + MorphHB(`map_master_atoms_morphhb_seed.py`) → `export_master_codebook_v1.py` → **41,775행** | **Export 체인에 gematria/4D 코드 없음** — SSOT: `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK` 「lexicon rail join only (**no 4D vectors**)」 |
+| **구동(47% 동결 벤치)** | `master_codebook_lexicon_v1_bridge.py` — 텍스트 토큰 ∩ `normalized_form` **lookup**으로 must_keep 확장 | **`apply_gematria_4d_bridge_policy: false`** — 실시간 4D가 **압축 결정**에 안 탐 (`include_gematria_*` 메타 기록과 **별개**) |
+
+**금지 오해:** 「사전 제작에 게마트리아 4D 100% 관여」·「4D가 사전을 설계했다」·「사전 안에 4D 벡터가 녹아 있다」(export JSON 필드는 Strong/MorphHB·`normalized_form` 중심).
+
+**맞는 말:** MKM **Logos 원어·학술 인덱스(Strong/MorphHB) 연구 → 데이터(41k) Export**; 47%는 **그 사전 lookup + 일반 압축 엔진 + 4D policy OFF**. 이론이 버려진 게 아니라 **수식(실시간 4D policy)이 아닌 데이터(사전)·포장(규율)** 로 상용화.
+
+**3층 최종 (에이전트 0%/100% 금지):** ① **기계**=업계 MLOps 조립 ② **연료**=41k(**Logos+Strong/MorphHB Export**, 4D 사전제작 ❌) ③ **포장**=WATCH/HOLD·Fact-Lock·실측 잠금.
+
+**대외 한 줄:** 「실시간 4D bridge 정책은 꺼져 있으나, 4만 단어 보존 사전은 Logos 원어 연구와 Strong/MorphHB 레일에서 Export한 우리 데이터 자산이며, 엔진은 lookup만 한다.»
+
+### 41k · 압축 · LG — 통합 이해 한 장 (2026-05-16 · 지휘관 확정 · 재발방지 SSOT)
+
+**에이전트는 본 절을 LG·압축·41k·이론 질문 시 먼저 읽고, 아래 「고정 응답」틀만 쓴다. `이론 0%` / `이론 100%` / `당선 확률 높음` **단독 금지.**
+
+| 주제 | 한 줄 팩트 |
+|------|------------|
+| **41k 뭐냐** | MKM `data/logos/` 원어 텍스트에서 나온 **서로 다른 단어 41,775종** — 표면 등장 **~132만 토큰**을 정규화·중복제거한 결과. **Strong 전체 목록이 아님**(코퍼스에 나온 말 + Strong/MorphHB **스티커**). |
+| **41k 자산?** | **회사 데이터 자산 ✅** — 공용 재료(Strong·MorphHB·원어) + **우리 Export 파이프라인**. **세계 독점 알고리즘 ❌**. |
+| **47.1%** | **렉시콘 lookup ON** + **`apply_gematria_4d_bridge_policy: false`** — `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`. |
+| **4D와 41k** | **사전 Export에 4D 코드 없음**. **구동 시 4D policy OFF**. 연구 방향(Logos 원어)은 **도메인 선택**이지 **사전每行 4D 계산 ❌**. |
+| **LG 22장 vs 7장** | 22장=세탁기·WATCH/HOLD·Fact-Lock·300 골든(합성 PoC). 7장=47%·0.47·40건·41k. **혼동 금지**. |
+| **0.47** | **토큰 절감률 하한** — WATCH/HOLD·실크 **아님**. |
+| **용어** | **Logos 원어**=성경 원문 히브리·그리스 모음. **Strong**=단어 번호표(G/H). **MorphHB**=히브리어 문법 형태 표. |
+
+**왜 오락가락했나 (에이전트 자기점검):** (1) **트랙 합침** — 세탁기 vs 압축 vs 이론 (2) **0.47 vs WATCH/HOLD** (3) **알고리즘 vs 데이터** — 4D policy OFF를 「이론 0%」로 말함 (4) **NotebookLM·채팅**을 SSOT처럼 씀.
+
+**재발방지 — 에이전트 필수 순서:** ① `lg_hs_before_after_factcheck_v1_latest.json` ② 본 절 ③ (수치) `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` ④ `MULTILENS_GEMATRIA_4D_UPLIFT_AB_V1.json`(융합 말할 때만).
+
+**6문장 검증 (답변 전 내부):** ① 22장 vs 7장 ② 0.47 vs WATCH/HOLD ③ 40 vs 300 ④ 4D policy OFF ≠ 이론 0% ⑤ bridge ON vs OFF ⑥ 41k=코퍼스 41775종 ≠ Strong 전체.
+
+**고정 응답 틀 (복붙·변형만):**
+
+> 압축 **기계**(샤드·Jaccard·floor)는 업계 일반 조립입니다. **연료**는 MKM Logos 원어 코퍼스에서 Export한 **41,775행 보존 렉시콘**(Strong/MorphHB 라벨·공용 재료 + **우리 파이프라인**) — **회사 데이터 자산**이지 독점 수학은 아닙니다. 동결 **47.1%**는 **렉시콘 ON + 실시간 4D bridge policy OFF**입니다. LG **22장**은 WATCH/HOLD·Fact-Lock·실측 잠금(철학·포장); **7장** 숫자와 섞지 않습니다. `0.47`은 **절감률 하한**이며 실행 브레이크가 아닙니다.
+
+**대외용 CEO 한 줄 (2026-05-16 · 지휘관 확정 · 「핵심 경쟁력이 뭐냐」):**
+
+> 압축 알고리즘 자체는 **검증된 업계 표준**을 씁니다. 그 엔진에 연료로 들어가는 **41k 원어 기반 렉시콘(데이터 노하우)** 과, 사고를 원천 차단하는 **보수적 제어 규율(WATCH/HOLD·Fact-Lock·실측 잠금 패키지)** 이 우리의 두 핵심 자산입니다.
+
+**대외 Q&A — `0.47` vs WATCH/HOLD (반드시 분리·한 문장에 섞지 말 것):**
+
+| 트랙 | 말할 것 | 말하지 말 것 |
+|------|---------|-------------|
+| **압축 (7장)** | 절감률이 **정책 하한**(동결 KPI·`ultra_saving_policy_min`, 예: **0.47**) 아래면 **압축 경로를 보수적으로** 잡는다. | 「0.47이면 세탁기 셧다운」 |
+| **가전 (22장)** | 실크 고온·위험 조합 등은 **WATCH/HOLD로 실행 전** 차단한다. 기준은 **실보드 실측**으로만 잠근다. | 「WATCH/HOLD = 0.47」 |
+
+### 7장 압축 덱만 Before/After (2026-05-16 · 숫자·증거 축)
+
+**범위:** `lg_hs_compression_discipline_deck_v1_latest.md` — **22장 PDF와 별도**. 7장 = **47%·0.47·41k·40건 벤치**만. SSOT: `lg_hs_before_after_factcheck_v1_latest.md`.
+
+**한 줄:** 발표 전엔 “압축 잘 되는 도구” 느낌 + 사전/코드북이 자주 비어 있음 → 발표 후(동결)엔 **41k 연결·47.1%·floor 0.47·Jaccard 0.885**를 **JSON 리포트로 재현 가능** + **과장 문구 Kill-Matrix**.
+
+| 축 | Before (발표 직전·초기) | After (현재 동결) |
+|----|-------------------------|-------------------|
+| **사전(연료)** | 40건 벤치에서 codebook export 자주 누락 → `export_not_found` | **41,775**행 동결 · 동결 active report **export_not_found 0** |
+| **정책·KPI** | floor **0.49** 추격 · W4–W9 등 HOLD 실험 다수 | floor **0.47** 공표 · **~47.1%** 절감 · avg Jaccard **~0.885** (`MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, **4D bridge policy OFF**) |
+| **health 예시** | cmp2_014 Jaccard **0.625** | baseline sweep health_case **0.875** (전 도메인 보장 ❌) |
+| **말·감사** | “압축 도구” 프레이밍 | **아티팩트 묶인 디시플린** + Shadow Auditor **4** pytest · VPS RTT triplet **~665–847 ms** (2026-05-16) |
+
+**슬라이드별 (7장):**
+
+| 장 | Before | After |
+|----|--------|-------|
+| **1–2** | 제조·리스크 언어 초안 | **70/20/10**·WATCH/HOLD=실행 전 차단(22장과 **개념 연결**, 수치는 3장만) |
+| **3** | 수치 흔들림·floor 0.49 | **0.47** · **47.1%** · **0.885** 동결 · policy_ok |
+| **4** | 샤드별 47%·의미 89% 등 **과장 위험** | **전역 절감만 ~47%** · 샤드 행=**Jaccard만** (lg_safe_domain_table) |
+| **5** | 사전 미연결·17/17 등 | **41,775** · Auditor **4** tests · conc10=스모크≠양산 SLA |
+| **6** | (없음·구두 과장) | **Kill-Matrix** (7680·Zero-Liability 등 **대외 금지**) |
+| **7** | 다음 단계 모호 | 벤치 → **RQ-017 보드 실측 [HYPO]** → 월간 Go/No-Go |
+
+**7장에서 안 바뀐 것:** 벤치 **40건**(22장 300건 아님) · **4D bridge policy OFF** · 덱 상태 **[DRAFT]**(법무 통과 전 대외 재발송 금지) · **실보드 양산 완료 주장 금지**.
+
+### 운영 모드 B — 소액 실전 + 예언 일일 고정 (2026-05-16 · 지휘관 확정)
+
+**격벽:** 예언·통찰 체인 ≠ `aroon_v1` 주문 경로(`projects/bitcoin-trading/AGENTS.md`). **실력 입증·방송 과시 금지** — 관측·`[HYPO]`·통찰 산출만.
+
+| 축 | 고정 |
+|----|------|
+| **로컬 Windows 일일** | `scripts/Register-MkmSmallLiveProphecyDailyOps_v1.ps1` → **08:35** `MKM-BTrack-DailyHypothesis-Chain`(btc·시장 CSV 갱신 기본) · **08:55** `MKM-Prophecy-Daily-Eval-Report`(`-SkipTrinityEvolution`·`scripts/core/trinity_*` 미배포) · **09:05** 패널 알림 · **4h** Fact-Safe |
+| **원클릭 수동** | `scripts/Invoke-MkmSmallLiveProphecyDailyOpsBundle_v1.ps1` |
+| **주간 학습(WF·스윕)** | **이원 태스크(단일 배관 아님):** 일 `09:45` `MKM-BTrack-RecommendedEval-AutoSweep-Weekly` → `Run-BtrackRecommendedEvalAutoSweep_v1.ps1` · 일 `10:15` `MKM-BTrack-Prophecy-Weekly-Learning` → `Invoke-MkmBtrackProphecyWeeklyLearning_v1.ps1` **`-SkipAutoSweep`** (스윕 재실행 없음 → `reports/*_recommended*` → `docs/final/artifacts/*_latest` 승격 · gates · 30일 eval · watchdog · registry seed). **상세 도면:** 본 파일 「B-track 예언·통찰 팩트록 배관」절. |
+| **VPS 실전** | PM2 `bitcoin-live-small-24h` 유지 · **소액**(`AROON_ORDER_QTY`·`BTC_MAX_TRADES_PER_DAY` 등 루트 `.env`) · **주문 ON/OFF는 별도 승인** |
+| **VPS 게이트 갱신** | cron **4h** `sync_fact_safe_risk_profile` + `build_trading_go_nogo` (`/var/log/mkm_fact_safe_risk_sync.log`) |
+| **금지** | 섀도우 backfill 승률로 실력 주장 · 예언 체인 실패를 “매매 중단”과 동일시 · B2B 압축/LG 본진과 합선 |
+
+**금지 한 줄:** 이론 0% · 이론 100% · 4D가 41k 설계 · 성경 공통 4만 단어 · 당선 확률 (채팅/NL).
+
+**지휘관 재개:** `@CENTRAL.md` 또는 「장기기억 맥락 이어」→ 본 절+체크포인트. **Soft-Lock** — 채팅은 완벽 차단 안 됨; **디스크 SSOT 우선**.
+
+### B-track 예언·통찰 팩트록 배관 (일일·주간 · Fact-Lock v1)
+
+**한 줄:** `[입력 → 예측 JSON → OHLCV 채점]` + 게이트 거절. **B-track·`[HYPO]`** — Track A·실매매·`aroon_v1` **자동 합선 금지**. 구현 SSOT: `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` Prophecy Hit Rate·일일 B-Track 번들 절.
+
+#### 일일 — 3개 독립 Scheduled Task (Mode B)
+
+| 시각 | 태스크명 | 스크립트 | 역할 |
+|------|----------|----------|------|
+| **08:35** | `MKM-BTrack-DailyHypothesis-Chain` | `run_btrack_daily_hypothesis_chain.ps1` | 시장 CSV·**명리** `run_lens_myeongni` · **사상** `run_lens_sasang`+`run_market_sasang_lens_v1` · **Logos** `run_lens_logos` · 퓨전 스텁 · 가설 `generate_btrack_hypothesis_prophecy_v1` · (선택) 체인 내 채점 |
+| **08:55** | `MKM-Prophecy-Daily-Eval-Report` | `run_daily_prophecy_eval_and_report.ps1` | 듀얼레그·WF·Trinity 생략 기본 — **일일 eval 별도 셸** |
+| **09:05** | `MKM-Prophecy-Panel-24h-Alerts` | `Check-ProphecyPanel24hAlerts.ps1` | 패널 KPI 알림 — **`sync_showroom_to_vps.ps1` 아님** |
+
+**쇼룸:** `scripts/sync_showroom_to_vps.ps1` — **주간·수동** (`AGENTS.md` Phase 3). 09:05 자동 파이프에 **포함되지 않음**.
+
+#### 주간 — 2개 Scheduled Task (일요일 · 이원)
+
+| 시각 | 태스크명 | 진입점 | 산출(핵심 경로) |
+|------|----------|--------|----------------|
+| **09:45** | `MKM-BTrack-RecommendedEval-AutoSweep-Weekly` | `Run-BtrackRecommendedEvalAutoSweep_v1.ps1` → `run_prophecy_btrack_recommended_eval_chain_v1.py` **`--auto-sweep-and-apply`** | `reports/prophecy_btrack_recommended_nbps_sweep_v1_latest.json` · `reports/*_recommended*_latest.json` · `reports/prophecy_promotion_gates_recommended_chain_v1_latest.json` |
+| **10:15** | `MKM-BTrack-Prophecy-Weekly-Learning` | `Invoke-MkmBtrackProphecyWeeklyLearning_v1.ps1` **`-SkipAutoSweep`** | `docs/final/artifacts/*_latest.json` 승격 · `prophecy_promotion_gates_v1_latest.json` · `seed_btrack_effective_adjustments_registry_v1.py` → **`docs/final/artifacts/effective_adjustments_registry_v1.jsonl`** |
+
+**스윕 본질 (09:45):** `neutral_bps` 그리드 기본 `2,2.5,3,4,6` · WF 기본 **`--n-folds 5`**(테스트 fold 4) · score 패널 기본 **`--recent-trading-days 180`**(주간 eval 30일과 **다름**). 일일 가설은 스윕 JSON 직접 읽기보다 **registry**(`effective_adjustments_registry_v1.jsonl`) 경유 가능.
+
+**게이트 (디스크 SSOT 예):** `prophecy_promotion_gates_v1_latest.json` — `combined_all_passed: false` · `soft_passed: true` · `auto_promote_ready: false` · `outcome_class: opportunistic` (수치는 실행마다 갱신; 브리핑 단정 금지).
+
+**적중률 인용 규칙:** 「33%」만 쓰지 않음 → **`docs/final/artifacts/prophecy_hit_rate_eval_latest.json`** · `run_mode: price` · `n_evaluated`·`price_directional_hit_rate` 필드 명시 (예: 2026-05-16 **0.333333, n=60**). 다른 윈도는 `prophecy_hit_rate_eval_30d_latest.json` 등 **파일별 분리**. **09:05 패널**은 `scripts/compute_prophecy_hit_rate_leg_decomposition_v1.py` → `reports/prophecy_hit_rate_leg_decomposition_latest.json`으로 **BTC/KOSPI/pooled 분리 + coin_flip(50%)·always_bear·always_bull 베이스라인**을 함께 노출.
+
+**일일 price hit ≠ WF 스킬:** `eval_prophecy_hit_rate_v1.py` **헤드라인**은 가설 `instrument` 선언이 **btc/kospi**이면 **해당 leg만**(`metrics.headline_instrument`, `price_directional_hit_rate`); **pooled**는 `metrics.pooled_*`·09:05 분해 블록으로 **관측만**. **`-IncludeDawnScore` 일일 체인**은 `build_btrack_ensemble_per_date_directions_v1.py` → `--per-date-direction-json`으로 **날짜별 방향** 채점(`scoring_mode: per_date_direction_overrides`); 미생성 시 동결 bear 등 **분포 통계**에 가까움. **50% 동전·WF(`prophecy_per_date_combo_walkforward_v1_latest.json`)와 혼동 금지** — 승격·연구 판정은 WF·게이트 JSON 우선.
+
+**Dual-KPI (본선 정의 재정렬 v1 · 2026-05-18, Track A 미변경):** **지휘관 승인 완료** — KPI-B **per-date WF** = 운영 헤드라인 (`prophecy_hit_rate_eval_latest.json` + `btrack_prophecy_score_latest.json`, `per_date_direction_overrides`). KPI-A **frozen** = 아카이브만 (`prophecy_hit_rate_eval_kpi_a_frozen_archive_v1_latest.json`, `frozen_single_direction_batch` ~43.3%). 승인·적용: `apply_btrack_dual_kpi_headline_human_approval_v1.py` → `btrack_dual_kpi_headline_human_approval_v1_latest.json` · 정책 `btrack_dual_kpi_headline_policy_v1.json`. 일일 체인: 승인 시 `run_btrack_kpi_b_shadow_eval_v1.py --promote-to-operational-headline`(frozen 빌드 생략); 미승인 시 frozen+shadow 병행. **live·Track A 자동 승격 없음** `[HYPO]`. compare·09:05 `[MKM-DUAL-KPI]`·주간 09:50 유지.
+
+**09:05 ALERT_1 2단(2026-05-17):** 운영 exit/웹훅 = **헤드라인 ≥50%**(`ALERT_1_HEADLINE_SKILL`); **≥60%**는 승격 밴드 정보(`ALERT_1_PROMOTION_BAND`, 50–59%는 실패 아님·웹훅 없음). WF `mean_test_accuracy` ≥0.48은 정보(`ALERT_1_WALKFORWARD`). **저신뢰 방향**은 `btrack_lens_ensemble_v1.json` `min_direction_confidence`(기본 0.25)·`scripts/btrack_direction_confidence_gate_v1.py`로 bull/bear→neutral. **per-date**에서 neutral 비중이 크면 **전체행** `price_directional_hit_rate`는 낮아질 수 있음 — no-call 분리는 `metrics.price_hit_rate_on_directional_calls`·`n_directional_calls`·`n_neutral_predictions`(09:05 obs 2번째 줄). ALERT_1 pass는 **전체행** 기준 유지.
+
+```mermaid
+flowchart TD
+  subgraph D ["일 Mon–Sat · Mode B"]
+    D1[08:35 DailyHypothesisChain]
+    D2[08:55 DailyEvalReport]
+    D3[09:05 Panel24hAlerts]
+  end
+  subgraph W0945 ["일 Sun 09:45"]
+    S[AutoSweep → recommended chain]
+    S --> R[reports/*_recommended* + nbps_sweep summary]
+  end
+  subgraph W1015 ["일 Sun 10:15 · SkipAutoSweep"]
+    L[WeeklyLearning]
+    L --> A[artifacts/*_latest + gates]
+    L --> REG[effective_adjustments_registry_v1.jsonl]
+  end
+  W0945 --> W1015
+  A -.->|합선 금지| X[Track A / aroon_v1 / 실매매]
+```
+
+**스케줄 권한:** `Register-BtrackRecommendedEvalAutoSweepWeeklyTask.ps1` — `RunLevel Limited` · `schtasks`/`Interactive`(267011 = S4U·자격 증명 이슈 회피). **「Admin 수리 완료」 서술 금지.**
+
+**C층 vs B층 (대외):** B-track 적중률·「우주 OS 100%」·예언 서사를 LG/압축 **47.1%·Jaccard 0.885** 덱과 **한 문단에 섞지 않음** (`PUBLIC_FACING` v1.7).
+
+#### Logos Multi-Orbit · 언어·사본학 격벽 (2026-05-16 · Fact-Lock)
+
+**한 줄:** 정경 **31,102** 본선(`verse_decoded_v2_complete` **31,087** 원어 + **15** NT `mt_canon_only_no_critical_text`)은 **SBLGNT/BHS 무결성 동결** — TR·외경·DSS를 **끼워 넣지 않음**. 확장은 **§4 Satellites `source_track: B_ext`** 별도 레일만.
+
+| 레일 | 역할 | SSOT |
+|------|------|------|
+| **Canon core** | SBLGNT+BHS+versification | `data/logos/verse_decoded_v2_complete_v1.jsonl` · gap **15** → `logos_gap_mt_only_residual_classify_v1_latest.json` |
+| **NT variant distance** | TR vs SBLGNT **거리 관측**(merge 금지) | `scripts/build_logos_textual_variant_distance_v1.py` → `logos_textual_variant_distance_v1_latest.json` |
+| **Satellite orbit** | DSS·외경 **drift/kNN** (canonical medoid 대비) | `scripts/build_logos_satellite_orbit_drift_v1.py` → `logos_satellite_orbit_drift_v1_latest.json` · `CONSTITUTION` §4 |
+| **Aramaic §4.7** | 다니엘/에스라 아람어 **연구 그래프** | `extract_aramaic_core_corpus_v1.py` — 본선 합선 금지 |
+
+**[Linguistic_Exception_Handling_Rule]** `gematria_engine`/`gematria_bridge_v1`은 **문자(정방형 히브리 유니코드) 합산**이므로 WLC 아람어 구절도 **크래시 없이** 4D까지 산출된다 — **아람어 전용 형태소·번역 레이어 없음**. 심층 아람어는 §4.7 B-track만.
+
+**[HYPO] 백로그:** `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-019** (Multi-Orbit Satellites). **금지:** 「31,102 전절 완전 원어 디코드」·medoid 고정 단정·DSS로 NT 15절 메우기.
+
+### [OPERATION_MODE_B_LEARN_AND_AUDIT] — 90일 동결 (2026-05-16 → 2026-08-14)
+
+**메타 인지 선언:** 「기술 전체가 가짜」가 아니라 **「한 방에 다 되는 기술이 아니었다」**. 암행어사·아테나 = **돈 버는 마법봉 ❌** · **스스로를 속이지 못하게 하는 OS ✅**.
+
+| # | 행동 강령 |
+|---|-----------|
+| **1** | 소액 실전(`aroon_v1`) + B-track 예언 = **증명 모드 ❌** · **비용 지불형 학습·감사 모드 ✅** (마찰·로그 수집). |
+| **2** | **90일간 신규 AI 페르소나·에이전트 이름 추가 금지.** 확장은 기존 OS(아테나·암행어사·12AI 라우팅) 파이프라인 안에서만. |
+| **3** | 트레이딩 엣지 개선 = **예언 한 축(B-track)** WF·레지스트리·`prophecy_promotion_gates`만. **실전 엔진 자동 합선·Auto-promotion 90일 전면 금지.** |
+| **4** | **단일 지표 숭배 금지:** BTC 7일 hit·PnL로 B2B 압축(41k·Fact-Lock) 훼손/과대 금지. **레일별 KPI만.** |
+| **5** | `prophecy_runtime_health_guard` **RED(`GATE_LIVE_CONFLICT`)** = 버그 아님 · **모드 B 선언**(실전 ON + 승격 게이트 미통과). |
+
+**Stop-Doing (운영 브리핑·채팅):**
+
+- **BTC treatment backfill·가상 승률(예: 92%)** — 실력 주장·내부 브리핑 **금지** (`exchange_fill_backfill` 라벨).
+- **예언 → 주문 자동 트리거** 실험 중단. 예언 = JSON·`[HYPO]` 관측만; 매매 = `aroon_v1`·`BTC_MAX_TRADES_PER_DAY` 등 **기계 분리**.
+- **명리·41k·게마트리아 → 단기 BTC 실전 승격** 90일 중단. **허용:** B-track 일일 체인 **관측·산출** (승격 없음).
+
+**유지 (중단 아님):** Track A 압축 shadow corpus · Logos KOSPI shadow 연구(non-gating) · 모드 B 일일 스케줄 · LG 7장 증거(5/20 결과는 **[VERIFY]** 일정).
+
+**SSOT 복사:** `MISSION_LOG.template.md` 상단 · `.cursor/rules/central-agent-memory.mdc` 항목 11.
+
+---
+
 ## 분기별 한 줄 (최근 1년 · 수동 채움)
 
 > 팀이 실제로 한 **결정·이정표**만 적는다. 비우면 됨.
 
 | 기간 | 핵심 한 줄 (무엇을 확정/중단/승격했는지) |
 |------|----------------------------------------|
+| 2026-05-17 (B-track model swap PoC) | `run_btrack_model_swap_harness_v1.py` — frozen harness·후보 채점; LG **pending** 병렬; ensemble 승격 금지. |
+| 2026-05-17 (B-track 예언 관측 모드) | 승격 트랙 **폐쇄**(aux/F2F3/CBO/Choice2); prod `min_conf=0.18` 유지; advisory primary=`advisory_ovn_bull`·일일 `advisory-sweep`(체인+패널); `MKM-OBS-MODE`·패널 로그 누적만 — LG HS 대기. |
+| 2026-05-16 (90일 학습·감사 동결 입안) | OPERATION_MODE_B_LEARN_AND_AUDIT ~2026-08-14: 페르소나 추가 금지·예언→실전 auto-promotion 금지·backfill 섀도우 승률 브리핑 금지; 아테나/암행어사=OS; template+morning briefing shadow 기본 off. |
+| 2026-05-16 (7장 압축덱 Before/After) | 22장≠7장; 7장=41k연결·47.1%/0.47/0.885 동결·Kill-Matrix·4 pytest; Before=export_not_found·0.49추격; After=factcheck SSOT — CENTRAL 「7장만」절. |
+| 2026-05-16 (41k·압축·LG 통합 재발방지) | CENTRAL 「통합 이해 한 장」+6문장 검증+고정응답틀; 41k=132万→41775종·자산✅·독점❌; 4D export❌/policy OFF; 에이전트 `이론 0/100%` 금지. |
+| 2026-05-16 (41k 사전 제작≠4D·구동 OFF) | Export=Logos+Strong/MorphHB(**gematria 코드 없음**); 47%=사전 lookup+**4D policy OFF**; 금지=「4D가 사전 설계」— CENTRAL 「41k 제작 vs 구동」절. |
+| 2026-05-16 (압축 4D bridge 트레이드오프 고정) | AB: bridge ON saving **51.2%→36.8%**·Jaccard **0.80→0.92**·floor 0.49 FAIL; 동결 47%=**렉시콘 ON+4D policy OFF**; policy memo=lexicon→47.5%·selective health bridge — **융합=절감 깨짐·Jaccard↑·latency AB 없음** CENTRAL 절. |
+| 2026-05-16 (LG HS · 혼동 재발방지·지휘관 판정 고정) | **두 트랙**(22장 세탁기 vs 7장 47%)·**0.47≠WATCH/HOLD**·47%에 gematria policy OFF·규율 패키지=차별·엔진=업계 조립·41k=MKM 자산 — CENTRAL 「LG HS」절+factcheck; AX 5/19≠LG 5/20; 채팅 당선확률 금지. |
 | 2026-05-16 (LG HS · 압축 상용 후속) | LG 미팅 **완료**·**5/20(화) 심사결과 대기**; RQ-017 VPS triplet(~710ms p95)·인과 주장 금지; hold/reject 시 **2주 폴백** `lg_hs_fallback_two_week_pipeline_v1`·주력 **Track C B2B**(onepager 선행); OpenData 327은 **목소리네트워크** 별도(~6/5). |
 | 2026-05-14 (퓨전 헬스 Logos insight skip — env 자동) | `run_workspace_automation_health.ps1` 퓨전 스모크: **`MKM_HEALTH_FUSION_SKIP_LOGOS_INSIGHT_BUNDLE`** truthy 시 Invoke **`-SkipLogosInsightBundle`** 자동 전달; `.env.example`·`sync_required_env_to_user.ps1`·CONSTITUTION §1.3.1·`AGENTS.md`·`CLAUDE.md`·`MULTI_LENS`…한 번에 돌리는 명령·`dual-regime-integrity` PR paths(`.env.example`·동 sync 스크립트) 정렬. |
 | 2026-05-13 (B2G 통제 무결성 부록 v0.2.1) | 부록 `B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md`(§1.1~동결)·내부 `B2G_TECH_DISCLOSURE_ONEPAGER_PREP_V1.md` 출원 전 1p 목차. |
@@ -482,7 +730,7 @@
 | 명리 | **고도화 v1:** 본 파일 「명리 렌즈 고도화 v1」— 삼고·만세력·§3.3 스택·날씨 원리 격리. 체인: `run_myeongni_lens_chain_from_bot_v1.py`/`Run-MyeongniLensChainFromBot_v1.ps1`; 단일 렌즈 `--recommended` 또는 브리지. | §3.3·`tests/test_myeongni_lens_chain_from_bot_v1.py` |
 | 사상 | 사상 4-Agent는 A-Track 승격 유지 상태이며 모니터 정책에서 `geumhwa_transition_threshold=0.58`로 상향해 과민 자동주입을 완화했다. | `docs/final/artifacts/sasang_4agent_monitor_policy_v1.json` |
 | 퓨전 | `보명지주/성정불변/병증약리/금화교역` 융합 게이트는 `FUSION_GATE_PASS`로 고정되어 승격 체인 체크에 결합됨. **B-track VA 교차감사:** `Run-VaFusionControlIntegrityChain_v1.ps1`·일일 `MKM-VaFusionControlIntegrity-Daily`·감사 실패 시 선택 웹훅(Fact-Lock: `CONSTITUTION` §3.8.4·`.env.example`). | `docs/final/artifacts/sasang_4agent_fusion_gate_latest.json` · `reports/fusion_control_integrity_audit_latest.json` |
-| 예언(B-track) | 권장 측정: `py scripts/run_prophecy_btrack_recommended_eval_chain_v1.py` 또는 원클릭 `py … --auto-sweep-and-apply` / `scripts/Run-BtrackRecommendedEvalAutoSweep_v1.ps1`. 게이트 SSOT: `eval_prophecy_promotion_gates_v1.py` → **`outcome_class`**·`gate_taxonomy`(내부 4분류; 장-뇌 **은유**만, 임상·신경과학 아님). 최근 재생성 기준 **`combined_all_passed=false`**, **`outcome_class=reject`** 가능 — A-track·실매매 자동 합선 금지. 증거 팩: `build_prophecy_gate_evidence_pack_v1.py`. **패널 24h:** ALERT_1·3 실패 시만 웹훅(기본). | `docs/final/artifacts/prophecy_promotion_gates_v1_latest.json` · `prophecy_gate_evidence_pack_v1_latest.json` · `gut_brain_agent_constitution_promotion_v1_latest.json` |
+| 예언(B-track) | 권장 측정: `py scripts/run_prophecy_btrack_recommended_eval_chain_v1.py` 또는 원클릭 `py … --auto-sweep-and-apply` / `scripts/Run-BtrackRecommendedEvalAutoSweep_v1.ps1`. 게이트 SSOT: `eval_prophecy_promotion_gates_v1.py` → **`outcome_class`**·`gate_taxonomy`(내부 4분류; 장-뇌 **은유**만, 임상·신경과학 아님). 최근 재생성 기준 **`combined_all_passed=false`**, **`outcome_class=reject`** 가능 — A-track·실매매 자동 합선 금지. 증거 팩: `build_prophecy_gate_evidence_pack_v1.py`. **패널 24h:** 헤드라인 &lt;50% 또는 ALERT_3 실패 시만 웹훅(기본); 50–59%는 승격 밴드 미달 정보. | `docs/final/artifacts/prophecy_promotion_gates_v1_latest.json` · `prophecy_gate_evidence_pack_v1_latest.json` · `gut_brain_agent_constitution_promotion_v1_latest.json` |
 
 ## 지금 막힌 것 (있을 때만)
 
@@ -490,9 +738,9 @@
 
 ## 다음에 할 일 (최대 3개)
 
-1. **예언(B-track):** 권장 체인·`reports/prophecy_promotion_gates_recommended_chain_v1_latest.json`; 패널 24h는 `Check-ProphecyPanel24hAlerts.ps1 -SkipWebhook` 스모크·`reports/prophecy_panel_24h_alerts_latest.json`; ALERT_3 구조면 dual refresh; (선택) `Register-ProphecyPanel24hAlertsTask.ps1` 도움말에 웹훅 라우팅 한 줄 보강.
-2. **원격 반영:** `scripts/push-internal.ps1`(또는 워크플로); `gitea/main`은 `SoloDev-MergeFeatureToGiteaMain.ps1 -DryRun` 선행; GitHub는 `Push-GitHub-Explicit.ps1 -Acknowledge` 예외만.
-3. **게이트·브리핑:** `verify_p0_constitution_gate_paths.ps1` 주기 점검·여유 시 `run_fact_lock_bundle.ps1`; 내부 응답은 `Field→Lens→Conflict→Final Action→Evidence` 고정(B→A 자동 합선 없음).
+1. **B-track model swap PoC (ACTIVE):** `scripts/run_btrack_model_swap_harness_v1.py` — frozen harness(30d+holdout7), `auto_promote=false`. 선택 `--include-gemini`(single-shot smoke만). **ensemble/Track A 무터치.**
+2. **예언 관측 모드 (병렬):** 일일 `advisory-sweep`·패널 로그·`MKM-OBS-MODE`. 승격·`min_conf` 변경 **동결**. ALERT_1 exit1 정상.
+3. **LG HS (PENDING):** 5/20 outcome 1줄 → `lg_hs_meeting_followup_v1.json` only — 당선 확률 등 **추측 금지**. hold/reject → Track C B2B 폴백 SSOT.
 
 ## 동기화 루틴
 
