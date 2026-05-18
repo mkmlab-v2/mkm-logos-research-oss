@@ -10,12 +10,20 @@ param(
     [switch]$SkipSweep,
     [switch]$SkipDialogueCompare,
     [switch]$SkipCmp2011Ab,
-    [switch]$SkipHealthSignoffCandidate
+    [switch]$SkipHealthSignoffCandidate,
+    [switch]$SkipCommanderApproval,
+    [switch]$SkipEncodingStatus
 )
 
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
+
+if (-not $SkipCommanderApproval) {
+    Write-Host "== Commander approval (sync, before dependent lanes) ==" -ForegroundColor Cyan
+    py scripts/record_mkm_inter_agent_health_commander_approval_v1.py --note "commander verbal approval 2026-05-18"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
 
 $jobs = @()
 if (-not $SkipSweep) {
@@ -40,6 +48,12 @@ if (-not $SkipHealthSignoffCandidate) {
     $jobs += Start-Job -ScriptBlock {
         Set-Location $using:root
         py scripts/build_mkm_inter_agent_health_signoff_candidate_v1.py
+    }
+}
+if (-not $SkipEncodingStatus) {
+    $jobs += Start-Job -ScriptBlock {
+        Set-Location $using:root
+        py scripts/build_mkm_inter_agent_encoding_status_v1.py --skip-pytest
     }
 }
 

@@ -167,6 +167,9 @@ def build_status(*, run_pytest: bool = True) -> dict[str, Any]:
         }
 
     all_core = m1_pass and m2_pass and m3.get("pass")
+    health_approval = _load_json(
+        ROOT / "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json"
+    )
     return {
         "schema": "mkm_inter_agent_encoding_status_v1",
         "generated_at_utc": _utc_now(),
@@ -180,7 +183,13 @@ def build_status(*, run_pytest: bool = True) -> dict[str, Any]:
             "trust_packet_onepager": "docs/final/artifacts/lg_compression_trust_packet_onepager_v1.md",
             "first_message_worked_example": "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md",
             "first_message_live_http": "docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json",
+            "health_domain_commander_approval": (
+                "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json"
+            ),
         },
+        "health_domain_commander_approved": bool(
+            health_approval and health_approval.get("commander_approved")
+        ),
         "boundary_ack": (
             "Not a finished MKM Language / Lingua Franca standard. "
             "No production SLA. No beats-SOTA-papers claim."

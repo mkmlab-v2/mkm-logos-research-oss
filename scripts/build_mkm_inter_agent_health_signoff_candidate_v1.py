@@ -15,6 +15,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 DEFAULT_OUT = ROOT / "docs/final/artifacts/mkm_inter_agent_health_domain_signoff_candidate_latest.json"
+COMMANDER_APPROVAL = (
+    ROOT / "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json"
+)
 SWEEP = ROOT / "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json"
 ACTIVE = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 INPUT_V2 = ROOT / "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
@@ -49,26 +52,12 @@ def _case_row_from_report(report: dict[str, Any], case_id: str) -> dict[str, Any
 
 
 def _single_case_evaluate(raw_text: str, *, routing_profile: str) -> dict[str, Any]:
-    from scripts.compression_v2_routing_profile_v1 import routing_profile_kwargs
+    from scripts.compression_v2_routing_profile_v1 import routing_profile_eval_kwargs
     from scripts.compression_token_api_stub import _baseline_avg_jaccard, _decision_selected_profile
     from scripts.report_multilens_performance_eval import evaluate_report
 
     selected = _decision_selected_profile()
-    route_kw = routing_profile_kwargs(routing_profile)  # type: ignore[arg-type]
-    eval_extra = {
-        k: v
-        for k, v in route_kw.items()
-        if k
-        not in (
-            "routing_profile",
-            "promotion_signoff_path",
-            "sweep_pointer",
-            "note",
-            "hypothesis_tier",
-            "research_only",
-            "routing_profile_degraded",
-        )
-    }
+    eval_extra = routing_profile_eval_kwargs(routing_profile)  # type: ignore[arg-type]
     doc = {
         "compression_cases": [
             {
@@ -139,6 +128,10 @@ def build() -> dict[str, Any]:
     if variant:
         bench_promotion_eligible = bool(variant.get("ultra_saving_policy_ok"))
 
+    approval_doc = _load(COMMANDER_APPROVAL) if COMMANDER_APPROVAL.is_file() else None
+    commander_approved = bool(approval_doc and approval_doc.get("commander_approved"))
+    human_required = not commander_approved
+
     return {
         "schema": "mkm_inter_agent_health_domain_signoff_candidate_v1",
         "generated_at_utc": _utc_now(),
@@ -172,11 +165,26 @@ def build() -> dict[str, Any]:
             ),
         },
         "bench_promotion_eligible_without_human": bench_promotion_eligible,
-        "human_review_required": True,
+        "human_review_required": human_required,
+        "commander_approval": {
+            "approved": commander_approved,
+            "pointer": COMMANDER_APPROVAL.relative_to(ROOT).as_posix()
+            if commander_approved
+            else None,
+            "approval_scope": approval_doc.get("approval_scope") if approval_doc else None,
+            "track_a_bench_promotion_approved": (
+                approval_doc.get("track_a_bench_promotion_approved") if approval_doc else False
+            ),
+        },
         "recommended_action": (
-            "Human gate: do not merge into Track A active without commander sign-off. "
-            "health_hangul_relaxed_cap_0.50 misses 0.47 floor on full 40-case sweep; "
-            "use for inter-agent B-track routing_profile=b_track_domain_relax only until re-sweep passes."
+            "Commander approved: wire b_track_domain_relax to approved health/hangul caps; "
+            "Track A active signoff unchanged."
+            if commander_approved
+            else (
+                "Human gate: do not merge into Track A active without commander sign-off. "
+                "health_hangul_relaxed_cap_0.50 misses 0.47 floor on full 40-case sweep; "
+                "use for inter-agent B-track routing_profile=b_track_domain_relax only until re-sweep passes."
+            )
         ),
         "public_copy_ko": (
             "건강·한글 도메인 완화 캡은 연구 후보이며, 현재 동결 Track A 벤치(약 47.5%)를 대체하지 않습니다."

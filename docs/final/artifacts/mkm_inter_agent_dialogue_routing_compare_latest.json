@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_dialogue_routing_compare_v1",
-  "generated_at_utc": "2026-05-18T21:30:20Z",
+  "generated_at_utc": "2026-05-18T21:44:53Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
   "scenario": "health",
@@ -21,9 +21,9 @@
       "routing_profile": "b_track_domain_relax",
       "all_compress_ok": true,
       "all_expand_ok": true,
-      "avg_savings_ratio": 0.37977941176470587,
+      "avg_savings_ratio": null,
       "transcript_turn_count": 4
     }
   ],
-  "avg_savings_delta_b_track_minus_track_a": 0.0
+  "avg_savings_delta_b_track_minus_track_a": null
 }

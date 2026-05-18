@@ -12,8 +12,30 @@ ROOT = Path(__file__).resolve().parents[1]
 DECISION = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
 SIGNOFF = ROOT / "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json"
 LOW_SAVING_SWEEP = ROOT / "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json"
+HEALTH_COMMANDER_APPROVAL = (
+    ROOT / "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json"
+)
 
 RoutingProfile = Literal["default", "track_a_promoted", "b_track_domain_relax"]
+
+ROUTING_EVAL_EXCLUDE_KEYS = frozenset(
+    {
+        "routing_profile",
+        "promotion_signoff_path",
+        "sweep_pointer",
+        "note",
+        "hypothesis_tier",
+        "research_only",
+        "routing_profile_degraded",
+        "health_commander_approval_path",
+        "approved_variant_id",
+    }
+)
+
+
+def routing_profile_eval_kwargs(profile: RoutingProfile) -> dict[str, Any]:
+    """Kwargs safe to pass to evaluate_report (metadata stripped)."""
+    return {k: v for k, v in routing_profile_kwargs(profile).items() if k not in ROUTING_EVAL_EXCLUDE_KEYS}
 
 
 @lru_cache(maxsize=1)
@@ -45,6 +67,13 @@ def promotion_signoff_run_config() -> dict[str, Any] | None:
     return cfg if isinstance(cfg, dict) else None
 
 
+def health_commander_approval_doc() -> dict[str, Any] | None:
+    doc = _load_json(HEALTH_COMMANDER_APPROVAL)
+    if not doc.get("commander_approved"):
+        return None
+    return doc
+
+
 def routing_profile_kwargs(profile: RoutingProfile) -> dict[str, Any]:
     """Extra evaluate_report kwargs for v2 compress (not full report args)."""
     if profile == "default":
@@ -68,6 +97,25 @@ def routing_profile_kwargs(profile: RoutingProfile) -> dict[str, Any]:
             kw["domain_relaxed_max_saving_exclude_case_ids"] = frozenset(str(x) for x in exclude)
         return kw
     if profile == "b_track_domain_relax":
+        approval = health_commander_approval_doc()
+        if approval:
+            cfg = approval.get("approved_run_config")
+            cfg = cfg if isinstance(cfg, dict) else {}
+            overrides = dict(cfg.get("domain_relaxed_max_saving_overrides") or {})
+            overrides.setdefault("ssot", 0.45)
+            return {
+                "routing_profile": profile,
+                "research_only": True,
+                "hypothesis_tier": "B",
+                "domain_relaxed_max_saving_overrides": overrides,
+                "domain_relaxed_max_saving_case_allowlist": None,
+                "health_commander_approval_path": HEALTH_COMMANDER_APPROVAL.relative_to(ROOT).as_posix(),
+                "approved_variant_id": approval.get("approved_variant_id"),
+                "note": (
+                    "B-track health/hangul caps from commander-approved candidate — "
+                    "not Track A bench allowlist."
+                ),
+            }
         sweep = _load_json(LOW_SAVING_SWEEP)
         best = sweep.get("best_by_floor_then_saving") or {}
         knobs = best.get("knobs") if isinstance(best.get("knobs"), dict) else {}

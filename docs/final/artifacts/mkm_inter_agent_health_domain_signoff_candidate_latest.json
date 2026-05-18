@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_health_domain_signoff_candidate_v1",
-  "generated_at_utc": "2026-05-18T21:38:39Z",
+  "generated_at_utc": "2026-05-18T21:49:19Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
   "track_wall": "b_track_research_only",
@@ -42,7 +42,13 @@
     "savings_delta_b_track_minus_default": 0.0
   },
   "bench_promotion_eligible_without_human": false,
-  "human_review_required": true,
-  "recommended_action": "Human gate: do not merge into Track A active without commander sign-off. health_hangul_relaxed_cap_0.50 misses 0.47 floor on full 40-case sweep; use for inter-agent B-track routing_profile=b_track_domain_relax only until re-sweep passes.",
+  "human_review_required": false,
+  "commander_approval": {
+    "approved": true,
+    "pointer": "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json",
+    "approval_scope": "b_track_inter_agent_v2_routing_only",
+    "track_a_bench_promotion_approved": false
+  },
+  "recommended_action": "Commander approved: wire b_track_domain_relax to approved health/hangul caps; Track A active signoff unchanged.",
   "public_copy_ko": "건강·한글 도메인 완화 캡은 연구 후보이며, 현재 동결 Track A 벤치(약 47.5%)를 대체하지 않습니다."
 }

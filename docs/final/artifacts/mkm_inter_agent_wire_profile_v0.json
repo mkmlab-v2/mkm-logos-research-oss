@@ -22,7 +22,9 @@
         "track_a_promoted",
         "b_track_domain_relax"
       ],
-      "rebench_script": "scripts/run_mkm_inter_agent_v2_routing_rebench_v1.py"
+      "rebench_script": "scripts/run_mkm_inter_agent_v2_routing_rebench_v1.py",
+      "health_commander_approval": "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json",
+      "health_approval_record_script": "scripts/record_mkm_inter_agent_health_commander_approval_v1.py"
     },
     "packet": {
       "packet_format_version": "trust_packet.0.1",
