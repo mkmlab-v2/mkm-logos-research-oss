@@ -1,7 +1,7 @@
 {
   "schema": "lg_hs_compression_discipline_deck_v1",
   "status": "[DRAFT]",
-  "generated_at_utc": "2026-05-18T21:07:47.322596Z",
+  "generated_at_utc": "2026-05-18T21:38:13.133535Z",
   "tone_ratio": "70/20/10",
   "slides": [
     {
@@ -77,12 +77,12 @@
       "bullets": [
         "40-case frozen bench — **token saving is global only** (47.5%); shard rows are Jaccard only.",
         "Jaccard = overlap proxy; not semantic meaning %.",
-        "`zone_a_scm` (n=12): avg **0.866**, min **0.667**",
+        "`zone_a_scm` (n=12): avg **0.910**, min **0.733**",
         "`zone_b_timing` (n=2): avg **0.845**, min **0.786**",
         "`zone_c_hangul` (n=14): avg **0.903**, min **0.750**",
-        "`zone_d_ssot` (n=8): avg **0.875**, min **0.714**",
+        "`zone_d_ssot` (n=8): avg **0.834**, min **0.714**",
         "`zone_g_health` (n=4): avg **0.922**, min **0.875**",
-        "Global min Jaccard **0.667** (worst case on bench)."
+        "Global min Jaccard **0.714** (worst case on bench)."
       ],
       "evidence": [
         "docs/final/artifacts/lg_hs_before_after_factcheck_v1_latest.json",

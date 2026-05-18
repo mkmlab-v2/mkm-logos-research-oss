@@ -48,9 +48,10 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 **상태:** `[DRAFT]` 복붙용. 수치·통과 여부는 아래 아티팩트만 SSOT; 본 절만으로 구현·상용 승격을 단정하지 않는다. 면책·금지 표현은 `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` §3.
 
 - **포지션:** “더 큰 모델”이 아니라 **좁은 통로(정책 하한 0.47) + 벤치 게이트 + 동결 JSON** — 엔터프라이즈 리스크·감사 관점의 **압축 거버넌스 레이어**.
-- **현행 벤치 스냅샷 (재현 전제):** Track A 전역 절감 **~47.1%**, `ultra_saving_policy_ok` @ **0.47**, 평균 Jaccard **~0.89**, 민감어 무결성 **1.0** (40건) — `reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json`, `docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`.
-- **금지 대외 단정:** Jaccard를 “의미 N%”, LLM 할루시네이션 제거, NPU/BOM 절감 **입증 완료**, “세계 유일 OS”로 서술하지 않는다.
-- **1-Pager SSOT:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` (EN/KO 복붙 단락·면책 포함).
+- **현행 벤치 스냅샷 (재현 전제):** Track A 전역 절감 **~47.5%**, `bench_saving_floor_ok` + `ultra_saving_policy_ok` @ **0.47**, 평균 Jaccard **~0.89** (min **~0.71**), 민감어 무결성 **1.0** (40건) — `ultra_compression_kpi_summary_latest.json`, `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`. 승격: `ssot_cap_0.45_top5_allowlist` (signoff 2026-05-18).
+- **플러그인 확장 (IR):** `compression_enterprise_executive_summary_v1.md` **「Plugin scalability IR」** — `codebook/shards/zone_*.json` 정책 팩, **가중치 LoRA 아님**, 문서당 샤드 1개 + 41k lexicon; Pack 0-A/B LoRA와 **별 축**.
+- **금지 대외 단정:** Jaccard를 “의미 N%”, LLM 할루시네이션 제거, NPU/BOM 절감 **입증 완료**, “세계 유일 OS”, **다중 샤드 동시 융합**, “학습비 0원”으로 서술하지 않는다.
+- **1-Pager SSOT:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` (EN/KO 복붙 단락·면책·Plugin IR § 포함).
 - **정책 기록:** 하한 0.49→0.47 — `docs/final/artifacts/track_a_policy_floor_decision_v1.json` · 운영 `docs/final/COMPRESSION_SLA_POLICY_V1.md`.
 - **연구 로드맵 (`[HYPO]`):** 도메인 Meta-Policy, 보드 ms 상관, Shadow Auditor — `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-016–RQ-018** (B-track; 본선·실매매 자동 합선 금지).
 
@@ -75,7 +76,9 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 **금지 대외 문구 (참모 브리핑 정리):** “환각 제거”, “리콜 0%”, “Zero-Liability”, “하루 만에 자동차 이식”, “7,680회 하드웨어 스윕 완료”(레포 SSOT 없으면), “세탁기 도메인 완성”, “8.2ms Fact-Lock”(아티팩트 없으면).
 
-**근거 번들:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` · `compression_shadow_auditor_latest.json` · `COMPRESSION_SLA_POLICY_V1.md` · §3.7 Stage A–C 표.
+**플러그인 확장 (Zero weight-training plug-in, IR 키워드):** 산업별 **GPU 파인튜닝** 대신 KB-scale **`zone_*.json`** 정책 팩 + 벤치·signoff — 상세 불릿·EN/KO는 `compression_enterprise_executive_summary_v1.md` **「Plugin scalability IR」**; 구현 `scripts/core/domain_router.py`, `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`.
+
+**근거 번들:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` · `compression_shadow_auditor_latest.json` · `COMPRESSION_SLA_POLICY_V1.md` · `lg_compression_trust_packet_onepager_v1.md` · §3.7 Stage A–C 표.
 
 #### 3.1.3 통합 실행 일정 — 압축·쇼룸·B2B (2026-05, SSOT)
 
@@ -83,7 +86,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 | ID | 기간 | 상태 | 산출 / DoD | 명령·경로 |
 |----|------|------|------------|-----------|
-| **C-A1** | 2026-05-16 | **완료** | policy floor **0.47**, bench saving **~47.1%**, avg Jaccard **~0.89**, cmp2_014 **0.875**, Shadow Auditor **exit 0** | `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, `ultra_compression_kpi_summary_latest.json`, `track_a_policy_floor_decision_v1.json` |
+| **C-A1** | 2026-05-18 | **완료** | policy floor **0.47**, bench saving **~47.5%**, promotion `ssot_cap_0.45_top5_allowlist`, avg Jaccard **~0.89**, Shadow Auditor **exit 0** | `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`, `ultra_compression_kpi_summary_latest.json`, `multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json` |
 | **C-A2** | 2026-05-16 | **내부 OK** | 1-Pager 내부 OEM 초안 통과(`ready_for_internal_oem_draft`); **대외 send=false** 법무 대기 | `check_compression_enterprise_summary_readiness_v1.py` → `reports/compression_enterprise_summary_readiness_v1_latest.json` |
 | **C-A3** | 2026-05-16 | **완료** | 쇼룸 Trust viz에 **compression_governance_v0** (policy **0.47**, saving/Jaccard, artifact paths) | `build_showroom_track_c_bundle_chain_v1.ps1` → `showroom_trust_visualization_slice_v0.json` · `public_showroom_trust_visualization_v0.html` |
 | **C-A4** | 2026-05-16 | **완료(주간 1회)** | 거버넌스 리포트 + Shadow Auditor + KPI 알람 OK | `compression_weekly_governance_report_latest.json` · `run_compression_weekly_governance_chain.ps1 -IncludeShadowAuditor` |

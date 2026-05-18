@@ -1,6 +1,6 @@
 # LG HS Before/After — Fact-Lock (v1)
 
-**Generated:** `2026-05-16T11:06:50Z` · **Status:** `[DRAFT]` internal only
+**Generated:** `2026-05-18T21:38:12Z` · **Status:** `[DRAFT]` internal only
 
 ## Verdict summary
 
@@ -18,6 +18,10 @@
 | `shadow_auditor_17_of_17` | **FAIL_DO_NOT_USE** |
 | `bench_conc10_as_production_sla` | **PARTIAL_TRUE_REWORD_REQUIRED** |
 | `jaccard_equals_meaning_percent` | **FAIL_DO_NOT_USE** |
+| `multi_shard_simultaneous_activation` | **FAIL_DO_NOT_USE** |
+| `plugin_lora_zero_training_cost` | **FAIL_DO_NOT_USE** |
+| `zone_c_health_filename` | **FAIL_DO_NOT_USE** |
+| `plugin_shard_single_route` | **FACT** |
 
 ## Safe copy table (LG-facing)
 
@@ -32,11 +36,11 @@
 
 | Label | n | avg Jaccard | min Jaccard | token saving |
 |-------|---|-------------|-------------|--------------|
-| Global (40-case bench) | 40 | 0.885 | 0.667 | 47.12% |
-| zone_a_scm | 12 | 0.866 | 0.667 | (global only — not per-shard) |
+| Global (40-case bench) | 40 | 0.890 | 0.714 | 47.54% |
+| zone_a_scm | 12 | 0.910 | 0.733 | (global only — not per-shard) |
 | zone_b_timing | 2 | 0.845 | 0.786 | (global only — not per-shard) |
 | zone_c_hangul | 14 | 0.903 | 0.750 | (global only — not per-shard) |
-| zone_d_ssot | 8 | 0.875 | 0.714 | (global only — not per-shard) |
+| zone_d_ssot | 8 | 0.834 | 0.714 | (global only — not per-shard) |
 | zone_g_health | 4 | 0.922 | 0.875 | (global only — not per-shard) |
 
 ## Governance proofs (accurate wording)

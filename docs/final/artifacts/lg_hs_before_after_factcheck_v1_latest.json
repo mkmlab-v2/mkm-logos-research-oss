@@ -1,6 +1,6 @@
 {
   "schema": "lg_hs_before_after_factcheck_v1",
-  "generated_at_utc": "2026-05-16T11:06:50Z",
+  "generated_at_utc": "2026-05-18T21:38:12Z",
   "claims": {
     "export_not_found_80": {
       "verdict": "PARTIAL_TRUE_REWORD_REQUIRED",
@@ -51,7 +51,7 @@
     "domain_table_per_shard_saving": {
       "verdict": "FAIL_DO_NOT_USE",
       "fact": "global_token_saving_rate applies to full 40-case bench only; repeating ~47% on each shard row misleads.",
-      "global_token_saving_rate": 0.47116736990154706
+      "global_token_saving_rate": 0.47538677918424754
     },
     "domain_table_scm_avg_067": {
       "verdict": "FAIL_DO_NOT_USE",
@@ -59,8 +59,8 @@
       "scm_shard": {
         "shard_id": "zone_a_scm",
         "case_count": 12,
-        "avg_jaccard": 0.8659245642701525,
-        "min_jaccard": 0.6666666666666666,
+        "avg_jaccard": 0.9103690087145969,
+        "min_jaccard": 0.7333333333333333,
         "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
       }
     },
@@ -80,7 +80,7 @@
       "fact": "tests/test_ultra_compression_artifacts.py is 4 contract tests; not 17/17.",
       "pytest": {
         "exit_code": 0,
-        "pytest_tail": "....                                                                     [100%]\n4 passed in 0.23s",
+        "pytest_tail": "....                                                                     [100%]\n4 passed in 0.48s",
         "passed_count": 4
       },
       "shadow_auditor": {
@@ -118,14 +118,35 @@
     "jaccard_equals_meaning_percent": {
       "verdict": "FAIL_DO_NOT_USE",
       "fact": "Jaccard is token/word overlap proxy on 40-case bench; not semantic meaning %."
+    },
+    "multi_shard_simultaneous_activation": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "Track A compress path selects one winning shard per document via keyword score (scripts/core/domain_router.py). Not multi-shard overlay on a single pass.",
+      "code_pointer": "scripts/core/domain_router.py · scripts/report_multilens_performance_eval.py",
+      "accurate_wording": "41k lexicon always ON + best-fit zone_*.json shard; multi-shard union = roadmap only."
+    },
+    "plugin_lora_zero_training_cost": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "No runtime weight LoRA on Track A compress path; JSON shard packs are KB-scale. Export/curation and bench signoff still have engineering cost.",
+      "accurate_wording": "Runtime fine-tuning not required; not 'training cost $0 forever'."
+    },
+    "zone_c_health_filename": {
+      "verdict": "FAIL_DO_NOT_USE",
+      "fact": "Health shard file is codebook/shards/zone_g_health.json (not zone_c_health).",
+      "path": "codebook/shards/zone_g_health.json"
+    },
+    "plugin_shard_single_route": {
+      "verdict": "FACT",
+      "fact": "use_domain_router=True loads zone_*.json; route() picks max routing_keywords hit; must_keep from that shard unions with master_codebook_lexicon_v1 when enabled.",
+      "shard_count_loaded": 9
     }
   },
   "frozen_bench_shard_jaccard": [
     {
       "shard_id": "zone_a_scm",
       "case_count": 12,
-      "avg_jaccard": 0.8659245642701525,
-      "min_jaccard": 0.6666666666666666,
+      "avg_jaccard": 0.9103690087145969,
+      "min_jaccard": 0.7333333333333333,
       "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
     },
     {
@@ -145,7 +166,7 @@
     {
       "shard_id": "zone_d_ssot",
       "case_count": 8,
-      "avg_jaccard": 0.8751104287868994,
+      "avg_jaccard": 0.8337545114199526,
       "min_jaccard": 0.7142857142857143,
       "note": "token_saving_rate is global-only on this bench; do not repeat per shard."
     },
@@ -159,23 +180,23 @@
   ],
   "frozen_bench_global": {
     "case_count": 40,
-    "global_token_saving_rate": 0.47116736990154706,
-    "avg_reconstruction_fidelity_jaccard": 0.885430029636686,
-    "min_reconstruction_fidelity_jaccard": 0.6666666666666666
+    "global_token_saving_rate": 0.47538677918424754,
+    "avg_reconstruction_fidelity_jaccard": 0.8904921794966301,
+    "min_reconstruction_fidelity_jaccard": 0.7142857142857143
   },
   "lg_safe_domain_table": [
     {
       "label": "Global (40-case bench)",
       "case_count": 40,
-      "avg_jaccard": 0.885430029636686,
-      "min_jaccard": 0.6666666666666666,
-      "token_saving_rate": 0.47116736990154706
+      "avg_jaccard": 0.8904921794966301,
+      "min_jaccard": 0.7142857142857143,
+      "token_saving_rate": 0.47538677918424754
     },
     {
       "label": "zone_a_scm",
       "case_count": 12,
-      "avg_jaccard": 0.8659245642701525,
-      "min_jaccard": 0.6666666666666666,
+      "avg_jaccard": 0.9103690087145969,
+      "min_jaccard": 0.7333333333333333,
       "token_saving_rate": "(global only — not per-shard)"
     },
     {
@@ -195,7 +216,7 @@
     {
       "label": "zone_d_ssot",
       "case_count": 8,
-      "avg_jaccard": 0.8751104287868994,
+      "avg_jaccard": 0.8337545114199526,
       "min_jaccard": 0.7142857142857143,
       "token_saving_rate": "(global only — not per-shard)"
     },

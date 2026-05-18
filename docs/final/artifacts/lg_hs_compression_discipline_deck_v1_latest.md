@@ -2,7 +2,7 @@
 
 **Status:** `[DRAFT]` — slides only; not legal-approved external send.
 
-**Generated:** 2026-05-18T21:35:58.193063Z
+**Generated:** 2026-05-18T21:38:13.133535Z
 
 **Tone:** 70/20/10 · manufacturing language · `lg_hs_persuasion_module_v1_2026-05-08.md`
 
