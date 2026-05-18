@@ -1,0 +1,64 @@
+{
+  "schema": "mkm_inter_agent_first_message_live_http_v1",
+  "captured_at_utc": "2026-05-18T20:09:59Z",
+  "classification": "INTERNAL_ONLY",
+  "stub": "scripts/compression_token_api_v2_stub.py",
+  "base_url": "http://127.0.0.1:8011",
+  "sample_input": "사상의학 체질 분류 예시. MKM inter-agent message rail demo. sasang taeeum soeum myeongri logos atom_id trust_packet.",
+  "curl": {
+    "start_stub": "py -m uvicorn scripts.compression_token_api_v2_stub:app --host 127.0.0.1 --port 8011",
+    "compress": "curl -s -X POST http://127.0.0.1:8011/v2/compress -H \"Content-Type: application/json\" -d @docs/final/artifacts/fixtures/mkm_inter_agent_compress_request_v1.json",
+    "expand": "curl -s -X POST http://127.0.0.1:8011/v2/expand -H \"Content-Type: application/json\" -d @docs/final/artifacts/fixtures/mkm_inter_agent_expand_request_v1.json"
+  },
+  "machine_roundtrip": {
+    "expand_equals_stub_reconstructed": true,
+    "token_in": 21,
+    "token_out": 8,
+    "savings_ratio": 0.6190476190476191,
+    "jaccard_proxy": 0.8823529411764706
+  },
+  "responses": {
+    "compress": {
+      "compression_packet": {
+        "packet_format_version": "trust_packet.0.1",
+        "api_contract_version": "2.0.0-draft",
+        "loss_profile": "semantic_general",
+        "compressed_text": "사상의학 체질 message sasang myeongri MKM rail soeum",
+        "residual_meta": {
+          "mk_stub_v2": {
+            "reconstructed_text": "사상의학 체질 분류 예시 MKM inter agent message rail demo sasang taeeum soeum myeongri logos",
+            "global_token_saving_rate": 0.6190476190476191,
+            "reconstruction_fidelity_jaccard": 0.8823529411764706
+          },
+          "placeholder_map": {}
+        },
+        "router_meta": {
+          "shard_id": "zone_a_scm",
+          "domain": "scm"
+        },
+        "content_fingerprint": "b3cec1bac0ef573a2b7e07ce21612f9e"
+      },
+      "compression_metrics": {
+        "token_in": 21,
+        "token_out": 8,
+        "savings_ratio": 0.6190476190476191
+      },
+      "integrity_flags": {
+        "stub_v2": true,
+        "hangul_principle": true,
+        "loss_profile": "semantic_general",
+        "jaccard_proxy": 0.8823529411764706
+      }
+    },
+    "expand": {
+      "text": "사상의학 체질 분류 예시 MKM inter agent message rail demo sasang taeeum soeum myeongri logos",
+      "api_contract_version": "2.0.0-draft",
+      "integrity_flags": {
+        "stub_v2": true,
+        "reassembly": "residual_meta",
+        "source": "mk_stub_v2"
+      }
+    }
+  },
+  "boundary_ack": "Live HTTP on local stub. Not production SLA. expand uses packet only (no original_text). Human L1 decode ~58% is separate research_only path."
+}

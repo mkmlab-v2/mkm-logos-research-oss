@@ -81,11 +81,45 @@ L1 **msgpack wire** (`POST /v1/research/l1_side_channel/wire`)는 본 예제 범
 
 ---
 
-## 7. 재현
+## 7. 재현 (in-process)
 
 ```bash
 py scripts/emit_mkm_inter_agent_first_message_worked_example_v1.py
 py -m pytest tests/test_emit_mkm_inter_agent_first_message_worked_example_v1.py tests/test_compression_token_api_v2_stub.py -q
 ```
+
+---
+
+## 8. 살아있는 HTTP 왕복 (로컬 stub · IR/내부 증명용)
+
+**전제:** 저장소 루트 `C:\workspace` · stub 기동 후 다른 터미널에서 curl.
+
+### 8.1 Stub 기동
+
+```bash
+py -m uvicorn scripts.compression_token_api_v2_stub:app --host 127.0.0.1 --port 8011
+```
+
+### 8.2 `POST /v2/compress`
+
+```bash
+curl -s -X POST http://127.0.0.1:8011/v2/compress ^
+  -H "Content-Type: application/json" ^
+  -d @docs/final/artifacts/fixtures/mkm_inter_agent_compress_request_v1.json
+```
+
+**실측 요약 (2026-05-19):** `token_in` 21 → `token_out` 8 · `savings_ratio` ~0.619 · `compressed_text`는 증류 본문 · `residual_meta.mk_stub_v2`에 기계 재조립문·Jaccard 보관.
+
+### 8.3 `POST /v2/expand` (packet only — `original_text` 없음)
+
+```bash
+curl -s -X POST http://127.0.0.1:8011/v2/expand ^
+  -H "Content-Type: application/json" ^
+  -d @docs/final/artifacts/fixtures/mkm_inter_agent_expand_request_v1.json
+```
+
+**실측:** `expand` 출력 == `mk_stub_v2.reconstructed_text` · `integrity_flags.source` = `mk_stub_v2`.
+
+**박제 JSON:** `docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json` (compress+expand 응답 전문).
 
 **schema:** `mkm_inter_agent_first_message_worked_example_v1` · **generated:** 2026-05-19

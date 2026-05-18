@@ -60,6 +60,9 @@ PACKS: dict[str, list[str]] = {
         "docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json",
         "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md",
         "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.json",
+        "docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json",
+        "docs/final/artifacts/fixtures/mkm_inter_agent_compress_request_v1.json",
+        "docs/final/artifacts/fixtures/mkm_inter_agent_expand_request_v1.json",
     ],
     "LENS_PROPHECY": [
         "docs/final/NOTEBOOKLM_PROPHECY_LENS_INDEX_V1.md",
