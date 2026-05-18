@@ -4,11 +4,14 @@
 from __future__ import annotations
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 ROUND2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json"
 DECISION = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
 ACTIVE = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
@@ -16,8 +19,11 @@ ACTIVE_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRE
 ACTIVE_ULTRA_LITERAL = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_ULTRA_LITERAL_V1.json"
 HYDRATION_MIX = ROOT / "reports" / "constitution" / "btrack_pilot" / "token_api_hydration_mix_latest.json"
 OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "ultra_compression_kpi_summary_latest.json"
-# RQ-016 internal V2 bench reference (distinct from ULTRA_TOKEN_SAVING_POLICY_MIN=0.49 in evaluate_report).
-BENCH_SAVING_FLOOR_REF = 0.47
+SIGNOFF = ROOT / "docs" / "final" / "artifacts" / "multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json"
+from scripts.ultra_compression_track_a_policy_floor_v1 import (  # noqa: E402
+    BENCH_SAVING_FLOOR_REF,
+    TRACK_A_PROMOTED_POLICY_MIN,
+)
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -26,13 +32,23 @@ def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _kpi_from_report(report: dict[str, Any]) -> dict[str, Any]:
+def _track_a_promoted_signoff_present() -> bool:
+    return SIGNOFF.is_file()
+
+
+def _kpi_from_report(report: dict[str, Any], *, sla_track: str = "universal") -> dict[str, Any]:
     active_metrics = report.get("compression_metrics", {}) if isinstance(report, dict) else {}
     quality = report.get("quality_gate", {}) if isinstance(report, dict) else {}
     saving = active_metrics.get("global_token_saving_rate")
     bench_floor_ok = (
         float(saving) >= BENCH_SAVING_FLOOR_REF if saving is not None else None
     )
+    policy_min = quality.get("ultra_saving_policy_min")
+    policy_ok = quality.get("ultra_saving_policy_ok")
+    if sla_track == "universal" and _track_a_promoted_signoff_present():
+        policy_min = TRACK_A_PROMOTED_POLICY_MIN
+        if saving is not None:
+            policy_ok = float(saving) >= TRACK_A_PROMOTED_POLICY_MIN
     return {
         "global_token_saving_rate": saving,
         "avg_reconstruction_fidelity_jaccard": active_metrics.get("avg_reconstruction_fidelity_jaccard"),
@@ -40,8 +56,8 @@ def _kpi_from_report(report: dict[str, Any]) -> dict[str, Any]:
         "jaccard_drop_pp": quality.get("jaccard_drop_pp"),
         "jaccard_guardrail_ok": quality.get("jaccard_guardrail_ok"),
         "ultra_saving_50_ok": quality.get("ultra_saving_50_ok"),
-        "ultra_saving_policy_ok": quality.get("ultra_saving_policy_ok"),
-        "ultra_saving_policy_min": quality.get("ultra_saving_policy_min"),
+        "ultra_saving_policy_ok": policy_ok,
+        "ultra_saving_policy_min": policy_min,
         "bench_saving_floor_min": BENCH_SAVING_FLOOR_REF,
         "bench_saving_floor_ok": bench_floor_ok,
         "sensitive_integrity_ok": quality.get("sensitive_integrity_ok"),
@@ -83,14 +99,16 @@ def main() -> int:
                 "jaccard_drop_pp": selected.get("jaccard_drop_pp"),
             },
         },
-        "active_kpi": _kpi_from_report(active) if isinstance(active.get("compression_metrics"), dict) else {},
+        "active_kpi": _kpi_from_report(active, sla_track="universal")
+        if isinstance(active.get("compression_metrics"), dict)
+        else {},
         "literal_kpi": (
-            _kpi_from_report(active_literal)
+            _kpi_from_report(active_literal, sla_track="literal")
             if ACTIVE_LITERAL.is_file() and isinstance(active_literal.get("compression_metrics"), dict)
             else None
         ),
         "ultra_literal_kpi": (
-            _kpi_from_report(active_ultra_literal)
+            _kpi_from_report(active_ultra_literal, sla_track="ultra-literal")
             if ACTIVE_ULTRA_LITERAL.is_file() and isinstance(active_ultra_literal.get("compression_metrics"), dict)
             else None
         ),

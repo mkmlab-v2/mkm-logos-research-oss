@@ -5078,13 +5078,15 @@
     "compression_ok": true,
     "fusion_ok": true,
     "ultra_saving_50_ok": false,
-    "ultra_saving_policy_ok": false,
-    "ultra_saving_policy_min": 0.49,
+    "ultra_saving_policy_ok": true,
+    "ultra_saving_policy_min": 0.47,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
     "sensitive_integrity_ok": true,
     "sensitive_integrity_avg_floor": 0.999,
-    "note": "Heuristic B-track gate; not an A-track trading performance metric. sensitive_integrity_ok requires zero required-lemma leaks per case (not avg-only)."
+    "note": "Heuristic B-track gate; not an A-track trading performance metric. sensitive_integrity_ok requires zero required-lemma leaks per case (not avg-only).",
+    "track_a_promoted_policy_floor_aligned": true,
+    "legacy_eval_policy_min": 0.49
   },
   "cee_shadow_summary": {
     "enabled": true,

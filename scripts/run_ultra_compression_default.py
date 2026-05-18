@@ -15,6 +15,9 @@ if str(ROOT) not in sys.path:
 
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy
 from scripts.report_multilens_performance_eval import evaluate_report
+from scripts.ultra_compression_track_a_policy_floor_v1 import (
+    apply_promoted_policy_floor_to_quality_gate,
+)
 
 
 INPUT_V2 = ROOT / "docs" / "final" / "artifacts" / "MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json"
@@ -253,6 +256,8 @@ def main() -> int:
         domain_relaxed_max_saving_exclude_case_ids=relaxed_case_exclude,
         include_cee_core=True,
     )
+    if promotion_signoff_applied and sla_track == "universal":
+        apply_promoted_policy_floor_to_quality_gate(report)
     report["active_profile"] = {
         "sla_track": sla_track,
         "from_decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",

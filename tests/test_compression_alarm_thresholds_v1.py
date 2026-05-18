@@ -34,6 +34,8 @@ def _bench_floor_alarm_reasons(active: dict, thr: dict) -> list[str]:
 def test_compression_alarm_thresholds_contract() -> None:
     thr = _load(_THRESH)
     assert thr.get("bench_saving_floor_min") == 0.47
+    assert thr.get("track_a_promoted_policy_min") == 0.47
+    assert thr.get("suggested_policy_floor_token_saving_rate") == 0.47
     assert thr.get("alarm_if_bench_saving_floor_false") is True
 
 

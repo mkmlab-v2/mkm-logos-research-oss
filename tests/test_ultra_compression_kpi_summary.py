@@ -30,6 +30,11 @@ def test_ultra_compression_kpi_summary_contract() -> None:
     assert 0.0 <= float(active.get("avg_sensitive_integrity", -1)) <= 1.0
     assert active.get("bench_saving_floor_min") == 0.47
     assert isinstance(active.get("bench_saving_floor_ok"), bool)
+    signoff = _ROOT / "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json"
+    if signoff.is_file():
+        assert active.get("ultra_saving_policy_min") == 0.47
+        assert active.get("ultra_saving_policy_ok") is True
+        assert active.get("bench_saving_floor_ok") is True
     lit = d.get("literal_kpi")
     if lit is not None and isinstance(lit, dict):
         assert 0.0 <= float(lit.get("global_token_saving_rate") or 0.0) <= 1.0

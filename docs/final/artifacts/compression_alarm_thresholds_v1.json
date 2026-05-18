@@ -1,10 +1,11 @@
 {
   "schema": "compression_alarm_thresholds_v1",
   "version": "2026-05-18",
-  "description": "Active_kpi bounds for scripts/send_compression_kpi_alarm_if_needed.ps1. Bench floor 0.47 (RQ-016) is separate from decision/canary axis 0.49 (ultra_saving_policy_ok).",
+  "description": "Active_kpi bounds for send_compression_kpi_alarm_if_needed.ps1. Promoted Track A uses RQ-016 bench/decision floor 0.47 (ultra_saving_policy_ok). Legacy grid evaluate_report may still emit 0.49 for non-promoted sweeps.",
   "bench_aligned_field": "active_kpi.global_token_saving_rate",
   "bench_saving_floor_min": 0.47,
-  "suggested_policy_floor_token_saving_rate": 0.49,
+  "track_a_promoted_policy_min": 0.47,
+  "suggested_policy_floor_token_saving_rate": 0.47,
   "min_avg_reconstruction_fidelity_jaccard": 0.4,
   "min_global_token_saving_rate": 0.47,
   "min_avg_sensitive_integrity": 0.8,

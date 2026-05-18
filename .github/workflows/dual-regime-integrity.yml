@@ -1062,7 +1062,7 @@ jobs:
         run: python scripts/report_ultra_compression_kpi_summary.py
 
       - name: Ultra compression KPI summary contract
-        run: python -m pytest tests/test_ultra_compression_kpi_summary.py tests/test_compression_alarm_thresholds_v1.py -q --tb=short
+        run: python -m pytest tests/test_ultra_compression_kpi_summary.py tests/test_compression_alarm_thresholds_v1.py tests/test_ultra_compression_track_a_policy_floor_v1.py -q --tb=short
 
       - name: Compression weekly governance report snapshot
         run: python scripts/build_compression_weekly_governance_report.py
