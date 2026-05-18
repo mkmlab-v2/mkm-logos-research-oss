@@ -49,6 +49,10 @@ def build(*, dialogue_turns: int = 4) -> dict[str, Any]:
     )
 
     status_doc: dict[str, Any] | None = _load(STATUS) if STATUS.is_file() else None
+    from scripts.mkm_inter_agent_rq019_status_v1 import resolve_rq019_status
+
+    rq_019_status = resolve_rq019_status()
+    rq_019_closed = rq_019_status == "CLOSED"
     ratios: list[float] = []
     for row in dialogue.get("transcript") or []:
         if not isinstance(row, dict):
@@ -67,8 +71,9 @@ def build(*, dialogue_turns: int = 4) -> dict[str, Any]:
         "approval_pointer": APPROVAL.relative_to(ROOT).as_posix(),
         "approved_variant_id": approval.get("approved_variant_id"),
         "track_a_bench_promotion_approved": approval.get("track_a_bench_promotion_approved"),
-        "rq_019_external_closed": False,
-        "legal_signoff_required_for_rq019_closed": True,
+        "rq_019_external_closed": rq_019_closed,
+        "rq_019_status": rq_019_status,
+        "legal_signoff_required_for_rq019_closed": not rq_019_closed,
         "ops_ready": {
             "b_track_health_dialogue": dialogue.get("all_expand_packet_only") is True
             and dialogue.get("all_expand_ok") is True,
@@ -86,13 +91,26 @@ def build(*, dialogue_turns: int = 4) -> dict[str, Any]:
         },
         "boundary_ack": (
             "Commander approved B-track inter-agent health caps only. "
-            "Track A frozen bench unchanged. RQ-019 stays OPEN until legal on external copy."
+            "Track A frozen bench unchanged. "
+            + (
+                "RQ-019 CLOSED after counsel + commander close artifacts."
+                if rq_019_closed
+                else "RQ-019 stays OPEN until legal on external copy."
+            )
         ),
-        "recommended_next": [
-            "Legal review: mkm_inter_agent_ir_snippet_v1.md + PUBLIC_FACING v1.7",
-            "Optional: live HTTP demo for internal stakeholders (stub port 8011)",
-            "Do not promote health_hangul_relaxed_cap_0.50 to Track A without 0.47 floor re-sweep",
-        ],
+        "recommended_next": (
+            [
+                "External copy: PUBLIC_FACING v1.7 on each outbound asset",
+                "Optional: live HTTP demo for internal stakeholders (stub port 8011)",
+                "Do not promote health_hangul_relaxed_cap_0.50 to Track A without 0.47 floor re-sweep",
+            ]
+            if rq_019_closed
+            else [
+                "Legal review: mkm_inter_agent_ir_snippet_v1.md + PUBLIC_FACING v1.7",
+                "Optional: live HTTP demo for internal stakeholders (stub port 8011)",
+                "Do not promote health_hangul_relaxed_cap_0.50 to Track A without 0.47 floor re-sweep",
+            ]
+        ),
     }
 
 

@@ -1,10 +1,10 @@
 {
   "schema": "mkm_inter_agent_legal_handoff_pack_v1",
-  "generated_at_utc": "2026-05-18T22:18:35Z",
+  "generated_at_utc": "2026-05-18T22:41:03Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
-  "rq_019_status": "OPEN",
-  "legal_review_status": "SUBMITTED_TO_COUNSEL",
+  "rq_019_status": "CLOSED",
+  "legal_review_status": "COUNSEL_SIGNED",
   "commander_ops_approved": true,
   "commander_legal_submission": true,
   "technical_closure_ready": true,
@@ -49,8 +49,8 @@
     {
       "id": 7,
       "item": "Legal sign-off on external copy",
-      "met": false,
-      "evidence": "PENDING — counsel review of ir_snippet + PUBLIC_FACING v1.7"
+      "met": true,
+      "evidence": "docs/final/artifacts/mkm_inter_agent_legal_counsel_signoff_v1_latest.json"
     }
   ],
   "documents_for_counsel": [
@@ -68,6 +68,7 @@
     "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md",
     "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json",
     "docs/final/artifacts/mkm_inter_agent_ir_snippet_v1.md",
+    "docs/final/artifacts/mkm_inter_agent_legal_counsel_signoff_v1_latest.json",
     "docs/final/artifacts/mkm_inter_agent_post_commander_approval_bundle_latest.json",
     "docs/final/artifacts/mkm_inter_agent_rq019_closure_readiness_latest.json",
     "docs/final/artifacts/mkm_inter_agent_wire_profile_v0.json",

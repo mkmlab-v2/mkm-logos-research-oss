@@ -136,12 +136,18 @@ def build() -> dict[str, Any]:
             seen.add(rel)
             documents_for_counsel.append(rel)
 
+    from scripts.mkm_inter_agent_rq019_status_v1 import resolve_rq019_status
+
+    rq_019_status = resolve_rq019_status()
+    if rq_019_status == "OPEN" and item7_met:
+        rq_019_status = "READY_FOR_COMMANDER_CLOSE"
+
     return {
         "schema": "mkm_inter_agent_legal_handoff_pack_v1",
         "generated_at_utc": _utc_now(),
         "classification": "INTERNAL_ONLY",
         "hypothesis_tier": "B",
-        "rq_019_status": "OPEN" if not item7_met else "READY_FOR_COMMANDER_CLOSE",
+        "rq_019_status": rq_019_status,
         "legal_review_status": legal_status,
         "commander_ops_approved": True,
         "commander_legal_submission": (_load(PATHS["submission"]) or {}).get(

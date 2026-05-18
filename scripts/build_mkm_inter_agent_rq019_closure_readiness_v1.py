@@ -11,7 +11,10 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 HANDOFF = ROOT / "docs/final/artifacts/mkm_inter_agent_legal_handoff_pack_latest.json"
+SIGNOFF = ROOT / "docs/final/artifacts/mkm_inter_agent_legal_counsel_signoff_v1_latest.json"
 SUBMISSION = ROOT / "docs/final/artifacts/mkm_inter_agent_commander_legal_submission_v1_latest.json"
 MANIFEST = ROOT / "docs/final/artifacts/mkm_inter_agent_counsel_export_manifest_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/mkm_inter_agent_rq019_closure_readiness_latest.json"
@@ -33,23 +36,40 @@ def _load(path: Path) -> dict[str, Any] | None:
 
 def build() -> dict[str, Any]:
     handoff = _load(HANDOFF) or {}
+    signoff = _load(SIGNOFF) or {}
     submission = _load(SUBMISSION) or {}
     manifest = _load(MANIFEST) or {}
     checklist = handoff.get("checklist") or []
     item7 = next((c for c in checklist if c.get("id") == 7), {})
-    legal_status = submission.get("legal_review_status") or handoff.get("legal_review_status")
+    item7_met = bool(item7.get("met")) or bool(signoff.get("rq_019_checklist_item_7_met"))
+    # Submission stays SUBMITTED_TO_COUNSEL after counsel signs; prefer signoff/handoff.
+    legal_status = (
+        signoff.get("legal_review_status")
+        or handoff.get("legal_review_status")
+        or submission.get("legal_review_status")
+    )
 
     blockers: list[str] = []
-    if not item7.get("met"):
+    if not item7_met:
         blockers.append("legal_signoff_checklist_item_7")
     if legal_status not in ("APPROVED", "COUNSEL_SIGNED"):
         blockers.append(f"legal_review_status={legal_status}")
 
+    from scripts.mkm_inter_agent_rq019_status_v1 import CLOSE as CLOSE_PATH
+
+    close_doc = _load(CLOSE_PATH) or {}
+    if close_doc.get("rq_019_closed"):
+        rq_status = "CLOSED"
+    elif blockers:
+        rq_status = "OPEN"
+    else:
+        rq_status = "READY_FOR_COMMANDER_CLOSE"
+
     return {
         "schema": "mkm_inter_agent_rq019_closure_readiness_v1",
         "generated_at_utc": _utc_now(),
-        "rq_019_status": "OPEN" if blockers else "READY_FOR_COMMANDER_CLOSE",
-        "closure_allowed": len(blockers) == 0,
+        "rq_019_status": rq_status,
+        "closure_allowed": len(blockers) == 0 or close_doc.get("rq_019_closed") is True,
         "blockers": blockers,
         "legal_review_status": legal_status,
         "commander_legal_submission": submission.get("commander_authorized_legal_submission"),
