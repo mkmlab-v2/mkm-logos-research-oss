@@ -36,7 +36,11 @@ def _load_json(path: Path) -> dict[str, Any] | None:
     return o if isinstance(o, dict) else None
 
 
-def _eval_price(score_path: Path | None) -> tuple[dict[str, Any], dict[str, Any]]:
+def _eval_price(
+    score_path: Path | None,
+    *,
+    headline_instrument: str | None = None,
+) -> tuple[dict[str, Any], dict[str, Any]]:
     """Single or batch rows: {predicted_direction, actual_direction} or {rows:[...]}."""
     if not score_path or not score_path.is_file():
         return (
@@ -56,9 +60,17 @@ def _eval_price(score_path: Path | None) -> tuple[dict[str, Any], dict[str, Any]
     else:
         rows = [doc]
 
+    inst_filter: str | None = None
+    if headline_instrument and str(headline_instrument).strip().lower() not in ("", "auto", "pooled"):
+        inst_filter = str(headline_instrument).strip().lower()
+
     hits = 0
     n = 0
     for r in rows:
+        if inst_filter:
+            row_inst = str(r.get("instrument") or "btc").strip().lower()
+            if row_inst != inst_filter:
+                continue
         pd = str(r.get("predicted_direction") or r.get("predicted_sign") or "").strip().lower()
         ad = str(r.get("actual_direction") or r.get("actual_sign") or "").strip().lower()
         if not pd or not ad:
@@ -180,10 +192,19 @@ def main() -> int:
         default=None,
         help="proxy mode: glob under workspace root for registry reports (optional).",
     )
+    ap.add_argument(
+        "--headline-instrument",
+        type=str,
+        default="auto",
+        help="price mode: filter score rows by instrument (btc, kospi). auto/pooled = all rows.",
+    )
     args = ap.parse_args()
 
     if args.run_mode == "price":
-        metrics, meta = _eval_price(args.score_json)
+        metrics, meta = _eval_price(
+            args.score_json,
+            headline_instrument=args.headline_instrument,
+        )
     else:
         metrics, meta = _eval_proxy(args.registry_glob, ROOT)
 
@@ -200,6 +221,7 @@ def main() -> int:
             "run_mode": args.run_mode,
             "score_json": str(args.score_json) if args.score_json else None,
             "registry_glob": args.registry_glob,
+            "headline_instrument": args.headline_instrument,
         },
         "metrics": metrics,
         "sources": {

@@ -115,6 +115,8 @@ def run_experiment(
         "--output",
         str(eval_out.relative_to(ROOT)),
     ]
+    if btc_only:
+        eval_cmd.extend(["--headline-instrument", "btc"])
     _run_py(eval_cmd, env=env)
 
     per_date_doc = _load(per_date_out)
