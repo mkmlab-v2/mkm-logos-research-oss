@@ -29,6 +29,11 @@ param(
 $ErrorActionPreference = "Stop"
 $root = if ($WorkspaceRoot) { (Resolve-Path -LiteralPath $WorkspaceRoot).Path } else { Split-Path -Parent $PSScriptRoot }
 
+$dotenv = Join-Path $root "scripts\Import-WorkspaceDotEnv_v1.ps1"
+if (Test-Path -LiteralPath $dotenv) {
+    . $dotenv -WorkspaceRoot $root
+}
+
 $sync = Join-Path $root "scripts\sync_marketing_queue_to_linkedin_v1.py"
 $linkedin = Join-Path $root "scripts\run_linkedin_b2b_weekly_draft_chain_v1.ps1"
 $summary = Join-Path $root "scripts\build_marketing_weekly_bundle_summary_v1.py"
@@ -70,11 +75,11 @@ if ($Gemini) {
 
 if (-not $SkipLinkedIn) {
     Write-Host "== LinkedIn B2B draft chain ==" -ForegroundColor Cyan
-    $liArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $linkedin, "-WorkspaceRoot", $root)
-    if ($useGemini) { $liArgs += "-Gemini" }
-    if ($WithChart) { $liArgs += "-WithChart" }
-    if ($WhatIfOnly) { $liArgs += "-WhatIfOnly" }
-    & powershell.exe @liArgs
+    $liParams = @{ WorkspaceRoot = $root }
+    if ($useGemini) { $liParams["Gemini"] = $true }
+    if ($WithChart) { $liParams["WithChart"] = $true }
+    if ($WhatIfOnly) { $liParams["WhatIfOnly"] = $true }
+    & $linkedin @liParams
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 

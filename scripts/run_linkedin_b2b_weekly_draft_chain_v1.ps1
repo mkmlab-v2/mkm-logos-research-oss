@@ -8,6 +8,10 @@ param(
 
 $ErrorActionPreference = "Stop"
 $root = if ($WorkspaceRoot) { (Resolve-Path -LiteralPath $WorkspaceRoot).Path } else { Split-Path -Parent $PSScriptRoot }
+$dotenv = Join-Path $root "scripts\Import-WorkspaceDotEnv_v1.ps1"
+if (Test-Path -LiteralPath $dotenv) {
+    . $dotenv -WorkspaceRoot $root
+}
 $queue = Join-Path $root "data\marketing\linkedin_queue.json"
 $example = Join-Path $root "data\marketing\linkedin_queue_v1.example.json"
 $gen = Join-Path $root "scripts\generate_linkedin_b2b_copy_v1.py"
