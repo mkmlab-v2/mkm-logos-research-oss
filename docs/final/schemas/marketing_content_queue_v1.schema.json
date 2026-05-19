@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "marketing_content_queue_v1.schema.json",
+  "title": "MKM marketing content queue v1 (multi-channel, draft-only)",
+  "type": "object",
+  "required": ["schema", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "marketing_content_queue_v1" },
+    "updated_at_utc": { "type": "string", "format": "date-time" },
+    "default_cost_tier": {
+      "type": "string",
+      "enum": ["tier_0", "tier_15", "tier_50"],
+      "description": "Pointer to docs/final/artifacts/marketing_ops_cost_tier_v1_latest.json"
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/queue_item" }
+    }
+  },
+  "definitions": {
+    "queue_item": {
+      "type": "object",
+      "required": ["id", "channel", "status", "topic", "locale"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{2,48}$" },
+        "channel": {
+          "type": "string",
+          "enum": ["linkedin", "youtube_script", "newsletter", "x_thread"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "drafted", "human_approved", "skipped"]
+        },
+        "topic": { "type": "string", "minLength": 3, "maxLength": 500 },
+        "hook": { "type": "string", "maxLength": 300 },
+        "locale": { "type": "string", "enum": ["ko", "en"] },
+        "audience": {
+          "type": "string",
+          "enum": ["b2b_platform", "b2b_oem", "b2b_investor_adjacent", "internal_only"]
+        },
+        "source_artifacts": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "maxItems": 8
+        },
+        "cta_url": { "type": "string", "maxLength": 500 },
+        "notes": { "type": "string", "maxLength": 2000 },
+        "allow_gemini": {
+          "type": "boolean",
+          "description": "If true, weekly bundle may pass --gemini for this item only (tier_15+)."
+        },
+        "draft_paths": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "markdown": { "type": "string" },
+            "evidence_json": { "type": "string" },
+            "chart_png": { "type": "string" }
+          }
+        },
+        "drafted_at_utc": { "type": "string" }
+      }
+    }
+  }
+}

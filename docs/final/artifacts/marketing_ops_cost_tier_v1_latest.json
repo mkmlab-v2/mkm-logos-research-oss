@@ -1,0 +1,46 @@
+{
+  "schema": "marketing_ops_cost_tier_v1",
+  "generated_at_utc": "2026-05-19T12:00:00Z",
+  "boundary_ack": "Tiers are ops guidance only. No auto-publish. PUBLIC_FACING v1.7 applies to all external copy.",
+  "recommended_default": "tier_0",
+  "tiers": {
+    "tier_0": {
+      "label": "월 $0 (API 최소)",
+      "monthly_api_usd_estimate": "0-5",
+      "cursor": "Pro 1 seat; marketplace free plugins only (Figma, Exa as needed)",
+      "weekly_routine": "Run-MarketingWeeklyDraftBundle_v1.ps1 (assemble-only, no -Gemini)",
+      "linkedin": "generate_linkedin_b2b_copy_v1.py --assemble-only",
+      "gemini": "OFF for weekly bundle; MKM_MARKETING_GEMINI_ALLOWED unset or 0",
+      "btrack_separation": "MKM_BTRACK_CONTEMPLATION_USE_GEMINI=0 (research budget separate)",
+      "publish": "Human copy from reports/marketing/linkedin_drafts/*_[DRAFT].md",
+      "avoid": ["OpenTweet", "AgentKits full autopilot", "n8n for GTM", "weekly -Gemini flag"]
+    },
+    "tier_15": {
+      "label": "월 ~$15 (선별 API)",
+      "monthly_api_usd_estimate": "10-20",
+      "cursor": "tier_0 + Exa queries for research (cite only)",
+      "weekly_routine": "Same bundle; at most 1-2 posts/month with -Gemini on high-priority queue items (allow_gemini: true)",
+      "gemini": "gemini-2.5-flash via gemini_multimodal_batch.py for 1-2 images/month",
+      "publish": "Optional Buffer free tier after human approval",
+      "avoid": ["Daily Gemini on all channels", "Xpoz high-volume social listening"]
+    },
+    "tier_50": {
+      "label": "월 ~$50 (이벤트·캠페인)",
+      "monthly_api_usd_estimate": "40-60",
+      "cursor": "tier_15 + AgentKits skills-only (copy/SEO checklists, no auto-send)",
+      "weekly_routine": "Event week: -Gemini + WithChart for 1 LinkedIn post; IR/deck via Figma",
+      "gemini": "Batch image + tone pass for launch week only",
+      "publish": "Buffer/Later paid tier if volume warrants",
+      "avoid": ["Faceless YouTube full auto-upload", "LinkedIn Ads without ads-linkedin skill review"]
+    }
+  },
+  "scripts": {
+    "weekly_bundle": "scripts/Run-MarketingWeeklyDraftBundle_v1.ps1",
+    "register_task": "scripts/Register-MarketingWeeklyDraftBundleTask.ps1",
+    "verify_task": "scripts/Verify-MarketingWeeklyDraftBundleTaskReadiness_v1.ps1",
+    "persona_weekly": "Invoke-MkmPersonaHealth_v1.ps1 -Persona MarketingWeeklyBundle",
+    "persona_readiness": "Invoke-MkmPersonaHealth_v1.ps1 -Persona MarketingWeeklyBundleReadiness",
+    "unified_queue": "data/marketing/marketing_content_queue.json",
+    "unified_queue_example": "data/marketing/marketing_content_queue_v1.example.json"
+  }
+}

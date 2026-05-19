@@ -15,6 +15,8 @@
   GpuRecommendedBundle = run_workspace_automation_health.ps1 -MkmGpuRecommendedBundleOnly (P0 + reconcile + Run-MkmGpuRecommendedBundle_v1)
   LinkedInB2bWeekly = run_linkedin_b2b_weekly_draft_chain_v1.ps1 (assemble-only + copy guard; no publish)
   LinkedInB2bWeeklyReadiness = Verify-LinkedInB2bWeeklyDraftTaskReadiness.ps1 (Windows Task Scheduler)
+  MarketingWeeklyBundle = Run-MarketingWeeklyDraftBundle_v1.ps1 (tier_0 default; unified queue + LinkedIn + summary)
+  MarketingWeeklyBundleReadiness = Verify-MarketingWeeklyDraftBundleTaskReadiness_v1.ps1
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle
@@ -36,7 +38,7 @@
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness')]
     [string]$Persona
 )
 
@@ -103,6 +105,18 @@ try {
         }
         'LinkedInB2bWeeklyReadiness' {
             $script = Join-Path $PSScriptRoot 'Verify-LinkedInB2bWeeklyDraftTaskReadiness.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script
+            exit $LASTEXITCODE
+        }
+        'MarketingWeeklyBundle' {
+            $script = Join-Path $PSScriptRoot 'Run-MarketingWeeklyDraftBundle_v1.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+            exit $LASTEXITCODE
+        }
+        'MarketingWeeklyBundleReadiness' {
+            $script = Join-Path $PSScriptRoot 'Verify-MarketingWeeklyDraftBundleTaskReadiness_v1.ps1'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
             & $ps @common $script
             exit $LASTEXITCODE

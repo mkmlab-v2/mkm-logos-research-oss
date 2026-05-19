@@ -1,0 +1,75 @@
+<#
+.SYNOPSIS
+  Cost-optimized weekly marketing bundle: unified queue sync -> LinkedIn assemble-only -> summary.
+
+.DESCRIPTION
+  Default tier_0 ($0 API): no -Gemini unless MKM_MARKETING_GEMINI_ALLOWED=1 and queue items allow_gemini.
+  SSOT: docs/final/artifacts/marketing_ops_cost_tier_v1_latest.json
+
+.PARAMETER Gemini
+  Force Gemini for LinkedIn generation (overrides tier_0; use sparingly).
+
+.PARAMETER WithChart
+  Pass through to LinkedIn chain.
+
+.PARAMETER WhatIfOnly
+  Dry-run LinkedIn generator only (after sync).
+
+.PARAMETER SkipLinkedIn
+  Only sync queue + write summary (debug).
+#>
+param(
+    [string]$WorkspaceRoot = "",
+    [switch]$Gemini,
+    [switch]$WithChart,
+    [switch]$WhatIfOnly,
+    [switch]$SkipLinkedIn
+)
+
+$ErrorActionPreference = "Stop"
+$root = if ($WorkspaceRoot) { (Resolve-Path -LiteralPath $WorkspaceRoot).Path } else { Split-Path -Parent $PSScriptRoot }
+
+$sync = Join-Path $root "scripts\sync_marketing_queue_to_linkedin_v1.py"
+$linkedin = Join-Path $root "scripts\run_linkedin_b2b_weekly_draft_chain_v1.ps1"
+$summary = Join-Path $root "scripts\build_marketing_weekly_bundle_summary_v1.py"
+
+Write-Host "== Marketing queue -> LinkedIn sync ==" -ForegroundColor Cyan
+& py $sync --init-from-example
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+$syncJson = & py $sync 2>&1 | Out-String
+Write-Host $syncJson
+
+$useGemini = $false
+if ($Gemini) {
+    $allowed = $env:MKM_MARKETING_GEMINI_ALLOWED
+    if ($allowed -match '^(1|true|yes|on)$') {
+        $useGemini = $true
+    } else {
+        Write-Warning "MKM_MARKETING_GEMINI_ALLOWED not set; ignoring -Gemini (tier_0 default)."
+    }
+} elseif ($syncJson -match '"suggest_gemini_flag"\s*:\s*true') {
+    if ($env:MKM_MARKETING_GEMINI_ALLOWED -match '^(1|true|yes|on)$') {
+        $useGemini = $true
+        Write-Host "Using -Gemini for allow_gemini queue items (MKM_MARKETING_GEMINI_ALLOWED=1)." -ForegroundColor Yellow
+    }
+}
+
+if (-not $SkipLinkedIn) {
+    Write-Host "== LinkedIn B2B draft chain ==" -ForegroundColor Cyan
+    $liArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $linkedin, "-WorkspaceRoot", $root)
+    if ($useGemini) { $liArgs += "-Gemini" }
+    if ($WithChart) { $liArgs += "-WithChart" }
+    if ($WhatIfOnly) { $liArgs += "-WhatIfOnly" }
+    & powershell.exe @liArgs
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+Write-Host "== Bundle summary ==" -ForegroundColor Cyan
+$sumArgs = @($summary)
+if ($useGemini) { $sumArgs += "--gemini-used" }
+& py @sumArgs
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[DONE] tier SSOT: docs/final/artifacts/marketing_ops_cost_tier_v1_latest.json" -ForegroundColor Green
+Write-Host "[DONE] summary: reports/marketing/marketing_weekly_bundle_latest.json" -ForegroundColor Green
+exit 0
