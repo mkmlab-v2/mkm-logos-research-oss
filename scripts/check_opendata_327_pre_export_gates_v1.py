@@ -73,6 +73,11 @@ def build() -> dict[str, Any]:
             "part_c_md": PART_C.relative_to(ROOT).as_posix(),
         },
         "merge_guide": "docs/final/artifacts/opendata_327_submission_pdf_merge_guide_v1_latest.md",
+        "next_human": [
+            "K-Startup 표지(A) 양식 수동 병합 + Annex(D) 선택",
+            "§2-2 목표안 수치는 제출 전 내부 벤치로 확정",
+            "K-Startup + 나라장터 접수 (6/5 18:00)",
+        ],
     }
 
 

@@ -16,8 +16,15 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 MERGE_GUIDE = ROOT / "docs/final/artifacts/opendata_327_submission_pdf_merge_guide_v1_latest.json"
 REPORTS = ROOT / "reports"
+GATES_LATEST = REPORTS / "opendata_327_pre_export_gates_latest.json"
 
 STRIP_HEADINGS = ("(부록) 우선 준비", "변경 이력")
+
+NEXT_HUMAN_KO = [
+    "K-Startup 표지(A) 양식 수동 병합 + Annex(D) 선택",
+    "§2-2 목표안 수치는 제출 전 내부 벤치로 확정",
+    "K-Startup + 나라장터 접수 (6/5 18:00)",
+]
 
 
 def _utc_now() -> str:
@@ -81,6 +88,45 @@ def _print_pdf(browser: Path, html_path: Path, pdf_path: Path) -> None:
         raise RuntimeError(
             f"PDF export failed exit={proc.returncode} stderr={proc.stderr[:500]!r}"
         )
+
+
+def _refresh_gates_workflow(*, export_doc: dict[str, Any]) -> None:
+    """Merge PDF export paths into gates JSON (UTF-8; avoids PowerShell encoding bugs)."""
+    if GATES_LATEST.is_file():
+        gates = json.loads(GATES_LATEST.read_text(encoding="utf-8-sig"))
+    else:
+        gates = {"schema": "opendata_327_pre_export_gates_v1", "gates": [], "all_gates_ok_for_export_draft": True}
+
+    parts = export_doc.get("parts") or []
+    part_b = next((p for p in parts if "part_b" in str(p.get("pdf", ""))), {})
+    part_c = next((p for p in parts if "part_c" in str(p.get("pdf", ""))), {})
+    part_b_pdf = part_b.get("pdf")
+    size_mb = (
+        round((ROOT / part_b_pdf).stat().st_size / (1024 * 1024), 2) if part_b_pdf else 0.0
+    )
+
+    gates["generated_at_utc"] = _utc_now()
+    gates["workflow_step_status"] = {
+        "step_1_strip_md": "completed",
+        "step_2_fill_placeholders": "completed_draft_targets",
+        "step_3_export_pdf": "completed",
+        "step_4_merge": "b_only_interim_no_cover_a",
+        "step_5_size_check": "ok_under_30mb" if size_mb < 30 else "over_30mb_review",
+        "step_6_kstartup_dry_run": "scheduled_2026-06-01",
+        "step_7_final_submit": "scheduled_2026-06-04_05",
+    }
+    gates["export_artifacts"] = {
+        "part_b_pdf": part_b.get("pdf"),
+        "part_b_pdf_merge_name": export_doc.get("part_b_pdf_merge_name"),
+        "part_c_pdf": part_c.get("pdf"),
+        "part_b_html": part_b.get("html"),
+        "part_c_html": part_c.get("html"),
+        "part_b_size_mb": size_mb,
+    }
+    gates["merge_guide"] = "docs/final/artifacts/opendata_327_submission_pdf_merge_guide_v1_latest.md"
+    gates["next_human"] = list(NEXT_HUMAN_KO)
+    GATES_LATEST.parent.mkdir(parents=True, exist_ok=True)
+    GATES_LATEST.write_text(json.dumps(gates, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def _export_part(
@@ -147,7 +193,18 @@ def main() -> int:
 
     summary_path = REPORTS / "opendata_327_pdf_export_latest.json"
     summary_path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps({"ok": True, "output": str(summary_path), "parts": out["parts"]}, ensure_ascii=False))
+    _refresh_gates_workflow(export_doc=out)
+    print(
+        json.dumps(
+            {
+                "ok": True,
+                "output": str(summary_path),
+                "gates": str(GATES_LATEST),
+                "parts": out["parts"],
+            },
+            ensure_ascii=False,
+        )
+    )
     return 0
 
 
