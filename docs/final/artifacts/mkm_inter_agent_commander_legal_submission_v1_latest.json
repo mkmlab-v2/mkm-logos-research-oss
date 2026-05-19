@@ -1,9 +1,9 @@
 {
   "schema": "mkm_inter_agent_commander_legal_submission_v1",
-  "generated_at_utc": "2026-05-18T22:18:03Z",
+  "generated_at_utc": "2026-05-19T00:33:31Z",
   "classification": "INTERNAL_ONLY",
   "commander_authorized_legal_submission": true,
-  "submitted_at_utc": "2026-05-18T22:18:03Z",
+  "submitted_at_utc": "2026-05-19T00:33:31Z",
   "legal_review_status": "SUBMITTED_TO_COUNSEL",
   "is_counsel_signoff": false,
   "handoff_pointer": "docs/final/artifacts/mkm_inter_agent_legal_handoff_pack_latest.json",

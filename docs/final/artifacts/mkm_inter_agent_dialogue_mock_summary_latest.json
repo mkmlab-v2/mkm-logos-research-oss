@@ -1,9 +1,11 @@
 {
   "schema": "mkm_inter_agent_dialogue_mock_summary_v1",
-  "generated_at_utc": "2026-05-18T20:53:02Z",
+  "generated_at_utc": "2026-05-19T00:26:48Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
   "boundary_ack": "Simulated agents; plaintext is logged for audit only. On-wire payload is Trust Packet only. Not production A2A. Not Track A trading trigger.",
+  "routing_profile": "track_a_promoted",
+  "scenario": "trading",
   "turns_requested": 4,
   "turns_recorded": 4,
   "all_compress_ok": true,
@@ -17,7 +19,18 @@
       "wire_only": true,
       "compress": {
         "http_status": 200,
-        "loss_profile": "semantic_general"
+        "loss_profile": "semantic_general",
+        "routing_profile": "track_a_promoted",
+        "compression_metrics": {
+          "token_in": 18,
+          "token_out": 18,
+          "savings_ratio": 0.0
+        },
+        "integrity_flags": {
+          "routing_research_only": null,
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        }
       },
       "trust_packet_redacted": {
         "packet_format_version": "trust_packet.0.1",
@@ -46,7 +59,18 @@
       "wire_only": true,
       "compress": {
         "http_status": 200,
-        "loss_profile": "semantic_general"
+        "loss_profile": "semantic_general",
+        "routing_profile": "track_a_promoted",
+        "compression_metrics": {
+          "token_in": 37,
+          "token_out": 19,
+          "savings_ratio": 0.4864864864864865
+        },
+        "integrity_flags": {
+          "routing_research_only": null,
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        }
       },
       "trust_packet_redacted": {
         "packet_format_version": "trust_packet.0.1",
@@ -84,7 +108,18 @@
       "wire_only": true,
       "compress": {
         "http_status": 200,
-        "loss_profile": "semantic_general"
+        "loss_profile": "semantic_general",
+        "routing_profile": "track_a_promoted",
+        "compression_metrics": {
+          "token_in": 26,
+          "token_out": 26,
+          "savings_ratio": 0.0
+        },
+        "integrity_flags": {
+          "routing_research_only": null,
+          "shard_id": "zone_d_ssot",
+          "domain": "ssot"
+        }
       },
       "trust_packet_redacted": {
         "packet_format_version": "trust_packet.0.1",
@@ -122,7 +157,18 @@
       "wire_only": true,
       "compress": {
         "http_status": 200,
-        "loss_profile": "semantic_general"
+        "loss_profile": "semantic_general",
+        "routing_profile": "track_a_promoted",
+        "compression_metrics": {
+          "token_in": 46,
+          "token_out": 21,
+          "savings_ratio": 0.5434782608695652
+        },
+        "integrity_flags": {
+          "routing_research_only": null,
+          "shard_id": "zone_e_finance",
+          "domain": "finance"
+        }
       },
       "trust_packet_redacted": {
         "packet_format_version": "trust_packet.0.1",

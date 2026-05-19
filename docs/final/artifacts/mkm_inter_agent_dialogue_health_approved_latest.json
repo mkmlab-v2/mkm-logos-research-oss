@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_dialogue_mock_summary_v1",
-  "generated_at_utc": "2026-05-18T21:56:39Z",
+  "generated_at_utc": "2026-05-19T00:33:35Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
   "boundary_ack": "Simulated agents; plaintext is logged for audit only. On-wire payload is Trust Packet only. Not production A2A. Not Track A trading trigger.",

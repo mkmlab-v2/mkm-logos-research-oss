@@ -1,11 +1,11 @@
 {
   "schema": "mkm_inter_agent_legal_counsel_signoff_v1",
-  "generated_at_utc": "2026-05-18T23:03:56Z",
+  "generated_at_utc": "2026-05-19T00:33:16Z",
   "classification": "INTERNAL_ONLY",
   "counsel_signoff": true,
   "legal_review_status": "COUNSEL_SIGNED",
-  "signed_at_utc": "2026-05-18T23:03:56Z",
-  "counsel_reference": "COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY",
+  "signed_at_utc": "2026-05-19T00:33:16Z",
+  "counsel_reference": "LC-2026-05-19-RQ019-CLEARED",
   "approver_label": "external_counsel",
   "rq_019_checklist_item_7_met": true,
   "boundary_ack": "Counsel sign-off recorded. Commander must still agree RQ-019 CLOSED and promotion path."

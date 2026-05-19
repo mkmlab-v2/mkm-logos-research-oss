@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_first_message_live_http_v1",
-  "captured_at_utc": "2026-05-18T22:18:05Z",
+  "captured_at_utc": "2026-05-19T00:33:33Z",
   "classification": "INTERNAL_ONLY",
   "capture_mode": "in_process_testclient",
   "stub": "scripts/compression_token_api_v2_stub.py",
@@ -67,7 +67,7 @@
           "replacement": "tracka_profile_meta",
           "status": "legacy_flat_keys_removed"
         },
-        "evaluate_report_ms": 911.187,
+        "evaluate_report_ms": 971.36,
         "routing_profile": "track_a_promoted",
         "v2_case_id": "v2-trust-packet",
         "promotion_signoff_path": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",

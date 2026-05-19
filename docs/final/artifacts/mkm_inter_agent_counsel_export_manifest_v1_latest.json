@@ -1,8 +1,8 @@
 {
   "schema": "mkm_inter_agent_counsel_export_manifest_v1",
-  "generated_at_utc": "2026-05-18T22:18:03Z",
+  "generated_at_utc": "2026-05-19T00:33:32Z",
   "classification": "INTERNAL_ONLY",
-  "file_count": 16,
+  "file_count": 19,
   "files": [
     {
       "path": "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
@@ -27,12 +27,17 @@
     {
       "path": "docs/final/artifacts/mkm_inter_agent_commander_legal_submission_v1_latest.json",
       "size_bytes": 825,
-      "sha256": "0d5f6d4aed471cde21200823047a6e3b842b586568209c865998bbbb877355a5"
+      "sha256": "f167ea3019f7a1eef5f9d4d040ff75a1f10fa040aaab8c78f52fd3a42dae7aaa"
+    },
+    {
+      "path": "docs/final/artifacts/mkm_inter_agent_counsel_export_manifest_v1_latest.json",
+      "size_bytes": 4401,
+      "sha256": "23603d916b8af2e792e7ffafaaa9d57c7d8ec7cc0da01e1bbd3e6eebdc5d3420"
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_dialogue_health_approved_latest.json",
       "size_bytes": 8983,
-      "sha256": "7a051a7a52f7abcb11b98f31d8ad4aa2cb847f91973dae0f30dc4a2b6d62a92b"
+      "sha256": "307f8a5de122e8bf892466a28fe73aade909748259be88b6efb364104ab9756a"
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_encoding_sota_map_v1.md",
@@ -41,18 +46,18 @@
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json",
-      "size_bytes": 2741,
-      "sha256": "7ddcc98a37fa550d90384f3b49a0a80dea5077c70e552c128d3361fedaab173a"
+      "size_bytes": 2850,
+      "sha256": "615c7d8ce629d966f063c27c460a79d44966350422879da49b9f93a12522c6a3"
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json",
-      "size_bytes": 2777,
-      "sha256": "60a2552d39ce38a968a00a4c3d6a5f745f9e6d614e049ee6ff399942776f6bd8"
+      "size_bytes": 3732,
+      "sha256": "c024cc2f3fcd189dada8df2fb61db9b46b7dc95092fd9bb723beb03ac8614b2e"
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.json",
       "size_bytes": 3945,
-      "sha256": "c9bb2c4c3b5f429a2f053cdba0a8803652aaf2d60eee9271acd916e84551e44b"
+      "sha256": "053fcd9d52160591a4da73bfce69871f783268c175f0dc2c86eb74e808d9827b"
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md",
@@ -66,13 +71,23 @@
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_ir_snippet_v1.md",
-      "size_bytes": 3172,
-      "sha256": "c0d75be38de0d676657a3c82f089cca89e63b8b736a79a8241835b0335501620"
+      "size_bytes": 3385,
+      "sha256": "22cdd703cae8eabd652bd89be915b795c4f3eddb7564ef930ae2d5eb326cd0e4"
+    },
+    {
+      "path": "docs/final/artifacts/mkm_inter_agent_legal_counsel_signoff_v1_latest.json",
+      "size_bytes": 509,
+      "sha256": "5bdb0f3abd4731835b5cb4ddb72bdeaa19f1c7b69b96bc8104526b417025b90b"
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_post_commander_approval_bundle_latest.json",
-      "size_bytes": 1320,
-      "sha256": "01f7b54f5f4bd2f041fabd3336cc6c097c686287a7dd710a213f2cd5f348c08d"
+      "size_bytes": 1348,
+      "sha256": "bb215b7a4d1487927e044328d0243d90e97c11550b2da92471c858d2ed1ecada"
+    },
+    {
+      "path": "docs/final/artifacts/mkm_inter_agent_rq019_closure_readiness_latest.json",
+      "size_bytes": 724,
+      "sha256": "54cdbf5b31296b07f193aa01d67bec3d4ba3fd0d61e760ea39d2894942be498a"
     },
     {
       "path": "docs/final/artifacts/mkm_inter_agent_wire_profile_v0.json",

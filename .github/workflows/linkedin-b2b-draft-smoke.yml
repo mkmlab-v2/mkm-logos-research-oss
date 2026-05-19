@@ -1,0 +1,53 @@
+name: LinkedIn B2B draft smoke (Fact-Lock)
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/generate_linkedin_b2b_copy_v1.py"
+      - "scripts/check_linkedin_b2b_draft_copy_v1.py"
+      - "scripts/Run-LinkedInB2bDraftQueue_v1.ps1"
+      - "scripts/run_linkedin_b2b_weekly_draft_chain_v1.ps1"
+      - "projects/no1kmedi/scripts/check-marketing-copy-compliance.mjs"
+      - "docs/final/schemas/linkedin_b2b_queue_v1.schema.json"
+      - "data/marketing/linkedin_queue_v1.example.json"
+      - "tests/test_generate_linkedin_b2b_copy_v1.py"
+      - "tests/test_check_linkedin_b2b_draft_copy_v1.py"
+      - ".github/workflows/linkedin-b2b-draft-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/generate_linkedin_b2b_copy_v1.py"
+      - "scripts/check_linkedin_b2b_draft_copy_v1.py"
+      - "scripts/Run-LinkedInB2bDraftQueue_v1.ps1"
+      - "scripts/run_linkedin_b2b_weekly_draft_chain_v1.ps1"
+      - "projects/no1kmedi/scripts/check-marketing-copy-compliance.mjs"
+      - "docs/final/schemas/linkedin_b2b_queue_v1.schema.json"
+      - "data/marketing/linkedin_queue_v1.example.json"
+      - "tests/test_generate_linkedin_b2b_draft_copy_v1.py"
+      - "tests/test_check_linkedin_b2b_draft_copy_v1.py"
+      - ".github/workflows/linkedin-b2b-draft-smoke.yml"
+  workflow_dispatch:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test deps
+        run: pip install jsonschema pytest
+      - name: LinkedIn B2B draft pytest + queue dry-run
+        run: |
+          python -m pytest \
+            tests/test_generate_linkedin_b2b_copy_v1.py \
+            tests/test_check_linkedin_b2b_draft_copy_v1.py \
+            -q --tb=short
+          python scripts/generate_linkedin_b2b_copy_v1.py \
+            --queue data/marketing/linkedin_queue_v1.example.json \
+            --dry-run

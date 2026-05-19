@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "linkedin_b2b_queue_v1.schema.json",
+  "title": "LinkedIn B2B draft queue v1",
+  "type": "object",
+  "required": ["schema", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "linkedin_b2b_queue_v1" },
+    "updated_at_utc": { "type": "string", "format": "date-time" },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/queue_item" }
+    }
+  },
+  "definitions": {
+    "queue_item": {
+      "type": "object",
+      "required": ["id", "status", "topic", "locale"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{2,48}$" },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "drafted", "human_approved", "skipped"]
+        },
+        "topic": { "type": "string", "minLength": 3, "maxLength": 500 },
+        "hook": { "type": "string", "maxLength": 300 },
+        "locale": { "type": "string", "enum": ["ko", "en"] },
+        "audience": {
+          "type": "string",
+          "enum": ["b2b_platform", "b2b_oem", "b2b_investor_adjacent"]
+        },
+        "source_artifacts": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "maxItems": 8
+        },
+        "cta_url": { "type": "string", "maxLength": 500 },
+        "notes": { "type": "string", "maxLength": 2000 },
+        "draft_paths": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "markdown": { "type": "string" },
+            "evidence_json": { "type": "string" },
+            "chart_png": { "type": "string" }
+          }
+        },
+        "drafted_at_utc": { "type": "string" }
+      }
+    }
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_post_commander_approval_bundle_v1",
-  "generated_at_utc": "2026-05-18T22:41:04Z",
+  "generated_at_utc": "2026-05-19T00:33:35Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
   "commander_approved": true,
@@ -17,7 +17,7 @@
     "avg_savings_ratio": 0.379779
   },
   "encoding_status": {
-    "rq_019_milestones_core_ready": true,
+    "rq_019_milestones_core_ready": false,
     "health_domain_commander_approved": true
   },
   "boundary_ack": "Commander approved B-track inter-agent health caps only. Track A frozen bench unchanged. RQ-019 CLOSED after counsel + commander close artifacts.",
