@@ -585,6 +585,12 @@ if ($ensembleV2On) {
   if ($LASTEXITCODE -ne 0) { throw "refresh_gut_brain_btrack_promotion_status_v1 exit $LASTEXITCODE" }
 }
 
+Write-Host "==> build_btrack_daily_p15_shadow_status_v1.py (P1.5 abstain shadow tag; observation_only)"
+py scripts/build_btrack_daily_p15_shadow_status_v1.py
+if ($LASTEXITCODE -ne 0) {
+  Write-Host "WARN: build_btrack_daily_p15_shadow_status_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+}
+
 Write-Host "==> build_prophecy_health_status_v1.py (prophecy_health_status_latest.json)"
 py scripts/build_prophecy_health_status_v1.py
 if ($LASTEXITCODE -ne 0) { throw "build_prophecy_health_status_v1 exit $LASTEXITCODE" }
