@@ -39,23 +39,56 @@ def _preset_metrics(curve: dict[str, Any], policy_id: str) -> dict[str, Any]:
     return {}
 
 
+def _slice_v2_latest_7d(dirs_out: Path, n: int) -> int:
+    """Reuse frozen v2 per-date panel (no v2 builder regen — avoids missing v2 hook)."""
+    src = ROOT / "reports/btrack_ensemble_per_date_directions_v2_latest.json"
+    if not src.is_file():
+        return 2
+    try:
+        doc = json.loads(src.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return 2
+    rows = doc.get("rows") if isinstance(doc.get("rows"), list) else []
+    dated = [r for r in rows if isinstance(r, dict) and r.get("eval_date")]
+    dated.sort(key=lambda r: str(r.get("eval_date")))
+    tail = dated[-n:] if len(dated) >= n else dated
+    if not tail:
+        return 2
+    out_doc = {
+        **{k: v for k, v in doc.items() if k != "rows"},
+        "rows": tail,
+        "inputs": {
+            **(doc.get("inputs") if isinstance(doc.get("inputs"), dict) else {}),
+            "n_eval_dates": len(tail),
+            "sliced_from": str(src.relative_to(ROOT)).replace("\\", "/"),
+        },
+        "note": f"Last {len(tail)} eval_date rows sliced from v2_latest (7d shadow; no rebuild).",
+    }
+    dirs_out.parent.mkdir(parents=True, exist_ok=True)
+    dirs_out.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"WROTE: {dirs_out} rows={len(tail)} mode=slice_v2_latest")
+    return 0
+
+
 def main() -> int:
     n = 7
     dirs_out = ROOT / "reports/btrack_ensemble_per_date_directions_v2_7d_shadow.json"
     curve_out = ROOT / "reports/confidence_abstain_curve_v1_7d_latest.json"
 
-    rc_dirs = _run(
-        [
-            sys.executable,
-            str(BUILD_DIRS),
-            "--recent-trading-days",
-            str(n),
-            "--ensemble-mode",
-            "v2_confidence_fusion",
-            "--output",
-            str(dirs_out),
-        ]
-    )
+    rc_dirs = _slice_v2_latest_7d(dirs_out, n)
+    if rc_dirs != 0:
+        rc_dirs = _run(
+            [
+                sys.executable,
+                str(BUILD_DIRS),
+                "--recent-trading-days",
+                str(n),
+                "--ensemble-mode",
+                "v1",
+                "--output",
+                str(dirs_out),
+            ]
+        )
     if rc_dirs != 0:
         print("direction build failed", file=sys.stderr)
         return rc_dirs
