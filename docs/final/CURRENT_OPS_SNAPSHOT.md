@@ -2,13 +2,13 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
-## Ops slice (2026-05-19 · OpenData 327 B+C+D 병합)
+## Ops slice (2026-05-19 · OpenData 327 접수 준비)
 
-**Thread:** Cursor — export·merge 체인
+**Thread:** Cursor — prep 원클릭·readiness
 
-- **완료:** `Run-OpenData327SubmissionChain_v1.ps1` — G1 B/C/D + G4 **PASS** · Part B/C/D PDF · **`reports/opendata_327_submission_bcd_merged_v1.pdf`** (~0.22MB, 표지 A 제외) · `merge_opendata_327_submission_pdf_v1.py` · gates JSON 한글 UTF-8 정상
-- **막힘:** **표지(A)** K-Startup 양식 맨 앞 삽입(human) · §2-2 목표 수치 내부 확정 · K-Startup+나라장터 **6/5 18:00**
-- **다음:** `opendata_327_submission_bcd_merged_v1.pdf` 육안 검수 → 표지 삽입 → 6/1 dry-run
+- **완료:** `Run-OpenData327SubmissionPrep_v1.ps1` — G1/G4 **PASS** · B/C/D PDF · **`reports/opendata_327_submission_bcd_merged_v1.pdf`** (~0.22MB) · `reports/opendata_327_submission_readiness_latest.json` (`technical_ready: true`) · §4-1 MD 반영
+- **막힘:** **표지(A)** K-Startup 맨 앞 삽입(human) · §2-2 목표 수치 확정 · CH-KSTARTUP·CH-NARA · G3/G4/G5
+- **다음:** BCD PDF 육안 검수 → 표지 삽입 → 6/1 dry-run → 6/5 18:00 접수
 
 **재개:**
 ```
