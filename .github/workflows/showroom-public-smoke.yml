@@ -1,0 +1,24 @@
+# Optional: public URL smoke for jemaai.cloud showroom (manual / scheduled).
+# Network-dependent — does not run on ordinary PR path validation.
+name: Showroom public smoke
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 0 * * *" # 09:30 KST daily (UTC 00:30)
+
+permissions:
+  contents: read
+
+jobs:
+  public-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Dual-host showroom HTTP smoke
+        run: python scripts/check_showroom_trust_viz_public_chain_v1.py

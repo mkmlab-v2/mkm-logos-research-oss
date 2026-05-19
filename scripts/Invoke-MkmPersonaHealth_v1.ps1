@@ -17,6 +17,7 @@
   LinkedInB2bWeeklyReadiness = Verify-LinkedInB2bWeeklyDraftTaskReadiness.ps1 (Windows Task Scheduler)
   MarketingWeeklyBundle = Run-MarketingWeeklyDraftBundle_v1.ps1 (tier_0 default; unified queue + LinkedIn + summary)
   MarketingWeeklyBundleReadiness = Verify-MarketingWeeklyDraftBundleTaskReadiness_v1.ps1
+  ShowroomTrackCHealth = Invoke-ShowroomTrackCHealth_v1.ps1 (task verify + dual-host smoke + B2B readiness)
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle
@@ -38,7 +39,7 @@
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth')]
     [string]$Persona
 )
 
@@ -123,6 +124,12 @@ try {
         }
         'MarketingPublishPhase2' {
             $script = Join-Path $PSScriptRoot 'Invoke-MarketingPublishPhase2_v1.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+            exit $LASTEXITCODE
+        }
+        'ShowroomTrackCHealth' {
+            $script = Join-Path $PSScriptRoot 'Invoke-ShowroomTrackCHealth_v1.ps1'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
             & $ps @common $script -WorkspaceRoot $WorkspaceRoot
             exit $LASTEXITCODE

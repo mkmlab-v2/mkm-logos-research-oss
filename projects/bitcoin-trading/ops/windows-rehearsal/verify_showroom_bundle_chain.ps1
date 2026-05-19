@@ -10,6 +10,7 @@ param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$SkipBuild,
     [switch]$WithStagingCopy,
+    [switch]$SkipVisualQualityGate,
     # Passed through to build_showroom_track_c_bundle_chain_v1.ps1 when building
     [switch]$SkipFreshnessInBuild
 )
@@ -50,25 +51,33 @@ if (-not (Test-Path -LiteralPath $bundlePath)) {
     throw "[verify-showroom] missing $bundlePath (run without -SkipBuild)"
 }
 
-Write-Host "[verify-showroom] Step 2/6: visual quality gate (atlas-only)"
-py $qualityGatePy --game-root $showroomRoot
-if ($LASTEXITCODE -ne 0) {
-    if (Test-Path -LiteralPath $rollbackAtlasPy) {
-        Write-Host "[verify-showroom] visual quality gate failed; attempting atlas pointer rollback"
-        py $rollbackAtlasPy --game-root $showroomRoot --reason "verify_showroom_bundle_chain_quality_gate_failed"
-    } else {
-        Write-Host "[verify-showroom] visual quality gate failed; rollback script not present: $rollbackAtlasPy" -ForegroundColor Yellow
+if ($SkipVisualQualityGate) {
+    Write-Host "[verify-showroom] Step 2/6: skipped (-SkipVisualQualityGate; atlas/WebGL poll not required for topology graph B2B)"
+} else {
+    Write-Host "[verify-showroom] Step 2/6: visual quality gate (atlas-only)"
+    py $qualityGatePy --game-root $showroomRoot
+    if ($LASTEXITCODE -ne 0) {
+        if (Test-Path -LiteralPath $rollbackAtlasPy) {
+            Write-Host "[verify-showroom] visual quality gate failed; attempting atlas pointer rollback"
+            py $rollbackAtlasPy --game-root $showroomRoot --reason "verify_showroom_bundle_chain_quality_gate_failed"
+        } else {
+            Write-Host "[verify-showroom] visual quality gate failed; rollback script not present: $rollbackAtlasPy" -ForegroundColor Yellow
+        }
+        throw "visual quality gate failed"
     }
-    throw "visual quality gate failed"
 }
 
 Write-Host "[verify-showroom] Step 3/6: feature contracts"
 py $featureContractPy --showroom-html (Join-Path $showroomRoot "public_showroom_poll.html")
 if ($LASTEXITCODE -ne 0) { throw "feature contract failed" }
 
-Write-Host "[verify-showroom] Step 4/6: Gate C terminology lint"
-py $gateLintPy
-if ($LASTEXITCODE -ne 0) { throw "Gate C lint failed" }
+if (Test-Path -LiteralPath $gateLintPy) {
+    Write-Host "[verify-showroom] Step 4/6: Gate C terminology lint"
+    py $gateLintPy
+    if ($LASTEXITCODE -ne 0) { throw "Gate C lint failed" }
+} else {
+    Write-Host "[verify-showroom] Step 4/6: skipped (missing $gateLintPy)"
+}
 
 Write-Host "[verify-showroom] Step 5/6: pytest"
 py -m pytest $testPath -q

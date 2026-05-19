@@ -23,7 +23,9 @@ param(
     [switch]$RefreshStaging,
     [switch]$DryRun,
     [switch]$SkipDotenvUserSync,
-    [switch]$AllowPasswordPrompt
+    [switch]$AllowPasswordPrompt,
+    [switch]$ApplyRecommendedNginx,
+    [switch]$NginxSnippetOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -67,6 +69,8 @@ $htmlTrust = Join-Path $staging "public_showroom_trust_visualization_v0.html"
 $jsonTrust = Join-Path $staging "showroom_trust_visualization_slice_v0.json"
 $htmlLogos = Join-Path $staging "public_showroom_logos_research_v1.html"
 $jsonLogos = Join-Path $staging "showroom_logos_research_slice_v0.json"
+$htmlMeaningGraph = Join-Path $staging "public_showroom_meaning_topology_graph_v1.html"
+$jsonMeaningGraph = Join-Path $staging "showroom_meaning_topology_graph_slice_v1.json"
 $htmlSaju = Join-Path $staging "public_showroom_probabilistic_saju_v1.html"
 $jsonSaju = Join-Path $staging "showroom_saju_hour_bundle_demo_v1.json"
 
@@ -90,8 +94,10 @@ if ($RefreshStaging) {
     }
 }
 
-if (-not (Test-Path -LiteralPath $html) -or -not (Test-Path -LiteralPath $htmlMinimal) -or -not (Test-Path -LiteralPath $json)) {
-    throw "[showroom-vps-sync] staging files missing under $staging — run deploy_showroom_static.ps1 or use -RefreshStaging."
+if (-not $NginxSnippetOnly) {
+    if (-not (Test-Path -LiteralPath $html) -or -not (Test-Path -LiteralPath $htmlMinimal) -or -not (Test-Path -LiteralPath $json)) {
+        throw "[showroom-vps-sync] staging files missing under $staging — run deploy_showroom_static.ps1 or use -RefreshStaging."
+    }
 }
 
 $hostName = Get-EnvAny "MKM_VPS_HOST"
@@ -152,6 +158,8 @@ function Invoke-ScpShowroomPair {
             @{ Path = $jsonTrust; Label = "trust viz JSON" },
             @{ Path = $htmlLogos; Label = "logos research HTML" },
             @{ Path = $jsonLogos; Label = "logos research JSON" },
+            @{ Path = $htmlMeaningGraph; Label = "meaning topology graph HTML" },
+            @{ Path = $jsonMeaningGraph; Label = "meaning topology graph JSON" },
             @{ Path = $htmlSaju; Label = "probabilistic saju HTML" },
             @{ Path = $jsonSaju; Label = "saju hour bundle JSON" }
         )) {
@@ -176,9 +184,36 @@ function Invoke-ScpShowroomPair {
     }
 }
 
-Invoke-ScpShowroomPair
+if (-not $NginxSnippetOnly) {
+    Invoke-ScpShowroomPair
+}
+
+if ($ApplyRecommendedNginx -or $NginxSnippetOnly) {
+    $snippetLocal = Join-Path $here "jemaai-cloud-mvp\nginx_snippets\jemaai_showroom_ui.conf"
+    if (-not (Test-Path -LiteralPath $snippetLocal)) {
+        throw "[showroom-vps-sync] missing nginx snippet: $snippetLocal"
+    }
+    $remoteSnippet = "/etc/nginx/snippets/jemaai_showroom_ui.conf"
+    $sshTarget = "${user}@${hostName}"
+    $scpSnip = @()
+    foreach ($a in $extraArgs) { $scpSnip += $a }
+    $scpSnip += $snippetLocal
+    $scpSnip += "${sshTarget}:${remoteSnippet}"
+    if ($DryRun) {
+        Write-Host "[showroom-vps-sync] DRYRUN scp snippet $($scpSnip -join ' ')"
+    } else {
+        Write-Host "[showroom-vps-sync] pushing nginx snippet -> $remoteSnippet" -ForegroundColor Cyan
+        & scp @scpSnip
+        if ($LASTEXITCODE -ne 0) { throw "[showroom-vps-sync] scp snippet failed: $LASTEXITCODE" }
+        $applyCmd = "sudo bash -c 'nginx -t && systemctl reload nginx'"
+        Write-Host "[showroom-vps-sync] nginx -t && reload (api.jemaai.cloud static mirror)" -ForegroundColor Cyan
+        & ssh @($extraArgs + @($sshTarget, $applyCmd))
+        if ($LASTEXITCODE -ne 0) { throw "[showroom-vps-sync] nginx reload failed: $LASTEXITCODE" }
+    }
+}
 
 $reload = Get-EnvAny "JEMAAI_VPS_RELOAD_NGINX"
+if ($ApplyRecommendedNginx) { $reload = "1" }
 if ($reload -eq "1") {
     $sshTarget = "${user}@${hostName}"
     $remoteCmd = "sudo nginx -t && sudo systemctl reload nginx"

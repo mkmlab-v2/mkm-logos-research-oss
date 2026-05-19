@@ -27,6 +27,14 @@ def main() -> int:
     macro_smoke = _read_json(artifacts / "macro_risk_warning_api_smoke_latest.json")
     macro_policy = _read_json(artifacts / "macro_risk_warning_policy_binding_latest.json")
     showroom = _read_json(artifacts / "vps_24h_daemon_showroom_readiness_latest.json")
+    url_ssot = _read_json(artifacts / "jemaai_showroom_public_urls_v1_latest.json")
+    pages = url_ssot.get("pages") if isinstance(url_ssot.get("pages"), dict) else {}
+
+    def _page_canonical(key: str, fallback: str) -> str:
+        block = pages.get(key) if isinstance(pages.get(key), dict) else {}
+        return str(block.get("canonical") or fallback)
+
+    board_block = pages.get("board_minimal") if isinstance(pages.get("board_minimal"), dict) else {}
 
     payload = {
         "schema": "mkm_trackc_commercial_package_v1",
@@ -45,9 +53,28 @@ def main() -> int:
         "macro_risk_policy": macro_policy if macro_policy else {"note": "missing artifact"},
         "showroom": showroom if showroom else {"note": "missing artifact"},
         "public_demo_urls": {
-            "topology_radar_v1": "https://api.jemaai.cloud/public_showroom_topology_radar_v1.html",
-            "board_minimal": "https://api.jemaai.cloud/public_showroom_board_minimal.html",
-            "logos_research_v1": "https://api.jemaai.cloud/public_showroom_logos_research_v1.html",
+            "topology_radar_v1": _page_canonical(
+                "topology_radar",
+                "https://jemaai.cloud/public_showroom_topology_radar_v1.html",
+            ),
+            "meaning_topology_graph_v1": _page_canonical(
+                "meaning_topology_graph",
+                "https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html",
+            ),
+            "board_minimal": str(
+                board_block.get("hub_cta_default")
+                or board_block.get("canonical")
+                or "https://api.jemaai.cloud/public_showroom_board_minimal.html"
+            ),
+            "logos_research_v1": _page_canonical(
+                "logos_research",
+                "https://jemaai.cloud/public_showroom_logos_research_v1.html",
+            ),
+            "public_events_latest": str(
+                (url_ssot.get("api") or {}).get("public_events_latest")
+                or "https://api.jemaai.cloud/api/public-events/latest"
+            ),
+            "url_ssot": "docs/final/artifacts/jemaai_showroom_public_urls_v1_latest.json",
             "note": "observational_only · NON_GATING · no_trade_signals · not investment advice",
         },
         "evidence": {

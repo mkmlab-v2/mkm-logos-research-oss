@@ -237,6 +237,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【쇼룸 nginx 주간】 | `api.jemaai.cloud` nginx snippet만 (일요일) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Register-ShowroomTrackCNginxWeeklyTask.ps1` |
 | 【쇼룸 nginx 예약 점검】 | Task `Showroom-TrackC-Nginx-Weekly` (기본 일 09:40) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-ShowroomTrackCNginxWeeklyScheduledTask_v1.ps1` |
 | 【쇼룸 헬스】 | 예약 태스크 + 듀얼 호스트 스모크 + B2B readiness | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ShowroomTrackCHealth` |
+| 【쇼룸 커밋 범위】 | Track C 쇼룸 전용 `git status` 목록 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Show-ShowroomTrackCGitScope_v1.ps1` |
 
 ### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
 

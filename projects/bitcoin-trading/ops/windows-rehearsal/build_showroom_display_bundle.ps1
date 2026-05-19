@@ -290,8 +290,34 @@ if ($runtime) {
 $c2AsOf = $null
 if ($c2 -and $c2.generated_at_utc) { $c2AsOf = [string]$c2.generated_at_utc }
 
-$asOf = $c2AsOf
-if ([string]::IsNullOrWhiteSpace($asOf)) { $asOf = $generatedUtc }
+function Get-NewestUtcAnchor {
+    param([string[]]$Candidates)
+    $bestStr = $null
+    $bestDto = $null
+    foreach ($c in $Candidates) {
+        if ([string]::IsNullOrWhiteSpace($c)) { continue }
+        try {
+            $dto = [DateTimeOffset]::Parse($c)
+            if ($null -eq $bestDto -or $dto -gt $bestDto) {
+                $bestDto = $dto
+                $bestStr = $c
+            }
+        } catch {
+            # ignore unparsable
+        }
+    }
+    return @{ UtcString = $bestStr; Dto = $bestDto }
+}
+
+# Showroom context age: C2 guardrail may lag; prefer freshest Track-C observability anchor.
+$contextAnchorSource = "generated_fallback"
+$anchorPick = Get-NewestUtcAnchor -Candidates @($c2AsOf, $freshnessGeneratedAtUtc, $topologyRadarGenAt, $generatedUtc)
+$asOf = $anchorPick.UtcString
+if ([string]::IsNullOrWhiteSpace($asOf)) { $asOf = $generatedUtc; $contextAnchorSource = "generated_fallback" }
+elseif ($asOf -eq $c2AsOf) { $contextAnchorSource = "c2_guardrail" }
+elseif ($asOf -eq $freshnessGeneratedAtUtc) { $contextAnchorSource = "logos_freshness_sidecar" }
+elseif ($asOf -eq $topologyRadarGenAt) { $contextAnchorSource = "topology_radar_snapshot" }
+else { $contextAnchorSource = "generated_fallback" }
 
 $contextTtlSec = 14400
 try {
@@ -688,6 +714,7 @@ $observability = [ordered]@{
         context_age_seconds     = $contextAgeSec
         context_ttl_seconds     = $contextTtlSec
         context_stale           = $contextStale
+        context_anchor_source   = $contextAnchorSource
         public_pnl_pct_mode     = $(if ($null -ne $pnlPct) { "equity_vs_baseline_" + $baselineMode } else { "unavailable_no_metrics" })
         logos_x_index_0_100     = $logosXIndex
         logos_x_band            = $logosXBand

@@ -60,9 +60,13 @@ def _build_index(*, generated_at: str, steps: list[tuple[str, int]]) -> str:
 
 | Surface | URL | Notes |
 |---------|-----|-------|
-| Risk topology radar (Phase 2.1–2.2) | https://api.jemaai.cloud/public_showroom_topology_radar_v1.html | Observational · NON_GATING · click core for Logos slice panel |
-| Minimal public board | https://api.jemaai.cloud/public_showroom_board_minimal.html | `public_event_v1` whitelist poll |
-| Logos research slice (full) | https://api.jemaai.cloud/public_showroom_logos_research_v1.html | `[HYPO]` snapshot · not live trading |
+| Risk topology radar (Phase 2.1–2.2) | https://jemaai.cloud/public_showroom_topology_radar_v1.html | Canonical static · `api.jemaai.cloud` mirror via nginx snippet |
+| Meaning topology graph (capped subgraph) | https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html | `bible_meaning_graph` slice · hub labels · `[HYPO]` |
+| Minimal public board | https://api.jemaai.cloud/public_showroom_board_minimal.html | Hub CTA default · `public_event_v1` poll |
+| Logos research slice (full) | https://jemaai.cloud/public_showroom_logos_research_v1.html | `[HYPO]` snapshot · not live trading |
+| Public Event API | https://api.jemaai.cloud/api/public-events/latest | API SSOT only (not static HTML) |
+
+**5-min showroom demo script:** `docs/final/artifacts/track_c_showroom_topology_sales_demo_script_v1_latest.md`
 
 Screenshots: capture locally after `sync_showroom_to_vps.ps1 -RefreshStaging`; do not embed win rates or path leaks in decks.
 

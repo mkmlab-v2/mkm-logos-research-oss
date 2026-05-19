@@ -1,25 +1,26 @@
-# Register Windows Task Scheduler job: daily Track C showroom bundle chain (freshness + build + validate).
-# For bundle + API ingest + VPS sync, prefer: scripts\Register-ShowroomTrackCPublishDailyTask.ps1
+# Register Windows Task Scheduler: daily Track C showroom publish (bundle + ingest + VPS sync + smoke).
 #
 # Usage:
-#   powershell -NoProfile -ExecutionPolicy Bypass -File C:\workspace\scripts\Register-ShowroomTrackCBundleTask.ps1
-#   powershell ... -StartTime 09:28
-#   powershell ... -Unregister  # remove task only
+#   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Register-ShowroomTrackCPublishDailyTask.ps1
+#   powershell ... -StartTime 09:32
+#   powershell ... -ApplyRecommendedNginx   # weekly nginx snippet refresh on VPS
+#   powershell ... -Unregister
 
 param(
-    [string]$StartTime = "09:28",
+    [string]$StartTime = "09:32",
     [string]$WorkspaceRoot = "C:\workspace",
-    [string]$TaskName = "Showroom-TrackC-Bundle-Daily",
+    [string]$TaskName = "Showroom-TrackC-Publish-Daily",
+    [switch]$ApplyRecommendedNginx,
     [switch]$Unregister
 )
 
 $ErrorActionPreference = "Stop"
 
-$chainScript = Join-Path $WorkspaceRoot "scripts\build_showroom_track_c_bundle_chain_v1.ps1"
+$routineScript = Join-Path $WorkspaceRoot "scripts\Invoke-ShowroomTrackCPublishRoutine_v1.ps1"
 $assertScript = Join-Path $WorkspaceRoot "projects\bitcoin-trading\ops\windows-rehearsal\assert_task_target_exists.ps1"
 
 if (-not $Unregister) {
-    & powershell -NoProfile -ExecutionPolicy Bypass -File $assertScript -TargetPath $chainScript -Label "Track C showroom bundle chain"
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $assertScript -TargetPath $routineScript -Label "Showroom Track C publish routine"
 }
 
 $oldEap = $ErrorActionPreference
@@ -50,9 +51,12 @@ $argParts = @(
     "-NoProfile",
     "-WindowStyle", "Hidden",
     "-ExecutionPolicy", "Bypass",
-    "-File", "`"$chainScript`"",
+    "-File", "`"$routineScript`"",
     "-WorkspaceRoot", "`"$WorkspaceRoot`""
 )
+if ($ApplyRecommendedNginx) {
+    $argParts += "-ApplyRecommendedNginx"
+}
 $tr = "$psExe " + ($argParts -join " ")
 
 schtasks /Create /TN $TaskName /SC DAILY /ST $StartTime /TR $tr /F | Out-Null
@@ -70,3 +74,4 @@ if ($LASTEXITCODE -ne 0) {
 Write-Host "Created scheduled task: $TaskName"
 Write-Host "Start time (daily): $StartTime"
 Write-Host "Command: $tr"
+Write-Host "Verify: scripts\Verify-ShowroomTrackCPublishScheduledTask_v1.ps1"

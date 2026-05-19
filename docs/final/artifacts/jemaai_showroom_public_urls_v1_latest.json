@@ -1,0 +1,42 @@
+{
+  "schema": "jemaai_showroom_public_urls_v1",
+  "generated_at_utc": "2026-05-19T12:00:00Z",
+  "policy_ref": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1",
+  "hosts": {
+    "static_showroom_canonical": "https://jemaai.cloud",
+    "public_event_api": "https://api.jemaai.cloud"
+  },
+  "pages": {
+    "topology_radar": {
+      "path": "/public_showroom_topology_radar_v1.html",
+      "canonical": "https://jemaai.cloud/public_showroom_topology_radar_v1.html",
+      "api_mirror": "https://api.jemaai.cloud/public_showroom_topology_radar_v1.html"
+    },
+    "meaning_topology_graph": {
+      "path": "/public_showroom_meaning_topology_graph_v1.html",
+      "canonical": "https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html",
+      "api_mirror": "https://api.jemaai.cloud/public_showroom_meaning_topology_graph_v1.html",
+      "data_json": "https://jemaai.cloud/showroom_meaning_topology_graph_slice_v1.json"
+    },
+    "logos_research": {
+      "path": "/public_showroom_logos_research_v1.html",
+      "canonical": "https://jemaai.cloud/public_showroom_logos_research_v1.html",
+      "api_mirror": "https://api.jemaai.cloud/public_showroom_logos_research_v1.html"
+    },
+    "board_minimal": {
+      "path": "/public_showroom_board_minimal.html",
+      "canonical": "https://jemaai.cloud/public_showroom_board_minimal.html",
+      "api_mirror": "https://api.jemaai.cloud/public_showroom_board_minimal.html",
+      "hub_cta_default": "https://api.jemaai.cloud/public_showroom_board_minimal.html"
+    }
+  },
+  "api": {
+    "public_events_latest": "https://api.jemaai.cloud/api/public-events/latest"
+  },
+  "demo_script": "docs/final/artifacts/track_c_showroom_topology_sales_demo_script_v1_latest.md",
+  "publish_routine": "scripts/Invoke-ShowroomTrackCPublishRoutine_v1.ps1",
+  "publish_daily_task": "scripts/Register-ShowroomTrackCPublishDailyTask.ps1",
+  "nginx_weekly_task": "scripts/Register-ShowroomTrackCNginxWeeklyTask.ps1",
+  "nginx_snippet_ssot": "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/nginx_snippets/jemaai_showroom_ui.conf",
+  "vps_static_root": "/var/www/jemaai"
+}

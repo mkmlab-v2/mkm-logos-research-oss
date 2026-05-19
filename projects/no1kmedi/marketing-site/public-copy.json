@@ -13,6 +13,16 @@
       "label": "공개 관측 보드 보기",
       "sublabel": "미니멀 정적 보드 · 지연 스냅샷(관측·교육; 투자 권유·주문 아님)"
     },
+    "showroom_topology_radar": {
+      "href": "https://jemaai.cloud/public_showroom_topology_radar_v1.html",
+      "label": "Risk Topology Radar",
+      "sublabel": "관측 레이더 · NON_GATING · 실매매 트리거 아님"
+    },
+    "showroom_meaning_graph": {
+      "href": "https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html",
+      "label": "의미 연결망 그래프",
+      "sublabel": "bible_meaning_graph 실데이터 슬라이스 · [HYPO] 연구용"
+    },
     "premium_mkmlife": {
       "href": "https://mkmlife.com",
       "label": "원퀘스천 프리미엄 리포트",

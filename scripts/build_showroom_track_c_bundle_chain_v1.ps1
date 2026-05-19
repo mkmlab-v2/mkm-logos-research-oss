@@ -8,6 +8,7 @@
 #   pwsh ... -TopologyRadarSnapshotStrict   # fail if no graph/sidecar artifacts (no stub ref)
 #   pwsh ... -SkipValidate          # skip validate_showroom_public_bundle.py
 #   pwsh ... -SkipLogosResearchSlice  # skip build_showroom_logos_research_slice_v1.py
+#   pwsh ... -SkipMeaningTopologyGraphSlice  # skip build_showroom_meaning_topology_graph_slice_v1.py
 
 param(
     [string]$WorkspaceRoot = "",
@@ -15,7 +16,8 @@ param(
     [switch]$SkipTopologyRadarSnapshot,
     [switch]$TopologyRadarSnapshotStrict,
     [switch]$SkipValidate,
-    [switch]$SkipLogosResearchSlice
+    [switch]$SkipLogosResearchSlice,
+    [switch]$SkipMeaningTopologyGraphSlice
 )
 
 $ErrorActionPreference = "Stop"
@@ -92,15 +94,26 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 if (-not $SkipLogosResearchSlice) {
-    Write-Host "[chain] (6/6) showroom Logos research thin slice (theme DB -> JSON)" -ForegroundColor Cyan
+    Write-Host "[chain] (6/7) showroom Logos research thin slice (theme DB -> JSON)" -ForegroundColor Cyan
     & $py (Join-Path $root "scripts\build_showroom_logos_research_slice_v1.py")
     if ($LASTEXITCODE -ne 0) {
         Write-Error "build_showroom_logos_research_slice_v1.py failed: $LASTEXITCODE"
         exit $LASTEXITCODE
     }
 } else {
-    Write-Host "[chain] (6/6) SKIP Logos research slice" -ForegroundColor Yellow
+    Write-Host "[chain] (6/7) SKIP Logos research slice" -ForegroundColor Yellow
 }
 
-Write-Host "[chain] OK -> $bundleOut (+ trust viz + logos research slice JSON under jemaai-cloud-mvp/)" -ForegroundColor Green
+if (-not $SkipMeaningTopologyGraphSlice) {
+    Write-Host "[chain] (7/7) showroom meaning topology graph slice (graph JSONL -> capped subgraph)" -ForegroundColor Cyan
+    & $py (Join-Path $root "scripts\build_showroom_meaning_topology_graph_slice_v1.py")
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "build_showroom_meaning_topology_graph_slice_v1.py failed: $LASTEXITCODE"
+        exit $LASTEXITCODE
+    }
+} else {
+    Write-Host "[chain] (7/7) SKIP meaning topology graph slice" -ForegroundColor Yellow
+}
+
+Write-Host "[chain] OK -> $bundleOut (+ trust viz + logos + meaning graph slice JSON under jemaai-cloud-mvp/)" -ForegroundColor Green
 exit 0
