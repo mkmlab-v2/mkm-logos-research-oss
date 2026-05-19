@@ -139,6 +139,7 @@ $required = @(
     "scripts\Run-OpenData327SubmissionChain_v1.ps1",
     "scripts\Run-OpenData327SubmissionPrep_v1.ps1",
     "scripts\build_opendata_327_submission_readiness_v1.py",
+    "scripts\build_opendata_327_commander_handoff_v1.py",
     "tests\test_build_opendata_327_submission_readiness_v1.py",
     "docs\final\TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md",
     "docs\final\MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md",

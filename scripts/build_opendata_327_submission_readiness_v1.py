@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GATES = ROOT / "reports/opendata_327_pre_export_gates_latest.json"
 EXPORT = ROOT / "reports/opendata_327_pdf_export_latest.json"
 MERGE_LATEST = ROOT / "reports/opendata_327_pdf_merge_latest.json"
+HANDOFF = ROOT / "reports/opendata_327_commander_handoff_latest.json"
 PART_B_MD = ROOT / "docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_submission_v1.md"
 CHECKLIST = ROOT / "docs/final/artifacts/opendata_327_kstartup_submission_checklist_v1_latest.json"
 PARALLEL = ROOT / "docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json"
@@ -88,6 +89,8 @@ def build() -> dict[str, Any]:
 
     merge_bcd = _load(MERGE_LATEST) or {}
     bcd_merged = _file_meta(merge_bcd.get("output_pdf"))
+    final_upload = _file_meta(merge_bcd.get("final_upload_pdf"))
+    has_cover = bool(merge_bcd.get("final_upload_pdf"))
 
     technical_ready = (
         gates_ok
@@ -110,11 +113,16 @@ def build() -> dict[str, Any]:
         "deadline_kst": checklist.get("deadline", {}).get("kst", "2026-06-05T18:00:00+09:00"),
         "technical_ready_for_pdf_bundle": technical_ready,
         "ready_for_kstartup_upload": False,
-        "ready_for_kstartup_upload_blockers": [
-            "표지(A) 수동 병합 미완료",
-            "K-Startup·나라장터 채널 human",
-            "G3/G4/G5 human gates in kstartup checklist",
-        ],
+        "ready_for_kstartup_upload_blockers": (
+            ["K-Startup·나라장터 채널 human", "G3/G4/G5 human gates in kstartup checklist"]
+            if has_cover
+            else [
+                "표지(A) 수동 병합 미완료",
+                "K-Startup·나라장터 채널 human",
+                "G3/G4/G5 human gates in kstartup checklist",
+            ]
+        ),
+        "cover_a_merged": has_cover,
         "pre_export_gates": {
             "all_ok": gates_ok,
             "pointer": GATES.relative_to(ROOT).as_posix(),
@@ -126,6 +134,7 @@ def build() -> dict[str, Any]:
             "part_c_pdf": part_c,
             "part_d_annex_pdf": part_d,
             "bcd_merged_pdf": bcd_merged,
+            "final_upload_pdf": final_upload,
             "export_summary": EXPORT.relative_to(ROOT).as_posix() if EXPORT.is_file() else None,
             "merge_summary": MERGE_LATEST.relative_to(ROOT).as_posix() if MERGE_LATEST.is_file() else None,
         },
@@ -138,6 +147,8 @@ def build() -> dict[str, Any]:
             "parallel_lane": PARALLEL.relative_to(ROOT).as_posix(),
             "chain_script": "scripts/Run-OpenData327SubmissionChain_v1.ps1",
             "prep_script": "scripts/Run-OpenData327SubmissionPrep_v1.ps1",
+            "handoff_script": "scripts/build_opendata_327_commander_handoff_v1.py",
+            "commander_handoff": HANDOFF.relative_to(ROOT).as_posix(),
         },
         "track_wall": "separate_from_LG_compression_OEM",
         "boundary_ack": "technical_ready does not imply legal sign-off or K-Startup submit complete.",

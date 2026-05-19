@@ -23,4 +23,8 @@ Write-Host "== Submission readiness summary ==" -ForegroundColor Cyan
 py scripts/build_opendata_327_submission_readiness_v1.py --refresh-parallel-checklist
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "[DONE] See reports/opendata_327_submission_readiness_latest.json" -ForegroundColor Green
+Write-Host "== Commander handoff (fused) ==" -ForegroundColor Cyan
+py scripts/build_opendata_327_commander_handoff_v1.py
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[DONE] reports/opendata_327_submission_readiness_latest.json + opendata_327_commander_handoff_latest.json" -ForegroundColor Green
