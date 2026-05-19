@@ -12,8 +12,8 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 READINESS = ROOT / "reports/opendata_327_submission_readiness_latest.json"
+MERGE_LATEST = ROOT / "reports/opendata_327_pdf_merge_latest.json"
 DEFAULT_OUT = ROOT / "reports/opendata_327_commander_handoff_latest.json"
-
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
@@ -73,13 +73,31 @@ def build() -> dict[str, Any]:
             "size_kb": _kb(ROOT / "reports/opendata_327_submission_bcd_merged_v1.pdf"),
             "note": "표지 A 없음 — step_4_merge bcd_merged_no_cover_a",
         },
-        {
-            "step": "최종 업로드용 (표지 A 후)",
-            "path": "reports/moksori_ai_opendata327_task1_business_plan_v1.pdf",
-            "size_kb": _kb(ROOT / "reports/moksori_ai_opendata327_task1_business_plan_v1.pdf"),
-            "note": "merge --cover-pdf 로 생성",
-        },
     ]
+
+    merge_doc: dict[str, Any] = {}
+    if MERGE_LATEST.is_file():
+        merge_doc = json.loads(MERGE_LATEST.read_text(encoding="utf-8-sig"))
+    final_path = merge_doc.get("final_upload_pdf")
+    cover_merged = bool(readiness.get("cover_a_merged")) or bool(final_path)
+    if cover_merged and final_path:
+        artifacts_table.append(
+            {
+                "step": "최종 업로드용 (A+B+C+D)",
+                "path": final_path,
+                "size_kb": _kb(ROOT / final_path),
+                "note": "merge --cover-pdf 완료",
+            }
+        )
+    else:
+        artifacts_table.append(
+            {
+                "step": "최종 업로드용 (표지 A 후)",
+                "path": None,
+                "status": "pending",
+                "note": "py scripts/merge_opendata_327_submission_pdf_v1.py --cover-pdf <cover_a.pdf>",
+            }
+        )
 
     human_only = [
         {
