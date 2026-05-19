@@ -1,14 +1,14 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-05-15T08:15:25Z",
+  "generated_at_utc": "2026-05-19T12:43:16Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
-    "lens_walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json",
-    "instrument_walkforward_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_instrument_combo_walkforward_v1_latest.json",
-    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "lens_walkforward_json": "reports\\prophecy_per_date_combo_walkforward_recommended_chain_v1_latest.json",
+    "instrument_walkforward_json": "reports\\prophecy_instrument_combo_walkforward_recommended_chain_v1_latest.json",
+    "score_json": "reports\\btrack_prophecy_score_recommended_eval_chain_v1_latest.json",
     "hypothesis_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
-    "promotion_track_mode": "btc_only_crossassist",
+    "promotion_track_mode": "dual",
     "thresholds": {
       "min_mean_test_accuracy": 0.55,
       "max_stdev_test_accuracy": 0.15,
@@ -24,66 +24,122 @@
     },
     "skip_shared_gates": false,
     "strict_streak_required": 5,
-    "streak_history_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_promotion_strict_streak_legacy_v1.json"
+    "streak_history_json": "reports\\prophecy_promotion_strict_streak_recommended_chain_v1.json"
   },
   "tracks": {
     "per_date_lens": {
-      "all_gates_passed": false,
+      "all_gates_passed": true,
       "gates": [
         {
           "gate_id": "lens_wf_mean_test_accuracy",
-          "passed": false,
+          "passed": true,
           "threshold": {
             "op": ">=",
             "min_mean_test_accuracy": 0.55
           },
           "observed": {
-            "mean_test_accuracy": 0.25
+            "mean_test_accuracy": 0.569444
           }
         },
         {
           "gate_id": "lens_wf_stdev_test_accuracy",
-          "passed": false,
+          "passed": true,
           "threshold": {
             "op": "<=",
             "max_stdev_test_accuracy": 0.15
           },
           "observed": {
-            "stdev_test_accuracy": 0.433013
+            "stdev_test_accuracy": 0.057265
           }
         },
         {
           "gate_id": "lens_wf_fraction_folds_beat_always_bull",
-          "passed": false,
+          "passed": true,
           "threshold": {
             "op": ">=",
             "min_fraction_test_beats_always_bull": 0.5
           },
           "observed": {
-            "fraction_test_beats_always_bull": 0.25,
+            "fraction_test_beats_always_bull": 0.75,
             "n_folds": 4
           }
         },
         {
           "gate_id": "lens_wf_min_fold_test_accuracy",
-          "passed": false,
+          "passed": true,
           "threshold": {
             "op": ">=",
             "min_min_test_accuracy_across_folds": 0.4
           },
           "observed": {
-            "min_test_accuracy": 0.0
+            "min_test_accuracy": 0.5
           }
         }
       ]
     },
     "instrument_combo": {
-      "all_gates_passed": null,
-      "gates": []
+      "all_gates_passed": true,
+      "gates": [
+        {
+          "gate_id": "instrument_wf_mean_test_accuracy",
+          "passed": true,
+          "threshold": {
+            "op": ">=",
+            "min_mean_test_accuracy": 0.55
+          },
+          "observed": {
+            "mean_test_accuracy": 0.552083
+          }
+        },
+        {
+          "gate_id": "instrument_wf_stdev_test_accuracy",
+          "passed": true,
+          "threshold": {
+            "op": "<=",
+            "max_stdev_test_accuracy": 0.15
+          },
+          "observed": {
+            "stdev_test_accuracy": 0.039741
+          }
+        },
+        {
+          "gate_id": "instrument_wf_fraction_folds_beat_always_bull",
+          "passed": true,
+          "threshold": {
+            "op": ">=",
+            "min_fraction_test_beats_always_bull": 0.5
+          },
+          "observed": {
+            "fraction_test_beats_always_bull": 0.5,
+            "n_folds": 4
+          }
+        },
+        {
+          "gate_id": "instrument_wf_min_fold_test_accuracy",
+          "passed": true,
+          "threshold": {
+            "op": ">=",
+            "min_min_test_accuracy_across_folds": 0.4
+          },
+          "observed": {
+            "min_test_accuracy": 0.5
+          }
+        }
+      ]
     },
     "shared": {
       "all_gates_passed": true,
       "gates": [
+        {
+          "gate_id": "panel_kospi_btc_per_date",
+          "passed": true,
+          "reason": null,
+          "detail": {
+            "n_eval_dates_with_any_row": 180,
+            "n_eval_dates_with_kospi_and_btc": 180,
+            "n_score_rows": 360
+          }
+        },
         {
           "gate_id": "score_btc_csv_input_present",
           "passed": true,
@@ -105,9 +161,9 @@
           "passed": true,
           "reason": null,
           "detail": {
-            "neutral_ratio": 0.0,
-            "neutral_count": 0,
-            "row_count": 30,
+            "neutral_ratio": 0.416667,
+            "neutral_count": 150,
+            "row_count": 360,
             "max_neutral_ratio": 0.7
           }
         }
@@ -117,47 +173,57 @@
   "gates": [
     {
       "gate_id": "lens_wf_mean_test_accuracy",
-      "passed": false,
+      "passed": true,
       "threshold": {
         "op": ">=",
         "min_mean_test_accuracy": 0.55
       },
       "observed": {
-        "mean_test_accuracy": 0.25
+        "mean_test_accuracy": 0.569444
       }
     },
     {
       "gate_id": "lens_wf_stdev_test_accuracy",
-      "passed": false,
+      "passed": true,
       "threshold": {
         "op": "<=",
         "max_stdev_test_accuracy": 0.15
       },
       "observed": {
-        "stdev_test_accuracy": 0.433013
+        "stdev_test_accuracy": 0.057265
       }
     },
     {
       "gate_id": "lens_wf_fraction_folds_beat_always_bull",
-      "passed": false,
+      "passed": true,
       "threshold": {
         "op": ">=",
         "min_fraction_test_beats_always_bull": 0.5
       },
       "observed": {
-        "fraction_test_beats_always_bull": 0.25,
+        "fraction_test_beats_always_bull": 0.75,
         "n_folds": 4
       }
     },
     {
       "gate_id": "lens_wf_min_fold_test_accuracy",
-      "passed": false,
+      "passed": true,
       "threshold": {
         "op": ">=",
         "min_min_test_accuracy_across_folds": 0.4
       },
       "observed": {
-        "min_test_accuracy": 0.0
+        "min_test_accuracy": 0.5
+      }
+    },
+    {
+      "gate_id": "panel_kospi_btc_per_date",
+      "passed": true,
+      "reason": null,
+      "detail": {
+        "n_eval_dates_with_any_row": 180,
+        "n_eval_dates_with_kospi_and_btc": 180,
+        "n_score_rows": 360
       }
     },
     {
@@ -181,30 +247,30 @@
       "passed": true,
       "reason": null,
       "detail": {
-        "neutral_ratio": 0.0,
-        "neutral_count": 0,
-        "row_count": 30,
+        "neutral_ratio": 0.416667,
+        "neutral_count": 150,
+        "row_count": 360,
         "max_neutral_ratio": 0.7
       }
     }
   ],
-  "lens_all_gates_passed": false,
-  "instrument_combo_all_gates_passed": null,
+  "lens_all_gates_passed": true,
+  "instrument_combo_all_gates_passed": true,
   "shared_all_gates_passed": true,
-  "combined_all_passed": false,
-  "all_gates_passed": false,
-  "strict_passed": false,
-  "soft_passed": false,
-  "lens_soft_passed": false,
-  "instrument_soft_passed": null,
-  "strict_pass_streak": 0,
-  "auto_promote_ready": false,
-  "promotion_recommendation": "defer",
-  "outcome_class": "reject",
+  "combined_all_passed": true,
+  "all_gates_passed": true,
+  "strict_passed": true,
+  "soft_passed": true,
+  "lens_soft_passed": true,
+  "instrument_soft_passed": true,
+  "strict_pass_streak": 5,
+  "auto_promote_ready": true,
+  "promotion_recommendation": "auto_promote_ready",
+  "outcome_class": "pass_candidate",
   "gate_taxonomy": {
     "schema": "prophecy_gate_taxonomy_v1",
-    "outcome_class": "reject",
-    "promotion_recommendation": "defer",
+    "outcome_class": "pass_candidate",
+    "promotion_recommendation": "auto_promote_ready",
     "microbiome_metaphor_map": {
       "pass_candidate": "beneficial_signal_analog",
       "reject": "harmful_noise_analog",

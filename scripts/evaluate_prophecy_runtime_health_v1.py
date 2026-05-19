@@ -71,6 +71,7 @@ def _analyze(
     min_hit_rate: float,
     max_neutral_ratio: float,
     max_neutral_streak: int,
+    allow_live_prophecy_separation: bool = False,
 ) -> tuple[list[Finding], dict[str, Any]]:
     findings: list[Finding] = []
 
@@ -143,19 +144,34 @@ def _analyze(
     live_env = live_doc.get("environment") if isinstance(live_doc.get("environment"), dict) else {}
     live_enable_trading = bool(live_env.get("status_enable_trading"))
     if live_enable_trading and (not auto_promote_ready or not all_gates_passed):
-        findings.append(
-            Finding(
-                severity="red",
-                code="GATE_LIVE_CONFLICT",
-                message="Live trading is enabled while latest promotion gates are not ready.",
-                observed={
-                    "live_status": live_status,
-                    "status_enable_trading": live_enable_trading,
-                    "auto_promote_ready": auto_promote_ready,
-                    "all_gates_passed": all_gates_passed,
-                },
+        if allow_live_prophecy_separation:
+            findings.append(
+                Finding(
+                    severity="amber",
+                    code="MODE_B_LIVE_PROPHECY_SEPARATION",
+                    message="Live execution ON and prophecy gates not passed — expected under Operation Mode B (shadow prophecy).",
+                    observed={
+                        "live_status": live_status,
+                        "status_enable_trading": live_enable_trading,
+                        "auto_promote_ready": auto_promote_ready,
+                        "all_gates_passed": all_gates_passed,
+                    },
+                )
             )
-        )
+        else:
+            findings.append(
+                Finding(
+                    severity="red",
+                    code="GATE_LIVE_CONFLICT",
+                    message="Live trading is enabled while latest promotion gates are not ready.",
+                    observed={
+                        "live_status": live_status,
+                        "status_enable_trading": live_enable_trading,
+                        "auto_promote_ready": auto_promote_ready,
+                        "all_gates_passed": all_gates_passed,
+                    },
+                )
+            )
 
     summary = {
         "price_directional_hit_rate": hit_rate,
@@ -186,6 +202,11 @@ def main() -> int:
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--stdout-only", action="store_true")
     ap.add_argument("--fail-on-red", action="store_true")
+    ap.add_argument(
+        "--operation-mode-b-shadow",
+        action="store_true",
+        help="Operation Mode B: live aroon ON + prophecy shadow gates not passed is expected (amber, not red).",
+    )
     args = ap.parse_args()
 
     hit_doc = _load_json(args.hit_rate_json)
@@ -203,6 +224,7 @@ def main() -> int:
         min_hit_rate=args.min_hit_rate,
         max_neutral_ratio=args.max_neutral_ratio,
         max_neutral_streak=args.max_neutral_streak,
+        allow_live_prophecy_separation=args.operation_mode_b_shadow,
     )
 
     red_count = sum(1 for f in findings if f.severity == "red")

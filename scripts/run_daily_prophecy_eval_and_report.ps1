@@ -44,7 +44,9 @@ param(
     [int]$TrinitySafetyConsecutiveThresholdKospi = 0,
     [int]$TrinitySafetyWindowBtc = 0,
     [int]$TrinitySafetyConsecutiveThresholdBtc = 0,
-    [switch]$SkipRuntimeHealthGuard
+    [switch]$SkipRuntimeHealthGuard,
+    # Operation Mode B: live ON + prophecy gates not passed -> amber (not red GATE_LIVE_CONFLICT).
+    [switch]$OperationModeBShadow
 )
 
 $ErrorActionPreference = "Stop"
@@ -136,7 +138,9 @@ $runtimeHealthStatus = $null
 $runtimeHealthShouldPauseTrading = $null
 if (-not $SkipRuntimeHealthGuard -and (Test-Path -LiteralPath $runtimeHealthScript)) {
     Write-Host "==> evaluate_prophecy_runtime_health_v1.py"
-    & py $runtimeHealthScript --output $runtimeHealthOut
+    $rhArgs = @($runtimeHealthScript, "--output", $runtimeHealthOut)
+    if ($OperationModeBShadow) { $rhArgs += "--operation-mode-b-shadow" }
+    & py @rhArgs
     if ($LASTEXITCODE -ne 0) {
         throw "evaluate_prophecy_runtime_health_v1.py exit $LASTEXITCODE"
     }
