@@ -100,6 +100,7 @@ def _refresh_gates_workflow(*, export_doc: dict[str, Any]) -> None:
     parts = export_doc.get("parts") or []
     part_b = next((p for p in parts if "part_b" in str(p.get("pdf", ""))), {})
     part_c = next((p for p in parts if "part_c" in str(p.get("pdf", ""))), {})
+    part_d = next((p for p in parts if "part_d" in str(p.get("pdf", ""))), {})
     part_b_pdf = part_b.get("pdf")
     size_mb = (
         round((ROOT / part_b_pdf).stat().st_size / (1024 * 1024), 2) if part_b_pdf else 0.0
@@ -119,8 +120,10 @@ def _refresh_gates_workflow(*, export_doc: dict[str, Any]) -> None:
         "part_b_pdf": part_b.get("pdf"),
         "part_b_pdf_merge_name": export_doc.get("part_b_pdf_merge_name"),
         "part_c_pdf": part_c.get("pdf"),
+        "part_d_pdf": part_d.get("pdf"),
         "part_b_html": part_b.get("html"),
         "part_c_html": part_c.get("html"),
+        "part_d_html": part_d.get("html"),
         "part_b_size_mb": size_mb,
     }
     gates["merge_guide"] = "docs/final/artifacts/opendata_327_submission_pdf_merge_guide_v1_latest.md"
@@ -153,11 +156,13 @@ def _export_part(
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--skip-part-c", action="store_true")
+    ap.add_argument("--skip-part-d", action="store_true")
     args = ap.parse_args()
 
     guide = json.loads(MERGE_GUIDE.read_text(encoding="utf-8"))
     part_b_md = ROOT / guide["merge_order"][1]["source_md"]
     part_c_md = ROOT / guide["merge_order"][2]["source_md"]
+    part_d_md = ROOT / guide["merge_order"][3]["source_md"]
 
     browser = _find_browser()
     out: dict[str, Any] = {
@@ -188,6 +193,17 @@ def main() -> int:
                 html_out=REPORTS / "opendata_327_part_c_draft_v1.html",
                 pdf_out=REPORTS / "opendata_327_part_c_draft_v1.pdf",
                 title="OpenData 327 Part C",
+            )
+        )
+
+    if not args.skip_part_d and part_d_md.is_file():
+        out["parts"].append(
+            _export_part(
+                browser=browser,
+                source_md=part_d_md,
+                html_out=REPORTS / "opendata_327_part_d_annex_v1.html",
+                pdf_out=REPORTS / "opendata_327_part_d_annex_v1.pdf",
+                title="OpenData 327 Part D Annex",
             )
         )
 

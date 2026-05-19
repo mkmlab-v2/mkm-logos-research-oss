@@ -15,4 +15,8 @@ Write-Host "== OpenData 327 PDF export (Part B + C) ==" -ForegroundColor Cyan
 py scripts/export_opendata_327_submission_pdf_v1.py
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-Write-Host "[DONE] OpenData 327 chain OK (gates workflow refreshed via Python UTF-8)" -ForegroundColor Green
+Write-Host "== OpenData 327 merge B+C+D (no cover A) ==" -ForegroundColor Cyan
+py scripts/merge_opendata_327_submission_pdf_v1.py
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+Write-Host "[DONE] OpenData 327 chain OK (export + BCD merge, cover A manual)" -ForegroundColor Green

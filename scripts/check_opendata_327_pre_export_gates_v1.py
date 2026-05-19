@@ -13,6 +13,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 PART_B = ROOT / "docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_submission_v1.md"
 PART_C = ROOT / "docs/final/artifacts/ai_opendata_challenge_2026_327_market_expansion_submission_v1.md"
+PART_D = ROOT / "docs/final/B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md"
 DEFAULT_OUT = ROOT / "reports/opendata_327_pre_export_gates_latest.json"
 
 G1_PATTERNS = [
@@ -55,11 +56,13 @@ def _scan(path: Path, patterns: list[re.Pattern[str]]) -> list[dict[str, str]]:
 def build() -> dict[str, Any]:
     g1_b = _scan(PART_B, G1_PATTERNS)
     g1_c = _scan(PART_C, G1_PATTERNS)
+    g1_d = _scan(PART_D, G1_PATTERNS) if PART_D.is_file() else []
     g4_raw = _scan(PART_B, G4_POSITIVE)
     g4 = [h for h in g4_raw if not any(m in h["excerpt"] for m in G4_NEGATION_MARKERS)]
     gates = [
         {"id": "G1_B", "ok": len(g1_b) == 0, "hits": g1_b},
         {"id": "G1_C", "ok": len(g1_c) == 0, "hits": g1_c},
+        {"id": "G1_D", "ok": len(g1_d) == 0, "hits": g1_d},
         {"id": "G4", "ok": len(g4) == 0, "hits": g4},
     ]
     all_ok = all(g["ok"] for g in gates)

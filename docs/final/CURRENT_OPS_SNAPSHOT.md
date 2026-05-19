@@ -2,18 +2,18 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
-## Ops slice (2026-05-19 · OpenData 327 자동 체인)
+## Ops slice (2026-05-19 · OpenData 327 B+C+D 병합)
 
-**Thread:** Cursor — 게이트·§4-1 PDF 재출력
+**Thread:** Cursor — export·merge 체인
 
-- **완료:** `Run-OpenData327SubmissionChain_v1.ps1` — G1/G4 **PASS** · Part B `reports/opendata_327_part_b_v1.pdf` (~97KB, §4-1 반영) · merge copy `moksori_ai_opendata327_task1_business_plan_v1.pdf` · Part C draft PDF · `check_opendata_327_pre_export_gates_v1.py` / `export_opendata_327_submission_pdf_v1.py` 신규
-- **막힘:** 표지(A)+Annex(D) **수동 병합** · §2-2 목표 수치 **내부 확정 전** · K-Startup+나라장터 **6/5 18:00** (human)
-- **다음:** PDF 육안 검수 → merge guide A+B(+C/D) → 6/1 dry-run
+- **완료:** `Run-OpenData327SubmissionChain_v1.ps1` — G1 B/C/D + G4 **PASS** · Part B/C/D PDF · **`reports/opendata_327_submission_bcd_merged_v1.pdf`** (~0.22MB, 표지 A 제외) · `merge_opendata_327_submission_pdf_v1.py` · gates JSON 한글 UTF-8 정상
+- **막힘:** **표지(A)** K-Startup 양식 맨 앞 삽입(human) · §2-2 목표 수치 내부 확정 · K-Startup+나라장터 **6/5 18:00**
+- **다음:** `opendata_327_submission_bcd_merged_v1.pdf` 육안 검수 → 표지 삽입 → 6/1 dry-run
 
 **재개:**
 ```
 @docs/final/CURRENT_OPS_SNAPSHOT.md
-OpenData 327 Part B PDF 재출력 완료 · 병합·접수만 남음
+OpenData BCD 병합 PDF 준비됨 · 표지(A)만 수동
 ```
 
 ## Ops slice (2026-05-19 · IR Moat 덱 · 채팅 종료)
