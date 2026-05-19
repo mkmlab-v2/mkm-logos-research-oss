@@ -11,11 +11,16 @@
     "boundary_ack": { "type": "string", "minLength": 10 },
     "auto_publish_allowed": { "const": false },
     "buffer_api_configured": { "type": "boolean" },
+    "default_publish_path": {
+      "type": "string",
+      "enum": ["linkedin_manual_paste", "buffer_draft_tray"]
+    },
+    "post_ready_markdown": { "type": "string" },
     "commander_checklist": {
       "type": "array",
       "items": { "type": "string" },
       "minItems": 3,
-      "maxItems": 12
+      "maxItems": 8
     },
     "items": {
       "type": "array",
