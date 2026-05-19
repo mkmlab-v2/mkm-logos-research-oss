@@ -1,0 +1,61 @@
+{
+  "schema": "marketing_content_queue_v1",
+  "updated_at_utc": "2026-05-19T12:00:00Z",
+  "default_cost_tier": "tier_0",
+  "items": [
+    {
+      "id": "compression_governance_moat_w12",
+      "channel": "linkedin",
+      "status": "pending",
+      "topic": "Deterministic compression governance: artifact-bound token economy without weight fine-tuning per vertical",
+      "hook": "We do not sell the flashiest model score — we sell measurable ops discipline your platform team can audit.",
+      "locale": "en",
+      "audience": "b2b_platform",
+      "source_artifacts": [
+        "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",
+        "docs/final/artifacts/track_c_b2b_compression_plugin_appendix_v1_latest.md"
+      ],
+      "cta_url": "https://a-codeai.com",
+      "allow_gemini": false,
+      "notes": "Legal sign-off before publish. Human LinkedIn only."
+    },
+    {
+      "id": "showroom_topology_observability_ko",
+      "channel": "linkedin",
+      "status": "pending",
+      "topic": "관측 전용 토폴로지 레이더 — 투자 권유·주문 트리거가 아닌 B2B 레짐 압력 스냅샷",
+      "hook": "지연 스냅샷·NON_GATING — 실매매 자동 합선 없음.",
+      "locale": "ko",
+      "audience": "b2b_platform",
+      "source_artifacts": [
+        "docs/final/artifacts/track_c_b2b_meeting_pack_index_v1_latest.md"
+      ],
+      "cta_url": "https://api.jemaai.cloud/public_showroom_topology_radar_v1.html",
+      "allow_gemini": false,
+      "notes": "Korean post; paste disclaimer from generator."
+    },
+    {
+      "id": "compression_discipline_youtube_q2",
+      "channel": "youtube_script",
+      "status": "pending",
+      "topic": "10-minute explainer: compression governance vs model leaderboard (B2B platform teams)",
+      "locale": "en",
+      "audience": "b2b_platform",
+      "source_artifacts": [
+        "docs/final/artifacts/compression_enterprise_executive_summary_v1.md"
+      ],
+      "allow_gemini": false,
+      "notes": "Script generator v2 — not in weekly bundle v1; backlog only."
+    },
+    {
+      "id": "trackc_newsletter_may_w3",
+      "channel": "newsletter",
+      "status": "skipped",
+      "topic": "Track C macro observability digest (internal pilot list)",
+      "locale": "ko",
+      "audience": "internal_only",
+      "source_artifacts": [],
+      "notes": "Skipped until newsletter generator ships."
+    }
+  ]
+}

@@ -40,7 +40,7 @@ def build(*, gemini_used: bool) -> dict[str, Any]:
 
     drafts = []
     if DRAFTS.is_dir():
-        drafts = sorted(p.name for p in DRAFTS.glob("*_[DRAFT].md"))
+        drafts = sorted(p.name for p in DRAFTS.iterdir() if p.name.endswith("_[DRAFT].md"))
 
     recommended = tier.get("recommended_default", "tier_0")
     if gemini_used:
