@@ -1,7 +1,7 @@
 {
   "schema": "mkm_inter_agent_encoding_status_v1",
-  "generated_at_utc": "2026-05-18T20:45:41Z",
-  "rq_019": "OPEN",
+  "generated_at_utc": "2026-05-19T00:33:46Z",
+  "rq_019": "CLOSED",
   "rq_019_milestones_core_ready": true,
   "research_only_components": [
     "l1_side_channel_wire",
@@ -14,7 +14,7 @@
         "exit_code": 0,
         "passed": true,
         "test_file": "tests/test_compression_token_api_v2_stub.py",
-        "stdout_tail": ".................                                                        [100%]\n17 passed in 1.22s\n",
+        "stdout_tail": "..................                                                       [100%]\n18 passed in 1.56s\n",
         "stderr_tail": ""
       },
       "inprocess_roundtrip": {
@@ -54,7 +54,10 @@
     "sota_map": "docs/final/artifacts/mkm_inter_agent_encoding_sota_map_v1.md",
     "trust_packet_onepager": "docs/final/artifacts/lg_compression_trust_packet_onepager_v1.md",
     "first_message_worked_example": "docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md",
-    "first_message_live_http": "docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json"
+    "first_message_live_http": "docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json",
+    "health_domain_commander_approval": "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json",
+    "rq019_commander_close": "docs/final/artifacts/mkm_inter_agent_rq019_commander_close_v1_latest.json"
   },
+  "health_domain_commander_approved": true,
   "boundary_ack": "Not a finished MKM Language / Lingua Franca standard. No production SLA. No beats-SOTA-papers claim."
 }

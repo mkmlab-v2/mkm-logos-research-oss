@@ -1,11 +1,11 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
+Revised: 2026-05-19 — §3.1.3 **C-S2→9장 v1.1(Moat/Plugin)** · §3.1.5 **Inter-Agent RQ-019 IR 포인터** · §10 OpenData 병렬·법무 handoff. (2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
-**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-17 개정** 처리한다(§3.7.2 **(C)** COGS·법무 **승격 전** 단계는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트」** 표만 상세 — 본 절은 정책·동결 지연만). §3.6 Visualization v0 **역참조** + 이전 2026-05-15 §3.7.2 민감 액션 **구조 Lock** + KPI·면책 **동결 지연** 유지. **2026-05-15** 개정분(§3.7.2 **(B)/(C)**·RQ-009·`PUBLIC_FACING` §3 역참조) 및 **2026-05-14** 개정분(§3.7.2 `[DRAFT]`·RQ-009) 및 **2026-05-11** 동결분(§3.11 등)·**2026-05-10** 동결분(§3.9–§3.10·M-milestones 등)은 유지된다. **2026-05-15** 한정 추가 범위: §3.7.2 **(B)** 민감 외부 액션에 **자동 단독 실행 불가 + 휴먼 게이트**를 SSOT 전제로 명시; §3.7.2 **(C)** 파일럿 KPI **수치**는 대외 본문·동 체크리스트에 **박지 않음**(내부 R&D·실측·법무 후 승격). 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시한다. `§3.7`은 영업·마케팅·개발 파이프라인의 **공통 지침**으로 적용한다.
+**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-19 개정** 처리한다(§3.1.3 C-S2·§3.1.5·§10 포인터; **RQ-019·OpenData는 Track C 1차 매출 파도와 합선하지 않음**). §3.7.2 **(C)** COGS·법무 **승격 전** 단계는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트」** 표만 상세 — 본 §는 정책·동결 지연만. §3.6 Visualization v0 **역참조** + §3.7.2 민감 액션 **구조 Lock** + KPI·면책 **대외 동결 지연** 유지. **2026-05-15** §3.7.2 **(B)/(C)**·RQ-009·**2026-05-11** §3.11·**2026-05-10** §3.9–§3.10 등 이전 동결분은 유지. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시. `§3.7`은 영업·마케팅·개발 파이프라인 **공통 지침**.
 
 ## 1) Fact-Locked Baseline
 
@@ -94,7 +94,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 | **C-B1** | 2026-05-16 | **실험 기록** | bridge·soft-term·cap-weight 튜닝 모두 **floor 0.47 동시 충족 없음** → **baseline 유지** | `compression_domain_bridge_sweep_v1_latest.json` · `compression_scm_cap_tune_sweep_v1_latest.json` |
 | **C-B2** | 2026-05-16 | **VPS 3회** | `vps-mkmlife` 동일 호스트 벤치 **3회** pull · p95 **665–847ms** (median **~710ms**); 2026-04-10 스냅샷(~293ms)과 **동일 조건 아님** | `Run-CompressionBoardMsVpsBenchTriplet_v1.ps1` · `compression_board_ms_vps_bench_triplet_v1_latest.json` · `bench_l1_api_load_summary_vps_latest.json` |
 | **C-S1** | 2026-05-16 | **갱신** | §2·Logos·B2B 1p 오퍼 아티팩트 재생성 | `build_track_c_macro_risk_mvp_filled_v1.py` → `track_c_2026_h2_macro_risk_alert_report_mvp_v1.md` |
-| **C-S2** | 2026-05-16 | **완료** | LG 압축·디시플린 덱 아웃라인 5장 + Kill-Matrix | `build_lg_hs_compression_discipline_deck_v1.py` → `lg_hs_compression_discipline_deck_v1_latest.md` |
+| **C-S2** | 2026-05-19 | **완료** | LG 압축·디시플린 IR 덱 **v1.1 · 9 slides**(Slide 4–5 Moat/Plugin) + Kill-Matrix + factcheck; **`gitea/main` 반영** · 법무 전 `[DRAFT]` | `lg_hs_compression_discipline_deck_v1_latest.md` · `lg_hs_ir_moat_speaker_pack_v1_latest.md` · `lg_hs_before_after_factcheck_v1_latest.json` |
 | **C-S3** | 미팅 완료 → **2026-05-20(화) 결과 대기** | **대기** | LG 결과 한 줄 기록; **hold/reject 시** 2주 폴백 파이프라인 | `lg_hs_meeting_followup_v1.json` · `lg_hs_fallback_two_week_pipeline_v1.json` · 법무 전 재발송 금지 |
 
 **승격 경계:** 위 일정의 **완료**는 Track A 상용·실매매·OEM 계약 **자동 승격이 아님** — `COMPRESSION_12M_LEARNINGS` §9·`MKM_PROMOTION_GATE_CHECKLIST_B_TO_A_C_V1.md`·휴먼 승인 병행.
@@ -106,6 +106,17 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - **SSOT:** `docs/final/artifacts/runtime_assurance_safety_plc_executive_summary_v1.md`
 - **LG 후속:** `docs/final/artifacts/lg_hs_meeting_followup_v1.json` — 화요일 결과는 `outcome_record_template`만 채움
 - **대외 send:** 법무·`PUBLIC_FACING` 통과 전 **압축 1-Pager 우선**; Safety PLC 문서는 follow-up 첨부 권장
+
+#### 3.1.5 Inter-Agent Encoding — B2B·IR 보조 (`[VISION]` · RQ-019, 2026-05-19)
+
+**상태:** 연구·IR 초안. **구현·경로 SSOT**는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` Inter-Agent 표 행만 — 본 절만으로 **Lingua Franca 완성·상용 SLA·Track A 승격** 단정 금지.
+
+- **연구 큐:** `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-019** — 내부 ops **`rq_019: CLOSED`** (`mkm_inter_agent_encoding_status_latest.json` · `COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY`). M1–M3 `core_ready` ≠ Track A·실매매 승격.
+- **법무:** `mkm_inter_agent_legal_counsel_signoff_v1_latest.json` — **`COUNSEL_SIGNED`** · checklist #7 met → `mkm_inter_agent_rq019_closure_readiness_latest.json` **`closure_allowed: true`**.
+- **IR 복붙(counsel-cleared · 발송마다 PUBLIC_FACING):** `docs/final/artifacts/mkm_inter_agent_ir_snippet_v1.md` · 금지 주장·SOTA 맵 `mkm_inter_agent_encoding_sota_map_v1.md`.
+- **격벽:** B-track·Trust Packet 초안 — **실매매·Track A 벤치·압축 47% 덱과 한 슬라이드 합치기 금지** (`PUBLIC_FACING` v1.7).
+
+**공고 병렬 레인 (Track C 1차 매출과 분리):** MSME AI+ OpenData **제2026-327** — 제출 SSOT `docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_submission_v1.md` · PDF `reports/opendata_327_part_b_v1.pdf` 등 · 병렬 체크 `docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json` — **§3.8 B2B 매크로·§3.1 압축 우선 파도와 합선하지 않음**.
 
 ### 3.2 축 B — 초고난도 비정형 텍스트 기반 사업 (고급 해설형)
 
@@ -533,7 +544,7 @@ Manufacturing-discipline add-on (P1 / OEM meetings, 2026-05-16):
 
 ## 10) Immediate Next Actions
 
-0. **§3.1.3 일정:** LG 미팅 **완료**; **C-S3** **2026-05-20(화)** 대기(결과 전 추가 발송 없음). **RQ-017** VPS triplet+페이로드 스윕 완료; **hold/reject** 시 `lg_hs_fallback_two_week_pipeline_v1.json`(주력 `LANE-TRACKC-B2B`, B2B onepager 선행 갱신됨). **RQ-016** baseline 유지 · **C-A4** 주간 거버넌스.
+0. **§3.1.3 일정:** LG 미팅 **완료**; **C-S3** **2026-05-20(화)** 대기(결과 전 추가 발송 없음). **C-S2** 9장 Moat 덱 → PPT·Q&A는 `compression_enterprise_executive_summary_v1.md` Plugin § · **법무 전 `[DRAFT]`**. **RQ-019** **CLOSED** (`COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY` · IR `mkm_inter_agent_ir_snippet_v1.md` · 발송마다 PUBLIC_FACING). **OpenData 327** §4-1 MD 반영 → PDF 재출력·병합·**6/5 18:00** 접수 잔여. **RQ-017** VPS triplet 완료; **hold/reject** 시 `lg_hs_fallback_two_week_pipeline_v1.json`. **RQ-016** baseline · **C-A4** 주간 거버넌스.
 1. **§3.8 MVP:** `2026 H2 매크로 리스크 경보 리포트` — **목차·Executive Summary 1p·근거 아티팩트 경로 표**는 `docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md`에 동결; 본문 수치는 해당 경로의 JSON·로그로 채운다.
 2. **B2B 오퍼:** 구독 범위(주기·대시보드·이메일)·면책·신뢰 KPI를 넣은 **1페이지 세일즈 시트** 초안을 Track C 공통 문구(§9)와 함께 고정한다. **자동 생성 초안:** `docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md` (`py scripts/build_track_c_macro_risk_mvp_filled_v1.py` 실행 시 MVP와 함께 갱신).
 3. **P1(압축) 세일즈:** `docs/final/artifacts/compression_enterprise_executive_summary_v1.md` **`[DRAFT]`** — §3.1.2 Kill-Matrix·금지 문구와 함께 OEM/IR에 사용; 법무 통과 전 `[DRAFT]` 유지.

@@ -18,8 +18,24 @@ on:
       - "scripts/run_mkm_inter_agent_v2_routing_rebench_v1.py"
       - "scripts/run_mkm_inter_agent_dialogue_routing_compare_v1.py"
       - "scripts/Invoke-MkmInterAgentParallelLanes_v1.ps1"
+      - "scripts/record_mkm_inter_agent_health_commander_approval_v1.py"
+      - "scripts/build_mkm_inter_agent_health_signoff_candidate_v1.py"
+      - "scripts/build_mkm_inter_agent_post_commander_approval_bundle_v1.py"
+      - "scripts/build_mkm_inter_agent_legal_handoff_pack_v1.py"
+      - "scripts/record_mkm_inter_agent_commander_legal_submission_v1.py"
+      - "scripts/build_mkm_inter_agent_counsel_export_manifest_v1.py"
+      - "scripts/capture_mkm_inter_agent_first_message_live_http_v1.py"
+      - "scripts/build_mkm_inter_agent_rq019_closure_readiness_v1.py"
+      - "scripts/record_mkm_inter_agent_legal_counsel_signoff_v1.py"
+      - "scripts/Invoke-MkmInterAgentCounselSubmissionParallel_v1.ps1"
+      - "scripts/run_mkm_cmp2_011_v2_routing_ab_v1.py"
       - "tests/test_run_mkm_inter_agent_dialogue_routing_compare_v1.py"
       - "tests/test_compression_v2_routing_profile_v1.py"
+      - "tests/test_record_mkm_inter_agent_health_commander_approval_v1.py"
+      - "tests/test_build_mkm_inter_agent_health_signoff_candidate_v1.py"
+      - "tests/test_build_mkm_inter_agent_post_commander_approval_bundle_v1.py"
+      - "tests/test_build_mkm_inter_agent_legal_handoff_pack_v1.py"
+      - "tests/test_mkm_cmp2_011_v2_routing_ab_v1.py"
       - "codebook/shards/zone_g_health.json"
       - "docs/final/openapi_token_compression_v2_draft.yaml"
       - "docs/final/artifacts/mkm_inter_agent_*"
@@ -40,8 +56,24 @@ on:
       - "scripts/run_mkm_inter_agent_v2_routing_rebench_v1.py"
       - "scripts/run_mkm_inter_agent_dialogue_routing_compare_v1.py"
       - "scripts/Invoke-MkmInterAgentParallelLanes_v1.ps1"
+      - "scripts/record_mkm_inter_agent_health_commander_approval_v1.py"
+      - "scripts/build_mkm_inter_agent_health_signoff_candidate_v1.py"
+      - "scripts/build_mkm_inter_agent_post_commander_approval_bundle_v1.py"
+      - "scripts/build_mkm_inter_agent_legal_handoff_pack_v1.py"
+      - "scripts/record_mkm_inter_agent_commander_legal_submission_v1.py"
+      - "scripts/build_mkm_inter_agent_counsel_export_manifest_v1.py"
+      - "scripts/capture_mkm_inter_agent_first_message_live_http_v1.py"
+      - "scripts/build_mkm_inter_agent_rq019_closure_readiness_v1.py"
+      - "scripts/record_mkm_inter_agent_legal_counsel_signoff_v1.py"
+      - "scripts/Invoke-MkmInterAgentCounselSubmissionParallel_v1.ps1"
+      - "scripts/run_mkm_cmp2_011_v2_routing_ab_v1.py"
       - "tests/test_run_mkm_inter_agent_dialogue_routing_compare_v1.py"
       - "tests/test_compression_v2_routing_profile_v1.py"
+      - "tests/test_record_mkm_inter_agent_health_commander_approval_v1.py"
+      - "tests/test_build_mkm_inter_agent_health_signoff_candidate_v1.py"
+      - "tests/test_build_mkm_inter_agent_post_commander_approval_bundle_v1.py"
+      - "tests/test_build_mkm_inter_agent_legal_handoff_pack_v1.py"
+      - "tests/test_mkm_cmp2_011_v2_routing_ab_v1.py"
       - "codebook/shards/zone_g_health.json"
       - "docs/final/openapi_token_compression_v2_draft.yaml"
       - "docs/final/artifacts/mkm_inter_agent_*"
@@ -79,6 +111,13 @@ jobs:
             tests/test_emit_mkm_inter_agent_first_message_worked_example_v1.py \
             tests/test_run_mkm_inter_agent_dialogue_mock_v1.py \
             tests/test_compression_v2_routing_profile_v1.py \
+            tests/test_run_mkm_inter_agent_dialogue_routing_compare_v1.py \
+            tests/test_record_mkm_inter_agent_health_commander_approval_v1.py \
+            tests/test_build_mkm_inter_agent_health_signoff_candidate_v1.py \
+            tests/test_build_mkm_inter_agent_post_commander_approval_bundle_v1.py \
+            tests/test_build_mkm_inter_agent_legal_handoff_pack_v1.py \
+            tests/test_mkm_inter_agent_counsel_submission_v1.py \
+            tests/test_mkm_cmp2_011_v2_routing_ab_v1.py \
             -q \
             -m "not slow"
 

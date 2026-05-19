@@ -9,6 +9,13 @@
     "timezone": "Asia/Seoul",
     "status": "pending"
   },
+  "pre_meeting_2026_05_20": {
+    "prepared_at_utc": "2026-05-19",
+    "deck_ssot": "docs/final/artifacts/lg_hs_compression_discipline_deck_v1_latest.md",
+    "b2b_pack": "docs/final/artifacts/track_c_b2b_meeting_pack_index_v1_latest.md",
+    "rq019_closure_pointer": "docs/final/artifacts/mkm_inter_agent_rq019_closure_readiness_latest.json",
+    "operator_note": "Internal meeting OK; external send still requires legal sign-off per surface."
+  },
   "materials_used": [
     "docs/final/artifacts/lg_hs_compression_discipline_deck_v1_latest.md",
     "docs/final/artifacts/compression_enterprise_executive_summary_v1.md",

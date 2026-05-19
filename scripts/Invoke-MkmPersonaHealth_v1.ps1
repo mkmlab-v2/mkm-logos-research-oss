@@ -13,6 +13,8 @@
   P0 = verify_p0_constitution_gate_paths.ps1
   AramaicDailyReadiness = Verify-AramaicMvpDailyTaskReadiness.ps1 (Windows Task Scheduler; 미등록 시 실패)
   GpuRecommendedBundle = run_workspace_automation_health.ps1 -MkmGpuRecommendedBundleOnly (P0 + reconcile + Run-MkmGpuRecommendedBundle_v1)
+  LinkedInB2bWeekly = run_linkedin_b2b_weekly_draft_chain_v1.ps1 (assemble-only + copy guard; no publish)
+  LinkedInB2bWeeklyReadiness = Verify-LinkedInB2bWeeklyDraftTaskReadiness.ps1 (Windows Task Scheduler)
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle
@@ -34,7 +36,7 @@
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness')]
     [string]$Persona
 )
 
@@ -91,6 +93,18 @@ try {
             $script = Join-Path $PSScriptRoot 'run_workspace_automation_health.ps1'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
             & $ps @common $script -WorkspaceRoot $WorkspaceRoot -MkmGpuRecommendedBundleOnly
+            exit $LASTEXITCODE
+        }
+        'LinkedInB2bWeekly' {
+            $script = Join-Path $PSScriptRoot 'run_linkedin_b2b_weekly_draft_chain_v1.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+            exit $LASTEXITCODE
+        }
+        'LinkedInB2bWeeklyReadiness' {
+            $script = Join-Path $PSScriptRoot 'Verify-LinkedInB2bWeeklyDraftTaskReadiness.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script
             exit $LASTEXITCODE
         }
         default {

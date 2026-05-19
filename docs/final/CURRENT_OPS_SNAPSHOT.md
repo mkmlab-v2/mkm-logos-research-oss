@@ -2,6 +2,91 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-19 · OpenData 327 B+C+D 병합)
+
+**Thread:** Cursor — export·merge 체인
+
+- **완료:** `Run-OpenData327SubmissionChain_v1.ps1` — G1 B/C/D + G4 **PASS** · Part B/C/D PDF · **`reports/opendata_327_submission_bcd_merged_v1.pdf`** (~0.22MB, 표지 A 제외) · `merge_opendata_327_submission_pdf_v1.py` · gates JSON 한글 UTF-8 정상
+- **막힘:** **표지(A)** K-Startup 양식 맨 앞 삽입(human) · §2-2 목표 수치 내부 확정 · K-Startup+나라장터 **6/5 18:00**
+- **다음:** `opendata_327_submission_bcd_merged_v1.pdf` 육안 검수 → 표지 삽입 → 6/1 dry-run
+
+**재개:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+OpenData BCD 병합 PDF 준비됨 · 표지(A)만 수동
+```
+
+## Ops slice (2026-05-19 · IR Moat 덱 · 채팅 종료)
+
+**Thread:** Cursor — LLM vs MKM Moat · Plug-in scalability · gitea/main 반영
+
+- **완료:** 7장→**9장** 압축 덱 v1.1 (Slide 4–5 Moat/Plug-in + speaker 부록) · factcheck Moat 금지어 · `compression_enterprise_summary` 포인터 · 커밋 `8a7d469141` · `push-internal` dev · **`gitea/main` `b6f109d4e2`** · `ready_internal: true` · Connect Slack **불필요**(로컬 IR)
+- **막힘:** 법무 Sign-off 전 **`[DRAFT]` 대외 발송 금지** · PPT 미제작 · 루트 워킹트리 **dirty**(`*_latest` 등, IR 커밋과 분리)
+- **다음:** PPT ← `lg_hs_compression_discipline_deck_v1_latest.md` · Q&A ← `compression_enterprise_executive_summary_v1.md` § Plugin · (선택) 22장 vs 7장 Moat 문구 정합
+
+**재개:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+@docs/final/CENTRAL_AGENT_MEMORY_V1.md
+장기기억 맥락이어라
+IR Moat 덱 main 반영됨 · PPT·법무 대기 · git pull gitea main
+```
+
+## Ops slice (2026-05-19 · 장전 파이프라인 · 채팅 종료)
+
+**Thread:** Cursor — KOSPI 장전 예측·텔레그램 고급화·Mode B 스케줄
+
+- **완료:** `run_daily_prophecy_eval` **`--force-dual-leg-panel`** (KOSPI n=7) · 장전 원페이저 `internal_kospi_morning_brief_onepager_latest.*` · 스케줄 **08:05 / 08:18 / 08:30 / 08:42** (`Register-MkmSmallLiveProphecyDailyOps_v1.ps1`) · 텔레그램 **advanced** + Security Agent/User env · `MKM_TELEGRAM_DIGEST_STYLE=advanced` · 08:30 태스크가 brief 재갱신 후 발송 · CENTRAL checkpoint 저장
+- **막힘:** KOSPI 7d 적중 **~29%** (B-track [HYPO]) · VPS heartbeat **stale** (`live_sync`) · n8n 잡음은 `OPS_ALARM_WEBHOOK`·panel `-SkipWebhook`로 완화(선택 추가 필터) · git 미커밋
+- **다음:** 내일 **08:30** 고급 TG 1통 확인 · (선택) LiveSync 태스크 · KOSPI 적중 연구는 별도 채팅
+
+**재개:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+@docs/final/CENTRAL_AGENT_MEMORY_V1.md
+장기기억 맥락이어라
+장전 08:30 advanced TG · dual-leg · 스케줄 08:05/08:18/08:30/08:42
+```
+
+## Ops slice (2026-05-19 · OpenData §4-1 · 채팅 종료)
+
+**Thread:** Cursor — 제출본 대표자 역량·LG 문구·세션 마무리
+
+- **완료:** `ai_opendata_challenge_2026_327_business_plan_submission_v1.md` **§4-1** 학력·경력(한의사·목소리네트워크·jema-ai) · LG **1차 평가 통과만**(2차·PoC·최종 미기재) · Part B/C PDF는 `reports/` (`opendata_327_part_b_draft_v1.pdf` 등) — **§4-1 반영 PDF는 미재출력**
+- **막힘:** §2-2 성능표 `[ ]` 유지 · 표지(A)+Annex(D) 병합 · K-Startup+나라장터 접수 **~2026-06-05 18:00** · (별도) Cloud Agent GH001·Setup Save
+- **다음:** Part B **PDF 재출력(선택)** → `opendata_327_submission_pdf_merge_guide_v1_latest.md` 병합 → [DEV-10](https://giryun288.atlassian.net/browse/DEV-10)
+
+**재개:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+@docs/final/CENTRAL_AGENT_MEMORY_V1.md
+장기기억 맥락이어라
+OpenData: §4-1 MD 반영됨 → PDF 재출력·병합·6/5 접수
+```
+
+## Ops slice (2026-05-19 · Cursor Cloud Agent 3.4 · 세션 종료)
+
+**Thread:** Cursor — Changelog 3.3/3.4 · Cloud IaC · Setup Agent
+
+- **완료:** `.cursor/environment.json` + Dockerfile/`install.sh` · `cursor/cloud-env-iac` → **GitHub** ([branch](https://github.com/mkmlab-v2/mkm-destiny-ai-41e38ec6/tree/cursor/cloud-env-iac)) · `dev` → **internal/gitea** · payapp `NO1KMEDI_ADMIN_TOKEN` 하드코딩 제거 · Dashboard 기본 리포 **`mkmlab-v2/mkm-destiny-ai-41e38ec6`** · 브랜치 **`cursor/cloud-env-iac`** · 이전 Setup **Archive**
+- **막힘:** `dev` 전체 → GitHub **GH001** (`global_atom_full_canon` 100MB+) · Setup **Save 미적용**(Next/payapp 데모 스냅샷 고정 안 함) · `computerUse` UI 데모는 **Stop으로 중단 권장**
+- **다음:** Cloud Agents 사이드바 **돌아가는 항목 Stop** · Environment **Update script** = `bash .cursor/environment/install.sh` only · Personal Secrets에서 실거래/결제 키 **미등록** · (선택) Setup **Review→Save**는 install-only 확인 후
+
+**재개:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+장기기억 맥락이어라
+Cloud Agent는 cursor/cloud-env-iac + install.sh만
+```
+
+## Ops slice (2026-05-19 · OpenData PDF 자동 마무리)
+
+**Thread:** Cursor — Part B/C PDF export
+
+- **완료:** `reports/opendata_327_part_b_draft_v1.pdf` · `reports/moksori_ai_opendata327_task1_business_plan_v1.pdf` · `reports/opendata_327_part_c_draft_v1.pdf` · 게이트 `step_3_export_pdf: completed`
+- **막힘 (지휘관):** §4-1·§2-2 placeholder · 표지+Annex 병합 · K-Startup/나라장터 접수 **6/5 18:00**
+- **다음:** placeholder 채움 후 PDF 재출력(선택) → merge guide → [DEV-10](https://giryun288.atlassian.net/browse/DEV-10)
+
 ## Ops slice (2026-05-19 · M-COMP-A1 압축 밀기)
 
 **Thread:** Cursor — cmp2 min_pair 프로덕션 + 40건 벤치
@@ -14,9 +99,9 @@
 
 **Thread:** Cursor — 권장안 자동화
 
-- **완료:** Slack `#project-mkmlife` **발송** · [DEV-12](https://giryun288.atlassian.net/browse/DEV-12) **완료** · MCP **`authenticated: true`** · `nlm` 렌즈 팩 **19 ok / 4 fail**(JSON) → `reports/notebooklm_lens_pack_push_latest.log` · OpenData 게이트 **PASS** · Part B 초안 HTML `reports/opendata_327_part_b_draft_v1.html`
-- **막힘:** Headless PDF 미생성(Chrome print) · K-Startup·나라장터 접수 · §4-1·§2-2 placeholder
-- **다음:** Word/브라우저로 HTML→PDF · merge guide 병합 · [DEV-10](https://giryun288.atlassian.net/browse/DEV-10) 6/5
+- **완료:** Slack `#project-mkmlife` **발송** · [DEV-12](https://giryun288.atlassian.net/browse/DEV-12) **완료** · MCP **`authenticated: true`** · `nlm` 렌즈 팩 **19 ok / 4 fail** · OpenData 게이트 **PASS** · Part B PDF **`reports/opendata_327_part_b_v1.pdf`** (~310KB, Edge headless)
+- **막힘:** K-Startup·나라장터 접수 · §4-1·§2-2 placeholder · 최종 병합 PDF(A+C+D) 미완
+- **다음:** Part B PDF 검수 → merge guide A+B 병합 · [DEV-10](https://giryun288.atlassian.net/browse/DEV-10) 6/5
 
 ## Ops slice (2026-05-18 · Cross-chat 종료 · 융합 재개용)
 

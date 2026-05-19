@@ -30,6 +30,7 @@ catch {
 # 2026-05-05: MKM_DOMAIN_PORTFOLIO_POINTER_V1.md (도메인×역할×쇼룸 배치 §1.1; P0 존재 게이트).
 # 2026-05-05: TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md (Track C 상용·법무·IP 경계 SSOT; P0 존재 게이트).
 # 2026-05-05: PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md (대외 문서·홈·쇼룸 보안·IP 카피 체크리스트; P0 존재 게이트).
+# 2026-05-19: LinkedIn B2B draft queue v1 (local JSON queue; assemble/Gemini; no auto-publish; copy guard).
 # 2026-05-13: TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md + showroom_topology_radar_snapshot_v1 schema/example/pytest + emit CLI + JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC §4.4.
 # 2026-05-05: MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md (KR 건강·웰빙 대외 카피 가드레일; P0 존재 게이트).
 # 2026-05-05: CENTRAL_AGENT_MEMORY_V1.md (명리 렌즈 고도화 v1 등 장기기억 지문; P0 존재 게이트).
@@ -50,6 +51,8 @@ catch {
 # 2026-05-10: MKM Control-Integrity Golden/LoRA (schema, profile SSOT, aggregate/gate/inference/eval PS1/py, smoke pytest).
 # 2026-05-10: General-rail compression benchmark (corpus JSONL, manifests, promotion chain scripts, SSOT artifacts, Multilens ultra anchor).
 # 2026-05-19: Ultra compression health bridge pinpoint (py + PS1 + contract JSON + pytest).
+# 2026-05-19: MKM Inter-Agent Encoding RQ-019 (status/build/smoke/legal handoff + IR snippet + wire profile + pytest).
+# 2026-05-19: LG HS compression IR deck v1.1 builder + latest MD (Track C §3.1.3 C-S2).
 # 2026-05-10: Track C P1 sales kit canonical paths (mkm_ai_sales_kit_v1).
 # 2026-05-10: MKM promotion gate evidence bundle + pilot report path index (G0-G11 audit JSON).
 # 2026-05-11: Lens music prompt PoC M26-M30 (metric, runbook, webhook, health, dashboard bridge tests).
@@ -119,6 +122,17 @@ $required = @(
     "docs\final\MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
     "docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
     "docs\final\PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+    "docs\final\schemas\linkedin_b2b_queue_v1.schema.json",
+    "data\marketing\linkedin_queue_v1.example.json",
+    "scripts\generate_linkedin_b2b_copy_v1.py",
+    "scripts\check_linkedin_b2b_draft_copy_v1.py",
+    "scripts\Run-LinkedInB2bDraftQueue_v1.ps1",
+    "scripts\run_linkedin_b2b_weekly_draft_chain_v1.ps1",
+    "scripts\Register-LinkedInB2bWeeklyDraftTask.ps1",
+    "scripts\Verify-LinkedInB2bWeeklyDraftTaskReadiness.ps1",
+    ".github\workflows\linkedin-b2b-draft-smoke.yml",
+    "tests\test_generate_linkedin_b2b_copy_v1.py",
+    "tests\test_check_linkedin_b2b_draft_copy_v1.py",
     "docs\final\TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md",
     "docs\final\MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md",
     "docs\final\CENTRAL_AGENT_MEMORY_V1.md",
@@ -368,6 +382,19 @@ $required = @(
     "docs\final\master_codebook_dual_track.multidomain_1000.json",
     "docs\final\openapi_token_compression_stub_v1.yaml",
     "scripts\compression_token_api_v2_stub.py",
+    "scripts\build_mkm_inter_agent_encoding_status_v1.py",
+    "scripts\build_mkm_inter_agent_legal_handoff_pack_v1.py",
+    "scripts\build_mkm_inter_agent_rq019_closure_readiness_v1.py",
+    "scripts\Invoke-MkmInterAgentEncodingSmoke_v1.ps1",
+    "scripts\Invoke-MkmInterAgentLegalHandoffParallel_v1.ps1",
+    "docs\final\artifacts\mkm_inter_agent_encoding_sota_map_v1.md",
+    "docs\final\artifacts\mkm_inter_agent_ir_snippet_v1.md",
+    "docs\final\artifacts\mkm_inter_agent_wire_profile_v0.json",
+    "docs\final\artifacts\lg_hs_compression_discipline_deck_v1_latest.md",
+    "docs\final\artifacts\lg_hs_ir_moat_speaker_pack_v1_latest.md",
+    "tests\test_build_mkm_inter_agent_encoding_status_v1.py",
+    "tests\test_build_mkm_inter_agent_legal_handoff_pack_v1.py",
+    "scripts\build_lg_hs_compression_discipline_deck_v1.py",
     "scripts\Serve-CompressionV2Explorer.ps1",
     "scripts\Start-CompressionV2ExplorerDemo.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\jemaai-cloud-mvp\compression_v2_explorer.html",

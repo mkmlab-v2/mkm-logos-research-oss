@@ -221,6 +221,8 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【빠른 헌법 점검】 | P0 필수 경로 존재만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` |
 | 【아람 일일 준비】 | Aramaic MVP 일일 예약 작업 인자·Track T survivor dry-run 스위치 확인(`Verify-AramaicMvpDailyTaskReadiness.ps1`; 작업 미등록 시 실패) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AramaicDailyReadiness` |
 | 【GPU 권장 번들】 | Control-Integrity oracle + Pack 0-B pytest(CONSTITUTION §1.2.1); P0·reconcile 후 번들만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona GpuRecommendedBundle` |
+| 【링크드인 B2B 주간】 | LinkedIn 초안 큐 assemble-only + 카피 가드(자동 발행 없음) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona LinkedInB2bWeekly` |
+| 【링크드인 B2B 예약 점검】 | Task Scheduler `MKM_LinkedIn_B2B_WeeklyDraft` 등록·인자 확인 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona LinkedInB2bWeeklyReadiness` |
 | 【예언 레일 일단락】 | 예언 본선 클로저(P0·B-track 정렬 pytest·safe ops·GO/NO_GO 갱신). 통과 판정은 `reports/prophecy_lane_closure_bundle_v1_latest.json`의 **`closure_ok: true`** 및 `manual_remainder`(Windows `schtasks` 일반예언·Track A 실매매는 수동 잔여) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` |
 | 【샌드박스 헬스】 | SANDBOX 예언 아티팩트 헬스(느슨·일상) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ProphecySandbox` |
 | 【샌드박스 헬스 strict】 | watchlist 게이트(`max_n_calendar_days>=3`, 주간·승격 전) | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ProphecySandboxStrict` |

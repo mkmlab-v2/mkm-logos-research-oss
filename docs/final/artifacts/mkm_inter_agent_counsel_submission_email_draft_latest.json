@@ -1,0 +1,11 @@
+{
+  "schema": "mkm_inter_agent_counsel_submission_email_draft_v1",
+  "generated_at_utc": "2026-05-18T22:29:10Z",
+  "classification": "INTERNAL_ONLY",
+  "send_status": "DRAFT_ONLY_NOT_SENT",
+  "suggested_subject": "[MKM][RQ-019] Inter-Agent Encoding — external copy legal review",
+  "attachment": "mkm_inter_agent_counsel_export_pack_v1.zip",
+  "body_ko": "안녕하세요, 법무팀님.\n\nMKM Inter-Agent Encoding(RQ-019) 대외 카피·면책 검토 요청드립니다.\n\n첨부: mkm_inter_agent_counsel_export_pack_v1.zip (manifest 기준 16개 파일 + 인덱스)\n동봉 요지:\n- mkm_inter_agent_ir_snippet_v1.md (대외 초안 KO/EN — 법무 수정 전 송부 금지)\n- PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md v1.7\n\n확인 요청:\n1. Lingua Franca 완성·업계 표준 채택·상용 SLA·100% 무손실 복원 주장 없음\n2. Track A 동결 벤치(~47% token saving)와 기계 왕복·L1 human decode(~58%, research_only) 혼동 금지 문구\n3. 수정된 KO/EN 한 줄 승인 또는 redline\n\n회신 시 티켓/이메일 ID를 기록해 주시면 record_mkm_inter_agent_legal_counsel_signoff_v1.py에 반영합니다.\n\n감사합니다.\nMKM Ops (INTERNAL)",
+  "body_en": "Legal review request: MKM RQ-019 inter-agent encoding external copy.\n\nAttached ZIP per counsel export manifest. Please review IR snippet + PUBLIC_FACING v1.7 alignment.\nDo not approve claims of finished lingua franca, production SLA, lossless decode, or SOTA superiority.\nReply with ticket/email ID for our sign-off recorder.\n\nThank you.",
+  "boundary_ack": "Agent cannot send email; commander sends from org mailbox and records counsel reference."
+}

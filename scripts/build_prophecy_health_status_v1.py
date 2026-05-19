@@ -20,6 +20,7 @@ KOSPI_DEFAULT = ROOT / "research" / "market_data" / "kospi_daily_external_yf.csv
 BTC_DEFAULT = ROOT / "research" / "market_data" / "btc_daily_external_yf.csv"
 EVAL_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "prophecy_hit_rate_eval_latest.json"
 HYP_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "btrack_hypothesis_prophecy_latest.json"
+P15_SHADOW_DEFAULT = ROOT / "reports/btrack_daily_p15_shadow_status_v1_latest.json"
 SCHEMA_ID = "prophecy_health_status_v1"
 
 
@@ -139,6 +140,13 @@ def main() -> int:
     prov = hyp_doc.get("provenance") if isinstance(hyp_doc.get("provenance"), dict) else {}
     llm_model = prov.get("llm_model")
 
+    p15_shadow: dict[str, Any] = {}
+    if P15_SHADOW_DEFAULT.is_file():
+        try:
+            p15_shadow = json.loads(P15_SHADOW_DEFAULT.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            p15_shadow = {"load_error": True}
+
     warnings: list[str] = []
     if not k_meta.get("exists"):
         warnings.append("kospi_csv_missing_expect_proxy_or_skip_price_path")
@@ -172,6 +180,17 @@ def main() -> int:
             "llm_model": llm_model,
             "route_inferred": route,
         },
+        "p15_abstain_shadow_pointer": str(P15_SHADOW_DEFAULT.relative_to(ROOT)),
+        "p15_abstain_shadow_summary": {
+            "operator_recommendation": (p15_shadow.get("daily_chain_hook") or {}).get(
+                "operator_recommendation"
+            ),
+            "policy_posture_7d": p15_shadow.get("policy_posture_7d"),
+            "window_trading_days": p15_shadow.get("window_trading_days"),
+            "generated_at_utc": p15_shadow.get("generated_at_utc"),
+        }
+        if P15_SHADOW_DEFAULT.is_file()
+        else None,
         "flags": {
             "proxy_mode_or_eval_missing": hit_path in ("proxy", "eval_missing"),
             "kospi_csv_present": bool(k_meta.get("exists")),

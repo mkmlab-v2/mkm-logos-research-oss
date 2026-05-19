@@ -1,0 +1,33 @@
+{
+  "schema": "logos_verse_myeongri_cross_bridge_v1",
+  "version": "1.0.0",
+  "subset_id": "v1_core_subset",
+  "ts_utc": "2026-05-17T00:00:00Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "interpretation_note": "[HYPO] fixture — geometric distance only; not healing proof.",
+  "inputs": {
+    "golden_profile_ssot": "tests/fixtures/myeongri_deterministic_lora_golden_sample_v1.jsonl"
+  },
+  "verse_os": {
+    "verse_id": "Lev.23.9",
+    "lane": "canon",
+    "vector_4d": { "S": 0.41, "L": 0.29, "K": 0.21, "M": 0.09 },
+    "medoid_rank": 1
+  },
+  "human_terminal": {
+    "profile_id": "golden_mdl_gs_v1_0001",
+    "birth_instant_utc": "1992-03-12T17:00:00Z",
+    "iana_tz": "Asia/Seoul",
+    "vector_4d": { "S": 0.25, "L": 0.25, "K": 0.25, "M": 0.25 }
+  },
+  "geometry": {
+    "l2_os_human": 0.35,
+    "cosine_os_human": 0.92
+  },
+  "track_wall": {
+    "a_track_auto_promotion": false,
+    "live_trading_trigger": false,
+    "ready_for_external_send": false
+  }
+}

@@ -36,6 +36,7 @@ from scripts.compression_token_api_stub import (  # noqa: E402
 from scripts.compression_v2_routing_profile_v1 import (  # noqa: E402
     RoutingProfile,
     resolve_v2_case_id,
+    routing_profile_eval_kwargs,
     routing_profile_kwargs,
 )
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
@@ -177,20 +178,7 @@ def _run_evaluate_for_packet(
     }
     _bp = env_apply_gematria_4d_bridge_policy()
     route_kw = routing_profile_kwargs(routing_profile)
-    eval_extra = {
-        k: v
-        for k, v in route_kw.items()
-        if k
-        not in (
-            "routing_profile",
-            "promotion_signoff_path",
-            "sweep_pointer",
-            "note",
-            "hypothesis_tier",
-            "research_only",
-            "routing_profile_degraded",
-        )
-    }
+    eval_extra = routing_profile_eval_kwargs(routing_profile)
     report = evaluate_report(
         doc,
         source_input="api:v2_trust_packet",

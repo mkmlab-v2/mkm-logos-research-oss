@@ -30,11 +30,13 @@
 | RQ-016 | OPEN | **압축 Meta-Policy** — 도메인 유입 시 lexicon·shard 자동 정렬(수동 핀포인트 축소) | 2026-05-16 sweep: **scm/health selective bridge** → scm Jaccard **1.0** 가능하나 **global saving < 0.47**; soft-term 핀도 동일 tradeoff → **baseline 유지** | `compression_domain_bridge_sweep_v1_latest.json` · `compression_scm_shard_pin_experimental_v1.json` · `run_compression_domain_bridge_sweep_v1.py` | Per-domain **cap tuning** 또는 literal 프로필 분기; Track A opt-in은 floor 통과 실험 후 |
 | RQ-017 | OPEN | **토큰 절감 ↔ 보드 실측 지연(ms)** 상관 — edge/NPU 하드웨어에서 입증 | **2026-05-16:** 로컬 페이로드 스윕 + **VPS triplet OK** (p95 median **~710ms**); **인과 주장 금지** | `compression_board_ms_vps_bench_triplet_v1_latest.json` · `Run-CompressionBoardMsVpsBenchTriplet_v1.ps1` · `compression_board_ms_correlation_report_v1_latest.json` | edge/NPU·페이로드–절감 A/B; LG **C-S3 2026-05-20**; OEM ms **휴먼** |
 | RQ-018 | OPEN | **Shadow Auditor** — 야간 `test_ultra_compression_artifacts` + loss-pattern → research 큐 자동 적재 | **2026-05-16 구현:** `run_compression_shadow_auditor_v1.py` · 일일 `Register-CompressionShadowAuditorDailyTask.ps1` · 주간 `-IncludeShadowAuditor` | `scripts/run_compression_shadow_auditor_v1.py` · `reports/constitution/btrack_pilot/compression_shadow_auditor_latest.json` · `compression_research_metaphor_debug_queue.jsonl` · `tests/test_run_compression_shadow_auditor_v1.py` | 웹훅·Track A 자동 승격 연결 여부; board ms(RQ-017) 상관 리포트 병합 |
-| RQ-019 | OPEN | **MKM Inter-Agent Encoding** (「MKM Language」/ Lingua Franca `[VISION]`) — SOTA 4축(시맨틱·신경압축·슈퍼토큰·프롬프트 경제)과 **레포 층** 정렬·승격 조건 | **2026-05-19:** A2A dialogue mock + `decode_mode=l1_experimental` expand · CI/Invoke 갱신 · 법무 전 대외 **미승격** | `mkm_inter_agent_dialogue_mock_summary_latest.json` · `mkm_inter_agent_l1_decode_experimental_v1.py` · `run_mkm_inter_agent_dialogue_mock_v1.py` | **CLOSED** = 법무 + PUBLIC_FACING; B-track 데모·L1 API는 **research_only** |
+| RQ-019 | **CLOSED** | **MKM Inter-Agent Encoding** (「MKM Language」/ Lingua Franca `[VISION]`) — SOTA 4축(시맨틱·신경압축·슈퍼토큰·프롬프트 경제)과 **레포 층** 정렬·승격 조건 | **2026-05-19:** 체크리스트 #7 `COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY` · `mkm_inter_agent_legal_counsel_signoff_v1_latest.json` · `mkm_inter_agent_rq019_commander_close_v1_latest.json` · encoding smoke 36 passed | `mkm_inter_agent_legal_handoff_pack_latest.json` · `mkm_inter_agent_rq019_closure_readiness_latest.json` (`closure_allowed: true`) | 대외 한 줄은 `TRACK_C` §3.1.5·`PUBLIC_FACING` v1.7 경로만; Track A 벤치·실매매 자동 합선 없음 |
 
-### RQ-019 — `CLOSED` 이관 준비 (체크리스트 · **M1–M3·법무 전까지 `OPEN` 유지**)
+### RQ-019 — **CLOSED** (2026-05-19 · counsel `COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY`)
 
-아래 **전부** 충족·지휘관 합의 후: (a) RQ-019 **`CLOSED`**, (b) 대외 한 줄을 `TRACK_C` / `PUBLIC_FACING` / P0 중 **합의된 절**로만 이관. **부분 충족으로 `CLOSED` 금지.**
+체크리스트 #1–7 충족·지휘관 폐쇄 완료. 대외 한 줄·면책은 **`TRACK_C` §3.1.5** / **`PUBLIC_FACING` v1.7** / `mkm_inter_agent_ir_snippet_v1.md` 경로만. 메시지별 `requires_legal_edit`·Track A·실매매 자동 합선 없음.
+
+**이관 시점 체크리스트 (아카이브):**
 
 | # | 조건 | 근거·산출 |
 |---|------|-----------|
@@ -104,5 +106,5 @@
 ## 메타
 
 - **schema:** `research_open_questions_v1`
-- **last_reviewed_utc:** 2026-05-19 — **RQ-019** 추가(MKM Inter-Agent Encoding / SOTA 4축 맵·M1–M3 승격 체크리스트). (이전: 2026-05-16 RQ-015 Logos Phase N 등.)
+- **last_reviewed_utc:** 2026-05-19 — **RQ-019 CLOSED** (counsel sign-off + commander close artifacts). (이전: RQ-019 OPEN·M1–M3 체크리스트 추가.)
 - **mirror (optional):** 로컬 그래프용 `memory/obsidian_vault/UNIVERSE_MKm/INBOX_연구_토의큐.md` — Git과 자동 동기화하지 않는다.

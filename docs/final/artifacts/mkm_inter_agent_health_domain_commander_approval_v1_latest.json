@@ -1,0 +1,31 @@
+{
+  "schema": "mkm_inter_agent_health_domain_commander_approval_v1",
+  "generated_at_utc": "2026-05-18T21:44:51Z",
+  "classification": "INTERNAL_ONLY",
+  "hypothesis_tier": "B",
+  "commander_approved": true,
+  "approved_at_utc": "2026-05-18T21:44:51Z",
+  "approval_scope": "b_track_inter_agent_v2_routing_only",
+  "track_a_bench_promotion_approved": false,
+  "does_not_replace_track_a_active": true,
+  "candidate_pointer": "docs/final/artifacts/mkm_inter_agent_health_domain_signoff_candidate_latest.json",
+  "approved_variant_id": "health_hangul_relaxed_cap_0.50",
+  "approved_run_config": {
+    "domain_relaxed_max_saving_overrides": {
+      "health": 0.5,
+      "hangul": 0.5
+    }
+  },
+  "sweep_evidence": {
+    "path": "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json",
+    "global_token_saving_rate": 0.4683544303797469,
+    "ultra_saving_policy_ok": false,
+    "avg_jaccard": 0.8987633629700194,
+    "policy_floor": 0.47
+  },
+  "bench_promotion_eligible_without_human": false,
+  "boundary_ack": "Commander approved B-track inter-agent use of health/hangul relaxed caps only. Track A frozen bench (~47%) and multilens signoff top5 remain unchanged. No production SLA or lossless claim.",
+  "approval_note": "commander verbal approval 2026-05-18",
+  "routing_profile_wired": "b_track_domain_relax",
+  "v2_compress_field": "routing_profile"
+}

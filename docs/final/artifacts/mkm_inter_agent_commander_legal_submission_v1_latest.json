@@ -1,0 +1,15 @@
+{
+  "schema": "mkm_inter_agent_commander_legal_submission_v1",
+  "generated_at_utc": "2026-05-19T00:33:31Z",
+  "classification": "INTERNAL_ONLY",
+  "commander_authorized_legal_submission": true,
+  "submitted_at_utc": "2026-05-19T00:33:31Z",
+  "legal_review_status": "SUBMITTED_TO_COUNSEL",
+  "is_counsel_signoff": false,
+  "handoff_pointer": "docs/final/artifacts/mkm_inter_agent_legal_handoff_pack_latest.json",
+  "manifest_pointer": "docs/final/artifacts/mkm_inter_agent_counsel_export_manifest_v1_latest.json",
+  "technical_closure_ready": true,
+  "rq_019_status": "OPEN",
+  "boundary_ack": "Commander authorized internal submission to legal review. This is not counsel written approval. RQ-019 remains OPEN until checklist item 7.",
+  "submission_note": "commander authorized counsel handoff 2026-05-18"
+}

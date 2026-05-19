@@ -1,0 +1,54 @@
+{
+  "schema": "mkm_inter_agent_health_domain_signoff_candidate_v1",
+  "generated_at_utc": "2026-05-18T21:55:22Z",
+  "classification": "INTERNAL_ONLY",
+  "hypothesis_tier": "B",
+  "track_wall": "b_track_research_only",
+  "rq": "RQ-016-A-plan",
+  "does_not_replace_track_a_active": true,
+  "current_track_a_signoff": "multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json (ssot top5 only)",
+  "proposed_variant_id": "health_hangul_relaxed_cap_0.50",
+  "proposed_run_config": {
+    "domain_relaxed_max_saving_overrides": {
+      "health": 0.5,
+      "hangul": 0.5
+    }
+  },
+  "sweep_evidence": {
+    "path": "docs/final/artifacts/compression_low_saving_local_cap_sweep_v1_latest.json",
+    "global_token_saving_rate": 0.4683544303797469,
+    "ultra_saving_policy_ok": false,
+    "avg_jaccard": 0.8987633629700194,
+    "policy_floor": 0.47
+  },
+  "cmp2_011_focus": {
+    "active_report_row": {
+      "token_saving_rate": 0.5555555555555556,
+      "jaccard": 0.9375,
+      "domain": "health",
+      "shard_id": "zone_g_health",
+      "lexicon_hit_count": 0
+    },
+    "v2_api_default": {
+      "token_saving_rate": 0.5555555555555556,
+      "jaccard": 0.9375,
+      "global_token_saving_rate": 0.5555555555555556
+    },
+    "v2_api_b_track_domain_relax": {
+      "token_saving_rate": 0.5555555555555556,
+      "jaccard": 0.9375,
+      "global_token_saving_rate": 0.5555555555555556
+    },
+    "savings_delta_b_track_minus_default": 0.0
+  },
+  "bench_promotion_eligible_without_human": false,
+  "human_review_required": false,
+  "commander_approval": {
+    "approved": true,
+    "pointer": "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json",
+    "approval_scope": "b_track_inter_agent_v2_routing_only",
+    "track_a_bench_promotion_approved": false
+  },
+  "recommended_action": "Commander approved: wire b_track_domain_relax to approved health/hangul caps; Track A active signoff unchanged.",
+  "public_copy_ko": "건강·한글 도메인 완화 캡은 연구 후보이며, 현재 동결 Track A 벤치(약 47.5%)를 대체하지 않습니다."
+}

@@ -1,0 +1,60 @@
+{
+  "schema": "logos_verse_4d_showroom_slice_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-05-17T00:00:00Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "boundary": {
+    "line_ko": "테스트 슬라이스 — NON_GATING 연구용.",
+    "line_en": "Test slice — NON_GATING research only.",
+    "gating_status": "NON_GATING"
+  },
+  "track_wall": {
+    "a_track_auto_promotion": false,
+    "live_trading_trigger": false,
+    "ready_for_external_send": false
+  },
+  "factory_one_liner": {
+    "ko": "구절 단위 4D 투영·코사인 kNN 허브 관측(고정 레시피).",
+    "en": "Verse-level 4D projection and cosine kNN hub observation under fixed recipes."
+  },
+  "medoids_top3": [
+    {
+      "rank": 1,
+      "verse_id": "GEN.1.1",
+      "centrality": 0.91,
+      "lane": "canon",
+      "book": "GEN"
+    },
+    {
+      "rank": 2,
+      "verse_id": "JHN.3.16",
+      "centrality": 0.88,
+      "lane": "canon",
+      "book": "JHN"
+    },
+    {
+      "rank": 3,
+      "verse_id": "PSA.23.1",
+      "centrality": 0.85,
+      "lane": "canon",
+      "book": "PSA"
+    }
+  ],
+  "phase4_delta_summary": {
+    "source_artifact": "docs/final/artifacts/logos_verse_4d_os_compare_v1_latest.json",
+    "interpretation_note": "[HYPO] null corpora separate from canon under fixed metrics; not promotion proof.",
+    "deltas_vs_canon": {
+      "null_vector_permutation": {
+        "delta_mean_top1_cosine": -0.12,
+        "delta_top_medoid_centrality": -0.05,
+        "delta_gini_centrality": 0.02,
+        "delta_mean_edge_weight": -0.03
+      }
+    }
+  },
+  "disclaimer": {
+    "evidence_tier": "hypo_research_only",
+    "gating_status": "NON_GATING"
+  }
+}

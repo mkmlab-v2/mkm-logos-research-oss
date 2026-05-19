@@ -148,6 +148,9 @@ def _run_one_recommended_eval(
     skip_gates: bool,
     fail_on_gate: bool,
     calibration_note: str,
+    per_date_direction_json: Path | None = None,
+    include_source_direction_signal: bool = False,
+    include_expanded_prior_features: bool = False,
 ) -> tuple[int, list[dict[str, object]], dict[str, Any] | None]:
     score_path = paths.score_json
     score_path.parent.mkdir(parents=True, exist_ok=True)
@@ -169,6 +172,8 @@ def _run_one_recommended_eval(
     ]
     if not no_mild_downside:
         build_cmd.extend(_mild_downside_args())
+    if per_date_direction_json is not None:
+        build_cmd.extend(["--per-date-direction-json", str(per_date_direction_json)])
 
     steps: list[dict[str, object]] = []
     rc = _run(build_cmd)
@@ -190,6 +195,10 @@ def _run_one_recommended_eval(
         "--output",
         str(paths.lens_out),
     ]
+    if include_source_direction_signal:
+        lens_cmd.append("--include-source-direction-signal")
+    if include_expanded_prior_features:
+        lens_cmd.append("--include-expanded-prior-features")
     rc = _run(lens_cmd)
     steps.append({"step": "run_prophecy_per_date_combo_walkforward", "exit_code": rc, "cmd": lens_cmd})
     if rc != 0:
@@ -469,6 +478,35 @@ def main() -> int:
         action="store_true",
         help="Pass --fail-on-gate to eval (exit 1 when combined_all_passed is false).",
     )
+    ap.add_argument(
+        "--per-date-direction-json",
+        type=Path,
+        default=None,
+        help="V2 lane: per-date predicted_direction map for score build.",
+    )
+    ap.add_argument(
+        "--per-date-min-confidence",
+        type=float,
+        default=None,
+        help="Accepted for ensemble_v2_eval_chain CLI compatibility (filtering is in direction builder).",
+    )
+    ap.add_argument("--include-source-direction-signal", action="store_true")
+    ap.add_argument("--include-expanded-prior-features", action="store_true")
+    ap.add_argument(
+        "--instrument-btc-policies",
+        default="",
+        help="Accepted for v2 eval_chain compatibility (instrument WF uses score panel).",
+    )
+    ap.add_argument("--instrument-include-panel-kospi-mode", action="store_true")
+    ap.add_argument("--instrument-adaptive-panel-or-joint", action="store_true")
+    ap.add_argument("--instrument-train-holdout-select", action="store_true")
+    ap.add_argument("--instrument-beat-bull-train-weight", type=float, default=None)
+    ap.add_argument("--instrument-force-panel-policy", action="store_true")
+    ap.add_argument(
+        "--calibration-note",
+        default="",
+        help="Override default calibration note on promotion gates eval.",
+    )
     args = ap.parse_args()
 
     if not args.btc_csv.is_file():
@@ -633,7 +671,7 @@ def main() -> int:
         worst_rc = max((int(r.get("exit_code") or 0) for r in rows), default=0)
         return worst_rc
 
-    calibration_note = (
+    calibration_note = str(args.calibration_note or "").strip() or (
         "recommended_chain_v1: reports-only artifacts; dual-leg + mild_downside + neutral_bps CLI."
     )
     paths = _ChainPaths(
@@ -654,6 +692,9 @@ def main() -> int:
         skip_gates=bool(args.skip_gates),
         fail_on_gate=bool(args.fail_on_gate),
         calibration_note=calibration_note,
+        per_date_direction_json=args.per_date_direction_json,
+        include_source_direction_signal=bool(args.include_source_direction_signal),
+        include_expanded_prior_features=bool(args.include_expanded_prior_features),
     )
     if rc != 0:
         _write_summary(args.summary_out, steps, gates=None, neutral_bps=float(args.neutral_bps))

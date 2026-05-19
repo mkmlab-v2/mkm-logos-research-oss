@@ -22,9 +22,16 @@ $tests = @(
     "tests/test_compression_token_api_v2_stub.py",
     "tests/test_build_mkm_inter_agent_encoding_status_v1.py",
     "tests/test_emit_mkm_inter_agent_first_message_worked_example_v1.py",
-    "tests/test_run_mkm_inter_agent_dialogue_mock_v1.py"
+    "tests/test_run_mkm_inter_agent_dialogue_mock_v1.py",
+    "tests/test_run_mkm_inter_agent_dialogue_routing_compare_v1.py",
+    "tests/test_compression_v2_routing_profile_v1.py",
+    "tests/test_record_mkm_inter_agent_health_commander_approval_v1.py",
+    "tests/test_mkm_cmp2_011_v2_routing_ab_v1.py",
+    "tests/test_build_mkm_inter_agent_health_signoff_candidate_v1.py",
+    "tests/test_mkm_inter_agent_counsel_submission_v1.py",
+    "tests/test_capture_mkm_inter_agent_first_message_live_http_v1.py"
 )
-Write-Host "== Inter-agent encoding pytest (3 files) ==" -ForegroundColor Cyan
+Write-Host "== Inter-agent encoding pytest ==" -ForegroundColor Cyan
 py -m pytest @tests -q --tb=short
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
@@ -49,6 +56,12 @@ if (-not $SkipDialogueMock) {
 if (-not $SkipL1ExperimentalPytest) {
     Write-Host "== L1 experimental expand (slow) ==" -ForegroundColor Cyan
     py -m pytest tests/test_compression_token_api_v2_stub.py::test_v2_expand_l1_experimental_mode_research_only -q --tb=short
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($IncludeParallelLanes) {
+    Write-Host "== Parallel lanes (sweep + dialogue compare; slow) ==" -ForegroundColor Cyan
+    powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmInterAgentParallelLanes_v1.ps1
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
