@@ -26,6 +26,12 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.btrack_conditional_bear_override_v1 import apply_conditional_bear_override_v1
+from scripts.btrack_regime_conditional_price_dampen_v1 import apply_regime_conditional_price_dampen_v1
+from scripts.logos_shadow_eval_lib import load_kospi_yf_rows
 DEFAULT_BUNDLE = ROOT / "docs" / "final" / "artifacts" / "btrack_llm_input_bundle_latest.json"
 DEFAULT_SCHEMA = ROOT / "docs" / "final" / "BTRACK_HYPOTHESIS_PROPHECY_V1.schema.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_hypothesis_prophecy_latest.json"
@@ -33,6 +39,8 @@ DEFAULT_SCORE = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_l
 DEFAULT_ENSEMBLE_CONFIG = ROOT / "docs" / "final" / "artifacts" / "btrack_lens_ensemble_v1.json"
 DEFAULT_BLOCKED_ADJUSTMENTS_REGISTRY = ROOT / "docs" / "final" / "artifacts" / "blocked_adjustments_registry_v1.jsonl"
 DEFAULT_EFFECTIVE_ADJUSTMENTS_REGISTRY = ROOT / "docs" / "final" / "artifacts" / "effective_adjustments_registry_v1.jsonl"
+DEFAULT_KOSPI_CSV = ROOT / "research" / "market_data" / "kospi_daily_external_yf.csv"
+KOSPI_ONLY_SCORE = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_score_kospi_only_latest.json"
 
 SCHEMA_ID = "btrack_hypothesis_prophecy_v1"
 FALLBACK_ENSEMBLE_WEIGHTS = {
@@ -173,27 +181,72 @@ def _sgn_to_dir(v: float) -> str:
     return "neutral"
 
 
-def _extract_price_lens_from_score(
-    score_doc: dict[str, Any], lookback: int, instrument: str
-) -> tuple[float, float, dict[str, Any]]:
-    rows = score_doc.get("rows") if isinstance(score_doc.get("rows"), list) else []
-    t_rows = [r for r in rows if isinstance(r, dict) and str(r.get("instrument") or "").lower() == instrument]
-    if not t_rows:
-        return 0.0, 0.0, {"reason": "score_rows_missing", "instrument": instrument}
-    tail = t_rows[-max(1, int(lookback)) :]
-    returns = [_safe_float(r.get("daily_return"), 0.0) for r in tail]
+def _price_lens_from_returns(returns: list[float], instrument: str, *, lookback_rows: int) -> tuple[float, float, dict[str, Any]]:
     avg_ret = sum(returns) / max(1, len(returns))
     abs_returns = [abs(v) for v in returns]
     abs_ret_mean = sum(abs_returns) / max(1, len(abs_returns))
-    # Scale to bounded score domain with mild sensitivity.
     direction_score = max(-1.0, min(1.0, avg_ret / 0.02))
     confidence = max(0.0, min(1.0, abs(direction_score)))
     return direction_score, confidence, {
         "instrument": instrument,
-        "lookback_rows": len(tail),
+        "lookback_rows": lookback_rows,
         "avg_daily_return": avg_ret,
         "recent_abs_return_mean": abs_ret_mean,
     }
+
+
+def _extract_price_lens_from_kospi_csv(lookback: int, csv_path: Path | None = None) -> tuple[float, float, dict[str, Any]]:
+    path = csv_path or DEFAULT_KOSPI_CSV
+    if not path.is_file():
+        return 0.0, 0.0, {"reason": "kospi_csv_missing", "instrument": "kospi", "path": str(path)}
+
+    rows = sorted(load_kospi_yf_rows(path), key=lambda r: str(r.get("date", "")))
+    closes: list[tuple[str, float]] = []
+    for row in rows:
+        close = row.get("close")
+        if close is None:
+            continue
+        try:
+            px = float(close)
+        except (TypeError, ValueError):
+            continue
+        if px > 0:
+            closes.append((str(row.get("date", ""))[:10], px))
+    if len(closes) < 2:
+        return 0.0, 0.0, {"reason": "insufficient_kospi_rows", "instrument": "kospi"}
+    daily_returns: list[float] = []
+    for i in range(1, len(closes)):
+        prev_px = closes[i - 1][1]
+        if prev_px > 0:
+            daily_returns.append((closes[i][1] - prev_px) / prev_px)
+    tail = daily_returns[-max(1, int(lookback)) :]
+    if not tail:
+        return 0.0, 0.0, {"reason": "insufficient_kospi_returns", "instrument": "kospi"}
+    score, conf, meta = _price_lens_from_returns(tail, "kospi", lookback_rows=len(tail))
+    meta["source"] = "kospi_daily_external_yf.csv"
+    meta["csv_path"] = str(path)
+    return score, conf, meta
+
+
+def _extract_price_lens_from_score(
+    score_doc: dict[str, Any],
+    lookback: int,
+    instrument: str,
+    *,
+    kospi_csv_fallback: bool = False,
+) -> tuple[float, float, dict[str, Any]]:
+    rows = score_doc.get("rows") if isinstance(score_doc.get("rows"), list) else []
+    t_rows = [r for r in rows if isinstance(r, dict) and str(r.get("instrument") or "").lower() == instrument]
+    if not t_rows:
+        if kospi_csv_fallback and instrument == "kospi":
+            csv_score, csv_conf, csv_meta = _extract_price_lens_from_kospi_csv(lookback)
+            if csv_meta.get("reason") not in ("kospi_csv_missing", "insufficient_kospi_rows", "insufficient_kospi_returns"):
+                csv_meta["fallback"] = "kospi_csv"
+            return csv_score, csv_conf, csv_meta
+        return 0.0, 0.0, {"reason": "score_rows_missing", "instrument": instrument}
+    tail = t_rows[-max(1, int(lookback)) :]
+    returns = [_safe_float(r.get("daily_return"), 0.0) for r in tail]
+    return _price_lens_from_returns(returns, instrument, lookback_rows=len(tail))
 
 
 def _collect_btc_scope_violations(bundle: dict[str, Any]) -> list[str]:
@@ -395,6 +448,7 @@ def _build_ensemble_from_bundle(
     score_doc: dict[str, Any],
     ensemble_cfg: dict[str, Any],
     previous_doc: dict[str, Any] | None,
+    price_instrument_override: str | None = None,
 ) -> dict[str, Any]:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     compression_bridge = _extract_compression_bridge_meta(bundle)
@@ -402,11 +456,12 @@ def _build_ensemble_from_bundle(
     weights, weights_source = _resolve_weights(raw_weights)
     rules = ensemble_cfg.get("rules") if isinstance(ensemble_cfg.get("rules"), dict) else {}
 
-    price_instrument = str(rules.get("price_instrument") or "btc").strip().lower()
+    price_instrument = str(price_instrument_override or rules.get("price_instrument") or "btc").strip().lower()
     price_score, price_conf, price_meta = _extract_price_lens_from_score(
         score_doc,
         lookback=int(rules.get("price_lookback_days", 5)),
         instrument=price_instrument,
+        kospi_csv_fallback=(price_instrument == "kospi"),
     )
 
     macro_art = bundle.get("artifacts", {}).get("macro_independent_lens") or {}
@@ -551,6 +606,249 @@ def _build_ensemble_from_bundle(
             "compression_bridge_confidence_adjustment": confidence_adjustment_meta,
         },
     }
+
+
+_V2_ENSEMBLE_MODES = frozenset({"v2_confidence_fusion", "v2"})
+
+
+def _resolve_weights_v2(raw: dict[str, Any]) -> dict[str, float]:
+    defaults = {
+        "price": 0.55,
+        "macro": 0.18,
+        "news": 0.12,
+        "myeongni": 0.06,
+        "sasang": 0.06,
+        "logos": 0.03,
+    }
+    out = {k: _safe_float(raw.get(k), defaults[k]) for k in defaults}
+    total = sum(out.values())
+    if total <= 0:
+        return defaults
+    return {k: v / total for k, v in out.items()}
+
+
+def _build_ensemble_v2_from_bundle(
+    bundle: dict[str, Any],
+    *,
+    score_doc: dict[str, Any],
+    ensemble_cfg: dict[str, Any],
+    previous_doc: dict[str, Any] | None,
+    price_instrument_override: str | None = None,
+) -> dict[str, Any]:
+    """v2: separate myeongni/sasang/logos + confidence-scaled weights (B-track research_only)."""
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    compression_bridge = _extract_compression_bridge_meta(bundle)
+    raw_weights = ensemble_cfg.get("weights_v2") if isinstance(ensemble_cfg.get("weights_v2"), dict) else {}
+    base_weights = _resolve_weights_v2(raw_weights)
+    rules = ensemble_cfg.get("rules") if isinstance(ensemble_cfg.get("rules"), dict) else {}
+    v2_rules = rules.get("v2") if isinstance(rules.get("v2"), dict) else {}
+    min_conf_floor = max(0.0, min(1.0, _safe_float(v2_rules.get("min_confidence_floor"), 0.15)))
+    logos_max_w = max(0.0, _safe_float(v2_rules.get("logos_max_weight"), 0.08))
+    conflict_dampen = max(0.0, min(1.0, _safe_float(v2_rules.get("conflict_dampen"), 0.85)))
+    drop_logos_on_conflict = bool(v2_rules.get("drop_logos_on_conflict", False))
+
+    price_instrument = str(price_instrument_override or rules.get("price_instrument") or "btc").strip().lower()
+    price_score, price_conf, price_meta = _extract_price_lens_from_score(
+        score_doc,
+        lookback=int(rules.get("price_lookback_days", 5)),
+        instrument=price_instrument,
+        kospi_csv_fallback=(price_instrument == "kospi"),
+    )
+    macro_art = bundle.get("artifacts", {}).get("macro_independent_lens") or {}
+    news_art = bundle.get("artifacts", {}).get("news_independent_lens") or {}
+    macro_scores = macro_art.get("scores") if isinstance(macro_art.get("scores"), dict) else {}
+    news_scores = news_art.get("scores") if isinstance(news_art.get("scores"), dict) else {}
+    m_score, m_conf = _extract_lens_score(bundle, "myeongni_independent_lens")
+    s_score, s_conf = _extract_lens_score(bundle, "sasang_independent_lens")
+    l_score, l_conf = _extract_lens_score(bundle, "logos_independent_lens")
+
+    lens_values: dict[str, dict[str, float]] = {
+        "price": {"score": price_score, "confidence": price_conf},
+        "macro": {
+            "score": _safe_float(macro_scores.get("direction_score"), 0.0),
+            "confidence": _safe_float(macro_scores.get("confidence"), 0.0),
+        },
+        "news": {
+            "score": _safe_float(news_scores.get("direction_score"), 0.0),
+            "confidence": _safe_float(news_scores.get("confidence"), 0.0),
+        },
+        "myeongni": {"score": m_score, "confidence": m_conf},
+        "sasang": {"score": s_score, "confidence": s_conf},
+        "logos": {"score": l_score, "confidence": l_conf},
+    }
+
+    eff_weights: dict[str, float] = {}
+    for name, w in base_weights.items():
+        conf = max(min_conf_floor, _safe_float(lens_values[name]["confidence"], 0.0))
+        eff_weights[name] = w * conf
+    if eff_weights.get("logos", 0.0) > logos_max_w:
+        eff_weights["logos"] = logos_max_w
+
+    price_s = _safe_float(lens_values["price"]["score"], 0.0)
+    macro_s = _safe_float(lens_values["macro"]["score"], 0.0)
+    conflict_meta: dict[str, Any] = {"applied": False}
+    margin_probe = _safe_float(rules.get("tie_break_min_margin"), 0.03)
+    if price_s * macro_s < 0 and abs(price_s) >= margin_probe and abs(macro_s) >= margin_probe:
+        conflict_meta = {"applied": True, "reason": "price_macro_sign_conflict", "dampen": conflict_dampen}
+        for key in ("price", "macro"):
+            blob = lens_values[key]
+            blob["score"] = max(-1.0, min(1.0, _safe_float(blob.get("score"), 0.0) * conflict_dampen))
+        if drop_logos_on_conflict:
+            eff_weights["logos"] = 0.0
+            lens_values["logos"]["score"] = 0.0
+
+    w_sum = sum(eff_weights.values()) or 1.0
+    norm_weights = {k: v / w_sum for k, v in eff_weights.items()}
+    weighted_raw = sum(norm_weights[k] * _safe_float(lens_values[k]["score"], 0.0) for k in norm_weights)
+    margin_raw = _safe_float(rules.get("tie_break_min_margin"), 0.03)
+    neutral_penalty_raw = _safe_float(rules.get("neutral_penalty"), -0.1)
+    weighted, margin, neutral_penalty, compression_adjustment_meta = _apply_compression_bridge_adjustments(
+        weighted=weighted_raw,
+        margin=margin_raw,
+        neutral_penalty=neutral_penalty_raw,
+        compression_bridge=compression_bridge,
+        rules=rules,
+        price_meta=price_meta,
+    )
+    weighted, lens_values, regime_meta = apply_regime_conditional_price_dampen_v1(
+        lens_values=lens_values,
+        weighted_raw=weighted,
+        weights=norm_weights,
+        price_meta=price_meta,
+        rules=rules,
+    )
+    preliminary_direction = "neutral" if abs(weighted) < margin else _sgn_to_dir(weighted)
+    weighted, preliminary_direction, bear_meta = apply_conditional_bear_override_v1(
+        weighted=weighted,
+        preliminary_direction=preliminary_direction,
+        lens_values=lens_values,
+        price_meta=price_meta,
+        margin=margin,
+        rules=rules,
+    )
+
+    prev_streak = 0
+    if isinstance(previous_doc, dict):
+        pmeta = previous_doc.get("runtime_meta")
+        if isinstance(pmeta, dict):
+            prev_streak = int(pmeta.get("neutral_streak", 0) or 0)
+        else:
+            pdir = str((previous_doc.get("prediction") or {}).get("direction") or "").lower()
+            prev_streak = 1 if pdir == "neutral" else 0
+    neutral_streak = prev_streak + 1 if preliminary_direction == "neutral" else 0
+    max_neutral_streak = int(rules.get("max_neutral_streak_before_recalibration", 3))
+    direction = preliminary_direction
+    recalibration_triggered = False
+    tie_breaker_order = list(
+        rules.get("tie_breaker_order_v2")
+        or rules.get("tie_breaker_order")
+        or ["price", "macro", "news", "myeongni", "sasang", "logos"]
+    )
+    if neutral_streak >= max_neutral_streak:
+        recalibration_triggered = True
+        for name in tie_breaker_order:
+            cand = lens_values.get(name, {"score": 0.0})
+            c_score = _safe_float(cand.get("score"), 0.0)
+            if abs(c_score) >= margin:
+                direction = _sgn_to_dir(c_score)
+                break
+
+    if direction == "neutral":
+        base_confidence = max(0.0, min(1.0, 0.5 + neutral_penalty))
+        bridge_signal = _safe_float(compression_adjustment_meta.get("signal"), 0.0)
+        if bool(compression_adjustment_meta.get("applied")) and abs(bridge_signal) < 1e-12:
+            bridge_signal = 0.005
+        confidence = max(0.0, min(1.0, base_confidence + bridge_signal))
+        confidence_adjustment_meta = {
+            "applied": bool(compression_adjustment_meta.get("applied")),
+            "reason": "neutral_confidence_rule_with_bridge",
+            "base_confidence": round(base_confidence, 6),
+            "signal": round(bridge_signal, 6),
+            "adjusted_confidence": round(confidence, 6),
+        }
+    else:
+        base_confidence = max(0.0, min(1.0, abs(weighted)))
+        confidence, confidence_adjustment_meta = _apply_bridge_confidence_adjustment(
+            base_confidence=base_confidence,
+            direction=direction,
+            compression_adjustment_meta=compression_adjustment_meta,
+        )
+
+    from scripts.btrack_direction_confidence_gate_v1 import apply_min_direction_confidence_gate
+
+    direction, confidence, low_conf_gate = apply_min_direction_confidence_gate(
+        direction, confidence, rules=rules
+    )
+
+    label = (
+        "[HYPO] Rule-based lens ensemble v2_confidence_fusion "
+        "(price/macro/news/myeongni/sasang/logos). research_only; no live trigger."
+    )
+    runtime_meta: dict[str, Any] = {
+        "ensemble_mode": "v2_confidence_fusion",
+        "weighted_score": round(weighted, 6),
+        "preliminary_direction": preliminary_direction,
+        "neutral_streak": neutral_streak,
+        "neutral_penalty": neutral_penalty,
+        "recalibration_triggered": recalibration_triggered,
+        "max_neutral_streak_before_recalibration": max_neutral_streak,
+        "tie_breaker_order": tie_breaker_order,
+        "tie_break_min_margin": margin,
+        "lens_values": lens_values,
+        "price_meta": price_meta,
+        "price_instrument": price_instrument,
+        "weights": None,
+        "weights_v2_base": base_weights,
+        "weights_v2_effective": {k: round(v, 6) for k, v in norm_weights.items()},
+        "v2_conflict_dampen": conflict_meta,
+        "macro_available": bool(macro_art),
+        "news_available": bool(news_art),
+        "compression_bridge": compression_bridge,
+        "compression_bridge_available": bool(compression_bridge.get("available")),
+        "compression_bridge_adjustment": compression_adjustment_meta,
+        "compression_bridge_confidence_adjustment": confidence_adjustment_meta,
+        "regime_conditional_price_dampen": regime_meta,
+        "conditional_bear_override": bear_meta,
+        "low_confidence_direction_gate": low_conf_gate,
+        "overnight_return": score_doc.get("overnight_return"),
+        "prior_range_position": score_doc.get("prior_range_position"),
+        "realized_vol_5d": score_doc.get("realized_vol_5d"),
+        "vol_regime_high": score_doc.get("vol_regime_high"),
+    }
+    doc = {
+        "schema": SCHEMA_ID,
+        "version": "1.1.0",
+        "hypothesis_tier": "B",
+        "boundary_ack": True,
+        "ts_utc": now,
+        "label": label,
+        "lens_artifacts": {
+            "logos": "docs/final/artifacts/logos_independent_lens_latest.json",
+            "myeongni": "docs/final/artifacts/myeongni_independent_lens_latest.json",
+            "sasang": "docs/final/artifacts/sasang_independent_lens_latest.json",
+            "fusion_stub": "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
+            "shadow_minority_monthly": "docs/final/artifacts/independent_lens_shadow_minority_monthly_latest.json",
+        },
+        "prediction": {
+            "instrument": "btc",
+            "horizon": "1d",
+            "direction": direction,
+            "confidence": round(confidence, 4),
+        },
+        "provenance": {
+            "llm_model": "rule_based_ensemble_v2_confidence_fusion",
+            "prompt_id": "generate_btrack_hypothesis_prophecy_v1.py (v2_confidence_fusion)",
+        },
+        "runtime_meta": runtime_meta,
+    }
+    return doc
+
+
+def _ensemble_builder_for_rules(rules: dict[str, Any]):
+    mode = str(rules.get("ensemble_mode") or "v1").strip().lower()
+    if mode in _V2_ENSEMBLE_MODES:
+        return _build_ensemble_v2_from_bundle
+    return _build_ensemble_from_bundle
 
 
 def _extract_json_blob(text: str) -> dict[str, Any] | None:
@@ -932,14 +1230,21 @@ def main() -> int:
     elif args.stub:
         doc = _build_stub_from_bundle(bundle)
     else:
-        score_doc = _load_json(args.score_json) if args.score_json.is_file() else {}
+        score_path = args.score_json
+        if args.research_evaluation_instrument == "kospi" and KOSPI_ONLY_SCORE.is_file():
+            score_path = KOSPI_ONLY_SCORE
+        score_doc = _load_json(score_path) if score_path.is_file() else {}
         ensemble_cfg = _load_json(args.ensemble_config) if args.ensemble_config.is_file() else {}
         previous_doc = _load_json(args.output) if args.output.is_file() else None
-        doc = _build_ensemble_from_bundle(
+        price_override = "kospi" if args.research_evaluation_instrument == "kospi" else None
+        rules_for_builder = ensemble_cfg.get("rules") if isinstance(ensemble_cfg.get("rules"), dict) else {}
+        builder = _ensemble_builder_for_rules(rules_for_builder if isinstance(rules_for_builder, dict) else {})
+        doc = builder(
             bundle,
             score_doc=score_doc,
             ensemble_cfg=ensemble_cfg,
             previous_doc=previous_doc,
+            price_instrument_override=price_override,
         )
     blocked_keys = _read_blocked_adjustment_keys(args.blocked_adjustments_registry)
     effective_rows = _read_effective_adjustments(
@@ -970,6 +1275,10 @@ def main() -> int:
             rm["research_evaluation_instrument_note"] = (
                 "OHLCV score split only; execution scope remains BTC-only per btc_only_guard."
             )
+            if args.research_evaluation_instrument == "kospi":
+                rm["price_instrument_research_override"] = "kospi"
+                if isinstance(rm.get("price_meta"), dict):
+                    rm["price_meta"]["research_evaluation_instrument"] = "kospi"
 
     if contemplation_meta is not None:
         doc.setdefault("provenance", {})

@@ -156,4 +156,41 @@ def test_bridge_adjustment_changes_confidence_when_context_removed() -> None:
         assert bool(on_adj.get("applied")) is True
         assert bool(off_adj.get("applied")) is False
         assert on_doc.get("prediction", {}).get("direction") == off_doc.get("prediction", {}).get("direction")
-        assert float(on_doc.get("prediction", {}).get("confidence")) != float(off_doc.get("prediction", {}).get("confidence"))
+        assert float(on_doc.get("prediction", {}).get("confidence")) != float(
+            off_doc.get("prediction", {}).get("confidence")
+        )
+
+
+def test_research_kospi_uses_kospi_price_lens(tmp_path: Path) -> None:
+    if not _BUNDLE.is_file():
+        import pytest
+
+        pytest.skip("bundle not built")
+    kospi_csv = _ROOT / "research" / "market_data" / "kospi_daily_external_yf.csv"
+    if not kospi_csv.is_file():
+        import pytest
+
+        pytest.skip("kospi csv missing")
+    out = tmp_path / "hyp_kospi.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_SCRIPT),
+            "--bundle",
+            str(_BUNDLE),
+            "--output",
+            str(out),
+            "--research-evaluation-instrument",
+            "kospi",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("prediction", {}).get("instrument") == "kospi"
+    runtime_meta = doc.get("runtime_meta") if isinstance(doc.get("runtime_meta"), dict) else {}
+    assert runtime_meta.get("price_instrument") == "kospi"
+    price_meta = runtime_meta.get("price_meta") if isinstance(runtime_meta.get("price_meta"), dict) else {}
+    assert price_meta.get("instrument") == "kospi"
+    assert price_meta.get("reason") != "score_rows_missing"
