@@ -23,6 +23,7 @@ COMMANDER_CHECKLIST = [
     "Run: py scripts/set_marketing_queue_publish_status_v1.py --item-id <id> --approve",
     "Post on LinkedIn manually OR schedule in Buffer after approve (no API auto-fire from MKM).",
     "After live post: py scripts/set_marketing_queue_publish_status_v1.py --item-id <id> --mark-published",
+    "Optional Buffer draft tray: py scripts/push_marketing_draft_to_buffer_v1.py --item-id <id> (dry-run) then --push-draft after MKM_BUFFER_PUSH_ALLOWED=1",
 ]
 
 

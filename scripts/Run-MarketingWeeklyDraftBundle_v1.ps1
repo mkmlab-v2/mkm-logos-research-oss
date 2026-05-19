@@ -73,6 +73,12 @@ if ($Gemini) {
     }
 }
 
+$channels = Join-Path $root "scripts\generate_marketing_channel_draft_v1.py"
+
+Write-Host "== YouTube / newsletter drafts (assemble-only) ==" -ForegroundColor Cyan
+& py $channels --channel all
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 if (-not $SkipLinkedIn) {
     Write-Host "== LinkedIn B2B draft chain ==" -ForegroundColor Cyan
     $liParams = @{ WorkspaceRoot = $root }

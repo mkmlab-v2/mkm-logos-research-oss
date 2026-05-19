@@ -9,7 +9,9 @@
 param(
     [string]$WorkspaceRoot = "",
     [string]$ApproveItemId = "",
-    [string]$MarkPublishedItemId = ""
+    [string]$MarkPublishedItemId = "",
+    [string]$BufferPushItemId = "",
+    [switch]$BufferPushDraft
 )
 
 $ErrorActionPreference = "Stop"
@@ -21,6 +23,7 @@ if (Test-Path -LiteralPath $dotenv) { . $dotenv -WorkspaceRoot $root }
 $pull = Join-Path $root "scripts\sync_marketing_queue_to_linkedin_v1.py"
 $handoff = Join-Path $root "scripts\build_marketing_publish_handoff_v1.py"
 $status = Join-Path $root "scripts\set_marketing_queue_publish_status_v1.py"
+$buffer = Join-Path $root "scripts\push_marketing_draft_to_buffer_v1.py"
 
 Write-Host "== Pull drafted status from LinkedIn queue ==" -ForegroundColor Cyan
 & py $pull --pull-linkedin-status
@@ -35,6 +38,14 @@ if ($ApproveItemId) {
 if ($MarkPublishedItemId) {
     Write-Host "== Mark published: $MarkPublishedItemId ==" -ForegroundColor Cyan
     & py $status --item-id $MarkPublishedItemId --mark-published
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($BufferPushItemId) {
+    Write-Host "== Buffer draft push: $BufferPushItemId ==" -ForegroundColor Cyan
+    $bufArgs = @($buffer, "--item-id", $BufferPushItemId)
+    if ($BufferPushDraft) { $bufArgs += "--push-draft" }
+    & py @bufArgs
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 

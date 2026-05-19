@@ -226,6 +226,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【홍보 주간 번들 · tier_0】 | 통합 큐 sync → LinkedIn assemble-only → 요약 JSON (기본 API $0) | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MarketingWeeklyBundle` |
 | 【홍보 주간 예약 점검】 | Task `MKM_Marketing_WeeklyDraftBundle` (기본 **-Gemini 없음**) | `… -Persona MarketingWeeklyBundleReadiness` |
 | 【홍보 Phase 2 · 승인·게시】 | handoff JSON+체크리스트 MD · `--approve` / `--mark-published` (자동 게시 없음) | `… -Persona MarketingPublishPhase2` |
+| 【홍보 멀티채널 v2】 | 주간 번들에 YouTube·뉴스레터 assemble-only 포함 · Buffer는 `--push-draft`만(임시저장) | `Run-MarketingWeeklyDraftBundle_v1.ps1` · `push_marketing_draft_to_buffer_v1.py` |
 | **가성비 SSOT** | `tier_0` / `tier_15` / `tier_50` | `docs/final/artifacts/marketing_ops_cost_tier_v1_latest.json` · 큐 `data/marketing/marketing_content_queue_v1.example.json` |
 | **tier_15 이벤트 주** | 큐에 `allow_gemini` 1건 + `.env` `MKM_MARKETING_GEMINI_ALLOWED=1` 후 `-Gemini` 1회 | `scripts/Invoke-MarketingTier15EventWeek_v1.ps1` · 복귀 `-RevertTier0` |
 | 【예언 레일 일단락】 | 예언 본선 클로저(P0·B-track 정렬 pytest·safe ops·GO/NO_GO 갱신). 통과 판정은 `reports/prophecy_lane_closure_bundle_v1_latest.json`의 **`closure_ok: true`** 및 `manual_remainder`(Windows `schtasks` 일반예언·Track A 실매매는 수동 잔여) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` |
@@ -235,6 +236,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【쇼룸 publish 예약 점검】 | Task `Showroom-TrackC-Publish-Daily` (기본 09:32) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-ShowroomTrackCPublishScheduledTask_v1.ps1` |
 | 【쇼룸 nginx 주간】 | `api.jemaai.cloud` nginx snippet만 (일요일) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Register-ShowroomTrackCNginxWeeklyTask.ps1` |
 | 【쇼룸 nginx 예약 점검】 | Task `Showroom-TrackC-Nginx-Weekly` (기본 일 09:40) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-ShowroomTrackCNginxWeeklyScheduledTask_v1.ps1` |
+| 【쇼룸 헬스】 | 예약 태스크 + 듀얼 호스트 스모크 + B2B readiness | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ShowroomTrackCHealth` |
 
 ### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
 

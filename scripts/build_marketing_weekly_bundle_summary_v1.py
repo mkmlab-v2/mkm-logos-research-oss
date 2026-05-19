@@ -13,6 +13,8 @@ ROOT = Path(__file__).resolve().parents[1]
 TIER = ROOT / "docs/final/artifacts/marketing_ops_cost_tier_v1_latest.json"
 UNIFIED = ROOT / "data/marketing/marketing_content_queue.json"
 DRAFTS = ROOT / "reports/marketing/linkedin_drafts"
+YOUTUBE_DRAFTS = ROOT / "reports/marketing/youtube_scripts"
+NEWSLETTER_DRAFTS = ROOT / "reports/marketing/newsletter_drafts"
 DEFAULT_OUT = ROOT / "reports/marketing/marketing_weekly_bundle_latest.json"
 
 
@@ -40,9 +42,14 @@ def build(*, gemini_used: bool) -> dict[str, Any]:
             if ch != "linkedin" and item.get("status") == "pending":
                 pending_non_linkedin.append(f"{item.get('id')}:{ch}")
 
-    drafts = []
-    if DRAFTS.is_dir():
-        drafts = sorted(p.name for p in DRAFTS.iterdir() if p.name.endswith("_[DRAFT].md"))
+    def _draft_names(folder: Path) -> list[str]:
+        if not folder.is_dir():
+            return []
+        return sorted(p.name for p in folder.iterdir() if p.name.endswith("_[DRAFT].md"))
+
+    drafts = _draft_names(DRAFTS)
+    youtube_drafts = _draft_names(YOUTUBE_DRAFTS)
+    newsletter_drafts = _draft_names(NEWSLETTER_DRAFTS)
 
     recommended = active_tier if unified else tier.get("recommended_default", "tier_0")
     if gemini_used and recommended == "tier_0":
@@ -60,6 +67,9 @@ def build(*, gemini_used: bool) -> dict[str, Any]:
         "pending_non_linkedin_generators": pending_non_linkedin,
         "linkedin_draft_files": drafts[:20],
         "linkedin_draft_count": len(drafts),
+        "youtube_script_draft_files": youtube_drafts[:10],
+        "newsletter_draft_files": newsletter_drafts[:10],
+        "multichannel_draft_count": len(drafts) + len(youtube_drafts) + len(newsletter_drafts),
         "human_publish_only": True,
         "boundary_ack": "Drafts are [DRAFT]; no API publish. B-track [HYPO] not auto-promoted.",
     }

@@ -46,7 +46,18 @@
     "orchestrator": "scripts/Invoke-MarketingPublishPhase2_v1.ps1",
     "approve": "py scripts/set_marketing_queue_publish_status_v1.py --item-id <id> --approve",
     "mark_published": "py scripts/set_marketing_queue_publish_status_v1.py --item-id <id> --mark-published",
-    "buffer": "Optional BUFFER_ACCESS_TOKEN in .env — handoff reports buffer_api_configured only; scheduling remains human in Buffer UI"
+    "buffer": "Optional BUFFER_ACCESS_TOKEN + BUFFER_LINKEDIN_CHANNEL_ID; MKM_BUFFER_PUSH_ALLOWED=1 for --push-draft",
+    "buffer_dry_run": "py scripts/push_marketing_draft_to_buffer_v1.py --item-id <id>",
+    "buffer_push_draft": "py scripts/push_marketing_draft_to_buffer_v1.py --item-id <id> --push-draft"
+  },
+  "multichannel_v2": {
+    "generator": "scripts/generate_marketing_channel_draft_v1.py",
+    "channels": ["youtube_script", "newsletter"],
+    "outputs": [
+      "reports/marketing/youtube_scripts/*_[DRAFT].md",
+      "reports/marketing/newsletter_drafts/*_[DRAFT].md"
+    ],
+    "bundle": "Included in Run-MarketingWeeklyDraftBundle_v1.ps1 after LinkedIn sync"
   },
   "scripts": {
     "weekly_bundle": "scripts/Run-MarketingWeeklyDraftBundle_v1.ps1",
