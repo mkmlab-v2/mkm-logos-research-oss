@@ -9,6 +9,7 @@ import json
 import re
 import subprocess
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -208,35 +209,57 @@ def _build_fuel_files(item: dict[str, Any], fuel_dir: Path) -> list[Path]:
 def _run_gemini_research(item: dict[str, Any], fuel_paths: list[Path], timeout: int) -> tuple[int, str]:
     loc = item.get("locale", "en")
     lang = "Korean" if loc == "ko" else "English"
+    kpi = _kpi_snippet()
     prompt = (
         f"Write a LinkedIn post draft for B2B platform/OEM operators.\n"
         f"Language: {lang}.\n"
         f"Topic: {item.get('topic')}\n"
-        f"Opening hook (use or refine): {item.get('hook', '')}\n\n"
+        f"Opening hook (use or refine): {item.get('hook', '')}\n"
+        f"CTA URL (if used): {item.get('cta_url', '')}\n\n"
         "Rules:\n"
         "- Start output with line: **[DRAFT]**\n"
-        "- Use ONLY numbers present in attached KPI JSON or enterprise summary MD.\n"
+        "- Use ONLY numbers present in the KPI block below or attached MD sources.\n"
         "- Do NOT claim guaranteed returns, 100% lossless, neuroscience proof, or live trading triggers.\n"
         "- Include a one-line disclaimer at the end.\n"
         "- Length: 180-260 words for EN; similar density for KO.\n"
-        "- Suggest one CTA URL from attachments if present.\n"
     )
-    cmd = [
+    if kpi.get("present"):
+        prompt += (
+            "\nKPI (artifact-bound; do not invent other metrics):\n"
+            f"- global_token_saving_rate: {kpi.get('global_token_saving_rate')}\n"
+            f"- avg_reconstruction_fidelity_jaccard: {kpi.get('avg_reconstruction_fidelity_jaccard')}\n"
+            f"- ultra_saving_policy_ok: {kpi.get('ultra_saving_policy_ok')}\n"
+            f"- bench_saving_floor_ok: {kpi.get('bench_saving_floor_ok')}\n"
+            f"- source: {kpi.get('kpi_path')}\n"
+        )
+    cmd_base = [
         sys.executable,
         str(GEMINI_BATCH),
         "research",
-        "--prompt",
-        prompt,
         "--temperature",
         "0.25",
         "--timeout",
         str(timeout),
     ]
-    for fp in fuel_paths:
-        cmd.extend(["--file", str(fp)])
-    proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace")
-    out = (proc.stdout or "") + (proc.stderr or "")
-    return proc.returncode, out.strip()
+    # Gemini file API rejects application/json attachments (500/400); inline KPI + MD only.
+    attach_paths = [fp for fp in fuel_paths if fp.suffix.lower() not in {".json"}]
+    last_exit = 1
+    last_out = ""
+    for attempt in range(3):
+        cmd = [*cmd_base, "--prompt", prompt]
+        for fp in attach_paths:
+            cmd.extend(["--file", str(fp)])
+        proc = subprocess.run(
+            cmd, cwd=str(ROOT), capture_output=True, text=True, encoding="utf-8", errors="replace"
+        )
+        last_exit = proc.returncode
+        last_out = ((proc.stdout or "") + (proc.stderr or "")).strip()
+        if last_exit == 0 and last_out:
+            return last_exit, last_out
+        if "500 INTERNAL" not in last_out and "503" not in last_out:
+            break
+        time.sleep(2 * (attempt + 1))
+    return last_exit, last_out
 
 
 def _write_chart(item_id: str) -> Path | None:
