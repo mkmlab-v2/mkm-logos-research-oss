@@ -2,18 +2,26 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
-## Ops slice (2026-05-19 · OpenData 327 융합 핸드오프)
+## Ops slice (2026-05-19 · 융합 — OpenData · LG · B-track)
 
-**Thread:** Cursor — B+C+D 병합·commander JSON
+**Thread:** Cursor — 세션 마감 SSOT · 로컬 restore
 
-- **완료:** G1(B/C/D)+G4 **PASS** · B ~97KB · C ~51KB · D ~84KB · **`opendata_327_submission_bcd_merged_v1.pdf`** ~228KB · `opendata_327_commander_handoff_latest.json` · `Run-OpenData327SubmissionChain` = Prep 동일
-- **막힘(human):** BCD 육안 검수 · 표지(A) `merge --cover-pdf` · §2-2 확정·재export · 6/1 dry-run · 6/5 18:00 접수
-- **다음:** 표지 PDF 확보 후 최종 `moksori_ai_opendata327_task1_business_plan_v1.pdf` 생성
+| 레인 | 상태 | SSOT |
+|------|------|------|
+| **OpenData 327** | Prep **PASS** · B+C+D `opendata_327_submission_bcd_merged_v1.pdf` (~0.22MB) | `reports/opendata_327_commander_handoff_latest.json` · `opendata_327_submission_readiness_latest.json` |
+| **LG HS** | `ready_for_internal_meeting=true` · fallback **미발동** · `outcome` **pending** | `reports/lg_hs_pre_meeting_readiness_v1_latest.json` |
+| **B-track** | **wave6** `all_ok: true` · score builder per-date instrument · pytest 23 passed | `gitea/main` **`1312d9c626`** (+ dev `8e454830d8` handoff fix, push 대기) |
+
+- **완료:** `Run-OpenData327SubmissionPrep_v1.ps1` 재실행 · 런타임 `artifacts/*_latest`·`reports/trading*` **restore** (커밋 제외)
+- **막힘:** OpenData **표지(A)** 레포 없음 · LG **대외 send 법무 후** · B-track **[HYPO]/90일 동결**
+- **다음 (지휘관 1):** 표지 A 경로 → `py scripts/merge_opendata_327_submission_pdf_v1.py --cover-pdf <표지A.pdf>` → LG 미팅 후 `record_lg_hs_meeting_outcome_v1.py --outcome-class … --summary-one-line "…"`
 
 **재개:**
 ```
 @docs/final/CURRENT_OPS_SNAPSHOT.md
-OpenData commander handoff JSON · 표지·접수만 human
+@reports/opendata_327_commander_handoff_latest.json
+장기기억 맥락이어라
+OpenData 표지A만 human · LG outcome pending · main 1312d9c626
 ```
 
 ## Ops slice (2026-05-19 · IR Moat 덱 · 채팅 종료)
