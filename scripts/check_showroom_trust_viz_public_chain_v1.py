@@ -24,6 +24,10 @@ URLS: dict[str, str] = {
     "meaning_graph_mirror": f"{API_MIRROR}/public_showroom_meaning_topology_graph_v1.html",
     "meaning_json_canonical": f"{CANONICAL}/showroom_meaning_topology_graph_slice_v1.json",
     "meaning_json_mirror": f"{API_MIRROR}/showroom_meaning_topology_graph_slice_v1.json",
+    "meaning_qa_v2_canonical": f"{CANONICAL}/public_showroom_meaning_topology_qa_v2.html",
+    "meaning_qa_v2_mirror": f"{API_MIRROR}/public_showroom_meaning_topology_qa_v2.html",
+    "meaning_qa_presets_canonical": f"{CANONICAL}/showroom_meaning_topology_qa_presets_v1.json",
+    "meaning_qa_presets_mirror": f"{API_MIRROR}/showroom_meaning_topology_qa_presets_v1.json",
     "radar_canonical": f"{CANONICAL}/public_showroom_topology_radar_v1.html",
     "radar_mirror": f"{API_MIRROR}/public_showroom_topology_radar_v1.html",
     "public_events_latest": f"{API_MIRROR}/api/public-events/latest",
@@ -47,6 +51,8 @@ def main() -> int:
         "trust_html",
         "meaning_graph_canonical",
         "meaning_graph_mirror",
+        "meaning_qa_v2_canonical",
+        "meaning_qa_v2_mirror",
         "radar_canonical",
         "radar_mirror",
     }
@@ -120,6 +126,19 @@ def main() -> int:
                 errors.append("meaning_json_canonical: schema_version mismatch")
         except Exception as e:
             errors.append(f"meaning_json_canonical parse: {e}")
+
+    if steps.get("meaning_qa_presets_canonical", {}).get("http_status") == 200:
+        try:
+            _, body, _ = _fetch(URLS["meaning_qa_presets_canonical"])
+            pq = json.loads(body.decode("utf-8"))
+            steps["meaning_qa_presets_payload"] = {
+                "schema_version": pq.get("schema_version"),
+                "preset_count": len(pq.get("presets") or []),
+            }
+            if pq.get("schema_version") != "showroom_meaning_topology_qa_presets_v1":
+                errors.append("meaning_qa_presets_canonical: schema_version mismatch")
+        except Exception as e:
+            errors.append(f"meaning_qa_presets_canonical parse: {e}")
 
     report = {
         "schema": "showroom_trust_viz_public_chain_smoke_v1",

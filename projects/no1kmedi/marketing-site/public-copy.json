@@ -23,6 +23,11 @@
       "label": "의미 연결망 그래프",
       "sublabel": "bible_meaning_graph 실데이터 슬라이스 · [HYPO] 연구용"
     },
+    "showroom_meaning_qa_v2": {
+      "href": "https://jemaai.cloud/public_showroom_meaning_topology_qa_v2.html",
+      "label": "Meaning Topology Q&A Studio",
+      "sublabel": "질문→답변+그래프 하이라이트 · [HYPO] B2B 데모 · NON_GATING"
+    },
     "premium_mkmlife": {
       "href": "https://mkmlife.com",
       "label": "원퀘스천 프리미엄 리포트",
