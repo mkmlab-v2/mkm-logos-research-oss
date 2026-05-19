@@ -40,7 +40,8 @@ def main() -> int:
     args = ap.parse_args()
 
     py = sys.executable
-    score_rel = "docs/final/artifacts/btrack_prophecy_score_latest.json"
+    score_for_kpi = SCORE_BTC if SCORE_BTC.is_file() else SCORE
+    score_rel = str(score_for_kpi.relative_to(ROOT)).replace("\\", "/")
     tasks: list[tuple[str, list[str]]] = [
         ("advisory_bear_trap", [py, "scripts/run_btrack_wrong_dir_holdout_v1.py", "advisory-sweep"]),
         ("model_swap_harness", [py, "scripts/run_btrack_model_swap_harness_v1.py"]),

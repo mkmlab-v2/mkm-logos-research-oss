@@ -32,7 +32,10 @@ def _utc_now() -> str:
 
 
 def _rel(p: Path) -> str:
-    return str(p.relative_to(ROOT)).replace("\\", "/")
+    try:
+        return str(p.resolve().relative_to(ROOT.resolve())).replace("\\", "/")
+    except ValueError:
+        return str(p.resolve()).replace("\\", "/")
 
 
 def _optional_ref(p: Path) -> dict[str, Any]:

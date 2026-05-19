@@ -144,6 +144,53 @@ def _load_per_date_direction_map(path: Path | None) -> dict[str, str]:
     return out
 
 
+def _infer_panel_instrument_from_per_date(path: Path | None) -> str | None:
+    """When per-date rows declare a single instrument (e.g. btc), use it for the OHLCV leg."""
+    if path is None or not path.is_file():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8-sig"))
+    except Exception:
+        return None
+    rows: list[Any] = []
+    if isinstance(payload, dict) and isinstance(payload.get("rows"), list):
+        rows = payload.get("rows") or []
+    elif isinstance(payload, list):
+        rows = payload
+    else:
+        return None
+    labels: set[str] = set()
+    for r in rows:
+        if not isinstance(r, dict):
+            continue
+        lab = str(r.get("instrument") or "").strip().lower()
+        if lab in ("btc", "kospi", "multi"):
+            labels.add(lab)
+    if len(labels) == 1:
+        return labels.pop()
+    return None
+
+
+def _load_batch_eval_dates(path: Path | None) -> list[str] | None:
+    if path is None:
+        return None
+    p = path if path.is_absolute() else ROOT / path
+    if not p.is_file():
+        return None
+    try:
+        payload = json.loads(p.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return None
+    if isinstance(payload, list):
+        return [str(d)[:10] for d in payload if str(d).strip()]
+    if isinstance(payload, dict):
+        for key in ("eval_dates", "batch_eval_dates", "dates", "anchor_eval_dates"):
+            raw = payload.get(key)
+            if isinstance(raw, list):
+                return [str(d)[:10] for d in raw if str(d).strip()]
+    return None
+
+
 def _is_manual_override_hypothesis(h: dict[str, Any]) -> bool:
     prov = h.get("provenance")
     if not isinstance(prov, dict):
@@ -763,6 +810,18 @@ def main() -> int:
         help="If N>1, emit one score row per leg per eval date for the last N past trading days "
         "(same hypothesis predicted_direction vs rolling actuals; see meta.frozen_prediction_note).",
     )
+    ap.add_argument(
+        "--batch-eval-dates-json",
+        type=Path,
+        default=None,
+        help="Optional JSON with eval_dates[] (e.g. reports/btrack_anchor_eval_dates_v1.json) for fixed anchor panel.",
+    )
+    ap.add_argument(
+        "--panel-instrument",
+        choices=["btc", "kospi", "multi"],
+        default=None,
+        help="Override hypothesis instrument for batch/single-date panels (e.g. btc anchor hybrid lanes).",
+    )
     ap.add_argument("--neutral-bps", type=float, default=5.0, help="Abs return below this (in bps) => neutral.")
     ap.add_argument(
         "--bull-reversal-lookback",
@@ -1077,6 +1136,15 @@ def main() -> int:
 
     inst_declared = _instrument(hyp)
     inst = inst_declared
+    per_date_dir_path = args.per_date_direction_json
+    if per_date_dir_path and not per_date_dir_path.is_absolute():
+        per_date_dir_path = ROOT / per_date_dir_path
+    if args.panel_instrument:
+        inst = str(args.panel_instrument).strip().lower()
+    else:
+        inferred_inst = _infer_panel_instrument_from_per_date(per_date_dir_path)
+        if inferred_inst:
+            inst = inferred_inst
     if args.force_dual_leg_panel:
         if btc_rows and kospi_rows:
             inst = "multi"
@@ -1086,17 +1154,21 @@ def main() -> int:
                 file=sys.stderr,
             )
     predicted = _predicted_direction(hyp)
-    per_date_dir_path = args.per_date_direction_json
-    if per_date_dir_path and not per_date_dir_path.is_absolute():
-        per_date_dir_path = ROOT / per_date_dir_path
     per_date_direction_map = _load_per_date_direction_map(per_date_dir_path)
     year_rebound_overrides = _parse_year_rebound_overrides(str(args.year_rebound_overrides))
     year_default_overrides = _parse_year_default_overrides(str(args.year_default_overrides))
 
     batch_dual_calendar_intersection = False
     n_batch = max(1, int(args.recent_trading_days))
-    if n_batch > 1:
-        if args.force_dual_leg_panel and btc_rows:
+    batch_dates_path = args.batch_eval_dates_json
+    if batch_dates_path and not batch_dates_path.is_absolute():
+        batch_dates_path = ROOT / batch_dates_path
+    explicit_batch_dates = _load_batch_eval_dates(batch_dates_path)
+    use_batch_panel = bool(explicit_batch_dates) or n_batch > 1
+    if use_batch_panel:
+        if explicit_batch_dates:
+            dates_to_use = explicit_batch_dates
+        elif args.force_dual_leg_panel and btc_rows:
             batch_dual_calendar_intersection = True
             dates_to_use = _last_n_intersection_trading_dates(kospi_rows, btc_rows, n_batch)
             if not dates_to_use:
@@ -1111,8 +1183,12 @@ def main() -> int:
             if not dates_to_use:
                 print("Could not resolve trading dates for --recent-trading-days (empty CSV or no past dates).", file=sys.stderr)
                 return 2
+        if explicit_batch_dates:
+            wmeta_anchor = {"batch_eval_dates_source": str(batch_dates_path)}
+        else:
+            wmeta_anchor = {}
         rows_out: list[dict[str, Any]] = []
-        wmeta: dict[str, Any] = {"warnings": []}
+        wmeta: dict[str, Any] = {"warnings": [], **wmeta_anchor}
         for ed in dates_to_use:
             predicted_for_date = per_date_direction_map.get(ed, predicted)
             if per_date_direction_map and predicted_for_date is None:
