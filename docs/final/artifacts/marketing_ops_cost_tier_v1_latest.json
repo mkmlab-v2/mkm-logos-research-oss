@@ -34,6 +34,11 @@
       "avoid": ["Faceless YouTube full auto-upload", "LinkedIn Ads without ads-linkedin skill review"]
     }
   },
+  "tier15_event_week": {
+    "enable": "scripts/Invoke-MarketingTier15EventWeek_v1.ps1",
+    "revert": "scripts/Invoke-MarketingTier15EventWeek_v1.ps1 -RevertTier0",
+    "set_queue": "scripts/set_marketing_queue_cost_tier_v1.py --active-tier tier_15 --event-week --gemini-item <id>"
+  },
   "scripts": {
     "weekly_bundle": "scripts/Run-MarketingWeeklyDraftBundle_v1.ps1",
     "register_task": "scripts/Register-MarketingWeeklyDraftBundleTask.ps1",

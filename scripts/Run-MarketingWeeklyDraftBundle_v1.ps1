@@ -32,12 +32,26 @@ $root = if ($WorkspaceRoot) { (Resolve-Path -LiteralPath $WorkspaceRoot).Path } 
 $sync = Join-Path $root "scripts\sync_marketing_queue_to_linkedin_v1.py"
 $linkedin = Join-Path $root "scripts\run_linkedin_b2b_weekly_draft_chain_v1.ps1"
 $summary = Join-Path $root "scripts\build_marketing_weekly_bundle_summary_v1.py"
+$queuePath = Join-Path $root "data\marketing\marketing_content_queue.json"
 
 Write-Host "== Marketing queue -> LinkedIn sync ==" -ForegroundColor Cyan
 & py $sync --init-from-example
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $syncJson = & py $sync 2>&1 | Out-String
 Write-Host $syncJson
+
+if (Test-Path -LiteralPath $queuePath) {
+    try {
+        $q = Get-Content -LiteralPath $queuePath -Raw -Encoding UTF8 | ConvertFrom-Json
+        $tier = if ($q.active_cost_tier) { $q.active_cost_tier } else { $q.default_cost_tier }
+        Write-Host ("active_cost_tier={0}" -f $tier) -ForegroundColor DarkCyan
+        if ($q.tier15_event_week -and $q.tier15_event_week.enabled) {
+            Write-Host "tier15_event_week=enabled (max 1-2 Gemini posts/month if MKM_MARKETING_GEMINI_ALLOWED=1)" -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Warning "Could not parse marketing_content_queue.json for tier hint."
+    }
+}
 
 $useGemini = $false
 if ($Gemini) {

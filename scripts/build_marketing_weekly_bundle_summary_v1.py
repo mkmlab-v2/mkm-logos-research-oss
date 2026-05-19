@@ -29,6 +29,8 @@ def _load(path: Path) -> dict[str, Any] | None:
 def build(*, gemini_used: bool) -> dict[str, Any]:
     tier = _load(TIER) or {}
     unified = _load(UNIFIED)
+    active_tier = (unified or {}).get("active_cost_tier") or (unified or {}).get("default_cost_tier") or "tier_0"
+    event_week = (unified or {}).get("tier15_event_week") or {}
     by_channel: dict[str, int] = {}
     pending_non_linkedin: list[str] = []
     if unified:
@@ -42,14 +44,16 @@ def build(*, gemini_used: bool) -> dict[str, Any]:
     if DRAFTS.is_dir():
         drafts = sorted(p.name for p in DRAFTS.iterdir() if p.name.endswith("_[DRAFT].md"))
 
-    recommended = tier.get("recommended_default", "tier_0")
-    if gemini_used:
+    recommended = active_tier if unified else tier.get("recommended_default", "tier_0")
+    if gemini_used and recommended == "tier_0":
         recommended = "tier_15"
 
     return {
         "schema": "marketing_weekly_bundle_summary_v1",
         "generated_at_utc": _utc_now(),
         "cost_tier_pointer": TIER.relative_to(ROOT).as_posix(),
+        "active_cost_tier": active_tier,
+        "tier15_event_week_enabled": bool(event_week.get("enabled")),
         "recommended_cost_tier": recommended,
         "gemini_used_this_run": gemini_used,
         "queue_counts_by_channel": by_channel,

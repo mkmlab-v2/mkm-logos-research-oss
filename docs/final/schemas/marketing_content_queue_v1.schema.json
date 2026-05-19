@@ -13,6 +13,26 @@
       "enum": ["tier_0", "tier_15", "tier_50"],
       "description": "Pointer to docs/final/artifacts/marketing_ops_cost_tier_v1_latest.json"
     },
+    "active_cost_tier": {
+      "type": "string",
+      "enum": ["tier_0", "tier_15", "tier_50"],
+      "description": "Current ops mode; weekly bundle reads this for summary tier hint"
+    },
+    "tier15_event_week": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "max_gemini_linkedin_posts_this_month": { "type": "integer", "minimum": 1, "maximum": 4 },
+        "requires_env": { "type": "string" },
+        "run_command": { "type": "string" },
+        "checklist": {
+          "type": "array",
+          "items": { "type": "string" },
+          "maxItems": 12
+        }
+      }
+    },
     "items": {
       "type": "array",
       "items": { "$ref": "#/definitions/queue_item" }

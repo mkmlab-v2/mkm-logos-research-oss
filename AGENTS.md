@@ -226,6 +226,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【홍보 주간 번들 · tier_0】 | 통합 큐 sync → LinkedIn assemble-only → 요약 JSON (기본 API $0) | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MarketingWeeklyBundle` |
 | 【홍보 주간 예약 점검】 | Task `MKM_Marketing_WeeklyDraftBundle` (기본 **-Gemini 없음**) | `… -Persona MarketingWeeklyBundleReadiness` |
 | **가성비 SSOT** | `tier_0` / `tier_15` / `tier_50` | `docs/final/artifacts/marketing_ops_cost_tier_v1_latest.json` · 큐 `data/marketing/marketing_content_queue_v1.example.json` |
+| **tier_15 이벤트 주** | 큐에 `allow_gemini` 1건 + `.env` `MKM_MARKETING_GEMINI_ALLOWED=1` 후 `-Gemini` 1회 | `scripts/Invoke-MarketingTier15EventWeek_v1.ps1` · 복귀 `-RevertTier0` |
 | 【예언 레일 일단락】 | 예언 본선 클로저(P0·B-track 정렬 pytest·safe ops·GO/NO_GO 갱신). 통과 판정은 `reports/prophecy_lane_closure_bundle_v1_latest.json`의 **`closure_ok: true`** 및 `manual_remainder`(Windows `schtasks` 일반예언·Track A 실매매는 수동 잔여) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1` |
 | 【샌드박스 헬스】 | SANDBOX 예언 아티팩트 헬스(느슨·일상) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ProphecySandbox` |
 | 【샌드박스 헬스 strict】 | watchlist 게이트(`max_n_calendar_days>=3`, 주간·승격 전) | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ProphecySandboxStrict` |
@@ -345,6 +346,7 @@ Cloud Agent VM은 **Ubuntu**이다. Windows 전용 `powershell … verify_p0_con
 - **“무제한”이 아닌 제약:** 가설 JSON은 `py scripts/generate_btrack_hypothesis_prophecy_v1.py` 및 `docs/final/BTRACK_HYPOTHESIS_PROPHECY_V1.schema.json` 기준으로 **`hypothesis_tier=B`·`boundary_ack`·라벨 `[HYPO]`** 등 필드·경계를 지킨다. 클라우드 Gemini·유료 API는 **명시 플래그·환경·비용 상한** 하에서만.
 - **가격 적중 채점 체인(팩트 포인터):** 일일 번들 `scripts/run_btrack_daily_hypothesis_chain.ps1`이 (기본) `generate_btrack_hypothesis_prophecy_v1` → `build_btrack_prophecy_score_from_ohlcv.py` → `eval_prophecy_hit_rate_v1.py --run-mode price` 경로를 포함한다(`-SkipHitRate`로 생략 가능). 표·분기·proxy 분기는 **`docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`** 일일 B-Track 번들·Prophecy Hit Rate 절.
 - **권장 측정·neutral_bps 자동 스윕(주간 스케줄 가능):** `py scripts/run_prophecy_btrack_recommended_eval_chain_v1.py --auto-sweep-and-apply` 또는 `scripts/Run-BtrackRecommendedEvalAutoSweep_v1.ps1` — 기본 그리드 스윕 후 최적 행을 `reports/*_recommended*_latest*`에 반영; 승격 판정은 `reports/prophecy_promotion_gates_recommended_chain_v1_latest.json`. 로그오프 실행(S4U) 묶음: `scripts/Register-BtrackRecommendedEvalAutoSweepWeeklyTask.ps1 -RunWhenLoggedOff`(관리자 번들 `Register-MkmBtrackProphecyTasksRunWhenLoggedOff_v1.ps1`에 포함). **A-track·실매매 자동 합선 없음.**
+- **V2 dual strict 승격 재현(원클릭 · source ON / expanded prior OFF):** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-BtrackLensV2DualStrictPromotionChain_v1.ps1` — 산출 `reports/btrack_lens_v2_dual_strict_promotion_chain_v1_latest.json`; evidence까지: `-RunPromotionBundle`. **`--include-expanded-prior-features`는 Lens WF 회귀(금지).** nbps 스윕 시 `--per-date-direction-json` 필수(체인 스윕 루프 반영됨).
 
 ## 12AI vs 코드북 도메인
 
