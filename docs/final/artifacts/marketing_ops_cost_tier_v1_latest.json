@@ -39,12 +39,22 @@
     "revert": "scripts/Invoke-MarketingTier15EventWeek_v1.ps1 -RevertTier0",
     "set_queue": "scripts/set_marketing_queue_cost_tier_v1.py --active-tier tier_15 --event-week --gemini-item <id>"
   },
+  "phase2_publish_handoff": {
+    "boundary": "copy_guard PASS + human_approved required before Buffer or LinkedIn fire. MKM never auto-posts.",
+    "handoff_json": "reports/marketing/marketing_publish_handoff_latest.json",
+    "checklist_md": "reports/marketing/marketing_publish_checklist_latest.md",
+    "orchestrator": "scripts/Invoke-MarketingPublishPhase2_v1.ps1",
+    "approve": "py scripts/set_marketing_queue_publish_status_v1.py --item-id <id> --approve",
+    "mark_published": "py scripts/set_marketing_queue_publish_status_v1.py --item-id <id> --mark-published",
+    "buffer": "Optional BUFFER_ACCESS_TOKEN in .env — handoff reports buffer_api_configured only; scheduling remains human in Buffer UI"
+  },
   "scripts": {
     "weekly_bundle": "scripts/Run-MarketingWeeklyDraftBundle_v1.ps1",
     "register_task": "scripts/Register-MarketingWeeklyDraftBundleTask.ps1",
     "verify_task": "scripts/Verify-MarketingWeeklyDraftBundleTaskReadiness_v1.ps1",
     "persona_weekly": "Invoke-MkmPersonaHealth_v1.ps1 -Persona MarketingWeeklyBundle",
     "persona_readiness": "Invoke-MkmPersonaHealth_v1.ps1 -Persona MarketingWeeklyBundleReadiness",
+    "persona_phase2": "Invoke-MkmPersonaHealth_v1.ps1 -Persona MarketingPublishPhase2",
     "unified_queue": "data/marketing/marketing_content_queue.json",
     "unified_queue_example": "data/marketing/marketing_content_queue_v1.example.json"
   }

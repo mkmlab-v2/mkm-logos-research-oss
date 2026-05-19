@@ -51,7 +51,7 @@
         },
         "status": {
           "type": "string",
-          "enum": ["pending", "drafted", "human_approved", "skipped"]
+          "enum": ["pending", "drafted", "human_approved", "published", "skipped"]
         },
         "topic": { "type": "string", "minLength": 3, "maxLength": 500 },
         "hook": { "type": "string", "maxLength": 300 },
@@ -80,7 +80,9 @@
             "chart_png": { "type": "string" }
           }
         },
-        "drafted_at_utc": { "type": "string" }
+        "drafted_at_utc": { "type": "string" },
+        "human_approved_at_utc": { "type": "string" },
+        "published_at_utc": { "type": "string" }
       }
     }
   }

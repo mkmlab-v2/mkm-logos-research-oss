@@ -38,7 +38,7 @@
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2')]
     [string]$Persona
 )
 
@@ -119,6 +119,12 @@ try {
             $script = Join-Path $PSScriptRoot 'Verify-MarketingWeeklyDraftBundleTaskReadiness_v1.ps1'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
             & $ps @common $script
+            exit $LASTEXITCODE
+        }
+        'MarketingPublishPhase2' {
+            $script = Join-Path $PSScriptRoot 'Invoke-MarketingPublishPhase2_v1.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
             exit $LASTEXITCODE
         }
         default {

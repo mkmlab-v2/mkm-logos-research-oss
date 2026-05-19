@@ -53,7 +53,17 @@ def _to_linkedin_item(item: dict[str, Any]) -> dict[str, Any]:
         "topic": item["topic"],
         "locale": item["locale"],
     }
-    for key in ("hook", "audience", "source_artifacts", "cta_url", "notes", "draft_paths", "drafted_at_utc"):
+    for key in (
+        "hook",
+        "audience",
+        "source_artifacts",
+        "cta_url",
+        "notes",
+        "draft_paths",
+        "drafted_at_utc",
+        "human_approved_at_utc",
+        "published_at_utc",
+    ):
         if key in item:
             out[key] = item[key]
     return out

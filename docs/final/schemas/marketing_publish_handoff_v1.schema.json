@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "marketing_publish_handoff_v1.schema.json",
+  "title": "MKM marketing publish handoff v1 (Phase 2 — human fire only)",
+  "type": "object",
+  "required": ["schema", "generated_at_utc", "boundary_ack", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "marketing_publish_handoff_v1" },
+    "generated_at_utc": { "type": "string" },
+    "boundary_ack": { "type": "string", "minLength": 10 },
+    "auto_publish_allowed": { "const": false },
+    "buffer_api_configured": { "type": "boolean" },
+    "commander_checklist": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 3,
+      "maxItems": 12
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/handoff_item" }
+    }
+  },
+  "definitions": {
+    "handoff_item": {
+      "type": "object",
+      "required": ["id", "channel", "queue_status", "copy_guard", "ready_for_human_fire", "next_commander_action"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "channel": { "type": "string" },
+        "locale": { "type": "string" },
+        "queue_status": { "type": "string" },
+        "topic": { "type": "string" },
+        "draft_markdown": { "type": "string" },
+        "evidence_json": { "type": "string" },
+        "chart_png": { "type": "string" },
+        "copy_guard": { "type": "string", "enum": ["PASS", "FAIL", "MISSING_DRAFT"] },
+        "copy_guard_detail": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "ready_for_human_fire": { "type": "boolean" },
+        "ready_for_buffer_schedule": { "type": "boolean" },
+        "next_commander_action": { "type": "string" }
+      }
+    }
+  }
+}

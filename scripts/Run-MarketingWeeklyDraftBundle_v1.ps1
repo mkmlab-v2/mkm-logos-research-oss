@@ -91,4 +91,10 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[DONE] tier SSOT: docs/final/artifacts/marketing_ops_cost_tier_v1_latest.json" -ForegroundColor Green
 Write-Host "[DONE] summary: reports/marketing/marketing_weekly_bundle_latest.json" -ForegroundColor Green
+
+Write-Host "== Phase 2 publish handoff ==" -ForegroundColor Cyan
+$phase2 = Join-Path $root "scripts\Invoke-MarketingPublishPhase2_v1.ps1"
+& $phase2 -WorkspaceRoot $root
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 exit 0
