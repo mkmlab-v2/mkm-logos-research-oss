@@ -51,11 +51,16 @@ export type EnterpriseCopy = {
   disclaimer: { title: string; items: string[] };
 };
 
+export type HubLink = { href: string; label: string; sublabel: string };
+
 export type SiteCopy = {
   hub_links: {
-    showroom_jemaai: { href: string; label: string; sublabel: string };
-    premium_mkmlife: { href: string; label: string; sublabel: string };
-    b2b_acodeai: { href: string; label: string; sublabel: string };
+    showroom_jemaai: HubLink;
+    premium_mkmlife: HubLink;
+    b2b_acodeai: HubLink;
+    showroom_topology_radar?: HubLink;
+    showroom_meaning_graph?: HubLink;
+    showroom_meaning_qa_v2?: HubLink;
   };
   header: { brand_name: string; brand_tagline: string };
   seo: { title: string; description: string };

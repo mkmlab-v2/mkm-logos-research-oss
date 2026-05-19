@@ -125,6 +125,28 @@ export default function HomePage({ searchParams }: HomePageProps) {
                 </a>
               );
             })}
+            {(
+              [
+                "showroom_meaning_qa_v2",
+                "showroom_topology_radar",
+                "showroom_meaning_graph",
+              ] as const
+            ).map((key) => {
+              const link = c.hub_links[key];
+              if (!link?.href) return null;
+              return (
+                <a
+                  key={key}
+                  className="btn btn-ghost"
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={link.sublabel}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </div>
         </section>
 

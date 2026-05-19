@@ -23,6 +23,9 @@ export default function EnterprisePage() {
   const e = requireEnterprise();
   const presetClass = homepagePresetClassMap[DEFAULT_HOMEPAGE_PRESET];
   const showroom = c.hub_links.showroom_jemaai;
+  const qaStudio = c.hub_links.showroom_meaning_qa_v2 ?? showroom;
+  const topologyRadar = c.hub_links.showroom_topology_radar;
+  const meaningGraph = c.hub_links.showroom_meaning_graph;
   const api = c.hub_links.b2b_acodeai;
 
   return (
@@ -57,9 +60,10 @@ export default function EnterprisePage() {
           <div className="hero-cta">
             <a
               className="btn btn-primary enterprise-btn-primary"
-              href={showroom.href}
+              href={qaStudio.href}
               target="_blank"
               rel="noopener noreferrer"
+              title={qaStudio.sublabel}
             >
               {e.hero.cta_primary}
             </a>
@@ -144,11 +148,54 @@ export default function EnterprisePage() {
           <div className="enterprise-proof-grid">
             <a
               className="enterprise-proof-card enterprise-proof-card--primary"
+              href={qaStudio.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="enterprise-proof-card-label">B2B 데모</span>
+              <strong>{qaStudio.label}</strong>
+              <p>{qaStudio.sublabel}</p>
+              <span className="enterprise-proof-card-arrow" aria-hidden="true">
+                →
+              </span>
+            </a>
+            {topologyRadar ? (
+              <a
+                className="enterprise-proof-card"
+                href={topologyRadar.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="enterprise-proof-card-label">레이더</span>
+                <strong>{topologyRadar.label}</strong>
+                <p>{topologyRadar.sublabel}</p>
+                <span className="enterprise-proof-card-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ) : null}
+            {meaningGraph ? (
+              <a
+                className="enterprise-proof-card"
+                href={meaningGraph.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="enterprise-proof-card-label">그래프</span>
+                <strong>{meaningGraph.label}</strong>
+                <p>{meaningGraph.sublabel}</p>
+                <span className="enterprise-proof-card-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ) : null}
+            <a
+              className="enterprise-proof-card"
               href={showroom.href}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="enterprise-proof-card-label">관측</span>
+              <span className="enterprise-proof-card-label">보드</span>
               <strong>{showroom.label}</strong>
               <p>{showroom.sublabel}</p>
               <span className="enterprise-proof-card-arrow" aria-hidden="true">

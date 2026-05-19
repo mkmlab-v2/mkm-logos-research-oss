@@ -17,6 +17,9 @@ def test_enterprise_block_present_and_links() -> None:
     assert len(ent["pillars"]["cards"]) >= 3
     showroom = data["hub_links"]["showroom_jemaai"]["href"]
     assert showroom.startswith("https://api.jemaai.cloud/")
+    qa_v2 = data["hub_links"]["showroom_meaning_qa_v2"]["href"]
+    assert qa_v2.endswith("public_showroom_meaning_topology_qa_v2.html")
+    assert "[HYPO]" in data["hub_links"]["showroom_meaning_qa_v2"]["sublabel"]
     hero = ent["hero"]["title"] + ent["hero"]["subtitle"]
     for banned in ("LG전자", "LG ", "합격", "수상"):
         assert banned not in hero
