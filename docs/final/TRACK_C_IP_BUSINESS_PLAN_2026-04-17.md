@@ -116,7 +116,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - **IR 복붙(counsel-cleared · 발송마다 PUBLIC_FACING):** `docs/final/artifacts/mkm_inter_agent_ir_snippet_v1.md` · 금지 주장·SOTA 맵 `mkm_inter_agent_encoding_sota_map_v1.md`.
 - **격벽:** B-track·Trust Packet 초안 — **실매매·Track A 벤치·압축 47% 덱과 한 슬라이드 합치기 금지** (`PUBLIC_FACING` v1.7).
 
-**공고 병렬 레인 (Track C 1차 매출과 분리):** MSME AI+ OpenData **제2026-327** — 제출 SSOT `docs/final/ai_opendata_challenge_2026_327_business_plan_submission_v1.md` · PDF `reports/opendata_327_part_b_v1.pdf` 등 · 병렬 체크 `docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json` — **§3.8 B2B 매크로·§3.1 압축 우선 파도와 합선하지 않음**.
+**공고 병렬 레인 (Track C 1차 매출과 분리):** MSME AI+ OpenData **제2026-327** — 제출 SSOT `docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_submission_v1.md` · PDF `reports/opendata_327_part_b_v1.pdf` 등 · 병렬 체크 `docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json` — **§3.8 B2B 매크로·§3.1 압축 우선 파도와 합선하지 않음**.
 
 ### 3.2 축 B — 초고난도 비정형 텍스트 기반 사업 (고급 해설형)
 

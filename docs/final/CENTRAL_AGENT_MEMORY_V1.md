@@ -12,7 +12,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-18T23:06:03Z
+- **last_updated_utc:** 2026-05-19T00:30:08Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -22,6 +22,13 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-05-19T00:30:08Z** — OpenData 327: gates PASS, Part B/C PDF 재출력(§4-1), 체인 스크립트 추가
+- **2026-05-19T00:27:53Z** — LinkedIn B2B: 주간 Task 등록+초안 재생성(차트)+페르소나·CONSTITUTION
+- **2026-05-19T00:27:53Z** — wave5+gates: combined_all_passed=true streak 1/5; lock restored approved
+- **2026-05-18T23:15:51Z** — LinkedIn B2B v1: CI+bundle+weekly chain PASS; marketing-copy 면책 오탐 수정
+- **2026-05-18T23:15:36Z** — B-track autopilot+expansion hybrid+P1.5 shadow+post-release; lock=approved; live OFF
+- **2026-05-18T23:12:35Z** — 병렬: B nbps 3.5 sweep+ensemble v2 WF; TRACK_C/IR counsel-cleared; gitea merge dry-run OK
+- **2026-05-18T23:10:31Z** — B-track post-release: release READY, live 별도, 30d v1 56.7% research
 - **2026-05-18T23:06:03Z** — RQ-019 CLOSED: counsel COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY, checklist 7, smoke 36 pass
 - **2026-05-18T22:51:43Z** — B-track post-release: release READY, live 별도, 30d v1 56.7% research
 - **2026-05-18T22:48:13Z** — B-track post-release: release READY, live 별도, 30d v1 56.7% research
@@ -35,13 +42,6 @@
 - **2026-05-18T21:44:18Z** — IR Moat 9장 덱·gitea/main 반영·PPT·법무 대기·채팅 종료
 - **2026-05-18T21:40:17Z** — 병렬: cmp2_011 AB + health signoff 후보 커밋·푸시
 - **2026-05-18T21:36:26Z** — IR Moat 슬라이드 4-5·9장 덱·factcheck·enterprise summary 포인터 반영
-- **2026-05-18T21:31:22Z** — Parallel: low-saving sweep refresh + health A2A routing compare
-- **2026-05-18T21:00:13Z** — RQ-019: v2 routing_profile + zone_g_health shard + rebench
-- **2026-05-18T20:53:45Z** — RQ-019 parallel: A2A dialogue mock + L1 experimental expand
-- **2026-05-18T20:46:36Z** — RQ-019: CI smoke+Invoke+IR snippet; push internal
-- **2026-05-18T20:35:20Z** — Inter-agent: live HTTP in NL(19 src); status refreshed; pytest 20; RQ-019 core_ready
-- **2026-05-18T20:17:44Z** — Inter-agent live HTTP curl evidence committed; fixtures+live_http_v1.json for IR snippet
-- **2026-05-18T20:04:13Z** — Inter-agent RQ-019: worked example+status committed dff50e4; rq_019_milestones_core_ready true
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
