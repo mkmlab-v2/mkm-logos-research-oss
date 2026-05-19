@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ko" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · Meaning topology · Q&A Studio (v2)</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: "#c5a057",
+            verse: "#6ee7b7",
+            theme: "#fbbf24",
+            regime: "#93c5fd",
+          },
+          fontFamily: { sans: ["Inter", "system-ui", "Noto Sans KR", "sans-serif"] },
+          boxShadow: { glow: "0 0 24px rgba(197, 160, 87, 0.25)" },
+        },
+      },
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    body {
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(99, 102, 241, 0.12), transparent 50%),
+        radial-gradient(900px 500px at 90% 0%, rgba(197, 160, 87, 0.1), transparent 45%), #06080c;
+    }
+    .glass {
+      background: rgba(14, 18, 26, 0.65);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .chat-scroll::-webkit-scrollbar { width: 6px; }
+    .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+    #graphChart { min-height: 480px; }
+    @media (min-width: 1024px) { #graphChart { min-height: calc(100vh - 7rem); } }
+  </style>
+</head>
+<body class="h-full text-slate-100 font-sans antialiased">
+  <header class="border-b border-white/10 glass sticky top-0 z-20">
+    <div class="max-w-[1600px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <p class="text-[10px] uppercase tracking-[0.2em] text-slate-500 mb-0.5">JEMA AI · Track C Showroom</p>
+        <h1 class="text-lg font-semibold text-white">Meaning Topology · Q&A Studio <span class="text-accent text-sm font-normal">v2</span></h1>
+        <p class="text-xs text-slate-400 max-w-xl mt-1">질문 → 답변 + 위상망 하이라이트 · <span class="text-slate-500">[HYPO] research_only</span></p>
+      </div>
+      <div class="flex flex-wrap gap-1.5 text-[10px] uppercase tracking-wider">
+        <span class="px-2 py-0.5 rounded-full border border-amber-500/40 text-amber-200/90 bg-amber-500/10">[HYPO]</span>
+        <span class="px-2 py-0.5 rounded-full border border-white/10 text-slate-400">NON_GATING</span>
+        <span class="px-2 py-0.5 rounded-full border border-white/10 text-slate-400">no_trade_signals</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1600px] mx-auto px-4 py-4 grid lg:grid-cols-[minmax(320px,38%)_1fr] gap-4 min-h-[calc(100vh-4.5rem)]">
+    <section class="glass rounded-2xl flex flex-col overflow-hidden shadow-glow min-h-[420px] lg:min-h-0 lg:h-[calc(100vh-5.5rem)]">
+      <div class="p-4 border-b border-white/10">
+        <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500 mb-3">Research Q&A</h2>
+        <div class="flex gap-2">
+          <input id="questionInput" type="text" autocomplete="off" placeholder="예: 제국 전환과 연결된 구절은?"
+            class="flex-1 rounded-xl bg-black/40 border border-white/10 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent/50" />
+          <button id="askBtn" type="button" class="rounded-xl bg-accent/90 hover:bg-accent text-black font-medium text-sm px-4 py-2.5 shrink-0">질문</button>
+        </div>
+        <p id="loadStatus" class="text-[11px] text-slate-500 mt-2">그래프·프리셋 로드 중…</p>
+      </div>
+      <div id="suggested" class="px-4 py-2 flex flex-wrap gap-1.5 border-b border-white/5"></div>
+      <div id="chatLog" class="flex-1 overflow-y-auto p-4 space-y-4 chat-scroll text-sm" aria-live="polite"></div>
+      <footer class="p-3 border-t border-white/10 text-[10px] text-slate-500">데모 프리셋 · 실시간 LLM·투자 권유·종교적 단정 아님</footer>
+    </section>
+
+    <section class="glass rounded-2xl flex flex-col overflow-hidden min-h-[480px] lg:min-h-0 lg:h-[calc(100vh-5.5rem)]">
+      <div class="px-4 py-3 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500">Live subgraph</h2>
+          <p id="graphMeta" class="text-xs text-slate-400 mt-0.5">—</p>
+        </div>
+        <div class="flex gap-3 text-[11px] text-slate-500">
+          <span><span class="inline-block w-2 h-2 rounded-full bg-verse mr-1"></span>verse</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-theme mr-1"></span>theme</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-regime mr-1"></span>regime</span>
+        </div>
+      </div>
+      <div id="graphChart" class="flex-1 w-full" role="img" aria-label="Meaning topology graph"></div>
+    </section>
+  </main>
+
+  <nav class="max-w-[1600px] mx-auto px-4 pb-6 text-xs text-slate-500 flex flex-wrap gap-x-3">
+    <a href="public_showroom_topology_radar_v1.html" class="text-accent hover:underline">← Radar</a>
+    <a href="public_showroom_meaning_topology_graph_v1.html" class="hover:text-slate-300">v1 testbed</a>
+  </nav>
+
+  <script>
+(function () {
+  "use strict";
+  const GRAPH_URL = "showroom_meaning_topology_graph_slice_v1.json";
+  const PRESETS_URL = "showroom_meaning_topology_qa_presets_v1.json";
+  const KIND_COLOR = { verse: "#6ee7b7", theme: "#fbbf24", regime: "#93c5fd", other: "#94a3b8" };
+  const KIND_IDX = { verse: 0, theme: 1, regime: 2, other: 3 };
+  let graphDoc = null, presetsDoc = null, chart = null;
+  const el = (id) => document.getElementById(id);
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function addMessage(role, html) {
+    const node = document.createElement("div");
+    node.className = "flex " + (role === "user" ? "justify-end" : "justify-start");
+    const bubble = document.createElement("div");
+    bubble.className = "max-w-[95%] rounded-2xl px-3 py-2.5 text-sm " +
+      (role === "user" ? "bg-indigo-600/30 border border-indigo-400/20" : "bg-black/35 border border-white/10");
+    const label = document.createElement("p");
+    label.className = "text-[10px] uppercase tracking-wider text-slate-500 mb-1";
+    label.textContent = role === "user" ? "You" : "Assistant · [HYPO]";
+    const body = document.createElement("div");
+    body.className = "leading-relaxed answer-body";
+    body.innerHTML = html;
+    bubble.appendChild(label);
+    bubble.appendChild(body);
+    node.appendChild(bubble);
+    el("chatLog").appendChild(node);
+    el("chatLog").scrollTop = el("chatLog").scrollHeight;
+    return body;
+  }
+
+  function typewriter(targetEl, text, done) {
+    let i = 0;
+    targetEl.textContent = "";
+    function step() {
+      if (i <= text.length) {
+        const slice = text.slice(0, i);
+        targetEl.innerHTML = esc(slice).replace(/\*\*(.+?)\*\*/g, "<strong class='text-accent'>$1</strong>");
+        i += 2;
+        setTimeout(step, 12);
+      } else if (done) done();
+    }
+    step();
+  }
+
+  function matchPreset(q) {
+    const t = q.trim().toLowerCase();
+    if (!t || !presetsDoc) return null;
+    for (const p of presetsDoc.presets || []) {
+      if (p.prompt_ko && p.prompt_ko.toLowerCase() === t) return p;
+      for (const kw of p.keywords || []) {
+        if (t.includes(String(kw).toLowerCase())) return p;
+      }
+    }
+    return null;
+  }
+
+  function respond(question) {
+    const preset = matchPreset(question);
+    const fb = presetsDoc && presetsDoc.fallback;
+    const answer = preset ? preset.answer_ko : (fb && fb.answer_ko) || "[HYPO] 응답 없음";
+    const ids = preset ? (preset.highlight_node_ids || []) : (fb && fb.highlight_node_ids) || [];
+    addMessage("user", esc(question));
+    const body = addMessage("assistant", "");
+    typewriter(body, answer, function () { applyHighlight(ids); });
+  }
+
+  function buildChartOption(highlightSet) {
+    const nodes = (graphDoc.nodes || []).map(function (n) {
+      const kind = n.kind || "other";
+      const hi = highlightSet.has(n.id);
+      const base = 10 + (n.hub_score || 0) * 14;
+      return {
+        id: n.id, name: n.label || n.id,
+        category: KIND_IDX[kind] != null ? KIND_IDX[kind] : 3,
+        symbolSize: hi ? base * 1.35 : base,
+        itemStyle: {
+          color: KIND_COLOR[kind] || KIND_COLOR.other,
+          opacity: hi ? 1 : 0.12,
+          shadowBlur: hi ? 18 : 0,
+          shadowColor: hi ? (KIND_COLOR[kind] || "#fff") : "transparent",
+        },
+        label: {
+          show: hi || n.kind === "theme" || n.kind === "regime",
+          color: hi ? "#f8fafc" : "rgba(148,163,184,0.35)",
+          fontSize: hi ? 11 : 9,
+        },
+      };
+    });
+    const links = (graphDoc.edges || []).map(function (e) {
+      const active = highlightSet.has(e.src) && highlightSet.has(e.dst);
+      return {
+        source: e.src, target: e.dst,
+        lineStyle: {
+          color: active ? "rgba(197,160,87,0.55)" : "rgba(100,116,139,0.08)",
+          width: active ? 1.8 : 0.6, curveness: 0.15,
+        },
+      };
+    });
+    return {
+      backgroundColor: "transparent",
+      animationDurationUpdate: 750,
+      series: [{
+        type: "graph", layout: "force", roam: true, draggable: true,
+        data: nodes, links: links,
+        categories: [{ name: "verse" }, { name: "theme" }, { name: "regime" }, { name: "other" }],
+        force: { repulsion: 220, edgeLength: [40, 120], gravity: 0.06, friction: 0.35 },
+        emphasis: { focus: "adjacency", lineStyle: { width: 3 } },
+      }],
+    };
+  }
+
+  function applyHighlight(ids) {
+    if (!chart || !graphDoc) return;
+    chart.setOption(buildChartOption(new Set(ids || [])), { notMerge: true });
+  }
+
+  function initChart() {
+    chart = echarts.init(document.getElementById("graphChart"));
+    chart.setOption(buildChartOption(new Set()));
+    window.addEventListener("resize", function () { chart && chart.resize(); });
+  }
+
+  function renderSuggestions() {
+    const box = el("suggested");
+    box.innerHTML = "";
+    (presetsDoc.presets || []).forEach(function (p) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "text-[11px] px-2.5 py-1 rounded-lg border border-white/10 bg-white/5 text-slate-300 hover:border-accent/40 hover:text-accent";
+      b.textContent = p.prompt_ko.length > 40 ? p.prompt_ko.slice(0, 38) + "…" : p.prompt_ko;
+      b.title = p.prompt_ko;
+      b.addEventListener("click", function () { el("questionInput").value = p.prompt_ko; respond(p.prompt_ko); });
+      box.appendChild(b);
+    });
+  }
+
+  function boot() {
+    Promise.all([
+      fetch(GRAPH_URL).then(function (r) { if (!r.ok) throw new Error(GRAPH_URL); return r.json(); }),
+      fetch(PRESETS_URL).then(function (r) { if (!r.ok) throw new Error(PRESETS_URL); return r.json(); }),
+    ]).then(function (arr) {
+      graphDoc = arr[0]; presetsDoc = arr[1];
+      const st = graphDoc.stats || {};
+      el("loadStatus").textContent = "loaded · " + (st.node_count || "?") + " nodes · " + (st.edge_count || "?") + " edges";
+      el("graphMeta").textContent = "nodes=" + (st.node_count || "?") + " · edges=" + (st.edge_count || "?");
+      initChart(); renderSuggestions();
+      const note = presetsDoc.disclaimer && presetsDoc.disclaimer.note_ko;
+      addMessage("assistant", esc(note || "연구용 데모입니다."));
+    }).catch(function (err) {
+      el("loadStatus").innerHTML = '<span class="text-red-400">로드 실패: ' + esc(String(err)) + "</span>";
+    });
+  }
+
+  el("askBtn").addEventListener("click", function () {
+    const q = el("questionInput").value.trim();
+    if (q) respond(q);
+  });
+  el("questionInput").addEventListener("keydown", function (e) { if (e.key === "Enter") el("askBtn").click(); });
+  boot();
+})();
+  </script>
+</body>
+</html>

@@ -18,6 +18,13 @@
       "api_mirror": "https://api.jemaai.cloud/public_showroom_meaning_topology_graph_v1.html",
       "data_json": "https://jemaai.cloud/showroom_meaning_topology_graph_slice_v1.json"
     },
+    "meaning_topology_qa_v2": {
+      "path": "/public_showroom_meaning_topology_qa_v2.html",
+      "canonical": "https://jemaai.cloud/public_showroom_meaning_topology_qa_v2.html",
+      "api_mirror": "https://api.jemaai.cloud/public_showroom_meaning_topology_qa_v2.html",
+      "presets_json": "https://jemaai.cloud/showroom_meaning_topology_qa_presets_v1.json",
+      "b2b_demo_primary": true
+    },
     "logos_research": {
       "path": "/public_showroom_logos_research_v1.html",
       "canonical": "https://jemaai.cloud/public_showroom_logos_research_v1.html",

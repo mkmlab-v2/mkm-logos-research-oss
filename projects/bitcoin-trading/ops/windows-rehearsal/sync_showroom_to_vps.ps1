@@ -71,6 +71,8 @@ $htmlLogos = Join-Path $staging "public_showroom_logos_research_v1.html"
 $jsonLogos = Join-Path $staging "showroom_logos_research_slice_v0.json"
 $htmlMeaningGraph = Join-Path $staging "public_showroom_meaning_topology_graph_v1.html"
 $jsonMeaningGraph = Join-Path $staging "showroom_meaning_topology_graph_slice_v1.json"
+$htmlMeaningQaV2 = Join-Path $staging "public_showroom_meaning_topology_qa_v2.html"
+$jsonMeaningQaPresets = Join-Path $staging "showroom_meaning_topology_qa_presets_v1.json"
 $htmlSaju = Join-Path $staging "public_showroom_probabilistic_saju_v1.html"
 $jsonSaju = Join-Path $staging "showroom_saju_hour_bundle_demo_v1.json"
 
@@ -160,6 +162,8 @@ function Invoke-ScpShowroomPair {
             @{ Path = $jsonLogos; Label = "logos research JSON" },
             @{ Path = $htmlMeaningGraph; Label = "meaning topology graph HTML" },
             @{ Path = $jsonMeaningGraph; Label = "meaning topology graph JSON" },
+            @{ Path = $htmlMeaningQaV2; Label = "meaning topology Q&A v2 HTML" },
+            @{ Path = $jsonMeaningQaPresets; Label = "meaning topology Q&A presets JSON" },
             @{ Path = $htmlSaju; Label = "probabilistic saju HTML" },
             @{ Path = $jsonSaju; Label = "saju hour bundle JSON" }
         )) {

@@ -105,15 +105,21 @@ if (-not $SkipLogosResearchSlice) {
 }
 
 if (-not $SkipMeaningTopologyGraphSlice) {
-    Write-Host "[chain] (7/7) showroom meaning topology graph slice (graph JSONL -> capped subgraph)" -ForegroundColor Cyan
+    Write-Host "[chain] (7/8) showroom meaning topology graph slice (graph JSONL -> capped subgraph)" -ForegroundColor Cyan
     & $py (Join-Path $root "scripts\build_showroom_meaning_topology_graph_slice_v1.py")
     if ($LASTEXITCODE -ne 0) {
         Write-Error "build_showroom_meaning_topology_graph_slice_v1.py failed: $LASTEXITCODE"
         exit $LASTEXITCODE
     }
+    Write-Host "[chain] (8/8) showroom meaning topology Q&A presets (slice -> demo JSON)" -ForegroundColor Cyan
+    & $py (Join-Path $root "scripts\build_showroom_meaning_topology_qa_presets_v1.py")
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "build_showroom_meaning_topology_qa_presets_v1.py failed: $LASTEXITCODE"
+        exit $LASTEXITCODE
+    }
 } else {
-    Write-Host "[chain] (7/7) SKIP meaning topology graph slice" -ForegroundColor Yellow
+    Write-Host "[chain] (7-8/8) SKIP meaning topology graph slice + Q&A presets" -ForegroundColor Yellow
 }
 
-Write-Host "[chain] OK -> $bundleOut (+ trust viz + logos + meaning graph slice JSON under jemaai-cloud-mvp/)" -ForegroundColor Green
+Write-Host "[chain] OK -> $bundleOut (+ trust viz + logos + meaning graph + Q&A presets under jemaai-cloud-mvp/)" -ForegroundColor Green
 exit 0
