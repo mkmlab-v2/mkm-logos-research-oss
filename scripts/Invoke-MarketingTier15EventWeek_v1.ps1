@@ -23,8 +23,24 @@ $setter = Join-Path $root "scripts\set_marketing_queue_cost_tier_v1.py"
 
 if ($RevertTier0) {
     & py $setter --active-tier tier_0 --clear-event-week --reset-gemini-flags
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    $envPath = Join-Path $root ".env"
+    if (Test-Path -LiteralPath $envPath) {
+        $lines = @(Get-Content -LiteralPath $envPath)
+        $found = $false
+        for ($i = 0; $i -lt $lines.Count; $i++) {
+            if ($lines[$i] -match '^\s*#?\s*MKM_MARKETING_GEMINI_ALLOWED\s*=') {
+                $lines[$i] = 'MKM_MARKETING_GEMINI_ALLOWED=0'
+                $found = $true
+                break
+            }
+        }
+        if (-not $found) { $lines += 'MKM_MARKETING_GEMINI_ALLOWED=0' }
+        Set-Content -LiteralPath $envPath -Value $lines -Encoding UTF8
+        Write-Host '[DONE] MKM_MARKETING_GEMINI_ALLOWED=0 in .env (event week off).' -ForegroundColor DarkGray
+    }
     Write-Host "[DONE] Reverted to tier_0. Weekly task stays assemble-only." -ForegroundColor Green
-    exit $LASTEXITCODE
+    exit 0
 }
 
 & py $setter --active-tier tier_15 --event-week --gemini-item $GeminiItemId

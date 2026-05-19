@@ -44,3 +44,38 @@ def test_sync_linkedin_items(tmp_path):
     assert out["schema"] == "linkedin_b2b_queue_v1"
     assert len(out["items"]) == 2
     assert all(i["id"] for i in out["items"])
+
+
+def test_pull_linkedin_status_to_unified(tmp_path):
+    unified = tmp_path / "marketing_content_queue.json"
+    unified.write_text(EXAMPLE.read_text(encoding="utf-8"), encoding="utf-8")
+    linkedin = tmp_path / "linkedin_queue.json"
+    subprocess.run(
+        [sys.executable, str(SCRIPT), "--unified-queue", str(unified), "--linkedin-queue", str(linkedin)],
+        cwd=str(ROOT),
+        check=True,
+    )
+    li = json.loads(linkedin.read_text(encoding="utf-8"))
+    li["items"][0]["status"] = "drafted"
+    li["items"][0]["drafted_at_utc"] = "2026-05-19T00:00:00Z"
+    li["items"][0]["draft_paths"] = {"markdown": "reports/foo_[DRAFT].md"}
+    linkedin.write_text(json.dumps(li, indent=2), encoding="utf-8")
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--unified-queue",
+            str(unified),
+            "--linkedin-queue",
+            str(linkedin),
+            "--pull-linkedin-status",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stderr
+    u = json.loads(unified.read_text(encoding="utf-8"))
+    first = next(i for i in u["items"] if i["id"] == li["items"][0]["id"])
+    assert first["status"] == "drafted"
+    assert first["draft_paths"]["markdown"] == "reports/foo_[DRAFT].md"

@@ -59,6 +59,34 @@ def _to_linkedin_item(item: dict[str, Any]) -> dict[str, Any]:
     return out
 
 
+def pull_linkedin_status_to_unified(unified_path: Path, linkedin_path: Path, *, dry_run: bool) -> dict[str, Any]:
+    """Copy drafted status/paths from linkedin_b2b_queue back into unified queue."""
+    if not unified_path.is_file() or not linkedin_path.is_file():
+        return {"ok": True, "skipped": True, "reason": "queue_missing"}
+    unified = _load_json(unified_path)
+    linkedin = _load_json(linkedin_path)
+    by_id = {str(i["id"]): i for i in linkedin.get("items", []) if isinstance(i, dict) and i.get("id")}
+    updated = 0
+    for item in unified.get("items", []):
+        if not isinstance(item, dict) or item.get("channel") != "linkedin":
+            continue
+        li = by_id.get(str(item.get("id")))
+        if not li:
+            continue
+        if li.get("status") == "drafted":
+            item["status"] = "drafted"
+            for key in ("draft_paths", "drafted_at_utc"):
+                if key in li:
+                    item[key] = li[key]
+            updated += 1
+    unified["updated_at_utc"] = _utc_now()
+    if dry_run:
+        return {"ok": True, "dry_run": True, "items_updated": updated}
+    _validate_unified(unified)
+    unified_path.write_text(json.dumps(unified, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return {"ok": True, "items_updated": updated, "output": _rel(unified_path)}
+
+
 def sync(unified_path: Path, linkedin_path: Path, *, dry_run: bool) -> dict[str, Any]:
     if not unified_path.is_file():
         return {
@@ -113,9 +141,18 @@ def main() -> int:
     ap.add_argument("--linkedin-queue", type=Path, default=DEFAULT_LINKEDIN)
     ap.add_argument("--init-from-example", action="store_true", help="Copy unified example if queue missing")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument(
+        "--pull-linkedin-status",
+        action="store_true",
+        help="Merge drafted status from linkedin queue into unified queue (then exit).",
+    )
     args = ap.parse_args()
 
     unified = args.unified_queue
+    if args.pull_linkedin_status:
+        print(json.dumps(pull_linkedin_status_to_unified(unified, args.linkedin_queue, dry_run=args.dry_run)))
+        return 0
+
     if args.init_from_example and not unified.is_file() and UNIFIED_EXAMPLE.is_file():
         unified.parent.mkdir(parents=True, exist_ok=True)
         unified.write_text(UNIFIED_EXAMPLE.read_text(encoding="utf-8"), encoding="utf-8")
