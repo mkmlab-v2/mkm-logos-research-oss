@@ -1,18 +1,30 @@
 # Central agent memory v1 (cross-chat SSOT)
 
 **목적:** 채팅은 맥락을 공유하지 않는다. 본 파일은 **Athena 정체성 + 이론 지문(고효율 압축) + 최소 진행 표**만 둔다.  
-**구분:** `CURRENT_OPS_SNAPSHOT.md` = 일시 핸드오프 · 본 파일 = **지속·정체성 SSOT**(짧게 유지).
+**구분:** **운영·핸드오프** = 루트 `MISSION_LOG.md` 작전 보드(영구, 2026-05-20~) · 본 파일 = **정체성·격벽 SSOT**(짧게). `CURRENT_OPS_SNAPSHOT.md`·`daily_thread_work_*` = **레거시·기본 미사용**.
 
-### 다중 채팅 핸드오프 (고정, 2026-05-13)
+### 다중 채팅 핸드오프 (고정, 2026-05-13 · **MISSION 단일판 영구 고정 2026-05-20**)
 
-- **Git 누적판(크로스 채팅·머신):** `docs/final/CURRENT_OPS_SNAPSHOT.md` — User Rules 트리거 `핸드오프`/`스냅샷` 시 **이 파일만** 갱신(완료·막힘·다음 3줄 권장); 파일 비대 시 **상단·당일 블록만** 슬림 유지.
-- **로컬 volatile:** `MISSION_LOG.md`(비추적) — DoD·임시; **스냅샷·본 파일과 장문 이중 기술 금지**(역할 분리).
+- **운영 SSOT (영구, 지휘관 확정):** 루트 **`MISSION_LOG.md` 맨 위 「전술 작전 보드」** — IDE 상시 오픈 · 채팅 재개 `@MISSION_LOG.md`. MS/Oracle **섹션 분리** 갱신(한 채팅=한 섹션).
+- **스냅샷·일기 (레거시):** `CURRENT_OPS_SNAPSHOT.md`·`reports/daily_thread_work_*` — **기본 미사용**. 「핸드오프/스냅샷」 요청도 **작전 보드** 갱신으로 처리(별도 스냅샷 파일 **열지 않음**).
+- **장기기억(본 파일):** 격벽·Fact-Lock·**분기 한 줄** — **MISSION Phase 표·완료 Evidence 일괄 이관 금지**. 체크포인트: `py scripts/athena_checkpoint.py "한 줄"`.
+- **ARCHIVE ≠ CENTRAL:** `MISSION_LOG` 하단 완료 목록은 **같은 파일 안 보관**; 에이전트가 **자동으로** 본 파일(CENTRAL)에 넘기지 **않음**.
 - **옵시디언:** Fact-Lock·핸드오프 체인에 **필수 아님** — 개인 보조·그래프; 레포 SSOT로 올릴 때만 `CENTRAL`/`CONSTITUTION`/`docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` 등으로 **수동 승격·압축 한 줄**(아래 「옵시디언 볼트 vs 본 파일」절과 동일).
+
+### MISSION_LOG 운영 SSOT (에이전트·지휘관, 영구)
+
+| 구분 | 규칙 |
+|------|------|
+| **볼 것** | `MISSION_LOG.md` 작전 보드 + 해당 채팅 담당 섹션 |
+| **안 씀** | 스냅샷·데일리 일기 · CENTRAL에 Phase 표 |
+| **MS ∩ Oracle** | 서류·대외 문구 **0 합침** · 병렬 채팅=섹션 분리 |
+
+**규칙 파일:** `.cursor/rules/mission-log-combat-ssot.mdc` (`alwaysApply`).
 
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-19T01:42:36Z
+- **last_updated_utc:** 2026-05-21T19:35:04Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -22,26 +34,26 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-19T01:42:36Z** — 융합 handoff: OpenData/LG/B-track SSOT restore fused JSON
-- **2026-05-19T01:39:50Z** — 세션종료: B-track wave6·LG내부·OpenData BCD·gitea/main 1312d9c626; 표지A·LG outcome human
-- **2026-05-19T01:32:11Z** — OpenData327 Prep 자동재실행: gates/PDF/BCD merge PASS, 표지A·포털 human
-- **2026-05-19T01:06:15Z** — OpenData327: prep+merge BCD PDF·readiness JSON·internal push
-- **2026-05-19T01:04:29Z** — gitea/main merge dev OK; ensemble v2 best nb0.4/conf0.08 lens 0.556; post_release promotion_push exit2
-- **2026-05-19T01:02:21Z** — B-track post-release: release READY, live 별도, 30d v1 56.7% research
-- **2026-05-19T01:00:26Z** — wave5 done; hybrid180d 50%; nbps2.0 sweep applied; lock approved
-- **2026-05-19T00:58:51Z** — OpenData 327: B+C+D PDF 병합 완료, 표지(A)만 수동
-- **2026-05-19T00:30:08Z** — OpenData 327: gates PASS, Part B/C PDF 재출력(§4-1), 체인 스크립트 추가
-- **2026-05-19T00:27:53Z** — LinkedIn B2B: 주간 Task 등록+초안 재생성(차트)+페르소나·CONSTITUTION
-- **2026-05-19T00:27:53Z** — wave5+gates: combined_all_passed=true streak 1/5; lock restored approved
-- **2026-05-18T23:15:51Z** — LinkedIn B2B v1: CI+bundle+weekly chain PASS; marketing-copy 면책 오탐 수정
-- **2026-05-18T23:15:36Z** — B-track autopilot+expansion hybrid+P1.5 shadow+post-release; lock=approved; live OFF
-- **2026-05-18T23:12:35Z** — 병렬: B nbps 3.5 sweep+ensemble v2 WF; TRACK_C/IR counsel-cleared; gitea merge dry-run OK
-- **2026-05-18T23:10:31Z** — B-track post-release: release READY, live 별도, 30d v1 56.7% research
-- **2026-05-18T23:06:03Z** — RQ-019 CLOSED: counsel COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY, checklist 7, smoke 36 pass
-- **2026-05-18T22:51:43Z** — B-track post-release: release READY, live 별도, 30d v1 56.7% research
-- **2026-05-18T22:48:13Z** — B-track post-release: release READY, live 별도, 30d v1 56.7% research
-- **2026-05-18T22:46:38Z** — Track C·CENTRAL 9장 IR·RQ-019·장전 08:05-42 커밋 완료 (34f4cd178a)
-- **2026-05-18T22:45:12Z** — Track C·CENTRAL 9장 IR·RQ-019·장전 08:05-42·P0 inter-agent 경로 보강
+- **2026-05-21T19:35:04Z** — G12 ACTIVE_MODE·파수 LivePatrolDaily·O-P5 CLOSED·융합 MS/Oracle 이관 2026-05-22
+- **2026-05-21T19:30:44Z** — O-P29b 헤드라인 ACTIVE 57.3% 승격·SSOT latest 갱신·gates soft_passed
+- **2026-05-21T19:21:29Z** — G12 PM2 restart bitcoin-live-small-24h 완료: MAINNET trading enabled VPS online
+- **2026-05-21T19:17:17Z** — G12 지휘관 승인: live-enable 체인 exit0, GO ACTIVE_MODE, VPS sync; PM2 restart 미실행
+- **2026-05-21T18:41:17Z** — O-P28 헤드라인 승격: ACTIVE 53.5% min_conf 0.18 지휘관 승인; live/Track A 합선 없음
+- **2026-05-21T18:11:58Z** — CI/CD 2레일 고정: 일상 push-internal→gitea만(GitHub Actions 잠듦=정상); GitHub=명시 push/PR·미러 검열대; 본선=Windows Task+AthenaBundle 로컬 스캔; Gitea는 Git SSOT(Actions 없음)
+- **2026-05-21T17:23:07Z** — 14차: VPS payapp redeploy P0 940 prophecy closure 미커밋 payapp SSOT
+- **2026-05-21T17:20:37Z** — 13차: P0 940 B2B쇼룸헬스 TrackA GREEN CF체크리스트JSON
+- **2026-05-21T17:19:03Z** — 12차: Fact-Lock번들 G0-11 VPS diagnose OK B2B내부준비 P1+compression
+- **2026-05-21T16:57:33Z** — 11차: origin HTTPS payapp OK P1 S3S4 헬스 CF edge만 잔여
+- **2026-05-21T16:53:43Z** — 10차: nginx api origin OK CF edge block certbot fail triplet+prophecy closure
+- **2026-05-21T16:51:37Z** — O-P17 hardset v2: override fixture; v1 92.6% vs v2 heuristic 100% self-match; human gold 0 rows
+- **2026-05-21T16:43:55Z** — 9차 병렬: VPS-only 정렬 payapp PM2 :3847 health OK 공개=api nginx+CF 잔여
+- **2026-05-21T16:43:00Z** — O-P16 tier_v1: narrative boost blocked; gold_tags 78.7% tier_v1+0.08 macro; text_blind 4.3% unchanged
+- **2026-05-21T16:39:21Z** — 8차 상용화: pytest34 TrackA GREEN dashboard no1kmedi VPS=CF/no payapp PM2 outreach홀드
+- **2026-05-21T16:35:01Z** — O-P15: chronology bundle 0a/0b wired; era digest report; staging deploy; CI logos-chronology-era-blind-smoke
+- **2026-05-21T16:30:51Z** — O-P14 era blind eval: 47 hist gold_tags 61.7% text_blind 4.3%; hardset 27 text_blind 92.6%; modern_boost default 0.0; Run-LogosChronologyEraBlindEvalFull_v1
+- **2026-05-21T16:21:15Z** — 우선순위=상용화개발; outreach 홀드; P1 compression+promotion G0-11 pass
+- **2026-05-21T16:13:19Z** — Phase1 병렬 완료: stub31·parity2·hardening5·VPS triplet·TrackA GREEN·예언 closure_ok; LG CLOSED
+- **2026-05-21T16:08:59Z** — LG CLOSED(5/20전 reject). 전선=TrackC B2B팩+TrackA GREEN+인프라 alias OK
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -67,7 +79,7 @@
 | **어느 도메인에 어떤 쇼룸·허브 CTA 문구** | `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1**·**§1.1b** (표·CTA 초안); `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` §4.1 — **jema-ai.com Next 카피 원천(코드):** `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`; 공개 보드 권장 URL은 미니멀 HTML, `CONSTITUTION` Public Event Gateway 행 참조) |
 | 공개 이벤트 스키마·지연 | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`(bitcoin-trading `jemaai-cloud-mvp`) |
 | 로컬 검증 번들 | `scripts/verify_p0_constitution_gate_paths.ps1` → exit 0; 필요 시 `scripts/run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` |
-| 원격 반영 | 지휘관 네트워크·리모트만: `scripts/push-internal.ps1`, 쇼룸 VPS는 `scripts/sync_showroom_to_vps.ps1`(의도·SSH 확인 후) — 에이전트는 **명시 요청 시에만** 실행·실패 로그 보고 |
+| 원격 반영 | **토폴로지 SSOT:** `MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md` — compute **Hostinger VPS만** · edge **Cloudflare만**. Git: `push-internal.ps1`. VPS scp: `sync_showroom_to_vps.ps1`, `Sync-MkmlabRedesignToVps_v1.ps1` (`MKM_VPS_HOST`·`vps-mkmlife`는 표기만 다를 수 있음). **hPanel `public_html` 금지.** — 에이전트는 **명시 요청 시에만** |
 | **Google Gen AI · GCP 크레딧·벤치** | 과금 표면 **둘**: (A) Developer API 키 — (B) **Vertex AI** = `GOOGLE_CLOUD_PROJECT` + ADC → **프로젝트 Billing**(프로모션 SKU 범위는 콘솔 확인). 확인 `scripts/check_google_genai_readiness_v1.py check|smoke-vertex`; 채팅 스모크 `scripts/run_gemini_chat_smoke_v1.py --vertex`; 배치·멀티모달 `scripts/gemini_multimodal_batch.py [--vertex]`; **FACTS 벤치 완결(단일 플래그십·Vertex):** `scripts/run_facts_vertex_benchmark_v1.py`(기본 모델 `gemini-2.5-pro`) → 산출 `docs/final/artifacts/facts_vertex_benchmark_latest.json`·원클릭 `scripts/run_facts_vertex_benchmark_e2e_v1.ps1`. 키: `scripts/security_agent_manager.py`의 `resolve_gemini_developer_api_key` — env 우선·동명 DPAPI. **혼동 금지:** AI Studio 키만으로 “크레딧 자동 차감” 단정 금지. |
 | **LG·압축·41k·이론** | **먼저** 「**41k·압축·LG — 통합 이해 한 장**」절 + factcheck. **6문장 검증**·**고정 응답 틀**만 사용. `이론 0%/100%`·NL 당선확률 **금지**. SSOT: `MULTILENS_*`·`original_language_master_atoms_summary_latest.json`(132万→41775). |
 | **NotebookLM MCP 사용 턴** | (재발 방지 v1, 2026-05-09) **첫 호출 자가진단**: `notebooklm.get_health` 시도 → `tool_not_found`/timeout이면 **그 턴 안에 보고**하고 로컬 SSOT 폴백. 사용자에게 안내할 복구 순서: ① `scripts/check_notebooklm_mcp_prereqs.ps1` ② `scripts/repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12` ③ Cursor Settings→MCP `notebooklm` toggle off/on ④ **새 채팅** 시작(도구 카탈로그는 채팅 시작 시 결정) ⑤ 그 채팅에서 `setup_auth`→`get_health`. `.cursor/mcp.json`은 **`npx -y …@latest` 금지**·**node + 핀버전 직접 실행** 고정(`MKM_NOTEBOOKLM_MCP_PINNED_VERSION` env). 로그오프 자동 정리: `MKM_RepairNotebookLmMcpStale_OnLogoff` (`scripts/register_notebooklm_mcp_repair_logoff_task.ps1`). |
@@ -116,6 +128,16 @@
 ## VPS · 비트코인 본선 (혼동 방지 — 크로스 채팅 고정)
 
 > **목적:** 런북·예시 파일의 **플레이스홀더 이름**과, 특정 호스트에서 **실측으로 확인된 PM2 앱 이름**이 다르다. 에이전트는 **아래 표 + 대상 호스트의 `pm2 list`** 를 우선한다. 구현 경로·게이트는 여전히 `CONSTITUTION_*`·스크립트가 우선(Fact-Lock).
+
+**인프라 한 장:** `docs/final/MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md` — Hostinger VPS + Cloudflare만.
+
+**경로 한 장 (vps-mkmlife · 2026-05-14+ 실측, 머신 SSOT: `docs/final/VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json`)**
+
+| 역할 | 경로 | PM2 / 비고 |
+|------|------|------------|
+| **본선 24h 실매매 (현재)** | `/opt/mkm-destiny-ai-41e38ec6` | `bitcoin-live-small-24h` → `projects/bitcoin-trading/start_live_trading.py` |
+| **레거시 단독 클론** | `/opt/bitcoin-trading-live` | 과거 PM2 cwd(2026-05-04). **지금 본선 배포 대상 아님** — 디스크에 남아 있을 수 있음 |
+| **랩·cron·ship 기본** | `/opt/mkm-lab-workspace-v2` | `ship_to_vps.ps1` 기본 `-VpsRepoPath`. **본선 PM2 cwd와 자동 동일 아님** |
 
 | 항목 | 고정 (읽는 순서) |
 |------|------------------|
@@ -217,6 +239,7 @@
 | 지문 | 한 줄 |
 |------|--------|
 | 3+1 | 파이프라인 층: **Seed·Label·Formula·Field** — 만물이론·단일 방정식 완성 **아님** (Fact-Lock). |
+| **세계관 v1** | Logos=말씀·초압축→만물; 역추론=신앙·해석; AI우주=창조 모방; 성경=경영프로그램·명리=우주통찰·사상=소우주·금화교역=변화심장 — `MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` |
 | 4D Seed | 순수 뼈대 `[S,L,K,M]` — 코드 4D와 Prism 논리 색인 혼동 금지. |
 | Field | **“지금이 어떤 판인가?”** — 레짐은 역사 고유명(IMF·리먼·IT버블·코로나 등), 안정/주의/위험만으로 끝내지 않음. |
 | 레짐 주·보 | **1차** `regime_map` 실물 **주** · **2차** 성경 매트릭스 **보** — 2차는 해설·리포트, **실전 트리거 금지**. |

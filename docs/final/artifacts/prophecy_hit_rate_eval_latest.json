@@ -1,22 +1,37 @@
 {
   "schema": "prophecy_hit_rate_eval_report_v2",
-  "generated_at_utc": "2026-05-14T21:30:04Z",
+  "generated_at_utc": "2026-05-21T19:28:01Z",
   "run_mode": "price",
   "status": "ok",
-  "zeroing_note": "price: directional match rate over provided rows.",
+  "zeroing_note": "Headline promotion: price_directional_hit_rate is ACTIVE (low-confidence rows skipped). price_directional_hit_rate_all is all scored rows including neutral/low-conf predictions.",
   "inputs": {
     "run_mode": "price",
-    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
-    "registry_glob": null
+    "score_json": "reports\\op29b_shadow\\btrack_prophecy_score_op29b_shadow.json",
+    "per_date_json": "reports\\op29b_shadow\\btrack_ensemble_per_date_directions_180d_op29b_gated.json",
+    "headline_instrument": "auto",
+    "min_confidence_active_gate": 0.18,
+    "score_abs_deadzone": 0.0
   },
   "metrics": {
-    "price_directional_hit_rate": 0.6,
-    "n_evaluated": 30,
-    "price_hits": 18
+    "price_directional_hit_rate": 0.572581,
+    "n_evaluated": 248,
+    "price_hits": 142,
+    "price_directional_hit_rate_all": 0.402778,
+    "n_evaluated_all": 360,
+    "price_hits_all": 145,
+    "coverage_active": 0.688889
+  },
+  "headline_promotion_v1": {
+    "lane": "op29b_dynamic_min018_v2",
+    "human_approved": true,
+    "prior_price_directional_hit_rate": 0.535354,
+    "delta_vs_prior": 0.037227,
+    "research_only_boundary": false,
+    "track_a_live_auto_merge": false
   },
   "sources": {
     "oracle_path": null,
     "registry_path": null,
-    "used_field": "best.unified_score_balanced (fallback: mean btc_balanced_accuracy_mean + kospi_balanced_accuracy_mean)"
+    "used_field": "op29b_dynamic_per_date_lens_v2_confidence_fusion"
   }
 }
