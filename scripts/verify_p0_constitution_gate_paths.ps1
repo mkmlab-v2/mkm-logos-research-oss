@@ -28,6 +28,7 @@ catch {
 # 2026-05-02: +4 myeongni jijangan LUT M1 (lut, schema, script, test).
 # 2026-05-05: JEMA_AI_DOMAIN_POINTER_V1.md (jema-ai.com 도메인 포인터; P0 존재 게이트).
 # 2026-05-05: MKM_DOMAIN_PORTFOLIO_POINTER_V1.md (도메인×역할×쇼룸 배치 §1.1; P0 존재 게이트).
+# 2026-05-21: MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md + .json (Hostinger VPS compute only; Cloudflare edge only).
 # 2026-05-05: TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md (Track C 상용·법무·IP 경계 SSOT; P0 존재 게이트).
 # 2026-05-05: PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md (대외 문서·홈·쇼룸 보안·IP 카피 체크리스트; P0 존재 게이트).
 # 2026-05-19: LinkedIn B2B draft queue v1 (local JSON queue; assemble/Gemini; no auto-publish; copy guard).
@@ -64,6 +65,7 @@ catch {
 # 2026-04-28: $required trimmed to 171 existing paths (weather triplet, eval_filter_lift,
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 # 2026-05-16: saju_birth_resolver_v1 + MANSE_PRECISION_RUNTIME_POINTER_V1 + pytest (intake fusion birth gate).
+# 2026-05-20: Logos graph-wire RAG PoC + v6 PoC link spec + commercial readiness (DF-P0-02; LO-CG-01).
 
 $ErrorActionPreference = "Stop"
 $required = @(
@@ -120,8 +122,13 @@ $required = @(
     "AGENTS.md",
     "docs\final\JEMA_AI_DOMAIN_POINTER_V1.md",
     "docs\final\MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
+    "docs\final\MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md",
+    "docs\final\MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.json",
     "docs\final\TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
     "docs\final\PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+    "docs\final\MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md",
+    "docs\final\MKM12_75_FORMULAS_SSOT_V1.md",
+    "docs\final\artifacts\mkm12_75_formulas_ssot_v1_latest.json",
     "docs\final\schemas\linkedin_b2b_queue_v1.schema.json",
     "data\marketing\linkedin_queue_v1.example.json",
     "data\marketing\marketing_content_queue_v1.example.json",
@@ -176,6 +183,10 @@ $required = @(
     "scripts\sync_notebooklm_sources_to_mkm_data_vault.ps1",
     "scripts\Sync-PrSasangPromotionMirror_v1.ps1",
     "scripts\run_multilens_v2_bridge_policy_snapshot.py",
+    "scripts\run_multilens_p1_production_chain.py",
+    "scripts\Run-MultilensP1ProductionChain.ps1",
+    "scripts\run_p1_efficiency_ab.py",
+    "scripts\report_p1_final_selection.py",
     "scripts\run_waiting_queue_monthly_check.ps1",
     "projects\bitcoin-trading\ops\windows-rehearsal\DAILY_EXECUTION_INSIGHT_BRIEF_TEMPLATE.md",
     "scripts\build_daily_execution_insight_brief_v1.py",
@@ -186,6 +197,10 @@ $required = @(
     "scripts\Invoke-AmsaengEosaGovernanceCycle.ps1",
     "scripts\Invoke-MkmSchedulerLaneMap_v1.ps1",
     "scripts\check_no1kmedi_internal_api_security_contract_v1.py",
+    "projects\no1kmedi\payapp-api\ecosystem.config.cjs",
+    "projects\no1kmedi\payapp-api\deploy-vps-local-llm.sh",
+    "projects\no1kmedi\payapp-api\diagnose-prod.mjs",
+    "scripts\deploy\linux\nginx-api.no1kmedi.com.snippet.conf",
     "scripts\Invoke-No1kmediInternalApiSecurityProbe_v1.ps1",
     "scripts\sign_public_event_gateway_get_hmac_v1.py",
     "tests\test_public_event_gateway_get_hmac_v1.py",
@@ -346,6 +361,33 @@ $required = @(
     "docs\final\schemas\patient_intake_fusion_draft_input_v1.schema.json",
     "tests\fixtures\patient_intake_fusion_draft_v1.example.json",
     "scripts\build_patient_intake_fusion_draft_v1.py",
+    "scripts\build_sasang_boming_jiju_clinical_lens_pack_v1.py",
+    "scripts\core\sasang_boming_jiju_clinical_lens_v1.py",
+    "docs\final\schemas\sasang_boming_jiju_clinical_lens_pack_v1.schema.json",
+    "tests\test_sasang_boming_jiju_clinical_lens_v1.py",
+    "scripts\core\sasang_cross_ref_deep_link_v1.py",
+    "scripts\core\patient_intake_myeongni_sasang_cross_v1.py",
+    "tests\test_patient_intake_myeongni_sasang_cross_v1.py",
+    "scripts\harvest_scm_boming_jiju_from_ijeoma_chunk_table_v1.py",
+    "scripts\core\harvest_scm_boming_jiju_from_ijeoma_v1.py",
+    "docs\final\schemas\patient_intake_fusion_rationale_v1.schema.json",
+    "tests\test_harvest_scm_boming_jiju_from_ijeoma_v1.py",
+    "scripts\Run-PatientIntakeFusionBtrackChain_v1.ps1",
+    "scripts\Register-PatientIntakeFusionWeeklyTask_v1.ps1",
+    "scripts\Run-PatientIntakeFusionBtrackWeeklyOps_v1.ps1",
+    "scripts\build_patient_intake_fusion_all_constitutions_v1.py",
+    "scripts\Verify-PatientIntakeFusionWeeklyScheduledTask_v1.ps1",
+    "tests\test_patient_intake_trackc_dashboard_slice_v1.py",
+    "scripts\prune_scm_boming_jiju_ijeoma_harvest_lexicon_v1.py",
+    "scripts\core\prune_scm_boming_jiju_ijeoma_harvest_v1.py",
+    "tests\test_prune_scm_boming_jiju_ijeoma_harvest_v1.py",
+    "tests\test_showroom_patient_intake_slice_v1.py",
+    "scripts\validate_showroom_trust_slice_local_v1.py",
+    "tests\fixtures\patient_intake_soeum_clinical_v1.example.json",
+    "tests\fixtures\patient_intake_taeeum_clinical_v1.example.json",
+    "tests\fixtures\patient_intake_soyang_clinical_v1.example.json",
+    "tests\fixtures\patient_intake_taeyang_clinical_v1.example.json",
+    "tests\test_patient_intake_constitution_fixtures_v1.py",
     "scripts\saju_birth_resolver_v1.py",
     "docs\final\MANSE_PRECISION_RUNTIME_POINTER_V1.json",
     "scripts\Invoke-PatientIntakeFusionDraft_v1.ps1",
@@ -934,7 +976,39 @@ $required = @(
     "scripts\Register-TrackACommercializationDailyTask.ps1",
     "scripts\Verify-TrackACommercializationDailyScheduledTask_v1.ps1",
     "tests\fixtures\track_a_metering_log_smoke_v1.jsonl",
-    "docs\final\artifacts\MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json"
+    "docs\final\artifacts\MKM_AI_COMPRESSION_PILOT_REPORT_PATHS_V1.json",
+    "scripts\build_mkm_graph_wire_rag_poc_v1.py",
+    "tests\test_build_mkm_graph_wire_rag_poc_v1.py",
+    "docs\final\artifacts\logos_graph_wire_rag_poc_v1_latest.json",
+    "docs\final\artifacts\logos_observatory_v6_poc_link_spec_v1.json",
+    "scripts\build_logos_observatory_commercial_readiness_v1.py",
+    "scripts\Invoke-LogosObservatoryCommercializationBundle_v1.ps1",
+    "scripts\Invoke-LogosCommercializationParallel_v1.ps1",
+    "scripts\run_logos_graph_seed_chain_v1.py",
+    "scripts\load_verse_corpus_by_ids_v1.py",
+    "scripts\build_logos_graph_wire_profile_v1.py",
+    "scripts\Invoke-DataFabricP1Parallel_v1.ps1",
+    "tests\test_run_logos_graph_seed_chain_v1.py",
+    "tests\test_load_verse_corpus_by_ids_v1.py",
+    "docs\final\artifacts\logos_graph_seed_chain_v1_latest.json",
+    "docs\final\artifacts\logos_verse_selective_load_v1_latest.json",
+    "docs\final\artifacts\logos_graph_wire_profile_v1_latest.json",
+    "scripts\mkm_unified_asset_registry_v1.py",
+    "scripts\Invoke-DataFabricP1LaneF_v1.ps1",
+    "tests\test_mkm_unified_asset_registry_v1.py",
+    "docs\final\artifacts\mkm_unified_asset_registry_v1_latest.json",
+    "scripts\resolve_logos_atom_anchor_verse_pool_v1.py",
+    "scripts\Invoke-DataFabricP2Parallel_v1.ps1",
+    "tests\test_resolve_logos_atom_anchor_verse_pool_v1.py",
+    "docs\final\artifacts\atom_anchor_registry_v1.json",
+    "scripts\build_logos_canon_manuscript_fabric_v2.py",
+    "scripts\logos_canon_manuscript_fabric_v2.py",
+    "scripts\logos_wire_manuscript_route_v1.py",
+    "scripts\run_logos_canon_manuscript_fabric_v2_chain_v1.py",
+    "scripts\Invoke-DataFabricFusion_v1.ps1",
+    "tests\test_logos_canon_manuscript_fabric_v2.py",
+    "docs\final\artifacts\logos_canon_manuscript_fabric_v2_latest.json",
+    "data\logos\logos_variant_omission_bridge_edges_v2.jsonl"
 )
 
 $missing = @()
