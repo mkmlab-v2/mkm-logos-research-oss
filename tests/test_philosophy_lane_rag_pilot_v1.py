@@ -65,6 +65,43 @@ def test_philosophy_lane_schema_ok_without_sqlite() -> None:
     assert isinstance(doc.get("blocks"), list)
 
 
+def test_philosophy_lane_structured_bilingual_hybrid_dual() -> None:
+    ws = Path(__file__).resolve().parents[1]
+    st_sqlite = ws / "reports/constitution/btrack_pilot/logos_vector_index_ann_lite_st_u_v1.sqlite"
+    if not st_sqlite.is_file():
+        return
+    script = ws / "scripts/philosophy_lane_rag_pilot_v1.py"
+    out = ws / "reports/constitution/btrack_pilot/_test_philosophy_lane_structured_hybrid.json"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(script),
+            "--query-en",
+            "covenant stability under crisis",
+            "--query-ko",
+            "위기 가운데 언약의 안정과 신실",
+            "--rag-lane",
+            "hybrid_dual",
+            "--hybrid-style",
+            "dual_embed_mean",
+            "--out",
+            str(out),
+        ],
+        cwd=str(ws),
+        capture_output=True,
+        text=True,
+        timeout=180,
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    route = doc.get("rag_query_route") or {}
+    assert route.get("structured_bilingual") is True
+    assert route.get("hybrid_style") == "dual_embed_mean"
+    assert doc.get("version") == "1.2.0"
+    ann = doc.get("ann_lite_query") or {}
+    assert isinstance(ann.get("top_k"), list) and ann["top_k"]
+
+
 def test_philosophy_lane_custom_forbidden_config() -> None:
     ws = Path(__file__).resolve().parents[1]
     script = ws / "scripts" / "philosophy_lane_rag_pilot_v1.py"
