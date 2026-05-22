@@ -5,6 +5,12 @@ import type {
   PatientConsultInputV1,
   SasangType,
 } from "@/lib/cdss-contract";
+import {
+  azureOpenAiChatCompletionsUrl,
+  azureOpenAiDeploymentModel,
+  getAzureOpenAiConfig,
+  isAzureOpenAiConfigured,
+} from "@/lib/azure-openai-config";
 import { looksLikeIsoInstant } from "@/lib/global-birth-input";
 import { promises as fs } from "node:fs";
 import path from "node:path";
@@ -377,7 +383,15 @@ function safeJsonParse(text: string): Record<string, unknown> | null {
 }
 
 /** Dedicated CDSS endpoint, OpenRouter, or Gemini(OpenAI-compatible) in that order. */
-function resolveCdssOpenAiCredentials(): { apiBase: string; apiKey: string } | null {
+function resolveCdssOpenAiCredentials(): { apiBase: string; apiKey: string; azure?: boolean } | null {
+  const azureCfg = getAzureOpenAiConfig();
+  if (azureCfg) {
+    return {
+      apiBase: azureOpenAiChatCompletionsUrl(azureCfg),
+      apiKey: azureCfg.apiKey,
+      azure: true,
+    };
+  }
   const dedicatedBase = process.env.CDSS_LLM_API_BASE_URL?.trim();
   const dedicatedKey = process.env.CDSS_LLM_API_KEY?.trim();
   if (dedicatedBase && dedicatedKey) {
@@ -456,14 +470,21 @@ async function callOpenAiCompatibleModel(model: string, input: PatientConsultInp
   try {
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
     };
+    if (creds.azure) {
+      headers["api-key"] = apiKey;
+    } else {
+      headers.Authorization = `Bearer ${apiKey}`;
+    }
     if (apiBase.includes("openrouter.ai")) {
       headers["HTTP-Referer"] = process.env.OPENROUTER_HTTP_REFERER?.trim() || "https://jema-ai.com";
       headers["X-Title"] = process.env.OPENROUTER_APP_NAME?.trim() || "jema-ai.com CDSS";
     }
 
-    const res = await fetch(`${apiBase.replace(/\/$/, "")}/chat/completions`, {
+    const fetchUrl = creds.azure
+      ? apiBase
+      : `${apiBase.replace(/\/$/, "")}/chat/completions`;
+    const res = await fetch(fetchUrl, {
       method: "POST",
       headers,
       signal: controller.signal,
@@ -497,12 +518,13 @@ type ReasoningRouterOutcome =
   | { ok: false; reason: CdssGenerationReason };
 
 async function generateReasoningWithRouter(input: PatientConsultInputV1): Promise<ReasoningRouterOutcome> {
-  const primaryModel =
-    process.env.CDSS_LLM_PRIMARY_MODEL?.trim() ||
-    process.env.CDSS_GEMINI_MODEL?.trim() ||
-    process.env.GEMINI_MODEL?.trim() ||
-    process.env.OPENROUTER_MODEL?.trim() ||
-    "";
+  const primaryModel = isAzureOpenAiConfigured()
+    ? azureOpenAiDeploymentModel()
+    : process.env.CDSS_LLM_PRIMARY_MODEL?.trim() ||
+      process.env.CDSS_GEMINI_MODEL?.trim() ||
+      process.env.GEMINI_MODEL?.trim() ||
+      process.env.OPENROUTER_MODEL?.trim() ||
+      "";
   const fallbackModel = process.env.CDSS_LLM_FALLBACK_MODEL?.trim() || "";
   const escalationModel = process.env.CDSS_LLM_ESCALATION_MODEL?.trim() || "";
   const enabled = (process.env.CDSS_LLM_ENABLED || "false").toLowerCase() === "true";

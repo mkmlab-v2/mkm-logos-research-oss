@@ -1,8 +1,17 @@
 /**
- * Clinical text generation: OpenRouter (optional) + Ollama-compatible local LLM (optional).
- * Default routing: JEMA_AI_LLM_PRIORITY=auto|openrouter_first|local_first|openrouter_only|local_only
- * Guardian public chat: GUARDIAN_CHAT_LLM_PRIORITY (optional); when unset and both backends exist, local_first.
+ * Clinical text generation: Azure OpenAI (startup credits, 1st) + Gemini + OpenRouter + local Ollama.
+ * Global: MKM_LLM_PRIORITY (default azure_first when AZURE_OPENAI_* configured).
+ * Per-site: JEMA_AI_LLM_PRIORITY, GUARDIAN_CHAT_LLM_PRIORITY.
  */
+import {
+  azureOpenAiChatCompletionsUrl,
+  azureOpenAiDeploymentModel,
+  azureOpenAiFetchTimeoutMs,
+  getAzureOpenAiConfig,
+  isAzureOpenAiConfigured,
+  mkmLlmDefaultsToAzureFirst,
+  resolveMkmLlmPriorityRaw,
+} from "./azure-openai-config";
 
 export type GenerateClinicalOptions = {
   prompt: string;
@@ -25,6 +34,8 @@ export type GenerateClinicalResult = {
 
 export type LlmPriority =
   | "auto"
+  | "azure_first"
+  | "azure_only"
   | "gemini_first"
   | "openrouter_first"
   | "local_first"
@@ -106,6 +117,8 @@ function parseLlmPriorityValue(raw: string | undefined): LlmPriority | null {
   if (!p) return null;
   if (p === "auto") return "auto";
   if (
+    p === "azure_first" ||
+    p === "azure_only" ||
     p === "gemini_first" ||
     p === "local_first" ||
     p === "openrouter_first" ||
@@ -118,8 +131,13 @@ function parseLlmPriorityValue(raw: string | undefined): LlmPriority | null {
   return null;
 }
 
+function defaultLlmPriority(): LlmPriority {
+  if (mkmLlmDefaultsToAzureFirst()) return "azure_first";
+  return "auto";
+}
+
 function llmPriority(): LlmPriority {
-  return parseLlmPriorityValue(process.env.JEMA_AI_LLM_PRIORITY) || "auto";
+  return parseLlmPriorityValue(resolveMkmLlmPriorityRaw()) || defaultLlmPriority();
 }
 
 /** Effective priority for generateClinicalText second argument. */
@@ -127,12 +145,6 @@ export function resolveLlmPriorityForCaller(caller: GenerateClinicalCaller): Llm
   if (caller === "default") return llmPriority();
   const explicit = parseLlmPriorityValue(process.env.GUARDIAN_CHAT_LLM_PRIORITY);
   if (explicit) return explicit;
-  const geminiKey = getGeminiApiKey();
-  const localUrl = deriveLocalLlmUrl();
-  const key = getOpenRouterApiKey();
-  if (geminiKey) return "gemini_first";
-  if (localUrl && key) return "local_first";
-  if (localUrl) return "local_only";
   return llmPriority();
 }
 
@@ -140,6 +152,50 @@ function localTimeoutMs(): number {
   const v = parseInt(process.env.LOCAL_LLM_TIMEOUT_MS || process.env.LOCAL_LLM_FETCH_TIMEOUT_MS || "", 10);
   if (Number.isFinite(v) && v >= 3000) return Math.min(v, 600000);
   return 120000;
+}
+
+async function fetchAzureOpenAi(opts: GenerateClinicalOptions): Promise<GenerateClinicalResult> {
+  const cfg = getAzureOpenAiConfig();
+  if (!cfg) {
+    return buildFallback("Azure OpenAI가 설정되어 있지 않습니다.");
+  }
+  const model = azureOpenAiDeploymentModel(cfg);
+  const url = azureOpenAiChatCompletionsUrl(cfg);
+  const body = {
+    model,
+    messages: [
+      { role: "system", content: opts.systemInstruction },
+      { role: "user", content: opts.prompt },
+    ],
+    temperature: opts.temperature ?? 0.7,
+    top_p: opts.topP ?? 0.95,
+    max_tokens: opts.maxOutputTokens ?? 1024,
+  };
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), azureOpenAiFetchTimeoutMs());
+  try {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": cfg.apiKey,
+      },
+      body: JSON.stringify(body),
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      return buildFallback(`Azure OpenAI 응답 준비 중입니다. (${res.status})`);
+    }
+    const data = (await res.json()) as OpenAiCompatResponse;
+    const text = data.choices?.[0]?.message?.content?.trim();
+    if (!text) return buildFallback();
+    return { text, provider: `azure:${model}`, fallbackUsed: false };
+  } catch {
+    return buildFallback("Azure OpenAI 호출에 실패했습니다.");
+  } finally {
+    clearTimeout(t);
+  }
 }
 
 async function fetchOpenRouter(opts: GenerateClinicalOptions): Promise<GenerateClinicalResult> {
@@ -282,6 +338,17 @@ async function fetchLocalOpenAiCompatible(opts: GenerateClinicalOptions): Promis
   }
 }
 
+/** Try backends in order; first non-fallback wins. */
+async function chainBackends(
+  order: Array<() => Promise<GenerateClinicalResult>>,
+): Promise<GenerateClinicalResult> {
+  for (const fn of order) {
+    const r = await fn();
+    if (!r.fallbackUsed) return r;
+  }
+  return buildFallback();
+}
+
 async function generateClinicalTextWithPriority(
   opts: GenerateClinicalOptions,
   p: LlmPriority,
@@ -289,6 +356,18 @@ async function generateClinicalTextWithPriority(
   const key = getOpenRouterApiKey();
   const geminiKey = getGeminiApiKey();
   const localUrl = deriveLocalLlmUrl();
+  const azureOk = isAzureOpenAiConfigured();
+
+  if (p === "azure_only") {
+    if (!azureOk) {
+      return {
+        text: "AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_API_KEY, AZURE_OPENAI_DEPLOYMENT을 설정해 주세요.",
+        provider: "stub",
+        fallbackUsed: true,
+      };
+    }
+    return fetchAzureOpenAi(opts);
+  }
 
   if (p === "local_only") {
     return fetchLocalOpenAiCompatible(opts);
@@ -316,70 +395,62 @@ async function generateClinicalTextWithPriority(
     return fetchOpenRouter(opts);
   }
 
+  if (p === "azure_first") {
+    const order: Array<() => Promise<GenerateClinicalResult>> = [];
+    if (azureOk) order.push(() => fetchAzureOpenAi(opts));
+    if (geminiKey) order.push(() => fetchGeminiOpenAiCompatible(opts));
+    if (key) order.push(() => fetchOpenRouter(opts));
+    if (localUrl) order.push(() => fetchLocalOpenAiCompatible(opts));
+    if (order.length === 0) {
+      return {
+        text: "생성형 AI가 연결되어 있지 않습니다. Azure OpenAI 또는 폴백 키를 설정해 주세요.",
+        provider: "stub",
+        fallbackUsed: true,
+      };
+    }
+    return chainBackends(order);
+  }
+
   if (p === "gemini_first") {
-    if (geminiKey) {
-      const g = await fetchGeminiOpenAiCompatible(opts);
-      if (!g.fallbackUsed) return g;
-    }
-    if (key) {
-      const or = await fetchOpenRouter(opts);
-      if (!or.fallbackUsed) return or;
-    }
-    if (localUrl) {
-      const loc = await fetchLocalOpenAiCompatible(opts);
-      if (!loc.fallbackUsed) return loc;
-    }
-    if (geminiKey) return fetchGeminiOpenAiCompatible(opts);
-    if (key) return fetchOpenRouter(opts);
-    return fetchLocalOpenAiCompatible(opts);
+    const order: Array<() => Promise<GenerateClinicalResult>> = [];
+    if (geminiKey) order.push(() => fetchGeminiOpenAiCompatible(opts));
+    if (key) order.push(() => fetchOpenRouter(opts));
+    if (localUrl) order.push(() => fetchLocalOpenAiCompatible(opts));
+    if (azureOk) order.push(() => fetchAzureOpenAi(opts));
+    return chainBackends(order.length ? order : [() => buildFallback()]);
   }
 
   if (p === "local_first") {
-    if (localUrl) {
-      const loc = await fetchLocalOpenAiCompatible(opts);
-      if (!loc.fallbackUsed) return loc;
-    }
-    if (key) {
-      const or = await fetchOpenRouter(opts);
-      if (!or.fallbackUsed) return or;
-    }
-    return localUrl ? fetchLocalOpenAiCompatible(opts) : fetchOpenRouter(opts);
+    const order: Array<() => Promise<GenerateClinicalResult>> = [];
+    if (localUrl) order.push(() => fetchLocalOpenAiCompatible(opts));
+    if (azureOk) order.push(() => fetchAzureOpenAi(opts));
+    if (key) order.push(() => fetchOpenRouter(opts));
+    return chainBackends(order.length ? order : [() => fetchOpenRouter(opts)]);
   }
 
   if (p === "openrouter_first") {
-    if (key) {
-      const or = await fetchOpenRouter(opts);
-      if (!or.fallbackUsed) return or;
-    }
-    if (localUrl) {
-      const loc = await fetchLocalOpenAiCompatible(opts);
-      if (!loc.fallbackUsed) return loc;
-    }
-    return key ? fetchOpenRouter(opts) : fetchLocalOpenAiCompatible(opts);
+    const order: Array<() => Promise<GenerateClinicalResult>> = [];
+    if (key) order.push(() => fetchOpenRouter(opts));
+    if (azureOk) order.push(() => fetchAzureOpenAi(opts));
+    if (localUrl) order.push(() => fetchLocalOpenAiCompatible(opts));
+    return chainBackends(order.length ? order : [() => fetchLocalOpenAiCompatible(opts)]);
   }
 
-  // auto: Gemini 우선, 다음 OpenRouter, 이후 로컬
-  if (geminiKey) {
-    const g = await fetchGeminiOpenAiCompatible(opts);
-    if (!g.fallbackUsed) return g;
-  }
-  if (key) {
-    const or = await fetchOpenRouter(opts);
-    if (!or.fallbackUsed) return or;
-  }
-  if (localUrl) {
-    const loc = await fetchLocalOpenAiCompatible(opts);
-    if (!loc.fallbackUsed) return loc;
-  }
-  if (!key && !localUrl) {
+  // auto: Azure(설정 시) → Gemini → OpenRouter → 로컬
+  const order: Array<() => Promise<GenerateClinicalResult>> = [];
+  if (azureOk) order.push(() => fetchAzureOpenAi(opts));
+  if (geminiKey) order.push(() => fetchGeminiOpenAiCompatible(opts));
+  if (key) order.push(() => fetchOpenRouter(opts));
+  if (localUrl) order.push(() => fetchLocalOpenAiCompatible(opts));
+  if (order.length === 0) {
     return {
       text:
-        "생성형 AI가 연결되어 있지 않습니다. GEMINI_API_KEY(또는 GOOGLE_API_KEY), OPENROUTER_API_KEY, OLLAMA_HOST 중 하나를 설정해 주세요.",
+        "생성형 AI가 연결되어 있지 않습니다. AZURE_OPENAI_* 또는 GEMINI/OPENROUTER/OLLAMA_HOST를 설정해 주세요.",
       provider: "stub",
       fallbackUsed: true,
     };
   }
-  return buildFallback();
+  return chainBackends(order);
 }
 
 export async function generateClinicalText(

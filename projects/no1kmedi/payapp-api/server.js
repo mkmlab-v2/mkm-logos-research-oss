@@ -5,6 +5,13 @@ import fs from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
 import crypto from "crypto";
+import {
+  azureOpenAiChatCompletionsUrl,
+  azureOpenAiFetchTimeoutMs,
+  getAzureOpenAiConfig,
+  isAzureOpenAiConfigured,
+  mkmHybridUsesAzureFirst,
+} from "./lib/azure-openai.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const workspaceRootEnv = path.join(__dirname, "..", "..", "..", ".env");
@@ -79,7 +86,7 @@ function effectiveAiRouterMode(site_profile) {
     const m = String(process.env.MKMLIFE_AI_ROUTER_MODE || "")
       .trim()
       .toLowerCase();
-    if (m && ["n8n", "openrouter", "local", "hybrid"].includes(m)) return m;
+    if (m && ["n8n", "openrouter", "local", "hybrid", "azure"].includes(m)) return m;
   }
   return AI_ROUTER_MODE;
 }
@@ -92,6 +99,10 @@ function effectiveAiRouterMode(site_profile) {
 function pickModelForBackend(site_profile, requestedModel, backend) {
   const req = requestedModel && String(requestedModel).trim();
   if (req) return req;
+  if (backend === "azure") {
+    const m = String(process.env.AZURE_OPENAI_DEPLOYMENT || process.env.AZURE_OPENAI_DEPLOYMENT_NAME || "").trim();
+    if (m) return m;
+  }
   if (site_profile === "mkmlife") {
     if (backend === "openrouter") {
       const m = String(process.env.MKMLIFE_OPENROUTER_MODEL || "").trim();
@@ -105,6 +116,14 @@ function pickModelForBackend(site_profile, requestedModel, backend) {
   return "";
 }
 
+function resolveEffectiveAiRouterMode(site_profile) {
+  const global = String(process.env.MKM_LLM_PRIORITY || process.env.JEMA_AI_LLM_PRIORITY || "")
+    .trim()
+    .toLowerCase();
+  if (global === "azure_only") return "azure";
+  return effectiveAiRouterMode(site_profile);
+}
+
 function slugRouterError(e) {
   const msg = (e && e.message) || String(e || "error");
   return msg.replace(/\s+/g, "_").slice(0, 72);
@@ -112,10 +131,11 @@ function slugRouterError(e) {
 
 function hasAiBackendConfigured() {
   const m = AI_ROUTER_MODE;
+  if (m === "azure") return isAzureOpenAiConfigured();
   if (m === "n8n") return !!N8N_WEBHOOK_URL;
   if (m === "openrouter") return !!OPENROUTER_API_KEY;
   if (m === "local") return !!LOCAL_LLM_URL;
-  return !!(N8N_WEBHOOK_URL || LOCAL_LLM_URL || OPENROUTER_API_KEY);
+  return !!(isAzureOpenAiConfigured() || N8N_WEBHOOK_URL || LOCAL_LLM_URL || OPENROUTER_API_KEY);
 }
 
 /** n8n Webhook Request Contract — bump when breaking payload shape */
@@ -774,6 +794,32 @@ async function callLocalModel(messages, model) {
   return data?.choices?.[0]?.message?.content || data?.response || "";
 }
 
+async function callAzure(messages, model) {
+  const cfg = getAzureOpenAiConfig();
+  if (!cfg) throw new Error("AZURE_OPENAI_* is not configured");
+  const deployment = model || cfg.deployment;
+  const url = azureOpenAiChatCompletionsUrl(cfg);
+  const res = await fetchWithTimeout(
+    url,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "api-key": cfg.apiKey,
+      },
+      body: JSON.stringify({
+        model: deployment,
+        messages,
+        temperature: 0.3,
+      }),
+    },
+    azureOpenAiFetchTimeoutMs()
+  );
+  if (!res.ok) throw new Error(`Azure OpenAI error: ${res.status}`);
+  const data = await res.json();
+  return data?.choices?.[0]?.message?.content || "";
+}
+
 async function callN8n({
   question,
   category,
@@ -856,6 +902,10 @@ async function retryJsonResponseWithProvider({
       reference_snippets: `${reference_snippets || ""}\n[retry_reason] ${reason || "json_contract_retry"}`.trim(),
     });
   }
+  if (provider === "azure") {
+    const azCfg = getAzureOpenAiConfig();
+    return callAzure(retryMessages, model || azCfg?.deployment);
+  }
   if (provider === "openrouter") return callOpenRouter(retryMessages, openrouterModel || model);
   if (provider === "local") return callLocalModel(retryMessages, localModel || model);
   return "";
@@ -876,17 +926,29 @@ function sendRouterStatus(_req, res) {
   const localConfigured = !!LOCAL_LLM_URL;
   const n8nConfigured = !!N8N_WEBHOOK_URL;
   const openrouterConfigured = !!OPENROUTER_API_KEY;
+  const azureConfigured = isAzureOpenAiConfigured();
+  const azureCfg = getAzureOpenAiConfig();
   const urlFromOllamaHost = !String(process.env.LOCAL_LLM_URL || "").trim() && !!String(process.env.OLLAMA_HOST || "").trim();
   res.json({
     success: true,
     ai_router_mode: AI_ROUTER_MODE,
+    mkm_llm_priority: String(process.env.MKM_LLM_PRIORITY || process.env.JEMA_AI_LLM_PRIORITY || "").trim() || null,
+    hybrid_azure_first: mkmHybridUsesAzureFirst(),
     ai_chat_guards: AI_CHAT_GUARDS,
     has_backend: hasAiBackendConfigured(),
     backends: {
+      azure: azureConfigured,
       n8n: n8nConfigured,
       local: localConfigured,
       openrouter: openrouterConfigured,
     },
+    azure_openai: azureCfg
+      ? {
+          endpoint: azureCfg.endpoint,
+          deployment: azureCfg.deployment,
+          api_version: azureCfg.apiVersion,
+        }
+      : null,
     local_llm_url: localConfigured ? LOCAL_LLM_URL : null,
     local_llm_url_derived_from_ollama_host: urlFromOllamaHost,
     local_llm_default_model: LOCAL_LLM_DEFAULT_MODEL,
@@ -1097,7 +1159,7 @@ app.post("/api/ai/chat", async (req, res) => {
       ];
     }
 
-    const mode = effectiveAiRouterMode(site_profile);
+    const mode = resolveEffectiveAiRouterMode(site_profile);
     const router_trace = [];
     const orModel = pickModelForBackend(site_profile, model, "openrouter") || OPENROUTER_MODEL;
     const locModel = pickModelForBackend(site_profile, model, "local") || LOCAL_LLM_DEFAULT_MODEL;
@@ -1127,6 +1189,13 @@ app.post("/api/ai/chat", async (req, res) => {
         router_trace.push(e?.name === "AbortError" ? "n8n:timeout" : `n8n:err:${slugRouterError(e)}`);
         throw e;
       }
+    } else if (mode === "azure") {
+      router_trace.push("route:azure_only");
+      const azCfg = getAzureOpenAiConfig();
+      const azModel = pickModelForBackend(site_profile, model, "azure") || azCfg?.deployment;
+      answer = await callAzure(safeMessages, azModel);
+      provider = "azure";
+      router_trace.push("azure:ok");
     } else if (mode === "openrouter") {
       router_trace.push("route:openrouter_only");
       answer = await callOpenRouter(safeMessages, orModel);
@@ -1138,38 +1207,52 @@ app.post("/api/ai/chat", async (req, res) => {
       provider = "local";
       router_trace.push("local:ok");
     } else {
-      // hybrid: n8n -> local -> openrouter (never call OpenRouter without a key)
+      // hybrid: azure (MKM default) -> n8n -> local -> openrouter
       router_trace.push("route:hybrid");
-      try {
-        router_trace.push("n8n:start");
-        answer = await callN8n(n8nArgs());
-        provider = "n8n";
-        router_trace.push("n8n:ok");
-      } catch (e) {
-        router_trace.push(e?.name === "AbortError" ? "n8n:timeout" : `n8n:err:${slugRouterError(e)}`);
+      if (mkmHybridUsesAzureFirst() && isAzureOpenAiConfigured()) {
         try {
-          router_trace.push("local:start");
-          answer = await callLocalModel(safeMessages, locModel);
-          provider = "local";
-          router_trace.push("local:ok");
-        } catch (e2) {
-          router_trace.push(`local:err:${slugRouterError(e2)}`);
-          if (!OPENROUTER_API_KEY) {
-            return res.status(503).json({
-              success: false,
-              error: "ai_backend_unconfigured",
-              ai_router_mode: "hybrid",
-              ai_router_mode_effective: mode,
-              site_profile,
-              router_trace,
-              hint:
-                "n8n/local failed or were not configured. Set OPENROUTER_API_KEY, or fix N8N_WEBHOOK_URL / LOCAL_LLM_URL.",
-            });
+          router_trace.push("azure:start");
+          const azCfg = getAzureOpenAiConfig();
+          const azModel = pickModelForBackend(site_profile, model, "azure") || azCfg?.deployment;
+          answer = await callAzure(safeMessages, azModel);
+          provider = "azure";
+          router_trace.push("azure:ok");
+        } catch (e) {
+          router_trace.push(`azure:err:${slugRouterError(e)}`);
+        }
+      }
+      if (!answer) {
+        try {
+          router_trace.push("n8n:start");
+          answer = await callN8n(n8nArgs());
+          provider = "n8n";
+          router_trace.push("n8n:ok");
+        } catch (e) {
+          router_trace.push(e?.name === "AbortError" ? "n8n:timeout" : `n8n:err:${slugRouterError(e)}`);
+          try {
+            router_trace.push("local:start");
+            answer = await callLocalModel(safeMessages, locModel);
+            provider = "local";
+            router_trace.push("local:ok");
+          } catch (e2) {
+            router_trace.push(`local:err:${slugRouterError(e2)}`);
+            if (!OPENROUTER_API_KEY) {
+              return res.status(503).json({
+                success: false,
+                error: "ai_backend_unconfigured",
+                ai_router_mode: "hybrid",
+                ai_router_mode_effective: mode,
+                site_profile,
+                router_trace,
+                hint:
+                  "azure/n8n/local failed or were not configured. Set AZURE_OPENAI_*, OPENROUTER_API_KEY, or fix N8N/LOCAL_LLM.",
+              });
+            }
+            router_trace.push("openrouter:start");
+            answer = await callOpenRouter(safeMessages, orModel);
+            provider = "openrouter";
+            router_trace.push("openrouter:ok");
           }
-          router_trace.push("openrouter:start");
-          answer = await callOpenRouter(safeMessages, orModel);
-          provider = "openrouter";
-          router_trace.push("openrouter:ok");
         }
       }
     }
