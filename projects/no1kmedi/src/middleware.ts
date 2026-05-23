@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 const FARM_HOSTS = new Set(["farm.jema-ai.com", "www.farm.jema-ai.com"]);
+const FARM_CANONICAL_ORIGIN = "https://farm.jema-ai.com";
+/** Hub hosts: /smartfarm on apex/app is redirected to farm.jema-ai.com (B2B canonical). */
+const JEMA_HUB_HOSTS = new Set([
+  "jema-ai.com",
+  "www.jema-ai.com",
+  "app.jema-ai.com",
+  "www.app.jema-ai.com",
+]);
 /** O-P5: www.jema12.com/studio → jema-ai.com/studio → app.jema-ai.com/studio (CF) → oracle v6 */
 const STUDIO_ORACLE_V6_URL =
   "https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1";
@@ -25,6 +33,17 @@ export function middleware(request: NextRequest) {
 
   if (isStudioPath(pathname)) {
     return NextResponse.redirect(STUDIO_ORACLE_V6_URL, 301);
+  }
+
+  if (
+    JEMA_HUB_HOSTS.has(host) &&
+    (pathname === "/smartfarm" || pathname.startsWith("/smartfarm/"))
+  ) {
+    const suffix =
+      pathname === "/smartfarm" || pathname === "/smartfarm/"
+        ? "/"
+        : pathname.replace(/^\/smartfarm/, "");
+    return NextResponse.redirect(`${FARM_CANONICAL_ORIGIN}${suffix}`, 308);
   }
 
   if (!host) {

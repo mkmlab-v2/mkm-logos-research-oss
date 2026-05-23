@@ -23,17 +23,37 @@ const requiredPathChecks = [
   "nav.safety",
   "nav.workflow",
   "nav.contact",
+  "nav.service_developer",
+  "nav.toggle_label",
+  "nav.toggle_open_aria",
+  "nav.toggle_close_aria",
+  "nav.main_aria_label",
   "links.consumer",
+  "links.developer",
   "links.clinician",
   "links.reception",
   "links.contact",
+  "homepage_a11y.skip_to_main",
   "hero.eyebrow",
   "hero.title",
+  "hero.proof_aria_label",
   "hero.subtitle",
   "hero.cta_primary",
   "hero.cta_secondary",
   "hero.cta_tertiary",
   "hero.cta_quaternary",
+  "governance_flow.title",
+  "governance_flow.section_lead",
+  "why_mkm_ai.title",
+  "why_mkm_ai.section_lead",
+  "why_mkm_ai.disclaimer",
+  "quick_start.title",
+  "quick_start.section_lead",
+  "basic_health_chat.title",
+  "basic_health_chat.section_lead",
+  "basic_health_chat.assistant_greeting",
+  "basic_health_chat.chat.error_message",
+  "nav.governance",
   "trust.note",
   "public_solution.title",
   "public_solution.section_lead",
@@ -41,6 +61,13 @@ const requiredPathChecks = [
   "clinic_o2o.section_lead",
   "landing_flow.title",
   "contact.title",
+  "paddle_checkout.button_idle",
+  "paddle_checkout.hint",
+  "paddle_checkout.errors.missing_env",
+  "free_validation_lead.title",
+  "free_validation_lead.section_lead",
+  "free_validation_lead.success",
+  "free_validation_lead.errors.required_fields",
   "footer.email",
 ];
 
@@ -68,6 +95,63 @@ try {
   for (const p of requiredPathChecks) {
     assert(isNonEmptyString(getByPath(parsed, p)), `Missing or empty required field: ${p}`, errors);
   }
+
+  assert(isNonEmptyString(parsed.governance_flow?.title), "governance_flow.title is required", errors);
+  assert(
+    Array.isArray(parsed.governance_flow?.field_items) && parsed.governance_flow.field_items.length >= 1,
+    "governance_flow.field_items must contain at least 1 item",
+    errors,
+  );
+  assert(
+    Array.isArray(parsed.governance_flow?.lens_items) && parsed.governance_flow.lens_items.length >= 3,
+    "governance_flow.lens_items must contain at least 3 items",
+    errors,
+  );
+  assert(
+    /^https:\/\//.test(String(parsed.governance_flow?.figjam_url ?? "")),
+    "governance_flow.figjam_url must be https",
+    errors,
+  );
+
+  assert(
+    Array.isArray(parsed.why_mkm_ai?.cards) && parsed.why_mkm_ai.cards.length >= 3,
+    "why_mkm_ai.cards must contain at least 3 items",
+    errors,
+  );
+  assert(
+    Array.isArray(parsed.quick_start?.cards) && parsed.quick_start.cards.length >= 3,
+    "quick_start.cards must contain at least 3 items",
+    errors,
+  );
+  assert(
+    Array.isArray(parsed.quick_start?.ctas) && parsed.quick_start.ctas.length >= 2,
+    "quick_start.ctas must contain at least 2 items",
+    errors,
+  );
+  assert(
+    Array.isArray(parsed.home_clinic_flow?.steps) && parsed.home_clinic_flow.steps.length >= 4,
+    "home_clinic_flow.steps must contain at least 4 items",
+    errors,
+  );
+
+  for (const ctaLayout of ["marketing", "workspace"]) {
+    const block = parsed.basic_health_chat?.ctas?.[ctaLayout];
+    assert(block != null, `basic_health_chat.ctas.${ctaLayout} is required`, errors);
+    for (const side of ["primary", "secondary"]) {
+      assert(isNonEmptyString(block?.[side]?.label), `basic_health_chat.ctas.${ctaLayout}.${side}.label is required`, errors);
+      assert(
+        validateLinkTarget(block?.[side]?.href),
+        `basic_health_chat.ctas.${ctaLayout}.${side}.href must start with '/' or '#'`,
+        errors,
+      );
+    }
+  }
+
+  assert(
+    Array.isArray(parsed.hero?.proof_items) && parsed.hero.proof_items.length >= 3,
+    "hero.proof_items must contain at least 3 items",
+    errors,
+  );
 
   assert(Array.isArray(parsed.hero?.role_cards) && parsed.hero.role_cards.length >= 2, "hero.role_cards must contain at least 2 cards", errors);
   if (Array.isArray(parsed.hero?.role_cards)) {
@@ -109,7 +193,7 @@ try {
     assert(isNonEmptyString(hub?.sublabel), `hub_links.${hubKey}.sublabel is required`, errors);
   }
 
-  ["consumer", "clinician", "reception", "contact"].forEach((key) => {
+  ["consumer", "clinician", "reception", "developer", "contact"].forEach((key) => {
     assert(validateLinkTarget(parsed.links?.[key]), `links.${key} must start with '/' or '#'`, errors);
   });
   if (parsed.links?.enterprise != null) {
@@ -123,6 +207,8 @@ try {
       "seo.description",
       "hero.title",
       "hero.subtitle",
+      "nav.main_aria_label",
+      "nav.principles_aria_label",
       "pillars.title",
       "breadth.title",
       "proof.title",

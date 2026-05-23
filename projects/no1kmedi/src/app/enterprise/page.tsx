@@ -31,14 +31,14 @@ export default function EnterprisePage() {
   return (
     <div className={`${presetClass} enterprise-page`}>
       <a className="skip" href="#main">
-        본문으로 건너뛰기
+        {c.homepage_a11y.skip_to_main}
       </a>
       <header className="site-header enterprise-header">
         <div className="header-inner">
           <a className="brand" href="/enterprise">
             {c.header.brand_name} <span>{e.nav.brand_tagline}</span>
           </a>
-          <nav className="nav-main enterprise-nav" aria-label="기업·파트너">
+          <nav className="nav-main enterprise-nav" aria-label={e.nav.main_aria_label}>
             <a href="/">{e.nav.back_home}</a>
             <a href="#pillars">{e.nav.pillars}</a>
             <a href="#proof">{e.nav.proof}</a>
@@ -78,7 +78,7 @@ export default function EnterprisePage() {
           </div>
         </section>
 
-        <section className="enterprise-principles" aria-label="핵심 원칙">
+        <section className="enterprise-principles" aria-label={e.nav.principles_aria_label}>
           <ul className="enterprise-principles-grid">
             {e.principles.map((item) => (
               <li key={item.title} className="enterprise-principle-chip">

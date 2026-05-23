@@ -9,6 +9,8 @@ export type EnterpriseCopy = {
     proof: string;
     research: string;
     contact: string;
+    main_aria_label: string;
+    principles_aria_label: string;
   };
   hero: {
     eyebrow: string;
@@ -58,6 +60,8 @@ export type SiteCopy = {
     showroom_jemaai: HubLink;
     premium_mkmlife: HubLink;
     b2b_acodeai: HubLink;
+    research_mkmlab?: HubLink;
+    personadiary_preview?: HubLink;
     showroom_topology_radar?: HubLink;
     showroom_meaning_graph?: HubLink;
     showroom_meaning_qa_v2?: HubLink;
@@ -70,10 +74,16 @@ export type SiteCopy = {
     service_clinician: string;
     service_reception: string;
     service_enterprise?: string;
+    service_developer: string;
+    toggle_label: string;
+    toggle_open_aria: string;
+    toggle_close_aria: string;
+    main_aria_label: string;
     about_group: string;
     about: string;
     safety: string;
     workflow: string;
+    governance?: string;
     contact: string;
   };
   links: {
@@ -81,9 +91,16 @@ export type SiteCopy = {
     clinician: string;
     reception: string;
     enterprise?: string;
+    developer: string;
     contact: string;
   };
   enterprise?: EnterpriseCopy;
+  homepage_a11y: {
+    skip_to_main: string;
+    trust_section_label: string;
+    feature_triad_heading: string;
+    brand_motion_proof_label: string;
+  };
   hero: {
     eyebrow: string;
     title: string;
@@ -92,6 +109,8 @@ export type SiteCopy = {
     cta_secondary: string;
     cta_tertiary: string;
     cta_quaternary: string;
+    proof_aria_label: string;
+    proof_items: string[];
     role_cards: {
       title: string;
       body: string;
@@ -105,6 +124,71 @@ export type SiteCopy = {
     lead: string;
     consumer: { title: string; body: string; cta: string; href: string };
     clinician: { title: string; body: string; cta: string; href: string };
+  };
+  why_mkm_ai: {
+    title: string;
+    section_lead: string;
+    cards: { title: string; body: string; code_terms?: string[] }[];
+    disclaimer: string;
+  };
+  quick_start: {
+    title: string;
+    section_lead: string;
+    cards: { title: string; body: string }[];
+    ctas: { label: string; href: string; variant: "primary" | "ghost" }[];
+  };
+  home_clinic_flow: {
+    steps: { step: string; title: string; body: string }[];
+  };
+  basic_health_chat: {
+    title: string;
+    section_lead: string;
+    assistant_greeting: string;
+    labels: {
+      pain_area: string;
+      pain_scale: string;
+      digestion: string;
+      sleep: string;
+    };
+    placeholders: {
+      pain_area: string;
+      digestion: string;
+      sleep: string;
+      message: string;
+    };
+    chat: {
+      assistant_role: string;
+      user_role: string;
+      busy_message: string;
+      send_busy: string;
+      send_idle: string;
+      error_message: string;
+    };
+    survey_defaults: {
+      pain_area_empty: string;
+      digestion_empty: string;
+      sleep_empty: string;
+    };
+    ctas: {
+      marketing: { primary: { label: string; href: string }; secondary: { label: string; href: string } };
+      workspace: { primary: { label: string; href: string }; secondary: { label: string; href: string } };
+    };
+  };
+  governance_flow: {
+    title: string;
+    section_lead: string;
+    field_label: string;
+    lens_label: string;
+    resolve_label: string;
+    field_items: { title: string; body: string }[];
+    lens_items: { title: string; body: string; non_gating?: boolean }[];
+    resolver: { title: string; body: string };
+    final_action_label: string;
+    final_actions: string[];
+    footnote_prefix: string;
+    figjam_label: string;
+    figjam_url: string;
+    svg_preview_note: string;
   };
   trust: { items: { label: string; value: string }[]; note: string };
   public_solution: {
@@ -142,10 +226,28 @@ export type SiteCopy = {
     cta_secondary: string;
   };
   contact: { title: string; section_lead: string; email_label: string };
+  paddle_checkout: {
+    button_loading: string;
+    button_idle: string;
+    hint: string;
+    errors: { missing_env: string; init_failed: string; checkout_prefix: string };
+  };
+  free_validation_lead: {
+    title: string;
+    section_lead: string;
+    labels: { name: string; email: string; company: string; use_case: string };
+    placeholders: { use_case: string };
+    submit_busy: string;
+    submit_idle: string;
+    errors: { required_fields: string; save_failed: string; network: string };
+    success: string;
+  };
   footer: {
     company_line: string;
     brand_subline: string;
+    address_label: string;
     address: string;
+    biz_reg_label: string;
     email: string;
     biz_reg: string;
     rights: string;

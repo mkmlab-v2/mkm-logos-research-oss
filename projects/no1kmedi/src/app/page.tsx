@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import { resolveHomepagePresetClass } from "@/lib/homepagePreset";
 import { siteCopy } from "@/content/siteCopy";
 import { SiteHeader } from "@/components/SiteHeader";
@@ -6,9 +6,19 @@ import { FreeValidationLeadForm } from "@/components/FreeValidationLeadForm";
 import { ContactActionLinks } from "@/components/ContactActionLinks";
 import { BasicHealthChatCard } from "@/components/BasicHealthChatCard";
 import { HomepageAppEntry } from "@/components/HomepageAppEntry";
+import { FieldLensGovernanceFlow } from "@/components/FieldLensGovernanceFlow";
+import { HomeHeroSection } from "@/components/HomeHeroSection";
 import { PaddleCheckoutButton } from "@/components/PaddleCheckoutButton";
 
 export const dynamic = "force-dynamic";
+
+function renderBodyWithCodeTerms(body: string, codeTerms?: string[]): ReactNode {
+  if (!codeTerms?.length) return body;
+  const pattern = new RegExp(`(${codeTerms.join("|")})`, "g");
+  return body.split(pattern).map((part, idx) =>
+    codeTerms.includes(part) ? <code key={`code-${idx}`}>{part}</code> : <Fragment key={`t-${idx}`}>{part}</Fragment>,
+  );
+}
 
 type HomePageProps = {
   searchParams?: {
@@ -18,28 +28,6 @@ type HomePageProps = {
 
 export default function HomePage({ searchParams }: HomePageProps) {
   const c = siteCopy;
-  const clinicCardFlow = [
-    {
-      step: "01",
-      title: "내원 후 기본 정보 입력",
-      body: "증상·생활패턴·문진 정보를 AI 보조 입력폼에 빠르게 정리합니다.",
-    },
-    {
-      step: "02",
-      title: "AI가 상담 포인트 정리",
-      body: "위험 신호와 확인 질문을 요약해 한의사 진찰 전 체크리스트를 만듭니다.",
-    },
-    {
-      step: "03",
-      title: "한의사 진찰·최종 판단",
-      body: "AI는 보조만 수행하고, 진단과 처방은 한의사가 최종 확정합니다.",
-    },
-    {
-      step: "04",
-      title: "설명·연결·기록 보조",
-      body: "환자 이해를 돕는 요약과 다음 내원/관리 포인트를 쉽게 안내합니다.",
-    },
-  ] as const;
   const heroCtaLinks = {
     primary: c.links.consumer,
     secondary: c.links.clinician,
@@ -56,105 +44,17 @@ export default function HomePage({ searchParams }: HomePageProps) {
   return (
     <div className={homepagePresetClass}>
       <a className="skip" href="#main">
-        본문으로 건너뛰기
+        {c.homepage_a11y.skip_to_main}
       </a>
       <SiteHeader nav={c.nav} brand={c.header} links={c.links} />
       <main id="main">
-        <section className="hero" id="top" aria-labelledby="hero-title">
-          <div className="hero-orb hero-orb-a" aria-hidden="true" />
-          <div className="hero-orb hero-orb-b" aria-hidden="true" />
-          <div className="hero-grid-overlay" aria-hidden="true" />
-          <span className="eyebrow">{c.hero.eyebrow}</span>
-          <h1 id="hero-title">{c.hero.title}</h1>
-          <p className="hero-lead">{c.hero.subtitle}</p>
-          <div className="hero-cta">
-            <a className="btn btn-primary" href={heroCtaLinks.primary}>
-              {c.hero.cta_primary}
-            </a>
-            <a className="btn btn-ghost" href={heroCtaLinks.secondary}>
-              {c.hero.cta_secondary}
-            </a>
-            <a className="btn btn-ghost" href={heroCtaLinks.tertiary}>
-              {c.hero.cta_tertiary}
-            </a>
-            <a className="btn btn-ghost" href={heroCtaLinks.quaternary}>
-              {c.hero.cta_quaternary}
-            </a>
-          </div>
-          <div className="hero-role-cta">
-            {c.hero.role_cards.map((card) => (
-              <article key={card.title} className="card card-lift">
-                <h3>{card.title}</h3>
-                <p>{card.body}</p>
-                <a className={`btn ${card.variant === "primary" ? "btn-primary" : "btn-ghost"}`} href={card.href}>
-                  {card.cta}
-                </a>
-              </article>
-            ))}
-          </div>
-          <div className="hero-proof" role="list" aria-label="핵심 가치">
-            <span role="listitem">근거 출처 매핑</span>
-            <span role="listitem">의료진 최종판단 고정</span>
-            <span role="listitem">일반인 무료 사전 리포트</span>
-          </div>
-          <div
-            className="section-cta hub-cross-links"
-            style={{
-              marginTop: "1rem",
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "0.5rem",
-              alignItems: "center",
-            }}
-            aria-label="MKM 관련 도메인 안내"
-          >
-            {(
-              ["showroom_jemaai", "premium_mkmlife", "b2b_acodeai"] as const
-            ).map((key) => {
-              const link = c.hub_links[key];
-              return (
-                <a
-                  key={key}
-                  className="btn btn-ghost"
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={link.sublabel}
-                >
-                  {link.label}
-                </a>
-              );
-            })}
-            {(
-              [
-                "showroom_meaning_qa_v2",
-                "showroom_topology_radar",
-                "showroom_meaning_graph",
-              ] as const
-            ).map((key) => {
-              const link = c.hub_links[key];
-              if (!link?.href) return null;
-              return (
-                <a
-                  key={key}
-                  className="btn btn-ghost"
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={link.sublabel}
-                >
-                  {link.label}
-                </a>
-              );
-            })}
-          </div>
-        </section>
+        <HomeHeroSection hero={c.hero} hubLinks={c.hub_links} ctaLinks={heroCtaLinks} />
 
         <HomepageAppEntry copy={c.app_entry} />
 
         <section id="feature-triad" className="feature-triad" aria-labelledby="feature-triad-heading">
           <h2 id="feature-triad-heading" className="sr-only">
-            핵심 역량
+            {c.homepage_a11y.feature_triad_heading}
           </h2>
           <div className="feature-triad-grid">
             {c.feature_triad.cards.map((card) => (
@@ -207,34 +107,26 @@ export default function HomePage({ searchParams }: HomePageProps) {
         </section>
 
         <section id="quick-start" aria-labelledby="quick-start-title">
-          <h2 id="quick-start-title">일반인 홍보·상담 안내와 한의사 진료보조를 분리 운영합니다</h2>
-          <p className="section-lead">
-            홈페이지에서는 일반인에게 간단 건강상담을 제공하고, 상세 문진은 카카오 설문으로 수집해 한의사 화면에 구조화 전달합니다.
-          </p>
+          <h2 id="quick-start-title">{c.quick_start.title}</h2>
+          <p className="section-lead">{c.quick_start.section_lead}</p>
           <div className="grid-3">
-            <article className="card">
-              <h3>1차 상담 (홈페이지)</h3>
-              <p>주요 불편 부위·통증·수면/소화 상태를 짧게 입력해 사전 안내를 받습니다.</p>
-            </article>
-            <article className="card">
-              <h3>2차 문진 (카카오 설문)</h3>
-              <p>기본 환자 정보, 건강 정보, 체질 판단 최소 문항을 빠르게 완료합니다.</p>
-            </article>
-            <article className="card">
-              <h3>3차 진료 (한의사 최종 판단)</h3>
-              <p>SOAP 초안은 AI가 보조하고, 진단·처방·차트 확정은 한의사가 수행합니다.</p>
-            </article>
+            {c.quick_start.cards.map((item) => (
+              <article key={item.title} className="card">
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
           </div>
           <div className="section-cta">
-            <a className="btn btn-primary" href="/consumer?panel=survey#patient-intake">
-              카카오 설문 시작하기
-            </a>
-            <a className="btn btn-ghost" href="/consumer">
-              간단 건강상담 먼저 해보기
-            </a>
-            <a className="btn btn-ghost" href={c.links.clinician}>
-              한의사 보조 열기
-            </a>
+            {c.quick_start.ctas.map((cta) => (
+              <a
+                key={cta.label}
+                className={`btn ${cta.variant === "primary" ? "btn-primary" : "btn-ghost"}`}
+                href={cta.href === "/clinician" ? c.links.clinician : cta.href}
+              >
+                {cta.label}
+              </a>
+            ))}
           </div>
         </section>
 
@@ -248,7 +140,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
               <p className="section-lead">
                 {c.concept_block.lead}
               </p>
-              <div className="hero-proof" role="list" aria-label="브랜드 모션 특징">
+              <div className="hero-proof" role="list" aria-label={c.homepage_a11y.brand_motion_proof_label}>
                 {c.concept_block.proof_items.map((item) => (
                   <span key={item} role="listitem">{item}</span>
                 ))}
@@ -261,7 +153,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
               <div className="brand-motion-grain" />
               <div className="brand-motion-tint" />
               <div className="brand-motion-card-news">
-                {clinicCardFlow.map((item) => (
+                {c.home_clinic_flow.steps.map((item) => (
                   <article key={item.step} className="brand-flow-card">
                     <p className="brand-flow-step">STEP {item.step}</p>
                     <h3>{item.title}</h3>
@@ -274,7 +166,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
           </div>
         </section>
 
-        <section id="trust" aria-label="신뢰 지표">
+        <section id="trust" aria-label={c.homepage_a11y.trust_section_label}>
           <div className="trust-strip" role="list">
             {c.trust.items.map((item) => (
               <article key={item.label} className="trust-item" role="listitem">
@@ -288,38 +180,21 @@ export default function HomePage({ searchParams }: HomePageProps) {
           </p>
         </section>
 
+        <FieldLensGovernanceFlow copy={c.governance_flow} />
+
         <section id="why-mkm-ai" aria-labelledby="why-mkm-ai-title">
-          <h2 id="why-mkm-ai-title">Why MKM AI?</h2>
-          <p className="section-lead">
-            범용 AI의 구조적 과신 리스크를 그대로 트레이딩에 연결하지 않고, 교차검증과 방어 거버넌스를 통해
-            위험 노출을 통제합니다.
-          </p>
+          <h2 id="why-mkm-ai-title">{c.why_mkm_ai.title}</h2>
+          <p className="section-lead">{c.why_mkm_ai.section_lead}</p>
           <div className="grid-3">
-            <article className="card">
-              <h3>구조적 과신 리스크</h3>
-              <p>
-                단일 모델은 불확실성이 큰 구간에서도 답을 강제 생성할 수 있습니다. MKM은 이 구간을 확정 신호가 아닌
-                경고/관망 구간으로 분리합니다.
-              </p>
-            </article>
-            <article className="card">
-              <h3>4AI 교차검증 + 보수 Veto</h3>
-              <p>
-                다중 엔진의 교차검증 신호를 정량화하고, 확신이 약한 국면에서는 보수 정책이 <code>HOLD_SAFE</code>를 우선
-                선언하도록 설계했습니다.
-              </p>
-            </article>
-            <article className="card">
-              <h3>Action+Alert 거버넌스</h3>
-              <p>
-                Regime transition risk signal은 임계치/히스테리시스/쿨다운 정책으로 제어하며, 조건 충족 시
-                <code>EXPOSURE_CONTROL</code>와 경보를 함께 실행합니다.
-              </p>
-            </article>
+            {c.why_mkm_ai.cards.map((item) => (
+              <article key={item.title} className="card">
+                <h3>{item.title}</h3>
+                <p>{renderBodyWithCodeTerms(item.body, item.code_terms)}</p>
+              </article>
+            ))}
           </div>
           <p className="trust-note" role="note">
-            본 시스템은 수익 보장을 주장하지 않으며, Track C에서는 risk-warning 및 exposure control 목적의 운영 신호를
-            제공합니다.
+            {c.why_mkm_ai.disclaimer}
           </p>
         </section>
 
@@ -430,7 +305,7 @@ export default function HomePage({ searchParams }: HomePageProps) {
         <section id="contact" aria-labelledby="contact-title">
           <h2 id="contact-title">{c.contact.title}</h2>
           <p className="section-lead">{c.contact.section_lead}</p>
-          <div className="section-cta" style={{ marginBottom: "0.75rem" }}>
+          <div className="section-cta section-cta--contact-paddle">
             <PaddleCheckoutButton />
           </div>
           <ContactActionLinks email={c.footer.email} label={c.contact.email_label} />
@@ -443,8 +318,12 @@ export default function HomePage({ searchParams }: HomePageProps) {
           <div className="footer-brand">{c.footer.company_line}</div>
           <div className="footer-meta">
             <p>{c.footer.brand_subline}</p>
-            <p>주소: {c.footer.address}</p>
-            <p>사업자등록번호: {c.footer.biz_reg}</p>
+            <p>
+              {c.footer.address_label}: {c.footer.address}
+            </p>
+            <p>
+              {c.footer.biz_reg_label}: {c.footer.biz_reg}
+            </p>
           </div>
           <div className="footer-legal">{c.footer.rights}</div>
         </div>

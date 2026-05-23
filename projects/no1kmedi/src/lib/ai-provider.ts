@@ -417,7 +417,7 @@ async function generateClinicalTextWithPriority(
     if (key) order.push(() => fetchOpenRouter(opts));
     if (localUrl) order.push(() => fetchLocalOpenAiCompatible(opts));
     if (azureOk) order.push(() => fetchAzureOpenAi(opts));
-    return chainBackends(order.length ? order : [() => buildFallback()]);
+    return chainBackends(order.length ? order : [async () => buildFallback()]);
   }
 
   if (p === "local_first") {

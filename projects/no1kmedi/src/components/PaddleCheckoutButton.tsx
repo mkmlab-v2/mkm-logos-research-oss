@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { initializePaddle } from "@paddle/paddle-js";
+import { siteCopy } from "@/content/siteCopy";
 
 type PaddleEnv = "sandbox" | "production";
 
@@ -10,6 +11,7 @@ function getPaddleEnv(value: string | undefined): PaddleEnv {
 }
 
 export function PaddleCheckoutButton() {
+  const copy = siteCopy.paddle_checkout;
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<string>("");
 
@@ -19,7 +21,7 @@ export function PaddleCheckoutButton() {
 
   async function handleCheckout() {
     if (!clientToken || !priceId) {
-      setMessage("Paddle env가 비어 있습니다. NEXT_PUBLIC_PADDLE_CLIENT_TOKEN / NEXT_PUBLIC_PADDLE_PRICE_ID를 설정하세요.");
+      setMessage(copy.errors.missing_env);
       return;
     }
 
@@ -32,7 +34,7 @@ export function PaddleCheckoutButton() {
       });
 
       if (!paddle) {
-        setMessage("Paddle 초기화에 실패했습니다.");
+        setMessage(copy.errors.init_failed);
         return;
       }
 
@@ -41,27 +43,19 @@ export function PaddleCheckoutButton() {
       });
     } catch (error) {
       const msg = error instanceof Error ? error.message : "unknown_error";
-      setMessage(`Paddle checkout 오류: ${msg}`);
+      setMessage(`${copy.errors.checkout_prefix}${msg}`);
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div style={{ display: "grid", gap: "0.5rem" }}>
-      <button
-        type="button"
-        className="btn btn-ghost"
-        onClick={handleCheckout}
-        disabled={loading}
-      >
-        {loading ? "Paddle 로딩 중..." : "Paddle Checkout 테스트"}
+    <div className="paddle-checkout-root">
+      <button type="button" className="btn btn-ghost" onClick={handleCheckout} disabled={loading}>
+        {loading ? copy.button_loading : copy.button_idle}
       </button>
       {clientToken && priceId ? (
-        <p className="trust-note" style={{ fontSize: "0.85em", margin: 0 }}>
-          결제창이 뜨지 않거나 네트워크 400이면 Paddle 대시보드 Checkout {'>'} Checkout settings의 Default payment link를
-          설정했는지 확인하세요(토큰·가격 ID와 동일 sandbox/live 벤더).
-        </p>
+        <p className="trust-note paddle-checkout-hint">{copy.hint}</p>
       ) : null}
       {message ? (
         <p className="trust-note" role="status">
@@ -71,4 +65,3 @@ export function PaddleCheckoutButton() {
     </div>
   );
 }
-

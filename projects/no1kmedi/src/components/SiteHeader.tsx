@@ -8,11 +8,16 @@ type Nav = {
   service_clinician: string;
   service_reception: string;
   service_enterprise?: string;
-  service_developer?: string;
+  service_developer: string;
+  toggle_label: string;
+  toggle_open_aria: string;
+  toggle_close_aria: string;
+  main_aria_label: string;
   about_group: string;
   about: string;
   safety: string;
   workflow: string;
+  governance?: string;
   contact: string;
 };
 type Brand = { brand_name: string; brand_tagline: string };
@@ -21,6 +26,7 @@ type Links = {
   clinician: string;
   reception: string;
   enterprise?: string;
+  developer: string;
   contact: string;
 };
 
@@ -36,7 +42,7 @@ export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; link
         <button
           type="button"
           className="nav-toggle"
-          aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
+          aria-label={open ? nav.toggle_close_aria : nav.toggle_open_aria}
           aria-expanded={open}
           aria-controls="site-nav"
           id="nav-toggle"
@@ -47,12 +53,12 @@ export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; link
             }
           }}
         >
-          메뉴
+          {nav.toggle_label}
         </button>
         <nav
           className={`nav-main${open ? " is-open" : ""}`}
           id="site-nav"
-          aria-label="주요"
+          aria-label={nav.main_aria_label}
           onKeyDown={(event) => {
             if (event.key === "Escape") {
               setOpen(false);
@@ -74,8 +80,8 @@ export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; link
               {nav.service_enterprise}
             </a>
           ) : null}
-          <a href="/developer/graph-insights" onClick={() => setOpen(false)}>
-            {nav.service_developer ?? "개발자 그래프 인사이트"}
+          <a href={links.developer} onClick={() => setOpen(false)}>
+            {nav.service_developer}
           </a>
           <span className="nav-group-label">{nav.about_group}</span>
           <a href="#about" onClick={() => setOpen(false)}>
@@ -84,6 +90,11 @@ export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; link
           <a href="#safety" onClick={() => setOpen(false)}>
             {nav.safety}
           </a>
+          {nav.governance ? (
+            <a href="#governance-flow" onClick={() => setOpen(false)}>
+              {nav.governance}
+            </a>
+          ) : null}
           <a href="#workflow" onClick={() => setOpen(false)}>
             {nav.workflow}
           </a>

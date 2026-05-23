@@ -37,6 +37,16 @@
       "href": "https://a-codeai.com",
       "label": "토큰·압축 API (B2B)",
       "sublabel": "정적 랜딩과 API 경로 분리·도입 문의는 해당 도메인 정책 따름"
+    },
+    "research_mkmlab": {
+      "href": "https://mkmlab.space",
+      "label": "MKM LAB 분자한의학 연구소·생산 제품",
+      "sublabel": "발효 NO 대사체·연구소 라인업 소개 · AI·쇼룸 본거지 아님 · 상업 문의는 jema-ai.com"
+    },
+    "personadiary_preview": {
+      "href": "/personadiary",
+      "label": "Persona Diary 프리뷰",
+      "sublabel": "초개인화 라이프로그 콘셉트 프리뷰 · 웰니스/리플렉션 · 의료·투자 조언 아님"
     }
   },
   "header": {
@@ -53,10 +63,16 @@
     "service_clinician": "한의사 보조",
     "service_reception": "접수대 PIN",
     "service_enterprise": "기업·파트너",
+    "service_developer": "개발자 그래프 인사이트",
+    "toggle_label": "메뉴",
+    "toggle_open_aria": "메뉴 열기",
+    "toggle_close_aria": "메뉴 닫기",
+    "main_aria_label": "주요",
     "about_group": "소개",
     "about": "서비스",
     "safety": "안전·고지",
     "workflow": "활용 흐름",
+    "governance": "의사결정 구조",
     "contact": "문의"
   },
   "links": {
@@ -64,16 +80,23 @@
     "clinician": "/clinician",
     "reception": "/reception",
     "enterprise": "/enterprise",
+    "developer": "/developer/graph-insights",
     "contact": "#contact"
   },
   "hero": {
     "eyebrow": "한의원 진료 보조 워크플로우",
     "title": "일반인 건강상담 안내와 한의사 진료보조를 함께 제공하는 AI 한의학 플랫폼",
     "subtitle": "일반인은 홈페이지에서 간단 상담 후 카카오 설문으로 연결되고, 한의사는 구조화된 문진 정보를 바탕으로 진료 판단을 보조받습니다. 최종 진단·처방은 한의사가 수행합니다.",
-    "cta_primary": "일반인 상담 시작",
-    "cta_secondary": "한의사 보조 열기",
+    "cta_primary": "상담 전 참고 리포트 시작",
+    "cta_secondary": "의료진 보조 화면 보기",
     "cta_tertiary": "도입·요금 문의",
     "cta_quaternary": "리포트/PIN 조회",
+    "proof_aria_label": "핵심 가치",
+    "proof_items": [
+      "근거 출처 매핑",
+      "의료진 최종판단 고정",
+      "일반인 무료 사전 리포트"
+    ],
     "role_cards": [
       {
         "title": "환자/보호자",
@@ -85,7 +108,7 @@
       {
         "title": "한의사/의료진",
         "body": "문진·상담 데이터를 기반으로 진료 준비 초안을 정리하며, 최종 진단·처방 판단은 의료진이 확정합니다.",
-        "cta": "한의사 보조 시작",
+        "cta": "의료진 보조 입장",
         "href": "/clinician",
         "variant": "ghost"
       }
@@ -106,6 +129,152 @@
       "cta": "한의사 보조 열기",
       "href": "/clinician"
     }
+  },
+  "governance_flow": {
+    "title": "의사결정 구조",
+    "section_lead": "실물 레짐과 운영 게이트가 주(主)이며, 사상·명리·성경(Logos) 렌즈는 보조 입력입니다. 최종 판단·진료·처방은 사람(한의사·운영자)이 확정합니다.",
+    "field_label": "Field · 주",
+    "lens_label": "Lens · 보",
+    "resolve_label": "조율",
+    "field_items": [
+      { "title": "1차 실물 레짐", "body": "regime_map 등 역사적·운영 판(場) 식별" },
+      { "title": "운영·안전 게이트", "body": "Fact-Lock·승인·노출 통제 등 운영 리스크 게이트" }
+    ],
+    "lens_items": [
+      { "title": "사상", "body": "단기 강도·보조 입력" },
+      { "title": "명리", "body": "중기 방향·보조 입력" },
+      { "title": "성경 (Logos)", "body": "거시 맥락 · [NON_GATING] 해설용", "non_gating": true }
+    ],
+    "resolver": {
+      "title": "Conflict Resolver",
+      "body": "렌즈 간 충돌·과열 신호를 격벽하고, Field·운영 게이트를 우선합니다."
+    },
+    "final_action_label": "Final Action (관측 라벨)",
+    "final_actions": ["HOLD", "REDUCE", "WATCH"],
+    "footnote_prefix": "FigJam SSOT:",
+    "figjam_label": "MKM Field-Lens Decision Flow",
+    "figjam_url": "https://www.figma.com/board/PKFUNbiHIf4accqV6qT8wa",
+    "svg_preview_note": "레포 미리보기 reports/mkm_field_lens_flow.svg"
+  },
+  "why_mkm_ai": {
+    "title": "Why MKM AI?",
+    "section_lead": "범용 AI의 구조적 과신 리스크를 그대로 트레이딩에 연결하지 않고, 교차검증과 방어 거버넌스를 통해 위험 노출을 통제합니다.",
+    "cards": [
+      {
+        "title": "구조적 과신 리스크",
+        "body": "단일 모델은 불확실성이 큰 구간에서도 답을 강제 생성할 수 있습니다. MKM은 이 구간을 확정 신호가 아닌 경고/관망 구간으로 분리합니다."
+      },
+      {
+        "title": "4AI 교차검증 + 보수 Veto",
+        "body": "다중 엔진의 교차검증 신호를 정량화하고, 확신이 약한 국면에서는 보수 정책이 HOLD_SAFE를 우선 선언하도록 설계했습니다.",
+        "code_terms": ["HOLD_SAFE"]
+      },
+      {
+        "title": "Action+Alert 거버넌스",
+        "body": "Regime transition risk signal은 임계치/히스테리시스/쿨다운 정책으로 제어하며, 조건 충족 시 EXPOSURE_CONTROL와 경보를 함께 실행합니다.",
+        "code_terms": ["EXPOSURE_CONTROL"]
+      }
+    ],
+    "disclaimer": "본 시스템은 수익 보장을 주장하지 않으며, Track C에서는 risk-warning 및 exposure control 목적의 운영 신호를 제공합니다."
+  },
+  "quick_start": {
+    "title": "일반인 홍보·상담 안내와 한의사 진료보조를 분리 운영합니다",
+    "section_lead": "홈페이지에서는 일반인에게 간단 건강상담을 제공하고, 상세 문진은 카카오 설문으로 수집해 한의사 화면에 구조화 전달합니다.",
+    "cards": [
+      {
+        "title": "1차 상담 (홈페이지)",
+        "body": "주요 불편 부위·통증·수면/소화 상태를 짧게 입력해 사전 안내를 받습니다."
+      },
+      {
+        "title": "2차 문진 (카카오 설문)",
+        "body": "기본 환자 정보, 건강 정보, 체질 판단 최소 문항을 빠르게 완료합니다."
+      },
+      {
+        "title": "3차 진료 (한의사 최종 판단)",
+        "body": "SOAP 초안은 AI가 보조하고, 진단·처방·차트 확정은 한의사가 수행합니다."
+      }
+    ],
+    "ctas": [
+      {
+        "label": "카카오 설문 시작하기",
+        "href": "/consumer?panel=survey#patient-intake",
+        "variant": "primary"
+      },
+      {
+        "label": "간단 건강상담 먼저 해보기",
+        "href": "/consumer",
+        "variant": "ghost"
+      },
+      {
+        "label": "한의사 보조 열기",
+        "href": "/clinician",
+        "variant": "ghost"
+      }
+    ]
+  },
+  "basic_health_chat": {
+    "title": "AI 기본 건강상담 안내",
+    "section_lead": "간단한 건강 질문에 답하고, 필요 시 상세 문진과 한의원 상담 단계로 연결됩니다.",
+    "assistant_greeting": "기본 건강 정보를 바탕으로 상담 전 안내를 도와드립니다. 응급 증상은 즉시 119/응급실을 이용해 주세요.",
+    "labels": {
+      "pain_area": "주요 불편 부위",
+      "pain_scale": "통증 강도 (0-10)",
+      "digestion": "소화 상태",
+      "sleep": "수면 상태"
+    },
+    "placeholders": {
+      "pain_area": "예: 목, 허리, 소화",
+      "digestion": "예: 더부룩함",
+      "sleep": "예: 자주 깸",
+      "message": "예: 요즘 소화불량이 심한데 어떤 준비를 하면 좋을까요?"
+    },
+    "chat": {
+      "assistant_role": "AI",
+      "user_role": "나",
+      "busy_message": "답변을 준비 중입니다...",
+      "send_busy": "전송 중...",
+      "send_idle": "질문하기",
+      "error_message": "AI 응답이 지연되고 있습니다. 아래 문진 입력으로 바로 상담 연결을 진행해 주세요."
+    },
+    "survey_defaults": {
+      "pain_area_empty": "미입력",
+      "digestion_empty": "미입력",
+      "sleep_empty": "미입력"
+    },
+    "ctas": {
+      "marketing": {
+        "primary": { "label": "상세 문진으로 이어가기", "href": "#patient-intake" },
+        "secondary": { "label": "한의원 상담 연결 문의", "href": "#contact" }
+      },
+      "workspace": {
+        "primary": { "label": "상세 문진 작성하기", "href": "/consumer?panel=survey#patient-intake" },
+        "secondary": { "label": "문의", "href": "/#contact" }
+      }
+    }
+  },
+  "home_clinic_flow": {
+    "steps": [
+      {
+        "step": "01",
+        "title": "내원 후 기본 정보 입력",
+        "body": "증상·생활패턴·문진 정보를 AI 보조 입력폼에 빠르게 정리합니다."
+      },
+      {
+        "step": "02",
+        "title": "AI가 상담 포인트 정리",
+        "body": "위험 신호와 확인 질문을 요약해 한의사 진찰 전 체크리스트를 만듭니다."
+      },
+      {
+        "step": "03",
+        "title": "한의사 진찰·최종 판단",
+        "body": "AI는 보조만 수행하고, 진단과 처방은 한의사가 최종 확정합니다."
+      },
+      {
+        "step": "04",
+        "title": "설명·연결·기록 보조",
+        "body": "환자 이해를 돕는 요약과 다음 내원/관리 포인트를 쉽게 안내합니다."
+      }
+    ]
   },
   "trust": {
     "note": "본 서비스는 일반인 상담 안내와 한의사 진료보조를 분리 운영하며, 최종 진단·처방은 한의사가 수행합니다.",
@@ -147,6 +316,12 @@
     ],
     "cta_primary": "참고 리포트 시작",
     "cta_secondary": "제휴·도입 문의"
+  },
+  "homepage_a11y": {
+    "skip_to_main": "본문으로 건너뛰기",
+    "trust_section_label": "신뢰 지표",
+    "feature_triad_heading": "핵심 역량",
+    "brand_motion_proof_label": "브랜드 모션 특징"
   },
   "feature_triad": {
     "cards": [
@@ -268,6 +443,37 @@
     "section_lead": "로그인·결제·기관 인증 등 운영 기능은 별도 관리 화면에서 제공됩니다. 공개 페이지에서는 도입 상담 문의를 안내합니다.",
     "email_label": "이메일"
   },
+  "paddle_checkout": {
+    "button_loading": "Paddle 로딩 중...",
+    "button_idle": "Paddle Checkout 테스트",
+    "hint": "결제창이 뜨지 않거나 네트워크 400이면 Paddle 대시보드 Checkout > Checkout settings의 Default payment link를 설정했는지 확인하세요(토큰·가격 ID와 동일 sandbox/live 벤더).",
+    "errors": {
+      "missing_env": "Paddle env가 비어 있습니다. NEXT_PUBLIC_PADDLE_CLIENT_TOKEN / NEXT_PUBLIC_PADDLE_PRICE_ID를 설정하세요.",
+      "init_failed": "Paddle 초기화에 실패했습니다.",
+      "checkout_prefix": "Paddle checkout 오류: "
+    }
+  },
+  "free_validation_lead": {
+    "title": "무료 검증 신청",
+    "section_lead": "월 30회 샘플 검증으로 먼저 확인하고, 필요 시 90일 파일럿으로 전환합니다.",
+    "labels": {
+      "name": "이름",
+      "email": "이메일",
+      "company": "회사명",
+      "use_case": "주요 사용 시나리오 (선택)"
+    },
+    "placeholders": {
+      "use_case": "예: 재무 리스크 조기 경보"
+    },
+    "submit_busy": "제출 중...",
+    "submit_idle": "무료 검증 신청하기",
+    "errors": {
+      "required_fields": "이름/이메일/회사명을 입력해 주세요.",
+      "save_failed": "리드 저장 중 오류가 발생했습니다.",
+      "network": "네트워크 오류로 접수에 실패했습니다."
+    },
+    "success": "접수 완료: 1영업일 내에 무료 검증 안내를 드립니다."
+  },
   "enterprise": {
     "seo": {
       "title": "JEMA AI | 기업·파트너 — 운영 안전 게이트",
@@ -279,7 +485,9 @@
       "pillars": "핵심 가치",
       "proof": "확인 경로",
       "research": "연구",
-      "contact": "문의"
+      "contact": "문의",
+      "main_aria_label": "기업·파트너",
+      "principles_aria_label": "핵심 원칙"
     },
     "hero": {
       "eyebrow": "B2B · 운영 안전",
@@ -381,7 +589,9 @@
   "footer": {
     "company_line": "주식회사 목소리네트워크",
     "brand_subline": "MKMLAB · JEMA AI",
+    "address_label": "주소",
     "address": "경기도 광명시 디지털로 24, 102동 2301호",
+    "biz_reg_label": "사업자등록번호",
     "email": "support@mkmlife.com",
     "biz_reg": "628-86-01742",
     "rights": "© 2026 주식회사 목소리네트워크. 무단 복제를 금지합니다."

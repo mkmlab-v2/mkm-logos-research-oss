@@ -10,6 +10,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { siteCopy } from "@/content/siteCopy";
 
 type ChatTurn = {
   role: "user" | "assistant";
@@ -28,6 +29,7 @@ type BasicHealthChatCardProps = {
 };
 
 export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCardProps) {
+  const copy = siteCopy.basic_health_chat;
   const [message, setMessage] = useState("");
   const [painArea, setPainArea] = useState("");
   const [painScale, setPainScale] = useState("5");
@@ -35,12 +37,8 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
   const [sleepNote, setSleepNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  const [history, setHistory] = useState<ChatTurn[]>([
-    {
-      role: "assistant",
-      message:
-        "기본 건강 정보를 바탕으로 상담 전 안내를 도와드립니다. 응급 증상은 즉시 119/응급실을 이용해 주세요.",
-    },
+  const [history, setHistory] = useState<ChatTurn[]>(() => [
+    { role: "assistant", message: copy.assistant_greeting },
   ]);
 
   const canAsk = useMemo(() => message.trim().length > 1 && !busy, [message, busy]);
@@ -62,10 +60,10 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
           message: userMessage,
           health_data: {
             survey: {
-              pain_area: painArea.trim() || "미입력",
+              pain_area: painArea.trim() || copy.survey_defaults.pain_area_empty,
               pain_scale_0_10: Number(painScale),
-              digestion_pattern: digestiveNote.trim() || "미입력",
-              sleep_pattern: sleepNote.trim() || "미입력",
+              digestion_pattern: digestiveNote.trim() || copy.survey_defaults.digestion_empty,
+              sleep_pattern: sleepNote.trim() || copy.survey_defaults.sleep_empty,
               vector_4d: { S: 0.25, L: 0.25, K: 0.25, M: 0.25 },
             },
           },
@@ -78,13 +76,14 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
       }
       setHistory((prev) => [...prev, { role: "assistant", message: json.response || "" }]);
     } catch {
-      setError("AI 응답이 지연되고 있습니다. 아래 문진 입력으로 바로 상담 연결을 진행해 주세요.");
+      setError(copy.chat.error_message);
     } finally {
       setBusy(false);
     }
   }
 
   const isWorkspace = layout === "workspace";
+  const ctas = isWorkspace ? copy.ctas.workspace : copy.ctas.marketing;
 
   return (
     <section
@@ -93,46 +92,61 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
       className={isWorkspace ? "workspace-chat-root" : undefined}
     >
       <h2 id="basic-health-chat-title" className={isWorkspace ? "sr-only" : undefined}>
-        AI 기본 건강상담 안내
+        {copy.title}
       </h2>
-      {isWorkspace ? null : (
-        <p className="section-lead">간단한 건강 질문에 답하고, 필요 시 상세 문진과 한의원 상담 단계로 연결됩니다.</p>
-      )}
+      {isWorkspace ? null : <p className="section-lead">{copy.section_lead}</p>}
 
       <div className={`chat-card${isWorkspace ? " chat-card--workspace" : ""}`}>
         <div className="chat-profile-grid">
           <label>
-            주요 불편 부위
-            <input value={painArea} onChange={(e) => setPainArea(e.target.value)} placeholder="예: 목, 허리, 소화" />
+            {copy.labels.pain_area}
+            <input
+              value={painArea}
+              onChange={(e) => setPainArea(e.target.value)}
+              placeholder={copy.placeholders.pain_area}
+            />
           </label>
           <label>
-            통증 강도 (0-10)
+            {copy.labels.pain_scale}
             <input value={painScale} onChange={(e) => setPainScale(e.target.value)} type="number" min={0} max={10} />
           </label>
           <label>
-            소화 상태
-            <input value={digestiveNote} onChange={(e) => setDigestiveNote(e.target.value)} placeholder="예: 더부룩함" />
+            {copy.labels.digestion}
+            <input
+              value={digestiveNote}
+              onChange={(e) => setDigestiveNote(e.target.value)}
+              placeholder={copy.placeholders.digestion}
+            />
           </label>
           <label>
-            수면 상태
-            <input value={sleepNote} onChange={(e) => setSleepNote(e.target.value)} placeholder="예: 자주 깸" />
+            {copy.labels.sleep}
+            <input
+              value={sleepNote}
+              onChange={(e) => setSleepNote(e.target.value)}
+              placeholder={copy.placeholders.sleep}
+            />
           </label>
         </div>
 
         <div className="chat-log" role="log" aria-live="polite">
           {history.map((turn, idx) => (
             <p key={`${turn.role}-${idx}`} className={`chat-bubble chat-bubble-${turn.role}`}>
-              <strong>{turn.role === "assistant" ? "AI" : "나"}</strong> {turn.message}
+              <strong>{turn.role === "assistant" ? copy.chat.assistant_role : copy.chat.user_role}</strong>{" "}
+              {turn.message}
             </p>
           ))}
-          {busy ? <p className="chat-bubble chat-bubble-assistant"><strong>AI</strong> 답변을 준비 중입니다...</p> : null}
+          {busy ? (
+            <p className="chat-bubble chat-bubble-assistant">
+              <strong>{copy.chat.assistant_role}</strong> {copy.chat.busy_message}
+            </p>
+          ) : null}
         </div>
 
         <div className="chat-input-row">
           <input
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="예: 요즘 소화불량이 심한데 어떤 준비를 하면 좋을까요?"
+            placeholder={copy.placeholders.message}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 e.preventDefault();
@@ -141,7 +155,7 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
             }}
           />
           <button className="btn btn-primary" type="button" onClick={() => void askAssistant()} disabled={!canAsk}>
-            {busy ? "전송 중..." : "질문하기"}
+            {busy ? copy.chat.send_busy : copy.chat.send_idle}
           </button>
         </div>
         {error ? <p className="consult-error">{error}</p> : null}
@@ -149,20 +163,20 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
         <div className="section-cta">
           {isWorkspace ? (
             <>
-              <Link className="btn btn-primary" href="/consumer?panel=survey#patient-intake">
-                상세 문진 작성하기
+              <Link className="btn btn-primary" href={ctas.primary.href}>
+                {ctas.primary.label}
               </Link>
-              <Link className="btn btn-ghost" href="/#contact">
-                문의
+              <Link className="btn btn-ghost" href={ctas.secondary.href}>
+                {ctas.secondary.label}
               </Link>
             </>
           ) : (
             <>
-              <a className="btn btn-primary" href="#patient-intake">
-                상세 문진으로 이어가기
+              <a className="btn btn-primary" href={ctas.primary.href}>
+                {ctas.primary.label}
               </a>
-              <a className="btn btn-ghost" href="#contact">
-                한의원 상담 연결 문의
+              <a className="btn btn-ghost" href={ctas.secondary.href}>
+                {ctas.secondary.label}
               </a>
             </>
           )}

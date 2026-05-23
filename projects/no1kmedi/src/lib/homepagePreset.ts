@@ -1,4 +1,9 @@
-/** Homepage visual preset SSOT (jema-ai.com marketing surface). */
+/**
+ * Homepage visual preset SSOT (jema-ai.com marketing surface).
+ * Color/accent overrides: globals.css `.preset-*` classes.
+ * Spacing/type scale (8pt): globals.css `MKM-DESIGN-SYSTEM-TOKEN-V1` — same for all presets.
+ * Token names: src/lib/designTokens.ts
+ */
 export const DEFAULT_HOMEPAGE_PRESET = "stripe-linear" as const;
 
 export const homepagePresetKeys = ["stripe-linear", "apple-notion"] as const;

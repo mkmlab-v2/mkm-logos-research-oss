@@ -9,6 +9,7 @@
 "use client";
 
 import { useState } from "react";
+import { siteCopy } from "@/content/siteCopy";
 
 type LeadPayload = {
   name: string;
@@ -32,6 +33,7 @@ function trackEvent(event: string, payload?: Record<string, unknown>) {
 }
 
 export function FreeValidationLeadForm() {
+  const copy = siteCopy.free_validation_lead;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
@@ -43,7 +45,7 @@ export function FreeValidationLeadForm() {
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!name.trim() || !email.trim() || !company.trim()) {
-      setError("이름/이메일/회사명을 입력해 주세요.");
+      setError(copy.errors.required_fields);
       return;
     }
 
@@ -67,18 +69,18 @@ export function FreeValidationLeadForm() {
 
       const json = (await res.json()) as LeadApiResponse;
       if (!res.ok || !json.success) {
-        setError(json.error || "리드 저장 중 오류가 발생했습니다.");
+        setError(json.error || copy.errors.save_failed);
         return;
       }
 
       trackEvent("submit_lead", { lead_channel: "free_validation_form" });
-      setStatus("접수 완료: 1영업일 내에 무료 검증 안내를 드립니다.");
+      setStatus(copy.success);
       setName("");
       setEmail("");
       setCompany("");
       setUseCase("");
     } catch {
-      setError("네트워크 오류로 접수에 실패했습니다.");
+      setError(copy.errors.network);
     } finally {
       setBusy(false);
     }
@@ -86,24 +88,28 @@ export function FreeValidationLeadForm() {
 
   return (
     <div className="card lead-form-card">
-      <h3>무료 검증 신청</h3>
-      <p className="section-lead">월 30회 샘플 검증으로 먼저 확인하고, 필요 시 90일 파일럿으로 전환합니다.</p>
+      <h3>{copy.title}</h3>
+      <p className="section-lead">{copy.section_lead}</p>
       <form className="lead-form" onSubmit={onSubmit}>
         <label>
-          이름
+          {copy.labels.name}
           <input value={name} onChange={(e) => setName(e.target.value)} required />
         </label>
         <label>
-          이메일
+          {copy.labels.email}
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </label>
         <label>
-          회사명
+          {copy.labels.company}
           <input value={company} onChange={(e) => setCompany(e.target.value)} required />
         </label>
         <label>
-          주요 사용 시나리오 (선택)
-          <input value={useCase} onChange={(e) => setUseCase(e.target.value)} placeholder="예: 재무 리스크 조기 경보" />
+          {copy.labels.use_case}
+          <input
+            value={useCase}
+            onChange={(e) => setUseCase(e.target.value)}
+            placeholder={copy.placeholders.use_case}
+          />
         </label>
         <button
           type="submit"
@@ -111,7 +117,7 @@ export function FreeValidationLeadForm() {
           disabled={busy}
           onClick={() => trackEvent("click_free_validation", { location: "home_contact" })}
         >
-          {busy ? "제출 중..." : "무료 검증 신청하기"}
+          {busy ? copy.submit_busy : copy.submit_idle}
         </button>
       </form>
       {status ? <p className="lead-success">{status}</p> : null}

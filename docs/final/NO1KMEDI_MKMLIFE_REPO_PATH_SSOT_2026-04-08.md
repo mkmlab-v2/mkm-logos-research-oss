@@ -4,6 +4,7 @@
 
 ## 1) 범위 분리 (혼동 금지)
 
+- **인프라:** 앱·PM2·nginx origin = **Hostinger VPS만** · DNS·CDN·메일 = **Cloudflare만** — `docs/final/MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md`.
 - 이 문서는 **no1kmedi / mkmlife 계열**의 로컬 모노레포 경로 + **VPS PM2 실측 잠금값**을 한곳에 묶는다. (`payapp-api`만이 아님.)
 - `jema12.com`, `jemaai.cloud`, `bitcoin-trading` 배포 런북과 절차를 섞지 않는다.
 - 특히 `docs/final/SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md`는 no1kmedi/mkmlife용이 아니다.
@@ -25,7 +26,8 @@
 | 구분 | 이름 | 비고 |
 |------|------|------|
 | 레포 `ecosystem.config.cjs` / `deploy-vps-local-llm.sh` | `no1kmedi-payapp-api` | Express `payapp-api`용 |
-| 본선 잠금(실측) | `no1kmedi-com` | Next standalone (`…/.next/standalone`) — **Express와 별 프로세스** |
+| 본선 잠금(실측) | `no1kmedi-com` | Next.js — **`/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi`** 에서 `npm start` (2026-05-23 PM2 실측). **Express와 별 프로세스** |
+| 본선 잠금(실측) | `no1kmedi-payapp-api` | Express `payapp-api` — `…/projects/no1kmedi/payapp-api` |
 | 본선 잠금(실측) | `mkmlife` | `mkm-life` 런타임 |
 
 **같은 이름으로 두 서비스를 취급하지 말 것.** 배포·재시작 시 어떤 앱인지 먼저 구분한다.
@@ -94,8 +96,19 @@ CI는 **저장에 포함된 워크플로만** 돌아간다. §2.2의 `deploy-to-
 
 절대경로는 추측하지 않고, PM2 `exec cwd` 실측값으로만 고정한다.
 
-- `no1kmedi-com` PM2 `exec cwd`: `/opt/no1kmedi-com/.next/standalone`
-- `mkmlife` PM2 `exec cwd`: `/var/www/mkmlife_runtime/mkm-life`
+**잠금값 (2026-05-23, `scripts/Invoke-No1kmediVpsPm2Preflight_v1.ps1` · `reports/no1kmedi_vps_pm2_preflight_latest.json`):**
+
+- `no1kmedi-com` PM2 `exec cwd`: **`/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi`** — `script path` `/usr/bin/npm`, `script args` `start`
+- `no1kmedi-payapp-api` PM2 `exec cwd`: **`/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi/payapp-api`**
+- `mkmlife` PM2 `exec cwd`: **`/var/www/mkmlife_runtime/mkm-life`**
+
+**레거시(디스크 없음, PM2 미사용):** `/opt/no1kmedi-com/.next/standalone` — 2026-05-23 VPS `PATH PROBE` **ABSENT**. 문서·재등록 예시에서 standalone을 기본으로 쓰지 않는다.
+
+**로컬 배포 진입점:** `scripts/Deploy-No1kmediDestinyTarball_v1.ps1` — tarball → 위 `projects/no1kmedi` 경로 → 원격 `npm ci && npm run build && pm2 restart no1kmedi-com`.
+
+**Origin 포트 (2026-05-23, VPS `origin_probe`):** Next `no1kmedi-com` → **`127.0.0.1:3010`** (`package.json` `start`: `next start -p 3010`). `api.no1kmedi.com` nginx → **`127.0.0.1:3847`** (`payapp-api`). Edge는 Cloudflare → nginx → 위 포트.
+
+**로컬 인프라 마감 원클릭:** `projects/no1kmedi`에서 `npm run check:infra-closure` — `Invoke-No1kmediVpsPm2Preflight_v1.ps1` → `check-no1kmedi-staging-preflight_v1.mjs` → `check-no1kmedi-deploy-readiness_v1.mjs`. 산출: `reports/no1kmedi_staging_preflight_latest.json` (`infra_closure.closure_ok`), `reports/no1kmedi_deploy_readiness_latest.json` (`ready`).
 
 운영 규칙:
 
@@ -132,13 +145,13 @@ pm2 describe mkmlife | sed -n '1,160p'
 - PM2 `exec cwd`가 잠금값과 일치하는지 확인
 - 불일치 시 임의 수정하지 말고, 경로 확정 후 재배포 절차를 다시 밟는다
 
-재등록 예시(주의: 아래는 `ecosystem.config.cjs`가 실제로 존재하는 디렉터리에서만 실행):
+재등록 예시(주의: 아래는 `ecosystem.config.cjs` 또는 **실측 `exec cwd`** 가 있는 디렉터리에서만 실행):
 
 ```bash
-# no1kmedi-com (예: ecosystem 파일이 있는 경로)
-cd /opt/no1kmedi-com
+# no1kmedi-com (본선 실측: monorepo projects/no1kmedi)
+cd /opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi
 pm2 delete no1kmedi-com || true
-pm2 start ecosystem.config.cjs --name no1kmedi-com
+pm2 start npm --name no1kmedi-com --cwd /opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi -- start
 pm2 save
 
 # mkmlife (예: ecosystem 파일이 있는 경로)
@@ -188,7 +201,7 @@ pm2 describe no1kmedi-com | sed -n '1,160p'
 pm2 describe mkmlife | sed -n '1,160p'
 
 # 1) no1kmedi-com: exec cwd 확인
-# 기대: /opt/no1kmedi-com/.next/standalone
+# 기대: /opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi (레거시 standalone 경로는 사용하지 않음)
 
 # 2) mkmlife: exec cwd 확인
 # 기대: /var/www/mkmlife_runtime/mkm-life

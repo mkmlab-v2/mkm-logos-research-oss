@@ -33,7 +33,7 @@ const prohibitedPatterns = [
 /** Lines that mention banned phrases only to disclaim them (PUBLIC_FACING v1.7). */
 function lineIsDisclaimerContext(line) {
   if (/\b(no|not)\b/i.test(line) && /guarantee|보장/i.test(line)) return true;
-  if (/금지|없음|아님|쓰지\s*않|제공하지\s*않|하지\s*않습니다|표현을\s*쓰지/i.test(line) && /guarantee|보장|환각/i.test(line)) {
+  if (/금지|없음|아님|쓰지\s*않|제공하지\s*않|하지\s*않습니다|표현을\s*쓰지|주장하지\s*않/i.test(line) && /guarantee|보장|환각/i.test(line)) {
     return true;
   }
   return false;
