@@ -1,0 +1,49 @@
+{
+  "schema": "universal_compression_v3_packet_sketch_v1",
+  "version": "0.1.0",
+  "status": "research_only",
+  "hypothesis_tier": "B",
+  "boundary_ack": "Layered base codebook + dynamic domain shards sketch only. Does not replace trust_packet.0.1, Track A Golden 40, or live-trading paths.",
+  "generated_at_utc": "2026-05-23T12:00:00Z",
+  "commander_plain_language_map": "docs/final/MKM_COMMANDER_PLAIN_LANGUAGE_SYSTEM_MAP_V1.md",
+  "layers": {
+    "base_codebook": {
+      "role": "always_on_core_lexicon",
+      "lexicon_row_count_ssot": 41775,
+      "export_script": "scripts/export_master_codebook_v1.py",
+      "path_pattern": "reports/constitution/btrack_pilot/master_codebook_lexicon_v1_{row_count}_rows_latest.json",
+      "lookup": "scripts/core/master_codebook_lexicon_v1_bridge.py",
+      "note_ko": "통짜 수백만 Term 단일 JSON 합치기는 설계상 비권장 — lookup·패킷 부담"
+    },
+    "dynamic_extension_shards": {
+      "role": "single_winner_domain_plugin",
+      "shard_glob": "codebook/shards/zone_*.json",
+      "router": "scripts/core/domain_router.py",
+      "examples": ["zone_f_code", "zone_e_finance", "zone_g_health"],
+      "multi_shard_union": "roadmap_not_track_a_default"
+    },
+    "packet": {
+      "current_contract": "trust_packet.0.1",
+      "api": "scripts/compression_token_api_v2_stub.py",
+      "openapi": "docs/final/openapi_token_compression_v2_draft.yaml",
+      "v3_delta_hypo": "optional shard_manifest_ref in packet meta — not implemented"
+    }
+  },
+  "adoption_hints": {
+    "structured_ok": "compression_domain_adoption_tier_matrix_v1.json tier adopt_ok",
+    "free_nl_not_recommended": "adopt_not_recommended",
+    "code_equivalent_profile": "loss_profile code_equivalent in v2 stub"
+  },
+  "not_claimed": [
+    "Universal NL default transport",
+    "70-80% sentence coverage without bench row",
+    "Track A auto-promotion from this sketch",
+    "Sub-15ms production SLA",
+    "Verse-level RAG inside compress path"
+  ],
+  "evidence_pointers": [
+    "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
+    "docs/final/artifacts/mkm_inter_agent_wire_profile_v0.json",
+    "docs/final/artifacts/compression_domain_adoption_tier_matrix_v1.json"
+  ]
+}
