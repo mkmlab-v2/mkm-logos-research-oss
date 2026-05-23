@@ -59,8 +59,10 @@
   "cloudflare_smartfarm_redirect": {
     "script": "scripts/setup_cloudflare_jema_ai_smartfarm_redirect_v1.py",
     "wrapper_ps1": "scripts/Invoke-CloudflareJemaAiSmartfarmRedirect_v1.ps1",
+    "triage": "scripts/check_cloudflare_token_roles_v1.py",
     "report": "reports/cloudflare_jema_ai_smartfarm_redirect_latest.json",
-    "status": "pending_token_or_rulesets_write"
+    "status": "scope_jema_ai_zone_missing_on_rulesets_token",
+    "note": "jemaai.cloud rulesets OK != jema-ai.com redirect OK; extend CLOUDFLARE_RULESETS_API_TOKEN with jema-ai.com Zone Rulesets Edit"
   },
   "phase5b_token_targets": [
     ".thread-rail-list",
