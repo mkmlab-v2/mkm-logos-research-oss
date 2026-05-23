@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/personal_insight_evolution_feedback_v1.schema.json",
+  "title": "personal_insight_evolution_feedback_v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "event_id",
+    "ts_utc",
+    "product_lane",
+    "surface",
+    "helpful",
+    "hypothesis_tier",
+    "non_gating",
+    "preview_only"
+  ],
+  "properties": {
+    "schema": { "const": "personal_insight_evolution_feedback_v1" },
+    "event_id": { "type": "string", "minLength": 8, "maxLength": 128 },
+    "ts_utc": { "type": "string", "format": "date-time" },
+    "product_lane": {
+      "type": "string",
+      "enum": ["personadiary", "mkmlife_one_question", "clinician_cdss"]
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "daily_guide",
+        "monthly_guide",
+        "reflect",
+        "one_question_report",
+        "cds_draft",
+        "patient_bundle"
+      ]
+    },
+    "helpful": { "type": "boolean" },
+    "clarity_score": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "usefulness_score": { "type": "integer", "minimum": 1, "maximum": 5 },
+    "physician_action": {
+      "type": "string",
+      "enum": ["accept", "edit", "reject", "defer"]
+    },
+    "content_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "profile_id": { "type": "string", "maxLength": 64 },
+        "question_id": { "type": "string", "maxLength": 128 },
+        "request_id": { "type": "string", "maxLength": 128 },
+        "calendar_kst": { "type": "string", "maxLength": 32 },
+        "package_schema": { "type": "string", "maxLength": 64 }
+      }
+    },
+    "tags": {
+      "type": "array",
+      "maxItems": 12,
+      "items": { "type": "string", "minLength": 1, "maxLength": 32 }
+    },
+    "free_text": { "type": "string", "maxLength": 2000 },
+    "consent_feedback_use": { "type": "boolean" },
+    "probe": { "type": "boolean" },
+    "hypothesis_tier": { "const": "B" },
+    "non_gating": { "const": true },
+    "preview_only": { "const": true },
+    "research_only": { "const": true }
+  }
+}

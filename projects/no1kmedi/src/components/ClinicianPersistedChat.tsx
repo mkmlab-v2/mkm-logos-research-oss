@@ -6,6 +6,7 @@ import { buildClinicianConsultPayload } from "@/lib/clinician-consult-payload-v1
 import { cdsSnapshotFromApi, formatCdsAssistantMessage } from "@/lib/clinician-chat-format";
 import { streamTextClient } from "@/lib/consumer-chat-stream";
 import { formatIntakePinInput, triageBadgeClass, triageLabel } from "@/lib/clinician-intake-utils";
+import { ClinicianCdsFeedbackBar } from "@/components/ClinicianCdsFeedbackBar";
 
 type AdvancedConsultResponse = {
   success: boolean;
@@ -196,6 +197,11 @@ export function ClinicianPersistedChat({
             </p>
           ) : null}
         </div>
+
+        <ClinicianCdsFeedbackBar
+          requestId={thread.lastCds?.requestId}
+          disabled={!canUseAdvancedConsult || busy}
+        />
 
         <div className="chat-input-row clinician-chat-input-row">
           <textarea

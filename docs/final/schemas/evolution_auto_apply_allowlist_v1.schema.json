@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "evolution_auto_apply_allowlist_v1.schema.json",
+  "title": "evolution_auto_apply_allowlist_v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "research_only",
+    "rails",
+    "forbidden_targets",
+    "human_signoff_required_for"
+  ],
+  "properties": {
+    "schema": { "const": "evolution_auto_apply_allowlist_v1" },
+    "version": { "type": "integer", "minimum": 1 },
+    "generated_at_utc": { "type": "string" },
+    "research_only": { "type": "boolean" },
+    "hypothesis_tag": { "type": "string" },
+    "note": { "type": "string" },
+    "rails": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commander_hypothesis", "btrack_price", "general_holdout"],
+      "properties": {
+        "commander_hypothesis": { "$ref": "#/$defs/rail_policy" },
+        "btrack_price": { "$ref": "#/$defs/rail_policy" },
+        "general_holdout": { "$ref": "#/$defs/rail_policy" }
+      }
+    },
+    "forbidden_targets": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "human_signoff_required_for": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    }
+  },
+  "$defs": {
+    "rail_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["auto_apply_mode", "allowed_parameter_targets", "allowed_artifact_writes"],
+      "properties": {
+        "auto_apply_mode": {
+          "type": "string",
+          "enum": ["none", "parameter_only", "copy_to_reports_only"]
+        },
+        "allowed_parameter_targets": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "allowed_artifact_writes": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "entry_scripts": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

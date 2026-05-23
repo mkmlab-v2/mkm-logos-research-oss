@@ -12,6 +12,7 @@ export const personadiaryCopy = {
     conceptKo:
       "오늘의 마음 일기 — 명리 일운·MKM 4AI·라이프·성경 앵커(Logos) 가이드형 답변",
     apiPath: "/api/personadiary/daily-guide",
+    feedbackApiPath: "/api/personadiary/feedback",
     packageSchema: "personadiary_daily_response_package_v1",
   },
   links: {

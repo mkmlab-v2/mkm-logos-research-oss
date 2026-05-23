@@ -2,8 +2,10 @@
 
 import { usePersonadiaryDailyGuide } from "./usePersonadiaryDailyGuide";
 
+import { PersonadiaryFeedbackStrip } from "./PersonadiaryFeedbackStrip";
+
 export function PersonadiaryDailyGuideCards() {
-  const { pkg, loading, error } = usePersonadiaryDailyGuide();
+  const { pkg, loading, error, profileId } = usePersonadiaryDailyGuide();
 
   if (loading) {
     return <p className="pd-guide-loading">오늘의 가이드를 불러오는 중…</p>;
@@ -54,6 +56,7 @@ export function PersonadiaryDailyGuideCards() {
             </article>
           ))}
       </div>
+      <PersonadiaryFeedbackStrip profileId={profileId} calendarKst={pkg.calendar_kst} />
     </div>
   );
 }

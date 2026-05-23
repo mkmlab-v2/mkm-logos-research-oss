@@ -41,6 +41,20 @@ const probes = [
     expectStatus: 200,
     jsonIncludes: { ok: true, preview_only: true },
   },
+  {
+    id: "personadiary_feedback_api",
+    method: "POST",
+    url: `${(process.env.NO1KMEDI_FEEDBACK_SMOKE_BASE_URL || "https://app.jema-ai.com").replace(/\/$/, "")}/api/personadiary/feedback`,
+    body: {
+      helpful: true,
+      surface: "daily_guide",
+      profile_id: "commander",
+      probe: true,
+      consent_feedback_use: true,
+    },
+    expectStatus: 200,
+    jsonIncludes: { ok: true, preview_only: true },
+  },
 ];
 
 const report = {
@@ -56,8 +70,9 @@ const report = {
 for (const probe of probes) {
   const row = { url: probe.url, ok: false };
   try {
-    const res = await fetch(probe.url, {
-      method: "GET",
+    const method = probe.method || "GET";
+    const fetchInit = {
+      method,
       redirect:
         probe.followRedirects
           ? "follow"
@@ -65,7 +80,12 @@ for (const probe of probes) {
             ? "manual"
             : "follow",
       signal: AbortSignal.timeout(20000),
-    });
+    };
+    if (method === "POST" && probe.body) {
+      fetchInit.headers = { "content-type": "application/json" };
+      fetchInit.body = JSON.stringify(probe.body);
+    }
+    const res = await fetch(probe.url, fetchInit);
     row.status = res.status;
     const text = await res.text();
     row.content_type = res.headers.get("content-type");
