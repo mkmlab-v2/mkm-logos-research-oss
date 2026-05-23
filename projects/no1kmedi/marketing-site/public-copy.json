@@ -47,6 +47,11 @@
       "href": "/personadiary",
       "label": "Persona Diary 프리뷰",
       "sublabel": "초개인화 라이프로그 콘셉트 프리뷰 · 웰니스/리플렉션 · 의료·투자 조언 아님"
+    },
+    "farm_b2b_smartfarm": {
+      "href": "https://farm.jema-ai.com",
+      "label": "농업 IoT · 스마트관수 (B2B)",
+      "sublabel": "노지·시설 SI · 하드웨어 파트너·API 연동 · 충남 금산 파일럿 · 투자·의료 조언 아님"
     }
   },
   "header": {

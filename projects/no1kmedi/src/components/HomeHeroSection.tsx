@@ -4,6 +4,7 @@ const HUB_PRIMARY_KEYS = [
   "showroom_jemaai",
   "premium_mkmlife",
   "b2b_acodeai",
+  "farm_b2b_smartfarm",
   "research_mkmlab",
   "personadiary_preview",
 ] as const;
