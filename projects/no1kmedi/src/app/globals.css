@@ -2770,7 +2770,7 @@ section h2 {
   opacity: 0.9;
 }
 
-/* --- App workspace (/consumer, /clinician): sidebar + main, ChatGPT-style density --- */
+/* --- App workspace (/consumer, /clinician): sidebar + main — MKM-DESIGN-SYSTEM-TOKEN-V1 phase5 --- */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -2810,8 +2810,8 @@ section h2 {
 .workspace-topbar-inner {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.55rem 0.85rem;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
   max-width: 1400px;
   margin: 0 auto;
 }
@@ -2821,9 +2821,9 @@ section h2 {
   background: var(--surface);
   border: 1px solid var(--line);
   color: var(--text);
-  border-radius: 8px;
-  padding: 0.38rem 0.65rem;
-  font-size: 0.82rem;
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--text-xs);
   cursor: pointer;
 }
 
@@ -2868,10 +2868,10 @@ section h2 {
   flex-shrink: 0;
   border-right: 1px solid var(--line);
   background: rgba(18, 28, 25, 0.55);
-  padding: 0.85rem 0.65rem;
+  padding: var(--space-md) var(--space-sm);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-md);
   min-height: 0;
 }
 
@@ -2896,16 +2896,16 @@ section h2 {
 .workspace-nav {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: var(--space-xs);
 }
 
 .workspace-nav + .workspace-nav {
-  margin-top: 0.35rem;
+  margin-top: var(--space-xs);
 }
 
 .workspace-nav-label {
-  margin: 0 0 0.22rem;
-  font-size: 0.7rem;
+  margin: 0 0 var(--space-xs);
+  font-size: var(--text-xs);
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: color-mix(in srgb, var(--muted) 90%, white 10%);
@@ -2918,11 +2918,11 @@ section h2 {
 .workspace-nav-item {
   text-align: left;
   border: 1px solid transparent;
-  border-radius: 10px;
-  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-sm);
   background: transparent;
   color: var(--muted);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   cursor: pointer;
   font-family: inherit;
 }
@@ -3063,11 +3063,11 @@ section h2 {
 
 .palette-dialog {
   width: min(520px, 100%);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
-  padding: 0.65rem 0.65rem 0.5rem;
+  padding: var(--space-sm) var(--space-sm);
 }
 
 .palette-input {
@@ -3143,11 +3143,11 @@ section h2 {
 .workspace-secondary-btn {
   width: 100%;
   border: 1px dashed var(--line);
-  border-radius: 10px;
-  padding: 0.5rem 0.6rem;
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-sm);
   background: rgba(255, 255, 255, 0.03);
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: var(--text-xs);
   font-family: inherit;
   cursor: pointer;
 }
@@ -3173,7 +3173,7 @@ main.workspace-main {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  padding: 0.85rem 1rem 1.25rem;
+  padding: var(--space-md) var(--space-md) var(--space-lg);
   max-width: none;
   margin: 0;
 }
@@ -3200,11 +3200,11 @@ main.workspace-main {
 
 .workspace-consent-card {
   width: min(560px, 100%);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--line);
   background: var(--surface);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.45);
-  padding: 1rem 1.05rem;
+  padding: var(--space-md) var(--space-md);
 }
 
 .workspace-consent-card h2 {
@@ -3230,9 +3230,9 @@ main.workspace-main {
 }
 
 .workspace-consent-actions {
-  margin-top: 0.85rem;
+  margin-top: var(--space-md);
   display: flex;
-  gap: 0.55rem;
+  gap: var(--space-sm);
   justify-content: flex-end;
 }
 
@@ -3255,7 +3255,7 @@ main.workspace-main {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   border-color: rgba(255, 255, 255, 0.08);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.018), rgba(255, 255, 255, 0)),
@@ -3290,7 +3290,7 @@ main.workspace-main {
 }
 
 .chat-card--clinician {
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
 }
 
 .clinician-chat-toolbar {
@@ -3298,22 +3298,22 @@ main.workspace-main {
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
-  padding-bottom: 0.65rem;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
   border-bottom: 1px solid var(--line);
-  margin-bottom: 0.65rem;
+  margin-bottom: var(--space-sm);
   flex-shrink: 0;
 }
 
 .clinician-context-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: var(--space-xs);
 }
 
 .clinician-context-chip {
-  font-size: 0.75rem;
-  padding: 0.2rem 0.5rem;
+  font-size: var(--text-xs);
+  padding: var(--space-xs) var(--space-sm);
   border-radius: 999px;
   border: 1px solid var(--line);
   color: var(--muted);
@@ -3343,13 +3343,13 @@ main.workspace-main {
   min-height: 2.75rem;
   max-height: 8rem;
   resize: vertical;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: rgba(0, 0, 0, 0.15);
   color: var(--text);
-  padding: 0.55rem 0.65rem;
+  padding: var(--space-sm) var(--space-sm);
   font-family: inherit;
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
 }
 
 .btn-sm {
@@ -3369,8 +3369,8 @@ main.workspace-main {
 .workspace-panel {
   max-width: 52rem;
   border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 1rem 1.05rem;
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-md);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.014), rgba(255, 255, 255, 0)),
     var(--surface);
@@ -3378,16 +3378,16 @@ main.workspace-main {
 }
 
 .workspace-panel--prose .workspace-panel-title {
-  margin: 0 0 0.75rem;
-  font-size: 1.08rem;
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-lg);
   letter-spacing: -0.01em;
 }
 
 .workspace-muted {
-  margin: 0.85rem 0 0;
-  font-size: 0.88rem;
+  margin: var(--space-md) 0 0;
+  font-size: var(--text-sm);
   color: var(--muted);
-  line-height: 1.55;
+  line-height: var(--leading-normal);
 }
 
 .jema-diff-strip {

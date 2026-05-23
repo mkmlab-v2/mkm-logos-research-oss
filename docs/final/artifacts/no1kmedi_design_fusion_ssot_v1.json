@@ -4,7 +4,8 @@
   "layer_a_subroutes": {
     "personadiary": "production_canonical_phase4",
     "smartfarm": "production_canonical_phase4",
-    "enterprise": "production_canonical_phase4"
+    "enterprise": "production_canonical_phase4",
+    "consumer_clinician_workspace": "production_canonical_phase5"
   },
   "layers": {
     "A_tokens_css": "projects/no1kmedi/src/app/globals.css",
@@ -45,6 +46,19 @@
   "smartfarm_copy_migrated": ["a11y.skip_to_main", "a11y.nav_aria_label", "a11y.mail_subject"],
   "phase3_token_pass_utc": "2026-05-22",
   "phase4_token_pass_utc": "2026-05-23",
+  "phase5_token_pass_utc": "2026-05-23",
+  "phase5_token_targets": [
+    ".workspace-topbar-inner",
+    ".workspace-sidebar",
+    ".workspace-nav-item",
+    "main.workspace-main",
+    ".workspace-panel",
+    ".workspace-consent-card",
+    ".chat-card--workspace",
+    ".clinician-chat-toolbar",
+    ".clinician-chat-textarea",
+    ".palette-dialog"
+  ],
   "phase4_token_targets": [
     ".pd-premium-cta",
     ".pd-glass",

@@ -123,5 +123,23 @@ for (const [needle, label] of phase4TokenChecks) {
   }
 }
 
+const phase5TokenChecks = [
+  ["MKM-DESIGN-SYSTEM-TOKEN-V1 phase5", "workspace phase5 marker comment"],
+  [".workspace-nav-item {", "workspace nav item block"],
+  ["border-radius: var(--radius-md);", "workspace nav radius (shared phase5)"],
+  ["main.workspace-main {", "workspace main block"],
+  ["padding: var(--space-md) var(--space-md) var(--space-lg);", "workspace main padding"],
+  [".workspace-panel {", "workspace panel block"],
+  [".clinician-chat-toolbar {", "clinician toolbar block"],
+  [".clinician-chat-textarea {", "clinician textarea block"],
+  [".workspace-consent-card {", "workspace consent card block"],
+];
+for (const [needle, label] of phase5TokenChecks) {
+  if (!globals.includes(needle)) {
+    console.error(`[check-design-tokens-smoke] phase5 token missing (${label}): ${needle}`);
+    process.exit(1);
+  }
+}
+
 console.log("[check-design-tokens-smoke] passed.");
 process.exit(0);
