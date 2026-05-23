@@ -5,6 +5,7 @@
   "research_only": false,
   "boundary_ack": "Wire profile describes intended agent-to-agent envelope. Production SLA, lingua franca completion, and lossless human decode are not claimed.",
   "commander_plain_language_map": "docs/final/MKM_COMMANDER_PLAIN_LANGUAGE_SYSTEM_MAP_V1.md",
+  "v3_packet_sketch_research_only": "docs/final/artifacts/universal_compression_v3_packet_sketch_v1.json",
   "layers": {
     "lexicon": {
       "symbol_key": "atom_id",

@@ -24,36 +24,69 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-21T19:35:04Z
+- **last_updated_utc:** 2026-05-23T04:45:21Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
 - **external_briefing_ref_v2:** `athena_memory_bank_v2.md` (time-series partition + firewall)
 - **지휘관 보좌 프로필 (초개인화 v1):** `docs/final/schemas/commander_profile_v1.schema.json` · `docs/final/artifacts/commander_profile_v1.example.json` — `birth_anchor`·`myeongni_fact_ref`=엔진 Fact; `cognition_hypothesis`·`assist_coaching_v1`=`[HYPO]`·격벽만. 사주로 GTM·실매매·임상 단정 금지. 가족 앵커는 `family_anchors_ref`(딸 등).
 
+## CF jemaai rulesets — 재발 방지 (Fact-Lock · 2026-05-22)
+
+| 판정 | 규칙 |
+|------|------|
+| **403 + verify 200** | **scope** — 토큰 만료 아님 |
+| **카운터 SSOT** | `reports/cloudflare_jemaai_scope_recurrence_v1_latest.json` · `reports/cloudflare_jemaai_scope_recurrence_log.jsonl` |
+| **자동진행 시** | `record_cloudflare_jemaai_scope_recurrence_v1.py` → blocked면 **apply 스킵** · Op30에 `[CF-GATE]` 1줄만 |
+| **지휘관 1타** | API Tokens → **동일** `cfut_*` 편집 → jemaai.cloud만 **WAF Edit + Cache Rules Edit** (mkmlife Analytics만 추가 **불충분**) |
+| **CF UI (한국어)** | 커스텀 토큰 **가운데 열 = 검색** — **「영역 WAF」「캐시 규칙」 트리 메뉴가 없으면 정상**. `WAF`·`Cache Rules`·`Zone Read` **영문 검색** 후 Edit/Read 선택 (`JEMAAI_CLOUD_SHOWROOM_CF_EDGE_DASHBOARD_V1.md` §1) |
+| **에이전트 금지** | 매일 새 토큰 · `CLOUDFLARE_API_TOKEN` 덮어쓰기 · 403 apply 반복 · **없는 KR 메뉴명으로 안내** |
+
+---
+
+## Cursor 웹 자동화 3단계 (영구 고정 · 2026-05-22)
+
+**지휘관 확정 — 앞으로 이 순서만.** 상세: `.cursor/rules/mkm-browser-automation-v1.mdc` · 채널 A=`browser_*`(IDE) · B=`openchrome` · C=`notebooklm` MCP.
+
+| 순위 | 지휘관 지시 예 | 에이전트 동작 | 브라우저 |
+|------|----------------|---------------|----------|
+| **1** | 「API로 해」「스크립트로」 | `scripts/*.py`·CF/AWS API·exit code·아티팩트만 SSOT | **띄우지 않음** |
+| **2** | 「내장 브라우저로 확인」「localhost 스모크」 | `cursor-ide-browser` → `browser_*` (스냅샷·스모크) | IDE 패널만 |
+| **3** | 「토큰 줄게」「로그인은 내가」 | **일반 Chrome(수동)** → `reports/*_LOCAL.json` 또는 `.env` → `Invoke-Apply*` 등 apply | **에이전트 로그인·클릭 금지** |
+
+**Human Blocker (수동 SSOT만):** `dash.cloudflare.com`·Turnstile/캡차·은행·결제·K-Startup PMS 임시저장. openchrome/IDE로 여기 로그인 시도 → **무한 보안 확인** 재발(2026-05-22 확인).
+
+**에이전트 NEVER:** 「로그인해서 클릭해 줘」로 CF/은행 진입 · openchrome으로 `dash.cloudflare.com` · Turnstile 우회 반복 · 실패 후 동일 브라우저 2회 이상.
+
+**에이전트 ALWAYS:** 문(토큰/키)은 지휘관이 열고, 에이전트는 **API·스크립트·2순위 스모크**만. CF jemaai rulesets → `CLOUDFLARE_RULESETS_API_TOKEN` 분리 + `Invoke-ApplyJemaaiShowroomCfEdgeTokenFromSecret_v1.ps1` (위 CF 절).
+
+**openchrome:** 제거 대상 아님 — **채널 B**, 지휘관이 **외장 크롬** 요청 또는 A 차단+승인 시만. CF 대시보드·Human Blocker에는 **쓰지 않음**.
+
+---
+
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-05-21T19:35:04Z** — G12 ACTIVE_MODE·파수 LivePatrolDaily·O-P5 CLOSED·융합 MS/Oracle 이관 2026-05-22
-- **2026-05-21T19:30:44Z** — O-P29b 헤드라인 ACTIVE 57.3% 승격·SSOT latest 갱신·gates soft_passed
-- **2026-05-21T19:21:29Z** — G12 PM2 restart bitcoin-live-small-24h 완료: MAINNET trading enabled VPS online
-- **2026-05-21T19:17:17Z** — G12 지휘관 승인: live-enable 체인 exit0, GO ACTIVE_MODE, VPS sync; PM2 restart 미실행
-- **2026-05-21T18:41:17Z** — O-P28 헤드라인 승격: ACTIVE 53.5% min_conf 0.18 지휘관 승인; live/Track A 합선 없음
-- **2026-05-21T18:11:58Z** — CI/CD 2레일 고정: 일상 push-internal→gitea만(GitHub Actions 잠듦=정상); GitHub=명시 push/PR·미러 검열대; 본선=Windows Task+AthenaBundle 로컬 스캔; Gitea는 Git SSOT(Actions 없음)
-- **2026-05-21T17:23:07Z** — 14차: VPS payapp redeploy P0 940 prophecy closure 미커밋 payapp SSOT
-- **2026-05-21T17:20:37Z** — 13차: P0 940 B2B쇼룸헬스 TrackA GREEN CF체크리스트JSON
-- **2026-05-21T17:19:03Z** — 12차: Fact-Lock번들 G0-11 VPS diagnose OK B2B내부준비 P1+compression
-- **2026-05-21T16:57:33Z** — 11차: origin HTTPS payapp OK P1 S3S4 헬스 CF edge만 잔여
-- **2026-05-21T16:53:43Z** — 10차: nginx api origin OK CF edge block certbot fail triplet+prophecy closure
-- **2026-05-21T16:51:37Z** — O-P17 hardset v2: override fixture; v1 92.6% vs v2 heuristic 100% self-match; human gold 0 rows
-- **2026-05-21T16:43:55Z** — 9차 병렬: VPS-only 정렬 payapp PM2 :3847 health OK 공개=api nginx+CF 잔여
-- **2026-05-21T16:43:00Z** — O-P16 tier_v1: narrative boost blocked; gold_tags 78.7% tier_v1+0.08 macro; text_blind 4.3% unchanged
-- **2026-05-21T16:39:21Z** — 8차 상용화: pytest34 TrackA GREEN dashboard no1kmedi VPS=CF/no payapp PM2 outreach홀드
-- **2026-05-21T16:35:01Z** — O-P15: chronology bundle 0a/0b wired; era digest report; staging deploy; CI logos-chronology-era-blind-smoke
-- **2026-05-21T16:30:51Z** — O-P14 era blind eval: 47 hist gold_tags 61.7% text_blind 4.3%; hardset 27 text_blind 92.6%; modern_boost default 0.0; Run-LogosChronologyEraBlindEvalFull_v1
-- **2026-05-21T16:21:15Z** — 우선순위=상용화개발; outreach 홀드; P1 compression+promotion G0-11 pass
-- **2026-05-21T16:13:19Z** — Phase1 병렬 완료: stub31·parity2·hardening5·VPS triplet·TrackA GREEN·예언 closure_ok; LG CLOSED
-- **2026-05-21T16:08:59Z** — LG CLOSED(5/20전 reject). 전선=TrackC B2B팩+TrackA GREEN+인프라 alias OK
+- **2026-05-23T04:45:21Z** — 지휘관용 4비유 맵 v1 (교육용·SSOT아님) + Fact-Lock 4문장·Mermaid 고정
+- **2026-05-23T04:36:49Z** — 2026-05-23 P31 TG 휴장일 market_seal·HOLD·08:18 cross_lens·08:28 advanced 완료
+- **2026-05-23T04:30:41Z** — Stateless Trust Packet: P0 paths, weekly -IncludeStatelessTrustPacket, lossless PoC, Invoke routine
+- **2026-05-23T04:21:27Z** — 08:18 eval에 IncludeCrossLensRagFusion: cross_lens+sphere→08:28 TG I-c/I-d
+- **2026-05-23T03:16:56Z** — TG advanced: I-c cross-lens RAG + I-d 4RAG·그래프 URL·sphere pre-step·bridge v1
+- **2026-05-23T02:53:45Z** — TG 장전 advanced: 08:28(eval후)·.env advanced·IV-b 오늘3액션·VI축소·태스크재등록
+- **2026-05-23T02:24:49Z** — 일요일 감사 Task 등록·readiness·LivePatrol GO·S4U는 관리자 PowerShell에서 weekend 번들
+- **2026-05-23T02:19:13Z** — 환자 고부하 기본솔루션 SSOT: patient_high_load_daily_optimization_playbook_v1.json + CENTRAL 라우팅·김하은(소음인·정해계축계유기미) 레퍼런스; 간지=MKM·신강용신=변증/포스텔라·환자단독 MKM 강/목용신 금지
+- **2026-05-23T02:18:20Z** — 패널 refresh 6스텝 exit0·reports/prophecy_panel_24h_alert_check_latest·헤드라인57.3%유지
+- **2026-05-23T02:14:30Z** — 2026-05-23 패널 24h 훅 정합·readiness ALL OK·ALERT_1 kpi_b policy·헤드라인 57.3% 유지
+- **2026-05-23T01:38:16Z** — 2026-05-23 Oracle: Phase A 유지·수동 B-track 스윕 exit0·헤드라인 57.3%·일일 43.3% 분리·LivePatrol GO
+- **2026-05-23T01:19:36Z** — Phase A dual-lane SSOT: daily operational vs commander headline KPI separated; O-P29b headline restored 57.3% (n=248); daily 43.3% (n=30); pointer prophecy_hit_rate_ssot_pointer_v1_latest.json
+- **2026-05-22T11:35:09Z** — done: personadiary 오픈베타 VPS배포(프리미엄홈·daily-guide·waitlist·/demo)·CF jemaai 쇼룸 rulesets infra_ok. next: MS-PASTE 수동·preview DNS 선택·커밋 요청 시
+- **2026-05-22T10:11:58Z** — 브라우저자동화점검: IDE browser_* 주입OK·YouTube MKM채널생성가능·RTMP/CF대시보드는 HumanBlocker
+- **2026-05-22T09:58:45Z** — 웹3단계영구: 1API 2browser_*스모크 3일반Chrome토큰→apply; CF dash openchrome/로그인자동 금지; CENTRAL+규칙 고정
+- **2026-05-22T08:11:07Z** — 2026-05-22 Azure eastus2 azure_first+VPS sync; LoRA 0-A/0-B only no domain packs; O-P31c daily chain exit0 ZoneA24h+ZoneB shorts no Azure credit; handoff MISSION_LOG fusion
+- **2026-05-22T02:35:44Z** — LivePatrol ok O-P30 streak29 personadiary.com 200 Telegram task 0830 re-reg
+- **2026-05-22T02:32:55Z** — PersonaDiary VPS deploy+Telegram personal sent Logos Proverbs 3:5
+- **2026-05-22T02:25:59Z** — PersonaDiary daily fortune+Logos anchor Proverbs 3:5 NON_GATING pytest6
+- **2026-05-22T02:23:05Z** — PersonaDiary 홈=personadiary_daily_response_package_v1(명리·4AI·라이프·Logos)·CONTRACT+API /api/personadiary/daily-guide
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -66,6 +99,14 @@
 | 구현 여부·경로·게이트 | CONSTITUTION + `scripts/verify_p0_constitution_gate_paths.ps1` + 해당 스크립트 | 설명 보조만 |
 | 사상·DNA·시장 심리가 “다 합쳐졌나” | 헌법 표 **격벽**·일일 B-track 번들 절·`KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md`( A/B ) | `[HYPO]` 또는 `research_only` |
 | 대외·제안·카피 | `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` + `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` | 인용 각주만 |
+| **환자·고3·소음인·복통·저혈압·수험 생활 설계** | **`docs/final/artifacts/patient_high_load_daily_optimization_playbook_v1.json`** (웜앤글로우·고부하 공학 설계 SSOT) + `patient_care_bundle`·`MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md` | **간지=FACT(MKM 엔진)** · **신강·용신=한의/포스텔라** · MKM `strength_label`·용신후보 **환자 단독 금지** |
+
+### 환자·고부하 생활공학 기본 솔루션 (2026-05-23 잠금)
+
+- **SSOT:** `docs/final/artifacts/patient_high_load_daily_optimization_playbook_v1.json` — L0 임상 주 · L1 뇌-장/저혈압/전정 · L2 체온·식이 · L3 학습 · L4 진로 · L5 달력 `[HYPO]`만.
+- **레퍼런스 케이스:** 김하은(2008-02-03 14:00 서울·소음인·고3) — `reference_case_v1` 필드; 사주 **정해·계축·계유·기미** MKM=포스텔라 일치.
+- **상담 톤:** 「고정밀 센서」·따뜻한 입력·마이크로 투두 — **「사주 강하니 버텨」·합격 단정·사주 인과」 금지** (`patient_care_bundle` 정책과 동일).
+- **엔진:** 표·대운 → `run_saju_global_birth_v1` / `build_myeongni_full_report_v1`; 임상 강약·용신 → **변증·외부 만세력(조후·억부)**, MKM `yongsin_hypothesis`는 **연구 로그만**.
 
 ---
 
@@ -81,7 +122,9 @@
 | 로컬 검증 번들 | `scripts/verify_p0_constitution_gate_paths.ps1` → exit 0; 필요 시 `scripts/run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` |
 | 원격 반영 | **토폴로지 SSOT:** `MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md` — compute **Hostinger VPS만** · edge **Cloudflare만**. Git: `push-internal.ps1`. VPS scp: `sync_showroom_to_vps.ps1`, `Sync-MkmlabRedesignToVps_v1.ps1` (`MKM_VPS_HOST`·`vps-mkmlife`는 표기만 다를 수 있음). **hPanel `public_html` 금지.** — 에이전트는 **명시 요청 시에만** |
 | **Google Gen AI · GCP 크레딧·벤치** | 과금 표면 **둘**: (A) Developer API 키 — (B) **Vertex AI** = `GOOGLE_CLOUD_PROJECT` + ADC → **프로젝트 Billing**(프로모션 SKU 범위는 콘솔 확인). 확인 `scripts/check_google_genai_readiness_v1.py check|smoke-vertex`; 채팅 스모크 `scripts/run_gemini_chat_smoke_v1.py --vertex`; 배치·멀티모달 `scripts/gemini_multimodal_batch.py [--vertex]`; **FACTS 벤치 완결(단일 플래그십·Vertex):** `scripts/run_facts_vertex_benchmark_v1.py`(기본 모델 `gemini-2.5-pro`) → 산출 `docs/final/artifacts/facts_vertex_benchmark_latest.json`·원클릭 `scripts/run_facts_vertex_benchmark_e2e_v1.ps1`. 키: `scripts/security_agent_manager.py`의 `resolve_gemini_developer_api_key` — env 우선·동명 DPAPI. **혼동 금지:** AI Studio 키만으로 “크레딧 자동 차감” 단정 금지. |
-| **LG·압축·41k·이론** | **먼저** 「**41k·압축·LG — 통합 이해 한 장**」절 + factcheck. **6문장 검증**·**고정 응답 틀**만 사용. `이론 0%/100%`·NL 당선확률 **금지**. SSOT: `MULTILENS_*`·`original_language_master_atoms_summary_latest.json`(132万→41775). |
+| **LG·압축·41k·이론** | **먼저** `docs/final/MKM_COMMANDER_PLAIN_LANGUAGE_SYSTEM_MAP_V1.md` + 「**41k·압축·LG — 통합 이해 한 장**」절 + factcheck. **6문장 검증**·**고정 응답 틀**만 사용. `이론 0%/100%`·NL 당선확률 **금지**. SSOT: `MULTILENS_*`·`original_language_master_atoms_summary_latest.json`(132万→41775). |
+| **V2 압축 vs Logos RAG (3줄 · 2026-05-23)** | ① **V2 compress** = `evaluate_report` + 41775 lexicon **lookup** + `domain_router` — **Logos ANN 31102 verse RAG 없음**. ② **Logos RAG** = B-track only (`commander_daily_logos_anchor` 선택 ANN · O-P31c 대본 · philosophy/cross_lens 파일럿) — **`[NON_GATING]`**. ③ **`graph_wire_selective_bridge` Track A 기본 `false`** — B-track 스테이징만 `true` 검토. 상세: `MKM_COMMANDER` §4·§5. |
+| **환자·고부하·수험 생활 설계** | `docs/final/artifacts/patient_high_load_daily_optimization_playbook_v1.json` → CENTRAL 「환자·고부하 생활공학」절; 간지만 필요 시 `run_saju_global_birth_v1` |
 | **NotebookLM MCP 사용 턴** | (재발 방지 v1, 2026-05-09) **첫 호출 자가진단**: `notebooklm.get_health` 시도 → `tool_not_found`/timeout이면 **그 턴 안에 보고**하고 로컬 SSOT 폴백. 사용자에게 안내할 복구 순서: ① `scripts/check_notebooklm_mcp_prereqs.ps1` ② `scripts/repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12` ③ Cursor Settings→MCP `notebooklm` toggle off/on ④ **새 채팅** 시작(도구 카탈로그는 채팅 시작 시 결정) ⑤ 그 채팅에서 `setup_auth`→`get_health`. `.cursor/mcp.json`은 **`npx -y …@latest` 금지**·**node + 핀버전 직접 실행** 고정(`MKM_NOTEBOOKLM_MCP_PINNED_VERSION` env). 로그오프 자동 정리: `MKM_RepairNotebookLmMcpStale_OnLogoff` (`scripts/register_notebooklm_mcp_repair_logoff_task.ps1`). |
 
 ---
@@ -439,7 +482,7 @@
 
 | 축 | 고정 |
 |----|------|
-| **로컬 Windows 일일** | `scripts/Register-MkmSmallLiveProphecyDailyOps_v1.ps1` 기본 **08:05** `MKM-BTrack-DailyHypothesis-Chain` → **08:18** `MKM-Prophecy-Daily-Eval-Report`(원페이저·`--force-dual-leg-panel` 등) → **08:30** `MKM-Telegram-Minimal-Daily-Digest`(**advanced**, `MKM_TELEGRAM_DIGEST_STYLE=advanced`) → **08:42** `MKM-Prophecy-Panel-24h-Alerts` · **4h** Fact-Safe |
+| **로컬 Windows 일일** | `scripts/Register-MkmSmallLiveProphecyDailyOps_v1.ps1` 기본 **08:05** `MKM-BTrack-DailyHypothesis-Chain` → **08:18** `MKM-Prophecy-Daily-Eval-Report`(원페이저·`--force-dual-leg-panel` 등) → **08:28** `MKM-Telegram-Minimal-Daily-Digest`(**advanced**, `MKM_TELEGRAM_DIGEST_STYLE=advanced`) → **08:42** `MKM-Prophecy-Panel-24h-Alerts` · **4h** Fact-Safe |
 | **원클릭 수동** | `scripts/Invoke-MkmSmallLiveProphecyDailyOpsBundle_v1.ps1` |
 | **주간 학습(WF·스윕)** | **이원 태스크(단일 배관 아님):** 일 `09:45` `MKM-BTrack-RecommendedEval-AutoSweep-Weekly` → `Run-BtrackRecommendedEvalAutoSweep_v1.ps1` · 일 `10:15` `MKM-BTrack-Prophecy-Weekly-Learning` → `Invoke-MkmBtrackProphecyWeeklyLearning_v1.ps1` **`-SkipAutoSweep`** (스윕 재실행 없음 → `reports/*_recommended*` → `docs/final/artifacts/*_latest` 승격 · gates · 30일 eval · watchdog · registry seed). **상세 도면:** 본 파일 「B-track 예언·통찰 팩트록 배관」절. |
 | **VPS 실전** | PM2 `bitcoin-live-small-24h` 유지 · **소액**(`AROON_ORDER_QTY`·`BTC_MAX_TRADES_PER_DAY` 등 루트 `.env`) · **주문 ON/OFF는 별도 승인** |
@@ -459,8 +502,8 @@
 | 시각 | 태스크명 | 스크립트 | 역할 |
 |------|----------|----------|------|
 | **08:05** | `MKM-BTrack-DailyHypothesis-Chain` | `run_btrack_daily_hypothesis_chain.ps1` | 시장 CSV·**명리** `run_lens_myeongni` · **사상** `run_lens_sasang`+`run_market_sasang_lens_v1` · **Logos** `run_lens_logos` · 퓨전 스텁 · 가설 `generate_btrack_hypothesis_prophecy_v1` · (선택) 체인 내 채점 |
-| **08:18** | `MKM-Prophecy-Daily-Eval-Report` | `run_daily_prophecy_eval_and_report.ps1` | 듀얼레그(`--force-dual-leg-panel`)·원페이저·WF·Trinity 생략 기본 — **일일 eval 별도 셸** |
-| **08:30** | `MKM-Telegram-Minimal-Daily-Digest` | `Register-TelegramMinimalDailyDigestTask.ps1` | 장전 **advanced** TG 1통(08:18 brief 재갱신 후 발송) — User env `MKM_TELEGRAM_DIGEST_STYLE=advanced` |
+| **08:18** | `MKM-Prophecy-Daily-Eval-Report` | `run_daily_prophecy_eval_and_report.ps1` | 듀얼레그·원페이저·WF·Trinity 생략 기본 · **`-IncludeCrossLensRagFusion`** → `build_cross_lens_rag_fusion_v1` + `assemble_three_lens_sphere_envelope_v1` (08:28 TG I-c/I-d 선행) |
+| **08:28** | `MKM-Telegram-Minimal-Daily-Digest` | `Register-TelegramMinimalDailyDigestTask.ps1` | 장전 **advanced** TG 1통(**08:18 eval·brief 후** 발송) — `IV-b 오늘 3액션` · User env `MKM_TELEGRAM_DIGEST_STYLE=advanced` |
 | **08:42** | `MKM-Prophecy-Panel-24h-Alerts` | `Check-ProphecyPanel24hAlerts.ps1` | 패널 KPI 알림 — **`sync_showroom_to_vps.ps1` 아님** |
 
 **쇼룸:** `scripts/sync_showroom_to_vps.ps1` — **주간·수동** (`AGENTS.md` Phase 3). 일일 장전 파이프에 **포함되지 않음**.
@@ -489,7 +532,7 @@ flowchart TD
   subgraph D ["일 Mon–Sat · Mode B · KST"]
     D1[08:05 DailyHypothesisChain]
     D2[08:18 DailyEvalReport]
-    D3[08:30 TelegramDigest advanced]
+    D3[08:28 TelegramDigest advanced]
     D4[08:42 Panel24hAlerts]
   end
   subgraph W0945 ["일 Sun 09:45"]
@@ -542,7 +585,7 @@ flowchart TD
 - **예언 → 주문 자동 트리거** 실험 중단. 예언 = JSON·`[HYPO]` 관측만; 매매 = `aroon_v1`·`BTC_MAX_TRADES_PER_DAY` 등 **기계 분리**.
 - **명리·41k·게마트리아 → 단기 BTC 실전 승격** 90일 중단. **허용:** B-track 일일 체인 **관측·산출** (승격 없음).
 
-**유지 (중단 아님):** Track A 압축 shadow corpus · Logos KOSPI shadow 연구(non-gating) · 모드 B 일일 스케줄(08:05/08:18/08:30/08:42) · LG 9장 IR 덱(5/20 결과는 **[VERIFY]** 일정).
+**유지 (중단 아님):** Track A 압축 shadow corpus · Logos KOSPI shadow 연구(non-gating) · 모드 B 일일 스케줄(08:05/08:18/08:28/08:42) · LG 9장 IR 덱(5/20 결과는 **[VERIFY]** 일정).
 
 **SSOT 복사:** `MISSION_LOG.template.md` 상단 · `.cursor/rules/central-agent-memory.mdc` 항목 11.
 
