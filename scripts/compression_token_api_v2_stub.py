@@ -4,8 +4,9 @@
 Run: uvicorn scripts.compression_token_api_v2_stub:app --host 127.0.0.1 --port 8011
 
 Compress uses ``evaluate_report`` (same family as v1 live hydration). The packet's ``residual_meta``
-includes ``mk_stub_v2.reconstructed_text`` so ``POST /v2/expand`` can return engine reconstruction
-without echoing a separate v1 ``original_text`` field — still experimental, not a production SLA.
+Default ``POST /v2/expand`` (``decode_mode=stub``) may read ``mk_stub_v2.reconstructed_text``.
+``decode_mode=codebook_only`` is the Trust Packet Stateless Profile (no full-text residual).
+``stateless_packet`` on compress omits ``reconstructed_text`` from the packet. Still experimental, not production SLA.
 ``GlobalPivotCompressionPipeline`` is not used; name in early drafts was superseded by this path.
 
 Dev: MKM_APPLY_GEMATRIA_4D_BRIDGE_POLICY=1 enables full gematria/4D bridge policy in evaluate_report (see compression_token_api_stub).
@@ -13,6 +14,7 @@ Dev: MKM_APPLY_GEMATRIA_4D_BRIDGE_POLICY=1 enables full gematria/4D bridge polic
 
 from __future__ import annotations
 
+import base64
 import hashlib
 import os
 import sys
@@ -28,6 +30,11 @@ from fastapi import FastAPI  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 from starlette.middleware.cors import CORSMiddleware  # noqa: E402
 
+from scripts.compression_profile_v1 import (  # noqa: E402
+    CompressionProfile,
+    profile_evaluate_report_kwargs_v2,
+    profile_meta,
+)
 from scripts.compression_token_api_stub import (  # noqa: E402
     TOKEN_RE,
     _baseline_avg_jaccard,
@@ -40,6 +47,10 @@ from scripts.compression_v2_routing_profile_v1 import (  # noqa: E402
     routing_profile_kwargs,
 )
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
+from scripts.core.master_codebook_lexicon_v1_bridge import (  # noqa: E402
+    lexicon_atom_sequence_for_text,
+    resolve_latest_codebook_path,
+)
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
 from scripts.report_multilens_performance_eval import _jaccard, evaluate_report  # noqa: E402
 from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
@@ -53,6 +64,8 @@ from scripts.run_hybrid_codec_v0_spike import _phrase_first_enabled  # noqa: E40
 API_CONTRACT_VERSION = "2.0.0-draft"
 PACKET_FORMAT_VERSION = "trust_packet.0.1"
 RESIDUAL_STUB_KEY = "mk_stub_v2"
+LEXICON_RAIL_KEY = "mkm_lexicon_rail_v1"
+LEXICON_WIRE_SCHEMA = "mkm_lexicon_wire_v1"
 # Same multiset definition as tests (`_jaccard`); floor aligns with Track A round-trip targets.
 V2_JACCARD_TRUST_MIN = 0.73
 _LEGACY_FLAT_KEY_ACCESS_COUNT = 0
@@ -81,11 +94,14 @@ app.add_middleware(
 class CompressRequestV2(BaseModel):
     text: str
     loss_profile: LossProfile
+    compression_profile: CompressionProfile = "economy"
     locale: str | None = None
     client_request_id: str | None = None
     notes: str | None = None
     emit_semantic_pointer: bool = False
+    graph_wire_selective_bridge: bool = False
     routing_profile: RoutingProfile = "track_a_promoted"
+    stateless_packet: bool = False
 
 
 class CompressionPacket(BaseModel):
@@ -110,7 +126,7 @@ class CompressResponseV2(BaseModel):
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
-DecodeMode = Literal["stub", "l1_experimental"]
+DecodeMode = Literal["stub", "l1_experimental", "codebook_only"]
 
 
 class ExpandRequestV2(BaseModel):
@@ -122,6 +138,73 @@ class ExpandResponseV2(BaseModel):
     text: str
     api_contract_version: str = API_CONTRACT_VERSION
     decode_mode: DecodeMode = "stub"
+    integrity_flags: dict[str, Any] = Field(default_factory=dict)
+
+
+class MkmLexiconWireEncodeRequest(BaseModel):
+    text: str | None = None
+    atom_id_sequence: list[str] | None = None
+    zstd_min_raw_bytes: int = Field(default=64, ge=0)
+    zstd_level: int = Field(default=3, ge=1, le=22)
+    use_ko_health_sidecar: bool = Field(
+        default=False,
+        description="[HYPO] B-track: merge KO health sidecar atoms (research_only; not Track A).",
+    )
+
+
+class MkmLexiconWireEncodeResponse(BaseModel):
+    schema: str = "mkm_lexicon_wire_encode_v1"
+    wire_b64: str
+    wire_byte_len: int
+    codec_variant: str
+    atom_id_sequence: list[str]
+    lexicon_meta: dict[str, Any] = Field(default_factory=dict)
+    integrity_flags: dict[str, Any] = Field(default_factory=dict)
+
+
+class MkmLexiconWireDecodeRequest(BaseModel):
+    wire_b64: str
+
+
+class MkmLexiconWireDecodeResponse(BaseModel):
+    schema: str = "mkm_lexicon_wire_decode_v1"
+    payload: dict[str, Any]
+    atom_id_sequence: list[str]
+    integrity_flags: dict[str, Any] = Field(default_factory=dict)
+
+
+class MkmWireTurnRequest(BaseModel):
+    text: str
+    session_id: str | None = None
+    turn_id: int = Field(default=1, ge=1)
+    from_agent: str = "agent_alpha"
+    to_agent: str = "agent_beta"
+    loss_profile: str = "semantic_general"
+    routing_profile: str = "track_a_promoted"
+    zstd_min_raw_bytes: int = Field(default=0, ge=0)
+    use_ko_health_sidecar: bool = Field(default=False, description="[HYPO] B-track KO health sidecar overlay.")
+
+
+class MkmWireTurnResponse(BaseModel):
+    envelope_schema: str = "mkm_inter_agent_wire_envelope_v1"
+    envelope: dict[str, Any]
+    envelope_utf8_byte_len: int
+    integrity_flags: dict[str, Any] = Field(default_factory=dict)
+
+
+class MkmWireReplayRequest(BaseModel):
+    envelopes: list[dict[str, Any]] | None = None
+    scenario: str | None = Field(default=None, description="trading|health|lexicon_dense demo export")
+    turns: int = Field(default=4, ge=2, le=16)
+    use_ko_health_sidecar: bool = Field(default=False, description="[HYPO] when scenario export is used")
+
+
+class MkmWireReplayResponse(BaseModel):
+    schema: str = "mkm_inter_agent_wire_replay_v1"
+    turn_count: int
+    turns: list[dict[str, Any]]
+    scenario: str | None = None
+    session_id: str | None = None
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -153,16 +236,21 @@ def _run_evaluate_for_packet(
     loss_profile: LossProfile,
     *,
     emit_semantic_pointer: bool = False,
+    graph_wire_selective_bridge: bool = False,
     client_request_id: str | None = None,
     routing_profile: RoutingProfile = "track_a_promoted",
+    compression_profile: CompressionProfile = "economy",
 ) -> dict[str, Any]:
     """Run evaluate_report and return payload for Trust Packet fields."""
-    selected = _decision_selected_profile()
-    strategy = str(selected.get("strategy", "A"))
-    intensity = str(selected.get("intensity", "extreme"))
-    general_cap = selected.get("general_max_saving_rate")
-    sensitive_cap = selected.get("sensitive_max_saving_rate")
-    hangul_cap = selected.get("hangul_max_saving_rate")
+    prof_kw = profile_evaluate_report_kwargs_v2(
+        compression_profile,
+        graph_wire_selective_bridge=graph_wire_selective_bridge,
+    )
+    strategy = str(prof_kw["strategy"])
+    intensity = str(prof_kw["intensity"])
+    general_cap = prof_kw.get("general_max_saving_rate")
+    sensitive_cap = prof_kw.get("sensitive_max_saving_rate")
+    hangul_cap = prof_kw.get("hangul_max_saving_rate")
     case_id = resolve_v2_case_id(client_request_id)
     t0 = perf_counter()
     doc = {
@@ -176,28 +264,39 @@ def _run_evaluate_for_packet(
         ],
         "fusion_answer_cases": [],
     }
-    _bp = env_apply_gematria_4d_bridge_policy()
+    _bp = bool(prof_kw.get("apply_gematria_4d_bridge_policy"))
     route_kw = routing_profile_kwargs(routing_profile)
     eval_extra = routing_profile_eval_kwargs(routing_profile)
+    case_wire: dict[str, dict[str, Any]] | None = None
+    if graph_wire_selective_bridge:
+        from scripts.mkm_graph_wire_bridge_influence_v1 import (  # noqa: WPS433
+            build_wire_influence_for_text,
+        )
+
+        inf = build_wire_influence_for_text(text, case_id=case_id)
+        if inf:
+            case_wire = {case_id: inf}
     report = evaluate_report(
         doc,
         source_input="api:v2_trust_packet",
         mode="experimental",
-        strategy=strategy if strategy in {"A", "B", "C"} else "A",
-        intensity=intensity if intensity in {"high", "ultra", "extreme"} else "extreme",
+        strategy=strategy,
+        intensity=intensity,
         must_keep={"사상의학", "체질", "sasang", "myeongri", "bible"},
         jaccard_drop_threshold_pp=1.5,
         baseline_avg_jaccard=_baseline_avg_jaccard(),
         general_max_saving_rate=float(general_cap) if general_cap is not None else None,
         sensitive_max_saving_rate=float(sensitive_cap) if sensitive_cap is not None else None,
         hangul_max_saving_rate=float(hangul_cap) if hangul_cap is not None else None,
-        use_domain_router=True,
-        use_master_codebook_lexicon_v1=True,
-        include_gematria_metadata=_bp,
-        include_gematria_4d_bridge=_bp,
-        include_cee_core=_bp,
+        use_domain_router=bool(prof_kw.get("use_domain_router", True)),
+        use_master_codebook_lexicon_v1=bool(prof_kw.get("use_master_codebook_lexicon_v1", True)),
+        include_gematria_metadata=bool(prof_kw.get("include_gematria_metadata", _bp)),
+        include_gematria_4d_bridge=bool(prof_kw.get("include_gematria_4d_bridge", _bp)),
+        include_cee_core=bool(prof_kw.get("include_cee_core", _bp)),
         apply_gematria_4d_bridge_policy=_bp,
         emit_semantic_pointer=emit_semantic_pointer,
+        graph_wire_selective_bridge=graph_wire_selective_bridge,
+        case_graph_wire_influence=case_wire,
         **eval_extra,
     )
     elapsed_ms = round((perf_counter() - t0) * 1000.0, 3)
@@ -232,6 +331,8 @@ def _run_evaluate_for_packet(
         "global_ratio": ratio,
         "jaccard": float(jac) if jac is not None else None,
         "semantic_pointer": sp_first,
+        "compression_profile": compression_profile,
+        "apply_gematria_4d_bridge_policy": _bp,
     }
     if loss_profile == "lossless_text":
         out["integrity_note"] = "lossless_text_profile_engine_may_still_be_semantic_stub"
@@ -305,6 +406,102 @@ def _legacy_flat_key_access_count() -> int:
     return int(_LEGACY_FLAT_KEY_ACCESS_COUNT)
 
 
+def _resolve_atom_id_sequence(
+    *,
+    text: str | None,
+    atom_id_sequence: list[str] | None,
+    use_ko_health_sidecar: bool = False,
+) -> tuple[list[str], dict[str, Any]]:
+    if atom_id_sequence:
+        return list(atom_id_sequence), {"status": "ok", "source": "request_body"}
+    if not text:
+        return [], {"status": "skipped", "reason": "no_text_or_sequence"}
+    path = resolve_latest_codebook_path()
+    if path is None:
+        return [], {"status": "skipped", "reason": "lexicon_missing"}
+    if use_ko_health_sidecar:
+        from scripts.mkm_inter_agent_ko_health_sidecar_v1 import DEFAULT_SIDECAR, merged_atom_sequence_for_text
+
+        seq, meta = merged_atom_sequence_for_text(text, path, DEFAULT_SIDECAR, tokenization="hangul_syllable")
+        flat = {
+            "status": "ok",
+            "source": "merged_main_and_ko_health_sidecar",
+            "hypothesis_tier": "B",
+            "research_only": True,
+            "ko_health_sidecar": True,
+            "atom_id_count": len(seq),
+            "merge_meta": meta,
+        }
+        return seq, flat
+    seq, meta = lexicon_atom_sequence_for_text(text, path)
+    return seq, meta
+
+
+def _stub_block_for_packet(
+    stub_block: dict[str, Any],
+    *,
+    stateless_packet: bool,
+) -> dict[str, Any]:
+    """Trust Packet Stateless Profile: drop full-text leak; keep structured residual fields."""
+    if not stateless_packet:
+        return stub_block
+    return {k: v for k, v in stub_block.items() if k != "reconstructed_text"}
+
+
+def _expand_codebook_only(pkt: CompressionPacket) -> tuple[str, dict[str, Any]]:
+    """Expand without reading mk_stub_v2.reconstructed_text (DoD ② Trust Packet Stateless Profile)."""
+    from scripts.report_multilens_performance_eval import _reconstruct_experimental_from_raw
+
+    flags: dict[str, Any] = {"reassembly": "codebook_only"}
+    meta = pkt.residual_meta if isinstance(pkt.residual_meta, dict) else {}
+    stub = meta.get(RESIDUAL_STUB_KEY) if isinstance(meta.get(RESIDUAL_STUB_KEY), dict) else {}
+
+    if isinstance(stub, dict) and "reconstructed_text" in stub:
+        flags["stateless_violation"] = "reconstructed_text_present_in_packet"
+
+    if pkt.loss_profile == "lossless_text":
+        hybrid = stub.get("hybrid_codec_v0_payload") if isinstance(stub, dict) else None
+        if isinstance(hybrid, dict):
+            restored = hybrid_decode_packet_dict(hybrid)
+            flags["source"] = "hybrid_codec_v0_payload"
+            return restored, flags
+
+    route = _router.route(pkt.compressed_text)
+    flags["shard_id"] = route.shard_id
+    flags["domain"] = route.domain
+    flags["hangul_principle"] = route.hangul_principle
+
+    anchor_text = _reconstruct_experimental_from_raw(
+        raw=pkt.compressed_text,
+        compressed_candidate=pkt.compressed_text,
+        use_hangul_principle=route.hangul_principle,
+    )
+    text = anchor_text if anchor_text else pkt.compressed_text
+    flags["source"] = "compressed_anchor_codebook"
+
+    if isinstance(meta.get("placeholder_map"), dict) and meta.get("placeholder_map"):
+        flags["placeholder_map_present"] = True
+    if isinstance(meta.get(LEXICON_RAIL_KEY), dict):
+        flags["lexicon_rail_present"] = True
+
+    return text, flags
+
+
+def _attach_lexicon_rail(residual_meta: dict[str, Any], text: str) -> None:
+    """Optional 41k atom_id sequence rail (MKM language vocabulary layer)."""
+    path = resolve_latest_codebook_path()
+    if path is None:
+        return
+    seq, meta = lexicon_atom_sequence_for_text(text, path)
+    if not seq:
+        return
+    residual_meta[LEXICON_RAIL_KEY] = {
+        "symbol_key": "atom_id",
+        "atom_id_sequence": seq,
+        "lexicon_meta": meta,
+    }
+
+
 def _build_tracka_profile_payload(*, include_legacy_flat_keys: bool) -> dict[str, Any]:
     """Single construction path: meta-first payload."""
     meta = _tracka_profile_meta()
@@ -328,6 +525,9 @@ def health() -> dict[str, Any]:
         "packet_format_version": PACKET_FORMAT_VERSION,
         "schema_version": "token_compression_stub_v2_draft",
         "stub_engine": "evaluate_report",
+        "compression_profiles": ["economy", "fidelity", "literal"],
+        "compression_profile_default": "economy",
+        "anchor_ssot": "reports/constitution/btrack_pilot/comp_4d_anchor_ssot_v1.json",
         "legacy_flat_key_access_count": _legacy_flat_key_access_count(),
         **profile_payload,
     }
@@ -340,8 +540,11 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
         "stub_v2": True,
         "hangul_principle": route.hangul_principle,
         "loss_profile": body.loss_profile,
+        **profile_meta(body.compression_profile),
         **_build_tracka_profile_payload(include_legacy_flat_keys=False),
     }
+    if body.stateless_packet:
+        flags["stateless_packet"] = True
     try:
         # Fused lane: lossless_text goes through deterministic hybrid codec first.
         if body.loss_profile == "lossless_text":
@@ -353,15 +556,17 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
             savings = max(0.0, min(1.0, 1.0 - (float(out_len) / float(in_len))))
             flags["hybrid_codec_v0_fused"] = True
             flags["hybrid_codec_v0_exact_restore_ok"] = restored == body.text
+            hybrid_stub: dict[str, Any] = {
+                "reconstructed_text": restored,
+                "global_token_saving_rate": savings,
+                "reconstruction_fidelity_jaccard": _jaccard(body.text, restored),
+                "hybrid_codec_v0_payload": hybrid_payload,
+            }
             residual_meta = {
-                RESIDUAL_STUB_KEY: {
-                    "reconstructed_text": restored,
-                    "global_token_saving_rate": savings,
-                    "reconstruction_fidelity_jaccard": _jaccard(body.text, restored),
-                    "hybrid_codec_v0_payload": hybrid_payload,
-                },
+                RESIDUAL_STUB_KEY: _stub_block_for_packet(hybrid_stub, stateless_packet=body.stateless_packet),
                 "placeholder_map": {},
             }
+            _attach_lexicon_rail(residual_meta, body.text)
             packet = CompressionPacket(
                 loss_profile=body.loss_profile,
                 compressed_text=encoded,
@@ -382,11 +587,17 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
             body.text,
             body.loss_profile,
             emit_semantic_pointer=bool(body.emit_semantic_pointer),
+            graph_wire_selective_bridge=bool(body.graph_wire_selective_bridge),
             client_request_id=body.client_request_id,
             routing_profile=body.routing_profile,
+            compression_profile=body.compression_profile,
         )
         flags["evaluate_report_ms"] = ev.get("elapsed_ms")
         flags["routing_profile"] = body.routing_profile
+        flags.update(profile_meta(body.compression_profile))
+        flags["apply_gematria_4d_bridge_policy_effective"] = bool(
+            ev.get("apply_gematria_4d_bridge_policy")
+        )
         flags["v2_case_id"] = resolve_v2_case_id(body.client_request_id)
         route_meta = routing_profile_kwargs(body.routing_profile)
         if route_meta.get("research_only"):
@@ -416,10 +627,15 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
         sp_ev = ev.get("semantic_pointer")
         if isinstance(sp_ev, dict):
             stub_block["semantic_pointer"] = sp_ev
+            gw = sp_ev.get("graph_wire_influence_v1")
+            if isinstance(gw, dict):
+                flags["graph_wire_influence_v1"] = True
+                flags["graph_wire_bridge_boost"] = bool(gw.get("bridge_boost"))
         residual_meta = {
-            RESIDUAL_STUB_KEY: stub_block,
+            RESIDUAL_STUB_KEY: _stub_block_for_packet(stub_block, stateless_packet=body.stateless_packet),
             "placeholder_map": {},
         }
+        _attach_lexicon_rail(residual_meta, body.text)
         packet = CompressionPacket(
             loss_profile=body.loss_profile,
             compressed_text=comp,
@@ -442,11 +658,15 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
     except Exception as exc:
         flags["evaluate_report_failed"] = True
         flags["error_class"] = type(exc).__name__
-        residual_meta = {
-            RESIDUAL_STUB_KEY: {
+        err_stub = _stub_block_for_packet(
+            {
                 "reconstructed_text": body.text,
                 "error_class": type(exc).__name__,
             },
+            stateless_packet=body.stateless_packet,
+        )
+        residual_meta = {
+            RESIDUAL_STUB_KEY: err_stub,
             "placeholder_map": {},
         }
         packet = CompressionPacket(
@@ -468,6 +688,11 @@ def expand_v2(body: ExpandRequestV2) -> ExpandResponseV2:
     pkt = body.compression_packet
     mode = body.decode_mode
     flags: dict[str, Any] = {"stub_v2": True, "decode_mode": mode}
+
+    if mode == "codebook_only":
+        text, cb_flags = _expand_codebook_only(pkt)
+        flags.update(cb_flags)
+        return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
 
     if mode == "l1_experimental":
         from scripts.mkm_inter_agent_l1_decode_experimental_v1 import (  # noqa: WPS433
@@ -499,3 +724,179 @@ def expand_v2(body: ExpandRequestV2) -> ExpandResponseV2:
         return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
     flags["reassembly"] = "degraded_compressed_text_only"
     return ExpandResponseV2(text=pkt.compressed_text, decode_mode=mode, integrity_flags=flags)
+
+
+def _lexicon_wire_payload(atom_ids: list[str]) -> dict[str, Any]:
+    return {
+        "schema": LEXICON_WIRE_SCHEMA,
+        "atom_id_sequence": atom_ids,
+        "atom_count": len(atom_ids),
+    }
+
+
+@app.post("/v1/research/mkm_lexicon_wire/encode", response_model=MkmLexiconWireEncodeResponse)
+def encode_mkm_lexicon_wire(body: MkmLexiconWireEncodeRequest) -> MkmLexiconWireEncodeResponse:
+    """Research lane: atom_id_sequence only on adaptive msgpack wire (no Trust Packet JSON)."""
+    from scripts.l1_side_channel_wire_codec import decode_adaptive_msgpack, encode_adaptive_msgpack  # noqa: WPS433
+
+    atom_ids, lex_meta = _resolve_atom_id_sequence(
+        text=body.text,
+        atom_id_sequence=body.atom_id_sequence,
+        use_ko_health_sidecar=body.use_ko_health_sidecar,
+    )
+    if not atom_ids:
+        return MkmLexiconWireEncodeResponse(
+            wire_b64="",
+            wire_byte_len=0,
+            codec_variant="none",
+            atom_id_sequence=[],
+            lexicon_meta=lex_meta,
+            integrity_flags={
+                "research_only": True,
+                "error": "empty_atom_id_sequence",
+            },
+        )
+    payload = _lexicon_wire_payload(atom_ids)
+    try:
+        wire_bytes, variant = encode_adaptive_msgpack(
+            payload,
+            zstd_min_raw_bytes=body.zstd_min_raw_bytes,
+            zstd_level=body.zstd_level,
+        )
+        decoded = decode_adaptive_msgpack(wire_bytes)
+        assert decoded.get("atom_id_sequence") == atom_ids
+    except Exception as exc:
+        return MkmLexiconWireEncodeResponse(
+            wire_b64="",
+            wire_byte_len=0,
+            codec_variant="none",
+            atom_id_sequence=atom_ids,
+            lexicon_meta=lex_meta,
+            integrity_flags={
+                "research_only": True,
+                "error": "wire_encode_failed",
+                "error_class": type(exc).__name__,
+            },
+        )
+    codec_variant = "zstd_msgpack" if variant == "zstd" else "raw_msgpack"
+    return MkmLexiconWireEncodeResponse(
+        wire_b64=base64.b64encode(wire_bytes).decode("ascii"),
+        wire_byte_len=len(wire_bytes),
+        codec_variant=codec_variant,
+        atom_id_sequence=atom_ids,
+        lexicon_meta=lex_meta,
+        integrity_flags={
+            "research_only": True,
+            "roundtrip_sanity": True,
+            **(
+                {"ko_health_sidecar": True, "hypothesis_tier": "B"}
+                if body.use_ko_health_sidecar
+                else {}
+            ),
+        },
+    )
+
+
+@app.post("/v1/research/mkm_lexicon_wire/decode", response_model=MkmLexiconWireDecodeResponse)
+def decode_mkm_lexicon_wire(body: MkmLexiconWireDecodeRequest) -> MkmLexiconWireDecodeResponse:
+    """Research lane: decode lexicon wire blob back to atom_id_sequence."""
+    from scripts.l1_side_channel_wire_codec import decode_adaptive_msgpack  # noqa: WPS433
+
+    try:
+        wire_bytes = base64.b64decode(body.wire_b64.encode("ascii"))
+        payload = decode_adaptive_msgpack(wire_bytes)
+    except Exception as exc:
+        return MkmLexiconWireDecodeResponse(
+            payload={},
+            atom_id_sequence=[],
+            integrity_flags={
+                "research_only": True,
+                "error": "wire_decode_failed",
+                "error_class": type(exc).__name__,
+            },
+        )
+    atom_ids = payload.get("atom_id_sequence") if isinstance(payload, dict) else []
+    if not isinstance(atom_ids, list):
+        atom_ids = []
+    return MkmLexiconWireDecodeResponse(
+        payload=payload if isinstance(payload, dict) else {},
+        atom_id_sequence=[str(x) for x in atom_ids],
+        integrity_flags={"research_only": True},
+    )
+
+
+@app.post("/v1/research/mkm_inter_agent_wire/turn", response_model=MkmWireTurnResponse)
+def send_mkm_wire_turn_v1(body: MkmWireTurnRequest) -> MkmWireTurnResponse:
+    """Research lane: one turn -> wire envelope v1 (M6/M7 runtime adapter path)."""
+    from scripts.mkm_inter_agent_wire_envelope_v1 import (
+        build_turn_envelope,
+        envelope_utf8_byte_len,
+        new_session_id,
+    )
+
+    enc_req = MkmLexiconWireEncodeRequest(
+        text=body.text,
+        zstd_min_raw_bytes=body.zstd_min_raw_bytes,
+        use_ko_health_sidecar=body.use_ko_health_sidecar,
+    )
+    enc_resp = encode_mkm_lexicon_wire(enc_req)
+    if not enc_resp.wire_b64:
+        return MkmWireTurnResponse(
+            envelope={},
+            envelope_utf8_byte_len=0,
+            integrity_flags={"research_only": True, "error": "encode_failed"},
+        )
+    sid = body.session_id or new_session_id("api")
+    envelope = build_turn_envelope(
+        encode_response={
+            "wire_b64": enc_resp.wire_b64,
+            "wire_byte_len": enc_resp.wire_byte_len,
+            "codec_variant": enc_resp.codec_variant,
+            "atom_id_sequence": enc_resp.atom_id_sequence,
+            "lexicon_meta": enc_resp.lexicon_meta,
+        },
+        session_id=sid,
+        turn_id=body.turn_id,
+        from_agent=body.from_agent,
+        to_agent=body.to_agent,
+        loss_profile=body.loss_profile,
+        routing_profile=body.routing_profile,
+    )
+    env_len = envelope_utf8_byte_len(envelope)
+    return MkmWireTurnResponse(
+        envelope=envelope,
+        envelope_utf8_byte_len=env_len,
+        integrity_flags={"research_only": True, "runtime_adapter": "mkm_inter_agent_wire_runtime_adapter_v1"},
+    )
+
+
+@app.post("/v1/research/mkm_inter_agent_wire/replay", response_model=MkmWireReplayResponse)
+def replay_mkm_wire_session_v1(body: MkmWireReplayRequest) -> MkmWireReplayResponse:
+    """Research lane: replay wire envelopes → gloss (+ optional wire decode check)."""
+    from scripts.mkm_inter_agent_wire_replay_v1 import replay_envelopes, replay_scenario_demo
+
+    if body.envelopes:
+        result = replay_envelopes(body.envelopes)
+    elif body.scenario in ("trading", "health", "lexicon_dense"):
+        result = replay_scenario_demo(
+            scenario=body.scenario,
+            turns=body.turns,
+            use_ko_health_sidecar=body.use_ko_health_sidecar,
+        )
+    else:
+        return MkmWireReplayResponse(
+            turn_count=0,
+            turns=[],
+            integrity_flags={"research_only": True, "error": "envelopes_or_scenario_required"},
+        )
+    return MkmWireReplayResponse(
+        turn_count=int(result.get("turn_count") or 0),
+        turns=result.get("turns") or [],
+        scenario=result.get("scenario"),
+        session_id=result.get("session_id"),
+        integrity_flags={
+            "research_only": True,
+            "ok": bool(result.get("ok")),
+            **(result.get("integrity_flags") or {}),
+        },
+    )

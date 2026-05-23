@@ -4,7 +4,8 @@ param(
     [switch]$SkipCompressionAlarm,
     [switch]$IncludeLiteralTrack,
     [switch]$IncludeUltraLiteralTrack,
-    [switch]$SkipV2TrustPacketTests
+    [switch]$SkipV2TrustPacketTests,
+    [switch]$SkipGoldenBenchRegression
 )
 
 $ErrorActionPreference = "Stop"
@@ -13,6 +14,12 @@ Set-Location $WorkspaceRoot
 Write-Host "=== run_ultra_compression_default.py (universal) ===" -ForegroundColor Cyan
 py scripts\run_ultra_compression_default.py
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+if (-not $SkipGoldenBenchRegression) {
+    Write-Host "=== check_compression_golden_bench_regression_v1.py ===" -ForegroundColor Cyan
+    py scripts\check_compression_golden_bench_regression_v1.py
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
 
 if ($IncludeLiteralTrack) {
     Write-Host "=== run_ultra_compression_default.py --mode literal ===" -ForegroundColor Cyan

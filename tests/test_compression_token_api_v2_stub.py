@@ -8,6 +8,7 @@ typically scores at or near 1.0 when the engine returns full ``reconstructed_tex
 
 from __future__ import annotations
 
+import copy
 from pathlib import Path
 
 import pytest
@@ -46,12 +47,42 @@ def test_openapi_v2_contract_has_emit_semantic_pointer() -> None:
     assert em.get("type") == "boolean"
 
 
+def test_openapi_v2_contract_has_graph_wire_selective_bridge() -> None:
+    yaml = pytest.importorskip("yaml")
+    spec = yaml.safe_load(OPENAPI_V2.read_text(encoding="utf-8"))
+    props = spec["components"]["schemas"]["CompressRequestV2"]["properties"]
+    gw = props["graph_wire_selective_bridge"]
+    assert gw.get("type") == "boolean"
+    assert gw.get("default") is False
+
+
+def test_openapi_v2_contract_has_compression_profile() -> None:
+    yaml = pytest.importorskip("yaml")
+    spec = yaml.safe_load(OPENAPI_V2.read_text(encoding="utf-8"))
+    props = spec["components"]["schemas"]["CompressRequestV2"]["properties"]
+    cp = props["compression_profile"]
+    assert cp.get("default") == "economy"
+    assert set(cp.get("enum", [])) == {"economy", "fidelity", "literal"}
+
+
+def test_openapi_v2_contract_has_stateless_packet_and_codebook_only() -> None:
+    yaml = pytest.importorskip("yaml")
+    spec = yaml.safe_load(OPENAPI_V2.read_text(encoding="utf-8"))
+    compress_props = spec["components"]["schemas"]["CompressRequestV2"]["properties"]
+    assert compress_props["stateless_packet"]["default"] is False
+    expand_props = spec["components"]["schemas"]["ExpandRequestV2"]["properties"]
+    assert "codebook_only" in expand_props["decode_mode"]["enum"]
+
+
 def test_health_v2():
     before = _legacy_flat_key_access_count()
     r = client.get("/health")
     assert r.status_code == 200
     j = r.json()
     assert j.get("status") == "ok"
+    assert j.get("compression_profiles") == ["economy", "fidelity", "literal"]
+    assert j.get("compression_profile_default") == "economy"
+    assert "comp_4d_anchor_ssot_v1.json" in str(j.get("anchor_ssot", ""))
     assert j.get("api_contract_version") == API_CONTRACT_VERSION
     assert j.get("packet_format_version") == PACKET_FORMAT_VERSION
     assert j.get("tracka_profile_meta") == _tracka_profile_meta()
@@ -149,6 +180,136 @@ def test_compress_expand_roundtrip_semantic_general():
     assert recon == stub_res
 
 
+def _packet_without_reconstructed_text(packet: dict) -> dict:
+    """Trust Packet Stateless Profile: strip full-text leak; keep allowed structured residual."""
+    out = copy.deepcopy(packet)
+    meta = out.get("residual_meta")
+    if not isinstance(meta, dict):
+        return out
+    stub = meta.get(RESIDUAL_STUB_KEY)
+    if isinstance(stub, dict):
+        slim = {k: v for k, v in stub.items() if k != "reconstructed_text"}
+        out["residual_meta"] = {**meta, RESIDUAL_STUB_KEY: slim}
+    return out
+
+
+def test_v2_stateless_trust_packet_roundtrip_red():
+    """Trust Packet Stateless Profile (DoD ②) — Step B GREEN target; RED until codebook_only exists.
+
+    Packet diet: no mk_stub_v2.reconstructed_text; expand via decode_mode=codebook_only only.
+    Must not use stub residual reassembly or degraded_compressed_text_only as the final path.
+    """
+    sample = "사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference."
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "client_request_id": "test-v2-stateless-red",
+        },
+    )
+    assert cr.status_code == 200
+    pkt_raw = cr.json()["compression_packet"]
+    assert "reconstructed_text" in pkt_raw["residual_meta"][RESIDUAL_STUB_KEY]
+
+    pkt = _packet_without_reconstructed_text(pkt_raw)
+    assert "reconstructed_text" not in pkt["residual_meta"][RESIDUAL_STUB_KEY]
+    assert pkt.get("compressed_text")
+    assert pkt.get("router_meta", {}).get("shard_id")
+
+    er = client.post(
+        "/v2/expand",
+        json={"compression_packet": pkt, "decode_mode": "codebook_only"},
+    )
+    assert er.status_code == 200, er.text
+    ej = er.json()
+    flags = ej.get("integrity_flags") or {}
+    assert flags.get("source") != RESIDUAL_STUB_KEY
+    assert flags.get("reassembly") == "codebook_only"
+    expanded = ej["text"]
+    jac = _jaccard(sample, expanded)
+    assert jac >= V2_ROUNDTRIP_JACCARD_MIN
+
+
+def test_v2_stateless_packet_compress_and_codebook_only_roundtrip():
+    """End-to-end Trust Packet Stateless Profile: compress omits reconstructed_text."""
+    sample = "사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference."
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "client_request_id": "test-v2-stateless-e2e",
+            "stateless_packet": True,
+        },
+    )
+    assert cr.status_code == 200
+    assert cr.json()["integrity_flags"].get("stateless_packet") is True
+    pkt = cr.json()["compression_packet"]
+    stub = pkt["residual_meta"][RESIDUAL_STUB_KEY]
+    assert "reconstructed_text" not in stub
+
+    er = client.post(
+        "/v2/expand",
+        json={"compression_packet": pkt, "decode_mode": "codebook_only"},
+    )
+    assert er.status_code == 200
+    flags = er.json().get("integrity_flags") or {}
+    assert flags.get("reassembly") == "codebook_only"
+    assert flags.get("source") != RESIDUAL_STUB_KEY
+    jac = _jaccard(sample, er.json()["text"])
+    assert jac >= V2_ROUNDTRIP_JACCARD_MIN
+
+
+def test_v2_stateless_lossless_hybrid_codebook_only_exact():
+    """Stateless packet + lossless_text: expand via codebook_only must restore hybrid payload exactly."""
+    sample = "OPS gateway 8788 and SHA256 checksum must restore exactly."
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "lossless_text",
+            "client_request_id": "test-v2-stateless-lossless",
+            "stateless_packet": True,
+        },
+    )
+    assert cr.status_code == 200
+    assert cr.json()["integrity_flags"].get("hybrid_codec_v0_exact_restore_ok") is True
+    pkt = cr.json()["compression_packet"]
+    stub = pkt["residual_meta"][RESIDUAL_STUB_KEY]
+    assert "reconstructed_text" not in stub
+    assert "hybrid_codec_v0_payload" in stub
+
+    er = client.post(
+        "/v2/expand",
+        json={"compression_packet": pkt, "decode_mode": "codebook_only"},
+    )
+    assert er.status_code == 200
+    flags = er.json().get("integrity_flags") or {}
+    assert flags.get("reassembly") == "codebook_only"
+    assert flags.get("source") == "hybrid_codec_v0_payload"
+    assert er.json()["text"] == sample
+
+
+def test_v2_stateless_stub_fallback_is_degraded_not_dod_compliant():
+    """Baseline: default stub expand without reconstructed_text uses degraded path (not DoD ②)."""
+    sample = "사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference."
+    cr = client.post(
+        "/v2/compress",
+        json={"text": sample, "loss_profile": "semantic_general"},
+    )
+    assert cr.status_code == 200
+    pkt = _packet_without_reconstructed_text(cr.json()["compression_packet"])
+    er = client.post(
+        "/v2/expand",
+        json={"compression_packet": pkt, "decode_mode": "stub"},
+    )
+    assert er.status_code == 200
+    flags = er.json().get("integrity_flags") or {}
+    assert flags.get("reassembly") == "degraded_compressed_text_only"
+    assert flags.get("source") != RESIDUAL_STUB_KEY
+
+
 def test_v2_compress_emit_semantic_pointer_in_residual():
     sample = "사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference."
     cr = client.post(
@@ -187,6 +348,39 @@ def test_v2_expand_l1_experimental_mode_research_only():
     assert flags.get("decode_mode") == "l1_experimental"
     assert flags.get("reassembly") == "l1_experimental_beam"
     assert isinstance(ej.get("text"), str) and ej["text"]
+
+
+def test_v2_compress_attaches_lexicon_rail_atom_ids():
+    """Trust packet may carry ordered 41k atom_id sequence (MKM language vocabulary rail)."""
+    sample = "MKM inter-agent rail demo strong morph bible logos reference."
+    cr = client.post(
+        "/v2/compress",
+        json={"text": sample, "loss_profile": "semantic_general"},
+    )
+    assert cr.status_code == 200
+    rail = (cr.json()["compression_packet"].get("residual_meta") or {}).get("mkm_lexicon_rail_v1")
+    assert isinstance(rail, dict), "expected mkm_lexicon_rail_v1 on packet"
+    seq = rail.get("atom_id_sequence")
+    assert isinstance(seq, list) and len(seq) >= 1
+    assert rail.get("symbol_key") == "atom_id"
+    assert all(isinstance(x, str) and x for x in seq)
+
+
+def test_v2_mkm_lexicon_wire_encode_decode_roundtrip():
+    sample = "strong morph greek logos bible reference message kai mercy alpha beta"
+    enc = client.post(
+        "/v1/research/mkm_lexicon_wire/encode",
+        json={"text": sample, "zstd_min_raw_bytes": 0},
+    )
+    assert enc.status_code == 200
+    ej = enc.json()
+    assert ej.get("integrity_flags", {}).get("research_only") is True
+    assert ej.get("wire_byte_len", 0) > 0
+    seq = ej.get("atom_id_sequence") or []
+    assert len(seq) >= 1
+    dec = client.post("/v1/research/mkm_lexicon_wire/decode", json={"wire_b64": ej["wire_b64"]})
+    assert dec.status_code == 200
+    assert dec.json().get("atom_id_sequence") == seq
 
 
 def test_v2_expand_accepts_trust_packet_only():
@@ -262,6 +456,38 @@ def test_v2_trust_restoration_flag_on_subfloor_engine_jaccard():
     )
     assert cr.status_code == 200
     assert cr.json()["integrity_flags"].get("jaccard_trust_restoration") is True
+
+
+def test_v2_compression_profile_fidelity_enables_bridge_policy() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "compression profile fidelity lane sample sasang",
+            "loss_profile": "semantic_general",
+            "compression_profile": "fidelity",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("compression_profile") == "fidelity"
+    assert flags.get("apply_gematria_4d_bridge_policy") is True
+    assert flags.get("apply_gematria_4d_bridge_policy_effective") is True
+
+
+def test_v2_compression_profile_economy_disables_bridge_policy() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "compression profile economy lane sample",
+            "loss_profile": "semantic_general",
+            "compression_profile": "economy",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("compression_profile") == "economy"
+    assert flags.get("apply_gematria_4d_bridge_policy") is False
+    assert flags.get("apply_gematria_4d_bridge_policy_effective") is False
 
 
 def test_v2_lossless_profile_uses_fused_hybrid_codec():

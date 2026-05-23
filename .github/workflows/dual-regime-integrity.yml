@@ -557,6 +557,15 @@ on:
       - "tests/test_export_master_codebook_v1.py"
       - "tests/test_compression_token_api_stub.py"
       - "tests/test_compression_token_api_v2_stub.py"
+      - "scripts/check_compression_golden_bench_regression_v1.py"
+      - "scripts/run_customer_compression_stateless_poc_v1.py"
+      - "tests/test_check_compression_golden_bench_regression_v1.py"
+      - "data/compression/**"
+      - "tests/test_v2_graph_wire_selective_bridge_v1.py"
+      - "tests/test_mkm_graph_wire_bridge_influence_v1.py"
+      - "tests/test_comp_atom05_graph_wire_bridge_smoke_v1.py"
+      - "scripts/mkm_graph_wire_bridge_influence_v1.py"
+      - "docs/final/openapi_token_compression_v2_draft.yaml"
       - "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/compression_v2_explorer.html"
       - "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md"
       - "scripts/Serve-CompressionV2Explorer.ps1"
@@ -1043,6 +1052,12 @@ jobs:
       - name: Trust Packet API v2 stub (round-trip + Jaccard floor — no v1 echo)
         run: python -m pytest tests/test_compression_token_api_v2_stub.py -q --tb=short
 
+      - name: Golden 40 bench regression gate (read-only active report)
+        run: python scripts/check_compression_golden_bench_regression_v1.py
+
+      - name: Golden bench regression gate contract
+        run: python -m pytest tests/test_check_compression_golden_bench_regression_v1.py -q --tb=short
+
       - name: jemaai.cloud V1 vs V2 Explorer static page (path lock)
         run: test -f projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/compression_v2_explorer.html
 
@@ -1230,6 +1245,9 @@ jobs:
 
       - name: Cross-lens RAG fusion v1 (sasang axis block contract)
         run: python -m pytest tests/test_build_cross_lens_rag_fusion_v1.py -q --tb=short
+
+      - name: Logos CDIM v1 (cross-domain interface read-only assemble)
+        run: python -m pytest tests/test_logos_cross_domain_interface_v1.py -q --tb=short
 
       - name: Premium B-track multi-lens report v1 (schema + sync packager subprocess)
         run: |

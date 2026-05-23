@@ -13,7 +13,9 @@ param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$SkipLiteralTrack,
     [switch]$SkipCompressionAlarm,
-    [switch]$IncludeShadowAuditor
+    [switch]$IncludeShadowAuditor,
+    [switch]$IncludeStatelessTrustPacket,
+    [switch]$SkipStatelessTrustPacket
 )
 
 $ErrorActionPreference = "Stop"
@@ -56,6 +58,17 @@ Write-Host "Appended: $logPath" -ForegroundColor DarkGray
 if ($IncludeShadowAuditor) {
     Write-Host "=== run_compression_shadow_auditor_v1.py ===" -ForegroundColor Cyan
     & py (Join-Path $WorkspaceRoot "scripts\run_compression_shadow_auditor_v1.py") --refresh-loss-patterns
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($IncludeStatelessTrustPacket -and -not $SkipStatelessTrustPacket) {
+    $trustRoutine = Join-Path $WorkspaceRoot "scripts\Invoke-CompressionStatelessTrustPacketRoutine_v1.ps1"
+    if (-not (Test-Path -LiteralPath $trustRoutine)) { throw "Missing: $trustRoutine" }
+    Write-Host "=== Invoke-CompressionStatelessTrustPacketRoutine_v1.ps1 ===" -ForegroundColor Cyan
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $trustRoutine `
+        -WorkspaceRoot $WorkspaceRoot `
+        -SkipPytest `
+        -SkipGoldenBenchRegression
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 

@@ -18,6 +18,21 @@ info:
 
     Current production-like stub remains: docs/final/openapi_token_compression_stub_v1.yaml (POST /v1/*).
 
+    **Operator guide (4-Cell, Korean digest — no separate MD):**
+    `reports/constitution/btrack_pilot/comp_atom05_profile_matrix_brief_v1.json` → `operator_guide_ko`,
+    `profile_presets`, `pitfalls` (regenerate: `py scripts/comp_atom05_profile_matrix_brief_v1.py`).
+
+    **Profile presets (bench full_v2_40, research_only):**
+    | Preset | compression_profile | graph_wire_selective_bridge | Bench headline (aggregate) |
+    |--------|---------------------|-----------------------------|----------------------------|
+    | Track A frozen | economy | false | ~47.5% saving / Jaccard ~0.890 |
+    | B-track v2 recommended | economy | true | ~47.1% saving / Jaccard ~0.897 |
+    | Fidelity (human gate) | fidelity | n/a | ~32.2% saving / Jaccard ~0.967 |
+
+    **Pitfalls:** Do not assume every `POST /v2/compress` returns 47.1%/0.897 — only ~9/40 bench cases get
+    `bridge_boost`; per-text scores vary. Wire is not must_keep graph word paste — see
+    `semantic_pointer.graph_wire_influence_v1`. Do not auto-promote economy+wire into Track A active report.
+
     Versioning: bump draft `info.version` until first implementation; then align `api_contract_version` inside
     packets with MINOR/MAJOR rules agreed for v2.
 servers:
@@ -34,11 +49,25 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/CompressRequestV2"
-            example:
-              text: "Example document body for compression."
-              loss_profile: semantic_general
-              client_request_id: "req-v2-001"
-              emit_semantic_pointer: true
+            examples:
+              track_a_frozen_economy:
+                summary: Track A frozen (economy, wire OFF)
+                value:
+                  text: "Example document body for compression."
+                  loss_profile: semantic_general
+                  compression_profile: economy
+                  graph_wire_selective_bridge: false
+                  emit_semantic_pointer: false
+                  client_request_id: "req-v2-track-a"
+              btrack_recommended_hybrid:
+                summary: B-track v2 draft recommended (economy + selective wire)
+                value:
+                  text: "Example document body for compression."
+                  loss_profile: semantic_general
+                  compression_profile: economy
+                  graph_wire_selective_bridge: true
+                  emit_semantic_pointer: true
+                  client_request_id: "req-v2-btrack-wire"
       responses:
         "200":
           description: OK (draft schema)
@@ -85,6 +114,64 @@ paths:
       responses:
         "200":
           description: OK
+  /v1/research/mkm_lexicon_wire/encode:
+    post:
+      operationId: encodeMkmLexiconWire
+      summary: "[research_only] atom_id_sequence on adaptive msgpack wire"
+      description: |
+        Research lane only. Encodes ordered 41k lexicon atom_ids (from `text` or explicit
+        `atom_id_sequence`). Not production SLA; not live trading. See
+        `scripts/compression_token_api_v2_stub.py`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MkmLexiconWireEncodeRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MkmLexiconWireEncodeResponse"
+  /v1/research/mkm_lexicon_wire/decode:
+    post:
+      operationId: decodeMkmLexiconWire
+      summary: "[research_only] decode lexicon wire blob"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MkmLexiconWireDecodeRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MkmLexiconWireDecodeResponse"
+  /v1/research/mkm_inter_agent_wire/turn:
+    post:
+      operationId: sendMkmWireTurnV1
+      summary: "[research_only] one A2A turn as wire envelope v1"
+      description: |
+        Wraps lexicon wire encode into `mkm_inter_agent_wire_envelope_v1` turn JSON.
+        Wire-first path (M6/M7); not full Trust Packet on-wire. B-track only.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MkmWireTurnRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MkmWireTurnResponse"
 components:
   schemas:
     LossProfile:
@@ -150,6 +237,15 @@ components:
           type: string
         loss_profile:
           $ref: "#/components/schemas/LossProfile"
+        compression_profile:
+          type: string
+          enum: [economy, fidelity, literal]
+          default: economy
+          description: |
+            Product tier mapped to evaluate_report bench config (Fact-Lock).
+            economy = bridge OFF (Track A frozen ~47.5% / Jaccard ~0.890 on comp_atom01 control).
+            fidelity = bridge ON (~32.2% / ~0.967). literal = conservative caps (~23.6% / ~0.975).
+            SSOT: scripts/compression_profile_v1.py · reports/constitution/btrack_pilot/comp_4d_anchor_ssot_v1.json
         locale:
           type: string
           description: Optional BCP-47 hint
@@ -164,6 +260,32 @@ components:
           description: |
             If true, evaluate_report runs with semantic pointer emission and the first case pointer
             is attached at `compression_packet.residual_meta.mk_stub_v2.semantic_pointer`.
+        graph_wire_selective_bridge:
+          type: boolean
+          default: false
+          description: |
+            B-track COMP-ATOM-05 (research). When true with atom-network GraphRAG available,
+            per-request graph route may set `bridge_boost` and enable per-case 4D bridge policy
+            without global `compression_profile=fidelity`. Does not change Track A economy default.
+            Wire metadata at `semantic_pointer.graph_wire_influence_v1`; optional
+            `integrity_flags.graph_wire_influence_v1` / `graph_wire_bridge_boost`.
+            Bench matrix: `reports/constitution/btrack_pilot/comp_atom05_profile_matrix_sweep_v1.json`.
+            Operator digest: `comp_atom05_profile_matrix_brief_v1.json` (`operator_guide_ko`, `profile_presets`).
+            With `compression_profile: economy`, stub uses `profile_evaluate_report_kwargs_v2`
+            (bench `_base_eval_kwargs` + global bridge OFF) so per-case wire is not zeroed by economy profile caps.
+            **Not** a guarantee of bench-aggregate 47.1%/0.897 on every request.
+            **No-op guard:** If GraphRAG/atom-network is unavailable, graph route misses, or integration
+            strips Gematria/4D bridge metadata on the runtime path, `graph_wire_selective_bridge=true` yields
+            no `bridge_boost` (same effective behavior as `false`). Default remains `false` for Track A parity.
+            Staging scope SSOT: `reports/constitution/btrack_pilot/comp_v2_wire_staging_promotion_scope_v1.json`.
+        stateless_packet:
+          type: boolean
+          default: false
+          description: |
+            Trust Packet Stateless Profile (DoD ②). When true, `compression_packet.residual_meta.mk_stub_v2`
+            omits `reconstructed_text` (no full-text leak). Pair with `POST /v2/expand` and
+            `decode_mode=codebook_only` for round-trip. Allowed structured residual may include
+            `hybrid_codec_v0_payload`, `mkm_lexicon_rail_v1`, `placeholder_map`, metrics fields.
     CompressResponseV2:
       type: object
       required: [compression_packet, integrity_flags]
@@ -195,6 +317,15 @@ components:
       properties:
         compression_packet:
           $ref: "#/components/schemas/CompressionPacket"
+        decode_mode:
+          type: string
+          enum: [stub, l1_experimental, codebook_only]
+          default: stub
+          description: |
+            stub = may read `mk_stub_v2.reconstructed_text` when present.
+            codebook_only = Trust Packet Stateless Profile; no full-text residual; uses
+            compressed_text + router_meta + allowed structured residual only.
+            l1_experimental = research_only beam decode on compressed_text.
     ExpandResponseV2:
       type: object
       required: [text, integrity_flags]
@@ -209,3 +340,104 @@ components:
           type: object
           additionalProperties: true
           description: e.g. reassembly_ok, warnings, jaccard_proxy
+    MkmLexiconWireEncodeRequest:
+      type: object
+      properties:
+        text:
+          type: string
+          description: Source text; atom_ids resolved via master_codebook_lexicon_v1 bridge.
+        atom_id_sequence:
+          type: array
+          items:
+            type: string
+          description: Optional explicit atom_id list (skips text resolution).
+        zstd_min_raw_bytes:
+          type: integer
+          minimum: 0
+          default: 64
+        zstd_level:
+          type: integer
+          minimum: 1
+          maximum: 22
+          default: 3
+    MkmLexiconWireEncodeResponse:
+      type: object
+      properties:
+        schema:
+          type: string
+          example: mkm_lexicon_wire_encode_v1
+        wire_b64:
+          type: string
+        wire_byte_len:
+          type: integer
+        codec_variant:
+          type: string
+        atom_id_sequence:
+          type: array
+          items:
+            type: string
+        lexicon_meta:
+          type: object
+          additionalProperties: true
+        integrity_flags:
+          type: object
+          additionalProperties: true
+    MkmLexiconWireDecodeRequest:
+      type: object
+      required: [wire_b64]
+      properties:
+        wire_b64:
+          type: string
+    MkmLexiconWireDecodeResponse:
+      type: object
+      properties:
+        schema:
+          type: string
+        payload:
+          type: object
+          additionalProperties: true
+        atom_id_sequence:
+          type: array
+          items:
+            type: string
+        integrity_flags:
+          type: object
+          additionalProperties: true
+    MkmWireTurnRequest:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+        session_id:
+          type: string
+        turn_id:
+          type: integer
+          minimum: 1
+          default: 1
+        from_agent:
+          type: string
+        to_agent:
+          type: string
+        loss_profile:
+          type: string
+        routing_profile:
+          type: string
+        zstd_min_raw_bytes:
+          type: integer
+          minimum: 0
+          default: 0
+    MkmWireTurnResponse:
+      type: object
+      properties:
+        envelope_schema:
+          type: string
+          example: mkm_inter_agent_wire_envelope_v1
+        envelope:
+          type: object
+          additionalProperties: true
+        envelope_utf8_byte_len:
+          type: integer
+        integrity_flags:
+          type: object
+          additionalProperties: true
