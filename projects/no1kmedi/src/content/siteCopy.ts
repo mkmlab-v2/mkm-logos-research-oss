@@ -60,6 +60,7 @@ export type SiteCopy = {
     showroom_jemaai: HubLink;
     premium_mkmlife: HubLink;
     b2b_acodeai: HubLink;
+    farm_b2b_smartfarm?: HubLink;
     research_mkmlab?: HubLink;
     personadiary_preview?: HubLink;
     showroom_topology_radar?: HubLink;
