@@ -448,6 +448,7 @@ $required = @(
     "codebook\shards\zone_h_legacy.json",
     "docs\final\master_codebook_dual_track.multidomain_1000.json",
     "docs\final\openapi_token_compression_stub_v1.yaml",
+    "docs\final\MKM_COMMANDER_PLAIN_LANGUAGE_SYSTEM_MAP_V1.md",
     "docs\final\openapi_token_compression_v2_draft.yaml",
     "scripts\compression_token_api_v2_stub.py",
     "scripts\check_compression_golden_bench_regression_v1.py",

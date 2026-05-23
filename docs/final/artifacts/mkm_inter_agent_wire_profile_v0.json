@@ -4,6 +4,7 @@
   "status": "draft_contract",
   "research_only": false,
   "boundary_ack": "Wire profile describes intended agent-to-agent envelope. Production SLA, lingua franca completion, and lossless human decode are not claimed.",
+  "commander_plain_language_map": "docs/final/MKM_COMMANDER_PLAIN_LANGUAGE_SYSTEM_MAP_V1.md",
   "layers": {
     "lexicon": {
       "symbol_key": "atom_id",
@@ -46,6 +47,12 @@
           "global_token_saving_rate",
           "reconstruction_fidelity_jaccard",
           "semantic_pointer"
+        ],
+        "lexicon_rail_block": "mkm_lexicon_rail_v1",
+        "lexicon_rail_fields": [
+          "symbol_key",
+          "atom_id_sequence",
+          "lexicon_meta"
         ]
       }
     },
@@ -59,7 +66,10 @@
   "operations": {
     "compress": "POST /v2/compress",
     "expand_packet_only": "POST /v2/expand",
-    "expand_input_rule": "compression_packet only; no original_text field"
+    "expand_input_rule": "compression_packet only; no original_text field",
+    "lexicon_wire_encode": "POST /v1/research/mkm_lexicon_wire/encode",
+    "lexicon_wire_decode": "POST /v1/research/mkm_lexicon_wire/decode",
+    "lexicon_wire_note": "research_only; payload is atom_id_sequence on adaptive msgpack wire"
   },
   "human_decode": {
     "research_only": true,
