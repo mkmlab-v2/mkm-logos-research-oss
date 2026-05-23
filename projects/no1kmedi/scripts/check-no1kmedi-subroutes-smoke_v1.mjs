@@ -18,10 +18,16 @@ const probes = [
     bodyIncludes: ["Persona Diary", "프리뷰", "안전·면책"],
   },
   {
-    id: "smartfarm_hub_redirect",
-    url: `${base}/smartfarm`,
+    id: "smartfarm_app_hub_redirect",
+    url: "https://app.jema-ai.com/smartfarm",
     expectStatuses: [301, 302, 308],
-    locationIncludesAny: ["farm.jema-ai.com", "app.jema-ai.com"],
+    locationIncludesAny: ["farm.jema-ai.com"],
+  },
+  {
+    id: "smartfarm_apex_chain",
+    url: `${base}/smartfarm`,
+    followRedirects: true,
+    finalUrlIncludes: "farm.jema-ai.com",
   },
   {
     id: "smartfarm_farm_host",
@@ -53,12 +59,26 @@ for (const probe of probes) {
     const res = await fetch(probe.url, {
       method: "GET",
       redirect:
-        probe.locationIncludes || probe.locationIncludesAny ? "manual" : "follow",
+        probe.followRedirects
+          ? "follow"
+          : probe.locationIncludes || probe.locationIncludesAny
+            ? "manual"
+            : "follow",
       signal: AbortSignal.timeout(20000),
     });
     row.status = res.status;
     const text = await res.text();
     row.content_type = res.headers.get("content-type");
+    if (probe.followRedirects) {
+      row.final_url = res.url;
+      if (res.url.includes(probe.finalUrlIncludes)) {
+        row.ok = true;
+      } else {
+        row.error = "final_url_mismatch";
+      }
+      report.results[probe.id] = row;
+      continue;
+    }
     if (probe.locationIncludesAny) {
       const loc = res.headers.get("location") || "";
       row.location = loc;
