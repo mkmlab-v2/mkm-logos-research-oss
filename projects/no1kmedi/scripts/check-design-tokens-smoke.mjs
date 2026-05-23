@@ -102,5 +102,26 @@ for (const [needle, label] of heroTokenChecks) {
   }
 }
 
+const phase4TokenChecks = [
+  [".pd-premium-cta {", "personadiary pd-premium-cta block"],
+  ["gap: var(--space-md);", "pd-premium-cta gap (shared phase4)"],
+  [".pd-glass {", "personadiary pd-glass block"],
+  ["border-radius: var(--radius-lg);", "pd-glass radius (shared phase4)"],
+  [".sf-hero-cta {", "smartfarm sf-hero-cta block"],
+  [".sf-btn {", "smartfarm sf-btn block"],
+  ["padding: var(--space-sm) var(--space-lg);", "sf-btn padding (shared phase4)"],
+  ["border-radius: var(--radius-md);", "sf-btn radius (shared phase4)"],
+  [".enterprise-eyebrow {", "enterprise eyebrow block"],
+  ["padding: var(--space-xs) var(--space-md);", "enterprise-eyebrow padding"],
+  [".enterprise-principle-chip {", "enterprise principle chip block"],
+  ["border-radius: var(--radius-lg);", "enterprise chip radius (shared phase4)"],
+];
+for (const [needle, label] of phase4TokenChecks) {
+  if (!globals.includes(needle)) {
+    console.error(`[check-design-tokens-smoke] phase4 token missing (${label}): ${needle}`);
+    process.exit(1);
+  }
+}
+
 console.log("[check-design-tokens-smoke] passed.");
 process.exit(0);

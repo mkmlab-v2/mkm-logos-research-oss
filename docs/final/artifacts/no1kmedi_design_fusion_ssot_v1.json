@@ -1,0 +1,104 @@
+{
+  "schema": "no1kmedi_design_fusion_ssot_v1",
+  "updated_utc": "2026-05-23",
+  "layer_a_subroutes": {
+    "personadiary": "production_canonical_phase4",
+    "smartfarm": "production_canonical_phase4",
+    "enterprise": "production_canonical_phase4"
+  },
+  "layers": {
+    "A_tokens_css": "projects/no1kmedi/src/app/globals.css",
+    "A_tokens_ts": "projects/no1kmedi/src/lib/designTokens.ts",
+    "A_guardrail_rule": ".cursor/rules/mkm-no1kmedi-design-guardrail-v1.mdc",
+    "B_figma_variables": "docs/final/artifacts/no1kmedi_figma_token_map_v1.json",
+    "C_lens_runtime": "projects/no1kmedi/src/lib/designThemeLayerC.stub.ts"
+  },
+  "figma_figjam": {
+    "title": "MKM Field-Lens Decision Flow",
+    "board_url": "https://www.figma.com/board/PKFUNbiHIf4accqV6qT8wa",
+    "mermaid_repo": "reports/mkm_field_lens_flow.mmd",
+    "svg_preview_repo": "reports/mkm_field_lens_flow.svg"
+  },
+  "layer_b_hero": {
+    "component": "projects/no1kmedi/src/components/HomeHeroSection.tsx",
+    "env_local_keys": ["FIGMA_TARGET_DESIGN_URL", "FIGMA_HERO_NODE_ID", "FIGMA_HERO_FRAME_NAME"],
+    "env_example": "projects/no1kmedi/.env.example",
+    "resolve_script": "projects/no1kmedi/scripts/resolve_no1kmedi_figma_hero_target_v1.mjs",
+    "figma_design_file_url": null,
+    "invocation": "opt_in_manual_only",
+    "note": "DEFERRED: no CI/deploy gate. Run resolve script + Figma MCP only when a Design file URL exists; FigJam is not a substitute."
+  },
+  "homepage_copy_migrated": [
+    "governance_flow",
+    "why_mkm_ai",
+    "quick_start",
+    "home_clinic_flow",
+    "hero.proof_items",
+    "homepage_a11y",
+    "footer.address_label",
+    "basic_health_chat",
+    "nav.toggle_*",
+    "free_validation_lead",
+    "paddle_checkout"
+  ],
+  "enterprise_copy_migrated": ["nav.main_aria_label", "skip via homepage_a11y"],
+  "smartfarm_copy_migrated": ["a11y.skip_to_main", "a11y.nav_aria_label", "a11y.mail_subject"],
+  "phase3_token_pass_utc": "2026-05-22",
+  "phase4_token_pass_utc": "2026-05-23",
+  "phase4_token_targets": [
+    ".pd-premium-cta",
+    ".pd-glass",
+    ".pd-premium-hero-inner",
+    ".sf-hero-cta",
+    ".sf-btn",
+    ".sf-section",
+    ".enterprise-eyebrow",
+    ".enterprise-principle-chip"
+  ],
+  "phase3_token_targets": [
+    ".chat-card",
+    ".lead-form-card",
+    ".lead-form",
+    ".paddle-checkout-root",
+    ".hero-lead",
+    ".hero-cta",
+    ".hero-proof span",
+    ".hero-role-cta",
+    ".eyebrow"
+  ],
+  "homepage_copy_gate": "projects/no1kmedi/scripts/check-homepage-marketing-copy-wired_v1.mjs",
+  "layer_b_status": "deferred_code_first",
+  "layer_b_policy": {
+    "production_blocker": false,
+    "figma_design_url_required": false,
+    "reactivation_trigger": "human sets FIGMA_TARGET_DESIGN_URL in .env.local and runs resolve script",
+    "deprecated_fields": ["layer_b_blocked_reason", "not_started"]
+  },
+  "layer_a_status": "production_canonical",
+  "deploy_readiness": {
+    "script": "projects/no1kmedi/scripts/check-no1kmedi-deploy-readiness_v1.mjs",
+    "npm_script": "check:deploy-readiness",
+    "report": "reports/no1kmedi_deploy_readiness_latest.json"
+  },
+  "vps_preflight": {
+    "local_script": "scripts/Invoke-No1kmediVpsPm2Preflight_v1.ps1",
+    "local_staging_script": "projects/no1kmedi/scripts/check-no1kmedi-staging-preflight_v1.mjs",
+    "deploy_tarball": "scripts/Deploy-No1kmediDestinyTarball_v1.ps1",
+    "report": "reports/no1kmedi_vps_pm2_preflight_latest.json",
+    "vps_runtime_path_verified_utc": "2026-05-23",
+    "canonical_no1kmedi_exec_cwd": "/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi",
+    "standalone_path_stale_in_doc": false,
+    "note": "SSOT doc updated 2026-05-23; VPS npm start from tarball path"
+  },
+  "public_surface": {
+    "component": "projects/no1kmedi/src/components/FieldLensGovernanceFlow.tsx",
+    "copy_ssot": "marketing-site/public-copy.json#governance_flow",
+    "anchor_id": "governance-flow",
+    "copy_policy": "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+    "lens_contract": "AGENTS.md — Field primary; 사상/명리/성경 auxiliary; Logos NON_GATING"
+  },
+  "smoke": {
+    "design_tokens": "projects/no1kmedi/scripts/check-design-tokens-smoke.mjs",
+    "npm_script": "check:design-tokens"
+  }
+}
