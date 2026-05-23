@@ -49,6 +49,8 @@
   "phase5_token_pass_utc": "2026-05-23",
   "phase5b_token_pass_utc": "2026-05-23",
   "phase6_token_pass_utc": "2026-05-23",
+  "phase7_token_pass_utc": "2026-05-23",
+  "phase7_token_targets": [".lead-success", ".consult-access-row", ".consult-access-row input"],
   "phase6_token_targets": [
     ".chat-input-row",
     ".lead-form label",

@@ -2539,18 +2539,18 @@ section h2 {
 }
 
 .lead-success {
-  margin: 0.8rem 0 0;
+  margin: var(--space-md) 0 0;
   color: #94e6cf;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
 }
 
 .consult-access-card {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-md);
 }
 
 .consult-access-row {
   display: flex;
-  gap: 0.65rem;
+  gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
@@ -2558,10 +2558,10 @@ section h2 {
   flex: 1;
   min-width: 240px;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--surface);
   color: var(--text);
-  padding: 0.65rem 0.75rem;
+  padding: var(--space-sm) var(--space-md);
 }
 
 .consult-access-ok {

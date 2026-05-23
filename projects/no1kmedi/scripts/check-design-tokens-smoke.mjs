@@ -168,5 +168,18 @@ for (const [needle, label] of phase6TokenChecks) {
   }
 }
 
+const phase7TokenChecks = [
+  [".lead-success {", "lead success block"],
+  [".consult-access-row input {", "consult access input block"],
+  ["margin: var(--space-md) 0 0;", "lead-success margin (phase7)"],
+  ["gap: var(--space-sm);", "consult-access-row gap (phase7)"],
+];
+for (const [needle, label] of phase7TokenChecks) {
+  if (!globals.includes(needle)) {
+    console.error(`[check-design-tokens-smoke] phase7 token missing (${label}): ${needle}`);
+    process.exit(1);
+  }
+}
+
 console.log("[check-design-tokens-smoke] passed.");
 process.exit(0);
