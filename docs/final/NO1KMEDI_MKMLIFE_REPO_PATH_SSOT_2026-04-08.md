@@ -108,7 +108,7 @@ CI는 **저장에 포함된 워크플로만** 돌아간다. §2.2의 `deploy-to-
 
 **Origin 포트 (2026-05-23, VPS `origin_probe`):** Next `no1kmedi-com` → **`127.0.0.1:3010`** (`package.json` `start`: `next start -p 3010`). `api.no1kmedi.com` nginx → **`127.0.0.1:3847`** (`payapp-api`). Edge는 Cloudflare → nginx → 위 포트.
 
-**Smartfarm B2B 공개 URL:** **`https://farm.jema-ai.com`** (본선). **`app.jema-ai.com/smartfarm`** → Next middleware **308** → farm (2026-05-23 nginx에서 `/consumer` rewrite 제거; `scripts/deploy/linux/apply_app_jema_ai_nginx_v1.sh`). **`jema-ai.com/smartfarm`**은 Cloudflare가 `app`으로 보낼 수 있어 2-hop — 대외 CTA·허브 카드는 **farm 서브도메인** 우선. apex 직행 308: `scripts/deploy/linux/apply_jema_ai_com_apex_nginx_v1.sh`.
+**Smartfarm B2B 공개 URL:** **`https://farm.jema-ai.com`** (본선). **`app.jema-ai.com/smartfarm`** → Next middleware **308** → farm (`apply_app_jema_ai_nginx_v1.sh`). **`jema-ai.com/smartfarm`** 1-hop: Cloudflare `scripts/setup_cloudflare_jema_ai_smartfarm_redirect_v1.py` (308 → farm, `--dry-run` 후 적용) · nginx origin 폴백 `apply_jema_ai_com_apex_nginx_v1.sh`. 대외 CTA는 **farm 서브도메인** 우선.
 
 **로컬 인프라 마감 원클릭:** `projects/no1kmedi`에서 `npm run check:infra-closure` — `Invoke-No1kmediVpsPm2Preflight_v1.ps1` → `check-no1kmedi-staging-preflight_v1.mjs` → `check-no1kmedi-deploy-readiness_v1.mjs`. 산출: `reports/no1kmedi_staging_preflight_latest.json` (`infra_closure.closure_ok`), `reports/no1kmedi_deploy_readiness_latest.json` (`ready`).
 

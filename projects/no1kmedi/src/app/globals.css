@@ -887,42 +887,42 @@ main {
 .chat-profile-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 0.7rem;
+  gap: var(--space-md);
 }
 
 .chat-profile-grid label {
   display: grid;
-  gap: 0.35rem;
+  gap: var(--space-xs);
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: var(--text-sm);
 }
 
 .chat-profile-grid input,
 .chat-input-row input {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--bg);
   color: var(--text);
-  padding: 0.62rem 0.7rem;
+  padding: var(--space-sm) var(--space-md);
 }
 
 .chat-log {
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 0.7rem;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
   background: rgba(255, 255, 255, 0.01);
   display: grid;
-  gap: 0.45rem;
+  gap: var(--space-xs);
   max-height: 280px;
   overflow: auto;
 }
 
 .chat-bubble {
   margin: 0;
-  padding: 0.55rem 0.65rem;
-  border-radius: 8px;
-  font-size: 0.92rem;
+  padding: var(--space-sm) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
 }
 
 .chat-bubble-user {
@@ -2770,7 +2770,7 @@ section h2 {
   opacity: 0.9;
 }
 
-/* --- App workspace (/consumer, /clinician): sidebar + main — MKM-DESIGN-SYSTEM-TOKEN-V1 phase5 --- */
+/* --- App workspace (/consumer, /clinician) — MKM-DESIGN-SYSTEM-TOKEN-V1 phase5/5b --- */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -2953,8 +2953,8 @@ section h2 {
 }
 
 .thread-rail-label {
-  margin: 0 0 0.35rem;
-  font-size: 0.72rem;
+  margin: 0 0 var(--space-xs);
+  font-size: var(--text-xs);
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--muted);
@@ -2967,14 +2967,14 @@ section h2 {
   overflow: auto;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: var(--space-xs);
 }
 
 .thread-rail-item {
   display: flex;
   align-items: stretch;
-  gap: 0.2rem;
-  border-radius: 8px;
+  gap: var(--space-xs);
+  border-radius: var(--radius-sm);
   border: 1px solid transparent;
 }
 
@@ -2990,24 +2990,24 @@ section h2 {
   border: 0;
   background: transparent;
   color: var(--text);
-  padding: 0.4rem 0.35rem;
+  padding: var(--space-xs) var(--space-xs);
   cursor: pointer;
   font-family: inherit;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: var(--space-xs);
 }
 
 .thread-rail-title {
-  font-size: 0.82rem;
-  line-height: 1.25;
+  font-size: var(--text-xs);
+  line-height: var(--leading-tight);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .thread-rail-meta {
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   color: var(--muted);
 }
 
@@ -3020,7 +3020,7 @@ section h2 {
   cursor: pointer;
   font-size: 1rem;
   line-height: 1;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 }
 
 .thread-rail-delete:hover {
@@ -3030,13 +3030,13 @@ section h2 {
 
 .jema-diff-strip {
   flex-shrink: 0;
-  margin-bottom: 0.65rem;
-  padding: 0.55rem 0.7rem;
-  border-radius: 10px;
+  margin-bottom: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
   background: rgba(61, 155, 132, 0.07);
-  font-size: 0.78rem;
-  line-height: 1.5;
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
   color: var(--muted);
 }
 
@@ -3073,12 +3073,12 @@ section h2 {
 .palette-input {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.55rem 0.65rem;
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm) var(--space-sm);
   background: var(--bg);
   color: var(--text);
-  font-size: 0.92rem;
-  margin-bottom: 0.45rem;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-xs);
 }
 
 .palette-list {
@@ -3093,14 +3093,14 @@ section h2 {
   width: 100%;
   text-align: left;
   border: 0;
-  border-radius: 8px;
-  padding: 0.45rem 0.5rem;
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-sm);
   background: transparent;
   color: var(--text);
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 0.12rem;
+  gap: var(--space-xs);
   font-family: inherit;
 }
 

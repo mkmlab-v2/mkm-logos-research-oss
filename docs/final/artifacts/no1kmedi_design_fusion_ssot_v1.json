@@ -5,7 +5,7 @@
     "personadiary": "production_canonical_phase4",
     "smartfarm": "production_canonical_phase4",
     "enterprise": "production_canonical_phase4",
-    "consumer_clinician_workspace": "production_canonical_phase5"
+    "consumer_clinician_workspace": "production_canonical_phase5b"
   },
   "layers": {
     "A_tokens_css": "projects/no1kmedi/src/app/globals.css",
@@ -47,6 +47,16 @@
   "phase3_token_pass_utc": "2026-05-22",
   "phase4_token_pass_utc": "2026-05-23",
   "phase5_token_pass_utc": "2026-05-23",
+  "phase5b_token_pass_utc": "2026-05-23",
+  "phase5b_token_targets": [
+    ".thread-rail-list",
+    ".thread-rail-item",
+    ".palette-input",
+    ".palette-item",
+    ".chat-log",
+    ".chat-bubble",
+    ".jema-diff-strip"
+  ],
   "phase5_token_targets": [
     ".workspace-topbar-inner",
     ".workspace-sidebar",
