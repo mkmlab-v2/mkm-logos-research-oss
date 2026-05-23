@@ -936,7 +936,7 @@ main {
 .chat-input-row {
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 0.55rem;
+  gap: var(--space-sm);
 }
 
 .hero {
@@ -2524,18 +2524,18 @@ section h2 {
 
 .lead-form label {
   display: grid;
-  gap: 0.4rem;
-  font-size: 0.9rem;
+  gap: var(--space-xs);
+  font-size: var(--text-sm);
   color: var(--muted);
 }
 
 .lead-form input {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   background: var(--surface);
   color: var(--text);
-  padding: 0.65rem 0.75rem;
+  padding: var(--space-sm) var(--space-md);
 }
 
 .lead-success {
@@ -3209,23 +3209,23 @@ main.workspace-main {
 
 .workspace-consent-card h2 {
   margin: 0;
-  font-size: 1.04rem;
+  font-size: var(--text-lg);
 }
 
 .workspace-consent-card p {
-  margin: 0.7rem 0 0;
+  margin: var(--space-md) 0 0;
   color: var(--muted);
-  line-height: 1.5;
-  font-size: 0.9rem;
+  line-height: var(--leading-normal);
+  font-size: var(--text-sm);
 }
 
 .workspace-consent-check {
-  margin-top: 0.7rem;
-  padding: 0.55rem 0.6rem;
+  margin-top: var(--space-md);
+  padding: var(--space-sm) var(--space-sm);
   border: 1px dashed var(--line);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.03);
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   color: var(--muted);
 }
 
@@ -3391,7 +3391,7 @@ main.workspace-main {
 }
 
 .jema-diff-strip {
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   border-color: rgba(61, 155, 132, 0.22);
   background:
     linear-gradient(180deg, rgba(61, 155, 132, 0.09), rgba(61, 155, 132, 0.04)),

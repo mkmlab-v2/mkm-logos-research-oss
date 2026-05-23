@@ -48,6 +48,20 @@
   "phase4_token_pass_utc": "2026-05-23",
   "phase5_token_pass_utc": "2026-05-23",
   "phase5b_token_pass_utc": "2026-05-23",
+  "phase6_token_pass_utc": "2026-05-23",
+  "phase6_token_targets": [
+    ".chat-input-row",
+    ".lead-form label",
+    ".lead-form input",
+    ".workspace-consent-check",
+    ".workspace-consent-card h2"
+  ],
+  "cloudflare_smartfarm_redirect": {
+    "script": "scripts/setup_cloudflare_jema_ai_smartfarm_redirect_v1.py",
+    "wrapper_ps1": "scripts/Invoke-CloudflareJemaAiSmartfarmRedirect_v1.ps1",
+    "report": "reports/cloudflare_jema_ai_smartfarm_redirect_latest.json",
+    "status": "pending_token_or_rulesets_write"
+  },
   "phase5b_token_targets": [
     ".thread-rail-list",
     ".thread-rail-item",

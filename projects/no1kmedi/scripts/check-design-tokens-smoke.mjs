@@ -155,5 +155,18 @@ for (const [needle, label] of phase5bTokenChecks) {
   }
 }
 
+const phase6TokenChecks = [
+  [".chat-input-row {", "chat input row block"],
+  [".lead-form input {", "lead form input block"],
+  [".workspace-consent-check {", "workspace consent check block"],
+  ["padding: var(--space-sm) var(--space-md);", "lead form input padding (phase6)"],
+];
+for (const [needle, label] of phase6TokenChecks) {
+  if (!globals.includes(needle)) {
+    console.error(`[check-design-tokens-smoke] phase6 token missing (${label}): ${needle}`);
+    process.exit(1);
+  }
+}
+
 console.log("[check-design-tokens-smoke] passed.");
 process.exit(0);
