@@ -9,14 +9,34 @@
     "market_uplift_claim_scope": "research_ab_holdout_only"
   },
   "evidence": {
-    "bundle_index": "reports/evidence_bundle_20260421/index.json",
-    "hash_manifest": "reports/evidence_bundle_20260421/hashes_sha256.json",
-    "hash_sealed_approval_log": "reports/bio_dna_candidate_final_approval_hash_sealed_v1_latest.json",
-    "promotion_packet": "reports/bio_dna_constitution_promotion_packet_v1_latest.json"
+    "bundle_index": "reports/evidence_bundle_20260524/index.json",
+    "hash_manifest": "reports/evidence_bundle_20260524/hashes_sha256.json",
+    "hash_sealed_approval_log": "reports/bio_dna_btrack_promotion_hash_sealed_v1_latest.json",
+    "prior_bundle_index": "reports/evidence_bundle_20260421/index.json",
+    "prior_hash_sealed_approval_log": "reports/bio_dna_candidate_final_approval_hash_sealed_v1_latest.json",
+    "promotion_packet": "reports/bio_dna_constitution_promotion_packet_v1_latest.json",
+    "restore_pointer": "docs/final/artifacts/bio_dna_real_cohort_restore_pointer_v1.json",
+    "vault_mirror_stamp": "bio_dna_promotion_20260524"
   },
   "traceability": {
     "bundle_freeze_commit": "4f2dc854f4",
     "hash_seal_commit": "1322994ff5"
   },
-  "note": "Final human approval recorded after evidence bundle freeze and SHA-256 integrity sealing."
+  "reaffirmation_2026_05_24": {
+    "reaffirmed_at_utc": "2026-05-24T00:55:00Z",
+    "reaffirmed_by": "CEO_Giryun_Lee",
+    "action": "b_track_research_promotion_chain_complete",
+    "scope": "DNA B-track research candidate only; not Track A or live trading",
+    "evidence_refresh": {
+      "readiness": "reports/bio_dna_promotion_readiness_v1_latest.json",
+      "real_lane_rows": 200,
+      "ab_seed_stability": "reports/bio_dna_ab_neutral_seed_stability_v1.json",
+      "promotion_packet": "reports/bio_dna_constitution_promotion_packet_v1_latest.json",
+      "evidence_bundle": "reports/evidence_bundle_20260524/index.json",
+      "hash_sealed": "reports/bio_dna_btrack_promotion_hash_sealed_v1_latest.json",
+      "vault_mirror": "G:/MKM_DATA_VAULT/vault/bio_dna_promotion_20260524"
+    },
+    "operational_constraint_unchanged": "human_review_required_for_any_live_promotion"
+  },
+  "note": "Final human approval recorded after evidence bundle freeze and SHA-256 integrity sealing. Reaffirmed 2026-05-24 after 200-row real cohort restore and full B-track promotion chain."
 }

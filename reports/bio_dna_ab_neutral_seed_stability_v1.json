@@ -1,9 +1,9 @@
 {
   "schema": "bio_dna_ab_neutral_seed_stability_v1",
-  "generated_at_utc": "2026-04-21T09:51:58Z",
+  "generated_at_utc": "2026-05-24T00:54:23Z",
   "research_only": true,
   "inputs": {
-    "seed_start": 20260421,
+    "seed_start": 20260524,
     "seed_count": 30,
     "holdout_ratio": 0.3,
     "bootstrap_iterations": 2000,
@@ -13,8 +13,8 @@
     "source_mode": "blind_replay_profiles"
   },
   "outputs": {
-    "summary_csv": "C:\\workspace\\_merge_main\\reports\\bio_dna_ab_neutral_seed_stability_v1.csv",
-    "run_dir": "C:\\workspace\\_merge_main\\reports\\bio_dna_ab_neutral_seed_runs_v1"
+    "summary_csv": "C:\\workspace\\reports\\bio_dna_ab_neutral_seed_stability_v1.csv",
+    "run_dir": "C:\\workspace\\reports\\bio_dna_ab_neutral_seed_runs_v1"
   },
   "stats": {
     "attempted": 30,
@@ -26,7 +26,7 @@
     "uplift_p10": 0.24299065420560748,
     "uplift_p90": 0.24299065420560748,
     "ci_low_median": 0.09345794392523366,
-    "ci_low_p10": 0.09252336448598131,
+    "ci_low_p10": 0.09345794392523366,
     "ci_low_p90": 0.10280373831775702
   },
   "failures": [],

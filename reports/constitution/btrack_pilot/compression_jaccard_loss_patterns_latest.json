@@ -1,6 +1,6 @@
 {
   "schema": "compression_jaccard_loss_patterns_v1",
-  "ts_utc": "2026-05-18T18:27:49.651134+00:00",
+  "ts_utc": "2026-05-23T23:05:28.914314+00:00",
   "sla_track": "universal",
   "sources": {
     "input": "docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
@@ -10,7 +10,7 @@
   },
   "summary": {
     "case_count": 40,
-    "avg_words_lost": 1.575
+    "avg_words_lost": 1.975
   },
   "cases": [
     {
@@ -33,13 +33,15 @@
       "id": "cmp2_002",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.9411764705882353,
-      "token_saving_rate": 0.1578947368421053,
+      "reconstruction_fidelity_jaccard": 0.8235294117647058,
+      "token_saving_rate": 0.26315789473684215,
       "raw_word_count": 17,
-      "recon_word_count": 16,
-      "words_lost_count": 1,
+      "recon_word_count": 14,
+      "words_lost_count": 3,
       "words_extra_count": 0,
       "words_lost_sample": [
+        "proxy",
+        "requires",
         "traceability"
       ],
       "words_extra_sample": []
@@ -66,14 +68,17 @@
       "id": "cmp2_004",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.9333333333333333,
-      "token_saving_rate": 0.125,
+      "reconstruction_fidelity_jaccard": 0.7333333333333333,
+      "token_saving_rate": 0.3125,
       "raw_word_count": 15,
-      "recon_word_count": 14,
-      "words_lost_count": 1,
+      "recon_word_count": 11,
+      "words_lost_count": 4,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "reproduce"
+        "claim",
+        "explicitly",
+        "reproduce",
+        "reviews"
       ],
       "words_extra_sample": []
     },
@@ -81,14 +86,17 @@
       "id": "cmp2_005",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.8571428571428571,
-      "token_saving_rate": 0.19999999999999996,
+      "reconstruction_fidelity_jaccard": 0.6428571428571429,
+      "token_saving_rate": 0.4,
       "raw_word_count": 14,
-      "recon_word_count": 12,
-      "words_lost_count": 2,
+      "recon_word_count": 9,
+      "words_lost_count": 5,
       "words_extra_count": 0,
       "words_lost_sample": [
+        "cadence",
         "external",
+        "monthly",
+        "override",
         "updates"
       ],
       "words_extra_sample": []
@@ -97,13 +105,16 @@
       "id": "cmp2_006",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 1.0,
-      "token_saving_rate": 0.11111111111111116,
+      "reconstruction_fidelity_jaccard": 0.875,
+      "token_saving_rate": 0.2222222222222222,
       "raw_word_count": 16,
-      "recon_word_count": 16,
-      "words_lost_count": 0,
+      "recon_word_count": 14,
+      "words_lost_count": 2,
       "words_extra_count": 0,
-      "words_lost_sample": [],
+      "words_lost_sample": [
+        "anchors",
+        "mislabeled"
+      ],
       "words_extra_sample": []
     },
     {
@@ -127,13 +138,14 @@
       "id": "cmp2_008",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7857142857142857,
-      "token_saving_rate": 0.38888888888888884,
+      "reconstruction_fidelity_jaccard": 0.7142857142857143,
+      "token_saving_rate": 0.4444444444444444,
       "raw_word_count": 14,
-      "recon_word_count": 11,
-      "words_lost_count": 3,
+      "recon_word_count": 10,
+      "words_lost_count": 4,
       "words_extra_count": 0,
       "words_lost_sample": [
+        "alignment",
         "constitution",
         "constraints",
         "timing"
@@ -144,13 +156,19 @@
       "id": "cmp2_009",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 1.0,
-      "token_saving_rate": 0.23809523809523814,
+      "reconstruction_fidelity_jaccard": 0.6875,
+      "token_saving_rate": 0.47619047619047616,
       "raw_word_count": 16,
-      "recon_word_count": 16,
-      "words_lost_count": 0,
+      "recon_word_count": 11,
+      "words_lost_count": 5,
       "words_extra_count": 0,
-      "words_lost_sample": [],
+      "words_lost_sample": [
+        "aligned",
+        "ci",
+        "docs",
+        "drift",
+        "scripts"
+      ],
       "words_extra_sample": []
     },
     {
@@ -165,7 +183,7 @@
       "words_extra_count": 0,
       "words_lost_sample": [
         "avoid",
-        "false",
+        "confidence",
         "predictive"
       ],
       "words_extra_sample": []

@@ -1,54 +1,40 @@
 {
   "schema": "master_atoms_corpus_split_summary_v1",
-  "generated_at_utc": "2026-03-30T19:42:23Z",
+  "generated_at_utc": "2026-05-23T05:50:03Z",
   "inputs": {
     "atoms": "C:\\workspace\\reports\\constitution\\btrack_pilot\\original_language_master_atoms_latest.jsonl",
     "source_basename_to_bucket": {
       "verse_decoded_v2.jsonl": "canon_decode",
       "dss_parsed_enriched.jsonl": "dss",
       "apocrypha_std.jsonl": "apocrypha"
-    },
-    "lexicon_seed_jsonl": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_atoms_lexicon_seed_latest.jsonl"
+    }
   },
-  "atoms_total": 41769,
+  "atoms_total": 41658,
   "by_bucket_presence": {
     "apocrypha": 11129,
     "canon_decode": 32614,
-    "dss": 477
+    "dss": 280
   },
   "by_exclusive_pattern": {
-    "apocrypha_only": 8687,
-    "canon_decode_only": 30348,
-    "dss_only": 291,
-    "mixed_multi_bucket": 2443
+    "apocrypha_only": 8766,
+    "canon_decode_only": 30349,
+    "dss_only": 180,
+    "mixed_multi_bucket": 2363
   },
   "by_lang_exclusive_pattern": {
     "greek": {
       "canon_decode_only": 13982
     },
     "hebrew": {
-      "mixed_multi_bucket": 2266,
-      "canon_decode_only": 16366,
+      "mixed_multi_bucket": 2265,
+      "canon_decode_only": 16367,
       "apocrypha_only": 4279,
       "dss_only": 2
     },
     "other": {
-      "mixed_multi_bucket": 177,
-      "apocrypha_only": 4408,
-      "dss_only": 289
-    }
-  },
-  "lexicon_seed_strongs": {
-    "unmatched_by_exclusive_pattern": {
-      "apocrypha_only": 4252,
-      "canon_decode_only": 24412,
-      "dss_only": 1,
-      "mixed_multi_bucket": 1343
-    },
-    "ambiguous_by_exclusive_pattern": {
-      "apocrypha_only": 1,
-      "canon_decode_only": 920,
-      "mixed_multi_bucket": 489
+      "mixed_multi_bucket": 98,
+      "apocrypha_only": 4487,
+      "dss_only": 178
     }
   }
 }

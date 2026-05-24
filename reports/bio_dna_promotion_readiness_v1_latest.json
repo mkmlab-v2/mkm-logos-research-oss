@@ -1,22 +1,23 @@
 {
   "schema": "bio_dna_promotion_readiness_v1",
-  "generated_at_utc": "2026-05-05T08:29:32Z",
+  "generated_at_utc": "2026-05-24T00:49:06Z",
+  "promotion_candidate_ready": true,
   "inputs": {
-    "mapping_coverage_report": "C:\\workspace\\tests\\fixtures\\agct_demo_mapping_coverage.json",
+    "mapping_coverage_report": "C:\\workspace\\reports\\bio_paper_snp_mapping_coverage_autofill_v1.json",
     "overlap_report": "C:\\workspace\\reports\\bio_genotype_paper_snp_overlap_v1_latest.json",
     "overlap_csv": null,
     "focus_sample_id": null
   },
   "thresholds": {
-    "min_coverage_ratio": 0.3,
-    "min_target_rows": 1,
-    "min_match_rows": 1,
+    "min_coverage_ratio": 0.98,
+    "min_target_rows": 20,
+    "min_match_rows": 2,
     "min_focus_match_ratio": null
   },
   "observations": {
     "coverage_ratio": 1.0,
-    "rows_with_paper_snp_targets": 4,
-    "rows_with_any_genotype_match": 4,
+    "rows_with_paper_snp_targets": 200,
+    "rows_with_any_genotype_match": 200,
     "focus_sample_match_ratio": null
   },
   "checks": {

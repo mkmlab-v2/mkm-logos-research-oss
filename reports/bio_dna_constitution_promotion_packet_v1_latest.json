@@ -1,10 +1,11 @@
 {
   "schema": "bio_dna_constitution_promotion_packet_v1",
-  "generated_at_utc": "2026-04-21T09:55:00Z",
+  "generated_at_utc": "2026-05-24T00:55:00Z",
   "status": {
     "promotion_candidate_ready": true,
-    "threshold_sweep_passing_count": 18,
-    "threshold_sweep_candidate_count": 27,
+    "readiness_checks_passing": "3/3",
+    "threshold_sweep_passing_count": 36,
+    "threshold_sweep_candidate_count": 200,
     "recommended_policy": {
       "min_mapping_coverage_ratio": 0.98,
       "min_overlap_target_rows": 20,
@@ -12,14 +13,24 @@
     }
   },
   "evidence": {
-    "readiness_report": "reports/bio_dna_promotion_readiness_real_1case_v1.json",
-    "threshold_sweep_report": "reports/bio_dna_promotion_threshold_sweep_real_1case_v1.json",
+    "readiness_report": "reports/bio_dna_promotion_readiness_v1_latest.json",
+    "readiness_report_real_lane": "reports/bio_dna_promotion_readiness_real_lane_v1_latest.json",
+    "readiness_report_demo_lane": "reports/bio_dna_promotion_readiness_demo_lane_v1_latest.json",
+    "threshold_sweep_report": "reports/bio_dna_promotion_threshold_sweep_v1_latest.json",
     "mapping_coverage_report": "reports/bio_paper_snp_mapping_coverage_autofill_v1.json",
     "overlap_report": "reports/bio_genotype_paper_snp_overlap_v1_latest.json",
-    "genotype_input_csv": "tmp/bio_genotype_real_1case_v1.csv",
-    "cohort_csv": "tmp/bio_cohort_with_paper_snp_sidecar_autofill_v1.csv",
+    "genotype_input_csv": "tmp/bio_genotype_long_v1.csv",
+    "cohort_csv": "tmp/bio_real_cohort_merged_with_sidecar_v1.csv",
+    "ab_holdout_eval": "reports/bio_dna_ab_holdout_eval_v1_autobuild_latest.json",
+    "ab_autobuild_report": "reports/bio_dna_ab_autobuild_report_v1_latest.json",
     "ab_neutral_seed_stability_summary_json": "reports/bio_dna_ab_neutral_seed_stability_v1.json",
     "ab_neutral_seed_stability_summary_csv": "reports/bio_dna_ab_neutral_seed_stability_v1.csv"
+  },
+  "cohort_observations": {
+    "coverage_ratio": 1.0,
+    "rows_with_paper_snp_targets": 200,
+    "rows_with_any_genotype_match": 200,
+    "lane": "real_cohort_restored_from_archive"
   },
   "ab_holdout_policy": {
     "baseline_mode_locked": "neutral",
@@ -28,17 +39,21 @@
       "attempted": 30,
       "succeeded": 30,
       "promotion_ready_rate": 1.0,
-      "ci_low_median": 0.09345794392523366
+      "ci_low_median": 0.09345794392523366,
+      "uplift_median": 0.24299065420560748,
+      "seed_start": 20260524
     }
   },
   "guardrails": {
     "synthetic_data_allowed_for_e2e_only": true,
     "synthetic_data_promotion_forbidden": true,
-    "note": "This packet is derived from non-synthetic real-seed input run."
+    "track_a_live_trading_auto_promotion_forbidden": true,
+    "note": "200-row real cohort restored 2026-05-24; B-track research promotion only."
   },
   "decision_hint": {
     "constitution_update_candidate": true,
-    "requires_human_review_and_approval": true,
+    "b_track_research_promotion_complete": true,
+    "requires_human_review_for_live_promotion": true,
     "market_uplift_claim_scope": "research_ab_holdout_only"
   }
 }

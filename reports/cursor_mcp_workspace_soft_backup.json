@@ -1,13 +1,21 @@
 {
   "mcpServers": {
-    "compression-server": {
-      "command": "py",
+    "filesystem": {
+      "command": "npx",
       "args": [
-        "-u",
-        "C:/workspace/mcp-servers/compression_server.py"
-      ],
-      "cwd": "C:/workspace",
-      "timeout": 60000
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:/workspace"
+      ]
+    },
+    "openchrome": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "openchrome-mcp@latest",
+        "serve",
+        "--auto-launch"
+      ]
     },
     "athena-core": {
       "command": "py",
@@ -16,61 +24,66 @@
         "C:/workspace/mcp-servers/athena_core_server.py"
       ],
       "cwd": "C:/workspace",
+      "env": {
+        "WORKSPACE_ROOT": "C:/workspace",
+        "MKM12_LTM_DB_TYPE": "file",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
       "timeout": 60000
     },
-    "athena-metacognition": {
-      "command": "py",
+    "sequential-thinking": {
+      "command": "npx",
       "args": [
-        "-u",
-        "C:/workspace/mcp-servers/athena_metacognition_server_official.py"
-      ],
-      "cwd": "C:/workspace",
-      "timeout": 60000
-    },
-    "logos-code-pack-distribution": {
-      "command": "py",
-      "args": [
-        "-u",
-        "C:/workspace/mcp-servers/logos_code_pack_distribution_server.py"
-      ],
-      "cwd": "C:/workspace",
-      "timeout": 60000
-    },
-    "logs-resource": {
-      "command": "py",
-      "args": [
-        "-u",
-        "C:/workspace/mcp-servers/logs_resource_server.py"
-      ],
-      "cwd": "C:/workspace",
-      "timeout": 60000
-    },
-    "config-resource": {
-      "command": "py",
-      "args": [
-        "-u",
-        "C:/workspace/mcp-servers/config_resource_server.py"
-      ],
-      "cwd": "C:/workspace",
-      "timeout": 60000
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
     },
     "athena-manseryeok": {
       "command": "py",
       "args": [
-        "-u",
         "C:/workspace/mcp-servers/athena_manseryeok_server.py"
       ],
-      "cwd": "C:/workspace",
-      "timeout": 60000
+      "env": {
+        "MANSERYEOK_DAY_ROLLOVER_POLICY": "midnight_00"
+      }
     },
-    "mkm-unified-hub": {
+    "compression-server": {
       "command": "py",
       "args": [
-        "-u",
-        "C:/workspace/scripts/mkm_unified_mcp.py"
+        "C:/workspace/mcp-servers/compression_server.py"
       ],
-      "cwd": "C:/workspace",
-      "timeout": 60000
+      "env": {
+        "WORKSPACE_ROOT": "C:/workspace"
+      }
+    },
+    "devops-mcp": {
+      "command": "py",
+      "args": [
+        "C:/workspace/mcp-servers/devops_mcp_server.py"
+      ],
+      "env": {
+        "WORKSPACE_ROOT": "C:/workspace",
+        "SSH_KEY_PATH": "${env:SSH_KEY_PATH}"
+      }
+    },
+    "notebooklm": {
+      "command": "node",
+      "args": [
+        "C:/Users/PRO/AppData/Roaming/npm/node_modules/notebooklm-mcp/dist/index.js"
+      ],
+      "env": {
+        "NOTEBOOKLM_PROFILE": "full",
+        "HEADLESS": "false",
+        "MKM_NOTEBOOKLM_MCP_PINNED_VERSION": "2.0.0",
+        "STEALTH_ENABLED": "false",
+        "STEALTH_RANDOM_DELAYS": "false",
+        "STEALTH_HUMAN_TYPING": "false",
+        "STEALTH_MOUSE_MOVEMENTS": "false",
+        "BROWSER_TIMEOUT": "60000"
+      }
     }
   }
 }

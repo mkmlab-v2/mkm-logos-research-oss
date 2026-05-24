@@ -1,13 +1,13 @@
 {
   "schema": "compression_shadow_auditor_v1",
-  "ts_utc": "2026-05-16T06:45:59.459480+00:00",
+  "ts_utc": "2026-05-23T17:30:04.015185+00:00",
   "audit_ok": true,
   "exit_code": 0,
   "pytest": {
     "exit_code": 0,
     "target": "tests/test_ultra_compression_artifacts.py"
   },
-  "policy_floor_min": 0.47,
+  "policy_floor_min": 0.49,
   "thresholds": {
     "jaccard_warn_below": 0.7,
     "jaccard_critical_below": 0.5,

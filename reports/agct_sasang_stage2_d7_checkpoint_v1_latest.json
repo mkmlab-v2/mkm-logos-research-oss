@@ -1,19 +1,19 @@
 {
   "schema": "agct_sasang_stage2_d7_checkpoint_v1",
-  "generated_at_utc": "2026-05-14T22:35:02Z",
+  "generated_at_utc": "2026-05-23T22:35:02Z",
   "track": "B_TRACK",
-  "status": "PASS",
+  "status": "TRACKING",
   "inputs": {
     "thresholds_json": "C:\\workspace\\docs\\final\\artifacts\\agct_sasang_stage2_promotion_thresholds_v1.json",
     "history_jsonl": "C:\\workspace\\reports\\agct_sasang_stage2_compare_history_v1.jsonl",
     "promotion_gate_json": "C:\\workspace\\reports\\agct_sasang_stage2_promotion_gate_v1_latest.json"
   },
   "metrics": {
-    "history_rows": 11,
-    "first_observed_at_utc": "2026-04-28T15:13:02Z",
-    "elapsed_days": 16.306947,
+    "history_rows": 0,
+    "first_observed_at_utc": null,
+    "elapsed_days": null,
     "min_elapsed_days_required": 7.0,
-    "elapsed_days_ok": true,
+    "elapsed_days_ok": false,
     "required_decision": "GO_STAGE2_FINAL",
     "current_gate_decision": "GO_STAGE2_FINAL",
     "decision_ok": true

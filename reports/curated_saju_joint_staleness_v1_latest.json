@@ -1,12 +1,12 @@
 {
   "schema": "curated_saju_joint_staleness_v1",
-  "status": "OK",
-  "stale_reason": "within threshold",
+  "status": "STALE",
+  "stale_reason": "|curated_signal - bench_generated| = 345.71h (threshold 24.0h); curated=max_ingest_at_utc, bench=ok",
   "threshold_hours": 24.0,
-  "gap_hours": 1.1366,
+  "gap_hours": 345.7079,
   "curated_signal_utc": "2026-05-09T17:00:00Z",
   "curated_signal_source": "max_ingest_at_utc",
-  "bench_generated_utc": "2026-05-09T18:08:11.893779Z",
+  "bench_generated_utc": "2026-05-24T02:42:28.452976Z",
   "bench_source": "ok",
   "paths": {
     "curated_jsonl": "C:\\workspace\\data\\myeongni\\curated_saju_joint_v1.jsonl",

@@ -1,7 +1,7 @@
 {
   "schema": "myeongri_core_v2_upgrade_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-05-14T22:20:03.847293+00:00",
+  "generated_at_utc": "2026-05-23T22:20:03.847668+00:00",
   "labels": {
     "fact": "[FACT]",
     "hypothesis": "[HYPOTHESIS]",

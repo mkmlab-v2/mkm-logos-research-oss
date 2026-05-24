@@ -4,7 +4,7 @@
 
 ## 0) Meta
 
-| `brief_date_utc` | 2026-05-14 |
+| `brief_date_utc` | 2026-05-23 |
 | `workspace_anchor` | BTC spot / operator anchor — set via CLI if needed |
 | `mode` | `OBSERVATION_ONLY` |
 
@@ -41,7 +41,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-14T22:20:02Z |
+| `ts_utc` | 2026-05-23T22:20:02Z |
 | `schema` | myeongni_independent_lens_v0 |
 | `direction_score` | 0.08 |
 | `confidence` | 0.6855 |
@@ -52,7 +52,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-14T22:20:03Z |
+| `ts_utc` | 2026-05-23T22:20:03Z |
 | `direction_score` (overlay) | 0.0536 |
 | `confidence` (overlay) | 0.6033 |
 | `direction_sign` | neutral |
@@ -71,14 +71,14 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 | `mode` | neutral |
 | `verification_pass` | True |
 | `policy_hash` | `e3b54f77be6e…` |
-| `generated_at_utc` | 2026-05-14T21:00:02Z |
+| `generated_at_utc` | 2026-05-23T21:00:05Z |
 | `policy_path` | `C:\workspace\data\myeongni\myeongni_conflict_arbitration_v1.json` |
 
 #### Sasang (`sasang_independent_lens_latest`)
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-14T22:20:02Z |
+| `ts_utc` | 2026-05-23T22:20:02Z |
 | `mapping_target` | sideways |
 | `regime_hypothesis` | phase_transition |
 | `direction_score` | 0.17 |
@@ -102,7 +102,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-14T22:20:02Z |
+| `ts_utc` | 2026-05-23T22:20:02Z |
 
 - **human_commander banner:** [TRACK B / HYPO] 연구용·비자동 — 최종 채택은 지휘관 판단 대기
 - **`veto.force_hold`:** `True` · `reason_codes` = `["HIGH_ENTROPY_SOFTMAX"]`
@@ -119,7 +119,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-14T22:20:02Z |
+| `ts_utc` | 2026-05-23T22:20:03Z |
 | `direction_score` | -0.3233 |
 | `confidence` | 0.2 |
 | `evidence_refs_count` | 3 |

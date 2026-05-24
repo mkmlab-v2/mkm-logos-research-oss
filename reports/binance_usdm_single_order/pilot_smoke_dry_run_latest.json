@@ -1,6 +1,6 @@
 {
   "schema": "binance_usdm_single_order_v1",
-  "ts_utc": "2026-05-14T22:15:03.658635+00:00",
+  "ts_utc": "2026-05-24T14:15:03.066738+00:00",
   "symbol": "BTCUSDT",
   "side": "SELL",
   "qty": 0.001,

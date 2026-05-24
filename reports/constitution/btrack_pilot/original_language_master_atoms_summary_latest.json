@@ -1,18 +1,18 @@
 {
   "schema": "original_language_master_atoms_summary_v1",
-  "generated_at_utc": "2026-04-21T18:00:59Z",
+  "generated_at_utc": "2026-05-23T23:05:39Z",
   "inputs": [
     "C:\\workspace\\data\\logos\\verse_decoded_v2.jsonl",
     "C:\\workspace\\data\\logos\\manuscripts\\apocrypha_std.jsonl",
     "C:\\workspace\\data\\logos\\manuscripts\\dss_parsed_enriched.jsonl"
   ],
   "stats": {
-    "surface_token_count": 1318556,
-    "unique_master_atoms": 41775,
+    "surface_token_count": 1318024,
+    "unique_master_atoms": 41658,
     "unique_atoms_by_lang": {
       "greek": 13982,
       "hebrew": 22913,
-      "other": 4880
+      "other": 4763
     },
     "lemma_method": "normalized_form_v1",
     "note": "Pseudo-lemma mode (v1 normalized or v2 heuristic); not full morphology lemmatization."

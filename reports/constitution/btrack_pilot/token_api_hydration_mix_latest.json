@@ -1,69 +1,65 @@
 {
   "schema": "token_api_hydration_mix_v1",
-  "ts_utc": "2026-05-18T18:27:49.433364+00:00",
+  "ts_utc": "2026-05-23T23:05:28.696303+00:00",
   "source_openapi": "docs/final/openapi_token_compression_stub_v1.yaml",
   "total_examples": 5,
   "metrics_mode_counts": {
-    "none": 2,
-    "decision_fallback": 2,
-    "live": 1
+    "identity_gatekeeper_bypass": 5
   },
   "root_cause_counts": {
-    "hydrate_metrics_disabled_or_not_requested": 2,
-    "live_eval_available": 1,
-    "live_eval_unavailable_then_decision_fallback": 2
+    "unknown": 5
   },
-  "live_ratio": 0.2,
+  "live_ratio": 0.0,
   "rows": [
     {
       "example": "mode_none",
       "status_code": 200,
-      "metrics_mode": "none",
+      "metrics_mode": "identity_gatekeeper_bypass",
       "hydration_metrics_source": null,
-      "shadow_mode": "enabled",
-      "shadow_metrics_mode": "live",
-      "root_cause": "hydrate_metrics_disabled_or_not_requested",
-      "savings_ratio": null
+      "shadow_mode": "disabled",
+      "shadow_metrics_mode": null,
+      "root_cause": "unknown",
+      "savings_ratio": 0.0
     },
     {
       "example": "mode_public_ultra_literal",
       "status_code": 200,
-      "metrics_mode": "none",
+      "metrics_mode": "identity_gatekeeper_bypass",
       "hydration_metrics_source": null,
-      "shadow_mode": "enabled",
-      "shadow_metrics_mode": "live",
-      "root_cause": "hydrate_metrics_disabled_or_not_requested",
-      "savings_ratio": null
+      "shadow_mode": "disabled",
+      "shadow_metrics_mode": null,
+      "root_cause": "unknown",
+      "savings_ratio": 0.0
     },
     {
       "example": "mode_decision_fallback",
       "status_code": 200,
-      "metrics_mode": "decision_fallback",
-      "hydration_metrics_source": "decision_selected_candidate",
-      "shadow_mode": "enabled",
-      "shadow_metrics_mode": "live",
-      "root_cause": "live_eval_unavailable_then_decision_fallback",
-      "savings_ratio": 0.47538677918424754
+      "metrics_mode": "identity_gatekeeper_bypass",
+      "hydration_metrics_source": null,
+      "shadow_mode": "disabled",
+      "shadow_metrics_mode": null,
+      "root_cause": "unknown",
+      "savings_ratio": 0.0
     },
     {
       "example": "mode_live",
       "status_code": 200,
-      "metrics_mode": "live",
-      "hydration_metrics_source": "live_evaluate_report",
-      "shadow_mode": "enabled",
-      "shadow_metrics_mode": "live",
-      "root_cause": "live_eval_available",
-      "savings_ratio": 0.25
+      "metrics_mode": "identity_gatekeeper_bypass",
+      "hydration_metrics_source": null,
+      "shadow_mode": "disabled",
+      "shadow_metrics_mode": null,
+      "root_cause": "unknown",
+      "savings_ratio": 0.0
     },
     {
       "example": "mode_hydrate_with_meter_log",
       "status_code": 200,
-      "metrics_mode": "decision_fallback",
-      "hydration_metrics_source": "decision_selected_candidate",
-      "shadow_mode": "enabled",
-      "shadow_metrics_mode": "live",
-      "root_cause": "live_eval_unavailable_then_decision_fallback",
-      "savings_ratio": 0.47538677918424754
+      "metrics_mode": "identity_gatekeeper_bypass",
+      "hydration_metrics_source": null,
+      "shadow_mode": "disabled",
+      "shadow_metrics_mode": null,
+      "root_cause": "unknown",
+      "savings_ratio": 0.0
     }
   ]
 }
