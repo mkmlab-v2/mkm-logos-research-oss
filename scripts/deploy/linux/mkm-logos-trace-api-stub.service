@@ -1,0 +1,22 @@
+# MKM Logos Trace API (FastAPI stub) — install with install_logos_trace_api_stub_systemd.sh
+# Edit paths if workspace is not /opt/mkm-destiny-ai-41e38ec6.
+
+[Unit]
+Description=MKM Logos Trace API Stub (uvicorn)
+After=network.target
+
+[Service]
+Type=simple
+User=nobody
+WorkingDirectory=/opt/mkm-destiny-ai-41e38ec6
+Environment=PYTHONPATH=/opt/mkm-destiny-ai-41e38ec6
+Environment=LOGOS_TRACE_GRAPH_JSON=/var/www/jemaai/showroom_meaning_topology_graph_slice_v1.json
+Environment=LOGOS_TRACE_PRESETS_JSON=/var/www/jemaai/showroom_meaning_topology_qa_presets_v1.json
+Environment=LOGOS_TRACE_CHRONOLOGY_JSON=/var/www/jemaai/showroom_logos_chronology_overlay_v1.json
+EnvironmentFile=-/etc/mkm/logos-trace-api.env
+ExecStart=/usr/bin/python3 -m uvicorn scripts.logos_trace_api_stub_v1:app --host 127.0.0.1 --port 8021
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

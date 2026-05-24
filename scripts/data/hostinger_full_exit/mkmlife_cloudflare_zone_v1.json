@@ -1,0 +1,8 @@
+{
+  "schema": "mkmlife_cloudflare_zone_v1",
+  "apex": "mkmlife.com",
+  "cloudflare_account_id": "646e42cf881ab43043c32430e99d9af4",
+  "zone_id": "259a847ea3643566383972ebd3ede918",
+  "name_servers": [],
+  "note": "Paste zone_id from Cloudflare dashboard (mkmlife.com → Overview → API) after zone is active. Then: powershell -File scripts/Invoke-CloudflareEmailRoutingSetup_v1.ps1 -ZoneId <id>. Email Routing API token must include this zone (not DNS-only)."
+}

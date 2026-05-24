@@ -1,0 +1,11 @@
+{
+  "schema": "personadiary_cloudflare_zone_v1",
+  "apex": "personadiary.com",
+  "cloudflare_account_id": "646e42cf881ab43043c32430e99d9af4",
+  "zone_id": "d0dd685e69edb07d4cae077b1518bd9c",
+  "name_servers": [
+    "sarah.ns.cloudflare.com",
+    "sullivan.ns.cloudflare.com"
+  ],
+  "note": "Zone id from CF dashboard API panel (2026-05-15). API token must include this zone for automated readiness."
+}

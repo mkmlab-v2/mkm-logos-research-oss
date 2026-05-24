@@ -1,0 +1,23 @@
+# Include inside api.jemaai.cloud server { }:
+#   include /etc/nginx/snippets/mkm_logos_trace_api.conf;
+#
+# Proxies Logos Trace stub (127.0.0.1:8021). Track C / NON_GATING only.
+
+location = /v1/logos/health {
+    proxy_pass http://127.0.0.1:8021/health;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+
+location /v1/logos/ {
+    proxy_pass http://127.0.0.1:8021/v1/logos/;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+    add_header Cache-Control "no-store" always;
+}

@@ -1,0 +1,632 @@
+[
+  {
+    "slug": "new_wine",
+    "theme": "New Wine (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "New Wine 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "night_watch",
+    "theme": "Night Watch (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Night Watch 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "oil_anoint",
+    "theme": "Oil Anoint (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Oil Anoint 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "olive_tree",
+    "theme": "Olive Tree (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Olive Tree 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "open_grave",
+    "theme": "Open Grave (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Open Grave 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "oracle_balaam",
+    "theme": "Oracle Balaam (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Oracle Balaam 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "overcomer_crown",
+    "theme": "Overcomer Crown (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Overcomer Crown 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "patience_job",
+    "theme": "Patience Job (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Patience Job 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "peace_prince",
+    "theme": "Peace Prince (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Peace Prince 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "pentecost_flame",
+    "theme": "Pentecost Flame (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Pentecost Flame 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "persecution_blessed",
+    "theme": "Persecution Blessed (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Persecution Blessed 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "pharaoh_dreams",
+    "theme": "Pharaoh Dreams (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Pharaoh Dreams 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "pillar_fire",
+    "theme": "Pillar Fire (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Pillar Fire 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "plague_locusts",
+    "theme": "Plague Locusts (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Plague Locusts 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "potter_clay",
+    "theme": "토기장이 진흙 (Potter Clay)",
+    "anchor_ref": "예레미야 18:6",
+    "anchor_text": "진흙과 같이 나를 다루실",
+    "note": "설정 재구성·리셰이프 비유이며 [HYPO] Track A·실매매 단정 아님."
+  },
+  {
+    "slug": "power_spirit",
+    "theme": "Power Spirit (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Power Spirit 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "praise_temple",
+    "theme": "Praise Temple (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Praise Temple 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "prayer_fervent",
+    "theme": "Prayer Fervent (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Prayer Fervent 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "priest_melchizedek",
+    "theme": "Priest Melchizedek (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Priest Melchizedek 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "promise_land",
+    "theme": "Promise Land (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Promise Land 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "prophecy_fulfill",
+    "theme": "Prophecy Fulfill (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Prophecy Fulfill 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "providence_god",
+    "theme": "Providence God (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Providence God 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "pure_heart",
+    "theme": "Pure Heart (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Pure Heart 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "rain_latter",
+    "theme": "Rain Latter (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Rain Latter 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "redeemer_boaz",
+    "theme": "Redeemer Boaz (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Redeemer Boaz 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "refiner_fire",
+    "theme": "Refiner Fire (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Refiner Fire 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "repent_baptize",
+    "theme": "Repent Baptize (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Repent Baptize 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "rest_sabbath",
+    "theme": "Rest Sabbath (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Rest Sabbath 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "resurrection_body",
+    "theme": "Resurrection Body (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Resurrection Body 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "righteous_lot",
+    "theme": "Righteous Lot (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Righteous Lot 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "river_eden",
+    "theme": "River Eden (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "River Eden 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "rock_moses",
+    "theme": "Rock Moses (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Rock Moses 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "rod_iron",
+    "theme": "Rod Iron (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Rod Iron 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "root_jesse",
+    "theme": "Root Jesse (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Root Jesse 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "sabbath_rest",
+    "theme": "Sabbath Rest (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Sabbath Rest 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "sacrifice_praise",
+    "theme": "Sacrifice Praise (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Sacrifice Praise 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "salt_covenant",
+    "theme": "Salt Covenant (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Salt Covenant 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "sanctuary_god",
+    "theme": "Sanctuary God (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Sanctuary God 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "scroll_ezekiel",
+    "theme": "Scroll Ezekiel (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Scroll Ezekiel 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "second_death",
+    "theme": "Second Death (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Second Death 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "seed_word",
+    "theme": "Seed Word (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Seed Word 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "servant_moses",
+    "theme": "Servant Moses (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Servant Moses 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "seven_spirits",
+    "theme": "Seven Spirits (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Seven Spirits 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "shepherd_king",
+    "theme": "Shepherd King (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Shepherd King 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "sign_covenant",
+    "theme": "Sign Covenant (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Sign Covenant 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "sin_scapegoat",
+    "theme": "Sin Scapegoat (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Sin Scapegoat 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "sower_word",
+    "theme": "Sower Word (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Sower Word 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "spirit_truth",
+    "theme": "Spirit Truth (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Spirit Truth 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "star_bethlehem",
+    "theme": "Star Bethlehem (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Star Bethlehem 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "stone_rolled",
+    "theme": "Stone Rolled (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Stone Rolled 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "storm_calmed",
+    "theme": "Storm Calmed (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Storm Calmed 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "strong_delusion",
+    "theme": "Strong Delusion (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Strong Delusion 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "suffering_christ",
+    "theme": "Suffering Christ (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Suffering Christ 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "tabernacle_god",
+    "theme": "Tabernacle God (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Tabernacle God 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "temple_body",
+    "theme": "Temple Body (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Temple Body 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "tent_meeting",
+    "theme": "Tent Meeting (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Tent Meeting 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "test_abraham",
+    "theme": "Test Abraham (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Test Abraham 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "thorn_crown",
+    "theme": "Thorn Crown (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Thorn Crown 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "three_hebrews",
+    "theme": "Three Hebrews (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Three Hebrews 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "threshing_floor",
+    "theme": "Threshing Floor (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Threshing Floor 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "tithe_melchizedek",
+    "theme": "Tithe Melchizedek (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Tithe Melchizedek 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "tongue_control",
+    "theme": "Tongue Control (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Tongue Control 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "tower_siloam",
+    "theme": "Tower Siloam (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Tower Siloam 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "tree_planted",
+    "theme": "Tree Planted (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Tree Planted 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "tribulation_saints",
+    "theme": "Tribulation Saints (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Tribulation Saints 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "trumpet_judgment",
+    "theme": "Trumpet Judgment (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Trumpet Judgment 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "truth_sets_free",
+    "theme": "Truth Sets Free (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Truth Sets Free 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "unity_spirit",
+    "theme": "Unity Spirit (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Unity Spirit 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "valley_decision",
+    "theme": "Valley Decision (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Valley Decision 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "vine_true",
+    "theme": "Vine True (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Vine True 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "voice_lamb",
+    "theme": "Voice Lamb (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Voice Lamb 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "walk_emmaus",
+    "theme": "Walk Emmaus (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Walk Emmaus 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "wall_jericho",
+    "theme": "여리고 성벽 (Wall Jericho)",
+    "anchor_ref": "여호수아 6:20",
+    "anchor_text": "성이 무너지매",
+    "note": "방화벽 제거·카나리 통과 비유이며 [HYPO] Track A·실매매 단정 아님."
+  },
+  {
+    "slug": "war_heaven",
+    "theme": "War Heaven (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "War Heaven 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "watchman_wall",
+    "theme": "Watchman Wall (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Watchman Wall 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "water_baptism",
+    "theme": "Water Baptism (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Water Baptism 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "way_truth_life",
+    "theme": "길 진리 생명 (Way Truth Life)",
+    "anchor_ref": "요한복음 14:6",
+    "anchor_text": "내가 길이요 진리요",
+    "note": "SSOT 라우팅·단일 진입점 비유이며 [HYPO] Track A·실매매 단정 아님."
+  },
+  {
+    "slug": "wheat_harvest",
+    "theme": "Wheat Harvest (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Wheat Harvest 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "whirlwind_god",
+    "theme": "Whirlwind God (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Whirlwind God 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "widow_oil",
+    "theme": "Widow Oil (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Widow Oil 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "wilderness_test",
+    "theme": "Wilderness Test (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Wilderness Test 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "wine_blood",
+    "theme": "Wine Blood (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Wine Blood 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "wisdom_solomon",
+    "theme": "Wisdom Solomon (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Wisdom Solomon 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "witness_cloud",
+    "theme": "Witness Cloud (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Witness Cloud 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "woman_wisdom",
+    "theme": "Woman Wisdom (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Woman Wisdom 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "word_incarnate",
+    "theme": "Word Incarnate (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Word Incarnate 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "wrath_lamb",
+    "theme": "Wrath Lamb (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Wrath Lamb 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "yoke_easy",
+    "theme": "Yoke Easy (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Yoke Easy 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "zeal_house",
+    "theme": "Zeal House (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Zeal House 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  },
+  {
+    "slug": "zion_hill",
+    "theme": "Zion Hill (Track B)",
+    "anchor_ref": "시편 119:105",
+    "anchor_text": "주의 말씀은 내 발에 등이요",
+    "note": "Zion Hill 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+  }
+]

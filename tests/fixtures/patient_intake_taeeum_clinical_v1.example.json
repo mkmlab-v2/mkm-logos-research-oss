@@ -1,0 +1,24 @@
+{
+  "schema": "patient_intake_fusion_draft_v1",
+  "version": "1.0.0",
+  "encounter": {
+    "ref_token": "MKM-2026-PT-TAE-001"
+  },
+  "profile": {
+    "birth_instant_utc": "1985-07-20T14:00:00Z",
+    "iana_tz": "Asia/Seoul",
+    "is_male": false
+  },
+  "intake": {
+    "symptoms": ["기침·가래", "안면 홍조", "갈증", "피부 건조·소양"],
+    "situation": "폐열·담음 의심 추적",
+    "objective_draft": "맥 부수(浮數), 설 홍(舌紅) · 4진 확정 대기",
+    "sasang_estimate": {
+      "label": "태음인",
+      "source": "임상 진찰 확정"
+    }
+  },
+  "options": {
+    "include_logos_symbolic": false
+  }
+}

@@ -1,0 +1,9 @@
+﻿{
+    "schema":  "jema12_cloudflare_zone_v1",
+    "apex":  "jema12.com",
+    "redirect_target_host":  "jema-ai.com",
+    "cloudflare_account_id":  "646e42cf881ab43043c32430e99d9af4",
+    "zone_id":  "a9f34634593eef57609e48c3ffbe6f24",
+    "policy":  "301 all paths to https://jema-ai.com preserving path and query",
+    "note":  "Registrar transfer_completed does not guarantee zone in API token scope. Paste zone_id from dashboard, then: powershell -File scripts/Invoke-CloudflareJema12RedirectSetup_v1.ps1 -ZoneId \u003cid\u003e"
+}

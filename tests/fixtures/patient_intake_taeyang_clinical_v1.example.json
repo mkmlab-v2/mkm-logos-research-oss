@@ -1,0 +1,24 @@
+{
+  "schema": "patient_intake_fusion_draft_v1",
+  "version": "1.0.0",
+  "encounter": {
+    "ref_token": "MKM-2026-PT-TAY-001"
+  },
+  "profile": {
+    "birth_instant_utc": "1989-11-14T03:30:00Z",
+    "iana_tz": "Asia/Seoul",
+    "is_male": true
+  },
+  "intake": {
+    "symptoms": ["갈증·번갈", "요통", "소변 이상", "열성 두통"],
+    "situation": "태양 표증·신수열 감별 추적",
+    "objective_draft": "맥 홍대(洪大), 소변 황(尿黃) · 4진 확정 대기",
+    "sasang_estimate": {
+      "label": "태양인",
+      "source": "임상 진찰 확정"
+    }
+  },
+  "options": {
+    "include_logos_symbolic": false
+  }
+}

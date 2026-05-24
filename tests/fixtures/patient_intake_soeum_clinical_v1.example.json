@@ -1,0 +1,24 @@
+{
+  "schema": "patient_intake_fusion_draft_v1",
+  "version": "1.0.0",
+  "encounter": {
+    "ref_token": "MKM-2026-PT-0842"
+  },
+  "profile": {
+    "birth_instant_utc": "1989-11-14T03:30:00Z",
+    "iana_tz": "Asia/Seoul",
+    "is_male": true
+  },
+  "intake": {
+    "symptoms": ["만성 소화불량", "식후 복만감", "수족 냉증", "간헐적 심계(두근거림)"],
+    "situation": "만성 내과성 소화불량 추적",
+    "objective_draft": "맥상 침지(沈遲), 설질 담판(淡胖) 태백(苔白), 복진 시 중완(中脘) 압통 — 지휘관 4진 확정",
+    "sasang_estimate": {
+      "label": "소음인",
+      "source": "임상 진찰 확정"
+    }
+  },
+  "options": {
+    "include_logos_symbolic": false
+  }
+}

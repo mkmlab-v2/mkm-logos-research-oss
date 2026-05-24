@@ -1,0 +1,2 @@
+# O-P31c Zone B TTS render (optional — install only when rendering)
+edge-tts>=6.1.0

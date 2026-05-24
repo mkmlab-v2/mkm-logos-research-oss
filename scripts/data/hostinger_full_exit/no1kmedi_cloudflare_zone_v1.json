@@ -1,0 +1,8 @@
+{
+  "schema": "no1kmedi_cloudflare_zone_v1",
+  "apex": "no1kmedi.com",
+  "cloudflare_account_id": "646e42cf881ab43043c32430e99d9af4",
+  "zone_id": "1516522160411707c33f84e145416a53",
+  "name_servers": [],
+  "note": "API probe 2026-05-19. Email Routing: scripts/Invoke-CloudflareEmailRoutingSetup_v1.ps1 -Apex no1kmedi.com -LocalPart admin -ForwardTo $env:MKM_MKMLIFE_SUPPORT_FORWARD_TO -ZoneId 1516522160411707c33f84e145416a53. Token needs Email Routing scopes (DNS-only → 403)."
+}

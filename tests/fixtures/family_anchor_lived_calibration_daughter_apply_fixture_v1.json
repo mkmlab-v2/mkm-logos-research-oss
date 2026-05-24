@@ -1,0 +1,205 @@
+{
+  "schema": "family_anchor_lived_calibration_v1",
+  "version": "1.3.0",
+  "anchor_id": "family_anchor_our_daughter_v1",
+  "ts_utc": "2026-05-25T18:00:00Z",
+  "axis": "school_teacher",
+  "source": {
+    "method": "parent_facilitated_5min_fact_check",
+    "respondent": "daughter",
+    "facilitator": "commander",
+    "note": "Non-myeongni qualitative axis check; does not mutate engine pillars."
+  },
+  "responses": {
+    "homeroom_approval_need": "neutral",
+    "praise_vs_grading_memory": "praise",
+    "conflict_style": "honest_not_rebellious",
+    "may_2026_homeroom": "neutral",
+    "may_2026_school_energy": "tired_busy",
+    "closest_teacher": "academy_not_homeroom",
+    "operator_verdict_20260524": "integrated_academic_v3_matches",
+    "operator_verdict_20260525": "v4_minimal_lens_stack_parallel_approved"
+  },
+  "invalidates_narrative": [
+    "homeroom_model_student_arc",
+    "homeroom_approval_seeking_default",
+    "may_teacher_trust_peak",
+    "may_parent_teacher_meeting_optimal",
+    "sep_homeroom_teacher_golden_month",
+    "mar_shangguan_jian_guan_open_rebellion",
+    "jul_model_student_award_certain",
+    "adult_romance_or_boyfriend_certain_month",
+    "investment_or_family_wealth_prediction",
+    "homeroom_as_romance_proxy",
+    "oheng_percent_to_sasang_clinical",
+    "ziwu_chong_june_romance_control",
+    "november_foot_cold_clinical_from_wolwoon",
+    "twelve_month_three_lens_parallel_matrix",
+    "canvas_v4_perfect_sync_without_repo_artifact"
+  ],
+  "preferred_narrative": [
+    "homeroom_neutral_distance",
+    "school_fatigue_busy_not_warm_bonding",
+    "praise_from_close_mentor_academy",
+    "honest_opinion_not_verbal_rebellion",
+    "teacher_axis_split_yin_cang_guan_biao_yin_cai",
+    "may_2026_fatigue_routine_not_homeroom_glow",
+    "academic_integration_v3_keep",
+    "teacher_axis_homeroom_neutral_but_mentor_affinity_high",
+    "long_term_academic_engine_requires_sleep_and_energy_preservation",
+    "wealth_pocket_money_routine_not_investment",
+    "romance_peer_affinity_not_adult_dating",
+    "v4_sequential_blocks_not_monthly_merge",
+    "sasang_lifestyle_warmth_sleep_dance_not_monthly_pathology"
+  ],
+  "interpretation_guardrails_ko": [
+    "表層 천간에 正官 없음 — 담임「모범생·인정욕구」 서사 금지; 기본값 neutral.",
+    "시주 丁=정印 · 癸多=正財 — 칭찬은 가까운 멘토(학원) > 담임.",
+    "2026 丙午=편印 — 학교 밖·내면·멘토 축; 담임 드라마월 단정 금지.",
+    "5월 fact-check: 담임 보통 + 학교 피곤·바쁨 — 정재월=루틴·부담 해석, 교사 애정 피크 해석 폐기.",
+    "갈등: 상관견官 대판 X — 솔직한 의견 표현으로 읽기.",
+    "월운·육아 NL은 본 파일 + myeongni_full_report [FACT]만 SSOT; 포스텔러 월운 UI 금지.",
+    "통합 리포트는 담임 미화 대신 학원 멘토·칭찬·체력루틴(11:30 취침) 중심으로 유지한다.",
+    "재물: 미성년 용돈·소비·비교만 — 투자·가족 재산·대박 금지.",
+    "연애: 또래 호감·인기·단톡만 — 연인·결혼·○월 남친 단정 금지.",
+    "재물·또래 월운은 핵심월만; 12칸 풀스토리·3렌즈 월별 합선표 금지.",
+    "v4: 명리→사상 4줄→Logos 2줄 순서; Logos는 [NON_GATING].",
+    "가시 오행 비율(예: 수 37.5%) → 사상 병증 단정 금지.",
+    "6월 子午冲·11월 수족냉증 월처방 서사 금지."
+  ],
+  "accepted_synthesis_20260524": {
+    "label": "Lived-Calibrated & Academic Integration v3",
+    "status": "accepted_by_operator",
+    "scope": ["school_life", "peer_relations", "academic_long_term_hypothesis"],
+    "keep_points": [
+      "homeroom_neutral_distance",
+      "mentor_praise_driven_motivation",
+      "may_school_fatigue_busy",
+      "healthy_honest_expression_not_rebellion",
+      "sleep_routine_as_primary_fuel_for_study_engine"
+    ],
+    "disclaimer": "B-track HYPO narrative; no Track A/clinical/live auto-merge."
+  },
+  "accepted_synthesis_romance_wealth_20260525": {
+    "label": "2026 Romance-Peer & Wealth-Pocket-Money HYPO v1",
+    "status": "accepted_by_operator_pending_lived_check",
+    "scope": ["wealth_pocket_money", "romance_peer"],
+    "keep_points": [
+      "wealth_peak_months_1_4_5_11",
+      "romance_peer_peak_months_2_3_6_7",
+      "sep_not_dating_peak_aligns_v3_mentor_study",
+      "integrate_with_academic_v3_not_replace"
+    ],
+    "disclaimer": "B-track HYPO; engine ten_god mapping only."
+  },
+  "accepted_synthesis_v4_minimal_20260525": {
+    "label": "Integrated Parenting Guide v4-minimal (sequential lens stack)",
+    "status": "accepted_by_operator",
+    "scope": [
+      "school_v3_core",
+      "myeongni_peak_months",
+      "sasang_lifestyle_four_lines",
+      "logos_non_gating_two_lines"
+    ],
+    "rejects": [
+      "monthly_parallel_three_lens_merge",
+      "oheng_to_sasang_clinical",
+      "coordinator_ai_perfect_canvas_claim"
+    ],
+    "artifact_ref": "docs/final/artifacts/daughter_2026_integrated_guide_v4_minimal_latest.json",
+    "disclaimer": "B-track; sequential blocks only; not prediction proof."
+  },
+  "synthesis_artifact_ref": "docs/final/artifacts/daughter_2026_integrated_guide_v4_minimal_latest.json",
+  "synthesis_artifact_refs": {
+    "v4_minimal_primary": "docs/final/artifacts/daughter_2026_integrated_guide_v4_minimal_latest.json",
+    "romance_wealth_detail": "docs/final/artifacts/daughter_2026_romance_wealth_hyo_v1_latest.json"
+  },
+  "supplementary_axes": [
+    {
+      "axis": "wealth_pocket_money",
+      "status": "hyo_from_engine_pending_lived_check",
+      "engine_mapping": {
+        "natal_ten_god": "정재 3 · 편재 1",
+        "sewoon_2026": "병오 · 편인",
+        "peak_months_ten_god": { "1": "겁재", "4": "편재", "5": "정재", "11": "겁재" }
+      },
+      "responses": { "lived_check_status": "pending" },
+      "invalidates_narrative": ["investment_returns_2026", "family_inheritance_event", "may_wealth_lottery_month"],
+      "preferred_narrative": [
+        "pocket_money_routine_not_score_bribe",
+        "may_busy_planned_spending",
+        "jiebi_months_peer_comparison_gifts",
+        "sewoon_piinyin_mentor_experience_over_cash"
+      ],
+      "interpretation_guardrails_ko": [
+        "만 14~15세 — 용돈·선물·충동·비교만.",
+        "4·5월 지출은 활동·과제 루틴과 연결.",
+        "1·11월 겁재 — 친구·나눔·비교 감수성."
+      ]
+    },
+    {
+      "axis": "romance_peer",
+      "status": "hyo_from_engine_pending_lived_check",
+      "engine_mapping": {
+        "natal_hidden": "卯藏乙 정관",
+        "peak_months_ten_god": { "2": "식신", "3": "상관", "6": "편관", "7": "정관" },
+        "quiet_month": { "9": "정인" }
+      },
+      "responses": { "lived_check_status": "pending" },
+      "invalidates_narrative": ["boyfriend_by_month_certain", "homeroom_crush_arc", "mar_open_rebellion_for_crush"],
+      "preferred_narrative": [
+        "peer_crush_and_group_chat_not_couple",
+        "feb_mar_warm_expression_coaching",
+        "jun_role_gaze_stress_not_dating_peak",
+        "jul_popularity_praise_not_boyfriend",
+        "honest_expression_v3_not_rebellion"
+      ],
+      "interpretation_guardrails_ko": [
+        "성인 연애·결혼·임신 단정 금지.",
+        "6월 편관 — 시선·역할 부담; 짝사랑 확정 X.",
+        "3월 상관 — v3 솔직 표현과 정합.",
+        "9월 정인 — 멘토·학업."
+      ]
+    },
+    {
+      "axis": "sasang_lifestyle",
+      "status": "hyo_lifestyle_observed_v2_no_monthly_clinical",
+      "lifestyle_observed_v2": {
+        "height_cm": 158,
+        "build": "upper_thin_hands_lower_thicker",
+        "skin": "fair",
+        "nails_childhood": "thin",
+        "stool": "thick_tendency",
+        "makeup": "likes_long_removal",
+        "sleep": "late",
+        "dance": "academy_and_club_active",
+        "constitution_playbook": "소음인 (한의·가정 관찰)",
+        "morphology_open": "태음인형 체격 가설 — 한의 확정 전"
+      },
+      "four_lines_ko": [
+        "댄스·동아리 + 늦잠 → 다음날 학교 피곤 (v3 축).",
+        "화장·세안·수면 ↔ 피부·컨디션 → 11:30 취침 루틴.",
+        "체질·병증·약리 월매핑 금지; 오행%→한증 금지.",
+        "변·소화 관찰 — 상담 전제."
+      ],
+      "invalidates_narrative": [
+        "oheng_water_pct_soeumin_stomach_cold_diagnosis",
+        "november_cold_water_foot_defense_prescription",
+        "june_ziwu_chong_romance_suppression"
+      ],
+      "preferred_narrative": [
+        "warmth_recovery_sleep_over_herb_monthly",
+        "dance_with_hydration_rest_days"
+      ],
+      "interpretation_guardrails_ko": [
+        "사상 = 생활·체력 보조 [HYPO] only.",
+        "run_lens_sasang.py 시장 JSONL — 개인 체질 엔진 아님."
+      ]
+    }
+  ],
+  "myeongni_fact_ref": "reports/tmp_daughter_myeongni_full_v1.json",
+  "evidence_pack_ref": "docs/final/artifacts/myeongni_porteller_vs_mkm_evidence_pack_v1.json",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "auto_apply": "none"
+}

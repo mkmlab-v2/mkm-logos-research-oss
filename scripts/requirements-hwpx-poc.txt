@@ -1,0 +1,3 @@
+# B-track HWPX template fill PoC (optional; smoke installs on demand if missing)
+python-hwpx>=2.9.1,<3
+# Cursor MCP (optional): hwpx-mcp-server>=2.2.6

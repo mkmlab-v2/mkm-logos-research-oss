@@ -1,0 +1,2 @@
+# Optional: MKM ops scripts (scripts/mkm_sentry_ops_v1.py, health/cron reporters)
+sentry-sdk>=2.0,<3

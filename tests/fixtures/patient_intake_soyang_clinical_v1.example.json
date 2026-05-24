@@ -1,0 +1,24 @@
+{
+  "schema": "patient_intake_fusion_draft_v1",
+  "version": "1.0.0",
+  "encounter": {
+    "ref_token": "MKM-2026-PT-SOY-001"
+  },
+  "profile": {
+    "birth_instant_utc": "1992-01-08T06:15:00Z",
+    "iana_tz": "Asia/Seoul",
+    "is_male": true
+  },
+  "intake": {
+    "symptoms": ["오한·무한", "복통·소화불량 교대", "식후 복부 냉감"],
+    "situation": "표한·비수한 소양 추적",
+    "objective_draft": "맥 부완(浮緩), 복부 냉(腹冷) · 4진 확정 대기",
+    "sasang_estimate": {
+      "label": "소양인",
+      "source": "임상 진찰 확정"
+    }
+  },
+  "options": {
+    "include_logos_symbolic": false
+  }
+}

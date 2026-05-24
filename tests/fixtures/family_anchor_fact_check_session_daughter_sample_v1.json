@@ -1,0 +1,39 @@
+{
+  "schema": "family_anchor_fact_check_session_v1",
+  "version": "1.0.0",
+  "anchor_id": "family_anchor_our_daughter_v1",
+  "ts_utc": "2026-05-25T20:00:00Z",
+  "status": "ready_to_apply",
+  "facilitator": "commander",
+  "respondent": "daughter",
+  "calendar_kst": "2026-05",
+  "operator_v4_helpful": true,
+  "axes": [
+    {
+      "axis": "wealth_pocket_money",
+      "questions_ko": ["q1", "q2"],
+      "responses": {
+        "pocket_money_comparison_stress": "neutral",
+        "impulse_or_group_chat_spending": "sometimes"
+      }
+    },
+    {
+      "axis": "romance_peer",
+      "questions_ko": ["q3", "q4"],
+      "responses": {
+        "peer_crush_or_affinity": "neutral",
+        "group_chat_gaze_role_burden": "sometimes"
+      }
+    },
+    {
+      "axis": "sasang_lifestyle",
+      "questions_ko": ["q5", "q6"],
+      "responses": {
+        "dance_next_day_fatigue": "often",
+        "late_sleep_makeup_skin_impact": "sometimes"
+      }
+    }
+  ],
+  "hypothesis_tier": "B",
+  "research_only": true
+}

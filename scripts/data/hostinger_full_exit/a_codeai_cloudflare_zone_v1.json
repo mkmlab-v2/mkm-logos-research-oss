@@ -1,0 +1,11 @@
+{
+  "schema": "a_codeai_cloudflare_zone_v1",
+  "apex": "a-codeai.com",
+  "cloudflare_account_id": "646e42cf881ab43043c32430e99d9af4",
+  "zone_id": null,
+  "name_servers": [
+    "sarah.ns.cloudflare.com",
+    "sullivan.ns.cloudflare.com"
+  ],
+  "note": "Zone onboarded via CF dashboard 2026-05-15; zone_id TBD from dashboard API panel. NS from nameserver-directions page."
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "mkmlab_cloudflare_zone_v1",
+  "apex": "mkmlab.space",
+  "cloudflare_account_id": "646e42cf881ab43043c32430e99d9af4",
+  "zone_id": "38a47f29983bd4ebce3798be08f59ba3",
+  "name_servers": [
+    "sarah.ns.cloudflare.com",
+    "sullivan.ns.cloudflare.com"
+  ],
+  "note": "2026-05-21: NS set via Hostinger API (sarah/sullivan). Public NS=sarah/sullivan (verified). CF API may still list original_name_servers=dns-parking until activation_check succeeds (token needs Zone activation + Settings Edit). HTTPS via VPS LE. Hostinger renew by 2026-06-20."
+}
