@@ -69,6 +69,9 @@ def infer_track_rel(rel_posix: str) -> str:
             "/mkm/mkm-study",
             "trackc_evidence",
             "track_c_ip",
+            "logos_metaphor",
+            "external_research",
+            "/archive/",
         )
     ):
         return "B"
@@ -122,6 +125,9 @@ def infer_track_rel(rel_posix: str) -> str:
                 "trackc_",
                 "lens_music",
                 "aramaic",
+                "experimental",
+                "cinematic",
+                "/audio/",
             )
         ):
             return "B"
@@ -138,14 +144,18 @@ def infer_track_rel(rel_posix: str) -> str:
             )
         ):
             return "A"
-        return "unknown"
+        return "A"
 
     if text.startswith("reports/"):
-        if has_any(("btrack", "constitution/btrack", "prophecy_promotion")):
+        if has_any(
+            ("btrack", "constitution/btrack", "prophecy_promotion", "logos_metaphor")
+        ):
             return "B"
         return "A"
 
     if text.startswith("docs/"):
+        if text.startswith("docs/api/"):
+            return "A"
         return "A"
 
     return "unknown"

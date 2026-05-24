@@ -31,3 +31,8 @@ def test_infer_track_scripts_split() -> None:
 
 def test_infer_track_docs_final_not_unknown_on_relative_path() -> None:
     assert infer_track_rel("docs/final/artifacts/foo_latest.json") == "A"
+
+
+def test_infer_track_scripts_default_operational() -> None:
+    assert infer_track_rel("scripts/core/foo.py") == "A"
+    assert infer_track_rel("scripts/experimental/bar.py") == "B"
