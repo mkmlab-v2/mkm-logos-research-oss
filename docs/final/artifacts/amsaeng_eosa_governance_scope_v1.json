@@ -74,6 +74,16 @@
       "notes_ko": "넓은 번들(시간 증가). 주간·수동 권장; Fact-Lock 번들과 역할 분리."
     },
     {
+      "id": "workspace_postit_index",
+      "tier": "observe",
+      "scripts": ["scripts/build_workspace_postit_index_v1.py"],
+      "artifacts": [
+        "docs/final/artifacts/workspace_postit_index_latest.json",
+        "docs/final/artifacts/workspace_postit_index_latest.md"
+      ],
+      "notes_ko": "Run-AmsaengEosaMonitoringBundleTask 말단 workspace_postit_index_refresh(Non-gating·AllowNonZero). docs/scripts/reports 메타 색인만; Track A·실매매 비연결. 생략: -SkipWorkspacePostitIndex."
+    },
+    {
       "id": "disk_cleanup_destructive",
       "tier": "human_gate",
       "scripts": ["scripts/Invoke-CWorkspaceSafeCleanup.ps1", "scripts/Invoke-WorkspaceDeepCleanup.ps1"],

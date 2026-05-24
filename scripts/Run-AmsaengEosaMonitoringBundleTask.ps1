@@ -1,7 +1,9 @@
 [CmdletBinding()]
 param(
     # 번들 말단 거버넌스 주기를 SoftFail 로 돌리면 스케줄 실패가 줄어듦(기본은 엄격 모드).
-    [switch]$GovernanceSoftFail
+    [switch]$GovernanceSoftFail,
+    # Workspace Post-it 색인(build_workspace_postit_index_v1.py) 생략. Non-gating이나 긴급 단축 시.
+    [switch]$SkipWorkspacePostitIndex
 )
 
 Set-StrictMode -Version Latest
@@ -144,6 +146,19 @@ try {
             "--max-hit-rate-age-hours", "96"
         )
         Invoke-BundlePyStep -StepId "prophecy_evolution_watchdog_bundle" -ScriptPath $watchdogPy -ScriptArgs $watchdogArgs -AllowNonZero
+    }
+
+    if (-not $SkipWorkspacePostitIndex) {
+        Write-Host ""
+        Write-Host "=== Workspace Post-it index refresh (non-gating) ===" -ForegroundColor Cyan
+        $postitPy = Join-Path $PSScriptRoot "build_workspace_postit_index_v1.py"
+        if (Test-Path -LiteralPath $postitPy) {
+            Invoke-BundlePyStep -StepId "workspace_postit_index_refresh" -ScriptPath $postitPy -AllowNonZero
+        }
+        else {
+            Add-BundleStep -StepId "workspace_postit_index_refresh" -DurationMs 0 -ExitCode -1
+            Write-Warning "Missing Post-it index script: $postitPy"
+        }
     }
 }
 catch {
