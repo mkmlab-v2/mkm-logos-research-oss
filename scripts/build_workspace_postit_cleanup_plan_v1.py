@@ -53,6 +53,16 @@ def classify_items(
                 }
             )
             continue
+        # Ops anchors referenced by scheduled tasks (TG digest, personadiary mirror).
+        if path.endswith("commander_profile_v1.example.json") or "/commander_profile_v1" in path:
+            blocked.append(
+                {
+                    "path": path,
+                    "reason": "ops_scheduled_task_anchor",
+                    "suggestion": "never_archive_use_p0_verify",
+                }
+            )
+            continue
         if path.startswith("reports/"):
             caution.append(
                 {
