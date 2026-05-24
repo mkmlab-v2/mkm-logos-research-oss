@@ -4,6 +4,7 @@
 
 ## 로컬↔VPS 운영 표준 (충돌 방지 SSOT)
 
+- **인프라 토폴로지 (고정):** **컴pute = Hostinger VPS만** · **엣지 = Cloudflare만** (DNS·proxy·메일·redirect). **hPanel `public_html`·AWS/GCP 앱호스트·CF Pages/Workers 본선 금지.** → `docs/final/MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md` · `MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.json`
 - **정책 단일 SSOT:** `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md`
 - **실행 절차 부록:** `docs/final/FINANCIAL_PROPHECY_VPS_LIVE_TRADING_DIRECTIVE_V1.md`
 - **원칙 고정:** 코드/전략 동기화는 상시, 실전 주문 활성화(ON/OFF)는 별도 승인 게이트
@@ -194,7 +195,7 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
    - 실무 해석 고정: 명시적 STOP/승인 필요 예외(파괴적 삭제·실거래·비용 유발·비가역 근본 변경) 외에는 파일 편집/터미널/검증을 자율 연속 수행한다.
    - 모호성 처리 고정: 저위험 모호성은 질문 대신 합리적 기본값으로 구현/검증 후 사후 보고한다.
 2. **`.cursor/rules/sovereign-central-command.mdc`** — Vault·NotebookLM·보안·운영(3문장 요약 + **§4 마무리**). §4에서 **폐지**: “Next Action 2가지”, `[A]`/`[B]`·a/b 강요. **대체**: TITAN 마무리 또는 고위험 시 **승인 범위만** 명시(루트 `.cursorrules`와 동일 방향).
-3. **구현 팩트(환각 차단)**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — 기획·NotebookLM만 보고 “이미 구현” 단정 금지. **§1.1.1 [VISION]** — 예언 성능·재현 채점 우선(`prophecy_hit_rate_eval_report_v2`, `scripts/run_prophecy_restoration_spike.py` 등 AB 산출); 대외 도메인 사례(예: 국방 벤치)는 **`research_only`** 격리·본선 주장과 분리. P0·헌법 핵심 경로 존재 여부: `scripts/verify_p0_constitution_gate_paths.ps1`.
+3. **구현 팩트(환각 차단)**: `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — 기획·NotebookLM만 보고 “이미 구현” 단정 금지. **지휘관 세계관·철학(고정):** `docs/final/MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` · CONSTITUTION §1.0.5 — 서사≠구현·75식=인덱스(24+4 FACT). **§1.1.1 [VISION]** — 예언 성능·재현 채점 우선(`prophecy_hit_rate_eval_report_v2`, `scripts/run_prophecy_restoration_spike.py` 등 AB 산출); 대외 도메인 사례(예: 국방 벤치)는 **`research_only`** 격리·본선 주장과 분리. P0·헌법 핵심 경로 존재 여부: `scripts/verify_p0_constitution_gate_paths.ps1`.
 4. **Prism 색인 (논리 레이어, 선택)**: 물리 이동 없이 경로·역할만 묶은 **Grand Indexing 2.0** — `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§14**, 가독 색인 초안 `docs/final/MKM12_GRAND_INDEX_MAP.md`, 중앙 레지스트리 `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json`. 코드 4D 벡터 축 `(S,L,K,M)`과 혼동하지 말 것.
 5. **정체성 (Multi-Lens):** 단일 TOE·통일장 “완성” 선언 금지 — §1.1. 레짐·로고스·명리·외경은 **격벽·교차 참고** (§2.1·§4).
 6. **Cursor Cloud Sandbox · 본선 분리:** Cloud Agent/Sandbox는 검증·병렬 가속 전용; 실매매·프로덕션 쓰기·실키 주입은 로컬/VPS 본선과 분리. 상세 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc`.
@@ -282,6 +283,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 - **Changelog → 스택 맵:** `projects/bitcoin-trading/ops/v2/CURSOR_CHANGELOG_INTEGRATION_PLAN_2026-03-24.md` §3.3–3.4.
 - **워크스페이스 규칙(SSOT):** 루트 `.cursorrules`, `.cursor/rules/*.mdc`, 본 `AGENTS.md`, `CLAUDE.md`, `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` — **Git으로 버전 관리**.
 - **User Rules:** Cursor **Settings → Rules**에만 있는 문구는 **레포에 자동 동기화되지 않음**; 팀·본선 기준은 반드시 위 SSOT 파일에 반영한다.
+- **웹 자동화 3단계 (영구 · 2026-05-22):** ①API·스크립트(브라우저 없음) ②`browser_*` 스모크 ③지휘관 **일반 Chrome**→토큰→apply. **CF `dash.cloudflare.com`·Turnstile·은행** = ③만 — openchrome/에이전트 로그인 **금지**. CENTRAL 「Cursor 웹 자동화 3단계」·`.cursor/rules/mkm-browser-automation-v1.mdc`.
 
 ### Cursor Cloud specific instructions
 

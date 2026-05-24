@@ -13,6 +13,10 @@
     "buffer_api_configured": { "type": "boolean" },
     "default_publish_path": {
       "type": "string",
+      "enum": ["linkedin_openchrome_headed", "linkedin_manual_paste", "buffer_draft_tray"]
+    },
+    "fallback_publish_path": {
+      "type": "string",
       "enum": ["linkedin_manual_paste", "buffer_draft_tray"]
     },
     "post_ready_markdown": { "type": "string" },

@@ -16,6 +16,10 @@
 
 **라우팅:** 애플리케이션이 압축을 호출할 때는 **유스케이스별로 `mode`를 명시**하고(하드코딩 또는 설정 테이블), 트레이딩 모듈이 “수익 최적 조합”으로 프로파일을 바꾸지 않는다. 주문/감사 로그에 어떤 프로파일을 쓸지는 **별도 요구·지연·보관 정책**에 따르며, `ultra-literal`을 전 로그에 일괄 강제하는 것이 항상 타당하다고 단정하지 않는다.
 
+#### Domain adoption tier matrix (도입 가능 / 제한적 / 비권장)
+
+**SSOT:** `docs/final/artifacts/compression_domain_adoption_tier_matrix_v1.json` — workload-level **3-tier** adoption (distinct from Track A/B `mode` and from LG deck **Kill-Matrix** forbidden phrases). Validates with `py scripts/check_compression_domain_adoption_tier_v1.py` → `reports/compression_domain_adoption_tier_readiness_v1_latest.json`. **Does not** authorize Track A active profile changes or external customer send.
+
 #### Call-site audit (강제 라우팅 후보 — 레포 스캔 기준)
 
 **결론:** `projects/bitcoin-trading/src/**` 전략·백테스트·주문 경로에서 **`evaluate_report` / `POST /v1/compress` HTTP 호출은 발견되지 않음.** 압축은 **워크스페이스 `scripts/` 벤치·스텁·자동화**에 집중. OPS는 스텁 **생존 확인만** `GET http://127.0.0.1:8010/health` (`ensure_compression_stub.ps1`, `build_ops_health_overview.ps1`).

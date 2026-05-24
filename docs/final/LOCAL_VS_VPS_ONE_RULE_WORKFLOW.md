@@ -2,6 +2,8 @@
 
 **한 줄:** **코드/전략 동기화는 계속 수행하고, 실전 주문 활성화(ON)는 별도 승인 게이트로 분리한다.**
 
+**인프라 (앱·DNS 분리):** MKM은 **앱·PM2·nginx origin = Hostinger VPS만**, **도메인·CDN·메일 = Cloudflare만**. hPanel 공유호스팅·타 클라우드 앱 서버 혼동 금지 — `docs/final/MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md`.
+
 ---
 
 ## 왜 번거로워지나
@@ -97,7 +99,7 @@ VPS에 **비트코인만 잘린 폴더**만 두지 말고, **모노레포 전체
 
 **한 줄:** 모노레포 클론 1개 + PM2가 **`projects/bitcoin-trading/start_live_trading.py`** 를 가리키게 맞춘다.
 
-**실매매(메인넷 주문)만 추가로:** 사람 승인 후, 루트 `.env`에 **`TESTNET=false`**, **`ENABLE_TRADING=true`** — 미설정이면 `projects/bitcoin-trading/config/trading_config.yaml`의 `testnet` / `enable_live_trading` 기본값을 따른다. 기동 로그는 `start_24h_daemon.py`가 최종 판정에 가깝다. 로컬/VPS에서 비밀 출력 없이 점검: `powershell -NoProfile -ExecutionPolicy Bypass -File projects/bitcoin-trading/scripts/preflight_live_trading_readiness.ps1` — PM2 cwd가 **라이브 전용 트리**(예: `/opt/bitcoin-trading-live`)인지 **실측**으로 고정한다(`projects/bitcoin-trading/ops/v2/ssh/VPS_PM2_HEALTH_SSH_CURSOR_RUNBOOK.md`).
+**실매매(메인넷 주문)만 추가로:** 사람 승인 후, 루트 `.env`에 **`TESTNET=false`**, **`ENABLE_TRADING=true`** — 미설정이면 `projects/bitcoin-trading/config/trading_config.yaml`의 `testnet` / `enable_live_trading` 기본값을 따른다. 기동 로그는 `start_24h_daemon.py`가 최종 판정에 가깝다. 로컬/VPS에서 비밀 출력 없이 점검: `powershell -NoProfile -ExecutionPolicy Bypass -File projects/bitcoin-trading/scripts/preflight_live_trading_readiness.ps1` — PM2 **`exec cwd`·`script path`는 `pm2 show` 실측이 최종**이다. vps-mkmlife 기본 본선은 **`/opt/mkm-destiny-ai-41e38ec6`**(레거시 `/opt/bitcoin-trading-live` 아님) — `docs/final/VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json` · `projects/bitcoin-trading/ops/v2/ssh/VPS_PM2_HEALTH_SSH_CURSOR_RUNBOOK.md`.
 
 ---
 

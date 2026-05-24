@@ -1,7 +1,7 @@
 # Track C IP Business Plan (v2)
 
 Date: 2026-05-05  
-Revised: 2026-05-19 — §3.1.3 **C-S2→9장 v1.1(Moat/Plugin)** · §3.1.5 **Inter-Agent RQ-019 IR 포인터** · §10 OpenData 병렬·법무 handoff. (2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
+Revised: 2026-05-21 — **§3.0 도메인·채널 분리**(mkmlab.space 연구소·제품 vs jema-ai/mkmlife/jemaai). (2026-05-19 — §3.1.3 **C-S2→9장 v1.1(Moat/Plugin)**) · §3.1.5 **Inter-Agent RQ-019 IR 포인터** · §10 OpenData 병렬·법무 handoff. (2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
@@ -35,6 +35,39 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - `신시장지표`는 관측/경보형 서비스로 제한하고, 예측 단정·성과 보증이나 수익 약속을 암시하는 문구는 금지한다.
 
 ## 3) 통합 사업 포트폴리오 (요청 반영)
+
+### 3.0 도메인·채널 분리 (사업계획서·제안서 혼선 방지, 2026-05-21)
+
+**목적:** 평가·투자·정부 제출 문서에서 **「회사 홈페이지」「제품」「AI 사업」**이 한 URL로 뭉개지지 않도록 고정한다. **단일 SSOT 표:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1·§1.1·§1.1b.
+
+| 도메인 | 공개 역할 (한 줄) | 사업계획서에 쓸 때 | 이 도메인이 **아닌 것** |
+|--------|-------------------|-------------------|------------------------|
+| **mkmlab.space** | **MKM LAB 분자한의학 연구소** — 발효 **산화질소 대사체**·허브 발효 플랫폼·**연구소 생산 제품** 소개(구혈단·엔오플렉스 등) | **실물·R&D·건강기능식품 제조·유통** 설명·IR·협력 제안의 **연구소 정면** | AI 압축 API·쇼룸·원퀘스천 리포트·Track C B2B **본거지 아님** |
+| **jema-ai.com** (`app.`) | **JEMA AI** 브랜드 허브 — B2B **`/enterprise`** · 한의사 보조 **`/clinician`**(진료 대체 아님) | **§3.1 압축·§3.8 매크로 B2B** 등 **소프트웨어·인사이트** 영업면 | 연구소 제품 카탈로그·건기식 효능 단정·실매매 조종실 |
+| **mkmlife.com** | 소비자 **원퀘스천·단건 리포트** (다중 렌즈, 면책 고정) | B2C **디지털 제품** 퍼널 | 연구소 생산 라인업 **공식 홈** 아님 |
+| **jemaai.cloud** / **api.jemaai.cloud** | 공개 **관측·쇼룸** (Topology·Trust·Logos 데모, `[NON_GATING]`) | §3.6 **체험·리드** · 신뢰·재현 아티팩트 | 투자 권유·주문·연구소 제품 판매 페이지 |
+| **a-codeai.com** | **P1** 토큰·압축 API (`/` 랜딩 vs `/v1` 분리) | §3.1 **기술 1순위** B2B API | 연구소·소비자 UI |
+| **no1kmedi.com** | **레거시 내부 식별자** — Express·PayApp 등 **백엔드 축** | 문서·코드 경로 설명만; **대외 브랜드명으로 쓰지 않음** | 공개 회사 홈·연구소 소개 |
+| **jema12.com** | **301 → jema-ai.com** (레거시 유입) | 과거 링크·스튜디오 진입만 | 제품·연구소 SSOT 아님 |
+
+**연구소·제품 축 (mkmlab.space) — 사업계획서 복붙용 요지:**
+
+- **정체:** (주)목소리네트워크 산하 **MKM LAB 분자한의학 연구소** — 미래바이오 협력 레거시와 MKM 운영 체계 융합(2024~). **핵심 기술:** 발효 산화질소 대사체, 허브 발효, ODF·비침습 연계 **연구**.
+- **제품:** 연구소 **생산·유통 라인** 소개(외부 판매 채널 링크). **건강기능식품 제조·유통**은 사업자등록 **부종목**과 정합(`business_registration_plan_v1.md` §1).
+- **대외 경계:** 본 사이트는 **의료 행위·진단·치료·처방 대체 아님**. 제품 효능·표시는 **각 채널 공식 표기** 준수 — `MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md`.
+- **상업·B2B·AI 문의:** **jema-ai.com** (도입·파트너·클리닉 채널). **압축 API:** a-codeai.com. **관측 데모:** jemaai.cloud.
+- **구현·배포:** 정적 소스 `mkmlab-redesign/` · **Hostinger VPS** `Sync-MkmlabRedesignToVps_v1.ps1`(기본 `/var/www/mkmlab`) + nginx LE SSL + **Cloudflare** NS/DNS · 점검 `probe_mkmlab_space_readiness_v1.py` · 원클릭 `Invoke-MkmlabSpaceGoLiveAuto_v1.ps1` / `Invoke-MkmlabSpacePhase2_v1.ps1`. (2026-05-21 공개 **https OK**; CF 존 **pending** 시 `finalize_mkmlab_cloudflare_zone_v1.py`.)
+
+**Track C와의 관계 (합선 금지):**
+
+- **Track C 1차 매출 파도** = §3.1 압축 API · §3.8 매크로 B2B · §3.6 쇼룸 리드 (**소프트웨어·인사이트**).
+- **mkmlab.space** = **실물 R&D·제품·연구소 브랜드** — Track C 계약·NDA·역공학 조항(§9A)과 **동일 SKU로 묶지 않음**. 제안서에 두 축을 넣을 때 **표를 분리**하고 URL을 **각각 명시**.
+
+**금지 (제출·발표):**
+
+- 「회사 홈페이지는 jema-ai 하나」처럼 **단일 URL**로 서술.
+- mkmlab 제품 페이지에 **압축 47.5%·쇼룸·예언 적중률** 등 Track C 수치를 **같은 퍼널**처럼 기재.
+- **no1kmedi**를 고객-facing 브랜드로 표기 (`JEMA_AI_DOMAIN_POINTER_V1.md` 명명 계약).
 
 ### 3.1 축 A — 압축·토큰절감 사업 (최우선)
 
@@ -166,6 +199,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - 공개 쇼룸 1순위: `jemaai.cloud` (공개 전광판/쇼룸 SSOT와 정합).
   - 엔터프라이즈 API CTA 2순위: `a-codeai.com` (`/v1` 분리형 B2B 엔드포인트 문맥).
   - 브랜드 허브/설명 페이지는 `jema-ai.com`에서 연결하되, 실시간성/쇼룸 UI는 `jemaai.cloud`로 집중.
+  - **연구소·생산 제품(발효 NO 대사체 등):** `mkmlab.space` — §3.0 표. 쇼룸·압축 수치와 **동일 URL·퍼널로 묶지 않음**.
   - `a-codeai.com` 배포는 **정적 랜딩(`/`)과 API(`/v1`, `/health`)를 nginx에서 분리**한다. 운영 예시는 `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example`를 기준으로 한다.
   - **허브→쇼룸 CTA 문구(초안)·분기 SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1b — `jema-ai.com` Next 공개 카피 원천은 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`). 공개 보드 **권장 진입**은 `hub_links.showroom_jemaai` → `api.jemaai.cloud` 경로의 `public_showroom_board_minimal.html`(미니멀 정적 보드; `CONSTITUTION`·`JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`).
   - **쇼룸 1p 청사진(초안, DRAFT):** `docs/final/TRACK_C_TOPOLOGY_RADAR_SHOWROOM_BLUEPRINT_V1.md` — 대외 카피·수익 타겟·면책 블록을 **Track C §3.6과 동일 프레임**으로 고정; 배포 전 `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` 및 법무 검토. **구현 계약:** `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` §4.4, `showroom_topology_radar_snapshot_v1` 스키마·`tests/test_showroom_topology_radar_snapshot_schema_v1.py`.
@@ -558,6 +592,7 @@ Manufacturing-discipline add-on (P1 / OEM meetings, 2026-05-16):
 
 ### 10.1 운영 스냅샷 동기화 (2026-05-09 실측)
 
+- **도메인 분리 SSOT:** §3.0 · `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md`. **연구소·제품:** `mkmlab.space` (VPS+CF **live**). **AI·B2B:** `jema-ai.com` (`research_mkmlab` 허브). (2026-05-21 go-live 완료; CF edge **active** 전환은 `finalize_mkmlab_cloudflare_zone_v1.py` 재실행.)
 - 도메인 라우팅 실측: `jema-ai.com`/`www.jema-ai.com`은 `app.jema-ai.com`으로 301, 앱 본체는 nginx `proxy_pass http://127.0.0.1:3010`.
 - 앱 런타임 실측: PM2 `no1kmedi-com`, `no1kmedi`; 둘 다 `exec cwd=/opt/mkm-lab-workspace-v2/projects/no1kmedi`.
 - 카피 실측 반영: 메인 카드의 `Since 1972` 제거(`Clinical Heritage`), 타임라인의 연도 라벨은 단계형(`전통기반/체계화/디지털화/임상 AI 실험/Clinical Copilot`)으로 교체.

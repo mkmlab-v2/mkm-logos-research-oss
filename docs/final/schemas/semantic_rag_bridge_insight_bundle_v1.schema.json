@@ -75,7 +75,8 @@
             "logos_4d_state_v1",
             "prism_slkm_pointer",
             "compression_seed_slkm",
-            "market_sasang_lens_snapshot"
+            "market_sasang_lens_snapshot",
+            "family_anchor_lived_calibration_v1"
           ]
         },
         "artifact_path_rel": {
@@ -141,7 +142,10 @@
           "type": "array",
           "maxItems": 32,
           "items": { "type": "string", "maxLength": 512 }
-        }
+        },
+        "family_profile_id": { "type": "string", "maxLength": 128 },
+        "v4_artifact_ref": { "type": "string", "maxLength": 512 },
+        "generator": { "type": "string", "maxLength": 128 }
       }
     }
   }

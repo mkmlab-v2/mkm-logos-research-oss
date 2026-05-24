@@ -38,7 +38,7 @@
 | **압축·예언 허브 (A)** | `MKM_CORE_FACT` | `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`, `MKM_LESSONS_LEARNED_V1.md`, `MKM_CORE_THEORY_V1.md`, `COMPRESSION_SLA_POLICY_V1.md`, `docs/final/artifacts/mkm_inter_agent_encoding_sota_map_v1.md`, `docs/final/artifacts/lg_compression_trust_packet_onepager_v1.md`, `docs/final/artifacts/mkm_inter_agent_wire_profile_v0.json`, `docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json`, `docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.md`, `docs/final/artifacts/mkm_inter_agent_first_message_worked_example_v1.json`, `docs/final/artifacts/mkm_inter_agent_first_message_live_http_v1.json`, `docs/final/artifacts/fixtures/mkm_inter_agent_compress_request_v1.json`, `docs/final/artifacts/fixtures/mkm_inter_agent_expand_request_v1.json`, `docs/final/openapi_token_compression_v2_draft.yaml` | Inter-Agent RQ-019; live HTTP curl fixtures + `mkm_inter_agent_first_message_live_http_v1.json` |
 | **예언 전용 (A/B)** | `07_PROPHECY_BTRACK_2026Q2` · MCP `07-prophecy-btrack-2026q2` | `NOTEBOOKLM_PROPHECY_LENS_INDEX_V1.md` + 팩 `LENS_PROPHECY` · 푸시 `py scripts/push_notebooklm_prophecy_lens_pack_v1.py` — UUID `3e95ca50-66f8-4b54-b0ef-81821c199518` | **예언 질의 SSOT**; 레거시 `9de651e6` → `90_ARCHIVE_P2_PROPHECY_migrated_2026Q2` 아카이브; Track A·실매매 합선 금지 |
 | **이벤트 한정** | `EVENT_<slug>` | 해당 이벤트 소스 **1~3개만** (예: 발표 스크립트 단일 진본) | 기간 끝나면 소스 정리·아카이브 |
-| **스마트팜·금산 IoT** | `06_스마트팜_진도관광농원_사업화_2026Q2` | MCP id `06-2026q2` · URL `96865180-769e-4a77-89bb-5f03a8083ac3` · `reports/notebooklm_smartfarm_geumsan_sync_pack_v1/`(동기화 팩) · `docs/final/artifacts/smartfarm_geumsan_*` · `reports/smartfarm_vendor_outreach_log_v1.jsonl` · `https://farm.jema-ai.com/smartfarm` | 금산 300평 반쪽 턴키·벤더 RFQ·아웃리치(큐빅스·아다스 등) — **Track C/사업 노트와 분리** |
+| **스마트팜·금산 IoT** | `06_스마트팜_진도관광농원_사업화_2026Q2` | MCP id `06-2026q2` · URL `96865180-769e-4a77-89bb-5f03a8083ac3` · `reports/notebooklm_smartfarm_geumsan_sync_pack_v1/`(15 files · incl. `notebooklm_golden40_compression_watch_v1.md` **ops WATCH only**) · `compression_track_a_headline_policy_v1_latest.json` · `docs/final/artifacts/smartfarm_geumsan_*` · `reports/smartfarm_vendor_outreach_log_v1.jsonl` · `https://farm.jema-ai.com/smartfarm` | 금산 300평 반쪽 턴키·벤더 RFQ·아웃리치 — **압축 KPI headline은 06에 WATCH 스니펫만**(MS paste 47.5%/0.890 유지) · 소스 **~105** · Pro 한도 **300/노트** — **웹 UI 정리=선택**(주제 분리·`notebooklm_06_source_cleanup_guide_v1.md`) |
 
 **금지:** `MKM_CORE_FACT`에 명리·사업·이벤트 원본을 **추가로** 섞어 넣기.
 
@@ -129,6 +129,19 @@ NotebookLM·지휘부 브리핑을 레포 Fact-Lock과 맞출 때 **아래를 �
 - **완화(레포):** `.cursor/mcp.json`의 `notebooklm` 항목에 **`HEADLESS`=`false`** 를 두어 로그인 창이 보이게 한다(패키지 기본은 headless). MCP 프로세스를 **Reload Window / Cursor 재시작** 후에만 환경 변수가 반영된다.
 - **1회 설정:** MCP 도구 **`setup_auth`** 로 위 전용 프로필에 한 번 로그인하면 이후 같은 프로필을 재사용한다. 계정 전환·세션 꼬임 시 **`re_auth`** / **`cleanup_data`** 가 필요하다. 패키지 정의상 **`NOTEBOOKLM_PROFILE=standard`면 위 두 도구가 아예 노출되지 않으므로**, 레포 `.cursor/mcp.json`은 **`NOTEBOOKLM_PROFILE`=`full`** 로 두어 복구 도구를 켠다. 그다음 **Reload Window** 후 새 채팅에서 `cleanup_data`(미리보기→실행)→`setup_auth` 순을 권장한다.
 - **Fact-Lock:** NotebookLM 웹 UI 브리핑은 **참고**이며, 구현·게이트 확정은 여전히 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`·스크립트·아티팩트만 SSOT다.
+
+#### 노트북당 소스 한도 (플랜별 · 2026-05-23)
+
+Google Help [Usage limits](https://support.google.com/notebooklm/answer/16206866?hl=en) 기준 **노트북당 소스 개수** (MCP `50 queries/day`와 별개):
+
+| 플랜 | 소스/노트 |
+|------|-----------|
+| Standard (무료) | 50 |
+| Plus | 100 |
+| Pro | **300** |
+| Ultra | 600 |
+
+**MKM 운영 가정:** 지휘관 Workspace **Pro → 300**. `06_스마트팜…` 노트는 **~105건**이면 **한도 여유** — 웹 UI 삭제는 **주제 분리용 선택** (`reports/notebooklm_06_source_cleanup_guide_v1.md`). 레거시 문서의 “무료 50 한도” 표기는 **Standard 기준**이며 Pro와 혼동 금지.
 
 #### MCP 재발 방지 (로컬 자동·수동, 2026-05)
 

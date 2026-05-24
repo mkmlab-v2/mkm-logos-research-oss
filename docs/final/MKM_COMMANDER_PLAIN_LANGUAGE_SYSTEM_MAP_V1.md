@@ -65,10 +65,10 @@
 
 | 기능 | 담당 | 핵심 기술 | 비유 |
 | --- | --- | --- | --- |
-| **압축/복원 (41,775 Term)** | V2 Trust Packet | 렉시콘 **lookup** + 샤드 라우터 · **벡터 RAG 없음** | 초고속 **암호 설계도** (성경 **구절 검색기 아님**) |
+| **압축/복원 (41,658 Term)** | V2 Trust Packet | 렉시콘 **lookup** + 샤드 라우터 · **벡터 RAG 없음** | 초고속 **암호 설계도** (성경 **구절 검색기 아님**) |
 | **지식 검색 (31,102 verse)** | Logos 렌즈 | ANN-lite·그래프 PoC · B-track | **도서관 검색** (`[NON_GATING]`) |
 
-**압축에 쓰는 성경 관련 “틀”(내용·신학 아님):** ① **게마트리아** 글자→숫자 메타 ② **41,775 마스터 렉시콘** lookup ③ **`bible`/`logos` 도메인 라우팅**. **4D bridge policy는 Track A 동결 OFF.**
+**압축에 쓰는 성경 관련 “틀”(내용·신학 아님):** ① **게마트리아** 글자→숫자 메타 ② **41,658 마스터 렉시콘** lookup ③ **`bible`/`logos` 도메인 라우팅**. **4D bridge policy는 Track A 동결 OFF.**
 
 **RAG가 도는 곳 (압축 배관 밖):** `commander_daily_logos_anchor_v1.py`(선택 ANN) · O-P31c Zone B 대본 빌더 · `philosophy_lane_rag_pilot_v1.py` · `build_cross_lens_rag_fusion_v1.py` — **전부 B-track·해설 레인**.
 
@@ -81,7 +81,7 @@
 | 구분 | 실측 치수 | 성격 | 신호 형태 |
 | --- | --- | --- | --- |
 | **성경 구절 코퍼스** | **31,102** `verse_id` | Logos RAG·인덱스·그래프 | **`verse_id` 포인터** (예: `Gen.1.1`) |
-| **마스터 렉시콘** | **41,775** Term | atom export **종수** (132万 atom 계열에서 중복 제거·export) | V2: **`compressed_text` + atom_id + 샤드** |
+| **마스터 렉시콘** | **41,658** Term | atom export **종수** (132万 atom 계열에서 중복 제거·export) | V2: **`compressed_text` + atom_id + 샤드** |
 
 **한 줄:** Logos는 **구절 ID로 책을 꺼내 읽고**, 압축은 **구절 번호가 아니라 압축 앵커·렉시콘·샤드**로 통신한다. **합선 금지.**
 
@@ -89,7 +89,7 @@
 
 ## 6. 범용화 — Core 41k + 샤드 플러그인 (`[HYPO]` V3)
 
-**Fact-Lock:** 통짜 **수백만 단어 한 권** 확장은 **설계상 비권장** (lookup·패킷 부담). SSOT는 **41,775 고정 lookup ON** + **`codebook/shards/zone_*.json` 단일 승자 샤드** (`zone_f_code`, `zone_e_finance` 등). **multi-shard union = 로드맵.**
+**Fact-Lock:** 통짜 **수백만 단어 한 권** 확장은 **설계상 비권장** (lookup·패킷 부담). SSOT는 **41,658 고정 lookup ON** + **`codebook/shards/zone_*.json` 단일 승자 샤드** (`zone_f_code`, `zone_e_finance` 등). **multi-shard union = 로드맵.**
 
 **입증 없는 수치 금지:** 「일반 문장 70~80% 커버」 등 **본 문서·대외 1페이지에 쓰지 않음.**
 
@@ -155,8 +155,8 @@ flowchart TB
 
 | KPI | SSOT 값 | 조건 |
 | --- | --- | --- |
-| Token saving | **~47.5%** | `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` |
-| Jaccard proxy | **~0.89** avg | 동일 · **의미 보존 % 아님** |
+| Token saving | **~49.1%** | `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` (41658 lexicon, 2026-05-23) |
+| Jaccard proxy | **~0.873** avg | 동일 · **의미 보존 % 아님** |
 | 4D bridge | **OFF** | `apply_gematria_4d_bridge_policy: false` |
 
 **LG·9장 슬라이드·내부 벤치 보고에만** 사용. AI-to-AI·방송·전 도메인 **일반화 금지**.

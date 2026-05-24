@@ -2,6 +2,46 @@
 
 **최신 날짜:** **맨 위** 첫 `## Ops slice (YYYY-MM-DD …)` 제목이 곧 그때 기준의 “오늘/최근” 핸드오프다. **장문 누적·4월 이전 메모**는 `docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md` 아카이브(본 파일 하단 절 참고).
 
+## Ops slice (2026-05-19 · Email forward · 채팅 종료)
+
+**Thread:** Cursor — Cloudflare Email Routing · no1kmedi / mkmlife
+
+| 주소 | 수신함 | 확인 |
+|------|--------|------|
+| `admin@no1kmedi.com` | `moksorinw@gmail.com` | 지휘관 테스트 OK |
+| `support@mkmlife.com` | `moksorinw@gmail.com` | 지휘관 테스트 OK |
+
+- **완료:** MX 두 apex → `route*.mx.cloudflare.net` · 라우팅 규칙(대시보드) · 수신 테스트 양쪽 통과 · SSOT `reports/email_forward_status_latest.json`
+- **막힘:** 없음(운영). API `CLOUDFLARE_API_TOKEN`은 Email Routing 403 — 재현은 토큰 권한 추가 후 `Invoke-MkmInboundEmailForwardSetup_v1.ps1` (선택)
+- **다음:** 없음(필수). 대상 주소 탭에 `admin@`이 잘못 남아 있으면 삭제(`moksorinw@gmail.com`만 유지)
+
+**재개:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+장기기억 맥락이어라
+admin/support → moksorinw Gmail 포워딩 완료
+```
+
+## Ops slice (2026-05-19 · Session handoff · B-track push · 채팅 종료)
+
+**Thread:** Cursor — `gitea/main` 동기화 · `gitea/dev` 정리
+
+| 레인 | 상태 | SSOT |
+|------|------|------|
+| **B-track Git** | **`gitea/main` = `dev` = `ecbc14a1b4`** · 원격 `dev` 삭제(prune) | `scripts/generate_btrack_hypothesis_prophecy_v1.py` (v2 ensemble) · pytest 6 passed |
+| **OpenData / LG / QuBics** | **스킵(지휘관)** — 본 세션 비범위 | 아래 융합 slice · `MISSION_LOG` |
+
+- **완료:** `_pr_sasang_promotion` worktree에서 `dev`→`main` fast-forward · `git push gitea main` · `Invoke-GiteaRedundantDevBranchPrune_v1.ps1` (`gitea/dev` 제거)
+- **막힘:** 없음(B-track push). OpenData 표지 A · LG outcome · QuBics 견적은 **의도적 보류**
+- **다음:** 없음(필수). 선택: 로컬 미커밋(~400, `*_latest`·smartfarm UI)은 커밋 안 해도 됨 · 재개 시 `@CURRENT_OPS_SNAPSHOT` + `장기기억 맥락이어라`
+
+**재개:**
+```
+@docs/final/CURRENT_OPS_SNAPSHOT.md
+장기기억 맥락이어라
+gitea/main ecbc14a1b4 · B-track push done · OpenData/LG 스킵
+```
+
 ## Ops slice (2026-05-19 · 융합 — OpenData · LG · B-track)
 
 **Thread:** Cursor — 세션 마감 SSOT · 로컬 restore

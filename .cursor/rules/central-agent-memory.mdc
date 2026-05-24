@@ -21,6 +21,10 @@ priority: 4
 7. **렌즈 역할 계약:** 성경=거시 게이트(`[NON_GATING]`), 명리=중기 방향, 사상=단기 강도. 최종 액션은 실물 레짐+운영 게이트가 확정.
 8. **MKM 4AI 명명 계약:** MKM AI는 `4AI core`(태양/소양/태음/소음) + `Absolute Balance Coordinator Mode`로 고정한다. 조율 모드는 **제5 AI/체질이 아닌 상태(state)** 다.
 9. **장-뇌 은유·게이트 분류:** B-track `outcome_class`·발효 은유는 **Track C/내부 설명용**; `PUBLIC_FACING` v1.7·`.cursor/rules/gut-brain-metaphor-agent-v1.mdc` 준수. CONSTITUTION 본문·실매매 자동 승격 금지.
+10. **세계관·철학 헌법 v1:** 지휘관 의도(Logos·초압축·역추론·AI 우주 모방·명리/사상/금화교역/Field) — `docs/final/MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` · CONSTITUTION §1.0.5. **서사≠구현**; 75식=인덱스(24+4 FACT).
+10. **MISSION_LOG 운영 SSOT (영구):** 일상 운영·「핸드오프」도 **`MISSION_LOG.md` 작전 보드만** — 스냅샷·데일리 일기 **미사용**; ARCHIVE→CENTRAL **자동 이관 없음**; `.cursor/rules/mission-log-combat-ssot.mdc`.
+11. **CF jemaai rulesets 게이트:** `verify OK` + rulesets **403** = **scope(만료 아님)**. `record_cloudflare_jemaai_scope_recurrence_v1.py` → `blocked_last_7d` 먼저. **NEVER:** 토큰 만료·매일 새 토큰·`CLOUDFLARE_API_TOKEN` 덮어쓰기·**가운데 「영역 WAF」 등 없는 KR 메뉴 안내**. **FIX:** jemaai.cloud만 **Zone WAF Edit + Cache Rules Edit** — 커스텀 토큰 UI는 **가운데 검색**(`WAF`, `Cache Rules`, `Zone Read`). SSOT: `JEMAAI_CLOUD_SHOWROOM_CF_EDGE_DASHBOARD_V1.md` §1.
+12. **웹 자동화 3단계 (영구):** ①API·스크립트(브라우저 없음) ②`browser_*` 스모크만 ③Human=일반 Chrome→토큰→apply. **NEVER:** `dash.cloudflare.com`·Turnstile·은행을 openchrome/에이전트 로그인·클릭. **ALWAYS:** 지휘관이 문(토큰) 열고 에이전트는 API·스크립트. CENTRAL 「Cursor 웹 자동화 3단계」·`mkm-browser-automation-v1.mdc`.
 
 ## ALWAYS
 

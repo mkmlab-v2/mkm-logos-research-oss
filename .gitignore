@@ -22,6 +22,8 @@
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)
 /MISSION_LOG.md
+/MISSION_LOG.old.md
+/MISSION_LOG.pre_split_backup.md
 # Local machine paths only (tracked template: LOCAL_MACHINE_POINTER_V1.template.md)
 docs/final/LOCAL_MACHINE_POINTER_V1.md
 .env

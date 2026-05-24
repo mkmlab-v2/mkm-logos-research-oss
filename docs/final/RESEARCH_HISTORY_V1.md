@@ -3,7 +3,7 @@
 **역할:** 클라우드 NotebookLM에 흩어진 **노트북 제목·ID·소스 개수**를 한곳에 두어, “연습장 흔적”을 **나중에** 레포로 긁어올 때 **검색 출발점**으로 쓴다.  
 **성격:** **B 레이어(브리핑·역사)**. 구현·게이트·수치 SSOT는 **`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`**, **`docs/final/artifacts`**, **`MKM_CORE_THEORY_V1.md`**가 우선이며, 본 표는 **대체하지 않는다.**
 
-**현행 스냅샷 시각 (UTC):** 2026-05-14  
+**현행 스냅샷 시각 (UTC):** 2026-05-23  
 **과거 전체 목록(41개 · 2026-04-12):** 아카이브로 분리 — `docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md` (운영 출발점 아님).
 
 ---
@@ -16,9 +16,13 @@
 
 | 표시 이름 | MCP `id` | URL `…/notebook/<uuid>` | 소스 개수 (NL 프로브) | 비고 |
 |----------|----------|-------------------------|------------------------|------|
-| `00_MASTER_TRACKC_BOARD_2026Q2` (MCP 라이브러리 표시명; NL 웹과 동일) | `ops-command-anchor-fact-lock` | `347e5cbe-0ade-4615-9aac-8747d4fa644e` | **7** | **구 MCP 표시명:** `Ops Command Anchor (Fact-Lock)` · **아카이브 구명:** `작전지휘부 Ops20260318` — 동일 UUID. `lg_hs_*` 등 발표·온보딩 자료 혼재 가능 → `TRACKC_BIZ` / 이벤트 노트와 중복 검토. |
-| MKM Core Intelligence (Fact Focus) | `mkm-core-intelligence-fact-foc` | `aba1f8b1-be62-4367-ac7f-b1a997bb77d4` | **10** | 압축·SLA·코어 이론 중심 + `RESEARCH_HISTORY_V1.md`(B 인덱스) 포함 — `NotebookLM_sources_manifest.md` 기준 **유지 vs 별 노트** 검토만 권장. |
-| SBA 2026 모두의 챌린지 발표평가 준비 | `sba-2026` | `b25977f3-1f92-4075-8dfe-d4074ca708a7` | **21** | OD327 청크·LG HS 자료·PPTX 등 — 이벤트·사업 브리핑 축; 종료 후 소스 정리·아카이브 후보. |
+| **`06_스마트팜_진도관광농원_사업화_2026Q2` (활성 유일)** | `06-2026q2` | `96865180-769e-4a77-89bb-5f03a8083ac3` | **~130+** (과다 · 정리 필요) | pack: `reports/notebooklm_smartfarm_geumsan_sync_pack_v1/` (15 files incl. Golden40 WATCH snippet) · 2026-05-23 델타 MCP push |
+| `99_ARCHIVE_MKM_NOTEBOOKLM_2026Q2` | `90-archive-p2-prophecy-migrate` | `9de651e6-199d-4ea7-88d5-cbca2f177312` | (레거시) | 단일 아카이브 허브 · 신규 질의 금지 |
+| `[ARCHIVED] 00_MASTER_TRACKC_BOARD_2026Q2` | `ops-command-anchor-fact-lock` | `347e5cbe-0ade-4615-9aac-8747d4fa644e` | — | MCP 메타 아카이브 2026-05-23 |
+| `[ARCHIVED] MKM Core Intelligence` | `mkm-core-intelligence-fact-foc` | `aba1f8b1-be62-4367-ac7f-b1a997bb77d4` | — | 아카이브 |
+| `[ARCHIVED] SBA 2026` | `sba-2026` | `b25977f3-1f92-4075-8dfe-d4074ca708a7` | — | 이벤트 종료 |
+| `[ARCHIVED] 07_PROPHECY_BTRACK` | `07-prophecy-btrack-2026q2` | `3e95ca50-66f8-4b54-b0ef-81821c199518` | — | 예언 → 레포 SSOT |
+| `[ARCHIVED] 만세력·사주_AI_B` | `ai-b-mkm-abstract` | `af639d3e-b455-4f3f-8e25-47f58d962c60` | — | B-track 연구 |
 
 **정정(2026-05-14):** `00_MASTER_TRACKC_BOARD_2026Q2`는 `347e5cbe-…`와 **동일 노트**(NL 제목 변경). **2026-05-14 후속:** MCP `update_notebook`으로 라이브러리 **표시명**을 웹과 동일하게 맞춤(`ops-command-anchor-fact-lock` id 불변).
 

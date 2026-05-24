@@ -2,6 +2,8 @@
 
 **사용법**: 로컬 전용 파일 `MISSION_LOG.md`를 쓴다 (저장소 루트,`.gitignore`로 비추적). 이 템플릿을 복사해 시작한다.
 
+**파일 비대 시 (2026-05-23):** `py scripts/split_mission_log_old_v1.py` — **작전 보드·운영 일정 SSOT만** `MISSION_LOG.md`에 두고, 나머지는 `MISSION_LOG.old.md`(참고·비-SSOT). 백업: `MISSION_LOG.pre_split_backup.md`.
+
 **역할 분리**: 작전 스냅샷·핸드오프 문단은 `docs/final/CURRENT_OPS_SNAPSHOT.md`에 두고, 본 파일은 **로컬 체크리스트·exit 조건**만 기록한다. 동일 SSOT를 스냅샷과 이중 서술하지 않는다(루트 `.cursorrules`·`AGENTS.md`와 동일 방향).
 
 **병렬 세션**: Agents Window 등에서 동시에 `MISSION_LOG.md`를 쓰면 파일 경합이 날 수 있으니, 한 번에 한 에이전트(또는 한 채팅)만 이 파일을 갱신하는 것을 권장한다.
