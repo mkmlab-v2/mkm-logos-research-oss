@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/lexicon_4d_v1.schema.json",
+  "title": "Lexicon atom 4D aggregate v1 (Track B — logos verse corpus join)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "min_verse_count",
+    "inputs",
+    "rows",
+    "stats",
+    "hypothesis_tier",
+    "boundary_ack",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "lexicon_4d_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "generated_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "min_verse_count": { "type": "integer", "minimum": 1 },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["verse_jsonl", "codebook_json"],
+      "properties": {
+        "verse_jsonl": { "type": "string" },
+        "codebook_json": { "type": "string" },
+        "overlay_recipe_id": { "type": "string" }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "atom_id",
+          "normalized_form",
+          "vector_4d",
+          "verse_count",
+          "token_occurrences"
+        ],
+        "properties": {
+          "atom_id": { "type": "string", "minLength": 1 },
+          "normalized_form": { "type": "string" },
+          "lang": { "type": "string" },
+          "vector_4d": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["S", "L", "K", "M"],
+            "properties": {
+              "S": { "type": "number" },
+              "L": { "type": "number" },
+              "K": { "type": "number" },
+              "M": { "type": "number" }
+            }
+          },
+          "verse_count": { "type": "integer", "minimum": 1 },
+          "token_occurrences": { "type": "integer", "minimum": 1 }
+        }
+      }
+    },
+    "stats": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "hypothesis_tier": { "type": "string", "const": "B" },
+    "boundary_ack": { "type": "boolean", "const": true },
+    "track_wall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "a_track_auto_promotion",
+        "live_trading_trigger",
+        "ready_for_external_send"
+      ],
+      "properties": {
+        "a_track_auto_promotion": { "type": "boolean", "const": false },
+        "live_trading_trigger": { "type": "boolean", "const": false },
+        "ready_for_external_send": { "type": "boolean", "const": false }
+      }
+    }
+  }
+}

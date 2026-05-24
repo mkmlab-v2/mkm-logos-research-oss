@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_textual_variant_distance_v1.schema.json",
+  "title": "Logos NT textual-variant distance layer v1 (B-track, non-merge)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "ts_utc",
+    "hypothesis_tier",
+    "boundary_ack",
+    "source_track",
+    "canonical_ssot",
+    "entries",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "logos_textual_variant_distance_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "ts_utc": { "type": "string", "format": "date-time" },
+    "hypothesis_tier": { "type": "string", "const": "B" },
+    "boundary_ack": { "type": "boolean", "const": true },
+    "source_track": { "type": "string", "const": "B_textual_criticism" },
+    "canonical_ssot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["complete_jsonl", "complete_gap_count", "mt_only_policy_jsonl"],
+      "properties": {
+        "complete_jsonl": { "type": "string", "minLength": 1 },
+        "complete_gap_count": { "type": "integer", "minimum": 0 },
+        "mt_only_policy_jsonl": { "type": "string", "minLength": 1 },
+        "residual_classify_json": { "type": "string" }
+      }
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/entry" }
+    },
+    "aggregate": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "track_wall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["merge_into_complete_jsonl", "a_track_auto_promotion", "ready_for_external_send"],
+      "properties": {
+        "merge_into_complete_jsonl": { "type": "boolean", "const": false },
+        "a_track_auto_promotion": { "type": "boolean", "const": false },
+        "ready_for_external_send": { "type": "boolean", "const": false },
+        "forbidden_claim": { "type": "string" }
+      }
+    }
+  },
+  "definitions": {
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verse_id",
+        "testament",
+        "residual_taxonomy",
+        "decode_status",
+        "sblgnt_local",
+        "mt_only_vector_4d",
+        "distance"
+      ],
+      "properties": {
+        "verse_id": { "type": "string", "minLength": 1 },
+        "testament": { "type": "string", "enum": ["NT"] },
+        "residual_taxonomy": { "type": "string" },
+        "decode_status": { "type": "string" },
+        "sblgnt_local": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["present_in_morphgnt_index"],
+          "properties": {
+            "present_in_morphgnt_index": { "type": "boolean" },
+            "stepbible_sblgnt_candidates": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "tr_tradition": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "source_id": { "type": "string" },
+            "licensed": { "type": "boolean" },
+            "greek_text": { "type": ["string", "null"] },
+            "ingest_status": {
+              "type": "string",
+              "enum": ["pending_source", "available", "skipped"]
+            }
+          }
+        },
+        "mt_only_vector_4d": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["S", "L", "K", "M"],
+          "properties": {
+            "S": { "type": "number" },
+            "L": { "type": "number" },
+            "K": { "type": "number" },
+            "M": { "type": "number" }
+          }
+        },
+        "distance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["status"],
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": ["pending_tr_source", "computed", "not_applicable"]
+            },
+            "l2_vector_4d": { "type": ["number", "null"] },
+            "cosine_vector_4d": { "type": ["number", "null"] },
+            "note": { "type": "string" }
+          }
+        },
+        "interpretation": { "type": "string" }
+      }
+    }
+  }
+}

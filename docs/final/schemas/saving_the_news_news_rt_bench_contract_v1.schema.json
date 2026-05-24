@@ -1,0 +1,141 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/saving_the_news_news_rt_bench_contract_v1.schema.json",
+  "title": "Saving the News — NEWS-RT benchmark contract v1",
+  "description": "Design-time contract for a live-news-stream token/fidelity bench. KPI values remain null until an explicit bench run is recorded. Not A-TRACK or LOGOS-CAP.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "axis_id",
+    "status",
+    "lane",
+    "generated_at_utc",
+    "measurement_status",
+    "forbidden_cross_axis_claims",
+    "input_contracts",
+    "kpi_slots",
+    "bench_chain_scripts",
+    "artifact_outputs",
+    "blueprint_refs"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "saving_the_news_news_rt_bench_contract_v1"
+    },
+    "axis_id": {
+      "type": "string",
+      "const": "NEWS-RT"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["DESIGN_ONLY", "POC_SCHEDULED", "POC_RUNNING", "POC_COMPLETE"]
+    },
+    "lane": {
+      "type": "string",
+      "const": "research_only"
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "ready_for_external_send": {
+      "type": "boolean",
+      "const": false
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "measurement_status": {
+      "type": "string",
+      "enum": ["NOT_MEASURED", "PARTIAL", "COMPLETE"]
+    },
+    "forbidden_cross_axis_claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "input_contracts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["news_observation_schema", "min_observation_rows", "point_in_time_required"],
+      "properties": {
+        "news_observation_schema": { "type": "string" },
+        "min_observation_rows": { "type": "integer", "minimum": 1 },
+        "point_in_time_required": { "type": "boolean" },
+        "pre_news_shadow_input": { "type": "string" },
+        "news_independent_lens": { "type": "string" },
+        "macro_independent_lens": { "type": "string" }
+      }
+    },
+    "kpi_slots": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "token_saving_ratio",
+        "jaccard_fidelity_proxy",
+        "integrity_score",
+        "latency_p99_ms",
+        "measured_at_utc"
+      ],
+      "properties": {
+        "token_saving_ratio": { "type": ["number", "null"] },
+        "jaccard_fidelity_proxy": { "type": ["number", "null"] },
+        "integrity_score": { "type": ["number", "null"] },
+        "latency_p99_ms": { "type": ["number", "null"] },
+        "measured_at_utc": { "type": ["string", "null"], "format": "date-time" },
+        "cohort_id": { "type": ["string", "null"] },
+        "notes": { "type": "string" }
+      }
+    },
+    "bench_chain_scripts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["order", "script", "purpose"],
+        "properties": {
+          "order": { "type": "integer", "minimum": 1 },
+          "script": { "type": "string" },
+          "purpose": { "type": "string" },
+          "optional": { "type": "boolean" }
+        }
+      }
+    },
+    "artifact_outputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bench_result_latest", "readiness_pointer"],
+      "properties": {
+        "bench_result_latest": { "type": "string" },
+        "readiness_pointer": { "type": "string" }
+      }
+    },
+    "blueprint_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_blueprint", "track_c_onepager", "rq_ids"],
+      "properties": {
+        "canonical_blueprint": { "type": "string" },
+        "track_c_onepager": { "type": "string" },
+        "rq_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "prerequisite_checks": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["path", "exists"],
+        "properties": {
+          "path": { "type": "string" },
+          "exists": { "type": "boolean" }
+        }
+      }
+    }
+  }
+}

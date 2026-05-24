@@ -1,0 +1,54 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_verse_4d_graph_edges_v1.schema.json",
+  "title": "Logos verse 4D kNN graph edge v1 (Track B)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "verse_id_a",
+    "verse_id_b",
+    "cosine_or_l2",
+    "weight",
+    "hypothesis_tier",
+    "boundary_ack",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "logos_verse_4d_graph_edges_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "verse_id_a": { "type": "string", "minLength": 1 },
+    "verse_id_b": { "type": "string", "minLength": 1 },
+    "metric": {
+      "type": "string",
+      "enum": ["cosine", "l2_distance"],
+      "description": "cosine_or_l2 is cosine similarity when metric=cosine; else L2 distance on L2-normalized 4D."
+    },
+    "cosine_or_l2": {
+      "type": "number",
+      "description": "Cosine similarity in [-1,1] or non-negative L2 distance depending on metric."
+    },
+    "weight": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Graph edge weight (defaults to cosine similarity for kNN retention)."
+    },
+    "hypothesis_tier": { "type": "string", "const": "B" },
+    "boundary_ack": { "type": "boolean", "const": true },
+    "track_wall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "a_track_auto_promotion",
+        "live_trading_trigger",
+        "ready_for_external_send"
+      ],
+      "properties": {
+        "a_track_auto_promotion": { "type": "boolean", "const": false },
+        "live_trading_trigger": { "type": "boolean", "const": false },
+        "ready_for_external_send": { "type": "boolean", "const": false }
+      }
+    }
+  }
+}

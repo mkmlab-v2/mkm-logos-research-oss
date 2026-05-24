@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/patient_intake_fusion_rationale_v1.schema.json",
+  "title": "patient_intake_fusion_rationale_v1",
+  "description": "Track B pipeline rationale sidecar for patient_intake_fusion_draft runs.",
+  "type": "object",
+  "required": ["schema", "version", "generated_at_utc", "rail", "bundle_out"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "type": "string", "const": "patient_intake_fusion_rationale_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "rail": { "type": "string" },
+    "output_density": { "type": "string" },
+    "adjudication_model": { "type": "string" },
+    "bundle_out": { "type": "string" },
+    "myeongni_full_report": { "type": "string" },
+    "cross_checks_v1": {
+      "type": "object",
+      "description": "Structured [HYPO] cross-checks (non-clinical binding).",
+      "properties": {
+        "myeongni_sasang_clinical_v1": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string", "enum": ["match", "partial", "mismatch", "insufficient"] },
+            "status_ko": { "type": "string" },
+            "clinical_label": { "type": "string" },
+            "constitution_id": { "type": ["string", "null"] },
+            "signals": { "type": "array", "items": { "type": "string" } },
+            "element_surface": { "type": "object" }
+          }
+        },
+        "sasang_boming_jiju_lens_v1": {
+          "type": "object",
+          "properties": {
+            "pack_path": { "type": "string" },
+            "constitution_id": { "type": "string" },
+            "deep_link_count": { "type": "integer" },
+            "boming_term_count": { "type": "integer" },
+            "clinical_question_count": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "pipeline": { "type": "array" },
+    "inputs_echo": { "type": "object" },
+    "disclaimer": { "type": "string" }
+  }
+}

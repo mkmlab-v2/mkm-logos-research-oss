@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/sasang_boming_jiju_clinical_lens_pack_v1.schema.json",
+  "title": "sasang_boming_jiju_clinical_lens_pack_v1",
+  "description": "Per-constitution 보명지주·원전 포인터 pack for B-track clinical pre-chart assist. Not diagnosis or prescription.",
+  "type": "object",
+  "required": ["schema", "version", "generated_at_utc", "boundary_contract", "constitutions"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "type": "string", "const": "sasang_boming_jiju_clinical_lens_pack_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "boundary_contract": {
+      "type": "object",
+      "required": ["track", "research_only", "auto_prescription_forbidden", "physician_final_authority"],
+      "properties": {
+        "track": { "type": "string", "const": "B" },
+        "research_only": { "type": "boolean", "const": true },
+        "auto_prescription_forbidden": { "type": "boolean", "const": true },
+        "physician_final_authority": { "type": "boolean", "const": true }
+      }
+    },
+    "source_refs": {
+      "type": "object",
+      "properties": {
+        "lexicon_json": { "type": "string" },
+        "interpretive_bundle_json": { "type": "string" },
+        "cross_ref_draft_json": { "type": "string" }
+      }
+    },
+    "constitutions": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/definitions/constitution_slice" }
+    }
+  },
+  "definitions": {
+    "constitution_slice": {
+      "type": "object",
+      "required": ["label_ko", "constitution_id", "boming_jiju_terms", "literature_pointers", "clinical_priority_questions"],
+      "properties": {
+        "label_ko": { "type": "string" },
+        "constitution_id": {
+          "type": "string",
+          "enum": ["taeeum_in", "taeyang_in", "soeum_in", "soyang_in"]
+        },
+        "organ_axis_ko": { "type": "string" },
+        "boming_jiju_terms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["term"],
+            "properties": {
+              "term": { "type": "string" },
+              "priority": { "type": "integer" },
+              "notes": { "type": "string" },
+              "pillar_role": { "type": "string" }
+            }
+          }
+        },
+        "byeongjeung_reading_axes_ko": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "literature_pointers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title_ko": { "type": "string" },
+              "ref": { "type": "string" },
+              "note_ko": { "type": "string" }
+            }
+          }
+        },
+        "cross_ref_deep_links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["entry_id", "chunk_id", "deep_link_uri"],
+            "properties": {
+              "entry_id": { "type": "string" },
+              "chunk_id": { "type": "string" },
+              "section_key": { "type": "string" },
+              "section_label": { "type": "string" },
+              "line_start": { "type": "integer" },
+              "line_end": { "type": "integer" },
+              "artifact_path": { "type": "string" },
+              "satellite_ref": { "type": "string" },
+              "deep_link_uri": { "type": "string" },
+              "confidence": { "type": "number" },
+              "note_ko": { "type": "string" }
+            }
+          }
+        },
+        "clinical_priority_questions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["axis_ko", "prompt_ko"],
+            "properties": {
+              "axis_ko": { "type": "string" },
+              "prompt_ko": { "type": "string" },
+              "confirm_question_ko": { "type": "string" },
+              "trigger_keywords": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "yakri_lexicon_scan_ko": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Herb/pharmacology anchor terms for literature cross-check only — not Rx."
+        }
+      }
+    }
+  }
+}

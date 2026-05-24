@@ -1,0 +1,96 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/mkm_logos_research_thin_slice_v0.2.1.schema.json",
+  "title": "MKM Logos research thin slice v0.2.1 (Track B metaphor DB)",
+  "description": "Commander-curated symbolic theme for Logos Track B; research_metaphor_* namespace only; NON_GATING; not trading/clinical SSOT.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "meta",
+    "golden_anchor",
+    "semantic_nodes",
+    "governance_mapping",
+    "commander_insight"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "mkm_logos_research_thin_slice_v0.2.1"
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_tier", "gating_status", "weight_source", "ops_analogy_note"],
+      "properties": {
+        "evidence_tier": {
+          "type": "string",
+          "const": "hypo_research_only"
+        },
+        "gating_status": {
+          "type": "string",
+          "const": "NON_GATING"
+        },
+        "weight_source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ops_analogy_note": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "golden_anchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "theme", "ref", "text"],
+      "properties": {
+        "node_id": { "type": "string", "pattern": "^[A-Z0-9_]+$" },
+        "theme": { "type": "string", "minLength": 1 },
+        "ref": { "type": "string", "minLength": 1 },
+        "text": { "type": "string", "minLength": 1 }
+      }
+    },
+    "semantic_nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "node_id",
+          "ref",
+          "text",
+          "edge_type",
+          "target_node",
+          "impact_weight",
+          "research_metaphor_logic_connection",
+          "research_metaphor_domain"
+        ],
+        "properties": {
+          "node_id": { "type": "string", "pattern": "^NODE_[A-Z0-9_]+$" },
+          "ref": { "type": "string", "minLength": 1 },
+          "text": { "type": "string", "minLength": 1 },
+          "edge_type": { "type": "string", "minLength": 1 },
+          "target_node": { "type": "string", "pattern": "^ANCHOR_[A-Z0-9_]+$" },
+          "impact_weight": { "type": "number", "minimum": 0, "maximum": 1 },
+          "research_metaphor_logic_connection": { "type": "string", "minLength": 1 },
+          "research_metaphor_domain": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "governance_mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "patternProperties": {
+        "^research_metaphor_": { "type": "string", "minLength": 1 }
+      }
+    },
+    "commander_insight": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

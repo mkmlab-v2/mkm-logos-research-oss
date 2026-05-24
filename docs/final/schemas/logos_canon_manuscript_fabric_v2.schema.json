@@ -1,0 +1,42 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_canon_manuscript_fabric_v2.schema.json",
+  "title": "Logos canon address vs manuscript ink fabric v2",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "ts_utc",
+    "hypothesis_tier",
+    "canonical_address_layer",
+    "manuscript_instances",
+    "virtual_bridge_edges",
+    "wire_routing",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "logos_canon_manuscript_fabric_v2" },
+    "version": { "type": "string", "pattern": "^2\\.0\\.0$" },
+    "ts_utc": { "type": "string" },
+    "hypothesis_tier": { "type": "string", "const": "B" },
+    "canonical_address_layer": {
+      "type": "object",
+      "required": ["verse_count", "gap_nt_textual_variant_count", "gap_verse_ids"],
+      "properties": {
+        "verse_count": { "type": "integer", "const": 31102 },
+        "gap_nt_textual_variant_count": { "type": "integer", "const": 15 },
+        "gap_verse_ids": { "type": "array", "minItems": 15, "maxItems": 15 }
+      }
+    },
+    "manuscript_instances": { "type": "object" },
+    "virtual_bridge_edges": { "type": "object" },
+    "wire_routing": { "type": "object" },
+    "track_wall": {
+      "type": "object",
+      "properties": {
+        "core_corpus_sha_unchanged": { "type": "boolean", "const": true }
+      }
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/logos_concept_bridge_v1.schema.json",
+  "title": "logos_concept_bridge_v1",
+  "type": "object",
+  "required": ["schema", "hypothesis_tier", "policy", "query", "nodes", "paths"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "logos_concept_bridge_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "hypothesis_tier": { "const": "[HYPO]" },
+    "policy": {
+      "type": "object",
+      "required": ["research_only", "non_gating", "no_prophecy_claim"],
+      "properties": {
+        "research_only": { "const": true },
+        "non_gating": { "const": true },
+        "no_prophecy_claim": { "const": true },
+        "human_signoff_completed": { "type": "boolean" }
+      }
+    },
+    "query": {
+      "type": "object",
+      "required": ["concept_id", "label_ko"],
+      "properties": {
+        "concept_id": { "type": "string" },
+        "label_ko": { "type": "string" }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["node_id", "kind"],
+        "properties": {
+          "node_id": { "type": "string" },
+          "kind": {
+            "enum": ["modern_concept", "function", "lemma_proxy", "verse_ref"]
+          },
+          "label_ko": { "type": "string" },
+          "label_en": { "type": "string" },
+          "verse_id": { "type": "string" },
+          "rationale_ko": { "type": "string" }
+        }
+      }
+    },
+    "paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path_id", "steps"],
+        "properties": {
+          "path_id": { "type": "string" },
+          "steps": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2
+          },
+          "note_ko": { "type": "string" }
+        }
+      }
+    },
+    "graph_rag_hooks": {
+      "type": "object",
+      "properties": {
+        "seed_verse_ids": { "type": "array", "items": { "type": "string" } },
+        "seed_chain_json": { "type": "string" }
+      }
+    },
+    "known_limitations": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

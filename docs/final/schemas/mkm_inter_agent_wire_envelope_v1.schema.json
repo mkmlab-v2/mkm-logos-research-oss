@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mkm_inter_agent_wire_envelope_v1.schema.json",
+  "title": "MKM Inter-Agent Wire Envelope v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "wire_format_version",
+    "session_id",
+    "turn_id",
+    "from_agent",
+    "to_agent",
+    "payload"
+  ],
+  "properties": {
+    "schema": { "const": "mkm_inter_agent_wire_envelope_v1" },
+    "wire_format_version": { "type": "string" },
+    "session_id": { "type": "string" },
+    "turn_id": { "type": "integer", "minimum": 1 },
+    "from_agent": { "type": "string" },
+    "to_agent": { "type": "string" },
+    "payload": {
+      "type": "object",
+      "required": ["kind", "wire_b64", "atom_id_sequence"],
+      "properties": {
+        "kind": { "const": "lexicon_atom_wire" },
+        "wire_b64": { "type": "string" },
+        "wire_byte_len": { "type": "integer", "minimum": 0 },
+        "codec_variant": { "type": "string" },
+        "atom_id_sequence": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "atom_id_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "research_only": { "type": "boolean" }
+  },
+  "additionalProperties": true
+}

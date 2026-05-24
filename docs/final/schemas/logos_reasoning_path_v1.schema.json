@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "logos_reasoning_path_v1.schema.json",
+  "title": "logos_reasoning_path_v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "node_ids", "edges"],
+  "properties": {
+    "schema_version": { "const": "logos_reasoning_path_v1" },
+    "node_ids": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "maxItems": 8
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["src", "dst"],
+        "properties": {
+          "src": { "type": "string" },
+          "dst": { "type": "string" },
+          "edge_type": { "type": "string" }
+        }
+      }
+    },
+    "path_label_ko": { "type": "string" }
+  }
+}

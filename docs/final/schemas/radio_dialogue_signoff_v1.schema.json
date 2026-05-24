@@ -1,0 +1,25 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "radio_dialogue_signoff_v1",
+  "title": "radio_dialogue_signoff_v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "briefing_id",
+    "approved",
+    "approved_by",
+    "approved_at_utc"
+  ],
+  "properties": {
+    "schema": { "const": "radio_dialogue_signoff_v1" },
+    "briefing_id": { "type": "string", "minLength": 1 },
+    "program_style": { "type": "string" },
+    "deployment_target": { "type": "string" },
+    "approved": { "const": true },
+    "approved_by": { "type": "string", "minLength": 1 },
+    "approved_at_utc": { "type": "string" },
+    "script_generated_at_utc": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}

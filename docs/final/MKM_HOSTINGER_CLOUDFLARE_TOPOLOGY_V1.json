@@ -1,0 +1,70 @@
+{
+  "schema": "mkm_hostinger_cloudflare_topology_v1",
+  "version": "1.0.0",
+  "updated_utc": "2026-05-21",
+  "one_liner_ko": "컴pute=Hostinger VPS만 · 엣지=Cloudflare만 · hPanel public_html·타 클라우드 앱호스트 금지",
+  "compute": {
+    "provider": "hostinger",
+    "kind": "vps",
+    "allowed": ["ssh", "scp", "pm2", "nginx_on_vps", "git_pull_on_vps_disk"],
+    "forbidden": [
+      "hostinger_shared_hosting_hpanel_public_html_as_primary_origin",
+      "aws_ec2_app_host",
+      "gcp_compute_app_host",
+      "azure_vm_app_host",
+      "cloudflare_pages_workers_as_primary_app_host",
+      "github_pages_production_origin"
+    ]
+  },
+  "edge": {
+    "provider": "cloudflare",
+    "allowed": [
+      "dns_to_vps",
+      "http_proxy_cdn",
+      "email_routing",
+      "redirect_rules",
+      "ssl_at_edge_optional"
+    ],
+    "forbidden_as_primary_app_host": ["cloudflare_pages", "cloudflare_workers"]
+  },
+  "ssh_targets": {
+    "note": "Different labels; usually same Hostinger VPS. Verify with hostname -I on both.",
+    "ssh_config_alias_default": "vps-mkmlife",
+    "env_host_example": "srv1101456.hstgr.cloud",
+    "env_vars": ["MKM_VPS_HOST", "MKM_VPS_USER", "MKM_VPS_SSH_KEY_PATH", "MKM_VPS_SCP_EXTRA_ARGS"]
+  },
+  "vps_worktrees": {
+    "live_destiny_monorepo": {
+      "path_default": "/opt/mkm-destiny-ai-41e38ec6",
+      "pm2_examples": ["bitcoin-live-small-24h", "no1kmedi-com", "mkmlife"],
+      "pointer": "docs/final/VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json"
+    },
+    "lab_monorepo": {
+      "path_default": "/opt/mkm-lab-workspace-v2",
+      "ship_script_default": "scripts/deploy/ship_to_vps.ps1",
+      "note": "Automation, artifacts scp; not live PM2 cwd unless pm2 show says so"
+    },
+    "legacy_do_not_use_for_live": ["/opt/bitcoin-trading-live"]
+  },
+  "static_docroots_on_vps": {
+    "jemaai_showroom": "/var/www/jemaai",
+    "mkmlab": "/var/www/mkmlab",
+    "mkmlife_deploy_script_root": "/var/www/mkmlife"
+  },
+  "cloudflare_zone_registry_v1": "docs/final/artifacts/mkm_cloudflare_zone_registry_v1.json",
+  "cloudflare_recurrence_guard_bundle": "scripts/Invoke-MkmCloudflareRecurrenceGuardBundle_v1.ps1",
+  "cloudflare_zone_audit_script": "scripts/audit_mkm_cloudflare_zones_v1.py",
+  "cloudflare_zone_fixtures_dir": "scripts/data/hostinger_full_exit",
+  "dns_ensure_reports_glob": "reports/cloudflare_dns_ensure_*.json",
+  "doc_ssot": "docs/final/MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md",
+  "cross_ref": [
+    "docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",
+    "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
+    "docs/final/VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json",
+    "docs/final/NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md",
+    "docs/final/JEMAAI_CLOUD_SHOWROOM_CF_EDGE_DASHBOARD_V1.md",
+    "docs/final/artifacts/jemaai_cloud_showroom_cf_edge_dashboard_v1.json",
+    "AGENTS.md"
+  ],
+  "jemaai_showroom_cf_edge_dashboard_v1": "docs/final/artifacts/jemaai_cloud_showroom_cf_edge_dashboard_v1.json"
+}

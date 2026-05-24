@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_chronology_v1.schema.json",
+  "title": "Logos chronology v1 (B-track, observational)",
+  "description": "Commander-authored narrative eras for Logos Observatory: biblical/historical eras bridged to modern chronology_windows and/or regime_map keys. research_only, non_gating. Does not imply prophecy, trading signals, or clinical claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "schema_version",
+    "generated_at_utc",
+    "policy",
+    "hypothesis_tier",
+    "eras",
+    "modern_bridges"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "logos_chronology_v1"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.\\d+$"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_note": {
+      "type": "string",
+      "maxLength": 512,
+      "description": "Provenance: commander table, markdown export path, etc."
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["research_only", "non_gating", "no_trading_signal", "no_prophecy_certainty"],
+      "properties": {
+        "research_only": { "type": "boolean", "const": true },
+        "non_gating": { "type": "boolean", "const": true },
+        "no_trading_signal": { "type": "boolean", "const": true },
+        "no_prophecy_certainty": { "type": "boolean", "const": true }
+      }
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "enum": ["[HYPO]"]
+    },
+    "eras": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/era" }
+    },
+    "modern_bridges": {
+      "type": "array",
+      "description": "Explicit links from era_id to modern observation surfaces (not implicit market prophecy).",
+      "items": { "$ref": "#/$defs/modern_bridge" }
+    },
+    "merge_targets": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "logos_symbolic_event_map_v1": {
+          "type": "string",
+          "description": "Path to logos_symbolic_event_map_v1.json for chronology_windows extension"
+        },
+        "bible_meaning_graph_nodes_jsonl": {
+          "type": "string",
+          "description": "Optional path for era/theme node injection"
+        },
+        "bible_meaning_graph_edges_jsonl": {
+          "type": "string",
+          "description": "Optional path for timeline_anchor edges"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "era": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["era_id", "label_ko", "interpretation_class"],
+      "properties": {
+        "era_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]{2,63}$"
+        },
+        "label_ko": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "label_en": { "type": "string", "maxLength": 128 },
+        "interpretation_class": {
+          "type": "string",
+          "enum": ["[FACT]", "[HYPO]"],
+          "description": "[FACT] only for cited scripture refs; narrative synthesis must be [HYPO]."
+        },
+        "time": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "bce_start": { "type": "integer" },
+            "bce_end": { "type": "integer" },
+            "ce_start": { "type": "integer", "minimum": 1 },
+            "ce_end": { "type": "integer", "minimum": 1 },
+            "relative_phase": {
+              "type": "string",
+              "maxLength": 64,
+              "description": "When absolute dates unknown: e.g. exodus_wilderness_year_2"
+            }
+          }
+        },
+        "theme_tags": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 64 },
+          "maxItems": 32
+        },
+        "verse_refs": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 128 },
+          "description": "e.g. aramaic::Dan.2.10, Gen.1.1"
+        },
+        "regime_tags_observational": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["imf", "lehman", "it_bubble", "covid", "empire_transition", "stability", "caution", "risk"]
+          },
+          "description": "Secondary observational tags only; 1st regime_map is primary for modern Field."
+        },
+        "notes_ko": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "modern_bridge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["era_id", "bridge_kind"],
+      "properties": {
+        "era_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,63}$" },
+        "bridge_kind": {
+          "type": "string",
+          "enum": ["chronology_window", "regime_fingerprint", "theme_only"]
+        },
+        "window_id": {
+          "type": "string",
+          "description": "Key in logos_symbolic_event_map_v1.chronology_windows"
+        },
+        "regime_id": {
+          "type": "string",
+          "description": "Key in data/regimes/regime_map.json (imf, lehman, covid, it_bubble, ...)"
+        },
+        "resonance_weight": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 1
+        },
+        "interpretation_class": {
+          "type": "string",
+          "enum": ["[HYPO]"],
+          "const": "[HYPO]"
+        },
+        "rationale_ko": { "type": "string", "maxLength": 1000 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "bridge_kind": { "const": "chronology_window" } } },
+          "then": { "required": ["window_id"] }
+        },
+        {
+          "if": { "properties": { "bridge_kind": { "const": "regime_fingerprint" } } },
+          "then": { "required": ["regime_id"] }
+        }
+      ]
+    }
+  }
+}

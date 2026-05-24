@@ -1,0 +1,53 @@
+{
+  "schema": "radio_dialogue_script_v1",
+  "version": "1.0.0",
+  "briefing_id": "MKM-RADIO-20260522-SHORTS01",
+  "generated_at_utc": "2026-05-22T12:00:00Z",
+  "calendar_kst": "2026-05-22",
+  "hypothesis_tier": "B",
+  "non_gating": true,
+  "boundary_ack": true,
+  "program_style": "morning_shorts_60s",
+  "deployment_target": "YOUTUBE_SHORTS",
+  "gates": {
+    "public_facing_version": "1.7",
+    "spoken_price_allowed": false,
+    "human_review_required": true,
+    "track_a_webhook_count": 0
+  },
+  "track_wall": {
+    "live_trading_trigger": false,
+    "track_a_order_path": false,
+    "clinical_diagnosis": false
+  },
+  "market_context_pointer": {
+    "macro_band_snapshot": "reports/op31b_shadow/market_snapshot_latest.json",
+    "spoken_price_allowed": false
+  },
+  "upstream_inputs": {
+    "logos_anchor": "reports/commander_daily_logos_anchor_latest.json",
+    "briefing": "reports/commander_advanced_briefing_latest.json",
+    "fortune": "reports/commander_daily_fortune_latest.json",
+    "listener_story": null
+  },
+  "caption_config": {
+    "burn_in_subtitle": true,
+    "srt_output_path": "reports/radio_dialogue_script_morning_shorts_latest.srt"
+  },
+  "segments": [
+    {
+      "segment_index": 1,
+      "segment_name": "opening_and_disclaimer",
+      "dialogue": [
+        {
+          "sequence": 1,
+          "persona": "system_announcer",
+          "voice_profile_id": "ko-KR-SunHiNeural",
+          "audio_text": "본 방송은 투자, 의료, 법률 자문이 아닙니다. 다중 렌즈 해설은 관측·페이싱 참고용이며, 실전 결정은 청취자 본인에게 있습니다.",
+          "copy_tags": ["DISCLAIMER"],
+          "target_duration_sec": 8
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "btrack_lens_ensemble_v1",
+  "version": "1.2.0",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "weights": {
+    "price": 0.65,
+    "macro": 0.2,
+    "news": 0.1,
+    "myeongni_sasang": 0.05
+  },
+  "weights_v2": {
+    "price": 0.55,
+    "macro": 0.18,
+    "news": 0.12,
+    "myeongni": 0.06,
+    "sasang": 0.06,
+    "logos": 0.03
+  },
+  "rules": {
+    "ensemble_mode": "v1",
+    "price_instrument": "btc",
+    "price_lookback_days": 5,
+    "enforce_btc_only_guard": true,
+    "tie_break_min_margin": 0.03,
+    "neutral_penalty": -0.1,
+    "max_neutral_streak_before_recalibration": 3,
+    "tie_breaker_order": ["price", "macro", "news", "myeongni_sasang"],
+    "min_direction_confidence": 0.18,
+    "v2": {
+      "min_confidence_floor": 0.15,
+      "logos_max_weight": 0.08,
+      "conflict_dampen": 0.85,
+      "drop_logos_on_conflict": false
+    }
+  },
+  "note": "Set rules.ensemble_mode to v2_confidence_fusion for separate myeongni/sasang/logos + confidence-scaled weights. B-track research_only; not A-track promotion. min_direction_confidence promoted 0.25→0.18 (2026-05-17 grid experiment B8)."
+}

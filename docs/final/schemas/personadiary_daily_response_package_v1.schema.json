@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "personadiary_daily_response_package_v1.schema.json",
+  "title": "personadiary_daily_response_package_v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "product",
+    "hypothesis_tier",
+    "non_gating",
+    "calendar_kst",
+    "sections",
+    "ui_blocks",
+    "disclaimer_ko"
+  ],
+  "properties": {
+    "schema": { "const": "personadiary_daily_response_package_v1" },
+    "product": { "const": "personadiary.com" },
+    "hypothesis_tier": { "enum": ["B"] },
+    "non_gating": { "type": "boolean" },
+    "boundary_ack": { "type": "boolean" },
+    "calendar_kst": { "type": "string" },
+    "city_default": { "type": "string" },
+    "concept_ko": { "type": "string" },
+    "disclaimer_ko": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "source_fortune_path": { "type": "string" },
+    "sections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title_ko", "lines"],
+        "properties": {
+          "id": {
+            "enum": ["myeongni", "mkm_4ai", "lifestyle", "logos_anchor"]
+          },
+          "title_ko": { "type": "string" },
+          "lines": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "ui_blocks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "title_ko"],
+        "properties": {
+          "type": { "enum": ["hero", "card", "verse", "disclaimer"] },
+          "title_ko": { "type": "string" },
+          "body_ko": { "type": "string" },
+          "ref": { "type": "string" },
+          "badge_ko": { "type": "string" }
+        }
+      }
+    },
+    "reflect_template_ko": { "type": "string" },
+    "telegram_text": { "type": "string" }
+  },
+  "additionalProperties": true
+}

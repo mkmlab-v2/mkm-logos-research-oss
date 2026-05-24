@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/ambient_stream_manifest_v1.schema.json",
+  "title": "MKM O-P31c ambient 24h stream manifest v1 (Zone A)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "manifest_id",
+    "generated_at_utc",
+    "program_style",
+    "deployment_target",
+    "non_gating",
+    "gates",
+    "audio_bed_config",
+    "caption_config",
+    "visual_config",
+    "playlist"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "ambient_stream_manifest_v1" },
+    "version": { "type": "string", "pattern": "^1\\.\\d+\\.\\d+$" },
+    "manifest_id": { "type": "string", "minLength": 8 },
+    "generated_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "program_style": { "type": "string", "const": "ambient_24h_zone_a" },
+    "deployment_target": { "type": "string", "const": "YOUTUBE_LIVE_RTMP" },
+    "non_gating": { "type": "boolean", "const": true },
+    "gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public_facing_version", "spoken_price_allowed", "human_review_required"],
+      "properties": {
+        "public_facing_version": { "type": "string" },
+        "spoken_price_allowed": { "type": "boolean", "const": false },
+        "human_review_required": { "type": "boolean" },
+        "stream_pause_on_safe_ops_degraded": { "type": "boolean" }
+      }
+    },
+    "audio_bed_config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bgm_source_type", "license_chain_pointer", "crossfade_duration_sec"],
+      "properties": {
+        "bgm_source_type": {
+          "type": "string",
+          "enum": ["SELF_GENERATED", "CC0_APPROVED_ALLOWLIST", "MIXED"]
+        },
+        "license_chain_pointer": { "type": "string" },
+        "crossfade_duration_sec": { "type": "number", "minimum": 0, "maximum": 30 },
+        "loop_playlist": { "type": "boolean" }
+      }
+    },
+    "caption_config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["burn_in_disclaimer", "disclaimer_interval_min"],
+      "properties": {
+        "burn_in_disclaimer": { "type": "boolean" },
+        "disclaimer_interval_min": { "type": "integer", "minimum": 5, "maximum": 120 },
+        "disclaimer_text_ko": { "type": "string", "minLength": 20 }
+      }
+    },
+    "visual_config": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "primary": { "type": "string", "enum": ["oracle_sphere_idle", "static_frame", "waveform"] },
+        "fallback": { "type": "string" }
+      }
+    },
+    "ffmpeg_hints": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "playlist": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["track_id", "path", "license_tag"],
+        "properties": {
+          "track_id": { "type": "string" },
+          "path": { "type": "string" },
+          "license_tag": { "type": "string" },
+          "license_url": { "type": "string" },
+          "duration_sec": { "type": "number" }
+        }
+      }
+    }
+  }
+}

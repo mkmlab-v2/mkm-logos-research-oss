@@ -1,0 +1,92 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_verse_myeongri_cross_bridge_v1.schema.json",
+  "title": "Logos verse OS x Myeongri human terminal cross-bridge v1 (Track B)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "subset_id",
+    "ts_utc",
+    "hypothesis_tier",
+    "boundary_ack",
+    "interpretation_note",
+    "inputs",
+    "verse_os",
+    "human_terminal",
+    "geometry",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "logos_verse_myeongri_cross_bridge_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "subset_id": { "type": "string", "const": "v1_core_subset" },
+    "ts_utc": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$" },
+    "hypothesis_tier": { "type": "string", "const": "B" },
+    "boundary_ack": { "type": "boolean", "const": true },
+    "interpretation_note": { "type": "string", "minLength": 1 },
+    "pedagogical_map": { "type": "object" },
+    "inputs": { "type": "object" },
+    "verse_os": {
+      "type": "object",
+      "required": ["verse_id", "vector_4d"],
+      "properties": {
+        "verse_id": { "type": "string" },
+        "lane": { "type": "string" },
+        "vector_4d": {
+          "type": "object",
+          "required": ["S", "L", "K", "M"],
+          "properties": {
+            "S": { "type": "number" },
+            "L": { "type": "number" },
+            "K": { "type": "number" },
+            "M": { "type": "number" }
+          }
+        },
+        "mapping_recipe_id": { "type": "string" },
+        "medoid_rank": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "human_terminal": {
+      "type": "object",
+      "required": ["profile_id", "vector_4d"],
+      "properties": {
+        "profile_id": { "type": "string" },
+        "birth_instant_utc": { "type": "string" },
+        "iana_tz": { "type": "string" },
+        "engine_inputs": { "type": "object" },
+        "fusion_runner": { "type": "string" },
+        "vector_4d": {
+          "type": "object",
+          "required": ["S", "L", "K", "M"],
+          "properties": {
+            "S": { "type": "number" },
+            "L": { "type": "number" },
+            "K": { "type": "number" },
+            "M": { "type": "number" }
+          }
+        }
+      }
+    },
+    "geometry": {
+      "type": "object",
+      "required": ["l2_os_human", "cosine_os_human"],
+      "properties": {
+        "l2_os_human": { "type": "number", "minimum": 0 },
+        "cosine_os_human": { "type": "number", "minimum": -1, "maximum": 1 }
+      }
+    },
+    "blend_optional": { "type": ["object", "null"] },
+    "math_module": { "type": "object" },
+    "track_wall": {
+      "type": "object",
+      "required": ["a_track_auto_promotion", "live_trading_trigger", "ready_for_external_send"],
+      "properties": {
+        "a_track_auto_promotion": { "type": "boolean", "const": false },
+        "live_trading_trigger": { "type": "boolean", "const": false },
+        "ready_for_external_send": { "type": "boolean", "const": false }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/logos_subgraph_graphrag_router_v1.schema.json",
+  "title": "logos_subgraph_graphrag_router_v1",
+  "type": "object",
+  "required": ["schema", "hypothesis_tier", "research_only", "query", "paths", "verse_ids", "policy"],
+  "properties": {
+    "schema": { "const": "logos_subgraph_graphrag_router_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "hypothesis_tier": { "const": "B" },
+    "research_only": { "const": true },
+    "non_gating": { "const": true },
+    "query": { "type": "string" },
+    "bridges_matched": { "type": "integer", "minimum": 0 },
+    "paths": { "type": "array" },
+    "verse_ids": { "type": "array", "items": { "type": "string" } },
+    "lemma_edge_hits": { "type": "array" },
+    "policy": {
+      "type": "object",
+      "required": ["no_prophecy_claim", "router_kind"],
+      "properties": {
+        "no_prophecy_claim": { "const": true },
+        "router_kind": { "const": "logos_subgraph_v1" }
+      }
+    }
+  }
+}

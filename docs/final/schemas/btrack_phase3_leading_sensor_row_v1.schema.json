@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/btrack_phase3_leading_sensor_row_v1.schema.json",
+  "title": "B-track Phase 3 leading sensor row v1",
+  "description": "One calendar eval_date row for a leading sensor (research_only). Not a direction promotion artifact.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "eval_date",
+    "sensor_id",
+    "hypothesis_tier",
+    "boundary_ack",
+    "research_only",
+    "data_quality",
+    "features"
+  ],
+  "properties": {
+    "eval_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "sensor_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "hypothesis_tier": {
+      "type": "string",
+      "const": "B"
+    },
+    "boundary_ack": {
+      "type": "boolean",
+      "const": true
+    },
+    "research_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "data_quality": {
+      "type": "string",
+      "enum": ["stub_calendar", "measured_binance", "measured_csv", "measured_jsonl"]
+    },
+    "features": {
+      "type": "object",
+      "required": ["signed_flow_z", "level_pctile"],
+      "properties": {
+        "signed_flow_z": { "type": "number" },
+        "level_pctile": { "type": "number", "minimum": 0, "maximum": 1 },
+        "raw_funding_rate": { "type": "number" },
+        "raw_long_short_ratio": { "type": "number" },
+        "raw_netflow_btc": { "type": "number" }
+      },
+      "additionalProperties": true
+    },
+    "source": { "type": "string" },
+    "note": { "type": "string" }
+  }
+}

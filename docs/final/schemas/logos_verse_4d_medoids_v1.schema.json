@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_verse_4d_medoids_v1.schema.json",
+  "title": "Logos verse 4D graph medoid manifest v1 (Track B)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "ts_utc",
+    "hypothesis_tier",
+    "boundary_ack",
+    "inputs",
+    "outputs",
+    "build",
+    "counts",
+    "global_medoids",
+    "medoids_by_lane",
+    "medoids_by_book",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "logos_verse_4d_medoids_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "ts_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "hypothesis_tier": { "type": "string", "const": "B" },
+    "boundary_ack": { "type": "boolean", "const": true },
+    "purpose": { "type": "string" },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["verse_4d_jsonl"],
+      "properties": {
+        "verse_4d_jsonl": { "type": "string" },
+        "verse_4d_jsonl_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["graph_edges_jsonl", "medoid_manifest_self"],
+      "properties": {
+        "graph_edges_jsonl": { "type": "string" },
+        "graph_edges_jsonl_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "medoid_manifest_self": { "type": "string" }
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["top_k_neighbors", "metric", "similarity_on_l2_normalized"],
+      "properties": {
+        "top_k_neighbors": { "type": "integer", "minimum": 1 },
+        "top_medoids_global": { "type": "integer", "minimum": 1 },
+        "top_medoids_per_cluster": { "type": "integer", "minimum": 1 },
+        "metric": { "type": "string", "enum": ["cosine"] },
+        "similarity_on_l2_normalized": { "type": "boolean" },
+        "chunk_size": { "type": "integer", "minimum": 1 },
+        "numpy_used": { "type": "boolean" }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["rows_used", "edges_emitted", "unique_verse_ids"],
+      "properties": {
+        "rows_used": { "type": "integer", "minimum": 0 },
+        "edges_emitted": { "type": "integer", "minimum": 0 },
+        "unique_verse_ids": { "type": "integer", "minimum": 0 },
+        "lanes": { "type": "object", "additionalProperties": { "type": "integer" } },
+        "books": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "global_medoids": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/medoid_entry" }
+    },
+    "medoids_by_lane": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "$ref": "#/definitions/medoid_entry" }
+      }
+    },
+    "medoids_by_book": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "$ref": "#/definitions/medoid_entry" }
+      }
+    },
+    "track_wall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "a_track_auto_promotion",
+        "live_trading_trigger",
+        "ready_for_external_send"
+      ],
+      "properties": {
+        "a_track_auto_promotion": { "type": "boolean", "const": false },
+        "live_trading_trigger": { "type": "boolean", "const": false },
+        "ready_for_external_send": { "type": "boolean", "const": false }
+      }
+    },
+    "notes": { "type": "string" }
+  },
+  "definitions": {
+    "medoid_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rank", "verse_id", "centrality", "lane", "book"],
+      "properties": {
+        "rank": { "type": "integer", "minimum": 1 },
+        "verse_id": { "type": "string", "minLength": 1 },
+        "centrality": { "type": "number", "minimum": 0 },
+        "lane": { "type": "string" },
+        "book": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

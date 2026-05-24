@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_verse_4d_corpus_v1.schema.json",
+  "title": "Logos verse 4D corpus manifest v1 (Track B)",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "ts_utc",
+    "hypothesis_tier",
+    "mapping_recipe_id",
+    "inputs",
+    "outputs",
+    "counts",
+    "integrity",
+    "track_wall"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "logos_verse_4d_corpus_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "ts_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+    },
+    "hypothesis_tier": { "type": "string", "const": "B" },
+    "boundary_ack": { "type": "boolean" },
+    "mapping_recipe_id": { "type": "string", "minLength": 1 },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["primary_jsonl"],
+      "properties": {
+        "primary_jsonl": { "type": "string" },
+        "primary_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "dss_jsonl": { "type": "string" },
+        "apocrypha_jsonl": { "type": "string" }
+      }
+    },
+    "outputs": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["verse_4d_jsonl", "manifest_self"],
+      "properties": {
+        "verse_4d_jsonl": { "type": "string" },
+        "verse_4d_jsonl_sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "manifest_self": { "type": "string" }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["rows_emitted", "rows_skipped_empty_text"],
+      "properties": {
+        "rows_emitted": { "type": "integer", "minimum": 0 },
+        "rows_skipped_empty_text": { "type": "integer", "minimum": 0 },
+        "lanes": { "type": "object", "additionalProperties": { "type": "integer" } }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["duplicate_verse_id_count", "null_verse_id_count"],
+      "properties": {
+        "duplicate_verse_id_count": { "type": "integer", "minimum": 0 },
+        "null_verse_id_count": { "type": "integer", "minimum": 0 },
+        "vector_4d_missing_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "null_baselines_planned": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "External proof requires matched pipelines on control corpora."
+    },
+    "track_wall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["a_track_auto_promotion", "compression_4d_bridge_policy"],
+      "properties": {
+        "a_track_auto_promotion": { "type": "boolean", "const": false },
+        "compression_4d_bridge_policy": {
+          "type": "string",
+          "const": "off_for_track_a_frozen_47pct"
+        }
+      }
+    },
+    "purpose": { "type": "string" },
+    "notes": { "type": "string" }
+  }
+}

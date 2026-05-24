@@ -1,0 +1,39 @@
+{
+  "schema": "ambient_stream_manifest_v1",
+  "version": "1.0.0",
+  "manifest_id": "MKM-AMBIENT-20260522-001",
+  "generated_at_utc": "2026-05-22T12:00:00Z",
+  "program_style": "ambient_24h_zone_a",
+  "deployment_target": "YOUTUBE_LIVE_RTMP",
+  "non_gating": true,
+  "gates": {
+    "public_facing_version": "1.7",
+    "spoken_price_allowed": false,
+    "human_review_required": false,
+    "stream_pause_on_safe_ops_degraded": false
+  },
+  "audio_bed_config": {
+    "bgm_source_type": "SELF_GENERATED",
+    "license_chain_pointer": "policies/audio_copyright_field.json",
+    "crossfade_duration_sec": 4,
+    "loop_playlist": true
+  },
+  "caption_config": {
+    "burn_in_disclaimer": true,
+    "disclaimer_interval_min": 30,
+    "disclaimer_text_ko": "본 방송은 투자, 의료, 법률 자문이 아닙니다. 다중 렌즈 해설은 관측·페이싱 참고용이며, 실전 결정은 청취자 본인에게 있습니다."
+  },
+  "visual_config": {
+    "primary": "oracle_sphere_idle",
+    "fallback": "static_frame"
+  },
+  "playlist": [
+    {
+      "track_id": "mkm_bed_placeholder_01",
+      "path": "reports/audio/placeholder_bed_loop.wav",
+      "license_tag": "SELF_GENERATED",
+      "license_url": "",
+      "duration_sec": 180
+    }
+  ]
+}

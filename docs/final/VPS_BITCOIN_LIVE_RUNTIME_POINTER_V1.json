@@ -1,0 +1,44 @@
+{
+  "schema": "vps_bitcoin_live_runtime_pointer_v1",
+  "updated_utc": "2026-05-19",
+  "ssh_host_default": "vps-mkmlife",
+  "rule": "PM2 exec cwd and script path from pm2 show are always authoritative. Paths in this file are defaults for vps-mkmlife unless pm2 show disagrees.",
+  "live_primary": {
+    "role": "24h mainnet trading (current SSOT on vps-mkmlife as of 2026-05-14+)",
+    "pm2_app": "bitcoin-live-small-24h",
+    "monorepo_root": "/opt/mkm-destiny-ai-41e38ec6",
+    "script_path": "/opt/mkm-destiny-ai-41e38ec6/projects/bitcoin-trading/start_live_trading.py",
+    "env_file_preferred": "/opt/mkm-destiny-ai-41e38ec6/.env",
+    "bitcoin_trading_relative": "projects/bitcoin-trading",
+    "git_remote_hint": "mkmlab-v2/mkm-destiny-ai-41e38ec6 (verify with git remote -v on host)"
+  },
+  "legacy_do_not_deploy_here_for_live_pm2": {
+    "bitcoin_trading_live_clone": {
+      "path": "/opt/bitcoin-trading-live",
+      "note": "Standalone bitcoin-trading clone. Was PM2 cwd on 2026-05-04; superseded by destiny monorepo. May still exist on disk for logs/backups only."
+    },
+    "lab_monorepo": {
+      "path": "/opt/mkm-lab-workspace-v2",
+      "note": "ship_to_vps.ps1 default VpsRepoPath. Cron/export automation; NOT the same as live PM2 cwd unless pm2 show says otherwise."
+    }
+  },
+  "verify_commands": {
+    "pm2_show": "ssh vps-mkmlife \"pm2 show bitcoin-live-small-24h | rg -n 'status|exec cwd|script path|restarts|unstable'\"",
+    "health_snapshot": "ssh vps-mkmlife \"cd /opt/mkm-destiny-ai-41e38ec6 && bash projects/bitcoin-trading/ops/v2/ssh/vps_pm2_bitcoin_live_health_snapshot.sh\"",
+    "two_tree_status_windows": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-VpsBitcoinLabAndLiveStatus.ps1"
+  },
+  "deploy_after_pull": [
+    "cd <pm2 exec cwd from pm2 show>",
+    "git pull --ff-only <team branch>",
+    "pm2 restart bitcoin-live-small-24h --update-env",
+    "pm2 save"
+  ],
+  "cross_ref": [
+    "docs/final/MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md",
+    "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+    "docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",
+    "projects/bitcoin-trading/AGENTS.md",
+    "projects/bitcoin-trading/ops/v2/ssh/VPS_PM2_HEALTH_SSH_CURSOR_RUNBOOK.md",
+    "scripts/deploy/pm2_bitcoin_live_small_24h_monorepo.config.cjs"
+  ]
+}

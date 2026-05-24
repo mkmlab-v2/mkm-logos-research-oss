@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/patient_intake_fusion_draft_input_v1.schema.json",
+  "title": "patient_intake_fusion_draft_input_v1",
+  "description": "Intake for build_patient_intake_fusion_draft_v1 — birth profile + symptom/sasang draft. Minimize PHI: use ref_token, avoid names/RRN in this file.",
+  "type": "object",
+  "required": ["schema", "version", "profile", "intake"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "patient_intake_fusion_draft_v1"
+    },
+    "version": { "type": "string", "pattern": "^1\\." },
+    "meta": {
+      "type": "object",
+      "description": "Operator notes; not merged into clinical output by default.",
+      "additionalProperties": true
+    },
+    "encounter": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ref_token": {
+          "type": "string",
+          "maxLength": 128,
+          "description": "Non-PHI encounter id for audit (e.g. ENC-2026-0001)."
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "description": "Manseryeok input. Prefer birth_instant_utc (ISO Z) + iana_tz to avoid DST gap/ambiguous wall-clock (CONSTITUTION §3.4). If both birth_instant_utc and local_birth exist, engine uses birth_instant_utc.",
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "required": ["birth_instant_utc", "iana_tz"],
+          "properties": {
+            "birth_instant_utc": {
+              "type": "string",
+              "minLength": 12,
+              "description": "UTC instant ISO8601 ending in Z (e.g. 1990-05-15T05:30:00Z). Single source of truth for calendar hour extraction in iana_tz."
+            },
+            "iana_tz": { "type": "string", "minLength": 3 },
+            "is_male": { "type": "boolean" },
+            "local_birth": {
+              "type": "array",
+              "minItems": 6,
+              "maxItems": 6,
+              "items": { "type": "integer" },
+              "description": "Optional audit echo when birth_instant_utc is primary; generator may ignore if inconsistent."
+            }
+          }
+        },
+        {
+          "additionalProperties": false,
+          "required": ["local_birth", "iana_tz"],
+          "properties": {
+            "local_birth": {
+              "type": "array",
+              "minItems": 6,
+              "maxItems": 6,
+              "items": { "type": "integer" },
+              "description": "Local wall-clock birth [Y,M,D,h,m,s] in iana_tz. Use dst_fold when wall hour is repeated in fall-back."
+            },
+            "iana_tz": { "type": "string", "minLength": 3 },
+            "dst_fold": {
+              "type": "integer",
+              "enum": [0, 1],
+              "description": "Fold for ambiguous local civil hour (0=first occurrence, 1=second). Prefer birth_instant_utc instead."
+            },
+            "is_male": { "type": "boolean" }
+          }
+        }
+      ]
+    },
+    "intake": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "symptoms": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 500 }
+        },
+        "situation": { "type": "string", "maxLength": 8000 },
+        "subjective_notes": { "type": "string", "maxLength": 8000 },
+        "objective_draft": {
+          "type": "string",
+          "maxLength": 12000,
+          "description": "Optional staff-entered vitals/clinic notes for O (draft); clinician must confirm."
+        },
+        "sasang_estimate": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "label": { "type": "string", "maxLength": 200 },
+            "source": { "type": "string", "maxLength": 500 }
+          }
+        }
+      }
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "include_logos_symbolic": { "type": "boolean" },
+        "annual_start_year": { "type": "integer" },
+        "annual_years": { "type": "integer" },
+        "monthly_months_per_year": { "type": "integer" },
+        "apply_slot_templates_fill_empty_only": { "type": "boolean" }
+      }
+    }
+  }
+}
