@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/saving_the_news_phase3_truth_gating_v1.schema.json",
+  "title": "Saving the News — Phase 3 truth gating v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "lane",
+    "ready_for_external_send",
+    "generated_at_utc",
+    "gates",
+    "combined_all_passed",
+    "publish_signoff",
+    "human_signoff_required"
+  ],
+  "properties": {
+    "schema": { "const": "saving_the_news_phase3_truth_gating_v1" },
+    "lane": { "const": "research_only" },
+    "hypothesis_tier": { "const": "B" },
+    "ready_for_external_send": { "const": false },
+    "generated_at_utc": { "type": "string", "format": "date-time" },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["gate_id", "passed"],
+        "properties": {
+          "gate_id": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "reason": { "type": ["string", "null"] },
+          "observed": { "type": "object" }
+        }
+      }
+    },
+    "combined_all_passed": { "type": "boolean" },
+    "outcome_class": {
+      "type": "string",
+      "enum": ["pass_candidate", "reject", "opportunistic", "neutral_bucket"]
+    },
+    "publish_signoff": { "type": "object" },
+    "human_signoff_required": { "const": true },
+    "explicit_not_implemented": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
