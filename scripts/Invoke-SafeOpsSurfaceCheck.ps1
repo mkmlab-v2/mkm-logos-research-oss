@@ -32,7 +32,8 @@ param(
     [switch]$IgnoreLiveSync,
     # When false (default): pass -AllowPolicyLockedGoNoGo to Verify-TradingAutomationHealth so expected
     # Trinity LOCKED_MODE NO_GO does not fail the whole safe-ops tail (disk policy, not broken automation).
-    [switch]$StrictTradingGoNoGo
+    [switch]$StrictTradingGoNoGo,
+    [switch]$AllowDisabledSecurityIntegrityTask
 )
 
 Set-StrictMode -Version Latest
@@ -154,6 +155,9 @@ if (Test-Path -LiteralPath $verifyScript) {
     }
     if (-not $StrictTradingGoNoGo) {
         $verifyArgs += "-AllowPolicyLockedGoNoGo"
+    }
+    if ($AllowDisabledSecurityIntegrityTask) {
+        $verifyArgs += "-AllowDisabledSecurityIntegrityTask"
     }
     & powershell.exe @verifyArgs
     $verifyExit = $LASTEXITCODE

@@ -56,6 +56,21 @@ def _stream_threshold_bytes(cli_val: int | None) -> int:
     return 32 * 1024 * 1024
 
 
+def _iter_verse_jsonl(path: Path, cap: int | None) -> Iterator[dict[str, Any]]:
+    n = 0
+    with path.open(encoding="utf-8") as f:
+        for line in f:
+            if cap is not None and n >= cap:
+                break
+            line = line.strip()
+            if not line:
+                continue
+            item = json.loads(line)
+            if isinstance(item, dict) and item.get("verse_id"):
+                yield item
+                n += 1
+
+
 def iter_verse_dicts(
     path: Path,
     max_verses: int,
@@ -65,6 +80,9 @@ def iter_verse_dicts(
 ) -> Iterator[dict[str, Any]]:
     cap = max_verses if max_verses > 0 else None
     n = 0
+    if path.suffix.lower() == ".jsonl":
+        yield from _iter_verse_jsonl(path, cap)
+        return
     size = path.stat().st_size
     stream = force_stream or size >= stream_threshold_bytes
     if stream:

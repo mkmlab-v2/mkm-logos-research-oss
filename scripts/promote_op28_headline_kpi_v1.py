@@ -16,8 +16,10 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-if str(ROOT) not in sys.path:
-    sys.path.insert(0, str(ROOT))
+SCRIPTS = ROOT / "scripts"
+for p in (str(ROOT), str(SCRIPTS)):
+    if p not in sys.path:
+        sys.path.insert(0, p)
 
 from scripts.sweep_prophecy_headline_deadzone_hold_v1 import (
     _load_json,
@@ -28,7 +30,9 @@ from scripts.sweep_prophecy_headline_deadzone_hold_v1 import (
 
 DEFAULT_SCORE = ROOT / "reports" / "btrack_prophecy_score_op28_shadow_v1_latest.json"
 DEFAULT_PER_DATE = ROOT / "reports" / "btrack_ensemble_per_date_directions_180d_op28_gated_v1_latest.json"
-DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_hit_rate_eval_latest.json"
+from scripts.prophecy_hit_rate_ssot_v1 import HEADLINE_KPI  # noqa: E402
+
+DEFAULT_OUT = HEADLINE_KPI
 SCHEMA = "prophecy_hit_rate_eval_report_v2"
 
 
@@ -54,7 +58,24 @@ def main() -> int:
         ),
     )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--skip-evolution-allowlist",
+        action="store_true",
+        help="Skip evolution allowlist gate (tests only; do not use in scheduled automation).",
+    )
     args = ap.parse_args()
+
+    if not args.skip_evolution_allowlist:
+        from evolution_auto_apply_allowlist_v1 import assert_headline_kpi_promotion_allowed
+
+        try:
+            assert_headline_kpi_promotion_allowed(
+                min_confidence=float(args.min_confidence),
+                score_abs_deadzone=float(args.score_abs_deadzone),
+                output=args.output,
+            )
+        except ValueError as exc:
+            raise SystemExit(f"evolution allowlist: {exc}") from exc
 
     score_doc = _load_json(args.score_json)
     if not score_doc or not isinstance(score_doc.get("rows"), list):
@@ -102,6 +123,12 @@ def main() -> int:
             "delta_vs_prior": round(float(rate_active or 0) - float(args.prior_headline_rate), 6),
             "research_only_boundary": False,
             "track_a_live_auto_merge": False,
+            "evolution_allowlist_v1": {
+                "checked": not args.skip_evolution_allowlist,
+                "writer_script": "promote_op28_headline_kpi_v1",
+                "min_confidence_active_gate": float(args.min_confidence),
+                "score_abs_deadzone": float(args.score_abs_deadzone),
+            },
         },
         "sources": {
             "oracle_path": None,

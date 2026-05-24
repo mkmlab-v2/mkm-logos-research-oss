@@ -6,13 +6,19 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.prophecy_hit_rate_ssot_v1 import DAILY_OPERATIONAL  # noqa: E402
+
 DEFAULT_PROFILES = ROOT / "docs" / "final" / "artifacts" / "prophecy_causal_active_guard_policy_profiles_v1_latest.json"
-DEFAULT_EVAL = ROOT / "docs" / "final" / "artifacts" / "prophecy_hit_rate_eval_latest.json"
+DEFAULT_EVAL = DAILY_OPERATIONAL
 DEFAULT_WF = ROOT / "docs" / "final" / "artifacts" / "prophecy_instrument_combo_walkforward_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_causal_active_guard_policy_v1_latest.json"
 DEFAULT_DECISION = ROOT / "docs" / "final" / "artifacts" / "prophecy_causal_active_guard_policy_decision_latest.json"

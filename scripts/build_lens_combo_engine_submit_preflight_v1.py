@@ -87,7 +87,7 @@ def main() -> int:
 
     commands = [
         "# 1) Refresh strict backtest + candidate artifacts",
-        'py "scripts/run_prophecy_lens_combo_backtest_v1.py" --fee-bps-grid "5,10,20" --walkforward-mode expanding --walkforward-min-train-rows 10 --walkforward-test-window-rows 5',
+        'py "scripts/run_prophecy_lens_combo_backtest_v1.py" --logos-vote-mode omit --fee-bps-grid "5,10,20" --walkforward-mode expanding --walkforward-min-train-rows 10 --walkforward-test-window-rows 5',
         "",
         "# 2) Build engine handoff (explicit approval, still dry-run payload)",
         'py "scripts/run_lens_combo_limited_live_engine_handoff_v1.py" --approve-submit',

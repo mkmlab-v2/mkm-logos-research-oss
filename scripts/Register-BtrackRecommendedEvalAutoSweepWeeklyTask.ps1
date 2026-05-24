@@ -27,7 +27,8 @@ param(
     [string]$SundayAt = "09:45",
     [string]$WorkspaceRoot = "C:\workspace",
     [string]$AutoSweepGrid = "",
-    [switch]$RunWhenLoggedOff
+    [switch]$RunWhenLoggedOff,
+    [switch]$AlignPromotionPushPanel
 )
 
 $ErrorActionPreference = "Stop"
@@ -54,6 +55,9 @@ $at = Get-Date -Hour $hour -Minute $minute -Second 0
 $argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`" -WorkspaceRoot `"$WorkspaceRoot`""
 if ($AutoSweepGrid) {
     $argLine += " -AutoSweepGrid `"$AutoSweepGrid`""
+}
+if ($AlignPromotionPushPanel) {
+    $argLine += " -AlignPromotionPushPanel"
 }
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argLine -WorkingDirectory $WorkspaceRoot

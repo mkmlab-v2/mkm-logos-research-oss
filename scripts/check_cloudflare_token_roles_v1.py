@@ -16,6 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
+from mkm_cloudflare_http_probe_v1 import probe_smartfarm_1hop  # noqa: E402
 from mkm_cloudflare_token_v1 import (  # noqa: E402
     _read_dotenv_key,
     _read_windows_user_env,
@@ -250,16 +251,30 @@ def _build_jema_ai_redirect_guard(
         )
         return guard
     if jemaai_rulesets_ready and verify_ok and not redirect_ready:
+        http = probe_smartfarm_1hop()
+        if http.get("ok"):
+            guard["status"] = "edge_ok_operational_ssot"
+            guard["http_probe"] = http
+            guard["misdiagnosis_avoid"] = [
+                "token_expired",
+                "rotate CLOUDFLARE_API_TOKEN",
+                "new token daily",
+                "ask_commander_to_edit_cf_token_again",
+            ]
+            guard["agent_instruction_ko"] = (
+                "엣지 1-hop 정상(HTTP SSOT). API scope 없음은 만료 아님 — "
+                "토큰 편집·대시보드 클릭 반복 안내 금지. 인프라-as-code만 필요 시 LOCAL secret 1회."
+            )
+            return guard
         guard["status"] = "jemaai_ok_jema_ai_zone_missing"
         guard["misdiagnosis_avoid"] = ["token_expired", "rotate CLOUDFLARE_API_TOKEN", "new token daily"]
         guard["one_time_fix_ko"] = [
             "jemaai.cloud rulesets는 통과했지만 jema-ai.com 존 scope가 없음.",
-            "CF API Tokens → 기존 CLOUDFLARE_RULESETS_API_TOKEN 편집 → jema-ai.com에 Zone Read + Zone Rulesets Edit 추가.",
-            "또는 MKM_CLOUDFLARE_JEMA_AI_REDIRECT_TOKEN 1회 설정.",
-            "적용: powershell -File scripts/Invoke-CloudflareJemaAiSmartfarmRedirect_v1.ps1",
+            "HTTP 1-hop도 실패면 CF Redirect Rules 또는 nginx 폴백 점검.",
+            "선택: reports/cloudflare_jema_ai_redirect_token_secret_LOCAL.json → Invoke-ApplyJemaAiRedirectTokenFromSecret_v1.ps1",
         ]
         guard["agent_instruction_ko"] = (
-            "만료 아님 — jema-ai.com 존 Rulesets scope 추가 1회. nginx 2-hop은 이미 동작."
+            "만료 아님 — jema-ai.com Rulesets scope 또는 엣지 규칙 필요. HTTP 실패 시에만 엣지 조치."
         )
         return guard
     guard["status"] = "redirect_token_missing_or_invalid"
@@ -323,6 +338,8 @@ def main() -> int:
     redirect_blocker = "no_token"
     if redirect_tok:
         redirect_ready, redirect_blocker = _jema_ai_redirect_auth_ok(redirect_tok)
+    smartfarm_http = probe_smartfarm_1hop()
+    redirect_operational = bool(smartfarm_http.get("ok"))
 
     shared_fp = (
         roles["general_dns"]["fingerprint"]
@@ -348,6 +365,8 @@ def main() -> int:
             "zone_id": JEMA_AI_ZONE_ID,
             "host": "jema-ai.com",
             "automation_ready": redirect_ready and redirect_verify_ok,
+            "operational_ready": redirect_operational,
+            "http_probe": smartfarm_http,
             "token_source": redirect_src,
             "token_fingerprint": token_fingerprint(redirect_tok) if redirect_tok else None,
             "token_verify_http": redirect_verify_st,
@@ -375,8 +394,18 @@ def main() -> int:
             verify_ok=redirect_verify_ok,
             redirect_blocker=redirect_blocker,
         ),
+        "smartfarm_operational": {
+            "ready": redirect_operational,
+            "http_probe": smartfarm_http,
+        },
+        "zone_registry_ssot": "docs/final/artifacts/mkm_cloudflare_zone_registry_v1.json",
         "commands": {
             "triage": "py scripts/check_cloudflare_token_roles_v1.py",
+            "full_recurrence_bundle": (
+                "powershell -NoProfile -ExecutionPolicy Bypass -File "
+                "scripts/Invoke-MkmCloudflareRecurrenceGuardBundle_v1.ps1"
+            ),
+            "zone_audit": "py scripts/audit_mkm_cloudflare_zones_v1.py",
             "jema_ai_smartfarm_redirect": (
                 "powershell -File scripts/Invoke-CloudflareJemaAiSmartfarmRedirect_v1.ps1"
             ),
@@ -402,6 +431,10 @@ def main() -> int:
     )
 
     if out["jemaai_rulesets"]["automation_ready"]:
+        return 0
+    if jag.get("status") == "edge_ok_operational_ssot":
+        return 0
+    if out["smartfarm_operational"]["ready"]:
         return 0
     if verify_ok and not rulesets_ready:
         return 2

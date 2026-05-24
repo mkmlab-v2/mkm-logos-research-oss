@@ -2,9 +2,14 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
+
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
 
 
 def _utc_now() -> str:
@@ -37,6 +42,29 @@ def _lens_music_m32_dashboard_fields(*, hormone_doc: Dict[str, Any], overlay_doc
             "effective_hormone_ema_alpha", og.get("effective_hormone_ema_alpha")
         ),
     }
+
+
+def _inter_agent_rq019_trackc_slice(art: Path) -> Dict[str, Any]:
+    """RQ-019 inter-agent wire lane (B-track); merged from slice artifact."""
+    rel = "docs/final/artifacts/mkm_inter_agent_trackc_rq019_slice_v1_latest.json"
+    p = art / "mkm_inter_agent_trackc_rq019_slice_v1_latest.json"
+    if p.is_file():
+        doc = _read_json(p)
+        if doc.get("ok"):
+            from scripts.build_mkm_inter_agent_trackc_rq019_slice_v1 import dashboard_fields
+
+            return dashboard_fields(doc)
+    try:
+        from scripts.build_mkm_inter_agent_trackc_rq019_slice_v1 import build_slice, dashboard_fields
+
+        return dashboard_fields(build_slice())
+    except Exception:
+        return {
+            "role": "inter_agent_rq019_research_slice_v1",
+            "state": "NODATA",
+            "research_only": True,
+            "source": rel,
+        }
 
 
 def _prophecy_gate_taxonomy_slice(art: Path) -> Dict[str, Any]:
@@ -80,6 +108,130 @@ def _trust_visualization_v0_slice(root: Path) -> Dict[str, Any]:
         "final_action": fin.get("action"),
         "logos_non_gating": logos.get("non_gating"),
         "role": "trust_visualization_read_only_v0",
+    }
+
+
+def _patient_intake_fusion_b_track_slice(root: Path) -> Dict[str, Any]:
+    """Read-only B-track patient intake rationale cross_checks (한의원 예진 패킹)."""
+    rel = "reports/patient_intake_fusion_rationale_latest.json"
+    p = root / rel
+    if not p.is_file():
+        return {
+            "state": "NODATA",
+            "source": rel,
+            "role": "patient_intake_fusion_b_track_v1",
+            "research_only": True,
+        }
+    rat = _read_json(p)
+    if rat.get("schema") != "patient_intake_fusion_rationale_v1":
+        return {"state": "INVALID", "source": rel, "role": "patient_intake_fusion_b_track_v1"}
+    cc = rat.get("cross_checks_v1") if isinstance(rat.get("cross_checks_v1"), dict) else {}
+    mye = cc.get("myeongni_sasang_clinical_v1") if isinstance(cc.get("myeongni_sasang_clinical_v1"), dict) else {}
+    lens = cc.get("sasang_boming_jiju_lens_v1") if isinstance(cc.get("sasang_boming_jiju_lens_v1"), dict) else {}
+    se = ((rat.get("inputs_echo") or {}).get("intake") or {}).get("sasang_estimate") or {}
+    return {
+        "state": "OK",
+        "source": rel,
+        "role": "patient_intake_fusion_b_track_v1",
+        "research_only": True,
+        "rationale_version": rat.get("version"),
+        "output_density": rat.get("output_density"),
+        "bundle_out": rat.get("bundle_out"),
+        "myeongni_full_report": rat.get("myeongni_full_report"),
+        "clinical_sasang_label": se.get("label") if isinstance(se, dict) else None,
+        "cross_checks_v1": cc,
+        "myeongni_sasang_status": mye.get("status"),
+        "myeongni_sasang_status_ko": mye.get("status_ko"),
+        "constitution_id": mye.get("constitution_id"),
+        "deep_link_count": lens.get("deep_link_count"),
+        "boming_term_count": lens.get("boming_term_count"),
+        "auto_prescription_forbidden": True,
+    }
+
+
+def _coordinator_lens_conflict_slice(root: Path) -> Dict[str, Any]:
+    p = root / "reports" / "coordinator_lens_conflict_observation_latest.json"
+    if not p.is_file():
+        return {"state": "NODATA", "source": "reports/coordinator_lens_conflict_observation_latest.json"}
+    doc = _read_json(p)
+    if doc.get("schema") != "coordinator_lens_conflict_observation_v1":
+        return {"state": "INVALID", "source": str(p)}
+    wh = doc.get("webhook") if isinstance(doc.get("webhook"), dict) else {}
+    return {
+        "state": "OK",
+        "observation_status": doc.get("status"),
+        "conflict_count": (doc.get("consensus") or {}).get("conflict_count"),
+        "veto_force_hold": (doc.get("market_sasang_veto") or {}).get("veto_force_hold"),
+        "alert_fingerprint": doc.get("alert_fingerprint"),
+        "webhook_status": wh.get("status"),
+        "research_only": doc.get("research_only"),
+        "generated_at_utc": doc.get("generated_at_utc"),
+    }
+
+
+def _prophecy_headline_integrity_slice(root: Path) -> Dict[str, Any]:
+    p = root / "reports" / "prophecy_headline_integrity_observation_latest.json"
+    if not p.is_file():
+        return {"state": "NODATA", "source": "reports/prophecy_headline_integrity_observation_latest.json"}
+    doc = _read_json(p)
+    if doc.get("schema") != "prophecy_headline_integrity_observation_v1":
+        return {"state": "INVALID", "source": str(p)}
+    wh = doc.get("webhook") if isinstance(doc.get("webhook"), dict) else {}
+    return {
+        "state": "OK",
+        "observation_status": doc.get("status"),
+        "price_directional_hit_rate": (doc.get("metrics") or {}).get("price_directional_hit_rate"),
+        "warning_flags": doc.get("warning_flags") or [],
+        "combined_all_passed": (doc.get("promotion_gates") or {}).get("combined_all_passed"),
+        "per_date_direction_json": (doc.get("score_inputs") or {}).get("per_date_direction_json"),
+        "uniform_direction": (doc.get("uniform_prediction") or {}).get("direction"),
+        "eval_score_skew_hours": (doc.get("timestamps") or {}).get("eval_score_skew_hours"),
+        "webhook_status": wh.get("status"),
+        "research_only": doc.get("research_only"),
+        "generated_at_utc": doc.get("generated_at_utc"),
+    }
+
+
+def _logos_cross_domain_interface_slice(art: Path) -> Dict[str, Any]:
+    """CDIM v1 [HYPO]: read-only lens alignment; no verse-level ohaeng ingest."""
+    rel = "docs/final/artifacts/logos_cross_domain_interface_latest.json"
+    p = art / "logos_cross_domain_interface_latest.json"
+    if not p.is_file():
+        return {
+            "state": "NODATA",
+            "source": rel,
+            "role": "logos_cross_domain_interface_v1",
+            "research_only": True,
+            "non_gating": True,
+        }
+    doc = _read_json(p)
+    if doc.get("schema") != "logos_cross_domain_interface_v1":
+        return {"state": "INVALID", "source": rel, "role": "logos_cross_domain_interface_v1"}
+    csum = doc.get("conflict_summary") if isinstance(doc.get("conflict_summary"), dict) else {}
+    snaps = doc.get("lens_snapshots") if isinstance(doc.get("lens_snapshots"), list) else []
+    signs = [str((s or {}).get("direction_sign") or "?") for s in snaps if isinstance(s, dict)]
+    refs = doc.get("cross_refs") if isinstance(doc.get("cross_refs"), list) else []
+    ref_types: dict[str, int] = {}
+    for r in refs:
+        if isinstance(r, dict):
+            rt = str(r.get("relation_type") or "unknown")
+            ref_types[rt] = ref_types.get(rt, 0) + 1
+    return {
+        "state": "OK",
+        "source": rel,
+        "role": "logos_cross_domain_interface_v1",
+        "research_only": True,
+        "non_gating": True,
+        "ts_utc": doc.get("ts_utc"),
+        "field_regime_id": doc.get("field_regime_id"),
+        "no_verse_level_ohaeng_ingest": doc.get("no_verse_level_ohaeng_ingest"),
+        "lens_count": len(snaps),
+        "lens_direction_signs": signs,
+        "cross_ref_count": len(refs),
+        "cross_ref_types": ref_types,
+        "minority_lens_ids": csum.get("minority_lens_ids"),
+        "consensus_sign": (csum.get("consensus_direction_sign") or csum.get("majority_direction_sign")),
+        "design_doc": doc.get("design_doc"),
     }
 
 
@@ -312,7 +464,7 @@ def _tail_agent_decisions_jsonl(path: Path, *, line_tail_budget: int) -> Dict[st
 
 
 def main() -> int:
-    root = Path("C:/workspace")
+    root = _REPO_ROOT
     art = root / "docs" / "final" / "artifacts"
     now = datetime.now(timezone.utc)
 
@@ -397,6 +549,11 @@ def main() -> int:
     )
     trust_v0_slice = _trust_visualization_v0_slice(root)
     stt_audit_slice = _stt_routing_audit_slice(root)
+    patient_intake_slice = _patient_intake_fusion_b_track_slice(root)
+    logos_cdim_slice = _logos_cross_domain_interface_slice(art)
+    inter_agent_rq019_slice = _inter_agent_rq019_trackc_slice(art)
+    coordinator_conflict_slice = _coordinator_lens_conflict_slice(root)
+    prophecy_headline_integrity_slice = _prophecy_headline_integrity_slice(root)
 
     dashboard = {
         "schema": "mkm_trackc_ops_dashboard_v1",
@@ -632,8 +789,13 @@ def main() -> int:
                 "false_intervention_proxy": rr_metrics.get("false_intervention_proxy"),
                 "router_artifact": rr_row.get("router_artifact"),
             },
+            "inter_agent_rq019": inter_agent_rq019_slice,
+            "coordinator_lens_conflict_observation": coordinator_conflict_slice,
+            "prophecy_headline_integrity_observation": prophecy_headline_integrity_slice,
             "trust_visualization_v0": trust_v0_slice,
             "stt_routing_audit_log_slice": stt_audit_slice,
+            "patient_intake_fusion_b_track": patient_intake_slice,
+            "logos_cross_domain_interface": logos_cdim_slice,
         },
         "commercial_kpi_pointers": commercial_kpi_pointers,
         "evidence": {
@@ -664,6 +826,8 @@ def main() -> int:
             "trust_visualization_panel_v0_example": "docs/final/schemas/trust_visualization_panel_v0.example.json",
             "stt_routing_audit_log_summary": "reports/stt_routing_audit_log_v1_summary_latest.json",
             "stt_routing_audit_log_jsonl": "reports/stt_routing_audit_log_v1.jsonl",
+            "inter_agent_rq019_slice": "docs/final/artifacts/mkm_inter_agent_trackc_rq019_slice_v1_latest.json",
+            "inter_agent_encoding_status": "docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json",
             "forward_preregister_lock": "docs/final/artifacts/macro_risk_forward_preregister_lock_latest.json",
             "forward_log_latest": "docs/final/artifacts/macro_risk_forward_log_latest.json",
             "forward_weekly_report": "docs/final/artifacts/macro_risk_forward_weekly_report_latest.json",
@@ -748,6 +912,16 @@ def main() -> int:
         f"- forward_pipeline_reason_codes: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('reason_codes')}`",
         f"- forward_pipeline_rows_total: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_total')}`",
         f"- forward_pipeline_rows_in_window_7d: `{(dashboard['trackc']['forward_pipeline_health'] or {}).get('rows_in_window_7d')}`",
+        "",
+        "## Inter-agent RQ-019 (B-track research)",
+        f"- state: `{(dashboard['trackc'].get('inter_agent_rq019') or {}).get('state')}`",
+        f"- rq_019: `{(dashboard['trackc'].get('inter_agent_rq019') or {}).get('rq_019')}`",
+        f"- language_dev_m12_m25_ready: `{(dashboard['trackc'].get('inter_agent_rq019') or {}).get('language_dev_m12_m25_ready')}`",
+        f"- health_sidecar_uplift_avg_atoms: `{(dashboard['trackc'].get('inter_agent_rq019') or {}).get('health_sidecar_uplift_avg_atoms')}`",
+        f"- operator_hint: `{(dashboard['trackc'].get('inter_agent_rq019') or {}).get('operator_hint')}`",
+        f"- coordinator_conflict_status: `{(dashboard['trackc'].get('coordinator_lens_conflict_observation') or {}).get('observation_status')}`",
+        f"- prophecy_headline_integrity_status: `{(dashboard['trackc'].get('prophecy_headline_integrity_observation') or {}).get('observation_status')}`",
+        f"- prophecy_headline_hit_rate: `{(dashboard['trackc'].get('prophecy_headline_integrity_observation') or {}).get('price_directional_hit_rate')}`",
         "",
         "## Commercial KPI pointers (Track A / P0 SSOT)",
         f"- role: `{(dashboard.get('commercial_kpi_pointers') or {}).get('role')}`",

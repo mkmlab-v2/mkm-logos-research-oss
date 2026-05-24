@@ -106,7 +106,7 @@ if (-not $SkipLogosResearchSlice) {
 
 if (-not $SkipMeaningTopologyGraphSlice) {
     Write-Host "[chain] (7/8) showroom meaning topology graph slice (graph JSONL -> capped subgraph)" -ForegroundColor Cyan
-    & $py (Join-Path $root "scripts\build_showroom_meaning_topology_graph_slice_v1.py")
+    & $py (Join-Path $root "scripts\build_showroom_meaning_topology_graph_slice_v1.py") --max-nodes 128
     if ($LASTEXITCODE -ne 0) {
         Write-Error "build_showroom_meaning_topology_graph_slice_v1.py failed: $LASTEXITCODE"
         exit $LASTEXITCODE

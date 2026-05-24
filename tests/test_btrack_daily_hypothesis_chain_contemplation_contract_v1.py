@@ -10,6 +10,15 @@ _CHAIN = _ROOT / "scripts" / "run_btrack_daily_hypothesis_chain.ps1"
 _REGISTER = _ROOT / "scripts" / "Register-BTrackDailyHypothesisTask.ps1"
 
 
+def test_daily_chain_declares_pathology_te_mapping_steps() -> None:
+    text = _CHAIN.read_text(encoding="utf-8")
+    assert "[switch]$SkipPathologyTeMapping" in text
+    assert "dump_unified_trading_monitor_te_snapshot_v1.py" in text
+    assert "export_btrack_transfer_entropy_snapshot_v1.py" in text
+    assert "build_sasang_pathology_te_mapping_hypo_v1.py" in text
+    assert "build_compression_prophecy_bridge_status_v1.py" in text
+
+
 def test_daily_chain_declares_skip_prophecy_contemplation_gemini_and_passes_flag() -> None:
     text = _CHAIN.read_text(encoding="utf-8")
     assert "[switch]$SkipProphecyContemplationGemini" in text

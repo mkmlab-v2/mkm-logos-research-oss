@@ -18,6 +18,8 @@ POINTERS = {
     "lg_pre_meeting": ROOT / "reports/lg_hs_pre_meeting_readiness_v1_latest.json",
     "lg_followup": ROOT / "docs/final/artifacts/lg_hs_meeting_followup_v1.json",
     "btrack_wave6": ROOT / "reports/btrack_parallel_wave6_v1_latest.json",
+    "btrack_parallel_fusion": ROOT / "reports/btrack_parallel_weekly_fusion_v1_latest.json",
+    "btrack_parallel_summary": ROOT / "reports/btrack_parallel_run_summary_v1_latest.json",
 }
 
 
@@ -27,14 +29,24 @@ def _load(path: Path) -> dict[str, Any] | None:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def _rel(path: Path) -> str:
+    try:
+        return path.resolve().relative_to(ROOT.resolve()).as_posix()
+    except ValueError:
+        return str(path)
+
+
 def build() -> dict[str, Any]:
     op_handoff = _load(POINTERS["opendata_commander"]) or {}
     op_ready = _load(POINTERS["opendata_readiness"]) or {}
     lg_ready = _load(POINTERS["lg_pre_meeting"]) or {}
     lg_follow = _load(POINTERS["lg_followup"]) or {}
     wave6 = _load(POINTERS["btrack_wave6"]) or {}
+    btrack_fusion = _load(POINTERS["btrack_parallel_fusion"]) or {}
+    btrack_summary = _load(POINTERS["btrack_parallel_summary"]) or {}
 
     lg_outcome = (lg_follow.get("result_expected") or {}).get("status", "unknown")
+    inst = btrack_summary.get("instrument_split") or {}
 
     return {
         "schema": "mkm_parallel_lanes_fused_handoff_v1",
@@ -67,7 +79,15 @@ def build() -> dict[str, Any]:
             },
             "btrack": {
                 "wave6_all_ok": wave6.get("all_ok"),
+                "parallel_10_lane_fusion": _rel(POINTERS["btrack_parallel_fusion"])
+                if btrack_fusion
+                else None,
+                "kospi_frozen_hit": inst.get("kospi_bear_frozen_hit"),
+                "btc_frozen_hit": inst.get("btc_frozen_hit"),
+                "hypothesis_latest_instrument": inst.get("hypothesis_latest_points_to"),
+                "logos_policy": (btrack_summary.get("policy") or {}).get("logos_operational"),
                 "track_wall": "[HYPO] · 90d freeze · no auto Track A / live",
+                "operator_lines": (btrack_fusion.get("operator_lines") or [])[:6],
             },
         },
         "commander_single_action": (

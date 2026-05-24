@@ -64,11 +64,16 @@ def _build_index(*, generated_at: str, steps: list[tuple[str, int]]) -> str:
 | Meaning topology graph (capped subgraph) | https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html | `bible_meaning_graph` slice · hub labels · `[HYPO]` |
 | Minimal public board | https://api.jemaai.cloud/public_showroom_board_minimal.html | Hub CTA default · `public_event_v1` poll |
 | Logos research slice (full) | https://jemaai.cloud/public_showroom_logos_research_v1.html | `[HYPO]` snapshot · not live trading |
+| **Logos Observatory (Track C product)** | https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1 | Visual path · chronology rail · **NON_GATING** |
+| Logos Trace API (health) | https://api.jemaai.cloud/v1/logos/health | Deterministic stub · no live LLM |
+| Wire audit PoC (static JSON) | `docs/final/artifacts/logos_graph_wire_rag_poc_v1_latest.json` | B-track · `[HYPO]` · v6 panel reads `showroom_logos_graph_wire_rag_poc_v1.json` |
 | Public Event API | https://api.jemaai.cloud/api/public-events/latest | API SSOT only (not static HTML) |
+
+**Wire metrics (internal B2B only · not MS FinOps claims):** use `wire.honest_metrics.payload_savings_ratio` (~71% wire vs naive verse-id JSON) and `governance_overhead_factor` (~2.4× envelope vs naive). Do **not** label 2.42× as “compression” or paste into MS RQ-019 wire decks.
 
 **5-min showroom demo script:** `docs/final/artifacts/track_c_showroom_topology_sales_demo_script_v1_latest.md`
 
-Screenshots: capture locally after `sync_showroom_to_vps.ps1 -RefreshStaging`; do not embed win rates or path leaks in decks.
+Screenshots: capture locally after `sync_showroom_to_vps.ps1` (**do not** use `-RefreshStaging` — resets graph slice). Do not embed win rates or path leaks in decks.
 
 ## Regenerate
 

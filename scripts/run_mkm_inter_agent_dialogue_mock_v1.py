@@ -33,6 +33,20 @@ BETA_LINES_HEALTH = [
     "ACK: 환자 바이탈·증상 패킷 수신. 수면·식사 권고 유지, 임상 게이트 통과 전 조치 보류.",
     "ACK: 건강검진 브리프 반영. 회복 지표 모니터링 지속, 추가 증상 시 재패킷 요청.",
 ]
+ALPHA_LINES_LEXICON_DENSE = [
+    (
+        "strong morph greek logos bible reference message kai mercy alpha beta gamma "
+        "delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma"
+    ),
+    (
+        "hebrew aramaic covenant prophecy wisdom knowledge understanding counsel "
+        "might lord god spirit holy righteousness judgment salvation redemption"
+    ),
+]
+BETA_LINES_LEXICON_DENSE = [
+    "ACK: lexicon-dense packet received; atom rail count noted for routing compare.",
+    "ACK: greek/hebrew token density high; standing by for next compressed turn.",
+]
 
 
 def _utc_now() -> str:
@@ -71,6 +85,9 @@ def run_dialogue(
     if scenario == "health":
         alpha_lines = ALPHA_LINES_HEALTH
         beta_lines = BETA_LINES_HEALTH
+    elif scenario == "lexicon_dense":
+        alpha_lines = ALPHA_LINES_LEXICON_DENSE
+        beta_lines = BETA_LINES_LEXICON_DENSE
     else:
         alpha_lines = ALPHA_LINES_TRADING
         beta_lines = BETA_LINES_TRADING
@@ -103,6 +120,11 @@ def run_dialogue(
         compress_ok = cr.status_code == 200
         cr_body = cr.json() if compress_ok else {}
         packet = cr_body.get("compression_packet") if compress_ok else None
+        lexicon_count = 0
+        if isinstance(packet, dict):
+            rail = (packet.get("residual_meta") or {}).get("mkm_lexicon_rail_v1")
+            if isinstance(rail, dict) and isinstance(rail.get("atom_id_sequence"), list):
+                lexicon_count = len(rail["atom_id_sequence"])
 
         expand_row: dict[str, Any] | None = None
         if last_packet is not None:
@@ -136,6 +158,7 @@ def run_dialogue(
                 "http_status": cr.status_code,
                 "loss_profile": loss_profile,
                 "routing_profile": routing_profile,
+                "lexicon_atom_id_count": lexicon_count,
                 "compression_metrics": cr_body.get("compression_metrics"),
                 "integrity_flags": {
                     "routing_research_only": (cr_body.get("integrity_flags") or {}).get(
@@ -185,7 +208,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="MKM inter-agent A2A dialogue mock (Trust Packet only).")
     ap.add_argument("--turns", type=int, default=4)
     ap.add_argument("--routing-profile", default="track_a_promoted")
-    ap.add_argument("--scenario", choices=("trading", "health"), default="trading")
+    ap.add_argument("--scenario", choices=("trading", "health", "lexicon_dense"), default="trading")
     ap.add_argument("--jsonl-out", type=Path, default=DEFAULT_JSONL)
     ap.add_argument("--summary-out", type=Path, default=DEFAULT_SUMMARY)
     args = ap.parse_args()

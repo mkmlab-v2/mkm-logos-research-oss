@@ -1,9 +1,14 @@
 from __future__ import annotations
 
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 
 def _utc_now() -> str:
@@ -68,8 +73,19 @@ def _confidence_score(trackc: Dict[str, Any], logos: Dict[str, Any], dual_leg: D
 
 
 def main() -> int:
-    root = Path("C:/workspace")
+    root = Path(__file__).resolve().parents[1]
     art = root / "docs" / "final" / "artifacts"
+
+    krx_open = True
+    market_session_ko = "개장일(근무일)"
+    try:
+        from scripts.commander_market_session_calendar_v1 import krx_session_status  # noqa: WPS433
+
+        krx = krx_session_status()
+        krx_open = bool(krx.get("trading_today"))
+        market_session_ko = str(krx.get("label_ko") or market_session_ko)
+    except Exception:
+        pass
 
     dashboard = _read_json(art / "mkm_trackc_ops_dashboard_latest.json")
     logos_insight = _read_json(art / "logos_shadow_insight_latest.json")
@@ -85,12 +101,17 @@ def main() -> int:
         final_action = "HOLD"
     elif confidence >= 75:
         final_action = "GO_CONDITIONAL"
+    if not krx_open:
+        final_action = "HOLD"
+        confidence = min(confidence, 40)
 
     report = {
         "schema": "internal_kospi_morning_brief_onepager_v1",
         "generated_at_utc": _utc_now(),
         "today_action": final_action,
         "confidence_0_100": confidence,
+        "krx_trading_today": krx_open,
+        "market_session_ko": market_session_ko,
         "system_status": (dashboard.get("system") or {}).get("status"),
         "promotion_decision": (dashboard.get("system") or {}).get("promotion_decision"),
         "trackc_api_decision_state": trackc.get("api_decision_state"),
@@ -121,6 +142,7 @@ def main() -> int:
         "## A) Final Call (Quick)",
         "",
         f"- today_action: `{report['today_action']}`",
+        f"- market_session: `{report.get('market_session_ko', '—')}` (krx_trading_today={report.get('krx_trading_today')})",
         f"- conviction: `{report['confidence_0_100']} / 100`",
         "- execution_mode: `non-gating advisory`",
         "",

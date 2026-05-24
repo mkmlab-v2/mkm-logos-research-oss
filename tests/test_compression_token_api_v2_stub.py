@@ -27,6 +27,7 @@ from scripts.compression_token_api_v2_stub import (
     app,
 )
 from scripts.tracka_profile_client_utils import extract_tracka_profile_meta
+from scripts.core.master_codebook_lexicon_v1_bridge import resolve_latest_codebook_path
 from scripts.report_multilens_performance_eval import _jaccard
 
 client = TestClient(app)
@@ -512,3 +513,10 @@ def test_v2_lossless_profile_uses_fused_hybrid_codec():
     er = client.post("/v2/expand", json={"compression_packet": pkt})
     assert er.status_code == 200
     assert er.json()["text"] == sample
+
+
+def test_resolve_latest_codebook_uses_production_pointer() -> None:
+    """v2 lexicon rail resolves production SSOT via bench pointer (41658), not highest glob only."""
+    p = resolve_latest_codebook_path()
+    assert p is not None
+    assert "41658" in p.name

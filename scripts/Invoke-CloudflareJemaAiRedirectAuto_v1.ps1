@@ -26,8 +26,13 @@ $triagePath = Join-Path $WorkspaceRoot "reports\cloudflare_token_roles_triage_v1
 $ready = $false
 if (Test-Path $triagePath) {
     $t = Get-Content $triagePath -Raw | ConvertFrom-Json
-    $ready = [bool]$t.jema_ai_dynamic_redirect.automation_ready
-    $report.steps.triage.ready = $ready
+    $apiReady = [bool]$t.jema_ai_dynamic_redirect.automation_ready
+    $opReady = $false
+    if ($t.jema_ai_dynamic_redirect.PSObject.Properties.Name -contains 'operational_ready') {
+        $opReady = [bool]$t.jema_ai_dynamic_redirect.operational_ready
+    }
+    $ready = $apiReady -or $opReady
+    $report.steps.triage = @{ exit_code = $LASTEXITCODE; api_ready = $apiReady; operational_ready = $opReady; ready = $ready }
 }
 
 if (-not $ready) {
@@ -42,7 +47,7 @@ if (-not $ready) {
         if ($LASTEXITCODE -eq 0) { $ready = $true }
     } else {
         $report.steps.apply_secret = @{ skipped = "no secret file" }
-        Write-Host "[auto] CF scope still missing — dashboard 1-line fix required (see jema_ai_redirect_guard)" -ForegroundColor Yellow
+        Write-Host "[auto] CF API scope missing and HTTP edge not OK — see jema_ai_redirect_guard (no dashboard token nag if HTTP already 1-hop)" -ForegroundColor Yellow
     }
 } else {
     Write-Host "== 2-3/5 skip create (already ready) ==" -ForegroundColor Green
@@ -79,5 +84,14 @@ curl.exe -sSI "https://jema-ai.com/smartfarm" 2>&1 | Select-Object -First 6 | Ou
 $outPath = Join-Path $WorkspaceRoot "reports\cloudflare_jema_ai_redirect_auto_v1_latest.json"
 $report | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $outPath -Encoding UTF8
 Write-Host "Wrote $outPath" -ForegroundColor Green
+$curlOk = $false
+try {
+    $head = curl.exe -sSI "https://jema-ai.com/smartfarm" 2>&1 | Out-String
+    if ($head -match 'farm\.jema-ai\.com') { $curlOk = $true }
+} catch { }
+if ($curlOk) {
+    Write-Host "[auto] operational: smartfarm 1-hop HTTP OK (edge SSOT)" -ForegroundColor Green
+    exit 0
+}
 if ($ready) { exit 0 }
 exit 2

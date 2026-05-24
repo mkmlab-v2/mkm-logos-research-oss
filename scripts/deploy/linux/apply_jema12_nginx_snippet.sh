@@ -11,7 +11,9 @@
 #   sudo bash apply_jema12_nginx_snippet.sh /etc/nginx/sites-enabled/jema12.com
 #   sudo bash apply_jema12_nginx_snippet.sh -y /etc/nginx/sites-enabled/jema12.com   # nginx -t && reload
 #
-# Env: BROADCAST_TARGET (default https://api.jemaai.cloud/public_showroom_poll.html)
+# Env:
+#   BROADCAST_TARGET (default https://api.jemaai.cloud/public_showroom_poll.html)
+#   ORACLE_V3_URL (default https://jemaai.cloud/public_showroom_logos_oracle_v5.html) — O-P5 /studio/ redirect (v4/v3 legacy URLs still on static host)
 #
 set -euo pipefail
 
@@ -20,6 +22,7 @@ SNIP_FILE="$SNIP_DIR/mkm12_jema12_public_routes.conf"
 INCLUDE_LINE='    include /etc/nginx/snippets/mkm12_jema12_public_routes.conf;'
 MARK="# mkm12_jema12_public_routes"
 BROADCAST_TARGET="${BROADCAST_TARGET:-https://api.jemaai.cloud/public_showroom_poll.html}"
+ORACLE_V3_URL="${ORACLE_V3_URL:-https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1}"
 
 DO_APPLY=0
 if [[ "${1:-}" == "-y" ]] || [[ "${1:-}" == "--apply" ]]; then
@@ -32,7 +35,10 @@ mkdir -p "$SNIP_DIR"
 tee "$SNIP_FILE" >/dev/null <<EOF
 $MARK
 location = /studio {
-    return 301 /studio/;
+    return 302 ${ORACLE_V3_URL};
+}
+location = /studio/ {
+    return 302 ${ORACLE_V3_URL};
 }
 location = /broadcast {
     return 302 ${BROADCAST_TARGET};

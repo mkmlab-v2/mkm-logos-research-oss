@@ -111,11 +111,40 @@ def _expand_subgraph(
             if other not in selected:
                 neighbor_score[other] += weight
 
-    ranked_neighbors = sorted(neighbor_score.items(), key=lambda x: x[1], reverse=True)
-    for node_id, _ in ranked_neighbors:
-        if len(selected) >= max_nodes:
+    while len(selected) < max_nodes:
+        ranked_neighbors = sorted(neighbor_score.items(), key=lambda x: x[1], reverse=True)
+        if not ranked_neighbors:
             break
-        selected.add(node_id)
+        added = 0
+        for node_id, _ in ranked_neighbors:
+            if len(selected) >= max_nodes:
+                break
+            if node_id not in selected:
+                selected.add(node_id)
+                added += 1
+        if added == 0:
+            break
+        neighbor_score = defaultdict(float)
+        pending_edges = []
+        for row in _iter_jsonl(edges_path):
+            src = str(row.get("src_node_id") or "")
+            dst = str(row.get("dst_node_id") or "")
+            if not src or not dst:
+                continue
+            weight = float(row.get("weight") or 0.5)
+            edge_type = str(row.get("edge_type") or "link")
+            if src in selected or dst in selected:
+                pending_edges.append(
+                    {
+                        "src": src,
+                        "dst": dst,
+                        "edge_type": edge_type,
+                        "weight": weight,
+                    }
+                )
+                other = dst if src in selected else src
+                if other not in selected:
+                    neighbor_score[other] += weight
 
     pending_edges.sort(key=lambda e: float(e["weight"]), reverse=True)
     edges_out: list[dict[str, Any]] = []
@@ -176,6 +205,9 @@ def build_slice(
             row["corpus"] = raw["corpus"]
         if raw.get("ref"):
             row["ref"] = raw["ref"]
+        text_norm = str(raw.get("text_norm") or "").strip()
+        if text_norm and kind == "verse":
+            row["text_snippet_ko"] = text_norm[:160] + ("…" if len(text_norm) > 160 else "")
         if node_id in hub_by_node:
             row["hub_score"] = hub_by_node[node_id]
             row["candidate_id"] = cand_by_node.get(node_id)
@@ -217,9 +249,9 @@ def main() -> int:
     ap.add_argument("--candidates-json", type=Path, default=DEFAULT_CANDIDATES)
     ap.add_argument("--graph-nodes-jsonl", type=Path, default=DEFAULT_NODES)
     ap.add_argument("--graph-edges-jsonl", type=Path, default=DEFAULT_EDGES)
-    ap.add_argument("--seed-count", type=int, default=10)
-    ap.add_argument("--max-nodes", type=int, default=48)
-    ap.add_argument("--max-edges", type=int, default=96)
+    ap.add_argument("--seed-count", type=int, default=14)
+    ap.add_argument("--max-nodes", type=int, default=72)
+    ap.add_argument("--max-edges", type=int, default=140)
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT)
     ap.add_argument(
         "--mirror-artifact",

@@ -147,14 +147,14 @@ if ($EnableCausalThresholdSweep) {
     & py -3 "scripts\eval_prophecy_hit_rate_v1.py" `
         --run-mode price `
         --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json" `
-        --out "docs/final/artifacts/prophecy_hit_rate_eval_latest.json"
+        --output "docs/final/artifacts/prophecy_hit_rate_eval_daily_operational_latest.json"
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }
 
     & py -3 "scripts\resolve_prophecy_causal_guard_policy_profile_v1.py" `
         --profiles-json "docs/final/artifacts/prophecy_causal_active_guard_policy_profiles_v1_latest.json" `
-        --eval-json "docs/final/artifacts/prophecy_hit_rate_eval_latest.json" `
+        --eval-json "docs/final/artifacts/prophecy_hit_rate_eval_daily_operational_latest.json" `
         --walkforward-json "docs/final/artifacts/prophecy_instrument_combo_walkforward_v1_latest.json" `
         --out-policy-json "docs/final/artifacts/prophecy_causal_active_guard_policy_v1_latest.json" `
         --out-decision-json "docs/final/artifacts/prophecy_causal_active_guard_policy_decision_latest.json"
@@ -163,7 +163,7 @@ if ($EnableCausalThresholdSweep) {
     }
 
     & py -3 "scripts\guard_prophecy_causal_active_hit_rate_v1.py" `
-        --eval-json "docs/final/artifacts/prophecy_hit_rate_eval_latest.json" `
+        --eval-json "docs/final/artifacts/prophecy_hit_rate_eval_daily_operational_latest.json" `
         --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json" `
         --backup-json "docs/final/artifacts/btrack_prophecy_score_pre_causal_active_latest.json" `
         --policy-json "docs/final/artifacts/prophecy_causal_active_guard_policy_v1_latest.json" `
@@ -181,7 +181,7 @@ if ($EnableCausalThresholdSweep) {
                 & py -3 "scripts\eval_prophecy_hit_rate_v1.py" `
                     --run-mode price `
                     --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json" `
-                    --out "docs/final/artifacts/prophecy_hit_rate_eval_latest.json"
+                    --output "docs/final/artifacts/prophecy_hit_rate_eval_daily_operational_latest.json"
                 if ($LASTEXITCODE -ne 0) {
                     exit $LASTEXITCODE
                 }

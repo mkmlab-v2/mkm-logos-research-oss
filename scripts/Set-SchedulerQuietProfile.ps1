@@ -56,8 +56,12 @@ function Set-QuietMode {
             Write-Output ("[WhatIf] Disable-ScheduledTask {0}" -f $t.TaskName)
             continue
         }
-        Disable-ScheduledTask -TaskName $t.TaskName -TaskPath $t.TaskPath | Out-Null
-        $disabled += $t.TaskName
+        try {
+            Disable-ScheduledTask -TaskName $t.TaskName -TaskPath $t.TaskPath -ErrorAction Stop | Out-Null
+            $disabled += $t.TaskName
+        } catch {
+            Write-Warning ("Disable failed: {0} ({1})" -f $t.TaskName, $_.Exception.Message)
+        }
     }
 
     Write-Output ("mode=quiet target_count={0} disabled_now={1} backup={2}" -f $targets.Count, $disabled.Count, $BackupPath)

@@ -1,4 +1,4 @@
-"""Regression: B-track LLM input bundle includes minority monthly slot and version 1.1.0."""
+"""Regression: B-track LLM input bundle v1.3 includes interpretive bridge slice."""
 
 from __future__ import annotations
 
@@ -9,12 +9,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def test_build_btrack_llm_input_bundle_outputs_v11_schema(tmp_path: Path) -> None:
+def test_build_btrack_llm_input_bundle_outputs_v13_with_interpretive(tmp_path: Path) -> None:
     myeongni = tmp_path / "myeongni.json"
     sasang = tmp_path / "sasang.json"
     logos = tmp_path / "logos.json"
     fusion = tmp_path / "fusion.json"
     minority = tmp_path / "minority_monthly.json"
+    interpretive = tmp_path / "interpretive.json"
     out = tmp_path / "bundle.json"
     for p, label in (
         (myeongni, "m"),
@@ -24,6 +25,31 @@ def test_build_btrack_llm_input_bundle_outputs_v11_schema(tmp_path: Path) -> Non
         (minority, "mm"),
     ):
         p.write_text(json.dumps({"slot": label}), encoding="utf-8")
+
+    interpretive.write_text(
+        json.dumps(
+            {
+                "schema": "sasang_interpretive_insight_bundle_v1",
+                "version": "1.1.0",
+                "decision_authority": "human_only",
+                "rail": "B_TRACK",
+                "synthesis_v1": {
+                    "forbidden_synthesis_ko": "auto merge forbidden",
+                    "disagreement_protocol_ko": "hold observation",
+                },
+                "sections": [
+                    {
+                        "axis_id": "byeongjeung_yakri",
+                        "title_ko": "병증",
+                        "availability": "partial",
+                        "summary_ko": "문헌 앵커",
+                        "interpretive_depth_ko": "must not appear in bridge",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
 
     cmd = [
         "py",
@@ -38,14 +64,47 @@ def test_build_btrack_llm_input_bundle_outputs_v11_schema(tmp_path: Path) -> Non
         str(fusion),
         "--minority-monthly",
         str(minority),
+        "--interpretive",
+        str(interpretive),
         "--output",
         str(out),
     ]
     cp = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
     assert cp.returncode == 0, cp.stderr + cp.stdout
     data = json.loads(out.read_text(encoding="utf-8"))
-    assert data["version"] == "1.1.0"
-    assert data["artifacts"]["myeongni_independent_lens"]["slot"] == "m"
-    assert data["artifacts"]["independent_lens_shadow_minority_monthly"]["slot"] == "mm"
-    assert "independent_lens_shadow_minority_monthly" in data["artifact_paths"]
-    assert str(minority.resolve()) in data["artifact_paths"]["independent_lens_shadow_minority_monthly"]
+    assert data["version"] == "1.3.0"
+    bridge = data["artifacts"]["sasang_interpretive_bridge_context"]
+    assert bridge["available"] is True
+    assert bridge["auto_weight_adjustment_forbidden"] is True
+    assert bridge["track_a_live_routing_forbidden"] is True
+    assert bridge["axis_count"] == 1
+    assert bridge["sections_slice"][0]["axis_id"] == "byeongjeung_yakri"
+    assert "interpretive_depth_ko" not in json.dumps(bridge, ensure_ascii=False)
+    assert str(interpretive.resolve()) in data["artifact_paths"]["sasang_interpretive_insight_bundle"]
+
+
+def test_build_btrack_llm_input_bundle_skip_interpretive(tmp_path: Path) -> None:
+    out = tmp_path / "bundle.json"
+    for name in ("m.json", "s.json", "l.json", "f.json", "mm.json"):
+        (tmp_path / name).write_text("{}", encoding="utf-8")
+    cmd = [
+        "py",
+        str(ROOT / "scripts" / "build_btrack_llm_input_bundle.py"),
+        "--myeongni",
+        str(tmp_path / "m.json"),
+        "--sasang",
+        str(tmp_path / "s.json"),
+        "--logos",
+        str(tmp_path / "l.json"),
+        "--fusion",
+        str(tmp_path / "f.json"),
+        "--minority-monthly",
+        str(tmp_path / "mm.json"),
+        "--skip-interpretive",
+        "--output",
+        str(out),
+    ]
+    cp = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
+    assert cp.returncode == 0, cp.stderr + cp.stdout
+    data = json.loads(out.read_text(encoding="utf-8"))
+    assert data["artifacts"]["sasang_interpretive_bridge_context"]["available"] is False

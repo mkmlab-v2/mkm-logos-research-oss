@@ -46,6 +46,7 @@ from typing import Any, NamedTuple
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILD = ROOT / "scripts" / "build_btrack_prophecy_score_from_ohlcv.py"
+ENSEMBLE_DIRS = ROOT / "scripts" / "build_btrack_ensemble_per_date_directions_v1.py"
 LENS_WF = ROOT / "scripts" / "run_prophecy_per_date_combo_walkforward_v1.py"
 INST_WF = ROOT / "scripts" / "run_prophecy_instrument_combo_walkforward_v1.py"
 GATES = ROOT / "scripts" / "eval_prophecy_promotion_gates_v1.py"
@@ -136,6 +137,21 @@ class _ChainPaths(NamedTuple):
     streak_json: Path
 
 
+class _V2LaneOpts(NamedTuple):
+    per_date_direction_json: Path | None
+    include_source_direction_signal: bool
+    include_expanded_prior_features: bool
+
+
+def _v2_lane_opts_from_args(args: argparse.Namespace) -> _V2LaneOpts:
+    per_date = getattr(args, "per_date_direction_json", None)
+    return _V2LaneOpts(
+        per_date_direction_json=per_date if per_date is not None else None,
+        include_source_direction_signal=bool(getattr(args, "include_source_direction_signal", False)),
+        include_expanded_prior_features=bool(getattr(args, "include_expanded_prior_features", False)),
+    )
+
+
 def _run_one_recommended_eval(
     *,
     neutral_bps: float,
@@ -151,9 +167,37 @@ def _run_one_recommended_eval(
     per_date_direction_json: Path | None = None,
     include_source_direction_signal: bool = False,
     include_expanded_prior_features: bool = False,
+    instrument_beat_bull_train_weight: float | None = None,
+    instrument_train_objective: str = "beat_bull_first",
+    align_promotion_push_panel: bool = False,
 ) -> tuple[int, list[dict[str, object]], dict[str, Any] | None]:
     score_path = paths.score_json
     score_path.parent.mkdir(parents=True, exist_ok=True)
+
+    per_date_json = per_date_direction_json
+    lens_source_signal = include_source_direction_signal
+    lens_expanded_prior = include_expanded_prior_features
+    steps: list[dict[str, object]] = []
+
+    if align_promotion_push_panel:
+        lens_source_signal = True
+        lens_expanded_prior = True
+        if per_date_json is None:
+            per_date_json = score_path.parent / f"per_date_v1_{max(1, int(recent_trading_days))}d.json"
+            ens_cmd = [
+                sys.executable,
+                str(ENSEMBLE_DIRS),
+                "--recent-trading-days",
+                str(max(1, int(recent_trading_days))),
+                "--ensemble-mode",
+                "v1",
+                "--output",
+                str(per_date_json),
+            ]
+            rc_ens = _run(ens_cmd)
+            steps.append({"step": "build_btrack_ensemble_per_date_directions_v1", "exit_code": rc_ens, "cmd": ens_cmd})
+            if rc_ens != 0:
+                return rc_ens, steps, None
 
     build_cmd: list[str] = [
         sys.executable,
@@ -172,10 +216,9 @@ def _run_one_recommended_eval(
     ]
     if not no_mild_downside:
         build_cmd.extend(_mild_downside_args())
-    if per_date_direction_json is not None:
-        build_cmd.extend(["--per-date-direction-json", str(per_date_direction_json)])
+    if per_date_json is not None:
+        build_cmd.extend(["--per-date-direction-json", str(per_date_json)])
 
-    steps: list[dict[str, object]] = []
     rc = _run(build_cmd)
     steps.append({"step": "build_btrack_prophecy_score", "exit_code": rc, "cmd": build_cmd})
     if rc != 0:
@@ -195,15 +238,18 @@ def _run_one_recommended_eval(
         "--output",
         str(paths.lens_out),
     ]
-    if include_source_direction_signal:
+    if align_promotion_push_panel:
+        lens_cmd.extend(["--target-instrument", "btc"])
+    if lens_source_signal:
         lens_cmd.append("--include-source-direction-signal")
-    if include_expanded_prior_features:
+    if lens_expanded_prior:
         lens_cmd.append("--include-expanded-prior-features")
     rc = _run(lens_cmd)
     steps.append({"step": "run_prophecy_per_date_combo_walkforward", "exit_code": rc, "cmd": lens_cmd})
     if rc != 0:
         return rc, steps, None
 
+    inst_obj = str(instrument_train_objective or "beat_bull_first").strip().lower()
     inst_cmd = [
         sys.executable,
         str(INST_WF),
@@ -213,9 +259,26 @@ def _run_one_recommended_eval(
         str(btc_csv),
         "--n-folds",
         str(n_folds_clamped),
+        "--train-objective",
+        inst_obj,
+        "--test-policy",
+        "single",
+        "--selection-mode",
+        "inner-cv",
+        "--inner-folds",
+        "3",
+        "--inject-sweep-best",
         "--output",
         str(paths.inst_out),
     ]
+    if (
+        inst_obj == "accuracy"
+        and instrument_beat_bull_train_weight is not None
+        and float(instrument_beat_bull_train_weight) > 0
+    ):
+        inst_cmd.extend(
+            ["--beat-bull-train-weight", str(float(instrument_beat_bull_train_weight))]
+        )
     rc = _run(inst_cmd)
     steps.append({"step": "run_prophecy_instrument_combo_walkforward", "exit_code": rc, "cmd": inst_cmd})
     if rc != 0:
@@ -322,6 +385,13 @@ def apply_best_sweep_row_to_latest(
     streak_history_json: Path,
 ) -> int:
     """Copy sweep mean-best row artifacts to default latest paths; re-eval gates on prod streak."""
+    try:
+        from evolution_auto_apply_allowlist_v1 import assert_btrack_parameter_target_allowed
+
+        assert_btrack_parameter_target_allowed("neutral_bps")
+    except (ImportError, ValueError) as exc:
+        print(f"FAIL: evolution allowlist gate: {exc}", file=sys.stderr)
+        return 2
     doc = _load_json(sweep_summary_json)
     if not doc or str(doc.get("schema") or "") != "prophecy_btrack_recommended_nbps_sweep_v1":
         print(f"Missing or invalid sweep summary: {sweep_summary_json}", file=sys.stderr)
@@ -454,7 +524,12 @@ def main() -> int:
         help=f"Comma-separated grid for --auto-sweep-and-apply only (default {DEFAULT_AUTO_SWEEP_GRID}).",
     )
     ap.add_argument("--no-mild-downside", action="store_true", help="Omit downside_force_bear mild block.")
-    ap.add_argument("--n-folds", type=int, default=5)
+    ap.add_argument(
+        "--n-folds",
+        type=int,
+        default=6,
+        help="Align with run_btrack_promotion_push_v1 (180d dual-leg instrument mean gate).",
+    )
     ap.add_argument("--score-json", type=Path, default=DEFAULT_SCORE_OUT)
     ap.add_argument("--lens-walkforward-out", type=Path, default=DEFAULT_LENS_OUT)
     ap.add_argument("--instrument-walkforward-out", type=Path, default=DEFAULT_INST_OUT)
@@ -501,11 +576,22 @@ def main() -> int:
     ap.add_argument("--instrument-adaptive-panel-or-joint", action="store_true")
     ap.add_argument("--instrument-train-holdout-select", action="store_true")
     ap.add_argument("--instrument-beat-bull-train-weight", type=float, default=None)
+    ap.add_argument(
+        "--instrument-train-objective",
+        choices=("accuracy", "margin_vs_bull", "beat_bull_first", "stability_margin"),
+        default="beat_bull_first",
+        help="Instrument WF train-block selection (default beat_bull_first + single; ablation: avoid ensemble-top3).",
+    )
     ap.add_argument("--instrument-force-panel-policy", action="store_true")
     ap.add_argument(
         "--calibration-note",
         default="",
         help="Override default calibration note on promotion gates eval.",
+    )
+    ap.add_argument(
+        "--align-promotion-push-panel",
+        action="store_true",
+        help="Match run_btrack_promotion_push_v1: v1 per-date directions + lens btc target + expanded prior.",
     )
     args = ap.parse_args()
 
@@ -545,6 +631,7 @@ def main() -> int:
         sweep_dir.mkdir(parents=True, exist_ok=True)
         streak_iso = sweep_dir / "promotion_strict_streak_isolated_sweep_v1.json"
         _ensure_isolated_streak(streak_iso)
+        v2_lane = _v2_lane_opts_from_args(args)
 
         rows: list[dict[str, Any]] = []
         any_strict = False
@@ -574,6 +661,11 @@ def main() -> int:
                 skip_gates=bool(args.skip_gates),
                 fail_on_gate=bool(args.fail_on_gate),
                 calibration_note=note,
+                per_date_direction_json=v2_lane.per_date_direction_json,
+                include_source_direction_signal=v2_lane.include_source_direction_signal,
+                include_expanded_prior_features=v2_lane.include_expanded_prior_features,
+                instrument_train_objective=str(getattr(args, "instrument_train_objective", "beat_bull_first")),
+                align_promotion_push_panel=bool(args.align_promotion_push_panel),
             )
             comb = bool(gates.get("combined_all_passed")) if isinstance(gates, dict) else False
             if comb:
@@ -640,6 +732,7 @@ def main() -> int:
                 f"recommended_chain_v1 promoted from sweep neutral_bps={first_promote_nb}; "
                 "dual-leg + mild_downside + neutral_bps CLI."
             )
+            v2_lane = _v2_lane_opts_from_args(args)
             prc, pr_steps, pr_gates = _run_one_recommended_eval(
                 neutral_bps=float(first_promote_nb),
                 paths=promote_paths,
@@ -651,6 +744,11 @@ def main() -> int:
                 skip_gates=bool(args.skip_gates),
                 fail_on_gate=bool(args.fail_on_gate),
                 calibration_note=note,
+                per_date_direction_json=v2_lane.per_date_direction_json,
+                include_source_direction_signal=v2_lane.include_source_direction_signal,
+                include_expanded_prior_features=v2_lane.include_expanded_prior_features,
+                instrument_train_objective=str(getattr(args, "instrument_train_objective", "beat_bull_first")),
+                align_promotion_push_panel=bool(args.align_promotion_push_panel),
             )
             _write_summary(args.summary_out, pr_steps, gates=pr_gates, neutral_bps=float(first_promote_nb))
             return prc
@@ -673,7 +771,9 @@ def main() -> int:
 
     calibration_note = str(args.calibration_note or "").strip() or (
         "recommended_chain_v1: reports-only artifacts; dual-leg + mild_downside + neutral_bps CLI."
+        + ("; align_promotion_push_panel" if args.align_promotion_push_panel else "")
     )
+    align_panel = bool(args.align_promotion_push_panel)
     paths = _ChainPaths(
         score_json=args.score_json,
         lens_out=args.lens_walkforward_out,
@@ -695,6 +795,9 @@ def main() -> int:
         per_date_direction_json=args.per_date_direction_json,
         include_source_direction_signal=bool(args.include_source_direction_signal),
         include_expanded_prior_features=bool(args.include_expanded_prior_features),
+        instrument_beat_bull_train_weight=getattr(args, "instrument_beat_bull_train_weight", None),
+        instrument_train_objective=str(getattr(args, "instrument_train_objective", "beat_bull_first")),
+        align_promotion_push_panel=align_panel,
     )
     if rc != 0:
         _write_summary(args.summary_out, steps, gates=None, neutral_bps=float(args.neutral_bps))

@@ -18,13 +18,13 @@ DEFAULT_JSON = ROOT / "reports/marketing/marketing_publish_handoff_latest.json"
 DEFAULT_MD = ROOT / "reports/marketing/marketing_publish_checklist_latest.md"
 
 COMMANDER_CHECKLIST = [
-    "Open each draft_markdown path; confirm [DRAFT] and disclaimer.",
-    "Verify numbers match attached KPI/enterprise SSOT only (no new claims).",
-    "Run: py scripts/set_marketing_queue_publish_status_v1.py --item-id <id> --approve",
-    "Post on LinkedIn manually OR schedule in Buffer after approve (no API auto-fire from MKM).",
-    "After live post: py scripts/set_marketing_queue_publish_status_v1.py --item-id <id> --mark-published",
-    "Optional Buffer draft tray: py scripts/push_marketing_draft_to_buffer_v1.py --item-id <id> (dry-run) then --push-draft after MKM_BUFFER_PUSH_ALLOWED=1",
+    "Prep: `powershell -File scripts/Invoke-MarketingLinkedInPublishPrep_v1.ps1` (paste exports + clipboard + feed URL).",
+    "Publish: **OpenChrome headed** (logged-in Chrome) per `reports/marketing/linkedin_openchrome_publish_request_latest.json` — not Cursor embedded browser (no session).",
+    "Verify numbers match KPI/enterprise SSOT only (no new claims).",
+    "After live post: `py scripts/marketing_linkedin_publish_closure_v1.py --phrase \"올렸어\"` or `--item-id <id>`.",
 ]
+POST_READY_MD = "reports/marketing/marketing_linkedin_post_ready_latest.md"
+PASTE_PRIMARY_TXT = "reports/marketing/linkedin_paste_primary_latest.txt"
 
 
 def _utc_now() -> str:
@@ -46,7 +46,7 @@ def _resolve_draft_md(item: dict[str, Any]) -> Path | None:
     if not item_id:
         return None
     candidates = sorted(
-        DRAFTS.glob(f"{item_id}_*_[DRAFT].md"),
+        (p for p in DRAFTS.glob(f"{item_id}_*.md") if p.name.endswith("_[DRAFT].md")),
         key=lambda p: p.stat().st_mtime,
         reverse=True,
     )
@@ -77,17 +77,20 @@ def build(*, unified_path: Path = UNIFIED) -> dict[str, Any]:
         md_path = _resolve_draft_md(item)
         guard, detail = _guard_status(md_path)
         paths = item.get("draft_paths") if isinstance(item.get("draft_paths"), dict) else {}
-        ready_fire = guard == "PASS" and status in ("drafted", "human_approved")
+        ready_fire = guard == "PASS" and (
+            status in ("drafted", "human_approved")
+            or (status == "pending" and md_path is not None)
+        )
         ready_buffer = ready_fire and status == "human_approved" and buffer_ok
 
         if status == "published":
             action = "Already marked published in queue."
         elif guard != "PASS":
             action = "Fix draft or regenerate bundle; do not approve until copy_guard PASS."
-        elif status == "drafted":
-            action = "Review draft → --approve → post or Buffer schedule → --mark-published"
+        elif status == "drafted" or (status == "pending" and guard == "PASS" and md_path is not None):
+            action = f"Review → --approve if needed → copy from `{POST_READY_MD}` → LinkedIn → --mark-published when live."
         elif status == "human_approved":
-            action = "Approved: post or Buffer schedule now → --mark-published when live."
+            action = f"Copy from `{POST_READY_MD}` → LinkedIn paste → `--mark-published` when live."
         else:
             action = "Run weekly bundle to create draft first."
 
@@ -115,10 +118,13 @@ def build(*, unified_path: Path = UNIFIED) -> dict[str, Any]:
         "schema": "marketing_publish_handoff_v1",
         "generated_at_utc": _utc_now(),
         "boundary_ack": (
-            "Phase 2: MKM never auto-publishes. copy_guard PASS is necessary not sufficient. "
-            "Human approves (human_approved) then fires LinkedIn or Buffer. "
+            "Phase 2: no LinkedIn API. Recommended = OpenChrome headed (agent) after prep; "
+            f"fallback = manual paste from `{PASTE_PRIMARY_TXT}`. Buffer optional if tokens in .env. "
             "PUBLIC_FACING v1.7; no hallucination-eradication claims."
         ),
+        "default_publish_path": "linkedin_openchrome_headed",
+        "fallback_publish_path": "linkedin_manual_paste",
+        "post_ready_markdown": POST_READY_MD,
         "auto_publish_allowed": False,
         "buffer_api_configured": buffer_ok,
         "commander_checklist": COMMANDER_CHECKLIST,
@@ -132,9 +138,13 @@ def _render_md(doc: dict[str, Any]) -> str:
         "",
         f"- **generated_at_utc:** `{doc['generated_at_utc']}`",
         f"- **auto_publish_allowed:** `{doc['auto_publish_allowed']}`",
-        f"- **buffer_api_configured:** `{doc['buffer_api_configured']}`",
+        f"- **default_publish_path:** `{doc.get('default_publish_path', 'linkedin_openchrome_headed')}`",
+        f"- **fallback_publish_path:** `{doc.get('fallback_publish_path', 'linkedin_manual_paste')}`",
+        f"- **post_ready:** `{doc.get('post_ready_markdown', POST_READY_MD)}`",
+        f"- **paste_primary (LinkedIn):** `{PASTE_PRIMARY_TXT}` · per-item: `reports/marketing/linkedin_paste_ready/<id>_public.txt`",
+        f"- **buffer_api_configured:** `{doc['buffer_api_configured']}` _(optional; not required)_",
         "",
-        "## Commander checklist",
+        "## Commander checklist (LinkedIn manual — 4 steps)",
         "",
     ]
     for i, step in enumerate(doc.get("commander_checklist", []), 1):

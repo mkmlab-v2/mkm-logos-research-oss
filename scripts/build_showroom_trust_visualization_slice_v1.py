@@ -116,6 +116,38 @@ def _compression_governance_slice() -> Dict[str, Any]:
     }
 
 
+def _patient_intake_public_slice(trackc: Dict[str, Any]) -> Dict[str, Any]:
+    """한의원 예진 B-track 요약만 (공개 쇼룸 · 비임상)."""
+    pit = trackc.get("patient_intake_fusion_b_track")
+    if not isinstance(pit, dict):
+        return {
+            "state": "NODATA",
+            "role": "patient_intake_fusion_b_track_public_v1",
+            "research_only": True,
+            "auto_prescription_forbidden": True,
+        }
+    cc = pit.get("cross_checks_v1") if isinstance(pit.get("cross_checks_v1"), dict) else {}
+    mye = cc.get("myeongni_sasang_clinical_v1") if isinstance(cc.get("myeongni_sasang_clinical_v1"), dict) else {}
+    return {
+        "state": pit.get("state", "NODATA"),
+        "role": "patient_intake_fusion_b_track_public_v1",
+        "research_only": True,
+        "auto_prescription_forbidden": True,
+        "clinical_sasang_label": pit.get("clinical_sasang_label"),
+        "myeongni_sasang_status": mye.get("status"),
+        "myeongni_sasang_status_ko": mye.get("status_ko"),
+        "constitution_id": mye.get("constitution_id"),
+        "deep_link_count": pit.get("deep_link_count"),
+        "boming_term_count": pit.get("boming_term_count"),
+        "bundle_out": pit.get("bundle_out"),
+        "source": pit.get("source"),
+        "boundary_note_ko": (
+            "[HYPO] 한의사 4진·체질 확정 전 예진 재료 패킹. 진단·처방·탕명 자동 없음. "
+            "Track A·실매매·SaMD 아님."
+        ),
+    }
+
+
 def _board_ms_latency_slice() -> Dict[str, Any]:
     """RQ-017 read-only latency layers; no causal token-saving ↔ RTT claim."""
     if not BOARD_MS_REPORT.is_file():
@@ -181,6 +213,11 @@ def main() -> int:
         / "jemaai-cloud-mvp"
         / "showroom_trust_visualization_slice_v0.json",
     )
+    ap.add_argument(
+        "--mirror-staging",
+        action="store_true",
+        help="Copy slice + trust HTML into .showroom_staging for deploy_showroom_static",
+    )
     args = ap.parse_args()
 
     dash = _read_dashboard(args.dashboard)
@@ -199,28 +236,48 @@ def main() -> int:
 
     compression = _compression_governance_slice()
 
+    patient_intake = _patient_intake_public_slice(tc)
+
     doc: Dict[str, Any] = {
         "schema": "showroom_trust_visualization_slice_v0",
-        "version": "0.1.2",
+        "version": "0.1.3",
         "hypothesis_tag": "[HYPO]",
         "generated_at_utc": _utc_now_z(),
         "source_dashboard_rel": rel_dash,
         "trust_visualization_v0": trust,
         "stt_routing_audit_log_slice": stt,
+        "patient_intake_b_track_v0": patient_intake,
         "compression_governance_v0": compression,
         "compression_board_ms_v0": _board_ms_latency_slice(),
         "boundary_note": "Read-only showroom slice from Track C ops dashboard; not a trading signal.",
     }
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
+    mirrored: list[str] = []
+    if args.mirror_staging:
+        staging = ROOT / "projects" / "bitcoin-trading" / "ops" / "windows-rehearsal" / ".showroom_staging"
+        staging.mkdir(parents=True, exist_ok=True)
+        import shutil
+
+        for name in ("showroom_trust_visualization_slice_v0.json",):
+            dest = staging / name
+            shutil.copy2(args.out, dest)
+            mirrored.append(str(dest))
+        html_src = args.out.parent / "public_showroom_trust_visualization_v0.html"
+        if html_src.is_file():
+            dest_html = staging / html_src.name
+            shutil.copy2(html_src, dest_html)
+            mirrored.append(str(dest_html))
     print(
         json.dumps(
             {
                 "out": str(args.out),
                 "trust_state": trust.get("state"),
                 "stt_state": stt.get("state"),
+                "patient_intake_state": patient_intake.get("state"),
                 "compression_state": compression.get("state"),
                 "policy_floor": compression.get("policy_floor"),
+                "mirrored_staging": mirrored,
             },
             ensure_ascii=False,
         )

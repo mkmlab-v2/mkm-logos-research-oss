@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
 
 DEFAULT_SIGNOFF = ART / "btrack_promotion_signoff_packet_separated_v1_latest.json"
-DEFAULT_GATE = ART / "prophecy_promotion_gates_v1_panel_calibrated_latest.json"
+DEFAULT_GATE = ART / "prophecy_promotion_gates_v1_latest.json"
 DEFAULT_LIVE_AB = ART / "prophecy_live_ab_summary_v1_latest.json"
 DEFAULT_PRE_REVIEW = ART / "prophecy_track_a_candidate_pre_review_v1_latest.json"
 DEFAULT_OUT = ART / "prophecy_manual_promotion_decision_lock_v1_latest.json"
@@ -58,7 +58,8 @@ def main() -> int:
         "promotion_gate_auto_promote_ready": bool(gate.get("auto_promote_ready") is True),
         "promotion_gate_shared_gate_pass": bool(gate.get("shared_all_gates_passed") is True),
         "live_ab_ready": str(live_ab.get("status") or "") == "READY",
-        "pre_review_candidate_present": str(pre_review.get("status") or "") == "PRE_REVIEW_CANDIDATE",
+        "pre_review_candidate_present": str(pre_review.get("status") or "")
+        in ("PRE_REVIEW_CANDIDATE", "HUMAN_APPROVED", "APPROVED_CANDIDATE"),
     }
     approved = all(checklist.values())
 

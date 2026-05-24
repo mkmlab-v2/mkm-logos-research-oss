@@ -24,6 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
+from mkm_cloudflare_http_probe_v1 import probe_smartfarm_1hop  # noqa: E402
 from mkm_cloudflare_token_v1 import (  # noqa: E402
     JEMA_AI_ZONE_ID,
     resolve_cloudflare_jema_ai_redirect_token,
@@ -147,7 +148,19 @@ def main() -> int:
         "recurrence_fix": _recurrence_fix(),
     }
 
+    http_probe = probe_smartfarm_1hop()
+    out["http_probe"] = http_probe
     if not args.skip_preflight and not args.dry_run and not entry_ok:
+        if http_probe.get("ok"):
+            out["action"] = "edge_ok_skip_api_put"
+            out["blocker"] = "jema_ai_dynamic_redirect_scope_but_http_ok"
+            args.out_json.parent.mkdir(parents=True, exist_ok=True)
+            args.out_json.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
+            print(
+                "EDGE OK: HTTP 1-hop smartfarm→farm (operational SSOT). "
+                "Skipping CF API PUT — scope optional for infra-as-code only.",
+            )
+            return 0
         out["action"] = "preflight_blocked"
         out["blocker"] = (
             "jema_ai_dynamic_redirect_scope"

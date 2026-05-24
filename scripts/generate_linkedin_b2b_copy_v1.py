@@ -471,6 +471,17 @@ def main() -> int:
     doc["updated_at_utc"] = _utc_now()
     queue_path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
+    sync_script = ROOT / "scripts/sync_marketing_queue_to_linkedin_v1.py"
+    if sync_script.is_file() and exit_code == 0:
+        subprocess.run(
+            [sys.executable, str(sync_script)],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+
     if ns.strict_compliance and exit_code == 0:
         check_script = ROOT / "scripts/check_linkedin_b2b_draft_copy_v1.py"
         proc = subprocess.run(

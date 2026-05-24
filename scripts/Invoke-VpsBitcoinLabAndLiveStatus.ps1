@@ -1,9 +1,11 @@
 <#
 .SYNOPSIS
-  SSH one-shot: VPS에서 /opt/bitcoin-trading-live(실매매 PM2 cwd)와 /opt/mkm-lab-workspace-v2(랩) 상태를 연속 출력.
+  SSH one-shot: VPS 본선(destiny 모노레포)·랩·레거시 클론 상태를 한 번에 출력.
 
 .DESCRIPTION
-  두 트리 혼동 방지용. PM2 describe는 bitcoin-live-small-24h 기준(앱 없으면 스킵).
+  경로 SSOT: docs/final/VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json
+  본선 PM2 cwd 기본값: /opt/mkm-destiny-ai-41e38ec6 (레거시 /opt/bitcoin-trading-live 아님).
+  PM2 describe는 bitcoin-live-small-24h 기준(앱 없으면 스킵).
   -PullLabCronDiff 로 랩 트리의 export/sync cursor cron 등록 스크립트 미커밋 diff를
   reports/vps-mkm-lab-cron-export-sync.patch 로 저장.
 
@@ -31,21 +33,32 @@ if (-not (Test-Path $reportsDir)) {
 
 $remoteBash = @'
 set -euo pipefail
+echo "SSOT: VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json (repo docs/final)"
+echo ""
 echo "========================================"
-echo "LIVE CLONE (check PM2 exec cwd): /opt/bitcoin-trading-live"
+echo "LIVE PRIMARY (destiny monorepo): /opt/mkm-destiny-ai-41e38ec6"
 echo "========================================"
-if [ -d /opt/bitcoin-trading-live ]; then
-  cd /opt/bitcoin-trading-live
+if [ -d /opt/mkm-destiny-ai-41e38ec6 ]; then
+  cd /opt/mkm-destiny-ai-41e38ec6
   git status -sb || true
   git log -1 --oneline || true
   echo "--- remotes (first 2 lines) ---"
   git remote -v 2>/dev/null | head -n 2 || true
 else
-  echo "[MISSING] /opt/bitcoin-trading-live"
+  echo "[MISSING] /opt/mkm-destiny-ai-41e38ec6"
 fi
 echo ""
 echo "========================================"
-echo "LAB MONOREPO: /opt/mkm-lab-workspace-v2"
+echo "PM2: bitcoin-live-small-24h (authoritative for live cwd)"
+echo "========================================"
+if command -v pm2 >/dev/null 2>&1; then
+  pm2 describe bitcoin-live-small-24h 2>/dev/null | head -n 35 || echo "(app not found or describe failed)"
+else
+  echo "(pm2 not in PATH)"
+fi
+echo ""
+echo "========================================"
+echo "LAB MONOREPO (ship default, not always live cwd): /opt/mkm-lab-workspace-v2"
 echo "========================================"
 if [ -d /opt/mkm-lab-workspace-v2 ]; then
   cd /opt/mkm-lab-workspace-v2
@@ -58,12 +71,14 @@ else
 fi
 echo ""
 echo "========================================"
-echo "PM2: bitcoin-live-small-24h (if present)"
+echo "LEGACY standalone clone (do not deploy live here): /opt/bitcoin-trading-live"
 echo "========================================"
-if command -v pm2 >/dev/null 2>&1; then
-  pm2 describe bitcoin-live-small-24h 2>/dev/null | head -n 30 || echo "(app not found or describe failed)"
+if [ -d /opt/bitcoin-trading-live ]; then
+  cd /opt/bitcoin-trading-live
+  git status -sb || true
+  git log -1 --oneline || true
 else
-  echo "(pm2 not in PATH)"
+  echo "[MISSING] /opt/bitcoin-trading-live"
 fi
 '@
 $remoteBash = $remoteBash -replace "`r`n", "`n" -replace "`r", "`n"

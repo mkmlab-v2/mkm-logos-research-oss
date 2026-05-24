@@ -161,7 +161,21 @@ if ($LASTEXITCODE -ne 0) { throw "scp remote script failed (exit $LASTEXITCODE)"
 
 Write-Host "[STEP] Fetch+merge on VPS destiny repo" -ForegroundColor Yellow
 & ssh -i $SshKeyPath -o ConnectTimeout=15 -o BatchMode=yes $sshTarget "bash $remoteRemoteScript"
-if ($LASTEXITCODE -ne 0) { throw "VPS merge step failed (exit $LASTEXITCODE)" }
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "[WARN] merge failed; retrying surgical stash script" -ForegroundColor Yellow
+    $surgical = Join-Path $repoRoot "scripts/deploy/linux/run_destiny_bundle_merge_surgical_v1.sh"
+    if (-not (Test-Path -LiteralPath $surgical)) {
+        throw "VPS merge step failed (exit $LASTEXITCODE); surgical script missing"
+    }
+    $lf = [IO.File]::ReadAllText($surgical) -replace "`r`n", "`n"
+    $localSurgical = Join-Path $env:TEMP "run_destiny_bundle_merge_surgical_v1.sh"
+    [IO.File]::WriteAllText($localSurgical, $lf, (New-Object System.Text.UTF8Encoding $false))
+    $remoteSurgical = "/root/run_destiny_bundle_merge_surgical_v1.sh"
+    & scp -i $SshKeyPath -o ConnectTimeout=30 $localSurgical "${sshTarget}:${remoteSurgical}"
+    if ($LASTEXITCODE -ne 0) { throw "scp surgical merge script failed" }
+    & ssh -i $SshKeyPath -o ConnectTimeout=120 -o BatchMode=yes $sshTarget "bash $remoteSurgical"
+    if ($LASTEXITCODE -ne 0) { throw "VPS surgical merge failed (exit $LASTEXITCODE)" }
+}
 
 Remove-Item -LiteralPath $localRemoteScript -Force -ErrorAction SilentlyContinue
 

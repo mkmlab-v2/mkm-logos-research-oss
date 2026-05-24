@@ -4,11 +4,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.core.btrack_interpretive_bridge_v1 import interpretive_bridge_payload
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_llm_input_bundle_latest.json"
 
 DEFAULT_MYEONGNI = ROOT / "docs/final/artifacts/myeongni_independent_lens_latest.json"
@@ -21,6 +26,7 @@ DEFAULT_MACRO_LENS = ROOT / "docs/final/artifacts/macro_independent_lens_latest.
 DEFAULT_COMPRESSION_KPI = ROOT / "reports/constitution/btrack_pilot/ultra_compression_kpi_summary_latest.json"
 DEFAULT_COMPRESSION_ACTIVE = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 DEFAULT_COMPRESSION_DECISION = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
+DEFAULT_INTERPRETIVE = ROOT / "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json"
 
 
 def _read(path: Path) -> dict[str, Any] | None:
@@ -82,12 +88,24 @@ def main() -> int:
     ap.add_argument("--compression-kpi", type=Path, default=DEFAULT_COMPRESSION_KPI)
     ap.add_argument("--compression-active", type=Path, default=DEFAULT_COMPRESSION_ACTIVE)
     ap.add_argument("--compression-decision", type=Path, default=DEFAULT_COMPRESSION_DECISION)
+    ap.add_argument("--interpretive", type=Path, default=DEFAULT_INTERPRETIVE)
+    ap.add_argument(
+        "--skip-interpretive",
+        action="store_true",
+        help="Omit sasang_interpretive_bridge_context even if interpretive bundle exists.",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
+    interpretive_full = None if args.skip_interpretive else _read(args.interpretive)
+    interpretive_bridge = interpretive_bridge_payload(
+        interpretive_full,
+        source_path=args.interpretive,
+    )
+
     bundle = {
         "schema": "btrack_llm_input_bundle_v1",
-        "version": "1.2.0",
+        "version": "1.3.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
         "boundary_ack": True,
@@ -105,6 +123,7 @@ def main() -> int:
                 compression_active=args.compression_active,
                 compression_decision=args.compression_decision,
             ),
+            "sasang_interpretive_bridge_context": interpretive_bridge,
         },
         "artifact_paths": {
             "myeongni": str(args.myeongni.resolve()),
@@ -117,10 +136,12 @@ def main() -> int:
             "compression_kpi_summary": str(args.compression_kpi.resolve()),
             "compression_active_report": str(args.compression_active.resolve()),
             "compression_decision": str(args.compression_decision.resolve()),
+            "sasang_interpretive_insight_bundle": str(args.interpretive.resolve()),
         },
         "note": "Feed summarized fields to LLM; do not merge with live trading. Sasang: [NON-MEDICAL] if referenced. "
         "news/macro slots filled when news_independent_lens_latest.json / macro_independent_lens_latest.json exist "
-        "(run build_btrack_news_macro_lens_adapters_v1.py). compression_bridge_context is read-only.",
+        "(run build_btrack_news_macro_lens_adapters_v1.py). compression_bridge_context and "
+        "sasang_interpretive_bridge_context are read-only; interpretive slice excludes interpretive_depth_ko.",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(bundle, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

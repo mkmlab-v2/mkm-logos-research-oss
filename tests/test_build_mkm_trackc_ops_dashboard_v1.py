@@ -86,3 +86,11 @@ def test_trackc_dashboard_includes_lens_music_governance_fields():
     stt = (doc.get("trackc") or {}).get("stt_routing_audit_log_slice") or {}
     assert stt.get("role") == "silver_stt_audit_summary_v0"
     assert stt.get("state") in ("OK", "NODATA")
+    ia = (doc.get("trackc") or {}).get("inter_agent_rq019") or {}
+    assert ia.get("role") == "inter_agent_rq019_research_slice_v1"
+    assert ia.get("research_only") is True
+    assert ia.get("state") in ("OK", "DEGRADED")
+    cdim = (doc.get("trackc") or {}).get("logos_cross_domain_interface") or {}
+    assert cdim.get("role") == "logos_cross_domain_interface_v1"
+    assert cdim.get("non_gating") is True
+    assert cdim.get("state") in ("OK", "NODATA", "INVALID")

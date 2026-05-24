@@ -23,7 +23,13 @@ def neural_embedding_allowed(policy_doc: dict[str, Any], allow_bypass: bool) -> 
 
 
 def verse_text_for_embedding(row: dict[str, Any], max_chars: int) -> str:
-    raw = row.get("verse_text") or row.get("text") or row.get("verse_id")
+    raw = row.get("verse_text") or row.get("text")
+    if raw is None:
+        span = row.get("text_span")
+        if isinstance(span, dict):
+            raw = span.get("original_script_text") or span.get("text")
+    if raw is None:
+        raw = row.get("verse_id")
     if raw is None:
         return ""
     s = str(raw).strip()

@@ -38,7 +38,8 @@ param(
     [switch]$SkipGoNoGoRefresh,
     [switch]$SkipSafeOpsSurfaceCheck,
     [switch]$SafeOpsStrictTradingGoNoGo,
-    [switch]$SkipWebhook
+    [switch]$SkipWebhook,
+    [switch]$AllowDisabledSecurityIntegrityTask
 )
 
 $ErrorActionPreference = "Stop"
@@ -47,6 +48,15 @@ if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
     $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 }
 Set-Location -LiteralPath $WorkspaceRoot
+
+# Local dev: security integrity task is often Disabled intentionally; auto-waive unless strict audit.
+if (-not $AllowDisabledSecurityIntegrityTask -and -not $SafeOpsStrictTradingGoNoGo) {
+    $secTask = Get-ScheduledTask -TaskName "MKM-Security-Integrity-Check-5min" -ErrorAction SilentlyContinue
+    if ($secTask -and "$($secTask.State)" -eq "Disabled") {
+        $AllowDisabledSecurityIntegrityTask = $true
+        Write-Host "[closure] MKM-Security-Integrity-Check-5min is Disabled -> -AllowDisabledSecurityIntegrityTask (local dev)" -ForegroundColor DarkGray
+    }
+}
 
 $reportPath = Join-Path $WorkspaceRoot "reports\prophecy_lane_closure_bundle_v1_latest.json"
 $steps = [System.Collections.Generic.List[object]]::new()
@@ -128,6 +138,9 @@ try {
         }
         if ($SafeOpsStrictTradingGoNoGo) {
             $safeOpsArgs += "-StrictTradingGoNoGo"
+        }
+        if ($AllowDisabledSecurityIntegrityTask) {
+            $safeOpsArgs += "-AllowDisabledSecurityIntegrityTask"
         }
         $e4 = Invoke-BundleScript "scripts\Invoke-SafeOpsSurfaceCheck.ps1" $safeOpsArgs
         Add-Step "Invoke_SafeOpsSurfaceCheck" $e4

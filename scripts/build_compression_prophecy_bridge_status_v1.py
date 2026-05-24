@@ -47,6 +47,21 @@ BUILDER_COMPRESSION_TOKENS: tuple[str, ...] = (
     "MULTILENS_PERFORMANCE_EVAL_INPUT_V2",
 )
 
+DEFAULT_INTERPRETIVE = ROOT / "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json"
+
+BUILDER_INTERPRETIVE_TOKENS: tuple[str, ...] = (
+    "sasang_interpretive_bridge_context",
+    "sasang_interpretive_insight_bundle",
+    "interpretive_bridge_payload",
+    "btrack_interpretive_bridge_v1",
+)
+
+HYPOTHESIS_INTERPRETIVE_TOKENS: tuple[str, ...] = (
+    "interpretive_bridge",
+    "interpretive_bridge_available",
+    "interpretive_bridge_weight_adjustment_applied",
+)
+
 
 def _read_text(path: Path) -> str:
     if not path.is_file():
@@ -129,8 +144,29 @@ def main() -> int:
             }
         )
 
+    interpretive_builder_hits = [t for t in BUILDER_INTERPRETIVE_TOKENS if t in builder_src]
+    interpretive_hypo_hits = [t for t in HYPOTHESIS_INTERPRETIVE_TOKENS if t in hypo_src]
+    bundle_arts = bundle_doc.get("artifacts") if isinstance(bundle_doc.get("artifacts"), dict) else {}
+    interpretive_artifact = (
+        bundle_arts.get("sasang_interpretive_bridge_context") if isinstance(bundle_arts, dict) else {}
+    )
+    if not isinstance(interpretive_artifact, dict):
+        interpretive_artifact = {}
+    ib_available = bool(interpretive_artifact.get("available"))
+    ib_guards = (
+        interpretive_artifact.get("auto_weight_adjustment_forbidden") is True
+        and interpretive_artifact.get("track_a_live_routing_forbidden") is True
+    )
+    if ib_available and ib_guards and interpretive_builder_hits:
+        interpretive_bridge_status = "wired_read_only_v1"
+    elif interpretive_builder_hits or interpretive_hypo_hits:
+        interpretive_bridge_status = "wired_partial_v1"
+    else:
+        interpretive_bridge_status = "not_wired_v1"
+
     out = {
         "schema": "compression_prophecy_bridge_status_v1",
+        "version": "1.1.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "bridge_status": bridge_status,
         "wired_paths": sorted(set(wired_paths)),
@@ -141,6 +177,20 @@ def main() -> int:
         "builder_source_compression_token_hits": builder_hits,
         "hypothesis_gen_compression_token_hits": hypo_hits,
         "compression_wire_candidates": candidates_out,
+        "interpretive_bridge": {
+            "bridge_status": interpretive_bridge_status,
+            "bundle_slot": "artifacts.sasang_interpretive_bridge_context",
+            "source_bundle_path": DEFAULT_INTERPRETIVE.relative_to(ROOT).as_posix(),
+            "source_bundle_exists": DEFAULT_INTERPRETIVE.is_file(),
+            "snapshot_available": ib_available,
+            "snapshot_axis_count": interpretive_artifact.get("axis_count"),
+            "safety_flags_ok": ib_guards if ib_available else None,
+            "builder_token_hits": interpretive_builder_hits,
+            "hypothesis_gen_token_hits": interpretive_hypo_hits,
+            "weight_adjustment_applied_in_hypothesis": False,
+            "fact_safe_note": "Interpretive bridge is read-only human_only context. "
+            "Does not prove pathology→TE mapping or Track A promotion.",
+        },
         "fact_safe_note": "String scan + path presence only; does not prove causal impact on hit rate. "
         "A real bridge requires an explicit field in btrack_llm_input_bundle_v1 and builder wiring.",
         "out_of_scope": "No live trading; no automatic promotion; B-track remains hypothesis_tier B.",

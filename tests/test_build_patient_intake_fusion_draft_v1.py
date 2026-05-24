@@ -13,6 +13,8 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "build_patient_intake_fusion_draft_v1.py"
 FIXTURE = ROOT / "tests" / "fixtures" / "patient_intake_fusion_draft_v1.example.json"
+SOEUM_FIXTURE = ROOT / "tests" / "fixtures" / "patient_intake_soeum_clinical_v1.example.json"
+BUILD_LENS_PACK = ROOT / "scripts" / "build_sasang_boming_jiju_clinical_lens_pack_v1.py"
 INTAKE_SCHEMA_PATH = ROOT / "docs" / "final" / "schemas" / "patient_intake_fusion_draft_input_v1.schema.json"
 _SCHEMA = None
 
@@ -172,3 +174,67 @@ def test_build_patient_intake_fusion_birth_instant_utc_path(tmp_path):
     assert rj["birth_resolution_v1"]["engine_local_wall_ymdhms"] == [1990, 5, 15, 14, 30, 0]
     doc = json.loads(mye.read_text(encoding="utf-8-sig"))
     assert (doc.get("pillars") or {}).get("day")
+
+
+def test_soeum_intake_includes_boming_jiju_clinical_lens_pack(tmp_path):
+    subprocess.run(
+        [sys.executable, str(BUILD_LENS_PACK)],
+        cwd=str(ROOT),
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    bundle_out = tmp_path / "soeum_bundle.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--intake-json",
+            str(SOEUM_FIXTURE),
+            "--bundle-out",
+            str(bundle_out),
+            "--myeongni-out",
+            str(tmp_path / "soeum_mye.json"),
+            "--rationale-out",
+            str(tmp_path / "soeum_rat.json"),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert cp.returncode == 0, cp.stderr + cp.stdout
+    doc = json.loads(bundle_out.read_text(encoding="utf-8-sig"))
+    sasang = next(s for s in doc["patient_slots"] if s["slot_id"] == "sasang")
+    body = sasang["body_markdown"]
+    assert "보명지주" in body
+    assert "흡취지기" in body
+    assert "소화·한열" in body
+    assert "deep link" in body.lower() or "SASANG_CROSS_REF" in body
+    assert "교차검증" in body
+    assert "자동 추천 없음" in body or "처방" in body
+    mye_slot = next(s for s in doc["patient_slots"] if s["slot_id"] == "myeongni_ref")
+    assert "교차검증" in mye_slot["body_markdown"]
+    rat_path = tmp_path / "soeum_rationale.json"
+    cp2 = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--intake-json",
+            str(SOEUM_FIXTURE),
+            "--bundle-out",
+            str(tmp_path / "soeum_bundle2.json"),
+            "--myeongni-out",
+            str(tmp_path / "soeum_mye2.json"),
+            "--rationale-out",
+            str(rat_path),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert cp2.returncode == 0, cp2.stderr + cp2.stdout
+    rat = json.loads(rat_path.read_text(encoding="utf-8-sig"))
+    assert rat.get("version") == "1.1.0"
+    cc = rat.get("cross_checks_v1") or {}
+    assert cc.get("myeongni_sasang_clinical_v1", {}).get("constitution_id") == "soeum_in"
+    assert cc.get("sasang_boming_jiju_lens_v1", {}).get("deep_link_count", 0) >= 1

@@ -308,6 +308,30 @@ def _extract_lens_score(bundle: dict[str, Any], artifact_key: str) -> tuple[floa
     return _safe_float(scores.get("direction_score"), 0.0), _safe_float(scores.get("confidence"), 0.0)
 
 
+def _extract_interpretive_bridge_meta(bundle: dict[str, Any]) -> dict[str, Any]:
+    art = bundle.get("artifacts", {}).get("sasang_interpretive_bridge_context") or {}
+    if not isinstance(art, dict) or not art:
+        return {"available": False}
+    if not art.get("available"):
+        return {
+            "available": False,
+            "reason": art.get("reason") or "interpretive_bridge_unavailable",
+            "schema": art.get("schema"),
+        }
+    guard = art.get("synthesis_guardrails_ko") if isinstance(art.get("synthesis_guardrails_ko"), dict) else {}
+    return {
+        "available": True,
+        "schema": art.get("schema"),
+        "bridge_mode": art.get("bridge_mode"),
+        "auto_weight_adjustment_forbidden": bool(art.get("auto_weight_adjustment_forbidden", True)),
+        "track_a_live_routing_forbidden": bool(art.get("track_a_live_routing_forbidden", True)),
+        "decision_authority": art.get("decision_authority"),
+        "axis_count": art.get("axis_count"),
+        "source_bundle_version": art.get("source_bundle_version"),
+        "forbidden_synthesis_present": bool(guard.get("forbidden_synthesis_ko")),
+    }
+
+
 def _extract_compression_bridge_meta(bundle: dict[str, Any]) -> dict[str, Any]:
     art = bundle.get("artifacts", {}).get("compression_bridge_context") or {}
     if not isinstance(art, dict) or not art:
@@ -452,6 +476,7 @@ def _build_ensemble_from_bundle(
 ) -> dict[str, Any]:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     compression_bridge = _extract_compression_bridge_meta(bundle)
+    interpretive_bridge = _extract_interpretive_bridge_meta(bundle)
     raw_weights = ensemble_cfg.get("weights") if isinstance(ensemble_cfg.get("weights"), dict) else {}
     weights, weights_source = _resolve_weights(raw_weights)
     rules = ensemble_cfg.get("rules") if isinstance(ensemble_cfg.get("rules"), dict) else {}
@@ -604,6 +629,9 @@ def _build_ensemble_from_bundle(
             "compression_bridge_available": bool(compression_bridge.get("available")),
             "compression_bridge_adjustment": compression_adjustment_meta,
             "compression_bridge_confidence_adjustment": confidence_adjustment_meta,
+            "interpretive_bridge": interpretive_bridge,
+            "interpretive_bridge_available": bool(interpretive_bridge.get("available")),
+            "interpretive_bridge_weight_adjustment_applied": False,
         },
     }
 
@@ -638,6 +666,7 @@ def _build_ensemble_v2_from_bundle(
     """v2: separate myeongni/sasang/logos + confidence-scaled weights (B-track research_only)."""
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     compression_bridge = _extract_compression_bridge_meta(bundle)
+    interpretive_bridge = _extract_interpretive_bridge_meta(bundle)
     raw_weights = ensemble_cfg.get("weights_v2") if isinstance(ensemble_cfg.get("weights_v2"), dict) else {}
     base_weights = _resolve_weights_v2(raw_weights)
     rules = ensemble_cfg.get("rules") if isinstance(ensemble_cfg.get("rules"), dict) else {}
@@ -807,6 +836,9 @@ def _build_ensemble_v2_from_bundle(
         "compression_bridge_available": bool(compression_bridge.get("available")),
         "compression_bridge_adjustment": compression_adjustment_meta,
         "compression_bridge_confidence_adjustment": confidence_adjustment_meta,
+        "interpretive_bridge": interpretive_bridge,
+        "interpretive_bridge_available": bool(interpretive_bridge.get("available")),
+        "interpretive_bridge_weight_adjustment_applied": False,
         "regime_conditional_price_dampen": regime_meta,
         "conditional_bear_override": bear_meta,
         "low_confidence_direction_gate": low_conf_gate,

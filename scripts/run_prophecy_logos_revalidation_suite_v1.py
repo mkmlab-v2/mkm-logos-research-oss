@@ -42,6 +42,17 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def _panel_row_count(score_json: Path, target_instrument: str) -> int:
+    doc = _read_json(score_json)
+    rows = doc.get("rows") if isinstance(doc.get("rows"), list) else []
+    inst = target_instrument.strip().lower()
+    return sum(
+        1
+        for r in rows
+        if isinstance(r, dict) and str(r.get("instrument") or "").strip().lower() == inst
+    )
+
+
 def _safe_float(v: Any, d: float = 0.0) -> float:
     try:
         return float(v)
@@ -215,6 +226,17 @@ def main() -> int:
         router_dz_grid = "0.003,0.005,0.01,0.02"
         oos_tail_days = "252"
 
+  # Short panels (e.g. 30d dual-leg): strict/ quick defaults (120–252) exceed row count.
+    panel_n = _panel_row_count(args.score_json, args.target_instrument)
+    if panel_n > 0:
+        max_tail = max(3, panel_n - 10)
+        try:
+            requested_tail = int(oos_tail_days)
+        except ValueError:
+            requested_tail = max_tail
+        if requested_tail >= panel_n:
+            oos_tail_days = str(max_tail)
+
     lens_cmd = [
         sys.executable,
         str(ROOT / "scripts" / "run_prophecy_lens_combo_backtest_v1.py"),
@@ -238,6 +260,8 @@ def main() -> int:
         "30",
         "--output",
         str(args.lens_output),
+        "--logos-vote-mode",
+        "global",
     ]
     router_cmd = [
         sys.executable,

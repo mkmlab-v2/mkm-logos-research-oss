@@ -981,11 +981,18 @@ def evaluate_report(
     candidate_pool_min_jaccard_for_greedy: float = 0.88,
     candidate_pool_min_integrity_for_greedy: float = 1.0,
     emit_semantic_pointer: bool = False,
+    graph_wire_selective_bridge: bool = False,
+    case_graph_wire_influence: dict[str, dict[str, Any]] | None = None,
     experimental_decoder_fidelity_for_baseline: bool = False,
     domain_min_saving_floor_overrides: dict[str, float] | None = None,
     domain_relaxed_max_saving_overrides: dict[str, float] | None = None,
     domain_relaxed_max_saving_case_allowlist: frozenset[str] | None = None,
     domain_relaxed_max_saving_exclude_case_ids: frozenset[str] | None = None,
+    ijeoma_cjk_substitution_hypo_v1: bool = False,
+    ijeoma_cjk_substitution_lexicon_path: Path | str | None = None,
+    ijeoma_cjk_marker_strategy: str | None = None,
+    ijeoma_cjk_shorter_by: str | None = None,
+    ijeoma_cjk_billing_mode: bool | None = None,
 ) -> dict[str, Any]:
     if force_shard_id and not use_domain_router:
         raise ValueError("force_shard_id requires use_domain_router=True (DomainSpecificRouter).")
@@ -1020,12 +1027,60 @@ def evaluate_report(
         else None
     )
     state16_adapter = NoopState16Adapter()
+    _ijeoma_lex_default: Path | None = None
+    if ijeoma_cjk_substitution_hypo_v1:
+        from scripts.ijeoma_cjk_compression_hypo_v1 import (  # noqa: WPS433
+            compress_ijeoma_cjk_substitution,
+            default_hypo_lexicon_path,
+            expand_ijeoma_cjk_substitution,
+            resolve_marker_strategy,
+            resolve_shorter_by,
+            is_ijeoma_cjk_billing_mode,
+            _has_cjk,
+        )
+
+        _ijeoma_lex_default = (
+            Path(ijeoma_cjk_substitution_lexicon_path).resolve()
+            if ijeoma_cjk_substitution_lexicon_path
+            else default_hypo_lexicon_path()
+        )
+
     for c in comp_cases:
         case_id = str(c.get("id", ""))
         raw = str(c.get("raw_text", ""))
         source_comp = str(c.get("compressed_text", ""))
         source_rec = str(c.get("reconstructed_text", ""))
         comp = source_comp
+        case_mode = mode
+        cjk_sub_meta: dict[str, Any] | None = None
+        lane_id = str(c.get("lane_id") or "")
+        case_domain_hint = str(c.get("domain") or c.get("domain_tag") or "")
+        use_cjk_sub = ijeoma_cjk_substitution_hypo_v1 and _has_cjk(raw) and (
+            "ijeoma" in lane_id
+            or case_domain_hint == "ijeoma_sasang"
+            or c.get("ijeoma_cjk_substitution_hypo_v1") is True
+        )
+        if use_cjk_sub and _ijeoma_lex_default and _ijeoma_lex_default.is_file():
+            billing_active = (
+                ijeoma_cjk_billing_mode
+                if ijeoma_cjk_billing_mode is not None
+                else is_ijeoma_cjk_billing_mode()
+            )
+            cjk_marker = resolve_marker_strategy(ijeoma_cjk_marker_strategy, c)
+            cjk_shorter = resolve_shorter_by(ijeoma_cjk_shorter_by, c)
+            comp, cjk_sub_meta = compress_ijeoma_cjk_substitution(
+                raw,
+                _ijeoma_lex_default,
+                marker_strategy=cjk_marker,
+                shorter_by=cjk_shorter,
+            )
+            source_rec = expand_ijeoma_cjk_substitution(
+                comp, _ijeoma_lex_default, marker_strategy=cjk_marker
+            )
+            source_comp = comp
+            if isinstance(cjk_sub_meta, dict):
+                cjk_sub_meta["billing_mode_active"] = billing_active
+            case_mode = "baseline"
         effective_must_keep = set(must_keep)
         effective_hangul_principle = use_hangul_principle
         route_info: dict[str, Any] | None = None
@@ -1086,13 +1141,25 @@ def evaluate_report(
             apply_gematria_4d_bridge_policy=apply_gematria_4d_bridge_policy,
             bridge_policy_domain_allowlist=bridge_policy_domain_allowlist,
         )
+        wire_inf = (case_graph_wire_influence or {}).get(case_id)
+        if graph_wire_selective_bridge and isinstance(wire_inf, dict) and wire_inf.get("bridge_boost"):
+            apply_bridge_case = True
+        if isinstance(wire_inf, dict):
+            if route_info is None:
+                route_info = {}
+            route_info["graph_wire_influence_v1"] = {
+                "atom_id_sequence": wire_inf.get("atom_id_sequence"),
+                "wire_influence_score": wire_inf.get("wire_influence_score"),
+                "bridge_boost": wire_inf.get("bridge_boost"),
+                "graph_anchor_terms": (wire_inf.get("graph_anchor_terms") or [])[:12],
+            }
         if (
             apply_bridge_case
-            and mode == "experimental"
+            and case_mode == "experimental"
             and bridge_meta is not None
         ):
             effective_must_keep.update(_bridge_policy_terms_for_state(bridge_meta.get("state16")))
-        if mode == "experimental":
+        if case_mode == "experimental":
             expanded_must_keep = _expand_must_keep_words(effective_must_keep)
             if contextual_codec_v5 is not None and apply_bridge_case and bridge_meta is not None:
                 comp = contextual_codec_v5.encode(
@@ -1284,9 +1351,11 @@ def evaluate_report(
             raw=raw,
             source_reconstructed=source_rec,
             compressed_candidate=comp,
-            mode=mode,
+            mode=case_mode,
         )
-        if mode == "experimental":
+        if cjk_sub_meta is not None:
+            rec_for_eval = source_rec
+        if case_mode == "experimental":
             if codec_decoded is not None:
                 rec_for_eval = codec_decoded
             else:
@@ -1295,7 +1364,7 @@ def evaluate_report(
                     compressed_candidate=comp,
                     use_hangul_principle=effective_hangul_principle,
                 )
-        elif experimental_decoder_fidelity_for_baseline and mode == "baseline":
+        elif experimental_decoder_fidelity_for_baseline and case_mode == "baseline":
             # General-rail A/B: baseline rows otherwise score fidelity vs fixture
             # `reconstructed_text` while experimental scores vs the same heuristic
             # decoder, which inflates treatment Jaccard on Hangul routes. Use the
@@ -1336,6 +1405,7 @@ def evaluate_report(
         ).to_row_dict()
         row = {
             "id": c.get("id"),
+            "eval_mode_effective": case_mode,
             "raw_tokens": raw_t,
             "compressed_tokens": comp_t,
             "token_saving_rate": saving,
@@ -1348,8 +1418,10 @@ def evaluate_report(
             "route": route_info,
             "state16": state16_row,
         }
+        if cjk_sub_meta is not None:
+            row["ijeoma_cjk_substitution_hypo_v1"] = cjk_sub_meta
         if emit_semantic_pointer:
-            row["semantic_pointer"] = _semantic_pointer_v1(
+            sp = _semantic_pointer_v1(
                 case_id=c.get("id"),
                 route_info=route_info if isinstance(route_info, dict) else None,
                 bridge_meta=bridge_meta,
@@ -1357,6 +1429,14 @@ def evaluate_report(
                 raw_tokens=raw_t,
                 compressed_tokens=comp_t,
             )
+            if isinstance(wire_inf, dict):
+                sp["graph_wire_influence_v1"] = {
+                    "atom_id_sequence": wire_inf.get("atom_id_sequence"),
+                    "wire_influence_score": wire_inf.get("wire_influence_score"),
+                    "bridge_boost": wire_inf.get("bridge_boost"),
+                    "graph_anchor_terms": (wire_inf.get("graph_anchor_terms") or [])[:12],
+                }
+            row["semantic_pointer"] = sp
         if enc_o200k is not None:
             o200k_r = len(enc_o200k.encode(raw))
             o200k_c = len(enc_o200k.encode(comp))
@@ -1506,6 +1586,8 @@ def evaluate_report(
             "tiktoken_o200k_available": enc_o200k is not None,
             "tiktoken_o200k_unavailable_reason": o200k_err,
             "emit_semantic_pointer": emit_semantic_pointer,
+            "graph_wire_selective_bridge": graph_wire_selective_bridge,
+            "case_graph_wire_influence_count": len(case_graph_wire_influence or {}),
             "experimental_decoder_fidelity_for_baseline": bool(experimental_decoder_fidelity_for_baseline),
             "enable_router_blend_candidate": enable_router_blend_candidate,
             "domain_min_saving_floor_overrides": domain_min_saving_floor_overrides,

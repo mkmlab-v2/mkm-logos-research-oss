@@ -29,6 +29,19 @@ def test_build_slice_from_dashboard(tmp_path: Path) -> None:
                         "rows_total": 2,
                         "vendor_share_by_event_pct": 50.0,
                     },
+                    "patient_intake_fusion_b_track": {
+                        "state": "OK",
+                        "clinical_sasang_label": "소음인",
+                        "cross_checks_v1": {
+                            "myeongni_sasang_clinical_v1": {
+                                "status": "match",
+                                "status_ko": "일치(표면)",
+                                "constitution_id": "soeum_in",
+                            }
+                        },
+                        "deep_link_count": 5,
+                        "boming_term_count": 12,
+                    },
                 }
             },
             ensure_ascii=False,
@@ -57,6 +70,10 @@ def test_build_slice_from_dashboard(tmp_path: Path) -> None:
     assert "compression_governance_v0" in doc
     assert doc["compression_governance_v0"].get("role") == "compression_governance_read_only_v0"
     assert doc["compression_board_ms_v0"].get("role") == "compression_board_ms_research_read_only_v0"
+    pit = doc.get("patient_intake_b_track_v0") or {}
+    assert pit.get("state") == "OK"
+    assert pit.get("auto_prescription_forbidden") is True
+    assert pit.get("clinical_sasang_label") == "소음인"
 
 
 def test_build_slice_missing_dashboard_writes_nodata(tmp_path: Path) -> None:

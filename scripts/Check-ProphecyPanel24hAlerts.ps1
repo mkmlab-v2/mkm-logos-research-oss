@@ -22,6 +22,14 @@
   ALERT_2-only failure (strict_passed / auto_promote_ready) does not POST (reduces noise; exit code still 1).
   Use -IncludeAlert2InWebhook to restore legacy "webhook on any alert failure".
   Use -SkipWebhook to suppress POST (e.g. CI without secrets).
+  By default runs lightweight observability refresh (advisory-sweep, Dual-KPI compare) before
+  reading artifacts — aligned with run_btrack_daily_hypothesis_chain.ps1. Use -SkipObservabilityRefresh
+  for CI or when the daily chain just finished.
+
+  kpi_b_operational_headline: when commander approval JSON is APPROVED_KPI_B_OPERATIONAL_HEADLINE,
+  ALERT_1 uses prophecy_runtime_health_thresholds_v1.json (headline >= min_hit_rate_kpi_b_per_date_headline
+  OR directional skill floor with n_calls >= 10). Commander O-P29b headline lane (headline_promotion_v1)
+  is not auto-promoted from this panel.
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
@@ -29,10 +37,12 @@ param(
     [string]$OutJson = "",
     [switch]$AppendLog,
     [switch]$SkipWebhook,
-    [switch]$IncludeAlert2InWebhook
+    [switch]$IncludeAlert2InWebhook,
+    [switch]$SkipObservabilityRefresh
 )
 
 $ErrorActionPreference = "Stop"
+Set-Location -LiteralPath $WorkspaceRoot
 
 function Read-JsonFile {
     param([Parameter(Mandatory=$true)][string]$Path)
@@ -42,20 +52,125 @@ function Read-JsonFile {
     return Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json
 }
 
-$hitPath = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_hit_rate_eval_latest.json"
+function Read-JsonFileOptional {
+    param([string]$Path)
+    if (-not (Test-Path -LiteralPath $Path)) { return $null }
+    try {
+        return Get-Content -LiteralPath $Path -Raw -Encoding UTF8 | ConvertFrom-Json
+    } catch {
+        return $null
+    }
+}
+
+# Observability refresh (non-gating; mirrors daily chain hooks for scheduled panel task).
+$obsRefresh = [ordered]@{
+    skipped = [bool]$SkipObservabilityRefresh
+    steps = @()
+}
+if (-not $SkipObservabilityRefresh) {
+    $perDateDirsPath = Join-Path $WorkspaceRoot "reports\btrack_ensemble_per_date_directions_v1_latest.json"
+    $btcDefault = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
+    if (-not (Test-Path -LiteralPath $perDateDirsPath) -and (Test-Path -LiteralPath $btcDefault)) {
+        Write-Host "==> build_btrack_ensemble_per_date_directions_v1.py (panel advisory prereq)" -ForegroundColor DarkCyan
+        py scripts/build_btrack_ensemble_per_date_directions_v1.py --recent-trading-days 30 --target-instrument btc
+        $obsRefresh.steps += [ordered]@{ step = "build_per_date_directions"; exit_code = $LASTEXITCODE }
+    }
+    if (Test-Path -LiteralPath $perDateDirsPath) {
+        Write-Host "==> run_btrack_wrong_dir_holdout_v1.py advisory-sweep (panel refresh; non-gating)" -ForegroundColor DarkCyan
+        py scripts/run_btrack_wrong_dir_holdout_v1.py advisory-sweep
+        $obsRefresh.steps += [ordered]@{ step = "advisory-sweep"; exit_code = $LASTEXITCODE }
+        $holdoutManifest = Join-Path $WorkspaceRoot "scripts\build_btrack_holdout_gate_candidate_manifest_v1.py"
+        if (Test-Path -LiteralPath $holdoutManifest) {
+            py $holdoutManifest --skip-probe-refresh
+            $obsRefresh.steps += [ordered]@{ step = "build_btrack_holdout_gate_candidate_manifest_v1"; exit_code = $LASTEXITCODE }
+        }
+        foreach ($holdoutScript in @(
+            "build_btrack_holdout_gate_oos_180d_eval_v1.py",
+            "build_btrack_holdout_price_lens_cf_holdout7_v1.py"
+        )) {
+            $rel = Join-Path $WorkspaceRoot "scripts\$holdoutScript"
+            if (Test-Path -LiteralPath $rel) {
+                py $rel
+                $obsRefresh.steps += [ordered]@{ step = $holdoutScript; exit_code = $LASTEXITCODE }
+            }
+        }
+    } else {
+        Write-Host "WARN: Skip advisory-sweep (missing per-date directions): $perDateDirsPath" -ForegroundColor Yellow
+        $obsRefresh.steps += [ordered]@{ step = "advisory-sweep"; skipped = "missing_per_date_directions" }
+    }
+
+    $compareScript = Join-Path $WorkspaceRoot "scripts\compare_frozen_vs_per_date_combo_panel_v1.py"
+    if (Test-Path -LiteralPath $compareScript) {
+        Write-Host "==> compare_frozen_vs_per_date_combo_panel_v1.py (Dual-KPI panel compare)" -ForegroundColor DarkCyan
+        py $compareScript --min-train-rows 3 --output reports\frozen_vs_per_date_panel_compare_v1_latest.json
+        $obsRefresh.steps += [ordered]@{ step = "compare_frozen_vs_per_date_combo_panel_v1"; exit_code = $LASTEXITCODE }
+    }
+
+    $kpiBApprovalPath = Join-Path $WorkspaceRoot "docs\final\artifacts\btrack_dual_kpi_headline_human_approval_v1_latest.json"
+    $kpiBAp = Read-JsonFileOptional -Path $kpiBApprovalPath
+    if ($kpiBAp -and ([string]$kpiBAp.decision -eq "APPROVED_KPI_B_OPERATIONAL_HEADLINE")) {
+        $btcResolved = $btcDefault
+        if (Test-Path -LiteralPath $btcResolved) {
+            Write-Host "==> run_btrack_kpi_b_shadow_eval_v1.py (kpi_b_operational_headline observability)" -ForegroundColor DarkCyan
+            py scripts/run_btrack_kpi_b_shadow_eval_v1.py --btc-csv $btcResolved
+            $obsRefresh.steps += [ordered]@{ step = "kpi_b_shadow_eval"; exit_code = $LASTEXITCODE }
+        }
+    }
+}
+
+$hitPath = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_hit_rate_eval_daily_operational_latest.json"
 $panelPath = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_promotion_gates_v1_panel_calibrated_latest.json"
+$thresholdsPath = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_runtime_health_thresholds_v1.json"
+$kpiBApprovalPath = Join-Path $WorkspaceRoot "docs\final\artifacts\btrack_dual_kpi_headline_human_approval_v1_latest.json"
+$holdoutGateCandidatePath = Join-Path $WorkspaceRoot "reports\btrack_holdout_gate_candidate_v1_latest.json"
+$holdoutGateOosPath = Join-Path $WorkspaceRoot "reports\btrack_holdout_gate_oos_180d_v1_latest.json"
+$holdoutCfPath = Join-Path $WorkspaceRoot "reports\btrack_holdout_price_lens_cf_holdout7_v1_latest.json"
 
 $hit = Read-JsonFile -Path $hitPath
 $panel = Read-JsonFile -Path $panelPath
+$thresholds = Read-JsonFileOptional -Path $thresholdsPath
+$kpiBApproval = Read-JsonFileOptional -Path $kpiBApprovalPath
 
 if (-not $hit.metrics) {
-    throw "prophecy_hit_rate_eval_latest.json missing metrics (required for ALERT_1)"
+    throw "prophecy_hit_rate_eval_daily_operational_latest.json missing metrics (required for ALERT_1)"
 }
 if ($null -eq $hit.metrics.price_directional_hit_rate) {
-    throw "prophecy_hit_rate_eval_latest.json missing metrics.price_directional_hit_rate"
+    throw "prophecy_hit_rate_eval_daily_operational_latest.json missing metrics.price_directional_hit_rate"
 }
 $hitRate = [double]($hit.metrics.price_directional_hit_rate)
+
+$kpiBOperationalHeadline = $false
+if ($kpiBApproval -and ([string]$kpiBApproval.decision -eq "APPROVED_KPI_B_OPERATIONAL_HEADLINE")) {
+    $kpiBOperationalHeadline = $true
+}
+
+$alert1Policy = "frozen_default_min_hit_rate"
+$alert1ThresholdMin = $MinHitRate
 $a1Pass = $hitRate -ge $MinHitRate
+
+if ($kpiBOperationalHeadline -and $thresholds) {
+    $alert1Policy = "kpi_b_operational_headline"
+    $floorHeadline = [double]$thresholds.min_hit_rate_kpi_b_per_date_headline
+    $floorDir = [double]$thresholds.min_directional_hit_rate_kpi_b_operational
+    $alert1ThresholdMin = $floorHeadline
+    $a1Pass = $hitRate -ge $floorHeadline
+    $kpiBShadowPath = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_hit_rate_eval_kpi_b_shadow_v1_latest.json"
+    $kpiBShadow = Read-JsonFileOptional -Path $kpiBShadowPath
+    if ($kpiBShadow -and $kpiBShadow.metrics) {
+        $m = $kpiBShadow.metrics
+        $dirRate = $null
+        $nDir = 0
+        if ($null -ne $m.price_hit_rate_on_directional_calls) {
+            $dirRate = [double]$m.price_hit_rate_on_directional_calls
+        }
+        if ($null -ne $m.n_directional_calls) {
+            $nDir = [int]$m.n_directional_calls
+        }
+        if ($dirRate -ne $null -and $nDir -ge 10 -and $dirRate -ge $floorDir) {
+            $a1Pass = $true
+        }
+    }
+}
 
 $strictPassed = [bool]$panel.strict_passed
 $autoReady = [bool]$panel.auto_promote_ready
@@ -114,6 +229,12 @@ $result = [ordered]@{
         hit_rate_path = $hitPath
         panel_gate_path = $panelPath
         min_hit_rate = $MinHitRate
+        thresholds_path = $thresholdsPath
+        kpi_b_approval_path = $kpiBApprovalPath
+        holdout_gate_candidate_path = $holdoutGateCandidatePath
+        holdout_gate_oos_path = $holdoutGateOosPath
+        holdout_price_lens_cf_path = $holdoutCfPath
+        observability_refresh = $obsRefresh
         webhook_routing = [ordered]@{
             mode = $(if ($IncludeAlert2InWebhook) { "all_alerts" } else { "performance_and_structural_only" })
             posts_when = $(if ($IncludeAlert2InWebhook) { "any_alert_failed" } else { "alert1_or_alert3_failed" })
@@ -122,8 +243,11 @@ $result = [ordered]@{
     alerts = [ordered]@{
         ALERT_1_PERFORMANCE = [ordered]@{
             passed = $a1Pass
+            policy = $alert1Policy
+            kpi_b_operational_headline = $kpiBOperationalHeadline
             observed_price_directional_hit_rate = [math]::Round($hitRate, 6)
-            threshold_min = $MinHitRate
+            threshold_min = $alert1ThresholdMin
+            threshold_min_param = $MinHitRate
         }
         ALERT_2_GATE_REGRESSION = [ordered]@{
             passed = $a2Pass

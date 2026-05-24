@@ -37,6 +37,14 @@ from pydantic import BaseModel, Field  # noqa: E402
 from starlette.middleware.cors import CORSMiddleware  # noqa: E402
 
 from scripts.core.billing_meter import append_meter_event  # noqa: E402
+from scripts.core.compression_hardening_v1 import (  # noqa: E402
+    extract_mask_must_keep,
+    force_identity_on_eval_error,
+    gatekeeper_bypass_max_tokens,
+    llm_decode_params,
+    should_bypass_compression,
+    should_circuit_break_report,
+)
 from scripts.core.fallback_event_meter import append_fallback_event  # noqa: E402
 from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
 from scripts.core.multilens_bridge_policy_env import env_apply_gematria_4d_bridge_policy  # noqa: E402
@@ -480,6 +488,7 @@ def _live_eval_metrics(
     bytes_in: int | None = None,
     token_in: int | None = None,
     emit_semantic_pointer: bool = False,
+    extra_must_keep: set[str] | None = None,
 ) -> tuple[CompressionMetrics | None, float, str | None, dict[str, Any] | None]:
     selected = _decision_selected_profile()
     strategy = str(selected.get("strategy", "A"))
@@ -494,6 +503,9 @@ def _live_eval_metrics(
         ],
         "fusion_answer_cases": [],
     }
+    mk = {"사상의학", "체질", "sasang", "myeongri", "bible"}
+    if extra_must_keep:
+        mk = mk | set(extra_must_keep)
     try:
         _bp = env_apply_gematria_4d_bridge_policy()
         report = evaluate_report(
@@ -502,7 +514,7 @@ def _live_eval_metrics(
             mode="experimental",
             strategy=strategy if strategy in {"A", "B", "C"} else "A",
             intensity=intensity if intensity in {"high", "ultra", "extreme"} else "extreme",
-            must_keep={"사상의학", "체질", "sasang", "myeongri", "bible"},
+            must_keep=mk,
             jaccard_drop_threshold_pp=1.5,
             baseline_avg_jaccard=_baseline_avg_jaccard(),
             general_max_saving_rate=float(general_cap) if general_cap is not None else None,
@@ -516,6 +528,9 @@ def _live_eval_metrics(
             apply_gematria_4d_bridge_policy=_bp,
             emit_semantic_pointer=emit_semantic_pointer,
         )
+        cb_on, cb_reasons = should_circuit_break_report(report)
+        if cb_on:
+            return None, (perf_counter() - t0) * 1000.0, "circuit_breaker:" + ",".join(cb_reasons), None
         comp_block = report.get("compression_metrics", {})
         ratio = float(comp_block.get("global_token_saving_rate", 0.0))
         cases = comp_block.get("cases", [])
@@ -554,6 +569,13 @@ def _live_eval_metrics(
                     sp0 = cand
         return metrics, round((perf_counter() - t0) * 1000.0, 3), None, sp0
     except Exception as exc:
+        if force_identity_on_eval_error():
+            return (
+                None,
+                round((perf_counter() - t0) * 1000.0, 3),
+                f"circuit_breaker_eval_error:{type(exc).__name__}",
+                None,
+            )
         return None, round((perf_counter() - t0) * 1000.0, 3), type(exc).__name__, None
 
 
@@ -677,6 +699,27 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
         tuple[CompressionMetrics | None, float, str | None, dict[str, Any] | None] | None
     ) = None
     bytes_in, token_in = _text_size_tokens(body.text)
+    mask_terms, mask_meta = extract_mask_must_keep(body.text)
+    if mask_meta.get("mask_applied"):
+        flags["precompress_mask"] = mask_meta
+    flags["llm_decode_params"] = llm_decode_params()
+    flags["compression_hardening_config"] = "compression_enterprise_hardening_config_v1.json"
+    if should_bypass_compression(token_in):
+        flags["compression_gatekeeper_bypass"] = True
+        flags["compression_gatekeeper_max_tokens"] = gatekeeper_bypass_max_tokens()
+        metrics = _estimate_metrics_from_text(body.text, 0.0, bytes_in=bytes_in, token_in=token_in)
+        flags["metrics_mode"] = "identity_gatekeeper_bypass"
+        flags["shadow_mode"] = "disabled"
+        return CompressResponse(
+            shard_id=route.shard_id,
+            domain=route.domain,
+            original_text=body.text,
+            client_request_id=body.client_request_id,
+            eval_context_echo=body.eval_context,
+            compression_metrics=metrics,
+            semantic_pointer=None,
+            integrity_flags=flags,
+        )
     fallback_on, fallback_reasons, fallback_sig = _fallback_decision(body.text, token_in)
     flags["fallback_profile_active"] = bool(_fallback_profile_doc())
     flags["fallback_safe_triggered"] = fallback_on
@@ -757,6 +800,7 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
                     bytes_in=bytes_in,
                     token_in=token_in,
                     emit_semantic_pointer=emit_sp,
+                    extra_must_keep=mask_terms,
                 )
                 live_metrics_cache = (metrics, latency_ms, live_err, sp_live)
                 flags["hydration_live_eval_elapsed_ms"] = latency_ms
@@ -797,6 +841,7 @@ def compress(body: CompressRequest, request: Request) -> CompressResponse:
                 bytes_in=bytes_in,
                 token_in=token_in,
                 emit_semantic_pointer=emit_sp,
+                extra_must_keep=mask_terms,
             )
             if semantic_pointer_out is None and shadow_sp is not None:
                 semantic_pointer_out = shadow_sp

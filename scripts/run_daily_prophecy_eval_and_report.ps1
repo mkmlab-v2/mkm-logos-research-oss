@@ -11,6 +11,7 @@
 # Optional env: MKM_BTC_DAILY_CSV (path to BTC daily CSV), MKM_PROPHECY_PROXY_REGISTRY_GLOB (proxy eval),
 #   MKM_PROPHECY_SHADOW_PANEL_MODE (both | all | instrument_combo_best | per_date_lens_holdout_best | walkforward_aggregate) when -ShadowPanelMode omitted,
 #   MKM_PROPHECY_WALKFORWARD_N_FOLDS (integer) passed to walk-forward script when shadow mode is all or walkforward_aggregate.
+# Optional -IncludeCrossLensRagFusion: refreshes cross_lens_rag_fusion_latest.json + three_lens_sphere_envelope (Telegram advanced I-c/I-d).
 #
 # Example (Task Scheduler):
 #   powershell.exe -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\run_daily_prophecy_eval_and_report.ps1" -IncludeDatedArchive
@@ -46,7 +47,10 @@ param(
     [int]$TrinitySafetyConsecutiveThresholdBtc = 0,
     [switch]$SkipRuntimeHealthGuard,
     # Operation Mode B: live ON + prophecy gates not passed -> amber (not red GATE_LIVE_CONFLICT).
-    [switch]$OperationModeBShadow
+    [switch]$OperationModeBShadow,
+    # After eval: refresh cross_lens_rag_fusion + three_lens_sphere for 08:28 Telegram I-c/I-d.
+    [switch]$IncludeCrossLensRagFusion,
+    [switch]$SkipCrossLensRagFusion
 )
 
 $ErrorActionPreference = "Stop"
@@ -83,7 +87,8 @@ if ($IncludeShadowPanelEval -and -not (Test-Path -LiteralPath $shadowPanelScript
 
 $artifactsDir = Join-Path $WorkspaceRoot "docs\final\artifacts"
 $scoreOut = Join-Path $artifactsDir "btrack_prophecy_score_latest.json"
-$evalOut = Join-Path $artifactsDir "prophecy_hit_rate_eval_latest.json"
+$evalOut = Join-Path $artifactsDir "prophecy_hit_rate_eval_daily_operational_latest.json"
+$headlineEvalOut = Join-Path $artifactsDir "prophecy_hit_rate_eval_latest.json"
 $shadowPanelOut = Join-Path $artifactsDir "prophecy_shadow_panel_eval_v1_latest.json"
 $runtimeHealthOut = Join-Path $artifactsDir "prophecy_runtime_health_guard_latest.json"
 $walkforwardOut = Join-Path $artifactsDir "prophecy_per_date_combo_walkforward_v1_latest.json"
@@ -128,8 +133,8 @@ if (-not $SkipBuildScore) {
     }
 }
 
-Write-Host "==> eval_prophecy_hit_rate_v1.py (price)"
-& py scripts\eval_prophecy_hit_rate_v1.py --run-mode price --score-json $scoreOut
+Write-Host "==> eval_prophecy_hit_rate_v1.py (price -> daily operational; headline KPI untouched)"
+& py scripts\eval_prophecy_hit_rate_v1.py --run-mode price --score-json $scoreOut --output $evalOut
 if ($LASTEXITCODE -ne 0) {
     throw "eval_prophecy_hit_rate_v1.py (price) exit $LASTEXITCODE"
 }
@@ -710,4 +715,35 @@ if ($FailOnRuntimeHealthRed -and $runtimeHealthStatus -eq "red") {
     exit 3
 }
 
-Write-Host "OK: Daily prophecy eval finished. Latest: $evalOut Log: $logPath"
+$crossLensScript = Join-Path $WorkspaceRoot "scripts\build_cross_lens_rag_fusion_v1.py"
+$sphereScript = Join-Path $WorkspaceRoot "scripts\assemble_three_lens_sphere_envelope_v1.py"
+if ($IncludeCrossLensRagFusion -and -not $SkipCrossLensRagFusion) {
+    if (Test-Path -LiteralPath $crossLensScript) {
+        Write-Host "==> build_cross_lens_rag_fusion_v1.py (Track B; commander Telegram I-c)"
+        & py scripts\build_cross_lens_rag_fusion_v1.py --skip-alert-emit
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "build_cross_lens_rag_fusion_v1.py exit $LASTEXITCODE; Telegram cross-lens block may be stale."
+        }
+    }
+    else {
+        Write-Warning "Missing: $crossLensScript"
+    }
+    if (Test-Path -LiteralPath $sphereScript) {
+        Write-Host "==> assemble_three_lens_sphere_envelope_v1.py (4RAG pointers; Telegram I-d)"
+        & py scripts\assemble_three_lens_sphere_envelope_v1.py
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "assemble_three_lens_sphere_envelope_v1.py exit $LASTEXITCODE; Telegram 4RAG block may be stale."
+        }
+    }
+    else {
+        Write-Warning "Missing: $sphereScript"
+    }
+}
+
+Write-Host "==> build_prophecy_hit_rate_ssot_pointer_v1.py"
+& py scripts\build_prophecy_hit_rate_ssot_pointer_v1.py
+if ($LASTEXITCODE -ne 0) {
+    throw "build_prophecy_hit_rate_ssot_pointer_v1.py exit $LASTEXITCODE"
+}
+
+Write-Host "OK: Daily prophecy eval finished. Operational: $evalOut Headline KPI (unchanged unless promoted): $headlineEvalOut Log: $logPath"

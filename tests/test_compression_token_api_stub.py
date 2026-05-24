@@ -20,6 +20,22 @@ OPENAPI_STUB = ROOT / "docs" / "final" / "openapi_token_compression_stub_v1.yaml
 PARITY_DEBUG_OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "token_api_parity_debug_latest.json"
 
 
+@pytest.fixture(autouse=True)
+def _compression_stub_test_hardening_no_gatekeeper_bypass(monkeypatch, tmp_path):
+    """M0 gatekeeper: short payloads bypass compress — disable for legacy contract tests."""
+    cfg = tmp_path / "compression_hardening_test_gatekeeper_off.json"
+    cfg.write_text(
+        json.dumps({"schema": "compression_enterprise_hardening_config_v1", "gatekeeper_bypass_max_tokens": 0}),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("COMPRESSION_HARDENING_CONFIG_PATH", str(cfg))
+    from scripts.core import compression_hardening_v1 as ch
+
+    ch._config_doc.cache_clear()
+    yield
+    ch._config_doc.cache_clear()
+
+
 def _write_parity_debug(payload: dict, details: list[dict]) -> None:
     PARITY_DEBUG_OUT.parent.mkdir(parents=True, exist_ok=True)
     git_sha = os.getenv("GITHUB_SHA", "").strip()
@@ -232,6 +248,27 @@ def test_fallback_event_log_appended(monkeypatch, tmp_path):
     assert evt.get("triggered") is True
 
 
+def test_gatekeeper_bypass_short_payload(monkeypatch, tmp_path):
+    """M0: sub-threshold token_in → identity pass-through (explicit contract)."""
+    cfg = tmp_path / "compression_hardening_bypass_on.json"
+    cfg.write_text(
+        json.dumps({"schema": "compression_enterprise_hardening_config_v1", "gatekeeper_bypass_max_tokens": 4000}),
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("COMPRESSION_HARDENING_CONFIG_PATH", str(cfg))
+    from scripts.core import compression_hardening_v1 as ch
+
+    ch._config_doc.cache_clear()
+    r = client.post("/v1/compress", json={"text": "bible test hangul 테스트"})
+    assert r.status_code == 200
+    data = r.json()
+    flags = data.get("integrity_flags") or {}
+    assert flags.get("compression_gatekeeper_bypass") is True
+    assert flags.get("metrics_mode") == "identity_gatekeeper_bypass"
+    metrics = data.get("compression_metrics") or {}
+    assert int(metrics.get("token_in", 0)) > 0
+
+
 def test_compress_returns_shard():
     r = client.post("/v1/compress", json={"text": "bible test hangul 테스트"})
     assert r.status_code == 200
@@ -353,7 +390,14 @@ def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
     stub._live_eval_min_tokens.cache_clear()
     calls = {"n": 0}
 
-    def _fake_live_eval(text: str, *, bytes_in=None, token_in=None, emit_semantic_pointer=False):
+    def _fake_live_eval(
+        text: str,
+        *,
+        bytes_in=None,
+        token_in=None,
+        emit_semantic_pointer=False,
+        extra_must_keep=None,
+    ):
         calls["n"] += 1
         return (
             stub.CompressionMetrics(
@@ -369,6 +413,7 @@ def test_compress_reuses_live_eval_for_shadow_compare(monkeypatch):
         )
 
     monkeypatch.setattr(stub, "_live_eval_metrics", _fake_live_eval)
+    monkeypatch.setattr(stub, "_fallback_decision", lambda _text, _token_in: (False, [], {}))
     r = client.post(
         "/v1/compress",
         json={

@@ -62,6 +62,8 @@ param(
   [switch]$SkipHitRate,
   # KPI-B shadow eval (per-date WF on same panel; separate *_kpi_b_shadow_* artifacts only).
   [switch]$SkipKpiBShadowEval,
+  # Skip commander-approved KPI-B operational headline promote (shadow-only posture).
+  [switch]$SkipKpiBOperationalHeadlinePromote,
   [switch]$IncludeDawnScore,
   [switch]$SkipPerDateDirections,
   [switch]$SkipExternalFeedValidation,
@@ -108,7 +110,11 @@ param(
   # Phase 3 leading-sensor join + insight sidecar after price hit-rate (research_only; default OFF).
   [switch]$IncludePhase3LeadingSensors,
   [switch]$SkipPhase3NetworkFetch,
-  [switch]$StrictPhase3LeadingSensors
+  [switch]$StrictPhase3LeadingSensors,
+  # Sasang pathology ↔ TE sandbox mapping (default ON; research_only; weight_hint=0).
+  [switch]$SkipPathologyTeMapping,
+  # Walk-forward folds for daily shadow refresh (align with run_btrack_promotion_push_v1 default 6).
+  [int]$ProphecyWalkforwardNFolds = 6
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -333,6 +339,23 @@ Write-Host "==> build_btrack_llm_input_bundle.py"
 py scripts/build_btrack_llm_input_bundle.py
 if ($LASTEXITCODE -ne 0) { throw "bundle exit $LASTEXITCODE" }
 
+if (-not $SkipPathologyTeMapping) {
+  Write-Host "==> dump_unified_trading_monitor_te_snapshot_v1.py (monitoring_latest.json TE probe)"
+  py scripts/dump_unified_trading_monitor_te_snapshot_v1.py
+  if ($LASTEXITCODE -ne 0) { throw "dump_unified_trading_monitor_te_snapshot_v1 exit $LASTEXITCODE" }
+  Write-Host "==> export_btrack_transfer_entropy_snapshot_v1.py (B-track TE snapshot / detector)"
+  py scripts/export_btrack_transfer_entropy_snapshot_v1.py
+  if ($LASTEXITCODE -ne 0) { throw "export_btrack_transfer_entropy_snapshot_v1 exit $LASTEXITCODE" }
+  Write-Host "==> build_sasang_pathology_te_mapping_hypo_v1.py ([HYPO] pathology↔TE band; weight_hint=0)"
+  py scripts/build_sasang_pathology_te_mapping_hypo_v1.py
+  if ($LASTEXITCODE -ne 0) { throw "build_sasang_pathology_te_mapping_hypo_v1 exit $LASTEXITCODE" }
+  Write-Host "==> build_compression_prophecy_bridge_status_v1.py (compression + interpretive audit)"
+  py scripts/build_compression_prophecy_bridge_status_v1.py
+  if ($LASTEXITCODE -ne 0) { throw "build_compression_prophecy_bridge_status_v1 exit $LASTEXITCODE" }
+} else {
+  Write-Host "Skip pathology TE mapping (-SkipPathologyTeMapping)." -ForegroundColor DarkYellow
+}
+
 $contemplationJsonArg = $null
 $contemplationEnv = [string]$env:MKM_BTRACK_PROPHECY_CONTEMPLATION_V1
 $contemplationOptOut = ($contemplationEnv -eq "0" -or $contemplationEnv -ieq "false")
@@ -424,7 +447,7 @@ if (-not $SkipHitRate) {
       $btcResolved = $btcDefault
     }
     $perDateDirsRel = "reports\btrack_ensemble_per_date_directions_v1_latest.json"
-    if ($kpiBApproved -and -not [string]::IsNullOrWhiteSpace($btcResolved)) {
+    if ($kpiBApproved -and -not $SkipKpiBOperationalHeadlinePromote -and -not [string]::IsNullOrWhiteSpace($btcResolved)) {
       Write-Host "==> KPI-B operational headline (commander approved): run_btrack_kpi_b_shadow_eval_v1.py --promote-to-operational-headline" -ForegroundColor Cyan
       $kpiAArchiveRel = "docs\final\artifacts\prophecy_hit_rate_eval_kpi_a_frozen_archive_v1_latest.json"
       $shadowArgs = @(
@@ -535,8 +558,8 @@ if (-not $SkipHitRate) {
 }
 
 if (-not $SkipFastPromotionGate) {
-  Write-Host "==> run_prophecy_per_date_combo_walkforward_v1.py (refresh per-date WF on latest score)"
-  py scripts/run_prophecy_per_date_combo_walkforward_v1.py --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json"
+  Write-Host "==> run_prophecy_per_date_combo_walkforward_v1.py (refresh per-date WF on latest score; n-folds=$ProphecyWalkforwardNFolds)"
+  py scripts/run_prophecy_per_date_combo_walkforward_v1.py --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json" --n-folds $ProphecyWalkforwardNFolds
   if ($LASTEXITCODE -ne 0) {
     if ($StrictFastPromotionGate) {
       throw "run_prophecy_per_date_combo_walkforward_v1 exit $LASTEXITCODE"
@@ -544,8 +567,8 @@ if (-not $SkipFastPromotionGate) {
     Write-Host "WARN: per-date walkforward refresh failed; promotion gate may use stale artifact." -ForegroundColor Yellow
   }
 
-  Write-Host "==> run_prophecy_instrument_combo_walkforward_v1.py (refresh instrument WF on latest score)"
-  py scripts/run_prophecy_instrument_combo_walkforward_v1.py --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json"
+  Write-Host "==> run_prophecy_instrument_combo_walkforward_v1.py (refresh instrument WF; n-folds=$ProphecyWalkforwardNFolds inject-sweep-best)"
+  py scripts/run_prophecy_instrument_combo_walkforward_v1.py --score-json "docs/final/artifacts/btrack_prophecy_score_latest.json" --n-folds $ProphecyWalkforwardNFolds --inject-sweep-best --selection-mode inner-cv --inner-folds 3 --train-objective beat_bull_first
   if ($LASTEXITCODE -ne 0) {
     if ($StrictFastPromotionGate) {
       throw "run_prophecy_instrument_combo_walkforward_v1 exit $LASTEXITCODE"
@@ -553,8 +576,10 @@ if (-not $SkipFastPromotionGate) {
     Write-Host "WARN: instrument walkforward refresh failed; promotion gate may use stale artifact." -ForegroundColor Yellow
   }
 
-  Write-Host "==> eval_prophecy_promotion_gates_v1.py (numeric promotion gates, mode=$PromotionTrackMode)"
-  py scripts/eval_prophecy_promotion_gates_v1.py --promotion-track-mode $PromotionTrackMode
+  Write-Host "==> eval_prophecy_promotion_gates_v1.py (numeric promotion gates, mode=$PromotionTrackMode -> daily shadow only)"
+  # Strict SSOT (docs/final/artifacts/prophecy_promotion_gates_v1_latest.json) is written only by
+  # recommended/dual-strict/promotion-bundle chains — never by this daily shadow path.
+  py scripts/eval_prophecy_promotion_gates_v1.py --promotion-track-mode $PromotionTrackMode --output docs/final/artifacts/prophecy_promotion_gates_daily_shadow_v1_latest.json
   if ($LASTEXITCODE -ne 0) {
     if ($StrictFastPromotionGate) {
       throw "eval_prophecy_promotion_gates_v1 exit $LASTEXITCODE"

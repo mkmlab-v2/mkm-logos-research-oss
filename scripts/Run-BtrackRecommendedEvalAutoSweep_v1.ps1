@@ -21,7 +21,8 @@
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
-    [string]$AutoSweepGrid = ""
+    [string]$AutoSweepGrid = "",
+    [switch]$AlignPromotionPushPanel
 )
 
 $ErrorActionPreference = "Stop"
@@ -37,6 +38,9 @@ $pyArgs = @((Join-Path $root "scripts\run_prophecy_btrack_recommended_eval_chain
 if ($AutoSweepGrid) {
     $pyArgs += "--auto-sweep-grid"
     $pyArgs += $AutoSweepGrid
+}
+if ($AlignPromotionPushPanel) {
+    $pyArgs += "--align-promotion-push-panel"
 }
 
 & py @pyArgs

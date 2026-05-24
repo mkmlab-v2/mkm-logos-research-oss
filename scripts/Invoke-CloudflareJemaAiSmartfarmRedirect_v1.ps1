@@ -21,10 +21,18 @@ if (-not $SkipTriage) {
     $triagePath = Join-Path $root "reports/cloudflare_token_roles_triage_v1_latest.json"
     if ((Test-Path $triagePath) -and -not $DryRun) {
         $triage = Get-Content $triagePath -Raw | ConvertFrom-Json
-        $ready = $triage.jema_ai_dynamic_redirect.automation_ready
-        if (-not $ready) {
-            Write-Host "[smartfarm-cf] STOP: jema_ai_dynamic_redirect not ready — fix scope per jema_ai_redirect_guard (no PUT repeat)." -ForegroundColor Yellow
+        $apiReady = $triage.jema_ai_dynamic_redirect.automation_ready
+        $opReady = $false
+        if ($triage.jema_ai_dynamic_redirect.PSObject.Properties.Name -contains 'operational_ready') {
+            $opReady = [bool]$triage.jema_ai_dynamic_redirect.operational_ready
+        }
+        if (-not $apiReady -and -not $opReady) {
+            Write-Host "[smartfarm-cf] STOP: redirect API+HTTP not ready — see jema_ai_redirect_guard (no PUT repeat on 403)." -ForegroundColor Yellow
             exit 2
+        }
+        if ($opReady -and -not $apiReady) {
+            Write-Host "[smartfarm-cf] edge OK (HTTP SSOT) — skip CF API PUT until scope added (optional)." -ForegroundColor Green
+            exit 0
         }
     }
 }

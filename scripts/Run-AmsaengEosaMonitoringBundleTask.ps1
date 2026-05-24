@@ -105,6 +105,20 @@ try {
     Invoke-BundlePyStep -StepId "monitoring_heartbeat_append" -ScriptPath (Join-Path $PSScriptRoot "append_amsaeng_eosa_monitoring_heartbeat_v1.py")
     Invoke-BundlePyStep -StepId "trackc_evidence_rag_mvp" -ScriptPath (Join-Path $PSScriptRoot "build_trackc_evidence_rag_mvp_v1.py")
 
+    $coordObsPy = Join-Path $PSScriptRoot "check_coordinator_lens_conflict_observation_v1.py"
+    if (Test-Path -LiteralPath $coordObsPy) {
+        Write-Host ""
+        Write-Host "=== Coordinator lens conflict observation (O-P22; AllowNonZero) ===" -ForegroundColor Cyan
+        Invoke-BundlePyStep -StepId "coordinator_lens_conflict_observation" -ScriptPath $coordObsPy -AllowNonZero
+    }
+
+    $headlinePy = Join-Path $PSScriptRoot "check_prophecy_headline_integrity_v1.py"
+    if (Test-Path -LiteralPath $headlinePy) {
+        Write-Host ""
+        Write-Host "=== Prophecy headline integrity observation (B-track; AllowNonZero) ===" -ForegroundColor Cyan
+        Invoke-BundlePyStep -StepId "prophecy_headline_integrity_observation" -ScriptPath $headlinePy -AllowNonZero
+    }
+
     $smokePs1 = Join-Path $PSScriptRoot "Invoke-VpsOpsSmoke_v1.ps1"
     if (Test-Path -LiteralPath $smokePs1) {
         Write-Host ""

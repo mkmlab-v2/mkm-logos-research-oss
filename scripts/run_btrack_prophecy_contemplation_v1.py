@@ -33,6 +33,11 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.core.btrack_interpretive_bridge_v1 import compact_interpretive_for_prompt
+
 DEFAULT_BUNDLE = ROOT / "docs" / "final" / "artifacts" / "btrack_llm_input_bundle_latest.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_prophecy_contemplation_v1_latest.json"
 DEFAULT_SCHEMA = ROOT / "docs" / "final" / "schemas" / "btrack_prophecy_contemplation_v1.schema.json"
@@ -183,7 +188,13 @@ def _run_gemini_reflect(
     from google import genai
     from google.genai import types
 
-    bundle_text = json.dumps(bundle, ensure_ascii=False, indent=2)[:80_000]
+    arts = bundle.get("artifacts") if isinstance(bundle.get("artifacts"), dict) else {}
+    interpretive_bridge = arts.get("sasang_interpretive_bridge_context") if isinstance(arts, dict) else {}
+    if not isinstance(interpretive_bridge, dict):
+        interpretive_bridge = {}
+    interpretive_digest = compact_interpretive_for_prompt(interpretive_bridge)
+
+    bundle_text = json.dumps(bundle, ensure_ascii=False, indent=2)[:72_000]
     prompt = f"""You are a B-track research-only pre-flight reviewer (not live trading, not medical).
 Read the JSON bundle snapshot. Reply with a single JSON object only (no markdown fences).
 
@@ -195,7 +206,11 @@ Required JSON shape:
 }}
 
 Set contemplation_ok=false if the bundle suggests non-BTC execution gating, medical claims, or contradictions
-with a strict BTC-only research lane. Otherwise true.
+with a strict BTC-only research lane. Sasang interpretive axes are human_only reference — do not treat them as
+clinical diagnosis or order triggers. Otherwise true.
+
+Sasang interpretive bridge digest (read-only, non-gating):
+{interpretive_digest}
 
 Bundle JSON:
 {bundle_text}
@@ -275,6 +290,30 @@ def main() -> int:
             "id": "btc_trading_scope_bundle_guard",
             "ok": scope_ok,
             "detail": None if scope_ok else ";".join(violations[:12]),
+        }
+    )
+
+    arts = bundle.get("artifacts") if isinstance(bundle.get("artifacts"), dict) else {}
+    interpretive_bridge = arts.get("sasang_interpretive_bridge_context") if isinstance(arts, dict) else {}
+    if not isinstance(interpretive_bridge, dict):
+        interpretive_bridge = {}
+    ib_present = bool(interpretive_bridge.get("available"))
+    ib_guards_ok = (
+        interpretive_bridge.get("auto_weight_adjustment_forbidden") is True
+        and interpretive_bridge.get("track_a_live_routing_forbidden") is True
+    )
+    checks.append(
+        {
+            "id": "interpretive_bridge_present",
+            "ok": True,
+            "detail": "present" if ib_present else (interpretive_bridge.get("reason") or "absent_optional"),
+        }
+    )
+    checks.append(
+        {
+            "id": "interpretive_bridge_safety_flags",
+            "ok": (not ib_present) or ib_guards_ok,
+            "detail": None if ((not ib_present) or ib_guards_ok) else "forbidden_flags_not_true",
         }
     )
 

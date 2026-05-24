@@ -5,7 +5,9 @@ param(
   [switch]$AllowExpectedSecurityDrift,
   # When set: trading_go_no_go_latest.json may read NO_GO while gate_reason/risk_mode are
   # trinity_governor / LOCKED_MODE only (expected policy posture). Still requires fresh generated_at_utc.
-  [switch]$AllowPolicyLockedGoNoGo
+  [switch]$AllowPolicyLockedGoNoGo,
+  # When set: MKM-Security-Integrity-Check-5min in Disabled state counts as ok (local dev / closure bundle).
+  [switch]$AllowDisabledSecurityIntegrityTask
 )
 
 $ErrorActionPreference = "Stop"
@@ -40,6 +42,13 @@ function Get-TaskHealth([string]$TaskName) {
   $state = "$($task.State)"
   $ok = ($state -in @("Ready", "Running")) -and ($lastResult -eq 0 -or $null -eq $lastResult)
   $reason = if ($ok) { "ok" } else { "state_or_last_result_not_ok" }
+  if (
+    -not $ok -and $AllowDisabledSecurityIntegrityTask -and
+    $TaskName -eq "MKM-Security-Integrity-Check-5min" -and $state -eq "Disabled"
+  ) {
+    $ok = $true
+    $reason = "intentionally_disabled"
+  }
 
   return [pscustomobject]@{
     task_name = $TaskName

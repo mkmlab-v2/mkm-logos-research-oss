@@ -1,7 +1,7 @@
 param(
     [string]$OutPath = "reports/hostinger_exit_monitor_probe_latest.json",
     [int]$TimeoutSec = 20,
-    [string[]]$Domains = @("no1kmedi.com", "mkmlife.com", "jema-ai.com", "jema12.com", "jemaai.cloud"),
+    [string[]]$Domains = @("no1kmedi.com", "mkmlife.com", "jema-ai.com", "jema12.com", "jemaai.cloud", "mkmlab.space"),
     [string[]]$HttpsGateDomains = @()
 )
 

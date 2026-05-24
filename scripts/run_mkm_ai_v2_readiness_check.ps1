@@ -67,7 +67,6 @@ $expectedCore = @(
     "sequential-thinking",
     "athena-manseryeok",
     "compression-server",
-    "hostinger-website-manager",
     "devops-mcp"
 )
 $optionalServers = @(

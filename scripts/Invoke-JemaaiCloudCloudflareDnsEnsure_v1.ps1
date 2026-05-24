@@ -37,6 +37,7 @@ param(
     [string]$ZoneName = "jemaai.cloud",
     [string]$WwwLabel = "www",
     [string]$CnameTarget = "",
+    [string]$TrustedZoneId = "",
     [bool]$Proxied = $true,
     [switch]$WhatIf,
     [switch]$AllowDeleteConflictingWwwHost,
@@ -48,7 +49,12 @@ $ErrorActionPreference = "Stop"
 $ProgressPreference = "SilentlyContinue"
 
 function Get-CloudflareToken {
-    foreach ($k in @("CLOUDFLARE_API_TOKEN", "CF_API_TOKEN")) {
+    param([string]$ForZoneName = "")
+    $keys = @("CLOUDFLARE_API_TOKEN", "CF_API_TOKEN")
+    if ($ForZoneName -eq "personadiary.com") {
+        $keys = @("MKM_CLOUDFLARE_PERSONADIARY_DNS_TOKEN") + $keys
+    }
+    foreach ($k in $keys) {
         foreach ($scope in @("User", "Machine", "Process")) {
             $v = [Environment]::GetEnvironmentVariable($k, $scope)
             if (-not [string]::IsNullOrWhiteSpace($v)) { return @{ Token = $v.Trim(); Var = $k } }
@@ -108,9 +114,14 @@ function Invoke-CfApi {
     }
 }
 
-$tok = Get-CloudflareToken
+$tok = Get-CloudflareToken -ForZoneName $ZoneName.Trim()
 if (-not $tok) {
-    throw "Set CLOUDFLARE_API_TOKEN or CF_API_TOKEN (User env or Process). Never commit the token. See .env.example Cloudflare section."
+    $hint = if ($ZoneName -eq "personadiary.com") {
+        "Set MKM_CLOUDFLARE_PERSONADIARY_DNS_TOKEN (Zone.DNS Read+Edit for personadiary.com only) or CLOUDFLARE_API_TOKEN."
+    } else {
+        "Set CLOUDFLARE_API_TOKEN or CF_API_TOKEN (User env or Process)."
+    }
+    throw "$hint Never commit the token. See .env.example Cloudflare section."
 }
 
 $target = $CnameTarget.Trim()
@@ -126,17 +137,29 @@ $headers = @{
 $base = "https://api.cloudflare.com/client/v4"
 $zoneId = ""
 
+function Confirm-ZoneIdForName {
+    param([string]$Id, [string]$ExpectedName)
+    $zr0 = Invoke-CfApi -Method GET -Uri "$base/zones/$Id" -Headers $headers
+    if (-not $zr0.Ok) { throw "Zone detail failed HTTP $($zr0.Status): $($zr0.Text)" }
+    $z0 = $zr0.Text | ConvertFrom-Json
+    if (-not $z0.success -or -not $z0.result) { throw "Cloudflare zone detail success=false: $($zr0.Text)" }
+    if (-not ([string]$z0.result.name).Equals($ExpectedName, [System.StringComparison]::OrdinalIgnoreCase)) {
+        throw "Zone id '$Id' is '$($z0.result.name)', expected '$ExpectedName'."
+    }
+    return $Id
+}
+
+if (-not [string]::IsNullOrWhiteSpace($TrustedZoneId)) {
+    $zoneId = Confirm-ZoneIdForName -Id $TrustedZoneId.Trim() -ExpectedName $ZoneName.Trim()
+}
+
 # Optional env zone id: only use if it matches this run's ZoneName (avoids wrong zone -> DNS 403).
-$envZid = [Environment]::GetEnvironmentVariable("CLOUDFLARE_ZONE_ID", "Process")
-if ([string]::IsNullOrWhiteSpace($envZid)) { $envZid = [Environment]::GetEnvironmentVariable("CLOUDFLARE_ZONE_ID", "User") }
-if ([string]::IsNullOrWhiteSpace($envZid)) { $envZid = [Environment]::GetEnvironmentVariable("CLOUDFLARE_ZONE_ID", "Machine") }
-if (-not [string]::IsNullOrWhiteSpace($envZid)) {
-    $zr0 = Invoke-CfApi -Method GET -Uri "$base/zones/$($envZid.Trim())" -Headers $headers
-    if ($zr0.Ok) {
-        $z0 = $zr0.Text | ConvertFrom-Json
-        if ($z0.success -and $z0.result -and ([string]$z0.result.name).Equals($ZoneName, [System.StringComparison]::OrdinalIgnoreCase)) {
-            $zoneId = $envZid.Trim()
-        }
+if ([string]::IsNullOrWhiteSpace($zoneId)) {
+    $envZid = [Environment]::GetEnvironmentVariable("CLOUDFLARE_ZONE_ID", "Process")
+    if ([string]::IsNullOrWhiteSpace($envZid)) { $envZid = [Environment]::GetEnvironmentVariable("CLOUDFLARE_ZONE_ID", "User") }
+    if ([string]::IsNullOrWhiteSpace($envZid)) { $envZid = [Environment]::GetEnvironmentVariable("CLOUDFLARE_ZONE_ID", "Machine") }
+    if (-not [string]::IsNullOrWhiteSpace($envZid)) {
+        $zoneId = Confirm-ZoneIdForName -Id $envZid.Trim() -ExpectedName $ZoneName.Trim()
     }
 }
 

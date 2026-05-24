@@ -15,10 +15,16 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.prophecy_hit_rate_ssot_v1 import DAILY_OPERATIONAL, HEADLINE_KPI  # noqa: E402
+
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_health_status_latest.json"
 KOSPI_DEFAULT = ROOT / "research" / "market_data" / "kospi_daily_external_yf.csv"
 BTC_DEFAULT = ROOT / "research" / "market_data" / "btc_daily_external_yf.csv"
-EVAL_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "prophecy_hit_rate_eval_latest.json"
+EVAL_DEFAULT = DAILY_OPERATIONAL
+HEADLINE_EVAL = HEADLINE_KPI
 HYP_DEFAULT = ROOT / "docs" / "final" / "artifacts" / "btrack_hypothesis_prophecy_latest.json"
 P15_SHADOW_DEFAULT = ROOT / "reports/btrack_daily_p15_shadow_status_v1_latest.json"
 SCHEMA_ID = "prophecy_health_status_v1"

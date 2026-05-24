@@ -6,6 +6,9 @@ Research-only evaluator comparing:
 - 2-lens combinations
 - 3-lens combination
 - 3-lens + coordinator tie-break
+
+Logos (성경) default: ``--logos-vote-mode omit`` — Logos does not vote in directional
+majority (NON_GATING-aligned). Use ``global`` only for explicit Logos vote A/B studies.
 """
 from __future__ import annotations
 
@@ -122,13 +125,19 @@ def _stddev(values: list[float]) -> float:
     return var ** 0.5
 
 
-def _extract_lens_maps(sidecar: dict[str, Any]) -> tuple[dict[str, int], dict[str, int], int]:
-    logos_global = (((sidecar.get("lens_globals_for_sidecar") or {}).get("logos") or {}).get("direction_score"))
+def _extract_lens_maps(sidecar: dict[str, Any]) -> tuple[dict[str, int], dict[str, int], int, float]:
+    logos_block = (sidecar.get("lens_globals_for_sidecar") or {}).get("logos") or {}
+    logos_global = logos_block.get("direction_score")
     logos_sign = 0
     try:
         logos_sign = 1 if float(logos_global) > 0 else (-1 if float(logos_global) < 0 else 0)
     except (TypeError, ValueError):
         logos_sign = 0
+    logos_confidence = 0.0
+    try:
+        logos_confidence = float(logos_block.get("confidence") or 0.0)
+    except (TypeError, ValueError):
+        logos_confidence = 0.0
 
     myeongni_by_date: dict[str, int] = {}
     sasang_by_date: dict[str, int] = {}
@@ -145,7 +154,7 @@ def _extract_lens_maps(sidecar: dict[str, Any]) -> tuple[dict[str, int], dict[st
             sa_snapshot = (((dated.get("sasang_dynamics_jsonl") or {}).get("snapshot")) or {})
             myeongni_by_date[eval_date] = _dir_to_sign(str(my_snapshot.get("mapping_target") or "neutral"))
             sasang_by_date[eval_date] = _dir_to_sign(str(sa_snapshot.get("mapping_target") or "neutral"))
-    return myeongni_by_date, sasang_by_date, logos_sign
+    return myeongni_by_date, sasang_by_date, logos_sign, logos_confidence
 
 
 def _build_variants() -> list[dict[str, Any]]:
@@ -217,6 +226,9 @@ def _simulate_variant(
     myeongni_map: dict[str, int],
     sasang_map: dict[str, int],
     logos_sign: int,
+    logos_confidence: float,
+    logos_vote_mode: str,
+    logos_min_confidence: float,
     fee_rate: float,
     deadzone: float,
     annual_trading_days: int,
@@ -239,6 +251,10 @@ def _simulate_variant(
         lens_signs: list[int] = []
         for lens in variant["lenses"]:
             if lens == LENS_LOGOS:
+                if logos_vote_mode == "omit":
+                    continue
+                if logos_vote_mode == "confidence_gated" and logos_confidence < logos_min_confidence:
+                    continue
                 lens_signs.append(logos_sign)
             elif lens == LENS_MYEONGNI:
                 lens_signs.append(int(myeongni_map.get(eval_date, 0)))
@@ -246,7 +262,8 @@ def _simulate_variant(
                 lens_signs.append(int(sasang_map.get(eval_date, 0)))
         pos = _majority_sign(lens_signs)
 
-        if variant["use_coordinator"] and pos == 0:
+        # NON_GATING omit: lens abstain (pos==0) must not be overridden by BTC prior tie-break.
+        if variant["use_coordinator"] and pos == 0 and logos_vote_mode != "omit":
             prior_ret = _safe_float(btc_prior.get(eval_date), 0.0)
             if prior_ret > deadzone:
                 pos = 1
@@ -367,6 +384,23 @@ def main() -> int:
         help="Write top strategy as non-execution limited-live candidate artifact.",
     )
     ap.add_argument("--annual-trading-days", type=int, default=252)
+    ap.add_argument(
+        "--logos-vote-mode",
+        choices=("global", "omit", "confidence_gated"),
+        default="omit",
+        help=(
+            "How Logos participates in directional majority vote. "
+            "global=always append global logos_sign (legacy). "
+            "omit=Logos excluded from vote ([NON_GATING]-aligned research). "
+            "confidence_gated=append only when sidecar logos confidence >= --logos-min-confidence."
+        ),
+    )
+    ap.add_argument(
+        "--logos-min-confidence",
+        type=float,
+        default=0.25,
+        help="Used when --logos-vote-mode=confidence_gated (aligns with btrack min_direction_confidence band).",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -382,7 +416,9 @@ def main() -> int:
     if not filtered:
         raise SystemExit(f"no rows for instrument={target} in {args.score_json}")
 
-    myeongni_map, sasang_map, logos_sign = _extract_lens_maps(sidecar_doc)
+    myeongni_map, sasang_map, logos_sign, logos_confidence = _extract_lens_maps(sidecar_doc)
+    logos_vote_mode = str(args.logos_vote_mode or "global").strip().lower()
+    logos_min_confidence = float(args.logos_min_confidence)
     btc_prior = _prior_completed_daily_return_by_eval_date(args.btc_csv) if args.btc_csv.is_file() else {}
     fee_rate = float(args.fee_bps) / 10000.0
     fee_grid = (
@@ -402,6 +438,9 @@ def main() -> int:
             myeongni_map=myeongni_map,
             sasang_map=sasang_map,
             logos_sign=logos_sign,
+            logos_confidence=logos_confidence,
+            logos_vote_mode=logos_vote_mode,
+            logos_min_confidence=logos_min_confidence,
             fee_rate=fee_rate,
             deadzone=deadzone,
             annual_trading_days=annual_td,
@@ -420,6 +459,9 @@ def main() -> int:
                 myeongni_map=myeongni_map,
                 sasang_map=sasang_map,
                 logos_sign=logos_sign,
+                logos_confidence=logos_confidence,
+                logos_vote_mode=logos_vote_mode,
+                logos_min_confidence=logos_min_confidence,
                 fee_rate=(fee_bps / 10000.0),
                 deadzone=deadzone,
                 annual_trading_days=annual_td,
@@ -458,6 +500,9 @@ def main() -> int:
                 myeongni_map=myeongni_map,
                 sasang_map=sasang_map,
                 logos_sign=logos_sign,
+                logos_confidence=logos_confidence,
+                logos_vote_mode=logos_vote_mode,
+                logos_min_confidence=logos_min_confidence,
                 fee_rate=fee_rate,
                 deadzone=deadzone,
                 annual_trading_days=annual_td,
@@ -499,6 +544,10 @@ def main() -> int:
             "walkforward_test_window_rows": int(args.walkforward_test_window_rows),
             "walkforward_min_train_rows": int(args.walkforward_min_train_rows),
             "annual_trading_days": int(args.annual_trading_days),
+            "logos_vote_mode": logos_vote_mode,
+            "logos_min_confidence": logos_min_confidence,
+            "logos_sidecar_confidence": logos_confidence,
+            "logos_sidecar_sign": logos_sign,
         },
         "universe": {
             "strategies_total": len(strategy_results),
@@ -516,7 +565,9 @@ def main() -> int:
         "walkforward": walkforward,
         "note": (
             "Coordinator is a tie-break overlay for neutral votes only; "
-            "it uses prior completed BTC return sign in this research harness."
+            "it uses prior completed BTC return sign in this research harness. "
+            f"logos_vote_mode={logos_vote_mode}: Logos excluded from directional vote when omit "
+            "(strategy ids may still list logos for A/B labeling)."
         ),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

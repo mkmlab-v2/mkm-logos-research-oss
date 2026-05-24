@@ -39,6 +39,17 @@ def _find_item(doc: dict[str, Any], item_id: str) -> dict[str, Any] | None:
     return None
 
 
+def _strip_leading_draft_marker(body: str) -> str:
+    lines = body.splitlines()
+    while lines:
+        s = lines[0].strip().strip("*").strip()
+        if s in ("[DRAFT]", "DRAFT"):
+            lines.pop(0)
+            continue
+        break
+    return "\n".join(lines).strip()
+
+
 def _extract_post_body(md_path: Path) -> str:
     text = md_path.read_text(encoding="utf-8", errors="replace")
     # Drop markdown metadata block; keep from first ## Hook or **[DRAFT]**
@@ -52,6 +63,8 @@ def _extract_post_body(md_path: Path) -> str:
             continue
         if line.strip().startswith("## ") or line.strip().startswith("**[DRAFT]**"):
             started = True
+            if line.strip().startswith("**[DRAFT]**"):
+                continue
         if started:
             if line.startswith("## B-roll") or line.startswith("<!--"):
                 break
@@ -59,7 +72,7 @@ def _extract_post_body(md_path: Path) -> str:
     body = "\n".join(out).strip()
     body = re.sub(r"\*\*([^*]+)\*\*", r"\1", body)
     body = re.sub(r"`([^`]+)`", r"\1", body)
-    return body[:3000]
+    return _strip_leading_draft_marker(body)[:3000]
 
 
 def _guard_pass(md_path: Path) -> tuple[bool, list[str]]:
@@ -126,13 +139,26 @@ def main() -> int:
     if item.get("channel") != "linkedin":
         print(json.dumps({"ok": False, "error": "Buffer v1 supports linkedin channel only"}))
         return 2
-    if item.get("status") != "human_approved":
+    status = str(item.get("status") or "")
+    if args.push_draft:
+        if status != "human_approved":
+            print(
+                json.dumps(
+                    {
+                        "ok": False,
+                        "error": "status must be human_approved before Buffer push",
+                        "status": status,
+                    }
+                )
+            )
+            return 2
+    elif status not in ("drafted", "human_approved"):
         print(
             json.dumps(
                 {
                     "ok": False,
-                    "error": "status must be human_approved before Buffer push",
-                    "status": item.get("status"),
+                    "error": "status must be drafted or human_approved for Buffer preview",
+                    "status": status,
                 }
             )
         )

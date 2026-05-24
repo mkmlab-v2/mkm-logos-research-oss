@@ -4,11 +4,20 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+_SCRIPTS = ROOT / "scripts"
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
 DEFAULT_SLICE = ROOT / "docs/final/artifacts/showroom_meaning_topology_graph_slice_v1_latest.json"
+DEFAULT_CHRONOLOGY = (
+    ROOT
+    / "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp"
+    / "showroom_logos_chronology_overlay_v1.json"
+)
 OUT_MVP = (
     ROOT
     / "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp"
@@ -40,7 +49,34 @@ def _daniel_aramaic_ids(doc: dict) -> list[str]:
     return ids
 
 
-def build_presets(doc: dict) -> dict:
+def _era_presets(chrono: dict | None, doc: dict) -> list[dict]:
+    if not chrono:
+        return []
+    node_ids = {str(n["id"]) for n in doc.get("nodes") or []}
+    out: list[dict] = []
+    for era in chrono.get("eras") or []:
+        refs = [r for r in (era.get("verse_refs") or []) if r in node_ids]
+        era_nid = f"era::{era.get('era_id')}"
+        highlights = list(dict.fromkeys(refs + ([era_nid] if era_nid in node_ids else [])))
+        if not highlights and not refs:
+            highlights = [str(n["id"]) for n in (doc.get("nodes") or []) if n.get("kind") == "theme"][:2]
+        label = str(era.get("label_ko") or era.get("era_id") or "")
+        notes = str(era.get("notes_ko") or "")[:280]
+        body = f"[HYPO] 연대기 **{label}** 구간입니다. {notes}".strip()
+        out.append(
+            {
+                "id": f"era_{era.get('era_id', 'x')}",
+                "prompt_ko": label,
+                "answer_ko": f"{body} 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+                "answer_ko_product": body,
+                "highlight_node_ids": highlights,
+                "keywords": [str(era.get("era_id") or ""), label[:12]],
+            }
+        )
+    return out
+
+
+def build_presets(doc: dict, *, chrono: dict | None = None) -> dict:
     by_kind = _nodes_by_kind(doc)
     daniel = _daniel_aramaic_ids(doc)
     theme_ids = by_kind.get("theme") or []
@@ -57,6 +93,7 @@ def build_presets(doc: dict) -> dict:
             "gating_status": "NON_GATING",
             "no_trade_signals": True,
             "note_ko": "데모 프리셋 응답입니다. 실시간 LLM·실매매·종교적 단정이 아닙니다.",
+            "note_ko_product": "Curated preset · research_only · NON_GATING · not investment advice.",
         },
         "graph_slice_path": "showroom_meaning_topology_graph_slice_v1.json",
         "presets": [
@@ -67,6 +104,10 @@ def build_presets(doc: dict) -> dict:
                     "[HYPO] insight 허브 기준으로 **imperial_transition** 테마와 **empire_transition** "
                     "레짐이 다니엘 2장 구절 클러스터와 엣지로 연결됩니다. "
                     "이 화면은 연구용 부분 그래프이며 투자·매매·신학적 진리 단정이 아닙니다."
+                ),
+                "answer_ko_product": (
+                    "[HYPO] **imperial_transition** 테마와 **empire_transition** 레짐이 "
+                    "다니엘 2장 구절 클러스터와 그래프 엣지로 연결됩니다."
                 ),
                 "highlight_node_ids": list(
                     dict.fromkeys(theme_ids + regime_ids + daniel)
@@ -90,6 +131,10 @@ def build_presets(doc: dict) -> dict:
                     "[HYPO] **theme::imperial_transition** · **regime::empire_transition** 두 허브가 "
                     "시드 후보이며, 주변 verse 노드로 의미 연결이 투영됩니다. 운영 게이트·주문 트리거와 무관합니다."
                 ),
+                "answer_ko_product": (
+                    "[HYPO] **theme::imperial_transition** · **regime::empire_transition** 허브와 "
+                    "연결된 verse 노드로 의미 경로가 투영됩니다."
+                ),
                 "highlight_node_ids": theme_ids + regime_ids,
                 "keywords": ["테마", "레짐", "theme", "regime", "허브"],
             },
@@ -104,7 +149,7 @@ def build_presets(doc: dict) -> dict:
                 "highlight_node_ids": [str(n["id"]) for n in (doc.get("nodes") or [])],
                 "keywords": ["전체", "구조", "망", "그래프", "overview"],
             },
-        ],
+        ] + _era_presets(chrono, doc),
         "fallback": {
             "answer_ko": (
                 "[HYPO] 질문과 키워드가 프리셋과 맞지 않습니다. 왼쪽 **제안 질문**을 선택하거나 "
@@ -118,11 +163,19 @@ def build_presets(doc: dict) -> dict:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--slice-json", type=Path, default=DEFAULT_SLICE)
+    ap.add_argument("--chronology-json", type=Path, default=DEFAULT_CHRONOLOGY)
+    ap.add_argument("--no-chronology", action="store_true")
     ap.add_argument("--out-mvp", type=Path, default=OUT_MVP)
     ap.add_argument("--out-artifact", type=Path, default=OUT_ART)
     args = ap.parse_args()
     doc = _load(args.slice_json)
-    payload = build_presets(doc)
+    chrono = None
+    if not args.no_chronology and args.chronology_json.is_file():
+        chrono = _load(args.chronology_json)
+    payload = build_presets(doc, chrono=chrono)
+    from compute_logos_reasoning_path_v1 import attach_paths_to_presets
+
+    payload = attach_paths_to_presets(payload, doc)
     text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     args.out_mvp.parent.mkdir(parents=True, exist_ok=True)
     args.out_mvp.write_text(text, encoding="utf-8")

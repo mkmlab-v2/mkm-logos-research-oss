@@ -5,20 +5,31 @@ run_mode:
   price  — compare predicted vs actual direction using a small scoring payload (local SSOT).
   proxy  — optional registry/oracle precision path (placeholder until wired).
 
-Default out: docs/final/artifacts/prophecy_hit_rate_eval_latest.json
-See: docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md (Prophecy Hit Rate CLI).
+Default out: docs/final/artifacts/prophecy_hit_rate_eval_daily_operational_latest.json
+Commander headline KPI: docs/final/artifacts/prophecy_hit_rate_eval_latest.json (writes require --allow-headline-write).
+See: scripts/prophecy_hit_rate_ssot_v1.py · CONSTITUTION Prophecy Hit Rate CLI.
 """
 from __future__ import annotations
 
 import argparse
 import json
+import math
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-import math
 
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "prophecy_hit_rate_eval_latest.json"
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.prophecy_hit_rate_ssot_v1 import (  # noqa: E402
+    DAILY_OPERATIONAL,
+    HEADLINE_KPI,
+    is_headline_kpi_path,
+)
+
+DEFAULT_OUT = DAILY_OPERATIONAL
 SCHEMA = "prophecy_hit_rate_eval_report_v2"
 
 
@@ -178,7 +189,12 @@ def main() -> int:
         default="proxy",
         help="price: directional scoring via --score-json; proxy: registry/oracle placeholder",
     )
-    ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    ap.add_argument("--output", "--out", type=Path, dest="output", default=DEFAULT_OUT)
+    ap.add_argument(
+        "--allow-headline-write",
+        action="store_true",
+        help=f"Allow writing {HEADLINE_KPI.name} (commander KPI lane only).",
+    )
     ap.add_argument("--stdout-only", action="store_true", help="Print JSON to stdout; do not write file.")
     ap.add_argument(
         "--score-json",
@@ -234,6 +250,15 @@ def main() -> int:
     text = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
     print(text)
     if not args.stdout_only:
+        out_path = args.output.resolve()
+        if is_headline_kpi_path(out_path) and not args.allow_headline_write:
+            print(
+                "ERROR: refusing to overwrite commander headline KPI without --allow-headline-write.",
+                file=sys.stderr,
+            )
+            print(f"  headline_kpi: {HEADLINE_KPI}", file=sys.stderr)
+            print(f"  daily_operational (default): {DAILY_OPERATIONAL}", file=sys.stderr)
+            return 2
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(text, encoding="utf-8")
         # Success line on stdout (stderr can surface as terminating errors in strict PowerShell runs).

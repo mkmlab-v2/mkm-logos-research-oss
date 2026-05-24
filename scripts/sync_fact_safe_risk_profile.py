@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -27,6 +28,24 @@ DEFAULT_TRINITY_DAILY_SCORE_BTC = ROOT / "docs" / "final" / "artifacts" / "trini
 
 def _clamp(v: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, v))
+
+
+def _fee_guard_max_trades_cap() -> int | None:
+    """When set, Fact-Safe sync must not raise max_trades above this ops ceiling."""
+    raw = os.environ.get("MKM_FEE_GUARD_MAX_TRADES_PER_DAY", "").strip()
+    if not raw:
+        return None
+    try:
+        return max(1, int(raw))
+    except ValueError:
+        return None
+
+
+def _apply_fee_guard_cap(max_trades: int) -> int:
+    cap = _fee_guard_max_trades_cap()
+    if cap is None:
+        return max_trades
+    return min(max_trades, cap)
 
 
 def _safe_json(path: Path) -> dict[str, Any]:
@@ -119,7 +138,7 @@ def _derive_profile(
             "source": source_name,
             "mode": mode_name,
             # Tight cap under LOCKED / core-HOLD: reduces fee bleed vs high-frequency scalps.
-            "max_trades_per_day": 4,
+            "max_trades_per_day": _apply_fee_guard_cap(4),
             "max_position_size": 0.03,
             "maker_only_level": "strict",
             "slippage_cap_bps": 4,
@@ -143,7 +162,7 @@ def _derive_profile(
             out["trinity_evolution"] = trinity_evolution
         return out
 
-    max_trades = int(round(_clamp(40.0 * position_scale_cap, 10.0, 80.0)))
+    max_trades = _apply_fee_guard_cap(int(round(_clamp(40.0 * position_scale_cap, 10.0, 80.0))))
     max_position_size = round(_clamp(0.10 * position_scale_cap, 0.03, 0.20), 4)
     # High pressure -> tighter slippage bound.
     slippage_cap_bps = int(round(_clamp(12.0 - (fused_risk_pressure * 8.0), 3.0, 15.0)))

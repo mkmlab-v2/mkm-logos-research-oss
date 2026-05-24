@@ -35,6 +35,7 @@ CALIBRATION_KINDS = frozenset(
         "prism_slkm_pointer",
         "compression_seed_slkm",
         "market_sasang_lens_snapshot",
+        "family_anchor_lived_calibration_v1",
     }
 )
 TRACK_ENUM = frozenset({"B-track", "internal_lab", "Track_C_advisory"})

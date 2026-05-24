@@ -66,6 +66,7 @@ catch {
 # pre-news, and related fixtures absent in this workspace); restore entries after git merge.
 # 2026-05-16: saju_birth_resolver_v1 + MANSE_PRECISION_RUNTIME_POINTER_V1 + pytest (intake fusion birth gate).
 # 2026-05-20: Logos graph-wire RAG PoC + v6 PoC link spec + commercial readiness (DF-P0-02; LO-CG-01).
+# 2026-05-23: B-track evolution auto-apply allowlist + headline gates sweep + promote_op28 allowlist gate.
 
 $ErrorActionPreference = "Stop"
 $required = @(
@@ -285,6 +286,21 @@ $required = @(
     "tests\test_run_btrack_prophecy_contemplation_v1.py",
     "tests\test_btrack_daily_hypothesis_chain_contemplation_contract_v1.py",
     "scripts\eval_prophecy_promotion_gates_v1.py",
+    "docs\final\artifacts\evolution_auto_apply_allowlist_v1_latest.json",
+    "docs\final\schemas\evolution_auto_apply_allowlist_v1.schema.json",
+    "scripts\evolution_auto_apply_allowlist_v1.py",
+    "scripts\check_evolution_auto_apply_allowlist_v1.py",
+    "scripts\build_general_prophecy_evolution_health_v1.py",
+    "scripts\Invoke-EvolutionAllowlistAndHealth_v1.ps1",
+    "scripts\run_prophecy_btrack_recommended_eval_chain_v1.py",
+    "scripts\run_prophecy_btrack_headline_gates_recommended_chain_v1.py",
+    "scripts\Run-BtrackHeadlineGatesRecommendedSweep_v1.ps1",
+    "scripts\sweep_prophecy_headline_deadzone_hold_v1.py",
+    "scripts\promote_op28_headline_kpi_v1.py",
+    "scripts\Invoke-MkmBtrackProphecyWeeklyLearning_v1.ps1",
+    "tests\test_check_evolution_auto_apply_allowlist_v1.py",
+    "tests\test_run_prophecy_btrack_headline_gates_recommended_chain_v1.py",
+    "tests\test_promote_op28_headline_kpi_allowlist_v1.py",
     "scripts\build_prophecy_gate_evidence_pack_v1.py",
     ".cursor\rules\gut-brain-metaphor-agent-v1.mdc",
     ".cursor\skills\mkm-gut-brain-trackc-comms\SKILL.md",
@@ -778,6 +794,8 @@ $required = @(
     "scripts\Invoke-RadioOp31cFullDailyChain_v1.ps1",
     "scripts\build_radio_op31c_daily_summary_v1.py",
     "scripts\run_ambient_stream_ffmpeg_probe_v1.py",
+    "scripts\run_ambient_stream_rtmp_smoke_v1.py",
+    "scripts\run_ambient_stream_quality_audit_v1.py",
     "scripts\Register-RadioOp31cDailyTask.ps1",
     "scripts\Register-RadioOp31cFusionDailyTask.ps1",
     "scripts\Verify-RadioOp31cFusionScheduledTask_v1.ps1",
@@ -790,6 +808,7 @@ $required = @(
     "scripts\emit_ambient_stream_rtmp_command_v1.py",
     "scripts\Invoke-RadioDialogueHealthShortsChain_v1.ps1",
     "scripts\Invoke-RadioOp31cFusionDailyChain_v1.ps1",
+    "scripts\Invoke-ZoneALiveBroadcastPrep_v1.ps1",
     "scripts\build_radio_youtube_channel_copy_v1.py",
     "docs\final\artifacts\schemas\radio_youtube_channel_copy_v1.schema.json",
     "tests\test_build_radio_youtube_channel_copy_v1.py",

@@ -24,6 +24,7 @@
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
   5c. `py -m pytest tests/test_run_graphrag_pilot_router_v1.py` — GraphRAG 파일럿 라우터(Track B/K 관측 전용, GO 게이트·한글 별칭·brief fallback) 회귀.
+  5c4. `py -m pytest` COMP-ATOM-05 graph wire selective bridge — `test_mkm_graph_wire_bridge_influence_v1.py`·`test_comp_atom05_graph_wire_bridge_smoke_v1.py`·`test_v2_graph_wire_selective_bridge_v1.py`·OpenAPI contract·semantic_pointer smoke(`dual-regime` path filter와 동일 5종). `-SkipCompAtom05WireSmoke` 로 생략.
   5c2. `py -m pytest tests/test_philosophy_lane_rag_pilot_v1.py` — 철학·상담 레인 RAG 파일럿(금지어 JSON·ANN-lite 스킵 계약).
   5c2b. `py -m pytest tests/test_generate_linkedin_b2b_copy_v1.py tests/test_check_linkedin_b2b_draft_copy_v1.py` — LinkedIn B2B draft queue v1(로컬 JSON·assemble/Gemini·카피 가드; 자동 발행 없음). `-SkipLinkedInB2bDraftSmoke` 로 생략.
   5c3. `py -m pytest tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py tests/test_build_semantic_rag_bridge_insight_bundle_v1.py` — 내부 시맨틱+RAG 번역 브리지 번들 v1(스키마·Premium/철학 병합 CLI; `dual-regime-integrity.yml` 동일 단계).
@@ -151,6 +152,9 @@
 .PARAMETER SkipCuratedJointStalenessCheck
   끝단: `data/myeongni/curated_saju_joint_v1.jsonl` 시각 신호 vs `myeongni_celebrity_hit_rate_v1` 산출 시각의 staleness 점검(`check_curated_saju_joint_staleness_v1.py`)을 생략한다.
 
+.PARAMETER SkipCompAtom05WireSmoke
+  COMP-ATOM-05 graph wire selective bridge pytest 5종(influence·smoke·v2 API·OpenAPI contract·semantic_pointer)을 생략한다.
+
 .PARAMETER SkipMkmControlIntegritySmoke
   `tests/test_mkm_control_integrity_pipeline_smoke_v1.py`(Golden Set·홀드아웃 집계·게이트 CLI 회귀)를 생략한다.
 
@@ -230,6 +234,9 @@ param(
 
     # STT audit + showroom trust viz thin slice (2 pytests; dual-regime STT + thin slice step)
     [switch]$SkipSttRoutingAuditShowroomTrustSlice,
+
+    # COMP-ATOM-05 graph wire selective bridge (5 pytest; B-track)
+    [switch]$SkipCompAtom05WireSmoke,
 
     # LinkedIn B2B draft queue v1 (2 pytest; no API publish)
     [switch]$SkipLinkedInB2bDraftSmoke,
@@ -331,6 +338,13 @@ $premiumBtrackMultilensReportPytests = @(
 $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thin_bridge_line_v1.py'
 $mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
 $graphragPilotRouterTest = Join-Path $workspaceRoot 'tests\test_run_graphrag_pilot_router_v1.py'
+$compAtom05WirePytests = @(
+    (Join-Path $workspaceRoot 'tests\test_mkm_graph_wire_bridge_influence_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_comp_atom05_graph_wire_bridge_smoke_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_v2_graph_wire_selective_bridge_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_compression_token_api_v2_stub.py::test_openapi_v2_contract_has_graph_wire_selective_bridge'),
+    (Join-Path $workspaceRoot 'tests\test_multilens_performance_eval_report.py::test_evaluate_report_emit_semantic_pointer_smoke')
+)
 $philosophyLaneRagPilotTest = Join-Path $workspaceRoot 'tests\test_philosophy_lane_rag_pilot_v1.py'
 $linkedinB2bDraftPytests = @(
     (Join-Path $workspaceRoot 'tests\test_generate_linkedin_b2b_copy_v1.py'),
@@ -366,6 +380,10 @@ $myeongniLensRecommendedPytests = @(
     (Join-Path $workspaceRoot 'tests\test_independent_lens_shadow_gate_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_independent_lens_fusion_stub_v0.py'),
     (Join-Path $workspaceRoot 'tests\test_scm_boming_jiju_lexicon_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_sasang_boming_jiju_clinical_lens_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_patient_intake_constitution_fixtures_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_showroom_patient_intake_slice_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_validate_showroom_trust_slice_local_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_eval_btrack_insight_sidecar_lens_hit_agreement_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_btrack_yang_2015_style_metrics_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_myeongni_paper_contract_map_v1.py'),
@@ -719,6 +737,22 @@ Write-Host '== Fact-Lock: test_run_graphrag_pilot_router_v1.py ==' -ForegroundCo
 & py -m pytest $graphragPilotRouterTest -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
+}
+
+if (-not $SkipCompAtom05WireSmoke) {
+    foreach ($t in $compAtom05WirePytests) {
+        if ($t -match '::') {
+            continue
+        }
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "COMP-ATOM-05 wire pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: COMP-ATOM-05 graph wire selective bridge (pytest) ==' -ForegroundColor Cyan
+    & py -m pytest @compAtom05WirePytests -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 if (-not (Test-Path -LiteralPath $philosophyLaneRagPilotTest)) {

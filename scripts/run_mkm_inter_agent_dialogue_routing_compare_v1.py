@@ -29,17 +29,22 @@ def run_compare(*, turns: int = 4, scenario: str = "health") -> dict[str, Any]:
     for profile in PROFILES:
         doc = run_dialogue(turns=turns, scenario=scenario, routing_profile=profile)
         savings: list[float] = []
+        lexicon_counts: list[int] = []
         for row in doc.get("transcript") or []:
             compress = row.get("compress") or {}
             m = compress.get("compression_metrics")
             if isinstance(m, dict) and m.get("savings_ratio") is not None:
                 savings.append(float(m["savings_ratio"]))
+            lc = compress.get("lexicon_atom_id_count")
+            if isinstance(lc, int):
+                lexicon_counts.append(lc)
         runs.append(
             {
                 "routing_profile": profile,
                 "all_compress_ok": doc.get("all_compress_ok"),
                 "all_expand_ok": doc.get("all_expand_ok"),
                 "avg_savings_ratio": (sum(savings) / len(savings)) if savings else None,
+                "avg_lexicon_atom_id_count": (sum(lexicon_counts) / len(lexicon_counts)) if lexicon_counts else None,
                 "transcript_turn_count": len(doc.get("transcript") or []),
             }
         )
@@ -65,7 +70,7 @@ def run_compare(*, turns: int = 4, scenario: str = "health") -> dict[str, Any]:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--turns", type=int, default=4)
-    ap.add_argument("--scenario", choices=("trading", "health"), default="health")
+    ap.add_argument("--scenario", choices=("trading", "health", "lexicon_dense"), default="health")
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
     doc = run_compare(turns=max(2, args.turns), scenario=args.scenario)
