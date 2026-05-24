@@ -19,6 +19,7 @@
 #   public_showroom_logos_research_v1.html + showroom_logos_research_slice_v0.json (optional; [HYPO]/NON_GATING; build_showroom_logos_research_slice_v1.py, chain step 6/7)
 #   public_showroom_meaning_topology_graph_v1.html + showroom_meaning_topology_graph_slice_v1.json (optional; bible_meaning_graph subgraph; chain step 7/7)
 #   public_showroom_meaning_topology_qa_v2.html + showroom_meaning_topology_qa_presets_v1.json (optional; Q&A studio + ECharts highlight; build_showroom_meaning_topology_qa_presets_v1.py)
+#   public_showroom_logos_oracle_v3.html + v4 (visual path) + v5 (enterprise) + v6 (commercial) + showroom_logos_chronology_overlay_v1.json
 #   public_showroom_probabilistic_saju_v1.html + showroom_saju_hour_bundle_demo_v1.json  (see scripts/run_saju_hour_candidate_bundle_v1.py)
 
 param(
@@ -53,8 +54,16 @@ $files = @(
     @{ Name = "showroom_meaning_topology_graph_slice_v1.json"; Src = Join-Path $mvp "showroom_meaning_topology_graph_slice_v1.json"; Optional = $true },
     @{ Name = "public_showroom_meaning_topology_qa_v2.html"; Src = Join-Path $mvp "public_showroom_meaning_topology_qa_v2.html" },
     @{ Name = "showroom_meaning_topology_qa_presets_v1.json"; Src = Join-Path $mvp "showroom_meaning_topology_qa_presets_v1.json"; Optional = $true },
+    @{ Name = "public_showroom_logos_oracle_v3.html"; Src = Join-Path $mvp "public_showroom_logos_oracle_v3.html"; Optional = $true },
+    @{ Name = "public_showroom_logos_oracle_v4.html"; Src = Join-Path $mvp "public_showroom_logos_oracle_v4.html"; Optional = $true },
+    @{ Name = "public_showroom_logos_oracle_v5.html"; Src = Join-Path $mvp "public_showroom_logos_oracle_v5.html"; Optional = $true },
+    @{ Name = "public_showroom_logos_oracle_v6.html"; Src = Join-Path $mvp "public_showroom_logos_oracle_v6.html"; Optional = $true },
+    @{ Name = "showroom_logos_chronology_overlay_v1.json"; Src = Join-Path $mvp "showroom_logos_chronology_overlay_v1.json"; Optional = $true },
+    @{ Name = "showroom_logos_chronology_dynamic_map_v1.json"; Src = Join-Path $mvp "showroom_logos_chronology_dynamic_map_v1.json"; Optional = $true },
+    @{ Name = "showroom_logos_graph_wire_rag_poc_v1.json"; Src = Join-Path $mvp "showroom_logos_graph_wire_rag_poc_v1.json"; Optional = $true },
     @{ Name = "public_showroom_probabilistic_saju_v1.html"; Src = Join-Path $mvp "public_showroom_probabilistic_saju_v1.html" },
-    @{ Name = "showroom_saju_hour_bundle_demo_v1.json"; Src = Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json" }
+    @{ Name = "showroom_saju_hour_bundle_demo_v1.json"; Src = Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json" },
+    @{ Name = "public_showroom_mkm_inter_agent_wire_v3.html"; Src = Join-Path $mvp "public_showroom_mkm_inter_agent_wire_v3.html"; Optional = $true }
 )
 
 $destRoot = $WebRoot

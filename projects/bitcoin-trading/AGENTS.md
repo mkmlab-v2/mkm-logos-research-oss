@@ -23,7 +23,7 @@
 
 자동으로 “다 된 상태”가 되게 두지 않는다. 아래는 **사람이 실매매로 켠다는 결정** 이후에만 수행한다.
 
-1. **돌아가는 집 확인:** `pm2 describe <앱이름>`에서 **`exec cwd` + `script path`**가 의도한 트리인지 확인한다. `/opt/bitcoin-trading-live`만 고치고 PM2가 `/opt/mkm-lab-workspace-v2`를 쓰는 식이면 **본선은 그대로**일 수 있다. 헷갈리면 `ops/v2/ssh/VPS_PM2_HEALTH_SSH_CURSOR_RUNBOOK.md`의 절차로 스냅샷을 남긴다.
+1. **돌아가는 집 확인:** `pm2 describe <앱이름>`에서 **`exec cwd` + `script path`**가 의도한 트리인지 확인한다. vps-mkmlife 본선 기대값은 **`/opt/mkm-destiny-ai-41e38ec6`** + `projects/bitcoin-trading/start_live_trading.py`(레거시 `/opt/bitcoin-trading-live` 아님). 헷갈리면 `VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json` 또는 `ops/v2/ssh/VPS_PM2_HEALTH_SSH_CURSOR_RUNBOOK.md` 스냅샷.
 2. **코드 동기:** 그 `cwd` 루트에서만 `git pull` → **`pm2 restart <해당 앱만>`** (`restart all` 금지, 런북 예외만).
 3. **스위치(환경 > YAML 기본):** 루트 `.env`(또는 실제 `cwd`의 `.env`)에 **`TESTNET=false`(또는 `0/off`)**, **`ENABLE_TRADING=true`(또는 `1/on`)** — 미설정이면 `config/trading_config.yaml`의 `testnet` / `enable_live_trading`·`enable_trading` 기본값을 따른다(`scripts/start_24h_daemon.py`가 최종 합성).
 4. **기동 로그 확인:** `start_24h_daemon.py`가 출력하는 블록에서 **`테스트넷: False (실전 모드)`** + **`거래: 활성화`**가 둘 다 보여야 한다. 둘 중 하나라도 다르면 주문 경로를 신뢰하지 않는다.
@@ -41,10 +41,17 @@
 - `state mismatch` 1건이라도 발생 시 즉시 차단
 - 자동 재개 금지(최소 30분 + health 15분 정상 + 승인 플래그)
 
-## VPS 모노레포 경로 (Fact-Safe·배포 — 혼동 방지)
+## VPS 경로 (Fact-Safe·배포 — 혼동 방지)
 
-- 로컬 `ship_to_vps.ps1` 기본 **VPS 레포 루트**는 **`/opt/mkm-lab-workspace-v2`** (`VpsRepoPath`). 다른 경로(`/opt/mkm-destiny-*` 등)에 클론이 더 있어도, **PM2가 실제로 쓰는 cwd**가 본선이다.
-- **반드시** `pm2 show <앱이름>`으로 `exec cwd`·`script path`를 확인한 뒤, 그 모노레포 루트에서만 `git pull`·`scripts/sync_fact_safe_risk_profile.py`·`memory/v2/risk/` 갱신을 한다. 다른 클론에서만 sync 하면 **본선 프로세스가 그 JSON을 읽지 않을 수 있다.**
+**머신 SSOT:** `docs/final/VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json` (vps-mkmlife 기본값).
+
+| 경로 | 역할 |
+|------|------|
+| **`/opt/mkm-destiny-ai-41e38ec6`** | **본선 24h PM2 cwd** (`bitcoin-live-small-24h` → `projects/bitcoin-trading/start_live_trading.py`) |
+| `/opt/bitcoin-trading-live` | **레거시** 단독 클론(과거 실측). 본선 배포·`git pull` 대상으로 쓰지 않음 |
+| `/opt/mkm-lab-workspace-v2` | `ship_to_vps.ps1` 기본 `-VpsRepoPath`(랩·cron). **본선 PM2와 자동 동일 아님** |
+
+- **반드시** `pm2 show bitcoin-live-small-24h`(또는 실측 앱명)으로 `exec cwd`·`script path`를 확인한 뒤, **그 cwd 모노레포 루트**에서만 `git pull`·`scripts/sync_fact_safe_risk_profile.py`·`memory/v2/risk/` 갱신을 한다. 다른 클론에서만 sync 하면 **본선 프로세스가 그 JSON을 읽지 않을 수 있다.**
 - 금융 예언 → 리스크 JSON 반영 절차: **`docs/final/FINANCIAL_PROPHECY_VPS_LIVE_TRADING_DIRECTIVE_V1.md`**.
 
 ## Git 배포 정렬 (원격·브랜치 혼동 방지)

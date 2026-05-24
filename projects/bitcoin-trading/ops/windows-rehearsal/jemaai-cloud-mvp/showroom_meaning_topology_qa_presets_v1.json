@@ -1,13 +1,14 @@
 {
   "schema_version": "showroom_meaning_topology_qa_presets_v1",
-  "generated_at_utc": "2026-05-19T11:35:36Z",
+  "generated_at_utc": "2026-05-24T00:32:07Z",
   "research_only": true,
   "hypothesis_tier": "B",
   "disclaimer": {
     "evidence_tier": "hypo_research_only",
     "gating_status": "NON_GATING",
     "no_trade_signals": true,
-    "note_ko": "데모 프리셋 응답입니다. 실시간 LLM·실매매·종교적 단정이 아닙니다."
+    "note_ko": "데모 프리셋 응답입니다. 실시간 LLM·실매매·종교적 단정이 아닙니다.",
+    "note_ko_product": "Curated preset · research_only · NON_GATING · not investment advice."
   },
   "graph_slice_path": "showroom_meaning_topology_graph_slice_v1.json",
   "presets": [
@@ -15,6 +16,7 @@
       "id": "p1_empire_transition",
       "prompt_ko": "제국·왕조 전환(imperial / empire transition)과 연결된 구절은?",
       "answer_ko": "[HYPO] insight 허브 기준으로 **imperial_transition** 테마와 **empire_transition** 레짐이 다니엘 2장 구절 클러스터와 엣지로 연결됩니다. 이 화면은 연구용 부분 그래프이며 투자·매매·신학적 진리 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] **imperial_transition** 테마와 **empire_transition** 레짐이 다니엘 2장 구절 클러스터와 그래프 엣지로 연결됩니다.",
       "highlight_node_ids": [
         "theme::imperial_transition",
         "regime::empire_transition",
@@ -29,6 +31,41 @@
         "aramaic::Dan.2.18",
         "aramaic::Dan.2.19",
         "aramaic::Dan.2.20",
+        "aramaic::Dan.2.21",
+        "aramaic::Dan.2.22",
+        "aramaic::Dan.2.23",
+        "aramaic::Dan.2.24",
+        "aramaic::Dan.2.25",
+        "aramaic::Dan.2.26",
+        "aramaic::Dan.2.27",
+        "aramaic::Dan.2.28",
+        "aramaic::Dan.2.29",
+        "aramaic::Dan.2.30",
+        "aramaic::Dan.2.31",
+        "aramaic::Dan.2.32",
+        "aramaic::Dan.2.33",
+        "aramaic::Dan.2.34",
+        "aramaic::Dan.2.35",
+        "aramaic::Dan.2.36",
+        "aramaic::Dan.2.37",
+        "aramaic::Dan.2.38",
+        "aramaic::Dan.2.39",
+        "aramaic::Dan.2.4",
+        "aramaic::Dan.2.40",
+        "aramaic::Dan.2.41",
+        "aramaic::Dan.2.42",
+        "aramaic::Dan.2.43",
+        "aramaic::Dan.2.44",
+        "aramaic::Dan.2.45",
+        "aramaic::Dan.2.46",
+        "aramaic::Dan.2.47",
+        "aramaic::Dan.2.48",
+        "aramaic::Dan.2.49",
+        "aramaic::Dan.2.5",
+        "aramaic::Dan.2.6",
+        "aramaic::Dan.2.7",
+        "aramaic::Dan.2.8",
+        "aramaic::Dan.2.9",
         "greek::Dan.2.10",
         "greek::Dan.2.11",
         "greek::Dan.2.12",
@@ -39,6 +76,10 @@
         "greek::Dan.2.17",
         "greek::Dan.2.18",
         "greek::Dan.2.19",
+        "greek::Dan.2.20",
+        "greek::Dan.2.21",
+        "greek::Dan.2.22",
+        "greek::Dan.2.23",
         "hebrew::Dan.2.10",
         "hebrew::Dan.2.11",
         "hebrew::Dan.2.12",
@@ -48,7 +89,11 @@
         "hebrew::Dan.2.16",
         "hebrew::Dan.2.17",
         "hebrew::Dan.2.18",
-        "hebrew::Dan.2.19"
+        "hebrew::Dan.2.19",
+        "hebrew::Dan.2.20",
+        "hebrew::Dan.2.21",
+        "hebrew::Dan.2.22",
+        "hebrew::Dan.2.23"
       ],
       "keywords": [
         "제국",
@@ -58,7 +103,40 @@
         "transition",
         "다니엘",
         "daniel"
-      ]
+      ],
+      "reasoning_path_v1": {
+        "schema_version": "logos_reasoning_path_v1",
+        "node_ids": [
+          "theme::imperial_transition",
+          "aramaic::Dan.2.10",
+          "regime::empire_transition",
+          "aramaic::Dan.2.11",
+          "aramaic::Dan.2.12"
+        ],
+        "edges": [
+          {
+            "src": "theme::imperial_transition",
+            "dst": "aramaic::Dan.2.10",
+            "edge_type": "theme_association"
+          },
+          {
+            "src": "aramaic::Dan.2.10",
+            "dst": "regime::empire_transition",
+            "edge_type": "regime_projection"
+          },
+          {
+            "src": "regime::empire_transition",
+            "dst": "aramaic::Dan.2.11",
+            "edge_type": "regime_projection"
+          },
+          {
+            "src": "aramaic::Dan.2.11",
+            "dst": "aramaic::Dan.2.12",
+            "edge_type": "timeline_anchor"
+          }
+        ],
+        "path_label_ko": "imperial_transition → Dan.2.10 → empire_transition → Dan.2.11 → Dan.2.12"
+      }
     },
     {
       "id": "p2_daniel2_cluster",
@@ -76,6 +154,41 @@
         "aramaic::Dan.2.18",
         "aramaic::Dan.2.19",
         "aramaic::Dan.2.20",
+        "aramaic::Dan.2.21",
+        "aramaic::Dan.2.22",
+        "aramaic::Dan.2.23",
+        "aramaic::Dan.2.24",
+        "aramaic::Dan.2.25",
+        "aramaic::Dan.2.26",
+        "aramaic::Dan.2.27",
+        "aramaic::Dan.2.28",
+        "aramaic::Dan.2.29",
+        "aramaic::Dan.2.30",
+        "aramaic::Dan.2.31",
+        "aramaic::Dan.2.32",
+        "aramaic::Dan.2.33",
+        "aramaic::Dan.2.34",
+        "aramaic::Dan.2.35",
+        "aramaic::Dan.2.36",
+        "aramaic::Dan.2.37",
+        "aramaic::Dan.2.38",
+        "aramaic::Dan.2.39",
+        "aramaic::Dan.2.4",
+        "aramaic::Dan.2.40",
+        "aramaic::Dan.2.41",
+        "aramaic::Dan.2.42",
+        "aramaic::Dan.2.43",
+        "aramaic::Dan.2.44",
+        "aramaic::Dan.2.45",
+        "aramaic::Dan.2.46",
+        "aramaic::Dan.2.47",
+        "aramaic::Dan.2.48",
+        "aramaic::Dan.2.49",
+        "aramaic::Dan.2.5",
+        "aramaic::Dan.2.6",
+        "aramaic::Dan.2.7",
+        "aramaic::Dan.2.8",
+        "aramaic::Dan.2.9",
         "greek::Dan.2.10",
         "greek::Dan.2.11",
         "greek::Dan.2.12",
@@ -86,6 +199,10 @@
         "greek::Dan.2.17",
         "greek::Dan.2.18",
         "greek::Dan.2.19",
+        "greek::Dan.2.20",
+        "greek::Dan.2.21",
+        "greek::Dan.2.22",
+        "greek::Dan.2.23",
         "hebrew::Dan.2.10",
         "hebrew::Dan.2.11",
         "hebrew::Dan.2.12",
@@ -95,7 +212,11 @@
         "hebrew::Dan.2.16",
         "hebrew::Dan.2.17",
         "hebrew::Dan.2.18",
-        "hebrew::Dan.2.19"
+        "hebrew::Dan.2.19",
+        "hebrew::Dan.2.20",
+        "hebrew::Dan.2.21",
+        "hebrew::Dan.2.22",
+        "hebrew::Dan.2.23"
       ],
       "keywords": [
         "다니엘",
@@ -104,12 +225,46 @@
         "10",
         "19",
         "구절"
-      ]
+      ],
+      "reasoning_path_v1": {
+        "schema_version": "logos_reasoning_path_v1",
+        "node_ids": [
+          "aramaic::Dan.2.10",
+          "aramaic::Dan.2.11",
+          "aramaic::Dan.2.12",
+          "aramaic::Dan.2.13",
+          "aramaic::Dan.2.14"
+        ],
+        "edges": [
+          {
+            "src": "aramaic::Dan.2.10",
+            "dst": "aramaic::Dan.2.11",
+            "edge_type": "causal_precursor"
+          },
+          {
+            "src": "aramaic::Dan.2.11",
+            "dst": "aramaic::Dan.2.12",
+            "edge_type": "timeline_anchor"
+          },
+          {
+            "src": "aramaic::Dan.2.12",
+            "dst": "aramaic::Dan.2.13",
+            "edge_type": "timeline_anchor"
+          },
+          {
+            "src": "aramaic::Dan.2.13",
+            "dst": "aramaic::Dan.2.14",
+            "edge_type": "timeline_anchor"
+          }
+        ],
+        "path_label_ko": "Dan.2.10 → Dan.2.11 → Dan.2.12 → Dan.2.13 → Dan.2.14"
+      }
     },
     {
       "id": "p3_theme_regime",
       "prompt_ko": "테마(theme)와 레짐(regime) 허브만 설명해줘",
       "answer_ko": "[HYPO] **theme::imperial_transition** · **regime::empire_transition** 두 허브가 시드 후보이며, 주변 verse 노드로 의미 연결이 투영됩니다. 운영 게이트·주문 트리거와 무관합니다.",
+      "answer_ko_product": "[HYPO] **theme::imperial_transition** · **regime::empire_transition** 허브와 연결된 verse 노드로 의미 경로가 투영됩니다.",
       "highlight_node_ids": [
         "theme::imperial_transition",
         "regime::empire_transition"
@@ -120,12 +275,33 @@
         "theme",
         "regime",
         "허브"
-      ]
+      ],
+      "reasoning_path_v1": {
+        "schema_version": "logos_reasoning_path_v1",
+        "node_ids": [
+          "theme::imperial_transition",
+          "aramaic::Dan.2.10",
+          "regime::empire_transition"
+        ],
+        "edges": [
+          {
+            "src": "theme::imperial_transition",
+            "dst": "aramaic::Dan.2.10",
+            "edge_type": "theme_association"
+          },
+          {
+            "src": "aramaic::Dan.2.10",
+            "dst": "regime::empire_transition",
+            "edge_type": "regime_projection"
+          }
+        ],
+        "path_label_ko": "imperial_transition → Dan.2.10 → empire_transition"
+      }
     },
     {
       "id": "p4_full_map",
       "prompt_ko": "전체 부분 그래프 구조를 한눈에 보여줘",
-      "answer_ko": "[HYPO] 현재 슬라이스는 **35노드 · 54엣지**입니다. verse·theme·regime 종류별 색으로 구분됩니다.",
+      "answer_ko": "[HYPO] 현재 슬라이스는 **128노드 · 140엣지**입니다. verse·theme·regime 종류별 색으로 구분됩니다.",
       "highlight_node_ids": [
         "aramaic::Dan.2.10",
         "aramaic::Dan.2.11",
@@ -138,7 +314,92 @@
         "aramaic::Dan.2.18",
         "aramaic::Dan.2.19",
         "aramaic::Dan.2.20",
+        "aramaic::Dan.2.21",
+        "aramaic::Dan.2.22",
+        "aramaic::Dan.2.23",
+        "aramaic::Dan.2.24",
+        "aramaic::Dan.2.25",
+        "aramaic::Dan.2.26",
+        "aramaic::Dan.2.27",
+        "aramaic::Dan.2.28",
+        "aramaic::Dan.2.29",
+        "aramaic::Dan.2.30",
+        "aramaic::Dan.2.31",
+        "aramaic::Dan.2.32",
+        "aramaic::Dan.2.33",
+        "aramaic::Dan.2.34",
+        "aramaic::Dan.2.35",
+        "aramaic::Dan.2.36",
+        "aramaic::Dan.2.37",
+        "aramaic::Dan.2.38",
+        "aramaic::Dan.2.39",
+        "aramaic::Dan.2.4",
+        "aramaic::Dan.2.40",
+        "aramaic::Dan.2.41",
+        "aramaic::Dan.2.42",
+        "aramaic::Dan.2.43",
+        "aramaic::Dan.2.44",
+        "aramaic::Dan.2.45",
+        "aramaic::Dan.2.46",
+        "aramaic::Dan.2.47",
+        "aramaic::Dan.2.48",
+        "aramaic::Dan.2.49",
+        "aramaic::Dan.2.5",
+        "aramaic::Dan.2.6",
+        "aramaic::Dan.2.7",
+        "aramaic::Dan.2.8",
+        "aramaic::Dan.2.9",
+        "aramaic::Dan.3.1",
+        "aramaic::Dan.3.10",
+        "aramaic::Dan.3.11",
+        "aramaic::Dan.3.12",
+        "aramaic::Dan.3.13",
+        "aramaic::Dan.3.14",
+        "aramaic::Dan.3.15",
+        "aramaic::Dan.3.16",
+        "aramaic::Dan.3.17",
+        "aramaic::Dan.3.18",
+        "aramaic::Dan.3.19",
+        "aramaic::Dan.3.2",
+        "aramaic::Dan.3.20",
+        "aramaic::Dan.3.21",
+        "aramaic::Dan.3.22",
+        "aramaic::Dan.3.23",
+        "aramaic::Dan.3.24",
+        "aramaic::Dan.3.25",
+        "aramaic::Dan.3.26",
+        "aramaic::Dan.3.27",
+        "aramaic::Dan.3.28",
+        "aramaic::Dan.3.29",
+        "aramaic::Dan.3.3",
+        "aramaic::Dan.3.30",
+        "aramaic::Dan.3.4",
+        "aramaic::Dan.3.5",
+        "aramaic::Dan.3.6",
+        "aramaic::Dan.3.7",
+        "aramaic::Dan.3.8",
+        "aramaic::Dan.3.9",
+        "aramaic::Dan.4.1",
+        "aramaic::Dan.4.10",
+        "aramaic::Dan.4.11",
+        "aramaic::Dan.4.12",
+        "aramaic::Dan.4.13",
+        "aramaic::Dan.4.14",
+        "aramaic::Dan.4.15",
+        "aramaic::Dan.4.16",
+        "aramaic::Dan.4.17",
+        "aramaic::Dan.4.18",
+        "aramaic::Dan.4.19",
+        "aramaic::Dan.4.2",
+        "aramaic::Dan.4.20",
+        "aramaic::Dan.4.21",
+        "aramaic::Dan.4.22",
+        "aramaic::Dan.4.23",
+        "aramaic::Dan.4.24",
+        "aramaic::Dan.4.25",
+        "aramaic::Dan.5.29",
         "aramaic::Dan.5.3",
+        "aramaic::Dan.5.30",
         "aramaic::Jer.10.11",
         "greek::Dan.2.10",
         "greek::Dan.2.11",
@@ -150,6 +411,10 @@
         "greek::Dan.2.17",
         "greek::Dan.2.18",
         "greek::Dan.2.19",
+        "greek::Dan.2.20",
+        "greek::Dan.2.21",
+        "greek::Dan.2.22",
+        "greek::Dan.2.23",
         "hebrew::Dan.2.10",
         "hebrew::Dan.2.11",
         "hebrew::Dan.2.12",
@@ -160,6 +425,10 @@
         "hebrew::Dan.2.17",
         "hebrew::Dan.2.18",
         "hebrew::Dan.2.19",
+        "hebrew::Dan.2.20",
+        "hebrew::Dan.2.21",
+        "hebrew::Dan.2.22",
+        "hebrew::Dan.2.23",
         "regime::empire_transition",
         "theme::imperial_transition"
       ],
@@ -169,6 +438,212 @@
         "망",
         "그래프",
         "overview"
+      ],
+      "reasoning_path_v1": {
+        "schema_version": "logos_reasoning_path_v1",
+        "node_ids": [
+          "theme::imperial_transition",
+          "aramaic::Dan.2.10",
+          "regime::empire_transition",
+          "aramaic::Dan.2.11",
+          "aramaic::Dan.2.12"
+        ],
+        "edges": [
+          {
+            "src": "theme::imperial_transition",
+            "dst": "aramaic::Dan.2.10",
+            "edge_type": "theme_association"
+          },
+          {
+            "src": "aramaic::Dan.2.10",
+            "dst": "regime::empire_transition",
+            "edge_type": "regime_projection"
+          },
+          {
+            "src": "regime::empire_transition",
+            "dst": "aramaic::Dan.2.11",
+            "edge_type": "regime_projection"
+          },
+          {
+            "src": "aramaic::Dan.2.11",
+            "dst": "aramaic::Dan.2.12",
+            "edge_type": "timeline_anchor"
+          }
+        ],
+        "path_label_ko": "imperial_transition → Dan.2.10 → empire_transition → Dan.2.11 → Dan.2.12"
+      }
+    },
+    {
+      "id": "era_genesis_order_and_fall",
+      "prompt_ko": "창조와 타락 (Genesis)",
+      "answer_ko": "[HYPO] 연대기 **창조와 타락 (Genesis)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 근원 질서·혼돈·경계 상실의 서사 프레임. 시장 인과 단정 없음. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **창조와 타락 (Genesis)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 근원 질서·혼돈·경계 상실의 서사 프레임. 시장 인과 단정 없음.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "genesis_order_and_fall",
+        "창조와 타락 (Gene"
+      ]
+    },
+    {
+      "id": "era_patriarch_covenant_arc",
+      "prompt_ko": "족장 시대 · 언약 (Patriarchs)",
+      "answer_ko": "[HYPO] 연대기 **족장 시대 · 언약 (Patriarchs)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 언약·가족·약속 네트워크 은유. 거버넌스 계약의 상징층. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **족장 시대 · 언약 (Patriarchs)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 언약·가족·약속 네트워크 은유. 거버넌스 계약의 상징층.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "patriarch_covenant_arc",
+        "족장 시대 · 언약 ("
+      ]
+    },
+    {
+      "id": "era_exodus_wilderness_law",
+      "prompt_ko": "출애굽·광야 · 율법 (Exodus/Wilderness)",
+      "answer_ko": "[HYPO] 연대기 **출애굽·광야 · 율법 (Exodus/Wilderness)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 해방·규칙(Rule)·훈련 루프. 구조적 돌파·제도화 은유만. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **출애굽·광야 · 율법 (Exodus/Wilderness)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 해방·규칙(Rule)·훈련 루프. 구조적 돌파·제도화 은유만.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "exodus_wilderness_law",
+        "출애굽·광야 · 율법 "
+      ]
+    },
+    {
+      "id": "era_judges_risk_cycle",
+      "prompt_ko": "사사 시대 · 순환 리스크 (Judges)",
+      "answer_ko": "[HYPO] 연대기 **사사 시대 · 순환 리스크 (Judges)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 질서 붕괴·구원 반복. 변동성·조율 실패 키워드의 상징층. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **사사 시대 · 순환 리스크 (Judges)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 질서 붕괴·구원 반복. 변동성·조율 실패 키워드의 상징층.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "judges_risk_cycle",
+        "사사 시대 · 순환 리"
+      ]
+    },
+    {
+      "id": "era_united_divided_kingdom",
+      "prompt_ko": "통일·분열 왕국 (Kingdoms)",
+      "answer_ko": "[HYPO] 연대기 **통일·분열 왕국 (Kingdoms)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 거버넌스 수립·내부 분열·왕권 붕괴. 제도 신뢰 사이클 은유. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **통일·분열 왕국 (Kingdoms)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 거버넌스 수립·내부 분열·왕권 붕괴. 제도 신뢰 사이클 은유.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "united_divided_kingdom",
+        "통일·분열 왕국 (Ki"
+      ]
+    },
+    {
+      "id": "era_exile_and_return",
+      "prompt_ko": "포로기·귀환 (Exile/Return)",
+      "answer_ko": "[HYPO] 연대기 **포로기·귀환 (Exile/Return)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 심판·고립·회복 사이클. 유동성·긴축 키워드와 **관측 유사**만. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **포로기·귀환 (Exile/Return)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 심판·고립·회복 사이클. 유동성·긴축 키워드와 **관측 유사**만.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "exile_and_return",
+        "포로기·귀환 (Exil"
+      ]
+    },
+    {
+      "id": "era_intertestamental_empire_handoff",
+      "prompt_ko": "침묵기·제국 교체 (Intertestamental)",
+      "answer_ko": "[HYPO] 연대기 **침묵기·제국 교체 (Intertestamental)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 바벨론→페르시아→헬라→로마 교체와 다니엘 2 금속상 **구조 은유**. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **침묵기·제국 교체 (Intertestamental)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 바벨론→페르시아→헬라→로마 교체와 다니엘 2 금속상 **구조 은유**.",
+      "highlight_node_ids": [
+        "aramaic::Dan.2.31",
+        "aramaic::Dan.2.35",
+        "aramaic::Dan.2.10"
+      ],
+      "keywords": [
+        "intertestamental_empire_handoff",
+        "침묵기·제국 교체 (I"
+      ],
+      "reasoning_path_v1": {
+        "schema_version": "logos_reasoning_path_v1",
+        "node_ids": [
+          "aramaic::Dan.2.10",
+          "aramaic::Dan.2.31",
+          "aramaic::Dan.2.32",
+          "aramaic::Dan.2.33",
+          "aramaic::Dan.2.34"
+        ],
+        "edges": [
+          {
+            "src": "aramaic::Dan.2.31",
+            "dst": "aramaic::Dan.2.32",
+            "edge_type": "timeline_anchor"
+          },
+          {
+            "src": "aramaic::Dan.2.32",
+            "dst": "aramaic::Dan.2.33",
+            "edge_type": "timeline_anchor"
+          },
+          {
+            "src": "aramaic::Dan.2.33",
+            "dst": "aramaic::Dan.2.34",
+            "edge_type": "timeline_anchor"
+          }
+        ],
+        "path_label_ko": "Dan.2.10 → Dan.2.31 → Dan.2.32 → Dan.2.33 → Dan.2.34"
+      }
+    },
+    {
+      "id": "era_gospel_logos_incarnate",
+      "prompt_ko": "복음서 · Logos 현현 (Gospels)",
+      "answer_ko": "[HYPO] 연대기 **복음서 · Logos 현현 (Gospels)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 완전한 Logos 현현 **해설 프레임**; 치유·투자 확정 아님. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **복음서 · Logos 현현 (Gospels)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 완전한 Logos 현현 **해설 프레임**; 치유·투자 확정 아님.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "gospel_logos_incarnate",
+        "복음서 · Logos "
+      ]
+    },
+    {
+      "id": "era_early_church_network",
+      "prompt_ko": "초대교회·확장 (Acts)",
+      "answer_ko": "[HYPO] 연대기 **초대교회·확장 (Acts)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 네트워크 확장·핍박·분산 조율. 협업·커뮤니케이션 은유. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **초대교회·확장 (Acts)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 네트워크 확장·핍박·분산 조율. 협업·커뮤니케이션 은유.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "early_church_network",
+        "초대교회·확장 (Act"
+      ]
+    },
+    {
+      "id": "era_modern_observational_field",
+      "prompt_ko": "현대 관측 필드 (Modern bridges)",
+      "answer_ko": "[HYPO] 연대기 **현대 관측 필드 (Modern bridges)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. regime_map·chronology_windows와의 **2차 관측 정렬**만. Track A·MS Wire 무관. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **현대 관측 필드 (Modern bridges)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. regime_map·chronology_windows와의 **2차 관측 정렬**만. Track A·MS Wire 무관.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "modern_observational_field",
+        "현대 관측 필드 (Mo"
+      ]
+    },
+    {
+      "id": "era_eschaton_restoration_hypo",
+      "prompt_ko": "종말적 완성 (Eschaton · hypo)",
+      "answer_ko": "[HYPO] 연대기 **종말적 완성 (Eschaton · hypo)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 최종 질서 회복 **가설 프레임**; 날짜·시장 방향 예측 아님. 투자·실매매·확정 예언·신학적 단정이 아닙니다.",
+      "answer_ko_product": "[HYPO] 연대기 **종말적 완성 (Eschaton · hypo)** 구간입니다. [HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 최종 질서 회복 **가설 프레임**; 날짜·시장 방향 예측 아님.",
+      "highlight_node_ids": [
+        "theme::imperial_transition"
+      ],
+      "keywords": [
+        "eschaton_restoration_hypo",
+        "종말적 완성 (Esch"
       ]
     }
   ],
@@ -183,6 +658,33 @@
       "aramaic::Dan.2.13",
       "aramaic::Dan.2.14",
       "aramaic::Dan.2.15"
-    ]
+    ],
+    "reasoning_path_v1": {
+      "schema_version": "logos_reasoning_path_v1",
+      "node_ids": [
+        "theme::imperial_transition",
+        "aramaic::Dan.2.10",
+        "regime::empire_transition",
+        "aramaic::Dan.2.11"
+      ],
+      "edges": [
+        {
+          "src": "theme::imperial_transition",
+          "dst": "aramaic::Dan.2.10",
+          "edge_type": "theme_association"
+        },
+        {
+          "src": "aramaic::Dan.2.10",
+          "dst": "regime::empire_transition",
+          "edge_type": "regime_projection"
+        },
+        {
+          "src": "regime::empire_transition",
+          "dst": "aramaic::Dan.2.11",
+          "edge_type": "regime_projection"
+        }
+      ],
+      "path_label_ko": "imperial_transition → Dan.2.10 → empire_transition → Dan.2.11"
+    }
   }
 }

@@ -24,6 +24,13 @@ logger = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
 
+def _env_truthy(name: str, *, default: bool = True) -> bool:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    return str(raw).strip().lower() in ("1", "true", "yes", "on")
+
+
 @dataclass
 class _CrossState:
     prev_up: Optional[float] = None
@@ -57,7 +64,10 @@ class AroonFuturesEngine:
         self.order_qty = float(os.getenv("AROON_ORDER_QTY", "0.002"))
         self.min_cross_gap = float(os.getenv("AROON_MIN_CROSS_GAP", "2.0"))
 
-        self.binance = BinanceFuturesClient(testnet=self.testnet)
+        maker_only = _env_truthy("MKM_MAKER_ONLY", default=True)
+        self.binance = BinanceFuturesClient(testnet=self.testnet, maker_only=maker_only)
+        if maker_only:
+            logger.info("아론: Maker-only LIMIT+GTX (수수료 절감)")
         self._cross = _CrossState()
         self._last_up: Optional[float] = None
         self._last_down: Optional[float] = None

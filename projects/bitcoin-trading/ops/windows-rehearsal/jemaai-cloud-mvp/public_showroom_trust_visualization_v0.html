@@ -80,6 +80,17 @@
           }, null, 2)) + "</pre>");
           html += card("Field → Lenses → Final (trust_visualization_v0)", "<pre>" + esc(JSON.stringify(tv, null, 2)) + "</pre>");
           html += card("STT routing audit (summary slice)", "<pre>" + esc(JSON.stringify(st, null, 2)) + "</pre>");
+          var pit = doc.patient_intake_b_track_v0 || {};
+          if (pit && Object.keys(pit).length) {
+            var pitSummary =
+              "<p class=\"lede\" style=\"margin:0 0 0.5rem\">[HYPO] 체질 <strong>" + esc(pit.clinical_sasang_label) + "</strong> · " +
+              "명리×체질 <strong>" + esc(pit.myeongni_sasang_status_ko || pit.myeongni_sasang_status) + "</strong> · " +
+              "보명지주 앵커 <strong>" + esc(pit.boming_term_count) + "</strong> · " +
+              "원전 deep link <strong>" + esc(pit.deep_link_count) + "</strong></p>" +
+              "<p class=\"lede\" style=\"margin:0 0 0.5rem;color:#8b949e\">" + esc(pit.boundary_note_ko) + "</p>" +
+              "<pre>" + esc(JSON.stringify(pit, null, 2)) + "</pre>";
+            html += card("Patient intake fusion (B-track · non-clinical)", pitSummary);
+          }
           var cg = doc.compression_governance_v0 || {};
           if (cg && Object.keys(cg).length) {
             var pct = cg.global_token_saving_rate != null ? (Number(cg.global_token_saving_rate) * 100).toFixed(1) + "%" : "—";

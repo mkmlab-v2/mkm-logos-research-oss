@@ -52,7 +52,8 @@ test -f projects/bitcoin-trading/ops/v2/ssh/vps_pm2_bitcoin_live_drift_watch.sh 
 ```
 
 - 둘 다 `FAIL`이면: **repo 루트가 아님**이거나 **pull 브랜치가 잘못됨** → 1~2단계 재확인.
-- `/opt/bitcoin-trading-live`만 쓰고 여기에 `projects/bitcoin-trading`가 없으면: **모노레포에서 pull**하거나, PC에서 두 파일만 같은 상대 경로로 복사해 동일 구조를 맞춤.
+- **본선 PM2 cwd**는 vps-mkmlife 기준 **`/opt/mkm-destiny-ai-41e38ec6`** (`docs/final/VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json`). `/opt/bitcoin-trading-live`는 **레거시** 단독 클론이다.
+- cwd에 `projects/bitcoin-trading`가 없으면: **destiny 모노레포에서 pull**하거나, PC에서 두 파일만 같은 상대 경로로 복사해 동일 구조를 맞춤.
 
 ---
 

@@ -267,6 +267,14 @@ function Start-Daemon {
         if ($LASTEXITCODE -ne 0) {
             Write-Log "WARN: Fact-Safe risk sync failed; daemon start continues with existing profile"
         }
+        $feeGuardScript = Join-Path $projectRoot "..\..\scripts\apply_live_fee_guard_recommended_posture_v1.py"
+        if (Test-Path -LiteralPath $feeGuardScript) {
+            Write-Log "Applying fee-guard cap after Fact-Safe sync (MKM_FEE_GUARD_MAX_TRADES_PER_DAY)"
+            py $feeGuardScript | Out-Null
+            if ($LASTEXITCODE -ne 0) {
+                Write-Log "WARN: fee-guard apply failed; continuing with post-sync profile"
+            }
+        }
     } else {
         Write-Log "Fact-Safe risk sync skipped (prophecy/script missing)"
     }

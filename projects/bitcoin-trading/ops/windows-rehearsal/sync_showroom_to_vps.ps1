@@ -1,4 +1,5 @@
-# Push local showroom static assets (full `deploy_showroom_static` staging set when present) to VPS web root via scp (OpenSSH).
+# Push local showroom static assets to Hostinger VPS web root via scp (OpenSSH). Cloudflare only fronts DNS/proxy.
+# Topology SSOT: docs/final/MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md — NOT hPanel public_html.
 #
 # Prereq: Windows OpenSSH Client (scp/ssh on PATH).
 #
@@ -73,8 +74,14 @@ $htmlMeaningGraph = Join-Path $staging "public_showroom_meaning_topology_graph_v
 $jsonMeaningGraph = Join-Path $staging "showroom_meaning_topology_graph_slice_v1.json"
 $htmlMeaningQaV2 = Join-Path $staging "public_showroom_meaning_topology_qa_v2.html"
 $jsonMeaningQaPresets = Join-Path $staging "showroom_meaning_topology_qa_presets_v1.json"
+$htmlLogosOracleV3 = Join-Path $staging "public_showroom_logos_oracle_v3.html"
+$htmlLogosOracleV4 = Join-Path $staging "public_showroom_logos_oracle_v4.html"
+$htmlLogosOracleV5 = Join-Path $staging "public_showroom_logos_oracle_v5.html"
+$htmlLogosOracleV6 = Join-Path $staging "public_showroom_logos_oracle_v6.html"
+$jsonLogosChronologyOverlay = Join-Path $staging "showroom_logos_chronology_overlay_v1.json"
 $htmlSaju = Join-Path $staging "public_showroom_probabilistic_saju_v1.html"
 $jsonSaju = Join-Path $staging "showroom_saju_hour_bundle_demo_v1.json"
+$htmlWireInterAgentV3 = Join-Path $staging "public_showroom_mkm_inter_agent_wire_v3.html"
 
 if ($RefreshStaging) {
     Write-Host "[showroom-vps-sync] RefreshStaging: track_c chain -> deploy_showroom_static" -ForegroundColor Cyan
@@ -164,8 +171,14 @@ function Invoke-ScpShowroomPair {
             @{ Path = $jsonMeaningGraph; Label = "meaning topology graph JSON" },
             @{ Path = $htmlMeaningQaV2; Label = "meaning topology Q&A v2 HTML" },
             @{ Path = $jsonMeaningQaPresets; Label = "meaning topology Q&A presets JSON" },
+            @{ Path = $htmlLogosOracleV3; Label = "logos oracle v3 HTML" },
+            @{ Path = $htmlLogosOracleV4; Label = "logos oracle v4 visual path HTML" },
+            @{ Path = $htmlLogosOracleV5; Label = "logos oracle v5 enterprise HTML" },
+            @{ Path = $htmlLogosOracleV6; Label = "logos oracle v6 commercial HTML" },
+            @{ Path = $jsonLogosChronologyOverlay; Label = "logos chronology overlay JSON" },
             @{ Path = $htmlSaju; Label = "probabilistic saju HTML" },
-            @{ Path = $jsonSaju; Label = "saju hour bundle JSON" }
+            @{ Path = $jsonSaju; Label = "saju hour bundle JSON" },
+            @{ Path = $htmlWireInterAgentV3; Label = "MKM inter-agent wire v3 HTML" }
         )) {
         if (Test-Path -LiteralPath $pair.Path) {
             $argv += $pair.Path

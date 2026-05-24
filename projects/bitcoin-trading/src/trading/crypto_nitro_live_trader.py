@@ -1395,7 +1395,14 @@ class CryptoNitroLiveTrader:
         # 메모리 정리 카운터 (1시간마다 정리)
         last_cleanup_time = time.time()
         cleanup_interval = 3600  # 1시간
-        
+        last_risk_profile_reload = time.time()
+        try:
+            risk_profile_reload_interval = max(
+                60, int(os.getenv("RISK_PROFILE_RELOAD_SECONDS", "300"))
+            )
+        except (TypeError, ValueError):
+            risk_profile_reload_interval = 300
+
         try:
             while self.running:
                 try:
@@ -1404,6 +1411,20 @@ class CryptoNitroLiveTrader:
                     if current_time - last_cleanup_time >= cleanup_interval:
                         self._cleanup_memory()
                         last_cleanup_time = current_time
+
+                    # Hot-reload risk profile so disk caps (fee guard) apply without PM2 restart.
+                    if current_time - last_risk_profile_reload >= risk_profile_reload_interval:
+                        prev_max_trades = max_trades_per_day
+                        self._load_risk_profile()
+                        if self.config_max_trades_per_day is not None:
+                            max_trades_per_day = int(self.config_max_trades_per_day)
+                            if max_trades_per_day != prev_max_trades:
+                                logger.info(
+                                    "🛡️ risk_profile hot-reload: max_trades %d → %d",
+                                    prev_max_trades,
+                                    max_trades_per_day,
+                                )
+                        last_risk_profile_reload = current_time
                     
                     # 일일 거래 횟수 리셋
                     current_date = datetime.now().date()

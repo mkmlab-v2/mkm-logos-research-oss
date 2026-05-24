@@ -83,6 +83,10 @@ $keys = @(
   # Cloudflare API (DNS ensure / token verify; SSOT = workspace .env → sync to User)
   "CLOUDFLARE_API_TOKEN",
   "CF_API_TOKEN",
+  "CLOUDFLARE_RULESETS_API_TOKEN",
+  "MKM_CLOUDFLARE_RULESETS_TOKEN",
+  "MKM_MKMLIFE_CF_ANALYTICS_TOKEN",
+  "MKM_CLOUDFLARE_ANALYTICS_TOKEN",
   "CLOUDFLARE_ZONE_ID",
   # Kakao
   "KAKAO_REST_API_KEY",
@@ -174,6 +178,28 @@ $cfAlt = Get-DotenvVal "CF_API_TOKEN"
 if ([string]::IsNullOrWhiteSpace($cfMain) -and -not [string]::IsNullOrWhiteSpace($cfAlt)) {
   [Environment]::SetEnvironmentVariable("CLOUDFLARE_API_TOKEN", $cfAlt, "User")
   Write-Host "SET_USER:CLOUDFLARE_API_TOKEN (mirrored from CF_API_TOKEN)"
+}
+
+# mkmlife O-P30 CF UV: dedicated token preferred; else mirror main CF token for scheduled probes.
+$mkCf = Get-DotenvVal "MKM_MKMLIFE_CF_ANALYTICS_TOKEN"
+$mkCfAlt = Get-DotenvVal "MKM_CLOUDFLARE_ANALYTICS_TOKEN"
+if ([string]::IsNullOrWhiteSpace($mkCf) -and -not [string]::IsNullOrWhiteSpace($mkCfAlt)) {
+  $mkCf = $mkCfAlt
+}
+if ([string]::IsNullOrWhiteSpace($mkCf) -and -not [string]::IsNullOrWhiteSpace($cfMain)) {
+  $mkCf = $cfMain
+}
+elseif ([string]::IsNullOrWhiteSpace($mkCf) -and -not [string]::IsNullOrWhiteSpace($cfAlt)) {
+  $mkCf = $cfAlt
+}
+if (-not [string]::IsNullOrWhiteSpace($mkCf)) {
+  [Environment]::SetEnvironmentVariable("MKM_MKMLIFE_CF_ANALYTICS_TOKEN", $mkCf, "User")
+  if (-not (Get-DotenvVal "MKM_MKMLIFE_CF_ANALYTICS_TOKEN")) {
+    Write-Host "SET_USER:MKM_MKMLIFE_CF_ANALYTICS_TOKEN (mirrored from CLOUDFLARE/CF_API_TOKEN)"
+  }
+  else {
+    Write-Host "SET_USER:MKM_MKMLIFE_CF_ANALYTICS_TOKEN"
+  }
 }
 
 # Bluesky / ATProto: scheduled tasks and some paths expect User-scope BSKY_*.

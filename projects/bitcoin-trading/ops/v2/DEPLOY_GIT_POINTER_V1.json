@@ -2,9 +2,11 @@
   "schema": "deploy_git_pointer_v1",
   "version": 1,
   "policy_note": "전역 원칙은 루트 AGENTS.md — GitHub 최소·internal/gitea 우선. 아래는 특정 VPS가 실제로 fetch하는 원격이 GitHub일 때의 정렬용 포인터이다.",
+  "live_runtime_ssot": "docs/final/VPS_BITCOIN_LIVE_RUNTIME_POINTER_V1.json",
   "vps_monorepo_example": {
     "path": "/opt/mkm-lab-workspace-v2",
-    "bitcoin_trading_relative": "projects/bitcoin-trading"
+    "bitcoin_trading_relative": "projects/bitcoin-trading",
+    "note": "ship_to_vps default only; live PM2 on vps-mkmlife uses /opt/mkm-destiny-ai-41e38ec6 per live_runtime_ssot"
   },
   "deploy_alignment": {
     "remote_name": "destiny",

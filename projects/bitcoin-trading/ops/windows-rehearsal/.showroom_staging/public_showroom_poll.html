@@ -1265,7 +1265,7 @@
           EN: ["Hold the line!", "Gather center!", "Defensive posture!"]
         },
         attack: {
-          KR: ["풀매수 타격!", "돌격!", "기회를 놓치지 마라!"],
+          KR: ["상승 연출(데모)", "포메이션 전진", "신호 관측 — 투자 권유 없음"],
           EN: ["Charge now!", "Strike window!", "Push formation!"]
         },
         defend: {
@@ -1283,7 +1283,7 @@
           EN: ["Command holds. Keep formation.", "Operational lock acquired."]
         },
         tiger_shield: {
-          KR: ["선봉 준비 완료!", "돌격 각이 보인다!"],
+          KR: ["선봉 준비 완료!", "연출: 전진 각도"],
           EN: ["Vanguard ready!", "I see the strike angle!"]
         },
         rat_arbitrage: {
@@ -3018,10 +3018,10 @@
           addBubble(stageState.actors[0], "성문 방어 태세!");
         } else if (dir === "BUY" || dir === "LONG") {
           stageState.king.actionText = "charge_long";
-          addBubble(stageState.actors[0], "롱 돌격!");
+          addBubble(stageState.actors[0], "롱 연출(데모)");
         } else if (dir === "SELL" || dir === "SHORT") {
           stageState.king.actionText = "arrow_short";
-          addBubble(stageState.actors[0], "숏 사격!");
+          addBubble(stageState.actors[0], "숏 연출(데모)");
         } else {
           stageState.king.actionText = "scout";
           addBubble(stageState.actors[0], "정찰 유지");
