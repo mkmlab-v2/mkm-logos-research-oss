@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/saving_the_news_perspective_appendix_v1.schema.json",
+  "title": "Saving the News — Layer B perspective appendix v1",
+  "description": "Read-only semantic flavoring from lens snapshots + Logos subgraph GraphRAG. Not fact synthesis; not A-track or live trigger.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "lane",
+    "hypothesis_tier",
+    "ready_for_external_send",
+    "generated_at_utc",
+    "layer",
+    "bridge_mode",
+    "headline_anchor",
+    "entity_tokens",
+    "perspective_slots",
+    "coordinator_brief_ko"
+  ],
+  "properties": {
+    "schema": { "const": "saving_the_news_perspective_appendix_v1" },
+    "version": { "type": "string", "pattern": "^1\\.0\\.0$" },
+    "lane": { "const": "research_only" },
+    "hypothesis_tier": { "const": "B" },
+    "ready_for_external_send": { "const": false },
+    "generated_at_utc": { "type": "string" },
+    "layer": { "const": "B" },
+    "bridge_mode": { "const": "read_only_semantic_flavor" },
+    "fact_synthesis_forbidden": { "const": true },
+    "a_track_autotrigger_forbidden": { "const": true },
+    "headline_anchor": { "type": "object" },
+    "entity_tokens": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "perspective_slots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["lens_id", "source_kind", "non_gating", "flavor_ko"],
+        "properties": {
+          "lens_id": { "type": "string" },
+          "source_kind": {
+            "type": "string",
+            "enum": ["lens_snapshot", "logos_subgraph_graphrag"]
+          },
+          "non_gating": { "type": "boolean" },
+          "tags": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "flavor_ko": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "logos_graphrag": { "type": "object" },
+    "coordinator_brief_ko": { "type": "string", "minLength": 10 },
+    "flywheel_as_ref": { "type": "string" }
+  }
+}

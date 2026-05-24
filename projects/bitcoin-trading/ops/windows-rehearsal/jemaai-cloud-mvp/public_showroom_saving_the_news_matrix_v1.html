@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · Saving the News — Matrix Panel [HYPO]</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --surface: #12151a;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #e8eaef;
+      --muted: #8b919d;
+      --accent: #c5a057;
+      --watch: #d4a574;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+      background: var(--bg);
+    }
+    .wrap { max-width: 46rem; margin: 0 auto; padding: 1.5rem 1rem 2.5rem; }
+    h1 { font-size: 1.1rem; margin: 0 0 0.25rem; }
+    .lede { color: var(--muted); font-size: 0.8rem; margin: 0 0 1rem; }
+    .banner {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--watch);
+      border: 1px solid rgba(212, 165, 116, 0.4);
+      padding: 0.35rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 1rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+    th, td { border-bottom: 1px solid var(--border); padding: 0.45rem 0.35rem; text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; font-size: 0.7rem; text-transform: uppercase; }
+    .final {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+    .final strong { color: var(--accent); }
+    .meta { margin-top: 1rem; font-size: 0.75rem; color: var(--muted); }
+    .err { color: #c97a6d; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+    .tab {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.35rem 0.65rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+    .tab.active { color: var(--text); border-color: var(--accent); }
+    .panel-section { display: none; }
+    .panel-section.active { display: block; }
+    .layer-b-slot {
+      margin: 0.5rem 0;
+      padding: 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--surface);
+      font-size: 0.8125rem;
+    }
+    .layer-b-slot .tags { color: var(--watch); font-size: 0.7rem; }
+    pre.brief {
+      white-space: pre-wrap;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin: 0.75rem 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1 id="pageTitle">Saving the News — Multi-Lens Matrix</h1>
+      <p class="lede" id="pageSubtitle">Field → Lens(사상/명리/성경+streams) → Conflict → Final Action · research_only</p>
+      <div class="banner" id="hypoBanner">[HYPO] B-track observability — not investment advice</div>
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="layerA" id="tabLayerA">Layer A · Matrix</button>
+        <button type="button" class="tab" data-tab="layerB" id="tabLayerB">Layer B · Perspective [HYPO]</button>
+      </div>
+    </header>
+    <section id="layerA" class="panel-section active">
+      <p id="headline" class="lede">—</p>
+      <table>
+        <thead>
+          <tr><th>Lens</th><th>Dir</th><th>Conf</th><th>Digest</th></tr>
+        </thead>
+        <tbody id="lensBody"></tbody>
+      </table>
+      <div class="final" id="finalBlock">Final Action: —</div>
+    </section>
+    <section id="layerB" class="panel-section">
+      <p class="lede" id="layerBLede">의미론적 시선 부록 — 팩트 합성·투자 권유·송출 트리거 아님</p>
+      <div id="layerBSlots"></div>
+      <pre class="brief" id="layerBBrief">—</pre>
+      <div id="flywheelAxes"></div>
+    </section>
+    <p class="meta" id="metaLine">—</p>
+  </div>
+  <script>
+(function () {
+  const params = new URLSearchParams(location.search);
+  const apiBase = (params.get("api") || "http://127.0.0.1:8788").replace(/\/$/, "");
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  async function fetchJson(urls) {
+    for (const u of urls) {
+      try {
+        const r = await fetch(u, { cache: "no-store" });
+        if (!r.ok) continue;
+        return await r.json();
+      } catch (e) { /* next */ }
+    }
+    return null;
+  }
+
+  function applyPublicUi(panel) {
+    const ui = panel && panel.public_ui;
+    if (!ui) return;
+    document.getElementById("pageTitle").textContent = ui.title || document.getElementById("pageTitle").textContent;
+    document.getElementById("pageSubtitle").textContent = ui.subtitle || document.getElementById("pageSubtitle").textContent;
+    document.getElementById("hypoBanner").textContent = ui.banner || document.getElementById("hypoBanner").textContent;
+    document.getElementById("tabLayerA").textContent = ui.tab_layer_a || document.getElementById("tabLayerA").textContent;
+    document.getElementById("tabLayerB").textContent = ui.tab_layer_b || document.getElementById("tabLayerB").textContent;
+    document.getElementById("layerBLede").textContent = ui.layer_b_lede || document.getElementById("layerBLede").textContent;
+  }
+
+  function renderLayerB(panel) {
+    const lb = panel.layer_b;
+    const slotsEl = document.getElementById("layerBSlots");
+    const briefEl = document.getElementById("layerBBrief");
+    const axesEl = document.getElementById("flywheelAxes");
+    if (!lb) {
+      slotsEl.innerHTML = '<p class="err">Layer B 슬라이스 없음</p>';
+      briefEl.textContent = "—";
+      axesEl.innerHTML = "";
+      return;
+    }
+    const slots = lb.perspective_slots || [];
+    slotsEl.innerHTML = slots.map(function (s) {
+      const tags = (s.tags || []).join(" ");
+      const label = esc(s.display_label || s.lens_id || "channel");
+      return '<motion.div class="layer-b-slot"><strong>' + label + '</strong> ' +
+        '<span class="tags">' + esc(tags) + '</span><br />' + esc(s.flavor_ko || "") + '</div>';
+    }).join("");
+    briefEl.textContent = lb.coordinator_brief_ko || "—";
+    const axes = panel.flywheel_as_axes || [];
+    const ui = panel.public_ui || {};
+    const flyTitle = ui.flywheel_heading || "Flywheel A/S (axis-separated)";
+    if (axes.length) {
+      axesEl.innerHTML = "<p class=\"lede\">" + esc(flyTitle) + "</p><ul>" +
+        axes.map(function (a) {
+          return "<li>" + esc(a.label || a.axis_id) + ": " + esc(a.value != null ? a.value : a.observed) + "</li>";
+        }).join("") + "</ul>";
+    } else {
+      axesEl.innerHTML = "";
+    }
+  }
+
+  function bindTabs() {
+    document.querySelectorAll(".tab").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const id = btn.getAttribute("data-tab");
+        document.querySelectorAll(".tab").forEach(function (b) { b.classList.remove("active"); });
+        document.querySelectorAll(".panel-section").forEach(function (s) { s.classList.remove("active"); });
+        btn.classList.add("active");
+        const sec = document.getElementById(id);
+        if (sec) sec.classList.add("active");
+      });
+    });
+  }
+
+  function renderPanel(panel) {
+    if (!panel) return;
+    applyPublicUi(panel);
+    const anchor = panel.headline_anchor || {};
+    document.getElementById("headline").textContent = anchor.headline || "—";
+    const rows = panel.matrix_rows || [];
+    document.getElementById("lensBody").innerHTML = rows.map(function (r) {
+      const tags = (r.tags || []).join(" ");
+      const label = esc(r.label_public || r.label_ko || r.lens_id) + (tags ? " " + esc(tags) : "");
+      return "<tr><td>" + label + "</td><td>" + esc(r.direction_label) + "</td><td>" +
+        esc(r.confidence) + "</td><td>" + esc((r.digest || "").slice(0, 80)) + "</td></tr>";
+    }).join("");
+    const fa = panel.final_action || {};
+    document.getElementById("finalBlock").innerHTML =
+      "<strong>Observation posture: " + esc(fa.action || "—") + "</strong><br />" +
+      esc(fa.reason || "") +
+      (fa.not_investment_advice ? " · not investment advice" : "");
+    const cr = panel.conflict_resolver || {};
+    const mode = panel.display_mode || "internal_ops";
+    document.getElementById("metaLine").textContent =
+      "conflict=" + cr.conflict + " · generated " + (panel.generated_at_utc || "—") +
+      " · mode=" + mode + " · API " + apiBase;
+    renderLayerB(panel);
+  }
+
+  async function loadPanel() {
+    const urls = [];
+    try { urls.push(new URL("saving_the_news_matrix_panel_slice_v1_latest.json", location.href).href); } catch (e) {}
+    urls.push(apiBase.replace(/8788$/, "8788") + "/saving_the_news_matrix_panel_slice_v1_latest.json");
+    return fetchJson(urls);
+  }
+
+  async function pollEvent() {
+    try {
+      const r = await fetch(apiBase + "/api/public-events/latest", { cache: "no-store" });
+      if (!r.ok) return;
+      const ev = await r.json();
+      if (ev && ev.source && String(ev.source).indexOf("saving_the_news") >= 0) {
+        document.getElementById("metaLine").textContent +=
+          " · live event " + esc(ev.public_signal_direction) + " (" + esc(ev.event_id) + ")";
+      }
+    } catch (e) { /* static only */ }
+  }
+
+  bindTabs();
+  loadPanel().then(function (panel) {
+    if (!panel) {
+      document.getElementById("lensBody").innerHTML =
+        '<tr><td colspan="4" class="err">슬라이스 JSON 없음 — Run-SavingTheNewsShowroomLocalSmoke_v1.ps1 실행</td></tr>';
+      return;
+    }
+    renderPanel(panel);
+    return pollEvent();
+  });
+})();
+  </script>
+</body>
+</html>
