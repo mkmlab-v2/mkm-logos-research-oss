@@ -31,6 +31,13 @@ def test_verify_btrack_daily_hypothesis_scheduled_task_script_exists() -> None:
     assert "MKM-BTrack-DailyHypothesis-Chain" in text
     assert "arguments_contain_include_phase3_leading_sensors" in text
     assert "arguments_contain_skip_phase3_network_fetch" in text
+    assert "arguments_contain_include_market_myeongni_overlay" in text
     assert "research_evaluation_instrument" in text
     assert "next_run_time" in text
     assert "task_exists" in text
+
+
+def test_register_btrack_task_forwards_market_myeongni_overlay_to_chain_arg_line() -> None:
+    text = _REGISTER.read_text(encoding="utf-8")
+    assert "[switch]$IncludeMarketMyeongniOverlay" in text
+    assert '+= " -IncludeMarketMyeongniOverlay"' in text

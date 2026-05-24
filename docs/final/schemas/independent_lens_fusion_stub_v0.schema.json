@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://mkm12.local/schemas/independent_lens_fusion_stub_v0.schema.json",
   "title": "Independent lens fusion stub v0",
-  "description": "Read-only comparison of myeongni/sasang/logos lens artifacts; optional 4th market_sasang_lens_v1; deterministic conflict_summary only (no LLM). Not an A-track action or live trigger.",
+  "description": "Read-only comparison of myeongni/sasang/logos lens artifacts; optional market_sasang_lens_v1 and market_myeongni_lens_v1 rows; deterministic conflict_summary only (no LLM). Not an A-track action or live trigger.",
   "type": "object",
   "additionalProperties": true,
   "required": [
@@ -23,7 +23,7 @@
     },
     "version": {
       "type": "string",
-      "pattern": "^0\\.3\\.0$"
+      "pattern": "^0\\.(3\\.0|4\\.0)$"
     },
     "ts_utc": {
       "type": "string",
@@ -44,7 +44,7 @@
     "inputs": {
       "type": "array",
       "minItems": 3,
-      "maxItems": 4,
+      "maxItems": 5,
       "items": {
         "type": "object",
         "additionalProperties": true,

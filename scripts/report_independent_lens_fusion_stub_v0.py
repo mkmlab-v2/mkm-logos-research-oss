@@ -15,8 +15,9 @@ DEFAULT_MYEONGNI = ROOT / "docs" / "final" / "artifacts" / "myeongni_independent
 DEFAULT_SASANG = ROOT / "docs" / "final" / "artifacts" / "sasang_independent_lens_latest.json"
 DEFAULT_LOGOS = ROOT / "docs" / "final" / "artifacts" / "logos_independent_lens_latest.json"
 DEFAULT_MARKET_SASANG = ROOT / "docs" / "final" / "artifacts" / "market_sasang_lens_latest.json"
+DEFAULT_MARKET_MYEONGNI = ROOT / "docs" / "final" / "artifacts" / "market_myeongni_lens_latest.json"
 
-STUB_VERSION = "0.3.0"
+STUB_VERSION = "0.4.0"
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -96,6 +97,37 @@ def _load_market_sasang_lens(path: Path) -> dict[str, Any] | None:
         },
     }
     return row
+
+
+def _load_market_myeongni_lens(path: Path) -> dict[str, Any] | None:
+    """Map market_myeongni_lens_v1 → fusion-stub row shape; None if skip/unusable."""
+    doc = _read_json(path)
+    if not doc or doc.get("schema") != "market_myeongni_lens_v1":
+        return None
+    scores = doc.get("scores") if isinstance(doc.get("scores"), dict) else {}
+    ds = float(scores.get("direction_score") or 0.0)
+    ds = max(-1.0, min(1.0, ds))
+    cf = float(scores.get("confidence") or 0.0)
+    cf = max(0.0, min(1.0, cf))
+    overlay = doc.get("overlay") if isinstance(doc.get("overlay"), dict) else {}
+    applied = overlay.get("applied") if isinstance(overlay.get("applied"), dict) else {}
+    sign = str(doc.get("direction_sign") or _pick_sign(ds))
+    return {
+        "lens_id": "market_myeongni",
+        "available": True,
+        "direction_score": ds,
+        "confidence": cf,
+        "direction_sign": sign,
+        "artifact_path": str(path.resolve()),
+        "artifact_ts_utc": doc.get("ts_utc"),
+        "schema": doc.get("schema"),
+        "market_myeongni_lens_v1": {
+            "base_direction_score": overlay.get("base_direction_score"),
+            "base_confidence": overlay.get("base_confidence"),
+            "applied": applied,
+            "upstream_lens_id": overlay.get("upstream_lens_id"),
+        },
+    }
 
 
 def _build_conflict_summary(
@@ -208,6 +240,12 @@ def main() -> int:
         action="store_true",
         help="Exclude market_sasang_lens_v1 (legacy 3-lens consensus only).",
     )
+    ap.add_argument("--market-myeongni", type=Path, default=DEFAULT_MARKET_MYEONGNI)
+    ap.add_argument(
+        "--no-market-myeongni",
+        action="store_true",
+        help="Exclude market_myeongni_lens_v1 overlay row.",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -220,6 +258,10 @@ def main() -> int:
         ms = _load_market_sasang_lens(args.market_sasang)
         if ms is not None:
             lens_rows.append(ms)
+    if not args.no_market_myeongni:
+        mm = _load_market_myeongni_lens(args.market_myeongni)
+        if mm is not None:
+            lens_rows.append(mm)
     cs = _consensus(lens_rows)
     logos_doc = _read_json(args.logos)
     conflict_summary = _build_conflict_summary(lens_rows, cs, logos_doc)
@@ -235,7 +277,8 @@ def main() -> int:
         "conflict_summary": conflict_summary,
         "note": (
             "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. "
-            "v0.3.0: optional 4th input from market_sasang_lens_v1 when artifact exists (use --no-market-sasang for 3-lens only). "
+            "v0.4.0: optional market_sasang_lens_v1 and market_myeongni_lens_v1 rows when artifacts exist "
+            "(--no-market-sasang / --no-market-myeongni to exclude). "
             "No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; "
             "optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). "
             "conflict_summary.* is template-bound narrative + optional Logos batch anchors only. "

@@ -17,6 +17,9 @@
 # Model swap PoC harness (default ON): run_btrack_model_swap_harness_v1.py 30d frozen baseline (non-gating; no ensemble write). Use -SkipModelSwapHarness to skip.
 # Market bootstrap (default ON): runs fetch_kospi_yfinance_csv.py + fetch_btc_yfinance_csv.py first
 # so stale/missing CSV does not silently force proxy hit-rate mode. Use -SkipMarketDataRefresh for offline/CI.
+# Market Myeongni overlay (default OFF): after run_lens_myeongni, optional run_market_myeongni_lens_v1.py
+# (policy overlay on myeongni_independent_lens_latest.json; B-track observation only; no calendar merge).
+# Use -IncludeMarketMyeongniOverlay to emit market_myeongni_lens_latest.json (symmetric to run_market_sasang_lens_v1).
 # News/macro lens JSON: use -SkipNewsMacroAdapter to skip build_btrack_news_macro_lens_adapters_v1.py (reuse prior lens files).
 # Hit-rate: when research/market_data/kospi_daily_external_yf.csv exists, the chain runs
 #   build_btrack_prophecy_score_from_ohlcv.py -> eval_prophecy_hit_rate_v1 --run-mode price
@@ -113,6 +116,8 @@ param(
   [switch]$StrictPhase3LeadingSensors,
   # Sasang pathology ↔ TE sandbox mapping (default ON; research_only; weight_hint=0).
   [switch]$SkipPathologyTeMapping,
+  # Phase 2: market myeongni overlay (default OFF; requires fresh myeongni_independent_lens_latest.json).
+  [switch]$IncludeMarketMyeongniOverlay,
   # Walk-forward folds for daily shadow refresh (align with run_btrack_promotion_push_v1 default 6).
   [int]$ProphecyWalkforwardNFolds = 6
 )
@@ -274,6 +279,14 @@ if (Test-Path -LiteralPath $btcAltPublicScript) {
 Write-Host "==> run_lens_myeongni.py"
 py scripts/run_lens_myeongni.py
 if ($LASTEXITCODE -ne 0) { throw "run_lens_myeongni exit $LASTEXITCODE" }
+
+if ($IncludeMarketMyeongniOverlay) {
+  Write-Host "==> run_market_myeongni_lens_v1.py (Phase 2 opt-in; policy overlay on myeongni lens)"
+  py scripts/run_market_myeongni_lens_v1.py
+  if ($LASTEXITCODE -ne 0) { throw "run_market_myeongni_lens_v1 exit $LASTEXITCODE" }
+} else {
+  Write-Host "Skip market myeongni overlay (default; use -IncludeMarketMyeongniOverlay)." -ForegroundColor DarkYellow
+}
 
 Write-Host "==> run_lens_sasang.py"
 py scripts/run_lens_sasang.py

@@ -27,6 +27,8 @@ DEFAULT_COMPRESSION_KPI = ROOT / "reports/constitution/btrack_pilot/ultra_compre
 DEFAULT_COMPRESSION_ACTIVE = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 DEFAULT_COMPRESSION_DECISION = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
 DEFAULT_INTERPRETIVE = ROOT / "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json"
+DEFAULT_MARKET_MYEONGNI = ROOT / "docs/final/artifacts/market_myeongni_lens_latest.json"
+DEFAULT_MARKET_SASANG = ROOT / "docs/final/artifacts/market_sasang_lens_latest.json"
 
 
 def _read(path: Path) -> dict[str, Any] | None:
@@ -76,6 +78,88 @@ def _compression_bridge_payload(
     }
 
 
+def _market_lens_observation_slot(
+    path: Path,
+    *,
+    expected_schema: str,
+    lens_id: str,
+) -> dict[str, Any]:
+    """Thin read-only slice for market overlay lenses (no score recompute)."""
+    base: dict[str, Any] = {
+        "schema": "btrack_market_lens_observation_slot_v1",
+        "bridge_mode": "read_only_observation",
+        "lens_id": lens_id,
+        "available": False,
+        "a_track_autotrigger_forbidden": True,
+        "track_a_live_routing_forbidden": True,
+        "fact_safe_note": (
+            "Market overlay lens context for B-track hypothesis explanation only. "
+            "Does not replace myeongni_independent_lens or sasang_independent_lens; no live trigger."
+        ),
+        "source_path": str(path.resolve()),
+    }
+    doc = _read(path)
+    if not doc or doc.get("schema") != expected_schema:
+        return base
+    scores = doc.get("scores") if isinstance(doc.get("scores"), dict) else {}
+    direction_score: float | None = None
+    confidence: float | None = None
+    direction_sign = doc.get("direction_sign")
+    if expected_schema == "market_sasang_lens_v1":
+        fb = doc.get("fusion_bridge") if isinstance(doc.get("fusion_bridge"), dict) else {}
+        direction_score = float(fb.get("score_hint") or 0.0)
+        direction_score = max(-1.0, min(1.0, direction_score))
+        unc = doc.get("uncertainty") if isinstance(doc.get("uncertainty"), dict) else {}
+        comp = float(unc.get("composite_uncertainty") or 0.5)
+        comp = max(0.0, min(1.0, comp))
+        confidence = max(0.0, min(1.0, 1.0 - comp))
+        veto = doc.get("veto") if isinstance(doc.get("veto"), dict) else {}
+        if veto.get("force_hold"):
+            confidence *= 0.25
+        if not direction_sign:
+            if direction_score > 0:
+                direction_sign = "bull"
+            elif direction_score < 0:
+                direction_sign = "bear"
+            else:
+                direction_sign = "neutral"
+    else:
+        direction_score = scores.get("direction_score")  # type: ignore[assignment]
+        confidence = scores.get("confidence")  # type: ignore[assignment]
+    slot: dict[str, Any] = {
+        **base,
+        "available": True,
+        "artifact_ts_utc": doc.get("ts_utc"),
+        "hypothesis_tier": doc.get("hypothesis_tier"),
+        "boundary_ack": doc.get("boundary_ack"),
+        "direction_score": direction_score,
+        "confidence": confidence,
+        "direction_sign": direction_sign,
+    }
+    if expected_schema == "market_sasang_lens_v1":
+        unc = doc.get("uncertainty") if isinstance(doc.get("uncertainty"), dict) else {}
+        veto = doc.get("veto") if isinstance(doc.get("veto"), dict) else {}
+        slot["market_sasang_summary"] = {
+            "composite_uncertainty": unc.get("composite_uncertainty"),
+            "veto_force_hold": veto.get("force_hold"),
+            "veto_reason_codes": list(veto.get("reason_codes") or []),
+            "state_vector_sasang_softmax": doc.get("state_vector_sasang_softmax"),
+            "direction_hint": (doc.get("fusion_bridge") or {}).get("direction_hint")
+            if isinstance(doc.get("fusion_bridge"), dict)
+            else None,
+        }
+    elif expected_schema == "market_myeongni_lens_v1":
+        overlay = doc.get("overlay") if isinstance(doc.get("overlay"), dict) else {}
+        applied = overlay.get("applied") if isinstance(overlay.get("applied"), dict) else {}
+        slot["market_myeongni_summary"] = {
+            "upstream_lens_id": overlay.get("upstream_lens_id"),
+            "base_direction_score": overlay.get("base_direction_score"),
+            "base_confidence": overlay.get("base_confidence"),
+            "applied": applied,
+        }
+    return slot
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build btrack_llm_input_bundle_latest.json for LLM hypothesis step.")
     ap.add_argument("--myeongni", type=Path, default=DEFAULT_MYEONGNI)
@@ -94,6 +178,18 @@ def main() -> int:
         action="store_true",
         help="Omit sasang_interpretive_bridge_context even if interpretive bundle exists.",
     )
+    ap.add_argument("--market-myeongni-lens", type=Path, default=DEFAULT_MARKET_MYEONGNI)
+    ap.add_argument("--market-sasang-lens", type=Path, default=DEFAULT_MARKET_SASANG)
+    ap.add_argument(
+        "--skip-market-myeongni",
+        action="store_true",
+        help="Omit market_myeongni_observation_slot even if artifact exists.",
+    )
+    ap.add_argument(
+        "--skip-market-sasang",
+        action="store_true",
+        help="Omit market_sasang_observation_slot even if artifact exists.",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
@@ -103,9 +199,40 @@ def main() -> int:
         source_path=args.interpretive,
     )
 
+    market_myeongni_slot = (
+        _market_lens_observation_slot(
+            args.market_myeongni_lens,
+            expected_schema="market_myeongni_lens_v1",
+            lens_id="market_myeongni",
+        )
+        if not args.skip_market_myeongni
+        else {
+            "schema": "btrack_market_lens_observation_slot_v1",
+            "bridge_mode": "read_only_observation",
+            "lens_id": "market_myeongni",
+            "available": False,
+            "skipped": True,
+        }
+    )
+    market_sasang_slot = (
+        _market_lens_observation_slot(
+            args.market_sasang_lens,
+            expected_schema="market_sasang_lens_v1",
+            lens_id="market_sasang",
+        )
+        if not args.skip_market_sasang
+        else {
+            "schema": "btrack_market_lens_observation_slot_v1",
+            "bridge_mode": "read_only_observation",
+            "lens_id": "market_sasang",
+            "available": False,
+            "skipped": True,
+        }
+    )
+
     bundle = {
         "schema": "btrack_llm_input_bundle_v1",
-        "version": "1.3.0",
+        "version": "1.4.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
         "boundary_ack": True,
@@ -124,6 +251,8 @@ def main() -> int:
                 compression_decision=args.compression_decision,
             ),
             "sasang_interpretive_bridge_context": interpretive_bridge,
+            "market_myeongni_observation_slot": market_myeongni_slot,
+            "market_sasang_observation_slot": market_sasang_slot,
         },
         "artifact_paths": {
             "myeongni": str(args.myeongni.resolve()),
@@ -137,11 +266,15 @@ def main() -> int:
             "compression_active_report": str(args.compression_active.resolve()),
             "compression_decision": str(args.compression_decision.resolve()),
             "sasang_interpretive_insight_bundle": str(args.interpretive.resolve()),
+            "market_myeongni_lens": str(args.market_myeongni_lens.resolve()),
+            "market_sasang_lens": str(args.market_sasang_lens.resolve()),
         },
         "note": "Feed summarized fields to LLM; do not merge with live trading. Sasang: [NON-MEDICAL] if referenced. "
         "news/macro slots filled when news_independent_lens_latest.json / macro_independent_lens_latest.json exist "
-        "(run build_btrack_news_macro_lens_adapters_v1.py). compression_bridge_context and "
-        "sasang_interpretive_bridge_context are read-only; interpretive slice excludes interpretive_depth_ko.",
+        "(run build_btrack_news_macro_lens_adapters_v1.py). market_*_observation_slot are read-only overlays "
+        "(run_market_myeongni_lens_v1.py / run_market_sasang_lens_v1.py); no A-track trigger. "
+        "compression_bridge_context and sasang_interpretive_bridge_context are read-only; "
+        "interpretive slice excludes interpretive_depth_ko.",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(bundle, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

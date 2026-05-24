@@ -17,6 +17,8 @@
   -SkipPanel24hAlertsCheck may still be passed for documentation parity with the chain script; it is redundant with the new default.
   Phase3 leading sensors (research_only): pass -IncludePhase3LeadingSensors to forward the chain switch; add
   -SkipPhase3NetworkFetch to skip Binance prefetch (join uses existing sensor stubs only).
+  Phase2 market myeongni overlay: pass -IncludeMarketMyeongniOverlay to forward run_market_myeongni_lens_v1.py
+  (read-only observation slot in bundle v1.4+; not A-track / not live trigger).
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35"
@@ -42,6 +44,10 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -IncludePhase3LeadingSensors -SkipPhase3NetworkFetch
 
 .EXAMPLE
+  Phase2 market myeongni overlay (bundle read-only slot; symmetric to market_sasang):
+  powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -At "08:35" -IncludeMarketMyeongniOverlay
+
+.EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File "C:\workspace\scripts\Register-BTrackDailyHypothesisTask.ps1" -Remove
 #>
 param(
@@ -60,6 +66,8 @@ param(
     # Forward to run_btrack_daily_hypothesis_chain.ps1 (Phase3 leading-sensors hook; research_only).
     [switch]$IncludePhase3LeadingSensors,
     [switch]$SkipPhase3NetworkFetch,
+    # Forward to run_btrack_daily_hypothesis_chain.ps1 (Phase2 market_myeongni_lens_v1; read-only bundle slot).
+    [switch]$IncludeMarketMyeongniOverlay,
     [switch]$RunWhenLoggedOff,
     [switch]$Remove
 )
@@ -96,6 +104,9 @@ if ($IncludePhase3LeadingSensors) {
 }
 if ($SkipPhase3NetworkFetch) {
     $argLine += " -SkipPhase3NetworkFetch"
+}
+if ($IncludeMarketMyeongniOverlay) {
+    $argLine += " -IncludeMarketMyeongniOverlay"
 }
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argLine -WorkingDirectory $WorkspaceRoot
 $trigger = New-ScheduledTaskTrigger -Daily -At $At

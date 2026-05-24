@@ -47,7 +47,7 @@ if (-not $isAdmin) {
 Write-Host "[OK] Elevated shell detected. Re-registering tasks with -RunWhenLoggedOff ..." -ForegroundColor Green
 
 & (Join-Path $root "scripts\Register-BtrackAutomationHealthTask.ps1") -RunWhenLoggedOff
-& (Join-Path $root "scripts\Register-BTrackDailyHypothesisTask.ps1") -At "08:35" -ResearchEvaluationInstrument btc -SkipProphecyContemplationGemini -RunWhenLoggedOff
+& (Join-Path $root "scripts\Register-BTrackDailyHypothesisTask.ps1") -At "08:35" -ResearchEvaluationInstrument btc -SkipProphecyContemplationGemini -IncludeMarketMyeongniOverlay -RunWhenLoggedOff
 & (Join-Path $root "scripts\Register-ProphecyPanel24hAlertsTask.ps1") -At "09:05" -RunWhenLoggedOff
 & (Join-Path $root "scripts\Register-ProphecyEvolutionWatchdogTask.ps1") -At "10:15" -RunWhenLoggedOff
 & (Join-Path $root "scripts\Register-BtcWeightHitRateBundleWeeklyTask.ps1") -SundayAt "09:15" -RunWhenLoggedOff

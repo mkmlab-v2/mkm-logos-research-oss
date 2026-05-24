@@ -48,6 +48,7 @@ $btrackReg = @{
     At                            = $HypothesisAt
     ResearchEvaluationInstrument  = "btc"
     IncludeDawnScore              = $true
+    IncludeMarketMyeongniOverlay  = $true
     SkipProphecyContemplationGemini = $true
 }
 if ($RunWhenLoggedOff) { $btrackReg["RunWhenLoggedOff"] = $true }
