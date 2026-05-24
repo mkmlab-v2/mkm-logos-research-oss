@@ -1,0 +1,606 @@
+{
+  "schema": "logos_chronology_showroom_overlay_v1",
+  "schema_version": "1.0.0",
+  "generated_at_utc": "2026-05-23T23:30:07Z",
+  "hypothesis_tier": "[HYPO]",
+  "research_only": true,
+  "policy": {
+    "research_only": true,
+    "non_gating": true,
+    "no_trading_signal": true,
+    "no_prophecy_certainty": true
+  },
+  "eras": [
+    {
+      "era_id": "genesis_order_and_fall",
+      "label_ko": "창조와 타락 (Genesis)",
+      "label_en": "Creation, order, and fall",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 근원 질서·혼돈·경계 상실의 서사 프레임. 시장 인과 단정 없음.",
+      "time": {
+        "relative_phase": "genesis_primeval",
+        "bce_start": 4000,
+        "bce_end": 2000
+      },
+      "theme_tags": [
+        "creation",
+        "order",
+        "fall",
+        "boundary_loss"
+      ],
+      "verse_refs": [
+        "aramaic::Gen.1.1",
+        "aramaic::Gen.3.6"
+      ]
+    },
+    {
+      "era_id": "patriarch_covenant_arc",
+      "label_ko": "족장 시대 · 언약 (Patriarchs)",
+      "label_en": "Patriarchal covenant arc",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 언약·가족·약속 네트워크 은유. 거버넌스 계약의 상징층.",
+      "time": {
+        "relative_phase": "patriarchs",
+        "bce_start": 2000,
+        "bce_end": 1500
+      },
+      "theme_tags": [
+        "covenant",
+        "promise",
+        "lineage"
+      ],
+      "verse_refs": [
+        "aramaic::Gen.12.1",
+        "aramaic::Gen.15.6",
+        "aramaic::Gen.22.8"
+      ]
+    },
+    {
+      "era_id": "exodus_wilderness_law",
+      "label_ko": "출애굽·광야 · 율법 (Exodus/Wilderness)",
+      "label_en": "Exodus, wilderness, and law",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 해방·규칙(Rule)·훈련 루프. 구조적 돌파·제도화 은유만.",
+      "time": {
+        "relative_phase": "exodus_wilderness",
+        "bce_start": 1500,
+        "bce_end": 1200
+      },
+      "theme_tags": [
+        "liberation",
+        "passover",
+        "law",
+        "training"
+      ],
+      "verse_refs": [
+        "aramaic::Exod.12.13",
+        "aramaic::Exod.14.21",
+        "aramaic::Exod.20.1"
+      ],
+      "regime_tags_observational": [
+        "empire_transition"
+      ]
+    },
+    {
+      "era_id": "judges_risk_cycle",
+      "label_ko": "사사 시대 · 순환 리스크 (Judges)",
+      "label_en": "Judges — cyclical risk and rescue",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 질서 붕괴·구원 반복. 변동성·조율 실패 키워드의 상징층.",
+      "time": {
+        "relative_phase": "judges",
+        "bce_start": 1200,
+        "bce_end": 1000
+      },
+      "theme_tags": [
+        "cyclical_chaos",
+        "rescue",
+        "volatility"
+      ],
+      "verse_refs": [
+        "aramaic::Judg.2.16",
+        "aramaic::Judg.21.25"
+      ],
+      "regime_tags_observational": [
+        "risk",
+        "caution"
+      ]
+    },
+    {
+      "era_id": "united_divided_kingdom",
+      "label_ko": "통일·분열 왕국 (Kingdoms)",
+      "label_en": "United and divided monarchy",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 거버넌스 수립·내부 분열·왕권 붕괴. 제도 신뢰 사이클 은유.",
+      "time": {
+        "relative_phase": "monarchy",
+        "bce_start": 1000,
+        "bce_end": 586
+      },
+      "theme_tags": [
+        "governance",
+        "succession",
+        "civil_split"
+      ],
+      "verse_refs": [
+        "aramaic::1Sam.8.7",
+        "aramaic::1Kgs.12.16"
+      ],
+      "regime_tags_observational": [
+        "empire_transition",
+        "it_bubble"
+      ]
+    },
+    {
+      "era_id": "exile_and_return",
+      "label_ko": "포로기·귀환 (Exile/Return)",
+      "label_en": "Exile and return",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 심판·고립·회복 사이클. 유동성·긴축 키워드와 **관측 유사**만.",
+      "time": {
+        "relative_phase": "exile_return",
+        "bce_start": 586,
+        "bce_end": 400
+      },
+      "theme_tags": [
+        "exile",
+        "judgment",
+        "return",
+        "restoration"
+      ],
+      "verse_refs": [
+        "aramaic::Jer.29.10",
+        "aramaic::Ezra.1.1"
+      ],
+      "regime_tags_observational": [
+        "imf",
+        "caution"
+      ]
+    },
+    {
+      "era_id": "intertestamental_empire_handoff",
+      "label_ko": "침묵기·제국 교체 (Intertestamental)",
+      "label_en": "Intertestamental empire handoff",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 바벨론→페르시아→헬라→로마 교체와 다니엘 2 금속상 **구조 은유**.",
+      "time": {
+        "relative_phase": "intertestamental",
+        "bce_start": 400,
+        "bce_end": 4
+      },
+      "theme_tags": [
+        "imperial_transition",
+        "empire_transition",
+        "succession",
+        "silence"
+      ],
+      "verse_refs": [
+        "aramaic::Dan.2.31",
+        "aramaic::Dan.2.35",
+        "aramaic::Dan.2.10",
+        "aramaic::Gen.11.7"
+      ],
+      "regime_tags_observational": [
+        "empire_transition",
+        "it_bubble"
+      ]
+    },
+    {
+      "era_id": "gospel_logos_incarnate",
+      "label_ko": "복음서 · Logos 현현 (Gospels)",
+      "label_en": "Incarnation of Logos",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 완전한 Logos 현현 **해설 프레임**; 치유·투자 확정 아님.",
+      "time": {
+        "relative_phase": "gospels",
+        "ce_start": 4,
+        "ce_end": 33
+      },
+      "theme_tags": [
+        "incarnation",
+        "logos",
+        "revelation"
+      ],
+      "verse_refs": [
+        "aramaic::John.1.1",
+        "aramaic::John.1.14"
+      ],
+      "regime_tags_observational": [
+        "stability"
+      ]
+    },
+    {
+      "era_id": "early_church_network",
+      "label_ko": "초대교회·확장 (Acts)",
+      "label_en": "Early church network expansion",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 네트워크 확장·핍박·분산 조율. 협업·커뮤니케이션 은유.",
+      "time": {
+        "relative_phase": "early_church",
+        "ce_start": 33,
+        "ce_end": 100
+      },
+      "theme_tags": [
+        "network",
+        "persecution",
+        "expansion"
+      ],
+      "verse_refs": [
+        "aramaic::Acts.2.42",
+        "aramaic::Acts.8.1"
+      ]
+    },
+    {
+      "era_id": "modern_observational_field",
+      "label_ko": "현대 관측 필드 (Modern bridges)",
+      "label_en": "Modern observational field layer",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. regime_map·chronology_windows와의 **2차 관측 정렬**만. Track A·MS Wire 무관.",
+      "time": {
+        "relative_phase": "modern_observational",
+        "ce_start": 1997,
+        "ce_end": 2026
+      },
+      "theme_tags": [
+        "macro_observation",
+        "regime_fingerprint",
+        "non_gating"
+      ],
+      "regime_tags_observational": [
+        "imf",
+        "lehman",
+        "covid",
+        "it_bubble",
+        "risk"
+      ]
+    },
+    {
+      "era_id": "eschaton_restoration_hypo",
+      "label_ko": "종말적 완성 (Eschaton · hypo)",
+      "label_en": "Eschatological restoration (hypo frame)",
+      "interpretation_class": "[HYPO]",
+      "notes_ko": "[HYPO] AI 합성 v2(지휘관 GO 2026-05-20). 성경 거시 서사의 **구조적 관측 은유**이며 신학적 확정·예언 적중·실매매 신호가 아닙니다. 1차 Field는 regime_map 실물 레짐, 본 연대기는 Logos Observatory 부록(NON_GATING) 전용입니다. 최종 질서 회복 **가설 프레임**; 날짜·시장 방향 예측 아님.",
+      "time": {
+        "relative_phase": "eschaton_hypo"
+      },
+      "theme_tags": [
+        "eschaton",
+        "restoration",
+        "final_order"
+      ],
+      "verse_refs": [
+        "aramaic::Rev.21.1",
+        "aramaic::Rev.22.13"
+      ]
+    }
+  ],
+  "modern_bridges": [
+    {
+      "era_id": "genesis_order_and_fall",
+      "bridge_kind": "theme_only",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.6,
+      "rationale_ko": "창조·질서 vs 타락·혼돈 — meaning topology **theme** 관측만."
+    },
+    {
+      "era_id": "patriarch_covenant_arc",
+      "bridge_kind": "theme_only",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.65,
+      "rationale_ko": "언약 네트워크 — 계약·신뢰 메타포; 가격 게이트 무관."
+    },
+    {
+      "era_id": "exodus_wilderness_law",
+      "bridge_kind": "chronology_window",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 1.0,
+      "rationale_ko": "해방·회복 키워드 vs post_gfc_repair 윈도우 구조 유사 [HYPO].",
+      "window_id": "post_gfc_repair"
+    },
+    {
+      "era_id": "judges_risk_cycle",
+      "bridge_kind": "regime_fingerprint",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.9,
+      "rationale_ko": "순환 혼돈 vs lehman 레짐 지문 shadow (regime_map.lehman).",
+      "regime_id": "lehman"
+    },
+    {
+      "era_id": "judges_risk_cycle",
+      "bridge_kind": "chronology_window",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.72,
+      "rationale_ko": "급격 shock vs pandemic_shock 윈도우 관측 정렬 [HYPO].",
+      "window_id": "pandemic_shock"
+    },
+    {
+      "era_id": "united_divided_kingdom",
+      "bridge_kind": "regime_fingerprint",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.88,
+      "rationale_ko": "거버넌스·버블 상승 vs it_bubble 레짐 지문.",
+      "regime_id": "it_bubble"
+    },
+    {
+      "era_id": "exile_and_return",
+      "bridge_kind": "regime_fingerprint",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.85,
+      "rationale_ko": "심판·유동성 압박 vs imf 레짐 관측 태그.",
+      "regime_id": "imf"
+    },
+    {
+      "era_id": "exile_and_return",
+      "bridge_kind": "chronology_window",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.78,
+      "rationale_ko": "긴축·완화 사이클 vs rate_hike_cycle 구조 비교 [HYPO].",
+      "window_id": "rate_hike_cycle"
+    },
+    {
+      "era_id": "intertestamental_empire_handoff",
+      "bridge_kind": "regime_fingerprint",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.7,
+      "rationale_ko": "제국·금속상 전환 vs it_bubble + covid shadow (다니엘 클러스터).",
+      "regime_id": "covid"
+    },
+    {
+      "era_id": "intertestamental_empire_handoff",
+      "bridge_kind": "theme_only",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 1.0,
+      "rationale_ko": "theme::imperial_transition 허브 — 주문·레짐 게이트 무관."
+    },
+    {
+      "era_id": "gospel_logos_incarnate",
+      "bridge_kind": "theme_only",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.7,
+      "rationale_ko": "Logos 현현 — 해설·쇼룸 프리셋층; NON_GATING."
+    },
+    {
+      "era_id": "early_church_network",
+      "bridge_kind": "theme_only",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.65,
+      "rationale_ko": "네트워크 확장 — 분산 시스템 은유; 실매매 트리거 아님."
+    },
+    {
+      "era_id": "modern_observational_field",
+      "bridge_kind": "chronology_window",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.95,
+      "rationale_ko": "현대 윈도우 post_gfc_repair — Field 보조.",
+      "window_id": "post_gfc_repair"
+    },
+    {
+      "era_id": "modern_observational_field",
+      "bridge_kind": "chronology_window",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.9,
+      "rationale_ko": "pandemic_shock — risk-off·변동성 관측.",
+      "window_id": "pandemic_shock"
+    },
+    {
+      "era_id": "modern_observational_field",
+      "bridge_kind": "chronology_window",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.85,
+      "rationale_ko": "rate_hike_cycle — 긴축·완화 구조.",
+      "window_id": "rate_hike_cycle"
+    },
+    {
+      "era_id": "modern_observational_field",
+      "bridge_kind": "regime_fingerprint",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.92,
+      "rationale_ko": "lehman — coordination break shadow.",
+      "regime_id": "lehman"
+    },
+    {
+      "era_id": "modern_observational_field",
+      "bridge_kind": "regime_fingerprint",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.88,
+      "rationale_ko": "imf — 저장·유동성 압박 shadow.",
+      "regime_id": "imf"
+    },
+    {
+      "era_id": "modern_observational_field",
+      "bridge_kind": "regime_fingerprint",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.8,
+      "rationale_ko": "covid — 급격 판 전환 shadow.",
+      "regime_id": "covid"
+    },
+    {
+      "era_id": "modern_observational_field",
+      "bridge_kind": "regime_fingerprint",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.86,
+      "rationale_ko": "it_bubble — 제국·버블 상승 shadow.",
+      "regime_id": "it_bubble"
+    },
+    {
+      "era_id": "eschaton_restoration_hypo",
+      "bridge_kind": "theme_only",
+      "interpretation_class": "[HYPO]",
+      "resonance_weight": 0.5,
+      "rationale_ko": "종말 완성 — **가설 프레임**만; 예언 확정·매매 금지."
+    }
+  ],
+  "era_nodes": [
+    {
+      "id": "era::genesis_order_and_fall",
+      "label": "창조와 타락 (Genesis)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::Gen.1.1",
+        "aramaic::Gen.3.6"
+      ],
+      "theme_tags": [
+        "creation",
+        "order",
+        "fall",
+        "boundary_loss"
+      ]
+    },
+    {
+      "id": "era::patriarch_covenant_arc",
+      "label": "족장 시대 · 언약 (Patriarchs)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::Gen.12.1",
+        "aramaic::Gen.15.6",
+        "aramaic::Gen.22.8"
+      ],
+      "theme_tags": [
+        "covenant",
+        "promise",
+        "lineage"
+      ]
+    },
+    {
+      "id": "era::exodus_wilderness_law",
+      "label": "출애굽·광야 · 율법 (Exodus/Wilderness)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::Exod.12.13",
+        "aramaic::Exod.14.21",
+        "aramaic::Exod.20.1"
+      ],
+      "theme_tags": [
+        "liberation",
+        "passover",
+        "law",
+        "training"
+      ]
+    },
+    {
+      "id": "era::judges_risk_cycle",
+      "label": "사사 시대 · 순환 리스크 (Judges)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::Judg.2.16",
+        "aramaic::Judg.21.25"
+      ],
+      "theme_tags": [
+        "cyclical_chaos",
+        "rescue",
+        "volatility"
+      ]
+    },
+    {
+      "id": "era::united_divided_kingdom",
+      "label": "통일·분열 왕국 (Kingdoms)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::1Sam.8.7",
+        "aramaic::1Kgs.12.16"
+      ],
+      "theme_tags": [
+        "governance",
+        "succession",
+        "civil_split"
+      ]
+    },
+    {
+      "id": "era::exile_and_return",
+      "label": "포로기·귀환 (Exile/Return)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::Jer.29.10",
+        "aramaic::Ezra.1.1"
+      ],
+      "theme_tags": [
+        "exile",
+        "judgment",
+        "return",
+        "restoration"
+      ]
+    },
+    {
+      "id": "era::intertestamental_empire_handoff",
+      "label": "침묵기·제국 교체 (Intertestamental)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::Dan.2.31",
+        "aramaic::Dan.2.35",
+        "aramaic::Dan.2.10",
+        "aramaic::Gen.11.7"
+      ],
+      "theme_tags": [
+        "imperial_transition",
+        "empire_transition",
+        "succession",
+        "silence"
+      ]
+    },
+    {
+      "id": "era::gospel_logos_incarnate",
+      "label": "복음서 · Logos 현현 (Gospels)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::John.1.1",
+        "aramaic::John.1.14"
+      ],
+      "theme_tags": [
+        "incarnation",
+        "logos",
+        "revelation"
+      ]
+    },
+    {
+      "id": "era::early_church_network",
+      "label": "초대교회·확장 (Acts)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::Acts.2.42",
+        "aramaic::Acts.8.1"
+      ],
+      "theme_tags": [
+        "network",
+        "persecution",
+        "expansion"
+      ]
+    },
+    {
+      "id": "era::modern_observational_field",
+      "label": "현대 관측 필드 (Modern bridges)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [],
+      "theme_tags": [
+        "macro_observation",
+        "regime_fingerprint",
+        "non_gating"
+      ]
+    },
+    {
+      "id": "era::eschaton_restoration_hypo",
+      "label": "종말적 완성 (Eschaton · hypo)",
+      "kind": "era",
+      "interpretation_class": "[HYPO]",
+      "verse_refs": [
+        "aramaic::Rev.21.1",
+        "aramaic::Rev.22.13"
+      ],
+      "theme_tags": [
+        "eschaton",
+        "restoration",
+        "final_order"
+      ]
+    }
+  ],
+  "field_observation_ko": "연대기 레이어는 관측·해설용입니다. 1차 실물 레짐(regime_map)이 주이며 성경·연대기는 보(NON_GATING)입니다."
+}

@@ -1,0 +1,438 @@
+{
+  "schema": "logos_verse_4d_showroom_slice_v1",
+  "version": "1.0.0",
+  "subset_id": "v1_core_subset",
+  "generated_at_utc": "2026-05-17T05:40:23Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "boundary_sentence_ko": "정경 31,102절 SSOT 대비 verse_decoded_v2(BHS+SBLGNT)에 없는 2,361절; Track B 구절 4D·그래프·렉시콘 백투영은 28,741행(v1_core_subset) 범위.",
+  "boundary_sentence_en": "MT canon 31,102-verse SSOT minus 2,361 verses absent from verse_decoded_v2 (BHS+SBLGNT) = 28,741-verse BHS+SBLGNT Track B map (v1_core_subset).",
+  "coverage": {
+    "full_canon_verse_count": 31102,
+    "verse_decoded_v2_count": 31087,
+    "gap_count": 15,
+    "intersection_count": 31087,
+    "only_in_v2_count": 0,
+    "phase1_rows_emitted": 31102,
+    "phase1_rows_dropped": 0,
+    "gap_cause": "upstream_coverage_not_phase1_filter",
+    "verse_decoded_v2_editions": {
+      "BHS": 23145,
+      "SBLGNT": 7942
+    },
+    "gap_by_testament": {
+      "NT": 15
+    }
+  },
+  "factory_demo": {
+    "one_line_reproduce_cmd": "py scripts/run_logos_verse_4d_track_b_full_chain_v1.py",
+    "phase_runners": [
+      {
+        "phase": "phase1_canonical_corpus",
+        "runner": "scripts/build_logos_verse_4d_corpus_v1.py",
+        "description": "Emit SSOT logos_verse_4d_v1 JSONL + manifest from verse_decoded (import or recompute audit)."
+      },
+      {
+        "phase": "phase2_graph_and_medoid",
+        "runner": "scripts/build_logos_verse_4d_graph_v1.py",
+        "description": "Verse-verse kNN graph, hub/medoid extraction from logos_verse_4d_v1. Production graph already ran on 28,741 rows (verse_decoded_v2 intersection). coverage_diff documents the 2,361-verse MT-only gap; it is a boundary transparency guard, not a prerequisite to rerun phase2 on the frozen subset."
+      },
+      {
+        "phase": "phase3_lexicon_back_projection",
+        "runner": "scripts/project_logos_verse_4d_to_lexicon_v1.py",
+        "description": "Join atom_id from master_codebook; aggregate verse 4D → lexicon_4d_v1."
+      },
+      {
+        "phase": "phase4_external_proof",
+        "runner": "scripts/run_logos_verse_4d_phase4_chain_v1.py",
+        "description": "Null corpora + OS-graph metric compare ([HYPO], not public proof)."
+      }
+    ],
+    "contract_path": "docs/final/artifacts/LOGOS_VERSE_4D_V1_CONTRACT.json",
+    "forbidden_claims": [
+      "proven_cosmic_os",
+      "perfect_match_only_bible",
+      "track_a_compression_auto_upgrade"
+    ]
+  },
+  "sample_findings": {
+    "top_medoids": [
+      {
+        "rank": 1,
+        "verse_id": "Lev.23.33",
+        "centrality": 86.999897
+      },
+      {
+        "rank": 2,
+        "verse_id": "Exod.25.1",
+        "centrality": 85.999968
+      },
+      {
+        "rank": 3,
+        "verse_id": "Lev.23.26",
+        "centrality": 85.999908
+      },
+      {
+        "rank": 4,
+        "verse_id": "Lev.24.1",
+        "centrality": 84.999975
+      },
+      {
+        "rank": 5,
+        "verse_id": "Lev.23.9",
+        "centrality": 84.99997
+      },
+      {
+        "rank": 6,
+        "verse_id": "Lev.22.17",
+        "centrality": 83.999993
+      },
+      {
+        "rank": 7,
+        "verse_id": "Lev.23.1",
+        "centrality": 83.999989
+      },
+      {
+        "rank": 8,
+        "verse_id": "Lev.23.23",
+        "centrality": 83.999989
+      },
+      {
+        "rank": 9,
+        "verse_id": "Exod.16.11",
+        "centrality": 83.999986
+      },
+      {
+        "rank": 10,
+        "verse_id": "Exod.14.1",
+        "centrality": 83.0
+      }
+    ],
+    "phase4_null_vs_canon": {
+      "summary": {
+        "sample_size": 28741,
+        "max_rows": 0,
+        "full_graph": true,
+        "canon_mean_top1_cosine": 1.0,
+        "interpretation_note": "[HYPO] Metric deltas between canon and null corpora describe distributional separation under fixed recipes; they are not proof of semantic structure or promotion readiness. Production showroom and B2B copy must cite build.sample_size and build.max_rows from this report (small max_rows such as 30 indicates a smoke sample, not full-corpus OS metrics)."
+      },
+      "deltas_vs_canon": {
+        "null_vector_permutation": {
+          "delta_mean_top1_cosine": 0.0,
+          "delta_top_medoid_centrality": -980.0,
+          "delta_gini_centrality": 0.001891,
+          "delta_mean_edge_weight": 0.0
+        },
+        "null_char_shuffle": {
+          "delta_mean_top1_cosine": 0.0,
+          "delta_top_medoid_centrality": 305.0,
+          "delta_gini_centrality": 0.255724,
+          "delta_mean_edge_weight": 1e-06
+        },
+        "null_token_shuffle": {
+          "delta_mean_top1_cosine": 0.0,
+          "delta_top_medoid_centrality": 305.0,
+          "delta_gini_centrality": 0.255724,
+          "delta_mean_edge_weight": 1e-06
+        }
+      },
+      "sample_size_small": false
+    }
+  },
+  "disclaimer": {
+    "evidence_tier": "hypo_research_only",
+    "gating_status": "NON_GATING",
+    "ready_for_external_send": false,
+    "note_ko": "구절 4D OS 팩토리 연구 스냅샷([HYPO])입니다. 우주 OS 증명·Track A 압축 승격·실매매·임상 게이트 근거가 아닙니다."
+  },
+  "track_wall": {
+    "a_track_auto_promotion": false,
+    "live_trading_trigger": false
+  },
+  "public_facing_pointer": "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+  "source_artifacts": {
+    "coverage_diff": "reports/constitution/btrack_pilot/logos_verse_canon_coverage_diff_complete_v1_latest.json",
+    "medoids": "docs/final/artifacts/logos_verse_4d_single_anchor_medoids_v1_latest.json",
+    "os_compare": "docs/final/artifacts/logos_verse_4d_os_compare_v1_latest.json",
+    "corpus_manifest": "docs/final/artifacts/logos_verse_4d_single_anchor_corpus_v1_latest.json",
+    "contract": "docs/final/artifacts/LOGOS_VERSE_4D_V1_CONTRACT.json"
+  },
+  "cross_bridge_v0": {
+    "report_path": "docs/final/artifacts/logos_verse_myeongri_cross_bridge_v1_latest.json",
+    "verse_id": "3John.1.14",
+    "human_profile_id": "golden_mdl_gs_v1_0001",
+    "l2_os_human": 0.58630197,
+    "cosine_os_human": 0.64888568,
+    "one_line_cmd": "py scripts/build_logos_verse_myeongri_cross_bridge_v1.py",
+    "pedagogical_map": {
+      "verse_os": "universe_broadcast_station_gematria_4d",
+      "human_terminal": "receiver_myeongri_4d_golden_profile",
+      "geometry": "frequency_distance_meter_not_healing_proof"
+    },
+    "interpretation_note": "[HYPO] Geometric distance between gematria-bridge verse 4D (frozen v1_core_subset map) and MyeongriCompleteFusion birth 4D under fixed recipes. Same axis labels (S,L,K,M) do not imply identical measurement instruments. Not proof of semantic resonance, correction, or promotion readiness."
+  },
+  "cross_bridge_matrix_v0": {
+    "report_path": "docs/final/artifacts/logos_verse_myeongri_cross_bridge_matrix_v1_latest.json",
+    "matrix_version": "1.1.0",
+    "top_n": 10,
+    "human_profile_ids": [
+      "golden_mdl_gs_v1_0001",
+      "golden_mdl_gs_v1_0002",
+      "patient_intake_demo_v1"
+    ],
+    "unique_verse_vector_4d_count": 1,
+    "vector_4d_collapse_note": "When unique_verse_vector_4d_count < medoid_count, gematria_bridge maps distinct verses to the same (S,L,K,M) — report hub rank separately from coordinate diversity.",
+    "rows": [
+      {
+        "rank": 1,
+        "verse_id": "3John.1.14",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 2,
+        "verse_id": "Mark.15.29",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 3,
+        "verse_id": "Mark.15.32",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 4,
+        "verse_id": "Mark.15.33",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 5,
+        "verse_id": "Mark.15.34",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 6,
+        "verse_id": "Mark.15.35",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 7,
+        "verse_id": "Mark.15.36",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 8,
+        "verse_id": "Mark.15.37",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 9,
+        "verse_id": "Mark.15.38",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      },
+      {
+        "rank": 10,
+        "verse_id": "Mark.15.39",
+        "centrality": 2376.0,
+        "vector_4d": {
+          "S": 0.25,
+          "L": 0.25,
+          "K": 0.25,
+          "M": 0.25
+        },
+        "geometry_by_profile": {
+          "golden_mdl_gs_v1_0001": {
+            "l2_os_human": 0.58630197,
+            "cosine_os_human": 0.64888568
+          },
+          "golden_mdl_gs_v1_0002": {
+            "l2_os_human": 0.39528471,
+            "cosine_os_human": 0.78446454
+          },
+          "patient_intake_demo_v1": {
+            "l2_os_human": 0.30618622,
+            "cosine_os_human": 0.85280287
+          }
+        }
+      }
+    ]
+  }
+}

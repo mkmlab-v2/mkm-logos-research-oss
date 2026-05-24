@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MKM · Inter-Agent Wire · Showroom v3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { accent: "#c5a057", wire: "#6ee7b7", field: "#93c5fd", hypo: "#e879f9" },
+          fontFamily: { sans: ["Inter", "system-ui", "Noto Sans KR", "sans-serif"] },
+          boxShadow: { glow: "0 0 32px rgba(197, 160, 87, 0.25)" },
+        },
+      },
+    };
+  </script>
+  <style>
+    body {
+      background: radial-gradient(900px 500px at 50% 20%, rgba(99, 102, 241, 0.12), transparent 55%),
+        radial-gradient(1200px 600px at 10% -10%, rgba(14, 165, 233, 0.08), transparent 50%), #06080c;
+    }
+    .glass { background: rgba(14, 18, 26, 0.72); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.08); }
+    .atom-chip { transition: box-shadow 0.15s, transform 0.15s; cursor: pointer; }
+    .atom-chip:hover, .atom-chip.active { box-shadow: 0 0 16px rgba(110, 231, 183, 0.45); transform: scale(1.03); border-color: rgba(110, 231, 183, 0.6); }
+    .atom-chip.sidecar-only { border-color: rgba(232, 121, 249, 0.5); }
+  </style>
+</head>
+<body class="h-full text-slate-100 font-sans antialiased pb-24">
+  <header class="border-b border-white/10 glass sticky top-0 z-20">
+    <div class="max-w-[1600px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <p class="text-[10px] uppercase tracking-[0.2em] text-slate-500 mb-0.5">MKM · Inter-Agent Wire</p>
+        <h1 class="text-lg font-semibold text-white">RQ-019 research showroom <span class="text-accent text-sm font-normal">v3</span></h1>
+        <p id="fieldStrip" class="text-xs text-slate-400 max-w-2xl mt-1">Field(판) → Wire → Sidecar — <span class="text-slate-500">[HYPO] research_only · NON_GATING</span></p>
+      </div>
+      <div class="flex flex-wrap gap-1.5 text-[10px] uppercase tracking-wider">
+        <span class="px-2 py-0.5 rounded-full border border-fuchsia-500/40 text-fuchsia-200/90 bg-fuchsia-500/10">[HYPO]</span>
+        <span class="px-2 py-0.5 rounded-full border border-amber-500/30 text-amber-200/80 bg-amber-500/10">B-track</span>
+        <span class="px-2 py-0.5 rounded-full border border-white/10 text-slate-400">no_trade_signals</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1600px] mx-auto px-4 py-4 grid lg:grid-cols-3 gap-4 min-h-[calc(100vh-8rem)]">
+    <section id="panel-field" class="glass rounded-2xl p-4 shadow-glow flex flex-col">
+      <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500 mb-2">1 · Field (regime context)</h2>
+      <p class="text-sm text-slate-300 mb-3">시연 스냅샷 — 실물 <code class="text-field">regime_map</code> 주 · 성경/명리 보조.</p>
+      <dl class="space-y-2 text-sm">
+        <div class="flex justify-between border-b border-white/5 pb-2"><dt class="text-slate-500">regime_id</dt><dd class="text-field font-mono">post_covid_vol</dd></div>
+        <div class="flex justify-between border-b border-white/5 pb-2"><dt class="text-slate-500">rq_019</dt><dd class="text-wire font-mono">CLOSED</dd></div>
+        <div class="flex justify-between border-b border-white/5 pb-2"><dt class="text-slate-500">lane</dt><dd>language-dev M1–M28</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">gating</dt><dd class="text-hypo">NON_GATING</dd></div>
+      </dl>
+      <p class="text-[11px] text-slate-500 mt-auto pt-4">Not a buy/sell signal. Observational overlay only.</p>
+    </section>
+
+    <section id="panel-wire" class="glass rounded-2xl p-4 flex flex-col min-h-[320px]">
+      <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500 mb-2">2 · Wire atoms (fixture)</h2>
+      <p class="text-[11px] text-slate-500 mb-3">Trust Packet → atom_id sequence · click to inspect</p>
+      <div id="atomGrid" class="flex flex-wrap gap-2 content-start flex-1"></div>
+      <pre id="atomDetail" class="mt-3 text-[11px] bg-black/40 rounded-xl p-3 text-slate-400 overflow-x-auto border border-white/5 min-h-[4.5rem]">Select an atom…</pre>
+    </section>
+
+    <section id="panel-sidecar" class="glass rounded-2xl p-4 flex flex-col">
+      <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500 mb-2">3 · KO health sidecar</h2>
+      <label class="flex items-center gap-3 mb-4 cursor-pointer">
+        <input id="toggle-sidecar" type="checkbox" checked class="w-4 h-4 rounded accent-fuchsia-500" />
+        <span class="text-sm">Merge <code class="text-hypo">[HYPO]</code> health lexicon</span>
+      </label>
+      <dl class="space-y-2 text-sm mb-4">
+        <div class="flex justify-between"><dt class="text-slate-500">baseline atoms</dt><dd id="stat-baseline" class="font-mono">1</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">merged atoms</dt><dd id="stat-merged" class="font-mono text-wire">14</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">uplift</dt><dd id="stat-uplift" class="font-mono text-hypo">+13</dd></div>
+        <div class="flex justify-between"><dt class="text-slate-500">L1 exact (spike)</dt><dd class="font-mono text-amber-200/90">~57.9%</dd></div>
+      </dl>
+      <p id="sidecarNote" class="text-[11px] text-slate-500 mt-auto">Source: ko_health_sidecar_wire_demo_v1 · not Track A routing.</p>
+    </section>
+  </main>
+
+  <nav class="max-w-[1600px] mx-auto px-4 pb-28 text-xs text-slate-500 flex flex-wrap gap-x-3">
+    <a href="public_showroom_logos_oracle_v3.html" class="hover:text-slate-300" title="부록 +45초 · 선택">→ Logos Oracle v3 (appendix)</a>
+    <span class="text-slate-600">MS RQ-019 · research_only</span>
+  </nav>
+
+  <footer id="disclaimer-bar" class="fixed bottom-0 inset-x-0 glass border-t border-amber-500/30 z-30">
+    <div class="max-w-[1600px] mx-auto px-4 py-2.5 text-[11px] text-amber-100/90 leading-relaxed">
+      <strong class="text-amber-200">면책:</strong> B-track research_only. Exact restore ~57.9% (L1 spike). <strong>Not</strong> lossless · <strong>not</strong> 100% · <strong>not</strong> universal lingua franca.
+      No investment advice · no live trading · no Track A auto-promotion. Artifacts on disk are SSOT.
+    </div>
+  </footer>
+
+  <script>
+(function () {
+  "use strict";
+  const BASELINE = ["other::silver"];
+  const SIDECAR = [
+    "health::ko::s00", "health::ko::s01", "health::ko::s02", "health::ko::s03",
+    "health::ko::s04", "health::ko::s05", "health::ko::s06", "health::ko::s07",
+    "health::ko::s08", "health::ko::s09", "health::ko::s10", "health::ko::s11",
+    "health::ko::s12", "health::ko::s13"
+  ];
+  const el = (id) => document.getElementById(id);
+  let activeChip = null;
+
+  function renderAtoms(useSidecar) {
+    const grid = el("atomGrid");
+    grid.innerHTML = "";
+    const ids = useSidecar ? [...new Set([...BASELINE, ...SIDECAR])] : [...BASELINE];
+    ids.forEach((id) => {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "atom-chip text-[10px] font-mono px-2 py-1 rounded-lg border border-white/10 bg-black/30 text-wire";
+      if (SIDECAR.includes(id) && !BASELINE.includes(id)) chip.classList.add("sidecar-only");
+      chip.textContent = id.length > 28 ? id.slice(0, 26) + "…" : id;
+      chip.dataset.atom = id;
+      chip.addEventListener("click", () => {
+        if (activeChip) activeChip.classList.remove("active");
+        chip.classList.add("active");
+        activeChip = chip;
+        el("atomDetail").textContent = JSON.stringify({
+          atom_id: id,
+          source: BASELINE.includes(id) ? "main_lexicon" : "ko_health_sidecar",
+          research_only: true,
+          hypothesis_tier: "B"
+        }, null, 2);
+      });
+      grid.appendChild(chip);
+    });
+    el("stat-baseline").textContent = String(BASELINE.length);
+    el("stat-merged").textContent = String(ids.length);
+    el("stat-uplift").textContent = "+" + (ids.length - BASELINE.length);
+    el("sidecarNote").textContent = useSidecar
+      ? "Sidecar ON — merged fixture from ko_health_sidecar_wire_demo_v1"
+      : "Sidecar OFF — baseline wire only";
+  }
+
+  el("toggle-sidecar").addEventListener("change", (e) => renderAtoms(e.target.checked));
+  renderAtoms(true);
+})();
+  </script>
+</body>
+</html>

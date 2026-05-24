@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · Verse 4D factory slice (read-only)</title>
+  <style>
+    :root { --bg:#0a0b0d; --surface:#12151a; --border:rgba(255,255,255,.09); --text:#e8eaef; --muted:#8b919d; --accent:#7eb8da; }
+    * { box-sizing: border-box; }
+    body { margin:0; min-height:100vh; font-family:system-ui,sans-serif; font-size:15px; color:var(--text); background:var(--bg); }
+    .wrap { max-width:52rem; margin:0 auto; padding:1.5rem 1.1rem 2.5rem; }
+    h1 { font-size:1.15rem; margin:0 0 .35rem; }
+    .lede { margin:0 0 1rem; font-size:.8125rem; color:var(--muted); }
+    .card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem; margin-bottom:.85rem; }
+    .tag { display:inline-block; font-size:.68rem; padding:.15rem .45rem; border-radius:4px; background:rgba(126,184,218,.15); color:var(--accent); margin-right:.35rem; }
+    pre { font-size:.72rem; overflow:auto; white-space:pre-wrap; }
+    table { width:100%; border-collapse:collapse; font-size:.8rem; }
+    th, td { border:1px solid var(--border); padding:.35rem .5rem; text-align:left; }
+    a { color:var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <span class="tag">[HYPO]</span><span class="tag">NON_GATING</span><span class="tag">v1_core_subset</span>
+    <h1>Logos verse 4D · factory demo</h1>
+    <p class="lede">
+      Loads <code>showroom_logos_verse_4d_slice_v1.json</code>. Gematria-bridge (S,L,K,M) only — not sasang/clinical.
+      Cross-Bridge = geometry between verse OS and Myeongri birth 4D; not healing proof.
+    </p>
+    <p class="lede"><a href="public_showroom_logos_research_v1.html">Logos research themes</a> · <a href="public_showroom_board_minimal.html">Board</a></p>
+    <div id="out"></div>
+  </div>
+  <script>
+    (async () => {
+      const el = document.getElementById('out');
+      try {
+        const r = await fetch('showroom_logos_verse_4d_slice_v1.json', { cache: 'no-store' });
+        if (!r.ok) throw new Error(r.status);
+        const d = await r.json();
+        const cb = d.cross_bridge_v0 || {};
+        const mx = d.cross_bridge_matrix_v0 || {};
+        let html = '<div class="card"><h2>Boundary</h2><p>' + (d.boundary_sentence_ko || '') + '</p></div>';
+        if (cb.verse_id) {
+          html += '<div class="card"><h2>Cross-Bridge v0</h2><p>Verse <code>' + cb.verse_id + '</code> · L2 ' + cb.l2_os_human + ' · cosine ' + cb.cosine_os_human + '</p></div>';
+        }
+        if (mx.rows && mx.rows.length) {
+          html += '<div class="card"><h2>Medoid matrix (L2)</h2><table><tr><th>rank</th><th>verse</th>';
+          const pids = mx.human_profile_ids || [];
+          pids.forEach(p => { html += '<th>' + p + '</th>'; });
+          html += '</tr>';
+          mx.rows.slice(0, 10).forEach(row => {
+            html += '<tr><td>' + row.rank + '</td><td>' + row.verse_id + '</td>';
+            const g = row.geometry_by_profile || {};
+            pids.forEach(p => { html += '<td>' + ((g[p]||{}).l2_os_human ?? '—') + '</td>'; });
+            html += '</tr>';
+          });
+          html += '</table><p class="lede">unique vector_4d: ' + (mx.unique_verse_vector_4d_count ?? '?') + ' / ' + mx.top_n + '</p></div>';
+        }
+        html += '<div class="card"><h2>Raw snapshot</h2><pre>' + JSON.stringify(d, null, 2) + '</pre></div>';
+        el.innerHTML = html;
+      } catch (e) {
+        el.innerHTML = '<p class="card">Failed to load slice: ' + e + '</p>';
+      }
+    })();
+  </script>
+</body>
+</html>

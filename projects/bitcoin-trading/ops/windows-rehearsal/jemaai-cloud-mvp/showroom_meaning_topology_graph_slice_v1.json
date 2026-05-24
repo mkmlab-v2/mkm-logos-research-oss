@@ -1,0 +1,1954 @@
+{
+  "schema_version": "showroom_meaning_topology_graph_slice_v1",
+  "generated_at_utc": "2026-05-24T00:32:07Z",
+  "stale_after_utc": "2026-05-31T00:32:07Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "disclaimer": {
+    "evidence_tier": "hypo_research_only",
+    "gating_status": "NON_GATING",
+    "no_trade_signals": true,
+    "note_ko": "성경·로고스 의미 연결망의 연구용 부분 그래프입니다. 종교·신학적 진리·투자·임상·실매매(Track A) 근거가 아니며 운영 게이트·주문 트리거와 무관합니다."
+  },
+  "data_provenance": {
+    "candidates_path": "docs/final/artifacts/bible_meaning_insight_candidates_latest.json",
+    "graph_nodes_path": "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl",
+    "graph_edges_path": "docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl"
+  },
+  "selection": {
+    "seed_count": 14,
+    "max_nodes": 128,
+    "max_edges": 140,
+    "seed_candidate_ids": [
+      "cand_001",
+      "cand_002",
+      "cand_003",
+      "cand_004",
+      "cand_005",
+      "cand_006",
+      "cand_007",
+      "cand_008",
+      "cand_009",
+      "cand_010",
+      "cand_011",
+      "cand_012",
+      "cand_013",
+      "cand_014"
+    ],
+    "seed_source_node_ids": [
+      "aramaic::Dan.2.10",
+      "aramaic::Dan.2.11",
+      "aramaic::Dan.2.12",
+      "aramaic::Dan.2.13",
+      "aramaic::Dan.2.14",
+      "aramaic::Dan.2.15",
+      "aramaic::Dan.2.16",
+      "aramaic::Dan.2.17",
+      "aramaic::Dan.2.18",
+      "aramaic::Dan.2.19",
+      "aramaic::Dan.2.20",
+      "aramaic::Dan.2.21",
+      "aramaic::Dan.2.22",
+      "aramaic::Dan.2.23"
+    ]
+  },
+  "stats": {
+    "node_count": 128,
+    "edge_count": 140,
+    "kinds": {
+      "verse": 126,
+      "regime": 1,
+      "theme": 1
+    }
+  },
+  "nodes": [
+    {
+      "id": "aramaic::Dan.2.10",
+      "label": "Dan.2.10",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.10",
+      "text_snippet_ko": "ענו כשדי א כשדא י קדם מלכ א ו אמרין לא איתי אנש על יבשת א די מלת מלכ א יוכל ל החויה כ ל קבל די כל מלך רב ו שליט מלה כ דנה לא שאל ל כל חרטם ו אשף ו כשדי",
+      "hub_score": 0.9,
+      "candidate_id": "cand_001"
+    },
+    {
+      "id": "aramaic::Dan.2.11",
+      "label": "Dan.2.11",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.11",
+      "text_snippet_ko": "ו מלת א די מלכ ה שאל יקירה ו אחרן לא איתי די יחונ ה קדם מלכ א להן אלהין די מדר הון עם בשר א לא איתו הי",
+      "hub_score": 0.7,
+      "candidate_id": "cand_002"
+    },
+    {
+      "id": "aramaic::Dan.2.12",
+      "label": "Dan.2.12",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.12",
+      "text_snippet_ko": "כ ל קבל דנה מלכ א בנס ו קצף שגיא ו אמר ל הובדה ל כל חכימי בבל",
+      "hub_score": 0.6,
+      "candidate_id": "cand_003"
+    },
+    {
+      "id": "aramaic::Dan.2.13",
+      "label": "Dan.2.13",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.13",
+      "text_snippet_ko": "ו דת א נפקת ו חכימי א מתקטלין ו בעו דניאל ו חברו הי ל התקטלה",
+      "hub_score": 0.6,
+      "candidate_id": "cand_004"
+    },
+    {
+      "id": "aramaic::Dan.2.14",
+      "label": "Dan.2.14",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.14",
+      "text_snippet_ko": "ב אדין דניאל התיב עטא ו טעם ל אריוך רב טבחי א די מלכ א די נפק ל קטלה ל חכימי בבל",
+      "hub_score": 0.6,
+      "candidate_id": "cand_005"
+    },
+    {
+      "id": "aramaic::Dan.2.15",
+      "label": "Dan.2.15",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.15",
+      "text_snippet_ko": "ענה ו אמר ל אריוך שליט א די מלכ א על מה דת א מהחצפה מן קדם מלכ א אדין מלת א הודע אריוך ל דניאל",
+      "hub_score": 0.6,
+      "candidate_id": "cand_006"
+    },
+    {
+      "id": "aramaic::Dan.2.16",
+      "label": "Dan.2.16",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.16",
+      "text_snippet_ko": "ו דניאל על ו בעה מן מלכ א די זמן ינתן ל ה ו פשר א ל החויה ל מלכ א",
+      "hub_score": 0.6,
+      "candidate_id": "cand_007"
+    },
+    {
+      "id": "aramaic::Dan.2.17",
+      "label": "Dan.2.17",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.17",
+      "text_snippet_ko": "אדין דניאל ל בית ה אזל ו ל חנניה מישאל ו עזריה חברו הי מלת א הודע",
+      "hub_score": 0.6,
+      "candidate_id": "cand_008"
+    },
+    {
+      "id": "aramaic::Dan.2.18",
+      "label": "Dan.2.18",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.18",
+      "text_snippet_ko": "ו רחמין ל מבעא מן קדם אלה שמי א על רז ה דנה די לא יהבדון דניאל ו חברו הי עם שאר חכימי בבל",
+      "hub_score": 0.6,
+      "candidate_id": "cand_009"
+    },
+    {
+      "id": "aramaic::Dan.2.19",
+      "label": "Dan.2.19",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.19",
+      "text_snippet_ko": "אדין ל דניאל ב חזו א די לילי א רז ה גלי אדין דניאל ברך ל אלה שמי א",
+      "hub_score": 0.6,
+      "candidate_id": "cand_010"
+    },
+    {
+      "id": "aramaic::Dan.2.20",
+      "label": "Dan.2.20",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.20",
+      "text_snippet_ko": "ענה דניאל ו אמר להוא שמ ה די אלה א מברך מן עלמ א ו עד עלמ א די חכמת א ו גבורת א די ל ה היא",
+      "hub_score": 0.6,
+      "candidate_id": "cand_011"
+    },
+    {
+      "id": "aramaic::Dan.2.21",
+      "label": "Dan.2.21",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.21",
+      "text_snippet_ko": "ו הוא מהשנא עדני א ו זמני א מהעדה מלכין ו מהקים מלכין יהב חכמת א ל חכימין ו מנדע א ל ידעי בינה",
+      "hub_score": 0.6,
+      "candidate_id": "cand_012"
+    },
+    {
+      "id": "aramaic::Dan.2.22",
+      "label": "Dan.2.22",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.22",
+      "text_snippet_ko": "הוא גלא עמיקת א ו מסתרת א ידע מה ב חשוכ א ו נהיר א ו נהור א עמ ה שרא",
+      "hub_score": 0.6,
+      "candidate_id": "cand_013"
+    },
+    {
+      "id": "aramaic::Dan.2.23",
+      "label": "Dan.2.23",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.23",
+      "text_snippet_ko": "ל ך אלה אבהת י מהודא ו משבח אנה די חכמת א ו גבורת א יהבת ל י ו כען הודעת ני די בעינא מנ ך די מלת מלכ א הודעת נא",
+      "hub_score": 0.6,
+      "candidate_id": "cand_014"
+    },
+    {
+      "id": "aramaic::Dan.2.24",
+      "label": "Dan.2.24",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.24",
+      "text_snippet_ko": "כ ל קבל דנה דניאל על על אריוך די מני מלכ א ל הובדה ל חכימי בבל אזל ו כן אמר ל ה ל חכימי בבל אל תהובד העל ני קדם מלכ א ו פשר א ל מלכ א אחוא"
+    },
+    {
+      "id": "aramaic::Dan.2.25",
+      "label": "Dan.2.25",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.25",
+      "text_snippet_ko": "אדין אריוך ב התבהלה הנעל ל דניאל קדם מלכ א ו כן אמר ל ה די השכחת גבר מן בני גלות א די יהוד די פשר א ל מלכ א יהודע"
+    },
+    {
+      "id": "aramaic::Dan.2.26",
+      "label": "Dan.2.26",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.26",
+      "text_snippet_ko": "ענה מלכ א ו אמר ל דניאל די שמ ה בלטשאצר ה איתי ך ה אית ך כהל ל הודעת ני חלמ א די חזית ו פשר ה"
+    },
+    {
+      "id": "aramaic::Dan.2.27",
+      "label": "Dan.2.27",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.27",
+      "text_snippet_ko": "ענה דניאל קדם מלכ א ו אמר רז ה די מלכ א שאל לא חכימין אשפין חרטמין גזרין יכלין ל החויה ל מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.2.28",
+      "label": "Dan.2.28",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.28",
+      "text_snippet_ko": "ברם איתי אלה ב שמי א גלא רזין ו הודע ל מלכ א נבוכדנצר מה די להוא ב אחרית יומי א חלמ ך ו חזוי ראש ך על משכב ך דנה הוא"
+    },
+    {
+      "id": "aramaic::Dan.2.29",
+      "label": "Dan.2.29",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.29",
+      "text_snippet_ko": "אנתה מלכ א רעיונ ך על משכב ך סלקו מה די להוא אחרי דנה ו גלא רזי א הודע ך מה די להוא"
+    },
+    {
+      "id": "aramaic::Dan.2.30",
+      "label": "Dan.2.30",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.30",
+      "text_snippet_ko": "ו אנה לא ב חכמה די איתי ב י מן כל חיי א רז א דנה גלי ל י להן על דברת די פשר א ל מלכ א יהודעון ו רעיוני לבב ך תנדע"
+    },
+    {
+      "id": "aramaic::Dan.2.31",
+      "label": "Dan.2.31",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.31",
+      "text_snippet_ko": "אנתה מלכ א חזה הוית ו אלו צלם חד שגיא צלמ א דכן רב ו זיו ה יתיר קאם ל קבל ך ו רו ה דחיל"
+    },
+    {
+      "id": "aramaic::Dan.2.32",
+      "label": "Dan.2.32",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.32",
+      "text_snippet_ko": "הוא צלמ א ראש ה די דהב טב חדו הי ו דרעו הי די כסף מעו הי ו ירכת ה די נחש"
+    },
+    {
+      "id": "aramaic::Dan.2.33",
+      "label": "Dan.2.33",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.33",
+      "text_snippet_ko": "שקו הי די פרזל רגלו הי מנ הון מנ הין די פרזל ו מנ הון ו מנ הין די חסף"
+    },
+    {
+      "id": "aramaic::Dan.2.34",
+      "label": "Dan.2.34",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.34",
+      "text_snippet_ko": "חזה הוית עד די התגזרת אבן די לא ב ידין ו מחת ל צלמ א על רגלו הי די פרזל א ו חספ א ו הדקת המון"
+    },
+    {
+      "id": "aramaic::Dan.2.35",
+      "label": "Dan.2.35",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.35",
+      "text_snippet_ko": "ב אדין דקו כ חדה פרזל א חספ א נחש א כספ א ו דהב א ו הוו כ עור מן אדרי קיט ו נשא המון רוח א ו כל אתר לא השתכח ל הון ו אבנ א די מחת ל צלמ א הות ל טור רב ו מלת כל …"
+    },
+    {
+      "id": "aramaic::Dan.2.36",
+      "label": "Dan.2.36",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.36",
+      "text_snippet_ko": "דנה חלמ א ו פשר ה נאמר קדם מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.2.37",
+      "label": "Dan.2.37",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.37",
+      "text_snippet_ko": "אנתה מלכ א מלך מלכי א די אלה שמי א מלכות א חסנ א ו תקפ א ו יקר א יהב ל ך"
+    },
+    {
+      "id": "aramaic::Dan.2.38",
+      "label": "Dan.2.38",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.38",
+      "text_snippet_ko": "ו ב כל די דארין דירין בני אנש א חיות בר א ו עוף שמי א יהב ב יד ך ו השלט ך ב כל הון אנתה הוא ראש ה די דהב א"
+    },
+    {
+      "id": "aramaic::Dan.2.39",
+      "label": "Dan.2.39",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.39",
+      "text_snippet_ko": "ו בתר ך תקום מלכו אחרי ארע א ארע מנ ך ו מלכו תליתיא תליתאה אחרי די נחש א די תשלט ב כל ארע א"
+    },
+    {
+      "id": "aramaic::Dan.2.4",
+      "label": "Dan.2.4",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.4",
+      "text_snippet_ko": "ו ידברו ה כשדים ל מלך ארמית מלכ א ל עלמין חיי אמר חלמ א ל עבדי ך ל עבד ך ו פשר א נחוא"
+    },
+    {
+      "id": "aramaic::Dan.2.40",
+      "label": "Dan.2.40",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.40",
+      "text_snippet_ko": "ו מלכו רביעיה רביעאה תהוא תקיפה כ פרזל א כ ל קבל די פרזל א מהדק ו חשל כל א ו כ פרזל א די מרעע כל אלין תדק ו תרע"
+    },
+    {
+      "id": "aramaic::Dan.2.41",
+      "label": "Dan.2.41",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.41",
+      "text_snippet_ko": "ו די חזיתה רגלי א ו אצבעת א מנ הון מנ הן חסף די פחר ו מנ הון ו מנ הין פרזל מלכו פליגה תהוה ו מן נצבת א די פרזל א להוא ב ה כ ל קבל די חזיתה פרזל א מערב ב חסף טינ…"
+    },
+    {
+      "id": "aramaic::Dan.2.42",
+      "label": "Dan.2.42",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.42",
+      "text_snippet_ko": "ו אצבעת רגלי א מנ הון מנ הין פרזל ו מנ הון ו מנ הין חסף מן קצת מלכות א תהוה תקיפה ו מנ ה תהוה תבירה"
+    },
+    {
+      "id": "aramaic::Dan.2.43",
+      "label": "Dan.2.43",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.43",
+      "text_snippet_ko": "די ו די חזית פרזל א מערב ב חסף טינ א מתערבין להון ב זרע אנש א ו לא להון דבקין דנה עם דנה הא כ די פרזל א לא מתערב עם חספ א"
+    },
+    {
+      "id": "aramaic::Dan.2.44",
+      "label": "Dan.2.44",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.44",
+      "text_snippet_ko": "ו ב יומי הון די מלכי א אנון יקים אלה שמי א מלכו די ל עלמין לא תתחבל ו מלכות ה ל עם אחרן לא תשתבק תדק ו תסיף כל אלין מלכות א ו היא תקום ל עלמי א"
+    },
+    {
+      "id": "aramaic::Dan.2.45",
+      "label": "Dan.2.45",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.45",
+      "text_snippet_ko": "כ ל קבל די חזית די מ טור א אתגזרת אבן די לא ב ידין ו הדקת פרזל א נחש א חספ א כספ א ו דהב א אלה רב הודע ל מלכ א מה די להוא אחרי דנה ו יציב חלמ א ו מהימן פשר ה"
+    },
+    {
+      "id": "aramaic::Dan.2.46",
+      "label": "Dan.2.46",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.46",
+      "text_snippet_ko": "ב אדין מלכ א נבוכדנצר נפל על אנפו הי ו ל דניאל סגד ו מנחה ו ניחחין אמר ל נסכה ל ה"
+    },
+    {
+      "id": "aramaic::Dan.2.47",
+      "label": "Dan.2.47",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.47",
+      "text_snippet_ko": "ענה מלכ א ל דניאל ו אמר מן קשט די אלה כון הוא אלה אלהין ו מרא מלכין ו גלה רזין די יכלת ל מגלא רז ה דנה"
+    },
+    {
+      "id": "aramaic::Dan.2.48",
+      "label": "Dan.2.48",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.48",
+      "text_snippet_ko": "אדין מלכ א ל דניאל רבי ו מתנן רברבן שגיאן יהב ל ה ו השלט ה על כל מדינת בבל ו רב סגנין על כל חכימי בבל"
+    },
+    {
+      "id": "aramaic::Dan.2.49",
+      "label": "Dan.2.49",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.49",
+      "text_snippet_ko": "ו דניאל בעא מן מלכ א ו מני על עבידת א די מדינת בבל ל שדרך מישך ו עבד נגו ו דניאל ב תרע מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.2.5",
+      "label": "Dan.2.5",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.5",
+      "text_snippet_ko": "ענה מלכ א ו אמר ל כשדי א ל כשדא י מלת א מנ י אזדא הן לא תהודעונ ני חלמ א ו פשר ה הדמין תתעבדון ו בתי כון נולי יתשמון"
+    },
+    {
+      "id": "aramaic::Dan.2.6",
+      "label": "Dan.2.6",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.6",
+      "text_snippet_ko": "ו הן חלמ א ו פשר ה תהחון מתנן ו נבזבה ו יקר שגיא תקבלון מן קדמ י להן חלמ א ו פשר ה החו ני"
+    },
+    {
+      "id": "aramaic::Dan.2.7",
+      "label": "Dan.2.7",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.7",
+      "text_snippet_ko": "ענו תנינות ו אמרין מלכ א חלמ א יאמר ל עבדו הי ו פשר ה נהחוה"
+    },
+    {
+      "id": "aramaic::Dan.2.8",
+      "label": "Dan.2.8",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.8",
+      "text_snippet_ko": "ענה מלכ א ו אמר מן יציב ידע אנה די עדנ א אנתון זבנין כ ל קבל די חזיתון די אזדא מנ י מלת א"
+    },
+    {
+      "id": "aramaic::Dan.2.9",
+      "label": "Dan.2.9",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.2.9",
+      "text_snippet_ko": "די הן חלמ א לא תהודענ ני חדה היא דת כון ו מלה כדבה ו שחיתה הזמנתון הזדמנתון ל מאמר קדמ י עד די עדנ א ישתנא להן חלמ א אמרו ל י ו אנדע די פשר ה תהחונ ני"
+    },
+    {
+      "id": "aramaic::Dan.3.1",
+      "label": "Dan.3.1",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.1",
+      "text_snippet_ko": "נבוכדנצר מלכ א עבד צלם די דהב רומ ה אמין שתין פתי ה אמין שת אקימ ה ב בקעת דורא ב מדינת בבל"
+    },
+    {
+      "id": "aramaic::Dan.3.10",
+      "label": "Dan.3.10",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.10",
+      "text_snippet_ko": "אנתה אנת מלכ א שמת טעם די כל אנש די ישמע קל קרנ א משרקית א קיתרס קתרוס שבכא פסנתרין ו סיפניה ו סופניה ו כל זני זמר א יפל ו יסגד ל צלם דהב א"
+    },
+    {
+      "id": "aramaic::Dan.3.11",
+      "label": "Dan.3.11",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.11",
+      "text_snippet_ko": "ו מן די לא יפל ו יסגד יתרמא ל גוא אתון נור א יקדת א"
+    },
+    {
+      "id": "aramaic::Dan.3.12",
+      "label": "Dan.3.12",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.12",
+      "text_snippet_ko": "איתי גברין יהודאין די מנית ית הון על עבידת מדינת בבל שדרך מישך ו עבד נגו גברי א אלך לא שמו עלי ך על ך מלכ א טעם ל אלהי ך ל אלה ך לא פלחין ו ל צלם דהב א די הקימת…"
+    },
+    {
+      "id": "aramaic::Dan.3.13",
+      "label": "Dan.3.13",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.13",
+      "text_snippet_ko": "ב אדין נבוכדנצר ב רגז ו חמה אמר ל היתיה ל שדרך מישך ו עבד נגו ב אדין גברי א אלך היתיו קדם מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.3.14",
+      "label": "Dan.3.14",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.14",
+      "text_snippet_ko": "ענה נבכדנצר ו אמר ל הון ה צדא שדרך מישך ו עבד נגו ל אלה י לא איתי כון פלחין ו ל צלם דהב א די הקימת לא סגדין"
+    },
+    {
+      "id": "aramaic::Dan.3.15",
+      "label": "Dan.3.15",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.15",
+      "text_snippet_ko": "כען הן איתי כון עתידין די ב עדנ א די תשמעון קל קרנ א משרוקית א קיתרס קתרוס שבכא פסנתרין ו סומפניה ו כל זני זמר א תפלון ו תסגדון ל צלמ א די עבדת ו הן לא תסגדון ב…"
+    },
+    {
+      "id": "aramaic::Dan.3.16",
+      "label": "Dan.3.16",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.16",
+      "text_snippet_ko": "ענו שדרך מישך ו עבד נגו ו אמרין ל מלכ א נבוכדנצר לא חשחין אנחנה על דנה פתגם ל התבות ך"
+    },
+    {
+      "id": "aramaic::Dan.3.17",
+      "label": "Dan.3.17",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.17",
+      "text_snippet_ko": "הן איתי אלה נא די אנחנא פלחין יכל ל שיזבות נא מן אתון נור א יקדת א ו מן יד ך מלכ א ישיזב"
+    },
+    {
+      "id": "aramaic::Dan.3.18",
+      "label": "Dan.3.18",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.18",
+      "text_snippet_ko": "ו הן לא ידיע להוא ל ך מלכ א די ל אלהי ך ל אלה ך לא איתי נא אית נא פלחין ו ל צלם דהב א די הקימת לא נסגד"
+    },
+    {
+      "id": "aramaic::Dan.3.19",
+      "label": "Dan.3.19",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.19",
+      "text_snippet_ko": "ב אדין נבוכדנצר התמלי חמא ו צלם אנפו הי אשתנו אשתני על שדרך מישך ו עבד נגו ענה ו אמר ל מזא ל אתונ א חד שבעה על די חזה ל מזי ה"
+    },
+    {
+      "id": "aramaic::Dan.3.2",
+      "label": "Dan.3.2",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.2",
+      "text_snippet_ko": "ו נבוכדנצר מלכ א שלח ל מכנש ל אחשדרפני א סגני א ו פחות א אדרגזרי א גדברי א דתברי א תפתי א ו כל שלטני מדינת א ל מתא ל חנכת צלמ א די הקים נבוכדנצר מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.3.20",
+      "label": "Dan.3.20",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.20",
+      "text_snippet_ko": "ו ל גברין גברי חיל די ב חיל ה אמר ל כפתה ל שדרך מישך ו עבד נגו ל מרמא ל אתון נור א יקדת א"
+    },
+    {
+      "id": "aramaic::Dan.3.21",
+      "label": "Dan.3.21",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.21",
+      "text_snippet_ko": "ב אדין גברי א אלך כפתו ב סרבלי הון פטישי הון פטשי הון ו כרבלת הון ו לבשי הון ו רמיו ל גוא אתון נור א יקדת א"
+    },
+    {
+      "id": "aramaic::Dan.3.22",
+      "label": "Dan.3.22",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.22",
+      "text_snippet_ko": "כ ל קבל דנה מן די מלת מלכ א מחצפה ו אתונ א אזה יתירא גברי א אלך די הסקו ל שדרך מישך ו עבד נגו קטל המון שביב א די נור א"
+    },
+    {
+      "id": "aramaic::Dan.3.23",
+      "label": "Dan.3.23",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.23",
+      "text_snippet_ko": "ו גברי א אלך תלת הון שדרך מישך ו עבד נגו נפלו ל גוא אתון נור א יקדת א מכפתין"
+    },
+    {
+      "id": "aramaic::Dan.3.24",
+      "label": "Dan.3.24",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.24",
+      "text_snippet_ko": "אדין נבוכדנצר מלכ א תוה ו קם ב התבהלה ענה ו אמר ל הדברו הי ה לא גברין תלתא רמינא ל גוא נור א מכפתין ענין ו אמרין ל מלכ א יציבא מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.3.25",
+      "label": "Dan.3.25",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.25",
+      "text_snippet_ko": "ענה ו אמר הא אנה חזה גברין ארבעה שרין מהלכין ב גוא נור א ו חבל לא איתי ב הון ו רו ה די רביעי א רביע אה דמה ל בר אלהין"
+    },
+    {
+      "id": "aramaic::Dan.3.26",
+      "label": "Dan.3.26",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.26",
+      "text_snippet_ko": "ב אדין קרב נבוכדנצר ל תרע אתון נור א יקדת א ענה ו אמר שדרך מישך ו עבד נגו עבדו הי די אלה א עלי א עלא ה פקו ו אתו ב אדין נפקין שדרך מישך ו עבד נגו מן גוא נור א"
+    },
+    {
+      "id": "aramaic::Dan.3.27",
+      "label": "Dan.3.27",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.27",
+      "text_snippet_ko": "ו מתכנשין אחשדרפני א סגני א ו פחות א ו הדברי מלכ א חזין ל גברי א אלך די לא שלט נור א ב גשמ הון ו שער ראש הון לא התחרך ו סרבלי הון לא שנו ו ריח נור לא עדת ב הון"
+    },
+    {
+      "id": "aramaic::Dan.3.28",
+      "label": "Dan.3.28",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.28",
+      "text_snippet_ko": "ענה נבוכדנצר ו אמר בריך אלה הון די שדרך מישך ו עבד נגו די שלח מלאכ ה ו שיזב ל עבדו הי די התרחצו עלו הי ו מלת מלכ א שניו ו יהבו גשמי הון גשמ הון די לא יפלחון ו ל…"
+    },
+    {
+      "id": "aramaic::Dan.3.29",
+      "label": "Dan.3.29",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.29",
+      "text_snippet_ko": "ו מ ני שים טעם די כל עם אמה ו לשן די יאמר שלה שלו על אלה הון די שדרך מישך ו עבד נגוא הדמין יתעבד ו בית ה נולי ישתוה כ ל קבל די לא איתי אלה אחרן די יכל ל הצלה כ …"
+    },
+    {
+      "id": "aramaic::Dan.3.3",
+      "label": "Dan.3.3",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.3",
+      "text_snippet_ko": "ב אדין מתכנשין אחשדרפני א סגני א ו פחות א אדרגזרי א גדברי א דתברי א תפתי א ו כל שלטני מדינת א ל חנכת צלמ א די הקים נבוכדנצר מלכ א ו קאמין ו קימין ל קבל צלמ א די…"
+    },
+    {
+      "id": "aramaic::Dan.3.30",
+      "label": "Dan.3.30",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.30",
+      "text_snippet_ko": "ב אדין מלכ א הצלח ל שדרך מישך ו עבד נגו ב מדינת בבל"
+    },
+    {
+      "id": "aramaic::Dan.3.4",
+      "label": "Dan.3.4",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.4",
+      "text_snippet_ko": "ו כרוז א קרא ב חיל ל כון אמרין עממי א אמי א ו לשני א"
+    },
+    {
+      "id": "aramaic::Dan.3.5",
+      "label": "Dan.3.5",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.5",
+      "text_snippet_ko": "ב עדנ א די תשמעון קל קרנ א משרוקית א קיתרוס קתרוס סבכא פסנתרין סומפניה ו כל זני זמר א תפלון ו תסגדון ל צלם דהב א די הקים נבוכדנצר מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.3.6",
+      "label": "Dan.3.6",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.6",
+      "text_snippet_ko": "ו מן די לא יפל ו יסגד ב ה שעת א יתרמא ל גוא אתון נור א יקדת א"
+    },
+    {
+      "id": "aramaic::Dan.3.7",
+      "label": "Dan.3.7",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.7",
+      "text_snippet_ko": "כ ל קבל דנה ב ה זמנ א כ די שמעין כל עממי א קל קרנ א משרוקית א קיתרס קתרוס שבכא פסנטרין ו כל זני זמר א נפלין כל עממי א אמי א ו לשני א סגדין ל צלם דהב א די הקים נ…"
+    },
+    {
+      "id": "aramaic::Dan.3.8",
+      "label": "Dan.3.8",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.8",
+      "text_snippet_ko": "כ ל קבל דנה ב ה זמנ א קרבו גברין כשדאין ו אכלו קרצי הון די יהודי א"
+    },
+    {
+      "id": "aramaic::Dan.3.9",
+      "label": "Dan.3.9",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.3.9",
+      "text_snippet_ko": "ענו ו אמרין ל נבוכדנצר מלכ א מלכ א ל עלמין חיי"
+    },
+    {
+      "id": "aramaic::Dan.4.1",
+      "label": "Dan.4.1",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.1",
+      "text_snippet_ko": "אנה נבוכדנצר שלה הוית ב בית י ו רענן ב היכל י"
+    },
+    {
+      "id": "aramaic::Dan.4.10",
+      "label": "Dan.4.10",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.10",
+      "text_snippet_ko": "חזה הוית ב חזוי ראש י על משכב י ו אלו עיר ו קדיש מן שמי א נחת"
+    },
+    {
+      "id": "aramaic::Dan.4.11",
+      "label": "Dan.4.11",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.11",
+      "text_snippet_ko": "קרא ב חיל ו כן אמר גדו אילנ א ו קצצו ענפו הי אתרו עפי ה ו בדרו אנב ה תנד חיות א מן תחתו הי ו צפרי א מן ענפו הי"
+    },
+    {
+      "id": "aramaic::Dan.4.12",
+      "label": "Dan.4.12",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.12",
+      "text_snippet_ko": "ברם עקר שרשו הי ב ארע א שבקו ו ב אסור די פרזל ו נחש ב דתא א די בר א ו ב טל שמי א יצטבע ו עם חיות א חלק ה ב עשב ארע א"
+    },
+    {
+      "id": "aramaic::Dan.4.13",
+      "label": "Dan.4.13",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.13",
+      "text_snippet_ko": "לבב ה מן אנוש א אנש א ישנון ו לבב חיוה יתיהב ל ה ו שבעה עדנין יחלפון עלו הי"
+    },
+    {
+      "id": "aramaic::Dan.4.14",
+      "label": "Dan.4.14",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.14",
+      "text_snippet_ko": "ב גזרת עירין פתגמ א ו מאמר קדישין שאלת א עד דברת די ינדעון חיי א די שליט עלי א עלא ה ב מלכות אנוש א אנש א ו ל מן די יצבא יתננ ה ו שפל אנשים יקים עלי ה על ה"
+    },
+    {
+      "id": "aramaic::Dan.4.15",
+      "label": "Dan.4.15",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.15",
+      "text_snippet_ko": "דנה חלמ א חזית אנה מלכ א נבוכדנצר ו אנתה ו אנת בלטשאצר פשר א אמר כ ל קבל די כל חכימי מלכות י לא יכלין פשר א ל הודעת ני ו אנתה ו אנת כהל די רוח אלהין קדישין ב ך"
+    },
+    {
+      "id": "aramaic::Dan.4.16",
+      "label": "Dan.4.16",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.16",
+      "text_snippet_ko": "אדין דניאל די שמ ה בלטשאצר אשתומם כ שעה חדה ו רעינ הי יבהלנ ה ענה מלכ א ו אמר בלטשאצר חלמ א ו פשר א אל יבהל ך ענה בלטשאצר ו אמר מרא י מר י חלמ א ל שנאי ך ל שנא …"
+    },
+    {
+      "id": "aramaic::Dan.4.17",
+      "label": "Dan.4.17",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.17",
+      "text_snippet_ko": "אילנ א די חזית די רבה ו תקף ו רומ ה ימטא ל שמי א ו חזות ה ל כל ארע א"
+    },
+    {
+      "id": "aramaic::Dan.4.18",
+      "label": "Dan.4.18",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.18",
+      "text_snippet_ko": "ו עפי ה שפיר ו אנב ה שגיא ו מזון ל כל א ב ה תחתו הי תדור חיות בר א ו ב ענפו הי ישכנן צפרי שמי א"
+    },
+    {
+      "id": "aramaic::Dan.4.19",
+      "label": "Dan.4.19",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.19",
+      "text_snippet_ko": "אנתה אנת הוא מלכ א די רבית ו תקפת ו רבות ך רבת ו מטת ל שמי א ו שלטנ ך ל סוף ארע א"
+    },
+    {
+      "id": "aramaic::Dan.4.2",
+      "label": "Dan.4.2",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.2",
+      "text_snippet_ko": "חלם חזית ו ידחלנ ני ו הרהרין על משכב י ו חזוי ראש י יבהלנ ני"
+    },
+    {
+      "id": "aramaic::Dan.4.20",
+      "label": "Dan.4.20",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.20",
+      "text_snippet_ko": "ו די חזה מלכ א עיר ו קדיש נחת מן שמי א ו אמר גדו אילנ א ו חבלו הי ברם עקר שרשו הי ב ארע א שבקו ו ב אסור די פרזל ו נחש ב דתא א די בר א ו ב טל שמי א יצטבע ו עם חי…"
+    },
+    {
+      "id": "aramaic::Dan.4.21",
+      "label": "Dan.4.21",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.21",
+      "text_snippet_ko": "דנה פשר א מלכ א ו גזרת עלי א עלא ה היא די מטת על מרא י מר י מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.4.22",
+      "label": "Dan.4.22",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.22",
+      "text_snippet_ko": "ו ל ך טרדין מן אנש א ו עם חיות בר א להוה מדר ך ו עשב א כ תורין ל ך יטעמון ו מ טל שמי א ל ך מצבעין ו שבעה עדנין יחלפון על יך עד די תנדע די שליט עלי א ב מלכות אנש…"
+    },
+    {
+      "id": "aramaic::Dan.4.23",
+      "label": "Dan.4.23",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.23",
+      "text_snippet_ko": "ו די אמרו ל משבק עקר שרשו הי די אילנ א מלכות ך ל ך קימה מן די תנדע די שלטן שמי א"
+    },
+    {
+      "id": "aramaic::Dan.4.24",
+      "label": "Dan.4.24",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.24",
+      "text_snippet_ko": "להן מלכ א מלכ י ישפר עלי ך על ך ו חטי ך ו חטא ך ב צדקה פרק ו עוית ך ב מחן ענין הן תהוא ארכה ל שלות ך"
+    },
+    {
+      "id": "aramaic::Dan.4.25",
+      "label": "Dan.4.25",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.4.25",
+      "text_snippet_ko": "כל א מטא על נבוכדנצר מלכ א"
+    },
+    {
+      "id": "aramaic::Dan.5.29",
+      "label": "Dan.5.29",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.5.29",
+      "text_snippet_ko": "ב אדין אמר בלשאצר ו הלבישו ל דניאל ארגונ א ו המונכ א ו המניכ א די דהב א על צואר ה ו הכרזו עלו הי די להוא שליט תלתא ב מלכות א"
+    },
+    {
+      "id": "aramaic::Dan.5.3",
+      "label": "Dan.5.3",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.5.3",
+      "text_snippet_ko": "ב אדין היתיו מאני דהב א די הנפקו מן היכל א די בית אלה א די ב ירושלם ו אשתיו ב הון מלכ א ו רברבנו הי שגלת ה ו לחנת ה"
+    },
+    {
+      "id": "aramaic::Dan.5.30",
+      "label": "Dan.5.30",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Dan.5.30",
+      "text_snippet_ko": "ב ה ב לילי א קטיל בלאשצר מלכ א כשדי א כשדא ה"
+    },
+    {
+      "id": "aramaic::Jer.10.11",
+      "label": "Jer.10.11",
+      "kind": "verse",
+      "corpus": "aramaic",
+      "ref": "Jer.10.11",
+      "text_snippet_ko": "כ דנה תאמרון ל הום אלהי א די שמי א ו ארק א לא עבדו יאבדו מ ארע א ו מן תחות שמי א אלה"
+    },
+    {
+      "id": "greek::Dan.2.10",
+      "label": "Dan.2.10",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.10",
+      "text_snippet_ko": "ענו כשדי א כשדא י קדם מלכ א ו אמרין לא איתי אנש על יבשת א די מלת מלכ א יוכל ל החויה כ ל קבל די כל מלך רב ו שליט מלה כ דנה לא שאל ל כל חרטם ו אשף ו כשדי"
+    },
+    {
+      "id": "greek::Dan.2.11",
+      "label": "Dan.2.11",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.11",
+      "text_snippet_ko": "ו מלת א די מלכ ה שאל יקירה ו אחרן לא איתי די יחונ ה קדם מלכ א להן אלהין די מדר הון עם בשר א לא איתו הי"
+    },
+    {
+      "id": "greek::Dan.2.12",
+      "label": "Dan.2.12",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.12",
+      "text_snippet_ko": "כ ל קבל דנה מלכ א בנס ו קצף שגיא ו אמר ל הובדה ל כל חכימי בבל"
+    },
+    {
+      "id": "greek::Dan.2.13",
+      "label": "Dan.2.13",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.13",
+      "text_snippet_ko": "ו דת א נפקת ו חכימי א מתקטלין ו בעו דניאל ו חברו הי ל התקטלה"
+    },
+    {
+      "id": "greek::Dan.2.14",
+      "label": "Dan.2.14",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.14",
+      "text_snippet_ko": "ב אדין דניאל התיב עטא ו טעם ל אריוך רב טבחי א די מלכ א די נפק ל קטלה ל חכימי בבל"
+    },
+    {
+      "id": "greek::Dan.2.15",
+      "label": "Dan.2.15",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.15",
+      "text_snippet_ko": "ענה ו אמר ל אריוך שליט א די מלכ א על מה דת א מהחצפה מן קדם מלכ א אדין מלת א הודע אריוך ל דניאל"
+    },
+    {
+      "id": "greek::Dan.2.16",
+      "label": "Dan.2.16",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.16",
+      "text_snippet_ko": "ו דניאל על ו בעה מן מלכ א די זמן ינתן ל ה ו פשר א ל החויה ל מלכ א"
+    },
+    {
+      "id": "greek::Dan.2.17",
+      "label": "Dan.2.17",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.17",
+      "text_snippet_ko": "אדין דניאל ל בית ה אזל ו ל חנניה מישאל ו עזריה חברו הי מלת א הודע"
+    },
+    {
+      "id": "greek::Dan.2.18",
+      "label": "Dan.2.18",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.18",
+      "text_snippet_ko": "ו רחמין ל מבעא מן קדם אלה שמי א על רז ה דנה די לא יהבדון דניאל ו חברו הי עם שאר חכימי בבל"
+    },
+    {
+      "id": "greek::Dan.2.19",
+      "label": "Dan.2.19",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.19",
+      "text_snippet_ko": "אדין ל דניאל ב חזו א די לילי א רז ה גלי אדין דניאל ברך ל אלה שמי א"
+    },
+    {
+      "id": "greek::Dan.2.20",
+      "label": "Dan.2.20",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.20",
+      "text_snippet_ko": "ענה דניאל ו אמר להוא שמ ה די אלה א מברך מן עלמ א ו עד עלמ א די חכמת א ו גבורת א די ל ה היא"
+    },
+    {
+      "id": "greek::Dan.2.21",
+      "label": "Dan.2.21",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.21",
+      "text_snippet_ko": "ו הוא מהשנא עדני א ו זמני א מהעדה מלכין ו מהקים מלכין יהב חכמת א ל חכימין ו מנדע א ל ידעי בינה"
+    },
+    {
+      "id": "greek::Dan.2.22",
+      "label": "Dan.2.22",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.22",
+      "text_snippet_ko": "הוא גלא עמיקת א ו מסתרת א ידע מה ב חשוכ א ו נהיר א ו נהור א עמ ה שרא"
+    },
+    {
+      "id": "greek::Dan.2.23",
+      "label": "Dan.2.23",
+      "kind": "verse",
+      "corpus": "greek",
+      "ref": "Dan.2.23",
+      "text_snippet_ko": "ל ך אלה אבהת י מהודא ו משבח אנה די חכמת א ו גבורת א יהבת ל י ו כען הודעת ני די בעינא מנ ך די מלת מלכ א הודעת נא"
+    },
+    {
+      "id": "hebrew::Dan.2.10",
+      "label": "Dan.2.10",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.10",
+      "text_snippet_ko": "ענו כשדי א כשדא י קדם מלכ א ו אמרין לא איתי אנש על יבשת א די מלת מלכ א יוכל ל החויה כ ל קבל די כל מלך רב ו שליט מלה כ דנה לא שאל ל כל חרטם ו אשף ו כשדי"
+    },
+    {
+      "id": "hebrew::Dan.2.11",
+      "label": "Dan.2.11",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.11",
+      "text_snippet_ko": "ו מלת א די מלכ ה שאל יקירה ו אחרן לא איתי די יחונ ה קדם מלכ א להן אלהין די מדר הון עם בשר א לא איתו הי"
+    },
+    {
+      "id": "hebrew::Dan.2.12",
+      "label": "Dan.2.12",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.12",
+      "text_snippet_ko": "כ ל קבל דנה מלכ א בנס ו קצף שגיא ו אמר ל הובדה ל כל חכימי בבל"
+    },
+    {
+      "id": "hebrew::Dan.2.13",
+      "label": "Dan.2.13",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.13",
+      "text_snippet_ko": "ו דת א נפקת ו חכימי א מתקטלין ו בעו דניאל ו חברו הי ל התקטלה"
+    },
+    {
+      "id": "hebrew::Dan.2.14",
+      "label": "Dan.2.14",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.14",
+      "text_snippet_ko": "ב אדין דניאל התיב עטא ו טעם ל אריוך רב טבחי א די מלכ א די נפק ל קטלה ל חכימי בבל"
+    },
+    {
+      "id": "hebrew::Dan.2.15",
+      "label": "Dan.2.15",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.15",
+      "text_snippet_ko": "ענה ו אמר ל אריוך שליט א די מלכ א על מה דת א מהחצפה מן קדם מלכ א אדין מלת א הודע אריוך ל דניאל"
+    },
+    {
+      "id": "hebrew::Dan.2.16",
+      "label": "Dan.2.16",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.16",
+      "text_snippet_ko": "ו דניאל על ו בעה מן מלכ א די זמן ינתן ל ה ו פשר א ל החויה ל מלכ א"
+    },
+    {
+      "id": "hebrew::Dan.2.17",
+      "label": "Dan.2.17",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.17",
+      "text_snippet_ko": "אדין דניאל ל בית ה אזל ו ל חנניה מישאל ו עזריה חברו הי מלת א הודע"
+    },
+    {
+      "id": "hebrew::Dan.2.18",
+      "label": "Dan.2.18",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.18",
+      "text_snippet_ko": "ו רחמין ל מבעא מן קדם אלה שמי א על רז ה דנה די לא יהבדון דניאל ו חברו הי עם שאר חכימי בבל"
+    },
+    {
+      "id": "hebrew::Dan.2.19",
+      "label": "Dan.2.19",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.19",
+      "text_snippet_ko": "אדין ל דניאל ב חזו א די לילי א רז ה גלי אדין דניאל ברך ל אלה שמי א"
+    },
+    {
+      "id": "hebrew::Dan.2.20",
+      "label": "Dan.2.20",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.20",
+      "text_snippet_ko": "ענה דניאל ו אמר להוא שמ ה די אלה א מברך מן עלמ א ו עד עלמ א די חכמת א ו גבורת א די ל ה היא"
+    },
+    {
+      "id": "hebrew::Dan.2.21",
+      "label": "Dan.2.21",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.21",
+      "text_snippet_ko": "ו הוא מהשנא עדני א ו זמני א מהעדה מלכין ו מהקים מלכין יהב חכמת א ל חכימין ו מנדע א ל ידעי בינה"
+    },
+    {
+      "id": "hebrew::Dan.2.22",
+      "label": "Dan.2.22",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.22",
+      "text_snippet_ko": "הוא גלא עמיקת א ו מסתרת א ידע מה ב חשוכ א ו נהיר א ו נהור א עמ ה שרא"
+    },
+    {
+      "id": "hebrew::Dan.2.23",
+      "label": "Dan.2.23",
+      "kind": "verse",
+      "corpus": "hebrew",
+      "ref": "Dan.2.23",
+      "text_snippet_ko": "ל ך אלה אבהת י מהודא ו משבח אנה די חכמת א ו גבורת א יהבת ל י ו כען הודעת ני די בעינא מנ ך די מלת מלכ א הודעת נא"
+    },
+    {
+      "id": "regime::empire_transition",
+      "label": "empire_transition",
+      "kind": "regime"
+    },
+    {
+      "id": "theme::imperial_transition",
+      "label": "imperial_transition",
+      "kind": "theme"
+    }
+  ],
+  "edges": [
+    {
+      "src": "aramaic::Dan.2.10",
+      "dst": "hebrew::Dan.2.10",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.11",
+      "dst": "hebrew::Dan.2.11",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.12",
+      "dst": "hebrew::Dan.2.12",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.13",
+      "dst": "hebrew::Dan.2.13",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.14",
+      "dst": "hebrew::Dan.2.14",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.15",
+      "dst": "hebrew::Dan.2.15",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.16",
+      "dst": "hebrew::Dan.2.16",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.17",
+      "dst": "hebrew::Dan.2.17",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.18",
+      "dst": "hebrew::Dan.2.18",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.19",
+      "dst": "hebrew::Dan.2.19",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.20",
+      "dst": "hebrew::Dan.2.20",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.21",
+      "dst": "hebrew::Dan.2.21",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.22",
+      "dst": "hebrew::Dan.2.22",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.23",
+      "dst": "hebrew::Dan.2.23",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.82
+    },
+    {
+      "src": "aramaic::Dan.2.41",
+      "dst": "aramaic::Dan.2.42",
+      "edge_type": "timeline_anchor",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.10",
+      "dst": "greek::Dan.2.10",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.11",
+      "dst": "greek::Dan.2.11",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.12",
+      "dst": "greek::Dan.2.12",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.13",
+      "dst": "greek::Dan.2.13",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.14",
+      "dst": "greek::Dan.2.14",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.15",
+      "dst": "greek::Dan.2.15",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.16",
+      "dst": "greek::Dan.2.16",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.17",
+      "dst": "greek::Dan.2.17",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.18",
+      "dst": "greek::Dan.2.18",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.19",
+      "dst": "greek::Dan.2.19",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.20",
+      "dst": "greek::Dan.2.20",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.21",
+      "dst": "greek::Dan.2.21",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.22",
+      "dst": "greek::Dan.2.22",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.23",
+      "dst": "greek::Dan.2.23",
+      "edge_type": "cross_lens_confirm",
+      "weight": 0.78
+    },
+    {
+      "src": "aramaic::Dan.2.28",
+      "dst": "aramaic::Dan.2.29",
+      "edge_type": "timeline_anchor",
+      "weight": 0.777419
+    },
+    {
+      "src": "aramaic::Dan.3.17",
+      "dst": "aramaic::Dan.3.18",
+      "edge_type": "timeline_anchor",
+      "weight": 0.775862
+    },
+    {
+      "src": "aramaic::Dan.2.24",
+      "dst": "aramaic::Dan.2.25",
+      "edge_type": "timeline_anchor",
+      "weight": 0.764865
+    },
+    {
+      "src": "aramaic::Dan.2.15",
+      "dst": "aramaic::Dan.2.16",
+      "edge_type": "timeline_anchor",
+      "weight": 0.764
+    },
+    {
+      "src": "aramaic::Dan.3.22",
+      "dst": "aramaic::Dan.3.23",
+      "edge_type": "timeline_anchor",
+      "weight": 0.7625
+    },
+    {
+      "src": "aramaic::Dan.2.26",
+      "dst": "aramaic::Dan.2.27",
+      "edge_type": "timeline_anchor",
+      "weight": 0.76
+    },
+    {
+      "src": "aramaic::Dan.2.14",
+      "dst": "aramaic::Dan.2.15",
+      "edge_type": "timeline_anchor",
+      "weight": 0.755172
+    },
+    {
+      "src": "aramaic::Dan.2.18",
+      "dst": "aramaic::Dan.2.19",
+      "edge_type": "timeline_anchor",
+      "weight": 0.755172
+    },
+    {
+      "src": "aramaic::Dan.3.20",
+      "dst": "aramaic::Dan.3.21",
+      "edge_type": "timeline_anchor",
+      "weight": 0.753333
+    },
+    {
+      "src": "aramaic::Dan.2.25",
+      "dst": "aramaic::Dan.2.26",
+      "edge_type": "timeline_anchor",
+      "weight": 0.752941
+    },
+    {
+      "src": "aramaic::Dan.3.7",
+      "dst": "aramaic::Dan.3.8",
+      "edge_type": "timeline_anchor",
+      "weight": 0.752632
+    },
+    {
+      "src": "aramaic::Dan.3.24",
+      "dst": "aramaic::Dan.3.25",
+      "edge_type": "timeline_anchor",
+      "weight": 0.752381
+    },
+    {
+      "src": "aramaic::Dan.2.48",
+      "dst": "aramaic::Dan.2.49",
+      "edge_type": "timeline_anchor",
+      "weight": 0.751613
+    },
+    {
+      "src": "aramaic::Dan.2.34",
+      "dst": "aramaic::Dan.2.35",
+      "edge_type": "timeline_anchor",
+      "weight": 0.748889
+    },
+    {
+      "src": "aramaic::Dan.4.15",
+      "dst": "aramaic::Dan.4.16",
+      "edge_type": "timeline_anchor",
+      "weight": 0.748
+    },
+    {
+      "src": "aramaic::Dan.3.12",
+      "dst": "aramaic::Dan.3.13",
+      "edge_type": "timeline_anchor",
+      "weight": 0.747619
+    },
+    {
+      "src": "aramaic::Dan.2.19",
+      "dst": "aramaic::Dan.2.20",
+      "edge_type": "timeline_anchor",
+      "weight": 0.746154
+    },
+    {
+      "src": "aramaic::Dan.2.5",
+      "dst": "aramaic::Dan.2.6",
+      "edge_type": "timeline_anchor",
+      "weight": 0.745714
+    },
+    {
+      "src": "aramaic::Dan.3.13",
+      "dst": "aramaic::Dan.3.14",
+      "edge_type": "timeline_anchor",
+      "weight": 0.745714
+    },
+    {
+      "src": "aramaic::Dan.2.17",
+      "dst": "aramaic::Dan.2.18",
+      "edge_type": "timeline_anchor",
+      "weight": 0.745161
+    },
+    {
+      "src": "aramaic::Dan.3.3",
+      "dst": "aramaic::Dan.3.30",
+      "edge_type": "timeline_anchor",
+      "weight": 0.745161
+    },
+    {
+      "src": "aramaic::Dan.2.37",
+      "dst": "aramaic::Dan.2.38",
+      "edge_type": "timeline_anchor",
+      "weight": 0.74375
+    },
+    {
+      "src": "aramaic::Dan.2.40",
+      "dst": "aramaic::Dan.2.41",
+      "edge_type": "timeline_anchor",
+      "weight": 0.743243
+    },
+    {
+      "src": "aramaic::Dan.2.10",
+      "dst": "aramaic::Dan.2.11",
+      "edge_type": "timeline_anchor",
+      "weight": 0.742857
+    },
+    {
+      "src": "aramaic::Dan.3.25",
+      "dst": "aramaic::Dan.3.26",
+      "edge_type": "timeline_anchor",
+      "weight": 0.742553
+    },
+    {
+      "src": "aramaic::Dan.5.29",
+      "dst": "aramaic::Dan.5.3",
+      "edge_type": "timeline_anchor",
+      "weight": 0.742105
+    },
+    {
+      "src": "aramaic::Dan.4.22",
+      "dst": "aramaic::Dan.4.23",
+      "edge_type": "timeline_anchor",
+      "weight": 0.74186
+    },
+    {
+      "src": "aramaic::Dan.2.16",
+      "dst": "aramaic::Dan.2.17",
+      "edge_type": "timeline_anchor",
+      "weight": 0.741667
+    },
+    {
+      "src": "aramaic::Dan.4.17",
+      "dst": "aramaic::Dan.4.18",
+      "edge_type": "timeline_anchor",
+      "weight": 0.741379
+    },
+    {
+      "src": "aramaic::Dan.2.46",
+      "dst": "aramaic::Dan.2.47",
+      "edge_type": "timeline_anchor",
+      "weight": 0.741176
+    },
+    {
+      "src": "aramaic::Dan.2.13",
+      "dst": "aramaic::Dan.2.14",
+      "edge_type": "timeline_anchor",
+      "weight": 0.74
+    },
+    {
+      "src": "aramaic::Dan.2.29",
+      "dst": "aramaic::Dan.2.30",
+      "edge_type": "timeline_anchor",
+      "weight": 0.738889
+    },
+    {
+      "src": "aramaic::Dan.3.28",
+      "dst": "aramaic::Dan.3.29",
+      "edge_type": "timeline_anchor",
+      "weight": 0.738596
+    },
+    {
+      "src": "aramaic::Dan.2.33",
+      "dst": "aramaic::Dan.2.34",
+      "edge_type": "timeline_anchor",
+      "weight": 0.738462
+    },
+    {
+      "src": "aramaic::Dan.3.30",
+      "dst": "aramaic::Dan.3.4",
+      "edge_type": "timeline_anchor",
+      "weight": 0.738095
+    },
+    {
+      "src": "aramaic::Dan.2.6",
+      "dst": "aramaic::Dan.2.7",
+      "edge_type": "timeline_anchor",
+      "weight": 0.737037
+    },
+    {
+      "src": "aramaic::Dan.4.13",
+      "dst": "aramaic::Dan.4.14",
+      "edge_type": "timeline_anchor",
+      "weight": 0.736842
+    },
+    {
+      "src": "aramaic::Dan.2.38",
+      "dst": "aramaic::Dan.2.39",
+      "edge_type": "timeline_anchor",
+      "weight": 0.736364
+    },
+    {
+      "src": "aramaic::Dan.3.14",
+      "dst": "aramaic::Dan.3.15",
+      "edge_type": "timeline_anchor",
+      "weight": 0.736364
+    },
+    {
+      "src": "aramaic::Dan.4.1",
+      "dst": "aramaic::Dan.4.10",
+      "edge_type": "timeline_anchor",
+      "weight": 0.736364
+    },
+    {
+      "src": "aramaic::Dan.3.10",
+      "dst": "aramaic::Dan.3.11",
+      "edge_type": "timeline_anchor",
+      "weight": 0.735294
+    },
+    {
+      "src": "aramaic::Dan.2.12",
+      "dst": "aramaic::Dan.2.13",
+      "edge_type": "timeline_anchor",
+      "weight": 0.734783
+    },
+    {
+      "src": "aramaic::Dan.3.23",
+      "dst": "aramaic::Dan.3.24",
+      "edge_type": "timeline_anchor",
+      "weight": 0.733333
+    },
+    {
+      "src": "aramaic::Dan.2.47",
+      "dst": "aramaic::Dan.2.48",
+      "edge_type": "timeline_anchor",
+      "weight": 0.732432
+    },
+    {
+      "src": "aramaic::Dan.3.21",
+      "dst": "aramaic::Dan.3.22",
+      "edge_type": "timeline_anchor",
+      "weight": 0.731579
+    },
+    {
+      "src": "aramaic::Dan.3.27",
+      "dst": "aramaic::Dan.3.28",
+      "edge_type": "timeline_anchor",
+      "weight": 0.731373
+    },
+    {
+      "src": "aramaic::Dan.4.11",
+      "dst": "aramaic::Dan.4.12",
+      "edge_type": "timeline_anchor",
+      "weight": 0.730769
+    },
+    {
+      "src": "aramaic::Dan.2.44",
+      "dst": "aramaic::Dan.2.45",
+      "edge_type": "timeline_anchor",
+      "weight": 0.730189
+    },
+    {
+      "src": "aramaic::Dan.5.3",
+      "dst": "aramaic::Dan.5.30",
+      "edge_type": "timeline_anchor",
+      "weight": 0.72963
+    },
+    {
+      "src": "aramaic::Dan.3.16",
+      "dst": "aramaic::Dan.3.17",
+      "edge_type": "timeline_anchor",
+      "weight": 0.729412
+    },
+    {
+      "src": "aramaic::Dan.3.6",
+      "dst": "aramaic::Dan.3.7",
+      "edge_type": "timeline_anchor",
+      "weight": 0.729268
+    },
+    {
+      "src": "aramaic::Dan.2.23",
+      "dst": "aramaic::Dan.2.24",
+      "edge_type": "timeline_anchor",
+      "weight": 0.728571
+    },
+    {
+      "src": "aramaic::Dan.2.43",
+      "dst": "aramaic::Dan.2.44",
+      "edge_type": "timeline_anchor",
+      "weight": 0.727907
+    },
+    {
+      "src": "aramaic::Dan.3.5",
+      "dst": "aramaic::Dan.3.6",
+      "edge_type": "timeline_anchor",
+      "weight": 0.727778
+    },
+    {
+      "src": "aramaic::Dan.2.36",
+      "dst": "aramaic::Dan.2.37",
+      "edge_type": "timeline_anchor",
+      "weight": 0.727273
+    },
+    {
+      "src": "aramaic::Dan.2.20",
+      "dst": "aramaic::Dan.2.21",
+      "edge_type": "timeline_anchor",
+      "weight": 0.726667
+    },
+    {
+      "src": "aramaic::Dan.2.45",
+      "dst": "aramaic::Dan.2.46",
+      "edge_type": "timeline_anchor",
+      "weight": 0.726667
+    },
+    {
+      "src": "aramaic::Dan.2.8",
+      "dst": "aramaic::Dan.2.9",
+      "edge_type": "timeline_anchor",
+      "weight": 0.726667
+    },
+    {
+      "src": "aramaic::Dan.4.21",
+      "dst": "aramaic::Dan.4.22",
+      "edge_type": "timeline_anchor",
+      "weight": 0.726667
+    },
+    {
+      "src": "aramaic::Dan.4.14",
+      "dst": "aramaic::Dan.4.15",
+      "edge_type": "timeline_anchor",
+      "weight": 0.726415
+    },
+    {
+      "src": "aramaic::Dan.2.32",
+      "dst": "aramaic::Dan.2.33",
+      "edge_type": "timeline_anchor",
+      "weight": 0.726087
+    },
+    {
+      "src": "aramaic::Dan.3.8",
+      "dst": "aramaic::Dan.3.9",
+      "edge_type": "timeline_anchor",
+      "weight": 0.726087
+    },
+    {
+      "src": "aramaic::Dan.2.7",
+      "dst": "aramaic::Dan.2.8",
+      "edge_type": "timeline_anchor",
+      "weight": 0.725806
+    },
+    {
+      "src": "aramaic::Dan.2.27",
+      "dst": "aramaic::Dan.2.28",
+      "edge_type": "timeline_anchor",
+      "weight": 0.725
+    },
+    {
+      "src": "aramaic::Dan.3.26",
+      "dst": "aramaic::Dan.3.27",
+      "edge_type": "timeline_anchor",
+      "weight": 0.72449
+    },
+    {
+      "src": "aramaic::Dan.3.1",
+      "dst": "aramaic::Dan.3.10",
+      "edge_type": "timeline_anchor",
+      "weight": 0.72439
+    },
+    {
+      "src": "aramaic::Dan.3.11",
+      "dst": "aramaic::Dan.3.12",
+      "edge_type": "timeline_anchor",
+      "weight": 0.72439
+    },
+    {
+      "src": "aramaic::Dan.4.16",
+      "dst": "aramaic::Dan.4.17",
+      "edge_type": "timeline_anchor",
+      "weight": 0.72439
+    },
+    {
+      "src": "aramaic::Dan.2.42",
+      "dst": "aramaic::Dan.2.43",
+      "edge_type": "timeline_anchor",
+      "weight": 0.724242
+    },
+    {
+      "src": "aramaic::Dan.3.4",
+      "dst": "aramaic::Dan.3.5",
+      "edge_type": "timeline_anchor",
+      "weight": 0.724242
+    },
+    {
+      "src": "aramaic::Dan.4.24",
+      "dst": "aramaic::Dan.4.25",
+      "edge_type": "timeline_anchor",
+      "weight": 0.724
+    },
+    {
+      "src": "aramaic::Dan.2.31",
+      "dst": "aramaic::Dan.2.32",
+      "edge_type": "timeline_anchor",
+      "weight": 0.723529
+    },
+    {
+      "src": "aramaic::Dan.3.9",
+      "dst": "aramaic::Dan.4.1",
+      "edge_type": "timeline_anchor",
+      "weight": 0.723529
+    },
+    {
+      "src": "aramaic::Dan.4.10",
+      "dst": "aramaic::Dan.4.11",
+      "edge_type": "timeline_anchor",
+      "weight": 0.723529
+    },
+    {
+      "src": "aramaic::Dan.4.18",
+      "dst": "aramaic::Dan.4.19",
+      "edge_type": "timeline_anchor",
+      "weight": 0.723529
+    },
+    {
+      "src": "aramaic::Dan.2.30",
+      "dst": "aramaic::Dan.2.31",
+      "edge_type": "timeline_anchor",
+      "weight": 0.723256
+    },
+    {
+      "src": "aramaic::Dan.3.18",
+      "dst": "aramaic::Dan.3.19",
+      "edge_type": "timeline_anchor",
+      "weight": 0.723256
+    },
+    {
+      "src": "aramaic::Dan.4.12",
+      "dst": "aramaic::Dan.4.13",
+      "edge_type": "timeline_anchor",
+      "weight": 0.722857
+    },
+    {
+      "src": "aramaic::Dan.4.23",
+      "dst": "aramaic::Dan.4.24",
+      "edge_type": "timeline_anchor",
+      "weight": 0.722857
+    },
+    {
+      "src": "aramaic::Dan.3.19",
+      "dst": "aramaic::Dan.3.2",
+      "edge_type": "timeline_anchor",
+      "weight": 0.722222
+    },
+    {
+      "src": "aramaic::Dan.3.2",
+      "dst": "aramaic::Dan.3.20",
+      "edge_type": "timeline_anchor",
+      "weight": 0.721622
+    },
+    {
+      "src": "aramaic::Dan.2.21",
+      "dst": "aramaic::Dan.2.22",
+      "edge_type": "timeline_anchor",
+      "weight": 0.721429
+    },
+    {
+      "src": "aramaic::Dan.4.20",
+      "dst": "aramaic::Dan.4.21",
+      "edge_type": "timeline_anchor",
+      "weight": 0.720833
+    },
+    {
+      "src": "aramaic::Dan.2.49",
+      "dst": "aramaic::Dan.2.5",
+      "edge_type": "timeline_anchor",
+      "weight": 0.72
+    },
+    {
+      "src": "aramaic::Dan.2.39",
+      "dst": "aramaic::Dan.2.4",
+      "edge_type": "timeline_anchor",
+      "weight": 0.719355
+    },
+    {
+      "src": "aramaic::Dan.2.11",
+      "dst": "aramaic::Dan.2.12",
+      "edge_type": "timeline_anchor",
+      "weight": 0.718182
+    },
+    {
+      "src": "aramaic::Dan.3.29",
+      "dst": "aramaic::Dan.3.3",
+      "edge_type": "timeline_anchor",
+      "weight": 0.718182
+    },
+    {
+      "src": "aramaic::Dan.2.4",
+      "dst": "aramaic::Dan.2.40",
+      "edge_type": "timeline_anchor",
+      "weight": 0.717647
+    },
+    {
+      "src": "aramaic::Dan.3.15",
+      "dst": "aramaic::Dan.3.16",
+      "edge_type": "timeline_anchor",
+      "weight": 0.714286
+    },
+    {
+      "src": "aramaic::Dan.2.9",
+      "dst": "aramaic::Dan.3.1",
+      "edge_type": "timeline_anchor",
+      "weight": 0.713043
+    },
+    {
+      "src": "aramaic::Dan.2.22",
+      "dst": "aramaic::Dan.2.23",
+      "edge_type": "timeline_anchor",
+      "weight": 0.711429
+    },
+    {
+      "src": "aramaic::Dan.2.35",
+      "dst": "aramaic::Dan.2.36",
+      "edge_type": "timeline_anchor",
+      "weight": 0.709524
+    },
+    {
+      "src": "aramaic::Dan.4.19",
+      "dst": "aramaic::Dan.4.2",
+      "edge_type": "timeline_anchor",
+      "weight": 0.706897
+    },
+    {
+      "src": "aramaic::Dan.4.2",
+      "dst": "aramaic::Dan.4.20",
+      "edge_type": "timeline_anchor",
+      "weight": 0.704167
+    },
+    {
+      "src": "aramaic::Dan.2.10",
+      "dst": "aramaic::Dan.2.11",
+      "edge_type": "causal_precursor",
+      "weight": 0.64
+    },
+    {
+      "src": "aramaic::Dan.2.10",
+      "dst": "aramaic::Jer.10.11",
+      "edge_type": "fulfillment",
+      "weight": 0.62
+    },
+    {
+      "src": "aramaic::Dan.2.10",
+      "dst": "theme::imperial_transition",
+      "edge_type": "theme_association",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.10",
+      "dst": "regime::empire_transition",
+      "edge_type": "regime_projection",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.11",
+      "dst": "theme::imperial_transition",
+      "edge_type": "theme_association",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.11",
+      "dst": "regime::empire_transition",
+      "edge_type": "regime_projection",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.12",
+      "dst": "theme::imperial_transition",
+      "edge_type": "theme_association",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.12",
+      "dst": "regime::empire_transition",
+      "edge_type": "regime_projection",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.13",
+      "dst": "theme::imperial_transition",
+      "edge_type": "theme_association",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.13",
+      "dst": "regime::empire_transition",
+      "edge_type": "regime_projection",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.14",
+      "dst": "theme::imperial_transition",
+      "edge_type": "theme_association",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.14",
+      "dst": "regime::empire_transition",
+      "edge_type": "regime_projection",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.15",
+      "dst": "theme::imperial_transition",
+      "edge_type": "theme_association",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.15",
+      "dst": "regime::empire_transition",
+      "edge_type": "regime_projection",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.16",
+      "dst": "theme::imperial_transition",
+      "edge_type": "theme_association",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.16",
+      "dst": "regime::empire_transition",
+      "edge_type": "regime_projection",
+      "weight": 0.6
+    },
+    {
+      "src": "aramaic::Dan.2.17",
+      "dst": "theme::imperial_transition",
+      "edge_type": "theme_association",
+      "weight": 0.6
+    }
+  ]
+}

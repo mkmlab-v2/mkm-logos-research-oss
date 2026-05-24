@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ko" class="h-full">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · Logos Observatory · Oracle v3</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { accent: "#c5a057", verse: "#6ee7b7", theme: "#fbbf24", regime: "#93c5fd", era: "#e879f9" },
+          fontFamily: { sans: ["Inter", "system-ui", "Noto Sans KR", "sans-serif"] },
+          boxShadow: { glow: "0 0 32px rgba(197, 160, 87, 0.35)" },
+        },
+      },
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+  <style>
+    body {
+      background: radial-gradient(900px 500px at 50% 20%, rgba(139, 92, 246, 0.14), transparent 55%),
+        radial-gradient(1200px 600px at 10% -10%, rgba(99, 102, 241, 0.12), transparent 50%),
+        radial-gradient(900px 500px at 90% 0%, rgba(197, 160, 87, 0.1), transparent 45%), #06080c;
+    }
+    .glass { background: rgba(14, 18, 26, 0.65); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.08); }
+    .chat-scroll::-webkit-scrollbar { width: 6px; }
+    .chat-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+    #graphChart { min-height: 360px; }
+    #orbCanvas { width: 100%; height: 100%; display: block; }
+    @media (min-width: 1280px) { #graphChart { min-height: calc(100vh - 8rem); } }
+  </style>
+</head>
+<body class="h-full text-slate-100 font-sans antialiased">
+  <div class="bg-slate-900/90 border-b border-amber-500/30 text-center py-1.5 text-[11px] text-amber-100/90">
+    Legacy v3 (crystal orb) — 권장: <a href="public_showroom_logos_oracle_v5.html" class="underline text-sky-300">v5 enterprise</a> · <a href="public_showroom_logos_oracle_v4.html" class="underline text-sky-300/80">v4 path</a> · [HYPO]
+  </div>
+  <header class="border-b border-white/10 glass sticky top-0 z-20">
+    <div class="max-w-[1800px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <p class="text-[10px] uppercase tracking-[0.2em] text-slate-500 mb-0.5">JEMA AI · Logos Observatory</p>
+        <h1 class="text-lg font-semibold text-white">Crystal topology · Q&A <span class="text-accent text-sm font-normal">v3</span></h1>
+        <p id="fieldStrip" class="text-xs text-slate-400 max-w-2xl mt-1">Field(판) · 연대기·현대 공명 관측 — <span class="text-slate-500">[HYPO] NON_GATING</span></p>
+      </div>
+      <div class="flex flex-wrap gap-1.5 text-[10px] uppercase tracking-wider">
+        <span class="px-2 py-0.5 rounded-full border border-amber-500/40 text-amber-200/90 bg-amber-500/10">[HYPO]</span>
+        <span class="px-2 py-0.5 rounded-full border border-fuchsia-500/30 text-fuchsia-200/80 bg-fuchsia-500/10">CHRONOLOGY</span>
+        <span class="px-2 py-0.5 rounded-full border border-white/10 text-slate-400">no_trade_signals</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-[1800px] mx-auto px-4 py-4 grid xl:grid-cols-[minmax(280px,30%)_minmax(220px,22%)_1fr] gap-4 min-h-[calc(100vh-5rem)]">
+    <section class="glass rounded-2xl flex flex-col overflow-hidden shadow-glow min-h-[380px] xl:min-h-0 xl:h-[calc(100vh-6rem)] order-2 xl:order-1">
+      <div class="p-4 border-b border-white/10">
+        <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500 mb-3">Research Q&A</h2>
+        <div class="flex gap-2">
+          <input id="questionInput" type="text" autocomplete="off" placeholder="연대기·구절·현대 윈도우를 물어보세요"
+            class="flex-1 rounded-xl bg-black/40 border border-white/10 px-3 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-accent/50" />
+          <button id="askBtn" type="button" class="rounded-xl bg-accent/90 hover:bg-accent text-black font-medium text-sm px-4 py-2.5 shrink-0">질문</button>
+        </div>
+        <p id="loadStatus" class="text-[11px] text-slate-500 mt-2">로드 중…</p>
+      </div>
+      <div id="suggested" class="px-4 py-2 flex flex-wrap gap-1.5 border-b border-white/5"></div>
+      <div id="chatLog" class="flex-1 overflow-y-auto p-4 space-y-4 chat-scroll text-sm" aria-live="polite"></div>
+      <details class="p-3 border-t border-white/10 text-[10px] text-slate-500 group">
+        <summary class="cursor-pointer text-slate-400 hover:text-accent list-none flex items-center gap-1">
+          <span class="group-open:rotate-90 transition-transform inline-block">▸</span> Trust · 데이터·면책
+        </summary>
+        <ul class="mt-2 space-y-1.5 text-slate-500 leading-relaxed">
+          <li><strong class="text-slate-400">증거 등급:</strong> [HYPO] · research_only · NON_GATING — 실매매·투자조언·확정 예언 아님.</li>
+          <li><strong class="text-slate-400">응답:</strong> 프리셋·연대기 JSON만 — <em>실시간 LLM·ChatGPT형 환각 응답 없음</em>.</li>
+          <li><strong class="text-slate-400">연대기:</strong> v2 AI 합성(11 eras). 경로 애니메이션은 <a href="public_showroom_logos_oracle_v4.html" class="text-accent hover:underline">Oracle v4</a>.</li>
+          <li><strong class="text-slate-400">현대 브리지:</strong> regime_map·윈도우 <em>관측 유사</em>만; 1차 실물 레짐이 주, 성경·연대기는 보.</li>
+          <li><strong class="text-slate-400">Not investment advice;</strong> final decisions remain with you. MS 압축·Wire·FinOps와 무관한 제품면.</li>
+        </ul>
+      </details>
+      <footer class="px-3 pb-3 text-[10px] text-slate-600">Logos Observatory · Oracle v3 · B-track showroom</footer>
+    </section>
+
+    <section class="glass rounded-2xl flex flex-col overflow-hidden min-h-[280px] xl:min-h-0 xl:h-[calc(100vh-6rem)] order-1 xl:order-2 relative">
+      <div class="px-4 py-3 border-b border-white/10 text-center">
+        <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500">Observatory orb</h2>
+        <p id="orbMeta" class="text-[11px] text-slate-500 mt-1">—</p>
+      </div>
+      <div class="flex-1 relative min-h-[200px] flex items-center justify-center p-2">
+        <canvas id="orbCanvas" aria-label="Topology orb visualization"></canvas>
+        <div class="pointer-events-none absolute inset-0 rounded-2xl" style="box-shadow: inset 0 0 80px rgba(139,92,246,0.12);"></div>
+      </div>
+    </section>
+
+    <section class="glass rounded-2xl flex flex-col overflow-hidden min-h-[400px] xl:min-h-0 xl:h-[calc(100vh-6rem)] order-3">
+      <div class="px-4 py-3 border-b border-white/10 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 class="text-xs font-medium uppercase tracking-wider text-slate-500">Live subgraph</h2>
+          <p id="graphMeta" class="text-xs text-slate-400 mt-0.5">—</p>
+        </div>
+        <div class="flex flex-wrap gap-2 text-[11px] text-slate-500">
+          <span><span class="inline-block w-2 h-2 rounded-full bg-verse mr-1"></span>verse</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-theme mr-1"></span>theme</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-regime mr-1"></span>regime</span>
+          <span><span class="inline-block w-2 h-2 rounded-full bg-era mr-1"></span>era</span>
+        </div>
+      </div>
+      <div id="graphChart" class="flex-1 w-full" role="img" aria-label="Meaning topology graph"></div>
+    </section>
+  </main>
+
+  <nav class="max-w-[1800px] mx-auto px-4 pb-6 text-xs text-slate-500 flex flex-wrap gap-x-3">
+    <a href="public_showroom_logos_oracle_v4.html" class="text-accent hover:underline">Oracle v4 · Visual path</a>
+    <a href="public_showroom_meaning_topology_qa_v2.html" class="hover:text-slate-300">← Q&A v2</a>
+    <a href="public_showroom_topology_radar_v1.html" class="text-accent hover:underline">Radar</a>
+    <a href="public_showroom_meaning_topology_graph_v1.html" class="hover:text-slate-300">Graph v1</a>
+    <a href="public_showroom_mkm_inter_agent_wire_v3.html" class="hover:text-accent">Inter-agent wire v3</a>
+  </nav>
+
+  <script>
+(function () {
+  "use strict";
+  const GRAPH_URL = "showroom_meaning_topology_graph_slice_v1.json";
+  const PRESETS_URL = "showroom_meaning_topology_qa_presets_v1.json";
+  const CHRONOLOGY_URL = "showroom_logos_chronology_overlay_v1.json";
+  const KIND_COLOR = { verse: "#6ee7b7", theme: "#fbbf24", regime: "#93c5fd", era: "#e879f9", other: "#94a3b8" };
+  const KIND_IDX = { verse: 0, theme: 1, regime: 2, era: 3, other: 4 };
+  let graphDoc = null, presetsDoc = null, chronoDoc = null, chart = null, orbAnim = null;
+  const el = (id) => document.getElementById(id);
+
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function addMessage(role, html) {
+    const node = document.createElement("div");
+    node.className = "flex " + (role === "user" ? "justify-end" : "justify-start");
+    const bubble = document.createElement("div");
+    bubble.className = "max-w-[95%] rounded-2xl px-3 py-2.5 text-sm " +
+      (role === "user" ? "bg-indigo-600/30 border border-indigo-400/20" : "bg-black/35 border border-white/10");
+    const label = document.createElement("p");
+    label.className = "text-[10px] uppercase tracking-wider text-slate-500 mb-1";
+    label.textContent = role === "user" ? "You" : "Oracle · [HYPO]";
+    const body = document.createElement("div");
+    body.className = "leading-relaxed answer-body";
+    body.innerHTML = html;
+    bubble.appendChild(label);
+    bubble.appendChild(body);
+    node.appendChild(bubble);
+    el("chatLog").appendChild(node);
+    el("chatLog").scrollTop = el("chatLog").scrollHeight;
+    return body;
+  }
+
+  function typewriter(targetEl, text, done) {
+    let i = 0;
+    targetEl.textContent = "";
+    function step() {
+      if (i <= text.length) {
+        const slice = text.slice(0, i);
+        targetEl.innerHTML = esc(slice).replace(/\n/g, "<br>")
+          .replace(/\*\*(.+?)\*\*/g, "<strong class='text-accent'>$1</strong>");
+        i += 2;
+        setTimeout(step, 12);
+      } else if (done) done();
+    }
+    step();
+  }
+
+  function bridgesForEra(eraId) {
+    return ((chronoDoc && chronoDoc.modern_bridges) || []).filter(function (b) {
+      return b.era_id === eraId;
+    });
+  }
+
+  function buildEraAnswer(era) {
+    const bridges = bridgesForEra(era.era_id);
+    const parts = ["[HYPO] 연대기 **" + (era.label_ko || era.era_id) + "** 구간입니다."];
+    if (era.notes_ko) parts.push(era.notes_ko);
+    if (era.theme_tags && era.theme_tags.length) {
+      parts.push("테마 태그: " + era.theme_tags.join(", ") + ".");
+    }
+    if (era.regime_tags_observational && era.regime_tags_observational.length) {
+      parts.push("관측 레짐 태그(비게이팅): " + era.regime_tags_observational.join(", ") + ".");
+    }
+    if (era.verse_refs && era.verse_refs.length) {
+      const shown = era.verse_refs.slice(0, 5);
+      const tail = era.verse_refs.length > 5 ? " 외 " + (era.verse_refs.length - 5) + "건" : "";
+      parts.push("연결 구절: " + shown.join(", ") + tail + ".");
+    }
+    if (bridges.length) {
+      parts.push("현대 공명 브리지 " + bridges.length + "건:");
+      bridges.slice(0, 4).forEach(function (b) {
+        parts.push("· " + (b.rationale_ko || b.bridge_kind || "bridge"));
+      });
+    }
+    parts.push("구슬·그래프에서 **era** 노드를 강조했습니다. 투자·확정 예언·실매매 신호가 **아닙니다** (NON_GATING).");
+    return parts.join("\n\n");
+  }
+
+  function eraPresetFromDoc(era) {
+    return {
+      prompt_ko: era.label_ko,
+      answer_ko: buildEraAnswer(era),
+      highlight_node_ids: (era.verse_refs || []).concat(["era::" + era.era_id]),
+      keywords: [era.era_id].concat(era.theme_tags || []),
+    };
+  }
+
+  function matchPreset(q) {
+    const t = q.trim().toLowerCase();
+    if (!t) return null;
+    const all = (presetsDoc && presetsDoc.presets) || [];
+    for (const p of all) {
+      if (p.prompt_ko && p.prompt_ko.toLowerCase() === t) return p;
+      for (const kw of p.keywords || []) {
+        if (t.includes(String(kw).toLowerCase())) return p;
+      }
+    }
+    if (chronoDoc && chronoDoc.eras) {
+      for (const era of chronoDoc.eras) {
+        const label = String(era.label_ko || "").toLowerCase();
+        const eid = String(era.era_id || "").toLowerCase();
+        if ((eid && t.includes(eid)) || (label && (t.includes(label) || t.includes(label.slice(0, 4))))) {
+          return eraPresetFromDoc(era);
+        }
+      }
+    }
+    return null;
+  }
+
+  function respond(question) {
+    const preset = matchPreset(question);
+    const fb = presetsDoc && presetsDoc.fallback;
+    const answer = preset ? preset.answer_ko : (fb && fb.answer_ko) || "[HYPO] 응답 없음";
+    let ids = preset ? (preset.highlight_node_ids || []) : (fb && fb.highlight_node_ids) || [];
+    ids = ids.map(function (id) { return id.indexOf("era::") === 0 ? id : id; });
+    addMessage("user", esc(question));
+    const body = addMessage("assistant", "");
+    typewriter(body, answer, function () { applyHighlight(ids); pulseOrb(ids); });
+  }
+
+  function buildChartOption(highlightSet) {
+    const eraNodes = (chronoDoc && chronoDoc.era_nodes) || [];
+    const baseNodes = (graphDoc.nodes || []).slice();
+    const merged = baseNodes.concat(eraNodes.filter(function (e) {
+      return !baseNodes.some(function (n) { return n.id === e.id; });
+    }));
+    const nodes = merged.map(function (n) {
+      const kind = n.kind || "other";
+      const hi = highlightSet.has(n.id);
+      const base = 10 + (n.hub_score || 0) * 14 + (kind === "era" ? 8 : 0);
+      return {
+        id: n.id, name: n.label || n.id,
+        category: KIND_IDX[kind] != null ? KIND_IDX[kind] : 4,
+        symbolSize: hi ? base * 1.4 : base,
+        itemStyle: {
+          color: KIND_COLOR[kind] || KIND_COLOR.other,
+          opacity: hi ? 1 : (kind === "era" ? 0.55 : 0.12),
+          shadowBlur: hi ? 20 : 0,
+          shadowColor: hi ? (KIND_COLOR[kind] || "#fff") : "transparent",
+        },
+        label: {
+          show: hi || kind === "theme" || kind === "regime" || kind === "era",
+          color: hi ? "#f8fafc" : "rgba(148,163,184,0.35)",
+          fontSize: hi ? 11 : 9,
+        },
+      };
+    });
+    const links = (graphDoc.edges || []).map(function (e) {
+      const active = highlightSet.has(e.src) && highlightSet.has(e.dst);
+      return {
+        source: e.src, target: e.dst,
+        lineStyle: {
+          color: active ? "rgba(197,160,87,0.55)" : "rgba(100,116,139,0.08)",
+          width: active ? 1.8 : 0.6, curveness: 0.15,
+        },
+      };
+    });
+    return {
+      backgroundColor: "transparent",
+      animationDurationUpdate: 750,
+      series: [{
+        type: "graph", layout: "force", roam: true, draggable: true,
+        data: nodes, links: links,
+        categories: [{ name: "verse" }, { name: "theme" }, { name: "regime" }, { name: "era" }, { name: "other" }],
+        force: { repulsion: 220, edgeLength: [40, 120], gravity: 0.06, friction: 0.35 },
+        emphasis: { focus: "adjacency", lineStyle: { width: 3 } },
+      }],
+    };
+  }
+
+  function applyHighlight(ids) {
+    if (!chart || !graphDoc) return;
+    chart.setOption(buildChartOption(new Set(ids || [])), { notMerge: true });
+  }
+
+  function initChart() {
+    chart = echarts.init(document.getElementById("graphChart"));
+    chart.setOption(buildChartOption(new Set()));
+    window.addEventListener("resize", function () { chart && chart.resize(); resizeOrb(); });
+  }
+
+  function resizeOrb() {
+    const c = el("orbCanvas");
+    const box = c.parentElement;
+    if (!box) return;
+    c.width = box.clientWidth * (window.devicePixelRatio || 1);
+    c.height = box.clientHeight * (window.devicePixelRatio || 1);
+    c.style.width = box.clientWidth + "px";
+    c.style.height = box.clientHeight + "px";
+  }
+
+  function pulseOrb(ids) {
+    if (!orbAnim) return;
+    orbAnim.highlightIds = new Set(ids || []);
+  }
+
+  function initOrb() {
+    const c = el("orbCanvas");
+    const ctx = c.getContext("2d");
+    resizeOrb();
+    const particles = [];
+    const n = Math.min(48, ((graphDoc && graphDoc.nodes) || []).length + 12);
+    for (let i = 0; i < n; i++) {
+      particles.push({
+        angle: Math.random() * Math.PI * 2,
+        r: 0.25 + Math.random() * 0.35,
+        speed: 0.002 + Math.random() * 0.004,
+        kind: i % 4,
+      });
+    }
+    orbAnim = { particles: particles, highlightIds: new Set(), t: 0 };
+    function frame() {
+      if (!orbAnim) return;
+      const w = c.width, h = c.height, cx = w / 2, cy = h / 2, rad = Math.min(w, h) * 0.38;
+      ctx.clearRect(0, 0, w, h);
+      const g = ctx.createRadialGradient(cx, cy, rad * 0.1, cx, cy, rad);
+      g.addColorStop(0, "rgba(197,160,87,0.35)");
+      g.addColorStop(0.5, "rgba(139,92,246,0.12)");
+      g.addColorStop(1, "rgba(6,8,12,0)");
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = "rgba(197,160,87,0.25)";
+      ctx.lineWidth = 2 * (window.devicePixelRatio || 1);
+      ctx.beginPath();
+      ctx.arc(cx, cy, rad, 0, Math.PI * 2);
+      ctx.stroke();
+      orbAnim.t += 0.016;
+      const kinds = ["#6ee7b7", "#fbbf24", "#93c5fd", "#e879f9"];
+      orbAnim.particles.forEach(function (p) {
+        p.angle += p.speed;
+        const x = cx + Math.cos(p.angle + orbAnim.t) * p.r * rad;
+        const y = cy + Math.sin(p.angle + orbAnim.t * 0.7) * p.r * rad;
+        ctx.fillStyle = kinds[p.kind % kinds.length];
+        ctx.globalAlpha = 0.35 + 0.25 * Math.sin(orbAnim.t * 2 + p.angle);
+        ctx.beginPath();
+        ctx.arc(x, y, 3 * (window.devicePixelRatio || 1), 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function renderSuggestions() {
+    const box = el("suggested");
+    box.innerHTML = "";
+    const items = [];
+    (presetsDoc.presets || []).slice(0, 3).forEach(function (p) { items.push(p); });
+    if (chronoDoc && chronoDoc.eras) {
+      chronoDoc.eras.forEach(function (era) {
+        const ep = eraPresetFromDoc(era);
+        items.push({ prompt_ko: "연대기: " + era.label_ko, keywords: ep.keywords, _era: era });
+      });
+    }
+    items.forEach(function (p) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "text-[11px] px-2.5 py-1 rounded-lg border border-white/10 bg-white/5 text-slate-300 hover:border-accent/40 hover:text-accent";
+      const label = p.prompt_ko || "";
+      b.textContent = label.length > 36 ? label.slice(0, 34) + "…" : label;
+      b.title = label;
+      b.addEventListener("click", function () { el("questionInput").value = label; respond(label); });
+      box.appendChild(b);
+    });
+  }
+
+  function updateFieldStrip() {
+    const bridges = (chronoDoc && chronoDoc.modern_bridges) || [];
+    const parts = ["Field · 관측 전용"];
+    if (bridges.length) {
+      parts.push("현대 브리지 " + bridges.length + "건 [HYPO]");
+    }
+    if (chronoDoc && chronoDoc.field_observation_ko) {
+      parts.push(chronoDoc.field_observation_ko.slice(0, 80) + "…");
+    }
+    el("fieldStrip").textContent = parts.join(" · ");
+    el("orbMeta").textContent = chronoDoc ? "eras=" + ((chronoDoc.eras || []).length) : "chronology optional";
+  }
+
+  function boot() {
+    const reqs = [
+      fetch(GRAPH_URL).then(function (r) { if (!r.ok) throw new Error(GRAPH_URL); return r.json(); }),
+      fetch(PRESETS_URL).then(function (r) { if (!r.ok) throw new Error(PRESETS_URL); return r.json(); }),
+      fetch(CHRONOLOGY_URL).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }),
+    ];
+    Promise.all(reqs).then(function (arr) {
+      graphDoc = arr[0]; presetsDoc = arr[1]; chronoDoc = arr[2];
+      const st = graphDoc.stats || {};
+      el("loadStatus").textContent = "loaded · " + (st.node_count || "?") + " nodes · chronology=" + (chronoDoc ? "yes" : "no");
+      el("graphMeta").textContent = "nodes=" + (st.node_count || "?") + " · edges=" + (st.edge_count || "?");
+      updateFieldStrip();
+      initChart(); initOrb(); renderSuggestions();
+      const note = (presetsDoc.disclaimer && presetsDoc.disclaimer.note_ko) || "";
+      addMessage("assistant", esc(note + " 구슬은 스냅샷 밀도 시각화이며 미래 확정이 아닙니다."));
+    }).catch(function (err) {
+      el("loadStatus").innerHTML = '<span class="text-red-400">로드 실패: ' + esc(String(err)) + "</span>";
+    });
+  }
+
+  el("askBtn").addEventListener("click", function () {
+    const q = el("questionInput").value.trim();
+    if (q) respond(q);
+  });
+  el("questionInput").addEventListener("keydown", function (e) { if (e.key === "Enter") el("askBtn").click(); });
+  boot();
+})();
+  </script>
+</body>
+</html>

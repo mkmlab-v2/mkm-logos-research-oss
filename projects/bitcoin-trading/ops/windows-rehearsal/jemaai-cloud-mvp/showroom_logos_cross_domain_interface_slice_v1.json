@@ -1,0 +1,31 @@
+{
+  "schema": "showroom_logos_cross_domain_interface_slice_v1",
+  "version": "1.0.0",
+  "state": "OK",
+  "generated_at_utc": "2026-05-23T23:05:55.516952Z",
+  "source_rel": "docs/final/artifacts/logos_cross_domain_interface_latest.json",
+  "role": "logos_cross_domain_interface_v1",
+  "non_gating": true,
+  "research_only": true,
+  "cdim_ts_utc": "2026-05-23T23:05:31Z",
+  "field_regime_id": "observational_stub_non_gating",
+  "no_verse_level_ohaeng_ingest": true,
+  "lens_direction_signs": [
+    "bull",
+    "bull",
+    "bear",
+    "bull"
+  ],
+  "cross_ref_count": 21,
+  "minority_lens_ids": [
+    "logos"
+  ],
+  "forbidden_claims": [
+    "universal_ohaeng_taxonomy_on_bible_corpus",
+    "logos_gating_live_trade",
+    "ms_era_metrics_other_than_text_blind_4_3pct",
+    "prophecy_hit_from_cdim_assembly"
+  ],
+  "design_doc": "docs/final/LOGOS_CROSS_DOMAIN_INTERFACE_MAPPER_V1.md",
+  "boundary_note": "Lens isolation only; not prophecy hit rate or live trading."
+}

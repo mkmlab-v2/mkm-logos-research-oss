@@ -1,0 +1,84 @@
+# mkmlab.space — static research + product site (Hostinger VPS + Cloudflare proxy).
+
+# Docroot: /var/www/mkmlab (Sync-MkmlabRedesignToVps_v1.ps1 from mkmlab-redesign/)
+
+#
+
+# TLS: certbot certonly --nginx -d mkmlab.space -d www.mkmlab.space
+
+#   (certs under /etc/letsencrypt/live/mkmlab.space/)
+
+
+
+server {
+
+    listen 80;
+
+    listen [::]:80;
+
+    server_name mkmlab.space www.mkmlab.space;
+
+
+
+    location /.well-known/acme-challenge/ {
+
+        root /var/www/mkmlab;
+
+    }
+
+
+
+    location / {
+
+        return 301 https://$host$request_uri;
+
+    }
+
+}
+
+
+
+server {
+
+    listen 443 ssl http2;
+
+    listen [::]:443 ssl http2;
+
+    server_name mkmlab.space www.mkmlab.space;
+
+
+
+    ssl_certificate     /etc/letsencrypt/live/mkmlab.space/fullchain.pem;
+
+    ssl_certificate_key /etc/letsencrypt/live/mkmlab.space/privkey.pem;
+
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+
+
+    root /var/www/mkmlab;
+
+    index index.html en.html;
+
+
+
+    location / {
+
+        try_files $uri $uri/ /index.html;
+
+    }
+
+
+
+    location ~* \.(css|js|svg|png|jpg|jpeg|webp|mp4|woff2?)$ {
+
+        expires 7d;
+
+        add_header Cache-Control "public, max-age=604800";
+
+    }
+
+}
+

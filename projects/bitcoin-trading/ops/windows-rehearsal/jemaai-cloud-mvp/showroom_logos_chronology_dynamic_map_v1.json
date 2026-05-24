@@ -1,0 +1,176 @@
+{
+  "schema": "logos_chronology_dynamic_map_v1",
+  "generated_at_utc": "2026-05-20T04:38:38Z",
+  "policy": {
+    "research_only": true,
+    "non_gating": true,
+    "no_trading_signal": true
+  },
+  "hypothesis_tier": "[HYPO]",
+  "inputs": {
+    "chronology_json": "docs/final/artifacts/logos_chronology_v1_latest.json",
+    "macro_json": "docs/final/artifacts/trackc_macro_risk_morning_briefing_latest.json",
+    "regime_map_json": "data/regimes/regime_map.json"
+  },
+  "inferred_regime_tags": [
+    "caution",
+    "covid",
+    "lehman",
+    "risk"
+  ],
+  "era_ranking": [
+    {
+      "era_id": "modern_observational_field",
+      "label_ko": "현대 관측 필드 (Modern bridges)",
+      "score": 0.856733,
+      "matched_tags": [
+        "covid",
+        "lehman",
+        "risk"
+      ],
+      "matched_bridges": 2,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 ['covid', 'lehman', 'risk'] 정렬(비게이팅)."
+    },
+    {
+      "era_id": "judges_risk_cycle",
+      "label_ko": "사사 시대 · 순환 리스크 (Judges)",
+      "score": 0.470917,
+      "matched_tags": [
+        "caution",
+        "risk"
+      ],
+      "matched_bridges": 1,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 ['caution', 'risk'] 정렬(비게이팅)."
+    },
+    {
+      "era_id": "exile_and_return",
+      "label_ko": "포로기·귀환 (Exile/Return)",
+      "score": 0.1625,
+      "matched_tags": [
+        "caution"
+      ],
+      "matched_bridges": 0,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 ['caution'] 정렬(비게이팅)."
+    },
+    {
+      "era_id": "intertestamental_empire_handoff",
+      "label_ko": "침묵기·제국 교체 (Intertestamental)",
+      "score": 0.139417,
+      "matched_tags": [],
+      "matched_bridges": 1,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 — 정렬(비게이팅)."
+    },
+    {
+      "era_id": "early_church_network",
+      "label_ko": "초대교회·확장 (Acts)",
+      "score": 0.0,
+      "matched_tags": [],
+      "matched_bridges": 0,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 — 정렬(비게이팅)."
+    },
+    {
+      "era_id": "eschaton_restoration_hypo",
+      "label_ko": "종말적 완성 (Eschaton · hypo)",
+      "score": 0.0,
+      "matched_tags": [],
+      "matched_bridges": 0,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 — 정렬(비게이팅)."
+    },
+    {
+      "era_id": "exodus_wilderness_law",
+      "label_ko": "출애굽·광야 · 율법 (Exodus/Wilderness)",
+      "score": 0.0,
+      "matched_tags": [],
+      "matched_bridges": 0,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 — 정렬(비게이팅)."
+    },
+    {
+      "era_id": "genesis_order_and_fall",
+      "label_ko": "창조와 타락 (Genesis)",
+      "score": 0.0,
+      "matched_tags": [],
+      "matched_bridges": 0,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 — 정렬(비게이팅)."
+    },
+    {
+      "era_id": "gospel_logos_incarnate",
+      "label_ko": "복음서 · Logos 현현 (Gospels)",
+      "score": 0.0,
+      "matched_tags": [],
+      "matched_bridges": 0,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 — 정렬(비게이팅)."
+    },
+    {
+      "era_id": "patriarch_covenant_arc",
+      "label_ko": "족장 시대 · 언약 (Patriarchs)",
+      "score": 0.0,
+      "matched_tags": [],
+      "matched_bridges": 0,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 — 정렬(비게이팅)."
+    },
+    {
+      "era_id": "united_divided_kingdom",
+      "label_ko": "통일·분열 왕국 (Kingdoms)",
+      "score": 0.0,
+      "matched_tags": [],
+      "matched_bridges": 0,
+      "interpretation_class": "[HYPO]",
+      "narrative_hint_ko": "[HYPO] 매크로 태그 ['caution', 'covid', 'lehman', 'risk']와 관측 태그 — 정렬(비게이팅)."
+    }
+  ],
+  "primary_match": {
+    "era_id": "modern_observational_field",
+    "label_ko": "현대 관측 필드 (Modern bridges)",
+    "confidence_band": "high",
+    "interpretation_class": "[HYPO]",
+    "operator_line_ko": "[HYPO·NON_GATING] 현재 매크로 스냅샷은 연대기 후보 '현대 관측 필드 (Modern bridges)'(modern_observational_field)와 구조적 유사도 점수 0.857로 정렬됩니다. 신학·가격 확정·실매매 트리거 아님."
+  },
+  "probe_optional": {
+    "schema": "logos_resonance_probe_v2",
+    "rank_mode": "regime_primary",
+    "generated_at_utc": "2026-05-20T04:38:40.397182+00:00",
+    "verses_scanned": 4,
+    "corpus_paths": [
+      "C:\\workspace\\tests\\fixtures\\logos_mini.jsonl"
+    ],
+    "device": "cuda",
+    "regime_id": "covid",
+    "top_k": 5,
+    "hits": [
+      {
+        "cosine_to_regime_fingerprint_4d": 0.88761,
+        "verse_id": "fixture_gloss_only",
+        "corpus_key": "canon",
+        "text_preview": "In the beginning"
+      },
+      {
+        "cosine_to_regime_fingerprint_4d": 0.73445,
+        "verse_id": "fixture_john_1_1",
+        "corpus_key": "canon",
+        "text_preview": "Ἐν ἀρχῇ"
+      },
+      {
+        "cosine_to_regime_fingerprint_4d": 0.664883,
+        "verse_id": "fixture_gen_1_1",
+        "corpus_key": "canon",
+        "text_preview": "בְּרֵאשִׁית"
+      },
+      {
+        "cosine_to_regime_fingerprint_4d": 0.528778,
+        "verse_id": "fixture_gen_1_2",
+        "corpus_key": "canon",
+        "text_preview": "וְהָאָרֶץ"
+      }
+    ]
+  }
+}
