@@ -37,13 +37,123 @@ def infer_type(path: Path) -> str:
     return "other"
 
 
-def infer_track(path: Path) -> str:
-    text = path.as_posix().lower()
-    if "btrack" in text or "research" in text or "hypo" in text:
+def infer_track_rel(rel_posix: str) -> str:
+    """Heuristic A/B lane from workspace-relative path — not compression engine output."""
+    text = rel_posix.lower()
+
+    def has_any(markers: Sequence[str]) -> bool:
+        return any(m in text for m in markers)
+
+    # B-track: research, hypothesis, pilot benches (specific before broad)
+    if has_any(
+        (
+            "btrack",
+            "btrack_pilot",
+            "/research/",
+            "hypo",
+            "sandbox",
+            "trackb_",
+            "track_b",
+            "/data/logos/btrack",
+            "general_prophecy",
+            "saving_the_news",
+            "aramaic",
+            "comp_atom",
+            "comp_univ",
+            "truthfulqa",
+            "lens_music",
+            "premium_multilens",
+            "prophecy_restoration",
+            "prophecy_prior_threshold",
+            "/mkm-study",
+            "/mkm/mkm-study",
+            "trackc_evidence",
+            "track_c_ip",
+        )
+    ):
         return "B"
-    if "track_a" in text or "commercial" in text or "ops" in text:
+
+    # A-track: governance, ops, commercialization, trading monorepo
+    if has_any(
+        (
+            "track_a",
+            "/track-a",
+            "commercial",
+            "commercialization",
+            "p0_commercial",
+            "/ops/",
+            "ops_",
+            "projects/bitcoin-trading/",
+            "ops/windows-rehearsal",
+            "ops_phase1",
+            "automation_registry",
+            "verify_p0",
+            "fact_lock",
+            "run_fact_lock",
+            "multilens_p1_production",
+            "dual-regime",
+            "amsaeng_eosa",
+            "safe_ops",
+            "live_trading",
+            "constitution_inference",
+            "constitution_gates",
+            "compression_automation",
+            "run_track_a",
+        )
+    ):
         return "A"
+
+    if text.startswith("docs/final/"):
+        return "A"
+
+    if text.startswith("projects/"):
+        if has_any(("no1kmedi", "mkm-life", "jema12")):
+            return "A"
+        return "A"
+
+    if text.startswith("scripts/"):
+        if has_any(
+            (
+                "btrack",
+                "hypo",
+                "research",
+                "prophecy_restoration",
+                "general_prophecy",
+                "trackc_",
+                "lens_music",
+                "aramaic",
+            )
+        ):
+            return "B"
+        if has_any(
+            (
+                "track_a",
+                "p0_",
+                "verify_",
+                "ops_",
+                "amsaeng",
+                "fact_lock",
+                "compression_",
+                "workspace_postit",
+            )
+        ):
+            return "A"
+        return "unknown"
+
+    if text.startswith("reports/"):
+        if has_any(("btrack", "constitution/btrack", "prophecy_promotion")):
+            return "B"
+        return "A"
+
+    if text.startswith("docs/"):
+        return "A"
+
     return "unknown"
+
+
+def infer_track(path: Path, *, rel_posix: str | None = None) -> str:
+    rel = rel_posix if rel_posix is not None else path.as_posix()
+    return infer_track_rel(rel)
 
 
 def infer_lane(path: Path) -> str:
@@ -106,7 +216,7 @@ def make_item(root: Path, path: Path) -> Dict[str, object]:
     return {
         "path": rel,
         "type": infer_type(path),
-        "track": infer_track(path),
+        "track": infer_track_rel(rel),
         "lane": infer_lane(path),
         "status": infer_status(path),
         "evidence_level": infer_evidence_level(path),
