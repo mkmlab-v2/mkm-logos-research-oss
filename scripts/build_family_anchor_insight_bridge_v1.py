@@ -26,6 +26,10 @@ DEFAULT_MYEONGNI = ROOT / "reports/tmp_daughter_myeongni_full_v1.json"
 DEFAULT_BRIDGE_OUT = ROOT / "docs/final/artifacts/family_anchor_insight_bridge_v1_latest.json"
 DEFAULT_ENVELOPE_OUT = ROOT / "docs/final/artifacts/family_anchor_sphere_envelope_v1_latest.json"
 DEFAULT_ONE_QUESTION_OUT = ROOT / "reports/family_anchor_one_question_context_latest.json"
+DEFAULT_EXPLORE_OUT = ROOT / "docs/final/artifacts/family_orb_explore_layer_v1_latest.json"
+DEFAULT_GOVERNANCE_OUT = ROOT / "docs/final/artifacts/family_lens_fusion_governance_v1_latest.json"
+DEFAULT_MONTHLY_SEQUENTIAL = ROOT / "docs/final/artifacts/daughter_2026_monthly_sequential_v1_latest.json"
+DEFAULT_SHOWROOM_URLS = ROOT / "docs/final/artifacts/jemaai_showroom_public_urls_v1_latest.json"
 MKMLIFE_PUBLIC = ROOT / "projects/mkm/mkm-life/public/data"
 BRIDGE_SCHEMA = ROOT / "docs/final/schemas/semantic_rag_bridge_insight_bundle_v1.schema.json"
 HUB_V6 = "https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1"
@@ -193,6 +197,7 @@ def build_sphere_envelope(
     *,
     anchor_path: Path,
     bridge_path: Path,
+    explore_layer_ref: str | None = None,
 ) -> dict[str, Any]:
     b1 = v4.get("block_1_core_v3_lived") or {}
     return {
@@ -267,9 +272,65 @@ def build_sphere_envelope(
             {"path": _rel(DEFAULT_V4), "present": DEFAULT_V4.is_file()},
             {"path": _rel(DEFAULT_MYEONGNI), "present": DEFAULT_MYEONGNI.is_file()},
             {"path": _rel(bridge_path), "present": True},
-        ],
+        ]
+        + (
+            [
+                {
+                    "path": _rel(DEFAULT_MONTHLY_SEQUENTIAL),
+                    "present": DEFAULT_MONTHLY_SEQUENTIAL.is_file(),
+                }
+            ]
+            if DEFAULT_MONTHLY_SEQUENTIAL.is_file()
+            else []
+        ),
         "insight_bridge_ref": _rel(bridge_path),
+        "monthly_sequential_ref": _rel(DEFAULT_MONTHLY_SEQUENTIAL)
+        if DEFAULT_MONTHLY_SEQUENTIAL.is_file()
+        else None,
+        "layer_b_explore": {
+            "default_enabled": False,
+            "enable_query_flag": "explore=1",
+            "rag_graph_runtime": False,
+            "explore_layer_ref": explore_layer_ref or _rel(DEFAULT_EXPLORE_OUT),
+            "governance_ref": _rel(DEFAULT_GOVERNANCE_OUT),
+        },
     }
+
+
+def _write_explore_layer_artifacts(
+    v4: dict[str, Any],
+    *,
+    explore_out: Path,
+    governance_out: Path,
+    strict_schema: bool,
+) -> None:
+    from scripts.build_family_orb_explore_layer_v1 import (
+        GOV_SCHEMA_PATH,
+        SCHEMA_PATH,
+        build_explore_layer,
+        build_governance,
+        _validate,
+    )
+
+    showroom_path = DEFAULT_SHOWROOM_URLS
+    if not showroom_path.is_file():
+        raise SystemExit(f"missing showroom urls: {showroom_path}")
+    showroom = _read(showroom_path)
+    profile_id = str(v4.get("anchor_id") or "family_anchor_our_daughter_v1")
+    explore_ref = _rel(explore_out)
+    gov_ref = _rel(governance_out)
+    explore = build_explore_layer(v4, showroom, governance_ref=gov_ref)
+    governance = build_governance(profile_id=profile_id, explore_ref=explore_ref)
+    for doc, path, schema in (
+        (explore, explore_out, SCHEMA_PATH),
+        (governance, governance_out, GOV_SCHEMA_PATH),
+    ):
+        errs = _validate(doc, schema)
+        if errs and strict_schema:
+            raise SystemExit(f"explore layer schema validation failed: {errs}")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        print(f"Wrote {_rel(path)}")
 
 
 def build_one_question_context(envelope: dict[str, Any], bridge: dict[str, Any]) -> dict[str, Any]:
@@ -325,6 +386,7 @@ def main() -> int:
     ap.add_argument("--one-question-out", type=Path, default=DEFAULT_ONE_QUESTION_OUT)
     ap.add_argument("--copy-mkmlife-public", action="store_true")
     ap.add_argument("--strict-schema", action="store_true")
+    ap.add_argument("--skip-explore-layer", action="store_true")
     args = ap.parse_args()
 
     anchor_path = args.anchor_json if args.anchor_json.is_absolute() else ROOT / args.anchor_json
@@ -349,8 +411,23 @@ def main() -> int:
     envelope_out = args.envelope_out if args.envelope_out.is_absolute() else ROOT / args.envelope_out
     one_q_out = args.one_question_out if args.one_question_out.is_absolute() else ROOT / args.one_question_out
 
+    explore_out = DEFAULT_EXPLORE_OUT
+    governance_out = DEFAULT_GOVERNANCE_OUT
+    if not args.skip_explore_layer:
+        _write_explore_layer_artifacts(
+            v4,
+            explore_out=explore_out,
+            governance_out=governance_out,
+            strict_schema=args.strict_schema,
+        )
+
     envelope = build_sphere_envelope(
-        anchor, v4, myeongni, anchor_path=anchor_path, bridge_path=bridge_out
+        anchor,
+        v4,
+        myeongni,
+        anchor_path=anchor_path,
+        bridge_path=bridge_out,
+        explore_layer_ref=_rel(explore_out),
     )
     one_q = build_one_question_context(envelope, bridge)
 
@@ -373,6 +450,14 @@ def main() -> int:
             dest = MKMLIFE_PUBLIC / name
             dest.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             print(f"Wrote {_rel(dest)}")
+        if not args.skip_explore_layer and explore_out.is_file() and governance_out.is_file():
+            for name, src in (
+                ("family_orb_explore_layer_v1.json", explore_out),
+                ("family_lens_fusion_governance_v1.json", governance_out),
+            ):
+                dest = MKMLIFE_PUBLIC / name
+                dest.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+                print(f"Wrote {_rel(dest)}")
 
     return 0
 

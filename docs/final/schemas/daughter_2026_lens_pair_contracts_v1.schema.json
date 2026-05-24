@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/daughter_2026_lens_pair_contracts_v1.schema.json",
+  "title": "daughter_2026_lens_pair_contracts_v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "anchor_id",
+    "calendar_year",
+    "generated_at_utc",
+    "fusion_mode",
+    "pairs",
+    "global_forbidden_ko"
+  ],
+  "properties": {
+    "schema": { "const": "daughter_2026_lens_pair_contracts_v1" },
+    "version": { "type": "string", "pattern": "^1\\." },
+    "anchor_id": { "type": "string" },
+    "calendar_year": { "type": "integer", "minimum": 2020, "maximum": 2100 },
+    "generated_at_utc": { "type": "string" },
+    "hypothesis_tier": { "const": "B" },
+    "research_only": { "const": true },
+    "fusion_mode": { "const": "sequential_blocks_not_monthly_parallel_merge" },
+    "governance_ref": { "type": "string" },
+    "pairs": {
+      "type": "object",
+      "required": ["myeongni_to_sasang", "myeongni_to_logos", "sasang_to_logos"],
+      "properties": {
+        "myeongni_to_sasang": { "$ref": "#/$defs/pair_contract" },
+        "myeongni_to_logos": { "$ref": "#/$defs/pair_contract" },
+        "sasang_to_logos": { "$ref": "#/$defs/pair_contract" }
+      }
+    },
+    "global_forbidden_ko": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "maxLength": 512 }
+    }
+  },
+  "$defs": {
+    "pair_contract": {
+      "type": "object",
+      "required": ["pair_id", "label_ko", "allowed_ko", "forbidden_ko", "junction_triggers"],
+      "properties": {
+        "pair_id": { "type": "string" },
+        "label_ko": { "type": "string" },
+        "allowed_ko": { "type": "array", "items": { "type": "string" } },
+        "forbidden_ko": { "type": "array", "items": { "type": "string" } },
+        "junction_triggers": {
+          "type": "object",
+          "additionalProperties": { "type": "string", "maxLength": 1024 }
+        }
+      }
+    }
+  }
+}

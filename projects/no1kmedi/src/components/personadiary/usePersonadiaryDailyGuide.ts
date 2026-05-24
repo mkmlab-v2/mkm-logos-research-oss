@@ -8,6 +8,7 @@ export type DailyGuideBlock = {
   body_ko?: string;
   ref?: string;
   badge_ko?: string;
+  mkmlife_href?: string;
 };
 
 export type DailyGuidePackage = {

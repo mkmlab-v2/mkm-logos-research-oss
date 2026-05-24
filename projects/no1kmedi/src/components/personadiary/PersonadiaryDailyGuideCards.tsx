@@ -19,6 +19,7 @@ export function PersonadiaryDailyGuideCards() {
   }
 
   const hero = pkg.ui_blocks?.find((b) => b.type === "hero");
+  const newsMeHypo = pkg.ui_blocks?.find((b) => b.type === "news_me_hypo");
   const cards = pkg.ui_blocks?.filter(
     (b) =>
       b.type === "card" ||
@@ -39,6 +40,22 @@ export function PersonadiaryDailyGuideCards() {
           <p className="pd-guide-hero-body">{hero.body_ko}</p>
           {hero.badge_ko ? (
             <span className="pd-reflect-tag">{hero.badge_ko}</span>
+          ) : null}
+        </article>
+      ) : null}
+      {newsMeHypo ? (
+        <article className="pd-guide-hero pd-guide-news-me pd-glass">
+          <h3>{newsMeHypo.title_ko}</h3>
+          <p className="pd-guide-hero-body">{newsMeHypo.body_ko}</p>
+          {newsMeHypo.badge_ko ? (
+            <span className="pd-reflect-tag">{newsMeHypo.badge_ko}</span>
+          ) : null}
+          {newsMeHypo.mkmlife_href ? (
+            <p className="pd-guide-mkmlife-link">
+              <a href={newsMeHypo.mkmlife_href} rel="noopener noreferrer">
+                mkmlife 원퀘스천 · oracle-sphere →
+              </a>
+            </p>
           ) : null}
         </article>
       ) : null}

@@ -1911,6 +1911,25 @@ section h2 {
   color: rgba(226, 232, 240, 0.95);
 }
 
+.pd-guide-news-me {
+  margin-top: 0.75rem;
+  border: 1px solid rgba(129, 140, 248, 0.35);
+}
+
+.pd-guide-mkmlife-link {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+}
+
+.pd-guide-mkmlife-link a {
+  color: #a5b4fc;
+  text-decoration: none;
+}
+
+.pd-guide-mkmlife-link a:hover {
+  text-decoration: underline;
+}
+
 .pd-guide-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

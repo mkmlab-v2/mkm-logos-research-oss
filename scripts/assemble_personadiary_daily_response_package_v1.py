@@ -97,6 +97,40 @@ def _first_line(sections: List[Dict[str, Any]], sid: str) -> str:
     return ""
 
 
+def _build_news_me_hypo_block(
+    sections: List[Dict[str, Any]],
+    fortune: Dict[str, Any],
+    hypo_meta: Dict[str, Any],
+    world_meta: Dict[str, Any],
+) -> Dict[str, Any] | None:
+    """Dedicated 「오늘의 뉴스 × 나 [HYPO]」 card — mkmlife upstream chain surface."""
+    world_lines = next((s for s in sections if s["id"] == "world_pulse"), {}).get("lines") or []
+    fusion_line = str(world_meta.get("fusion_one_liner_ko") or "").strip()
+    synthesis = str(hypo_meta.get("synthesis_ko") or "").strip()
+    world_body = "\n".join(world_lines[:4]).strip()
+    body_parts: List[str] = []
+    if fusion_line:
+        body_parts.append(fusion_line)
+    elif world_body:
+        body_parts.append(world_body[:280])
+    if synthesis:
+        body_parts.append(synthesis[:280])
+    if not body_parts:
+        return None
+    branches = hypo_meta.get("branches") or []
+    mkmlife_href = "https://mkmlife.com/oracle-sphere"
+    out: Dict[str, Any] = {
+        "type": "news_me_hypo",
+        "title_ko": "오늘의 뉴스 × 나",
+        "body_ko": "\n\n".join(body_parts)[:600],
+        "badge_ko": "[HYPO][NON_GATING]",
+        "mkmlife_href": mkmlife_href,
+    }
+    if branches:
+        out["branches"] = branches[:5]
+    return out
+
+
 def _build_ui_blocks(
     sections: List[Dict[str, Any]],
     fortune: Dict[str, Any],
@@ -130,6 +164,9 @@ def _build_ui_blocks(
             "badge_ko": f"{city} · 세상×나 · [가설]",
         }
     ]
+    news_me = _build_news_me_hypo_block(sections, fortune, hypo_meta, world_meta)
+    if news_me:
+        blocks.append(news_me)
     for sec in sections:
         if sec["id"] == "logos_anchor":
             continue
@@ -239,6 +276,9 @@ def assemble_package(
             "lifestyle": fortune.get("lifestyle_concierge"),
             "logos_anchor": fortune.get("logos_daily_anchor"),
             "world_pulse_fusion": fortune.get("world_pulse_fusion"),
+            "hypothesis_stream": fortune.get("hypothesis_stream"),
+            "kernel_skins_ref": "docs/final/artifacts/mkm_life_anchor_os_kernel_skins_v1_latest.json",
+            "mkmlife_chain_env": "MKM_SYNC_MKMLIFE_ONE_QUESTION_CONTEXT",
         },
     }
 

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/daughter_2026_monthly_sequential_v1.schema.json",
+  "title": "daughter_2026_monthly_sequential_v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "anchor_id",
+    "calendar_year",
+    "generated_at_utc",
+    "fusion_mode",
+    "pair_contracts_ref",
+    "months"
+  ],
+  "properties": {
+    "schema": { "const": "daughter_2026_monthly_sequential_v1" },
+    "version": { "type": "string", "pattern": "^1\\." },
+    "anchor_id": { "type": "string" },
+    "calendar_year": { "type": "integer" },
+    "generated_at_utc": { "type": "string" },
+    "hypothesis_tier": { "const": "B" },
+    "research_only": { "const": true },
+    "auto_apply": { "const": "none" },
+    "fusion_mode": { "const": "sequential_blocks_not_monthly_parallel_merge" },
+    "rag_graph_runtime": { "const": false },
+    "pair_contracts_ref": { "type": "string" },
+    "upstream_refs": { "type": "object" },
+    "months": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": { "$ref": "#/$defs/month_block" }
+    },
+    "report_md_ref": { "type": "string" }
+  },
+  "$defs": {
+    "sequential_layer": {
+      "type": "object",
+      "required": ["layer_id", "label_ko", "body_ko", "tags"],
+      "properties": {
+        "layer_id": {
+          "type": "string",
+          "enum": ["core", "myeongni", "sasang", "logos"]
+        },
+        "label_ko": { "type": "string" },
+        "body_ko": { "type": "string", "maxLength": 4000 },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "junction_trigger_id": { "type": "string" }
+      }
+    },
+    "month_block": {
+      "type": "object",
+      "required": ["month", "layers", "peak_flags"],
+      "properties": {
+        "month": { "type": "integer", "minimum": 1, "maximum": 12 },
+        "wolwoon_fact": { "type": "object" },
+        "peak_flags": {
+          "type": "object",
+          "properties": {
+            "wealth_peak": { "type": "boolean" },
+            "romance_peer_peak": { "type": "boolean" },
+            "quiet_mentor_study": { "type": "boolean" }
+          }
+        },
+        "layers": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": { "$ref": "#/$defs/sequential_layer" }
+        }
+      }
+    }
+  }
+}

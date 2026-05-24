@@ -45,11 +45,28 @@
         "type": "object",
         "required": ["type", "title_ko"],
         "properties": {
-          "type": { "enum": ["hero", "card", "verse", "disclaimer"] },
+          "type": {
+            "enum": [
+              "hero",
+              "card",
+              "verse",
+              "disclaimer",
+              "world_pulse",
+              "hypothesis_stream",
+              "user_condition",
+              "news_me_hypo"
+            ]
+          },
           "title_ko": { "type": "string" },
           "body_ko": { "type": "string" },
           "ref": { "type": "string" },
-          "badge_ko": { "type": "string" }
+          "badge_ko": { "type": "string" },
+          "mkmlife_href": { "type": "string" },
+          "branches": {
+            "type": "array",
+            "items": { "type": "object" }
+          },
+          "tilt_ko": { "type": "string" }
         }
       }
     },
