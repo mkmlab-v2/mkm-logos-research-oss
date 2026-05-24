@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-24T06:47:41Z
+- **last_updated_utc:** 2026-05-24T08:55:25Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -69,6 +69,15 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-05-24T08:55:25Z** — SESSION END: DNA B-track closed; 5/24 Sunday ops complete; MISSION_LOG saved; next 5/26 TG digest
+- **2026-05-24T08:51:18Z** — Bitcoin-OpsKPI 3개 UAC 상승 Enable 완료(Ready); Safe Ops·registry drift 0 유지
+- **2026-05-24T08:48:38Z** — 압축·RQ-021 MISSION 마감: R16 cap FROZEN · R17–R18 wire gloss hook · ACTIVE/MS HOLD · 코딩 종료 관측만
+- **2026-05-24T08:43:57Z** — gitea/main fast-forward에 myeongni probe+CENTRAL 반영 완료; 암행어사·AthenaBundle·P0·live_sync OK
+- **2026-05-24T08:43:07Z** — 자동진행: feature push 완료·암행어사·AthenaBundle·P0 OK; gitea/main 머지는 워킹트리 dirty로 보류
+- **2026-05-24T08:37:43Z** — B-track R18: wire gloss hook smoke wired · decoder 0pp · dryrun hypo_wire_gloss_sidecar · cap/ACTIVE HOLD
+- **2026-05-24T08:35:11Z** — 5/24 Sunday ops complete: FourRag+sweep+audit ALL OK; Oracle fusion exit0; promote HOLD
+- **2026-05-24T06:52:01Z** — DNA B-track closure: evidence bundle+hash seal+Vault mirror+restore pointer; live/Track A still human_review
+- **2026-05-24T06:51:01Z** — 신규 B-track R17: wire gloss lexicon-aligned POC match 1.0 · gloss 12/12 · cap sunday closure 유지 · ACTIVE/MS HOLD
 - **2026-05-24T06:47:41Z** — 암행어사·아테나 AthenaBundle 통과; MASTER_PROBE 16/16·integrity_guard 149 OK; live_sync fresh; OpsKPI 3개는 관리자 Enable 잔여
 - **2026-05-24T06:45:18Z** — 2026-05-24 일요일 마감: Logos per-lane cap 0.15 B-track FROZEN · Round16 plateau=cap-policy · N240 J 0.921 · ACTIVE/MS HOLD · 파라미터 스윕 종료 · 관측만
 - **2026-05-24T00:57:09Z** — DNA B-track research promotion complete: strict 3/3, 200-row real, AB 30/30 seed, packet+approval refresh; live/Track A human_review unchanged
@@ -80,15 +89,6 @@
 - **2026-05-23T18:22:07Z** — B-track daily+recommended eval 2026-05-23: hypothesis/score refreshed; strict_pass false streak 0; panel ALERT_2 exit1 expected; no promote
 - **2026-05-23T17:39:00Z** — RQ-021 B-track commander signoff recorded; post-signoff routine OK; ACTIVE/MS/P4 blended remain HOLD
 - **2026-05-23T17:35:35Z** — RQ-021 wave5: hypo-cooc-sidecar on dryrun; per-lane report; headline golden_core 0.873 only; P4 gate false; MS/ACTIVE 금지
-- **2026-05-23T17:31:07Z** — RQ-021 wave4: prefix-gated cooc v2 proceed=true (1191 isolate); 4 pool expansion dilution; golden_core 0.873 stable; P4 gate false; MS/ACTIVE 금지
-- **2026-05-23T17:30:11Z** — Personal Insight Evolution v1 종료: 3제품 피드백·ingest 토큰·internal ca07464652·mkmlife 9b8334b
-- **2026-05-23T17:28:54Z** — RQ-021 wave3: golden_core N400 0.873 floor OK; cooc F1 0.36 hook HOLD; expansion dilution confirmed; MS/ACTIVE 금지
-- **2026-05-23T17:23:18Z** — RQ-021 wave2: polar v3 cooc cartesian sep 2.35>polar; homog_full N400 0.771 mixed 0.820 floor FAIL; P4 gate false; MS/ACTIVE 금지
-- **2026-05-23T17:17:33Z** — RQ-021 P2-P6 밀기: polar v2 HOLD·N40 floor OK·N400 floor FAIL·P4 gate false; streak 6 B-track only; MS/ACTIVE 금지
-- **2026-05-23T17:00:31Z** — auto: prophecy streak=4, evolution+SafeOps+watchdog OK, outer_lens dryrun OK; MS 배제·promote 금지
-- **2026-05-23T16:58:16Z** — MISSION_LOG: MS 작업 배제(별도 지시 전) + Evolution allowlist/SafeOps 권장 고정·general 08:45/09:00 일정 융합
-- **2026-05-23T16:52:48Z** — 예언 evolution 권장: headline promote HOLD, Security 태스크 Disabled 유지(로컬), allowlist+weekly+closure OK, general holdout signoff만
-- **2026-05-23T14:46:34Z** — 2026-05-23 순차: 코드북 3b hold·pointer·bridge 41658; 예언 nf6 streak5 gates; V2 30 passed; MS·ACTIVE 승격 금지
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -107,6 +107,7 @@
 
 - **SSOT:** `docs/final/artifacts/patient_high_load_daily_optimization_playbook_v1.json` — L0 임상 주 · L1 뇌-장/저혈압/전정 · L2 체온·식이 · L3 학습 · L4 진로 · L5 달력 `[HYPO]`만.
 - **우리 딸 (가족·실명 미기록):** **2012-03-28 10:20 서울** · 소음인(관찰) · 만14~15세 — `playbook` `family_anchor_our_daughter_v1` · 사주 **임진·계묘·무자·정사** · `reports/tmp_daughter_myeongni_full_v1.json`. **환자 김하은과 동일인 아님.**
+- **딸 lived calibration (2026-05-24 · school_teacher · B-track):** `docs/final/artifacts/family_anchor_lived_calibration_our_daughter_v1_latest.json` — 담임 **neutral** · 칭찬 기억↑ · 솔직 표현(반항 X) · 5월 담임 보통·학교 피곤 · **학원 멘토>담임**; NL「모범생·담임 황금기」**금지** · `auto_apply=none`.
 - **환자 김하은 (진료 케이스):** **2008-02-03 14:00 서울** · 고3·소음인 등 — `playbook` `patient_reference_kim_haeun_v1` · **정해·계축·계유·기미** · `reports/tmp_kim_haeun_myeongni_full_v1.json`.
 - **상담 톤:** 「고정밀 센서」·따뜻한 입력·마이크로 투두 — **「사주 강하니 버텨」·합격 단정·사주 인과」 금지** (`patient_care_bundle` 정책과 동일).
 - **엔진:** 표·대운 → `run_saju_global_birth_v1` / `build_myeongni_full_report_v1`; 임상 강약·용신 → **변증·외부 만세력(조후·억부)**, MKM `yongsin_hypothesis`는 **연구 로그만**.
@@ -613,7 +614,8 @@ flowchart TD
 
 | 기간 | 핵심 한 줄 (무엇을 확정/중단/승격했는지) |
 |------|----------------------------------------|
-| 2026-05-24 (DNA B-track 승격) | Real 200-row restore + strict readiness **3/3** + AB neutral **30/30** seed + promotion packet·approval reaffirmation 갱신; pytest 9 passed; **B-track research promotion complete** · **live/Track A human_review unchanged**. |
+| 2026-05-24 (DNA B-track 마무리) | Evidence bundle `20260524` + SHA seal + Vault `bio_dna_promotion_20260524` + restore pointer; **B-track research closed** · live/Track A **human_review**. |
+| 2026-05-24 (DNA B-track 승격) | Real 200-row restore + strict readiness **3/3** + AB neutral **30/30** seed + promotion packet·approval reaffirmation; pytest 9 passed. |
 | 2026-05-24 (DNA OSS·주말 관측) | GitHub 3종=**`[REFERENCE]`만**; §8.1 B-track rsid·승인 JSON; **`scripts/` 주입·ACTIVE 금지**. |
 | 2026-05-19 (Track C·CENTRAL SSOT 정합) | **9장** 압축 IR 덱 v1.1(Moat)·`TRACK_C` §3.1.5 RQ-019 포인터·장전 스케줄 **08:05/08:18/08:30/08:42**; RQ-019 **OPEN**(법무 SUBMITTED_TO_COUNSEL); OpenData 327 병렬·6/5 접수 잔여. |
 | 2026-05-17 (B-track model swap PoC) | `run_btrack_model_swap_harness_v1.py` — frozen harness·후보 채점; LG **pending** 병렬; ensemble 승격 금지. |
