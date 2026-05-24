@@ -1,0 +1,43 @@
+name: logos-chronology-era-blind-smoke
+
+on:
+  push:
+    paths:
+      - "scripts/logos_chronology_map_core_v1.py"
+      - "scripts/eval_logos_chronology_era_blind_v1.py"
+      - "scripts/build_logos_hardset_news_era_gold_v1.py"
+      - "scripts/run_logos_chronology_era_modern_boost_ab_v1.py"
+      - "scripts/run_logos_chronology_era_tier_boost_ab_v1.py"
+      - "tests/test_logos_chronology_tier_boost_v1.py"
+      - "scripts/build_logos_hardset_news_era_gold_v2_v1.py"
+      - "tests/test_logos_chronology_hardset_gold_v2_v1.py"
+      - "scripts/merge_logos_symbolic_revalidation_era_blocks_v1.py"
+      - "docs/final/artifacts/fixtures/logos_chronology_historical_era_gold_v1.json"
+      - "tests/test_eval_logos_chronology_era_blind_v1.py"
+      - "tests/test_logos_chronology_hardset_and_ab_v1.py"
+  pull_request:
+    paths:
+      - "scripts/logos_chronology_map_core_v1.py"
+      - "scripts/eval_logos_chronology_era_blind_v1.py"
+      - "scripts/build_logos_hardset_news_era_gold_v1.py"
+      - "scripts/run_logos_chronology_era_modern_boost_ab_v1.py"
+      - "scripts/run_logos_chronology_era_tier_boost_ab_v1.py"
+      - "tests/test_logos_chronology_tier_boost_v1.py"
+      - "scripts/build_logos_hardset_news_era_gold_v2_v1.py"
+      - "tests/test_logos_chronology_hardset_gold_v2_v1.py"
+      - "docs/final/artifacts/fixtures/logos_chronology_historical_era_gold_v1.json"
+      - "tests/test_eval_logos_chronology_era_blind_v1.py"
+      - "tests/test_logos_chronology_hardset_and_ab_v1.py"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: pytest era blind eval
+        run: |
+          python -m pip install -q pytest
+          python -m pytest tests/test_eval_logos_chronology_era_blind_v1.py tests/test_logos_chronology_hardset_and_ab_v1.py -q

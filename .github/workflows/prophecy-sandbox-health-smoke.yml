@@ -1,0 +1,48 @@
+# Smoke: Prophecy Sandbox lib/rollup/health/bridge + dry-run chain (no network).
+name: Prophecy Sandbox health smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop, "chore/**"]
+    paths:
+      - "scripts/sandbox_prophecy_lib_v1.py"
+      - "scripts/run_prophecy_sandbox_daily_chain_v1.py"
+      - "scripts/run_prophecy_sandbox_weekly_phase3_v1.py"
+      - "scripts/verify_sandbox_prophecy_artifacts_v1.py"
+      - "scripts/dispatch_sandbox_prophecy_accumulation_gate_webhook_v1.py"
+      - "scripts/check_prophecy_sandbox_health_v1.py"
+      - "scripts/build_sandbox_prophecy_*_v1.py"
+      - "scripts/patch_sandbox_prophecy_stream_calendar_v1.py"
+      - "scripts/dispatch_sandbox_prophecy_watchlist_webhook_v1.py"
+      - "tests/test_sandbox_prophecy_lib_v1.py"
+      - "tests/test_build_sandbox_prophecy_*.py"
+      - "tests/test_check_prophecy_sandbox_health_v1.py"
+      - "tests/test_build_sandbox_track_a_candidate_bridge_draft_v1.py"
+      - ".github/workflows/prophecy-sandbox-health-smoke.yml"
+
+jobs:
+  pytest-and-dry-run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: pytest sandbox regressions
+        run: |
+          python -m pytest \
+            tests/test_sandbox_prophecy_lib_v1.py \
+            tests/test_build_sandbox_prophecy_stream_rollup_v1.py \
+            tests/test_build_sandbox_prophecy_holdout_report_v1.py \
+            tests/test_build_sandbox_prophecy_ops_dashboard_v1.py \
+            tests/test_build_sandbox_prophecy_accumulation_status_v1.py \
+            tests/test_build_sandbox_prophecy_human_review_pack_v1.py \
+            tests/test_build_sandbox_prophecy_operator_digest_v1.py \
+            tests/test_check_prophecy_sandbox_health_v1.py \
+            tests/test_build_sandbox_track_a_candidate_bridge_draft_v1.py \
+            tests/test_verify_sandbox_prophecy_artifacts_v1.py \
+            -q
+      - name: dry-run sandbox chain target list
+        run: python scripts/run_prophecy_sandbox_daily_chain_v1.py --dry-run

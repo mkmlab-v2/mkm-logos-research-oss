@@ -1,0 +1,31 @@
+# Smoke: Track C B2B meeting pack builders + readiness gate regression (no network).
+name: Track C B2B meeting pack smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop, "chore/**"]
+    paths:
+      - "scripts/build_track_c_b2b_meeting_pack_v1.py"
+      - "scripts/build_track_c_logos_b2b_sales_collateral_v1.py"
+      - "scripts/check_track_c_b2b_meeting_pack_readiness_v1.py"
+      - "scripts/run_logos_track_b_commander_deep_report_v1.py"
+      - "scripts/build_track_c_macro_risk_mvp_filled_v1.py"
+      - "scripts/build_track_c_logos_b2b_offer_onepager_v1.py"
+      - "scripts/build_track_c_combined_b2b_offer_onepager_v1.py"
+      - "scripts/Invoke-TrackCB2bMeetingPack_v1.ps1"
+      - "tests/test_build_track_c_logos_b2b_sales_collateral_v1.py"
+      - "tests/test_check_track_c_b2b_meeting_pack_readiness_v1.py"
+      - ".github/workflows/track-c-b2b-meeting-pack-smoke.yml"
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: pytest meeting pack regressions
+        run: python -m pytest tests/test_build_track_c_logos_b2b_sales_collateral_v1.py tests/test_check_track_c_b2b_meeting_pack_readiness_v1.py -q
