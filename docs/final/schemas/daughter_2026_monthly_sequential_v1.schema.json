@@ -46,6 +46,8 @@
         },
         "label_ko": { "type": "string" },
         "body_ko": { "type": "string", "maxLength": 4000 },
+        "fact_line_ko": { "type": "string", "maxLength": 2000 },
+        "inference_line_ko": { "type": "string", "maxLength": 2000 },
         "tags": {
           "type": "array",
           "items": { "type": "string" }

@@ -53,6 +53,12 @@ def test_build_daughter_monthly_sequential_cli(tmp_path: Path) -> None:
     logos = next(l for l in jan["layers"] if l["layer_id"] == "logos")
     assert logos["junction_trigger_id"] == "comparison_heart"
 
+    myeongni = next(l for l in jan["layers"] if l["layer_id"] == "myeongni")
+    assert myeongni.get("fact_line_ko")
+    assert myeongni.get("inference_line_ko")
+    assert "[FACT]" in myeongni["fact_line_ko"]
+    assert "[HYPO" in myeongni["inference_line_ko"]
+
     assert md_out.is_file()
     md = md_out.read_text(encoding="utf-8")
     assert "12월" in md
