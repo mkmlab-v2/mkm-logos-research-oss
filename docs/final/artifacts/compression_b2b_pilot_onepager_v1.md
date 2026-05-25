@@ -53,4 +53,6 @@ MKM 내부 동결 벤치 및 품질 게이트 통과 수치는 아래와 같습�
 
 ---
 
+**미터링·SLA 부록 (JSON):** `scripts/build_compression_b2b_pilot_metering_appendix_v1.py` → `docs/final/artifacts/compression_b2b_pilot_metering_appendix_latest.json` (스키마 `docs/final/schemas/compression_b2b_pilot_metering_appendix_v1.schema.json`). 스모크: `scripts/Run-CompressionPilotMeteringSmoke_v1.ps1`.
+
 *교차 참조:* `docs/final/artifacts/compression_public_evidence_pack_skeleton_v1.md` (공개 벤치 패킹 목차 · 동일 수치·면책 정렬).

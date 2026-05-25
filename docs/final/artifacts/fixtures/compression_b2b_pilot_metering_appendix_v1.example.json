@@ -1,0 +1,57 @@
+{
+  "schema": "compression_b2b_pilot_metering_appendix_v1",
+  "generated_at_utc": "2026-05-26T00:00:00Z",
+  "pilot": {
+    "tenant_id": "pilot-demo",
+    "period_label": "2026-06 pilot window (example)",
+    "contract_ref": "COMP-PILOT-EXAMPLE-001",
+    "one_pager_path": "docs/final/artifacts/compression_b2b_pilot_onepager_v1.md"
+  },
+  "metering": {
+    "meter_schema": "track_a_metering_log_v1",
+    "log_path_relative": "reports/constitution/btrack_pilot/track_a_metering_log_v1.jsonl",
+    "events_total": 3,
+    "parse_errors": 0,
+    "aggregate": {
+      "tokens_before_sum": 420,
+      "tokens_after_sum": 220,
+      "global_saving_rate": 0.47619,
+      "events_in_band_40_50": 2,
+      "band_hit_rate_40_50": 0.666667
+    },
+    "integrity_note": "Jaccard scores in contracts refer to lexical token overlap proxy only, not semantic equivalence.",
+    "bench_jaccard_proxy": 0.89
+  },
+  "sla_appendix": {
+    "status": "draft_internal",
+    "sla_draft_pointer": "docs/final/TRACK_A_SLA_DRAFT.md",
+    "settlement_mode": "manual_invoice_v0",
+    "hydrate_window_required": true,
+    "target_saving_band_pct": { "min": 40, "max": 50 },
+    "obligations": [
+      "Append-only metering via POST /v1/metering/log or eval_context.meter_log",
+      "Weekly metering summary export for pilot review",
+      "Hydrate window re-measurement before production SLA attachment"
+    ],
+    "exclusions": [
+      "No automated live-trading or prophecy promotion triggers from bench KPI",
+      "No guarantee of semantic meaning preservation from Jaccard alone",
+      "Free-form NL negotiation and legal negation-critical text excluded from pilot scope"
+    ]
+  },
+  "evidence_pointers": {
+    "active_report_path": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "kpi_gate_path": "docs/final/artifacts/general_compression_kpi_gate_v2.json",
+    "metering_summary_path": "docs/final/artifacts/track_a_metering_summary_latest.json"
+  },
+  "disclaimers": [
+    "Reference bench and AB gate figures describe MKM frozen internal corpora; they do not replace tenant workload measurement.",
+    "Jaccard is a lexical reconstruction proxy, not a guarantee against semantic drift or hallucination.",
+    "This appendix supports B2B token-economy engineering observation only; not investment, medical, or trade execution advice."
+  ],
+  "governance": {
+    "publish_allowed": false,
+    "pre_send_gate": "scripts/check_compression_enterprise_summary_readiness_v1.py",
+    "fail_comp_note": "FAIL-COMP-004: do not auto-merge bench KPI into Track A live trading."
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/compression_b2b_pilot_metering_appendix_v1.schema.json",
+  "title": "Compression B2B pilot metering + SLA appendix v1",
+  "description": "Contract-facing appendix JSON for paid pilot metering evidence. Not a payment processor receipt; pairs with compression_b2b_pilot_onepager_v1.md.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "pilot",
+    "metering",
+    "sla_appendix",
+    "evidence_pointers",
+    "disclaimers",
+    "governance"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "compression_b2b_pilot_metering_appendix_v1"
+    },
+    "generated_at_utc": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T"
+    },
+    "pilot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tenant_id", "period_label"],
+      "properties": {
+        "tenant_id": { "type": "string", "minLength": 1 },
+        "period_label": { "type": "string", "minLength": 1 },
+        "contract_ref": { "type": "string" },
+        "one_pager_path": {
+          "type": "string",
+          "const": "docs/final/artifacts/compression_b2b_pilot_onepager_v1.md"
+        }
+      }
+    },
+    "metering": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "meter_schema",
+        "log_path_relative",
+        "events_total",
+        "aggregate",
+        "integrity_note"
+      ],
+      "properties": {
+        "meter_schema": {
+          "type": "string",
+          "const": "track_a_metering_log_v1"
+        },
+        "log_path_relative": { "type": "string", "minLength": 1 },
+        "events_total": { "type": "integer", "minimum": 0 },
+        "parse_errors": { "type": "integer", "minimum": 0 },
+        "aggregate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["tokens_before_sum", "tokens_after_sum", "global_saving_rate"],
+          "properties": {
+            "tokens_before_sum": { "type": "integer", "minimum": 0 },
+            "tokens_after_sum": { "type": "integer", "minimum": 0 },
+            "global_saving_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+            "events_in_band_40_50": { "type": "integer", "minimum": 0 },
+            "band_hit_rate_40_50": { "type": ["number", "null"], "minimum": 0, "maximum": 1 }
+          }
+        },
+        "integrity_note": {
+          "type": "string",
+          "description": "Jaccard is lexical proxy only; see sla_appendix."
+        },
+        "bench_jaccard_proxy": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Optional snapshot from active report; not tenant workload."
+        }
+      }
+    },
+    "sla_appendix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "settlement_mode", "hydrate_window_required", "obligations", "exclusions"],
+      "properties": {
+        "status": { "type": "string", "enum": ["draft_internal"] },
+        "sla_draft_pointer": {
+          "type": "string",
+          "const": "docs/final/TRACK_A_SLA_DRAFT.md"
+        },
+        "settlement_mode": {
+          "type": "string",
+          "enum": ["manual_invoice_v0"]
+        },
+        "hydrate_window_required": { "type": "boolean" },
+        "target_saving_band_pct": {
+          "type": "object",
+          "properties": {
+            "min": { "type": "number" },
+            "max": { "type": "number" }
+          }
+        },
+        "obligations": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "exclusions": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        }
+      }
+    },
+    "evidence_pointers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["active_report_path", "kpi_gate_path"],
+      "properties": {
+        "active_report_path": { "type": "string" },
+        "kpi_gate_path": { "type": "string" },
+        "metering_summary_path": { "type": "string" }
+      }
+    },
+    "disclaimers": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 3,
+      "maxItems": 5
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["publish_allowed", "pre_send_gate", "fail_comp_note"],
+      "properties": {
+        "publish_allowed": { "type": "boolean", "const": false },
+        "pre_send_gate": {
+          "type": "string",
+          "const": "scripts/check_compression_enterprise_summary_readiness_v1.py"
+        },
+        "fail_comp_note": {
+          "type": "string",
+          "description": "Bench KPI must not auto-wire to live trading."
+        }
+      }
+    }
+  }
+}
