@@ -21,6 +21,7 @@ DEFAULT_MYEONGNI = ROOT / "reports/tmp_daughter_myeongni_full_v1.json"
 DEFAULT_CONTRACTS = ROOT / "docs/final/artifacts/daughter_2026_lens_pair_contracts_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/daughter_2026_monthly_sequential_v1_latest.json"
 DEFAULT_MD = ROOT / "reports/daughter_2026_monthly_sequential_ko_v1_latest.md"
+DEFAULT_ANCHOR = ROOT / "docs/final/artifacts/family_anchor_lived_calibration_our_daughter_v1_latest.json"
 SCHEMA_PATH = ROOT / "docs/final/schemas/daughter_2026_monthly_sequential_v1.schema.json"
 MKMLIFE_PUBLIC = ROOT / "projects/mkm/mkm-life/public/data"
 
@@ -108,6 +109,53 @@ def _pick_logos_trigger(guard: dict[str, Any] | None, month: int, contracts: dic
     return "default_logos", str(triggers.get("default_logos", ""))
 
 
+def _split_fact_inference(body_ko: str) -> tuple[str, str]:
+    """Split layer body into FACT (engine/lived) vs inference (HYPO / parenting read)."""
+    fact_parts: list[str] = []
+    infer_parts: list[str] = []
+    for line in body_ko.splitlines():
+        s = line.strip()
+        if not s:
+            continue
+        if s.startswith("[FACT]") or (s.startswith("- ") and "[HYPO" not in s):
+            fact_parts.append(s)
+        else:
+            infer_parts.append(s)
+    return "\n".join(fact_parts), "\n".join(infer_parts)
+
+
+def _layer_with_lines(
+    layer: dict[str, Any],
+    *,
+    sasang_lived_note: str = "",
+) -> dict[str, Any]:
+    body = str(layer.get("body_ko") or "")
+    fact_line, inference_line = _split_fact_inference(body)
+    if layer.get("layer_id") == "sasang" and sasang_lived_note:
+        inference_line = (
+            f"{inference_line}\n\n[HYPO · lived] {sasang_lived_note}".strip()
+            if inference_line
+            else f"[HYPO · lived] {sasang_lived_note}"
+        )
+    out = dict(layer)
+    out["fact_line_ko"] = fact_line
+    out["inference_line_ko"] = inference_line
+    return out
+
+
+def _sasang_lived_note_from_anchor(anchor_path: Path) -> str:
+    if not anchor_path.is_file():
+        return ""
+    anchor = _read(anchor_path)
+    for block in anchor.get("supplementary_axes") or []:
+        if not isinstance(block, dict) or block.get("axis") != "sasang_lifestyle":
+            continue
+        resp = block.get("responses") or {}
+        if isinstance(resp, dict):
+            return str(resp.get("dance_next_day_qualifier_ko") or "").strip()
+    return ""
+
+
 def _core_body(v4: dict[str, Any], month: int) -> str:
     b1 = v4.get("block_1_core_v3_lived") or {}
     lines = list(b1.get("school_teacher") or []) + list(b1.get("study_engine") or [])
@@ -164,6 +212,7 @@ def build_monthly_sequential(
     monthly = _monthly_rows(myeongni, year=year)
     wealth_peaks = set(v4.get("block_2_myeongni_peaks_2026", {}).get("wealth_peak_months") or [])
     romance_peaks = set(v4.get("block_2_myeongni_peaks_2026", {}).get("romance_peer_peak_months") or [])
+    sasang_lived_note = _sasang_lived_note_from_anchor(DEFAULT_ANCHOR)
 
     months_out: list[dict[str, Any]] = []
     for m in range(1, 13):
@@ -216,13 +265,13 @@ def build_monthly_sequential(
                     "romance_peer_peak": m in romance_peaks,
                     "quiet_mentor_study": m in (8, 9),
                 },
-                "layers": layers,
+                "layers": [_layer_with_lines(ly, sasang_lived_note=sasang_lived_note) for ly in layers],
             }
         )
 
     doc: dict[str, Any] = {
         "schema": "daughter_2026_monthly_sequential_v1",
-        "version": "1.0.0",
+        "version": "1.1.0",
         "anchor_id": v4.get("anchor_id") or "family_anchor_our_daughter_v1",
         "calendar_year": year,
         "generated_at_utc": _now(),
@@ -273,7 +322,14 @@ def render_markdown(doc: dict[str, Any]) -> str:
         lines.append("")
         for layer in block.get("layers") or []:
             lines.append(f"### {layer.get('label_ko')}")
-            lines.append(str(layer.get("body_ko") or ""))
+            if layer.get("fact_line_ko"):
+                lines.append("**FACT**")
+                lines.append(str(layer.get("fact_line_ko") or ""))
+            if layer.get("inference_line_ko"):
+                lines.append("**예상 [HYPO]**")
+                lines.append(str(layer.get("inference_line_ko") or ""))
+            if not layer.get("fact_line_ko") and not layer.get("inference_line_ko"):
+                lines.append(str(layer.get("body_ko") or ""))
             lines.append("")
     lines.append("---")
     lines.append("[HYPO][research_only] Track A·실매매·임상·연인 단정 없음.")
@@ -335,11 +391,37 @@ def main() -> int:
         md_path.write_text(render_markdown(doc), encoding="utf-8")
         print(f"Wrote {_rel(md_path)}")
 
+    if not args.skip_md:
+        import subprocess
+        import sys
+
+        companion = ROOT / "scripts/build_daughter_2026_monthly_companion_reports_v1.py"
+        if companion.is_file():
+            r = subprocess.run(
+                [sys.executable, str(companion), "--json", str(out_path)],
+                cwd=ROOT,
+            )
+            if r.returncode != 0:
+                raise SystemExit(f"companion reports failed exit {r.returncode}")
+        annual = ROOT / "scripts/build_daughter_2026_annual_report_for_daughter_v1.py"
+        if annual.is_file():
+            r2 = subprocess.run(
+                [sys.executable, str(annual), "--json", str(out_path)],
+                cwd=ROOT,
+            )
+            if r2.returncode != 0:
+                raise SystemExit(f"annual daughter report failed exit {r2.returncode}")
+
     if args.copy_mkmlife_public:
         MKMLIFE_PUBLIC.mkdir(parents=True, exist_ok=True)
         dest = MKMLIFE_PUBLIC / "daughter_2026_monthly_sequential_v1.json"
         dest.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"Wrote {_rel(dest)}")
+        annual_md = ROOT / "reports/daughter_2026_annual_report_for_daughter_ko_v1_latest.md"
+        if annual_md.is_file():
+            annual_dest = MKMLIFE_PUBLIC / "daughter_2026_annual_report_ko_v1.md"
+            annual_dest.write_text(annual_md.read_text(encoding="utf-8"), encoding="utf-8")
+            print(f"Wrote {_rel(annual_dest)}")
 
     return 0
 
