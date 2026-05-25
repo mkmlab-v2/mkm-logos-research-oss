@@ -82,6 +82,9 @@ $jsonLogosChronologyOverlay = Join-Path $staging "showroom_logos_chronology_over
 $htmlSaju = Join-Path $staging "public_showroom_probabilistic_saju_v1.html"
 $jsonSaju = Join-Path $staging "showroom_saju_hour_bundle_demo_v1.json"
 $htmlWireInterAgentV3 = Join-Path $staging "public_showroom_mkm_inter_agent_wire_v3.html"
+$htmlSavingNews = Join-Path $staging "public_showroom_saving_the_news_matrix_v1.html"
+$jsonSavingNewsPanel = Join-Path $staging "saving_the_news_matrix_panel_slice_v1_latest.json"
+$jsonSavingNewsTopology = Join-Path $staging "saving_the_news_showroom_topology_slice_v1_latest.json"
 
 if ($RefreshStaging) {
     Write-Host "[showroom-vps-sync] RefreshStaging: track_c chain -> deploy_showroom_static" -ForegroundColor Cyan
@@ -178,7 +181,10 @@ function Invoke-ScpShowroomPair {
             @{ Path = $jsonLogosChronologyOverlay; Label = "logos chronology overlay JSON" },
             @{ Path = $htmlSaju; Label = "probabilistic saju HTML" },
             @{ Path = $jsonSaju; Label = "saju hour bundle JSON" },
-            @{ Path = $htmlWireInterAgentV3; Label = "MKM inter-agent wire v3 HTML" }
+            @{ Path = $htmlWireInterAgentV3; Label = "MKM inter-agent wire v3 HTML" },
+            @{ Path = $htmlSavingNews; Label = "Saving the News matrix HTML" },
+            @{ Path = $jsonSavingNewsPanel; Label = "Saving the News panel slice JSON" },
+            @{ Path = $jsonSavingNewsTopology; Label = "Saving the News topology slice JSON" }
         )) {
         if (Test-Path -LiteralPath $pair.Path) {
             $argv += $pair.Path

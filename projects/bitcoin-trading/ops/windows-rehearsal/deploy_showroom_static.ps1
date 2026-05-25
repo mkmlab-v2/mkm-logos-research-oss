@@ -21,6 +21,7 @@
 #   public_showroom_meaning_topology_qa_v2.html + showroom_meaning_topology_qa_presets_v1.json (optional; Q&A studio + ECharts highlight; build_showroom_meaning_topology_qa_presets_v1.py)
 #   public_showroom_logos_oracle_v3.html + v4 (visual path) + v5 (enterprise) + v6 (commercial) + showroom_logos_chronology_overlay_v1.json
 #   public_showroom_probabilistic_saju_v1.html + showroom_saju_hour_bundle_demo_v1.json  (see scripts/run_saju_hour_candidate_bundle_v1.py)
+#   public_showroom_saving_the_news_matrix_v1.html + saving_the_news_*_slice_v1_latest.json (Run-SavingTheNewsShowroomLocalSmoke_v1.ps1 / build_saving_the_news_showroom_topology_slice_v1.py)
 
 param(
     [string]$WebRoot = "",
@@ -40,6 +41,8 @@ $wsRoot = if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
     (Resolve-Path -LiteralPath $WorkspaceRoot).Path
 }
 $topologyArtifact = Join-Path $wsRoot "docs\final\artifacts\showroom_topology_radar_snapshot_v1_latest.json"
+$savingNewsPanelArtifact = Join-Path $wsRoot "docs\final\artifacts\saving_the_news_matrix_panel_slice_v1_latest.json"
+$savingNewsTopologyArtifact = Join-Path $wsRoot "docs\final\artifacts\saving_the_news_showroom_topology_slice_v1_latest.json"
 $files = @(
     @{ Name = "public_showroom_poll.html"; Src = Join-Path $mvp "public_showroom_poll.html" },
     @{ Name = "public_showroom_board_minimal.html"; Src = Join-Path $mvp "public_showroom_board_minimal.html" },
@@ -63,7 +66,10 @@ $files = @(
     @{ Name = "showroom_logos_graph_wire_rag_poc_v1.json"; Src = Join-Path $mvp "showroom_logos_graph_wire_rag_poc_v1.json"; Optional = $true },
     @{ Name = "public_showroom_probabilistic_saju_v1.html"; Src = Join-Path $mvp "public_showroom_probabilistic_saju_v1.html" },
     @{ Name = "showroom_saju_hour_bundle_demo_v1.json"; Src = Join-Path $mvp "showroom_saju_hour_bundle_demo_v1.json" },
-    @{ Name = "public_showroom_mkm_inter_agent_wire_v3.html"; Src = Join-Path $mvp "public_showroom_mkm_inter_agent_wire_v3.html"; Optional = $true }
+    @{ Name = "public_showroom_mkm_inter_agent_wire_v3.html"; Src = Join-Path $mvp "public_showroom_mkm_inter_agent_wire_v3.html"; Optional = $true },
+    @{ Name = "public_showroom_saving_the_news_matrix_v1.html"; Src = Join-Path $mvp "public_showroom_saving_the_news_matrix_v1.html"; Optional = $true },
+    @{ Name = "saving_the_news_matrix_panel_slice_v1_latest.json"; Src = $savingNewsPanelArtifact; Optional = $true },
+    @{ Name = "saving_the_news_showroom_topology_slice_v1_latest.json"; Src = $savingNewsTopologyArtifact; Optional = $true }
 )
 
 $destRoot = $WebRoot
