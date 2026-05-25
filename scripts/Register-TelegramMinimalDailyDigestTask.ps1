@@ -48,13 +48,15 @@ foreach ($n in @('TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID')) {
 }
 $fortunePy = Join-Path '__WORKSPACE__' 'scripts\build_commander_daily_fortune_v1.py'
 [Environment]::SetEnvironmentVariable('MKM_TELEGRAM_DIGEST_STYLE', 'advanced', 'Process')
+$py = (Get-Command py -ErrorAction SilentlyContinue).Source
+if (-not $py) { $py = 'py' }
 if (Test-Path -LiteralPath $fortunePy) {
-  py $fortunePy --skip-regenerate
-  if ($LASTEXITCODE -ne 0) { Write-Warning "commander daily fortune exit $LASTEXITCODE; abort send."; exit $LASTEXITCODE }
+  & $py $fortunePy --skip-regenerate
+  if ($LASTEXITCODE -ne 0) { Write-Warning "commander daily fortune exit $LASTEXITCODE; continue to briefing." }
 }
-py scripts/build_commander_telegram_advanced_briefing_v1.py --archive
+& $py scripts/build_commander_telegram_advanced_briefing_v1.py --archive
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-py scripts/send_telegram_minimal_ops_digest_v1.py --style advanced
+& $py scripts/send_telegram_minimal_ops_digest_v1.py --style advanced
 exit $LASTEXITCODE
 '@
 $loader = $loader.Replace('__WORKSPACE__', $WorkspaceRoot.Replace("'", "''"))
