@@ -33,6 +33,9 @@ param(
     # When false (default): pass -AllowPolicyLockedGoNoGo to Verify-TradingAutomationHealth so expected
     # Trinity LOCKED_MODE NO_GO does not fail the whole safe-ops tail (disk policy, not broken automation).
     [switch]$StrictTradingGoNoGo,
+    # Optional strict mode: require MKM-Security-Integrity-Check-5min to be enabled.
+    [switch]$StrictSecurityIntegrityTaskEnabled,
+    # Forwarded to Verify-TradingAutomationHealth (Prophecy lane closure / local dev).
     [switch]$AllowDisabledSecurityIntegrityTask
 )
 
@@ -155,6 +158,9 @@ if (Test-Path -LiteralPath $verifyScript) {
     }
     if (-not $StrictTradingGoNoGo) {
         $verifyArgs += "-AllowPolicyLockedGoNoGo"
+    }
+    if ($StrictSecurityIntegrityTaskEnabled) {
+        $verifyArgs += "-StrictSecurityIntegrityTaskEnabled"
     }
     if ($AllowDisabledSecurityIntegrityTask) {
         $verifyArgs += "-AllowDisabledSecurityIntegrityTask"
