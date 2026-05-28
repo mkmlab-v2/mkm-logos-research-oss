@@ -38,17 +38,19 @@ foreach ($n in @('TELEGRAM_BOT_TOKEN', 'TELEGRAM_CHAT_ID')) {
   if ($u) { [Environment]::SetEnvironmentVariable($n, $u, 'Process') }
 }
 Set-Location -LiteralPath '__WORKSPACE__'
-py scripts/fetch_kospi_yfinance_csv.py
+$py = (Get-Command py -ErrorAction SilentlyContinue).Source
+if (-not $py) { $py = 'py' }
+& $py scripts/fetch_kospi_yfinance_csv.py
 if ($LASTEXITCODE -ne 0) { Write-Warning "kospi fetch exit $LASTEXITCODE" }
-py scripts/fetch_btc_yfinance_csv.py
+& $py scripts/fetch_btc_yfinance_csv.py
 if ($LASTEXITCODE -ne 0) { Write-Warning "btc fetch exit $LASTEXITCODE" }
-py scripts/fetch_nasdaq_yfinance_csv.py
+& $py scripts/fetch_nasdaq_yfinance_csv.py
 if ($LASTEXITCODE -ne 0) { Write-Warning "nasdaq fetch exit $LASTEXITCODE" }
-py scripts/score_commander_evening_briefing_v1.py --skip-kospi-fetch
+& $py scripts/score_commander_evening_briefing_v1.py --skip-kospi-fetch
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-py scripts/run_commander_briefing_evolution_v1.py
+& $py scripts/run_commander_briefing_evolution_v1.py
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-py scripts/send_telegram_minimal_ops_digest_v1.py --style evening_review
+& $py scripts/send_telegram_minimal_ops_digest_v1.py --style evening_review
 exit $LASTEXITCODE
 '@
 $loader = $loader.Replace('__WORKSPACE__', $WorkspaceRoot.Replace("'", "''"))
