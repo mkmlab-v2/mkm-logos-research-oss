@@ -1,0 +1,37 @@
+---
+title: Design/Showroom development lane (UI · 공개 쇼룸)
+alwaysApply: false
+description: Design/Showroom·jemaai·no1kmedi UI 작업 시 — MISSION_LOG Design 행 + 도메인/쇼룸 SSOT만 선독. 사상 4AI 코어와 혼동 금지.
+---
+
+# Design/Showroom lane (Cursor 개발 레인 · Fact-Lock)
+
+**Purpose:** jemaai.cloud 쇼룸·도메인 포트폴리오·공개 UI — **레포 전역 스캔 없이** 쇼룸·허브 SSOT만 선로드한다.
+
+**NOT this lane:** MKM **사상 4AI**(태양/소양/태음/소음) — **B-track 시장 충돌 코어**와 1:1 매핑 금지.
+
+## 재개 트리거 (동등)
+
+「**Design 레인**」「**쇼룸 레인**」「**Design/Showroom**」「미션로그 이어서 · Design」「미션로그 이어서 · 쇼룸」
+
+## ALWAYS (첫 턴 · 다른 답변보다 먼저)
+
+1. `MISSION_LOG.md` — 표 「다음 1타」에서 **`Design/Showroom` 행만** 읽는다(전체 핸드오프 블록 **기본 생략**).
+2. `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` — **§1.1·§1.1b** (도메인 역할·CTA).
+3. `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — 공개 vs 비공개 경계.
+4. `projects/no1kmedi` 편집 시: `.cursor/rules/mkm-no1kmedi-design-guardrail-v1.mdc` (globs 자동) + `npm run check:design-tokens`(해당 디렉터리).
+5. 카피·IP: `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.7 — 과장·%·이론 비노출.
+
+**웹 스모크:** `mkm-browser-automation-v1.mdc` — API·`browser_*` Tier 2; CF 대시보드 로그인은 Tier 3(지휘관).
+
+## NEVER
+
+- jemaai.cloud 쇼룸 색·역할을 **no1kmedi 허브**에 무단 이식 (`mkm-no1kmedi-design-guardrail`).
+- MS 압축 **47.5%**·Track A KPI를 쇼룸 **헤드라인**으로 사용 (`FAIL-COMP-004`).
+- `sync_showroom_to_vps.ps1`·nginx·실배포를 **디자인 픽셀 작업과 동일 레인**으로 섞지 않음(배포는 지휘관 승인·별 턴).
+- 사상 4AI를 **디자인 전담 봇**으로 재명명.
+
+## OPTIONAL
+
+- 쇼룸 sync: `AGENTS.md` jemaai.cloud 절 · `pwsh .\scripts\sync_showroom_to_vps.ps1 -RefreshStaging`
+- 페르소나: `Invoke-MkmPersonaHealth_v1.ps1 -Persona ShowroomTrackCHealth` (배포·예약 점검)

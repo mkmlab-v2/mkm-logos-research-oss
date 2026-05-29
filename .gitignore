@@ -15,6 +15,10 @@
 !.cursor/environment/
 !.cursor/environment/**
 !.cursor/rules/cursor-cloud-sandbox-boundary.mdc
+# Dev lanes: scoped SSOT preload (Infra/GPU · Design/Showroom; share across clones)
+!.cursor/rules/infra-lane.mdc
+!.cursor/rules/design-lane.mdc
+!.cursor/rules/mission-log-combat-ssot.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md
