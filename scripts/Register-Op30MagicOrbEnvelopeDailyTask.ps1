@@ -41,4 +41,5 @@ Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger `
     -Settings $settings -Principal $principal -Description $description -Force | Out-Null
 
 Write-Host "Registered: $TaskName daily at $DailyAt (Invoke-Op30AutoRun_v1.ps1)"
+Write-Host "Verify: powershell -File scripts\Verify-Op30MagicOrbEnvelopeDailyTask_v1.ps1"
 Write-Host "Remove: powershell -File scripts\Register-Op30MagicOrbEnvelopeDailyTask.ps1 -Remove"

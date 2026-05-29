@@ -1,14 +1,23 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  O-P30 Phase 2 daily: refresh envelope, optional CF asset deploy, live probe.
+  O-P30 Phase 2 daily: refresh envelope, public Logos-only assets, internal KV, optional deploy, live probe.
+
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-Op30Phase2Daily_v1.ps1
+
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-Op30Phase2Daily_v1.ps1 -DeployAssets -IncludeTierMatrixSmoke
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
     [switch]$DeployAssets,
     [switch]$FullDeploy,
     [switch]$SkipProbe,
-    [switch]$IncludeLivePatrol
+    [switch]$SkipKvSync,
+    [switch]$IncludeLivePatrol,
+    [switch]$IncludeTierMatrixSmoke,
+    [switch]$IncludeOraclePreviewSmoke
 )
 
 $ErrorActionPreference = "Continue"
@@ -16,20 +25,23 @@ Set-Location -LiteralPath $WorkspaceRoot
 $py = if (Test-Path "$env:WINDIR\py.exe") { "$env:WINDIR\py.exe" } else { "py" }
 $reportPath = Join-Path $WorkspaceRoot "reports\op30_phase2_daily_latest.json"
 $failed = @()
+$mkmlifeRoot = Join-Path $WorkspaceRoot "projects\mkm\mkm-life"
 
 Write-Host "==> envelope assemble" -ForegroundColor Cyan
 & $py scripts/assemble_three_lens_sphere_envelope_v1.py --validate-schema --copy-mkmlife-public
 if ($LASTEXITCODE -ne 0) { $failed += "envelope" }
 
-$src = Join-Path $WorkspaceRoot "projects\mkm\mkm-life\public\data\three_lens_sphere_envelope_v1.json"
-$assetDir = Join-Path $WorkspaceRoot "projects\mkm\mkm-life\.open-next\assets\data"
-if (Test-Path $src) {
-    New-Item -ItemType Directory -Force -Path $assetDir | Out-Null
-    Copy-Item -LiteralPath $src -Destination (Join-Path $assetDir "three_lens_sphere_envelope_v1.json") -Force
-    Write-Host "Synced envelope -> .open-next/assets/data/" -ForegroundColor DarkGray
+Write-Host "==> public Logos-only asset sync" -ForegroundColor Cyan
+powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $mkmlifeRoot "scripts\Sync-MkmlifePublicEnvelopeAssets_v1.ps1")
+if ($LASTEXITCODE -ne 0) { $failed += "public_asset_sync" }
+
+$kvOk = $true
+if (-not $SkipKvSync) {
+    Write-Host "==> internal full envelope KV sync (remote)" -ForegroundColor Cyan
+    powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $mkmlifeRoot "scripts\Sync-MkmlifeInternalEnvelopeKv_v1.ps1")
+    if ($LASTEXITCODE -ne 0) { $failed += "internal_envelope_kv"; $kvOk = $false }
 }
 
-$mkmlifeRoot = Join-Path $WorkspaceRoot "projects\mkm\mkm-life"
 if ($FullDeploy) {
     Write-Host "==> mkmlife full deploy (worker patches)" -ForegroundColor Cyan
     Push-Location $mkmlifeRoot
@@ -52,6 +64,29 @@ if ($FullDeploy) {
             if ($LASTEXITCODE -ne 0) { $failed += "asset_deploy" }
         } finally { Pop-Location }
     }
+}
+
+$tierMatrixOk = $null
+if ($IncludeTierMatrixSmoke) {
+    Write-Host "==> multilens tier matrix smoke (mkmlife.com)" -ForegroundColor Cyan
+    Push-Location $mkmlifeRoot
+    try {
+        $env:MKMLIFE_BASE_URL = "https://mkmlife.com"
+        npm run smoke:multilens-tier-matrix
+        if ($LASTEXITCODE -ne 0) { $failed += "tier_matrix_smoke"; $tierMatrixOk = $false }
+        else { $tierMatrixOk = $true }
+    } finally { Pop-Location }
+}
+
+$previewSmokeOk = $null
+if ($IncludeOraclePreviewSmoke) {
+    Write-Host "==> oracle preview token smoke (mkmlife.com)" -ForegroundColor Cyan
+    Push-Location $mkmlifeRoot
+    try {
+        npm run smoke:oracle-preview
+        if ($LASTEXITCODE -ne 0) { $failed += "oracle_preview_smoke"; $previewSmokeOk = $false }
+        else { $previewSmokeOk = $true }
+    } finally { Pop-Location }
 }
 
 if ($IncludeLivePatrol) {
@@ -84,6 +119,9 @@ if (Test-Path $envPath) {
     envelope_final_action = $finalAction
     deploy_assets = $DeployAssets.IsPresent
     full_deploy = $FullDeploy.IsPresent
+    internal_kv_sync_ok = $kvOk
+    tier_matrix_smoke_ok = $tierMatrixOk
+    oracle_preview_smoke_ok = $previewSmokeOk
     probe_ok = $probeOk
 } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $reportPath -Encoding UTF8
 
