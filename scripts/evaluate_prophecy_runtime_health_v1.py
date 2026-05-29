@@ -20,7 +20,8 @@ ART = ROOT / "docs" / "final" / "artifacts"
 DEFAULT_HIT = ART / "prophecy_hit_rate_eval_latest.json"
 DEFAULT_SCORE = ART / "btrack_prophecy_score_latest.json"
 DEFAULT_HYPO = ART / "btrack_hypothesis_prophecy_latest.json"
-DEFAULT_GATES = ART / "prophecy_promotion_gates_v1_latest.json"
+# Ops closure SSOT: daily B-track shadow gates (see build_prophecy_promotion_gates_ssot_pointer_v1.py).
+DEFAULT_GATES = ART / "prophecy_promotion_gates_daily_shadow_v1_latest.json"
 DEFAULT_LIVE_AB = ART / "prophecy_live_ab_summary_v1_latest.json"
 DEFAULT_OUT = ART / "prophecy_runtime_health_guard_latest.json"
 
