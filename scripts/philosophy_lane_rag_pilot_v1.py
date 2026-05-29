@@ -43,6 +43,11 @@ from scripts.logos_rag_query_route_v1 import (  # noqa: E402
     detect_query_route,
     hangul_ratio,
 )
+from scripts.resolve_logos_verse_reference_v1 import (  # noqa: E402
+    DEFAULT_JSONL as LOGOS_VERSE_JSONL,
+    load_verse_row,
+    resolve_verse_references_in_text,
+)
 from scripts.run_logos_rag_retrieval_round_v1 import (  # noqa: E402
     _encode_query,
     _load_index,
@@ -316,6 +321,55 @@ def _run_cross_lens_fusion() -> tuple[bool, str | None]:
     return True, None
 
 
+def _verse_reference_resolve_payload(raw_q: str) -> dict[str, Any]:
+    """Track L: deterministic verse_id before ANN semantic search."""
+    refs = resolve_verse_references_in_text(raw_q)
+    if not refs:
+        return {"resolved": [], "primary_verse_id": None, "corpus_hits": []}
+    hits: list[dict[str, Any]] = []
+    for r in refs[:3]:
+        row = load_verse_row(r.verse_id, LOGOS_VERSE_JSONL)
+        snippet = None
+        if isinstance(row, dict):
+            for key in ("original_text", "text", "interpretation"):
+                v = row.get(key)
+                if isinstance(v, str) and v.strip():
+                    snippet = v.strip()[:400]
+                    break
+        hits.append(
+            {
+                "verse_id": r.verse_id,
+                "resolve_via": r.resolve_via,
+                "corpus_found": row is not None,
+                "snippet": snippet,
+            }
+        )
+    return {
+        "resolved": [r.to_dict() for r in refs],
+        "primary_verse_id": refs[0].verse_id,
+        "corpus_hits": hits,
+        "track_l_rail": "deterministic_before_ann",
+    }
+
+
+def _blocks_from_direct_verse(verse_doc: dict[str, Any]) -> list[dict[str, Any]]:
+    out: list[dict[str, Any]] = []
+    for hit in verse_doc.get("corpus_hits") or []:
+        if not isinstance(hit, dict) or not hit.get("corpus_found"):
+            continue
+        vid = hit.get("verse_id")
+        out.append(
+            {
+                "source_rail": "logos_verse_reference_resolve_v1",
+                "hypothesis_tag": "[HYPO]",
+                "summary": f"Direct corpus row for {vid!r} (Track L resolver; not ANN top-1).",
+                "detail": hit.get("snippet") or "",
+                "evidence_path": str(LOGOS_VERSE_JSONL.resolve()),
+            }
+        )
+    return out
+
+
 def _blocks_from_ann(ann: dict[str, Any] | None) -> list[dict[str, Any]]:
     if not ann:
         return []
@@ -427,6 +481,8 @@ def main() -> int:
         print("Provide --user-query or both --query-en and --query-ko.", file=sys.stderr)
         return 1
 
+    verse_reference_resolve = _verse_reference_resolve_payload(raw_q)
+
     hybrid_style: HybridStyle = args.hybrid_style  # type: ignore[assignment]
     rag_lane = str(args.rag_lane or "ko_only").strip().lower()
     route_policy = str(args.query_route).strip().lower()
@@ -532,7 +588,8 @@ def main() -> int:
         },
         "forbidden_config_path": str(forbidden_path.resolve()),
         "forbidden_config_fallback": forbidden_cfg_err is not None,
-        "rails_used": ["forbidden_substrings_v1", "logos_rag_query_route_v1", "logos_ann_lite_query_v1"]
+        "verse_reference_resolve": verse_reference_resolve,
+        "rails_used": ["forbidden_substrings_v1", "logos_verse_reference_resolve_v1", "logos_rag_query_route_v1", "logos_ann_lite_query_v1"]
         + (
             ["logos_rag_hybrid_query_v1"]
             if structured_bilingual and rag_lane != "ko_only"
@@ -561,7 +618,9 @@ def main() -> int:
         "cross_lens_fusion_ok": fusion_ok if args.invoke_cross_lens_fusion else None,
         "fusion_artifact_hint": "docs/final/artifacts/cross_lens_rag_fusion_latest.json",
         "m31_hormone_gate": {"status": "skipped_v1", "note": "Pilot v1 does not wire lens_music M31; add in v2 if needed."},
-        "blocks": [] if status == "fallback_rejection" else _blocks_from_ann(ann_doc),
+        "blocks": []
+        if status == "fallback_rejection"
+        else _blocks_from_direct_verse(verse_reference_resolve) + _blocks_from_ann(ann_doc),
     }
 
     if status == "fallback_rejection":

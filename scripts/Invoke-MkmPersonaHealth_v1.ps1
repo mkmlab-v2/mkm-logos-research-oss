@@ -18,6 +18,8 @@
   MarketingWeeklyBundle = Run-MarketingWeeklyDraftBundle_v1.ps1 (tier_0 default; unified queue + LinkedIn + summary)
   MarketingWeeklyBundleReadiness = Verify-MarketingWeeklyDraftBundleTaskReadiness_v1.ps1
   ShowroomTrackCHealth = Invoke-ShowroomTrackCHealth_v1.ps1 (task verify + dual-host smoke + B2B readiness)
+  BtrackProphecyLightRefresh = Run-BtrackProphecyOpsLightRefresh_v1.ps1 (briefing + mkmlife envelope; no full daily chain)
+  BtrackProphecyDailyReadiness = Verify-BtrackProphecyDailyOpsReadiness_v1.ps1 (tasks + chain wiring)
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle
@@ -39,7 +41,7 @@
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'LogosTrackL0')]
     [string]$Persona
 )
 
@@ -77,7 +79,7 @@ try {
         'AmsaengHealth' {
             $script = Join-Path $PSScriptRoot 'run_workspace_automation_health.ps1'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
-            & $ps @common $script
+            & $ps @common $script -IncludeProphecyBtrackScheduledOpsSmoke
             exit $LASTEXITCODE
         }
         'P0' {
@@ -132,6 +134,24 @@ try {
             $script = Join-Path $PSScriptRoot 'Invoke-ShowroomTrackCHealth_v1.ps1'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
             & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+            exit $LASTEXITCODE
+        }
+        'BtrackProphecyLightRefresh' {
+            $script = Join-Path $PSScriptRoot 'Run-BtrackProphecyOpsLightRefresh_v1.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+            exit $LASTEXITCODE
+        }
+        'BtrackProphecyDailyReadiness' {
+            $script = Join-Path $PSScriptRoot 'Verify-BtrackProphecyDailyOpsReadiness_v1.ps1'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+            exit $LASTEXITCODE
+        }
+        'LogosTrackL0' {
+            $script = Join-Path $PSScriptRoot 'run_logos_track_l_l0_readiness_v1.py'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & py -3 $script
             exit $LASTEXITCODE
         }
         default {

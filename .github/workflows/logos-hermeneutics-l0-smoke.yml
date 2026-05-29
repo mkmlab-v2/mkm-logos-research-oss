@@ -1,0 +1,36 @@
+# Track L L0: verse reference resolver + readiness bundle (no LLM, no GPU).
+name: Logos Hermeneutics Track L L0 smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop, "chore/**"]
+    paths:
+      - "scripts/resolve_logos_verse_reference_v1.py"
+      - "scripts/run_logos_track_l_l0_readiness_v1.py"
+      - "scripts/Invoke-MkmPersonaHealth_v1.ps1"
+      - "scripts/philosophy_lane_rag_pilot_v1.py"
+      - "tests/test_resolve_logos_verse_reference_v1.py"
+      - "tests/test_run_logos_track_l_l0_readiness_v1.py"
+      - "docs/final/LOGOS_HERMENEUTICS_TRACK_L_CHARTER_V1.md"
+      - "docs/final/MKM_PROMOTION_GATE_CHECKLIST_L0_L12_V1.md"
+      - "docs/final/artifacts/LOGOS_TRACK_L_L0_READINESS_V1_CONTRACT.json"
+      - ".github/workflows/logos-hermeneutics-l0-smoke.yml"
+
+jobs:
+  l0-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: pytest Track L L0
+        run: |
+          python -m pytest \
+            tests/test_resolve_logos_verse_reference_v1.py \
+            tests/test_run_logos_track_l_l0_readiness_v1.py \
+            -q --tb=short

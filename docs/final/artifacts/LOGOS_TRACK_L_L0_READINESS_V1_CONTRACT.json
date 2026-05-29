@@ -1,0 +1,18 @@
+{
+  "schema": "logos_track_l_l0_readiness_v1_contract_meta_v1",
+  "artifact_schema": "logos_track_l_l0_readiness_v1",
+  "runner_version": "1.0.0",
+  "purpose": "Track L L0: charter + corpus manifest + John 19:34 → Jhn.19.34 resolver + corpus row smoke.",
+  "default_output_path": "docs/final/artifacts/logos_track_l_l0_readiness_v1_latest.json",
+  "runner": "scripts/run_logos_track_l_l0_readiness_v1.py",
+  "resolver": "scripts/resolve_logos_verse_reference_v1.py",
+  "charter": "docs/final/LOGOS_HERMENEUTICS_TRACK_L_CHARTER_V1.md",
+  "checklist": "docs/final/MKM_PROMOTION_GATE_CHECKLIST_L0_L12_V1.md",
+  "hypothesis_tier": "B",
+  "track": "L",
+  "forbidden": {
+    "a_track_live_trigger": true,
+    "compression_kpi_merge": true,
+    "logos_gating_market_action": true
+  }
+}
