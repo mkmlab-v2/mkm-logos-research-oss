@@ -16,13 +16,13 @@ $repoRoot = "C:\workspace"
 $mkmLife = Join-Path $repoRoot "projects\mkm\mkm-life"
 
 function Invoke-Git {
-    param([string]$Cwd, [string[]]$Args)
-    $display = "git -C `"$Cwd`" $($Args -join ' ')"
+    param([string]$Cwd, [string[]]$GitArgs)
+    $display = "git -C `"$Cwd`" $($GitArgs -join ' ')"
     if ($DryRun) {
         Write-Host "[DRY] $display"
         return
     }
-    & git -C $Cwd @Args
+    & git -C $Cwd @GitArgs
     if ($LASTEXITCODE -ne 0) { throw "Failed: $display" }
 }
 
