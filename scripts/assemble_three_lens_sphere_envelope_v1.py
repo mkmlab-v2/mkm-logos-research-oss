@@ -19,7 +19,9 @@ DEFAULT_TOPOLOGY = ROOT / "docs/final/artifacts/showroom_meaning_topology_graph_
 DEFAULT_CDI = ROOT / "docs/final/artifacts/logos_cross_domain_interface_latest.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/three_lens_sphere_envelope_v1_latest.json"
 SCHEMA_PATH = ROOT / "docs/final/schemas/three_lens_sphere_envelope_v1.schema.json"
-MKMLIFE_PUBLIC = ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_v1.json"
+MKMLIFE_PUBLIC_LEGACY = ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_v1.json"
+MKMLIFE_PUBLIC_LOGOS = ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_public_v1.json"
+MKMLIFE_INTERNAL = ROOT / "projects/mkm/mkm-life/data/internal/three_lens_sphere_envelope_v1.json"
 
 HUB_V6 = "https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1"
 HUB_TOPOLOGY = "https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html"
@@ -324,6 +326,36 @@ def assemble(
     return envelope
 
 
+def strip_public_envelope(full: dict[str, Any]) -> dict[str, Any]:
+    """Public oracle-sphere: Logos axis only — hide myeongni/sasang IP and internal paths."""
+    logos = dict((full.get("lenses") or {}).get("logos") or {})
+    for key in ("artifact_path",):
+        logos.pop(key, None)
+    public: dict[str, Any] = {
+        k: v
+        for k, v in full.items()
+        if k
+        not in (
+            "lenses",
+            "inputs_manifest",
+            "rag_layers",
+            "rag_layers_resolved",
+        )
+    }
+    public["profile_mode"] = "public_logos_only"
+    public["exposure_tier"] = "public_demo"
+    public["lenses"] = {"logos": logos}
+    public["layer_b_explore"] = {
+        "default_enabled": False,
+        "enable_query_flag": "explore",
+        "rag_graph_runtime": False,
+    }
+    graph_viz = dict(public.get("graph_viz") or {})
+    graph_viz.pop("graph_slice_path", None)
+    public["graph_viz"] = graph_viz
+    return public
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description="Assemble three-lens magic sphere envelope v1 (read-only).")
     ap.add_argument("--fusion-json", type=Path, default=DEFAULT_FUSION)
@@ -341,11 +373,20 @@ def main() -> None:
     print(f"Wrote {_rel(args.out_json)} final_action={envelope['final_action']}")
 
     if args.copy_mkmlife_public:
-        MKMLIFE_PUBLIC.parent.mkdir(parents=True, exist_ok=True)
-        MKMLIFE_PUBLIC.write_text(
+        MKMLIFE_INTERNAL.parent.mkdir(parents=True, exist_ok=True)
+        MKMLIFE_INTERNAL.write_text(
             json.dumps(envelope, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
         )
-        print(f"Wrote {_rel(MKMLIFE_PUBLIC)}")
+        print(f"Wrote {_rel(MKMLIFE_INTERNAL)} (internal full envelope)")
+        public = strip_public_envelope(envelope)
+        MKMLIFE_PUBLIC_LOGOS.parent.mkdir(parents=True, exist_ok=True)
+        MKMLIFE_PUBLIC_LOGOS.write_text(
+            json.dumps(public, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
+        print(f"Wrote {_rel(MKMLIFE_PUBLIC_LOGOS)} (public Logos-only)")
+        if MKMLIFE_PUBLIC_LEGACY.is_file():
+            MKMLIFE_PUBLIC_LEGACY.unlink()
+            print(f"Removed legacy {_rel(MKMLIFE_PUBLIC_LEGACY)}")
 
     if args.validate_schema and SCHEMA_PATH.is_file():
         try:

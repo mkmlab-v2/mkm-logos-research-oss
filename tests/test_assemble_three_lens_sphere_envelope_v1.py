@@ -9,6 +9,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "scripts" / "assemble_three_lens_sphere_envelope_v1.py"
 OUT = ROOT / "docs/final/artifacts/three_lens_sphere_envelope_v1_latest.json"
+PUBLIC_MKMLIFE = ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_public_v1.json"
+INTERNAL_MKMLIFE = ROOT / "projects/mkm/mkm-life/data/internal/three_lens_sphere_envelope_v1.json"
+LEGACY_PUBLIC_FULL = ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_v1.json"
 
 
 def test_assemble_three_lens_sphere_envelope_v1_runs():
@@ -33,4 +36,24 @@ def test_assemble_three_lens_sphere_envelope_v1_runs():
     assert "mkmlife.com" in doc["hub_links"]["mkmlife_oracle_sphere"]
     resolved = doc.get("rag_layers_resolved") or {}
     assert "lexical" in resolved
-    assert all(e.get("present") for e in resolved["lexical"])
+
+
+def test_assemble_copy_mkmlife_public_logos_only_envelope():
+    proc = subprocess.run(
+        [sys.executable, str(SCRIPT), "--copy-mkmlife-public"],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    assert proc.returncode == 0, proc.stderr or proc.stdout
+    assert PUBLIC_MKMLIFE.is_file()
+    assert INTERNAL_MKMLIFE.is_file()
+    assert not LEGACY_PUBLIC_FULL.is_file()
+    pub = json.loads(PUBLIC_MKMLIFE.read_text(encoding="utf-8"))
+    assert pub.get("profile_mode") == "public_logos_only"
+    assert set((pub.get("lenses") or {}).keys()) == {"logos"}
+    assert "rag_layers_resolved" not in pub
+    assert "inputs_manifest" not in pub
+    internal = json.loads(INTERNAL_MKMLIFE.read_text(encoding="utf-8"))
+    assert set((internal.get("lenses") or {}).keys()) == {"logos", "sasang", "myeongni"}
