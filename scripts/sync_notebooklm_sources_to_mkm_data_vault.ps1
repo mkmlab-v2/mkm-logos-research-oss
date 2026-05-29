@@ -539,4 +539,13 @@ if ($WhatIf) {
 $stampPath = Join-Path $destRoot "_LAST_SYNC.txt"
 Write-Utf8NoBom -Path $stampPath -Text $stampText
 
+# Local workspace fallback for 07:10 readiness when G: shared drive is not mounted yet.
+$localStampRoot = Join-Path $WorkspaceRoot "vault\notebooklm_sources"
+if (-not (Test-Path -LiteralPath $localStampRoot)) {
+    New-Item -ItemType Directory -Path $localStampRoot -Force | Out-Null
+}
+$localStampPath = Join-Path $localStampRoot "_LAST_SYNC.txt"
+Write-Utf8NoBom -Path $localStampPath -Text $stampText
+Write-Host "NotebookLM sync marker mirrored -> $localStampPath"
+
 Write-Host "NotebookLM vault mirror OK -> $destRoot (copied=$copied skipped=$skipped; optional-absent uses gray line, unexpected absent uses WARNING)"
