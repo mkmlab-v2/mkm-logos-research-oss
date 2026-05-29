@@ -33,7 +33,8 @@ def test_convert_script_smoke(tmp_path: Path) -> None:
     )
     assert r.returncode == 0, r.stderr
     lines = [x for x in out.read_text(encoding="utf-8").splitlines() if x.strip()]
-    assert len(lines) == 3
+    expected = sum(1 for line in FIXTURE.read_text(encoding="utf-8").splitlines() if line.strip())
+    assert len(lines) == expected
     row = json.loads(lines[0])
     assert row["schema"] == "log_myeongri_correlation_input_row_v1"
     assert row["run_metadata"]["run_id"] == "pytest_convert_v1"

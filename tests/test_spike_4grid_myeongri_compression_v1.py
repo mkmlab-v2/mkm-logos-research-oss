@@ -9,9 +9,33 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+CODEBOOK_DIR = ROOT / "docs" / "final" / "artifacts" / "derived" / "myeongri_sasang_codebook_spike_v1"
+
+
+def _ensure_spike_codebook() -> None:
+    gt = CODEBOOK_DIR / "global_tokens.json"
+    if gt.is_file():
+        try:
+            doc = json.loads(gt.read_text(encoding="utf-8"))
+            if doc.get("tokens"):
+                return
+        except json.JSONDecodeError:
+            pass
+    build = ROOT / "scripts" / "build_myeongri_sasang_codebook_spike_v1.py"
+    cp = subprocess.run(
+        [sys.executable, str(build)],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=120,
+    )
+    assert cp.returncode == 0, cp.stderr
 
 
 def test_spike_4grid_schema_smoke() -> None:
+    _ensure_spike_codebook()
     script = ROOT / "scripts" / "spike_4grid_myeongri_compression_v1.py"
     cp = subprocess.run(
         [sys.executable, str(script), "--samples", "5", "--seed", "1", "--stdout-only"],
