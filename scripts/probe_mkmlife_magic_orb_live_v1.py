@@ -22,10 +22,28 @@ CHECKS = [
         "max_bytes": 16384,
     },
     {
-        "id": "mkmlife_envelope",
-        "url": "https://mkmlife.com/data/three_lens_sphere_envelope_v1.json",
-        "markers": ['"schema": "three_lens_sphere_envelope_v1"', '"hypothesis_tier": "B"'],
+        "id": "mkmlife_envelope_public",
+        "url": "https://mkmlife.com/data/three_lens_sphere_envelope_public_v1.json",
+        "markers": [
+            '"schema": "three_lens_sphere_envelope_v1"',
+            '"profile_mode": "public_logos_only"',
+            '"hypothesis_tier": "B"',
+        ],
         "max_bytes": 8192,
+    },
+    {
+        "id": "mkmlife_envelope_legacy_404",
+        "url": "https://mkmlife.com/data/three_lens_sphere_envelope_v1.json",
+        "expect_status": 404,
+        "markers": [],
+        "max_bytes": 512,
+    },
+    {
+        "id": "mkmlife_full_envelope_api_unauth",
+        "url": "https://mkmlife.com/api/v1/oracle-sphere/full-envelope",
+        "expect_status": 403,
+        "markers": [],
+        "max_bytes": 512,
     },
     {
         "id": "mkmlife_home",
@@ -69,8 +87,13 @@ def main() -> int:
         max_b = int(row.get("max_bytes") or 4096)
         status, body, err = _fetch(row["url"], max_bytes=max_b)
         missing = [m for m in row["markers"] if m not in body]
-        core_ok = status is not None and 200 <= status < 400 and err is None
-        markers_ok = not missing
+        expect_status = row.get("expect_status")
+        if expect_status is not None:
+            core_ok = status == expect_status
+            markers_ok = True
+        else:
+            core_ok = status is not None and 200 <= status < 400 and err is None
+            markers_ok = not missing
         optional = bool(row.get("optional"))
         ok = core_ok and (markers_ok or optional)
         results.append(
