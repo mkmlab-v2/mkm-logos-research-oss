@@ -47,5 +47,5 @@ Track B chain remains the **vector / distill** lane; Track L adds **deterministi
 
 ## Known quality notes
 
-- `Jhn.19.32`–`Jhn.19.34` may share duplicate paragraph text in ingest (versification QA; separate fix).
+- `Jhn.19.32`–`Jhn.19.34` versification repair: `scripts/repair_logos_jhn_19_32_34_versification_v1.py --write` (backup + per-verse split).
 - RAG pilot missing `John 19:34` was a **routing** issue, not corpus absence — use resolver first.

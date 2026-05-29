@@ -41,7 +41,7 @@
 #>
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'LogosTrackL0')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'LogosTrackL0', 'LogosTrackL1')]
     [string]$Persona
 )
 
@@ -150,6 +150,12 @@ try {
         }
         'LogosTrackL0' {
             $script = Join-Path $PSScriptRoot 'run_logos_track_l_l0_readiness_v1.py'
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+            & py -3 $script
+            exit $LASTEXITCODE
+        }
+        'LogosTrackL1' {
+            $script = Join-Path $PSScriptRoot 'run_logos_track_l_l1_readiness_v1.py'
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
             & py -3 $script
             exit $LASTEXITCODE

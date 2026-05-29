@@ -1,0 +1,17 @@
+{
+  "schema": "sasang_4agent_monitor_policy_v1",
+  "generated_at_utc": "2026-05-29T19:55:00Z",
+  "geumhwa_transition_threshold": 0.58,
+  "auto_injection": {
+    "enabled": true,
+    "force_hold": true,
+    "reduce_exposure": false
+  },
+  "cooldown_bars": 3,
+  "hysteresis": {
+    "consecutive_breach_required": 2,
+    "release_threshold": 0.5
+  },
+  "human_reactivation_required": true,
+  "notes_ko": "Monitor snapshot 2026-05-14 embedded threshold 0.58; restored for Invoke-Sasang4AgentDailyMonitor.ps1."
+}
