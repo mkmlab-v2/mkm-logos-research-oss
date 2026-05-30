@@ -1,13 +1,22 @@
-# Push magic_orb insight payloads to mkmlife KV via POST webhook ([HYPO] B-track).
+# Push magic_orb insight payloads to mkmlife KV via POST webhook or wrangler ([HYPO] B-track).
 param(
     [string]$BaseUrl = "https://mkmlife.com",
     [switch]$DryRun,
-    [switch]$LocalDev
+    [switch]$LocalDev,
+    [switch]$WranglerDirect
 )
 
 $ErrorActionPreference = "Stop"
 $root = if ($env:MKM_WORKSPACE_ROOT) { $env:MKM_WORKSPACE_ROOT } else { "C:\workspace" }
 Set-Location $root
+
+if ($WranglerDirect) {
+    $mkm = Join-Path $root "projects\mkm\mkm-life"
+    $wrArgs = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", (Join-Path $mkm "scripts\Sync-MkmlifeMagicOrbInsightKv_v1.ps1"))
+    if ($DryRun) { $wrArgs += "-WhatIfOnly" }
+    & powershell @wrArgs
+    exit $LASTEXITCODE
+}
 
 if ($LocalDev) { $BaseUrl = "http://127.0.0.1:3105" }
 
