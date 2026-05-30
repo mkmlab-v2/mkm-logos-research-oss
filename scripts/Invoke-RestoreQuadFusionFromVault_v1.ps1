@@ -8,12 +8,26 @@
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
-    [string]$VaultQuadDir = "G:\공유 드라이브\MKM_DATA_VAULT\projects\bitcoin-trading\data\quad_fusion_training",
+    [string]$VaultQuadDir = "",
     [string]$TargetName = "quad_fusion_result_20260308_230751.json",
     [switch]$WhatIfOnly
 )
 
 $ErrorActionPreference = "Stop"
+if ([string]::IsNullOrWhiteSpace($VaultQuadDir)) {
+    $candidates = @()
+    if ($env:MKM_DATA_VAULT_ROOT) {
+        $candidates += Join-Path $env:MKM_DATA_VAULT_ROOT "projects\bitcoin-trading\data\quad_fusion_training"
+    }
+    $candidates += Join-Path (Join-Path "G:" "공유 드라이브\MKM_DATA_VAULT") "projects\bitcoin-trading\data\quad_fusion_training"
+    $candidates += Join-Path (Join-Path "G:" "MKM_DATA_VAULT") "projects\bitcoin-trading\data\quad_fusion_training"
+    foreach ($candidate in $candidates) {
+        if ($candidate -and (Test-Path -LiteralPath $candidate)) {
+            $VaultQuadDir = $candidate
+            break
+        }
+    }
+}
 $destDir = Join-Path $WorkspaceRoot "data\quad_fusion_training"
 $destPath = Join-Path $destDir $TargetName
 
