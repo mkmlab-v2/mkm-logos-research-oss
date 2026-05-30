@@ -34,6 +34,22 @@ def test_bloom_from_router_has_query_center():
     assert doc["stats"]["node_count"] <= 48
 
 
+def test_bloom_router_nodes_use_bridge_label_ko():
+    if not ROUTER.is_file():
+        return
+    mod = _load_builder()
+    router = json.loads(ROUTER.read_text(encoding="utf-8"))
+    doc = mod.build_bloom(query=router.get("query", "test"), router=router)
+    ko_nodes = [n for n in doc["nodes"] if n.get("label_ko") or ("가-힣" in n.get("label", ""))]
+    assert ko_nodes, "expected Korean labels from bridge label_ko"
+    english_only = [
+        n["label"]
+        for n in doc["nodes"]
+        if n.get("kind") not in ("query",) and not (n.get("label_ko") or __import__("re").search(r"[가-힣]", n.get("label", "")))
+    ]
+    assert len(english_only) <= max(4, len(doc["nodes"]) // 4), english_only[:6]
+
+
 def test_bloom_builder_cli_help():
     import subprocess
     import sys

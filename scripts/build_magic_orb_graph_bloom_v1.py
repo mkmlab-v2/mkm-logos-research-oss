@@ -71,17 +71,90 @@ def _label_from_step(step: str) -> str:
     return tail.replace("_", " ")
 
 
-def _node_from_step(step: str) -> dict[str, Any]:
+class _BridgeLabelLookup:
+    """Resolve display labels from logos_concept_bridge_v1 node label_ko."""
+
+    def __init__(self) -> None:
+        self._by_bridge: dict[str, dict[str, str]] = {}
+
+    def _keys_for_step(self, step: str) -> list[str]:
+        keys = [step]
+        if step.startswith("node:"):
+            keys.append(step[5:])
+        elif not step.startswith(("concept:", "function:", "lemma:", "verse:")):
+            keys.append(f"node:{step}")
+        else:
+            keys.append(f"node:{step}")
+        return keys
+
+    def load_bridge(self, bridge_artifact: str) -> None:
+        rel = bridge_artifact.replace("\\", "/").strip()
+        if not rel or rel in self._by_bridge:
+            return
+        mapping: dict[str, str] = {}
+        path = ROOT / rel
+        if path.is_file():
+            try:
+                doc = json.loads(path.read_text(encoding="utf-8-sig"))
+            except json.JSONDecodeError:
+                doc = {}
+            for node in doc.get("nodes") or []:
+                if not isinstance(node, dict):
+                    continue
+                nid = str(node.get("node_id") or "").strip()
+                lko = str(node.get("label_ko") or "").strip()
+                if nid and lko:
+                    mapping[nid] = lko
+                    for alt in self._keys_for_step(nid):
+                        mapping.setdefault(alt, lko)
+                vid = str(node.get("verse_id") or "").strip()
+                if vid and lko:
+                    mapping[vid] = lko
+                    if "::" in vid:
+                        mapping.setdefault(vid.split("::", 1)[-1], lko)
+            q = doc.get("query") or {}
+            if isinstance(q, dict):
+                cid = str(q.get("concept_id") or "").strip()
+                qlko = str(q.get("label_ko") or "").strip()
+                if cid and qlko:
+                    mapping.setdefault(cid, qlko)
+        self._by_bridge[rel] = mapping
+
+    def label_for_verse_id(self, vid: str) -> str | None:
+        for mapping in self._by_bridge.values():
+            for key in (vid, vid.split("::")[-1] if "::" in vid else vid):
+                hit = mapping.get(key)
+                if hit:
+                    return hit
+        return None
+
+    def label_for_step(self, bridge_artifact: str | None, step: str) -> str | None:
+        if not bridge_artifact:
+            return None
+        rel = bridge_artifact.replace("\\", "/").strip()
+        self.load_bridge(rel)
+        mapping = self._by_bridge.get(rel) or {}
+        for key in self._keys_for_step(step):
+            hit = mapping.get(key)
+            if hit:
+                return hit
+        return None
+
+
+def _node_from_step(step: str, *, label_ko: str | None = None) -> dict[str, Any]:
     kind = _kind_from_step(step)
     node_id = _slug_id(step, kind)
+    display = (label_ko or "").strip() or _label_from_step(step)
     row: dict[str, Any] = {
         "id": node_id,
-        "label": _label_from_step(step),
+        "label": display,
         "kind": kind,
         "hub_score": 0.72 if kind == "verse" else 0.58,
     }
+    if label_ko:
+        row["label_ko"] = label_ko
     if kind == "verse":
-        row["ref"] = _label_from_step(step)
+        row["ref"] = display
     return row
 
 
@@ -125,17 +198,25 @@ def bloom_from_router_paths(
 
     q = query.strip()
     if q:
-        add_node({"id": "query::center", "label": q[:48], "kind": "query", "hub_score": 1.0})
+        add_node({"id": "query::center", "label": q[:120], "kind": "query", "hub_score": 1.0})
 
+    label_lookup = _BridgeLabelLookup()
     for path in router.get("paths") or []:
         if not isinstance(path, dict):
             continue
+        bridge_artifact = path.get("bridge_artifact")
+        if isinstance(bridge_artifact, str) and bridge_artifact.strip():
+            label_lookup.load_bridge(bridge_artifact.strip())
         steps = path.get("steps") or []
         prev: str | None = None
         for step in steps:
             if not isinstance(step, str):
                 continue
-            n = _node_from_step(step)
+            lko = label_lookup.label_for_step(
+                bridge_artifact if isinstance(bridge_artifact, str) else None,
+                step,
+            )
+            n = _node_from_step(step, label_ko=lko)
             add_node(n)
             if prev:
                 add_edge(prev, n["id"], "path_step", 0.7)
@@ -147,13 +228,17 @@ def bloom_from_router_paths(
         if not isinstance(vid, str):
             continue
         nid = _verse_node_id(vid)
+        vlko = label_lookup.label_for_verse_id(vid)
+        vlabel = vlko or _verse_label(vid)
         row_v: dict[str, Any] = {
             "id": nid,
-            "label": _verse_label(vid),
+            "label": vlabel,
             "kind": "verse",
             "hub_score": 0.62,
-            "ref": _verse_label(vid),
+            "ref": vlabel,
         }
+        if vlko:
+            row_v["label_ko"] = vlko
         if "::" in vid:
             row_v["corpus"] = vid.split("::")[0]
         add_node(row_v)
@@ -164,13 +249,16 @@ def bloom_from_router_paths(
         if not isinstance(vid, str):
             continue
         nid = _verse_node_id(vid)
+        vlko = label_lookup.label_for_verse_id(vid)
+        vlabel = vlko or _verse_label(vid)
         add_node(
             {
                 "id": nid,
-                "label": _verse_label(vid),
+                "label": vlabel,
                 "kind": "verse",
                 "hub_score": 0.5,
-                "ref": _verse_label(vid),
+                "ref": vlabel,
+                **({"label_ko": vlko} if vlko else {}),
             }
         )
         if "query::center" in seen_nodes:
@@ -185,6 +273,7 @@ def bloom_from_router_paths(
         "non_gating": True,
         "seed_query": q or router.get("query"),
         "disclaimer_ko": DISCLAIMER_KO,
+        "display_locale": "ko",
         "stats": {"node_count": len(nodes), "edge_count": len(edges)},
         "nodes": nodes,
         "edges": edges,
