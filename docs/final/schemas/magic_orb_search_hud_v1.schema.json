@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "magic_orb_search_hud_v1.schema.json",
+  "title": "magic_orb_search_hud_v1",
+  "type": "object",
+  "required": ["schema", "corpus", "theoretical", "this_query", "display_lines"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "magic_orb_search_hud_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "hypothesis_tier": { "enum": ["B"] },
+    "research_only": { "type": "boolean" },
+    "non_gating": { "type": "boolean" },
+    "disclaimer_ko": { "type": "string" },
+    "corpus": {
+      "type": "object",
+      "required": ["verse_count", "atom_count", "meaning_graph_edge_count"],
+      "properties": {
+        "verse_count": { "type": "integer", "minimum": 0 },
+        "atom_count": { "type": "integer", "minimum": 0 },
+        "meaning_graph_edge_count": { "type": "integer", "minimum": 0 },
+        "source_artifact_rel": { "type": "string" }
+      }
+    },
+    "theoretical": {
+      "type": "object",
+      "required": ["pairspace_upper", "mode", "not_evaluated_at_runtime"],
+      "properties": {
+        "pairspace_upper": { "type": "integer", "minimum": 0 },
+        "pairspace_upper_display": { "type": "string" },
+        "mode": { "type": "string" },
+        "hypothesis_tier": { "type": "string" },
+        "not_evaluated_at_runtime": { "type": "boolean" },
+        "note_ko": { "type": "string" }
+      }
+    },
+    "this_query": {
+      "type": "object",
+      "required": ["bridges_matched", "paths", "bloom_nodes", "bloom_edges"],
+      "properties": {
+        "bridges_matched": { "type": "integer", "minimum": 0 },
+        "paths": { "type": "integer", "minimum": 0 },
+        "bloom_nodes": { "type": "integer", "minimum": 0 },
+        "bloom_edges": { "type": "integer", "minimum": 0 },
+        "top_match_score": { "type": "integer", "minimum": 0 },
+        "ann_status": { "type": "string" },
+        "router_kind": { "type": "string" }
+      }
+    },
+    "display_lines": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": { "type": "string" }
+    }
+  }
+}

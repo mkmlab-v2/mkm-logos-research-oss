@@ -19,6 +19,8 @@ DEFAULT_OUT = ROOT / "docs/final/artifacts/magic_orb_graph_bloom_v1_latest.json"
 
 SCHEMA = "magic_orb_graph_bloom_v1"
 VERSION = "1.0.0"
+MAX_ABS_NODE_CAP = 64
+MAX_ABS_EDGE_CAP = 72
 NODE_CAP = 48
 EDGE_CAP = 56
 
@@ -170,19 +172,56 @@ def _verse_label(vid: str) -> str:
     return vid.replace("verse:", "")
 
 
+def _normalize_hub_verse_id(vid: str) -> str:
+    v = vid.strip()
+    if v.startswith("John."):
+        return "Jhn." + v[5:]
+    return v
+
+
+def _enforce_caps(
+    nodes: list[dict[str, Any]],
+    edges: list[dict[str, Any]],
+    *,
+    pinned_ids: set[str],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    if len(nodes) <= NODE_CAP:
+        return nodes, edges[:EDGE_CAP]
+
+    ranked = sorted(
+        nodes,
+        key=lambda n: (
+            0 if n.get("id") in pinned_ids or n.get("id") == "query::center" else 1,
+            -float(n.get("hub_score") or 0),
+        ),
+    )
+    keep_ids = {n["id"] for n in ranked[:NODE_CAP]}
+    trimmed_nodes = [n for n in nodes if n["id"] in keep_ids]
+    trimmed_edges = [
+        e
+        for e in edges
+        if e.get("src") in keep_ids and e.get("dst") in keep_ids
+    ][:EDGE_CAP]
+    return trimmed_nodes, trimmed_edges
+
+
 def bloom_from_router_paths(
     query: str,
     router: dict[str, Any],
     *,
     ann_top_verse_ids: list[str] | None = None,
+    hub_verse_refs: list[str] | None = None,
 ) -> dict[str, Any]:
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
     seen_nodes: set[str] = set()
     seen_edges: set[tuple[str, str, str]] = set()
+    pinned_ids: set[str] = {"query::center"}
 
-    def add_node(n: dict[str, Any]) -> None:
-        if n["id"] in seen_nodes or len(nodes) >= NODE_CAP:
+    def add_node(n: dict[str, Any], *, force: bool = False) -> None:
+        if n["id"] in seen_nodes:
+            return
+        if not force and len(nodes) >= NODE_CAP:
             return
         seen_nodes.add(n["id"])
         nodes.append(n)
@@ -198,15 +237,39 @@ def bloom_from_router_paths(
 
     q = query.strip()
     if q:
-        add_node({"id": "query::center", "label": q[:120], "kind": "query", "hub_score": 1.0})
+        add_node({"id": "query::center", "label": q[:120], "kind": "query", "hub_score": 1.0}, force=True)
 
     label_lookup = _BridgeLabelLookup()
+    for path in router.get("paths") or []:
+        if isinstance(path, dict) and isinstance(path.get("bridge_artifact"), str):
+            label_lookup.load_bridge(path["bridge_artifact"].strip())
+
+    for vid in hub_verse_refs or []:
+        if not isinstance(vid, str) or not vid.strip():
+            continue
+        norm = _normalize_hub_verse_id(vid.strip())
+        nid = _verse_node_id(norm)
+        pinned_ids.add(nid)
+        vlko = label_lookup.label_for_verse_id(norm)
+        vlabel = vlko or _verse_label(norm)
+        hub_row: dict[str, Any] = {
+            "id": nid,
+            "label": vlabel,
+            "kind": "verse",
+            "hub_score": 0.96,
+            "ref": vlabel,
+            "pinned_hub": True,
+        }
+        if vlko:
+            hub_row["label_ko"] = vlko
+        add_node(hub_row, force=True)
+        if "query::center" in seen_nodes:
+            add_edge("query::center", nid, "hub_anchor", 0.92)
+
     for path in router.get("paths") or []:
         if not isinstance(path, dict):
             continue
         bridge_artifact = path.get("bridge_artifact")
-        if isinstance(bridge_artifact, str) and bridge_artifact.strip():
-            label_lookup.load_bridge(bridge_artifact.strip())
         steps = path.get("steps") or []
         prev: str | None = None
         for step in steps:
@@ -263,6 +326,8 @@ def bloom_from_router_paths(
         )
         if "query::center" in seen_nodes:
             add_edge("query::center", nid, "ann_lite", 0.45)
+
+    nodes, edges = _enforce_caps(nodes, edges, pinned_ids=pinned_ids)
 
     return {
         "schema": SCHEMA,
@@ -459,15 +524,21 @@ def build_bloom(
     topology_slice: dict[str, Any] | None = None,
     lod_node_cap: int = 48,
     lod_edge_cap: int = 56,
+    hub_verse_refs: list[str] | None = None,
 ) -> dict[str, Any]:
     global NODE_CAP, EDGE_CAP
-    NODE_CAP = min(48, max(8, lod_node_cap))
-    EDGE_CAP = min(56, max(8, lod_edge_cap))
+    NODE_CAP = min(MAX_ABS_NODE_CAP, max(8, lod_node_cap))
+    EDGE_CAP = min(MAX_ABS_EDGE_CAP, max(8, lod_edge_cap))
 
     if topology_slice and topology_slice.get("nodes"):
         base = bloom_from_topology_slice(topology_slice, query)
     elif router:
-        base = bloom_from_router_paths(query, router, ann_top_verse_ids=ann_top_verse_ids)
+        base = bloom_from_router_paths(
+            query,
+            router,
+            ann_top_verse_ids=ann_top_verse_ids,
+            hub_verse_refs=hub_verse_refs,
+        )
     else:
         raise ValueError("router or topology_slice required")
 
@@ -512,12 +583,18 @@ def main() -> int:
     ap.add_argument("--ann-verse-ids", default="", help="comma-separated verse refs")
     ap.add_argument("--lod-node-cap", type=int, default=48)
     ap.add_argument("--lod-edge-cap", type=int, default=56)
+    ap.add_argument(
+        "--hub-verse-ids",
+        default="",
+        help="comma-separated canonical verse_ids pinned as bloom hubs (gold profile)",
+    )
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
     router = _load_json(args.router_json) if args.router_json.is_file() else None
     slice_doc = _load_json(args.topology_slice_json) if args.topology_slice_json and args.topology_slice_json.is_file() else None
     ann_ids = [x.strip() for x in args.ann_verse_ids.split(",") if x.strip()]
+    hub_ids = [x.strip() for x in args.hub_verse_ids.split(",") if x.strip()]
 
     doc = build_bloom(
         query=args.query,
@@ -529,6 +606,7 @@ def main() -> int:
         topology_slice=slice_doc,
         lod_node_cap=args.lod_node_cap,
         lod_edge_cap=args.lod_edge_cap,
+        hub_verse_refs=hub_ids or None,
     )
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

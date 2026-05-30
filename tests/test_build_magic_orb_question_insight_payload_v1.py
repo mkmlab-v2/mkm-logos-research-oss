@@ -44,6 +44,10 @@ def test_payload_embeds_graph_bloom():
     assert payload["schema"] == "magic_orb_question_insight_v1"
     assert payload["graph_bloom"]["schema"] == "magic_orb_graph_bloom_v1"
     assert len(payload["graph_bloom"]["nodes"]) >= 2
+    hud = payload.get("search_hud_v1") or {}
+    assert hud.get("schema") == "magic_orb_search_hud_v1"
+    assert len(hud.get("display_lines") or []) == 3
+    assert hud.get("theoretical", {}).get("not_evaluated_at_runtime") is True
 
 
 def test_insight_builder_help():
@@ -92,3 +96,25 @@ def test_rag_fusion_prefers_ranked_router_over_stale_bundle():
     assert rag[1]["source_id"].startswith("logos_subgraph:mid:")
     assert payload["rag_fusion"]["router_paths_included"] == 2
     assert "logos_subgraph:path_stale" not in {r["source_id"] for r in rag}
+
+
+def test_path_snippet_uses_verse_excerpt_not_raw_steps_json():
+    mod = _load_builder()
+    router = {
+        "paths": [
+            {
+                "path_id": "p1",
+                "bridge_artifact": "bridge.json",
+                "steps": ["verse:Jhn.3.16"],
+                "note_ko": "은혜·구원 경로",
+                "match_score": 8,
+            }
+        ],
+        "verse_ids": [],
+    }
+    cache = mod._VerseSnippetCache()
+    row = mod._rag_path_row(router["paths"][0], verse_cache=cache)
+    snippet = row["snippet"]
+    assert "은혜·구원 경로" in snippet
+    assert '"steps"' not in snippet
+    assert "match_score=" not in snippet

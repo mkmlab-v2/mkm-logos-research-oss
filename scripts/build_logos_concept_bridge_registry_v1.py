@@ -29,6 +29,9 @@ DEFAULT_BRIDGE_PATHS = (
     ART / "logos_concept_bridge_gold_q10_resilience_capitulation_phase_gemini_v1_latest.json",
     ART / "logos_concept_bridge_gold_q11_stability_after_volatility_shock_gemini_v1_latest.json",
     ART / "logos_concept_bridge_gold_q12_risk_excess_cycle_unwind_gemini_v1_latest.json",
+    ART / "logos_concept_bridge_gold_q13_passion_blood_water_symbolism_v1_latest.json",
+    ART / "logos_concept_bridge_gold_q04_judgment_covenant_remnant_v1_latest.json",
+    ART / "logos_concept_bridge_gold_q08_suffering_comfort_pattern_v1_latest.json",
 )
 
 

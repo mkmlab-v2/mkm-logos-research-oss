@@ -47,6 +47,8 @@ def _run_chain(
     insight_out: Path,
     bloom_out: Path,
     dry_run: bool,
+    include_ann_lite: bool,
+    typology_boost: bool,
 ) -> int:
     cmd = [
         PY,
@@ -63,8 +65,11 @@ def _run_chain(
         str(bloom_out),
         "--chain-out",
         str(BY_QUERY_REPORTS / f"chain_{query_id}_latest.json"),
-        "--skip-ann-lite",
     ]
+    if not include_ann_lite:
+        cmd.append("--skip-ann-lite")
+    if typology_boost:
+        cmd.append("--typology-boost")
     if expand_graph:
         cmd.append("--expand-graph")
     if sync_public:
@@ -87,6 +92,18 @@ def main() -> int:
     ap.add_argument("--sync-public-by-query", action="store_true", default=True)
     ap.add_argument("--out-json", type=Path, default=DEFAULT_BATCH_OUT)
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--include-ann-lite", action="store_true", help="run ANN-lite query rail (default: skip)")
+    ap.add_argument(
+        "--typology-boost",
+        action="store_true",
+        help="Apply CPU typology lexicon boost after ANN query.",
+    )
+    ap.add_argument(
+        "--query-ids",
+        nargs="*",
+        default=None,
+        help="Run only these fixture ids (e.g. q08). Default: all items.",
+    )
     args = ap.parse_args()
 
     fixture_path = args.fixture_json if args.fixture_json.is_absolute() else ROOT / args.fixture_json
@@ -95,6 +112,11 @@ def main() -> int:
     items = _load_fixture(fixture_path)
     if not items:
         raise SystemExit(f"no items in fixture: {args.fixture_json}")
+    if args.query_ids:
+        allow = {str(x) for x in args.query_ids}
+        items = [it for it in items if str(it.get("id")) in allow]
+        if not items:
+            raise SystemExit(f"no fixture items matched --query-ids {args.query_ids}")
 
     BY_QUERY_REPORTS.mkdir(parents=True, exist_ok=True)
     if args.sync_public_by_query:
@@ -131,6 +153,8 @@ def main() -> int:
             insight_out=insight_out,
             bloom_out=bloom_out,
             dry_run=args.dry_run,
+            include_ann_lite=bool(args.include_ann_lite),
+            typology_boost=bool(args.typology_boost),
         )
         ok = rc == 0
         all_ok = all_ok and ok
@@ -176,6 +200,9 @@ def main() -> int:
         "fixture_json": str(args.fixture_json.relative_to(ROOT)).replace("\\", "/"),
         "primary_query_id": args.primary_query_id,
         "expand_graph": bool(args.expand_graph or args.expand_primary_only),
+        "include_ann_lite": bool(args.include_ann_lite),
+        "typology_boost": bool(args.typology_boost),
+        "query_ids_filter": list(args.query_ids) if args.query_ids else None,
         "all_ok": all_ok,
         "rows": rows,
     }

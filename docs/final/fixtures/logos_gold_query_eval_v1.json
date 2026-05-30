@@ -37,54 +37,86 @@
     {
       "id": "q03",
       "query_ko": "언약이 흔들릴 때 심판의 경고와 회복의 약속이 동시에 엮이는 성경 경로는 어디인가?",
-      "eval_tier": "gold_soft",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": ["Jer.31.31", "Jer.31.33", "Hos.11.8", "Isa.40.1"],
       "gold_verse_prefixes": ["Jer.", "Hos.", "Isa."],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q04_judgment_covenant_remnant_v1_latest.json",
       "gate": {
         "router_path_hit_min": 1,
         "router_verse_hit_min": 0,
         "ann_top8_hit_min": 0
-      }
+      },
+      "notes_ko": "[HYPO] Showroom dense 64 LOD; judgment+restoration covenant chain (q04 bridge assist)."
     },
     {
       "id": "q02",
       "query_ko": "무너지기 전 심판과 경고",
-      "eval_tier": "observational",
+      "eval_tier": "gold_required",
       "gold_verse_ids": ["Jer.1.10", "Dan.5.25", "Rev.18.2", "Job.24.19"],
       "gold_verse_prefixes": ["Jer.", "Dan.", "Rev.", "Prov."],
-      "gate": null,
-      "bridge_artifact_hint": "logos_concept_bridge_gold_q02_judgment_warning_collapse_gemini_v1_latest.json"
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q02_judgment_warning_collapse_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] Showroom dense 64 LOD; judgment warning before collapse lane."
     },
     {
       "id": "q01",
       "query_ko": "위기 가운데 언약의 안정과 신실",
-      "eval_tier": "observational",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": ["Ps.89.28", "Jer.31.33", "Isa.40.8", "Job.24.19"],
       "gold_verse_prefixes": ["Ps.", "Isa.", "Jer."],
-      "gate": null
+      "bridge_artifact_hint": "logos_concept_bridge_covenant_crisis_poc_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] Showroom dense 64 LOD; covenant stability in crisis lane."
     },
     {
       "id": "q05",
       "query_ko": "고문헌의 붕괴·교역(hubris/trade) 서사와 거시 변동성 쇼크 서사 사이에 구조적으로 대응되는 Logos 경로는 무엇인가?",
-      "eval_tier": "observational",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": ["Rev.18.10", "Ezek.27.27", "Dan.4.30", "Job.20.5"],
       "gold_verse_prefixes": ["Rev.18", "Ezek.27", "Dan.4", "Job.20"],
-      "gate": null,
       "bridge_artifact_hint": "logos_concept_bridge_gold_q12_risk_excess_cycle_unwind_gemini_v1_latest.json",
-      "notes_ko": "[HYPO] Logos overlay only; not price or live trading trigger."
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] Logos overlay only; showroom dense 64 LOD; not price or live trading trigger."
     },
     {
       "id": "q07",
       "query_ko": "사랑과 용서가 언약 안에서 어떻게 연결되는가?",
-      "eval_tier": "observational",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": ["1Cor.13.4", "Eph.4.32", "Jer.31.34", "Ps.103.12"],
       "gold_verse_prefixes": ["1Cor.", "Eph.", "Jer.31", "Ps."],
-      "gate": null
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q07_restoration_after_disruption_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] Showroom dense 64 LOD; covenant love/forgiveness lane."
     },
     {
       "id": "q08",
       "query_ko": "고난과 위로가 함께 나타나는 성경적 패턴은 무엇인가?",
-      "eval_tier": "observational",
+      "eval_tier": "gold_required",
       "gold_verse_ids": ["2Cor.1.3", "2Cor.1.4", "Ps.23.4", "Isa.40.1"],
       "gold_verse_prefixes": ["2Cor.1", "Ps.23", "Isa.40", "Isa.61"],
-      "gate": null,
-      "notes_ko": "ANN/router artifacts optional until insight batch; typology lexicon entry ready."
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q08_suffering_comfort_pattern_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] Showroom dense 64 LOD; suffering/comfort typology lane."
     }
   ]
 }

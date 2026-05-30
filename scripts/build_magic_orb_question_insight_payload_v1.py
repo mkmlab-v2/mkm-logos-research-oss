@@ -22,8 +22,16 @@ DEFAULT_OUT_ART = ROOT / "docs/final/artifacts/magic_orb_question_insight_v1_lat
 DEFAULT_OUT_PUBLIC = ROOT / "projects/mkm/mkm-life/public/data/magic_orb_question_insight_v1_latest.json"
 
 SCHEMA = "magic_orb_question_insight_v1"
-VERSION = "1.0.0"
-GENERATOR = "build_magic_orb_question_insight_payload_v1.py@1.1.0"
+VERSION = "1.1.0"
+GENERATOR = "build_magic_orb_question_insight_payload_v1.py@1.2.0"
+HUD_SCHEMA = "magic_orb_search_hud_v1"
+HUD_VERSION = "1.0.0"
+DEFAULT_CORPUS_BUNDLE = ROOT / "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json"
+DEFAULT_ATOMS_SUMMARY = (
+    ROOT / "reports/constitution/btrack_pilot/original_language_master_atoms_summary_latest.json"
+)
+DEFAULT_VERSE_JSONL = ROOT / "data/logos/verse_decoded_v2_single_anchor_v1.jsonl"
+SNIPPET_EXCERPT_MAX = 140
 
 
 def _utc_now() -> str:
@@ -39,16 +47,88 @@ def _path_sort_key(path: dict[str, Any]) -> tuple[int, str]:
     return (-score, str(path.get("path_id") or ""))
 
 
-def _rag_path_row(path: dict[str, Any]) -> dict[str, Any]:
+class _VerseSnippetCache:
+    """Lazy verse row lookup for evidence packing (build-time only)."""
+
+    def __init__(self, jsonl_path: Path = DEFAULT_VERSE_JSONL) -> None:
+        self._jsonl = jsonl_path
+        self._rows: dict[str, dict[str, Any]] = {}
+
+    @staticmethod
+    def _normalize_vid(vid: str) -> str:
+        v = vid.strip()
+        if v.startswith("John."):
+            return "Jhn." + v[5:]
+        if "::" in v:
+            return v.split("::", 1)[-1]
+        if v.startswith("verse:"):
+            return v.split(":", 1)[-1]
+        return v
+
+    def prefetch(self, verse_ids: set[str]) -> None:
+        missing = {self._normalize_vid(v) for v in verse_ids if v} - set(self._rows)
+        if not missing or not self._jsonl.is_file():
+            return
+        needles = {f'"verse_id": "{vid}"' for vid in missing}
+        with self._jsonl.open(encoding="utf-8") as fh:
+            for line in fh:
+                if not any(n in line for n in needles):
+                    continue
+                row = json.loads(line)
+                vid = str(row.get("verse_id") or "")
+                if vid in missing:
+                    self._rows[vid] = row
+                    needles.discard(f'"verse_id": "{vid}"')
+                if not needles:
+                    break
+
+    def excerpt(self, verse_id: str) -> str:
+        vid = self._normalize_vid(verse_id)
+        row = self._rows.get(vid)
+        if not row:
+            self.prefetch({vid})
+            row = self._rows.get(vid)
+        if not row:
+            return vid
+        label = str(row.get("source_ref") or vid)
+        body = str(row.get("text") or row.get("original_text") or "").strip()
+        body = " ".join(body.split())
+        if len(body) > SNIPPET_EXCERPT_MAX:
+            body = body[: SNIPPET_EXCERPT_MAX - 1] + "…"
+        return f"{label}: {body}" if body else label
+
+
+def _verse_ids_from_steps(steps: list[Any]) -> list[str]:
+    out: list[str] = []
+    for step in steps:
+        if isinstance(step, str) and step.startswith("verse:"):
+            out.append(step.split(":", 1)[1])
+    return out
+
+
+def _format_path_snippet(path: dict[str, Any], *, verse_cache: _VerseSnippetCache | None) -> str:
     rel = str(path.get("bridge_artifact") or "")
     pid = str(path.get("path_id") or "path")
-    steps = path.get("steps") or []
-    steps_json = json.dumps(steps, ensure_ascii=False)
-    snippet = (
-        f"GraphRAG path {pid} via {rel}\n"
-        f"match_score={path.get('match_score')}; steps={steps_json}\n"
-        f"{path.get('note_ko') or ''}\n---\n[HYPO subgraph router; token overlap; NON_GATING]"
-    )
+    note = str(path.get("note_ko") or "").strip()
+    lines: list[str] = []
+    if note:
+        lines.append(note)
+    else:
+        lines.append(f"GraphRAG 경로 {pid} · {rel}")
+    for vid in _verse_ids_from_steps(list(path.get("steps") or []))[:4]:
+        if verse_cache:
+            lines.append(f"· {verse_cache.excerpt(vid)}")
+        else:
+            lines.append(f"· {vid}")
+    lines.append("---")
+    lines.append("[HYPO subgraph router; token overlap; NON_GATING]")
+    return "\n".join(lines)
+
+
+def _rag_path_row(path: dict[str, Any], *, verse_cache: _VerseSnippetCache | None = None) -> dict[str, Any]:
+    rel = str(path.get("bridge_artifact") or "")
+    pid = str(path.get("path_id") or "path")
+    snippet = _format_path_snippet(path, verse_cache=verse_cache)
     return {
         "source_id": f"logos_subgraph:{pid}:{rel}",
         "snippet": snippet,
@@ -58,12 +138,16 @@ def _rag_path_row(path: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _rag_verse_row(vid: str) -> dict[str, Any]:
+def _rag_verse_row(vid: str, *, verse_cache: _VerseSnippetCache | None = None) -> dict[str, Any]:
+    norm = _VerseSnippetCache._normalize_vid(vid)
+    snippet = verse_cache.excerpt(norm) if verse_cache else f"{norm} (subgraph verse_ref) [HYPO]"
+    if "[HYPO" not in snippet:
+        snippet = f"{snippet}\n---\n[HYPO verse_ref; NON_GATING]"
     return {
-        "source_id": f"logos_subgraph_verse:{vid}",
-        "snippet": f"{vid} (subgraph verse_ref) [HYPO]",
+        "source_id": f"logos_subgraph_verse:{norm}",
+        "snippet": snippet,
         "confidence_band": "B",
-        "uri": f"logos:verse:{vid}",
+        "uri": f"logos:verse:{norm}",
         "evidence_kind": "subgraph_verse",
     }
 
@@ -73,20 +157,30 @@ def _rag_from_router_ranked(
     *,
     path_cap: int,
     verse_cap: int,
+    verse_cache: _VerseSnippetCache | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Ranked path rows + verse rows from router (query-scoped, NON_GATING)."""
     paths = sorted(
         [p for p in (router.get("paths") or []) if isinstance(p, dict)],
         key=_path_sort_key,
     )
-    path_rows = [_rag_path_row(p) for p in paths[: max(0, path_cap)]]
+    if verse_cache:
+        prefetch_ids: set[str] = set()
+        for p in paths[: max(0, path_cap)]:
+            prefetch_ids.update(_verse_ids_from_steps(list(p.get("steps") or [])))
+        for vid in router.get("verse_ids") or []:
+            if isinstance(vid, str):
+                prefetch_ids.add(vid)
+        verse_cache.prefetch(prefetch_ids)
+
+    path_rows = [_rag_path_row(p, verse_cache=verse_cache) for p in paths[: max(0, path_cap)]]
     verse_rows: list[dict[str, Any]] = []
     for vid in router.get("verse_ids") or []:
         if not isinstance(vid, str) or not vid:
             continue
         if len(verse_rows) >= max(0, verse_cap):
             break
-        verse_rows.append(_rag_verse_row(vid))
+        verse_rows.append(_rag_verse_row(vid, verse_cache=verse_cache))
     return path_rows, verse_rows
 
 
@@ -114,7 +208,12 @@ def _merge_rag_evidence(
     path_rows: list[dict[str, Any]] = []
     verse_rows: list[dict[str, Any]] = []
     if router:
-        path_rows, verse_rows = _rag_from_router_ranked(router, path_cap=path_cap, verse_cap=verse_cap)
+        path_rows, verse_rows = _rag_from_router_ranked(
+            router,
+            path_cap=path_cap,
+            verse_cap=verse_cap,
+            verse_cache=_VerseSnippetCache(),
+        )
         for row in path_rows + verse_rows:
             _add(row)
 
@@ -139,13 +238,6 @@ def _merge_rag_evidence(
     return _cap_rows(merged, rag_cap), meta
 
 
-def _rag_from_router(router: dict[str, Any]) -> list[dict[str, Any]]:
-    """Legacy flat list — prefer _merge_rag_evidence."""
-    path_rows, verse_rows = _rag_from_router_ranked(router, path_cap=999, verse_cap=999)
-    return path_rows + verse_rows
-    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-
 def _load_json(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
         return None
@@ -160,40 +252,41 @@ def _cap_rows(rows: list[Any], cap: int) -> list[Any]:
     return rows[:cap] if cap > 0 else rows
 
 
-def _rag_from_router(router: dict[str, Any]) -> list[dict[str, Any]]:
-    """Synthesize rag_evidence rows from subgraph router paths (NON_GATING)."""
-    rag: list[dict[str, Any]] = []
-    for path in router.get("paths") or []:
-        if not isinstance(path, dict):
-            continue
-        rel = str(path.get("bridge_artifact") or "")
-        pid = str(path.get("path_id") or "path")
-        steps = path.get("steps") or []
-        steps_json = json.dumps(steps, ensure_ascii=False)
-        snippet = (
-            f"GraphRAG path {pid} via {rel}\n"
-            f"match_score={path.get('match_score')}; steps={steps_json}\n"
-            f"{path.get('note_ko') or ''}\n---\n[HYPO subgraph router; token overlap; NON_GATING]"
-        )
-        rag.append(
-            {
-                "source_id": f"logos_subgraph:{pid}:{rel}",
-                "snippet": snippet,
-                "confidence_band": "B",
-            }
-        )
-    for vid in router.get("verse_ids") or []:
-        if not isinstance(vid, str):
-            continue
-        rag.append(
-            {
-                "source_id": f"logos_subgraph_verse:{vid}",
-                "snippet": f"{vid} (subgraph verse_ref) [HYPO]",
-                "confidence_band": "B",
-                "uri": f"logos:verse:{vid}",
-            }
-        )
-    return rag
+def _field_logos_overlay_slots(overlay_doc: dict[str, Any] | None) -> list[dict[str, Any]]:
+    if not overlay_doc:
+        return []
+    field = overlay_doc.get("field_observation") if isinstance(overlay_doc.get("field_observation"), dict) else {}
+    logos = overlay_doc.get("logos_overlay") if isinstance(overlay_doc.get("logos_overlay"), dict) else {}
+    regime = field.get("primary_regime_id_observational") or "unknown"
+    cos = logos.get("top_hit_cosine")
+    cos_s = f"{cos:.3f}" if isinstance(cos, (int, float)) else "n/a"
+    return [
+        {
+            "slot_id": "field.regime_observational",
+            "text": (
+                f"Field(1차 regime_map 관측): primary={regime}; "
+                f"logos_resonance_cosine={cos_s}. [HYPO][NON_GATING] 실매매·Track A 트리거 아님."
+            ),
+        },
+        {
+            "slot_id": "field_logos.overlay_boundary",
+            "text": (
+                "Field 주(主)·Logos 보(補) 연구 합선 슬롯. "
+                "B-track field_logos_overlay_prophecy_v1 — 예측·채점·parameter_only 진화 레일."
+            ),
+        },
+    ]
+
+
+def _load_field_logos_overlay_latest() -> dict[str, Any] | None:
+    path = ROOT / "docs/final/artifacts/field_logos_overlay_prophecy_v1_latest.json"
+    if not path.is_file():
+        return None
+    try:
+        doc = json.loads(path.read_text(encoding="utf-8-sig"))
+    except json.JSONDecodeError:
+        return None
+    return doc if isinstance(doc, dict) else None
 
 
 def _slots_from_query(
@@ -225,6 +318,127 @@ def _slots_from_query(
             ),
         },
     ]
+
+
+def _format_pairspace_upper(n: int) -> str:
+    if n <= 0:
+        return "0"
+    exp = len(str(n)) - 1
+    mantissa = n / (10**exp)
+    return f"~{mantissa:.1f}×10^{exp}"
+
+
+def _load_corpus_hud_stats() -> dict[str, Any]:
+    """SSOT corpus counts — no synthetic runtime counters."""
+    verse_count = 31_102
+    meaning_edges = 1_196
+    atom_count = 41_658
+    source_rel = "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json"
+
+    bundle = _load_json(DEFAULT_CORPUS_BUNDLE)
+    if bundle:
+        snap = bundle.get("manifest_snapshot") if isinstance(bundle.get("manifest_snapshot"), dict) else {}
+        gf = bundle.get("graph_files") if isinstance(bundle.get("graph_files"), dict) else {}
+        try:
+            verse_count = int(snap.get("corpus_verse_count") or verse_count)
+        except (TypeError, ValueError):
+            pass
+        try:
+            meaning_edges = int(gf.get("edges_line_count") or meaning_edges)
+        except (TypeError, ValueError):
+            pass
+        source_rel = str(bundle.get("manifest_snapshot", {}).get("manifest_path") or source_rel)
+
+    atoms = _load_json(DEFAULT_ATOMS_SUMMARY)
+    if atoms and isinstance(atoms.get("stats"), dict):
+        try:
+            atom_count = int(atoms["stats"].get("unique_master_atoms") or atom_count)
+        except (TypeError, ValueError):
+            pass
+
+    return {
+        "verse_count": verse_count,
+        "atom_count": atom_count,
+        "meaning_graph_edge_count": meaning_edges,
+        "source_artifact_rel": source_rel.replace("\\", "/"),
+    }
+
+
+def _top_router_match_score(router: dict[str, Any] | None) -> int:
+    if not router:
+        return 0
+    best = 0
+    for path in router.get("paths") or []:
+        if not isinstance(path, dict):
+            continue
+        try:
+            best = max(best, int(path.get("match_score") or 0))
+        except (TypeError, ValueError):
+            continue
+    return best
+
+
+def build_search_hud_v1(
+    *,
+    router: dict[str, Any] | None,
+    graph_bloom: dict[str, Any] | None,
+    subgraph_summary: dict[str, Any],
+    ann_status: str,
+) -> dict[str, Any]:
+    corpus = _load_corpus_hud_stats()
+    v = int(corpus["verse_count"])
+    pairspace_upper = v * (v - 1) // 2 if v > 1 else 0
+    bloom_stats = (graph_bloom or {}).get("stats") if isinstance(graph_bloom, dict) else {}
+    bloom_nodes = int(bloom_stats.get("node_count") or 0) if isinstance(bloom_stats, dict) else 0
+    bloom_edges = int(bloom_stats.get("edge_count") or 0) if isinstance(bloom_stats, dict) else 0
+    bridges = int(subgraph_summary.get("bridges_matched") or 0)
+    paths = int(subgraph_summary.get("paths") or 0)
+    top_match = _top_router_match_score(router)
+    pair_display = _format_pairspace_upper(pairspace_upper)
+
+    display_lines = [
+        (
+            f"[CORPUS]      Verses {corpus['verse_count']:,} · Atoms {corpus['atom_count']:,} · "
+            f"Meaning edges {corpus['meaning_graph_edge_count']:,}"
+        ),
+        f"[THEORETICAL] Pairspace upper {pair_display} · Mode: offline_4d_knn [HYPO]",
+        (
+            f"[THIS QUERY]  Bridges {bridges} · Paths {paths} · Bloom {bloom_nodes}/{bloom_edges} · "
+            f"Match {top_match}"
+        ),
+    ]
+
+    return {
+        "schema": HUD_SCHEMA,
+        "version": HUD_VERSION,
+        "generated_at_utc": _utc_now(),
+        "hypothesis_tier": "B",
+        "research_only": True,
+        "non_gating": True,
+        "disclaimer_ko": (
+            "측정·SSOT 아티팩트 기반 HUD입니다. 실시간 full-graph scan·난수 카운터 없음. "
+            "[HYPO][NON_GATING] — Track A·실매매·예언 적중 근거 아님."
+        ),
+        "corpus": corpus,
+        "theoretical": {
+            "pairspace_upper": pairspace_upper,
+            "pairspace_upper_display": pair_display,
+            "mode": "offline_4d_knn",
+            "hypothesis_tier": "[HYPO]",
+            "not_evaluated_at_runtime": True,
+            "note_ko": "이론적 pairspace 상한만 표기; 질의 시 전량 평가하지 않음.",
+        },
+        "this_query": {
+            "bridges_matched": bridges,
+            "paths": paths,
+            "bloom_nodes": bloom_nodes,
+            "bloom_edges": bloom_edges,
+            "top_match_score": top_match,
+            "ann_status": ann_status,
+            "router_kind": str(subgraph_summary.get("router_kind") or "token_overlap_logos_subgraph_v1"),
+        },
+        "display_lines": display_lines,
+    }
 
 
 def _ann_top_verse_ids(rag: list[dict[str, Any]]) -> list[str]:
@@ -273,6 +487,9 @@ def build_payload(
         slots = list(bundle.get("structured_insight_slots") or [])
         if not slots:
             slots = _slots_from_query(query, None, rag_meta)
+    overlay_doc = _load_field_logos_overlay_latest()
+    if overlay_doc:
+        slots = slots + _field_logos_overlay_slots(overlay_doc)
     lens_route = bundle.get("lens_route") or {
         "lens_id": "logos_graphrag",
         "route_confidence_0_1": 0.5,
@@ -335,6 +552,12 @@ def build_payload(
     }
     if graph_bloom and graph_bloom.get("schema") == "magic_orb_graph_bloom_v1":
         payload["graph_bloom"] = graph_bloom
+    payload["search_hud_v1"] = build_search_hud_v1(
+        router=router,
+        graph_bloom=graph_bloom,
+        subgraph_summary=subgraph_summary,
+        ann_status=ann_status,
+    )
     return payload
 
 
@@ -350,6 +573,7 @@ def main() -> int:
     ap.add_argument("--expand-graph", action="store_true")
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT_ART)
     ap.add_argument("--sync-public", action="store_true")
+    ap.add_argument("--ann-rag-json", type=Path, default=None, help="ANN-lite rag rows sidecar")
     args = ap.parse_args()
 
     bundle = _load_json(args.bundle_json)
@@ -357,6 +581,14 @@ def main() -> int:
         bundle = {"schema": "semantic_rag_bridge_insight_bundle_v1", "rag_evidence": []}
     if bundle.get("schema") != "semantic_rag_bridge_insight_bundle_v1":
         raise SystemExit(f"invalid bundle: {args.bundle_json}")
+
+    if args.ann_rag_json and args.ann_rag_json.is_file():
+        ann_path = args.ann_rag_json if args.ann_rag_json.is_absolute() else ROOT / args.ann_rag_json
+        ann_doc = json.loads(ann_path.read_text(encoding="utf-8-sig"))
+        ann_rows = list(ann_doc.get("rag_evidence") or []) if isinstance(ann_doc, dict) else []
+        if ann_rows:
+            existing = list(bundle.get("rag_evidence") or [])
+            bundle["rag_evidence"] = existing + ann_rows
 
     chain = _load_json(args.chain_json)
     if chain:
@@ -394,6 +626,7 @@ def main() -> int:
             expand_graph=args.expand_graph,
             lod_node_cap=int((caps or {}).get("lod_node_cap") or 48),
             lod_edge_cap=int((caps or {}).get("lod_edge_cap") or 56),
+            hub_verse_refs=list((caps or {}).get("hub_verse_ids") or []) or None,
         )
 
     payload = build_payload(

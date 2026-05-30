@@ -91,6 +91,8 @@ def _title_book(book: str) -> str:
         "exod": "Exod",
         "deut": "Deut",
         "1cor": "1Cor",
+        "2cor": "2Cor",
+        "2corinthians": "2Cor",
         "eph": "Eph",
     }
     return mapping.get(b, book[:1].upper() + book[1:] if book else book)

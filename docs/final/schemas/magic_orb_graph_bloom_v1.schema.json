@@ -22,7 +22,7 @@
     },
     "nodes": {
       "type": "array",
-      "maxItems": 48,
+      "maxItems": 64,
       "items": {
         "type": "object",
         "required": ["id", "label", "kind"],
@@ -40,7 +40,7 @@
     },
     "edges": {
       "type": "array",
-      "maxItems": 56,
+      "maxItems": 72,
       "items": {
         "type": "object",
         "required": ["src", "dst"],

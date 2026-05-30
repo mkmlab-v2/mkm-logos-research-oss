@@ -7,18 +7,23 @@
     {
       "id": "q01",
       "query_ko": "위기 가운데 언약의 안정과 신실",
-      "query_key_hint": "ac97b7efd98bb326"
+      "query_key_hint": "ac97b7efd98bb326",
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] Primary showroom sample; covenant stability in crisis."
     },
     {
       "id": "q02",
       "query_ko": "무너지기 전 심판과 경고",
-      "query_key_hint": "e8ac9e70c843d1e6"
+      "query_key_hint": "e8ac9e70c843d1e6",
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] Judgment warning before collapse; not price or live trading trigger."
     },
     {
       "id": "q03",
       "query_ko": "언약이 흔들릴 때 심판의 경고와 회복의 약속이 동시에 엮이는 성경 경로는 어디인가?",
       "query_key_hint": "baseline_multibridge_v1",
-      "expand_graph": true
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] Judgment+restoration covenant chain; q04 bridge typology assist."
     },
     {
       "id": "q04",
@@ -33,6 +38,27 @@
       "query_key_hint": "logos_hubris_volatility_overlay_v1",
       "expand_graph": true,
       "hypothesis_note": "[HYPO][NON_GATING] Logos-primary overlay; Field/regime narrative context only — not price or live trading trigger."
+    },
+    {
+      "id": "q06",
+      "query_ko": "예수가 십자가에 못박혀 돌아가실 때 흘린 물과 피의 상징은 무엇을 의미하는가?",
+      "query_key_hint": "logos_passion_blood_water_symbolism_v1",
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] John 19:34 typology lane; not price, clinical, or live trading trigger."
+    },
+    {
+      "id": "q07",
+      "query_ko": "사랑과 용서가 언약 안에서 어떻게 연결되는가?",
+      "query_key_hint": "logos_love_forgiveness_covenant_v1",
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] open-domain sample; token router + optional ANN-lite."
+    },
+    {
+      "id": "q08",
+      "query_ko": "고난과 위로가 함께 나타나는 성경적 패턴은 무엇인가?",
+      "query_key_hint": "logos_suffering_comfort_pattern_v1",
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] open-domain sample; not clinical or trading trigger."
     }
   ]
 }

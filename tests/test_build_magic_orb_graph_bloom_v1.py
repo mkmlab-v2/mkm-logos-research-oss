@@ -31,7 +31,34 @@ def test_bloom_from_router_has_query_center():
     assert "query::center" in ids
     assert doc["stats"]["node_count"] == len(doc["nodes"])
     assert doc["stats"]["edge_count"] == len(doc["edges"])
-    assert doc["stats"]["node_count"] <= 48
+    assert doc["stats"]["node_count"] <= 64
+
+
+def test_bloom_gold_profile_allows_dense_cap():
+    mod = _load_builder()
+    gold_mod_path = ROOT / "scripts/magic_orb_gold_lod_profiles_v1.py"
+    gspec = importlib.util.spec_from_file_location("magic_orb_gold_lod_profiles_v1", gold_mod_path)
+    gmod = importlib.util.module_from_spec(gspec)
+    assert gspec.loader is not None
+    gspec.loader.exec_module(gmod)
+    caps = gmod.resolve_gold_lod_profile("q04")
+    assert caps["lod_node_cap"] == 64
+    assert caps["lod_edge_cap"] == 72
+    if not ROUTER.is_file():
+        return
+    router = json.loads(ROUTER.read_text(encoding="utf-8"))
+    doc = mod.build_bloom(
+        query=router.get("query", "test"),
+        router=router,
+        lod_node_cap=int(caps["lod_node_cap"]),
+        lod_edge_cap=int(caps["lod_edge_cap"]),
+        hub_verse_refs=list(caps.get("hub_verse_ids") or []),
+        expand_graph=True,
+    )
+    assert doc["stats"]["node_count"] <= 64
+    hub_nodes = [n for n in doc["nodes"] if (n.get("hub_score") or 0) >= 0.9]
+    if caps.get("hub_verse_ids"):
+        assert hub_nodes, "expected pinned hub nodes for gold profile"
 
 
 def test_bloom_router_nodes_use_bridge_label_ko():
