@@ -3,7 +3,7 @@
 .SYNOPSIS
   Restore quad_fusion_result JSON from MKM_DATA_VAULT into workspace data/quad_fusion_training.
 
-  Vault SSOT (when mounted): G:\공유 드라이브\MKM_DATA_VAULT\projects\bitcoin-trading\data\quad_fusion_training
+  Set MKM_DATA_VAULT_ROOT (e.g. G:\...\MKM_DATA_VAULT) or pass -VaultQuadDir explicitly.
   Field snapshot default: quad_fusion_result_20260308_230751.json
 #>
 param(
@@ -15,24 +15,17 @@ param(
 
 $ErrorActionPreference = "Stop"
 if ([string]::IsNullOrWhiteSpace($VaultQuadDir)) {
-    $candidates = @()
-    if ($env:MKM_DATA_VAULT_ROOT) {
-        $candidates += Join-Path $env:MKM_DATA_VAULT_ROOT "projects\bitcoin-trading\data\quad_fusion_training"
+    if ([string]::IsNullOrWhiteSpace($env:MKM_DATA_VAULT_ROOT)) {
+        Write-Error "Set MKM_DATA_VAULT_ROOT to vault root (contains projects/bitcoin-trading/...) or pass -VaultQuadDir."
     }
-    $candidates += Join-Path (Join-Path "G:" "공유 드라이브\MKM_DATA_VAULT") "projects\bitcoin-trading\data\quad_fusion_training"
-    $candidates += Join-Path (Join-Path "G:" "MKM_DATA_VAULT") "projects\bitcoin-trading\data\quad_fusion_training"
-    foreach ($candidate in $candidates) {
-        if ($candidate -and (Test-Path -LiteralPath $candidate)) {
-            $VaultQuadDir = $candidate
-            break
-        }
-    }
+    $VaultQuadDir = Join-Path $env:MKM_DATA_VAULT_ROOT "projects\bitcoin-trading\data\quad_fusion_training"
 }
+
 $destDir = Join-Path $WorkspaceRoot "data\quad_fusion_training"
 $destPath = Join-Path $destDir $TargetName
 
 if (-not (Test-Path -LiteralPath $VaultQuadDir)) {
-    Write-Error "Vault quad dir not found (mount G:): $VaultQuadDir"
+    Write-Error "Vault quad dir not found: $VaultQuadDir"
 }
 
 $src = Join-Path $VaultQuadDir $TargetName
@@ -58,7 +51,6 @@ if (-not (Test-Path -LiteralPath $destDir)) {
 Copy-Item -LiteralPath $src -Destination $destPath -Force
 Write-Host "[quad-restore] copied -> $destPath ($((Get-Item $destPath).Length) bytes)" -ForegroundColor Green
 
-# Optional second canonical for btc regime map script
 $altName = "quad_fusion_result_20260401_125917.json"
 $altSrc = Join-Path $VaultQuadDir $altName
 if ((Test-Path -LiteralPath $altSrc) -and $altName -ne (Split-Path $src -Leaf)) {
