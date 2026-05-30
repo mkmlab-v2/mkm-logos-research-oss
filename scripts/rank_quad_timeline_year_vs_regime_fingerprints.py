@@ -31,6 +31,17 @@ def _l2n(u4: Dict[str, Any]) -> np.ndarray:
     return arr / (n + 1e-8)
 
 
+def _primary_regime(
+    ranked: List[Tuple[str, float, Dict[str, float]]],
+    exclude_regime_ids: set[str],
+) -> str | None:
+    for rid, _sim, _fp in ranked:
+        if rid in exclude_regime_ids:
+            continue
+        return rid
+    return ranked[0][0] if ranked else None
+
+
 def _rank(
     v_year: np.ndarray,
     regimes: Dict[str, Any],
@@ -56,6 +67,7 @@ def _build_ranking_doc(
     regime_map: Path,
     btc_ext_map: Optional[Path],
     no_btc_ext: bool,
+    exclude_regime_ids: set[str],
 ) -> Dict[str, Any]:
     hist = json.loads(regime_map.read_text(encoding="utf-8"))["regimes"]
     ranked_hist = _rank(v_year, hist)
@@ -63,16 +75,18 @@ def _build_ranking_doc(
         "schema": "quad_timeline_year_vs_regime_fingerprints_v1",
         "vector_source": vector_source,
         "current_unified_4d_vector_raw": u4_raw,
+        "exclude_regime_ids_from_primary": sorted(exclude_regime_ids),
         "notes": [
             "cosine is dot(L2_norm(current), L2_norm(regime fingerprint)).",
             "If vector_source is manual, caller is responsible for calibration provenance.",
+            "primary_* skips exclude_regime_ids (default unknown) so flat UFT fallback does not win.",
         ],
         **extra_meta,
         "historical_regimes_ranking": [
             {"regime_id": rid, "cosine_similarity": round(sim, 6), "fingerprint_slkm": fp}
             for rid, sim, fp in ranked_hist
         ],
-        "primary_historical_regime": ranked_hist[0][0] if ranked_hist else None,
+        "primary_historical_regime": _primary_regime(ranked_hist, exclude_regime_ids),
     }
     if not no_btc_ext and btc_ext_map and btc_ext_map.is_file():
         ext = json.loads(btc_ext_map.read_text(encoding="utf-8"))["regimes"]
@@ -81,7 +95,7 @@ def _build_ranking_doc(
             {"regime_id": rid, "cosine_similarity": round(sim, 6), "fingerprint_slkm": fp}
             for rid, sim, fp in ranked_ext
         ]
-        doc["primary_btc_ext_regime"] = ranked_ext[0][0] if ranked_ext else None
+        doc["primary_btc_ext_regime"] = _primary_regime(ranked_ext, exclude_regime_ids)
     return doc
 
 
@@ -135,6 +149,12 @@ def main() -> int:
     )
     ap.add_argument("--no-btc-ext", action="store_true")
     ap.add_argument(
+        "--exclude-regime-ids",
+        type=str,
+        default="unknown",
+        help="Comma-separated regime ids skipped when picking primary_* (default: unknown).",
+    )
+    ap.add_argument(
         "--output",
         type=Path,
         default=r / "backtest_results" / "QUAD_TIMELINE_YEAR_VS_REGIME_FINGERPRINTS_RANKING.json",
@@ -152,6 +172,7 @@ def main() -> int:
         return 2
 
     btc_ext = None if args.no_btc_ext else args.btc_ext_map
+    exclude_ids = {x.strip() for x in (args.exclude_regime_ids or "").split(",") if x.strip()}
 
     if args.compare_years:
         if not args.quad_json.is_file():
@@ -181,6 +202,7 @@ def main() -> int:
                 regime_map=args.regime_map,
                 btc_ext_map=btc_ext,
                 no_btc_ext=args.no_btc_ext,
+                exclude_regime_ids=exclude_ids,
             )
             by_year[str(yr)] = {
                 "primary_historical_regime": doc.get("primary_historical_regime"),
@@ -244,6 +266,7 @@ def main() -> int:
         regime_map=args.regime_map,
         btc_ext_map=btc_ext,
         no_btc_ext=args.no_btc_ext,
+        exclude_regime_ids=exclude_ids,
     )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
