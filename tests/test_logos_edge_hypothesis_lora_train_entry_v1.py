@@ -106,3 +106,38 @@ def test_sft_builder_writes_instruction_rows(tmp_path: Path) -> None:
     assert len(lines) == 1
     manifest = json.loads(out_manifest.read_text(encoding="utf-8"))
     assert manifest["human_signoff_required"] is True
+
+
+def test_microtrain_dry_run_contract(tmp_path: Path) -> None:
+    jsonl = tmp_path / "sft.jsonl"
+    row = {
+        "instruction": "Logos edge [HYPO] test",
+        "output": "[HYPO] guarded edge",
+        "metadata": {"merge_to_canonical_allowed": False},
+    }
+    jsonl.write_text(json.dumps(row, ensure_ascii=False) + "\n", encoding="utf-8")
+    report = tmp_path / "report.json"
+    adapter = tmp_path / "adapter"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts/run_logos_edge_hypothesis_microtrain_v1.py"),
+            "--jsonl",
+            str(jsonl),
+            "--adapter-out",
+            str(adapter),
+            "--report-json",
+            str(report),
+            "--mode",
+            "dry_run",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads(report.read_text(encoding="utf-8"))
+    assert doc["schema"] == "logos_edge_hypothesis_microtrain_v1"
+    assert doc["microtrain_smoke_ok"] is True
+    assert doc["kaggle_lane"] is False
