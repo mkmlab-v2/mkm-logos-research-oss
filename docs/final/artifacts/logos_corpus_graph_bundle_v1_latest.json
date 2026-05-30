@@ -1,7 +1,7 @@
 {
   "schema": "logos_corpus_graph_bundle_v1",
   "version": "1.0.0",
-  "ts_utc": "2026-05-02T05:05:51Z",
+  "ts_utc": "2026-05-30T22:20:02Z",
   "hypothesis_tier": "B",
   "source_slice": {
     "slice_id": "slice2_corpus_graph_bundle",
@@ -9,8 +9,8 @@
   },
   "manifest_snapshot": {
     "manifest_path": "docs/final/artifacts/logos_corpus_manifest_v1_latest.json",
-    "manifest_file_sha256": "60d8ce0dd5f7065dbf199965ecbc8e17291cc4f62ad86a8aecb2f2abfdd18da0",
-    "manifest_ts_utc": "2026-05-02T05:03:56Z",
+    "manifest_file_sha256": "faba79088af62b0e2887645893252a52c5b64a7af8a71fded4386977b4ebb783",
+    "manifest_ts_utc": "2026-05-30T04:15:12Z",
     "corpus_input_path": "data/logos/verse_4pipeline_full_31102.json",
     "corpus_input_sha256": "204ed87c7da133c62ac54274ad3ca05c27ecd8d5ce40457c81ece77134aa0f4b",
     "corpus_verse_count": 31102
@@ -20,8 +20,8 @@
     "nodes_sha256": "116c1db01438c02d0bdea92ad74de31b185504254977d293357cae3fc54daa7f",
     "nodes_line_count": 1192,
     "edges_jsonl_path": "docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl",
-    "edges_sha256": "ed87e5c867db326a972fc23fbe7a8623c357060b90fa6bf19b41381ee13e1435",
-    "edges_line_count": 1196,
+    "edges_sha256": "522ad058b438bc77492f3f3d9cf5a0630106c9468a34c04d9ff5f45318b9ad4f",
+    "edges_line_count": 1241,
     "edge_type_counts": {
       "timeline_anchor": 263,
       "causal_precursor": 1,
@@ -29,7 +29,7 @@
       "recurrence": 1,
       "contrast_inversion": 1,
       "cross_lens_confirm": 529,
-      "theme_association": 200,
+      "theme_association": 245,
       "regime_projection": 200
     }
   },
@@ -41,6 +41,6 @@
     "graph_refs_not_in_corpus_sample": [],
     "skipped_alignment_reason": null
   },
-  "dedupe_bundle_key_sha256": "8429443bb3bc4402a398d55b296704261b964920b72eb52947927648dfcd7c8a",
+  "dedupe_bundle_key_sha256": "ec53ced6afcd710b8caf8ef7a7afd2cd4613c59e028cfbc53631523e20f07eb6",
   "notes": ""
 }
