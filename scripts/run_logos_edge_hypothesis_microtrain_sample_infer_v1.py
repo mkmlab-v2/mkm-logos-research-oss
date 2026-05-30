@@ -43,8 +43,12 @@ def _build_prompt(instruction: str) -> str:
     return f"### Instruction:\n{instruction}\n### Response:\n"
 
 
-def _score_output(text: str) -> dict[str, Any]:
+def _score_output(text: str, *, expected_rank: int | None = None) -> dict[str, Any]:
     lower = text.lower()
+    pred_rank = None
+    m = re.search(r"rank=(\d+)", text)
+    if m:
+        pred_rank = int(m.group(1))
     checks = {
         "has_hypo_tag": "[HYPO]" in text,
         "mentions_research_only": "research_only" in lower or "research only" in lower,
@@ -52,6 +56,10 @@ def _score_output(text: str) -> dict[str, Any]:
         "mentions_merge_wall": "merge_to_canonical_allowed=false" in lower
         or "merge_to_canonical_allowed = false" in lower
         or "canonical" in lower and "false" in lower,
+        "candidate_template_ok": "candidate edge rank=" in lower,
+        "predicted_rank": pred_rank,
+        "expected_rank": expected_rank,
+        "rank_match": expected_rank is not None and pred_rank == expected_rank,
     }
     checks["format_smoke_ok"] = checks["has_hypo_tag"] and (
         checks["mentions_research_only"] or checks["mentions_non_gating"]
@@ -171,11 +179,24 @@ def main() -> int:
 
     model, tokenizer = _load_model(args.model_name, args.adapter_path)
     format_ok = 0
+    rank_ok = 0
+    rank_total = 0
     for i, row in enumerate(rows, start=1):
         pred, latency_ms = _generate(model, tokenizer, row["instruction"], args.max_new_tokens)
-        scores = _score_output(pred)
+        meta = row.get("metadata") if isinstance(row.get("metadata"), dict) else {}
+        expected_rank = meta.get("queue_rank")
+        if expected_rank is not None:
+            try:
+                expected_rank = int(expected_rank)
+            except (TypeError, ValueError):
+                expected_rank = None
+        scores = _score_output(pred, expected_rank=expected_rank)
         if scores["format_smoke_ok"]:
             format_ok += 1
+        if expected_rank is not None:
+            rank_total += 1
+            if scores.get("rank_match"):
+                rank_ok += 1
         samples.append(
             {
                 "sample_index": i,
@@ -202,6 +223,9 @@ def main() -> int:
         "sample_count": len(samples),
         "format_smoke_pass_count": format_ok,
         "overall_format_smoke_ok": overall,
+        "rank_match_pass_count": rank_ok,
+        "rank_match_total": rank_total,
+        "rank_accuracy": (rank_ok / rank_total) if rank_total else None,
         "samples": samples,
         "note": "Format smoke only; not semantic edge quality or promotion GO.",
     }

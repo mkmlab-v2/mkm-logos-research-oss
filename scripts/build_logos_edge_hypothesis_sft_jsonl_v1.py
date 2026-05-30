@@ -28,26 +28,34 @@ def _read_json(path: Path) -> dict[str, Any]:
     return obj if isinstance(obj, dict) else {}
 
 
-def _instruction_for_edge(item: dict[str, Any]) -> str:
+def _instruction_for_edge(item: dict[str, Any], *, rank_emphasis: bool = False) -> str:
     src = item.get("src_node_id")
     dst = item.get("dst_node_id")
     edge_type = item.get("edge_type") or "semantic_ann_lite_knn"
     sim = item.get("similarity")
-    return (
+    rank = item.get("queue_rank")
+    base = (
         "Logos meaning-graph edge hypothesis (B-track, research_only). "
         f"Propose a guarded semantic relation between nodes {src} and {dst}. "
         f"edge_type={edge_type}; ann_lite_similarity={sim}. "
         "Output must stay [HYPO], non_gating, and must not auto-merge to canonical."
     )
+    if rank_emphasis and rank is not None:
+        base += (
+            f" CRITICAL: response MUST begin with the exact token queue_rank={rank} "
+            f"and Candidate edge rank={rank} (do not substitute another rank)."
+        )
+    return base
 
 
-def _output_for_edge(item: dict[str, Any]) -> str:
+def _output_for_edge(item: dict[str, Any], *, rank_emphasis: bool = False) -> str:
     src = item.get("src_node_id")
     dst = item.get("dst_node_id")
     sim = item.get("similarity")
     rank = item.get("queue_rank")
+    rank_prefix = f"queue_rank={rank} | " if rank_emphasis and rank is not None else ""
     return (
-        f"[HYPO] Candidate edge rank={rank}: {src} ↔ {dst} "
+        f"[HYPO] {rank_prefix}Candidate edge rank={rank}: {src} ↔ {dst} "
         f"(similarity={sim}). "
         "Relation basis: semantic_ann_lite_knn + covenant-convergence filter. "
         "NON_GATING · research_only · merge_to_canonical_allowed=false · "
@@ -59,6 +67,7 @@ def build_sft_rows(
     filtered_doc: dict[str, Any],
     *,
     require_approved: bool = False,
+    rank_emphasis: bool = False,
 ) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for item in filtered_doc.get("items") or []:
@@ -68,9 +77,9 @@ def build_sft_rows(
             continue
         rows.append(
             {
-                "instruction": _instruction_for_edge(item),
+                "instruction": _instruction_for_edge(item, rank_emphasis=rank_emphasis),
                 "input": "",
-                "output": _output_for_edge(item),
+                "output": _output_for_edge(item, rank_emphasis=rank_emphasis),
                 "metadata": {
                     "schema": "logos_edge_hypothesis_sft_v1",
                     "hypothesis_tier": "B",
@@ -97,6 +106,11 @@ def main() -> int:
         action="store_true",
         help="Only rows with review_decision=approve (default: include pending for train-entry pack)",
     )
+    ap.add_argument(
+        "--rank-emphasis",
+        action="store_true",
+        help="Repeat queue_rank in instruction/output to reduce rank mode-collapse ([HYPO] experiment)",
+    )
     args = ap.parse_args()
 
     filtered = _read_json(args.filtered_json)
@@ -104,7 +118,11 @@ def main() -> int:
         print(json.dumps({"ok": False, "error": f"missing filtered items: {args.filtered_json}"}))
         return 1
 
-    rows = build_sft_rows(filtered, require_approved=args.require_approved)
+    rows = build_sft_rows(
+        filtered,
+        require_approved=args.require_approved,
+        rank_emphasis=args.rank_emphasis,
+    )
     if not rows:
         print(json.dumps({"ok": False, "error": "no SFT rows after filter (require_approved?)"}))
         return 1
@@ -130,6 +148,7 @@ def main() -> int:
         "merge_to_canonical_allowed": False,
         "human_signoff_required": True,
         "require_approved": args.require_approved,
+        "rank_emphasis": args.rank_emphasis,
         "row_count": len(rows),
         "jsonl_path": _rel(args.output_jsonl),
         "source_filtered": _rel(args.filtered_json),
