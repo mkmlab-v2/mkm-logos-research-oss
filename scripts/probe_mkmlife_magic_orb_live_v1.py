@@ -19,7 +19,8 @@ CHECKS = [
     {
         "id": "mkmlife_oracle",
         "url": "https://mkmlife.com/oracle-sphere",
-        "markers": ["magic-orb-page", "마법구슬", "NON-MEDICAL", "magic-orb-disclaimer"],
+        "markers": ["magic-orb-page", "마법구슬", "NON-MEDICAL"],
+        "markers_any": [["magic-orb-disclaimer", "magic-orb-immersive-legal-line"]],
         "max_bytes": 16384,
     },
     {
@@ -105,6 +106,9 @@ def main() -> int:
         max_b = int(row.get("max_bytes") or 4096)
         status, body, err = _fetch(row["url"], max_bytes=max_b)
         missing = [m for m in row["markers"] if m not in body]
+        for group in row.get("markers_any") or []:
+            if not any(marker in body for marker in group):
+                missing.append("|".join(group))
         expect_status = row.get("expect_status")
         if expect_status is not None:
             core_ok = status == expect_status
