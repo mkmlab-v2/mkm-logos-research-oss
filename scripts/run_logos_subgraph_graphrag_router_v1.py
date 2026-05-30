@@ -19,8 +19,67 @@ DEFAULT_GOLD = ART / "logos_semantic_query_gold_human_v1.json"
 DEFAULT_OUT = ART / "logos_subgraph_graphrag_router_v1_latest.json"
 
 SCHEMA = "logos_subgraph_graphrag_router_v1"
-VERSION = "1.0.0"
+VERSION = "1.3.0"
 TOKEN_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
+
+# Multi-syllable then single Hangul particles (longest-first).
+_KO_PARTICLE_SUFFIXES = (
+    "에서",
+    "으로",
+    "에게",
+    "까지",
+    "부터",
+    "이며",
+    "이라",
+    "이고",
+    "처럼",
+    "보다",
+    "한테",
+)
+_KO_SINGLE_PARTICLES = "이가은는을를의와과도로만"
+
+# Query glue tokens — excluded from bridge overlap scoring (not thematic).
+_SCORING_STOP_TOKENS = frozenset(
+    {
+        "때",
+        "동시에",
+        "엮이는",
+        "성경",
+        "어디인가",
+        "경로는",
+        "경로",
+        "어디",
+        "무엇",
+        "어떻",
+        "어떤",
+        "있는",
+        "없는",
+        "무엇인가",
+        "구조적으로",
+        "대응되는",
+        "서사",
+        "거시",
+        "현재",
+        "logos",
+        "사이에",
+    }
+)
+
+# Query token → bridge haystack aliases (composite overlay queries).
+_TOKEN_HAY_ALIASES: dict[str, tuple[str, ...]] = {
+    "붕괴": ("붕괴", "무너", "collapse", "멸망", "fall"),
+    "교역": ("교역", "trade", "바벨", "바벨론", "babylon"),
+}
+
+# Composite-query lanes: pick at most one best bridge per active lane.
+_THEME_LANES: tuple[tuple[str, tuple[str, ...]], ...] = (
+    ("hubris_trade", ("바벨", "바벨론", "babel", "babylon", "교역", "hubris", "trade", "탑")),
+    ("volatility", ("변동", "변동성", "volatility", "shock", "쇼크", "절제")),
+    ("covenant", ("언약", "약속", "신실", "covenant")),
+    ("judgment", ("심판", "경고", "무너", "붕괴", "judgment", "warning", "collapse")),
+    ("restoration", ("회복", "갱신", "치유", "restoration", "restore")),
+    ("mercy", ("자비", "긍휴", "mercy", "compassion")),
+)
 
 
 def _utc_now() -> str:
@@ -65,7 +124,37 @@ def _tokens(text: str) -> list[str]:
     return out
 
 
-def _bridge_score(query_tokens: list[str], bridge: dict[str, Any]) -> int:
+def _match_stems(token: str) -> list[str]:
+    """Return token + particle-stripped stems for Korean substring overlap."""
+    if len(token) < 2:
+        return []
+    stems: list[str] = [token]
+    t = token
+    for suf in _KO_PARTICLE_SUFFIXES:
+        if len(t) > len(suf) + 1 and t.endswith(suf):
+            stems.append(t[: -len(suf)])
+    if len(t) >= 3:
+        for p in _KO_SINGLE_PARTICLES:
+            if t.endswith(p):
+                stems.append(t[:-1])
+                break
+    seen: set[str] = set()
+    out: list[str] = []
+    for s in stems:
+        if len(s) >= 2 and s not in seen:
+            seen.add(s)
+            out.append(s)
+    return out
+
+
+def _token_in_hay(token: str, hay: str) -> bool:
+    for stem in _match_stems(token):
+        if stem in hay:
+            return True
+    return False
+
+
+def _bridge_haystack(bridge: dict[str, Any]) -> str:
     parts: list[str] = []
     q = bridge.get("query") if isinstance(bridge.get("query"), dict) else {}
     parts.append(str(q.get("label_ko") or ""))
@@ -76,8 +165,135 @@ def _bridge_score(query_tokens: list[str], bridge: dict[str, Any]) -> int:
         parts.append(str(node.get("label_ko") or ""))
         parts.append(str(node.get("label_en") or ""))
         parts.append(str(node.get("rationale_ko") or ""))
-    hay = " ".join(parts).lower()
-    return sum(1 for t in query_tokens if t in hay)
+    for path in bridge.get("paths") or []:
+        if isinstance(path, dict):
+            parts.append(str(path.get("note_ko") or ""))
+    return " ".join(parts).lower()
+
+
+def _token_aliases(token: str) -> tuple[str, ...]:
+    return _TOKEN_HAY_ALIASES.get(token, (token,))
+
+
+def _token_or_alias_in_hay(token: str, hay: str) -> bool:
+    for alias in _token_aliases(token):
+        if _token_in_hay(alias, hay):
+            return True
+    return False
+
+
+def _bridge_token_hits(query_tokens: list[str], bridge: dict[str, Any]) -> set[str]:
+    hay = _bridge_haystack(bridge)
+    hits: set[str] = set()
+    for t in query_tokens:
+        if t in _SCORING_STOP_TOKENS:
+            continue
+        if _token_or_alias_in_hay(t, hay):
+            hits.add(t)
+    return hits
+
+
+def _bridge_score(query_tokens: list[str], bridge: dict[str, Any]) -> int:
+    return len(_bridge_token_hits(query_tokens, bridge))
+
+
+def _active_theme_lanes(query: str) -> list[str]:
+    q = query.lower()
+    lanes: list[str] = []
+    for lane_id, keywords in _THEME_LANES:
+        if any(kw in q for kw in keywords):
+            lanes.append(lane_id)
+    return lanes
+
+
+def _bridge_theme_lane(bridge: dict[str, Any]) -> str | None:
+    blob = _bridge_haystack(bridge)
+    for lane_id, keywords in _THEME_LANES:
+        if any(kw in blob for kw in keywords):
+            return lane_id
+    return None
+
+
+def _select_bridges_multi_coverage(
+    candidates: list[tuple[int, set[str], dict[str, Any], str]],
+    *,
+    query: str,
+    top_bridges: int,
+    lane_backfill_pool: list[tuple[int, set[str], dict[str, Any], str]] | None = None,
+) -> list[tuple[int, set[str], dict[str, Any], str]]:
+    """Prefer diverse token coverage; force one bridge per active theme lane when composite."""
+    if not candidates and not lane_backfill_pool:
+        return []
+    pool_all = lane_backfill_pool or candidates
+    ranked = sorted(candidates, key=lambda x: (x[0], len(x[1])), reverse=True)
+    selected: list[tuple[int, set[str], dict[str, Any], str]] = []
+    selected_rels: set[str] = set()
+    covered: set[str] = set()
+    lanes_filled: set[str] = set()
+
+    active_lanes = _active_theme_lanes(query)
+    if len(active_lanes) >= 2:
+        by_lane: dict[str, list[tuple[int, set[str], dict[str, Any], str]]] = {}
+        for item in ranked:
+            lane = _bridge_theme_lane(item[2])
+            if lane:
+                by_lane.setdefault(lane, []).append(item)
+        for lane in active_lanes:
+            pool = by_lane.get(lane) or []
+            pool = sorted(pool, key=lambda x: (x[0], len(x[1])), reverse=True)
+            if not pool:
+                pool = [
+                    item
+                    for item in pool_all
+                    if _bridge_theme_lane(item[2]) == lane and item[3] not in selected_rels
+                ]
+                pool = sorted(
+                    pool,
+                    key=lambda x: (x[0], len(x[2].get("paths") or []), len(x[1])),
+                    reverse=True,
+                )
+            for item in pool:
+                if item[3] in selected_rels:
+                    continue
+                selected.append(item)
+                selected_rels.add(item[3])
+                covered |= item[1]
+                lanes_filled.add(lane)
+                break
+
+    composite_theme_only = len(active_lanes) >= 2
+
+    for item in ranked:
+        if len(selected) >= top_bridges:
+            break
+        score, hits, doc, rel = item
+        if score <= 0 or rel in selected_rels:
+            continue
+        if composite_theme_only:
+            lane = _bridge_theme_lane(doc)
+            if lane not in active_lanes:
+                continue
+        if not selected:
+            selected.append(item)
+            selected_rels.add(rel)
+            covered |= hits
+            continue
+        new_hits = hits - covered
+        if new_hits or score >= selected[0][0]:
+            selected.append(item)
+            selected_rels.add(rel)
+            covered |= hits
+
+    if len(selected) < top_bridges and not composite_theme_only:
+        for item in ranked:
+            if len(selected) >= top_bridges:
+                break
+            if item[3] not in selected_rels and item[0] > 0:
+                selected.append(item)
+                selected_rels.add(item[3])
+
+    selected.sort(key=lambda x: (x[0], len(x[1])), reverse=True)
+    return selected[:top_bridges]
 
 
 def _verse_ids_from_bridge(bridge: dict[str, Any]) -> list[str]:
@@ -109,7 +325,8 @@ def route(
     top_bridges: int,
 ) -> dict[str, Any]:
     query_tokens = _tokens(query)
-    bridge_docs: list[tuple[int, dict[str, Any], str]] = []
+    candidates: list[tuple[int, set[str], dict[str, Any], str]] = []
+    lane_backfill_pool: list[tuple[int, set[str], dict[str, Any], str]] = []
     for entry in registry.get("entries") or []:
         if not isinstance(entry, dict) or not entry.get("present"):
             continue
@@ -122,17 +339,24 @@ def route(
         doc = _load_json(path)
         if not doc:
             continue
-        score = _bridge_score(query_tokens, doc)
-        if score > 0:
-            bridge_docs.append((score, doc, rel))
+        hits = _bridge_token_hits(query_tokens, doc)
+        item = (len(hits), hits, doc, rel)
+        lane_backfill_pool.append(item)
+        if hits:
+            candidates.append(item)
 
-    bridge_docs.sort(key=lambda x: x[0], reverse=True)
-    selected = bridge_docs[:top_bridges]
+    selected = _select_bridges_multi_coverage(
+        candidates,
+        query=query,
+        top_bridges=top_bridges,
+        lane_backfill_pool=lane_backfill_pool,
+    )
+    active_lanes = _active_theme_lanes(query)
 
     paths_out: list[dict[str, Any]] = []
     verse_ids: list[str] = []
     seen_v: set[str] = set()
-    for score, doc, rel in selected:
+    for score, _hits, doc, rel in selected:
         for path in doc.get("paths") or []:
             if not isinstance(path, dict):
                 continue
@@ -177,6 +401,7 @@ def route(
         "non_gating": True,
         "query": query,
         "query_tokens": query_tokens,
+        "theme_lanes_active": active_lanes,
         "bridges_matched": len(selected),
         "paths": paths_out,
         "verse_ids": verse_ids,
@@ -186,6 +411,7 @@ def route(
             "no_prophecy_claim": True,
             "track_wall": "B_track_not_track_A",
             "router_kind": "logos_subgraph_v1",
+            "bridge_selection": "multi_coverage_v1",
         },
     }
 
@@ -213,7 +439,7 @@ def main() -> int:
     args = ap.parse_args()
 
     query = (args.query or "").strip()
-    if args.query_id:
+    if args.query_id and not query:
         loaded = _query_from_gold(args.gold_json, args.query_id.strip())
         if not loaded:
             print(json.dumps({"ok": False, "error": f"query_id not found: {args.query_id}"}, ensure_ascii=False))

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "magic_orb_graph_bloom_v1.schema.json",
+  "title": "magic_orb_graph_bloom_v1",
+  "type": "object",
+  "required": ["schema", "nodes", "edges"],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "magic_orb_graph_bloom_v1" },
+    "version": { "type": "string" },
+    "seed_query": { "type": "string", "maxLength": 800 },
+    "disclaimer_ko": { "type": "string" },
+    "hypothesis_tier": { "enum": ["B"] },
+    "research_only": { "type": "boolean" },
+    "non_gating": { "type": "boolean" },
+    "stats": {
+      "type": "object",
+      "properties": {
+        "node_count": { "type": "integer", "minimum": 0 },
+        "edge_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "maxItems": 48,
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "kind"],
+        "properties": {
+          "id": { "type": "string" },
+          "label": { "type": "string" },
+          "kind": {
+            "enum": ["query", "verse", "theme", "regime", "concept", "lemma", "other"]
+          },
+          "hub_score": { "type": "number", "minimum": 0, "maximum": 1 },
+          "ref": { "type": "string" },
+          "corpus": { "type": "string" }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "maxItems": 56,
+      "items": {
+        "type": "object",
+        "required": ["src", "dst"],
+        "properties": {
+          "src": { "type": "string" },
+          "dst": { "type": "string" },
+          "edge_type": { "type": "string" },
+          "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    }
+  }
+}

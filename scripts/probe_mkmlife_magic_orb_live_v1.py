@@ -6,6 +6,7 @@ import json
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -57,6 +58,23 @@ CHECKS = [
         "url": "https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1",
         "markers": ["mkmlife.com/oracle-sphere", "Topology graph"],
         "max_bytes": 65536,
+    },
+    {
+        "id": "mkmlife_insight_latest_static",
+        "url": "https://mkmlife.com/data/magic_orb_question_insight_v1_latest.json",
+        "markers": [
+            '"schema": "magic_orb_question_insight_v1"',
+            '"schema": "magic_orb_graph_bloom_v1"',
+            '"graph_bloom"',
+        ],
+        "max_bytes": 32768,
+    },
+    {
+        "id": "mkmlife_insight_api_get",
+        "url": "https://mkmlife.com/api/v1/magic-orb/insight?query="
+        + urllib.parse.quote("위기 가운데 언약의 안정과 신실"),
+        "markers": ['"magic_orb_question_insight_v1"', '"graph_bloom"'],
+        "max_bytes": 32768,
     },
 ]
 

@@ -1,0 +1,38 @@
+{
+  "schema": "magic_orb_question_insight_queries_v1",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "non_gating": true,
+  "items": [
+    {
+      "id": "q01",
+      "query_ko": "위기 가운데 언약의 안정과 신실",
+      "query_key_hint": "ac97b7efd98bb326"
+    },
+    {
+      "id": "q02",
+      "query_ko": "무너지기 전 심판과 경고",
+      "query_key_hint": "e8ac9e70c843d1e6"
+    },
+    {
+      "id": "q03",
+      "query_ko": "언약이 흔들릴 때 심판의 경고와 회복의 약속이 동시에 엮이는 성경 경로는 어디인가?",
+      "query_key_hint": "baseline_multibridge_v1",
+      "expand_graph": true
+    },
+    {
+      "id": "q04",
+      "query_ko": "심판의 경고 이후에도 언약의 잔류가 남는다는 성경적 논증은, 어떤 구절·경로(chain)로 연결되는가?",
+      "query_key_hint": "logos_chain_judgment_covenant_v1",
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] Logos chain query; not price or live trading trigger."
+    },
+    {
+      "id": "q05",
+      "query_ko": "고문헌의 붕괴·교역(hubris/trade) 서사와 거시 변동성 쇼크 서사 사이에 구조적으로 대응되는 Logos 경로는 무엇인가?",
+      "query_key_hint": "logos_hubris_volatility_overlay_v1",
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] Logos-primary overlay; Field/regime narrative context only — not price or live trading trigger."
+    }
+  ]
+}
