@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "scripts" / "build_logos_candidate_edge_offline_4d_strict_batch_v1.py"
-OUT_BATCH = ROOT / "reports" / "logos_candidate_edge_offline_4d_lora_strict_batch_v1_latest.json"
+OUT_BATCH = ROOT / "reports/logos_candidate_edge_offline_4d_lora_strict_batch_v1_latest.json"
 OUT_FILTERED = ROOT / "docs/final/artifacts/logos_review_queue_offline_4d_strict_v1_latest.json"
 
 
@@ -30,7 +30,12 @@ def test_offline_4d_strict_batch_builder_smoke() -> None:
     assert batch["bulk_merge_blocked"] is True
     assert batch["lora_strict_only"] is True
     assert batch["pending_only"] is True
-    assert len(batch["items"]) == 5
-    assert filtered["stats"]["selected_count"] == 5
+    n = len(batch["items"])
+    assert 0 <= n <= 5
+    assert filtered["stats"]["selected_count"] == n
+    if n == 0:
+        # Queue satiation: all offline_4d rows decided — builder still exits 0.
+        return
+    assert n == 5
     assert all(i.get("lane_id") == "offline_4d_knn" for i in filtered["items"])
     assert all(not i.get("review_decision") for i in filtered["items"])
