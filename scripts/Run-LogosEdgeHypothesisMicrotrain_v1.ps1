@@ -3,7 +3,9 @@ param(
     [ValidateSet("DryRun", "Smoke")]
     [string]$Mode = "DryRun",
     [int]$MaxSteps = 8,
-    [switch]$SkipTrainEntryRefresh
+    [switch]$SkipTrainEntryRefresh,
+    [switch]$SampleInfer,
+    [int]$SampleLimit = 2
 )
 
 $ErrorActionPreference = "Stop"
@@ -33,4 +35,11 @@ if ($Mode -eq "DryRun") {
     Write-Host "[OK] Dry-run passed. Re-run with -Mode Smoke for ~5min GPU micro-train." -ForegroundColor Green
 } else {
     Write-Host "[OK] Micro-train smoke complete. Adapter under reports/logos_edge_hypothesis_microtrain_v1/" -ForegroundColor Green
+}
+
+if ($SampleInfer) {
+    Write-Host "[+] Sample inference ($SampleLimit prompts)..." -ForegroundColor Cyan
+    & py scripts/run_logos_edge_hypothesis_microtrain_sample_infer_v1.py --limit $SampleLimit
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    Write-Host "[OK] Sample infer report: reports/logos_edge_hypothesis_microtrain_sample_infer_v1_latest.json" -ForegroundColor Green
 }

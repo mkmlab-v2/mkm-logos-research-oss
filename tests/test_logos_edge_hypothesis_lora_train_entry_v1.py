@@ -141,3 +141,17 @@ def test_microtrain_dry_run_contract(tmp_path: Path) -> None:
     assert doc["schema"] == "logos_edge_hypothesis_microtrain_v1"
     assert doc["microtrain_smoke_ok"] is True
     assert doc["kaggle_lane"] is False
+
+
+def test_sample_infer_score_hypo_format() -> None:
+    mod_path = ROOT / "scripts/run_logos_edge_hypothesis_microtrain_sample_infer_v1.py"
+    spec = importlib.util.spec_from_file_location("logos_micro_sample_infer", mod_path)
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+    good = mod._score_output(
+        "[HYPO] Candidate edge rank=1: a ↔ b. NON_GATING · research_only · merge_to_canonical_allowed=false"
+    )
+    bad = mod._score_output("This edge is definitely canonical truth.")
+    assert good["format_smoke_ok"] is True
+    assert bad["format_smoke_ok"] is False
