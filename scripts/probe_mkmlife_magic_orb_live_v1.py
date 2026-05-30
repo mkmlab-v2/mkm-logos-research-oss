@@ -77,6 +77,86 @@ CHECKS = [
         "markers": ['"magic_orb_question_insight_v1"', '"graph_bloom"'],
         "max_bytes": 32768,
     },
+    {
+        "id": "mkmlife_insight_q08_static",
+        "url": "https://mkmlife.com/data/magic_orb_insight_by_query/23524432377849f7.json",
+        "markers": ['"query_id": "q08"', '"schema": "magic_orb_graph_bloom_v1"'],
+        "max_bytes": 32768,
+        "optional": True,
+    },
+    {
+        "id": "mkmlife_insight_q08_api_get",
+        "url": "https://mkmlife.com/api/v1/magic-orb/insight?query="
+        + urllib.parse.quote("고난과 위로가 함께 나타나는 성경적 패턴은 무엇인가?"),
+        "markers": ['"query_id": "q08"', '"graph_bloom"'],
+        "max_bytes": 32768,
+        "optional": True,
+    },
+    {
+        "id": "mkmlife_insight_q01_static",
+        "url": "https://mkmlife.com/data/magic_orb_insight_by_query/ac97b7efd98bb326.json",
+        "markers": ['"query_id": "q01"', '"schema": "magic_orb_graph_bloom_v1"'],
+        "max_bytes": 65536,
+        "optional": True,
+    },
+    {
+        "id": "mkmlife_insight_q07_static",
+        "url": "https://mkmlife.com/data/magic_orb_insight_by_query/ac532b47d8664c36.json",
+        "markers": ['"query_id": "q07"', "Jer.31.33"],
+        "max_bytes": 65536,
+        "optional": True,
+    },
+    {
+        "id": "mkmlife_insight_q02_static",
+        "url": "https://mkmlife.com/data/magic_orb_insight_by_query/e8ac9e70c843d1e6.json",
+        "markers": [
+            '"query_id": "q02"',
+            "logos_concept_bridge_gold_q02_judgment_warning_collapse",
+        ],
+        "max_bytes": 65536,
+        "optional": True,
+    },
+    {
+        "id": "mkmlife_insight_q05_static",
+        "url": "https://mkmlife.com/data/magic_orb_insight_by_query/5d940bba424da73b.json",
+        "markers": [
+            '"query_id": "q05"',
+            "logos_concept_bridge_gold_q12_risk_excess_cycle_unwind",
+        ],
+        "max_bytes": 65536,
+        "optional": True,
+    },
+    {
+        "id": "mkmlife_insight_q03_static",
+        "url": "https://mkmlife.com/data/magic_orb_insight_by_query/e6e606a225eceaf1.json",
+        "markers": [
+            '"query_id": "q03"',
+            "logos_concept_bridge_gold_q04_judgment_covenant_remnant",
+        ],
+        "max_bytes": 65536,
+        "optional": True,
+    },
+    {
+        "id": "mkmlife_insight_q04_static",
+        "url": "https://mkmlife.com/data/magic_orb_insight_by_query/482fb24be6f1ec09.json",
+        "markers": [
+            '"query_id": "q04"',
+            "logos_concept_bridge_gold_q04_judgment_covenant_remnant",
+        ],
+        "max_bytes": 32768,
+        "optional": True,
+    },
+    {
+        "id": "mkmlife_insight_q04_api_get",
+        "url": "https://mkmlife.com/api/v1/magic-orb/insight?query="
+        + urllib.parse.quote(
+            "심판의 경고 이후에도 언약의 잔류가 남는다는 성경적 논증은, "
+            "어떤 구절·경로(chain)로 연결되는가?"
+        ),
+        "markers": ['"query_id": "q04"', '"graph_bloom"'],
+        "max_bytes": 32768,
+        "optional": True,
+    },
 ]
 
 

@@ -56,13 +56,8 @@ if ($FullDeploy) {
         Write-Host "WARN: .open-next missing — run -FullDeploy once" -ForegroundColor Yellow
         $failed += "asset_deploy_skipped"
     } else {
-        Push-Location $mkmlifeRoot
-        try {
-            Remove-Item Env:CLOUDFLARE_API_TOKEN -ErrorAction SilentlyContinue
-            Remove-Item Env:CF_API_TOKEN -ErrorAction SilentlyContinue
-            npx wrangler deploy --config wrangler.jsonc
-            if ($LASTEXITCODE -ne 0) { $failed += "asset_deploy" }
-        } finally { Pop-Location }
+        powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $mkmlifeRoot "scripts\Deploy-CloudflareMkmlife.ps1") -SkipBuild -SkipOracleSphereHero
+        if ($LASTEXITCODE -ne 0) { $failed += "asset_deploy" }
     }
 }
 
