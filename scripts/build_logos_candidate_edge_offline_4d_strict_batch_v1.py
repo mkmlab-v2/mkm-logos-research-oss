@@ -28,17 +28,26 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--queue-json", type=Path, default=DEFAULT_QUEUE)
     ap.add_argument("--max-batch-size", type=int, default=5)
+    ap.add_argument(
+        "--pending-only",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Skip rows with review_decision already set (default: true)",
+    )
     ap.add_argument("--output-batch-json", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--output-filtered-json", type=Path, default=DEFAULT_FILTERED)
     args = ap.parse_args()
 
     queue_path = args.queue_json if args.queue_json.is_absolute() else ROOT / args.queue_json
     doc = _read_json(queue_path)
-    offline = [
+    offline_all = [
         i
         for i in doc.get("items") or []
         if isinstance(i, dict) and i.get("lane_id") == "offline_4d_knn"
-    ][: max(1, int(args.max_batch_size))]
+    ]
+    if args.pending_only:
+        offline_all = [i for i in offline_all if not i.get("review_decision")]
+    offline = offline_all[: max(1, int(args.max_batch_size))]
 
     batch = {
         "schema": "logos_candidate_edge_offline_4d_lora_strict_batch_v1",
@@ -46,6 +55,7 @@ def main() -> int:
         "hypothesis_tier": "B",
         "research_only": True,
         "bulk_merge_blocked": True,
+        "pending_only": bool(args.pending_only),
         "max_batch_size": int(args.max_batch_size),
         "lora_strict_only": True,
         "items": [

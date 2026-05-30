@@ -29,6 +29,8 @@ def test_offline_4d_strict_batch_builder_smoke() -> None:
     assert batch["schema"] == "logos_candidate_edge_offline_4d_lora_strict_batch_v1"
     assert batch["bulk_merge_blocked"] is True
     assert batch["lora_strict_only"] is True
+    assert batch["pending_only"] is True
     assert len(batch["items"]) == 5
     assert filtered["stats"]["selected_count"] == 5
     assert all(i.get("lane_id") == "offline_4d_knn" for i in filtered["items"])
+    assert all(not i.get("review_decision") for i in filtered["items"])

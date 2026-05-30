@@ -38,8 +38,10 @@ def _rel(path: Path) -> str:
 
 def _render_md(payload: dict[str, Any]) -> str:
     lora = payload.get("lora_summary") or {}
+    ranks = [row.get("queue_rank") for row in (payload.get("items") or []) if row.get("queue_rank") is not None]
+    rank_span = f"{min(ranks)}–{max(ranks)}" if ranks else "n/a"
     lines = [
-        "# Logos offline_4d strict — Commander review pack (Wave 2)",
+        f"# Logos offline_4d strict — Commander review pack (Wave {payload.get('wave', 2)})",
         "",
         f"- generated: `{payload.get('generated_at_utc')}`",
         "- lane: **offline_4d_knn** · `[HYPO]` · `[NON_GATING]` · research_only",
@@ -50,7 +52,7 @@ def _render_md(payload: dict[str, Any]) -> str:
         f"- rank_match: **{lora.get('rank_match', 'n/a')}** · steps: {lora.get('microtrain_steps', 'n/a')}",
         f"- closure: `{lora.get('closure_ref', 'n/a')}`",
         "",
-        "## Items (ranks 46–50)",
+        f"## Items (ranks {rank_span})",
         "",
         "| rank | pair | sim | cross-book | decision | note |",
         "|-----:|------|----:|:-----------|:---------|:-----|",
@@ -92,6 +94,7 @@ def _books_from_pair(pair_key: str) -> list[str]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--wave", type=int, default=2, help="Wave label for pack metadata")
     ap.add_argument("--subset-json", type=Path, default=DEFAULT_SUBSET)
     ap.add_argument("--batch-json", type=Path, default=DEFAULT_BATCH)
     ap.add_argument("--lora-closure-json", type=Path, default=DEFAULT_LORA)
@@ -132,7 +135,7 @@ def main() -> int:
         "non_gating": True,
         "merge_to_canonical_allowed": False,
         "bulk_merge_blocked": True,
-        "wave": 2,
+        "wave": int(args.wave),
         "subset_path": _rel(subset_path),
         "strict_batch_path": _rel(batch_path),
         "stats": subset.get("stats"),
