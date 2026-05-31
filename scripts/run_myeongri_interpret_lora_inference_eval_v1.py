@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.myeongri_interpret_envelope_views_v1 import extract_compact_from_interpret_instruction  # noqa: E402
 from scripts.run_myeongri_harness_v2_engine_interpret_smoke_v1 import _try_parse_envelope  # noqa: E402
 
 DEFAULT_SFT = ROOT / "data/training/myeongri_interpret_sft_v2/locked_eval.jsonl"
@@ -42,9 +43,14 @@ def main() -> int:
     ap.add_argument("--profile-json", type=Path, default=DEFAULT_PROFILE)
     ap.add_argument("--profile-key", default="train_default")
     ap.add_argument("--limit", type=int, default=25)
-    ap.add_argument("--max-new-tokens", type=int, default=384)
+    ap.add_argument("--max-new-tokens", type=int, default=448)
     ap.add_argument("--temperature", type=float, default=0.2)
     ap.add_argument("--top-p", type=float, default=0.9)
+    ap.add_argument(
+        "--row-indices",
+        default="",
+        help="Comma-separated 1-based row indices to eval (default: first --limit rows).",
+    )
     ap.add_argument("--predictions-jsonl", type=Path, default=DEFAULT_PRED)
     ap.add_argument("--report-json", type=Path, default=DEFAULT_REPORT)
     ap.add_argument("--oracle-sft", action="store_true", help="Use SFT output as prediction (smoke)")
@@ -61,9 +67,21 @@ def main() -> int:
         _resolve_quantization,
     )
 
-    rows = _load_jsonl(args.sft_jsonl)
-    if args.limit > 0:
-        rows = rows[: args.limit]
+    all_rows = _load_jsonl(args.sft_jsonl)
+    if args.row_indices.strip():
+        wanted_list = [int(x.strip()) for x in args.row_indices.split(",") if x.strip()]
+        pairs: list[tuple[int, dict]] = []
+        for i in wanted_list:
+            if 1 <= i <= len(all_rows):
+                pairs.append((i, all_rows[i - 1]))
+        row_indices = [p[0] for p in pairs]
+        rows = [p[1] for p in pairs]
+    elif args.limit > 0:
+        rows = all_rows[: args.limit]
+        row_indices = list(range(1, len(rows) + 1))
+    else:
+        rows = all_rows
+        row_indices = list(range(1, len(rows) + 1))
     if not rows:
         print("no rows", file=sys.stderr)
         return 2
@@ -81,13 +99,16 @@ def main() -> int:
             bnb_4bit_quant_type=bnb_qt,
         )
 
-    parse_ok = match_ok = 0
+    parse_ok = match_ok = coerced_ok = 0
     per_row: list[dict[str, Any]] = []
     args.predictions_jsonl.parent.mkdir(parents=True, exist_ok=True)
     with args.predictions_jsonl.open("w", encoding="utf-8") as fout:
-        for i, row in enumerate(rows, start=1):
+        for idx, row in zip(row_indices, rows, strict=False):
+            i = idx
             instruction = str(row.get("instruction", ""))
             gold_out = json.loads(str(row.get("output", "{}")))
+            compact = extract_compact_from_interpret_instruction(instruction)
+            gold_sha = str(gold_out.get("deterministic_input_sha256") or "")
             if args.oracle_sft:
                 raw = row.get("output", "")
             else:
@@ -103,14 +124,19 @@ def main() -> int:
                     chat_leak_stop=True,
                 )
                 _ = time.perf_counter() - t0
-            parsed, note = _try_parse_envelope(
+            parsed, note, coerced = _try_parse_envelope(
                 raw if isinstance(raw, str) else json.dumps(raw),
                 gold_out=gold_out,
                 postprocess_v1=True,
+                compact=compact,
+                lang="ko",
+                deterministic_input_sha256=gold_sha,
             )
             ok_parse = parsed is not None and note == ""
             if ok_parse:
                 parse_ok += 1
+            if coerced:
+                coerced_ok += 1
             ok_match = False
             if ok_parse and parsed is not None:
                 ok_match = _canonical_envelope(parsed) == _canonical_envelope(gold_out)
@@ -119,6 +145,7 @@ def main() -> int:
             rec = {
                 "row_index": i,
                 "parse_ok": ok_parse,
+                "envelope_coerced_from_template": coerced,
                 "envelope_match_normalized": ok_match,
                 "mismatch_note": note or None,
                 "prediction_raw_head": (raw if isinstance(raw, str) else str(raw))[:400],
@@ -143,6 +170,7 @@ def main() -> int:
         "sft_jsonl": str(sft_rel).replace("\\", "/"),
         "rows": n,
         "parse_ok_rate": round(parse_ok / n, 6) if n else 0.0,
+        "envelope_coerced_rate": round(coerced_ok / n, 6) if n else 0.0,
         "envelope_match_rate": round(match_ok / n, 6) if n else 0.0,
         "adapter_path": adapter or None,
         "oracle_sft": bool(args.oracle_sft),

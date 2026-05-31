@@ -50,14 +50,20 @@ def _utc_now() -> str:
 def _extract_insight(raw: str) -> str | None:
     from scripts.run_myeongri_deterministic_lora_inference_eval_v1 import _extract_json_object
     from scripts.myeongri_interpret_envelope_views_v1 import (
+        extract_insight_from_raw_leak_truncated,
         extract_mkm_insight_from_llm_parsed,
         sanitize_interpret_raw_for_parse,
     )
 
     parsed = _extract_json_object(sanitize_interpret_raw_for_parse(raw))
-    if not isinstance(parsed, dict):
-        return None
-    return extract_mkm_insight_from_llm_parsed(parsed)
+    if isinstance(parsed, dict):
+        ins = extract_mkm_insight_from_llm_parsed(parsed)
+        if ins and ins.strip():
+            return ins.strip()
+    leaked = extract_insight_from_raw_leak_truncated(raw)
+    if leaked and leaked.strip():
+        return leaked.strip()
+    return None
 
 
 def main() -> int:

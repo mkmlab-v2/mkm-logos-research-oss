@@ -151,6 +151,25 @@ def test_try_parse_envelope_postprocess_row22_pattern() -> None:
     assert p1["deterministic_input_sha256"] == gold_sha
 
 
+def test_extract_insight_from_raw_leak_truncated_row13_pattern() -> None:
+    """Truncated JSON mid-insight string (320 chars) still yields recoverable narrative."""
+    raw = (
+        '{\n  "schema": "myeongri_ai_interpretation_envelope_v1",\n'
+        '  "version": "1.0.0",\n'
+        '  "hypothesis_tier": "B",\n'
+        '  "boundary_ack": true,\n'
+        '  "human_review_required": true,\n'
+        '  "mkm_advanced_insight": "[HYPO] 출생 정보를 기반으로 만세력 결과는 년: 기미, 월: 임신, 일: 임신, '
+        "시: 신해입니다. 이 결과는 표준 만세력 데이터베이스에서 가져온 값이며, "
+        "계산 방법은 표준 데이터베이스 우선 사용 후 계산 로직 Fallback 방식을"
+    )
+    ins = extract_insight_from_raw_leak_truncated(raw)
+    assert ins is not None
+    assert ins.startswith("[HYPO]")
+    assert "Fallback 방식을" in ins
+    assert len(ins) >= 8
+
+
 def test_validate_envelope_missing_governance() -> None:
     from scripts.myeongri_interpret_envelope_views_v1 import validate_envelope_required_fields
 

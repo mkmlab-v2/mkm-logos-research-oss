@@ -36,4 +36,5 @@ def test_interpret_instruction_mentions_envelope_not_saju_compute() -> None:
         sha256_hex="a" * 64,
     )
     assert "myeongri_ai_interpretation_envelope_v1" in msg
+    assert "CRITICAL (Harness v2)" in msg
     assert "deterministic inputs only" in msg.lower()

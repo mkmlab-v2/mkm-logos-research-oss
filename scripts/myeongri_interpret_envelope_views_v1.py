@@ -87,39 +87,44 @@ def strip_chat_leakage(raw: str) -> str:
 def extract_insight_from_raw_leak_truncated(raw: str) -> str | None:
     """Recover narrative when JSON is truncated or polluted inside mkm_advanced_insight."""
     s = normalize_json_punctuation_for_parse((raw or "").strip())
-    key = "mkm_advanced_insight"
-    ki = s.find(key)
     val = ""
-    if ki >= 0:
-        sub = s[ki + len(key) :].lstrip()
-        if sub.startswith('":"'):
-            sub = sub[3:]
-        elif sub.startswith(':"'):
-            sub = sub[2:]
-        elif sub.startswith(":"):
-            sub = sub[1:].lstrip().lstrip('"')
-        elif sub.startswith('"'):
-            sub = sub[1:]
-        q1 = sub.find('"')
-        if q1 > 0:
-            val = sub[:q1]
-        elif sub:
-            val = sub[:4000]
-    if len(val) < 8:
+    m = re.search(
+        r'"mkm_advanced_insight"\s*:\s*"((?:\\.|[^"\\])*)"',
+        s,
+        flags=re.DOTALL,
+    )
+    if not m:
         m = re.search(
-            r'mkm_advanced_insight\s*:\s*"((?:\\.|[^"\\])*)"',
+            r'"mkm_advanced_insight"\s*:\s*"([^"\n]{8,4000})',
             s,
             flags=re.DOTALL,
         )
-        if not m:
-            m = re.search(
-                r'mkm_advanced_insight\s*:\s*"([^"\n]{8,4000})',
-                s,
-                flags=re.DOTALL,
-            )
-        if not m:
-            return None
+    if m:
         val = m.group(1)
+    else:
+        key = "mkm_advanced_insight"
+        ki = s.find(f'"{key}"')
+        if ki < 0:
+            ki = s.find(key)
+        if ki >= 0:
+            sub = s[ki + len(key) :].lstrip()
+            if sub.startswith('": "'):
+                sub = sub[4:]
+            elif sub.startswith('":"'):
+                sub = sub[3:]
+            elif sub.startswith(':"'):
+                sub = sub[2:]
+            elif sub.startswith(":"):
+                sub = sub[1:].lstrip().lstrip('"')
+            elif sub.startswith('"'):
+                sub = sub[1:]
+            q1 = sub.find('"')
+            if q1 > 0:
+                val = sub[:q1]
+            elif sub:
+                val = sub[:4000]
+    if len(val) < 8:
+        return None
     for leak in _INSIGHT_VALUE_LEAK_MARKERS:
         if leak in val:
             val = val.split(leak, 1)[0]

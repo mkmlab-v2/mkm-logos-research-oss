@@ -67,35 +67,38 @@ try {
             --adapter-path $adapter `
             --profile-key $profileKey `
             --limit 25 `
-            --max-new-tokens 384 `
+            --max-new-tokens 448 `
             --report-json reports/myeongri_interpret_lora_v4_eval_locked25_latest.json `
             --predictions-jsonl reports/myeongri_interpret_lora_v4_preds_locked25_latest.jsonl
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
 
     if (-not $SkipEval100) {
-        Write-Host "[v4] 5/7 LoRA eval locked100 (GPU)"
+        Write-Host "[v4] 5/7 LoRA eval locked100 guard448 (GPU)"
         & py scripts/run_myeongri_interpret_lora_inference_eval_v1.py `
             --sft-jsonl $sftEval `
             --adapter-path $adapter `
             --profile-key $profileKey `
             --limit 100 `
-            --max-new-tokens 384 `
-            --report-json reports/myeongri_interpret_lora_v4_eval_locked100_latest.json `
-            --predictions-jsonl reports/myeongri_interpret_lora_v4_preds_locked100_latest.jsonl
+            --max-new-tokens 448 `
+            --report-json reports/myeongri_interpret_lora_v4_eval_locked100_guard448_latest.json `
+            --predictions-jsonl reports/myeongri_interpret_lora_v4_preds_locked100_guard448_latest.jsonl
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
 
     if (-not $SkipNarrativeAudit) {
-        Write-Host "[v4] 6/7 narrative diversity audit (post-train preds)"
+        Write-Host "[v4] 6/7 narrative diversity audit (guard448 preds)"
         & py scripts/audit_myeongri_interpret_narrative_diversity_v1.py `
-            --eval-json reports/myeongri_interpret_lora_v4_eval_locked100_latest.json `
-            --predictions-jsonl reports/myeongri_interpret_lora_v4_preds_locked100_latest.jsonl `
-            --out-json reports/myeongri_interpret_v4_narrative_diversity_audit_locked100_latest.json
+            --eval-json reports/myeongri_interpret_lora_v4_eval_locked100_guard448_latest.json `
+            --predictions-jsonl reports/myeongri_interpret_lora_v4_preds_locked100_guard448_latest.jsonl `
+            --out-json reports/myeongri_interpret_v4_diversity_audit_locked100_guard448_latest.json
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        Write-Host "[v4] 7/7 verify chain (no GPU)"
+        & powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-MyeongriInterpretV4Guard448VerifyChain_v1.ps1 -SkipPosteval
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
 
-    Write-Host "[v4] 7/7 done — adapter $adapter + reports/myeongri_interpret_lora_v4_eval_*"
+    Write-Host "[v4] done — adapter $adapter + reports/myeongri_interpret_lora_v4_eval_locked100_guard448_*"
     exit 0
 } finally {
     Pop-Location

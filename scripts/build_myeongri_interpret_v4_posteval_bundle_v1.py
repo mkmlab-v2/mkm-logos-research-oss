@@ -16,10 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-DEFAULT_EVAL = ROOT / "reports/myeongri_interpret_lora_v4_eval_locked100_latest.json"
-DEFAULT_PREDS = ROOT / "reports/myeongri_interpret_lora_v4_preds_locked100_latest.jsonl"
+DEFAULT_EVAL = ROOT / "reports/myeongri_interpret_lora_v4_eval_locked100_guard448_latest.json"
+DEFAULT_PREDS = ROOT / "reports/myeongri_interpret_lora_v4_preds_locked100_guard448_latest.jsonl"
 DEFAULT_SFT = ROOT / "data/training/myeongri_interpret_sft_v4/locked_eval.jsonl"
-DEFAULT_DIVERSITY = ROOT / "reports/myeongri_interpret_v4_diversity_audit_locked100.json"
+DEFAULT_DIVERSITY = ROOT / "reports/myeongri_interpret_v4_diversity_audit_locked100_guard448_latest.json"
 DEFAULT_SAMPLE_OUT = ROOT / "reports/myeongri_interpret_v4_human_review_sample_latest.json"
 DEFAULT_MISMATCH_OUT = ROOT / "reports/myeongri_interpret_v4_match_mismatch_summary_latest.json"
 DEFAULT_EMPTY_OUT = ROOT / "reports/myeongri_interpret_v4_empty_insight_rows_latest.json"
@@ -36,6 +36,48 @@ def _load_jsonl(path: Path) -> list[dict]:
         for line in path.read_text(encoding="utf-8-sig").splitlines()
         if line.strip()
     ]
+
+
+def _commander_fields_from_prior(path: Path) -> tuple[dict[int, dict[str, Any]], dict[str, Any]]:
+    """Return per-row commander review fields + top-level human gate metadata if signed."""
+    if not path.is_file():
+        return {}, {}
+    try:
+        prior = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}, {}
+    if not prior.get("commander_signed_at_utc"):
+        return {}, {}
+    by_row: dict[int, dict[str, Any]] = {}
+    for s in prior.get("samples") or []:
+        ri = int(s.get("row_index", 0))
+        if ri <= 0:
+            continue
+        keep = {
+            k: s[k]
+            for k in (
+                "reviewer_verdict",
+                "reviewer_verdict_source",
+                "reviewer_verdict_reason",
+                "reviewer_comment",
+            )
+            if k in s and s[k] is not None
+        }
+        if keep.get("reviewer_verdict_source") == "commander_v1":
+            by_row[ri] = keep
+    top = {
+        k: prior[k]
+        for k in (
+            "human_verdict_counts",
+            "human_verdict_applied_at_utc",
+            "human_verdict_source",
+            "commander_signed_at_utc",
+            "population_caveats",
+            "human_gate_pass",
+        )
+        if k in prior
+    }
+    return by_row, top
 
 
 def _parse_envelope(
@@ -97,12 +139,30 @@ def main() -> int:
         default=DEFAULT_STATUS,
         help="Merge posteval artifact pointers into harness status JSON.",
     )
+    ap.add_argument(
+        "--preserve-commander-review",
+        action="store_true",
+        default=True,
+        help="Keep commander_v1 verdicts on overlapping rows when sample-out already signed (default on).",
+    )
+    ap.add_argument(
+        "--no-preserve-commander-review",
+        action="store_false",
+        dest="preserve_commander_review",
+    )
     args = ap.parse_args()
+
+    commander_by_row: dict[int, dict[str, Any]] = {}
+    commander_top: dict[str, Any] = {}
+    if args.preserve_commander_review:
+        commander_by_row, commander_top = _commander_fields_from_prior(args.sample_out)
 
     for p in (args.eval_json, args.predictions_jsonl, args.sft_jsonl):
         if not p.is_file():
             print(f"missing: {p}", file=sys.stderr)
             return 2
+
+    from scripts.audit_myeongri_interpret_narrative_diversity_v1 import _extract_insight
 
     eval_doc = json.loads(args.eval_json.read_text(encoding="utf-8"))
     preds = {int(p["row_index"]): p for p in _load_jsonl(args.predictions_jsonl)}
@@ -123,7 +183,7 @@ def main() -> int:
             instruction=str(sft_row.get("instruction", "")),
         ) if raw else (None, False)
         ev = per_eval.get(i, {})
-        insight = _insight_from_env(parsed) if parsed else ""
+        insight = (_extract_insight(raw) if raw else None) or ""
         if not insight:
             empty_rows.append(
                 {
@@ -171,29 +231,30 @@ def main() -> int:
             instruction=str(sft_rows[idx - 1].get("instruction", "")),
         ) if raw else (None, False)
         ev = per_eval.get(idx, {})
-        insight = _insight_from_env(parsed) if parsed else ""
+        insight = (_extract_insight(raw) if raw else None) or ""
         auto_note = "empty_insight_after_parse" if not insight else "narrative_variant_ok"
-        samples.append(
-            {
-                "row_index": idx,
-                "parse_ok": ev.get("parse_ok"),
-                "envelope_match_normalized": ev.get("envelope_match_normalized"),
-                "envelope_coerced_from_template": ev.get("envelope_coerced_from_template"),
-                "postprocess_coerced": coerced,
-                "mkm_advanced_insight": insight,
-                "confidence_score": parsed.get("confidence_score") if parsed else None,
-                "human_review_required": parsed.get("human_review_required") if parsed else None,
-                "reviewer_prompts_ko": [
-                    "사주 4주·일간이 엔진 입력과 모순 없는가?",
-                    "가격·매매·의료 단정 표현이 없는가?",
-                    "[HYPO]·면책 문구가 적절한가?",
-                    "골드 envelope match 없이 coerce만으로 통과한 행인가?",
-                ],
-                "reviewer_verdict": None,
-                "auto_note": auto_note,
-                "gold_insight_head": _insight_from_env(gold)[:160],
-            }
-        )
+        row_sample: dict[str, Any] = {
+            "row_index": idx,
+            "parse_ok": ev.get("parse_ok"),
+            "envelope_match_normalized": ev.get("envelope_match_normalized"),
+            "envelope_coerced_from_template": ev.get("envelope_coerced_from_template"),
+            "postprocess_coerced": coerced,
+            "mkm_advanced_insight": insight,
+            "confidence_score": parsed.get("confidence_score") if parsed else None,
+            "human_review_required": parsed.get("human_review_required") if parsed else None,
+            "reviewer_prompts_ko": [
+                "사주 4주·일간이 엔진 입력과 모순 없는가?",
+                "가격·매매·의료 단정 표현이 없는가?",
+                "[HYPO]·면책 문구가 적절한가?",
+                "골드 envelope match 없이 coerce만으로 통과한 행인가?",
+            ],
+            "reviewer_verdict": None,
+            "auto_note": auto_note,
+            "gold_insight_head": _insight_from_env(gold)[:160],
+        }
+        if idx in commander_by_row:
+            row_sample.update(commander_by_row[idx])
+        samples.append(row_sample)
 
     div_pointer = ""
     if args.diversity_json.is_file():
@@ -212,6 +273,8 @@ def main() -> int:
         "diversity_audit_pointer": div_pointer,
         "samples": samples,
     }
+    if commander_top:
+        sample_doc.update(commander_top)
     args.sample_out.parent.mkdir(parents=True, exist_ok=True)
     args.sample_out.write_text(
         json.dumps(sample_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
@@ -259,7 +322,7 @@ def main() -> int:
             "match_mismatch_summary": str(args.mismatch_out.relative_to(ROOT)).replace("\\", "/"),
             "empty_insight_rows": str(args.empty_out.relative_to(ROOT)).replace("\\", "/"),
             "reparse_empty_insight_count": len(empty_rows),
-            "postprocess_v2": "strip_leak+curly_quote+insight_regex_recovery",
+            "postprocess_v2": "strip_leak+curly_quote+insight_regex_recovery+leak_truncated_fallback",
         }
         v4.setdefault("human_review_sample", {})["report"] = str(
             args.sample_out.relative_to(ROOT)

@@ -138,7 +138,7 @@ def main() -> int:
     ap.add_argument("--profile-json", type=Path, default=DEFAULT_PROFILE)
     ap.add_argument("--profile-key", default="train_default")
     ap.add_argument("--model-name", default="", help="Override HF model id")
-    ap.add_argument("--max-new-tokens", type=int, default=384)
+    ap.add_argument("--max-new-tokens", type=int, default=448)
     ap.add_argument("--temperature", type=float, default=0.2)
     ap.add_argument("--top-p", type=float, default=0.9)
     args = ap.parse_args()

@@ -25,6 +25,18 @@ from pathlib import Path
 from typing import Any
 
 WORKSPACE_ROOT = Path(__file__).resolve().parent.parent
+SCRIPTS_DIR = WORKSPACE_ROOT / "scripts"
+if str(SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_DIR))
+
+from myeongri_deterministic_lora_golden_views_v1 import (
+    aggregate_field_diffs,
+    build_field_diff_v1,
+    four_pillars_match,
+    instruction_pillars_only_from_golden_row,
+    pillars_only_supervision_v1,
+    pred_shaped_for_field_diff,
+)
 DEFAULT_GOLDEN = WORKSPACE_ROOT / "tests" / "fixtures" / "myeongri_deterministic_lora_golden_sample_v1.jsonl"
 DEFAULT_PROFILE_JSON = (
     WORKSPACE_ROOT / "docs" / "final" / "artifacts" / "myeongri_deterministic_lora_model_profiles_v1.json"
@@ -151,7 +163,7 @@ def _balanced_json_slice(s: str) -> str | None:
 
 
 def _strip_trailing_role_leakage(s: str) -> str:
-    """Drop common chat-template continuations after the JSON block (Qwen-style leaks)."""
+    """Drop common chat-template and multilingual continuations after the JSON block."""
     for marker in (
         "\n\nHuman:",
         "\nHuman:",
@@ -161,6 +173,16 @@ def _strip_trailing_role_leakage(s: str) -> str:
         "\nAssistant:",
         "\n### Instruction:",
         "\n### Response:",
+        "\n\n{",
+        "采用了",
+        "任务：",
+        "若要提供",
+        "Select all correct",
+        "Thank you for providing",
+        "Instructions:",
+        "指令：",
+        "标准数据库",
+        "未能正确翻译",
     ):
         if marker in s:
             s = s.split(marker, 1)[0].strip()
@@ -172,6 +194,76 @@ def _strip_trailing_role_leakage(s: str) -> str:
     if m:
         s = s[: m.start()].strip()
     return s
+
+
+def _is_envelope_v1_dict(obj: dict[str, Any]) -> bool:
+    if obj.get("schema") == "myeongri_ai_interpretation_envelope_v1":
+        return True
+    alt = str(obj.get("$schema", ""))
+    return "myeongri_ai_interpretation_envelope_v1" in alt
+
+
+def _finalize_interpret_completion(raw: str) -> str:
+    """Trim interpret LLM output to first envelope JSON object when parseable."""
+    s = _strip_trailing_role_leakage((raw or "").strip())
+    slice_ = _balanced_json_slice(s)
+    if slice_:
+        try:
+            obj = json.loads(slice_)
+            if isinstance(obj, dict) and _is_envelope_v1_dict(obj):
+                return slice_
+        except json.JSONDecodeError:
+            pass
+    return s
+
+
+def _chat_leak_stopping_criteria(tokenizer: Any, prompt_token_len: int):
+    """Stop when chat/multilingual tail leaks appear or first envelope JSON closes."""
+    from transformers import StoppingCriteria
+
+    markers = (
+        "\nHuman:",
+        "Human:",
+        "\n### Instruction:",
+        "\n### Response:",
+        "Assistant:Human",
+        "Assistant:\nHuman",
+        "\n\n{",
+        "采用了",
+        "任务：",
+        "若要提供",
+        "Select all correct",
+        "Thank you for providing",
+        "Instructions:",
+        "指令：",
+        "标准数据库",
+        "未能正确翻译",
+    )
+
+    class _LeakStop(StoppingCriteria):
+        def __call__(self, input_ids: Any, scores: Any, **kwargs: Any) -> bool:
+            row = input_ids[0]
+            if len(row) <= prompt_token_len:
+                return False
+            n_new = int(len(row) - prompt_token_len)
+            if n_new < 4:
+                return False
+            if n_new % 4 != 0:
+                return False
+            text = tokenizer.decode(row[prompt_token_len:], skip_special_tokens=True)
+            tail = text[-800:] if len(text) > 800 else text
+            if any(m in tail for m in markers):
+                return True
+            sl = _balanced_json_slice(text)
+            if not sl:
+                return False
+            try:
+                obj = json.loads(sl)
+            except json.JSONDecodeError:
+                return False
+            return isinstance(obj, dict) and _is_envelope_v1_dict(obj)
+
+    return _LeakStop()
 
 
 def _extract_json_object(text: str) -> dict[str, Any] | None:
@@ -240,36 +332,6 @@ def _model_device(model: Any) -> Any:
     except Exception:
         pass
     return next(model.parameters()).device
-
-
-def _chat_leak_stopping_criteria(tokenizer: Any, prompt_token_len: int):
-    """Stop generation when decoded new text contains common chat-template leaks."""
-    from transformers import StoppingCriteria
-
-    markers = (
-        "\nHuman:",
-        "Human:",
-        "\n### Instruction:",
-        "\n### Response:",
-        "Assistant:Human",
-        "Assistant:\nHuman",
-    )
-
-    class _LeakStop(StoppingCriteria):
-        def __call__(self, input_ids: Any, scores: Any, **kwargs: Any) -> bool:
-            row = input_ids[0]
-            if len(row) <= prompt_token_len:
-                return False
-            n_new = int(len(row) - prompt_token_len)
-            if n_new < 6:
-                return False
-            if n_new % 6 != 0:
-                return False
-            text = tokenizer.decode(row[prompt_token_len:], skip_special_tokens=True)
-            tail = text[-800:] if len(text) > 800 else text
-            return any(m in tail for m in markers)
-
-    return _LeakStop()
 
 
 def _load_model_and_tokenizer(
@@ -347,8 +409,12 @@ def _generate_one(
         output_ids = model.generate(**inputs, **gen_kw)
     full = tokenizer.decode(output_ids[0], skip_special_tokens=True)
     if "### Response:" in full:
-        return full.split("### Response:", 1)[1].strip()
-    return full.strip()
+        completion = full.split("### Response:", 1)[1].strip()
+    else:
+        completion = full.strip()
+    if chat_leak_stop:
+        completion = _finalize_interpret_completion(completion)
+    return completion
 
 
 def main() -> int:
@@ -377,7 +443,12 @@ def main() -> int:
     ap.add_argument(
         "--oracle-golden",
         action="store_true",
-        help="Skip model; use json.dumps(expected_result) as prediction (pipeline smoke).",
+        help="Skip model; use golden supervision as prediction (full JSON or pillars-only tier).",
+    )
+    ap.add_argument(
+        "--pillars-only-curriculum",
+        action="store_true",
+        help="Tier-0 pillars-only instruction + four_pillars alignment (Pack 0-B curriculum).",
     )
     ap.add_argument("--predictions-jsonl", type=str, default=str(DEFAULT_PREDICTIONS))
     ap.add_argument("--report-json", type=str, default=str(DEFAULT_REPORT))
@@ -437,6 +508,7 @@ def main() -> int:
     per_row: list[dict[str, Any]] = []
     parse_ok = 0
     match_ok = 0
+    pillars_match = 0
 
     model = tokenizer = None
     if not args.oracle_golden:
@@ -454,11 +526,22 @@ def main() -> int:
             if not isinstance(exp, dict):
                 print(f"row {sid}: missing expected_result", file=sys.stderr)
                 return 1
-            instruction = _instruction_from_golden_row(row)
+            instruction = (
+                instruction_pillars_only_from_golden_row(row)
+                if args.pillars_only_curriculum
+                else _instruction_from_golden_row(row)
+            )
 
             t0 = time.perf_counter()
             if args.oracle_golden:
-                raw_pred = json.dumps(exp, ensure_ascii=False, separators=(",", ":"))
+                if args.pillars_only_curriculum:
+                    raw_pred = json.dumps(
+                        pillars_only_supervision_v1(exp),
+                        ensure_ascii=False,
+                        separators=(",", ":"),
+                    )
+                else:
+                    raw_pred = json.dumps(exp, ensure_ascii=False, separators=(",", ":"))
             else:
                 assert model is not None and tokenizer is not None
                 raw_pred = _generate_one(
@@ -477,12 +560,22 @@ def main() -> int:
             exp_n = _normalize_result(exp)
             ok_parse = parsed is not None
             ok_match = False
+            ok_pillars = False
             mismatch_note = ""
+            field_diff: dict[str, Any] | None = None
             if ok_parse:
-                pred_n = _normalize_result(parsed)
-                ok_match = _canonical_json(pred_n) == _canonical_json(exp_n)
-                if not ok_match:
-                    mismatch_note = "canonical_json_mismatch"
+                if args.pillars_only_curriculum:
+                    ok_pillars = four_pillars_match(exp, parsed)
+                    pred_for_diff = pred_shaped_for_field_diff(exp, parsed)
+                    field_diff = build_field_diff_v1(exp, pred_for_diff)
+                    ok_match = ok_pillars
+                    if not ok_pillars:
+                        mismatch_note = "four_pillars_mismatch"
+                else:
+                    pred_n = _normalize_result(parsed)
+                    ok_match = _canonical_json(pred_n) == _canonical_json(exp_n)
+                    if not ok_match:
+                        mismatch_note = "canonical_json_mismatch"
             else:
                 mismatch_note = "json_parse_failed"
 
@@ -490,6 +583,8 @@ def main() -> int:
                 parse_ok += 1
             if ok_match:
                 match_ok += 1
+            if ok_pillars:
+                pillars_match += 1
 
             rec = {
                 "sample_id": sid,
@@ -499,6 +594,10 @@ def main() -> int:
                 "mismatch_note": mismatch_note,
                 "prediction_raw_head": raw_pred[:500],
             }
+            if args.pillars_only_curriculum:
+                rec["pillars_match"] = ok_pillars
+                if field_diff is not None:
+                    rec["field_diff"] = field_diff
             per_row.append(rec)
             fout.write(
                 json.dumps(
@@ -527,6 +626,12 @@ def main() -> int:
         "predictions_jsonl": str(pred_path),
         "per_row": per_row,
     }
+    if args.pillars_only_curriculum:
+        report["alignment_tier"] = "pillars_only"
+        report["pillars_only_curriculum"] = True
+        report["pillars_parse_ok"] = parse_ok
+        report["pillars_alignment_pass_rate"] = round(pillars_match / n, 6) if n else 0.0
+        report["field_diff_aggregate"] = aggregate_field_diffs(per_row)
     if args.emit_timing:
         report["timing_ms"] = _percentiles_ms(latencies_ms)
 
