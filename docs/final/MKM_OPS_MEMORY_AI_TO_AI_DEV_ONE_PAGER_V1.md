@@ -101,6 +101,31 @@ Artifact: `reports/mkm_ops_memory_index_token_bench_v1_latest.json`.
 
 LoRA training/eval: separate chat + `storage/adapters/myeongri_interpret_lora_v0/…`.
 
+### Interpret LoRA v4 — variant curriculum (next)
+
+**Problem (v3):** `insight-mode=fixed` → `template_skeleton_unique_count=1` on train/preds despite format pass.
+
+**v4 fix:** `--insight-mode variant` (6 KO phrasing variants via `sample_id` hash) · `method_id=template_v2_variant_from_engine_pillars*`
+
+| Stage | Metric | v3 | v4 oracle (locked100) |
+|-------|--------|-----|------------------------|
+| SFT skeleton | `template_skeleton_unique_count` | 1 | **84** (gate **pass**) |
+| Post-train | pending | skeleton=1 | train `run_interpret_v4_variant_s100` then eval chain |
+
+```powershell
+# Rebuild SFT + oracle diversity + train(100) + eval100 + narrative audit
+powershell -File scripts\Run-MyeongriInterpretV4EvalChain_v1.ps1
+
+# Oracle-only (no GPU): SFT label ceiling
+py scripts/audit_myeongri_interpret_sft_oracle_diversity_v1.py `
+  --sft-jsonl data/training/myeongri_interpret_sft_v4/locked_eval.jsonl `
+  --out-json reports/myeongri_interpret_sft_v4_oracle_diversity_locked100_latest.json
+```
+
+**Adapter (train output):** `storage/adapters/myeongri_interpret_lora_v0/run_interpret_v4_variant_s100` · profile `train_default` in `myeongri_deterministic_lora_model_profiles_v1.json`
+
+---
+
 ### Interpret LoRA v3 milestone (2026-05-31 · Fact-Lock)
 
 **Status:** format-contract pass on holdout · **not** Track A / not Ops inject merge.

@@ -39,10 +39,39 @@ def test_convert_interpret_sft_smoke(tmp_path: Path) -> None:
     assert proc.returncode == 0, proc.stderr
     line = json.loads(out.read_text(encoding="utf-8").splitlines()[0])
     assert "myeongri_ai_interpretation_envelope_v1" in line["instruction"]
+    assert "CRITICAL (Harness v2)" in line["instruction"]
     out_obj = json.loads(line["output"])
     assert out_obj["schema"] == "myeongri_ai_interpretation_envelope_v1"
     assert out_obj["hypothesis_tier"] == "B"
     assert "[HYPO]" in out_obj["mkm_advanced_insight"]
+
+
+def test_convert_interpret_sft_variant_mode_diverse_skeleton(tmp_path: Path) -> None:
+    out = tmp_path / "interpret_sft_variant.jsonl"
+    proc = subprocess.run(
+        [
+            sys.executable,
+            str(ROOT / "scripts" / "convert_myeongri_golden_to_interpret_sft_jsonl_v1.py"),
+            "--input-jsonl",
+            str(FIXTURE),
+            "--output-jsonl",
+            str(out),
+            "--insight-mode",
+            "variant",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stderr
+    from scripts.audit_myeongri_interpret_narrative_diversity_v1 import insight_to_template_skeleton
+
+    insights = []
+    for line in out.read_text(encoding="utf-8").splitlines():
+        env = json.loads(json.loads(line)["output"])
+        insights.append(env["mkm_advanced_insight"])
+    skeletons = {insight_to_template_skeleton(i) for i in insights}
+    assert len(skeletons) >= 2
 
 
 def test_interpret_sft_output_validates_schema(tmp_path: Path) -> None:
