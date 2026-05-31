@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-05-31T13:45:21Z
+- **last_updated_utc:** 2026-05-31T16:08:00Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -69,6 +69,18 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-05-31T16:08:00Z** — 2026-06-01 cross-ref ENTRY_07/08 monthly pass (no direct_witness); push internal 4e18dda4ca; hygiene/MCP lean baseline; DailyOpsPatrol resume_pack OK; [HYPO] B-track only
+- **2026-05-31T15:59:22Z** — Plan B interpret v4 closeout: guard448 baseline+commander human gate 10/10 pass; posteval preserves commander_signed; verify chain exit 0; commit 92d973453c (scripts/tests only, reports local SSOT). B-track research_only.
+- **2026-05-31T15:23:53Z** — Recovery signoff+ CROSS_REF audit/fence sync; handoff hold_monitor
+- **2026-05-31T15:15:58Z** — L1/L5 weekly maintenance exit0; dashboard HOLD; crossref health green watch rollup
+- **2026-05-31T15:07:00Z** — Extended sweep refreshed; health/rollup/tiering rebuilt
+- **2026-05-31T15:01:37Z** — Commander approved: threshold applied, HR closed, core100 verified_manual x100, comparison refreshed
+- **2026-05-31T14:58:32Z** — OpenBible restored+24step crossref weekly done; health rollup hold; core100 provisional autofill
+- **2026-05-31T14:48:30Z** — 융합: 임상 MVP+ledger(4pass)·SDIT/triage/roadmap·2025통찰아카이브폐기(MCP·12페르소나·검증완료금지)·MISSION P0–P4·RQ-025/026·다음 P1 append주5건+TruthfulQA
+- **2026-05-31T14:35:27Z** — 앵커 후속: crossref rollup·health 갱신; OpenBible 3경로 없어 벤치24 blocked
+- **2026-05-31T13:50:08Z** — MISSION_LOG+CENTRAL: v4 interpret postprocess v2 empty0 human10/0 InterpretBtrackGate f4cff634fe; GPU=reeval; B-track HOLD no Track A
+- **2026-05-31T13:48:58Z** — 명령 패키지(Daily/Weekly)·CONSTITUTION path sidecar v1(96 pins·ops index 분리)·resume pack pins·판정=verify_p0 only·[HYPO]
+- **2026-05-31T13:47:18Z** — L1/L5 주간 전체 완료 exit0·overall HOLD·tiering monitor_only
 - **2026-05-31T13:45:21Z** — v4 postprocess v2: empty insight 4->0 reparse; status posteval pointers; InterpretBtrackGate OK
 - **2026-05-31T13:35:15Z** — 주간 L1/L5 전체 대기(무거움); crossref health 가벼운 갱신·alert active 20건
 - **2026-05-31T13:32:23Z** — 2026-05-31 InterpretBtrackGate+AthenaOpsMemory OK; v4 coerce100 match0 narrative PASS; human auto 6p/4f(empty); P0 paths OK
@@ -77,18 +89,6 @@
 - **2026-05-31T13:23:13Z** — RQ-024 앵커 자동 트리아지: pytest 17 pass, CROSS_REF 16건 0 verified, tiering 갱신 monitor_only
 - **2026-05-31T13:19:44Z** — 운영 앵커 맵 SSOT: mkm_anchor_map_operator_v1_latest.json · CENTRAL·RQ-024
 - **2026-05-31T13:08:48Z** — B2B SaaS 대외 6문장+HBM비유 SSOT: mkm_b2b_compression_positioning_external_v1_latest.json · RQ-023
-- **2026-05-31T11:53:28Z** — GPU 일시 중단: v4 Qwen7B LoRA train 중복 2프로세스 강제 종료; adapter v4 미완; oracle skeleton=84 gate PASS 유지; 재개=Run-MyeongriInterpretV4EvalChain -SkipRebuild -SkipOracleAudit
-- **2026-05-31T11:30:28Z** — Interpret SFT v4 variant: oracle locked100 skeleton_unique=84 gate PASS; v3 post-train skeleton=1; v4 LoRA train+eval100 running (run_interpret_v4_variant_s100); B-track HOLD
-- **2026-05-31T11:22:53Z** — Interpret v3 narrative audit: skeleton_unique=1 v3_prefix=100% gate FAIL; human_review auto 9 needs_edit 1 fail; format locked100 OK; B-track HOLD
-- **2026-05-31T11:03:47Z** — Interpret LoRA v3 locked100: parse/match 100% coerced 0% (n=100); adapter run_interpret_v3_harness_s100; pipeline completed; human_review_sample pending; B-track HOLD no Track A
-- **2026-05-31T09:17:41Z** — Dev one-pager: MKM Ops AI↔AI pointer layer (3-node index, 143/1880/5775 tok scope, gates, commands) → docs/final/MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md; orthogonal Harness v2 LoRA lane
-- **2026-05-31T07:24:08Z** — ops memory Phase 0 P0+routine+internal push; Phase 0.5 slice preview parallel
-- **2026-05-31T05:02:53Z** — MISSION_LOG·CENTRAL hygiene 자동화: 세션14·타임라인45·주간Task MKM_MissionLog_CentralHygiene_Weekly 06:30
-- **2026-05-31T04:55:28Z** — MCP lean 7서버·응급 SSOT mcp_lean_profile_emergency_recovery_v1.json·MISSION_LOG Infra 행·CENTRAL 반복루틴 행 동기화 완료(2026-05-31)
-- **2026-05-31T04:54:36Z** — MCP lean 7서버 고정(2026-05-31): hostinger-website-manager 제거·openchrome 기본 제외·readiness PASS·응급 SSOT docs/final/artifacts/mcp_lean_profile_emergency_recovery_v1.json
-- **2026-05-24T21:59:04Z** — Anchor OS 3레인 완료: kernel+4skins 빌더·mkmlife 월별4층 탭·personadiary news_me_hypo — gitea push 910bd46a42
-- **2026-05-24T21:24:23Z** — 워크스페이스 Post-it: 로컬 색인·safe 아카이브·P0 1033(TG 프로필 복구); gitea/main c92b1b72d1 머지·VPS 48c5c043c6·Invoke-VpsWorkspacePostitIndexOnly_v1.ps1; B-track S4U 6건 자동UAC 재등록; D 미커밋·promote 금지 유지
-- **2026-05-24T21:10:06Z** — Post-it: local 18595 vs VPS 7660 diff report; ops local=index+archive VPS=index-only
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 

@@ -5,15 +5,15 @@
   "research_only": true,
   "hypothesis_tier": "B",
   "boundary_ack": "[HYPO] ops memory index — Track A·live trading auto-merge forbidden",
-  "last_updated_utc": "2026-05-31T07:45:45.451994Z",
+  "last_updated_utc": "2026-05-31T16:09:00.412077Z",
   "nodes": {
     "prism_ops_mission_log_board": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "## 🚀 전술 작전 보드",
       "anchor_end": "### 📦 핸드오프 · 다른 채팅 융합",
       "line_range": [
-        28,
-        97
+        30,
+        99
       ],
       "essence": "작전 보드 SSOT — 사업화·압축 격벽·Track A 금지·B2B SEND_GATE HOLD",
       "must_keep_tags": [
@@ -40,16 +40,16 @@
         "MCP lean"
       ],
       "priority": 9,
-      "char_count": 2483,
-      "content_sha256_prefix": "fe09cdcdc1a03eb7"
+      "char_count": 2710,
+      "content_sha256_prefix": "16abf616325f9186"
     },
     "prism_ops_mission_log_next_one": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "**다음 1타 (레인 · 새 채팅):**",
       "anchor_end": "### 🧠 메타인지",
       "line_range": [
-        167,
-        200
+        172,
+        207
       ],
       "essence": "레인별 다음 1타 SSOT — 재개 복붙·HOLD·Track A·실매매 금지",
       "must_keep_tags": [
@@ -58,8 +58,8 @@
         "금지"
       ],
       "priority": 8,
-      "char_count": 5073,
-      "content_sha256_prefix": "9e34a61baea08543"
+      "char_count": 5683,
+      "content_sha256_prefix": "a8ffd7862ed8d8c2"
     }
   }
 }
