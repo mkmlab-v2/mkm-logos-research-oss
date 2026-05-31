@@ -22,9 +22,11 @@ Machine index JSON
   node_id · file_path · anchor_start/end · line_range · essence · must_keep_tags · priority
         │
         ▼  build_mkm_chat_resume_pack_v1.py (default top_n=3, optional --include-slice)
+        ▼  merge_mkm_ops_patrol_into_resume_pack_v1.py (after DailyOpsPatrol paste; field `last_ops_patrol`)
 Chat inject payload
   OFF: essence + must_keep_tags only  (~143 tok, 3 nodes, tiktoken cl100k_base)
   ON:  + truncated anchor body         (~1,880 tok @ slice-max-chars 1200)
+  + optional `last_ops_patrol.paste_line` (~1 line; not in must_keep inject gate)
 ```
 
 **Not a new natural language.** Structured pointers + governance substring gates.
@@ -101,28 +103,30 @@ Artifact: `reports/mkm_ops_memory_index_token_bench_v1_latest.json`.
 
 LoRA training/eval: separate chat + `storage/adapters/myeongri_interpret_lora_v0/…`.
 
-### Interpret LoRA v4 — variant curriculum (next)
+### Interpret LoRA v4 — variant curriculum (post-train · 2026-05-31)
 
-**Problem (v3):** `insight-mode=fixed` → `template_skeleton_unique_count=1` on train/preds despite format pass.
+**SSOT:** `reports/myeongri_interpret_harness_v3_v4_status_latest.json` · eval `reports/myeongri_interpret_lora_v4_eval_locked100_latest.json` · diversity `reports/myeongri_interpret_v4_diversity_audit_locked100.json`
 
-**v4 fix:** `--insight-mode variant` (6 KO phrasing variants via `sample_id` hash) · `method_id=template_v2_variant_from_engine_pillars*`
+| Metric | v3 locked100 | v4 locked100 (post-train) |
+|--------|--------------|---------------------------|
+| parse_ok | 1.0 | 1.0 |
+| envelope_match | **1.0** | **0.0** |
+| envelope_coerced | 0.0 | **1.0** |
+| v3_fixed_prefix_rate | 1.0 | **0.0** |
+| template_skeleton_unique | 1 | **96** (96/96 with insight) |
+| narrative_diversity_gate | **fail** | **pass** |
+| empty_insight rows | — | **4** (parse still ok) |
 
-| Stage | Metric | v3 | v4 oracle (locked100) |
-|-------|--------|-----|------------------------|
-| SFT skeleton | `template_skeleton_unique_count` | 1 | **84** (gate **pass**) |
-| Post-train | pending | skeleton=1 | train `run_interpret_v4_variant_s100` then eval chain |
+**읽는 법:** v4는 **고정 문구 암기 문제는 해소**(narrative PASS). 다만 **골드 JSON 문자열 일치(match)는 0%** — 전건 `coerce`로 governance 유지(v3와 trade-off). **Track A·실매매·Ops inject 합선 없음** · `[HYPO]` / `research_only`.
+
+**Adapter:** `storage/adapters/myeongri_interpret_lora_v0/run_interpret_v4_variant_s100` (train 100 step · **max-seq-length 768**)
 
 ```powershell
-# Rebuild SFT + oracle diversity + train(100) + eval100 + narrative audit
-powershell -File scripts\Run-MyeongriInterpretV4EvalChain_v1.ps1
-
-# Oracle-only (no GPU): SFT label ceiling
-py scripts/audit_myeongri_interpret_sft_oracle_diversity_v1.py `
-  --sft-jsonl data/training/myeongri_interpret_sft_v4/locked_eval.jsonl `
-  --out-json reports/myeongri_interpret_sft_v4_oracle_diversity_locked100_latest.json
+py scripts/audit_myeongri_interpret_narrative_diversity_v1.py `
+  --eval-json reports/myeongri_interpret_lora_v4_eval_locked100_latest.json `
+  --predictions-jsonl reports/myeongri_interpret_lora_v4_preds_locked100_latest.jsonl `
+  --out-json reports/myeongri_interpret_v4_diversity_audit_locked100.json
 ```
-
-**Adapter (train output):** `storage/adapters/myeongri_interpret_lora_v0/run_interpret_v4_variant_s100` · profile `train_default` in `myeongri_deterministic_lora_model_profiles_v1.json`
 
 ---
 
