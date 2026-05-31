@@ -50,6 +50,15 @@ NODE_SPECS: tuple[NodeSpec, ...] = (
         must_keep_tags=("hygiene", "MISSION_LOG", "MCP lean"),
         priority=9,
     ),
+    NodeSpec(
+        node_id="prism_ops_mission_log_next_one",
+        file_path="MISSION_LOG.md",
+        anchor_start="**다음 1타 (레인 · 새 채팅):**",
+        anchor_end="### 🧠 메타인지",
+        essence="레인별 다음 1타 SSOT — 재개 복붙·HOLD·Track A·실매매 금지",
+        must_keep_tags=("Track A", "HOLD", "금지"),
+        priority=8,
+    ),
 )
 
 

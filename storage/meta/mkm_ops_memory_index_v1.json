@@ -5,7 +5,7 @@
   "research_only": true,
   "hypothesis_tier": "B",
   "boundary_ack": "[HYPO] ops memory index — Track A·live trading auto-merge forbidden",
-  "last_updated_utc": "2026-05-31T07:12:22.923891Z",
+  "last_updated_utc": "2026-05-31T07:45:45.451994Z",
   "nodes": {
     "prism_ops_mission_log_board": {
       "file_path": "MISSION_LOG.md",
@@ -40,8 +40,26 @@
         "MCP lean"
       ],
       "priority": 9,
-      "char_count": 2503,
-      "content_sha256_prefix": "78141492db3063f9"
+      "char_count": 2483,
+      "content_sha256_prefix": "fe09cdcdc1a03eb7"
+    },
+    "prism_ops_mission_log_next_one": {
+      "file_path": "MISSION_LOG.md",
+      "anchor_start": "**다음 1타 (레인 · 새 채팅):**",
+      "anchor_end": "### 🧠 메타인지",
+      "line_range": [
+        167,
+        200
+      ],
+      "essence": "레인별 다음 1타 SSOT — 재개 복붙·HOLD·Track A·실매매 금지",
+      "must_keep_tags": [
+        "Track A",
+        "HOLD",
+        "금지"
+      ],
+      "priority": 8,
+      "char_count": 5073,
+      "content_sha256_prefix": "9e34a61baea08543"
     }
   }
 }

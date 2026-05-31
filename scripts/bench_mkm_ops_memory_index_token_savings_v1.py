@@ -24,6 +24,7 @@ from mkm_ops_memory_index_lib_v1 import (  # noqa: E402
     extract_node_from_index,
     load_index,
     top_nodes_by_priority,
+    truncate_anchor_slice,
     utc_now_iso,
 )
 
@@ -53,14 +54,26 @@ def _full_slice_text(root: Path) -> str:
     return "\n\n---\n\n".join(parts)
 
 
-def _inject_text(root: Path, *, top_n: int) -> str:
+def _inject_pins_text(
+    root: Path,
+    *,
+    top_n: int,
+    include_slice: bool = False,
+    slice_max_chars: int = 1200,
+) -> str:
+    """Mirror build_mkm_chat_resume_pack_v1 ops inject payload."""
     index = load_index(DEFAULT_INDEX_PATH)
     lines: list[str] = []
-    for node_id, node in top_nodes_by_priority(index, top_n=top_n):
+    for _node_id, node in top_nodes_by_priority(index, top_n=top_n):
         lines.append(node.get("essence") or "")
         for tag in node.get("must_keep_tags") or []:
             lines.append(tag)
-        lines.append(f"[node:{node_id}]")
+        if include_slice:
+            block = extract_node_from_index(root, node)
+            preview, _truncated = truncate_anchor_slice(
+                block, max_chars=slice_max_chars
+            )
+            lines.append(preview)
     return "\n".join(lines)
 
 
@@ -72,7 +85,13 @@ def main() -> int:
         type=Path,
         default=SCRIPT_ROOT / "reports" / "mkm_ops_memory_index_token_bench_v1_latest.json",
     )
-    ap.add_argument("--top-n", type=int, default=2)
+    ap.add_argument("--top-n", type=int, default=3)
+    ap.add_argument(
+        "--slice-max-chars",
+        type=int,
+        default=1200,
+        help="Per-node slice cap for resume-pack ON arm (default 1200).",
+    )
     args = ap.parse_args()
 
     root = args.workspace_root.resolve()
@@ -86,17 +105,27 @@ def main() -> int:
 
     try:
         full_text = _full_slice_text(root)
-        inject_text = _inject_text(root, top_n=args.top_n)
+        inject_off_text = _inject_pins_text(root, top_n=args.top_n, include_slice=False)
+        inject_on_text = _inject_pins_text(
+            root,
+            top_n=args.top_n,
+            include_slice=True,
+            slice_max_chars=args.slice_max_chars,
+        )
     except (FileNotFoundError, ValueError) as exc:
         print(f"FAIL: bench input: {exc}", file=sys.stderr)
         return 1
 
     full_count = _count_tokens(full_text)
-    inject_count = _count_tokens(inject_text)
+    inject_off_count = _count_tokens(inject_off_text)
+    inject_on_count = _count_tokens(inject_on_text)
     full_t = int(full_count["tokens"])
-    inject_t = int(inject_count["tokens"])
-    saved = max(0, full_t - inject_t)
-    ratio = round(saved / full_t, 4) if full_t else 0.0
+    inject_off_t = int(inject_off_count["tokens"])
+    inject_on_t = int(inject_on_count["tokens"])
+    saved_vs_full = max(0, full_t - inject_off_t)
+    ratio_vs_full = round(saved_vs_full / full_t, 4) if full_t else 0.0
+    slice_delta_t = max(0, inject_on_t - inject_off_t)
+    slice_ratio = round(slice_delta_t / inject_off_t, 4) if inject_off_t else 0.0
 
     doc: dict[str, Any] = {
         "schema": "mkm_ops_memory_index_token_bench_v1",
@@ -105,19 +134,38 @@ def main() -> int:
         "hypothesis_tier": "B",
         "boundary_ack": "[HYPO] token bench — not commercial SLA; measure only",
         "generated_at_utc": utc_now_iso(),
+        "node_count": len(NODE_SPECS),
         "top_n_inject_pins": args.top_n,
+        "slice_max_chars": args.slice_max_chars,
         "full_anchor_slices": {
             "char_count": len(full_text),
             **full_count,
         },
-        "inject_pins_text": {
-            "char_count": len(inject_text),
-            **inject_count,
+        "resume_pack_inject_off": {
+            "label": "essence+must_keep_tags only (no --include-slice)",
+            "char_count": len(inject_off_text),
+            **inject_off_count,
         },
-        "delta": {
-            "tokens_saved_vs_full_slices": saved,
-            "reduction_ratio": ratio,
-            "reduction_percent": round(ratio * 100, 2),
+        "resume_pack_inject_on": {
+            "label": f"essence+tags+slice preview (--include-slice --slice-max-chars {args.slice_max_chars})",
+            "char_count": len(inject_on_text),
+            **inject_on_count,
+        },
+        "delta_vs_full_slices": {
+            "tokens_saved_pins_off": saved_vs_full,
+            "reduction_ratio": ratio_vs_full,
+            "reduction_percent": round(ratio_vs_full * 100, 2),
+        },
+        "slice_on_off_ab": {
+            "tokens_added_by_slice": slice_delta_t,
+            "inject_off_tokens": inject_off_t,
+            "inject_on_tokens": inject_on_t,
+            "overhead_ratio_vs_off": slice_ratio,
+            "overhead_percent_vs_off": round(slice_ratio * 100, 2),
+        },
+        "legacy_alias": {
+            "inject_pins_text": "resume_pack_inject_off",
+            "delta": "delta_vs_full_slices",
         },
     }
 
@@ -125,8 +173,10 @@ def main() -> int:
     args.out.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {args.out}")
     print(
-        f"full={full_t} inject={inject_t} saved={saved} "
-        f"reduction={doc['delta']['reduction_percent']}% ({full_count['method']})"
+        f"full_slices={full_t} inject_off={inject_off_t} inject_on={inject_on_t} "
+        f"saved_vs_full={doc['delta_vs_full_slices']['reduction_percent']}% "
+        f"slice_overhead=+{slice_delta_t}tok ({doc['slice_on_off_ab']['overhead_percent_vs_off']}%) "
+        f"({full_count['method']})"
     )
     return 0
 

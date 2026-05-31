@@ -52,7 +52,12 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
         "FAIL-COMP-004 active report only.\n"
         "SEND_GATE: HOLD\n\n"
         "### 📦 핸드오ff · 다른 채팅 융합\n\n"
-        "handoff tail\n",
+        "handoff tail\n\n"
+        "**다음 1타 (레인 · 새 채팅):**\n\n"
+        "| 레인 | 다음 1타 |\n"
+        "| Oracle | **금지:** Track A · **HOLD** |\n\n"
+        "### 🧠 메타인지\n\n"
+        "meta tail\n",
         encoding="utf-8",
     )
     central_dir = tmp_path / "docs" / "final"
@@ -69,7 +74,7 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
 
     doc = build_index_document(tmp_path)
     assert doc["research_only"] is True
-    assert len(doc["nodes"]) == 2
+    assert len(doc["nodes"]) == 3
     errors = verify_index_sources(tmp_path, doc)
     assert errors == []
 

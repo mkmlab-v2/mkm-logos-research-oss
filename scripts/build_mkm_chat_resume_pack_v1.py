@@ -70,7 +70,7 @@ def _load_ops_pins(
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--top-n", type=int, default=2)
+    ap.add_argument("--top-n", type=int, default=3)
     ap.add_argument(
         "--include-slice",
         action="store_true",
