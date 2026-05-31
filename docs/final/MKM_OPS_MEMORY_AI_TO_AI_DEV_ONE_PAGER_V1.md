@@ -3,7 +3,7 @@
 **Track:** B · `[HYPO]` / `research_only` · **not** Track A · **not** live-trading gate  
 **SSOT human text:** `MISSION_LOG.md` · `docs/final/CENTRAL_AGENT_MEMORY_V1.md`  
 **Machine index (derived):** `storage/meta/mkm_ops_memory_index_v1.json`  
-**Main on:** `gitea/main` (Ops Phase 0 + coerce: `3da853780a` · `26ab1019a6`)
+**Main on:** `gitea/main` (Ops Phase 0 + coerce + one-pager; v3 eval artifacts on disk — see below)
 
 ---
 
@@ -100,6 +100,36 @@ Artifact: `reports/mkm_ops_memory_index_token_bench_v1_latest.json`.
 | Key scripts | `mkm_ops_memory_index_lib_v1.py` | `run_myeongri_harness_v2_engine_interpret_smoke_v1.py` · `myeongri_interpret_envelope_views_v1.py` |
 
 LoRA training/eval: separate chat + `storage/adapters/myeongri_interpret_lora_v0/…`.
+
+### Interpret LoRA v3 milestone (2026-05-31 · Fact-Lock)
+
+**Status:** format-contract pass on holdout · **not** Track A / not Ops inject merge.
+
+| Eval | Rows | parse_ok | envelope_match | coerced | Report |
+|------|------|----------|----------------|---------|--------|
+| locked25 | 25 | 1.0 | 1.0 | 0.0 | `reports/myeongri_interpret_lora_v3_eval_locked25_latest.json` |
+| locked100 | 100 | 1.0 | 1.0 | 0.0 | `reports/myeongri_interpret_lora_v3_eval_locked100_latest.json` |
+
+- **Adapter:** `storage/adapters/myeongri_interpret_lora_v0/run_interpret_v3_harness_s100` (100 train steps)
+- **SFT:** `data/training/myeongri_interpret_sft_v3/{train,locked_eval}.jsonl`
+- **Pipeline SSOT:** `reports/myeongri_interpret_harness_v3_pipeline_status_latest.json` (`locked100_eval.status: completed`)
+- **Human review queue:** `reports/myeongri_interpret_v3_human_review_sample_latest.json` (10 rows · `reviewer_verdict` null · check narrative diversity)
+
+**Meaning of metrics:**
+
+- `envelope_match_rate` = normalized JSON matches SFT gold envelope (curriculum/template-aligned).
+- `envelope_coerced_rate: 0` = post-train path does **not** rely on `coerce_llm_envelope_to_contract_v1` template merge (contrast post_train v1 0/5).
+- **Open quality gate:** human sample — 서사가 template 반복인지 (`auto_note: check_narrative_diversity`).
+
+**Re-run eval (GPU):**
+
+```powershell
+py scripts/run_myeongri_interpret_lora_inference_eval_v1.py `
+  --sft-jsonl data/training/myeongri_interpret_sft_v3/locked_eval.jsonl `
+  --adapter-path storage/adapters/myeongri_interpret_lora_v0/run_interpret_v3_harness_s100 `
+  --limit 100 `
+  --report-json reports/myeongri_interpret_lora_v3_eval_locked100_latest.json
+```
 
 ---
 
