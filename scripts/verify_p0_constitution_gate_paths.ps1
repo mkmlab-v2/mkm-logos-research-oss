@@ -67,6 +67,7 @@ catch {
 # 2026-05-16: saju_birth_resolver_v1 + MANSE_PRECISION_RUNTIME_POINTER_V1 + pytest (intake fusion birth gate).
 # 2026-05-20: Logos graph-wire RAG PoC + v6 PoC link spec + commercial readiness (DF-P0-02; LO-CG-01).
 # 2026-05-23: B-track evolution auto-apply allowlist + headline gates sweep + promote_op28 allowlist gate.
+# 2026-05-31: Ops memory index Phase 0 ([HYPO] anchor index + must_keep gate + hygiene chain).
 
 $ErrorActionPreference = "Stop"
 $required = @(
@@ -175,6 +176,20 @@ $required = @(
     "projects\bitcoin-trading\AGENTS.md",
     "CLAUDE.md",
     "MISSION_LOG.template.md",
+    "storage\meta\mkm_ops_memory_index_v1.json",
+    "scripts\mkm_ops_memory_index_lib_v1.py",
+    "scripts\build_mkm_ops_memory_index_v1.py",
+    "scripts\check_mkm_ops_memory_must_keep_gate_v1.py",
+    "scripts\bench_mkm_ops_memory_index_token_savings_v1.py",
+    "scripts\Invoke-MkmOpsMemoryIndexRoutine_v1.ps1",
+    "scripts\Invoke-MissionLogCentralHygiene_v1.ps1",
+    "scripts\Register-MissionLogCentralHygieneWeeklyTask.ps1",
+    "scripts\Verify-MissionLogCentralHygieneScheduledTask_v1.ps1",
+    "scripts\rotate_mission_log_sessions_v1.py",
+    "scripts\archive_central_timeline_v1.py",
+    "tests\test_mkm_ops_memory_index_v1.py",
+    "tests\test_rotate_mission_log_sessions_v1.py",
+    "tests\test_bench_mkm_ops_memory_index_token_savings_v1.py",
     "docs\final\LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",
     "docs\final\LOCAL_MACHINE_POINTER_V1.template.md",
     "docs\final\MKM_TRINITY_INDEX_V1.json",
@@ -748,6 +763,20 @@ $required = @(
     "scripts\run_philosophy_lane_rag_pilot_v1.ps1",
     "docs\final\artifacts\schemas\philosophy_lane_rag_pilot_forbidden_substrings_v1.json",
     "tests\test_philosophy_lane_rag_pilot_v1.py",
+    "scripts\mkm_system2_self_correction_gate_mvp_v1.py",
+    "scripts\run_mkm_system2_self_correction_gate_chain_v1.py",
+    "scripts\mkm_system2_human_signoff_v1.py",
+    "scripts\export_system2_vertex_staging_pack_v1.py",
+    "scripts\invoke_system2_vertex_staging_upload_v1.py",
+    "scripts\run_mkm_system2_gemini_repair_smoke_v1.py",
+    "scripts\run_mkm_system2_ollama_repair_smoke_v1.py",
+    "scripts\Run-MkmSystem2SelfCorrectionGateMvp_v1.ps1",
+    "docs\final\artifacts\schemas\mkm_system2_self_correction_gate_mvp_v1.schema.json",
+    "docs\final\artifacts\schemas\mkm_system2_human_signoff_ack_v1.schema.json",
+    "docs\final\artifacts\fixtures\mkm_system2_gate_draft_pass_v1.txt",
+    "docs\final\artifacts\fixtures\mkm_system2_gate_draft_fail_v1.txt",
+    "docs\final\artifacts\fixtures\mkm_system2_human_signoff_ack_v1.example.json",
+    "tests\test_mkm_system2_self_correction_gate_mvp_v1.py",
     "scripts\Invoke-MaxProphecyBurst_v1.ps1",
     "scripts\Invoke-LabVpsBtrackM31Smoke_v1.ps1",
     "scripts\vps_bitcoin_live_hygiene_reset_v1.sh",
