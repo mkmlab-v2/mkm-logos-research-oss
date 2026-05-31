@@ -78,6 +78,8 @@ if (-not $SkipExternalFeedValidation) {
 
 $logPath = "$workspace\docs\final\artifacts\waiting_queue_monthly_check_log.jsonl"
 $sourceHuntSummaryPath = "$workspace\docs\final\artifacts\entry16_source_hunt_summary.json"
+$entry07SourceHuntSummaryPath = "$workspace\docs\final\artifacts\entry07_source_hunt_summary_latest.json"
+$entry08SourceHuntSummaryPath = "$workspace\docs\final\artifacts\entry08_source_hunt_summary_latest.json"
 $promotionGatePath = "$workspace\docs\final\artifacts\entry16_promotion_gate.json"
 $decisionLockPath = "$workspace\docs\final\artifacts\entry16_manual_promotion_decision_lock_latest.json"
 $highReliabilityGatePath = "$workspace\docs\final\artifacts\high_reliability_mode_gate_latest.json"
@@ -241,6 +243,32 @@ py scripts/evaluate_entry16_promotion_gate.py
 if ($LASTEXITCODE -ne 0) {
     throw "ENTRY_16 promotion gate evaluation failed with exit code $LASTEXITCODE"
 }
+
+Write-Host "[waiting-queue-check] CROSS_REF wait-queue ENTRY_07/08 source-hunt (idempotent seed + summary)..."
+py scripts/seed_entry07_source_hunt_from_qd_v1.py
+if ($LASTEXITCODE -ne 0) {
+    throw "ENTRY_07 source-hunt seed failed with exit code $LASTEXITCODE"
+}
+py scripts/report_entry07_source_hunt_v1.py
+if ($LASTEXITCODE -ne 0) {
+    throw "ENTRY_07 source-hunt summary failed with exit code $LASTEXITCODE"
+}
+py scripts/seed_entry08_source_hunt_from_qd_v1.py
+if ($LASTEXITCODE -ne 0) {
+    throw "ENTRY_08 source-hunt seed failed with exit code $LASTEXITCODE"
+}
+py scripts/report_entry08_source_hunt_v1.py
+if ($LASTEXITCODE -ne 0) {
+    throw "ENTRY_08 source-hunt summary failed with exit code $LASTEXITCODE"
+}
+if (-not (Test-Path -LiteralPath $entry07SourceHuntSummaryPath)) {
+    throw "ENTRY_07 summary missing: $entry07SourceHuntSummaryPath"
+}
+if (-not (Test-Path -LiteralPath $entry08SourceHuntSummaryPath)) {
+    throw "ENTRY_08 summary missing: $entry08SourceHuntSummaryPath"
+}
+$entry07SourceHuntStatus = "pass"
+$entry08SourceHuntStatus = "pass"
 
 $btrackVerifiedGateStatus = "pass"
 $btrackSymbolLaneGateStatus = "pass"
@@ -1190,6 +1218,10 @@ $logRow = @{
     bundle_test = if ($SkipBundle) { "skipped" } else { "pass" }
     source_hunt_summary = "pass"
     source_hunt_summary_path = $sourceHuntSummaryPath
+    entry07_source_hunt_summary = $entry07SourceHuntStatus
+    entry07_source_hunt_summary_path = $entry07SourceHuntSummaryPath
+    entry08_source_hunt_summary = $entry08SourceHuntStatus
+    entry08_source_hunt_summary_path = $entry08SourceHuntSummaryPath
     promotion_gate = "pass"
     promotion_gate_path = $promotionGatePath
     decision_lock_ref = if (Test-Path -LiteralPath $decisionLockPath) { $decisionLockPath } else { $null }

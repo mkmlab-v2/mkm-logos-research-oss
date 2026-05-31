@@ -48,6 +48,19 @@ def test_waiting_queue_log_row_contract() -> None:
             assert bundle_test == "pass", f"row[{i}] full bundle_test must be pass"
 
 
+def test_entry07_entry08_cross_ref_summaries_on_disk() -> None:
+    p7 = _ROOT / "docs" / "final" / "artifacts" / "entry07_source_hunt_summary_latest.json"
+    p8 = _ROOT / "docs" / "final" / "artifacts" / "entry08_source_hunt_summary_latest.json"
+    assert p7.is_file(), f"missing {p7}"
+    assert p8.is_file(), f"missing {p8}"
+    s7 = json.loads(p7.read_text(encoding="utf-8"))
+    s8 = json.loads(p8.read_text(encoding="utf-8"))
+    assert s7.get("cross_ref_entry") == "ENTRY_07"
+    assert s8.get("cross_ref_entry") == "ENTRY_08"
+    assert s7.get("ssot_mutation") is False
+    assert s8.get("ssot_mutation") is False
+
+
 def test_waiting_queue_has_entry16_gate_fields_in_recent_rows() -> None:
     rows = list(_rows(_LOG))
     candidates = [r for r in rows if "promotion_gate" in r or "promotion_gate_path" in r]
