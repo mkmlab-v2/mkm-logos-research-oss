@@ -59,9 +59,7 @@ try {
             --lora-r $($p.lora_r) `
             --lora-alpha $($p.lora_alpha) `
             --lora-dropout $($p.lora_dropout) `
-            --output-dir $adapter `
-            --save-steps 25 `
-            --save-total-limit 3
+            --output-dir $adapter
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
 

@@ -325,6 +325,13 @@
       "prism_axis": "L",
       "agent_access": "b_track_only",
       "summary_ko": "must_keep_tags fail-safe gate (source + inject phases)"
+    },
+    {
+      "id": "prism_doc_mkm_ops_memory_ai_to_ai_dev_one_pager_v1",
+      "path": "docs/final/MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md",
+      "prism_axis": "K",
+      "agent_access": "b_track_only",
+      "summary_ko": "Ops AI↔AI pointer layer dev one-pager (3-node index, gates, token scope)"
     }
   ]
 }

@@ -1,0 +1,130 @@
+# MKM Ops Memory — AI↔AI Dev One-Pager v1
+
+**Track:** B · `[HYPO]` / `research_only` · **not** Track A · **not** live-trading gate  
+**SSOT human text:** `MISSION_LOG.md` · `docs/final/CENTRAL_AGENT_MEMORY_V1.md`  
+**Machine index (derived):** `storage/meta/mkm_ops_memory_index_v1.json`  
+**Main on:** `gitea/main` (Ops Phase 0 + coerce: `3da853780a` · `26ab1019a6`)
+
+---
+
+## Problem
+
+Chat sessions do not share memory. Pasting full `MISSION_LOG.md` every turn burns tokens and mixes lanes (MS / Oracle / B-track / Track A).
+
+## Design (3 layers)
+
+```
+Human SSOT (plain Markdown)
+  MISSION_LOG anchors · CENTRAL checkpoint block
+        │
+        ▼  build_mkm_ops_memory_index_v1.py (deterministic anchor extract)
+Machine index JSON
+  node_id · file_path · anchor_start/end · line_range · essence · must_keep_tags · priority
+        │
+        ▼  build_mkm_chat_resume_pack_v1.py (default top_n=3, optional --include-slice)
+Chat inject payload
+  OFF: essence + must_keep_tags only  (~143 tok, 3 nodes, tiktoken cl100k_base)
+  ON:  + truncated anchor body         (~1,880 tok @ slice-max-chars 1200)
+```
+
+**Not a new natural language.** Structured pointers + governance substring gates.
+
+---
+
+## NODE_SPECS (v1 · 3 nodes)
+
+| node_id | Anchor (start → end) | must_keep_tags | priority |
+|---------|----------------------|----------------|----------|
+| `prism_ops_mission_log_board` | `## 🚀 전술 작전 보드` → `### 📦 핸드오프` | `FAIL-COMP-004`, `Track A`, `SEND_GATE: HOLD` | 10 |
+| `prism_ops_central_checkpoint` | `<!-- ATHENA_CHECKPOINT_V1_START/END -->` | `hygiene`, `MISSION_LOG`, `MCP lean` | 9 |
+| `prism_ops_mission_log_next_one` | `**다음 1타 (레인 · 새 채팅):**` → `### 🧠 메타인지` | `Track A`, `HOLD`, `금지` | 8 |
+
+Library: `scripts/mkm_ops_memory_index_lib_v1.py` · `NODE_SPECS`.
+
+---
+
+## Gates (fail-fast)
+
+| Phase | Script | Checks |
+|-------|--------|--------|
+| **source** | `check_mkm_ops_memory_must_keep_gate_v1.py --phase source` | Each anchor slice in SSOT files contains its `must_keep_tags` |
+| **inject** | same `--phase inject --payload-text …` | Assembled resume/inject text contains **all** node tags |
+
+Missing tag → **exit 1**. Substring match only (not semantic QA).
+
+---
+
+## Developer commands (repo root)
+
+```powershell
+# Build index + source gate + resume pack (no slice)
+powershell -File scripts\Invoke-MkmOpsMemoryIndexRoutine_v1.ps1
+
+# Resume pack with slice preview [HYPO]
+powershell -File scripts\Invoke-MkmOpsMemoryIndexRoutine_v1.ps1 -IncludeSlice
+
+# Token bench [HYPO] → reports/mkm_ops_memory_index_token_bench_v1_latest.json
+py scripts/bench_mkm_ops_memory_index_token_savings_v1.py
+
+# pytest
+py -m pytest tests/test_mkm_ops_memory_index_v1.py tests/test_bench_mkm_ops_memory_index_token_savings_v1.py -q
+```
+
+Hygiene hook (optional weekly): `Invoke-MissionLogCentralHygiene_v1.ps1` tail rebuilds index.
+
+---
+
+## Measured token footprint [HYPO]
+
+Scope: **3-node full anchor text** vs **resume inject OFF/ON** — not whole repo, not full MISSION_LOG.
+
+| Mode | Tokens (cl100k_base) |
+|------|------------------------|
+| Full 3-node anchors | 5,775 |
+| Inject OFF (pins) | 143 |
+| Inject ON (slice 1200/ node) | 1,880 |
+
+**Default ops:** inject **OFF** (143). Use `-IncludeSlice` only when lane “다음 1타” body needed.
+
+Artifact: `reports/mkm_ops_memory_index_token_bench_v1_latest.json`.
+
+---
+
+## Orthogonal lane: Myeongni Harness v2 (do not merge with Ops inject)
+
+| Concern | Ops memory index | Harness v2 interpret |
+|---------|------------------|---------------------|
+| Role | Chat resume · ops continuity | Engine pillars + LLM envelope JSON |
+| GPU | No | Yes (optional `--run-llm`) |
+| Coerce | N/A | `coerce_llm_envelope_to_contract_v1` (LoRA payload-echo) |
+| Key scripts | `mkm_ops_memory_index_lib_v1.py` | `run_myeongri_harness_v2_engine_interpret_smoke_v1.py` · `myeongri_interpret_envelope_views_v1.py` |
+
+LoRA training/eval: separate chat + `storage/adapters/myeongri_interpret_lora_v0/…`.
+
+---
+
+## Extension hooks (same pattern)
+
+1. Add `NodeSpec` in `NODE_SPECS` (anchor + tags that **exist in slice**).
+2. Rebuild index; fix SSOT if source gate fails.
+3. Tune `--top-n` / `--slice-max-chars` on resume pack.
+4. Re-run token bench; do **not** claim savings vs unmeasured baselines.
+
+Prism registry pointers: `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` (`prism_ops_memory_index_v1`).
+
+---
+
+## NEVER (Fact-Lock)
+
+- Treat index JSON as human SSOT (always derived from Markdown).
+- Use 97.52% as “whole context” savings without citing 5,775 vs 143 scope.
+- Auto-merge B-track / 3-lens / live trading from pins or tags alone.
+- Promote `[HYPO]` bench to Track A SLA or commercial headline without human sign-off.
+
+---
+
+## Related docs
+
+- `.cursor/rules/mission-log-combat-ssot.mdc` · `AGENTS.md` (resume pack)
+- `docs/final/COMPRESSION_SLA_POLICY_V1.md` (Track A vs B — separate from Ops pins)
+- This one-pager: dev onboarding for **Ops AI↔AI pointer layer** only.
