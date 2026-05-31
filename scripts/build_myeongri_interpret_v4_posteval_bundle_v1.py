@@ -23,6 +23,7 @@ DEFAULT_DIVERSITY = ROOT / "reports/myeongri_interpret_v4_diversity_audit_locked
 DEFAULT_SAMPLE_OUT = ROOT / "reports/myeongri_interpret_v4_human_review_sample_latest.json"
 DEFAULT_MISMATCH_OUT = ROOT / "reports/myeongri_interpret_v4_match_mismatch_summary_latest.json"
 DEFAULT_EMPTY_OUT = ROOT / "reports/myeongri_interpret_v4_empty_insight_rows_latest.json"
+DEFAULT_STATUS = ROOT / "reports/myeongri_interpret_harness_v3_v4_status_latest.json"
 
 
 def _utc_now() -> str:
@@ -37,12 +38,24 @@ def _load_jsonl(path: Path) -> list[dict]:
     ]
 
 
-def _parse_envelope(raw: str) -> dict[str, Any] | None:
-    from scripts.run_myeongri_deterministic_lora_inference_eval_v1 import _extract_json_object
-    from scripts.myeongri_interpret_envelope_views_v1 import sanitize_interpret_raw_for_parse
+def _parse_envelope(
+    raw: str,
+    *,
+    gold: dict[str, Any] | None = None,
+    instruction: str = "",
+) -> tuple[dict[str, Any] | None, bool]:
+    from scripts.myeongri_interpret_envelope_views_v1 import extract_compact_from_interpret_instruction
+    from scripts.run_myeongri_harness_v2_engine_interpret_smoke_v1 import _try_parse_envelope
 
-    parsed = _extract_json_object(sanitize_interpret_raw_for_parse(raw))
-    return parsed if isinstance(parsed, dict) else None
+    compact = extract_compact_from_interpret_instruction(instruction) if instruction else None
+    sha = str((gold or {}).get("deterministic_input_sha256") or "").strip()
+    parsed, _note, coerced = _try_parse_envelope(
+        raw,
+        gold_out=gold,
+        compact=compact,
+        deterministic_input_sha256=sha,
+    )
+    return (parsed if isinstance(parsed, dict) else None), coerced
 
 
 def _insight_from_env(env: dict) -> str:
@@ -78,6 +91,12 @@ def main() -> int:
     ap.add_argument("--empty-out", type=Path, default=DEFAULT_EMPTY_OUT)
     ap.add_argument("--sample-n", type=int, default=10)
     ap.add_argument("--seed", type=int, default=20260531)
+    ap.add_argument(
+        "--status-json",
+        type=Path,
+        default=DEFAULT_STATUS,
+        help="Merge posteval artifact pointers into harness status JSON.",
+    )
     args = ap.parse_args()
 
     for p in (args.eval_json, args.predictions_jsonl, args.sft_jsonl):
@@ -98,7 +117,11 @@ def main() -> int:
         gold = json.loads(str(sft_row.get("output", "{}")))
         pred_rec = preds.get(i, {})
         raw = str(pred_rec.get("prediction_raw", ""))
-        parsed = _parse_envelope(raw) if raw else None
+        parsed, _coerced = _parse_envelope(
+            raw,
+            gold=gold,
+            instruction=str(sft_row.get("instruction", "")),
+        ) if raw else (None, False)
         ev = per_eval.get(i, {})
         insight = _insight_from_env(parsed) if parsed else ""
         if not insight:
@@ -142,7 +165,11 @@ def main() -> int:
         gold = json.loads(str(sft_rows[idx - 1].get("output", "{}")))
         pred_rec = preds.get(idx, {})
         raw = str(pred_rec.get("prediction_raw", ""))
-        parsed = _parse_envelope(raw) if raw else None
+        parsed, coerced = _parse_envelope(
+            raw,
+            gold=gold,
+            instruction=str(sft_rows[idx - 1].get("instruction", "")),
+        ) if raw else (None, False)
         ev = per_eval.get(idx, {})
         insight = _insight_from_env(parsed) if parsed else ""
         auto_note = "empty_insight_after_parse" if not insight else "narrative_variant_ok"
@@ -152,6 +179,7 @@ def main() -> int:
                 "parse_ok": ev.get("parse_ok"),
                 "envelope_match_normalized": ev.get("envelope_match_normalized"),
                 "envelope_coerced_from_template": ev.get("envelope_coerced_from_template"),
+                "postprocess_coerced": coerced,
                 "mkm_advanced_insight": insight,
                 "confidence_score": parsed.get("confidence_score") if parsed else None,
                 "human_review_required": parsed.get("human_review_required") if parsed else None,
@@ -221,6 +249,24 @@ def main() -> int:
     args.empty_out.write_text(
         json.dumps(empty_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
+
+    if args.status_json.is_file():
+        status = json.loads(args.status_json.read_text(encoding="utf-8"))
+        v4 = status.setdefault("v4_variant_sft", {})
+        v4["posteval_artifacts"] = {
+            "generated_at_utc": _utc_now(),
+            "human_review_sample": str(args.sample_out.relative_to(ROOT)).replace("\\", "/"),
+            "match_mismatch_summary": str(args.mismatch_out.relative_to(ROOT)).replace("\\", "/"),
+            "empty_insight_rows": str(args.empty_out.relative_to(ROOT)).replace("\\", "/"),
+            "reparse_empty_insight_count": len(empty_rows),
+            "postprocess_v2": "strip_leak+curly_quote+insight_regex_recovery",
+        }
+        v4.setdefault("human_review_sample", {})["report"] = str(
+            args.sample_out.relative_to(ROOT)
+        ).replace("\\", "/")
+        args.status_json.write_text(
+            json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        )
 
     print(
         json.dumps(

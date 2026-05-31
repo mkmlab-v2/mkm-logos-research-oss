@@ -5,7 +5,9 @@ from __future__ import annotations
 import json
 
 from scripts.myeongri_interpret_envelope_views_v1 import (
+    extract_insight_from_raw_leak_truncated,
     normalize_hex_ascii,
+    normalize_json_punctuation_for_parse,
     repair_envelope_fields_v1,
     strip_chat_leakage,
 )
@@ -22,6 +24,38 @@ def test_normalize_hex_ascii_homoglyph() -> None:
 def test_strip_chat_leakage() -> None:
     raw = '{"schema":"myeongri_ai_interpretation_envelope_v1"}Human: Can you'
     assert "Human:" not in strip_chat_leakage(raw)
+
+
+def test_normalize_json_punctuation_curly_quotes() -> None:
+    assert normalize_json_punctuation_for_parse("\u201chuman_review_required\u201d") == '"human_review_required"'
+
+
+def test_augment_parsed_recovers_insight_after_json_key() -> None:
+    from scripts.myeongri_interpret_envelope_views_v1 import augment_parsed_with_recovered_insight
+
+    raw = (
+        '{"schema":"myeongri_ai_interpretation_envelope_v1","mkm_advanced_insight":'
+        '"[HYPO] narrative body. LEAK rest"}'
+    ).replace("LEAK", "若要提供")
+    out = augment_parsed_with_recovered_insight(None, raw)
+    assert out is not None
+    ins = str(out.get("mkm_advanced_insight") or "")
+    assert ins.startswith("[HYPO]")
+    assert "若要提供" not in ins
+    assert "narrative body" in ins
+
+
+def test_try_parse_envelope_curly_quote_row42_pattern() -> None:
+    raw = (
+        '{\n  "schema": "myeongri_ai_interpretation_envelope_v1",\n'
+        '  "mkm_advanced_insight": "[HYPO] 1994년 9월 16일 해석.",\n'
+        '  "confidence_score": 0.95,\n'
+        '  \u201chuman_review_required\u201d: true\n}'
+    )
+    parsed, note, coerced = _try_parse_envelope(raw, postprocess_v1=True)
+    assert parsed is not None
+    assert parsed["mkm_advanced_insight"].startswith("[HYPO]")
+    assert parsed.get("human_review_required") is True or coerced
 
 
 def test_repair_envelope_insight_match_copies_sha() -> None:
@@ -57,6 +91,34 @@ def test_merge_llm_envelope_nested_interpretation() -> None:
     assert env["hypothesis_tier"] == "B"
     assert env["mkm_advanced_insight"].startswith("[HYPO]")
     assert env["deterministic_input_sha256"] == sha
+
+
+def test_insight_variants_differ_by_sample_id() -> None:
+    from scripts.myeongri_interpret_envelope_views_v1 import (
+        build_mkm_insight_ko_v1,
+        insight_variant_index,
+        template_envelope_from_compact,
+    )
+
+    compact = {
+        "full_saju": {"saju": {"year": "甲子", "month": "乙丑", "day": "丙寅", "hour": "丁卯"}, "ilgan": "丙"},
+        "resolution": {
+            "birth_instant_utc": "1992-03-12T17:00:00Z",
+            "iana_tz": "Asia/Seoul",
+            "local_iso": "1992-03-13T02:00:00+09:00",
+        },
+    }
+    a = template_envelope_from_compact(compact, sample_id="mdl-gs-v1-5001")
+    b = template_envelope_from_compact(compact, sample_id="mdl-gs-v1-5099")
+    assert a["mkm_advanced_insight"] != b["mkm_advanced_insight"]
+    variants = {
+        template_envelope_from_compact(compact, sample_id=f"id-{i}")["mkm_advanced_insight"]
+        for i in range(24)
+    }
+    assert len(variants) >= 3
+    v0 = build_mkm_insight_ko_v1(y="甲", mo="乙", d="丙", h="丁", ilgan="丙", utc="u", tz="t", variant=0)
+    v1 = build_mkm_insight_ko_v1(y="甲", mo="乙", d="丙", h="丁", ilgan="丙", utc="u", tz="t", variant=1)
+    assert v0 != v1
 
 
 def test_try_parse_envelope_postprocess_row22_pattern() -> None:

@@ -8,7 +8,7 @@ base-model interpretation envelope generation (no Pack0B saju LoRA — wrong tas
 Example::
 
   py scripts/run_myeongri_harness_v2_engine_interpret_smoke_v1.py --limit 5
-  py scripts/run_myeongri_harness_v2_engine_interpret_smoke_v1.py --limit 5 --run-llm --max-new-tokens 512
+  py scripts/run_myeongri_harness_v2_engine_interpret_smoke_v1.py --limit 5 --run-llm --max-new-tokens 320
 """
 
 from __future__ import annotations
@@ -83,12 +83,16 @@ def _try_parse_envelope(
     coerce_missing_governance: bool = True,
 ) -> tuple[dict | None, str, bool]:
     from scripts.myeongri_interpret_envelope_views_v1 import (
+        augment_parsed_with_recovered_insight,
         coerce_llm_envelope_to_contract_v1,
         sanitize_interpret_raw_for_parse,
     )
     from scripts.run_myeongri_deterministic_lora_inference_eval_v1 import _extract_json_object
 
-    parsed = _extract_json_object(sanitize_interpret_raw_for_parse(raw))
+    parsed = augment_parsed_with_recovered_insight(
+        _extract_json_object(sanitize_interpret_raw_for_parse(raw)),
+        raw,
+    )
     if not coerce_missing_governance:
         from scripts.myeongri_interpret_envelope_views_v1 import (
             repair_envelope_fields_v1,
@@ -134,7 +138,7 @@ def main() -> int:
     ap.add_argument("--profile-json", type=Path, default=DEFAULT_PROFILE)
     ap.add_argument("--profile-key", default="train_default")
     ap.add_argument("--model-name", default="", help="Override HF model id")
-    ap.add_argument("--max-new-tokens", type=int, default=1024)
+    ap.add_argument("--max-new-tokens", type=int, default=384)
     ap.add_argument("--temperature", type=float, default=0.2)
     ap.add_argument("--top-p", type=float, default=0.9)
     args = ap.parse_args()
