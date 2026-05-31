@@ -304,6 +304,27 @@
       "prism_axis": "M",
       "agent_access": "execute_observe",
       "summary_ko": "live A/B 요약 JSON 빌드(KPI 기반)"
+    },
+    {
+      "id": "prism_ops_memory_index_v1",
+      "path": "storage/meta/mkm_ops_memory_index_v1.json",
+      "prism_axis": "S",
+      "agent_access": "b_track_only",
+      "summary_ko": "[HYPO] MISSION_LOG·CENTRAL anchor ops memory index — must_keep gate; Track A·live merge 없음"
+    },
+    {
+      "id": "prism_script_build_mkm_ops_memory_index_v1",
+      "path": "scripts/build_mkm_ops_memory_index_v1.py",
+      "prism_axis": "L",
+      "agent_access": "b_track_only",
+      "summary_ko": "Ops memory index builder (anchor SSOT, fail-fast MISSION_LOG)"
+    },
+    {
+      "id": "prism_script_check_mkm_ops_memory_must_keep_gate_v1",
+      "path": "scripts/check_mkm_ops_memory_must_keep_gate_v1.py",
+      "prism_axis": "L",
+      "agent_access": "b_track_only",
+      "summary_ko": "must_keep_tags fail-safe gate (source + inject phases)"
     }
   ]
 }

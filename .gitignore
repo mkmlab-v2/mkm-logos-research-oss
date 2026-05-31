@@ -27,7 +27,8 @@
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)
 /MISSION_LOG.md
 /MISSION_LOG.old.md
-/MISSION_LOG.pre_split_backup.md
+/MISSION_LOG.sessions.md
+/docs/final/artifacts/central_timeline_archive_v1.md
 # Local machine paths only (tracked template: LOCAL_MACHINE_POINTER_V1.template.md)
 docs/final/LOCAL_MACHINE_POINTER_V1.md
 .env

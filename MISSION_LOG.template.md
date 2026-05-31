@@ -2,7 +2,11 @@
 
 **사용법**: 로컬 전용 파일 `MISSION_LOG.md`를 쓴다 (저장소 루트,`.gitignore`로 비추적). 이 템플릿을 복사해 시작한다.
 
-**파일 비대 시 (2026-05-23):** `py scripts/split_mission_log_old_v1.py` — **작전 보드·운영 일정 SSOT만** `MISSION_LOG.md`에 두고, 나머지는 `MISSION_LOG.old.md`(참고·비-SSOT). 백업: `MISSION_LOG.pre_split_backup.md`.
+**파일 비대 시 (2026-05-31):**
+- **세션 갱신 상한(14줄):** `py scripts/rotate_mission_log_sessions_v1.py` → 초과분 `MISSION_LOG.sessions.md`
+- **주간 원클릭:** `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MissionLogCentralHygiene_v1.ps1` (세션 cap + CENTRAL 타임라인 cap + 필요 시 split)
+- **예약(선택):** `scripts\Register-MissionLogCentralHygieneWeeklyTask.ps1` (일요일 06:30)
+- **대량 분리(수동/주간):** `py scripts/split_mission_log_old_v1.py` — 작전 보드만 본 파일 · 나머지 `MISSION_LOG.old.md` · 백업 `MISSION_LOG.pre_split_backup.md`
 
 **역할 분리**: 작전 스냅샷·핸드오프 문단은 `docs/final/CURRENT_OPS_SNAPSHOT.md`에 두고, 본 파일은 **로컬 체크리스트·exit 조건**만 기록한다. 동일 SSOT를 스냅샷과 이중 서술하지 않는다(루트 `.cursorrules`·`AGENTS.md`와 동일 방향).
 
