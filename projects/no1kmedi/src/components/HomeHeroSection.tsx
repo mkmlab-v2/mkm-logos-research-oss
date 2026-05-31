@@ -3,6 +3,9 @@ import type { HubLink, SiteCopy } from "@/content/siteCopy";
 const HUB_PRIMARY_KEYS = [
   "showroom_jemaai",
   "premium_mkmlife",
+  "clinician_support",
+  "clinician_no1kmedi_portal",
+  "mai_profile_card",
   "b2b_acodeai",
   "farm_b2b_smartfarm",
   "research_mkmlab",

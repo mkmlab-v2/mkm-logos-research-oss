@@ -9,6 +9,7 @@ import {
   triageBadgeClass,
   triageLabel,
 } from "@/lib/clinician-intake-utils";
+import type { ClinicianSurveySsotPayload } from "@/lib/clinician-survey-ssot-v1";
 
 const RECENT_PIN_STORAGE_KEY = "advanced_consult_recent_pins_v1";
 
@@ -57,8 +58,25 @@ export function ClinicianConsultContextPanel({
   const [lookupBusy, setLookupBusy] = useState(false);
   const [lookupStatus, setLookupStatus] = useState("");
   const [recentPins, setRecentPins] = useState<RecentPinItem[]>([]);
+  const [surveySsot, setSurveySsot] = useState<ClinicianSurveySsotPayload | null>(null);
 
   const canUseAdvancedConsult = accessStatus?.success === true && accessStatus?.can_use_pro_clinical_assist === true;
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch("/api/clinician/constitution-survey-ssot", { cache: "no-store" });
+        const json = (await res.json()) as ClinicianSurveySsotPayload;
+        if (!cancelled && json.success) setSurveySsot(json);
+      } catch {
+        /* optional metadata */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     try {
@@ -138,6 +156,25 @@ export function ClinicianConsultContextPanel({
           <p className="consult-error">{accessStatus.error}</p>
         ) : null}
       </div>
+
+      {surveySsot ? (
+        <div className="card consult-access-card">
+          <h3>설문 레인 (SSOT)</h3>
+          <p className="workspace-muted">{surveySsot.disclaimer}</p>
+          <p className="consult-access-ok">
+            진료실: 문진 PIN + 앱 내 {surveySsot.physician_lane.constitution_questions_in_app}문항 · pack{" "}
+            {surveySsot.pack_id ?? "—"}
+            {surveySsot.item_count != null ? ` (${surveySsot.item_count} bank items)` : ""}
+          </p>
+          <p className="workspace-muted">
+            <a href={surveySsot.consumer_lane.survey_url} target="_blank" rel="noopener noreferrer">
+              {surveySsot.consumer_lane.label}
+            </a>
+            {" — "}
+            {surveySsot.consumer_lane.sublabel}
+          </p>
+        </div>
+      ) : null}
 
       <div className="card consult-access-card">
         <h3>문진 PIN</h3>

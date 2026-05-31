@@ -66,6 +66,9 @@ export type SiteCopy = {
     showroom_topology_radar?: HubLink;
     showroom_meaning_graph?: HubLink;
     showroom_meaning_qa_v2?: HubLink;
+    clinician_support?: HubLink;
+    clinician_no1kmedi_portal?: HubLink;
+    mai_profile_card?: HubLink;
   };
   header: { brand_name: string; brand_tagline: string };
   seo: { title: string; description: string };

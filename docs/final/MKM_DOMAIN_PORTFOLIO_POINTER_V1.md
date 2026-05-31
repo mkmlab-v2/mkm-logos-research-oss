@@ -10,12 +10,13 @@
 
 | 도메인 | 제품·역할 (레포 기준 요약) | SSOT / 진입 문서 | VPS·배포 — 혼동 금지 |
 |--------|---------------------------|-------------------|----------------------|
-| **no1kmedi.com** | MKM LAB/가디언·no1kmedi 웹·Express API 쪽 축 (`projects/no1kmedi/`, `payapp-api`). | `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md`(경로·PM2), `no1kmedi` 실행보고 노트(NotebookLM, 참고) | PM2 `no1kmedi-com` / `no1kmedi-payapp-api` — **jema12 런북과 절차 혼용 금지**. |
+| **no1kmedi.com** | **한의사 포털 apex** + **`clinic.`** 서브도메인(Next `/clinician`) · **`research.`** 연구소 정적 · Express **`api.`** | `MKM_DOMAIN_CLINICAL_LANE_V1.md` · `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` | PM2 `no1kmedi-com` `:3010` · nginx `apply_*_no1kmedi_*_v1.sh` · **jema12 런북 혼용 금지** |
 | **mkmlife.com** | mkmlife.com 소비자 제품; **원퀘스천·단건 과금** 락은 동 SSOT §11. 소스는 서브모듈 `projects/mkm/mkm-life`. | 위 SSOT §10·§11, `MKMLIFE_VPS_SSH_CURSOR_CLEANUP_RUNBOOK.md` | PM2 이름 **`mkmlife`** — **`exec cwd`만 본선 Git**. E: 백업 전용(§2.1b). |
 | **jema12.com** | **레거시 브랜드 도메인** — 정책: 전 경로 **301 → `https://jema-ai.com`** (path·query 유지). CF Registrar 이전 완료; **zone이 API 토큰에 보이면** `scripts/Invoke-CloudflareJema12RedirectSetup_v1.ps1`. | `SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md`(nginx·studio/broadcast **레거시**), `jema12_cloudflare_zone_v1.json` | **no1kmedi/mkmlife 배포와 분리**. 공개 브랜드·B2B 허브는 **jema-ai.com**만. |
 | **jemaai.cloud** | 공개 쇼룸·Public Event Gateway·**실매매와 격리**된 관측 UI. | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`(프로젝트 경로는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 표), `run_jemaai_cloud_completion_chain.ps1` = 로컬 점검, **배포 아님** · CF DNS ensure 산출: `reports/cloudflare_dns_ensure_jemaai_cloud.json`(요약 체인: `reports/cloudflare_dns_ensure_chain_latest.json`) | 게이트웨이·nginx 예시는 bitcoin-trading `jemaai-cloud-mvp` 경로. **api.jemaai.cloud 권장** — `jema12.cloud`와 동일 가정 금지(핸드오프 표). |
 | **a-codeai.com** | L2·압축 API·B2B 대외면: **정적 랜딩과 API 포트 분리** (nginx). | `P0_COMMERCIALIZATION_TRACKER.md`(a-codeai nginx 체크리스트), `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example` | **apex가 스텁 JSON만 받아 404 나는 설정** 금지 — `/` vs `/v1/` 분리 우선. |
-| **mkmlab.space** | **분자한의학 연구소·생산 제품** — `mkmlab-redesign/` → **VPS** `/var/www/mkmlab` + nginx(LE SSL) · **CF** zone `38a47f29983bd4ebce3798be08f59ba3` · NS Hostinger API · 번들 `Invoke-MkmlabSpaceGoLiveAuto_v1.ps1` / `Invoke-MkmlabSpacePhase2_v1.ps1`. **hPanel `public_html` 아님.** | `reports/mkmlab_space_readiness_latest.json` | **2026-05-21:** 공개 `https://mkmlab.space`·`/en.html` probe **ok** · CF 존 **pending** 시 `finalize_mkmlab_cloudflare_zone_v1.py` 재실행 |
+| **mkmlab.space** | **퇴역 예정** — **301 → `research.no1kmedi.com`** (등록 만료 ~2026-06-20). 콘텐츠 SSOT는 `mkmlab-redesign/` → `/var/www/mkmlab`. | `MKM_DOMAIN_CLINICAL_LANE_V1.md` · `apply_mkmlab_space_retire_301_v1.sh` | 갱신 중단 전 **research** vhost·DNS ensure · `Invoke-No1kmediDomainParallelMigrate_v1.ps1` |
+| **research.no1kmedi.com** | **분자한의학 연구소·생산 제품** (구 mkmlab.space). | 동 상위 · `reports/mkmlab_space_readiness_latest.json` | VPS static · CF zone **no1kmedi.com** |
 | **jema-ai.com** | **공개 브랜드·Next `metadataBase`**. B2B **`/enterprise`** · 한의사 보조 **`/clinician`**(채팅+CDSS·환자 번들). 소스 `projects/no1kmedi`. | `JEMA_AI_DOMAIN_POINTER_V1.md` · CF DNS ensure 산출: `reports/cloudflare_dns_ensure_jema-ai_com.json`(요약 체인: `reports/cloudflare_dns_ensure_chain_latest.json`) | **실측(2026-05-16):** upstream `127.0.0.1:3010` · PM2 `no1kmedi-com` **`cwd=/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi`**. 배포: `Deploy-No1kmediDestinyTarball_v1.ps1` (`-RunApiSmoke` 권장). VPS `.env.local`: `MKM_WORKSPACE_ROOT`·`MKM_PYTHON`·`KM_CLINICIAN_PRO_EMAIL_ALLOWLIST`. |
 | **personadiary.com** | B2C 일기·리플렉션/운세 콘셉트는 **별도 채팅 레인**에서 단계 검증. **프리뷰(2026-05-20):** `no1kmedi` 호스트 라우팅 `/personadiary` · PM2 `no1kmedi-com` · 메일 `hello@`/`contact@`. 제품·데이터 본선 **미확정**. | `PERSONADIARY_DOMAIN_POINTER_V1.md` · `artifacts/personadiary_preview_ops_v1_latest.json` | **본선 연결 전** 전용 repo·DB·결제 **합선 금지**. mkmlife API/DB 공유 가정 금지. |
 
@@ -31,8 +32,9 @@ Track C·공개 쇼룸 논의와 동일 선상: **실매매·조종실은 어디
 | **프리미엄 소비자 제품** — 원퀘스천·단건 리포트(명리·사상·로고스 렌즈 병렬) | **mkmlife.com** | **리포트 카드** 중심·단건 완결; 챗뷔페형 기본값 아님; 배지·면책 고정 | 실거래 퍼널·원격 진료 동선과 **합선 금지** | `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` §10–§11 |
 | **브랜드·허브·진입** — 회사 소개, 깊은 링크, 문서 하단 디스클레이머 | **jema-ai.com** | 라이트 마케팅 랜딩; **CTA는 mkmlife/jemaai로 분기** | 쇼룸 **실시간 전광판 UI**는 기본 **여기에 두지 않음**(혼잡·이중 유지보수 방지) | `JEMA_AI_DOMAIN_POINTER_V1.md` |
 | **B2B 압축·API 대외면** | **a-codeai.com** (및 정책에 따른 API 호스트) | 정적 랜딩 vs `/v1` API **경로 분리** | apex 스텁만 노출 404 류 | `P0_COMMERCIALIZATION_TRACKER.md`·nginx 예시 |
-| **분자한의학 연구소·생산 제품** — 발효 NO 대사체·허브 발효·연구소 라인업 | **mkmlab.space** | 연구·제조 스토리·제품 카드; **상업·B2B는 jema-ai.com** | AI 쇼룸·압축 API·원퀘스천·투자 단정 **합선 금지** | `mkmlab-redesign/` · `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.0 |
-| **백엔드 API·PayApp (내부 식별)** | **no1kmedi.com** | **대외 브랜드·홈페이지 아님** — Express·결제 축 | jema12 런북·mkmlab **VPS docroot**와 **혼용 금지** | `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` §1 |
+| **분자한의학 연구소·생산 제품** | **research.no1kmedi.com** (구 mkmlab.space) | 연구·제조 스토리; **상업·B2B는 jema-ai.com** | AI 쇼룸·실매매 **합선 금지** | `mkmlab-redesign/` · `TRACK_C` §3.0 |
+| **한의사 진료 보조** | **clinic.no1kmedi.com** · **no1kmedi.com** apex | SOAP·CDSS·/clinician; **공식 URL은 app.jema-ai.com** | consumer·MAI **합선 금지** | `MKM_DOMAIN_CLINICAL_LANE_V1.md` |
+| **백엔드 API·PayApp** | **api.no1kmedi.com** | Express·결제 — **UI 없음** | apex 포털 nginx와 **vhost 분리** | `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` §1 |
 
 **와이어·카피 순서(Track C 고정):** JSON 계약(허용/금지 필드) → 와이어프레임 → 카피 (`TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.6·실행 항목 참조). 초안 자산: `docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_SHOWROOM_WIREFRAME_V1.md`(있을 때).
 
@@ -47,12 +49,13 @@ Track C·공개 쇼룸 논의와 동일 선상: **실매매·조종실은 어디
 | jema-ai.com | **a-codeai.com** (또는 정책상 API 랜딩) | 「토큰·압축 API (B2B)」 | API·정적 경로 분리; `P0` a-codeai 절. |
 | jemaai.cloud (푸터/보조) | **jema-ai.com** | 「JEMA AI 소개」 | 브랜드 허브; 전광판 **중복 임베드**는 기본 금지(이중 유지보수). |
 | **mkmlife.com** (필요 시) | jemaai.cloud | 「라이브 데모·공개 보드」(선택) | **소비자 본 퍼널**은 리포트 구매; 쇼룸은 **신뢰·채널** 보조. |
-| **jema-ai.com** | **mkmlab.space** | 「MKM LAB 분자한의학 연구소·생산 제품」 | 연구소·건기식·R&D; **AI·압축 수치를 같은 홈처럼 쓰지 않음** (`TRACK_C` §3.0). |
-| **mkmlab.space** | **jema-ai.com** | 「도입·파트너·B2B·클리닉 채널 문의」 | 상업 계약·Track C 영업은 **jema-ai**; 연구소 페이지는 **소개·제품만**. |
+| **jema-ai.com** | **research.no1kmedi.com** | 「MKM LAB 분자한의학 연구소·생산 제품」 | 연구소·R&D; **AI·압축 수치 합선 금지** (`TRACK_C` §3.0). |
+| **research.no1kmedi.com** | **jema-ai.com** | 「도입·파트너·B2B·클리닉 문의」 | 상업·Track C는 **jema-ai**; 연구소는 **소개·제품만**. |
+| **jema-ai.com** | **clinic.no1kmedi.com** | 「한의사 포털 (no1kmedi)」 | 현장 북마크; **제안서 URL은 app.jema-ai.com/clinician**. |
 
 `jema-ai.com` 전용 상세·미확정 항목: `JEMA_AI_DOMAIN_POINTER_V1.md` — CTA는 **이 표(1.1b)와 `§1.1` 역할**에 맞출 것.
 
-**구현 원천(코드):** Next 브랜드 허브 공개 카피는 `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`: `showroom_jemaai`, `premium_mkmlife`, `b2b_acodeai`, **`research_mkmlab`** → `https://mkmlab.space`) — `showroom_jemaai.href` 기본값은 **권장 미니멀 보드** `https://api.jemaai.cloud/public_showroom_board_minimal.html`(레이아웃·경로는 `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`·`deploy_showroom_static.ps1`와 정합). 표(1.1b)와 불일치 시 **먼저 JSON을 고치고** 본 표를 개정한다.
+**구현 원천(코드):** `projects/no1kmedi/marketing-site/public-copy.json` — `research_mkmlab` → **`https://research.no1kmedi.com`** · `clinician_no1kmedi_portal` → **`https://clinic.no1kmedi.com`**. 표(1.1b)와 불일치 시 **먼저 JSON을 고치고** 본 표를 개정한다.
 
 ---
 
@@ -78,5 +81,6 @@ Track C·공개 쇼룸 논의와 동일 선상: **실매매·조종실은 어디
 
 ## 4) 미확정 도메인 전용 포인터 (상세)
 
+- **임상·체질·MAI 레인:** `docs/final/MKM_DOMAIN_CLINICAL_LANE_V1.md` — physician_gold vs consumer_survey_only · 허브 CTA.
 - **jema-ai.com:** `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` — 확정 전 금지·체크리스트.
 - **personadiary.com:** `docs/final/PERSONADIARY_DOMAIN_POINTER_V1.md` — 동일.

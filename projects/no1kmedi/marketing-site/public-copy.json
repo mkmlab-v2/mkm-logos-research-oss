@@ -39,9 +39,9 @@
       "sublabel": "정적 랜딩과 API 경로 분리·도입 문의는 해당 도메인 정책 따름"
     },
     "research_mkmlab": {
-      "href": "https://mkmlab.space",
+      "href": "https://research.no1kmedi.com",
       "label": "MKM LAB 분자한의학 연구소·생산 제품",
-      "sublabel": "발효 NO 대사체·연구소 라인업 소개 · AI·쇼룸 본거지 아님 · 상업 문의는 jema-ai.com"
+      "sublabel": "발효 NO 대사체·연구소 라인업 · 구 mkmlab.space 이전 · 상업 문의는 jema-ai.com"
     },
     "personadiary_preview": {
       "href": "/personadiary",
@@ -52,6 +52,21 @@
       "href": "https://farm.jema-ai.com",
       "label": "농업 IoT · 스마트관수 (B2B)",
       "sublabel": "노지·시설 SI · 하드웨어 파트너·API 연동 · 충남 금산 파일럿 · 투자·의료 조언 아님"
+    },
+    "clinician_support": {
+      "href": "https://app.jema-ai.com/clinician",
+      "label": "한의사 진료 보조 · 문진",
+      "sublabel": "SOAP·care bundle·체질 가설 — 원장 확정 전제 · 진단·처방 대체 아님 · 제안서·대외 URL은 jema-ai"
+    },
+    "clinician_no1kmedi_portal": {
+      "href": "https://clinic.no1kmedi.com",
+      "label": "한의사 포털 (no1kmedi)",
+      "sublabel": "현장 북마크용 · app.jema-ai.com/clinician 과 동일 앱 · PayApp·api 호스트와 분리"
+    },
+    "mai_profile_card": {
+      "href": "https://mkmlife.com/ask-one",
+      "label": "12유형 성향 스냅샷 (MAI)",
+      "sublabel": "MBTI® 공식 검사 아님 · 참고용 설문 · 임상 확정·사상 4진과 별도 레인"
     }
   },
   "header": {
