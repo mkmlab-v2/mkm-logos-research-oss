@@ -207,3 +207,14 @@ def top_nodes_by_priority(
         key=lambda item: (-int(item[1].get("priority", 0)), item[0]),
     )
     return ranked[:top_n]
+
+
+def truncate_anchor_slice(text: str, *, max_chars: int) -> tuple[str, bool]:
+    """Return (possibly truncated text, was_truncated)."""
+    if max_chars < 1:
+        raise ValueError("max_chars must be >= 1")
+    if len(text) <= max_chars:
+        return text, False
+    marker = "\n… [HYPO slice truncated]\n"
+    budget = max(1, max_chars - len(marker))
+    return text[:budget].rstrip() + marker, True

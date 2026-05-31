@@ -14,10 +14,18 @@
 
 .PARAMETER DryRunIndex
   Pass --dry-run to index builder only.
+
+.PARAMETER IncludeSlice
+  [HYPO] Phase 0.5 — pass --include-slice to resume pack builder.
+
+.PARAMETER SliceMaxChars
+  Max chars per anchor slice preview (default 1200).
 #>
 param(
     [switch]$SkipBench,
-    [switch]$DryRunIndex
+    [switch]$DryRunIndex,
+    [switch]$IncludeSlice,
+    [int]$SliceMaxChars = 1200
 )
 
 $ErrorActionPreference = "Stop"
@@ -42,9 +50,11 @@ if (-not $DryRunIndex) {
     Invoke-Step -Name "must_keep_gate_source" -Command @(
         "py", "scripts/check_mkm_ops_memory_must_keep_gate_v1.py", "--phase", "source"
     )
-    Invoke-Step -Name "build_chat_resume_pack" -Command @(
-        "py", "scripts/build_mkm_chat_resume_pack_v1.py"
-    )
+    $resumeArgs = @("py", "scripts/build_mkm_chat_resume_pack_v1.py")
+    if ($IncludeSlice) {
+        $resumeArgs += @("--include-slice", "--slice-max-chars", "$SliceMaxChars")
+    }
+    Invoke-Step -Name "build_chat_resume_pack" -Command $resumeArgs
     if (-not $SkipBench) {
         Invoke-Step -Name "token_bench_hypo" -Command @(
             "py", "scripts/bench_mkm_ops_memory_index_token_savings_v1.py"

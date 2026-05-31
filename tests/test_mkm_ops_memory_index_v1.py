@@ -14,6 +14,7 @@ from mkm_ops_memory_index_lib_v1 import (  # noqa: E402
     build_index_document,
     extract_anchor_block,
     missing_must_keep_tags,
+    truncate_anchor_slice,
     verify_index_sources,
 )
 
@@ -98,3 +99,11 @@ def test_gate_fails_when_tag_stripped(tmp_path: Path) -> None:
     )
     with pytest.raises(ValueError, match="must_keep_tags missing"):
         build_index_document(tmp_path)
+
+
+def test_truncate_anchor_slice_marks_overflow() -> None:
+    text = "a" * 200
+    preview, truncated = truncate_anchor_slice(text, max_chars=50)
+    assert truncated is True
+    assert "HYPO slice truncated" in preview
+    assert len(preview) <= 50

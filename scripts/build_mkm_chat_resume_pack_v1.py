@@ -1,16 +1,17 @@
 from __future__ import annotations
 
+import argparse
 import json
 import subprocess
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List
 
 from mkm_ops_memory_index_lib_v1 import (
     DEFAULT_INDEX_PATH,
-    missing_must_keep_tags,
+    extract_node_from_index,
     top_nodes_by_priority,
+    truncate_anchor_slice,
     utc_now_iso,
 )
 
@@ -29,36 +30,76 @@ def _build_ops_inject_text(pins: List[Dict[str, Any]]) -> str:
         parts.append(pin.get("essence") or "")
         for tag in pin.get("must_keep_tags") or []:
             parts.append(tag)
+        slice_preview = pin.get("slice_preview")
+        if slice_preview:
+            parts.append(slice_preview)
     return "\n".join(parts)
 
 
-def _load_ops_pins(root: Path, *, top_n: int) -> List[Dict[str, Any]]:
+def _load_ops_pins(
+    root: Path,
+    *,
+    top_n: int,
+    include_slice: bool,
+    slice_max_chars: int,
+) -> List[Dict[str, Any]]:
     index_path = root / DEFAULT_INDEX_PATH.relative_to(SCRIPT_ROOT)
     if not index_path.is_file():
         return []
     index = _read_json(index_path)
     pins: List[Dict[str, Any]] = []
     for node_id, node in top_nodes_by_priority(index, top_n=top_n):
-        pins.append(
-            {
-                "node_id": node_id,
-                "essence": node.get("essence"),
-                "must_keep_tags": node.get("must_keep_tags") or [],
-                "file_path": node.get("file_path"),
-                "line_range": node.get("line_range"),
-            }
-        )
+        pin: Dict[str, Any] = {
+            "node_id": node_id,
+            "essence": node.get("essence"),
+            "must_keep_tags": node.get("must_keep_tags") or [],
+            "file_path": node.get("file_path"),
+            "line_range": node.get("line_range"),
+        }
+        if include_slice:
+            block = extract_node_from_index(root, node)
+            preview, truncated = truncate_anchor_slice(
+                block, max_chars=slice_max_chars
+            )
+            pin["slice_preview"] = preview
+            pin["slice_truncated"] = truncated
+            pin["slice_max_chars"] = slice_max_chars
+        pins.append(pin)
     return pins
 
 
 def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--top-n", type=int, default=2)
+    ap.add_argument(
+        "--include-slice",
+        action="store_true",
+        help="[HYPO] Include truncated anchor body per pin (Phase 0.5).",
+    )
+    ap.add_argument(
+        "--slice-max-chars",
+        type=int,
+        default=1200,
+        help="Max chars per anchor slice preview (default 1200).",
+    )
+    args = ap.parse_args()
+
+    if args.slice_max_chars < 64:
+        print("FAIL: --slice-max-chars must be >= 64", file=sys.stderr)
+        return 1
+
     root = SCRIPT_ROOT
     art = root / "docs" / "final" / "artifacts"
 
     dashboard = _read_json(art / "mkm_trackc_ops_dashboard_latest.json")
     acceptance = _read_json(art / "mkm_trackc_operational_acceptance_latest.json")
 
-    ops_pins = _load_ops_pins(root, top_n=2)
+    ops_pins = _load_ops_pins(
+        root,
+        top_n=args.top_n,
+        include_slice=args.include_slice,
+        slice_max_chars=args.slice_max_chars,
+    )
     inject_text = _build_ops_inject_text(ops_pins)
 
     if ops_pins and inject_text:
@@ -86,6 +127,11 @@ def main() -> int:
         "generated_at_utc": utc_now_iso(),
         "research_only": True,
         "boundary_ack": "[HYPO] resume pack — ops index pins are B-track; no Track A·live merge",
+        "ops_memory_options": {
+            "include_slice": args.include_slice,
+            "slice_max_chars": args.slice_max_chars if args.include_slice else None,
+            "top_n": args.top_n,
+        },
         "quick_refs": {
             "central_memory": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
             "ops_memory_index": "storage/meta/mkm_ops_memory_index_v1.json",
@@ -103,10 +149,9 @@ def main() -> int:
             "acceptance_status": acceptance.get("status"),
         },
         "resume_commands": [
-            "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_mkm_trackc_operational_acceptance.ps1",
-            "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Set-PaddleOnboardingStatus.ps1 -Status IN_PROGRESS -Note \"Payout/legal onboarding steps in progress.\"",
             "py scripts/build_mkm_ops_memory_index_v1.py",
-            "py scripts/build_mkm_chat_resume_pack_v1.py",
+            "py scripts/build_mkm_chat_resume_pack_v1.py --include-slice",
+            "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-MkmOpsMemoryIndexRoutine_v1.ps1 -IncludeSlice",
         ],
     }
 
@@ -119,6 +164,7 @@ def main() -> int:
         "",
         f"- generated_at_utc: `{resume['generated_at_utc']}`",
         f"- research_only: `{resume.get('research_only')}`",
+        f"- include_slice: `{args.include_slice}`",
         f"- system_status: `{resume['latest_status'].get('system_status')}`",
         f"- promotion_decision: `{resume['latest_status'].get('promotion_decision')}`",
         f"- trackc_packet_status: `{resume['latest_status'].get('trackc_packet_status')}`",
@@ -132,6 +178,14 @@ def main() -> int:
             md_lines.append(
                 f"- **{pin['node_id']}** — {pin.get('essence')} · must_keep: {tags}"
             )
+            if pin.get("slice_preview"):
+                truncated = pin.get("slice_truncated")
+                md_lines.append(
+                    f"  - slice_preview ({'truncated' if truncated else 'full'}):"
+                )
+                md_lines.append("```")
+                md_lines.append(pin["slice_preview"])
+                md_lines.append("```")
         md_lines.append("")
 
     md_lines += ["## Quick Refs"]
@@ -141,7 +195,7 @@ def main() -> int:
         "",
         "## Resume Commands",
         "- `py scripts/build_mkm_ops_memory_index_v1.py`",
-        "- `py scripts/build_mkm_chat_resume_pack_v1.py`",
+        "- `py scripts/build_mkm_chat_resume_pack_v1.py --include-slice`",
     ]
     out_md.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
 
