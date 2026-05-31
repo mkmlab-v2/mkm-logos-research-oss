@@ -117,7 +117,7 @@ LoRA training/eval: separate chat + `storage/adapters/myeongri_interpret_lora_v0
 | narrative_diversity_gate | **fail** | **pass** |
 | empty_insight rows | — | **4** (parse still ok) |
 
-**읽는 법:** v4는 **고정 문구 암기 문제는 해소**(narrative PASS). 다만 **골드 JSON 문자열 일치(match)는 0%** — 전건 `coerce`로 governance 유지(v3와 trade-off). **Track A·실매매·Ops inject 합선 없음** · `[HYPO]` / `research_only`.
+**읽는 법:** v4는 **고정 문구 암기 문제는 해소**(narrative PASS). 다만 **골드 JSON 문자열 일치(match)는 0%** — 전건 `coerce`로 governance 유지(v3와 trade-off). 주된 diff: `mkm_advanced_insight`·`confidence_score`(0.55→0.95)·`method_id`(variant vs `standard_db_*`)·`prohibition_ack` — `reports/myeongri_interpret_v4_match_mismatch_summary_latest.json`. 빈 insight **4건** → human review `fail`. **Command package (CPU):** `InterpretBtrackGate`. **Track A·실매매·Ops inject 합선 없음** · `[HYPO]` / `research_only`.
 
 **Adapter:** `storage/adapters/myeongri_interpret_lora_v0/run_interpret_v4_variant_s100` (train 100 step · **max-seq-length 768**)
 

@@ -1,0 +1,427 @@
+{
+  "schema": "mkm_command_package_manifest_v1",
+  "version": "1.1.0",
+  "generated_note": "지휘관 수동 소환용. 채팅 트리거는 에이전트가 이 파일·Invoke-MkmCommandPackage_v1.ps1을 SSOT로 따른다.",
+  "scheduler_task_whitelist_v1": {
+    "note": "WeeklyOpsPatrol schtasks guard — Ready=정상. required=false 는 없으면 WARN(exit 2)만.",
+    "tasks": [
+      { "name": "MKM_WeeklyOpsPatrol", "required": true },
+      { "name": "MKM_BillingPatrol_Weekly", "required": false },
+      { "name": "MKM-Sunday-Automation-LastResult-Audit", "required": false },
+      { "name": "MKM_Compression_WeeklyGovernance", "required": false },
+      { "name": "MKM_CursorDevEnvironment_Comfort_Weekly", "required": false }
+    ]
+  },
+  "excludes_global": [
+    "gemini_jems_paste_block (지휘관 수동 · BillingPatrol 선택)",
+    "bitcoin_trading_safeops_phase1_otel",
+    "autonomous_evolution_mutator_btrack_full_explore"
+  ],
+  "packages": {
+    "OpsSummonLite": {
+      "label_ko": "운영 소환 · 경량 (Gem 제외)",
+      "estimated_minutes": 6,
+      "aliases": ["운영 소환", "경량 소환"],
+      "chat_triggers": [],
+      "cursor_open": [
+        "@MISSION_LOG.md",
+        "@docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+        "docs/final/artifacts/mkm_chat_resume_pack_latest.md"
+      ],
+      "steps": [
+        {
+          "id": "remote_mode",
+          "title": "원격 게시 모드 확인 (읽기 전용)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Show-RemotePublicationMode.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "p0_paths",
+          "title": "P0 헌법 경로",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/verify_p0_constitution_gate_paths.ps1"
+          ],
+          "required": true
+        },
+        {
+          "id": "git_sanity",
+          "title": "Git 워크스페이스 sanity",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Verify-GitWorkspaceSanity.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "chat_resume_pack",
+          "title": "채팅 재개 팩 (경량)",
+          "command": ["py", "scripts/build_mkm_chat_resume_pack_v1.py"],
+          "required": false
+        }
+      ],
+      "artifacts_after": ["docs/final/artifacts/mkm_chat_resume_pack_latest.md"]
+    },
+    "AthenaSummon": {
+      "label_ko": "아테나 소환 · 일일 가벼움 (Gem 제외)",
+      "estimated_minutes": 6,
+      "aliases": [
+        "아테나 소환",
+        "아테나를 소환",
+        "아테나를 소환한다",
+        "소환 아테나"
+      ],
+      "chat_triggers": [
+        "【아테나 소환】",
+        "아테나 소환",
+        "Athena summon"
+      ],
+      "extends": "OpsSummonLite",
+      "artifacts_after": ["docs/final/artifacts/mkm_chat_resume_pack_latest.md"]
+    },
+    "DailyOpsPatrol": {
+      "label_ko": "일상 운영 점검 · 아테나+암행어사+환경",
+      "estimated_minutes": 20,
+      "aliases": ["일상 점검", "데일리 점검", "운영 일상", "전체 일상 점검"],
+      "chat_triggers": ["【일상 점검】", "【데일리 점검】", "일상 운영 점검"],
+      "extends": "OpsSummonLite",
+      "steps_after_extend": [
+        {
+          "id": "athena_automation_registry",
+          "title": "Athena 자동화 스케줄 vs registry",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Invoke-AthenaAutomationRegistryCheck.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "ops_patrol_health",
+          "title": "운영·환경 헬스 (MCP·P0·reconcile; SafeOps/매매 제외)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Invoke-MkmOpsPatrolHealth_v1.ps1"
+          ],
+          "required": true
+        },
+        {
+          "id": "amsaeng_governance",
+          "title": "암행어사 거버넌스 (MCP·비밀·API; SafeOps 제외)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Invoke-AmsaengEosaGovernanceCycle.ps1",
+            "-SkipSafeOps"
+          ],
+          "required": false
+        },
+        {
+          "id": "notebooklm_prereqs",
+          "title": "NotebookLM MCP prereqs (로컬)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/check_notebooklm_mcp_prereqs.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "secrets_hybrid",
+          "title": "비밀 하이브리드 readiness (DPAPI·레포 위생)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Invoke-MkmSecretsHybridReadiness_v1.ps1"
+          ],
+          "required": false
+        }
+      ],
+      "artifacts_after": [
+        "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
+        "projects/bitcoin-trading/memory/v2/ops/automation_registry_reconcile_latest.json",
+        "reports/mcp_hygiene_probe_latest.json",
+        "reports/amsaeng_eosa_governance_cycle_latest.json"
+      ]
+    },
+    "WeeklyOpsPatrol": {
+      "label_ko": "주간 운영 점검 · 스케줄·환경 전체",
+      "estimated_minutes": 35,
+      "aliases": ["주간 점검", "주간 운영", "전체 주간 점검"],
+      "chat_triggers": ["【주간 점검】", "【주간 운영】", "주간 운영 점검"],
+      "extends": "DailyOpsPatrol",
+      "steps_after_extend": [
+        {
+          "id": "schtasks_whitelist_guard",
+          "title": "예약 작업 화이트리스트 (Ready 실측)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Invoke-MkmScheduledTaskWhitelistGuard_v1.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "cursor_dev_comfort",
+          "title": "Cursor 개발 환경 comfort 스냅샷",
+          "command": ["py", "scripts/background_jobs/cursor_dev_environment_comfort_v1.py"],
+          "required": false
+        },
+        {
+          "id": "sunday_automation_audit_task",
+          "title": "일요일 자동화 LastResult audit 태스크",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Verify-SundayAutomationAuditScheduledTask_v1.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "mission_log_hygiene_task",
+          "title": "MISSION_LOG/CENTRAL hygiene 주간 태스크",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Verify-MissionLogCentralHygieneScheduledTask_v1.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "billing_patrol_task",
+          "title": "BillingPatrol 주간 태스크 등록 확인",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Verify-MkmBillingPatrolWeeklyTaskReadiness.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "trackc_fusion_task",
+          "title": "Track C macro fusion 일일 태스크",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Verify-TrackCMacroDailyFusionScheduledTask_v1.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "showroom_publish_task",
+          "title": "Showroom Track C publish 태스크",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Verify-ShowroomTrackCPublishScheduledTask_v1.ps1"
+          ],
+          "required": false
+        },
+        {
+          "id": "ops_memory_index",
+          "title": "Ops 메모리 인덱스 (벤치 제외)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Invoke-MkmOpsMemoryIndexRoutine_v1.ps1",
+            "-SkipBench"
+          ],
+          "required": false
+        }
+      ],
+      "artifacts_after": [
+        "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
+        "docs/final/artifacts/mkm_ops_memory_index_v1_latest.json",
+        "docs/final/artifacts/cursor_dev_environment_comfort_latest.json",
+        "reports/mkm_scheduled_task_whitelist_guard_latest.json"
+      ],
+      "scheduler_optional": {
+        "register": "scripts/Register-MkmWeeklyOpsPatrolTask.ps1",
+        "verify": "scripts/Verify-MkmWeeklyOpsPatrolTaskReadiness.ps1",
+        "task_name": "MKM_WeeklyOpsPatrol",
+        "default_trigger": "Sunday 08:30 local"
+      }
+    },
+    "AthenaSummonFull": {
+      "label_ko": "아테나 Fact-Lock 번들 (느림 · 일상점검과 별도)",
+      "estimated_minutes": 45,
+      "aliases": ["아테나 전체", "아테나 풀 점검"],
+      "chat_triggers": ["【아테나 Fact-Lock】", "아테나 pytest 번들"],
+      "extends": "OpsSummonLite",
+      "steps_after_extend": [
+        {
+          "id": "fact_lock_bundle",
+          "title": "Fact-Lock 번들 (CI 근접)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/run_fact_lock_bundle.ps1",
+            "-SkipTwoTrackSubmissionAndMultiSymbolSmoke",
+            "-SkipAramaicBtrackGraphPipelineSmoke",
+            "-SkipSttRoutingAuditShowroomTrustSlice",
+            "-SkipMkmControlIntegritySmoke",
+            "-SkipMkmGpuRecommendedBundle"
+          ],
+          "required": true
+        }
+      ],
+      "artifacts_after": ["docs/final/artifacts/mkm_chat_resume_pack_latest.md"]
+    },
+    "AthenaOpsMemory": {
+      "label_ko": "아테나 · Ops 메모리 인덱스",
+      "estimated_minutes": 5,
+      "aliases": ["ops 메모리", "장기기억 인덱스"],
+      "chat_triggers": ["【아테나 ops 메모리】"],
+      "steps": [
+        {
+          "id": "ops_memory_routine",
+          "title": "Ops memory index + resume pack",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Invoke-MkmOpsMemoryIndexRoutine_v1.ps1",
+            "-SkipBench"
+          ],
+          "required": true
+        }
+      ],
+      "artifacts_after": [
+        "storage/meta/mkm_ops_memory_index_v1.json",
+        "docs/final/artifacts/mkm_chat_resume_pack_latest.md"
+      ]
+    },
+    "InterpretBtrackGate": {
+      "label_ko": "명리 Interpret B-track 게이트 (CPU · v4 post-eval)",
+      "estimated_minutes": 3,
+      "aliases": ["interpret gate", "v4 gate", "명리 게이트"],
+      "chat_triggers": ["【interpret 게이트】", "【명리 btrack 게이트】"],
+      "steps": [
+        {
+          "id": "v4_posteval_bundle",
+          "title": "v4 human review sample + mismatch summary",
+          "command": ["py", "scripts/build_myeongri_interpret_v4_posteval_bundle_v1.py"],
+          "required": false
+        },
+        {
+          "id": "v4_human_review_auto",
+          "title": "Auto reviewer_verdict on v4 sample",
+          "command": [
+            "py",
+            "scripts/apply_myeongri_interpret_v3_human_review_auto_v1.py",
+            "--sample-json",
+            "reports/myeongri_interpret_v4_human_review_sample_latest.json",
+            "--diversity-json",
+            "reports/myeongri_interpret_v4_diversity_audit_locked100.json",
+            "--status-json",
+            "reports/myeongri_interpret_harness_v3_v4_status_latest.json"
+          ],
+          "required": false
+        }
+      ],
+      "artifacts_after": [
+        "reports/myeongri_interpret_v4_human_review_sample_latest.json",
+        "reports/myeongri_interpret_v4_match_mismatch_summary_latest.json",
+        "reports/myeongri_interpret_harness_v3_v4_status_latest.json"
+      ]
+    },
+    "BillingPatrol": {
+      "label_ko": "GCP 과금 순찰 (주 1회 권장)",
+      "estimated_minutes": 5,
+      "aliases": ["과금 순찰", "빌링 점검", "크레딧 점검"],
+      "chat_triggers": ["【과금 순찰】", "GCP billing"],
+      "cost_lock_note": "Vertex bulk·신규 gemini bridge 금지. smoke-vertex만.",
+      "steps": [
+        {
+          "id": "gem_paste_block",
+          "title": "Gem paste (크레딧 필드 포함)",
+          "command": ["py", "scripts/build_mkm_gem_ops_paste_block_v1.py"],
+          "required": false
+        },
+        {
+          "id": "genai_readiness",
+          "title": "Google GenAI readiness (smoke-vertex)",
+          "command": ["py", "scripts/check_google_genai_readiness_v1.py", "smoke-vertex"],
+          "required": false
+        }
+      ],
+      "artifacts_after": [
+        "reports/mkm_gem_ops_paste_block_latest.json",
+        "reports/gcp_genai_app_builder_billing_probe_latest.json"
+      ],
+      "manual_after": [
+        "GCP Console → Billing → Reports: Discovery Engine vs Vertex AI SKU (24–48h 지연 가능)"
+      ],
+      "scheduler_optional": {
+        "register": "scripts/Register-MkmBillingPatrolWeeklyTask.ps1",
+        "verify": "scripts/Verify-MkmBillingPatrolWeeklyTaskReadiness.ps1",
+        "task_name": "MKM_BillingPatrol_Weekly",
+        "default_trigger": "Sunday 10:00 local"
+      }
+    },
+    "AmsaengPatrol": {
+      "label_ko": "암행어사 순찰 (= 일상 운영 점검 별칭)",
+      "estimated_minutes": 20,
+      "aliases": ["암행어사", "암행어사 소환"],
+      "chat_triggers": ["【암행어사 점검】"],
+      "extends": "DailyOpsPatrol"
+    }
+  }
+}
