@@ -16,10 +16,13 @@ const BANK_REL = path.join(
 
 async function resolveWorkspaceRoot(): Promise<string | null> {
   const fromEnv = process.env.MKM_WORKSPACE_ROOT?.trim();
+  const cwd = process.cwd();
   const candidates = [
     fromEnv ? path.resolve(fromEnv) : null,
-    path.resolve(process.cwd(), "..", ".."),
-    path.resolve(process.cwd(), "..", "..", ".."),
+    cwd,
+    path.resolve(cwd, ".."),
+    path.resolve(cwd, "..", ".."),
+    path.resolve(cwd, "..", "..", ".."),
   ].filter((c): c is string => Boolean(c));
   for (const root of candidates) {
     try {

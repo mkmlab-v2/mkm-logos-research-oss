@@ -45,6 +45,10 @@ for legacy in /etc/nginx/sites-enabled/no1kmedi.com* /etc/nginx/sites-enabled/ww
   log "Disabled legacy $legacy"
 done
 shopt -u nullglob
+if [[ -e /etc/nginx/sites-enabled/mkmlab-company-website ]]; then
+  mv /etc/nginx/sites-enabled/mkmlab-company-website /etc/nginx/sites-enabled/mkmlab-company-website.legacy-disabled 2>/dev/null || true
+  log "Disabled mkmlab-company-website (apex conflict with portal)"
+fi
 PORTAL_SSL_DIR="/etc/letsencrypt/live/no1kmedi.com"
 if [[ ! -f "${PORTAL_SSL_DIR}/fullchain.pem" ]] && [[ -f /etc/letsencrypt/live/www.no1kmedi.com/fullchain.pem ]]; then
   PORTAL_SSL_DIR="/etc/letsencrypt/live/www.no1kmedi.com"

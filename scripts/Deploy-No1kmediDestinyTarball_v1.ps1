@@ -102,6 +102,7 @@ if (-not $SkipMonorepoPathsFromLocal) {
         "docs/final/schemas/patient_care_bundle_v1.schema.json",
         "docs/final/artifacts/patient_care_bundle_slot_templates_ko_v1.json",
         "docs/final/artifacts/patient_care_bundle_generation_policy_v1.default.json",
+        "docs/final/artifacts/clinic_constitution_survey_item_bank_v1.json",
         "tests/fixtures/patient_care_bundle_soap_stub_v1.example.json"
     )
     Write-Host "[no1kmedi-tarball] scp monorepo CDS/bundle paths from local" -ForegroundColor Cyan

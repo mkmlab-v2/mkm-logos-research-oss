@@ -77,6 +77,7 @@
 | **CF Zone** | `1516522160411707c33f84e145416a53` · **active** |
 | **한의사** | `clinic.no1kmedi.com` + apex → Next `:3010` · `middleware.ts` → `/clinician` |
 | **연구소** | `research.no1kmedi.com` → `/var/www/mkmlab` (구 `mkmlab.space` **301** 후 갱신 중단) |
+| **mkmlab.space 만료** | hPanel `hostinger_hpanel_domains_manifest_v1.json` **2026-06-20** — **자동 갱신 OFF**(지휘관·Hostinger) · 트래픽은 research만 유지 |
 | **인프라 유지** | `api.` · `eno.` · `saju-api.` · Email Routing — apex 포털과 **vhost 분리** |
 
 **로컬 번들:** `scripts/Invoke-No1kmediDomainParallelMigrate_v1.ps1` · CF DNS `ensure_no1kmedi_research_clinic_cloudflare_dns_v1.py` · VPS nginx `apply_*_no1kmedi_*_v1.sh` · mkmlab 퇴역 `apply_mkmlab_space_retire_301_v1.sh`.
