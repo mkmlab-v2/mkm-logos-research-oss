@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.myeongri_interpret_envelope_views_v1 import extract_compact_from_interpret_instruction  # noqa: E402
 from scripts.run_myeongri_harness_v2_engine_interpret_smoke_v1 import _try_parse_envelope  # noqa: E402
 
 
@@ -59,8 +60,22 @@ def main() -> int:
     for i in range(n):
         raw = str(preds[i].get("prediction_raw", ""))
         gold_out = json.loads(str(gold_rows[i].get("output", "{}")))
-        p0, n0 = _try_parse_envelope(raw, gold_out=gold_out, postprocess_v1=False)
-        p1, n1 = _try_parse_envelope(raw, gold_out=gold_out, postprocess_v1=True)
+        compact = extract_compact_from_interpret_instruction(str(gold_rows[i].get("instruction", "")))
+        gold_sha = str(gold_out.get("deterministic_input_sha256") or "")
+        p0, n0, _ = _try_parse_envelope(
+            raw,
+            gold_out=gold_out,
+            postprocess_v1=False,
+            compact=compact,
+            deterministic_input_sha256=gold_sha,
+        )
+        p1, n1, coerced = _try_parse_envelope(
+            raw,
+            gold_out=gold_out,
+            postprocess_v1=True,
+            compact=compact,
+            deterministic_input_sha256=gold_sha,
+        )
         ok0 = p0 is not None and n0 == "" and _canonical_envelope(p0) == _canonical_envelope(gold_out)
         ok1 = p1 is not None and n1 == "" and _canonical_envelope(p1) == _canonical_envelope(gold_out)
         if p1 is not None and n1 == "":

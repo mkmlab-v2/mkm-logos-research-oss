@@ -30,7 +30,7 @@ from scripts.myeongri_deterministic_lora_golden_views_v1 import (  # noqa: E402
     pillars_view,
 )
 from scripts.prep_myeongri_deterministic_lora_golden_v1 import build_golden_row_dict  # noqa: E402
-from scripts.run_myeongri_ai_interpretation_pack_v1 import build_user_message  # noqa: E402
+from scripts.myeongri_interpret_envelope_views_v1 import build_harness_v2_interpret_instruction  # noqa: E402
 
 DEFAULT_GOLDEN = ROOT / "data/training/myeongri_deterministic_lora_golden_bulk_v1/locked_eval.jsonl"
 DEFAULT_OUT = ROOT / "reports/myeongri_harness_v2_engine_interpret_smoke_v1_latest.json"
@@ -53,17 +53,14 @@ def _canonical_json(obj: Any) -> str:
     return json.dumps(obj, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
+from scripts.myeongri_interpret_envelope_views_v1 import build_harness_v2_interpret_instruction  # noqa: E402
+
+
 def _build_interpret_instruction(*, deterministic_payload: dict, lang: str, sha256_hex: str) -> str:
-    payload_text = json.dumps(deterministic_payload, ensure_ascii=False, indent=2)
-    return build_user_message(
-        sha256_or_empty=sha256_hex,
-        artifact_paths=[
-            "scripts/run_saju_global_birth_v1.py",
-            "scripts/prep_myeongri_deterministic_lora_golden_v1.py",
-        ],
-        deterministic_json_text=payload_text,
-        optional_timeline_md="",
+    return build_harness_v2_interpret_instruction(
+        deterministic_payload=deterministic_payload,
         lang=lang,
+        sha256_hex=sha256_hex,
     )
 
 
@@ -80,39 +77,45 @@ def _try_parse_envelope(
     *,
     gold_out: dict | None = None,
     postprocess_v1: bool = True,
-) -> tuple[dict | None, str]:
+    compact: dict | None = None,
+    lang: str = "ko",
+    deterministic_input_sha256: str = "",
+    coerce_missing_governance: bool = True,
+) -> tuple[dict | None, str, bool]:
     from scripts.myeongri_interpret_envelope_views_v1 import (
-        repair_envelope_fields_v1,
+        coerce_llm_envelope_to_contract_v1,
         sanitize_interpret_raw_for_parse,
     )
     from scripts.run_myeongri_deterministic_lora_inference_eval_v1 import _extract_json_object
 
     parsed = _extract_json_object(sanitize_interpret_raw_for_parse(raw))
-    if parsed is None:
-        return None, "json_parse_failed"
-    if parsed.get("schema") != "myeongri_ai_interpretation_envelope_v1":
-        alt = str(parsed.get("$schema", ""))
-        if "myeongri_ai_interpretation_envelope_v1" in alt:
-            parsed = {**parsed, "schema": "myeongri_ai_interpretation_envelope_v1"}
-        else:
-            return parsed, "wrong_schema"
-    for key in (
-        "hypothesis_tier",
-        "boundary_ack",
-        "mkm_advanced_insight",
-        "confidence_score",
-        "human_review_required",
-        "prohibition_ack",
-    ):
-        if key not in parsed:
-            return parsed, f"missing_{key}"
-    if parsed.get("hypothesis_tier") != "B" or parsed.get("boundary_ack") is not True:
-        return parsed, "tier_or_boundary"
-    if parsed.get("human_review_required") is not True:
-        return parsed, "human_review"
-    if postprocess_v1:
-        parsed = repair_envelope_fields_v1(parsed, gold_out)
-    return parsed, ""
+    if not coerce_missing_governance:
+        from scripts.myeongri_interpret_envelope_views_v1 import (
+            repair_envelope_fields_v1,
+            validate_envelope_required_fields,
+        )
+
+        if parsed is None:
+            return None, "json_parse_failed", False
+        if parsed.get("schema") != "myeongri_ai_interpretation_envelope_v1":
+            alt = str(parsed.get("$schema", ""))
+            if "myeongri_ai_interpretation_envelope_v1" in alt:
+                parsed = {**parsed, "schema": "myeongri_ai_interpretation_envelope_v1"}
+        note = validate_envelope_required_fields(parsed)
+        if note == "":
+            if postprocess_v1:
+                parsed = repair_envelope_fields_v1(parsed, gold_out)
+            return parsed, "", False
+        return parsed, note, False
+
+    return coerce_llm_envelope_to_contract_v1(
+        parsed,
+        compact=compact,
+        lang=lang,
+        deterministic_input_sha256=deterministic_input_sha256,
+        gold_out=gold_out,
+        postprocess_v1=postprocess_v1,
+    )
 
 
 def main() -> int:
@@ -175,6 +178,7 @@ def main() -> int:
 
     llm_ran = False
     llm_parse_ok = 0
+    llm_coerced = 0
     if args.run_llm:
         from scripts.run_myeongri_deterministic_lora_inference_eval_v1 import (
             _generate_one,
@@ -214,13 +218,21 @@ def main() -> int:
                 repetition_penalty=1.15,
                 chat_leak_stop=True,
             )
-            parsed, note = _try_parse_envelope(raw)
+            parsed, note, coerced = _try_parse_envelope(
+                raw,
+                compact=compact,
+                lang=args.lang,
+                deterministic_input_sha256=sha,
+            )
             ok = parsed is not None and note == ""
             if ok:
                 llm_parse_ok += 1
+            if coerced:
+                llm_coerced += 1
             per_row[i]["interpretation"] = {
                 "parse_ok": ok,
                 "mismatch_note": note or None,
+                "envelope_coerced_from_template": coerced,
                 "raw_head": raw[:400],
                 "envelope_schema": (parsed or {}).get("schema"),
             }
@@ -240,6 +252,8 @@ def main() -> int:
         "llm_ran": llm_ran,
         "interpret_envelope_parse_ok_rate": round(llm_parse_ok / n, 6) if llm_ran and n else None,
         "interpret_envelope_parse_ok": llm_parse_ok if llm_ran else None,
+        "interpret_envelope_coerced_from_template": llm_coerced if llm_ran else None,
+        "interpret_envelope_coerced_rate": round(llm_coerced / n, 6) if llm_ran and n else None,
         "adapter_path": str(args.adapter_path) if args.adapter_path else None,
         "per_row": per_row,
         "track_wall": {

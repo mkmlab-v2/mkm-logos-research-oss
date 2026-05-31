@@ -37,6 +37,28 @@ def test_repair_envelope_insight_match_copies_sha() -> None:
     assert fixed["deterministic_input_sha256"] == gold_sha
 
 
+def test_merge_llm_envelope_nested_interpretation() -> None:
+    from scripts.myeongri_interpret_envelope_views_v1 import merge_llm_envelope_with_template_v1
+
+    compact = {
+        "full_saju": {"saju": {"year": "甲子", "month": "乙丑", "day": "丙寅", "hour": "丁卯"}, "ilgan": "丙"},
+        "resolution": {"birth_instant_utc": "1992-03-12T17:00:00Z", "iana_tz": "Asia/Seoul"},
+    }
+    sha = "abc123" * 10 + "abcd"
+    parsed = {
+        "$schema": "myeongri_ai_interpretation_envelope_v1",
+        "interpretation": {"summary": "Engine pillars suggest balanced wood-metal tension in B-track reading."},
+    }
+    env, note, used = merge_llm_envelope_with_template_v1(
+        parsed, compact=compact, lang="ko", deterministic_input_sha256=sha
+    )
+    assert note == ""
+    assert used is True
+    assert env["hypothesis_tier"] == "B"
+    assert env["mkm_advanced_insight"].startswith("[HYPO]")
+    assert env["deterministic_input_sha256"] == sha
+
+
 def test_try_parse_envelope_postprocess_row22_pattern() -> None:
     gold_sha = "acae3a38317b1d21208fa764e10f3f0cc8854f3ba981605f89e6030690e76484"
     insight = "[HYPO] 결정론 엔진 기준 사주"
@@ -59,9 +81,45 @@ def test_try_parse_envelope_postprocess_row22_pattern() -> None:
         },
         ensure_ascii=False,
     ) + "Human: x"
-    p0, n0 = _try_parse_envelope(raw, gold_out=gold, postprocess_v1=False)
-    p1, n1 = _try_parse_envelope(raw, gold_out=gold, postprocess_v1=True)
+    p0, n0, _ = _try_parse_envelope(raw, gold_out=gold, postprocess_v1=False)
+    p1, n1, _ = _try_parse_envelope(raw, gold_out=gold, postprocess_v1=True)
     assert p0 is not None and n0 == ""
     assert p1 is not None and n1 == ""
     assert p0["deterministic_input_sha256"] != gold_sha
     assert p1["deterministic_input_sha256"] == gold_sha
+
+
+def test_validate_envelope_missing_governance() -> None:
+    from scripts.myeongri_interpret_envelope_views_v1 import validate_envelope_required_fields
+
+    assert validate_envelope_required_fields({"schema": "myeongri_ai_interpretation_envelope_v1"}) == "missing_hypothesis_tier"
+
+
+def test_try_parse_envelope_lora_payload_echo_without_compact() -> None:
+    """LoRA post-train pattern: flat schema + nested engine payload, no governance keys."""
+    raw = json.dumps(
+        {
+            "schema": "myeongri_ai_interpretation_envelope_v1",
+            "version": "1.0.0",
+            "payload": {
+                "schema": "saju_global_birth_result_v1",
+                "version": "1.0.0",
+                "resolution": {
+                    "birth_instant_utc": "1971-05-20T08:13:00Z",
+                    "iana_tz": "Asia/Seoul",
+                },
+                "full_saju": {
+                    "saju": {"year": "辛亥", "month": "癸巳", "day": "乙巳", "hour": "乙酉"},
+                    "ilgan": "乙",
+                },
+            },
+        },
+        ensure_ascii=False,
+    )
+    parsed, note, coerced = _try_parse_envelope(raw)
+    assert parsed is not None
+    assert note == ""
+    assert coerced is True
+    assert parsed["hypothesis_tier"] == "B"
+    assert parsed["boundary_ack"] is True
+    assert parsed["mkm_advanced_insight"].startswith("[HYPO]")
