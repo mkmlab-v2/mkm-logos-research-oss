@@ -113,7 +113,15 @@ LoRA training/eval: separate chat + `storage/adapters/myeongri_interpret_lora_v0
 - **Adapter:** `storage/adapters/myeongri_interpret_lora_v0/run_interpret_v3_harness_s100` (100 train steps)
 - **SFT:** `data/training/myeongri_interpret_sft_v3/{train,locked_eval}.jsonl`
 - **Pipeline SSOT:** `reports/myeongri_interpret_harness_v3_pipeline_status_latest.json` (`locked100_eval.status: completed`)
-- **Human review queue:** `reports/myeongri_interpret_v3_human_review_sample_latest.json` (10 rows · `reviewer_verdict` null · check narrative diversity)
+- **Human review queue:** `reports/myeongri_interpret_v3_human_review_sample_latest.json` — auto triage via `apply_myeongri_interpret_v3_human_review_auto_v1.py` (`pass`/`needs_edit`/`fail`; not Track A)
+- **Narrative diversity audit:** `reports/myeongri_interpret_narrative_diversity_audit_latest.json` — check `template_skeleton_unique_count` (not full-string unique alone)
+
+```powershell
+py scripts/audit_myeongri_interpret_narrative_diversity_v1.py `
+  --eval-json reports/myeongri_interpret_lora_v3_eval_locked100_latest.json `
+  --predictions-jsonl reports/myeongri_interpret_lora_v3_preds_locked100_latest.json
+py scripts/apply_myeongri_interpret_v3_human_review_auto_v1.py
+```
 
 **Meaning of metrics:**
 
