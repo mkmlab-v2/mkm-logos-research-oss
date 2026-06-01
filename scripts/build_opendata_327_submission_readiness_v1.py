@@ -98,10 +98,17 @@ def build() -> dict[str, Any]:
         and merge.get("under_30mb", False)
         and bcd_merged.get("exists", False)
     )
-    human_items = list(gates.get("next_human") or [])
-    for g in checklist.get("pre_submit_gates") or []:
-        if g.get("done") is None and g.get("owner") == "human":
-            human_items.append(f"{g.get('id')}: {g.get('check')}")
+    gate_ids = [
+        g.get("id")
+        for g in (checklist.get("pre_submit_gates") or [])
+        if g.get("done") is None and g.get("owner") == "human" and g.get("id")
+    ]
+    compressed_gates = "/".join(gate_ids) if gate_ids else "human gates"
+    human_items = [
+        "표지 A(공식 양식) 맨 앞 수동 삽입 후 최종 업로드 PDF 확인",
+        "§2-2 수치 내부 벤치 1회 재확인",
+        f"{compressed_gates} 최종 확인",
+    ]
 
     return {
         "schema": "opendata_327_submission_readiness_v1",
