@@ -1,0 +1,25 @@
+# MKM WSE-3 — 지휘관 채팅 복붙 패키지 v1 (Cursor IDE)
+# SSOT 규칙: .cursor/rules/mkm-wse3-commander-starters.mdc (alwaysApply: false)
+# Gemini Gem용 MKM_GEM_OPS_* 와 별개 제품.
+# 수치: resume 슬라이스 OFF ~143 tok / ON ~1.8k tok — 29x 등 벤더 배수 금지.
+
+=== ① 세션 재개 (Resume · WSE-3) ===
+
+【재개 · WSE-3】
+1) 로컬 실행: py scripts/build_mkm_chat_resume_pack_v1.py --lane [oracle|infra|ms]
+2) @docs/final/artifacts/mkm_chat_resume_pack_latest.md 를 읽고 레인 핫패스만 브리핑 대기.
+금지: MISSION_LOG 통째 복사 · gather_context 전채널(web/icd 등) 기본 ON.
+판정·GO/NO_GO는 이 턴에서 확정하지 말 것 — 스크립트·아티팩트만.
+
+=== ② 핀셋 저격 (Logos / Data) ===
+
+【저격 로드 · Logos】
+- 대상 포인터: [예: Jn.1.1 또는 scripts/실경로]
+- 가이드: anchor05 풀 스캔은 종료됨. load_verse_corpus_by_ids_v1.py 기반 selective load만.
+  [HYPO] 초안 해석만 — 본문 전체·31k 풀 주입 금지 · top-k/그래프 인덱스만.
+
+=== ③ 게이트 채점 (Sign-off · Fact-Lock) ===
+
+【게이트 판정 · Fact-Lock】
+- 검증 명령: [예: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1]
+- 가이드: LLM 임의 판정 금지. exit code 0 · pytest green · *_latest.json 필드만으로 GO/NO_GO 리포트.

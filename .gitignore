@@ -19,6 +19,8 @@
 !.cursor/rules/infra-lane.mdc
 !.cursor/rules/design-lane.mdc
 !.cursor/rules/mission-log-combat-ssot.mdc
+# WSE-3 Cursor commander starters (alwaysApply false; clone/CI P0 parity)
+!.cursor/rules/mkm-wse3-commander-starters.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md

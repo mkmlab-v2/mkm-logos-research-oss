@@ -68,6 +68,7 @@ catch {
 # 2026-05-20: Logos graph-wire RAG PoC + v6 PoC link spec + commercial readiness (DF-P0-02; LO-CG-01).
 # 2026-05-23: B-track evolution auto-apply allowlist + headline gates sweep + promote_op28 allowlist gate.
 # 2026-05-31: Ops memory index Phase 0 ([HYPO] anchor index + must_keep gate + hygiene chain).
+# 2026-06-01: WSE-3 Cursor commander starters (.mdc + artifact TXT) + resume pack builder.
 
 $ErrorActionPreference = "Stop"
 $required = @(
@@ -181,6 +182,9 @@ $required = @(
     "scripts\build_mkm_ops_memory_index_v1.py",
     "scripts\check_mkm_ops_memory_must_keep_gate_v1.py",
     "scripts\bench_mkm_ops_memory_index_token_savings_v1.py",
+    "scripts\build_mkm_chat_resume_pack_v1.py",
+    ".cursor\rules\mkm-wse3-commander-starters.mdc",
+    "docs\final\artifacts\MKM_WSE3_COMMANDER_CHAT_STARTERS_V1.txt",
     "scripts\Invoke-MkmOpsMemoryIndexRoutine_v1.ps1",
     "scripts\Invoke-MissionLogCentralHygiene_v1.ps1",
     "scripts\Register-MissionLogCentralHygieneWeeklyTask.ps1",
@@ -829,6 +833,10 @@ $required = @(
     "scripts\run_ambient_stream_ffmpeg_probe_v1.py",
     "scripts\run_ambient_stream_rtmp_smoke_v1.py",
     "scripts\run_ambient_stream_quality_audit_v1.py",
+    "scripts\zone_a_broadcast_design_dqa_v1.py",
+    "docs\final\artifacts\zone_a_broadcast_design_tokens_v1.json",
+    "docs\final\artifacts\schemas\zone_a_broadcast_design_tokens_v1.schema.json",
+    "tests\test_zone_a_broadcast_design_dqa_v1.py",
     "scripts\Register-RadioOp31cDailyTask.ps1",
     "scripts\Register-RadioOp31cFusionDailyTask.ps1",
     "scripts\Verify-RadioOp31cFusionScheduledTask_v1.ps1",
@@ -845,6 +853,9 @@ $required = @(
     "scripts\build_radio_youtube_channel_copy_v1.py",
     "docs\final\artifacts\schemas\radio_youtube_channel_copy_v1.schema.json",
     "tests\test_build_radio_youtube_channel_copy_v1.py",
+    "scripts\build_radio_op31c_guard_copy_v1.py",
+    "docs\final\artifacts\schemas\radio_op31c_guard_copy_v1.schema.json",
+    "tests\test_build_radio_op31c_guard_copy_v1.py",
     "tests\test_tkm_health_dialogue_guard_v1.py",
     "tests\test_manage_ambient_playlist_fifo_v1.py",
     "tests\test_build_radio_dialogue_script_health_shorts_v1.py",

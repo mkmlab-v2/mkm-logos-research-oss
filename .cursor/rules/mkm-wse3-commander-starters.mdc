@@ -1,0 +1,77 @@
+---
+title: MKM WSE-3 commander chat starters (컨텍스트 다이어트)
+alwaysApply: false
+description: >-
+  지휘관 채팅 재개·Logos selective load·게이트 판정 시 복붙 스타터.
+  【재개·WSE-3】【저격 로드·Logos】【게이트 판정·Fact-Lock】 트리거.
+  Gemini Gem(MKM_GEM_*)과 별개 — Cursor IDE 전용.
+---
+
+# MKM WSE-3 — 지휘관 채팅 스타터 (Cursor)
+
+**목적:** 턴당 **이삿짐式 컨텍스트**를 줄인다. 메모지 재개 → 핀셋 주소 → 스크립트 판정.  
+**SSOT 수치:** resume pack **슬라이스 OFF** ≈ **143 tok** / **슬라이스 ON** ≈ **1.8k tok** (`docs/final/MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md`). **29×·벤더 배수 주장 금지.**  
+**충돌 시:** 루트 `.cursorrules` · `central-agent-memory.mdc` · `mkm-automation-gate.mdc` · Fact-Lock `CONSTITUTION_*`가 우선.
+
+**제품 구분:** `docs/final/artifacts/MKM_GEM_OPS_COMMANDER_PROMPT_*.txt` = **Google Gemini Gem**용. 본 규칙 = **Cursor** 채팅·`@` 규칙.
+
+---
+
+## ALWAYS (트리거 시)
+
+지휘관 메시지에 **【재개 · WSE-3】**·**【저격 로드 · Logos】**·**【게이트 판정 · Fact-Lock】**·`WSE-3`·`resume pack`·`selective load`가 있거나 **`@.cursor/rules/mkm-wse3-commander-starters.mdc`** / **`@docs/final/artifacts/MKM_WSE3_COMMANDER_CHAT_STARTERS_V1.txt`** 를 붙였으면:
+
+1. 아래 **해당 블록** 의도에 맞게 동작한다(전문 복붙은 아티팩트 TXT 동일).
+2. **재개:** 저장소 루트에서 `py scripts/build_mkm_chat_resume_pack_v1.py --lane oracle|ms|infra` (**`--include-slice` 없음**) 실행 후 `docs/final/artifacts/mkm_chat_resume_pack_latest.md` Read → **레인 핫패스만** 브리핑. 동등: 「장기기억 맥락이어」·「미션로그 이어서」+ lane.
+3. **Logos:** `verse_id` 예 `Jn.1.1`, `Ps.89.28` — `scripts/load_verse_corpus_by_ids_v1.py` selective only. `comp_anchor05` **full scan은 1회성 종료** — 일상 핫패스 금지.
+4. **게이트:** 지휘관이 준 **실경로** 스크립트·pytest만 실행 → **exit code**·`*_latest.json` 필드로 보고. **GO/NO_GO·Track A·실매매**는 이 턴에서 LLM이 확정하지 않음.
+
+**MCP:** `gather_context` / Unified RAG **전채널 기본 ON**은 레거시 잔존. 지휘관이 HOLD하지 않았어도 **web·icd·metacognition·넓은 코드 rglob** 은 **명시 요청 전 OFF** — `mkm-browser-automation-v1.mdc`·`notebooklm-mcp-session-bridge.mdc`와 병행.
+
+---
+
+## NEVER
+
+- `MISSION_LOG.md` **통째** 붙여넣기·Read로 전량 스캔(재개 팩·lane으로 대체).
+- 31k 코퍼스·RAG **본문 전량**을 프롬프트에 풀기.
+- pytest·exit code 없이 **「통과」「GO」** 단정 · **29×·Cerebras 배수**를 레포 실측처럼 서술.
+- 본 규칙 전문을 **alwaysApply**로 승격 요청(컨텍스트 비대화 — `alwaysApply: false` 유지).
+
+---
+
+## 복붙 블록 (지휘관 · Cursor 채팅)
+
+### ① 세션 재개
+
+```text
+【재개 · WSE-3】
+1) 로컬 실행: py scripts/build_mkm_chat_resume_pack_v1.py --lane [oracle|infra|ms]
+2) @docs/final/artifacts/mkm_chat_resume_pack_latest.md 를 읽고 레인 핫패스만 브리핑 대기.
+금지: MISSION_LOG 통째 복사 · gather_context 전채널(web/icd 등) 기본 ON.
+판정·GO/NO_GO는 이 턴에서 확정하지 말 것 — 스크립트·아티팩트만.
+```
+
+### ② Logos / selective load
+
+```text
+【저격 로드 · Logos】
+- 대상 포인터: [예: Jn.1.1 또는 scripts/실경로]
+- 가이드: anchor05 풀 스캔은 종료됨. load_verse_corpus_by_ids_v1.py 기반 selective load만.
+  [HYPO] 초안 해석만 — 본문 전체·31k 풀 주입 금지 · top-k/그래프 인덱스만.
+```
+
+### ③ 게이트 판정
+
+```text
+【게이트 판정 · Fact-Lock】
+- 검증 명령: [예: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constitution_gate_paths.ps1]
+- 가이드: LLM 임의 판정 금지. exit code 0 · pytest green · *_latest.json 필드만으로 GO/NO_GO 리포트.
+```
+
+---
+
+## OPTIONAL
+
+- 토큰 벤치: `py scripts/bench_mkm_ops_memory_index_token_savings_v1.py`
+- 일상 패키지: `powershell -File scripts/Invoke-MkmCommandPackage_v1.ps1 -Package DailyOpsPatrol`
+- P0 빠른 점검: `scripts/verify_p0_constitution_gate_paths.ps1`
