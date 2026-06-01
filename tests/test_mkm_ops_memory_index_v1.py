@@ -14,6 +14,7 @@ from mkm_ops_memory_index_lib_v1 import (  # noqa: E402
     build_index_document,
     extract_anchor_block,
     missing_must_keep_tags,
+    nodes_for_resume,
     truncate_anchor_slice,
     verify_index_sources,
 )
@@ -55,7 +56,12 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
         "handoff tail\n\n"
         "**다음 1타 (레인 · 새 채팅):**\n\n"
         "| 레인 | 다음 1타 |\n"
-        "| Oracle | **금지:** Track A · **HOLD** |\n\n"
+        "| **Oracle** | **금지:** Track A·실매매 · **HOLD** |\n"
+        "| **CROSS_REF·DSS [HYPO]** | HOLD |\n"
+        "| **Infra/GPU** | **금지:** Track A·live·match% · **HOLD** |\n"
+        "| **Clinic·SDIT·Insight** | clinic |\n"
+        "| **MS** | **금지:** 에이전트 포털 · **MS** |\n"
+        "| **환자·최소영 (Track B)** | patient |\n\n"
         "### 🧠 메타인지\n\n"
         "meta tail\n",
         encoding="utf-8",
@@ -74,9 +80,44 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
 
     doc = build_index_document(tmp_path)
     assert doc["research_only"] is True
-    assert len(doc["nodes"]) == 3
+    assert len(doc["nodes"]) == 6
     errors = verify_index_sources(tmp_path, doc)
     assert errors == []
+
+
+def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
+    mission = tmp_path / "MISSION_LOG.md"
+    mission.write_text(
+        "# MISSION_LOG\n\n"
+        "## 🚀 전술 작전 보드\n\n"
+        "FAIL-COMP-004 · Track A · SEND_GATE: HOLD\n\n"
+        "### 📦 핸드오ff · 다른 채팅 융합\n\n"
+        "**다음 1타 (레인 · 새 채팅):**\n\n"
+        "| **Oracle** | **금지:** Track A·실매매 · **HOLD** |\n"
+        "| **CROSS_REF·DSS [HYPO]** | hold |\n"
+        "| **Infra/GPU** | **금지:** Track A·live · **HOLD** |\n"
+        "| **Clinic·SDIT·Insight** | c |\n"
+        "| **MS** | **금지:** 에이전트 · **MS** row |\n"
+        "| **환자·최소영 (Track B)** | p |\n\n"
+        "### 🧠 메타인지\n\n",
+        encoding="utf-8",
+    )
+    central_dir = tmp_path / "docs" / "final"
+    central_dir.mkdir(parents=True)
+    (central_dir / "CENTRAL_AGENT_MEMORY_V1.md").write_text(
+        "<!-- ATHENA_CHECKPOINT_V1_START -->\n"
+        "- hygiene MISSION_LOG MCP lean\n"
+        "<!-- ATHENA_CHECKPOINT_V1_END -->\n",
+        encoding="utf-8",
+    )
+    doc = build_index_document(tmp_path)
+    lane_ids = [nid for nid, _ in nodes_for_resume(doc, lane="oracle")]
+    assert lane_ids == [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_oracle",
+    ]
+    assert "prism_ops_mission_log_next_one" not in lane_ids
 
     out = tmp_path / "storage" / "meta" / "index.json"
     out.parent.mkdir(parents=True)

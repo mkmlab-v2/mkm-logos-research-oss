@@ -9,10 +9,16 @@ from typing import Any, Dict, List
 
 from mkm_ops_memory_index_lib_v1 import (
     DEFAULT_INDEX_PATH,
+    LANE_OPS_PACKS,
     extract_node_from_index,
-    top_nodes_by_priority,
+    nodes_for_resume,
     truncate_anchor_slice,
     utc_now_iso,
+)
+from mkm_sidecar_constitution_lib_v1 import (
+    CONSTITUTION_REL,
+    DEFAULT_SIDECAR_PATH,
+    constitution_pins_for_resume,
 )
 
 SCRIPT_ROOT = Path(__file__).resolve().parents[1]
@@ -40,6 +46,7 @@ def _load_ops_pins(
     root: Path,
     *,
     top_n: int,
+    lane: str | None,
     include_slice: bool,
     slice_max_chars: int,
 ) -> List[Dict[str, Any]]:
@@ -48,7 +55,7 @@ def _load_ops_pins(
         return []
     index = _read_json(index_path)
     pins: List[Dict[str, Any]] = []
-    for node_id, node in top_nodes_by_priority(index, top_n=top_n):
+    for node_id, node in nodes_for_resume(index, top_n=top_n, lane=lane):
         pin: Dict[str, Any] = {
             "node_id": node_id,
             "essence": node.get("essence"),
@@ -68,6 +75,16 @@ def _load_ops_pins(
     return pins
 
 
+def _load_constitution_pins(root: Path, *, top_n: int = 3) -> list[dict[str, Any]]:
+    sidecar_path = root / DEFAULT_SIDECAR_PATH.relative_to(SCRIPT_ROOT)
+    if not sidecar_path.is_file():
+        return []
+    sidecar = _read_json(sidecar_path)
+    if sidecar.get("schema") != "mkm_sidecar_constitution_paths_v1":
+        return []
+    return constitution_pins_for_resume(sidecar, top_n=top_n)
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--top-n", type=int, default=3)
@@ -81,6 +98,12 @@ def main() -> int:
         type=int,
         default=1200,
         help="Max chars per anchor slice preview (default 1200).",
+    )
+    ap.add_argument(
+        "--lane",
+        choices=sorted(LANE_OPS_PACKS.keys()),
+        default=None,
+        help="Oracle/MS/Infra lane pack: board+CENTRAL+one lane row (ignores --top-n for ops pins).",
     )
     args = ap.parse_args()
 
@@ -97,10 +120,17 @@ def main() -> int:
     ops_pins = _load_ops_pins(
         root,
         top_n=args.top_n,
+        lane=args.lane,
         include_slice=args.include_slice,
         slice_max_chars=args.slice_max_chars,
     )
+    constitution_pins = _load_constitution_pins(root, top_n=min(3, args.top_n))
     inject_text = _build_ops_inject_text(ops_pins)
+    if constitution_pins:
+        for pin in constitution_pins:
+            inject_text += "\n" + (pin.get("essence") or "")
+            for tag in pin.get("must_keep_tags") or []:
+                inject_text += "\n" + tag
 
     if ops_pins and inject_text:
         index_path = root / DEFAULT_INDEX_PATH.relative_to(SCRIPT_ROOT)
@@ -114,6 +144,8 @@ def main() -> int:
             "--payload-text",
             inject_text,
         ]
+        for pin in ops_pins:
+            gate_cmd.extend(["--node-id", pin["node_id"]])
         proc = subprocess.run(gate_cmd, capture_output=True, text=True, cwd=str(root))
         if proc.returncode != 0:
             print(proc.stdout, file=sys.stderr)
@@ -131,6 +163,7 @@ def main() -> int:
             "include_slice": args.include_slice,
             "slice_max_chars": args.slice_max_chars if args.include_slice else None,
             "top_n": args.top_n,
+            "lane": args.lane,
         },
         "quick_refs": {
             "central_memory": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
@@ -142,6 +175,11 @@ def main() -> int:
             "core_prompt_gemini_athena": "docs/final/artifacts/MKM_CORE_PROMPT_GEMINI_ATHENA_V1.md",
         },
         "ops_memory_pins": ops_pins,
+        "constitution_path_pins": constitution_pins,
+        "constitution_sidecar_path": str(
+            DEFAULT_SIDECAR_PATH.relative_to(SCRIPT_ROOT)
+        ).replace("\\", "/"),
+        "constitution_source_ssot": CONSTITUTION_REL,
         "latest_status": {
             "system_status": (dashboard.get("system") or {}).get("status"),
             "promotion_decision": (dashboard.get("system") or {}).get("promotion_decision"),
@@ -186,6 +224,18 @@ def main() -> int:
                 md_lines.append("```")
                 md_lines.append(pin["slice_preview"])
                 md_lines.append("```")
+        md_lines.append("")
+
+    if constitution_pins:
+        md_lines += ["## Constitution Path Pins ([HYPO] sidecar)", ""]
+        for pin in constitution_pins:
+            tags = ", ".join(f"`{t}`" for t in pin.get("must_keep_tags") or [])
+            paths = ", ".join(f"`{p}`" for p in pin.get("top_paths") or [])[:500]
+            md_lines.append(
+                f"- **{pin['segment_id']}** — {pin.get('essence')} · must_keep: {tags}"
+            )
+            if paths:
+                md_lines.append(f"  - paths: {paths}")
         md_lines.append("")
 
     md_lines += ["## Quick Refs"]

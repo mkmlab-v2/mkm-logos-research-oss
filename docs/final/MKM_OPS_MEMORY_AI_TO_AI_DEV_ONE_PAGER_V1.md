@@ -33,15 +33,25 @@ Chat inject payload
 
 ---
 
-## NODE_SPECS (v1 · 3 nodes)
+## NODE_SPECS (v1 · 6 nodes)
 
 | node_id | Anchor (start → end) | must_keep_tags | priority |
 |---------|----------------------|----------------|----------|
 | `prism_ops_mission_log_board` | `## 🚀 전술 작전 보드` → `### 📦 핸드오프` | `FAIL-COMP-004`, `Track A`, `SEND_GATE: HOLD` | 10 |
 | `prism_ops_central_checkpoint` | `<!-- ATHENA_CHECKPOINT_V1_START/END -->` | `hygiene`, `MISSION_LOG`, `MCP lean` | 9 |
 | `prism_ops_mission_log_next_one` | `**다음 1타 (레인 · 새 채팅):**` → `### 🧠 메타인지` | `Track A`, `HOLD`, `금지` | 8 |
+| `prism_ops_lane_oracle` | `\| **Oracle** \|` → `\| **CROSS_REF·DSS [HYPO]** \|` | `Track A`, `실매매`, `금지` | 7 |
+| `prism_ops_lane_infra` | `\| **Infra/GPU** \|` → `\| **Clinic·SDIT·Insight** \|` | `Track A`, `live`, `금지` | 7 |
+| `prism_ops_lane_ms` | `\| **MS** \|` → `\| **환자·최소영 (Track B)** \|` | `MS`, `금지`, `에이전트` | 7 |
 
-Library: `scripts/mkm_ops_memory_index_lib_v1.py` · `NODE_SPECS`.
+**레인 inject (병렬 채팅):** `--lane oracle|ms|infra` → board + CENTRAL + **해당 레인 1행만** (전 `다음 1타` 표 미주입).
+
+```powershell
+py scripts/build_mkm_chat_resume_pack_v1.py --lane oracle
+powershell -File scripts\Invoke-MkmOpsMemoryIndexRoutine_v1.ps1 -Lane oracle
+```
+
+Library: `scripts/mkm_ops_memory_index_lib_v1.py` · `NODE_SPECS` · `LANE_OPS_PACKS`.
 
 ---
 
@@ -178,6 +188,56 @@ py scripts/run_myeongri_interpret_lora_inference_eval_v1.py `
 4. Re-run token bench; do **not** claim savings vs unmeasured baselines.
 
 Prism registry pointers: `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` (`prism_ops_memory_index_v1`).
+
+---
+
+## Ops Memory 본선 운영 확장 체크리스트 v1 (2026-06-01)
+
+**목적:** AI-to-AI **와이어 버스 승격 없이**, Ops Memory만 **운영 SSOT 재개 규약**으로 안전 확장.  
+**Track:** 운영 보조 · `[HYPO]` 유지 · **not** Track A ACTIVE · **not** live trading · **not** inter-agent wire promotion.
+
+### 범위 고정
+
+| IN (허용) | OUT (금지) |
+|-----------|------------|
+| `NODE_SPECS` 추가·anchor/tags 정합 | index JSON을 human SSOT로 승격 |
+| source/inject `must_keep` 게이트 | inter-agent wire·V2 stub 본선 합선 |
+| resume pack → Daily/Weekly patrol | 97.52%를 전체 컨텍스트·상용 SLA 주장 |
+| 레인별 pin 분리(MS/Oracle/Infra) | Track A ACTIVE·실매매 컨텍스트 자동 주입 |
+| 토큰 벤치 **3-node scope** 재측정 | must_keep = semantic QA로 과신 |
+
+### 정밀 타격 표 (repo root · Windows)
+
+| # | 단계 | 명령 | Pass | 실패 시 |
+|---|------|------|------|---------|
+| 1 | P0 경로 | `powershell -File scripts\verify_p0_constitution_gate_paths.ps1` | exit **0** | ops memory 경로 누락 — SSOT·스크립트 복구 |
+| 2 | 인덱스 빌드 | `py scripts/build_mkm_ops_memory_index_v1.py` | exit **0** + `WROTE: storage/meta/mkm_ops_memory_index_v1.json` | anchor drift — `MISSION_LOG`/`CENTRAL` 앵커·태그 수정 |
+| 3 | source 게이트 | `py scripts/check_mkm_ops_memory_must_keep_gate_v1.py --phase source` | exit **0** | slice에 `must_keep_tags` 없음 — SSOT 본문 또는 `NODE_SPECS` 수정 |
+| 4 | resume pack | `py scripts/build_mkm_chat_resume_pack_v1.py` | exit **0** + `mkm_chat_resume_pack_latest.json` | inject 조립 실패 |
+| 5 | inject 게이트 | (resume pack 빌더 내부) `phase=inject` | stdout `inject gate: OK` | pin 텍스트에 태그 누락 |
+| 6 | 원클릭 루틴 | `powershell -File scripts\Invoke-MkmOpsMemoryIndexRoutine_v1.ps1` | exit **0** | 2–5 중 어디선가 실패 |
+| 7 | pytest 회귀 | `py -m pytest tests/test_mkm_ops_memory_index_v1.py tests/test_bench_mkm_ops_memory_index_token_savings_v1.py -q` | **6 passed** | `mkm_ops_memory_index_lib_v1.py` 회귀 |
+| 8 | 토큰 벤치 | `py scripts/bench_mkm_ops_memory_index_token_savings_v1.py` | exit **0** → `reports/mkm_ops_memory_index_token_bench_v1_latest.json` | 범위·node_count 확인 후만 % 인용 |
+| 9 | 일상 patrol | `powershell -File scripts\Invoke-MkmCommandPackage_v1.ps1 -Package DailyOpsPatrol` | exit **0** · paste `OpsMem` | manifest `ops_memory_index_daily` 단계 확인 |
+| 10 | Athena ops | `powershell -File scripts\Invoke-MkmCommandPackage_v1.ps1 -Package AthenaOpsMemory` | exit **0** | index+resume만 — Fact-Lock 번들 아님 |
+| 11 | 주간 hygiene | `powershell -File scripts\Invoke-MissionLogCentralHygiene_v1.ps1` | exit **0** · `overall_ok=true` | index rebuild 실패 — anchor/tags |
+| 12 | NODE 추가 | `NODE_SPECS` 편집 → 2–7 재실행 | source+inject **0** | 태그를 slice에 **먼저** 넣고 spec 추가 |
+| 13 | slice preview | `Invoke-MkmOpsMemoryIndexRoutine_v1.ps1 -IncludeSlice` | exit **0** · inject ON 토큰 상한 확인 | 기본 ops는 **OFF**(143 tok) 유지 |
+| 14 | 승격 판정 | — | **`would_change_active: false`** · human SSOT=MD | ACTIVE·live·A2A wire **HOLD** |
+| 15 | Quiet 후 복구 | `Set-SchedulerQuietProfile.ps1 -Mode Quiet` 실행 후 | `Invoke-AthenaAutomationRegistryCheck` **drift 0** | **Register 5종:** `Register-TradingAutomationHealthTask.ps1 -Force` · `Register-CoreTaskConsecutiveFailureAlertTask.ps1 -Force` · `Register-SentinelTaskHealthMonitorTask.ps1 -Force` · `Register-AmsaengEosaMonitoringBundleTask.ps1` · `Register-LiveSyncHeartbeatPullTask.ps1 -SoftFail` · 백업: `reports/scheduler_quiet_mode_disable_backup_latest.json` |
+| 16 | Op30 07:50 실패 | `reports/op30_scheduled_failure_triage_20260601_v1.json` | probe OK·**LastResult=1** → post-probe/rollup 의심 · **복구:** `schtasks /Run /TN MKM_Op30_MagicOrb_Envelope_Daily` | 내일 **07:50** `LastResult=0` 관측 |
+
+### NODE 추가 절차 (레인 확장 시)
+
+1. `MISSION_LOG` 또는 `CENTRAL`에 **must_keep_tags가 slice 안에 실제로 존재**하는 앵커 확정.
+2. `scripts/mkm_ops_memory_index_lib_v1.py` → `NODE_SPECS`에 `NodeSpec` 추가 (`priority`·`essence`·`node_id` 고유).
+3. 표 #2–#7 실행.
+4. (선택) `build_mkm_chat_resume_pack_v1.py --top-n N` — default **3**; 레인 pin 늘리면 토큰 재벤치(#8).
+5. **병렬 채팅:** MS/Oracle/Infra **별 node_id** — 한 inject에 전 레인 합치지 않음 (`mission-log-combat-ssot`).
+
+### 본선 “GO” 한 줄 (Ops Memory만)
+
+> `verify_p0` **0** + routine(#6) **0** + pytest(#7) **0** + resume pack pins에 `FAIL-COMP-004`·`Track A`·`HOLD`/`금지` 유지 + **Track A ACTIVE·live·A2A wire 변경 없음**.
 
 ---
 

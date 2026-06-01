@@ -25,7 +25,9 @@ param(
     [switch]$SkipBench,
     [switch]$DryRunIndex,
     [switch]$IncludeSlice,
-    [int]$SliceMaxChars = 1200
+    [int]$SliceMaxChars = 1200,
+    [ValidateSet("oracle", "ms", "infra")]
+    [string]$Lane = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -42,6 +44,10 @@ function Invoke-Step {
     }
 }
 
+Invoke-Step -Name "build_constitution_sidecar" -Command @(
+    "py", "scripts/build_mkm_sidecar_constitution_paths_v1.py", "--skip-if-unchanged"
+)
+
 $indexArgs = @("py", "scripts/build_mkm_ops_memory_index_v1.py")
 if ($DryRunIndex) { $indexArgs += "--dry-run" }
 Invoke-Step -Name "build_ops_memory_index" -Command $indexArgs
@@ -51,6 +57,9 @@ if (-not $DryRunIndex) {
         "py", "scripts/check_mkm_ops_memory_must_keep_gate_v1.py", "--phase", "source"
     )
     $resumeArgs = @("py", "scripts/build_mkm_chat_resume_pack_v1.py")
+    if ($Lane) {
+        $resumeArgs += @("--lane", $Lane)
+    }
     if ($IncludeSlice) {
         $resumeArgs += @("--include-slice", "--slice-max-chars", "$SliceMaxChars")
     }

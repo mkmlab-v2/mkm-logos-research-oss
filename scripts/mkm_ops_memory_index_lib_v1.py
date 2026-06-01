@@ -59,7 +59,52 @@ NODE_SPECS: tuple[NodeSpec, ...] = (
         must_keep_tags=("Track A", "HOLD", "금지"),
         priority=8,
     ),
+    NodeSpec(
+        node_id="prism_ops_lane_oracle",
+        file_path="MISSION_LOG.md",
+        anchor_start="| **Oracle** |",
+        anchor_end="| **CROSS_REF·DSS [HYPO]** |",
+        essence="Oracle 레인 다음 1타 — 예언·진화·Inception 관측 · Track A·실매매 금지",
+        must_keep_tags=("Track A", "실매매", "금지"),
+        priority=7,
+    ),
+    NodeSpec(
+        node_id="prism_ops_lane_infra",
+        file_path="MISSION_LOG.md",
+        anchor_start="| **Infra/GPU** |",
+        anchor_end="| **Clinic·SDIT·Insight** |",
+        essence="Infra/GPU 레인 — Interpret·DailyOpsPatrol · Track A·live·match% 헤드라인 금지",
+        must_keep_tags=("Track A", "live", "금지"),
+        priority=7,
+    ),
+    NodeSpec(
+        node_id="prism_ops_lane_ms",
+        file_path="MISSION_LOG.md",
+        anchor_start="| **MS** |",
+        anchor_end="| **환자·최소영 (Track B)** |",
+        essence="MS 레인 — 지휘관 수동 제출만 · 에이전트 포털·% 헤드라인 금지",
+        must_keep_tags=("MS", "금지", "에이전트"),
+        priority=7,
+    ),
 )
+
+LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
+    "oracle": (
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_oracle",
+    ),
+    "ms": (
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_ms",
+    ),
+    "infra": (
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_infra",
+    ),
+}
 
 
 def utc_now_iso() -> str:
@@ -216,6 +261,29 @@ def top_nodes_by_priority(
         key=lambda item: (-int(item[1].get("priority", 0)), item[0]),
     )
     return ranked[:top_n]
+
+
+def nodes_for_resume(
+    index: dict[str, Any],
+    *,
+    top_n: int = 3,
+    lane: str | None = None,
+) -> list[tuple[str, dict[str, Any]]]:
+    """Default: top-N by priority. Lane pack: board + CENTRAL + one lane row (no full next-one table)."""
+    nodes = index.get("nodes") or {}
+    if lane:
+        lane_key = lane.strip().lower()
+        if lane_key not in LANE_OPS_PACKS:
+            raise ValueError(
+                f"unknown lane {lane!r}; expected one of {sorted(LANE_OPS_PACKS)}"
+            )
+        selected: list[tuple[str, dict[str, Any]]] = []
+        for node_id in LANE_OPS_PACKS[lane_key]:
+            if node_id not in nodes:
+                raise KeyError(f"lane pack missing node: {node_id}")
+            selected.append((node_id, nodes[node_id]))
+        return selected
+    return top_nodes_by_priority(index, top_n=top_n)
 
 
 def truncate_anchor_slice(text: str, *, max_chars: int) -> tuple[str, bool]:
