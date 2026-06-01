@@ -1,0 +1,122 @@
+{
+  "schema": "opendata_327_kstartup_submission_checklist_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-05-16T16:00:00Z",
+  "status": "INTERNAL_CHECKLIST",
+  "announcement": "중소벤처기업부 제2026-327호 AI+ OpenData 챌린지",
+  "legal_entity": {
+    "name": "주식회사 목소리네트워크",
+    "brn": "628-86-01742",
+    "ceo": "이기륜",
+    "address": "경기도 광명시 광명로 880",
+    "entity_type": "1인 기업"
+  },
+  "task": "과제① 정책자금 융자 신청서 자동 생성 (중진공, 계약 연계형)",
+  "deadline": {
+    "kst": "2026-06-05T18:00:00+09:00",
+    "label": "접수 마감 (공고 기준 — 제출 직전 공고문 재확인)"
+  },
+  "parallel_channels_required": [
+    {
+      "id": "CH-KSTARTUP",
+      "name": "K-Startup 온라인 접수",
+      "owner": "human",
+      "done": null,
+      "notes": "계정·사업계획서 PDF·증빙 업로드"
+    },
+    {
+      "id": "CH-NARA",
+      "name": "나라장터 입찰 (계약 연계형)",
+      "owner": "human",
+      "done": null,
+      "notes": "공고문 입찰 절차·가격평가 요건 병행 필수"
+    }
+  ],
+  "document_bundle": [
+    {
+      "id": "DOC-PLAN",
+      "item": "사업계획서 (과제① 본문)",
+      "ssot": "docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_overview_v1.md",
+      "done": null
+    },
+    {
+      "id": "DOC-ANNEX",
+      "item": "통제·보안 부록 (복붙)",
+      "ssot": "docs/final/B2G_CONTROL_INTEGRITY_PROPOSAL_ANNEX_V1.md",
+      "done": null
+    },
+    {
+      "id": "DOC-MARKET",
+      "item": "시장성 압축본 (선택 첨부)",
+      "ssot": "docs/final/artifacts/ai_opendata_challenge_2026_327_market_expansion_summary_v1.md",
+      "done": null
+    },
+    {
+      "id": "DOC-BRN",
+      "item": "사업자등록증 PDF (KSIC 58221 정정 후 재발급)",
+      "ssot": "docs/final/artifacts/business_registration_plan_v1.md",
+      "done": null
+    },
+    {
+      "id": "DOC-TECH",
+      "item": "기술공시 1p (출원 전 — B2G_TECH_DISCLOSURE)",
+      "ssot": "docs/final/B2G_TECH_DISCLOSURE_ONEPAGER_PREP_V1.md",
+      "done": null
+    }
+  ],
+  "pre_submit_gates": [
+    {
+      "id": "G1",
+      "check": "과제① 본문에 LG/압축 47%/OEM 로열티 미혼입",
+      "ssot": "opendata_327_parallel_lane_checklist_v1_latest.json OD1",
+      "done": true
+    },
+    {
+      "id": "G2",
+      "check": "미구현 기능을 완료로 서술하지 않음",
+      "ssot": "opendata_327_parallel_lane_checklist_v1_latest.json OD4",
+      "done": true
+    },
+    {
+      "id": "G3",
+      "check": "출원번호·특허는 실제 접수 후만 기재",
+      "owner": "human",
+      "done": null
+    },
+    {
+      "id": "G4",
+      "check": "타 채널(B2B·압축 OEM) 덱·enterprise summary 미첨부 — LG 영업 채널 종료·신규 LG 작업 아님",
+      "owner": "human",
+      "done": null,
+      "auto_if": "reports/opendata_327_pre_export_gates_latest.json gates.G4.ok"
+    },
+    {
+      "id": "G5",
+      "check": "공고 파란 안내 문구 삭제·검정 정리",
+      "owner": "human",
+      "done": null
+    }
+  ],
+  "calendar_milestones_kst": [
+    {"date": "2026-05-16", "action": "본 체크리스트 + parallel lane OD1/OD4 완료"},
+    {"date": "2026-05-25", "action": "사업계획서 PDF 초안 + Annex 병합 검토"},
+    {"date": "2026-06-01", "action": "K-Startup 업로드 dry-run"},
+    {"date": "2026-06-04", "action": "나라장터 입찰 제출 + 최종 PDF"},
+    {"date": "2026-06-05", "action": "마감 18:00 — 버퍼 4h"}
+  ],
+  "forbidden_in_submission": [
+    "MKM compression 47% as 과제① core innovation claim",
+    "Safety PLC certified",
+    "trading or live execution",
+    "hallucination-free guarantee",
+    "unregistered patent numbers"
+  ],
+  "parent_checklist": "docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json",
+  "pdf_merge_guide": "docs/final/artifacts/opendata_327_submission_pdf_merge_guide_v1_latest.md",
+  "submission_md": {
+    "part_b": "docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_submission_v1.md",
+    "part_c": "docs/final/artifacts/ai_opendata_challenge_2026_327_market_expansion_submission_v1.md",
+    "pre_export_gates": "reports/opendata_327_pre_export_gates_latest.json",
+    "step_1_strip": "completed_2026-05-16"
+  }
+}

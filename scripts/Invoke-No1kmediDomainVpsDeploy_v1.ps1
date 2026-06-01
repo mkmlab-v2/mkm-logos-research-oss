@@ -34,11 +34,11 @@ $steps = [System.Collections.Generic.List[object]]::new()
 function Add-Step($n, $ec, $note) { $steps.Add([ordered]@{ step = $n; exit_code = $ec; note = $note }) | Out-Null }
 
 if (-not $SkipCloudflare) {
-    $cfArgs = @()
-    if ($DryRun) { $cfArgs += "--dry-run" }
-    & py (Join-Path $root "scripts\ensure_no1kmedi_research_clinic_cloudflare_dns_v1.py") @cfArgs
-    Add-Step "cloudflare_dns" $LASTEXITCODE $(if ($DryRun) { "dry-run" } else { "applied" })
-    if (-not $DryRun) { Start-Sleep -Seconds 8 }
+    $cfArgs = @("-SkipBrowser")
+    if ($DryRun) { $cfArgs += "-DryRun" }
+    & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\Invoke-No1kmediCloudflareDnsEnsure_v1.ps1") @cfArgs
+    Add-Step "cloudflare_dns" $LASTEXITCODE $(if ($LASTEXITCODE -eq 0) { "ok_or_public_live" } else { "check_chain" })
+    if (-not $DryRun -and $LASTEXITCODE -eq 0) { Start-Sleep -Seconds 3 }
 }
 
 if (-not $SkipMkmlabSync) {

@@ -20,8 +20,15 @@ CHECKLIST = ROOT / "docs/final/artifacts/opendata_327_kstartup_submission_checkl
 PARALLEL = ROOT / "docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json"
 MERGE_GUIDE = ROOT / "docs/final/artifacts/opendata_327_submission_pdf_merge_guide_v1_latest.md"
 DEFAULT_OUT = ROOT / "reports/opendata_327_submission_readiness_latest.json"
+LG_FOLLOWUP = ROOT / "docs/final/artifacts/lg_hs_meeting_followup_v1.json"
 
 DEADLINE_KST = datetime(2026, 6, 5, 18, 0, 0)  # noqa: DTZ001 — label anchor only
+
+_GATE_HUMAN_LABELS: dict[str, str] = {
+    "G3": "특허·출원번호(실제 접수 후만 기재)",
+    "G4": "타 채널 압축·B2B 덱 미첨부 확인(본문 grep)",
+    "G5": "공고 파란 안내 문구 검정 정리",
+}
 
 
 def _utc_now() -> str:
@@ -32,6 +39,15 @@ def _load(path: Path) -> dict[str, Any] | None:
     if not path.is_file():
         return None
     return json.loads(path.read_text(encoding="utf-8-sig"))
+
+
+def _lg_sales_channel_closed() -> bool:
+    doc = _load(LG_FOLLOWUP) or {}
+    st = doc.get("operator_channel_status") or {}
+    if st.get("status") == "CLOSED_REJECT":
+        return True
+    oc = str(st.get("outcome_class") or "")
+    return oc in {"reject", "hold", "closed"}
 
 
 def _file_meta(rel: str | None) -> dict[str, Any]:
@@ -98,17 +114,24 @@ def build() -> dict[str, Any]:
         and merge.get("under_30mb", False)
         and bcd_merged.get("exists", False)
     )
-    gate_ids = [
-        g.get("id")
-        for g in (checklist.get("pre_submit_gates") or [])
-        if g.get("done") is None and g.get("owner") == "human" and g.get("id")
-    ]
-    compressed_gates = "/".join(gate_ids) if gate_ids else "human gates"
+    g4_grep_ok = any(
+        g.get("id") == "G4" and g.get("ok") for g in (gates.get("gates") or [])
+    )
+    lg_closed = _lg_sales_channel_closed()
+    pending_human_gates: list[str] = []
+    for g in checklist.get("pre_submit_gates") or []:
+        gid = str(g.get("id") or "")
+        if g.get("done") is True or g.get("owner") != "human":
+            continue
+        if gid == "G4" and g4_grep_ok:
+            continue
+        label = _GATE_HUMAN_LABELS.get(gid, gid)
+        pending_human_gates.append(label)
     human_items = [
         "표지 A(공식 양식) 맨 앞 수동 삽입 후 최종 업로드 PDF 확인",
         "§2-2 수치 내부 벤치 1회 재확인",
-        f"{compressed_gates} 최종 확인",
     ]
+    human_items.extend(f"{label} (지휘관 1회)" for label in pending_human_gates)
 
     return {
         "schema": "opendata_327_submission_readiness_v1",
@@ -118,13 +141,11 @@ def build() -> dict[str, Any]:
         "technical_ready_for_pdf_bundle": technical_ready,
         "ready_for_kstartup_upload": False,
         "ready_for_kstartup_upload_blockers": (
-            ["G3/G4/G5 human gates in kstartup checklist"]
-            if has_cover
-            else [
-                "표지(A) 수동 병합 미완료",
-                "G3/G4/G5 human gates in kstartup checklist",
-            ]
+            (["표지(A) 수동 병합 미완료"] if not has_cover else [])
+            + [f"human: {x}" for x in pending_human_gates]
         ),
+        "lg_sales_channel_closed": lg_closed,
+        "g4_text_grep_passed": g4_grep_ok,
         "cover_a_merged": has_cover,
         "pre_export_gates": {
             "all_ok": gates_ok,

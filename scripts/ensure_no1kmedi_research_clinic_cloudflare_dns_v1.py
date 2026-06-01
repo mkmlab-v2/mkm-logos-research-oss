@@ -10,25 +10,21 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+from mkm_cloudflare_token_v1 import resolve_cloudflare_token  # noqa: E402
+from no1kmedi_public_dns_status_v1 import public_dns_live  # noqa: E402
+
 ZONE_ID = "1516522160411707c33f84e145416a53"
 ORIGIN_IP = "148.230.97.246"
-DEFAULT_HOSTS = [
-    "research.no1kmedi.com",
-    "clinic.no1kmedi.com",
-    "no1kmedi.com",
-    "www.no1kmedi.com",
+# (fqdn, proxied) — www.clinic: grey cloud per SSOT (free plan 4th-level SSL)
+DEFAULT_HOST_SPECS: list[tuple[str, bool]] = [
+    ("research.no1kmedi.com", True),
+    ("clinic.no1kmedi.com", True),
+    ("www.clinic.no1kmedi.com", False),
+    ("no1kmedi.com", True),
+    ("www.no1kmedi.com", True),
 ]
 OUT = ROOT / "reports" / "no1kmedi_research_clinic_cf_dns_latest.json"
-
-
-def _load_token() -> str:
-    env_path = ROOT / ".env"
-    if env_path.is_file():
-        for line in env_path.read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if line.startswith("CLOUDFLARE_API_TOKEN=") or line.startswith("CF_API_TOKEN="):
-                return line.split("=", 1)[1].strip().strip('"').strip("'")
-    return (os.environ.get("CLOUDFLARE_API_TOKEN") or os.environ.get("CF_API_TOKEN") or "").strip()
 
 
 def _api(tok: str, method: str, path: str, body: dict | None = None) -> dict:
@@ -49,25 +45,28 @@ def _api(tok: str, method: str, path: str, body: dict | None = None) -> dict:
             return {"success": False, "errors": [{"message": str(e)}]}
 
 
-def _ensure_a(tok: str, host: str, dry: bool) -> dict:
+def _ensure_a(tok: str, host: str, proxied: bool, dry: bool) -> dict:
     lr = _api(tok, "GET", f"/zones/{ZONE_ID}/dns_records?name={host}")
     recs = lr.get("result") or []
     a_ok = [
         r
         for r in recs
-        if r.get("type") == "A" and r.get("content") == ORIGIN_IP and r.get("proxied")
+        if r.get("type") == "A"
+        and r.get("content") == ORIGIN_IP
+        and bool(r.get("proxied")) == proxied
     ]
     if a_ok:
-        return {"host": host, "action": "ok", "result": True}
-    body = {"type": "A", "name": host, "content": ORIGIN_IP, "proxied": True, "ttl": 1}
+        return {"host": host, "proxied": proxied, "action": "ok", "result": True}
+    body = {"type": "A", "name": host, "content": ORIGIN_IP, "proxied": proxied, "ttl": 1}
     if dry:
-        return {"host": host, "action": "would_create", "result": True, "dry_run": True}
+        return {"host": host, "proxied": proxied, "action": "would_create", "result": True, "dry_run": True}
     for r in recs:
         if r.get("type") in ("A", "AAAA"):
             _api(tok, "DELETE", f"/zones/{ZONE_ID}/dns_records/{r['id']}")
     cr = _api(tok, "POST", f"/zones/{ZONE_ID}/dns_records", body)
     return {
         "host": host,
+        "proxied": proxied,
         "action": "create",
         "result": bool(cr.get("success")),
         "errors": cr.get("errors"),
@@ -76,17 +75,20 @@ def _ensure_a(tok: str, host: str, dry: bool) -> dict:
 
 def main() -> int:
     dry = "--dry-run" in sys.argv
-    hosts = DEFAULT_HOSTS
+    force = "--require-api-write" in sys.argv
+    live = public_dns_live()
+    host_specs = list(DEFAULT_HOST_SPECS)
     if "--hosts-only" in sys.argv:
         i = sys.argv.index("--hosts-only")
-        hosts = sys.argv[i + 1 :]
-        if not hosts:
+        names = sys.argv[i + 1 :]
+        if not names:
             print("--hosts-only requires host names", file=sys.stderr)
             return 1
+        host_specs = [(h, True) for h in names]
 
-    tok = _load_token()
+    tok, tok_src = resolve_cloudflare_token(extra_keys=("MKM_CLOUDFLARE_NO1KMEDI_DNS_TOKEN",))
     if not tok:
-        print("CLOUDFLARE_API_TOKEN missing", file=sys.stderr)
+        print("MKM_CLOUDFLARE_NO1KMEDI_DNS_TOKEN or CLOUDFLARE_API_TOKEN missing", file=sys.stderr)
         return 1
 
     out: dict = {
@@ -94,8 +96,26 @@ def main() -> int:
         "zone_id": ZONE_ID,
         "origin_ip": ORIGIN_IP,
         "dry_run": dry,
+        "public_dns_live": live,
+        "require_api_write": force,
+        "token_source": tok_src,
         "hosts": [],
     }
+    if live and not force and not dry:
+        for host, proxied in host_specs:
+            out["hosts"].append(
+                {
+                    "host": host,
+                    "proxied": proxied,
+                    "action": "skipped_public_live",
+                    "result": True,
+                }
+            )
+        out["all_ok"] = True
+        out["agent_note"] = "Public DNS/HTTPS OK — API ensure skipped (policy: no1kmedi_cf_dns_ops_policy_v1)"
+        OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+        print(json.dumps(out, indent=2))
+        return 0
     verify = _api(tok, "GET", "/user/tokens/verify")
     if not verify.get("success"):
         out["token_verify"] = False
@@ -104,8 +124,8 @@ def main() -> int:
         return 2
 
     failed = 0
-    for host in hosts:
-        row = _ensure_a(tok, host, dry)
+    for host, proxied in host_specs:
+        row = _ensure_a(tok, host, proxied, dry)
         out["hosts"].append(row)
         if not row.get("result"):
             failed += 1

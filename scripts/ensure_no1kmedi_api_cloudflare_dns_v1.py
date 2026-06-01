@@ -10,20 +10,14 @@ import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+from mkm_cloudflare_token_v1 import resolve_cloudflare_token  # noqa: E402
+from no1kmedi_public_dns_status_v1 import public_dns_live  # noqa: E402
+
 ZONE_ID = "1516522160411707c33f84e145416a53"
 HOST = "api.no1kmedi.com"
 ORIGIN_IP = "148.230.97.246"
 OUT = ROOT / "reports" / "no1kmedi_api_cf_automation_probe_latest.json"
-
-
-def _load_token() -> str:
-    env_path = ROOT / ".env"
-    if env_path.is_file():
-        for line in env_path.read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if line.startswith("CLOUDFLARE_API_TOKEN=") or line.startswith("CF_API_TOKEN="):
-                return line.split("=", 1)[1].strip().strip('"').strip("'")
-    return (os.environ.get("CLOUDFLARE_API_TOKEN") or os.environ.get("CF_API_TOKEN") or "").strip()
 
 
 def _api(tok: str, method: str, path: str, body: dict | None = None) -> dict:
@@ -46,9 +40,11 @@ def _api(tok: str, method: str, path: str, body: dict | None = None) -> dict:
 
 def main() -> int:
     dry = "--dry-run" in sys.argv
-    tok = _load_token()
+    force = "--require-api-write" in sys.argv
+    live = public_dns_live()
+    tok, tok_src = resolve_cloudflare_token(extra_keys=("MKM_CLOUDFLARE_NO1KMEDI_DNS_TOKEN",))
     if not tok:
-        print("CLOUDFLARE_API_TOKEN missing", file=sys.stderr)
+        print("MKM_CLOUDFLARE_NO1KMEDI_DNS_TOKEN or CLOUDFLARE_API_TOKEN missing", file=sys.stderr)
         return 1
 
     out: dict = {
@@ -57,7 +53,17 @@ def main() -> int:
         "origin_ip": ORIGIN_IP,
         "zone_id": ZONE_ID,
         "dry_run": dry,
+        "public_dns_live": live,
+        "require_api_write": force,
+        "token_source": tok_src,
     }
+    if live and not force and not dry:
+        out["dns_action"] = "skipped_public_live"
+        out["dns_result"] = True
+        out["agent_note"] = "api.no1kmedi.com public /health OK — API ensure skipped"
+        OUT.write_text(json.dumps(out, indent=2), encoding="utf-8")
+        print(json.dumps(out, indent=2))
+        return 0
     verify = _api(tok, "GET", "/user/tokens/verify")
     out["token_verify"] = verify.get("success")
     if not verify.get("success"):

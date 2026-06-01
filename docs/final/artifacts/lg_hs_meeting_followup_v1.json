@@ -1,5 +1,13 @@
 {
   "schema": "lg_hs_meeting_followup_v1",
+  "operator_channel_status": {
+    "status": "CLOSED_REJECT",
+    "outcome_class": "reject",
+    "closed_at_kst": "2026-05-20",
+    "summary_one_line": "LG H&S 2026 모두의 챌린지 — 후속 미진행·채널 종료. 신규 LG 덱·미팅·아웃리치 없음.",
+    "agent_must_not_resurface_as_active_work": true,
+    "opendata_g4_note": "OpenData G4는 제출 PDF에 타채널 덱 미첨부 확인만 — LG 영업 작업 아님."
+  },
   "meeting_status": "completed",
   "meeting_completed_note_utc": "2026-05-16",
   "result_expected": {
@@ -7,7 +15,8 @@
     "target_date": "2026-05-20",
     "target_weekday": "Tuesday",
     "timezone": "Asia/Seoul",
-    "status": "pending"
+    "status": "received",
+    "outcome_class": "reject"
   },
   "pre_meeting_2026_05_20": {
     "prepared_at_utc": "2026-05-19",

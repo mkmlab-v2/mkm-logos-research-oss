@@ -80,7 +80,9 @@
 | **mkmlab.space 만료** | hPanel `hostinger_hpanel_domains_manifest_v1.json` **2026-06-20** — **자동 갱신 OFF**(지휘관·Hostinger) · 트래픽은 research만 유지 |
 | **인프라 유지** | `api.` · `eno.` · `saju-api.` · Email Routing — apex 포털과 **vhost 분리** |
 
-**로컬 번들:** `scripts/Invoke-No1kmediDomainParallelMigrate_v1.ps1` · CF DNS `ensure_no1kmedi_research_clinic_cloudflare_dns_v1.py` · VPS nginx `apply_*_no1kmedi_*_v1.sh` · mkmlab 퇴역 `apply_mkmlab_space_retire_301_v1.sh`.
+**로컬 번들:** `scripts/Invoke-No1kmediDomainParallelMigrate_v1.ps1` · DNS ops `scripts/Invoke-No1kmediCloudflareDnsEnsure_v1.ps1` · VPS nginx `apply_*_no1kmedi_*_v1.sh` · mkmlab 퇴역 `apply_mkmlab_space_retire_301_v1.sh`.
+
+**DNS·토큰 (재발 방지 · 2026-06-01):** 공개 DNS/HTTPS 통과(`verify_no1kmedi_public_dns_v1.py` · `all_ok`)면 **운영 GREEN** — `CLOUDFLARE_API_TOKEN`에 Zone DNS Edit 없어도 **토큰 재생성 요청 금지**. API 동기화만 필요할 때 `-RequireApiWrite` 또는 `MKM_CLOUDFLARE_NO1KMEDI_DNS_TOKEN`. 정책: `docs/final/artifacts/no1kmedi_cf_dns_ops_policy_v1.json`.
 
 ---
 

@@ -1,0 +1,23 @@
+{
+  "schema": "no1kmedi_cf_dns_ops_policy_v1",
+  "updated_utc": "2026-06-01",
+  "fact_lock": "Public DNS/HTTPS pass is operational GREEN for no1kmedi clinic/research/api. Missing Zone.DNS Edit on CLOUDFLARE_API_TOKEN is NOT a blocker.",
+  "agent_always": [
+    "Before suggesting a new Cloudflare DNS token, read reports/no1kmedi_public_dns_verify_latest.json (or run: py scripts/verify_no1kmedi_public_dns_v1.py).",
+    "If all_ok is true, do NOT ask the commander to create or rotate a DNS token unless they explicitly request API DNS automation or record changes.",
+    "Use MKM_CLOUDFLARE_NO1KMEDI_DNS_TOKEN only for optional API sync — never overwrite CLOUDFLARE_API_TOKEN with a narrow DNS-only token."
+  ],
+  "agent_never": [
+    "Treat probe exit 2 or ensure API 10000 as DNS outage when public verify is all_ok.",
+    "Repeat K-Startup-style token-creation steps on every deploy when DNS already resolves and HTTPS returns 200."
+  ],
+  "ssot_scripts": {
+    "public_verify": "scripts/verify_no1kmedi_public_dns_v1.py",
+    "ops_chain": "scripts/Invoke-No1kmediCloudflareDnsEnsure_v1.ps1",
+    "optional_token_apply": "scripts/Invoke-ApplyNo1kmediDnsTokenFromSecret_v1.ps1"
+  },
+  "ssot_reports": {
+    "public_dns": "reports/no1kmedi_public_dns_verify_latest.json",
+    "ops_chain": "reports/no1kmedi_cf_dns_ensure_chain_latest.json"
+  }
+}
