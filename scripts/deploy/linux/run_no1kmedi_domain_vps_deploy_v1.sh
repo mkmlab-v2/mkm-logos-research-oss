@@ -26,10 +26,11 @@ if [[ ! -f "$APEX_SSL" ]] && [[ "$DO_APPLY" -eq 1 ]]; then
       log "Removed broken site (no apex cert): $f"
     fi
   done
-  if [[ -L /etc/nginx/sites-enabled/no1kmedi.com ]]; then
-    mv /etc/nginx/sites-enabled/no1kmedi.com /etc/nginx/sites-enabled/no1kmedi.com.legacy-disabled 2>/dev/null \
+  if [[ -L /etc/nginx/sites-enabled/no1kmedi.com ]] || [[ -e /etc/nginx/sites-enabled/no1kmedi.com ]]; then
+    mkdir -p /etc/nginx/sites-disabled
+    mv /etc/nginx/sites-enabled/no1kmedi.com /etc/nginx/sites-disabled/no1kmedi.com 2>/dev/null \
       || rm -f /etc/nginx/sites-enabled/no1kmedi.com
-    log "Disabled legacy sites-enabled/no1kmedi.com"
+    log "Moved legacy sites-enabled/no1kmedi.com -> sites-disabled"
   fi
 fi
 

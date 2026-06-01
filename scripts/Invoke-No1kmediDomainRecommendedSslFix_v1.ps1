@@ -36,19 +36,34 @@ if [[ -f "$CLINIC_CERT" ]]; then
   fi
   bash "$REPO/scripts/deploy/linux/apply_clinic_no1kmedi_nginx_v1.sh" -y
 fi
+DISABLED_DIR="/etc/nginx/sites-disabled"
+mkdir -p "$DISABLED_DIR"
+disable_nginx_site() {
+  local src="$1"
+  [[ -e "$src" ]] || return 0
+  local base dest
+  base=$(basename "$src")
+  dest="$DISABLED_DIR/$base"
+  if [[ -e "$dest" ]]; then
+    dest="$DISABLED_DIR/${base}.$(date +%Y%m%d%H%M%S)"
+  fi
+  mv "$src" "$dest" 2>/dev/null || rm -f "$src"
+  log "Moved out of sites-enabled: $base -> $dest"
+}
 shopt -s nullglob
+for stale in /etc/nginx/sites-enabled/*.legacy-disabled; do
+  disable_nginx_site "$stale"
+done
 for legacy in /etc/nginx/sites-enabled/no1kmedi.com* /etc/nginx/sites-enabled/www.no1kmedi.com*; do
   base=$(basename "$legacy")
   [[ "$base" == "no1kmedi.com-portal" ]] && continue
-  [[ "$base" == *.legacy-disabled ]] && continue
-  mv "$legacy" "${legacy}.legacy-disabled" 2>/dev/null || rm -f "$legacy"
-  log "Disabled legacy $legacy"
+  disable_nginx_site "$legacy"
 done
-shopt -u nullglob
 if [[ -e /etc/nginx/sites-enabled/mkmlab-company-website ]]; then
-  mv /etc/nginx/sites-enabled/mkmlab-company-website /etc/nginx/sites-enabled/mkmlab-company-website.legacy-disabled 2>/dev/null || true
-  log "Disabled mkmlab-company-website (apex conflict with portal)"
+  disable_nginx_site "/etc/nginx/sites-enabled/mkmlab-company-website"
+  log "mkmlab-company-website removed (apex conflict with portal)"
 fi
+shopt -u nullglob
 PORTAL_SSL_DIR="/etc/letsencrypt/live/no1kmedi.com"
 if [[ ! -f "${PORTAL_SSL_DIR}/fullchain.pem" ]] && [[ -f /etc/letsencrypt/live/www.no1kmedi.com/fullchain.pem ]]; then
   PORTAL_SSL_DIR="/etc/letsencrypt/live/www.no1kmedi.com"
