@@ -122,12 +122,6 @@ def build() -> dict[str, Any]:
             "owner": "human",
             "date_kst": "2026-06-01",
         },
-        {
-            "id": 5,
-            "task": "6/5 18:00 K-Startup + 나라장터 접수",
-            "owner": "human",
-            "date_kst": "2026-06-05T18:00:00+09:00",
-        },
     ]
 
     return {
@@ -143,7 +137,7 @@ def build() -> dict[str, Any]:
         "rerun_one_liner": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Run-OpenData327SubmissionPrep_v1.ps1",
         "rerun_chain_legacy": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Run-OpenData327SubmissionChain_v1.ps1",
         "readiness_pointer": READINESS.relative_to(ROOT).as_posix(),
-        "boundary_ack": "PDF/BCD merge automated; cover insert and portal submit remain human.",
+        "boundary_ack": "PDF/BCD merge automated; cover insert remains human.",
     }
 
 

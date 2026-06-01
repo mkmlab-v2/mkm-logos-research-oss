@@ -21,6 +21,11 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
+def _rel_to_root(path: Path) -> str:
+    abs_path = path if path.is_absolute() else (ROOT / path)
+    return abs_path.resolve().relative_to(ROOT).as_posix()
+
+
 def _merge_pdfs(paths: list[Path], out_path: Path) -> dict[str, Any]:
     from pypdf import PdfReader, PdfWriter
 
@@ -36,7 +41,7 @@ def _merge_pdfs(paths: list[Path], out_path: Path) -> dict[str, Any]:
     with out_path.open("wb") as fh:
         writer.write(fh)
     size_mb = round(out_path.stat().st_size / (1024 * 1024), 2)
-    return {"pages_appended": pages, "size_mb": size_mb, "parts": [p.relative_to(ROOT).as_posix() for p in paths]}
+    return {"pages_appended": pages, "size_mb": size_mb, "parts": [_rel_to_root(p) for p in paths]}
 
 
 def main() -> int:
@@ -76,8 +81,8 @@ def main() -> int:
         if not args.cover_pdf.is_file():
             raise FileNotFoundError(f"cover PDF not found: {args.cover_pdf}")
         final_result = _merge_pdfs([args.cover_pdf, args.out_pdf], args.final_out_pdf)
-        cover_a = args.cover_pdf.relative_to(ROOT).as_posix()
-        final_pdf = args.final_out_pdf.relative_to(ROOT).as_posix()
+        cover_a = _rel_to_root(args.cover_pdf)
+        final_pdf = _rel_to_root(args.final_out_pdf)
         step_4 = "abcd_merged_with_cover_a"
     else:
         step_4 = "bcd_merged_no_cover_a"
@@ -86,7 +91,7 @@ def main() -> int:
         "schema": "opendata_327_pdf_merge_v1",
         "generated_at_utc": _utc_now(),
         "ok": True,
-        "output_pdf": args.out_pdf.relative_to(ROOT).as_posix(),
+        "output_pdf": _rel_to_root(args.out_pdf),
         "cover_part_a": cover_a or "manual_kstartup_form_required",
         "final_upload_pdf": final_pdf,
         "merge_order": result["parts"],
@@ -120,14 +125,12 @@ def main() -> int:
             ea["final_upload_size_mb"] = doc["final_size_mb"]
         gates["next_human"] = (
             [
-                "K-Startup + 나라장터 접수 (6/5 18:00)",
                 "§2-2 목표안 수치는 제출 전 내부 벤치로 확정",
             ]
             if final_pdf
             else [
                 "K-Startup 표지(A)를 맨 앞에 수동 삽입 후 업로드",
                 "§2-2 목표안 수치는 제출 전 내부 벤치로 확정",
-                "K-Startup + 나라장터 접수 (6/5 18:00)",
             ]
         )
         GATES_LATEST.write_text(json.dumps(gates, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

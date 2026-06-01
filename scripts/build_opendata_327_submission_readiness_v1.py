@@ -99,9 +99,6 @@ def build() -> dict[str, Any]:
         and bcd_merged.get("exists", False)
     )
     human_items = list(gates.get("next_human") or [])
-    for ch in checklist.get("parallel_channels_required") or []:
-        if ch.get("done") is None:
-            human_items.append(f"{ch.get('id')}: {ch.get('name')}")
     for g in checklist.get("pre_submit_gates") or []:
         if g.get("done") is None and g.get("owner") == "human":
             human_items.append(f"{g.get('id')}: {g.get('check')}")
@@ -114,11 +111,10 @@ def build() -> dict[str, Any]:
         "technical_ready_for_pdf_bundle": technical_ready,
         "ready_for_kstartup_upload": False,
         "ready_for_kstartup_upload_blockers": (
-            ["K-Startup·나라장터 채널 human", "G3/G4/G5 human gates in kstartup checklist"]
+            ["G3/G4/G5 human gates in kstartup checklist"]
             if has_cover
             else [
                 "표지(A) 수동 병합 미완료",
-                "K-Startup·나라장터 채널 human",
                 "G3/G4/G5 human gates in kstartup checklist",
             ]
         ),
