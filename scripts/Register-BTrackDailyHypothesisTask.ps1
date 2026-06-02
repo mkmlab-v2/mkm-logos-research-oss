@@ -68,6 +68,8 @@ param(
     [switch]$SkipPhase3NetworkFetch,
     # Forward to run_btrack_daily_hypothesis_chain.ps1 (Phase2 market_myeongni_lens_v1; read-only bundle slot).
     [switch]$IncludeMarketMyeongniOverlay,
+    # Skip TE monitor dump when tools/core/transfer_entropy_market_regime_detector.py is absent (B-track research_only).
+    [switch]$SkipPathologyTeMapping,
     [switch]$RunWhenLoggedOff,
     [switch]$Remove
 )
@@ -107,6 +109,17 @@ if ($SkipPhase3NetworkFetch) {
 }
 if ($IncludeMarketMyeongniOverlay) {
     $argLine += " -IncludeMarketMyeongniOverlay"
+}
+$teDetectorPath = Join-Path $WorkspaceRoot "tools\core\transfer_entropy_market_regime_detector.py"
+$skipTe = $SkipPathologyTeMapping.IsPresent -or -not (Test-Path -LiteralPath $teDetectorPath)
+if ($SkipPathologyTeMapping.IsPresent -and (Test-Path -LiteralPath $teDetectorPath)) {
+    Write-Host "Note: -SkipPathologyTeMapping set; TE probe module exists but will be skipped." -ForegroundColor DarkYellow
+}
+if (-not $SkipPathologyTeMapping.IsPresent -and -not (Test-Path -LiteralPath $teDetectorPath)) {
+    Write-Host "Auto -SkipPathologyTeMapping: missing $teDetectorPath (B-track research_only)." -ForegroundColor DarkYellow
+}
+if ($skipTe) {
+    $argLine += " -SkipPathologyTeMapping"
 }
 $action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $argLine -WorkingDirectory $WorkspaceRoot
 $trigger = New-ScheduledTaskTrigger -Daily -At $At

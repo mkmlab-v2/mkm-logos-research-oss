@@ -47,7 +47,18 @@ if (-not $isAdmin) {
 Write-Host "[OK] Elevated shell detected. Re-registering tasks with -RunWhenLoggedOff ..." -ForegroundColor Green
 
 & (Join-Path $root "scripts\Register-BtrackAutomationHealthTask.ps1") -RunWhenLoggedOff
-& (Join-Path $root "scripts\Register-BTrackDailyHypothesisTask.ps1") -At "08:35" -ResearchEvaluationInstrument btc -SkipProphecyContemplationGemini -IncludeMarketMyeongniOverlay -RunWhenLoggedOff
+$btrackS4u = @{
+    At                              = "08:35"
+    ResearchEvaluationInstrument    = "btc"
+    SkipProphecyContemplationGemini = $true
+    IncludeMarketMyeongniOverlay      = $true
+    RunWhenLoggedOff                = $true
+}
+if (-not (Test-Path -LiteralPath (Join-Path $root "tools\core\transfer_entropy_market_regime_detector.py"))) {
+    $btrackS4u["SkipPathologyTeMapping"] = $true
+    Write-Host "[WARN] TE module missing; S4U hypothesis chain registers with -SkipPathologyTeMapping" -ForegroundColor Yellow
+}
+& (Join-Path $root "scripts\Register-BTrackDailyHypothesisTask.ps1") @btrackS4u
 & (Join-Path $root "scripts\Register-ProphecyPanel24hAlertsTask.ps1") -At "09:05" -RunWhenLoggedOff
 & (Join-Path $root "scripts\Register-ProphecyEvolutionWatchdogTask.ps1") -At "10:15" -RunWhenLoggedOff
 & (Join-Path $root "scripts\Register-BtcWeightHitRateBundleWeeklyTask.ps1") -SundayAt "09:15" -RunWhenLoggedOff

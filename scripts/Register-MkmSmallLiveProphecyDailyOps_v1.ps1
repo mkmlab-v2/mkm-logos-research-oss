@@ -19,8 +19,9 @@
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
-    [string]$HypothesisAt = "08:05",
+    [string]$HypothesisAt = "08:00",
     [string]$EvalAt = "08:18",
+    [string]$RegistryAt = "08:22",
     [string]$PanelAt = "08:42",
     [string]$DigestAt = "08:28",
     [switch]$SkipProphecyContemplationGemini,
@@ -44,17 +45,19 @@ if ($Remove) {
 }
 
 $btrackReg = @{
-    WorkspaceRoot                 = $WorkspaceRoot
-    At                            = $HypothesisAt
-    ResearchEvaluationInstrument  = "btc"
-    IncludeDawnScore              = $true
-    IncludeMarketMyeongniOverlay  = $true
+    WorkspaceRoot                   = $WorkspaceRoot
+    At                              = $HypothesisAt
+    ResearchEvaluationInstrument    = "btc"
+    IncludeDawnScore                = $true
+    IncludeMarketMyeongniOverlay    = $true
     SkipProphecyContemplationGemini = $true
 }
-if ($RunWhenLoggedOff) { $btrackReg["RunWhenLoggedOff"] = $true }
-if (-not $SkipProphecyContemplationGemini) {
-    $btrackReg.Remove("SkipProphecyContemplationGemini")
+$teDetectorPath = Join-Path $WorkspaceRoot "tools\core\transfer_entropy_market_regime_detector.py"
+if (-not (Test-Path -LiteralPath $teDetectorPath)) {
+    $btrackReg["SkipPathologyTeMapping"] = $true
+    Write-Host "B-track register: auto SkipPathologyTeMapping (TE module absent)." -ForegroundColor DarkYellow
 }
+if ($RunWhenLoggedOff) { $btrackReg["RunWhenLoggedOff"] = $true }
 
 Write-Host "=== Mode B: register daily prophecy + panel tasks ===" -ForegroundColor Cyan
 
@@ -81,11 +84,26 @@ $panelReg = @{ WorkspaceRoot = $WorkspaceRoot; At = $PanelAt; KpiBOperationalHea
 if ($RunWhenLoggedOff) { $panelReg["RunWhenLoggedOff"] = $true }
 & (Join-Path $WorkspaceRoot "scripts\Register-ProphecyPanel24hAlertsTask.ps1") @panelReg
 
+$registryTask = "MKM-Research-Morning-Prediction-Registry"
+$registryPy = Join-Path $WorkspaceRoot "scripts\build_research_morning_prediction_registry_v1.py"
+if (-not (Test-Path -LiteralPath $registryPy)) {
+    throw "Missing: $registryPy"
+}
+$registryArgLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command `"Set-Location -LiteralPath '$($WorkspaceRoot.Replace("'", "''"))'; `$py = (Get-Command py -ErrorAction SilentlyContinue).Source; if (-not `$py) { `$py = 'py' }; & `$py scripts/build_research_morning_prediction_registry_v1.py`""
+$registryAction = New-ScheduledTaskAction -Execute "powershell.exe" -Argument $registryArgLine -WorkingDirectory $WorkspaceRoot
+$registryTrigger = New-ScheduledTaskTrigger -Daily -At $RegistryAt
+$registrySettings = New-ScheduledTaskSettingsSet -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Minutes 10) -MultipleInstances IgnoreNew -Hidden
+$registryPrincipal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType $logonType -RunLevel Limited
+Register-ScheduledTask -TaskName $registryTask -Action $registryAction -Trigger $registryTrigger -Settings $registrySettings -Principal $registryPrincipal `
+    -Description "R-IBL: seal multi-lens predictions for evening score (research_only)." -Force | Out-Null
+Write-Host "[DONE] $registryTask at $RegistryAt (LogonType=$logonType)" -ForegroundColor Green
+
 Write-Host ""
 Write-Host "Registered Mode B tasks. Verify:" -ForegroundColor Cyan
 Get-ScheduledTask -TaskName @(
     "MKM-BTrack-DailyHypothesis-Chain",
     "MKM-Prophecy-Daily-Eval-Report",
+    "MKM-Research-Morning-Prediction-Registry",
     "MKM-Prophecy-Panel-24h-Alerts",
     "MKM-FactSafe-RiskProfile-Sync-4H"
 ) -ErrorAction SilentlyContinue | ForEach-Object {
@@ -94,5 +112,5 @@ Get-ScheduledTask -TaskName @(
 }
 & (Join-Path $WorkspaceRoot "scripts\Register-TelegramMinimalDailyDigestTask.ps1") -WorkspaceRoot $WorkspaceRoot -At $DigestAt
 
-Write-Host "Morning order (KST): $HypothesisAt hypothesis -> $EvalAt eval+brief -> $DigestAt Telegram (advanced) -> $PanelAt panel" -ForegroundColor DarkGray
+Write-Host "Morning order (KST): $HypothesisAt hypothesis -> $EvalAt eval+brief -> $RegistryAt R-IBL seal -> $DigestAt Telegram (prophecy) -> $PanelAt panel" -ForegroundColor DarkGray
 Write-Host "VPS: Fact-Safe 4h cron + bitcoin-live-small-24h (small qty). See CENTRAL 「운영 모드 B」." -ForegroundColor DarkGray
