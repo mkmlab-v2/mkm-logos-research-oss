@@ -1,0 +1,177 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/btrack_nextgen_indexer_charter_v1.schema.json",
+  "title": "B-track next-gen corpus indexer charter v1",
+  "description": "B-track [HYPO] clean-slate indexer planning. Parallel arms vs frozen Golden-40. No Track A active write.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "track_a_active_write",
+    "hypo_label",
+    "branch_name",
+    "constitution_meta",
+    "paradigm_shift_summary_ko",
+    "parallel_bench_arms",
+    "frozen_baseline",
+    "retire_gates",
+    "forbidden",
+    "dod_exit_criteria",
+    "guardrails"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "btrack_nextgen_indexer_charter_v1"
+    },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "research_only": { "type": "boolean", "const": true },
+    "track_a_active_write": { "type": "boolean", "const": false },
+    "hypo_label": { "type": "string", "const": "[HYPO]" },
+    "branch_name": { "type": "string", "const": "feature/btrack-nextgen-indexer-v1" },
+    "one_page_summary_ko": { "type": "string", "minLength": 20 },
+    "paradigm_shift_summary_ko": { "type": "string", "minLength": 20 },
+    "constitution_meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_setting", "track_a_strict_lock", "fail_comp_004_summary"],
+      "properties": {
+        "route_setting": { "type": "string" },
+        "track_a_strict_lock": { "type": "boolean" },
+        "fail_comp_004_summary": { "type": "string" },
+        "mission_log_section": { "type": "string" },
+        "supersedes_local_optimization_only": { "type": "boolean" }
+      }
+    },
+    "parallel_bench_arms": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "arm_id",
+          "label_ko",
+          "implementation_status",
+          "same_bench_cases",
+          "metrics_required"
+        ],
+        "properties": {
+          "arm_id": {
+            "type": "string",
+            "enum": [
+              "legacy_discrete_41k",
+              "gpu_semantic_poc",
+              "nextgen_latent_indexer"
+            ]
+          },
+          "label_ko": { "type": "string" },
+          "implementation_status": {
+            "type": "string",
+            "enum": ["frozen_production_ssot", "partial_poc", "charter_only"]
+          },
+          "same_bench_cases": { "type": "string" },
+          "metrics_required": {
+            "type": "array",
+            "items": { "type": "string" },
+            "minItems": 2
+          },
+          "script_pointers": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "artifact_pointers": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "reporting": { "type": "string" }
+        }
+      }
+    },
+    "frozen_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "bench_input",
+        "active_report",
+        "headline_rounded",
+        "metrics_snapshot"
+      ],
+      "properties": {
+        "bench_input": { "type": "string" },
+        "active_report": { "type": "string" },
+        "headline_rounded": { "type": "string" },
+        "metrics_snapshot": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "global_token_saving_rate",
+            "avg_reconstruction_fidelity_jaccard"
+          ],
+          "properties": {
+            "global_token_saving_rate": { "type": "number" },
+            "avg_reconstruction_fidelity_jaccard": { "type": "number" },
+            "alignment_pass_rate_raw": { "type": ["number", "null"] },
+            "alignment_pass_rate_repair_v2": { "type": ["number", "null"] }
+          }
+        }
+      }
+    },
+    "retire_gates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["legacy_41k_disconnect_allowed", "conditions_all_required"],
+      "properties": {
+        "legacy_41k_disconnect_allowed": { "type": "boolean", "const": false },
+        "conditions_all_required": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 3
+        },
+        "new_baseline_ssot_after_beat": { "type": "string" }
+      }
+    },
+    "related_specs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "forbidden": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 4
+    },
+    "dod_exit_criteria": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["criterion_id", "description", "human_signoff_required"],
+        "properties": {
+          "criterion_id": { "type": "string" },
+          "description": { "type": "string" },
+          "commands_optional": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "evidence_paths": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "human_signoff_required": { "type": "boolean" }
+        }
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 2
+    },
+    "path_check": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}
