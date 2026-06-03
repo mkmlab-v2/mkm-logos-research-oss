@@ -62,7 +62,6 @@ $results += New-CheckResult -Name "mcp_profile_json" -Passed $true -Detail "Load
 
 $expectedCore = @(
     "filesystem",
-    "openchrome",
     "athena-core",
     "sequential-thinking",
     "athena-manseryeok",
@@ -71,7 +70,9 @@ $expectedCore = @(
 )
 $optionalServers = @(
     # NotebookLM MCP can be present depending on local auth/session workflow.
-    "notebooklm"
+    "notebooklm",
+    # openchrome: 80+ tools; enable only when user requests 외장 크롬 (Switch-McpProfile -Profile with-openchrome).
+    "openchrome"
 )
 $actualServers = @($mcp.mcpServers.PSObject.Properties.Name | Sort-Object)
 $expectedSorted = @($expectedCore | Sort-Object)
@@ -135,7 +136,7 @@ if (-not (Test-Path -LiteralPath $centralPath)) {
 else {
     $results += New-CheckResult -Name "central_memory_exists" -Passed $true -Detail "Found $centralPath"
     $centralRaw = Get-Content -LiteralPath $centralPath -Raw
-    $hasMcpEntry = ($centralRaw -match "athena-core\(MKM12_LTM_DB_TYPE=file\)")
+    $hasMcpEntry = ($centralRaw -like '*athena-core(MKM12_LTM_DB_TYPE=file)*')
     $detail = if ($hasMcpEntry) { "Found athena-core MCP entry in central memory" } else { "athena-core MCP entry missing" }
     $results += New-CheckResult -Name "central_memory_has_mcp_entry" -Passed $hasMcpEntry -Detail $detail
 }

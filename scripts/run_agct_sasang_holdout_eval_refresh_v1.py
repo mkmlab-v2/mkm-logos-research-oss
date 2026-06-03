@@ -29,6 +29,16 @@ def main() -> int:
     )
     ns = ap.parse_args()
 
+    missing = [p for p in (ns.cohort_csv, ns.genotype_csv) if not p.is_file()]
+    if missing:
+        print(
+            "SKIP: AGCT Sasang holdout refresh — cohort/genotype CSV not on disk "
+            f"(missing={[str(p) for p in missing]}). Restore via "
+            "docs/final/artifacts/bio_dna_real_cohort_restore_pointer_v1.json",
+            file=sys.stderr,
+        )
+        return 0
+
     cmd = [
         sys.executable,
         str(root / "scripts" / "run_agct_sasang_holdout_eval_v1.py"),
