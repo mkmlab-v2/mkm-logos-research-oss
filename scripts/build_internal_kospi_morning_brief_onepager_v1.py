@@ -72,6 +72,67 @@ def _confidence_score(trackc: Dict[str, Any], logos: Dict[str, Any], dual_leg: D
     return max(0, min(100, int(round(score))))
 
 
+def _resolve_action_with_hypothesis(
+    *,
+    governance_confidence: int,
+    krx_open: bool,
+    dual_leg: Dict[str, Any],
+    hypothesis: Dict[str, Any],
+) -> tuple[str, int, Dict[str, Any]]:
+    """Align internal brief with latest B-track KOSPI hypothesis + hit-rate gate."""
+    pred = hypothesis.get("prediction") if isinstance(hypothesis.get("prediction"), dict) else {}
+    rm = hypothesis.get("runtime_meta") if isinstance(hypothesis.get("runtime_meta"), dict) else {}
+    price_meta = rm.get("price_meta") if isinstance(rm.get("price_meta"), dict) else {}
+    overlay = price_meta.get("kospi_overnight_overlay") if isinstance(price_meta.get("kospi_overnight_overlay"), dict) else {}
+
+    hypo_dir = str(pred.get("direction") or "").lower()
+    hypo_conf = _safe_float(pred.get("confidence"), 0.0)
+    weighted = _safe_float(rm.get("weighted_score"), 0.0)
+    kospi_hr = _safe_float(((dual_leg.get("legs") or {}).get("kospi") or {}).get("price_directional_hit_rate"), -1.0)
+
+    confidence = governance_confidence
+    final_action = "WATCH"
+    if confidence < 45:
+        final_action = "HOLD"
+    elif confidence >= 75:
+        final_action = "GO_CONDITIONAL"
+
+    hit_rate_untrusted = 0.0 <= kospi_hr < 0.35
+    if hit_rate_untrusted:
+        confidence = min(confidence, 42)
+
+    if hypo_dir == "bear":
+        if final_action == "GO_CONDITIONAL":
+            final_action = "WATCH"
+        if weighted <= -0.03:
+            final_action = "WATCH"
+        confidence = min(confidence, max(35, int(round(hypo_conf * 100))))
+    elif hypo_dir == "bull" and hypo_conf >= 0.45 and not hit_rate_untrusted:
+        confidence = max(confidence, min(100, int(round(hypo_conf * 100))))
+
+    if hit_rate_untrusted and final_action == "GO_CONDITIONAL":
+        final_action = "WATCH"
+
+    if not krx_open:
+        final_action = "HOLD"
+        confidence = min(confidence, 40)
+
+    hypo_block = {
+        "instrument": pred.get("instrument"),
+        "direction": hypo_dir or None,
+        "confidence": round(hypo_conf, 4) if hypo_conf else None,
+        "weighted_score": round(weighted, 6),
+        "kospi_overnight_overlay_applied": bool(overlay.get("applied")),
+        "composite_tilt": overlay.get("composite_tilt"),
+        "us_overnight_score": overlay.get("us_overnight_score"),
+        "domestic_price_score": overlay.get("domestic_price_score"),
+        "price_score_after_blend": overlay.get("price_score_after_blend"),
+        "hit_rate_gate_applied": hit_rate_untrusted,
+        "dual_leg_kospi_hit_rate": kospi_hr if kospi_hr >= 0 else None,
+    }
+    return final_action, confidence, hypo_block
+
+
 def main() -> int:
     root = Path(__file__).resolve().parents[1]
     art = root / "docs" / "final" / "artifacts"
@@ -91,25 +152,25 @@ def main() -> int:
     logos_insight = _read_json(art / "logos_shadow_insight_latest.json")
     dual_leg = _read_json(art / "trackc_prophecy_dual_leg_brief_latest.json")
     fallback = _read_json(art / "fallback_post_cutoff_watch_report_latest.json")
+    hypothesis = _read_json(art / "btrack_hypothesis_prophecy_latest.json")
 
     trackc = dashboard.get("trackc") or {}
     logos_summary = logos_insight.get("summary") or {}
-    confidence = _confidence_score(trackc, logos_summary, dual_leg, fallback)
+    governance_confidence = _confidence_score(trackc, logos_summary, dual_leg, fallback)
 
-    final_action = "WATCH"
-    if confidence < 45:
-        final_action = "HOLD"
-    elif confidence >= 75:
-        final_action = "GO_CONDITIONAL"
-    if not krx_open:
-        final_action = "HOLD"
-        confidence = min(confidence, 40)
+    final_action, confidence, hypo_block = _resolve_action_with_hypothesis(
+        governance_confidence=governance_confidence,
+        krx_open=krx_open,
+        dual_leg=dual_leg,
+        hypothesis=hypothesis,
+    )
 
     report = {
         "schema": "internal_kospi_morning_brief_onepager_v1",
         "generated_at_utc": _utc_now(),
         "today_action": final_action,
         "confidence_0_100": confidence,
+        "governance_confidence_0_100": governance_confidence,
         "krx_trading_today": krx_open,
         "market_session_ko": market_session_ko,
         "system_status": (dashboard.get("system") or {}).get("status"),
@@ -121,11 +182,14 @@ def main() -> int:
         "dual_leg_kospi_n_evaluated": ((dual_leg.get("legs") or {}).get("kospi") or {}).get("n_evaluated"),
         "dual_leg_kospi_hit_rate": ((dual_leg.get("legs") or {}).get("kospi") or {}).get("price_directional_hit_rate"),
         "fallback_signal": (fallback.get("summary") or {}).get("signal"),
+        "btrack_hypothesis": hypo_block,
         "evidence_paths": [
             "docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json",
             "docs/final/artifacts/logos_shadow_insight_latest.json",
             "docs/final/artifacts/trackc_prophecy_dual_leg_brief_latest.json",
             "docs/final/artifacts/fallback_post_cutoff_watch_report_latest.json",
+            "docs/final/artifacts/btrack_hypothesis_prophecy_latest.json",
+            "docs/final/artifacts/global_market_overnight_signals_v1_latest.json",
         ],
     }
 
@@ -144,7 +208,17 @@ def main() -> int:
         f"- today_action: `{report['today_action']}`",
         f"- market_session: `{report.get('market_session_ko', '—')}` (krx_trading_today={report.get('krx_trading_today')})",
         f"- conviction: `{report['confidence_0_100']} / 100`",
+        f"- governance_confidence (pre-hypo): `{report.get('governance_confidence_0_100', '—')}`",
         "- execution_mode: `non-gating advisory`",
+        "",
+        "## A2) B-track hypothesis sync",
+        "",
+        f"- direction: `{((report.get('btrack_hypothesis') or {}).get('direction'))}`",
+        f"- hypothesis_confidence: `{((report.get('btrack_hypothesis') or {}).get('confidence'))}`",
+        f"- weighted_score: `{((report.get('btrack_hypothesis') or {}).get('weighted_score'))}`",
+        f"- overnight_tilt: `{((report.get('btrack_hypothesis') or {}).get('composite_tilt'))}`",
+        f"- price_blend: `{((report.get('btrack_hypothesis') or {}).get('price_score_after_blend'))}`",
+        f"- hit_rate_gate: `{((report.get('btrack_hypothesis') or {}).get('hit_rate_gate_applied'))}`",
         "",
         "## B) Why (30-second read)",
         "",

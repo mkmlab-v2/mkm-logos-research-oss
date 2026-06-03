@@ -216,8 +216,32 @@ def _append_personal_fortune(workspace: Path, lines: List[str]) -> None:
             lines.append(ln)
 
 
+def _ko_market_action(action: Any) -> str:
+    raw = str(action or "—").strip().upper()
+    table = {
+        "HOLD": "관망",
+        "WATCH": "주시",
+        "BULL": "상승",
+        "BEAR": "하락",
+        "REDUCE": "축소",
+        "GO": "관측·허용",
+        "NO_GO": "중단",
+    }
+    if raw in table:
+        return table[raw]
+    if raw.startswith("HOLD("):
+        return raw.replace("HOLD", "관망", 1)
+    return str(action or "—")
+
+
+def _ko_direction(direction: Any) -> str:
+    raw = str(direction or "—").strip().lower()
+    table = {"bull": "상승", "bear": "하락", "neutral": "중립", "hold": "관망", "watch": "주시"}
+    return table.get(raw, str(direction or "—"))
+
+
 def build_digest_prophecy(workspace: Path) -> str:
-    """장전 예언 브리핑만 — Logos/Track C/VPS/패널·체크리스트 등 운영 잡음 제외."""
+    """장전 예언 브리핑만(한글) — 일운·RAG·VPS·패널·R-IBL·운영 잡음 제외."""
     art = workspace / "docs" / "final" / "artifacts"
 
     brief = _read_json(art / "internal_kospi_morning_brief_onepager_latest.json")
@@ -228,8 +252,9 @@ def build_digest_prophecy(workspace: Path) -> str:
     now_kst = datetime.now(KST).strftime("%Y-%m-%d %H:%M KST")
     brief_ts = _fmt_kst_from_utc(brief.get("generated_at_utc") or dual_leg.get("generated_at_utc"))
 
-    action = brief.get("today_action") or "—"
+    action = _ko_market_action(brief.get("today_action"))
     conf = brief.get("confidence_0_100")
+    session_ko = brief.get("market_session_ko") or ""
     kospi_n, kospi_hr = _leg_metrics(dual_leg, "kospi")
     if brief.get("dual_leg_kospi_n_evaluated") is not None:
         kospi_n = brief.get("dual_leg_kospi_n_evaluated")
@@ -239,27 +264,97 @@ def build_digest_prophecy(workspace: Path) -> str:
     pooled = hit.get("metrics") or {}
 
     pred = hypo.get("prediction") or {}
-    hypo_inst = pred.get("instrument") or "—"
-    hypo_dir = pred.get("direction") or "—"
+    hypo_inst = str(pred.get("instrument") or "—").upper()
+    if hypo_inst == "KOSPI":
+        hypo_inst = "코스피"
+    elif hypo_inst == "BTC":
+        hypo_inst = "비트코인"
+    elif hypo_inst == "MULTI":
+        hypo_inst = "멀티(코스피·비트코인)"
+    hypo_dir = _ko_direction(pred.get("direction"))
     hypo_conf = pred.get("confidence")
+    rm = hypo.get("runtime_meta") if isinstance(hypo.get("runtime_meta"), dict) else {}
+    lv = rm.get("lens_values") if isinstance(rm.get("lens_values"), dict) else {}
+    overlay = ((rm.get("price_meta") or {}).get("kospi_overnight_overlay") or {})
+    if not isinstance(overlay, dict):
+        overlay = {}
 
     lines: List[str] = [
         f"MKM 예언 브리핑 · {now_kst}",
-        f"근거: {brief_ts}",
+        f"근거 시각: {brief_ts}",
+        "B-track [가설] · 실매매·Track A 자동 연동 없음",
         "",
-        f"▸ 오늘: {action} | 확신 {conf}/100",
-        "  B-track [HYPO] · 실매매 자동 트리거 아님",
-        "",
-        "▸ 적중(관측)",
-        f"  KOSPI: {_fmt_pct(kospi_hr)} (n={kospi_n}) · BTC: {_fmt_pct(btc_hr)} (n={btc_n})",
-        f"  통합: {_fmt_pct(pooled.get('price_directional_hit_rate'))} (n={pooled.get('n_evaluated')})",
-        "",
-        f"▸ 가설: {hypo_inst} {hypo_dir}" + (f" (conf {hypo_conf})" if hypo_conf is not None else ""),
+        f"▸ 오늘 장전: {action}" + (f" · 확신 {conf}/100" if conf is not None else ""),
     ]
-    _append_personal_fortune(workspace, lines)
+    if session_ko:
+        lines.append(f"  세션: {session_ko}")
+    lines.extend(
+        [
+            "",
+            "▸ 적중률(관측)",
+            f"  코스피: {_fmt_pct(kospi_hr)} (표본 {kospi_n})",
+            f"  비트코인: {_fmt_pct(btc_hr)} (표본 {btc_n})",
+            f"  통합: {_fmt_pct(pooled.get('price_directional_hit_rate'))} (표본 {pooled.get('n_evaluated')})",
+            "",
+            "▸ B-track 가격 가설",
+            f"  {hypo_inst} · 방향 {hypo_dir}"
+            + (f" · 신뢰 {float(hypo_conf):.2f}" if hypo_conf is not None else ""),
+        ]
+    )
+    if overlay.get("applied"):
+        us_s = overlay.get("us_overnight_score")
+        dom_s = overlay.get("domestic_price_score")
+        blend_s = overlay.get("price_score_after_blend")
+        tilt = overlay.get("composite_tilt") or "—"
+        lines.extend(
+            [
+                "",
+                "▸ Field·오버나이트 [HYPO]",
+                f"  {tilt} · US prior {us_s} · 국내 {dom_s} → blend {blend_s}",
+            ]
+        )
+    price_s = lv.get("price", {}).get("score")
+    news_s = lv.get("news", {}).get("score")
+    macro_s = lv.get("macro", {}).get("score")
+    if price_s is not None or news_s is not None:
+        lines.extend(
+            [
+                "",
+                "▸ 렌즈 스냅샷",
+                f"  price {price_s} · news {news_s} · macro {macro_s}",
+                "  사상·명리·성경 상세는 internal executive MD 참조",
+            ]
+        )
+    if brief.get("today_action") and brief.get("btrack_hypothesis"):
+        lines.extend(
+            [
+                "",
+                f"▸ Internal brief (동기화): {_ko_market_action(brief.get('today_action'))}"
+                + (f" · {brief.get('confidence_0_100')}/100" if brief.get("confidence_0_100") is not None else ""),
+            ]
+        )
+    if _truthy("MKM_TELEGRAM_PROPHECY_INCLUDE_FORTUNE", default=False):
+        _append_personal_fortune(workspace, lines)
+
+    if _truthy("MKM_TELEGRAM_PROPHECY_INCLUDE_RIBL", default=False):
+        registry = _read_json(workspace / "reports" / "research_morning_prediction_registry_latest.json")
+        if registry.get("schema") == "research_morning_prediction_registry_v1":
+            by_lens = registry.get("predictions_by_lens") or {}
+            lens_summary = " · ".join(f"{k}={v}" for k, v in sorted(by_lens.items()))
+            lines.extend(
+                [
+                    "",
+                    f"▸ R-IBL 봉인: {registry.get('n_predictions')}건 · seal={registry.get('seal_id')}",
+                    f"  렌즈 {lens_summary or '—'}",
+                ]
+            )
+            for p in (registry.get("predictions") or [])[:2]:
+                if isinstance(p, dict) and p.get("claim_ko"):
+                    lines.append(f"  · {str(p.get('claim_ko'))[:120]}")
+
     text = "\n".join(lines)
     if len(text) > TELEGRAM_MAX_LEN:
-        return text[: TELEGRAM_MAX_LEN - 20] + "\n…(truncated)"
+        return text[: TELEGRAM_MAX_LEN - 20] + "\n…(잘림)"
     return text
 
 
@@ -336,29 +431,46 @@ def build_digest_advanced(workspace: Path) -> str:
 
 
 def build_digest_evening_review(workspace: Path) -> str:
-    """Evening scorecard Telegram — scores morning briefing_id predictions."""
+    """Evening scorecard Telegram — scores R-IBL morning seal predictions."""
     try:
         sys.path.insert(0, str(workspace / "scripts"))
-        from score_commander_evening_briefing_v1 import (  # noqa: WPS433
+        from score_research_evening_predictions_v1 import (  # noqa: WPS433
             build_evening_telegram,
-            resolve_archive,
-            score_evening_briefing,
+            resolve_research_seal,
+            score_research_evening,
         )
         from run_commander_briefing_evolution_v1 import run_evolution  # noqa: WPS433
 
         cal = datetime.now(KST).strftime("%Y-%m-%d")
-        arch = resolve_archive(cal)
-        if not arch.is_file():
-            return f"🌙 MKM 저녁 채점 · {cal}\n아침 브리핑 아카이브 없음 ({arch.name})"
-        score = score_evening_briefing(arch)
-        out = workspace / "reports" / "commander_evening_briefing_score_latest.json"
-        out.write_text(json.dumps(score, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        seal = resolve_research_seal(cal)
+        score_path = workspace / "reports" / "evening_multi_lens_score_v1.json"
+        score: dict = {}
+        if score_path.is_file():
+            score = json.loads(score_path.read_text(encoding="utf-8-sig"))
+        if score.get("schema") == "evening_multi_lens_score_v1" and score.get("calendar_kst") == cal:
+            pass
+        elif seal.is_file():
+            include_bn = os.getenv("MKM_EVENING_INCLUDE_BINANCE_SHADOW", "1").strip().lower() in (
+                "1",
+                "true",
+                "yes",
+                "on",
+            )
+            score = score_research_evening(
+                seal,
+                workspace=workspace,
+                include_binance_shadow=include_bn,
+            )
+            score_path.write_text(json.dumps(score, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        else:
+            return f"🌙 MKM 저녁 채점 · {cal}\nR-IBL seal 없음 ({seal.name})"
         evo = run_evolution(dry_run=True)
         evo_path = workspace / "reports" / "commander_briefing_evolution_latest.json"
         evo_path.write_text(json.dumps(evo, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-        text = build_evening_telegram(score)
+        text = build_evening_telegram(score, evolution=evo)
         props = len(evo.get("proposals") or [])
-        text += f"\n\n▸ 자율진화(dry-run): 제안 {props}건 · avg_soft={evo.get('avg_soft_hit_rate')}"
+        if props and "▸ 진화 제안" not in text:
+            text += f"\n\n▸ 자율진화(dry-run): 제안 {props}건 · avg_soft={evo.get('avg_soft_hit_rate')}"
         if len(text) > TELEGRAM_MAX_LEN:
             return text[: TELEGRAM_MAX_LEN - 20] + "\n…(truncated)"
         return text
