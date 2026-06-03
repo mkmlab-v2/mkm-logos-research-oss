@@ -31,6 +31,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.btrack_conditional_bear_override_v1 import apply_conditional_bear_override_v1
 from scripts.btrack_regime_conditional_price_dampen_v1 import apply_regime_conditional_price_dampen_v1
+from scripts.kospi_overnight_price_overlay_v1 import apply_kospi_overnight_price_overlay
 from scripts.logos_shadow_eval_lib import load_kospi_yf_rows
 DEFAULT_BUNDLE = ROOT / "docs" / "final" / "artifacts" / "btrack_llm_input_bundle_latest.json"
 DEFAULT_SCHEMA = ROOT / "docs" / "final" / "BTRACK_HYPOTHESIS_PROPHECY_V1.schema.json"
@@ -488,6 +489,10 @@ def _build_ensemble_from_bundle(
         instrument=price_instrument,
         kospi_csv_fallback=(price_instrument == "kospi"),
     )
+    if price_instrument == "kospi":
+        price_score, price_conf, price_meta = apply_kospi_overnight_price_overlay(
+            price_score, price_conf, price_meta
+        )
 
     macro_art = bundle.get("artifacts", {}).get("macro_independent_lens") or {}
     news_art = bundle.get("artifacts", {}).get("news_independent_lens") or {}
@@ -683,6 +688,10 @@ def _build_ensemble_v2_from_bundle(
         instrument=price_instrument,
         kospi_csv_fallback=(price_instrument == "kospi"),
     )
+    if price_instrument == "kospi":
+        price_score, price_conf, price_meta = apply_kospi_overnight_price_overlay(
+            price_score, price_conf, price_meta
+        )
     macro_art = bundle.get("artifacts", {}).get("macro_independent_lens") or {}
     news_art = bundle.get("artifacts", {}).get("news_independent_lens") or {}
     macro_scores = macro_art.get("scores") if isinstance(macro_art.get("scores"), dict) else {}

@@ -169,6 +169,12 @@ if (Test-Path -LiteralPath $dotEnv) {
     }
 }
 
+$teDetectorPath = Join-Path $WorkspaceRoot "tools\core\transfer_entropy_market_regime_detector.py"
+if (-not $SkipPathologyTeMapping -and -not (Test-Path -LiteralPath $teDetectorPath)) {
+    Write-Host "Auto-skip pathology TE mapping: missing $teDetectorPath (B-track research_only)." -ForegroundColor DarkYellow
+    $SkipPathologyTeMapping = $true
+}
+
 if (-not $SkipMarketDataRefresh) {
   Write-Host "==> fetch_kospi_yfinance_csv.py (market data bootstrap; B-track research-only)"
   py scripts/fetch_kospi_yfinance_csv.py
@@ -185,6 +191,29 @@ if (-not $SkipMarketDataRefresh) {
       throw "fetch_btc_yfinance_csv exit $LASTEXITCODE (StrictMarketDataRefresh)"
     }
     Write-Host "WARN: BTC CSV fetch failed; dual-leg score may be KOSPI-only." -ForegroundColor Yellow
+  }
+  Write-Host "==> fetch_nasdaq_yfinance_csv.py + fetch_ndx_yfinance_csv.py (KOSPI overnight prior; B-track [HYPO])"
+  py scripts/fetch_nasdaq_yfinance_csv.py
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: Nasdaq CSV fetch failed; overnight overlay may use snapshot-only indices." -ForegroundColor Yellow
+  }
+  py scripts/fetch_ndx_yfinance_csv.py
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: NDX CSV fetch failed; overnight overlay may use snapshot-only indices." -ForegroundColor Yellow
+  }
+  if (Test-Path -LiteralPath (Join-Path $WorkspaceRoot "scripts\fetch_global_overnight_indices_yfinance_v1.py")) {
+    Write-Host "==> fetch_global_overnight_indices_yfinance_v1.py (Nikkei/Hang Seng/Shanghai; B-track [HYPO])"
+    py scripts/fetch_global_overnight_indices_yfinance_v1.py
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: Asia index CSV fetch partial fail; overnight may use Naver snapshot rows." -ForegroundColor Yellow
+    }
+  }
+  if (Test-Path -LiteralPath (Join-Path $WorkspaceRoot "scripts\build_global_market_overnight_signals_v1.py")) {
+    Write-Host "==> build_global_market_overnight_signals_v1.py (US/Asia prior artifact)"
+    py scripts/build_global_market_overnight_signals_v1.py
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: global overnight artifact build failed; KOSPI price overlay may skip." -ForegroundColor Yellow
+    }
   }
 } else {
   Write-Host "Skip market data bootstrap (-SkipMarketDataRefresh)." -ForegroundColor DarkYellow

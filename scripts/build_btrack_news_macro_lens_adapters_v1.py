@@ -26,6 +26,7 @@ DEFAULT_EXTERNAL_MACRO_SIGNALS = ROOT / "docs/final/artifacts/external_macro_sig
 DEFAULT_EXTERNAL_NEWS_FEED = ROOT / "docs/final/artifacts/external_news_feed_latest.json"
 DEFAULT_BTC_MARKET_SIGNALS = ROOT / "docs/final/artifacts/btc_market_signals_latest.json"
 DEFAULT_BTC_ALT_PUBLIC_SIGNALS = ROOT / "docs/final/artifacts/btc_alt_public_signals_latest.json"
+DEFAULT_GLOBAL_OVERNIGHT = ROOT / "docs/final/artifacts/global_market_overnight_signals_v1_latest.json"
 DEFAULT_NEWS_OUT = ROOT / "docs/final/artifacts/news_independent_lens_latest.json"
 DEFAULT_MACRO_OUT = ROOT / "docs/final/artifacts/macro_independent_lens_latest.json"
 
@@ -163,6 +164,42 @@ def _macro_seed_texts_from_naver_signals(doc: dict[str, Any]) -> list[str]:
     return seeds
 
 
+def _macro_seed_texts_from_global_overnight(doc: dict[str, Any] | None) -> list[str]:
+    if not doc or doc.get("schema") != "global_market_overnight_signals_v1":
+        return []
+    seeds: list[str] = []
+    for row in doc.get("indices") or []:
+        if not isinstance(row, dict):
+            continue
+        try:
+            ch = float(row.get("change_pct") or 0.0)
+        except (TypeError, ValueError):
+            continue
+        label = str(row.get("label_ko") or row.get("id") or "index")
+        if ch <= -0.5:
+            seeds.append(f"{label} overnight selloff decline risk-off stress")
+        elif ch >= 0.5:
+            seeds.append(f"{label} overnight rally gain momentum recovery")
+        else:
+            seeds.append(f"{label} stabilization flat consolidation")
+    composite = str(doc.get("composite_tilt") or "")
+    if composite == "risk_off_overnight":
+        seeds.append("global risk-off selloff stress decline")
+    elif composite == "risk_on_overnight":
+        seeds.append("global rally risk-on momentum support")
+    return seeds
+
+
+def _news_headlines_from_global_overnight(doc: dict[str, Any] | None) -> list[str]:
+    if not doc or doc.get("schema") != "global_market_overnight_signals_v1":
+        return []
+    out: list[str] = []
+    for h in doc.get("news_headlines") or []:
+        if isinstance(h, str) and h.strip():
+            out.append(h.strip())
+    return out
+
+
 def _macro_seed_texts_from_external_macro(doc: dict[str, Any]) -> list[str]:
     trend = doc.get("macro_trend") if isinstance(doc.get("macro_trend"), dict) else {}
     t = str(trend.get("trend") or "").strip().lower()
@@ -213,11 +250,14 @@ def _build_news_doc(
     naver_news_doc: dict[str, Any] | None,
     external_news_path: Path,
     external_news_doc: dict[str, Any] | None,
+    global_overnight_path: Path,
+    global_overnight_doc: dict[str, Any] | None,
 ) -> dict[str, Any]:
     pre_texts = _headlines_from_pre_news(pre_doc) if pre_doc else []
     naver_texts = _texts_from_naver_news_feed(naver_news_doc) if naver_news_doc else []
     external_texts = _texts_from_naver_news_feed(external_news_doc) if external_news_doc else []
-    texts = pre_texts + naver_texts + external_texts
+    overnight_texts = _news_headlines_from_global_overnight(global_overnight_doc)
+    texts = pre_texts + naver_texts + external_texts + overnight_texts
     ds, cf, meta = _score_from_texts(texts)
     return {
         "schema": "news_independent_lens_v0",
@@ -238,6 +278,7 @@ def _build_news_doc(
             "pre_news_headline_count": len(pre_texts),
             "naver_news_text_count": len(naver_texts),
             "external_news_text_count": len(external_texts),
+            "global_overnight_headline_count": len(overnight_texts),
             "digest": " | ".join(texts[:5])[:500],
             "tilt_meta": meta,
         },
@@ -246,6 +287,7 @@ def _build_news_doc(
             "input_path": _rel(pre_news_path) if pre_doc else "",
             "naver_news_input_path": _rel(naver_news_path) if naver_news_doc else "",
             "external_news_input_path": _rel(external_news_path) if external_news_doc else "",
+            "global_overnight_input_path": _rel(global_overnight_path) if global_overnight_doc else "",
         },
         "note": "B-track news lens from pre_news_shadow_input (keyword tilt); research_only; not live trading.",
     }
@@ -262,13 +304,23 @@ def _build_macro_doc(
     btc_market_doc: dict[str, Any] | None,
     btc_alt_public_path: Path,
     btc_alt_public_doc: dict[str, Any] | None,
+    global_overnight_path: Path,
+    global_overnight_doc: dict[str, Any] | None,
 ) -> dict[str, Any]:
     feed_texts = _texts_from_external_feed(feed_doc) if feed_doc else []
     naver_seed_texts = _macro_seed_texts_from_naver_signals(naver_signals_doc) if naver_signals_doc else []
     external_macro_seed_texts = _macro_seed_texts_from_external_macro(external_macro_doc) if external_macro_doc else []
     btc_market_seed_texts = _macro_seed_texts_from_btc_market(btc_market_doc) if btc_market_doc else []
     btc_alt_public_seed_texts = _macro_seed_texts_from_btc_alt_public(btc_alt_public_doc) if btc_alt_public_doc else []
-    texts = feed_texts + naver_seed_texts + external_macro_seed_texts + btc_market_seed_texts + btc_alt_public_seed_texts
+    overnight_seed_texts = _macro_seed_texts_from_global_overnight(global_overnight_doc)
+    texts = (
+        feed_texts
+        + naver_seed_texts
+        + external_macro_seed_texts
+        + btc_market_seed_texts
+        + btc_alt_public_seed_texts
+        + overnight_seed_texts
+    )
     ds, cf, meta = _score_from_texts(texts)
     return {
         "schema": "macro_independent_lens_v0",
@@ -291,6 +343,7 @@ def _build_macro_doc(
             "external_macro_seed_count": len(external_macro_seed_texts),
             "btc_market_seed_count": len(btc_market_seed_texts),
             "btc_alt_public_seed_count": len(btc_alt_public_seed_texts),
+            "global_overnight_seed_count": len(overnight_seed_texts),
             "tilt_meta": meta,
         },
         "provenance": {
@@ -301,6 +354,7 @@ def _build_macro_doc(
             "external_macro_input_path": _rel(external_macro_path) if external_macro_doc else "",
             "btc_market_input_path": _rel(btc_market_path) if btc_market_doc else "",
             "btc_alt_public_input_path": _rel(btc_alt_public_path) if btc_alt_public_doc else "",
+            "global_overnight_input_path": _rel(global_overnight_path) if global_overnight_doc else "",
         },
         "note": "B-track macro lens from external_feed_drop (keyword tilt); research_only; not live trading.",
     }
@@ -318,6 +372,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--external-news-feed", type=Path, default=DEFAULT_EXTERNAL_NEWS_FEED)
     ap.add_argument("--btc-market-signals", type=Path, default=DEFAULT_BTC_MARKET_SIGNALS)
     ap.add_argument("--btc-alt-public-signals", type=Path, default=DEFAULT_BTC_ALT_PUBLIC_SIGNALS)
+    ap.add_argument("--global-overnight", type=Path, default=DEFAULT_GLOBAL_OVERNIGHT)
     ap.add_argument("--news-out", type=Path, default=DEFAULT_NEWS_OUT)
     ap.add_argument("--macro-out", type=Path, default=DEFAULT_MACRO_OUT)
     ap.add_argument("--dry-run", action="store_true")
@@ -333,6 +388,7 @@ def main(argv: list[str] | None = None) -> int:
     external_news_doc = _read_json(args.external_news_feed)
     btc_market_doc = _read_json(args.btc_market_signals)
     btc_alt_public_doc = _read_json(args.btc_alt_public_signals)
+    global_overnight_doc = _read_json(args.global_overnight)
 
     news_doc = _build_news_doc(
         args.pre_news_input,
@@ -341,6 +397,8 @@ def main(argv: list[str] | None = None) -> int:
         naver_news_doc,
         args.external_news_feed,
         external_news_doc,
+        args.global_overnight,
+        global_overnight_doc,
     )
     macro_doc = _build_macro_doc(
         args.external_feed,
@@ -353,6 +411,8 @@ def main(argv: list[str] | None = None) -> int:
         btc_market_doc,
         args.btc_alt_public_signals,
         btc_alt_public_doc,
+        args.global_overnight,
+        global_overnight_doc,
     )
 
     if args.dry_run:
