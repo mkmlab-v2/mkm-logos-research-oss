@@ -71,7 +71,7 @@ def build_markdown(*, workspace: Path = ROOT) -> str:
         f"- **성경:** `{logos.get('scores', {}).get('direction_score')}` `[NON_GATING]`",
         f"- **Conflict:** 국내 모멘텀↑ vs US overnight↓ · 사상 heat vs news cold",
         "",
-        "## Overnight board (anchor `{overnight.get('session_anchor_date')}`)",
+        f"## Overnight board (anchor `{overnight.get('session_anchor_date') or '—'}`)",
         "",
     ]
     for row in overnight.get("indices") or []:
