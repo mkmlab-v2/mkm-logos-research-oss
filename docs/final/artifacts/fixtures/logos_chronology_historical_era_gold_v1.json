@@ -1,0 +1,486 @@
+{
+  "schema": "logos_chronology_historical_era_gold_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-05-22T00:00:00Z",
+  "policy": {
+    "research_only": true,
+    "non_gating": true,
+    "no_prophecy_certainty": true,
+    "label_guided_seed_excluded": true
+  },
+  "hypothesis_tier": "[HYPO]",
+  "excluded_source_ids": ["label_guided_seed", "manual_seed"],
+  "operator_note_ko": "지휘관·운영자 gold. 신학 확정·실매매·Track A 승격 근거 아님. inferred_regime_tags는 당시 뉴스/매크로 징후에서 추출될 법한 관측 태그만 기록.",
+  "events": [
+    {
+      "event_id": "macro-1997-07-asian-crisis",
+      "tier": "macro_landmark",
+      "as_of_date": "1997-07-02",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["imf", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return", "judges_risk_cycle"],
+      "headline_ko": "아시아 통화·IMF 구제 국면"
+    },
+    {
+      "event_id": "macro-2000-03-dotcom-peak",
+      "tier": "macro_landmark",
+      "as_of_date": "2000-03-10",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["it_bubble", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "intertestamental_empire_handoff", "united_divided_kingdom"],
+      "headline_ko": "닷컴 버블 정점·IT 과열"
+    },
+    {
+      "event_id": "macro-2001-09-911-shock",
+      "tier": "macro_landmark",
+      "as_of_date": "2001-09-11",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["risk", "lehman"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "지정학 충격·리스크 오프"
+    },
+    {
+      "event_id": "macro-2008-09-lehman",
+      "tier": "macro_landmark",
+      "as_of_date": "2008-09-15",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["lehman", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle", "exile_and_return"],
+      "headline_ko": "리먼·글로벌 신용 경색"
+    },
+    {
+      "event_id": "macro-2009-03-gfc-trough",
+      "tier": "macro_landmark",
+      "as_of_date": "2009-03-09",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["imf", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return"],
+      "headline_ko": "금융위기 저점·유동성 개입"
+    },
+    {
+      "event_id": "macro-2010-05-eu-sovereign-stress",
+      "tier": "macro_landmark",
+      "as_of_date": "2010-05-09",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["imf", "risk", "caution"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return", "judges_risk_cycle"],
+      "headline_ko": "유로존 재정·구제 논의"
+    },
+    {
+      "event_id": "macro-2011-08-us-downgrade",
+      "tier": "macro_landmark",
+      "as_of_date": "2011-08-05",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk", "caution"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "미국 신용등급·변동성 확대"
+    },
+    {
+      "event_id": "macro-2013-05-taper-tantrum",
+      "tier": "macro_landmark",
+      "as_of_date": "2013-05-22",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "테이퍼 쇼크·금리 재가격"
+    },
+    {
+      "event_id": "macro-2015-08-china-deval",
+      "tier": "macro_landmark",
+      "as_of_date": "2015-08-11",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk", "imf"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return"],
+      "headline_ko": "위안화·신흥국 스트레스"
+    },
+    {
+      "event_id": "macro-2016-06-brexit-vote",
+      "tier": "macro_landmark",
+      "as_of_date": "2016-06-23",
+      "partition": "calibration",
+      "inferred_regime_tags": ["risk", "caution"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "united_divided_kingdom"],
+      "headline_ko": "브렉시트·정치 불확실"
+    },
+    {
+      "event_id": "macro-2018-02-volatility-spike",
+      "tier": "macro_landmark",
+      "as_of_date": "2018-02-05",
+      "partition": "calibration",
+      "inferred_regime_tags": ["risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "VIX 급등·변동성 쇼크"
+    },
+    {
+      "event_id": "macro-2020-03-covid-crash",
+      "tier": "macro_landmark",
+      "as_of_date": "2020-03-16",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["covid", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "코로나 팬데믹·급락"
+    },
+    {
+      "event_id": "macro-2020-11-vaccine-rally",
+      "tier": "macro_landmark",
+      "as_of_date": "2020-11-09",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["covid", "stability"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "gospel_logos_incarnate"],
+      "headline_ko": "백신·리스크 온 완화"
+    },
+    {
+      "event_id": "macro-2021-11-inflation-pivot",
+      "tier": "macro_landmark",
+      "as_of_date": "2021-11-10",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "인플레 재부상·긴축 기대"
+    },
+    {
+      "event_id": "macro-2022-02-ukraine-invasion",
+      "tier": "macro_landmark",
+      "as_of_date": "2022-02-24",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["risk", "lehman"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "지정학·에너지 쇼크"
+    },
+    {
+      "event_id": "macro-2022-06-cbdc-hike-cycle",
+      "tier": "macro_landmark",
+      "as_of_date": "2022-06-15",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field"],
+      "headline_ko": "중앙은행 긴축 사이클"
+    },
+    {
+      "event_id": "macro-2023-03-svb-banking",
+      "tier": "macro_landmark",
+      "as_of_date": "2023-03-10",
+      "partition": "calibration",
+      "inferred_regime_tags": ["lehman", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "지역은행·유동성 스트레스"
+    },
+    {
+      "event_id": "macro-2024-08-yen-carry-unwind",
+      "tier": "macro_landmark",
+      "as_of_date": "2024-08-05",
+      "partition": "calibration",
+      "inferred_regime_tags": ["risk", "imf"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return"],
+      "headline_ko": "캐리 트레이드·글로벌 변동성"
+    },
+    {
+      "event_id": "narrative-exodus-motif-only",
+      "tier": "biblical_narrative",
+      "as_of_date": "2015-01-01",
+      "partition": "calibration",
+      "inferred_regime_tags": ["empire_transition"],
+      "gold_era_id": "exodus_wilderness_law",
+      "acceptable_era_ids": ["exodus_wilderness_law", "intertestamental_empire_handoff", "patriarch_covenant_arc"],
+      "headline_ko": "출애굽·해방 서사 키워드만 (매크로 태그 없음)"
+    },
+    {
+      "event_id": "narrative-patriarch-covenant",
+      "tier": "biblical_narrative",
+      "as_of_date": "2012-06-01",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["stability"],
+      "gold_era_id": "patriarch_covenant_arc",
+      "acceptable_era_ids": ["patriarch_covenant_arc", "gospel_logos_incarnate", "genesis_order_and_fall"],
+      "headline_ko": "언약·족장 네트워크 은유"
+    },
+    {
+      "event_id": "narrative-exile-return-motif",
+      "tier": "biblical_narrative",
+      "as_of_date": "2014-03-01",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["imf"],
+      "gold_era_id": "exile_and_return",
+      "acceptable_era_ids": ["exile_and_return", "modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "포로·귀환·구제 은유 (imf 태그만)"
+    },
+    {
+      "event_id": "narrative-intertestamental-empire",
+      "tier": "biblical_narrative",
+      "as_of_date": "2018-01-01",
+      "partition": "calibration",
+      "inferred_regime_tags": ["it_bubble", "empire_transition"],
+      "gold_era_id": "intertestamental_empire_handoff",
+      "acceptable_era_ids": ["intertestamental_empire_handoff", "modern_observational_field", "united_divided_kingdom"],
+      "headline_ko": "제국 교체·버블 구조 은유"
+    },
+    {
+      "event_id": "narrative-judges-volatility-cycle",
+      "tier": "biblical_narrative",
+      "as_of_date": "2016-01-20",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk", "caution"],
+      "gold_era_id": "judges_risk_cycle",
+      "acceptable_era_ids": ["judges_risk_cycle", "modern_observational_field", "exile_and_return"],
+      "headline_ko": "순환 리스크·질서 붕괴 키워드"
+    },
+    {
+      "event_id": "narrative-united-kingdom-split",
+      "tier": "biblical_narrative",
+      "as_of_date": "2017-05-01",
+      "partition": "calibration",
+      "inferred_regime_tags": ["it_bubble"],
+      "gold_era_id": "united_divided_kingdom",
+      "acceptable_era_ids": ["united_divided_kingdom", "intertestamental_empire_handoff", "modern_observational_field"],
+      "headline_ko": "왕국 분열·거버넌스 은유"
+    },
+    {
+      "event_id": "narrative-gospel-incarnation",
+      "tier": "biblical_narrative",
+      "as_of_date": "2013-12-25",
+      "partition": "calibration",
+      "inferred_regime_tags": ["stability"],
+      "gold_era_id": "gospel_logos_incarnate",
+      "acceptable_era_ids": ["gospel_logos_incarnate", "patriarch_covenant_arc", "early_church_network"],
+      "headline_ko": "복음·Logos 현현 프레임"
+    },
+    {
+      "event_id": "narrative-early-church-network",
+      "tier": "biblical_narrative",
+      "as_of_date": "2019-06-01",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["stability"],
+      "gold_era_id": "early_church_network",
+      "acceptable_era_ids": ["early_church_network", "gospel_logos_incarnate"],
+      "headline_ko": "초대교회·네트워크 확장 은유"
+    },
+    {
+      "event_id": "narrative-genesis-order-fall",
+      "tier": "biblical_narrative",
+      "as_of_date": "2010-01-01",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["stability"],
+      "gold_era_id": "genesis_order_and_fall",
+      "acceptable_era_ids": ["genesis_order_and_fall", "patriarch_covenant_arc"],
+      "headline_ko": "창조·질서·경계 상실 프레임"
+    },
+    {
+      "event_id": "narrative-eschaton-hypo",
+      "tier": "biblical_narrative",
+      "as_of_date": "2025-01-01",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["risk"],
+      "gold_era_id": "eschaton_restoration_hypo",
+      "acceptable_era_ids": ["eschaton_restoration_hypo", "modern_observational_field", "gospel_logos_incarnate"],
+      "headline_ko": "종말 완성 가설 프레임 (비예측)"
+    },
+    {
+      "event_id": "macro-2007-08-quant-crisis",
+      "tier": "macro_landmark",
+      "as_of_date": "2007-08-09",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk", "lehman"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "퀀트 펀드·유동성 경색 전조"
+    },
+    {
+      "event_id": "macro-2012-07-draghi-whatever",
+      "tier": "macro_landmark",
+      "as_of_date": "2012-07-26",
+      "partition": "calibration",
+      "inferred_regime_tags": ["imf", "caution"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return"],
+      "headline_ko": "ECB·유로 구제 기대"
+    },
+    {
+      "event_id": "macro-2014-10-oil-collapse",
+      "tier": "macro_landmark",
+      "as_of_date": "2014-10-15",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk", "imf"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return"],
+      "headline_ko": "유가 폭락·신흥국 스트레스"
+    },
+    {
+      "event_id": "macro-2019-08-inversion",
+      "tier": "macro_landmark",
+      "as_of_date": "2019-08-14",
+      "partition": "calibration",
+      "inferred_regime_tags": ["risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "장단 금리 역전·경기 둔화 우려"
+    },
+    {
+      "event_id": "macro-2021-01-meme-retail",
+      "tier": "macro_landmark",
+      "as_of_date": "2021-01-28",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["it_bubble", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "intertestamental_empire_handoff"],
+      "headline_ko": "밈·소매 과열"
+    },
+    {
+      "event_id": "macro-2024-04-middle-east-escalation",
+      "tier": "macro_landmark",
+      "as_of_date": "2024-04-14",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["risk", "lehman"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "중동 긴장·유가 리스크"
+    },
+    {
+      "event_id": "macro-2025-04-tariff-shock",
+      "tier": "macro_landmark",
+      "as_of_date": "2025-04-07",
+      "partition": "calibration",
+      "inferred_regime_tags": ["risk", "caution"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "관세·무역 정책 쇼크"
+    },
+    {
+      "event_id": "macro-1998-08-russia-default",
+      "tier": "macro_landmark",
+      "as_of_date": "1998-08-17",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["imf", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return"],
+      "headline_ko": "러시아 디폴트·신흥국 확산"
+    },
+    {
+      "event_id": "macro-2002-07-accounting-scandal",
+      "tier": "macro_landmark",
+      "as_of_date": "2002-07-21",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["it_bubble", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "united_divided_kingdom"],
+      "headline_ko": "회계 스캔들·거버넌스 신뢰 붕괴"
+    },
+    {
+      "event_id": "macro-2004-06-fed-hike-start",
+      "tier": "macro_landmark",
+      "as_of_date": "2004-06-30",
+      "partition": "calibration",
+      "inferred_regime_tags": ["risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field"],
+      "headline_ko": "금리 상승 사이클 개시"
+    },
+    {
+      "event_id": "macro-2017-12-tax-reform-rally",
+      "tier": "macro_landmark",
+      "as_of_date": "2017-12-20",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["stability", "it_bubble"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "gospel_logos_incarnate"],
+      "headline_ko": "세제·실적 랠리"
+    },
+    {
+      "event_id": "macro-2020-06-reopen-rotation",
+      "tier": "macro_landmark",
+      "as_of_date": "2020-06-08",
+      "partition": "calibration",
+      "inferred_regime_tags": ["covid", "stability"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field"],
+      "headline_ko": "리오픈·섹터 로테이션"
+    },
+    {
+      "event_id": "macro-2023-10-bond-selloff",
+      "tier": "macro_landmark",
+      "as_of_date": "2023-10-03",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk", "lehman"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "국채 급락·금리 재가격"
+    },
+    {
+      "event_id": "macro-2021-03-archegos",
+      "tier": "macro_landmark",
+      "as_of_date": "2021-03-26",
+      "partition": "calibration",
+      "inferred_regime_tags": ["lehman", "risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "레버리지 펀드·청산 연쇄"
+    },
+    {
+      "event_id": "macro-2006-05-inflation-peak",
+      "tier": "macro_landmark",
+      "as_of_date": "2006-05-15",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field"],
+      "headline_ko": "원자재·인플레 고점 우려"
+    },
+    {
+      "event_id": "macro-2011-03-fukushima",
+      "tier": "macro_landmark",
+      "as_of_date": "2011-03-11",
+      "partition": "locked_eval",
+      "inferred_regime_tags": ["risk", "imf"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return"],
+      "headline_ko": "재난·공급망·수요 쇼크"
+    },
+    {
+      "event_id": "macro-2015-01-snb-franc",
+      "tier": "macro_landmark",
+      "as_of_date": "2015-01-15",
+      "partition": "calibration",
+      "inferred_regime_tags": ["risk", "imf"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field"],
+      "headline_ko": "스위스 프랑·FX 쇼크"
+    },
+    {
+      "event_id": "macro-2022-09-uk-mini-budget",
+      "tier": "macro_landmark",
+      "as_of_date": "2022-09-26",
+      "partition": "train_holdout",
+      "inferred_regime_tags": ["risk", "imf"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "exile_and_return"],
+      "headline_ko": "영국 미니 예산·금리 쇼크"
+    },
+    {
+      "event_id": "macro-2024-01-red-sea-shipping",
+      "tier": "macro_landmark",
+      "as_of_date": "2024-01-12",
+      "partition": "calibration",
+      "inferred_regime_tags": ["risk", "lehman"],
+      "gold_era_id": "modern_observational_field",
+      "acceptable_era_ids": ["modern_observational_field", "judges_risk_cycle"],
+      "headline_ko": "홍해·운임·공급망 리스크"
+    }
+  ]
+}
