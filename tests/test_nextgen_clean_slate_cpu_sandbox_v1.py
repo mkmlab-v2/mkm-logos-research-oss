@@ -143,7 +143,11 @@ def test_ng40_poc_eval_hybrid_bench() -> None:
     assert proc.returncode == 0, proc.stderr
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["schema"] == "nextgen_latent_poc_eval_hybrid_v1"
-    assert doc["eval_lane"]["beat_check"]["beat_frozen"] is True
+    parallel = doc["eval_lane"]["beat_check_vs_parallel_bench"]
+    assert parallel["beat_frozen"] is True, parallel
+    active = doc["eval_lane"]["beat_check_vs_active_ssot"]
+    assert active["beat_frozen"] is False
+    assert float(active["delta_saving_pp"]) > 0
     assert doc["oracle_jaccard_upper_bound"]["aggregate"]["case_count"] >= 40
 
 
@@ -179,6 +183,9 @@ def test_sandbox_chain_execute() -> None:
 def test_topology_validates_against_schema() -> None:
     jsonschema = pytest.importorskip("jsonschema")
     schema = json.loads(TOPOLOGY_SCHEMA.read_text(encoding="utf-8"))
+    charter = ROOT / "reports/btrack_nextgen_indexer_charter_v1_latest.json"
+    if not charter.is_file():
+        _run_script("scripts/build_btrack_nextgen_indexer_charter_v1.py")
     topo = EXP / "topology_spec_v1_latest.json"
     if not topo.is_file():
         _run_script(

@@ -143,7 +143,13 @@ def main() -> int:
         use_master_codebook_lexicon_v1=False,
         active_track_parity=False,
     )
-    frozen = _frozen_active()
+    frozen_active = _frozen_active()
+    parallel_frozen: dict[str, Any] = {"present": False}
+    if args.caps_json.is_file():
+        caps_doc = json.loads(args.caps_json.read_text(encoding="utf-8"))
+        fb = caps_doc.get("frozen_baseline_parallel")
+        if isinstance(fb, dict) and fb.get("case_count"):
+            parallel_frozen = {"present": True, **fb}
 
     eval_rows: list[dict[str, Any]] = []
     for c in (eval_report.get("compression_metrics") or {}).get("cases") or []:
@@ -175,7 +181,7 @@ def main() -> int:
             {
                 "keep_ratio": kr,
                 "aggregate": agg,
-                "beat_check": _beat(agg, frozen),
+                "beat_check": _beat(agg, frozen_active),
             }
         )
         if not best_poc_agg or float(agg.get("avg_reconstruction_fidelity_jaccard") or 0) >= float(
@@ -235,13 +241,15 @@ def main() -> int:
         },
         "eval_lane": {
             "aggregate": eval_agg,
-            "beat_check": _beat(eval_agg, frozen),
+            "beat_check_vs_active_ssot": _beat(eval_agg, frozen_active),
+            "beat_check_vs_parallel_bench": _beat(eval_agg, parallel_frozen),
+            "beat_check": _beat(eval_agg, frozen_active),
             "per_case_count": len(eval_rows),
         },
         "poc_lane": {
             "selected_keep_ratio": best_poc_kr,
             "aggregate": best_poc_agg,
-            "beat_check": _beat(best_poc_agg, frozen),
+            "beat_check": _beat(best_poc_agg, frozen_active),
             "sweep": poc_sweep,
         },
         "oracle_jaccard_upper_bound": {
@@ -250,27 +258,31 @@ def main() -> int:
                 "beats_frozen_jaccard": float(
                     oracle_jaccard_only["avg_reconstruction_fidelity_jaccard"]
                 )
-                >= float(frozen.get("avg_reconstruction_fidelity_jaccard") or 0)
-                if frozen.get("present")
+                >= float(frozen_active.get("avg_reconstruction_fidelity_jaccard") or 0)
+                if frozen_active.get("present")
                 else False,
                 "delta_jaccard_pp": round(
                     (
                         float(oracle_jaccard_only["avg_reconstruction_fidelity_jaccard"])
-                        - float(frozen.get("avg_reconstruction_fidelity_jaccard") or 0)
+                        - float(frozen_active.get("avg_reconstruction_fidelity_jaccard") or 0)
                     )
                     * 100,
                     2,
                 )
-                if frozen.get("present")
+                if frozen_active.get("present")
                 else None,
             },
             "per_case": oracle_rows,
         },
-        "frozen_baseline_parallel": frozen,
+        "frozen_baseline_active_ssot": frozen_active,
+        "frozen_baseline_parallel_bench": parallel_frozen,
+        "frozen_baseline_parallel": parallel_frozen,
         "guardrails": [
             "Oracle hybrid is not an implementation; eval remains production-shaped path",
             "PoC does not beat frozen on saving; do not merge into Track A",
             "41k lexicon OFF on eval lane",
+            "beat_check_vs_active_ssot uses MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT; "
+            "beat_check_vs_parallel_bench uses ng40 eval frozen_baseline_parallel (~48.8% saving)",
         ],
     }
 
@@ -280,7 +292,13 @@ def main() -> int:
         json.dumps(
             {
                 "wrote": str(args.out_json),
-                "eval_beat": out["eval_lane"]["beat_check"]["beat_frozen"],
+                "eval_beat_active_ssot": out["eval_lane"]["beat_check_vs_active_ssot"][
+                    "beat_frozen"
+                ],
+                "eval_beat_parallel_bench": out["eval_lane"]["beat_check_vs_parallel_bench"][
+                    "beat_frozen"
+                ],
+                "eval_beat": out["eval_lane"]["beat_check_vs_parallel_bench"]["beat_frozen"],
                 "eval_saving": eval_agg.get("global_token_saving_rate"),
                 "eval_jaccard": eval_agg.get("avg_reconstruction_fidelity_jaccard"),
                 "poc_kr": best_poc_kr,

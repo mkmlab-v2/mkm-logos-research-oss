@@ -25,7 +25,7 @@
     "research_only": { "type": "boolean", "const": true },
     "track_a_active_write": { "type": "boolean", "const": false },
     "hypo_label": { "type": "string", "const": "[HYPO]" },
-    "charter_pointer": { "type": "string" },
+    "charter_pointer": { "type": ["string", "null"] },
     "hosts": {
       "type": "object",
       "additionalProperties": false,
