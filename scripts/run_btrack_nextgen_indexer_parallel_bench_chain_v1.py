@@ -99,9 +99,14 @@ def build_plan(execute: bool) -> dict:
         {
             "step_id": "S4_nextgen_latent",
             "arm_id": "nextgen_latent_indexer",
-            "script": None,
-            "mode": "blocked",
-            "description": "Latent indexer bench not implemented — charter_only arm",
+            "script": "scripts/run_nextgen_clean_slate_cpu_sandbox_chain_v1.py",
+            "mode": "execute_only",
+            "description": "CPU clean-slate sandbox (topology+RTT+P0+P1+NG baseline)",
+            "optional": False,
+            "extra_args": [
+                "--execute",
+                "--main-only",
+            ],
         },
     ]
 
@@ -134,7 +139,7 @@ def build_plan(execute: bool) -> dict:
             row["status"] = "skipped_missing_script"
             results.append(row)
             continue
-        row.update(_run_py(script))
+        row.update(_run_py(script, step.get("extra_args")))
         if step.get("optional") and row["exit_code"] != 0:
             row["status"] = "optional_fail"
         else:
@@ -153,6 +158,134 @@ def build_plan(execute: bool) -> dict:
     if gpu_path.is_file():
         gdoc = json.loads(gpu_path.read_text(encoding="utf-8"))
         gpu_metrics = gdoc.get("summary") or gdoc.get("compression_metrics") or gdoc
+
+    ng_baseline_path = (
+        ROOT
+        / "experiments/nextgen_clean_slate_cpu_v1/results/nextgen_neural_baseline_v1_latest.json"
+    )
+    ng40_path = (
+        ROOT
+        / "experiments/nextgen_clean_slate_cpu_v1/results/ng40_latent_stub_shadow_v1_latest.json"
+    )
+    ng40_poc_path = (
+        ROOT
+        / "experiments/nextgen_clean_slate_cpu_v1/results/ng40_latent_poc_v1_latest.json"
+    )
+    ng40_eval_best = (
+        ROOT
+        / "experiments/nextgen_clean_slate_cpu_v1/results/ng40_latent_eval_best_v1_latest.json"
+    )
+    ng40_sweep = (
+        ROOT
+        / "experiments/nextgen_clean_slate_cpu_v1/results/ng40_latent_eval_cap_sweep_v1_latest.json"
+    )
+    ng40_hybrid = (
+        ROOT
+        / "experiments/nextgen_clean_slate_cpu_v1/results/ng40_latent_poc_eval_hybrid_v1_latest.json"
+    )
+    ng40_ablation = (
+        ROOT
+        / "experiments/nextgen_clean_slate_cpu_v1/results/ng40_lexicon_ablation_v1_latest.json"
+    )
+    ng_metrics = None
+    ng_status = "charter_only"
+    ng_beat = {
+        "beat_frozen": False,
+        "reason": "ng_baseline_not_golden40_compatible",
+    }
+    if ng_baseline_path.is_file():
+        ng_doc = json.loads(ng_baseline_path.read_text(encoding="utf-8-sig"))
+        ng_metrics = ng_doc.get("measurements_summary")
+        phase = ng_doc.get("implementation_phase") or "partial_poc"
+        ng_status = "partial_poc" if phase else "charter_only"
+    elif execute and any(
+        s.get("step_id") == "S4_nextgen_latent" and s.get("status") == "ok"
+        for s in results
+    ):
+        ng_status = "partial_poc"
+    if ng40_eval_best.is_file():
+        ev_doc = json.loads(ng40_eval_best.read_text(encoding="utf-8-sig"))
+        ev_agg = ev_doc.get("aggregate") or {}
+        ng_metrics = {
+            "infra_baseline": ng_metrics,
+            "ng40_eval_best": ev_agg,
+            "ng40_eval_beat_check": ev_doc.get("beat_check"),
+            "golden40_compatible": ev_doc.get("golden40_compatible"),
+        }
+        if ng40_sweep.is_file():
+            sw = json.loads(ng40_sweep.read_text(encoding="utf-8-sig"))
+            ng_metrics["cap_sweep_any_beat"] = sw.get("any_beat_frozen")
+            ng_metrics["cap_sweep_combo_count"] = sw.get("combo_count")
+        if ng40_ablation.is_file():
+            ab = json.loads(ng40_ablation.read_text(encoding="utf-8-sig"))
+            ng_metrics["lexicon_ablation"] = ab.get("attribution")
+            ng_metrics["lexicon_ablation_arms"] = [
+                {
+                    "arm_id": a.get("arm_id"),
+                    "beat_frozen": (a.get("beat_check") or {}).get("beat_frozen"),
+                    "saving": (a.get("aggregate") or {}).get("global_token_saving_rate"),
+                    "jaccard": (a.get("aggregate") or {}).get(
+                        "avg_reconstruction_fidelity_jaccard"
+                    ),
+                }
+                for a in ab.get("arms") or []
+            ]
+        ng_status = "partial_poc"
+        ng_beat = {
+            **(ev_doc.get("beat_check") or {}),
+            "reason": (ev_doc.get("beat_check") or {}).get("reason")
+            or "ng40_eval_best_measured",
+            "note": "NG-40 eval cap lane (41k OFF); primary beat evidence",
+        }
+    if ng40_hybrid.is_file():
+        hy_doc = json.loads(ng40_hybrid.read_text(encoding="utf-8-sig"))
+        ng_metrics = dict(ng_metrics or {})
+        ng_metrics["poc_eval_hybrid"] = {
+            "eval": (hy_doc.get("eval_lane") or {}).get("aggregate"),
+            "poc": (hy_doc.get("poc_lane") or {}).get("aggregate"),
+            "oracle_jaccard_avg": (hy_doc.get("oracle_jaccard_upper_bound") or {})
+            .get("aggregate", {})
+            .get("avg_reconstruction_fidelity_jaccard"),
+            "caps": hy_doc.get("eval_caps"),
+        }
+    if ng40_poc_path.is_file():
+        poc_doc = json.loads(ng40_poc_path.read_text(encoding="utf-8-sig"))
+        poc_agg = poc_doc.get("aggregate") or {}
+        ng_metrics = dict(ng_metrics or {})
+        ng_metrics.update(
+            {
+                "infra_baseline": ng_metrics.get("infra_baseline") or ng_metrics,
+                "ng40_latent_poc": poc_agg,
+                "ng40_poc_beat_check": poc_doc.get("beat_check"),
+                "ng40_poc_selected_keep_ratio": poc_doc.get("selected_keep_ratio"),
+            }
+        )
+        ng_status = "partial_poc"
+        if not (ng_beat or {}).get("beat_frozen"):
+            ng_beat = {
+                **(poc_doc.get("beat_check") or {}),
+                "reason": (poc_doc.get("beat_check") or {}).get("reason")
+                or "ng40_latent_poc_measured",
+                "note": "P2b salience PoC; Jaccard near frozen at high keep_ratio; saving tradeoff",
+            }
+    elif ng40_path.is_file() and not ng40_eval_best.is_file():
+        ng40_doc = json.loads(ng40_path.read_text(encoding="utf-8-sig"))
+        agg = ng40_doc.get("aggregate") or {}
+        ng_metrics = {
+            "infra_baseline": ng_metrics,
+            "ng40_shadow": agg,
+            "ng40_beat_check": ng40_doc.get("beat_check"),
+            "golden40_compatible": ng40_doc.get("golden40_compatible"),
+        }
+        ng_status = "partial_poc"
+        ng_beat = {
+            **(ng40_doc.get("beat_check") or {}),
+            "reason": (
+                (ng40_doc.get("beat_check") or {}).get("reason")
+                or "ng40_shadow_measured"
+            ),
+            "note": "P2 stub on Golden-40; not neural E2E; ACTIVE overwrite forbidden",
+        }
 
     summary = {
         "schema": "btrack_nextgen_indexer_parallel_bench_v1",
@@ -175,9 +308,39 @@ def build_plan(execute: bool) -> dict:
                 ),
             },
             "nextgen_latent_indexer": {
-                "status": "charter_only",
-                "metrics": None,
-                "beat_check": {"beat_frozen": False, "reason": "not_implemented"},
+                "status": ng_status,
+                "metrics": ng_metrics,
+                "beat_check": ng_beat,
+                "baseline_pointer": (
+                    str(ng_baseline_path.relative_to(ROOT)).replace("\\", "/")
+                    if ng_baseline_path.is_file()
+                    else None
+                ),
+                "ng40_shadow_pointer": (
+                    str(ng40_path.relative_to(ROOT)).replace("\\", "/")
+                    if ng40_path.is_file()
+                    else None
+                ),
+                "ng40_latent_poc_pointer": (
+                    str(ng40_poc_path.relative_to(ROOT)).replace("\\", "/")
+                    if ng40_poc_path.is_file()
+                    else None
+                ),
+                "ng40_eval_best_pointer": (
+                    str(ng40_eval_best.relative_to(ROOT)).replace("\\", "/")
+                    if ng40_eval_best.is_file()
+                    else None
+                ),
+                "ng40_cap_sweep_pointer": (
+                    str(ng40_sweep.relative_to(ROOT)).replace("\\", "/")
+                    if ng40_sweep.is_file()
+                    else None
+                ),
+                "ng40_lexicon_ablation_pointer": (
+                    str(ng40_ablation.relative_to(ROOT)).replace("\\", "/")
+                    if ng40_ablation.is_file()
+                    else None
+                ),
             },
         },
         "steps": results,

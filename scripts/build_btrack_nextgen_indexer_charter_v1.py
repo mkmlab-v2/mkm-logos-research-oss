@@ -133,8 +133,8 @@ def main() -> int:
             },
             {
                 "arm_id": "nextgen_latent_indexer",
-                "label_ko": "[HYPO] Native neural corpus indexer — continuous latent binding",
-                "implementation_status": "charter_only",
+                "label_ko": "[HYPO] Native neural corpus indexer — CPU clean-slate distributed PoC",
+                "implementation_status": "partial_poc",
                 "same_bench_cases": _rel(BENCH_INPUT),
                 "metrics_required": [
                     "global_token_saving_rate",
@@ -142,13 +142,20 @@ def main() -> int:
                     "alignment_pass_rate_raw",
                 ],
                 "script_pointers": [
+                    _rel(ROOT / "scripts/run_nextgen_clean_slate_cpu_sandbox_chain_v1.py"),
+                    _rel(ROOT / "scripts/Run-NextGenCleanSlateCpuSandbox_v1.ps1"),
                     _rel(ROOT / "scripts/run_btrack_nextgen_indexer_parallel_bench_chain_v1.py"),
                 ],
                 "artifact_pointers": [
+                    _rel(
+                        ROOT
+                        / "experiments/nextgen_clean_slate_cpu_v1/results/nextgen_neural_baseline_v1_latest.json"
+                    ),
                     _rel(ROOT / "reports/btrack_nextgen_indexer_parallel_bench_v1_latest.json"),
                 ],
                 "reporting": (
-                    "NG-40 shadow matrix only until beat frozen baseline + human sign-off"
+                    "nextgen_neural_baseline_v1 (Golden-40 incompatible); "
+                    "NG-40 eval/PoC/hybrid when artifacts exist; ACTIVE overwrite forbidden"
                 ),
             },
         ],
@@ -175,6 +182,11 @@ def main() -> int:
             _rel(
                 ROOT
                 / "docs/final/artifacts/btrack_31k41k_prophecy_shadow_experiment_spec_v1_latest.md"
+            ),
+            _rel(ROOT / "experiments/nextgen_clean_slate_cpu_v1/README.md"),
+            _rel(
+                ROOT
+                / "docs/final/schemas/nextgen_clean_slate_cpu_topology_v1.schema.json"
             ),
         ],
         "forbidden": [

@@ -1,0 +1,59 @@
+{
+  "schema": "nextgen_clean_slate_cpu_topology_v1",
+  "generated_at_utc": "2026-06-04T00:00:00Z",
+  "research_only": true,
+  "track_a_active_write": false,
+  "hypo_label": "[HYPO]",
+  "charter_pointer": "reports/btrack_nextgen_indexer_charter_v1_latest.json",
+  "hosts": {
+    "primary": {
+      "host_id": "main",
+      "hostname": "MAIN_PC",
+      "role": "primary",
+      "ip": "192.168.0.10",
+      "ram_gb": 32,
+      "cpu_logical": 16,
+      "repo_root": "C:/workspace",
+      "shard_indices": [0]
+    },
+    "aux": [
+      {
+        "host_id": "aux0",
+        "hostname": "AUX_PC",
+        "role": "aux",
+        "ip": "192.168.0.20",
+        "ram_gb": 16,
+        "cpu_logical": 8,
+        "repo_root": "C:/workspace",
+        "shard_indices": [1]
+      }
+    ]
+  },
+  "shard_policy": {
+    "unit": "case_batch",
+    "primary_shard_index": 0,
+    "default_shard_count": 2,
+    "sync_model": "offline_batch",
+    "note": "Phase P1: fake weight blocks; Phase P2: latent indexer stub"
+  },
+  "latency_gates_ms": {
+    "aux_shard_p95_max": 200,
+    "loopback_p95_max": 50,
+    "action_if_exceeded": "disable_aux_sharding; single-host CPU only"
+  },
+  "evaluation_ssot": {
+    "baseline_json": "experiments/nextgen_clean_slate_cpu_v1/results/nextgen_neural_baseline_v1_latest.json",
+    "golden40_compatible": false,
+    "frozen_baseline_pointer": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+  },
+  "measurement_protocol": {
+    "rtt_script": "scripts/run_nextgen_clean_slate_cpu_rtt_probe_v1.py",
+    "payload_kb_grid": [64, 256, 1024],
+    "rounds_default": 20
+  },
+  "guardrails": [
+    "No Track A active write",
+    "No live trading trigger",
+    "Golden-40 scores are parallel reference only"
+  ]
+}

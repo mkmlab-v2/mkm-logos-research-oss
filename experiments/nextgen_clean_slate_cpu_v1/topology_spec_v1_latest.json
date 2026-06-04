@@ -1,0 +1,55 @@
+{
+  "schema": "nextgen_clean_slate_cpu_topology_v1",
+  "generated_at_utc": "2026-06-04T01:49:08Z",
+  "research_only": true,
+  "track_a_active_write": false,
+  "hypo_label": "[HYPO]",
+  "charter_pointer": "reports/btrack_nextgen_indexer_charter_v1_latest.json",
+  "hosts": {
+    "primary": {
+      "host_id": "main",
+      "hostname": "DESKTOP-2511",
+      "role": "primary",
+      "ip": null,
+      "ram_gb": null,
+      "cpu_logical": 12,
+      "repo_root": "C:/workspace",
+      "shard_indices": [
+        0
+      ]
+    },
+    "aux": []
+  },
+  "shard_policy": {
+    "unit": "case_batch",
+    "primary_shard_index": 0,
+    "default_shard_count": 1,
+    "sync_model": "offline_batch",
+    "note": "P1: fake weight blocks; P2: latent indexer stub (future)"
+  },
+  "latency_gates_ms": {
+    "aux_shard_p95_max": 200,
+    "loopback_p95_max": 50,
+    "action_if_exceeded": "disable_aux_sharding; single-host CPU only"
+  },
+  "evaluation_ssot": {
+    "baseline_json": "experiments/nextgen_clean_slate_cpu_v1/results/nextgen_neural_baseline_v1_latest.json",
+    "golden40_compatible": false,
+    "frozen_baseline_pointer": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
+  },
+  "measurement_protocol": {
+    "rtt_script": "scripts/run_nextgen_clean_slate_cpu_rtt_probe_v1.py",
+    "payload_kb_grid": [
+      64,
+      256,
+      1024
+    ],
+    "rounds_default": 20
+  },
+  "guardrails": [
+    "No Track A active write",
+    "No live trading trigger",
+    "Golden-40 scores are parallel reference only",
+    "FAIL-COMP-004: no auto-merge to MS or Track A headlines"
+  ]
+}

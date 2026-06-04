@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/nextgen_clean_slate_cpu_topology_v1.schema.json",
+  "title": "Next-Gen clean-slate CPU distributed topology v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "track_a_active_write",
+    "hypo_label",
+    "hosts",
+    "shard_policy",
+    "latency_gates_ms",
+    "evaluation_ssot",
+    "guardrails"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "nextgen_clean_slate_cpu_topology_v1"
+    },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "research_only": { "type": "boolean", "const": true },
+    "track_a_active_write": { "type": "boolean", "const": false },
+    "hypo_label": { "type": "string", "const": "[HYPO]" },
+    "charter_pointer": { "type": "string" },
+    "hosts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary"],
+      "properties": {
+        "primary": { "$ref": "#/$defs/host_node" },
+        "aux": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/host_node" }
+        }
+      }
+    },
+    "shard_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit", "primary_shard_index", "default_shard_count"],
+      "properties": {
+        "unit": {
+          "type": "string",
+          "enum": ["case_batch", "weight_block", "lexicon_chunk"]
+        },
+        "primary_shard_index": { "type": "integer", "minimum": 0 },
+        "default_shard_count": { "type": "integer", "minimum": 1 },
+        "sync_model": {
+          "type": "string",
+          "enum": ["offline_batch", "streaming"]
+        },
+        "note": { "type": "string" }
+      }
+    },
+    "latency_gates_ms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["aux_shard_p95_max", "loopback_p95_max"],
+      "properties": {
+        "aux_shard_p95_max": { "type": "number", "minimum": 0 },
+        "loopback_p95_max": { "type": "number", "minimum": 0 },
+        "action_if_exceeded": { "type": "string" }
+      }
+    },
+    "evaluation_ssot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseline_json", "golden40_compatible"],
+      "properties": {
+        "baseline_json": { "type": "string" },
+        "golden40_compatible": { "type": "boolean", "const": false },
+        "frozen_baseline_pointer": { "type": "string" }
+      }
+    },
+    "measurement_protocol": {
+      "type": "object",
+      "properties": {
+        "rtt_script": { "type": "string" },
+        "payload_kb_grid": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 1 }
+        },
+        "rounds_default": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "guardrails": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "host_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["host_id", "hostname", "role"],
+      "properties": {
+        "host_id": { "type": "string" },
+        "hostname": { "type": "string" },
+        "role": { "type": "string", "enum": ["primary", "aux"] },
+        "ip": { "type": ["string", "null"] },
+        "ram_gb": { "type": ["number", "null"] },
+        "cpu_logical": { "type": ["integer", "null"] },
+        "repo_root": { "type": "string" },
+        "shard_indices": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}
