@@ -23,8 +23,10 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib import error, parse, request
+from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parents[1]
+KST = ZoneInfo("Asia/Seoul")
 DOTENV = ROOT / ".env"
 DEFAULT_ALERT = ROOT / "docs" / "final" / "artifacts" / "cross_lens_rag_alert_latest.json"
 DEFAULT_FUSION = ROOT / "docs" / "final" / "artifacts" / "cross_lens_rag_fusion_latest.json"
@@ -161,6 +163,14 @@ def _telegram_eligible_for_status(status: str, min_status: str) -> bool:
     if status == "YELLOW":
         return min_status == "yellow"
     return False
+
+
+def _morning_prophecy_only_window() -> bool:
+    """06–11 KST: only send_telegram --scheduled-morning (장전 예언) may ping Telegram."""
+    raw = os.getenv("MKM_TELEGRAM_MORNING_KOSPI_ONLY", "1").strip().lower()
+    if raw in {"0", "false", "no", "off"}:
+        return False
+    return 6 <= datetime.now(KST).hour < 11
 
 
 def main() -> int:
@@ -309,6 +319,12 @@ def main() -> int:
     else:
         result["webhook_result"] = "no_webhook_configured"
 
+    morning_tg_skipped = False
+    if tg_will_send and _morning_prophecy_only_window():
+        result["telegram_result"] = "skipped_morning_prophecy_only_window"
+        tg_will_send = False
+        morning_tg_skipped = True
+
     if tg_will_send:
         sl = alert.get("signal_light") if isinstance(alert.get("signal_light"), dict) else {}
         note = str(sl.get("note") or "")
@@ -326,6 +342,8 @@ def main() -> int:
             result["telegram_sent"] = ok_t
             result["telegram_result"] = msg_t
             delivery_ok = delivery_ok or ok_t
+    elif morning_tg_skipped:
+        pass
     elif not notify_tg:
         result["telegram_result"] = "telegram_notify_disabled"
     elif not tg_token or not tg_chat:

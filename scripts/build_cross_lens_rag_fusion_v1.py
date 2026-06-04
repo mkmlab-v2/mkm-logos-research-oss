@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+_SCRIPTS = ROOT / "scripts"
 
 DEFAULT_LOGOS_WEALTH = ROOT / "docs" / "final" / "artifacts" / "logos_ann_query_wealth_transfer_latest.json"
 DEFAULT_LOGOS_JUSTICE = ROOT / "docs" / "final" / "artifacts" / "logos_ann_query_justice_weights_latest.json"
@@ -29,6 +30,23 @@ DEFAULT_ALERT_JSON = ROOT / "docs" / "final" / "artifacts" / "cross_lens_rag_ale
 DEFAULT_ALERT_LOG_JSONL = ROOT / "reports" / "cross_lens_rag_alert_log.jsonl"
 
 LENS_MUSIC_GATE_CHAIN_SCHEMA = "lens_music_gate_chain_v1"
+
+
+def _build_lens_multi_axis_audit(
+    myeongni_path: Path,
+    sasang_path: Path,
+) -> dict[str, Any] | None:
+    """Multi-axis audit envelope — no graph router; optional import failure → None."""
+    try:
+        import sys
+
+        if str(_SCRIPTS) not in sys.path:
+            sys.path.insert(0, str(_SCRIPTS))
+        from lens_multi_axis_audit_v1 import build_envelope_from_lens_paths
+
+        return build_envelope_from_lens_paths(myeongni_path, sasang_path, interpret_path=None)
+    except Exception:
+        return None
 
 
 def _read_json(path: Path) -> dict[str, Any] | None:
@@ -311,6 +329,24 @@ def _write_markdown(path: Path, payload: dict[str, Any]) -> None:
     else:
         lines.append("_No lens music gate-chain JSON supplied (`--lens-music-gate-chain-json`)._")
         lines.append("")
+    audit = payload.get("lens_multi_axis_audit_v1")
+    lines += ["", "## Multi-axis audit (myeongni / sasang, no GraphRAG)", ""]
+    if isinstance(audit, dict) and str(audit.get("schema")) == "lens_multi_axis_audit_envelope_v1":
+        lines.append(
+            f"- graph_router_invoked={audit.get('graph_router_invoked')} · "
+            f"lint_pass={audit.get('lint', {}).get('pass')}"
+        )
+        for lid in ("myeongni", "sasang"):
+            block = audit.get("lenses", {}).get(lid) if isinstance(audit.get("lenses"), dict) else None
+            if isinstance(block, dict):
+                n_ax = len(block.get("axes") or [])
+                lines.append(f"- {lid}: axes={n_ax}, available={block.get('available')}")
+        lines.append("")
+        lines.append("_Shell-only audit frame; axes are numeric joins, not semantic graph edges._")
+        lines.append("")
+    else:
+        lines.append("_Audit envelope not embedded (build_lens_multi_axis_audit_envelope_v1.py)._")
+        lines.append("")
     lines += ["", "## Theme Retrieval Summary", ""]
     for th in themes:
         anchors = ", ".join(th["top_verse_ids"]) if th["top_verse_ids"] else "n/a"
@@ -532,10 +568,11 @@ def main() -> int:
         args.lens_music_gate_chain_json,
         enabled=not args.no_lens_music,
     )
+    multi_axis_audit = _build_lens_multi_axis_audit(args.myeongni_lens, args.sasang_lens)
 
     payload = {
         "schema": "cross_lens_rag_fusion_v1",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
         "boundary_ack": True,
@@ -545,6 +582,7 @@ def main() -> int:
         "lens_snapshots": lens_snapshots,
         "sasang_b_track_axis_scores_v1": sasang_axis,
         "lens_music_symbolic_passthrough_v1": music_pt,
+        "lens_multi_axis_audit_v1": multi_axis_audit,
         "cross_lens_conflict_matrix": conflict,
         "final_gate_panel": _build_final_gate(conflict, fusion_stub),
         "delta_from_prev": {

@@ -100,7 +100,7 @@ def test_fusion_emits_sasang_axis_block_in_json_and_md(tmp_path: Path) -> None:
     assert cp.returncode == 0, cp.stdout + cp.stderr
 
     out = json.loads(out_json.read_text(encoding="utf-8"))
-    assert out.get("version") == "1.1.0"
+    assert out.get("version") == "1.2.0"
     assert out.get("lens_music_symbolic_passthrough_v1") is None
     ax = out.get("sasang_b_track_axis_scores_v1")
     assert isinstance(ax, dict)

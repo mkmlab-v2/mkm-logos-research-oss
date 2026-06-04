@@ -240,6 +240,23 @@ def _ko_direction(direction: Any) -> str:
     return table.get(raw, str(direction or "—"))
 
 
+def _ko_composite_tilt(tilt: Any) -> str:
+    raw = str(tilt or "—").strip()
+    table = {
+        "risk_off_overnight": "위험회피·오버나이트",
+        "risk_on_overnight": "위험선호·오버나이트",
+        "neutral_overnight": "중립·오버나이트",
+    }
+    return table.get(raw, raw.replace("_", " "))
+
+
+def _morning_kospi_only_window() -> bool:
+    """06:00–10:59 KST — single Korean prophecy briefing policy."""
+    if not _truthy("MKM_TELEGRAM_MORNING_KOSPI_ONLY", default=True):
+        return False
+    return 6 <= datetime.now(KST).hour < 11
+
+
 def build_digest_prophecy(workspace: Path) -> str:
     """장전 예언 브리핑만(한글) — 일운·RAG·VPS·패널·R-IBL·운영 잡음 제외."""
     art = workspace / "docs" / "final" / "artifacts"
@@ -280,9 +297,9 @@ def build_digest_prophecy(workspace: Path) -> str:
         overlay = {}
 
     lines: List[str] = [
-        f"MKM 예언 브리핑 · {now_kst}",
+        f"MKM 장전 예언 브리핑 · {now_kst}",
         f"근거 시각: {brief_ts}",
-        "B-track [가설] · 실매매·Track A 자동 연동 없음",
+        "[가설] B트랙 · 실매매·압축A 자동 연동 없음",
         "",
         f"▸ 오늘 장전: {action}" + (f" · 확신 {conf}/100" if conf is not None else ""),
     ]
@@ -296,7 +313,7 @@ def build_digest_prophecy(workspace: Path) -> str:
             f"  비트코인: {_fmt_pct(btc_hr)} (표본 {btc_n})",
             f"  통합: {_fmt_pct(pooled.get('price_directional_hit_rate'))} (표본 {pooled.get('n_evaluated')})",
             "",
-            "▸ B-track 가격 가설",
+            "▸ B트랙 가격 가설",
             f"  {hypo_inst} · 방향 {hypo_dir}"
             + (f" · 신뢰 {float(hypo_conf):.2f}" if hypo_conf is not None else ""),
         ]
@@ -305,12 +322,12 @@ def build_digest_prophecy(workspace: Path) -> str:
         us_s = overlay.get("us_overnight_score")
         dom_s = overlay.get("domestic_price_score")
         blend_s = overlay.get("price_score_after_blend")
-        tilt = overlay.get("composite_tilt") or "—"
+        tilt = _ko_composite_tilt(overlay.get("composite_tilt"))
         lines.extend(
             [
                 "",
-                "▸ Field·오버나이트 [HYPO]",
-                f"  {tilt} · US prior {us_s} · 국내 {dom_s} → blend {blend_s}",
+                "▸ 레짐·오버나이트 [가설]",
+                f"  {tilt} · 미국 야간 {us_s} · 국내 {dom_s} → 혼합 {blend_s}",
             ]
         )
     price_s = lv.get("price", {}).get("score")
@@ -321,15 +338,15 @@ def build_digest_prophecy(workspace: Path) -> str:
             [
                 "",
                 "▸ 렌즈 스냅샷",
-                f"  price {price_s} · news {news_s} · macro {macro_s}",
-                "  사상·명리·성경 상세는 internal executive MD 참조",
+                f"  가격 {price_s} · 뉴스 {news_s} · 거시 {macro_s}",
+                "  사상·명리·성경 상세는 executive 원페이저(MD) 참조",
             ]
         )
     if brief.get("today_action") and brief.get("btrack_hypothesis"):
         lines.extend(
             [
                 "",
-                f"▸ Internal brief (동기화): {_ko_market_action(brief.get('today_action'))}"
+                f"▸ 내부 브리프(동기화): {_ko_market_action(brief.get('today_action'))}"
                 + (f" · {brief.get('confidence_0_100')}/100" if brief.get("confidence_0_100") is not None else ""),
             ]
         )
@@ -481,8 +498,8 @@ def build_digest_evening_review(workspace: Path) -> str:
 def _resolve_style(cli_style: Optional[str]) -> str:
     if cli_style:
         return cli_style.strip().lower()
-    env = os.getenv("MKM_TELEGRAM_DIGEST_STYLE", "personal").strip().lower()
-    return env if env in {"minimal", "advanced", "prophecy", "personal", "evening_review"} else "personal"
+    env = os.getenv("MKM_TELEGRAM_DIGEST_STYLE", "prophecy").strip().lower()
+    return env if env in {"minimal", "advanced", "prophecy", "personal", "evening_review"} else "prophecy"
 
 
 def main() -> int:
@@ -491,13 +508,31 @@ def main() -> int:
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--force", action="store_true", help="Send even if MKM_TELEGRAM_MINIMAL_DIGEST_ENABLED is off")
     ap.add_argument(
+        "--scheduled-morning",
+        action="store_true",
+        help="08:28 task: force enable + --style prophecy (Korean KOSPI briefing only)",
+    )
+    ap.add_argument(
+        "--allow-legacy-style",
+        action="store_true",
+        help="Allow advanced/personal/minimal during 06–11 KST (default blocked)",
+    )
+    ap.add_argument(
         "--style",
         choices=("minimal", "advanced", "prophecy", "personal", "evening_review"),
         default=None,
-        help="Digest layout (default: env MKM_TELEGRAM_DIGEST_STYLE or personal=일운만)",
+        help="Digest layout (default: env MKM_TELEGRAM_DIGEST_STYLE or prophecy=장전 한글)",
     )
     args = ap.parse_args()
     _load_dotenv()
+
+    if args.scheduled_morning:
+        os.environ["MKM_TELEGRAM_MINIMAL_DIGEST_ENABLED"] = "1"
+        os.environ["MKM_TELEGRAM_DIGEST_STYLE"] = "prophecy"
+        os.environ["MKM_TELEGRAM_INCLUDE_PERSONAL_FORTUNE"] = "0"
+        args.force = True
+        if args.style is None:
+            args.style = "prophecy"
 
     if not args.force and not _truthy("MKM_TELEGRAM_MINIMAL_DIGEST_ENABLED", default=False):
         print("SKIP: MKM_TELEGRAM_MINIMAL_DIGEST_ENABLED not set")
@@ -514,6 +549,17 @@ def main() -> int:
         return 0
 
     style = _resolve_style(args.style)
+    if (
+        not args.allow_legacy_style
+        and style != "prophecy"
+        and _morning_kospi_only_window()
+    ):
+        print(
+            f"SKIP: morning KST (06–11) allows Korean prophecy only; blocked style={style}. "
+            "Use --style prophecy or --allow-legacy-style.",
+            file=sys.stderr,
+        )
+        return 0
     text = build_digest(args.workspace_root.resolve(), style=style)
     print(text)
     if args.dry_run:
