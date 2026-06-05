@@ -2,7 +2,9 @@
     "schema": "runpod_nemotron_full_handoff_v1",
     "lane": "research_only",
     "checked_at_utc": "2026-06-05T17:00:00Z",
-    "status": "full_train_pulled_local_pod_terminated",
+    "status": "closed_vault_archived_hold",
+    "expansion_stance": "HOLD",
+    "vault_archive_script": "scripts/Invoke-NemotronResearchArchive_v1.ps1",
     "train_progress": {
         "step": 256,
         "total_steps": 256,

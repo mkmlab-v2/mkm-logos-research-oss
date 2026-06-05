@@ -1,0 +1,29 @@
+{
+  "schema": "nemotron_runpod_cost_guard_v1",
+  "lane": "research_only",
+  "expansion_stance_default": "HOLD",
+  "active_now": false,
+  "note": "Enable only with explicit GO_RUNPOD; terminate via scripts/Invoke-RunPodPodTerminate_v1.ps1",
+  "limits": {
+    "max_usd_per_run": 25,
+    "max_hours_per_run": 12,
+    "default_full_limit_rows": 2048,
+    "blocked_without_guard": {
+      "full_limit_zero_all_rows": true,
+      "reason": "~65k rows multi-day; require human budget sign-off"
+    }
+  },
+  "mid_scale_go_profile": {
+    "full_limit_rows": 8192,
+    "max_steps_cap": 512,
+    "recommended_gpu": "A40 48GB",
+    "est_usd_range": [8, 18]
+  },
+  "required_env": ["RUNPOD_API_KEY", "HF_TOKEN"],
+  "terminate_script": "scripts/Invoke-RunPodPodTerminate_v1.ps1",
+  "forbidden": [
+    "Track A promotion",
+    "competition auto-submit",
+    "MKM core auto-wire"
+  ]
+}

@@ -1,10 +1,12 @@
 ﻿{
   "schema": "kaggle_nemotron_resume_v1",
-  "finished_at_utc": "2026-06-05T18:00:00Z",
+  "finished_at_utc": "2026-06-06T00:00:00Z",
   "lane": "private_dev_no_mkm_core",
   "research_only": true,
   "local_validate_ok": true,
   "allow_competition_submit": false,
+  "expansion_stance": "HOLD",
+  "lane_status": "closed_vault_archived",
   "runpod_cloud_smoke": {
     "status": "ok",
     "pod_id": "e54skr3x4r6tjr",
@@ -14,7 +16,7 @@
     "train_runtime_sec": 980.2,
     "final_train_loss": 22.5,
     "mean_token_accuracy_last": 0.4755,
-    "train_report": "reports/kaggle_nemotron_kaggle_train_latest.json",
+    "train_report": "reports/kaggle_nemotron_kaggle_train_full_latest.json",
     "smoke_log": "reports/nemotron_cloud_gpu_smoke_latest.log",
     "submission_zip_local": "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/submission.zip",
     "pod_state": "terminated",
@@ -37,7 +39,7 @@
     "terminate_script": "scripts/Invoke-RunPodPodTerminate_v1.ps1"
   },
   "git": {
-    "commit": "ddf504d7a0",
+    "commit": "90eff7490b",
     "branch": "feature/btrack-nextgen-indexer-v1",
     "push": "internal_ok"
   },
@@ -53,7 +55,8 @@
   "nim_api_lane": {
     "status": "ok",
     "report": "reports/nvidia_api_primary_lane_v1_latest.json",
-    "model": "meta/llama-3.3-70b-instruct"
+    "model": "meta/llama-3.3-70b-instruct",
+    "role": "inference_primary"
   },
   "wsl_local": {
     "pulled_adapter_verify": "ok",
@@ -61,8 +64,20 @@
     "smoke_train_16gb": "failed_mamba_shape",
     "inference_recommendation": "NIM API (run_nvidia_api_primary_lane_v1.py)"
   },
+  "vault_archive": {
+    "script": "scripts/Invoke-NemotronResearchArchive_v1.ps1",
+    "report": "reports/nemotron_research_archive_v1_latest.json",
+    "cost_guard": "docs/final/artifacts/nemotron_runpod_cost_guard_v1.json"
+  },
+  "train_gpu_alternatives": {
+    "runpod": "only_proven_30b_qlora_path",
+    "innovation_lab_brev": "submitted_under_review_not_active",
+    "kaggle_t4": "smoke_human_gate_not_69k",
+    "local_16gb": "research_blocked_16gb"
+  },
   "next_human": [
-    "RunPod FULL DONE — pull ok, pod terminated; research_only, no submit",
-    "Local 16GB: adapter on disk verified; use NIM for inference; cloud RunPod for 30B QLoRA"
+    "HOLD: 69k expansion deferred; artifacts archived to Vault",
+    "Re-open only with GO_RUNPOD + cost guard sign-off or Brev acceptance email",
+    "Optional: competition submit still requires explicit human GO (allow_competition_submit false)"
   ]
 }
