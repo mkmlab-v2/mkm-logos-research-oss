@@ -20,6 +20,9 @@ def test_normalize_verse_in_builder_module() -> None:
     assert mod.normalize_verse_ref("greek::John.19.34") == "John.19.34"
     assert mod.normalize_verse_ref("node_verse_john_19_34") == "John.19.34"
     assert mod.normalize_verse_ref("Isa.28.8") == "Isa.28.8"
+    assert mod.normalize_verse_ref("verse_ref:jeremiah_1_10") == "Jer.1.10"
+    assert mod.normalize_verse_ref("verse_ref:daniel_5_25_28") == "Dan.5.25"
+    assert mod.normalize_verse_ref("verse_ref:revelation_18_2") == "Rev.18.2"
 
 
 def test_gold_eval_report_builds() -> None:

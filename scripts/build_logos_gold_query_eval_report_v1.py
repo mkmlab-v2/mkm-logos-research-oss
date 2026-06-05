@@ -34,11 +34,27 @@ def _read_json(path: Path) -> dict[str, Any]:
     return obj if isinstance(obj, dict) else {}
 
 
+def _parse_verse_ref_slug(body: str) -> str:
+    """verse_ref:jeremiah_1_10 → Jer.1.10; daniel_5_25_28 → Dan.5.25."""
+    parts = body.split("_")
+    if len(parts) >= 4 and parts[-1].isdigit() and parts[-2].isdigit() and parts[-3].isdigit():
+        book = "_".join(parts[:-3])
+        return f"{_title_book(book)}.{parts[-3]}.{parts[-2]}"
+    if len(parts) >= 3 and parts[-1].isdigit() and parts[-2].isdigit():
+        book = "_".join(parts[:-2])
+        return f"{_title_book(book)}.{parts[-2]}.{parts[-1]}"
+    return body.replace("_", ".")
+
+
 def normalize_verse_ref(raw: str) -> str:
     """Collapse node_verse_john_19_34, greek::John.19.34 → John.19.34."""
     s = str(raw or "").strip()
     if not s:
         return ""
+    if s.startswith("verse_ref:"):
+        s = _parse_verse_ref_slug(s.split(":", 1)[1])
+    elif s.startswith("vr_"):
+        s = _parse_verse_ref_slug(s[3:])
     if s.lower().startswith("verse:"):
         s = s.split(":", 1)[1]
     if s.startswith("node:verse_ref:"):
@@ -84,6 +100,7 @@ def _title_book(book: str) -> str:
         "zechariah": "Zech",
         "hos": "Hos",
         "dan": "Dan",
+        "daniel": "Dan",
         "job": "Job",
         "prov": "Prov",
         "eccl": "Eccl",

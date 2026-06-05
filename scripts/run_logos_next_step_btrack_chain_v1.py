@@ -37,6 +37,11 @@ def main() -> int:
         _run("build_logos_graphrag_empire_transition_dan2_trial_v1.py", "dan2_trial"),
         _run("build_kospi_june2026_logos_anchor_crosswalk_v1.py", "crosswalk"),
         _run("materialize_logos_gold_q09_election_router_ann_v1.py", "materialize_q09"),
+        _run(
+            "materialize_logos_gold_router_canonical_v1.py",
+            "router_canonical_q02_q05",
+            ["--query-id", "q02", "--query-id", "q05", "--promote-gold-prefix-first"],
+        ),
         _run("build_logos_gold_query_eval_report_v1.py", "gold_eval"),
         _run("render_kospi_june_4ai_prophecy_report_v1.py", "kospi_report"),
         _run("build_logos_exploration_insight_digest_v1.py", "insight_digest"),
