@@ -28,6 +28,9 @@ Set-Location -LiteralPath $WorkspaceRoot
 
 $py = if (Get-Command py -ErrorAction SilentlyContinue) { "py" } else { "python" }
 $todayKst = (Get-Date).ToString("yyyy-MM-dd")
+$fetchEndKst = (Get-Date).AddDays(1).ToString("yyyy-MM-dd")
+$lastKrxSessionKst = (& $py -c "from datetime import date; from scripts.kospi_krx_calendar_v1 import last_krx_trading_day_on_or_before; print(last_krx_trading_day_on_or_before(date.today()) or '')").Trim()
+if (-not $lastKrxSessionKst) { $lastKrxSessionKst = $todayKst }
 
 function Invoke-Step([string]$Name, [scriptblock]$Block) {
     Write-Host "`n[june-kospi] $Name" -ForegroundColor Cyan
@@ -69,7 +72,7 @@ if ($runEvening) {
     $fetchKospi = Join-Path $WorkspaceRoot "scripts\fetch_kospi_yfinance_csv.py"
     if (Test-Path -LiteralPath $fetchKospi) {
         Invoke-Step "fetch_kospi_yfinance_csv (merge long history)" {
-            & $py $fetchKospi --merge --start 1990-01-01
+            & $py $fetchKospi --merge --start 1990-01-01 --end $fetchEndKst --fill-recent-gaps
         }
     }
 
@@ -81,7 +84,7 @@ if ($runEvening) {
     }
 
     Invoke-Step "eval_kospi_daily_prophecy ($YearMonth)" {
-        & $py scripts/eval_kospi_june2026_daily_prophecy_v1.py --calendar-json $calendarJson
+        & $py scripts/eval_kospi_june2026_daily_prophecy_v1.py --calendar-json $calendarJson --as-of-kst $lastKrxSessionKst
     }
 
     if ($YearMonth -eq "2026-06") {
@@ -97,8 +100,20 @@ if ($runEvening) {
         Invoke-Step "run_kospi_june2026_weight_candidate_compare (dry-run)" {
             & $py scripts/run_kospi_june2026_weight_candidate_compare_v1.py --year-month $YearMonth
         }
+        Invoke-Step "run_kospi_june2026_shadow_candidate_panel (parallel shadow diff)" {
+            & $py scripts/run_kospi_june2026_shadow_candidate_panel_v1.py --year-month $YearMonth
+        }
+        Invoke-Step "build_kospi_june2026_neutral_research_bundle (B-track)" {
+            & $py scripts/build_kospi_june2026_neutral_research_bundle_v1.py
+        }
+        Invoke-Step "build_kospi_june2026_shadow_panel_rollup" {
+            & $py scripts/build_kospi_june2026_shadow_panel_rollup_v1.py --year-month $YearMonth
+        }
         Invoke-Step "build_kospi_june2026_promotion_readiness" {
             & $py scripts/build_kospi_june2026_promotion_readiness_v1.py --year-month $YearMonth
+        }
+        Invoke-Step "render_kospi_june_4ai_prophecy_report (post-shadow panel)" {
+            & $py scripts/render_kospi_june_4ai_prophecy_report_v1.py
         }
         Invoke-Step "build_kospi_june2026_human_apply_review_bundle" {
             & $py scripts/build_kospi_june2026_human_apply_review_bundle_v1.py
@@ -150,11 +165,11 @@ if ($runEvening) {
         if (Test-Path -LiteralPath $govBundle) {
             Invoke-Step "Run-ACodeGovernorResearchBundle (replay+gate+obs)" {
                 & powershell -NoProfile -ExecutionPolicy Bypass -File $govBundle `
-                    -WorkspaceRoot $WorkspaceRoot -SessionDate $todayKst
+                    -WorkspaceRoot $WorkspaceRoot -SessionDate $lastKrxSessionKst
             }
         } elseif (Test-Path -LiteralPath $govObs) {
             Invoke-Step "a_code_governor_knob_evening_observation (RQ-028 [HYPO])" {
-                & $py $govObs --session-date $todayKst
+                & $py $govObs --session-date $lastKrxSessionKst
             }
         }
         $govJson = Join-Path $WorkspaceRoot "reports\a_code_governor_knob_evening_observation_v1_latest.json"
