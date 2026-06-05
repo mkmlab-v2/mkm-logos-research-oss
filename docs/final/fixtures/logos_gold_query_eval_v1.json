@@ -117,6 +117,62 @@
         "ann_top8_hit_min": 0
       },
       "notes_ko": "[HYPO] Showroom dense 64 LOD; suffering/comfort typology lane."
+    },
+    {
+      "id": "q09",
+      "query_ko": "정치 전환기에 공동체 경계와 시대 분별은 어떤 성경 경로로 연결되는가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": ["Neh.4.9", "Rev.16.15", "1Chr.12.32"],
+      "gold_verse_prefixes": ["Neh.", "Rev.16", "1Chr."],
+      "bridge_artifact_hint": "docs/final/artifacts/logos_concept_bridge_regime_watchfulness_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] KOSPI June election_20260603 crosswalk; election GraphRAG router SSOT."
+    },
+    {
+      "id": "q10",
+      "query_ko": "야간 risk-off·변동성 충돌 속에서 위로와 견고함의 성경 경로는?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": ["Ps.23.3", "Jer.30.18", "Job.5.24"],
+      "gold_verse_prefixes": ["Ps.23", "Jer.30", "Job.5"],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q11_stability_after_volatility_shock_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] KOSPI June risk_off_overnight crosswalk; GraphRAG SSOT."
+    },
+    {
+      "id": "q11",
+      "query_ko": "레짐 전환·WATCH 속 경계와 분별의 성경 경로는?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": ["Luke.22.4", "Ps.89.28", "Jer.31.33"],
+      "gold_verse_prefixes": ["Luke.22", "Ps.89", "Jer.31"],
+      "bridge_artifact_hint": "logos_concept_bridge_regime_watchfulness_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] KOSPI June regime_watch_lehman_shadow crosswalk; GraphRAG SSOT."
+    },
+    {
+      "id": "q12",
+      "query_ko": "Daniel 2 제국 전환(금·철·진흙) 상징과 궁정 위기 경로는?",
+      "eval_tier": "observational",
+      "gold_verse_ids": ["Dan.2.10", "Dan.2.31"],
+      "gold_verse_prefixes": ["Dan.2"],
+      "bridge_artifact_hint": "bible_meaning_insight_candidates_latest.json",
+      "gate": {
+        "router_path_hit_min": 0,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] Dan.2 trial_only — eval tracking only; not merged into 6-topic fixture without human sign-off."
     }
   ]
 }

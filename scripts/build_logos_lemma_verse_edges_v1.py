@@ -6,17 +6,36 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from scripts.logos_verse_ref_canonical_v1 import canonical_verse_ref
 DEFAULT_BRIDGE = ROOT / "docs/final/artifacts/logos_concept_bridge_semiconductor_poc_v1_latest.json"
 DEFAULT_GRAPH_NODES = ROOT / "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/logos_lemma_verse_edges_v1.jsonl"
 DEFAULT_MANIFEST = ROOT / "docs/final/artifacts/logos_lemma_verse_edges_v1_latest.json"
 
 TOK_RE = re.compile(r"[\u0590-\u05FF]{3,}")
+
+
+def _is_lemma_step(sid: str) -> bool:
+    return sid.startswith("lemma:") or sid.startswith(("lp_", "node_lemma_")) or "lemma" in sid.lower()
+
+
+def _resolve_verse_dst(sid: str, verse_by_short: dict[str, str]) -> str:
+    if sid.startswith("verse:"):
+        raw = verse_by_short.get(sid, sid.split(":", 1)[1])
+        return canonical_verse_ref(raw)
+    if sid in verse_by_short:
+        return canonical_verse_ref(verse_by_short[sid])
+    c = canonical_verse_ref(sid)
+    if c and re.match(r"^[A-Za-z0-9]+\.\d+\.\d+", c):
+        return c
+    return ""
 
 
 def _utc_now() -> str:
@@ -35,6 +54,8 @@ def build_edges(bridge_path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]
         vid = node.get("verse_id")
         if nid.startswith("verse:") and vid:
             verse_by_short[nid] = str(vid)
+        elif node.get("kind") == "verse_ref" and nid:
+            verse_by_short[nid] = str(vid or nid.replace("verse:", ""))
 
     rows: list[dict[str, Any]] = []
     edge_i = 0
@@ -49,21 +70,27 @@ def build_edges(bridge_path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]
             sid = str(step) if isinstance(step, str) else str((step or {}).get("node_id") or "")
             if not sid:
                 continue
-            if "lemma" in sid:
+            if _is_lemma_step(sid):
                 lemma_id = sid
-            elif sid.startswith("verse:") and lemma_id:
-                dst = verse_by_short.get(sid, sid.replace("verse:", ""))
+            elif lemma_id:
+                dst = _resolve_verse_dst(sid, verse_by_short)
+                if not dst:
+                    lemma_id = None
+                    continue
                 rows.append(
                     {
                         "schema": "logos_lemma_verse_edge_v1",
                         "edge_id": f"lemma_verse::{edge_i}",
                         "src_node_id": lemma_id,
                         "dst_node_id": dst,
-                        "edge_type": "LEMMA_VERSE_PROXY",
+                        "edge_type": "CONTAIN",
                         "weight": 0.5,
                         "hypothesis_tier": "B",
                         "research_only": True,
                         "path_id": path.get("path_id"),
+                        "source_bridge": bridge_path.relative_to(ROOT).as_posix()
+                        if bridge_path.is_relative_to(ROOT)
+                        else str(bridge_path),
                     }
                 )
                 edge_i += 1
@@ -80,6 +107,51 @@ def build_edges(bridge_path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]
         "note": "Educational proxy edges from concept_bridge; not morphology-verified.",
     }
     return rows, manifest
+
+
+def build_edges_from_registry(registry_path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    if not registry_path.is_file():
+        raise FileNotFoundError(registry_path)
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    merged: list[dict[str, Any]] = []
+    seen_pairs: set[tuple[str, str]] = set()
+    bridge_sources: list[str] = []
+    edge_i = 0
+    for entry in registry.get("entries") or []:
+        if not isinstance(entry, dict) or not entry.get("present"):
+            continue
+        rel = entry.get("artifact_path")
+        if not isinstance(rel, str):
+            continue
+        bridge_path = ROOT / rel.replace("/", "\\") if "\\" not in rel else Path(rel)
+        if not bridge_path.is_file():
+            bridge_path = ROOT / rel
+        if not bridge_path.is_file():
+            continue
+        rows, _ = build_edges(bridge_path)
+        bridge_sources.append(bridge_path.relative_to(ROOT).as_posix() if bridge_path.is_relative_to(ROOT) else str(bridge_path))
+        for row in rows:
+            key = (str(row.get("src_node_id")), str(row.get("dst_node_id")))
+            if key in seen_pairs:
+                continue
+            seen_pairs.add(key)
+            row = dict(row)
+            row["edge_id"] = f"lemma_verse::reg_{edge_i}"
+            edge_i += 1
+            merged.append(row)
+    manifest = {
+        "schema": "logos_lemma_verse_edges_v1",
+        "generated_at_utc": _utc_now(),
+        "hypothesis_tier": "B",
+        "research_only": True,
+        "source_registry": registry_path.relative_to(ROOT).as_posix()
+        if registry_path.is_relative_to(ROOT)
+        else str(registry_path),
+        "bridge_sources_count": len(bridge_sources),
+        "edge_count": len(merged),
+        "note": "CONTAIN edges from all human-reviewed registry bridges; not morphology-verified.",
+    }
+    return merged, manifest
 
 
 def _edges_from_graph_nodes(
@@ -137,6 +209,12 @@ def _edges_from_graph_nodes(
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build logos lemma-verse edges v1 (Phase 1+)")
     ap.add_argument("--bridge-json", type=Path, default=DEFAULT_BRIDGE)
+    ap.add_argument(
+        "--registry-json",
+        type=Path,
+        default=None,
+        help="Merge CONTAIN edges from all present registry bridges (overrides --bridge-json).",
+    )
     ap.add_argument("--graph-nodes-jsonl", type=Path, default=DEFAULT_GRAPH_NODES)
     ap.add_argument("--include-graph-heuristic", action="store_true", default=True)
     ap.add_argument("--no-graph-heuristic", action="store_false", dest="include_graph_heuristic")
@@ -146,7 +224,11 @@ def main() -> int:
     ap.add_argument("--manifest-json", type=Path, default=DEFAULT_MANIFEST)
     args = ap.parse_args()
 
-    rows, manifest = build_edges(args.bridge_json)
+    if args.registry_json:
+        reg_path = args.registry_json if args.registry_json.is_absolute() else ROOT / args.registry_json
+        rows, manifest = build_edges_from_registry(reg_path)
+    else:
+        rows, manifest = build_edges(args.bridge_json)
     if args.include_graph_heuristic:
         graph_rows = _edges_from_graph_nodes(
             args.graph_nodes_jsonl,

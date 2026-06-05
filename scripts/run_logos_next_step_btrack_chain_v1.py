@@ -34,9 +34,14 @@ def main() -> int:
     args = ap.parse_args()
 
     steps = [
+        _run("build_logos_lemma_verse_edges_v1.py", "lemma_edges_registry", [
+            "--registry-json",
+            "docs/final/artifacts/logos_concept_bridge_registry_v1_latest.json",
+        ]),
         _run("build_logos_graphrag_empire_transition_dan2_trial_v1.py", "dan2_trial"),
         _run("build_kospi_june2026_logos_anchor_crosswalk_v1.py", "crosswalk"),
         _run("materialize_logos_gold_q09_election_router_ann_v1.py", "materialize_q09"),
+        _run("materialize_logos_gold_crosswalk_queries_v1.py", "materialize_crosswalk_q10_q12"),
         _run(
             "materialize_logos_gold_router_canonical_v1.py",
             "router_canonical_q02_q05",
@@ -50,6 +55,8 @@ def main() -> int:
 
     gold = json.loads((ROOT / "reports/logos_gold_query_eval_v1_latest.json").read_text(encoding="utf-8-sig"))
     q09 = next((r for r in gold.get("rows") or [] if r.get("id") == "q09"), {})
+    q10 = next((r for r in gold.get("rows") or [] if r.get("id") == "q10"), {})
+    q11 = next((r for r in gold.get("rows") or [] if r.get("id") == "q11"), {})
     crosswalk = json.loads(
         (ROOT / "reports/kospi_june2026_logos_anchor_crosswalk_v1_latest.json").read_text(encoding="utf-8-sig")
     )
@@ -63,6 +70,8 @@ def main() -> int:
         all(s["exit_code"] == 0 for s in steps)
         and bool((gold.get("summary") or {}).get("gold_required_all_pass"))
         and q09.get("gate_pass") is True
+        and q10.get("gate_pass") is True
+        and q11.get("gate_pass") is True
         and len(rag_hits) >= 1
         and "risk_off_overnight" in topic_ids
         and dan2.get("topic_pass") is True
@@ -80,6 +89,8 @@ def main() -> int:
         "results": {
             "gold_required_all_pass": (gold.get("summary") or {}).get("gold_required_all_pass"),
             "q09_gate_pass": q09.get("gate_pass"),
+            "q10_gate_pass": q10.get("gate_pass"),
+            "q11_gate_pass": q11.get("gate_pass"),
             "q09_rag_gold_hits": rag_hits,
             "crosswalk_topics": sorted(topic_ids),
             "dan2_trial_pass": dan2.get("topic_pass"),

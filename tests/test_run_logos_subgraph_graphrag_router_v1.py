@@ -169,3 +169,46 @@ def test_logos_subgraph_router_q05_hubris_volatility_overlay(tmp_path: Path) -> 
     assert "volatility" in lanes
     assert doc["bridges_matched"] >= 3
     assert len(doc["paths"]) >= 9
+
+
+def test_logos_subgraph_router_canonical_verse_refs_at_source(tmp_path: Path) -> None:
+    subprocess.run([sys.executable, str(COVENANT_BUILDER)], cwd=str(ROOT), check=True)
+    subprocess.run([sys.executable, str(REGISTRY_BUILDER)], cwd=str(ROOT), check=True)
+    out = tmp_path / "router_canon.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(ROUTER),
+            "--query-id",
+            "q02",
+            "--gold-json",
+            str(ROOT / "docs/final/fixtures/logos_gold_query_eval_v1.json"),
+            "--top-bridges",
+            "4",
+            "--output-json",
+            str(out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("policy", {}).get("verse_ref_canonical_at_source") is True
+    for vid in doc.get("verse_ids") or []:
+        assert not str(vid).startswith("verse_ref:")
+        assert not str(vid).startswith("hebrew::")
+        assert "." in str(vid)
+    for path in doc.get("paths") or []:
+        for step in path.get("steps") or []:
+            s = str(step)
+            if s.startswith(("concept:", "function:", "lemma:", "node:", "mc_", "func_", "lp_")):
+                continue
+            if s.startswith("verse:"):
+                inner = s.split(":", 1)[1]
+                assert not inner.startswith("verse_ref:")
+                assert "." in inner
+                continue
+            assert not s.startswith("verse_ref:")
+            assert not s.startswith("vr_")

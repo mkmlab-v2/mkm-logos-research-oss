@@ -6,11 +6,14 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from scripts.logos_verse_ref_canonical_v1 import canonical_verse_ref
 ART = ROOT / "docs/final/artifacts"
 DEFAULT_REGISTRY = ART / "logos_concept_bridge_registry_v1_latest.json"
 DEFAULT_LEMMA = ART / "logos_lemma_verse_edges_v1.jsonl"
@@ -19,7 +22,7 @@ DEFAULT_GOLD = ART / "logos_semantic_query_gold_human_v1.json"
 DEFAULT_OUT = ART / "logos_subgraph_graphrag_router_v1_latest.json"
 
 SCHEMA = "logos_subgraph_graphrag_router_v1"
-VERSION = "1.3.0"
+VERSION = "1.4.0"
 TOKEN_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
 
 # Multi-syllable then single Hangul particles (longest-first).
@@ -296,8 +299,39 @@ def _select_bridges_multi_coverage(
     return selected[:top_bridges]
 
 
-def _verse_ids_from_bridge(bridge: dict[str, Any]) -> list[str]:
+def _canonicalize_path_step(step: Any) -> str:
+    raw = str(step).strip()
+    if not raw:
+        return raw
+    if raw.startswith(
+        ("concept:", "function:", "lemma:", "lemma_proxy:", "node:", "mc_", "func_", "lp_")
+    ):
+        return raw
+    if raw.startswith("verse:"):
+        inner = raw.split(":", 1)[1]
+        c = canonical_verse_ref(inner)
+        return c if c and "." in c else raw
+    c = canonical_verse_ref(raw)
+    if c and "." in c and re.match(r"^[A-Za-z0-9]", c):
+        return c
+    return raw
+
+
+def _dedupe_canon_verse_ids(raw_ids: list[str]) -> list[str]:
     out: list[str] = []
+    seen: set[str] = set()
+    for vid in raw_ids:
+        c = canonical_verse_ref(str(vid))
+        if not c or not re.match(r"^[A-Za-z0-9]+\.\d+\.\d+", c):
+            continue
+        if c not in seen:
+            seen.add(c)
+            out.append(c)
+    return out
+
+
+def _verse_ids_from_bridge(bridge: dict[str, Any]) -> list[str]:
+    raw: list[str] = []
     seen: set[str] = set()
     for node in bridge.get("nodes") or []:
         if not isinstance(node, dict):
@@ -307,13 +341,13 @@ def _verse_ids_from_bridge(bridge: dict[str, Any]) -> list[str]:
         vid = node.get("verse_id") or node.get("node_id", "").replace("verse:", "")
         if isinstance(vid, str) and vid and vid not in seen:
             seen.add(vid)
-            out.append(vid)
+            raw.append(vid)
     hooks = bridge.get("graph_rag_hooks") if isinstance(bridge.get("graph_rag_hooks"), dict) else {}
     for sid in hooks.get("seed_verse_ids") or []:
         if isinstance(sid, str) and sid and sid not in seen:
             seen.add(sid)
-            out.append(sid)
-    return out
+            raw.append(sid)
+    return _dedupe_canon_verse_ids(raw)
 
 
 def route(
@@ -360,11 +394,13 @@ def route(
         for path in doc.get("paths") or []:
             if not isinstance(path, dict):
                 continue
+            steps_raw = path.get("steps") or []
+            steps_out = [_canonicalize_path_step(s) for s in steps_raw if s is not None]
             paths_out.append(
                 {
                     "bridge_artifact": rel,
                     "path_id": path.get("path_id"),
-                    "steps": path.get("steps"),
+                    "steps": steps_out,
                     "note_ko": path.get("note_ko"),
                     "match_score": score,
                 }
@@ -392,6 +428,9 @@ def route(
         gr = seed_chain.get("graph_rag") if isinstance(seed_chain.get("graph_rag"), dict) else {}
         seed_verses = [str(x) for x in (gr.get("verse_node_ids") or [])[:20]]
 
+    verse_ids = _dedupe_canon_verse_ids(verse_ids)
+    seed_verses_canon = _dedupe_canon_verse_ids(seed_verses) if seed_verses else []
+
     return {
         "schema": SCHEMA,
         "version": VERSION,
@@ -406,12 +445,13 @@ def route(
         "paths": paths_out,
         "verse_ids": verse_ids,
         "lemma_edge_hits": lemma_hits[:30],
-        "seed_chain_verse_sample": seed_verses,
+        "seed_chain_verse_sample": seed_verses_canon or seed_verses,
         "policy": {
             "no_prophecy_claim": True,
             "track_wall": "B_track_not_track_A",
             "router_kind": "logos_subgraph_v1",
             "bridge_selection": "multi_coverage_v1",
+            "verse_ref_canonical_at_source": True,
         },
     }
 
