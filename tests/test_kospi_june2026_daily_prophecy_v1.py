@@ -356,12 +356,173 @@ def test_neutral_research_bundle_schema() -> None:
         cal = json.loads(cal_path.read_text(encoding="utf-8-sig"))
         rules = json.loads(rules_path.read_text(encoding="utf-8-sig"))
 
-    doc = bundle.build_bundle(calendar=cal, rules=rules, eval_doc=None, evolution_path=rules_path)
+    doc = bundle.build_bundle(
+        calendar=cal,
+        rules=rules,
+        eval_doc=None,
+        evolution_path=rules_path,
+        calendar_path=cal_path if cal_path.is_file() else ROOT / "reports/kospi_202606_daily_prophecy_calendar_v1.json",
+    )
     assert doc["schema"] == "kospi_june2026_neutral_research_bundle_v1"
     assert doc["auto_apply"] is False
     assert doc["neutral_decomposition"]["n_trading_days"] >= 1
     assert "policy_sweep" in doc
     assert "four_ai_counterfactual" in doc
+
+
+def test_channel_input_audit_schema() -> None:
+    import scripts.build_kospi_june2026_channel_input_audit_v1 as audit
+
+    cal = {
+        "year_month": "2026-06",
+        "blend_weights_applied": {"session_myeongni": 0.3, "sasang": 0.24, "macro": 0.24, "myeongni_independent": 0.22},
+        "rows": [
+            {
+                "session_date": "2026-06-01",
+                "predicted_direction": "neutral",
+                "session_mapping_target": "sideways",
+                "session_direction_score": 0.0,
+                "blend": {
+                    "votes": {"bull": 0.24, "bear": 0.0, "neutral": 0.76},
+                    "winner_resolution": "neutral_plurality",
+                    "channels": [],
+                },
+            }
+        ],
+    }
+    doc = audit.build_audit(
+        calendar=cal,
+        rules={"neutral_band": 0.06, "blend_policy_v2": {}},
+        eval_doc={
+            "rows": [
+                {
+                    "session_date": "2026-06-01",
+                    "predicted_direction": "neutral",
+                    "actual_direction": "bull",
+                    "outcome": "NEUTRAL_DRAW",
+                }
+            ]
+        },
+        neutral_bundle=None,
+        myeongni_jsonl=ROOT / "data/missing_myeongni.jsonl",
+        sasang_jsonl=ROOT / "data/missing_sasang.jsonl",
+        calendar_path=ROOT / "reports/kospi_202606_daily_prophecy_calendar_v1.json",
+    )
+    assert doc["schema"] == "kospi_june2026_channel_input_audit_v1"
+    assert doc["auto_apply"] is False
+    assert doc["scored_day_counterfactuals"]["n_scored"] == 1
+
+
+def test_per_date_lens_counterfactual_schema() -> None:
+    import scripts.build_kospi_june2026_per_date_lens_counterfactual_v1 as cf
+
+    cal = {
+        "year_month": "2026-06",
+        "blend_weights_applied": {
+            "session_myeongni": 0.3,
+            "sasang": 0.24,
+            "macro": 0.24,
+            "myeongni_independent": 0.22,
+        },
+        "rows": [
+            {
+                "session_date": "2026-06-01",
+                "predicted_direction": "neutral",
+                "session_mapping_target": "sideways",
+                "session_direction_score": 0.0,
+                "blend": {"channels": [], "votes": {"bull": 0.24, "neutral": 0.76}},
+            }
+        ],
+    }
+    doc = cf.build_counterfactual(
+        calendar=cal,
+        rules={"neutral_band": 0.06, "blend_policy_v2": {}},
+        eval_doc=None,
+        myeongni_jsonl=ROOT / "data/missing_myeongni.jsonl",
+        sasang_jsonl=ROOT / "data/missing_sasang.jsonl",
+        calendar_path=ROOT / "reports/kospi_202606_daily_prophecy_calendar_v1.json",
+        write_counter_calendar=False,
+        counter_calendar_path=ROOT / "reports/tmp_counter_cal.json",
+    )
+    assert doc["schema"] == "kospi_june2026_per_date_lens_counterfactual_v1"
+    assert doc["auto_apply"] is False
+    assert doc["summary"]["n_direction_diffs"] == 0
+
+
+def test_macro_daily_refresh_poc_schema() -> None:
+    import scripts.build_kospi_june2026_macro_daily_refresh_poc_v1 as macro_poc
+
+    cal = {
+        "year_month": "2026-06",
+        "blend_weights_applied": {
+            "session_myeongni": 0.3,
+            "macro": 0.24,
+            "sasang": 0.24,
+            "myeongni_independent": 0.22,
+        },
+        "rows": [
+            {
+                "session_date": "2026-06-01",
+                "predicted_direction": "neutral",
+                "session_mapping_target": "sideways",
+                "session_direction_score": 0.0,
+                "blend": {"channels": [], "votes": {"bull": 0.24, "neutral": 0.76}},
+            }
+        ],
+    }
+    doc = macro_poc.build_macro_daily_refresh_poc(
+        calendar=cal,
+        rules={"neutral_band": 0.06, "blend_policy_v2": {}},
+        eval_doc=None,
+        macro_gate_by_day={},
+        calendar_path=ROOT / "reports/kospi_202606_daily_prophecy_calendar_v1.json",
+        macro_jsonl_meta={"available": False},
+        global_macro={"artifact_ts_utc": "2026-06-01T00:00:00Z"},
+        write_counter_calendar=False,
+        counter_calendar_path=ROOT / "reports/tmp_macro_counter_cal.json",
+    )
+    assert doc["schema"] == "kospi_june2026_macro_daily_refresh_poc_v1"
+    assert doc["auto_apply"] is False
+    assert doc["summary"]["n_direction_diffs"] == 0
+
+
+def test_combined_per_date_counterfactual_schema() -> None:
+    import scripts.build_kospi_june2026_combined_per_date_counterfactual_v1 as comb
+
+    cal = {
+        "year_month": "2026-06",
+        "blend_weights_applied": {
+            "session_myeongni": 0.3,
+            "macro": 0.24,
+            "sasang": 0.24,
+            "myeongni_independent": 0.22,
+        },
+        "rows": [
+            {
+                "session_date": "2026-06-01",
+                "predicted_direction": "neutral",
+                "session_mapping_target": "sideways",
+                "session_direction_score": 0.0,
+                "blend": {"channels": [], "votes": {"bull": 0.24, "neutral": 0.76}},
+            }
+        ],
+    }
+    doc = comb.build_combined_counterfactual(
+        calendar=cal,
+        rules={"neutral_band": 0.06, "blend_policy_v2": {}},
+        eval_doc=None,
+        myeongni_jsonl=ROOT / "data/missing_myeongni.jsonl",
+        sasang_jsonl=ROOT / "data/missing_sasang.jsonl",
+        macro_backfill_jsonl=ROOT / "reports/missing_macro.jsonl",
+        operational_jsonl=None,
+        calendar_path=ROOT / "reports/kospi_202606_daily_prophecy_calendar_v1.json",
+        macro_jsonl_meta={"available": False},
+        write_counter_calendar=False,
+        counter_calendar_path=ROOT / "reports/tmp_combined_counter_cal.json",
+    )
+    assert doc["schema"] == "kospi_june2026_combined_per_date_counterfactual_v1"
+    assert doc["auto_apply"] is False
+    assert "combined_lens_macro_tier2" in doc["arms"]
 
 
 def test_shadow_candidate_panel_schema() -> None:

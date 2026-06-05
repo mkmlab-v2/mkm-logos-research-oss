@@ -26,6 +26,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.kospi_june2026_multilens_blend_v1 import default_weights_v2  # noqa: E402
+from scripts.kospi_lens_per_date_static_v1 import (  # noqa: E402
+    DEFAULT_MACRO_BACKFILL_JSONL,
+    load_lens_jsonl_by_day,
+    load_macro_gate_by_day,
+    static_lenses_for_eval_date,
+)
 from scripts.run_kospi_multilens_blend_backtest_v1 import (  # noqa: E402
     EVOLUTION_RULES,
     KOSPI_CSV,
@@ -45,6 +51,9 @@ from scripts.kospi_june2026_multilens_blend_v1 import (  # noqa: E402
 DEFAULT_PANEL_FULL = ROOT / "reports/btrack_session_myeongni_panel_full_window_v1.csv"
 DEFAULT_PANEL_252 = ROOT / "reports/btrack_session_myeongni_panel_252d_v1.csv"
 DEFAULT_OUT = ROOT / "reports/kospi_lens_ablation_backtest_latest.json"
+DEFAULT_MYEONGNI_JSONL = ROOT / "data/myeongni/myeongni_16_state_experiment_v1.manseryeok_session_30y_v1.jsonl"
+DEFAULT_SASANG_JSONL = ROOT / "data/sasang/sasang_dynamics_regime_mapping_v1.manseryeok_session_30y_v1.jsonl"
+DEFAULT_OUT_WALKFORWARD = ROOT / "reports/kospi_lens_ablation_backtest_walkforward_latest.json"
 
 
 def _utc_now() -> str:
@@ -134,11 +143,30 @@ def run_ablation(
     date_to: str,
     rules: dict[str, Any],
     neutral_bps: float = 5.0,
+    lens_source: str = "snapshot",
+    myeongni_jsonl: Path | None = None,
+    sasang_jsonl: Path | None = None,
+    include_macro_per_date: bool = False,
+    macro_jsonl: Path | None = None,
 ) -> dict[str, Any]:
     neutral_band = float(rules.get("neutral_band", 0.06))
     blend_policy = dict(rules.get("blend_policy_v2") or {})
     coord_policy = dict(rules.get("four_ai_coordinator_policy") or {})
-    static_lenses = load_static_lenses()
+    baseline_lenses = load_static_lenses()
+    lens_jsonl_meta: dict[str, Any] | None = None
+    my_by_day: dict[str, dict[str, Any]] = {}
+    sa_by_day: dict[str, dict[str, Any]] = {}
+    macro_gate_by_day: dict[str, dict[str, Any]] | None = None
+    if lens_source == "per_date_jsonl":
+        my_path = myeongni_jsonl or DEFAULT_MYEONGNI_JSONL
+        sa_path = sasang_jsonl or DEFAULT_SASANG_JSONL
+        my_by_day, sa_by_day, lens_jsonl_meta = load_lens_jsonl_by_day(my_path, sa_path)
+        if include_macro_per_date:
+            macro_path = macro_jsonl or DEFAULT_MACRO_BACKFILL_JSONL
+            macro_gate_by_day = load_macro_gate_by_day(macro_path)
+            if lens_jsonl_meta is not None:
+                lens_jsonl_meta["macro_jsonl"] = str(macro_path)
+                lens_jsonl_meta["macro_gate_days"] = len(macro_gate_by_day)
 
     eval_dates = sorted(d for d in panel_by_date if date_from <= d <= date_to)
     eval_dates = [d for d in eval_dates if d in closes]
@@ -152,14 +180,23 @@ def run_ablation(
         four_ai_mode = str(spec["four_ai_mode"])
         preds: dict[str, str] = {}
         diverge_from_v2 = 0
-        v2_preds: dict[str, str] = {}
 
         for dk in eval_dates:
+            if lens_source == "per_date_jsonl":
+                day_lenses = static_lenses_for_eval_date(
+                    dk,
+                    sasang_by_day=sa_by_day,
+                    myeongni_by_day=my_by_day,
+                    baseline=baseline_lenses,
+                    macro_gate_by_day=macro_gate_by_day,
+                )
+            else:
+                day_lenses = baseline_lenses
             pred, meta = _predict_v2(
                 dk,
                 panel_row=panel_by_date[dk],
                 closes=closes,
-                static_lenses=static_lenses,
+                static_lenses=day_lenses,
                 ensemble_row=ensemble_by_date.get(dk),
                 weights=weights,
                 blend_policy=blend_policy,
@@ -169,7 +206,6 @@ def run_ablation(
             )
             preds[dk] = pred
             v2_dir = str(meta.get("v2") or pred)
-            v2_preds[dk] = v2_dir
             if four_ai_mode != "none" and v2_dir != pred:
                 diverge_from_v2 += 1
 
@@ -215,7 +251,20 @@ def run_ablation(
         )
 
     overlay_uplift_pp = _delta_pp(lens3_soft, lens3_4ai_soft)
-    warnings = _methodology_warnings(rows)
+    warnings = _methodology_warnings(rows, lens_source=lens_source)
+
+    if lens_source == "per_date_jsonl":
+        macro_note = (
+            "macro from OHLCV research backfill JSONL as-of; "
+            if include_macro_per_date
+            else "macro remains global snapshot; "
+        )
+        static_note = (
+            "myeongni+sasang per-date from manseryeok session JSONL as-of; "
+            f"{macro_note}logos/field remain global snapshot."
+        )
+    else:
+        static_note = "Independent lenses use latest artifact snapshot (not walk-forward refreshed)."
 
     return {
         "schema": "kospi_lens_ablation_backtest_v1",
@@ -224,13 +273,16 @@ def run_ablation(
         "research_only": True,
         "track_wall": "no_track_a_live_auto_merge",
         "watch_ablation_run": True,
+        "lens_source": lens_source,
+        "include_macro_per_date": include_macro_per_date,
+        "lens_jsonl_meta": lens_jsonl_meta,
         "window": {
             "date_from": date_from,
             "date_to": date_to,
             "n_calendar_days": len(eval_dates),
         },
         "neutral_bps": neutral_bps,
-        "static_lens_note": "Independent lenses use latest artifact snapshot (not walk-forward refreshed).",
+        "static_lens_note": static_note,
         "best_arm": best,
         "ranked_arms": ranked,
         "four_ai_overlay_uplift_pp_vs_lens3_runtime": overlay_uplift_pp,
@@ -241,25 +293,31 @@ def run_ablation(
     }
 
 
-def _methodology_warnings(rows: list[dict[str, Any]]) -> list[str]:
+def _methodology_warnings(rows: list[dict[str, Any]], *, lens_source: str) -> list[str]:
     """Flag arms that lean on static lens snapshots (not per-date walk-forward)."""
     out: list[str] = []
-    for r in rows:
-        aid = str(r.get("arm_id") or "")
-        w = r.get("weights") or {}
-        session_w = float(w.get("session_myeongni") or 0.0)
-        mom_w = float(w.get("momentum_overlay") or 0.0)
-        if session_w <= 0.0 and mom_w <= 0.0:
-            rate = r.get("pred_neutral_rate")
-            out.append(
-                f"{aid}: session/momentum=0 — independent lenses are latest-artifact snapshots "
-                f"(not walk-forward); pred_neutral_rate={rate}. Headline soft HR may reflect "
-                "fixed-direction bias, not causal forecast skill."
-            )
-    out.append(
-        "All arms: macro/logos/sasang/myeongni static paths share one JSON snapshot per run "
-        "(same caveat as kospi_multilens_blend_backtest_v1)."
-    )
+    if lens_source == "per_date_jsonl":
+        out.append(
+            "per_date_jsonl: myeongni+sasang from manseryeok session JSONL (eval_date as-of). "
+            "macro/logos/field still global snapshot. Session channel still per-date from panel."
+        )
+    else:
+        for r in rows:
+            aid = str(r.get("arm_id") or "")
+            w = r.get("weights") or {}
+            session_w = float(w.get("session_myeongni") or 0.0)
+            mom_w = float(w.get("momentum_overlay") or 0.0)
+            if session_w <= 0.0 and mom_w <= 0.0:
+                rate = r.get("pred_neutral_rate")
+                out.append(
+                    f"{aid}: session/momentum=0 — independent lenses are latest-artifact snapshots "
+                    f"(not walk-forward); pred_neutral_rate={rate}. Headline soft HR may reflect "
+                    "fixed-direction bias, not causal forecast skill."
+                )
+        out.append(
+            "All arms: macro/logos/sasang/myeongni static paths share one JSON snapshot per run "
+            "(same caveat as kospi_multilens_blend_backtest_v1)."
+        )
     return out
 
 
@@ -275,9 +333,16 @@ def _verdict_ko(
     soft = (best.get("metrics") or {}).get("soft_hit_rate")
     soft_pct = f"{float(soft) * 100:.2f}%" if soft is not None else "n/a"
     uplift = f"{overlay_uplift_pp:+.2f}pp" if overlay_uplift_pp is not None else "n/a"
+    static_only_top = bid in ("sasang_myeongni_only", "three_lens_runtime")
+    caveat = (
+        " (정적 렌즈 스냅샷 편향 주의 — session/일별 패널 미사용)"
+        if static_only_top
+        else ""
+    )
     return (
-        f"최고 soft HR={soft_pct} ({bid}). "
+        f"최고 soft HR={soft_pct} ({bid}){caveat}. "
         f"4AI overlay vs lens3_runtime 델타={uplift}. "
+        f"경고 {len(warnings)}건 methodology_warnings 참조. "
         "apply·Track A·실매매 합선 금지."
     )
 
@@ -289,6 +354,20 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--date-from", default="1996-12-11")
     ap.add_argument("--date-to", default="2026-06-05")
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--lens-source",
+        choices=("snapshot", "per_date_jsonl"),
+        default="snapshot",
+        help="snapshot=latest JSON artifacts; per_date_jsonl=manseryeok session JSONL as-of.",
+    )
+    ap.add_argument("--myeongni-jsonl", type=Path, default=DEFAULT_MYEONGNI_JSONL)
+    ap.add_argument("--sasang-jsonl", type=Path, default=DEFAULT_SASANG_JSONL)
+    ap.add_argument(
+        "--include-macro-per-date",
+        action="store_true",
+        help="With per_date_jsonl: macro direction from research backfill JSONL as-of.",
+    )
+    ap.add_argument("--macro-jsonl", type=Path, default=DEFAULT_MACRO_BACKFILL_JSONL)
     ap.add_argument(
         "--also-window",
         action="append",
@@ -304,6 +383,20 @@ def main(argv: list[str] | None = None) -> int:
     if not args.kospi_csv.is_file():
         print(f"Missing kospi csv: {args.kospi_csv}", file=sys.stderr)
         return 2
+    if args.lens_source == "per_date_jsonl" and args.include_macro_per_date:
+        if not args.macro_jsonl.is_file():
+            print(f"Missing macro jsonl: {args.macro_jsonl}", file=sys.stderr)
+            return 2
+    if args.lens_source == "per_date_jsonl":
+        if not args.myeongni_jsonl.is_file():
+            print(f"Missing myeongni jsonl: {args.myeongni_jsonl}", file=sys.stderr)
+            return 2
+        if not args.sasang_jsonl.is_file():
+            print(f"Missing sasang jsonl: {args.sasang_jsonl}", file=sys.stderr)
+            return 2
+        if args.output == DEFAULT_OUT:
+            suffix = "_macro" if args.include_macro_per_date else ""
+            args.output = ROOT / f"reports/kospi_lens_ablation_backtest_walkforward{suffix}_latest.json"
 
     rules = _read_json(EVOLUTION_RULES)
     panel = _load_panel(args.panel_csv)
@@ -317,6 +410,11 @@ def main(argv: list[str] | None = None) -> int:
         date_to=args.date_to,
         rules=rules,
         neutral_bps=neutral_bps,
+        lens_source=args.lens_source,
+        myeongni_jsonl=args.myeongni_jsonl,
+        sasang_jsonl=args.sasang_jsonl,
+        include_macro_per_date=args.include_macro_per_date,
+        macro_jsonl=args.macro_jsonl,
     )
 
     extra_windows: list[dict[str, Any]] = []
@@ -333,6 +431,11 @@ def main(argv: list[str] | None = None) -> int:
             date_to=w_to,
             rules=rules,
             neutral_bps=neutral_bps,
+            lens_source=args.lens_source,
+            myeongni_jsonl=args.myeongni_jsonl,
+            sasang_jsonl=args.sasang_jsonl,
+            include_macro_per_date=args.include_macro_per_date,
+            macro_jsonl=args.macro_jsonl,
         )
         wdoc["window_tag"] = tag
         extra_windows.append(wdoc)
@@ -345,7 +448,15 @@ def main(argv: list[str] | None = None) -> int:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    art = ROOT / "docs/final/artifacts/kospi_lens_ablation_backtest_latest.json"
+    if args.lens_source == "per_date_jsonl":
+        art_name = (
+            "kospi_lens_ablation_backtest_walkforward_macro_latest.json"
+            if args.include_macro_per_date
+            else "kospi_lens_ablation_backtest_walkforward_latest.json"
+        )
+    else:
+        art_name = "kospi_lens_ablation_backtest_latest.json"
+    art = ROOT / "docs/final/artifacts" / art_name
     art.parent.mkdir(parents=True, exist_ok=True)
     art.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 

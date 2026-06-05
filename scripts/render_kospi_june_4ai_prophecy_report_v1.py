@@ -459,6 +459,152 @@ def render_markdown(doc: dict[str, Any], *, calendar: dict[str, Any] | None = No
             ]
         )
 
+    neutral_bundle = _read_json(ROOT / "reports/kospi_june2026_neutral_research_bundle_latest.json")
+    if neutral_bundle.get("schema") == "kospi_june2026_neutral_research_bundle_v1":
+        decomp = neutral_bundle.get("neutral_decomposition") if isinstance(neutral_bundle.get("neutral_decomposition"), dict) else {}
+        rc = decomp.get("root_cause_counts") if isinstance(decomp.get("root_cause_counts"), dict) else {}
+        sweep = neutral_bundle.get("policy_sweep") if isinstance(neutral_bundle.get("policy_sweep"), dict) else {}
+        best = sweep.get("best_lowest_neutral") if isinstance(sweep.get("best_lowest_neutral"), dict) else {}
+        cf = neutral_bundle.get("four_ai_counterfactual") if isinstance(neutral_bundle.get("four_ai_counterfactual"), dict) else {}
+        lines.extend(
+            [
+                "",
+                "### 6.3h Neutral 분해 연구 (B-track · apply 없음)",
+                "",
+                f"- **SSOT:** `reports/kospi_june2026_neutral_research_bundle_latest.json`",
+                f"- **June neutral:** {decomp.get('n_neutral_predictions', '—')}/{decomp.get('n_trading_days', '—')} "
+                f"({decomp.get('neutral_rate', '—')})",
+                f"- **root cause:** session_sideways={rc.get('session_sideways_dominant', '—')} · "
+                f"plurality={rc.get('neutral_plurality', '—')}",
+                f"- **policy sweep (36 grid):** 최소 neutral={best.get('n_neutral', '—')} · "
+                f"캘린더 diff={best.get('n_diff_vs_active_calendar', '—')}일",
+                f"- **4AI lock OFF:** v2 불일치 {cf.get('n_unlocked_would_change_v2', '—')}일 · "
+                f"lock/unlock diff={cf.get('n_direction_diffs_lock_vs_unlock', '—')}",
+                "- **auto_apply:** false · evolution·캘린더 변경 없음",
+            ]
+        )
+        for finding in neutral_bundle.get("key_findings_ko") or []:
+            lines.append(f"- {finding}")
+
+    channel_audit = _read_json(ROOT / "reports/kospi_june2026_channel_input_audit_latest.json")
+    if channel_audit.get("schema") == "kospi_june2026_channel_input_audit_v1":
+        sc = channel_audit.get("scored_day_counterfactuals") if isinstance(channel_audit.get("scored_day_counterfactuals"), dict) else {}
+        jsonl = channel_audit.get("per_date_jsonl") if isinstance(channel_audit.get("per_date_jsonl"), dict) else {}
+        lines.extend(
+            [
+                "",
+                "### 6.3i 채널 입력 감사 (static lens · scored counterfactual)",
+                "",
+                f"- **SSOT:** `reports/kospi_june2026_channel_input_audit_latest.json`",
+                f"- **per-date JSONL:** {'available' if jsonl.get('available') else 'missing'} · "
+                f"replay diff={len(channel_audit.get('per_date_replay_diffs') or [])}일",
+                f"- **scored soft:** active={sc.get('active_soft_hit_rate', '—')} · "
+                f"4AI unlock={sc.get('four_ai_unlock_soft_hit_rate', '—')} · "
+                f"per-date={sc.get('per_date_lens_soft_hit_rate', '—')}",
+                "- **auto_apply:** false",
+            ]
+        )
+        for finding in channel_audit.get("key_findings_ko") or []:
+            lines.append(f"- {finding}")
+        for day in sc.get("days") or []:
+            if not isinstance(day, dict):
+                continue
+            lines.append(
+                f"  - `{day.get('session_date')}` actual={day.get('actual_direction')} · "
+                f"active={day.get('active_direction')}({day.get('active_outcome')}) · "
+                f"unlock={day.get('four_ai_unlock_direction')}({day.get('four_ai_unlock_outcome')})"
+            )
+
+    per_date_cf = _read_json(ROOT / "reports/kospi_june2026_per_date_lens_counterfactual_latest.json")
+    if per_date_cf.get("schema") == "kospi_june2026_per_date_lens_counterfactual_v1":
+        summ = per_date_cf.get("summary") if isinstance(per_date_cf.get("summary"), dict) else {}
+        sf = summ.get("scored_forward") if isinstance(summ.get("scored_forward"), dict) else {}
+        act = summ.get("active_direction_counts") if isinstance(summ.get("active_direction_counts"), dict) else {}
+        ctr = summ.get("counterfactual_direction_counts") if isinstance(summ.get("counterfactual_direction_counts"), dict) else {}
+        lines.extend(
+            [
+                "",
+                "### 6.3j Per-date lens counterfactual PoC",
+                "",
+                f"- **SSOT:** `reports/kospi_june2026_per_date_lens_counterfactual_latest.json`",
+                f"- **counter calendar:** `{per_date_cf.get('counter_calendar_path', '—')}`",
+                f"- **방향 diff:** {summ.get('n_direction_diffs', '—')}/{summ.get('n_trading_days', '—')} · "
+                f"active neutral={act.get('neutral', '—')} → counter neutral={ctr.get('neutral', '—')}",
+                f"- **scored soft:** {sf.get('active_soft_hit_rate', '—')} → "
+                f"{sf.get('counterfactual_soft_hit_rate', '—')} (n={sf.get('n_scored', '—')})",
+                "- **auto_apply:** false · active calendar·evolution 변경 없음",
+            ]
+        )
+        for finding in per_date_cf.get("key_findings_ko") or []:
+            lines.append(f"- {finding}")
+        for day in sf.get("days") or []:
+            if not isinstance(day, dict):
+                continue
+            if day.get("active_direction") == day.get("counterfactual_direction"):
+                continue
+            lines.append(
+                f"  - `{day.get('session_date')}` actual={day.get('actual_direction')} · "
+                f"{day.get('active_direction')}→{day.get('counterfactual_direction')} "
+                f"({day.get('active_outcome')}→{day.get('counterfactual_outcome')})"
+            )
+
+    macro_poc = _read_json(ROOT / "reports/kospi_june2026_macro_daily_refresh_poc_latest.json")
+    if macro_poc.get("schema") == "kospi_june2026_macro_daily_refresh_poc_v1":
+        summ = macro_poc.get("summary") if isinstance(macro_poc.get("summary"), dict) else {}
+        sf = summ.get("scored_forward") if isinstance(summ.get("scored_forward"), dict) else {}
+        act = summ.get("active_direction_counts") if isinstance(summ.get("active_direction_counts"), dict) else {}
+        ctr = summ.get("counterfactual_direction_counts") if isinstance(summ.get("counterfactual_direction_counts"), dict) else {}
+        mg = macro_poc.get("macro_gate") if isinstance(macro_poc.get("macro_gate"), dict) else {}
+        gm = macro_poc.get("global_macro_snapshot") if isinstance(macro_poc.get("global_macro_snapshot"), dict) else {}
+        lines.extend(
+            [
+                "",
+                "### 6.3k Macro daily refresh PoC (OHLCV gate · macro-only)",
+                "",
+                f"- **SSOT:** `reports/kospi_june2026_macro_daily_refresh_poc_latest.json`",
+                f"- **global macro snapshot:** direction={gm.get('direction', '—')} · "
+                f"score={gm.get('direction_score', '—')} · ts={gm.get('artifact_ts_utc', '—')}",
+                f"- **June gate as-of:** {mg.get('june_asof_coverage', '—')}/{mg.get('june_trading_days', '—')} · "
+                f"방향 diff {summ.get('n_direction_diffs', '—')}/{summ.get('n_trading_days', '—')}",
+                f"- **active neutral={act.get('neutral', '—')} → counter neutral={ctr.get('neutral', '—')}**",
+                f"- **scored soft:** {sf.get('active_soft_hit_rate', '—')} → "
+                f"{sf.get('counterfactual_soft_hit_rate', '—')} (n={sf.get('n_scored', '—')})",
+                "- **auto_apply:** false · macro_independent_lens·active calendar 변경 없음",
+            ]
+        )
+        for finding in macro_poc.get("key_findings_ko") or []:
+            lines.append(f"- {finding}")
+
+    combined_cf = _read_json(ROOT / "reports/kospi_june2026_combined_per_date_counterfactual_latest.json")
+    if combined_cf.get("schema") == "kospi_june2026_combined_per_date_counterfactual_v1":
+        arms = combined_cf.get("arms") if isinstance(combined_cf.get("arms"), dict) else {}
+        sf = combined_cf.get("scored_forward") if isinstance(combined_cf.get("scored_forward"), dict) else {}
+        soft = sf.get("soft_by_arm") if isinstance(sf.get("soft_by_arm"), dict) else {}
+        comb = arms.get("combined_lens_macro_tier2") if isinstance(arms.get("combined_lens_macro_tier2"), dict) else {}
+        lens = arms.get("per_date_lens") if isinstance(arms.get("per_date_lens"), dict) else {}
+        macro_t2 = arms.get("macro_tier2") if isinstance(arms.get("macro_tier2"), dict) else {}
+        mt2bf = combined_cf.get("macro_tier2_vs_backfill") or []
+        lines.extend(
+            [
+                "",
+                "### 6.3l Combined per-date counterfactual (lens + macro tier-2)",
+                "",
+                f"- **SSOT:** `reports/kospi_june2026_combined_per_date_counterfactual_latest.json`",
+                f"- **macro tier2 vs backfill diff days:** {len(mt2bf)}",
+                f"- **per_date_lens diff vs active:** {lens.get('n_direction_diffs_vs_active', '—')}",
+                f"- **macro_tier2 diff vs active:** {macro_t2.get('n_direction_diffs_vs_active', '—')}",
+                f"- **combined diff vs active:** {comb.get('n_direction_diffs_vs_active', '—')} · "
+                f"neutral {((arms.get('active') or {}).get('direction_counts') or {}).get('neutral', '—')}→"
+                f"{(comb.get('direction_counts') or {}).get('neutral', '—')}",
+                f"- **scored soft:** active={soft.get('active', '—')} · lens={soft.get('per_date_lens', '—')} · "
+                f"macro_tier2={soft.get('macro_tier2', '—')} · combined={soft.get('combined_lens_macro_tier2', '—')} "
+                f"(n={sf.get('n_scored', '—')})",
+                "- **auto_apply:** false",
+            ]
+        )
+        for finding in combined_cf.get("key_findings_ko") or []:
+            lines.append(f"- {finding}")
+
     walk_path = ROOT / "reports/kospi_multilens_walkforward_backtest_latest.json"
     walk = _read_json(walk_path)
     if walk.get("schema") == "kospi_multilens_walkforward_backtest_v1":
@@ -606,7 +752,8 @@ def render_markdown(doc: dict[str, Any], *, calendar: dict[str, Any] | None = No
             "py scripts/kospi_june_4ai_prophecy_overlay_v1.py",
             "py scripts/render_kospi_june_4ai_prophecy_report_v1.py",
             "py scripts/run_kospi_june2026_weight_candidate_compare_v1.py --year-month 2026-06",
-            "py scripts/backfill_macro_risk_forward_log_from_ohlcv_v1.py --date-from 2026-01-01 --date-to 2026-04-30",
+            "py scripts/backfill_macro_risk_forward_log_from_ohlcv_v1.py --date-from 2026-01-01 --date-to 2026-06-30",
+            "py scripts/build_kospi_june2026_macro_daily_refresh_poc_v1.py --year-month 2026-06 --refresh-macro-backfill",
             "py scripts/run_three_lens_horizon_empirical_eval_v2.py --instrument both --date-from 2026-01-01 --date-to 2026-04-30",
             "powershell -File scripts/Run-BtcMultilensResearchCrossCheck_v1.ps1",
             "pwsh -File scripts/Invoke-KospiJune2026ProphecyLoop_v1.ps1 -Phase Evening -YearMonth 2026-06",

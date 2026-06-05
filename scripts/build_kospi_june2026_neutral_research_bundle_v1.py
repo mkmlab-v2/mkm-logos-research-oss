@@ -27,7 +27,8 @@ from scripts.kospi_june2026_multilens_blend_v1 import (  # noqa: E402
     load_static_lenses,
 )
 
-DEFAULT_CAL = ROOT / "reports/kospi_june2026_daily_prophecy_calendar_v1.json"
+DEFAULT_CAL = ROOT / "reports/kospi_202606_daily_prophecy_calendar_v1.json"
+DEFAULT_CAL_FALLBACK = ROOT / "reports/kospi_june2026_daily_prophecy_calendar_v1.json"
 DEFAULT_RULES = ROOT / "data/commander/kospi_june2026_prophecy_evolution_v1.json"
 DEFAULT_EVAL = ROOT / "reports/kospi_june2026_daily_prophecy_eval_latest.json"
 DEFAULT_OUT = ROOT / "reports/kospi_june2026_neutral_research_bundle_latest.json"
@@ -35,6 +36,21 @@ DEFAULT_OUT = ROOT / "reports/kospi_june2026_neutral_research_bundle_latest.json
 
 def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _resolve_calendar_path(path: Path | None = None, *, year_month: str = "2026-06") -> Path:
+    if path is not None and path.is_file():
+        return path
+    ym_tag = year_month.replace("-", "")
+    candidates = [
+        ROOT / f"reports/kospi_{ym_tag}_daily_prophecy_calendar_v1.json",
+        DEFAULT_CAL,
+        DEFAULT_CAL_FALLBACK,
+    ]
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    return path or DEFAULT_CAL
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -254,6 +270,7 @@ def build_bundle(
     rules: dict[str, Any],
     eval_doc: dict[str, Any] | None,
     evolution_path: Path,
+    calendar_path: Path,
 ) -> dict[str, Any]:
     rows = calendar.get("rows") if isinstance(calendar.get("rows"), list) else []
     trading_days = [str(r.get("session_date")) for r in rows if r.get("session_date")]
@@ -311,7 +328,9 @@ def build_bundle(
         "auto_apply": False,
         "year_month": calendar.get("year_month") or "2026-06",
         "active_candidate_id": calendar.get("weights_candidate_id") or rules.get("last_candidate_apply_id"),
-        "calendar_path": str(DEFAULT_CAL.relative_to(ROOT)).replace("\\", "/"),
+        "calendar_path": str(calendar_path.relative_to(ROOT)).replace("\\", "/")
+        if calendar_path.is_relative_to(ROOT)
+        else str(calendar_path).replace("\\", "/"),
         "neutral_decomposition": decomposition,
         "policy_sweep": {
             "grid_size": len(sweep),
@@ -328,20 +347,28 @@ def build_bundle(
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--calendar-json", type=Path, default=DEFAULT_CAL)
+    ap.add_argument("--year-month", type=str, default="2026-06")
+    ap.add_argument("--calendar-json", type=Path, default=None)
     ap.add_argument("--rules-json", type=Path, default=DEFAULT_RULES)
     ap.add_argument("--eval-json", type=Path, default=DEFAULT_EVAL)
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args(argv)
 
-    calendar = _read_json(args.calendar_json)
+    cal_path = _resolve_calendar_path(args.calendar_json, year_month=args.year_month)
+    calendar = _read_json(cal_path)
     if not calendar.get("rows"):
-        raise SystemExit(f"Missing calendar rows: {args.calendar_json}")
+        raise SystemExit(f"Missing calendar rows: {cal_path}")
 
     rules = _read_json(args.rules_json)
     eval_doc = _read_json(args.eval_json) if args.eval_json.is_file() else None
 
-    doc = build_bundle(calendar=calendar, rules=rules, eval_doc=eval_doc, evolution_path=args.rules_json)
+    doc = build_bundle(
+        calendar=calendar,
+        rules=rules,
+        eval_doc=eval_doc,
+        evolution_path=args.rules_json,
+        calendar_path=cal_path,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 

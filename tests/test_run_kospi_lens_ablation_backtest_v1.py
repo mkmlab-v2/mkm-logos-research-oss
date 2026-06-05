@@ -46,3 +46,23 @@ def test_ablation_json_on_disk_if_present() -> None:
     assert doc["schema"] == "kospi_lens_ablation_backtest_v1"
     assert "comparisons" in doc
     assert "verdict_ko" in doc
+
+
+def test_per_date_static_loader_shape() -> None:
+    from scripts.kospi_lens_per_date_static_v1 import static_lenses_for_eval_date
+
+    sa_by = {
+        "2026-06-01": {"mapping_target": "bull", "eval_date": "2026-06-01", "stub": False},
+    }
+    my_by = {
+        "2026-06-01": {"mapping_target": "sideways", "eval_date": "2026-06-01", "stub": False},
+    }
+    out = static_lenses_for_eval_date(
+        "2026-06-05",
+        sasang_by_day=sa_by,
+        myeongni_by_day=my_by,
+        baseline={"sasang": {}, "myeongni_independent": {}, "macro": {"loaded": False}},
+    )
+    assert out["sasang"]["direction"] == "bull"
+    assert out["sasang"]["per_date"] is True
+    assert out["myeongni_independent"]["direction"] == "neutral"

@@ -104,7 +104,19 @@ if ($runEvening) {
             & $py scripts/run_kospi_june2026_shadow_candidate_panel_v1.py --year-month $YearMonth
         }
         Invoke-Step "build_kospi_june2026_neutral_research_bundle (B-track)" {
-            & $py scripts/build_kospi_june2026_neutral_research_bundle_v1.py
+            & $py scripts/build_kospi_june2026_neutral_research_bundle_v1.py --calendar-json $calendarJson --year-month $YearMonth
+        }
+        Invoke-Step "build_kospi_june2026_channel_input_audit (B-track)" {
+            & $py scripts/build_kospi_june2026_channel_input_audit_v1.py --calendar-json $calendarJson --year-month $YearMonth
+        }
+        Invoke-Step "build_kospi_june2026_per_date_lens_counterfactual (PoC)" {
+            & $py scripts/build_kospi_june2026_per_date_lens_counterfactual_v1.py --calendar-json $calendarJson --year-month $YearMonth
+        }
+        Invoke-Step "build_kospi_june2026_macro_daily_refresh_poc (B-track)" {
+            & $py scripts/build_kospi_june2026_macro_daily_refresh_poc_v1.py --calendar-json $calendarJson --year-month $YearMonth --refresh-macro-backfill
+        }
+        Invoke-Step "build_kospi_june2026_combined_per_date_counterfactual (PoC)" {
+            & $py scripts/build_kospi_june2026_combined_per_date_counterfactual_v1.py --calendar-json $calendarJson --year-month $YearMonth --refresh-macro-backfill
         }
         Invoke-Step "build_kospi_june2026_shadow_panel_rollup" {
             & $py scripts/build_kospi_june2026_shadow_panel_rollup_v1.py --year-month $YearMonth
@@ -139,11 +151,19 @@ if ($runEvening) {
             }
         }
         if (-not $SkipHeavyResearch) {
+            $macroBackfillTo = if ($YearMonth -eq "2026-06") { "2026-06-30" } else { "${YearMonth}-30" }
             Invoke-Step "backfill_macro_risk_forward_log_from_ohlcv (research)" {
-                & $py scripts/backfill_macro_risk_forward_log_from_ohlcv_v1.py --date-from 2026-01-01 --date-to 2026-04-30
+                & $py scripts/backfill_macro_risk_forward_log_from_ohlcv_v1.py --date-from 2026-01-01 --date-to $macroBackfillTo
             }
             Invoke-Step "run_three_lens_horizon_empirical_eval_v2 (B-track kospi+btc)" {
                 & $py scripts/run_three_lens_horizon_empirical_eval_v2.py --instrument both --date-from 2026-01-01 --date-to 2026-04-30
+            }
+            $ablPs1 = Join-Path $WorkspaceRoot "scripts\Invoke-KospiLensAblationWalkforward_v1.ps1"
+            $myJsonl = Join-Path $WorkspaceRoot "data\myeongni\myeongni_16_state_experiment_v1.manseryeok_session_30y_v1.jsonl"
+            if ((Test-Path -LiteralPath $ablPs1) -and (Test-Path -LiteralPath $myJsonl)) {
+                Invoke-Step "Invoke-KospiLensAblationWalkforward (per-date JSONL; SkipJsonlBuild)" {
+                    & powershell -NoProfile -ExecutionPolicy Bypass -File $ablPs1 -WorkspaceRoot $WorkspaceRoot -SkipJsonlBuild
+                }
             }
         } else {
             Write-Host "[june-kospi] SkipHeavyResearch: macro backfill + horizon v2 생략" -ForegroundColor DarkYellow
