@@ -58,6 +58,13 @@ TORCH_PIN="$("$PY" -c "import torch; print(torch.__version__)")"
 echo "[bootstrap] post-hf torch=$TORCH_PIN cuda_avail=$("$PY" -c "import torch; print(torch.cuda.is_available())")"
 
 if ! "$PY" -c "import mamba_ssm" 2>/dev/null; then
+  # Prebuilt mamba wheels target torch 2.10+cu128 — template torch 2.4+cu124 passes CUDA smoke but breaks ABI.
+  TORCH_MAJOR_MINOR="$("$PY" -c 'import torch; p=torch.__version__.split("+")[0].split("."); print(f"{p[0]}.{p[1]}")')"
+  if [[ "$TORCH_MAJOR_MINOR" != "2.10" ]]; then
+    echo "[bootstrap] torch=$TORCH_MAJOR_MINOR — upgrading to 2.10.0+cu128 for mamba wheels..."
+    "$PY" -m pip install "torch==2.10.0" "torchvision" "torchaudio" \
+      --index-url https://download.pytorch.org/whl/cu128 --force-reinstall
+  fi
   MAMBA_INSTALL="$ROOT/scripts/run_nemotron_wsl_install_mamba_v1.sh"
   if [[ -f "$MAMBA_INSTALL" ]]; then
     bash "$MAMBA_INSTALL" "$PY"

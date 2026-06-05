@@ -1,0 +1,42 @@
+{
+  "schema": "wsl_nemotron_sandbox_handoff_v1",
+  "lane": "research_only",
+  "checked_at_utc": "2026-06-05T18:00:00Z",
+  "status": "adapter_verify_ok_wsl_smoke_train_failed_16gb",
+  "sudo_policy": "never_in_noninteractive_agent",
+  "venv_path": ".venv-nemotron-wsl",
+  "python": "3.12.3",
+  "gpu": "NVIDIA GeForce RTX 5060 Ti 16GB",
+  "torch": "2.10.0+cu128",
+  "cuda_ok": true,
+  "pulled_adapter_verify": {
+    "script": "scripts/verify_nemotron_pulled_adapter_v1.py",
+    "report": "reports/nemotron_pulled_adapter_verify_v1_latest.json",
+    "adapter_dir": "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/output",
+    "peft_type": "LORA",
+    "r": 16,
+    "tensor_count": 48,
+    "status": "ok"
+  },
+  "wsl_smoke_train": {
+    "invoke": "Invoke-NvidiaNemotronLocalTrain_v1.ps1 -WslTrain -Smoke",
+    "report": "reports/nvidia_nemotron_wsl_smoke_latest.json",
+    "status": "failed",
+    "error": "RuntimeError mat1/mat2 shape mismatch in mamba bnb path (16GB local 30B QLoRA blocked)",
+    "policy": "local_30b_qlora: use RunPod cloud train or NIM API for inference"
+  },
+  "nim_api": {
+    "script": "scripts/run_nvidia_api_primary_lane_v1.py",
+    "report": "reports/nvidia_api_primary_lane_v1_latest.json",
+    "model": "meta/llama-3.3-70b-instruct",
+    "status": "ok"
+  },
+  "bootstrap_script": "scripts/wsl/nemotron_local_setup_and_train_v1.sh",
+  "cloud_bootstrap": "scripts/run_nemotron_cloud_bootstrap_v1.sh",
+  "forbidden": [
+    "sudo apt in agent/noninteractive",
+    "Track A promotion",
+    "competition submit",
+    "MKM core auto-wire"
+  ]
+}

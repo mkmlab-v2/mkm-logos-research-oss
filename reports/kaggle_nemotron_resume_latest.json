@@ -1,0 +1,68 @@
+﻿{
+  "schema": "kaggle_nemotron_resume_v1",
+  "finished_at_utc": "2026-06-05T18:00:00Z",
+  "lane": "private_dev_no_mkm_core",
+  "research_only": true,
+  "local_validate_ok": true,
+  "allow_competition_submit": false,
+  "runpod_cloud_smoke": {
+    "status": "ok",
+    "pod_id": "e54skr3x4r6tjr",
+    "pod_name": "mkm-nemotron-smoke",
+    "gpu": "NVIDIA L40S",
+    "steps_completed": 20,
+    "train_runtime_sec": 980.2,
+    "final_train_loss": 22.5,
+    "mean_token_accuracy_last": 0.4755,
+    "train_report": "reports/kaggle_nemotron_kaggle_train_latest.json",
+    "smoke_log": "reports/nemotron_cloud_gpu_smoke_latest.log",
+    "submission_zip_local": "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/submission.zip",
+    "pod_state": "terminated",
+    "bundle_zip": "reports/runpod_nemotron_smoke_bundle_v1.zip"
+  },
+  "runpod_cloud_full": {
+    "status": "ok",
+    "pod_id": "txir98r3pwaqbr",
+    "pod_name": "mkm-nemotron-full",
+    "gpu": "NVIDIA A40 48GB",
+    "row_count": 2048,
+    "steps_completed": 256,
+    "train_loss": 9.584,
+    "mean_token_accuracy": 0.7223,
+    "train_report": "reports/kaggle_nemotron_kaggle_train_full_latest.json",
+    "full_log": "reports/nemotron_cloud_gpu_full_latest.log",
+    "submission_zip_local": "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/submission.zip",
+    "adapter_dir_local": "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/output",
+    "pod_state": "terminated",
+    "terminate_script": "scripts/Invoke-RunPodPodTerminate_v1.ps1"
+  },
+  "git": {
+    "commit": "ddf504d7a0",
+    "branch": "feature/btrack-nextgen-indexer-v1",
+    "push": "internal_ok"
+  },
+  "accelerator_kaggle": "gpu-t4-x2",
+  "kernel_url": "https://www.kaggle.com/code/familyunion/nemotron-qlora-private-train-v2-notebook-t4",
+  "hf_token_kaggle_secret": "Set HF_TOKEN in Kaggle Notebook Secrets if Hub download fails",
+  "notebook_paste": {
+    "combined_v45": "reports/kaggle_nemotron_notebook_cell12_combined_v45.txt",
+    "cell1_writefile": "reports/kaggle_nemotron_notebook_cell1_writefile_v45.txt",
+    "cell2_smoke": "reports/kaggle_nemotron_notebook_cell2_run_nemotron_smoke_v1.txt",
+    "ipynb": "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train_nb/nemotron_qlora_train_v1.ipynb"
+  },
+  "nim_api_lane": {
+    "status": "ok",
+    "report": "reports/nvidia_api_primary_lane_v1_latest.json",
+    "model": "meta/llama-3.3-70b-instruct"
+  },
+  "wsl_local": {
+    "pulled_adapter_verify": "ok",
+    "adapter_verify_report": "reports/nemotron_pulled_adapter_verify_v1_latest.json",
+    "smoke_train_16gb": "failed_mamba_shape",
+    "inference_recommendation": "NIM API (run_nvidia_api_primary_lane_v1.py)"
+  },
+  "next_human": [
+    "RunPod FULL DONE — pull ok, pod terminated; research_only, no submit",
+    "Local 16GB: adapter on disk verified; use NIM for inference; cloud RunPod for 30B QLoRA"
+  ]
+}

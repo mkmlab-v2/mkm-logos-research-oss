@@ -1,0 +1,72 @@
+﻿{
+    "schema": "runpod_nemotron_full_handoff_v1",
+    "lane": "research_only",
+    "checked_at_utc": "2026-06-05T17:00:00Z",
+    "status": "full_train_pulled_local_pod_terminated",
+    "train_progress": {
+        "step": 256,
+        "total_steps": 256,
+        "pct": 100,
+        "train_loss": "9.584",
+        "mean_token_accuracy": "0.7223",
+        "report_json": "local_ok",
+        "submission_zip": "local_ok",
+        "output_dir": "local_ok",
+        "log": "local_ok",
+        "pod_terminate": "ok",
+        "terminate_script": "scripts/Invoke-RunPodPodTerminate_v1.ps1"
+    },
+    "local_artifacts": {
+        "report": "reports/kaggle_nemotron_kaggle_train_full_latest.json",
+        "log": "reports/nemotron_cloud_gpu_full_latest.log",
+        "submission": "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/submission.zip",
+        "output_dir": "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/output"
+    },
+    "hf_token_present": true,
+    "hf_token_note": "RunPod UI env did not reach SSH; wrote /workspace/.env on pod",
+    "train_profile": {
+        "mode": "full_no_smoke",
+        "full_limit": 2048,
+        "epochs": 1,
+        "max_steps": 0,
+        "est_steps": 256,
+        "est_hours": 3.5,
+        "note": "limit=0 uses all ~69k rows (days on 1xGPU); default 2048 is research full"
+    },
+    "pod": {
+        "name": "mkm-nemotron-full",
+        "id": "txir98r3pwaqbr",
+        "gpu": "1x A40 48GB",
+        "usd_per_hr": 0.46,
+        "ssh": "root@194.68.245.118 -p 22156",
+        "jupyter": "port 8888 Ready"
+    },
+    "fixes_applied_utc": "2026-06-05T10:58:00Z",
+    "fixes": [
+        "torch 2.10.0+cu128 + mamba wheels (template torch 2.4 ABI mismatch)",
+        "HF_TOKEN via /workspace/.env",
+        "bootstrap torch 2.10 pin committed in scripts/run_nemotron_cloud_bootstrap_v1.sh"
+    ],
+    "monitor": [
+        "ssh -p 22156 root@194.68.245.118 tail -f /workspace/reports/nemotron_cloud_gpu_full_latest.log",
+        "ssh -p 22156 root@194.68.245.118 'ps aux | grep nemotron_qlora'"
+    ],
+    "bundle_zip": "C:\\workspace\\reports\\runpod_nemotron_smoke_bundle_v1.zip",
+    "pull_artifacts": [
+        "reports/kaggle_nemotron_kaggle_train_full_latest.json",
+        "reports/nemotron_cloud_gpu_full_latest.log",
+        "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/output/",
+        "data/kaggle/nvidia-nemotron-model-reasoning-challenge/kaggle_train/submission.zip"
+    ],
+    "pull_scp_example": "scp -P 22156 -r root@194.68.245.118:/workspace/reports/kaggle_nemotron_kaggle_train_full_latest.json reports/",
+    "est_cost_usd": {
+        "low": 5,
+        "high": 12,
+        "note": "A40 $0.46/hr; ~3.5h SFT after ~63GB HF cache"
+    },
+    "forbidden": [
+        "Track A promotion",
+        "competition submit",
+        "MKM core auto-wire"
+    ]
+}
