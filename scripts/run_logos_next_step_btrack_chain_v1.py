@@ -48,8 +48,8 @@ def main() -> int:
         _run("materialize_logos_gold_q09_election_router_ann_v1.py", "materialize_q09"),
         _run("materialize_logos_gold_crosswalk_queries_v1.py", "materialize_crosswalk_q10_q12"),
         _run(
-            "materialize_logos_gold_router_canonical_v1.py",
-            "router_canonical_q02_q05",
+            "materialize_logos_gold_router_live_v1.py",
+            "router_live_q02_q05",
             ["--query-id", "q02", "--query-id", "q05", "--promote-gold-prefix-first"],
         ),
         _run("build_logos_gold_query_eval_report_v1.py", "gold_eval"),

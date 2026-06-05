@@ -43,7 +43,7 @@ def main() -> int:
         mat_extra.append("--promote-gold-prefix-first")
 
     steps = [
-        _run("materialize_logos_gold_router_canonical_v1.py", mat_extra),
+        _run("materialize_logos_gold_router_live_v1.py", mat_extra),
         _run("build_logos_gold_query_eval_report_v1.py"),
     ]
     ok = all(s["exit_code"] == 0 for s in steps)

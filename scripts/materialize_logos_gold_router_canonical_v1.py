@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Canonicalize Logos gold router artifacts (verse_ref aliases → canon) [HYPO][research_only]."""
+"""Legacy post-hoc canonicalize Logos gold router artifacts [HYPO][research_only].
+
+Prefer ``materialize_logos_gold_router_live_v1.py`` when router v1.4+ runtime
+canonicalization is SSOT (P1-4). This script remains for stale sidecar repair.
+"""
 from __future__ import annotations
 
 import argparse
@@ -162,8 +166,26 @@ def main() -> int:
         action="store_true",
         help="Skip prepending gold verse_id rows to insight rag_evidence",
     )
+    ap.add_argument(
+        "--legacy-post-hoc-only",
+        action="store_true",
+        help="Run post-hoc canonical rewrite (default: suggest live materialize)",
+    )
     ap.add_argument("--out-json", type=Path, default=MANIFEST)
     args = ap.parse_args()
+
+    if not args.legacy_post_hoc_only:
+        print(
+            json.dumps(
+                {
+                    "ok": False,
+                    "error": "post_hoc_deprecated_use_live",
+                    "prefer": "scripts/materialize_logos_gold_router_live_v1.py",
+                    "hint": "Pass --legacy-post-hoc-only to force post-hoc canonical rewrite.",
+                }
+            )
+        )
+        return 2
 
     qids = args.query_id or ["q02", "q05"]
     gold_doc = _read(args.gold_json)
