@@ -22,7 +22,7 @@ DEFAULT_GOLD = ART / "logos_semantic_query_gold_human_v1.json"
 DEFAULT_OUT = ART / "logos_subgraph_graphrag_router_v1_latest.json"
 
 SCHEMA = "logos_subgraph_graphrag_router_v1"
-VERSION = "1.4.0"
+VERSION = "1.4.1"
 TOKEN_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
 
 # Multi-syllable then single Hangul particles (longest-first).
@@ -303,6 +303,9 @@ def _canonicalize_path_step(step: Any) -> str:
     raw = str(step).strip()
     if not raw:
         return raw
+    if raw.startswith("node_verse_"):
+        c = canonical_verse_ref(raw)
+        return c if c and "." in c else raw
     if raw.startswith(
         ("concept:", "function:", "lemma:", "lemma_proxy:", "node:", "mc_", "func_", "lp_")
     ):

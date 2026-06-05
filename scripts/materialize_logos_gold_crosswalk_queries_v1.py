@@ -42,6 +42,7 @@ def _gold_item(gold_doc: dict[str, Any], qid: str) -> dict[str, Any]:
 
 def _canonicalize_router(router: dict[str, Any], gold_ids: list[str] | None = None) -> dict[str, Any]:
     out = deepcopy(router)
+    _ = gold_ids
     canon_ids: list[str] = []
     seen: set[str] = set()
     for vid in out.get("verse_ids") or []:
@@ -50,17 +51,15 @@ def _canonicalize_router(router: dict[str, Any], gold_ids: list[str] | None = No
             seen.add(c)
             canon_ids.append(c)
     out["verse_ids"] = canon_ids
-    gold_i = 0
-    gold = gold_ids or []
     for path in out.get("paths") or []:
         if not isinstance(path, dict):
             continue
         steps: list[str] = []
         for step in path.get("steps") or []:
             raw = str(step)
-            if raw.startswith("node_verse_") and gold_i < len(gold):
-                steps.append(gold[gold_i])
-                gold_i += 1
+            if raw.startswith("node_verse_"):
+                c = canonical_verse_ref(raw)
+                steps.append(c if c and "." in c else raw)
                 continue
             if raw.startswith(("concept:", "function:", "lemma:", "lemma_proxy:", "node:", "mc_", "func_", "lp_")):
                 steps.append(raw)

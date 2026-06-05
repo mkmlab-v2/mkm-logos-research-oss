@@ -46,6 +46,19 @@ def _parse_verse_ref_slug(body: str) -> str:
     return body.replace("_", ".")
 
 
+def _parse_node_verse_slug(body: str) -> str:
+    """node_verse body: john_19_34 → John.19.34; ps23_3 → Ps.23.3."""
+    parts = body.split("_")
+    if len(parts) >= 3 and parts[-1].isdigit() and parts[-2].isdigit():
+        book = "_".join(parts[:-2])
+        return f"{_title_book(book)}.{parts[-2]}.{parts[-1]}"
+    if len(parts) == 2 and parts[-1].isdigit():
+        m = re.match(r"^([a-z0-9]+?)(\d+)$", parts[0], flags=re.IGNORECASE)
+        if m:
+            return f"{_title_book(m.group(1))}.{m.group(2)}.{parts[1]}"
+    return body.replace("_", ".")
+
+
 def normalize_verse_ref(raw: str) -> str:
     """Collapse node_verse_john_19_34, greek::John.19.34 → John.19.34."""
     s = str(raw or "").strip()
@@ -57,6 +70,8 @@ def normalize_verse_ref(raw: str) -> str:
         s = _parse_verse_ref_slug(s[3:])
     if s.lower().startswith("verse:"):
         s = s.split(":", 1)[1]
+    if s.startswith("node_verse_"):
+        return _parse_node_verse_slug(s[len("node_verse_") :])
     if s.startswith("node:verse_ref:"):
         s = s[len("node:verse_ref:") :]
         parts = s.split("_")
@@ -65,12 +80,6 @@ def normalize_verse_ref(raw: str) -> str:
             return f"{_title_book(book)}.{parts[-2]}.{parts[-1]}"
     if "::" in s:
         s = s.split("::", 1)[1]
-    if s.startswith("node_verse_"):
-        s = s[len("node_verse_") :]
-        parts = s.split("_")
-        if len(parts) >= 3 and parts[-2].isdigit() and parts[-1].isdigit():
-            book = "_".join(parts[:-2]).replace("_", " ")
-            return f"{_title_book(book)}.{parts[-2]}.{parts[-1]}"
     # Full book names from bridge nodes: Jeremiah.31.33 → Jer.31.33
     m = re.match(r"^([A-Za-z0-9]+)\.(\d+)\.(\d+)$", s)
     if m:

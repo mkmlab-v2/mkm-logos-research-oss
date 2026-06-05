@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 import jsonschema
+import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 ROUTER = ROOT / "scripts/run_logos_subgraph_graphrag_router_v1.py"
@@ -212,3 +213,47 @@ def test_logos_subgraph_router_canonical_verse_refs_at_source(tmp_path: Path) ->
                 continue
             assert not s.startswith("verse_ref:")
             assert not s.startswith("vr_")
+
+
+def test_logos_subgraph_router_node_verse_compact_steps(tmp_path: Path) -> None:
+    """node_verse_ps23_3 style steps canonicalize at source (P1-1)."""
+    risk_off = ROOT / "reports/logos_graphrag_2026_risk_off_latest.json"
+    if not risk_off.is_file():
+        return
+    out = tmp_path / "router_risk_off.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(ROUTER),
+            "--query",
+            "야간 risk-off 변동성",
+            "--output-json",
+            str(out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    for path in doc.get("paths") or []:
+        for step in path.get("steps") or []:
+            s = str(step)
+            if s.startswith("node_verse_"):
+                pytest.fail(f"uncanon node_verse step remained: {s}")
+    # When routing hits stability bridge, compact node steps become canon refs
+    graph = json.loads(risk_off.read_text(encoding="utf-8"))
+    raw_steps = [
+        str(s)
+        for p in graph.get("paths") or []
+        for s in (p.get("steps") or [])
+        if str(s).startswith("node_verse_")
+    ]
+    if raw_steps:
+        sys.path.insert(0, str(ROOT / "scripts"))
+        import build_logos_gold_query_eval_report_v1 as ev
+
+        for raw in raw_steps[:3]:
+            canon = ev.normalize_verse_ref(raw)
+            assert "." in canon and not canon.startswith("node_verse_")
