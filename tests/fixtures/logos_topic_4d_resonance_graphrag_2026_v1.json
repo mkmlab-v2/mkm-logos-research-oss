@@ -1,0 +1,72 @@
+{
+  "schema": "logos_topic_4d_resonance_topics_v1",
+  "version": "1.0.0",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "generated_at_utc": "2026-06-05T22:29:08Z",
+  "topics": [
+    {
+      "topic_id": "risk_off_overnight",
+      "seed_verse_ids": [
+        "Ps.23.3",
+        "Jer.30.18",
+        "Job.5.24"
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_risk_off_latest.json"
+    },
+    {
+      "topic_id": "election_20260603",
+      "seed_verse_ids": [
+        "Neh.4.9",
+        "Rev.16.15",
+        "1Chr.12.32"
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_election_latest.json"
+    },
+    {
+      "topic_id": "ai_hubris_trade",
+      "seed_verse_ids": [
+        "Jer.1.10",
+        "Dan.5.25",
+        "Rev.18.2"
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_ai_trade_latest.json"
+    },
+    {
+      "topic_id": "collapse_warn",
+      "seed_verse_ids": [
+        "Jer.1.10",
+        "Dan.5.25",
+        "Rev.18.2"
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_collapse_warn_latest.json"
+    },
+    {
+      "topic_id": "excess_unwind",
+      "seed_verse_ids": [
+        "Job.20.22",
+        "Dan.4.27",
+        "Rev.18.2"
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_excess_unwind_latest.json"
+    },
+    {
+      "topic_id": "regime_watch_lehman_shadow",
+      "seed_verse_ids": [
+        "Luke.22.4",
+        "Ps.89.28",
+        "Jer.31.33"
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_regime_watch_latest.json"
+    },
+    {
+      "topic_id": "empire_transition_dan2",
+      "seed_verse_ids": [
+        "Dan.2.10",
+        "Dan.2.31"
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_empire_transition_dan2_latest.json"
+    }
+  ],
+  "note": "KOSPI June 6-topic crosswalk + Dan.2 empire_transition (human sign-off merged)."
+}

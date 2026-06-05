@@ -23,8 +23,24 @@ MANIFEST = ROOT / "reports/logos_gold_crosswalk_materialize_v1_latest.json"
 GRAPH_BY_QID: dict[str, str] = {
     "q10": "reports/logos_graphrag_2026_risk_off_latest.json",
     "q11": "reports/logos_graphrag_2026_regime_watch_latest.json",
+    "q12": "reports/logos_graphrag_2026_empire_transition_dan2_latest.json",
+}
+
+GRAPH_FALLBACK_BY_QID: dict[str, str] = {
     "q12": "reports/logos_graphrag_2026_empire_transition_dan2_trial_v1_latest.json",
 }
+
+
+def _resolve_graph_path(qid: str) -> Path:
+    rel = GRAPH_BY_QID.get(qid)
+    if not rel:
+        raise KeyError(qid)
+    path = ROOT / rel
+    if not path.is_file():
+        fb = GRAPH_FALLBACK_BY_QID.get(qid)
+        if fb:
+            path = ROOT / fb
+    return path
 
 
 def _read(path: Path) -> dict[str, Any]:
@@ -98,7 +114,7 @@ def materialize_one(
     graph_rel = GRAPH_BY_QID.get(qid)
     if not graph_rel:
         return {"query_id": qid, "ok": False, "error": "no graphrag mapping"}
-    graph_path = ROOT / graph_rel
+    graph_path = _resolve_graph_path(qid)
     graph = _read(graph_path)
     if not graph.get("paths"):
         return {"query_id": qid, "ok": False, "error": f"missing graphrag: {graph_path}"}
@@ -114,7 +130,7 @@ def materialize_one(
     router = _ensure_gold_in_router(router, gold_ids)
     router["materialize_meta"] = {
         "schema": "logos_gold_crosswalk_materialize_v1",
-        "source_graphrag": graph_rel,
+        "source_graphrag": str(graph_path.relative_to(ROOT)).replace("\\", "/"),
         "query_id": qid,
         "hypothesis_tier": "B",
         "research_only": True,
