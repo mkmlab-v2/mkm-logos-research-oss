@@ -22,7 +22,8 @@ DEFAULT_GOLD = ART / "logos_semantic_query_gold_human_v1.json"
 DEFAULT_OUT = ART / "logos_subgraph_graphrag_router_v1_latest.json"
 
 SCHEMA = "logos_subgraph_graphrag_router_v1"
-VERSION = "1.4.1"
+VERSION = "1.5.0"
+CONTAIN_EDGE_TYPES = frozenset({"CONTAIN", "LEMMA_VERSE_PROXY"})
 TOKEN_RE = re.compile(r"[A-Za-z0-9_가-힣]+")
 
 # Multi-syllable then single Hangul particles (longest-first).
@@ -200,6 +201,119 @@ def _bridge_score(query_tokens: list[str], bridge: dict[str, Any]) -> int:
     return len(_bridge_token_hits(query_tokens, bridge))
 
 
+def _lemma_src_haystack(src_node_id: str) -> str:
+    s = str(src_node_id or "").lower()
+    for prefix in (
+        "lemma:hebrew:",
+        "lemma:greek:",
+        "lemma:aramaic:",
+        "lemma:",
+        "lemma_proxy:",
+        "node:lemma_proxy:",
+        "node:lemma_",
+        "lp_",
+    ):
+        if s.startswith(prefix):
+            s = s[len(prefix) :]
+            break
+    return s.replace("_", " ").replace(":", " ")
+
+
+def _canon_edge_dst(raw: str) -> str:
+    s = str(raw or "").strip()
+    if not s:
+        return ""
+    c = canonical_verse_ref(s)
+    if c and re.match(r"^[A-Za-z0-9]+\.\d+\.\d+", c):
+        return c
+    m = re.match(r"^([a-z]+)(\d+)\.(\d+)$", s.lower())
+    if m:
+        book = m.group(1)
+        book_canon = canonical_verse_ref(f"{book}.{m.group(2)}.{m.group(3)}")
+        if book_canon and re.match(r"^[A-Za-z0-9]+\.\d+\.\d+", book_canon):
+            return book_canon
+        return f"{book[:1].upper()}{book[1:]}.{m.group(2)}.{m.group(3)}"
+    return c
+
+
+def _lemma_contain_boost(
+    query_tokens: list[str],
+    bridge_rel: str,
+    lemma_rows: list[dict[str, Any]],
+) -> int:
+    """+1 per CONTAIN edge on bridge when query token hits lemma src (cap 3)."""
+    boost = 0
+    for row in lemma_rows:
+        if str(row.get("edge_type") or "") not in CONTAIN_EDGE_TYPES:
+            continue
+        if str(row.get("source_bridge") or "") != bridge_rel:
+            continue
+        hay = _lemma_src_haystack(str(row.get("src_node_id") or ""))
+        if not hay:
+            continue
+        for t in query_tokens:
+            if t in _SCORING_STOP_TOKENS:
+                continue
+            if _token_in_hay(t, hay):
+                boost += 1
+                break
+    return min(boost, 3)
+
+
+def _contain_verse_ids_for_bridge(
+    bridge_rel: str,
+    lemma_rows: list[dict[str, Any]],
+) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for row in lemma_rows:
+        if str(row.get("edge_type") or "") not in CONTAIN_EDGE_TYPES:
+            continue
+        if str(row.get("source_bridge") or "") != bridge_rel:
+            continue
+        dst = _canon_edge_dst(str(row.get("dst_node_id") or ""))
+        if dst and dst not in seen:
+            seen.add(dst)
+            out.append(dst)
+    return out
+
+
+def _lemma_hits_for_verses(
+    verse_ids: list[str],
+    lemma_rows: list[dict[str, Any]],
+    *,
+    bridge_rels: set[str] | None = None,
+) -> list[dict[str, Any]]:
+    canon_set = set(verse_ids)
+    hits: list[dict[str, Any]] = []
+    seen_edges: set[str] = set()
+    for row in lemma_rows:
+        edge_type = str(row.get("edge_type") or "")
+        if edge_type not in CONTAIN_EDGE_TYPES:
+            continue
+        bridge_rel = str(row.get("source_bridge") or "")
+        if bridge_rels is not None and bridge_rel and bridge_rel not in bridge_rels:
+            continue
+        dst = _canon_edge_dst(str(row.get("dst_node_id") or ""))
+        if not dst or dst not in canon_set:
+            continue
+        eid = str(row.get("edge_id") or "")
+        if eid in seen_edges:
+            continue
+        seen_edges.add(eid)
+        hits.append(
+            {
+                "edge_id": row.get("edge_id"),
+                "src_node_id": row.get("src_node_id"),
+                "dst_node_id": dst,
+                "edge_type": edge_type,
+                "source_bridge": bridge_rel or None,
+                "weight": row.get("weight"),
+            }
+        )
+    return hits
+
+
 def _active_theme_lanes(query: str) -> list[str]:
     q = query.lower()
     lanes: list[str] = []
@@ -215,6 +329,25 @@ def _bridge_theme_lane(bridge: dict[str, Any]) -> str | None:
         if any(kw in blob for kw in keywords):
             return lane_id
     return None
+
+
+def _lane_keywords(lane_id: str) -> tuple[str, ...]:
+    for lid, keywords in _THEME_LANES:
+        if lid == lane_id:
+            return keywords
+    return ()
+
+
+def _bridge_matches_lane(bridge: dict[str, Any], lane_id: str) -> bool:
+    keywords = _lane_keywords(lane_id)
+    if not keywords:
+        return False
+    blob = _bridge_haystack(bridge)
+    return any(kw in blob for kw in keywords)
+
+
+def _bridge_matches_any_active_lane(bridge: dict[str, Any], active_lanes: list[str]) -> bool:
+    return any(_bridge_matches_lane(bridge, lane) for lane in active_lanes)
 
 
 def _select_bridges_multi_coverage(
@@ -238,9 +371,9 @@ def _select_bridges_multi_coverage(
     if len(active_lanes) >= 2:
         by_lane: dict[str, list[tuple[int, set[str], dict[str, Any], str]]] = {}
         for item in ranked:
-            lane = _bridge_theme_lane(item[2])
-            if lane:
-                by_lane.setdefault(lane, []).append(item)
+            for lane in active_lanes:
+                if _bridge_matches_lane(item[2], lane):
+                    by_lane.setdefault(lane, []).append(item)
         for lane in active_lanes:
             pool = by_lane.get(lane) or []
             pool = sorted(pool, key=lambda x: (x[0], len(x[1])), reverse=True)
@@ -248,7 +381,7 @@ def _select_bridges_multi_coverage(
                 pool = [
                     item
                     for item in pool_all
-                    if _bridge_theme_lane(item[2]) == lane and item[3] not in selected_rels
+                    if _bridge_matches_lane(item[2], lane) and item[3] not in selected_rels
                 ]
                 pool = sorted(
                     pool,
@@ -273,8 +406,7 @@ def _select_bridges_multi_coverage(
         if score <= 0 or rel in selected_rels:
             continue
         if composite_theme_only:
-            lane = _bridge_theme_lane(doc)
-            if lane not in active_lanes:
+            if not _bridge_matches_any_active_lane(doc, active_lanes):
                 continue
         if not selected:
             selected.append(item)
@@ -364,6 +496,7 @@ def route(
     query_tokens = _tokens(query)
     candidates: list[tuple[int, set[str], dict[str, Any], str]] = []
     lane_backfill_pool: list[tuple[int, set[str], dict[str, Any], str]] = []
+    lemma_boost_total = 0
     for entry in registry.get("entries") or []:
         if not isinstance(entry, dict) or not entry.get("present"):
             continue
@@ -377,9 +510,13 @@ def route(
         if not doc:
             continue
         hits = _bridge_token_hits(query_tokens, doc)
-        item = (len(hits), hits, doc, rel)
+        rel_posix = rel.replace("\\", "/")
+        boost = _lemma_contain_boost(query_tokens, rel_posix, lemma_rows)
+        lemma_boost_total += boost
+        score = len(hits) + boost
+        item = (score, hits, doc, rel_posix)
         lane_backfill_pool.append(item)
-        if hits:
+        if hits or boost > 0:
             candidates.append(item)
 
     selected = _select_bridges_multi_coverage(
@@ -389,6 +526,7 @@ def route(
         lane_backfill_pool=lane_backfill_pool,
     )
     active_lanes = _active_theme_lanes(query)
+    selected_rels = {rel for _s, _h, _d, rel in selected}
 
     paths_out: list[dict[str, Any]] = []
     verse_ids: list[str] = []
@@ -412,19 +550,12 @@ def route(
             if vid not in seen_v:
                 seen_v.add(vid)
                 verse_ids.append(vid)
+        for vid in _contain_verse_ids_for_bridge(rel, lemma_rows):
+            if vid not in seen_v:
+                seen_v.add(vid)
+                verse_ids.append(vid)
 
-    lemma_hits: list[dict[str, Any]] = []
-    for row in lemma_rows:
-        dst = row.get("dst_node_id")
-        if isinstance(dst, str) and any(dst in v or v.endswith(dst) for v in verse_ids):
-            lemma_hits.append(
-                {
-                    "edge_id": row.get("edge_id"),
-                    "src_node_id": row.get("src_node_id"),
-                    "dst_node_id": dst,
-                    "edge_type": row.get("edge_type"),
-                }
-            )
+    lemma_hits = _lemma_hits_for_verses(verse_ids, lemma_rows, bridge_rels=selected_rels)
 
     seed_verses: list[str] = []
     if seed_chain:
@@ -448,6 +579,13 @@ def route(
         "paths": paths_out,
         "verse_ids": verse_ids,
         "lemma_edge_hits": lemma_hits[:30],
+        "lemma_contain_meta": {
+            "edges_considered": sum(
+                1 for r in lemma_rows if str(r.get("edge_type") or "") in CONTAIN_EDGE_TYPES
+            ),
+            "boost_applied_total": lemma_boost_total,
+            "hit_count": len(lemma_hits),
+        },
         "seed_chain_verse_sample": seed_verses_canon or seed_verses,
         "policy": {
             "no_prophecy_claim": True,
@@ -455,6 +593,7 @@ def route(
             "router_kind": "logos_subgraph_v1",
             "bridge_selection": "multi_coverage_v1",
             "verse_ref_canonical_at_source": True,
+            "lemma_contain_boost_v1": True,
         },
     }
 
@@ -512,6 +651,7 @@ def main() -> int:
                 "bridges_matched": doc["bridges_matched"],
                 "paths": len(doc["paths"]),
                 "verse_ids": len(doc["verse_ids"]),
+                "lemma_edge_hits": len(doc.get("lemma_edge_hits") or []),
                 "out": str(args.output_json),
             },
             ensure_ascii=False,

@@ -257,3 +257,49 @@ def test_logos_subgraph_router_node_verse_compact_steps(tmp_path: Path) -> None:
         for raw in raw_steps[:3]:
             canon = ev.normalize_verse_ref(raw)
             assert "." in canon and not canon.startswith("node_verse_")
+
+
+def test_logos_subgraph_router_lemma_contain_boost(tmp_path: Path) -> None:
+    lemma_builder = ROOT / "scripts/build_logos_lemma_verse_edges_v1.py"
+    registry = ROOT / "docs/final/artifacts/logos_concept_bridge_registry_v1_latest.json"
+    subprocess.run([sys.executable, str(COVENANT_BUILDER)], cwd=str(ROOT), check=True)
+    subprocess.run([sys.executable, str(REGISTRY_BUILDER)], cwd=str(ROOT), check=True)
+    subprocess.run(
+        [
+            sys.executable,
+            str(lemma_builder),
+            "--registry-json",
+            str(registry),
+            "--no-graph-heuristic",
+        ],
+        cwd=str(ROOT),
+        check=True,
+    )
+    out = tmp_path / "router_q01_lemma.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(ROUTER),
+            "--query-id",
+            "q01",
+            "--gold-json",
+            str(ROOT / "docs/final/fixtures/logos_gold_query_eval_v1.json"),
+            "--top-bridges",
+            "4",
+            "--output-json",
+            str(out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("policy", {}).get("lemma_contain_boost_v1") is True
+    meta = doc.get("lemma_contain_meta") or {}
+    assert int(meta.get("edges_considered") or 0) >= 10
+    hits = doc.get("lemma_edge_hits") or []
+    assert len(hits) >= 1
+    assert any(str(h.get("edge_type")) == "CONTAIN" for h in hits)
+    assert any(h.get("dst_node_id") in {"Ps.89.28", "Jer.31.33", "Job.24.19"} for h in hits)
