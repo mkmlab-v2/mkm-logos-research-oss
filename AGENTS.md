@@ -239,6 +239,18 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【쇼룸 nginx 예약 점검】 | Task `Showroom-TrackC-Nginx-Weekly` (기본 일 09:40) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-ShowroomTrackCNginxWeeklyScheduledTask_v1.ps1` |
 | 【쇼룸 헬스】 | 예약 태스크 + 듀얼 호스트 스모크 + B2B readiness | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ShowroomTrackCHealth` |
 | 【쇼룸 커밋 범위】 | Track C 쇼룸 전용 `git status` 목록 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Show-ShowroomTrackCGitScope_v1.ps1` |
+| 【A-code 운영자 보조】 | RQ-031 operator lane thin (`-SkipGovernorBundle`) + lane gate | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona OperatorAssistLane` |
+| 【A-code 운영자 보조 full】 | RQ-031 full (multiday governor 포함) | `… -Persona OperatorAssistLaneFull` |
+| 【A-code 운영자 보조 점검】 | 스크립트·산출·주간 Task action | `… -Persona OperatorAssistLaneReadiness` |
+| 【A-code 운영자 보조 dual 점검】 | full+light 주간 Task 둘 다 필수 | `… -Persona OperatorAssistLaneReadinessBoth` |
+| 【A-code governor smoke】 | RQ-028/031 pytest only (CI 동일) | `… -Persona ACodeGovernorSmoke` |
+| 【A-code sign-off archive】 | human sign-off archive pack + smoke | `… -Persona ACodeGovernorArchive` |
+| 【A-code 운영자 보조 light】 | light-only routine + ops profile JSON | `… -Persona OperatorAssistLaneLight` |
+| 【A-code RQ close 체크리스트】 | 지휘관 수동 RESEARCH CLOSED 절차 (자동 종료 없음) | `… -Persona ACodeRqCloseChecklist` |
+| 【A-code closure readiness】 | closure readiness + weekly ops 1-page | `… -Persona ACodeClosureReadiness` |
+| 【A-code RQ close handoff】 | commander handoff + RESEARCH migration draft (자동 CLOSED 없음) | `… -Persona ACodeRqCloseHandoff` |
+| 【히어로 루프 점검】 | Commander daily prophecy hero loop readiness | `… -Persona CommanderProphecyHeroReadiness` |
+| 【코스피 6월 예약 점검】 | June KOSPI weekday morning/evening Task Scheduler + schedule JSON | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona KospiJune2026DailyReadiness` |
 
 ### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
 
