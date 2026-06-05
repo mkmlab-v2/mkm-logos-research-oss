@@ -135,6 +135,9 @@ def _collect_rag_verses(insight: dict[str, Any]) -> list[str]:
     for row in insight.get("rag_evidence") or []:
         if not isinstance(row, dict):
             continue
+        direct = normalize_verse_ref(str(row.get("verse_id") or ""))
+        if direct and re.search(r"\.\d+\.\d+", direct):
+            rows.append(direct)
         sid = str(row.get("source_id") or "")
         for pat in (
             r"verse:([A-Za-z0-9_.]+)",

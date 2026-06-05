@@ -1,0 +1,16 @@
+{
+  "schema": "logos_topic_4d_resonance_topics_v1",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "note": "Dan.2 trial — not merged into 18-seed SSOT fixture",
+  "topics": [
+    {
+      "topic_id": "empire_transition_dan2_trial",
+      "seed_verse_ids": [
+        "Dan.2.10",
+        "Dan.2.31"
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_empire_transition_dan2_trial_v1_latest.json"
+    }
+  ]
+}

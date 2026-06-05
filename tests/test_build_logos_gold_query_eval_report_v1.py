@@ -65,3 +65,18 @@ def test_rag_snippet_verse_extraction() -> None:
     }
     verses = mod._collect_rag_verses(insight)
     assert "Jer.31.33" in verses
+
+
+def test_rag_verse_id_field_extraction() -> None:
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import build_logos_gold_query_eval_report_v1 as mod
+
+    insight = {
+        "rag_evidence": [
+            {"verse_id": "Neh.4.9", "source": "election_graphrag_router"},
+            {"verse_id": "1Chr.12.32", "source": "election_graphrag_router"},
+        ]
+    }
+    verses = mod._collect_rag_verses(insight)
+    assert "Neh.4.9" in verses
+    assert "1Chr.12.32" in verses
