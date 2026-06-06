@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { Suspense } from "react";
+import { normalizeRequestHost, shouldUseMinimalClinicianShell } from "@/lib/no1kmedi-portal-host";
 import { ClinicianWorkspaceClient } from "./ClinicianWorkspaceClient";
 
 export const metadata: Metadata = {
@@ -10,6 +12,9 @@ export const metadata: Metadata = {
 };
 
 export default function ClinicianPage() {
+  const host = normalizeRequestHost(headers().get("host"));
+  const minimalShell = shouldUseMinimalClinicianShell(host);
+
   return (
     <Suspense
       fallback={
@@ -18,7 +23,7 @@ export default function ClinicianPage() {
         </div>
       }
     >
-      <ClinicianWorkspaceClient />
+      <ClinicianWorkspaceClient minimalShell={minimalShell} />
     </Suspense>
   );
 }

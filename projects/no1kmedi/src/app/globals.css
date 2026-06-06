@@ -1816,7 +1816,8 @@ section h2 {
 
 .pd-moment-card {
   text-align: left;
-  padding: 0.75rem 0.85rem;
+  padding: 0.85rem 0.95rem;
+  min-height: 44px;
   border-radius: 0.75rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(15, 23, 42, 0.5);
@@ -1839,7 +1840,7 @@ section h2 {
 
 .pd-moment-card:hover {
   transform: perspective(600px) rotateX(3deg) rotateY(-2deg);
-  border-color: rgba(99, 102, 241, 0.45);
+  border-color: rgba(79, 182, 157, 0.55);
 }
 
 .pd-reflect-input {
@@ -1855,35 +1856,175 @@ section h2 {
   resize: vertical;
 }
 
+.pd-btn-primary {
+  background: linear-gradient(180deg, #4fb69d, #3d9b84) !important;
+  border: 1px solid rgba(61, 155, 132, 0.75) !important;
+  color: #041210 !important;
+  box-shadow: 0 8px 20px rgba(61, 155, 132, 0.22);
+}
+
+.pd-btn-primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #57c1a7, #43a78f) !important;
+  box-shadow: 0 12px 28px rgba(61, 155, 132, 0.28);
+}
+
 .pd-reflect-submit {
   width: 100%;
-  background: linear-gradient(90deg, #6366f1, #10b981) !important;
-  border: none !important;
+  min-height: 44px;
 }
 
-.pd-reflect-result {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+.pd-moment-result {
+  margin-top: 1.1rem;
+  padding: 1rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(79, 182, 157, 0.25);
+  background: rgba(15, 23, 42, 0.45);
 }
 
-.pd-reflect-tag {
-  margin: 0 0 0.5rem;
-  font-size: 0.68rem;
-  color: rgba(253, 224, 71, 0.85);
+.pd-moment-result-eyebrow {
+  margin: 0 0 0.45rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(79, 182, 157, 0.95);
 }
 
-.pd-reflect-result p:last-child {
+.pd-moment-result-lead {
+  margin: 0 0 0.85rem;
+  font-size: 1rem;
+  line-height: 1.55;
+  font-weight: 500;
+  color: rgba(241, 245, 249, 0.98);
+}
+
+.pd-moment-result-cards {
+  display: grid;
+  gap: 0.65rem;
+  margin-bottom: 0.5rem;
+}
+
+.pd-moment-result-card {
+  padding: 0.75rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(2, 6, 23, 0.35);
+}
+
+.pd-moment-result-card h4 {
+  margin: 0 0 0.4rem;
+  font-size: 0.82rem;
+  color: #cbd5e1;
+}
+
+.pd-moment-result-card ul {
   margin: 0;
-  font-size: 0.88rem;
-  line-height: 1.6;
+  padding-left: 1.1rem;
+  font-size: 0.84rem;
+  line-height: 1.5;
   color: rgba(203, 213, 225, 0.95);
 }
 
+.pd-moment-result-card li + li {
+  margin-top: 0.25rem;
+}
+
+.pd-moment-more {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.pd-moment-more summary {
+  cursor: pointer;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.pd-moment-more-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.pd-moment-more-list li {
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.35);
+}
+
+.pd-moment-more-list strong {
+  display: block;
+  font-size: 0.78rem;
+  margin-bottom: 0.2rem;
+}
+
+.pd-moment-more-list p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.pd-moment-dev {
+  margin-top: 0.65rem;
+  font-size: 0.68rem;
+  color: rgba(100, 116, 139, 0.9);
+}
+
+.pd-moment-dev summary {
+  cursor: pointer;
+}
+
+.pd-moment-dev-meta {
+  margin: 0.35rem 0 0;
+  font-family: ui-monospace, monospace;
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.pd-moment-polish-note {
+  margin: -0.35rem 0 0.65rem;
+  font-size: 0.68rem;
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.pd-moment-disclaimer {
+  margin: 0.75rem 0 0;
+  font-size: 0.72rem;
+  color: rgba(148, 163, 184, 0.9);
+}
+
 .pd-daily-guide {
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 1.35rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.pd-daily-guide-label {
+  margin-top: 0;
+}
+
+.pd-guide-expand {
+  display: block;
+  width: 100%;
+  margin: 0.65rem 0 0;
+  padding: 0.55rem 0.75rem;
+  min-height: 44px;
+  border-radius: 0.65rem;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  background: transparent;
+  color: rgba(148, 163, 184, 0.95);
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.pd-guide-expand:hover {
+  border-color: rgba(79, 182, 157, 0.4);
+  color: rgba(203, 213, 225, 0.95);
+}
+
+.pd-guide-expanded {
+  margin-top: 0.75rem;
 }
 
 .pd-guide-loading,
@@ -1959,6 +2100,120 @@ section h2 {
   color: rgba(253, 224, 71, 0.8) !important;
 }
 
+.pd-body-rhythm-teaser {
+  margin: 0.5rem 0 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.55rem;
+  background: rgba(45, 212, 191, 0.06);
+  border: 1px solid rgba(45, 212, 191, 0.18);
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(203, 213, 225, 0.92);
+}
+
+.pd-body-rhythm-teaser-label {
+  display: inline-block;
+  margin-right: 0.45rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 0.35rem;
+  background: rgba(45, 212, 191, 0.15);
+  color: #5eead4;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.pd-body-rhythm-section {
+  margin: 0.85rem 0 1rem;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(45, 212, 191, 0.28);
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    135deg,
+    rgba(45, 212, 191, 0.05) 0%,
+    rgba(15, 23, 42, 0.4) 100%
+  );
+}
+
+.pd-body-rhythm-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.55rem;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+
+.pd-body-rhythm-heading {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #99f6e4;
+}
+
+.pd-body-rhythm-badge {
+  font-size: 0.68rem;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.pd-body-rhythm-chevron {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.pd-body-rhythm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.pd-body-rhythm-card {
+  padding: 0.65rem 0.7rem;
+  border-radius: 0.55rem;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(45, 212, 191, 0.12);
+}
+
+.pd-body-rhythm-card h4 {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  color: #ccfbf1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.pd-body-rhythm-tier {
+  font-size: 0.62rem;
+  padding: 0.08rem 0.35rem;
+  border-radius: 0.3rem;
+  background: rgba(45, 212, 191, 0.12);
+  color: rgba(153, 246, 228, 0.85);
+  font-weight: 500;
+}
+
+.pd-body-rhythm-card-body {
+  margin: 0;
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: rgba(203, 213, 225, 0.9);
+  white-space: pre-line;
+}
+
+.pd-body-rhythm-disclaimer {
+  margin: 0.65rem 0 0;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: rgba(148, 163, 184, 0.85);
+}
+
 .pd-premium-aside {
   padding: 1.35rem 1.25rem;
 }
@@ -1999,9 +2254,12 @@ section h2 {
 
 .pd-pillar-icon {
   display: block;
-  font-size: 1.25rem;
   margin-bottom: 0.65rem;
-  color: #818cf8;
+  color: #4fb69d;
+}
+
+.pd-pillar-icon svg {
+  display: block;
 }
 
 .pd-pillar-card h3 {
@@ -3301,6 +3559,151 @@ main.workspace-main {
   min-height: 0;
   overflow: auto;
   padding-right: 0.2rem;
+}
+
+/* --- no1kmedi.com / clinic.* — minimal clinician shell (ChatGPT-first) --- */
+.minimal-clinician-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #0d0d0d;
+  color: #ececec;
+}
+
+.minimal-clinician-topbar {
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0d0d0d;
+  z-index: 40;
+}
+
+.minimal-clinician-topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 1rem;
+  max-width: 52rem;
+  margin: 0 auto;
+}
+
+.minimal-clinician-menu-btn,
+.minimal-clinician-ghost-btn {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #ececec;
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: none;
+  line-height: 1.2;
+}
+
+.minimal-clinician-menu-btn:hover,
+.minimal-clinician-ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.minimal-clinician-brand {
+  flex: 1;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+.minimal-clinician-brand-tag {
+  margin-left: 0.4rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #8e8e8e;
+}
+
+.minimal-clinician-topbar-actions {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.minimal-clinician-drawer {
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: min(300px, 88vw);
+  height: calc(100vh - 48px);
+  z-index: 36;
+  transform: translateX(-102%);
+  transition: transform 0.2s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background: #141414;
+  padding: 0.85rem 0.65rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 8px 0 28px rgba(0, 0, 0, 0.45);
+}
+
+.minimal-clinician-drawer.is-open {
+  transform: translateX(0);
+}
+
+.minimal-clinician-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 0.75rem 1rem 1.25rem;
+}
+
+.minimal-clinician-main--panel {
+  max-width: 52rem;
+}
+
+.minimal-clinician-back-btn {
+  align-self: flex-start;
+  margin-bottom: 0.65rem;
+  border: 0;
+  background: transparent;
+  color: #8e8e8e;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.2rem 0;
+  font-family: inherit;
+}
+
+.minimal-clinician-back-btn:hover {
+  color: #ececec;
+}
+
+.minimal-clinician-shell .chat-card--clinician,
+.minimal-clinician-shell .chat-card--workspace {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+}
+
+.minimal-clinician-shell .clinician-chat-toolbar {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+.minimal-clinician-shell .clinician-chat-textarea {
+  background: #1a1a1a;
+  border-color: rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+}
+
+.minimal-clinician-shell .chat-bubble {
+  max-width: 92%;
+}
+
+.minimal-clinician-shell .workspace-nav-item.is-active {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 /* Clinician ChatGPT-style workspace */

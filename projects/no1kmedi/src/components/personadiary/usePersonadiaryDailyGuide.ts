@@ -1,14 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  createContext,
+  createElement,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import type { DailyGuideBlock } from "@/lib/personadiaryDailyGuide";
 
-export type DailyGuideBlock = {
-  type: string;
-  title_ko: string;
-  body_ko?: string;
-  ref?: string;
-  badge_ko?: string;
-  mkmlife_href?: string;
+export type MomentPresetPolishBlock = {
+  presets?: Record<
+    string,
+    {
+      canonical_query?: string;
+      summary_ko_polished?: string | null;
+    }
+  >;
+  hero?: { body_ko_polished?: string | null };
 };
 
 export type DailyGuidePackage = {
@@ -17,6 +29,14 @@ export type DailyGuidePackage = {
   ui_blocks?: DailyGuideBlock[];
   reflect_template_ko?: string;
   disclaimer_ko?: string;
+  moment_preset_polish_v1?: MomentPresetPolishBlock;
+};
+
+type DailyGuideContextValue = {
+  pkg: DailyGuidePackage | null;
+  loading: boolean;
+  error: string | null;
+  profileId: string;
 };
 
 const DEFAULT_PROFILE =
@@ -24,37 +44,130 @@ const DEFAULT_PROFILE =
     process.env.NEXT_PUBLIC_PERSONADIARY_PROFILE_ID?.trim()) ||
   "commander";
 
-export function usePersonadiaryDailyGuide(profileId: string = DEFAULT_PROFILE) {
+const FETCH_TIMEOUT_MS = 12_000;
+
+const DailyGuideContext = createContext<DailyGuideContextValue | null>(null);
+
+function isValidPackage(doc: unknown): doc is DailyGuidePackage {
+  return (
+    typeof doc === "object" &&
+    doc !== null &&
+    (doc as DailyGuidePackage).ui_blocks !== undefined
+  );
+}
+
+async function loadStaticPackage(profileId: string): Promise<DailyGuidePackage | null> {
+  const paths = [
+    `/data/profiles/${profileId}.json`,
+    "/data/personadiary_daily_response_package_v1.json",
+  ];
+  for (const path of paths) {
+    try {
+      const res = await fetch(path, { cache: "no-store" });
+      if (!res.ok) continue;
+      const doc = (await res.json()) as DailyGuidePackage;
+      if (isValidPackage(doc)) return doc;
+    } catch {
+      /* try next */
+    }
+  }
+  return null;
+}
+
+async function fetchDailyGuidePackage(
+  profileId: string,
+  signal: AbortSignal
+): Promise<DailyGuidePackage> {
+  const q = new URLSearchParams({ profile_id: profileId });
+  const res = await fetch(`/api/personadiary/daily-guide?${q}`, {
+    cache: "no-store",
+    signal,
+  });
+  const data = await res.json();
+  if (!res.ok || !data?.ok || !isValidPackage(data.package)) {
+    const fallback = await loadStaticPackage(profileId);
+    if (fallback) return fallback;
+    throw new Error(String(data?.error || "load_failed"));
+  }
+  return data.package as DailyGuidePackage;
+}
+
+function useDailyGuideFetch(
+  profileId: string,
+  enabled: boolean
+): DailyGuideContextValue {
   const [pkg, setPkg] = useState<DailyGuidePackage | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(enabled);
   const [error, setError] = useState<string | null>(null);
+  const requestId = useRef(0);
 
   useEffect(() => {
-    let cancelled = false;
+    if (!enabled) return;
+
+    const id = ++requestId.current;
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+
+    setLoading(true);
+    setError(null);
+
     (async () => {
       try {
-        const q = new URLSearchParams({ profile_id: profileId });
-        const res = await fetch(`/api/personadiary/daily-guide?${q}`, {
-          cache: "no-store",
-        });
-        const data = await res.json();
-        if (!res.ok || !data.ok) {
-          if (!cancelled) setError(data.error || "load_failed");
-          return;
+        const loaded = await fetchDailyGuidePackage(profileId, controller.signal);
+        if (requestId.current !== id) return;
+        setPkg(loaded);
+      } catch (err) {
+        if (requestId.current !== id) return;
+        const fallback = await loadStaticPackage(profileId);
+        if (fallback) {
+          setPkg(fallback);
+          setError(null);
+        } else {
+          const message =
+            err instanceof Error && err.name === "AbortError"
+              ? "timeout"
+              : "network_error";
+          setError(message);
         }
-        if (!cancelled) setPkg(data.package as DailyGuidePackage);
-      } catch {
-        if (!cancelled) setError("network_error");
       } finally {
-        if (!cancelled) setLoading(false);
+        window.clearTimeout(timer);
+        if (requestId.current === id) setLoading(false);
       }
     })();
-    return () => {
-      cancelled = true;
-    };
-  }, [profileId]);
 
-  return { pkg, loading, error, profileId };
+    return () => {
+      controller.abort();
+      window.clearTimeout(timer);
+    };
+  }, [profileId, enabled]);
+
+  return { pkg, loading: enabled ? loading : false, error, profileId };
+}
+
+export function PersonadiaryDailyGuideProvider({
+  children,
+  profileId = DEFAULT_PROFILE,
+}: {
+  children: ReactNode;
+  profileId?: string;
+}) {
+  const value = useDailyGuideFetch(profileId, true);
+  const memo = useMemo(() => value, [value.pkg, value.loading, value.error, value.profileId]);
+  return createElement(DailyGuideContext.Provider, { value: memo }, children);
+}
+
+export function usePersonadiaryDailyGuide(profileId: string = DEFAULT_PROFILE) {
+  const ctx = useContext(DailyGuideContext);
+  const standalone = useDailyGuideFetch(profileId, !ctx);
+
+  if (ctx) {
+    if (ctx.profileId !== profileId) {
+      return { pkg: null, loading: true, error: null, profileId };
+    }
+    return ctx;
+  }
+
+  return standalone;
 }
 
 export function formatReflectFromGuide(

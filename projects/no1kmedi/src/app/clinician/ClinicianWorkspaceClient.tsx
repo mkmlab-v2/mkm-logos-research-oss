@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppWorkspaceShell } from "@/components/AppWorkspaceShell";
+import { MinimalClinicianShell } from "@/components/MinimalClinicianShell";
+import { JEMA_AI_PUBLIC_ORIGIN } from "@/lib/no1kmedi-portal-host";
 import { ClinicianConsultContextPanel } from "@/components/ClinicianConsultContextPanel";
 import { ClinicianPersistedChat } from "@/components/ClinicianPersistedChat";
 import { ClinicianThreadRail } from "@/components/ClinicianThreadRail";
@@ -49,7 +51,12 @@ function ClinicianSafetyPanel() {
   );
 }
 
-export function ClinicianWorkspaceClient() {
+type ClinicianWorkspaceClientProps = {
+  /** no1kmedi.com / clinic.* (or localhost dev simulate) — ChatGPT-minimal chrome */
+  minimalShell?: boolean;
+};
+
+export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWorkspaceClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { ready, threads, activeThreadId, setActiveThreadId, activeThread, createThread, deleteThread, commitThread } =
@@ -150,9 +157,20 @@ export function ClinicianWorkspaceClient() {
       { id: "bundle", label: "환자 번들", hint: "panel", run: () => onSelect("bundle") },
       { id: "safety", label: "안전·고지", hint: "panel", run: () => onSelect("safety") },
       { id: "new", label: "새 상담", hint: "스레드", run: () => startNewConsult() },
-      { id: "home", label: "랜딩으로", hint: "/", run: () => router.push("/") },
+      {
+        id: "home",
+        label: minimalShell ? "브랜드 허브" : "랜딩으로",
+        hint: minimalShell ? JEMA_AI_PUBLIC_ORIGIN : "/",
+        run: () => {
+          if (minimalShell) {
+            window.open(JEMA_AI_PUBLIC_ORIGIN, "_blank", "noopener,noreferrer");
+            return;
+          }
+          router.push("/");
+        },
+      },
     ],
-    [onSelect, router, startNewConsult],
+    [minimalShell, onSelect, router, startNewConsult],
   );
 
   const sidebarBody =
@@ -185,65 +203,84 @@ export function ClinicianWorkspaceClient() {
       }
     : null;
 
+  const panelContent = (
+    <>
+      {activeId === "chat" ? (
+        <div className="workspace-chat-column">
+          <ClinicianPersistedChat
+            thread={activeThread}
+            onCommit={commitThread}
+            canUseAdvancedConsult={canUseAdvancedConsult}
+            onOpenPatientSettings={() => onSelect("patient")}
+            onOpenBundle={() => onSelect("bundle")}
+          />
+        </div>
+      ) : null}
+      {activeId === "patient" ? (
+        <div className="workspace-scroll-panel">
+          <ClinicianConsultContextPanel
+            context={activeThread.context}
+            onContextChange={patchContext}
+            accessEmail={accessEmail}
+            onAccessEmailChange={setAccessEmail}
+            accessBusy={accessBusy}
+            accessStatus={accessStatus}
+            onCheckAccess={() => void checkAccessStatus()}
+          />
+        </div>
+      ) : null}
+      {activeId === "bundle" ? (
+        <div className="workspace-scroll-panel">
+          {draftForBundle && activeThread.lastCds?.envelope ? (
+            <PatientCareBundlePreview
+              enabled={canUseAdvancedConsult}
+              formState={activeThread.context}
+              draft={draftForBundle}
+              cdsEnvelope={activeThread.lastCds.envelope}
+              kmCdsValidationOk={activeThread.lastCds.validationOk}
+            />
+          ) : (
+            <div className="workspace-panel notice-box">
+              <p>먼저 「대화」에서 진료 보조 초안을 생성한 뒤, SSOT 봉투가 준비되면 번들을 만들 수 있습니다.</p>
+            </div>
+          )}
+        </div>
+      ) : null}
+      {activeId === "safety" ? <ClinicianSafetyPanel /> : null}
+    </>
+  );
+
   return (
     <>
       <JemaWorkspaceCommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} actions={paletteActions} />
-      <AppWorkspaceShell
-        homeHref="/"
-        roleLabel="한의사"
-        nav={[...NAV]}
-        activeId={activeId}
-        onSelect={onSelect}
-        sidebarBody={sidebarBody}
-        sidebarFooter={
-          <button type="button" className="workspace-secondary-btn" onClick={startNewConsult}>
-            새 상담
-          </button>
-        }
-      >
-        {activeId === "chat" ? (
-          <div className="workspace-chat-column">
-            <ClinicianPersistedChat
-              thread={activeThread}
-              onCommit={commitThread}
-              canUseAdvancedConsult={canUseAdvancedConsult}
-              onOpenPatientSettings={() => onSelect("patient")}
-              onOpenBundle={() => onSelect("bundle")}
-            />
-          </div>
-        ) : null}
-        {activeId === "patient" ? (
-          <div className="workspace-scroll-panel">
-            <ClinicianConsultContextPanel
-              context={activeThread.context}
-              onContextChange={patchContext}
-              accessEmail={accessEmail}
-              onAccessEmailChange={setAccessEmail}
-              accessBusy={accessBusy}
-              accessStatus={accessStatus}
-              onCheckAccess={() => void checkAccessStatus()}
-            />
-          </div>
-        ) : null}
-        {activeId === "bundle" ? (
-          <div className="workspace-scroll-panel">
-            {draftForBundle && activeThread.lastCds?.envelope ? (
-              <PatientCareBundlePreview
-                enabled={canUseAdvancedConsult}
-                formState={activeThread.context}
-                draft={draftForBundle}
-                cdsEnvelope={activeThread.lastCds.envelope}
-                kmCdsValidationOk={activeThread.lastCds.validationOk}
-              />
-            ) : (
-              <div className="workspace-panel notice-box">
-                <p>먼저 「대화」에서 진료 보조 초안을 생성한 뒤, SSOT 봉투가 준비되면 번들을 만들 수 있습니다.</p>
-              </div>
-            )}
-          </div>
-        ) : null}
-        {activeId === "safety" ? <ClinicianSafetyPanel /> : null}
-      </AppWorkspaceShell>
+      {minimalShell ? (
+        <MinimalClinicianShell
+          roleLabel="한의사"
+          nav={[...NAV]}
+          activeId={activeId}
+          onSelect={onSelect}
+          sidebarBody={sidebarBody}
+          onNewConsult={startNewConsult}
+        >
+          {panelContent}
+        </MinimalClinicianShell>
+      ) : (
+        <AppWorkspaceShell
+          homeHref="/"
+          roleLabel="한의사"
+          nav={[...NAV]}
+          activeId={activeId}
+          onSelect={onSelect}
+          sidebarBody={sidebarBody}
+          sidebarFooter={
+            <button type="button" className="workspace-secondary-btn" onClick={startNewConsult}>
+              새 상담
+            </button>
+          }
+        >
+          {panelContent}
+        </AppWorkspaceShell>
+      )}
     </>
   );
 }

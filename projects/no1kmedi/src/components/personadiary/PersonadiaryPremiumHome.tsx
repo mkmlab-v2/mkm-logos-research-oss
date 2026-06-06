@@ -5,6 +5,7 @@ import { personadiaryCopy } from "@/content/personadiaryCopy";
 import { PersonadiaryMagicOrb } from "./PersonadiaryMagicOrb";
 import { PersonadiaryDailyGuideCards } from "./PersonadiaryDailyGuideCards";
 import { PersonadiaryReflectTeaser } from "./PersonadiaryReflectTeaser";
+import { PersonadiaryDailyGuideProvider } from "./usePersonadiaryDailyGuide";
 
 export function PersonadiaryPremiumHome() {
   return (
@@ -46,8 +47,10 @@ export function PersonadiaryPremiumHome() {
           </p>
           <div className="pd-premium-reflect-grid">
             <div className="pd-glass pd-premium-reflect-panel">
-              <PersonadiaryDailyGuideCards />
-              <PersonadiaryReflectTeaser />
+              <PersonadiaryDailyGuideProvider>
+                <PersonadiaryReflectTeaser />
+                <PersonadiaryDailyGuideCards />
+              </PersonadiaryDailyGuideProvider>
             </div>
             <aside className="pd-glass pd-premium-aside">
               <h3>마음돌봄 셸</h3>
@@ -73,7 +76,10 @@ export function PersonadiaryPremiumHome() {
           <div className="pd-pillar-grid">
             <article className="pd-glass pd-pillar-card">
               <span className="pd-pillar-icon" aria-hidden="true">
-                ◈
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+                </svg>
               </span>
               <h3>찰나의 나</h3>
               <p>
@@ -82,7 +88,9 @@ export function PersonadiaryPremiumHome() {
             </article>
             <article className="pd-glass pd-pillar-card">
               <span className="pd-pillar-icon" aria-hidden="true">
-                ◎
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M12 3c-4 0-7 2.5-7 6 0 5 7 12 7 12s7-7 7-12c0-3.5-3-6-7-6z" />
+                </svg>
               </span>
               <h3>개인화 콘텐츠</h3>
               <p>
@@ -91,7 +99,10 @@ export function PersonadiaryPremiumHome() {
             </article>
             <article className="pd-glass pd-pillar-card">
               <span className="pd-pillar-icon" aria-hidden="true">
-                ◇
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <rect x="4" y="4" width="16" height="16" rx="3" />
+                  <path d="M8 12h8M12 8v8" />
+                </svg>
               </span>
               <h3>모먼트 수집</h3>
               <p>

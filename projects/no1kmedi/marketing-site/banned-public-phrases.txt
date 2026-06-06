@@ -6,6 +6,10 @@ OpenAI GPT
 ENO-GPT
 Clinical Copilot
 Copilot
+Since 1972
+SINCE 1972
+한의원 1972
+1972년 개원
 Sovereign AI
 가성비 모델
 RAG-lite

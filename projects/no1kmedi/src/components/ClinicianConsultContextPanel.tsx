@@ -34,6 +34,7 @@ type PatientPinLookupResponse = {
 };
 
 type ClinicianConsultContextPanelProps = {
+  compact?: boolean;
   context: ClinicianThreadContext;
   onContextChange: (patch: Partial<ClinicianThreadContext>) => void;
   accessEmail: string;
@@ -44,6 +45,7 @@ type ClinicianConsultContextPanelProps = {
 };
 
 export function ClinicianConsultContextPanel({
+  compact = false,
   context,
   onContextChange,
   accessEmail,
@@ -200,7 +202,10 @@ export function ClinicianConsultContextPanel({
         ) : null}
       </div>
 
-      <form className="consult-form consult-form--compact" onSubmit={(e) => e.preventDefault()}>
+      <form
+        className={`consult-form${compact ? " consult-form--compact" : ""}`}
+        onSubmit={(e) => e.preventDefault()}
+      >
         <label>
           출생 UTC
           <input value={context.birthInstantUtc} onChange={(e) => patch({ birthInstantUtc: e.target.value })} />

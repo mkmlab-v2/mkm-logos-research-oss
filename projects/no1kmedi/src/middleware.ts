@@ -1,5 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import {
+  normalizeRequestHost,
+  shouldRewriteRootToClinician,
+} from "@/lib/no1kmedi-portal-host";
 
 const FARM_HOSTS = new Set(["farm.jema-ai.com", "www.farm.jema-ai.com"]);
 const FARM_CANONICAL_ORIGIN = "https://farm.jema-ai.com";
@@ -17,16 +21,6 @@ const PERSONADIARY_HOSTS = new Set([
   "personadiary.com",
   "www.personadiary.com",
   "preview.personadiary.com",
-]);
-/** 한의사 진료 보조 — clinic.no1kmedi.com (공식 브랜드 URL은 app.jema-ai.com/clinician). */
-const CLINIC_NO1KMEDI_HOSTS = new Set([
-  "clinic.no1kmedi.com",
-  "www.clinic.no1kmedi.com",
-]);
-/** no1kmedi apex — 한의사 포털 진입(동일 Next, /clinician). api.* 는 별도 nginx vhost. */
-const NO1KMEDI_APEX_PORTAL_HOSTS = new Set([
-  "no1kmedi.com",
-  "www.no1kmedi.com",
 ]);
 
 function rewriteToClinicianPath(pathname: string): string {
@@ -53,7 +47,7 @@ function isStudioPath(pathname: string): boolean {
 }
 
 export function middleware(request: NextRequest) {
-  const host = (request.headers.get("host") ?? "").split(":")[0]?.toLowerCase();
+  const host = normalizeRequestHost(request.headers.get("host"));
   const { pathname } = request.nextUrl;
 
   if (isStudioPath(pathname)) {
@@ -75,13 +69,18 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (CLINIC_NO1KMEDI_HOSTS.has(host) || NO1KMEDI_APEX_PORTAL_HOSTS.has(host)) {
+  if (shouldRewriteRootToClinician(host)) {
     if (shouldPassThroughStaticOrApi(pathname)) {
       return NextResponse.next();
     }
+    const targetPath = rewriteToClinicianPath(pathname);
+    if (targetPath === pathname) {
+      return NextResponse.next();
+    }
     const url = request.nextUrl.clone();
-    url.pathname = rewriteToClinicianPath(pathname);
-    return NextResponse.rewrite(url);
+    url.pathname = targetPath;
+    // Redirect (not rewrite) so the browser URL shows /clinician — avoids stale hub cache on /.
+    return NextResponse.redirect(url);
   }
 
   if (PERSONADIARY_HOSTS.has(host)) {

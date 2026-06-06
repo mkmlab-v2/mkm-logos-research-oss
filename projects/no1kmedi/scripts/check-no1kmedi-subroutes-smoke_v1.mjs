@@ -42,6 +42,26 @@ const probes = [
     jsonIncludes: { ok: true, preview_only: true },
   },
   {
+    id: "personadiary_apex_page",
+    url: "https://personadiary.com/",
+    headers: { "User-Agent": "MKM-PersonadiarySmoke/1.0" },
+    expectStatus: 200,
+    bodyIncludes: ["Persona Diary", "프리뷰"],
+  },
+  {
+    id: "personadiary_moment_api",
+    method: "POST",
+    url: "https://personadiary.com/api/personadiary/moment",
+    headers: {
+      "User-Agent": "MKM-PersonadiarySmoke/1.0",
+      "content-type": "application/json",
+    },
+    body: { text: "오늘 점심 뭐 먹을까?" },
+    expectStatus: 200,
+    jsonIncludes: { ok: true },
+    jsonMomentIntent: "meal",
+  },
+  {
     id: "personadiary_feedback_api",
     method: "POST",
     url: `${(process.env.NO1KMEDI_FEEDBACK_SMOKE_BASE_URL || "https://app.jema-ai.com").replace(/\/$/, "")}/api/personadiary/feedback`,
@@ -81,8 +101,10 @@ for (const probe of probes) {
             : "follow",
       signal: AbortSignal.timeout(20000),
     };
+    fetchInit.headers = { ...(probe.headers || {}) };
     if (method === "POST" && probe.body) {
-      fetchInit.headers = { "content-type": "application/json" };
+      fetchInit.headers["content-type"] =
+        fetchInit.headers["content-type"] || "application/json";
       fetchInit.body = JSON.stringify(probe.body);
     }
     const res = await fetch(probe.url, fetchInit);
@@ -128,14 +150,25 @@ for (const probe of probes) {
       report.results[probe.id] = row;
       continue;
     }
-    if (probe.jsonIncludes) {
+    if (probe.jsonIncludes || probe.jsonMomentIntent) {
       const data = JSON.parse(text);
       row.json = { ok: data.ok, preview_only: data.preview_only };
-      const jsonOk = Object.entries(probe.jsonIncludes).every(([k, v]) => data[k] === v);
-      if (!jsonOk) {
-        row.error = "json_field_mismatch";
-        report.results[probe.id] = row;
-        continue;
+      if (probe.jsonIncludes) {
+        const jsonOk = Object.entries(probe.jsonIncludes).every(([k, v]) => data[k] === v);
+        if (!jsonOk) {
+          row.error = "json_field_mismatch";
+          report.results[probe.id] = row;
+          continue;
+        }
+      }
+      if (probe.jsonMomentIntent) {
+        const intent = data?.moment?.intent;
+        row.json.moment_intent = intent;
+        if (intent !== probe.jsonMomentIntent) {
+          row.error = "moment_intent_mismatch";
+          report.results[probe.id] = row;
+          continue;
+        }
       }
     }
     if (probe.bodyIncludes) {

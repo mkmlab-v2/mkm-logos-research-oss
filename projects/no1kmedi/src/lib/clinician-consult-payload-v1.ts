@@ -5,6 +5,8 @@
 import type { PatientConsultInputV1 } from "./cdss-contract";
 
 export type ClinicianConsultFormState = {
+  /** Demo / SSOT patient slug when survey context is not loaded */
+  ssotSlug?: string;
   actorId: string;
   birthInstantUtc: string;
   ianaTz: string;

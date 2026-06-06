@@ -7,15 +7,46 @@ export type DailyGuideBlock = {
   body_ko?: string;
   ref?: string;
   badge_ko?: string;
+  mkmlife_href?: string;
+  evidence_tier?: "literature_supported" | "coaching_heuristic" | "delight" | string;
+};
+
+export type DailyGuideSection = {
+  id?: string;
+  title_ko?: string;
+  lines?: string[];
+};
+
+export type MomentPresetPolishEntry = {
+  canonical_query?: string;
+  summary_ko_deterministic?: string;
+  summary_ko_polished?: string | null;
+  polish_meta?: Record<string, unknown>;
+};
+
+export type MomentPresetPolishBlock = {
+  schema?: string;
+  hypothesis_tier?: string;
+  lane?: string;
+  presets?: Partial<Record<string, MomentPresetPolishEntry>>;
+  hero?: {
+    body_ko_deterministic?: string;
+    body_ko_polished?: string | null;
+    polish_meta?: Record<string, unknown>;
+  };
 };
 
 export type DailyGuidePackage = {
   schema?: string;
+  profile_id?: string;
+  city_default?: string;
   calendar_kst?: string;
   concept_ko?: string;
+  sections?: DailyGuideSection[];
   ui_blocks?: DailyGuideBlock[];
   reflect_template_ko?: string;
   disclaimer_ko?: string;
+  moment_preset_polish_v1?: MomentPresetPolishBlock;
 };
 
 function normalizeProfileId(raw: string | null | undefined): string {
