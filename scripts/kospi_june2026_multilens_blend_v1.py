@@ -44,10 +44,14 @@ def _lens_direction_from_artifact(path: Path) -> tuple[str, float, bool]:
     return _dir_from_score(ds), ds, bool(doc)
 
 
-def load_static_lenses() -> dict[str, Any]:
+def load_static_lenses(
+    *,
+    myeongni_path: Path | None = None,
+    sasang_path: Path | None = None,
+) -> dict[str, Any]:
     logos_p = ART / "logos_independent_lens_latest.json"
-    myeongni_p = ART / "myeongni_independent_lens_latest.json"
-    sasang_p = ART / "sasang_independent_lens_latest.json"
+    myeongni_p = myeongni_path or (ART / "myeongni_independent_lens_latest.json")
+    sasang_p = sasang_path or (ART / "sasang_independent_lens_latest.json")
     macro_p = ART / "macro_independent_lens_latest.json"
 
     logos_d, logos_s, logos_ok = _lens_direction_from_artifact(logos_p)

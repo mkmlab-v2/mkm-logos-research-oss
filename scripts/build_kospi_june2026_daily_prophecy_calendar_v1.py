@@ -264,6 +264,8 @@ def build_calendar(
     profile: str = "v2_multilens",
     weights_override: dict[str, float] | None = None,
     weights_candidate_id: str | None = None,
+    myeongni_lens_json: Path | None = None,
+    sasang_lens_json: Path | None = None,
 ) -> dict[str, Any]:
     ym, month_start, month_end = _parse_year_month(year_month)
     rules = _read_json(EVOLUTION_RULES)
@@ -301,7 +303,11 @@ def build_calendar(
 
     closes = _load_closes(KOSPI_CSV)
     logos_dir, logos_score = _logos_direction()
-    static_lenses = load_static_lenses() if profile == "v2_multilens" else {}
+    static_lenses = (
+        load_static_lenses(myeongni_path=myeongni_lens_json, sasang_path=sasang_lens_json)
+        if profile == "v2_multilens"
+        else {}
+    )
     ensemble_by_date = (
         load_ensemble_kospi_per_date(trading_days) if profile == "v2_multilens" else {}
     )
@@ -431,6 +437,13 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Use blend_weights_v2_candidates.<id> from evolution rules (shadow build)",
     )
+    ap.add_argument(
+        "--output-only",
+        action="store_true",
+        help="Write only --output path; skip docs/final/artifacts and legacy June mirror",
+    )
+    ap.add_argument("--myeongni-lens-json", type=Path, default=None, help="Research override for myeongni lens artifact")
+    ap.add_argument("--sasang-lens-json", type=Path, default=None, help="Research override for sasang lens artifact")
     args = ap.parse_args(argv)
 
     report_out, art_out = _paths_for_month(args.year_month)
@@ -448,14 +461,17 @@ def main(argv: list[str] | None = None) -> int:
         profile=args.profile,
         year_month=args.year_month,
         weights_candidate_id=args.weights_candidate_id,
+        myeongni_lens_json=args.myeongni_lens_json,
+        sasang_lens_json=args.sasang_lens_json,
     )
     payload = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
     report_out.parent.mkdir(parents=True, exist_ok=True)
     report_out.write_text(payload, encoding="utf-8")
-    art_out.parent.mkdir(parents=True, exist_ok=True)
-    art_out.write_text(payload, encoding="utf-8")
-    if legacy_june is not None:
-        legacy_june.write_text(payload, encoding="utf-8")
+    if not args.output_only:
+        art_out.parent.mkdir(parents=True, exist_ok=True)
+        art_out.write_text(payload, encoding="utf-8")
+        if legacy_june is not None:
+            legacy_june.write_text(payload, encoding="utf-8")
     print(f"WROTE: {report_out.resolve()} rows={doc['n_trading_days']}")
     return 0
 
