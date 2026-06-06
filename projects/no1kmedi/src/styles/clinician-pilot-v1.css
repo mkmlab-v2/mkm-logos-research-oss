@@ -1,0 +1,311 @@
+/* Clinician pilot commercial bundle v1 — scoped to minimal shell + chat workspace */
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] {
+  --cp-bg: #0d0d0d;
+  --cp-surface: #141414;
+  --cp-surface-elevated: #1a1a1a;
+  --cp-border: rgba(255, 255, 255, 0.1);
+  --cp-border-strong: rgba(255, 255, 255, 0.16);
+  --cp-text: #ececec;
+  --cp-text-muted: #9a9a9a;
+  --cp-accent: #3d9b84;
+  --cp-accent-soft: rgba(61, 155, 132, 0.14);
+  --cp-user-bubble: rgba(61, 155, 132, 0.16);
+  --cp-assist-bubble: rgba(255, 255, 255, 0.06);
+  --cp-radius-sm: 10px;
+  --cp-radius-md: 14px;
+  --cp-radius-lg: 18px;
+  --cp-shadow-drawer: 8px 0 32px rgba(0, 0, 0, 0.5);
+  --cp-font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+  font-family: var(--cp-font);
+  background: var(--cp-bg);
+  color: var(--cp-text);
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-topbar {
+  border-bottom-color: var(--cp-border);
+  background: var(--cp-bg);
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-menu-btn,
+.minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-ghost-btn {
+  border-color: var(--cp-border);
+  border-radius: var(--cp-radius-sm);
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-menu-btn:focus-visible,
+.minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-ghost-btn:focus-visible,
+.minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-back-btn:focus-visible {
+  outline: 2px solid var(--cp-accent);
+  outline-offset: 2px;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-drawer {
+  background: var(--cp-surface);
+  border-right-color: var(--cp-border);
+  box-shadow: var(--cp-shadow-drawer);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-drawer {
+    transition: none;
+  }
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 0;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .workspace-chat-column,
+.minimal-clinician-shell[data-clinician-pilot="v1"] .clinician-chat-root {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .chat-card--clinician {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .chat-log {
+  flex: 1;
+  min-height: 12rem;
+  max-height: none;
+  border: 1px solid var(--cp-border);
+  border-radius: var(--cp-radius-md);
+  background: var(--cp-surface-elevated);
+  padding: 1rem;
+  scroll-behavior: smooth;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .chat-bubble {
+  max-width: min(36rem, 92%);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--cp-radius-sm);
+  line-height: 1.55;
+  font-size: 0.9375rem;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .chat-bubble strong {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--cp-text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .chat-bubble-user {
+  margin-left: auto;
+  background: var(--cp-user-bubble);
+  border: 1px solid rgba(61, 155, 132, 0.22);
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .chat-bubble-assistant {
+  background: var(--cp-assist-bubble);
+  border: 1px solid var(--cp-border);
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .clinician-chat-textarea {
+  background: var(--cp-surface-elevated);
+  border: 1px solid var(--cp-border-strong);
+  border-radius: var(--cp-radius-md);
+  color: var(--cp-text);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  resize: vertical;
+  min-height: 2.75rem;
+  max-height: 8rem;
+  padding: 0.65rem 0.85rem;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .clinician-chat-textarea:focus-visible {
+  outline: 2px solid var(--cp-accent);
+  outline-offset: 1px;
+  border-color: rgba(61, 155, 132, 0.45);
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .clinician-chat-input-row .btn-primary {
+  border-radius: var(--cp-radius-sm);
+  min-width: 4.5rem;
+}
+
+.minimal-clinician-shell[data-clinician-pilot="v1"] .clinician-context-chip {
+  border-color: var(--cp-border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--cp-text-muted);
+}
+
+/* Empty state */
+.clinician-pilot-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.75rem;
+  min-height: 10rem;
+  padding: 1.5rem 1rem;
+  color: var(--cp-text-muted, #9a9a9a);
+}
+
+.clinician-pilot-empty h2 {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--cp-text, #ececec);
+  letter-spacing: -0.02em;
+}
+
+.clinician-pilot-empty p {
+  margin: 0;
+  font-size: 0.875rem;
+  max-width: 22rem;
+  line-height: 1.5;
+}
+
+.clinician-pilot-starters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+.clinician-pilot-starter-btn {
+  border: 1px solid var(--cp-border, rgba(255, 255, 255, 0.12));
+  background: transparent;
+  color: var(--cp-text, #ececec);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.clinician-pilot-starter-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.clinician-pilot-starter-btn:focus-visible {
+  outline: 2px solid var(--cp-accent, #3d9b84);
+  outline-offset: 2px;
+}
+
+/* Skeleton */
+.clinician-pilot-skeleton {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.clinician-pilot-skeleton-line {
+  height: 0.65rem;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: clinicianPilotShimmer 1.2s ease-in-out infinite;
+}
+
+.clinician-pilot-skeleton-line:nth-child(1) {
+  width: 88%;
+}
+.clinician-pilot-skeleton-line:nth-child(2) {
+  width: 72%;
+}
+.clinician-pilot-skeleton-line:nth-child(3) {
+  width: 56%;
+}
+
+@keyframes clinicianPilotShimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clinician-pilot-skeleton-line {
+    animation: none;
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* Disclaimer footer */
+.clinician-pilot-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--cp-border, rgba(255, 255, 255, 0.08));
+  background: var(--cp-bg, #0d0d0d);
+  padding: 0.5rem 1rem 0.65rem;
+}
+
+.clinician-pilot-footer-inner {
+  max-width: 48rem;
+  margin: 0 auto;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  color: var(--cp-text-muted, #8e8e8e);
+}
+
+.clinician-pilot-footer-inner a,
+.clinician-pilot-footer-link {
+  color: var(--cp-accent, #3d9b84);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.clinician-pilot-footer-link:focus-visible {
+  outline: 2px solid var(--cp-accent, #3d9b84);
+  outline-offset: 2px;
+}
+
+.clinician-pilot-footer-tag {
+  display: inline-block;
+  margin-right: 0.35rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--cp-text-muted, #9a9a9a);
+}
+
+@media (max-width: 640px) {
+  .minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-topbar-actions .minimal-clinician-hub-link {
+    display: none;
+  }
+
+  .minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-topbar-inner {
+    padding-inline: 0.65rem;
+  }
+
+  .minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-main {
+    padding-inline: 0.65rem;
+  }
+}

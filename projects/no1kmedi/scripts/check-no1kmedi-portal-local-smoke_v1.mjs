@@ -20,16 +20,18 @@ async function probeClinicianMinimal() {
   assert.equal(res.status, 200, `clinician status ${res.status}`);
   const html = await res.text();
   assert.ok(
-    /minimalShell\\":true|"minimalShell":true/.test(html),
+    /"minimalShell":true|minimalShell\\":true/.test(html),
     "minimalShell:true missing in RSC payload",
   );
   assert.ok(!html.includes("feature-triad"), "marketing feature-triad leaked into clinician");
   assert.ok(!html.includes("SINCE 1972"), "banned SINCE 1972 leaked");
   assert.ok(!html.includes("한의사를 위한 진료 보조 AI Copilot"), "legacy copilot hero leaked");
   assert.ok(html.includes("한의사 보조"), "clinician title missing");
+  assert.ok(html.includes('data-clinician-pilot-route="v1"'), "clinician pilot route marker missing");
   return {
     status: res.status,
     minimal_shell: true,
+    pilot_v1: true,
     title_ok: html.includes("한의사 보조"),
   };
 }

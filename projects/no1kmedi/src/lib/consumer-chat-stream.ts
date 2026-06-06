@@ -5,10 +5,21 @@ export function streamTextClient(full: string, onPartial: (s: string) => void): 
     onPartial("");
     return Promise.resolve();
   }
+
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    typeof window.matchMedia === "function" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (reducedMotion) {
+    onPartial(full);
+    return Promise.resolve();
+  }
+
   return new Promise((resolve) => {
     let i = 0;
-    const step = 3;
-    const tick = () => {
+    const step = Math.max(2, Math.min(6, Math.ceil(chars.length / 120)));
+    const frame = () => {
       i += step;
       if (i >= chars.length) {
         onPartial(full);
@@ -16,8 +27,8 @@ export function streamTextClient(full: string, onPartial: (s: string) => void): 
         return;
       }
       onPartial(chars.slice(0, i).join(""));
-      window.setTimeout(tick, 12);
+      window.requestAnimationFrame(() => window.setTimeout(frame, 10));
     };
-    tick();
+    frame();
   });
 }

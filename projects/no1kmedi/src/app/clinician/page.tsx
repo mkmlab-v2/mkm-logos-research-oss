@@ -16,14 +16,17 @@ export default function ClinicianPage() {
   const minimalShell = shouldUseMinimalClinicianShell(host);
 
   return (
-    <Suspense
-      fallback={
-        <div className="workspace-fallback" role="status" aria-live="polite">
-          화면을 불러오는 중…
-        </div>
-      }
-    >
-      <ClinicianWorkspaceClient minimalShell={minimalShell} />
-    </Suspense>
+    <>
+      <div data-clinician-pilot-route="v1" hidden aria-hidden="true" />
+      <Suspense
+        fallback={
+          <div className="workspace-fallback" role="status" aria-live="polite">
+            화면을 불러오는 중…
+          </div>
+        }
+      >
+        <ClinicianWorkspaceClient minimalShell={minimalShell} />
+      </Suspense>
+    </>
   );
 }

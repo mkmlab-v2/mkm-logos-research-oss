@@ -45,6 +45,12 @@ export function ClinicianPersistedChat({
   const [error, setError] = useState("");
   const [streamBuf, setStreamBuf] = useState<string | null>(null);
   const requestGen = useRef(0);
+  const logRef = useRef<HTMLDivElement | null>(null);
+
+  const starterPrompts = useMemo(
+    () => ["두통·어지럼 주호소 정리", "소화불량·식후 팽만 상담 초안", "수면·피로 패턴 참고 요약"],
+    [],
+  );
 
   useEffect(() => {
     setTurns(thread.turns);
@@ -52,6 +58,12 @@ export function ClinicianPersistedChat({
     setError("");
     setMessage("");
   }, [thread.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const el = logRef.current;
+    if (!el) return;
+    el.scrollTop = el.scrollHeight;
+  }, [turns, streamBuf, busy]);
 
   const ctx = thread.context;
   const canSend = useMemo(
@@ -179,7 +191,36 @@ export function ClinicianPersistedChat({
           </p>
         ) : null}
 
-        <div className="chat-log" role="log" aria-live="polite">
+        <div
+          ref={logRef}
+          className="chat-log"
+          role="log"
+          aria-live="polite"
+          aria-busy={busy}
+        >
+          {turns.length === 0 && !busy && streamBuf === null ? (
+            <div className="clinician-pilot-empty">
+              <h2>진료 보조 대화</h2>
+              <p>
+                주증상을 입력하면 SOAP·CDSS 참고 초안을 정리합니다. 출생·문진은 「환자·설정」에서 먼저
+                확인하세요.
+              </p>
+              {canUseAdvancedConsult ? (
+                <div className="clinician-pilot-starters" aria-label="예시 질문">
+                  {starterPrompts.map((prompt) => (
+                    <button
+                      key={prompt}
+                      type="button"
+                      className="clinician-pilot-starter-btn"
+                      onClick={() => setMessage(prompt)}
+                    >
+                      {prompt}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
           {turns.map((turn, idx) => (
             <p key={`${turn.role}-${idx}`} className={`chat-bubble chat-bubble-${turn.role}`}>
               <strong>{turn.role === "assistant" ? "보조" : "나"}</strong> {turn.message}
@@ -192,9 +233,14 @@ export function ClinicianPersistedChat({
             </p>
           ) : null}
           {busy && streamBuf === null ? (
-            <p className="chat-bubble chat-bubble-assistant">
-              <strong>보조</strong> 초안을 생성 중입니다…
-            </p>
+            <div className="chat-bubble chat-bubble-assistant" aria-label="초안 생성 중">
+              <strong>보조</strong>
+              <div className="clinician-pilot-skeleton" aria-hidden="true">
+                <span className="clinician-pilot-skeleton-line" />
+                <span className="clinician-pilot-skeleton-line" />
+                <span className="clinician-pilot-skeleton-line" />
+              </div>
+            </div>
           ) : null}
         </div>
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { ClinicianPilotDisclaimerFooter } from "@/components/ClinicianPilotDisclaimerFooter";
 import { JEMA_AI_PUBLIC_ORIGIN } from "@/lib/no1kmedi-portal-host";
 import type { WorkspaceNavItem } from "@/components/AppWorkspaceShell";
 
@@ -40,7 +41,7 @@ export function MinimalClinicianShell({
   }
 
   return (
-    <div className="minimal-clinician-shell">
+    <div className="minimal-clinician-shell" data-clinician-pilot="v1">
       <a className="skip" href="#minimal-clinician-main">
         본문으로 건너뛰기
       </a>
@@ -125,6 +126,7 @@ export function MinimalClinicianShell({
         ) : null}
         {children}
       </main>
+      <ClinicianPilotDisclaimerFooter onOpenSafety={() => select("safety")} />
     </div>
   );
 }

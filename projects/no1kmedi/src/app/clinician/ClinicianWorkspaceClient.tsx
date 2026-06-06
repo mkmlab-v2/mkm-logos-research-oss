@@ -1,15 +1,36 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppWorkspaceShell } from "@/components/AppWorkspaceShell";
 import { MinimalClinicianShell } from "@/components/MinimalClinicianShell";
 import { JEMA_AI_PUBLIC_ORIGIN } from "@/lib/no1kmedi-portal-host";
-import { ClinicianConsultContextPanel } from "@/components/ClinicianConsultContextPanel";
 import { ClinicianPersistedChat } from "@/components/ClinicianPersistedChat";
 import { ClinicianThreadRail } from "@/components/ClinicianThreadRail";
 import { JemaWorkspaceCommandPalette, type PaletteAction } from "@/components/JemaWorkspaceCommandPalette";
-import { PatientCareBundlePreview } from "@/components/PatientCareBundlePreview";
+
+const panelFallback = (
+  <div className="workspace-fallback" role="status" aria-live="polite">
+    패널을 불러오는 중…
+  </div>
+);
+
+const ClinicianConsultContextPanel = dynamic(
+  () =>
+    import("@/components/ClinicianConsultContextPanel").then((m) => ({
+      default: m.ClinicianConsultContextPanel,
+    })),
+  { loading: () => panelFallback },
+);
+
+const PatientCareBundlePreview = dynamic(
+  () =>
+    import("@/components/PatientCareBundlePreview").then((m) => ({
+      default: m.PatientCareBundlePreview,
+    })),
+  { loading: () => panelFallback },
+);
 import { siteCopy } from "@/content/siteCopy";
 import { useClinicianThreads } from "@/hooks/useClinicianThreads";
 import type { ClinicianThreadContext } from "@/lib/clinician-chat-types";

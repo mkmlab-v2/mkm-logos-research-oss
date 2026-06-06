@@ -56,6 +56,8 @@
     "check:subroutes-smoke": "node ./scripts/check-no1kmedi-subroutes-smoke_v1.mjs",
     "check:parallel-push": "node ./scripts/check-no1kmedi-parallel-push_v1.mjs",
     "check:deploy-readiness": "node ./scripts/check-no1kmedi-deploy-readiness_v1.mjs",
+    "check:clinician-pilot-commercial": "node ./scripts/check-clinician-pilot-commercial-smoke_v1.mjs",
+    "check:portal-local-smoke": "node ./scripts/check-no1kmedi-portal-local-smoke_v1.mjs",
     "check:public-copy-schema": "node ./scripts/check-public-copy-schema.mjs",
     "check:marketing-copy": "npm run check:public-copy-schema && node ./scripts/check-marketing-copy-compliance.mjs",
     "bench:cdss:generate100": "node ./scripts/generate-cdss-benchmark-100.mjs",
