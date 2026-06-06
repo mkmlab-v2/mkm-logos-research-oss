@@ -112,6 +112,14 @@ if ($runEvening) {
         Invoke-Step "build_kospi_june2026_per_date_lens_counterfactual (PoC)" {
             & $py scripts/build_kospi_june2026_per_date_lens_counterfactual_v1.py --calendar-json $calendarJson --year-month $YearMonth
         }
+        if ($YearMonth -eq "2026-06") {
+            Invoke-Step "build_kospi_june2026_pre_post_r1_calendar_ab (shadow)" {
+                & $py scripts/build_kospi_june2026_pre_post_r1_calendar_ab_v1.py --as-of-kst $lastKrxSessionKst
+            }
+            Invoke-Step "build_kospi_june2026_4ai_lock_unlock_hr_cross (partial forward)" {
+                & $py scripts/build_kospi_june2026_4ai_lock_unlock_hr_cross_v1.py --calendar-json $calendarJson --as-of-kst $lastKrxSessionKst
+            }
+        }
         Invoke-Step "build_kospi_june2026_macro_daily_refresh_poc (B-track)" {
             & $py scripts/build_kospi_june2026_macro_daily_refresh_poc_v1.py --calendar-json $calendarJson --year-month $YearMonth --refresh-macro-backfill
         }
@@ -153,7 +161,7 @@ if ($runEvening) {
         if (-not $SkipHeavyResearch) {
             $macroBackfillTo = if ($YearMonth -eq "2026-06") { "2026-06-30" } else { "${YearMonth}-30" }
             Invoke-Step "backfill_macro_risk_forward_log_from_ohlcv (research)" {
-                & $py scripts/backfill_macro_risk_forward_log_from_ohlcv_v1.py --date-from 2026-01-01 --date-to $macroBackfillTo
+                & $py scripts/backfill_macro_risk_forward_log_from_ohlcv_v1.py --date-from 1996-01-01 --date-to $macroBackfillTo
             }
             Invoke-Step "run_three_lens_horizon_empirical_eval_v2 (B-track kospi+btc)" {
                 & $py scripts/run_three_lens_horizon_empirical_eval_v2.py --instrument both --date-from 2026-01-01 --date-to 2026-04-30
@@ -173,8 +181,26 @@ if ($runEvening) {
         }
     }
 
-    Invoke-Step "rebuild calendar (post-evolution weights unchanged in dry-run)" {
-        & $py scripts/build_kospi_june2026_daily_prophecy_calendar_v1.py --year-month $YearMonth --skip-panel-rebuild --profile v2_multilens
+    $evoJson = Join-Path $WorkspaceRoot "reports\kospi_june2026_prophecy_evolution_latest.json"
+    $evoApplied = $false
+    if ($YearMonth -eq "2026-06" -and (Test-Path -LiteralPath $evoJson)) {
+        try {
+            $evoDoc = Get-Content -LiteralPath $evoJson -Raw -Encoding UTF8 | ConvertFrom-Json
+            $evoApplied = [bool]$evoDoc.applied
+        } catch {
+            Write-Warning "evolution json parse failed: $_"
+        }
+    }
+    if ($YearMonth -eq "2026-06" -and $evoApplied) {
+        Invoke-Step "rebuild calendar (post-evolution apply)" {
+            & $py scripts/build_kospi_june2026_daily_prophecy_calendar_v1.py --year-month $YearMonth --skip-panel-rebuild --profile v2_multilens
+        }
+    } elseif ($YearMonth -eq "2026-06") {
+        Write-Host "[june-kospi] skip calendar rebuild (evolution dry-run / not applied — sealed calendar preserved)" -ForegroundColor DarkYellow
+    } else {
+        Invoke-Step "rebuild calendar (post-evolution weights unchanged in dry-run)" {
+            & $py scripts/build_kospi_june2026_daily_prophecy_calendar_v1.py --year-month $YearMonth --skip-panel-rebuild --profile v2_multilens
+        }
     }
 
     Invoke-June4AiReportChain
