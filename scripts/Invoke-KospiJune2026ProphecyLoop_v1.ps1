@@ -110,7 +110,7 @@ if ($runEvening) {
             & $py scripts/build_kospi_june2026_channel_input_audit_v1.py --calendar-json $calendarJson --year-month $YearMonth
         }
         Invoke-Step "build_kospi_june2026_per_date_lens_counterfactual (PoC)" {
-            & $py scripts/build_kospi_june2026_per_date_lens_counterfactual_v1.py --calendar-json $calendarJson --year-month $YearMonth
+            & $py scripts/build_kospi_june2026_per_date_lens_counterfactual_v1.py --calendar-json $calendarJson --year-month $YearMonth --no-write-counter-calendar
         }
         if ($YearMonth -eq "2026-06") {
             Invoke-Step "build_kospi_june2026_pre_post_r1_calendar_ab (shadow)" {
@@ -121,16 +121,22 @@ if ($runEvening) {
             }
         }
         Invoke-Step "build_kospi_june2026_macro_daily_refresh_poc (B-track)" {
-            & $py scripts/build_kospi_june2026_macro_daily_refresh_poc_v1.py --calendar-json $calendarJson --year-month $YearMonth --refresh-macro-backfill
+            & $py scripts/build_kospi_june2026_macro_daily_refresh_poc_v1.py --calendar-json $calendarJson --year-month $YearMonth --refresh-macro-backfill --no-write-counter-calendar
         }
         Invoke-Step "build_kospi_june2026_combined_per_date_counterfactual (PoC)" {
-            & $py scripts/build_kospi_june2026_combined_per_date_counterfactual_v1.py --calendar-json $calendarJson --year-month $YearMonth --refresh-macro-backfill
+            & $py scripts/build_kospi_june2026_combined_per_date_counterfactual_v1.py --calendar-json $calendarJson --year-month $YearMonth --refresh-macro-backfill --no-write-counter-calendar
         }
         Invoke-Step "build_kospi_june2026_shadow_panel_rollup" {
             & $py scripts/build_kospi_june2026_shadow_panel_rollup_v1.py --year-month $YearMonth
         }
         Invoke-Step "build_kospi_june2026_promotion_readiness" {
             & $py scripts/build_kospi_june2026_promotion_readiness_v1.py --year-month $YearMonth
+        }
+        Invoke-Step "build_kospi_june2026_wf_prefilter_drift_digest (RQ-032)" {
+            & $py scripts/build_kospi_june2026_wf_prefilter_drift_digest_v1.py
+        }
+        Invoke-Step "build_kospi_june2026_gate_reached_bundle (n>=15 auto)" {
+            & $py scripts/build_kospi_june2026_gate_reached_bundle_v1.py --calendar-json $calendarJson --as-of-kst $lastKrxSessionKst
         }
         Invoke-Step "render_kospi_june_4ai_prophecy_report (post-shadow panel)" {
             & $py scripts/render_kospi_june_4ai_prophecy_report_v1.py
