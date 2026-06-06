@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { ClinicianChatThread } from "@/lib/clinician-chat-types";
+import type { ClinicianChatThread, ClinicianThreadMetaPatch } from "@/lib/clinician-chat-types";
 import {
   createEmptyClinicianThread,
   loadClinicianThreads,
@@ -66,16 +66,34 @@ export function useClinicianThreads() {
       if (!cur) return prev;
       const turns = patch.turns ?? cur.turns;
       const context = patch.context ?? cur.context;
+      const autoTitle = cur.titlePinned ? cur.title : titleFromClinicianTurns(turns);
       const next: ClinicianChatThread = {
         ...cur,
         ...patch,
         turns,
         context,
-        title: patch.title ?? titleFromClinicianTurns(turns),
+        title: patch.title ?? autoTitle,
         updatedAt: Date.now(),
       };
       const others = prev.filter((t) => t.id !== next.id);
       const merged = [next, ...others];
+      saveClinicianThreads(merged);
+      return merged;
+    });
+  }, []);
+
+  const updateThreadMeta = useCallback((id: string, meta: ClinicianThreadMetaPatch) => {
+    setThreads((prev) => {
+      const cur = prev.find((t) => t.id === id);
+      if (!cur) return prev;
+      const next: ClinicianChatThread = {
+        ...cur,
+        ...meta,
+        titlePinned: meta.titlePinned ?? (meta.title !== undefined || meta.patientLabel !== undefined ? true : cur.titlePinned),
+        updatedAt: Date.now(),
+      };
+      const others = prev.filter((t) => t.id !== id);
+      const merged = [next, ...others].sort((a, b) => b.updatedAt - a.updatedAt);
       saveClinicianThreads(merged);
       return merged;
     });
@@ -90,5 +108,6 @@ export function useClinicianThreads() {
     createThread,
     deleteThread,
     commitThread,
+    updateThreadMeta,
   };
 }

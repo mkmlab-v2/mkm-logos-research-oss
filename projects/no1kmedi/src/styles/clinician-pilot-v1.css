@@ -296,16 +296,313 @@
   color: var(--cp-text-muted, #9a9a9a);
 }
 
-@media (max-width: 640px) {
-  .minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-topbar-actions .minimal-clinician-hub-link {
-    display: none;
+/* --- ChatGPT/Gemini-style persist sidebar (v2) --- */
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-layout {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  width: 100%;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-sidebar {
+  flex-shrink: 0;
+  width: 17.5rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--cp-border);
+  background: var(--cp-surface);
+  padding: 0.75rem 0.55rem 0.65rem;
+  gap: 0.55rem;
+  z-index: 36;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-sidebar-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex-shrink: 0;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-brand--sidebar {
+  padding: 0 0.35rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-new-chat {
+  width: 100%;
+  border: 1px solid var(--cp-border-strong);
+  background: transparent;
+  color: var(--cp-text);
+  border-radius: var(--cp-radius-sm);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-new-chat:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-sidebar-threads {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail--gpt {
+  flex: 1;
+  min-height: 0;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 0.15rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-item {
+  position: relative;
+  border-radius: var(--cp-radius-sm);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-item.is-active {
+  background: var(--cp-accent-soft);
+  border-color: rgba(61, 155, 132, 0.35);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-actions {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 0.15rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-menu {
+  width: 1.65rem;
+  height: 1.65rem;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--cp-text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-item:hover .thread-rail-menu,
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-menu:focus-visible {
+  opacity: 1;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-menu:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cp-text);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-menu-pop {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 50;
+  min-width: 9.5rem;
+  border: 1px solid var(--cp-border-strong);
+  border-radius: var(--cp-radius-sm);
+  background: var(--cp-surface-elevated);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-menu-pop button {
+  border: 0;
+  background: transparent;
+  color: var(--cp-text);
+  text-align: left;
+  padding: 0.45rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-menu-pop button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-menu-pop button.is-danger {
+  color: #ffb4b4;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-edit {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 0.45rem 0.35rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-edit-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.68rem;
+  color: var(--cp-text-muted);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-edit-label input {
+  border: 1px solid var(--cp-border-strong);
+  border-radius: 8px;
+  background: var(--cp-bg);
+  color: var(--cp-text);
+  padding: 0.4rem 0.5rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-edit-actions {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-edit-save,
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-edit-cancel {
+  border-radius: 8px;
+  padding: 0.35rem 0.65rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-family: inherit;
+  border: 1px solid var(--cp-border);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-edit-save {
+  background: var(--cp-accent-soft);
+  color: var(--cp-text);
+  border-color: rgba(61, 155, 132, 0.35);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .thread-rail-edit-cancel {
+  background: transparent;
+  color: var(--cp-text-muted);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex-shrink: 0;
+  border-top: 1px solid var(--cp-border);
+  padding-top: 0.5rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-nav-item {
+  border: 0;
+  background: transparent;
+  color: var(--cp-text-muted);
+  text-align: left;
+  padding: 0.45rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-nav-item:hover,
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-nav-item.is-active {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--cp-text);
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-sidebar-foot {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-top: 0.25rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-sidebar-note {
+  margin: 0;
+  padding: 0 0.35rem;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-column {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-topbar--mobile {
+  display: none;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-main {
+  max-width: none;
+  flex: 1;
+  width: 100%;
+}
+
+.minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-main--panel {
+  max-width: 52rem;
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 899px) {
+  .minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: min(18rem, 88vw);
+    transform: translateX(-102%);
+    transition: transform 0.2s ease;
+    box-shadow: var(--cp-shadow-drawer);
   }
 
-  .minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-topbar-inner {
+  .minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-sidebar.is-mobile-open {
+    transform: translateX(0);
+  }
+
+  .minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-topbar--mobile {
+    display: block;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--cp-border);
+  }
+
+  .minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+  }
+
+  .minimal-clinician-shell[data-clinician-sidebar="gpt-persist"] .minimal-clinician-main {
     padding-inline: 0.65rem;
   }
+}
 
-  .minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-main {
+@media (max-width: 640px) {
+  .minimal-clinician-shell[data-clinician-pilot="v1"] .minimal-clinician-topbar-inner {
     padding-inline: 0.65rem;
   }
 }

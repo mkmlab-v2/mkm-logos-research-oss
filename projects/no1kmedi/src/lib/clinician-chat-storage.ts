@@ -53,11 +53,51 @@ export function createEmptyClinicianThread(): ClinicianChatThread {
   return {
     id: newClinicianThreadId(),
     title: "새 상담",
+    patientLabel: "",
+    sessionDate: toSessionDateInput(now),
+    titlePinned: false,
     createdAt: now,
     updatedAt: now,
-    turns: defaultOpeningTurns(),
+    turns: [],
     context: defaultClinicianContext(),
   };
+}
+
+export function toSessionDateInput(ms: number): string {
+  const d = new Date(ms);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`;
+}
+
+export function threadDisplayPrimary(t: ClinicianChatThread): string {
+  const patient = t.patientLabel?.trim();
+  if (patient) return patient;
+  const title = t.title?.trim();
+  if (title) return title;
+  return "새 상담";
+}
+
+export function threadDisplaySecondary(t: ClinicianChatThread): string {
+  if (t.sessionDate?.trim()) {
+    try {
+      return new Date(`${t.sessionDate.trim()}T12:00:00`).toLocaleDateString("ko-KR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        weekday: "short",
+      });
+    } catch {
+      /* fall through */
+    }
+  }
+  return new Date(t.updatedAt).toLocaleString("ko-KR", {
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 function trimTurns(turns: ClinicianChatTurn[]): ClinicianChatTurn[] {
@@ -73,6 +113,12 @@ export function normalizeClinicianThreads(raw: unknown): ClinicianChatThread[] {
     .filter((t) => t && typeof t.id === "string" && Array.isArray(t.turns))
     .map((t) => ({
       ...t,
+      patientLabel: typeof t.patientLabel === "string" ? t.patientLabel : "",
+      sessionDate:
+        typeof t.sessionDate === "string" && t.sessionDate.trim()
+          ? t.sessionDate.trim()
+          : toSessionDateInput(t.updatedAt || Date.now()),
+      titlePinned: Boolean(t.titlePinned),
       turns: trimTurns(t.turns),
       context: { ...defaultClinicianContext(), ...t.context },
     }))

@@ -27,7 +27,10 @@ async function probeClinicianMinimal() {
   assert.ok(!html.includes("SINCE 1972"), "banned SINCE 1972 leaked");
   assert.ok(!html.includes("한의사를 위한 진료 보조 AI Copilot"), "legacy copilot hero leaked");
   assert.ok(html.includes("한의사 보조"), "clinician title missing");
-  assert.ok(html.includes('data-clinician-pilot-route="v1"'), "clinician pilot route marker missing");
+  assert.ok(
+    html.includes('data-clinician-sidebar-mode="gpt-persist"') || html.includes('data-clinician-pilot-route="v2"'),
+    "clinician gpt sidebar marker missing",
+  );
   return {
     status: res.status,
     minimal_shell: true,

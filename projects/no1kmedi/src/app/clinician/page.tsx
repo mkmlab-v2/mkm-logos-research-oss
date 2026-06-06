@@ -17,7 +17,7 @@ export default function ClinicianPage() {
 
   return (
     <>
-      <div data-clinician-pilot-route="v1" hidden aria-hidden="true" />
+      <div data-clinician-pilot-route="v2" data-clinician-sidebar-mode="gpt-persist" hidden aria-hidden="true" />
       <Suspense
         fallback={
           <div className="workspace-fallback" role="status" aria-live="polite">

@@ -23,9 +23,22 @@ export type ClinicianCdsSnapshot = {
 export type ClinicianChatThread = {
   id: string;
   title: string;
+  /** User-edited display name (e.g. patient name). Shown in sidebar when set. */
+  patientLabel?: string;
+  /** Optional session date (YYYY-MM-DD) for sidebar grouping / labels. */
+  sessionDate?: string;
+  /** When true, auto-title from first user message is disabled. */
+  titlePinned?: boolean;
   createdAt: number;
   updatedAt: number;
   turns: ClinicianChatTurn[];
   context: ClinicianThreadContext;
   lastCds?: ClinicianCdsSnapshot;
+};
+
+export type ClinicianThreadMetaPatch = {
+  title?: string;
+  patientLabel?: string;
+  sessionDate?: string;
+  titlePinned?: boolean;
 };

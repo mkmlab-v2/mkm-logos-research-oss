@@ -80,8 +80,17 @@ type ClinicianWorkspaceClientProps = {
 export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWorkspaceClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { ready, threads, activeThreadId, setActiveThreadId, activeThread, createThread, deleteThread, commitThread } =
-    useClinicianThreads();
+  const {
+    ready,
+    threads,
+    activeThreadId,
+    setActiveThreadId,
+    activeThread,
+    createThread,
+    deleteThread,
+    commitThread,
+    updateThreadMeta,
+  } = useClinicianThreads();
 
   const [activeId, setActiveId] = useState<string>(() => {
     const p = searchParams.get("panel");
@@ -205,6 +214,7 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
           router.replace("/clinician", { scroll: false });
         }}
         onDelete={deleteThread}
+        onUpdateMeta={updateThreadMeta}
       />
     ) : null;
 

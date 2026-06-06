@@ -14,7 +14,8 @@ async function probeClinicianPilot() {
 
   const checks = {
     minimal_shell: /"minimalShell":true|minimalShell\\":true/.test(html),
-    pilot_route: html.includes('data-clinician-pilot-route="v1"'),
+    pilot_route: html.includes('data-clinician-pilot-route="v2"') || html.includes('data-clinician-sidebar-mode="gpt-persist"'),
+    gpt_sidebar: html.includes('data-clinician-sidebar="gpt-persist"') || html.includes('data-clinician-sidebar-mode="gpt-persist"'),
     clinician_title: html.includes("한의사 보조"),
     safety_meta: html.includes("최종 진단") || html.includes("참고·초안"),
     no_marketing_leak: !html.includes("SINCE 1972") && !html.includes("feature-triad"),
