@@ -29,7 +29,7 @@
         radial-gradient(900px 480px at 50% -10%, rgba(197, 160, 87, 0.07), transparent 55%),
         var(--bg);
     }
-    .wrap { max-width: 56rem; margin: 0 auto; padding: 1.5rem 1.1rem 2rem; }
+    .wrap { max-width: 62rem; margin: 0 auto; padding: 1.5rem 1.1rem 2rem; }
     header { margin-bottom: 1rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border); }
     h1 { font-size: 1.15rem; margin: 0 0 0.35rem; font-weight: 650; }
     .lede { margin: 0; font-size: 0.8125rem; color: var(--muted); max-width: 42rem; }
@@ -50,7 +50,7 @@
       grid-template-columns: 1fr;
     }
     @media (min-width: 900px) {
-      .layout { grid-template-columns: 1fr 14rem; align-items: start; }
+      .layout { grid-template-columns: 1fr 17.5rem; align-items: start; }
     }
     .graph-panel {
       position: relative;
@@ -61,6 +61,26 @@
       overflow: hidden;
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
     }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+      align-items: center;
+      padding: 0.55rem 0.7rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .toolbar label { display: inline-flex; align-items: center; gap: 0.3rem; cursor: pointer; }
+    .toolbar select {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.2rem 0.45rem;
+      font-size: 0.72rem;
+    }
+    .filter-group { display: flex; flex-wrap: wrap; gap: 0.35rem 0.55rem; }
     canvas {
       display: block;
       width: 100%;
@@ -75,22 +95,59 @@
       padding: 0.85rem 0.9rem;
       font-size: 0.8125rem;
     }
-    .side h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 0 0 0.5rem; }
+    .side h2 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      margin: 0.85rem 0 0.4rem;
+    }
+    .side h2:first-child { margin-top: 0; }
     .side .id { font-family: ui-monospace, monospace; font-size: 0.7rem; word-break: break-all; color: var(--accent); }
     .side p { margin: 0.35rem 0 0; color: var(--muted); }
-    .legend { display: flex; flex-wrap: wrap; gap: 0.5rem 0.85rem; margin-top: 0.65rem; font-size: 0.72rem; color: var(--muted); }
+    .snippet {
+      font-size: 0.7rem;
+      line-height: 1.45;
+      max-height: 4.5rem;
+      overflow-y: auto;
+      word-break: break-word;
+      opacity: 0.9;
+    }
+    #pathList {
+      margin: 0.25rem 0 0;
+      padding-left: 1.1rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+    #pathList li { margin: 0.2rem 0; }
+    .actions { display: flex; flex-direction: column; gap: 0.45rem; margin-top: 0.65rem; }
+    .btn, .actions a {
+      display: inline-block;
+      font-size: 0.72rem;
+      padding: 0.4rem 0.55rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn:hover, .actions a:hover { border-color: rgba(197, 160, 87, 0.45); }
+    .legend { display: flex; flex-wrap: wrap; gap: 0.5rem 0.85rem; padding: 0.55rem 0.7rem; font-size: 0.72rem; color: var(--muted); }
     .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.25rem; vertical-align: middle; }
     .meta-line { font-size: 0.75rem; color: var(--muted); margin: 0.5rem 0 0; }
     .err { color: #c97a6d; }
     .footer-links { font-size: 0.8125rem; margin-top: 1rem; }
     .footer-links a { color: var(--accent); }
     #status { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.65rem; }
+    .copy-ok { color: var(--verse); font-size: 0.68rem; margin-top: 0.25rem; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>Meaning topology · live subgraph</h1>
+      <h1>Meaning topology · subgraph</h1>
       <p class="lede">
         <code>bible_meaning_graph</code>에서 insight 후보 허브를 시드로 뽑은 부분 그래프입니다.
         관측·연구 시각화이며 매매·투자·종교적 단정이 아닙니다.
@@ -107,6 +164,15 @@
 
     <div class="layout">
       <section class="graph-panel" aria-label="Meaning graph canvas">
+        <div class="toolbar" id="graphToolbar">
+          <label>레이아웃
+            <select id="layoutMode" aria-label="Layout mode">
+              <option value="force">Force (구조)</option>
+              <option value="rail">장 순서 레일</option>
+            </select>
+          </label>
+          <span class="filter-group" id="edgeFilters" aria-label="Edge type filters"></span>
+        </div>
         <canvas id="graphCanvas" width="800" height="420" role="img"
           aria-label="Interactive meaning topology subgraph (research only)"></canvas>
         <div class="legend" id="legend"></div>
@@ -114,14 +180,22 @@
       <aside class="side" id="detailPanel" aria-live="polite">
         <h2>Node detail</h2>
         <p class="id" id="detailId">—</p>
-        <p id="detailMeta">노드를 클릭하면 라벨·종류·허브 점수가 표시됩니다.</p>
+        <p id="detailMeta">노드를 클릭하면 라벨·종류·허브 점수·연결 경로가 표시됩니다.</p>
+        <p id="detailSnippet" class="snippet" hidden></p>
+        <h2>Path to theme / regime</h2>
+        <ul id="pathList"><li>—</li></ul>
+        <div class="actions">
+          <a id="qaDeepLink" href="public_showroom_meaning_topology_qa_v2.html" hidden>Q&amp;A Studio에서 보기</a>
+          <button type="button" class="btn" id="copyEvidence" hidden>근거 카드 복사</button>
+          <span id="copyOk" class="copy-ok" hidden>복사됨</span>
+        </div>
       </aside>
     </div>
 
     <p class="meta-line" id="statsLine">—</p>
 
     <p class="footer-links">
-      <a href="public_showroom_meaning_topology_qa_v2.html">→ Q&A Studio v2 (B2B 데모)</a>
+      <a href="public_showroom_meaning_topology_qa_v2.html">→ Q&amp;A Studio v2 (B2B 데모)</a>
       ·
       <a href="public_showroom_topology_radar_v1.html">← Risk topology radar</a>
       ·
@@ -144,21 +218,46 @@
 
   const canvas = document.getElementById("graphCanvas");
   const ctx = canvas.getContext("2d");
+  let graphDoc = null;
   let simNodes = [];
   let simEdges = [];
+  let nodeById = {};
   let selectedId = null;
   let dragging = null;
   let animId = 0;
   let simRunning = true;
   let calmFrames = 0;
-  const CALM_VEL = 0.08;
-  const CALM_FRAMES = 28;
+  let layoutTicks = 0;
+  let layoutMode = "force";
+  let edgeFilter = new Set();
+  let pathNodeIds = new Set();
+  let pathEdgeKeys = new Set();
+  const CALM_VEL = 0.12;
+  const CALM_FRAMES = 18;
+  const MAX_VEL = 2.8;
+  const MAX_LAYOUT_TICKS = 420;
 
   function esc(s) {
     return String(s)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;");
+  }
+
+  function edgeKey(e) {
+    return e.src.id + "|" + e.dst.id + "|" + (e.edge_type || "link");
+  }
+
+  function edgeVisible(e) {
+    const t = e.edge_type || "link";
+    return edgeFilter.has(t);
+  }
+
+  function parseVerseIndex(ref) {
+    if (!ref) return null;
+    const m = String(ref).match(/(\d+)\.(\d+)/);
+    if (!m) return null;
+    return parseInt(m[1], 10) * 1000 + parseInt(m[2], 10);
   }
 
   function resizeCanvas() {
@@ -172,6 +271,7 @@
   }
 
   function initSimulation(doc) {
+    graphDoc = doc;
     const nodes = (doc.nodes || []).map(function (n, i) {
       const angle = (i / Math.max(doc.nodes.length, 1)) * Math.PI * 2;
       const r = 80 + (n.hub_score || 0) * 40;
@@ -182,35 +282,181 @@
         hub_score: n.hub_score,
         ref: n.ref,
         corpus: n.corpus,
+        candidate_id: n.candidate_id,
+        text_snippet_ko: n.text_snippet_ko,
+        verse_index: parseVerseIndex(n.ref),
         x: canvas.width / 2 + Math.cos(angle) * r,
         y: canvas.height / 2 + Math.sin(angle) * r,
         vx: 0,
         vy: 0,
       };
     });
-    const byId = {};
-    nodes.forEach(function (n) { byId[n.id] = n; });
+    nodeById = {};
+    nodes.forEach(function (n) { nodeById[n.id] = n; });
     const edges = (doc.edges || []).map(function (e) {
       return {
-        src: byId[e.src],
-        dst: byId[e.dst],
-        edge_type: e.edge_type,
+        src: nodeById[e.src],
+        dst: nodeById[e.dst],
+        edge_type: e.edge_type || "link",
         weight: e.weight || 0.5,
       };
     }).filter(function (e) { return e.src && e.dst; });
     simNodes = nodes;
     simEdges = edges;
+
+    const types = new Set();
+    edges.forEach(function (e) { types.add(e.edge_type || "link"); });
+    edgeFilter = types;
+    renderEdgeFilters(types);
+  }
+
+  function renderEdgeFilters(types) {
+    const box = document.getElementById("edgeFilters");
+    const sorted = Array.from(types).sort();
+    box.innerHTML = sorted.map(function (t) {
+      return '<label><input type="checkbox" data-edge-type="' + esc(t) + '" checked /> ' + esc(t) + "</label>";
+    }).join("");
+    box.querySelectorAll("input[data-edge-type]").forEach(function (inp) {
+      inp.addEventListener("change", function () {
+        const t = inp.getAttribute("data-edge-type");
+        if (inp.checked) edgeFilter.add(t);
+        else edgeFilter.delete(t);
+        if (selectedId) computePaths(selectedId);
+        draw();
+      });
+    });
+  }
+
+  function applyRailLayout() {
+    const w = canvas.width;
+    const h = canvas.height;
+    const padX = 36;
+    const padY = 28;
+    const anchors = simNodes.filter(function (n) { return n.kind === "theme" || n.kind === "regime"; });
+    anchors.forEach(function (n, i) {
+      n.x = padX + 24;
+      n.y = padY + (h - padY * 2) * ((i + 1) / (anchors.length + 1));
+      n.vx = 0;
+      n.vy = 0;
+    });
+    const verses = simNodes.filter(function (n) { return n.kind === "verse"; });
+    verses.sort(function (a, b) {
+      const ai = a.verse_index != null ? a.verse_index : 0;
+      const bi = b.verse_index != null ? b.verse_index : 0;
+      return ai - bi;
+    });
+    const left = w * 0.22;
+    const right = w - padX;
+    const span = Math.max(right - left, 1);
+    verses.forEach(function (n, i) {
+      const t = verses.length <= 1 ? 0.5 : i / (verses.length - 1);
+      n.x = left + span * t;
+      n.y = h * 0.52 + (i % 2 === 0 ? -12 : 12);
+      n.vx = 0;
+      n.vy = 0;
+    });
+    simNodes.filter(function (n) { return n.kind === "other"; }).forEach(function (n, i) {
+      n.x = w * 0.5;
+      n.y = padY + i * 18;
+      n.vx = 0;
+      n.vy = 0;
+    });
+    stopSimulation();
+    draw();
+  }
+
+  function setLayoutMode(mode) {
+    layoutMode = mode;
+    if (mode === "rail") {
+      applyRailLayout();
+    } else {
+      wakeSimulation(false);
+    }
+  }
+
+  function buildAdjacency() {
+    const adj = {};
+    simNodes.forEach(function (n) { adj[n.id] = []; });
+    simEdges.forEach(function (e) {
+      if (!edgeVisible(e)) return;
+      adj[e.src.id].push({ node: e.dst, edge: e });
+      adj[e.dst.id].push({ node: e.src, edge: e });
+    });
+    return adj;
+  }
+
+  function bfsPath(startId, targetKind) {
+    const adj = buildAdjacency();
+    const q = [startId];
+    const prev = {};
+    const seen = {};
+    seen[startId] = true;
+    while (q.length) {
+      const id = q.shift();
+      const node = nodeById[id];
+      if (node && node.kind === targetKind && id !== startId) {
+        const pathNodes = [];
+        const pathEdges = [];
+        let cur = id;
+        while (cur) {
+          pathNodes.unshift(cur);
+          const step = prev[cur];
+          if (step) {
+            pathEdges.unshift(step.edge);
+            cur = step.from;
+          } else {
+            cur = null;
+          }
+        }
+        return { nodes: pathNodes, edges: pathEdges };
+      }
+      (adj[id] || []).forEach(function (step) {
+        if (seen[step.node.id]) return;
+        seen[step.node.id] = true;
+        prev[step.node.id] = { from: id, edge: step.edge };
+        q.push(step.node.id);
+      });
+    }
+    return null;
+  }
+
+  function computePaths(nodeId) {
+    pathNodeIds = new Set([nodeId]);
+    pathEdgeKeys = new Set();
+    const paths = [];
+    ["theme", "regime"].forEach(function (kind) {
+      const p = bfsPath(nodeId, kind);
+      if (p) {
+        paths.push({ kind: kind, path: p });
+        p.nodes.forEach(function (id) { pathNodeIds.add(id); });
+        p.edges.forEach(function (e) { pathEdgeKeys.add(edgeKey(e)); });
+      }
+    });
+    return paths;
+  }
+
+  function clampVelocity(n) {
+    const speed = Math.sqrt(n.vx * n.vx + n.vy * n.vy) || 0;
+    if (speed > MAX_VEL) {
+      const s = MAX_VEL / speed;
+      n.vx *= s;
+      n.vy *= s;
+    }
   }
 
   function tick() {
+    if (layoutMode !== "force") return;
+    layoutTicks += 1;
     const w = canvas.width;
     const h = canvas.height;
     const cx = w / 2;
     const cy = h / 2;
-    const repulse = 4200;
-    const linkK = 0.045;
-    const centerK = 0.002;
-    const damp = 0.86;
+    const pad = 24;
+    const alpha = Math.max(0.22, 1 - layoutTicks / MAX_LAYOUT_TICKS);
+    const repulse = 1100 * alpha;
+    const linkK = 0.028 * alpha;
+    const centerK = 0.0016;
+    const damp = 0.78;
 
     for (let i = 0; i < simNodes.length; i++) {
       for (let j = i + 1; j < simNodes.length; j++) {
@@ -219,6 +465,8 @@
         let dx = a.x - b.x;
         let dy = a.y - b.y;
         let dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+        const minDist = 18;
+        if (dist < minDist) dist = minDist;
         const f = repulse / (dist * dist);
         dx = (dx / dist) * f;
         dy = (dy / dist) * f;
@@ -230,12 +478,13 @@
     }
 
     simEdges.forEach(function (e) {
+      if (!edgeVisible(e)) return;
       const a = e.src;
       const b = e.dst;
       const dx = b.x - a.x;
       const dy = b.y - a.y;
       const dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
-      const rest = 70 + (1 - e.weight) * 30;
+      const rest = 88 + (1 - e.weight) * 24;
       const f = (dist - rest) * linkK * (0.5 + e.weight);
       a.vx += (dx / dist) * f;
       a.vy += (dy / dist) * f;
@@ -249,17 +498,19 @@
       n.vy += (cy - n.y) * centerK;
       n.vx *= damp;
       n.vy *= damp;
+      clampVelocity(n);
       maxVel = Math.max(maxVel, Math.abs(n.vx), Math.abs(n.vy));
       n.x += n.vx;
       n.y += n.vy;
-      n.x = Math.max(24, Math.min(w - 24, n.x));
-      n.y = Math.max(24, Math.min(h - 24, n.y));
+      if (n.x < pad) { n.x = pad; if (n.vx < 0) n.vx = 0; }
+      else if (n.x > w - pad) { n.x = w - pad; if (n.vx > 0) n.vx = 0; }
+      if (n.y < pad) { n.y = pad; if (n.vy < 0) n.vy = 0; }
+      else if (n.y > h - pad) { n.y = h - pad; if (n.vy > 0) n.vy = 0; }
     });
+    if (layoutTicks >= MAX_LAYOUT_TICKS) { stopSimulation(); return; }
     if (maxVel < CALM_VEL) {
       calmFrames += 1;
-      if (calmFrames >= CALM_FRAMES) {
-        stopSimulation();
-      }
+      if (calmFrames >= CALM_FRAMES) stopSimulation();
     } else {
       calmFrames = 0;
     }
@@ -268,23 +519,21 @@
   function stopSimulation() {
     simRunning = false;
     calmFrames = 0;
-    simNodes.forEach(function (n) {
-      n.vx = 0;
-      n.vy = 0;
-    });
+    simNodes.forEach(function (n) { n.vx = 0; n.vy = 0; });
+    draw();
   }
 
-  function wakeSimulation() {
+  function wakeSimulation(soft) {
+    if (layoutMode !== "force") return;
     if (simRunning) return;
     simRunning = true;
     calmFrames = 0;
+    layoutTicks = soft ? Math.floor(MAX_LAYOUT_TICKS * 0.72) : 0;
     ensureLoop();
   }
 
   function ensureLoop() {
-    if (!animId) {
-      animId = requestAnimationFrame(loop);
-    }
+    if (!animId) animId = requestAnimationFrame(loop);
   }
 
   function displayLabel(n) {
@@ -293,15 +542,20 @@
     }
     if (n.ref) return n.ref;
     if (n.label) return n.label;
-    const tail = n.id.split("::")[1];
-    return tail || n.id;
+    return n.id.split("::")[1] || n.id;
   }
 
   function shouldShowLabel(n) {
     if (n.kind === "theme" || n.kind === "regime") return true;
-    if (n.id === selectedId) return true;
+    if (selectedId && (n.id === selectedId || pathNodeIds.has(n.id))) return true;
     if (n.hub_score != null && n.hub_score >= 0.55) return true;
     return false;
+  }
+
+  function nodeAlpha(n) {
+    if (!selectedId) return 1;
+    if (n.id === selectedId || pathNodeIds.has(n.id)) return 1;
+    return 0.28;
   }
 
   function drawNodeLabels() {
@@ -317,8 +571,20 @@
       ctx.fillStyle = "rgba(10, 11, 13, 0.82)";
       ctx.fillRect(n.x - tw / 2 - 3, y - 1, tw + 6, 13);
       ctx.fillStyle = n.id === selectedId ? "#fff" : "#e8eaef";
+      ctx.globalAlpha = nodeAlpha(n);
       ctx.fillText(text, n.x, y);
+      ctx.globalAlpha = 1;
     });
+  }
+
+  function strokeForEdge(e, onPath) {
+    if (onPath) return "rgba(197,160,87,0.75)";
+    if (e.edge_type === "cross_lens_confirm") return "rgba(143,188,143,0.35)";
+    if (e.edge_type === "theme_association" || e.edge_type === "regime_projection") {
+      return "rgba(197,160,87,0.42)";
+    }
+    if (e.edge_type === "timeline_anchor") return "rgba(158,180,212,0.28)";
+    return "rgba(255,255,255,0.12)";
   }
 
   function draw() {
@@ -329,33 +595,36 @@
     ctx.fillRect(0, 0, w, h);
 
     simEdges.forEach(function (e) {
+      if (!edgeVisible(e)) return;
+      const onPath = pathEdgeKeys.has(edgeKey(e));
+      const dim = selectedId && !onPath;
       ctx.beginPath();
       ctx.moveTo(e.src.x, e.src.y);
       ctx.lineTo(e.dst.x, e.dst.y);
-      var stroke = "rgba(255,255,255,0.12)";
-      if (e.edge_type === "cross_lens_confirm") stroke = "rgba(143,188,143,0.35)";
-      else if (e.edge_type === "theme_association" || e.edge_type === "regime_projection") {
-        stroke = "rgba(197,160,87,0.42)";
-      } else if (e.edge_type === "timeline_anchor") stroke = "rgba(158,180,212,0.28)";
-      ctx.strokeStyle = stroke;
-      ctx.lineWidth = 0.5 + e.weight;
+      ctx.strokeStyle = strokeForEdge(e, onPath);
+      ctx.globalAlpha = dim ? 0.15 : (onPath ? 1 : 0.85);
+      ctx.lineWidth = onPath ? 2.2 : (0.5 + e.weight);
       ctx.stroke();
+      ctx.globalAlpha = 1;
     });
 
     simNodes.forEach(function (n) {
       const r = n.kind === "theme" || n.kind === "regime" ? 9 : 5 + (n.hub_score || 0) * 4;
       const color = KIND_COLOR[n.kind] || KIND_COLOR.other;
+      const alpha = nodeAlpha(n);
       ctx.beginPath();
       ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
       ctx.fillStyle = color;
-      if (n.id === selectedId) {
+      ctx.globalAlpha = alpha;
+      if (n.id === selectedId || pathNodeIds.has(n.id)) {
         ctx.shadowColor = color;
-        ctx.shadowBlur = 14;
+        ctx.shadowBlur = n.id === selectedId ? 14 : 8;
       } else {
         ctx.shadowBlur = 0;
       }
       ctx.fill();
       ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
       if (n.id === selectedId) {
         ctx.strokeStyle = "#fff";
         ctx.lineWidth = 1.5;
@@ -368,11 +637,8 @@
   function loop() {
     if (simRunning) tick();
     draw();
-    if (simRunning) {
-      animId = requestAnimationFrame(loop);
-    } else {
-      animId = 0;
-    }
+    if (simRunning) animId = requestAnimationFrame(loop);
+    else animId = 0;
   }
 
   function pickNode(mx, my) {
@@ -383,30 +649,96 @@
       const dy = n.y - my;
       const d = Math.sqrt(dx * dx + dy * dy);
       const r = n.kind === "theme" || n.kind === "regime" ? 14 : 12;
-      if (d < r && d < bestD) {
-        best = n;
-        bestD = d;
-      }
+      if (d < r && d < bestD) { best = n; bestD = d; }
     });
     return best;
+  }
+
+  function formatPathLine(p) {
+    const labels = p.path.nodes.map(function (id) {
+      const n = nodeById[id];
+      return n ? displayLabel(n) : id;
+    });
+    const edges = p.path.edges.map(function (e) { return e.edge_type; }).join(" → ");
+    return p.kind + ": " + labels.join(" → ") + (edges ? " (" + edges + ")" : "");
+  }
+
+  function updateQaLink(nodeId) {
+    const a = document.getElementById("qaDeepLink");
+    const ids = Array.from(pathNodeIds);
+    const q = new URLSearchParams();
+    q.set("node", nodeId);
+    if (ids.length > 1) q.set("highlight", ids.join(","));
+    q.set("preset", "p1_empire_transition");
+    a.href = "public_showroom_meaning_topology_qa_v2.html?" + q.toString();
+    a.hidden = false;
+    document.getElementById("copyEvidence").hidden = false;
+  }
+
+  function buildEvidenceCard(n, paths) {
+    const lines = [
+      "[HYPO] research_only · NON_GATING · no_trade_signals",
+      "Node: " + n.id,
+      "Label: " + displayLabel(n),
+      "kind=" + n.kind + (n.hub_score != null ? " · hub_score=" + n.hub_score : ""),
+    ];
+    if (n.ref) lines.push("ref=" + n.ref);
+    if (graphDoc && graphDoc.generated_at_utc) lines.push("slice generated: " + graphDoc.generated_at_utc);
+    paths.forEach(function (p) { lines.push(formatPathLine(p)); });
+    lines.push("Source: bible_meaning_graph · showroom slice v1");
+    lines.push("Not investment advice · not theological certainty · not Track A gate.");
+    return lines.join("\n");
   }
 
   function showDetail(n) {
     selectedId = n ? n.id : null;
     const idEl = document.getElementById("detailId");
     const metaEl = document.getElementById("detailMeta");
+    const snippetEl = document.getElementById("detailSnippet");
+    const pathEl = document.getElementById("pathList");
+    document.getElementById("copyOk").hidden = true;
+
     if (!n) {
       idEl.textContent = "—";
-      metaEl.textContent = "노드를 클릭하면 라벨·종류·허브 점수가 표시됩니다.";
+      metaEl.textContent = "노드를 클릭하면 라벨·종류·허브 점수·연결 경로가 표시됩니다.";
+      snippetEl.hidden = true;
+      pathEl.innerHTML = "<li>—</li>";
+      pathNodeIds = new Set();
+      pathEdgeKeys = new Set();
+      document.getElementById("qaDeepLink").hidden = true;
+      document.getElementById("copyEvidence").hidden = true;
+      draw();
       return;
     }
+
     idEl.textContent = n.id;
-    let lines = ["kind=" + n.kind];
-    if (n.ref) lines.push("ref=" + n.ref);
-    if (n.corpus) lines.push("corpus=" + n.corpus);
-    if (n.hub_score != null) lines.push("hub_score=" + n.hub_score);
-    metaEl.textContent = displayLabel(n) + " · " + lines.join(" · ");
-    if (!simRunning) draw();
+    const meta = [];
+    meta.push("kind=" + n.kind);
+    if (n.ref) meta.push("ref=" + n.ref);
+    if (n.corpus) meta.push("corpus=" + n.corpus);
+    if (n.hub_score != null) meta.push("hub_score=" + n.hub_score);
+    if (n.candidate_id) meta.push("candidate=" + n.candidate_id);
+    metaEl.textContent = displayLabel(n) + " · " + meta.join(" · ");
+
+    if (n.text_snippet_ko) {
+      snippetEl.textContent = n.text_snippet_ko;
+      snippetEl.hidden = false;
+    } else {
+      snippetEl.hidden = true;
+    }
+
+    const paths = computePaths(n.id);
+    if (paths.length) {
+      pathEl.innerHTML = paths.map(function (p) {
+        return "<li>" + esc(formatPathLine(p)) + "</li>";
+      }).join("");
+    } else {
+      pathEl.innerHTML = "<li>theme/regime까지 경로 없음 (엣지 필터·슬라이스 범위 확인)</li>";
+    }
+
+    updateQaLink(n.id);
+    n._evidenceCard = buildEvidenceCard(n, paths);
+    draw();
   }
 
   function canvasPos(evt) {
@@ -424,7 +756,7 @@
     const n = pickNode(p.x, p.y);
     if (n) {
       dragging = n;
-      wakeSimulation();
+      if (layoutMode === "force") wakeSimulation(true);
       showDetail(n);
       canvas.setPointerCapture(evt.pointerId);
     }
@@ -436,18 +768,32 @@
     dragging.y = p.y;
     dragging.vx = 0;
     dragging.vy = 0;
-    if (!simRunning) draw();
+    draw();
   });
   canvas.addEventListener("pointerup", function () {
-    if (dragging) wakeSimulation();
+    if (dragging && layoutMode === "force") wakeSimulation(true);
     dragging = null;
   });
   canvas.addEventListener("click", function (evt) {
     if (dragging) return;
     const p = canvasPos(evt);
-    const n = pickNode(p.x, p.y);
-    showDetail(n);
-    if (!simRunning) draw();
+    showDetail(pickNode(p.x, p.y));
+  });
+
+  document.getElementById("layoutMode").addEventListener("change", function (e) {
+    setLayoutMode(e.target.value);
+  });
+
+  document.getElementById("copyEvidence").addEventListener("click", function () {
+    const n = selectedId && nodeById[selectedId];
+    if (!n || !n._evidenceCard) return;
+    navigator.clipboard.writeText(n._evidenceCard).then(function () {
+      const ok = document.getElementById("copyOk");
+      ok.textContent = "복사됨";
+      ok.hidden = false;
+    }).catch(function () {
+      window.prompt("근거 카드 (수동 복사):", n._evidenceCard);
+    });
   });
 
   function renderLegend(kinds) {
@@ -470,6 +816,17 @@
     throw new Error("slice JSON not found");
   }
 
+  function initFromUrl() {
+    const params = new URLSearchParams(location.search);
+    const nodeId = params.get("node") || (params.get("highlight") || "").split(",")[0];
+    if (!nodeId || !nodeById[nodeId]) return;
+    if (params.get("layout") === "rail") {
+      document.getElementById("layoutMode").value = "rail";
+      setLayoutMode("rail");
+    }
+    showDetail(nodeById[nodeId]);
+  }
+
   async function load() {
     const st = document.getElementById("status");
     const urls = [];
@@ -490,14 +847,17 @@
       : '<span style="color:var(--verse)">loaded</span>';
     simRunning = true;
     calmFrames = 0;
+    layoutTicks = 0;
     cancelAnimationFrame(animId);
     animId = 0;
     ensureLoop();
+    setTimeout(initFromUrl, 900);
   }
 
   window.addEventListener("resize", function () {
     resizeCanvas();
-    if (!simRunning) draw();
+    if (layoutMode === "rail") applyRailLayout();
+    else if (!simRunning) draw();
   });
 
   load().catch(function (e) {

@@ -211,6 +211,29 @@
     chart.setOption(buildChartOption(new Set(ids || [])), { notMerge: true });
   }
 
+  function applyUrlParams() {
+    const params = new URLSearchParams(location.search);
+    const highlightRaw = params.get("highlight") || params.get("node");
+    if (highlightRaw) {
+      const ids = highlightRaw.split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+      if (ids.length) applyHighlight(ids);
+    }
+    const presetId = params.get("preset");
+    if (presetId) {
+      const preset = (presetsDoc.presets || []).find(function (p) { return p.id === presetId; });
+      if (preset) {
+        el("questionInput").value = preset.prompt_ko;
+        respond(preset.prompt_ko);
+        return;
+      }
+    }
+    const q = params.get("q");
+    if (q) {
+      el("questionInput").value = q;
+      respond(q);
+    }
+  }
+
   function initChart() {
     chart = echarts.init(document.getElementById("graphChart"));
     chart.setOption(buildChartOption(new Set()));
@@ -243,6 +266,7 @@
       initChart(); renderSuggestions();
       const note = presetsDoc.disclaimer && presetsDoc.disclaimer.note_ko;
       addMessage("assistant", esc(note || "연구용 데모입니다."));
+      applyUrlParams();
     }).catch(function (err) {
       el("loadStatus").innerHTML = '<span class="text-red-400">로드 실패: ' + esc(String(err)) + "</span>";
     });
