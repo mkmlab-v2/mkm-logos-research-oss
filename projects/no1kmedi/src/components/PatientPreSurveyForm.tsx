@@ -18,6 +18,7 @@ import {
   type ConstitutionQuestionOption,
 } from "@/lib/constitution-survey-schema";
 import { buildClinicIntakePatientPinSmsBody } from "@/lib/clinic-intake-staff-link-v1";
+import { ClinicIntakeMobileWizard } from "@/components/ClinicIntakeMobileWizard";
 
 type PatientPreSurveyResponse = {
   success: boolean;
@@ -348,6 +349,10 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
     }
   }
 
+  if (intakeMode === "clinic_v1") {
+    return <ClinicIntakeMobileWizard />;
+  }
+
   return (
     <section id="patient-intake" aria-labelledby="patient-intake-title">
       <h2 id="patient-intake-title">상세 문진 입력</h2>
@@ -368,35 +373,6 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
           연락처
           <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="010-0000-0000" required />
         </label>
-        {intakeMode === "clinic_v1" ? (
-          <>
-            <label>
-              생년월일
-              <input type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} required />
-            </label>
-            <label>
-              출생 시간 (선택)
-              <input
-                type="time"
-                value={birthTime}
-                onChange={(e) => setBirthTime(e.target.value)}
-                disabled={birthTimeUnknown}
-              />
-            </label>
-            <label>
-              <input
-                type="checkbox"
-                checked={birthTimeUnknown}
-                onChange={(e) => {
-                  setBirthTimeUnknown(e.target.checked);
-                  if (e.target.checked) setBirthTime("");
-                }}
-              />
-              출생 시간을 모릅니다 (정오 기준으로 계산)
-            </label>
-          </>
-        ) : null}
-        {intakeMode === "legacy" ? (
         <label>
           연령대
           <select value={ageBand} onChange={(e) => setAgeBand(e.target.value)} required>
@@ -409,7 +385,6 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
             <option value="60plus">60대 이상</option>
           </select>
         </label>
-        ) : null}
         <label>
           통증/불편 부위
           <input value={painArea} onChange={(e) => setPainArea(e.target.value)} required />
@@ -430,31 +405,8 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
           소화 패턴
           <input value={digestionPattern} onChange={(e) => setDigestionPattern(e.target.value)} placeholder="예: 식후 더부룩함" />
         </label>
-        {intakeMode === "clinic_v1" ? (
-          <>
-            <label>
-              한열 민감도 (선택)
-              <select value={clinicHeatColdSensitivity} onChange={(e) => setClinicHeatColdSensitivity(e.target.value)}>
-                <option value="">선택 안함</option>
-                <option value="더위를 더 탐">더위를 더 탐</option>
-                <option value="추위를 더 탐">추위를 더 탐</option>
-                <option value="비슷함">비슷함</option>
-              </select>
-            </label>
-            <label>
-              피로 회복 (선택)
-              <select value={clinicFatigueRecovery} onChange={(e) => setClinicFatigueRecovery(e.target.value)}>
-                <option value="">선택 안함</option>
-                <option value="휴식하면 빠르게 회복">휴식하면 빠르게 회복</option>
-                <option value="휴식해도 오래 감">휴식해도 오래 감</option>
-                <option value="중간">중간</option>
-              </select>
-            </label>
-          </>
-        ) : null}
-        {intakeMode === "legacy" ? (
-          <fieldset className="patient-survey-full patient-survey-flags">
-            <legend>체질 추정 설문 (핵심 5문항 필수)</legend>
+        <fieldset className="patient-survey-full patient-survey-flags">
+          <legend>체질 추정 설문 (핵심 5문항 필수)</legend>
             <p className="section-lead">
               핵심 설문 완료: {answeredCoreConstitutionCount}/{CORE_CONSTITUTION_QUESTION_IDS.length}
             </p>
@@ -517,7 +469,6 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
               </div>
             ) : null}
           </fieldset>
-        ) : null}
         <label className="patient-survey-full">
           이번 상담에서 가장 해결하고 싶은 점
           <textarea value={goal} onChange={(e) => setGoal(e.target.value)} rows={3} placeholder="원하는 상담 방향을 적어 주세요." />
