@@ -41,6 +41,9 @@ def main() -> int:
     hist_ab = _load("logos_chronology_historical_tier_v2_ab_v1_latest.json", REP)
     locked_cmp = _load("logos_chronology_locked_eval_policy_compare_v1_latest.json", REP)
     hist_rag_t2 = _load("logos_chronology_era_blind_eval_rag_assisted_tier_v2_v1_latest.json")
+    hist_v2 = _load("logos_chronology_era_blind_eval_text_blind_v2_v1_latest.json")
+    v2_ab = _load("logos_chronology_text_blind_v2_ab_v1_latest.json", REP)
+    v2_hold = _load("logos_chronology_text_blind_v2_holdout_v1_latest.json", REP)
     margin = _load("logos_hardset_era_human_margin_report_v1_latest.json", REP)
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -141,6 +144,48 @@ def main() -> int:
                 f"- gold_tags tier_v1 → tier_v2: **{_pct(c.get('gold_tags_tier_v1_hit_at_1'))}** → **{_pct(c.get('gold_tags_tier_v2_hit_at_1'))}** (Δ {c.get('gold_tags_delta_v2_minus_v1')})",
             ]
         )
+    if v2_ab or hist_v2:
+        c2 = (v2_ab or {}).get("compare") or {}
+        s2 = (hist_v2 or {}).get("summary") or {}
+        s1_ms = (hist_t or {}).get("summary") or {}
+        lines.extend(
+            [
+                "",
+                "## text_blind_v2 B-track PoC (KO keywords + era hints · MS baseline unchanged)",
+                "",
+                f"- all-events v1 (MS): **{_pct(c2.get('hit_at_1_strict_v1') or s1_ms.get('hit_at_1_strict'))}**",
+                f"- all-events v2 (research): **{_pct(c2.get('hit_at_1_strict_v2') or s2.get('hit_at_1_strict'))}** · Δ **{c2.get('delta_v2_minus_v1')}**",
+                f"- target 15% met: **`{c2.get('target_met')}`** · ms_headline_unchanged: **`{(v2_ab or {}).get('policy', {}).get('ms_headline_unchanged')}`**",
+            ]
+        )
+    if v2_hold:
+        cmp_h = v2_hold.get("compare") or {}
+        by = v2_hold.get("by_partition") or {}
+        lines.extend(
+            [
+                "",
+                "## Partition holdout (text_blind v1 vs v2)",
+                "",
+                "| partition | n | v1 hit@1 | v2 hit@1 | Δ |",
+                "|-----------|---|----------|----------|---|",
+            ]
+        )
+        for part in ("train_holdout", "locked_eval", "calibration"):
+            block = by.get(part) or {}
+            s1 = block.get("text_blind_v1_ms_baseline") or {}
+            s2p = block.get("text_blind_v2_btrack_poc") or {}
+            mark = " **(OOS primary)**" if part == "train_holdout" else ""
+            lines.append(
+                f"| `{part}`{mark} | {s1.get('n', '—')} | {_pct(s1.get('hit_at_1_strict'))} | "
+                f"{_pct(s2p.get('hit_at_1_strict'))} | {block.get('delta_v2_minus_v1')} |"
+            )
+        lines.extend(
+            [
+                "",
+                f"- train_holdout 15% gate: **`{cmp_h.get('train_holdout_target_15pct_met')}`**",
+                f"- note: {v2_hold.get('note_ko', '')}",
+            ]
+        )
     if margin and margin.get("ready"):
         hi = margin.get("hardset_internal") or {}
         lines.extend(
@@ -189,6 +234,8 @@ def main() -> int:
             "",
             "- `docs/final/artifacts/logos_chronology_era_blind_eval_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_era_blind_eval_text_blind_v1_latest.json`",
+            "- `docs/final/artifacts/logos_chronology_era_blind_eval_text_blind_v2_v1_latest.json` (B-track PoC · not MS)",
+            "- `reports/logos_chronology_text_blind_v2_holdout_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_eval_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_v2_eval_v1_latest.json` (hardset SSOT · tier_v2_locked_eval)",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_v2_tier_v1_baseline_eval_v1_latest.json` (compare only)",
