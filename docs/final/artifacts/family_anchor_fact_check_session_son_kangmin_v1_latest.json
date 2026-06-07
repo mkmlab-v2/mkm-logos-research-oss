@@ -1,0 +1,59 @@
+{
+  "schema": "family_anchor_fact_check_session_v1",
+  "version": "1.0.0",
+  "anchor_id": "family_anchor_son_kangmin_v1",
+  "ts_utc": "2026-06-07T15:45:00Z",
+  "status": "applied",
+  "facilitator": "commander",
+  "respondent": "parent_commander",
+  "calendar_kst": "2026-06",
+  "operator_integrated_guide_helpful": true,
+  "axes": [
+    {
+      "axis": "growth_height",
+      "questions_ko": [
+        "최근 키·체중 (보호자 확인, cm/kg)",
+        "성장호르몬 주사 상태",
+        "당 수치 상승으로 GH 중단 이력",
+        "검사 수치( IGF-1·HbA1c 등) 숫자를 지금 공유할 수 있나?"
+      ],
+      "responses": {
+        "height_cm_confirmed": "143",
+        "weight_kg_confirmed": "38",
+        "gh_therapy_status": "active_recent_restart",
+        "glucose_history_blocks_gh": "yes_over_6mo_pause",
+        "lab_numeric_in_hand": "no"
+      }
+    },
+    {
+      "axis": "sasang_lifestyle",
+      "questions_ko": [
+        "식사 속도·상체 발달·급한 temperament 재확인",
+        "소양/태양 가설 유지 여부"
+      ],
+      "responses": {
+        "eating_pace": "fast",
+        "morphology_upper_body": "yes",
+        "temperament_pace": "fast_impatient",
+        "constitution_hypothesis": "soyang_primary_tae-yang_secondary"
+      }
+    }
+  ],
+  "clinical_labs_intake": {
+    "anthropometrics_as_of_kst": "2026-06",
+    "height_cm": 143,
+    "weight_kg": 38,
+    "bmi_approx": 18.6,
+    "labs_numeric_available": false,
+    "labs_pending_clinician_ssot": [
+      "igf_1",
+      "hba1c",
+      "fasting_glucose",
+      "bone_age_years"
+    ],
+    "parent_reported_context_ko": "당 수치 상승으로 GH 6개월+ 중단 후 최근 재개; 수치는 소아내분비·주치의 기록만 SSOT"
+  },
+  "notes": "2026-06-07 commander fact-check: height/weight/GH·당 narrative aligned to integrated guide v1; numeric lab values not in repo — pending clinician SSOT.",
+  "hypothesis_tier": "B",
+  "research_only": true
+}

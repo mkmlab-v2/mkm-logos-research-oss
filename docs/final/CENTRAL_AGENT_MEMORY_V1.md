@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-07T14:39:55Z
+- **last_updated_utc:** 2026-06-07T15:29:07Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -71,6 +71,10 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-06-07T15:29:07Z** — showroom 2030 live jemaai.cloud; nginx snippet+reload OK; ShowroomTrackCHealth OK
+- **2026-06-07T15:22:21Z** — showroom 2030 slice panel shipped gitea/main 7c353e74; topology radar+JSON deploy staging OK
+- **2026-06-07T15:17:40Z** — off-fixture OOV measured n=67 v1/v2 85.1% parity; CI+P0+CONSTITUTION wired; pushed internal
+- **2026-06-07T14:48:44Z** — 2030 horizon gitea/main ac15374980 · --strict rebuild OK · weekly bundle verify OK (next 6/14)
 - **2026-06-07T14:39:55Z** — Macro horizon 2030 showroom slice wired: build_showroom_macro_horizon_2030_slice_v1 + Topology Radar panel [HYPO]
 - **2026-06-07T14:36:55Z** — 2030 horizon ops: Verify-WeeklyBundle OK, fact_lock Logos pytest+2030, P0 paths
 - **2026-06-07T14:29:24Z** — Logos 2030 horizon v1.2.1: myeongni/sasang read-only wiring, CI pytest+1, MISSION_LOG 갱신
@@ -87,10 +91,6 @@
 - **2026-06-07T12:43:48Z** — B2B verbal rehearsal 2026-06-07 complete; signoff internal_rehearsal_complete; external send HOLD; counsel shelf
 - **2026-06-07T12:42:28Z** — holdout structural closure: oracle 53.3% vs prod 51.7%; hybrid shadow 60%; 04-02 MS/hybrid=bear but v1 neutral_miss; margin020 frozen anchor 50% research-only
 - **2026-06-07T12:38:44Z** — holdout7 04-02 neutral_miss: margin sweep 0/1 recovered hold min_conf; hybrid 180d 48.3% soft_pass shadow-only no promote
-- **2026-06-07T12:36:07Z** — text_blind_v2 holdout parallel OK: train_holdout 10%→90%; digest+margin refreshed; MS frozen
-- **2026-06-07T12:34:43Z** — holdout gate OOS 180d: 41.4% A1 fail holdout7 6/6 neutralized train_wrong 0/60; manifest refresh composite 6/7; hybrid bbs_ms 60% shadow-only
-- **2026-06-07T12:33:21Z** — DSS B-track 종료: ext3 chunk40·927 surface·frontline 15/15·research round OK; Track C B2B 리허설 CLOSED signoff B2B_REHEARSAL_20260607_DSS; SEND_GATE HOLD·track_a blocked
-- **2026-06-07T12:27:18Z** — text_blind_v2 PoC OK: hit@1 6.4%→87.2% (47 gold); MS baseline frozen; B-track only
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -109,7 +109,7 @@
 
 - **SSOT:** `docs/final/artifacts/patient_high_load_daily_optimization_playbook_v1.json` — L0 임상 주 · L1 뇌-장/저혈압/전정 · L2 체온·식이 · L3 학습 · L4 진로 · L5 달력 `[HYPO]`만.
 - **우리 딸 (가족·실명 미기록):** **2012-03-28 10:20 서울** · 소음인(관찰) · 만14~15세 — `playbook` `family_anchor_our_daughter_v1` · 사주 **임진·계묘·무자·정사** · `reports/tmp_daughter_myeongni_full_v1.json`. **환자 김하은과 동일인 아님.**
-- **우리 아들 이강민 (가족 anchor · 2026-06-07):** **2014-05-09 01:26 서울** · GH·당 관리 중 · 사주 **갑오·기사·경진·정축(일간 庚)** · `family_anchor_son_kangmin_v1` → `docs/final/artifacts/family_anchor_lived_calibration_son_kangmin_v1_latest.json` · 통합가이드 MD **`reports/kangmin_son_integrated_guide_v1.md`** · JSON `kangmin_son_integrated_guide_v1_latest.json` · 명리 `reports/kangmin_myeongni_full_v1.json` · **lived_fact_check 2026-06-07** · **1순위=키·혈당·GH 연속성** · 소양/태양 [HYPO] · `auto_apply=none`.
+- **우리 아들 이강민 (가족 anchor · 2026-06-07):** **2014-05-09 01:26 서울** · GH·당 관리 중 · 사주 **갑오·기사·경진·정축(일간 庚)** · `family_anchor_son_kangmin_v1` → `docs/final/artifacts/family_anchor_lived_calibration_son_kangmin_v1_latest.json` (**v1.1.0** · `clinical_labs_l0` 143/38 confirmed · lab numeric pending clinician SSOT) · 통합가이드 **`reports/kangmin_son_integrated_guide_v1.md`** · apply `scripts/apply_family_anchor_son_kangmin_lived_fact_check_v1.py` · **1순위=키·혈당·GH 연속성** · 소양/태양 [HYPO] · `auto_apply=none`.
 - **딸 통합 가이드 v4-minimal (2026-05-25 · B-track):** SSOT `daughter_2026_integrated_guide_v4_minimal_latest.json` + `family_anchor` v1.3.0 — **순서:** v3 학교·멘토 → 명리 핵심월(재물·또래) → **사상 생활 4줄** → **Logos 2줄 [NON_GATING]**; **제품 브리지 [FACT]:** `build_family_anchor_insight_bridge_v1.py` · mkmlife `/oracle-sphere?profile=family` · blueprint `saving_the_news_blueprint_v1.md` §9; **금지:** 12칸 3렌즈 합선·오행%→체질·6월충 연애통제·11월 냉증 처방 · `auto_apply=none`.
 - **환자 김하은 (진료 케이스):** **2008-02-03 14:00 서울** · 고3·소음인 등 — `playbook` `patient_reference_kim_haeun_v1` · **정해·계축·계유·기미** · `reports/tmp_kim_haeun_myeongni_full_v1.json`.
 - **상담 톤:** 「고정밀 센서」·따뜻한 입력·마이크로 투두 — **「사주 강하니 버텨」·합격 단정·사주 인과」 금지** (`patient_care_bundle` 정책과 동일).

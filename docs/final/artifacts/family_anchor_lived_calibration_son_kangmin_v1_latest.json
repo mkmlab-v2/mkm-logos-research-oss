@@ -1,0 +1,204 @@
+{
+  "schema": "family_anchor_lived_calibration_v1",
+  "version": "1.1.0",
+  "anchor_id": "family_anchor_son_kangmin_v1",
+  "ts_utc": "2026-06-07T16:53:53Z",
+  "axis": "growth_height_blood_sugar",
+  "source": {
+    "method": "parent_commander_intake_2026-06-07",
+    "respondent": "commander",
+    "facilitator": "athena",
+    "note": "Son profile for family wellness; not clinical patient registry. Engine pillars from run_saju_global_birth_v1."
+  },
+  "subject": {
+    "relation": "son",
+    "display_label_ko": "아들 이강민",
+    "birth_local": "2014-05-09 01:26 Asia/Seoul",
+    "birth_instant_utc": "2014-05-08T16:26:00Z",
+    "is_male": true
+  },
+  "myeongni_fact_ref": {
+    "pillars": {
+      "year": "갑오",
+      "month": "기사",
+      "day": "경진",
+      "hour": "정축"
+    },
+    "day_master_stem": "경",
+    "day_master_element_hint": "금(陽)",
+    "strength_label_engine": "중약",
+    "school_decision_engine": "flow_centered",
+    "element_counts_visible": {
+      "목": 1,
+      "화": 3,
+      "토": 3,
+      "금": 1,
+      "수": 0
+    },
+    "daewoon_current": {
+      "pillar": "기사",
+      "age_start": 9.36,
+      "age_end": 19.36,
+      "cycle": 1
+    },
+    "sewoon_2026": {
+      "pillar": "병오",
+      "stem_ten_god": "편관",
+      "main_element": "화"
+    },
+    "full_report_path": "reports/kangmin_myeongni_full_v1.json",
+    "birth_json_path": "reports/kangmin_saju_birth_v1.json",
+    "engine_regenerate_cli": "py scripts/run_saju_global_birth_v1.py --utc-instant 2014-05-08T16:26:00Z --iana-tz Asia/Seoul --is-male"
+  },
+  "clinical_l0_parent_reported": {
+    "height_cm": 143,
+    "weight_kg": 38,
+    "bmi_approx": 18.6,
+    "morphology": "머리·상체 발달 상대적 우세",
+    "treatments": [
+      "성장호르몬 주사(최근 재개)",
+      "성호르몬 억제 주사(때때로)",
+      "당 수치 상승으로 6개월+ GH 중단 이력"
+    ],
+    "primary_goal_ko": "키 성장 · 혈당 안정 · GH 치료 연속성",
+    "disclaimer": "L0=소아내분비·주치의 SSOT; 본 anchor는 육아·루틴 참고만",
+    "anthropometrics_as_of_kst": "2026-06",
+    "labs_numeric_available": false
+  },
+  "responses": {
+    "personality_pace": "fast_impatient",
+    "eating_pace": "fast",
+    "constitution_parent_hypothesis": "soyang_or_tae-yang",
+    "operator_verdict_20260607": "integrated_growth_guide_v1_accepted_for_memory",
+    "lived_fact_check_applied_at": "2026-06-07T16:53:53Z",
+    "workspace_guide_canonical": "reports/kangmin_son_integrated_guide_v1.md",
+    "operator_verdict_sequential_sync": "height_weight_clinical_l0_confirmed_no_new_labs",
+    "operator_verdict_20260607_labs": "height_weight_confirmed_lab_numeric_pending_clinician_ssot",
+    "operator_verdict_integrated_guide": "integrated_growth_guide_v1_matches"
+  },
+  "interpretation_guardrails_ko": [
+    "용신·strength_label·오행% → 한약·병증·키 cm 단정 금지.",
+    "GH·당·억제주사 = 의학 SSOT; 사주 인과 서술 금지.",
+    "월운 12칸 × 3렌즈 합선·월별 처방 금지.",
+    "소양/태양 = 생활 가설 [HYPO]; 한의 확정 전 임상 단정 금지.",
+    "포스텔러 월운 UI SSOT 금지 — MKM monthly_fortune만 [FACT 보조]."
+  ],
+  "invalidates_narrative": [
+    "final_height_cm_from_saju",
+    "gh_success_rate_from_sewoon",
+    "oheng_zero_water_soeumin_diagnosis",
+    "monthly_herb_from_wolwoon",
+    "sasang_clinical_from_element_percent"
+  ],
+  "preferred_narrative": [
+    "sleep_2130_2200_gh_ally",
+    "slow_eating_15min_20_chews",
+    "daily_rope_hang_swim_lower_spine",
+    "blood_sugar_stable_meals_protein_first",
+    "pomodoro_25_5_study_for_fast_temperament",
+    "endocrinologist_calendar_child_owned"
+  ],
+  "synthesis_artifact_ref": "docs/final/artifacts/kangmin_son_integrated_guide_v1_latest.json",
+  "synthesis_md_ref": "reports/kangmin_son_integrated_guide_v1.md",
+  "supplementary_axes": [
+    {
+      "axis": "growth_height",
+      "status": "lived_check_applied",
+      "priority": 1,
+      "four_lines_ko": [
+        "21:30–22:00 취침 + GH 주사 시간 고정 = 1순위.",
+        "15분 식사·단백질 선섭취 → 당·GH 효율 동시.",
+        "매일 줄넘기·매달리기·수영 — 하체·척추 (정형/내분비 상의).",
+        "키·최종신장 사주 단정 금지 — 검사·골연령 SSOT."
+      ],
+      "responses": {
+        "height_cm_confirmed": "143",
+        "weight_kg_confirmed": "38",
+        "gh_therapy_status": "active_recent_restart",
+        "glucose_history_blocks_gh": "yes_over_6mo_pause",
+        "lab_numeric_in_hand": "no",
+        "lived_check_status": "completed"
+      }
+    },
+    {
+      "axis": "sasang_lifestyle",
+      "status": "lived_check_applied",
+      "constitution_hypothesis": {
+        "primary": "소양인",
+        "secondary": "태양인",
+        "morphology": "상체·머리 발달, 급함, 빠른 식사"
+      },
+      "four_lines_ko": [
+        "천천히·적게·자주 — 소양/태양 가설 생활축.",
+        "미지근한 수분; 얼음·공복 단 간식 자제 (당 vigilance).",
+        "급한 temperament → 짧은 규칙적 운동.",
+        "체질 라벨은 관찰용; 월별 병증·약리 매핑 금지."
+      ],
+      "responses": {
+        "eating_pace": "fast",
+        "morphology_upper_body": "yes",
+        "temperament_pace": "fast_impatient",
+        "constitution_hypothesis": "soyang_primary_tae-yang_secondary",
+        "lived_check_status": "completed"
+      }
+    }
+  ],
+  "lens_stack_order": [
+    "L0_clinical_endocrine",
+    "myeongni_fact_core",
+    "sasang_lifestyle_hyo",
+    "logos_non_gating"
+  ],
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "auto_apply": "none",
+  "evo_material_tags": [
+    "family_anchor",
+    "growth_hormone_context",
+    "pediatric_wellness_hyo",
+    "mutator_b_track_seed"
+  ],
+  "clinical_labs_l0": {
+    "ssot": "pediatric_endocrinology_clinician",
+    "as_of_kst": "2026-06",
+    "labs_numeric_available": false,
+    "disclaimer_ko": "검사 수치·처방·예후는 주치의 SSOT; 본 anchor는 보호자 intake·생활 설계 참고만",
+    "anthropometrics": {
+      "height_cm": 143,
+      "weight_kg": 38,
+      "bmi_approx": 18.6,
+      "source": "parent_commander_fact_check"
+    },
+    "labs": {
+      "igf_1": {
+        "status": "pending_clinician_ssot",
+        "value": null,
+        "unit": "ng/mL",
+        "note_ko": "GH 재개 후 3·6개월 추적 — 주치의 일정"
+      },
+      "hba1c": {
+        "status": "pending_clinician_ssot",
+        "value": null,
+        "unit": "%",
+        "note_ko": "당 상승 이력(보호자 보고); 숫자는 EMR/검사지만"
+      },
+      "fasting_glucose": {
+        "status": "pending_clinician_ssot",
+        "value": null,
+        "unit": "mg/dL"
+      },
+      "bone_age_years": {
+        "status": "pending_clinician_ssot",
+        "value": null,
+        "unit": "years"
+      }
+    },
+    "parent_reported_context_ko": "당 수치 상승으로 GH 6개월+ 중단 후 최근 재개; 수치는 소아내분비·주치의 기록만 SSOT",
+    "pending_lab_keys": [
+      "igf_1",
+      "hba1c",
+      "fasting_glucose",
+      "bone_age_years"
+    ]
+  }
+}

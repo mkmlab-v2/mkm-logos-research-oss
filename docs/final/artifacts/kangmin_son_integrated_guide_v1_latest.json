@@ -1,0 +1,187 @@
+{
+  "schema": "family_son_integrated_parenting_guide_v1",
+  "version": "1.0.0",
+  "anchor_id": "family_anchor_son_kangmin_v1",
+  "subject_label_ko": "아들 이강민",
+  "generated_at_utc": "2026-06-07T10:20:00Z",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "auto_apply": "none",
+  "primary_goal_ko": "성장(키) · 혈당 안정 · 성장호르몬 치료 연속성",
+  "fact_refs": {
+    "family_anchor": "docs/final/artifacts/family_anchor_lived_calibration_son_kangmin_v1_latest.json",
+    "saju_birth": "reports/kangmin_saju_birth_v1.json",
+    "myeongni_full_report": "reports/kangmin_myeongni_full_v1.json"
+  },
+  "clinical_l0_parent_reported": {
+    "height_cm": 143,
+    "weight_kg": 38,
+    "bmi_approx": 18.6,
+    "morphology": "머리·상체 발달 상대적 우세",
+    "treatments": [
+      "성장호르몬 주사(최근 재개)",
+      "성호르몬 억제 주사(때때로)",
+      "당 수치 상승으로 6개월+ GH 중단 이력"
+    ],
+    "primary_goal_ko": "키 성장 · 혈당 안정 · GH 치료 연속성",
+    "disclaimer": "L0=소아내분비·주치의 SSOT; 본 anchor는 육아·루틴 참고만",
+    "anthropometrics_as_of_kst": "2026-06",
+    "labs_numeric_available": false
+  },
+  "pillars_fact": {
+    "year": "갑오",
+    "month": "기사",
+    "day": "경진",
+    "hour": "정축",
+    "day_master": "경(金·陽)",
+    "verification_all_match": true,
+    "calculation_method": "standard_db_primary"
+  },
+  "myeongni_engine_fact": {
+    "strength_label": "중약",
+    "strength_note": "MKM 간이 추정; 임상·용신 확정 아님",
+    "element_counts_visible": {
+      "목": 1,
+      "화": 3,
+      "토": 3,
+      "금": 1,
+      "수": 0
+    },
+    "dominant_element": "화",
+    "weakest_element": "수",
+    "school_decision": "flow_centered",
+    "yongsin_hypothesis_rank1": "수",
+    "yongsin_disclaimer": "[HYPO] 연구용 후보만; 처방·단정 금지"
+  },
+  "daewoon_fact": {
+    "direction": "forward",
+    "qiyun_age_years": 9.36,
+    "current_cycle": {
+      "cycle": 1,
+      "pillar": "기사",
+      "age_start": 9.36,
+      "age_end": 19.36,
+      "note_ko": "현재(만12·한13세) 1대운 중 — 사춘기·2차 성장 임계 구간"
+    },
+    "next_cycle": {
+      "pillar": "경오",
+      "age_start": 19.36
+    }
+  },
+  "annual_2026_fact": {
+    "sewoon_pillar": "병오",
+    "sewoon_stem_ten_god": "편관",
+    "sewoon_main_element": "화",
+    "daewoon_pillar": "기사"
+  },
+  "growth_focus_months_2026_hyo": {
+    "label": "[HYPO] 육아·생활 해석 — 월별 처방·약리 금지",
+    "support_routine_months": [
+      1,
+      4,
+      7,
+      11,
+      12
+    ],
+    "vigilance_months": [
+      5,
+      6,
+      8
+    ],
+    "notes": {
+      "5_6_8": "화·금·관성(편관) 겹침 — 혈당·수면·과열·스트ress 루틴 점검 (의학 판단은 소아내분비)",
+      "11_12": "수·토 기운 월 — 수분·저녁 루틴·느린 식사 연습에 유리한 생활 리듬 [HYPO]"
+    }
+  },
+  "sasang_block_hyo": {
+    "primary_hypothesis": "소양인",
+    "secondary_hypothesis": "태양인",
+    "morphology_alignment": "상체·머리 발달, 급한 temperament — 소양/태양형 체격과 겹칠 수 있음",
+    "forbidden": "오행 0 수 = 소음인 위한 등 병증 단정",
+    "four_lines_ko": [
+      "식사 속도·과식·야식은 혈당·GH 효율 모두에 직결 — 「20회 씹기·15분 최소」 루틴이 1순위 생활 처방(의료 대체 아님).",
+      "소양/태양 가설: 상체·폐·위장 부담 — 미지근한 수분·단백·흰쌀보다 현미·잡곡·채소 비율↑ (한의·영양 상담 전제).",
+      "급한 성격 → 운동은 「짧고 규칙적」(줄넘기·수영·매달리기) + GH 주사일·검사일 캘린더 고정.",
+      "체질 라벨은 관찰·생활 설계용; 성장 cm·최종 키 단정·사주 인과 서술 금지."
+    ]
+  },
+  "life_management": {
+    "L0_clinical": [
+      "소아내분비·주치의 = 성장호르몬·억제주사·당·Igf-1·뼈연령 SSOT",
+      "GH 재개 후 3·6개월 검사 주기는 의사 일정 그대로",
+      "당 수치 악화 시 GH 중단 이력 있음 — 식후 혈당·HbA1c 추적 우선"
+    ],
+    "L1_sleep_growth": [
+      "목표 취침 21:30–22:00 (축 시간 01:26 → 야행·늦잠 경향 방어)",
+      "GH 주사 시간·취침 1시간 전 스크린 OFF 고정",
+      "주 7일 중 6일 수면 8h+ (만 12–13세)"
+    ],
+    "L2_food_blood_sugar": [
+      "탄수화물: 흰빵·음료·간식 분리 — 단백질·섬유 먼저",
+      "아침·점심 단백질 20–25g 목표(닭·두부·달걀·우유)",
+      "식사 15분 이상·물 30분 전 1컵",
+      "GH 기간: 공복·식후 당은 검사일만 SSOT; 평소 과당·야식 금지"
+    ],
+    "L3_exercise": [
+      "매일 30분: 줄넘기·수영·농구(매달리기 포함) — 골격 자극",
+      "성장판 보호: 과도한 역기·충격 스포츠는 정형·내분비와 상의",
+      "식후 20분 산책 → 혈당 스파이크 완화"
+    ],
+    "L4_study": [
+      "25분 집중 + 5분 스트레칭 (급한 temperament 채널링)",
+      "아침 15분 복습 > 밤 벼락치기",
+      "칭찬은 「속도」보다 「끝까지 한 문제」 단위"
+    ]
+  },
+  "logos_non_gating": {
+    "two_lines_ko": [
+      "「몸은 하나의 그릇」— 성급함·비교는 마음 습관; 키·몸은 시간과 순종(의료·루틴) 속에서 자라는 영역으로만 말한다 [NON_GATING].",
+      "부모의 「인내·규칙·쉼」 모델링 — 성경적 성장 서사는 확률·cm 단정 없이 「때를 기다림·선한 습관」 일반 원칙만."
+    ]
+  },
+  "disclaimer_ko": "본 산출물은 MKM B-track 가족 웰니스 참고용이다. 사주·사상·월운은 생활 루틴 설계 보조이며, 성장호르몬·당뇨·최종 키에 대한 의학적 판단·처방을 대체하지 않는다. Track A·실매매·임상 자동 합선 없음.",
+  "clinical_labs_l0": {
+    "ssot": "pediatric_endocrinology_clinician",
+    "as_of_kst": "2026-06",
+    "labs_numeric_available": false,
+    "disclaimer_ko": "검사 수치·처방·예후는 주치의 SSOT; 본 anchor는 보호자 intake·생활 설계 참고만",
+    "anthropometrics": {
+      "height_cm": 143,
+      "weight_kg": 38,
+      "bmi_approx": 18.6,
+      "source": "parent_commander_fact_check"
+    },
+    "labs": {
+      "igf_1": {
+        "status": "pending_clinician_ssot",
+        "value": null,
+        "unit": "ng/mL",
+        "note_ko": "GH 재개 후 3·6개월 추적 — 주치의 일정"
+      },
+      "hba1c": {
+        "status": "pending_clinician_ssot",
+        "value": null,
+        "unit": "%",
+        "note_ko": "당 상승 이력(보호자 보고); 숫자는 EMR/검사지만"
+      },
+      "fasting_glucose": {
+        "status": "pending_clinician_ssot",
+        "value": null,
+        "unit": "mg/dL"
+      },
+      "bone_age_years": {
+        "status": "pending_clinician_ssot",
+        "value": null,
+        "unit": "years"
+      }
+    },
+    "parent_reported_context_ko": "당 수치 상승으로 GH 6개월+ 중단 후 최근 재개; 수치는 소아내분비·주치의 기록만 SSOT",
+    "pending_lab_keys": [
+      "igf_1",
+      "hba1c",
+      "fasting_glucose",
+      "bone_age_years"
+    ]
+  },
+  "fact_check_applied_at_utc": "2026-06-07T16:53:53Z"
+}
