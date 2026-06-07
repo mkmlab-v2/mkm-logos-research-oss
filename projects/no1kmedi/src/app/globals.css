@@ -1762,6 +1762,246 @@ section h2 {
   border-color: rgba(16, 185, 129, 0.45);
 }
 
+.pd-ritual-draw {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.pd-ritual-draw-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 2.25rem;
+}
+
+.pd-ritual-draw-inner h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #f1f5f9;
+}
+
+.pd-ritual-lead {
+  margin: 0 0 1.25rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.pd-ritual-orb-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.pd-ritual-orb-stack {
+  position: relative;
+  width: 260px;
+  height: 260px;
+}
+
+.pd-lattice-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.pd-ritual-phase {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  color: #a5b4fc;
+  text-align: center;
+}
+
+.pd-ritual-hint--warn {
+  color: #fcd34d;
+}
+
+.pd-lattice-mini-bloom {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0.65rem 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.pd-lattice-mini-bloom li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: rgba(226, 232, 240, 0.9);
+}
+
+.pd-lattice-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #94a3b8;
+}
+
+.pd-lattice-dot--theme { background: #ffd60a; }
+.pd-lattice-dot--concept { background: #64d2ff; }
+.pd-lattice-dot--regime { background: #5e5ce6; }
+.pd-lattice-dot--verse { background: #94a3b8; }
+.pd-lattice-dot--lemma { background: #bf5af2; }
+.pd-lattice-dot--other { background: #a78bfa; }
+
+.pd-ritual-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.78rem;
+  color: #a5b4fc;
+}
+
+.pd-ritual-breath {
+  width: 100%;
+  max-width: 16rem;
+  margin-top: 0.75rem;
+  text-align: center;
+}
+
+.pd-ritual-breath-bar {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.pd-ritual-breath-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #6ee7b7, #818cf8);
+  transition: width 0.08s linear;
+}
+
+.pd-ritual-breath p {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #c4b5fd;
+}
+
+.pd-ritual-form-label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.pd-ritual-question:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pd-ritual-submit {
+  margin-top: 0.65rem;
+}
+
+.pd-ritual-card-reveal {
+  margin-top: 1.5rem;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.pd-ritual-card-reveal.is-flipped {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.pd-ritual-tarot-card {
+  padding: 1.15rem 1.1rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(129, 140, 248, 0.35);
+  background: linear-gradient(145deg, rgba(30, 27, 75, 0.55), rgba(9, 13, 22, 0.85));
+}
+
+.pd-ritual-card-eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6ee7b7;
+}
+
+.pd-ritual-tarot-card h3 {
+  margin: 0;
+  font-size: 1.45rem;
+  color: #f8fafc;
+}
+
+.pd-ritual-card-en {
+  margin: 0.15rem 0 0.75rem;
+  font-size: 0.78rem;
+  color: rgba(148, 163, 184, 0.85);
+}
+
+.pd-ritual-card-prompt {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: #e2e8f0;
+}
+
+.pd-ritual-card-overlay {
+  margin: 0 0 0.65rem;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.08);
+  color: #cbd5e1;
+}
+
+.pd-ritual-card-overlay-label {
+  display: block;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6ee7b7;
+  margin-bottom: 0.25rem;
+}
+
+.pd-ritual-card-meta,
+.pd-ritual-card-logos {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: rgba(148, 163, 184, 0.95);
+}
+
+.pd-ritual-card-metrics {
+  margin: 0.75rem 0 0;
+  font-size: 0.65rem;
+  font-family: ui-monospace, monospace;
+  color: rgba(100, 116, 139, 0.9);
+}
+
+.pd-ritual-handoff {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.pd-ritual-handoff-note {
+  margin: 0;
+  font-size: 0.72rem;
+  color: rgba(148, 163, 184, 0.9);
+}
+
+.pd-premium-hero-inner {
+  grid-template-columns: 1fr;
+}
+
 .pd-premium-section-inner {
   max-width: 1100px;
   margin: 0 auto;
@@ -2960,6 +3200,55 @@ section h2 {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.2rem 0.55rem;
+}
+
+.consult-iws-draft-body {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.consult-iws-draft-body h4 {
+  margin: 0.85rem 0 0.35rem;
+  font-size: 0.95rem;
+}
+
+.consult-iws-draft-body li {
+  margin: 0.25rem 0 0.25rem 1.1rem;
+}
+
+.consult-iws-suppression {
+  margin-top: 0.85rem;
+  font-size: 0.85rem;
+}
+
+.consult-iws-suppression summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.consult-iws-suppression-table {
+  width: 100%;
+  margin-top: 0.5rem;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+.consult-iws-suppression-table th,
+.consult-iws-suppression-table td {
+  border: 1px solid var(--line);
+  padding: 0.35rem 0.45rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.consult-iws-suppression-table th {
+  background: color-mix(in srgb, var(--line) 35%, transparent);
+  font-weight: 600;
+}
+
+.consult-iws-suppression-table code {
+  font-size: 0.78rem;
 }
 
 .triage-badge {

@@ -2,9 +2,9 @@
 
 import Link from "next/link";
 import { personadiaryCopy } from "@/content/personadiaryCopy";
-import { PersonadiaryMagicOrb } from "./PersonadiaryMagicOrb";
 import { PersonadiaryDailyGuideCards } from "./PersonadiaryDailyGuideCards";
 import { PersonadiaryReflectTeaser } from "./PersonadiaryReflectTeaser";
+import { PersonadiaryRitualDraw } from "./PersonadiaryRitualDraw";
 import { PersonadiaryDailyGuideProvider } from "./usePersonadiaryDailyGuide";
 
 export function PersonadiaryPremiumHome() {
@@ -29,29 +29,27 @@ export function PersonadiaryPremiumHome() {
               </Link>
             </div>
           </div>
-          <div className="pd-premium-hero-visual pd-glass">
-            <PersonadiaryMagicOrb size={280} />
-          </div>
         </div>
       </section>
 
-      <section
-        className="pd-premium-reflect-section"
-        aria-labelledby="pd-reflect-home-title"
-      >
-        <div className="pd-premium-section-inner">
-          <h2 id="pd-reflect-home-title">지금 이 순간, 가볍게 성찰해 보기</h2>
-          <p className="pd-premium-section-lead">
-            홈에서 바로 체험할 수 있는 미리보기입니다. 더 깊은 인터랙션은
-            콘셉트 데모에서 이어집니다.
-          </p>
-          <div className="pd-premium-reflect-grid">
-            <div className="pd-glass pd-premium-reflect-panel">
-              <PersonadiaryDailyGuideProvider>
+      <PersonadiaryDailyGuideProvider>
+        <PersonadiaryRitualDraw />
+
+        <section
+          className="pd-premium-reflect-section"
+          aria-labelledby="pd-reflect-home-title"
+        >
+          <div className="pd-premium-section-inner">
+            <h2 id="pd-reflect-home-title">지금 이 순간, 가볍게 성찰해 보기</h2>
+            <p className="pd-premium-section-lead">
+              홈에서 바로 체험할 수 있는 미리보기입니다. 더 깊은 인터랙션은
+              콘셉트 데모에서 이어집니다.
+            </p>
+            <div className="pd-premium-reflect-grid">
+              <div className="pd-glass pd-premium-reflect-panel">
                 <PersonadiaryReflectTeaser />
                 <PersonadiaryDailyGuideCards />
-              </PersonadiaryDailyGuideProvider>
-            </div>
+              </div>
             <aside className="pd-glass pd-premium-aside">
               <h3>마음돌봄 셸</h3>
               <p>
@@ -64,8 +62,9 @@ export function PersonadiaryPremiumHome() {
               </p>
             </aside>
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
+      </PersonadiaryDailyGuideProvider>
 
       <section
         className="pd-premium-pillars"

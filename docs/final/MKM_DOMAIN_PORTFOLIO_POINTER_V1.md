@@ -29,7 +29,7 @@ Track C·공개 쇼룸 논의와 동일 선상: **실매매·조종실은 어디
 | 표면(무엇을 보여주나) | 도메인(호스트) | 디자인·톤 | 금지·경계 | SSOT |
 |----------------------|----------------|----------|----------|------|
 | **공개 전광판** — 지연·추상 시그널, Topology/BTC·매크로 **관측** 데모, `public-event.v1` 기반 쇼룸 HTML | **jemaai.cloud** | 다크·미니멀 **보드**; 티커·가상 반응은 **ID 매핑**만; “실시간 무지연” 문구 없이 SPEC상 지연·면책 | 주문·체결·실키·정확 포지션 **공개 금지** | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`, `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` |
-| **프리미엄 소비자 제품** — 원퀘스천·단건 리포트(명리·사상·로고스 렌즈 병렬) | **mkmlife.com** | **리포트 카드** 중심·단건 완결; 챗뷔페형 기본값 아님; 배지·면책 고정 | 실거래 퍼널·원격 진료 동선과 **합선 금지** | `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` §10–§11 |
+| **개인화 라이프 허브** — 검색·오늘 맞춤 관측 덱(L0)·가벼운 맥락 답변(L1) + **원퀘스천** 유료 심화 리포트(L2); 광고 없음·뉴스 **포털 아님**(관측 덱·`PUBLIC_FACING` v1.6) | **mkmlife.com** | **포털형 홈**(중앙 검색 + HP 카드 + 덱 프리뷰) + 리포트 카드 완결; 무한 채팅·챗뷔페 기본값 아님; 배지·면책 고정 | 실거래 퍼널·원격 진료·언론사형 **뉴스 포털** 서술과 **합선 금지** | `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` §10–§11 · 홈 `HomeLifePortal` |
 | **브랜드·허브·진입** — 회사 소개, 깊은 링크, 문서 하단 디스클레이머 | **jema-ai.com** | 라이트 마케팅 랜딩; **CTA는 mkmlife/jemaai로 분기** | 쇼룸 **실시간 전광판 UI**는 기본 **여기에 두지 않음**(혼잡·이중 유지보수 방지) | `JEMA_AI_DOMAIN_POINTER_V1.md` |
 | **B2B 압축·API 대외면** | **a-codeai.com** (및 정책에 따른 API 호스트) | 정적 랜딩 vs `/v1` API **경로 분리** | apex 스텁만 노출 404 류 | `P0_COMMERCIALIZATION_TRACKER.md`·nginx 예시 |
 | **분자한의학 연구소·생산 제품** | **research.no1kmedi.com** (구 mkmlab.space) | 연구·제조 스토리; **상업·B2B는 jema-ai.com** | AI 쇼룸·실매매 **합선 금지** | `mkmlab-redesign/` · `TRACK_C` §3.0 |

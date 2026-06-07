@@ -21,9 +21,14 @@ type Point = { x: number; y: number; z: number; c: string };
 export function PersonadiaryMagicOrb({
   size = 300,
   showTone = true,
+  onOrbActivate,
+  activateLabel = "구슬을 눌러 호흡 맞추기",
 }: {
   size?: number;
   showTone?: boolean;
+  /** Touch/click on orb canvas (ritual gate-in). */
+  onOrbActivate?: () => void;
+  activateLabel?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ptsRef = useRef<Point[]>([]);
@@ -155,7 +160,20 @@ export function PersonadiaryMagicOrb({
         className="pd-orb-canvas"
         width={size}
         height={size}
-        aria-label="마음의 구슬 파티클"
+        role={onOrbActivate ? "button" : undefined}
+        tabIndex={onOrbActivate ? 0 : undefined}
+        aria-label={onOrbActivate ? activateLabel : "마음의 구슬 파티클"}
+        onClick={onOrbActivate ? () => onOrbActivate() : undefined}
+        onKeyDown={
+          onOrbActivate
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onOrbActivate();
+                }
+              }
+            : undefined
+        }
       />
       <div className="pd-orb-legend">
         {LEGEND.map((item) => (
