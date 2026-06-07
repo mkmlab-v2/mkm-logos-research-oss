@@ -29,6 +29,17 @@ function shouldRewriteRootToClinician(host) {
   return LOCAL.has(h) && isTruthyEnv(process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST);
 }
 
+function isPublicPatientSurfacePath(pathname) {
+  if (!pathname || pathname === "/") return false;
+  return ["/intake", "/consumer"].some((base) => pathname === base || pathname.startsWith(`${base}/`));
+}
+
+assert.equal(isPublicPatientSurfacePath("/intake"), true);
+assert.equal(isPublicPatientSurfacePath("/intake/"), true);
+assert.equal(isPublicPatientSurfacePath("/consumer"), true);
+assert.equal(isPublicPatientSurfacePath("/consumer/survey"), true);
+assert.equal(isPublicPatientSurfacePath("/clinician"), false);
+
 assert.equal(normalizeRequestHost("NO1KMEDI.COM:3010"), "no1kmedi.com");
 assert.equal(isNo1kmediPortalHost("clinic.no1kmedi.com"), true);
 assert.equal(isNo1kmediPortalHost("localhost"), false);

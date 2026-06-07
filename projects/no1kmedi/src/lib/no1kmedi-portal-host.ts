@@ -46,6 +46,13 @@ export function shouldRewriteRootToClinician(host: string): boolean {
   return LOCAL_DEV_HOSTS.has(h) && devSimulateNo1kmediPortal();
 }
 
+/** Patient-facing hub routes — must not be prefixed with /clinician on portal hosts. */
+export function isPublicPatientSurfacePath(pathname: string): boolean {
+  if (!pathname || pathname === "/") return false;
+  const paths = ["/intake", "/consumer"];
+  return paths.some((base) => pathname === base || pathname.startsWith(`${base}/`));
+}
+
 /** ChatGPT-minimal shell on no1kmedi hosts, app.jema-ai.com /clinician, and localhost when dev simulate is on. */
 export function shouldUseMinimalClinicianShell(host: string): boolean {
   const h = normalizeRequestHost(host);

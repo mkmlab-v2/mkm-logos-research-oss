@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
+  isPublicPatientSurfacePath,
   normalizeRequestHost,
   shouldRewriteRootToClinician,
 } from "@/lib/no1kmedi-portal-host";
@@ -71,6 +72,9 @@ export function middleware(request: NextRequest) {
 
   if (shouldRewriteRootToClinician(host)) {
     if (shouldPassThroughStaticOrApi(pathname)) {
+      return NextResponse.next();
+    }
+    if (isPublicPatientSurfacePath(pathname)) {
       return NextResponse.next();
     }
     const targetPath = rewriteToClinicianPath(pathname);
