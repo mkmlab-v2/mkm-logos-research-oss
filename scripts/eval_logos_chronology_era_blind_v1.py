@@ -21,6 +21,7 @@ from logos_chronology_map_core_v1 import (
     load_json,
     rank_eras,
 )
+from logos_chronology_rag_tag_bridge_v1 import infer_tags_rag_assisted
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -74,19 +75,24 @@ def _evaluate_event(
     tag_mode: str,
     modern_boost: float,
     boost_policy: str = "global",
+    graphrag_topics_json: Path | None = None,
 ) -> dict[str, Any]:
     tags = list(ev.get("inferred_regime_tags") or [])
-    if tag_mode == "text_blind" and ev.get("canonical_text"):
-        tags = infer_tags_from_text(str(ev["canonical_text"]))
-    elif tag_mode == "text_blind" and ev.get("headline_ko"):
-        tags = infer_tags_from_text(str(ev["headline_ko"]))
+    rag_trace: dict[str, Any] | None = None
+    text_src = str(ev.get("canonical_text") or ev.get("headline_ko") or "")
+    if tag_mode == "text_blind" and text_src:
+        tags = infer_tags_from_text(text_src)
+    elif tag_mode == "rag_assisted" and text_src:
+        tags, rag_trace = infer_tags_rag_assisted(text_src, graphrag_topics_json=graphrag_topics_json)
 
     tier = str(ev.get("tier") or "")
+    partition = str(ev.get("partition") or "") or None
     ranking = rank_eras(
         chrono,
         tags,
         modern_boost=modern_boost,
         event_tier=tier,
+        event_partition=partition,
         boost_policy=boost_policy,
     )
     pred_ids = [str(r["era_id"]) for r in ranking]
@@ -116,6 +122,7 @@ def _evaluate_event(
         "is_synthetic_source": bool(ev.get("is_synthetic_source")),
         "observation_id": ev.get("observation_id"),
         "source_id": ev.get("source_id"),
+        "rag_trace": rag_trace,
     }
 
 
@@ -153,9 +160,15 @@ def main() -> int:
     ap.add_argument("--hardset-jsonl", type=Path, default=DEFAULT_HARDSET)
     ap.add_argument(
         "--tag-mode",
-        choices=["gold_tags", "text_blind"],
+        choices=["gold_tags", "text_blind", "rag_assisted"],
         default="gold_tags",
-        help="gold_tags=fixture tags; text_blind=headline/text keyword inference only",
+        help="gold_tags=fixture tags; text_blind=keyword only; rag_assisted=text_blind+GraphRAG topic enrichment (PoC)",
+    )
+    ap.add_argument(
+        "--graphrag-topics-json",
+        type=Path,
+        default=ROOT / "reports/logos_topic_graphrag_seed_retrieval_v1_latest.json",
+        help="GraphRAG topic catalog for rag_assisted mode",
     )
     ap.add_argument(
         "--modern-boost",
@@ -165,9 +178,9 @@ def main() -> int:
     )
     ap.add_argument(
         "--boost-policy",
-        choices=["global", "tier_v1"],
+        choices=["global", "tier_v1", "tier_v2_locked_eval"],
         default="global",
-        help="tier_v1: modern_boost=0 for biblical_narrative tier only",
+        help="tier_v1: narrative boost off; tier_v2_locked_eval: +locked_eval judges/modern dampen",
     )
     ap.add_argument(
         "--min-human-override-ratio",
@@ -221,6 +234,11 @@ def main() -> int:
 
     boost = float(args.modern_boost)
     policy = str(args.boost_policy)
+    graphrag_path = (
+        args.graphrag_topics_json
+        if args.graphrag_topics_json.is_absolute()
+        else ROOT / args.graphrag_topics_json
+    )
     results = [
         _evaluate_event(
             chrono,
@@ -228,6 +246,7 @@ def main() -> int:
             tag_mode=args.tag_mode,
             modern_boost=boost,
             boost_policy=policy,
+            graphrag_topics_json=graphrag_path if args.tag_mode == "rag_assisted" else None,
         )
         for ev in events
     ]
@@ -268,9 +287,12 @@ def main() -> int:
             status = "warning"
 
     known = [
-        f"modern_observational_field boost policy={policy} base={boost} (tier_v1 blocks boost on biblical_narrative).",
+        f"modern_observational_field boost policy={policy} base={boost} "
+        f"(tier_v1/v2 block narrative boost; tier_v2 dampens modern on locked_eval risk cluster).",
         "gold_tags mode uses operator-supplied tags (upper bound on tag extraction quality).",
-        "text_blind mode uses keyword heuristics only; no RAG retrieval in this eval.",
+        "text_blind mode uses keyword heuristics only; no RAG retrieval in this eval."
+        if args.tag_mode != "rag_assisted"
+        else "rag_assisted merges text_blind tags with offline GraphRAG topic-router enrichment (PoC; not live LLM).",
         "Does not measure price-direction prophecy; era alignment only.",
     ]
     known.extend(governance.get("limitation_lines") or [])
@@ -289,6 +311,7 @@ def main() -> int:
             "boost_policy": policy,
             "include_hardset_news": args.include_hardset_news,
             "excluded_source_ids": sorted(excluded),
+            "graphrag_topics_json": _rel_repo(graphrag_path) if args.tag_mode == "rag_assisted" else None,
         },
         "summary": summary,
         "governance": governance or None,

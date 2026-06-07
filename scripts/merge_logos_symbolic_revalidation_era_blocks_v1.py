@@ -21,11 +21,20 @@ def _slim(path: Path) -> dict[str, Any]:
     return {k: d[k] for k in ("schema", "generated_at_utc", "status", "summary", "known_limitations") if k in d}
 
 
+def _load_reval(path: Path) -> dict[str, Any]:
+    raw = path.read_text(encoding="utf-8-sig")
+    try:
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        obj, _ = json.JSONDecoder().raw_decode(raw)
+        return obj
+
+
 def main() -> int:
     if not REVAL.is_file():
         print(f"MISSING: {REVAL}")
         return 2
-    doc = json.loads(REVAL.read_text(encoding="utf-8"))
+    doc = _load_reval(REVAL)
     pairs = [
         ("non_synthetic_era_blind_eval_historical_gold_tags_v1", "logos_chronology_era_blind_eval_v1_latest.json"),
         ("non_synthetic_era_blind_eval_historical_text_blind_v1", "logos_chronology_era_blind_eval_text_blind_v1_latest.json"),
@@ -47,6 +56,9 @@ def main() -> int:
     h2 = ROOT / "docs/final/artifacts/logos_chronology_hardset_text_blind_v2_eval_v1_latest.json"
     if h2.is_file():
         doc["non_synthetic_era_blind_eval_hardset_v2"] = _slim(h2)
+    h2_rag = ROOT / "docs/final/artifacts/logos_chronology_hardset_rag_assisted_v2_tier_v2_eval_v1_latest.json"
+    if h2_rag.is_file():
+        doc["non_synthetic_era_blind_eval_hardset_v2_rag_tier_v2"] = _slim(h2_rag)
     cmp_h = ROOT / "docs/final/artifacts/logos_chronology_hardset_gold_mode_compare_v1_latest.json"
     if cmp_h.is_file():
         doc["non_synthetic_hardset_gold_mode_compare_v1"] = json.loads(cmp_h.read_text(encoding="utf-8"))

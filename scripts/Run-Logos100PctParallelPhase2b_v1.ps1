@@ -80,6 +80,10 @@ if ($BtrackOperatorProxyAck) {
     if ($LASTEXITCODE -ne 0) { throw "registry refresh failed" }
 }
 
+Write-Host "==> chronology hardset closure (tier_v2 SSOT + margin report)" -ForegroundColor Cyan
+& $py scripts/run_logos_chronology_hardset_closure_v1.py
+if ($LASTEXITCODE -ne 0) { throw "chronology hardset closure failed" }
+
 if (-not $SkipClosure) {
     Write-Host "==> closure" -ForegroundColor Cyan
     & $py scripts/build_logos_100pct_closure_v1.py --run-pytest

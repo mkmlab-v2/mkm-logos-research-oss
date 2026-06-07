@@ -10,11 +10,12 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs/final/artifacts"
+REP = ROOT / "reports"
 DEFAULT_OUT = ROOT / "reports/logos_chronology_era_blind_eval_digest_v1_latest.md"
 
 
-def _load(name: str) -> dict[str, Any] | None:
-    p = ART / name
+def _load(name: str, base: Path | None = None) -> dict[str, Any] | None:
+    p = (base or ART) / name
     if not p.is_file():
         return None
     return json.loads(p.read_text(encoding="utf-8"))
@@ -31,11 +32,16 @@ def main() -> int:
     hist_t = _load("logos_chronology_era_blind_eval_text_blind_v1_latest.json")
     hard = _load("logos_chronology_hardset_text_blind_eval_v1_latest.json")
     hard2 = _load("logos_chronology_hardset_text_blind_v2_eval_v1_latest.json")
+    hard2_rag = _load("logos_chronology_hardset_rag_assisted_v2_tier_v2_eval_v1_latest.json")
     hcmp = _load("logos_chronology_hardset_gold_mode_compare_v1_latest.json")
     ab = _load("logos_chronology_era_modern_boost_ab_v1_latest.json")
     tab = _load("logos_chronology_era_tier_boost_ab_v1_latest.json")
     tier_eval = _load("logos_chronology_era_blind_eval_tier_v1_latest.json")
     dmap = _load("logos_chronology_dynamic_map_v1_latest.json")
+    hist_ab = _load("logos_chronology_historical_tier_v2_ab_v1_latest.json", REP)
+    locked_cmp = _load("logos_chronology_locked_eval_policy_compare_v1_latest.json", REP)
+    hist_rag_t2 = _load("logos_chronology_era_blind_eval_rag_assisted_tier_v2_v1_latest.json")
+    margin = _load("logos_hardset_era_human_margin_report_v1_latest.json", REP)
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     lines = [
@@ -52,15 +58,19 @@ def main() -> int:
     for label, doc in (
         ("Historical", hist_g),
         ("Historical", hist_t),
+        ("Historical", hist_rag_t2),
         ("Hardset v1 uniform", hard),
-        ("Hardset v2 rank gold", hard2),
+        ("Hardset v2 SSOT", hard2),
+        ("Hardset v2 SSOT", hard2_rag),
     ):
         if not doc:
             continue
         s = doc.get("summary") or {}
         mode = (doc.get("inputs") or {}).get("tag_mode") or s.get("tag_mode") or "?"
+        policy = (doc.get("inputs") or {}).get("boost_policy") or s.get("boost_policy") or ""
+        policy_note = f" · `{policy}`" if policy and label.startswith("Hardset v2") else ""
         lines.append(
-            f"| {label} | `{mode}` | {s.get('n_non_synthetic', '—')} | "
+            f"| {label}{policy_note} | `{mode}` | {s.get('n_non_synthetic', '—')} | "
             f"{_pct(s.get('hit_at_1_strict'))} | {_pct(s.get('hit_at_3'))} | {doc.get('status', '—')} |"
         )
 
@@ -117,6 +127,46 @@ def main() -> int:
                 f"- delta: **{hcmp.get('delta_hit_at_1_strict')}**",
             ]
         )
+    if hist_ab:
+        c = hist_ab.get("compare") or {}
+        ms = hist_ab.get("ms_citation_contract") or {}
+        lines.extend(
+            [
+                "",
+                "## Historical tier_v2 AB (MS baseline contamination check)",
+                "",
+                f"- MS citation baseline (text_blind tier_v1): **{_pct(c.get('ms_citation_baseline_text_blind_tier_v1'))}**",
+                f"- text_blind tier_v2: **{_pct(c.get('text_blind_tier_v2_hit_at_1_strict'))}** · Δ **{c.get('text_blind_delta_v2_minus_v1')}**",
+                f"- baseline_contaminated_by_tier_v2: **`{ms.get('baseline_contaminated_by_tier_v2')}`**",
+                f"- gold_tags tier_v1 → tier_v2: **{_pct(c.get('gold_tags_tier_v1_hit_at_1'))}** → **{_pct(c.get('gold_tags_tier_v2_hit_at_1'))}** (Δ {c.get('gold_tags_delta_v2_minus_v1')})",
+            ]
+        )
+    if margin and margin.get("ready"):
+        hi = margin.get("hardset_internal") or {}
+        lines.extend(
+            [
+                "",
+                "## Human margin report (post sign-off · internal)",
+                "",
+                f"- report: `reports/logos_hardset_era_human_margin_report_v1_latest.md`",
+                f"- MS allowed headline: **{_pct((margin.get('ms_citation_contract') or {}).get('allowed_value'))}**",
+                f"- hardset SSOT: **{_pct(hi.get('hit_at_1_strict'))}** · locked_eval **{_pct(hi.get('locked_eval_hit_at_1_strict'))}**",
+            ]
+        )
+    if locked_cmp:
+        c = locked_cmp.get("compare") or {}
+        s1 = (locked_cmp.get("steps") or {}).get("text_blind_tier_v1", {}).get("summary") or {}
+        s2 = (locked_cmp.get("steps") or {}).get("text_blind_tier_v2", {}).get("summary") or {}
+        lines.extend(
+            [
+                "",
+                "## Hardset tier_v2 locked_eval policy (commander-signed gold)",
+                "",
+                f"- text_blind tier_v1 hit@1: **{_pct(s1.get('hit_at_1_strict'))}** · locked_eval: **{_pct(c.get('locked_eval_v1'))}**",
+                f"- text_blind tier_v2 hit@1: **{_pct(s2.get('hit_at_1_strict'))}** · locked_eval: **{_pct(c.get('locked_eval_v2_text_blind'))}**",
+                f"- Δ v2−v1 strict: **{c.get('hit_at_1_delta_v2_minus_v1')}**",
+            ]
+        )
     if dmap:
         top = (dmap.get("era_ranking") or [{}])[0]
         era_id = dmap.get("primary_era_id") or top.get("era_id")
@@ -140,6 +190,8 @@ def main() -> int:
             "- `docs/final/artifacts/logos_chronology_era_blind_eval_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_era_blind_eval_text_blind_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_eval_v1_latest.json`",
+            "- `docs/final/artifacts/logos_chronology_hardset_text_blind_v2_eval_v1_latest.json` (hardset SSOT · tier_v2_locked_eval)",
+            "- `docs/final/artifacts/logos_chronology_hardset_text_blind_v2_tier_v1_baseline_eval_v1_latest.json` (compare only)",
             "- `docs/final/artifacts/logos_chronology_era_modern_boost_ab_v1_latest.json`",
             "- `docs/final/artifacts/logos_symbolic_revalidation_report_latest.json`",
             "",

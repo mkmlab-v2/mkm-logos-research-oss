@@ -146,6 +146,14 @@ def score_era(row: dict[str, Any], inferred: set[str]) -> tuple[float, list[str]
 
 
 NARRATIVE_TIERS = frozenset({"biblical_narrative"})
+LOCKED_EVAL_PARTITION = "locked_eval"
+JUDGES_ERA = "judges_risk_cycle"
+MODERN_ERA = "modern_observational_field"
+TIER_V2_POLICIES = frozenset({"tier_v2_locked_eval"})
+
+
+def _locked_eval_risk_cluster(inferred: set[str]) -> bool:
+    return bool({"risk"} & inferred) and bool({"lehman", "caution"} & inferred)
 
 
 def resolve_modern_boost(
@@ -153,10 +161,33 @@ def resolve_modern_boost(
     modern_boost: float,
     boost_policy: str,
 ) -> float:
-    """tier_v1: no modern boost on narrative tier (배선 오염 차단)."""
-    if boost_policy == "tier_v1" and event_tier in NARRATIVE_TIERS:
+    """tier_v1: no modern boost on narrative tier (배선 오염 차단).
+
+    tier_v2_locked_eval: tier_v1 + locked_eval risk-cluster rows block modern boost bleed.
+    """
+    if boost_policy in ("tier_v1", *TIER_V2_POLICIES) and event_tier in NARRATIVE_TIERS:
         return 0.0
     return modern_boost
+
+
+def apply_locked_eval_score_adjustments(
+    era_id: str,
+    score: float,
+    inferred: set[str],
+    *,
+    event_partition: str | None,
+    boost_policy: str,
+) -> float:
+    """Dampen modern overlap; lift judges when locked_eval carries risk+lehman/caution tags."""
+    if boost_policy not in TIER_V2_POLICIES:
+        return score
+    if event_partition != LOCKED_EVAL_PARTITION or not _locked_eval_risk_cluster(inferred):
+        return score
+    if era_id == MODERN_ERA:
+        return max(0.0, round(score - 0.20, 6))
+    if era_id == JUDGES_ERA:
+        return min(1.0, round(score + 0.16, 6))
+    return score
 
 
 def rank_eras(
@@ -165,15 +196,26 @@ def rank_eras(
     *,
     modern_boost: float = 0.0,
     event_tier: str | None = None,
+    event_partition: str | None = None,
     boost_policy: str = "global",
 ) -> list[dict[str, Any]]:
-    effective_boost = resolve_modern_boost(event_tier, modern_boost, boost_policy)
     inferred_set = set(inferred_tags)
+    effective_boost = resolve_modern_boost(event_tier, modern_boost, boost_policy)
+    if boost_policy in TIER_V2_POLICIES and event_partition == LOCKED_EVAL_PARTITION:
+        if _locked_eval_risk_cluster(inferred_set):
+            effective_boost = 0.0
     ranking: list[dict[str, Any]] = []
     for row in era_rows(chrono):
         score, matched, bh = score_era(row, inferred_set)
-        if row["era_id"] == "modern_observational_field" and inferred_set:
+        if row["era_id"] == MODERN_ERA and inferred_set:
             score = min(1.0, score + effective_boost)
+        score = apply_locked_eval_score_adjustments(
+            str(row["era_id"]),
+            score,
+            inferred_set,
+            event_partition=event_partition,
+            boost_policy=boost_policy,
+        )
         ranking.append(
             {
                 "era_id": row["era_id"],

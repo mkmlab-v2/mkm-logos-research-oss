@@ -45,6 +45,9 @@ def main() -> int:
 
     ev_status = ev.get("status") if ev else None
     ev_n = (ev.get("summary") or {}).get("n_non_synthetic") if ev else None
+    ev_policy = (ev.get("inputs") or {}).get("boost_policy") if ev else None
+    if ev and ev_policy != "tier_v2_locked_eval":
+        blockers.append("primary_eval_boost_policy_not_tier_v2_locked_eval")
 
     ready = len(blockers) == 0
     doc = {
@@ -54,13 +57,14 @@ def main() -> int:
         "human_signoff_completed": signed,
         "eval_status": ev_status,
         "eval_n": ev_n,
+        "eval_boost_policy": ev_policy,
         "blockers": blockers,
         "ms_citation_allowed": False,
         "allowed_ms_metric": "historical_text_blind_4_3pct_only",
         "fixture_path": "docs/final/artifacts/fixtures/logos_chronology_hardset_era_gold_overrides_v1.json",
         "commands_after_signoff": [
-            "py scripts/build_logos_hardset_news_era_gold_v2_v1.py",
-            "powershell -File scripts/Run-LogosChronologyHardsetParallel_v1.ps1",
+            "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-LogosChronologyHardsetParallel_v1.ps1",
+            "py scripts/run_logos_chronology_hardset_closure_v1.py",
         ],
     }
     args.output_json.parent.mkdir(parents=True, exist_ok=True)

@@ -92,7 +92,22 @@ def _news_metrics(news_rows: list[dict[str, Any]], lookback_days: int = 7) -> tu
     coverage_score = _clamp01(len(window) / 20.0)
     non_hypo = sum(1 for r in window if str(r.get("hypothesis_tag", "")).strip() != "[HYPO]")
     source_reliability = _clamp01(0.2 + (non_hypo / len(window)) * 0.8)
-    risk_terms = ("widen", "volatility", "risk-off", "stress", "shock")
+    risk_terms = (
+        "widen",
+        "volatility",
+        "risk-off",
+        "stress",
+        "shock",
+        "위기",
+        "재난",
+        "산불",
+        "화재",
+        "감염",
+        "확진",
+        "긴급",
+        "충격",
+        "붕괴",
+    )
     risk_hits = 0
     for r in window:
         txt = str(r.get("canonical_text", "")).lower()

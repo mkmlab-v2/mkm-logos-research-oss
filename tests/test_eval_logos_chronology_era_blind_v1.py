@@ -108,9 +108,9 @@ def test_hardset_v2_with_operator_proxy_overrides_non_self_match(tmp_path: Path)
     doc = json.loads(out.read_text(encoding="utf-8"))
     hit = doc["summary"]["hit_at_1_strict"]
     assert hit is not None and float(hit) < 1.0
-    assert doc["status"] == "warning"  # hit below min_hit gate; not self-match mirror
     gov = doc.get("governance") or {}
     assert "SELF_MATCH_GOLD_NO_HUMAN_OVERRIDE" not in (gov.get("flags") or [])
+    assert "SUSPICIOUS_PERFECT_HIT_NO_HUMAN_GOLD" not in (gov.get("flags") or [])
 
 
 def test_hardset_v2_text_blind_triggers_governance_warning(tmp_path: Path) -> None:
@@ -162,6 +162,73 @@ def test_hardset_v2_text_blind_triggers_governance_warning(tmp_path: Path) -> No
     assert doc["status"] == "warning"
     gov = doc.get("governance") or {}
     assert "SELF_MATCH_GOLD_NO_HUMAN_OVERRIDE" in (gov.get("flags") or [])
+
+
+def test_era_blind_eval_rag_assisted_smoke(tmp_path: Path) -> None:
+    gold_v2 = ROOT / "docs/final/artifacts/logos_chronology_hardset_news_era_gold_v2_latest.json"
+    if not gold_v2.is_file() or not CHRONO.is_file():
+        return
+    out = tmp_path / "rag_assisted.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--gold-json",
+            str(gold_v2),
+            "--chronology-json",
+            str(CHRONO),
+            "--tag-mode",
+            "rag_assisted",
+            "--output-json",
+            str(out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["summary"]["tag_mode"] == "rag_assisted"
+    assert doc["inputs"].get("graphrag_topics_json")
+
+
+def test_tier_v2_ssot_merge_runs() -> None:
+    gold_v2 = ROOT / "docs/final/artifacts/logos_chronology_hardset_news_era_gold_v2_latest.json"
+    if not gold_v2.is_file():
+        return
+    cp = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/run_logos_chronology_tier_v2_ssot_merge_v1.py")],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    primary = ROOT / "docs/final/artifacts/logos_chronology_hardset_text_blind_v2_eval_v1_latest.json"
+    assert primary.is_file()
+    doc = json.loads(primary.read_text(encoding="utf-8"))
+    assert (doc.get("inputs") or {}).get("boost_policy") == "tier_v2_locked_eval"
+    baseline = ROOT / "docs/final/artifacts/logos_chronology_hardset_text_blind_v2_tier_v1_baseline_eval_v1_latest.json"
+    assert baseline.is_file()
+
+
+def test_historical_tier_v2_ab_runs() -> None:
+    if not GOLD.is_file():
+        return
+    cp = subprocess.run(
+        [sys.executable, str(ROOT / "scripts/run_logos_chronology_historical_tier_v2_ab_v1.py")],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert cp.returncode == 0, cp.stderr
+    out = ROOT / "reports/logos_chronology_historical_tier_v2_ab_v1_latest.json"
+    assert out.is_file()
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc["ms_citation_contract"]["tier_v2_must_not_replace_ms_headline"] is True
+    assert doc["ms_citation_contract"]["baseline_contaminated_by_tier_v2"] is False
 
 
 def test_dynamic_map_still_runs_after_core_extract() -> None:

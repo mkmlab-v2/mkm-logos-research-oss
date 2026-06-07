@@ -132,6 +132,70 @@ AUX_GRID: list[dict[str, Any]] = [
             "overnight_negative_or_positive": True,
         },
     },
+    {
+        "slug": "holdout_ovn_pos_bull",
+        "enabled": True,
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "overnight_positive": True,
+        },
+    },
+    {
+        "slug": "holdout_pr_high_bull",
+        "enabled": True,
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "prior_range_high": True,
+            "prior_range_high_min": 0.75,
+        },
+    },
+    {
+        "slug": "holdout_union_ovn_neg_or_pr_high",
+        "enabled": True,
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "overnight_negative_or_prior_range_high": True,
+            "prior_range_high_min": 0.75,
+        },
+    },
+    {
+        "slug": "holdout_last_ret_neg_bull",
+        "enabled": True,
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "last_daily_return_negative": True,
+        },
+    },
+    {
+        "slug": "holdout_price_score_min_bull",
+        "enabled": True,
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "price_score_min": True,
+            "price_score_min_value": 0.35,
+        },
+    },
+    {
+        "slug": "holdout_union_pr_high_or_last_ret_neg",
+        "enabled": True,
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "prior_range_high_or_last_ret_neg": True,
+            "prior_range_high_min": 0.75,
+        },
+    },
 ]
 
 ADVISORY_RULES: list[dict[str, Any]] = [

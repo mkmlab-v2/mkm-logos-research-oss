@@ -316,6 +316,8 @@ def run_backtest(
     date_to: str,
     rules: dict[str, Any],
     neutral_bps: float = 5.0,
+    catalog: dict[str, dict[str, Any]] | None = None,
+    four_ai_modes: tuple[str, ...] | None = None,
 ) -> dict[str, Any]:
     neutral_band = float(rules.get("neutral_band", 0.06))
     blend_policy = dict(rules.get("blend_policy_v2") or {})
@@ -327,8 +329,9 @@ def run_backtest(
     eval_dates = [d for d in eval_dates if d in closes]
     ensemble_by_date = load_ensemble_kospi_per_date(eval_dates)
 
-    catalog = _variant_catalog(rules)
-    four_ai_modes = ("none", "current", "legacy_hold")
+    catalog = catalog if catalog is not None else _variant_catalog(rules)
+    if four_ai_modes is None:
+        four_ai_modes = ("none", "current", "legacy_hold")
 
     rows: list[dict[str, Any]] = []
     for variant_id, spec in catalog.items():

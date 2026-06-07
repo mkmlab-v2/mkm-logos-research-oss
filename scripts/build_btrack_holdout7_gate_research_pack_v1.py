@@ -21,7 +21,8 @@ DEFAULT_OUT = ROOT / "reports/btrack_holdout7_gate_research_pack_v1_latest.json"
 PANEL = ROOT / "reports/btrack_holdout7_gemini_vs_prod_panel_v1_latest.json"
 CF = ROOT / "reports/btrack_wrong_dir_counterfactual_matrix_v1_latest.json"
 DUMP = ROOT / "reports/btrack_wrong_dir_holdout_features_v1_latest.json"
-PER_DATE = ROOT / "reports/btrack_model_swap_work/per_date_baseline_30d.json"
+PER_DATE = ROOT / "reports/btrack_ensemble_per_date_directions_180d_v1_latest.json"
+PER_DATE_FALLBACK = ROOT / "reports/btrack_model_swap_work/per_date_baseline_30d.json"
 AUX_GRID_JSON = ROOT / "reports/btrack_wrong_dir_auxiliary_grid_v1_latest.json"
 HYBRID_MATRIX = ROOT / "reports/btrack_frozen30d_hybrid_rule_matrix_v1_latest.json"
 HYBRID_SHADOW = ROOT / "reports/btrack_bbs_ms_hybrid_shadow_lane_v1_latest.json"
@@ -276,7 +277,8 @@ def main() -> int:
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
 
-    for p, name in ((PANEL, "panel"), (CF, "counterfactual"), (DUMP, "dump"), (PER_DATE, "per_date")):
+    per_path = PER_DATE if PER_DATE.is_file() else PER_DATE_FALLBACK
+    for p, name in ((PANEL, "panel"), (CF, "counterfactual"), (DUMP, "dump"), (per_path, "per_date")):
         if not p.is_file():
             print(f"Missing {name}: {p}", file=sys.stderr)
             return 2
@@ -287,7 +289,7 @@ def main() -> int:
         panel=_load(PANEL),
         cf=_load(CF),
         dump=_load(DUMP),
-        per_doc=_load(PER_DATE),
+        per_doc=_load(per_path),
         aux_grid=aux_grid,
         holdout_dates=holdout,
     )

@@ -52,6 +52,9 @@ def match_apply_when(row: dict[str, Any], apply_when: dict[str, Any]) -> tuple[b
         )
         or (ovn_neg or pr_hi),
         "prior_range_high": (not aw.get("prior_range_high")) or pr_hi,
+        "prior_range_high_or_last_ret_neg": (not aw.get("prior_range_high_or_last_ret_neg"))
+        or pr_hi
+        or (last_ret_f is not None and last_ret_f < 0),
         "prior_range_low": (not aw.get("prior_range_low"))
         or (prp_f is not None and prp_f < _safe_float(aw.get("prior_range_low_max"), 0.25)),
         "vol_regime_high": (not aw.get("vol_regime_high"))

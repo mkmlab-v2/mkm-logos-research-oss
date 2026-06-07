@@ -20,7 +20,8 @@ DEFAULT_OUT = ROOT / "reports/btrack_holdout7_uncovered_four_probe_v1_latest.jso
 GATE_PACK = ROOT / "reports/btrack_holdout7_gate_research_pack_v1_latest.json"
 CF = ROOT / "reports/btrack_wrong_dir_counterfactual_matrix_v1_latest.json"
 DUMP = ROOT / "reports/btrack_wrong_dir_holdout_features_v1_latest.json"
-PER_DATE = ROOT / "reports/btrack_model_swap_work/per_date_baseline_30d.json"
+PER_DATE = ROOT / "reports/btrack_ensemble_per_date_directions_180d_v1_latest.json"
+PER_DATE_FALLBACK = ROOT / "reports/btrack_model_swap_work/per_date_baseline_30d.json"
 WORK = ROOT / "reports/btrack_holdout7_uncovered_four_work"
 BTC = ROOT / "research/market_data/btc_daily_external_yf.csv"
 KOSPI = ROOT / "research/market_data/kospi_daily_external_yf.csv"
@@ -83,6 +84,50 @@ PROBE_LAYERS: list[dict[str, Any]] = [
         },
         "rationale_ko": "holdout7: preliminary bull + ensemble neutral abstain miss (e.g. 04-02 advisory)",
     },
+    {
+        "slug": "holdout_last_ret_neg_bull",
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "last_daily_return_negative": True,
+        },
+        "rationale_ko": "OVN≈0 구간: 전일 수익률 음수 + preliminary bull bear trap",
+    },
+    {
+        "slug": "holdout_price_score_min_bull",
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "price_score_min": True,
+            "price_score_min_value": 0.35,
+        },
+        "rationale_ko": "price 렌즈 score>=0.35 + preliminary bull (04-14 등)",
+    },
+    {
+        "slug": "holdout_union_pr_high_or_last_ret_neg",
+        "action": "force_neutral",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "prior_range_high_or_last_ret_neg": True,
+            "prior_range_high_min": 0.75,
+        },
+        "rationale_ko": "prior_range>=0.75 ∪ last_daily_return<0 (04-08/14 타깃)",
+    },
+    {
+        "slug": "holdout_low_conf_neutral_boundary",
+        "action": "advisory_only",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "predicted_neutral": True,
+            "confidence_below": True,
+            "confidence_threshold": 0.18,
+        },
+        "rationale_ko": "04-02: conf=0.1799·threshold=0.18 경계 neutral abstain miss",
+    },
 ]
 
 
@@ -110,6 +155,13 @@ def match_probe_when(row: dict[str, Any], apply_when: dict[str, Any]) -> bool:
     prp = row.get("prior_range_position")
     prp_f = _safe_float(prp, 0.5) if prp is not None else None
     pr_hi_min = _safe_float(aw.get("prior_range_high_min"), 0.75)
+    last_ret = row.get("last_daily_return")
+    last_ret_f = _safe_float(last_ret, 0.0) if last_ret is not None else None
+    price_score = _safe_float(row.get("price_lens_score"), 0.0)
+    price_lv = row.get("lens_values") if isinstance(row.get("lens_values"), dict) else {}
+    price_blob = price_lv.get("price") if isinstance(price_lv.get("price"), dict) else {}
+    if price_blob.get("score") is not None:
+        price_score = _safe_float(price_blob.get("score"), price_score)
 
     if aw.get("holdout_only") and not row.get("is_holdout_7"):
         return False
@@ -131,7 +183,35 @@ def match_probe_when(row: dict[str, Any], apply_when: dict[str, Any]) -> bool:
     if aw.get("overnight_negative_or_positive"):
         if not (ovn_f is not None and ovn_f != 0):
             return False
+    if aw.get("last_daily_return_negative") and not (last_ret_f is not None and last_ret_f < 0):
+        return False
+    if aw.get("price_score_min") and price_score < _safe_float(aw.get("price_score_min_value"), 0.35):
+        return False
+    if aw.get("prior_range_high_or_last_ret_neg"):
+        pr_hi = prp_f is not None and prp_f >= pr_hi_min
+        last_neg = last_ret_f is not None and last_ret_f < 0
+        if not (pr_hi or last_neg):
+            return False
+    if aw.get("confidence_below"):
+        conf = row.get("confidence")
+        conf_f = _safe_float(conf, 1.0) if conf is not None else None
+        thr = _safe_float(aw.get("confidence_threshold"), 0.18)
+        if not (conf_f is not None and conf_f < thr):
+            return False
     return True
+
+
+def _probe_row_eligible(row: dict[str, Any], layer: dict[str, Any]) -> bool:
+    """Bear-trap wrong_dir rows, or neutral-abstain miss rows for advisory probes."""
+    if not row:
+        return False
+    action = str(layer.get("action") or "force_neutral").lower()
+    pred = str(row.get("predicted_direction") or "").lower()
+    act = str(row.get("actual_direction") or "").lower()
+    neutral_miss = pred == "neutral" and act in ("bull", "bear")
+    if action == "advisory_only":
+        return bool(row.get("is_wrong_direction")) or neutral_miss
+    return bool(row.get("is_wrong_direction"))
 
 
 def _prepare_rows(per_doc: dict[str, Any], holdout: list[str], dump: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -145,11 +225,41 @@ def _prepare_rows(per_doc: dict[str, Any], holdout: list[str], dump: dict[str, A
         ed = str(r.get("eval_date") or "")[:10]
         base = dump_by.get(ed) or {}
         row = dict(r)
-        row["actual_direction"] = base.get("actual_direction")
+        for key in (
+            "actual_direction",
+            "overnight_return",
+            "prior_range_position",
+            "last_daily_return",
+            "realized_vol_5d",
+            "price_lens_score",
+            "preliminary_direction",
+            "confidence",
+            "low_confidence_direction_gate",
+        ):
+            if base.get(key) is not None and row.get(key) is None:
+                row[key] = base[key]
         row["is_holdout_7"] = ed in holdout_set
         pred = str(row.get("predicted_direction") or "").lower()
         act = str(row.get("actual_direction") or "").lower()
         row["is_wrong_direction"] = pred in ("bull", "bear") and act in ("bull", "bear") and pred != act
+        row["is_neutral_abstain_miss"] = pred == "neutral" and act in ("bull", "bear")
+        if base.get("is_wrong_direction") is True:
+            row["is_wrong_direction"] = True
+        by_date[ed] = row
+    for ed in holdout_set:
+        if ed in by_date:
+            continue
+        base = dump_by.get(ed)
+        if not isinstance(base, dict):
+            continue
+        row = dict(base)
+        row["is_holdout_7"] = True
+        pred = str(row.get("predicted_direction") or "").lower()
+        act = str(row.get("actual_direction") or "").lower()
+        if row.get("is_wrong_direction") is None:
+            row["is_wrong_direction"] = (
+                pred in ("bull", "bear") and act in ("bull", "bear") and pred != act
+            )
         by_date[ed] = row
     return by_date
 
@@ -174,14 +284,18 @@ def _probe_holdout7(
     uncovered_targets: list[str] | None = None,
 ) -> dict[str, Any]:
     apply_when = layer.get("apply_when") or {}
+    action = str(layer.get("action") or "force_neutral").lower()
     neutralized: list[str] = []
-    flagged: list[str] = []
+    advisory_flagged: list[str] = []
     for ed in holdout:
         row = by_date.get(ed)
-        if not row or not row.get("is_wrong_direction"):
+        if not _probe_row_eligible(row, layer):
             continue
-        if match_probe_when(row, apply_when):
-            flagged.append(ed)
+        if not match_probe_when(row, apply_when):
+            continue
+        if action == "advisory_only":
+            advisory_flagged.append(ed)
+        elif row and row.get("is_wrong_direction"):
             neutralized.append(ed)
     uncovered_four = uncovered_targets or [
         "2026-04-08",
@@ -190,14 +304,18 @@ def _probe_holdout7(
         "2026-05-11",
     ]
     hit_uncovered = sorted(set(neutralized) & set(uncovered_four))
+    bear_trap_n = sum(1 for ed in holdout if (by_date.get(ed) or {}).get("is_wrong_direction"))
     return {
         "slug": layer.get("slug"),
+        "action": action,
         "rationale_ko": layer.get("rationale_ko"),
         "n_holdout7_wrong_neutralized": len(neutralized),
         "neutralized_dates": sorted(neutralized),
+        "n_holdout7_advisory_flagged": len(advisory_flagged),
+        "advisory_flagged_dates": sorted(advisory_flagged),
         "uncovered_four_hit": hit_uncovered,
         "n_uncovered_four_hit": len(hit_uncovered),
-        "covers_all_holdout7_wrong": len(neutralized) == 7,
+        "covers_all_holdout7_wrong": len(neutralized) == bear_trap_n and bear_trap_n > 0,
     }
 
 
@@ -281,22 +399,26 @@ def main() -> int:
     )
     args = ap.parse_args()
 
-    if not PER_DATE.is_file():
-        print(f"Missing {PER_DATE}", file=sys.stderr)
+    per_path = PER_DATE if PER_DATE.is_file() else PER_DATE_FALLBACK
+    if not per_path.is_file():
+        print(f"Missing per-date doc ({PER_DATE} and fallback)", file=sys.stderr)
         return 2
 
     holdout = holdout_dates_from_cf(CF)
     dump = _load(DUMP) if DUMP.is_file() else {"rows": []}
-    by_date = _prepare_rows(_load(PER_DATE), holdout, dump)
+    by_date = _prepare_rows(_load(per_path), holdout, dump)
     uncovered = list(
         (_load(GATE_PACK).get("findings") or {}).get("holdout7_uncovered_by_either_gate")
         or ["2026-04-08", "2026-04-27", "2026-05-07", "2026-05-11"]
     )
 
-    probe_results = [_probe_holdout7(layer, by_date, holdout) for layer in PROBE_LAYERS]
+    probe_results = [
+        _probe_holdout7(layer, by_date, holdout, uncovered_targets=uncovered) for layer in PROBE_LAYERS
+    ]
     best = max(probe_results, key=lambda x: (x.get("n_holdout7_wrong_neutralized"), x.get("n_uncovered_four_hit")))
 
     signed_row = next((x for x in probe_results if x.get("slug") == "holdout_ovn_signed_bull"), None)
+    pr_high_row = next((x for x in probe_results if x.get("slug") == "holdout_pr_high_bull"), None)
     neutral_miss_row = next(
         (x for x in probe_results if x.get("slug") == "holdout_prelim_bull_pred_neutral_miss"), None
     )
@@ -305,13 +427,35 @@ def main() -> int:
         stack_dates.update(signed_row.get("neutralized_dates") or [])
     if neutral_miss_row:
         stack_dates.update(neutral_miss_row.get("neutralized_dates") or [])
+    stack_pr_dates: set[str] = set(stack_dates)
+    if pr_high_row:
+        stack_pr_dates.update(pr_high_row.get("neutralized_dates") or [])
     bear_trap = _holdout_bear_trap_dates(by_date, holdout)
+    neutral_miss_dates = sorted(
+        ed
+        for ed in holdout
+        if (by_date.get(ed) or {}).get("is_neutral_abstain_miss")
+        or (
+            str((by_date.get(ed) or {}).get("predicted_direction") or "").lower() == "neutral"
+            and str((by_date.get(ed) or {}).get("actual_direction") or "").lower() in ("bull", "bear")
+        )
+    )
+    uncovered_set = set(uncovered)
     tradeoff = {
         "stack_signed_bull_plus_neutral_miss": {
             "n_covered": len(stack_dates),
             "covers_all_bear_trap": len(stack_dates) >= len(bear_trap) and len(bear_trap) == 7,
             "dates": sorted(stack_dates),
-        }
+            "uncovered_hit": sorted(uncovered_set & stack_dates),
+            "n_uncovered_hit": len(uncovered_set & stack_dates),
+        },
+        "stack_signed_bull_plus_pr_high": {
+            "n_covered": len(stack_pr_dates),
+            "covers_all_bear_trap": len(stack_pr_dates) >= len(bear_trap) and len(bear_trap) == 7,
+            "dates": sorted(stack_pr_dates),
+            "uncovered_hit": sorted(uncovered_set & stack_pr_dates),
+            "n_uncovered_hit": len(uncovered_set & stack_pr_dates),
+        },
     }
 
     union_eval: dict[str, Any] | None = None
@@ -322,7 +466,7 @@ def main() -> int:
             else "holdout_ovn_signed_bull"
         )
         layer = next(l for l in PROBE_LAYERS if l["slug"] == eval_slug)
-        base_doc = _load(PER_DATE)
+        base_doc = _load(per_path)
         new_rows: list[dict[str, Any]] = []
         for r in base_doc.get("rows") or []:
             if not isinstance(r, dict):
@@ -364,11 +508,18 @@ def main() -> int:
         "probe_layers": probe_results,
         "best_probe": best,
         "tradeoff_pr_high_vs_signed_bull": tradeoff,
+        "holdout7_miss_taxonomy": {
+            "bear_trap_wrong_dir_dates": bear_trap,
+            "neutral_abstain_miss_dates": neutral_miss_dates,
+            "note_ko": "7/7 neutralized 목표는 bear_trap wrong_dir 기준; 04-02는 neutral_abstain_miss(별도 advisory).",
+        },
         "union_30d_eval": union_eval,
         "operator_lines": [
             "- [MKM-HOLDOUT7-FOUR] research_only; auto_promote=false.",
             f"- [MKM-HOLDOUT7-FOUR] best_probe={best.get('slug')} holdout7_neutralized={best.get('n_holdout7_wrong_neutralized')}/7 "
-            f"uncovered_four_hit={best.get('n_uncovered_four_hit')}/4.",
+            f"uncovered_hit={best.get('n_uncovered_four_hit')}/{len(uncovered)}.",
+            f"- [MKM-HOLDOUT7-FOUR] stack_signed+pr_high uncovered={tradeoff['stack_signed_bull_plus_pr_high']['n_uncovered_hit']}/{len(uncovered)} "
+            f"bear_trap_covered={tradeoff['stack_signed_bull_plus_pr_high']['n_covered']}/7.",
         ],
         "auto_promote": False,
     }

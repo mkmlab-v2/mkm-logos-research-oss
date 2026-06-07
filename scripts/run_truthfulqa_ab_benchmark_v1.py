@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import math
+import re
 import statistics
 import time
 import urllib.error
@@ -230,7 +231,14 @@ def _chat_completions_url(base: str) -> str:
     return f"{u}/v1/chat/completions"
 
 
-def _post_chat(url: str, model: str, messages: list[dict[str, str]], temperature: float, max_tokens: int) -> tuple[dict[str, Any], float]:
+def _post_chat(
+    url: str,
+    model: str,
+    messages: list[dict[str, str]],
+    temperature: float,
+    max_tokens: int,
+    request_timeout_sec: int = 120,
+) -> tuple[dict[str, Any], float]:
     body = {
         "model": model,
         "messages": messages,
@@ -244,7 +252,7 @@ def _post_chat(url: str, model: str, messages: list[dict[str, str]], temperature
         method="POST",
     )
     t0 = time.perf_counter()
-    with urllib.request.urlopen(req, timeout=120) as resp:
+    with urllib.request.urlopen(req, timeout=request_timeout_sec) as resp:
         payload = json.loads(resp.read().decode("utf-8"))
     elapsed_ms = (time.perf_counter() - t0) * 1000.0
     return payload, elapsed_ms
@@ -266,14 +274,39 @@ def _extract_text(payload: dict[str, Any]) -> str:
 
 
 def _parse_letter(text: str, n_choices: int) -> str | None:
-    """Prefer the last in-range letter (thinking traces often end with the final choice)."""
-    found: str | None = None
-    for ch in text.upper():
-        if "A" <= ch <= "Z":
-            idx = ord(ch) - ord("A")
-            if 0 <= idx < n_choices:
-                found = ch
-    return found
+    """Parse MC letter; tolerate thinking traces without matching letters inside words."""
+    raw = (text or "").strip()
+    if not raw:
+        return None
+
+    def _in_range(letter: str) -> bool:
+        idx = ord(letter) - ord("A")
+        return 0 <= idx < n_choices
+
+    if len(raw) <= 3 and raw.upper() in {chr(ord("A") + i) for i in range(n_choices)}:
+        return raw.upper()
+
+    explicit = re.findall(
+        r"(?i)(?:final\s+answer|answer|choice|select|return|output)\s*[:\-]?\s*([A-Z])\b",
+        raw,
+    )
+    for letter in reversed(explicit):
+        if _in_range(letter.upper()):
+            return letter.upper()
+
+    for line in reversed([ln.strip() for ln in raw.splitlines() if ln.strip()]):
+        m = re.fullmatch(r"([A-Z])\s*[\.\):\-]?", line.upper())
+        if m and _in_range(m.group(1)):
+            return m.group(1)
+        m = re.fullmatch(r"([A-Z])", line.upper())
+        if m and _in_range(m.group(1)):
+            return m.group(1)
+
+    isolated = re.findall(r"(?<![A-Za-z])([A-Z])(?![A-Za-z])", raw.upper())
+    for letter in reversed(isolated):
+        if _in_range(letter):
+            return letter
+    return None
 
 
 def _p95(vals: list[float]) -> float | None:
@@ -339,7 +372,18 @@ def main() -> int:
     ap.add_argument("--baseline-model", default="baseline-model")
     ap.add_argument("--candidate-model", default="candidate-model")
     ap.add_argument("--temperature", type=float, default=0.0)
-    ap.add_argument("--max-tokens", type=int, default=8)
+    ap.add_argument(
+        "--max-tokens",
+        type=int,
+        default=256,
+        help="Completion budget; thinking models (e.g. gemma4) need >8 for reasoning traces.",
+    )
+    ap.add_argument(
+        "--request-timeout-sec",
+        type=int,
+        default=120,
+        help="HTTP timeout per chat completion (raise for slow local models e.g. gemma4:12b).",
+    )
     ap.add_argument("--mc-system-prompt", default="Answer with one capital letter only.")
     ap.add_argument(
         "--generation-system-prompt",
@@ -437,6 +481,7 @@ def main() -> int:
                         messages=messages,
                         temperature=args.temperature,
                         max_tokens=args.max_tokens,
+                        request_timeout_sec=args.request_timeout_sec,
                     )
                     output_text = _extract_text(payload)
                     parsed = _parse_letter(output_text, len(choices))
@@ -536,6 +581,7 @@ def main() -> int:
                         messages=messages,
                         temperature=args.temperature,
                         max_tokens=max(args.max_tokens, 64),
+                        request_timeout_sec=args.request_timeout_sec,
                     )
                     output_text = _extract_text(payload_raw)
                     truth_hit = _contains_any(output_text, correct_answers)

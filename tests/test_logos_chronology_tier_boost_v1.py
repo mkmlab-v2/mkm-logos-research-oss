@@ -10,7 +10,11 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
-from logos_chronology_map_core_v1 import resolve_modern_boost, rank_eras  # noqa: E402
+from logos_chronology_map_core_v1 import (  # noqa: E402
+    apply_locked_eval_score_adjustments,
+    rank_eras,
+    resolve_modern_boost,
+)
 
 
 def test_resolve_modern_boost_tier_v1_blocks_narrative() -> None:
@@ -29,6 +33,44 @@ def test_rank_eras_tier_v1_changes_narrative_top1() -> None:
     t = rank_eras(chrono, tags, modern_boost=0.08, event_tier="biblical_narrative", boost_policy="tier_v1")
     if g and t:
         assert float(g[0]["score"]) >= float(t[0]["score"])
+
+
+def test_tier_v2_locked_eval_flips_judges_on_risk_cluster() -> None:
+    chrono_path = ROOT / "docs/final/artifacts/logos_chronology_v1_latest.json"
+    if not chrono_path.is_file():
+        return
+    chrono = json.loads(chrono_path.read_text(encoding="utf-8"))
+    tags = ["lehman", "risk"]
+    v1 = rank_eras(
+        chrono,
+        tags,
+        modern_boost=0.08,
+        event_tier="news_hardset",
+        event_partition="locked_eval",
+        boost_policy="tier_v1",
+    )
+    v2 = rank_eras(
+        chrono,
+        tags,
+        modern_boost=0.08,
+        event_tier="news_hardset",
+        event_partition="locked_eval",
+        boost_policy="tier_v2_locked_eval",
+    )
+    assert v1 and v2
+    assert v1[0]["era_id"] == "modern_observational_field"
+    assert v2[0]["era_id"] == "judges_risk_cycle"
+
+
+def test_apply_locked_eval_adjustments_noop_without_risk_cluster() -> None:
+    s = apply_locked_eval_score_adjustments(
+        "modern_observational_field",
+        0.8,
+        {"risk"},
+        event_partition="locked_eval",
+        boost_policy="tier_v2_locked_eval",
+    )
+    assert s == 0.8
 
 
 def test_tier_boost_ab_runs(tmp_path: Path) -> None:

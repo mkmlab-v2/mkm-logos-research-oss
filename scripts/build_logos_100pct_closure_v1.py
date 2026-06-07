@@ -25,6 +25,10 @@ LEMMA_MANIFEST = ROOT / "docs/final/artifacts/logos_lemma_verse_edges_v1_latest.
 OL_ATOMS_SUMMARY = ROOT / "reports/constitution/btrack_pilot/original_language_master_atoms_summary_latest.json"
 BRIDGE_REGISTRY = ROOT / "docs/final/artifacts/logos_concept_bridge_registry_v1_latest.json"
 SUBGRAPH_ROUTER = ROOT / "docs/final/artifacts/logos_subgraph_graphrag_router_v1_latest.json"
+HARDSET_CLOSURE = ROOT / "reports/logos_chronology_hardset_closure_v1_latest.json"
+HARDSET_MARGIN = ROOT / "reports/logos_hardset_era_human_margin_report_v1_latest.json"
+HIST_TIER_V2_AB = ROOT / "reports/logos_chronology_historical_tier_v2_ab_v1_latest.json"
+HARDSET_SSOT = ROOT / "docs/final/artifacts/logos_chronology_hardset_text_blind_v2_eval_v1_latest.json"
 
 
 def _utc_now() -> str:
@@ -134,6 +138,31 @@ def _check_cross_domain(cdim: dict[str, Any] | None) -> dict[str, Any]:
     }
 
 
+def _check_chronology_hardset(
+    closure: dict[str, Any] | None,
+    margin: dict[str, Any] | None,
+    hist_ab: dict[str, Any] | None,
+    ssot: dict[str, Any] | None,
+) -> dict[str, Any]:
+    closure_ok = bool(closure and closure.get("ok"))
+    margin_ok = bool(margin and margin.get("ready"))
+    ms_contract = (hist_ab or {}).get("ms_citation_contract") or {}
+    baseline_clean = ms_contract.get("baseline_contaminated_by_tier_v2") is False
+    policy = (ssot.get("inputs") or {}).get("boost_policy") if ssot else None
+    tier_v2_ssot = policy == "tier_v2_locked_eval"
+    hit1 = (ssot.get("summary") or {}).get("hit_at_1_strict") if ssot else None
+    passed = closure_ok and margin_ok and baseline_clean and tier_v2_ssot
+    return {
+        "passed": passed,
+        "closure_ok": closure_ok,
+        "human_margin_ready": margin_ok,
+        "ms_baseline_uncontaminated": baseline_clean,
+        "hardset_ssot_boost_policy": policy,
+        "hardset_hit_at_1_strict": hit1,
+        "ms_citation_note": "historical text_blind only for external headline",
+    }
+
+
 def _check_phase2_graphrag(registry: dict[str, Any] | None, router: dict[str, Any] | None) -> dict[str, Any]:
     reg_ok = bool(registry and registry.get("schema") == "logos_concept_bridge_registry_v1")
     bridge_n = int((registry or {}).get("bridge_count") or 0)
@@ -193,6 +222,10 @@ def build_report(*, run_pytest: bool) -> dict[str, Any]:
     registry = _read_json(BRIDGE_REGISTRY)
     subgraph_router = _read_json(SUBGRAPH_ROUTER)
     cdim = _read_json(CDIM)
+    hardset_closure = _read_json(HARDSET_CLOSURE)
+    hardset_margin = _read_json(HARDSET_MARGIN)
+    hist_tier_ab = _read_json(HIST_TIER_V2_AB)
+    hardset_ssot = _read_json(HARDSET_SSOT)
 
     checks = {
         "rag_4e_resolved": _check_rag_resolved(envelope),
@@ -203,6 +236,9 @@ def build_report(*, run_pytest: bool) -> dict[str, Any]:
         "ol_master_atoms": _check_ol_master_atoms(ol_atoms),
         "cross_domain_interface": _check_cross_domain(cdim),
         "graphrag_phase2": _check_phase2_graphrag(registry, subgraph_router),
+        "chronology_hardset_post_signoff": _check_chronology_hardset(
+            hardset_closure, hardset_margin, hist_tier_ab, hardset_ssot
+        ),
     }
     if run_pytest:
         checks["pytest_bundle"] = _run_pytest(quick=False)

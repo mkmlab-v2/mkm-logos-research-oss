@@ -58,6 +58,16 @@ def _in_window(rows: list[dict[str, Any]], ts_key: str, since: datetime) -> list
     return out
 
 
+def _in_window_chronicle(rows: list[dict[str, Any]], since: datetime) -> list[dict[str, Any]]:
+    """Chronicle history rows use generated_at_utc; overlay rows may use as_of_utc."""
+    out: list[dict[str, Any]] = []
+    for row in rows:
+        ts = _parse_iso(row.get("as_of_utc")) or _parse_iso(row.get("generated_at_utc"))
+        if ts is not None and ts >= since:
+            out.append(row)
+    return out
+
+
 def _group_match(text: str, group: list[str]) -> bool:
     return any(tok.lower() in text for tok in group)
 
@@ -66,14 +76,39 @@ def _hypothesis_match(text: str, groups: list[list[str]]) -> bool:
     return any(_group_match(text, g) for g in groups)
 
 
-def _calc(rows_news: list[dict[str, Any]], rows_chronicle: list[dict[str, Any]], hyp_cfg: dict[str, Any]) -> dict[str, Any]:
+DEFAULT_STRESS_TERMS: tuple[str, ...] = (
+    "risk-off",
+    "stress",
+    "shock",
+    "volatility",
+    "liquidity thin",
+    "credit spreads",
+)
+
+
+def _stress_terms(hyp_doc: dict[str, Any], hyp_cfg: dict[str, Any]) -> tuple[str, ...]:
+    per_hyp = hyp_cfg.get("stress_terms_any")
+    if isinstance(per_hyp, list) and per_hyp:
+        return tuple(str(t).lower() for t in per_hyp)
+    global_terms = hyp_doc.get("stress_terms_any")
+    if isinstance(global_terms, list) and global_terms:
+        return tuple(str(t).lower() for t in global_terms)
+    return DEFAULT_STRESS_TERMS
+
+
+def _calc(
+    rows_news: list[dict[str, Any]],
+    rows_chronicle: list[dict[str, Any]],
+    hyp_cfg: dict[str, Any],
+    hyp_doc: dict[str, Any],
+) -> dict[str, Any]:
     groups = hyp_cfg.get("keyword_groups_any", [])
     if not isinstance(groups, list):
         groups = []
 
     matched = 0
     stress_hits = 0
-    stress_terms = ("risk-off", "stress", "shock", "volatility", "liquidity thin", "credit spreads")
+    stress_terms = _stress_terms(hyp_doc, hyp_cfg)
     for r in rows_news:
         txt = str(r.get("canonical_text", "")).lower()
         if _hypothesis_match(txt, groups):
@@ -118,14 +153,14 @@ def main() -> int:
     now = _now_utc()
     since = now - timedelta(days=args.lookback_days)
     news_rows = _in_window(_load_jsonl(args.news_jsonl), "as_of_utc", since)
-    chronicle_rows = _in_window(_load_jsonl(args.chronicle_jsonl), "as_of_utc", since)
+    chronicle_rows = _in_window_chronicle(_load_jsonl(args.chronicle_jsonl), since)
     hyp = _load_json(args.hypotheses_json)
 
     hypo_list = hyp.get("hypotheses", [])
     if not isinstance(hypo_list, list):
         hypo_list = []
 
-    eval_rows = [_calc(news_rows, chronicle_rows, h) for h in hypo_list]
+    eval_rows = [_calc(news_rows, chronicle_rows, h, hyp) for h in hypo_list]
     strong = sum(1 for r in eval_rows if r["composite_score"] >= 0.6)
     medium = sum(1 for r in eval_rows if 0.4 <= r["composite_score"] < 0.6)
     weak = max(0, len(eval_rows) - strong - medium)

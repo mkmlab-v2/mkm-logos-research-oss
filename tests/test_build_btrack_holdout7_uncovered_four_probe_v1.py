@@ -49,3 +49,23 @@ def test_match_overnight_positive() -> None:
     }
     layer = next(l for l in PROBE_LAYERS if l["slug"] == "holdout_ovn_pos_bull")
     assert match_probe_when(row, layer["apply_when"]) is True
+
+
+def test_advisory_probe_counts_neutral_abstain_miss() -> None:
+    holdout = ["2026-04-02"]
+    by_date = {
+        "2026-04-02": {
+            "eval_date": "2026-04-02",
+            "predicted_direction": "neutral",
+            "preliminary_direction": "bull",
+            "actual_direction": "bear",
+            "is_holdout_7": True,
+            "is_wrong_direction": False,
+            "is_neutral_abstain_miss": True,
+            "confidence": 0.1799,
+        }
+    }
+    layer = next(l for l in PROBE_LAYERS if l["slug"] == "holdout_low_conf_neutral_boundary")
+    res = _probe_holdout7(layer, by_date, holdout)
+    assert res["n_holdout7_wrong_neutralized"] == 0
+    assert res["n_holdout7_advisory_flagged"] == 1

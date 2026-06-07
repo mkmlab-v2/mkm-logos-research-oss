@@ -24,6 +24,7 @@ KOSPI_CSV = ROOT / "research/market_data/kospi_daily_external_yf.csv"
 
 VARIANTS: list[dict[str, Any]] = [
     {"slug": "baseline"},
+    {"slug": "margin_015", "tie_break_min_margin": 0.015},
     {"slug": "margin_020", "tie_break_min_margin": 0.02},
     {"slug": "margin_025", "tie_break_min_margin": 0.025},
     {"slug": "min_conf_017", "min_direction_confidence": 0.17},
@@ -69,7 +70,7 @@ def _metrics(ev: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _run(slug: str, cfg: dict[str, Any]) -> dict[str, Any]:
+def _run(slug: str, cfg: dict[str, Any], *, recent_trading_days: int) -> dict[str, Any]:
     WORK.mkdir(parents=True, exist_ok=True)
     cfg_p = WORK / f"ens_{slug}.json"
     per = WORK / f"per_{slug}.json"
@@ -80,7 +81,7 @@ def _run(slug: str, cfg: dict[str, Any]) -> dict[str, Any]:
         [
             "scripts/build_btrack_ensemble_per_date_directions_v1.py",
             "--recent-trading-days",
-            "30",
+            str(recent_trading_days),
             "--ensemble-config",
             str(cfg_p.relative_to(ROOT)),
             "--output",
@@ -89,7 +90,7 @@ def _run(slug: str, cfg: dict[str, Any]) -> dict[str, Any]:
         [
             "scripts/build_btrack_prophecy_score_from_ohlcv.py",
             "--recent-trading-days",
-            "30",
+            str(recent_trading_days),
             "--force-dual-leg-panel",
             "--btc-csv",
             str(BTC_CSV.relative_to(ROOT)),
@@ -125,26 +126,50 @@ def _cohort_recovery(per_date_path: Path, cohort: list[dict[str, Any]]) -> dict[
     }
     recovered = 0
     newly_directional = 0
+    per_day: list[dict[str, Any]] = []
     for m in cohort:
         ed = str(m.get("eval_date"))[:10]
         actual = str(m.get("actual_direction") or "").lower()
+        baseline_pred = str(m.get("predicted_direction") or "").lower()
         pred = preds.get(ed, "neutral")
+        hit = pred == actual
         if pred in ("bull", "bear"):
             newly_directional += 1
-            if pred == actual:
+            if hit:
                 recovered += 1
+        per_day.append(
+            {
+                "eval_date": ed,
+                "baseline_predicted": baseline_pred,
+                "variant_predicted": pred,
+                "actual_direction": actual,
+                "newly_directional": pred in ("bull", "bear") and baseline_pred == "neutral",
+                "hit": hit,
+            }
+        )
     return {
         "n_cohort": len(cohort),
         "n_newly_directional": newly_directional,
         "n_recovered_hits": recovered,
+        "per_day": per_day,
     }
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--miss-report", type=Path, default=DEFAULT_MISS)
+    ap.add_argument(
+        "--recent-trading-days",
+        type=int,
+        default=30,
+        help="Per-date rebuild window; use 180 when miss cohort includes holdout7 dates.",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
-    miss_doc = _load(DEFAULT_MISS)
+    if not args.miss_report.is_file():
+        print(f"Missing miss report: {args.miss_report}", file=sys.stderr)
+        return 2
+    miss_doc = _load(args.miss_report)
     cohort = _neutral_miss_days(miss_doc)
     base = _load(DEFAULT_CFG)
     rows: list[dict[str, Any]] = []
@@ -152,7 +177,7 @@ def main() -> int:
         slug = str(spec["slug"])
         print(f"==> neutral_margin {slug}", file=sys.stderr)
         try:
-            raw = _run(slug, _apply(base, spec))
+            raw = _run(slug, _apply(base, spec), recent_trading_days=args.recent_trading_days)
             ev = raw["eval"]
             row = {
                 "slug": slug,
@@ -174,6 +199,8 @@ def main() -> int:
         "schema": "btrack_neutral_abstain_margin_experiment_v1",
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "research_only": True,
+        "miss_report_path": str(args.miss_report.resolve()),
+        "recent_trading_days": args.recent_trading_days,
         "n_neutral_abstain_cohort": len(cohort),
         "variants": rows,
         "best_by_headline": best_a1,
