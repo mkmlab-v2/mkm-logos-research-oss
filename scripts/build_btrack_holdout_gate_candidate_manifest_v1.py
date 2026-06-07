@@ -26,6 +26,7 @@ GATE_PACK = ROOT / "reports/btrack_holdout7_gate_research_pack_v1_latest.json"
 HOLDOUT30D_SWEEP = ROOT / "reports/btrack_holdout30d_headline_sweep_v1_latest.json"
 HYBRID_MATRIX = ROOT / "reports/btrack_frozen30d_hybrid_rule_matrix_v1_latest.json"
 HYBRID_SHADOW = ROOT / "reports/btrack_bbs_ms_hybrid_shadow_lane_v1_latest.json"
+PARALLEL_RESEARCH = ROOT / "reports/btrack_hybrid_research_parallel_v1_latest.json"
 PANEL = ROOT / "reports/btrack_holdout7_gemini_vs_prod_panel_v1_latest.json"
 CF = ROOT / "reports/btrack_wrong_dir_counterfactual_matrix_v1_latest.json"
 DUMP = ROOT / "reports/btrack_wrong_dir_holdout_features_v1_latest.json"
@@ -105,6 +106,43 @@ def _hybrid_shadow_summary(shadow: dict[str, Any], matrix: dict[str, Any]) -> di
         "alert_1_pass_frozen30d": frozen_h >= 0.5,
         "operator_recommendation": (shadow or {}).get("operator_recommendation") or "shadow_only_not_headline",
         "do_not": list((shadow or {}).get("do_not") or []),
+    }
+
+
+def _parallel_research_summary(doc: dict[str, Any]) -> dict[str, Any] | None:
+    if not doc:
+        return None
+    r1 = None
+    r2 = None
+    r5 = None
+    for t in doc.get("tasks") or []:
+        if not isinstance(t, dict):
+            continue
+        name = t.get("task")
+        summ = t.get("summary") or {}
+        if name == "r1_holdout7_ablation":
+            r1 = {
+                "best_holdout7_variant": summ.get("best_holdout7_variant"),
+                "best_holdout7_rate": summ.get("best_holdout7_rate"),
+                "holdout7_gap_pp": summ.get("holdout7_gap_pp_frozen_vs_holdout7"),
+            }
+        elif name == "r2_ms_drift_watch":
+            r2 = {
+                "ms_direction_diff_count": summ.get("ms_direction_diff_count"),
+                "recommended_ms_policy": summ.get("recommended_ms_policy"),
+                "holdout7_hybrid_flips": summ.get("holdout7_hybrid_flips"),
+            }
+        elif name == "r5_ms_neutral_tail":
+            r5 = summ.get("holdout7_rates")
+    return {
+        "pointer": str(PARALLEL_RESEARCH.relative_to(ROOT)).replace("\\", "/")
+        if PARALLEL_RESEARCH.is_file()
+        else None,
+        "lane": doc.get("lane"),
+        "r1_ablation": r1,
+        "r2_ms_drift": r2,
+        "r5_ms_neutral_tail": r5,
+        "operator_lines": list(doc.get("operator_lines") or [])[:8],
     }
 
 
@@ -269,6 +307,8 @@ def main() -> int:
     hybrid_shadow_doc = _load(HYBRID_SHADOW) if HYBRID_SHADOW.is_file() else {}
     hybrid_matrix_doc = _load(HYBRID_MATRIX) if HYBRID_MATRIX.is_file() else {}
     hybrid_summary = _hybrid_shadow_summary(hybrid_shadow_doc, hybrid_matrix_doc)
+    parallel_doc = _load(PARALLEL_RESEARCH) if PARALLEL_RESEARCH.is_file() else {}
+    parallel_summary = _parallel_research_summary(parallel_doc)
 
     operator_lines = [
         "- [MKM-HOLDOUT-GATE] candidate=holdout_ovn_signed_bull; research_only; auto_promote=false.",
@@ -283,6 +323,8 @@ def main() -> int:
         operator_lines.extend(_holdout30d_operator_lines(h30_summary))
     if hybrid_summary:
         operator_lines.extend(_hybrid_shadow_operator_lines(hybrid_summary))
+    if parallel_summary:
+        operator_lines.extend(list(parallel_summary.get("operator_lines") or [])[:6])
 
     report = {
         "schema": "btrack_holdout_gate_candidate_v1",
@@ -304,6 +346,7 @@ def main() -> int:
             "holdout30d_headline_sweep": str(HOLDOUT30D_SWEEP) if HOLDOUT30D_SWEEP.is_file() else None,
             "hybrid_shadow_lane": str(HYBRID_SHADOW) if HYBRID_SHADOW.is_file() else None,
             "hybrid_rule_matrix": str(HYBRID_MATRIX) if HYBRID_MATRIX.is_file() else None,
+            "hybrid_research_parallel": str(PARALLEL_RESEARCH) if PARALLEL_RESEARCH.is_file() else None,
             "model_swap_closed": True,
             "gemini_holdout7_wrong_dir": "7/7 same as prod (panel)",
         },
@@ -325,6 +368,7 @@ def main() -> int:
         },
         "holdout30d_anchor_sweep": h30_summary,
         "hybrid_shadow_lane": hybrid_summary,
+        "hybrid_research_parallel": parallel_summary,
         "probe_best_slug": (probe.get("best_probe") or {}).get("slug"),
         "operator_lines": operator_lines,
     }

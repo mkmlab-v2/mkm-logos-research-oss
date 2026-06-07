@@ -365,6 +365,30 @@ def _task_ms_anchor_vs_latest() -> dict[str, Any]:
     return {"task": "ms_anchor_vs_latest", "exit_code": 0, "summary": summary}
 
 
+def _task_hybrid_research_parallel() -> dict[str, Any]:
+    script = ROOT / "scripts/run_btrack_hybrid_research_parallel_v1.py"
+    if not script.is_file():
+        return {"task": "hybrid_research_parallel", "exit_code": 2, "error": "missing script"}
+    proc = subprocess.run(
+        [sys.executable, str(script)],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    out = ROOT / "reports/btrack_hybrid_research_parallel_v1_latest.json"
+    summary: dict[str, Any] = {"exit_code": proc.returncode}
+    if out.is_file():
+        doc = _load(out)
+        summary["lane"] = doc.get("lane")
+        summary["operator_lines"] = (doc.get("operator_lines") or [])[:4]
+    return {
+        "task": "hybrid_research_parallel",
+        "exit_code": 0 if proc.returncode in (0, 1) else proc.returncode,
+        "summary": summary,
+        "stderr_tail": (proc.stderr or "")[-300:] if proc.returncode not in (0, 1) else None,
+    }
+
+
 def _anchor_dates_list() -> list[str]:
     anchor_dates_path = ROOT / "reports/btrack_anchor_eval_dates_v1.json"
     if anchor_dates_path.is_file():
@@ -385,10 +409,11 @@ def main() -> int:
         _task_train_miss_autopsy,
         _task_shadow_lane_pack,
         _task_ms_anchor_vs_latest,
+        _task_hybrid_research_parallel,
         _task_observation_refresh,
     ]
     results: list[dict[str, Any]] = []
-    with ThreadPoolExecutor(max_workers=5) as pool:
+    with ThreadPoolExecutor(max_workers=6) as pool:
         futs = {pool.submit(fn): fn.__name__ for fn in tasks}
         for fut in as_completed(futs):
             try:

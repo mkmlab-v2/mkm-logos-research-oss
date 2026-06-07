@@ -15,6 +15,9 @@ SCORE = ROOT / "docs/final/artifacts/btrack_prophecy_score_latest.json"
 FROZEN_EVAL = ROOT / "reports/prophecy_hit_rate_eval_30d_frozen_kpi_a_v1.json"
 SHADOW = ROOT / "reports/btrack_bbs_ms_hybrid_shadow_lane_v1_latest.json"
 MS_DRIFT = ROOT / "reports/btrack_ms_anchor_vs_latest_hybrid_v1_latest.json"
+MS_DRIFT_WATCH = ROOT / "reports/btrack_ms_drift_shadow_watch_v1_latest.json"
+ABLATION = ROOT / "reports/btrack_hybrid_holdout7_ablation_v1_latest.json"
+TAIL_RESEARCH = ROOT / "reports/btrack_holdout7_ms_neutral_tail_v1_latest.json"
 DAILY_DIFF = ROOT / "reports/btrack_frozen30d_hybrid_daily_diff_v1_latest.json"
 HYPO = ROOT / "docs/final/artifacts/btrack_hypothesis_prophecy_latest.json"
 
@@ -115,6 +118,9 @@ def main() -> int:
         headline = dir_h
     shadow_row = _bbs_shadow_for_date(ed) if ed else None
     ms_drift = _load(MS_DRIFT)
+    ms_watch = _load(MS_DRIFT_WATCH)
+    ablation = _load(ABLATION)
+    tail = _load(TAIL_RESEARCH)
 
     report = {
         "schema": "btrack_bbs_ms_hybrid_today_shadow_digest_v1",
@@ -154,6 +160,13 @@ def main() -> int:
             if ms_drift
             else None
         ),
+        "holdout7_research": {
+            "ablation_pointer": str(ABLATION.relative_to(ROOT)).replace("\\", "/") if ablation else None,
+            "holdout7_gap_pp": ablation.get("holdout7_gap_pp_frozen_vs_holdout7"),
+            "best_holdout7_variant": ablation.get("best_holdout7_variant"),
+            "ms_neutral_tail_rates": tail.get("holdout7_rates") if tail else None,
+            "ms_drift_policy": ms_watch.get("recommended_ms_policy") if ms_watch else None,
+        },
         "operator_lines": [],
     }
     op = report["operator_lines"]
@@ -169,6 +182,17 @@ def main() -> int:
             f"- [MKM-BBS-SHADOW] ms_drift anchor={float(ms_drift.get('anchor_ms_hybrid_rate') or 0):.1%} "
             f"latest={float(ms_drift.get('latest_ms_hybrid_rate') or 0):.1%} "
             f"diff_days={ms_drift.get('ms_direction_diff_days')}."
+        )
+    if ablation:
+        op.append(
+            f"- [MKM-BBS-SHADOW] holdout7_ablation best={ablation.get('best_holdout7_variant')} "
+            f"gap_pp={ablation.get('holdout7_gap_pp_frozen_vs_holdout7')}."
+        )
+    if tail:
+        rates = tail.get("holdout7_rates") or {}
+        op.append(
+            f"- [MKM-BBS-SHADOW] ms_neutral_tail baseline={rates.get('baseline_hybrid')} "
+            f"oracle_bear={rates.get('oracle_force_bear_tail')}."
         )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
