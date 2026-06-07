@@ -73,6 +73,16 @@ PROBE_LAYERS: list[dict[str, Any]] = [
         },
         "rationale_ko": "holdout7: OVN 음수(3) ∪ 양수(4) → wrong_dir 7/7 중립화 목표",
     },
+    {
+        "slug": "holdout_prelim_bull_pred_neutral_miss",
+        "action": "advisory_only",
+        "apply_when": {
+            "holdout_only": True,
+            "preliminary_bull": True,
+            "predicted_neutral": True,
+        },
+        "rationale_ko": "holdout7: preliminary bull + ensemble neutral abstain miss (e.g. 04-02 advisory)",
+    },
 ]
 
 
@@ -104,6 +114,8 @@ def match_probe_when(row: dict[str, Any], apply_when: dict[str, Any]) -> bool:
     if aw.get("holdout_only") and not row.get("is_holdout_7"):
         return False
     if aw.get("preliminary_bull") and prelim != "bull":
+        return False
+    if aw.get("predicted_neutral") and pred != "neutral":
         return False
     if aw.get("overnight_negative") and not (ovn_f is not None and ovn_f < 0):
         return False
@@ -142,7 +154,25 @@ def _prepare_rows(per_doc: dict[str, Any], holdout: list[str], dump: dict[str, A
     return by_date
 
 
-def _probe_holdout7(layer: dict[str, Any], by_date: dict[str, dict[str, Any]], holdout: list[str]) -> dict[str, Any]:
+def _holdout_bear_trap_dates(
+    by_date: dict[str, dict[str, Any]], holdout: list[str]
+) -> list[str]:
+    """Holdout7 rows where baseline predicted direction ≠ actual (bear-trap set)."""
+    out: list[str] = []
+    for ed in holdout:
+        row = by_date.get(ed)
+        if row and row.get("is_wrong_direction"):
+            out.append(ed)
+    return sorted(out)
+
+
+def _probe_holdout7(
+    layer: dict[str, Any],
+    by_date: dict[str, dict[str, Any]],
+    holdout: list[str],
+    *,
+    uncovered_targets: list[str] | None = None,
+) -> dict[str, Any]:
     apply_when = layer.get("apply_when") or {}
     neutralized: list[str] = []
     flagged: list[str] = []
@@ -153,7 +183,12 @@ def _probe_holdout7(layer: dict[str, Any], by_date: dict[str, dict[str, Any]], h
         if match_probe_when(row, apply_when):
             flagged.append(ed)
             neutralized.append(ed)
-    uncovered_four = ["2026-04-08", "2026-04-27", "2026-05-07", "2026-05-11"]
+    uncovered_four = uncovered_targets or [
+        "2026-04-08",
+        "2026-04-27",
+        "2026-05-07",
+        "2026-05-11",
+    ]
     hit_uncovered = sorted(set(neutralized) & set(uncovered_four))
     return {
         "slug": layer.get("slug"),
@@ -261,6 +296,24 @@ def main() -> int:
     probe_results = [_probe_holdout7(layer, by_date, holdout) for layer in PROBE_LAYERS]
     best = max(probe_results, key=lambda x: (x.get("n_holdout7_wrong_neutralized"), x.get("n_uncovered_four_hit")))
 
+    signed_row = next((x for x in probe_results if x.get("slug") == "holdout_ovn_signed_bull"), None)
+    neutral_miss_row = next(
+        (x for x in probe_results if x.get("slug") == "holdout_prelim_bull_pred_neutral_miss"), None
+    )
+    stack_dates: set[str] = set()
+    if signed_row:
+        stack_dates.update(signed_row.get("neutralized_dates") or [])
+    if neutral_miss_row:
+        stack_dates.update(neutral_miss_row.get("neutralized_dates") or [])
+    bear_trap = _holdout_bear_trap_dates(by_date, holdout)
+    tradeoff = {
+        "stack_signed_bull_plus_neutral_miss": {
+            "n_covered": len(stack_dates),
+            "covers_all_bear_trap": len(stack_dates) >= len(bear_trap) and len(bear_trap) == 7,
+            "dates": sorted(stack_dates),
+        }
+    }
+
     union_eval: dict[str, Any] | None = None
     if not args.skip_eval:
         eval_slug = (
@@ -310,6 +363,7 @@ def main() -> int:
         },
         "probe_layers": probe_results,
         "best_probe": best,
+        "tradeoff_pr_high_vs_signed_bull": tradeoff,
         "union_30d_eval": union_eval,
         "operator_lines": [
             "- [MKM-HOLDOUT7-FOUR] research_only; auto_promote=false.",

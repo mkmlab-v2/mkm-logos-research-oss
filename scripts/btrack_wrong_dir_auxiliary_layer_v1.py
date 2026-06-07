@@ -41,6 +41,7 @@ def match_apply_when(row: dict[str, Any], apply_when: dict[str, Any]) -> tuple[b
 
     checks = {
         "preliminary_bull": (not aw.get("preliminary_bull")) or prelim == "bull",
+        "predicted_neutral": (not aw.get("predicted_neutral")) or pred == "neutral",
         "predicted_bull": (not aw.get("predicted_bull")) or pred == "bull",
         "overnight_negative": (not aw.get("overnight_negative")) or ovn_neg,
         "overnight_positive": (not aw.get("overnight_positive")) or ovn_pos,
