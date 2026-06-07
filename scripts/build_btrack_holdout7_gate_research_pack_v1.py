@@ -23,6 +23,8 @@ CF = ROOT / "reports/btrack_wrong_dir_counterfactual_matrix_v1_latest.json"
 DUMP = ROOT / "reports/btrack_wrong_dir_holdout_features_v1_latest.json"
 PER_DATE = ROOT / "reports/btrack_model_swap_work/per_date_baseline_30d.json"
 AUX_GRID_JSON = ROOT / "reports/btrack_wrong_dir_auxiliary_grid_v1_latest.json"
+HYBRID_MATRIX = ROOT / "reports/btrack_frozen30d_hybrid_rule_matrix_v1_latest.json"
+HYBRID_SHADOW = ROOT / "reports/btrack_bbs_ms_hybrid_shadow_lane_v1_latest.json"
 
 
 def _utc_now() -> str:
@@ -187,6 +189,47 @@ def build_pack(
                 "delta_vs_prod_baseline": top.get("delta_vs_prod_baseline"),
             }
 
+    hybrid_lane = None
+    hybrid_ops: list[str] = []
+    if HYBRID_MATRIX.is_file() or HYBRID_SHADOW.is_file():
+        shadow = _load(HYBRID_SHADOW) if HYBRID_SHADOW.is_file() else {}
+        matrix = _load(HYBRID_MATRIX) if HYBRID_MATRIX.is_file() else {}
+        lane_key = "bbs_ms_agree_or_ms_else"
+        mx = (matrix.get("matrix") or {}).get(lane_key) or {}
+        metrics = shadow.get("metrics") if isinstance(shadow.get("metrics"), dict) else {}
+        full = mx.get("full_30d") or {}
+        h7mx = mx.get("holdout7") or {}
+        frozen_h = float(metrics.get("frozen_30d_all_rows") or full.get("rate") or 0)
+        holdout_h = float(metrics.get("holdout7") or h7mx.get("rate") or 0)
+        hybrid_lane = {
+            "lane_id": shadow.get("lane_id") or "bbs_ms_hybrid_frozen30d_v1",
+            "rule_slug": lane_key,
+            "frozen30d_headline": frozen_h,
+            "holdout7_headline": holdout_h,
+            "alert_1_pass_frozen30d": frozen_h >= 0.5,
+            "pointer_shadow": str(HYBRID_SHADOW.relative_to(ROOT)).replace("\\", "/")
+            if HYBRID_SHADOW.is_file()
+            else None,
+            "pointer_matrix": str(HYBRID_MATRIX.relative_to(ROOT)).replace("\\", "/")
+            if HYBRID_MATRIX.is_file()
+            else None,
+            "note_ko": "holdout aux stack는 headline Δ=0; ALERT_1 uplift는 hybrid shadow 별도 레인.",
+        }
+        hybrid_ops = [
+            f"- [MKM-HOLDOUT7-GATE] hybrid bbs_ms frozen30d={frozen_h:.1%} holdout7={holdout_h:.1%} shadow_only.",
+            f"- [MKM-HOLDOUT7-GATE] hybrid matrix={hybrid_lane.get('pointer_matrix')}; auto_promote=false.",
+        ]
+
+    operator_lines = [
+            "- [MKM-HOLDOUT7-GATE] model_swap closed; input/gate research only; auto_promote=false.",
+            f"- [MKM-HOLDOUT7-GATE] advisory_ovn_bull holdout7_wrong_hit={len(adv_overlap)}/7 dates={sorted(adv_overlap)}.",
+            f"- [MKM-HOLDOUT7-GATE] best aux {best_aux.get('slug')} neutralized={best_aux.get('n_neutralized')}/7 "
+            f"(headline delta see aux_grid; ALERT_1 still fail).",
+            f"- [MKM-HOLDOUT7-GATE] uncovered_by_either={uncovered_both}.",
+            "- [MKM-HOLDOUT7-GATE] price-lens CF bear_fix=0/7; see btrack_holdout_price_lens_cf_holdout7_v1_latest.json.",
+            "- [MKM-HOLDOUT7-GATE] research candidate holdout_ovn_signed_bull (post-ensemble) targets 7/7 neutral; manifest SSOT.",
+        ] + hybrid_ops
+
     return {
         "schema": "btrack_holdout7_gate_research_pack_v1",
         "generated_at_utc": _utc_now(),
@@ -212,6 +255,7 @@ def build_pack(
             "holdout7_uncovered_by_best_aux_neutral": uncovered_aux,
             "holdout7_uncovered_by_either_gate": uncovered_both,
             "aux_grid_ssot_best": grid_best,
+            "hybrid_shadow_lane_bbs_ms": hybrid_lane,
         },
         "advisory_sweep_holdout7": advisory_rows,
         "auxiliary_holdout7_effects": aux_summaries,
@@ -220,16 +264,9 @@ def build_pack(
             "Tighten causal price-lens / ensemble blend on bear-regime days (CF shows neutral variants exist but no bear fix).",
             "Extend holdout-only force_neutral rules for the 4 dates missed by neutral_ovn_bull (see holdout7_uncovered_by_either_gate).",
             "Do not spend API on per-date LLM swap; auto_promote remains false.",
+            "Headline ALERT_1 uplift: evaluate bbs_ms_agree_or_ms_else hybrid shadow on frozen30d anchor (separate from post-ensemble aux).",
         ],
-        "operator_lines": [
-            "- [MKM-HOLDOUT7-GATE] model_swap closed; input/gate research only; auto_promote=false.",
-            f"- [MKM-HOLDOUT7-GATE] advisory_ovn_bull holdout7_wrong_hit={len(adv_overlap)}/7 dates={sorted(adv_overlap)}.",
-            f"- [MKM-HOLDOUT7-GATE] best aux {best_aux.get('slug')} neutralized={best_aux.get('n_neutralized')}/7 "
-            f"(headline delta see aux_grid; ALERT_1 still fail).",
-            f"- [MKM-HOLDOUT7-GATE] uncovered_by_either={uncovered_both}.",
-            "- [MKM-HOLDOUT7-GATE] price-lens CF bear_fix=0/7; see btrack_holdout_price_lens_cf_holdout7_v1_latest.json.",
-            "- [MKM-HOLDOUT7-GATE] research candidate holdout_ovn_signed_bull (post-ensemble) targets 7/7 neutral; manifest SSOT.",
-        ],
+        "operator_lines": operator_lines,
         "auto_promote": False,
     }
 

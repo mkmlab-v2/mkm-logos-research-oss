@@ -105,7 +105,10 @@ def main() -> int:
 
     y_col = ns.y_col
     if not y_col:
-        y_col = "ohlcv_close" if (ns.ohlcv_csv and ns.ohlcv_csv.is_file()) else "elem_fire"
+        if ns.ohlcv_csv and ns.ohlcv_csv.is_file():
+            y_col = "ohlcv_close"
+        else:
+            y_col = "elem_fire"
 
     cmd_corr = [
         sys.executable,

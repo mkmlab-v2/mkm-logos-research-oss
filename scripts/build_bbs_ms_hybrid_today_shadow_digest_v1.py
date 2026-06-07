@@ -14,6 +14,7 @@ DEFAULT_OUT = ROOT / "reports/btrack_bbs_ms_hybrid_today_shadow_digest_v1_latest
 SCORE = ROOT / "docs/final/artifacts/btrack_prophecy_score_latest.json"
 FROZEN_EVAL = ROOT / "reports/prophecy_hit_rate_eval_30d_frozen_kpi_a_v1.json"
 SHADOW = ROOT / "reports/btrack_bbs_ms_hybrid_shadow_lane_v1_latest.json"
+MS_DRIFT = ROOT / "reports/btrack_ms_anchor_vs_latest_hybrid_v1_latest.json"
 DAILY_DIFF = ROOT / "reports/btrack_frozen30d_hybrid_daily_diff_v1_latest.json"
 HYPO = ROOT / "docs/final/artifacts/btrack_hypothesis_prophecy_latest.json"
 
@@ -113,6 +114,7 @@ def main() -> int:
     if not headline:
         headline = dir_h
     shadow_row = _bbs_shadow_for_date(ed) if ed else None
+    ms_drift = _load(MS_DRIFT)
 
     report = {
         "schema": "btrack_bbs_ms_hybrid_today_shadow_digest_v1",
@@ -141,11 +143,39 @@ def main() -> int:
             "no_prophecy_to_live_auto_promotion",
             "90d_learn_audit_freeze",
         ],
+        "ms_lens_drift_watch": (
+            {
+                "pointer": str(MS_DRIFT.relative_to(ROOT)).replace("\\", "/"),
+                "anchor_ms_hybrid_rate": ms_drift.get("anchor_ms_hybrid_rate"),
+                "latest_ms_hybrid_rate": ms_drift.get("latest_ms_hybrid_rate"),
+                "ms_direction_diff_days": ms_drift.get("ms_direction_diff_days"),
+                "note_ko": "MS per_date anchor vs latest; WATCH only [HYPO], not live trigger.",
+            }
+            if ms_drift
+            else None
+        ),
+        "operator_lines": [],
     }
+    op = report["operator_lines"]
+    op.append("- [MKM-BBS-SHADOW] research_only; WATCH_HYBRID_SHADOW_LANE; auto_promote=false.")
+    if ed and headline:
+        agree = report["shadow_candidate"].get("agrees_with_headline")
+        op.append(
+            f"- [MKM-BBS-SHADOW] eval_date={ed} headline={headline} "
+            f"shadow_agrees={agree}."
+        )
+    if ms_drift:
+        op.append(
+            f"- [MKM-BBS-SHADOW] ms_drift anchor={float(ms_drift.get('anchor_ms_hybrid_rate') or 0):.1%} "
+            f"latest={float(ms_drift.get('latest_ms_hybrid_rate') or 0):.1%} "
+            f"diff_days={ms_drift.get('ms_direction_diff_days')}."
+        )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {args.output.resolve()}")
     print(f"eval_date={ed} headline={headline} shadow={shadow_row.get('bbs_ms_hybrid') if shadow_row else None}")
+    for line in report.get("operator_lines") or []:
+        print(line)
     return 0
 
 

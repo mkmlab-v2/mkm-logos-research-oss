@@ -34,6 +34,7 @@ $requiredFiles = @(
     "scripts\run_btrack_kpi_b_shadow_eval_v1.py",
     "scripts\run_btrack_wrong_dir_holdout_v1.py",
     "scripts\build_btrack_prophecy_observation_mode_status_v1.py",
+    "scripts\build_bbs_ms_hybrid_today_shadow_digest_v1.py",
     "scripts\run_btrack_model_swap_harness_v1.py",
     "reports\btrack_advisory_bear_trap_manifest_v1_latest.json",
     "docs\final\artifacts\btrack_lens_ensemble_v1.json"

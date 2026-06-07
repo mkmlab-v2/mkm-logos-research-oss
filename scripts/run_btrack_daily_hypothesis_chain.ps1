@@ -658,6 +658,12 @@ if ($LASTEXITCODE -ne 0) {
   Write-Host "WARN: build_btrack_daily_p15_shadow_status_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
 }
 
+Write-Host "==> build_bbs_ms_hybrid_today_shadow_digest_v1.py (WATCH_HYBRID_SHADOW_LANE; research_only)"
+py scripts/build_bbs_ms_hybrid_today_shadow_digest_v1.py
+if ($LASTEXITCODE -ne 0) {
+  Write-Host "WARN: build_bbs_ms_hybrid_today_shadow_digest_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+}
+
 Write-Host "==> build_prophecy_health_status_v1.py (prophecy_health_status_latest.json)"
 py scripts/build_prophecy_health_status_v1.py
 if ($LASTEXITCODE -ne 0) { throw "build_prophecy_health_status_v1 exit $LASTEXITCODE" }

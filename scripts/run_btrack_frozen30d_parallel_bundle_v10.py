@@ -177,6 +177,18 @@ def _dir_map(doc: dict[str, Any]) -> dict[str, str]:
     return out
 
 
+def _m016_dir_map() -> dict[str, str]:
+    if M016_PER.is_file():
+        return _dir_map(_load(M016_PER))
+    out: dict[str, str] = {}
+    for d in _load(DAILY_DIFF).get("per_day") or []:
+        if isinstance(d, dict):
+            ed = str(d.get("eval_date") or "")[:10]
+            if ed:
+                out[ed] = str(d.get("m016_v1") or "neutral").lower()
+    return out
+
+
 def _task_train_miss_autopsy() -> dict[str, Any]:
     panel = _load(HOLDOUT7_PANEL)
     train_days = (panel.get("lanes") or {}).get("bbs_hybrid", {}).get("train23", {}).get("per_day") or []
@@ -310,7 +322,7 @@ def _task_ms_anchor_vs_latest() -> dict[str, Any]:
     anc = _dir_map(_load(MS_ANCHOR))
     lat = _dir_map(_load(MS_LATEST))
     leg = _dir_map(_load(LEGACY_V1))
-    m16 = _dir_map(_load(M016_PER))
+    m16 = _m016_dir_map()
     agree_anc = agree_lat = n = 0
     ms_diff_days: list[str] = []
     for ed in dates:
