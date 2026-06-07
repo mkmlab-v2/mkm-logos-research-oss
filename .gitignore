@@ -135,6 +135,9 @@ data/kaggle_auto_weather/
 # RDA public soil/weather ZIP unpack (large local-only; mapping SSOT is docs/final/SMARTFARM_RDA_*)
 data/smartfarm_rda_extract_v1/
 
+# ETCBC DSS text-fabric corpus (local-only; setup_etcbc_dss_data_v1.py)
+data/etcbc-dss/
+
 # MCP server local PID locks (restored tree may contain; do not commit)
 mcp-servers/.athena-*.pid
 mcp-servers/.*.pid

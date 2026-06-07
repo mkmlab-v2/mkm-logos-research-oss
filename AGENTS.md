@@ -222,6 +222,8 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【빠른 헌법 점검】 | P0 필수 경로 존재만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` |
 | 【아람 일일 준비】 | Aramaic MVP 일일 예약 작업 인자·Track T survivor dry-run 스위치 확인(`Verify-AramaicMvpDailyTaskReadiness.ps1`; 작업 미등록 시 실패) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AramaicDailyReadiness` |
 | 【GPU 권장 번들】 | Control-Integrity oracle + Pack 0-B pytest(CONSTITUTION §1.2.1); P0·reconcile 후 번들만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona GpuRecommendedBundle` |
+| 【로컬 GPU 주간】 | Azure HOLD · CPU gates + hp sweep + counsel ZIP; MusicGen은 러너 `-IncludeAudioGenerate` | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona LocalGpuWeeklyRoutine` |
+| 【Track C B2B 리허설 prep】 | 15min script + counsel ZIP + copy/rehearsal gates (no send) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona TrackCB2bRehearsalPrep` |
 | 【링크드인 B2B 주간】 | LinkedIn 초안 큐 assemble-only + 카피 가드(자동 발행 없음) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona LinkedInB2bWeekly` |
 | 【링크드인 B2B 예약 점검】 | Task Scheduler `MKM_LinkedIn_B2B_WeeklyDraft` 등록·인자 확인 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona LinkedInB2bWeeklyReadiness` |
 | 【홍보 주간 번들 · tier_0】 | 통합 큐 sync → LinkedIn assemble-only → 요약 JSON (기본 API $0) | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MarketingWeeklyBundle` |

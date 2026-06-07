@@ -14,7 +14,12 @@ param(
     [switch]$EnableTrinityEvolution,
     [switch]$EnableRiskProfileSync,
     [string]$BtcCsvPath = "",
+    [switch]$OperationModeBShadow,
     [switch]$EnablePreNewsShadow,
+    [switch]$SkipNaverNewsIngest,
+    [switch]$SkipExaMacroNewsRefresh,
+    [switch]$SkipExternalFeedRefresh,
+    [string]$ExternalNewsFeedJson = "docs/final/artifacts/external_feed_drop_latest.validated.json",
     [switch]$EnablePreNewsShadowWeeklyReport,
     [string]$PreNewsBatchReportJson = "docs/final/artifacts/global_atom_full_canon_batch_report_latest.json",
     [string]$PreNewsInputJson = "docs/final/artifacts/pre_news_shadow_input_latest.json",
@@ -23,7 +28,9 @@ param(
     [string]$PreNewsStageThresholdPolicyJson = "docs/final/artifacts/pre_news_shadow_stage_threshold_policy_v1.json",
     [int]$PreNewsPolicyAuditWindowDays = 30,
     [int]$PreNewsPolicyGovernanceAlertThreshold = 2,
-    [int]$PreNewsPolicyChangeLogTailRows = 20
+    [int]$PreNewsPolicyChangeLogTailRows = 20,
+    [switch]$SkipLiveProphecyTriage,
+    [switch]$SkipBiblicalHistoryChronicleRefresh
 )
 
 $ErrorActionPreference = "Stop"
@@ -52,6 +59,9 @@ if (-not $EnableTrinityEvolution) {
 }
 if (-not $EnableRiskProfileSync) {
     $args += "-SkipRiskProfileSync"
+}
+if ($OperationModeBShadow) {
+    $args += "-OperationModeBShadow"
 }
 if ($EnableWalkforwardAggregate) {
     $args += @("-IncludeShadowPanelEval", "-ShadowPanelMode", "all")
@@ -210,11 +220,106 @@ if ($EnableCausalThresholdSweep) {
 }
 
 if ($EnablePreNewsShadow) {
+    if (-not $SkipNaverNewsIngest) {
+        Write-Host "==> fetch_naver_openapi_signals_v1.py (pre-news upstream ingest)" -ForegroundColor Cyan
+        & py -3 "scripts\fetch_naver_openapi_signals_v1.py" --allow-cache-fallback
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Naver OpenAPI ingest failed; continuing with existing naver/pre_news artifacts."
+        }
+
+        if (-not $SkipExaMacroNewsRefresh) {
+            Write-Host "==> Run-BtrackExaMacroNewsChain_v1.ps1 (fetch only; reuse staging if no EXA_API_KEY)" -ForegroundColor Cyan
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File "scripts\Run-BtrackExaMacroNewsChain_v1.ps1" `
+                -SkipAdapter -AppendStaging
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Exa macro news refresh failed; continuing with existing staging."
+            }
+        }
+
+        if (-not $SkipExternalFeedRefresh) {
+            Write-Host "==> load_external_feed_drop_with_fallback_v1.py (3rd-leg external drop)" -ForegroundColor Cyan
+            & py -3 "scripts\load_external_feed_drop_with_fallback_v1.py" --allow-empty
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "External feed drop validation failed; continuing with existing validated drop."
+            }
+
+            Write-Host "==> fetch_external_macro_news_signals_v1.py (FRED macro + NewsAPI if keyed)" -ForegroundColor Cyan
+            & py -3 "scripts\fetch_external_macro_news_signals_v1.py" --allow-cache-fallback
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "External macro/news API fetch failed; continuing with feed drop + cache."
+            }
+        }
+
+        $externalNewsFeedResolved = Join-Path $WorkspaceRoot $ExternalNewsFeedJson
+        $lensArgs = @("scripts\build_btrack_news_macro_lens_adapters_v1.py")
+        if (Test-Path -LiteralPath $externalNewsFeedResolved) {
+            $lensArgs += @("--external-news-feed", $ExternalNewsFeedJson)
+        }
+        Write-Host "==> build_btrack_news_macro_lens_adapters_v1.py (naver+exa+external drop)" -ForegroundColor Cyan
+        & py -3 @lensArgs
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+        }
+    }
+
     & powershell.exe -NoProfile -ExecutionPolicy Bypass -File "scripts\run_global_atom_pre_news_shadow_chain_v1.ps1" `
         -BatchReportJson $PreNewsBatchReportJson `
         -PreNewsInputJson $PreNewsInputJson
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
+    }
+
+    if (-not $SkipBiblicalHistoryChronicleRefresh) {
+        Write-Host "==> build_chronicle_history_news_signal_stub_v1.py (B-track chronicle daily)" -ForegroundColor Cyan
+        & py -3 "scripts\build_chronicle_history_news_signal_stub_v1.py"
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Chronicle signal refresh failed; continuing with existing chronicle history."
+        }
+        else {
+            & py -3 "scripts\evaluate_chronicle_history_news_signal_weekly_v1.py"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Chronicle weekly eval failed; continuing."
+            }
+            & py -3 "scripts\build_chronicle_pr1_daily_overlay_v1.py"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Chronicle PR1 overlay build failed; continuing."
+            }
+            & py -3 "scripts\ingest_dss_apocrypha_research_context_v1.py"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "DSS apocrypha research context ingest failed; continuing."
+            }
+            & py -3 "scripts\build_dss_authority_readiness_reconciliation_v1.py"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "DSS authority readiness reconciliation failed; continuing."
+            }
+            & py -3 "scripts\ingest_dss_ndjson_token_manifest_research_context_v1.py" `
+                --merge-into "docs/final/artifacts/news_observation_v1_dss_apocrypha_research_context_latest.jsonl"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "DSS NDJSON manifest research context ingest failed; continuing."
+            }
+            & py -3 "scripts\build_chronicle_h_dss1_daily_overlay_v1.py"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Chronicle H-DSS1 overlay build failed; continuing."
+            }
+            & py -3 "scripts\eval_biblical_history_h_dss1_chronicle_hold_alignment_v1.py"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "H-DSS1 chronicle hold alignment failed; continuing."
+            }
+            & py -3 "scripts\build_biblical_resonance_research_production_ab_v1.py"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Biblical resonance research/production AB failed; continuing."
+            }
+            & py -3 "scripts\build_dss_ndjson_resonance_uplift_report_v1.py"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "DSS NDJSON resonance uplift report failed; continuing."
+            }
+            & py -3 "scripts\evaluate_biblical_resonance_hypotheses_v1.py" `
+                --lookback-days 90 `
+                --output-json "reports\biblical_resonance_eval_production_90d_latest.json"
+            if ($LASTEXITCODE -ne 0) {
+                Write-Warning "Biblical resonance production 90d eval failed; continuing."
+            }
+        }
     }
 }
 
@@ -278,6 +383,42 @@ if ($EnablePreNewsShadowWeeklyReport) {
         --projection-log-jsonl "reports/pre_news_shadow_projection_log.jsonl" `
         --tail-rows 5 `
         --out-json "docs/final/artifacts/pre_news_shadow_ops_status_latest.json"
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if (-not $SkipLiveProphecyTriage -and ($OperationModeBShadow -or $EnablePreNewsShadow)) {
+    $liveHealthScript = Join-Path $WorkspaceRoot "projects\bitcoin-trading\ops\windows-rehearsal\check_live_trading_health.ps1"
+    if (Test-Path -LiteralPath $liveHealthScript) {
+        Write-Host "==> check_live_trading_health.ps1 (live ops snapshot for triage)" -ForegroundColor Cyan
+        & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $liveHealthScript
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Live trading health check failed; continuing with stale live_trading_health_latest.json if present."
+        }
+    }
+    else {
+        Write-Warning "Missing live health script: $liveHealthScript"
+    }
+
+    Write-Host "==> build_live_vs_prophecy_triage_v1.py" -ForegroundColor Cyan
+    & py -3 "scripts\build_live_vs_prophecy_triage_v1.py"
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+
+    Write-Host "==> evaluate_prophecy_runtime_health_v1.py (post-live-health refresh)" -ForegroundColor Cyan
+    $rhTailArgs = @("scripts\evaluate_prophecy_runtime_health_v1.py")
+    if ($OperationModeBShadow) {
+        $rhTailArgs += "--operation-mode-b-shadow"
+    }
+    & py -3 @rhTailArgs
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+
+    Write-Host "==> build_live_vs_prophecy_triage_v1.py (final)" -ForegroundColor Cyan
+    & py -3 "scripts\build_live_vs_prophecy_triage_v1.py"
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

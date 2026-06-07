@@ -34,6 +34,7 @@ def _build_index(*, generated_at: str, steps: list[tuple[str, int]]) -> str:
         ("6 · H2 MVP", "docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md"),
         ("7 · Logos appendix", "docs/final/artifacts/track_c_b2b_logos_lens_appendix_v1_latest.md"),
         ("8 · Compression plugin IR", "docs/final/artifacts/track_c_b2b_compression_plugin_appendix_v1_latest.md"),
+        ("9 · Audio hook PoC `[HYPO]`", "docs/final/artifacts/dynamic_bgm_melody_chain_demo_v1_latest.json"),
     ]
     rows = []
     for label, path in artifacts:
@@ -55,6 +56,13 @@ def _build_index(*, generated_at: str, steps: list[tuple[str, int]]) -> str:
 | Step | Path | Disk |
 |------|------|------|
 {chr(10).join(rows)}
+
+### Audio hook (B-track · internal deck only · `[HYPO]`)
+
+- **PoC chain:** `py scripts/run_dynamic_bgm_melody_chain_v1.py`
+- **HP sweep:** `py scripts/run_dynamic_bgm_hp_sweep_v1.py` → `dynamic_bgm_hp_sweep_v1_latest.json`
+- **Counsel pack:** included in `track_c_b2b_counsel_export_pack_v1.zip` when manifest rebuilt
+- **Not** Suno competitor claim · legal send **HOLD**
 
 ## Public demo URLs (pointers only · no performance claims)
 

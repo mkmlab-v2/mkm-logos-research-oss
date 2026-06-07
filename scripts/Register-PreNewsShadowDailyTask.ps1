@@ -16,6 +16,7 @@ $argLine = @(
     "-NoProfile",
     "-ExecutionPolicy", "Bypass",
     "-File", ('"{0}"' -f $scriptPath),
+    "-OperationModeBShadow",
     "-EnablePreNewsShadow",
     "-EnablePreNewsShadowWeeklyReport"
 ) -join " "
@@ -39,7 +40,7 @@ Register-ScheduledTask `
     -Trigger $trigger `
     -Settings $settings `
     -Principal $principal `
-    -Description "Runs daily prophecy wrapper with pre-news shadow projection and weekly summary."
+    -Description "Daily prophecy wrapper: 3-leg news ingest, pre-news shadow, weekly governance, live health + live/prophecy triage (Mode B)."
 
 Write-Host "Registered scheduled task: $TaskName at $RunAt" -ForegroundColor Green
 
