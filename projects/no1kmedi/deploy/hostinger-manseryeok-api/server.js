@@ -1,10 +1,12 @@
 import http from "node:http";
+import { runVerifyLiteEngine } from "./verify-lite-engine.mjs";
 
 const port = Number(process.env.PORT || 3000);
 const apiToken = (process.env.MANSERYEOK_API_TOKEN || "").trim();
 const rateLimitMax = Number(process.env.MANSERYEOK_RATE_LIMIT_MAX || 120);
 const rateLimitWindowMs = Number(process.env.MANSERYEOK_RATE_LIMIT_WINDOW_MS || 60_000);
 const rateLimitWindow = new Map();
+const workspaceRoot = (process.env.MKM_WORKSPACE_ROOT || "").trim();
 
 function makeSajuLabel(value = "") {
   const text = String(value);
@@ -50,16 +52,80 @@ function readToken(req) {
   return "";
 }
 
-const server = http.createServer((req, res) => {
-  if (req.method === "GET" && req.url === "/health") {
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ ok: true }));
+function readJsonBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+    req.on("end", () => {
+      try {
+        resolve(JSON.parse(body || "{}"));
+      } catch {
+        reject(new Error("invalid_json"));
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+function jsonResponse(res, status, payload) {
+  res.writeHead(status, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+  res.end(JSON.stringify(payload));
+}
+
+async function handleVerifyLite(req, res, payload) {
+  if (!workspaceRoot) {
+    jsonResponse(res, 503, {
+      success: false,
+      error: "workspace_root_not_found",
+      hint: "Set MKM_WORKSPACE_ROOT on VPS to monorepo root with scripts/saju_askone_verify_bundle_v1.py",
+    });
     return;
   }
 
-  if (req.method !== "POST" || req.url !== "/manseryeok/reference") {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ success: false, error: "not_found" }));
+  const tz = payload.tz || payload.iana_tz;
+  if (typeof tz !== "string" || !tz.trim()) {
+    jsonResponse(res, 400, { success: false, error: "tz_required" });
+    return;
+  }
+
+  try {
+    const doc = await runVerifyLiteEngine({
+      birth_instant_utc: payload.birth_instant_utc,
+      year: payload.year,
+      month: payload.month,
+      day: payload.day,
+      hour: payload.hour,
+      minute: payload.minute,
+      tz: tz.trim(),
+      is_solar: payload.is_solar,
+      is_male: payload.is_male,
+      secondary_day_rollover_policy: payload.secondary_day_rollover_policy,
+    });
+    jsonResponse(res, 200, { success: true, ...doc, source: "hostinger-manseryeok-api" });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    const isRoot = msg.includes("workspace_root_not_found");
+    jsonResponse(res, isRoot ? 503 : 500, {
+      success: false,
+      error: isRoot ? "workspace_root_not_found" : "engine_runtime_error",
+      message: msg.slice(0, 400),
+    });
+  }
+}
+
+const server = http.createServer(async (req, res) => {
+  if (req.method === "GET" && req.url === "/health") {
+    jsonResponse(res, 200, { ok: true, verify_lite_engine: Boolean(workspaceRoot) });
+    return;
+  }
+
+  const isReference = req.method === "POST" && req.url === "/manseryeok/reference";
+  const isVerifyLite = req.method === "POST" && req.url === "/manseryeok/verify-lite";
+
+  if (!isReference && !isVerifyLite) {
+    jsonResponse(res, 404, { success: false, error: "not_found" });
     return;
   }
 
@@ -76,57 +142,48 @@ const server = http.createServer((req, res) => {
   if (apiToken) {
     const providedToken = readToken(req);
     if (!providedToken || providedToken !== apiToken) {
-      res.writeHead(401, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: false, error: "unauthorized" }));
+      jsonResponse(res, 401, { success: false, error: "unauthorized" });
       return;
     }
   }
 
-  let body = "";
-  req.on("data", (chunk) => {
-    body += chunk.toString();
-  });
+  let payload;
+  try {
+    payload = await readJsonBody(req);
+  } catch {
+    jsonResponse(res, 400, { success: false, error: "invalid_json" });
+    return;
+  }
 
-  req.on("end", () => {
-    let payload = {};
-    try {
-      payload = JSON.parse(body || "{}");
-    } catch {
-      res.writeHead(400, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ success: false, error: "invalid_json" }));
-      return;
-    }
+  if (isVerifyLite) {
+    await handleVerifyLite(req, res, payload);
+    return;
+  }
 
-    const birthDatetime = payload.birth_datetime;
-    const utc = payload.birth_instant_utc;
-    const ianaTz = payload.iana_tz;
-    const useGlobal =
-      typeof utc === "string" &&
-      utc.trim().length > 0 &&
-      typeof ianaTz === "string" &&
-      ianaTz.trim().length > 0;
-    const seed = useGlobal ? `${utc.trim()}|${ianaTz.trim()}` : birthDatetime;
-    if (typeof seed !== "string" || seed.trim().length === 0) {
-      res.writeHead(400, { "Content-Type": "application/json" });
-      res.end(
-        JSON.stringify({
-          success: false,
-          error: "provide birth_instant_utc+iana_tz or birth_datetime",
-        }),
-      );
-      return;
-    }
+  const birthDatetime = payload.birth_datetime;
+  const utc = payload.birth_instant_utc;
+  const ianaTz = payload.iana_tz;
+  const useGlobal =
+    typeof utc === "string" &&
+    utc.trim().length > 0 &&
+    typeof ianaTz === "string" &&
+    ianaTz.trim().length > 0;
+  const seed = useGlobal ? `${utc.trim()}|${ianaTz.trim()}` : birthDatetime;
+  if (typeof seed !== "string" || seed.trim().length === 0) {
+    jsonResponse(res, 400, {
+      success: false,
+      error: "provide birth_instant_utc+iana_tz or birth_datetime",
+    });
+    return;
+  }
 
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(
-      JSON.stringify({
-        success: true,
-        saju_label: makeSajuLabel(seed),
-      }),
-    );
+  jsonResponse(res, 200, {
+    success: true,
+    saju_label: makeSajuLabel(seed),
+    source: workspaceRoot ? "legacy-stub-label" : "legacy-stub-label",
   });
 });
 
 server.listen(port, () => {
-  console.log(`hostinger-manseryeok-api running on port ${port}`);
+  console.log(`hostinger-manseryeok-api running on port ${port} (verify-lite engine=${Boolean(workspaceRoot)})`);
 });
