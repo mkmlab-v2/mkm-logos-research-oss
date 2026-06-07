@@ -886,6 +886,25 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 
 **승격 기록 (Fact-Lock):** 2026-05-07 — Logos **ANN-lite 시맨틱 엔진**을 **S1_SHADOW** 관측 경로(일일 융합·주간 게이트·KPI 계약)에 연결. 렌즈 계약상 Logos는 **[NON_GATING]** 보조; 최종 액션은 1차 실물 레짐 및 운영 게이트가 확정한다.
 
+### 8.2b Logos 연대기 · 2030 거시 Horizon (`[HYPO]` · narrative_template)
+
+**목적:** 성경 연대기·역사 매칭(B-track)과 general prophecy·macro forward SSOT를 **결정론적으로 조립**한 2030 horizon 시나리오. **실매매·Track A/B2B 대외 헤드라인·GDP/주가 확정 예언 금지.** 연대기 era-blind **MS 대외 ~6.4%**(text_blind v1); text_blind_v2 holdout은 **B-track 내부**만.
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| 2030 horizon 빌더 | `scripts/build_logos_macro_horizon_2030_scenario_v1.py` → `docs/final/artifacts/logos_macro_horizon_2030_scenario_v1_latest.json` · `reports/logos_macro_horizon_2030_scenario_v1_latest.md` | `--strict` 시 dynamic map·macro briefing 필수; `scenario_kind=narrative_template`; `scenario_probability_weights`는 heuristic `[HYPO]` |
+| 스키마 | `docs/final/schemas/logos_macro_horizon_2030_scenario_v1.schema.json` | |
+| 연대기 병렬 번들 | `scripts/Invoke-LogosChronologyParallelBundle_v1.ps1` | (0a) dynamic map → (0b) era blind eval → **(0c) 2030 horizon `--strict`** → overlay/deploy |
+| 주간 예약 | `scripts/Register-LogosChronologyWeeklyBundleTask.ps1` · `scripts/Verify-LogosChronologyWeeklyBundleTask_v1.ps1` | Task `MKM_Logos_Chronology_WeeklyBundle` (일 08:30); bundle에 2030 step 포함 여부 spot-check |
+| 연대기 SSOT·dynamic map | `scripts/build_logos_chronology_from_repo_ssot_v1.py` · `scripts/build_logos_chronology_dynamic_map_v1.py` | 산출 `logos_chronology_v1_latest.json` · `logos_chronology_dynamic_map_v1_latest.json` |
+| civilization apocalypse registry (입력) | `docs/final/artifacts/general_prophecy_civilization_apocalypse_v1_latest.json` (SSOT) · 미러 소스 `reports/general_prophecy_civilization_apocalypse_v1_latest.json` | 빌더가 reports→artifacts 미러; civ.tech/civ.finance 질문 p 병합 |
+| two-track 2030 band | `docs/final/artifacts/prophecy_2050_two_track_v1_latest.json` | phase별 track_a_thesis·track_b_forward_lean(2031 band) |
+| holdout (internal only) | `reports/logos_chronology_text_blind_v2_holdout_v1_latest.json` | MS/B2B 헤드라인 금지 |
+| 명리·사상 read-only | 기본 `myeongni_independent_lens_latest.json` · `market_sasang_lens_latest.json` | `lens_triad_stub` 스냅샷; **non-gating** · Final action은 Field 유지 |
+| CI·회귀 | `tests/test_build_logos_macro_horizon_2030_scenario_v1.py` | strict pass/fail·phase·JP/EU·probability weights·lens wiring; `dual-regime-integrity.yml` Logos insight bundle 단계에 포함 |
+
+**렌즈 격벽:** 명리·사상은 `lens_triad_stub`(`not_run_in_this_builder`); Logos overlay만 `[NON_GATING]` 보조.
+
 ---
 
 ## 9. NotebookLM 매니페스트·이제마 B 인벤토리 (저장소 확인됨)

@@ -52,6 +52,10 @@ if (-not $SkipEraBlindEval) {
     if ($LASTEXITCODE -ne 0) { throw "Run-LogosChronologyEraBlindEvalFull_v1.ps1 failed: $LASTEXITCODE" }
     & py $digestPy
     if ($LASTEXITCODE -ne 0) { throw "build_logos_chronology_era_eval_digest_v1.py failed: $LASTEXITCODE" }
+    $horizon2030Py = Join-Path $root "scripts\build_logos_macro_horizon_2030_scenario_v1.py"
+    Write-Host "[logos-chrono-bundle] (0c) macro horizon 2030 scenario (strict)"
+    & py $horizon2030Py --strict
+    if ($LASTEXITCODE -ne 0) { throw "build_logos_macro_horizon_2030_scenario_v1.py failed: $LASTEXITCODE" }
 } else {
     Write-Host "[logos-chrono-bundle] era blind eval skipped (-SkipEraBlindEval)"
 }

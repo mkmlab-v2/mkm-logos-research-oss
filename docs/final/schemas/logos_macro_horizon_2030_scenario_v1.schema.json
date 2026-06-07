@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/logos_macro_horizon_2030_scenario_v1.schema.json",
+  "title": "Logos macro horizon 2030 scenario v1",
+  "description": "B-track narrative_template scenario assembled from chronology + macro forward + general prophecy. Not trading signals.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "scenario_kind",
+    "hypothesis_tier",
+    "research_rail",
+    "field_primary",
+    "conflict_resolver",
+    "tri_axis_scenarios",
+    "phases"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "logos_macro_horizon_2030_scenario_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "scenario_kind": { "type": "string", "const": "narrative_template" },
+    "hypothesis_tier": { "type": "string" },
+    "research_rail": { "type": "string", "const": "B" },
+    "field_primary": {
+      "type": "object",
+      "required": ["decision_state"],
+      "properties": {
+        "regime_id": { "type": ["string", "null"] },
+        "decision_state": { "type": "string" },
+        "risk_warning_level": { "type": ["string", "null"] }
+      }
+    },
+    "conflict_resolver": {
+      "type": "object",
+      "required": ["final_action"],
+      "properties": {
+        "summary_ko": { "type": "string" },
+        "final_action": { "type": "string" }
+      }
+    }
+  }
+}
