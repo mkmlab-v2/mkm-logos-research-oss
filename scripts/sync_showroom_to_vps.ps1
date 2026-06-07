@@ -6,7 +6,9 @@ param(
     [switch]$RefreshStaging,
     [switch]$DryRun,
     [switch]$SkipDotenvUserSync,
-    [switch]$AllowPasswordPrompt
+    [switch]$AllowPasswordPrompt,
+    [switch]$ApplyRecommendedNginx,
+    [switch]$NginxSnippetOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -26,6 +28,8 @@ if ($RefreshStaging) { $argList += "-RefreshStaging" }
 if ($DryRun) { $argList += "-DryRun" }
 if ($SkipDotenvUserSync) { $argList += "-SkipDotenvUserSync" }
 if ($AllowPasswordPrompt) { $argList += "-AllowPasswordPrompt" }
+if ($ApplyRecommendedNginx) { $argList += "-ApplyRecommendedNginx" }
+if ($NginxSnippetOnly) { $argList += "-NginxSnippetOnly" }
 
 if (Get-Command pwsh -ErrorAction SilentlyContinue) {
     & pwsh @argList
