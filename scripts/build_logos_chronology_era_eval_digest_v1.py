@@ -44,6 +44,7 @@ def main() -> int:
     hist_v2 = _load("logos_chronology_era_blind_eval_text_blind_v2_v1_latest.json")
     v2_ab = _load("logos_chronology_text_blind_v2_ab_v1_latest.json", REP)
     v2_hold = _load("logos_chronology_text_blind_v2_holdout_v1_latest.json", REP)
+    v2_hint_off = _load("logos_chronology_text_blind_v2_hint_off_ab_v1_latest.json", REP)
     margin = _load("logos_hardset_era_human_margin_report_v1_latest.json", REP)
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -186,6 +187,18 @@ def main() -> int:
                 f"- note: {v2_hold.get('note_ko', '')}",
             ]
         )
+    if v2_hint_off:
+        c3 = v2_hint_off.get("compare") or {}
+        lines.extend(
+            [
+                "",
+                "## Hint-off ablation (v2 full vs v2_no_hints · commander-approved)",
+                "",
+                f"- all-events: full **{_pct(c3.get('all_events_hit_at_1_full'))}** · no_hints **{_pct(c3.get('all_events_hit_at_1_no_hints'))}** · hint uplift **{_pct(c3.get('all_events_hint_uplift'))}**",
+                f"- train_holdout: full **{_pct(c3.get('train_holdout_hit_at_1_full'))}** · no_hints **{_pct(c3.get('train_holdout_hit_at_1_no_hints'))}** · hint uplift **{_pct(c3.get('train_holdout_hint_uplift'))}**",
+                "- MS baseline still **v1 ~6.4% only**; ablation is B-track internal lower-bound probe.",
+            ]
+        )
     if margin and margin.get("ready"):
         hi = margin.get("hardset_internal") or {}
         lines.extend(
@@ -236,6 +249,7 @@ def main() -> int:
             "- `docs/final/artifacts/logos_chronology_era_blind_eval_text_blind_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_era_blind_eval_text_blind_v2_v1_latest.json` (B-track PoC · not MS)",
             "- `reports/logos_chronology_text_blind_v2_holdout_v1_latest.json`",
+            "- `reports/logos_chronology_text_blind_v2_hint_off_ab_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_eval_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_v2_eval_v1_latest.json` (hardset SSOT · tier_v2_locked_eval)",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_v2_tier_v1_baseline_eval_v1_latest.json` (compare only)",

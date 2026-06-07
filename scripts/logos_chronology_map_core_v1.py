@@ -310,6 +310,7 @@ def rank_eras(
     boost_policy: str = "global",
     source_text: str | None = None,
     text_blind_v2: bool = False,
+    text_blind_v2_era_hints: bool = True,
 ) -> list[dict[str, Any]]:
     inferred_set = set(inferred_tags)
     effective_boost = resolve_modern_boost(event_tier, modern_boost, boost_policy)
@@ -321,7 +322,7 @@ def rank_eras(
         score, matched, bh = score_era(row, inferred_set)
         if row["era_id"] == MODERN_ERA and inferred_set:
             score = min(1.0, score + effective_boost)
-        if text_blind_v2 and source_text:
+        if text_blind_v2 and source_text and text_blind_v2_era_hints:
             score = min(1.0, score + era_text_hint_bonus(str(row["era_id"]), source_text))
         score = apply_locked_eval_score_adjustments(
             str(row["era_id"]),
