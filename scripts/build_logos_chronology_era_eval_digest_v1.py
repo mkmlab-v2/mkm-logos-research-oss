@@ -46,6 +46,8 @@ def main() -> int:
     v2_hold = _load("logos_chronology_text_blind_v2_holdout_v1_latest.json", REP)
     v2_hint_off = _load("logos_chronology_text_blind_v2_hint_off_ab_v1_latest.json", REP)
     v2_en = _load("logos_chronology_text_blind_v2_en_headline_ab_v1_latest.json", REP)
+    off_ab = _load("logos_chronology_off_fixture_text_blind_v2_ab_v1_latest.json", REP)
+    off_hold = _load("logos_chronology_off_fixture_holdout_v1_latest.json", REP)
     margin = _load("logos_hardset_era_human_margin_report_v1_latest.json", REP)
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -200,6 +202,48 @@ def main() -> int:
                 "- MS baseline still **v1 ~6.4% only**; ablation is B-track internal lower-bound probe.",
             ]
         )
+    if off_ab and off_hold:
+        c_off = off_ab.get("compare") or {}
+        cd = (off_ab.get("inputs") or {}).get("cohort_definition") or {}
+        lines.extend(
+            [
+                "",
+                "## Off-fixture OOV (historical 47 disjoint · measured)",
+                "",
+                f"- cohort: hardset base **{cd.get('n_hardset_base', '—')}** + blind_split expansion **{cd.get('n_oov_expansion', '—')}** · total gold **{(off_ab.get('inputs') or {}).get('gold_json', '—')}**",
+                f"- all-events v1 (MS lane): **{_pct(c_off.get('all_events_hit_at_1_v1'))}** · v2 (B-track): **{_pct(c_off.get('all_events_hit_at_1_v2'))}** · Δ **{c_off.get('delta_v2_minus_v1')}**",
+            ]
+        )
+        if c_off.get("all_events_hit_at_1_v2_no_hints") is not None:
+            lines.append(
+                f"- v2 no_hints lower bound: **{_pct(c_off.get('all_events_hit_at_1_v2_no_hints'))}** · hint uplift **{_pct(c_off.get('hint_uplift_all_events'))}**"
+            )
+        by = off_hold.get("by_partition") or {}
+        lines.extend(
+            [
+                "",
+                "| partition (off-fixture) | n | v1 hit@1 | v2 hit@1 | Δ |",
+                "|-------------------------|---|----------|----------|---|",
+            ]
+        )
+        for part in ("train_holdout", "locked_eval", "calibration"):
+            block = by.get(part) or {}
+            s1 = block.get("text_blind_v1_ms_baseline") or {}
+            s2p = block.get("text_blind_v2_btrack_poc") or {}
+            mark = " **(OOS primary)**" if part == "train_holdout" else ""
+            lines.append(
+                f"| `{part}`{mark} | {s1.get('n', '—')} | {_pct(s1.get('hit_at_1_strict'))} | "
+                f"{_pct(s2p.get('hit_at_1_strict'))} | {block.get('delta_v2_minus_v1')} |"
+            )
+        cmp_h = off_hold.get("compare") or {}
+        lines.extend(
+            [
+                "",
+                f"- off-fixture train_holdout 15% gate: **`{cmp_h.get('train_holdout_target_15pct_met')}`**",
+                f"- note: {off_hold.get('note_ko', '')}",
+                "- MS baseline remains historical text_blind v1 (~6.4%); off-fixture is B-track generalization probe.",
+            ]
+        )
     if v2_en:
         c4 = v2_en.get("compare") or {}
         lines.extend(
@@ -209,7 +253,7 @@ def main() -> int:
                 "",
                 f"- all-events: KO **{_pct(c4.get('all_events_hit_at_1_ko'))}** · EN **{_pct(c4.get('all_events_hit_at_1_en'))}**",
                 f"- train_holdout: KO **{_pct(c4.get('train_holdout_hit_at_1_ko'))}** · EN **{_pct(c4.get('train_holdout_hit_at_1_en'))}**",
-                "- Sidecar glosses only; true unseen headlines remain unmeasured off-fixture.",
+                "- EN sidecar glosses on **same historical 47**; live OOV generalization → see **Off-fixture OOV** section above.",
             ]
         )
     if margin and margin.get("ready"):

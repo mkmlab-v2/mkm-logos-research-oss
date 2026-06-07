@@ -51,7 +51,16 @@ def _partition_slice(doc: dict[str, Any], partition: str) -> dict[str, Any]:
     }
 
 
-def build_holdout(v1: dict[str, Any], v2: dict[str, Any]) -> dict[str, Any]:
+def build_holdout(
+    v1: dict[str, Any],
+    v2: dict[str, Any],
+    *,
+    schema: str = "logos_chronology_text_blind_v2_holdout_v1",
+    v1_input: str | None = None,
+    v2_input: str | None = None,
+    note_ko: str | None = None,
+    cohort: str = "historical_fixture",
+) -> dict[str, Any]:
     by_partition: dict[str, dict[str, Any]] = {}
     for part in PARTITIONS:
         s1 = _partition_slice(v1, part)
@@ -66,10 +75,16 @@ def build_holdout(v1: dict[str, Any], v2: dict[str, Any]) -> dict[str, Any]:
         }
     hold = by_partition["train_holdout"]
     h_hold_v2 = float((hold.get("text_blind_v2_btrack_poc") or {}).get("hit_at_1_strict") or 0.0)
+    default_note = (
+        "train_holdout=20건 OOS-style slice. v2는 B-track 연구; MS/대외 6.4% baseline 교체 금지."
+        if cohort == "historical_fixture"
+        else "off-fixture=historical gold 47건과 event_id 불교집. v2 B-track 내부; MS baseline 교체 금지."
+    )
     return {
-        "schema": "logos_chronology_text_blind_v2_holdout_v1",
+        "schema": schema,
         "generated_at_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "[HYPO]",
+        "cohort": cohort,
         "policy": {
             "research_only": True,
             "non_gating": True,
@@ -78,8 +93,8 @@ def build_holdout(v1: dict[str, Any], v2: dict[str, Any]) -> dict[str, Any]:
             "primary_oos_partition": "train_holdout",
         },
         "inputs": {
-            "v1_json": str(DEFAULT_V1.relative_to(ROOT)).replace("\\", "/"),
-            "v2_json": str(DEFAULT_V2.relative_to(ROOT)).replace("\\", "/"),
+            "v1_json": v1_input or str(DEFAULT_V1.relative_to(ROOT)).replace("\\", "/"),
+            "v2_json": v2_input or str(DEFAULT_V2.relative_to(ROOT)).replace("\\", "/"),
         },
         "all_events_summary": {
             "text_blind_v1_ms_baseline": v1.get("summary") or {},
@@ -92,9 +107,7 @@ def build_holdout(v1: dict[str, Any], v2: dict[str, Any]) -> dict[str, Any]:
             "train_holdout_delta_v2_minus_v1": hold.get("delta_v2_minus_v1"),
             "train_holdout_target_15pct_met": h_hold_v2 >= 0.15,
         },
-        "note_ko": (
-            "train_holdout=20건 OOS-style slice. v2는 B-track 연구; MS/대외 6.4% baseline 교체 금지."
-        ),
+        "note_ko": note_ko or default_note,
     }
 
 

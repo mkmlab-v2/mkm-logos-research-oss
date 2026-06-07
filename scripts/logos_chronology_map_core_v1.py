@@ -12,6 +12,9 @@ POLICY = {
     "no_trading_signal": True,
 }
 
+# Live news hardset/off-fixture: v2 era hints + KO keyword extras tuned on historical blind set.
+NEWS_EVENT_TIERS = frozenset({"news_hardset", "news_off_fixture"})
+
 REGIME_ID_HINTS: dict[str, list[str]] = {
     "post_covid_normalization": ["covid", "risk"],
     "pandemic_shock": ["covid", "risk"],
@@ -192,6 +195,8 @@ def infer_tags_from_text(text: str) -> list[str]:
 
 def infer_tags_from_text_v2(text: str, *, event_tier: str | None = None) -> list[str]:
     """text_blind_v2: v1 English + Korean macro/narrative keywords; macro fallback risk tag."""
+    if event_tier in NEWS_EVENT_TIERS:
+        return infer_tags_from_text(text)
     low = (text or "").lower()
     tags: set[str] = set(infer_tags_from_text(text))
     for needle, tag in TEXT_TAG_KEYWORDS_V2_KO:
@@ -322,7 +327,7 @@ def rank_eras(
         score, matched, bh = score_era(row, inferred_set)
         if row["era_id"] == MODERN_ERA and inferred_set:
             score = min(1.0, score + effective_boost)
-        if text_blind_v2 and source_text and text_blind_v2_era_hints:
+        if text_blind_v2 and source_text and text_blind_v2_era_hints and event_tier not in NEWS_EVENT_TIERS:
             score = min(1.0, score + era_text_hint_bonus(str(row["era_id"]), source_text))
         score = apply_locked_eval_score_adjustments(
             str(row["era_id"]),

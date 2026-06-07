@@ -47,17 +47,25 @@ def main() -> int:
             [py, str(ROOT / "scripts/summarize_logos_chronology_partition_holdout_v1.py")],
         ),
         (
+            "off_fixture_ab",
+            [
+                py,
+                str(ROOT / "scripts/run_logos_chronology_off_fixture_text_blind_v2_ab_v1.py"),
+                "--include-no-hints",
+            ],
+        ),
+        (
             "human_margin",
             [py, str(ROOT / "scripts/build_logos_hardset_era_human_margin_report_v1.py")],
         ),
     ]
-    with ThreadPoolExecutor(max_workers=2) as pool:
+    with ThreadPoolExecutor(max_workers=3) as pool:
         futures = {pool.submit(_run, label, cmd): label for label, cmd in wave2}
         for fut in as_completed(futures):
             label = futures[fut]
             steps[label] = fut.result()
 
-    if any(steps[k]["exit_code"] != 0 for k in ("holdout_partitions", "human_margin")):
+    if any(steps[k]["exit_code"] != 0 for k in ("holdout_partitions", "off_fixture_ab", "human_margin")):
         _write_manifest(steps, ok=False)
         return 1
 
@@ -81,6 +89,8 @@ def _write_manifest(steps: dict[str, dict[str, Any]], *, ok: bool) -> None:
         "outputs": [
             "reports/logos_chronology_text_blind_v2_ab_v1_latest.json",
             "reports/logos_chronology_text_blind_v2_holdout_v1_latest.json",
+            "reports/logos_chronology_off_fixture_text_blind_v2_ab_v1_latest.json",
+            "reports/logos_chronology_off_fixture_holdout_v1_latest.json",
             "reports/logos_chronology_era_blind_eval_digest_v1_latest.md",
             "reports/logos_hardset_era_human_margin_report_v1_latest.json",
         ],

@@ -15,6 +15,13 @@ on:
       - "docs/final/artifacts/fixtures/logos_chronology_historical_era_gold_v1.json"
       - "tests/test_eval_logos_chronology_era_blind_v1.py"
       - "tests/test_logos_chronology_hardset_and_ab_v1.py"
+      - "scripts/build_logos_chronology_off_fixture_era_gold_v1.py"
+      - "scripts/run_logos_chronology_off_fixture_text_blind_v2_ab_v1.py"
+      - "scripts/summarize_logos_chronology_off_fixture_holdout_v1.py"
+      - "scripts/run_logos_chronology_text_blind_v2_parallel_v1.py"
+      - "scripts/summarize_logos_chronology_partition_holdout_v1.py"
+      - "scripts/build_logos_chronology_era_eval_digest_v1.py"
+      - "tests/test_logos_chronology_off_fixture_text_blind_v2_v1.py"
   pull_request:
     paths:
       - "scripts/logos_chronology_map_core_v1.py"
@@ -28,6 +35,13 @@ on:
       - "docs/final/artifacts/fixtures/logos_chronology_historical_era_gold_v1.json"
       - "tests/test_eval_logos_chronology_era_blind_v1.py"
       - "tests/test_logos_chronology_hardset_and_ab_v1.py"
+      - "scripts/build_logos_chronology_off_fixture_era_gold_v1.py"
+      - "scripts/run_logos_chronology_off_fixture_text_blind_v2_ab_v1.py"
+      - "scripts/summarize_logos_chronology_off_fixture_holdout_v1.py"
+      - "scripts/run_logos_chronology_text_blind_v2_parallel_v1.py"
+      - "scripts/summarize_logos_chronology_partition_holdout_v1.py"
+      - "scripts/build_logos_chronology_era_eval_digest_v1.py"
+      - "tests/test_logos_chronology_off_fixture_text_blind_v2_v1.py"
 
 jobs:
   smoke:
@@ -40,4 +54,4 @@ jobs:
       - name: pytest era blind eval
         run: |
           python -m pip install -q pytest
-          python -m pytest tests/test_eval_logos_chronology_era_blind_v1.py tests/test_logos_chronology_hardset_and_ab_v1.py -q
+          python -m pytest tests/test_eval_logos_chronology_era_blind_v1.py tests/test_logos_chronology_hardset_and_ab_v1.py tests/test_logos_chronology_off_fixture_text_blind_v2_v1.py -q
