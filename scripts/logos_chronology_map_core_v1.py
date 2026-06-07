@@ -64,6 +64,95 @@ TEXT_TAG_KEYWORDS: list[tuple[str, str]] = [
     ("acts ", "stability"),
 ]
 
+# text_blind_v2: Korean + narrative hints (B-track PoC; MS baseline text_blind v1 unchanged).
+TEXT_TAG_KEYWORDS_V2_KO: list[tuple[str, str]] = [
+    ("imf", "imf"),
+    ("구제", "imf"),
+    ("통화", "imf"),
+    ("유로", "imf"),
+    ("ecb", "imf"),
+    ("리먼", "lehman"),
+    ("신용", "lehman"),
+    ("유동성", "lehman"),
+    ("은행", "lehman"),
+    ("금융위기", "lehman"),
+    ("코로나", "covid"),
+    ("팬데믹", "covid"),
+    ("백신", "covid"),
+    ("닷컴", "it_bubble"),
+    ("버블", "it_bubble"),
+    ("it 과열", "it_bubble"),
+    ("나스닥", "it_bubble"),
+    ("변동성", "risk"),
+    ("vix", "risk"),
+    ("지정학", "risk"),
+    ("긴축", "risk"),
+    ("인플레", "risk"),
+    ("테이퍼", "risk"),
+    ("브렉시트", "risk"),
+    ("위안화", "imf"),
+    ("캐리", "risk"),
+    ("출애굽", "empire_transition"),
+    ("광야", "empire_transition"),
+    ("율법", "empire_transition"),
+    ("해방", "empire_transition"),
+    ("언약", "stability"),
+    ("족장", "stability"),
+    ("포로", "imf"),
+    ("귀환", "imf"),
+    ("제국", "empire_transition"),
+    ("교체", "empire_transition"),
+    ("사사", "risk"),
+    ("순환", "risk"),
+    ("질서 붕괴", "risk"),
+    ("왕국", "empire_transition"),
+    ("분열", "empire_transition"),
+    ("복음", "stability"),
+    ("logos", "stability"),
+    ("초대교회", "stability"),
+    ("네트워크", "stability"),
+    ("창조", "stability"),
+    ("질서", "stability"),
+    ("경계", "stability"),
+    ("종말", "risk"),
+]
+
+# Direct era phrase hints (score bonus in text_blind_v2 only; not gold-tag leakage).
+ERA_TEXT_HINTS: dict[str, list[str]] = {
+    "modern_observational_field": [
+        "imf",
+        "구제",
+        "리먼",
+        "코로나",
+        "팬데믹",
+        "변동성",
+        "버블",
+        "닷컴",
+        "긴축",
+        "인플레",
+        "지정학",
+        "유동성",
+        "vix",
+        "테이퍼",
+        "브렉시트",
+        "위안화",
+        "은행",
+        "금융위기",
+        "중앙은행",
+        "퀀트",
+    ],
+    "exodus_wilderness_law": ["출애굽", "광야", "율법", "해방"],
+    "patriarch_covenant_arc": ["언약", "족장"],
+    "exile_and_return": ["포로", "귀환", "구제"],
+    "intertestamental_empire_handoff": ["제국", "교체", "침묵"],
+    "judges_risk_cycle": ["사사", "순환", "질서 붕괴", "리스크"],
+    "united_divided_kingdom": ["왕국", "분열", "거버넌스"],
+    "gospel_logos_incarnate": ["복음", "logos", "현현"],
+    "early_church_network": ["초대교회", "네트워크", "확장"],
+    "genesis_order_and_fall": ["창조", "경계", "타락"],
+    "eschaton_restoration_hypo": ["종말", "완성", "eschaton"],
+}
+
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
@@ -99,6 +188,27 @@ def infer_tags_from_text(text: str) -> list[str]:
         if needle in low:
             tags.add(tag)
     return sorted(tags)
+
+
+def infer_tags_from_text_v2(text: str, *, event_tier: str | None = None) -> list[str]:
+    """text_blind_v2: v1 English + Korean macro/narrative keywords; macro fallback risk tag."""
+    low = (text or "").lower()
+    tags: set[str] = set(infer_tags_from_text(text))
+    for needle, tag in TEXT_TAG_KEYWORDS_V2_KO:
+        if needle in low:
+            tags.add(tag)
+    if not tags and event_tier == "macro_landmark":
+        tags.add("risk")
+    return sorted(tags)
+
+
+def era_text_hint_bonus(era_id: str, text: str) -> float:
+    low = (text or "").lower()
+    hints = ERA_TEXT_HINTS.get(era_id, [])
+    hits = sum(1 for h in hints if h.lower() in low)
+    if hits <= 0:
+        return 0.0
+    return round(min(0.45, 0.15 * hits), 6)
 
 
 def era_rows(chrono: dict[str, Any]) -> list[dict[str, Any]]:
@@ -198,6 +308,8 @@ def rank_eras(
     event_tier: str | None = None,
     event_partition: str | None = None,
     boost_policy: str = "global",
+    source_text: str | None = None,
+    text_blind_v2: bool = False,
 ) -> list[dict[str, Any]]:
     inferred_set = set(inferred_tags)
     effective_boost = resolve_modern_boost(event_tier, modern_boost, boost_policy)
@@ -209,6 +321,8 @@ def rank_eras(
         score, matched, bh = score_era(row, inferred_set)
         if row["era_id"] == MODERN_ERA and inferred_set:
             score = min(1.0, score + effective_boost)
+        if text_blind_v2 and source_text:
+            score = min(1.0, score + era_text_hint_bonus(str(row["era_id"]), source_text))
         score = apply_locked_eval_score_adjustments(
             str(row["era_id"]),
             score,

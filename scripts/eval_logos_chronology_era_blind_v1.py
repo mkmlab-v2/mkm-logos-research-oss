@@ -18,6 +18,7 @@ from logos_chronology_map_core_v1 import (
     POLICY,
     confidence_band,
     infer_tags_from_text,
+    infer_tags_from_text_v2,
     load_json,
     rank_eras,
 )
@@ -80,12 +81,14 @@ def _evaluate_event(
     tags = list(ev.get("inferred_regime_tags") or [])
     rag_trace: dict[str, Any] | None = None
     text_src = str(ev.get("canonical_text") or ev.get("headline_ko") or "")
+    tier = str(ev.get("tier") or "")
     if tag_mode == "text_blind" and text_src:
         tags = infer_tags_from_text(text_src)
+    elif tag_mode == "text_blind_v2" and text_src:
+        tags = infer_tags_from_text_v2(text_src, event_tier=tier or None)
     elif tag_mode == "rag_assisted" and text_src:
         tags, rag_trace = infer_tags_rag_assisted(text_src, graphrag_topics_json=graphrag_topics_json)
 
-    tier = str(ev.get("tier") or "")
     partition = str(ev.get("partition") or "") or None
     ranking = rank_eras(
         chrono,
@@ -94,6 +97,8 @@ def _evaluate_event(
         event_tier=tier,
         event_partition=partition,
         boost_policy=boost_policy,
+        source_text=text_src if tag_mode == "text_blind_v2" else None,
+        text_blind_v2=(tag_mode == "text_blind_v2"),
     )
     pred_ids = [str(r["era_id"]) for r in ranking]
     gold = str(ev.get("gold_era_id") or "")
@@ -160,9 +165,9 @@ def main() -> int:
     ap.add_argument("--hardset-jsonl", type=Path, default=DEFAULT_HARDSET)
     ap.add_argument(
         "--tag-mode",
-        choices=["gold_tags", "text_blind", "rag_assisted"],
+        choices=["gold_tags", "text_blind", "text_blind_v2", "rag_assisted"],
         default="gold_tags",
-        help="gold_tags=fixture tags; text_blind=keyword only; rag_assisted=text_blind+GraphRAG topic enrichment (PoC)",
+        help="gold_tags=fixture tags; text_blind=keyword v1; text_blind_v2=KO+narrative hints (B-track); rag_assisted=text_blind+GraphRAG",
     )
     ap.add_argument(
         "--graphrag-topics-json",
