@@ -10,28 +10,14 @@ import {
   triageLabel,
 } from "@/lib/clinician-intake-utils";
 import type { ClinicianSurveySsotPayload } from "@/lib/clinician-survey-ssot-v1";
+import {
+  applyPatientPinSurveyToClinicianState,
+  type PatientPinLookupResponse,
+} from "@/lib/patient-intake-pin-lookup-v1";
 
 const RECENT_PIN_STORAGE_KEY = "advanced_consult_recent_pins_v1";
 
 type RecentPinItem = { pin: string; name: string; phoneLast4: string; savedAt: string };
-
-type PatientPinLookupResponse = {
-  success: boolean;
-  error?: string;
-  survey?: {
-    survey_id: string;
-    intake_pin: string;
-    triage_level: "routine" | "priority" | "emergency";
-    patient_name: string;
-    symptoms: {
-      pain_area: string;
-      pain_scale_0_10: number;
-      symptom_duration: string;
-      consultation_goal: string;
-    };
-    constitution_survey: { sleep_pattern: string; digestion_pattern: string };
-  };
-};
 
 type ClinicianConsultContextPanelProps = {
   compact?: boolean;
@@ -114,22 +100,9 @@ export function ClinicianConsultContextPanel({
         return;
       }
       const s = json.survey;
-      const mergedComplaint = [s.symptoms.pain_area, s.symptoms.consultation_goal].filter(Boolean).join(" / ");
-      patch({
-        chiefComplaint: mergedComplaint || s.symptoms.pain_area || context.chiefComplaint,
-        onset: s.symptoms.symptom_duration || context.onset,
-        severity: `${s.symptoms.pain_scale_0_10}/10`,
-        digestionPattern: s.constitution_survey.digestion_pattern || context.digestionPattern,
-        sleepPattern: s.constitution_survey.sleep_pattern || context.sleepPattern,
-        painScale0to10: String(s.symptoms.pain_scale_0_10),
-        loadedSurveyContext: {
-          surveyId: s.survey_id,
-          intakePin: s.intake_pin,
-          patientName: s.patient_name,
-          triageLevel: s.triage_level,
-        },
-      });
-      setLookupStatus(`반영: ${s.intake_pin} / ${s.patient_name}`);
+      patch(applyPatientPinSurveyToClinicianState(s, context));
+      const sajuHint = s.lane_a_profile?.saju_label ? ` · 사주 ${s.lane_a_profile.saju_label}` : "";
+      setLookupStatus(`반영: ${s.intake_pin} / ${s.patient_name}${sajuHint}`);
     } catch {
       setLookupStatus("네트워크 오류");
     } finally {

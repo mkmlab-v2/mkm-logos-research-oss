@@ -19,14 +19,17 @@ async function request(path, init) {
 }
 
 async function main() {
+  const patientName = "스모크테스트";
+  const patientPhone = "010-1234-5678";
+
   const submit = await request("/api/intake/clinic-intake-v1", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       schema_version: "clinic_intake_v1",
       patient: {
-        name: "스모크테스트",
-        phone: "010-1234-5678",
+        name: patientName,
+        phone: patientPhone,
         birthdate: "1990-01-01",
         visit_type: "초진",
       },
@@ -66,6 +69,10 @@ async function main() {
         specialty: "sleep",
         preferred_time: "weekday_evening",
       },
+      optional_profile: {
+        birth_time: "09:30",
+        birth_time_known: true,
+      },
       submitted_at_utc: new Date().toISOString(),
     }),
   });
@@ -76,6 +83,18 @@ async function main() {
   assert(typeof submit.json?.intake_pin === "string" && submit.json.intake_pin.length >= 6, "intake_pin required");
   assert(["routine", "priority", "emergency"].includes(submit.json?.triage_level), "triage_level invalid");
   assert(submit.json?.kakao_summary?.receipt_id === submit.json?.survey_id, "kakao_summary.receipt_id mismatch");
+  assert(submit.json?.birth_resolved === true, "birth_resolved must be true when birthdate provided");
+  assert(typeof submit.json?.birth_resolved === "boolean", "birth_resolved field required");
+
+  const intakePin = submit.json.intake_pin;
+  const pinLookup = await request(
+    `/api/intake/patient-presurvey?pin=${encodeURIComponent(intakePin)}&name=${encodeURIComponent(patientName)}`,
+    { method: "GET" },
+  );
+  assert(pinLookup.res.status === 200, `PIN lookup expected 200, got ${pinLookup.res.status}`);
+  assert(pinLookup.json?.success === true, "PIN lookup success must be true");
+  assert(pinLookup.json?.survey?.lane_a_profile?.birth_instant_utc, "PIN lookup must return birth_instant_utc");
+  assert(pinLookup.json?.survey?.lane_a_profile?.iana_tz === "Asia/Seoul", "PIN lookup iana_tz must be Asia/Seoul");
 
   const list = await request("/api/intake/clinic-intake-v1", {
     method: "GET",

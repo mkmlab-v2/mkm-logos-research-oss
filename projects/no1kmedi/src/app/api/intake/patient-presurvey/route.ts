@@ -381,6 +381,13 @@ export async function GET(request: NextRequest) {
           patient_name: found.patient.name,
           symptoms: found.symptoms,
           constitution_survey: found.lane_a_profile.constitution_survey,
+          lane_a_profile: {
+            birth_instant_utc: found.lane_a_profile.birth_instant_utc,
+            iana_tz: found.lane_a_profile.iana_tz,
+            birth_time_known: found.lane_a_profile.birth_time_known,
+            saju_label: found.lane_a_profile.saju_label,
+            saju_source: found.lane_a_profile.saju_source,
+          },
         },
       },
       { status: 200, headers: { "Cache-Control": "no-store" } },

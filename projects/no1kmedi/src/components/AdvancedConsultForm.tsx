@@ -3,7 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import type { CdssGenerationReason } from "@/lib/cdss-contract";
 import { buildClinicianConsultPayload, type ClinicianConsultFormState } from "@/lib/clinician-consult-payload-v1";
+import {
+  applyPatientPinSurveyToClinicianState,
+  type PatientPinLookupResponse,
+} from "@/lib/patient-intake-pin-lookup-v1";
 import { getConfidenceThresholds } from "@/lib/confidence-thresholds";
+import { IntegratedWellnessLifestyleDraftPreview } from "@/components/IntegratedWellnessLifestyleDraftPreview";
 import { PatientCareBundlePreview } from "@/components/PatientCareBundlePreview";
 
 function formatIntakePinInput(value: string): string {
@@ -135,6 +140,28 @@ type AdvancedConsultResponse = {
     tri_layer?: unknown;
     validation?: { ok: boolean; method: string; error?: string };
   };
+  integrated_wellness?: {
+    lifestyle_draft?: {
+      schema?: string;
+      disclaimer?: string;
+      human_confirm_required?: boolean;
+      suppression_log_count?: number;
+      suppression_log?: Array<{
+        node_id?: string;
+        reason?: string;
+        tier_blocked_by?: string;
+        triggered_by?: string;
+      }>;
+      patient_slots?: Array<{
+        slot_id?: string;
+        title?: string;
+        body_markdown?: string;
+        human_confirm_required?: boolean;
+      }>;
+    };
+    resolved_path?: string;
+    error?: string;
+  };
 };
 
 type MemberAccessStatusResponse = {
@@ -144,28 +171,6 @@ type MemberAccessStatusResponse = {
   payment_status?: string;
   verification_status?: string;
   can_use_pro_clinical_assist?: boolean;
-};
-
-type PatientPinLookupResponse = {
-  success: boolean;
-  error?: string;
-  retry_after_seconds?: number;
-  survey?: {
-    survey_id: string;
-    intake_pin: string;
-    triage_level: "routine" | "priority" | "emergency";
-    patient_name: string;
-    symptoms: {
-      pain_area: string;
-      pain_scale_0_10: number;
-      symptom_duration: string;
-      consultation_goal: string;
-    };
-    constitution_survey: {
-      sleep_pattern: string;
-      digestion_pattern: string;
-    };
-  };
 };
 
 type AdvancedConsultFormProps = {
@@ -339,9 +344,15 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
     try {
       const requestId = `req_${Date.now()}`;
       const consultPayload = buildClinicianConsultPayload(consultFormState, requestId);
-      const res = await fetch("/api/cdss/advanced-consult?validate_km_cds_envelope=1", {
+      const headers: Record<string, string> = { "Content-Type": "application/json" };
+      const email = accessEmail.trim().toLowerCase();
+      if (email) headers["x-clinician-email"] = email;
+
+      const res = await fetch(
+        "/api/cdss/advanced-consult?validate_km_cds_envelope=1&include_integrated_wellness=1",
+        {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers,
         body: JSON.stringify({
           ...consultPayload,
           lens_mode: lensMode,
@@ -353,7 +364,8 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
             contract_constraints: ["no medical diagnosis", "no prescription replacement"],
           },
         }),
-      });
+        },
+      );
       const json = (await res.json()) as AdvancedConsultResponse;
       setResult(json);
       if (json?.draft?.citations?.length) setSelectedCitationId(json.draft.citations[0].citation_id);
@@ -394,28 +406,30 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
         return;
       }
 
-      const painPart = json.survey.symptoms.pain_area;
-      const goalPart = json.survey.symptoms.consultation_goal;
-      const mergedComplaint = [painPart, goalPart].filter(Boolean).join(" / ");
-      setChiefComplaint(mergedComplaint || painPart || "환자 문진 입력 기반");
-      setOnset(json.survey.symptoms.symptom_duration || "");
-      setSeverity(`${json.survey.symptoms.pain_scale_0_10}/10`);
-      setDigestionPattern(json.survey.constitution_survey.digestion_pattern || "");
-      setSleepPattern(json.survey.constitution_survey.sleep_pattern || "");
-      setPainScale0to10(
-        typeof json.survey.symptoms.pain_scale_0_10 === "number"
-          ? String(json.survey.symptoms.pain_scale_0_10)
-          : "",
-      );
-      setMedication("");
-      setLoadedSurveyContext({
-        surveyId: json.survey.survey_id,
-        intakePin: json.survey.intake_pin,
-        patientName: json.survey.patient_name,
-        triageLevel: json.survey.triage_level,
+      const applied = applyPatientPinSurveyToClinicianState(json.survey, {
+        chiefComplaint,
+        onset,
+        severity,
+        digestionPattern,
+        sleepPattern,
+        painScale0to10,
+        bodyHeatPreference,
+        constitutionFreeText,
       });
+      if (applied.chiefComplaint) setChiefComplaint(applied.chiefComplaint);
+      if (applied.onset) setOnset(applied.onset);
+      if (applied.severity) setSeverity(applied.severity);
+      if (applied.digestionPattern) setDigestionPattern(applied.digestionPattern);
+      if (applied.sleepPattern) setSleepPattern(applied.sleepPattern);
+      if (applied.painScale0to10) setPainScale0to10(applied.painScale0to10);
+      if (applied.bodyHeatPreference) setBodyHeatPreference(applied.bodyHeatPreference);
+      if (applied.constitutionFreeText) setConstitutionFreeText(applied.constitutionFreeText);
+      if (applied.birthInstantUtc) setBirthInstantUtc(applied.birthInstantUtc);
+      if (applied.ianaTz) setIanaTz(applied.ianaTz);
+      if (applied.loadedSurveyContext) setLoadedSurveyContext(applied.loadedSurveyContext);
+      const sajuHint = json.survey.lane_a_profile?.saju_label ? ` · 사주 ${json.survey.lane_a_profile.saju_label}` : "";
       setLookupStatus(
-        `문진 조회 완료: ${json.survey.intake_pin} / ${json.survey.patient_name} (${triageLabel(json.survey.triage_level)}) 정보를 입력 폼에 반영했습니다.`,
+        `문진 조회 완료: ${json.survey.intake_pin} / ${json.survey.patient_name} (${triageLabel(json.survey.triage_level)}) 정보를 입력 폼에 반영했습니다.${sajuHint}`,
       );
       saveRecentPin(json.survey.intake_pin, json.survey.patient_name, lookupPhoneLast4);
     } catch {
@@ -802,6 +816,15 @@ export function AdvancedConsultForm({ activeView = "assist" }: AdvancedConsultFo
               ) : null}
 
               <p className="consult-notice">{result.draft?.non_medical_notice}</p>
+
+              <IntegratedWellnessLifestyleDraftPreview
+                draft={
+                  result.integrated_wellness?.lifestyle_draft ??
+                  (result.integrated_wellness?.error
+                    ? { error: result.integrated_wellness.error }
+                    : undefined)
+                }
+              />
 
               {result.draft ? (
                 <PatientCareBundlePreview

@@ -17,6 +17,7 @@ import {
   type ConstitutionQuestionId,
   type ConstitutionQuestionOption,
 } from "@/lib/constitution-survey-schema";
+import { buildClinicIntakePatientPinSmsBody } from "@/lib/clinic-intake-staff-link-v1";
 
 type PatientPreSurveyResponse = {
   success: boolean;
@@ -70,6 +71,8 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [birthdate, setBirthdate] = useState("");
+  const [birthTime, setBirthTime] = useState("");
+  const [birthTimeUnknown, setBirthTimeUnknown] = useState(false);
   const [ageBand, setAgeBand] = useState("");
   const [painArea, setPainArea] = useState("");
   const [painScale, setPainScale] = useState("5");
@@ -109,9 +112,13 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
     [constitutionAnswers],
   );
   const isCoreConstitutionSurveyComplete = answeredCoreConstitutionCount === CORE_CONSTITUTION_QUESTION_IDS.length;
-  const intakeShareMessage = report
-    ? `[NO1KMEDI 문진 코드]\n문진코드: ${report.intakePin}\n이름: ${report.patientName}\n진료 전에 원장님 화면에 이 코드를 입력해 주세요.`
-    : "";
+  const intakeShareMessage = useMemo(() => {
+    if (!report) return "";
+    if (intakeMode === "clinic_v1") {
+      return buildClinicIntakePatientPinSmsBody({ intakePin: report.intakePin });
+    }
+    return `[NO1KMEDI 문진 코드]\n문진코드: ${report.intakePin}\n이름: ${report.patientName}\n진료 전에 원장님 화면에 이 코드를 입력해 주세요.`;
+  }, [report, intakeMode]);
 
   function shareViaSms() {
     if (!report) return;
@@ -187,6 +194,10 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
                 region: preferredRegion.trim(),
                 specialty: preferredSpecialty.trim(),
                 preferred_time: preferredTime.trim(),
+              },
+              optional_profile: {
+                birth_time: birthTimeUnknown ? undefined : birthTime.trim() || undefined,
+                birth_time_known: !birthTimeUnknown && Boolean(birthTime.trim()),
               },
               submitted_at_utc: new Date().toISOString(),
             }
@@ -272,6 +283,8 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
       setName("");
       setPhone("");
       setBirthdate("");
+      setBirthTime("");
+      setBirthTimeUnknown(false);
       setAgeBand("");
       setPainArea("");
       setPainScale("5");
@@ -356,14 +369,37 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
           <input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="010-0000-0000" required />
         </label>
         {intakeMode === "clinic_v1" ? (
-          <label>
-            생년월일
-            <input value={birthdate} onChange={(e) => setBirthdate(e.target.value)} placeholder="YYYY-MM-DD" required />
-          </label>
+          <>
+            <label>
+              생년월일
+              <input type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} required />
+            </label>
+            <label>
+              출생 시간 (선택)
+              <input
+                type="time"
+                value={birthTime}
+                onChange={(e) => setBirthTime(e.target.value)}
+                disabled={birthTimeUnknown}
+              />
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={birthTimeUnknown}
+                onChange={(e) => {
+                  setBirthTimeUnknown(e.target.checked);
+                  if (e.target.checked) setBirthTime("");
+                }}
+              />
+              출생 시간을 모릅니다 (정오 기준으로 계산)
+            </label>
+          </>
         ) : null}
+        {intakeMode === "legacy" ? (
         <label>
           연령대
-          <select value={ageBand} onChange={(e) => setAgeBand(e.target.value)} required={intakeMode === "legacy"}>
+          <select value={ageBand} onChange={(e) => setAgeBand(e.target.value)} required>
             <option value="">선택</option>
             <option value="under20">20세 미만</option>
             <option value="20s">20대</option>
@@ -373,6 +409,7 @@ export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurvey
             <option value="60plus">60대 이상</option>
           </select>
         </label>
+        ) : null}
         <label>
           통증/불편 부위
           <input value={painArea} onChange={(e) => setPainArea(e.target.value)} required />

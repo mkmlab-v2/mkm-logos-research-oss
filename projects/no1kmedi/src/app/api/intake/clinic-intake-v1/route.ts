@@ -9,12 +9,31 @@ import {
   type ClinicIntakeV1Payload,
 } from "@/lib/clinic-intake-v1-contract";
 import { deliverKakaoIntakeSummary } from "@/lib/kakao-intake-adapter";
+import { extractSajuLabelFromVerifyLite, resolveClinicBirthInstant } from "@/lib/clinic-intake-birth-v1";
+import { runVerifyLiteEngine } from "@/lib/manseryeok-verify-lite-engine";
 
 function generateIntakePin(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let pin = "";
   for (let i = 0; i < 6; i += 1) pin += chars[Math.floor(Math.random() * chars.length)];
   return `${pin.slice(0, 3)}-${pin.slice(3)}`;
+}
+
+async function resolveSajuSnapshot(birthInstantUtc: string, ianaTz: string) {
+  try {
+    const lite = await runVerifyLiteEngine({
+      birth_instant_utc: birthInstantUtc,
+      tz: ianaTz,
+    });
+    const label = extractSajuLabelFromVerifyLite(lite.myeongni_lite);
+    return {
+      saju_label: label || undefined,
+      saju_source: label ? ("live" as const) : ("pending" as const),
+      myeongni_lite: lite.myeongni_lite,
+    };
+  } catch {
+    return { saju_label: undefined, saju_source: "pending" as const, myeongni_lite: null };
+  }
 }
 
 export async function POST(request: NextRequest) {
@@ -29,6 +48,20 @@ export async function POST(request: NextRequest) {
     const intakePin = generateIntakePin();
     const submittedAt = payload.submitted_at_utc || new Date().toISOString();
     const surveyId = `clinic_intake_${Date.now()}`;
+
+    const birthResolved = resolveClinicBirthInstant({
+      birthdate: payload.patient.birthdate,
+      birthTime: payload.optional_profile?.birth_time,
+      birthTimeKnown: payload.optional_profile?.birth_time_known,
+    });
+
+    let saju_label: string | undefined;
+    let saju_source: "live" | "fallback" | "pending" | undefined;
+    if (birthResolved) {
+      const saju = await resolveSajuSnapshot(birthResolved.birth_instant_utc, birthResolved.iana_tz);
+      saju_label = saju.saju_label;
+      saju_source = saju.saju_source;
+    }
 
     const record: PatientPreSurveyRecord = {
       survey_id: surveyId,
@@ -55,6 +88,15 @@ export async function POST(request: NextRequest) {
         },
       },
       lane_a_profile: {
+        ...(birthResolved
+          ? {
+              birth_instant_utc: birthResolved.birth_instant_utc,
+              iana_tz: birthResolved.iana_tz,
+              birth_time_known: birthResolved.birth_time_known,
+              birth_time_defaulted: birthResolved.birth_time_defaulted,
+            }
+          : {}),
+        ...(saju_label ? { saju_label, saju_source } : saju_source ? { saju_source } : {}),
         constitution_survey: {
           schema_version: "clinic_intake_v1",
           sleep_pattern: payload.health_core.sleep_quality.trim(),
@@ -62,6 +104,8 @@ export async function POST(request: NextRequest) {
           questionnaire_answers: {
             heat_cold_sensitivity: payload.constitution.heat_cold_sensitivity,
             fatigue_recovery: payload.constitution.fatigue_recovery,
+            body_frame: payload.constitution.body_frame,
+            temperament: payload.constitution.temperament,
           },
         },
       },
@@ -79,6 +123,7 @@ export async function POST(request: NextRequest) {
       },
       meta: {
         source: "clinic_intake_v1",
+        vocabulary_lane: "physician_gold",
       },
     };
 
@@ -98,6 +143,9 @@ export async function POST(request: NextRequest) {
         survey_id: surveyId,
         intake_pin: intakePin,
         triage_level: triageLevel,
+        birth_resolved: Boolean(birthResolved),
+        saju_label: saju_label || null,
+        saju_source: saju_source || null,
         kakao_summary: kakaoSummary,
         kakao_delivery: kakaoDelivery,
       },
@@ -126,6 +174,8 @@ export async function GET(request: NextRequest) {
       patient_phone: row.patient.phone,
       symptom: row.symptoms.pain_area,
       severity_nrs: row.symptoms.pain_scale_0_10,
+      saju_label: row.lane_a_profile?.saju_label || "",
+      birth_instant_utc: row.lane_a_profile?.birth_instant_utc || "",
       constitution_heat_cold:
         (row.lane_a_profile?.constitution_survey?.questionnaire_answers?.heat_cold_sensitivity as string | undefined) || "",
       constitution_fatigue_recovery:

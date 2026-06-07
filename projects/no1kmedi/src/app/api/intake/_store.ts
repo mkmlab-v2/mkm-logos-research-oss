@@ -48,6 +48,12 @@ export type PatientPreSurveyRecord = {
     };
   };
   lane_a_profile: {
+    birth_instant_utc?: string;
+    iana_tz?: string;
+    birth_time_known?: boolean;
+    birth_time_defaulted?: boolean;
+    saju_label?: string;
+    saju_source?: "live" | "fallback" | "pending";
     constitution_survey: {
       schema_version?: string;
       sleep_pattern: string;
@@ -69,6 +75,7 @@ export type PatientPreSurveyRecord = {
   };
   meta?: {
     source?: string;
+    vocabulary_lane?: string;
     kakao_summary?: Record<string, unknown>;
   };
 };
