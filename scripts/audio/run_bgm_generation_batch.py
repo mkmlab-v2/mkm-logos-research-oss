@@ -49,6 +49,13 @@ def _default_provenance(run_id: str, seed_id: str) -> dict:
     }
 
 
+def _resolve_generation_seconds(seed: dict, placeholder_seconds: float) -> float:
+    """Use seed target_loop_seconds when placeholder_seconds is unset (<=0)."""
+    if placeholder_seconds > 0:
+        return float(placeholder_seconds)
+    return float(seed.get("target_loop_seconds") or 2.0)
+
+
 def _write_silence_wav(path: Path, seconds: float, sample_rate: int = 48000) -> None:
     """Mono 16-bit PCM silence (stdlib only)."""
     import wave
@@ -81,8 +88,8 @@ def main() -> int:
     p.add_argument(
         "--placeholder-seconds",
         type=float,
-        default=2.0,
-        help="Duration seconds per WAV for placeholder or external stub backends.",
+        default=0.0,
+        help="Duration per WAV; 0 = seed target_loop_seconds (fallback 2.0 for placeholder-only).",
     )
     p.add_argument(
         "--provenance-json",
@@ -133,6 +140,7 @@ def main() -> int:
     seed_canonical = json.dumps(seed, sort_keys=True, ensure_ascii=False)
     seed_hash = hashlib.sha256(seed_canonical.encode("utf-8")).hexdigest()
     seed_id = str(seed.get("seed_id", "unknown"))
+    generation_seconds = _resolve_generation_seconds(seed, args.placeholder_seconds)
 
     written_wavs: list[str] = []
     if emit_mode == "placeholder":
@@ -145,7 +153,7 @@ def main() -> int:
             stem = f"bgm_{run_id}_{i:03d}"
             wav_path = args.output_dir / f"{stem}.wav"
             meta_path = args.output_dir / f"{stem}.meta.json"
-            _write_silence_wav(wav_path, args.placeholder_seconds, sr)
+            _write_silence_wav(wav_path, generation_seconds, sr)
             meta_path.write_text(json.dumps(prov, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
             written_wavs.append(str(wav_path.as_posix()))
     elif emit_mode == "external":
@@ -159,8 +167,9 @@ def main() -> int:
         if not script_path.is_file():
             print(json.dumps({"ok": False, "error": f"external script not found: {script_path}"}, indent=2))
             return 4
-        timeout_s = int((os.environ.get("MKM_AUDIO_EXTERNAL_TIMEOUT_SEC") or "600").strip() or "600")
+        timeout_s = int((os.environ.get("MKM_AUDIO_EXTERNAL_TIMEOUT_SEC") or "900").strip() or "900")
         seed_abs = args.seed_json.resolve()
+        cond_env = (os.environ.get("MKM_AUDIO_CONDITIONING_JSON") or "").strip()
         for i in range(args.count):
             stem = f"bgm_{run_id}_{i:03d}"
             wav_path = args.output_dir / f"{stem}.wav"
@@ -177,8 +186,14 @@ def main() -> int:
                 "--run-id",
                 run_id,
                 "--seconds",
-                str(args.placeholder_seconds),
+                str(generation_seconds),
             ]
+            if cond_env and "musicgen" in script_path.name.lower():
+                cond_path = Path(cond_env)
+                if not cond_path.is_absolute():
+                    cond_path = (_REPO_ROOT / cond_path).resolve()
+                if cond_path.is_file():
+                    cmd.extend(["--conditioning-json", str(cond_path)])
             try:
                 subprocess.run(cmd, check=True, timeout=timeout_s, cwd=str(_REPO_ROOT))
             except subprocess.CalledProcessError as e:
@@ -188,6 +203,21 @@ def main() -> int:
                 print(json.dumps({"ok": False, "error": "external_generator_timeout", "timeout_sec": timeout_s}, indent=2))
                 return 6
             prov = _default_provenance(run_id, seed_id)
+            meta_path = args.output_dir / f"{stem}.meta.json"
+            if meta_path.is_file():
+                try:
+                    prov.update(_load_json(meta_path))
+                except Exception:
+                    pass
+            elif "musicgen" in script_path.name.lower():
+                prov.update(
+                    {
+                        "provider": "local_transformers",
+                        "model_id": os.environ.get("MKM_AUDIO_MUSICGEN_MODEL", "facebook/musicgen-small"),
+                        "model_version": "transformers_musicgen",
+                        "commercial_terms_tag": "apache2_self_host_weights_v1",
+                    }
+                )
             if args.provenance_json and args.provenance_json.is_file():
                 extra = _load_json(args.provenance_json)
                 prov.update(extra)
@@ -212,6 +242,7 @@ def main() -> int:
         "seed_path": str(args.seed_json.as_posix()),
         "seed_hash": f"sha256:{seed_hash}",
         "requested_count": args.count,
+        "generation_seconds": generation_seconds,
         "output_dir": str(args.output_dir.as_posix()),
         "emit_mode": emit_mode,
         "status": (
@@ -251,6 +282,13 @@ def main() -> int:
             ]
             if meta_path.is_file():
                 cmd.extend(["--provenance-json", str(meta_path.resolve())])
+            cond_env = (os.environ.get("MKM_AUDIO_CONDITIONING_JSON") or "").strip()
+            if cond_env:
+                cond_path = Path(cond_env)
+                if not cond_path.is_absolute():
+                    cond_path = (_REPO_ROOT / cond_path).resolve()
+                if cond_path.is_file():
+                    cmd.extend(["--conditioning-json", str(cond_path)])
             if args.gate_waive_lufs:
                 cmd.append("--waive-lufs")
             if args.gate_waive_bpm_lens:
@@ -272,6 +310,26 @@ def main() -> int:
                     "decision": decision,
                 }
             )
+            if export_path.is_file() and decision == "PASS":
+                cond_env = (os.environ.get("MKM_AUDIO_CONDITIONING_JSON") or "").strip()
+                if cond_env and "musicgen" in script_raw.lower():
+                    cond_path = Path(cond_env)
+                    if not cond_path.is_absolute():
+                        cond_path = (_REPO_ROOT / cond_path).resolve()
+                    feedback_path = wav_path.with_suffix(".conditioning_feedback.json")
+                    fb_cmd = [
+                        sys.executable,
+                        str(_REPO_ROOT / "scripts/audio/build_conditioning_feedback_from_gate_v1.py"),
+                        "--gate-report",
+                        str(export_path.resolve()),
+                        "--conditioning-json",
+                        str(cond_path),
+                        "--out-json",
+                        str(feedback_path.resolve()),
+                    ]
+                    if cond_path.is_file():
+                        subprocess.run(fb_cmd, cwd=str(_REPO_ROOT), check=False)
+                        gate_rows[-1]["conditioning_feedback"] = str(feedback_path.as_posix())
         gate_summary_path_str = str((args.gate_export_dir / f"_gates_summary_{run_id}.json").resolve())
         gate_summary_path = gate_summary_path_str
         Path(gate_summary_path_str).write_text(

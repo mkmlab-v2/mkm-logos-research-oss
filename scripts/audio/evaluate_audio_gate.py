@@ -17,6 +17,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+try:
+    from scripts.audio.detect_bpm_v1 import bpm_delta_pct, measure_bpm_v1
+except ModuleNotFoundError:
+    from detect_bpm_v1 import bpm_delta_pct, measure_bpm_v1
+
 
 def _utc_now_iso() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -95,6 +100,61 @@ def _pick_wav(input_dir: Path, explicit: Path | None) -> Path | None:
     return wavs[0] if wavs else None
 
 
+def _resolve_bpm_target(seed: dict[str, Any] | None, conditioning: dict[str, Any] | None) -> tuple[float, str | None]:
+    """Prefer conditioning tempo_bpm_target over seed bpm when present."""
+    if conditioning:
+        cond = conditioning.get("conditioning") or {}
+        tempo = cond.get("tempo_bpm_target")
+        if isinstance(tempo, (int, float)) and float(tempo) > 0:
+            return float(tempo), "conditioning"
+    if seed and isinstance(seed.get("bpm"), (int, float)) and float(seed["bpm"]) > 0:
+        return float(seed["bpm"]), "seed"
+    return 0.0, None
+
+
+def _evaluate_bpm_lens(
+    samples: list[float],
+    sample_rate: int,
+    seed: dict[str, Any],
+    track: str,
+    *,
+    target_bpm: float | None = None,
+    target_bpm_source: str | None = None,
+    max_delta_pct: float = 12.0,
+    min_confidence: float = 0.25,
+) -> tuple[bool, list[str], dict[str, Any]]:
+    """Returns (lens_pass, skipped_reasons, metric_fields)."""
+    skipped: list[str] = []
+    fields: dict[str, Any] = {}
+    if target_bpm is None:
+        target_bpm, target_bpm_source = _resolve_bpm_target(seed, None)
+    if target_bpm <= 0:
+        return True, skipped, fields
+    if target_bpm_source:
+        fields["bpm_target"] = target_bpm
+        fields["bpm_target_source"] = target_bpm_source
+
+    if isinstance(seed.get("bpm_max_delta_pct"), (int, float)):
+        max_delta_pct = float(seed["bpm_max_delta_pct"])
+
+    observed, confidence = measure_bpm_v1(samples, sample_rate)
+    if observed is None or confidence < min_confidence:
+        if track == "B":
+            skipped.append("bpm_detector_low_confidence_b_track")
+            return True, skipped, fields
+        skipped.append("bpm_detector_low_confidence")
+        return False, skipped, fields
+
+    delta = bpm_delta_pct(observed, target_bpm)
+    fields["bpm_observed"] = observed
+    fields["bpm_delta_pct"] = delta
+    harmonic_delta = bpm_delta_pct(observed * 2.0, target_bpm)
+    half_delta = bpm_delta_pct(observed / 2.0, target_bpm) if observed >= 2.0 else 999.0
+    best_delta = min(delta, harmonic_delta, half_delta)
+    fields["bpm_delta_pct"] = best_delta
+    return best_delta <= max_delta_pct, skipped, fields
+
+
 def build_report(
     *,
     wav_path: Path,
@@ -105,6 +165,7 @@ def build_report(
     run_id: str,
     lufs_profile: str,
     loop_join_policy: dict[str, Any],
+    conditioning: dict[str, Any] | None = None,
     waive_lufs: bool = False,
     waive_bpm_lens: bool = False,
 ) -> dict[str, Any]:
@@ -142,13 +203,23 @@ def build_report(
     if track == "A" and not terms_tag:
         skipped.append("commercial_terms_tag_required_for_track_a")
 
-    if seed and "bpm" in seed:
+    bpm_target, bpm_target_source = _resolve_bpm_target(seed, conditioning)
+    if bpm_target > 0:
         if waive_bpm_lens:
             skipped.append("bpm_lens_waived_explicit_cli")
             metrics["lens_alignment_pass"] = True
         else:
-            skipped.append("bpm_lens_alignment_requires_detector_v1")
-            metrics["lens_alignment_pass"] = False
+            lens_ok, bpm_skipped, bpm_fields = _evaluate_bpm_lens(
+                samples,
+                _sr,
+                seed or {},
+                track,
+                target_bpm=bpm_target,
+                target_bpm_source=bpm_target_source,
+            )
+            skipped.extend(bpm_skipped)
+            metrics.update(bpm_fields)
+            metrics["lens_alignment_pass"] = lens_ok
     else:
         metrics["lens_alignment_pass"] = True
 
@@ -190,7 +261,7 @@ def build_report(
         "loop_join_policy": loop_join_policy,
         "metrics": metrics,
         "provenance": prov_out,
-        "tool_versions": {"evaluate_audio_gate": "1.0.0"},
+        "tool_versions": {"evaluate_audio_gate": "1.0.0", "detect_bpm_v1": "1.0.0"},
         "artifacts": {"wav_path": str(wav_path.as_posix())},
         "decision": decision,
     }
@@ -205,6 +276,12 @@ def main() -> int:
     ap.add_argument("--wav", type=Path, default=None, help="Single WAV (overrides input-dir pick).")
     ap.add_argument("--field-policy", type=Path, default=Path("policies/audio_copyright_field.json"))
     ap.add_argument("--seed-json", type=Path, default=None)
+    ap.add_argument(
+        "--conditioning-json",
+        type=Path,
+        default=None,
+        help="Optional sasang_music_conditioning_v1; tempo_bpm_target overrides seed bpm for lens check.",
+    )
     ap.add_argument("--provenance-json", type=Path, default=None, help="Sidecar provenance.json.")
     ap.add_argument("--track", choices=("A", "B"), default="A")
     ap.add_argument("--run-id", type=str, default="")
@@ -217,7 +294,7 @@ def main() -> int:
     ap.add_argument(
         "--waive-bpm-lens",
         action="store_true",
-        help="PASS lens_alignment when seed has bpm but detector is not wired (explicit waiver).",
+        help="PASS lens_alignment explicitly (audit override; detector v1 is default when omitted).",
     )
     args = ap.parse_args()
 
@@ -228,6 +305,7 @@ def main() -> int:
 
     field_policy = _load_json(args.field_policy)
     seed = _load_json(args.seed_json) if args.seed_json else None
+    conditioning = _load_json(args.conditioning_json) if args.conditioning_json else None
     prov_path = args.provenance_json
     if prov_path is None:
         candidate = wav_path.with_suffix(".meta.json")
@@ -252,6 +330,7 @@ def main() -> int:
         run_id=run_id,
         lufs_profile=lufs_profile,
         loop_join_policy=loop_join_policy,
+        conditioning=conditioning,
         waive_lufs=args.waive_lufs,
         waive_bpm_lens=args.waive_bpm_lens,
     )

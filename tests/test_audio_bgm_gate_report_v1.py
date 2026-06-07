@@ -774,3 +774,206 @@ def test_measure_lufs_measured_flag_when_pyloudnorm_installed(tmp_path):
     _ok, val, measured = _measure_lufs(path)
     assert measured is True
     assert val is not None
+
+
+def _write_click_wav(path: Path, *, bpm: float = 120.0, seconds: float = 4.0, sample_rate: int = 48000) -> None:
+    import math
+    import struct
+    import wave
+
+    samples_per_beat = int(sample_rate * 60.0 / bpm)
+    n = int(seconds * sample_rate)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with wave.open(str(path), "w") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(sample_rate)
+        for i in range(n):
+            v = 12000 if i % samples_per_beat == 0 else 0
+            wf.writeframes(struct.pack("<h", v))
+
+
+def test_detect_bpm_v1_finds_click_track(tmp_path):
+    from scripts.audio.detect_bpm_v1 import measure_bpm_v1
+    from scripts.audio.evaluate_audio_gate import _read_wav_normalized
+
+    wav = tmp_path / "clicks.wav"
+    _write_click_wav(wav, bpm=120.0)
+    samples, sr, _ = _read_wav_normalized(wav)
+    bpm, confidence = measure_bpm_v1(samples, sr)
+    assert bpm is not None
+    assert confidence >= 0.25
+    assert abs(bpm - 120.0) <= 12.0
+
+
+def test_gate_bpm_detector_passes_click_track(tmp_path, monkeypatch):
+    from scripts.audio.evaluate_audio_gate import build_report
+
+    monkeypatch.setattr(
+        "scripts.audio.evaluate_audio_gate._measure_lufs",
+        lambda _path: (True, -14.0, True),
+    )
+    policy = json.loads((ROOT / "policies/audio_copyright_field.json").read_text(encoding="utf-8"))
+    wav = tmp_path / "clicks.wav"
+    _write_click_wav(wav, bpm=96.0)
+    report = build_report(
+        wav_path=wav,
+        field_policy=policy,
+        seed={"seed_id": "click_96", "bpm": 96, "lufs_profile": "streaming_minus14_lufs_v1"},
+        provenance={
+            "provider": "self_hosted",
+            "model_id": "test-clicks",
+            "commercial_terms_tag": "apache2_self_host_weights_v1",
+        },
+        track="B",
+        run_id="click_bpm_test",
+        lufs_profile="streaming_minus14_lufs_v1",
+        loop_join_policy={
+            "crossfade_ms": 12.0,
+            "max_join_sample_jump": 0.02,
+            "eval_window_samples": 2048,
+        },
+    )
+    assert report["metrics"]["lens_alignment_pass"] is True
+    assert "bpm_observed" in report["metrics"]
+
+
+def test_gate_bpm_low_confidence_b_track_passes(tmp_path, monkeypatch):
+    import wave
+
+    from scripts.audio.evaluate_audio_gate import build_report
+
+    monkeypatch.setattr(
+        "scripts.audio.evaluate_audio_gate._measure_lufs",
+        lambda _path: (True, -14.0, True),
+    )
+    policy = json.loads((ROOT / "policies/audio_copyright_field.json").read_text(encoding="utf-8"))
+    wav = tmp_path / "silence.wav"
+    with wave.open(str(wav), "w") as wf:
+        wf.setnchannels(1)
+        wf.setsampwidth(2)
+        wf.setframerate(48000)
+        wf.writeframes(b"\x00\x01" * 48000)
+    report = build_report(
+        wav_path=wav,
+        field_policy=policy,
+        seed={"seed_id": "ambient", "bpm": 96, "lufs_profile": "streaming_minus14_lufs_v1"},
+        provenance={
+            "provider": "local_transformers",
+            "model_id": "musicgen-small",
+            "commercial_terms_tag": "apache2_self_host_weights_v1",
+        },
+        track="B",
+        run_id="ambient_bpm",
+        lufs_profile="streaming_minus14_lufs_v1",
+        loop_join_policy={
+            "crossfade_ms": 12.0,
+            "max_join_sample_jump": 0.02,
+            "eval_window_samples": 2048,
+        },
+    )
+    assert report["decision"] == "PASS"
+    assert "bpm_detector_low_confidence_b_track" in (report["metrics"].get("skipped_checks") or [])
+
+
+def test_build_conditioning_feedback_from_gate_v1(tmp_path):
+    from scripts.audio.build_conditioning_feedback_from_gate_v1 import build_feedback
+
+    gate = {
+        "run_id": "fb01",
+        "decision": "PASS",
+        "metrics": {
+            "bpm_observed": 180.0,
+            "bpm_delta_pct": 6.24,
+            "lufs_integrated": -14.5,
+            "loop_seamlessness_pass": True,
+            "lufs_target_match": True,
+            "lens_alignment_pass": True,
+        },
+    }
+    conditioning = {
+        "conditioning": {
+            "tempo_bpm_target": 96,
+            "duration_seconds": 32.0,
+            "prompt_en": "minimal bed, 96 bpm, no vocals",
+        }
+    }
+    doc = build_feedback(
+        gate_report=gate,
+        conditioning=conditioning,
+        gate_report_path=tmp_path / "gate.json",
+        conditioning_path=tmp_path / "cond.json",
+    )
+    patch = doc["suggested_conditioning_patch"]
+    assert patch["tempo_bpm_target"] == 90.0
+    assert "prompt_en_hint" in patch
+    assert doc["schema"] == "sasang_music_conditioning_feedback_v1"
+
+
+def test_apply_conditioning_feedback_patch_v1(tmp_path):
+    from scripts.audio.apply_conditioning_feedback_patch_v1 import apply_feedback_patch
+
+    conditioning = {
+        "schema": "sasang_music_conditioning_v1",
+        "version": "1.0.0",
+        "hypothesis_class": "HYPO",
+        "generator_target": "musicgen",
+        "conditioning": {
+            "prompt_en": "minimal bed, 96 bpm, no vocals",
+            "duration_seconds": 32.0,
+            "sample_rate": 32000,
+            "tempo_bpm_target": 96.0,
+        },
+        "provenance": {
+            "source": "adapter_from_mapping",
+            "commercial_terms_tag": "apache2_self_host_weights_v1",
+            "experiment_id": "tension_sasang_01",
+        },
+    }
+    feedback = {
+        "schema": "sasang_music_conditioning_feedback_v1",
+        "run_id": "a8bf6275",
+        "gate_decision": "PASS",
+        "suggested_conditioning_patch": {
+            "tempo_bpm_target": 90.0,
+            "prompt_en_hint": "minimal bed, 90 bpm, no vocals",
+            "last_lufs_integrated": -14.5,
+        },
+    }
+    merged = apply_feedback_patch(conditioning, feedback)
+    assert merged["conditioning"]["tempo_bpm_target"] == 90.0
+    assert "90 bpm" in merged["conditioning"]["prompt_en"]
+    assert "pass2" in merged["provenance"]["experiment_id"]
+    assert "a8bf6275" in merged["notes"]
+
+
+def test_gate_bpm_uses_conditioning_tempo_target(tmp_path, monkeypatch):
+    from scripts.audio.evaluate_audio_gate import build_report
+
+    policy = {"commercial_model_allowlist": [{"id": "apache2_self_host_weights_v1"}]}
+    wav = tmp_path / "click_90.wav"
+    _write_click_wav(wav, bpm=90.0)
+
+    report = build_report(
+        wav_path=wav,
+        field_policy=policy,
+        seed={"seed_id": "click_seed", "bpm": 96, "lufs_profile": "streaming_minus14_lufs_v1"},
+        provenance={"commercial_terms_tag": "apache2_self_host_weights_v1"},
+        track="B",
+        run_id="cond_bpm_test",
+        lufs_profile="streaming_minus14_lufs_v1",
+        loop_join_policy={
+            "crossfade_ms": 12.0,
+            "max_join_sample_jump": 0.02,
+            "eval_window_samples": 2048,
+        },
+        conditioning={
+            "schema": "sasang_music_conditioning_v1",
+            "conditioning": {"tempo_bpm_target": 90.0, "prompt_en": "bed 90 bpm"},
+        },
+        waive_lufs=True,
+    )
+    assert report["metrics"]["bpm_target"] == 90.0
+    assert report["metrics"]["bpm_target_source"] == "conditioning"
+    assert report["metrics"]["lens_alignment_pass"] is True
+
