@@ -22,6 +22,25 @@ from urllib import error, parse, request
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SIGNALS_OUT = ROOT / "docs/final/artifacts/naver_openapi_signals_latest.json"
 DEFAULT_NEWS_OUT = ROOT / "docs/final/artifacts/naver_news_feed_latest.json"
+DEFAULT_PRE_NEWS_INPUT = ROOT / "docs/final/artifacts/pre_news_shadow_input_latest.json"
+
+
+def _load_env() -> None:
+    env_path = ROOT / ".env"
+    if not env_path.is_file():
+        return
+    import os
+
+    for line in env_path.read_text(encoding="utf-8", errors="replace").splitlines():
+        s = line.strip()
+        if not s or s.startswith("#") or "=" not in s:
+            continue
+        k, v = s.split("=", 1)
+        k = k.strip()
+        if k and k not in os.environ:
+            os.environ[k] = v.strip().strip('"').strip("'")
+
+
 def _env(name: str, default: str = "") -> str:
     return str(__import__("os").environ.get(name, default)).strip()
 
@@ -255,6 +274,50 @@ def _build_trend_payload(keywords: list[str], lookback_days: int) -> dict[str, A
     }
 
 
+def _sync_pre_news_shadow_input(news_doc: dict[str, Any], out_path: Path) -> int:
+    data = news_doc.get("data")
+    if not isinstance(data, list) or not data:
+        return 0
+    ts_default = str(news_doc.get("ts_utc") or _utc_now())
+    rows: list[dict[str, Any]] = []
+    for i, item in enumerate(data, start=1):
+        if not isinstance(item, dict):
+            continue
+        headline = str(item.get("title") or "").strip()
+        if not headline:
+            continue
+        rows.append(
+            {
+                "row_id": f"naver_{i:03d}",
+                "timestamp_utc": ts_default,
+                "source": str(item.get("source") or "naver_news_search_api_v1"),
+                "headline": headline,
+                "link": item.get("link"),
+                "pub_date": item.get("pub_date"),
+            }
+        )
+    if not rows:
+        return 0
+    doc = {
+        "schema": "pre_news_shadow_input_v1",
+        "generated_at_utc": _utc_now(),
+        "research_only": True,
+        "promotion_required": True,
+        "source_track": "K",
+        "ingest": {
+            "adapter": "fetch_naver_openapi_signals_v1",
+            "naver_news_feed_schema": news_doc.get("schema"),
+            "query": news_doc.get("query"),
+            "items_count": news_doc.get("items_count"),
+        },
+        "rows": rows,
+    }
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"WROTE: {out_path.resolve()}")
+    return len(rows)
+
+
 def main(argv: list[str] | None = None) -> int:
     if argv is None:
         argv = sys.argv[1:]
@@ -269,8 +332,11 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--signals-out", type=Path, default=DEFAULT_SIGNALS_OUT)
     ap.add_argument("--news-out", type=Path, default=DEFAULT_NEWS_OUT)
     ap.add_argument("--allow-cache-fallback", action="store_true")
+    ap.add_argument("--pre-news-input-out", type=Path, default=DEFAULT_PRE_NEWS_INPUT)
+    ap.add_argument("--skip-pre-news-input-sync", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
+    _load_env()
 
     client_id = args.client_id.strip() or _env("NAVER_CLIENT_ID")
     client_secret = args.client_secret.strip() or _env("NAVER_CLIENT_SECRET")
@@ -333,6 +399,8 @@ def main(argv: list[str] | None = None) -> int:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(f"WROTE: {path.resolve()}")
+    if not args.skip_pre_news_input_sync and int(news_doc.get("items_count") or 0) > 0:
+        _sync_pre_news_shadow_input(news_doc, args.pre_news_input_out)
     return 0
 
 
