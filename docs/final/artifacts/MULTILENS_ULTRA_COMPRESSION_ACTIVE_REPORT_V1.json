@@ -5461,7 +5461,7 @@
     "domain_relaxed_max_saving_exclude_case_ids": null,
     "promotion_signoff_applied": {
       "path": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
-      "selected_variant_id": "ssot_cap_0.45_top5_allowlist"
+      "selected_variant_id": "ssot_cap_0.45_top5_allowlist_plus_shard_loss_pattern_tune_v1"
     }
   }
 }

@@ -1,10 +1,10 @@
 {
   "schema": "multilens_ultra_compression_track_a_promotion_signoff_v1",
-  "approved_at_utc": "2026-05-18T20:10:38.681077Z",
+  "approved_at_utc": "2026-06-07T12:16:30Z",
   "reviewer": "commander",
-  "note": "RQ-016 top5 ssot cap 0.45 bench promotion",
-  "candidate_path": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_PROMOTION_CANDIDATE_V1.json",
-  "selected_variant_id": "ssot_cap_0.45_top5_allowlist",
+  "note": "2026-06-07 commander GO: ssot shard loss-pattern tune (zone_d_ssot, zone_b_timing) Active refresh; Decision V1 47.5%/0.890 MS headline frozen",
+  "candidate_path": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+  "selected_variant_id": "ssot_cap_0.45_top5_allowlist_plus_shard_loss_pattern_tune_v1",
   "selected_run_config": {
     "domain_relaxed_max_saving_overrides": {
       "ssot": 0.45
@@ -19,12 +19,29 @@
     "domain_relaxed_max_saving_exclude_case_ids": null,
     "apply_gematria_4d_bridge_policy": false
   },
+  "shard_tune_at_apply": {
+    "commit": "94b90238e1",
+    "paths": [
+      "codebook/shards/zone_d_ssot.json",
+      "codebook/shards/zone_b_timing.json"
+    ],
+    "loss_pattern_source": "reports/constitution/btrack_pilot/compression_jaccard_loss_patterns_latest.json"
+  },
   "promotion_gates_at_apply": {
     "ultra_saving_policy_ok": true,
-    "jaccard_drop_pp_vs_v2_baseline": 0.0,
-    "jaccard_drop_within_decision_threshold": true,
-    "min_jaccard_pin": 0.7142857142857143,
-    "min_jaccard_not_below_track_a": true,
+    "bench_saving_floor_ok": true,
+    "bench_saving_floor_min": 0.47,
+    "global_token_saving_rate": 0.47116736990154706,
+    "avg_reconstruction_fidelity_jaccard": 0.8893218363593751,
+    "min_reconstruction_fidelity_jaccard": 0.6875,
+    "sensitive_violation_count": 0,
+    "golden_bench_regression_ok": true,
+    "golden_bench_regression_path": "reports/compression_golden_bench_regression_v1_latest.json",
+    "decision_v1_ms_headline_frozen": {
+      "global_token_saving_rate": 0.47538677918424754,
+      "avg_reconstruction_fidelity_jaccard": 0.8904921794966301,
+      "note": "FAIL-COMP-004: MS paste unchanged; Active operational KPI only"
+    },
     "cases_with_jaccard_regression_count": 4,
     "regressing_case_ids": [
       "cmp2_002",
@@ -34,14 +51,16 @@
     ],
     "regression_confined_to_top5_low_saving": true,
     "bench_promotion_eligible": true,
-    "auto_track_a_promotion_allowed": true,
-    "human_review_required": false,
+    "auto_track_a_promotion_allowed": false,
+    "human_review_required": true,
     "commander_waiver_eligible": false
   },
   "human_approval": {
     "commander_approve_promotion": true,
+    "commander_approve_active_refresh": true,
     "accept_min_j_waiver": false,
-    "auto_track_a_promotion_allowed_at_apply": true
+    "auto_track_a_promotion_allowed_at_apply": false,
+    "approved_via_chat": "2026-06-07-c6203580-track-a-active-go"
   },
   "active_report_path": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json"
 }
