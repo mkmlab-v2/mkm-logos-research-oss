@@ -223,6 +223,13 @@ def _build_generation_prompt(question: str, system_prompt: str) -> list[dict[str
     ]
 
 
+def _chat_completions_url(base: str) -> str:
+    u = base.rstrip("/")
+    if u.endswith("/v1"):
+        return f"{u}/chat/completions"
+    return f"{u}/v1/chat/completions"
+
+
 def _post_chat(url: str, model: str, messages: list[dict[str, str]], temperature: float, max_tokens: int) -> tuple[dict[str, Any], float]:
     body = {
         "model": model,
@@ -231,7 +238,7 @@ def _post_chat(url: str, model: str, messages: list[dict[str, str]], temperature
         "max_tokens": max_tokens,
     }
     req = urllib.request.Request(
-        url=url.rstrip("/") + "/v1/chat/completions",
+        url=_chat_completions_url(url),
         data=json.dumps(body).encode("utf-8"),
         headers={"Content-Type": "application/json"},
         method="POST",
@@ -244,21 +251,29 @@ def _post_chat(url: str, model: str, messages: list[dict[str, str]], temperature
 
 
 def _extract_text(payload: dict[str, Any]) -> str:
+    """Ollama thinking models (e.g. gemma4) may leave content empty and use reasoning."""
     choices = payload.get("choices") or []
     if not choices:
         return ""
     msg = choices[0].get("message") or {}
-    return str(msg.get("content") or "")
+    content = str(msg.get("content") or "").strip()
+    if content:
+        return content
+    reasoning = str(msg.get("reasoning") or "").strip()
+    if reasoning:
+        return reasoning
+    return str(choices[0].get("text") or "")
 
 
 def _parse_letter(text: str, n_choices: int) -> str | None:
+    """Prefer the last in-range letter (thinking traces often end with the final choice)."""
+    found: str | None = None
     for ch in text.upper():
         if "A" <= ch <= "Z":
             idx = ord(ch) - ord("A")
             if 0 <= idx < n_choices:
-                return ch
-            return None
-    return None
+                found = ch
+    return found
 
 
 def _p95(vals: list[float]) -> float | None:

@@ -9,6 +9,19 @@ _ROOT = Path(__file__).resolve().parents[1]
 _SCRIPT = _ROOT / "scripts" / "run_truthfulqa_ab_benchmark_v1.py"
 
 
+def test_chat_completions_url_dedupes_v1_suffix() -> None:
+    from scripts.run_truthfulqa_ab_benchmark_v1 import _chat_completions_url
+
+    assert (
+        _chat_completions_url("http://127.0.0.1:11434/v1")
+        == "http://127.0.0.1:11434/v1/chat/completions"
+    )
+    assert (
+        _chat_completions_url("http://127.0.0.1:11434")
+        == "http://127.0.0.1:11434/v1/chat/completions"
+    )
+
+
 def test_truthfulqa_benchmark_generate_sample_dataset(tmp_path: Path) -> None:
     dataset = tmp_path / "truthfulqa_sample.jsonl"
     cp = subprocess.run(
