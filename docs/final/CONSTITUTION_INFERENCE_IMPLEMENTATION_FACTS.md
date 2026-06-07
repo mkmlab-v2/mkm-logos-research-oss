@@ -901,8 +901,9 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | two-track 2030 band | `docs/final/artifacts/prophecy_2050_two_track_v1_latest.json` | phase별 track_a_thesis·track_b_forward_lean(2031 band) |
 | holdout (internal only) | `reports/logos_chronology_text_blind_v2_holdout_v1_latest.json` | MS/B2B 헤드라인 금지 |
 | off-fixture OOV (measured) | `scripts/build_logos_chronology_off_fixture_era_gold_v1.py` → `docs/final/artifacts/logos_chronology_off_fixture_era_gold_v1_latest.json` · AB `scripts/run_logos_chronology_off_fixture_text_blind_v2_ab_v1.py` · holdout `scripts/summarize_logos_chronology_off_fixture_holdout_v1.py` | historical gold(47)와 **disjoint**; hardset27+live news expansion; parallel wave2 `scripts/run_logos_chronology_text_blind_v2_parallel_v1.py`; digest §Off-fixture; `[HYPO]` B-track only |
+| showroom 2030 slice (read-only) | `scripts/build_showroom_macro_horizon_2030_slice_v1.py` → `docs/final/artifacts/showroom_macro_horizon_2030_slice_v1_latest.json` | Track C 쇼룸; `no_trade_signals`; `public_showroom_topology_radar_v1.html` 타임라인 패널; chain step `build_showroom_track_c_bundle_chain_v1.ps1` (3/7); bundle observability `macro_horizon_2030_snapshot_*` |
 | 명리·사상 read-only | 기본 `myeongni_independent_lens_latest.json` · `market_sasang_lens_latest.json` | `lens_triad_stub` 스냅샷; **non-gating** · Final action은 Field 유지 |
-| CI·회귀 | `tests/test_build_logos_macro_horizon_2030_scenario_v1.py` · `tests/test_logos_chronology_off_fixture_text_blind_v2_v1.py` | horizon strict; off-fixture gold disjoint + AB measured; `logos-chronology-era-blind-smoke.yml` |
+| CI·회귀 | `tests/test_build_logos_macro_horizon_2030_scenario_v1.py` · `tests/test_logos_chronology_off_fixture_text_blind_v2_v1.py` · `tests/test_build_showroom_macro_horizon_2030_slice_v1.py` | horizon strict; off-fixture; showroom slice schema + `[HYPO]` banner; `logos-chronology-era-blind-smoke.yml` |
 
 **렌즈 격벽:** 명리·사상은 `lens_triad_stub`(`not_run_in_this_builder`); Logos overlay만 `[NON_GATING]` 보조.
 

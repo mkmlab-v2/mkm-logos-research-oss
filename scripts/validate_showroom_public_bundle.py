@@ -56,6 +56,22 @@ _SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
 _SHOWROOM_DISPLAY_MODES = frozenset({"idle", "defend", "attack"})
 _SHOWROOM_TICKER_KEY_RE = re.compile(r"^[A-Z0-9_]{1,64}$")
 _SHOWROOM_REACTION_ID_RE = re.compile(r"^R_[A-Z0-9_]{1,32}$")
+_PLAYBACK_ID_RE = re.compile(
+    r"^LM_HP(020|050|100)_(SOYANG|TAEYANG|TAEEUM|SOEUM)_(IDLE|DEFEND|ATTACK)_V[0-9]+$"
+)
+_VIDEO_PLAYBACK_ID_RE = re.compile(
+    r"^LV_HP(020|050|100)_(SOYANG|TAEYANG|TAEEUM|SOEUM)_(IDLE|DEFEND|ATTACK)_V[0-9]+$"
+)
+_LENS_AUDIO_FORBIDDEN_SUBSTRINGS: List[str] = [
+    "musicgen",
+    "suno",
+    "workspace/",
+    "c:/",
+    "soap",
+    "cdss",
+    "live_generation",
+    "run_id",
+]
 
 
 def _flatten_strings(obj: Any, out: List[str]) -> None:
@@ -150,6 +166,221 @@ def _validate_topology_radar_fields(obs: Dict[str, Any]) -> List[str]:
     return errs
 
 
+_MACRO_HORIZON_OBS_KEYS = frozenset(
+    {
+        "macro_horizon_2030_snapshot_present",
+        "macro_horizon_2030_snapshot_generated_at_utc",
+        "macro_horizon_2030_snapshot_stale_after_utc",
+        "macro_horizon_2030_snapshot_hypo_banner",
+        "macro_horizon_2030_snapshot_final_action",
+        "macro_horizon_2030_snapshot_btc_base_weight",
+        "macro_horizon_2030_snapshot_btc_stress_weight",
+        "macro_horizon_2030_snapshot_no_trade_signals",
+        "macro_horizon_2030_snapshot_disclaimer_ref",
+    }
+)
+
+
+def _validate_macro_horizon_2030_fields(obs: Dict[str, Any]) -> List[str]:
+    errs: List[str] = []
+    keys = [k for k in obs if isinstance(k, str) and k.startswith("macro_horizon_2030_snapshot_")]
+    if not keys:
+        return errs
+    for k in keys:
+        if k not in _MACRO_HORIZON_OBS_KEYS:
+            errs.append(f"observability unknown macro horizon key: {k}")
+    present = obs.get("macro_horizon_2030_snapshot_present")
+    if present is None:
+        errs.append("macro_horizon_2030_snapshot_* set but macro_horizon_2030_snapshot_present is missing")
+        return errs
+    if present is False:
+        for k in keys:
+            if k != "macro_horizon_2030_snapshot_present":
+                errs.append(f"observability.{k} must not be set when macro_horizon_2030_snapshot_present is false")
+        return errs
+    if present is not True:
+        errs.append("observability.macro_horizon_2030_snapshot_present must be boolean")
+        return errs
+
+    gen = obs.get("macro_horizon_2030_snapshot_generated_at_utc")
+    if not isinstance(gen, str) or not _TS_UTC_RE.match(gen):
+        errs.append(
+            "observability.macro_horizon_2030_snapshot_generated_at_utc must match YYYY-MM-DDTHH:MM:SSZ when present=true"
+        )
+    stale = obs.get("macro_horizon_2030_snapshot_stale_after_utc")
+    if not isinstance(stale, str) or not _TS_UTC_RE.match(stale):
+        errs.append(
+            "observability.macro_horizon_2030_snapshot_stale_after_utc must match YYYY-MM-DDTHH:MM:SSZ when present=true"
+        )
+    hypo = obs.get("macro_horizon_2030_snapshot_hypo_banner")
+    if not isinstance(hypo, str) or len(hypo) < 8:
+        errs.append("observability.macro_horizon_2030_snapshot_hypo_banner must be a non-trivial string when present=true")
+    elif not hypo.lstrip().upper().startswith("[HYPO]"):
+        errs.append("observability.macro_horizon_2030_snapshot_hypo_banner must start with [HYPO]")
+    elif len(hypo) > 512:
+        errs.append("observability.macro_horizon_2030_snapshot_hypo_banner max length 512")
+
+    final_action = obs.get("macro_horizon_2030_snapshot_final_action")
+    if not isinstance(final_action, str) or not final_action.strip():
+        errs.append("observability.macro_horizon_2030_snapshot_final_action must be a non-empty string when present=true")
+
+    base_w = obs.get("macro_horizon_2030_snapshot_btc_base_weight")
+    stress_w = obs.get("macro_horizon_2030_snapshot_btc_stress_weight")
+    if not isinstance(base_w, (int, float)) or base_w < 0 or base_w > 1:
+        errs.append("observability.macro_horizon_2030_snapshot_btc_base_weight must be number 0..1 when present=true")
+    if not isinstance(stress_w, (int, float)) or stress_w < 0 or stress_w > 1:
+        errs.append("observability.macro_horizon_2030_snapshot_btc_stress_weight must be number 0..1 when present=true")
+
+    if obs.get("macro_horizon_2030_snapshot_no_trade_signals") is not True:
+        errs.append("observability.macro_horizon_2030_snapshot_no_trade_signals must be true when present=true")
+
+    disc = obs.get("macro_horizon_2030_snapshot_disclaimer_ref")
+    if disc != "jemaai_showroom_v1":
+        errs.append("observability.macro_horizon_2030_snapshot_disclaimer_ref must be jemaai_showroom_v1 when present=true")
+
+    return errs
+
+
+def _validate_lens_audio_observability_v1(block: Any, parent_sdm: Any) -> List[str]:
+    errs: List[str] = []
+    if block is None:
+        return errs
+    if not isinstance(block, dict):
+        errs.append("public_event_v1.lens_audio_observability_v1 must be an object if present")
+        return errs
+
+    if block.get("schema") != "public_event_lens_audio_thin_slice_v1":
+        errs.append("lens_audio_observability_v1.schema must be public_event_lens_audio_thin_slice_v1")
+    if block.get("hypothesis_class") != "HYPO":
+        errs.append("lens_audio_observability_v1.hypothesis_class must be HYPO")
+    if block.get("track_wall") != "B_track_research_only":
+        errs.append("lens_audio_observability_v1.track_wall must be B_track_research_only")
+    if block.get("non_gating") is not True:
+        errs.append("lens_audio_observability_v1.non_gating must be true")
+    if block.get("clinical_claims") is not False:
+        errs.append("lens_audio_observability_v1.clinical_claims must be false")
+    if block.get("disclaimer_ref") != "jemaai_lens_audio_hypo_v1":
+        errs.append("lens_audio_observability_v1.disclaimer_ref must be jemaai_lens_audio_hypo_v1")
+
+    pid = block.get("playback_id")
+    if not isinstance(pid, str) or not _PLAYBACK_ID_RE.match(pid):
+        errs.append(
+            "lens_audio_observability_v1.playback_id must match "
+            "^LM_HP(020|050|100)_(SOYANG|TAEYANG|TAEEUM|SOEUM)_(IDLE|DEFEND|ATTACK)_V[0-9]+$"
+        )
+
+    plv = block.get("playback_lut_version")
+    if not isinstance(plv, str) or not plv.startswith("jemaai_lens_audio_playback_lut_v1@"):
+        errs.append("lens_audio_observability_v1.playback_lut_version must start with jemaai_lens_audio_playback_lut_v1@")
+
+    gate = block.get("gate")
+    if not isinstance(gate, dict):
+        errs.append("lens_audio_observability_v1.gate must be an object")
+    else:
+        decision = gate.get("decision")
+        if decision not in ("PASS", "HOLD", "WATCH"):
+            errs.append("lens_audio_observability_v1.gate.decision must be PASS|HOLD|WATCH")
+        for bk in (
+            "lens_alignment_pass",
+            "loop_seamlessness_pass",
+            "lufs_target_match",
+            "commercial_license_verified",
+        ):
+            if bk not in gate or not isinstance(gate[bk], bool):
+                errs.append(f"lens_audio_observability_v1.gate.{bk} must be boolean")
+
+    bind = block.get("showroom_display_mode_bind")
+    if bind is not None:
+        if not isinstance(bind, str) or bind.lower() not in _SHOWROOM_DISPLAY_MODES:
+            errs.append("lens_audio_observability_v1.showroom_display_mode_bind must be idle|defend|attack if present")
+        elif parent_sdm is not None and isinstance(parent_sdm, str) and bind.lower() != parent_sdm.lower():
+            errs.append(
+                "lens_audio_observability_v1.showroom_display_mode_bind must match public_event_v1.showroom_display_mode when both set"
+            )
+
+    value_strings: List[str] = []
+
+    def _walk_lens_values(obj: Any, key: str | None = None) -> None:
+        if key == "clinical_claims":
+            return
+        if isinstance(obj, str):
+            value_strings.append(obj)
+        elif isinstance(obj, dict):
+            for k, v in obj.items():
+                _walk_lens_values(v, k)
+        elif isinstance(obj, list):
+            for v in obj:
+                _walk_lens_values(v, key)
+
+    _walk_lens_values(block)
+    block_text = " ".join(value_strings).lower()
+    for bad in _LENS_AUDIO_FORBIDDEN_SUBSTRINGS + FORBIDDEN_SUBSTRINGS:
+        if bad in block_text:
+            errs.append(f"lens_audio_observability_v1 contains forbidden token: {bad}")
+
+    return errs
+
+
+def _validate_lens_video_observability_v1(block: Any, parent_sdm: Any, audio_block: Any) -> List[str]:
+    errs: List[str] = []
+    if block is None:
+        return errs
+    if not isinstance(block, dict):
+        errs.append("public_event_v1.lens_video_observability_v1 must be an object if present")
+        return errs
+
+    if block.get("schema") != "public_event_lens_video_thin_slice_v1":
+        errs.append("lens_video_observability_v1.schema must be public_event_lens_video_thin_slice_v1")
+    if block.get("hypothesis_class") != "HYPO":
+        errs.append("lens_video_observability_v1.hypothesis_class must be HYPO")
+    if block.get("track_wall") != "B_track_research_only":
+        errs.append("lens_video_observability_v1.track_wall must be B_track_research_only")
+    if block.get("non_gating") is not True:
+        errs.append("lens_video_observability_v1.non_gating must be true")
+    if block.get("clinical_claims") is not False:
+        errs.append("lens_video_observability_v1.clinical_claims must be false")
+    if block.get("disclaimer_ref") != "jemaai_lens_video_hypo_v1":
+        errs.append("lens_video_observability_v1.disclaimer_ref must be jemaai_lens_video_hypo_v1")
+
+    vpid = block.get("video_playback_id")
+    if not isinstance(vpid, str) or not _VIDEO_PLAYBACK_ID_RE.match(vpid):
+        errs.append(
+            "lens_video_observability_v1.video_playback_id must match "
+            "^LV_HP(020|050|100)_(SOYANG|TAEYANG|TAEEUM|SOEUM)_(IDLE|DEFEND|ATTACK)_V[0-9]+$"
+        )
+
+    plv = block.get("playback_lut_version")
+    if not isinstance(plv, str) or not plv.startswith("jemaai_lens_video_playback_lut_v1@"):
+        errs.append("lens_video_observability_v1.playback_lut_version must start with jemaai_lens_video_playback_lut_v1@")
+
+    mirror = block.get("audio_playback_id_mirror")
+    if isinstance(audio_block, dict) and audio_block.get("playback_id"):
+        if mirror != audio_block.get("playback_id"):
+            errs.append("lens_video_observability_v1.audio_playback_id_mirror must match lens_audio playback_id")
+
+    gate = block.get("gate")
+    if not isinstance(gate, dict):
+        errs.append("lens_video_observability_v1.gate must be an object")
+    else:
+        decision = gate.get("decision")
+        if decision not in ("PASS", "HOLD", "WATCH"):
+            errs.append("lens_video_observability_v1.gate.decision must be PASS|HOLD|WATCH")
+        for bk in ("loop_seamlessness_pass", "visual_alignment_pass", "commercial_license_verified"):
+            if bk not in gate or not isinstance(gate[bk], bool):
+                errs.append(f"lens_video_observability_v1.gate.{bk} must be boolean")
+
+    bind = block.get("showroom_display_mode_bind")
+    if bind is not None:
+        if not isinstance(bind, str) or bind.lower() not in _SHOWROOM_DISPLAY_MODES:
+            errs.append("lens_video_observability_v1.showroom_display_mode_bind must be idle|defend|attack if present")
+        elif parent_sdm is not None and isinstance(parent_sdm, str) and bind.lower() != parent_sdm.lower():
+            errs.append(
+                "lens_video_observability_v1.showroom_display_mode_bind must match public_event_v1.showroom_display_mode when both set"
+            )
+
+    return errs
+
+
 def _validate_logos_graph_meta(meta: Any, prefix: str) -> List[str]:
     errs: List[str] = []
     if meta is None:
@@ -201,6 +432,7 @@ def validate_bundle(path: Path) -> List[str]:
     obs = doc.get("observability")
     if isinstance(obs, dict):
         errors.extend(_validate_topology_radar_fields(obs))
+        errors.extend(_validate_macro_horizon_2030_fields(obs))
         if "logos_graph_meta" in obs:
             errors.extend(_validate_logos_graph_meta(obs.get("logos_graph_meta"), "observability.logos_graph_meta"))
             if obs.get("track_b_non_gating") is not True:
@@ -253,6 +485,13 @@ def validate_bundle(path: Path) -> List[str]:
                     errors.append(
                         f"public_event_v1.showroom_reaction_line_ids[{i}] must match ^R_[A-Z0-9_]{{1,32}}$"
                     )
+
+    errors.extend(_validate_lens_audio_observability_v1(pub.get("lens_audio_observability_v1"), sdm))
+    errors.extend(
+        _validate_lens_video_observability_v1(
+            pub.get("lens_video_observability_v1"), sdm, pub.get("lens_audio_observability_v1")
+        )
+    )
 
     dm = pub.get("delayed_metrics")
     if isinstance(dm, dict):

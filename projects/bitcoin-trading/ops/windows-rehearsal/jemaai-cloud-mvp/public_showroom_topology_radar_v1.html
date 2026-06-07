@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>JEMA AI · Risk Topology Radar</title>
+  <title>JEMA AI · Macro Horizon 2030</title>
   <style>
     :root {
       --bg: #0a0b0d;
@@ -28,9 +28,24 @@
         radial-gradient(900px 480px at 50% -10%, rgba(197, 160, 87, 0.07), transparent 55%),
         var(--bg);
     }
-    .wrap { max-width: 44rem; margin: 0 auto; padding: 1.75rem 1.15rem 2.5rem; }
+    .wrap { max-width: 52rem; margin: 0 auto; padding: 1.75rem 1.15rem 2.5rem; }
     header { margin-bottom: 1.25rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    h1 { font-size: 1.15rem; font-weight: 650; margin: 0 0 0.35rem; letter-spacing: -0.02em; }
+    h1 { font-size: 1.35rem; font-weight: 650; margin: 0 0 0.35rem; letter-spacing: -0.02em; }
+    .hero-action {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 0.75rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      border: 1px solid rgba(212, 165, 116, 0.45);
+      background: rgba(212, 165, 116, 0.1);
+      font-size: 0.78rem;
+      font-weight: 650;
+      color: var(--watch);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .field-chip { font-size: 0.78rem; color: var(--muted); margin: 0.35rem 0 0; }
     .lede { margin: 0; font-size: 0.8125rem; color: var(--muted); max-width: 38rem; }
     .badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0 0; }
     .badge {
@@ -134,25 +149,112 @@
     .footer-links { font-size: 0.8125rem; margin-top: 1.25rem; }
     .footer-links a { color: var(--accent); }
     #status { font-size: 0.75rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .macro-panel {
+      border: 1px solid rgba(197, 160, 87, 0.22);
+      border-radius: 14px;
+      background: linear-gradient(165deg, #151922 0%, #12151a 55%, #0f1218 100%);
+      padding: 1.15rem 1.2rem 1.2rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+    }
+    .macro-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.65rem; margin-bottom: 0.85rem; }
+    .macro-panel h2 { font-size: 1rem; margin: 0; font-weight: 650; }
+    .macro-sub { margin: 0; font-size: 0.78rem; color: var(--muted); max-width: 28rem; }
+    .stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; margin-bottom: 0.85rem; }
+    @media (max-width: 540px) { .stat-row { grid-template-columns: 1fr; } }
+    .macro-badges { display: contents; }
+    .macro-badge {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.65rem 0.7rem;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .macro-badge .k { font-size: 0.68rem; letter-spacing: 0.02em; color: var(--muted); margin: 0 0 0.25rem; text-transform: none; }
+    .macro-badge .v { font-size: 1.35rem; font-weight: 700; margin: 0; color: var(--accent); line-height: 1.1; }
+    .macro-badge .kind { font-size: 0.62rem; color: var(--muted); margin: 0.2rem 0 0; opacity: 0.85; }
+    .timeline-wrap { margin: 0.25rem 0 0.85rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .timeline-svg { width: 100%; min-width: 300px; height: auto; display: block; }
+    .timeline-node-label { fill: #e8eaef; font-size: 11px; font-weight: 650; font-family: system-ui, sans-serif; }
+    .timeline-node-sub { fill: #8b919d; font-size: 10px; font-family: system-ui, sans-serif; }
+    .timeline-focus { fill: #6f7684; font-size: 9px; font-family: system-ui, sans-serif; }
+    .timeline-now { fill: #c5a057; font-size: 9px; font-weight: 650; font-family: system-ui, sans-serif; }
+    .path-block { margin-top: 0.5rem; }
+    .path-legend { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-top: 0.35rem; }
+    .overlay-line { font-size: 0.75rem; color: var(--muted); margin: 0.75rem 0 0; padding-top: 0.65rem; border-top: 1px solid var(--border); }
+    .radar-compact {
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .radar-compact summary {
+      cursor: pointer;
+      padding: 0.7rem 0.95rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      list-style: none;
+      user-select: none;
+    }
+    .radar-compact summary::-webkit-details-marker { display: none; }
+    .radar-compact[open] summary { border-bottom: 1px solid var(--border); color: var(--text); }
+    .radar-compact .radar-panel { border: none; box-shadow: none; margin: 0; padding: 0.85rem 1rem 1rem; }
+    .radar-compact .radar-svg { width: min(100%, 220px); }
+    .meta-details { margin-top: 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: rgba(0,0,0,0.15); }
+    .meta-details summary { padding: 0.55rem 0.8rem; font-size: 0.72rem; color: var(--muted); cursor: pointer; list-style: none; }
+    .meta-details summary::-webkit-details-marker { display: none; }
+    .meta-details .grid { padding: 0 0.8rem 0.75rem; margin: 0; }
+    .site-footer { margin-top: 1.75rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--muted); line-height: 1.55; }
+    .site-footer .badges { margin-top: 0.55rem; }
+    .path-bar {
+      display: flex;
+      height: 0.55rem;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin: 0.35rem 0 0.5rem;
+    }
+    .path-base { background: var(--calm); }
+    .path-stress { background: var(--critical); opacity: 0.85; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>Risk Topology Radar</h1>
+      <h1>거시 리스크 · 2030 Horizon</h1>
       <p class="lede">
-        관측·게이트·지연 메타만 표시합니다. 매매 지시·투자 권유·성과 보장이 아닙니다.
+        BTC-USD 시나리오 타임라인 — registry 확률·운영 포즈만 표시합니다. 매매·투자 권유·성과 보장이 아닙니다.
       </p>
-      <div class="badges" aria-label="Boundary badges">
-        <span class="badge badge-warn">[HYPO] read-only</span>
-        <span class="badge">NON_GATING</span>
-        <span class="badge">no_trade_signals</span>
-        <span class="badge mono" id="disclaimerBadge">disclaimer_ref=—</span>
-      </div>
+      <p class="field-chip" id="fieldChip">Field — · posture —</p>
+      <div class="hero-action" id="heroAction" aria-live="polite">WATCH</div>
     </header>
 
     <p id="status">데이터 로드 중…</p>
 
+    <section class="macro-panel" id="macroHorizonPanel" aria-label="Macro horizon 2030 timeline">
+      <div class="macro-head">
+        <div>
+          <h2>BTC-USD · 2026–2030 시나리오 타임라인</h2>
+          <p class="macro-sub" id="macroSummary">—</p>
+        </div>
+      </div>
+      <div class="stat-row" id="macroBadges"><span class="v">—</span></div>
+      <div class="timeline-wrap" id="macroTimeline" aria-hidden="false"></div>
+      <div class="path-block">
+        <p class="k" style="font-size:0.68rem;color:var(--muted);margin:0">시나리오 가중 (heuristic · not calibrated)</p>
+        <div class="path-bar" id="btcPathBar" aria-label="Base versus stress heuristic weights">
+          <div class="path-base" id="btcPathBase" style="width:27%"></div>
+          <div class="path-stress" id="btcPathStress" style="width:73%"></div>
+        </div>
+        <div class="path-legend">
+          <span id="pathLegendBase">Base 27%</span>
+          <span id="pathLegendStress">Stress 73%</span>
+        </div>
+      </div>
+      <p class="overlay-line">Logos era (보조 · NON_GATING): <span id="logosEraOverlay">—</span></p>
+    </section>
+
+    <details class="radar-compact">
+      <summary>운영 레이더 · observational (보조)</summary>
     <section class="radar-panel state-calm" id="radarPanel" aria-label="Topology radar visualization">
       <svg class="radar-svg" viewBox="0 0 320 320" role="img" aria-labelledby="radarTitle">
         <title id="radarTitle">Risk topology radar — observational only</title>
@@ -168,7 +270,6 @@
       </svg>
       <p class="state-label" id="stateLabel">CALM · OBSERVE</p>
       <p class="summary" id="summaryLine">—</p>
-      <p class="meta" id="metaLine">—</p>
       <div class="deep-dive" id="deepDive" aria-live="polite">
         <div class="panel-tags" aria-label="Research boundary">
           <span class="badge badge-warn">[HYPO]</span>
@@ -187,20 +288,39 @@
         </p>
       </div>
     </section>
+    </details>
 
+    <details class="meta-details">
+      <summary>기술 메타 · ingest / snapshot</summary>
     <div class="grid" id="factGrid"></div>
+    </details>
 
     <p class="footer-links">
       <a href="public_showroom_meaning_topology_qa_v2.html">Meaning topology Q&A v2</a>
       ·
       <a href="public_showroom_meaning_topology_graph_v1.html">Meaning topology graph v1</a>
       ·
+      <a href="public_showroom_lens_media_thin_slice_v1.html">Lens media hub</a>
+      ·
       <a href="public_showroom_board_minimal.html">← 검증 공개 보드</a>
       ·
       <a href="public_showroom_poll.html">전체 데모 UI</a>
-      ·
-      <a href="public_showroom_trust_visualization_v0.html">Trust viz v0</a>
     </p>
+
+    <footer class="site-footer">
+      <p id="footerDisclaimer">
+        지연·관측 전용. 과거 성과·미래 수익을 보장하지 않으며 투자 권유가 아닙니다.
+        시나리오는 narrative_template이며 joint calibration이 아닙니다.
+      </p>
+      <div class="badges" aria-label="Boundary badges">
+        <span class="badge badge-warn">[HYPO] read-only</span>
+        <span class="badge">research_only</span>
+        <span class="badge">NON_GATING</span>
+        <span class="badge">no_trade_signals</span>
+        <span class="badge mono" id="disclaimerBadge">disclaimer_ref=jemaai_showroom_v1</span>
+      </div>
+      <p class="meta" id="metaLine" style="margin-top:0.65rem">—</p>
+    </footer>
   </div>
 
   <script>
@@ -219,6 +339,7 @@
   const MAX_NODES = 4;
 
   let snapshot = null;
+  let macroSlice = null;
   let bundleEvent = null;
   let logosSlice = null;
   let logosLoadPromise = null;
@@ -327,6 +448,71 @@
     }
   }
 
+  function renderTimeline(phases, action) {
+    const positions = [120, 360, 600];
+    const yearLabels = ["2026–27", "2028–29", "2030"];
+    let svg = '<svg class="timeline-svg" viewBox="0 0 720 150" role="img" aria-label="2030 macro phase timeline">';
+    svg += '<line x1="80" y1="42" x2="640" y2="42" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>';
+    svg += '<line x1="80" y1="42" x2="120" y2="42" stroke="#c5a057" stroke-width="2.5" opacity="0.85"/>';
+    svg += '<text x="80" y="24" class="timeline-now">NOW · 2026</text>';
+    svg += '<text x="640" y="24" text-anchor="end" class="timeline-now">' + esc(String(action || "WATCH")) + "</text>";
+    (phases || []).forEach(function (p, i) {
+      const x = positions[i] || (120 + i * 240);
+      const active = i === 0;
+      const r = active ? 11 : 8;
+      const fill = active ? "#d4a574" : "rgba(255,255,255,0.12)";
+      svg += '<circle cx="' + x + '" cy="42" r="' + r + '" fill="' + fill + '"';
+      if (active) svg += ' stroke="#c5a057" stroke-width="2"';
+      svg += "/>";
+      svg += '<text x="' + x + '" y="72" text-anchor="middle" class="timeline-node-label">' +
+        esc(yearLabels[i] || p.phase_id || "") + "</text>";
+      svg += '<text x="' + x + '" y="88" text-anchor="middle" class="timeline-node-sub">' +
+        esc(p.label_ko || "") + "</text>";
+      (p.focus || []).slice(0, 2).forEach(function (f, fi) {
+        svg += '<text x="' + x + '" y="' + (104 + fi * 13) + '" text-anchor="middle" class="timeline-focus">' +
+          esc(f) + "</text>";
+      });
+    });
+    svg += "</svg>";
+    return svg;
+  }
+
+  function renderMacroHorizon(slice) {
+    const panel = document.getElementById("macroHorizonPanel");
+    if (!slice) {
+      document.getElementById("macroBadges").innerHTML = '<span class="v">Macro slice unavailable</span>';
+      document.getElementById("macroTimeline").innerHTML = "";
+      return;
+    }
+    const badges = slice.macro_badges || [];
+    document.getElementById("macroBadges").innerHTML = badges.map(function (b) {
+      return '<div class="macro-badge"><p class="k">' + esc(b.label_ko || b.badge_id) +
+        '</p><p class="v">' + esc(b.value_display || "—") +
+        '</p><p class="kind">' + esc(b.value_kind || "") + '</p></div>';
+    }).join("");
+    const phases = slice.phase_bands || [];
+    document.getElementById("macroTimeline").innerHTML = renderTimeline(phases, slice.final_action);
+    const btc = slice.btc_path || {};
+    const basePct = Math.round((btc.base_weight || 0) * 100);
+    const stressPct = Math.round((btc.stress_weight || 0) * 100);
+    document.getElementById("btcPathBase").style.width = basePct + "%";
+    document.getElementById("btcPathStress").style.width = stressPct + "%";
+    document.getElementById("pathLegendBase").textContent = "Base " + basePct + "%";
+    document.getElementById("pathLegendStress").textContent = "Stress " + stressPct + "%";
+    const field = slice.field_primary || {};
+    document.getElementById("fieldChip").textContent =
+      "Field · " + (field.regime_id || "—") + " · " + (field.decision_state || "—") +
+      " · posture " + (btc.operator_posture || "—");
+    document.getElementById("heroAction").textContent = slice.final_action || "WATCH";
+    document.getElementById("macroSummary").textContent =
+      slice.summary_one_line || "BTC-USD scenario timeline · not investment advice.";
+    const overlay = slice.logos_era_overlay || {};
+    document.getElementById("logosEraOverlay").textContent = overlay.secondary_label_ko || "—";
+    if (slice.hypo_banner) {
+      panel.setAttribute("aria-description", slice.hypo_banner);
+    }
+  }
+
   function renderFacts(ev, snap) {
     const grid = document.getElementById("factGrid");
     const ob = (window.__cachedBundle && window.__cachedBundle.observability) || {};
@@ -338,6 +524,9 @@
       ["스냅샷 생성", snap && snap.generated_at_utc ? snap.generated_at_utc : "—"],
       ["만료", snap && snap.stale_after_utc ? snap.stale_after_utc : "—"],
       ["Topology refs", typeof ob.topology_radar_snapshot_artifact_ref_count === "number" ? ob.topology_radar_snapshot_artifact_ref_count : "—"],
+      ["2030 macro", ob.macro_horizon_2030_snapshot_present === true ? (ob.macro_horizon_2030_snapshot_final_action || "present") : "—"],
+      ["BTC base/stress", (ob.macro_horizon_2030_snapshot_btc_base_weight != null && ob.macro_horizon_2030_snapshot_btc_stress_weight != null)
+        ? (ob.macro_horizon_2030_snapshot_btc_base_weight + "/" + ob.macro_horizon_2030_snapshot_btc_stress_weight) : "—"],
     ];
     grid.innerHTML = rows.map(function (r) {
       return '<div class="cell"><p class="k">' + esc(r[0]) + '</p><p class="v">' + esc(r[1]) + '</p></div>';
@@ -353,10 +542,12 @@
     document.getElementById("summaryLine").textContent = sum;
     const disc = snap.disclaimer_ref || ev.disclaimer_ref || "jemaai_showroom_v1";
     document.getElementById("disclaimerBadge").textContent = "disclaimer_ref=" + disc;
+    const stale = macroSlice && macroSlice.stale_after_utc ? macroSlice.stale_after_utc : (snap.stale_after_utc || "—");
+    const gen = macroSlice && macroSlice.generated_at_utc ? macroSlice.generated_at_utc : (snap.generated_at_utc || "—");
     document.getElementById("metaLine").textContent =
-      (snap.hypo_banner ? snap.hypo_banner + " · " : "") +
-      "API " + apiBase + " · 갱신 " + new Date().toISOString();
+      "Slice generated " + gen + " · stale after " + stale + " · API " + apiBase;
     renderFacts(ev, snap);
+    renderMacroHorizon(macroSlice);
   }
 
   async function fetchJson(urls) {
@@ -372,13 +563,17 @@
 
   async function loadStatic() {
     const snapUrls = [];
+    const macroUrls = [];
     const bundleUrls = [];
     try { snapUrls.push(new URL("showroom_topology_radar_snapshot_v1_latest.json", location.href).href); } catch (e) {}
+    try { macroUrls.push(new URL("showroom_macro_horizon_2030_slice_v1_latest.json", location.href).href); } catch (e) {}
     try { bundleUrls.push(new URL("showroom_public_bundle_v1.json", location.href).href); } catch (e) {}
     snapUrls.push("https://jemaai.cloud/showroom_topology_radar_snapshot_v1_latest.json");
+    macroUrls.push("https://jemaai.cloud/showroom_macro_horizon_2030_slice_v1_latest.json");
     bundleUrls.push("https://jemaai.cloud/showroom_public_bundle_v1.json");
 
     snapshot = await fetchJson(snapUrls);
+    macroSlice = await fetchJson(macroUrls);
     const bundle = await fetchJson(bundleUrls);
     window.__cachedBundle = bundle;
     if (bundle && bundle.public_event_v1) bundleEvent = bundle.public_event_v1;

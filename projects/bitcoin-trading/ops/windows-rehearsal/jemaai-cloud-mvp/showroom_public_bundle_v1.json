@@ -1,19 +1,24 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-05-24T15:27:19.4720900+00:00",
+    "generated_at_utc":  "2026-06-07T15:19:56.5939453+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
-                    "runtime_health":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\runtime_health_latest.json",
-                    "trade_window_24h":  "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\all_trades_latest_24h.json",
-                    "logos_corpus_graph_bundle_v1":  "C:\\workspace\\docs\\final\\artifacts\\logos_corpus_graph_bundle_v1_latest.json",
+                    "showroom_macro_horizon_2030_slice_v1":  "C:\\workspace\\docs\\final\\artifacts\\showroom_macro_horizon_2030_slice_v1_latest.json",
                     "c2_guardrail_status":  "C:\\workspace\\docs\\final\\artifacts\\c2_aegis_guardrail_status_latest.json",
-                    "exodus_pressure_v1":  "C:\\workspace\\docs\\final\\artifacts\\exodus_pressure_v1_latest.json",
-                    "ops_fusion_status":  "C:\\workspace\\docs\\final\\artifacts\\ops_fusion_cycle_status_latest.json",
-                    "showroom_topology_radar_snapshot_v1":  "C:\\workspace\\docs\\final\\artifacts\\showroom_topology_radar_snapshot_v1_latest.json",
+                    "dynamic_bgm_hp_sweep_v1":  "C:\\workspace\\docs\\final\\artifacts\\dynamic_bgm_hp_sweep_v1_latest.json",
+                    "logos_corpus_graph_bundle_v1":  "C:\\workspace\\docs\\final\\artifacts\\logos_corpus_graph_bundle_v1_latest.json",
+                    "showroom_lens_video_observability_v1":  "C:\\workspace\\docs\\final\\artifacts\\showroom_lens_video_observability_v1_latest.json",
+                    "trade_window_24h":  "C:\\workspace\\projects\\bitcoin-trading\\exports\\cursor_trade_history\\all_trades_latest_24h.json",
                     "logos_4d_state_v1":  "C:\\workspace\\docs\\final\\artifacts\\logos_4d_state_v1_latest.json",
-                    "daemon_status":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\status\\trading_daemon_status.json",
+                    "showroom_topology_radar_snapshot_v1":  "C:\\workspace\\docs\\final\\artifacts\\showroom_topology_radar_snapshot_v1_latest.json",
                     "trading_state":  "C:\\workspace\\projects\\bitcoin-trading\\logs\\trading_state.json",
-                    "logos_track_c_freshness_sidecar_v1":  "C:\\workspace\\docs\\final\\artifacts\\logos_track_c_freshness_sidecar_v1_latest.json"
+                    "exodus_pressure_v1":  "C:\\workspace\\docs\\final\\artifacts\\exodus_pressure_v1_latest.json",
+                    "showroom_lens_audio_observability_v1":  "C:\\workspace\\docs\\final\\artifacts\\showroom_lens_audio_observability_v1_latest.json",
+                    "lens_music_hormone_trend_v1":  "C:\\workspace\\docs\\final\\artifacts\\lens_music_hormone_trend_latest.json",
+                    "logos_track_c_freshness_sidecar_v1":  "C:\\workspace\\docs\\final\\artifacts\\logos_track_c_freshness_sidecar_v1_latest.json",
+                    "daemon_status":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\status\\trading_daemon_status.json",
+                    "runtime_health":  "C:\\workspace\\projects\\bitcoin-trading\\memory\\v2\\ops\\runtime_health_latest.json",
+                    "ops_fusion_status":  "C:\\workspace\\docs\\final\\artifacts\\ops_fusion_cycle_status_latest.json"
                 },
     "observability":  {
                           "unified_score_balanced":  0.40342,
@@ -23,7 +28,7 @@
                           "direction_source":  "c2",
                           "ops_fusion_overall_ok":  true,
                           "runtime_overall_ok":  true,
-                          "snapshot_as_of_utc":  "2026-05-24T15:27:19.4720900+00:00",
+                          "snapshot_as_of_utc":  "2026-06-07T15:19:56.5939453+00:00",
                           "context_age_seconds":  0,
                           "context_ttl_seconds":  14400,
                           "context_stale":  false,
@@ -38,23 +43,40 @@
                                                    "schema":  "showroom_logos_graph_meta_v1",
                                                    "hypothesis_tier":  "B",
                                                    "source_schema":  "logos_corpus_graph_bundle_v1",
-                                                   "dedupe_bundle_key_sha256":  "ab02d5dc2fd165516d2068bf06c8c07fe710cd8d6e0be8a07015e8d473013bbb",
-                                                   "ts_utc":  "2026-05-23T23:05:31Z",
+                                                   "dedupe_bundle_key_sha256":  "99b18325a1332aa98309a31e73c56208079df6fef2500b449bd78c6fa1938379",
+                                                   "ts_utc":  "2026-06-07T13:08:38Z",
                                                    "nodes_line_count":  1192,
                                                    "edges_line_count":  1196
                                                },
                           "track_b_non_gating":  true,
                           "logos_freshness_sidecar_present":  true,
-                          "logos_freshness_staleness_seconds":  5192,
-                          "logos_freshness_generated_at_utc":  "2026-05-24T00:32:03.135222Z",
+                          "logos_freshness_staleness_seconds":  6689,
+                          "logos_freshness_generated_at_utc":  "2026-06-07T15:00:07Z",
                           "topology_radar_snapshot_present":  true,
-                          "topology_radar_snapshot_generated_at_utc":  "2026-05-24T00:32:03Z",
-                          "topology_radar_snapshot_stale_after_utc":  "2026-05-25T00:32:03Z",
+                          "topology_radar_snapshot_generated_at_utc":  "2026-06-07T15:00:07Z",
+                          "topology_radar_snapshot_stale_after_utc":  "2026-06-08T15:00:07Z",
                           "topology_radar_snapshot_hypo_banner":  "[HYPO] Topology snapshot (read-only graph / sidecar proximity)",
                           "topology_radar_snapshot_artifact_ref_count":  5,
                           "topology_radar_snapshot_no_trade_signals":  true,
                           "topology_radar_snapshot_disclaimer_ref":  "jemaai_showroom_v1",
-                          "topology_radar_snapshot_stub":  false
+                          "topology_radar_snapshot_stub":  false,
+                          "macro_horizon_2030_snapshot_present":  true,
+                          "macro_horizon_2030_snapshot_generated_at_utc":  "2026-06-07T15:19:55Z",
+                          "macro_horizon_2030_snapshot_stale_after_utc":  "2026-06-08T15:19:55Z",
+                          "macro_horizon_2030_snapshot_hypo_banner":  "[HYPO] Macro horizon 2030 read-only map (narrative_template; not calibrated joint distribution)",
+                          "macro_horizon_2030_snapshot_final_action":  "WATCH",
+                          "macro_horizon_2030_snapshot_btc_base_weight":  0.27,
+                          "macro_horizon_2030_snapshot_btc_stress_weight":  0.73,
+                          "macro_horizon_2030_snapshot_no_trade_signals":  true,
+                          "macro_horizon_2030_snapshot_disclaimer_ref":  "jemaai_showroom_v1",
+                          "lens_audio_observability_present":  true,
+                          "lens_audio_playback_id":  "LM_HP050_SOYANG_IDLE_V1",
+                          "lens_audio_gate_decision":  "WATCH",
+                          "lens_audio_track_b_hypo":  true,
+                          "lens_video_observability_present":  true,
+                          "lens_video_playback_id":  "LV_HP050_SOYANG_IDLE_V1",
+                          "lens_video_gate_decision":  "WATCH",
+                          "lens_video_track_b_hypo":  true
                       },
     "public_ui":  {
                       "schema":  "showroom_public_ui_v1",
@@ -74,35 +96,35 @@
                       "logos_y_fragility_0_100":  59
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-05-24T15:27:19.4720900+00:00",
+                            "timestamp":  "2026-06-07T15:19:56.5939453+00:00",
                             "active_character_id":  "dragon_quant",
                             "risk_level":  "INFO",
                             "public_signal_direction":  "HOLD",
-                            "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | logos_x=MID quad=Q1 [NON_GATING] | logos_graph_bundle=B [NON_GATING] | topology_radar_snapshot=B [NON_GATING]",
+                            "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | logos_x=MID quad=Q1 [NON_GATING] | logos_graph_bundle=B [NON_GATING] | topology_radar_snapshot=B [NON_GATING] | macro_horizon_2030=WATCH btc_base_stress=0.27/0.73 [HYPO][NON_GATING] | lens_audio=LM_HP050_SOYANG_IDLE_V1 gate=WATCH lens_video=LV_HP050_SOYANG_IDLE_V1 gate_v=WATCH [HYPO][NON_GATING]",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260524T152719-25b0c0da",
+                            "event_id":  "showroom-20260607T151956-900f9827",
                             "source":  "ops_showroom_bundle_v1",
                             "system_status":  "online",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-05-24T15:27:19.4720900+00:00",
+                                                    "as_of_utc":  "2026-06-07T15:19:56.5939453+00:00",
                                                     "logos_x_index_0_100":  51,
                                                     "logos_x_band":  "MID",
                                                     "logos_quadrant":  "Q1",
                                                     "logos_y_fragility_0_100":  59,
-                                                    "logos_4d_state_generated_at_utc":  "2026-05-23T22:28:06.188754Z",
+                                                    "logos_4d_state_generated_at_utc":  "2026-06-07T03:45:44.904843Z",
                                                     "logos_graph_bundle_present":  true,
                                                     "logos_graph_nodes_line_count":  1192,
                                                     "logos_graph_edges_line_count":  1196,
-                                                    "logos_graph_bundle_dedupe_sha256":  "ab02d5dc2fd165516d2068bf06c8c07fe710cd8d6e0be8a07015e8d473013bbb",
-                                                    "logos_graph_bundle_ts_utc":  "2026-05-23T23:05:31Z",
-                                                    "logos_graph_staleness_seconds":  5192,
-                                                    "logos_freshness_sidecar_generated_at_utc":  "2026-05-24T00:32:03.135222Z"
+                                                    "logos_graph_bundle_dedupe_sha256":  "99b18325a1332aa98309a31e73c56208079df6fef2500b449bd78c6fa1938379",
+                                                    "logos_graph_bundle_ts_utc":  "2026-06-07T13:08:38Z",
+                                                    "logos_graph_staleness_seconds":  6689,
+                                                    "logos_freshness_sidecar_generated_at_utc":  "2026-06-07T15:00:07Z"
                                                 },
                             "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-05-24T15:27:19.4720900+00:00",
+                            "last_ok_utc":  "2026-06-07T15:19:56.5939453+00:00",
                             "order_summary_public":  {
                                                          "trades_24h_count":  0,
                                                          "latest_trade_utc":  null,
@@ -127,6 +149,64 @@
                             "showroom_ticker_key":  "S_ONLINE_R_INFO_PSD_HOLD_DA_FLAT",
                             "showroom_reaction_line_ids":  [
                                                                "R_MODE_IDLE_01"
-                                                           ]
+                                                           ],
+                            "lens_audio_observability_v1":  {
+                                                                "schema":  "public_event_lens_audio_thin_slice_v1",
+                                                                "hypothesis_class":  "HYPO",
+                                                                "track_wall":  "B_track_research_only",
+                                                                "non_gating":  true,
+                                                                "clinical_claims":  false,
+                                                                "playback_id":  "LM_HP050_SOYANG_IDLE_V1",
+                                                                "playback_lut_version":  "jemaai_lens_audio_playback_lut_v1@2026-06-07",
+                                                                "showroom_display_mode_bind":  "idle",
+                                                                "gate":  {
+                                                                             "decision":  "WATCH",
+                                                                             "audio_gate_report_ref":  "c5e2e10494e24a0b",
+                                                                             "lens_alignment_pass":  true,
+                                                                             "loop_seamlessness_pass":  true,
+                                                                             "lufs_target_match":  true,
+                                                                             "commercial_license_verified":  true
+                                                                         },
+                                                                "conditioning_meta":  {
+                                                                                          "hp_pct":  0.5,
+                                                                                          "sasang_primary":  "soyang",
+                                                                                          "numeric_mode":  "melody",
+                                                                                          "tempo_bpm_target":  101.76,
+                                                                                          "bpm_observed":  180.01125070316894
+                                                                                      },
+                                                                "trend_meta":  {
+                                                                                   "hormone_trend_state":  "NODATA",
+                                                                                   "gematria_trace_present":  false
+                                                                               },
+                                                                "disclaimer_ref":  "jemaai_lens_audio_hypo_v1",
+                                                                "generated_at_utc":  "2026-06-07T15:19:56Z",
+                                                                "baked_asset_week":  "2026-W23"
+                                                            },
+                            "research_only":  true,
+                            "lens_video_observability_v1":  {
+                                                                "schema":  "public_event_lens_video_thin_slice_v1",
+                                                                "hypothesis_class":  "HYPO",
+                                                                "track_wall":  "B_track_research_only",
+                                                                "non_gating":  true,
+                                                                "clinical_claims":  false,
+                                                                "video_playback_id":  "LV_HP050_SOYANG_IDLE_V1",
+                                                                "audio_playback_id_mirror":  "LM_HP050_SOYANG_IDLE_V1",
+                                                                "playback_lut_version":  "jemaai_lens_video_playback_lut_v1@2026-06-07",
+                                                                "showroom_display_mode_bind":  "idle",
+                                                                "gate":  {
+                                                                             "decision":  "WATCH",
+                                                                             "video_gate_report_ref":  "c5e2e10494e24a0b",
+                                                                             "loop_seamlessness_pass":  true,
+                                                                             "visual_alignment_pass":  true,
+                                                                             "commercial_license_verified":  true
+                                                                         },
+                                                                "conditioning_meta":  {
+                                                                                          "sasang_primary":  "soyang",
+                                                                                          "showroom_display_mode":  "idle"
+                                                                                      },
+                                                                "disclaimer_ref":  "jemaai_lens_video_hypo_v1",
+                                                                "generated_at_utc":  "2026-06-07T15:19:56Z",
+                                                                "baked_asset_week":  "2026-W23"
+                                                            }
                         }
 }

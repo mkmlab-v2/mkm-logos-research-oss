@@ -28,6 +28,28 @@ function Read-JsonFile {
     }
 }
 
+function Format-ShowroomUtcZ {
+    param($Raw)
+    if ($null -eq $Raw) { return $null }
+    if ($Raw -is [DateTime]) {
+        $dt = [DateTime]$Raw
+        if ($dt.Kind -eq [DateTimeKind]::Unspecified) {
+            $dt = [DateTime]::SpecifyKind($dt, [DateTimeKind]::Utc)
+        }
+        return $dt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    }
+    if ($Raw -is [DateTimeOffset]) {
+        return $Raw.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    }
+    $s = [string]$Raw
+    if ([string]::IsNullOrWhiteSpace($s)) { return $null }
+    try {
+        return ([DateTimeOffset]::Parse($s)).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+    } catch {
+        return $s
+    }
+}
+
 function Get-C2SignalLamp {
     param([string]$Status)
     $s = [string]$Status
@@ -141,6 +163,7 @@ $logos4dStatePath = Join-Path $root "docs\final\artifacts\logos_4d_state_v1_late
 $logosGraphBundlePath = Join-Path $root "docs\final\artifacts\logos_corpus_graph_bundle_v1_latest.json"
 $logosFreshnessSidecarPath = Join-Path $root "docs\final\artifacts\logos_track_c_freshness_sidecar_v1_latest.json"
 $topologySnapshotPath = Join-Path $root "docs\final\artifacts\showroom_topology_radar_snapshot_v1_latest.json"
+$macroHorizonSlicePath = Join-Path $root "docs\final\artifacts\showroom_macro_horizon_2030_slice_v1_latest.json"
 $exodusPressurePath = Join-Path $root "docs\final\artifacts\exodus_pressure_v1_latest.json"
 
 $c2 = Read-JsonFile -Path $c2Path
@@ -154,6 +177,7 @@ $logos4d = Read-JsonFile -Path $logos4dStatePath
 $logosGraphDoc = Read-JsonFile -Path $logosGraphBundlePath
 $freshnessDoc = Read-JsonFile -Path $logosFreshnessSidecarPath
 $topologyDoc = Read-JsonFile -Path $topologySnapshotPath
+$macroHorizonDoc = Read-JsonFile -Path $macroHorizonSlicePath
 
 $logosGraphBundlePresent = $false
 $logosGraphNlc = $null
@@ -207,35 +231,13 @@ if ($freshnessDoc -and [string]$freshnessDoc.schema -eq "logos_track_c_freshness
         try { $freshnessStalenessSec = [int]$freshnessDoc.freshness.staleness_seconds } catch { $freshnessStalenessSec = $null }
     }
     if ($freshnessDoc.generated_at_utc) {
-        $rawFg = $freshnessDoc.generated_at_utc
-        if ($rawFg -is [DateTime]) {
-            $dtF = [DateTime]$rawFg
-            if ($dtF.Kind -eq [DateTimeKind]::Unspecified) {
-                $dtF = [DateTime]::SpecifyKind($dtF, [DateTimeKind]::Utc)
-            }
-            $freshnessGeneratedAtUtc = $dtF.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
-        } elseif ($rawFg -is [DateTimeOffset]) {
-            $freshnessGeneratedAtUtc = $rawFg.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
-        } else {
-            $freshnessGeneratedAtUtc = [string]$rawFg
-        }
+        $freshnessGeneratedAtUtc = Format-ShowroomUtcZ -Raw $freshnessDoc.generated_at_utc
     }
 }
 
 function Format-TopologyUtcString {
     param($Raw)
-    if ($null -eq $Raw) { return $null }
-    if ($Raw -is [DateTime]) {
-        $dt = [DateTime]$Raw
-        if ($dt.Kind -eq [DateTimeKind]::Unspecified) {
-            $dt = [DateTime]::SpecifyKind($dt, [DateTimeKind]::Utc)
-        }
-        return $dt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
-    }
-    if ($Raw -is [DateTimeOffset]) {
-        return $Raw.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
-    }
-    return [string]$Raw
+    return Format-ShowroomUtcZ -Raw $Raw
 }
 
 $topologyRadarPresent = $false
@@ -264,6 +266,32 @@ if ($topologyDoc -and [string]$topologyDoc.schema_version -eq "showroom_topology
     if ($topologyDoc.disclaimer_ref) {
         $topologyRadarDisclaimer = [string]$topologyDoc.disclaimer_ref
     }
+}
+
+$macroHorizonPresent = $false
+$macroHorizonGenAt = $null
+$macroHorizonStaleAfter = $null
+$macroHorizonHypo = $null
+$macroHorizonFinalAction = $null
+$macroHorizonBtcBase = $null
+$macroHorizonBtcStress = $null
+$macroHorizonNoTrade = $null
+$macroHorizonDisclaimer = $null
+if ($macroHorizonDoc -and [string]$macroHorizonDoc.schema_version -eq "showroom_macro_horizon_2030_slice_v1" -and ($macroHorizonDoc.no_trade_signals -eq $true)) {
+    $macroHorizonPresent = $true
+    $macroHorizonGenAt = Format-TopologyUtcString -Raw $macroHorizonDoc.generated_at_utc
+    $macroHorizonStaleAfter = Format-TopologyUtcString -Raw $macroHorizonDoc.stale_after_utc
+    if ($macroHorizonDoc.hypo_banner) {
+        $macroHorizonHypo = [string]$macroHorizonDoc.hypo_banner
+        if ($macroHorizonHypo.Length -gt 480) { $macroHorizonHypo = $macroHorizonHypo.Substring(0, 480) }
+    }
+    if ($macroHorizonDoc.final_action) { $macroHorizonFinalAction = [string]$macroHorizonDoc.final_action }
+    if ($macroHorizonDoc.btc_path) {
+        if ($macroHorizonDoc.btc_path.base_weight -ne $null) { $macroHorizonBtcBase = [double]$macroHorizonDoc.btc_path.base_weight }
+        if ($macroHorizonDoc.btc_path.stress_weight -ne $null) { $macroHorizonBtcStress = [double]$macroHorizonDoc.btc_path.stress_weight }
+    }
+    if ($macroHorizonDoc.no_trade_signals -ne $null) { $macroHorizonNoTrade = [bool]$macroHorizonDoc.no_trade_signals }
+    if ($macroHorizonDoc.disclaimer_ref) { $macroHorizonDisclaimer = [string]$macroHorizonDoc.disclaimer_ref }
 }
 
 $generatedUtc = ([DateTimeOffset]::UtcNow).ToString("o")
@@ -311,12 +339,13 @@ function Get-NewestUtcAnchor {
 
 # Showroom context age: C2 guardrail may lag; prefer freshest Track-C observability anchor.
 $contextAnchorSource = "generated_fallback"
-$anchorPick = Get-NewestUtcAnchor -Candidates @($c2AsOf, $freshnessGeneratedAtUtc, $topologyRadarGenAt, $generatedUtc)
+$anchorPick = Get-NewestUtcAnchor -Candidates @($c2AsOf, $freshnessGeneratedAtUtc, $topologyRadarGenAt, $macroHorizonGenAt, $generatedUtc)
 $asOf = $anchorPick.UtcString
 if ([string]::IsNullOrWhiteSpace($asOf)) { $asOf = $generatedUtc; $contextAnchorSource = "generated_fallback" }
 elseif ($asOf -eq $c2AsOf) { $contextAnchorSource = "c2_guardrail" }
 elseif ($asOf -eq $freshnessGeneratedAtUtc) { $contextAnchorSource = "logos_freshness_sidecar" }
 elseif ($asOf -eq $topologyRadarGenAt) { $contextAnchorSource = "topology_radar_snapshot" }
+elseif ($asOf -eq $macroHorizonGenAt) { $contextAnchorSource = "macro_horizon_2030_slice" }
 else { $contextAnchorSource = "generated_fallback" }
 
 $contextTtlSec = 14400
@@ -644,6 +673,12 @@ if ($logosGraphBundlePresent) {
 if ($topologyRadarPresent) {
     $abstract = "$abstract | topology_radar_snapshot=B [NON_GATING]"
 }
+if ($macroHorizonPresent) {
+    $mhTail = if ($null -ne $macroHorizonBtcBase -and $null -ne $macroHorizonBtcStress) {
+        " btc_base_stress=$macroHorizonBtcBase/$macroHorizonBtcStress"
+    } else { "" }
+    $abstract = "$abstract | macro_horizon_2030=$macroHorizonFinalAction$mhTail [HYPO][NON_GATING]"
+}
 
 $sys = Get-SystemStatus -RuntimeOk $runtimeOk -FusionOk $fusionOk
 if ($contextStale) { $sys = "degraded" }
@@ -702,6 +737,44 @@ foreach ($k in $delayed.Keys) {
     $publicEvent.delayed_metrics[$k] = $delayed[$k]
 }
 
+# Lens media Thin Slice (Track C §3.9) — weekday CPU mapping -> playback_id + video_playback_id.
+$lensMediaBuilder = Join-Path $root "scripts\build_showroom_lens_media_observability_v1.py"
+$lensAudioBlockPath = Join-Path $root "docs\final\artifacts\showroom_lens_audio_observability_v1_latest.json"
+$lensVideoBlockPath = Join-Path $root "docs\final\artifacts\showroom_lens_video_observability_v1_latest.json"
+$lensMediaPresent = $false
+$lensPlaybackId = $null
+$lensVideoPlaybackId = $null
+$lensGateDecision = $null
+$lensVideoGateDecision = $null
+if (Test-Path -LiteralPath $lensMediaBuilder) {
+    try {
+        & py $lensMediaBuilder --showroom-display-mode $sdm --audio-out-json $lensAudioBlockPath --video-out-json $lensVideoBlockPath 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0 -and (Test-Path -LiteralPath $lensAudioBlockPath)) {
+            $lensBlock = Read-JsonFile -Path $lensAudioBlockPath
+            $lensVideoBlock = $null
+            if (Test-Path -LiteralPath $lensVideoBlockPath) {
+                $lensVideoBlock = Read-JsonFile -Path $lensVideoBlockPath
+            }
+            if ($lensBlock -and [string]$lensBlock.schema -eq "public_event_lens_audio_thin_slice_v1") {
+                $publicEvent["lens_audio_observability_v1"] = $lensBlock
+                $publicEvent["research_only"] = $true
+                $lensMediaPresent = $true
+                if ($lensBlock.playback_id) { $lensPlaybackId = [string]$lensBlock.playback_id }
+                if ($lensBlock.gate -and $lensBlock.gate.decision) { $lensGateDecision = [string]$lensBlock.gate.decision }
+                if ($lensVideoBlock -and [string]$lensVideoBlock.schema -eq "public_event_lens_video_thin_slice_v1") {
+                    $publicEvent["lens_video_observability_v1"] = $lensVideoBlock
+                    if ($lensVideoBlock.video_playback_id) { $lensVideoPlaybackId = [string]$lensVideoBlock.video_playback_id }
+                    if ($lensVideoBlock.gate -and $lensVideoBlock.gate.decision) { $lensVideoGateDecision = [string]$lensVideoBlock.gate.decision }
+                }
+                $videoTail = if ($lensVideoPlaybackId) { " lens_video=$lensVideoPlaybackId gate_v=$lensVideoGateDecision" } else { "" }
+                $publicEvent.abstract_reason = "$abstract | lens_audio=$lensPlaybackId gate=$lensGateDecision$videoTail [HYPO][NON_GATING]"
+            }
+        }
+    } catch {
+        Write-Warning "[showroom-bundle] lens media observability skipped: $_"
+    }
+}
+
 $observability = [ordered]@{
         unified_score_balanced = $score
         c2_status               = $c2Status
@@ -736,6 +809,29 @@ if ($topologyRadarPresent) {
     $observability["topology_radar_snapshot_disclaimer_ref"] = $topologyRadarDisclaimer
     $observability["topology_radar_snapshot_stub"] = $topologyRadarStub
 }
+if ($macroHorizonPresent) {
+    $observability["macro_horizon_2030_snapshot_present"] = $true
+    $observability["macro_horizon_2030_snapshot_generated_at_utc"] = $macroHorizonGenAt
+    $observability["macro_horizon_2030_snapshot_stale_after_utc"] = $macroHorizonStaleAfter
+    $observability["macro_horizon_2030_snapshot_hypo_banner"] = $macroHorizonHypo
+    $observability["macro_horizon_2030_snapshot_final_action"] = $macroHorizonFinalAction
+    $observability["macro_horizon_2030_snapshot_btc_base_weight"] = $macroHorizonBtcBase
+    $observability["macro_horizon_2030_snapshot_btc_stress_weight"] = $macroHorizonBtcStress
+    $observability["macro_horizon_2030_snapshot_no_trade_signals"] = $macroHorizonNoTrade
+    $observability["macro_horizon_2030_snapshot_disclaimer_ref"] = $macroHorizonDisclaimer
+}
+if ($lensMediaPresent) {
+    $observability["lens_audio_observability_present"] = $true
+    $observability["lens_audio_playback_id"] = $lensPlaybackId
+    $observability["lens_audio_gate_decision"] = $lensGateDecision
+    $observability["lens_audio_track_b_hypo"] = $true
+    if ($lensVideoPlaybackId) {
+        $observability["lens_video_observability_present"] = $true
+        $observability["lens_video_playback_id"] = $lensVideoPlaybackId
+        $observability["lens_video_gate_decision"] = $lensVideoGateDecision
+        $observability["lens_video_track_b_hypo"] = $true
+    }
+}
 
 $bundle = [ordered]@{
     schema               = "showroom_public_bundle_v1"
@@ -752,7 +848,12 @@ $bundle = [ordered]@{
         logos_corpus_graph_bundle_v1 = $logosGraphBundlePath
         logos_track_c_freshness_sidecar_v1 = $logosFreshnessSidecarPath
         showroom_topology_radar_snapshot_v1 = $topologySnapshotPath
+        showroom_macro_horizon_2030_slice_v1 = $macroHorizonSlicePath
         exodus_pressure_v1    = $exodusPressurePath
+        lens_music_hormone_trend_v1 = (Join-Path $root "docs\final\artifacts\lens_music_hormone_trend_latest.json")
+        dynamic_bgm_hp_sweep_v1 = (Join-Path $root "docs\final\artifacts\dynamic_bgm_hp_sweep_v1_latest.json")
+        showroom_lens_audio_observability_v1 = $lensAudioBlockPath
+        showroom_lens_video_observability_v1 = $lensVideoBlockPath
     }
     observability        = $observability
     public_ui            = $publicUi

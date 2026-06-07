@@ -26,6 +26,10 @@ on:
       - "tests/test_showroom_topology_radar_snapshot_schema_v1.py"
       - "tests/test_build_showroom_topology_radar_snapshot_v1.py"
       - "scripts/build_showroom_meaning_topology_graph_slice_v1.py"
+      - "scripts/build_showroom_macro_horizon_2030_slice_v1.py"
+      - "docs/final/schemas/showroom_macro_horizon_2030_slice_v1.schema.json"
+      - "tests/test_build_showroom_macro_horizon_2030_slice_v1.py"
+      - "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_topology_radar_v1.html"
       - "docs/final/schemas/showroom_meaning_topology_graph_slice_v1.schema.json"
       - "tests/test_build_showroom_meaning_topology_graph_slice_v1.py"
       - "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_meaning_topology_graph_v1.html"
@@ -53,6 +57,10 @@ on:
       - "tests/test_showroom_topology_radar_snapshot_schema_v1.py"
       - "tests/test_build_showroom_topology_radar_snapshot_v1.py"
       - "scripts/build_showroom_meaning_topology_graph_slice_v1.py"
+      - "scripts/build_showroom_macro_horizon_2030_slice_v1.py"
+      - "docs/final/schemas/showroom_macro_horizon_2030_slice_v1.schema.json"
+      - "tests/test_build_showroom_macro_horizon_2030_slice_v1.py"
+      - "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_topology_radar_v1.html"
       - "docs/final/schemas/showroom_meaning_topology_graph_slice_v1.schema.json"
       - "tests/test_build_showroom_meaning_topology_graph_slice_v1.py"
       - "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_meaning_topology_graph_v1.html"
@@ -84,5 +92,6 @@ jobs:
             tests/test_showroom_topology_radar_snapshot_schema_v1.py \
             tests/test_build_showroom_topology_radar_snapshot_v1.py \
             tests/test_build_showroom_meaning_topology_graph_slice_v1.py \
+            tests/test_build_showroom_macro_horizon_2030_slice_v1.py \
             -q --tb=short
 
