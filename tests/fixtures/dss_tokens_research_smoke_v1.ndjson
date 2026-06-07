@@ -1,0 +1,9 @@
+{"work":"Ben_Sira","token_index":1,"script":"hebrew","lineage_tier":"A_HEBREW_PRIMARY","source":"SEFARIA_API"}
+{"work":"Ben_Sira","token_index":2,"script":"hebrew","lineage_tier":"A_HEBREW_PRIMARY","source":"SEFARIA_API"}
+{"work":"Ben_Sira","token_index":3,"script":"hebrew","lineage_tier":"A_HEBREW_PRIMARY","source":"SEFARIA_API"}
+{"work":"Jubilees","token_index":1,"script":"hebrew","lineage_tier":"A_HEBREW_PRIMARY","source":"SEFARIA_API"}
+{"work":"Jubilees","token_index":2,"script":"hebrew","lineage_tier":"A_HEBREW_PRIMARY","source":"SEFARIA_API"}
+{"work":"Jubilees","token_index":3,"script":"other","lineage_tier":"C_TRANSLATION_PROXY","source":"URL_TEXT"}
+{"work":"1_Enoch","token_index":1,"script":"other","lineage_tier":"C_TRANSLATION_PROXY","source":"URL_TEXT"}
+{"work":"1_Enoch","token_index":2,"script":"other","lineage_tier":"C_TRANSLATION_PROXY","source":"URL_TEXT"}
+{"work":"1_Enoch","token_index":3,"script":"hebrew","lineage_tier":"A_HEBREW_PRIMARY","source":"SEFARIA_API"}

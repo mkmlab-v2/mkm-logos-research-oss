@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-07T12:16:51Z
+- **last_updated_utc:** 2026-06-07T13:00:18Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -71,26 +71,26 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-06-07T13:00:18Z** — EN headline probe OK: holdout KO 90% vs EN 80%; sidecar only; Logos 레인 패시브 종료
+- **2026-06-07T12:59:11Z** — DSS slice decoupling: skip_korea_context + decoupled JSONL; overlap 121→0 in slice_decoupled AB; research round 9/9 pytest 43
+- **2026-06-07T12:50:21Z** — hint-off ablation OK: holdout 90%→85% (KO keywords dominate); era hint +5pp; MS v1 frozen
+- **2026-06-07T12:48:44Z** — DSS default 3-file chunk30/cap1500 → 2736 surface; research round 8/8 pytest 42; slice overlap 121=Korea-prod dup, minimal slice→0
+- **2026-06-07T12:48:09Z** — B2B external_send GO: commander+counsel signoff; disclaimer integrity fixed; CTO draft ready; PDF print manual
+- **2026-06-07T12:47:32Z** — Logos holdout 레인 CLOSED(서랍): WATCH_HOLDOUT 패시브·MS v1 6.4% only; MISSION_LOG 블록 반영
+- **2026-06-07T12:43:48Z** — B2B verbal rehearsal 2026-06-07 complete; signoff internal_rehearsal_complete; external send HOLD; counsel shelf
+- **2026-06-07T12:42:28Z** — holdout structural closure: oracle 53.3% vs prod 51.7%; hybrid shadow 60%; 04-02 MS/hybrid=bear but v1 neutral_miss; margin020 frozen anchor 50% research-only
+- **2026-06-07T12:38:44Z** — holdout7 04-02 neutral_miss: margin sweep 0/1 recovered hold min_conf; hybrid 180d 48.3% soft_pass shadow-only no promote
+- **2026-06-07T12:36:07Z** — text_blind_v2 holdout parallel OK: train_holdout 10%→90%; digest+margin refreshed; MS frozen
+- **2026-06-07T12:34:43Z** — holdout gate OOS 180d: 41.4% A1 fail holdout7 6/6 neutralized train_wrong 0/60; manifest refresh composite 6/7; hybrid bbs_ms 60% shadow-only
+- **2026-06-07T12:33:21Z** — DSS B-track 종료: ext3 chunk40·927 surface·frontline 15/15·research round OK; Track C B2B 리허설 CLOSED signoff B2B_REHEARSAL_20260607_DSS; SEND_GATE HOLD·track_a blocked
+- **2026-06-07T12:27:18Z** — text_blind_v2 PoC OK: hit@1 6.4%→87.2% (47 gold); MS baseline frozen; B-track only
+- **2026-06-07T12:26:56Z** — holdout7 autopsy: bull-on-bear trap 5/5 in 30d panel; gemini swap no holdout fix; aux holdout_ovn_signed_bull 6/7 research-only; Azure T4=0 await MS
+- **2026-06-07T12:24:46Z** — Track C B2B 15min internal rehearsal complete (DSS appendix); SEND_GATE HOLD; ready_for_external_send false
 - **2026-06-07T12:16:51Z** — Track A Active commander GO: signoff+KPI 47.12%/0.889 shard tune; MS Decision V1 47.5% frozen
 - **2026-06-07T12:16:23Z** — Track C B2B 15min internal rehearsal complete 2026-06-07; signoff internal_rehearsal_complete; ready_for_external_send=false SEND_GATE HOLD
 - **2026-06-07T12:10:19Z** — Track C B2B 15min live rehearsal complete; internal_rehearsal_complete; SEND_GATE HOLD; counsel/CTO abandoned solo
 - **2026-06-07T12:09:02Z** — Azure ticket sync Open await MS; btrack model swap harness 30d A1 pass holdout_review; no promote
 - **2026-06-07T12:06:51Z** — Track C B2B 15min prep refresh OK: readiness pass counsel32; signoff internal_rehearsal_complete; external send HOLD
-- **2026-06-07T12:05:38Z** — B2B prep+signoff post LOGOS L2; counsel zip 32; GPU weekly Ready
-- **2026-06-07T12:02:33Z** — Logos RAG L2 ACK recorded post 100pct closure; Track C shadow ingest only; no A/live
-- **2026-06-07T11:59:36Z** — Lens audio+B2B lane 종료 OK — hp4/4 MusicGen3/3 counsel32 rehearsal checked; 1인 counsel 폐기·서랍; 다음 없음
-- **2026-06-07T11:59:00Z** — Lens audio+B2B lane closed(shelf): hp4/4 MusicGen3/3 ZIP32; 1인 counsel/CTO abandoned SEND_GATE HOLD
-- **2026-06-07T11:57:45Z** — LOGOS 100pct closure_ok; RAG 4e chain wired Phase2b; B2B 15min script LOGOS block; GPU weekly Ready
-- **2026-06-07T11:56:45Z** — Biblical/DSS seq: chunk125 692 rows, apocrypha 48k rebuild, unified cycle PASS tier2 READY, WATCH
-- **2026-06-07T11:53:02Z** — Track C B2B internal rehearsal checked: prep complete, counsel ZIP 32, readiness pass; external send HOLD
-- **2026-06-07T11:50:22Z** — gitea/main e43df9c600: 4 commits (Logos chronology B-track, LocalGpuWeekly+pre-news, audio BGM, mkmlife portal UI); runtime artifacts restored; P0 1074 OK
-- **2026-06-07T11:50:15Z** — Biblical/DSS: evaluate_authority restored, cap sweep plateau 350, partial frontline+pytest 39, WATCH
-- **2026-06-07T10:52:11Z** — Biblical/DSS: authority pin OK · full_surface 246 ingest · H-PR1+AB refresh · WATCH 유지 [HYPO]
-- **2026-06-07T10:51:12Z** — Logos hardset closure: human margin report + pipeline wired; MS 6.4% only
-- **2026-06-07T10:50:43Z** — Lens audio hook: RTX weekly 3/3 PASS; counsel ZIP 30; B2B meeting pack+15min rehearsal readiness ok (external send HOLD)
-- **2026-06-07T10:49:17Z** — gitea/main: Active shard tune 47.1%/0.889 floor OK; multilens LOCK Baseline A·equal Logos REJECT; Logos per-date macro-gate PoC 1248fa40ef [HYPO non-gating]; 이강민 anchor lived_fact_check→reports/kangmin guide
-- **2026-06-07T10:48:22Z** — Hardset SSOT=tier_v2 77.8% primary; tier_v1 baseline 분리; parallel merge idempotent
-- **2026-06-07T10:45:53Z** — squeezebits 2026 compression intel JSON fact-lock 등록 [HYPO] · WATCH/blocked 유지
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 

@@ -1,0 +1,132 @@
+{
+  "schema": "unified_frontline_cycle_report_v1",
+  "generated_at": "2026-06-07T12:16:19Z",
+  "tag": "command_center_followup_20260607_legacy_restore",
+  "overall_status": "PASS",
+  "runs": {
+    "dss": {
+      "command": "C:\\Python311\\python.exe run_dss_ci_smoke.py --manifest dss_ci_manifest_tf4.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "**Locating corpus resources ...**\nwrote 200 records to C:\\workspace\\projects\\dss-4d-ingest\\outputs\\dss_tokens_pilot_manifest_tf4.ndjson\n{\"ok\": true, \"records\": 200, \"ingest_mode\": \"textfabric\", \"out\": \"C:\\\\workspace\\\\projects\\\\dss-4d-ingest\\\\outputs\\\\dss_tokens_pilot_manifest_tf4.ndjson\", \"research_only\": true}\nOK: verified 200 records\naliased ci manifest → C:\\workspace\\projects\\dss-4d-ingest\\outputs\\dss_tokens_ci_smoke_manifest_tf4.ndjson\n{\"ok\": true, \"schema\": \"dss_token_pilot_summary_v1\", \"tag\": \"pilot_manifest_tf4\", \"records\": 200, \"sha256\": \"8eaaa57e03ded4891bac50e3c29d3343d10f97d006439a546b6078c99a64be75\", \"out_primary\": \"C:\\\\workspace\\\\projects\\\\dss-4d-ingest\\\\outputs\\\\dss_tokens_pilot_manifest_tf4.ndjson\", \"out_alias\": \"C:\\\\workspace\\\\projects\\\\dss-4d-ingest\\\\outputs\\\\dss_tokens_ci_smoke_manifest_tf4.ndjson\", \"dry_run\": false, \"research_only\": true, \"hypothesis_tier\": \"[HYPO]\"}\n"
+    },
+    "apocrypha": {
+      "command": "n/a",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "ext3_hebrew_priority_ndjson_on_disk_no_refetch"
+    },
+    "fusion_join_gate": {
+      "command": "C:\\Python311\\python.exe judge_fusion_join_quality.py --dss-ndjson outputs/dss_tokens_ci_smoke_manifest_tf4.ndjson --apocrypha-ndjson outputs/apocrypha_tokens_pilot_manifest_ext3_hebrew_priority.ndjson --min-overlap-tokens 5 --min-overlap-ratio-dss 0.02 --out outputs\\fusion_join_quality_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=PASS\nreport=outputs\\fusion_join_quality_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "insight_brief": {
+      "command": "C:\\Python311\\python.exe build_dss_apocrypha_insight_brief_v1.py --tag command_center_followup_20260607_legacy_restore --quality-json outputs\\apocrypha_quality_report_pilot_manifest_ext3_hebrew_priority.json --fusion-quality-json outputs\\fusion_join_quality_command_center_followup_20260607_legacy_restore.json --out-json outputs\\dss_apocrypha_insight_brief_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "pilot_insight_ready=True\nauthority_ready=False\njson=outputs\\dss_apocrypha_insight_brief_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "authority_readiness": {
+      "command": "C:\\Python311\\python.exe evaluate_authority_readiness.py --tag command_center_followup_20260607_legacy_restore --insight-brief-json outputs\\dss_apocrypha_insight_brief_command_center_followup_20260607_legacy_restore.json --out-json outputs\\authority_readiness_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=READY\njson=outputs\\authority_readiness_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "joint_frontline_gate": {
+      "command": "C:\\Python311\\python.exe run_joint_frontline_gate.py --tag command_center_followup_20260607_legacy_restore --fusion-json outputs\\fusion_join_quality_command_center_followup_20260607_legacy_restore.json --authority-json outputs\\authority_readiness_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=PASS\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\joint_frontline_gate_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "summarize_dss_apocrypha_insights": {
+      "command": "C:\\Python311\\python.exe summarize_dss_apocrypha_insights.py --tag command_center_followup_20260607_legacy_restore --insight-brief-json outputs\\dss_apocrypha_insight_brief_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "hebrew=1024 fusion_overlap=0.35 pilot_ready=True\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\dss_apocrypha_insight_summary_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "plan_apocrypha_hebrew_priority": {
+      "command": "C:\\Python311\\python.exe plan_apocrypha_hebrew_priority.py --tag command_center_followup_20260607_legacy_restore",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "plan_ready=False\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\apocrypha_hebrew_priority_plan_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "compare_authority_readiness_delta": {
+      "command": "C:\\Python311\\python.exe compare_authority_readiness_delta.py --tag command_center_followup_20260607_legacy_restore --current-json outputs\\authority_readiness_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status_delta=READY->READY\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\authority_readiness_delta_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "rank_apocrypha_symbol_patterns": {
+      "command": "C:\\Python311\\python.exe rank_apocrypha_symbol_patterns.py --tag command_center_followup_20260607_legacy_restore",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "ranked=2\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\apocrypha_symbol_pattern_rank_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "summarize_fusion_insight_topn": {
+      "command": "C:\\Python311\\python.exe summarize_fusion_insight_topn.py --tag command_center_followup_20260607_legacy_restore --fusion-json outputs\\fusion_join_quality_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "highlights=1\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_insight_topn_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "generate_fusion_rule_candidates": {
+      "command": "C:\\Python311\\python.exe generate_fusion_rule_candidates.py --tag command_center_followup_20260607_legacy_restore --fusion-json outputs\\fusion_join_quality_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "candidates=2\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_rule_candidates_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "score_fusion_rule_candidates": {
+      "command": "C:\\Python311\\python.exe score_fusion_rule_candidates.py --tag command_center_followup_20260607_legacy_restore --fusion-json outputs\\fusion_join_quality_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "scored=2\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_rule_scores_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "fusion_rule_score_gate": {
+      "command": "C:\\Python311\\python.exe judge_fusion_rule_score_gate.py --tag command_center_followup_20260607_legacy_restore",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=PASS\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\fusion_rule_score_gate_command_center_followup_20260607_legacy_restore.json\n"
+    },
+    "unified_cycle_regression": {
+      "command": "C:\\Python311\\python.exe judge_unified_cycle_regression.py --tag command_center_followup_20260607_legacy_restore --current-report-json outputs\\unified_frontline_cycle_report_command_center_followup_20260607_legacy_restore.json",
+      "cwd": "C:\\workspace\\projects\\dss-4d-ingest",
+      "exit_code": 0,
+      "status": "PASS",
+      "output": "status=PASS\njson=C:\\workspace\\projects\\dss-4d-ingest\\outputs\\unified_cycle_regression_command_center_followup_20260607_legacy_restore.json\n"
+    }
+  },
+  "notes": {
+    "apocrypha_manifest": "pilot_manifest_ext3_hebrew_priority.json",
+    "dss_manifest": "dss_ci_manifest_tf4.json",
+    "authority_readiness_status": "READY",
+    "legacy_scripts_restored": [
+      "run_joint_frontline_gate.py",
+      "summarize_dss_apocrypha_insights.py",
+      "plan_apocrypha_hebrew_priority.py",
+      "compare_authority_readiness_delta.py",
+      "rank_apocrypha_symbol_patterns.py",
+      "summarize_fusion_insight_topn.py",
+      "generate_fusion_rule_candidates.py",
+      "score_fusion_rule_candidates.py",
+      "judge_fusion_rule_score_gate.py",
+      "judge_unified_cycle_regression.py"
+    ],
+    "research_only": true,
+    "hypothesis_tier": "[HYPO]"
+  }
+}
