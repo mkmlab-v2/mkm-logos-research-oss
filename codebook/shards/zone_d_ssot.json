@@ -12,13 +12,24 @@
   "must_keep_hard_terms": [
     "source",
     "artifact",
-    "ssot"
+    "ssot",
+    "traceability",
+    "constitution"
   ],
   "must_keep_soft_terms": [
     "governance",
     "policy",
     "quality",
     "review",
+    "caveats",
+    "notes",
+    "cadence",
+    "external",
+    "override",
+    "updates",
+    "requires",
+    "reproduce",
+    "constraints",
     "대비",
     "압축"
   ],

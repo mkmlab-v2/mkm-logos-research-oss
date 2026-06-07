@@ -516,7 +516,15 @@ def test_v2_lossless_profile_uses_fused_hybrid_codec():
 
 
 def test_resolve_latest_codebook_uses_production_pointer() -> None:
-    """v2 lexicon rail resolves production SSOT via bench pointer (41658), not highest glob only."""
+    """v2 lexicon rail resolves production SSOT via bench pointer, not highest glob only."""
+    pointer = (
+        Path(__file__).resolve().parents[1]
+        / "reports/constitution/btrack_pilot/master_codebook_bench_lexicon_pointer_v1_latest.json"
+    )
+    assert pointer.is_file(), "bench lexicon pointer missing"
+    import json
+
+    prod_path = json.loads(pointer.read_text(encoding="utf-8"))["production_ssot"]["path"]
     p = resolve_latest_codebook_path()
     assert p is not None
-    assert "41658" in p.name
+    assert p.name == Path(prod_path).name

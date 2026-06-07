@@ -8,7 +8,10 @@
     "전이",
     "타이밍",
     "월간",
-    "주간"
+    "주간",
+    "matrix",
+    "thresholds",
+    "transition"
   ],
   "must_keep_hard_terms": [
     "명리",
@@ -19,7 +22,10 @@
     "bootstrap",
     "quality",
     "전이",
-    "타이밍"
+    "타이밍",
+    "matrix",
+    "thresholds",
+    "transition"
   ],
   "guard_tokens": [
     "manual",
