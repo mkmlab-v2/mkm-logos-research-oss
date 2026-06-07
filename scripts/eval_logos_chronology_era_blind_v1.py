@@ -69,6 +69,32 @@ def _hit_at_3(pred_ids: list[str], gold: str, acceptable: list[str]) -> bool:
     return any(pid in pool for pid in pred_ids[:3])
 
 
+def _resolve_text_src(ev: dict[str, Any], text_source: str) -> str:
+    if text_source == "headline_en":
+        return str(ev.get("headline_en") or ev.get("canonical_text") or "")
+    if text_source == "canonical_text":
+        return str(ev.get("canonical_text") or "")
+    return str(ev.get("canonical_text") or ev.get("headline_ko") or "")
+
+
+def _merge_en_headlines(events: list[dict[str, Any]], sidecar_path: Path | None) -> int:
+    if not sidecar_path or not sidecar_path.is_file():
+        return 0
+    sidecar = load_json(sidecar_path)
+    by_id = {
+        str(row.get("event_id") or ""): str(row.get("headline_en") or "")
+        for row in (sidecar.get("headlines") or [])
+        if row.get("event_id")
+    }
+    merged = 0
+    for ev in events:
+        eid = str(ev.get("event_id") or "")
+        if eid in by_id and by_id[eid]:
+            ev["headline_en"] = by_id[eid]
+            merged += 1
+    return merged
+
+
 def _evaluate_event(
     chrono: dict[str, Any],
     ev: dict[str, Any],
@@ -77,10 +103,11 @@ def _evaluate_event(
     modern_boost: float,
     boost_policy: str = "global",
     graphrag_topics_json: Path | None = None,
+    text_source: str = "headline_ko",
 ) -> dict[str, Any]:
     tags = list(ev.get("inferred_regime_tags") or [])
     rag_trace: dict[str, Any] | None = None
-    text_src = str(ev.get("canonical_text") or ev.get("headline_ko") or "")
+    text_src = _resolve_text_src(ev, text_source)
     tier = str(ev.get("tier") or "")
     if tag_mode == "text_blind" and text_src:
         tags = infer_tags_from_text(text_src)
@@ -116,6 +143,8 @@ def _evaluate_event(
         "as_of_date": ev.get("as_of_date"),
         "partition": ev.get("partition"),
         "tag_mode": tag_mode,
+        "text_source": text_source,
+        "text_preview": text_src[:120] if text_src else None,
         "inferred_regime_tags": tags,
         "gold_era_id": gold,
         "acceptable_era_ids": acceptable,
@@ -196,6 +225,18 @@ def main() -> int:
         default=0.10,
         help="text_blind: warn if human_override ratio below this when heuristic gold present",
     )
+    ap.add_argument(
+        "--text-source",
+        choices=["headline_ko", "headline_en", "canonical_text"],
+        default="headline_ko",
+        help="Which event text field to feed tag inference (headline_en for EN-only OOV probe).",
+    )
+    ap.add_argument(
+        "--en-headlines-json",
+        type=Path,
+        default=None,
+        help="Sidecar mapping event_id -> headline_en merged into gold events before eval.",
+    )
     ap.add_argument("--skip-governance", action="store_true", help="Disable self-match governance gate")
     args = ap.parse_args()
 
@@ -216,6 +257,10 @@ def main() -> int:
     excluded = set(gold_doc.get("excluded_source_ids") or list(SYNTHETIC_SOURCES))
 
     events: list[dict[str, Any]] = list(gold_doc.get("events") or [])
+    en_sidecar = args.en_headlines_json
+    if en_sidecar is not None and not en_sidecar.is_absolute():
+        en_sidecar = ROOT / en_sidecar
+    n_en_merged = _merge_en_headlines(events, en_sidecar)
     if args.include_hardset_news and gold_doc.get("schema") != "logos_chronology_hardset_news_era_gold_v1":
         hardset = args.hardset_jsonl if args.hardset_jsonl.is_absolute() else ROOT / args.hardset_jsonl
         for row in _load_jsonl(hardset):
@@ -255,6 +300,7 @@ def main() -> int:
             modern_boost=boost,
             boost_policy=policy,
             graphrag_topics_json=graphrag_path if args.tag_mode == "rag_assisted" else None,
+            text_source=str(args.text_source),
         )
         for ev in events
     ]
@@ -274,6 +320,7 @@ def main() -> int:
         "macro_landmark_hit_at_1_strict": _rate(macro, "hit_at_1_strict"),
         "narrative_hit_at_1_strict": _rate(narrative, "hit_at_1_strict"),
         "tag_mode": args.tag_mode,
+        "text_source": args.text_source,
     }
 
     status = "ok"
@@ -315,6 +362,9 @@ def main() -> int:
             "gold_json": _rel_repo(gold_path),
             "chronology_json": _rel_repo(chrono_path),
             "tag_mode": args.tag_mode,
+            "text_source": args.text_source,
+            "en_headlines_json": _rel_repo(en_sidecar) if en_sidecar else None,
+            "n_en_headlines_merged": n_en_merged,
             "modern_boost": boost,
             "boost_policy": policy,
             "include_hardset_news": args.include_hardset_news,

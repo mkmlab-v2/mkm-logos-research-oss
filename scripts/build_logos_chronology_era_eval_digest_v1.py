@@ -45,6 +45,7 @@ def main() -> int:
     v2_ab = _load("logos_chronology_text_blind_v2_ab_v1_latest.json", REP)
     v2_hold = _load("logos_chronology_text_blind_v2_holdout_v1_latest.json", REP)
     v2_hint_off = _load("logos_chronology_text_blind_v2_hint_off_ab_v1_latest.json", REP)
+    v2_en = _load("logos_chronology_text_blind_v2_en_headline_ab_v1_latest.json", REP)
     margin = _load("logos_hardset_era_human_margin_report_v1_latest.json", REP)
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -199,6 +200,18 @@ def main() -> int:
                 "- MS baseline still **v1 ~6.4% only**; ablation is B-track internal lower-bound probe.",
             ]
         )
+    if v2_en:
+        c4 = v2_en.get("compare") or {}
+        lines.extend(
+            [
+                "",
+                "## EN headline probe (v2 · research sidecar · not live OOV)",
+                "",
+                f"- all-events: KO **{_pct(c4.get('all_events_hit_at_1_ko'))}** · EN **{_pct(c4.get('all_events_hit_at_1_en'))}**",
+                f"- train_holdout: KO **{_pct(c4.get('train_holdout_hit_at_1_ko'))}** · EN **{_pct(c4.get('train_holdout_hit_at_1_en'))}**",
+                "- Sidecar glosses only; true unseen headlines remain unmeasured off-fixture.",
+            ]
+        )
     if margin and margin.get("ready"):
         hi = margin.get("hardset_internal") or {}
         lines.extend(
@@ -250,6 +263,7 @@ def main() -> int:
             "- `docs/final/artifacts/logos_chronology_era_blind_eval_text_blind_v2_v1_latest.json` (B-track PoC · not MS)",
             "- `reports/logos_chronology_text_blind_v2_holdout_v1_latest.json`",
             "- `reports/logos_chronology_text_blind_v2_hint_off_ab_v1_latest.json`",
+            "- `reports/logos_chronology_text_blind_v2_en_headline_ab_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_eval_v1_latest.json`",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_v2_eval_v1_latest.json` (hardset SSOT · tier_v2_locked_eval)",
             "- `docs/final/artifacts/logos_chronology_hardset_text_blind_v2_tier_v1_baseline_eval_v1_latest.json` (compare only)",
