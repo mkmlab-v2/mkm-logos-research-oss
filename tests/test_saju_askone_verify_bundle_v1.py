@@ -33,3 +33,7 @@ def test_askone_verify_bundle_utc_mode() -> None:
         assert doc.get("myeongni_lite") is not None
         lite = doc["myeongni_lite"]
         assert lite.get("daewoon_current", {}).get("pillar")
+        assert lite.get("oheng_visible", {}).get("element_counts_visible")
+        ec = lite["oheng_visible"]["element_counts_visible"]
+        assert ec.get("화") == 3 and ec.get("수") == 0
+        assert lite.get("ten_god_lite", {}).get("counts_combined_ko", {}).get("정인") == 3
