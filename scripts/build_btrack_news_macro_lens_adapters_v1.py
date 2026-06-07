@@ -27,6 +27,7 @@ DEFAULT_EXTERNAL_NEWS_FEED = ROOT / "docs/final/artifacts/external_news_feed_lat
 DEFAULT_BTC_MARKET_SIGNALS = ROOT / "docs/final/artifacts/btc_market_signals_latest.json"
 DEFAULT_BTC_ALT_PUBLIC_SIGNALS = ROOT / "docs/final/artifacts/btc_alt_public_signals_latest.json"
 DEFAULT_GLOBAL_OVERNIGHT = ROOT / "docs/final/artifacts/global_market_overnight_signals_v1_latest.json"
+DEFAULT_EXA_NEWS_JSONL = ROOT / "reports/exa_macro_news_observation_staging_v1_latest.jsonl"
 DEFAULT_NEWS_OUT = ROOT / "docs/final/artifacts/news_independent_lens_latest.json"
 DEFAULT_MACRO_OUT = ROOT / "docs/final/artifacts/macro_independent_lens_latest.json"
 
@@ -236,6 +237,26 @@ def _macro_seed_texts_from_btc_alt_public(doc: dict[str, Any]) -> list[str]:
     return []
 
 
+def _texts_from_exa_news_jsonl(path: Path) -> list[str]:
+    if not path.is_file():
+        return []
+    texts: list[str] = []
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(row, dict):
+            continue
+        t = str(row.get("canonical_text") or "").strip()
+        if t:
+            texts.append(t[:2000])
+    return texts
+
+
 def _rel(p: Path) -> str:
     try:
         return str(p.resolve().relative_to(ROOT))
@@ -252,12 +273,14 @@ def _build_news_doc(
     external_news_doc: dict[str, Any] | None,
     global_overnight_path: Path,
     global_overnight_doc: dict[str, Any] | None,
+    exa_news_path: Path,
+    exa_texts: list[str],
 ) -> dict[str, Any]:
     pre_texts = _headlines_from_pre_news(pre_doc) if pre_doc else []
     naver_texts = _texts_from_naver_news_feed(naver_news_doc) if naver_news_doc else []
     external_texts = _texts_from_naver_news_feed(external_news_doc) if external_news_doc else []
     overnight_texts = _news_headlines_from_global_overnight(global_overnight_doc)
-    texts = pre_texts + naver_texts + external_texts + overnight_texts
+    texts = pre_texts + naver_texts + external_texts + overnight_texts + exa_texts
     ds, cf, meta = _score_from_texts(texts)
     return {
         "schema": "news_independent_lens_v0",
@@ -279,6 +302,7 @@ def _build_news_doc(
             "naver_news_text_count": len(naver_texts),
             "external_news_text_count": len(external_texts),
             "global_overnight_headline_count": len(overnight_texts),
+            "exa_macro_text_count": len(exa_texts),
             "digest": " | ".join(texts[:5])[:500],
             "tilt_meta": meta,
         },
@@ -288,6 +312,7 @@ def _build_news_doc(
             "naver_news_input_path": _rel(naver_news_path) if naver_news_doc else "",
             "external_news_input_path": _rel(external_news_path) if external_news_doc else "",
             "global_overnight_input_path": _rel(global_overnight_path) if global_overnight_doc else "",
+            "exa_news_jsonl_path": _rel(exa_news_path) if exa_texts else "",
         },
         "note": "B-track news lens from pre_news_shadow_input (keyword tilt); research_only; not live trading.",
     }
@@ -306,6 +331,8 @@ def _build_macro_doc(
     btc_alt_public_doc: dict[str, Any] | None,
     global_overnight_path: Path,
     global_overnight_doc: dict[str, Any] | None,
+    exa_news_path: Path,
+    exa_texts: list[str],
 ) -> dict[str, Any]:
     feed_texts = _texts_from_external_feed(feed_doc) if feed_doc else []
     naver_seed_texts = _macro_seed_texts_from_naver_signals(naver_signals_doc) if naver_signals_doc else []
@@ -320,6 +347,7 @@ def _build_macro_doc(
         + btc_market_seed_texts
         + btc_alt_public_seed_texts
         + overnight_seed_texts
+        + exa_texts
     )
     ds, cf, meta = _score_from_texts(texts)
     return {
@@ -344,6 +372,7 @@ def _build_macro_doc(
             "btc_market_seed_count": len(btc_market_seed_texts),
             "btc_alt_public_seed_count": len(btc_alt_public_seed_texts),
             "global_overnight_seed_count": len(overnight_seed_texts),
+            "exa_macro_text_count": len(exa_texts),
             "tilt_meta": meta,
         },
         "provenance": {
@@ -355,6 +384,7 @@ def _build_macro_doc(
             "btc_market_input_path": _rel(btc_market_path) if btc_market_doc else "",
             "btc_alt_public_input_path": _rel(btc_alt_public_path) if btc_alt_public_doc else "",
             "global_overnight_input_path": _rel(global_overnight_path) if global_overnight_doc else "",
+            "exa_news_jsonl_path": _rel(exa_news_path) if exa_texts else "",
         },
         "note": "B-track macro lens from external_feed_drop (keyword tilt); research_only; not live trading.",
     }
@@ -373,6 +403,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--btc-market-signals", type=Path, default=DEFAULT_BTC_MARKET_SIGNALS)
     ap.add_argument("--btc-alt-public-signals", type=Path, default=DEFAULT_BTC_ALT_PUBLIC_SIGNALS)
     ap.add_argument("--global-overnight", type=Path, default=DEFAULT_GLOBAL_OVERNIGHT)
+    ap.add_argument("--exa-news-jsonl", type=Path, default=DEFAULT_EXA_NEWS_JSONL)
     ap.add_argument("--news-out", type=Path, default=DEFAULT_NEWS_OUT)
     ap.add_argument("--macro-out", type=Path, default=DEFAULT_MACRO_OUT)
     ap.add_argument("--dry-run", action="store_true")
@@ -389,6 +420,7 @@ def main(argv: list[str] | None = None) -> int:
     btc_market_doc = _read_json(args.btc_market_signals)
     btc_alt_public_doc = _read_json(args.btc_alt_public_signals)
     global_overnight_doc = _read_json(args.global_overnight)
+    exa_texts = _texts_from_exa_news_jsonl(args.exa_news_jsonl)
 
     news_doc = _build_news_doc(
         args.pre_news_input,
@@ -399,6 +431,8 @@ def main(argv: list[str] | None = None) -> int:
         external_news_doc,
         args.global_overnight,
         global_overnight_doc,
+        args.exa_news_jsonl,
+        exa_texts,
     )
     macro_doc = _build_macro_doc(
         args.external_feed,
@@ -413,6 +447,8 @@ def main(argv: list[str] | None = None) -> int:
         btc_alt_public_doc,
         args.global_overnight,
         global_overnight_doc,
+        args.exa_news_jsonl,
+        exa_texts,
     )
 
     if args.dry_run:

@@ -231,3 +231,54 @@ def test_naver_multi_group_signals_seed_macro(mod, tmp_path: Path) -> None:
     assert macro["macro_stream_outputs"]["external_macro_seed_count"] >= 1
     assert macro["macro_stream_outputs"]["btc_market_seed_count"] >= 1
     assert macro["macro_stream_outputs"]["btc_alt_public_seed_count"] >= 1
+
+
+def test_exa_news_jsonl_contributes_to_news_and_macro(mod, tmp_path: Path) -> None:
+    pre = tmp_path / "pre.json"
+    pre.write_text(json.dumps({"schema": "pre_news_shadow_input_v1", "rows": []}), encoding="utf-8")
+    feed = tmp_path / "feed.json"
+    feed.write_text(json.dumps({"schema": "external_feed_drop_v1", "data": []}), encoding="utf-8")
+    exa = tmp_path / "exa.jsonl"
+    exa.write_text(
+        json.dumps(
+            {
+                "schema_version": "news_observation_v1",
+                "observation_id": "11111111-1111-4111-8111-111111111111",
+                "as_of_utc": "2026-06-07T00:00:00Z",
+                "published_utc": "2026-06-07T00:00:00Z",
+                "source_id": "exa_macro_wire",
+                "source_record_url": "https://example.invalid/1",
+                "canonical_text": "Oil shock risk-off selloff stress in global macro markets",
+                "text_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "ingested_at_utc": "2026-06-07T00:00:00Z",
+                "dataset_partition": "calibration",
+                "hypothesis_tag": "[HYPO]",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    nout = tmp_path / "news.json"
+    mout = tmp_path / "macro.json"
+    assert (
+        mod.main(
+            [
+                "--pre-news-input",
+                str(pre),
+                "--external-feed",
+                str(feed),
+                "--exa-news-jsonl",
+                str(exa),
+                "--news-out",
+                str(nout),
+                "--macro-out",
+                str(mout),
+            ]
+        )
+        == 0
+    )
+    news = json.loads(nout.read_text(encoding="utf-8"))
+    macro = json.loads(mout.read_text(encoding="utf-8"))
+    assert news["news_stream_outputs"]["exa_macro_text_count"] == 1
+    assert macro["macro_stream_outputs"]["exa_macro_text_count"] == 1
+    assert news["scores"]["direction_score"] < 0

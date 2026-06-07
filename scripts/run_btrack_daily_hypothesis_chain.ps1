@@ -80,6 +80,7 @@ param(
   [string]$GeminiModel = "",
   [switch]$IncludeNaverOpenApiRefresh,
   [switch]$SkipNaverOpenApiRefresh,
+  [switch]$IncludeExaMacroNewsRefresh,
   [switch]$SkipNewsMacroAdapter,
   [switch]$IncludeYang2015SurfaceMetrics,
   [switch]$IncludeLogosSymbolicPromotionChain,
@@ -269,6 +270,21 @@ if (-not $doNaverOpenApiRefresh) {
       py @naverArgs
       if ($LASTEXITCODE -ne 0) {
         Write-Host "WARN: Naver OpenAPI refresh failed; continue with existing artifacts." -ForegroundColor Yellow
+      }
+    }
+  }
+}
+
+if ($IncludeExaMacroNewsRefresh) {
+  $exaFetch = Join-Path $WorkspaceRoot "scripts\fetch_exa_macro_news_observation_v1.py"
+  if (Test-Path -LiteralPath $exaFetch) {
+    if ([string]::IsNullOrWhiteSpace($env:EXA_API_KEY)) {
+      Write-Host "Skip Exa macro news refresh (EXA_API_KEY missing after .env load)." -ForegroundColor DarkYellow
+    } else {
+      Write-Host "==> fetch_exa_macro_news_observation_v1.py (research-only Exa macro ingest)"
+      py $exaFetch --num-results 8 --validate --append
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: Exa macro news refresh failed; continue with existing staging." -ForegroundColor Yellow
       }
     }
   }
