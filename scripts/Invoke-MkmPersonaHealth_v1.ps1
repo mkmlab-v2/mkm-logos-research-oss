@@ -36,7 +36,7 @@
 
   MarketingWeeklyBundleReadiness = Verify-MarketingWeeklyDraftBundleTaskReadiness_v1.ps1
 
-  ShowroomTrackCHealth = Invoke-ShowroomTrackCHealth_v1.ps1 (task verify + dual-host smoke + B2B readiness)
+  ShowroomTrackCHealth = Invoke-ShowroomTrackCHealth_v1.ps1 (task verify + dual-host smoke + lens media hub QA + B2B readiness)
 
   BtrackProphecyLightRefresh = Run-BtrackProphecyOpsLightRefresh_v1.ps1 (briefing + mkmlife envelope; no full daily chain)
 
@@ -49,6 +49,12 @@
   LocalGpuWeeklyRoutineReadiness = Verify-MkmLocalGpuWeeklyRoutineTaskReadiness_v1.ps1 (Windows Task Scheduler)
 
   TrackCB2bRehearsalPrep = Invoke-TrackCB2bInternalRehearsalPrep_v1.ps1 (15min script + counsel ZIP + gates; no send)
+
+  ScienceCoreLaneReadiness = Invoke-ScienceCoreLaneReadiness_v1.ps1 (check_science_core_lane_readiness_v1.py; no full governance)
+
+  ScienceCoreWeeklyReadiness = Verify-ScienceCoreWeeklyGovernanceTask_v1.ps1 (Windows Task Scheduler)
+
+  ScienceCoreGovernance = Run-ScienceCoreGovernanceBundle_v1.ps1 -UseFullHumanistPerDate -RunHumanistAb -RunLogosAb -RunLongWalkforward -ExtendCalendarStubs -RebuildScience -RunNewsWeightAblation -RunLongWindowLaneCompare -RunTripleBlendWeightSweep -RunPnlBootstrap
 
 
 
@@ -92,7 +98,7 @@ param(
 
     [Parameter(Mandatory = $true, Position = 0)]
 
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance')]
 
     [string]$Persona
 
@@ -373,6 +379,42 @@ try {
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
 
             & $ps @common $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'ScienceCoreLaneReadiness' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-ScienceCoreLaneReadiness_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+
+            exit $LASTEXITCODE
+
+        }
+
+        'ScienceCoreWeeklyReadiness' {
+
+            $script = Join-Path $PSScriptRoot 'Verify-ScienceCoreWeeklyGovernanceTask_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+
+            exit $LASTEXITCODE
+
+        }
+
+        'ScienceCoreGovernance' {
+
+            $script = Join-Path $PSScriptRoot 'Run-ScienceCoreGovernanceBundle_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -UseFullHumanistPerDate -RunHumanistAb -RunLogosAb -RunLongWalkforward -ExtendCalendarStubs -RebuildScience -RunNewsWeightAblation -RunLongWindowLaneCompare -RunTripleBlendWeightSweep -RunPnlBootstrap
 
             exit $LASTEXITCODE
 

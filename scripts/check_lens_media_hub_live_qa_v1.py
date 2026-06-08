@@ -29,7 +29,28 @@ def _head(url: str) -> int:
         return int(resp.status)
 
 
+def _html_structure_checks(html: str, fails: list[str]) -> None:
+    if 'type="video/mp4"' not in html:
+        fails.append("html missing mp4 source")
+    if "aSuffix" not in html:
+        fails.append("html missing audio cache bust")
+    mp4_i = html.find("video/mp4")
+    webm_i = html.find("video/webm")
+    if mp4_i < 0 or webm_i < 0 or mp4_i > webm_i:
+        fails.append("mp4 not listed before webm in template")
+
+
 def main() -> int:
+    import argparse
+
+    ap = argparse.ArgumentParser(description="Lens media hub live QA (12 pairs).")
+    ap.add_argument(
+        "--offline",
+        action="store_true",
+        help="Skip live HEAD checks; local WAV + HTML structure only.",
+    )
+    args = ap.parse_args()
+
     fails: list[str] = []
     alu = json.loads(AUDIO_LUT.read_text(encoding="utf-8"))
     vlu = json.loads(VIDEO_LUT.read_text(encoding="utf-8"))
@@ -47,28 +68,22 @@ def main() -> int:
                 dur = w.getnframes() / float(w.getframerate())
             if dur < min_dur:
                 fails.append(f"{k} local_dur={dur:.1f}s (<{min_dur})")
-        for label, url in (
-            ("wav", f"https://jemaai.cloud/audio/lens_btrack/v1/{a['file']}?v={av}"),
-            ("webm", f"https://jemaai.cloud/video/lens_btrack/v1/{v.get('file', '')}?v={vv}"),
-            ("mp4", f"https://jemaai.cloud/video/lens_btrack/v1/{v.get('mp4_file', '')}?v={vv}"),
-        ):
-            if label != "wav" and not v.get("file"):
-                continue
-            try:
-                if _head(url) != 200:
-                    fails.append(f"{k} {label} status!=200")
-            except OSError as exc:
-                fails.append(f"{k} {label} {exc}")
+        if not args.offline:
+            for label, url in (
+                ("wav", f"https://jemaai.cloud/audio/lens_btrack/v1/{a['file']}?v={av}"),
+                ("webm", f"https://jemaai.cloud/video/lens_btrack/v1/{v.get('file', '')}?v={vv}"),
+                ("mp4", f"https://jemaai.cloud/video/lens_btrack/v1/{v.get('mp4_file', '')}?v={vv}"),
+            ):
+                if label != "wav" and not v.get("file"):
+                    continue
+                try:
+                    if _head(url) != 200:
+                        fails.append(f"{k} {label} status!=200")
+                except OSError as exc:
+                    fails.append(f"{k} {label} {exc}")
 
     html = HTML.read_text(encoding="utf-8")
-    if 'type="video/mp4"' not in html:
-        fails.append("html missing mp4 source")
-    if "aSuffix" not in html:
-        fails.append("html missing audio cache bust")
-    mp4_i = html.find("video/mp4")
-    webm_i = html.find("video/webm")
-    if mp4_i < 0 or webm_i < 0 or mp4_i > webm_i:
-        fails.append("mp4 not listed before webm in template")
+    _html_structure_checks(html, fails)
 
     if fails:
         print("[lens-media-qa] FAIL", flush=True)

@@ -3,10 +3,12 @@
 # Usage:
 #   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-ShowroomTrackCHealth_v1.ps1
 #   ... -SkipB2bReadiness
+#   ... -SkipLensMediaHub (offline / no jemaai.cloud HEAD)
 
 param(
     [string]$WorkspaceRoot = "C:\workspace",
-    [switch]$SkipB2bReadiness
+    [switch]$SkipB2bReadiness,
+    [switch]$SkipLensMediaHub
 )
 
 $ErrorActionPreference = "Stop"
@@ -30,6 +32,12 @@ Invoke-Step "nginx weekly task verify" {
 
 Invoke-Step "dual-host public smoke" {
     py (Join-Path $root "scripts\check_showroom_trust_viz_public_chain_v1.py")
+}
+
+if (-not $SkipLensMediaHub) {
+    Invoke-Step "lens media hub live QA (12 pairs)" {
+        py (Join-Path $root "scripts\check_lens_media_hub_live_qa_v1.py")
+    }
 }
 
 if (-not $SkipB2bReadiness) {
