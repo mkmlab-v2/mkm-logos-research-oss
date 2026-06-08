@@ -22,3 +22,5 @@ jobs:
           python-version: "3.11"
       - name: Dual-host showroom HTTP smoke
         run: python scripts/check_showroom_trust_viz_public_chain_v1.py
+      - name: Lens media hub live QA (12 pairs)
+        run: python scripts/check_lens_media_hub_live_qa_v1.py
