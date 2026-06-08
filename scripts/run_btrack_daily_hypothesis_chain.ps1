@@ -36,6 +36,10 @@
 # Longer window: -IncludeDawnScore (30 trading days for score rows).
 # KOSPI stress observation (default ON): build_kospi_stress_observation_hypothesis_v1.py after prophecy_health_status
 # (5d vol + monthly foreign_net_buy proxy; observation_only). Use -SkipKospiStressObservation to omit.
+# KOSPI shock-cutoff score observation (default ON; research_only side artifact; does not replace main score):
+#   build_btrack_prophecy_score_kospi_shock_cutoff_obs_latest.json + eval sidecar.
+#   Use -SkipKospiShockCutoffObservation to omit. Env MKM_BTRACK_KOSPI_SHOCK_CUTOFF_OBS=0|false also disables.
+#   Legacy -IncludeKospiShockCutoffObservation is a no-op when default ON (kept for wrappers).
 # Manual one-offs:
 #   py scripts/build_btrack_prophecy_score_from_ohlcv.py
 #   py scripts/eval_prophecy_hit_rate_v1.py --run-mode price --score-json docs/final/artifacts/btrack_prophecy_score_latest.json
@@ -120,6 +124,7 @@ param(
   # Phase 2: market myeongni overlay (default OFF; requires fresh myeongni_independent_lens_latest.json).
   [switch]$IncludeMarketMyeongniOverlay,
   # Research-only KOSPI score with shock cutoff enabled (separate artifact; does not replace main score).
+  [switch]$SkipKospiShockCutoffObservation,
   [switch]$IncludeKospiShockCutoffObservation,
   # Walk-forward folds for daily shadow refresh (align with run_btrack_promotion_push_v1 default 6).
   [int]$ProphecyWalkforwardNFolds = 6
@@ -370,7 +375,12 @@ if ($LASTEXITCODE -ne 0) {
   Write-Host "WARN: build_lens_conflict_day_decision_snapshot_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
 }
 
-if ($IncludeKospiShockCutoffObservation) {
+$kospiShockObsOn = (-not $SkipKospiShockCutoffObservation) -or $IncludeKospiShockCutoffObservation
+$shockObsEnv = [string]$env:MKM_BTRACK_KOSPI_SHOCK_CUTOFF_OBS
+if ($shockObsEnv -eq "0" -or $shockObsEnv -ieq "false" -or $shockObsEnv -ieq "no" -or $shockObsEnv -ieq "off") {
+  $kospiShockObsOn = $false
+}
+if ($kospiShockObsOn) {
   Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (KOSPI shock-cutoff observation; research_only side artifact)"
   py scripts/build_btrack_prophecy_score_from_ohlcv.py `
     --panel-instrument kospi `

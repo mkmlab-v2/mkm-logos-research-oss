@@ -33,6 +33,7 @@ from scripts.btrack_conditional_bear_override_v1 import apply_conditional_bear_o
 from scripts.btrack_regime_conditional_price_dampen_v1 import apply_regime_conditional_price_dampen_v1
 from scripts.kospi_overnight_price_overlay_v1 import apply_kospi_overnight_price_overlay
 from scripts.logos_shadow_eval_lib import load_kospi_yf_rows
+from scripts.report_independent_lens_fusion_stub_v0 import resolve_fusion_headline_v1
 DEFAULT_BUNDLE = ROOT / "docs" / "final" / "artifacts" / "btrack_llm_input_bundle_latest.json"
 DEFAULT_SCHEMA = ROOT / "docs" / "final" / "BTRACK_HYPOTHESIS_PROPHECY_V1.schema.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "btrack_hypothesis_prophecy_latest.json"
@@ -118,26 +119,59 @@ def _sign_to_direction(sign: str) -> str:
     return "neutral"
 
 
-def _build_stub_from_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
-    fusion = bundle.get("artifacts", {}).get("independent_lens_fusion_stub") or {}
-    cs = fusion.get("consensus") if isinstance(fusion.get("consensus"), dict) else {}
-    consensus_sign = str(cs.get("consensus_sign") or "neutral").lower()
-    direction = _sign_to_direction(consensus_sign)
-    conf = cs.get("consensus_confidence")
+def _safe_float(v: Any, default: float = 0.0) -> float:
     try:
-        cfn = float(conf) if conf is not None else 0.45
+        return float(v)
+    except (TypeError, ValueError):
+        return default
+
+
+def _fusion_operator_view_from_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
+    fusion = bundle.get("artifacts", {}).get("independent_lens_fusion_stub") or {}
+    hl = resolve_fusion_headline_v1(fusion if isinstance(fusion, dict) else None)
+    cs = fusion.get("consensus") if isinstance(fusion.get("consensus"), dict) else {}
+    ce = fusion.get("consensus_effective") if isinstance(fusion.get("consensus_effective"), dict) else {}
+    operator_sign = str(hl.get("headline_sign") or "neutral").lower()
+    if operator_sign == "unknown":
+        operator_sign = str(ce.get("consensus_sign") or cs.get("consensus_sign") or "neutral").lower()
+    return {
+        **hl,
+        "operator_sign": operator_sign,
+        "consensus_score_raw": _safe_float(cs.get("consensus_score"), 0.0),
+        "consensus_score_effective": _safe_float(
+            ce.get("consensus_score") if ce else cs.get("consensus_score"),
+            _safe_float(cs.get("consensus_score"), 0.0),
+        ),
+    }
+
+
+def _build_stub_from_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
+    fusion_view = _fusion_operator_view_from_bundle(bundle)
+    direction = _sign_to_direction(str(fusion_view.get("operator_sign") or "neutral"))
+    try:
+        cfn = float(fusion_view.get("consensus_score_effective"))
     except (TypeError, ValueError):
         cfn = 0.45
-    cfn = max(0.0, min(1.0, cfn))
+    cfn = max(0.0, min(1.0, abs(cfn) if cfn else 0.45))
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    raw_sign = str(fusion_view.get("raw_consensus_sign") or "unknown")
+    headline_sign = str(fusion_view.get("headline_sign") or direction)
+    demote = bool(fusion_view.get("demote_active"))
+    label_suffix = ""
+    if demote and raw_sign != headline_sign:
+        label_suffix = f" | fusion demote raw={raw_sign} headline={headline_sign}"
     return {
         "schema": SCHEMA_ID,
         "version": "1.0.0",
         "hypothesis_tier": "B",
         "boundary_ack": True,
         "ts_utc": now,
-        "label": "[HYPO] Stub from fusion consensus_sign only — not live trading; sasang [NON-MEDICAL] if used.",
+        "label": (
+            "[HYPO] Stub from fusion headline_gating (v0.5+); raw consensus non-gating — "
+            "not live trading; sasang [NON-MEDICAL] if used."
+            + label_suffix
+        ),
         "lens_artifacts": {
             "logos": "docs/final/artifacts/logos_independent_lens_latest.json",
             "myeongni": "docs/final/artifacts/myeongni_independent_lens_latest.json",
@@ -153,16 +187,15 @@ def _build_stub_from_bundle(bundle: dict[str, Any]) -> dict[str, Any]:
         },
         "provenance": {
             "llm_model": "stub_heuristic_v1",
-            "prompt_id": "generate_btrack_hypothesis_prophecy_v1.py (default heuristic)",
+            "prompt_id": "generate_btrack_hypothesis_prophecy_v1.py (fusion headline stub)",
+            "fusion_headline_sign": headline_sign,
+            "fusion_raw_consensus_sign": raw_sign,
+            "fusion_demote_active": demote,
+        },
+        "runtime_meta": {
+            "fusion_headline": fusion_view,
         },
     }
-
-
-def _safe_float(v: Any, default: float = 0.0) -> float:
-    try:
-        return float(v)
-    except (TypeError, ValueError):
-        return default
 
 
 def _resolve_weights(raw_weights: dict[str, Any]) -> tuple[dict[str, float], str]:
@@ -917,16 +950,25 @@ def _normalize_gemini_doc(doc: dict[str, Any], bundle: dict[str, Any]) -> dict[s
     if direction not in ("neutral", "abstain"):
         return doc
 
-    fusion = bundle.get("artifacts", {}).get("independent_lens_fusion_stub") or {}
-    consensus = fusion.get("consensus") if isinstance(fusion.get("consensus"), dict) else {}
-    c_score_raw = consensus.get("consensus_score")
-    try:
-        c_score = float(c_score_raw)
-    except (TypeError, ValueError):
-        c_score = 0.0
+    fusion_view = _fusion_operator_view_from_bundle(bundle)
+    c_score = _safe_float(fusion_view.get("consensus_score_effective"), 0.0)
+    operator_sign = str(fusion_view.get("operator_sign") or "").lower()
+    if operator_sign in ("bull", "bear"):
+        pred["direction"] = operator_sign
+        cf = pred.get("confidence")
+        try:
+            cfn = float(cf) if cf is not None else 0.0
+        except (TypeError, ValueError):
+            cfn = 0.0
+        pred["confidence"] = round(max(cfn, 0.51), 4)
+        label = str(doc.get("label") or "").strip()
+        suffix = f" | neutral->{operator_sign}_headline_fallback"
+        if suffix not in label:
+            doc["label"] = f"{label}{suffix}" if label else f"[HYPO] neutral->{operator_sign}_headline_fallback"
+        return doc
 
     fallback_dir = "neutral"
-    # Favor directional call unless consensus is near-zero.
+    # Favor directional call unless effective consensus is near-zero.
     if c_score >= 0.08:
         fallback_dir = "bull"
     elif c_score <= -0.08:
@@ -1136,9 +1178,48 @@ JSON Schema reference (follow required + enums):
     from google import genai
     from google.genai import types
 
-    # google.genai HttpOptions.timeout is milliseconds; API minimum deadline is 10s.
+    client = _gemini_studio_client(key, timeout)
+    resp = client.models.generate_content(
+        model=model,
+        contents=[types.Part.from_text(text=prompt)],
+        config=types.GenerateContentConfig(temperature=0.2),
+    )
+    raw = (resp.text or "").strip()
+    doc = _extract_json_blob(raw)
+    if not doc:
+        raise RuntimeError(f"Gemini did not return parseable JSON. Raw (truncated): {raw[:2000]!r}")
+    return _normalize_gemini_doc(doc, bundle)
+
+
+def _gemini_studio_client(key: str, timeout: int):
+    """AI Studio API key route (not Vertex OAuth)."""
+    import os
+
+    from google import genai
+    from google.genai import types
+
+    os.environ["GOOGLE_GENAI_USE_VERTEXAI"] = "0"
     timeout_ms = max(10_000, int(timeout) * 1000)
-    client = genai.Client(api_key=key, http_options=types.HttpOptions(timeout=timeout_ms))
+    return genai.Client(api_key=key, vertexai=False, http_options=types.HttpOptions(timeout=timeout_ms))
+
+
+def run_gemini_hypothesis_prompt(
+    *,
+    prompt: str,
+    bundle: dict[str, Any],
+    model: str,
+    timeout: int,
+) -> dict[str, Any]:
+    """Call Gemini with a caller-built prompt; normalize to btrack_hypothesis_prophecy_v1."""
+    import os
+
+    key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+    if not key:
+        raise RuntimeError("GEMINI_API_KEY or GOOGLE_API_KEY required for gemini per-date")
+
+    from google.genai import types
+
+    client = _gemini_studio_client(key, timeout)
     resp = client.models.generate_content(
         model=model,
         contents=[types.Part.from_text(text=prompt)],

@@ -161,6 +161,59 @@ def test_bridge_adjustment_changes_confidence_when_context_removed() -> None:
         )
 
 
+def test_stub_uses_fusion_headline_not_raw_consensus(tmp_path: Path) -> None:
+    bundle = tmp_path / "bundle_fusion_demote.json"
+    bundle.write_text(
+        json.dumps(
+            {
+                "schema": "btrack_llm_input_bundle_v1",
+                "artifacts": {
+                    "independent_lens_fusion_stub": {
+                        "version": "0.5.0",
+                        "demote_active": True,
+                        "consensus": {
+                            "consensus_sign": "bull",
+                            "consensus_score": 0.069,
+                            "consensus_confidence": 0.55,
+                        },
+                        "consensus_effective": {
+                            "consensus_sign": "bear",
+                            "consensus_score": -0.12,
+                        },
+                        "headline_gating": {
+                            "headline_sign": "bear",
+                            "headline_source": "consensus_effective",
+                            "non_gating": True,
+                        },
+                    }
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    out = tmp_path / "hyp_stub.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_SCRIPT),
+            "--bundle",
+            str(bundle),
+            "--output",
+            str(out),
+            "--stub",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("prediction", {}).get("direction") == "bear"
+    prov = doc.get("provenance") if isinstance(doc.get("provenance"), dict) else {}
+    assert prov.get("fusion_headline_sign") == "bear"
+    assert prov.get("fusion_raw_consensus_sign") == "bull"
+    assert prov.get("fusion_demote_active") is True
+
+
 def test_research_kospi_uses_kospi_price_lens(tmp_path: Path) -> None:
     if not _BUNDLE.is_file():
         import pytest
