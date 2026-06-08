@@ -79,3 +79,19 @@ def test_badges_include_rates_inflation_liquidity_kinds() -> None:
     assert "rates_path" in ids
     assert "inflation_patch" in ids
     assert "liquidity_stress" in ids
+
+
+@pytest.mark.skipif(not SOURCE.is_file(), reason="2030 scenario artifact missing")
+def test_slice_includes_lens_media_bind() -> None:
+    from scripts.build_showroom_macro_horizon_2030_slice_v1 import build_slice
+
+    doc = json.loads(SOURCE.read_text(encoding="utf-8"))
+    slice_doc = build_slice(doc)
+    bind = slice_doc.get("lens_media_bind") or {}
+    assert bind.get("hypothesis_class") == "HYPO"
+    assert bind.get("non_gating") is True
+    assert bind.get("showroom_display_mode") in ("idle", "defend", "attack")
+    assert bind.get("playback_id", "").startswith("LM_HP050_")
+    assert "playback_id=" in bind.get("media_hub_query", "")
+    assert bind.get("sasang_primary") in ("soyang", "taeyang", "taeeum", "soeum")
+    assert bind.get("sasang_source")

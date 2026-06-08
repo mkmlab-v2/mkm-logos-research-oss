@@ -286,6 +286,9 @@
         <a href="public_showroom_topology_radar_v1.html">Risk Topology Radar</a>
         ·
         <a href="public_showroom_logos_research_v1.html">Logos 연구 슬라이스 (스냅샷·NON_GATING)</a>
+        ·
+        <a href="public_showroom_lens_media_thin_slice_v1.html">Lens media Thin Slice [HYPO]</a>
+        · legacy <a href="public_showroom_lens_audio_thin_slice_v1.html">audio-only</a>
       </p>
     </section>
   </div>
@@ -367,6 +370,20 @@
     return "상태 " + sys + " · 리스크 " + risk + " · 방향 " + dir + delay;
   }
 
+  function lensAudioStripHtml(obj) {
+    const la = obj && obj.lens_audio_observability_v1;
+    const ob = cachedBundle && cachedBundle.observability;
+    const present = la || (ob && ob.lens_audio_observability_present === true);
+    if (!present) return "";
+    const block = la || {};
+    const pid = block.playback_id || (ob && ob.lens_audio_playback_id) || "—";
+    const gate = (block.gate && block.gate.decision) || (ob && ob.lens_audio_gate_decision) || "—";
+    const week = block.baked_asset_week || "—";
+    return '<div class="cell cell-full"><p class="k">Lens audio <span class="pill pill-warn">[HYPO]</span></p>'
+      + '<p class="v sub">' + escapeHtml("playback_id=" + pid + " · gate=" + gate + " · bake=" + week) + '</p>'
+      + '<p class="v sub"><a href="public_showroom_lens_media_thin_slice_v1.html" style="color:var(--accent)">Media Thin Slice · audio+video LUT</a> · pre-baked loop only</p></div>';
+  }
+
   function topologyStripHtml() {
     const ob = cachedBundle && cachedBundle.observability;
     if (!ob || ob.topology_radar_snapshot_present !== true) return "";
@@ -438,7 +455,8 @@
       '<div class="cell"><p class="k">이벤트 ID</p><p class="v sub mono">' + escapeHtml(String(eid)) + '</p></div>' +
       '<div class="cell"><p class="k">면책 참조</p><p class="v sub mono">' + escapeHtml(String(disc)) + '</p></div>' +
       '<div class="cell cell-full"><p class="k">추상 사유</p><p class="v sub">' + escapeHtml(String(reason)) + '</p></div>' +
-      topologyStripHtml();
+      topologyStripHtml() +
+      lensAudioStripHtml(obj);
 
     document.getElementById("tickerLine").textContent = tickerLine(obj);
     renderReactions(obj);

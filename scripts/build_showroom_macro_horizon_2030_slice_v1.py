@@ -11,6 +11,16 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in __import__("sys").path:
+    __import__("sys").path.insert(0, str(ROOT))
+
+from scripts.lens_btrack_playback_matrix_v1 import (  # noqa: E402
+    default_sasang_primary,
+    media_hub_query,
+    normalize_sasang_primary,
+    sasang_from_macro_scenario,
+    showroom_mode_from_final_action,
+)
 
 DEFAULT_SOURCE = ROOT / "docs/final/artifacts/logos_macro_horizon_2030_scenario_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/showroom_macro_horizon_2030_slice_v1_latest.json"
@@ -137,6 +147,11 @@ def build_slice(doc: dict[str, Any], *, stale_hours: int = 24) -> dict[str, Any]
     base_w = float(btc_w.get("base", 0.27))
     stress_w = float(btc_w.get("stress", 0.73))
 
+    media_mode = showroom_mode_from_final_action(str(final_action))
+    sasang, sasang_source = sasang_from_macro_scenario(doc)
+    lens_bind = media_hub_query(sasang=sasang, mode=media_mode)
+    lens_bind["sasang_source"] = sasang_source
+
     return {
         "schema_version": "showroom_macro_horizon_2030_slice_v1",
         "generated_at_utc": gen,
@@ -177,6 +192,13 @@ def build_slice(doc: dict[str, Any], *, stale_hours: int = 24) -> dict[str, Any]
         "boundary_ack": (
             "Showroom slice only; not Track A, live trading, MS/B2B headline, or price forecast."
         ),
+        "lens_media_bind": {
+            **lens_bind,
+            "non_gating": True,
+            "hypothesis_class": "HYPO",
+            "bind_reason": "final_action_to_showroom_mode_heuristic_v1",
+            "sasang_source": sasang_source,
+        },
     }
 
 

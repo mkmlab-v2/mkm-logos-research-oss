@@ -181,6 +181,22 @@
     .path-block { margin-top: 0.5rem; }
     .path-legend { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-top: 0.35rem; }
     .overlay-line { font-size: 0.75rem; color: var(--muted); margin: 0.75rem 0 0; padding-top: 0.65rem; border-top: 1px solid var(--border); }
+    .macro-cta-row { margin-top: 0.85rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; }
+    .macro-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.55rem 0.95rem;
+      border-radius: 999px;
+      border: 1px solid rgba(197, 160, 87, 0.45);
+      background: rgba(197, 160, 87, 0.12);
+      color: var(--accent);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .macro-cta:hover { background: rgba(197, 160, 87, 0.2); }
+    .macro-cta-hint { font-size: 0.72rem; color: var(--muted); margin: 0; }
     .radar-compact {
       margin-bottom: 1rem;
       border: 1px solid var(--border);
@@ -251,6 +267,10 @@
         </div>
       </div>
       <p class="overlay-line">Logos era (보조 · NON_GATING): <span id="logosEraOverlay">—</span></p>
+      <div class="macro-cta-row">
+        <a class="macro-cta" id="mediaAmbientCta" href="public_showroom_lens_media_thin_slice_v1.html">Ambient loop · 12 pairs</a>
+        <p class="macro-cta-hint" id="mediaAmbientHint">final_action → 연출 모드 매핑 · [HYPO]</p>
+      </div>
     </section>
 
     <details class="radar-compact">
@@ -508,6 +528,15 @@
       slice.summary_one_line || "BTC-USD scenario timeline · not investment advice.";
     const overlay = slice.logos_era_overlay || {};
     document.getElementById("logosEraOverlay").textContent = overlay.secondary_label_ko || "—";
+    const bind = slice.lens_media_bind || {};
+    const mediaHref = "public_showroom_lens_media_thin_slice_v1.html?" +
+      (bind.media_hub_query || ("sasang=soyang&mode=idle"));
+    const cta = document.getElementById("mediaAmbientCta");
+    if (cta) cta.setAttribute("href", mediaHref);
+    const hint = document.getElementById("mediaAmbientHint");
+    if (hint && bind.playback_id) {
+      hint.textContent = (bind.showroom_display_mode || "idle") + " · " + bind.playback_id + " · [HYPO]";
+    }
     if (slice.hypo_banner) {
       panel.setAttribute("aria-description", slice.hypo_banner);
     }
