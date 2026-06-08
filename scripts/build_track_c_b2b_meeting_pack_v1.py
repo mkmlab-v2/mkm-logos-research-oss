@@ -69,6 +69,7 @@ def _build_index(*, generated_at: str, steps: list[tuple[str, int]]) -> str:
 | Surface | URL | Notes |
 |---------|-----|-------|
 | Risk topology radar (Phase 2.1–2.2) | https://jemaai.cloud/public_showroom_topology_radar_v1.html | Canonical static · `api.jemaai.cloud` mirror via nginx snippet |
+| Lens media hub (12 ambient pairs) | https://jemaai.cloud/public_showroom_lens_media_thin_slice_v1.html | MusicGen + pixel pre-baked loop · not live AI · `[HYPO]` showroom |
 | Meaning topology graph (capped subgraph) | https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html | `bible_meaning_graph` slice · hub labels · `[HYPO]` |
 | Minimal public board | https://api.jemaai.cloud/public_showroom_board_minimal.html | Hub CTA default · `public_event_v1` poll |
 | Logos research slice (full) | https://jemaai.cloud/public_showroom_logos_research_v1.html | `[HYPO]` snapshot · not live trading |

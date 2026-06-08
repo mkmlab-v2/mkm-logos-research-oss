@@ -12,8 +12,9 @@
 **탭 순서 (왼쪽→오른쪽):**
 
 1. `public_showroom_topology_radar_v1.html` — Risk Topology Radar  
-2. `public_showroom_meaning_topology_graph_v1.html` — Meaning topology graph (**신규**)  
-3. `public_showroom_logos_research_v1.html` — Logos research slice (백업)
+2. `public_showroom_lens_media_thin_slice_v1.html` — Lens media hub (12 ambient pairs)  
+3. `public_showroom_meaning_topology_graph_v1.html` — Meaning topology graph  
+4. `public_showroom_logos_research_v1.html` — Logos research slice (백업)
 
 **로컬 스테이징 (VPS 전):**
 
@@ -66,7 +67,26 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-ShowroomTrack
 
 ---
 
-## 3) Act 2 — Meaning Topology Graph (2분 30초) ★ 핵심
+## 3) Act 1b — Lens Media Hub (2분) · ambient loop
+
+**URL:** `https://jemaai.cloud/public_showroom_lens_media_thin_slice_v1.html`  
+(레이더 CTA **Ambient loop · 12 pairs** 와 동일)
+
+**말하기:**
+
+1. "사상 4체질 × 관망·방어·공격 **12쌍**입니다. **MusicGen underscore + pixel pre-baked 루프**이며, Suno식 실시간 생성·실사 영상이 **아닙니다**."
+2. 칩에서 **태양·idle** → 재생. "오디오·비주얼은 **각각 루프**이고, 데모는 **관측·분위기**용입니다."
+3. (선택) macro bind 배지가 보이면: "거시 슬라이스와 **휴리스틱 바인드**일 뿐, 주문·매매 트리거가 **아닙니다**."
+
+**금지:** 성과·치유·투자 신호 단정 · Stable Audio/AnimateDiff는 **푸터 연구 링크만** 언급.
+
+**전환:**
+
+> "분위기 레이어 다음, 의미 **그래프 실데이터**로 넘어가겠습니다."
+
+---
+
+## 4) Act 2 — Meaning Topology Graph (2분 30초) ★ 핵심
 
 **URL:** `https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html`
 
@@ -92,7 +112,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-ShowroomTrack
 
 ---
 
-## 4) Act 3 — Logos Research Slice 백업 (60초)
+## 5) Act 3 — Logos Research Slice 백업 (60초)
 
 **URL:** `https://jemaai.cloud/public_showroom_logos_research_v1.html`
 
@@ -104,15 +124,15 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-ShowroomTrack
 
 ---
 
-## 5) 클로징 (30초)
+## 6) 클로징 (30초)
 
-> "정리하면, MKM Track C 쇼룸은 **(1) 관측 레이더 (2) 의미 그래프 실데이터 (3) 서면 B2B 팩** 세 층입니다.  
+> "정리하면, MKM Track C 쇼룸은 **(1) 관측 레이더 (2) 렌즈 미디어 허브 (3) 의미 그래프 (4) 서면 B2B 팩** 네 층입니다.  
 > 다음 단계는 **90일 PoC SOW** 범위에서 귀사 데이터 경계 안에 그래프 시드를 맞추는 것이고, **실매매·본선 트리거 합선은 하지 않습니다.**  
 > 질문 주시면, 아티팩트 경로와 재현 명령으로 답변드리겠습니다."
 
 ---
 
-## 6) Q&A 즉답 카드 (15초 구조: 결론 → 근거 → 제한)
+## 7) Q&A 즉답 카드 (15초 구조: 결론 → 근거 → 제한)
 
 | # | 질문 | 답변 골격 |
 |---|------|-----------|
@@ -129,7 +149,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-ShowroomTrack
 
 ---
 
-## 7) 첨부 포인터 (슬라이드 각주용)
+## 8) 첨부 포인터 (슬라이드 각주용)
 
 | 자료 | 경로 |
 |------|------|
@@ -140,6 +160,6 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-ShowroomTrack
 
 ---
 
-## 8) 면책 (모든 덱·이메일 하단)
+## 9) 면책 (모든 덱·이메일 하단)
 
 > Not investment advice. No buy/sell instructions. Logos / meaning-graph layers are `[HYPO]` and `[NON_GATING]`. Core formulas not disclosed. Observational showroom only.

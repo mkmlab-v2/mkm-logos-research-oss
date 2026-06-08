@@ -88,11 +88,17 @@ $jsonSavingNewsPanel = Join-Path $staging "saving_the_news_matrix_panel_slice_v1
 $jsonSavingNewsTopology = Join-Path $staging "saving_the_news_showroom_topology_slice_v1_latest.json"
 $htmlLensAudio = Join-Path $staging "public_showroom_lens_audio_thin_slice_v1.html"
 $htmlLensMedia = Join-Path $staging "public_showroom_lens_media_thin_slice_v1.html"
+$htmlLensAbSmoke = Join-Path $staging "public_showroom_lens_audio_ab_smoke_v1.html"
+$htmlLensStableAudio = Join-Path $staging "public_showroom_lens_stable_audio_matrix_v1.html"
+$jsonLensAbSmoke = Join-Path $staging "showroom_lens_audio_ab_smoke_v1.json"
+$jsonLensStableAudio = Join-Path $staging "showroom_lens_stable_audio_matrix_v1.json"
+$audioStableOpenDir = Join-Path $staging "audio\lens_btrack\stable_audio_open\v1"
 $jsonLensAudioSlice = Join-Path $staging "showroom_lens_audio_thin_slice_v1.json"
 $jsonLensMediaSlice = Join-Path $staging "showroom_lens_media_thin_slice_v1.json"
 $jsonLensAudioLut = Join-Path $staging "jemaai_lens_audio_playback_lut_v1_latest.json"
 $jsonLensVideoLut = Join-Path $staging "jemaai_lens_video_playback_lut_v1_latest.json"
 $audioLensBtrackDir = Join-Path $staging "audio\lens_btrack\v1"
+$audioAbSmokeDir = Join-Path $staging "audio\lens_btrack\ab_smoke\v1"
 $videoLensBtrackDir = Join-Path $staging "video\lens_btrack\v1"
 
 if ($RefreshStaging) {
@@ -137,6 +143,28 @@ $extraRaw = Get-EnvAny "MKM_VPS_SCP_EXTRA_ARGS"
 $extraArgs = @()
 if (-not [string]::IsNullOrWhiteSpace($extraRaw)) {
     $extraArgs = $extraRaw -split "\s+" | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+}
+
+function Test-HasSshOption([string[]]$ScpLeadingArgs, [string]$OptionName) {
+    for ($i = 0; $i -lt $ScpLeadingArgs.Count; $i++) {
+        $arg = $ScpLeadingArgs[$i]
+        if ($arg -eq "-o" -and ($i + 1) -lt $ScpLeadingArgs.Count) {
+            $next = $ScpLeadingArgs[$i + 1]
+            if ($next -like "$OptionName=*") { return $true }
+        }
+        if ($arg -like "$OptionName=*") { return $true }
+    }
+    return $false
+}
+
+foreach ($pair in @(
+        @("ConnectTimeout", "20"),
+        @("ServerAliveInterval", "15"),
+        @("ServerAliveCountMax", "3")
+    )) {
+    if (-not (Test-HasSshOption -ScpLeadingArgs $extraArgs -OptionName $pair[0])) {
+        $extraArgs += @("-o", "$($pair[0])=$($pair[1])")
+    }
 }
 
 # Do not name the parameter $args — it collides with PowerShell's automatic $args and breaks -args binding.
@@ -201,8 +229,12 @@ function Invoke-ScpShowroomPair {
             @{ Path = $jsonSavingNewsTopology; Label = "Saving the News topology slice JSON" },
             @{ Path = $htmlLensAudio; Label = "lens audio thin slice HTML" },
             @{ Path = $htmlLensMedia; Label = "lens media thin slice HTML" },
+            @{ Path = $htmlLensAbSmoke; Label = "lens audio AB smoke HTML" },
+            @{ Path = $htmlLensStableAudio; Label = "lens stable audio matrix HTML" },
             @{ Path = $jsonLensAudioSlice; Label = "lens audio thin slice JSON" },
             @{ Path = $jsonLensMediaSlice; Label = "lens media thin slice JSON" },
+            @{ Path = $jsonLensAbSmoke; Label = "lens audio AB smoke JSON" },
+            @{ Path = $jsonLensStableAudio; Label = "lens stable audio matrix JSON" },
             @{ Path = $jsonLensAudioLut; Label = "lens audio playback LUT JSON" },
             @{ Path = $jsonLensVideoLut; Label = "lens video playback LUT JSON" }
         )) {
@@ -265,6 +297,80 @@ function Invoke-ScpLensAudioAssets {
     }
 }
 
+function Invoke-ScpLensStableAudioOpen {
+    if (-not (Test-Path -LiteralPath $audioStableOpenDir)) {
+        Write-Host "[showroom-vps-sync] lens stable audio WAV dir not in staging (optional): $audioStableOpenDir" -ForegroundColor DarkGray
+        return
+    }
+    $wavCount = @(Get-ChildItem -LiteralPath $audioStableOpenDir -Filter "*.wav" -File -ErrorAction SilentlyContinue).Count
+    if ($wavCount -le 0) {
+        Write-Host "[showroom-vps-sync] lens stable audio dir empty (optional): $audioStableOpenDir" -ForegroundColor DarkGray
+        return
+    }
+    $remoteDir = "${user}@${hostName}:${remoteRoot}/audio/lens_btrack/stable_audio_open/v1/"
+    $argv = @()
+    foreach ($a in $extraArgs) { $argv += $a }
+    $argv += (Join-Path $audioStableOpenDir "*")
+    $argv += $remoteDir
+    if ($DryRun) {
+        Write-Host "[showroom-vps-sync] DRYRUN scp lens stable audio $($argv -join ' ')"
+        return
+    }
+    $hasIdentity = Test-HasIdentityArgs -ScpLeadingArgs $extraArgs
+    if (-not $AllowPasswordPrompt -and -not $hasIdentity) {
+        throw "[showroom-vps-sync] blocked: non-interactive mode requires key auth for lens stable audio scp."
+    }
+    $sshTarget = "${user}@${hostName}"
+    $mkdirCmd = "mkdir -p ${remoteRoot}/audio/lens_btrack/stable_audio_open/v1"
+    Write-Host "[showroom-vps-sync] ssh mkdir -p ${remoteRoot}/audio/lens_btrack/stable_audio_open/v1" -ForegroundColor Cyan
+    & ssh @($extraArgs + @($sshTarget, $mkdirCmd))
+    if ($LASTEXITCODE -ne 0) {
+        throw "[showroom-vps-sync] ssh mkdir lens stable audio failed ($LASTEXITCODE)"
+    }
+    Write-Host "[showroom-vps-sync] scp lens stable audio WAV ($wavCount) -> ${remoteRoot}/audio/lens_btrack/stable_audio_open/v1/" -ForegroundColor Cyan
+    & scp @argv
+    if ($LASTEXITCODE -ne 0) {
+        throw "[showroom-vps-sync] scp lens stable audio failed ($LASTEXITCODE)"
+    }
+}
+
+function Invoke-ScpLensAbSmokeAudio {
+    if (-not (Test-Path -LiteralPath $audioAbSmokeDir)) {
+        Write-Host "[showroom-vps-sync] lens AB smoke WAV dir not in staging (optional): $audioAbSmokeDir" -ForegroundColor DarkGray
+        return
+    }
+    $wavCount = @(Get-ChildItem -LiteralPath $audioAbSmokeDir -Filter "*.wav" -File -ErrorAction SilentlyContinue).Count
+    if ($wavCount -le 0) {
+        Write-Host "[showroom-vps-sync] lens AB smoke dir empty (optional): $audioAbSmokeDir" -ForegroundColor DarkGray
+        return
+    }
+    $remoteAbDir = "${user}@${hostName}:${remoteRoot}/audio/lens_btrack/ab_smoke/v1/"
+    $argv = @()
+    foreach ($a in $extraArgs) { $argv += $a }
+    $argv += (Join-Path $audioAbSmokeDir "*")
+    $argv += $remoteAbDir
+    if ($DryRun) {
+        Write-Host "[showroom-vps-sync] DRYRUN scp lens AB smoke $($argv -join ' ')"
+        return
+    }
+    $hasIdentity = Test-HasIdentityArgs -ScpLeadingArgs $extraArgs
+    if (-not $AllowPasswordPrompt -and -not $hasIdentity) {
+        throw "[showroom-vps-sync] blocked: non-interactive mode requires key auth for lens AB smoke scp."
+    }
+    $sshTarget = "${user}@${hostName}"
+    $mkdirCmd = "mkdir -p ${remoteRoot}/audio/lens_btrack/ab_smoke/v1"
+    Write-Host "[showroom-vps-sync] ssh mkdir -p ${remoteRoot}/audio/lens_btrack/ab_smoke/v1" -ForegroundColor Cyan
+    & ssh @($extraArgs + @($sshTarget, $mkdirCmd))
+    if ($LASTEXITCODE -ne 0) {
+        throw "[showroom-vps-sync] ssh mkdir lens AB smoke failed ($LASTEXITCODE)"
+    }
+    Write-Host "[showroom-vps-sync] scp lens AB smoke WAV ($wavCount) -> ${remoteRoot}/audio/lens_btrack/ab_smoke/v1/" -ForegroundColor Cyan
+    & scp @argv
+    if ($LASTEXITCODE -ne 0) {
+        throw "[showroom-vps-sync] scp lens AB smoke failed ($LASTEXITCODE)"
+    }
+}
+
 function Invoke-ScpLensVideoAssets {
     if (-not (Test-Path -LiteralPath $videoLensBtrackDir)) {
         Write-Host "[showroom-vps-sync] lens video WEBM dir not in staging (optional): $videoLensBtrackDir" -ForegroundColor DarkGray
@@ -306,6 +412,8 @@ function Invoke-ScpLensVideoAssets {
 if (-not $NginxSnippetOnly) {
     Invoke-ScpShowroomPair
     Invoke-ScpLensAudioAssets
+    Invoke-ScpLensAbSmokeAudio
+    Invoke-ScpLensStableAudioOpen
     Invoke-ScpLensVideoAssets
 }
 
