@@ -20,11 +20,14 @@
 
 .PARAMETER SliceMaxChars
   Max chars per anchor slice preview (default 1200).
+.PARAMETER IncludeA2aPilot
+  [HYPO] tp01 — run build_mkm_chat_resume_a2a_pilot_v1.py after token bench (B-track wire only).
 #>
 param(
     [switch]$SkipBench,
     [switch]$DryRunIndex,
     [switch]$IncludeSlice,
+    [switch]$IncludeA2aPilot,
     [int]$SliceMaxChars = 1200,
     [ValidateSet("oracle", "ms", "infra")]
     [string]$Lane = ""
@@ -68,6 +71,16 @@ if (-not $DryRunIndex) {
         Invoke-Step -Name "token_bench_hypo" -Command @(
             "py", "scripts/bench_mkm_ops_memory_index_token_savings_v1.py"
         )
+    }
+    if ($IncludeA2aPilot) {
+        $pilotArgs = @("py", "scripts/build_mkm_chat_resume_a2a_pilot_v1.py")
+        if ($IncludeSlice) {
+            $pilotArgs += @("--include-slice", "--slice-max-chars", "$SliceMaxChars")
+        }
+        if ($Lane) {
+            $pilotArgs += @("--lane", $Lane)
+        }
+        Invoke-Step -Name "a2a_tp01_resume_pilot_hypo" -Command $pilotArgs
     }
 }
 

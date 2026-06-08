@@ -76,5 +76,18 @@
     "research_only": true,
     "spike_summary": "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json",
     "public_copy_rule": "Never claim 100% lossless decode; cite measured exact_restore_rate from spike JSON"
+  },
+  "a2a_target_points_v1": {
+    "artifact": "docs/final/artifacts/a2a_target_points_v1_latest.json",
+    "builder": "scripts/build_a2a_target_points_v1.py",
+    "schema": "docs/final/schemas/a2a_target_points_v1.schema.json",
+    "status": "PILOT_ALL_THREE_TP",
+    "research_only": true,
+    "tp_pilots": [
+      "scripts/build_mkm_chat_resume_a2a_pilot_v1.py",
+      "scripts/build_a2a_tp02_lexicon_dense_bench_v1.py",
+      "scripts/build_a2a_tp03_chain_ref_pilot_v1.py"
+    ],
+    "pilot_bundle": "scripts/Invoke-A2aTargetPointsPilotBundle_v1.ps1"
   }
 }

@@ -11,7 +11,9 @@ param(
     [switch]$SkipWorkedExampleEmit,
     [switch]$SkipDialogueMock,
     [switch]$SkipL1ExperimentalPytest,
-    [switch]$IncludeParallelLanes
+    [switch]$IncludeParallelLanes,
+    [switch]$IncludeTp02LexiconDenseBench,
+    [switch]$IncludeA2aTargetPointsPilotBundle
 )
 
 $ErrorActionPreference = "Stop"
@@ -62,6 +64,20 @@ if (-not $SkipL1ExperimentalPytest) {
 if ($IncludeParallelLanes) {
     Write-Host "== Parallel lanes (sweep + dialogue compare; slow) ==" -ForegroundColor Cyan
     powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmInterAgentParallelLanes_v1.ps1
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($IncludeTp02LexiconDenseBench) {
+    Write-Host "== tp02 lexicon_dense A2A bench [HYPO] ==" -ForegroundColor Cyan
+    py scripts/build_a2a_tp02_lexicon_dense_bench_v1.py --strict-exit
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    py scripts/build_a2a_target_points_v1.py --strict-exit
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if ($IncludeA2aTargetPointsPilotBundle) {
+    Write-Host "== A2A target points pilot bundle tp01-tp03 [HYPO] ==" -ForegroundColor Cyan
+    powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-A2aTargetPointsPilotBundle_v1.ps1 -StrictExit
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 
