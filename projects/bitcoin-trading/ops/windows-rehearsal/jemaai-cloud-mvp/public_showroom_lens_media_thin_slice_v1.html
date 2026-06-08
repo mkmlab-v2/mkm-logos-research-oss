@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · 렌즈 미디어 쇼룸</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --surface: #12151a;
+      --surface2: #151922;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #e8eaef;
+      --muted: #8b919d;
+      --accent: #c5a057;
+      --calm: #8fbc8f;
+      --watch: #d4a574;
+      --critical: #c97a6d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--text);
+      background:
+        radial-gradient(880px 420px at 50% -8%, rgba(197, 160, 87, 0.08), transparent 55%),
+        radial-gradient(600px 300px at 90% 20%, rgba(120, 190, 220, 0.05), transparent 50%),
+        var(--bg);
+    }
+    .wrap { max-width: 56rem; margin: 0 auto; padding: 1.75rem 1.15rem 2.5rem; }
+    header {
+      margin-bottom: 1.25rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h1 {
+      font-size: 1.35rem;
+      font-weight: 650;
+      margin: 0 0 0.35rem;
+      letter-spacing: -0.02em;
+    }
+    .lede { margin: 0; font-size: 0.8125rem; color: var(--muted); max-width: 40rem; }
+    .nav { margin-top: 0.75rem; font-size: 0.8125rem; }
+    .nav a { color: var(--accent); text-decoration: none; }
+    .nav a:hover { text-decoration: underline; }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0 0; }
+    .badge {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .badge-warn { border-color: rgba(212, 165, 116, 0.45); color: var(--watch); }
+
+    .stage {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--surface2) 0%, var(--surface) 100%);
+      box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+      margin-bottom: 1.25rem;
+    }
+    .stage.mode-idle { --glow: var(--calm); }
+    .stage.mode-defend { --glow: var(--watch); }
+    .stage.mode-attack { --glow: var(--critical); }
+    .stage-video-wrap {
+      position: relative;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+    .stage-video-wrap video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #0a0b0d;
+    }
+    .video-err {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--critical);
+      background: rgba(0, 0, 0, 0.72);
+      pointer-events: none;
+    }
+    .video-err[hidden] { display: none !important; }
+    .stage-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 35%, transparent 60%, rgba(0,0,0,0.55) 100%);
+    }
+    .stage-top {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      padding: 1rem 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+    }
+    .stage-mode-pill {
+      font-size: 0.72rem;
+      font-weight: 650;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--glow) 55%, transparent);
+      background: rgba(0, 0, 0, 0.45);
+      color: var(--glow);
+      backdrop-filter: blur(6px);
+    }
+    .stage-sasang {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.85);
+      text-shadow: 0 1px 8px rgba(0,0,0,0.8);
+    }
+    .stage-bottom {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 1rem 1.1rem 1.15rem;
+      pointer-events: none;
+    }
+    .stage-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+    .stage-sub {
+      margin: 0.25rem 0 0;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.72);
+    }
+    .stage-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.85rem 1.1rem 1rem;
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,0.25);
+    }
+    .btn-play {
+      appearance: none;
+      border: 1px solid rgba(197, 160, 87, 0.55);
+      background: rgba(197, 160, 87, 0.12);
+      color: var(--accent);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .btn-play:hover { background: rgba(197, 160, 87, 0.22); }
+    .vol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-left: auto;
+    }
+    .vol-wrap input { width: 88px; accent-color: var(--accent); }
+
+    .picker-section { margin-bottom: 1.25rem; }
+    .picker-section h2 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin: 0 0 0.65rem;
+      font-weight: 600;
+    }
+    .chip-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 0.75rem; }
+    .chip {
+      appearance: none;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-size: 0.78rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .chip:hover { border-color: rgba(197, 160, 87, 0.35); color: var(--text); }
+    .chip.active {
+      border-color: rgba(197, 160, 87, 0.55);
+      background: rgba(197, 160, 87, 0.12);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.55rem;
+    }
+    @media (min-width: 640px) { .matrix-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 900px) { .matrix-grid { grid-template-columns: repeat(4, 1fr); } }
+    .matrix-tile {
+      appearance: none;
+      text-align: left;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.65rem 0.7rem;
+      background: rgba(255,255,255,0.02);
+      cursor: pointer;
+      color: inherit;
+      transition: border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+    }
+    .matrix-tile:hover {
+      border-color: rgba(197, 160, 87, 0.35);
+      transform: translateY(-1px);
+    }
+    .matrix-tile.active {
+      border-color: rgba(197, 160, 87, 0.6);
+      box-shadow: 0 0 0 1px rgba(197, 160, 87, 0.25);
+      background: rgba(197, 160, 87, 0.08);
+    }
+    .tile-mode {
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .tile-sasang {
+      font-size: 0.88rem;
+      font-weight: 600;
+      margin: 0.15rem 0 0;
+    }
+    .tile-dot {
+      display: inline-block;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      margin-right: 0.35rem;
+      vertical-align: middle;
+      background: var(--watch);
+    }
+    .tile-dot.pass { background: var(--calm); }
+
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.65rem;
+      margin-bottom: 1rem;
+    }
+    @media (min-width: 640px) { .stat-row { grid-template-columns: repeat(4, 1fr); } }
+    .stat {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      background: rgba(255,255,255,0.02);
+    }
+    .stat-k { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .stat-v { font-size: 0.9rem; font-weight: 600; margin-top: 0.2rem; }
+
+    details.ops {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.02);
+      margin-top: 1rem;
+    }
+    details.ops summary {
+      cursor: pointer;
+      padding: 0.65rem 0.85rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      user-select: none;
+    }
+    details.ops pre {
+      margin: 0;
+      padding: 0 0.85rem 0.85rem;
+      font-size: 0.68rem;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--muted);
+    }
+    .err { color: var(--critical); font-size: 0.85rem; }
+    footer {
+      margin-top: 1.5rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      padding-top: 0.85rem;
+      line-height: 1.6;
+    }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0,0,0,0); border: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>렌즈 미디어 · Ambient Loop</h1>
+      <p class="lede">사상 4체질 × 전시 모드(관망·방어·공격) · pixel ambient pre-baked 루프(오디오+비주얼). 실사·실시간 AI 생성 아님.</p>
+      <div class="badges">
+        <span class="badge badge-warn">[HYPO]</span>
+        <span class="badge">NON_GATING</span>
+        <span class="badge">12 pairs · HP050</span>
+      </div>
+      <p class="nav">
+        <a href="public_showroom_topology_radar_v1.html">← Macro 2030</a>
+        · <a href="public_showroom_board_minimal.html">Minimal board</a>
+        · <a href="public_showroom_poll.html">Full poll</a>
+      </p>
+    </header>
+    <div id="root"><p class="lede">불러오는 중…</p></div>
+    <footer data-disclaimer-ref="jemaai_lens_media_hypo_v1">
+      프로덕션 미디어 LUT (MusicGen + pixel 720p 루프) · B-track 연구(Stable Audio·AnimateDiff)는 별도 페이지
+      · <a href="public_showroom_lens_audio_ab_smoke_v1.html" style="color:var(--accent);">오디오 A/B</a>
+      · <a href="public_showroom_lens_stable_audio_matrix_v1.html" style="color:var(--accent);">Stable Audio</a>
+    </footer>
+  </div>
+  <script>
+    (function () {
+      var root = document.getElementById("root");
+      var urlParams = new URLSearchParams(window.location.search);
+      var pollMs = 60000;
+      var apiBase = urlParams.get("api") || "";
+      var urlPlaybackId = urlParams.get("playback_id");
+      var urlSasang = (urlParams.get("sasang") || "").toLowerCase();
+      var urlMode = (urlParams.get("mode") || "").toLowerCase();
+      var urlAutoplay = urlParams.get("autoplay") === "1";
+      if (urlParams.get("audio_gen") === "stable") {
+        try {
+          var ru = new URL(window.location.href);
+          ru.searchParams.delete("audio_gen");
+          window.history.replaceState({}, "", ru.toString());
+        } catch (e) {}
+      }
+
+      var SASANG_KO = { soyang: "소양", taeyang: "태양", taeeum: "태음", soeum: "소음" };
+      var MODE_KO = { idle: "관망", defend: "방어", attack: "공격" };
+      var MODE_DESC = {
+        idle: "저변동 · ambient bed",
+        defend: "리스크 축소 · guarded tone",
+        attack: "모멘텀 · elevated pulse"
+      };
+
+      var state = {
+        audioLut: null,
+        videoLut: null,
+        macroSlice: null,
+        pairs: [],
+        selectedId: null,
+        heroVideo: null,
+        heroAudio: null,
+        playing: false,
+        shellReady: false
+      };
+
+      var LOAD_TIMEOUT_MS = 12000;
+      var loadTimer = setTimeout(function () {
+        if (!state.shellReady && root) {
+          root.innerHTML =
+            '<p class="err">로드 지연 — JSON·미디어 경로 확인 후 새로고침하세요. ' +
+            '<a href="public_showroom_lens_media_thin_slice_v1.html">캐시 없이 재시도</a></p>';
+        }
+      }, LOAD_TIMEOUT_MS);
+
+      function resolveAudioSrc(pair) {
+        if (!pair) return "";
+        return pair.prodAsrc || pair.asrc || "";
+      }
+
+      function esc(s) {
+        if (s === null || s === undefined) return "";
+        return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+      }
+
+      function fetchWithTimeout(url, opts, ms) {
+        return new Promise(function (resolve, reject) {
+          var timer = setTimeout(function () {
+            reject(new Error(url + " timeout after " + ms + "ms"));
+          }, ms);
+          fetch(url, opts)
+            .then(function (r) { clearTimeout(timer); resolve(r); })
+            .catch(function (e) { clearTimeout(timer); reject(e); });
+        });
+      }
+
+      function loadJson(url) {
+        return fetchWithTimeout(url, { cache: "no-store" }, LOAD_TIMEOUT_MS).then(function (r) {
+          if (!r.ok) throw new Error(url + " HTTP " + r.status);
+          return r.json();
+        });
+      }
+
+      function resolveEvent(bundle, live, slice) {
+        if (live && (live.lens_audio_observability_v1 || live.lens_video_observability_v1)) return live;
+        if (slice && (slice.lens_audio_observability_v1 || slice.lens_video_observability_v1)) return slice;
+        if (bundle && bundle.public_event_v1) return bundle.public_event_v1;
+        return live || slice || {};
+      }
+
+      function buildPairs(audioLut, videoLut) {
+        var aEntries = (audioLut && audioLut.entries) || {};
+        var vEntries = (videoLut && videoLut.entries) || {};
+        var abase = (audioLut && audioLut.assets_base_url) || "./audio/lens_btrack/v1/";
+        var vbase = (videoLut && videoLut.assets_base_url) || "./video/lens_btrack/v1/";
+        var vSuffix = (videoLut && videoLut.version)
+          ? ("?v=" + encodeURIComponent(String(videoLut.version)))
+          : "";
+        var aSuffix = (audioLut && audioLut.version)
+          ? ("?v=" + encodeURIComponent(String(audioLut.version)))
+          : "";
+        return Object.keys(aEntries).sort().map(function (apid) {
+          var arow = aEntries[apid] || {};
+          var vpid = apid.replace(/^LM_/, "LV_");
+          var vrow = vEntries[vpid] || {};
+          var sasang = String(arow.sasang_primary || "soyang").toLowerCase();
+          var mode = String(arow.showroom_display_mode || "idle").toLowerCase();
+          var vf = String(vrow.file || "");
+          var mp4f = String(vrow.mp4_file || vf.replace(/\.webm$/i, ".mp4"));
+          var posterf = String(vrow.poster_file || vf.replace(/\.webm$/i, "_poster.png"));
+          return {
+            id: apid,
+            vpid: vpid,
+            sasang: sasang,
+            mode: mode,
+            gate: (function () {
+              var ag = String((arow.gate_decision || "WATCH")).toUpperCase();
+              var vg = String((vrow.gate_decision || ag)).toUpperCase();
+              if (ag === "FAIL" || vg === "FAIL") return "FAIL";
+              if (ag === "PASS" && vg === "PASS") return "PASS";
+              return "WATCH";
+            })(),
+            prodAsrc: arow.file ? abase + arow.file + aSuffix : "",
+            asrc: arow.file ? abase + arow.file + aSuffix : "",
+            vsrc: vf ? vbase + vf + vSuffix : "",
+            mp4src: vf ? vbase + mp4f + vSuffix : "",
+            poster: vf ? vbase + posterf + vSuffix : ""
+          };
+        });
+      }
+
+      function findPair(id) {
+        for (var i = 0; i < state.pairs.length; i++) {
+          if (state.pairs[i].id === id) return state.pairs[i];
+        }
+        return state.pairs[0] || null;
+      }
+
+      function wirePlayback() {
+        var v = state.heroVideo;
+        var a = state.heroAudio;
+        if (!v || !a) return;
+        v.addEventListener("play", function () {
+          a.play().catch(function () {});
+          state.playing = true;
+          updatePlayBtn();
+        });
+        v.addEventListener("pause", function () {
+          a.pause();
+          state.playing = false;
+          updatePlayBtn();
+        });
+        v.addEventListener("ended", function () { v.play().catch(function () {}); });
+        v.addEventListener("error", function () {
+          var errEl = document.getElementById("hero-video-err");
+          if (!errEl) return;
+          var code = v.error && v.error.code ? v.error.code : "?";
+          errEl.hidden = false;
+          errEl.textContent = "비디오 로드 실패 (code " + code + "). MP4/WebM 경로·코덱을 확인하세요.";
+        });
+        if (a) {
+          a.addEventListener("error", function () {
+            var errEl = document.getElementById("hero-video-err");
+            if (!errEl) return;
+            errEl.hidden = false;
+            errEl.textContent = "오디오 로드 실패 — MusicGen 프로덕션 WAV 경로를 확인하세요.";
+          });
+        }
+        a.loop = true;
+        v.loop = true;
+        v.muted = true;
+        v.playsInline = true;
+      }
+
+      function startHeroVisual(autoplayAudio) {
+        var v = state.heroVideo;
+        var a = state.heroAudio;
+        if (!v) return;
+        v.muted = true;
+        v.play().catch(function () {});
+        if (autoplayAudio && a) {
+          a.play().catch(function () {});
+        }
+      }
+
+      function updatePlayBtn() {
+        var btn = document.getElementById("btn-play-sync");
+        if (btn) btn.textContent = state.playing ? "일시정지" : "재생";
+      }
+
+      function selectPair(id, autoplay) {
+        var pair = findPair(id);
+        if (!pair) return;
+        var wasPlaying = state.heroVideo && !state.heroVideo.paused;
+        state.selectedId = pair.id;
+        renderShell(true);
+        if (autoplay || wasPlaying) {
+          startHeroVisual(true);
+        }
+      }
+
+      function renderShell(full) {
+        if (!full) return;
+        var pair = findPair(state.selectedId) || state.pairs[0];
+        if (!pair) {
+          clearTimeout(loadTimer);
+          state.shellReady = true;
+          root.innerHTML = '<p class="err">미디어 LUT 없음 — build_lens_btrack_playback_lut_matrix_v1.py 실행 필요</p>';
+          return;
+        }
+        state.selectedId = pair.id;
+        var modeClass = "mode-" + pair.mode;
+        var sasangKo = SASANG_KO[pair.sasang] || pair.sasang;
+        var modeKo = MODE_KO[pair.mode] || pair.mode;
+
+        var html = "";
+        html += '<div class="stat-row">';
+        html += statCell("체질", sasangKo);
+        html += statCell("모드", modeKo);
+        html += statCell("게이트", pair.gate);
+        html += statCell("페어", state.pairs.length + " / 12");
+        html += statCell("오디오", "MusicGen · prod");
+        if (state.macroSlice && state.macroSlice.lens_media_bind) {
+          var mb = state.macroSlice.lens_media_bind;
+          var mbS = SASANG_KO[String(mb.sasang_primary || "").toLowerCase()] || mb.sasang_primary || "—";
+          var mbM = MODE_KO[String(mb.showroom_display_mode || "").toLowerCase()] || mb.showroom_display_mode || "—";
+          html += statCell("Macro bind", mbS + " · " + mbM);
+        }
+        html += "</div>";
+
+        html += '<div class="stage ' + esc(modeClass) + '" id="hero-stage">';
+        html += '<div class="stage-video-wrap">';
+        html += '<video id="hero-video" playsinline loop muted autoplay preload="auto"';
+        if (pair.poster) {
+          html += ' poster="' + esc(pair.poster) + '"';
+        }
+        html += '>';
+        if (pair.mp4src) {
+          html += '<source src="' + esc(pair.mp4src) + '" type="video/mp4">';
+        }
+        if (pair.vsrc) {
+          html += '<source src="' + esc(pair.vsrc) + '" type="video/webm">';
+        }
+        html += "</video>";
+        html += '<p id="hero-video-err" class="video-err" hidden></p>';
+        html += '<audio id="hero-audio" class="sr-only" loop preload="auto" src="' + esc(resolveAudioSrc(pair)) + '"></audio>';
+        html += '<div class="stage-overlay"></div>';
+        html += '<div class="stage-top"><span class="stage-mode-pill">' + esc(modeKo) + "</span>";
+        html += '<span class="stage-sasang">' + esc(sasangKo) + " · HP050</span></div>";
+        html += '<div class="stage-bottom"><p class="stage-title">' + esc(sasangKo) + " — " + esc(modeKo) + "</p>";
+        html += '<p class="stage-sub">' + esc(MODE_DESC[pair.mode] || "") + "</p></div></div>";
+        html += '<div class="stage-controls">';
+        html += '<button type="button" class="btn-play" id="btn-play-sync">재생</button>';
+        html += '<div class="vol-wrap"><label for="vol">음량</label>';
+        html += '<input type="range" id="vol" min="0" max="1" step="0.05" value="0.85" /></div>';
+        html += "</div></div>";
+
+        html += '<div class="picker-section"><h2>전시 모드</h2><div class="chip-row" id="mode-chips">';
+        ["idle", "defend", "attack"].forEach(function (m) {
+          var active = m === pair.mode ? " active" : "";
+          html += '<button type="button" class="chip' + active + '" data-mode="' + esc(m) + '">' + esc(MODE_KO[m]) + "</button>";
+        });
+        html += "</div><h2>사상 4체질</h2><div class="chip-row" id="sasang-chips">";
+        ["soyang", "taeyang", "taeeum", "soeum"].forEach(function (s) {
+          var active = s === pair.sasang ? " active" : "";
+          html += '<button type="button" class="chip' + active + '" data-sasang="' + esc(s) + '">' + esc(SASANG_KO[s]) + "</button>";
+        });
+        html += "</div></div>";
+
+        html += '<div class="picker-section"><h2>12 ambient loops</h2><div class="matrix-grid" id="matrix-grid">';
+        state.pairs.forEach(function (p) {
+          var active = p.id === pair.id ? " active" : "";
+          var dotClass = p.gate === "PASS" ? " pass" : "";
+          html += '<button type="button" class="matrix-tile' + active + '" data-pair-id="' + esc(p.id) + '">';
+          html += '<span class="tile-mode"><span class="tile-dot' + dotClass + '"></span>' + esc(MODE_KO[p.mode]) + "</span>";
+          html += '<div class="tile-sasang">' + esc(SASANG_KO[p.sasang]) + "</div></button>";
+        });
+        html += "</div></div>";
+
+        html += '<details class="ops"><summary>Operator · LUT / gate JSON (collapsed)</summary><pre id="ops-pre"></pre></details>';
+
+        root.innerHTML = html;
+        state.shellReady = true;
+        clearTimeout(loadTimer);
+        state.heroVideo = document.getElementById("hero-video");
+        state.heroAudio = document.getElementById("hero-audio");
+        wirePlayback();
+        startHeroVisual(false);
+        document.getElementById("btn-play-sync").addEventListener("click", function () {
+          if (!state.heroVideo) return;
+          if (state.heroVideo.paused) startHeroVisual(true);
+          else state.heroVideo.pause();
+        });
+        document.getElementById("vol").addEventListener("input", function (e) {
+          if (state.heroAudio) state.heroAudio.volume = parseFloat(e.target.value);
+        });
+        if (state.heroAudio) state.heroAudio.volume = 0.85;
+
+        document.getElementById("mode-chips").addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-mode]");
+          if (!btn) return;
+          pickByFilter(state.pairs, pair.sasang, btn.getAttribute("data-mode"));
+        });
+        document.getElementById("sasang-chips").addEventListener("click", function (e) {
+          var btn = e.target.closest("[data-sasang]");
+          if (!btn) return;
+          pickByFilter(state.pairs, btn.getAttribute("data-sasang"), pair.mode);
+        });
+        document.getElementById("matrix-grid").addEventListener("click", function (e) {
+          var tile = e.target.closest("[data-pair-id]");
+          if (!tile) return;
+          selectPair(tile.getAttribute("data-pair-id"), true);
+        });
+
+        var opsPre = document.getElementById("ops-pre");
+        if (opsPre) {
+          opsPre.textContent = JSON.stringify({
+            playback_id: pair.id,
+            video_playback_id: pair.vpid,
+            sasang_primary: pair.sasang,
+            showroom_display_mode: pair.mode,
+            gate: pair.gate,
+            audio_gen: "production",
+            audio_src: resolveAudioSrc(pair)
+          }, null, 2);
+        }
+      }
+
+      function statCell(k, v) {
+        return '<div class="stat"><div class="stat-k">' + esc(k) + '</div><div class="stat-v">' + esc(v) + "</div></div>";
+      }
+
+      function pickByFilter(pairs, sasang, mode) {
+        for (var i = 0; i < pairs.length; i++) {
+          if (pairs[i].sasang === sasang && pairs[i].mode === mode) {
+            selectPair(pairs[i].id, true);
+            return;
+          }
+        }
+      }
+
+      function resolveInitialSelection(pairs, macroSlice) {
+        if (urlPlaybackId) {
+          for (var i = 0; i < pairs.length; i++) {
+            if (pairs[i].id === urlPlaybackId) return pairs[i].id;
+          }
+        }
+        if (urlSasang && urlMode) {
+          for (var j = 0; j < pairs.length; j++) {
+            if (pairs[j].sasang === urlSasang && pairs[j].mode === urlMode) return pairs[j].id;
+          }
+        }
+        var bind = macroSlice && macroSlice.lens_media_bind;
+        if (bind) {
+          if (bind.playback_id) {
+            for (var k = 0; k < pairs.length; k++) {
+              if (pairs[k].id === bind.playback_id) return pairs[k].id;
+            }
+          }
+          var bs = String(bind.sasang_primary || "").toLowerCase();
+          var bm = String(bind.showroom_display_mode || "idle").toLowerCase();
+          if (bs && bm) {
+            for (var m = 0; m < pairs.length; m++) {
+              if (pairs[m].sasang === bs && pairs[m].mode === bm) return pairs[m].id;
+            }
+          }
+        }
+        return null;
+      }
+
+      function refresh() {
+        var jobs = [
+          loadJson("jemaai_lens_audio_playback_lut_v1_latest.json").catch(function () {
+            return loadJson("jemaai_lens_audio_playback_lut_v1.example.json");
+          }),
+          loadJson("jemaai_lens_video_playback_lut_v1_latest.json").catch(function () {
+            return loadJson("jemaai_lens_video_playback_lut_v1.example.json");
+          }),
+          loadJson("showroom_public_bundle_v1.json").catch(function () { return null; }),
+          loadJson("showroom_lens_media_thin_slice_v1.json").catch(function () { return null; }),
+          loadJson("showroom_macro_horizon_2030_slice_v1_latest.json").catch(function () { return null; })
+        ];
+        if (apiBase) {
+          jobs.push(
+            fetchWithTimeout(apiBase.replace(/\/$/, "") + "/api/public-events/latest", { cache: "no-store" }, LOAD_TIMEOUT_MS)
+              .then(function (r) { return r.ok ? r.json() : null; })
+              .catch(function () { return null; })
+          );
+        } else {
+          jobs.push(Promise.resolve(null));
+        }
+        Promise.all(jobs).then(function (res) {
+          state.audioLut = res[0];
+          state.videoLut = res[1];
+          state.pairs = buildPairs(res[0], res[1]);
+          var macroSlice = res[4];
+          state.macroSlice = macroSlice;
+          var deep = resolveInitialSelection(state.pairs, macroSlice);
+          if (deep) state.selectedId = deep;
+          var slice = res[3];
+          var live = res[5];
+          var ev = resolveEvent(res[2], live, slice);
+          var ab = ev.lens_audio_observability_v1 || (slice && slice.lens_audio_observability_v1);
+          if (ab && ab.playback_id && !state.selectedId) state.selectedId = ab.playback_id;
+          if (!state.selectedId && state.pairs.length) state.selectedId = state.pairs[0].id;
+          if (!state.shellReady) {
+            renderShell(true);
+            if (urlAutoplay) startHeroVisual(true);
+          }
+        }).catch(function (e) {
+          clearTimeout(loadTimer);
+          root.innerHTML = '<p class="err">로드 실패: ' + esc(String(e)) + "</p>";
+        });
+      }
+
+      refresh();
+      setInterval(refresh, pollMs);
+    })();
+  </script>
+</body>
+</html>

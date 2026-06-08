@@ -1,0 +1,100 @@
+{
+  "schema": "showroom_lens_media_thin_slice_v1",
+  "hypothesis_tag": "[HYPO]",
+  "track_wall": "B_track_research_only",
+  "generated_at_utc": "2026-06-08T04:10:20Z",
+  "lens_audio_observability_v1": {
+    "schema": "public_event_lens_audio_thin_slice_v1",
+    "hypothesis_class": "HYPO",
+    "track_wall": "B_track_research_only",
+    "non_gating": true,
+    "clinical_claims": false,
+    "playback_id": "LM_HP050_TAEYANG_IDLE_V1",
+    "playback_lut_version": "jemaai_lens_audio_playback_lut_v1@2026-06-08",
+    "showroom_display_mode_bind": "idle",
+    "gate": {
+      "decision": "PASS",
+      "audio_gate_report_ref": "c5e2e10494e24a0b",
+      "lens_alignment_pass": true,
+      "loop_seamlessness_pass": true,
+      "lufs_target_match": true,
+      "commercial_license_verified": true,
+      "source": "jemaai_lens_audio_playback_lut_v1"
+    },
+    "conditioning_meta": {
+      "hp_pct": 0.5,
+      "sasang_primary": "taeyang",
+      "numeric_mode": "melody",
+      "tempo_bpm_target": 101.76,
+      "bpm_observed": 180.01125070316894
+    },
+    "trend_meta": {
+      "hormone_trend_state": "NODATA",
+      "gematria_trace_present": false
+    },
+    "disclaimer_ref": "jemaai_lens_audio_hypo_v1",
+    "generated_at_utc": "2026-06-08T04:10:20Z",
+    "baked_asset_week": "2026-W24"
+  },
+  "lens_video_observability_v1": {
+    "schema": "public_event_lens_video_thin_slice_v1",
+    "hypothesis_class": "HYPO",
+    "track_wall": "B_track_research_only",
+    "non_gating": true,
+    "clinical_claims": false,
+    "video_playback_id": "LV_HP050_TAEYANG_IDLE_V1",
+    "audio_playback_id_mirror": "LM_HP050_TAEYANG_IDLE_V1",
+    "playback_lut_version": "jemaai_lens_video_playback_lut_v1@2026-06-08",
+    "showroom_display_mode_bind": "idle",
+    "gate": {
+      "decision": "PASS",
+      "video_gate_report_ref": "c5e2e10494e24a0b",
+      "loop_seamlessness_pass": true,
+      "visual_alignment_pass": true,
+      "commercial_license_verified": true
+    },
+    "conditioning_meta": {
+      "sasang_primary": "taeyang",
+      "showroom_display_mode": "idle"
+    },
+    "disclaimer_ref": "jemaai_lens_video_hypo_v1",
+    "generated_at_utc": "2026-06-08T04:10:20Z",
+    "baked_asset_week": "2026-W24"
+  },
+  "playback_lut": {
+    "audio": {
+      "version": "2026-06-08",
+      "playback_id": "LM_HP050_TAEYANG_IDLE_V1",
+      "public_asset_url": "https://jemaai.cloud/audio/lens_btrack/v1/hp050_taeyang_idle_v1.wav",
+      "entry": {
+        "file": "hp050_taeyang_idle_v1.wav",
+        "hp_pct": 0.5,
+        "sasang_primary": "taeyang",
+        "showroom_display_mode": "idle",
+        "gate_decision": "PASS",
+        "duration_sec": 30,
+        "gate_source": "reports/track_c_audio_hook_samples_v1/lens_btrack_audio_musicgen_bake_report_v1_latest.json"
+      }
+    },
+    "video": {
+      "version": "2026-06-08",
+      "video_playback_id": "LV_HP050_TAEYANG_IDLE_V1",
+      "public_asset_url": "https://jemaai.cloud/video/lens_btrack/v1/lv_hp050_taeyang_idle_v1.webm",
+      "entry": {
+        "file": "lv_hp050_taeyang_idle_v1.webm",
+        "poster_file": "lv_hp050_taeyang_idle_v1_poster.png",
+        "sasang_primary": "taeyang",
+        "showroom_display_mode": "idle",
+        "gate_decision": "PASS",
+        "duration_sec": 12,
+        "width": 1280,
+        "height": 720,
+        "fps": 30,
+        "audio_playback_id_mirror": "LM_HP050_TAEYANG_IDLE_V1",
+        "mp4_file": "lv_hp050_taeyang_idle_v1.mp4",
+        "gate_source": "reports/track_c_audio_hook_samples_v1/lens_btrack_audio_musicgen_bake_report_v1_latest.json"
+      }
+    }
+  },
+  "boundary_note": "Pre-baked static audio+video loop lookup only. Not live MusicGen/AnimateDiff. Not clinical. Not a trading signal. Logos/medical/live-trading walls remain NON_GATING / blocked."
+}
