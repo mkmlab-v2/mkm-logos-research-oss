@@ -157,15 +157,67 @@ def _coordinator_lens_conflict_slice(root: Path) -> Dict[str, Any]:
     if doc.get("schema") != "coordinator_lens_conflict_observation_v1":
         return {"state": "INVALID", "source": str(p)}
     wh = doc.get("webhook") if isinstance(doc.get("webhook"), dict) else {}
+    hl = doc.get("headline") if isinstance(doc.get("headline"), dict) else {}
     return {
         "state": "OK",
         "observation_status": doc.get("status"),
         "conflict_count": (doc.get("consensus") or {}).get("conflict_count"),
+        "headline_sign": hl.get("headline_sign"),
+        "raw_consensus_sign": hl.get("raw_consensus_sign"),
+        "headline_mismatch": doc.get("headline_mismatch"),
+        "demote_active": doc.get("demote_active"),
         "veto_force_hold": (doc.get("market_sasang_veto") or {}).get("veto_force_hold"),
         "alert_fingerprint": doc.get("alert_fingerprint"),
         "webhook_status": wh.get("status"),
         "research_only": doc.get("research_only"),
         "generated_at_utc": doc.get("generated_at_utc"),
+    }
+
+
+def _independent_lens_fusion_stub_slice(art: Path) -> Dict[str, Any]:
+    rel = "docs/final/artifacts/independent_lens_fusion_stub_latest.json"
+    p = art / "independent_lens_fusion_stub_latest.json"
+    if not p.is_file():
+        return {"state": "NODATA", "source": rel}
+    doc = _read_json(p)
+    if doc.get("schema") != "independent_lens_fusion_stub_v0":
+        return {"state": "INVALID", "source": rel}
+    from scripts.report_independent_lens_fusion_stub_v0 import resolve_fusion_headline_v1
+
+    hl = resolve_fusion_headline_v1(doc)
+    cs = doc.get("consensus") if isinstance(doc.get("consensus"), dict) else {}
+    return {
+        "state": "OK",
+        "source": rel,
+        "version": doc.get("version"),
+        "ts_utc": doc.get("ts_utc"),
+        "headline_sign": hl.get("headline_sign"),
+        "raw_consensus_sign": hl.get("raw_consensus_sign"),
+        "effective_consensus_sign": hl.get("effective_consensus_sign"),
+        "demote_active": hl.get("demote_active"),
+        "non_gating": hl.get("non_gating"),
+        "conflict_count": cs.get("conflict_count"),
+        "agreement_rate": cs.get("agreement_rate"),
+        "research_only": True,
+    }
+
+
+def _lens_conflict_day_decision_slice(art: Path) -> Dict[str, Any]:
+    rel = "docs/final/artifacts/lens_conflict_day_decision_snapshot_v1_latest.json"
+    p = art / "lens_conflict_day_decision_snapshot_v1_latest.json"
+    if not p.is_file():
+        return {"state": "NODATA", "source": rel}
+    doc = _read_json(p)
+    if doc.get("schema") != "lens_conflict_day_decision_snapshot_v1":
+        return {"state": "INVALID", "source": rel}
+    return {
+        "state": "OK",
+        "source": rel,
+        "regime": doc.get("regime"),
+        "final_action": doc.get("final_action"),
+        "operator_posture": doc.get("operator_posture"),
+        "generated_at_utc": doc.get("generated_at_utc"),
+        "research_only": doc.get("research_only"),
     }
 
 
@@ -553,6 +605,8 @@ def main() -> int:
     logos_cdim_slice = _logos_cross_domain_interface_slice(art)
     inter_agent_rq019_slice = _inter_agent_rq019_trackc_slice(art)
     coordinator_conflict_slice = _coordinator_lens_conflict_slice(root)
+    fusion_stub_slice = _independent_lens_fusion_stub_slice(art)
+    lens_conflict_day_slice = _lens_conflict_day_decision_slice(art)
     prophecy_headline_integrity_slice = _prophecy_headline_integrity_slice(root)
 
     dashboard = {
@@ -791,6 +845,8 @@ def main() -> int:
             },
             "inter_agent_rq019": inter_agent_rq019_slice,
             "coordinator_lens_conflict_observation": coordinator_conflict_slice,
+            "independent_lens_fusion_stub": fusion_stub_slice,
+            "lens_conflict_day_decision": lens_conflict_day_slice,
             "prophecy_headline_integrity_observation": prophecy_headline_integrity_slice,
             "trust_visualization_v0": trust_v0_slice,
             "stt_routing_audit_log_slice": stt_audit_slice,

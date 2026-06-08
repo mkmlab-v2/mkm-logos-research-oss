@@ -119,6 +119,8 @@ param(
   [switch]$SkipPathologyTeMapping,
   # Phase 2: market myeongni overlay (default OFF; requires fresh myeongni_independent_lens_latest.json).
   [switch]$IncludeMarketMyeongniOverlay,
+  # Research-only KOSPI score with shock cutoff enabled (separate artifact; does not replace main score).
+  [switch]$IncludeKospiShockCutoffObservation,
   # Walk-forward folds for daily shadow refresh (align with run_btrack_promotion_push_v1 default 6).
   [int]$ProphecyWalkforwardNFolds = 6
 )
@@ -361,6 +363,32 @@ if ($LASTEXITCODE -ne 0) { throw "run_lens_logos exit $LASTEXITCODE" }
 Write-Host "==> report_independent_lens_fusion_stub_v0.py"
 py scripts/report_independent_lens_fusion_stub_v0.py
 if ($LASTEXITCODE -ne 0) { throw "fusion stub exit $LASTEXITCODE" }
+
+Write-Host "==> build_lens_conflict_day_decision_snapshot_v1.py (B-track conflict-day operator posture; human gate)"
+py scripts/build_lens_conflict_day_decision_snapshot_v1.py
+if ($LASTEXITCODE -ne 0) {
+  Write-Host "WARN: build_lens_conflict_day_decision_snapshot_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+}
+
+if ($IncludeKospiShockCutoffObservation) {
+  Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py (KOSPI shock-cutoff observation; research_only side artifact)"
+  py scripts/build_btrack_prophecy_score_from_ohlcv.py `
+    --panel-instrument kospi `
+    --recent-trading-days 30 `
+    --bull-reversal-enable-shock-cutoff `
+    --output docs/final/artifacts/btrack_prophecy_score_kospi_shock_cutoff_obs_latest.json
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: KOSPI shock-cutoff observation score exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+  } else {
+    py scripts/eval_prophecy_hit_rate_v1.py `
+      --run-mode price `
+      --score-json docs/final/artifacts/btrack_prophecy_score_kospi_shock_cutoff_obs_latest.json `
+      --out docs/final/artifacts/prophecy_hit_rate_eval_kospi_shock_cutoff_obs_latest.json
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: KOSPI shock-cutoff observation eval exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+    }
+  }
+}
 
 Write-Host "==> run_logos_track_b_commander_deep_report_v1.py"
 py scripts/run_logos_track_b_commander_deep_report_v1.py

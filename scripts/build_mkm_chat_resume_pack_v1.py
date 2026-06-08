@@ -85,6 +85,55 @@ def _load_constitution_pins(root: Path, *, top_n: int = 3) -> list[dict[str, Any
     return constitution_pins_for_resume(sidecar, top_n=top_n)
 
 
+def _load_a2a_chain_refs(root: Path) -> Dict[str, Any] | None:
+    """Machine-only tp03 pointer block — omitted from human MD resume pack."""
+    pilot_path = root / "docs/final/artifacts/a2a_tp03_chain_ref_pilot_v1_latest.json"
+    if not pilot_path.is_file():
+        return None
+    pilot = _read_json(pilot_path)
+    if pilot.get("schema") != "a2a_tp03_chain_ref_pilot_v1":
+        return None
+    pointers: List[Dict[str, Any]] = []
+    for row in pilot.get("artifacts") or []:
+        handoff = row.get("pointer_handoff")
+        if not isinstance(handoff, dict):
+            continue
+        slim: Dict[str, Any] = {
+            "artifact_id": handoff.get("artifact_id") or row.get("artifact_id"),
+            "artifact_path": handoff.get("artifact_path") or row.get("artifact_path"),
+            "sha256": handoff.get("sha256") or row.get("sha256"),
+            "chain_step": handoff.get("chain_step") or row.get("chain_step"),
+            "handoff_mode": handoff.get("handoff_mode") or "pointer_plus_fingerprint",
+        }
+        if handoff.get("essence_line"):
+            slim["essence_line"] = handoff["essence_line"]
+        if handoff.get("schema"):
+            slim["schema"] = handoff["schema"]
+        pointers.append(slim)
+    if not pointers:
+        return None
+    agg = pilot.get("aggregate_pointer_vs_full") or {}
+    return {
+        "schema": "mkm_chat_resume_a2a_chain_refs_v1",
+        "source_pilot": "docs/final/artifacts/a2a_tp03_chain_ref_pilot_v1_latest.json",
+        "research_only": True,
+        "boundary_ack": (
+            "[HYPO] A2A machine block only — pointer+fingerprint refs for agent context. "
+            "Human MD resume pack unchanged. Not Track A·live merge."
+        ),
+        "artifacts_present": pilot.get("artifacts_present"),
+        "artifacts_missing": pilot.get("artifacts_missing"),
+        "reduction_percent_if_pointers_only": (pilot.get("kpi_headline") or {}).get(
+            "reduction_percent_if_pointers_only"
+        ),
+        "aggregate_pointer_vs_full": {
+            "tokens_saved_sum": agg.get("tokens_saved_sum"),
+            "reduction_percent": agg.get("reduction_percent"),
+        },
+        "pointer_rows": pointers,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--top-n", type=int, default=3)
@@ -125,6 +174,7 @@ def main() -> int:
         slice_max_chars=args.slice_max_chars,
     )
     constitution_pins = _load_constitution_pins(root, top_n=min(3, args.top_n))
+    a2a_chain_refs = _load_a2a_chain_refs(root)
     inject_text = _build_ops_inject_text(ops_pins)
     if constitution_pins:
         for pin in constitution_pins:
@@ -180,6 +230,7 @@ def main() -> int:
             DEFAULT_SIDECAR_PATH.relative_to(SCRIPT_ROOT)
         ).replace("\\", "/"),
         "constitution_source_ssot": CONSTITUTION_REL,
+        "a2a_chain_refs": a2a_chain_refs,
         "latest_status": {
             "system_status": (dashboard.get("system") or {}).get("status"),
             "promotion_decision": (dashboard.get("system") or {}).get("promotion_decision"),

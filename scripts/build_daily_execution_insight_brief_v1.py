@@ -618,6 +618,18 @@ def build_markdown(
             lv = cs.get("logos_evidence_verse_ids")
             if isinstance(lv, list):
                 verses = [str(x) for x in lv]
+        try:
+            from scripts.report_independent_lens_fusion_stub_v0 import resolve_fusion_headline_v1
+
+            hl = resolve_fusion_headline_v1(fusion)
+            lines.append(
+                f"- **`headline_gating`:** raw=`{hl.get('raw_consensus_sign')}` · "
+                f"headline=`{hl.get('headline_sign')}` · demote=`{hl.get('demote_active')}` · "
+                f"non_gating=`{hl.get('non_gating')}`"
+            )
+            lines.append("")
+        except ImportError:
+            pass
 
     lines.append(f"- **`minority_lens_ids`:** `{json.dumps(minority, ensure_ascii=False)}`")
     lines.append(f"- **`logos_evidence_verse_ids`:** `{json.dumps(verses, ensure_ascii=False)}`")

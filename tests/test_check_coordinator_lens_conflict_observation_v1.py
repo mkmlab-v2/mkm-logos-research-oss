@@ -205,3 +205,22 @@ def test_bad_schema_exit_1(tmp_path: Path) -> None:
     bad["schema"] = "wrong_schema"
     cp = _run(tmp_path, bad)
     assert cp.returncode == 1
+
+
+def test_headline_mismatch_triggers_observation(tmp_path: Path) -> None:
+    stub = _minimal_stub(conflict_count=0, veto=False)
+    stub["version"] = "0.5.0"
+    stub["demote_active"] = True
+    stub["consensus_effective"] = {"consensus_sign": "bear"}
+    stub["headline_gating"] = {
+        "headline_sign": "bear",
+        "raw_consensus_sign": "bull",
+        "non_gating": True,
+        "headline_source": "consensus_effective",
+    }
+    cp = _run(tmp_path, stub)
+    assert cp.returncode == 0, cp.stderr
+    out = json.loads((tmp_path / "observation.json").read_text(encoding="utf-8"))
+    assert out["headline_mismatch"] is True
+    assert out["headline"]["headline_sign"] == "bear"
+    assert out["status"] != "CONSENSUS"

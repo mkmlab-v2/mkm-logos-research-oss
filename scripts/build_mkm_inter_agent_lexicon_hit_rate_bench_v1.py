@@ -16,6 +16,11 @@ if str(ROOT) not in sys.path:
 
 DEFAULT_OUT = ROOT / "docs/final/artifacts/mkm_inter_agent_lexicon_hit_rate_bench_v1_latest.json"
 
+from scripts.run_mkm_inter_agent_dialogue_mock_v1 import (  # noqa: E402
+    ALPHA_LINES_LEXICON_DENSE,
+    BETA_LINES_LEXICON_DENSE,
+)
+
 CORPORA: dict[str, list[str]] = {
     "trading": [
         "WATCH regime macro fragility BTC REDUCE exposure prophecy dual-leg KOSPI",
@@ -25,16 +30,7 @@ CORPORA: dict[str, list[str]] = {
         "환자 건강 수면 식사 증상 호흡 피로 회복 체온 임상 바이탈 Silver Tech",
         "건강검진 회복률 수면 부족 식사 불균형 의료 팀 검토",
     ],
-    "lexicon_dense": [
-        (
-            "strong morph greek logos bible reference message kai mercy alpha beta gamma "
-            "delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma"
-        ),
-        (
-            "hebrew aramaic covenant prophecy wisdom knowledge understanding counsel "
-            "might lord god spirit holy righteousness judgment salvation redemption"
-        ),
-    ],
+    "lexicon_dense": list(ALPHA_LINES_LEXICON_DENSE) + list(BETA_LINES_LEXICON_DENSE),
 }
 
 

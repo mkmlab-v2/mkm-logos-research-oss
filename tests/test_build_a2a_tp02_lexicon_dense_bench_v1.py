@@ -17,8 +17,12 @@ def test_build_bench_document_schema_and_ok():
     assert doc["bench_config"]["scenario"] == "lexicon_dense"
     assert doc["bench_ok"] is True
     headline = doc["kpi_headline"]
-    assert headline.get("mock_avg_savings_ratio") is not None
+    mock_avg = headline.get("mock_avg_savings_ratio")
+    assert mock_avg is not None
+    assert mock_avg >= 0.35, f"lexicon_dense fixture too short for ROI bench: {mock_avg}"
     assert headline.get("wire_avg_envelope_vs_packet_savings") is not None
+    token_ins = doc["trust_packet_mock"]["metrics"].get("token_in_by_turn") or []
+    assert token_ins and min(token_ins) >= 32, "turns should exceed compress skip threshold"
 
 
 def test_emit_script_writes_json(tmp_path, monkeypatch):

@@ -33,19 +33,29 @@ BETA_LINES_HEALTH = [
     "ACK: 환자 바이탈·증상 패킷 수신. 수면·식사 권고 유지, 임상 게이트 통과 전 조치 보류.",
     "ACK: 건강검진 브리프 반영. 회복 지표 모니터링 지속, 추가 증상 시 재패킷 요청.",
 ]
+# Repeated lexicon-mappable chunk — long enough to clear compress skip (>=32 tok) and
+# exercise 41k atom rail on tp02 bench (~200+ tok per alpha turn at 4x repeat).
+_LEXICON_DENSE_CHUNK = (
+    "strong morph greek logos bible reference message kai mercy alpha beta gamma "
+    "delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma "
+    "hebrew aramaic covenant prophecy wisdom knowledge understanding counsel "
+    "might lord god spirit holy righteousness judgment salvation redemption "
+    "prophecy lane B-track WATCH regime macro fragility exposure REDUCE HOLD "
+    "orders risk profile dual-leg KOSPI BTC executor standing guardian gate "
+)
 ALPHA_LINES_LEXICON_DENSE = [
-    (
-        "strong morph greek logos bible reference message kai mercy alpha beta gamma "
-        "delta epsilon zeta eta theta iota kappa lambda mu nu xi omicron pi rho sigma"
-    ),
-    (
-        "hebrew aramaic covenant prophecy wisdom knowledge understanding counsel "
-        "might lord god spirit holy righteousness judgment salvation redemption"
-    ),
+    (_LEXICON_DENSE_CHUNK * 4).strip(),
+    (_LEXICON_DENSE_CHUNK * 4 + " fragility elevated covenant renewal shadow advisory ").strip(),
 ]
 BETA_LINES_LEXICON_DENSE = [
-    "ACK: lexicon-dense packet received; atom rail count noted for routing compare.",
-    "ACK: greek/hebrew token density high; standing by for next compressed turn.",
+    (
+        "ACK: lexicon-dense trust packet received; atom rail count noted for routing compare. "
+        + _LEXICON_DENSE_CHUNK * 2
+    ).strip(),
+    (
+        "ACK: greek hebrew token density high; executor standing by for next compressed turn. "
+        + _LEXICON_DENSE_CHUNK * 2
+    ).strip(),
 ]
 
 

@@ -16,6 +16,13 @@ from typing import Any
 from urllib import error, request
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.report_independent_lens_fusion_stub_v0 import resolve_fusion_headline_v1  # noqa: E402
+
 DEFAULT_STUB = Path("docs/final/artifacts/independent_lens_fusion_stub_latest.json")
 DEFAULT_OUT = Path("reports/coordinator_lens_conflict_observation_latest.json")
 DEFAULT_DEDUP_STATE = Path("reports/coordinator_lens_conflict_dedup_state_v1.json")
@@ -203,17 +210,26 @@ def main() -> int:
     inputs = stub.get("inputs") or []
     consensus = stub.get("consensus") or {}
     conflict_summary = stub.get("conflict_summary") or {}
+    headline = resolve_fusion_headline_v1(stub)
     conflict_count = int(consensus.get("conflict_count") or 0)
     veto_active, veto_codes = _market_sasang_veto(inputs)
     stale_lens = _stale_lens_ids(inputs, now, max_age)
     stub_stale = (now - stub_ts) > max_age
+    headline_mismatch = bool(
+        headline.get("non_gating")
+        and headline.get("raw_consensus_sign") != headline.get("headline_sign")
+    )
 
     base["fusion_stub_ts_utc"] = stub.get("ts_utc")
+    base["fusion_stub_version"] = stub.get("version")
     base["consensus"] = {
         "conflict_count": conflict_count,
         "agreement_rate": consensus.get("agreement_rate"),
         "consensus_sign": consensus.get("consensus_sign"),
     }
+    base["headline"] = headline
+    base["headline_mismatch"] = headline_mismatch
+    base["demote_active"] = headline.get("demote_active")
     base["market_sasang_veto"] = {
         "veto_force_hold": veto_active,
         "veto_reason_codes": veto_codes,
@@ -229,7 +245,7 @@ def main() -> int:
         print(f"WROTE: {out_path} status=STALE stale_lens={stale_lens}")
         return 0
 
-    trigger = conflict_count >= 1 or veto_active
+    trigger = conflict_count >= 1 or veto_active or headline_mismatch
     if not trigger:
         base["status"] = "CONSENSUS"
         base["conflict_active"] = False
@@ -238,7 +254,12 @@ def main() -> int:
         print(f"WROTE: {out_path} status=CONSENSUS")
         return 0
 
-    majority_sign = str(conflict_summary.get("majority_sign") or consensus.get("consensus_sign") or "unknown")
+    majority_sign = str(
+        headline.get("headline_sign")
+        or conflict_summary.get("majority_sign")
+        or consensus.get("consensus_sign")
+        or "unknown"
+    )
     minority_ids = [str(x) for x in (conflict_summary.get("minority_lens_ids") or []) if x]
     verse_ids = [str(x) for x in (conflict_summary.get("logos_evidence_verse_ids") or []) if x]
     narrative = str(conflict_summary.get("conflict_narrative_guarded") or "")
@@ -272,6 +293,10 @@ def main() -> int:
             "veto_force_hold": veto_active,
             "veto_reason_codes": veto_codes,
             "majority_sign": majority_sign,
+            "headline_sign": headline.get("headline_sign"),
+            "raw_consensus_sign": headline.get("raw_consensus_sign"),
+            "headline_mismatch": headline_mismatch,
+            "demote_active": headline.get("demote_active"),
             "minority_lens_ids": minority_ids,
             "logos_evidence_verse_ids": verse_ids,
             "conflict_narrative_guarded": narrative[:NARRATIVE_CLIP],

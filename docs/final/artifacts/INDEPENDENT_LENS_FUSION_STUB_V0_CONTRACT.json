@@ -2,8 +2,8 @@
   "schema": "independent_lens_fusion_stub_v0_contract_meta_v1",
   "artifact_schema": "independent_lens_fusion_stub_v0",
   "artifact_json_schema": "docs/final/schemas/independent_lens_fusion_stub_v0.schema.json",
-  "runner_version": "0.4.0",
-  "purpose": "Read-only comparison between independent lens outputs before any real fusion policy; adds deterministic conflict_summary (no LLM). v0.4.0 adds optional market_myeongni_lens_v1 as 5th input (with optional market_sasang_lens_v1 as 4th).",
+  "runner_version": "0.5.0",
+  "purpose": "Read-only comparison between independent lens outputs before any real fusion policy; adds deterministic conflict_summary (no LLM). v0.5.0 adds non-voting sidecar_rails (news/macro/overnight), consensus_effective demote, headline_gating. v0.4.0 adds optional market_myeongni_lens_v1 as 5th input (with optional market_sasang_lens_v1 as 4th).",
   "runner": "scripts/report_independent_lens_fusion_stub_v0.py",
   "default_output_path": "docs/final/artifacts/independent_lens_fusion_stub_latest.json",
   "required_input_artifacts": [
@@ -15,6 +15,12 @@
     "docs/final/artifacts/market_sasang_lens_latest.json",
     "docs/final/artifacts/market_myeongni_lens_latest.json"
   ],
+  "sidecar_input_artifacts_v0_5": [
+    "docs/final/artifacts/news_independent_lens_latest.json",
+    "docs/final/artifacts/macro_independent_lens_latest.json",
+    "docs/final/artifacts/global_market_overnight_signals_v1_latest.json"
+  ],
+  "sidecar_wiring_v0_5": "sidecar_rails are observation_only and non_voting; demote_active zeros humanist lens vote weights and sets headline_gating when raw consensus bull conflicts with sidecar shock/bear.",
   "market_sasang_wiring_v0_3": "Runner loads market_sasang_lens_v1 when file exists and --no-market-sasang is not set. Maps fusion_bridge.score_hint→direction_score; confidence from 1−composite_uncertainty, ×0.25 on veto.force_hold. Extra fields under inputs[].market_sasang_lens_v1 for coordinator.",
   "market_myeongni_wiring_v0_4": "Runner loads market_myeongni_lens_v1 when file exists and --no-market-myeongni is not set. Uses overlay scores from market_myeongni_lens_v1; upstream myeongni engine unchanged. Extra fields under inputs[].market_myeongni_lens_v1 for coordinator. Daily chain opt-in: run_btrack_daily_hypothesis_chain.ps1 -IncludeMarketMyeongniOverlay.",
   "payload_conflict_summary_v0_2": {
