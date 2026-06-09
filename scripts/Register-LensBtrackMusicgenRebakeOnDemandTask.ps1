@@ -35,7 +35,7 @@ if ($exists) { schtasks /Delete /TN $TaskName /F | Out-Null }
 $psExe = if (Get-Command pwsh -ErrorAction SilentlyContinue) { "pwsh" } else { "powershell.exe" }
 $tr = "$psExe -NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$worker`" -WorkspaceRoot `"$WorkspaceRoot`" -ForceRegen"
 
-schtasks /Create /TN $TaskName /SC ONCE /ST 00:00 /SD 01/01/2099 /TR $tr /F | Out-Null
+schtasks /Create /TN $TaskName /SC ONCE /ST 00:00 /SD 2099/01/01 /TR $tr /F | Out-Null
 if ($LASTEXITCODE -ne 0) { throw "Failed to create task $TaskName" }
 
 Write-Host "Created on-demand task: $TaskName"
