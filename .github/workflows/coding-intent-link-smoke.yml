@@ -1,0 +1,46 @@
+# Coding intent 3-point link PoC — pytest smoke (research_only, no secrets).
+name: Coding Intent Link Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop, dev]
+    paths:
+      - "scripts/record_coding_intent_link_v1.py"
+      - "scripts/githooks/post-commit-coding-intent-link_v1.sample"
+      - "scripts/Install-CodingIntentLinkGitHook_v1.ps1"
+      - "docs/final/schemas/coding_intent_link_v1.schema.json"
+      - "tests/test_record_coding_intent_link_v1.py"
+      - "scripts/build_coding_intent_pr_manifest_v1.py"
+      - "docs/final/schemas/coding_intent_pr_manifest_v1.schema.json"
+      - "tests/test_build_coding_intent_pr_manifest_v1.py"
+      - "scripts/build_coding_intent_gitea_merge_precheck_v1.py"
+      - "tests/test_build_coding_intent_gitea_merge_precheck_v1.py"
+      - ".github/workflows/coding-intent-link-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/record_coding_intent_link_v1.py"
+      - "scripts/githooks/post-commit-coding-intent-link_v1.sample"
+      - "scripts/Install-CodingIntentLinkGitHook_v1.ps1"
+      - "docs/final/schemas/coding_intent_link_v1.schema.json"
+      - "tests/test_record_coding_intent_link_v1.py"
+      - "scripts/build_coding_intent_pr_manifest_v1.py"
+      - "docs/final/schemas/coding_intent_pr_manifest_v1.schema.json"
+      - "tests/test_build_coding_intent_pr_manifest_v1.py"
+      - "scripts/build_coding_intent_gitea_merge_precheck_v1.py"
+      - "tests/test_build_coding_intent_gitea_merge_precheck_v1.py"
+      - ".github/workflows/coding-intent-link-smoke.yml"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install test deps
+        run: pip install pytest jsonschema
+      - name: Pytest coding intent link + PR manifest
+        run: |
+          python -m pytest tests/test_record_coding_intent_link_v1.py tests/test_build_coding_intent_pr_manifest_v1.py tests/test_build_coding_intent_gitea_merge_precheck_v1.py -q

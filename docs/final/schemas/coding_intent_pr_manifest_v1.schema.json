@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/coding_intent_pr_manifest_v1.schema.json",
+  "title": "Coding intent PR manifest v1 (commits ↔ checkpoints ↔ link log)",
+  "type": "object",
+  "required": [
+    "schema",
+    "built_at_utc",
+    "research_only",
+    "base_ref",
+    "head_sha",
+    "branch",
+    "commit_count",
+    "rows",
+    "coverage"
+  ],
+  "properties": {
+    "schema": { "const": "coding_intent_pr_manifest_v1" },
+    "built_at_utc": { "type": "string" },
+    "research_only": { "const": true },
+    "base_ref": { "type": "string" },
+    "head_sha": { "type": "string", "minLength": 7 },
+    "branch": { "type": "string" },
+    "commit_count": { "type": "integer", "minimum": 0 },
+    "note": { "type": "string" },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sha", "subject"],
+        "properties": {
+          "sha": { "type": "string", "minLength": 7 },
+          "subject": { "type": "string" },
+          "author_iso": { "type": ["string", "null"] },
+          "link_id": { "type": ["string", "null"] },
+          "link_ok": { "type": ["boolean", "null"] },
+          "checkpoint_stamp": { "type": ["string", "null"] },
+          "checkpoint_message": { "type": ["string", "null"] },
+          "intent_ref": { "type": ["string", "null"] }
+        },
+        "additionalProperties": false
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "required": [
+        "commits_with_link",
+        "commits_with_checkpoint",
+        "commits_with_intent_ref",
+        "checkpoint_total",
+        "link_log_entries"
+      ],
+      "properties": {
+        "commits_with_link": { "type": "integer", "minimum": 0 },
+        "commits_with_checkpoint": { "type": "integer", "minimum": 0 },
+        "commits_with_intent_ref": { "type": "integer", "minimum": 0 },
+        "checkpoint_total": { "type": "integer", "minimum": 0 },
+        "link_log_entries": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "evidence_paths": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

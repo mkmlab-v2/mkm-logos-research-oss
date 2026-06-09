@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/coding_intent_gitea_merge_precheck_v1.schema.json",
+  "title": "Coding intent gitea merge precheck v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "checked_at_utc",
+    "research_only",
+    "publication_mode",
+    "integration_remote",
+    "base_ref",
+    "branch",
+    "head_sha",
+    "ahead_commits",
+    "porcelain_lines",
+    "precheck_ok",
+    "blockers",
+    "warnings"
+  ],
+  "properties": {
+    "schema": { "const": "coding_intent_gitea_merge_precheck_v1" },
+    "checked_at_utc": { "type": "string" },
+    "research_only": { "const": true },
+    "publication_mode": { "const": "internal_first" },
+    "integration_remote": { "type": "string" },
+    "base_ref": { "type": "string" },
+    "branch": { "type": "string" },
+    "head_sha": { "type": "string", "minLength": 7 },
+    "ahead_commits": { "type": "integer", "minimum": 0 },
+    "porcelain_lines": { "type": "integer", "minimum": 0 },
+    "link_ok": { "type": ["boolean", "null"] },
+    "link_drift": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "manifest_coverage": { "type": "object" },
+    "precheck_ok": { "type": "boolean" },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "warnings": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "evidence_paths": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "next_commands": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "additionalProperties": false
+}

@@ -70,6 +70,8 @@ catch {
 # 2026-05-31: Ops memory index Phase 0 ([HYPO] anchor index + must_keep gate + hygiene chain).
 # 2026-06-01: WSE-3 Cursor commander starters (.mdc + artifact TXT) + resume pack builder.
 # 2026-06-09: MKM Morning Beans v1 (bounded feed, calendar SSOT, mkmlife export, daily task chain).
+# 2026-06-10: Coding intent 3-point link PoC (record script, schema, pytest, hook sample, CI smoke).
+# 2026-06-10: Coding intent PR manifest v1 (base..HEAD ↔ checkpoints ↔ link log).
 
 $ErrorActionPreference = "Stop"
 $required = @(
@@ -220,6 +222,10 @@ $required = @(
     "tests\test_multi_res_index_v1.py",
     "tests\test_multi_res_fills_join_v1.py",
     "tests\test_multi_res_drift_recovery_drill_v1.py",
+    "scripts\check_multi_res_fills_ssot_health_v1.py",
+    "tests\test_check_multi_res_fills_ssot_health_v1.py",
+    "scripts\Invoke-MultiResIndexDelegationRoutine_v1.ps1",
+    "scripts\Register-BtrackFillsWeeklyBackfillTask.ps1",
     ".github\workflows\multi-res-index-smoke.yml",
     "docs\final\LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md",
     "docs\final\LOCAL_MACHINE_POINTER_V1.template.md",
@@ -511,6 +517,21 @@ $required = @(
     "tests\test_gematria_myeongri_spike_smoke.py",
     "scripts\athena_checkpoint.py",
     "tests\test_athena_checkpoint.py",
+    "scripts\record_coding_intent_link_v1.py",
+    "scripts\Invoke-CodingIntentLinkRecord_v1.ps1",
+    "scripts\Install-CodingIntentLinkGitHook_v1.ps1",
+    "scripts\githooks\post-commit-coding-intent-link_v1.sample",
+    "docs\final\schemas\coding_intent_link_v1.schema.json",
+    "tests\test_record_coding_intent_link_v1.py",
+    "scripts\build_coding_intent_pr_manifest_v1.py",
+    "scripts\Invoke-CodingIntentPrManifest_v1.ps1",
+    "scripts\build_coding_intent_gitea_merge_precheck_v1.py",
+    "scripts\Invoke-CodingIntentGiteaMergePrecheck_v1.ps1",
+    "docs\final\schemas\coding_intent_gitea_merge_precheck_v1.schema.json",
+    "tests\test_build_coding_intent_gitea_merge_precheck_v1.py",
+    "docs\final\schemas\coding_intent_pr_manifest_v1.schema.json",
+    "tests\test_build_coding_intent_pr_manifest_v1.py",
+    ".github\workflows\coding-intent-link-smoke.yml",
     "docs\final\BTRACK_GEMATRIA_MYEONGRI_MATH_ISOLATION_V1.md",
     "scripts\core\track_source_guard.py",
     "scripts\core\sovereign_jsonl.py",

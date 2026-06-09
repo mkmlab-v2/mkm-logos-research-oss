@@ -34,6 +34,14 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - `초고난도 비정형 텍스트(성경·사해사본 등)/명리/사상`은 Track C에서 **리스크 포지셔닝/서사/해설형 인텔리전스**로 패키징하되, 투자조언/자동매매 문구는 금지한다.
 - `신시장지표`는 관측/경보형 서비스로 제한하고, 예측 단정·성과 보증이나 수익 약속을 암시하는 문구는 금지한다.
 
+### 2.3 Cursor 세션 · AI↔AI 운영 baseline (2026-06-09)
+
+- **Cursor IDE 사용량은 자동 검증 루프를 대체하지 않는다.** 대외·내부 운영 주장은 스크립트 exit code·아티팩트 경로로만 한다.
+- **장기기억 SSOT:** `CENTRAL` + Git; **AI↔AI inject**는 `MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md` — structured pins · `[HYPO]` · inter-agent wire 본선 **HOLD**.
+- **세션 표:** `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` · 에이전트 규칙 `.cursor/rules/cursor-session-validation-baseline-v1.mdc` · 스킬 `mkm-cursor-session-ops`.
+- **Track C 쇼룸(예):** lens media hub offline/live QA는 **배포·CI** 축; Track A·실매매 승격과 **합선 금지**.
+- **맥락·의도 자산:** 업계 「코딩 의도 DB」 논의 = 내부 `MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md` + 본 문서 **§3.11(7)**; 벤더 대화 Memory ≠ 운영 SSOT.
+
 ## 3) 통합 사업 포트폴리오 (요청 반영)
 
 ### 3.0 도메인·채널 분리 (사업계획서·제안서 혼선 방지, 2026-05-21)
@@ -434,6 +442,14 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 
 - 브리핑·NL 아이디어는 **`docs/final/CENTRAL_AGENT_MEMORY_V1.md`에 압축 반영 후** Track C 본문을 고친다 — NL 출력 단독으로 SSOT를 바꾸지 않는다.
 - Vault 미러: `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` — 매니페스트 `docs/NotebookLM_sources_manifest.md`에 본 파일 경로가 포함되어 있음.
+
+#### (7) 맥락·의도 자산 (Coding intent · 2026-06)
+
+- **시장 관측 `[HYPO]`:** 코딩 에이전트 시장은 모델 벤치마크만이 아니라 **작업 맥락·의도(왜 이 코드인가)·대화 궤적** 축적으로 **플랫폼 락인**을 강화하는 방향(Pydantic 등 업계 논의, 2026-06).
+- **MKM 포지션 `[FACT·운영]`:** 벤더가 호스팅하는 전체 상호작용 아카이브가 아니라 **export 가능한** 게이트·`athena_checkpoint`·`agent_decisions_log.jsonl`·ops memory inject(`MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md`)로 **모델 교체 내성**을 둔다.
+- **B2B 카피 (허용):** 「의도 가능한 운영」= **감사 JSON · Fact-Lock · 정책 일관 게이트** — 압축 KPI(47.5% 등)와 **동일 문장·퍼널로 합선 금지** (`§3.1`·`PUBLIC_FACING` v1.7).
+- **대체 위협:** 모델 벤더 내장 memory·Projects·enterprise interaction store는 `§3.11(3)` **빅테크 내재화**와 동일 축; 대응은 범용 모델 경쟁이 아니라 **도메인 게이트·감사·이식 가능 SSOT**.
+- **PoC `[FACT·research_only]`:** 내부 머지 전 `Invoke-CodingIntentGiteaMergePrecheck_v1.ps1`(`gitea`/`internal`·GitHub PR 비의존) · 3점 링크·PR manifest·precheck JSON · P0·Fact-Lock **3d2e–3d2g** · CI · post-commit hook — **상용 의도 DB API**는 **후속**.
 
 ---
 

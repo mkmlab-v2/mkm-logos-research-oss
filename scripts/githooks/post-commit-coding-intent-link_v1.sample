@@ -1,0 +1,14 @@
+#!/bin/sh
+# Optional MKM post-commit hook — records coding intent 3-point link (research_only).
+# Install: powershell -File scripts/Install-CodingIntentLinkGitHook_v1.ps1
+set -e
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+cd "$ROOT" || exit 0
+py scripts/record_coding_intent_link_v1.py record \
+  --include-diff \
+  --gate-exit-code 0 \
+  --allow-partial \
+  --skip-decision-log \
+  --mission-id post-commit-hook \
+  >/dev/null 2>&1 || true
+exit 0
