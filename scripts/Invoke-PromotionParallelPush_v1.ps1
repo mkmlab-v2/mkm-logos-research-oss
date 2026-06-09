@@ -70,8 +70,22 @@ Write-Host "==> post-wave (serial): sync + readiness" -ForegroundColor Cyan
 $post = @()
 & $py scripts/sync_op29b_prophecy_gates_headline_v1.py --skip-headline-promote 2>&1 | Out-Host
 $post += [ordered]@{ name = "sync_op29b_gates"; exit = $LASTEXITCODE }
-& $py scripts/run_prophecy_strict_streak_tick_v1.py 2>&1 | Out-Host
-$post += [ordered]@{ name = "strict_streak_tick"; exit = $LASTEXITCODE }
+$alignHuman = Join-Path $WorkspaceRoot "docs\final\artifacts\btrack_align_panel_human_approval_v1_latest.json"
+if (Test-Path -LiteralPath $alignHuman) {
+    Write-Host "SKIP: strict_streak_tick (align-panel human approval — do not overwrite gates SSOT)" -ForegroundColor Yellow
+    $post += [ordered]@{ name = "strict_streak_tick"; exit = 0; skipped = "align_panel_human_approval" }
+} else {
+    $alignStreak = Join-Path $WorkspaceRoot "reports\prophecy_promotion_strict_streak_align_panel_v1.json"
+    $tickArgs = @("scripts/run_prophecy_strict_streak_tick_v1.py")
+    if (Test-Path -LiteralPath $alignStreak) {
+        $tickArgs += @(
+            "--streak-history-json", "reports/prophecy_promotion_strict_streak_align_panel_v1.json",
+            "--no-sync-push-best"
+        )
+    }
+    & $py @tickArgs 2>&1 | Out-Host
+    $post += [ordered]@{ name = "strict_streak_tick"; exit = $LASTEXITCODE }
+}
 $gatesRec = Join-Path $WorkspaceRoot "reports\prophecy_promotion_gates_recommended_chain_v1_latest.json"
 & $py scripts/build_prophecy_promotion_readiness_report_v1.py --gates-json $gatesRec 2>&1 | Out-Host
 $post += [ordered]@{ name = "prophecy_readiness_recommended"; exit = $LASTEXITCODE }

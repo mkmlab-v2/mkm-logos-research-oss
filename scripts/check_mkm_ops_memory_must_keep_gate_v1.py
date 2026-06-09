@@ -19,6 +19,7 @@ from mkm_ops_memory_index_lib_v1 import (
     extract_node_from_index,
     load_index,
     missing_must_keep_tags,
+    verify_index_sha_drift,
     verify_index_sources,
 )
 
@@ -54,6 +55,11 @@ def main() -> int:
         dest="node_ids",
         help="Limit verification to specific node id(s).",
     )
+    ap.add_argument(
+        "--fail-on-stale-sha",
+        action="store_true",
+        help="Exit 1 when indexed content_sha256_prefix drifts from live source.",
+    )
     args = ap.parse_args()
 
     root = args.workspace_root.resolve()
@@ -64,6 +70,14 @@ def main() -> int:
         return 1
 
     if args.phase == "source":
+        if args.fail_on_stale_sha:
+            drift_errors = verify_index_sha_drift(root, index)
+            if drift_errors:
+                for err in drift_errors:
+                    print(f"FAIL: {err}", file=sys.stderr)
+                return 1
+            print("sha drift gate: OK")
+
         if args.node_ids:
             errors: list[str] = []
             nodes = index.get("nodes") or {}

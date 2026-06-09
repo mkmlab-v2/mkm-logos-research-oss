@@ -56,6 +56,20 @@
 
   ScienceCoreGovernance = Run-ScienceCoreGovernanceBundle_v1.ps1 -UseFullHumanistPerDate -RunHumanistAb -RunLogosAb -RunLongWalkforward -ExtendCalendarStubs -RebuildScience -RunNewsWeightAblation -RunLongWindowLaneCompare -RunTripleBlendWeightSweep -RunPnlBootstrap
 
+  PrismMetaChannelStaging = Invoke-PrismMetaChannelStaging_v1.ps1 -Action Verify (sign-off + live smoke)
+
+  PrismMetaChannelStagingStatus = Invoke-PrismMetaChannelStaging_v1.ps1 -Action Status
+
+  WebOpsRegimeBundle = Invoke-WebOpsRegimeWeeklyRoutine_v1.ps1 (bundle+overlay+bench; -SkipLiveCdp)
+
+  WebOpsRegimeReadiness = Verify-WebOpsRegimeWeeklyTaskReadiness_v1.ps1 (Task MKM_WebOps_Regime_Weekly)
+
+  OpsMemoryWebOps = route_mkm_ops_memory_pack_v1.py --topic Nebius web_ops --build-resume-pack
+
+  ParallelPassiveLoop = Invoke-ParallelPassiveLoop_v1.ps1 (shim + L1 canary + MAX_HYPO gate + web_ops fusion; parallel)
+
+  MultiResIndexDelegation = Invoke-MultiResIndexDelegationRoutine_v1.ps1 (P0 + multi-res pytest + index + ops overlay + delegation)
+
 
 
 .EXAMPLE
@@ -98,7 +112,7 @@ param(
 
     [Parameter(Mandatory = $true, Position = 0)]
 
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation')]
 
     [string]$Persona
 
@@ -415,6 +429,102 @@ try {
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
 
             & $ps @common $script -UseFullHumanistPerDate -RunHumanistAb -RunLogosAb -RunLongWalkforward -ExtendCalendarStubs -RebuildScience -RunNewsWeightAblation -RunLongWindowLaneCompare -RunTripleBlendWeightSweep -RunPnlBootstrap
+
+            exit $LASTEXITCODE
+
+        }
+
+        'PrismMetaChannelStaging' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-PrismMetaChannelStaging_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -Action Verify
+
+            exit $LASTEXITCODE
+
+        }
+
+        'PrismMetaChannelStagingStatus' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-PrismMetaChannelStaging_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -Action Status
+
+            exit $LASTEXITCODE
+
+        }
+
+        'WebOpsRegimeBundle' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-WebOpsRegimeWeeklyRoutine_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -SkipLiveCdp -RequireDualAlignment
+
+            exit $LASTEXITCODE
+
+        }
+
+        'WebOpsRegimeReadiness' {
+
+            $script = Join-Path $PSScriptRoot 'Verify-WebOpsRegimeWeeklyTaskReadiness_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+
+            exit $LASTEXITCODE
+
+        }
+
+        'OpsMemoryWebOps' {
+
+            $route = Join-Path $PSScriptRoot 'route_mkm_ops_memory_pack_v1.py'
+
+            if (-not (Test-Path -LiteralPath $route)) { throw "Missing: $route" }
+
+            & py $route --topic 'Nebius web_ops cost audit' --build-resume-pack
+
+            exit $LASTEXITCODE
+
+        }
+
+        'ParallelPassiveLoop' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-ParallelPassiveLoop_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'AiToAiGovernanceDelegation' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-AiToAiGovernanceDelegation_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'MultiResIndexDelegation' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MultiResIndexDelegationRoutine_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script
 
             exit $LASTEXITCODE
 

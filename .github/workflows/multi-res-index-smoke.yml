@@ -1,0 +1,49 @@
+name: Multi-res index smoke
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "docs/final/schemas/multi_res_index_v1.schema.json"
+      - "scripts/multi_res_fills_join_v1.py"
+      - "scripts/build_multi_res_fills_token_bench_v1.py"
+      - "scripts/build_mkm_ops_memory_fills_overlay_v1.py"
+      - "tests/test_multi_res_index_v1.py"
+      - "tests/test_multi_res_fills_join_v1.py"
+      - "tests/test_multi_res_drift_recovery_drill_v1.py"
+      - "tests/fixtures/multi_res_trades_smoke_v1.json"
+      - ".github/workflows/multi-res-index-smoke.yml"
+  pull_request:
+    paths:
+      - "docs/final/schemas/multi_res_index_v1.schema.json"
+      - "scripts/multi_res_fills_join_v1.py"
+      - "scripts/build_multi_res_fills_token_bench_v1.py"
+      - "scripts/build_mkm_ops_memory_fills_overlay_v1.py"
+      - "tests/test_multi_res_index_v1.py"
+      - "tests/test_multi_res_fills_join_v1.py"
+      - "tests/test_multi_res_drift_recovery_drill_v1.py"
+      - "tests/fixtures/multi_res_trades_smoke_v1.json"
+      - ".github/workflows/multi-res-index-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install test deps
+        run: pip install -q pytest jsonschema
+      - name: pytest multi-res
+        run: |
+          python -m pytest tests/test_multi_res_index_v1.py tests/test_multi_res_fills_join_v1.py tests/test_multi_res_drift_recovery_drill_v1.py -q

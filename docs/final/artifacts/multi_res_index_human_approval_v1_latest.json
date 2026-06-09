@@ -1,0 +1,38 @@
+{
+  "schema": "multi_res_index_human_approval_v1",
+  "approved_at_utc": "2026-06-09T12:15:00Z",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "decision": "APPROVED_BTRACK_MULTI_RES_WEEK1",
+  "reviewer": "commander",
+  "note_ko": "Multi-Res Index Week 1·AUTO 위임 17/17 승인 — schema·pytest·fills index·must_keep·fusion bench; Track A·live·apply-active 승격 없음.",
+  "live_trading_enabled": false,
+  "track_a_auto_promote": false,
+  "would_change_active": false,
+  "stop_nodes_remain_skipped": ["S1", "S2", "S3", "S4", "S5"],
+  "gate_snapshot": {
+    "delegation_status": "auto_chain_complete",
+    "auto_done": 17,
+    "auto_total": 17,
+    "manifest_gates": {
+      "schema_pytest_pass": "pass",
+      "fills_index_built": "pass",
+      "must_keep_gate_pass": "pass",
+      "fusion_bench_recorded": "pass"
+    }
+  },
+  "evidence": {
+    "delegation_summary": "reports/multi_res_index_delegation_v1_latest.json",
+    "fills_index": "reports/multi_res_fills_index_v1_latest.json",
+    "fusion_bench": "reports/multi_res_fusion_bench_v1_latest.json",
+    "promotion_manifest": "reports/multi_res_index_promotion_manifest_v1_latest.json"
+  },
+  "operational_pointers": {
+    "runner": "scripts/run_multi_res_index_delegation_v1.py",
+    "routine": "scripts/Invoke-MultiResIndexDelegationRoutine_v1.ps1",
+    "persona": "Invoke-MkmPersonaHealth_v1.ps1 -Persona MultiResIndexDelegation",
+    "index_builder": "scripts/multi_res_fills_join_v1.py",
+    "schema": "docs/final/schemas/multi_res_index_v1.schema.json"
+  },
+  "post_approval_routine_exit_0_utc": "2026-06-09T12:22:53Z"
+}

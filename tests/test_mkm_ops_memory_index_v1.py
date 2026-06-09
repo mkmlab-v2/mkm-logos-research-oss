@@ -56,11 +56,11 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
         "handoff tail\n\n"
         "**다음 1타 (레인 · 새 채팅):**\n\n"
         "| 레인 | 다음 1타 |\n"
-        "| **Oracle** | **금지:** Track A·실매매 · **HOLD** |\n"
+        "| **Oracle·예언·align-panel** | **금지:** Track A·실매매 · **HOLD** |\n"
         "| **CROSS_REF·DSS [HYPO]** | HOLD |\n"
         "| **Infra/GPU** | **금지:** Track A·live·match% · **HOLD** |\n"
         "| **Clinic·SDIT·Insight** | clinic |\n"
-        "| **MS** | **금지:** 에이전트 포털 · **MS** |\n"
+        "| **MS** | **HOLD** · **금지:** 에이전트 포털 · **MS** |\n"
         "| **환자·최소영 (Track B)** | patient |\n\n"
         "### 🧠 메타인지\n\n"
         "meta tail\n",
@@ -72,8 +72,7 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
     central.write_text(
         "# CENTRAL\n\n"
         "<!-- ATHENA_CHECKPOINT_V1_START -->\n"
-        "- hygiene weekly MISSION_LOG\n"
-        "- MCP lean profile\n"
+        "- MISSION_LOG research_only 금지 weekly\n"
         "<!-- ATHENA_CHECKPOINT_V1_END -->\n",
         encoding="utf-8",
     )
@@ -93,11 +92,11 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
         "FAIL-COMP-004 · Track A · SEND_GATE: HOLD\n\n"
         "### 📦 핸드오ff · 다른 채팅 융합\n\n"
         "**다음 1타 (레인 · 새 채팅):**\n\n"
-        "| **Oracle** | **금지:** Track A·실매매 · **HOLD** |\n"
+        "| **Oracle·예언·align-panel** | **금지:** Track A·실매매 · **HOLD** |\n"
         "| **CROSS_REF·DSS [HYPO]** | hold |\n"
         "| **Infra/GPU** | **금지:** Track A·live · **HOLD** |\n"
         "| **Clinic·SDIT·Insight** | c |\n"
-        "| **MS** | **금지:** 에이전트 · **MS** row |\n"
+        "| **MS** | **HOLD** · **금지:** 에이전트 · **MS** row |\n"
         "| **환자·최소영 (Track B)** | p |\n\n"
         "### 🧠 메타인지\n\n",
         encoding="utf-8",
@@ -106,7 +105,7 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
     central_dir.mkdir(parents=True)
     (central_dir / "CENTRAL_AGENT_MEMORY_V1.md").write_text(
         "<!-- ATHENA_CHECKPOINT_V1_START -->\n"
-        "- hygiene MISSION_LOG MCP lean\n"
+        "- MISSION_LOG research_only 금지 checkpoint\n"
         "<!-- ATHENA_CHECKPOINT_V1_END -->\n",
         encoding="utf-8",
     )
@@ -139,7 +138,7 @@ def test_gate_fails_when_tag_stripped(tmp_path: Path) -> None:
     central_dir.mkdir(parents=True)
     (central_dir / "CENTRAL_AGENT_MEMORY_V1.md").write_text(
         "<!-- ATHENA_CHECKPOINT_V1_START -->\n"
-        "- hygiene MISSION_LOG MCP lean\n"
+        "- MISSION_LOG research_only 금지 checkpoint\n"
         "<!-- ATHENA_CHECKPOINT_V1_END -->\n",
         encoding="utf-8",
     )

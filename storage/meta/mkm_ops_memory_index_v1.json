@@ -1,19 +1,19 @@
 {
   "schema": "mkm_ops_memory_index_v1",
-  "index_version": "1.0",
+  "index_version": "1.1",
   "track": "B",
   "research_only": true,
   "hypothesis_tier": "B",
   "boundary_ack": "[HYPO] ops memory index — Track A·live trading auto-merge forbidden",
-  "last_updated_utc": "2026-05-31T16:09:00.412077Z",
+  "last_updated_utc": "2026-06-09T12:10:02.175625Z",
   "nodes": {
     "prism_ops_mission_log_board": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "## 🚀 전술 작전 보드",
       "anchor_end": "### 📦 핸드오프 · 다른 채팅 융합",
       "line_range": [
-        30,
-        99
+        8,
+        693
       ],
       "essence": "작전 보드 SSOT — 사업화·압축 격벽·Track A 금지·B2B SEND_GATE HOLD",
       "must_keep_tags": [
@@ -22,34 +22,33 @@
         "SEND_GATE: HOLD"
       ],
       "priority": 10,
-      "char_count": 3879,
-      "content_sha256_prefix": "2b1fc6b3bc3d4173"
+      "char_count": 43779,
+      "content_sha256_prefix": "44109fc693551f65"
     },
     "prism_ops_central_checkpoint": {
       "file_path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
       "anchor_start": "<!-- ATHENA_CHECKPOINT_V1_START -->",
       "anchor_end": "<!-- ATHENA_CHECKPOINT_V1_END -->",
       "line_range": [
-        71,
-        91
+        73,
+        93
       ],
-      "essence": "CENTRAL 최신 운영 체크포인트 블록 — hygiene·MCP·격벽 스냅샷",
+      "essence": "CENTRAL 최신 운영 체크포인트 블록 — MISSION_LOG·research_only·격벽 스냅샷",
       "must_keep_tags": [
-        "hygiene",
         "MISSION_LOG",
-        "MCP lean"
+        "research_only"
       ],
       "priority": 9,
-      "char_count": 2710,
-      "content_sha256_prefix": "16abf616325f9186"
+      "char_count": 2300,
+      "content_sha256_prefix": "d7bb817d1ca7da1b"
     },
     "prism_ops_mission_log_next_one": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "**다음 1타 (레인 · 새 채팅):**",
       "anchor_end": "### 🧠 메타인지",
       "line_range": [
-        172,
-        207
+        783,
+        832
       ],
       "essence": "레인별 다음 1타 SSOT — 재개 복붙·HOLD·Track A·실매매 금지",
       "must_keep_tags": [
@@ -58,8 +57,90 @@
         "금지"
       ],
       "priority": 8,
-      "char_count": 5683,
-      "content_sha256_prefix": "a8ffd7862ed8d8c2"
+      "char_count": 8857,
+      "content_sha256_prefix": "835ade9bd71ec03d"
+    },
+    "prism_ops_lane_oracle": {
+      "file_path": "MISSION_LOG.md",
+      "anchor_start": "| **Oracle·예언·align-panel** |",
+      "anchor_end": "| **CROSS_REF·DSS [HYPO]** |",
+      "line_range": [
+        790,
+        795
+      ],
+      "essence": "Oracle 레인 다음 1타 — 예언·진화·Inception 관측 · Track A·실매매 금지",
+      "must_keep_tags": [
+        "Track A",
+        "실매매",
+        "금지"
+      ],
+      "priority": 7,
+      "char_count": 1394,
+      "content_sha256_prefix": "7c2700929d70d437"
+    },
+    "prism_ops_lane_infra": {
+      "file_path": "MISSION_LOG.md",
+      "anchor_start": "| **Infra/GPU** |",
+      "anchor_end": "| **Clinic·SDIT·Insight** |",
+      "line_range": [
+        801,
+        801
+      ],
+      "essence": "Infra/GPU 레인 — Interpret·DailyOpsPatrol · Track A·live·match% 헤드라인 금지",
+      "must_keep_tags": [
+        "Track A",
+        "금지",
+        "GPU"
+      ],
+      "priority": 7,
+      "char_count": 267,
+      "content_sha256_prefix": "16f2993e416ec851"
+    },
+    "prism_ops_lane_ms": {
+      "file_path": "MISSION_LOG.md",
+      "anchor_start": "| **MS** |",
+      "anchor_end": "| **환자·최소영 (Track B)** |",
+      "line_range": [
+        811,
+        811
+      ],
+      "essence": "MS 레인 — 지휘관 수동 제출만 · 에이전트 포털·% 헤드라인 금지",
+      "must_keep_tags": [
+        "MS",
+        "금지",
+        "HOLD"
+      ],
+      "priority": 7,
+      "char_count": 166,
+      "content_sha256_prefix": "8074d31fd78d9a9d"
+    },
+    "prism_ops_fills_multi_res_summary": {
+      "slice_kind": "json_pointer",
+      "file_path": "reports/multi_res_fills_index_v1_latest.json",
+      "json_pointers": [
+        "/meta/n_fill_rows",
+        "/meta/n_daily_buckets",
+        "/meta/trades_source",
+        "/research_only",
+        "/low_res/daily_by_utc_date"
+      ],
+      "essence": "fills multi-res low-res inject — daily buckets + row count · B-track",
+      "must_keep_tags": [
+        "research_only",
+        "n_fill_rows"
+      ],
+      "priority": 4,
+      "field_tags": [
+        "btrack",
+        "fills",
+        "multi_res",
+        "execution"
+      ],
+      "char_count": 1839,
+      "content_sha256_prefix": "52b716e584747231"
     }
-  }
+  },
+  "overlays": [
+    "fills_multi_res_v1"
+  ]
 }
