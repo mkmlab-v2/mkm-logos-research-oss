@@ -117,13 +117,13 @@
     },
     {
       "name": "\\MKM-LiveSync-Heartbeat-Pull",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "ops_sync",
       "criticality": "low"
     },
     {
       "name": "\\MKM-Trading-Automation-Health-30min",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "athena_automation",
       "criticality": "high",
       "optional": true
@@ -144,21 +144,21 @@
     },
     {
       "name": "\\MKM_CoreTask_ConsecutiveFailure_Alert_15min",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "athena_automation",
       "criticality": "medium",
       "optional": true
     },
     {
       "name": "\\MKM_Sentinel_TaskHealth_Monitor_15m",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "athena_automation",
       "criticality": "medium",
       "optional": true
     },
     {
       "name": "\\MKM-AmsaengEosa-Monitoring-Bundle-60min",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "athena_automation",
       "criticality": "medium",
       "optional": true

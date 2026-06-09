@@ -72,7 +72,9 @@ $optionalServers = @(
     # NotebookLM MCP can be present depending on local auth/session workflow.
     "notebooklm",
     # openchrome: 80+ tools; enable only when user requests 외장 크롬 (Switch-McpProfile -Profile with-openchrome).
-    "openchrome"
+    "openchrome",
+    # Hostinger hPanel/VPS lane (Tier 3 manual secrets); optional infra MCP.
+    "hostinger-website-manager"
 )
 $actualServers = @($mcp.mcpServers.PSObject.Properties.Name | Sort-Object)
 $expectedSorted = @($expectedCore | Sort-Object)
