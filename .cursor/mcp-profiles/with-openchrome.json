@@ -8,6 +8,15 @@
         "C:/workspace"
       ]
     },
+    "openchrome": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "openchrome-mcp@latest",
+        "serve",
+        "--auto-launch"
+      ]
+    },
     "athena-core": {
       "command": "py",
       "args": [
