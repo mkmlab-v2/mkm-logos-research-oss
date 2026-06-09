@@ -1,0 +1,29 @@
+[
+  {
+    "symbol": "BTCUSDT",
+    "side": "BUY",
+    "qty": 0.001,
+    "price": 50000.0,
+    "realized_pnl": 0.1,
+    "commission": 0.01,
+    "timestamp": "2026-01-10T12:00:00Z"
+  },
+  {
+    "symbol": "BTCUSDT",
+    "side": "SELL",
+    "qty": 0.001,
+    "price": 50100.0,
+    "realized_pnl": 0.2,
+    "commission": 0.01,
+    "timestamp": "2026-01-10T15:00:00Z"
+  },
+  {
+    "symbol": "BTCUSDT",
+    "side": "SELL",
+    "qty": 0.002,
+    "price": 51000.0,
+    "realized_pnl": -0.5,
+    "commission": 0.02,
+    "timestamp": "2026-01-11T09:00:00Z"
+  }
+]

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "multi_res_index_v1.schema.json",
+  "title": "Multi-resolution fills index v1 (B-track)",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "hypothesis_tier",
+    "boundary_ack",
+    "meta",
+    "low_res",
+    "high_res",
+    "coordinate_map"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "multi_res_index_v1" },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "research_only": { "const": true },
+    "hypothesis_tier": { "const": "B" },
+    "boundary_ack": { "type": "string", "minLength": 8 },
+    "meta": { "$ref": "#/$defs/meta" },
+    "low_res": { "$ref": "#/$defs/low_res" },
+    "high_res": { "$ref": "#/$defs/high_res" },
+    "coordinate_map": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/coordinate" }
+    }
+  },
+  "$defs": {
+    "meta": {
+      "type": "object",
+      "required": ["n_fill_rows", "n_daily_buckets", "trades_source"],
+      "additionalProperties": true,
+      "properties": {
+        "n_fill_rows": { "type": "integer", "minimum": 0 },
+        "n_daily_buckets": { "type": "integer", "minimum": 0 },
+        "trades_source": { "type": "string", "minLength": 1 },
+        "fallback_used": { "type": "boolean" },
+        "fallback_source": { "type": "string" }
+      }
+    },
+    "low_res": {
+      "type": "object",
+      "required": ["daily_by_utc_date"],
+      "additionalProperties": true,
+      "properties": {
+        "daily_by_utc_date": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/daily_bucket" }
+        }
+      }
+    },
+    "daily_bucket": {
+      "type": "object",
+      "required": ["fill_count"],
+      "additionalProperties": true,
+      "properties": {
+        "fill_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "high_res": {
+      "type": "object",
+      "required": ["row_pointer_base", "row_summaries"],
+      "additionalProperties": true,
+      "properties": {
+        "row_pointer_base": { "type": "string", "minLength": 1 },
+        "row_summaries": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/row_summary" }
+        }
+      }
+    },
+    "row_summary": {
+      "type": "object",
+      "required": ["row_id", "utc_date", "json_pointer"],
+      "additionalProperties": true,
+      "properties": {
+        "row_id": { "type": "integer", "minimum": 0 },
+        "utc_date": { "type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$" },
+        "json_pointer": { "type": "string", "pattern": "^/" },
+        "symbol": { "type": "string" },
+        "side": { "type": "string" }
+      }
+    },
+    "coordinate": {
+      "type": "object",
+      "required": ["coord", "utc_date", "high_res_row_ids"],
+      "additionalProperties": true,
+      "properties": {
+        "coord": { "type": "string", "minLength": 1 },
+        "utc_date": { "type": "string" },
+        "low_res_key": { "type": "string" },
+        "high_res_row_ids": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

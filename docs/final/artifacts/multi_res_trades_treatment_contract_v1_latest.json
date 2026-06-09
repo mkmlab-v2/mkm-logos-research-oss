@@ -1,0 +1,28 @@
+{
+  "schema": "multi_res_trades_treatment_contract_v1",
+  "generated_at_utc": "2026-06-09T12:00:00Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "boundary_ack": "[HYPO] fills high-res pointer contract — Track A·live auto-merge forbidden",
+  "primary_path": "projects/bitcoin-trading/exports/cursor_trade_history/trades_treatment.json",
+  "fallback_paths": [
+    "projects/bitcoin-trading/exports/cursor_trade_history/trades_treatment_v2_shadow.json",
+    "reports/vps_trades_treatment_24h_latest.json"
+  ],
+  "row_shape": {
+    "required_fields": ["timestamp", "symbol", "side"],
+    "optional_fields": [
+      "price",
+      "qty",
+      "realized_pnl",
+      "commission",
+      "net_pnl",
+      "exchange_trade_id",
+      "signal_source"
+    ],
+    "timestamp_formats": ["unix_ms", "unix_s", "iso8601"]
+  },
+  "low_res_contract": "btrack_fills_daily_feature_cache_v1",
+  "index_schema": "docs/final/schemas/multi_res_index_v1.schema.json",
+  "would_change_active": false
+}
