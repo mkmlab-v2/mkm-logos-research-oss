@@ -15,7 +15,10 @@ from mkm_consumer_facade_v1 import (  # noqa: E402
     acode_from_sasang,
     deck_consumer_facade_block,
     enrich_deck_card_consumer,
+    facade_envelope_logos_lens,
+    facade_hyper_personal_card,
     facade_morning_beans_card,
+    facade_public_envelope_consumer,
     morning_beans_consumer_headlines,
 )
 
@@ -190,3 +193,43 @@ def test_morning_beans_export_consumer_facade(tmp_path: Path) -> None:
     for token in ("Logos", "성경", "사주", "태양인", "마법구슬"):
         assert token not in blob, token
     assert deck_consumer_facade_block()["theology_verse_refs_stripped"] is True
+
+
+def test_facade_envelope_logos_lens_strips_theology() -> None:
+    raw = {
+        "title_ko": "성경 · 연대기 축",
+        "body_ko": "[NON_GATING] 성경·Logos 보조 해설. 투자·실매매 근거 아님.",
+        "available": True,
+    }
+    out = facade_envelope_logos_lens(raw)
+    combined = (out.get("title_ko") or "") + (out.get("body_ko") or "")
+    for token in FORBIDDEN:
+        assert token not in combined, token
+
+
+def test_facade_public_envelope_consumer_adds_block() -> None:
+    pub = facade_public_envelope_consumer(
+        {
+            "lenses": {"logos": {"title_ko": "성경", "body_ko": "Logos test"}},
+            "field": {"regime_label_ko": "internal"},
+            "conflict_resolver": {"summary_ko": "명리 vs Logos"},
+        }
+    )
+    assert pub.get("consumer_facade")
+    logos = pub["lenses"]["logos"]
+    assert "성경" not in logos["title_ko"]
+    assert "Logos" not in logos["body_ko"]
+
+
+def test_facade_hyper_personal_card_consumer_labels() -> None:
+    card = facade_hyper_personal_card(
+        {
+            "priors_display": [{"key": "sasang_scalar", "label_ko": "사상 큐레이션 강도", "value": 0.7}],
+            "lenses_summary_ko": {"logos": "Logos summary", "myeongni": "명리 summary"},
+            "one_line_ko": "태양인 Logos 한 줄",
+            "forbidden": ["Logos lens"],
+        }
+    )
+    assert card["priors_display"][0]["label_ko"] == "A-Code 큐레이션 강도"
+    assert "Logos" not in card["lenses_summary_ko"]["logos"]
+    assert "Logos" not in card["one_line_ko"]

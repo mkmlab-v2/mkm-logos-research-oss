@@ -216,3 +216,93 @@ def morning_beans_consumer_headlines() -> dict[str, str]:
             "무한 스크롤·투자·임상 단정 없음 [HYPO]."
         ),
     }
+
+
+_ENVELOPE_LOGOS_PUBLIC_TITLE = "맥락 · 연대기 축"
+_ENVELOPE_LOGOS_PUBLIC_BODY_FALLBACK = (
+    "[NON_GATING] 맥락·연대기 보조 해설. evidence_refs만 연결. 투자·실매매 근거 아님."
+)
+
+
+def envelope_consumer_facade_block() -> dict[str, Any]:
+    return {
+        "schema": "saving_the_news_public_copy_facade_v1",
+        "version": "1.0.0",
+        "theology_verse_refs_stripped": True,
+        "consumer_surface": "context_sphere_public",
+    }
+
+
+def facade_envelope_logos_lens(lens: dict[str, Any]) -> dict[str, Any]:
+    out = dict(lens)
+    out["title_ko"] = _ENVELOPE_LOGOS_PUBLIC_TITLE
+    body = _strip_theological_surface(str(out.get("body_ko") or ""))
+    if any(tok in body for tok in ("성경", "Logos", "사주", "명리", "마법구슬")):
+        body = _ENVELOPE_LOGOS_PUBLIC_BODY_FALLBACK
+    out["body_ko"] = body
+    out["consumer_title_ko"] = _ENVELOPE_LOGOS_PUBLIC_TITLE
+    out["consumer_body_ko"] = body
+    return out
+
+
+def facade_public_envelope_consumer(public: dict[str, Any]) -> dict[str, Any]:
+    out = dict(public)
+    lenses = dict(out.get("lenses") or {})
+    if "logos" in lenses:
+        lenses["logos"] = facade_envelope_logos_lens(dict(lenses["logos"]))
+    out["lenses"] = lenses
+    field = dict(out.get("field") or {})
+    if field.get("regime_label_ko"):
+        field["regime_label_ko"] = "거시·운영 관측 (참고)"
+    out["field"] = field
+    conflict = dict(out.get("conflict_resolver") or {})
+    if conflict.get("summary_ko"):
+        conflict["summary_ko"] = _strip_theological_surface(str(conflict["summary_ko"]))
+    out["conflict_resolver"] = conflict
+    out["consumer_facade"] = envelope_consumer_facade_block()
+    return out
+
+
+_HP_PRIOR_LABELS: dict[str, str] = {
+    "sasang_scalar": "A-Code 큐레이션 강도",
+    "myeongni_day_pillar_prior_hypo": "개인 리듬 prior",
+    "wellness_hypo_budget": "웰니스 예산 [HYPO]",
+}
+
+_HP_LENS_SUMMARY_KEYS = ("sasang", "myeongni", "logos")
+
+
+def facade_hyper_personal_card(card: dict[str, Any]) -> dict[str, Any]:
+    out = dict(card)
+    priors = []
+    for row in out.get("priors_display") or []:
+        if not isinstance(row, dict):
+            continue
+        key = str(row.get("key") or "")
+        priors.append(
+            {
+                **row,
+                "label_ko": _HP_PRIOR_LABELS.get(key, _strip_theological_surface(str(row.get("label_ko") or key))),
+            }
+        )
+    out["priors_display"] = priors
+    summaries = dict(out.get("lenses_summary_ko") or {})
+    consumer_summaries: dict[str, str | None] = {}
+    for lid in _HP_LENS_SUMMARY_KEYS:
+        raw = summaries.get(lid)
+        if raw is None:
+            continue
+        consumer_summaries[lid] = _strip_theological_surface(str(raw))
+    out["lenses_summary_ko"] = consumer_summaries
+    if out.get("one_line_ko"):
+        out["one_line_ko"] = _strip_theological_surface(str(out["one_line_ko"]))
+    if out.get("disclaimer_ko"):
+        out["disclaimer_ko"] = _strip_theological_surface(str(out["disclaimer_ko"]))
+    forbidden = [
+        "Context appendix is NON_GATING auxiliary only.",
+        "Not Track A or CMS promotion proof.",
+        "Not live trading or consumer app launch.",
+    ]
+    out["forbidden"] = forbidden
+    out["consumer_facade"] = deck_consumer_facade_block()
+    return out
