@@ -34,6 +34,13 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - `초고난도 비정형 텍스트(성경·사해사본 등)/명리/사상`은 Track C에서 **리스크 포지셔닝/서사/해설형 인텔리전스**로 패키징하되, 투자조언/자동매매 문구는 금지한다.
 - `신시장지표`는 관측/경보형 서비스로 제한하고, 예측 단정·성과 보증이나 수익 약속을 암시하는 문구는 금지한다.
 
+### 2.3 Cursor 세션 · AI↔AI 운영 baseline (2026-06-09)
+
+- **Cursor IDE 사용량은 자동 검증 루프를 대체하지 않는다.** 대외·내부 운영 주장은 스크립트 exit code·아티팩트 경로로만 한다.
+- **장기기억 SSOT:** `CENTRAL` + Git; **AI↔AI inject**는 `MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md` — structured pins · `[HYPO]` · inter-agent wire 본선 **HOLD**.
+- **세션 표:** `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` · 에이전트 규칙 `.cursor/rules/cursor-session-validation-baseline-v1.mdc` · 스킬 `mkm-cursor-session-ops`.
+- **Track C 쇼룸(예):** lens media hub offline/live QA는 **배포·CI** 축; Track A·실매매 승격과 **합선 금지**.
+
 ## 3) 통합 사업 포트폴리오 (요청 반영)
 
 ### 3.0 도메인·채널 분리 (사업계획서·제안서 혼선 방지, 2026-05-21)

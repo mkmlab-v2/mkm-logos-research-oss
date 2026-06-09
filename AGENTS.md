@@ -128,6 +128,20 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 - **승격 상태 요약:** `docs/final/artifacts/gut_brain_agent_constitution_promotion_v1_latest.json` (에이전트 규칙 vs B-track→A-track 구분).
 - **금지:** `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 본문에 미생물·장뇌 **온톨로지** 삽입; P0 exit 0을 예측 품질 통과로 서술.
 
+## Cursor 세션 검증 baseline (2026-06-09 · Fact-Lock)
+
+**한 줄:** Cursor **사용량 ≠ 자동 검증**. 매 턴 `alwaysApply` = **소프트 가드**; **실행 판정** = 스크립트 exit 0 · pytest · `*_latest.json`만.
+
+| SSOT | 역할 |
+|------|------|
+| `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` | 시작·중·종료·일/주간 표 |
+| `.cursor/rules/cursor-session-validation-baseline-v1.mdc` | 에이전트 alwaysApply 요약 |
+| `.cursor/skills/mkm-cursor-session-ops/SKILL.md` | 세션 start/mid/end 실행 순서 |
+| `docs/final/MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md` | AI↔AI inject · `[HYPO]` · must_keep 게이트 |
+
+**세션 시작(재개):** CENTRAL/MISSION_LOG Read → (오늘 미실행 시) `Invoke-MkmSoloBackgroundOps_v1.ps1` → `build_mkm_chat_resume_pack_v1.py --lane …`  
+**세션 종료:** `athena_checkpoint.py` 1줄 + `MISSION_LOG` **해당 레인** 다음 1타만.
+
 ## Athena 실행 거버넌스 (§28 · 선택 일상 점검)
 
 - **헌법:** `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §28 — `scripts/athena_run_v1.py`(ECC·`--target`/DPAPI·감사 JSONL·선택 `ATHENA_ECC_AUDIT_WEBHOOK_URL`).
@@ -253,6 +267,9 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【A-code RQ close handoff】 | commander handoff + RESEARCH migration draft (자동 CLOSED 없음) | `… -Persona ACodeRqCloseHandoff` |
 | 【히어로 루프 점검】 | Commander daily prophecy hero loop readiness | `… -Persona CommanderProphecyHeroReadiness` |
 | 【코스피 6월 예약 점검】 | June KOSPI weekday morning/evening Task Scheduler + schedule JSON | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona KospiJune2026DailyReadiness` |
+| 【Science Core 점검】 | Science Core lane readiness (scripts + governance contract; no full bundle) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ScienceCoreLaneReadiness` |
+| 【Science Core 주간 예약 점검】 | Task `MKM_ScienceCore_WeeklyGovernance` 등록·인자 확인 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ScienceCoreWeeklyReadiness` |
+| 【Science Core 거버넌스】 | full governance 번들 (holdout·WF·long WF·A/B; 느림) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ScienceCoreGovernance` |
 
 ### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
 

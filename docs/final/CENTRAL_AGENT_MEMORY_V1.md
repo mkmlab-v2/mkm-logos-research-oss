@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-07T15:29:07Z
+- **last_updated_utc:** 2026-06-09T03:04:21Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -71,26 +71,26 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-06-09T03:04:21Z** — 6/9 Oracle 예언 align-panel Fact-Lock 작전 보드 최종 확정 — MISSION_LOG 반영 · 6/10 08:18/08:28 WATCH
+- **2026-06-09T02:58:52Z** — Track C Study HOLD 이번 주(파일럿 미구동·가족=MD/playbook만); 본선=Track A 6/10 08:18 실측·Track B 광명 MD/MS340
+- **2026-06-09T01:47:31Z** — 격리 chat shim DOGFOOD_LIVE: Cursor :8011/v1·OpenRouter·phase4/shadow/A/B n40 bundle~18%·MaintenanceRoutine_v1; MS340 human=G3·G5 6/10→6/12
+- **2026-06-08T23:50:51Z** — Morning Beans v1: P0+CONSTITUTION+CI dual-regime pytest 등록; chain/verify OK cards=8
+- **2026-06-08T23:18:30Z** — Morning Beans v1: calendar SSOT+가족2카드+verify cards=8; Task MKM_MorningBeans_Daily 07:05 Ready
+- **2026-06-08T16:39:58Z** — 압축 INSULATE_AND_DEVELOP 장부고정; nextgen charter+sandbox+parallel bench exit0; 340 forbidden pass·gate pass필드 수정; human=G0+6/10 임시저장
+- **2026-06-08T16:26:19Z** — MS 채팅 종료: 340 paste·runbook·LOI SKU분리 완료; human=G0+6/10 임시저장
+- **2026-06-08T15:45:36Z** — 지원사업: human blocker(G0·주관·dry-run) attest+submission_gate exit0 전 업로드/autofill 금지; 금지어스캔만으로 준비완료 금지; SKU 1개·마중우주선서사 재사용 금지
+- **2026-06-08T15:24:11Z** — Pivot+340 paste 승인; G0·6/10 임시저장=human; LOI 카톡 draft 준비
+- **2026-06-08T15:05:42Z** — 정정: OpenData327 심사 진행중; K-Startup 마중 CLOSED_REJECT 2026-06-08 (20457759)
+- **2026-06-08T15:00:27Z** — OpenData 327 CLOSED_REJECT 2026-06-08; MS P0 grant lane closed; next=340호 eligibility or clinic cash only
+- **2026-06-08T12:56:30Z** — Lens media hub: pixel_v2+MusicGen32s 배포·QA스크립트·체질별conditioning·sync 타임아웃
+- **2026-06-08T09:35:33Z** — 2026-06 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
+- **2026-06-08T09:28:18Z** — 광명백제한의원 직원교육 MD v1: reports/gwangmyeong_baekje_staff_education_abdominal_core_integrated_v1.md — 복부비만×대사+ISA/ZOA/ADIM 팩트체크 반영·독자자산 명시
+- **2026-06-08T09:16:16Z** — 강민(2014) GH: 당·IGF-1·골연령 게이트 하 연속투여 유리; 와이프 170·3년·타병원은 희망·비용감각 OK·병원쇼핑·숫자확약은 조정. 창업패키지 AI PMS autofill 스크립트·콘솔·Run 래퍼 추가(OpenData 레인 분리).
+- **2026-06-08T04:16:21Z** — 환자 Track B: 사이트 미사용·지휘관 장기기억+reports SSOT 고정 (jang_hyeonjin 등록 중)
+- **2026-06-08T04:08:32Z** — PATIENT Track B: 장현진 slug=jang_hyeonjin 등록 — pointer·memory·registry·PATIENT_TRACK_B_MEMORY_V1.md (학습·lifestyle_v1 케이스)
 - **2026-06-07T15:29:07Z** — showroom 2030 live jemaai.cloud; nginx snippet+reload OK; ShowroomTrackCHealth OK
 - **2026-06-07T15:22:21Z** — showroom 2030 slice panel shipped gitea/main 7c353e74; topology radar+JSON deploy staging OK
 - **2026-06-07T15:17:40Z** — off-fixture OOV measured n=67 v1/v2 85.1% parity; CI+P0+CONSTITUTION wired; pushed internal
-- **2026-06-07T14:48:44Z** — 2030 horizon gitea/main ac15374980 · --strict rebuild OK · weekly bundle verify OK (next 6/14)
-- **2026-06-07T14:39:55Z** — Macro horizon 2030 showroom slice wired: build_showroom_macro_horizon_2030_slice_v1 + Topology Radar panel [HYPO]
-- **2026-06-07T14:36:55Z** — 2030 horizon ops: Verify-WeeklyBundle OK, fact_lock Logos pytest+2030, P0 paths
-- **2026-06-07T14:29:24Z** — Logos 2030 horizon v1.2.1: myeongni/sasang read-only wiring, CI pytest+1, MISSION_LOG 갱신
-- **2026-06-07T14:07:03Z** — 2026-06 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
-- **2026-06-07T13:18:16Z** — B2B 리허설+external_send 게이트 GO 완료; CTO 메일·PDF 준비만 됨—수신처 없어 발송 HOLD; MS Azure T4 티켓 대기
-- **2026-06-07T13:14:44Z** — Logos/B2B 장부 락 유지 확정: MS v1 6.4%·SEND_GATE HOLD·v2 내부[HYPO] only; 레인 종료
-- **2026-06-07T13:09:12Z** — B2B external_send pack refreshed; readiness/signoff wired; CTO draft+PDF ready manual send
-- **2026-06-07T13:00:18Z** — EN headline probe OK: holdout KO 90% vs EN 80%; sidecar only; Logos 레인 패시브 종료
-- **2026-06-07T12:59:11Z** — DSS slice decoupling: skip_korea_context + decoupled JSONL; overlap 121→0 in slice_decoupled AB; research round 9/9 pytest 43
-- **2026-06-07T12:50:21Z** — hint-off ablation OK: holdout 90%→85% (KO keywords dominate); era hint +5pp; MS v1 frozen
-- **2026-06-07T12:48:44Z** — DSS default 3-file chunk30/cap1500 → 2736 surface; research round 8/8 pytest 42; slice overlap 121=Korea-prod dup, minimal slice→0
-- **2026-06-07T12:48:09Z** — B2B external_send GO: commander+counsel signoff; disclaimer integrity fixed; CTO draft ready; PDF print manual
-- **2026-06-07T12:47:32Z** — Logos holdout 레인 CLOSED(서랍): WATCH_HOLDOUT 패시브·MS v1 6.4% only; MISSION_LOG 블록 반영
-- **2026-06-07T12:43:48Z** — B2B verbal rehearsal 2026-06-07 complete; signoff internal_rehearsal_complete; external send HOLD; counsel shelf
-- **2026-06-07T12:42:28Z** — holdout structural closure: oracle 53.3% vs prod 51.7%; hybrid shadow 60%; 04-02 MS/hybrid=bear but v1 neutral_miss; margin020 frozen anchor 50% research-only
-- **2026-06-07T12:38:44Z** — holdout7 04-02 neutral_miss: margin sweep 0/1 recovered hold min_conf; hybrid 180d 48.3% soft_pass shadow-only no promote
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -100,6 +100,7 @@
 
 | 질문 예시 | 먼저 볼 것 | RAG·NL |
 |-----------|------------|--------|
+| **Cursor·장기기억·AI↔AI·자동 검증 여부** | `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` · `MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md` · `.cursor/skills/mkm-cursor-session-ops/SKILL.md` | **alwaysApply ≠ pytest** · 사용량≠검증 |
 | 구현 여부·경로·게이트 | CONSTITUTION + `scripts/verify_p0_constitution_gate_paths.ps1` + 해당 스크립트 | 설명 보조만 |
 | 사상·DNA·시장 심리가 “다 합쳐졌나” | 헌법 표 **격벽**·일일 B-track 번들 절·`KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md`( A/B ) | `[HYPO]` 또는 `research_only` |
 | 대외·제안·카피 | `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` + `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` | 인용 각주만 |

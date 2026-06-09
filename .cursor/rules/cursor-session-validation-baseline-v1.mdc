@@ -1,0 +1,27 @@
+---
+description: Cursor 세션 시작·중·종료 최소 검증 baseline — Fact-Lock vs alwaysApply 구분
+alwaysApply: true
+---
+
+# Cursor Session Validation Baseline v1
+
+**SSOT:** `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` · 스킬 `.cursor/skills/mkm-cursor-session-ops/SKILL.md`
+
+## ALWAYS
+
+- **구분:** `alwaysApply` 규칙 = **소프트 거버넌스**(매 턴). **실행 검증** = 스크립트 exit 0 · `*_latest.json` · pytest만.
+- **재개 트리거**(「장기기억 맥락 이어」·`@CENTRAL`·`@MISSION_LOG`·「미션로그 이어서」): SSOT Read **후** 작업; `reports/mkm_solo_background_ops_state.json` 오늘 `last_ok` 아니면 `Invoke-MkmSoloBackgroundOps_v1.ps1` 1회.
+- **레인 작업:** resume pack `build_mkm_chat_resume_pack_v1.py --lane oracle|ms|infra|web_ops` — 전 MISSION_LOG 붙이지 않음.
+- **종료:** 의미 있는 진행 후 `athena_checkpoint.py` 1줄 + `MISSION_LOG` **해당 레인** 다음 1타만.
+- **판정:** 구현·통과는 `CONSTITUTION_*`·호출 가능 스크립트·exit code만.
+
+## NEVER
+
+- Cursor 사용량·채팅 횟수로 자동 검증된다고 서술.
+- NotebookLM UI/MCP UI 초록 = 인증·검증 완료로 단정(별도 `get_health`).
+- Ops memory index·resume pack을 Track A·live trading gate로 승격.
+
+## OPTIONAL
+
+- PR/머지 전: `Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` 또는 AthenaBundle(주간).
+- Track C 쇼룸: `check_lens_media_hub_live_qa_v1.py` offline/live.
