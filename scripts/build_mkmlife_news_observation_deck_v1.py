@@ -11,11 +11,22 @@ import argparse
 import hashlib
 import json
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(ROOT / "scripts"))
+
+from mkm_consumer_facade_v1 import (  # noqa: E402
+    DISCLAIMER_DECK_EN,
+    DISCLAIMER_DECK_KO,
+    deck_consumer_facade_block,
+    deck_public_ui,
+    enrich_deck_card_consumer,
+)
 DEFAULT_NEWS_JSONL = ROOT / "docs/final/artifacts/news_observation_v1_latest.jsonl"
 DEFAULT_BENCH = ROOT / "docs/final/artifacts/saving_the_news_news_rt_bench_result_v1_latest.json"
 DEFAULT_PHASE1 = ROOT / "docs/final/artifacts/saving_the_news_phase1_poc_status_v1_latest.json"
@@ -352,6 +363,7 @@ def build_deck(
                     pixel_lang=pixel_lang,
                 )
             )
+            enrich_deck_card_consumer(card, deck_status=deck_status)
         cards.append(card)
 
     return {
@@ -362,14 +374,10 @@ def build_deck(
         "pixel_meta_schema_version": PIXEL_META_SCHEMA_VERSION if pixel_lang else None,
         "deck_status": deck_status,
         "hold_reason": hold_reason,
-        "disclaimer_ko": (
-            "B-track 관측 덱입니다. 투자·실매매·의료 판단 근거가 아니며, "
-            "성경(Logos) 렌즈는 [NON_GATING] 보조 해설입니다."
-        ),
-        "disclaimer_en": (
-            "B-track observation deck only. Not for trading, medical, or investment decisions. "
-            "Logos lens is [NON_GATING] auxiliary context."
-        ),
+        "disclaimer_ko": DISCLAIMER_DECK_KO,
+        "disclaimer_en": DISCLAIMER_DECK_EN,
+        "public_ui": deck_public_ui(lang),
+        "consumer_facade": deck_consumer_facade_block(),
         "quality_gate": {
             "jaccard_fidelity_proxy_floor": jaccard_floor,
             "token_saving_ratio": bench_metrics.get("token_saving_ratio"),
