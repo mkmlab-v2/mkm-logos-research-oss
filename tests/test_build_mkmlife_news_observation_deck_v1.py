@@ -191,6 +191,75 @@ def test_build_mkmlife_news_observation_deck_category_badge(tmp_path: Path) -> N
     assert card.get("category_label_ko") == "세계"
 
 
+def test_build_mkmlife_news_observation_deck_pixel_meta(tmp_path: Path) -> None:
+    news = tmp_path / "news.jsonl"
+    news.write_text(
+        json.dumps(
+            {
+                "schema_version": "news_observation_v1",
+                "observation_id": "00000000-0000-4000-8000-000000000042",
+                "as_of_utc": "2026-05-10T08:00:00Z",
+                "published_utc": "2026-05-10T08:00:00Z",
+                "source_id": "external_feed_bbc_business",
+                "canonical_text": "Finance headline sample",
+                "text_sha256": "a347d2d11e94363755918d1b93704f1d9f2fba79ef8a32e874dda1d0b0491f35",
+                "ingested_at_utc": "2026-05-10T08:01:00Z",
+                "dataset_partition": "train_holdout",
+                "hypothesis_tag": "[HYPO]",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    bench = tmp_path / "bench.json"
+    bench.write_text(
+        json.dumps({"metrics": {"jaccard_fidelity_proxy": 0.46, "token_saving_ratio": 0.39}}),
+        encoding="utf-8",
+    )
+    pixel = tmp_path / "pixel.json"
+    pixel.write_text(
+        json.dumps(
+            {
+                "schema": "mkm_pixel_language_v1",
+                "category_sprite_registry": {
+                    "finance": {"sprite_id": "PB_SPR_FINANCE_01"},
+                    "other": {"sprite_id": "PB_SPR_OBS_01"},
+                },
+                "category_sasang_default": {"finance": "taeeum", "other": "taeeum"},
+                "lens_media_mode_by_deck_status": {"WATCH": "defend", "HOLD": "idle"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    out = tmp_path / "deck.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(SCRIPT),
+            "--news-jsonl",
+            str(news),
+            "--bench-json",
+            str(bench),
+            "--phase1-json",
+            str(tmp_path / "missing.json"),
+            "--pixel-language-json",
+            str(pixel),
+            "--output-json",
+            str(out),
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert cp.returncode == 0, cp.stdout + cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    assert doc.get("pixel_meta_schema_version") == "1"
+    card = doc["cards"][0]
+    assert card.get("pixel_sprite_id") == "PB_SPR_FINANCE_01"
+    assert card.get("sasang_accent") == "taeeum"
+    assert card.get("lens_media_key") == "LM_HP050_TAEEUM_DEFEND_V1"
+
+
 def test_build_mkmlife_news_observation_deck_korean_headline_no_original(tmp_path: Path) -> None:
     news = tmp_path / "news.jsonl"
     news.write_text(

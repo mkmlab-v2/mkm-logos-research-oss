@@ -20,8 +20,12 @@ DEFAULT_NEWS_JSONL = ROOT / "docs/final/artifacts/news_observation_v1_latest.jso
 DEFAULT_BENCH = ROOT / "docs/final/artifacts/saving_the_news_news_rt_bench_result_v1_latest.json"
 DEFAULT_PHASE1 = ROOT / "docs/final/artifacts/saving_the_news_phase1_poc_status_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/mkmlife_news_observation_deck_v1_latest.json"
+DEFAULT_PIXEL_LANGUAGE = ROOT / "docs/final/artifacts/MKM_PIXEL_LANGUAGE_V1.json"
 MKMLIFE_PUBLIC = ROOT / "projects/mkm/mkm-life/public/data"
 JACCARD_FLOOR_DEFAULT = 0.40
+PIXEL_META_SCHEMA_VERSION = "1"
+_VALID_SASANG = frozenset({"soyang", "taeyang", "taeeum", "soeum"})
+_VALID_MODES = frozenset({"idle", "defend", "attack"})
 
 _SOURCE_LABEL_KO: dict[str, str] = {
     "external_feed_bbc_world": "BBC 세계",
@@ -157,6 +161,61 @@ def _ask_prefill(lang: str = "ko") -> str:
     return _ASK_PREFILL_KO
 
 
+def _load_pixel_language(path: Path) -> dict[str, Any]:
+    doc = _load_json(path)
+    if doc.get("schema") != "mkm_pixel_language_v1":
+        raise ValueError(f"unexpected pixel language schema: {doc.get('schema')!r}")
+    return doc
+
+
+def _lens_media_key(sasang: str, mode: str) -> str:
+    s = sasang.strip().lower()
+    m = mode.strip().lower()
+    if s not in _VALID_SASANG:
+        s = "taeeum"
+    if m not in _VALID_MODES:
+        m = "idle"
+    return f"LM_HP050_{s.upper()}_{m.upper()}_V1"
+
+
+def map_category_to_pixel_meta(
+    category: str | None,
+    *,
+    deck_status: str,
+    pixel_lang: dict[str, Any],
+) -> dict[str, str]:
+    """Deterministic pixel accent + LUT key — no LLM / GPU."""
+    registry = pixel_lang.get("category_sprite_registry")
+    if not isinstance(registry, dict):
+        registry = {}
+    cat = (category or "other").strip().lower() or "other"
+    sprite_entry = registry.get(cat) if isinstance(registry.get(cat), dict) else registry.get("other")
+    if not isinstance(sprite_entry, dict):
+        sprite_entry = {}
+    sprite_id = str(sprite_entry.get("sprite_id") or "PB_SPR_OBS_01")
+
+    sasang_defaults = pixel_lang.get("category_sasang_default")
+    sasang = "taeeum"
+    if isinstance(sasang_defaults, dict):
+        raw = sasang_defaults.get(cat) or sasang_defaults.get("other") or "taeeum"
+        sasang = str(raw).strip().lower()
+    if sasang not in _VALID_SASANG:
+        sasang = "taeeum"
+
+    mode_map = pixel_lang.get("lens_media_mode_by_deck_status")
+    mode = "idle"
+    if isinstance(mode_map, dict):
+        mode = str(mode_map.get(deck_status) or mode_map.get("HOLD") or "idle").strip().lower()
+    if mode not in _VALID_MODES:
+        mode = "idle"
+
+    return {
+        "pixel_sprite_id": sprite_id,
+        "sasang_accent": sasang,
+        "lens_media_key": _lens_media_key(sasang, mode),
+    }
+
+
 def _row_sort_key(row: dict[str, Any]) -> tuple[str, str]:
     return (str(row.get("as_of_utc") or ""), str(row.get("observation_id") or ""))
 
@@ -238,10 +297,18 @@ def build_deck(
     bench_metrics: dict[str, Any],
     lang: str,
     selection: str = "round_robin",
+    pixel_lang: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     selected_rows, selection_mode = _select_rows_for_deck(
         rows, max_cards=max_cards, selection=selection
     )
+    jaccard = bench_metrics.get("jaccard_fidelity_proxy")
+    deck_status = "WATCH"
+    hold_reason: str | None = None
+    if isinstance(jaccard, (int, float)) and float(jaccard) < jaccard_floor:
+        deck_status = "HOLD"
+        hold_reason = f"jaccard_fidelity_proxy {float(jaccard):.4f} < floor {jaccard_floor}"
+
     cards: list[dict[str, Any]] = []
     for row in selected_rows:
         canonical = str(row.get("canonical_text") or "").strip()
@@ -277,20 +344,22 @@ def build_deck(
             card["category"] = category
         if category_label_ko:
             card["category_label_ko"] = category_label_ko
+        if pixel_lang:
+            card.update(
+                map_category_to_pixel_meta(
+                    category,
+                    deck_status=deck_status,
+                    pixel_lang=pixel_lang,
+                )
+            )
         cards.append(card)
-
-    jaccard = bench_metrics.get("jaccard_fidelity_proxy")
-    deck_status = "WATCH"
-    hold_reason: str | None = None
-    if isinstance(jaccard, (int, float)) and float(jaccard) < jaccard_floor:
-        deck_status = "HOLD"
-        hold_reason = f"jaccard_fidelity_proxy {float(jaccard):.4f} < floor {jaccard_floor}"
 
     return {
         "schema": "mkmlife_news_observation_deck_v1",
         "generated_at_utc": _utc_now(),
         "lane": "research_only",
         "hypothesis_tag": "[HYPO]",
+        "pixel_meta_schema_version": PIXEL_META_SCHEMA_VERSION if pixel_lang else None,
         "deck_status": deck_status,
         "hold_reason": hold_reason,
         "disclaimer_ko": (
@@ -319,6 +388,7 @@ def build_deck(
             "news_rt_bench": bench_metrics.get("bench_json"),
             "phase1_status": bench_metrics.get("phase1_json"),
             "blueprint": "docs/research/saving_the_news_blueprint_v1.md",
+            "pixel_language": _rel(DEFAULT_PIXEL_LANGUAGE) if pixel_lang else None,
         },
     }
 
@@ -345,12 +415,30 @@ def main() -> int:
         help="round_robin: balance category on deck; recent: newest N only.",
     )
     ap.add_argument("--copy-mkmlife-public", action="store_true")
+    ap.add_argument(
+        "--pixel-language-json",
+        type=Path,
+        default=DEFAULT_PIXEL_LANGUAGE,
+        help="MKM_PIXEL_LANGUAGE_V1.json (default: enable pixel meta on cards).",
+    )
+    ap.add_argument(
+        "--skip-pixel-meta",
+        action="store_true",
+        help="Do not inject pixel_sprite_id / sasang_accent / lens_media_key.",
+    )
     args = ap.parse_args()
 
     news_path = args.news_jsonl.resolve()
     rows = _load_jsonl(news_path)
     if not rows:
         raise SystemExit(f"no news_observation rows: {news_path}")
+
+    pixel_lang: dict[str, Any] | None = None
+    if not args.skip_pixel_meta:
+        pixel_path = args.pixel_language_json.resolve()
+        if not pixel_path.is_file():
+            raise SystemExit(f"missing pixel language: {pixel_path}")
+        pixel_lang = _load_pixel_language(pixel_path)
 
     metrics = _bench_metrics(args.bench_json.resolve(), args.phase1_json.resolve())
     deck = build_deck(
@@ -360,6 +448,7 @@ def main() -> int:
         bench_metrics=metrics,
         lang=args.lang,
         selection=args.deck_selection,
+        pixel_lang=pixel_lang,
     )
 
     out_path = args.output_json.resolve()
