@@ -12,11 +12,15 @@
   3c. `py -m pytest tests/test_mkm_trinity_index_v1.py` — MKM Trinity 인덱스 JSON·스키마 계약(CONSTITUTION §1 렌즈 인덱스 bullet)
   3d. `py -m pytest tests/test_mkm_meta_layer_envelope_v1.py` — 메타 인지 봉투 v1·킬 스위치 정규화·`AthenaValidator`(CONSTITUTION §1.3.1 보강 2026-05-05)
   3d2. `py -m pytest tests/test_athena_checkpoint.py` — CENTRAL `athena_checkpoint.py` prepend·`--max-checkpoints`(CI `Athena execution governance` 스텝에 포함된 동일 테스트)
+  3d2e. `py -m pytest tests/test_record_coding_intent_link_v1.py` — Coding intent 3-point link PoC(git↔checkpoint↔gate·diff schema; `research_only`; CI `dual-regime-integrity` Athena §28 블록과 동일). `-SkipCodingIntentLinkSmoke` 로 생략.
+  3d2f. `py -m pytest tests/test_build_coding_intent_pr_manifest_v1.py` — PR manifest PoC(base..HEAD ↔ checkpoints ↔ link log; `research_only`). `-SkipCodingIntentPrManifestSmoke` 로 생략.
+  3d2g. `py -m pytest tests/test_build_coding_intent_gitea_merge_precheck_v1.py` — Gitea/internal merge precheck summary(`internal_first`; GitHub PR 비의존). `-SkipCodingIntentGiteaMergePrecheckSmoke` 로 생략.
   3d2c. `py -m pytest tests/test_run_vertex_gemini_agent_search_context_v1.py` — Vertex Agent Search → 명시적 RAG 컨텍스트 헬퍼(오프라인; GCP 미호출). `-SkipVertexAgentSearchContextUnit` 로 생략.
   3d2d. `py -m pytest tests/test_athena_daily_thread_log_sync_v1.py` — 다중 채팅 일기 MD 병합(오프라인). `-SkipDailyThreadWorkLogUnit` 로 생략.
   3d2a. `py -m pytest …` — CI `dual-regime-integrity.yml`에서 Aramaic 직전의 **Two-track submission pack**(pytest **3**) + **Multi-symbol gates and counterfactual QA**(pytest **3**)를 **동일 순서**로 한 번에 실행(총 **6**개 파일). `-SkipTwoTrackSubmissionAndMultiSymbolSmoke` 로 생략.
   3d2b. `py -m pytest …` — Aramaic B-track graph pipeline smoke **27**개 파일(CI `dual-regime-integrity.yml` `Aramaic B-track graph pipeline smoke` 단계와 동일 목록: 코퍼스·audit trend·alert·threshold sweep/apply·MVP audit PS1 passthrough·그래프·점수·시맨틱·bridge·Bible meaning graph·insight survivor·cap bucket·drift alert schema·insight/cap CLI 연쇄 jsonschema·Track T survivor health·survivor health alert schema·weight/shadow·bridge coef). `-SkipAramaicBtrackGraphPipelineSmoke` 로 생략.
   3d3. `py -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py tests/test_build_logos_macro_horizon_2030_scenario_v1.py` — Logos insight bundle v1 + macro horizon 2030(CI `Logos insight bundle + macro horizon 2030` 스텝과 동일)
+  3d3b. `py -m pytest tests/test_btrack_science_core_v1.py tests/test_run_prophecy_lens_combo_science_core_v1.py tests/test_build_science_core_instrument_matrix_v1.py tests/test_run_science_core_conditional_attach_research_v1.py tests/test_run_science_core_prophecy_combo_sensitivity_v1.py` — Science Core B-track lane v1 + prophecy combo science arms + instrument matrix + conditional attach + fee sensitivity(CI `Science Core B-track lane v1` 스텝과 동일). `-SkipScienceCoreLaneSmoke` 로 생략.
   3d3a. `py -m pytest tests/test_stt_routing_audit_log_schema_v1.py tests/test_append_stt_routing_audit_log_v1.py tests/test_build_showroom_trust_visualization_slice_v1.py` — STT audit jsonschema + append·summarize + 쇼룸 Trust Visualization thin slice(CI `STT routing audit log v1 + showroom trust viz thin slice` 단계와 동일; CI YAML에서는 `Lens music prompt PoC M26-M30` 직후, 본 번들에서는 Logos insight 직후). `-SkipSttRoutingAuditShowroomTrustSlice` 로 생략.
   3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + 환자 통합 번들(`patient_care_bundle_v1`) 스키마·assemble·CDS 체인·슬롯 템플릿/정책/MD 렌더(`test_patient_care_bundle_templates_policy_render_v1`)·원클릭 `Invoke-PatientCareBundleAssemblePatientFacing_v1.ps1` + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
@@ -140,6 +144,9 @@
 .PARAMETER SkipAramaicBtrackGraphPipelineSmoke
   Aramaic B-track graph pipeline smoke pytest **27**개(CI `dual-regime-integrity.yml` Aramaic 단계와 동일 목록)를 생략한다.
 
+.PARAMETER SkipScienceCoreLaneSmoke
+  Science Core B-track lane pytest(`tests/test_btrack_science_core_v1.py`·`tests/test_run_prophecy_lens_combo_science_core_v1.py`; CI `Science Core B-track lane v1` 단계)를 생략한다.
+
 .PARAMETER SkipSttRoutingAuditShowroomTrustSlice
   STT audit jsonschema + append·summarize 및 쇼룸 Trust Visualization thin slice pytest 3개(CI `STT routing audit log v1 + showroom trust viz thin slice` 단계)를 생략한다.
 
@@ -232,6 +239,9 @@ param(
     # Aramaic B-track graph pipeline smoke (27 pytests; dual-regime `Aramaic B-track graph pipeline smoke` step)
     [switch]$SkipAramaicBtrackGraphPipelineSmoke,
 
+    # Science Core B-track lane v1 (offline pytest; dual-regime step after Logos insight bundle)
+    [switch]$SkipScienceCoreLaneSmoke,
+
     # STT audit + showroom trust viz thin slice (2 pytests; dual-regime STT + thin slice step)
     [switch]$SkipSttRoutingAuditShowroomTrustSlice,
 
@@ -240,6 +250,15 @@ param(
 
     # LinkedIn B2B draft queue v1 (2 pytest; no API publish)
     [switch]$SkipLinkedInB2bDraftSmoke,
+
+    # Coding intent 3-point link PoC (1 pytest; research_only)
+    [switch]$SkipCodingIntentLinkSmoke,
+
+    # Coding intent PR manifest PoC (1 pytest; research_only)
+    [switch]$SkipCodingIntentPrManifestSmoke,
+
+    # Gitea/internal merge precheck summary (1 pytest; research_only)
+    [switch]$SkipCodingIntentGiteaMergePrecheckSmoke,
 
     # Recommended tail: Invoke-SafeOpsSurfaceCheck.ps1 after pytest bundle (exit 2 fails; exit 1 warns only).
     [switch]$SkipSafeOpsSurfaceCheck,
@@ -274,6 +293,9 @@ $bioSasangNstatesRehydrateTest = Join-Path $workspaceRoot 'tests\test_bio_sasang
 $mkmTrinityIndexTest = Join-Path $workspaceRoot 'tests\test_mkm_trinity_index_v1.py'
 $mkmMetaLayerEnvelopeTest = Join-Path $workspaceRoot 'tests\test_mkm_meta_layer_envelope_v1.py'
 $athenaCheckpointTest = Join-Path $workspaceRoot 'tests\test_athena_checkpoint.py'
+$codingIntentLinkSmokeTest = Join-Path $workspaceRoot 'tests\test_record_coding_intent_link_v1.py'
+$codingIntentPrManifestSmokeTest = Join-Path $workspaceRoot 'tests\test_build_coding_intent_pr_manifest_v1.py'
+$codingIntentGiteaMergePrecheckSmokeTest = Join-Path $workspaceRoot 'tests\test_build_coding_intent_gitea_merge_precheck_v1.py'
 $vertexAgentSearchContextUnitTest = Join-Path $workspaceRoot 'tests\test_run_vertex_gemini_agent_search_context_v1.py'
 $dailyThreadWorkLogUnitTest = Join-Path $workspaceRoot 'tests\test_athena_daily_thread_log_sync_v1.py'
 # CI `dual-regime-integrity.yml` — Two-track submission pack + Multi-symbol gates (steps before Aramaic; keep in sync)
@@ -324,6 +346,11 @@ $logosInsightBundlePytests = @(
     (Join-Path $workspaceRoot 'tests\test_build_logos_insight_bundle_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_build_logos_macro_horizon_2030_scenario_v1.py')
 )
+$scienceCoreLaneSmokeTest = Join-Path $workspaceRoot 'tests\test_btrack_science_core_v1.py'
+$scienceCoreComboSmokeTest = Join-Path $workspaceRoot 'tests\test_run_prophecy_lens_combo_science_core_v1.py'
+$scienceCoreInstrumentMatrixTest = Join-Path $workspaceRoot 'tests\test_build_science_core_instrument_matrix_v1.py'
+$scienceCoreConditionalAttachTest = Join-Path $workspaceRoot 'tests\test_run_science_core_conditional_attach_research_v1.py'
+$scienceCoreProphecySensitivityTest = Join-Path $workspaceRoot 'tests\test_run_science_core_prophecy_combo_sensitivity_v1.py'
 $sttRoutingAuditShowroomTrustSlicePytests = @(
     (Join-Path $workspaceRoot 'tests\test_stt_routing_audit_log_schema_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_append_stt_routing_audit_log_v1.py'),
@@ -581,6 +608,39 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
+if (-not $SkipCodingIntentLinkSmoke) {
+    if (-not (Test-Path -LiteralPath $codingIntentLinkSmokeTest)) {
+        throw "Coding intent link pytest not found: $codingIntentLinkSmokeTest"
+    }
+    Write-Host '== Fact-Lock: test_record_coding_intent_link_v1.py (coding intent 3-point link PoC) ==' -ForegroundColor Cyan
+    & py -m pytest $codingIntentLinkSmokeTest -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if (-not $SkipCodingIntentPrManifestSmoke) {
+    if (-not (Test-Path -LiteralPath $codingIntentPrManifestSmokeTest)) {
+        throw "Coding intent PR manifest pytest not found: $codingIntentPrManifestSmokeTest"
+    }
+    Write-Host '== Fact-Lock: test_build_coding_intent_pr_manifest_v1.py (PR manifest PoC) ==' -ForegroundColor Cyan
+    & py -m pytest $codingIntentPrManifestSmokeTest -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if (-not $SkipCodingIntentGiteaMergePrecheckSmoke) {
+    if (-not (Test-Path -LiteralPath $codingIntentGiteaMergePrecheckSmokeTest)) {
+        throw "Coding intent gitea merge precheck pytest not found: $codingIntentGiteaMergePrecheckSmokeTest"
+    }
+    Write-Host '== Fact-Lock: test_build_coding_intent_gitea_merge_precheck_v1.py (gitea merge precheck) ==' -ForegroundColor Cyan
+    & py -m pytest $codingIntentGiteaMergePrecheckSmokeTest -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
 if (-not $SkipVertexAgentSearchContextUnit) {
     if (-not (Test-Path -LiteralPath $vertexAgentSearchContextUnitTest)) {
         throw "Vertex Agent Search context unit pytest not found: $vertexAgentSearchContextUnitTest"
@@ -648,6 +708,19 @@ Write-Host '== Fact-Lock: Logos insight bundle v1 (schema + builder; dual-regime
 & py -m pytest @logosInsightBundlePytests -q --tb=short
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
+}
+
+if (-not $SkipScienceCoreLaneSmoke) {
+    foreach ($t in @($scienceCoreLaneSmokeTest, $scienceCoreComboSmokeTest, $scienceCoreInstrumentMatrixTest, $scienceCoreConditionalAttachTest, $scienceCoreProphecySensitivityTest)) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "Science Core lane pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: Science Core B-track lane v1 + prophecy combo science arms (dual-regime parity) ==' -ForegroundColor Cyan
+    & py -m pytest $scienceCoreLaneSmokeTest $scienceCoreComboSmokeTest $scienceCoreInstrumentMatrixTest $scienceCoreConditionalAttachTest $scienceCoreProphecySensitivityTest -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
 }
 
 if (-not $SkipSttRoutingAuditShowroomTrustSlice) {

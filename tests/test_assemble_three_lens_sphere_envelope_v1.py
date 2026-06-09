@@ -53,6 +53,10 @@ def test_assemble_copy_mkmlife_public_logos_only_envelope():
     pub = json.loads(PUBLIC_MKMLIFE.read_text(encoding="utf-8"))
     assert pub.get("profile_mode") == "public_logos_only"
     assert set((pub.get("lenses") or {}).keys()) == {"logos"}
+    logos = pub["lenses"]["logos"]
+    assert "성경" not in logos.get("title_ko", "")
+    assert "Logos" not in logos.get("body_ko", "")
+    assert pub.get("consumer_facade")
     assert "rag_layers_resolved" not in pub
     assert "inputs_manifest" not in pub
     internal = json.loads(INTERNAL_MKMLIFE.read_text(encoding="utf-8"))

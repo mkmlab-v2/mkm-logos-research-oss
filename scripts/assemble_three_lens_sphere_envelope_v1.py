@@ -7,11 +7,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT / "scripts") not in sys.path:
+    sys.path.insert(0, str(ROOT / "scripts"))
+
+from mkm_consumer_facade_v1 import facade_public_envelope_consumer  # noqa: E402
 
 DEFAULT_FUSION = ROOT / "docs/final/artifacts/independent_lens_fusion_stub_latest.json"
 DEFAULT_PROPHECY = ROOT / "docs/final/artifacts/prophecy_hit_rate_eval_latest.json"
@@ -35,7 +40,7 @@ RAG_LAYER_REGISTRY: dict[str, list[tuple[str, Path, str | None]]] = {
         (
             "logos_semantic_query_set_v3_bilingual_v1",
             ROOT / "docs/final/artifacts/logos_semantic_query_set_v3_bilingual_v1.json",
-            "scripts/bootstrap_logos_query_gold_human_v1.py",
+            "scripts/bootstrap_logos_semantic_query_set_v3_bilingual_v1.py",
         ),
         (
             "strongs_ko_only_mapper",
@@ -353,7 +358,7 @@ def strip_public_envelope(full: dict[str, Any]) -> dict[str, Any]:
     graph_viz = dict(public.get("graph_viz") or {})
     graph_viz.pop("graph_slice_path", None)
     public["graph_viz"] = graph_viz
-    return public
+    return facade_public_envelope_consumer(public)
 
 
 def main() -> None:

@@ -250,6 +250,13 @@ on:
       - "tests/test_check_athena_execution_governance_smoke_v1.py"
       - "scripts/athena_checkpoint.py"
       - "tests/test_athena_checkpoint.py"
+      - "scripts/record_coding_intent_link_v1.py"
+      - "scripts/Invoke-CodingIntentLinkRecord_v1.ps1"
+      - "docs/final/schemas/coding_intent_link_v1.schema.json"
+      - "tests/test_record_coding_intent_link_v1.py"
+      - "scripts/build_coding_intent_pr_manifest_v1.py"
+      - "docs/final/schemas/coding_intent_pr_manifest_v1.schema.json"
+      - "tests/test_build_coding_intent_pr_manifest_v1.py"
       - "scripts/audio/**"
       - "scripts/Run-AudioBgmGeminiExternalChain_v1.ps1"
       - "scripts/Run-AudioBgmEconomyChain_v1.ps1"
@@ -616,6 +623,29 @@ on:
       - "scripts/build_logos_macro_horizon_2030_scenario_v1.py"
       - "docs/final/schemas/logos_macro_horizon_2030_scenario_v1.schema.json"
       - "tests/test_build_logos_macro_horizon_2030_scenario_v1.py"
+      - "scripts/btrack_science_core_v1.py"
+      - "scripts/build_btrack_science_core_per_date_v1.py"
+      - "scripts/run_science_core_governance_bundle_v1.py"
+      - "scripts/run_science_core_macro_gate_bias_audit_v1.py"
+      - "scripts/run_science_core_news_coverage_audit_v1.py"
+      - "scripts/run_science_core_news_weight_ablation_v1.py"
+      - "scripts/run_science_core_long_window_lane_compare_v1.py"
+      - "scripts/fetch_exa_macro_news_observation_v1.py"
+      - "scripts/backfill_exa_macro_news_observation_v1.py"
+      - "scripts/check_science_core_lane_readiness_v1.py"
+      - "scripts/build_science_core_instrument_matrix_v1.py"
+      - "scripts/run_science_core_conditional_attach_research_v1.py"
+      - "scripts/run_science_core_prophecy_combo_sensitivity_v1.py"
+      - "scripts/Run-ScienceCoreGovernanceBundle_v1.ps1"
+      - "scripts/Run-BtrackExaMacroNewsChain_v1.ps1"
+      - "scripts/Verify-ScienceCoreWeeklyGovernanceTask_v1.ps1"
+      - "tests/test_btrack_science_core_v1.py"
+      - "tests/test_run_prophecy_lens_combo_science_core_v1.py"
+      - "tests/test_build_science_core_instrument_matrix_v1.py"
+      - "tests/test_run_science_core_conditional_attach_research_v1.py"
+      - "tests/test_run_science_core_prophecy_combo_sensitivity_v1.py"
+      - "tests/test_backfill_exa_macro_news_observation_v1.py"
+      - "tests/test_fetch_exa_macro_news_observation_v1.py"
       - "scripts/run_aramaic_mvp_chain_v1.ps1"
       - "scripts/run_aramaic_mvp_now_with_audit.ps1"
       - "scripts/run_aramaic_raw_oos_audit_accumulator_v1.ps1"
@@ -712,6 +742,12 @@ on:
       - "tests/test_emit_myeongni_thin_bridge_line_v1.py"
       - "scripts/validate_mkm_personal_briefing_guardrails_v1.py"
       - "tests/test_validate_mkm_personal_briefing_guardrails_v1.py"
+      - "docs/final/schemas/mkm_morning_beans_feed_v1.schema.json"
+      - "scripts/build_mkm_morning_beans_feed_v1.py"
+      - "scripts/export_mkm_morning_beans_mkmlife_card_v1.py"
+      - "tests/test_mkm_morning_beans_feed_v1_schema.py"
+      - "tests/test_build_mkm_morning_beans_feed_v1.py"
+      - "tests/test_export_mkm_morning_beans_mkmlife_card_v1.py"
       - "scripts/build_sasang_interpretive_insight_bundle_v1.py"
       - "docs/final/schemas/sasang_interpretive_insight_bundle_v1.schema.json"
       - "docs/final/artifacts/SASANG_INTERPRETIVE_INSIGHT_BUNDLE_V1_CONTRACT.json"
@@ -1117,6 +1153,8 @@ jobs:
             tests/test_athena_run_v1.py \
             tests/test_athena_doctor_v1.py \
             tests/test_athena_checkpoint.py \
+            tests/test_record_coding_intent_link_v1.py \
+            tests/test_build_coding_intent_pr_manifest_v1.py \
             tests/test_build_integrated_governance_m31_digest_v1.py \
             tests/test_invoke_build_integrated_governance_if_deps_present_v1.py \
             tests/test_check_athena_execution_governance_smoke_v1.py \
@@ -1303,6 +1341,9 @@ jobs:
       - name: MKM personal briefing guardrails (Fact-Lock heuristic)
         run: python -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py -q --tb=short
 
+      - name: MKM Morning Beans feed v1 (schema + build + mkmlife export)
+        run: python -m pytest tests/test_mkm_morning_beans_feed_v1_schema.py tests/test_build_mkm_morning_beans_feed_v1.py tests/test_export_mkm_morning_beans_mkmlife_card_v1.py -q --tb=short
+
       # Doc: steps from the next job through workflow end are summarized as the "CI tail" pointer row in
       # docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md §6 (order SSOT remains this file).
       # Note: _pr_sasang_promotion SSOT mirror (Sync-PrSasangPromotionMirror_v1.ps1, run_workspace_automation_health -IncludePrSasangPromotionMirrorSync) is Windows/local health only — not a step here.
@@ -1328,6 +1369,9 @@ jobs:
 
       - name: Logos insight bundle + macro horizon 2030 (schema + build CLI)
         run: python -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py tests/test_build_logos_macro_horizon_2030_scenario_v1.py -q --tb=short
+
+      - name: Science Core B-track lane v1 (offline pytest)
+        run: python -m pytest tests/test_btrack_science_core_v1.py tests/test_run_prophecy_lens_combo_science_core_v1.py tests/test_build_science_core_instrument_matrix_v1.py tests/test_run_science_core_conditional_attach_research_v1.py tests/test_run_science_core_prophecy_combo_sensitivity_v1.py tests/test_backfill_exa_macro_news_observation_v1.py tests/test_fetch_exa_macro_news_observation_v1.py -q --tb=short
 
       - name: Bio PMID paper SNP sidecar join smoke (§8.1, no network)
         run: python -m pytest tests/test_bio_paper_snp_join_chain_smoke_v1.py tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py tests/test_run_bio_epmc_catalog_and_label_merge_v1_cli.py tests/test_check_bio_genotype_paper_snp_overlap_v1.py -q --tb=short
