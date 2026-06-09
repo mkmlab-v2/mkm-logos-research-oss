@@ -119,10 +119,12 @@ AUTO_RUNNERS: dict[str, list[str]] = {
         "scripts/verify_p0_constitution_gate_paths.ps1",
     ],
     "R3": [PY, "scripts/build_mkm_trackc_ops_dashboard_v1.py"],
+    "W5.1": [PY, "-m", "pytest", "tests/test_build_multi_res_todo_index_v1.py", "-q"],
+    "W5.2": [PY, "scripts/build_multi_res_todo_index_v1.py"],
 }
 
 
-MUST_RUN_NODES = frozenset({"W1.3", "W2.2", "W3.2", "W3.3", "R1"})
+MUST_RUN_NODES = frozenset({"W1.3", "W2.2", "W3.2", "W3.3", "R1", "W5.1"})
 
 
 def _execute_auto_node(node: dict[str, Any]) -> tuple[str, int | None, dict[str, Any] | None]:

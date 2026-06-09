@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "multi_res_todo_index_v1.schema.json",
+  "title": "Multi-resolution todo index v1 (B-track ops harness)",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "hypothesis_tier",
+    "boundary_ack",
+    "todo_queue_auto_enqueue",
+    "meta",
+    "low_res",
+    "mid_res",
+    "high_res",
+    "coordinate_map"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "multi_res_todo_index_v1" },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "research_only": { "const": true },
+    "hypothesis_tier": { "const": "B" },
+    "boundary_ack": { "type": "string", "minLength": 8 },
+    "todo_queue_auto_enqueue": { "const": false },
+    "meta": { "$ref": "#/$defs/meta" },
+    "low_res": { "$ref": "#/$defs/low_res" },
+    "mid_res": { "$ref": "#/$defs/mid_res" },
+    "high_res": { "$ref": "#/$defs/high_res" },
+    "coordinate_map": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/coordinate" }
+    },
+    "harness_refs": { "$ref": "#/$defs/harness_refs" }
+  },
+  "$defs": {
+    "meta": {
+      "type": "object",
+      "required": ["sources_present", "n_low_res", "n_mid_res", "n_high_res"],
+      "additionalProperties": true,
+      "properties": {
+        "sources_present": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "n_low_res": { "type": "integer", "minimum": 0 },
+        "n_mid_res": { "type": "integer", "minimum": 0 },
+        "n_high_res": { "type": "integer", "minimum": 0 },
+        "ops_memory_index_linked": { "type": "boolean" },
+        "fusion_bench_linked": { "type": "boolean" }
+      }
+    },
+    "low_res": {
+      "type": "object",
+      "required": ["lane_actions"],
+      "additionalProperties": true,
+      "properties": {
+        "lane_actions": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/lane_action" }
+        }
+      }
+    },
+    "lane_action": {
+      "type": "object",
+      "required": ["action_id", "lane_key", "essence", "priority"],
+      "additionalProperties": true,
+      "properties": {
+        "action_id": { "type": "string", "minLength": 1 },
+        "lane_key": { "type": "string", "minLength": 1 },
+        "essence": { "type": "string", "minLength": 1 },
+        "priority": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "source_section": { "type": "string" },
+        "human_only": { "type": "boolean" }
+      }
+    },
+    "mid_res": {
+      "type": "object",
+      "required": ["checkpoints", "delegation_pending"],
+      "additionalProperties": true,
+      "properties": {
+        "checkpoints": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/checkpoint_row" }
+        },
+        "delegation_pending": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/delegation_row" }
+        }
+      }
+    },
+    "checkpoint_row": {
+      "type": "object",
+      "required": ["checkpoint_id", "timestamp_utc", "essence"],
+      "additionalProperties": true,
+      "properties": {
+        "checkpoint_id": { "type": "string" },
+        "timestamp_utc": { "type": "string" },
+        "essence": { "type": "string" }
+      }
+    },
+    "delegation_row": {
+      "type": "object",
+      "required": ["node_id", "map_key", "status", "approval"],
+      "additionalProperties": true,
+      "properties": {
+        "node_id": { "type": "string" },
+        "map_key": { "type": "string" },
+        "status": { "type": "string" },
+        "approval": { "type": "string" },
+        "evidence": { "type": ["string", "null"] }
+      }
+    },
+    "high_res": {
+      "type": "object",
+      "required": ["pointers", "audit_tail"],
+      "additionalProperties": true,
+      "properties": {
+        "pointers": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/pointer" }
+        },
+        "audit_tail": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/audit_row" }
+        }
+      }
+    },
+    "pointer": {
+      "type": "object",
+      "required": ["pointer_id", "file_path"],
+      "additionalProperties": true,
+      "properties": {
+        "pointer_id": { "type": "string" },
+        "file_path": { "type": "string" },
+        "anchor_hint": { "type": "string" },
+        "node_id": { "type": "string" }
+      }
+    },
+    "audit_row": {
+      "type": "object",
+      "required": ["timestamp", "mission_id", "decision"],
+      "additionalProperties": true,
+      "properties": {
+        "timestamp": { "type": "string" },
+        "mission_id": { "type": "string" },
+        "decision": { "type": "string" },
+        "evidence_path": { "type": "string" },
+        "stage": { "type": "string" }
+      }
+    },
+    "coordinate": {
+      "type": "object",
+      "required": ["coord_id", "low_id", "resolution_tier"],
+      "additionalProperties": true,
+      "properties": {
+        "coord_id": { "type": "string" },
+        "low_id": { "type": "string" },
+        "mid_id": { "type": ["string", "null"] },
+        "high_id": { "type": ["string", "null"] },
+        "resolution_tier": {
+          "type": "string",
+          "enum": ["L", "M", "H", "L-M", "M-H", "L-H", "L-M-H"]
+        }
+      }
+    },
+    "harness_refs": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "harness_1_state_externalization": { "type": "string" },
+        "moss_evidence_replay_gate": { "type": "string" },
+        "adacom_context_manager": { "type": "string" }
+      }
+    }
+  }
+}
