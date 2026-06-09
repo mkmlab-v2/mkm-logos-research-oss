@@ -213,6 +213,8 @@ $required = @(
     "docs\final\schemas\multi_res_index_v1.schema.json",
     "docs\final\artifacts\multi_res_trades_treatment_contract_v1_latest.json",
     "scripts\multi_res_fills_join_v1.py",
+    "scripts\run_multi_res_index_delegation_v1.py",
+    "scripts\Invoke-MultiResIndexDelegationRoutine_v1.ps1",
     "scripts\build_multi_res_fills_token_bench_v1.py",
     "scripts\build_mkm_ops_memory_fills_overlay_v1.py",
     "tests\test_multi_res_index_v1.py",

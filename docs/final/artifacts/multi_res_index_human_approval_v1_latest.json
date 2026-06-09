@@ -29,7 +29,10 @@
   },
   "operational_pointers": {
     "runner": "scripts/run_multi_res_index_delegation_v1.py",
+    "routine": "scripts/Invoke-MultiResIndexDelegationRoutine_v1.ps1",
+    "persona": "Invoke-MkmPersonaHealth_v1.ps1 -Persona MultiResIndexDelegation",
     "index_builder": "scripts/multi_res_fills_join_v1.py",
     "schema": "docs/final/schemas/multi_res_index_v1.schema.json"
-  }
+  },
+  "post_approval_routine_exit_0_utc": "2026-06-09T12:22:53Z"
 }
