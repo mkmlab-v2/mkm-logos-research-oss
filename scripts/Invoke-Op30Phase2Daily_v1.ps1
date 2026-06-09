@@ -15,6 +15,7 @@ param(
     [switch]$FullDeploy,
     [switch]$SkipProbe,
     [switch]$SkipKvSync,
+    [switch]$SkipPostDeploySmoke,
     [switch]$IncludeLivePatrol,
     [switch]$IncludeTierMatrixSmoke,
     [switch]$IncludeOraclePreviewSmoke
@@ -56,7 +57,9 @@ if ($FullDeploy) {
         Write-Host "WARN: .open-next missing — run -FullDeploy once" -ForegroundColor Yellow
         $failed += "asset_deploy_skipped"
     } else {
-        powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $mkmlifeRoot "scripts\Deploy-CloudflareMkmlife.ps1") -SkipBuild -SkipOracleSphereHero
+        $deploySmokeArgs = @("-SkipBuild", "-SkipOracleSphereHero")
+        if ($SkipPostDeploySmoke) { $deploySmokeArgs += "-SkipPostDeploySmoke" }
+        powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $mkmlifeRoot "scripts\Deploy-CloudflareMkmlife.ps1") @deploySmokeArgs
         if ($LASTEXITCODE -ne 0) { $failed += "asset_deploy" }
     }
 }

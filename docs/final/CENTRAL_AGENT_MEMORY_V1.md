@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-09T20:24:00Z
+- **last_updated_utc:** 2026-06-09T20:40:37Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -71,6 +71,8 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-06-09T20:40:37Z** — 2026-06-10 학계감사 SSOT+ C Phase2+ mkmlife Phase2 deploy 완료; 4AI live smoke 잔여
+- **2026-06-09T20:29:44Z** — 채팅 종료: Infra 2순위 — NL portfolio prune·lean MCP push OK·VPS 61%·MISSION_LOG 갱신
 - **2026-06-09T20:24:00Z** — P2 done: Canvas triage + Harness/MOSS replay contract + push-internal cd71f7 [HYPO]
 - **2026-06-09T20:19:47Z** — post-340 Multi-Res TODO index W5 done: build_multi_res_todo_index_v1 22 lanes pytest5 delegation19/19 [HYPO]
 - **2026-06-09T20:19:45Z** — VPS /root 2차정리: 69%→61% stock-trading·apps·qwen gguf·HF캐시 제거·mkmlife+bitcoin online
@@ -89,8 +91,6 @@
 - **2026-06-09T17:17:06Z** — MISSION_LOG: Telegram 장전 코스피+지휘관 일운/주간/웰니스(170/80) 압축 연동 종료 — 6/11 08:28 패시브 관측
 - **2026-06-09T17:14:09Z** — 장전 TG에 지휘관 일운+주간+170/80 웰니스 압축블록 연동 (MKM_TELEGRAM_PROPHECY_INCLUDE_FORTUNE=1)
 - **2026-06-09T17:11:51Z** — gitea merge precheck 루틴 고정 internal-first [research_only]
-- **2026-06-09T17:05:21Z** — Telegram autopilot: Invoke-TelegramOpsAutopilot_v1 + n8n mute 스크립트, 08:28 체인에 mute 연동
-- **2026-06-09T17:04:49Z** — PR manifest PoC: base..HEAD↔checkpoint↔link log [research_only]
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
