@@ -272,6 +272,43 @@ _HP_PRIOR_LABELS: dict[str, str] = {
 _HP_LENS_SUMMARY_KEYS = ("sasang", "myeongni", "logos")
 
 
+# Mirror ORB_SAMPLE_QUERY_CONSUMER_LABELS in mkmlife-consumer-vocabulary-v1.ts
+_ORB_SAMPLE_CONSUMER_LABELS: dict[str, str] = {
+    "q01": "위기 속에서도 지키고 싶은 약속·리듬은 무엇인가?",
+    "q02": "무너지기 전에 감지할 수 있는 조기 경고 신호는?",
+    "q03": "경고와 회복 신호가 동시에 보일 때 어떤 맥락을 우선 볼까?",
+    "q04": "경고 이후에도 남는 회복 여지는 어디에서 보이는가?",
+    "q05": "거시 변동성과 개인 리듬 사이의 대응 관계는?",
+    "q06": "고난·회복 전환 구간에서 주의할 신호는?",
+    "q07": "사랑과 용서가 일상 리듬에 어떻게 연결되는가?",
+    "q08": "고난과 위로가 함께 나타나는 패턴은?",
+}
+
+
+def facade_magic_orb_query_item(item: dict[str, Any]) -> dict[str, Any]:
+    """Add consumer_query_ko for public fixture; keep query_ko for gold insight API."""
+    out = dict(item)
+    qid = str(out.get("id") or "")
+    internal = str(out.get("query_ko") or "")
+    label = _ORB_SAMPLE_CONSUMER_LABELS.get(qid, _strip_theological_surface(internal))
+    out["consumer_query_ko"] = label
+    out["consumer_facade"] = {
+        "schema": "saving_the_news_public_copy_facade_v1",
+        "version": "1.0.0",
+        "display_field": "consumer_query_ko",
+        "api_field": "query_ko",
+    }
+    return out
+
+
+def facade_magic_orb_queries_doc(doc: dict[str, Any]) -> dict[str, Any]:
+    out = dict(doc)
+    items = [facade_magic_orb_query_item(dict(it)) for it in (out.get("items") or []) if isinstance(it, dict)]
+    out["items"] = items
+    out["consumer_facade"] = deck_consumer_facade_block()
+    return out
+
+
 def facade_hyper_personal_card(card: dict[str, Any]) -> dict[str, Any]:
     out = dict(card)
     priors = []

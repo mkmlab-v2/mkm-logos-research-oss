@@ -17,6 +17,7 @@ from mkm_consumer_facade_v1 import (  # noqa: E402
     enrich_deck_card_consumer,
     facade_envelope_logos_lens,
     facade_hyper_personal_card,
+    facade_magic_orb_queries_doc,
     facade_morning_beans_card,
     facade_public_envelope_consumer,
     morning_beans_consumer_headlines,
@@ -233,3 +234,22 @@ def test_facade_hyper_personal_card_consumer_labels() -> None:
     assert card["priors_display"][0]["label_ko"] == "A-Code 큐레이션 강도"
     assert "Logos" not in card["lenses_summary_ko"]["logos"]
     assert "Logos" not in card["one_line_ko"]
+
+
+def test_facade_magic_orb_queries_consumer_field() -> None:
+    doc = facade_magic_orb_queries_doc(
+        {
+            "schema": "magic_orb_question_insight_queries_v1",
+            "items": [
+                {
+                    "id": "q04",
+                    "query_ko": "심판의 경고 이후에도 언약의 잔류가 남는다는 성경적 논증은?",
+                }
+            ],
+        }
+    )
+    item = doc["items"][0]
+    assert item["query_ko"].startswith("심판")
+    assert item["consumer_query_ko"]
+    assert "성경" not in item["consumer_query_ko"]
+    assert doc.get("consumer_facade")
