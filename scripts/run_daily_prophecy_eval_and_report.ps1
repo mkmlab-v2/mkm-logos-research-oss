@@ -50,7 +50,10 @@ param(
     [switch]$OperationModeBShadow,
     # After eval: refresh cross_lens_rag_fusion + three_lens_sphere for 08:28 Telegram I-c/I-d.
     [switch]$IncludeCrossLensRagFusion,
-    [switch]$SkipCrossLensRagFusion
+    [switch]$SkipCrossLensRagFusion,
+    # After score+eval: dual-leg brief + internal KOSPI morning onepager (08:28 prophecy TG).
+    [switch]$IncludeKospiMorningBrief,
+    [switch]$SkipKospiMorningBrief
 )
 
 $ErrorActionPreference = "Stop"
@@ -393,15 +396,17 @@ if (-not $SkipTrinityEvolution -and -not $DisableAutoTrinitySafetyGate) {
     }
 }
 if (-not $SkipTrinityEvolution) {
-    if (-not (Test-Path -LiteralPath $trinityBuildScript)) {
-        throw "Missing required script: $trinityBuildScript"
+    $trinityScriptsOk = @(
+        (Test-Path -LiteralPath $trinityBuildScript),
+        (Test-Path -LiteralPath $trinityDailyScoreScript),
+        (Test-Path -LiteralPath $trinityWeightTunerScript)
+    ) -notcontains $false
+    if (-not $trinityScriptsOk) {
+        Write-Warning "Trinity evolution scripts missing under scripts/core/; skipping trinity block (use -SkipTrinityEvolution to silence)."
+        $SkipTrinityEvolution = $true
     }
-    if (-not (Test-Path -LiteralPath $trinityDailyScoreScript)) {
-        throw "Missing required script: $trinityDailyScoreScript"
-    }
-    if (-not (Test-Path -LiteralPath $trinityWeightTunerScript)) {
-        throw "Missing required script: $trinityWeightTunerScript"
-    }
+}
+if (-not $SkipTrinityEvolution) {
     if (Test-Path -LiteralPath $scoreOut) {
         $scoreJson = Get-Content -LiteralPath $scoreOut -Raw -Encoding UTF8 | ConvertFrom-Json
         $lastKospi = $null
@@ -744,6 +749,20 @@ Write-Host "==> build_prophecy_hit_rate_ssot_pointer_v1.py"
 & py scripts\build_prophecy_hit_rate_ssot_pointer_v1.py
 if ($LASTEXITCODE -ne 0) {
     throw "build_prophecy_hit_rate_ssot_pointer_v1.py exit $LASTEXITCODE"
+}
+
+$kospiBriefPs1 = Join-Path $WorkspaceRoot "scripts\Invoke-ProphecyDualLegAndKospiBrief_v1.ps1"
+if ($IncludeKospiMorningBrief -and -not $SkipKospiMorningBrief) {
+    if (Test-Path -LiteralPath $kospiBriefPs1) {
+        Write-Host "==> Invoke-ProphecyDualLegAndKospiBrief_v1.ps1 (KOSPI morning onepager for 08:28 TG)"
+        & powershell -NoProfile -ExecutionPolicy Bypass -File $kospiBriefPs1 -WorkspaceRoot $WorkspaceRoot
+        if ($LASTEXITCODE -ne 0) {
+            Write-Warning "Invoke-ProphecyDualLegAndKospiBrief_v1.ps1 exit $LASTEXITCODE; prophecy TG market block may be stale."
+        }
+    }
+    else {
+        Write-Warning "Missing: $kospiBriefPs1"
+    }
 }
 
 Write-Host "OK: Daily prophecy eval finished. Operational: $evalOut Headline KPI (unchanged unless promoted): $headlineEvalOut Log: $logPath"

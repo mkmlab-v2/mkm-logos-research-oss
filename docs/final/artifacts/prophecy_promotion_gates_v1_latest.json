@@ -1,12 +1,12 @@
 {
   "schema": "prophecy_promotion_gates_v1",
-  "generated_at_utc": "2026-05-19T12:43:16Z",
+  "generated_at_utc": "2026-06-09T01:07:39Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
-    "lens_walkforward_json": "reports\\prophecy_per_date_combo_walkforward_recommended_chain_v1_latest.json",
-    "instrument_walkforward_json": "reports\\prophecy_instrument_combo_walkforward_recommended_chain_v1_latest.json",
-    "score_json": "reports\\btrack_prophecy_score_recommended_eval_chain_v1_latest.json",
+    "lens_walkforward_json": "C:\\workspace\\reports\\prophecy_btrack_recommended_nbps_sweep_v1\\prophecy_per_date_combo_walkforward_recommended_nbps_2_0.json",
+    "instrument_walkforward_json": "C:\\workspace\\reports\\prophecy_btrack_recommended_nbps_sweep_v1\\prophecy_instrument_combo_walkforward_recommended_nbps_2_0.json",
+    "score_json": "C:\\workspace\\reports\\prophecy_btrack_recommended_nbps_sweep_v1\\btrack_prophecy_score_recommended_nbps_2_0.json",
     "hypothesis_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
     "promotion_track_mode": "dual",
     "thresholds": {
@@ -24,7 +24,8 @@
     },
     "skip_shared_gates": false,
     "strict_streak_required": 5,
-    "streak_history_json": "reports\\prophecy_promotion_strict_streak_recommended_chain_v1.json"
+    "streak_history_json": "C:\\workspace\\reports\\prophecy_btrack_recommended_nbps_sweep_v1\\promotion_strict_streak_isolated_sweep_v1.json",
+    "calibration_note": "recommended_chain_v1 sweep neutral_bps=2.0; dual-leg + mild_downside; reports subdir; isolated streak."
   },
   "tracks": {
     "per_date_lens": {
@@ -38,7 +39,7 @@
             "min_mean_test_accuracy": 0.55
           },
           "observed": {
-            "mean_test_accuracy": 0.569444
+            "mean_test_accuracy": 0.566667
           }
         },
         {
@@ -49,7 +50,7 @@
             "max_stdev_test_accuracy": 0.15
           },
           "observed": {
-            "stdev_test_accuracy": 0.057265
+            "stdev_test_accuracy": 0.076012
           }
         },
         {
@@ -60,8 +61,8 @@
             "min_fraction_test_beats_always_bull": 0.5
           },
           "observed": {
-            "fraction_test_beats_always_bull": 0.75,
-            "n_folds": 4
+            "fraction_test_beats_always_bull": 0.8,
+            "n_folds": 5
           }
         },
         {
@@ -88,7 +89,7 @@
             "min_mean_test_accuracy": 0.55
           },
           "observed": {
-            "mean_test_accuracy": 0.552083
+            "mean_test_accuracy": 0.563333
           }
         },
         {
@@ -99,7 +100,7 @@
             "max_stdev_test_accuracy": 0.15
           },
           "observed": {
-            "stdev_test_accuracy": 0.039741
+            "stdev_test_accuracy": 0.077028
           }
         },
         {
@@ -110,8 +111,8 @@
             "min_fraction_test_beats_always_bull": 0.5
           },
           "observed": {
-            "fraction_test_beats_always_bull": 0.5,
-            "n_folds": 4
+            "fraction_test_beats_always_bull": 0.6,
+            "n_folds": 5
           }
         },
         {
@@ -122,7 +123,7 @@
             "min_min_test_accuracy_across_folds": 0.4
           },
           "observed": {
-            "min_test_accuracy": 0.5
+            "min_test_accuracy": 0.433333
           }
         }
       ]
@@ -161,8 +162,8 @@
           "passed": true,
           "reason": null,
           "detail": {
-            "neutral_ratio": 0.416667,
-            "neutral_count": 150,
+            "neutral_ratio": 0.058333,
+            "neutral_count": 21,
             "row_count": 360,
             "max_neutral_ratio": 0.7
           }
@@ -179,7 +180,7 @@
         "min_mean_test_accuracy": 0.55
       },
       "observed": {
-        "mean_test_accuracy": 0.569444
+        "mean_test_accuracy": 0.566667
       }
     },
     {
@@ -190,7 +191,7 @@
         "max_stdev_test_accuracy": 0.15
       },
       "observed": {
-        "stdev_test_accuracy": 0.057265
+        "stdev_test_accuracy": 0.076012
       }
     },
     {
@@ -201,8 +202,8 @@
         "min_fraction_test_beats_always_bull": 0.5
       },
       "observed": {
-        "fraction_test_beats_always_bull": 0.75,
-        "n_folds": 4
+        "fraction_test_beats_always_bull": 0.8,
+        "n_folds": 5
       }
     },
     {
@@ -247,8 +248,8 @@
       "passed": true,
       "reason": null,
       "detail": {
-        "neutral_ratio": 0.416667,
-        "neutral_count": 150,
+        "neutral_ratio": 0.058333,
+        "neutral_count": 21,
         "row_count": 360,
         "max_neutral_ratio": 0.7
       }
@@ -263,7 +264,7 @@
   "soft_passed": true,
   "lens_soft_passed": true,
   "instrument_soft_passed": true,
-  "strict_pass_streak": 5,
+  "strict_pass_streak": 6,
   "auto_promote_ready": true,
   "promotion_recommendation": "auto_promote_ready",
   "outcome_class": "pass_candidate",
@@ -279,5 +280,5 @@
     },
     "note": "Internal B-track classification only; not neuroscience or clinical claims. Pedagogical narrative: memory/obsidian_vault/UNIVERSE_MKm/CONCEPT_장뇌축_미생물_발효_아키텍처.md"
   },
-  "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing."
+  "note": "Dual-track B-track gates; combined requires lens WF + instrument WF + shared score checks. Human sign-off still required before A-track or live routing. recommended_chain_v1 sweep neutral_bps=2.0; dual-leg + mild_downside; reports subdir; isolated streak."
 }

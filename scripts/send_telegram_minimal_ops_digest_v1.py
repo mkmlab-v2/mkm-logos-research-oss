@@ -257,6 +257,11 @@ def _morning_kospi_only_window() -> bool:
     return 6 <= datetime.now(KST).hour < 11
 
 
+def _kospi_only_digest() -> bool:
+    """Morning prophecy body: KOSPI leg only (no BTC/MULTI hit-rate or non-KOSPI hypothesis)."""
+    return _truthy("MKM_TELEGRAM_MORNING_KOSPI_ONLY", default=True)
+
+
 def build_digest_prophecy(workspace: Path) -> str:
     """장전 예언 브리핑만(한글) — 일운·RAG·VPS·패널·R-IBL·운영 잡음 제외."""
     art = workspace / "docs" / "final" / "artifacts"
@@ -305,19 +310,29 @@ def build_digest_prophecy(workspace: Path) -> str:
     ]
     if session_ko:
         lines.append(f"  세션: {session_ko}")
-    lines.extend(
-        [
-            "",
-            "▸ 적중률(관측)",
-            f"  코스피: {_fmt_pct(kospi_hr)} (표본 {kospi_n})",
-            f"  비트코인: {_fmt_pct(btc_hr)} (표본 {btc_n})",
-            f"  통합: {_fmt_pct(pooled.get('price_directional_hit_rate'))} (표본 {pooled.get('n_evaluated')})",
-            "",
-            "▸ B트랙 가격 가설",
-            f"  {hypo_inst} · 방향 {hypo_dir}"
-            + (f" · 신뢰 {float(hypo_conf):.2f}" if hypo_conf is not None else ""),
-        ]
-    )
+    kospi_only = _kospi_only_digest()
+    hit_lines = [
+        "",
+        "▸ 적중률(관측)",
+        f"  코스피: {_fmt_pct(kospi_hr)} (표본 {kospi_n})",
+    ]
+    if not kospi_only:
+        hit_lines.extend(
+            [
+                f"  비트코인: {_fmt_pct(btc_hr)} (표본 {btc_n})",
+                f"  통합: {_fmt_pct(pooled.get('price_directional_hit_rate'))} (표본 {pooled.get('n_evaluated')})",
+            ]
+        )
+    lines.extend(hit_lines)
+    if not kospi_only or hypo_inst == "코스피":
+        lines.extend(
+            [
+                "",
+                "▸ B트랙 가격 가설",
+                f"  {hypo_inst} · 방향 {hypo_dir}"
+                + (f" · 신뢰 {float(hypo_conf):.2f}" if hypo_conf is not None else ""),
+            ]
+        )
     if overlay.get("applied"):
         us_s = overlay.get("us_overnight_score")
         dom_s = overlay.get("domestic_price_score")
@@ -339,7 +354,7 @@ def build_digest_prophecy(workspace: Path) -> str:
                 "",
                 "▸ 렌즈 스냅샷",
                 f"  가격 {price_s} · 뉴스 {news_s} · 거시 {macro_s}",
-                "  사상·명리·성경 상세는 executive 원페이저(MD) 참조",
+                "  사상·명리·성경 상세는 원페이저 브리핑(MD) 참조",
             ]
         )
     if brief.get("today_action") and brief.get("btrack_hypothesis"):
@@ -530,6 +545,15 @@ def main() -> int:
         os.environ["MKM_TELEGRAM_MINIMAL_DIGEST_ENABLED"] = "1"
         os.environ["MKM_TELEGRAM_DIGEST_STYLE"] = "prophecy"
         os.environ["MKM_TELEGRAM_INCLUDE_PERSONAL_FORTUNE"] = "0"
+        os.environ["MKM_TELEGRAM_MORNING_KOSPI_ONLY"] = "1"
+        for _k in (
+            "MKM_TELEGRAM_PROPHECY_INCLUDE_FORTUNE",
+            "MKM_TELEGRAM_PROPHECY_INCLUDE_RIBL",
+            "MKM_TELEGRAM_PROPHECY_INCLUDE_OPS_CONTEXT",
+            "MKM_TELEGRAM_PROPHECY_INCLUDE_DEV_COACH",
+            "MKM_TELEGRAM_PROPHECY_INCLUDE_TRUST_POINTER",
+        ):
+            os.environ[_k] = "0"
         args.force = True
         if args.style is None:
             args.style = "prophecy"
@@ -549,6 +573,14 @@ def main() -> int:
         return 0
 
     style = _resolve_style(args.style)
+    if style == "evening_review" and not _truthy("MKM_TELEGRAM_EVENING_DIGEST_ENABLED", default=False):
+        print("SKIP: MKM_TELEGRAM_EVENING_DIGEST_ENABLED not set (evening_review blocked)")
+        return 0
+    if style in {"advanced", "minimal", "personal"} and not _truthy(
+        "MKM_TELEGRAM_LEGACY_DIGEST_ENABLED", default=False
+    ):
+        print(f"SKIP: legacy style={style} blocked (set MKM_TELEGRAM_LEGACY_DIGEST_ENABLED=1 to override)")
+        return 0
     if (
         not args.allow_legacy_style
         and style != "prophecy"

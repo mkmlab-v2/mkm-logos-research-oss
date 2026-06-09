@@ -78,6 +78,7 @@ def test_build_digest_prophecy_korean_no_fortune(tmp_path: Path) -> None:
     assert "개인 일운" not in text
     assert "R-IBL" not in text
     assert "BTC" not in text
+    assert "executive" not in text.lower()
     assert "HYPO" not in text
     assert "Internal brief" not in text
     assert "B-track" not in text
@@ -93,3 +94,38 @@ def test_morning_blocks_evening_review_style(monkeypatch) -> None:
     monkeypatch.setenv("MKM_TELEGRAM_MORNING_KOSPI_ONLY", "1")
     monkeypatch.setattr(tg, "_morning_kospi_only_window", lambda: True)
     assert tg._resolve_style("evening_review") == "evening_review"
+
+
+def test_build_digest_prophecy_kospi_only_omits_btc(tmp_path: Path, monkeypatch) -> None:
+    monkeypatch.setenv("MKM_TELEGRAM_MORNING_KOSPI_ONLY", "1")
+    art = tmp_path / "docs" / "final" / "artifacts"
+    art.mkdir(parents=True, exist_ok=True)
+    (art / "internal_kospi_morning_brief_onepager_latest.json").write_text(
+        json.dumps({"today_action": "HOLD", "confidence_0_100": 40}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (art / "trackc_prophecy_dual_leg_brief_latest.json").write_text(
+        json.dumps(
+            {
+                "legs": {
+                    "kospi": {"n_evaluated": 10, "price_directional_hit_rate": 0.5},
+                    "btc": {"n_evaluated": 30, "price_directional_hit_rate": 0.667},
+                }
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    (art / "btrack_hypothesis_prophecy_latest.json").write_text(
+        json.dumps({"prediction": {"instrument": "BTC", "direction": "bear", "confidence": 0.9}}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (art / "prophecy_hit_rate_eval_latest.json").write_text(
+        json.dumps({"metrics": {"price_directional_hit_rate": 0.63, "n_evaluated": 30}}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    text = tg.build_digest_prophecy(tmp_path)
+    assert "코스피" in text
+    assert "비트코인" not in text
+    assert "통합" not in text
+    assert "B트랙 가격 가설" not in text

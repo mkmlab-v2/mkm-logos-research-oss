@@ -50,8 +50,12 @@ if ($LASTEXITCODE -ne 0) { Write-Warning "nasdaq fetch exit $LASTEXITCODE" }
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & $py scripts/run_commander_briefing_evolution_v1.py
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-& $py scripts/send_telegram_minimal_ops_digest_v1.py --style evening_review
-exit $LASTEXITCODE
+if ($env:MKM_TELEGRAM_EVENING_DIGEST_ENABLED -eq '1') {
+  & $py scripts/send_telegram_minimal_ops_digest_v1.py --style evening_review
+  exit $LASTEXITCODE
+}
+Write-Host '[SKIP] evening_review Telegram (MKM_TELEGRAM_EVENING_DIGEST_ENABLED!=1)'
+exit 0
 '@
 $loader = $loader.Replace('__WORKSPACE__', $WorkspaceRoot.Replace("'", "''"))
 $argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -Command `"$loader`""
