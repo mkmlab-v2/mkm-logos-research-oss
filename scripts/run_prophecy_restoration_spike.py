@@ -94,31 +94,16 @@ def _eval_year(eval_date: str) -> int | None:
     return int(s[:4])
 
 
-def _prior_completed_daily_return_by_eval_date(csv_path: Path) -> dict[str, float]:
-    """Map eval_date (YYYY-MM-DD) → prior trading session's simple close-to-close return.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
-    For CSV row index i (sorted ascending dates), eval_date = date[i]. The last fully
-    observed daily return before that session starts is (close[i-1]-close[i-2])/close[i-2].
-    """
-    if str(ROOT) not in sys.path:
-        sys.path.insert(0, str(ROOT))
-    from scripts.logos_shadow_eval_lib import load_kospi_yf_rows
-
-    rows = load_kospi_yf_rows(csv_path)
-    if len(rows) < 3:
-        return {}
-    out: dict[str, float] = {}
-    for i in range(2, len(rows)):
-        ed = str(rows[i]["date"])[:10]
-        try:
-            c1 = float(rows[i - 1]["close"])
-            c2 = float(rows[i - 2]["close"])
-        except (TypeError, ValueError):
-            continue
-        if c2 == 0.0:
-            continue
-        out[ed] = (c1 - c2) / c2
-    return out
+from scripts.prophecy_overlay_policies_v1 import (  # noqa: E402
+    _overnight_return_by_eval_date,
+    _prior_completed_daily_return_by_eval_date,
+    _prior_range_position_by_eval_date,
+    _realized_vol_5d_by_eval_date,
+    apply_overlay as _apply_overlay_impl,
+)
 
 
 def _apply_overlay(
@@ -128,39 +113,17 @@ def _apply_overlay(
     stress_years: set[int],
     prior_return_by_date: dict[str, float] | None,
     prior_return_threshold: float,
+    **kwargs: Any,
 ) -> tuple[list[dict[str, Any]], int]:
-    """Return new rows (deep copy) and count of modified predictions."""
-    modified = 0
-    out: list[dict[str, Any]] = []
-    prior_return_by_date = prior_return_by_date or {}
-    for r in rows:
-        nr = deepcopy(r)
-        pred = str(nr.get("predicted_direction") or "").strip().lower()
-        ed = str(nr.get("eval_date") or "").strip()[:10]
-        year = _eval_year(ed)
-        if overlay == "none":
-            pass
-        elif overlay == "stress_bear_to_neutral_v0":
-            if (
-                year is not None
-                and year in stress_years
-                and pred == "bear"
-            ):
-                nr["predicted_direction"] = "neutral"
-                nr["overlay_rule"] = "stress_bear_to_neutral_v0"
-                modified += 1
-        elif overlay == "prior_day_shock_bear_abstain_v0":
-            pr = prior_return_by_date.get(ed)
-            if pr is not None and pred == "bear" and pr <= prior_return_threshold:
-                nr["predicted_direction"] = "neutral"
-                nr["overlay_rule"] = "prior_day_shock_bear_abstain_v0"
-                nr["overlay_prior_completed_daily_return"] = round(pr, 8)
-                nr["overlay_prior_threshold"] = prior_return_threshold
-                modified += 1
-        else:
-            raise ValueError(f"unknown overlay: {overlay}")
-        out.append(nr)
-    return out, modified
+    return _apply_overlay_impl(
+        rows,
+        overlay=overlay,
+        stress_years=stress_years,
+        prior_return_by_date=prior_return_by_date,
+        prior_return_threshold=prior_return_threshold,
+        eval_year_fn=_eval_year,
+        **kwargs,
+    )
 
 
 def main() -> int:
