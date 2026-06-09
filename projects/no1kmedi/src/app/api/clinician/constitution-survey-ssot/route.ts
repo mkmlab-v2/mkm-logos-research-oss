@@ -46,6 +46,8 @@ export async function GET() {
       presurvey_api: "/api/intake/patient-presurvey",
       constitution_questions_in_app: CONSTITUTION_QUESTIONS.length,
       ssot_bank_path: BANK_REL,
+      print_form_path: "/forms/clinic_constitution_survey_print_v1.html",
+      print_form_label_ko: "사상체질 자가문진지 14문항 (A4 인쇄 · 원내용지)",
     },
     consumer_lane: {
       survey_url: consumerUrl,

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { ClinicianThreadContext } from "@/lib/clinician-chat-types";
 import {
   formatIntakePinInput,
+  formatPatientPinLookupError,
   normalizePatientNameInput,
   normalizePhoneLast4Input,
   triageBadgeClass,
@@ -14,6 +15,7 @@ import {
   applyPatientPinSurveyToClinicianState,
   type PatientPinLookupResponse,
 } from "@/lib/patient-intake-pin-lookup-v1";
+import { EnoMultimodalIntakePreviewCard } from "@/components/EnoMultimodalIntakePreviewCard";
 
 const RECENT_PIN_STORAGE_KEY = "advanced_consult_recent_pins_v1";
 
@@ -47,6 +49,10 @@ export function ClinicianConsultContextPanel({
   const [lookupStatus, setLookupStatus] = useState("");
   const [recentPins, setRecentPins] = useState<RecentPinItem[]>([]);
   const [surveySsot, setSurveySsot] = useState<ClinicianSurveySsotPayload | null>(null);
+  const [lifestylePrint, setLifestylePrint] = useState<{
+    print_form_path: string;
+    print_form_label_ko: string;
+  } | null>(null);
 
   const canUseAdvancedConsult = accessStatus?.success === true && accessStatus?.can_use_pro_clinical_assist === true;
 
@@ -57,6 +63,35 @@ export function ClinicianConsultContextPanel({
         const res = await fetch("/api/clinician/constitution-survey-ssot", { cache: "no-store" });
         const json = (await res.json()) as ClinicianSurveySsotPayload;
         if (!cancelled && json.success) setSurveySsot(json);
+      } catch {
+        /* optional metadata */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    void (async () => {
+      try {
+        const res = await fetch("/api/clinician/lifestyle-management-ssot", { cache: "no-store" });
+        const json = (await res.json()) as {
+          success?: boolean;
+          physician_lane?: { print_form_path?: string; print_form_label_ko?: string };
+        };
+        if (
+          !cancelled &&
+          json.success &&
+          json.physician_lane?.print_form_path &&
+          json.physician_lane?.print_form_label_ko
+        ) {
+          setLifestylePrint({
+            print_form_path: json.physician_lane.print_form_path,
+            print_form_label_ko: json.physician_lane.print_form_label_ko,
+          });
+        }
       } catch {
         /* optional metadata */
       }
@@ -86,6 +121,10 @@ export function ClinicianConsultContextPanel({
       setLookupStatus("PIN을 입력해 주세요.");
       return;
     }
+    if (!lookupName.trim() && lookupPhoneLast4.trim().length !== 4) {
+      setLookupStatus(formatPatientPinLookupError("second_factor_required"));
+      return;
+    }
     setLookupBusy(true);
     setLookupStatus("");
     try {
@@ -96,7 +135,12 @@ export function ClinicianConsultContextPanel({
       const res = await fetch(`/api/intake/patient-presurvey?${params.toString()}`, { cache: "no-store" });
       const json = (await res.json()) as PatientPinLookupResponse;
       if (!res.ok || !json.success || !json.survey) {
-        setLookupStatus(`조회 실패: ${json.error || "오류"}`);
+        if (res.status === 429 && json.error === "too_many_lookup_attempts") {
+          const retrySec = json.retry_after_seconds || 60;
+          setLookupStatus(`조회 제한 중입니다. 약 ${retrySec}초 후 다시 시도해 주세요.`);
+          return;
+        }
+        setLookupStatus(formatPatientPinLookupError(json.error));
         return;
       }
       const s = json.survey;
@@ -137,11 +181,20 @@ export function ClinicianConsultContextPanel({
           <h3>설문 레인 (SSOT)</h3>
           <p className="workspace-muted">{surveySsot.disclaimer}</p>
           <p className="consult-access-ok">
-            진료실: 문진 PIN + 앱 내 {surveySsot.physician_lane.constitution_questions_in_app}문항 · pack{" "}
+            <strong>원내 우선:</strong>{" "}
+            <a href={surveySsot.physician_lane.print_form_path} target="_blank" rel="noopener noreferrer">
+              {surveySsot.physician_lane.print_form_label_ko}
+            </a>
+            {" · "}
+            대기실 인쇄 → 환자 작성 → 차트 보관 → 한의사 확정 체질 기록
+          </p>
+          <p className="workspace-muted">
+            보조: 문진 PIN + 앱 내 {surveySsot.physician_lane.constitution_questions_in_app}문항 · pack{" "}
             {surveySsot.pack_id ?? "—"}
             {surveySsot.item_count != null ? ` (${surveySsot.item_count} bank items)` : ""}
           </p>
           <p className="workspace-muted">
+            소비자 레인(별도):{" "}
             <a href={surveySsot.consumer_lane.survey_url} target="_blank" rel="noopener noreferrer">
               {surveySsot.consumer_lane.label}
             </a>
@@ -151,20 +204,54 @@ export function ClinicianConsultContextPanel({
         </div>
       ) : null}
 
+      {lifestylePrint ? (
+        <div className="card consult-access-card">
+          <h3>생활관리 · 임신 준비</h3>
+          <p className="workspace-muted">
+            유산·회복·소음인 등 — 식이·운동·퍼스널컬러·<strong>[HYPO] 임신 시기(에너지)</strong> 원내 교부.
+            산부인과·Lab가 SSOT.
+          </p>
+          <p className="consult-access-ok">
+            <a href={lifestylePrint.print_form_path} target="_blank" rel="noopener noreferrer">
+              {lifestylePrint.print_form_label_ko}
+            </a>
+          </p>
+        </div>
+      ) : null}
+
+      <EnoMultimodalIntakePreviewCard context={context} onContextChange={patch} />
+
       <div className="card consult-access-card">
         <h3>문진 PIN</h3>
+        <p className="workspace-muted">PIN과 함께 <strong>환자 이름</strong> 또는 <strong>휴대폰 뒤 4자리</strong>가 필요합니다.</p>
         <div className="consult-access-row">
-          <input value={lookupPin} onChange={(e) => setLookupPin(formatIntakePinInput(e.target.value))} placeholder="PIN" />
+          <input
+            value={lookupPin}
+            onChange={(e) => setLookupPin(formatIntakePinInput(e.target.value))}
+            placeholder="예: H5N-8RL"
+            autoCapitalize="characters"
+            spellCheck={false}
+          />
           <input
             value={lookupName}
             onChange={(e) => setLookupName(normalizePatientNameInput(e.target.value))}
-            placeholder="이름"
+            onBlur={(e) => setLookupName(e.target.value.trim())}
+            placeholder="환자 이름"
+          />
+          <input
+            value={lookupPhoneLast4}
+            onChange={(e) => setLookupPhoneLast4(normalizePhoneLast4Input(e.target.value))}
+            placeholder="전화 뒤 4자리"
+            maxLength={4}
+            inputMode="numeric"
           />
           <button type="button" className="btn btn-ghost" onClick={() => void applyPatientPin()} disabled={lookupBusy}>
-            불러오기
+            {lookupBusy ? "조회 중…" : "불러오기"}
           </button>
         </div>
-        {lookupStatus ? <p className="consult-access-ok">{lookupStatus}</p> : null}
+        {lookupStatus ? (
+          <p className={lookupStatus.startsWith("반영:") ? "consult-access-ok" : "consult-error"}>{lookupStatus}</p>
+        ) : null}
         {context.loadedSurveyContext ? (
           <p className="consult-source-chip">
             {context.loadedSurveyContext.intakePin} / {context.loadedSurveyContext.patientName}{" "}
