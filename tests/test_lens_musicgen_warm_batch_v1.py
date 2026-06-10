@@ -17,11 +17,23 @@ from scripts.audio.musicgen_external_generator_v1 import (  # noqa: E402
     _resolve_max_new_tokens,
 )
 from scripts.build_dynamic_bgm_conditioning_diff_v1 import _normalize_sasang_in_prompt  # noqa: E402
-from scripts.build_lens_btrack_audio_loops_musicgen_v1 import recover_from_gen, _lut_entries  # noqa: E402
+from scripts.build_lens_btrack_audio_loops_musicgen_v1 import (  # noqa: E402
+    _should_publish_wav,
+    recover_from_gen,
+    _lut_entries,
+)
 
 
 def test_musicgen_warm_session_import() -> None:
     assert MusicGenWarmSession is not None
+
+
+def test_should_publish_wav_warn_mode(tmp_path: Path) -> None:
+    wav = tmp_path / "bgm.wav"
+    wav.write_bytes(b"RIFF" + b"\0" * 40)
+    assert _should_publish_wav(chain_rc=1, src_wav=wav, gate_mode="warn") is True
+    assert _should_publish_wav(chain_rc=1, src_wav=wav, gate_mode="strict") is False
+    assert _should_publish_wav(chain_rc=0, src_wav=wav, gate_mode="strict") is True
 
 
 def test_recover_from_gen_no_crash(tmp_path: Path) -> None:
