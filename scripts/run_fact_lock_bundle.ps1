@@ -1078,6 +1078,13 @@ if (-not $SkipIntegratedGovernanceBuild) {
 if (-not $SkipSafeOpsSurfaceCheck) {
     $safeOpsTail = Join-Path $workspaceRoot 'scripts\Invoke-SafeOpsSurfaceCheck.ps1'
     if (Test-Path -LiteralPath $safeOpsTail) {
+        if (-not $SafeOpsIgnoreLiveSync) {
+            $livePull = Join-Path $workspaceRoot 'scripts\Invoke-LiveSyncHeartbeatPull.ps1'
+            if (Test-Path -LiteralPath $livePull) {
+                Write-Host '== Fact-Lock (pre-safe-ops): LiveSync heartbeat pull (soft) ==' -ForegroundColor DarkCyan
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $livePull -WorkspaceRoot $workspaceRoot -SoftFail | Out-Null
+            }
+        }
         Write-Host '== Fact-Lock (recommended tail): Safe ops surface check ==' -ForegroundColor Cyan
         $safeOpsCli = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $safeOpsTail, '-WorkspaceRoot', $workspaceRoot)
         if ($SafeOpsIgnoreLiveSync) { $safeOpsCli += '-IgnoreLiveSync' }

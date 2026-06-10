@@ -31,7 +31,9 @@ DEFAULT_OUT = ART / "prophecy_lens_combo_backtest_v1_latest.json"
 LENS_LOGOS = "logos"
 LENS_MYEONGNI = "myeongni"
 LENS_SASANG = "sasang"
+LENS_SCIENCE = "science"
 LENSES = (LENS_LOGOS, LENS_MYEONGNI, LENS_SASANG)
+DEFAULT_SCIENCE_JSONL = ROOT / "reports" / "btrack_science_core_per_date_kospi_v1.jsonl"
 VALID_DIR = {"bull", "bear", "neutral"}
 
 # Ranking tie-break when primary metrics tie (see _rank_strategies).
@@ -157,7 +159,81 @@ def _extract_lens_maps(sidecar: dict[str, Any]) -> tuple[dict[str, int], dict[st
     return myeongni_by_date, sasang_by_date, logos_sign, logos_confidence
 
 
-def _build_variants() -> list[dict[str, Any]]:
+def _read_jsonl_rows(path: Path) -> list[dict[str, Any]]:
+    if not path.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            obj = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(obj, dict):
+            rows.append(obj)
+    return rows
+
+
+def _extract_science_maps(science_jsonl: Path) -> tuple[dict[str, int], dict[str, float]]:
+    signs: dict[str, int] = {}
+    scores: dict[str, float] = {}
+    for row in _read_jsonl_rows(science_jsonl):
+        eval_date = str(row.get("session_date") or row.get("eval_date") or "")[:10]
+        if not eval_date:
+            continue
+        direction = str(row.get("direction") or "").strip().lower()
+        sign = _dir_to_sign(direction)
+        score_block = row.get("scores")
+        direction_score: float | None = None
+        if isinstance(score_block, dict):
+            raw = score_block.get("direction_score")
+            if isinstance(raw, (int, float)):
+                direction_score = float(raw)
+        if direction_score is None:
+            raw = row.get("direction_score")
+            if isinstance(raw, (int, float)):
+                direction_score = float(raw)
+        if direction_score is None:
+            direction_score = float(sign)
+        signs[eval_date] = sign if sign != 0 else (1 if direction_score > 0 else (-1 if direction_score < 0 else 0))
+        scores[eval_date] = direction_score
+    return signs, scores
+
+
+def _science_blend_position(
+    *,
+    eval_date: str,
+    variant: dict[str, Any],
+    science_sign_map: dict[str, int],
+    science_score_map: dict[str, float],
+    myeongni_map: dict[str, int],
+    sasang_map: dict[str, int],
+    logos_sign: int,
+    deadzone: float,
+) -> int:
+    science_weight = float(variant.get("science_weight") or 0.55)
+    humanist_weight = float(variant.get("humanist_weight") or 0.45)
+    leg = str(variant.get("humanist_leg") or "sasang").strip().lower()
+    sci = float(science_score_map.get(eval_date, science_sign_map.get(eval_date, 0)))
+    if leg == LENS_SASANG:
+        hum = float(sasang_map.get(eval_date, 0))
+    elif leg == LENS_MYEONGNI:
+        hum = float(myeongni_map.get(eval_date, 0))
+    elif leg == LENS_LOGOS:
+        hum = float(logos_sign)
+    else:
+        hum = 0.0
+    blended = (science_weight * sci) + (humanist_weight * hum)
+    if blended > deadzone:
+        return 1
+    if blended < -deadzone:
+        return -1
+    return 0
+
+
+def _build_variants(*, include_science: bool = False) -> list[dict[str, Any]]:
     variants: list[dict[str, Any]] = []
     for lens in LENSES:
         variants.append({"id": lens, "lenses": [lens], "use_coordinator": False})
@@ -165,6 +241,44 @@ def _build_variants() -> list[dict[str, Any]]:
         variants.append({"id": f"{a}+{b}", "lenses": [a, b], "use_coordinator": False})
     variants.append({"id": "logos+myeongni+sasang", "lenses": list(LENSES), "use_coordinator": False})
     variants.append({"id": "logos+myeongni+sasang+coordinator", "lenses": list(LENSES), "use_coordinator": True})
+    if include_science:
+        variants.extend(
+            [
+                {
+                    "id": "science",
+                    "lenses": [LENS_SCIENCE],
+                    "use_coordinator": False,
+                    "resolver": "science_only",
+                },
+                {
+                    "id": "science+sasang",
+                    "lenses": [LENS_SCIENCE, LENS_SASANG],
+                    "use_coordinator": False,
+                    "resolver": "science_blend",
+                    "science_weight": 0.55,
+                    "humanist_weight": 0.45,
+                    "humanist_leg": LENS_SASANG,
+                },
+                {
+                    "id": "science+myeongni",
+                    "lenses": [LENS_SCIENCE, LENS_MYEONGNI],
+                    "use_coordinator": False,
+                    "resolver": "science_blend",
+                    "science_weight": 0.55,
+                    "humanist_weight": 0.45,
+                    "humanist_leg": LENS_MYEONGNI,
+                },
+                {
+                    "id": "science+logos",
+                    "lenses": [LENS_SCIENCE, LENS_LOGOS],
+                    "use_coordinator": False,
+                    "resolver": "science_blend",
+                    "science_weight": 0.55,
+                    "humanist_weight": 0.45,
+                    "humanist_leg": LENS_LOGOS,
+                },
+            ]
+        )
     return variants
 
 
@@ -225,6 +339,8 @@ def _simulate_variant(
     btc_prior: dict[str, float],
     myeongni_map: dict[str, int],
     sasang_map: dict[str, int],
+    science_sign_map: dict[str, int] | None = None,
+    science_score_map: dict[str, float] | None = None,
     logos_sign: int,
     logos_confidence: float,
     logos_vote_mode: str,
@@ -233,6 +349,8 @@ def _simulate_variant(
     deadzone: float,
     annual_trading_days: int,
 ) -> dict[str, Any]:
+    science_sign_map = science_sign_map or {}
+    science_score_map = science_score_map or {}
     prev_pos = 0
     equity = 1.0
     equity_curve: list[float] = []
@@ -248,19 +366,36 @@ def _simulate_variant(
         if actual_dir not in VALID_DIR:
             actual_dir = "neutral"
 
-        lens_signs: list[int] = []
-        for lens in variant["lenses"]:
-            if lens == LENS_LOGOS:
-                if logos_vote_mode == "omit":
-                    continue
-                if logos_vote_mode == "confidence_gated" and logos_confidence < logos_min_confidence:
-                    continue
-                lens_signs.append(logos_sign)
-            elif lens == LENS_MYEONGNI:
-                lens_signs.append(int(myeongni_map.get(eval_date, 0)))
-            elif lens == LENS_SASANG:
-                lens_signs.append(int(sasang_map.get(eval_date, 0)))
-        pos = _majority_sign(lens_signs)
+        resolver = str(variant.get("resolver") or "lens_majority").strip().lower()
+        if resolver == "science_only":
+            pos = int(science_sign_map.get(eval_date, 0))
+        elif resolver == "science_blend":
+            pos = _science_blend_position(
+                eval_date=eval_date,
+                variant=variant,
+                science_sign_map=science_sign_map,
+                science_score_map=science_score_map,
+                myeongni_map=myeongni_map,
+                sasang_map=sasang_map,
+                logos_sign=logos_sign,
+                deadzone=deadzone,
+            )
+        else:
+            lens_signs: list[int] = []
+            for lens in variant["lenses"]:
+                if lens == LENS_SCIENCE:
+                    lens_signs.append(int(science_sign_map.get(eval_date, 0)))
+                elif lens == LENS_LOGOS:
+                    if logos_vote_mode == "omit":
+                        continue
+                    if logos_vote_mode == "confidence_gated" and logos_confidence < logos_min_confidence:
+                        continue
+                    lens_signs.append(logos_sign)
+                elif lens == LENS_MYEONGNI:
+                    lens_signs.append(int(myeongni_map.get(eval_date, 0)))
+                elif lens == LENS_SASANG:
+                    lens_signs.append(int(sasang_map.get(eval_date, 0)))
+            pos = _majority_sign(lens_signs)
 
         # NON_GATING omit: lens abstain (pos==0) must not be overridden by BTC prior tie-break.
         if variant["use_coordinator"] and pos == 0 and logos_vote_mode != "omit":
@@ -402,6 +537,17 @@ def main() -> int:
         help="Used when --logos-vote-mode=confidence_gated (aligns with btrack min_direction_confidence band).",
     )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--include-science-core",
+        action="store_true",
+        help="Append science-core research arms (requires --science-jsonl). [HYPO] research_only.",
+    )
+    ap.add_argument(
+        "--science-jsonl",
+        type=Path,
+        default=DEFAULT_SCIENCE_JSONL,
+        help="Per-date science_core JSONL (session_date or eval_date rows).",
+    )
     args = ap.parse_args()
 
     score_doc = _read_json(args.score_json)
@@ -429,45 +575,43 @@ def main() -> int:
     deadzone = abs(float(args.coordinator_deadzone))
     annual_td = max(1, int(args.annual_trading_days))
 
-    variants = _build_variants()
-    strategy_results = [
-        _simulate_variant(
-            variant=v,
-            rows=filtered,
-            btc_prior=btc_prior,
-            myeongni_map=myeongni_map,
-            sasang_map=sasang_map,
-            logos_sign=logos_sign,
-            logos_confidence=logos_confidence,
-            logos_vote_mode=logos_vote_mode,
-            logos_min_confidence=logos_min_confidence,
-            fee_rate=fee_rate,
-            deadzone=deadzone,
-            annual_trading_days=annual_td,
-        )
-        for v in variants
-    ]
-    ranked = _rank_strategies(strategy_results)
+    include_science = bool(args.include_science_core)
+    science_sign_map: dict[str, int] = {}
+    science_score_map: dict[str, float] = {}
+    if include_science:
+        if not args.science_jsonl.is_file():
+            raise SystemExit(f"science jsonl missing for --include-science-core: {args.science_jsonl}")
+        science_sign_map, science_score_map = _extract_science_maps(args.science_jsonl)
 
-    fee_sensitivity: list[dict[str, Any]] = []
-    for fee_bps in fee_grid:
-        items = [
+    variants = _build_variants(include_science=include_science)
+
+    def _run_variants(rows: list[dict[str, Any]], fee: float) -> list[dict[str, Any]]:
+        return [
             _simulate_variant(
                 variant=v,
-                rows=filtered,
+                rows=rows,
                 btc_prior=btc_prior,
                 myeongni_map=myeongni_map,
                 sasang_map=sasang_map,
+                science_sign_map=science_sign_map,
+                science_score_map=science_score_map,
                 logos_sign=logos_sign,
                 logos_confidence=logos_confidence,
                 logos_vote_mode=logos_vote_mode,
                 logos_min_confidence=logos_min_confidence,
-                fee_rate=(fee_bps / 10000.0),
+                fee_rate=fee,
                 deadzone=deadzone,
                 annual_trading_days=annual_td,
             )
             for v in variants
         ]
+
+    strategy_results = _run_variants(filtered, fee_rate)
+    ranked = _rank_strategies(strategy_results)
+
+    fee_sensitivity: list[dict[str, Any]] = []
+    for fee_bps in fee_grid:
+        items = _run_variants(filtered, fee_bps / 10000.0)
         r = _rank_strategies(items)
         fee_sensitivity.append(
             {
@@ -492,23 +636,7 @@ def main() -> int:
     for idx, block in enumerate(wf_blocks):
         train_rows = block.get("train_rows") or []
         test_rows = block.get("test_rows") or []
-        items = [
-            _simulate_variant(
-                variant=v,
-                rows=test_rows,
-                btc_prior=btc_prior,
-                myeongni_map=myeongni_map,
-                sasang_map=sasang_map,
-                logos_sign=logos_sign,
-                logos_confidence=logos_confidence,
-                logos_vote_mode=logos_vote_mode,
-                logos_min_confidence=logos_min_confidence,
-                fee_rate=fee_rate,
-                deadzone=deadzone,
-                annual_trading_days=annual_td,
-            )
-            for v in variants
-        ]
+        items = _run_variants(test_rows, fee_rate)
         r = _rank_strategies(items)
         walkforward.append(
             {
@@ -548,6 +676,9 @@ def main() -> int:
             "logos_min_confidence": logos_min_confidence,
             "logos_sidecar_confidence": logos_confidence,
             "logos_sidecar_sign": logos_sign,
+            "include_science_core": include_science,
+            "science_jsonl": str(args.science_jsonl) if include_science else None,
+            "science_map_dates": len(science_sign_map) if include_science else 0,
         },
         "universe": {
             "strategies_total": len(strategy_results),
@@ -556,7 +687,15 @@ def main() -> int:
                 "two_lens_3",
                 "three_lens_1",
                 "three_lens_plus_coordinator_1",
-            ],
+            ]
+            + (
+                [
+                    "science_single_1",
+                    "science_humanist_pair_3",
+                ]
+                if include_science
+                else []
+            ),
         },
         "tie_break_policy": _tie_break_policy_doc(),
         "best_strategy": ranked[0] if ranked else None,

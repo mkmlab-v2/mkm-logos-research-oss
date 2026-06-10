@@ -174,6 +174,13 @@ def score_myeongni_at_date(
         consistency=consistency, contradiction=contradiction, rows_seen=len(history)
     )
     stub = bool(row.get("stub"))
+    provenance = str(row.get("source_provenance") or "").strip()
+    if provenance == "manseryeok_session_per_date_v1":
+        data_quality = provenance
+    elif stub:
+        data_quality = "calendar_stub"
+    else:
+        data_quality = "calendar_jsonl"
     return {
         "direction_score": round(direction, 6),
         "confidence": round(conf, 6),
@@ -182,7 +189,7 @@ def score_myeongni_at_date(
         "matched_calendar_day": matched_day,
         "eval_date": eval_date[:10],
         "causal_rows_seen": len(history),
-        "data_quality": "calendar_stub" if stub else "calendar_jsonl",
+        "data_quality": data_quality,
         "engine_mirror": "run_lens_myeongni_v0.2.0_per_date",
     }
 

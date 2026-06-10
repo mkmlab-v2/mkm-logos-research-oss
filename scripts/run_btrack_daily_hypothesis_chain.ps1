@@ -127,7 +127,9 @@ param(
   [switch]$SkipKospiShockCutoffObservation,
   [switch]$IncludeKospiShockCutoffObservation,
   # Walk-forward folds for daily shadow refresh (align with run_btrack_promotion_push_v1 default 6).
-  [int]$ProphecyWalkforwardNFolds = 6
+  [int]$ProphecyWalkforwardNFolds = 6,
+  # Science Core B-track tail: governance-gated prophecy combo + lane readiness (research_only; default OFF).
+  [switch]$IncludeScienceCoreLane
 )
 $ErrorActionPreference = "Stop"
 Set-Location $WorkspaceRoot
@@ -922,6 +924,43 @@ if (-not $SkipModelSwapHarness) {
   }
 } else {
   Write-Host "Skip model swap harness (-SkipModelSwapHarness)." -ForegroundColor DarkYellow
+}
+
+if ($IncludeScienceCoreLane) {
+  Write-Host "==> run_science_core_prophecy_combo_attach_v1.py (governance-gated science combo; research_only)" -ForegroundColor Cyan
+  py scripts/run_science_core_prophecy_combo_attach_v1.py --force-run
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: science_core prophecy combo attach exit $LASTEXITCODE; continuing chain (non-gating)." -ForegroundColor Yellow
+  }
+  $sciComboOut = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_lens_combo_backtest_science_core_v1_latest.json"
+  if (-not (Test-Path -LiteralPath $sciComboOut)) {
+    Write-Host "==> run_prophecy_lens_combo_backtest_v1.py --include-science-core (fallback direct combo)" -ForegroundColor Cyan
+    $sciScore = Join-Path $WorkspaceRoot "reports\btrack_prophecy_score_science_core_panel_v1.json"
+    $sciSidecar = Join-Path $WorkspaceRoot "reports\btrack_prophecy_score_insight_sidecar_science_core_panel_v1.json"
+    $sciJsonl = Join-Path $WorkspaceRoot "reports\btrack_science_core_per_date_kospi_v1.jsonl"
+    if ((Test-Path -LiteralPath $sciScore) -and (Test-Path -LiteralPath $sciSidecar) -and (Test-Path -LiteralPath $sciJsonl)) {
+      py scripts/run_prophecy_lens_combo_backtest_v1.py `
+        --score-json $sciScore `
+        --sidecar-json $sciSidecar `
+        --science-jsonl $sciJsonl `
+        --target-instrument kospi `
+        --include-science-core `
+        --logos-vote-mode omit `
+        --output $sciComboOut
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: direct science-core combo backtest exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+      }
+    } else {
+      Write-Host "WARN: Skip direct science-core combo (missing panel/science jsonl inputs)." -ForegroundColor Yellow
+    }
+  }
+  Write-Host "==> check_science_core_lane_readiness_v1.py (lane readiness snapshot)" -ForegroundColor Cyan
+  py scripts/check_science_core_lane_readiness_v1.py
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: check_science_core_lane_readiness exit $LASTEXITCODE; continuing chain (non-gating)." -ForegroundColor Yellow
+  }
+} else {
+  Write-Host "Skip Science Core lane tail (-IncludeScienceCoreLane to enable)." -ForegroundColor DarkYellow
 }
 
 if (-not $SkipPanel24hAlertsCheck) {
