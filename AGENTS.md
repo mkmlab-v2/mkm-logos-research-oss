@@ -244,6 +244,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【mkmlife 상용 게이트】 | 오프라인 상용화·소비자 파사드 pytest | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MkmlifePortalCommercialization` |
 | 【mkmlife 라이브·Playwright】 | mkmlife.com 라이브 스모크 + Playwright skim | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MkmlifePortalCommercializationLive` |
 | 【personadiary 디자인 스모크】 | personadiary.com 허브·Phase2 lattice/ritual 라이브 | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona PersonadiaryPortalDesign` |
+| 【멀티도메인 디자인 결선】 | P0 + 오프라인 pytest + mkmlife/personadiary/jemaai 라이브 스모크 | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MkmDomainDesignClosure` |
 | 【쇼룸 커밋 범위】 | Track C 쇼룸 전용 `git status` 목록 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Show-ShowroomTrackCGitScope_v1.ps1` |
 | 【A-code 운영자 보조】 | RQ-031 operator lane thin (`-SkipGovernorBundle`) + lane gate | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona OperatorAssistLane` |
 | 【A-code 운영자 보조 full】 | RQ-031 full (multiday governor 포함) | `… -Persona OperatorAssistLaneFull` |

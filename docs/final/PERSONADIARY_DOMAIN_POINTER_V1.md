@@ -48,6 +48,7 @@
 - [x] `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` 표 갱신 — **2026-06-10** (디자인 허브·Phase 2 lattice ritual; `preview_only` 유지)
 - [x] **디자인 허브 푸터** — `PersonadiaryHubFooter` · `mkm_domain_design_tokens_v1.json` · 라이브 스모크 `Run-PersonadiaryPortalDesignSmoke_v1.ps1`
 - [x] **Phase 2 UI (B-track)** — Lattice Convergence + Major-22 ritual LUT (`personadiary_ritual_draw_lut_major22_v1.json` · bloom slice); **세션 저장만** · mkmlife API 합선 없음
+- [x] **멀티도메인 결선** — `Invoke-MkmDomainDesignClosureBundle_v1.ps1` · 산출 `reports/mkm_domain_design_closure_v1_latest.json` (`closure_ok`)
 
 ---
 
