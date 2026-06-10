@@ -169,3 +169,16 @@ def test_repair_v2_noise_guard_keeps_improving_repair() -> None:
     improved = baseline + "\nscripts pytest fact-lock evaluate_report"
     out = apply_repair_v2_noise_guard(query, baseline_text=baseline, repair_text=improved)
     assert out == improved
+
+
+def test_repair_v2_noise_guard_rejects_marginal_bulk_on_drift() -> None:
+    query = "prism_btrack_insight_bridge_inventory_latest prism M SSOT"
+    baseline = "x" * 252
+    marginal = baseline + "\n" + ("registry drift noise " * 80)
+    out = apply_repair_v2_noise_guard(
+        query,
+        baseline_text=baseline,
+        repair_text=marginal,
+        mutation="stale_sha",
+    )
+    assert out == baseline

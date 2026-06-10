@@ -581,6 +581,9 @@ def slice_improves_query_jaccard(query: str, header: str, slice_text: str) -> bo
 
 
 REPAIR_V2_NOISE_GUARD_MIN_EXTRA_CHARS = 192
+REPAIR_V2_NOISE_GUARD_MIN_JACCARD_GAIN = 0.02
+REPAIR_V2_NOISE_GUARD_MAX_BULK_RATIO = 1.35
+DRIFT_REPAIR_MUTATIONS = frozenset({"stale_sha", "wrong_json_pointer", "header_drop"})
 
 
 def apply_repair_v2_noise_guard(
@@ -589,17 +592,30 @@ def apply_repair_v2_noise_guard(
     baseline_text: str,
     repair_text: str,
     min_extra_chars: int = REPAIR_V2_NOISE_GUARD_MIN_EXTRA_CHARS,
+    min_jaccard_gain: float = REPAIR_V2_NOISE_GUARD_MIN_JACCARD_GAIN,
+    max_bulk_ratio: float = REPAIR_V2_NOISE_GUARD_MAX_BULK_RATIO,
+    mutation: str = "baseline",
 ) -> str:
     """Drop repair slices when they add bulk without improving query Jaccard ([HYPO] B-track)."""
     if not query.strip() or not repair_text.strip():
         return repair_text
     if not baseline_text.strip():
         return repair_text
-    if len(repair_text) <= len(baseline_text) + min_extra_chars:
+    extra_chars = len(repair_text) - len(baseline_text)
+    if extra_chars <= min_extra_chars:
         return repair_text
     j_base = jaccard_similarity(query, baseline_text)
     j_repair = jaccard_similarity(query, repair_text)
     if j_repair <= j_base:
+        return baseline_text
+    gain = j_repair - j_base
+    bulk_ratio = len(repair_text) / max(len(baseline_text), 1)
+    gain_floor = min_jaccard_gain
+    ratio_cap = max_bulk_ratio
+    if mutation in DRIFT_REPAIR_MUTATIONS:
+        gain_floor = max(gain_floor, 0.025)
+        ratio_cap = min(ratio_cap, 1.25)
+    if bulk_ratio > ratio_cap and gain < gain_floor:
         return baseline_text
     return repair_text
 
@@ -635,7 +651,12 @@ def assemble_ops_memory_repair_v2_text(
     )
     if not noise_guard:
         return repaired
-    return apply_repair_v2_noise_guard(query, baseline_text=baseline, repair_text=repaired)
+    return apply_repair_v2_noise_guard(
+        query,
+        baseline_text=baseline,
+        repair_text=repaired,
+        mutation=mutation,
+    )
 
 
 def _window_around_best_token_hit(text: str, tokens: list[str], max_chars: int) -> str:
