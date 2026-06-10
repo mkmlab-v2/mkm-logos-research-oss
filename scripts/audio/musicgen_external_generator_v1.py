@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import sys
 import wave
@@ -63,14 +64,39 @@ def _resolve_prompt(seed: dict[str, Any], conditioning: dict[str, Any] | None, e
     return ", ".join(parts) if parts else "minimal instrumental underscore bed, no vocals"
 
 
+def _resolve_effective_seconds(
+    seed: dict[str, Any],
+    conditioning: dict[str, Any] | None,
+    cli_seconds: float,
+) -> float:
+    """Seed target_loop_seconds > conditioning duration > CLI --seconds."""
+    numeric = extract_numeric_conditioning(conditioning)
+    if numeric.get("duration_seconds") is not None:
+        return float(numeric["duration_seconds"])
+    loop_s = seed.get("target_loop_seconds")
+    if loop_s is not None:
+        return float(loop_s)
+    if cli_seconds and cli_seconds > 0:
+        return float(cli_seconds)
+    return 8.0
+
+
+def _enrich_numeric_duration(numeric: dict[str, Any], effective_seconds: float) -> dict[str, Any]:
+    if numeric.get("duration_seconds") is not None:
+        return numeric
+    return {**numeric, "duration_seconds": float(effective_seconds)}
+
+
 def _resolve_max_new_tokens(seconds: float, conditioning: dict[str, Any] | None) -> int:
     cap = float(seconds)
     if conditioning:
         cond = conditioning.get("conditioning") or {}
         if cond.get("duration_seconds"):
             cap = min(cap, float(cond["duration_seconds"]))
-    max_cap = int(os.environ.get("MKM_AUDIO_MUSICGEN_MAX_NEW_TOKENS", "1500"))
-    return max(128, min(max_cap, int(cap * 50)))
+    tokens_per_second = float(os.environ.get("MKM_AUDIO_MUSICGEN_TOKENS_PER_SECOND", "51"))
+    max_cap = int(os.environ.get("MKM_AUDIO_MUSICGEN_MAX_NEW_TOKENS", "2048"))
+    min_floor = int(os.environ.get("MKM_AUDIO_MUSICGEN_MIN_NEW_TOKENS", "128"))
+    return max(min_floor, min(max_cap, int(math.ceil(cap * tokens_per_second))))
 
 
 def _post_process_loop_lufs(samples, sample_rate: int, *, target_lufs: float = -12.0):
@@ -333,14 +359,18 @@ class MusicGenWarmSession:
     ) -> dict[str, Any]:
         expand_path = out_wav.with_suffix(".expand.json")
         expand = _load_json(expand_path) if expand_path.is_file() else None
+        effective_seconds = _resolve_effective_seconds(seed, conditioning, seconds)
         prompt = _resolve_prompt(seed, conditioning, expand)
-        max_new_tokens = _resolve_max_new_tokens(seconds, conditioning)
-        numeric = extract_numeric_conditioning(conditioning)
+        max_new_tokens = _resolve_max_new_tokens(effective_seconds, conditioning)
+        numeric = _enrich_numeric_duration(
+            extract_numeric_conditioning(conditioning),
+            effective_seconds,
+        )
         bundle, numeric_mode = self._bundle_for(numeric, self.numeric_mode, sample_rate)
         sr_hint = int(numeric.get("sample_rate") or sample_rate)
         melody_guide_seconds = min(
-            float(numeric.get("duration_seconds") or seconds or 8.0),
-            float(os.environ.get("MKM_AUDIO_MUSICGEN_MELODY_GUIDE_SECONDS", "30")),
+            float(numeric.get("duration_seconds") or effective_seconds),
+            float(os.environ.get("MKM_AUDIO_MUSICGEN_MELODY_GUIDE_SECONDS", "32")),
         )
         samples, out_sr, device, injection_meta = _generate_with_bundle(
             bundle,
@@ -433,14 +463,18 @@ def main() -> int:
     expand_path = args.out_wav.with_suffix(".expand.json")
     expand = _load_json(expand_path) if expand_path.is_file() else None
 
+    effective_seconds = _resolve_effective_seconds(seed, conditioning, args.seconds)
     prompt = _resolve_prompt(seed, conditioning, expand)
-    max_new_tokens = _resolve_max_new_tokens(args.seconds, conditioning)
-    numeric = extract_numeric_conditioning(conditioning)
+    max_new_tokens = _resolve_max_new_tokens(effective_seconds, conditioning)
+    numeric = _enrich_numeric_duration(
+        extract_numeric_conditioning(conditioning),
+        effective_seconds,
+    )
     numeric_mode = _numeric_injection_mode(numeric)
     sr_hint = int(numeric.get("sample_rate") or args.sample_rate)
     melody_guide_seconds = min(
-        float(numeric.get("duration_seconds") or args.seconds or 8.0),
-        float(os.environ.get("MKM_AUDIO_MUSICGEN_MELODY_GUIDE_SECONDS", "30")),
+        float(numeric.get("duration_seconds") or effective_seconds),
+        float(os.environ.get("MKM_AUDIO_MUSICGEN_MELODY_GUIDE_SECONDS", "32")),
     )
 
     if args.dry_run:
@@ -455,6 +489,7 @@ def main() -> int:
                     "model_id_effective": effective_model,
                     "prompt_preview": prompt[:200],
                     "max_new_tokens": max_new_tokens,
+                    "effective_seconds": effective_seconds,
                     "conditioning_json": str(cond_path) if cond_path else None,
                     "numeric_mode": numeric_mode,
                     "numeric_fields": numeric,
@@ -512,6 +547,7 @@ def main() -> int:
                 "device": device,
                 "prompt_preview": prompt[:200],
                 "max_new_tokens": max_new_tokens,
+                "effective_seconds": effective_seconds,
                 "sample_rate": out_sr,
                 "index": args.index,
                 "run_id": args.run_id,
