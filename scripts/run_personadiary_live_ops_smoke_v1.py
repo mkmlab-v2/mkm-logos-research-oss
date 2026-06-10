@@ -20,6 +20,14 @@ HUB_FOOTER_MARKERS = (
 )
 HUB_FOOTER_BOUNDARY = "합치지 않습니다"
 
+PHASE2_HTML_MARKERS = (
+    "pd-ritual-draw",
+    "Lattice Convergence",
+    "빛의 구슬",
+)
+PHASE2_LUT_SCHEMA = "personadiary_ritual_draw_lut_major22_v1"
+PHASE2_BLOOM_SCHEMA = "magic_orb_graph_bloom_v1"
+
 
 def hub_footer_probe_ok(html: str) -> tuple[bool, str]:
     """Design polish: MKM family hub footer on apex HTML (preview_only boundary)."""
@@ -72,6 +80,54 @@ def main() -> int:
         "url": f"{APEX}/",
         "ok": page.get("ok") and page.get("status") == 200 and hub_ok,
         "detail": hub_detail,
+    }
+
+    phase2_missing = [m for m in PHASE2_HTML_MARKERS if m not in page_text]
+    probes["phase2_ritual_lattice_html"] = {
+        "url": f"{APEX}/",
+        "ok": page.get("ok") and page.get("status") == 200 and not phase2_missing,
+        "detail": (
+            f"markers ok ({', '.join(PHASE2_HTML_MARKERS)})"
+            if not phase2_missing
+            else f"missing: {', '.join(phase2_missing)}"
+        ),
+    }
+
+    lut_fetch = _fetch(f"{APEX}/data/personadiary_ritual_draw_lut_major22_v1.json")
+    lut_ok = False
+    if lut_fetch.get("ok") and lut_fetch.get("status") == 200:
+        try:
+            lut_doc = json.loads(lut_fetch["text"])
+            lut_ok = (
+                lut_doc.get("schema") == PHASE2_LUT_SCHEMA
+                and lut_doc.get("preview_only") is True
+                and len(lut_doc.get("cards") or []) == 22
+            )
+        except json.JSONDecodeError:
+            lut_ok = False
+    probes["phase2_ritual_lut_json"] = {
+        "url": f"{APEX}/data/personadiary_ritual_draw_lut_major22_v1.json",
+        "status": lut_fetch.get("status"),
+        "ok": lut_ok,
+    }
+
+    bloom_fetch = _fetch(f"{APEX}/data/personadiary_lattice_convergence_bloom_slice_v1.json")
+    bloom_ok = False
+    if bloom_fetch.get("ok") and bloom_fetch.get("status") == 200:
+        try:
+            bloom_doc = json.loads(bloom_fetch["text"])
+            bloom_ok = (
+                bloom_doc.get("schema") == PHASE2_BLOOM_SCHEMA
+                and bloom_doc.get("research_only") is True
+                and bloom_doc.get("non_gating") is True
+                and any(n.get("kind") == "query" for n in bloom_doc.get("nodes") or [])
+            )
+        except json.JSONDecodeError:
+            bloom_ok = False
+    probes["phase2_lattice_bloom_json"] = {
+        "url": f"{APEX}/data/personadiary_lattice_convergence_bloom_slice_v1.json",
+        "status": bloom_fetch.get("status"),
+        "ok": bloom_ok,
     }
 
     guide = _fetch(f"{APEX}/api/personadiary/daily-guide")

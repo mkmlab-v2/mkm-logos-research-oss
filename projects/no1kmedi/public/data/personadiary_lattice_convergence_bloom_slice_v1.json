@@ -1,0 +1,64 @@
+{
+  "schema": "magic_orb_graph_bloom_v1",
+  "research_only": true,
+  "non_gating": true,
+  "disclaimer_ko": "[가설] 공명 맵 슬라이스는 교육·성찰 프리뷰이며 투자·실매매·임상 단정이 아닙니다.",
+  "nodes": [
+    {
+      "id": "q_reflect",
+      "label": "reflection query",
+      "label_ko": "성찰 질문",
+      "kind": "query"
+    },
+    {
+      "id": "theme_calm",
+      "label_ko": "평온 회복",
+      "kind": "theme",
+      "hub_score": 0.72,
+      "label": "평온 회복"
+    },
+    {
+      "id": "theme_relation",
+      "label_ko": "관계 신호",
+      "kind": "theme",
+      "hub_score": 0.68,
+      "label": "관계 신호"
+    },
+    {
+      "id": "concept_breath",
+      "label_ko": "호흡 페이싱",
+      "kind": "concept",
+      "hub_score": 0.65,
+      "label": "호흡 페이싱"
+    },
+    {
+      "id": "regime_watch",
+      "label_ko": "관측 WATCH",
+      "kind": "regime",
+      "hub_score": 0.55,
+      "label": "관측 WATCH"
+    },
+    {
+      "id": "verse_anchor",
+      "label_ko": "성경 앵커",
+      "kind": "verse",
+      "hub_score": 0.5,
+      "ref": "logos_preview",
+      "label": "성경 앵커"
+    },
+    {
+      "id": "lemma_moment",
+      "label_ko": "찰나 기록",
+      "kind": "lemma",
+      "hub_score": 0.6,
+      "label": "찰나 기록"
+    }
+  ],
+  "edges": [
+    {
+      "src": "q_reflect",
+      "dst": "theme_calm",
+      "weight": 0.4
+    }
+  ]
+}

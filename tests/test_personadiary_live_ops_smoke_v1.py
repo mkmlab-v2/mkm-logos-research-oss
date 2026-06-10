@@ -37,3 +37,8 @@ def test_hub_footer_probe_fails_when_boundary_missing():
     ok, detail = mod.hub_footer_probe_ok(html)
     assert ok is False
     assert "boundary" in detail
+
+
+def test_phase2_html_markers_constant():
+    mod = _load_smoke_module()
+    assert "pd-ritual-draw" in mod.PHASE2_HTML_MARKERS
