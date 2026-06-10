@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.error import HTTPError, URLError
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent.parent
 ART = ROOT / "docs" / "final" / "artifacts"
@@ -19,8 +19,15 @@ def _now_utc() -> str:
 
 
 def _fetch_text(url: str, timeout: float) -> tuple[bool, str]:
+    req = Request(
+        url,
+        headers={
+            "Accept": "text/html,application/json;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (compatible; MKM-AcodeaiBindingCheck/1.0)",
+        },
+    )
     try:
-        with urlopen(url, timeout=timeout) as resp:
+        with urlopen(req, timeout=timeout) as resp:
             body = resp.read().decode("utf-8", errors="replace")
             return True, body
     except (HTTPError, URLError, TimeoutError, ValueError):
