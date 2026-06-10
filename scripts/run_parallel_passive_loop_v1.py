@@ -102,6 +102,7 @@ def lane_shim() -> dict[str, Any]:
             "Bypass",
             "-File",
             str(ps1),
+            "-StartShimIfDown",
         ]
     )
     bench = _read_json(ROOT / "reports/chat_shim_compress_ab_bench_v1_latest.json") or {}

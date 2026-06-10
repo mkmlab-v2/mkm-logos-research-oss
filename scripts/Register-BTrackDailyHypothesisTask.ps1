@@ -68,6 +68,8 @@ param(
     [switch]$SkipPhase3NetworkFetch,
     # Forward to run_btrack_daily_hypothesis_chain.ps1 (Phase2 market_myeongni_lens_v1; read-only bundle slot).
     [switch]$IncludeMarketMyeongniOverlay,
+    # Science Core B-track tail: prophecy combo attach + lane readiness (research_only; default OFF).
+    [switch]$IncludeScienceCoreLane,
     # Skip TE monitor dump when tools/core/transfer_entropy_market_regime_detector.py is absent (B-track research_only).
     [switch]$SkipPathologyTeMapping,
     [switch]$RunWhenLoggedOff,
@@ -109,6 +111,9 @@ if ($SkipPhase3NetworkFetch) {
 }
 if ($IncludeMarketMyeongniOverlay) {
     $argLine += " -IncludeMarketMyeongniOverlay"
+}
+if ($IncludeScienceCoreLane) {
+    $argLine += " -IncludeScienceCoreLane"
 }
 $teDetectorPath = Join-Path $WorkspaceRoot "tools\core\transfer_entropy_market_regime_detector.py"
 $skipTe = $SkipPathologyTeMapping.IsPresent -or -not (Test-Path -LiteralPath $teDetectorPath)
