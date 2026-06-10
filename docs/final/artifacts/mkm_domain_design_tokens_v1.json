@@ -1,0 +1,36 @@
+{
+  "schema": "mkm_domain_design_tokens_v1",
+  "updated_utc": "2026-06-10",
+  "note": "Domain palettes stay isolated per MKM_DOMAIN_PORTFOLIO §1.1 — do not merge --accent across hosts.",
+  "domains": {
+    "mkmlife.com": {
+      "role": "consumer_observation_portal",
+      "palette": { "bg": "#0a0f1a", "accent": "#2dd4bf", "muted": "#94a3b8" },
+      "css_ssot": "projects/mkm/mkm-life/app/globals.css",
+      "ops_tail_env": "MKM_MKLIFE_SHOW_OPS_TAIL",
+      "ops_tail_query": "ops=1"
+    },
+    "jema-ai.com": {
+      "role": "brand_hub_light_clinical",
+      "palette": { "bg": "#0a1210", "accent": "#3d9b84", "muted": "#9aa9a3" },
+      "css_ssot": "projects/no1kmedi/src/app/globals.css",
+      "preset_default": "stripe-linear",
+      "preset_ssot": "projects/no1kmedi/src/lib/homepagePreset.ts"
+    },
+    "jemaai.cloud": {
+      "role": "dark_showroom_board",
+      "palette": { "bg": "#0a0b0d", "accent": "#c5a057", "muted": "#8b919d" },
+      "html_ssot": "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_board_minimal.html"
+    },
+    "personadiary.com": {
+      "role": "preview_life_reflection",
+      "palette": { "bg": "#030712", "accent": "#34d399", "muted": "#94a3b8" },
+      "css_ssot": "projects/no1kmedi/src/components/PersonadiaryChrome.tsx",
+      "preview_only": true,
+      "route_ssot": "projects/no1kmedi/src/app/personadiary/page.tsx",
+      "hub_footer_component": "projects/no1kmedi/src/components/personadiary/PersonadiaryHubFooter.tsx"
+    }
+  },
+  "hub_cta_ssot": "projects/no1kmedi/marketing-site/public-copy.json",
+  "hub_cta_policy": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1b"
+}
