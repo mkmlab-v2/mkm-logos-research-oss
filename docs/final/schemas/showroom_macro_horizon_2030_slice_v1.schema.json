@@ -116,6 +116,37 @@
         "non_gating": { "type": "boolean", "const": true }
       }
     },
-    "boundary_ack": { "type": "string", "minLength": 10 }
+    "boundary_ack": { "type": "string", "minLength": 10 },
+    "lens_media_bind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sasang_primary",
+        "showroom_display_mode",
+        "playback_id",
+        "media_hub_query",
+        "non_gating",
+        "hypothesis_class",
+        "bind_reason",
+        "sasang_source"
+      ],
+      "properties": {
+        "sasang_primary": {
+          "type": "string",
+          "enum": ["soyang", "taeyang", "taeeum", "soeum"]
+        },
+        "showroom_display_mode": {
+          "type": "string",
+          "enum": ["idle", "defend", "attack"]
+        },
+        "playback_id": { "type": "string", "minLength": 8 },
+        "video_playback_id": { "type": "string", "minLength": 8 },
+        "media_hub_query": { "type": "string", "minLength": 8 },
+        "sasang_source": { "type": "string", "minLength": 4 },
+        "non_gating": { "type": "boolean", "const": true },
+        "hypothesis_class": { "type": "string", "const": "HYPO" },
+        "bind_reason": { "type": "string", "minLength": 4 }
+      }
+    }
   }
 }
