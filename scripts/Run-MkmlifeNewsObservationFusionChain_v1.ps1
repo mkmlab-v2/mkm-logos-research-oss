@@ -62,7 +62,6 @@ if ($DeployMkmlifeAssets -or $FullMkmlifeDeploy) {
         Write-Host "[5/6] mkmlife asset deploy (wrangler; /news-deck route needs -FullMkmlifeDeploy once)..." -ForegroundColor Cyan
         $deployArgs += "-DeployAssets"
     }
-    $deployArgs += "-SkipPostDeploySmoke"
     & powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-Op30Phase2Daily_v1.ps1 @deployArgs
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 } else {
