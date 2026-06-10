@@ -7,6 +7,7 @@ import { ContactActionLinks } from "@/components/ContactActionLinks";
 import { BasicHealthChatCard } from "@/components/BasicHealthChatCard";
 import { HomepageAppEntry } from "@/components/HomepageAppEntry";
 import { FieldLensGovernanceFlow } from "@/components/FieldLensGovernanceFlow";
+import { HubDomainCrossLinks, HUB_FOOTER_KEYS } from "@/components/HubDomainCrossLinks";
 import { HomeHeroSection } from "@/components/HomeHeroSection";
 import { PaddleCheckoutButton } from "@/components/PaddleCheckoutButton";
 
@@ -315,6 +316,12 @@ export default function HomePage({ searchParams }: HomePageProps) {
 
       <footer className="site-footer">
         <div className="footer-inner">
+          <HubDomainCrossLinks
+            hubLinks={c.hub_links}
+            keys={HUB_FOOTER_KEYS}
+            className="footer-hub-links"
+            ariaLabel="MKM 패밀리 · 제품 허브"
+          />
           <div className="footer-brand">{c.footer.company_line}</div>
           <div className="footer-meta">
             <p>{c.footer.brand_subline}</p>
