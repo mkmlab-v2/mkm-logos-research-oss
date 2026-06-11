@@ -277,6 +277,9 @@ tmp_*.css
 tmp_*.html
 staging/
 
+# Slim public reproduce mirror (nested git → GitHub mkmlab-v2/a-codeai-compression-reproduce)
+exports/a-codeai-public-reproduce-v2/
+
 # Local docs/code exports (large Cursor/chat-style trees; do not bulk-commit)
 docs/code/
 

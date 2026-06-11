@@ -78,4 +78,19 @@ else
   fail "POST /v1/compress missing expected response fields"
 fi
 
+# 5) Open-bench payload JSON (optional but recommended after deploy)
+BENCH_PAYLOAD_BODY="$TMP_DIR/bench_payload.body"
+BENCH_PAYLOAD_CODE="$TMP_DIR/bench_payload.code"
+request GET "/a_codeai_public_bench_landing_payload_v1_latest.json" "$BENCH_PAYLOAD_BODY" "$BENCH_PAYLOAD_CODE"
+code="$(cat "$BENCH_PAYLOAD_CODE")"
+if [[ "$code" == "200" ]]; then
+  if rg -n "\"schema\"\\s*:\\s*\"a_codeai_public_bench_landing_payload_v1\"" "$BENCH_PAYLOAD_BODY" >/dev/null 2>&1; then
+    pass "GET /a_codeai_public_bench_landing_payload_v1_latest.json schema ok (200)"
+  else
+    fail "bench payload JSON schema mismatch"
+  fi
+else
+  echo "[WARN] bench payload not deployed yet (HTTP $code) — run deploy_a_codeai_landing_from_repo.sh"
+fi
+
 echo "[OK] a-codeai static+API route split looks healthy."
