@@ -3,13 +3,24 @@
   "description": "Whitelist for slim public reproduce mirror (no secrets, no full codebook vault).",
   "entry_scripts": [
     "scripts/run_compression_evidence_lv1_chain_v1.py",
-    "scripts/run_customer_compression_stateless_poc_v1.py"
+    "scripts/run_customer_compression_stateless_poc_v1.py",
+    "scripts/validate_compression_contributor_jsonl_v1.py",
+    "scripts/validate_prophecy_contributor_jsonl_v1.py",
+    "scripts/check_compression_contributions_manifest_v1.py",
+    "scripts/check_prophecy_contributions_manifest_v1.py"
   ],
   "path_prefixes": [
     "scripts/core/",
-    "codebook/shards/"
+    "codebook/shards/",
+    "data/compression/contributions/",
+    "data/compression/examples/",
+    "data/prophecy/contributions/",
+    "data/prophecy/examples/"
   ],
   "paths": [
+    "CONTRIBUTING_OPEN_BENCH.md",
+    "docs/final/artifacts/compression_open_bench_contributor_kit_v1_latest.json",
+    "docs/final/artifacts/prophecy_open_bench_contributor_kit_v1_latest.json",
     "data/compression/stateless_poc_open_structured_v1.jsonl",
     "data/compression/stateless_poc_open_structured_long_v1.jsonl",
     "data/compression/stateless_poc_golden40_public_safe_v1.jsonl",
@@ -51,7 +62,13 @@
     "scripts/resolve_a_codeai_public_reproduce_export_closure_v1.py",
     "tests/test_a_codeai_public_bench_landing_payload_v1.py",
     "tests/test_compression_open_bench_research_sweep_v1.py",
-    "tests/test_compression_open_bench_persuasion_deck_v1.py"
+    "tests/test_compression_open_bench_persuasion_deck_v1.py",
+    "tests/test_validate_compression_contributor_jsonl_v1.py",
+    "tests/test_validate_prophecy_contributor_jsonl_v1.py",
+    "tests/test_check_compression_contributions_manifest_v1.py",
+    "tests/test_check_prophecy_contributions_manifest_v1.py",
+    ".github/workflows/compression-contributor-pr-validate.yml",
+    ".github/workflows/prophecy-contributor-pr-validate.yml"
   ],
   "deny_filename_patterns": [
     ".env",
