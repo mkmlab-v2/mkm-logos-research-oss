@@ -1,0 +1,37 @@
+name: Prophecy open-bench contribution
+description: Submit masked falsifiable prophecy questions (B-track contributor lane)
+title: "[prophecy-contrib] "
+labels: ["research_only", "btrack", "prophecy-contributor"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Lane:** `contributor_provided` · **Track:** B-track research only · **SEND:** HOLD
+        **Not:** customer contract, live trading, or Track A price hit-rate claims.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Contributor checklist
+      options:
+        - label: Each row has contributor_provided=true, customer_provided=false, labels include research_only
+          required: true
+        - label: question_id slug, resolution_criteria rubric, binary outcome_spec, forecasts[].probability_0_1
+          required: true
+        - label: No PII; falsifiable resolution criteria (not vague narrative)
+          required: true
+        - label: Manifest entry added in data/prophecy/contributions/prophecy_contributions_manifest_v1.json
+          required: true
+        - label: validate_prophecy_contributor_jsonl_v1.py exit 0 locally
+          required: true
+  - type: input
+    id: jsonl_path
+    attributes:
+      label: JSONL path in repo
+      placeholder: data/prophecy/contributions/my_corpus_v1.jsonl
+    validations:
+      required: true
+  - type: textarea
+    id: domain
+    attributes:
+      label: Domain tags / topic (one line)
+      placeholder: macro, weather, policy — no live trade hooks

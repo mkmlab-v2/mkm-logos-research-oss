@@ -1,0 +1,90 @@
+{
+  "schema": "compression_open_bench_contributor_kit_v1",
+  "generated_at_utc": "2026-06-11T12:00:00Z",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "labels": ["DRAFT", "research_only", "contributor_provided", "btrack_learning", "[HYPO]"],
+  "purpose_ko": "GitHub/open-bench 기여 JSONL → B-track 벤치 → 승격 후보 → 지휘관 human apply (Track A active 자동 갱신 없음)",
+  "purpose_en": "Masked contributor JSONL → B-track bench → promotion candidate → commander --human-approve-promotion (no auto active report)",
+  "lane_matrix": {
+    "public_open": {
+      "role": "practice_sandbox",
+      "tenant_id": "public-open-web-v1",
+      "one_click": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-CompressionPublicOpenPilotIntake_v1.ps1 -MaxCases 30 -RelaxPassGate"
+    },
+    "contributor_provided": {
+      "role": "github_community_masked_jsonl",
+      "tenant_id": "contributor-community-v1",
+      "example_jsonl": "data/compression/examples/compression_contributor_example_v1.jsonl",
+      "community_seed_jsonl": "data/compression/contributions/premium_cs_masked_open_bench_seed_v1.jsonl",
+      "export_seed_script": "py scripts/export_open_bench_contributor_corpus_v1.py",
+      "contributions_dir": "data/compression/contributions",
+      "contributions_manifest": "data/compression/contributions/compression_contributions_manifest_v1.json",
+      "manifest_check": "py scripts/check_compression_contributions_manifest_v1.py [--pr-strict] [--validate-reference]",
+      "validate": "py scripts/validate_compression_contributor_jsonl_v1.py --jsonl <PATH> --min-rows 10",
+      "bench_chain": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-CompressionContributorBenchChain_v1.ps1 -ContributorJsonl <PATH>",
+      "promotion_candidate": "docs/final/artifacts/compression_contributor_promotion_candidate_v1_latest.json",
+      "human_apply_bridge": "py scripts/apply_compression_contributor_track_a_promotion_v1.py --human-approve-promotion --reviewer commander",
+      "multilens_codec_apply_separate": "py scripts/apply_multilens_ultra_compression_track_a_promotion_v1.py --human-approve-promotion"
+    },
+    "gate_plumbing_rehearsal": {
+      "role": "pipeline_e2e_only_not_moat_quality",
+      "tenant_id": "contributor-plumbing-rehearsal-v1",
+      "corpus_builder": "py scripts/build_compression_contributor_gate_plumbing_rehearsal_corpus_v1.py",
+      "corpus_jsonl": "data/compression/examples/compression_contributor_gate_plumbing_rehearsal_v1.jsonl",
+      "one_click": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-CompressionContributorPlumbingRehearsal_v1.ps1",
+      "candidate_json": "docs/final/artifacts/compression_contributor_promotion_candidate_plumbing_rehearsal_v1_latest.json",
+      "canonical_deny_valve_unchanged": "data/compression/examples/compression_contributor_example_v1.jsonl",
+      "note": "rehearsal_only=true — plumbing pass does not replace Moat or overwrite production candidate SSOT"
+    },
+    "customer_provided": {
+      "role": "SEND_HOLD_until_counsel",
+      "note": "Contributor lane must NOT set customer_provided=true"
+    }
+  },
+  "forbidden": [
+    "auto_track_a_promotion_allowed",
+    "customer_provided_true_on_contributor_rows",
+    "overwrite_MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_without_multilens_apply",
+    "claim_47_5_percent_from_contributor_poc",
+    "operator_panel_labels_on_contributor_corpus"
+  ],
+  "required_row_fields": {
+    "id": "string",
+    "text": "string min 40 chars masked",
+    "contributor_provided": true,
+    "customer_provided": false,
+    "labels": ["contributor_provided", "research_only", "btrack_learning_v1"]
+  },
+  "sibling_lanes": {
+    "prophecy_contributor_moat": "docs/final/artifacts/prophecy_open_bench_contributor_kit_v1_latest.json"
+  },
+  "open_bench_pointers": {
+    "reproduce_pack": "docs/final/artifacts/compression_public_reproduce_pack_v1_latest.json",
+    "evidence_chain": "py scripts/run_compression_evidence_lv1_chain_v1.py",
+    "landing_payload_hold": "docs/final/artifacts/a_codeai_public_bench_landing_payload_v1_latest.json",
+    "playbook_section_9": "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md"
+  },
+  "github": {
+    "issue_template": ".github/ISSUE_TEMPLATE/compression_contributor.yml",
+    "pr_validate_workflow": ".github/workflows/compression-contributor-pr-validate.yml",
+    "pr_checklist_inline": "Add manifest entry in compression_contributions_manifest_v1.json; validate exit 0; min 10 rows; no PII; CI --pr-strict"
+  },
+  "btrack_observability": {
+    "bundle_ssot": "reports/compression_contributor_btrack_obs_bundle_v1_latest.json",
+    "sync_script": "py scripts/sync_compression_contributor_btrack_observability_v1.py --signoff-json <SIGNOFF> --evidence-json <EVIDENCE> --mirror-vault",
+    "agent_log": "reports/agent_decisions_log.jsonl",
+    "vault_subdir": "btrack_artifacts_verified/compression_contributor",
+    "auto_after_apply": "apply_compression_contributor_track_a_promotion_v1.py runs sync unless --skip-obs-sync",
+    "note": "Fermentation input only; no explore/training/active-report auto-merge"
+  },
+  "promotion_ladder": [
+    "validate_compression_contributor_jsonl_v1.py",
+    "bootstrap_compression_pilot_tenant_v1.py --contributor-provided",
+    "run_customer_compression_stateless_poc_v1.py",
+    "build_compression_contributor_promotion_candidate_v1.py",
+    "apply_compression_contributor_track_a_promotion_v1.py --human-approve-promotion",
+    "sync_compression_contributor_btrack_observability_v1.py (auto unless --skip-obs-sync)",
+    "optional: run_ultra_compression_promotion_sweep_v1.py + apply_multilens_ultra_compression_track_a_promotion_v1.py"
+  ]
+}

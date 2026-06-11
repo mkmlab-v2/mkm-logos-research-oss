@@ -1,0 +1,36 @@
+{
+  "schema": "compression_contributions_manifest_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-06-11T18:00:00Z",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "lane": "contributor_provided",
+  "track": "btrack_research_only",
+  "auto_track_a_promotion_allowed": false,
+  "contributions_dir": "data/compression/contributions",
+  "reference_example": "data/compression/examples/compression_contributor_example_v1.jsonl",
+  "validate": {
+    "script": "scripts/validate_compression_contributor_jsonl_v1.py",
+    "min_rows": 10
+  },
+  "bench_chain": "scripts/Invoke-CompressionContributorBenchChain_v1.ps1",
+  "kit_ref": "docs/final/artifacts/compression_open_bench_contributor_kit_v1_latest.json",
+  "entries": [
+    {
+      "id": "premium_cs_masked_open_bench_seed_v1",
+      "jsonl": "data/compression/contributions/premium_cs_masked_open_bench_seed_v1.jsonl",
+      "contributor": "mkm-maintainers",
+      "domain": "premium_cs_masked_chat",
+      "row_count": 30,
+      "added_at_utc": "2026-06-11T16:30:00Z",
+      "note": "Masked synthetic CS scenarios — contributor_provided community seed; not customer_provided SEND evidence"
+    }
+  ],
+  "policy": {
+    "merge_requires_validation_exit_0": true,
+    "merge_requires_manifest_entry": true,
+    "forbidden_row_flags": ["customer_provided=true", "operator_panel", "synthetic_stub"],
+    "human_promotion": "py scripts/apply_compression_contributor_track_a_promotion_v1.py --human-approve-promotion"
+  },
+  "boundary_ack": "Contributor JSONL in this directory is B-track Moat evidence only; no SEND, no Track A 47.5% headline, no customer SLA."
+}

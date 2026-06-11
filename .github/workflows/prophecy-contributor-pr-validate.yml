@@ -1,0 +1,68 @@
+# PR gate: contributor prophecy JSONL under data/prophecy/contributions/ (B-track Moat).
+name: Prophecy contributor PR validate
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "data/prophecy/contributions/**"
+      - "data/prophecy/examples/prophecy_contributor*.jsonl"
+      - "scripts/validate_prophecy_contributor_jsonl_v1.py"
+      - "scripts/check_prophecy_contributions_manifest_v1.py"
+      - "tests/test_validate_prophecy_contributor_jsonl_v1.py"
+      - "tests/test_check_prophecy_contributions_manifest_v1.py"
+      - ".github/workflows/prophecy-contributor-pr-validate.yml"
+  pull_request:
+    paths:
+      - "data/prophecy/contributions/**"
+      - "data/prophecy/examples/prophecy_contributor*.jsonl"
+      - "scripts/validate_prophecy_contributor_jsonl_v1.py"
+      - "scripts/check_prophecy_contributions_manifest_v1.py"
+      - "tests/test_validate_prophecy_contributor_jsonl_v1.py"
+      - "tests/test_check_prophecy_contributions_manifest_v1.py"
+      - ".github/workflows/prophecy-contributor-pr-validate.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: prophecy-contributor-pr-validate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Pytest contributor validator + manifest check
+        run: |
+          python3 -m pytest \
+            tests/test_validate_prophecy_contributor_jsonl_v1.py \
+            tests/test_check_prophecy_contributions_manifest_v1.py \
+            -q --tb=short
+      - name: Manifest + reference example
+        run: |
+          python3 scripts/check_prophecy_contributions_manifest_v1.py \
+            --validate-reference
+      - name: Validate changed contributions JSONL (PR)
+        if: github.event_name == 'pull_request'
+        run: |
+          set -euo pipefail
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.sha }}"
+          mapfile -t FILES < <(git diff --name-only "$BASE" "$HEAD" -- 'data/prophecy/contributions/*.jsonl' || true)
+          if [ "${#FILES[@]}" -eq 0 ]; then
+            echo "No prophecy contributions JSONL changed in PR; manifest/reference checks only."
+            exit 0
+          fi
+          for f in "${FILES[@]}"; do
+            echo "=== validate $f ==="
+            python3 scripts/validate_prophecy_contributor_jsonl_v1.py \
+              --jsonl "$f" --min-rows 5
+          done
+          python3 scripts/check_prophecy_contributions_manifest_v1.py --pr-strict
