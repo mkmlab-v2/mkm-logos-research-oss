@@ -117,7 +117,7 @@
     },
     {
       "name": "\\MKM-LiveSync-Heartbeat-Pull",
-      "expected_status": "Disabled",
+      "expected_status": "Ready",
       "owner": "ops_sync",
       "criticality": "low"
     },

@@ -1,6 +1,6 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("base", "research", "ops", "hybrid")]
+    [ValidateSet("lean", "with-openchrome", "base", "research", "ops", "hybrid")]
     [string]$Profile
 )
 
@@ -11,10 +11,12 @@ $profileDir = Join-Path $workspace ".cursor/mcp-profiles"
 $targetFile = Join-Path $workspace ".cursor/mcp.json"
 
 $profileMap = @{
-    "base"     = "base.json"
-    "research" = "research-manseryeok-compression.json"
-    "ops"      = "ops-deploy-hostinger.json"
-    "hybrid"   = "hybrid-research-ops.json"
+    "lean"             = "lean.json"
+    "with-openchrome"  = "with-openchrome.json"
+    "base"             = "base.json"
+    "research"         = "research-manseryeok-compression.json"
+    "ops"              = "ops-deploy-hostinger.json"
+    "hybrid"           = "hybrid-research-ops.json"
 }
 
 $sourceFile = Join-Path $profileDir $profileMap[$Profile]

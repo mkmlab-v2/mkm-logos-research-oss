@@ -11,6 +11,9 @@ export type ClinicianSurveySsotPayload = {
     presurvey_api: string;
     constitution_questions_in_app: number;
     ssot_bank_path: string;
+    /** 원내 A4 인쇄용지 — 앱 설문보다 우선 (physician_gold) */
+    print_form_path: string;
+    print_form_label_ko: string;
   };
   consumer_lane: {
     survey_url: string;

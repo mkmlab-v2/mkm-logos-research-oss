@@ -10,6 +10,7 @@ from typing import Any, Dict, List
 from mkm_ops_memory_index_lib_v1 import (
     DEFAULT_INDEX_PATH,
     LANE_OPS_PACKS,
+    assemble_ops_memory_repair_v2_text,
     extract_node_from_index,
     nodes_for_resume,
     truncate_anchor_slice,
@@ -42,20 +43,41 @@ def _build_ops_inject_text(pins: List[Dict[str, Any]]) -> str:
     return "\n".join(parts)
 
 
+def _synthetic_repair_query(
+    routed: list[tuple[str, dict[str, Any]]],
+    *,
+    topic: str = "",
+) -> str:
+    parts: list[str] = []
+    if topic.strip():
+        parts.append(topic.strip())
+    for _node_id, node in routed:
+        essence = node.get("essence")
+        if essence:
+            parts.append(str(essence))
+        for tag in node.get("must_keep_tags") or []:
+            parts.append(str(tag))
+    return " ".join(parts)
+
+
 def _load_ops_pins(
     root: Path,
     *,
     top_n: int,
     lane: str | None,
     include_slice: bool,
+    repair_v2_slice: bool,
     slice_max_chars: int,
-) -> List[Dict[str, Any]]:
+    topic: str = "",
+) -> tuple[List[Dict[str, Any]], str | None]:
     index_path = root / DEFAULT_INDEX_PATH.relative_to(SCRIPT_ROOT)
     if not index_path.is_file():
-        return []
+        return [], None
     index = _read_json(index_path)
+    routed = list(nodes_for_resume(index, top_n=top_n, lane=lane))
     pins: List[Dict[str, Any]] = []
-    for node_id, node in nodes_for_resume(index, top_n=top_n, lane=lane):
+    repair_v2_text: str | None = None
+    for node_id, node in routed:
         pin: Dict[str, Any] = {
             "node_id": node_id,
             "essence": node.get("essence"),
@@ -63,7 +85,10 @@ def _load_ops_pins(
             "file_path": node.get("file_path"),
             "line_range": node.get("line_range"),
         }
-        if include_slice:
+        if repair_v2_slice:
+            pin["slice_mode"] = "repair_v2"
+            pin["slice_max_chars"] = slice_max_chars
+        elif include_slice:
             block = extract_node_from_index(root, node)
             preview, truncated = truncate_anchor_slice(
                 block, max_chars=slice_max_chars
@@ -71,8 +96,16 @@ def _load_ops_pins(
             pin["slice_preview"] = preview
             pin["slice_truncated"] = truncated
             pin["slice_max_chars"] = slice_max_chars
+            pin["slice_mode"] = "raw_truncate"
         pins.append(pin)
-    return pins
+    if repair_v2_slice and routed:
+        repair_v2_text = assemble_ops_memory_repair_v2_text(
+            root,
+            routed,
+            slice_max_chars=slice_max_chars,
+            query=_synthetic_repair_query(routed, topic=topic),
+        )
+    return pins, repair_v2_text
 
 
 def _load_constitution_pins(root: Path, *, top_n: int = 3) -> list[dict[str, Any]]:
@@ -143,6 +176,16 @@ def main() -> int:
         help="[HYPO] Include truncated anchor body per pin (Phase 0.5).",
     )
     ap.add_argument(
+        "--repair-v2-slice",
+        action="store_true",
+        help="[HYPO] Assemble repair_v2 noise-guard slices (overrides --include-slice).",
+    )
+    ap.add_argument(
+        "--topic",
+        default="",
+        help="Optional query/topic for repair_v2 relevance (lane routing uses --lane).",
+    )
+    ap.add_argument(
         "--slice-max-chars",
         type=int,
         default=1200,
@@ -166,16 +209,24 @@ def main() -> int:
     dashboard = _read_json(art / "mkm_trackc_ops_dashboard_latest.json")
     acceptance = _read_json(art / "mkm_trackc_operational_acceptance_latest.json")
 
-    ops_pins = _load_ops_pins(
+    use_repair_v2 = args.repair_v2_slice
+    use_raw_slice = args.include_slice and not use_repair_v2
+    ops_pins, repair_v2_text = _load_ops_pins(
         root,
         top_n=args.top_n,
         lane=args.lane,
-        include_slice=args.include_slice,
+        include_slice=use_raw_slice,
+        repair_v2_slice=use_repair_v2,
         slice_max_chars=args.slice_max_chars,
+        topic=args.topic,
     )
     constitution_pins = _load_constitution_pins(root, top_n=min(3, args.top_n))
     a2a_chain_refs = _load_a2a_chain_refs(root)
-    inject_text = _build_ops_inject_text(ops_pins)
+    inject_text = (
+        repair_v2_text
+        if repair_v2_text is not None
+        else _build_ops_inject_text(ops_pins)
+    )
     if constitution_pins:
         for pin in constitution_pins:
             inject_text += "\n" + (pin.get("essence") or "")
@@ -210,8 +261,12 @@ def main() -> int:
         "research_only": True,
         "boundary_ack": "[HYPO] resume pack — ops index pins are B-track; no Track A·live merge",
         "ops_memory_options": {
-            "include_slice": args.include_slice,
-            "slice_max_chars": args.slice_max_chars if args.include_slice else None,
+            "include_slice": use_raw_slice,
+            "repair_v2_slice": use_repair_v2,
+            "slice_max_chars": args.slice_max_chars
+            if (use_raw_slice or use_repair_v2)
+            else None,
+            "topic": args.topic or None,
             "top_n": args.top_n,
             "lane": args.lane,
         },
@@ -253,7 +308,8 @@ def main() -> int:
         "",
         f"- generated_at_utc: `{resume['generated_at_utc']}`",
         f"- research_only: `{resume.get('research_only')}`",
-        f"- include_slice: `{args.include_slice}`",
+        f"- include_slice: `{use_raw_slice}`",
+        f"- repair_v2_slice: `{use_repair_v2}`",
         f"- system_status: `{resume['latest_status'].get('system_status')}`",
         f"- promotion_decision: `{resume['latest_status'].get('promotion_decision')}`",
         f"- trackc_packet_status: `{resume['latest_status'].get('trackc_packet_status')}`",

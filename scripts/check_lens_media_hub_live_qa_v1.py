@@ -30,6 +30,8 @@ def _head(url: str) -> int:
 
 
 def _html_structure_checks(html: str, fails: list[str]) -> None:
+    if 'html += "</div><h2>사상 4체질</h2><div class="chip-row"' in html:
+        fails.append("html inline JS quote break (sasang-chips line)")
     if 'type="video/mp4"' not in html:
         fails.append("html missing mp4 source")
     if "aSuffix" not in html:

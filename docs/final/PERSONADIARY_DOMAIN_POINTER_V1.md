@@ -45,7 +45,10 @@
 - [x] PM2 이름 · `exec cwd` (실측) — **프리뷰:** `no1kmedi-com` · `/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi`
 - [x] nginx `server_name` 및 정적/API 분리 여부 — **프리뷰:** vhost → `:3010` (Next `/personadiary`)
 - [ ] 데이터 저장소(로컬 전용 / 서버 / 분리 계정) — **미확정** (프리뷰는 무저장)
-- [ ] `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` 표 갱신 — **다음**
+- [x] `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` 표 갱신 — **2026-06-10** (디자인 허브·Phase 2 lattice ritual; `preview_only` 유지)
+- [x] **디자인 허브 푸터** — `PersonadiaryHubFooter` · `mkm_domain_design_tokens_v1.json` · 라이브 스모크 `Run-PersonadiaryPortalDesignSmoke_v1.ps1`
+- [x] **Phase 2 UI (B-track)** — Lattice Convergence + Major-22 ritual LUT (`personadiary_ritual_draw_lut_major22_v1.json` · bloom slice); **세션 저장만** · mkmlife API 합선 없음
+- [x] **멀티도메인 결선** — `Invoke-MkmDomainDesignClosureBundle_v1.ps1` · 산출 `reports/mkm_domain_design_closure_v1_latest.json` (`closure_ok`)
 
 ---
 
@@ -58,7 +61,7 @@
 | **빌드** | `scripts/build_commander_daily_fortune_v1.py` → `scripts/assemble_personadiary_daily_response_package_v1.py` |
 | **산출** | `docs/final/artifacts/personadiary_daily_response_package_v1_latest.json` · `projects/no1kmedi/public/data/personadiary_daily_response_package_v1.json` |
 | **API** | `GET /api/personadiary/daily-guide` (`projects/no1kmedi`) |
-| **UI** | `PersonadiaryDailyGuideCards` + `PersonadiaryReflectTeaser`(reflect_template_ko) |
+| **UI** | `PersonadiaryDailyGuideCards` + `PersonadiaryReflectTeaser` + **Phase 2** `PersonadiaryRitualDraw` / `PersonadiaryLatticeOverlay` (`[HYPO]` · preview_only) |
 | **격벽** | `[가설]` · `[NON_GATING]` · preview_only · mkmlife/jemaai **합선 금지** |
 
 텔레그램 `personal` 다이제스트와 **동일 upstream** (`commander_daily_fortune_latest.json`)을 쓰되, PersonaDiary는 **ui_blocks**로 렌더한다.

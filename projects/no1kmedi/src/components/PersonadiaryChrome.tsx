@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { personadiaryCopy } from "@/content/personadiaryCopy";
+import { PersonadiaryHubFooter } from "@/components/personadiary/PersonadiaryHubFooter";
 
 export function PersonadiaryChrome({
   children,
@@ -37,6 +38,7 @@ export function PersonadiaryChrome({
       </header>
       {children}
       <footer className="pd-footer">
+        <PersonadiaryHubFooter />
         <p>
           {personadiaryCopy.brand.name} · 콘셉트 프리뷰 · 의료·투자·법률 조언을
           제공하지 않습니다.
@@ -115,6 +117,61 @@ export function PersonadiaryChrome({
           font-size: 0.72rem;
           color: rgba(148, 163, 184, 0.85);
           border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .pd-footer-links {
+          margin-top: 0.65rem;
+        }
+        .pd-footer-links a {
+          color: rgba(148, 163, 184, 0.95);
+          text-decoration: none;
+        }
+        .pd-footer-links a:hover {
+          color: #6ee7b7;
+        }
+        .pd-hub-footer {
+          margin-bottom: 1.25rem;
+          padding-bottom: 1.25rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .pd-hub-footer-kicker {
+          margin: 0 0 0.65rem;
+          font-size: 0.68rem;
+          letter-spacing: 0.06em;
+          text-transform: uppercase;
+          color: rgba(148, 163, 184, 0.75);
+        }
+        .pd-hub-footer-links {
+          justify-content: center;
+          margin-bottom: 0.5rem;
+        }
+        .pd-hub-footer-links .hub-pill-link,
+        .pd-hub-pill-link {
+          display: inline-flex;
+          align-items: center;
+          font-size: 0.78rem;
+          font-weight: 500;
+          color: rgba(226, 232, 240, 0.9);
+          text-decoration: none;
+          border: 1px solid rgba(52, 211, 153, 0.28);
+          border-radius: 999px;
+          padding: 0.35rem 0.75rem;
+          background: rgba(6, 78, 59, 0.18);
+          transition: border-color 0.15s ease, color 0.15s ease;
+        }
+        .pd-hub-footer-links .hub-pill-link:hover,
+        .pd-hub-pill-link:hover {
+          border-color: rgba(110, 231, 183, 0.55);
+          color: #6ee7b7;
+        }
+        .pd-hub-pill-link--brand {
+          margin-top: 0.35rem;
+        }
+        .pd-hub-footer-note {
+          margin: 0.75rem auto 0;
+          max-width: 36rem;
+          font-size: 0.68rem;
+          line-height: 1.45;
+          color: rgba(148, 163, 184, 0.7);
         }
       `}</style>
     </div>

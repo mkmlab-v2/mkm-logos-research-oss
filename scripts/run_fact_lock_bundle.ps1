@@ -25,6 +25,7 @@
   3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + 환자 통합 번들(`patient_care_bundle_v1`) 스키마·assemble·CDS 체인·슬롯 템플릿/정책/MD 렌더(`test_patient_care_bundle_templates_policy_render_v1`)·원클릭 `Invoke-PatientCareBundleAssemblePatientFacing_v1.ps1` + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   4b. `py -m pytest tests/test_premium_btrack_multilens_report_schema_v1.py tests/test_build_premium_btrack_multilens_report_v1.py tests/test_premium_multilens_job_queue_stub_v1.py tests/test_build_premium_multilens_queue_promotion_gate_v1.py` — Premium B-track multi-lens report v1(스키마·동기 빌더 subprocess·파일 큐 스텁·S1 승격 게이트 회귀); 직후 **`py scripts/premium_multilens_job_queue_stub_v1.py drain --allow-missing-queue`**(큐 없으면 SKIP·exit 0)·**`py scripts/build_premium_multilens_queue_promotion_gate_v1.py --skip-pytest`**(S1_SHADOW 승격 게이트 산출); 일상 원클릭은 **`scripts/Invoke-PremiumMultilensQueueRoutine_v1.ps1`**; `dual-regime-integrity.yml` 동일 pytest+drain+gate 단계
+  4c. `py scripts/check_mkm_domain_design_tokens_v1.py` + domain design offline pytest 8종(tokens·personadiary·mkmlife facade). `-SkipMkmDomainDesignOfflineSmoke` 로 생략. 라이브 결선은 **`Invoke-MkmDomainDesignClosureBundle_v1.ps1`**.
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
   5c. `py -m pytest tests/test_run_graphrag_pilot_router_v1.py` — GraphRAG 파일럿 라우터(Track B/K 관측 전용, GO 게이트·한글 별칭·brief fallback) 회귀.
@@ -270,7 +271,10 @@ param(
     [switch]$SafeOpsStrictTradingGoNoGo,
 
     # Integrated governance rebuild when deps exist (see Invoke-BuildIntegratedGovernanceIfDepsPresent_v1.ps1).
-    [switch]$SkipIntegratedGovernanceBuild
+    [switch]$SkipIntegratedGovernanceBuild,
+
+    # MKM multi-domain design tokens + personadiary/mkmlife offline pytest (no live HTTP)
+    [switch]$SkipMkmDomainDesignOfflineSmoke
 )
 
 $ErrorActionPreference = 'Stop'
@@ -363,6 +367,17 @@ $premiumBtrackMultilensReportPytests = @(
     (Join-Path $workspaceRoot 'tests\test_premium_multilens_job_queue_stub_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_build_premium_multilens_queue_promotion_gate_v1.py')
 )
+$mkmDomainDesignOfflinePytests = @(
+    (Join-Path $workspaceRoot 'tests\test_check_mkm_domain_design_tokens_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_personadiary_ritual_draw_lut_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_personadiary_lattice_convergence_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_personadiary_live_ops_smoke_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_check_mkmlife_portal_commercialization_gate_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_mkmlife_news_observation_deck_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_mkmlife_skim_read_preference_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_mkm_consumer_facade_v1.py')
+)
+$mkmDomainDesignTokensScript = Join-Path $workspaceRoot 'scripts\check_mkm_domain_design_tokens_v1.py'
 $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thin_bridge_line_v1.py'
 $mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
 $graphragPilotRouterTest = Join-Path $workspaceRoot 'tests\test_run_graphrag_pilot_router_v1.py'
@@ -786,6 +801,26 @@ if (Test-Path -LiteralPath $premiumQueuePromotionGate) {
     }
 }
 
+if (-not $SkipMkmDomainDesignOfflineSmoke) {
+    if (-not (Test-Path -LiteralPath $mkmDomainDesignTokensScript)) {
+        throw "MKM domain design tokens script not found: $mkmDomainDesignTokensScript"
+    }
+    foreach ($t in $mkmDomainDesignOfflinePytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "MKM domain design offline pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: mkm_domain_design_tokens_v1 + personadiary/mkmlife offline pytest ==' -ForegroundColor Cyan
+    & py $mkmDomainDesignTokensScript
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+    & py -m pytest @mkmDomainDesignOfflinePytests -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
 if (-not (Test-Path -LiteralPath $myeongniThinBridgeTest)) {
     throw "Myeongni thin bridge pytest not found: $myeongniThinBridgeTest"
 }
@@ -1043,6 +1078,13 @@ if (-not $SkipIntegratedGovernanceBuild) {
 if (-not $SkipSafeOpsSurfaceCheck) {
     $safeOpsTail = Join-Path $workspaceRoot 'scripts\Invoke-SafeOpsSurfaceCheck.ps1'
     if (Test-Path -LiteralPath $safeOpsTail) {
+        if (-not $SafeOpsIgnoreLiveSync) {
+            $livePull = Join-Path $workspaceRoot 'scripts\Invoke-LiveSyncHeartbeatPull.ps1'
+            if (Test-Path -LiteralPath $livePull) {
+                Write-Host '== Fact-Lock (pre-safe-ops): LiveSync heartbeat pull (soft) ==' -ForegroundColor DarkCyan
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $livePull -WorkspaceRoot $workspaceRoot -SoftFail | Out-Null
+            }
+        }
         Write-Host '== Fact-Lock (recommended tail): Safe ops surface check ==' -ForegroundColor Cyan
         $safeOpsCli = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $safeOpsTail, '-WorkspaceRoot', $workspaceRoot)
         if ($SafeOpsIgnoreLiveSync) { $safeOpsCli += '-IgnoreLiveSync' }

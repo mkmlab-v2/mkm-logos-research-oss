@@ -29,6 +29,7 @@ export function defaultClinicianContext(): ClinicianThreadContext {
     healthAppetite: "",
     healthBowelPattern: "",
     loadedSurveyContext: null,
+    enoMultimodalIntake: null,
     lensMode: "neutral",
     includeScripture: false,
   };

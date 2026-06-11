@@ -221,6 +221,35 @@
     .meta-details .grid { padding: 0 0.8rem 0.75rem; margin: 0; }
     .site-footer { margin-top: 1.75rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--muted); line-height: 1.55; }
     .site-footer .badges { margin-top: 0.55rem; }
+    .showroom-hub-footer-kicker {
+      margin: 0 0 0.55rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .showroom-hub-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem 0.6rem;
+      margin: 0 0 0.85rem;
+    }
+    .showroom-hub-pills a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.32rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.75rem;
+      background: rgba(21, 25, 34, 0.55);
+    }
+    .showroom-hub-pills a:hover {
+      border-color: rgba(197, 160, 87, 0.55);
+      color: var(--accent);
+    }
     .path-bar {
       display: flex;
       height: 0.55rem;
@@ -328,6 +357,13 @@
     </p>
 
     <footer class="site-footer">
+      <p class="showroom-hub-footer-kicker">MKM 패밀리 · 허브</p>
+      <div class="showroom-hub-pills" aria-label="MKM 패밀리 허브">
+        <a href="https://jema-ai.com" target="_blank" rel="noopener noreferrer">JEMA AI 소개</a>
+        <a href="https://mkmlife.com" target="_blank" rel="noopener noreferrer">원퀘스천 프리미엄 리포트</a>
+        <a href="https://a-codeai.com" target="_blank" rel="noopener noreferrer">토큰·압축 API (B2B)</a>
+        <a href="https://research.no1kmedi.com" target="_blank" rel="noopener noreferrer">MKM LAB 연구소</a>
+      </div>
       <p id="footerDisclaimer">
         지연·관측 전용. 과거 성과·미래 수익을 보장하지 않으며 투자 권유가 아닙니다.
         시나리오는 narrative_template이며 joint calibration이 아닙니다.

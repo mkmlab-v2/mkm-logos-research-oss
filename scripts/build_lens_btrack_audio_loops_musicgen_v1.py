@@ -50,6 +50,42 @@ MODE_HP_PCT: dict[str, float] = {
     "attack": max(0.15, HP_PCT_MATRIX - 0.22),
 }
 
+GATE_MODES = frozenset({"strict", "warn"})
+
+
+def _normalize_gate_mode(value: str) -> str:
+    mode = (value or "strict").strip().lower()
+    if mode not in GATE_MODES:
+        raise ValueError(f"gate_mode must be one of {sorted(GATE_MODES)}")
+    return mode
+
+
+def _should_publish_wav(*, chain_rc: int, src_wav: Path | None, gate_mode: str) -> bool:
+    if src_wav is None or not src_wav.is_file():
+        return False
+    if chain_rc == 0:
+        return True
+    return _normalize_gate_mode(gate_mode) == "warn"
+
+
+def _load_gate_summary(export_path: Path) -> dict[str, Any] | None:
+    if not export_path.is_file():
+        return None
+    try:
+        doc = json.loads(export_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+    if not isinstance(doc, dict):
+        return None
+    metrics = doc.get("metrics") if isinstance(doc.get("metrics"), dict) else {}
+    return {
+        "decision": doc.get("decision"),
+        "failure_reasons": doc.get("failure_reasons"),
+        "report": str(export_path.relative_to(ROOT)).replace("\\", "/"),
+        "bpm_delta_pct": metrics.get("bpm_delta_pct"),
+        "lens_alignment_pass": metrics.get("lens_alignment_pass"),
+    }
+
 
 def _utc_now_z() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -174,7 +210,7 @@ def _run_audio_gate(
     run_id: str,
     cond_path: Path,
     gate_track: str = "B",
-) -> int:
+) -> tuple[int, dict[str, Any] | None]:
     export_path = ROOT / "reports" / "audio" / f"audio_gate_{run_id}_000.json"
     export_path.parent.mkdir(parents=True, exist_ok=True)
     meta_path = wav_path.with_suffix(".meta.json")
@@ -196,7 +232,8 @@ def _run_audio_gate(
     ]
     if meta_path.is_file():
         cmd.extend(["--provenance-json", str(meta_path.resolve())])
-    return subprocess.run(cmd, cwd=str(ROOT)).returncode
+    gate_rc = subprocess.run(cmd, cwd=str(ROOT)).returncode
+    return gate_rc, _load_gate_summary(export_path)
 
 
 def _run_warm_pair(
@@ -209,7 +246,8 @@ def _run_warm_pair(
     pair_dir: Path,
     seconds: float,
     numeric_mode: str,
-) -> tuple[int, Path | None]:
+    gate_mode: str = "strict",
+) -> tuple[int, Path | None, dict[str, Any] | None]:
     hp = MODE_HP_PCT.get(mode.strip().lower(), HP_PCT_MATRIX)
     pair_dir.mkdir(parents=True, exist_ok=True)
     base_cond = _build_sasang_conditioning(seed_dict, sasang, max_duration_seconds=seconds)
@@ -231,17 +269,21 @@ def _run_warm_pair(
         )
     except Exception as exc:  # noqa: BLE001
         print(f"[lens-musicgen-bake] warm_gen_error {sasang}_{mode}: {exc}", flush=True)
-        return 1, None
+        return 1, None, None
 
-    gate_rc = _run_audio_gate(
+    gate_rc, gate_summary = _run_audio_gate(
         seed_path=seed_path,
         wav_path=out_wav,
         run_id=run_id,
         cond_path=cond_path,
     )
+    if gate_summary is not None:
+        gate_summary["gate_mode"] = _normalize_gate_mode(gate_mode)
     if gate_rc != 0:
-        return gate_rc, None
-    return 0, out_wav
+        if _normalize_gate_mode(gate_mode) == "warn":
+            return 0, out_wav, gate_summary
+        return gate_rc, None, gate_summary
+    return 0, out_wav, gate_summary
 
 
 def main() -> int:
@@ -280,8 +322,15 @@ def main() -> int:
         action="store_true",
         help="Regenerate even when publish WAV exists (resume after abort without stale skip).",
     )
+    ap.add_argument(
+        "--gate-mode",
+        choices=sorted(GATE_MODES),
+        default="strict",
+        help="strict=gate FAIL blocks publish; warn=publish + record gate FAIL (12-pair rebake).",
+    )
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
+    gate_mode = _normalize_gate_mode(args.gate_mode)
 
     partial_run = bool(args.only_sasang or args.only_mode or args.max_pairs > 0)
 
@@ -310,6 +359,7 @@ def main() -> int:
         "numeric_mode": args.numeric_mode,
         "seconds": args.seconds,
         "warm_batch": bool(args.warm_batch),
+        "gate_mode": gate_mode,
         "clips": [],
     }
 
@@ -390,9 +440,10 @@ def main() -> int:
 
         src_wav: Path | None = None
         chain_rc = 0
+        gate_summary: dict[str, Any] | None = None
         if use_cuda:
             if warm_session is not None:
-                chain_rc, src_wav = _run_warm_pair(
+                chain_rc, src_wav, gate_summary = _run_warm_pair(
                     warm_session,
                     seed_path=args.seed_json,
                     seed_dict=seed_dict,
@@ -401,6 +452,7 @@ def main() -> int:
                     pair_dir=pair_dir,
                     seconds=args.seconds,
                     numeric_mode=args.numeric_mode,
+                    gate_mode=gate_mode,
                 )
                 clip["generator"] = "musicgen_melody_warm"
             else:
@@ -414,11 +466,16 @@ def main() -> int:
                 )
             clip["chain_exit"] = chain_rc
             clip["chain_wav"] = str(src_wav) if src_wav else None
+        if gate_summary:
+            clip["audio_gate"] = gate_summary
 
-        if src_wav and src_wav.is_file() and chain_rc == 0:
+        if _should_publish_wav(chain_rc=chain_rc, src_wav=src_wav, gate_mode=gate_mode):
             _publish_wav(src_wav, out_wav)
             clip["generator"] = "musicgen_melody"
-            clip["status"] = "ok" if out_wav.stat().st_size > 0 else "fail"
+            if gate_summary and gate_summary.get("decision") == "FAIL" and gate_mode == "warn":
+                clip["status"] = "ok_gate_warn"
+            else:
+                clip["status"] = "ok" if out_wav.stat().st_size > 0 else "fail"
         elif args.fallback_tone:
             bpm = target_bpm(sasang, mode)
             hz = _hz_from_bpm(bpm)

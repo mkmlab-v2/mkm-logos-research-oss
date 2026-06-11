@@ -18,6 +18,9 @@
 .PARAMETER IncludeSlice
   [HYPO] Phase 0.5 — pass --include-slice to resume pack builder.
 
+.PARAMETER RepairV2Slice
+  [HYPO] repair_v2 noise-guard slices (overrides IncludeSlice).
+
 .PARAMETER SliceMaxChars
   Max chars per anchor slice preview (default 1200).
 .PARAMETER IncludeA2aPilot
@@ -27,6 +30,7 @@ param(
     [switch]$SkipBench,
     [switch]$DryRunIndex,
     [switch]$IncludeSlice,
+    [switch]$RepairV2Slice,
     [switch]$IncludeA2aPilot,
     [int]$SliceMaxChars = 1200,
     [ValidateSet("oracle", "ms", "infra")]
@@ -63,7 +67,9 @@ if (-not $DryRunIndex) {
     if ($Lane) {
         $resumeArgs += @("--lane", $Lane)
     }
-    if ($IncludeSlice) {
+    if ($RepairV2Slice) {
+        $resumeArgs += @("--repair-v2-slice", "--slice-max-chars", "$SliceMaxChars")
+    } elseif ($IncludeSlice) {
         $resumeArgs += @("--include-slice", "--slice-max-chars", "$SliceMaxChars")
     }
     Invoke-Step -Name "build_chat_resume_pack" -Command $resumeArgs

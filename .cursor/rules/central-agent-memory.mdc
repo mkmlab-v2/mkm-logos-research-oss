@@ -26,10 +26,12 @@ priority: 4
 11. **CF jemaai rulesets 게이트:** `verify OK` + rulesets **403** = **scope(만료 아님)**. `record_cloudflare_jemaai_scope_recurrence_v1.py` → `blocked_last_7d` 먼저. **NEVER:** 토큰 만료·매일 새 토큰·`CLOUDFLARE_API_TOKEN` 덮어쓰기·**가운데 「영역 WAF」 등 없는 KR 메뉴 안내**. **FIX:** jemaai.cloud만 **Zone WAF Edit + Cache Rules Edit** — 커스텀 토큰 UI는 **가운데 검색**(`WAF`, `Cache Rules`, `Zone Read`). SSOT: `JEMAAI_CLOUD_SHOWROOM_CF_EDGE_DASHBOARD_V1.md` §1.
 12. **no1kmedi DNS:** `no1kmedi_public_dns_verify_latest.json` **`all_ok`** → **토큰 재생성 요청 금지**; API만 `-RequireApiWrite` · `no1kmedi_cf_dns_ops_policy_v1.json`.
 13. **웹 자동화 3단계 (영구):** ①API·스크립트(브라우저 없음) ②`browser_*` 스모크만 ③Human=일반 Chrome→토큰→apply. **NEVER:** `dash.cloudflare.com`·Turnstile·은행을 openchrome/에이전트 로그인·클릭. **ALWAYS:** 지휘관이 문(토큰) 열고 에이전트는 API·스크립트. CENTRAL 「Cursor 웹 자동화 3단계」·`mkm-browser-automation-v1.mdc`.
+14. **Cursor 위임 분류 (S/M/L · 매 턴):** 코딩·위임·「Auto」 요청 시 **먼저 규모 분류** — **S**(1레인·당일) → To-Do/체크리스트 5개 이내 · **M**(반나절·1체인) → To-Do + 종료 `athena_checkpoint` + `MISSION_LOG` 다음 1타 · **L**(멀티레인·STOP) → `delegation-*.canvas.tsx` 또는 승인표 JSON. **3층:** `MISSION_LOG` → `todo_queue`/`agent_decisions_log` → Cursor To-Do(휘발). **To-Do 전부 체크 ≠ Track A·live·MISSION 승격.** 상세 표: CENTRAL 「Cursor 위임 분류」·`MISSION_LOG` §Cursor IDE 3층 To-Do.
 
 ## ALWAYS
 
 - 작업 시작 시 내부 자기점검 1줄을 수행한다: "CENTRAL_AGENT_MEMORY_V1 + athena_memory_bank 참조 완료, Fact-Lock 우선".
+- **코딩 위임·Auto·멀티스텝 구현** 요청이면 SSOT 14번대로 **S/M/L 분류를 답변·실행 전에 1줄** 밝힌다(분류만으로 끝내지 말고 해당 루트로 진행). `MISSION_LOG`에 MS P1 HOLD(340 등)가 있으면 **능동 공사·B-track 스윕 동결**, 예약 관측 루프만 유지.
 - 사용자가 **「장기기억 맥락이어라」**·**「장기기억 맥락 이어」**·**「장기기억 토대로」**·**「장기기억 토대로 진행해」** 중 **하나라도** 나오거나, 루트 `.cursorrules` **[MKM AI Operating Protocol]**에 적힌 **동일 의미의 재개 구문**(CENTRAL 기준, 이어서 등)을 내면, 그 턴에서는 **다른 추론·답변보다 먼저** `Read`로 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`(및 프로토콜대로 `AGENTS.md` 등)를 연 뒤 **운영 체크포인트·분기 한 줄**을 근거로 맥락을 이어서 진행한다. (**맥락 이어** 계열과 **토대로** 계열은 **동등 트리거**로 취급한다.)
 - 사용자가 **「장기기억 저장하라」** 등 `.cursorrules` **Checkpoint save** 절의 구문을 내면, 루트에서 `py scripts/athena_checkpoint.py "<한 줄 요약>"`을 **실행**하고 exit 0을 확인한다(요약이 없으면 한 문장만 묻고 실행).
 - 멀티레인·예언·상용 게이트·**전략·일반 답변**을 **시작하기 전**에 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`를 **읽는다**. 특히 **「이론 고효율 압축」표**로 Athena 정체성·격벽·Fact-Lock을 복원한 뒤 진행한다.

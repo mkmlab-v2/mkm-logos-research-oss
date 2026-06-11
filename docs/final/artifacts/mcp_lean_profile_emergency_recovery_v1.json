@@ -1,0 +1,73 @@
+{
+  "schema": "mcp_lean_profile_emergency_recovery_v1",
+  "locked_at_utc": "2026-05-31T05:00:00Z",
+  "summary_ko": "Cursor MCP lean 프로필(7서버). hostinger-website-manager 영구 제거. openchrome 기본 제외(81 tools). Browser(browser_tabs)는 mcp.json과 별개.",
+  "ssot_files": [
+    "C:/workspace/.cursor/mcp.json",
+    "C:/workspace/.cursorrules",
+    "C:/workspace/scripts/run_mkm_ai_v2_readiness_check.ps1"
+  ],
+  "default_enabled_servers": [
+    "filesystem",
+    "athena-core",
+    "sequential-thinking",
+    "athena-manseryeok",
+    "compression-server",
+    "devops-mcp",
+    "notebooklm"
+  ],
+  "optional_toggle_in_settings": {
+    "notebooklm": "소스 ingest·ask_question 할 때만 ON 권장",
+    "openchrome": "기본 mcp.json에 없음. 외장 Chrome 필요 시 with-openchrome 프로필"
+  },
+  "removed_do_not_restore": [
+    "hostinger-website-manager"
+  ],
+  "forbidden_in_default_profile": [
+    "playwright",
+    "manseryeok-mcp",
+    "hostinger-website-manager"
+  ],
+  "verify_commands": [
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_mkm_ai_v2_readiness_check.ps1",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check_notebooklm_mcp_prereqs.ps1",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/check_cursor_ide_browser_readiness_v1.ps1"
+  ],
+  "expected_readiness": {
+    "artifact": "docs/final/artifacts/mkm_ai_v2_readiness_latest.json",
+    "field": "overall_passed",
+    "value": true
+  },
+  "emergency_recovery_steps": [
+    "Developer: Reload Window",
+    "Settings → MCP: 7서버만 ON · hostinger/openchrome 없음 확인",
+    "실패 시: 해당 서버 토글 OFF→ON · Python 3개(athena-manseryeok, compression-server, devops-mcp) 재시도",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_mkm_ai_v2_readiness_check.ps1 → OVERALL PASS"
+  ],
+  "lean_align_one_click": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-McpLeanProfileAlign_v1.ps1",
+    "report": "reports/mcp_lean_profile_align_latest.json"
+  },
+  "openchrome_on_demand": {
+    "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Switch-McpProfile.ps1 -Profile with-openchrome",
+    "then": "Reload Window · 사용 후 lean 복귀: scripts/Invoke-McpLeanProfileAlign_v1.ps1"
+  },
+  "browser_tabs_not_mcp_json": {
+    "note": "cursor-ide-browser / browser_tabs는 Cursor Features → Browser. mcp.json 항목 아님.",
+    "recovery_ssot": "docs/final/artifacts/cursor_ide_browser_automation_recovery_v1.json",
+    "steps": [
+      "Settings → Features → Browser Automation ON",
+      "Developer: Reload Window",
+      "새 채팅에서 browser_tabs 1회 호출(기존 채팅은 도구 카탈로그 고정)"
+    ],
+    "host_check": "scripts/check_cursor_ide_browser_readiness_v1.ps1",
+    "report": "reports/cursor_ide_browser_readiness_latest.json"
+  },
+  "notebooklm_auth": {
+    "prereq": "scripts/check_notebooklm_mcp_prereqs.ps1",
+    "repair": "scripts/repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12",
+    "auth": "MCP setup_auth → get_health authenticated=true",
+    "account": "admin@no1kmedi.com (전용 Chrome 프로필)"
+  },
+  "vps_hostinger_note": "Hostinger VPS는 devops-mcp + scripts/Invoke-VpsOpsSmoke_v1.ps1. Hostinger API는 scripts/run_hostinger_mcp.ps1 수동만(mcp.json 미등록)."
+}

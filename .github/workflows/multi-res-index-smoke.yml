@@ -11,6 +11,10 @@ on:
       - "tests/test_multi_res_index_v1.py"
       - "tests/test_multi_res_fills_join_v1.py"
       - "tests/test_multi_res_drift_recovery_drill_v1.py"
+      - "tests/test_build_multi_res_todo_index_v1.py"
+      - "scripts/build_multi_res_todo_index_v1.py"
+      - "scripts/multi_res_todo_index_lib_v1.py"
+      - "docs/final/schemas/multi_res_todo_index_v1.schema.json"
       - "tests/fixtures/multi_res_trades_smoke_v1.json"
       - ".github/workflows/multi-res-index-smoke.yml"
   pull_request:
@@ -22,6 +26,10 @@ on:
       - "tests/test_multi_res_index_v1.py"
       - "tests/test_multi_res_fills_join_v1.py"
       - "tests/test_multi_res_drift_recovery_drill_v1.py"
+      - "tests/test_build_multi_res_todo_index_v1.py"
+      - "scripts/build_multi_res_todo_index_v1.py"
+      - "scripts/multi_res_todo_index_lib_v1.py"
+      - "docs/final/schemas/multi_res_todo_index_v1.schema.json"
       - "tests/fixtures/multi_res_trades_smoke_v1.json"
       - ".github/workflows/multi-res-index-smoke.yml"
   workflow_dispatch:
@@ -46,4 +54,4 @@ jobs:
         run: pip install -q pytest jsonschema
       - name: pytest multi-res
         run: |
-          python -m pytest tests/test_multi_res_index_v1.py tests/test_multi_res_fills_join_v1.py tests/test_multi_res_drift_recovery_drill_v1.py -q
+          python -m pytest tests/test_multi_res_index_v1.py tests/test_multi_res_fills_join_v1.py tests/test_multi_res_drift_recovery_drill_v1.py tests/test_build_multi_res_todo_index_v1.py -q

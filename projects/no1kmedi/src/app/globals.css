@@ -1077,6 +1077,37 @@ main {
   align-items: center;
 }
 
+.hub-cross-links--secondary {
+  margin-top: var(--space-sm);
+}
+
+.hub-pill-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.38rem 0.8rem;
+  background: rgba(18, 28, 25, 0.45);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.hub-pill-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer-hub-links {
+  margin-top: 0;
+  margin-bottom: var(--space-sm);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
+}
+
 /* Field-Lens governance flow (FigJam SSOT → public diagram) */
 .field-lens-flow .section-lead {
   max-width: 52rem;

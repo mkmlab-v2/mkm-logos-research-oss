@@ -50,7 +50,7 @@ Write-Host "[3/6] build mkmlife Observation Deck..." -ForegroundColor Cyan
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host "[4/6] deck pytest smoke..." -ForegroundColor Cyan
-& py -m pytest tests/test_build_mkmlife_news_observation_deck_v1.py tests/test_fetch_rss_to_external_feed_drop_v1.py tests/test_mkmlife_rss_minimal.py -q
+& py -m pytest tests/test_build_mkmlife_news_observation_deck_v1.py tests/test_fetch_rss_to_external_feed_drop_v1.py tests/test_mkmlife_rss_minimal.py tests/test_check_mkmlife_portal_commercialization_gate_v1.py -q
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if ($DeployMkmlifeAssets -or $FullMkmlifeDeploy) {

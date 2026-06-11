@@ -1,22 +1,9 @@
-import type { HubLink, SiteCopy } from "@/content/siteCopy";
-
-const HUB_PRIMARY_KEYS = [
-  "showroom_jemaai",
-  "premium_mkmlife",
-  "clinician_support",
-  "clinician_no1kmedi_portal",
-  "mai_profile_card",
-  "b2b_acodeai",
-  "farm_b2b_smartfarm",
-  "research_mkmlab",
-  "personadiary_preview",
-] as const;
-
-const HUB_SECONDARY_KEYS = [
-  "showroom_meaning_qa_v2",
-  "showroom_topology_radar",
-  "showroom_meaning_graph",
-] as const;
+import type { SiteCopy } from "@/content/siteCopy";
+import {
+  HubDomainCrossLinks,
+  HUB_PRIMARY_KEYS,
+  HUB_SECONDARY_KEYS,
+} from "@/components/HubDomainCrossLinks";
 
 type HomeHeroSectionProps = {
   hero: SiteCopy["hero"];
@@ -28,20 +15,6 @@ type HomeHeroSectionProps = {
     quaternary: string;
   };
 };
-
-function HubLinkButton({ link }: { link: HubLink }) {
-  return (
-    <a
-      className="btn btn-ghost"
-      href={link.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      title={link.sublabel}
-    >
-      {link.label}
-    </a>
-  );
-}
 
 /** Layer B target: map Figma Hero Auto-layout frame → this component only. */
 export function HomeHeroSection({ hero, hubLinks, ctaLinks }: HomeHeroSectionProps) {
@@ -85,18 +58,13 @@ export function HomeHeroSection({ hero, hubLinks, ctaLinks }: HomeHeroSectionPro
           </span>
         ))}
       </div>
-      <div className="section-cta hub-cross-links" aria-label="MKM 관련 도메인 안내">
-        {HUB_PRIMARY_KEYS.map((key) => {
-          const link = hubLinks[key];
-          if (!link?.href) return null;
-          return <HubLinkButton key={key} link={link} />;
-        })}
-        {HUB_SECONDARY_KEYS.map((key) => {
-          const link = hubLinks[key];
-          if (!link?.href) return null;
-          return <HubLinkButton key={key} link={link} />;
-        })}
-      </div>
+      <HubDomainCrossLinks hubLinks={hubLinks} keys={HUB_PRIMARY_KEYS} />
+      <HubDomainCrossLinks
+        hubLinks={hubLinks}
+        keys={HUB_SECONDARY_KEYS}
+        className="hub-cross-links hub-cross-links--secondary"
+        ariaLabel="쇼룸 연구·데모 링크"
+      />
     </section>
   );
 }

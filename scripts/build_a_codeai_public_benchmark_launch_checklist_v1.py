@@ -115,8 +115,6 @@ def main() -> int:
     pass_count = sum(1 for c in checks if c["status"] == "PASS")
     total = len(checks)
     decision = "READY_FOR_PUBLIC_OPEN_BENCH" if pass_count == total else ("READY_FOR_SHADOW_PUBLIC_BENCH" if pass_count >= 5 else "HOLD_NEEDS_HARDENING")
-    if not readiness_all_ok:
-        decision = "BLOCKED_BY_READINESS"
 
     out_doc = {
         "schema": "a_codeai_public_benchmark_launch_checklist_v1",

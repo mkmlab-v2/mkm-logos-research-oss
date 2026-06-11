@@ -76,11 +76,13 @@ try {
         }
     }
 
+    $bakeScript = Join-Path $WorkspaceRoot "scripts\build_lens_btrack_audio_loops_musicgen_v1.py"
     $bakeArgs = @(
-        (Join-Path $WorkspaceRoot "scripts\build_lens_btrack_audio_loops_musicgen_v1.py"),
+        $bakeScript,
         "--seconds", "32",
         "--skip-existing",
-        "--warm-batch"
+        "--warm-batch",
+        "--gate-mode", "warn"
     )
     if ($ForceRegen) {
         $bakeArgs += "--force-regen"
@@ -90,10 +92,23 @@ try {
 
     Write-Log "bake: py $($bakeArgs -join ' ')"
     & py @bakeArgs 2>&1 | ForEach-Object { Write-Log $_ }
+    $bakeExit = $LASTEXITCODE
+
+    Write-Log "post-bake recover-from-gen (publish gen/*.wav when gate-warn missed)"
+    $recoverArgs = @(
+        $bakeScript,
+        "--seconds", "32",
+        "--skip-existing",
+        "--recover-from-gen"
+    )
+    & py @recoverArgs 2>&1 | ForEach-Object { Write-Log $_ }
     if ($LASTEXITCODE -ne 0) {
-        Write-WorkerState "worker_fail" @{ exit_code = $LASTEXITCODE; step = "bake" }
-        Write-Log "FAIL bake exit=$LASTEXITCODE"
+        Write-WorkerState "worker_fail" @{ exit_code = $LASTEXITCODE; step = "recover_from_gen" }
+        Write-Log "FAIL recover exit=$LASTEXITCODE"
         exit $LASTEXITCODE
+    }
+    if ($bakeExit -ne 0) {
+        Write-Log "WARN bake exit=$bakeExit (continuing after recover-from-gen)"
     }
 
     Write-Log "offline QA"

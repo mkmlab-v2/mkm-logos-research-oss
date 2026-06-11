@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from mkm_ops_memory_index_lib_v1 import (  # noqa: E402
+    apply_repair_v2_noise_guard,
     build_index_document,
     extract_anchor_block,
     missing_must_keep_tags,
@@ -152,3 +153,32 @@ def test_truncate_anchor_slice_marks_overflow() -> None:
     assert truncated is True
     assert "HYPO slice truncated" in preview
     assert len(preview) <= 50
+
+
+def test_repair_v2_noise_guard_falls_back_to_baseline() -> None:
+    query = "prism notebooklm pointer SSOT"
+    baseline = "prism_notebooklm_log_metabolism_core_bridge_pointer prism S SSOT"
+    bloated = baseline + "\n" + ("noise token " * 120)
+    out = apply_repair_v2_noise_guard(query, baseline_text=baseline, repair_text=bloated)
+    assert out == baseline
+
+
+def test_repair_v2_noise_guard_keeps_improving_repair() -> None:
+    query = "compression fact-lock scripts"
+    baseline = "compression lane"
+    improved = baseline + "\nscripts pytest fact-lock evaluate_report"
+    out = apply_repair_v2_noise_guard(query, baseline_text=baseline, repair_text=improved)
+    assert out == improved
+
+
+def test_repair_v2_noise_guard_rejects_marginal_bulk_on_drift() -> None:
+    query = "prism_btrack_insight_bridge_inventory_latest prism M SSOT"
+    baseline = "x" * 252
+    marginal = baseline + "\n" + ("registry drift noise " * 80)
+    out = apply_repair_v2_noise_guard(
+        query,
+        baseline_text=baseline,
+        repair_text=marginal,
+        mutation="stale_sha",
+    )
+    assert out == baseline

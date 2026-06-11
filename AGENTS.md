@@ -254,6 +254,11 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【쇼룸 nginx 주간】 | `api.jemaai.cloud` nginx snippet만 (일요일) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Register-ShowroomTrackCNginxWeeklyTask.ps1` |
 | 【쇼룸 nginx 예약 점검】 | Task `Showroom-TrackC-Nginx-Weekly` (기본 일 09:40) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Verify-ShowroomTrackCNginxWeeklyScheduledTask_v1.ps1` |
 | 【쇼룸 헬스】 | 예약 태스크 + 듀얼 호스트 스모크 + B2B readiness | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ShowroomTrackCHealth` |
+| 【쇼룸 허브 푸터 라이브】 | jemaai.cloud 정적 보드 MKM 패밀리 푸터 마커 | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona JemaaiShowroomHubFooterLive` |
+| 【mkmlife 상용 게이트】 | 오프라인 상용화·소비자 파사드 pytest | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MkmlifePortalCommercialization` |
+| 【mkmlife 라이브·Playwright】 | mkmlife.com 라이브 스모크 + Playwright skim | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MkmlifePortalCommercializationLive` |
+| 【personadiary 디자인 스모크】 | personadiary.com 허브·Phase2 lattice/ritual 라이브 | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona PersonadiaryPortalDesign` |
+| 【멀티도메인 디자인 결선】 | P0 + 오프라인 pytest + mkmlife/personadiary/jemaai 라이브 스모크 | `powershell … -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona MkmDomainDesignClosure` |
 | 【쇼룸 커밋 범위】 | Track C 쇼룸 전용 `git status` 목록 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Show-ShowroomTrackCGitScope_v1.ps1` |
 | 【A-code 운영자 보조】 | RQ-031 operator lane thin (`-SkipGovernorBundle`) + lane gate | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona OperatorAssistLane` |
 | 【A-code 운영자 보조 full】 | RQ-031 full (multiday governor 포함) | `… -Persona OperatorAssistLaneFull` |

@@ -3,6 +3,7 @@
  */
 
 import type { PatientConsultInputV1 } from "./cdss-contract";
+import type { EnoMultimodalIntakeSnapshot } from "./eno-multimodal-intake-v1";
 
 export type ClinicianConsultFormState = {
   /** Demo / SSOT patient slug when survey context is not loaded */
@@ -29,6 +30,8 @@ export type ClinicianConsultFormState = {
     patientName: string;
     triageLevel: "routine" | "priority" | "emergency";
   } | null;
+  /** Eno PWA multimodal observation — physician confirms before CDSS use */
+  enoMultimodalIntake?: EnoMultimodalIntakeSnapshot | null;
 };
 
 export function buildClinicianConsultPayload(

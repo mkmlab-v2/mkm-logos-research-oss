@@ -1,0 +1,89 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:/workspace"
+      ]
+    },
+    "openchrome": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "openchrome-mcp@latest",
+        "serve",
+        "--auto-launch"
+      ]
+    },
+    "athena-core": {
+      "command": "py",
+      "args": [
+        "-u",
+        "C:/workspace/mcp-servers/athena_core_server.py"
+      ],
+      "cwd": "C:/workspace",
+      "env": {
+        "WORKSPACE_ROOT": "C:/workspace",
+        "MKM12_LTM_DB_TYPE": "file",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONPATH": "C:\\workspace;C:\\workspace\\mcp-servers"
+      },
+      "timeout": 60000
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-sequential-thinking"
+      ]
+    },
+    "athena-manseryeok": {
+      "command": "py",
+      "args": [
+        "C:/workspace/mcp-servers/athena_manseryeok_server.py"
+      ],
+      "env": {
+        "MANSERYEOK_DAY_ROLLOVER_POLICY": "midnight_00"
+      }
+    },
+    "compression-server": {
+      "command": "py",
+      "args": [
+        "C:/workspace/mcp-servers/compression_server.py"
+      ],
+      "env": {
+        "WORKSPACE_ROOT": "C:/workspace"
+      }
+    },
+    "devops-mcp": {
+      "command": "py",
+      "args": [
+        "C:/workspace/mcp-servers/devops_mcp_server.py"
+      ],
+      "env": {
+        "WORKSPACE_ROOT": "C:/workspace",
+        "SSH_KEY_PATH": "${env:SSH_KEY_PATH}"
+      }
+    },
+    "notebooklm": {
+      "command": "node",
+      "args": [
+        "C:/Users/PRO/AppData/Roaming/npm/node_modules/notebooklm-mcp/dist/index.js"
+      ],
+      "env": {
+        "NOTEBOOKLM_PROFILE": "full",
+        "HEADLESS": "false",
+        "MKM_NOTEBOOKLM_MCP_PINNED_VERSION": "2.0.0",
+        "STEALTH_ENABLED": "false",
+        "STEALTH_RANDOM_DELAYS": "false",
+        "STEALTH_HUMAN_TYPING": "false",
+        "STEALTH_MOUSE_MOVEMENTS": "false",
+        "BROWSER_TIMEOUT": "60000"
+      }
+    }
+  }
+}

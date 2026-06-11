@@ -522,6 +522,347 @@ def truncate_anchor_slice(text: str, *, max_chars: int) -> tuple[str, bool]:
     return text[:budget].rstrip() + marker, True
 
 
+MIN_FIELD_TAG_MATCH_LEN = 3
+PRISM_AXIS_LETTERS = frozenset("slkm")
+DEFAULT_ROUTE_MAX_NODES = 8
+DEFAULT_REPAIR_SLICE_MAX_CHARS = 800
+DEFAULT_REPAIR_MAX_TOTAL_CHARS = 4800
+REPAIR_MIN_PARAGRAPH_HITS = 2
+REPAIR_MIN_PARAGRAPH_HITS_LARGE_DOC = 2
+REPAIR_LARGE_DOC_CHARS = 12_000
+
+
+def prism_axis_field_tag(axis: str) -> str:
+    """Stable prism axis tag — bare single-letter tags are not used for routing."""
+    letter = str(axis or "S").strip().lower()[:1]
+    if letter not in PRISM_AXIS_LETTERS:
+        letter = "s"
+    return f"prism_axis_{letter}"
+
+
+def query_match_tokens(query: str, *, min_len: int = 2) -> list[str]:
+    """Tokenize query for relevance scoring (deduped, order preserved)."""
+    seen: set[str] = set()
+    tokens: list[str] = []
+    for token in re.split(r"[^a-zA-Z0-9_가-힣$]+", query.lower()):
+        if len(token) < min_len or token in seen:
+            continue
+        seen.add(token)
+        tokens.append(token)
+    return tokens
+
+
+def score_text_query_relevance(text: str, query: str) -> int:
+    """Count distinct query tokens present in text."""
+    if not text.strip():
+        return 0
+    low = text.lower()
+    return sum(1 for token in query_match_tokens(query) if token in low)
+
+
+def jaccard_similarity(a: str, b: str) -> float:
+    """Token-set Jaccard for repair slice gating ([HYPO] proxy)."""
+    sa = set(re.findall(r"[a-zA-Z0-9_가-힣$]+", a.lower()))
+    sb = set(re.findall(r"[a-zA-Z0-9_가-힣$]+", b.lower()))
+    if not sa and not sb:
+        return 1.0
+    if not sa or not sb:
+        return 0.0
+    return len(sa & sb) / len(sa | sb)
+
+
+def slice_improves_query_jaccard(query: str, header: str, slice_text: str) -> bool:
+    """Inject slice only when query Jaccard vs header strictly improves."""
+    if not slice_text.strip():
+        return False
+    j_before = jaccard_similarity(query, header)
+    j_after = jaccard_similarity(query, f"{header}\n{slice_text}")
+    return j_after > j_before
+
+
+REPAIR_V2_NOISE_GUARD_MIN_EXTRA_CHARS = 192
+REPAIR_V2_NOISE_GUARD_MIN_JACCARD_GAIN = 0.02
+REPAIR_V2_NOISE_GUARD_MAX_BULK_RATIO = 1.35
+DRIFT_REPAIR_MUTATIONS = frozenset({"stale_sha", "wrong_json_pointer", "header_drop"})
+
+
+def apply_repair_v2_noise_guard(
+    query: str,
+    *,
+    baseline_text: str,
+    repair_text: str,
+    min_extra_chars: int = REPAIR_V2_NOISE_GUARD_MIN_EXTRA_CHARS,
+    min_jaccard_gain: float = REPAIR_V2_NOISE_GUARD_MIN_JACCARD_GAIN,
+    max_bulk_ratio: float = REPAIR_V2_NOISE_GUARD_MAX_BULK_RATIO,
+    mutation: str = "baseline",
+) -> str:
+    """Drop repair slices when they add bulk without improving query Jaccard ([HYPO] B-track)."""
+    if not query.strip() or not repair_text.strip():
+        return repair_text
+    if not baseline_text.strip():
+        return repair_text
+    extra_chars = len(repair_text) - len(baseline_text)
+    if extra_chars <= min_extra_chars:
+        return repair_text
+    j_base = jaccard_similarity(query, baseline_text)
+    j_repair = jaccard_similarity(query, repair_text)
+    if j_repair <= j_base:
+        return baseline_text
+    gain = j_repair - j_base
+    bulk_ratio = len(repair_text) / max(len(baseline_text), 1)
+    gain_floor = min_jaccard_gain
+    ratio_cap = max_bulk_ratio
+    if mutation in DRIFT_REPAIR_MUTATIONS:
+        gain_floor = max(gain_floor, 0.025)
+        ratio_cap = min(ratio_cap, 1.25)
+    if bulk_ratio > ratio_cap and gain < gain_floor:
+        return baseline_text
+    return repair_text
+
+
+def assemble_ops_memory_repair_v2_text(
+    root: Path,
+    routed: list[tuple[str, dict[str, Any]]],
+    *,
+    slice_max_chars: int = DEFAULT_REPAIR_SLICE_MAX_CHARS,
+    query: str = "",
+    coordinate_filter: bool = False,
+    max_total_chars: int | None = DEFAULT_REPAIR_MAX_TOTAL_CHARS,
+    mutation: str = "baseline",
+    noise_guard: bool = True,
+) -> str:
+    """Header-only baseline vs repair slices; optional noise guard for pinset stability."""
+    baseline = assemble_ops_memory_pins_text(
+        root,
+        routed,
+        include_slice=False,
+        max_total_chars=max_total_chars,
+        mutation=mutation,
+    )
+    repaired = assemble_ops_memory_pins_text(
+        root,
+        routed,
+        include_slice=True,
+        slice_max_chars=slice_max_chars,
+        query=query,
+        coordinate_filter=coordinate_filter,
+        max_total_chars=max_total_chars,
+        mutation=mutation,
+    )
+    if not noise_guard:
+        return repaired
+    return apply_repair_v2_noise_guard(
+        query,
+        baseline_text=baseline,
+        repair_text=repaired,
+        mutation=mutation,
+    )
+
+
+def _window_around_best_token_hit(text: str, tokens: list[str], max_chars: int) -> str:
+    if not tokens or not text:
+        return ""
+    low = text.lower()
+    best_start = 0
+    best_score = -1
+    step = max(1, max_chars // 4)
+    for start in range(0, max(1, len(text)), step):
+        end = min(len(text), start + max_chars)
+        window = low[start:end]
+        score = sum(1 for token in tokens if token in window)
+        if score > best_score:
+            best_score = score
+            best_start = start
+    if best_score <= 0:
+        return ""
+    excerpt = text[best_start : best_start + max_chars]
+    preview, _ = truncate_anchor_slice(excerpt, max_chars=max_chars)
+    return preview
+
+
+def extract_query_relevant_excerpt(
+    text: str,
+    query: str,
+    *,
+    max_chars: int,
+    min_paragraph_hits: int | None = None,
+) -> str:
+    """Pick paragraphs/lines that overlap query tokens; skip pure noise headers."""
+    tokens = query_match_tokens(query)
+    if not text.strip():
+        return ""
+    if not tokens:
+        preview, _ = truncate_anchor_slice(text, max_chars=max_chars)
+        return preview
+
+    if min_paragraph_hits is None:
+        min_paragraph_hits = (
+            REPAIR_MIN_PARAGRAPH_HITS_LARGE_DOC
+            if len(text) >= REPAIR_LARGE_DOC_CHARS
+            else REPAIR_MIN_PARAGRAPH_HITS
+        )
+
+    paragraphs = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
+    if len(paragraphs) < 2:
+        paragraphs = [ln.strip() for ln in text.splitlines() if ln.strip()]
+
+    scored: list[tuple[int, str]] = []
+    for chunk in paragraphs:
+        low = chunk.lower()
+        score = sum(1 for token in tokens if token in low)
+        if score >= min_paragraph_hits:
+            scored.append((score, chunk))
+
+    if scored:
+        scored.sort(key=lambda item: (-item[0], -len(item[1])))
+        parts: list[str] = []
+        used = 0
+        for _score, chunk in scored:
+            if used >= max_chars:
+                break
+            budget = max_chars - used
+            piece, _ = truncate_anchor_slice(chunk, max_chars=budget)
+            if piece.strip():
+                parts.append(piece)
+                used += len(piece) + 2
+        if parts:
+            joined = "\n\n".join(parts)
+            preview, _ = truncate_anchor_slice(joined, max_chars=max_chars)
+            return preview
+
+    window = _window_around_best_token_hit(text, tokens, max_chars)
+    if window.strip():
+        return window
+    return ""
+
+
+def extract_node_repair_slice(
+    root: Path,
+    node: dict[str, Any],
+    query: str,
+    *,
+    max_chars: int,
+    coordinate_filter: bool = False,
+    use_relevance_filter: bool = True,
+    pin_header: str = "",
+    mutation: str = "baseline",
+) -> str:
+    """Repair_v2 slice extractor — registry chunks + json_pointer + relevance window."""
+    essence = str(node.get("essence") or "")
+    header_for_gate = pin_header.strip() or essence
+    if node.get("slice_kind") == "registry_chunk":
+        path = resolve_path(root, node["file_path"])
+        if not path.is_file():
+            raise FileNotFoundError(f"Missing indexed file: {node['file_path']}")
+        block = path.read_text(encoding="utf-8", errors="replace")
+        if mutation == "header_drop" and block:
+            lines = block.splitlines()
+            block = "\n".join(lines[1:]) if len(lines) > 1 else block
+    elif node.get("slice_kind") == "json_pointer":
+        if coordinate_filter:
+            pointers = node.get("json_pointers") or []
+            filtered = filter_json_pointers_for_query(pointers, query)
+            block = extract_json_slice_from_node(root, node, pointers=filtered)
+        else:
+            block = extract_node_from_index(root, node)
+    else:
+        block = extract_node_from_index(root, node)
+
+    if use_relevance_filter and query.strip():
+        scoring_query = f"{query} {essence}".strip()
+        excerpt = extract_query_relevant_excerpt(
+            block, scoring_query, max_chars=max_chars
+        )
+        if excerpt.strip() and slice_improves_query_jaccard(
+            query, header_for_gate, excerpt
+        ):
+            return excerpt
+        if score_text_query_relevance(block, scoring_query) <= 0:
+            return ""
+        preview, _ = truncate_anchor_slice(block, max_chars=max_chars)
+        if slice_improves_query_jaccard(query, header_for_gate, preview):
+            return preview
+        return ""
+
+    preview, _ = truncate_anchor_slice(block, max_chars=max_chars)
+    if use_relevance_filter and query.strip():
+        if slice_improves_query_jaccard(query, header_for_gate, preview):
+            return preview
+        return ""
+    return preview
+
+
+def assemble_ops_memory_pins_text(
+    root: Path,
+    routed: list[tuple[str, dict[str, Any]]],
+    *,
+    include_slice: bool = False,
+    slice_max_chars: int = DEFAULT_REPAIR_SLICE_MAX_CHARS,
+    query: str = "",
+    coordinate_filter: bool = False,
+    max_total_chars: int | None = DEFAULT_REPAIR_MAX_TOTAL_CHARS,
+    mutation: str = "baseline",
+) -> str:
+    """Assemble routed pins with optional repair slices and a total char budget."""
+    lines: list[str] = []
+    used = 0
+    for _node_id, node in routed:
+        header_parts = [node.get("essence") or ""]
+        header_parts.extend(str(t) for t in (node.get("must_keep_tags") or []))
+        header = "\n".join(p for p in header_parts if p)
+        if max_total_chars is not None and used >= max_total_chars:
+            break
+        if max_total_chars is not None and header and used + len(header) > max_total_chars:
+            remaining = max_total_chars - used
+            lines.append(header[:remaining])
+            break
+        if header:
+            lines.append(header)
+            used += len(header) + 1
+        if not include_slice:
+            continue
+        remaining = None
+        if max_total_chars is not None:
+            remaining = max(0, max_total_chars - used)
+            if remaining < 1:
+                break
+        cap = slice_max_chars if remaining is None else min(slice_max_chars, remaining)
+        preview = extract_node_repair_slice(
+            root,
+            node,
+            query,
+            max_chars=cap,
+            coordinate_filter=coordinate_filter,
+            use_relevance_filter=True,
+            pin_header=header,
+            mutation=mutation,
+        )
+        if not preview.strip():
+            continue
+        accumulated = "\n".join(lines)
+        if query.strip() and not slice_improves_query_jaccard(
+            query, accumulated, preview
+        ):
+            continue
+        lines.append(preview)
+        used += len(preview) + 1
+    return "\n".join(lines)
+
+
+def dedupe_routed_by_file_path(
+    ranked: list[tuple[str, dict[str, Any]]],
+) -> list[tuple[str, dict[str, Any]]]:
+    seen: set[str] = set()
+    out: list[tuple[str, dict[str, Any]]] = []
+    for node_id, node in ranked:
+        fp = str(node.get("file_path") or node_id)
+        if fp in seen:
+            continue
+        seen.add(fp)
+        out.append((node_id, node))
+    return out
+
+
 def build_web_ops_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
     """Build JSON-slice nodes from web_ops *_latest artifacts (skip missing files)."""
     nodes: dict[str, dict[str, Any]] = {}
@@ -676,14 +1017,37 @@ LANE_TOPIC_HINTS: dict[str, tuple[str, ...]] = {
 }
 
 
-def _query_matches_synonyms(q: str, tag: str) -> bool:
-    tag_low = tag.lower()
+def _field_tag_match_score(q: str, tag: str) -> int:
+    """Score field-tag relevance; 0 = no match. Blocks bare axis letter substring leaks."""
+    tag_low = tag.lower().strip()
+    if not tag_low:
+        return 0
+    if tag_low.startswith("prism_axis_"):
+        axis = tag_low.removeprefix("prism_axis_")
+        if len(axis) == 1 and axis in PRISM_AXIS_LETTERS:
+            needles = (
+                f"prism_axis_{axis}",
+                f"axis {axis}",
+                f"axis:{axis}",
+                f"prism {axis}",
+            )
+            return 3 if any(n in q for n in needles) else 0
+        return 0
+    if len(tag_low) < MIN_FIELD_TAG_MATCH_LEN:
+        return 0
     if tag_low in q:
-        return True
+        return 2 + min(len(tag_low) // 12, 3)
     for synonym in FIELD_TAG_SYNONYMS.get(tag_low, (tag_low,)):
-        if synonym.lower() in q:
-            return True
-    return False
+        syn = synonym.lower()
+        if len(syn) < MIN_FIELD_TAG_MATCH_LEN:
+            continue
+        if syn in q:
+            return 2
+    return 0
+
+
+def _query_matches_synonyms(q: str, tag: str) -> bool:
+    return _field_tag_match_score(q, tag) > 0
 
 
 def _query_mentions_regime_action(q: str) -> bool:
@@ -698,30 +1062,37 @@ def route_nodes_by_field_tags(
     query: str,
     *,
     min_hits: int = 1,
+    max_nodes: int | None = DEFAULT_ROUTE_MAX_NODES,
+    dedupe_file_paths: bool = True,
 ) -> list[tuple[str, dict[str, Any]]]:
     """Keyword router for JSON overlay nodes ([HYPO] — synonym map, not embedding RAG)."""
     q = query.lower()
-    hits: list[tuple[str, dict[str, Any]]] = []
-    seen: set[str] = set()
+    scored: list[tuple[int, str, dict[str, Any]]] = []
+    seen_ids: set[str] = set()
     for node_id, node in (index.get("nodes") or {}).items():
         field_tags = [str(t) for t in node.get("field_tags") or []]
-        if field_tags and any(_query_matches_synonyms(q, tag) for tag in field_tags):
-            if node_id not in seen:
-                seen.add(node_id)
-                hits.append((node_id, node))
-            continue
+        score = sum(_field_tag_match_score(q, tag) for tag in field_tags)
         essence = (node.get("essence") or "").lower()
         tokens = [t for t in re.split(r"[^a-zA-Z0-9_가-힣]+", q) if len(t) >= 3]
-        if any(token in essence for token in tokens):
-            if node_id not in seen:
-                seen.add(node_id)
-                hits.append((node_id, node))
+        score += sum(1 for token in tokens if token in essence)
+        if score > 0 and node_id not in seen_ids:
+            seen_ids.add(node_id)
+            scored.append((score, node_id, node))
     if _query_mentions_regime_action(q):
         for node_id, node in (index.get("nodes") or {}).items():
-            if node_id in WEB_OPS_ACTION_NODE_IDS and node_id not in seen:
-                seen.add(node_id)
-                hits.append((node_id, node))
-    ranked = sorted(hits, key=lambda item: (-int(item[1].get("priority", 0)), item[0]))
+            if node_id in WEB_OPS_ACTION_NODE_IDS and node_id not in seen_ids:
+                seen_ids.add(node_id)
+                scored.append((6, node_id, node))
+    scored.sort(
+        key=lambda item: (-item[0], -int(item[2].get("priority", 0)), item[1])
+    )
+    ranked: list[tuple[str, dict[str, Any]]] = [
+        (node_id, node) for _score, node_id, node in scored
+    ]
+    if dedupe_file_paths:
+        ranked = dedupe_routed_by_file_path(ranked)
+    if max_nodes is not None and len(ranked) > max_nodes:
+        ranked = ranked[:max_nodes]
     if len(ranked) < min_hits:
         return ranked
     return ranked

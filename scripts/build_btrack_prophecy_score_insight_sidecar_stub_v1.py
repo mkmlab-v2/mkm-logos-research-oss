@@ -172,9 +172,18 @@ def _jsonl_last_row_by_calendar_day(path: Path) -> dict[str, dict[str, Any]]:
                     continue
                 if not isinstance(o, dict):
                     continue
+                day_key: str | None = None
                 ts = str(o.get("ts_utc") or "").strip()
                 if len(ts) >= 10 and ts[4] == "-" and ts[7] == "-":
-                    by_day[ts[:10]] = o
+                    day_key = ts[:10]
+                else:
+                    for field in ("session_date", "eval_date"):
+                        raw = str(o.get(field) or "").strip()
+                        if len(raw) >= 10 and raw[4] == "-" and raw[7] == "-":
+                            day_key = raw[:10]
+                            break
+                if day_key:
+                    by_day[day_key] = o
     except OSError:
         return {}
     return by_day
@@ -212,6 +221,17 @@ def _myeongni_dated_compact(row: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _logos_dated_compact(row: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "direction": row.get("direction"),
+        "direction_score": row.get("direction_score"),
+        "derivation_mode": row.get("derivation_mode"),
+        "non_gating": row.get("non_gating"),
+        "source_provenance": row.get("source_provenance"),
+        "session_date": row.get("session_date"),
+    }
+
+
 def _score_row_context(row: dict[str, Any]) -> dict[str, Any]:
     return {
         "predicted_direction": row.get("predicted_direction"),
@@ -245,6 +265,7 @@ def _per_date_features(
     insight_per_day: dict[str, int] | None,
     sasang_by_day: dict[str, dict[str, Any]] | None,
     myeongni_exp_by_day: dict[str, dict[str, Any]] | None,
+    logos_by_day: dict[str, dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     out: list[dict[str, Any]] = []
     for i, row in enumerate(rows):
@@ -265,8 +286,13 @@ def _per_date_features(
             },
             "lens_snapshot_attribution": "global_mirrored_v1",
         }
-        if sasang_by_day is not None or myeongni_exp_by_day is not None:
-            dated: dict[str, Any] = {"sasang_dynamics_jsonl": None, "myeongni_16_state_jsonl": None}
+        if sasang_by_day is not None or myeongni_exp_by_day is not None or logos_by_day is not None:
+            dated: dict[str, Any] = {
+                "sasang_dynamics_jsonl": None,
+                "myeongni_16_state_jsonl": None,
+                "logos_per_date_jsonl": None,
+            }
+            per_date_overlay = False
             if sasang_by_day:
                 sd, srow = _row_asof_calendar_day(sasang_by_day, ed)
                 if sd and srow is not None:
@@ -283,7 +309,24 @@ def _per_date_features(
                         "snapshot": _myeongni_dated_compact(mrow),
                         "source_row_ts_utc": mrow.get("ts_utc"),
                     }
+            if logos_by_day:
+                ld, lrow = _row_asof_calendar_day(logos_by_day, ed)
+                if ld and lrow is not None:
+                    dated["logos_per_date_jsonl"] = {
+                        "matched_calendar_day": ld,
+                        "snapshot": _logos_dated_compact(lrow),
+                        "source_row_session_date": lrow.get("session_date"),
+                    }
+                    logos_snap = dict(item["lens_scores_snapshot"].get("logos") or {})
+                    logos_snap["per_date_overlay"] = True
+                    logos_snap["direction"] = lrow.get("direction")
+                    if lrow.get("direction_score") is not None:
+                        logos_snap["direction_score"] = lrow.get("direction_score")
+                    item["lens_scores_snapshot"]["logos"] = logos_snap
+                    per_date_overlay = True
             item["dated_source_snapshots_asof_eval_date"] = dated
+            if per_date_overlay:
+                item["lens_snapshot_attribution"] = "per_date_mirrored_v1"
         if insight_per_day is not None:
             item["myeongni_insight_lines_cumulative_through_eval_date"] = _cumulative_insight_lines_through(
                 insight_per_day, ed

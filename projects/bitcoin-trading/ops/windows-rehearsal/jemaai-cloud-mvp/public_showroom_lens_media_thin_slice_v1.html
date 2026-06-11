@@ -584,7 +584,7 @@
           var active = m === pair.mode ? " active" : "";
           html += '<button type="button" class="chip' + active + '" data-mode="' + esc(m) + '">' + esc(MODE_KO[m]) + "</button>";
         });
-        html += "</div><h2>사상 4체질</h2><div class="chip-row" id="sasang-chips">";
+        html += '</div><h2>사상 4체질</h2><div class="chip-row" id="sasang-chips">';
         ["soyang", "taeyang", "taeeum", "soeum"].forEach(function (s) {
           var active = s === pair.sasang ? " active" : "";
           html += '<button type="button" class="chip' + active + '" data-sasang="' + esc(s) + '">' + esc(SASANG_KO[s]) + "</button>";

@@ -50,7 +50,7 @@ param(
 $ErrorActionPreference = "Stop"
 $LensKeys = @(
   "OPS_COMMAND_ANCHOR", "TRACKC_BIZ", "LENS_MYEONGNI",
-  "LENS_SASANG", "LENS_LOGOS", "MKM_CORE_FACT"
+  "LENS_SASANG", "LENS_LOGOS", "MKM_CORE_FACT", "COMPRESSION_BTRACK"
 )
 
 if (-not $NotebookMapPath) {
@@ -109,26 +109,47 @@ if ($logDir -and -not (Test-Path -LiteralPath $logDir)) {
 $ts = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
 "=== Push-NotebooklmLensPacks_v1 start $ts dry_run=$DryRun ===" | Out-File -FilePath $LogPath -Encoding utf8
 
-function Get-SourceCount([string]$notebookId) {
+function Get-SourceList([string]$notebookId) {
   try {
     $rawList = (& nlm source list $notebookId 2>$null | Out-String)
-    if ([string]::IsNullOrWhiteSpace($rawList)) { return -1 }
-    $parsed = $rawList | ConvertFrom-Json
-    return @($parsed).Count
+    if ([string]::IsNullOrWhiteSpace($rawList)) { return @() }
+    return @($rawList | ConvertFrom-Json)
   }
   catch {
-    return -1
+    return @()
   }
 }
 
-# Per-notebook remaining slots (shared UUID across lenses uses one pool).
+function Get-SourceCount([string]$notebookId) {
+  $parsed = Get-SourceList $notebookId
+  if ($parsed.Count -eq 0) {
+    $rawList = (& nlm source list $notebookId 2>$null | Out-String)
+    if ([string]::IsNullOrWhiteSpace($rawList)) { return -1 }
+  }
+  return @($parsed).Count
+}
+
+function Get-ExistingTitleSet([string]$notebookId) {
+  $set = [System.Collections.Generic.HashSet[string]]::new(
+    [StringComparer]::OrdinalIgnoreCase
+  )
+  foreach ($s in (Get-SourceList $notebookId)) {
+    if ($s.title) { [void]$set.Add([string]$s.title) }
+  }
+  return $set
+}
+
+# Per-notebook remaining slots + existing titles (skip duplicate adds).
 $remainingByNotebook = @{}
+$existingTitlesByNotebook = @{}
 foreach ($nb in ($map.Values | Select-Object -Unique)) {
   if ($DryRun) {
     $remainingByNotebook[$nb] = [int]::MaxValue
+    $existingTitlesByNotebook[$nb] = $null
     "[DRY][notebook $nb] skip live source count" | Tee-Object -FilePath $LogPath -Append
     continue
   }
+  $existingTitlesByNotebook[$nb] = Get-ExistingTitleSet $nb
   $c = Get-SourceCount $nb
   if ($c -ge 0) {
     $rem = [Math]::Max(0, $MaxNotebookSources - $c)
@@ -141,8 +162,26 @@ foreach ($nb in ($map.Values | Select-Object -Unique)) {
   }
 }
 
+$tmpUploadDir = Join-Path $WorkspaceRoot "reports\tmp_nl_lens_upload"
+if (-not (Test-Path -LiteralPath $tmpUploadDir)) {
+  New-Item -ItemType Directory -Path $tmpUploadDir -Force | Out-Null
+}
+
+function Resolve-NlmUploadFile {
+  param([System.IO.FileInfo]$FileInfo, [string]$DisplayTitle)
+  $ext = $FileInfo.Extension.ToLowerInvariant()
+  if ($ext -in @(".json", ".jsonl", ".yaml", ".yml")) {
+    $uploadTitle = if ($ext -eq ".json") { "$DisplayTitle (text)" } else { $DisplayTitle }
+    $tmpPath = Join-Path $tmpUploadDir ($FileInfo.Name + ".txt")
+    [System.IO.File]::WriteAllText($tmpPath, [System.IO.File]::ReadAllText($FileInfo.FullName), (New-Object System.Text.UTF8Encoding $false))
+    return @{ Path = $tmpPath; Title = $uploadTitle }
+  }
+  return @{ Path = $FileInfo.FullName; Title = $DisplayTitle }
+}
+
 $ok = 0
 $fail = 0
+$skip = 0
 foreach ($lens in $LensKeys) {
   $dir = Join-Path $packRoot $lens
   if (-not (Test-Path -LiteralPath $dir)) {
@@ -160,17 +199,28 @@ foreach ($lens in $LensKeys) {
       "[STOP cap] notebook=$nid lens=$lens file=$($fi.Name)" | Tee-Object -FilePath $LogPath -Append
       break
     }
-    $full = $fi.FullName
+    $upload = Resolve-NlmUploadFile -FileInfo $fi -DisplayTitle $title
+    $full = $upload.Path
+    $nlmTitle = $upload.Title
+    $existing = $existingTitlesByNotebook[$nid]
+    if ($existing -and ($existing.Contains($title) -or $existing.Contains($nlmTitle))) {
+      "[SKIP exists] $lens $nlmTitle" | Tee-Object -FilePath $LogPath -Append
+      $skip++
+      continue
+    }
     if ($DryRun) {
-      "[DRY] nlm source add $nid --file `"$full`" --title `"$title`" --wait" | Tee-Object -FilePath $LogPath -Append
+      "[DRY] nlm source add $nid --file `"$full`" --title `"$nlmTitle`" --wait" | Tee-Object -FilePath $LogPath -Append
       $ok++
       continue
     }
     try {
-      & nlm source add $nid --file $full --title $title --wait 2>&1 | Tee-Object -FilePath $LogPath -Append
+      & nlm source add $nid --file $full --title $nlmTitle --wait 2>&1 | Tee-Object -FilePath $LogPath -Append
       if ($LASTEXITCODE -eq 0) {
         $ok++
         $remainingByNotebook[$nid] = $rem - 1
+        if ($null -ne $existing) {
+          try { [void]$existing.Add($nlmTitle) } catch { }
+        }
       }
       else {
         "[FAIL nlm exit=$LASTEXITCODE] $lens $($fi.Name)" | Tee-Object -FilePath $LogPath -Append
@@ -186,6 +236,6 @@ foreach ($lens in $LensKeys) {
 }
 
 $ts2 = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-"=== Done $ts2 ok=$ok fail=$fail ===" | Tee-Object -FilePath $LogPath -Append
+"=== Done $ts2 ok=$ok skip=$skip fail=$fail ===" | Tee-Object -FilePath $LogPath -Append
 if ($fail -gt 0) { exit 1 }
 exit 0

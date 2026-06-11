@@ -209,6 +209,42 @@
     }
     .footer-links a { color: var(--accent); text-decoration: none; }
     .footer-links a:hover { text-decoration: underline; }
+    .showroom-hub-footer {
+      margin-top: 1.5rem;
+      padding-top: 1.1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .showroom-hub-footer-kicker {
+      margin: 0 0 0.55rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .showroom-hub-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem 0.6rem;
+      margin: 0 0 0.65rem;
+    }
+    .showroom-hub-pills a {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.32rem 0.7rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 0.75rem;
+      background: rgba(21, 25, 34, 0.55);
+    }
+    .showroom-hub-pills a:hover {
+      border-color: rgba(197, 160, 87, 0.55);
+      color: var(--accent);
+    }
     .err { color: var(--danger); }
     .ok { color: var(--ok); }
     @media (max-width: 680px) {
@@ -291,6 +327,19 @@
         · legacy <a href="public_showroom_lens_audio_thin_slice_v1.html">audio-only</a>
       </p>
     </section>
+
+    <footer class="showroom-hub-footer" aria-label="MKM 패밀리 허브">
+      <p class="showroom-hub-footer-kicker">MKM 패밀리 · 허브</p>
+      <div class="showroom-hub-pills">
+        <a href="https://jema-ai.com" target="_blank" rel="noopener noreferrer">JEMA AI 소개</a>
+        <a href="https://mkmlife.com" target="_blank" rel="noopener noreferrer">원퀘스천 프리미엄 리포트</a>
+        <a href="https://a-codeai.com" target="_blank" rel="noopener noreferrer">토큰·압축 API (B2B)</a>
+        <a href="https://research.no1kmedi.com" target="_blank" rel="noopener noreferrer">MKM LAB 연구소</a>
+      </div>
+      <p class="footer-links" style="margin-top:0;">
+        지연 스냅샷 · 관측·교육 · 투자 권유·실매매 트리거 아님 · <span class="mono">research_only</span>
+      </p>
+    </footer>
   </div>
 
   <script>
