@@ -146,6 +146,33 @@
       </div>
     </section>
 
+    <section id="open-bench-section">
+      <div class="container">
+        <h2>오픈 벤치 (Lv.3 · SKU 분리)</h2>
+        <div class="card" id="open-bench-banner">
+          <span class="pill pill-warn">SEND_GATE</span>
+          <p id="open-bench-banner-text" class="small">loading...</p>
+        </div>
+        <div class="card">
+          <p class="small">런치 체크리스트</p>
+          <p id="open-bench-launch" class="mono">loading...</p>
+        </div>
+        <div class="card">
+          <p class="small">원클릭 재현 명령</p>
+          <p id="open-bench-reproduce-cmd" class="mono">loading...</p>
+          <p class="small">git HEAD: <span id="open-bench-git-head" class="mono">—</span></p>
+        </div>
+        <div class="card">
+          <p class="small">공개 코퍼스 SKU (코퍼스별 측정치만 — 합산 금지)</p>
+          <div id="open-bench-sku-table" class="mono">loading...</div>
+        </div>
+        <div class="card">
+          <p class="small">FAIL-COMP-004 (내부 SKU — 대외 인용 금지)</p>
+          <ul id="open-bench-fail-comp"></ul>
+        </div>
+      </div>
+    </section>
+
     <section>
       <div class="container">
         <h2>재현 점검 명령 예시</h2>
@@ -153,7 +180,7 @@
           <p class="mono">bash scripts/deploy/linux/check_a_codeai_public_routes.sh</p>
         </div>
         <div class="card">
-          <p class="mono">python3 scripts/build_a_codeai_public_evidence_json.py --repo-root .</p>
+          <p class="mono">python3 scripts/run_compression_evidence_lv1_chain_v1.py --skip-handoff</p>
         </div>
       </div>
     </section>
@@ -222,6 +249,46 @@
   </footer>
   <script>
     (async function () {
+      var benchBanner = document.getElementById("open-bench-banner-text");
+      var benchLaunch = document.getElementById("open-bench-launch");
+      var benchCmd = document.getElementById("open-bench-reproduce-cmd");
+      var benchGit = document.getElementById("open-bench-git-head");
+      var benchTable = document.getElementById("open-bench-sku-table");
+      var benchFail = document.getElementById("open-bench-fail-comp");
+      try {
+        var benchRes = await fetch("/a_codeai_public_bench_landing_payload_v1_latest.json", { cache: "no-store" });
+        var bench = await benchRes.json();
+        var banner = (bench.sections && bench.sections.banner) || {};
+        if (benchBanner) {
+          benchBanner.textContent = (banner.title_ko || "") + " — " + (banner.body_ko || "");
+        }
+        if (benchLaunch) {
+          benchLaunch.textContent =
+            "decision=" + (bench.launch_decision || "unknown") +
+            " pass=" + (bench.launch_pass_count || "?") +
+            " send_gate=" + (bench.send_gate || "HOLD");
+        }
+        if (benchCmd) benchCmd.textContent = bench.one_command_reproduce || "n/a";
+        if (benchGit) benchGit.textContent = bench.git_head || "n/a";
+        if (benchTable && bench.sections && bench.sections.public_skus) {
+          var lines = bench.sections.public_skus.map(function (row) {
+            return row.sku_id + " | cases=" + row.case_count +
+              " saving=" + row.saving_display + " jaccard=" + row.jaccard_display +
+              " sha=" + (row.corpus_sha256 || "").slice(0, 12) + "...";
+          });
+          benchTable.textContent = lines.join("\n") || "no public skus";
+        }
+        if (benchFail && bench.sections && bench.sections.fail_comp_004) {
+          bench.sections.fail_comp_004.forEach(function (item) {
+            var li = document.createElement("li");
+            li.textContent = item;
+            benchFail.appendChild(li);
+          });
+        }
+      } catch (e) {
+        if (benchBanner) benchBanner.textContent = "open-bench payload unavailable";
+      }
+
       var healthEl = document.getElementById("health-status");
       var readinessEl = document.getElementById("evidence-readiness");
       var gainEl = document.getElementById("evidence-gain");

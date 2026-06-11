@@ -33,7 +33,7 @@ param(
     [switch]$RepairV2Slice,
     [switch]$IncludeA2aPilot,
     [int]$SliceMaxChars = 1200,
-    [ValidateSet("oracle", "ms", "infra")]
+    [ValidateSet("oracle", "ms", "infra", "web_ops")]
     [string]$Lane = ""
 )
 

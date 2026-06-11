@@ -1,0 +1,51 @@
+# Smoke: open-bench evidence Lv.3 chain + a-codeai bench landing payload pytest (no secrets).
+name: Compression evidence open-bench smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_compression_evidence_lv1_chain_v1.py"
+      - "scripts/build_a_codeai_public_bench_landing_payload_v1.py"
+      - "scripts/materialize_a_codeai_public_reproduce_bundle_v1.py"
+      - "scripts/build_compression_public_reproduce_pack_v1.py"
+      - "data/compression/stateless_poc_open_structured*.jsonl"
+      - "data/compression/stateless_poc_golden40_public_safe_v1.jsonl"
+      - "tests/test_a_codeai_public_bench_landing_payload_v1.py"
+      - "tests/test_run_compression_evidence_lv1_chain_v1.py"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_compression_evidence_lv1_chain_v1.py"
+      - "scripts/build_a_codeai_public_bench_landing_payload_v1.py"
+      - "scripts/materialize_a_codeai_public_reproduce_bundle_v1.py"
+      - "scripts/build_compression_public_reproduce_pack_v1.py"
+      - "data/compression/stateless_poc_open_structured*.jsonl"
+      - "data/compression/stateless_poc_golden40_public_safe_v1.jsonl"
+      - "tests/test_a_codeai_public_bench_landing_payload_v1.py"
+      - "tests/test_run_compression_evidence_lv1_chain_v1.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compression-evidence-open-bench-smoke-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install minimal deps
+        run: pip install -q tiktoken jsonschema fastapi starlette pydantic httpx
+      - name: Evidence chain (handoff skipped)
+        run: python3 scripts/run_compression_evidence_lv1_chain_v1.py --skip-handoff
+      - name: Pytest open-bench landing + chain smoke
+        run: |
+          python3 -m pytest tests/test_a_codeai_public_bench_landing_payload_v1.py \
+            tests/test_run_compression_evidence_lv1_chain_v1.py -q --tb=short

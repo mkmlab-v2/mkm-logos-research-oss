@@ -1,0 +1,70 @@
+{
+  "schema": "a_codeai_public_reproduce_export_manifest_v1",
+  "description": "Whitelist for slim public reproduce mirror (no secrets, no full codebook vault).",
+  "entry_scripts": [
+    "scripts/run_compression_evidence_lv1_chain_v1.py",
+    "scripts/run_customer_compression_stateless_poc_v1.py"
+  ],
+  "path_prefixes": [
+    "scripts/core/",
+    "codebook/shards/"
+  ],
+  "paths": [
+    "data/compression/stateless_poc_open_structured_v1.jsonl",
+    "data/compression/stateless_poc_open_structured_long_v1.jsonl",
+    "data/compression/stateless_poc_golden40_public_safe_v1.jsonl",
+    "docs/final/artifacts/compression_b2b_off_the_shelf_shard_sku_v1.json",
+    "docs/final/artifacts/compression_open_bench_public_routing_v1.json",
+    "docs/final/artifacts/compression_open_bench_persuasion_deck_v1_latest.json",
+    "docs/final/artifacts/tenant_golden40_research_must_keep_overlay_v1.json",
+    "reports/compression_open_bench_dual_report_v1_latest.json",
+    "reports/compression_open_bench_research_sweep_v1_latest.json",
+    "reports/compression_industry_sku_50_sweep_v1_latest.json",
+    "reports/compression_b2b_sku_industry_poc_bundle_50_v1_latest.json",
+    "reports/customer_compression_stateless_poc_golden40_public_safe_routed_v1_latest.json",
+    "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+    "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+    "docs/final/artifacts/compression_open_structured_corpus_manifest_v1_latest.json",
+    "docs/final/artifacts/compression_b2b_legal_send_signoff_v1_latest.json",
+    "docs/final/artifacts/compression_b2b_pilot_roi_report_v1_latest.json",
+    "docs/final/artifacts/compression_b2b_recommended_workflow_v1.json",
+    "docs/final/artifacts/compression_b2b_prospect_poc_corpus_intake_v1.template.json",
+    "docs/final/artifacts/a_codeai_public_benchmark_launch_checklist_v1.json",
+    "docs/final/artifacts/media_fact_sheet_index_v1_latest.json",
+    "docs/final/artifacts/media_fact_sheet_compression_api_v1_latest.md",
+    "docs/final/artifacts/media_fact_sheet_handoff_governance_v1_latest.md",
+    "scripts/expand_compression_open_structured_corpus_v1.py",
+    "scripts/build_compression_open_structured_corpus_v1.py",
+    "scripts/build_compression_golden40_public_safe_corpus_v1.py",
+    "scripts/build_compression_open_bench_dual_report_v1.py",
+    "scripts/build_compression_open_bench_persuasion_deck_v1.py",
+    "scripts/run_compression_open_bench_research_sweep_v1.py",
+    "scripts/run_compression_industry_sku_50_sweep_v1.py",
+    "scripts/run_compression_open_bench_chain_v1.py",
+    "scripts/build_compression_public_reproduce_pack_v1.py",
+    "scripts/build_compression_public_evidence_pack_v0_index_v1.py",
+    "scripts/build_compression_media_fact_sheets_sync_v1.py",
+    "scripts/build_a_codeai_public_reproduce_bundle_v1.py",
+    "scripts/build_a_codeai_public_bench_landing_payload_v1.py",
+    "scripts/build_compression_proof_project_closure_v1.py",
+    "scripts/materialize_a_codeai_public_reproduce_bundle_v1.py",
+    "scripts/resolve_a_codeai_public_reproduce_export_closure_v1.py",
+    "tests/test_a_codeai_public_bench_landing_payload_v1.py",
+    "tests/test_compression_open_bench_research_sweep_v1.py",
+    "tests/test_compression_open_bench_persuasion_deck_v1.py"
+  ],
+  "deny_filename_patterns": [
+    ".env",
+    "credentials",
+    "dpapi",
+    ".pem",
+    ".key"
+  ],
+  "deny_path_substrings": [
+    "global_atom_full_canon",
+    "memory/v2",
+    "projects/bitcoin-trading/.env",
+    "reports/constitution/btrack_pilot/master_codebook_lexicon",
+    "canon_singularity"
+  ]
+}

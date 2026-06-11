@@ -1,0 +1,101 @@
+{
+  "schema": "compression_pilot_target_intake_kit_v1",
+  "generated_at_utc": "2026-06-11T05:45:00Z",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "labels": ["DRAFT", "research_only", "internal_ops", "[HYPO]"],
+  "purpose_ko": "지인·파일럿 1곳용 — 마스킹 JSONL 인입 후 1:1 ROI proxy 영수증까지 원클릭",
+  "purpose_en": "Single pilot target — masked JSONL in, one-click routed PoC + dollar/KRW ROI proxy for 1:1 only",
+  "sandbox_lanes": {
+    "internal_golden40": {
+      "tenant_id": "prospect-first-pilot-v1",
+      "role": "internal_first_pilot",
+      "one_click": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-CompressionPilotIntakeBlueprint_v1.ps1 -TenantId prospect-first-pilot-v1 -MaxCases 30 -Sku MKM-CHAT-D1 -CompressionProfile economy -RelaxPassGate -SkipProofCompletion"
+    },
+    "public_open_web": {
+      "tenant_id": "public-open-web-v1",
+      "role": "practice_sandbox_not_customer",
+      "one_click": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-CompressionPublicOpenPilotIntake_v1.ps1 -MaxCases 30 -RelaxPassGate"
+    },
+    "customer_target": {
+      "tenant_id": "<TENANT_SLUG>",
+      "role": "customer_masked_jsonl_pilot",
+      "one_click": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-CompressionCustomerPilotIntake_v1.ps1 -TenantId <TENANT_SLUG> -CustomerJsonl <PATH_TO_MASKED.jsonl> -MaxCases 30 -RelaxPassGate"
+    },
+    "customer_smoke_validated": {
+      "tenant_id": "customer-pilot-smoke-v1",
+      "role": "synthetic_smoke_e2e_not_real_customer",
+      "build_corpus": "py scripts/build_compression_customer_pilot_smoke_corpus_v1.py --rows 30",
+      "one_click": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-CompressionCustomerPilotIntake_v1.ps1 -TenantId customer-pilot-smoke-v1 -CustomerJsonl data/compression/examples/customer_masked_pilot_smoke_v1.jsonl -MaxCases 30 -RelaxPassGate",
+      "blueprint": "docs/final/artifacts/compression_pilot_intake_blueprint_customer-pilot-smoke-v1_v1.json",
+      "last_smoke_raw": {
+        "mean_token_saving_rate_proxy": 0.144084,
+        "mean_jaccard_proxy": 0.842614,
+        "rows": 30
+      }
+    }
+  },
+  "tenant_slug_rules": {
+    "pattern": "^[a-z0-9][a-z0-9-]{2,48}[a-z0-9]$",
+    "examples_ok": ["acme-chat-pilot-v1", "friend-b2b-pilot-2026"],
+    "examples_bad": ["Track A", "customer_1", "UPPERCASE-NO"]
+  },
+  "corpus_requirements": {
+    "format": "jsonl",
+    "min_cases": 20,
+    "max_cases": 50,
+    "required_fields": ["text"],
+    "optional_fields": ["domain_tag", "id"],
+    "masking_checklist": [
+      "PII removed (names, phones, emails, account IDs)",
+      "API keys / tokens / passwords stripped",
+      "Customer approval to use masked samples for internal pilot measurement",
+      "No raw production logs committed to Git — local path or secure handoff only"
+    ],
+    "example_row": {
+      "text": "[masked] User asked about refund policy for order ███. Agent explained 7-day window.",
+      "domain_tag": "customer-support-chat",
+      "labels": ["customer_provided", "masked", "pilot_only"]
+    }
+  },
+  "operator_sequence": [
+    "1. Agree 1:1 scope — proxy ROI only, not SLA or public case study",
+    "2. Receive 20–50 masked rows as JSONL (text field required)",
+    "3. Run Run-CompressionCustomerPilotIntake_v1.ps1 with new TenantId",
+    "4. Read reports/customer_compression_stateless_poc_<slug>_v1_latest.json + compression_b2b_pilot_roi_report_v1_latest.json",
+    "5. Present raw + repair_v2 dual block; cite list-price assumptions + boundary_ack",
+    "6. counsel sign-off before any ready_for_external_send or marketing reuse"
+  ],
+  "one_liner_1to1_ko": "귀사 마스킹 코퍼스 기준 proxy 절감률·Jaccard·월간 절감 추정치입니다. 리스트가·토큰 proxy 기준이며 계약·청구 약속이 아닙니다.",
+  "one_liner_1to1_en": "Proxy savings/Jaccard/monthly estimate on your masked corpus — list-price token proxy, not a billing commitment.",
+  "forbidden_headlines": [
+    "Track A 47.5% 동일 SLA 보장",
+    "Golden 40 / public-open-web / rehearsal 수치를 고객 성과처럼 합침",
+    "ready_for_external_send=true without counsel_signoff",
+    "Named customer case study from sandbox or stub corpora"
+  ],
+  "human_gates": [
+    {
+      "id": "customer_masked_jsonl_20_50",
+      "status": "pending",
+      "unlocks": "meaningful 1:1 ROI proxy on tenant slug"
+    },
+    {
+      "id": "counsel_signoff",
+      "status": "pending",
+      "unlocks": "ready_for_external_send"
+    }
+  ],
+  "output_artifacts": {
+    "poc_report": "reports/customer_compression_stateless_poc_<TENANT_SLUG>_v1_latest.json",
+    "roi_report": "docs/final/artifacts/compression_b2b_pilot_roi_report_v1_latest.json",
+    "intake_manifest": "reports/compression_b2b_prospect_poc_corpus_<TENANT_SLUG>_v1.json",
+    "must_keep_overlay": "docs/final/artifacts/tenant_<TENANT_SLUG>_must_keep_overlay_v1.json"
+  },
+  "fact_lock_pointers": [
+    "docs/final/artifacts/compression_b2b_recommended_workflow_v1.json",
+    "docs/final/COMPRESSION_SLA_POLICY_V1.md",
+    "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md"
+  ],
+  "boundary_ack": "Kit is ops SSOT for pilot intake — not customer contract; SEND_GATE HOLD until masked JSONL + human gates."
+}

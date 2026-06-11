@@ -275,6 +275,8 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【Science Core 점검】 | Science Core lane readiness (scripts + governance contract; no full bundle) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ScienceCoreLaneReadiness` |
 | 【Science Core 주간 예약 점검】 | Task `MKM_ScienceCore_WeeklyGovernance` 등록·인자 확인 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ScienceCoreWeeklyReadiness` |
 | 【Science Core 거버넌스】 | full governance 번들 (holdout·WF·long WF·A/B; 느림) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona ScienceCoreGovernance` |
+| 【커서 세션 업그레이드】 | Context diet + lane resume pack + solo ops + human_gate report (session start) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona CursorSessionUpgrade` (lane: `…Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle`) |
+| 【SEND 준비 스캐폴드】 | Masked JSONL stub validate + optional stub rehearsal (SEND_GATE HOLD) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-CompressionSendPrepScaffold_v1.ps1` |
 
 ### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
 

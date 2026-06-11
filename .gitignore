@@ -157,6 +157,7 @@ storage/MKM_ARCHIVE_FROM_F/
 # Local LoRA / Unsloth training venvs & compile cache (large; regenerable)
 .venv_lora/
 .venv_lora_local128/
+.venv-nemotron-wsl/
 unsloth_compiled_cache/
 # Deterministic LoRA Pack0b timestamped run dirs under workspace storage (regenerable; not SSOT)
 storage/adapters/myeongri_deterministic_lora_v0/run_*/
@@ -277,6 +278,9 @@ tmp_*.css
 tmp_*.html
 staging/
 
+# Slim public reproduce mirror (nested git → GitHub mkmlab-v2/a-codeai-compression-reproduce)
+exports/a-codeai-public-reproduce-v2/
+
 # Local docs/code exports (large Cursor/chat-style trees; do not bulk-commit)
 docs/code/
 
@@ -367,6 +371,7 @@ reports/aistudio_mcp_env_diagnosis.json
 /.cursor-clean-profile/
 /_hotfix_deploy/
 /_hotfix_deploy_origin/
+_tmp_mkmlife_deploy/
 /logos_reval_*/
 /agent/
 /agent

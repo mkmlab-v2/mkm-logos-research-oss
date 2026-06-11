@@ -21,7 +21,6 @@ from mkm_ops_memory_index_lib_v1 import (  # noqa: E402
     DEFAULT_INDEX_PATH,
     NODE_SPECS,
     assemble_ops_memory_repair_v2_text,
-    build_node_entry,
     extract_node_from_index,
     load_index,
     top_nodes_by_priority,
@@ -46,11 +45,12 @@ def _count_tokens(text: str, *, encoding_name: str = "cl100k_base") -> dict[str,
         }
 
 
-def _full_slice_text(root: Path) -> str:
+def _full_top_n_slice_text(root: Path, *, top_n: int) -> str:
+    """Full anchor paste for the same top-N nodes used by inject pins (apples-to-apples)."""
+    index = load_index(DEFAULT_INDEX_PATH)
     parts: list[str] = []
-    for spec in NODE_SPECS:
-        entry = build_node_entry(root, spec)
-        block = extract_node_from_index(root, entry)
+    for _node_id, node in top_nodes_by_priority(index, top_n=top_n):
+        block = extract_node_from_index(root, node)
         parts.append(block)
     return "\n\n---\n\n".join(parts)
 
@@ -151,7 +151,7 @@ def main() -> int:
         return 1
 
     try:
-        full_text = _full_slice_text(root)
+        full_text = _full_top_n_slice_text(root, top_n=args.top_n)
     except (FileNotFoundError, ValueError) as exc:
         full_text = ""
         full_slice_error = str(exc)
@@ -179,6 +179,7 @@ def main() -> int:
         "node_count": len(NODE_SPECS),
         "top_n_inject_pins": args.top_n,
         "slice_max_chars": args.slice_max_chars,
+        "comparison_scope": "top_n_inject_pins_full_anchor_vs_inject_off",
         "full_anchor_slices": {
             "char_count": len(full_text),
             **full_count,

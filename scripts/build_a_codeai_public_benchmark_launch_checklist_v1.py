@@ -13,6 +13,7 @@ OUT_DEFAULT = ART / "a_codeai_public_benchmark_launch_checklist_v1.json"
 HARDENING_DEFAULT = ART / "pointerguard_security_hardening_latest.json"
 READINESS_DEFAULT = ART / "pointerguard_ops_readiness_latest.json"
 BINDING_DEFAULT = ART / "a_codeai_public_binding_check_latest.json"
+OPEN_BENCH_BINDING_DEFAULT = ART / "a_codeai_open_bench_binding_check_latest.json"
 
 
 def _now_utc() -> str:
@@ -23,6 +24,14 @@ def _exists(path: Path) -> bool:
     return path.exists()
 
 
+_BINDING_SCHEMAS = frozenset(
+    {
+        "a_codeai_public_binding_check_v1",
+        "a_codeai_open_bench_binding_check_v1",
+    }
+)
+
+
 def _binding_ready(path: Path) -> tuple[bool, str]:
     if not path.exists():
         return False, "missing_binding_check"
@@ -30,7 +39,7 @@ def _binding_ready(path: Path) -> tuple[bool, str]:
         doc = json.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return False, "invalid_binding_check_json"
-    if str(doc.get("schema")) != "a_codeai_public_binding_check_v1":
+    if str(doc.get("schema")) not in _BINDING_SCHEMAS:
         return False, "binding_check_schema_mismatch"
     if not bool(doc.get("all_ok", False)):
         return False, "binding_check_failed"
@@ -59,6 +68,7 @@ def main() -> int:
         except Exception:
             readiness_all_ok = False
     binding_ok, binding_reason = _binding_ready(BINDING_DEFAULT)
+    open_bench_ok, open_bench_reason = _binding_ready(OPEN_BENCH_BINDING_DEFAULT)
 
     checks: list[dict[str, Any]] = [
         {
@@ -109,6 +119,13 @@ def main() -> int:
             "status": "PASS" if binding_ok else "TODO",
             "evidence_path": str(BINDING_DEFAULT),
             "reason": binding_reason,
+        },
+        {
+            "id": "C9_open_bench_payload_runtime_binding",
+            "description": "Published '/benchmark/' and '/ko/benchmark/' bind bench landing payload + open-bench section markers.",
+            "status": "PASS" if open_bench_ok else "TODO",
+            "evidence_path": str(OPEN_BENCH_BINDING_DEFAULT),
+            "reason": open_bench_reason,
         },
     ]
 
