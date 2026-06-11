@@ -46,8 +46,8 @@ NODE_SPECS: tuple[NodeSpec, ...] = (
         file_path="docs/final/CENTRAL_AGENT_MEMORY_V1.md",
         anchor_start="<!-- ATHENA_CHECKPOINT_V1_START -->",
         anchor_end="<!-- ATHENA_CHECKPOINT_V1_END -->",
-        essence="CENTRAL 최신 운영 체크포인트 블록 — MISSION_LOG·research_only·격벽 스냅샷",
-        must_keep_tags=("MISSION_LOG", "research_only"),
+        essence="CENTRAL 최신 운영 체크포인트 블록 — MISSION_LOG·SEND_GATE·격벽 스냅샷",
+        must_keep_tags=("SEND_GATE", "HOLD"),
         priority=9,
     ),
     NodeSpec(

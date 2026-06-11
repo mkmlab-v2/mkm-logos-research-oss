@@ -258,6 +258,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【A-code RQ close handoff】 | commander handoff + RESEARCH migration draft (자동 CLOSED 없음) | `… -Persona ACodeRqCloseHandoff` |
 | 【히어로 루프 점검】 | Commander daily prophecy hero loop readiness | `… -Persona CommanderProphecyHeroReadiness` |
 | 【코스피 6월 예약 점검】 | June KOSPI weekday morning/evening Task Scheduler + schedule JSON | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona KospiJune2026DailyReadiness` |
+| 【커서 세션 업그레이드】 | Context diet + lane resume pack + solo ops + human_gate report (session start) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona CursorSessionUpgrade` (lane: `…Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle`) |
 
 ### Fact-Lock + 프리미엄 멀티렌즈 권장 루틴 (운영 고정)
 

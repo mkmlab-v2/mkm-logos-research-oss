@@ -21,9 +21,13 @@
 !.cursor/rules/mission-log-combat-ssot.mdc
 # WSE-3 Cursor commander starters (alwaysApply false; clone/CI P0 parity)
 !.cursor/rules/mkm-wse3-commander-starters.mdc
+# Cursor session validation baseline (alwaysApply; share across clones)
+!.cursor/rules/cursor-session-validation-baseline-v1.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md
+!.cursor/skills/mkm-cursor-session-ops/
+!.cursor/skills/mkm-cursor-session-ops/SKILL.md
 
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)
@@ -152,6 +156,7 @@ storage/MKM_ARCHIVE_FROM_F/
 # Local LoRA / Unsloth training venvs & compile cache (large; regenerable)
 .venv_lora/
 .venv_lora_local128/
+.venv-nemotron-wsl/
 unsloth_compiled_cache/
 # Deterministic LoRA Pack0b timestamped run dirs under workspace storage (regenerable; not SSOT)
 storage/adapters/myeongri_deterministic_lora_v0/run_*/
@@ -362,6 +367,7 @@ reports/aistudio_mcp_env_diagnosis.json
 /.cursor-clean-profile/
 /_hotfix_deploy/
 /_hotfix_deploy_origin/
+_tmp_mkmlife_deploy/
 /logos_reval_*/
 /agent/
 /agent

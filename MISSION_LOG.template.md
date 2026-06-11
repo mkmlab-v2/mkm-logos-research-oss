@@ -74,6 +74,20 @@ PowerShell 예: `Copy-Item -Path MISSION_LOG.template.md -Destination MISSION_LO
 
 **Completed 규칙:** 위 리듬 행을 돌린 날짜·exit 0를 **Completed**에 한 줄 남기거나, Active 표의 해당 행 Evidence만 갱신한다(스냅샷·CENTRAL과 동일 문단 이중 기술 금지).
 
+## Cursor Session Validation (2026-06-09 · SSOT 표)
+
+**상세:** `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` · 스킬 `.cursor/skills/mkm-cursor-session-ops/SKILL.md`
+
+| 시점 | 최소 1줄 (복사) |
+|------|------------------|
+| **시작(재개)** | `@CENTRAL`/`@MISSION_LOG` Read → `Invoke-MkmSoloBackgroundOps_v1.ps1`(오늘 `last_ok` 아니면) → `build_mkm_chat_resume_pack_v1.py --lane <lane>` |
+| **중(구현·쇼룸)** | `Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` 또는 `check_lens_media_hub_live_qa_v1.py --offline` |
+| **종료** | `py scripts/athena_checkpoint.py "…"` + 작전 보드 **레인 다음 1타** |
+| **일간(PC)** | `-Persona AmsaengHealth` |
+| **주간(PC)** | `-Persona AthenaBundle` |
+
+**금지:** 채팅 횟수로 Track A·실매매 GO 단정 · `alwaysApply`만으로 pytest 통과 주장.
+
 ### 서브에이전트 복붙 브리프 (메인 채팅이 MISSION_LOG 소유)
 
 **메인이 브리프 문안을 생성**해 서브 첫 메시지에 붙여도 된다. **서브는 `MISSION_LOG.md`를 수정하지 않는다.**

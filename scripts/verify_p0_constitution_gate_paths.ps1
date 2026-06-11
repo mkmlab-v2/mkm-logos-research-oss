@@ -208,6 +208,7 @@ $required = @(
     ".cursor\rules\mkm-wse3-commander-starters.mdc",
     "docs\final\artifacts\MKM_WSE3_COMMANDER_CHAT_STARTERS_V1.txt",
     "scripts\Invoke-MkmOpsMemoryIndexRoutine_v1.ps1",
+    "scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1",
     "scripts\Invoke-MissionLogCentralHygiene_v1.ps1",
     "scripts\Register-MissionLogCentralHygieneWeeklyTask.ps1",
     "scripts\Verify-MissionLogCentralHygieneScheduledTask_v1.ps1",
