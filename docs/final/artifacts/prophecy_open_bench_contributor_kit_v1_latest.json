@@ -1,0 +1,78 @@
+{
+  "schema": "prophecy_open_bench_contributor_kit_v1",
+  "generated_at_utc": "2026-06-11T18:30:00Z",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "labels": ["DRAFT", "research_only", "contributor_provided", "prophecy_bench_v1", "[HYPO]"],
+  "purpose_ko": "GitHub/open-bench 기여 예언 JSONL(일반예언 질문·확률) → B-track 샌드박스 레지스트리 → Brier/게이트 → 승격 후보 → 지휘관 human apply (general_prophecy_latest 자동 합선 없음)",
+  "purpose_en": "Contributor prophecy JSONL → sandbox registry → Brier eval → promotion candidate → commander --human-approve-promotion (no auto merge to production registry)",
+  "lane_matrix": {
+    "public_observe": {
+      "role": "practice_sandbox_no_contribution",
+      "one_click": "py scripts/build_general_prophecy_brief.py",
+      "brief": "docs/final/artifacts/general_prophecy_brief_latest.md",
+      "note": "Observation-only brief; not SEND or live trading trigger"
+    },
+    "contributor_provided": {
+      "role": "github_community_falsifiable_questions",
+      "tenant_id": "prophecy-contributor-community-v1",
+      "example_jsonl": "data/prophecy/examples/prophecy_contributor_example_v1.jsonl",
+      "community_seed_jsonl": "data/prophecy/contributions/prophecy_contributor_ci_brier_seed_v1.jsonl",
+      "export_seed_script": "py scripts/export_prophecy_contributor_from_registry_v1.py",
+      "contributions_dir": "data/prophecy/contributions",
+      "contributions_manifest": "data/prophecy/contributions/prophecy_contributions_manifest_v1.json",
+      "manifest_check": "py scripts/check_prophecy_contributions_manifest_v1.py [--pr-strict] [--validate-reference]",
+      "validate": "py scripts/validate_prophecy_contributor_jsonl_v1.py --jsonl <PATH> --min-rows 5",
+      "bench_chain": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-ProphecyContributorBenchChain_v1.ps1 -ContributorJsonl <PATH>",
+      "sandbox_registry": "reports/prophecy_contributor_sandbox_registry_v1_latest.json",
+      "brier_eval": "reports/prophecy_contributor_brier_eval_v1_latest.json",
+      "promotion_candidate": "docs/final/artifacts/prophecy_contributor_promotion_candidate_v1_latest.json",
+      "human_apply": "py scripts/apply_prophecy_contributor_promotion_v1.py --human-approve-promotion --reviewer commander"
+    },
+    "customer_provided": {
+      "role": "SEND_HOLD_until_counsel",
+      "note": "Contributor lane must NOT set customer_provided=true; no contracted ROI prophecy claims"
+    },
+    "price_btrack_adjacent": {
+      "role": "separate_from_general_contributor_jsonl",
+      "note": "KOSPI/BTC hit-rate hypotheses use btrack_hypothesis_prophecy_v1 daily chain — not merged into contributor question JSONL without separate schema v2"
+    }
+  },
+  "forbidden": [
+    "auto_merge_general_prophecy_latest_without_human_apply",
+    "customer_provided_true_on_contributor_rows",
+    "live_trading_trigger_from_contributor_brier",
+    "claim_track_a_price_hit_rate_from_contributor_sandbox",
+    "logos_verse_gating_from_contributor_lane"
+  ],
+  "required_row_fields": {
+    "schema": "prophecy_contributor_question_v1",
+    "question_id": "slug pattern ^[a-z0-9][a-z0-9._-]{2,127}$",
+    "question_text": "min 20 chars falsifiable sentence",
+    "resolution_deadline_utc": "ISO-8601 Z",
+    "resolution_criteria": "unambiguous rubric",
+    "outcome_spec": "binary kind",
+    "forecasts": "at least one probability_0_1",
+    "contributor_provided": true,
+    "customer_provided": false,
+    "labels": ["contributor_provided", "research_only", "prophecy_bench_v1"]
+  },
+  "open_bench_pointers": {
+    "general_prophecy_schema": "docs/final/GENERAL_PROPHECY_SCHEMA_V1.json",
+    "compression_moat_sibling": "docs/final/artifacts/compression_open_bench_contributor_kit_v1_latest.json",
+    "prophecy_lane_closure": "scripts/Invoke-ProphecyLaneRecommendedClosureBundle_v1.ps1",
+    "promotion_gates": "docs/final/artifacts/prophecy_promotion_gates_v1_latest.json"
+  },
+  "github": {
+    "issue_template": ".github/ISSUE_TEMPLATE/prophecy_contributor.yml",
+    "pr_validate_workflow": ".github/workflows/prophecy-contributor-pr-validate.yml",
+    "pr_checklist_inline": "Add manifest entry; validate exit 0; min 5 questions; falsifiable rubric; no PII; CI --pr-strict"
+  },
+  "promotion_ladder": [
+    "validate_prophecy_contributor_jsonl_v1.py",
+    "build_prophecy_contributor_sandbox_registry_v1.py",
+    "eval_general_prophecy_brier_score.py (sandbox registry; resolved rows only)",
+    "build_prophecy_contributor_promotion_candidate_v1.py",
+    "apply_prophecy_contributor_promotion_v1.py --human-approve-promotion"
+  ]
+}

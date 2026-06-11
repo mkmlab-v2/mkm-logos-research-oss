@@ -1,0 +1,42 @@
+name: Compression open-bench contributor corpus
+description: Submit masked JSONL for B-track contributor lane (not customer evidence)
+title: "[contrib] "
+labels: ["compression", "btrack", "research-only"]
+body:
+  - type: markdown
+    value: |
+      **Lane:** `contributor_provided` · **Track:** B-track research only · **SEND:** HOLD
+
+      Do **not** submit real customer PII. Mask phones, emails, names, account ids.
+      Rows must **not** set `customer_provided: true`.
+
+  - type: checkboxes
+    id: contract
+    attributes:
+      label: Contributor contract
+      options:
+        - label: I confirm all text is masked/synthetic and I may contribute under repo license
+          required: true
+        - label: Each row has contributor_provided=true, customer_provided=false, labels include research_only
+          required: true
+        - label: I ran `py scripts/validate_compression_contributor_jsonl_v1.py --jsonl <file> --min-rows 10` locally (exit 0)
+          required: true
+
+  - type: input
+    id: jsonl_path
+    attributes:
+      label: JSONL path in PR (or attach plan)
+      description: e.g. data/compression/contributions/my_corpus_v1.jsonl
+      placeholder: data/compression/contributions/...
+
+  - type: textarea
+    id: domain
+    attributes:
+      label: Domain / use case (one line)
+      placeholder: e.g. developer support chat, billing, internal ops logs (masked)
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes for reviewers
+      description: Row count, masking method, known limitations

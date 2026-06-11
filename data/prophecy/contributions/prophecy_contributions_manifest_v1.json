@@ -1,0 +1,36 @@
+{
+  "schema": "prophecy_contributions_manifest_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-06-11T18:30:00Z",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "lane": "contributor_provided",
+  "track": "btrack_research_only",
+  "auto_registry_merge_allowed": false,
+  "contributions_dir": "data/prophecy/contributions",
+  "reference_example": "data/prophecy/examples/prophecy_contributor_example_v1.jsonl",
+  "validate": {
+    "script": "scripts/validate_prophecy_contributor_jsonl_v1.py",
+    "min_rows": 5
+  },
+  "bench_chain": "scripts/Invoke-ProphecyContributorBenchChain_v1.ps1",
+  "kit_ref": "docs/final/artifacts/prophecy_open_bench_contributor_kit_v1_latest.json",
+  "entries": [
+    {
+      "id": "prophecy_contributor_ci_brier_seed_v1",
+      "jsonl": "data/prophecy/contributions/prophecy_contributor_ci_brier_seed_v1.jsonl",
+      "contributor": "mkm-maintainers",
+      "domain": "ci_brier_smoke_resolved",
+      "row_count": 5,
+      "added_at_utc": "2026-06-11T18:30:00Z",
+      "note": "Resolved CI fixtures for Brier bench — contributor_provided; not customer_provided or live trading evidence"
+    }
+  ],
+  "policy": {
+    "merge_requires_validation_exit_0": true,
+    "merge_requires_manifest_entry": true,
+    "forbidden_row_flags": ["customer_provided=true", "live_trading", "track_a_promoted"],
+    "human_promotion": "py scripts/apply_prophecy_contributor_promotion_v1.py --human-approve-promotion"
+  },
+  "boundary_ack": "Contributor prophecy JSONL is B-track bench only; no SEND, no live trading trigger, no contracted customer ROI."
+}
