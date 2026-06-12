@@ -51,6 +51,14 @@
           "hides_site_header": true,
           "sidebar_icon_rail": true,
           "ssot": "projects/no1kmedi/src/lib/universeHubDiscoverMinimalV1.ts"
+        },
+        "hub_commercial_finish_v1": {
+          "status": "draft_research_only",
+          "send_gate": "HOLD",
+          "spoke_hero_ssot": "projects/no1kmedi/src/components/shell/UniverseHubSpokeHeroV2.tsx",
+          "plugin_icons_ssot": "projects/no1kmedi/src/components/shell/HubPluginIcon.tsx",
+          "design_tokens_scope": "projects/no1kmedi/src/app/globals.css (.universe-hub-page --hub-*)",
+          "closure_bundle": "scripts/Invoke-MkmDomainDesignClosureBundle_v1.ps1"
         }
       },
       "center_l0": {
