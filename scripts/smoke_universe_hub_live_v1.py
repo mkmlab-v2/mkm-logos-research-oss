@@ -199,6 +199,65 @@ def main() -> int:
         }
     )
 
+    code_logos, html_logos, _ = fetch(f"{ORIGIN}/hub/logos")
+    logos_needles = ("Logos 관측소", "logos_observatory", "[HYPO]", "research_only")
+    logos_ok = code_logos == 200 and any(n in html_logos for n in logos_needles)
+    logos_detail = f"status={code_logos}"
+    logos_chunk = html_logos if code_logos == 200 else ""
+    if code_logos == 200 and not logos_ok:
+        match_logos = re.search(
+            r"/_next/static/chunks/app/hub/logos/page-[^\"]+\.js",
+            html_logos,
+        )
+        if match_logos:
+            lgcode, chunk_logos, _ = fetch(
+                f"{ORIGIN}{match_logos.group(0)}",
+                max_bytes=2_000_000,
+            )
+            logos_ok = lgcode == 200 and any(n in chunk_logos for n in logos_needles)
+            logos_detail = f"chunk_status={lgcode} logos_in_chunk={logos_ok}"
+            logos_chunk = chunk_logos if lgcode == 200 else ""
+        else:
+            logos_detail = "hub/logos page chunk not found"
+    forbidden_logos = ("47.5%", "56.5%", "0.890")
+    logos_forbidden = any(f in logos_chunk for f in forbidden_logos)
+    checks.append(
+        {
+            "id": "hub_logos_observatory",
+            "ok": logos_ok and not logos_forbidden,
+            "detail": logos_detail if not logos_forbidden else "forbidden headline metric in page",
+        }
+    )
+
+    code_comp, html_comp, _ = fetch(f"{ORIGIN}/hub/compression")
+    comp_needles = ("압축 데모", "compression_sandbox", "[DRAFT]", "비-SLA")
+    comp_ok = code_comp == 200 and any(n in html_comp for n in comp_needles)
+    comp_detail = f"status={code_comp}"
+    comp_chunk = html_comp if code_comp == 200 else ""
+    if code_comp == 200 and not comp_ok:
+        match_comp = re.search(
+            r"/_next/static/chunks/app/hub/compression/page-[^\"]+\.js",
+            html_comp,
+        )
+        if match_comp:
+            cpcode, chunk_comp, _ = fetch(
+                f"{ORIGIN}{match_comp.group(0)}",
+                max_bytes=2_000_000,
+            )
+            comp_ok = cpcode == 200 and any(n in chunk_comp for n in comp_needles)
+            comp_detail = f"chunk_status={cpcode} compression_in_chunk={comp_ok}"
+            comp_chunk = chunk_comp if cpcode == 200 else ""
+        else:
+            comp_detail = "hub/compression page chunk not found"
+    comp_forbidden = any(f in comp_chunk for f in forbidden_logos)
+    checks.append(
+        {
+            "id": "hub_compression_sandbox",
+            "ok": comp_ok and not comp_forbidden,
+            "detail": comp_detail if not comp_forbidden else "forbidden headline metric in compression page",
+        }
+    )
+
     payload = {
         "schema": "universe_hub_live_smoke_v1",
         "generated_at_utc": datetime.now(timezone.utc)

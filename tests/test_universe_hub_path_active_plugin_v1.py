@@ -11,10 +11,14 @@ def active_plugin_id_from_path(pathname: str) -> str | None:
         return "governed_customization"
     if path.startswith("/hub/oracle"):
         return "oracle_observatory"
+    if path.startswith("/hub/logos"):
+        return "logos_observatory"
     if path.startswith("/hub/life"):
         return "mkm_life"
     if path.startswith("/hub/developer"):
         return "a_code_sandbox"
+    if path.startswith("/hub/compression"):
+        return "compression_sandbox"
     if path.startswith("/hub/reports"):
         return "my_reports"
     if path.startswith("/hub/operator"):
@@ -28,4 +32,6 @@ def test_hub_paths():
     assert active_plugin_id_from_path("/hub") == "discover"
     assert active_plugin_id_from_path("/hub/customize") == "governed_customization"
     assert active_plugin_id_from_path("/hub/oracle") == "oracle_observatory"
+    assert active_plugin_id_from_path("/hub/logos") == "logos_observatory"
+    assert active_plugin_id_from_path("/hub/compression") == "compression_sandbox"
     assert active_plugin_id_from_path("/clinician") == "clinician"
