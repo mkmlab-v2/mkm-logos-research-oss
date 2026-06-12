@@ -34,7 +34,7 @@ export function UniverseCenterAskV2() {
   }
 
   return (
-    <section className="universe-hub-ask" aria-labelledby="universe-hub-ask-title">
+    <section className="universe-hub-ask universe-hub-ask--v3" aria-labelledby="universe-hub-ask-title">
       <div className="universe-hub-ask-title-row">
         <h1 id="universe-hub-ask-title" className="universe-hub-ask-title">
           {copy.title}
@@ -59,23 +59,25 @@ export function UniverseCenterAskV2() {
 
       <IntentChipRowV2 selected={intent} onSelect={setIntent} />
 
-      <form className="universe-hub-ask-form" onSubmit={onSubmit}>
+      <form className="universe-hub-ask-form universe-hub-ask-form--pill" onSubmit={onSubmit}>
         <label className="sr-only" htmlFor="universe-hub-question">
           질문
         </label>
-        <input
-          id="universe-hub-question"
-          className="universe-hub-ask-input"
-          type="text"
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          placeholder={copy.placeholder}
-          maxLength={500}
-          autoComplete="off"
-        />
-        <button type="submit" className="universe-hub-ask-submit">
-          {copy.submit}
-        </button>
+        <div className="universe-hub-ask-pill">
+          <input
+            id="universe-hub-question"
+            className="universe-hub-ask-input universe-hub-ask-input--pill"
+            type="text"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            placeholder={copy.placeholder}
+            maxLength={500}
+            autoComplete="off"
+          />
+          <button type="submit" className="universe-hub-ask-submit universe-hub-ask-submit--pill">
+            {copy.submit}
+          </button>
+        </div>
       </form>
 
       {submitError ? (

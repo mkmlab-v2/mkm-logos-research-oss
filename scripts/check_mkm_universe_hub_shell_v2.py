@@ -39,6 +39,11 @@ REQUIRED_COMPONENTS = (
     "projects/no1kmedi/src/components/shell/UniverseReportsLedgerStubV2.tsx",
     "projects/no1kmedi/src/lib/universeHubReportLedgerStubV1.ts",
     "projects/no1kmedi/src/lib/no1kmedi-portal-host.ts",
+    "projects/no1kmedi/src/components/shell/UniverseLogosObservatoryV2.tsx",
+    "projects/no1kmedi/src/lib/universeHubLogosTopologyV1.ts",
+    "projects/no1kmedi/src/components/shell/HubEvidenceInspectorV3.tsx",
+    "projects/no1kmedi/src/lib/universeHubInspectorV3.ts",
+    "projects/no1kmedi/src/components/shell/UniverseCompressionSandboxV2.tsx",
 )
 
 REQUIRED_ROUTES = (
@@ -46,10 +51,12 @@ REQUIRED_ROUTES = (
     "projects/no1kmedi/src/app/hub/layout.tsx",
     "projects/no1kmedi/src/app/hub/customize/page.tsx",
     "projects/no1kmedi/src/app/hub/oracle/page.tsx",
+    "projects/no1kmedi/src/app/hub/logos/page.tsx",
     "projects/no1kmedi/src/app/hub/life/page.tsx",
     "projects/no1kmedi/src/app/hub/developer/page.tsx",
     "projects/no1kmedi/src/app/hub/reports/page.tsx",
     "projects/no1kmedi/src/app/hub/operator/page.tsx",
+    "projects/no1kmedi/src/app/hub/compression/page.tsx",
 )
 
 FORBIDDEN_IN_HUB = frozenset(
@@ -131,6 +138,8 @@ def run_check(*, write_report: bool = True, out_path: Path | None = None) -> tup
             issues.append("UnifiedUniverseShellV2 missing shell id")
         if "UniverseHubSiteHeader" not in text:
             issues.append("UnifiedUniverseShellV2 missing sticky site header")
+        if "HubEvidenceInspectorV3" not in text:
+            issues.append("UnifiedUniverseShellV2 missing HubEvidenceInspectorV3 chassis v3")
 
     plugins_ts = ROOT / "projects/no1kmedi/src/lib/universeHubPluginsV2.ts"
     if plugins_ts.is_file():
@@ -199,6 +208,24 @@ def run_check(*, write_report: bool = True, out_path: Path | None = None) -> tup
     reports_page = ROOT / "projects/no1kmedi/src/app/hub/reports/page.tsx"
     if reports_page.is_file() and "UniverseReportsLedgerStubV2" not in reports_page.read_text(encoding="utf-8"):
         issues.append("hub/reports missing UniverseReportsLedgerStubV2")
+
+    compression_page = ROOT / "projects/no1kmedi/src/app/hub/compression/page.tsx"
+    if compression_page.is_file():
+        comp_text = compression_page.read_text(encoding="utf-8")
+        if "UniverseCompressionSandboxV2" not in comp_text:
+            issues.append("hub/compression missing UniverseCompressionSandboxV2")
+        if "47.5%" in comp_text:
+            issues.append("hub/compression exposes forbidden 47.5% metric")
+    elif compression_page not in [ROOT / r for r in REQUIRED_ROUTES]:
+        pass
+    else:
+        issues.append("hub/compression page missing")
+
+    plugins_ts_compression = ROOT / "projects/no1kmedi/src/lib/universeHubPluginsV2.ts"
+    if plugins_ts_compression.is_file():
+        pt = plugins_ts_compression.read_text(encoding="utf-8")
+        if "compression_sandbox" not in pt or "/hub/compression" not in pt:
+            issues.append("universeHubPluginsV2 missing compression_sandbox spoke")
 
     customize_page = ROOT / "projects/no1kmedi/src/app/hub/customize/page.tsx"
     if customize_page.is_file():

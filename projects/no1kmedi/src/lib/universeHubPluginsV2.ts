@@ -10,8 +10,10 @@ export type UniverseHubPluginId =
   | "discover"
   | "governed_customization"
   | "oracle_observatory"
+  | "logos_observatory"
   | "mkm_life"
   | "a_code_sandbox"
+  | "compression_sandbox"
   | "my_reports"
   | "showroom"
   | "clinician"
@@ -61,10 +63,24 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
     navGroup: "b2b",
   },
   {
+    id: "compression_sandbox",
+    labelKo: "압축 데모 샌드박스",
+    href: "/hub/compression",
+    laneNote: "B2B PoC · [DRAFT] proxy",
+    navGroup: "b2b",
+  },
+  {
     id: "oracle_observatory",
     labelKo: "오라클 관측소",
     href: "/hub/oracle",
     laneNote: "B-track · research_only",
+    navGroup: "consumer",
+  },
+  {
+    id: "logos_observatory",
+    labelKo: "Logos 관측소",
+    href: "/hub/logos",
+    laneNote: "B-track · 4D topology [HYPO]",
     navGroup: "consumer",
   },
   {

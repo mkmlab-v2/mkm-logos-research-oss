@@ -1,7 +1,7 @@
 {
   "schema": "mkm_universe_hub_shell_contract_v2_draft",
   "status": "draft_research_only",
-  "updated_utc": "2026-06-11",
+  "updated_utc": "2026-06-12",
   "supersedes_nothing": "mkm_ui_shell_contract_v1.json remains enforced until human sign-off and gate wiring",
   "architecture_note": "Perplexity/Wrtn-style hub on jema-ai.com — central one-question input + left plugin sidebar. NOT infinite chat; NOT backend lane merge.",
   "hq_host": "jema-ai.com",
@@ -19,9 +19,32 @@
         "nav": "sidebar",
         "sidebar": "left",
         "main": "center_minimal",
+        "inspector": "right_read_only_v3",
         "content_pattern": "one_question_then_report",
-        "max_sidebar_plugins": 9,
+        "max_sidebar_plugins": 11,
         "max_primary_nav": 0
+      },
+      "layout_v3_chassis": {
+        "status": "draft_research_only",
+        "locked_utc": "2026-06-12",
+        "send_gate": "HOLD",
+        "spec_id": "hub_ui_chassis_v3_oss_layout_tailoring",
+        "fail_codes": ["FAIL-HUB-001", "FAIL-HUB-002", "FAIL-HUB-003"],
+        "forbidden": [
+          "vercel_ai_sdk_usechat_in_hub",
+          "track_a_47_5pct_public_copy",
+          "oss_template_repo_fork_overwrite"
+        ],
+        "inspector_routes": ["/hub", "/hub/logos"],
+        "inspector_data_ssot": "projects/no1kmedi/public/data/logos_corpus_4d_topology_hub_v1.json",
+        "compression_spoke_route": "/hub/compression",
+        "compression_public_metric_policy": "~24pct_draft_proxy_only",
+        "component_ssot": {
+          "shell_v3": "projects/no1kmedi/src/components/shell/UnifiedUniverseShellV2.tsx",
+          "inspector": "projects/no1kmedi/src/components/shell/HubEvidenceInspectorV3.tsx",
+          "discover_ask": "projects/no1kmedi/src/components/shell/UniverseCenterAskV2.tsx",
+          "compression_sandbox": "projects/no1kmedi/src/components/shell/UniverseCompressionSandboxV2.tsx"
+        }
       },
       "center_l0": {
         "pattern": "single_search_or_question_bar",
@@ -68,6 +91,20 @@
           "forbidden_headline_metrics": ["56.5%", "47.5%", "proxy pass rate as product claim"]
         },
         {
+          "id": "logos_observatory",
+          "icon": "compass",
+          "copy_key_ko": "plugin.logos.ko",
+          "label_ko": "Logos 관측소",
+          "route": "/hub/logos",
+          "surface": "logos_4d_topology_deck",
+          "backend_lane": "b_track_research_only",
+          "data_ssot": "projects/no1kmedi/public/data/logos_corpus_4d_topology_hub_v1.json",
+          "hypothesis_tier": "[HYPO]",
+          "research_only": true,
+          "forbidden_headline_metrics": ["era blind locked_eval as product claim", "Track A compression KPI"],
+          "note": "Closed 31k-verse internal 4D geometry — air-gapped from oracle/market lane"
+        },
+        {
           "id": "mkm_life",
           "icon": "leaf",
           "copy_key_ko": "plugin.life.ko",
@@ -89,6 +126,18 @@
           "backend_lane": "b2b_api",
           "deep_link_fallback": "https://a-codeai.com/",
           "auth": "operator_or_api_key_required"
+        },
+        {
+          "id": "compression_sandbox",
+          "icon": "gauge",
+          "copy_key_ko": "plugin.compression_demo.ko",
+          "label_ko": "압축 데모 샌드박스",
+          "route": "/hub/compression",
+          "surface": "compression_poc_offline_demo",
+          "backend_lane": "b2b_api_draft",
+          "hypothesis_tier": "[DRAFT]",
+          "forbidden_headline_metrics": ["47.5%", "Track A frozen SLA"],
+          "note": "Offline PoC simulator — separated from /hub/developer API bench"
         },
         {
           "id": "my_reports",
@@ -152,6 +201,11 @@
         "path_active_plugin": "projects/no1kmedi/src/lib/universeHubPathActivePlugin.ts",
         "customize_content": "projects/no1kmedi/src/lib/universeHubCustomizeContentV2.ts",
         "plugins_lib": "projects/no1kmedi/src/lib/universeHubPluginsV2.ts",
+        "logos_observatory": "projects/no1kmedi/src/components/shell/UniverseLogosObservatoryV2.tsx",
+        "logos_topology_lib": "projects/no1kmedi/src/lib/universeHubLogosTopologyV1.ts",
+        "inspector_v3": "projects/no1kmedi/src/components/shell/HubEvidenceInspectorV3.tsx",
+        "inspector_v3_lib": "projects/no1kmedi/src/lib/universeHubInspectorV3.ts",
+        "compression_sandbox": "projects/no1kmedi/src/components/shell/UniverseCompressionSandboxV2.tsx",
         "routes_root": "projects/no1kmedi/src/app/hub"
       },
       "nav_groups": ["discover", "b2b", "consumer", "ops"],
@@ -205,6 +259,14 @@
       "production_enable_gate": "human_sign_off_before_embed_flag_on_production_build",
       "production_embed_enabled_utc": "2026-06-12",
       "status": "embed_on_production_build_commander_approved"
+    },
+    {
+      "phase": "P5_ui_chassis_v3",
+      "deliverable": "3-pane OSS layout tailoring — inspector on /hub and /hub/logos; /hub/compression offline demo; no hub LLM",
+      "gate": "scripts/check_mkm_universe_hub_shell_v2.py",
+      "live_smoke": "scripts/smoke_universe_hub_live_v1.py",
+      "status": "deployed_live_smoke_11_11",
+      "spec_ref": "layout_v3_chassis"
     }
   ],
   "track_wall": "hub_ui_draft_not_track_a_not_live_not_send"
