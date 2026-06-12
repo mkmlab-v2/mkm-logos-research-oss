@@ -20,15 +20,20 @@ export function UniverseCenterAskV2() {
   const copy = HUB_DISCOVER_COPY[locale];
 
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   function onSubmit(event: FormEvent) {
     event.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
     const route = resolveHubAskRoute(question, intent);
     if (!route) {
       setSubmitError(copy.validationMissing);
       return;
     }
     setSubmitError(null);
+    setIsSubmitting(true);
     window.location.href = route;
   }
 
@@ -92,7 +97,9 @@ export function UniverseCenterAskV2() {
         <label className="sr-only" htmlFor="universe-hub-question">
           질문
         </label>
-        <div className={`universe-hub-ask-pill${discoverMinimal ? " universe-hub-ask-pill--minimal" : ""}`}>
+        <div
+          className={`universe-hub-ask-pill${discoverMinimal ? " universe-hub-ask-pill--minimal" : ""}${isSubmitting ? " is-submitting" : ""}`}
+        >
           <input
             id="universe-hub-question"
             className="universe-hub-ask-input universe-hub-ask-input--pill"
@@ -102,11 +109,16 @@ export function UniverseCenterAskV2() {
             placeholder={copy.placeholder}
             maxLength={500}
             autoComplete="off"
+            disabled={isSubmitting}
+            aria-invalid={submitError ? true : undefined}
+            aria-describedby={submitError ? "universe-hub-ask-error" : undefined}
           />
           <button
             type="submit"
             className={`universe-hub-ask-submit universe-hub-ask-submit--pill${discoverMinimal ? " universe-hub-ask-submit--icon" : ""}`}
             aria-label={copy.submit}
+            disabled={isSubmitting}
+            aria-busy={isSubmitting}
           >
             {discoverMinimal ? <HubAskSubmitIcon /> : copy.submit}
           </button>
@@ -116,7 +128,7 @@ export function UniverseCenterAskV2() {
       {discoverMinimal ? <IntentChipRowV2 selected={intent} onSelect={setIntent} /> : null}
 
       {submitError ? (
-        <p className="universe-hub-ask-error" role="alert">
+        <p id="universe-hub-ask-error" className="universe-hub-ask-error" role="alert">
           {submitError}
         </p>
       ) : null}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { UNIVERSE_HUB_PLUGIN_ICON_GLYPH } from "@/lib/universeHubPluginIconsV1";
+import { HubBrandMark, HubPluginIcon } from "@/components/shell/HubPluginIcon";
 import {
   type UniverseHubNavGroup,
   type UniverseHubPluginId,
@@ -40,7 +40,6 @@ function renderLink(
     ? `universe-hub-sidebar-link is-active${b2bEmphasis}${iconRail ? " is-icon-rail" : ""}`
     : `universe-hub-sidebar-link${b2bEmphasis}${iconRail ? " is-icon-rail" : ""}`;
   const label = plugin.labelKo;
-  const glyph = UNIVERSE_HUB_PLUGIN_ICON_GLYPH[plugin.id];
 
   if (plugin.external) {
     return (
@@ -52,7 +51,7 @@ function renderLink(
         title={label}
         aria-label={label}
       >
-        {iconRail ? <span className="universe-hub-sidebar-glyph">{glyph}</span> : label}
+        {iconRail ? <HubPluginIcon pluginId={plugin.id} /> : label}
       </a>
     );
   }
@@ -64,7 +63,7 @@ function renderLink(
       title={iconRail ? label : undefined}
       aria-label={iconRail ? label : undefined}
     >
-      {iconRail ? <span className="universe-hub-sidebar-glyph">{glyph}</span> : label}
+      {iconRail ? <HubPluginIcon pluginId={plugin.id} /> : label}
     </Link>
   );
 }
@@ -87,7 +86,7 @@ export function UniverseSidebarV2({ activeId, iconRail = false }: Props) {
       {iconRail ? (
         <div className="universe-hub-sidebar-brand universe-hub-sidebar-brand--icon-rail">
           <Link href="/hub" title="JEMA AI Hub" aria-label="JEMA AI Hub">
-            <span className="universe-hub-sidebar-glyph">J</span>
+            <HubBrandMark />
           </Link>
         </div>
       ) : (

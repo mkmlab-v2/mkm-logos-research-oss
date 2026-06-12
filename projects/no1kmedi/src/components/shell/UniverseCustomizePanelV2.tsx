@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { HubSpokeDiagramV2 } from "@/components/shell/HubSpokeDiagramV2";
 import { PackageLadderTableV2 } from "@/components/shell/PackageLadderTableV2";
+import { UniverseHubSpokeHeroV2 } from "@/components/shell/UniverseHubSpokeHeroV2";
 import {
   CUSTOMIZE_HEADLINE_KO,
   CUSTOMIZE_ICP_LABELS,
@@ -11,30 +12,26 @@ import { UNIVERSE_HUB_DEEP_LINKS } from "@/lib/universeHubPluginsV2";
 
 export function UniverseCustomizePanelV2() {
   return (
-    <article className="universe-hub-customize" aria-labelledby="hub-customize-title">
-      <header className="universe-hub-customize-hero">
-        <p className="universe-hub-plugin-lane">Governed AI Customization · Track C [DRAFT]</p>
-        <h1 id="hub-customize-title" className="universe-hub-plugin-title">
-          {CUSTOMIZE_HEADLINE_KO}
-        </h1>
-        <p className="universe-hub-plugin-body">{CUSTOMIZE_SUBHEAD_KO}</p>
-        <div className="universe-hub-plugin-actions">
-          <Link className="universe-hub-cta universe-hub-cta--primary" href={UNIVERSE_HUB_DEEP_LINKS.enterpriseWttPersonaOs}>
-            기업·파트너 소개
-          </Link>
-          <Link className="universe-hub-cta universe-hub-cta--ghost" href={UNIVERSE_HUB_DEEP_LINKS.compressionPilotApply}>
-            토큰 압축 사전 감사 신청
-          </Link>
-          <a
-            className="universe-hub-cta universe-hub-cta--ghost"
-            href={UNIVERSE_HUB_DEEP_LINKS.wttPersonaOsDemo}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            운영자 패널 데모 ↗
-          </a>
-        </div>
-      </header>
+    <article className="universe-hub-customize universe-hub-spoke-panel" aria-labelledby="hub-customize-title">
+      <UniverseHubSpokeHeroV2
+        pluginId="governed_customization"
+        titleId="hub-customize-title"
+        title={CUSTOMIZE_HEADLINE_KO}
+        body={CUSTOMIZE_SUBHEAD_KO}
+        primaryCta={{
+          href: UNIVERSE_HUB_DEEP_LINKS.enterpriseWttPersonaOs,
+          label: "기업·파트너 소개",
+        }}
+        secondaryCta={{
+          href: UNIVERSE_HUB_DEEP_LINKS.compressionPilotApply,
+          label: "토큰 압축 사전 감사 신청",
+        }}
+        extraCta={{
+          href: UNIVERSE_HUB_DEEP_LINKS.wttPersonaOsDemo,
+          label: "운영자 패널 데모 ↗",
+          external: true,
+        }}
+      />
 
       <section className="universe-hub-customize-section" aria-labelledby="hub-spoke-heading">
         <h2 id="hub-spoke-heading" className="universe-hub-section-title">
@@ -53,7 +50,12 @@ export function UniverseCustomizePanelV2() {
             <li key={p.id} className="universe-hub-pillar">
               <h3 className="universe-hub-pillar-title">{p.titleKo}</h3>
               <p className="universe-hub-pillar-summary">{p.summaryKo}</p>
-              <code className="universe-hub-artifact-path">{p.artifactPath}</code>
+              <Link className="universe-hub-pillar-cta" href={p.ctaHref}>
+                {p.ctaLabelKo} →
+              </Link>
+              <code className="universe-hub-artifact-path" title="내부 SSOT 경로">
+                {p.artifactPath}
+              </code>
             </li>
           ))}
         </ul>
