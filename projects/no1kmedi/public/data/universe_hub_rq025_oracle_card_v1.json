@@ -1,0 +1,20 @@
+{
+  "schema": "universe_hub_rq025_oracle_card_v1",
+  "version": "1.0.0",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "gating": "[NON_GATING]",
+  "rq_id": "RQ-025",
+  "title_ko": "RQ-025 · 매크로 λ AB 스냅샷",
+  "last_updated_utc": "2026-06-11T15:35:53Z",
+  "summary_ko": "3-arm holdout 비교 — majority 대비 우위 arm 없음. Track A·Oracle 승격·live 트리거 금지.",
+  "arms_label_ko": "proxy · merged_substitute · upstream (tie)",
+  "verdict": {
+    "any_beats_majority": false,
+    "track_a_promotion": false,
+    "oracle_promotion": false
+  },
+  "discovery_note_ko": "스키마 검증 OK · production sidecar meta 0건 — intake 대기.",
+  "data_ssot": "reports/rq025_lambda_ab_summary_v1_latest.json",
+  "forbidden_on_surface": ["56.5%", "47.5%", "Track A KPI headline"]
+}
