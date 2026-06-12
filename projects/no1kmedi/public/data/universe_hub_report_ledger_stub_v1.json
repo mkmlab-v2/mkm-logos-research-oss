@@ -1,0 +1,34 @@
+{
+  "schema": "universe_hub_report_ledger_stub_v1",
+  "version": "1.0.0",
+  "research_only": true,
+  "hypothesis_tag": "[HYPO]",
+  "last_updated_utc": "2026-06-11T18:45:00Z",
+  "disclaimer_ko": "합성·마스킹 stub — 실고객 리포트·WTT 중앙 채팅 합선 없음. mkmlife.com 계정 면이 SSOT.",
+  "entries": [
+    {
+      "id": "stub-rpt-001",
+      "title_ko": "원퀘스천 요약 · 비용 효율 (마스킹)",
+      "status": "stub",
+      "lane": "compression_pilot",
+      "updated_utc": "2026-06-10T09:00:00Z",
+      "source": "synthetic_fixture"
+    },
+    {
+      "id": "stub-rpt-002",
+      "title_ko": "매크로 관측 메모 · B-track [HYPO]",
+      "status": "stub",
+      "lane": "oracle_observatory",
+      "updated_utc": "2026-06-09T14:30:00Z",
+      "source": "synthetic_fixture"
+    },
+    {
+      "id": "stub-rpt-003",
+      "title_ko": "페르소나 가드 스트레스 노트 (마스킹)",
+      "status": "stub",
+      "lane": "governed_customization",
+      "updated_utc": "2026-06-08T11:15:00Z",
+      "source": "synthetic_fixture"
+    }
+  ]
+}
