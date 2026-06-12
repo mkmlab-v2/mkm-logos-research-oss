@@ -44,6 +44,13 @@
           "inspector": "projects/no1kmedi/src/components/shell/HubEvidenceInspectorV3.tsx",
           "discover_ask": "projects/no1kmedi/src/components/shell/UniverseCenterAskV2.tsx",
           "compression_sandbox": "projects/no1kmedi/src/components/shell/UniverseCompressionSandboxV2.tsx"
+        },
+        "discover_minimal_mode": {
+          "route": "/hub",
+          "visual_only": true,
+          "hides_site_header": true,
+          "sidebar_icon_rail": true,
+          "ssot": "projects/no1kmedi/src/lib/universeHubDiscoverMinimalV1.ts"
         }
       },
       "center_l0": {
