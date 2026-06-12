@@ -14,7 +14,7 @@ export const NO1KMEDI_APEX_PORTAL_HOSTS = new Set([
 
 export const LOCAL_DEV_HOSTS = new Set(["localhost", "127.0.0.1"]);
 
-/** Official clinician app host — minimal ChatGPT shell on /clinician (not apex hub rewrite). */
+/** Official clinician app host — minimal chat shell on /clinician (not apex hub rewrite). */
 export const JEMA_APP_CLINICIAN_MINIMAL_HOSTS = new Set([
   "app.jema-ai.com",
   "www.app.jema-ai.com",
@@ -61,7 +61,7 @@ export function isPublicPatientSurfacePath(pathname: string): boolean {
   return paths.some((base) => pathname === base || pathname.startsWith(`${base}/`));
 }
 
-/** ChatGPT-minimal shell on no1kmedi hosts, app.jema-ai.com /clinician, and localhost when dev simulate is on. */
+/** Minimal clinician chat shell on no1kmedi hosts, app.jema-ai.com /clinician, and localhost when dev simulate is on. */
 export function shouldUseMinimalClinicianShell(host: string): boolean {
   const h = normalizeRequestHost(host);
   if (JEMA_APP_CLINICIAN_MINIMAL_HOSTS.has(h)) return true;
