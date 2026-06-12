@@ -27,3 +27,24 @@ def test_middleware_redirects_root_to_hub():
     text = mw.read_text(encoding="utf-8")
     assert "shouldRedirectRootToHubHome" in text
     assert 'url.pathname = "/hub"' in text
+
+
+def test_app_jema_ai_clinician_subpath_not_hub_root():
+    """STOP: app.jema-ai.com /clinician must not collide with / -> /hub redirect."""
+    text = PORTAL_HOST.read_text(encoding="utf-8")
+    assert "app.jema-ai.com" in text
+    assert "JEMA_APP_CLINICIAN_MINIMAL_HOSTS" in text
+    assert "JEMA_AI_HUB_HOSTS" in text
+    # Hub redirect only on pathname === "/"
+    assert 'if (pathname !== "/") return false' in text
+
+
+def test_middleware_clinician_before_hub_collision_guard():
+    mw = ROOT / "projects/no1kmedi/src/middleware.ts"
+    text = mw.read_text(encoding="utf-8")
+    hub_idx = text.find("shouldRedirectRootToHubHome")
+    clinician_idx = text.find("shouldRewriteRootToClinician")
+    assert hub_idx > 0 and clinician_idx > 0
+    assert hub_idx < clinician_idx
+    assert "rewriteToClinicianPath" in text
+    assert 'pathname === "/clinician"' in text or 'pathname.startsWith("/clinician/")' in text

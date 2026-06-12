@@ -109,6 +109,53 @@ def main() -> int:
             chunk_detail = "hub page chunk not found in html"
     checks.append({"id": "empty_submit_guard", "ok": found, "detail": chunk_detail})
 
+    code_cl, _, cl_headers = fetch(f"{ORIGIN}/clinician", follow_redirects=False)
+    cl_loc = cl_headers.get("location", "")
+    clinician_not_hub_redirect = not (
+        code_cl in (301, 302, 307, 308) and "/hub" in cl_loc
+    )
+    checks.append(
+        {
+            "id": "clinician_not_hub_redirect",
+            "ok": clinician_not_hub_redirect,
+            "detail": f"status={code_cl} location={cl_loc!r}",
+        }
+    )
+
+    code_cl_final, html_cl, _ = fetch(f"{ORIGIN}/clinician")
+    clinician_ok = code_cl_final == 200 and "/hub/clinician" not in html_cl
+    checks.append(
+        {
+            "id": "clinician_200",
+            "ok": clinician_ok,
+            "detail": f"status={code_cl_final}",
+        }
+    )
+
+    code_life, html_life, _ = fetch(f"{ORIGIN}/hub/life")
+    embed_needles = ("universe-hub-mkmlife-embed", "mkmlife.com", "consumer_portal_v1")
+    life_embed_ok = code_life == 200 and any(n in html_life for n in embed_needles)
+    if code_life == 200 and not life_embed_ok:
+        match_life = re.search(
+            r"/_next/static/chunks/app/hub/life/page-[^\"]+\.js",
+            html_life,
+        )
+        if match_life:
+            lcode, chunk_life, _ = fetch(f"{ORIGIN}{match_life.group(0)}", max_bytes=2_000_000)
+            life_embed_ok = lcode == 200 and any(n in chunk_life for n in embed_needles)
+            life_detail = f"chunk_status={lcode} embed_in_chunk={life_embed_ok}"
+        else:
+            life_detail = "hub/life page chunk not found"
+    else:
+        life_detail = f"status={code_life}"
+    checks.append(
+        {
+            "id": "hub_life_mkmlife_embed",
+            "ok": life_embed_ok,
+            "detail": life_detail,
+        }
+    )
+
     payload = {
         "schema": "universe_hub_live_smoke_v1",
         "generated_at_utc": datetime.now(timezone.utc)
