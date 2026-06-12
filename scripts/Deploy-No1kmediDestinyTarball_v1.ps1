@@ -10,6 +10,7 @@
     2. Run this script (tarball overwrites projects/no1kmedi; monorepo root is synced via git pull on VPS).
 
   Sets on VPS .env.local (never shipped in tarball): MKM_WORKSPACE_ROOT, MKM_PYTHON, KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN.
+  Webhook env: run scripts\Sync-CompressionPilotAuditWebhook_v1.ps1 -SyncVps before or after deploy.
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Deploy-No1kmediDestinyTarball_v1.ps1
@@ -143,6 +144,7 @@ if (-not $SkipLocalBuild) {
     Write-Host "[no1kmedi-tarball] local npm run build" -ForegroundColor Cyan
     Push-Location $src
     try {
+        $env:NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED = "1"
         & npm run build
         if ($LASTEXITCODE -ne 0) { throw "local build failed exit $LASTEXITCODE" }
     } finally { Pop-Location }
@@ -175,6 +177,7 @@ touch "`$ENV_FILE"
 grep -q '^MKM_WORKSPACE_ROOT=' "`$ENV_FILE" && sed -i 's|^MKM_WORKSPACE_ROOT=.*|MKM_WORKSPACE_ROOT=$vpsDestinyRepo|' "`$ENV_FILE" || echo "MKM_WORKSPACE_ROOT=$vpsDestinyRepo" >> "`$ENV_FILE"
 grep -q '^KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN=' "`$ENV_FILE" || echo 'KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN=1' >> "`$ENV_FILE"
 grep -q '^MKM_PYTHON=' "`$ENV_FILE" && sed -i 's|^MKM_PYTHON=.*|MKM_PYTHON=/usr/bin/python3|' "`$ENV_FILE" || echo 'MKM_PYTHON=/usr/bin/python3' >> "`$ENV_FILE"
+grep -q '^NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=' "`$ENV_FILE" || echo 'NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=1' >> "`$ENV_FILE"
 pm2 restart no1kmedi-com --update-env || pm2 start npm --name no1kmedi-com --cwd $vpsDest -- start
 pm2 save
 rm -f $tarRemote

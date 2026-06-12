@@ -61,6 +61,8 @@ assert.equal(isNo1kmediPortalHost("localhost"), false);
 
 assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/", null), true);
 assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/hub", null), false);
+assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/clinician", null), false);
+assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/clinician/intake", null), false);
 assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/", "1"), false);
 assert.equal(shouldRedirectRootToHubHome("no1kmedi.com", "/", null), false);
 assert.equal(shouldRewriteRootToClinician("app.jema-ai.com"), false);
