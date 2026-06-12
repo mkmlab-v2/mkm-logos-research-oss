@@ -20,11 +20,18 @@ if (-not (Test-Path $ps1)) {
 $target = if ($EnvLocalPath) { $EnvLocalPath } else { Join-Path $root "projects\no1kmedi\.env.local" }
 
 function Get-DpapiPlain([string]$Key) {
-    $out = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ps1 -Action get -Key $Key -AsPlainText 2>$null
-    if ($LASTEXITCODE -ne 0) { return $null }
-    $t = ($out | Out-String).Trim()
-    if (-not $t) { return $null }
-    return $t
+    $prev = $ErrorActionPreference
+    $ErrorActionPreference = "SilentlyContinue"
+    try {
+        $out = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $ps1 -Action get -Key $Key -AsPlainText 2>$null
+        if ($LASTEXITCODE -ne 0) { return $null }
+        $t = ($out | Out-String).Trim()
+        if (-not $t) { return $null }
+        return $t
+    }
+    finally {
+        $ErrorActionPreference = $prev
+    }
 }
 
 $keys = @(
@@ -39,7 +46,7 @@ if (Test-Path $target) {
 }
 
 function Set-Or-Add([string]$name, [string]$value) {
-    script:lines = $script:lines | Where-Object { $_ -notmatch "^\s*$([regex]::Escape($name))\s*=" }
+    $script:lines = $script:lines | Where-Object { $_ -notmatch "^\s*$([regex]::Escape($name))\s*=" }
     $script:lines += "$name=$value"
 }
 
