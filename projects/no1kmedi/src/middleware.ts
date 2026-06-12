@@ -2,19 +2,15 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
   isPublicPatientSurfacePath,
+  JEMA_AI_HUB_HOSTS,
   normalizeRequestHost,
+  shouldRedirectRootToHubHome,
   shouldRewriteRootToClinician,
 } from "@/lib/no1kmedi-portal-host";
 
 const FARM_HOSTS = new Set(["farm.jema-ai.com", "www.farm.jema-ai.com"]);
 const FARM_CANONICAL_ORIGIN = "https://farm.jema-ai.com";
 /** Hub hosts: /smartfarm on apex/app is redirected to farm.jema-ai.com (B2B canonical). */
-const JEMA_HUB_HOSTS = new Set([
-  "jema-ai.com",
-  "www.jema-ai.com",
-  "app.jema-ai.com",
-  "www.app.jema-ai.com",
-]);
 /** O-P5: www.jema12.com/studio → jema-ai.com/studio → app.jema-ai.com/studio (CF) → oracle v6 */
 const STUDIO_ORACLE_V6_URL =
   "https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1";
@@ -47,16 +43,34 @@ function isStudioPath(pathname: string): boolean {
   );
 }
 
+function isHubOperatorPath(pathname: string): boolean {
+  return pathname === "/hub/operator" || pathname.startsWith("/hub/operator/");
+}
+
+/** Contract: operator_wtt auth internal_only — public URL must 403 unless dogfood build flag. */
+function hubOperatorAccessDenied(): NextResponse {
+  return new NextResponse("Forbidden — operator panel is internal-only.", {
+    status: 403,
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
 export function middleware(request: NextRequest) {
   const host = normalizeRequestHost(request.headers.get("host"));
   const { pathname } = request.nextUrl;
+
+  if (isHubOperatorPath(pathname)) {
+    if (process.env.NEXT_PUBLIC_UNIVERSE_HUB_OPERATOR_PANEL !== "1") {
+      return hubOperatorAccessDenied();
+    }
+  }
 
   if (isStudioPath(pathname)) {
     return NextResponse.redirect(STUDIO_ORACLE_V6_URL, 301);
   }
 
   if (
-    JEMA_HUB_HOSTS.has(host) &&
+    JEMA_AI_HUB_HOSTS.has(host) &&
     (pathname === "/smartfarm" || pathname.startsWith("/smartfarm/"))
   ) {
     const suffix =
@@ -68,6 +82,13 @@ export function middleware(request: NextRequest) {
 
   if (!host) {
     return NextResponse.next();
+  }
+
+  if (shouldRedirectRootToHubHome(host, pathname, request.nextUrl.searchParams.get("legacy_home"))) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/hub";
+    url.search = "";
+    return NextResponse.redirect(url);
   }
 
   if (shouldRewriteRootToClinician(host)) {

@@ -22,6 +22,7 @@
   3d3. `py -m pytest tests/test_logos_insight_bundle_schema_v1.py tests/test_build_logos_insight_bundle_v1.py tests/test_build_logos_macro_horizon_2030_scenario_v1.py` — Logos insight bundle v1 + macro horizon 2030(CI `Logos insight bundle + macro horizon 2030` 스텝과 동일)
   3d3b. `py -m pytest tests/test_btrack_science_core_v1.py tests/test_run_prophecy_lens_combo_science_core_v1.py tests/test_build_science_core_instrument_matrix_v1.py tests/test_run_science_core_conditional_attach_research_v1.py tests/test_run_science_core_prophecy_combo_sensitivity_v1.py` — Science Core B-track lane v1 + prophecy combo science arms + instrument matrix + conditional attach + fee sensitivity(CI `Science Core B-track lane v1` 스텝과 동일). `-SkipScienceCoreLaneSmoke` 로 생략.
   3d3a. `py -m pytest tests/test_stt_routing_audit_log_schema_v1.py tests/test_append_stt_routing_audit_log_v1.py tests/test_build_showroom_trust_visualization_slice_v1.py` — STT audit jsonschema + append·summarize + 쇼룸 Trust Visualization thin slice(CI `STT routing audit log v1 + showroom trust viz thin slice` 단계와 동일; CI YAML에서는 `Lens music prompt PoC M26-M30` 직후, 본 번들에서는 Logos insight 직후). `-SkipSttRoutingAuditShowroomTrustSlice` 로 생략.
+  3d3b-hub. `py scripts/check_mkm_universe_hub_shell_v2.py` + universe hub UX pytest 6종(CI `Universe Hub v2 UX gate` 단계; `4c` domain design offline pytest에 포함). `-SkipMkmDomainDesignOfflineSmoke` 로 생략.
   3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + 환자 통합 번들(`patient_care_bundle_v1`) 스키마·assemble·CDS 체인·슬롯 템플릿/정책/MD 렌더(`test_patient_care_bundle_templates_policy_render_v1`)·원클릭 `Invoke-PatientCareBundleAssemblePatientFacing_v1.ps1` + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
   4b. `py -m pytest tests/test_premium_btrack_multilens_report_schema_v1.py tests/test_build_premium_btrack_multilens_report_v1.py tests/test_premium_multilens_job_queue_stub_v1.py tests/test_build_premium_multilens_queue_promotion_gate_v1.py` — Premium B-track multi-lens report v1(스키마·동기 빌더 subprocess·파일 큐 스텁·S1 승격 게이트 회귀); 직후 **`py scripts/premium_multilens_job_queue_stub_v1.py drain --allow-missing-queue`**(큐 없으면 SKIP·exit 0)·**`py scripts/build_premium_multilens_queue_promotion_gate_v1.py --skip-pytest`**(S1_SHADOW 승격 게이트 산출); 일상 원클릭은 **`scripts/Invoke-PremiumMultilensQueueRoutine_v1.ps1`**; `dual-regime-integrity.yml` 동일 pytest+drain+gate 단계
@@ -369,10 +370,18 @@ $premiumBtrackMultilensReportPytests = @(
 )
 $mkmDomainDesignOfflinePytests = @(
     (Join-Path $workspaceRoot 'tests\test_check_mkm_domain_design_tokens_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_check_mkm_ui_shell_contract_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_check_mkm_universe_hub_shell_v2.py'),
+    (Join-Path $workspaceRoot 'tests\test_universe_hub_intent_router_v2.py'),
+    (Join-Path $workspaceRoot 'tests\test_universe_hub_path_active_plugin_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_universe_hub_rq025_oracle_card_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_universe_hub_report_ledger_stub_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_universe_hub_mkmlife_embed_v2.py'),
     (Join-Path $workspaceRoot 'tests\test_personadiary_ritual_draw_lut_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_personadiary_lattice_convergence_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_personadiary_live_ops_smoke_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_check_mkmlife_portal_commercialization_gate_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_check_mkmlife_pixel_sprite_urls_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_build_mkmlife_news_observation_deck_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_mkmlife_skim_read_preference_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_mkm_consumer_facade_v1.py')
@@ -810,8 +819,12 @@ if (-not $SkipMkmDomainDesignOfflineSmoke) {
             throw "MKM domain design offline pytest not found: $t"
         }
     }
-    Write-Host '== Fact-Lock: mkm_domain_design_tokens_v1 + personadiary/mkmlife offline pytest ==' -ForegroundColor Cyan
+    Write-Host '== Fact-Lock: mkm_domain_design_tokens_v1 + universe hub UX gate + personadiary/mkmlife offline pytest ==' -ForegroundColor Cyan
     & py $mkmDomainDesignTokensScript
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+    & py scripts/check_mkm_universe_hub_shell_v2.py
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

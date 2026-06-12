@@ -60,6 +60,8 @@ function Invoke-BundleScript([string]$RelPath, [string[]]$ScriptArguments) {
 
 $offlinePytests = @(
     "tests/test_check_mkm_domain_design_tokens_v1.py",
+    "tests/test_check_mkm_ui_shell_contract_v1.py",
+    "tests/test_check_mkm_universe_hub_shell_v2.py",
     "tests/test_personadiary_ritual_draw_lut_v1.py",
     "tests/test_personadiary_lattice_convergence_v1.py",
     "tests/test_personadiary_live_ops_smoke_v1.py",
@@ -78,6 +80,16 @@ try {
     $e1 = $LASTEXITCODE
     Add-Step "check_mkm_domain_design_tokens" $e1
     if ($e1 -ne 0) { throw "check_mkm_domain_design_tokens failed exit $e1" }
+
+    & py scripts/check_mkm_ui_shell_contract_v1.py
+    $e1b = $LASTEXITCODE
+    Add-Step "check_mkm_ui_shell_contract" $e1b
+    if ($e1b -ne 0) { throw "check_mkm_ui_shell_contract failed exit $e1b" }
+
+    & py scripts/check_mkm_universe_hub_shell_v2.py
+    $e1c = $LASTEXITCODE
+    Add-Step "check_mkm_universe_hub_shell_v2" $e1c
+    if ($e1c -ne 0) { throw "check_mkm_universe_hub_shell_v2 failed exit $e1c" }
 
     Write-Host "== domain design offline pytest ==" -ForegroundColor Cyan
     & py -m pytest @offlinePytests -q --tb=short
@@ -128,6 +140,7 @@ $out = [ordered]@{
     ssot              = @(
         "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
         "docs/final/artifacts/mkm_domain_design_tokens_v1.json",
+        "docs/final/artifacts/mkm_ui_shell_contract_v1.json",
         "docs/final/PERSONADIARY_DOMAIN_POINTER_V1.md"
     )
     notes             = "UI polish pass closure; re-run after domain deploy or hub footer changes."

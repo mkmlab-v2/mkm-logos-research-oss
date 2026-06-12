@@ -44,6 +44,18 @@ on:
       - "scripts/build_showroom_trust_visualization_slice_v1.py"
       - "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_trust_visualization_v0.html"
       - "tests/test_build_showroom_trust_visualization_slice_v1.py"
+      - "projects/no1kmedi/src/app/hub/**"
+      - "projects/no1kmedi/src/components/shell/Universe*.tsx"
+      - "projects/no1kmedi/src/components/shell/Hub*.tsx"
+      - "projects/no1kmedi/src/components/shell/IntentChip*.tsx"
+      - "projects/no1kmedi/src/components/shell/PackageLadder*.tsx"
+      - "projects/no1kmedi/src/lib/universeHub*.ts"
+      - "projects/no1kmedi/src/lib/no1kmedi-portal-host.ts"
+      - "scripts/check_mkm_universe_hub_shell_v2.py"
+      - "scripts/smoke_universe_hub_live_v1.py"
+      - "docs/final/artifacts/mkm_universe_hub_shell_contract_v2_draft.json"
+      - "tests/test_check_mkm_universe_hub_shell_v2.py"
+      - "tests/test_universe_hub_*.py"
       - "scripts/build_showroom_track_c_bundle_chain_v1.ps1"
       - "projects/bitcoin-trading/ops/windows-rehearsal/deploy_showroom_static.ps1"
       - "docs/final/MKM_SHOWROOM_OPS_AND_PACK0B_WORK_SCHEDULE_V1.md"
@@ -1239,6 +1251,11 @@ jobs:
 
       - name: STT routing audit log v1 + showroom trust viz thin slice
         run: python -m pytest tests/test_stt_routing_audit_log_schema_v1.py tests/test_append_stt_routing_audit_log_v1.py tests/test_build_showroom_trust_visualization_slice_v1.py -q --tb=short
+
+      - name: Universe Hub v2 UX gate (jema-ai.com /hub facade)
+        run: |
+          python scripts/check_mkm_universe_hub_shell_v2.py
+          python -m pytest tests/test_check_mkm_universe_hub_shell_v2.py tests/test_universe_hub_intent_router_v2.py tests/test_universe_hub_path_active_plugin_v1.py tests/test_universe_hub_rq025_oracle_card_v1.py tests/test_universe_hub_report_ledger_stub_v1.py tests/test_universe_hub_mkmlife_embed_v2.py -q --tb=short
 
       - name: MKM meta-layer envelope v1 (schema + kill-switch coherence)
         run: python -m pytest tests/test_mkm_meta_layer_envelope_v1.py -q --tb=short
