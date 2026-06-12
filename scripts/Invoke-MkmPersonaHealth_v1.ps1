@@ -114,7 +114,7 @@ param(
 
     [Parameter(Mandatory = $true, Position = 0)]
 
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
 
     [string]$Persona
 
@@ -595,6 +595,18 @@ try {
         'MkmDomainDesignClosure' {
 
             $script = Join-Path $PSScriptRoot 'Invoke-MkmDomainDesignClosureBundle_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'DesignLane' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmDesignLaneRoutine_v1.ps1'
 
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
 

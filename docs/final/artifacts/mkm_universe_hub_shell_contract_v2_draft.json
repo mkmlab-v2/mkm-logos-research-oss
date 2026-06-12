@@ -1,0 +1,211 @@
+{
+  "schema": "mkm_universe_hub_shell_contract_v2_draft",
+  "status": "draft_research_only",
+  "updated_utc": "2026-06-11",
+  "supersedes_nothing": "mkm_ui_shell_contract_v1.json remains enforced until human sign-off and gate wiring",
+  "architecture_note": "Perplexity/Wrtn-style hub on jema-ai.com — central one-question input + left plugin sidebar. NOT infinite chat; NOT backend lane merge.",
+  "hq_host": "jema-ai.com",
+  "hq_code_ssot": "projects/no1kmedi",
+  "inherits_from": "docs/final/artifacts/mkm_ui_shell_contract_v1.json",
+  "portfolio_ssot": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
+  "domain_sunset_policy": "other_domains_not_abandoned — mkmlife.com jemaai.cloud clinic api a-codeai keep roles; hub deep-links or embeds modules",
+  "shells": {
+    "universe_hub_v2": {
+      "shell_id": "universe_hub_v2",
+      "tenant_id": "jema-ai-hub",
+      "host": "jema-ai.com",
+      "role": "unified_brand_entry_and_plugin_router",
+      "layout": {
+        "nav": "sidebar",
+        "sidebar": "left",
+        "main": "center_minimal",
+        "content_pattern": "one_question_then_report",
+        "max_sidebar_plugins": 9,
+        "max_primary_nav": 0
+      },
+      "center_l0": {
+        "pattern": "single_search_or_question_bar",
+        "engine": "one_question_engine",
+        "turn_policy": "single_shot_report_not_infinite_chat",
+        "copy_key_ko": "hub.ask.placeholder.ko",
+        "copy_key_en": "hub.ask.placeholder.en",
+        "placeholder_ko": "가장 중요한 질문을 한 문장으로",
+        "placeholder_en": "Ask your one most important question"
+      },
+      "sidebar_plugins": [
+        {
+          "id": "discover",
+          "icon": "home",
+          "copy_key_ko": "plugin.discover.ko",
+          "label_ko": "홈 · 발견",
+          "route": "/",
+          "surface": "hub_l0",
+          "backend_lane": "none"
+        },
+        {
+          "id": "governed_customization",
+          "icon": "shield",
+          "copy_key_ko": "plugin.governed_customization.ko",
+          "label_ko": "AI 맞춤·가드 (B2B)",
+          "route": "/hub/customize",
+          "surface": "wtt_persona_os_intro",
+          "backend_lane": "track_c_b2b_draft",
+          "deep_link_fallback": "/enterprise#wtt-persona-os",
+          "identity_ssot": "docs/final/artifacts/governed_ai_customization_identity_v1_latest.json",
+          "business_plan_ref": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §0",
+          "send_gate": "HOLD",
+          "note": "Governed AI Customization OS hub spoke — EPB/FSM/guardrails; not merged into consumer ask-one canvas"
+        },
+        {
+          "id": "oracle_observatory",
+          "icon": "chart",
+          "copy_key_ko": "plugin.oracle.ko",
+          "label_ko": "오라클 관측소",
+          "route": "/hub/oracle",
+          "surface": "rq025_timeline_deck",
+          "backend_lane": "b_track_research_only",
+          "data_ssot": "reports/rq025_*",
+          "forbidden_headline_metrics": ["56.5%", "47.5%", "proxy pass rate as product claim"]
+        },
+        {
+          "id": "mkm_life",
+          "icon": "leaf",
+          "copy_key_ko": "plugin.life.ko",
+          "label_ko": "라이프 케어",
+          "route": "/hub/life",
+          "surface": "wellness_card_deck",
+          "backend_lane": "consumer_b_track",
+          "deep_link_fallback": "https://mkmlife.com/",
+          "embedded_shell_ref": "consumer_portal_v1",
+          "note": "Phase 1 may deep-link to mkmlife.com; Phase 2 optional embed — consumer_portal_v1 contract unchanged on mkmlife host"
+        },
+        {
+          "id": "a_code_sandbox",
+          "icon": "compress",
+          "copy_key_ko": "plugin.acode.ko",
+          "label_ko": "개발자 샌드박스",
+          "route": "/hub/developer",
+          "surface": "metering_and_open_bench",
+          "backend_lane": "b2b_api",
+          "deep_link_fallback": "https://a-codeai.com/",
+          "auth": "operator_or_api_key_required"
+        },
+        {
+          "id": "my_reports",
+          "icon": "folder",
+          "copy_key_ko": "plugin.reports.ko",
+          "label_ko": "내 리포트",
+          "route": "/hub/reports",
+          "surface": "report_ledger",
+          "backend_lane": "consumer"
+        },
+        {
+          "id": "showroom",
+          "icon": "board",
+          "copy_key_ko": "plugin.showroom.ko",
+          "label_ko": "공개 관측 보드",
+          "route": null,
+          "external_url": "https://jemaai.cloud/",
+          "surface": "public_showroom",
+          "note": "Showroom stays on jemaai.cloud per portfolio §1.1 — not duplicated inside hub main canvas by default"
+        },
+        {
+          "id": "clinician",
+          "icon": "clinic",
+          "copy_key_ko": "plugin.clinician.ko",
+          "label_ko": "한의사 보조",
+          "route": "/clinician",
+          "surface": "clinical_lane",
+          "backend_lane": "clinical_isolated",
+          "deep_link_fallback": "https://clinic.no1kmedi.com/"
+        },
+        {
+          "id": "operator_wtt",
+          "icon": "ops",
+          "copy_key_ko": "plugin.operator.ko",
+          "label_ko": "운영자 패널",
+          "route": "/hub/operator",
+          "surface": "operator_console",
+          "backend_lane": "operator_panel",
+          "embedded_shell_ref": "operator_console_v1",
+          "auth": "internal_only",
+          "send_gate": "HOLD"
+        }
+      ],
+      "component_ssot": {
+        "shell": "projects/no1kmedi/src/components/shell/UnifiedUniverseShellV2.tsx",
+        "site_header": "projects/no1kmedi/src/components/shell/UniverseHubSiteHeader.tsx",
+        "shell_client": "projects/no1kmedi/src/components/shell/HubShellClient.tsx",
+        "sidebar": "projects/no1kmedi/src/components/shell/UniverseSidebarV2.tsx",
+        "center_ask": "projects/no1kmedi/src/components/shell/UniverseCenterAskV2.tsx",
+        "intent_chip_row": "projects/no1kmedi/src/components/shell/IntentChipRowV2.tsx",
+        "package_ladder_table": "projects/no1kmedi/src/components/shell/PackageLadderTableV2.tsx",
+        "discover_copy": "projects/no1kmedi/src/lib/universeHubDiscoverCopyV2.ts",
+        "customize_panel": "projects/no1kmedi/src/components/shell/UniverseCustomizePanelV2.tsx",
+        "hub_spoke_diagram": "projects/no1kmedi/src/components/shell/HubSpokeDiagramV2.tsx",
+        "operator_panel": "projects/no1kmedi/src/components/shell/UniverseOperatorPanelV2.tsx",
+        "mkmlife_embed": "projects/no1kmedi/src/components/shell/UniverseMkmlifeEmbedV2.tsx",
+        "mkmlife_embed_lib": "projects/no1kmedi/src/lib/universeHubMkmlifeEmbedV2.ts",
+        "mkmlife_embed_chrome": "projects/mkm/mkm-life/components/HubEmbedChromeV1.tsx",
+        "plugin_panel": "projects/no1kmedi/src/components/shell/UniverseHubPluginPanel.tsx",
+        "intent_router": "projects/no1kmedi/src/lib/universeHubIntentRouterV2.ts",
+        "path_active_plugin": "projects/no1kmedi/src/lib/universeHubPathActivePlugin.ts",
+        "customize_content": "projects/no1kmedi/src/lib/universeHubCustomizeContentV2.ts",
+        "plugins_lib": "projects/no1kmedi/src/lib/universeHubPluginsV2.ts",
+        "routes_root": "projects/no1kmedi/src/app/hub"
+      },
+      "nav_groups": ["discover", "b2b", "consumer", "ops"],
+      "ux_forbidden_patterns": [
+        "infinite_chat_primary",
+        "buffet_subscription_copy",
+        "track_a_compression_headline_in_hub",
+        "customer_provided_data_merged_with_operator_panel",
+        "live_trading_trigger_from_hub_sidebar"
+      ],
+      "disclaimer_ids": ["NON-MEDICAL", "NON-DETERMINISTIC", "FINANCIAL-RISK", "RESEARCH_ONLY"]
+    }
+  },
+  "coexistence": {
+    "consumer_portal_v1": {
+      "host": "mkmlife.com",
+      "policy": "remain_until_hub_embed_proven",
+      "gate": "scripts/check_mkm_ui_shell_contract_v1.py"
+    },
+    "operator_console_v1": {
+      "policy": "internal_only_never_on_mkmlife_consumer_routes"
+    }
+  },
+  "implementation_phases": [
+    {
+      "phase": "P0_contract",
+      "deliverable": "this draft + portfolio §1.1 addendum review",
+      "gate": "human_sign_off"
+    },
+    {
+      "phase": "P1_hub_shell",
+      "deliverable": "UnifiedUniverseShellV2 on jema-ai.com /hub/* routes",
+      "gate": "scripts/check_mkm_universe_hub_shell_v2.py"
+    },
+    {
+      "phase": "P2_plugins",
+      "deliverable": "customize hub-spoke + intent router + grouped sidebar + plugin canvases",
+      "gate": "scripts/check_mkm_universe_hub_shell_v2.py",
+      "status": "complete_local"
+    },
+    {
+      "phase": "P3_operator_scaffold",
+      "deliverable": "operator mock queue env-gated; reports empty state; path-active shell",
+      "gate": "scripts/check_mkm_universe_hub_shell_v2.py",
+      "status": "complete_local"
+    },
+    {
+      "phase": "P4_embed_optional",
+      "deliverable": "mkmlife iframe embed env-gated (NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=1); mkmlife HubEmbedChromeV1 trims header/footer when embed=1",
+      "gate": "scripts/check_mkm_universe_hub_shell_v2.py",
+      "production_enable_gate": "human_sign_off_before_embed_flag_on_production_build",
+      "production_embed_enabled_utc": "2026-06-12",
+      "status": "embed_on_production_build_commander_approved"
+    }
+  ],
+  "track_wall": "hub_ui_draft_not_track_a_not_live_not_send"
+}

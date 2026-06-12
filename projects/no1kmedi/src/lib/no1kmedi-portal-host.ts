@@ -20,6 +20,14 @@ export const JEMA_APP_CLINICIAN_MINIMAL_HOSTS = new Set([
   "www.app.jema-ai.com",
 ]);
 
+/** jema-ai.com brand hosts — HQ `/hub` facade entry (not no1kmedi clinician portal). */
+export const JEMA_AI_HUB_HOSTS = new Set([
+  "jema-ai.com",
+  "www.jema-ai.com",
+  "app.jema-ai.com",
+  "www.app.jema-ai.com",
+]);
+
 export function normalizeRequestHost(hostHeader: string | null | undefined): string {
   return (hostHeader ?? "").split(":")[0]?.toLowerCase() ?? "";
 }
@@ -58,4 +66,18 @@ export function shouldUseMinimalClinicianShell(host: string): boolean {
   const h = normalizeRequestHost(host);
   if (JEMA_APP_CLINICIAN_MINIMAL_HOSTS.has(h)) return true;
   return shouldRewriteRootToClinician(h);
+}
+
+/** Redirect `/` → `/hub` on JEMA HQ hosts (and local dev unless simulating no1kmedi portal). */
+export function shouldRedirectRootToHubHome(
+  host: string,
+  pathname: string,
+  legacyHomeParam: string | null | undefined,
+): boolean {
+  if (pathname !== "/") return false;
+  if (legacyHomeParam === "1") return false;
+  const h = normalizeRequestHost(host);
+  if (shouldRewriteRootToClinician(h)) return false;
+  if (JEMA_AI_HUB_HOSTS.has(h)) return true;
+  return LOCAL_DEV_HOSTS.has(h);
 }
