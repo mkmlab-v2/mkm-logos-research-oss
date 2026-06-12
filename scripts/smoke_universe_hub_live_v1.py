@@ -69,6 +69,7 @@ def main() -> int:
 
     code_cust, html_cust, _ = fetch(f"{ORIGIN}/hub/customize")
     customize_ok = code_cust == 200 and "Hub–Spoke" in html_cust and "패키지 라더" in html_cust
+    customize_chunk = ""
     if code_cust == 200 and not customize_ok:
         match = re.search(
             r"/_next/static/chunks/app/hub/customize/page-[^\"]+\.js",
@@ -76,14 +77,56 @@ def main() -> int:
         )
         if match:
             ccode, chunk, _ = fetch(f"{ORIGIN}{match.group(0)}", max_bytes=2_000_000)
+            customize_chunk = chunk if ccode == 200 else ""
             customize_ok = ccode == 200 and (
                 "WTT Persona OS" in chunk or "HubSpokeDiagram" in chunk
             )
+    elif code_cust == 200:
+        customize_chunk = html_cust
     checks.append(
         {
             "id": "customize_hub_spoke",
             "ok": customize_ok,
             "detail": f"status={code_cust}",
+        }
+    )
+
+    pillar_cta_ok = code_cust == 200 and (
+        "토큰 압축 사전 감사 신청" in customize_chunk
+        or "Persona OS 개요" in customize_chunk
+    )
+    if code_cust == 200 and not pillar_cta_ok and not customize_chunk:
+        match = re.search(
+            r"/_next/static/chunks/app/hub/customize/page-[^\"]+\.js",
+            html_cust,
+        )
+        if match:
+            ccode, chunk, _ = fetch(f"{ORIGIN}{match.group(0)}", max_bytes=2_000_000)
+            pillar_cta_ok = ccode == 200 and (
+                "토큰 압축 사전 감사 신청" in chunk or "Persona OS 개요" in chunk
+            )
+    checks.append(
+        {
+            "id": "customize_pillar_cta",
+            "ok": pillar_cta_ok,
+            "detail": "pillar links to /enterprise and /enterprise/apply",
+        }
+    )
+
+    package_cta_ok = code_cust == 200 and "B2B 상담·사전 감사 신청" in customize_chunk
+    if code_cust == 200 and not package_cta_ok and not customize_chunk:
+        match = re.search(
+            r"/_next/static/chunks/app/hub/customize/page-[^\"]+\.js",
+            html_cust,
+        )
+        if match:
+            ccode, chunk, _ = fetch(f"{ORIGIN}{match.group(0)}", max_bytes=2_000_000)
+            package_cta_ok = ccode == 200 and "B2B 상담·사전 감사 신청" in chunk
+    checks.append(
+        {
+            "id": "customize_package_cta",
+            "ok": package_cta_ok,
+            "detail": "package ladder footer CTA",
         }
     )
 
