@@ -1,4 +1,4 @@
-import { UNIVERSE_HUB_DEEP_LINKS } from "@/lib/universeHubPluginsV2";
+import { buildMkmlifeAskOneHubDeepLink, UNIVERSE_HUB_DEEP_LINKS } from "@/lib/universeHubPluginsV2";
 
 /** P4: optional iframe embed — default OFF until build sets NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=1 */
 export function isMkmlifeEmbedEnabled(): boolean {
@@ -21,7 +21,12 @@ export function buildMkmlifeEmbedSrc(opts?: {
   } else if (view === "news-deck") {
     base = UNIVERSE_HUB_DEEP_LINKS.mkmlifeNewsDeck;
   } else {
-    base = UNIVERSE_HUB_DEEP_LINKS.mkmlifeAskOne;
+    const hubAsk = buildMkmlifeAskOneHubDeepLink(
+      opts?.prefill?.trim() ? { prefill: opts.prefill.trim() } : undefined,
+    );
+    const url = new URL(hubAsk);
+    url.searchParams.set("embed", "1");
+    return url.toString();
   }
   const url = new URL(base);
   url.searchParams.set("source", "jema_hub_v2");

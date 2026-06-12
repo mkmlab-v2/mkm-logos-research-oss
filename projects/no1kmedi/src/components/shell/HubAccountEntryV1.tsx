@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function HubAccountEntryV1({ compact = false }: Props) {
-  const { session, refresh } = useMkmFamilySessionV1();
+  const { session, loading, refresh } = useMkmFamilySessionV1();
   const [busy, setBusy] = useState(false);
 
   const onGoogleLogin = () => {
@@ -29,8 +29,12 @@ export function HubAccountEntryV1({ compact = false }: Props) {
     window.location.href = `/api/mkm-family/rp/handoff?product=${product}`;
   };
 
-  if (!session) {
-    return compact ? null : <div className="universe-hub-account-entry" aria-busy="true" />;
+  if (loading || !session) {
+    return compact ? null : (
+      <div className="universe-hub-account-entry" aria-busy={loading}>
+        {loading ? <span className="universe-hub-account-muted">MKM 계정 확인 중…</span> : null}
+      </div>
+    );
   }
 
   if (!session.configured) {

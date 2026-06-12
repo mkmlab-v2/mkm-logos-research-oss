@@ -7,13 +7,13 @@ import {
   shouldRedirectRootToHubHome,
   shouldRewriteRootToClinician,
 } from "@/lib/no1kmedi-portal-host";
+import { JEMAAI_CLOUD_PUBLIC_OBSERVE_URL } from "@/lib/jemaaiShowroomPublicV1";
 
 const FARM_HOSTS = new Set(["farm.jema-ai.com", "www.farm.jema-ai.com"]);
 const FARM_CANONICAL_ORIGIN = "https://farm.jema-ai.com";
 /** Hub hosts: /smartfarm on apex/app is redirected to farm.jema-ai.com (B2B canonical). */
-/** O-P5: www.jema12.com/studio → jema-ai.com/studio → app.jema-ai.com/studio (CF) → oracle v6 */
-const STUDIO_ORACLE_V6_URL =
-  "https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1";
+/** O-P5: /studio on hub hosts → public text-only observe surface on jemaai.cloud */
+const STUDIO_ORACLE_V6_URL = JEMAAI_CLOUD_PUBLIC_OBSERVE_URL;
 const PERSONADIARY_HOSTS = new Set([
   "personadiary.com",
   "www.personadiary.com",

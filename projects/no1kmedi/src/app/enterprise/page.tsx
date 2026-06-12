@@ -23,10 +23,9 @@ export default function EnterprisePage() {
   const e = requireEnterprise();
   const presetClass = homepagePresetClassMap[DEFAULT_HOMEPAGE_PRESET];
   const showroom = c.hub_links.showroom_jemaai;
-  const qaStudio = c.hub_links.showroom_meaning_qa_v2 ?? showroom;
-  const topologyRadar = c.hub_links.showroom_topology_radar;
-  const meaningGraph = c.hub_links.showroom_meaning_graph;
   const api = c.hub_links.b2b_acodeai;
+  const wttDemo = c.hub_links.wtt_persona_os_demo;
+  const compressionRoi = c.hub_links.compression_roi_dashboard;
 
   return (
     <div className={`${presetClass} enterprise-page`}>
@@ -41,6 +40,8 @@ export default function EnterprisePage() {
           <nav className="nav-main enterprise-nav" aria-label={e.nav.main_aria_label}>
             <a href="/">{e.nav.back_home}</a>
             <a href="#pillars">{e.nav.pillars}</a>
+            <a href="#wtt-persona-os">Persona OS</a>
+            <a href="#compression-roi">Compression</a>
             <a href="#proof">{e.nav.proof}</a>
             <a href="#research">{e.nav.research}</a>
             <a href="#contact">{e.nav.contact}</a>
@@ -60,10 +61,10 @@ export default function EnterprisePage() {
           <div className="hero-cta">
             <a
               className="btn btn-primary enterprise-btn-primary"
-              href={qaStudio.href}
+              href={showroom.href}
               target="_blank"
               rel="noopener noreferrer"
-              title={qaStudio.sublabel}
+              title={showroom.sublabel}
             >
               {e.hero.cta_primary}
             </a>
@@ -142,60 +143,111 @@ export default function EnterprisePage() {
           </div>
         </section>
 
+        <section id="wtt-persona-os" className="enterprise-wtt" aria-labelledby="wtt-title">
+          <p className="enterprise-section-label">{e.wtt_persona_os.section_label}</p>
+          <h2 id="wtt-title">{e.wtt_persona_os.title}</h2>
+          <p className="section-lead">{e.wtt_persona_os.lead}</p>
+          <div className="enterprise-wtt-layout">
+            <div className="enterprise-wtt-mock" aria-hidden="true">
+              <div className="enterprise-wtt-mock-bar">
+                <span className="enterprise-wtt-mock-pill hold">SEND HOLD</span>
+                <span className="enterprise-wtt-mock-pill">[HYPO]</span>
+              </div>
+              <div className="enterprise-wtt-mock-grid">
+                <div className="enterprise-wtt-mock-col">
+                  <span className="enterprise-wtt-mock-label">시나리오</span>
+                  <div className="enterprise-wtt-mock-chip is-active">VIP · 휴먼 요청</div>
+                  <div className="enterprise-wtt-mock-chip">환불 · 마스킹</div>
+                </div>
+                <div className="enterprise-wtt-mock-col enterprise-wtt-mock-col--main">
+                  <span className="enterprise-wtt-mock-label">워크스페이스</span>
+                  <div className="enterprise-wtt-mock-input">복붙 답변 그만하고 사람 연결해 주세요.</div>
+                  <div className="enterprise-wtt-mock-actions">
+                    <span className="enterprise-wtt-mock-btn">스캔 + FSM</span>
+                  </div>
+                </div>
+                <div className="enterprise-wtt-mock-col">
+                  <span className="enterprise-wtt-mock-label">텔레메트리</span>
+                  <div className="enterprise-wtt-mock-gauge">
+                    <div className="enterprise-wtt-mock-gauge-fill" style={{ width: "42%" }} />
+                  </div>
+                  <div className="enterprise-wtt-mock-badges">
+                    <span>elevated</span>
+                    <span>cum 0.41</span>
+                  </div>
+                </div>
+              </div>
+              <p className="enterprise-wtt-mock-caption">{e.wtt_persona_os.mock_caption}</p>
+            </div>
+            <div className="enterprise-wtt-copy">
+              <ul className="enterprise-wtt-bullets">
+                {e.wtt_persona_os.bullets.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              {wttDemo ? (
+                <a
+                  className="btn btn-primary enterprise-btn-primary"
+                  href={wttDemo.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {e.wtt_persona_os.cta_label}
+                </a>
+              ) : null}
+            </div>
+          </div>
+        </section>
+
+        <section id="compression-roi" className="enterprise-compression-roi" aria-labelledby="compression-roi-title">
+          <p className="enterprise-section-label">{e.compression_roi.section_label}</p>
+          <h2 id="compression-roi-title">{e.compression_roi.title}</h2>
+          <p className="section-lead">{e.compression_roi.lead}</p>
+          <div className="enterprise-compression-roi-card">
+            <div className="enterprise-compression-roi-metrics" aria-hidden="true">
+              <div className="enterprise-compression-roi-metric">
+                <span>프록시 절감률</span>
+                <strong>~14%</strong>
+                <small>pilot measured · not headline</small>
+              </div>
+              <div className="enterprise-compression-roi-metric">
+                <span>Jaccard 프록시</span>
+                <strong>~0.85</strong>
+                <small>operational post-processor</small>
+              </div>
+              <div className="enterprise-compression-roi-metric">
+                <span>send_gate</span>
+                <strong>HOLD</strong>
+                <small>counsel + contract</small>
+              </div>
+            </div>
+            <p className="enterprise-compression-roi-note">{e.compression_roi.artifact_note}</p>
+            <div className="enterprise-compression-roi-actions">
+              {e.compression_roi.apply_href ? (
+                <a className="btn btn-primary enterprise-btn-primary" href={e.compression_roi.apply_href}>
+                  {e.compression_roi.apply_cta_label ?? "무료 사전 감사 신청"}
+                </a>
+              ) : null}
+              {compressionRoi ? (
+                <a className="btn btn-ghost enterprise-btn-ghost" href={compressionRoi.href}>
+                  {e.compression_roi.cta_label}
+                </a>
+              ) : null}
+            </div>
+          </div>
+        </section>
+
         <section id="proof" className="enterprise-proof" aria-labelledby="proof-title">
           <h2 id="proof-title">{e.proof.title}</h2>
           <p className="section-lead">{e.proof.lead}</p>
           <div className="enterprise-proof-grid">
             <a
               className="enterprise-proof-card enterprise-proof-card--primary"
-              href={qaStudio.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span className="enterprise-proof-card-label">B2B 데모</span>
-              <strong>{qaStudio.label}</strong>
-              <p>{qaStudio.sublabel}</p>
-              <span className="enterprise-proof-card-arrow" aria-hidden="true">
-                →
-              </span>
-            </a>
-            {topologyRadar ? (
-              <a
-                className="enterprise-proof-card"
-                href={topologyRadar.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="enterprise-proof-card-label">레이더</span>
-                <strong>{topologyRadar.label}</strong>
-                <p>{topologyRadar.sublabel}</p>
-                <span className="enterprise-proof-card-arrow" aria-hidden="true">
-                  →
-                </span>
-              </a>
-            ) : null}
-            {meaningGraph ? (
-              <a
-                className="enterprise-proof-card"
-                href={meaningGraph.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="enterprise-proof-card-label">그래프</span>
-                <strong>{meaningGraph.label}</strong>
-                <p>{meaningGraph.sublabel}</p>
-                <span className="enterprise-proof-card-arrow" aria-hidden="true">
-                  →
-                </span>
-              </a>
-            ) : null}
-            <a
-              className="enterprise-proof-card"
               href={showroom.href}
               target="_blank"
               rel="noopener noreferrer"
             >
-              <span className="enterprise-proof-card-label">보드</span>
+              <span className="enterprise-proof-card-label">공개 관측</span>
               <strong>{showroom.label}</strong>
               <p>{showroom.sublabel}</p>
               <span className="enterprise-proof-card-arrow" aria-hidden="true">
@@ -215,6 +267,31 @@ export default function EnterprisePage() {
                 →
               </span>
             </a>
+            {wttDemo ? (
+              <a
+                className="enterprise-proof-card"
+                href={wttDemo.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="enterprise-proof-card-label">Persona OS</span>
+                <strong>{wttDemo.label}</strong>
+                <p>{wttDemo.sublabel}</p>
+                <span className="enterprise-proof-card-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ) : null}
+            {compressionRoi ? (
+              <a className="enterprise-proof-card" href={compressionRoi.href}>
+                <span className="enterprise-proof-card-label">Compression</span>
+                <strong>{compressionRoi.label}</strong>
+                <p>{compressionRoi.sublabel}</p>
+                <span className="enterprise-proof-card-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ) : null}
             <a className="enterprise-proof-card enterprise-proof-card--internal" href="/">
               <span className="enterprise-proof-card-label">허브</span>
               <strong>{e.nav.back_home}</strong>
@@ -254,6 +331,15 @@ export default function EnterprisePage() {
           <a href="/">jema-ai.com</a> · <a href="/company">회사 소개</a> ·{" "}
           <a href={`mailto:${c.footer.email}`}>{c.footer.email}</a>
         </p>
+        {c.positioning_v1 ? (
+          <p className="enterprise-positioning-tagline">
+            {c.positioning_v1.tagline_ko}
+            <span className="enterprise-positioning-tagline-en">
+              {" "}
+              · {c.positioning_v1.tagline_en}
+            </span>
+          </p>
+        ) : null}
         <p className="footer-muted">
           {c.footer.company_line} · {c.footer.brand_subline}
         </p>

@@ -52,6 +52,7 @@ export function UniverseCenterAskV2() {
           <h1 id="universe-hub-ask-title" className="universe-hub-ask-minimal-logo">
             JEMA AI
           </h1>
+          <p className="universe-hub-ask-minimal-tagline">{copy.tagline}</p>
           <button
             type="button"
             className="universe-hub-locale-toggle universe-hub-locale-toggle--minimal"
@@ -97,32 +98,75 @@ export function UniverseCenterAskV2() {
         <label className="sr-only" htmlFor="universe-hub-question">
           질문
         </label>
-        <div
-          className={`universe-hub-ask-pill${discoverMinimal ? " universe-hub-ask-pill--minimal" : ""}${isSubmitting ? " is-submitting" : ""}`}
-        >
-          <input
-            id="universe-hub-question"
-            className="universe-hub-ask-input universe-hub-ask-input--pill"
-            type="text"
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            placeholder={copy.placeholder}
-            maxLength={500}
-            autoComplete="off"
-            disabled={isSubmitting}
-            aria-invalid={submitError ? true : undefined}
-            aria-describedby={submitError ? "universe-hub-ask-error" : undefined}
-          />
-          <button
-            type="submit"
-            className={`universe-hub-ask-submit universe-hub-ask-submit--pill${discoverMinimal ? " universe-hub-ask-submit--icon" : ""}`}
-            aria-label={copy.submit}
-            disabled={isSubmitting}
-            aria-busy={isSubmitting}
+        {discoverMinimal ? (
+          <div
+            className={`universe-hub-ask-capsule${isSubmitting ? " is-submitting" : ""}`}
           >
-            {discoverMinimal ? <HubAskSubmitIcon /> : copy.submit}
-          </button>
-        </div>
+            <input
+              id="universe-hub-question"
+              className="universe-hub-ask-capsule-field"
+              type="text"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder={copy.placeholder}
+              maxLength={500}
+              autoComplete="off"
+              disabled={isSubmitting}
+              aria-invalid={submitError ? true : undefined}
+              aria-describedby={submitError ? "universe-hub-ask-error" : undefined}
+            />
+            <div className="universe-hub-ask-capsule-bar">
+              <div className="universe-hub-ask-capsule-tools">
+                <span className="universe-hub-ask-focus-badge">{copy.focusBadge}</span>
+                <button
+                  type="button"
+                  className="universe-hub-ask-attach-hint"
+                  disabled
+                  aria-disabled="true"
+                  title={copy.attachHintTitle}
+                >
+                  {copy.attachHint}
+                </button>
+              </div>
+              <button
+                type="submit"
+                className="universe-hub-ask-submit universe-hub-ask-submit--icon"
+                aria-label={copy.submit}
+                disabled={isSubmitting}
+                aria-busy={isSubmitting}
+              >
+                <HubAskSubmitIcon />
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div
+            className={`universe-hub-ask-pill${isSubmitting ? " is-submitting" : ""}`}
+          >
+            <input
+              id="universe-hub-question"
+              className="universe-hub-ask-input universe-hub-ask-input--pill"
+              type="text"
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              placeholder={copy.placeholder}
+              maxLength={500}
+              autoComplete="off"
+              disabled={isSubmitting}
+              aria-invalid={submitError ? true : undefined}
+              aria-describedby={submitError ? "universe-hub-ask-error" : undefined}
+            />
+            <button
+              type="submit"
+              className="universe-hub-ask-submit universe-hub-ask-submit--pill"
+              aria-label={copy.submit}
+              disabled={isSubmitting}
+              aria-busy={isSubmitting}
+            >
+              {copy.submit}
+            </button>
+          </div>
+        )}
       </form>
 
       {discoverMinimal ? <IntentChipRowV2 selected={intent} onSelect={setIntent} /> : null}

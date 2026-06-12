@@ -5,28 +5,56 @@
     "public_domain": "jema-ai.com",
     "audience": "일반인(AI 한의학 이해·무료 사전 리포트) 및 한의원·한의사(도입·진료보조)",
     "note": "사용자 노출 문구의 단일 원천. 공개 브랜드는 jema-ai.com이며, 내부 레포 식별자와 공개 브랜드 표기는 분리한다.",
-    "ssot_cross_domain_cta": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1·§1.1b (도메인 분기·허브 CTA 초안; 법무 확정 전 가이드)"
+    "ssot_cross_domain_cta": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1·§1.1b (도메인 분기·허브 CTA 초안; 법무 확정 전 가이드)",
+    "positioning_ssot": "docs/final/artifacts/mkm_agentic_engineering_positioning_onepager_v1_latest.md"
+  },
+  "positioning_v1": {
+    "schema": "mkm_positioning_footer_v1",
+    "snippets_doc": "docs/final/artifacts/mkm_showroom_positioning_footer_snippets_v1_latest.md",
+    "tagline_ko": "무한 챗봇이 아니라, 짧고 검증 가능한 신뢰 인프라",
+    "tagline_en": "We optimize for time-to-trust, not infinite chat.",
+    "footer_strip_ko": "관측·거버넌스만 — 투자·의료·실매매 지시 아님 · [NON_GATING] 렌즈는 설명 보조",
+    "footer_strip_en": "Observation and governance only — not investment, medical, or live-trading advice. Lens inputs are [NON_GATING] where applicable.",
+    "deck_kicker_ko": "Time-to-Trust · Anti-Slop · Fact-Lock",
+    "deck_kicker_en": "Time-to-Trust · Anti-Slop · Fact-Lock"
+  },
+  "hub_discover": {
+    "ko": {
+      "title": "가장 중요한 질문을 한 문장으로",
+      "tagline": "무한 챗봇이 아니라, 짧고 검증 가능한 신뢰 인프라",
+      "lead": "원퀘스천 엔진은 단발 리포트로 완결됩니다. 무한 대화가 아닙니다.",
+      "placeholder": "가장 중요한 질문을 한 문장으로",
+      "focus_badge": "Focus · 규칙 라우터",
+      "attach_hint": "첨부",
+      "attach_hint_title": "허브 첨부 커넥터는 준비 중입니다. mkmlife·플러그인으로 라우팅됩니다.",
+      "submit": "라우팅 · 리포트로 이동",
+      "routing_note": "한 문장 → 관측·리포트 라우팅 · 허브 LLM 없음 · artifact·게이트 기반(Time-to-Trust)",
+      "b2b_prefix": "B2B ·",
+      "b2b_link": "AI 맞춤·가드 (WTT Persona OS)",
+      "locale_toggle": "EN",
+      "validation_missing": "질문을 입력하거나 위 의도 칩을 선택해 주세요. 빈 제출로 외부 사이트로 이동하지 않습니다."
+    },
+    "en": {
+      "title": "Ask your one most important question",
+      "tagline": "We optimize for time-to-trust, not infinite chat.",
+      "lead": "One-question engine ends in a single report — not endless chat.",
+      "placeholder": "Ask your one most important question",
+      "focus_badge": "Focus · rule router",
+      "attach_hint": "Attach",
+      "attach_hint_title": "Hub attach connectors are not live — routing goes to mkmlife and plugins only.",
+      "submit": "Route · open report flow",
+      "routing_note": "One sentence → observation/report · no hub LLM · artifact-bound gates (time-to-trust)",
+      "b2b_prefix": "B2B ·",
+      "b2b_link": "Governed customization (WTT Persona OS)",
+      "locale_toggle": "KO",
+      "validation_missing": "Enter a question or pick an intent chip above. Empty submit will not redirect externally."
+    }
   },
   "hub_links": {
     "showroom_jemaai": {
-      "href": "https://api.jemaai.cloud/public_showroom_board_minimal.html",
-      "label": "공개 관측 보드 보기",
-      "sublabel": "미니멀 정적 보드 · 지연 스냅샷(관측·교육; 투자 권유·주문 아님)"
-    },
-    "showroom_topology_radar": {
-      "href": "https://jemaai.cloud/public_showroom_topology_radar_v1.html",
-      "label": "Risk Topology Radar",
-      "sublabel": "관측 레이더 · NON_GATING · 실매매 트리거 아님"
-    },
-    "showroom_meaning_graph": {
-      "href": "https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html",
-      "label": "의미 연결망 그래프",
-      "sublabel": "bible_meaning_graph 실데이터 슬라이스 · [HYPO] 연구용"
-    },
-    "showroom_meaning_qa_v2": {
-      "href": "https://jemaai.cloud/public_showroom_meaning_topology_qa_v2.html",
-      "label": "Meaning Topology Q&A Studio",
-      "sublabel": "질문→답변+그래프 하이라이트 · [HYPO] B2B 데모 · NON_GATING"
+      "href": "https://jemaai.cloud/public_observe_v1.html",
+      "label": "공개 관측 (텍스트)",
+      "sublabel": "Time-to-Trust · 차트·전광판 없음 · API 스냅샷만 · research_only"
     },
     "premium_mkmlife": {
       "href": "https://mkmlife.com",
@@ -48,6 +76,16 @@
       "label": "Persona Diary 프리뷰",
       "sublabel": "초개인화 라이프로그 콘셉트 프리뷰 · 웰니스/리플렉션 · 의료·투자 조언 아님"
     },
+    "wtt_persona_os_demo": {
+      "href": "https://personadiary.com/wtt-persona-os-demo-v1.html",
+      "label": "WTT Persona OS 운영자 패널",
+      "sublabel": "Governed AI Customization 데모 · [HYPO] · SEND HOLD · 비의료"
+    },
+    "compression_roi_dashboard": {
+      "href": "/compression/compression-b2b-pilot-roi-dashboard-v1.html",
+      "label": "압축 B2B Pilot ROI 보드",
+      "sublabel": "정적 목업 · 아티팩트 경로 링크 · 청구·헤드라인 수치 아님"
+    },
     "farm_b2b_smartfarm": {
       "href": "https://farm.jema-ai.com",
       "label": "농업 IoT · 스마트관수 (B2B)",
@@ -60,13 +98,13 @@
     },
     "clinician_no1kmedi_portal": {
       "href": "https://clinic.no1kmedi.com",
-      "label": "한의사 포털 (no1kmedi)",
+      "label": "한의사 진료 보조 (JEMA AI)",
       "sublabel": "현장 북마크용 · app.jema-ai.com/clinician 과 동일 앱 · PayApp·api 호스트와 분리"
     },
     "mai_profile_card": {
       "href": "https://mkmlife.com/ask-one",
-      "label": "12유형 성향 스냅샷 (MAI)",
-      "sublabel": "MBTI® 공식 검사 아님 · 참고용 설문 · 임상 확정·사상 4진과 별도 레인"
+      "label": "A·Code 12 패턴 스냅샷",
+      "sublabel": "실행·회복·인지 패턴 참고 설문 · 성격검사·임상·투자 판단 아님"
     }
   },
   "header": {
@@ -79,6 +117,7 @@
   },
   "nav": {
     "service_group": "서비스",
+    "service_hub": "통합 허브",
     "service_consumer": "일반인 상담",
     "service_clinician": "한의사 보조",
     "service_reception": "접수대 PIN",
@@ -96,6 +135,8 @@
     "contact": "문의"
   },
   "links": {
+    "hub": "/hub",
+    "classic_home": "/home",
     "consumer": "/consumer",
     "clinician": "/clinician",
     "reception": "/reception",
@@ -152,29 +193,29 @@
   },
   "governance_flow": {
     "title": "의사결정 구조",
-    "section_lead": "실물 레짐과 운영 게이트가 주(主)이며, 사상·명리·성경(Logos) 렌즈는 보조 입력입니다. 최종 판단·진료·처방은 사람(한의사·운영자)이 확정합니다.",
-    "field_label": "Field · 주",
-    "lens_label": "Lens · 보",
+    "section_lead": "운영·안전 게이트와 검증 가능한 데이터가 주(主)이며, 생체·심리·근거 기반 신호는 보조 입력입니다. 최종 판단·진료·처방은 사람(한의사·운영자)이 확정합니다.",
+    "field_label": "핵심 게이트 · 주",
+    "lens_label": "다중 신호 · 보",
     "resolve_label": "조율",
     "field_items": [
-      { "title": "1차 실물 레짐", "body": "regime_map 등 역사적·운영 판(場) 식별" },
-      { "title": "운영·안전 게이트", "body": "Fact-Lock·승인·노출 통제 등 운영 리스크 게이트" }
+      { "title": "리스크·환경 판별", "body": "시장·운영 맥락과 안전 한도 식별" },
+      { "title": "운영·안전 게이트", "body": "승인·노출 통제·감사 가능한 산출 경로" }
     ],
     "lens_items": [
-      { "title": "사상", "body": "단기 강도·보조 입력" },
-      { "title": "명리", "body": "중기 방향·보조 입력" },
-      { "title": "성경 (Logos)", "body": "거시 맥락 · [NON_GATING] 해설용", "non_gating": true }
+      { "title": "생체·행동 과학", "body": "단기 생리·웰니스·행동 패턴 (보조)" },
+      { "title": "심리·뇌과학", "body": "인지 부하·주의·감정 맥락 (보조)" },
+      { "title": "현대 의학·근거", "body": "공개 문헌·가이드라인 맥락 (보조, 비결정)", "non_gating": true }
     ],
     "resolver": {
       "title": "Conflict Resolver",
-      "body": "렌즈 간 충돌·과열 신호를 격벽하고, Field·운영 게이트를 우선합니다."
+      "body": "보조 신호 간 충돌을 격벽하고, 운영·안전 게이트를 우선합니다."
     },
     "final_action_label": "Final Action (관측 라벨)",
     "final_actions": ["HOLD", "REDUCE", "WATCH"],
-    "footnote_prefix": "FigJam SSOT:",
-    "figjam_label": "MKM Field-Lens Decision Flow",
+    "footnote_prefix": "아키텍처 개요:",
+    "figjam_label": "MKM Multi-signal Governance Flow",
     "figjam_url": "https://www.figma.com/board/PKFUNbiHIf4accqV6qT8wa",
-    "svg_preview_note": "레포 미리보기 reports/mkm_field_lens_flow.svg"
+    "svg_preview_note": "내부 검토용 다이어그램"
   },
   "why_mkm_ai": {
     "title": "Why MKM AI?",
@@ -513,7 +554,7 @@
       "eyebrow": "B2B · 운영 안전",
       "title": "자동화와 AI 제어가 위험해질 때, 먼저 멈추는 운영 게이트",
       "subtitle": "제조·스마트홈·엔터프라이즈 API에 단계적으로 도입할 수 있는 Fact-Lock 기반 안전·관측 계층입니다. 성능 과시가 아니라 운영 리스크 통제를 우선합니다.",
-      "cta_primary": "Q&A Studio 데모",
+      "cta_primary": "공개 관측 보기",
       "cta_secondary": "B2B API · 문서"
     },
     "principles": [
@@ -587,6 +628,27 @@
       "title": "말보다 먼저 확인하세요",
       "lead": "지연·스냅샷 기반 관측입니다. “실시간 무지연”·수익 보장 표현을 쓰지 않습니다."
     },
+    "wtt_persona_os": {
+      "section_label": "Persona OS",
+      "title": "Governed AI Customization — 운영자 패널",
+      "lead": "프리미엄 CS·Persona 톤을 운영자가 감시·완화하는 UI 목업입니다. 실서비스·SEND·실고객 데이터가 아닙니다.",
+      "cta_label": "운영자 패널 데모 열기",
+      "mock_caption": "디자인 스텁 · 브라우저 규칙 시뮬 · [HYPO]",
+      "bullets": [
+        "시나리오 프리셋 → EPB 스캔 → FSM 완화 액션",
+        "SEND_GATE HOLD · 휴먼 큐는 데모 라벨만",
+        "런타임 SSOT는 레포 스크립트(화면 아님)"
+      ]
+    },
+    "compression_roi": {
+      "section_label": "Compression B2B",
+      "title": "Pilot ROI 관측 보드 (정적)",
+      "lead": "고객 masked 코퍼스·미터링 부록의 1:1 프록시를 내부 검토용으로 봅니다. 대외 헤드라인·청구 확약이 아닙니다.",
+      "cta_label": "ROI 보드 열기",
+      "apply_cta_label": "무료 사전 감사 신청 (Tier-0)",
+      "apply_href": "/enterprise/apply",
+      "artifact_note": "수치는 로컬 아티팩트 JSON과 동기 — 마케팅 % 단정 금지"
+    },
     "contact": {
       "label": "도입·파트너 문의",
       "email": "support@mkmlife.com"
@@ -603,6 +665,127 @@
         "도입·파트너 문의는 **본 페이지에 표기된 회사 메일(`support@mkmlife.com`)만** 사용합니다. 개인 메일·비공식 채널로의 연락은 정책상 대응하지 않을 수 있습니다.",
         "관측·데모·공개 보드는 교육·검증 목적이며, 주문·체결·API·실거래 비밀(실키)을 공개하지 않습니다.",
         "성능·정확도·적중률 등 수치는 동결된 sales kit·검증 아티팩트 없이 단정하지 않습니다."
+      ]
+    }
+  },
+  "compression_pilot_audit_apply": {
+    "seo": {
+      "title": "JEMA AI | 토큰 압축 무료 사전 감사 신청",
+      "description": "마스킹 JSONL 기반 1:1 PoC 영수증. SLA·47% 보장·실API 무료 한 달이 아닌 Tier-0 사전 감사 프로그램."
+    },
+    "nav": {
+      "back_enterprise": "기업·파트너 소개",
+      "back_hub": "Universe Hub"
+    },
+    "hero": {
+      "eyebrow": "Tier 0 · 무료 사전 감사",
+      "title": "토큰 압축 파일럿 — 마스킹 데이터 사전 감사 신청",
+      "subtitle": "Google for Startups·NVIDIA Inception과 유사하게, 웹 양식으로 접수합니다. 승인 후 마스킹 JSONL(20–50행)을 안전 채널로 받고 1:1 절감·복원(Jaccard) 프록시 영수증을 드립니다. 계약·SLA·Track A 47% 헤드라인 보장이 아닙니다.",
+      "steps_label": "절차",
+      "steps": [
+        "온라인 신청 (본 페이지)",
+        "1영업일 내 NDA·JSONL 스키마 안내",
+        "마스킹 샘플 제출 → 내부 PoC (SEND HOLD)",
+        "영수증 검토 → 조건부 90일 유료 파일럿 논의"
+      ]
+    },
+    "sections": {
+      "organization": "1. 조직 정보",
+      "contact": "2. 담당자",
+      "use_case": "3. LLM 사용 맥락",
+      "data": "4. 데이터 준비",
+      "ack": "5. 프로그램 확인"
+    },
+    "labels": {
+      "company_legal_name": "법인·상호명",
+      "website": "웹사이트 (선택)",
+      "country": "국가/지역",
+      "company_stage": "조직 규모",
+      "team_size": "팀 규모 (선택)",
+      "contact_name": "담당자 이름",
+      "contact_email": "업무 이메일",
+      "contact_role": "직함",
+      "contact_phone": "연락처 (선택)",
+      "primary_domain": "주요 사용 도메인",
+      "llm_provider": "주 LLM 제공자",
+      "monthly_token_volume": "월 토큰 사용량 (추정)",
+      "use_case_summary": "사용 시나리오 요약",
+      "masked_jsonl_readiness": "마스킹 JSONL 준비 상태",
+      "estimated_sample_rows": "예상 샘플 행 수",
+      "referral_source": "유입 경로 (선택)",
+      "pii_scrub_ack": "PII·실키·내부 경로를 제거한 마스킹 샘플만 제출하겠습니다.",
+      "nda_ack": "NDA 또는 데이터 처리 약정 검토에 동의합니다.",
+      "not_sla_ack": "본 프로그램은 무료 사전 감사이며 SLA·청구 확약·프로덕션 API 1개월 무료가 아님을 이해합니다.",
+      "no_guarantee_ack": "Track A 내부 벤치(~47%)와 별개이며, 고객별 측정 결과만 유효함을 이해합니다."
+    },
+    "options": {
+      "company_stage": [
+        { "value": "pre_seed_startup", "label": "Pre-seed / Seed 스타트업" },
+        { "value": "growth_startup", "label": "Growth 스타트업" },
+        { "value": "smb", "label": "중소·SI" },
+        { "value": "enterprise", "label": "엔터프라이즈" },
+        { "value": "agency", "label": "에이전시·파트너" }
+      ],
+      "team_size": [
+        { "value": "1-10", "label": "1–10명" },
+        { "value": "11-50", "label": "11–50명" },
+        { "value": "51-200", "label": "51–200명" },
+        { "value": "200+", "label": "200명+" }
+      ],
+      "primary_domain": [
+        { "value": "customer_support", "label": "고객 상담·CS" },
+        { "value": "developer_api", "label": "개발자·API·코드" },
+        { "value": "security_compliance", "label": "보안·컴플라이언스" },
+        { "value": "ops_internal", "label": "내부 운영·로그" },
+        { "value": "other", "label": "기타" }
+      ],
+      "llm_provider": [
+        { "value": "openai", "label": "OpenAI" },
+        { "value": "anthropic", "label": "Anthropic" },
+        { "value": "azure_openai", "label": "Azure OpenAI" },
+        { "value": "google", "label": "Google / Vertex" },
+        { "value": "self_hosted", "label": "자체 호스팅" },
+        { "value": "multi", "label": "복수 제공자" }
+      ],
+      "monthly_token_volume": [
+        { "value": "lt_10m", "label": "월 1천만 토큰 미만" },
+        { "value": "10m_100m", "label": "월 1천만–1억" },
+        { "value": "100m_1b", "label": "월 1억–10억" },
+        { "value": "gt_1b", "label": "월 10억+" },
+        { "value": "unknown", "label": "미정" }
+      ],
+      "masked_jsonl_readiness": [
+        { "value": "ready", "label": "20–50행 JSONL 준비됨 (PII 제거)" },
+        { "value": "partial", "label": "일부만 가능 — 가이드 필요" },
+        { "value": "need_help", "label": "아직 없음 — 스키마·마스킹 안내 요청" }
+      ],
+      "estimated_sample_rows": [
+        { "value": "20_50", "label": "20–50행 (권장)" },
+        { "value": "50_200", "label": "50–200행" },
+        { "value": "200_plus", "label": "200행+" }
+      ]
+    },
+    "placeholders": {
+      "website": "https://example.com",
+      "country": "대한민국",
+      "use_case_summary": "예: VIP CS 챗봇 프롬프트·RAG 컨텍스트를 API 게이트웨이에서 압축하고 싶습니다.",
+      "referral_source": "GitHub open-bench / 지인 소개 / 검색 등"
+    },
+    "submit_idle": "사전 감사 신청 제출",
+    "submit_busy": "제출 중…",
+    "success": "접수 완료. 1영업일 내 NDA·JSONL 업로드 안내를 이메일로 드립니다. (신청 ID가 표시됩니다)",
+    "errors": {
+      "required_fields": "필수 항목을 입력해 주세요.",
+      "ack_required": "프로그램 확인(체크박스)을 모두 선택해 주세요.",
+      "save_failed": "접수 저장 중 오류가 발생했습니다.",
+      "network": "네트워크 오류로 접수에 실패했습니다."
+    },
+    "disclaimer": {
+      "title": "고지",
+      "items": [
+        "본 신청은 Tier-0 무료 사전 감사 대기열 접수입니다. 자동 승인·자동 PoC 실행·실API 개통이 아닙니다.",
+        "제출 JSONL은 Git 커밋·공개 저장소 업로드 금지. 안내드리는 보안 채널만 사용합니다.",
+        "SEND_GATE: HOLD — counsel 검토 전 대외 성과·47% 헤드라인 인용 금지."
       ]
     }
   },

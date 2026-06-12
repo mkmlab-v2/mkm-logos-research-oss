@@ -24,9 +24,10 @@ export type ClinicianSurveySsotPayload = {
   disclaimer: string;
 };
 
+import { resolveMkmlifeAskOneUrl } from "@/lib/mkmlife-hub-origin-v1";
+
 export function defaultMkmlifeConsumerSurveyUrl(): string {
-  return (
-    process.env.NEXT_PUBLIC_MKMLIFE_CONSUMER_SURVEY_URL?.trim() ||
-    "https://mkmlife.com/ask-one"
-  );
+  const explicit = process.env.NEXT_PUBLIC_MKMLIFE_CONSUMER_SURVEY_URL?.trim();
+  if (explicit) return explicit.replace(/\/$/, "");
+  return resolveMkmlifeAskOneUrl();
 }

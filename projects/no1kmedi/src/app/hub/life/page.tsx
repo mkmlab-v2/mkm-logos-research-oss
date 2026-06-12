@@ -2,7 +2,7 @@ import { UniverseHubPluginPanel } from "@/components/shell/UniverseHubPluginPane
 import { UniverseLifeBenefitsV2 } from "@/components/shell/UniverseLifeBenefitsV2";
 import { UniverseMkmlifeEmbedV2 } from "@/components/shell/UniverseMkmlifeEmbedV2";
 import { isMkmlifeEmbedEnabled } from "@/lib/universeHubMkmlifeEmbedV2";
-import { UNIVERSE_HUB_DEEP_LINKS } from "@/lib/universeHubPluginsV2";
+import { buildMkmlifeAskOneHubDeepLink, UNIVERSE_HUB_DEEP_LINKS } from "@/lib/universeHubPluginsV2";
 
 export const metadata = {
   title: "라이프 케어 — JEMA AI Hub",
@@ -38,8 +38,8 @@ export default function HubLifePage({ searchParams }: PageProps) {
           external: true,
         }}
         secondaryCta={{
-          href: UNIVERSE_HUB_DEEP_LINKS.mkmlifeAskOne,
-          label: "원퀘스천 작성",
+          href: buildMkmlifeAskOneHubDeepLink({ prefill }),
+          label: "원퀘스천 작성 (오픈 베타)",
           external: true,
         }}
         phaseNote={embedOn ? "P4 · embed ON" : "P4 · deep-link default"}

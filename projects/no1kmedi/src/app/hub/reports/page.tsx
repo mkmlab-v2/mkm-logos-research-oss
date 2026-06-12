@@ -5,11 +5,9 @@ import path from "node:path";
 
 
 import { HubPrefillBannerV2 } from "@/components/shell/HubPrefillBannerV2";
-
+import { UniverseHubDisclaimerCollapsible } from "@/components/shell/UniverseHubDisclaimerCollapsible";
 import { UniverseHubPluginPanel } from "@/components/shell/UniverseHubPluginPanel";
-
 import { UniverseReportsEmptyV2 } from "@/components/shell/UniverseReportsEmptyV2";
-
 import { UniverseReportsLedgerStubV2 } from "@/components/shell/UniverseReportsLedgerStubV2";
 
 import type { UniverseHubReportLedgerStubV1 } from "@/lib/universeHubReportLedgerStubV1";
@@ -72,8 +70,7 @@ export default async function HubReportsPage({ searchParams }: Props) {
 
   return (
 
-    <div className="universe-hub-plugin-stack">
-
+    <div className="universe-hub-plugin-stack universe-hub-plugin-stack--spoke">
       <HubPrefillBannerV2 prefill={prefill} />
 
       <UniverseHubPluginPanel
@@ -82,7 +79,7 @@ export default async function HubReportsPage({ searchParams }: Props) {
 
         title="내 리포트"
 
-        body="발행된 원퀘스천·리포트 장부는 mkmlife.com 계정 면에서 확인합니다."
+        body="오픈 베타는 회원가입 없이 mkmlife.com에서 생성한 리포트를 이 브라우저 기준으로 확인합니다. (계정 연동은 이후 단계)"
 
         primaryCta={{
 
@@ -102,6 +99,7 @@ export default async function HubReportsPage({ searchParams }: Props) {
 
       <UniverseReportsEmptyV2 />
 
+      <UniverseHubDisclaimerCollapsible defaultOpen={false} />
     </div>
 
   );

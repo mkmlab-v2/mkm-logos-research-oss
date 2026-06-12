@@ -4,6 +4,9 @@
  * Phase 1: deep-link routing only; no backend lane merge.
  */
 
+import { JEMAAI_CLOUD_PUBLIC_OBSERVE_URL } from "@/lib/jemaaiShowroomPublicV1";
+import { buildUniverseHubMkmlifeDeepLinks } from "@/lib/mkmlife-hub-origin-v1";
+
 export const UNIVERSE_HUB_SHELL_ID = "universe_hub_v2" as const;
 
 export type UniverseHubPluginId =
@@ -38,9 +41,8 @@ export const UNIVERSE_HUB_NAV_GROUP_LABELS: Record<Exclude<UniverseHubNavGroup, 
   ops: "운영 (internal)",
 };
 
-const MKMLIFE = "https://mkmlife.com";
 const PERSONADIARY = "https://personadiary.com";
-const JEMAAI = "https://jemaai.cloud";
+const JEMAAI = JEMAAI_CLOUD_PUBLIC_OBSERVE_URL;
 const ACODE = "https://a-codeai.com";
 
 export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
@@ -108,7 +110,7 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   },
   {
     id: "showroom",
-    labelKo: "공개 관측 보드",
+    labelKo: "공개 관측 (텍스트)",
     href: JEMAAI,
     external: true,
     navGroup: "consumer",
@@ -133,11 +135,10 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
 const ACODE_OPEN_BENCH_REPRODUCE =
   "https://github.com/mkmlab-v2/a-codeai-compression-reproduce";
 
+const MKMLIFE_LINKS = buildUniverseHubMkmlifeDeepLinks();
+
 export const UNIVERSE_HUB_DEEP_LINKS = {
-  mkmlifeHome: MKMLIFE,
-  mkmlifeAskOne: `${MKMLIFE}/ask-one`,
-  mkmlifeReports: `${MKMLIFE}/my-reports`,
-  mkmlifeNewsDeck: `${MKMLIFE}/news-deck`,
+  ...MKMLIFE_LINKS,
   personadiaryHome: PERSONADIARY,
   personadiaryOnJemaAi: "/personadiary",
   jemaaiShowroom: JEMAAI,
@@ -148,6 +149,17 @@ export const UNIVERSE_HUB_DEEP_LINKS = {
   compressionPilotApply: "/enterprise/apply",
   wttPersonaOsDemo: "https://personadiary.com/wtt-persona-os-demo-v1.html",
 } as const;
+
+/** Hub → mkmlife 원퀘스천 (open-beta guest; no signup). */
+export function buildMkmlifeAskOneHubDeepLink(opts?: { prefill?: string }): string {
+  const url = new URL(UNIVERSE_HUB_DEEP_LINKS.mkmlifeAskOne);
+  url.searchParams.set("source", "jema_hub_v2");
+  const q = opts?.prefill?.trim();
+  if (q) {
+    url.searchParams.set("prefill", q);
+  }
+  return url.toString();
+}
 
 export function visibleUniverseHubPlugins(): UniverseHubPluginV2[] {
   const showOperator = process.env.NEXT_PUBLIC_UNIVERSE_HUB_OPERATOR_PANEL === "1";

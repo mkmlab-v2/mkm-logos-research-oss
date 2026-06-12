@@ -84,8 +84,9 @@ export function HubEvidenceInspectorV3() {
       ) : (
         <section className="universe-hub-inspector-block" aria-labelledby="inspector-discover-heading">
           <h3 id="inspector-discover-heading" className="universe-hub-inspector-subtitle">
-            원퀘스천 라우터
+            Logos Observatory · 스텁
           </h3>
+          <p className="universe-hub-inspector-meta">[HYPO] · 읽기 전용 거시 관측 · 실매매·허브 LLM 비합선</p>
           <ul className="universe-hub-inspector-list">
             <li>단발 제출 → 플러그인·mkmlife로 분기</li>
             <li>무한 대화 아님 · 허브 LLM 없음</li>

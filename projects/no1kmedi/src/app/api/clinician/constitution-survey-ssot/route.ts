@@ -52,8 +52,8 @@ export async function GET() {
     consumer_lane: {
       survey_url: consumerUrl,
       score_api_path: `${mkmlifeOrigin.replace(/\/$/, "")}/api/v1/constitution/survey/score`,
-      label: "소비자 14문항·MAI (mkmlife)",
-      sublabel: "임상 확정·physician_gold와 별도 레인 · MBTI® 공식 검사 아님",
+      label: "소비자 A·Code 12 설문 (mkmlife)",
+      sublabel: "임상 확정·physician_gold와 별도 레인 · 성격검사·임상 판단 아님",
     },
     disclaimer:
       "진료실 문진·PIN은 physician_gold. mkmlife 설문은 consumer_survey_only이며 KPI·임상 단정에 합산하지 않습니다.",

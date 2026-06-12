@@ -44,6 +44,23 @@ export type EnterpriseCopy = {
     link_href: string;
   };
   proof: { title: string; lead: string };
+  wtt_persona_os: {
+    section_label: string;
+    title: string;
+    lead: string;
+    cta_label: string;
+    mock_caption: string;
+    bullets: string[];
+  };
+  compression_roi: {
+    section_label: string;
+    title: string;
+    lead: string;
+    cta_label: string;
+    apply_cta_label?: string;
+    apply_href?: string;
+    artifact_note: string;
+  };
   contact: { label: string; email: string };
   footer: {
     legal_entity: string;
@@ -55,7 +72,36 @@ export type EnterpriseCopy = {
 
 export type HubLink = { href: string; label: string; sublabel: string };
 
+export type PositioningV1Copy = {
+  schema: string;
+  snippets_doc: string;
+  tagline_ko: string;
+  tagline_en: string;
+  footer_strip_ko: string;
+  footer_strip_en: string;
+  deck_kicker_ko: string;
+  deck_kicker_en: string;
+};
+
+export type HubDiscoverLocaleCopy = {
+  title: string;
+  tagline: string;
+  lead: string;
+  placeholder: string;
+  focus_badge: string;
+  attach_hint: string;
+  attach_hint_title: string;
+  submit: string;
+  routing_note: string;
+  b2b_prefix: string;
+  b2b_link: string;
+  locale_toggle: string;
+  validation_missing: string;
+};
+
 export type SiteCopy = {
+  positioning_v1?: PositioningV1Copy;
+  hub_discover?: { ko: HubDiscoverLocaleCopy; en: HubDiscoverLocaleCopy };
   hub_links: {
     showroom_jemaai: HubLink;
     premium_mkmlife: HubLink;
@@ -63,6 +109,8 @@ export type SiteCopy = {
     farm_b2b_smartfarm?: HubLink;
     research_mkmlab?: HubLink;
     personadiary_preview?: HubLink;
+    wtt_persona_os_demo?: HubLink;
+    compression_roi_dashboard?: HubLink;
     showroom_topology_radar?: HubLink;
     showroom_meaning_graph?: HubLink;
     showroom_meaning_qa_v2?: HubLink;
@@ -74,6 +122,7 @@ export type SiteCopy = {
   seo: { title: string; description: string };
   nav: {
     service_group: string;
+    service_hub?: string;
     service_consumer: string;
     service_clinician: string;
     service_reception: string;
@@ -91,6 +140,8 @@ export type SiteCopy = {
     contact: string;
   };
   links: {
+    hub?: string;
+    classic_home?: string;
     consumer: string;
     clinician: string;
     reception: string;
@@ -256,6 +307,39 @@ export type SiteCopy = {
     biz_reg: string;
     rights: string;
   };
+  compression_pilot_audit_apply?: CompressionPilotAuditApplyCopy;
+};
+
+export type CompressionPilotAuditApplyCopy = {
+  seo: { title: string; description: string };
+  nav: { back_enterprise: string; back_hub: string };
+  hero: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    steps_label: string;
+    steps: string[];
+  };
+  sections: {
+    organization: string;
+    contact: string;
+    use_case: string;
+    data: string;
+    ack: string;
+  };
+  labels: Record<string, string>;
+  options: Record<string, { value: string; label: string }[]>;
+  placeholders: Record<string, string>;
+  submit_idle: string;
+  submit_busy: string;
+  success: string;
+  errors: {
+    required_fields: string;
+    ack_required: string;
+    save_failed: string;
+    network: string;
+  };
+  disclaimer: { title: string; items: string[] };
 };
 
 export const siteCopy = data as SiteCopy;

@@ -107,11 +107,41 @@ try {
     "governance_flow.lens_items must contain at least 3 items",
     errors,
   );
+  const governancePublicText = JSON.stringify(parsed.governance_flow ?? {});
+  for (const forbidden of ["사상", "명리", "성경", "Logos", "Field-Lens", "regime_map", "Lens ·"]) {
+    assert(
+      !governancePublicText.includes(forbidden),
+      `governance_flow must not expose internal term on public homepage: ${forbidden}`,
+      errors,
+    );
+  }
+  assert(
+    parsed.governance_flow?.lens_items?.some((item) => item?.non_gating === true),
+    "governance_flow.lens_items must include at least one non_gating auxiliary signal",
+    errors,
+  );
   assert(
     /^https:\/\//.test(String(parsed.governance_flow?.figjam_url ?? "")),
     "governance_flow.figjam_url must be https",
     errors,
   );
+
+  const maiCard = parsed.hub_links?.mai_profile_card;
+  if (maiCard) {
+    const maiText = JSON.stringify(maiCard);
+    for (const forbidden of ["MBTI", "사상", "명리", "성경", "MAI 성향", "12유형 성향"]) {
+      assert(
+        !maiText.includes(forbidden),
+        `hub_links.mai_profile_card must not expose internal/legacy term: ${forbidden}`,
+        errors,
+      );
+    }
+    assert(
+      String(maiCard.label ?? "").includes("A·Code 12"),
+      "hub_links.mai_profile_card.label must use A·Code 12 public branding",
+      errors,
+    );
+  }
 
   assert(
     Array.isArray(parsed.why_mkm_ai?.cards) && parsed.why_mkm_ai.cards.length >= 3,

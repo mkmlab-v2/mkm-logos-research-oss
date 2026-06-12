@@ -4,6 +4,7 @@ import { useState } from "react";
 
 type Nav = {
   service_group: string;
+  service_hub?: string;
   service_consumer: string;
   service_clinician: string;
   service_reception: string;
@@ -22,6 +23,7 @@ type Nav = {
 };
 type Brand = { brand_name: string; brand_tagline: string };
 type Links = {
+  hub?: string;
   consumer: string;
   clinician: string;
   reception: string;
@@ -66,6 +68,11 @@ export function SiteHeader({ nav, brand, links }: { nav: Nav; brand: Brand; link
           }}
         >
           <span className="nav-group-label">{nav.service_group}</span>
+          {nav.service_hub && links.hub ? (
+            <a href={links.hub} onClick={() => setOpen(false)}>
+              {nav.service_hub}
+            </a>
+          ) : null}
           <a href={links.consumer} onClick={() => setOpen(false)}>
             {nav.service_consumer}
           </a>

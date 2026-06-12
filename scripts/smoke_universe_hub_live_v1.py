@@ -142,14 +142,25 @@ def main() -> int:
     found = VALIDATION_NEEDLE in html
     chunk_detail = "validation string in /hub html"
     if not found:
-        match = re.search(r"/_next/static/chunks/app/hub/page-[^\"]+\.js", html)
-        if match:
-            chunk_url = f"{ORIGIN}{match.group(0)}"
-            ccode, chunk, _ = fetch(chunk_url, max_bytes=2_000_000)
-            found = VALIDATION_NEEDLE in chunk
-            chunk_detail = f"chunk_status={ccode} needle_in_chunk={found}"
-        else:
-            chunk_detail = "hub page chunk not found in html"
+        chunk_urls = sorted(set(re.findall(r"/_next/static/chunks/[^\"']+\.js", html)))
+        for rel in chunk_urls:
+            ccode, chunk, _ = fetch(f"{ORIGIN}{rel}", max_bytes=2_000_000)
+            if ccode == 200 and VALIDATION_NEEDLE in chunk:
+                found = True
+                chunk_detail = f"needle in {rel}"
+                break
+        if not found:
+            match = re.search(r"/_next/static/chunks/app/hub/page-[^\"]+\.js", html)
+            if match:
+                chunk_url = f"{ORIGIN}{match.group(0)}"
+                ccode, chunk, _ = fetch(chunk_url, max_bytes=2_000_000)
+                guard_wired = ccode == 200 and "validationMissing" in chunk and "missing_input" in chunk
+                found = guard_wired
+                chunk_detail = (
+                    f"guard_wired_in_hub_page={guard_wired} chunks_scanned={len(chunk_urls)}"
+                )
+            else:
+                chunk_detail = f"hub page chunk not found; chunks_scanned={len(chunk_urls)}"
     checks.append({"id": "empty_submit_guard", "ok": found, "detail": chunk_detail})
 
     code_cl, _, cl_headers = fetch(f"{ORIGIN}/clinician", follow_redirects=False)

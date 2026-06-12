@@ -41,7 +41,9 @@ export function UniverseReportsLedgerStubV2({ ledger }: Props) {
                 <td>
                   <code className="universe-hub-artifact-path">{row.lane}</code>
                 </td>
-                <td>{row.status}</td>
+                <td>
+                  <span className="universe-hub-ledger-status">{row.status}</span>
+                </td>
                 <td>
                   <time dateTime={row.updated_utc}>{formatUtc(row.updated_utc)}</time>
                 </td>

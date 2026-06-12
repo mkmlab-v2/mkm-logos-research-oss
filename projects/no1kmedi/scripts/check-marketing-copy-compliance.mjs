@@ -44,6 +44,17 @@ function lineViolatesCompliance(line) {
   return prohibitedPatterns.some((pattern) => pattern.test(line));
 }
 
+/** PUBLIC_FACING v1.7 — consumer-visible legacy brand noise (URLs with no1kmedi.com are OK). */
+function surfaceBrandViolation(line) {
+  const s = line.trim();
+  if (!s) return false;
+  if (/^https?:\/\//i.test(s)) return false;
+  if (/\(no1kmedi\)/i.test(s)) return true;
+  if (/no1kmedi\s+ai/i.test(s)) return true;
+  if (/(?<![./\w])no1kmedi(?!\.com)/i.test(s)) return true;
+  return false;
+}
+
 function collectStrings(value, bucket = []) {
   if (typeof value === "string") {
     bucket.push(value);
@@ -89,11 +100,13 @@ try {
   const parsed = JSON.parse(raw);
   const textLines = collectStrings(parsed);
   const violations = textLines.filter((line) => lineViolatesCompliance(line));
+  const surfaceHits = textLines.filter((line) => surfaceBrandViolation(line));
   const draftHits = await scanLinkedinDrafts();
 
-  if (violations.length > 0 || draftHits.length > 0) {
+  if (violations.length > 0 || surfaceHits.length > 0 || draftHits.length > 0) {
     console.error("[check-marketing-copy] compliance violation detected.");
     for (const line of violations) console.error(`- public-copy: ${line}`);
+    for (const line of surfaceHits) console.error(`- public-copy surface-brand: ${line}`);
     for (const line of draftHits) console.error(`- linkedin-draft: ${line}`);
     process.exitCode = 1;
   } else {
