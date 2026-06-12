@@ -1,0 +1,41 @@
+{
+  "schema": "mkm_family_identity_policy_v1",
+  "updated_utc": "2026-06-12",
+  "status": "approved_commander_2026-06-12",
+  "idp_anchor_host": "jema-ai.com",
+  "idp_code_ssot": "projects/no1kmedi",
+  "human_approval": {
+    "personadiary_mkmlife_db_merge": false,
+    "cross_product_identity_federation": true,
+    "note": "Shared mkm_account_id + product_profile_id links only; mkmlife DB and personadiary packages remain isolated stores."
+  },
+  "relying_parties": [
+    {
+      "product": "mkmlife",
+      "origin_default": "https://mkmlife.com",
+      "callback_path": "/auth/mkm-callback",
+      "client_storage": "localStorage mkm_life_user_id"
+    },
+    {
+      "product": "personadiary",
+      "origin_default": "https://personadiary.com",
+      "callback_path": "/auth/mkm-callback",
+      "client_storage": "sessionStorage mkm_family_account_id"
+    }
+  ],
+  "oauth": {
+    "provider": "google",
+    "callback_path": "/api/mkm-family/auth/google/callback",
+    "secrets_env": [
+      "MKM_FAMILY_AUTH_SECRET",
+      "GOOGLE_OAUTH_CLIENT_ID",
+      "GOOGLE_OAUTH_CLIENT_SECRET"
+    ],
+    "secrets_dpapi_keys_same_names": true
+  },
+  "forbidden": [
+    "auto_track_a_promotion",
+    "auto_live_trading",
+    "merge_personadiary_packages_into_mkmlife_db"
+  ]
+}

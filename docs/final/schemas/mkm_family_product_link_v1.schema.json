@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mkm_family_product_link_v1",
+  "title": "MKM Family product link (identity federation — no product DB merge)",
+  "type": "object",
+  "required": ["schema", "mkm_account_id", "product", "product_profile_id", "linked_at_utc"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "mkm_family_product_link_v1" },
+    "mkm_account_id": {
+      "type": "string",
+      "pattern": "^mkm_acc_[a-zA-Z0-9_-]{8,64}$"
+    },
+    "product": {
+      "enum": ["mkmlife", "personadiary", "clinician", "hub"]
+    },
+    "product_profile_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128,
+      "description": "Opaque handle in the relying product; not a foreign key into another product DB."
+    },
+    "linked_at_utc": { "type": "string", "format": "date-time" }
+  }
+}

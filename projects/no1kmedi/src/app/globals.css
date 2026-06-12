@@ -6702,6 +6702,77 @@ main.workspace-main {
   color: var(--muted);
 }
 
+.universe-hub-sidebar-account {
+  margin-top: auto;
+  padding-top: var(--space-sm);
+}
+
+.universe-hub-account-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: var(--text-xs);
+}
+
+.universe-hub-account-entry.is-compact {
+  align-items: center;
+}
+
+.universe-hub-account-google-btn {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  background: #fff;
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.universe-hub-account-user {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.universe-hub-account-avatar {
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.universe-hub-account-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.universe-hub-account-rp-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.universe-hub-account-rp-btn,
+.universe-hub-account-logout {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.universe-hub-account-muted {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.universe-hub-site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
 .universe-hub-main {
   padding: var(--space-xl) var(--space-lg);
   max-width: var(--hub-spoke-max);

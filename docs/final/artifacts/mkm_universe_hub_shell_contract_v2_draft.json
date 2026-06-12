@@ -210,6 +210,24 @@
           "send_gate": "HOLD"
         }
       ],
+      "mkm_family_identity_v1": {
+        "policy": "docs/final/artifacts/mkm_family_identity_policy_v1_latest.json",
+        "account_schema": "docs/final/schemas/mkm_family_account_v1.schema.json",
+        "product_link_schema": "docs/final/schemas/mkm_family_product_link_v1.schema.json",
+        "idp_routes": [
+          "/api/mkm-family/auth/google",
+          "/api/mkm-family/session",
+          "/api/mkm-family/rp/handoff",
+          "/api/mkm-family/rp/exchange"
+        ],
+        "hub_account_ui": "projects/no1kmedi/src/components/shell/HubAccountEntryV1.tsx",
+        "rp_callbacks": {
+          "mkmlife": "projects/mkm/mkm-life/app/auth/mkm-callback",
+          "personadiary": "projects/no1kmedi/src/app/auth/mkm-callback"
+        },
+        "db_merge": false,
+        "federation_only": true
+      },
       "component_ssot": {
         "shell": "projects/no1kmedi/src/components/shell/UnifiedUniverseShellV2.tsx",
         "site_header": "projects/no1kmedi/src/components/shell/UniverseHubSiteHeader.tsx",

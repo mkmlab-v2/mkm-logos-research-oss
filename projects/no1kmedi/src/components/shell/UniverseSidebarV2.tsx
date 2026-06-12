@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { HubAccountEntryV1 } from "@/components/shell/HubAccountEntryV1";
 import { HubBrandMark, HubPluginIcon } from "@/components/shell/HubPluginIcon";
 import {
   type UniverseHubNavGroup,
@@ -111,6 +112,9 @@ export function UniverseSidebarV2({ activeId, iconRail = false }: Props) {
           </div>
         ))}
       </nav>
+      <div className="universe-hub-sidebar-account">
+        <HubAccountEntryV1 compact={iconRail} />
+      </div>
       {!iconRail ? (
         <p className="universe-hub-sidebar-foot">
           <Link href="/home">클래식 소개 랜딩</Link>
