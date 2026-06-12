@@ -1,7 +1,9 @@
+import Link from "next/link";
 import {
   CUSTOMIZE_PACKAGES,
   type CustomizePackageTier,
 } from "@/lib/universeHubCustomizeContentV2";
+import { UNIVERSE_HUB_DEEP_LINKS } from "@/lib/universeHubPluginsV2";
 
 function tierLabel(tier: CustomizePackageTier): string {
   if (tier === "core") return "Core";
@@ -36,6 +38,12 @@ export function PackageLadderTableV2() {
           ))}
         </tbody>
       </table>
+      <p className="universe-hub-package-cta-row">
+        <Link className="universe-hub-cta universe-hub-cta--primary" href={UNIVERSE_HUB_DEEP_LINKS.compressionPilotApply}>
+          B2B 상담·사전 감사 신청
+        </Link>
+        <span className="universe-hub-package-cta-note">가격 미표기 · SEND HOLD · Track A SLA 없음</span>
+      </p>
     </div>
   );
 }
