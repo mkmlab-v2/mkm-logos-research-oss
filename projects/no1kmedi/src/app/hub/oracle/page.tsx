@@ -43,7 +43,7 @@ export default async function HubOraclePage({ searchParams }: Props) {
         body="시장·환경 관측은 B-track research_only입니다. 헤드라인 벤치 KPI·Track A 수치는 표시하지 않습니다."
         primaryCta={{
           href: UNIVERSE_HUB_DEEP_LINKS.jemaaiShowroom,
-          label: "공개 관측 보드 (jemaai.cloud)",
+          label: "공개 관측 (jemaai.cloud)",
           external: true,
         }}
         secondaryCta={{

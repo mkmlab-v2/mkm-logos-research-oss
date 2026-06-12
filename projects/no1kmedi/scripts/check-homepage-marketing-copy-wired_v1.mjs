@@ -8,7 +8,11 @@ import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const pagePath = join(root, "src/app/page.tsx");
+const homeRoutePath = join(root, "src/app/home/page.tsx");
+const homeComponentPath = join(root, "src/components/MarketingLegacyHomePage.tsx");
 const page = readFileSync(pagePath, "utf8");
+const homeRoute = readFileSync(homeRoutePath, "utf8");
+const homeComponent = readFileSync(homeComponentPath, "utf8");
 
 const bannedLiterals = [
   "본문으로 건너뛰기",
@@ -22,15 +26,22 @@ const bannedLiterals = [
   "월 30회 샘플 검증",
 ];
 
-const hits = bannedLiterals.filter((s) => page.includes(s));
+const marketingSurfaces = [page, homeRoute, homeComponent].join("\n");
+const hits = bannedLiterals.filter((s) => marketingSurfaces.includes(s));
 if (hits.length) {
-  console.error("[check-homepage-marketing-copy-wired_v1] hardcoded literals in page.tsx:");
+  console.error("[check-homepage-marketing-copy-wired_v1] hardcoded literals in homepage surfaces:");
   for (const h of hits) console.error(`  - ${h}`);
   process.exit(1);
 }
 
-if (!page.includes("c.homepage_a11y") || !page.includes("c.why_mkm_ai")) {
-  console.error("[check-homepage-marketing-copy-wired_v1] page.tsx missing c.homepage_a11y / c.why_mkm_ai wiring");
+const wiredSource =
+  page.includes("MarketingLegacyHomePage") || homeRoute.includes("MarketingLegacyHomePage")
+    ? homeComponent
+    : page;
+if (!wiredSource.includes("c.homepage_a11y") || !wiredSource.includes("c.why_mkm_ai")) {
+  console.error(
+    "[check-homepage-marketing-copy-wired_v1] homepage missing c.homepage_a11y / c.why_mkm_ai wiring",
+  );
   process.exit(1);
 }
 

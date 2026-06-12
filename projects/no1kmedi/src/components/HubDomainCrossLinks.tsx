@@ -12,11 +12,7 @@ export const HUB_PRIMARY_KEYS = [
   "personadiary_preview",
 ] as const;
 
-export const HUB_SECONDARY_KEYS = [
-  "showroom_meaning_qa_v2",
-  "showroom_topology_radar",
-  "showroom_meaning_graph",
-] as const;
+export const HUB_SECONDARY_KEYS = [] as const;
 
 export const HUB_FOOTER_KEYS = [
   "showroom_jemaai",

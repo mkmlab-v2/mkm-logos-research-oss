@@ -1,6 +1,6 @@
 import { hubLifeInternalRoute, isMkmlifeEmbedEnabled } from "@/lib/universeHubMkmlifeEmbedV2";
 
-import { UNIVERSE_HUB_DEEP_LINKS } from "@/lib/universeHubPluginsV2";
+import { buildMkmlifeAskOneHubDeepLink } from "@/lib/universeHubPluginsV2";
 
 
 
@@ -220,15 +220,11 @@ export function resolveHubAskRoute(
 
 
 
-  const base = UNIVERSE_HUB_DEEP_LINKS.mkmlifeAskOne;
-
   if (!trimmed) {
-
-    return `${base}?${hubSource}`;
-
+    return buildMkmlifeAskOneHubDeepLink();
   }
 
-  return `${base}?prefill=${encodeURIComponent(trimmed)}&${hubSource}`;
+  return buildMkmlifeAskOneHubDeepLink({ prefill: trimmed });
 
 }
 

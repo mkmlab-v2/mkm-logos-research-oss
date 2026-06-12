@@ -15,8 +15,16 @@ export const DOMAIN_VOCABULARY_LANES_V1 = {
   consumer_survey_only: {
     lane_id: "consumer_survey_only" as const,
     surfaces: ["mkmlife.com", "personadiary.com", "jema-ai.com/consumer"],
-    archetype_label_ko: "생활 패턴·아키타입 참고",
-    forbidden_on_surface: ["태음인 진단", "한의학적 진단", "처방", "MBTI® 공식 검사"],
+    archetype_label_ko: "A·Code 12 실행·회복 패턴 참고",
+    forbidden_on_surface: [
+      "태음인 진단",
+      "한의학적 진단",
+      "처방",
+      "MBTI® 공식 검사",
+      "사상 4진",
+      "명리",
+      "성경",
+    ],
     disclaimer_ko:
       "웰니스·자가 체크 참고용이며 의료 진단·치료를 대체하지 않습니다. 불편 시 의료기관을 방문하십시오.",
   },

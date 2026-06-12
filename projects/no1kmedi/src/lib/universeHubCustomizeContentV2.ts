@@ -16,6 +16,8 @@ export type CustomizePillar = {
   titleKo: string;
   summaryKo: string;
   artifactPath: string;
+  ctaHref: string;
+  ctaLabelKo: string;
 };
 
 export type CustomizeSpoke = {
@@ -48,9 +50,9 @@ export const CUSTOMIZE_SPOKES: CustomizeSpoke[] = [
   {
     id: "showroom",
     label: "Showroom",
-    href: "https://jemaai.cloud/",
+    href: "https://jemaai.cloud/public_observe_v1.html",
     external: true,
-    tag: "공개 보드",
+    tag: "공개 관측",
   },
 ];
 
@@ -60,18 +62,24 @@ export const CUSTOMIZE_PILLARS: CustomizePillar[] = [
     titleKo: "EPB 밴드",
     summaryKo: "따뜻함·경계 트리거 프로필로 톤 드리프트 억제",
     artifactPath: "reports/wtt_dialog_risk_policy_tune_v1_latest.json",
+    ctaHref: "/enterprise#wtt-persona-os",
+    ctaLabelKo: "Persona OS 개요",
   },
   {
     id: "fsm",
     titleKo: "Dialog FSM",
     summaryKo: "normal → elevated → cooldown → human handoff",
     artifactPath: "reports/wtt_spicy_corpus_fsm_batch_v1_latest.json",
+    ctaHref: "/enterprise#wtt-persona-os",
+    ctaLabelKo: "FSM·스트레스 개요",
   },
   {
     id: "audit",
     titleKo: "Audit intake",
     summaryKo: "마스킹·stub·합성 스트레스 — SEND HOLD",
     artifactPath: "data/wtt/examples/wtt_customer_masked_stub_v1.example.jsonl",
+    ctaHref: "/enterprise/apply",
+    ctaLabelKo: "토큰 압축 사전 감사 신청",
   },
 ];
 

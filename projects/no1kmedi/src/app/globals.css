@@ -6336,26 +6336,157 @@ main.workspace-main {
 
 /* universe_hub_v2 — jema-ai.com /hub (Phase 1 deep-link shell) */
 .universe-hub-page {
+  --hub-bg: var(--bg);
+  --hub-surface: var(--surface);
+  --hub-border: var(--line);
   --hub-accent: #3d9b84;
   --hub-accent-ink: #04120e;
-  --hub-surface-elevated: color-mix(in srgb, var(--surface) 94%, var(--bg) 6%);
+  --hub-surface-elevated: color-mix(in srgb, var(--hub-surface) 94%, var(--hub-bg) 6%);
   --hub-spoke-max: 52rem;
   --hub-pill-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --hub-pill-focus-inset: inset 0 1px 2px rgba(0, 0, 0, 0.06);
   --hub-radius-pill: 999px;
   min-height: 100vh;
-  background: var(--bg);
+  background: var(--hub-bg);
   color: var(--text);
 }
 
-/* Discover minimal mode — Perplexity-style chrome on /hub only */
-.universe-hub-page--discover-minimal {
-  background: #fafafa;
-  background: linear-gradient(180deg, #fafafa 0%, #f4f4f5 48%, #fafafa 100%);
+/* Discover 3-column — Claude/Perplexity dark anti-slop ( /hub home + inspector ) */
+.universe-hub-page--light-chrome.universe-hub-page--discover-v3 {
+  --hub-bg: #191919;
+  --hub-surface: #202020;
+  --hub-border: #2a2a2a;
+  --hub-discover-bg: #191919;
+  --hub-discover-surface: #202020;
+  --hub-discover-ink: #eceae7;
+  --hub-discover-muted: #9c9893;
+  --hub-discover-line: #2a2a2a;
+  --hub-discover-accent: #3d9b84;
+  --hub-pill-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.35),
+    0 12px 36px rgba(0, 0, 0, 0.22);
+  --hub-pill-focus-inset: inset 0 1px 2px rgba(0, 0, 0, 0.45);
+  --bg: var(--hub-bg);
+  --surface: var(--hub-surface);
+  --text: var(--hub-discover-ink);
+  --muted: var(--hub-discover-muted);
+  --line: var(--hub-border);
+  --accent: var(--hub-discover-accent);
+  --accent-dim: #2d7a68;
+  --hub-surface-elevated: #242424;
+  background: var(--hub-bg);
+  color: var(--hub-discover-ink);
 }
 
-.universe-hub-shell-v2--discover-minimal {
+.universe-hub-page--discover-v3 .universe-hub-shell-v2--light-chrome {
+  background: var(--hub-bg);
+  color: var(--hub-discover-ink);
+}
+
+.universe-hub-page--discover-v3 .universe-hub-sidebar--icon-rail {
+  background: color-mix(in srgb, var(--hub-surface) 92%, #000 8%);
+  border-right-color: var(--hub-border);
+}
+
+.universe-hub-page--discover-v3 .universe-hub-ask-capsule {
+  border-color: var(--hub-border);
+  background: var(--hub-surface);
+}
+
+.universe-hub-page--discover-v3 .universe-hub-ask-capsule:focus-within {
+  border-color: color-mix(in srgb, var(--hub-discover-accent) 42%, var(--hub-border) 58%);
+  box-shadow:
+    var(--hub-pill-focus-inset),
+    0 0 0 1px color-mix(in srgb, var(--hub-discover-accent) 22%, transparent 78%),
+    var(--hub-pill-shadow);
+}
+
+.universe-hub-page--discover-v3 .universe-hub-ask-pill:focus-within {
+  border-color: color-mix(in srgb, var(--hub-discover-accent) 42%, var(--hub-border) 58%);
+  box-shadow:
+    var(--hub-pill-focus-inset),
+    0 0 0 1px color-mix(in srgb, var(--hub-discover-accent) 22%, transparent 78%),
+    var(--hub-pill-shadow);
+}
+
+.universe-hub-page--discover-v3 .universe-hub-inspector-v3 {
+  border-left-color: var(--hub-border);
+  background: color-mix(in srgb, var(--hub-surface) 96%, #000 4%);
+}
+
+.universe-hub-sidebar-collapse {
+  align-self: flex-end;
+  margin: 0 0 var(--space-xs);
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--hub-border, var(--line));
+  background: var(--hub-surface, var(--surface));
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.universe-hub-sidebar-collapse:hover,
+.universe-hub-sidebar-collapse:focus-visible {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line) 65%);
+  outline: none;
+}
+
+.universe-hub-sidebar--icon-rail .universe-hub-sidebar-collapse {
+  align-self: center;
+}
+
+/* Hub light chrome — Claude/Perplexity-inspired palette on all /hub/* (no hub LLM) */
+.universe-hub-page--light-chrome {
+  --hub-discover-bg: #fbfaf7;
+  --hub-discover-surface: #ffffff;
+  --hub-discover-ink: #1c1917;
+  --hub-discover-muted: #6b6560;
+  --hub-discover-line: #e7e5e0;
+  --hub-discover-accent: #3d9b84;
+  --hub-pill-shadow:
+    0 2px 8px rgba(28, 25, 23, 0.04),
+    0 12px 32px rgba(28, 25, 23, 0.06);
+  --bg: var(--hub-discover-bg);
+  --surface: var(--hub-discover-surface);
+  --text: var(--hub-discover-ink);
+  --muted: var(--hub-discover-muted);
+  --line: var(--hub-discover-line);
+  --accent: var(--hub-discover-accent);
+  --accent-dim: #2d7a68;
+  --warn-bg: rgba(200, 160, 80, 0.14);
+  --hub-surface-elevated: #ffffff;
+  background: var(--hub-discover-bg);
+  color: var(--hub-discover-ink);
+}
+
+.universe-hub-shell-v2--light-chrome {
   min-height: 100vh;
   grid-template-columns: 4.5rem minmax(0, 1fr);
+  background: var(--hub-discover-bg);
+  color: var(--hub-discover-ink);
+}
+
+.universe-hub-main--hub-spoke {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  max-width: none;
+  width: 100%;
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1rem, 3vw, 1.75rem);
+  min-height: 100vh;
+}
+
+.universe-hub-plugin-stack--spoke {
+  max-width: 46rem;
+  margin: 0 auto;
+  width: 100%;
+  gap: var(--space-lg);
 }
 
 .universe-hub-main--discover-minimal {
@@ -6373,7 +6504,8 @@ main.workspace-main {
   padding: var(--space-md) var(--space-xs);
   align-items: center;
   gap: var(--space-sm);
-  background: color-mix(in srgb, #fafafa 92%, var(--surface) 8%);
+  background: color-mix(in srgb, var(--hub-discover-bg, #fbfaf7) 94%, #fff 6%);
+  border-right-color: var(--hub-discover-line, var(--line));
 }
 
 .universe-hub-sidebar-brand--icon-rail {
@@ -6444,12 +6576,23 @@ main.workspace-main {
   margin: 0;
   font-size: clamp(1.75rem, 4vw, 2.25rem);
   font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--text);
+  letter-spacing: -0.03em;
+  color: var(--hub-discover-ink, var(--text));
+}
+
+.universe-hub-ask-minimal-tagline {
+  margin: 0;
+  max-width: 28rem;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--hub-discover-muted, var(--muted));
+  letter-spacing: -0.01em;
 }
 
 .universe-hub-locale-toggle--minimal {
   font-size: var(--text-xs);
+  color: var(--hub-discover-muted, var(--muted));
+  border-color: var(--hub-discover-line, var(--line));
 }
 
 .universe-hub-ask-form--minimal {
@@ -6458,13 +6601,113 @@ main.workspace-main {
   margin: 0 auto var(--space-md);
 }
 
-.universe-hub-ask-pill--minimal {
+.universe-hub-ask-capsule {
   width: min(100%, 45rem);
   margin: 0 auto;
-  padding: var(--space-xs) var(--space-xs) var(--space-xs) var(--space-md);
-  border-radius: var(--hub-radius-pill);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hub-discover-line, var(--line));
+  border-radius: 1.25rem;
+  background: var(--hub-discover-surface, var(--surface));
   box-shadow: var(--hub-pill-shadow);
-  border-color: color-mix(in srgb, var(--line) 70%, #fff 30%);
+  overflow: hidden;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.universe-hub-ask-capsule:focus-within {
+  border-color: color-mix(in srgb, var(--hub-discover-accent, var(--hub-accent)) 45%, var(--hub-discover-line, var(--line)) 55%);
+  box-shadow:
+    0 2px 8px rgba(28, 25, 23, 0.05),
+    0 16px 40px rgba(61, 155, 132, 0.08);
+}
+
+.universe-hub-ask-capsule.is-submitting {
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.universe-hub-ask-capsule-field {
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 1rem 1.15rem 0.65rem;
+  font-size: 1.05rem;
+  font-family: inherit;
+  color: var(--hub-discover-ink, var(--text));
+  letter-spacing: -0.015em;
+}
+
+.universe-hub-ask-capsule-field::placeholder {
+  color: color-mix(in srgb, var(--hub-discover-muted, var(--muted)) 88%, transparent 12%);
+}
+
+.universe-hub-ask-capsule-field:focus {
+  outline: none;
+}
+
+.universe-hub-ask-capsule-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: 0.45rem 0.55rem 0.55rem 0.85rem;
+  border-top: 1px solid color-mix(in srgb, var(--hub-discover-line, var(--line)) 85%, transparent 15%);
+}
+
+.universe-hub-ask-capsule-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.universe-hub-ask-focus-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--hub-discover-accent, var(--accent));
+  background: color-mix(in srgb, var(--hub-discover-accent, var(--accent)) 10%, transparent 90%);
+  border: 1px solid color-mix(in srgb, var(--hub-discover-accent, var(--accent)) 28%, transparent 72%);
+}
+
+.universe-hub-ask-attach-hint {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--hub-discover-muted, var(--muted));
+  background: transparent;
+  border: 1px dashed color-mix(in srgb, var(--hub-discover-line, var(--line)) 90%, transparent 10%);
+  cursor: not-allowed;
+  opacity: 0.72;
+  font-family: inherit;
+}
+
+.universe-hub-ask--minimal .universe-hub-intent-chip {
+  border-radius: 999px;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+  background: var(--hub-discover-surface, var(--surface));
+  border-color: var(--hub-discover-line, var(--line));
+  color: var(--hub-discover-muted, var(--muted));
+}
+
+.universe-hub-ask--minimal .universe-hub-intent-chip.is-selected,
+.universe-hub-ask--minimal .universe-hub-intent-chip:hover {
+  border-color: color-mix(in srgb, var(--hub-discover-accent, var(--accent)) 50%, var(--hub-discover-line, var(--line)) 50%);
+  color: var(--hub-discover-ink, var(--text));
+  background: color-mix(in srgb, var(--hub-discover-accent, var(--accent)) 8%, var(--hub-discover-surface, var(--surface)) 92%);
 }
 
 .universe-hub-ask-submit--icon {
@@ -6553,6 +6796,187 @@ main.workspace-main {
   padding: var(--space-lg) var(--space-md);
   background: color-mix(in srgb, var(--surface) 88%, var(--bg) 12%);
   overflow-y: auto;
+}
+
+.universe-hub-page--light-chrome .universe-hub-inspector-v3 {
+  border-left-color: var(--hub-discover-line, var(--line));
+  background: color-mix(in srgb, var(--hub-discover-surface, var(--surface)) 92%, var(--hub-discover-bg, var(--bg)) 8%);
+}
+
+.universe-hub-page--light-chrome .universe-hub-spoke-hero {
+  border-color: var(--hub-discover-line);
+  background: var(--hub-discover-surface);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04);
+}
+
+.universe-hub-page--light-chrome .universe-hub-spoke-title {
+  letter-spacing: -0.02em;
+  color: var(--hub-discover-ink);
+}
+
+.universe-hub-page--light-chrome .universe-hub-spoke-body,
+.universe-hub-page--light-chrome .universe-hub-spoke-disclaimer,
+.universe-hub-page--light-chrome .universe-hub-section-lead {
+  color: var(--hub-discover-muted);
+}
+
+.universe-hub-page--light-chrome .universe-hub-ledger-stub {
+  padding: var(--space-lg);
+  border: 1px solid var(--hub-discover-line);
+  border-radius: 1rem;
+  background: var(--hub-discover-surface);
+  box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04);
+}
+
+.universe-hub-page--light-chrome .universe-hub-section-title {
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--hub-discover-ink);
+}
+
+.universe-hub-page--light-chrome .universe-hub-package-table-wrap {
+  margin-top: var(--space-sm);
+  border-radius: 0.75rem;
+  border: 1px solid var(--hub-discover-line);
+  overflow: hidden;
+}
+
+.universe-hub-page--light-chrome .universe-hub-package-table {
+  margin: 0;
+}
+
+.universe-hub-page--light-chrome .universe-hub-package-table th {
+  background: color-mix(in srgb, var(--hub-discover-bg) 55%, #fff 45%);
+  color: var(--hub-discover-muted);
+  border-bottom: 1px solid var(--hub-discover-line);
+}
+
+.universe-hub-page--light-chrome .universe-hub-package-table td {
+  border-bottom: 1px solid color-mix(in srgb, var(--hub-discover-line) 75%, transparent 25%);
+  color: var(--hub-discover-ink);
+}
+
+.universe-hub-page--light-chrome .universe-hub-package-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.universe-hub-page--light-chrome .universe-hub-artifact-path {
+  display: inline-block;
+  padding: 0.12rem 0.45rem;
+  border-radius: 0.35rem;
+  background: color-mix(in srgb, var(--hub-discover-bg) 50%, #fff 50%);
+  border: 1px solid var(--hub-discover-line);
+  font-size: 0.75rem;
+  color: var(--hub-discover-muted);
+  word-break: break-word;
+}
+
+.universe-hub-page--light-chrome .universe-hub-ledger-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--text-xs);
+  color: var(--hub-discover-muted);
+}
+
+.universe-hub-page--light-chrome .universe-hub-compliance-tag {
+  border-color: color-mix(in srgb, var(--hub-discover-line) 90%, transparent 10%);
+  color: var(--hub-discover-muted);
+  background: color-mix(in srgb, var(--hub-discover-bg) 40%, #fff 60%);
+}
+
+.universe-hub-page--light-chrome .universe-hub-empty-state {
+  background: var(--hub-discover-surface);
+  border-style: solid;
+  border-color: var(--hub-discover-line);
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04);
+}
+
+.universe-hub-page--light-chrome .universe-hub-empty-title {
+  color: var(--hub-discover-ink);
+  letter-spacing: -0.01em;
+}
+
+.universe-hub-page--light-chrome .universe-hub-cta--primary {
+  background: var(--hub-discover-accent);
+  color: #ffffff;
+  border-radius: 999px;
+}
+
+.universe-hub-page--light-chrome .universe-hub-cta--primary:hover {
+  text-decoration: none;
+  filter: brightness(0.96);
+}
+
+.universe-hub-page--light-chrome .universe-hub-cta--ghost {
+  border-color: var(--hub-discover-line);
+  border-radius: 999px;
+  background: var(--hub-discover-surface);
+  color: var(--hub-discover-ink);
+}
+
+.universe-hub-page--light-chrome .universe-hub-prefill-banner {
+  background: color-mix(in srgb, var(--hub-discover-accent) 8%, #fff 92%);
+  border-color: color-mix(in srgb, var(--hub-discover-accent) 22%, var(--hub-discover-line) 78%);
+  color: var(--hub-discover-muted);
+}
+
+.universe-hub-page--light-chrome .universe-hub-prefill-banner q {
+  color: var(--hub-discover-ink);
+}
+
+.universe-hub-page--light-chrome .universe-hub-ledger-status {
+  display: inline-block;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--hub-discover-muted);
+  background: color-mix(in srgb, var(--hub-discover-bg) 45%, #fff 55%);
+  border: 1px solid var(--hub-discover-line);
+}
+
+.universe-hub-page--light-chrome .universe-hub-disclaimer-toggle {
+  color: var(--hub-discover-accent);
+}
+
+.universe-hub-page--light-chrome .universe-hub-disclaimer-panel p {
+  color: var(--hub-discover-muted);
+}
+
+.universe-hub-page--light-chrome .universe-hub-sidebar-link.is-icon-rail.is-active {
+  background: color-mix(in srgb, var(--hub-discover-accent) 12%, #fff 88%);
+  color: var(--hub-discover-ink);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hub-discover-accent) 28%, transparent 72%);
+}
+
+.universe-hub-inspector-v3--resizable {
+  position: relative;
+}
+
+.universe-hub-inspector-resize-handle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0.45rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: col-resize;
+  z-index: 2;
+}
+
+.universe-hub-inspector-resize-handle:hover,
+.universe-hub-inspector-resize-handle:focus-visible {
+  background: color-mix(in srgb, var(--hub-discover-accent, var(--accent)) 18%, transparent 82%);
+  outline: none;
 }
 
 .universe-hub-inspector-inner {
@@ -7454,6 +7878,25 @@ main.workspace-main {
   margin: var(--space-sm) 0 0;
 }
 
+.universe-hub-compliance-positioning {
+  font-weight: 500;
+  color: var(--text);
+  opacity: 0.9;
+}
+
+.enterprise-positioning-tagline {
+  margin: var(--space-md) 0 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--text);
+  max-width: 42rem;
+}
+
+.enterprise-positioning-tagline-en {
+  color: var(--muted);
+  font-size: var(--text-xs);
+}
+
 .universe-hub-compliance-tag {
   display: inline-block;
   margin-right: var(--space-sm);
@@ -7840,7 +8283,7 @@ main.workspace-main {
     grid-template-columns: 1fr;
   }
 
-  .universe-hub-shell-v2--discover-minimal {
+  .universe-hub-shell-v2--light-chrome {
     grid-template-columns: 1fr;
   }
 

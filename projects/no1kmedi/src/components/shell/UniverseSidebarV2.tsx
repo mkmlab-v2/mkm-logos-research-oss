@@ -20,6 +20,8 @@ import {
 type Props = {
   activeId?: UniverseHubPluginId;
   iconRail?: boolean;
+  collapsed?: boolean;
+  onToggleCollapse?: () => void;
 };
 
 const GROUP_ORDER: UniverseHubNavGroup[] = ["discover", "b2b", "consumer", "ops"];
@@ -76,7 +78,12 @@ function renderLink(
   );
 }
 
-export function UniverseSidebarV2({ activeId, iconRail = false }: Props) {
+export function UniverseSidebarV2({
+  activeId,
+  iconRail = false,
+  collapsed = false,
+  onToggleCollapse,
+}: Props) {
   const pathname = usePathname() ?? "";
   const { session } = useMkmFamilySessionV1();
   const plugins = visibleUniverseHubPlugins();
@@ -92,6 +99,18 @@ export function UniverseSidebarV2({ activeId, iconRail = false }: Props) {
 
   return (
     <aside className={asideClass} aria-label="MKM 플러그인">
+      {onToggleCollapse ? (
+        <button
+          type="button"
+          className="universe-hub-sidebar-collapse"
+          onClick={onToggleCollapse}
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? "사이드바 펼치기" : "사이드바 접기"}
+          title={collapsed ? "사이드바 펼치기" : "사이드바 접기"}
+        >
+          {collapsed ? "›" : "‹"}
+        </button>
+      ) : null}
       {iconRail ? (
         <div className="universe-hub-sidebar-brand universe-hub-sidebar-brand--icon-rail">
           <Link href="/hub" title="JEMA AI Hub" aria-label="JEMA AI Hub">

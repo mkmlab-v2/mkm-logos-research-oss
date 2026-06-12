@@ -12,7 +12,7 @@ export function FieldLensGovernanceFlow({ copy }: { copy: GovernanceFlowCopy }) 
       <h2 id="governance-flow-title">{copy.title}</h2>
       <p className="section-lead">{copy.section_lead}</p>
 
-      <div className="field-lens-flow-grid" role="group" aria-label="Field-Lens-Resolver 흐름">
+      <div className="field-lens-flow-grid" role="group" aria-label="다중 신호 거버넌스 흐름">
         <div className="field-lens-column field-lens-column-primary">
           <p className="field-lens-column-label">{copy.field_label}</p>
           <ul className="field-lens-stack">

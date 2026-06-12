@@ -143,9 +143,14 @@ def run_check(*, write_report: bool = True, out_path: Path | None = None) -> tup
             issues.append("UnifiedUniverseShellV2 missing HubEvidenceInspectorV3 chassis v3")
 
     plugins_ts = ROOT / "projects/no1kmedi/src/lib/universeHubPluginsV2.ts"
+    origin_ts = ROOT / "projects/no1kmedi/src/lib/mkmlife-hub-origin-v1.ts"
+    showroom_ts = ROOT / "projects/no1kmedi/src/lib/jemaaiShowroomPublicV1.ts"
     if plugins_ts.is_file():
         text = plugins_ts.read_text(encoding="utf-8")
-        missing_links = [m for m in DEEP_LINK_MARKERS if m not in text]
+        origin_text = origin_ts.read_text(encoding="utf-8") if origin_ts.is_file() else ""
+        showroom_text = showroom_ts.read_text(encoding="utf-8") if showroom_ts.is_file() else ""
+        combined = f"{text}\n{origin_text}\n{showroom_text}"
+        missing_links = [m for m in DEEP_LINK_MARKERS if m not in combined]
         if missing_links:
             issues.append(f"universeHubPluginsV2 missing deep links: {missing_links}")
 
