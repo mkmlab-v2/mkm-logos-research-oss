@@ -124,6 +124,23 @@ export function HubPluginIcon({
           />
         </Svg>
       );
+    case "personadiary_preview":
+      return (
+        <Svg {...p}>
+          <path
+            d="M7 4h10a2 2 0 012 2v14l-4-2.5L11 20V6a2 2 0 00-2-2z"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M9 8h6M9 11h4"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+          />
+        </Svg>
+      );
     case "my_reports":
       return (
         <Svg {...p}>

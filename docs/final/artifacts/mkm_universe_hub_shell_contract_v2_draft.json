@@ -21,7 +21,7 @@
         "main": "center_minimal",
         "inspector": "right_read_only_v3",
         "content_pattern": "one_question_then_report",
-        "max_sidebar_plugins": 11,
+        "max_sidebar_plugins": 12,
         "max_primary_nav": 0
       },
       "layout_v3_chassis": {
@@ -130,6 +130,20 @@
           "deep_link_fallback": "https://mkmlife.com/",
           "embedded_shell_ref": "consumer_portal_v1",
           "note": "Phase 1 may deep-link to mkmlife.com; Phase 2 optional embed — consumer_portal_v1 contract unchanged on mkmlife host"
+        },
+        {
+          "id": "personadiary_preview",
+          "icon": "diary",
+          "copy_key_ko": "plugin.personadiary.ko",
+          "label_ko": "Persona Diary",
+          "route": null,
+          "external_url": "https://personadiary.com/",
+          "surface": "personadiary_preview_v1",
+          "backend_lane": "consumer_preview_only",
+          "hypothesis_tier": "[HYPO]",
+          "preview_only": true,
+          "deep_link_fallback": "/personadiary",
+          "note": "Same no1kmedi deploy via host rewrite — not merged with mkmlife DB; MKM family identity federation is future L lane"
         },
         {
           "id": "a_code_sandbox",
