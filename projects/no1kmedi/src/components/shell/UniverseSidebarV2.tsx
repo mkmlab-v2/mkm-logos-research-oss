@@ -4,6 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HubAccountEntryV1 } from "@/components/shell/HubAccountEntryV1";
 import { HubBrandMark, HubPluginIcon } from "@/components/shell/HubPluginIcon";
+import { useMkmFamilySessionV1 } from "@/hooks/useMkmFamilySessionV1";
+import {
+  isMkmFamilyHandoffHref,
+  resolveUniverseHubPluginHref,
+} from "@/lib/mkmFamilyHandoffV1";
 import {
   type UniverseHubNavGroup,
   type UniverseHubPluginId,
@@ -32,9 +37,12 @@ function isActive(pathname: string, href: string, pluginId: UniverseHubPluginId)
 function renderLink(
   plugin: UniverseHubPluginV2,
   pathname: string,
-  activeId?: UniverseHubPluginId,
-  iconRail?: boolean,
+  activeId: UniverseHubPluginId | undefined,
+  iconRail: boolean | undefined,
+  session: ReturnType<typeof useMkmFamilySessionV1>["session"],
 ) {
+  const href = resolveUniverseHubPluginHref(plugin.id, plugin.href, session);
+  const handoff = isMkmFamilyHandoffHref(href);
   const active = activeId === plugin.id || isActive(pathname, plugin.href, plugin.id);
   const b2bEmphasis = plugin.id === "governed_customization" ? " is-b2b-emphasis" : "";
   const className = active
@@ -42,13 +50,12 @@ function renderLink(
     : `universe-hub-sidebar-link${b2bEmphasis}${iconRail ? " is-icon-rail" : ""}`;
   const label = plugin.labelKo;
 
-  if (plugin.external) {
+  if (plugin.external || handoff) {
     return (
       <a
         className={className}
-        href={plugin.href}
-        target="_blank"
-        rel="noopener noreferrer"
+        href={href}
+        {...(handoff ? {} : { target: "_blank", rel: "noopener noreferrer" })}
         title={label}
         aria-label={label}
       >
@@ -71,6 +78,7 @@ function renderLink(
 
 export function UniverseSidebarV2({ activeId, iconRail = false }: Props) {
   const pathname = usePathname() ?? "";
+  const { session } = useMkmFamilySessionV1();
   const plugins = visibleUniverseHubPlugins();
 
   const byGroup = GROUP_ORDER.map((group) => ({
@@ -106,7 +114,7 @@ export function UniverseSidebarV2({ activeId, iconRail = false }: Props) {
             ) : null}
             <ul className="universe-hub-sidebar-list">
               {items.map((plugin) => (
-                <li key={plugin.id}>{renderLink(plugin, pathname, activeId, iconRail)}</li>
+                <li key={plugin.id}>{renderLink(plugin, pathname, activeId, iconRail, session)}</li>
               ))}
             </ul>
           </div>

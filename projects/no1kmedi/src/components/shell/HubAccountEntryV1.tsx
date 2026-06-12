@@ -1,40 +1,15 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-
-type SessionResponse = {
-  ok: boolean;
-  configured: boolean;
-  authenticated: boolean;
-  account?: {
-    mkm_account_id: string;
-    email: string;
-    display_name?: string;
-    picture_url?: string;
-  };
-};
+import { useState } from "react";
+import { useMkmFamilySessionV1 } from "@/hooks/useMkmFamilySessionV1";
 
 type Props = {
   compact?: boolean;
 };
 
 export function HubAccountEntryV1({ compact = false }: Props) {
-  const [session, setSession] = useState<SessionResponse | null>(null);
+  const { session, refresh } = useMkmFamilySessionV1();
   const [busy, setBusy] = useState(false);
-
-  const refresh = useCallback(async () => {
-    try {
-      const res = await fetch("/api/mkm-family/session", { credentials: "include" });
-      const data = (await res.json()) as SessionResponse;
-      setSession(data);
-    } catch {
-      setSession({ ok: false, configured: false, authenticated: false });
-    }
-  }, []);
-
-  useEffect(() => {
-    void refresh();
-  }, [refresh]);
 
   const onGoogleLogin = () => {
     window.location.href = `/api/mkm-family/auth/google?return_to=${encodeURIComponent("/hub")}`;

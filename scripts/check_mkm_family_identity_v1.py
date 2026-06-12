@@ -21,6 +21,12 @@ REQUIRED = [
     ROOT / "projects/no1kmedi/src/app/api/mkm-family/rp/exchange/route.ts",
     ROOT / "projects/mkm/mkm-life/lib/mkm-family-rp-client-v1.ts",
     ROOT / "projects/mkm/mkm-life/app/auth/mkm-callback/page.tsx",
+    ROOT / "projects/no1kmedi/src/hooks/useMkmFamilySessionV1.ts",
+    ROOT / "projects/no1kmedi/src/lib/mkmFamilyHandoffV1.ts",
+    ROOT / "scripts/Initialize-MkmFamilyGoogleOAuthSecureStore_v1.ps1",
+    ROOT / "scripts/Invoke-ApplyMkmFamilyGoogleOAuthToVps_v1.ps1",
+    ROOT / "scripts/Verify-MkmFamilyIdentityReadiness_v1.ps1",
+    ROOT / "scripts/smoke_mkm_family_identity_live_v1.py",
 ]
 
 FORBIDDEN_IN_POLICY_BODY = [
