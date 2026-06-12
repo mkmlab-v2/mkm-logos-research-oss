@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PersonadiaryMkmAuthBridge } from "@/components/personadiary/PersonadiaryMkmAuthBridge";
 import { personadiaryCopy } from "@/content/personadiaryCopy";
 
 const hubBase =
@@ -29,5 +30,10 @@ export default function PersonadiaryLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return children;
+  return (
+    <>
+      <PersonadiaryMkmAuthBridge />
+      {children}
+    </>
+  );
 }
