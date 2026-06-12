@@ -12,6 +12,7 @@ export type UniverseHubPluginId =
   | "oracle_observatory"
   | "logos_observatory"
   | "mkm_life"
+  | "personadiary_preview"
   | "a_code_sandbox"
   | "compression_sandbox"
   | "my_reports"
@@ -38,6 +39,7 @@ export const UNIVERSE_HUB_NAV_GROUP_LABELS: Record<Exclude<UniverseHubNavGroup, 
 };
 
 const MKMLIFE = "https://mkmlife.com";
+const PERSONADIARY = "https://personadiary.com";
 const JEMAAI = "https://jemaai.cloud";
 const ACODE = "https://a-codeai.com";
 
@@ -91,6 +93,14 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
     navGroup: "consumer",
   },
   {
+    id: "personadiary_preview",
+    labelKo: "Persona Diary",
+    href: PERSONADIARY,
+    external: true,
+    laneNote: "preview_only · [HYPO]",
+    navGroup: "consumer",
+  },
+  {
     id: "my_reports",
     labelKo: "내 리포트",
     href: "/hub/reports",
@@ -128,6 +138,8 @@ export const UNIVERSE_HUB_DEEP_LINKS = {
   mkmlifeAskOne: `${MKMLIFE}/ask-one`,
   mkmlifeReports: `${MKMLIFE}/my-reports`,
   mkmlifeNewsDeck: `${MKMLIFE}/news-deck`,
+  personadiaryHome: PERSONADIARY,
+  personadiaryOnJemaAi: "/personadiary",
   jemaaiShowroom: JEMAAI,
   aCodeLanding: ACODE,
   aCodeOpenBenchReproduce: ACODE_OPEN_BENCH_REPRODUCE,

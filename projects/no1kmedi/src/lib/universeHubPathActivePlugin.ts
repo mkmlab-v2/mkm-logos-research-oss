@@ -8,6 +8,7 @@ export function activePluginIdFromPath(pathname: string): UniverseHubPluginId | 
   if (path.startsWith("/hub/oracle")) return "oracle_observatory";
   if (path.startsWith("/hub/logos")) return "logos_observatory";
   if (path.startsWith("/hub/life")) return "mkm_life";
+  if (path.startsWith("/personadiary")) return "personadiary_preview";
   if (path.startsWith("/hub/developer")) return "a_code_sandbox";
   if (path.startsWith("/hub/compression")) return "compression_sandbox";
   if (path.startsWith("/hub/reports")) return "my_reports";

@@ -71,6 +71,7 @@ FORBIDDEN_IN_HUB = frozenset(
 
 DEEP_LINK_MARKERS = (
     "mkmlife.com",
+    "personadiary.com",
     "jemaai.cloud",
     "a-codeai.com",
 )
