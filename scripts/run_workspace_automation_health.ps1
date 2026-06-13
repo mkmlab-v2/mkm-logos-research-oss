@@ -127,6 +127,13 @@ param(
     # Shortcut profile: P0 paths + premium multilens report pytest only.
     [switch]$PremiumBtrackMultilensReportSmokeOnly,
 
+    # Optional: Bounded lane loop shadow smoke (pytest + dry-run invoke; CONSTITUTION §1.4.3).
+    [switch]$IncludeBoundedLaneLoopSmoke,
+    # Shortcut profile: P0 paths + bounded lane loop smoke only.
+    [switch]$BoundedLaneLoopSmokeOnly,
+    [ValidateSet("ms", "oracle", "infra", "design", "ops")]
+    [string]$BoundedLaneLoopSmokeLane = "infra",
+
     # Optional: GPU-adjacent recommended bundle (Control-Integrity oracle chain + Pack 0-B pytest); CONSTITUTION §1.2.1.
     [switch]$IncludeMkmGpuRecommendedBundle,
     # Shortcut profile: P0 + automation registry reconcile + Run-MkmGpuRecommendedBundle_v1.ps1, then exit 0.
@@ -156,7 +163,13 @@ param(
     [switch]$SafeOpsStrictTradingGoNoGo,
 
     # Optional: heartbeat / bundle-cycle JSON staleness (runs outside bundle success tail; see scripts/check_amsaeng_eosa_artifact_staleness_v1.py).
-    [switch]$IncludeAmsaengArtifactStaleness
+    [switch]$IncludeAmsaengArtifactStaleness,
+
+    # MKM solo scheduler band gate (SSOT tier0-4 + max Ready; ~10s). Default ON full health; skip with -SkipSchedulerSoloBandGate.
+    [switch]$SkipSchedulerSoloBandGate,
+    [switch]$IncludeSchedulerSoloBandGate,
+    # Shortcut: P0 + EnforceSoloBand audit only.
+    [switch]$SchedulerSoloBandGateOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -232,12 +245,28 @@ if ($PremiumBtrackMultilensReportSmokeOnly) {
     $SkipNewsObservationContractSmoke = $true
 }
 
+if ($BoundedLaneLoopSmokeOnly) {
+    $IncludeBoundedLaneLoopSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
 if ($MkmGpuRecommendedBundleOnly) {
     $IncludeMkmGpuRecommendedBundle = $true
     $SkipVaultMirror = $true
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
     $SkipNewsObservationContractSmoke = $true
+}
+
+if ($SchedulerSoloBandGateOnly) {
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSafeOpsSurfaceCheck = $true
 }
 
 if ($McpHygieneProbeOnly) {
@@ -259,7 +288,8 @@ if ($PrSasangPromotionMirrorSyncOnly) {
 }
 
 # Recommended default: run SafeOps on full health runs; shortcut profiles skip unless explicit Include* / IncludeWithVps.
-$shortcutForSafeOps = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmGpuRecommendedBundleOnly
+$shortcutProfiles = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmGpuRecommendedBundleOnly -or $SchedulerSoloBandGateOnly
+$shortcutForSafeOps = $shortcutProfiles
 $runSafeOps = $false
 $runSafeOpsWithVps = $false
 if (-not $SkipSafeOpsSurfaceCheck) {
@@ -273,6 +303,25 @@ if (-not $SkipSafeOpsSurfaceCheck) {
     elseif (-not $shortcutForSafeOps -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly) {
         $runSafeOps = $true
     }
+}
+
+$runSchedulerBand = $false
+if (-not $SkipSchedulerSoloBandGate) {
+    if ($SchedulerSoloBandGateOnly -or $IncludeSchedulerSoloBandGate) {
+        $runSchedulerBand = $true
+    }
+    elseif (-not $shortcutProfiles -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly) {
+        $runSchedulerBand = $true
+    }
+}
+
+function Invoke-SchedulerSoloBandGateStep {
+    param([string]$Root)
+    $bandRunner = Join-Path $Root "scripts\Invoke-MkmSchedulerSoloCoreStackAudit_v1.ps1"
+    if (-not (Test-Path -LiteralPath $bandRunner)) {
+        throw "Missing: $bandRunner"
+    }
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $bandRunner -WorkspaceRoot $Root -EnforceSoloBand
 }
 
 function Step([string]$Name, [scriptblock]$Block) {
@@ -349,6 +398,15 @@ try {
         Step "P0 / CONSTITUTION paths" {
             & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\verify_p0_constitution_gate_paths.ps1") -WorkspaceRoot $root
         }
+    }
+
+    if ($SchedulerSoloBandGateOnly) {
+        Step "MKM scheduler solo stack band gate (EnforceSoloBand)" {
+            Invoke-SchedulerSoloBandGateStep -Root $root
+        }
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] SchedulerSoloBandGateOnly: finished after P0 + band gate." -ForegroundColor Green
+        exit 0
     }
 
     if ($IncludePrSasangPromotionMirrorSync) {
@@ -442,6 +500,12 @@ try {
         }
     }
 
+    if ($runSchedulerBand) {
+        Step "MKM scheduler solo stack band gate (EnforceSoloBand)" {
+            Invoke-SchedulerSoloBandGateStep -Root $root
+        }
+    }
+
     if ($IncludeAmsaengArtifactStaleness) {
         $stalenessPy = Join-Path $root "scripts\check_amsaeng_eosa_artifact_staleness_v1.py"
         if (Test-Path -LiteralPath $stalenessPy) {
@@ -472,7 +536,7 @@ try {
         exit 0
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly -and -not $MkmGpuRecommendedBundleOnly) {
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly -and -not $BoundedLaneLoopSmokeOnly -and -not $MkmGpuRecommendedBundleOnly -and -not $SchedulerSoloBandGateOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -486,7 +550,7 @@ try {
         }
     }
 
-    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $MkmGpuRecommendedBundleOnly
+    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $MkmGpuRecommendedBundleOnly -or $SchedulerSoloBandGateOnly
     if ($IncludeBTrackDomainFeedbackSmoke -and -not $btProfileSkip) {
         $bt = Join-Path $root "scripts\Run-BTrackDomainFeedbackSmoke.ps1"
         if (Test-Path -LiteralPath $bt) {
@@ -799,6 +863,30 @@ try {
             Write-Host "=== MKM Control-Integrity pipeline smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: test_mkm_control_integrity_pipeline_smoke_v1.py not found"
         }
+    }
+
+    if ($IncludeBoundedLaneLoopSmoke) {
+        $bl1 = Join-Path $root "tests\test_bounded_lane_loop_v1.py"
+        $bl2 = Join-Path $root "tests\test_build_bounded_lane_pin_from_resume_pack_v1.py"
+        $bl3 = Join-Path $root "tests\test_bounded_lane_loop_week4_v1.py"
+        $blInvoke = Join-Path $root "scripts\Invoke-BoundedLaneLoop_v1.ps1"
+        if ((Test-Path -LiteralPath $bl1) -and (Test-Path -LiteralPath $bl2) -and (Test-Path -LiteralPath $bl3) -and (Test-Path -LiteralPath $blInvoke)) {
+            Step "Bounded lane loop shadow smoke (pytest + dry-run invoke; lane=$BoundedLaneLoopSmokeLane)" {
+                & py -m pytest $bl1 $bl2 $bl3 -q --tb=short
+                & powershell -NoProfile -ExecutionPolicy Bypass -File $blInvoke -Lane $BoundedLaneLoopSmokeLane -SkipPinBuild -DryRun
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Bounded lane loop shadow smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: bounded lane loop pytest/invoke file(s) missing"
+        }
+    }
+
+    if ($BoundedLaneLoopSmokeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] BoundedLaneLoopSmokeOnly: finished after P0 + bounded lane loop shadow smoke." -ForegroundColor Green
+        exit 0
     }
 
     if ($IncludeKmPhysicianCdsEnvelopeSmoke) {
