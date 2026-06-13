@@ -130,6 +130,27 @@ reports/poc_binance_signal_webhook/
 # (Tracked report logs remain tracked and will still appear as M when edited.)
 reports/**
 
+# MKM internal dogfood compression corpus (scrubbed ops logs; regenerable via build_mkm_internal_dogfood_corpus_v1.py)
+data/compression/mkm_internal_dogfood_v1.jsonl
+data/compression/mkm_internal_dogfood_v2.jsonl
+data/compression/mkm_internal_dogfood_v3.jsonl
+data/compression/tactical_b_free_audit_pilot_v1.jsonl
+data/compression/stateless_poc_prospect_mkm-internal-dogfood-v2_v1.jsonl
+data/compression/stateless_poc_prospect_mkm-internal-dogfood-v3_v1.jsonl
+data/compression/stateless_poc_prospect_tactical-b-free-audit-v1_v1.jsonl
+data/compression/stateless_poc_prospect_mkm-internal-dogfood-v1_v1.jsonl
+
+# WTT pilot intake tenant copies (regenerable via bootstrap_wtt_pilot_intake_v1.py)
+data/wtt/intake/wtt_pilot_*_v1.jsonl
+# WTT customer intake + provenance ledger (local pilot; human gate output)
+data/wtt/intake/*.jsonl
+data/wtt/provenance/*.provenance.json
+data/wtt/provenance/evidence/
+
+# RQ-025 Human Gate upstream λ CSV (drop zone; manifest + *.example tracked)
+data/rq025/intake/*.csv
+!data/rq025/intake/*.example
+
 # Thin daily chain: one-line myeongni JSONL (regenerable; Run-DailyExecutionInsightBrief_v1.ps1)
 data/multilens_eval/myeongni_independent_lens_thin_bridge_latest.jsonl
 
@@ -279,6 +300,8 @@ staging/
 
 # Slim public reproduce mirror (nested git → GitHub mkmlab-v2/a-codeai-compression-reproduce)
 exports/a-codeai-public-reproduce-v2/
+!docs/final/artifacts/a_codeai_public_reproduce_apache2_LICENSE.txt
+!docs/final/artifacts/a_codeai_public_reproduce_export_manifest_v1.json
 
 # Local docs/code exports (large Cursor/chat-style trees; do not bulk-commit)
 docs/code/
