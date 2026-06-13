@@ -43,8 +43,16 @@ export const HUB_INSPECTOR_ARTIFACTS_V1: HubInspectorArtifactV1[] = [
   },
   {
     id: "positioning_deck",
-    labelKo: "Positioning deck export (internal)",
-    href: "/hub/customize",
+    labelKo: "Positioning deck (internal · local PDF)",
+    href: "/enterprise",
     repoPath: "docs/final/artifacts/mkm_positioning_deck_v1_latest.pdf",
+  },
+  {
+    id: "open_bench_benchmark",
+    labelKo: "A-Code open bench (public)",
+    href: "https://a-codeai.com/benchmark/",
+    external: true,
+    repoPath: "https://github.com/mkmlab-v2/a-codeai-compression-reproduce",
+    hypo: true,
   },
 ];

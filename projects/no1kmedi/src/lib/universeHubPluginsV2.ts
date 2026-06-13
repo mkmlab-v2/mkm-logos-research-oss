@@ -143,6 +143,7 @@ export const UNIVERSE_HUB_DEEP_LINKS = {
   personadiaryOnJemaAi: "/personadiary",
   jemaaiShowroom: JEMAAI,
   aCodeLanding: ACODE,
+  aCodeOpenBenchBenchmark: `${ACODE}/benchmark/`,
   aCodeOpenBenchReproduce: ACODE_OPEN_BENCH_REPRODUCE,
   clinicianPortal: "https://clinic.no1kmedi.com/",
   enterpriseWttPersonaOs: "/enterprise#wtt-persona-os",
