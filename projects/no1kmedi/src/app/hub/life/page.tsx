@@ -29,7 +29,7 @@ export default function HubLifePage({ searchParams }: PageProps) {
         title="라이프 케어"
         body={
           embedOn
-            ? "아래 iframe은 mkmlife.com consumer_portal_v1입니다. 기본은 외부 탭 딥링크 — embed는 빌드 플래그로만 켭니다."
+            ? "로컬 dev pair 또는 NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=1 — mkmlife iframe이 Hub light chrome 안에 표시됩니다."
             : "웰니스·관측 카드 덱과 원퀘스천은 mkmlife.com consumer_portal_v1에서 운영됩니다."
         }
         primaryCta={{

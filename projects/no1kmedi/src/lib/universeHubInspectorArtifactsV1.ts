@@ -1,0 +1,50 @@
+/**
+ * Hub inspector — read-only artifact pointers ([HYPO] / non-gating).
+ * Public hrefs are fetchable or routable; repoPath is display-only SSOT.
+ */
+
+import { JEMAAI_CLOUD_PUBLIC_OBSERVE_URL } from "@/lib/jemaaiShowroomPublicV1";
+import { UNIVERSE_HUB_LOGOS_TOPOLOGY_PATH } from "@/lib/universeHubLogosTopologyV1";
+
+export type HubInspectorArtifactV1 = {
+  id: string;
+  labelKo: string;
+  href: string;
+  external?: boolean;
+  repoPath?: string;
+  hypo?: boolean;
+};
+
+export const HUB_INSPECTOR_ARTIFACTS_V1: HubInspectorArtifactV1[] = [
+  {
+    id: "logos_topology_json",
+    labelKo: "Logos 4D topology JSON",
+    href: UNIVERSE_HUB_LOGOS_TOPOLOGY_PATH,
+    repoPath: "projects/no1kmedi/public/data/logos_corpus_4d_topology_hub_v1.json",
+    hypo: true,
+  },
+  {
+    id: "logos_observatory",
+    labelKo: "Logos 관측소 (Hub spoke)",
+    href: "/hub/logos",
+    hypo: true,
+  },
+  {
+    id: "jemaai_showroom",
+    labelKo: "jemaai.cloud 공개 관측",
+    href: JEMAAI_CLOUD_PUBLIC_OBSERVE_URL,
+    external: true,
+  },
+  {
+    id: "positioning_onepager",
+    labelKo: "Agentic positioning one-pager (internal)",
+    href: "/enterprise",
+    repoPath: "docs/final/artifacts/mkm_agentic_engineering_positioning_onepager_v1_latest.md",
+  },
+  {
+    id: "positioning_deck",
+    labelKo: "Positioning deck export (internal)",
+    href: "/hub/customize",
+    repoPath: "docs/final/artifacts/mkm_positioning_deck_v1_latest.pdf",
+  },
+];
