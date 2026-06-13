@@ -38,6 +38,7 @@ def test_load_ops_pins_repair_v2_mode() -> None:
         ROOT,
         top_n=2,
         lane=None,
+        commander_default=False,
         include_slice=False,
         repair_v2_slice=True,
         slice_max_chars=400,

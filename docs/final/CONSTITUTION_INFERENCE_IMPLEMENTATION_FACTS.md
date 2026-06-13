@@ -280,6 +280,20 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 가속 번인 | `scripts/run_mkm_orchestrator_accelerated_burnin_v1.ps1` | `-RebuildGoPlusReport`로 GO+ 재생성; **`-ReportTailMatchIterations`** 시 리포트에 `--tail-samples`를 반복 수와 동일하게 넘겨 번인 직후 구간만 집계. exit 1(비안정 스냅샷)은 번인 실패로 치지 않음(`>=2`만 실패). |
 | 조건부 GO+ 리포트 v2 | `scripts/build_mkm_conditional_go_plus_report_v2.py` | 산출 `docs/final/artifacts/companion_ecosystem_conditional_go_plus_report_latest.json`. **`--window-minutes`**로 시간창 필터, **`--tail-samples`**로 해당 창 안에서 마지막 N줄만 집계(롤링 로그에 옛 WATCH가 많을 때 가속 번인 구간만 READY 판정에 쓰기 위함). |
 
+### 1.4.1 Bounded lane loop v1 (shadow mechanical runner)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| Pin 스키마 | `docs/final/schemas/bounded_lane_pin_v1.schema.json` | 레인별 **다음 1타** + 화이트리스트 `steps`; `CENTRAL`·`MISSION_LOG` 통째 주입 금지. |
+| 화이트리스트 | `docs/final/artifacts/bounded_lane_loop_whitelist_v1.json` | 허용 child만 실행; `todo_queue` enqueue·live·push 등 **substring 차단**. |
+| 예시 Pin | `docs/final/artifacts/fixtures/bounded_lane_pin_infra_v1.example.json` | infra 스모크: resume pack + P0 gate paths. |
+| Pin 빌더 | `scripts/build_bounded_lane_pin_from_resume_pack_v1.py` | resume pack + `MISSION_LOG` 레인 행 → `docs/final/artifacts/bounded_lane_pin_{lane}_latest.json`; `--refresh-resume-pack` · `--write-fixtures`(4레인 example). |
+| Pin fixtures | `docs/final/artifacts/fixtures/bounded_lane_pin_{ms,oracle,infra,design}_v1.example.json` | jsonschema 통과 스냅샷; `next_action_one_line` = MISSION 해당 레인 행(자동 enqueue·MISSION 통째 주입 **금지**). |
+| A2A peer (선택) | Pin `peer_handoff_pointer` → `a2a_tier3_cursor_wire_handoff_brief_{lane}_v1_latest.md` | 병렬 Cursor **peer** 채팅용 [HYPO]; source 채팅은 resume pack 그대로. |
+| 러너 | `scripts/run_bounded_lane_loop_v1.py` · `scripts/Invoke-BoundedLaneLoop_v1.ps1` | `-Lane` + 기본 auto pin build; `outcome_class` ∈ `{shadow_pass, shadow_warning, shadow_reject}` **만**; Track A 승격·human sign-off 없이 본선 합선 없음. |
+| 산출 | `reports/bounded_lane_loop_v1_latest.json` · `reports/bounded_lane_loop_audit.jsonl` | exit 0 = `shadow_pass`만; **≠** 무한 Cursor 채팅 루프. |
+| 회귀 | `tests/test_bounded_lane_loop_v1.py` | dry-run·화이트리스트 거부. |
+
 ---
 
 ## 2. Dual-regime / 레짐 융합 (실물 쪽, 1차 레짐)

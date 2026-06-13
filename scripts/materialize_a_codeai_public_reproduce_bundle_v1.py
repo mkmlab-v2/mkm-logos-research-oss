@@ -17,6 +17,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_DEFAULT = ROOT / "docs/final/artifacts/a_codeai_public_reproduce_export_manifest_v1.json"
 OUT_DIR_DEFAULT = ROOT / "exports/a-codeai-public-reproduce-v1"
+LICENSE_TEMPLATE = ROOT / "docs/final/artifacts/a_codeai_public_reproduce_apache2_LICENSE.txt"
 PY = sys.executable
 
 REPRODUCE_CI_YML = """name: reproduce-open-bench
@@ -51,6 +52,7 @@ pydantic>=2.0
 httpx>=0.24
 tiktoken>=0.5
 jsonschema>=4.0
+pytest>=7.0
 """
 
 LEAK_SCAN_SUFFIXES = {".json", ".jsonl", ".md", ".env", ".yaml", ".yml", ".toml"}
@@ -79,8 +81,16 @@ def _resolve_closure_paths(manifest: dict[str, Any]) -> list[str]:
     entries = manifest.get("entry_scripts") or []
     if not entries:
         return []
+    cmd = [
+        PY,
+        "scripts/resolve_a_codeai_public_reproduce_export_closure_v1.py",
+        "--out-json",
+        "reports/tmp_export_closure_v1.json",
+    ]
+    for rel in entries:
+        cmd.extend(["--entry", str(rel).replace("\\", "/")])
     proc = subprocess.run(
-        [PY, "scripts/resolve_a_codeai_public_reproduce_export_closure_v1.py", "--out-json", "reports/tmp_export_closure_v1.json"],
+        cmd,
         cwd=str(ROOT),
         capture_output=True,
         text=True,
@@ -110,7 +120,7 @@ def _collect_paths(manifest: dict[str, Any]) -> list[str]:
             if not fp.is_file():
                 continue
             rel = fp.relative_to(ROOT).as_posix()
-            if "__pycache__" in rel or rel.endswith(".pyc"):
+            if "__pycache__" in rel or rel.endswith(".pyc") or rel.endswith(".bak"):
                 continue
             rels.add(rel)
     return sorted(rels)
@@ -233,9 +243,17 @@ def materialize(
         "python3 scripts/run_compression_open_bench_chain_v1.py --skip-expand\n"
         "```\n\n"
         "FAIL-COMP-004: per-SKU metrics only; never merge Track A / handoff / prospect %.\n\n"
+        "## Enterprise pre-audit intake (web form · separate funnel)\n\n"
+        "- Tier-0 **free pre-audit** queue (masked JSONL sample review): "
+        "[app.jema-ai.com/enterprise/apply](https://app.jema-ai.com/enterprise/apply)\n"
+        "- Not auto-approval, not SLA or Track A headline guarantee; "
+        "open-bench metrics above are not a submission outcome.\n\n"
         "## Community contributions (contributor_provided · SEND_GATE HOLD)\n\n"
         "See `CONTRIBUTING_OPEN_BENCH.md` — masked JSONL under `data/*/contributions/`; "
-        "`contributor_provided=true`, `customer_provided=false`; no Track A / 47.5% headline.\n"
+        "`contributor_provided=true`, `customer_provided=false`; no Track A / 47.5% headline.\n\n"
+        "## License\n\n"
+        "Apache License 2.0 — see [LICENSE](LICENSE). "
+        "Open-bench reproduce only; SEND_GATE HOLD unchanged.\n"
     )
 
     ci_path = ".github/workflows/reproduce_ci.yml"
@@ -243,6 +261,8 @@ def materialize(
         (out_dir / ci_path).parent.mkdir(parents=True, exist_ok=True)
         (out_dir / ci_path).write_text(REPRODUCE_CI_YML, encoding="utf-8")
         (out_dir / "README.md").write_text(readme, encoding="utf-8")
+        if LICENSE_TEMPLATE.is_file():
+            shutil.copy2(LICENSE_TEMPLATE, out_dir / "LICENSE")
         (out_dir / "requirements-public-reproduce.txt").write_text(REQUIREMENTS_TXT, encoding="utf-8")
         (out_dir / ".gitignore").write_text("__pycache__/\n*.pyc\n.pytest_cache/\n", encoding="utf-8")
         (out_dir / "reports").mkdir(parents=True, exist_ok=True)

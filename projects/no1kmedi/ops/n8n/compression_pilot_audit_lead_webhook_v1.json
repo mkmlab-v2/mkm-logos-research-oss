@@ -1,0 +1,149 @@
+[
+  {
+    "updatedAt": "2026-06-11T23:30:00.000Z",
+    "createdAt": "2026-06-11T22:50:00.000Z",
+    "id": "CpLdWhk001Audit1",
+    "name": "compression-pilot-audit-lead-webhook",
+    "description": "Tier-0 compression pilot audit lead intake (dedicated lane; send_gate HOLD metadata only).",
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "path": "compression-pilot-audit-lead",
+          "httpMethod": "POST",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "Webhook_In",
+        "name": "Webhook In",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [260, 300],
+        "webhookId": "compression-pilot-audit-lead"
+      },
+      {
+        "parameters": {
+          "jsCode": "const payload = $json.body ?? $json;\nconst applicationId = payload.application_id || 'unknown';\nconst company = payload.company_legal_name || 'unknown';\nconst email = payload.contact_email || 'unknown';\nconst domain = payload.primary_domain || 'unknown';\nconst gate = payload.send_gate || 'HOLD';\nconst isProbe = payload.probe === true;\nconst text = isProbe\n  ? ''\n  : `[압축 파일럿 Tier-0 신청]\\n` +\n    `접수 ID: ${applicationId}\\n` +\n    `회사: ${company}\\n` +\n    `이메일: ${email}\\n` +\n    `도메인: ${domain}\\n` +\n    `게이트: ${gate}\\n` +\n    `※ 자동 PoC·승인 아님 · 대기열 접수만`;\nreturn [{\n  json: {\n    ok: true,\n    lane: 'compression_pilot_audit_lead',\n    application_id: applicationId,\n    company_legal_name: company,\n    contact_email: email,\n    primary_domain: domain,\n    send_gate: gate,\n    program: payload.program || 'tier_0_free_masked_jsonl_audit',\n    received_at_utc: new Date().toISOString(),\n    text,\n    skip_telegram: isProbe,\n  },\n}];"
+        },
+        "id": "Normalize_Payload",
+        "name": "Normalize Payload",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [560, 300]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "skip_telegram_false",
+                "leftValue": "={{ $json.skip_telegram }}",
+                "rightValue": false,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "IF_Notify",
+        "name": "IF Notify",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [820, 180]
+      },
+      {
+        "parameters": {
+          "chatId": "1762952901",
+          "text": "={{$json.text}}",
+          "additionalFields": {}
+        },
+        "id": "Telegram_Send",
+        "name": "Telegram Send KO",
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [1080, 160],
+        "credentials": {
+          "telegramApi": {
+            "id": "a0055919-48e0-4305-b474-2d76b12ee623",
+            "name": "telegram-default"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{$json}}",
+          "options": {}
+        },
+        "id": "Respond_OK",
+        "name": "Respond OK",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [820, 420]
+      }
+    ],
+    "connections": {
+      "Webhook In": {
+        "main": [
+          [
+            {
+              "node": "Normalize Payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize Payload": {
+        "main": [
+          [
+            {
+              "node": "IF Notify",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Respond OK",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF Notify": {
+        "main": [
+          [
+            {
+              "node": "Telegram Send KO",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "meta": {
+      "template": true,
+      "lane": "compression-pilot-audit-lead"
+    },
+    "versionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "activeVersionId": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
+    "versionCounter": 2,
+    "triggerCount": 1
+  }
+]

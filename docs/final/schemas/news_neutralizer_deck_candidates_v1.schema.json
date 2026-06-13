@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "news_neutralizer_deck_candidates_v1.schema.json",
+  "title": "news_neutralizer_deck_candidates_v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "lane",
+    "hypothesis_tag",
+    "promotion_required",
+    "promotion_status",
+    "source_shadow",
+    "candidate_cards",
+    "copy_lint"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "news_neutralizer_deck_candidates_v1" },
+    "generated_at_utc": { "type": "string" },
+    "lane": { "const": "research_only" },
+    "hypothesis_tag": { "const": "[HYPO]" },
+    "promotion_required": { "const": true },
+    "promotion_status": { "enum": ["pending_human", "approved", "rejected"] },
+    "source_shadow": { "type": "string" },
+    "synthesis_ref": { "type": "object" },
+    "candidate_cards": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/candidate_card" }
+    },
+    "copy_lint": {
+      "type": "object",
+      "required": ["passed", "violations"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "violations": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "$defs": {
+    "candidate_card": {
+      "type": "object",
+      "required": [
+        "card_id",
+        "observation_id",
+        "headline_display_ko",
+        "compressed_summary",
+        "hypothesis_tag",
+        "neutralizer_overlay"
+      ],
+      "properties": {
+        "card_id": { "type": "string" },
+        "observation_id": { "type": "string" },
+        "headline_display_ko": { "type": "string" },
+        "headline_original": { "type": "string" },
+        "compressed_summary": { "type": "string" },
+        "source_record_url": { "type": "string" },
+        "source_id": { "type": "string" },
+        "hypothesis_tag": { "const": "[HYPO]" },
+        "neutralizer_overlay": { "type": "object" }
+      }
+    }
+  }
+}

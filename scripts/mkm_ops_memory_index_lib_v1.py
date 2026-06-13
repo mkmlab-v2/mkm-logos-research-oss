@@ -46,8 +46,8 @@ NODE_SPECS: tuple[NodeSpec, ...] = (
         file_path="docs/final/CENTRAL_AGENT_MEMORY_V1.md",
         anchor_start="<!-- ATHENA_CHECKPOINT_V1_START -->",
         anchor_end="<!-- ATHENA_CHECKPOINT_V1_END -->",
-        essence="CENTRAL 최신 운영 체크포인트 블록 — MISSION_LOG·SEND_GATE·격벽 스냅샷",
-        must_keep_tags=("SEND_GATE", "HOLD"),
+        essence="CENTRAL 최신 운영 체크포인트 블록 — athena_checkpoint·격벽 스냅샷",
+        must_keep_tags=("ATHENA_CHECKPOINT", "CENTRAL"),
         priority=9,
     ),
     NodeSpec(
@@ -111,6 +111,19 @@ LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
         "prism_ops_web_ops_health",
     ),
 }
+
+# Default Cursor resume when commander says 「장기기억 맥락이어」 (no --lane).
+COMMANDER_DEFAULT_RESUME_NODES: tuple[str, ...] = (
+    "prism_ops_mission_log_board",
+    "prism_ops_central_checkpoint",
+    "prism_ops_mission_log_next_one",
+)
+COMMANDER_SLICE_NODE_IDS: frozenset[str] = frozenset(
+    {
+        "prism_ops_central_checkpoint",
+        "prism_ops_mission_log_next_one",
+    }
+)
 
 
 @dataclass(frozen=True)
@@ -446,6 +459,11 @@ def extract_node_slice_for_query(
 def extract_node_from_index(root: Path, node: dict[str, Any]) -> str:
     if node.get("slice_kind") == "json_pointer":
         return extract_json_slice_from_node(root, node)
+    if node.get("slice_kind") == "registry_chunk":
+        path = resolve_path(root, node["file_path"])
+        if not path.is_file():
+            raise FileNotFoundError(f"Missing indexed file: {node['file_path']}")
+        return path.read_text(encoding="utf-8", errors="replace")
     path = resolve_path(root, node["file_path"])
     if not path.is_file():
         raise FileNotFoundError(f"Missing indexed file: {node['file_path']}")
@@ -466,7 +484,7 @@ def verify_index_sources(root: Path, index: dict[str, Any]) -> list[str]:
         tags = node.get("must_keep_tags") or []
         try:
             block = extract_node_from_index(root, node)
-        except (FileNotFoundError, ValueError) as exc:
+        except (FileNotFoundError, ValueError, KeyError) as exc:
             errors.append(f"{node_id}: extract failed: {exc}")
             continue
         missing = missing_must_keep_tags(block, tags)
@@ -493,8 +511,15 @@ def nodes_for_resume(
     *,
     top_n: int = 3,
     lane: str | None = None,
+    root: Path | None = None,
+    commander_default: bool = False,
 ) -> list[tuple[str, dict[str, Any]]]:
-    """Default: top-N by priority. Lane pack: board + CENTRAL + one lane row (no full next-one table)."""
+    """Default: commander pack (board+CENTRAL+next-one table) or top-N by priority.
+
+    Lane pack: board + CENTRAL + one lane row (no full next-one table).
+    """
+    if lane and root is not None:
+        index = ensure_lane_pack_index(root, index, lane)
     nodes = index.get("nodes") or {}
     if lane:
         lane_key = lane.strip().lower()
@@ -506,6 +531,13 @@ def nodes_for_resume(
         for node_id in LANE_OPS_PACKS[lane_key]:
             if node_id not in nodes:
                 raise KeyError(f"lane pack missing node: {node_id}")
+            selected.append((node_id, nodes[node_id]))
+        return selected
+    if commander_default:
+        selected = []
+        for node_id in COMMANDER_DEFAULT_RESUME_NODES:
+            if node_id not in nodes:
+                raise KeyError(f"commander resume missing node: {node_id}")
             selected.append((node_id, nodes[node_id]))
         return selected
     return top_nodes_by_priority(index, top_n=top_n)
@@ -904,6 +936,36 @@ def merge_overlay_nodes(
     return merged
 
 
+def ensure_lane_pack_index(
+    root: Path,
+    index: dict[str, Any],
+    lane: str,
+) -> dict[str, Any]:
+    """Merge in-memory overlays when lane pack nodes are missing (web_ops JSON slices)."""
+    lane_key = lane.strip().lower()
+    if lane_key not in LANE_OPS_PACKS:
+        raise ValueError(
+            f"unknown lane {lane!r}; expected one of {sorted(LANE_OPS_PACKS)}"
+        )
+    nodes = index.get("nodes") or {}
+    missing = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in nodes]
+    if not missing:
+        return index
+    if lane_key == "web_ops":
+        overlay = build_web_ops_overlay_nodes(root)
+        if overlay:
+            merged = merge_overlay_nodes(index, overlay)
+            still = [
+                nid
+                for nid in LANE_OPS_PACKS[lane_key]
+                if nid not in (merged.get("nodes") or {})
+            ]
+            if not still:
+                return merged
+            missing = still
+    raise KeyError(f"lane pack missing node: {missing[0]}")
+
+
 def compute_node_sha_prefix(root: Path, node: dict[str, Any]) -> str:
     block = extract_node_from_index(root, node)
     return hashlib.sha256(block.encode("utf-8")).hexdigest()[:16]
@@ -1011,9 +1073,58 @@ LANE_TOPIC_HINTS: dict[str, tuple[str, ...]] = {
         "auth wall",
         "tier3",
     ),
-    "infra": ("infra", "gpu", "ollama", "vps", "인프라", "pack 0"),
-    "oracle": ("oracle", "예언", "prophecy", "inception"),
-    "ms": ("ms", "국방", "defense", "제출"),
+    "infra": (
+        "infra",
+        "gpu",
+        "ollama",
+        "vps",
+        "인프라",
+        "pack 0",
+        "scheduler",
+        "solo stack",
+        "parallel passive",
+        "news neutralizer",
+        "schtasks",
+    ),
+    "design": (
+        "design",
+        "showroom",
+        "jemaai",
+        "hub",
+        "디자인",
+        "쇼룸",
+        "portfolio",
+        "domain",
+    ),
+    "oracle": (
+        "oracle",
+        "예언",
+        "prophecy",
+        "inception",
+        "사상",
+        "sasang",
+        "태양인",
+        "태양",
+        "火剋金",
+        "금器",
+        "envelope",
+        "oper score",
+        "freeze",
+    ),
+    "ms": (
+        "ms",
+        "국방",
+        "defense",
+        "제출",
+        "compression",
+        "47.5",
+        "0.890",
+        "jaccard",
+        "압축",
+        "track a",
+        "moat",
+        "fail-comp",
+    ),
 }
 
 

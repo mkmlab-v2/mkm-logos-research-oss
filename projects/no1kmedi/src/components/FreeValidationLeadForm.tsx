@@ -10,12 +10,15 @@
 
 import { useState } from "react";
 import { siteCopy } from "@/content/siteCopy";
+import { isTurnstileClientEnabled } from "@/lib/turnstileConfigV1";
+import { TurnstileField } from "@/components/TurnstileField";
 
 type LeadPayload = {
   name: string;
   email: string;
   company: string;
   use_case: string;
+  turnstile_token?: string;
 };
 
 type LeadApiResponse = {
@@ -41,11 +44,17 @@ export function FreeValidationLeadForm() {
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [turnstileToken, setTurnstileToken] = useState("");
+  const turnstileEnabled = isTurnstileClientEnabled();
 
   async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!name.trim() || !email.trim() || !company.trim()) {
       setError(copy.errors.required_fields);
+      return;
+    }
+    if (turnstileEnabled && !turnstileToken.trim()) {
+      setError("보안 확인을 완료해 주세요.");
       return;
     }
 
@@ -58,6 +67,7 @@ export function FreeValidationLeadForm() {
       email: email.trim().toLowerCase(),
       company: company.trim(),
       use_case: useCase.trim(),
+      turnstile_token: turnstileEnabled ? turnstileToken : undefined,
     };
 
     try {
@@ -79,6 +89,7 @@ export function FreeValidationLeadForm() {
       setEmail("");
       setCompany("");
       setUseCase("");
+      setTurnstileToken("");
     } catch {
       setError(copy.errors.network);
     } finally {
@@ -111,6 +122,13 @@ export function FreeValidationLeadForm() {
             placeholder={copy.placeholders.use_case}
           />
         </label>
+        {turnstileEnabled ? (
+          <TurnstileField
+            onToken={setTurnstileToken}
+            onExpire={() => setTurnstileToken("")}
+            onError={() => setTurnstileToken("")}
+          />
+        ) : null}
         <button
           type="submit"
           className="btn btn-primary"

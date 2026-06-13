@@ -20,6 +20,12 @@
 .PARAMETER SkipIndexRebuild
   Only rebuild resume pack from existing index (faster follow-up in same lane).
 
+.PARAMETER SkipL2Shadow
+  Skip Tier 2 L2 shadow log append after resume pack (human MD unchanged either way).
+
+.PARAMETER SkipTier3WireHandoff
+  Skip Tier 3 parallel-chat wire handoff when -Lane is set (default: Tier 3 runs automatically with -Lane).
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle
 #>
@@ -27,7 +33,9 @@ param(
     [ValidateSet("", "oracle", "ms", "infra", "web_ops")]
     [string]$Lane = "",
     [switch]$SkipSoloOps,
-    [switch]$SkipIndexRebuild
+    [switch]$SkipIndexRebuild,
+    [switch]$SkipL2Shadow,
+    [switch]$SkipTier3WireHandoff
 )
 
 $ErrorActionPreference = "Stop"
@@ -95,6 +103,30 @@ if ($SkipIndexRebuild) {
     } | Out-Null
 }
 
+if (-not $SkipL2Shadow) {
+    $shadowArgs = @("py", "scripts/build_a2a_l2_shadow_measurement_v1.py", "--append-log")
+    if ($Lane) { $shadowArgs += @("--lane", $Lane) }
+    Invoke-Step "l2_shadow_measurement" {
+        & $shadowArgs[0] $shadowArgs[1..($shadowArgs.Length - 1)]
+    } | Out-Null
+}
+
+if ($Lane -and -not $SkipTier3WireHandoff) {
+    $tier3Args = @(
+        '-NoProfile', '-ExecutionPolicy', 'Bypass',
+        '-File', (Join-Path $root 'scripts\Run-A2aTier3CursorWireHandoffPilot_v1.ps1'),
+        '-Lane', $Lane, '-AppendLog', '-StrictExit'
+    )
+    Invoke-Step "tier3_wire_handoff_pilot" {
+        powershell @tier3Args
+    } | Out-Null
+}
+
+# --- Context diet audit (report only; strict gate is separate CI/pytest) ---
+Invoke-Step "cursor_rules_context_diet" {
+    py (Join-Path $root "scripts\check_cursor_rules_context_diet_v1.py")
+} | Out-Null
+
 # --- Rhythm suggestion (report only — no auto Amsaeng/Athena on session start) ---
 $dow = (Get-Date).DayOfWeek.value__
 $rhythm = [ordered]@{
@@ -129,10 +161,13 @@ if (Test-Path -LiteralPath $resumePackJson) {
 }
 
 $contextDiet = [ordered]@{
+    commander_trigger_ko = "장기기억 맥락이어"
     read_first = $resumePackMd
     read_fallback = "docs/final/CENTRAL_AGENT_MEMORY_V1.md (checkpoint block only)"
     never_on_resume = "Full MISSION_LOG.md paste; alwaysApply expansion"
-    inject_mode = "essence + must_keep_tags + line_range coordinates ([HYPO] B-track)"
+    mission_log_mode = "resume pack next_one table pin only (commander default)"
+    inject_mode = "essence + must_keep_tags + commander slices on CENTRAL+next_one ([HYPO] B-track)"
+    nl_sync_ssot = "reports/notebooklm_ltm_graph_ops_push_result_v1_latest.json"
     token_bench_ssot = "reports/mkm_ops_memory_index_token_bench_v1_latest.json"
 }
 

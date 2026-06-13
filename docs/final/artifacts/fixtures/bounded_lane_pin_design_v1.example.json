@@ -1,0 +1,31 @@
+{
+  "schema": "bounded_lane_pin_v1",
+  "generated_at_utc": "2026-06-13T20:03:51Z",
+  "lane": "design",
+  "next_action_one_line": "6/13 LIVE — developer benchmark+GitHub CTA · gitea `97825001da` · live smoke 12/12 · `SEND_GATE: HOLD` · 다음 1타: 패시브 hub smoke · 금지: 47.5%·9.1% 헤드라인·Track A·SEND",
+  "fact_lock_pointer": "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
+  "forbidden": [
+    "track_a_promote",
+    "live_trade",
+    "todo_queue_enqueue",
+    "cursor_infinite_chat"
+  ],
+  "max_steps_per_loop": 2,
+  "max_wall_seconds_per_loop": 600,
+  "steps": [
+    {
+      "step_id": "resume_pack",
+      "runner": "python",
+      "argv": [
+        "scripts/build_mkm_chat_resume_pack_v1.py"
+      ]
+    },
+    {
+      "step_id": "p0_gate_paths",
+      "runner": "powershell",
+      "argv": [
+        "scripts/verify_p0_constitution_gate_paths.ps1"
+      ]
+    }
+  ]
+}

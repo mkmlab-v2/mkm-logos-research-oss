@@ -61,6 +61,7 @@ def compress_plaintext_v2(
     routing_profile: str = "track_a_promoted",
     loss_profile: str = "semantic_general",
     client_request_id: str = "a2a-resume-pilot",
+    must_keep_overlay_terms: list[str] | None = None,
 ) -> dict[str, Any]:
     """Compress when token count meets skip threshold; else return skip row."""
     token_row = count_tokens(text)
@@ -74,15 +75,16 @@ def compress_plaintext_v2(
             "note": "compress/expand not invoked — ROI unlikely per dialogue mock evidence",
         }
 
-    cr = client.post(
-        "/v2/compress",
-        json={
-            "text": text,
-            "loss_profile": loss_profile,
-            "routing_profile": routing_profile,
-            "client_request_id": client_request_id,
-        },
-    )
+    payload: dict[str, Any] = {
+        "text": text,
+        "loss_profile": loss_profile,
+        "routing_profile": routing_profile,
+        "client_request_id": client_request_id,
+    }
+    if must_keep_overlay_terms:
+        payload["must_keep_overlay_terms"] = must_keep_overlay_terms
+
+    cr = client.post("/v2/compress", json=payload)
     body = cr.json() if cr.status_code == 200 else {"error": cr.text}
     packet = body.get("compression_packet") if cr.status_code == 200 else None
     flags = body.get("integrity_flags") or {}
@@ -96,7 +98,9 @@ def compress_plaintext_v2(
         "compression_metrics": metrics,
         "evaluate_report_ms": flags.get("evaluate_report_ms"),
         "routing_profile": routing_profile,
+        "loss_profile": loss_profile,
         "content_fingerprint": (packet or {}).get("content_fingerprint"),
+        "trust_packet_for_expand": packet if isinstance(packet, dict) else None,
         "trust_packet_redacted": redact_trust_packet(packet) if isinstance(packet, dict) else None,
     }
     if cr.status_code == 200 and isinstance(packet, dict):

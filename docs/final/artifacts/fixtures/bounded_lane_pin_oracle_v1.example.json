@@ -1,0 +1,34 @@
+{
+  "schema": "bounded_lane_pin_v1",
+  "generated_at_utc": "2026-06-13T20:03:51Z",
+  "lane": "oracle",
+  "next_action_one_line": "6/13 — sovereignty KEEP/ROLE_PARTIAL/SUPP_ALIGNED · prophecy light refresh exit0 · Pack0B ~233/500 train · P0 refreshed · 다음: locked_eval → raw/repair dual · 금지: promotion_ready·Track A·B→A",
+  "fact_lock_pointer": "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
+  "forbidden": [
+    "track_a_promote",
+    "live_trade",
+    "todo_queue_enqueue",
+    "cursor_infinite_chat"
+  ],
+  "max_steps_per_loop": 2,
+  "max_wall_seconds_per_loop": 600,
+  "steps": [
+    {
+      "step_id": "resume_pack",
+      "runner": "python",
+      "argv": [
+        "scripts/build_mkm_chat_resume_pack_v1.py",
+        "--lane",
+        "oracle"
+      ]
+    },
+    {
+      "step_id": "p0_gate_paths",
+      "runner": "powershell",
+      "argv": [
+        "scripts/verify_p0_constitution_gate_paths.ps1"
+      ]
+    }
+  ],
+  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_oracle_v1_latest.md"
+}

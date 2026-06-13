@@ -29,11 +29,11 @@ export default function HubDeveloperPage({ searchParams }: Props) {
           external: true,
         }}
         secondaryCta={{
-          href: UNIVERSE_HUB_DEEP_LINKS.aCodeOpenBenchReproduce,
-          label: "오픈벤치 재현 번들 ↗",
+          href: UNIVERSE_HUB_DEEP_LINKS.aCodeOpenBenchBenchmark,
+          label: "오픈 벤치 랜딩 ↗",
           external: true,
         }}
-        phaseNote="P2 · 스니펫 + GitHub reproduce"
+        phaseNote="P2 · 스니펫 + benchmark + GitHub reproduce"
       />
       <section className="universe-hub-open-bench-note" aria-labelledby="open-bench-heading">
         <h2 id="open-bench-heading" className="universe-hub-section-title">
@@ -46,16 +46,26 @@ export default function HubDeveloperPage({ searchParams }: Props) {
         <p className="universe-hub-disclaimer universe-hub-disclaimer--compact">
           SEND_GATE: HOLD · per-SKU metrics only · frozen Track A SLA 헤드라인과 동일시 금지 · B→A 자동 합선 없음
         </p>
-        <a
-          className="universe-hub-cta universe-hub-cta--ghost"
-          href={UNIVERSE_HUB_DEEP_LINKS.aCodeOpenBenchReproduce}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          mkmlab-v2/a-codeai-compression-reproduce ↗
-        </a>
+        <div className="universe-hub-plugin-actions">
+          <a
+            className="universe-hub-cta universe-hub-cta--ghost"
+            href={UNIVERSE_HUB_DEEP_LINKS.aCodeOpenBenchBenchmark}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            a-codeai.com/benchmark ↗
+          </a>
+          <a
+            className="universe-hub-cta universe-hub-cta--ghost"
+            href={UNIVERSE_HUB_DEEP_LINKS.aCodeOpenBenchReproduce}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            mkmlab-v2/a-codeai-compression-reproduce ↗
+          </a>
+        </div>
         <Link className="universe-hub-inline-link" href="/enterprise">
-          엔터프라이즈 소개 (내부)
+          엔터프라이즈 · positioning deck (internal)
         </Link>
       </section>
       <section aria-labelledby="dev-snippet-heading">

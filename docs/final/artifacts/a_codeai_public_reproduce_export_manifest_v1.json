@@ -60,6 +60,10 @@
     "scripts/build_compression_proof_project_closure_v1.py",
     "scripts/materialize_a_codeai_public_reproduce_bundle_v1.py",
     "scripts/resolve_a_codeai_public_reproduce_export_closure_v1.py",
+    "scripts/validate_compression_contributor_jsonl_v1.py",
+    "scripts/validate_prophecy_contributor_jsonl_v1.py",
+    "scripts/check_compression_contributions_manifest_v1.py",
+    "scripts/check_prophecy_contributions_manifest_v1.py",
     "tests/test_a_codeai_public_bench_landing_payload_v1.py",
     "tests/test_compression_open_bench_research_sweep_v1.py",
     "tests/test_compression_open_bench_persuasion_deck_v1.py",
@@ -75,7 +79,8 @@
     "credentials",
     "dpapi",
     ".pem",
-    ".key"
+    ".key",
+    ".bak"
   ],
   "deny_path_substrings": [
     "global_atom_full_canon",
