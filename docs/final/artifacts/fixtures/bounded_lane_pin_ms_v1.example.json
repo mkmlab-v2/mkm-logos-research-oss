@@ -1,6 +1,6 @@
 {
   "schema": "bounded_lane_pin_v1",
-  "generated_at_utc": "2026-06-13T20:03:50Z",
+  "generated_at_utc": "2026-06-13T20:13:59Z",
   "lane": "ms",
   "next_action_one_line": "HOLD · 제출본 47.5%/0.890 · 내부 policy 48.8%/0.869 · NG `apply_forbidden` · 다음: 대기 — 접수 캡처 보관만 · 금지: 포털 재제출·NG 승격 paste·HWPX % 수정",
   "fact_lock_pointer": "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
@@ -30,5 +30,11 @@
       ]
     }
   ],
-  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_ms_v1_latest.md"
+  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_ms_v1_latest.md",
+  "ltm_hint": {
+    "concept_id": "ms_lane_submission_hold",
+    "software_layer": "packaging",
+    "blast_radius": "lane",
+    "label_ko": "MS 제출 HOLD · apply_forbidden"
+  }
 }

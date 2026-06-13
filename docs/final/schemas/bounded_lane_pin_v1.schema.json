@@ -38,6 +38,31 @@
       "type": "string",
       "description": "Optional [HYPO] B-track A2A peer brief for parallel Cursor chat (not source/resume chat)."
     },
+    "ltm_hint": {
+      "type": "object",
+      "description": "Optional single LTM graph concept coordinate — not full graph inject.",
+      "additionalProperties": false,
+      "required": ["concept_id"],
+      "properties": {
+        "concept_id": {
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 128
+        },
+        "software_layer": {
+          "type": "string",
+          "maxLength": 64
+        },
+        "blast_radius": {
+          "type": "string",
+          "enum": ["local", "lane", "repo", "production"]
+        },
+        "label_ko": {
+          "type": "string",
+          "maxLength": 160
+        }
+      }
+    },
     "forbidden": {
       "type": "array",
       "items": {

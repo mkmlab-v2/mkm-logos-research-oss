@@ -86,6 +86,18 @@ def test_design_lane_resume_pack_without_lane_flag() -> None:
     assert "peer_handoff_pointer" not in pin
 
 
+def test_infra_pin_includes_ltm_hint() -> None:
+    if not (ROOT / "storage/meta/mkm_long_term_memory_graph_v1.json").is_file():
+        return
+    proc = _run_builder(["--lane", "infra", "--dry-run"])
+    assert proc.returncode == 0, proc.stderr
+    pin = json.loads(proc.stdout)
+    hint = pin.get("ltm_hint") or {}
+    assert hint.get("concept_id") == "infra_solo_scheduler_stack"
+    assert hint.get("software_layer") == "machine"
+    assert hint.get("blast_radius") in {"local", "lane", "repo", "production"}
+
+
 def test_infra_pin_includes_peer_handoff_when_brief_exists() -> None:
     brief = (
         ROOT

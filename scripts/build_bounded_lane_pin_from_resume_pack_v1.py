@@ -24,6 +24,16 @@ PIN_SCHEMA = ROOT / "docs/final/schemas/bounded_lane_pin_v1.schema.json"
 RESUME_PACK = ROOT / "docs/final/artifacts/mkm_chat_resume_pack_latest.json"
 MISSION_LOG = ROOT / "MISSION_LOG.md"
 INDEX_PATH = ROOT / "storage/meta/mkm_ops_memory_index_v1.json"
+GRAPH_PATH = ROOT / "storage/meta/mkm_long_term_memory_graph_v1.json"
+
+# Primary LTM graph concept per bounded pin lane (single hint — graph 통째 주입 금지).
+LANE_LTM_PRIMARY_CONCEPT: dict[str, str] = {
+    "ms": "ms_lane_submission_hold",
+    "oracle": "prophecy_research_only_boundary",
+    "infra": "infra_solo_scheduler_stack",
+    "design": "design_showroom_domain_portfolio",
+    "ops": "lane_resume_pack_contract",
+}
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -191,6 +201,30 @@ def _peer_handoff_pointer(root: Path, lane: str) -> str | None:
     return brief.relative_to(root).as_posix()
 
 
+def resolve_ltm_hint(root: Path, lane: str) -> dict[str, Any] | None:
+    """Single graph concept coordinate for multi-file edit routing ([HYPO] B-track)."""
+    concept_id = LANE_LTM_PRIMARY_CONCEPT.get(lane)
+    if not concept_id or not GRAPH_PATH.is_file():
+        return None
+    graph = _load_json(GRAPH_PATH)
+    concepts = graph.get("concepts") or {}
+    concept = concepts.get(concept_id)
+    if not isinstance(concept, dict):
+        return None
+    topo = concept.get("topology") or {}
+    hint: dict[str, Any] = {"concept_id": concept_id}
+    layer = topo.get("software_layer")
+    if isinstance(layer, str) and layer.strip():
+        hint["software_layer"] = layer.strip()
+    radius = topo.get("blast_radius")
+    if isinstance(radius, str) and radius.strip():
+        hint["blast_radius"] = radius.strip()
+    label = concept.get("label_ko")
+    if isinstance(label, str) and label.strip():
+        hint["label_ko"] = label.strip()[:160]
+    return hint
+
+
 def build_pin(
     root: Path,
     lane: str,
@@ -223,6 +257,9 @@ def build_pin(
     peer = _peer_handoff_pointer(root, lane)
     if peer:
         pin["peer_handoff_pointer"] = peer
+    ltm_hint = resolve_ltm_hint(root, lane)
+    if ltm_hint:
+        pin["ltm_hint"] = ltm_hint
     return pin
 
 
