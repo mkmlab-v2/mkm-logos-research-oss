@@ -406,7 +406,8 @@ def main() -> int:
         f"- repair_v2_slice: `{use_repair_v2}`",
         f"- system_status: `{resume['latest_status'].get('system_status')}`",
         f"- promotion_decision: `{resume['latest_status'].get('promotion_decision')}`",
-        f"- trackc_packet_status: `{resume['latest_status'].get('trackc_packet_status')}`",
+        f"- trackc_packet_status: `{resume['latest_status'].get('trackc_packet_status')}` "
+        f"(artifact READY ≠ SEND; see SEND_GATE below)",
         f"- acceptance_status: `{resume['latest_status'].get('acceptance_status')}`",
         "",
     ]
