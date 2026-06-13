@@ -293,6 +293,16 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 산출 | `reports/bounded_lane_loop_v1_latest.json` · `reports/bounded_lane_loop_audit.jsonl` | exit 0 = `shadow_pass`만; **≠** 무한 Cursor 채팅 루프. |
 | 회귀 | `tests/test_bounded_lane_loop_v1.py` | dry-run·화이트리스트 거부. |
 
+### 1.4.2 External Cortex fuel layer v1 (NL · lexicon · hub triangle)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| NL 1:1 mapping audit | `scripts/check_notebooklm_lane_mapping_audit_v1.py` | UUID 중복·팩 금지 경로; `docs/final/artifacts/notebooklm_lane_mapping_rules_v1.json`; `reports/notebooklm_lane_mapping_audit_v1_latest.json`. |
+| Lexicon lookup smoke | `scripts/check_lexicon_lookup_smoke_v1.py` | `master_codebook_lexicon_v1_bridge` 조인만 · **채팅 주입 없음**; `reports/lexicon_lookup_smoke_v1_latest.json`. |
+| Hub developer triangle | `scripts/check_hub_developer_copy_triangle_v1.py` | benchmark · GitHub reproduce · `/enterprise/apply` 링크 정합; `reports/hub_developer_copy_triangle_v1_latest.json`. |
+| 주간 번들 | `scripts/Invoke-NotebookLmFuelLayerAudit_v1.ps1` | 위 3종 + 선택 `-IncludeMcpPrereqs`; exit 0 = Week 2 fuel gate. |
+| 회귀 | `tests/test_notebooklm_fuel_layer_audit_v1.py` | offline audit 3종. |
+
 ---
 
 ## 2. Dual-regime / 레짐 융합 (실물 쪽, 1차 레짐)

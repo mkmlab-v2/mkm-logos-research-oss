@@ -67,6 +67,9 @@ export default function HubDeveloperPage({ searchParams }: Props) {
         <Link className="universe-hub-inline-link" href="/enterprise">
           엔터프라이즈 · positioning deck (internal)
         </Link>
+        <Link className="universe-hub-inline-link" href={UNIVERSE_HUB_DEEP_LINKS.compressionPilotApply}>
+          Tier-0 pre-audit apply
+        </Link>
       </section>
       <section aria-labelledby="dev-snippet-heading">
         <h2 id="dev-snippet-heading" className="universe-hub-section-title">

@@ -1,0 +1,30 @@
+{
+  "schema": "notebooklm_lane_mapping_rules_v1",
+  "description": "1 notebook UUID per RAG purpose. known_shared_notebook_groups shrink over time as notebooks split.",
+  "required_unique_lenses": [
+    "OPS_COMMAND_ANCHOR",
+    "LTM_GRAPH_OPS",
+    "TRACKC_BIZ",
+    "LENS_MYEONGNI",
+    "LENS_SASANG",
+    "LENS_LOGOS",
+    "MKM_CORE_FACT"
+  ],
+  "known_shared_notebook_groups": [
+    {
+      "id": "myeongni_logos_shared_until_split",
+      "lenses": ["LENS_MYEONGNI", "LENS_LOGOS"],
+      "note": "Split dedicated Logos notebook when ready; until then audit allows this pair only."
+    }
+  ],
+  "forbidden_path_substrings_in_lens": {
+    "MKM_CORE_FACT": [
+      "MYEONGRI_INSIGHT",
+      "TRACK_C_IP_BUSINESS_PLAN",
+      "business_registration_plan",
+      "ai_opendata_challenge"
+    ],
+    "LENS_MYEONGNI": ["COMPRESSION_12M_LEARNINGS"],
+    "LENS_LOGOS": ["TRACK_C_IP_BUSINESS_PLAN"]
+  }
+}
