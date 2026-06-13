@@ -7,12 +7,14 @@
  * Keywords: Next.js, API, lead, validation, conversion
  */
 import { NextRequest, NextResponse } from "next/server";
+import { verifyTurnstileToken } from "@/lib/turnstileServerV1";
 
 type FreeValidationLead = {
   name: string;
   email: string;
   company: string;
   use_case?: string;
+  turnstile_token?: string;
 };
 
 function isNonEmpty(value: unknown): value is string {
@@ -52,6 +54,15 @@ async function sendWebhookWithRetry(url: string, payload: Record<string, unknown
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as FreeValidationLead;
+    const turnstile = await verifyTurnstileToken(
+      body.turnstile_token,
+      request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || undefined,
+      "free-validation",
+    );
+    if (!turnstile.ok) {
+      return NextResponse.json({ success: false, error: turnstile.error }, { status: 400 });
+    }
+
     const invalid = validate(body);
     if (invalid) {
       return NextResponse.json({ success: false, error: invalid }, { status: 400 });

@@ -4926,6 +4926,10 @@ main.workspace-main {
   flex-shrink: 0;
 }
 
+.enterprise-apply-turnstile {
+  margin: 0.75rem 0 0.25rem;
+}
+
 .enterprise-apply-id {
   margin: 0.75rem 0 0;
   font-size: 0.85rem;
