@@ -286,7 +286,9 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | Pin 스키마 | `docs/final/schemas/bounded_lane_pin_v1.schema.json` | 레인별 **다음 1타** + 화이트리스트 `steps`; `CENTRAL`·`MISSION_LOG` 통째 주입 금지. |
 | 화이트리스트 | `docs/final/artifacts/bounded_lane_loop_whitelist_v1.json` | 허용 child만 실행; `todo_queue` enqueue·live·push 등 **substring 차단**. |
 | 예시 Pin | `docs/final/artifacts/fixtures/bounded_lane_pin_infra_v1.example.json` | infra 스모크: resume pack + P0 gate paths. |
-| Pin 빌더 | `scripts/build_bounded_lane_pin_from_resume_pack_v1.py` | resume pack + `MISSION_LOG` 레인 행 → `docs/final/artifacts/bounded_lane_pin_{lane}_latest.json`; `--refresh-resume-pack` 선택. |
+| Pin 빌더 | `scripts/build_bounded_lane_pin_from_resume_pack_v1.py` | resume pack + `MISSION_LOG` 레인 행 → `docs/final/artifacts/bounded_lane_pin_{lane}_latest.json`; `--refresh-resume-pack` · `--write-fixtures`(4레인 example). |
+| Pin fixtures | `docs/final/artifacts/fixtures/bounded_lane_pin_{ms,oracle,infra,design}_v1.example.json` | jsonschema 통과 스냅샷; `next_action_one_line` = MISSION 해당 레인 행(자동 enqueue·MISSION 통째 주입 **금지**). |
+| A2A peer (선택) | Pin `peer_handoff_pointer` → `a2a_tier3_cursor_wire_handoff_brief_{lane}_v1_latest.md` | 병렬 Cursor **peer** 채팅용 [HYPO]; source 채팅은 resume pack 그대로. |
 | 러너 | `scripts/run_bounded_lane_loop_v1.py` · `scripts/Invoke-BoundedLaneLoop_v1.ps1` | `-Lane` + 기본 auto pin build; `outcome_class` ∈ `{shadow_pass, shadow_warning, shadow_reject}` **만**; Track A 승격·human sign-off 없이 본선 합선 없음. |
 | 산출 | `reports/bounded_lane_loop_v1_latest.json` · `reports/bounded_lane_loop_audit.jsonl` | exit 0 = `shadow_pass`만; **≠** 무한 Cursor 채팅 루프. |
 | 회귀 | `tests/test_bounded_lane_loop_v1.py` | dry-run·화이트리스트 거부. |

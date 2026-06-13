@@ -83,3 +83,34 @@ def test_design_lane_resume_pack_without_lane_flag() -> None:
     pin = json.loads(proc.stdout)
     assert pin["lane"] == "design"
     assert pin["steps"][0]["argv"] == ["scripts/build_mkm_chat_resume_pack_v1.py"]
+    assert "peer_handoff_pointer" not in pin
+
+
+def test_infra_pin_includes_peer_handoff_when_brief_exists() -> None:
+    brief = (
+        ROOT
+        / "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_infra_v1_latest.md"
+    )
+    if not brief.is_file():
+        return
+    proc = _run_builder(["--lane", "infra", "--dry-run"])
+    assert proc.returncode == 0, proc.stderr
+    pin = json.loads(proc.stdout)
+    assert pin.get("peer_handoff_pointer") == brief.relative_to(ROOT).as_posix()
+
+
+def test_lane_fixtures_validate_against_schema() -> None:
+    try:
+        import jsonschema
+    except ImportError:
+        return
+    schema = json.loads(PIN_SCHEMA.read_text(encoding="utf-8"))
+    fixture_dir = ROOT / "docs/final/artifacts/fixtures"
+    for lane in ("ms", "oracle", "infra", "design"):
+        path = fixture_dir / f"bounded_lane_pin_{lane}_v1.example.json"
+        if not path.is_file():
+            proc = _run_builder(["--write-fixtures"])
+            assert proc.returncode == 0, proc.stderr
+        doc = json.loads(path.read_text(encoding="utf-8"))
+        jsonschema.validate(doc, schema)
+        assert doc["lane"] == lane

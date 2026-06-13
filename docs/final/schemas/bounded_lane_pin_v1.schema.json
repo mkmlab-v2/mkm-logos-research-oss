@@ -34,6 +34,10 @@
       "type": "string",
       "description": "Optional path to resume pack or artifact (no paste of full MISSION_LOG)."
     },
+    "peer_handoff_pointer": {
+      "type": "string",
+      "description": "Optional [HYPO] B-track A2A peer brief for parallel Cursor chat (not source/resume chat)."
+    },
     "forbidden": {
       "type": "array",
       "items": {

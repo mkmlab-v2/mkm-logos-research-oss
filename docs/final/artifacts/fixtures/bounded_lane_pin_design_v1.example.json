@@ -1,8 +1,8 @@
 {
   "schema": "bounded_lane_pin_v1",
   "generated_at_utc": "2026-06-13T20:03:51Z",
-  "lane": "infra",
-  "next_action_one_line": "6/13 band gate OK — solo_stack_ready 42 (band 38–48) · tier4 +NewsNeutralizer · Evolution_Lightweight4h Disabled(dup batch) · solo_ops exit0 · pytest 3/3 · `SEND_GATE: HOLD` · 다음: 패시브 관측 · 금지: tier4 미등록 Ready·Track A·live·SEND",
+  "lane": "design",
+  "next_action_one_line": "6/13 LIVE — developer benchmark+GitHub CTA · gitea `97825001da` · live smoke 12/12 · `SEND_GATE: HOLD` · 다음 1타: 패시브 hub smoke · 금지: 47.5%·9.1% 헤드라인·Track A·SEND",
   "fact_lock_pointer": "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
   "forbidden": [
     "track_a_promote",
@@ -17,9 +17,7 @@
       "step_id": "resume_pack",
       "runner": "python",
       "argv": [
-        "scripts/build_mkm_chat_resume_pack_v1.py",
-        "--lane",
-        "infra"
+        "scripts/build_mkm_chat_resume_pack_v1.py"
       ]
     },
     {
@@ -29,6 +27,5 @@
         "scripts/verify_p0_constitution_gate_paths.ps1"
       ]
     }
-  ],
-  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_infra_v1_latest.md"
+  ]
 }

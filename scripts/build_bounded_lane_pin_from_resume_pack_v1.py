@@ -40,6 +40,10 @@ DEFAULT_FORBIDDEN = [
     "cursor_infinite_chat",
 ]
 
+FIXTURE_LANES = ("ms", "oracle", "infra", "design")
+
+A2A_PEER_BRIEF_LANES = frozenset({"ms", "oracle", "infra"})
+
 LANE_PIN_CONFIG: dict[str, dict[str, Any]] = {
     "ms": {
         "node_id": "prism_ops_lane_ms",
@@ -175,6 +179,18 @@ def _resume_pack_argv(lane: str) -> list[str]:
     return argv
 
 
+def _peer_handoff_pointer(root: Path, lane: str) -> str | None:
+    if lane not in A2A_PEER_BRIEF_LANES:
+        return None
+    brief = (
+        root
+        / f"docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_{lane}_v1_latest.md"
+    )
+    if not brief.is_file():
+        return None
+    return brief.relative_to(root).as_posix()
+
+
 def build_pin(
     root: Path,
     lane: str,
@@ -182,7 +198,7 @@ def build_pin(
     resume_pack: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     next_action = extract_next_action_one_line(root, lane, resume_pack=resume_pack)
-    return {
+    pin: dict[str, Any] = {
         "schema": "bounded_lane_pin_v1",
         "generated_at_utc": _utc(),
         "lane": lane,
@@ -204,6 +220,25 @@ def build_pin(
             },
         ],
     }
+    peer = _peer_handoff_pointer(root, lane)
+    if peer:
+        pin["peer_handoff_pointer"] = peer
+    return pin
+
+
+def write_lane_fixtures(root: Path, *, resume_pack: dict[str, Any] | None = None) -> list[Path]:
+    fixture_dir = root / "docs/final/artifacts/fixtures"
+    fixture_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    for lane in FIXTURE_LANES:
+        pin = build_pin(root, lane, resume_pack=resume_pack)
+        errors = validate_pin(pin)
+        if errors:
+            raise ValueError(f"fixture pin invalid for {lane}: {errors}")
+        out = fixture_dir / f"bounded_lane_pin_{lane}_v1.example.json"
+        out.write_text(json.dumps(pin, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+        written.append(out)
+    return written
 
 
 def validate_pin(doc: dict[str, Any]) -> list[str]:
@@ -262,7 +297,34 @@ def main() -> int:
         help="Output path (default: docs/final/artifacts/bounded_lane_pin_{lane}_latest.json).",
     )
     ap.add_argument("--dry-run", action="store_true", help="Print pin JSON without writing.")
+    ap.add_argument(
+        "--write-fixtures",
+        action="store_true",
+        help="Write docs/final/artifacts/fixtures/bounded_lane_pin_{ms,oracle,infra,design}_v1.example.json",
+    )
     args = ap.parse_args()
+
+    resume_pack: dict[str, Any] | None = None
+    if RESUME_PACK.is_file():
+        resume_pack = _load_json(RESUME_PACK)
+
+    if args.write_fixtures:
+        try:
+            paths = write_lane_fixtures(ROOT, resume_pack=resume_pack)
+        except ValueError as exc:
+            print(f"build_bounded_lane_pin: {exc}", file=sys.stderr)
+            return 2
+        print(
+            json.dumps(
+                {
+                    "ok": True,
+                    "fixtures": [p.relative_to(ROOT).as_posix() for p in paths],
+                    "reproduce": "py scripts/build_bounded_lane_pin_from_resume_pack_v1.py --write-fixtures",
+                },
+                ensure_ascii=False,
+            )
+        )
+        return 0
 
     lane = args.lane.strip().lower()
     out_path = args.out
@@ -276,10 +338,7 @@ def main() -> int:
         if rc != 0:
             print(f"build_bounded_lane_pin: resume pack refresh failed exit {rc}", file=sys.stderr)
             return rc
-
-    resume_pack: dict[str, Any] | None = None
-    if RESUME_PACK.is_file():
-        resume_pack = _load_json(RESUME_PACK)
+        resume_pack = _load_json(RESUME_PACK) if RESUME_PACK.is_file() else None
 
     pin = build_pin(ROOT, lane, resume_pack=resume_pack)
     errors = validate_pin(pin)
