@@ -18,6 +18,9 @@
 .PARAMETER SkipEncodingStatus
   Pass -SkipEncodingStatus to the runner.
 
+.PARAMETER IncludeA2aExtendedRepro
+  Pass -IncludeA2aExtendedRepro to the runner (L1L2 chain + tp01 log + stack map; skips dialogue bench).
+
 .PARAMETER WorkspaceRoot
   Repo root (default: MKM_WORKSPACE_ROOT or parent of scripts/).
 #>
@@ -26,6 +29,7 @@ param(
     [string]$TaskName = "MKM_InterAgent_RQ019_Weekly_Smoke",
     [string]$SundayAt = "08:30",
     [switch]$SkipEncodingStatus,
+    [switch]$IncludeA2aExtendedRepro,
     [string]$WorkspaceRoot = ""
 )
 
@@ -63,6 +67,7 @@ $at = Get-Date -Hour $hour -Minute $minute -Second 0
 
 $argLine = "-NoProfile -WindowStyle Hidden -ExecutionPolicy Bypass -File `"$runner`""
 if ($SkipEncodingStatus) { $argLine += " -SkipEncodingStatus" }
+if ($IncludeA2aExtendedRepro) { $argLine += " -IncludeA2aExtendedRepro" }
 
 $action = New-ScheduledTaskAction -Execute "powershell.exe" `
     -Argument $argLine `

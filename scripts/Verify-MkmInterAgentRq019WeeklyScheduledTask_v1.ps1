@@ -24,4 +24,6 @@ Write-Output ("arguments={0}" -f $a.Arguments)
 Write-Output ("working_directory={0}" -f $a.WorkingDirectory)
 $argStr = [string]$a.Arguments
 $hasRunner = $argStr -match 'Run-MkmInterAgentRq019WeeklySmoke_v1\.ps1'
+$hasExtendedRepro = $argStr -match 'IncludeA2aExtendedRepro'
 Write-Output ("weekly_smoke_runner_in_task_action={0}" -f $hasRunner)
+Write-Output ("include_a2a_extended_repro_in_task_action={0}" -f $hasExtendedRepro)

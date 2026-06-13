@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-12T05:59:45Z
+- **last_updated_utc:** 2026-06-13T19:17:23Z
 - **owner:** (선택)
 - **nl_sync:** `cross_notebook_query` · MKM·운영 노트북 15종 · **2026-05-12:** Action 4 **완료** — `b-track-philosophy-lane-rag-pilot-v1` → `internal/main`/`gitea/main` 철학 RAG + P0 + 금지어 SSOT; **`mkm-life`** 서브모듈 `27baaa4`(`mkmlife-com` `main`, 철학 RAG `route.ts` 병합 완료) · 코퍼스 기간은 NL에 보이는 노트 생성일 기준 **2026-01~04** (2025 노트북은 목록에 없음) · **2026-04-19** `sync_notebooklm_sources_to_mkm_data_vault.ps1` → Vault `notebooklm_sources` **OK**(복사 50; 매니페스트상 누락·optional 스킵은 정책대로 WARNING/회색 스킵) · **2026-04-28** NotebookLM MCP `server_info/notebook_list` live 확인(auth configured, owned notebooks 11, TOP1/TOP2/ Fusion Hub 포함) · **2026-05-05** 동 스크립트 재실행 **exit 0** `copied=104 skipped=91` → `G:\공유 드라이브\MKM_DATA_VAULT\vault\notebooklm_sources` **OK** · **2026-05-10** 동 스크립트 **exit 0** `copied=62 skipped=136` → Vault 미러 **OK** (`docs/NotebookLM_sources_manifest.md` = Fact-Lock·Track C·운영 스냅샷 등 지휘부용 레포 원본 목록; 클라우드 `source_add`는 별도); 구현 계약 **메타 인지 봉투 v1**은 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` **§1.3.1**·`scripts/mkm_meta_layer_envelope_v1.py`·회귀 pytest 8·Track C `-MetaLayerEnvelopePath`(비면 미실행)로 Fact-Lock 고정(NotebookLM 단독 근거 아님) · **2026-05-11** 레포 SSOT 갱신: `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.11** 플랫폼 GTM·밸류에이션 냉정 정렬(미들웨어·2nd customer·빅테크 대응·수직·대외 수치 Fact-Lock); 상징→텍스트 **M30** `build_lens_music_prompt_runbook_webhook_health_summary_v1.py` → `docs/final/artifacts/lens_music_prompt_runbook_webhook_health_latest.json`·`trackc.lens_music_prompt_runbook_webhook_health`; NotebookLM 지휘부는 매니페스트 동일 파일 + Vault 미러 스크립트로 동기화(에이전트 채팅에 MCP 미주입 시 로컬 파일만 SSOT) · **2026-05-11** `sync_notebooklm_sources_to_mkm_data_vault.ps1` **exit 0** `copied=62 skipped=136` → Vault `notebooklm_sources` **OK** · **2026-05-13** MSME AI+ OpenData **제2026-327** 과제① SSOT 4파일(`business_registration_plan_v1.md`·`ai_opendata_challenge_2026_327_*`·`moksori_mega_commercialization_roadmap_from_repo_ssot_v1.md`) → `NotebookLM_sources_manifest.md` A표·지휘부 패킷·`sync_notebooklm_sources_to_mkm_data_vault.ps1` $SourceFiles 반영 → Vault 미러 **exit 0** `copied=66 skipped=136` **OK**; NotebookLM **클라우드(B)** MCP `get_health` **`authenticated=true`**(전용 Chrome 로그인 완료)·`ask_question` **OK** · `add_source`(text/url) **여전히 실패**(`Could not open the Add source dialog`; `session_id`+`show_browser` 무효) → **NotebookLM 웹 UI `source_add`**로 동일 4파일 수동 업로드 필요(레포 경로 불변) · **2026-05-14** NL 노트북 **레포 인덱스** — `RESEARCH_HISTORY_V1.md`: MCP **현행** 라이브러리만; 41개 과거=`docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md`; Vault `$SourceFiles`·`OPS_COMMAND_ANCHOR` 렌즈 팩에 현행 인덱스 반영 · **2026-05-14** Track C SSOT `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.7.2** 실버 테크 `[DRAFT]` + `docs/research/RESEARCH_OPEN_QUESTIONS_V1.md` **RQ-009** (패턴 이식·구현 미단정; 로컬 옵시디언 요약 `memory/obsidian_vault/SPIRIT/10_Daily_Log/2026-05-14_silver_track_c.md`) · **2026-05-15** 실버 COGS 템플릿 슬림·`stt_routing_audit_log_v1` 스키마만 SSOT; NotebookLM `nlm` 렌즈팩 푸시(`Push-NotebooklmLensPacks_v1.ps1`·맵 템플릿·하이브리드 `-PushLensPacksToNotebookLm`); Vault≠NL
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -71,26 +71,26 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-06-12T05:59:45Z** — Hub UI Chassis v3 shipped: 3-pane inspector /hub+/hub/logos, pill discover, /hub/compression [DRAFT] demo, shell contract+approval map locked, live smoke pending verify
-- **2026-06-12T05:59:11Z** — scheduler band gate wired: solo_ops+Sunday EnforceSoloBand; solo_stack_ready=41 band ok
-- **2026-06-12T05:50:34Z** — /hub/logos VPS deploy+live smoke 11/11; Logos 4D topology hub JSON live
-- **2026-06-12T05:48:44Z** — Wave7/final scheduler: MKM Ready 181->38; tier4 SSOT; prophecy holdout+showroom VPS trim; total stack 41 Ready
-- **2026-06-12T05:47:30Z** — Cursor 컨텍스트 다이어트 완료: AGENTS 2층(76줄)·cursorrules Slim v2(60)·core8 rules·diet+CI·User Rules minimal v1·재시작 후 strict PASS
-- **2026-06-12T05:41:16Z** — P0 Logos 4D topology batch(28741 verses) + /hub/logos observatory plugin·contract·DesignLane exit 0
-- **2026-06-12T05:39:55Z** — Wave6 scheduler: Ready 181->47 (-74%); 12 batches weekly/review_other; solo_target_band 55-70; reconcile ok
-- **2026-06-12T05:33:40Z** — Moat PR-gate prep: pr-strict manifest OK; prophecy bench Brier 0.222; a-codeai READY_FOR_PUBLIC_OPEN_BENCH 9/9; external community PR next; SEND HOLD
-- **2026-06-12T05:29:40Z** — Moat SSOT: GitHub contributor_provided 본선(실고객 없음); passive loop_ok hub 10/10 Moat 13/30 pass_rate_met false; SEND HOLD
-- **2026-06-12T05:27:28Z** — Wave5 scheduler: Ready 181->100 (-81); 12 batches research/ops dup; Aramaic daily registry Disabled; reconcile ok
-- **2026-06-12T05:21:30Z** — User Rules minimal v1.txt·MCP 카탈로그 가이드 AGENTS 반영
-- **2026-06-12T05:17:04Z** — cursorrules Slim v2(147→60줄)·diet cursorrules+template drift·CI 연동 완료
-- **2026-06-12T05:03:06Z** — Design hub: gitea/main 1aeb25518e package CTA+smoke 10-check; live 10/10; SSOT/canvas 10/10; SEND HOLD
-- **2026-06-12T04:57:23Z** — Wave4 scheduler: Ready 181->144 (-37); myeongni/logos/kospi/btrack99 batches; triage regen; reconcile ok
-- **2026-06-12T04:52:29Z** — MS/Compression: VPS deploy exit0·hub live smoke 10/10 customize CTA live·SEND HOLD·다음 Moat PR
-- **2026-06-12T04:47:16Z** — MS/Compression: customize pillar+package CTA·DesignLane exit0·pilot auto-local chain_ok 25; prophecy closure safe_ops degraded; SEND HOLD
-- **2026-06-12T04:37:44Z** — scheduler wave2-3: Ready 181→160; triage JSON; LiveSync registry Disabled
-- **2026-06-12T04:36:57Z** — 채팅종료 RQ-031/032 [HYPO]: 연대기×역사→era chain exit0; RQ-032 KOSPI 제거·text_blind locked 9.1% MS cite; ops·Track A·SEND 무관
-- **2026-06-12T04:32:08Z** — RQ-032 인류역사→era 전용 [HYPO]: KOSPI 제거; text_blind locked 9.1% MS cite; gold_tags 70.2% 상한; quad strict 0%; ops·Track A 무관
-- **2026-06-12T04:28:32Z** — RQ-031 long KOSPI: 7261d·Pillar A combined strict 8.1%·B stress vol 1.68·era 70.2%/locked 45.5%; ops·Track A 미변경
+- **2026-06-13T19:17:23Z** — Harness v2 순서 완료: mkmlife HTTP smoke 3105 OK; Qwen2.5-7B interpret smoke limit5 pillars+envelope 100%
+- **2026-06-13T19:11:58Z** — A2A 1-6 순서: IR+dogfood check+web_ops lossless+tp02/03 weekly
+- **2026-06-13T19:05:32Z** — Lambda Cloud signup moksorinw@no1kmedi.com workspace e8b029… credit reply sent; SSOT pointer updated; 15min meeting HOLD
+- **2026-06-13T19:00:46Z** — Harness v2: locked100 template+dual-pass dry-run 100% OK; mkmlife harness-v2-template route+smoke; routing SSOT reports/myeongni_rnd_operational_routing_closure_v1_latest.json
+- **2026-06-13T18:56:54Z** — Turnstile free path: no1kmedi VPS deploy + env sync + live /enterprise/apply smoke OK
+- **2026-06-13T18:52:39Z** — A2A Tier3 per-lane briefs + expand J fix; dogfood alerts cleared
+- **2026-06-13T18:46:32Z** — Harness v2 PoC: template chain 25/25 OK, pillars_emphasis outcome FAILED, interpret LoRA smoke RUN [HYPO]
+- **2026-06-13T18:43:04Z** — Pack0B Harness v2 locked: LoRA align 0% vs engine 100% — route harness_v2_engine_plus_interpret [HYPO]
+- **2026-06-13T18:41:59Z** — A2A dogfood auto: Tier3 all lanes + longitudinal report + session Tier3 auto on -Lane
+- **2026-06-13T18:30:30Z** — Pack0B pillars_emphasis locked100 align=0% parse=100% — LoRA E2E fail; Plan B Harness v2 next [HYPO]
+- **2026-06-13T18:23:50Z** — Tier3 Cursor wire handoff pilot oracle lane + session upgrade hook exit 0
+- **2026-06-13T18:19:44Z** — Tier2 L2 shadow: session upgrade append log + resume pack hook exit 0
+- **2026-06-13T18:06:53Z** — local_only automations closure: registry rows + weekly verify + routine persona exit0
+- **2026-06-13T18:05:53Z** — A2A recommended: trading routing AB in bench + tp01-03 weekly bundle + trading fixture fix exit 0
+- **2026-06-13T18:04:32Z** — Cursor Automations recommended local_only: mode env set, routine persona exit0, cloud webhook skipped
+- **2026-06-13T18:00:55Z** — Cursor Automations bootstrap exit0: local tasks Ready, DocSync+TestRecovery personas OK, Doc Sync UI paste copied+opened
+- **2026-06-13T17:57:17Z** — RQ-019 weekly smoke +IncludeA2aExtendedRepro exit 0; scheduled task re-registered with extended repro
+- **2026-06-13T17:55:09Z** — A2A full weekly repro bundle exit 0: dialogue bench pytest3 + L1L2 4 lanes + tp01 log + stack map
+- **2026-06-13T17:49:35Z** — Cursor Automations D-layer: workflows SSOT + webhook bridge + command package hook + DocSyncSafe persona exit 0
+- **CENTRAL** — athena_checkpoint ops-memory inject anchor (gate tag; do not remove)
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -119,6 +119,7 @@
 | 구현 여부·경로·게이트 | CONSTITUTION + `scripts/verify_p0_constitution_gate_paths.ps1` + 해당 스크립트 | 설명 보조만 |
 | 사상·DNA·시장 심리가 “다 합쳐졌나” | 헌법 표 **격벽**·일일 B-track 번들 절·`KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md`( A/B ) | `[HYPO]` 또는 `research_only` |
 | 대외·제안·카피 | `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` + `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` | 인용 각주만 |
+| **AI 대체·에이전틱·취향(Taste) 포지셔닝** | `docs/final/artifacts/mkm_agentic_engineering_positioning_onepager_v1_latest.md` (Decide–Execute–Deliver + Workslop·Anti-Slop·Editor · 쇼룸 KO/EN) | 업계·VC 통계는 방향성만 · 수치·구현은 CONSTITUTION+artifact |
 | **환자·고3·소음인·복통·저혈압·수험 생활 설계** | **`docs/final/artifacts/patient_high_load_daily_optimization_playbook_v1.json`** (웜앤글로우·고부하 공학 설계 SSOT) + `patient_care_bundle`·`MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md` | **간지=FACT(MKM 엔진)** · **신강·용신=한의/포스텔라** · MKM `strength_label`·용신후보 **환자 단독 금지** |
 
 ### 환자·고부하 생활공학 기본 솔루션 (2026-05-23 잠금)

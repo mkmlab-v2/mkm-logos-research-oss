@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from mkm_ops_memory_index_lib_v1 import (
+    COMMANDER_SLICE_NODE_IDS,
     DEFAULT_INDEX_PATH,
     LANE_OPS_PACKS,
     assemble_ops_memory_repair_v2_text,
@@ -15,6 +16,12 @@ from mkm_ops_memory_index_lib_v1 import (
     nodes_for_resume,
     truncate_anchor_slice,
     utc_now_iso,
+)
+from mkm_long_term_memory_graph_lib_v1 import (
+    DEFAULT_GRAPH_PATH,
+    load_graph,
+    merge_graph_routing_summary,
+    nodes_for_topic_resume,
 )
 from mkm_sidecar_constitution_lib_v1 import (
     CONSTITUTION_REL,
@@ -60,11 +67,35 @@ def _synthetic_repair_query(
     return " ".join(parts)
 
 
+def _load_nl_ltm_sync_status(root: Path) -> Dict[str, Any] | None:
+    path = root / "reports" / "notebooklm_ltm_graph_ops_push_result_v1_latest.json"
+    if not path.is_file():
+        return None
+    doc = _read_json(path)
+    if doc.get("schema") != "notebooklm_ltm_graph_ops_push_result_v1":
+        return None
+    ok = int(doc.get("ok") or 0)
+    fail = int(doc.get("fail") or 0)
+    return {
+        "notebook_name": "01 · 지휘·운영",
+        "notebook_id": doc.get("notebook_id"),
+        "push_ok": ok,
+        "push_fail": fail,
+        "generated_at_utc": doc.get("generated_at_utc"),
+        "repro_push": (
+            "powershell -NoProfile -ExecutionPolicy Bypass -File "
+            "scripts\\Invoke-NotebookLmLtmGraphOpsSetup_v1.ps1 -PushNlm"
+        ),
+        "nl_mcp_note": "Read 참모 — 통과 판정은 Cursor exit 0만",
+    }
+
+
 def _load_ops_pins(
     root: Path,
     *,
     top_n: int,
     lane: str | None,
+    commander_default: bool,
     include_slice: bool,
     repair_v2_slice: bool,
     slice_max_chars: int,
@@ -74,7 +105,29 @@ def _load_ops_pins(
     if not index_path.is_file():
         return [], None
     index = _read_json(index_path)
-    routed = list(nodes_for_resume(index, top_n=top_n, lane=lane))
+    graph_path = root / DEFAULT_GRAPH_PATH.relative_to(SCRIPT_ROOT)
+    graph = _read_json(graph_path) if graph_path.is_file() else {}
+    if graph.get("schema") == "mkm_long_term_memory_graph_v1" and (
+        topic.strip() or lane
+    ):
+        routed = nodes_for_topic_resume(
+            index,
+            graph,
+            topic,
+            lane=lane,
+            top_n=top_n,
+            root=root,
+        )
+    else:
+        routed = list(
+            nodes_for_resume(
+                index,
+                top_n=top_n,
+                lane=lane,
+                root=root,
+                commander_default=commander_default,
+            )
+        )
     pins: List[Dict[str, Any]] = []
     repair_v2_text: str | None = None
     for node_id, node in routed:
@@ -88,6 +141,15 @@ def _load_ops_pins(
         if repair_v2_slice:
             pin["slice_mode"] = "repair_v2"
             pin["slice_max_chars"] = slice_max_chars
+        elif commander_default and node_id in COMMANDER_SLICE_NODE_IDS:
+            block = extract_node_from_index(root, node)
+            preview, truncated = truncate_anchor_slice(
+                block, max_chars=slice_max_chars
+            )
+            pin["slice_preview"] = preview
+            pin["slice_truncated"] = truncated
+            pin["slice_max_chars"] = slice_max_chars
+            pin["slice_mode"] = "commander_default"
         elif include_slice:
             block = extract_node_from_index(root, node)
             preview, truncated = truncate_anchor_slice(
@@ -197,6 +259,16 @@ def main() -> int:
         default=None,
         help="Oracle/MS/Infra lane pack: board+CENTRAL+one lane row (ignores --top-n for ops pins).",
     )
+    ap.add_argument(
+        "--no-commander-default",
+        action="store_true",
+        help="Without --lane: use legacy top-N pins instead of board+CENTRAL+next-one table.",
+    )
+    ap.add_argument(
+        "--append-l2-shadow",
+        action="store_true",
+        help="[HYPO] Tier 2: append L2 compress shadow log after pack write (human MD unchanged).",
+    )
     args = ap.parse_args()
 
     if args.slice_max_chars < 64:
@@ -211,17 +283,26 @@ def main() -> int:
 
     use_repair_v2 = args.repair_v2_slice
     use_raw_slice = args.include_slice and not use_repair_v2
+    commander_default = args.lane is None and not args.no_commander_default
     ops_pins, repair_v2_text = _load_ops_pins(
         root,
         top_n=args.top_n,
         lane=args.lane,
+        commander_default=commander_default,
         include_slice=use_raw_slice,
         repair_v2_slice=use_repair_v2,
         slice_max_chars=args.slice_max_chars,
         topic=args.topic,
     )
+    graph_path = root / DEFAULT_GRAPH_PATH.relative_to(SCRIPT_ROOT)
+    graph = _read_json(graph_path) if graph_path.is_file() else {}
     constitution_pins = _load_constitution_pins(root, top_n=min(3, args.top_n))
     a2a_chain_refs = _load_a2a_chain_refs(root)
+    ltm_routing = None
+    if graph.get("schema") == "mkm_long_term_memory_graph_v1" and args.topic.strip():
+        ltm_routing = merge_graph_routing_summary(
+            graph, args.topic, resolved_lane=args.lane
+        )
     inject_text = (
         repair_v2_text
         if repair_v2_text is not None
@@ -263,16 +344,26 @@ def main() -> int:
         "ops_memory_options": {
             "include_slice": use_raw_slice,
             "repair_v2_slice": use_repair_v2,
+            "commander_default": commander_default,
+            "commander_trigger_ko": "장기기억 맥락이어",
             "slice_max_chars": args.slice_max_chars
-            if (use_raw_slice or use_repair_v2)
+            if (use_raw_slice or use_repair_v2 or commander_default)
             else None,
             "topic": args.topic or None,
             "top_n": args.top_n,
             "lane": args.lane,
         },
+        "commander_briefing": {
+            "trigger_ko": "장기기억 맥락이어",
+            "mission_log_mode": "next_one_table_pin_only — never paste full MISSION_LOG.md",
+            "fact_lock": "CONSTITUTION + scripts + exit 0 only — NL answer is not pass/fail",
+            "send_gate": "HOLD",
+            "nl_ltm_sync": _load_nl_ltm_sync_status(root),
+        },
         "quick_refs": {
             "central_memory": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
             "ops_memory_index": "storage/meta/mkm_ops_memory_index_v1.json",
+            "long_term_memory_graph": "storage/meta/mkm_long_term_memory_graph_v1.json",
             "ops_dashboard_md": "docs/final/artifacts/mkm_trackc_ops_dashboard_latest.md",
             "ops_dashboard_exec_md": "docs/final/artifacts/mkm_trackc_ops_dashboard_exec_latest.md",
             "acceptance_json": "docs/final/artifacts/mkm_trackc_operational_acceptance_latest.json",
@@ -285,6 +376,7 @@ def main() -> int:
             DEFAULT_SIDECAR_PATH.relative_to(SCRIPT_ROOT)
         ).replace("\\", "/"),
         "constitution_source_ssot": CONSTITUTION_REL,
+        "long_term_memory_routing": ltm_routing,
         "a2a_chain_refs": a2a_chain_refs,
         "latest_status": {
             "system_status": (dashboard.get("system") or {}).get("status"),
@@ -293,9 +385,11 @@ def main() -> int:
             "acceptance_status": acceptance.get("status"),
         },
         "resume_commands": [
+            "py scripts/build_mkm_long_term_memory_graph_v1.py",
             "py scripts/build_mkm_ops_memory_index_v1.py",
-            "py scripts/build_mkm_chat_resume_pack_v1.py --include-slice",
-            "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-MkmOpsMemoryIndexRoutine_v1.ps1 -IncludeSlice",
+            "py scripts/build_mkm_ops_memory_doctrine_overlay_v1.py",
+            "py scripts/build_mkm_chat_resume_pack_v1.py --repair-v2-slice",
+            "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-MkmOpsMemoryIndexRoutine_v1.ps1 -RepairV2Slice",
         ],
     }
 
@@ -316,6 +410,23 @@ def main() -> int:
         f"- acceptance_status: `{resume['latest_status'].get('acceptance_status')}`",
         "",
     ]
+    briefing = resume.get("commander_briefing") or {}
+    if briefing:
+        md_lines += [
+            "## Commander Resume (`장기기억 맥락이어`)",
+            "",
+            f"- trigger: `{briefing.get('trigger_ko')}`",
+            f"- mission_log: {briefing.get('mission_log_mode')}",
+            f"- fact_lock: {briefing.get('fact_lock')}",
+            f"- SEND_GATE: `{briefing.get('send_gate')}`",
+        ]
+        nl_sync = briefing.get("nl_ltm_sync") or {}
+        if nl_sync:
+            md_lines.append(
+                f"- NL 지휘부 sync: push **{nl_sync.get('push_ok')}/{int(nl_sync.get('push_ok') or 0) + int(nl_sync.get('push_fail') or 0)}** "
+                f"@ `{nl_sync.get('generated_at_utc')}` · repro: `{nl_sync.get('repro_push')}`"
+            )
+        md_lines.append("")
     if ops_pins:
         md_lines += ["## Ops Memory Pins ([HYPO])", ""]
         for pin in ops_pins:
@@ -358,6 +469,33 @@ def main() -> int:
 
     print(f"resume pack json written: {out_json}")
     print(f"resume pack md written: {out_md}")
+
+    if args.append_l2_shadow:
+        from build_a2a_l2_shadow_measurement_v1 import (  # noqa: E402
+            DEFAULT_LOG,
+            DEFAULT_OUT,
+            _append_log_row,
+            build_shadow_document,
+        )
+
+        shadow_doc = build_shadow_document(
+            root,
+            lane=args.lane,
+            top_n=args.top_n,
+        )
+        DEFAULT_OUT.parent.mkdir(parents=True, exist_ok=True)
+        DEFAULT_OUT.write_text(
+            json.dumps(shadow_doc, ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        _append_log_row(DEFAULT_LOG, shadow_doc)
+        headline = shadow_doc.get("kpi_headline") or {}
+        print(
+            f"l2 shadow: ok={shadow_doc.get('shadow_ok')} "
+            f"inject={headline.get('inject_tokens')} "
+            f"l2_savings={headline.get('l2_savings_ratio')}"
+        )
+
     return 0
 
 

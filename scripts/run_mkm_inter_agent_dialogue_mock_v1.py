@@ -18,12 +18,26 @@ DEFAULT_JSONL = ROOT / "docs/final/artifacts/mkm_inter_agent_dialogue_mock_lates
 DEFAULT_SUMMARY = ROOT / "docs/final/artifacts/mkm_inter_agent_dialogue_mock_summary_latest.json"
 
 ALPHA_LINES_TRADING = [
-    "WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears.",
-    "Prophecy lane B-track: dual-leg KOSPI/BTC divergence noted. Hold new longs; review at 09:00 KST.",
+    (
+        "WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears. "
+        "Prophecy lane B-track dual-leg KOSPI BTC divergence noted. Hold new longs; review at 09:00 KST. "
+        "Executor standing by; risk profile unchanged; guardian gate WATCH; no Track A live trigger."
+    ),
+    (
+        "Prophecy lane B-track: dual-leg KOSPI/BTC divergence noted. Hold new longs; review at 09:00 KST. "
+        "Macro fragility elevated; REDUCE exposure advisory; executor ACK pending; regime_map primary gate. "
+        "WATCH regime maintained; no Track A live trigger; guardian gate observability only."
+    ),
 ]
 BETA_LINES_TRADING = [
-    "ACK: exposure reduction logged. No new long orders until your next packet.",
-    "ACK: dual-leg brief received. Executor standing by; risk profile unchanged.",
+    (
+        "ACK: exposure reduction logged. No new long orders until your next packet. "
+        "Executor standing by; risk profile unchanged; prophecy lane B-track observability only."
+    ),
+    (
+        "ACK: dual-leg brief received. Executor standing by; risk profile unchanged. "
+        "No live trading trigger; WATCH regime maintained until next trust packet."
+    ),
 ]
 ALPHA_LINES_HEALTH = [
     "환자 건강 수면 식사 증상 호흡 피로 회복 체온 — 임상 진단 바이탈 Silver Tech 모니터링.",

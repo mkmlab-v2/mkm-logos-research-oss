@@ -14,6 +14,7 @@
 #>
 param(
     [switch]$SkipEncodingStatus,
+    [switch]$IncludeA2aExtendedRepro,
     [string]$WorkspaceRoot = ""
 )
 
@@ -38,6 +39,11 @@ try {
 
     if (-not $SkipEncodingStatus) {
         & $py scripts/build_mkm_inter_agent_encoding_status_v1.py --skip-pytest
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    }
+
+    if ($IncludeA2aExtendedRepro) {
+        powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $resolvedRoot 'scripts\Run-A2aWeeklyReproBundle_v1.ps1') -SkipDialogueBench -SkipTargetPointsPilot
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
     }
 

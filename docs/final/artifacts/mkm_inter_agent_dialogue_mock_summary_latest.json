@@ -1,6 +1,6 @@
 {
   "schema": "mkm_inter_agent_dialogue_mock_summary_v1",
-  "generated_at_utc": "2026-05-19T00:26:48Z",
+  "generated_at_utc": "2026-06-13T16:31:33Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
   "boundary_ack": "Simulated agents; plaintext is logged for audit only. On-wire payload is Trust Packet only. Not production A2A. Not Track A trading trigger.",
@@ -21,6 +21,7 @@
         "http_status": 200,
         "loss_profile": "semantic_general",
         "routing_profile": "track_a_promoted",
+        "lexicon_atom_id_count": 5,
         "compression_metrics": {
           "token_in": 18,
           "token_out": 18,
@@ -43,7 +44,30 @@
             "global_token_saving_rate": 0.0,
             "reconstruction_fidelity_jaccard": 1.0
           },
-          "placeholder_map": {}
+          "placeholder_map": {},
+          "mkm_lexicon_rail_v1": {
+            "symbol_key": "atom_id",
+            "atom_id_sequence": [
+              "other::watch",
+              "other::regime",
+              "other::on",
+              "other::until",
+              "other::gate"
+            ],
+            "lexicon_meta": {
+              "status": "ok",
+              "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
+              "lexicon_term_count": 41700,
+              "atom_id_count": 5,
+              "atom_id_sequence_sample": [
+                "other::watch",
+                "other::regime",
+                "other::on",
+                "other::until",
+                "other::gate"
+              ]
+            }
+          }
         },
         "router_meta": {
           "shard_id": "zone_d_ssot",
@@ -61,6 +85,7 @@
         "http_status": 200,
         "loss_profile": "semantic_general",
         "routing_profile": "track_a_promoted",
+        "lexicon_atom_id_count": 11,
         "compression_metrics": {
           "token_in": 37,
           "token_out": 19,
@@ -83,7 +108,42 @@
             "global_token_saving_rate": 0.4864864864864865,
             "reconstruction_fidelity_jaccard": 0.76
           },
-          "placeholder_map": {}
+          "placeholder_map": {},
+          "mkm_lexicon_rail_v1": {
+            "symbol_key": "atom_id",
+            "atom_id_sequence": [
+              "other::no",
+              "other::new",
+              "other::long",
+              "other::orders",
+              "other::until",
+              "other::your",
+              "other::next",
+              "other::watch",
+              "other::regime",
+              "other::on",
+              "other::gate"
+            ],
+            "lexicon_meta": {
+              "status": "ok",
+              "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
+              "lexicon_term_count": 41700,
+              "atom_id_count": 11,
+              "atom_id_sequence_sample": [
+                "other::no",
+                "other::new",
+                "other::long",
+                "other::orders",
+                "other::until",
+                "other::your",
+                "other::next",
+                "other::watch",
+                "other::regime",
+                "other::on",
+                "other::gate"
+              ]
+            }
+          }
         },
         "router_meta": {
           "shard_id": "zone_d_ssot",
@@ -110,6 +170,7 @@
         "http_status": 200,
         "loss_profile": "semantic_general",
         "routing_profile": "track_a_promoted",
+        "lexicon_atom_id_count": 6,
         "compression_metrics": {
           "token_in": 26,
           "token_out": 26,
@@ -132,7 +193,32 @@
             "global_token_saving_rate": 0.0,
             "reconstruction_fidelity_jaccard": 1.0
           },
-          "placeholder_map": {}
+          "placeholder_map": {},
+          "mkm_lexicon_rail_v1": {
+            "symbol_key": "atom_id",
+            "atom_id_sequence": [
+              "other::prophecy",
+              "other::lane",
+              "other::track",
+              "other::hold",
+              "other::new",
+              "other::at"
+            ],
+            "lexicon_meta": {
+              "status": "ok",
+              "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
+              "lexicon_term_count": 41700,
+              "atom_id_count": 6,
+              "atom_id_sequence_sample": [
+                "other::prophecy",
+                "other::lane",
+                "other::track",
+                "other::hold",
+                "other::new",
+                "other::at"
+              ]
+            }
+          }
         },
         "router_meta": {
           "shard_id": "zone_d_ssot",
@@ -159,6 +245,7 @@
         "http_status": 200,
         "loss_profile": "semantic_general",
         "routing_profile": "track_a_promoted",
+        "lexicon_atom_id_count": 11,
         "compression_metrics": {
           "token_in": 46,
           "token_out": 21,
@@ -174,14 +261,49 @@
         "packet_format_version": "trust_packet.0.1",
         "api_contract_version": "2.0.0-draft",
         "loss_profile": "semantic_general",
-        "compressed_text": "dual brief received Executor standing by risk Prophecy lane track Hold new at ACK divergence leg profile unchanged inferred_from_packet B KOSPI",
+        "compressed_text": "brief received Executor standing by risk Prophecy lane track Hold new at ACK dual divergence leg profile unchanged inferred_from_packet B KOSPI",
         "residual_meta": {
           "mk_stub_v2": {
             "reconstructed_text": "ACK dual leg brief received Executor standing by risk profile unchanged inferred_from_packet Prophecy lane B track dual leg KOSPI divergence Hold new at",
             "global_token_saving_rate": 0.5434782608695652,
             "reconstruction_fidelity_jaccard": 0.75
           },
-          "placeholder_map": {}
+          "placeholder_map": {},
+          "mkm_lexicon_rail_v1": {
+            "symbol_key": "atom_id",
+            "atom_id_sequence": [
+              "other::brief",
+              "other::received",
+              "other::executor",
+              "other::standing",
+              "other::by",
+              "other::prophecy",
+              "other::lane",
+              "other::track",
+              "other::hold",
+              "other::new",
+              "other::at"
+            ],
+            "lexicon_meta": {
+              "status": "ok",
+              "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
+              "lexicon_term_count": 41700,
+              "atom_id_count": 11,
+              "atom_id_sequence_sample": [
+                "other::brief",
+                "other::received",
+                "other::executor",
+                "other::standing",
+                "other::by",
+                "other::prophecy",
+                "other::lane",
+                "other::track",
+                "other::hold",
+                "other::new",
+                "other::at"
+              ]
+            }
+          }
         },
         "router_meta": {
           "shard_id": "zone_e_finance",

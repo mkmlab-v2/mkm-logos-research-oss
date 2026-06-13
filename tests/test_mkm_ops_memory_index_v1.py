@@ -73,6 +73,7 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
     central.write_text(
         "# CENTRAL\n\n"
         "<!-- ATHENA_CHECKPOINT_V1_START -->\n"
+        "<!-- CENTRAL checkpoint block -->\n"
         "- MISSION_LOG research_only 금지 weekly\n"
         "<!-- ATHENA_CHECKPOINT_V1_END -->\n",
         encoding="utf-8",
@@ -106,6 +107,7 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
     central_dir.mkdir(parents=True)
     (central_dir / "CENTRAL_AGENT_MEMORY_V1.md").write_text(
         "<!-- ATHENA_CHECKPOINT_V1_START -->\n"
+        "<!-- CENTRAL checkpoint block -->\n"
         "- MISSION_LOG research_only 금지 checkpoint\n"
         "<!-- ATHENA_CHECKPOINT_V1_END -->\n",
         encoding="utf-8",
@@ -124,6 +126,38 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
     out.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
     loaded = json.loads(out.read_text(encoding="utf-8"))
     assert loaded["nodes"]["prism_ops_mission_log_board"]["line_range"][0] == 3
+
+
+def test_nodes_for_resume_commander_default(tmp_path: Path) -> None:
+    mission = tmp_path / "MISSION_LOG.md"
+    mission.write_text(
+        "# MISSION_LOG\n\n"
+        "## 🚀 전술 작전 보드\n\n"
+        "FAIL-COMP-004 · Track A · SEND_GATE: HOLD\n\n"
+        "### 📦 핸드오ff · 다른 채팅 융합\n\n"
+        "**다음 1타 (레인 · 새 채팅):**\n\n"
+        "| **Oracle·예언·align-panel** | **금지:** Track A·실매매 · **HOLD** |\n"
+        "| **Infra/GPU** | **금지:** Track A·live · **HOLD** · **GPU** |\n"
+        "| **MS** | **HOLD** · **금지:** portal · **MS** |\n\n"
+        "### 🧠 메타인지\n\n",
+        encoding="utf-8",
+    )
+    central_dir = tmp_path / "docs" / "final"
+    central_dir.mkdir(parents=True)
+    (central_dir / "CENTRAL_AGENT_MEMORY_V1.md").write_text(
+        "<!-- ATHENA_CHECKPOINT_V1_START -->\n"
+        "<!-- CENTRAL checkpoint block -->\n"
+        "- checkpoint line\n"
+        "<!-- ATHENA_CHECKPOINT_V1_END -->\n",
+        encoding="utf-8",
+    )
+    doc = build_index_document(tmp_path)
+    ids = [nid for nid, _ in nodes_for_resume(doc, commander_default=True)]
+    assert ids == [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_mission_log_next_one",
+    ]
 
 
 def test_gate_fails_when_tag_stripped(tmp_path: Path) -> None:
