@@ -1,8 +1,20 @@
+import { resolveMkmlifeOrigin } from "@/lib/mkmlife-hub-origin-v1";
 import { buildMkmlifeAskOneHubDeepLink, UNIVERSE_HUB_DEEP_LINKS } from "@/lib/universeHubPluginsV2";
 
-/** P4: optional iframe embed — default OFF until build sets NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=1 */
+function isLocalMkmlifeDevPairOrigin(): boolean {
+  const origin = resolveMkmlifeOrigin();
+  return /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
+}
+
+/**
+ * P4: optional iframe embed — prod requires NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=1.
+ * Local hot-reload pair (NEXT_PUBLIC_MKMLIFE_ORIGIN=localhost:3105) auto-enables embed in dev.
+ */
 export function isMkmlifeEmbedEnabled(): boolean {
-  return process.env.NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED === "1";
+  if (process.env.NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED === "1") {
+    return true;
+  }
+  return process.env.NODE_ENV === "development" && isLocalMkmlifeDevPairOrigin();
 }
 
 export type MkmlifeEmbedView = "ask-one" | "home" | "news-deck";
