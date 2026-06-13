@@ -1,0 +1,40 @@
+{
+  "schema": "bounded_lane_loop_whitelist_v1",
+  "description": "Allowed child invocations for run_bounded_lane_loop_v1.py. Shadow-only; no Track A / live / todo_queue auto-enqueue.",
+  "allowed_invocations": [
+    {
+      "id": "resume_pack",
+      "runner": "python",
+      "argv_prefix": ["scripts/build_mkm_chat_resume_pack_v1.py"],
+      "max_wall_seconds": 120
+    },
+    {
+      "id": "p0_gate_paths",
+      "runner": "powershell",
+      "argv_prefix": ["scripts/verify_p0_constitution_gate_paths.ps1"],
+      "max_wall_seconds": 300
+    },
+    {
+      "id": "turnstile_free_ops",
+      "runner": "python",
+      "argv_prefix": ["scripts/check_turnstile_free_ops_v1.py"],
+      "max_wall_seconds": 180
+    },
+    {
+      "id": "orchestrator_bundle_verify",
+      "runner": "python",
+      "argv_prefix": ["scripts/verify_mkm_orchestrator_bundle_v1.py"],
+      "max_wall_seconds": 120
+    }
+  ],
+  "forbidden_argv_substrings": [
+    "push-internal",
+    "Push-GitHub-Explicit",
+    "start_live_trading",
+    "athena_run_v1.py",
+    "apply_trackc_plan_bridge_to_queue",
+    "bootstrap_mkm_orchestrator_queue",
+    "mkm_orchestrator_poll",
+    "Deploy-No1kmediDestinyTarball"
+  ]
+}
