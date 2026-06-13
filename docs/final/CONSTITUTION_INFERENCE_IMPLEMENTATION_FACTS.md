@@ -288,7 +288,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 예시 Pin | `docs/final/artifacts/fixtures/bounded_lane_pin_infra_v1.example.json` | infra 스모크: resume pack + P0 gate paths. |
 | Pin 빌더 | `scripts/build_bounded_lane_pin_from_resume_pack_v1.py` | resume pack + `MISSION_LOG` 레인 행 → `docs/final/artifacts/bounded_lane_pin_{lane}_latest.json`; `--refresh-resume-pack` · `--write-fixtures`(4레인 example). |
 | Pin fixtures | `docs/final/artifacts/fixtures/bounded_lane_pin_{ms,oracle,infra,design}_v1.example.json` | jsonschema 통과 스냅샷; `next_action_one_line` = MISSION 해당 레인 행(자동 enqueue·MISSION 통째 주입 **금지**). |
-| A2A peer (선택) | Pin `peer_handoff_pointer` → `a2a_tier3_cursor_wire_handoff_brief_{lane}_v1_latest.md` | 병렬 Cursor **peer** 채팅용 [HYPO]; source 채팅은 resume pack 그대로. |
+| A2A peer (선택) | Pin `peer_handoff_pointer` → `a2a_tier3_cursor_wire_handoff_brief_{ms,oracle,infra,design}_v1_latest.md` | 병렬 Cursor **peer** 채팅용 [HYPO]; source 채팅은 resume pack 그대로. |
 | LTM hint (선택) | Pin `ltm_hint` · `LANE_LTM_PRIMARY_CONCEPT` in `build_bounded_lane_pin_from_resume_pack_v1.py` | graph **1 concept**만 (`concept_id` + `topology.software_layer`); graph 통째·MISSION 통째 주입 금지. |
 | 다파일 편집 게이트 | `.cursor/rules/ltm-graph-os-coordinates-v1.mdc` | 편집 전: concept_id · software_layer · blast_radius 확인; Truth gate = CONSTITUTION + exit 0. |
 | 러너 | `scripts/run_bounded_lane_loop_v1.py` · `scripts/Invoke-BoundedLaneLoop_v1.ps1` | `-Lane` + 기본 auto pin build; `outcome_class` ∈ `{shadow_pass, shadow_warning, shadow_reject}` **만**; Track A 승격·human sign-off 없이 본선 합선 없음. |

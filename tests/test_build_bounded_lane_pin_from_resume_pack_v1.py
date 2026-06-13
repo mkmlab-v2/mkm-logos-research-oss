@@ -77,13 +77,29 @@ def test_build_write_and_loop_dry_run_infra() -> None:
         out.unlink(missing_ok=True)
 
 
-def test_design_lane_resume_pack_without_lane_flag() -> None:
+def test_design_lane_resume_pack_with_lane_flag() -> None:
     proc = _run_builder(["--lane", "design", "--dry-run"])
     assert proc.returncode == 0, proc.stderr
     pin = json.loads(proc.stdout)
     assert pin["lane"] == "design"
-    assert pin["steps"][0]["argv"] == ["scripts/build_mkm_chat_resume_pack_v1.py"]
-    assert "peer_handoff_pointer" not in pin
+    assert pin["steps"][0]["argv"] == [
+        "scripts/build_mkm_chat_resume_pack_v1.py",
+        "--lane",
+        "design",
+    ]
+
+
+def test_design_pin_includes_peer_handoff_when_brief_exists() -> None:
+    brief = (
+        ROOT
+        / "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_design_v1_latest.md"
+    )
+    if not brief.is_file():
+        return
+    proc = _run_builder(["--lane", "design", "--dry-run"])
+    assert proc.returncode == 0, proc.stderr
+    pin = json.loads(proc.stdout)
+    assert pin.get("peer_handoff_pointer") == brief.relative_to(ROOT).as_posix()
 
 
 def test_infra_pin_includes_ltm_hint() -> None:

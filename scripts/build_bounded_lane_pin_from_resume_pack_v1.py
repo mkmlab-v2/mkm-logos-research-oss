@@ -52,7 +52,7 @@ DEFAULT_FORBIDDEN = [
 
 FIXTURE_LANES = ("ms", "oracle", "infra", "design")
 
-A2A_PEER_BRIEF_LANES = frozenset({"ms", "oracle", "infra"})
+A2A_PEER_BRIEF_LANES = frozenset({"ms", "oracle", "infra", "design"})
 
 LANE_PIN_CONFIG: dict[str, dict[str, Any]] = {
     "ms": {
