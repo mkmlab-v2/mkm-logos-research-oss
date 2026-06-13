@@ -305,6 +305,17 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | 주간 번들 | `scripts/Invoke-NotebookLmFuelLayerAudit_v1.ps1` | 위 3종 + 선택 `-IncludeMcpPrereqs`; exit 0 = Week 2 fuel gate. |
 | 회귀 | `tests/test_notebooklm_fuel_layer_audit_v1.py` | offline audit 3종. |
 
+### 1.4.3 Bounded lane loop packaging v1 (Week 4 · shadow)
+
+| 항목 | 경로 | 비고 |
+|------|------|------|
+| Meta envelope 훅 | `run_bounded_lane_loop_v1.py --meta-layer-envelope-path` | 선택 validate; summary `meta_layer_envelope` 1블록; 실패 시 `shadow_warning`(Track A 미합선). |
+| Meta append (선택) | `--meta-layer-envelope-append` | `mkm_meta_layer_envelope_v1.py append` → `agent_decisions_log.jsonl`. |
+| A2A briefing sample | `scripts/build_bounded_lane_a2a_briefing_sample_v1.py` | `[HYPO]` 2-turn mock → `fixtures/bounded_lane_a2a_briefing_sample_v1.json`. |
+| Cost JSONL | `reports/bounded_lane_loop_cost_v1.jsonl` | 루프당 `loop_wall_seconds` · `step_count` · `outcome_class`. |
+| Invoke | `Invoke-BoundedLaneLoop_v1.ps1` | `-MetaLayerEnvelopePath` · `-RefreshA2aBriefingSample`. |
+| 회귀 | `tests/test_bounded_lane_loop_week4_v1.py` | envelope dry-run · A2A sample builder. |
+
 ---
 
 ## 2. Dual-regime / 레짐 융합 (실물 쪽, 1차 레짐)
