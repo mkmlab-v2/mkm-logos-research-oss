@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "news_neutralizer_shadow_v1.schema.json",
+  "title": "news_neutralizer_shadow_v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "lane",
+    "hypothesis_tag",
+    "promotion_required",
+    "auto_deck_publish",
+    "window_hours",
+    "clusters",
+    "bias_analyses",
+    "synthesis",
+    "provenance",
+    "copy_lint"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "schema": { "const": "news_neutralizer_shadow_v1" },
+    "generated_at_utc": { "type": "string" },
+    "lane": { "const": "research_only" },
+    "hypothesis_tag": { "const": "[HYPO]" },
+    "promotion_required": { "const": true },
+    "auto_deck_publish": { "const": false },
+    "window_hours": { "type": "integer", "minimum": 1, "maximum": 72 },
+    "ingest": { "type": "object" },
+    "clusters": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/cluster" }
+    },
+    "bias_analyses": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/bias_analysis" }
+    },
+    "synthesis": { "$ref": "#/$defs/synthesis" },
+    "provenance": { "$ref": "#/$defs/provenance" },
+    "copy_lint": { "$ref": "#/$defs/copy_lint" }
+  },
+  "$defs": {
+    "cluster": {
+      "type": "object",
+      "required": ["cluster_id", "representative_headline", "member_count", "source_urls"],
+      "properties": {
+        "cluster_id": { "type": "string" },
+        "representative_headline": { "type": "string" },
+        "member_count": { "type": "integer", "minimum": 1 },
+        "source_urls": { "type": "array", "items": { "type": "string" } },
+        "source_feed_ids": { "type": "array", "items": { "type": "string" } },
+        "published_utc_max": { "type": "string" }
+      }
+    },
+    "bias_analysis": {
+      "type": "object",
+      "required": [
+        "cluster_id",
+        "shared_facts",
+        "framing_signals",
+        "bias_transparency_note_ko",
+        "hypothesis_tag"
+      ],
+      "properties": {
+        "cluster_id": { "type": "string" },
+        "shared_facts": { "type": "array", "items": { "type": "string" } },
+        "framing_signals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["source_feed_id", "signal_ko"],
+            "properties": {
+              "source_feed_id": { "type": "string" },
+              "signal_ko": { "type": "string" },
+              "confidence": { "enum": ["low", "medium", "high"] }
+            }
+          }
+        },
+        "bias_transparency_note_ko": { "type": "string" },
+        "hypothesis_tag": { "const": "[HYPO]" },
+        "model_id": { "type": "string" },
+        "prompt_hash_sha256": { "type": "string" }
+      }
+    },
+    "synthesis": {
+      "type": "object",
+      "required": [
+        "topic_summary_ko",
+        "verified_facts",
+        "parallel_perspectives",
+        "our_view_opinion_ko",
+        "disclaimer_ko",
+        "hypothesis_tag"
+      ],
+      "properties": {
+        "topic_summary_ko": { "type": "string" },
+        "verified_facts": { "type": "array", "items": { "type": "string" } },
+        "parallel_perspectives": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["label_ko", "summary_ko", "source_urls"],
+            "properties": {
+              "label_ko": { "type": "string" },
+              "summary_ko": { "type": "string" },
+              "source_urls": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "our_view_opinion_ko": { "type": "string", "pattern": "\\[OPINION\\]" },
+        "disclaimer_ko": { "type": "string" },
+        "hypothesis_tag": { "const": "[HYPO]" },
+        "model_id": { "type": "string" },
+        "prompt_hash_sha256": { "type": "string" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["rss_sources", "mode"],
+      "properties": {
+        "mode": {
+          "enum": [
+            "dry_run",
+            "live",
+            "fixture",
+            "live_fallback_dry_run",
+            "live_azure",
+            "live_developer",
+            "live_vertex"
+          ]
+        },
+        "rss_sources": { "type": "array", "items": { "type": "string" } },
+        "billing_requested": { "type": "string" },
+        "billing_surface": { "type": "string" },
+        "live_error": { "type": ["string", "null"] },
+        "models": {
+          "type": "object",
+          "properties": {
+            "flash": { "type": "string" },
+            "pro": { "type": "string" }
+          }
+        },
+        "prompt_hashes": {
+          "type": "object",
+          "properties": {
+            "bias_analysis": { "type": "string" },
+            "synthesis": { "type": "string" }
+          }
+        }
+      }
+    },
+    "copy_lint": {
+      "type": "object",
+      "required": ["passed", "violations"],
+      "properties": {
+        "passed": { "type": "boolean" },
+        "violations": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schema": "news_neutralizer_rss_fixture_v1",
+  "items": [
+    {
+      "title": "Central banks hold rates steady amid inflation debate",
+      "link": "https://example.invalid/news/neutralizer/1",
+      "description": "Policy makers paused as data showed mixed signals on price growth.",
+      "published_utc": "2026-06-11T18:00:00Z",
+      "source_feed_id": "bbc_business",
+      "category": "finance"
+    },
+    {
+      "title": "Inflation debate continues as central banks keep rates unchanged",
+      "link": "https://example.invalid/news/neutralizer/2",
+      "description": "Analysts disagree on whether the pause helps consumers or investors.",
+      "published_utc": "2026-06-11T19:30:00Z",
+      "source_feed_id": "npr_news",
+      "category": "world"
+    },
+    {
+      "title": "Regional summit focuses on climate adaptation funding",
+      "link": "https://example.invalid/news/neutralizer/3",
+      "description": "Leaders discussed grants, not binding targets, for vulnerable coastlines.",
+      "published_utc": "2026-06-11T20:00:00Z",
+      "source_feed_id": "guardian_world",
+      "category": "world"
+    },
+    {
+      "title": "Tech firms announce joint safety standards for AI agents",
+      "link": "https://example.invalid/news/neutralizer/4",
+      "description": "The framework covers logging and human review, not product bans.",
+      "published_utc": "2026-06-11T21:00:00Z",
+      "source_feed_id": "aljazeera_english",
+      "category": "world"
+    }
+  ]
+}
