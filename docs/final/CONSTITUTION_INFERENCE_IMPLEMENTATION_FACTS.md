@@ -286,7 +286,8 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | Pin 스키마 | `docs/final/schemas/bounded_lane_pin_v1.schema.json` | 레인별 **다음 1타** + 화이트리스트 `steps`; `CENTRAL`·`MISSION_LOG` 통째 주입 금지. |
 | 화이트리스트 | `docs/final/artifacts/bounded_lane_loop_whitelist_v1.json` | 허용 child만 실행; `todo_queue` enqueue·live·push 등 **substring 차단**. |
 | 예시 Pin | `docs/final/artifacts/fixtures/bounded_lane_pin_infra_v1.example.json` | infra 스모크: resume pack + P0 gate paths. |
-| 러너 | `scripts/run_bounded_lane_loop_v1.py` · `scripts/Invoke-BoundedLaneLoop_v1.ps1` | `outcome_class` ∈ `{shadow_pass, shadow_warning, shadow_reject}` **만**; Track A 승격·human sign-off 없이 본선 합선 없음. |
+| Pin 빌더 | `scripts/build_bounded_lane_pin_from_resume_pack_v1.py` | resume pack + `MISSION_LOG` 레인 행 → `docs/final/artifacts/bounded_lane_pin_{lane}_latest.json`; `--refresh-resume-pack` 선택. |
+| 러너 | `scripts/run_bounded_lane_loop_v1.py` · `scripts/Invoke-BoundedLaneLoop_v1.ps1` | `-Lane` + 기본 auto pin build; `outcome_class` ∈ `{shadow_pass, shadow_warning, shadow_reject}` **만**; Track A 승격·human sign-off 없이 본선 합선 없음. |
 | 산출 | `reports/bounded_lane_loop_v1_latest.json` · `reports/bounded_lane_loop_audit.jsonl` | exit 0 = `shadow_pass`만; **≠** 무한 Cursor 채팅 루프. |
 | 회귀 | `tests/test_bounded_lane_loop_v1.py` | dry-run·화이트리스트 거부. |
 
