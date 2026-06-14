@@ -315,6 +315,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | A2A briefing sample | `scripts/build_bounded_lane_a2a_briefing_sample_v1.py` | `[HYPO]` 2-turn mock → `fixtures/bounded_lane_a2a_briefing_sample_v1.json`. |
 | Cost JSONL | `reports/bounded_lane_loop_cost_v1.jsonl` | 루프당 `loop_wall_seconds` · `step_count` · `outcome_class`. |
 | Invoke | `Invoke-BoundedLaneLoop_v1.ps1` | `-MetaLayerEnvelopePath` · `-RefreshA2aBriefingSample`. |
+| All-lanes invoke | `Invoke-BoundedLaneLoopAllLanes_v1.ps1` | ms·oracle·infra·design 순차; `-RefreshPin` · `-DryRun`. |
 | Health smoke | `run_workspace_automation_health.ps1 -IncludeBoundedLaneLoopSmoke` · `-BoundedLaneLoopSmokeOnly` | P0 + pytest 3종 + infra dry-run invoke; persona `BoundedLaneLoopShadow`. |
 | Weekly task | `scripts/Register-MkmBoundedLaneLoopShadowWeeklyTask.ps1` | tier3 optional · Sunday 09:30 · `MKM_BoundedLaneLoop_Shadow_Weekly`. |
 | 회귀 | `tests/test_bounded_lane_loop_week4_v1.py` | envelope dry-run · A2A sample builder. |
