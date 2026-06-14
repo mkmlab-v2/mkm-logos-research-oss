@@ -10,6 +10,15 @@ export const metadata: Metadata = {
   title: personadiaryCopy.seo.title,
   description: personadiaryCopy.seo.description,
   alternates: { canonical: "/personadiary" },
+  manifest: "/personadiary/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: "PersonaDiary",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    apple: "/personadiary/icon-192.svg",
+  },
   openGraph: {
     title: personadiaryCopy.seo.title,
     description: personadiaryCopy.seo.description,

@@ -3,12 +3,16 @@
 from __future__ import annotations
 
 import json
+import sys
 import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "scripts"))
+import personadiary_consumer_copy_v1 as pd_copy  # noqa: E402
+
 UA = "MKM-PersonadiarySmoke/1.0"
 APEX = "https://personadiary.com"
 
@@ -27,6 +31,14 @@ PHASE2_HTML_MARKERS = (
 )
 PHASE2_LUT_SCHEMA = "personadiary_ritual_draw_lut_major22_v1"
 PHASE2_BLOOM_SCHEMA = "magic_orb_graph_bloom_v1"
+OPS_HTML_MARKERS = (
+    "pd-main-ops",
+    "Persona Diary",
+    "pd-ops-export",
+    "pd-ops-import",
+    "pd-ops-native-hypo",
+    "pd-ops-voice-hypo",
+)
 
 
 def hub_footer_probe_ok(html: str) -> tuple[bool, str]:
@@ -73,6 +85,34 @@ def main() -> int:
         "status": page.get("status"),
         "ok": page.get("ok") and page.get("status") == 200
         and "Persona Diary" in page_text,
+    }
+
+    ops_page = _fetch(f"{APEX}/ops")
+    ops_text = ops_page.get("text") or ""
+    ops_missing = [m for m in OPS_HTML_MARKERS if m not in ops_text]
+    probes["mobile_ops_page"] = {
+        "url": f"{APEX}/ops",
+        "status": ops_page.get("status"),
+        "ok": ops_page.get("ok") and ops_page.get("status") == 200 and not ops_missing,
+        "detail": (
+            f"markers ok ({', '.join(OPS_HTML_MARKERS)})"
+            if not ops_missing
+            else f"missing: {', '.join(ops_missing)}"
+        ),
+    }
+
+    manifest = _fetch(f"{APEX}/personadiary/manifest.webmanifest")
+    manifest_ok = False
+    if manifest.get("ok") and manifest.get("status") == 200:
+        try:
+            mj = json.loads(manifest["text"])
+            manifest_ok = mj.get("start_url") == "/ops"
+        except json.JSONDecodeError:
+            manifest_ok = False
+    probes["pwa_manifest"] = {
+        "url": f"{APEX}/personadiary/manifest.webmanifest",
+        "status": manifest.get("status"),
+        "ok": manifest_ok,
     }
 
     hub_ok, hub_detail = hub_footer_probe_ok(page_text)
@@ -144,6 +184,32 @@ def main() -> int:
         "ok": guide_ok,
     }
 
+    forbidden_scan = pd_copy.scan_text_for_forbidden(ops_text)
+    contract = pd_copy.load_copy_contract()
+    marker_list = contract.get("smoke_html_markers") or [
+        "pd-non-prediction-contract",
+        "정신적 방화벽",
+        "SEND_GATE: HOLD",
+    ]
+    missing_contract_markers = [m for m in marker_list if m not in ops_text]
+    probes["non_prediction_copy"] = {
+        "url": f"{APEX}/ops",
+        "forbidden_scan_ok": forbidden_scan["ok"],
+        "violations": forbidden_scan["violations"],
+        "contract_markers_ok": len(missing_contract_markers) == 0,
+        "missing_markers": missing_contract_markers,
+        "ok": forbidden_scan["ok"] and len(missing_contract_markers) == 0,
+        "detail": (
+            "forbidden scan + contract markers pass"
+            if forbidden_scan["ok"] and not missing_contract_markers
+            else (
+                f"violations: {', '.join(forbidden_scan['violations'])}"
+                if not forbidden_scan["ok"]
+                else f"missing markers: {', '.join(missing_contract_markers)}"
+            )
+        ),
+    }
+
     moment = _fetch(
         f"{APEX}/api/personadiary/moment",
         method="POST",
@@ -202,6 +268,10 @@ def main() -> int:
             "https://personadiary.com/": {
                 "status": probes["apex_page"].get("status"),
                 "ok": probes["apex_page"].get("ok"),
+            },
+            "https://personadiary.com/ops": {
+                "status": probes["mobile_ops_page"].get("status"),
+                "ok": probes["mobile_ops_page"].get("ok"),
             },
         },
         "api_probe": {
