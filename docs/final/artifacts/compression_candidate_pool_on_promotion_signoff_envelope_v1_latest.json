@@ -1,0 +1,36 @@
+{
+  "schema": "compression_candidate_pool_on_promotion_signoff_envelope_v1",
+  "generated_at_utc": "2026-06-15T20:00:00Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "envelope_status": "draft_awaiting_commander",
+  "candidate_id": "candidate_pool_on",
+  "candidate_artifact": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json",
+  "separate_from_signoff": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
+  "guardrail_ko": "Golden-40 벤치 한정 스펙이며 v2 stateless 구현 경로는 ~6.4% token proxy로 제한됨 — 동일 헤드라인 금지 (FAIL-COMP-004).",
+  "guardrail_en": "Golden-40 evaluate_report bench only; v2 stateless trust-packet path remains ~6.4% operational proxy — do not merge headlines.",
+  "promotion_gates_at_apply": {
+    "golden40_global_token_saving_rate": 0.47398030942334735,
+    "golden40_avg_jaccard": 0.9720905381383321,
+    "field_public_open_pass_rate": 0.9667,
+    "field_wtt_pass_rate": 0.9667,
+    "tier_a_mean_operational_pass_rate": 0.8666666666666667,
+    "tier_a_excluded_corpus": "open_structured_long_v1"
+  },
+  "human_signoff": {
+    "reviewer": null,
+    "approved_at_utc": null,
+    "note": null
+  },
+  "apply_command_after_signoff": "py scripts/apply_multilens_ultra_compression_track_a_promotion_v1.py --human-approve-promotion --reviewer commander",
+  "forbidden_in_this_envelope": [
+    "automatic_active_swap",
+    "customer_sla_claim",
+    "open_structured_long_saving_in_tier_a_headline"
+  ],
+  "reproduce": [
+    "py scripts/sync_compression_hybrid_router_spec_from_spike_v1.py",
+    "py scripts/run_compression_hybrid_router_spike_v1.py"
+  ]
+}

@@ -1,0 +1,190 @@
+{
+  "schema": "compression_b2b_off_the_shelf_shard_sku_v1",
+  "generated_at_utc": "2026-06-11T03:00:00Z",
+  "promotion_signoff": {
+    "phase": "C_forced_shard_id_v1",
+    "approved_at_utc": "2026-06-11T02:00:00Z",
+    "approver": "commander_explicit",
+    "scope_ko": "SKU --sku 시 b2b_shard_id → forced_shard_id API 승격. Track A 자동 라우터(zone_*.json 키워드)는 불변."
+  },
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "labels": ["HYPO", "research_only", "internal_only", "b2b_gtm_draft"],
+  "boundary_ack_ko": "외부 SKU 명칭·산업 GTM은 기획안이며, 내부 zone 샤드는 레거시 라우팅 스냅샷입니다. B→A·실매매 자동 합선 없음.",
+  "sku_classes": {
+    "SKU-COORD": {
+      "sku_class": "coord",
+      "label_ko": "선동기화 장부 + pointer/inject ref wire",
+      "wire_modes": ["pointer_plus_fingerprint", "ltm_lane_inject"],
+      "bilateral_ground_truth_required": true,
+      "metrics_axis": "LTM_resume_and_tp03_pointer",
+      "factcheck_pointer": "docs/final/artifacts/ltm_moat_factcheck_v1_latest.json"
+    },
+    "SKU-MASK": {
+      "sku_class": "mask",
+      "label_ko": "마스킹 JSONL + v2 stateless/hybrid compress",
+      "poc_harness_script": "scripts/run_customer_compression_stateless_poc_v1.py",
+      "metrics_axis": "Track_A_frozen_and_hybrid_pilot",
+      "default_for_industry_skus": true
+    }
+  },
+  "hybrid_router_spec": "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
+  "hybrid_spike_report": "reports/compression_hybrid_router_spike_v1_latest.json",
+  "sku_separation_brief": "docs/final/artifacts/compression_sku_separation_brief_v1_latest.json",
+  "candidate_pool_signoff_envelope": "docs/final/artifacts/compression_candidate_pool_on_promotion_signoff_envelope_v1_latest.json",
+  "corpus_bindings_pointer": "docs/final/artifacts/compression_hybrid_router_spec_v1.json#corpus_bindings",
+  "mask_hybrid_router_table": [
+    {
+      "corpus_tag": "public-open-web-v1",
+      "corpus_id": "public_open_web_v1",
+      "backend": "mkm_candidate_pool",
+      "routing_profile": "candidate_pool_on",
+      "sku_class": "SKU-MASK"
+    },
+    {
+      "corpus_tag": "wtt-premium-cs-customer-v1",
+      "corpus_id": "wtt_premium_cs_customer_v1",
+      "backend": "mkm_v2_economy_shortcap",
+      "routing_profile": "track_a_promoted",
+      "sku_class": "SKU-MASK"
+    },
+    {
+      "corpus_tag": "open_structured_long",
+      "corpus_id": "open_structured_long_v1",
+      "backend": "mkm_v2_economy_stateless",
+      "kpi_saving_eligible": false,
+      "sku_class": "SKU-MASK"
+    },
+    {
+      "corpus_tag": "golden40_internal",
+      "corpus_id": "golden40_internal",
+      "backend": "llmlingua2",
+      "regress_lane": true,
+      "sku_class": "SKU-MASK"
+    }
+  ],
+  "sync_hybrid_spec_script": "scripts/sync_compression_hybrid_router_spec_from_spike_v1.py",
+  "poc_harness": {
+    "script": "scripts/run_customer_compression_stateless_poc_v1.py",
+    "implemented_flags": ["--input-jsonl", "--out-json", "--max-cases", "--loss-profile", "--jaccard-floor", "--relax-pass-gate", "--workspace-root", "--sku", "--sku-spec-json", "--shard-json"],
+    "not_implemented_flags": [],
+    "routing_wiring": "forced_shard_id_v1",
+    "default_out_json": "reports/customer_compression_stateless_poc_v1_latest.json",
+    "poc_command_windows": "py scripts/run_customer_compression_stateless_poc_v1.py --input-jsonl exports/a-codeai-public-reproduce-v2/data/compression/stateless_poc_golden40_public_safe_v1.jsonl --out-json reports/customer_compression_stateless_poc_v1_latest.json --relax-pass-gate",
+    "poc_command_stable_corpus": "py scripts/run_customer_compression_stateless_poc_v1.py --input-jsonl data/compression/stateless_poc_golden40_public_safe_v1.jsonl --out-json reports/customer_compression_stateless_poc_v1_latest.json --relax-pass-gate",
+    "poc_command_sku_example": "py scripts/run_customer_compression_stateless_poc_v1.py --input-jsonl data/compression/stateless_poc_golden40_public_safe_v1.jsonl --sku MKM-MED-G1 --out-json reports/customer_compression_stateless_poc_medm_g1_v1_latest.json --relax-pass-gate",
+    "poc_command_sku_metadata_only": "py scripts/run_customer_compression_stateless_poc_v1.py --input-jsonl data/compression/stateless_poc_golden40_public_safe_v1.jsonl --sku MKM-MED-G1 --no-force-b2b-shard --relax-pass-gate",
+    "poc_bundle_command": "py scripts/run_compression_b2b_sku_industry_poc_bundle_v1.py",
+    "corpus_build_command": "py scripts/build_compression_b2b_industry_poc_corpus_v1.py"
+  },
+  "demo_corpus": {
+    "primary_export_path": "exports/a-codeai-public-reproduce-v2/data/compression/stateless_poc_golden40_public_safe_v1.jsonl",
+    "stable_repo_path": "data/compression/stateless_poc_golden40_public_safe_v1.jsonl",
+    "row_count_expected": 40,
+    "industry_corpus_row_count_expected": 10,
+    "bundle_summary_path": "reports/compression_b2b_sku_industry_poc_bundle_v1_latest.json",
+    "framing_ko": "공용 41k 마스터 렉시콘 + 마스킹 JSONL stateless PoC 실측 — Track A 47.5% SLA·기성품 샤드 즉시 장착 보장 아님."
+  },
+  "external_claims_allowed": {
+    "track_a_47_5_pct_sla": false,
+    "off_the_shelf_shard_plug_and_play": false,
+    "industry_keywords_tuned": false,
+    "b2b_shard_catalog_on_disk": true,
+    "b2b_shard_runtime_routing": true,
+    "b2b_shard_runtime_routing_scope": "sku_forced_shard_id_only",
+    "customer_poc_measurement_only": true
+  },
+  "b2b_shards_root": "codebook/shards/b2b",
+  "b2b_shards_isolated_from_auto_router": true,
+  "skus": [
+    {
+      "external_sku": "MKM-SCM-A1",
+      "gtm_industry_ko": "제조·SCM",
+      "legacy_shard_path": "codebook/shards/zone_a_scm.json",
+      "b2b_shard_path": "codebook/shards/b2b/zone_a_scm_b2b_v1.json",
+      "legacy_domain_field": "scm",
+      "industry_fit_status": "legacy_mismatch",
+      "keywords_snapshot": {
+        "routing_keywords": ["사상의학", "체질", "태양인", "태음인", "소양인", "소음인", "증상", "처방"],
+        "must_keep_hard_terms": ["사상의학", "체질", "태양인", "태음인", "소양인", "소음인"],
+        "must_keep_soft_terms_top": ["증상", "처방", "금칙", "단위", "안전하다"]
+      },
+      "target_keywords_v1": ["공급망", "SCM", "재고", "리드타임", "BOM", "생산계획", "물류", "조달"],
+      "demo_industry_jsonl": "data/compression/stateless_poc_scm_public_safe_v1.jsonl",
+      "poc_report_path": "reports/customer_compression_stateless_poc_scm_a1_v1_latest.json",
+      "phase_b_note_ko": "산업 데모 JSONL 10건 + forced_shard_id PoC 리포트 분리 완료."
+    },
+    {
+      "external_sku": "MKM-CHAT-D1",
+      "gtm_industry_ko": "챗봇·대화형 AI",
+      "legacy_shard_path": "codebook/shards/zone_d_ssot.json",
+      "b2b_shard_path": "codebook/shards/b2b/zone_d_ssot_b2b_v1.json",
+      "legacy_domain_field": "ssot",
+      "industry_fit_status": "legacy_mismatch",
+      "keywords_snapshot": {
+        "routing_keywords": ["source", "artifact", "ssot", "fact-lock", "governance", "policy"],
+        "must_keep_hard_terms": ["source", "artifact", "ssot", "traceability", "constitution"],
+        "must_keep_soft_terms_top": ["governance", "policy", "quality", "review", "caveats"]
+      },
+      "target_keywords_v1": ["대화", "챗봇", "intent", "FAQ", "세션", "응답", "프롬프트", "고객지원"],
+      "demo_industry_jsonl": "data/compression/stateless_poc_chat_public_safe_v1.jsonl",
+      "poc_report_path": "reports/customer_compression_stateless_poc_chat_d1_v1_latest.json",
+      "phase_b_note_ko": "산업 데모 JSONL 10건 + forced_shard_id PoC 리포트 분리 완료."
+    },
+    {
+      "external_sku": "MKM-FIN-E1",
+      "gtm_industry_ko": "금융·공시",
+      "legacy_shard_path": "codebook/shards/zone_e_finance.json",
+      "b2b_shard_path": "codebook/shards/b2b/zone_e_finance_b2b_v1.json",
+      "legacy_domain_field": "finance",
+      "industry_fit_status": "legacy_mismatch",
+      "keywords_snapshot": {
+        "routing_keywords": ["risk", "volatility", "drawdown", "position", "leverage", "stoploss", "slippage", "pnl"],
+        "must_keep_hard_terms": ["risk", "drawdown", "position", "leverage"],
+        "must_keep_soft_terms_top": ["stoploss", "slippage", "pnl"]
+      },
+      "target_keywords_v1": ["공시", "재무제표", "감사", "규제", "리스크", "컴플라이언스", "ESG", "공시보고서"],
+      "demo_industry_jsonl": "data/compression/stateless_poc_finance_public_safe_v1.jsonl",
+      "poc_report_path": "reports/customer_compression_stateless_poc_fin_e1_v1_latest.json",
+      "phase_b_note_ko": "산업 데모 JSONL 10건 + forced_shard_id PoC 리포트 분리 완료."
+    },
+    {
+      "external_sku": "MKM-MED-G1",
+      "gtm_industry_ko": "의료·헬스케어",
+      "legacy_shard_path": "codebook/shards/zone_g_health.json",
+      "b2b_shard_path": "codebook/shards/b2b/zone_g_health_b2b_v1.json",
+      "legacy_domain_field": "health",
+      "industry_fit_status": "partial",
+      "keywords_snapshot": {
+        "routing_keywords": ["건강", "수면", "식사", "호흡", "피로", "증상", "회복", "체온", "환자", "임상", "진단", "바이탈", "의료", "건강검진", "silver", "vitals"],
+        "must_keep_hard_terms": ["건강", "수면", "식사", "증상", "환자", "임상", "진단"],
+        "must_keep_soft_terms_top": ["호흡", "피로", "회복", "체온", "자극성", "취침"]
+      },
+      "target_keywords_v1": ["의료", "임상", "진단", "환자", "바이탈", "Silver Tech", "건강검진", "SOAP"],
+      "demo_industry_jsonl": "data/compression/stateless_poc_health_public_safe_v1.jsonl",
+      "poc_report_path": "reports/customer_compression_stateless_poc_med_g1_v1_latest.json",
+      "phase_b_note_ko": "산업 데모 JSONL 10건 + forced_shard_id PoC 리포트 분리 완료."
+    }
+  ],
+  "poc_last_run": {
+    "executed_at_utc": "2026-06-11T01:18:27Z",
+    "exit_code": 0,
+    "mode": "industry_bundle_v1",
+    "bundle_summary_path": "reports/compression_b2b_sku_industry_poc_bundle_v1_latest.json",
+    "bundle_ok": true,
+    "sku_count": 4,
+    "note_ko": "산업별 JSONL 10건×4 SKU PoC 분리 — saving/J는 코퍼스별 실측만, 47.5%·SLA 동일시 금지."
+  },
+  "fact_lock_pointers": [
+    "docs/final/artifacts/ltm_moat_factcheck_v1_latest.json",
+    "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
+    "docs/final/artifacts/mkm_b2b_compression_positioning_external_v1_latest.json",
+    "docs/final/artifacts/compression_b2b_recommended_workflow_v1.json",
+    "scripts/run_customer_compression_stateless_poc_v1.py",
+    "scripts/compression_b2b_off_the_shelf_shard_sku_v1_lib.py",
+    "scripts/build_compression_b2b_industry_poc_corpus_v1.py",
+    "scripts/run_compression_b2b_sku_industry_poc_bundle_v1.py",
+    "codebook/shards/b2b/",
+    "docs/final/artifacts/compression_public_reproduce_pack_v1_latest.json"
+  ]
+}
