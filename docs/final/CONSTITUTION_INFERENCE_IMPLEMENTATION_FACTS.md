@@ -303,6 +303,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | Lexicon lookup smoke | `scripts/check_lexicon_lookup_smoke_v1.py` | `master_codebook_lexicon_v1_bridge` 조인만 · **채팅 주입 없음**; `reports/lexicon_lookup_smoke_v1_latest.json`. |
 | Hub developer triangle | `scripts/check_hub_developer_copy_triangle_v1.py` | benchmark · GitHub reproduce · `/enterprise/apply` 링크 정합; `reports/hub_developer_copy_triangle_v1_latest.json`. |
 | 주간 번들 | `scripts/Invoke-NotebookLmFuelLayerAudit_v1.ps1` | 위 3종 + 선택 `-IncludeMcpPrereqs`; exit 0 = Week 2 fuel gate. |
+| LENS split | `notebooklm_lens_pack_push_map_v1.template.json` · `notebooklm_nl_notebook_uuid_registry_v1.json` | LENS_MYEONGNI/LENS_LOGOS **1:1 UUID** (2026-06-14); audit `--strict-known-groups`. |
 | 회귀 | `tests/test_notebooklm_fuel_layer_audit_v1.py` | offline audit 3종. |
 
 ### 1.4.3 Bounded lane loop packaging v1 (Week 4 · shadow)
@@ -315,6 +316,7 @@ OpenAPI·스모크 스텁 등 **HTTP API 계약**은 `docs/final/openapi_macro_r
 | Cost JSONL | `reports/bounded_lane_loop_cost_v1.jsonl` | 루프당 `loop_wall_seconds` · `step_count` · `outcome_class`. |
 | Invoke | `Invoke-BoundedLaneLoop_v1.ps1` | `-MetaLayerEnvelopePath` · `-RefreshA2aBriefingSample`. |
 | Health smoke | `run_workspace_automation_health.ps1 -IncludeBoundedLaneLoopSmoke` · `-BoundedLaneLoopSmokeOnly` | P0 + pytest 3종 + infra dry-run invoke; persona `BoundedLaneLoopShadow`. |
+| Weekly task | `scripts/Register-MkmBoundedLaneLoopShadowWeeklyTask.ps1` | tier3 optional · Sunday 09:30 · `MKM_BoundedLaneLoop_Shadow_Weekly`. |
 | 회귀 | `tests/test_bounded_lane_loop_week4_v1.py` | envelope dry-run · A2A sample builder. |
 
 ---

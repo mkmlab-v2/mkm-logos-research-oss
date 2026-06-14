@@ -30,6 +30,17 @@ def test_notebooklm_lane_mapping_audit_exit_ok() -> None:
     assert doc["blocking_violation_count"] == 0
 
 
+def test_notebooklm_lane_mapping_strict_known_groups_exit_ok() -> None:
+    proc = _run("check_notebooklm_lane_mapping_audit_v1.py", "--strict-known-groups")
+    assert proc.returncode == 0, proc.stderr + proc.stdout
+    doc = json.loads((ROOT / "reports/notebooklm_lane_mapping_audit_v1_latest.json").read_text(encoding="utf-8"))
+    assert doc["ok"] is True
+    assert doc["blocking_violation_count"] == 0
+    assert doc.get("known_shared_notebook_groups") == [] or all(
+        g.get("status") != "known_shared_group" for g in (doc.get("known_shared_notebook_groups") or [])
+    )
+
+
 def test_lexicon_lookup_smoke_exit_ok() -> None:
     proc = _run("check_lexicon_lookup_smoke_v1.py")
     assert proc.returncode == 0, proc.stderr + proc.stdout
