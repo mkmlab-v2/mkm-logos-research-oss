@@ -1,11 +1,11 @@
 {
   "schema": "notebooklm_lens_pack_push_map_v1",
   "version": "1.0.0",
-  "note": "Lens UUIDs aligned to docs/final/notebooklm_nl_notebook_uuid_registry_v1.json (2026-06-14 LENS_MYEONGNI/LENS_LOGOS split). Runtime copy: reports/notebooklm_lens_packs_v1/notebook_ids.json.",
+  "note": "Lens UUIDs aligned to docs/final/notebooklm_nl_notebook_uuid_registry_v1.json (2026-06-14). Runtime copy: reports/notebooklm_lens_packs_v1/notebook_ids.json.",
     "lens_notebook_id": {
-    "OPS_COMMAND_ANCHOR": "347e5cbe-0ade-4615-9aac-8747d4fa644e",
+    "OPS_COMMAND_ANCHOR": "9bc26140-70c4-47d0-b9ea-bd3a394916a9",
     "LTM_GRAPH_OPS": "9bc26140-70c4-47d0-b9ea-bd3a394916a9",
-    "TRACKC_BIZ": "b25977f3-1f92-4075-8dfe-d4074ca708a7",
+    "TRACKC_BIZ": "8aaccea1-a2e2-4080-b8c1-6bfc65ffcd8e",
     "LENS_MYEONGNI": "d87af9c2-bba3-4165-ad5b-de9314de1440",
     "LENS_SASANG": "90132f48-febd-471a-82a1-b6ec80d98618",
     "LENS_LOGOS": "93e825c7-7d48-41f7-aedf-33e5fa59c2db",

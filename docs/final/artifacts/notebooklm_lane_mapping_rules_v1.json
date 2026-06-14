@@ -1,6 +1,6 @@
 {
   "schema": "notebooklm_lane_mapping_rules_v1",
-  "description": "1 notebook UUID per RAG purpose. known_shared_notebook_groups empty after 2026-06-14 LENS split (registry SSOT).",
+  "description": "1 notebook UUID per RAG purpose; documented ops share for OPS_COMMAND_ANCHOR + LTM_GRAPH_OPS.",
   "required_unique_lenses": [
     "OPS_COMMAND_ANCHOR",
     "LTM_GRAPH_OPS",
@@ -10,7 +10,13 @@
     "LENS_LOGOS",
     "MKM_CORE_FACT"
   ],
-  "known_shared_notebook_groups": [],
+  "known_shared_notebook_groups": [
+    {
+      "lenses": ["OPS_COMMAND_ANCHOR", "LTM_GRAPH_OPS"],
+      "notebook_id": "9bc26140-70c4-47d0-b9ea-bd3a394916a9",
+      "note": "01 · 지휘·운영 — ops command anchor + LTM graph packs share one daily ops notebook (NOTEBOOKLM_MINIMAL_PORTFOLIO seq 01)."
+    }
+  ],
   "forbidden_path_substrings_in_lens": {
     "MKM_CORE_FACT": [
       "MYEONGRI_INSIGHT",

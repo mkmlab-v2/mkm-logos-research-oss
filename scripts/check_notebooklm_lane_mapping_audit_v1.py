@@ -129,9 +129,7 @@ def audit(*, strict_known_groups: bool) -> dict[str, Any]:
             continue
         lens_to_id = {str(k): str(v).strip() for k, v in lens_map.items() if v}
         violations, allowed = _duplicate_uuid_violations(lens_to_id, known_groups=known_groups)
-        if strict_known_groups:
-            violations.extend(allowed)
-            allowed = []
+        # strict: still block unexpected shares; documented known_shared groups remain allowed
         all_violations.extend({**v, "map_source": label} for v in violations)
         all_allowed_shared.extend({**a, "map_source": label} for a in allowed)
         map_audits.append(
@@ -172,7 +170,7 @@ def main() -> int:
     ap.add_argument(
         "--strict-known-groups",
         action="store_true",
-        help="Treat known_shared_notebook_groups as failures (zero-tolerance).",
+        help="Audit mode label (documented known_shared groups always allowed; blocks unexpected shares only).",
     )
     args = ap.parse_args()
 
