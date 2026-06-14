@@ -10,11 +10,13 @@ TEMPLATE = ROOT / "docs" / "final" / "notebooklm_lens_pack_push_map_v1.template.
 
 REQUIRED_LENS = (
     "OPS_COMMAND_ANCHOR",
+    "LTM_GRAPH_OPS",
     "TRACKC_BIZ",
     "LENS_MYEONGNI",
     "LENS_SASANG",
     "LENS_LOGOS",
     "MKM_CORE_FACT",
+    "COMPRESSION_BTRACK",
 )
 
 
