@@ -1,0 +1,41 @@
+{
+  "schema": "compression_en_business_deep_pack_fallback_spec_v1",
+  "generated_at_utc": "2026-06-15T03:46:03Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "gate_artifact": "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json",
+  "vertical_id": "zone_h_en_business_v1",
+  "wire_family": "BIZ_MASK",
+  "lane_active_when": [
+    "enable_en_business_deep_pack=true",
+    "sku_class=mask AND routed shard_id=zone_h_en_business_v1"
+  ],
+  "match_order": [
+    "exact_snippet"
+  ],
+  "on_catalog_match": {
+    "roundtrip_path": "template_catalog_wire_v1",
+    "wire_prefix": "[BIZ_MASK:",
+    "integrity_flag": "en_business_deep_pack_wire_v1"
+  },
+  "on_no_match": {
+    "fallback_path": "semantic_v2_stub",
+    "integrity_flags": {
+      "no_match": "en_business_deep_pack_no_catalog_match",
+      "fallback_path": "en_business_deep_pack_fallback_path"
+    },
+    "exact_restore_ok": false,
+    "metrics_axis": "semantic_v2_stub_separate_from_biz_mask_wire"
+  },
+  "template_catalog_row_count": 3,
+  "forbidden": [
+    "merge_with_coding_deep_pack_headline",
+    "merge_with_wtt_cs_shortcap_headline",
+    "claim_biz_mask_saving_for_unmatched_snippet"
+  ],
+  "reproduce": [
+    "py scripts/build_compression_en_business_deep_pack_gate_v1.py",
+    "py scripts/build_compression_en_business_deep_pack_fallback_spec_v1.py"
+  ]
+}

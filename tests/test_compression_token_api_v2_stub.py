@@ -17,6 +17,7 @@ from fastapi.testclient import TestClient
 from scripts.compression_token_api_v2_stub import (
     API_CONTRACT_VERSION,
     CODING_DEEP_PACK_KEY,
+    EN_BUSINESS_DEEP_PACK_KEY,
     PACKET_FORMAT_VERSION,
     RESIDUAL_STUB_KEY,
     _legacy_flat_key_access_count,
@@ -34,6 +35,7 @@ from scripts.report_multilens_performance_eval import _jaccard
 client = TestClient(app)
 ROOT = Path(__file__).resolve().parents[1]
 OPENAPI_V2 = ROOT / "docs" / "final" / "openapi_token_compression_v2_draft.yaml"
+TEMPLATES_EB = ROOT / "codebook/templates/zone_h_en_business_templates_v1.jsonl"
 
 # Track A-style floor for V2 API round-trip fidelity (original vs expand output, not v1 echo).
 V2_ROUNDTRIP_JACCARD_MIN = 0.73
@@ -829,3 +831,51 @@ def test_resolve_latest_codebook_uses_production_pointer() -> None:
     p = resolve_latest_codebook_path()
     assert p is not None
     assert p.name == Path(prod_path).name
+
+
+def test_v2_en_business_deep_pack_wire_roundtrip_exact() -> None:
+    import json
+
+    row = json.loads(TEMPLATES_EB.read_text(encoding="utf-8").splitlines()[0])
+    sample = str(row["snippet"])
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_h_en_business_v1",
+            "sku_class": "mask",
+            "client_request_id": "test-v2-en-business-deep-pack-1",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("en_business_deep_pack_wire_v1") is True
+    assert flags.get("wire_family") == "BIZ_MASK"
+    assert flags.get("exact_restore_ok") is True
+    pkt = cr.json()["compression_packet"]
+    assert str(pkt["compressed_text"]).startswith("[BIZ_MASK:")
+    assert EN_BUSINESS_DEEP_PACK_KEY in pkt["residual_meta"]
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200, er.text
+    assert er.json()["text"] == sample
+    assert er.json()["integrity_flags"].get("reassembly") == "en_business_deep_pack_wire_v1"
+
+
+def test_v2_en_business_deep_pack_no_match_falls_back_semantic() -> None:
+    unknown = "Dear Team, this is a one-off note without catalog template match."
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": unknown,
+            "loss_profile": "semantic_general",
+            "enable_en_business_deep_pack": True,
+            "forced_shard_id": "zone_h_en_business_v1",
+            "client_request_id": "test-v2-en-business-fallback",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("en_business_deep_pack_no_catalog_match") is True
+    assert flags.get("en_business_deep_pack_fallback_path") == "semantic_v2_stub"
+    assert flags.get("en_business_deep_pack_wire_v1") is not True

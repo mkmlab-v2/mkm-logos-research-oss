@@ -1,0 +1,84 @@
+{
+  "schema": "compression_en_business_deep_pack_gate_v1",
+  "generated_at_utc": "2026-06-15T03:46:03Z",
+  "track": "B",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "track_a_active_untouched": true,
+  "vertical": "zone_h_en_business_formal",
+  "vertical_id": "zone_h_en_business_v1",
+  "policy_shard": "codebook/shards/zone_h_en_business_v1.json",
+  "wire_family": "BIZ_MASK",
+  "vertical_spec": "docs/final/artifacts/compression_en_business_deep_pack_spec_v1_latest.json",
+  "separate_from_coding_pack": "docs/final/artifacts/compression_coding_deep_pack_gate_v1_latest.json",
+  "separate_from_wtt_cs": "corpus_tag wtt-premium-cs-customer-v1 shortcap axis",
+  "template_catalog": {
+    "jsonl": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
+    "manifest": "codebook/templates/zone_h_en_business_templates_manifest_v1.json",
+    "catalog_sha256": "7b3de30c75942c3f3cf75c24ab18ce54e1596f06197d9b10a834bc0f935ffe64",
+    "row_count": 3
+  },
+  "roundtrip_path": "template_catalog_wire_v1",
+  "twin_metrics_axis": {
+    "primary_pair": [
+      "saving_rate",
+      "exact_restore_ok"
+    ],
+    "secondary_axis": "jaccard_proxy",
+    "note": "BIZ_MASK business formal wire. Not ZF_MASK coding pack. Not wtt CS shortcap (FAIL-COMP-004)."
+  },
+  "cases": [
+    {
+      "template_id": "eb_t001",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "wire_family": "BIZ_MASK",
+      "saving_rate": 0.4,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[BIZ_MASK:eb_t001@7b3de30c]",
+      "wire_token_count": 15,
+      "original_token_count": 25,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "eb_t002",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "wire_family": "BIZ_MASK",
+      "saving_rate": 0.25,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[BIZ_MASK:eb_t002@7b3de30c]",
+      "wire_token_count": 15,
+      "original_token_count": 20,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "eb_t003",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "wire_family": "BIZ_MASK",
+      "saving_rate": 0.4,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[BIZ_MASK:eb_t003@7b3de30c]",
+      "wire_token_count": 15,
+      "original_token_count": 25,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    }
+  ],
+  "summary": {
+    "case_count": 3,
+    "cases_ok": 3,
+    "exact_restore_pass_count": 3,
+    "mean_saving_rate": 0.35,
+    "mean_jaccard_proxy": 1.0
+  },
+  "reproduce": "py scripts/build_compression_en_business_deep_pack_gate_v1.py"
+}

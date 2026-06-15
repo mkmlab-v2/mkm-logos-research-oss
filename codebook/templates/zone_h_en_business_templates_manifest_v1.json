@@ -1,0 +1,15 @@
+{
+  "schema": "zone_h_en_business_templates_manifest_v1",
+  "generated_at_utc": "2026-06-15T03:46:03Z",
+  "catalog_path": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
+  "row_count": 3,
+  "catalog_sha256": "7b3de30c75942c3f3cf75c24ab18ce54e1596f06197d9b10a834bc0f935ffe64",
+  "template_ids": [
+    "eb_t001",
+    "eb_t002",
+    "eb_t003"
+  ],
+  "shard_id": "zone_h_en_business_v1",
+  "wire_family": "BIZ_MASK",
+  "research_only": true
+}
