@@ -66,3 +66,13 @@ def test_route_from_shard_id_unknown_raises() -> None:
         assert "Unknown shard_id" in str(e)
     else:
         raise AssertionError("expected ValueError")
+
+
+def test_route_from_shard_id_b2b_catalog_without_auto_keyword_route() -> None:
+    router = DomainSpecificRouter(SHARDS)
+    r = router.route_from_shard_id("zone_g_health_b2b_v1")
+    assert r.shard_id == "zone_g_health_b2b_v1"
+    assert r.domain == "health_b2b"
+    # B2B shards are catalog-only for keyword scoring — auto route must not pick b2b id.
+    auto = router.route("환자 임상 진단 의료 바이탈 건강검진")
+    assert auto.shard_id != "zone_g_health_b2b_v1"
