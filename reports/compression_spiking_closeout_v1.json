@@ -87,6 +87,8 @@
   "shadow_registry_sync": "scripts/run_compression_mask_shadow_registry_sync_v1.py",
   "shadow_registry_staging": "docs/final/artifacts/compression_mask_shadow_registry_staging_v1.json",
   "hypo_passive_cross_audit": "scripts/run_compression_mask_hypo_passive_cross_audit_v1.py",
+  "hypo_passive_cross_audit_task": "MKM_Compression_MaskHypoPassiveCrossAudit_Daily",
+  "hypo_passive_cross_audit_register": "scripts/Register-CompressionMaskHypoPassiveCrossAuditDailyTask.ps1",
   "reproduce": [
     "py scripts/run_en_business_template_overlay_scan_v1.py",
     "py scripts/run_en_business_shadow_router_bind_v1.py",

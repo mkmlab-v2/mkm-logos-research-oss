@@ -1,0 +1,413 @@
+{
+  "schema": "mkm_scheduler_solo_core_stack_v1",
+  "version": "2026-06-14",
+  "description": "1인 solo dev 권장 스케줄러 코어. 일상: Invoke-MkmSoloBackgroundOps_v1.ps1 + Invoke-MkmSchedulerSoloCoreStackAudit_v1.ps1 -EnforceSoloBand (solo_stack_ready<=max, unauthorized_ready=0). Apply Disable: -ApplyDisable -BatchFilter <id> 만. Track A/live 자동 승격 없음.",
+  "tier0_core_daily": [
+    "\\MKM_ParallelPassiveLoop_Daily",
+    "\\MKM_SafeOpsSurfaceCheck_Daily",
+    "\\MKM_McpHygieneProbe_Daily",
+    "\\MKM-BTrack-DailyHypothesis-Chain",
+    "\\GeneralProphecyDailyQueueV1",
+    "\\MKM_AIV2_DailyReadiness",
+    "\\MKM-PreNews-Shadow-Daily"
+  ],
+  "tier1_core_weekly": [
+    "\\MKM-AmsaengEosa-Weekly-Audit-Packet",
+    "\\MKM_TestRecovery_Safe_Weekly",
+    "\\MKM-Sunday-Automation-LastResult-Audit",
+    "\\MKM-BTrack-RecommendedEval-AutoSweep-Weekly",
+    "\\MKM_NotebookLmMcpWeeklyHygiene",
+    "\\MKM_DocSync_Safe_Weekly"
+  ],
+  "tier2_keep_event": [
+    "\\MKM_StopLocalDevServers_OnLogoff",
+    "\\MKM_RepairNotebookLmMcpStale_OnLogoff",
+    "\\MKM_CursorTerminalJanitor_OnLogoff"
+  ],
+  "tier3_optional_active": [
+    "\\Showroom-TrackC-Publish-Daily",
+    "\\MKM-TrackC-MacroDailyFusion",
+    "\\MKM-PreNews-Shadow-Health-Daily",
+    "\\MKM_AIV2_FinalOpsGuard_Daily",
+    "\\MKM-BTrack-OHLCV-Health-Daily",
+    "\\MKM-Prophecy-Daily-Eval-Report",
+    "\\MKM-Prophecy-Panel-24h-Alerts",
+    "\\MKM-Prophecy-Evolution-Watchdog",
+    "\\MKM_GpuRecommendedBundle_Weekly",
+    "\\MKM_WebOps_Regime_Weekly",
+    "\\MKM_A2A_Dogfood_Passive_Daily",
+    "\\MKM_A2A_Weekly_Repro_Bundle",
+    "\\MKM_InterAgent_RQ019_Weekly_Smoke",
+    "\\MKM_BoundedLaneLoop_Shadow_Weekly"
+  ],
+  "disable_batches": {
+    "btrack_dup_daily": {
+      "reason": "MKM-BTrack-DailyHypothesis-Chain 단일 일일 SSOT; Phase3/StrictStreak/Promotion-Fast 중복",
+      "tasks": [
+        "\\MKM-BTrack-Phase3-DailyChain",
+        "\\MKM-BTrack-Promotion-FastCycle-Strict",
+        "\\MKM-BTrack-StrictStreak-Cycle",
+        "\\MKM-BTrack-OHLCV-ScoreEval-Daily",
+        "\\MKM-BTrack-Phase1-MicroLive-VpsSync"
+      ]
+    },
+    "prophecy_sandbox_fail": {
+      "reason": "Sandbox chain Last Result 2 반복; DailyHypothesis+GeneralProphecy로 대체",
+      "tasks": [
+        "\\MKM-Prophecy-Sandbox-DailyChain",
+        "\\MKM-Prophecy-Sandbox-WeeklyPhase3"
+      ]
+    },
+    "trading_shadow_hourly": {
+      "reason": "HOLD_SHADOW; 관측만 필요 시 Observation 1개 유지 가능",
+      "tasks": [
+        "\\MKM-Trading-Execution-Readiness-Loop-2H",
+        "\\MKM-BinanceUSDM-SmallValidation-BestPreset-2H",
+        "\\MKM-BinanceUSDM-SmallValidation-BiDirectional-2H"
+      ]
+    },
+    "magic_orb_cluster": {
+      "reason": "MagicOrb/Op30 일일·주간 다중 체인 — Track C fusion 또는 수동으로 충분",
+      "tasks": [
+        "\\MKM_Logos_MagicOrb_AutoOps_Daily",
+        "\\MKM_MagicOrb_FunnelSummary_Daily",
+        "\\MKM_MagicOrb_QuestionInsight_Daily",
+        "\\MKM_Op30_MagicOrb_Envelope_Daily",
+        "\\MKM_MagicOrb_FunnelLiveReset_Weekly",
+        "\\MKM_Op30_MagicOrb_TierMatrix_Weekly",
+        "\\MKM_Op30_MagicOrb_Traffic_Weekly"
+      ]
+    },
+    "logos_submission_dup_daily": {
+      "reason": "TrackC-MacroDailyFusion·LogosSymbolic-Operational-Bundle로 대체",
+      "tasks": [
+        "\\MKM-LogosSymbolic-SubmissionPack-Daily",
+        "\\MKM-LogosSymbolic-SubmissionPack-Daily-Fast",
+        "\\MKM-MultilensRagCompletion-Daily",
+        "\\MKM-Logos-PureReal-DailyChain"
+      ]
+    },
+    "btrack_controltower_dup": {
+      "reason": "DailyHypothesis-Chain + 주간 RecommendedEval로 충분",
+      "tasks": [
+        "\\MKM_BTrack_ControlTower_Autopush_Daily",
+        "\\MKM_BTrack_Automation_Health_Daily"
+      ]
+    },
+    "myeongni_daily_cluster": {
+      "reason": "명리 일일 7중복; Run-MyeongniWeeklyOpsSummary_v1 + MKM-MyeongniSasang-WeeklyFusion 주간만 유지",
+      "tasks": [
+        "\\MKM_MkmMyeongniPackageB_DailyOps",
+        "\\MKM_MyeongniAutobot_Audit_Daily",
+        "\\MKM_MyeongniPreset_AutoLock_Daily",
+        "\\MKM_MyeongniStage2_Daily",
+        "\\MKM_MyeongniWeatherFusion_TrainApproveApply_Daily",
+        "\\MKM_MyeongriAiPromptChain_Daily",
+        "\\MKM_Myeongri_QwenSafeManaged_Daily"
+      ]
+    },
+    "logos_research_dup_daily": {
+      "reason": "MKM-TrackC-MacroDailyFusion(tier3) 단일 Logos 일일; PureReal/W22/Operational 중복",
+      "tasks": [
+        "\\MKM-Logos-PureReal-Day30-Checkpoint",
+        "\\MKM-LogosSymbolic-Daily-Operational-Bundle",
+        "\\MKM_Logos_W22_DoD5_Daily"
+      ]
+    },
+    "prophecy_kospi_dup_daily": {
+      "reason": "ParallelPassiveLoop + BTrack-DailyHypothesis-Chain 코어; KOSPI 6월·mkmlife companion 일일 중복",
+      "tasks": [
+        "\\MKM_Kospi_June2026_Prophecy_Evening",
+        "\\MKM_Kospi_June2026_Prophecy_Morning",
+        "\\MKM_Kospi_June2026_Weekend_Research",
+        "\\MKM_Mkmlife_Companion_Btrack_DailySummary"
+      ]
+    },
+    "btrack99_weekly_dup": {
+      "reason": "MKM_BTrack99_Weekly_Rollup 단일 주간 SSOT; Extended 중복",
+      "tasks": [
+        "\\MKM_BTrack99_Weekly_Rollup_Extended"
+      ]
+    },
+    "evolution_lightweight_4h": {
+      "reason": "B-track 4h 루프; tier3 MKM-Prophecy-Evolution-Watchdog로 대체",
+      "tasks": [
+        "\\MKM_Evolution_Lightweight4h"
+      ]
+    },
+    "compression_research_daily": {
+      "reason": "MKM_Compression_WeeklyGovernance 주간 + ParallelPassiveLoop 코어; 일일 shadow/bridge/uplift 중복",
+      "tasks": [
+        "\\MKM_Compression_ShadowAuditor_Daily",
+        "\\MKM_CompressionBridge_Size_Daily_Gate",
+        "\\MKM_ExternalUpliftAuto_Daily"
+      ]
+    },
+    "telegram_digest_dup": {
+      "reason": "1인 solo 텔레그램 digest 2중; 수동/주간으로 충분",
+      "tasks": [
+        "\\MKM-Telegram-Afternoon-Daily-Digest",
+        "\\MKM-Telegram-Minimal-Daily-Digest"
+      ]
+    },
+    "research_gate_daily": {
+      "reason": "B-track 연구 게이트 일일; Fact-Lock 번들·주간 감사로 대체",
+      "tasks": [
+        "\\MKM_ContextNote_ResearchGate_Daily",
+        "\\MKM_L1InverseDecoder_DailyGate",
+        "\\MKM_OnePlusThree_Daily_Gate",
+        "\\MKM_XAI_Contract_Daily_Gate",
+        "\\MKM-ThreeLens-FeatureGateV2-Daily"
+      ]
+    },
+    "product_surface_daily": {
+      "reason": "mkmlife/personadiary/pet 일일; 주간 헬스·수동 점검으로 대체",
+      "tasks": [
+        "\\MKM_MkmlabSpace_DailyHealth",
+        "\\MKM_Mkmlife_Guardrail_Redteam_Daily",
+        "\\MKM_Mkmlife_NewsObservationFusion_Daily",
+        "\\MKM-Personadiary-Daily-Guide-Refresh",
+        "\\MKM_PetCompanion_DailySummary"
+      ]
+    },
+    "agct_sasang_research_daily": {
+      "reason": "AGCT 사상 Stage2 B-track 연구 일일; [HYPO] 수동 스윕",
+      "tasks": [
+        "\\MKM_Agct_Pipeline_Integrity_Smoke_Daily",
+        "\\MKM_AgctSasangStage2_D7Checkpoint_Daily",
+        "\\MKM_AgctSasangStage2_StrictMonitor_Daily"
+      ]
+    },
+    "lens_lora_research_daily": {
+      "reason": "렌즈/LORA 일일 연구; tier3·GPU 주간 번들로 대체",
+      "tasks": [
+        "\\MKM-Lens-Daily-Auto",
+        "\\MKM_LensPenaltyShadow_Daily",
+        "\\MKM_LoraPack_Qwen_Efficiency_Daily",
+        "\\MKM-Radio-Op31c-Fusion-Daily"
+      ]
+    },
+    "misc_ops_noise_daily": {
+      "reason": "인사이트·메모리 GC·inspector 등 solo 백그라운드 ops로 대체",
+      "tasks": [
+        "\\MKM_DualRuntime_Heartbeat_Daily",
+        "\\MKM_GitRuntimeArtifactRestore_Daily",
+        "\\MKM_AgentMemory_GarbageCollection_Daily",
+        "\\MKM_MemoryGraph_OpsDaily",
+        "\\MKM_Internal_Inspector_Daily",
+        "\\MKM_DailyExecutionInsightBrief",
+        "\\MKM_MorningBeans_Daily"
+      ]
+    },
+    "ops_chain_dup_daily": {
+      "reason": "MKM_AIV2_DailyReadiness 코어; Phase1/VPS/Guardian drill 일일 중복",
+      "tasks": [
+        "\\MKM-Ops-Phase1-Chain-Daily-V2",
+        "\\MKM-VpsDailyLiveOps-Bundle",
+        "\\MKM-Trading-Guardian-Daily-Drill"
+      ]
+    },
+    "pointer_sasang_guard_daily": {
+      "reason": "포인터/사상 가드 일일; genesis pointer 체인 수동·주간",
+      "tasks": [
+        "\\MKM_PointerGuard_ControlChain_Daily",
+        "\\MKM_Sasang_ResponseMode_Guard_Daily"
+      ]
+    },
+    "aramaic_daily_dup": {
+      "reason": "Aramaic 주간 Threshold/BridgeCoef 유지; 일일 audit 중복",
+      "tasks": [
+        "\\MKM-AramaicMvp-DailyAudit"
+      ]
+    },
+    "btrack_controltower_weekly_dup": {
+      "reason": "MKM-BTrack-RecommendedEval-AutoSweep-Weekly 코어; ControlTower/AutoScientist 주간 중복",
+      "tasks": [
+        "\\MKM_BTrack_ControlTower_Weekly",
+        "\\MKM_BTrack_AutoScientist_Weekly"
+      ]
+    },
+    "commander_briefing_cluster": {
+      "reason": "지휘관 브리핑/레지스트리 일일·수동; MISSION_LOG·채팅으로 대체",
+      "tasks": [
+        "\\MKM-Commander-Evening-Briefing-Score",
+        "\\MKM-Commander-Morning-Nasdaq-Settlement",
+        "\\MKM-Commander-Ribl-Evening-Window-Guard",
+        "\\MKM-Research-Morning-Prediction-Registry"
+      ]
+    },
+    "review_other_solo_trim": {
+      "reason": "review_other 잔여; 코어·registry·수동으로 대체",
+      "tasks": [
+        "\\MKM-n8n-Service",
+        "\\MKM_BTC_Only_Guard_Status",
+        "\\MKM_Hanwha_Eval_Daily",
+        "\\MKM_Lens_Musicgen_Rebake_OnDemand",
+        "\\MKM_NotebookLM_Vault_Sync",
+        "\\MKM_TrackA_CommercializationDaily"
+      ]
+    },
+    "genius_research_cluster": {
+      "reason": "Genius 연구/리허설 클러스터; 수동·월간 1회로 충분",
+      "tasks": [
+        "\\MKM_GeniusDispatch_Chaos_MonthlyDrill",
+        "\\MKM_GeniusGovernance_CompletionWeekly",
+        "\\MKM_GeniusHumanReview_HoldRehearsal_Monthly",
+        "\\MKM_GeniusReasoning_MonthlyRefresh"
+      ]
+    },
+    "logos_weekly_sprawl": {
+      "reason": "tier3 TrackC-MacroDailyFusion; Logos 주간 4중복",
+      "tasks": [
+        "\\MKM-Logos-PureReal-WeeklySnapshot",
+        "\\MKM-Logos-Weekly-Revalidation",
+        "\\MKM_Logos_Chronology_WeeklyBundle",
+        "\\MKM_Logos_Phase10_FourRag_Weekly"
+      ]
+    },
+    "btrack_panel_weekly_dup": {
+      "reason": "BTrack RecommendedEval·BtcWeight 주간 SSOT; 패널/학습 주간 중복",
+      "tasks": [
+        "\\MKM-BTrack-AlignPanel-Streak-Observation-Weekly",
+        "\\MKM-BTrack-DualKpi-PanelCompare-Weekly",
+        "\\MKM-BTrack-Prophecy-Weekly-Learning",
+        "\\MKM-BTrack-WeeklyOpsSeparation",
+        "\\MKM_Btrack_Fills_WeeklyBackfill"
+      ]
+    },
+    "sandbox_pruner_dup": {
+      "reason": "Sandbox pruner 주간 2중; 수동 prune",
+      "tasks": [
+        "\\MKM_Sandbox_Pruner_Fallback_Shadow_Weekly",
+        "\\MKM_Sandbox_Pruner_Ops_Weekly"
+      ]
+    },
+    "cursor_weekly_dup": {
+      "reason": "tier2 logoff janitor + DocSync 코어; Cursor 주간 3중복",
+      "tasks": [
+        "\\MKM_Cursor35_WeeklyOpsRoutine",
+        "\\MKM_CursorDevEnvironment_Comfort_Weekly",
+        "\\MKM_CursorTerminalJanitor_Weekly"
+      ]
+    },
+    "science_trinity_research": {
+      "reason": "B-track 관측·KPI 주간; ParallelPassive·주간 patrol로 대체",
+      "tasks": [
+        "\\MKM_ScienceCore_WeeklyGovernance",
+        "\\MKM_Trinity_Weekly_KPI",
+        "\\MKM_PolymarketObservation_Weekly",
+        "\\MKM_SavingTheNews_NewsHpRt_WeeklyRefresh"
+      ]
+    },
+    "pet_companion_weekly": {
+      "reason": "Pet companion 주간 2중; 제품 수동 점검",
+      "tasks": [
+        "\\MKM-PetCompanion-AggregateSlots-Weekly",
+        "\\MKM_PetCompanion_CoreWeekly"
+      ]
+    },
+    "lens_music_poc_weekly": {
+      "reason": "렌즈 뮤직 POC 주간; GPU 권장 번들·수동",
+      "tasks": [
+        "\\MKM_LensMusicPromptPoc_ThresholdGovernanceDrills_Weekly",
+        "\\MKM_LensMusicPromptPoc_WeeklyThreshold",
+        "\\MKM_LensPenaltyShadow_WeeklyReport"
+      ]
+    },
+    "xai_contract_weekly": {
+      "reason": "XAI 계약 주간·월간 drill; Fact-Lock 번들로 대체",
+      "tasks": [
+        "\\MKM_XAI_Contract_Weekly_Reporting",
+        "\\MKM_XAI_Contract_Monthly_Governance_Drill"
+      ]
+    },
+    "solo_misc_weekly_sprawl": {
+      "reason": "1인 solo 잔여 주간 스프awl; 코어·선택 tier3만 유지",
+      "tasks": [
+        "\\MKM-Aramaic-MVP-Threshold-Weekly",
+        "\\MKM-ACode-OperatorAssistLane-Weekly",
+        "\\MKM_Local_Gpu_Weekly_Routine",
+        "\\MKM_Workspace_Archive_Offload_Weekly",
+        "\\MKM_Workspace_Lifecycle_Weekly",
+        "\\MKM_WeeklyOpsPatrol",
+        "\\MKM_YearlyDevMemoryDigest_Weekly",
+        "\\MKM_Acodeai_PublicBinding_Weekly",
+        "\\MKM_AgentHandoffGovernance_WeeklyBaseline",
+        "\\MKM_GraphSubgraph_LaneWeekly",
+        "\\MKM_BillingPatrol_Weekly",
+        "\\MKM_Kaggle_PrivateDev_Weekly",
+        "\\MKM_LoraPack_Efficiency_WeeklySummary",
+        "\\MKM_BiblicalHistory_WeeklyMaintenance",
+        "\\MKM-PatientIntakeFusion-Weekly",
+        "\\MKM-V2-Wire-Shadow-Metering-Weekly"
+      ]
+    },
+    "solo_extra_weekly_trim": {
+      "reason": "코어·registry·tier4 유지분 외 주간/월간; 페르소나·수동 1회로 대체",
+      "tasks": [
+        "\\MKM-ACode-OperatorAssistLane-Weekly-Light",
+        "\\MKM-BTrack-AlignPanel-FullRefresh-Monthly",
+        "\\MKM-MultilensMonthlyOpsSummary-Monthly",
+        "\\MKM_BTrack99_Weekly_Rollup",
+        "\\MKM_HubB_WeeklyMirror",
+        "\\MKM_L1_ExternalBenchmarkWatchdog_Monthly",
+        "\\MKM_ThreeLens_Weekly_Quality"
+      ]
+    },
+    "prophecy_holdout_sprawl": {
+      "reason": "GeneralProphecyDailyQueueV1 일일 코어; holdout/월간 체인 중복",
+      "tasks": [
+        "\\GeneralProphecyHoldoutEvolutionWeeklyV1",
+        "\\GeneralProphecyHoldoutFailureDrillWeeklyV1",
+        "\\GeneralProphecyMonthlyChainV1"
+      ]
+    },
+    "showroom_vps_auto_dup": {
+      "reason": "VPS 배포는 LOCAL_VS_VPS 수동 git pull; 자동 Guarded Deploy 금지",
+      "tasks": [
+        "\\Showroom-Guarded-VPS-Deploy-Daily"
+      ]
+    }
+  },
+  "tier4_solo_intentional_keep": [
+    "\\MKM-AramaicMvp-BridgeCoef-Weekly",
+    "\\MKM-AramaicMvp-Threshold-Weekly",
+    "\\MKM-BTrack-BtcWeight-HitRateBundle-Weekly",
+    "\\MKM-FactSafe-RiskProfile-Sync-4H",
+    "\\MKM-KmPhysician-CdsEnvelopeBatch-Weekly",
+    "\\MKM-MyeongniSasang-WeeklyFusion",
+    "\\MKM-Trading-Observation-Loop-2H",
+    "\\MKM-VaFusionControlIntegrity-Daily",
+    "\\MKM_CloudflareDnsHealthWeekly",
+    "\\MKM_Compression_WeeklyGovernance",
+    "\\MKM_Compression_MaskHypoPassiveCrossAudit_Daily",
+    "\\MKM_Marketing_WeeklyDraftBundle",
+    "\\MKM_MissionLog_CentralHygiene_Weekly",
+    "\\MKM_No1kmedi_CdssProdSmoke_Weekly",
+    "\\MKM_PreNewsShadow_Monthly_Drill",
+    "\\GeneralProphecyDailyQueueV1",
+    "\\Showroom-TrackC-Publish-Daily",
+    "\\Showroom-TrackC-Nginx-Weekly",
+    "\\MKM_NewsNeutralizer_Shadow_Weekly",
+    "\\MKM_AgentHandoffGovernance_WeeklyBaseline",
+    "\\MKM_BoundedLaneLoop_AllLanes_Weekly",
+    "\\MKM_Workspace_Lifecycle_Weekly"
+  ],
+  "register_task_policy_v1": {
+    "default_state": "Disabled",
+    "require_ssot_tier_before_enable_ready": true,
+    "allowed_tier_keys": [
+      "tier0_core_daily",
+      "tier1_core_weekly",
+      "tier2_keep_event",
+      "tier3_optional_active",
+      "tier4_solo_intentional_keep"
+    ],
+    "note_ko": "새 Register-*Task.ps1 추가 시: SSOT tier에 task path 등록 후에만 Ready. 미등록 Ready는 EnforceSoloBand SPRAWL_FAIL."
+  },
+  "solo_target_ready_band": {
+    "min": 38,
+    "max": 49,
+    "note": "tier0-3 코어 30 + tier4 의도 유지 ~21 + General/Showroom 코어 3; P0-P2 lifecycle/handoff weekly 3종 포함"
+  }
+}

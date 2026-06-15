@@ -110,6 +110,10 @@
         "hypo_shadow_registry_sync": "scripts/run_compression_mask_shadow_registry_sync_v1.py",
         "hypo_shadow_registry_staging": "docs/final/artifacts/compression_mask_shadow_registry_staging_v1.json",
         "hypo_passive_cross_audit": "scripts/run_compression_mask_hypo_passive_cross_audit_v1.py",
+        "hypo_passive_cross_audit_ps1": "scripts/Run-CompressionMaskHypoPassiveCrossAudit_v1.ps1",
+        "hypo_passive_cross_audit_register": "scripts/Register-CompressionMaskHypoPassiveCrossAuditDailyTask.ps1",
+        "hypo_passive_cross_audit_verify": "scripts/Verify-CompressionMaskHypoPassiveCrossAuditTaskReadiness_v1.ps1",
+        "hypo_passive_cross_audit_task": "MKM_Compression_MaskHypoPassiveCrossAudit_Daily",
         "tri_vertical_smoke": "scripts/run_compression_deep_pack_tri_vertical_smoke_v1.py",
         "builder_script": "scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
         "icp_synthetic_operator_axis": {
