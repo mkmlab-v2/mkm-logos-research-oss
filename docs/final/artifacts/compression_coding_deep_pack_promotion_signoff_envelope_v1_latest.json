@@ -1,6 +1,6 @@
 {
   "schema": "compression_coding_deep_pack_promotion_signoff_envelope_v1",
-  "generated_at_utc": "2026-06-15T01:48:37Z",
+  "generated_at_utc": "2026-06-15T02:26:09Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -12,6 +12,8 @@
   "guardrail_ko": "coding deep pack twin gate는 template-catalog wire(ZF_MASK) 전용. candidate_pool_on·Golden-40·Tier A ~86.7%와 헤드라인 합선 금지 (FAIL-COMP-004).",
   "guardrail_en": "Coding deep pack twin gate applies to template-catalog wire (ZF_MASK) only. Do not merge with candidate_pool_on, Golden-40, or Tier A ~86.7% headlines.",
   "fallback_spec": "docs/final/artifacts/compression_coding_deep_pack_fallback_spec_v1_latest.json",
+  "signoff_checklist": "docs/final/artifacts/compression_coding_deep_pack_signoff_checklist_v1_latest.json",
+  "signoff_checklist_builder": "scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py",
   "promotion_gates_at_apply": {
     "roundtrip_path": "template_catalog_wire_v1",
     "template_catalog_row_count": 16,
@@ -36,6 +38,7 @@
   ],
   "reproduce": [
     "py scripts/build_compression_coding_deep_pack_gate_v1.py",
-    "py scripts/build_compression_coding_deep_pack_signoff_envelope_v1.py"
+    "py scripts/build_compression_coding_deep_pack_signoff_envelope_v1.py",
+    "py scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py"
   ]
 }

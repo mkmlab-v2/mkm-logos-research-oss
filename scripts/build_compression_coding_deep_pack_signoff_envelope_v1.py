@@ -65,6 +65,8 @@ def build_envelope(*, gate_path: Path) -> dict[str, Any]:
             "Do not merge with candidate_pool_on, Golden-40, or Tier A ~86.7% headlines."
         ),
         "fallback_spec": "docs/final/artifacts/compression_coding_deep_pack_fallback_spec_v1_latest.json",
+        "signoff_checklist": "docs/final/artifacts/compression_coding_deep_pack_signoff_checklist_v1_latest.json",
+        "signoff_checklist_builder": "scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py",
         "promotion_gates_at_apply": {
             "roundtrip_path": "template_catalog_wire_v1",
             "template_catalog_row_count": row_count,
@@ -90,6 +92,7 @@ def build_envelope(*, gate_path: Path) -> dict[str, Any]:
         "reproduce": [
             "py scripts/build_compression_coding_deep_pack_gate_v1.py",
             "py scripts/build_compression_coding_deep_pack_signoff_envelope_v1.py",
+            "py scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py",
         ],
     }
 
