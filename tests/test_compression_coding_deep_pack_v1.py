@@ -45,9 +45,12 @@ def test_coding_deep_pack_gate_schema_and_twin_axes() -> None:
     assert gate["template_catalog"]["catalog_sha256"] == CATALOG_SHA256_PIN
     assert len(gate["cases"]) == 8
     for case in gate["cases"]:
+        assert case.get("roundtrip_path") == "template_catalog_wire_v1"
         assert "saving_rate" in case
         assert "exact_restore_ok" in case
         assert "jaccard_proxy" in case
+    assert gate["summary"]["exact_restore_pass_count"] == 8
+    assert float(gate["summary"]["mean_saving_rate"]) > 0.0
 
 
 def test_coding_deep_pack_gate_regenerate_smoke() -> None:

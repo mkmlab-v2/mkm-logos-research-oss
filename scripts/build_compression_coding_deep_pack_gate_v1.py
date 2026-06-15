@@ -19,10 +19,9 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from fastapi.testclient import TestClient  # noqa: E402
-
-from scripts.compression_token_api_v2_stub import app  # noqa: E402
-from scripts.report_multilens_performance_eval import _jaccard  # noqa: E402
+from scripts.compression_coding_deep_pack_v1_lib import (  # noqa: E402
+    measure_template_wire_twin,
+)
 
 TEMPLATES = ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl"
 MANIFEST = ROOT / "codebook/templates/zone_f_code_templates_manifest_v1.json"
@@ -75,41 +74,19 @@ def build_manifest(templates_path: Path, manifest_path: Path) -> dict[str, Any]:
     return doc
 
 
-def _run_stub_roundtrip(text: str, *, template_id: str) -> dict[str, Any]:
-    client = TestClient(app)
-    cr = client.post(
-        "/v2/compress",
-        json={
-            "text": text,
-            "loss_profile": "semantic_general",
-            "forced_shard_id": "zone_f_code",
-            "client_request_id": f"coding-deep-pack-{template_id}",
-        },
+def _run_template_wire_roundtrip(
+    text: str,
+    *,
+    template_id: str,
+    catalog_sha256: str,
+    catalog_rows: list[dict[str, Any]],
+) -> dict[str, Any]:
+    return measure_template_wire_twin(
+        original_snippet=text,
+        template_id=template_id,
+        catalog_sha256=catalog_sha256,
+        catalog_rows=catalog_rows,
     )
-    if cr.status_code != 200:
-        return {"template_id": template_id, "ok": False, "error": cr.json()}
-    cj = cr.json()
-    pkt = cj["compression_packet"]
-    er = client.post("/v2/expand", json={"compression_packet": pkt})
-    if er.status_code != 200:
-        return {"template_id": template_id, "ok": False, "error": er.json()}
-    expanded = er.json()["text"]
-    saving = cj.get("compression_metrics") or {}
-    saving_rate = saving.get("savings_ratio")
-    if saving_rate is None:
-        stub = (pkt.get("residual_meta") or {}).get("mk_stub_v2") or {}
-        saving_rate = stub.get("global_token_saving_rate")
-    exact_restore_ok = expanded == text
-    jaccard_proxy = _jaccard(text, expanded)
-    return {
-        "template_id": template_id,
-        "ok": True,
-        "saving_rate": round(float(saving_rate or 0.0), 6),
-        "exact_restore_ok": exact_restore_ok,
-        "jaccard_proxy": round(float(jaccard_proxy), 6),
-        "twin_gate_primary": "saving_rate + exact_restore_ok",
-        "jaccard_axis": "separate_from_exact_restore",
-    }
 
 
 def build_gate(
@@ -120,7 +97,16 @@ def build_gate(
     out_artifact: Path,
 ) -> dict[str, Any]:
     rows = load_templates(templates_path)
-    cases = [_run_stub_roundtrip(str(r["snippet"]), template_id=str(r["template_id"])) for r in rows]
+    catalog_sha256 = manifest["catalog_sha256"]
+    cases = [
+        _run_template_wire_roundtrip(
+            str(r["snippet"]),
+            template_id=str(r["template_id"]),
+            catalog_sha256=catalog_sha256,
+            catalog_rows=rows,
+        )
+        for r in rows
+    ]
     ok_cases = [c for c in cases if c.get("ok")]
     doc: dict[str, Any] = {
         "schema": "compression_coding_deep_pack_gate_v1",
@@ -139,10 +125,11 @@ def build_gate(
             "catalog_sha256": manifest["catalog_sha256"],
             "row_count": manifest["row_count"],
         },
+        "roundtrip_path": "template_catalog_wire_v1",
         "twin_metrics_axis": {
             "primary_pair": ["saving_rate", "exact_restore_ok"],
             "secondary_axis": "jaccard_proxy",
-            "note": "Do not merge Jaccard into exact_restore headline (FAIL-COMP-004).",
+            "note": "Template-catalog wire (MASK deep pack). Generic v2 semantic compress is a separate axis. Do not merge Jaccard into exact_restore headline (FAIL-COMP-004).",
         },
         "tier_a_status_note": TIER_A_STATUS_NOTE,
         "adjacent_evidence_not_decision": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json",

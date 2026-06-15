@@ -1,6 +1,6 @@
 {
   "schema": "compression_coding_deep_pack_gate_v1",
-  "generated_at_utc": "2026-06-14T20:39:59Z",
+  "generated_at_utc": "2026-06-15T00:22:48Z",
   "track": "B",
   "research_only": true,
   "hypothesis_tier": "B",
@@ -15,13 +15,14 @@
     "catalog_sha256": "68192997a2e18318f362419a62ddf43a5ec14164302ae4008bbd19449641898a",
     "row_count": 8
   },
+  "roundtrip_path": "template_catalog_wire_v1",
   "twin_metrics_axis": {
     "primary_pair": [
       "saving_rate",
       "exact_restore_ok"
     ],
     "secondary_axis": "jaccard_proxy",
-    "note": "Do not merge Jaccard into exact_restore headline (FAIL-COMP-004)."
+    "note": "Template-catalog wire (MASK deep pack). Generic v2 semantic compress is a separate axis. Do not merge Jaccard into exact_restore headline (FAIL-COMP-004)."
   },
   "tier_a_status_note": "Tier A operational pass rate (~86.7%) — Golden-40 and open_structured_long are separate axes; not a coding deep pack approval metric.",
   "adjacent_evidence_not_decision": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json",
@@ -29,72 +30,104 @@
     {
       "template_id": "zf_t01",
       "ok": true,
-      "saving_rate": 0.707317,
-      "exact_restore_ok": false,
-      "jaccard_proxy": 0.857143,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.692308,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_t01@68192997]",
+      "wire_token_count": 12,
+      "original_token_count": 39,
       "twin_gate_primary": "saving_rate + exact_restore_ok",
       "jaccard_axis": "separate_from_exact_restore"
     },
     {
       "template_id": "zf_t02",
       "ok": true,
-      "saving_rate": 0.6875,
-      "exact_restore_ok": false,
-      "jaccard_proxy": 0.909091,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.6,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_t02@68192997]",
+      "wire_token_count": 12,
+      "original_token_count": 30,
       "twin_gate_primary": "saving_rate + exact_restore_ok",
       "jaccard_axis": "separate_from_exact_restore"
     },
     {
       "template_id": "zf_t03",
       "ok": true,
-      "saving_rate": 0.694444,
-      "exact_restore_ok": false,
-      "jaccard_proxy": 0.916667,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.647059,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_t03@68192997]",
+      "wire_token_count": 12,
+      "original_token_count": 34,
       "twin_gate_primary": "saving_rate + exact_restore_ok",
       "jaccard_axis": "separate_from_exact_restore"
     },
     {
       "template_id": "zf_t04",
       "ok": true,
-      "saving_rate": 0.555556,
-      "exact_restore_ok": false,
-      "jaccard_proxy": 0.8,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.454545,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_t04@68192997]",
+      "wire_token_count": 12,
+      "original_token_count": 22,
       "twin_gate_primary": "saving_rate + exact_restore_ok",
       "jaccard_axis": "separate_from_exact_restore"
     },
     {
       "template_id": "zf_t05",
       "ok": true,
-      "saving_rate": 0.854167,
-      "exact_restore_ok": false,
-      "jaccard_proxy": 0.777778,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.612903,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_t05@68192997]",
+      "wire_token_count": 12,
+      "original_token_count": 31,
       "twin_gate_primary": "saving_rate + exact_restore_ok",
       "jaccard_axis": "separate_from_exact_restore"
     },
     {
       "template_id": "zf_t06",
       "ok": true,
-      "saving_rate": 0.6,
-      "exact_restore_ok": false,
-      "jaccard_proxy": 0.833333,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.555556,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_t06@68192997]",
+      "wire_token_count": 12,
+      "original_token_count": 27,
       "twin_gate_primary": "saving_rate + exact_restore_ok",
       "jaccard_axis": "separate_from_exact_restore"
     },
     {
       "template_id": "zf_t07",
       "ok": true,
-      "saving_rate": 0.681818,
-      "exact_restore_ok": false,
-      "jaccard_proxy": 0.875,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.636364,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_t07@68192997]",
+      "wire_token_count": 12,
+      "original_token_count": 33,
       "twin_gate_primary": "saving_rate + exact_restore_ok",
       "jaccard_axis": "separate_from_exact_restore"
     },
     {
       "template_id": "zf_t08",
       "ok": true,
-      "saving_rate": 0.777778,
-      "exact_restore_ok": false,
-      "jaccard_proxy": 0.8,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.612903,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_t08@68192997]",
+      "wire_token_count": 12,
+      "original_token_count": 31,
       "twin_gate_primary": "saving_rate + exact_restore_ok",
       "jaccard_axis": "separate_from_exact_restore"
     }
@@ -102,9 +135,9 @@
   "summary": {
     "case_count": 8,
     "cases_ok": 8,
-    "exact_restore_pass_count": 0,
-    "mean_saving_rate": 0.694822,
-    "mean_jaccard_proxy": 0.846126
+    "exact_restore_pass_count": 8,
+    "mean_saving_rate": 0.601455,
+    "mean_jaccard_proxy": 1.0
   },
   "reproduce": "py scripts/build_compression_coding_deep_pack_gate_v1.py"
 }
