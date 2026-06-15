@@ -1,0 +1,6 @@
+{
+  "input_jsonl": [
+    "data/compression/fixtures/zone_h_en_business_corpus_extract_fixture_v1.jsonl",
+    "data/compression/fixtures/zone_h_en_business_corpus_expand_v1.jsonl"
+  ]
+}

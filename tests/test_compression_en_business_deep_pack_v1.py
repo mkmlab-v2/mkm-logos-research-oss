@@ -30,7 +30,7 @@ def test_build_en_business_deep_pack_gate_exit_zero() -> None:
     assert doc["schema"] == "compression_en_business_deep_pack_gate_v1"
     assert doc["wire_family"] == "BIZ_MASK"
     summary = doc["summary"]
-    assert summary["exact_restore_pass_count"] == summary["case_count"] == 3
+    assert summary["exact_restore_pass_count"] == summary["case_count"] == 8
     assert summary["mean_saving_rate"] > 0.0
 
 
