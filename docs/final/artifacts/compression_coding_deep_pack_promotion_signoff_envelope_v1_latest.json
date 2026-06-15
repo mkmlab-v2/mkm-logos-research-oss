@@ -1,6 +1,6 @@
 {
   "schema": "compression_coding_deep_pack_promotion_signoff_envelope_v1",
-  "generated_at_utc": "2026-06-15T01:14:00Z",
+  "generated_at_utc": "2026-06-15T01:48:37Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -11,12 +11,13 @@
   "separate_from_track_a_signoff": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
   "guardrail_ko": "coding deep pack twin gate는 template-catalog wire(ZF_MASK) 전용. candidate_pool_on·Golden-40·Tier A ~86.7%와 헤드라인 합선 금지 (FAIL-COMP-004).",
   "guardrail_en": "Coding deep pack twin gate applies to template-catalog wire (ZF_MASK) only. Do not merge with candidate_pool_on, Golden-40, or Tier A ~86.7% headlines.",
+  "fallback_spec": "docs/final/artifacts/compression_coding_deep_pack_fallback_spec_v1_latest.json",
   "promotion_gates_at_apply": {
     "roundtrip_path": "template_catalog_wire_v1",
-    "template_catalog_row_count": 12,
-    "exact_restore_pass_count_min": 12,
-    "exact_restore_pass_count_observed": 12,
-    "mean_saving_rate_observed": 0.574504,
+    "template_catalog_row_count": 16,
+    "exact_restore_pass_count_min": 16,
+    "exact_restore_pass_count_observed": 16,
+    "mean_saving_rate_observed": 0.579649,
     "mean_saving_rate_min_research": 0.0,
     "jaccard_axis": "separate_from_exact_restore"
   },

@@ -927,6 +927,8 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
     coding_resp = _try_coding_deep_pack_compress(body, route, flags)
     if coding_resp is not None:
         return coding_resp
+    if flags.get("coding_deep_pack_no_catalog_match"):
+        flags["coding_deep_pack_fallback_path"] = "semantic_v2_stub"
     try:
         # Fused lane: lossless_text goes through deterministic hybrid codec first.
         if body.loss_profile == "lossless_text":
