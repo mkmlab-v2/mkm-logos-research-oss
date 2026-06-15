@@ -9,6 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURE = ROOT / "data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl"
+DEV_MIXED = ROOT / "data/compression/fixtures/zone_f_code_dev_support_mixed_v1.jsonl"
 CONTRIB = ROOT / "data/compression/contributions/open_bench_coding_snippet_seed_v1.jsonl"
 CATALOG = ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl"
 COVERAGE_RUNNER = ROOT / "scripts/run_zone_f_code_template_catalog_coverage_v1.py"
@@ -25,6 +26,19 @@ def test_coverage_open_bench_coding_seed_full_match() -> None:
     )
     assert row["snippet_candidates_total"] == 3
     assert row["wire_match_count"] == 3
+    assert row["wire_match_rate"] == 1.0
+
+
+def test_coverage_dev_support_mixed_full_match_on_production() -> None:
+    from scripts.zone_f_code_template_catalog_coverage_v1_lib import evaluate_corpus_coverage
+
+    row = evaluate_corpus_coverage(
+        DEV_MIXED,
+        catalog_path=CATALOG,
+        shard_path=ROOT / "codebook/shards/zone_f_code.json",
+    )
+    assert row["snippet_candidates_total"] == 4
+    assert row["wire_match_count"] == 4
     assert row["wire_match_rate"] == 1.0
 
 

@@ -1,11 +1,11 @@
 {
   "schema": "zone_f_code_template_catalog_batch_extract_v1",
-  "generated_at_utc": "2026-06-15T05:25:34Z",
+  "generated_at_utc": "2026-06-15T06:13:47Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
   "merge_policy": "prospect_only_no_auto_merge",
-  "input_count": 5,
+  "input_count": 6,
   "per_corpus": [
     {
       "input_jsonl": "data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl",
@@ -39,6 +39,13 @@
       "input_jsonl": "data/compression/contributions/open_bench_coding_snippet_seed_v1.jsonl",
       "ok": true,
       "rows_scanned": 3,
+      "candidates_novel": 0,
+      "prospect_template_ids": []
+    },
+    {
+      "input_jsonl": "data/compression/fixtures/zone_f_code_dev_support_mixed_v1.jsonl",
+      "ok": true,
+      "rows_scanned": 5,
       "candidates_novel": 0,
       "prospect_template_ids": []
     }

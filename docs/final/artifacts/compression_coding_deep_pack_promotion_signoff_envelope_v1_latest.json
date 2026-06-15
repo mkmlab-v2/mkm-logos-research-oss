@@ -1,10 +1,10 @@
 {
   "schema": "compression_coding_deep_pack_promotion_signoff_envelope_v1",
-  "generated_at_utc": "2026-06-15T04:30:27Z",
+  "generated_at_utc": "2026-06-15T06:13:49Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
-  "envelope_status": "draft_awaiting_commander",
+  "envelope_status": "commander_signed_research_envelope",
   "vertical": "zone_f_code_coding_deep_pack",
   "gate_artifact": "docs/final/artifacts/compression_coding_deep_pack_gate_v1_latest.json",
   "separate_from_candidate_pool_signoff": "docs/final/artifacts/compression_candidate_pool_on_promotion_signoff_envelope_v1_latest.json",
@@ -16,17 +16,17 @@
   "signoff_checklist_builder": "scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py",
   "promotion_gates_at_apply": {
     "roundtrip_path": "template_catalog_wire_v1",
-    "template_catalog_row_count": 22,
-    "exact_restore_pass_count_min": 22,
-    "exact_restore_pass_count_observed": 22,
-    "mean_saving_rate_observed": 0.602362,
+    "template_catalog_row_count": 25,
+    "exact_restore_pass_count_min": 25,
+    "exact_restore_pass_count_observed": 25,
+    "mean_saving_rate_observed": 0.622254,
     "mean_saving_rate_min_research": 0.0,
     "jaccard_axis": "separate_from_exact_restore"
   },
   "human_signoff": {
-    "reviewer": null,
-    "approved_at_utc": null,
-    "note": null
+    "reviewer": "commander",
+    "approved_at_utc": "2026-06-15T05:51:23Z",
+    "note": "tri-vertical deep pack research envelope"
   },
   "apply_command_after_signoff": null,
   "forbidden_in_this_envelope": [
