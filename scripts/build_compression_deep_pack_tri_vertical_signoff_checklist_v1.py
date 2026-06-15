@@ -52,6 +52,12 @@ def build_checklist(
     coding_checklist_items = coding.get("checklist") or {}
     coding_evidence = coding.get("evidence_paths") or {}
     coding_summary = coding.get("summary") or {}
+    en_biz_checklist_items = en_biz.get("checklist") or {}
+    en_biz_evidence = en_biz.get("evidence_paths") or {}
+    en_biz_summary = en_biz.get("summary") or {}
+    ko_cs_checklist_items = ko_cs.get("checklist") or {}
+    ko_cs_evidence = ko_cs.get("evidence_paths") or {}
+    ko_cs_summary = ko_cs.get("summary") or {}
 
     verticals = {
         "zone_f_code": {
@@ -66,11 +72,17 @@ def build_checklist(
             "wire_family": "BIZ_MASK",
             "checklist": en_biz,
             "artifact": _rel(en_business_path),
+            "coverage_artifact": en_biz_evidence.get("coverage_artifact"),
+            "coverage_wire_match_rate": en_biz_summary.get("coverage_wire_match_rate"),
+            "pipeline_builder": en_biz_evidence.get("pipeline_builder"),
         },
         "zone_ko_premium_cs_v1": {
             "wire_family": "CS_MASK",
             "checklist": ko_cs,
             "artifact": _rel(ko_cs_path),
+            "coverage_artifact": ko_cs_evidence.get("coverage_artifact"),
+            "coverage_wire_match_rate": ko_cs_summary.get("coverage_wire_match_rate"),
+            "pipeline_builder": ko_cs_evidence.get("pipeline_builder"),
         },
     }
 
@@ -107,6 +119,20 @@ def build_checklist(
         "zone_f_catalog_growth_pipeline_linked": bool(
             coding_checklist_items.get("catalog_growth_pipeline_pointer")
         ),
+        "zone_h_en_business_coverage_artifact_linked": bool(en_biz_evidence.get("coverage_artifact")),
+        "zone_h_en_business_coverage_corpora_full": bool(
+            en_biz_checklist_items.get("coverage_corpora_wire_match_full")
+        ),
+        "zone_h_en_business_catalog_growth_pipeline_linked": bool(
+            en_biz_checklist_items.get("catalog_growth_pipeline_pointer")
+        ),
+        "zone_ko_premium_cs_coverage_artifact_linked": bool(ko_cs_evidence.get("coverage_artifact")),
+        "zone_ko_premium_cs_coverage_corpora_full": bool(
+            ko_cs_checklist_items.get("coverage_corpora_wire_match_full")
+        ),
+        "zone_ko_premium_cs_catalog_growth_pipeline_linked": bool(
+            ko_cs_checklist_items.get("catalog_growth_pipeline_pointer")
+        ),
     }
     failed = [k for k, v in checklist.items() if not v]
     all_green = len(failed) == 0
@@ -126,15 +152,9 @@ def build_checklist(
                 "decision": meta["checklist"].get("decision"),
                 "all_green": meta["checklist"].get("all_green"),
                 "checklist_artifact": meta["artifact"],
-                **(
-                    {
-                        "coverage_artifact": meta.get("coverage_artifact"),
-                        "coverage_wire_match_rate": meta.get("coverage_wire_match_rate"),
-                        "pipeline_builder": meta.get("pipeline_builder"),
-                    }
-                    if vid == "zone_f_code"
-                    else {}
-                ),
+                "coverage_artifact": meta.get("coverage_artifact"),
+                "coverage_wire_match_rate": meta.get("coverage_wire_match_rate"),
+                "pipeline_builder": meta.get("pipeline_builder"),
             }
             for vid, meta in verticals.items()
         },
@@ -151,11 +171,14 @@ def build_checklist(
             "Each vertical twin gate uses saving_rate + exact_restore_ok — not Jaccard alone.",
             "KO CS CS_MASK requires ███ mask exact-restore; wtt shortcap stays hybrid-router only.",
             "zone_f_code catalog coverage is B-track wire-match evidence only — not customer SLA.",
+            "BIZ_MASK and CS_MASK verticals use the same coverage/pipeline symmetry as ZF_MASK.",
             "Rollup approves research envelopes only; ACTIVE swap requires separate Track A gate.",
         ],
         "btrack_coverage_note": coding.get("btrack_coverage_note"),
         "reproduce": [
             "py scripts/run_zone_f_code_template_catalog_coverage_v1.py",
+            "py scripts/run_zone_h_en_business_template_catalog_coverage_v1.py",
+            "py scripts/run_zone_ko_premium_cs_template_catalog_coverage_v1.py",
             "py scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py",
             "py scripts/build_compression_en_business_deep_pack_gate_v1.py",
             "py scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",

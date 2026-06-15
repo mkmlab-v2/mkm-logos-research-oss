@@ -1,6 +1,6 @@
 {
   "schema": "compression_en_business_deep_pack_fallback_spec_v1",
-  "generated_at_utc": "2026-06-15T03:46:03Z",
+  "generated_at_utc": "2026-06-15T08:24:20Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -28,7 +28,7 @@
     "exact_restore_ok": false,
     "metrics_axis": "semantic_v2_stub_separate_from_biz_mask_wire"
   },
-  "template_catalog_row_count": 3,
+  "template_catalog_row_count": 8,
   "forbidden": [
     "merge_with_coding_deep_pack_headline",
     "merge_with_wtt_cs_shortcap_headline",

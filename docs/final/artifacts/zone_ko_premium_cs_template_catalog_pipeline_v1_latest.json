@@ -1,0 +1,39 @@
+{
+  "schema": "zone_ko_premium_cs_template_catalog_pipeline_v1",
+  "vertical_id": "zone_ko_premium_cs_v1",
+  "wire_family": "CS_MASK",
+  "research_only": true,
+  "ok": true,
+  "write_prospect": false,
+  "human_approve_merge": false,
+  "steps": [
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\run_zone_ko_premium_cs_template_catalog_batch_extract_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "{\n  \"ok\": true,\n  \"input_count\": 4,\n  \"prospect_count\": 0,\n  \"report_out\": \"C:\\\\workspace\\\\reports\\\\zone_ko_premium_cs_template_catalog_batch_extract_v1_latest.json\",\n  \"prospect_written\": false,\n  \"append_mode\": false\n}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\run_zone_ko_premium_cs_template_catalog_coverage_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "{\"ok\": true, \"wire_match_rate\": 1.0, \"full_wire_match\": true, \"report_out\": \"C:\\\\workspace\\\\reports\\\\zone_ko_premium_cs_template_catalog_coverage_v1_latest.json\"}\n",
+      "stderr_tail": ""
+    },
+    {
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "C:\\workspace\\scripts\\merge_zone_ko_premium_cs_template_prospect_to_catalog_v1.py"
+      ],
+      "exit_code": 0,
+      "stdout_tail": "{\n  \"ok\": true,\n  \"dry_run\": true,\n  \"merge_count\": 0,\n  \"production_after_count\": 25,\n  \"new_template_ids\": [],\n  \"applied\": false,\n  \"report_out\": \"C:\\\\workspace\\\\reports\\\\zone_ko_premium_cs_template_catalog_merge_v1_latest.json\"\n}\n",
+      "stderr_tail": ""
+    }
+  ],
+  "reproduce": "py scripts/run_zone_ko_premium_cs_template_catalog_pipeline_v1.py"
+}

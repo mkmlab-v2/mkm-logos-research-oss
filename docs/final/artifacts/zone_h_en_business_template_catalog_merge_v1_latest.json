@@ -1,28 +1,22 @@
 {
   "schema": "zone_h_en_business_template_catalog_merge_v1",
-  "generated_at_utc": "2026-06-15T07:35:21Z",
+  "generated_at_utc": "2026-06-15T08:24:18Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
   "vertical_id": "zone_h_en_business_v1",
   "wire_family": "BIZ_MASK",
-  "human_approve_merge": true,
-  "reviewer": "commander",
-  "applied": true,
+  "human_approve_merge": false,
+  "reviewer": null,
+  "applied": false,
   "production_catalog": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
   "prospect_catalog": "codebook/templates/zone_h_en_business_templates_prospect_v1.jsonl",
-  "production_before_count": 3,
+  "production_before_count": 8,
   "prospect_input_count": 8,
-  "merge_count": 5,
-  "skipped_count": 3,
+  "merge_count": 0,
+  "skipped_count": 8,
   "production_after_count": 8,
-  "new_template_ids": [
-    "eb_t004",
-    "eb_t005",
-    "eb_t006",
-    "eb_t007",
-    "eb_t008"
-  ],
+  "new_template_ids": [],
   "skipped": [
     {
       "template_id": "eb_p001",
@@ -78,6 +72,100 @@
       "prospect": true,
       "source_row_id": "fixture-biz-003",
       "snippet_sha256": "2cb892f0b2d579d0906d102ae16a5b6c2b710dea95ec518ba25d2a2e56d7bdb3",
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "eb_p004",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "This notice confirms payment pursuant to contract amendment CA-2026-09. The attached invoice reflects the compliance review fee for Q3 delivery milestones.",
+      "must_keep_terms": [
+        "attached",
+        "compliance",
+        "contract",
+        "delivery",
+        "invoice",
+        "notice",
+        "payment",
+        "pursuant"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-004",
+      "snippet_sha256": "df13b9578bd3d911218c8e3d7d2075f066c3c1000555498e42dc72908152c43b",
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "eb_p005",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "NOTICE: Delivery schedule revision for enterprise proposal EP-4412. Purchase order authorization is required before shipment. Contact compliance if invoice totals differ from the signed contract.",
+      "must_keep_terms": [
+        "compliance",
+        "contract",
+        "delivery",
+        "invoice",
+        "notice",
+        "order",
+        "proposal",
+        "purchase"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-005",
+      "snippet_sha256": "d07df6fb5a1f4f5df52c17dc0674db0bcfdd47077e852c5d9c2d1fc88132870d",
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "eb_p006",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "Please find the attached compliance checklist for the supplier contract. Payment terms remain net-30 pursuant to our master agreement.",
+      "must_keep_terms": [
+        "attached",
+        "compliance",
+        "contract",
+        "payment",
+        "pursuant"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-006",
+      "snippet_sha256": "6f8cff1e6d6d4fda878e7acdeae0fe2cb7851035b2b4fd49e5dfcb76928d9688",
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "eb_p007",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "We received two invoices for the same delivery milestone. Please confirm which purchase order line item is authoritative before remittance.",
+      "must_keep_terms": [
+        "delivery",
+        "invoice",
+        "order",
+        "purchase",
+        "remittance"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-007",
+      "snippet_sha256": "431761a67f3852e6ffb4ab043055328ebead42743a172c27e3badc4e4ddbebfc",
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "eb_p008",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "NOTICE: Contract renewal requires compliance attestation and updated payment authorization. Attached proposal outlines delivery schedule changes effective next quarter.",
+      "must_keep_terms": [
+        "attached",
+        "compliance",
+        "contract",
+        "delivery",
+        "notice",
+        "payment",
+        "proposal",
+        "schedule"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-008",
+      "snippet_sha256": "091178f237ed4942dd765cbe1b9332ebc9b5c7cc57e7a203021a3a0c223f46d7",
       "skip_reason": "duplicate_snippet"
     }
   ],

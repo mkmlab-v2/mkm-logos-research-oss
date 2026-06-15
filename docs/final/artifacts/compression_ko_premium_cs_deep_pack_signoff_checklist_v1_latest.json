@@ -1,6 +1,6 @@
 {
   "schema": "compression_ko_premium_cs_deep_pack_signoff_checklist_v1",
-  "generated_at_utc": "2026-06-15T06:20:31Z",
+  "generated_at_utc": "2026-06-15T08:24:46Z",
   "decision": "READY_FOR_COMMANDER_SIGNOFF",
   "all_green": true,
   "research_only": true,
@@ -22,15 +22,20 @@
     "template_manifest_present": true,
     "separate_from_en_business_ack": true,
     "jaccard_axis_separate_ack": true,
-    "human_signoff_not_applied": true
+    "human_signoff_not_applied": true,
+    "coverage_artifact_present": true,
+    "coverage_corpora_wire_match_full": true,
+    "catalog_growth_pipeline_pointer": true
   },
   "failed_checks": [],
   "summary": {
-    "template_catalog_row_count": 22,
-    "exact_restore_pass_count": 22,
-    "mean_saving_rate_observed": 0.481069,
-    "catalog_sha256": "e2f30184ee188f8669a686060ab6a729713e85fe66b71ad71eefda7d1d1f9355",
-    "envelope_status": "draft_awaiting_commander"
+    "template_catalog_row_count": 25,
+    "exact_restore_pass_count": 25,
+    "mean_saving_rate_observed": 0.528463,
+    "catalog_sha256": "cea4afa8664302f4af6ee14937241743356a2af979e29f3f3dc336cf9408d9a9",
+    "envelope_status": "draft_awaiting_commander",
+    "coverage_wire_match_rate": 1.0,
+    "coverage_corpus_count": 4
   },
   "constraints": {
     "human_review_required": true,
@@ -51,8 +56,11 @@
     "fallback_spec": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_fallback_spec_v1_latest.json",
     "vertical_spec": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_spec_v1_latest.json",
     "template_manifest": "codebook/templates/zone_ko_premium_cs_templates_manifest_v1.json",
-    "en_business_gate_separation": "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json"
+    "en_business_gate_separation": "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json",
+    "coverage_artifact": "docs/final/artifacts/zone_ko_premium_cs_template_catalog_coverage_v1_latest.json",
+    "pipeline_builder": "scripts/run_zone_ko_premium_cs_template_catalog_pipeline_v1.py"
   },
+  "btrack_coverage_note": "Wire-match coverage on KO premium CS JSONL corpora is B-track evidence only — not customer SLA.",
   "operator_action": {
     "approve_if_all_green": true,
     "review_items_if_hold": [],
@@ -65,6 +73,7 @@
     "py scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
     "py scripts/build_compression_ko_premium_cs_deep_pack_signoff_envelope_v1.py",
     "py scripts/build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1.py",
+    "py scripts/run_zone_ko_premium_cs_template_catalog_coverage_v1.py",
     "py -m pytest tests/test_compression_ko_premium_cs_deep_pack_v1.py tests/test_build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1.py -q"
   ]
 }

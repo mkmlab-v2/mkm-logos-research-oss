@@ -1,6 +1,6 @@
 {
   "schema": "compression_en_business_deep_pack_gate_v1",
-  "generated_at_utc": "2026-06-15T07:36:58Z",
+  "generated_at_utc": "2026-06-15T08:24:20Z",
   "track": "B",
   "research_only": true,
   "hypothesis_tier": "B",
@@ -150,5 +150,8 @@
     "mean_saving_rate": 0.469978,
     "mean_jaccard_proxy": 1.0
   },
+  "coverage_builder": "scripts/run_zone_h_en_business_template_catalog_coverage_v1.py",
+  "coverage_artifact": "docs/final/artifacts/zone_h_en_business_template_catalog_coverage_v1_latest.json",
+  "pipeline_builder": "scripts/run_zone_h_en_business_template_catalog_pipeline_v1.py",
   "reproduce": "py scripts/build_compression_en_business_deep_pack_gate_v1.py"
 }

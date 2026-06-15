@@ -21,8 +21,12 @@ def _refresh_child_checklists() -> None:
         [sys.executable, str(ROOT / "scripts/run_zone_f_code_template_catalog_coverage_v1.py")],
         [sys.executable, str(ROOT / "scripts/build_compression_coding_deep_pack_gate_v1.py")],
         [sys.executable, str(ROOT / "scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py")],
+        [sys.executable, str(ROOT / "scripts/run_zone_h_en_business_template_catalog_coverage_v1.py")],
         [sys.executable, str(ROOT / "scripts/build_compression_en_business_deep_pack_gate_v1.py")],
+        [sys.executable, str(ROOT / "scripts/build_compression_en_business_deep_pack_signoff_checklist_v1.py")],
+        [sys.executable, str(ROOT / "scripts/run_zone_ko_premium_cs_template_catalog_coverage_v1.py")],
         [sys.executable, str(ROOT / "scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py")],
+        [sys.executable, str(ROOT / "scripts/build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1.py")],
     ]
     for cmd in steps:
         proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
@@ -48,6 +52,10 @@ def test_build_tri_vertical_signoff_checklist_exit_zero() -> None:
     assert doc["checklist"]["zone_f_coverage_artifact_linked"] is True
     assert doc["checklist"]["zone_f_coverage_coding_corpora_full"] is True
     assert doc["checklist"]["zone_f_catalog_growth_pipeline_linked"] is True
+    assert doc["checklist"]["zone_h_en_business_coverage_artifact_linked"] is True
+    assert doc["checklist"]["zone_h_en_business_coverage_corpora_full"] is True
+    assert doc["checklist"]["zone_ko_premium_cs_coverage_artifact_linked"] is True
+    assert doc["checklist"]["zone_ko_premium_cs_coverage_corpora_full"] is True
     zf = doc["verticals"]["zone_f_code"]
     assert zf.get("coverage_artifact")
     assert zf.get("pipeline_builder")

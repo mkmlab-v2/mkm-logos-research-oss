@@ -1,0 +1,67 @@
+{
+  "schema": "zone_ko_premium_cs_template_catalog_coverage_v1",
+  "vertical_id": "zone_ko_premium_cs_v1",
+  "wire_family": "CS_MASK",
+  "research_only": true,
+  "shard_json": "C:/workspace/codebook/shards/zone_ko_premium_cs_v1.json",
+  "catalog_jsonl": "C:/workspace/codebook/templates/zone_ko_premium_cs_templates_v1.jsonl",
+  "catalog_row_count": 25,
+  "input_count": 4,
+  "missing_inputs": [],
+  "min_score": 1,
+  "canonical_mask_token": "███",
+  "corpora": [
+    {
+      "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-premium-cs-customer-v1_v1_bodyonly_v1.jsonl",
+      "rows_scanned": 30,
+      "rows_with_snippet_candidates": 11,
+      "snippet_candidates_total": 10,
+      "wire_match_count": 10,
+      "wire_miss_count": 0,
+      "wire_match_rate": 1.0,
+      "non_canonical_mask_skipped": 2,
+      "misses_sample": []
+    },
+    {
+      "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-premium-cs-customer-v1_v1_remainder_000_017_v1.jsonl",
+      "rows_scanned": 2,
+      "rows_with_snippet_candidates": 1,
+      "snippet_candidates_total": 1,
+      "wire_match_count": 1,
+      "wire_miss_count": 0,
+      "wire_match_rate": 1.0,
+      "non_canonical_mask_skipped": 0,
+      "misses_sample": []
+    },
+    {
+      "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-premium-cs-auto-local-v1_v1.jsonl",
+      "rows_scanned": 25,
+      "rows_with_snippet_candidates": 9,
+      "snippet_candidates_total": 18,
+      "wire_match_count": 18,
+      "wire_miss_count": 0,
+      "wire_match_rate": 1.0,
+      "non_canonical_mask_skipped": 0,
+      "misses_sample": []
+    },
+    {
+      "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-premium-cs-compression-v1_v1_bodyonly_v1.jsonl",
+      "rows_scanned": 30,
+      "rows_with_snippet_candidates": 4,
+      "snippet_candidates_total": 0,
+      "wire_match_count": 0,
+      "wire_miss_count": 0,
+      "wire_match_rate": 1.0,
+      "non_canonical_mask_skipped": 4,
+      "misses_sample": []
+    }
+  ],
+  "aggregate": {
+    "corpus_count": 4,
+    "snippet_candidates_total": 29,
+    "wire_match_count": 29,
+    "wire_match_rate": 1.0,
+    "all_corpora_present": true,
+    "full_wire_match": true
+  }
+}

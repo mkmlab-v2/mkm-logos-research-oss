@@ -38,6 +38,14 @@ def _load(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _corpora_wire_match_full(coverage: dict[str, Any]) -> bool:
+    corpora = coverage.get("corpora") or []
+    rows = [c for c in corpora if int(c.get("snippet_candidates_total") or 0) > 0]
+    if not rows:
+        return False
+    return all(float(c.get("wire_match_rate") or 0) >= 1.0 for c in rows)
+
+
 def build_checklist(
     *,
     gate_path: Path,
@@ -49,6 +57,14 @@ def build_checklist(
     envelope = _load(envelope_path)
     fallback = _load(fallback_path)
     spec = _load(spec_path) if spec_path.is_file() else {}
+
+    coverage_rel = str(gate.get("coverage_artifact") or "")
+    coverage_path = (
+        ROOT / coverage_rel
+        if coverage_rel
+        else ROOT / "docs/final/artifacts/zone_h_en_business_template_catalog_coverage_v1_latest.json"
+    )
+    coverage = _load(coverage_path) if coverage_path.is_file() else {}
 
     summary = gate.get("summary") or {}
     catalog = gate.get("template_catalog") or {}
@@ -77,6 +93,10 @@ def build_checklist(
         "jaccard_axis_separate_ack": str((gate.get("twin_metrics_axis") or {}).get("secondary_axis"))
         == "jaccard_proxy",
         "human_signoff_not_applied": not bool((envelope.get("human_signoff") or {}).get("reviewer")),
+        "coverage_artifact_present": coverage_path.is_file()
+        and coverage.get("schema") == "zone_h_en_business_template_catalog_coverage_v1",
+        "coverage_corpora_wire_match_full": _corpora_wire_match_full(coverage),
+        "catalog_growth_pipeline_pointer": bool(gate.get("pipeline_builder")),
     }
     failed = [k for k, v in checklist.items() if not v]
     all_green = len(failed) == 0
@@ -102,6 +122,8 @@ def build_checklist(
             ),
             "catalog_sha256": catalog.get("catalog_sha256"),
             "envelope_status": envelope.get("envelope_status"),
+            "coverage_wire_match_rate": float((coverage.get("aggregate") or {}).get("wire_match_rate") or 0.0),
+            "coverage_corpus_count": int((coverage.get("aggregate") or {}).get("corpus_count") or 0),
         },
         "constraints": {
             "human_review_required": True,
@@ -122,7 +144,12 @@ def build_checklist(
             "vertical_spec": _rel(spec_path),
             "template_manifest": _rel(TEMPLATE_MANIFEST),
             "coding_pack_gate_separation": _rel(CODING_GATE),
+            "coverage_artifact": _rel(coverage_path) if coverage_path.is_file() else None,
+            "pipeline_builder": gate.get("pipeline_builder"),
         },
+        "btrack_coverage_note": (
+            "Wire-match coverage on en business JSONL corpora is B-track evidence only — not customer SLA."
+        ),
         "operator_action": {
             "approve_if_all_green": all_green,
             "review_items_if_hold": failed,
@@ -135,6 +162,7 @@ def build_checklist(
             "py scripts/build_compression_en_business_deep_pack_gate_v1.py",
             "py scripts/build_compression_en_business_deep_pack_signoff_envelope_v1.py",
             "py scripts/build_compression_en_business_deep_pack_signoff_checklist_v1.py",
+            "py scripts/run_zone_h_en_business_template_catalog_coverage_v1.py",
             "py -m pytest tests/test_compression_en_business_deep_pack_v1.py tests/test_build_compression_en_business_deep_pack_signoff_checklist_v1.py -q",
         ],
     }

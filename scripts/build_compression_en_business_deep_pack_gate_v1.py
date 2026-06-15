@@ -137,6 +137,9 @@ def build_gate(
                 sum(float(c.get("jaccard_proxy") or 0.0) for c in ok_cases) / max(1, len(ok_cases)), 6
             ),
         },
+        "coverage_builder": "scripts/run_zone_h_en_business_template_catalog_coverage_v1.py",
+        "coverage_artifact": "docs/final/artifacts/zone_h_en_business_template_catalog_coverage_v1_latest.json",
+        "pipeline_builder": "scripts/run_zone_h_en_business_template_catalog_pipeline_v1.py",
         "reproduce": "py scripts/build_compression_en_business_deep_pack_gate_v1.py",
     }
     payload = json.dumps(doc, indent=2, ensure_ascii=False) + "\n"
