@@ -1,0 +1,29 @@
+{
+  "schema": "compression_deep_pack_tri_vertical_human_signoff_v1",
+  "approved": false,
+  "decision": "PENDING",
+  "reviewer": null,
+  "approved_at_utc": null,
+  "note": null,
+  "research_envelope_only_acknowledged": false,
+  "scope": {
+    "track_a_active_swap": false,
+    "live_trading": false,
+    "b_to_a_auto_bridge": false,
+    "customer_sla_claim": false,
+    "headline_merge_forbidden": "FAIL-COMP-004"
+  },
+  "verticals": [
+    "zone_f_code",
+    "zone_h_en_business_v1",
+    "zone_ko_premium_cs_v1"
+  ],
+  "wire_families": ["ZF_MASK", "BIZ_MASK", "CS_MASK"],
+  "prerequisite_checklist": "docs/final/artifacts/compression_deep_pack_tri_vertical_signoff_checklist_v1_latest.json",
+  "child_envelopes": [
+    "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
+    "docs/final/artifacts/compression_en_business_deep_pack_promotion_signoff_envelope_v1_latest.json",
+    "docs/final/artifacts/compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1_latest.json"
+  ],
+  "note_template": "Research envelope signoff only. Does not authorize Track A ACTIVE swap or SEND unlock."
+}
