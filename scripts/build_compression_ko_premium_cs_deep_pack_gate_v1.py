@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Build zone_h_en_business template manifest + twin gate artifact.
-
-Twin axis: saving_rate + exact_restore_ok (Jaccard separate).
-research_only · SEND_GATE HOLD · separate from zone_f_code ZF_MASK.
-"""
+"""Build zone_ko_premium_cs template manifest + twin gate artifact."""
 
 from __future__ import annotations
 
@@ -19,16 +15,16 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from scripts.compression_en_business_deep_pack_v1_lib import (  # noqa: E402
+from scripts.compression_ko_premium_cs_deep_pack_v1_lib import (  # noqa: E402
     measure_template_wire_twin,
     resolve_template_match,
 )
 
-TEMPLATES = ROOT / "codebook/templates/zone_h_en_business_templates_v1.jsonl"
-MANIFEST = ROOT / "codebook/templates/zone_h_en_business_templates_manifest_v1.json"
-DEFAULT_GATE_REPORTS = ROOT / "reports/compression_en_business_deep_pack_gate_v1_latest.json"
-DEFAULT_GATE_ARTIFACT = ROOT / "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json"
-SPEC_ARTIFACT = ROOT / "docs/final/artifacts/compression_en_business_deep_pack_spec_v1_latest.json"
+TEMPLATES = ROOT / "codebook/templates/zone_ko_premium_cs_templates_v1.jsonl"
+MANIFEST = ROOT / "codebook/templates/zone_ko_premium_cs_templates_manifest_v1.json"
+DEFAULT_GATE_REPORTS = ROOT / "reports/compression_ko_premium_cs_deep_pack_gate_v1_latest.json"
+DEFAULT_GATE_ARTIFACT = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_gate_v1_latest.json"
+SPEC_ARTIFACT = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_spec_v1_latest.json"
 
 
 def _utc() -> str:
@@ -56,14 +52,14 @@ def build_manifest(templates_path: Path, manifest_path: Path) -> dict[str, Any]:
     catalog_hash = _sha256_file(templates_path)
     rows = load_templates(templates_path)
     doc = {
-        "schema": "zone_h_en_business_templates_manifest_v1",
+        "schema": "zone_ko_premium_cs_templates_manifest_v1",
         "generated_at_utc": _utc(),
         "catalog_path": templates_path.relative_to(ROOT).as_posix(),
         "row_count": len(rows),
         "catalog_sha256": catalog_hash,
         "template_ids": [r["template_id"] for r in rows],
-        "shard_id": "zone_h_en_business_v1",
-        "wire_family": "BIZ_MASK",
+        "shard_id": "zone_ko_premium_cs_v1",
+        "wire_family": "CS_MASK",
         "research_only": True,
     }
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
@@ -98,7 +94,7 @@ def build_gate(
         )
     ok_cases = [c for c in cases if c.get("ok")]
     doc: dict[str, Any] = {
-        "schema": "compression_en_business_deep_pack_gate_v1",
+        "schema": "compression_ko_premium_cs_deep_pack_gate_v1",
         "generated_at_utc": _utc(),
         "track": "B",
         "research_only": True,
@@ -106,13 +102,13 @@ def build_gate(
         "send_gate": "HOLD",
         "ready_for_external_send": False,
         "track_a_active_untouched": True,
-        "vertical": "zone_h_en_business_formal",
-        "vertical_id": "zone_h_en_business_v1",
-        "policy_shard": "codebook/shards/zone_h_en_business_v1.json",
-        "wire_family": "BIZ_MASK",
+        "vertical": "ko_premium_cs_turn",
+        "vertical_id": "zone_ko_premium_cs_v1",
+        "policy_shard": "codebook/shards/zone_ko_premium_cs_v1.json",
+        "wire_family": "CS_MASK",
         "vertical_spec": SPEC_ARTIFACT.relative_to(ROOT).as_posix(),
-        "separate_from_coding_pack": "docs/final/artifacts/compression_coding_deep_pack_gate_v1_latest.json",
-        "separate_from_wtt_cs": "corpus_tag wtt-premium-cs-customer-v1 shortcap axis",
+        "separate_from_en_business": "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json",
+        "separate_from_wtt_shortcap": "corpus_tag wtt-premium-cs-customer-v1 hybrid shortcap only",
         "template_catalog": {
             "jsonl": templates_path.relative_to(ROOT).as_posix(),
             "manifest": MANIFEST.relative_to(ROOT).as_posix(),
@@ -123,7 +119,7 @@ def build_gate(
         "twin_metrics_axis": {
             "primary_pair": ["saving_rate", "exact_restore_ok"],
             "secondary_axis": "jaccard_proxy",
-            "note": "BIZ_MASK business formal wire. Not ZF_MASK coding pack. Not wtt CS shortcap (FAIL-COMP-004).",
+            "note": "CS_MASK masked Korean CS wire. Mask tokens (███) must exact-restore. Not BIZ_MASK / ZF_MASK (FAIL-COMP-004).",
         },
         "cases": cases,
         "summary": {
@@ -137,7 +133,7 @@ def build_gate(
                 sum(float(c.get("jaccard_proxy") or 0.0) for c in ok_cases) / max(1, len(ok_cases)), 6
             ),
         },
-        "reproduce": "py scripts/build_compression_en_business_deep_pack_gate_v1.py",
+        "reproduce": "py scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
     }
     payload = json.dumps(doc, indent=2, ensure_ascii=False) + "\n"
     out_reports.parent.mkdir(parents=True, exist_ok=True)
@@ -148,7 +144,7 @@ def build_gate(
 
 
 def main() -> int:
-    ap = argparse.ArgumentParser(description="Build en business deep pack manifest + twin gate")
+    ap = argparse.ArgumentParser(description="Build ko premium cs deep pack manifest + twin gate")
     ap.add_argument("--templates", type=Path, default=TEMPLATES)
     ap.add_argument("--manifest", type=Path, default=MANIFEST)
     ap.add_argument("--out-reports", type=Path, default=DEFAULT_GATE_REPORTS)
@@ -164,19 +160,19 @@ def main() -> int:
         out_reports=args.out_reports,
         out_artifact=args.out_artifact,
     )
-    from scripts.build_compression_en_business_deep_pack_fallback_spec_v1 import build_fallback_spec  # noqa: WPS433
+    from scripts.build_compression_ko_premium_cs_deep_pack_fallback_spec_v1 import build_fallback_spec  # noqa: WPS433
 
-    fallback_path = ROOT / "docs/final/artifacts/compression_en_business_deep_pack_fallback_spec_v1_latest.json"
+    fallback_path = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_fallback_spec_v1_latest.json"
     fallback_doc = build_fallback_spec(gate_path=args.out_artifact)
     fallback_path.write_text(json.dumps(fallback_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    from scripts.build_compression_en_business_deep_pack_signoff_envelope_v1 import build_envelope  # noqa: WPS433
+    from scripts.build_compression_ko_premium_cs_deep_pack_signoff_envelope_v1 import build_envelope  # noqa: WPS433
 
-    signoff_path = ROOT / "docs/final/artifacts/compression_en_business_deep_pack_promotion_signoff_envelope_v1_latest.json"
+    signoff_path = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1_latest.json"
     signoff_doc = build_envelope(gate_path=args.out_artifact)
     signoff_path.write_text(json.dumps(signoff_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    from scripts.build_compression_en_business_deep_pack_signoff_checklist_v1 import build_checklist  # noqa: WPS433
+    from scripts.build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1 import build_checklist  # noqa: WPS433
 
-    checklist_path = ROOT / "docs/final/artifacts/compression_en_business_deep_pack_signoff_checklist_v1_latest.json"
+    checklist_path = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_signoff_checklist_v1_latest.json"
     checklist_doc = build_checklist(
         gate_path=args.out_artifact,
         envelope_path=signoff_path,
@@ -188,11 +184,10 @@ def main() -> int:
         json.dumps(
             {
                 "ok": True,
-                "catalog_sha256": manifest["catalog_sha256"],
-                "row_count": manifest["row_count"],
-                "exact_restore_pass_count": gate["summary"]["exact_restore_pass_count"],
-                "mean_saving_rate": gate["summary"]["mean_saving_rate"],
-                "out_artifact": str(args.out_artifact),
+                "manifest": str(args.manifest),
+                "gate_artifact": str(args.out_artifact),
+                "exact_restore": gate["summary"]["exact_restore_pass_count"],
+                "case_count": gate["summary"]["case_count"],
             },
             indent=2,
         )

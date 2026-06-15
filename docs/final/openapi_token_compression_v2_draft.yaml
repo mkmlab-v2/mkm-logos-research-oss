@@ -314,6 +314,24 @@ components:
             Also auto-enabled when `sku_class=mask` and routed shard is `zone_f_code`. Pair expand
             with default `decode_mode=stub`; emits `integrity_flags.coding_deep_pack_wire_v1`.
             research_only · not Track A ACTIVE · not customer SLA.
+        enable_en_business_deep_pack:
+          type: boolean
+          default: false
+          description: |
+            B-track [HYPO]: zone_h_en_business formal template-catalog wire (`BIZ_MASK`) when input
+            matches `codebook/templates/zone_h_en_business_templates_v1.jsonl`. Also auto-enabled
+            when `sku_class=mask` and routed shard is `zone_h_en_business_v1`. Pair expand with
+            default `decode_mode=stub`; emits `integrity_flags.en_business_deep_pack_wire_v1`.
+            research_only · not Track A ACTIVE · not customer SLA.
+        enable_ko_premium_cs_deep_pack:
+          type: boolean
+          default: false
+          description: |
+            B-track [HYPO]: zone_ko_premium_cs masked Korean CS template wire (`CS_MASK`) when input
+            matches `codebook/templates/zone_ko_premium_cs_templates_v1.jsonl`. Also auto-enabled
+            when `sku_class=mask` and routed shard is `zone_ko_premium_cs_v1`. Mask tokens (███) must
+            exact-restore. Pair expand with default `decode_mode=stub`; emits
+            `integrity_flags.ko_premium_cs_deep_pack_wire_v1`. research_only · not Track A ACTIVE.
     CompressResponseV2:
       type: object
       required: [compression_packet, integrity_flags]

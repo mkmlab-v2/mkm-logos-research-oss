@@ -77,6 +77,33 @@ def test_openapi_v2_contract_has_corpus_tag_and_sku_class() -> None:
     assert props["sku_class"]["enum"] == ["coord", "mask"]
 
 
+def test_openapi_v2_contract_has_enable_coding_deep_pack() -> None:
+    yaml = pytest.importorskip("yaml")
+    props = yaml.safe_load(OPENAPI_V2.read_text(encoding="utf-8"))["components"]["schemas"]["CompressRequestV2"]["properties"]
+    field = props["enable_coding_deep_pack"]
+    assert field.get("type") == "boolean"
+    assert field.get("default") is False
+    assert "ZF_MASK" in field.get("description", "")
+
+
+def test_openapi_v2_contract_has_enable_en_business_deep_pack() -> None:
+    yaml = pytest.importorskip("yaml")
+    props = yaml.safe_load(OPENAPI_V2.read_text(encoding="utf-8"))["components"]["schemas"]["CompressRequestV2"]["properties"]
+    field = props["enable_en_business_deep_pack"]
+    assert field.get("type") == "boolean"
+    assert field.get("default") is False
+    assert "BIZ_MASK" in field.get("description", "")
+
+
+def test_openapi_v2_contract_has_enable_ko_premium_cs_deep_pack() -> None:
+    yaml = pytest.importorskip("yaml")
+    props = yaml.safe_load(OPENAPI_V2.read_text(encoding="utf-8"))["components"]["schemas"]["CompressRequestV2"]["properties"]
+    field = props["enable_ko_premium_cs_deep_pack"]
+    assert field.get("type") == "boolean"
+    assert field.get("default") is False
+    assert "CS_MASK" in field.get("description", "")
+
+
 def test_compress_forced_shard_id_b2b_catalog() -> None:
     cr = client.post(
         "/v2/compress",
@@ -879,3 +906,51 @@ def test_v2_en_business_deep_pack_no_match_falls_back_semantic() -> None:
     assert flags.get("en_business_deep_pack_no_catalog_match") is True
     assert flags.get("en_business_deep_pack_fallback_path") == "semantic_v2_stub"
     assert flags.get("en_business_deep_pack_wire_v1") is not True
+
+
+def test_v2_ko_premium_cs_deep_pack_roundtrip() -> None:
+    import json as _json
+
+    rows = [_json.loads(line) for line in TEMPLATES_EB.parent.joinpath("zone_ko_premium_cs_templates_v1.jsonl").read_text(encoding="utf-8").splitlines() if line.strip()]
+    sample = str(rows[0]["snippet"])
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "enable_ko_premium_cs_deep_pack": True,
+            "forced_shard_id": "zone_ko_premium_cs_v1",
+            "client_request_id": "test-v2-ko-cs-wire",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("ko_premium_cs_deep_pack_wire_v1") is True
+    assert flags.get("wire_family") == "CS_MASK"
+    assert flags.get("exact_restore_ok") is True
+    pkt = cr.json()["compression_packet"]
+    assert str(pkt["compressed_text"]).startswith("[CS_MASK:")
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200, er.text
+    assert er.json()["text"] == sample
+    assert "███" in er.json()["text"]
+    assert er.json()["integrity_flags"].get("reassembly") == "ko_premium_cs_deep_pack_wire_v1"
+
+
+def test_v2_ko_premium_cs_deep_pack_no_match_falls_back_semantic() -> None:
+    unknown = "일회성 문의입니다. 카탈로그에 없는 짧은 텍스트 ███"
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": unknown,
+            "loss_profile": "semantic_general",
+            "enable_ko_premium_cs_deep_pack": True,
+            "forced_shard_id": "zone_ko_premium_cs_v1",
+            "client_request_id": "test-v2-ko-cs-fallback",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("ko_premium_cs_deep_pack_no_catalog_match") is True
+    assert flags.get("ko_premium_cs_deep_pack_fallback_path") == "semantic_v2_stub"
+    assert flags.get("ko_premium_cs_deep_pack_wire_v1") is not True
