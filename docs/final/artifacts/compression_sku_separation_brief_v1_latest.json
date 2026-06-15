@@ -63,7 +63,9 @@
         "template_catalog_jsonl": "codebook/templates/zone_f_code_templates_v1.jsonl",
         "template_manifest": "codebook/templates/zone_f_code_templates_manifest_v1.json",
         "twin_gate_artifact": "docs/final/artifacts/compression_coding_deep_pack_gate_v1_latest.json",
+        "signoff_envelope": "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
         "builder_script": "scripts/build_compression_coding_deep_pack_gate_v1.py",
+        "signoff_builder_script": "scripts/build_compression_coding_deep_pack_signoff_envelope_v1.py",
         "adjacent_not_decision": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json"
       }
     }

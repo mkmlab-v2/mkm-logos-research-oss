@@ -32,6 +32,7 @@
   "hybrid_spike_report": "reports/compression_hybrid_router_spike_v1_latest.json",
   "sku_separation_brief": "docs/final/artifacts/compression_sku_separation_brief_v1_latest.json",
   "candidate_pool_signoff_envelope": "docs/final/artifacts/compression_candidate_pool_on_promotion_signoff_envelope_v1_latest.json",
+  "coding_deep_pack_signoff_envelope": "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
   "corpus_bindings_pointer": "docs/final/artifacts/compression_hybrid_router_spec_v1.json#corpus_bindings",
   "mask_hybrid_router_table": [
     {

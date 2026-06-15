@@ -100,6 +100,8 @@ def test_b2b_spec_mask_hybrid_router_table() -> None:
     assert pub["backend"] == "mkm_candidate_pool"
     assert doc.get("corpus_bindings_pointer")
     assert doc.get("sku_separation_brief")
+    assert doc.get("coding_deep_pack_signoff_envelope")
+    assert doc["coding_deep_pack_signoff_envelope"] != doc["candidate_pool_signoff_envelope"]
 
 
 def test_sku_separation_brief_schema() -> None:

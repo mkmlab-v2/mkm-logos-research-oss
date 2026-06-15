@@ -144,6 +144,8 @@ def build_gate(
         },
         "tier_a_status_note": TIER_A_STATUS_NOTE,
         "adjacent_evidence_not_decision": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json",
+        "signoff_envelope": "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
+        "signoff_envelope_builder": "scripts/build_compression_coding_deep_pack_signoff_envelope_v1.py",
         "cases": cases,
         "summary": {
             "case_count": len(cases),
@@ -183,6 +185,12 @@ def main() -> int:
         out_reports=args.out_reports,
         out_artifact=args.out_artifact,
     )
+    from scripts.build_compression_coding_deep_pack_signoff_envelope_v1 import build_envelope  # noqa: WPS433
+
+    signoff_path = ROOT / "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json"
+    signoff_doc = build_envelope(gate_path=args.out_artifact)
+    signoff_path.parent.mkdir(parents=True, exist_ok=True)
+    signoff_path.write_text(json.dumps(signoff_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(
         json.dumps(
             {
