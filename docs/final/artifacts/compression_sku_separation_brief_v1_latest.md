@@ -18,8 +18,10 @@
 
 ## Coding deep pack PoC (zone_f_code · seed)
 
-- **템플릿 카탈로그:** `codebook/templates/zone_f_code_templates_v1.jsonl` (8 seeds) + manifest hash pin
+- **템플릿 카탈로그:** `codebook/templates/zone_f_code_templates_v1.jsonl` (**25** rows) + manifest hash pin
 - **Twin gate:** `compression_coding_deep_pack_gate_v1_latest.json` — `saving_rate` + `exact_restore_ok` (Jaccard **별도 축**)
+- **Coverage / pipeline:** `zone_f_code_template_catalog_coverage_v1_latest.json` · `run_zone_f_code_template_catalog_pipeline_v1.py`
+- **Tri-vertical rollup:** `compression_deep_pack_tri_vertical_signoff_checklist_v1_latest.json` · post-signoff `compression_deep_pack_tri_vertical_post_signoff_checklist_v1_latest.json`
 - **재현:** `py scripts/build_compression_coding_deep_pack_gate_v1.py`
 - **인접 증거(결정 아님):** `compression_candidate_pool_on_track_a_candidate_v1_latest.json`
 

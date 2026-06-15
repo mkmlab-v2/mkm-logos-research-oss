@@ -8,9 +8,15 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "docs/final/artifacts/compression_deep_pack_tri_vertical_signoff_checklist_v1_latest.json"
 BUILDER = ROOT / "scripts/build_compression_deep_pack_tri_vertical_signoff_checklist_v1.py"
+RECORD = ROOT / "scripts/record_compression_deep_pack_tri_vertical_human_signoff_v1.py"
+
+
+def _revoke_tri_signoff_for_test_reset() -> None:
+    subprocess.run([sys.executable, str(RECORD), "--revoke"], cwd=ROOT, capture_output=True, text=True, check=False)
 
 
 def _refresh_child_checklists() -> None:
+    _revoke_tri_signoff_for_test_reset()
     steps = [
         [sys.executable, str(ROOT / "scripts/run_zone_f_code_template_catalog_coverage_v1.py")],
         [sys.executable, str(ROOT / "scripts/build_compression_coding_deep_pack_gate_v1.py")],

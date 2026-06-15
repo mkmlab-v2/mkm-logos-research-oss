@@ -5,6 +5,7 @@
 .DESCRIPTION
   CI `dual-regime-integrity.yml` 단일 잡에는 토큰 API·렌즈 뮤직·Athena §28 블록 등 **긴 전제 단계**가 끼어 로컬 번들의 **상대 순서**(예: meta 봉투 vs `test_athena_checkpoint` vs Logos)와 1:1로 같지 않을 수 있다. **동일 회귀 케이스 커버**가 목적이며, 라인 단위 동시 실행 순서 동치는 보장하지 않는다.
   1. `py scripts/integrity_guard.py` (CI 첫 단계)
+  1b. `py scripts/check_cursor_rules_context_diet_v1.py --strict` (core 8 · slim AGENTS; `-SkipCursorRulesContextDiet`)
   2. `projects/bitcoin-trading/ops/v2/tasks/run_prophecy_alignment_pytest.ps1`
      — dual-regime 스모크 + multilens marginal(V1) 후 워크스페이스 루트 Fact-Lock(Thin V2·시장 어댑터·일반예언·**B-track 세션 패널→조인→상관 4 pytest** 등 명시 목록)
   3. `py -m pytest tests/test_sasang_interpretive_insight_bundle_v1.py` — 사상 통찰 참조 번들 v1.1 스키마·`synthesis_v1`(dual-regime 동일 단계)
@@ -32,6 +33,7 @@
   5c. `py -m pytest tests/test_run_graphrag_pilot_router_v1.py` — GraphRAG 파일럿 라우터(Track B/K 관측 전용, GO 게이트·한글 별칭·brief fallback) 회귀.
   5c4. `py -m pytest` COMP-ATOM-05 graph wire selective bridge — `test_mkm_graph_wire_bridge_influence_v1.py`·`test_comp_atom05_graph_wire_bridge_smoke_v1.py`·`test_v2_graph_wire_selective_bridge_v1.py`·OpenAPI contract·semantic_pointer smoke(`dual-regime` path filter와 동일 5종). `-SkipCompAtom05WireSmoke` 로 생략.
   5c2. `py -m pytest tests/test_philosophy_lane_rag_pilot_v1.py` — 철학·상담 레인 RAG 파일럿(금지어 JSON·ANN-lite 스킵 계약).
+  5c2c. `py -m pytest tests/test_build_compression_deep_pack_tri_vertical_signoff_checklist_v1.py tests/test_build_compression_deep_pack_tri_vertical_post_signoff_checklist_v1.py` — tri-vertical ZF/BIZ/CS deep pack rollup + post-commander-signoff status(B-track; SEND HOLD). `-SkipCompressionDeepPackTriVerticalSmoke` 로 생략.
   5c2b. `py -m pytest tests/test_generate_linkedin_b2b_copy_v1.py tests/test_check_linkedin_b2b_draft_copy_v1.py` — LinkedIn B2B draft queue v1(로컬 JSON·assemble/Gemini·카피 가드; 자동 발행 없음). `-SkipLinkedInB2bDraftSmoke` 로 생략.
   5c3. `py -m pytest tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py tests/test_build_semantic_rag_bridge_insight_bundle_v1.py` — 내부 시맨틱+RAG 번역 브리지 번들 v1(스키마·Premium/철학 병합 CLI; `dual-regime-integrity.yml` 동일 단계).
   5d. `py -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py` — Control-Integrity Golden/LoRA 파이프라인 스모크(aggregate·프로모션 게이트·오라클 추론 타이밍; GPU 불필요). `-SkipMkmControlIntegritySmoke` 로 생략.
@@ -43,6 +45,9 @@
 
 .PARAMETER SkipIntegrityGuard
   `integrity_guard.py` 생략(빠른 확인용). CI와 완전 동치가 아님.
+
+.PARAMETER SkipCursorRulesContextDiet
+  `check_cursor_rules_context_diet_v1.py --strict` 생략(규칙·AGENTS 주입층 미변경 시).
 
 .PARAMETER IncludeP1AB
   Fact-Lock 핵심 검증 후 `scripts/run_p1_ab_bundle.ps1`를 추가 실행한다.
@@ -173,6 +178,9 @@
 .PARAMETER SkipKmPhysicianCdsEnvelope
   한의 의사 CDS assist envelope v1 회귀 3종 pytest + `tests/test_automation_registry_json_v1.py`(MKM 주간 태스크 SSOT; `dual-regime` 의「Myeongri AI interpretation + KM physician CDS」단계와 동일 목록)를 생략한다.
 
+.PARAMETER SkipSchedulerSoloCoreStackSmoke
+  MKM solo scheduler SSOT band gate pytest 3종(`tests/test_mkm_scheduler_solo_core_stack_audit_v1.py`; 오프라인+EnforceSoloBand 스모크) 생략.
+
 .PARAMETER SkipSafeOpsSurfaceCheck
   말미 권장 단계 `Invoke-SafeOpsSurfaceCheck.ps1`(운영 표면·신선도·Verify-Trading) 생략.
 
@@ -250,6 +258,12 @@ param(
     # COMP-ATOM-05 graph wire selective bridge (5 pytest; B-track)
     [switch]$SkipCompAtom05WireSmoke,
 
+    # Tri-vertical deep pack signoff rollup + post-signoff checklist (B-track; research envelope only)
+    [switch]$SkipCompressionDeepPackTriVerticalSmoke,
+
+    # MKM solo scheduler SSOT band gate (3 pytest; offline + EnforceSoloBand subprocess)
+    [switch]$SkipSchedulerSoloCoreStackSmoke,
+
     # LinkedIn B2B draft queue v1 (2 pytest; no API publish)
     [switch]$SkipLinkedInB2bDraftSmoke,
 
@@ -275,7 +289,10 @@ param(
     [switch]$SkipIntegratedGovernanceBuild,
 
     # MKM multi-domain design tokens + personadiary/mkmlife offline pytest (no live HTTP)
-    [switch]$SkipMkmDomainDesignOfflineSmoke
+    [switch]$SkipMkmDomainDesignOfflineSmoke,
+
+    # Cursor rules context diet + slim AGENTS.md line budget (default on)
+    [switch]$SkipCursorRulesContextDiet
 )
 
 $ErrorActionPreference = 'Stop'
@@ -397,6 +414,10 @@ $compAtom05WirePytests = @(
     (Join-Path $workspaceRoot 'tests\test_compression_token_api_v2_stub.py::test_openapi_v2_contract_has_graph_wire_selective_bridge'),
     (Join-Path $workspaceRoot 'tests\test_multilens_performance_eval_report.py::test_evaluate_report_emit_semantic_pointer_smoke')
 )
+$compressionDeepPackTriVerticalSmokePytests = @(
+    (Join-Path $workspaceRoot 'tests\test_build_compression_deep_pack_tri_vertical_signoff_checklist_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_compression_deep_pack_tri_vertical_post_signoff_checklist_v1.py')
+)
 $philosophyLaneRagPilotTest = Join-Path $workspaceRoot 'tests\test_philosophy_lane_rag_pilot_v1.py'
 $linkedinB2bDraftPytests = @(
     (Join-Path $workspaceRoot 'tests\test_generate_linkedin_b2b_copy_v1.py'),
@@ -421,7 +442,10 @@ $kmPhysicianCdsEnvelopeTests = @(
     (Join-Path $workspaceRoot 'tests\test_assemble_patient_care_bundle_with_myeongni_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_build_patient_care_bundle_from_km_cds_chain_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_patient_care_bundle_templates_policy_render_v1.py'),
-    (Join-Path $workspaceRoot 'tests\test_automation_registry_json_v1.py')
+    (Join-Path $workspaceRoot 'tests\test_automation_registry_json_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_resolve_km_classics_citations_hypo_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_build_km_classics_index_hypo_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_km_classics_citation_cds_smoke_v1.py')
 )
 $myeongniLensRecommendedPytests = @(
     (Join-Path $workspaceRoot 'tests\test_independent_lenses_v0.py'),
@@ -470,6 +494,14 @@ Set-Location -LiteralPath $workspaceRoot
 if (-not $SkipIntegrityGuard) {
     Write-Host '== Fact-Lock: integrity_guard.py ==' -ForegroundColor Cyan
     & py (Join-Path $workspaceRoot 'scripts\integrity_guard.py')
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if (-not $SkipCursorRulesContextDiet) {
+    Write-Host '== Fact-Lock: check_cursor_rules_context_diet_v1.py --strict ==' -ForegroundColor Cyan
+    & py (Join-Path $workspaceRoot 'scripts\check_cursor_rules_context_diet_v1.py') --strict
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }
@@ -546,6 +578,19 @@ if (-not $SkipCompressionRestoreBridge) {
     }
     Write-Host '== Fact-Lock: run_agent_compression_restore_bridge.ps1 ==' -ForegroundColor Cyan
     & powershell -NoProfile -ExecutionPolicy Bypass -File $compressionRestoreBridgeScript
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if (-not $SkipCompressionDeepPackTriVerticalSmoke) {
+    foreach ($t in $compressionDeepPackTriVerticalSmokePytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "Compression deep pack tri-vertical pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: compression deep pack tri-vertical signoff smoke (pytest) ==' -ForegroundColor Cyan
+    & py -m pytest @compressionDeepPackTriVerticalSmokePytests -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }
@@ -1071,6 +1116,20 @@ if (-not $SkipCuratedJointStalenessCheck) {
         & py $curatedJointStalenessScript
         if ($LASTEXITCODE -ne 0) {
             Write-Host 'WARN: staleness check returned non-zero (use --strict on script only if you want CI fail).' -ForegroundColor Yellow
+        }
+    }
+}
+
+if (-not $SkipSchedulerSoloCoreStackSmoke) {
+    $schedulerPytest = Join-Path $workspaceRoot 'tests\test_mkm_scheduler_solo_core_stack_audit_v1.py'
+    if (-not (Test-Path -LiteralPath $schedulerPytest)) {
+        Write-Host "WARN: scheduler solo stack pytest missing; skip: $schedulerPytest" -ForegroundColor Yellow
+    }
+    else {
+        Write-Host '== Fact-Lock: MKM scheduler solo core stack band gate (pytest) ==' -ForegroundColor Cyan
+        & py -m pytest $schedulerPytest -q
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
         }
     }
 }

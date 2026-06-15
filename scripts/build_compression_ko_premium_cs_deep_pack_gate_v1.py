@@ -175,6 +175,11 @@ def main() -> int:
     signoff_path = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1_latest.json"
     signoff_doc = build_envelope(gate_path=args.out_artifact)
     signoff_path.write_text(json.dumps(signoff_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    from scripts.compression_deep_pack_tri_vertical_human_signoff_v1_lib import (  # noqa: WPS433
+        reconcile_from_tri_signoff_record,
+    )
+
+    reconcile_from_tri_signoff_record()
     from scripts.build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1 import build_checklist  # noqa: WPS433
 
     checklist_path = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_signoff_checklist_v1_latest.json"

@@ -252,6 +252,11 @@ def main() -> int:
     signoff_doc = build_envelope(gate_path=args.out_artifact)
     signoff_path.parent.mkdir(parents=True, exist_ok=True)
     signoff_path.write_text(json.dumps(signoff_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    from scripts.compression_deep_pack_tri_vertical_human_signoff_v1_lib import (  # noqa: WPS433
+        reconcile_from_tri_signoff_record,
+    )
+
+    reconcile_from_tri_signoff_record()
     from scripts.build_compression_coding_deep_pack_fallback_spec_v1 import build_fallback_spec  # noqa: WPS433
 
     fallback_path = ROOT / "docs/final/artifacts/compression_coding_deep_pack_fallback_spec_v1_latest.json"

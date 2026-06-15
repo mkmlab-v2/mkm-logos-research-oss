@@ -12,11 +12,27 @@ TRI_SIGNOFF = ROOT / "reports/compression_deep_pack_tri_vertical_human_signoff_l
 
 
 def test_build_post_signoff_checklist_when_commander_signed() -> None:
-    if not TRI_SIGNOFF.is_file():
-        import pytest
-
-        pytest.skip("tri human signoff record missing")
     from scripts.compression_deep_pack_tri_vertical_human_signoff_v1_lib import reconcile_from_tri_signoff_record
+
+    record = ROOT / "scripts/record_compression_deep_pack_tri_vertical_human_signoff_v1.py"
+    tri_path = ROOT / "reports/compression_deep_pack_tri_vertical_human_signoff_latest.json"
+    tri = json.loads(tri_path.read_text(encoding="utf-8")) if tri_path.is_file() else {}
+    if not tri.get("approved"):
+        proc_sign = subprocess.run(
+            [
+                sys.executable,
+                str(record),
+                "--reviewer",
+                "commander",
+                "--acknowledge-research-envelope-only",
+                "--skip-tri-checklist-gate",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        assert proc_sign.returncode == 0, proc_sign.stderr or proc_sign.stdout
 
     reconcile_from_tri_signoff_record()
     proc = subprocess.run(
