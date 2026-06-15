@@ -3,8 +3,8 @@
   "approved": true,
   "decision": "APPROVED_RESEARCH_ENVELOPE_ONLY",
   "reviewer": "commander",
-  "approved_at_utc": "2026-06-15T07:25:31Z",
-  "note": "tri-vertical deep pack research envelope approved",
+  "approved_at_utc": "2026-06-15T07:31:32Z",
+  "note": "post gate refresh reconcile",
   "research_envelope_only_acknowledged": true,
   "scope": {
     "track_a_active_swap": false,
@@ -30,7 +30,7 @@
     "docs/final/artifacts/compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1_latest.json"
   ],
   "note_template": "Research envelope signoff only. Does not authorize Track A ACTIVE swap or SEND unlock.",
-  "recorded_at_utc": "2026-06-15T07:25:31Z",
+  "recorded_at_utc": "2026-06-15T07:31:32Z",
   "patched_child_envelopes": [
     "C:/workspace/docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
     "C:/workspace/docs/final/artifacts/compression_en_business_deep_pack_promotion_signoff_envelope_v1_latest.json",
