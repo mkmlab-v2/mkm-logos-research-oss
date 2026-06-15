@@ -1,0 +1,119 @@
+{
+  "schema": "zone_f_code_template_catalog_extract_v1",
+  "generated_at_utc": "2026-06-15T02:19:44Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "input_jsonl": "data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl",
+  "production_catalog": "codebook/templates/zone_f_code_templates_v1.jsonl",
+  "production_catalog_row_count": 16,
+  "prospect_catalog_default": "codebook/templates/zone_f_code_templates_prospect_v1.jsonl",
+  "merge_policy": "prospect_only_no_auto_merge",
+  "extract_stats": {
+    "rows_scanned": 5,
+    "candidates_raw": 4,
+    "candidates_deduped": 3,
+    "candidates_novel": 3,
+    "candidates_skipped_existing": 0
+  },
+  "prospect_template_ids": [
+    "zf_p001",
+    "zf_p002",
+    "zf_p003"
+  ],
+  "prospect_rows": [
+    {
+      "template_id": "zf_p001",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def validate_api_schema(payload: dict) -> bool:\n    return payload.get(\"schema\") == \"v1\" and payload.get(\"json\") is True",
+      "must_keep_terms": [
+        "api",
+        "json",
+        "schema"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-code-001",
+      "snippet_sha256": "2c17f9c7170678b7df8468a9f1c87e79ba0243c5cd9bf04aca481741c6bdfb54"
+    },
+    {
+      "template_id": "zf_p002",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "import pytest\n\ndef test_endpoint_health():\n    r = client.get(\"/health\")\n    assert r.status_code == 200\n    assert r.json()[\"api_contract_version\"]",
+      "must_keep_terms": [
+        "api",
+        "endpoint",
+        "json",
+        "pytest"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-code-002",
+      "snippet_sha256": "a3d9cbcc074f8f092dcca912a8ccf10645dcbb390bcf62c08992ebe87533689e"
+    },
+    {
+      "template_id": "zf_p003",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "class WebhookClient:\n    def post_json(self, endpoint: str, body: dict) -> dict:\n        return {\"endpoint\": endpoint, \"json\": body, \"status\": \"ok\"}",
+      "must_keep_terms": [
+        "class",
+        "endpoint",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-code-003",
+      "snippet_sha256": "01413fbb7d5a3ec0f96359411fc29e28a50bd03305b25ad5c3eb6a0a31f14cc0"
+    }
+  ],
+  "twin_preview": {
+    "case_count": 3,
+    "exact_restore_pass_count": 3,
+    "mean_saving_rate": 0.624431
+  },
+  "twin_cases": [
+    {
+      "template_id": "zf_p001",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.580645,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_p001@28bd3118]",
+      "wire_token_count": 13,
+      "original_token_count": 31,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore",
+      "prospect": true
+    },
+    {
+      "template_id": "zf_p002",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.617647,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_p002@28bd3118]",
+      "wire_token_count": 13,
+      "original_token_count": 34,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore",
+      "prospect": true
+    },
+    {
+      "template_id": "zf_p003",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "saving_rate": 0.675,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[ZF_MASK:zf_p003@28bd3118]",
+      "wire_token_count": 13,
+      "original_token_count": 40,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore",
+      "prospect": true
+    }
+  ],
+  "reproduce": "py scripts/build_zone_f_code_template_catalog_from_corpus_v1.py --input-jsonl data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl --write-prospect"
+}

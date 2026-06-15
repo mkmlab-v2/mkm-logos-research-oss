@@ -1,0 +1,5 @@
+{"id": "fixture-code-001", "domain_tag": "developer-support", "text": "Customer shared this handler:\n```python\ndef validate_api_schema(payload: dict) -> bool:\n    return payload.get(\"schema\") == \"v1\" and payload.get(\"json\") is True\n```\nPlease review."}
+{"id": "fixture-code-002", "domain_tag": "developer-support", "text": "```python\nimport pytest\n\ndef test_endpoint_health():\n    r = client.get(\"/health\")\n    assert r.status_code == 200\n    assert r.json()[\"api_contract_version\"]\n```"}
+{"id": "fixture-code-003", "domain_tag": "developer-support", "snippet": "class WebhookClient:\n    def post_json(self, endpoint: str, body: dict) -> dict:\n        return {\"endpoint\": endpoint, \"json\": body, \"status\": \"ok\"}"}
+{"id": "fixture-nocode-001", "domain_tag": "customer-support", "text": "Refund request for order ███ — no code in this row."}
+{"id": "fixture-dup-001", "domain_tag": "developer-support", "text": "```python\ndef validate_api_schema(payload: dict) -> bool:\n    return payload.get(\"schema\") == \"v1\" and payload.get(\"json\") is True\n```"}
