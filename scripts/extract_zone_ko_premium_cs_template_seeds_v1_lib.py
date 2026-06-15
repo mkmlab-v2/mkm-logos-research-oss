@@ -75,7 +75,7 @@ def looks_like_ko_premium_cs(text: str, *, min_hangul_ratio: float = 0.35) -> bo
 
 def score_snippet(snippet: str, keywords: list[str]) -> int:
     lower = snippet.lower()
-    return sum(1 for kw in keywords if kw in lower)
+    return sum(1 for kw in keywords if kw in snippet or kw in lower)
 
 
 def must_keep_terms_for_snippet(snippet: str, keywords: list[str], *, min_terms: int = 1) -> list[str]:
@@ -87,49 +87,134 @@ def must_keep_terms_for_snippet(snippet: str, keywords: list[str], *, min_terms:
     return found[:8]
 
 
-def snippet_id_seed(snippet: str) -> str:
-    return hashlib.sha256(snippet.encode("utf-8")).hexdigest()[:10]
+def normalize_snippet(snippet: str) -> str:
+    return snippet.replace("\r\n", "\n").strip()
+
+
+def snippet_hash(snippet: str) -> str:
+    return hashlib.sha256(normalize_snippet(snippet).encode("utf-8")).hexdigest()
+
+
+def row_allowed_for_ko_cs(obj: dict[str, Any]) -> bool:
+    labels = obj.get("labels") or []
+    label_blob = " ".join(str(x) for x in labels).lower()
+    if labels and "premium_cs" not in label_blob:
+        return obj.get("domain_tag") == "customer-support-chat"
+    tenant = str(obj.get("tenant_id") or "")
+    if tenant and "premium-cs" in tenant:
+        return True
+    return obj.get("domain_tag") == "customer-support-chat" or not labels
+
+
+def extract_seeds_from_row(
+    obj: dict[str, Any],
+    *,
+    keywords: list[str],
+    source_row_id: str | None = None,
+    min_score: int = 1,
+) -> list[dict[str, Any]]:
+    if not row_allowed_for_ko_cs(obj):
+        return []
+    row_id = source_row_id or str(obj.get("id") or obj.get("session_id") or "")
+    seeds: list[dict[str, Any]] = []
+    for blob in row_text_blobs(obj):
+        snippet = normalize_snippet(blob)
+        if not looks_like_ko_premium_cs(snippet):
+            continue
+        score = score_snippet(snippet, keywords)
+        if score < min_score:
+            continue
+        seeds.append(
+            {
+                "snippet": snippet,
+                "snippet_sha256": snippet_hash(snippet),
+                "language": "ko",
+                "must_keep_terms": must_keep_terms_for_snippet(snippet, keywords),
+                "source_row_id": row_id,
+                "extract_score": score,
+            }
+        )
+    return seeds
+
+
+def dedupe_seeds(seeds: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    seen: set[str] = set()
+    out: list[dict[str, Any]] = []
+    for seed in seeds:
+        h = str(seed.get("snippet_sha256") or snippet_hash(str(seed.get("snippet") or "")))
+        if h in seen:
+            continue
+        seen.add(h)
+        seed["snippet_sha256"] = h
+        out.append(seed)
+    return out
+
+
+def filter_existing_catalog(
+    seeds: list[dict[str, Any]],
+    existing_snippets: set[str],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    novel: list[dict[str, Any]] = []
+    skipped: list[dict[str, Any]] = []
+    existing_norm = {normalize_snippet(s) for s in existing_snippets}
+    for seed in seeds:
+        snippet = normalize_snippet(str(seed.get("snippet") or ""))
+        if snippet in existing_norm:
+            skipped.append({**seed, "skip_reason": "already_in_catalog"})
+        else:
+            novel.append(seed)
+    return novel, skipped
+
+
+def assign_prospect_template_ids(
+    seeds: list[dict[str, Any]],
+    *,
+    prefix: str = "kcs_p",
+    start_index: int = 1,
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for i, seed in enumerate(seeds, start=start_index):
+        rows.append(
+            {
+                "template_id": f"{prefix}{i:03d}",
+                "shard_id": "zone_ko_premium_cs_v1",
+                "language": "ko",
+                "snippet": seed["snippet"],
+                "must_keep_terms": seed.get("must_keep_terms") or [],
+                "prospect": True,
+                "source_row_id": seed.get("source_row_id"),
+                "snippet_sha256": seed.get("snippet_sha256"),
+                "extract_score": seed.get("extract_score"),
+            }
+        )
+    return rows
 
 
 def extract_from_jsonl(
     path: Path,
     *,
     shard: dict[str, Any],
+    existing_snippets: set[str] | None = None,
     min_score: int = 1,
     max_rows: int = 50,
-    skip_snippets: set[str] | None = None,
-) -> list[dict[str, Any]]:
-    skip = skip_snippets or set()
+) -> dict[str, Any]:
     keywords = shard_keywords(shard)
-    seen: set[str] = set()
-    rows: list[dict[str, Any]] = []
+    raw_seeds: list[dict[str, Any]] = []
+    rows_scanned = 0
     for obj in iter_jsonl_rows(path):
-        labels = obj.get("labels") or []
-        if labels and "premium_cs" not in " ".join(str(x) for x in labels).lower():
-            if obj.get("domain_tag") != "customer-support-chat":
-                continue
-        for blob in row_text_blobs(obj):
-            snippet = blob.strip()
-            if snippet in skip or snippet in seen:
-                continue
-            if not looks_like_ko_premium_cs(snippet):
-                continue
-            score = score_snippet(snippet, keywords)
-            if score < min_score:
-                continue
-            seen.add(snippet)
-            template_id = f"kcs_p{snippet_id_seed(snippet)}"
-            rows.append(
-                {
-                    "template_id": template_id,
-                    "shard_id": str(shard.get("shard_id") or "zone_ko_premium_cs_v1"),
-                    "language": "ko",
-                    "snippet": snippet,
-                    "must_keep_terms": must_keep_terms_for_snippet(snippet, keywords),
-                    "extract_score": score,
-                    "source_jsonl": path.name,
-                }
-            )
-            if len(rows) >= max_rows:
-                return rows
-    return rows
+        rows_scanned += 1
+        raw_seeds.extend(extract_seeds_from_row(obj, keywords=keywords, min_score=min_score))
+    deduped = dedupe_seeds(raw_seeds)
+    existing = existing_snippets or set()
+    novel, skipped = filter_existing_catalog(deduped, existing)
+    prospect_rows = assign_prospect_template_ids(novel[:max_rows])
+    return {
+        "input_jsonl": path.as_posix(),
+        "rows_scanned": rows_scanned,
+        "candidates_raw": len(raw_seeds),
+        "candidates_deduped": len(deduped),
+        "candidates_novel": len(novel),
+        "candidates_skipped_existing": len(skipped),
+        "prospect_rows": prospect_rows,
+        "skipped": skipped,
+    }

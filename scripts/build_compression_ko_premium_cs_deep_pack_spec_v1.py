@@ -56,6 +56,9 @@ def build_spec() -> dict[str, Any]:
                 "template_catalog_production": _rel(
                     ROOT / "codebook/templates/zone_ko_premium_cs_templates_v1.jsonl"
                 ),
+                "template_catalog_prospect": _rel(
+                    ROOT / "codebook/templates/zone_ko_premium_cs_templates_prospect_v1.jsonl"
+                ),
                 "template_manifest": _rel(ROOT / "codebook/templates/zone_ko_premium_cs_templates_manifest_v1.json"),
                 "twin_gate_artifact": _rel(
                     ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_gate_v1_latest.json"
@@ -65,6 +68,7 @@ def build_spec() -> dict[str, Any]:
                 ),
                 "codec_lib": "scripts/compression_ko_premium_cs_deep_pack_v1_lib.py",
                 "extract_lib": "scripts/extract_zone_ko_premium_cs_template_seeds_v1_lib.py",
+                "extract_builder": "scripts/build_zone_ko_premium_cs_template_catalog_from_corpus_v1.py",
                 "gate_builder": "scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
             },
         },
@@ -82,6 +86,7 @@ def build_spec() -> dict[str, Any]:
         },
         "reproduce": [
             "py scripts/build_compression_ko_premium_cs_deep_pack_spec_v1.py",
+            "py scripts/build_zone_ko_premium_cs_template_catalog_from_corpus_v1.py --write-prospect",
             "py scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
         ],
     }
