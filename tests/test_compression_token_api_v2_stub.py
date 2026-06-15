@@ -185,6 +185,44 @@ def test_compress_unknown_corpus_tag_422() -> None:
     assert cr.json()["detail"]["error"] == "unknown_corpus_tag"
 
 
+def test_compress_en_biz_shadow_bind_metadata_without_hybrid_binding() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "risk drawdown leverage control invoice payment",
+            "loss_profile": "semantic_general",
+            "corpus_tag": "en_biz_v1",
+            "client_request_id": "test-v2-shadow-bind-meta",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("shadow_bind_eval_only") is True
+    assert flags.get("shadow_corpus_tag") == "en_biz_v1"
+    assert flags.get("shadow_shard_id_recommended") == "zone_h_en_business_v1"
+    assert flags.get("baseline_shard_id") == "zone_e_finance"
+    assert flags.get("shadow_bind_diverges_from_baseline") is True
+    assert flags.get("production_router_unchanged") is True
+    assert flags.get("wire_family") == "BIZ_MASK"
+    assert cr.json()["compression_packet"]["router_meta"]["shard_id"] == flags["baseline_shard_id"]
+
+
+def test_compress_en_business_email_alias_shadow_bind_metadata() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "Please review the invoice and payment schedule.",
+            "loss_profile": "semantic_general",
+            "corpus_tag": "en-business-email",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("shadow_bind_applied") is True
+    assert flags.get("shadow_corpus_tag") == "en-business-email"
+    assert flags.get("send_gate") == "HOLD"
+
+
 def test_compress_must_keep_overlay_terms_flag() -> None:
     cr = client.post(
         "/v2/compress",

@@ -68,6 +68,43 @@ def shard_route_to_dict(route: ShardRoute) -> dict[str, Any]:
     }
 
 
+def shadow_bind_integrity_flags(
+    *,
+    text: str,
+    corpus_tag: str | None,
+    baseline_route: ShardRoute,
+    router: DomainSpecificRouter,
+    spec: dict[str, Any] | None = None,
+    spec_path: Path | None = None,
+) -> dict[str, Any]:
+    """Metadata-only shadow bind flags for v2 stub (does not mutate production route)."""
+    doc = spec if spec is not None else load_shadow_bind_spec(spec_path)
+    tag = str(corpus_tag or "").strip()
+    if not corpus_tag_triggers_shadow(tag, doc):
+        return {}
+    cmp = compare_baseline_vs_shadow(text, corpus_tag=tag, router=router, spec=doc)
+    bind_path = (spec_path or DEFAULT_BIND_SPEC)
+    try:
+        bind_rel = bind_path.relative_to(ROOT).as_posix()
+    except ValueError:
+        bind_rel = bind_path.as_posix()
+    return {
+        "shadow_bind_eval_only": True,
+        "shadow_only": True,
+        "shadow_bind_spec": bind_rel,
+        "shadow_corpus_tag": tag,
+        "shadow_bind_applied": bool(cmp["shadow_applied"]),
+        "baseline_shard_id": cmp["baseline_route"]["shard_id"],
+        "shadow_shard_id_recommended": cmp["shadow_route"]["shard_id"] if cmp["shadow_applied"] else None,
+        "shadow_bind_diverges_from_baseline": bool(cmp["diverges_from_baseline"]),
+        "wire_family": str(doc.get("wire_family") or "BIZ_MASK"),
+        "production_router_unchanged": True,
+        "baseline_route_shard_used_for_compress": baseline_route.shard_id,
+        "send_gate": "HOLD",
+        "research_only": True,
+    }
+
+
 def compare_baseline_vs_shadow(
     text: str,
     *,

@@ -89,6 +89,12 @@
         "hypo_shadow_router_bind": "scripts/run_en_business_shadow_router_bind_v1.py",
         "hypo_shadow_router_bind_spec": "docs/final/artifacts/compression_en_business_shadow_router_bind_v1.json",
         "hypo_shadow_router_bind_artifact": "docs/final/artifacts/en_business_shadow_router_bind_v1_latest.json",
+        "v2_stub_shadow_bind_metadata": {
+          "maturity": "partial_stub_metadata",
+          "endpoint": "POST /v2/compress integrity_flags only",
+          "active_swap": false,
+          "lib": "scripts/en_business_shadow_router_bind_v1_lib.py:shadow_bind_integrity_flags"
+        },
         "builder_script": "scripts/build_compression_en_business_deep_pack_gate_v1.py"
       },
       "ko_premium_cs_deep_pack_poc": {

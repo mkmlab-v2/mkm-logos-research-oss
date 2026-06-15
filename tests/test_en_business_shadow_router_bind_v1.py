@@ -46,6 +46,29 @@ def test_shadow_bind_lib_forces_shard_on_tag() -> None:
     assert cmp["diverges_from_baseline"] is True
 
 
+def test_shadow_bind_integrity_flags_metadata_shape() -> None:
+    from scripts.core.domain_router import DomainSpecificRouter
+    from scripts.en_business_shadow_router_bind_v1_lib import (
+        load_shadow_bind_spec,
+        shadow_bind_integrity_flags,
+    )
+
+    spec = load_shadow_bind_spec(BIND_SPEC)
+    router = DomainSpecificRouter(SHARDS)
+    baseline = router.route("risk drawdown leverage control invoice payment")
+    flags = shadow_bind_integrity_flags(
+        text="risk drawdown leverage control invoice payment",
+        corpus_tag="en_biz_v1",
+        baseline_route=baseline,
+        router=router,
+        spec=spec,
+        spec_path=BIND_SPEC,
+    )
+    assert flags["shadow_bind_eval_only"] is True
+    assert flags["shadow_bind_diverges_from_baseline"] is True
+    assert flags["baseline_route_shard_used_for_compress"] == baseline.shard_id
+
+
 def test_shadow_bind_no_apply_without_tag() -> None:
     from scripts.core.domain_router import DomainSpecificRouter
     from scripts.en_business_shadow_router_bind_v1_lib import (

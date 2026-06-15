@@ -41,6 +41,11 @@ from scripts.compression_hybrid_router_spec_v1_lib import (  # noqa: E402
     corpus_binding_integrity_flags,
     resolve_hybrid_router,
 )
+from scripts.en_business_shadow_router_bind_v1_lib import (  # noqa: E402
+    corpus_tag_triggers_shadow,
+    load_shadow_bind_spec,
+    shadow_bind_integrity_flags,
+)
 from scripts.compression_profile_v1 import (  # noqa: E402
     CompressionProfile,
     profile_evaluate_report_kwargs_v2,
@@ -749,6 +754,8 @@ def _resolve_hybrid_corpus_binding(body: CompressRequestV2) -> HybridRouterResol
         return None
     res = resolve_hybrid_router(tag, sku_class=body.sku_class)
     if res is None:
+        if corpus_tag_triggers_shadow(tag, load_shadow_bind_spec()):
+            return None
         from fastapi import HTTPException
 
         raise HTTPException(
@@ -800,6 +807,24 @@ def _effective_compress_overrides(
     return profile, short_thr, short_max, overlay_extra
 
 
+def _attach_shadow_bind_integrity_flags(
+    body: CompressRequestV2,
+    route: ShardRoute,
+    flags: dict[str, Any],
+) -> None:
+    tag = str(body.corpus_tag or "").strip()
+    if not tag:
+        return
+    flags.update(
+        shadow_bind_integrity_flags(
+            text=body.text,
+            corpus_tag=tag,
+            baseline_route=route,
+            router=_router,
+        )
+    )
+
+
 @app.get("/health")
 def health() -> dict[str, Any]:
     profile_payload = _build_tracka_profile_payload(include_legacy_flat_keys=False)
@@ -815,6 +840,8 @@ def health() -> dict[str, Any]:
         "hybrid_codec_router_default": "off",
         "hybrid_router_spec": "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
         "hybrid_router_stub_binding": "partial_stub_metadata",
+        "shadow_bind_stub_metadata": "corpus_tag→integrity_flags only; production route unchanged",
+        "shadow_bind_spec": "docs/final/artifacts/compression_en_business_shadow_router_bind_v1.json",
         "anchor_ssot": "reports/constitution/btrack_pilot/comp_4d_anchor_ssot_v1.json",
         "legacy_flat_key_access_count": _legacy_flat_key_access_count(),
         **profile_payload,
@@ -1181,6 +1208,7 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
     }
     if hybrid_res is not None:
         flags.update(corpus_binding_integrity_flags(hybrid_res))
+    _attach_shadow_bind_integrity_flags(body, route, flags)
     if forced_sid:
         flags["forced_shard_id"] = forced_sid
         flags["forced_shard_promoted_b2b"] = forced_sid.endswith("_b2b_v1")

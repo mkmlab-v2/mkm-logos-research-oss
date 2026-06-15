@@ -89,6 +89,7 @@
   "hypo_passive_cross_audit": "scripts/run_compression_mask_hypo_passive_cross_audit_v1.py",
   "hypo_passive_cross_audit_task": "MKM_Compression_MaskHypoPassiveCrossAudit_Daily",
   "hypo_passive_cross_audit_register": "scripts/Register-CompressionMaskHypoPassiveCrossAuditDailyTask.ps1",
+  "v2_stub_shadow_bind_metadata": "POST /v2/compress integrity_flags via shadow_bind_integrity_flags (no ACTIVE swap)",
   "reproduce": [
     "py scripts/run_en_business_template_overlay_scan_v1.py",
     "py scripts/run_en_business_shadow_router_bind_v1.py",
