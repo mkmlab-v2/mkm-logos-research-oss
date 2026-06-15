@@ -1,0 +1,154 @@
+{
+  "schema": "compression_mask_hypo_passive_cross_audit_v1",
+  "generated_at_utc": "2026-06-15T12:38:13Z",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "shadow_only": true,
+  "non_gating": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "input_policy": "masked_corpus_jsonl_replay_only",
+  "forbidden": [
+    "live_trade_traffic",
+    "production_domain_router_mutation",
+    "customer_sla_headline_from_hypo_min_saving"
+  ],
+  "workspace_root": "C:/workspace",
+  "steps": [
+    {
+      "step_id": "registry_sync",
+      "hypo_id": "HYPO-3",
+      "script": "scripts/run_compression_mask_shadow_registry_sync_v1.py",
+      "exit_code": 0,
+      "ok": true,
+      "stdout_tail": "{\"ok\": true, \"all_entries_present\": true, \"git_head_sha\": \"181d19fb6c029f692e79f78efd3309cf7123882f\", \"entry_count\": 7, \"report_out\": \"C:\\\\workspace\\\\reports\\\\compression_mask_shadow_registry_v1_latest.json\", \"staging_out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\compression_mask_shadow_registry_staging_v1.json\", \"mirror_copied\": 7}\n",
+      "stderr_tail": "",
+      "stdout_json": {
+        "ok": true,
+        "all_entries_present": true,
+        "git_head_sha": "181d19fb6c029f692e79f78efd3309cf7123882f",
+        "entry_count": 7,
+        "report_out": "C:\\workspace\\reports\\compression_mask_shadow_registry_v1_latest.json",
+        "staging_out": "C:\\workspace\\docs\\final\\artifacts\\compression_mask_shadow_registry_staging_v1.json",
+        "mirror_copied": 7
+      },
+      "report_path": "C:/workspace/reports/compression_mask_shadow_registry_v1_latest.json",
+      "report_summary": {
+        "schema": "compression_mask_shadow_registry_v1",
+        "aggregate": {
+          "entry_count": 7,
+          "missing_entry_ids": [],
+          "all_entries_present": true
+        }
+      }
+    },
+    {
+      "step_id": "biz_overlay",
+      "hypo_id": "HYPO-1a",
+      "script": "scripts/run_en_business_template_overlay_scan_v1.py",
+      "exit_code": 0,
+      "ok": true,
+      "stdout_tail": "{\"ok\": true, \"wire_match_rate\": 1.0, \"exact_restore_rate_on_matched\": 1.0, \"tenant_overlay_rate_on_matched\": 1.0, \"min_saving_rate_observed\": 0.066667, \"full_wire_and_twin_pass\": true, \"report_out\": \"C:\\\\workspace\\\\reports\\\\en_business_template_overlay_scan_v1_latest.json\"}\n",
+      "stderr_tail": "",
+      "stdout_json": {
+        "ok": true,
+        "wire_match_rate": 1.0,
+        "exact_restore_rate_on_matched": 1.0,
+        "tenant_overlay_rate_on_matched": 1.0,
+        "min_saving_rate_observed": 0.066667,
+        "full_wire_and_twin_pass": true,
+        "report_out": "C:\\workspace\\reports\\en_business_template_overlay_scan_v1_latest.json"
+      },
+      "report_path": "C:/workspace/reports/en_business_template_overlay_scan_v1_latest.json",
+      "report_summary": {
+        "schema": "en_business_template_overlay_scan_v1",
+        "aggregate": {
+          "corpus_count": 3,
+          "snippet_candidates_total": 14,
+          "wire_match_count": 14,
+          "wire_match_rate": 1.0,
+          "exact_restore_pass_count": 14,
+          "exact_restore_rate_on_matched": 1.0,
+          "tenant_overlay_pass_count": 14,
+          "tenant_overlay_rate_on_matched": 1.0,
+          "min_saving_rate_observed": 0.066667,
+          "saving_rate_floor_hypo_pass": true,
+          "full_wire_and_twin_pass": true
+        }
+      }
+    },
+    {
+      "step_id": "biz_shadow_bind",
+      "hypo_id": "HYPO-2",
+      "script": "scripts/run_en_business_shadow_router_bind_v1.py",
+      "exit_code": 0,
+      "ok": true,
+      "stdout_tail": "{\"ok\": true, \"shadow_applied_count\": 13, \"divergence_count\": 0, \"divergence_rate\": 0.0, \"full_shadow_bind_pass\": true, \"report_out\": \"C:\\\\workspace\\\\reports\\\\en_business_shadow_router_bind_v1_latest.json\"}\n",
+      "stderr_tail": "",
+      "stdout_json": {
+        "ok": true,
+        "shadow_applied_count": 13,
+        "divergence_count": 0,
+        "divergence_rate": 0.0,
+        "full_shadow_bind_pass": true,
+        "report_out": "C:\\workspace\\reports\\en_business_shadow_router_bind_v1_latest.json"
+      },
+      "report_path": "C:/workspace/reports/en_business_shadow_router_bind_v1_latest.json",
+      "report_summary": {
+        "schema": "en_business_shadow_router_bind_eval_v1",
+        "aggregate": {
+          "corpus_count": 3,
+          "en_business_rows_total": 13,
+          "shadow_applied_count": 13,
+          "divergence_count": 0,
+          "divergence_rate": 0.0,
+          "all_shadow_routes_expected_shard": true,
+          "full_shadow_bind_pass": true
+        }
+      }
+    },
+    {
+      "step_id": "cs_wtt_overlay",
+      "hypo_id": "HYPO-1b",
+      "script": "scripts/run_ko_premium_cs_wtt_template_overlay_scan_v1.py",
+      "exit_code": 0,
+      "ok": true,
+      "stdout_tail": "{\"ok\": true, \"wire_match_rate\": 1.0, \"exact_restore_rate_on_matched\": 1.0, \"tenant_overlay_rate_on_matched\": 1.0, \"min_saving_rate_observed\": 0.125, \"full_wire_and_twin_pass\": true, \"report_out\": \"C:\\\\workspace\\\\reports\\\\ko_premium_cs_wtt_template_overlay_scan_v1_latest.json\"}\n",
+      "stderr_tail": "",
+      "stdout_json": {
+        "ok": true,
+        "wire_match_rate": 1.0,
+        "exact_restore_rate_on_matched": 1.0,
+        "tenant_overlay_rate_on_matched": 1.0,
+        "min_saving_rate_observed": 0.125,
+        "full_wire_and_twin_pass": true,
+        "report_out": "C:\\workspace\\reports\\ko_premium_cs_wtt_template_overlay_scan_v1_latest.json"
+      },
+      "report_path": "C:/workspace/reports/ko_premium_cs_wtt_template_overlay_scan_v1_latest.json",
+      "report_summary": {
+        "schema": "ko_premium_cs_wtt_template_overlay_scan_v1",
+        "aggregate": {
+          "corpus_count": 5,
+          "snippet_candidates_total": 38,
+          "wire_match_count": 38,
+          "wire_match_rate": 1.0,
+          "exact_restore_pass_count": 38,
+          "exact_restore_rate_on_matched": 1.0,
+          "tenant_overlay_pass_count": 38,
+          "tenant_overlay_rate_on_matched": 1.0,
+          "min_saving_rate_observed": 0.125,
+          "saving_rate_floor_hypo_pass": true,
+          "full_wire_and_twin_pass": true
+        }
+      }
+    }
+  ],
+  "aggregate": {
+    "step_count": 4,
+    "pass_count": 4,
+    "fail_count": 0,
+    "failed_step_ids": [],
+    "all_steps_pass": true
+  },
+  "reproduce": "py scripts/run_compression_mask_hypo_passive_cross_audit_v1.py"
+}

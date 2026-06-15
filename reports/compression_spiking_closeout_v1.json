@@ -57,6 +57,24 @@
         "min_saving_rate_observed": 0.125,
         "full_wire_and_twin_pass": true
       }
+    },
+    {
+      "id": "HYPO-3",
+      "wire_family": "MASK_REGISTRY",
+      "runner": "scripts/run_compression_mask_shadow_registry_sync_v1.py",
+      "staging": "docs/final/artifacts/compression_mask_shadow_registry_staging_v1.json",
+      "report": "reports/compression_mask_shadow_registry_v1_latest.json"
+    },
+    {
+      "id": "HYPO-4",
+      "wire_family": "MASK_PASSIVE_AUDIT",
+      "runner": "scripts/run_compression_mask_hypo_passive_cross_audit_v1.py",
+      "report": "docs/final/artifacts/compression_mask_hypo_passive_cross_audit_v1_latest.json",
+      "aggregate": {
+        "step_count": 4,
+        "pass_count": 4,
+        "all_steps_pass": true
+      }
     }
   ],
   "biz_gate_pointer": "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json",
@@ -68,11 +86,14 @@
   "sku_brief_pointer": "docs/final/artifacts/compression_sku_separation_brief_v1_latest.json",
   "shadow_registry_sync": "scripts/run_compression_mask_shadow_registry_sync_v1.py",
   "shadow_registry_staging": "docs/final/artifacts/compression_mask_shadow_registry_staging_v1.json",
+  "hypo_passive_cross_audit": "scripts/run_compression_mask_hypo_passive_cross_audit_v1.py",
   "reproduce": [
     "py scripts/run_en_business_template_overlay_scan_v1.py",
     "py scripts/run_en_business_shadow_router_bind_v1.py",
     "py scripts/run_ko_premium_cs_wtt_template_overlay_scan_v1.py",
-    "py -m pytest tests/test_en_business_template_overlay_scan_v1.py tests/test_en_business_shadow_router_bind_v1.py tests/test_ko_premium_cs_wtt_template_overlay_scan_v1.py -q"
+    "py scripts/run_compression_mask_shadow_registry_sync_v1.py",
+    "py scripts/run_compression_mask_hypo_passive_cross_audit_v1.py",
+    "py -m pytest tests/test_en_business_template_overlay_scan_v1.py tests/test_en_business_shadow_router_bind_v1.py tests/test_ko_premium_cs_wtt_template_overlay_scan_v1.py tests/test_compression_mask_shadow_registry_v1.py tests/test_compression_mask_hypo_passive_cross_audit_v1.py -q"
   ],
   "verification_exit_code": 0,
   "forbidden": [
