@@ -824,6 +824,47 @@ def test_v2_coding_deep_pack_literal_slot_key_rename_falls_back_semantic() -> No
     assert flags.get("coding_deep_pack_no_catalog_match") is True
 
 
+def _zone_f_template_snippet(template_id: str) -> str:
+    import json
+
+    for line in (ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl").read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        if str(row.get("template_id") or "") == template_id:
+            return str(row["snippet"])
+    raise KeyError(template_id)
+
+
+@pytest.mark.parametrize("template_id", ["zf_t23", "zf_t24", "zf_t25"])
+def test_v2_coding_deep_pack_merged_dev_support_roundtrip(template_id: str) -> None:
+    sample = _zone_f_template_snippet(template_id)
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_f_code",
+            "sku_class": "mask",
+            "enable_coding_deep_pack": True,
+            "client_request_id": f"test-v2-coding-deep-pack-{template_id}",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    cj = cr.json()
+    flags = cj["integrity_flags"]
+    assert flags.get("coding_deep_pack_wire_v1") is True
+    assert flags.get("exact_restore_ok") is True
+    pkt = cj["compression_packet"]
+    assert str(pkt["compressed_text"]).startswith("[ZF_MASK:")
+    assert CODING_DEEP_PACK_KEY in pkt["residual_meta"]
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200, er.text
+    ej = er.json()
+    assert ej["text"] == sample
+    assert ej["integrity_flags"].get("reassembly") == "coding_deep_pack_wire_v1"
+
+
 def test_v2_coding_deep_pack_no_match_falls_back_semantic() -> None:
     unknown = "def totally_unknown_helper() -> None:\n    pass\n"
     cr = client.post(

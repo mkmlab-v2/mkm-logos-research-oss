@@ -1,10 +1,10 @@
 {
   "schema": "compression_coding_deep_pack_promotion_signoff_envelope_v1",
-  "generated_at_utc": "2026-06-15T06:13:49Z",
+  "generated_at_utc": "2026-06-15T06:30:29Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
-  "envelope_status": "commander_signed_research_envelope",
+  "envelope_status": "draft_awaiting_commander",
   "vertical": "zone_f_code_coding_deep_pack",
   "gate_artifact": "docs/final/artifacts/compression_coding_deep_pack_gate_v1_latest.json",
   "separate_from_candidate_pool_signoff": "docs/final/artifacts/compression_candidate_pool_on_promotion_signoff_envelope_v1_latest.json",
@@ -24,9 +24,9 @@
     "jaccard_axis": "separate_from_exact_restore"
   },
   "human_signoff": {
-    "reviewer": "commander",
-    "approved_at_utc": "2026-06-15T05:51:23Z",
-    "note": "tri-vertical deep pack research envelope"
+    "reviewer": null,
+    "approved_at_utc": null,
+    "note": null
   },
   "apply_command_after_signoff": null,
   "forbidden_in_this_envelope": [

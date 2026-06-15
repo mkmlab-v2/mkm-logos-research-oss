@@ -49,11 +49,18 @@ def build_checklist(
     en_biz = _load(en_business_path)
     ko_cs = _load(ko_cs_path)
 
+    coding_checklist_items = coding.get("checklist") or {}
+    coding_evidence = coding.get("evidence_paths") or {}
+    coding_summary = coding.get("summary") or {}
+
     verticals = {
         "zone_f_code": {
             "wire_family": "ZF_MASK",
             "checklist": coding,
             "artifact": _rel(coding_path),
+            "coverage_artifact": coding_evidence.get("coverage_artifact"),
+            "coverage_wire_match_rate": coding_summary.get("coverage_wire_match_rate"),
+            "pipeline_builder": coding_evidence.get("pipeline_builder"),
         },
         "zone_h_en_business_v1": {
             "wire_family": "BIZ_MASK",
@@ -93,6 +100,13 @@ def build_checklist(
             for v in verticals.values()
         ),
         "fail_comp_axis_separation_ack": True,
+        "zone_f_coverage_artifact_linked": bool(coding_evidence.get("coverage_artifact")),
+        "zone_f_coverage_coding_corpora_full": bool(
+            coding_checklist_items.get("coverage_coding_corpora_wire_match_full")
+        ),
+        "zone_f_catalog_growth_pipeline_linked": bool(
+            coding_checklist_items.get("catalog_growth_pipeline_pointer")
+        ),
     }
     failed = [k for k, v in checklist.items() if not v]
     all_green = len(failed) == 0
@@ -112,6 +126,15 @@ def build_checklist(
                 "decision": meta["checklist"].get("decision"),
                 "all_green": meta["checklist"].get("all_green"),
                 "checklist_artifact": meta["artifact"],
+                **(
+                    {
+                        "coverage_artifact": meta.get("coverage_artifact"),
+                        "coverage_wire_match_rate": meta.get("coverage_wire_match_rate"),
+                        "pipeline_builder": meta.get("pipeline_builder"),
+                    }
+                    if vid == "zone_f_code"
+                    else {}
+                ),
             }
             for vid, meta in verticals.items()
         },
@@ -127,9 +150,12 @@ def build_checklist(
             "Three wire families (ZF_MASK / BIZ_MASK / CS_MASK) remain separate axes.",
             "Each vertical twin gate uses saving_rate + exact_restore_ok — not Jaccard alone.",
             "KO CS CS_MASK requires ███ mask exact-restore; wtt shortcap stays hybrid-router only.",
+            "zone_f_code catalog coverage is B-track wire-match evidence only — not customer SLA.",
             "Rollup approves research envelopes only; ACTIVE swap requires separate Track A gate.",
         ],
+        "btrack_coverage_note": coding.get("btrack_coverage_note"),
         "reproduce": [
+            "py scripts/run_zone_f_code_template_catalog_coverage_v1.py",
             "py scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py",
             "py scripts/build_compression_en_business_deep_pack_gate_v1.py",
             "py scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
