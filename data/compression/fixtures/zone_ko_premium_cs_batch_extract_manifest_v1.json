@@ -3,6 +3,9 @@
     "data/compression/stateless_poc_prospect_wtt-premium-cs-customer-v1_v1_bodyonly_v1.jsonl",
     "data/compression/stateless_poc_prospect_wtt-premium-cs-customer-v1_v1_remainder_000_017_v1.jsonl",
     "data/compression/stateless_poc_prospect_wtt-premium-cs-auto-local-v1_v1.jsonl",
-    "data/compression/stateless_poc_prospect_wtt-premium-cs-compression-v1_v1_bodyonly_v1.jsonl"
+    "data/compression/stateless_poc_prospect_wtt-premium-cs-compression-v1_v1_bodyonly_v1.jsonl",
+    "data/compression/stateless_poc_prospect_wtt-icp-synthetic-operator-v1_v1.jsonl",
+    "data/compression/stateless_poc_prospect_wtt-icp-synthetic-operator-v1_v1_bodyonly_v1.jsonl",
+    "data/compression/stateless_poc_prospect_wtt-premium-cs-compression-v1_v1.jsonl"
   ]
 }

@@ -5,8 +5,8 @@
   "research_only": true,
   "shard_json": "C:/workspace/codebook/shards/zone_h_en_business_v1.json",
   "catalog_jsonl": "C:/workspace/codebook/templates/zone_h_en_business_templates_v1.jsonl",
-  "catalog_row_count": 8,
-  "input_count": 2,
+  "catalog_row_count": 13,
+  "input_count": 3,
   "missing_inputs": [],
   "min_score": 2,
   "corpora": [
@@ -29,12 +29,22 @@
       "wire_miss_count": 0,
       "wire_match_rate": 1.0,
       "misses_sample": []
+    },
+    {
+      "input_jsonl": "C:/workspace/data/compression/fixtures/zone_h_en_business_corpus_expand_v2.jsonl",
+      "rows_scanned": 4,
+      "rows_with_snippet_candidates": 4,
+      "snippet_candidates_total": 5,
+      "wire_match_count": 5,
+      "wire_miss_count": 0,
+      "wire_match_rate": 1.0,
+      "misses_sample": []
     }
   ],
   "aggregate": {
-    "corpus_count": 2,
-    "snippet_candidates_total": 9,
-    "wire_match_count": 9,
+    "corpus_count": 3,
+    "snippet_candidates_total": 14,
+    "wire_match_count": 14,
     "wire_match_rate": 1.0,
     "all_corpora_present": true,
     "full_wire_match": true

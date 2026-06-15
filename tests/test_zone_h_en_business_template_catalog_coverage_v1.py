@@ -54,6 +54,25 @@ def test_coverage_expand_full_match() -> None:
     assert row["wire_match_rate"] == 1.0
 
 
+def test_coverage_expand_v2_full_match() -> None:
+    from scripts.zone_h_en_business_template_catalog_coverage_v1_lib import evaluate_corpus_snippet_coverage
+
+    shard = __import__(
+        "scripts.extract_zone_h_en_business_template_seeds_v1_lib",
+        fromlist=["load_shard"],
+    ).load_shard(ROOT / "codebook/shards/zone_h_en_business_v1.json")
+    from scripts.compression_en_business_deep_pack_v1_lib import load_template_catalog
+
+    rows = load_template_catalog(CATALOG)
+    row = evaluate_corpus_snippet_coverage(
+        ROOT / "data/compression/fixtures/zone_h_en_business_corpus_expand_v2.jsonl",
+        shard=shard,
+        catalog_rows=rows,
+    )
+    assert row["snippet_candidates_total"] == 5
+    assert row["wire_match_rate"] == 1.0
+
+
 def test_coverage_runner_smoke() -> None:
     proc = subprocess.run(
         [sys.executable, str(COVERAGE_RUNNER)],

@@ -16,6 +16,10 @@ TEMPLATES = ROOT / "codebook/templates/zone_h_en_business_templates_v1.jsonl"
 GATE_ARTIFACT = ROOT / "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json"
 
 
+def _template_row_count() -> int:
+    return sum(1 for line in TEMPLATES.read_text(encoding="utf-8").splitlines() if line.strip())
+
+
 def test_build_en_business_deep_pack_gate_exit_zero() -> None:
     proc = subprocess.run(
         [sys.executable, str(GATE_BUILDER)],
@@ -30,7 +34,8 @@ def test_build_en_business_deep_pack_gate_exit_zero() -> None:
     assert doc["schema"] == "compression_en_business_deep_pack_gate_v1"
     assert doc["wire_family"] == "BIZ_MASK"
     summary = doc["summary"]
-    assert summary["exact_restore_pass_count"] == summary["case_count"] == 8
+    row_count = _template_row_count()
+    assert summary["exact_restore_pass_count"] == summary["case_count"] == row_count
     assert summary["mean_saving_rate"] > 0.0
 
 

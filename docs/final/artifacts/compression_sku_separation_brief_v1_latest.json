@@ -77,7 +77,7 @@
         "maturity": "seed_poc",
         "vertical": "zone_h_en_business_v1",
         "wire_family": "BIZ_MASK",
-        "template_catalog_row_count": 8,
+        "template_catalog_row_count": 13,
         "template_catalog_jsonl": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
         "twin_gate_artifact": "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json",
         "coverage_artifact": "docs/final/artifacts/zone_h_en_business_template_catalog_coverage_v1_latest.json",
@@ -100,7 +100,14 @@
         "mask_canonicalize_lib": "scripts/normalize_ko_premium_cs_mask_snippet_v1_lib.py",
         "catalog_pipeline": "scripts/run_zone_ko_premium_cs_template_catalog_pipeline_v1.py",
         "tri_vertical_smoke": "scripts/run_compression_deep_pack_tri_vertical_smoke_v1.py",
-        "builder_script": "scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py"
+        "builder_script": "scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
+        "icp_synthetic_operator_axis": {
+          "status": "excluded_from_cs_deep_pack_manifest",
+          "reason": "ICP operator PoC uses variant phrasing; not CS_MASK template-catalog wire evidence (FAIL-COMP-004).",
+          "corpus_examples": [
+            "data/compression/stateless_poc_prospect_wtt-icp-synthetic-operator-v1_v1.jsonl"
+          ]
+        }
       }
     }
   },

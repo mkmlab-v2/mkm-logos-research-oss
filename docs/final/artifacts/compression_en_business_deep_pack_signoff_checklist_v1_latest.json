@@ -1,8 +1,8 @@
 {
   "schema": "compression_en_business_deep_pack_signoff_checklist_v1",
-  "generated_at_utc": "2026-06-15T08:55:28Z",
-  "decision": "READY_FOR_COMMANDER_SIGNOFF",
-  "all_green": true,
+  "generated_at_utc": "2026-06-15T09:31:04Z",
+  "decision": "HOLD_NEEDS_REVIEW",
+  "all_green": false,
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -15,26 +15,29 @@
     "research_only_true": true,
     "track_a_active_untouched_true": true,
     "send_gate_hold": true,
-    "envelope_awaiting_commander": true,
+    "envelope_awaiting_commander": false,
     "fallback_spec_present": true,
     "vertical_spec_present": true,
     "template_manifest_present": true,
     "separate_from_coding_pack_ack": true,
     "jaccard_axis_separate_ack": true,
-    "human_signoff_not_applied": true,
+    "human_signoff_not_applied": false,
     "coverage_artifact_present": true,
     "coverage_corpora_wire_match_full": true,
     "catalog_growth_pipeline_pointer": true
   },
-  "failed_checks": [],
+  "failed_checks": [
+    "envelope_awaiting_commander",
+    "human_signoff_not_applied"
+  ],
   "summary": {
-    "template_catalog_row_count": 8,
-    "exact_restore_pass_count": 8,
-    "mean_saving_rate_observed": 0.469978,
-    "catalog_sha256": "773d79327340203bdc63440ae509ffb068c050636ec99e5d740e7c52ea51529b",
-    "envelope_status": "draft_awaiting_commander",
+    "template_catalog_row_count": 13,
+    "exact_restore_pass_count": 13,
+    "mean_saving_rate_observed": 0.408462,
+    "catalog_sha256": "7cbefe0fdcaf172a803362c749ef2bf0e77a96fe433c2f972c4c36ac41bc397e",
+    "envelope_status": "commander_signed_research_envelope",
     "coverage_wire_match_rate": 1.0,
-    "coverage_corpus_count": 2
+    "coverage_corpus_count": 3
   },
   "constraints": {
     "human_review_required": true,
@@ -60,8 +63,11 @@
   },
   "btrack_coverage_note": "Wire-match coverage on en business JSONL corpora is B-track evidence only — not customer SLA.",
   "operator_action": {
-    "approve_if_all_green": true,
-    "review_items_if_hold": [],
+    "approve_if_all_green": false,
+    "review_items_if_hold": [
+      "envelope_awaiting_commander",
+      "human_signoff_not_applied"
+    ],
     "after_commander_signoff": [
       "Set human_signoff.reviewer + approved_at_utc on signoff envelope (manual edit).",
       "Do NOT run ACTIVE apply without explicit Track A promotion order."
