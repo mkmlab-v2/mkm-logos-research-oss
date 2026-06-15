@@ -1,22 +1,18 @@
 {
   "schema": "zone_f_code_template_catalog_batch_extract_v1",
-  "generated_at_utc": "2026-06-15T02:27:42Z",
+  "generated_at_utc": "2026-06-15T03:47:01Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
   "merge_policy": "prospect_only_no_auto_merge",
-  "input_count": 4,
+  "input_count": 5,
   "per_corpus": [
     {
       "input_jsonl": "data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl",
       "ok": true,
       "rows_scanned": 5,
-      "candidates_novel": 3,
-      "prospect_template_ids": [
-        "zf_p001",
-        "zf_p002",
-        "zf_p003"
-      ]
+      "candidates_novel": 0,
+      "prospect_template_ids": []
     },
     {
       "input_jsonl": "data/compression/stateless_poc_prospect_tactical-b-free-audit-v1_v1.jsonl",
@@ -38,6 +34,17 @@
       "rows_scanned": 30,
       "candidates_novel": 0,
       "prospect_template_ids": []
+    },
+    {
+      "input_jsonl": "data/compression/contributions/open_bench_coding_snippet_seed_v1.jsonl",
+      "ok": true,
+      "rows_scanned": 3,
+      "candidates_novel": 3,
+      "prospect_template_ids": [
+        "zf_p001",
+        "zf_p002",
+        "zf_p003"
+      ]
     }
   ],
   "aggregate_stats": {
@@ -50,44 +57,46 @@
       "template_id": "zf_p001",
       "shard_id": "zone_f_code",
       "language": "python",
-      "snippet": "def validate_api_schema(payload: dict) -> bool:\n    return payload.get(\"schema\") == \"v1\" and payload.get(\"json\") is True",
+      "snippet": "from fastapi import APIRouter\n\nrouter = APIRouter()\n\n@router.post(\"/v2/validate\")\ndef validate_endpoint(payload: dict) -> dict:\n    schema = payload.get(\"schema\") or \"v1\"\n    return {\"endpoint\": \"/v2/validate\", \"json\": True, \"schema\": schema}",
       "must_keep_terms": [
         "api",
+        "endpoint",
         "json",
         "schema"
       ],
       "prospect": true,
-      "source_row_id": "fixture-code-001",
-      "snippet_sha256": "2c17f9c7170678b7df8468a9f1c87e79ba0243c5cd9bf04aca481741c6bdfb54"
+      "source_row_id": "contrib-coding-seed-001",
+      "snippet_sha256": "100b00bba83e6053303cc8e8bec5f5b731756fa1bf921a674d91015013937baa"
     },
     {
       "template_id": "zf_p002",
       "shard_id": "zone_f_code",
       "language": "python",
-      "snippet": "import pytest\n\ndef test_endpoint_health():\n    r = client.get(\"/health\")\n    assert r.status_code == 200\n    assert r.json()[\"api_contract_version\"]",
+      "snippet": "import traceback\n\ndef parse_json_schema(raw: bytes) -> dict:\n    try:\n        return json.loads(raw.decode(\"utf-8\"))\n    except ValueError as error:\n        traceback.print_exc()\n        raise error",
       "must_keep_terms": [
-        "api",
-        "endpoint",
         "json",
-        "pytest"
+        "schema",
+        "traceback"
       ],
       "prospect": true,
-      "source_row_id": "fixture-code-002",
-      "snippet_sha256": "a3d9cbcc074f8f092dcca912a8ccf10645dcbb390bcf62c08992ebe87533689e"
+      "source_row_id": "contrib-coding-seed-002",
+      "snippet_sha256": "0e8071361f1637a0caa1fee8be5f445d13d4f15ab9c97847ef7228a26cd6fad8"
     },
     {
       "template_id": "zf_p003",
       "shard_id": "zone_f_code",
       "language": "python",
-      "snippet": "class WebhookClient:\n    def post_json(self, endpoint: str, body: dict) -> dict:\n        return {\"endpoint\": endpoint, \"json\": body, \"status\": \"ok\"}",
+      "snippet": "@pytest.mark.asyncio\nasync def test_api_endpoint_schema_contract():\n    response = await client.get(\"/openapi.json\")\n    assert response.status_code == 200\n    schema = response.json()\n    assert \"/health\" in schema.get(\"paths\", {})",
       "must_keep_terms": [
-        "class",
+        "api",
         "endpoint",
-        "json"
+        "json",
+        "pytest",
+        "schema"
       ],
       "prospect": true,
-      "source_row_id": "fixture-code-003",
-      "snippet_sha256": "01413fbb7d5a3ec0f96359411fc29e28a50bd03305b25ad5c3eb6a0a31f14cc0"
+      "source_row_id": "contrib-coding-seed-003",
+      "snippet_sha256": "8ca17821b4c8e5ba4b714906de1248f18b6b52a05ba2f2cbba7ce8633502c96b"
     }
   ],
   "prospect_template_ids": [

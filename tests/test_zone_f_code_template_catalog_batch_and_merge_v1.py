@@ -54,9 +54,10 @@ def test_merge_plan_dry_run_default() -> None:
     prospect = load_catalog_rows(ROOT / "codebook/templates/zone_f_code_templates_prospect_v1.jsonl")
     plan = plan_prospect_merge(production_rows=production, prospect_rows=prospect)
     assert len(production) == 19
-    assert plan["merge_count"] == 0
-    assert plan["skipped_count"] == len(prospect)
-    assert plan["production_after_count"] == 19
+    assert len(prospect) == 3
+    assert plan["merge_count"] == 3
+    assert plan["skipped_count"] == 0
+    assert plan["production_after_count"] == 22
 
 
 def test_merge_requires_reviewer_when_approved(tmp_path: Path) -> None:
