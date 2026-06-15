@@ -201,6 +201,9 @@ def build_gate(
         "batch_extract_artifact": "docs/final/artifacts/zone_f_code_template_catalog_batch_extract_v1_latest.json",
         "prospect_merge_builder": "scripts/merge_zone_f_code_template_prospect_to_catalog_v1.py",
         "prospect_merge_artifact": "docs/final/artifacts/zone_f_code_template_catalog_merge_v1_latest.json",
+        "coverage_builder": "scripts/run_zone_f_code_template_catalog_coverage_v1.py",
+        "coverage_artifact": "docs/final/artifacts/zone_f_code_template_catalog_coverage_v1_latest.json",
+        "pipeline_builder": "scripts/run_zone_f_code_template_catalog_pipeline_v1.py",
         "cases": cases,
         "extension_cases": extension_cases,
         "summary": {
