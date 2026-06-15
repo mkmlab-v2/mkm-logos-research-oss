@@ -72,6 +72,7 @@
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
+- **2026-06-13T20:05:52Z** — A2A dogfood 4/4; gitea merge conflict resolve (CENTRAL+mkm-life+hub TS)
 - **2026-06-13T19:42:37Z** — P0+P1 LTM audit: CENTRAL resume-pack handoff, MISSION next_1ta A2A+stale refresh, resume pack READY≠SEND label
 - **2026-06-13T19:17:23Z** — Harness v2 순서 완료: mkmlife HTTP smoke 3105 OK; Qwen2.5-7B interpret smoke limit5 pillars+envelope 100%
 - **2026-06-13T19:11:58Z** — A2A 1-6 순서: IR+dogfood check+web_ops lossless+tp02/03 weekly
@@ -92,6 +93,28 @@
 - **2026-06-13T17:57:17Z** — RQ-019 weekly smoke +IncludeA2aExtendedRepro exit 0; scheduled task re-registered with extended repro
 - **2026-06-13T17:55:09Z** — A2A full weekly repro bundle exit 0: dialogue bench pytest3 + L1L2 4 lanes + tp01 log + stack map
 - **2026-06-13T17:49:35Z** — Cursor Automations D-layer: workflows SSOT + webhook bridge + command package hook + DocSyncSafe persona exit 0
+- **2026-06-12T05:59:45Z** — Hub UI Chassis v3 shipped: 3-pane inspector /hub+/hub/logos, pill discover, /hub/compression [DRAFT] demo, shell contract locked, live smoke 11/11
+- **2026-06-12T05:59:11Z** — scheduler band gate wired: solo_ops+Sunday EnforceSoloBand; solo_stack_ready=41 band ok
+- **2026-06-12T05:50:34Z** — /hub/logos VPS deploy+live smoke 11/11; Logos 4D topology hub JSON live
+- **2026-06-12T05:48:44Z** — Wave7/final scheduler: MKM Ready 181->38; tier4 SSOT; prophecy holdout+showroom VPS trim; total stack 41 Ready
+- **2026-06-12T05:47:30Z** — Cursor 컨텍스트 다이어트 완료: AGENTS 2층(76줄)·cursorrules Slim v2(60)·core8 rules·diet+CI·User Rules minimal v1·재시작 후 strict PASS
+- **2026-06-12T05:41:16Z** — P0 Logos 4D topology batch(28741 verses) + /hub/logos observatory plugin·contract·DesignLane exit 0
+- **2026-06-12T05:39:55Z** — Wave6 scheduler: Ready 181->47 (-74%); 12 batches weekly/review_other; solo_target_band 55-70; reconcile ok
+- **2026-06-12T05:33:40Z** — Moat PR-gate prep: pr-strict manifest OK; prophecy bench Brier 0.222; a-codeai READY_FOR_PUBLIC_OPEN_BENCH 9/9; external community PR next; SEND HOLD
+- **2026-06-12T05:29:40Z** — Moat SSOT: GitHub contributor_provided 본선(실고객 없음); passive loop_ok hub 10/10 Moat 13/30 pass_rate_met false; SEND HOLD
+- **2026-06-12T05:27:28Z** — Wave5 scheduler: Ready 181->100 (-81); 12 batches research/ops dup; Aramaic daily registry Disabled; reconcile ok
+- **2026-06-12T05:21:30Z** — User Rules minimal v1.txt·MCP 카탈로그 가이드 AGENTS 반영
+- **2026-06-12T05:17:04Z** — cursorrules Slim v2(147→60줄)·diet cursorrules+template drift·CI 연동 완료
+- **2026-06-12T05:03:06Z** — Design hub: gitea/main 1aeb25518e package CTA+smoke 10-check; live 10/10; SSOT/canvas 10/10; SEND HOLD
+- **2026-06-12T04:57:23Z** — Wave4 scheduler: Ready 181->144 (-37); myeongni/logos/kospi/btrack99 batches; triage regen; reconcile ok
+- **2026-06-12T04:52:29Z** — MS/Compression: VPS deploy exit0·hub live smoke 10/10 customize CTA live·SEND HOLD·다음 Moat PR
+- **2026-06-12T04:47:16Z** — MS/Compression: customize pillar+package CTA·DesignLane exit0·pilot auto-local chain_ok 25; prophecy closure safe_ops degraded; SEND HOLD
+- **2026-06-12T04:37:44Z** — scheduler wave2-3: Ready 181→160; triage JSON; LiveSync registry Disabled
+- **2026-06-12T04:36:57Z** — 채팅종료 RQ-031/032 [HYPO]: 연대기×역사→era chain exit0; RQ-032 KOSPI 제거·text_blind locked 9.1% MS cite; ops·Track A·SEND 무관
+- **2026-06-12T04:32:08Z** — RQ-032 인류역사→era 전용 [HYPO]: KOSPI 제거; text_blind locked 9.1% MS cite; gold_tags 70.2% 상한; quad strict 0%; ops·Track A 무관
+- **2026-06-12T04:28:32Z** — RQ-031 long KOSPI: 7261d·Pillar A combined strict 8.1%·B stress vol 1.68·era 70.2%/locked 45.5%; ops·Track A 미변경
+- **2026-06-11T05:27:33Z** — open-bench monorepo 커밋 79a26e5 gitea push + binding weekly task + export manifest canon_singularity 제외
+- **2026-06-10T12:39:15Z** — Media Fact Sheet 3종+index(SKU 분리·SEND_GATE HOLD)
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 

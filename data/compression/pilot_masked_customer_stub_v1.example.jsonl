@@ -1,0 +1,25 @@
+{"text": "[masked] User asked about refund policy for order ███. Agent explained 7-day window.", "domain_tag": "customer-support-chat", "id": "stub-001", "labels": ["synthetic_stub", "masked", "pilot_only", "not_customer_data"]}
+{"text": "[masked] Billing inquiry: invoice ███ shows duplicate line item for subscription tier B.", "domain_tag": "customer-support-chat", "id": "stub-002", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] API integration error 429 on endpoint /v1/compress — asked for rate limit guidance.", "domain_tag": "developer-support", "id": "stub-003", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Requested SOC2 overview and data retention period for chat logs.", "domain_tag": "security-review", "id": "stub-004", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Compared token savings proxy vs prior vendor quote for 30-day pilot.", "domain_tag": "b2b-evaluation", "id": "stub-005", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Onboarding thread: how to route MKM-CHAT-D1 SKU for economy profile.", "domain_tag": "customer-support-chat", "id": "stub-006", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Escalation: latency spike during batch compression job ███.", "domain_tag": "ops-incident", "id": "stub-007", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Asked whether golden40 public-safe corpus can substitute customer logs — told no.", "domain_tag": "b2b-evaluation", "id": "stub-008", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Privacy review: confirm PII stripped from attached JSONL sample set.", "domain_tag": "security-review", "id": "stub-009", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Pilot scope: 25 masked rows, proxy ROI only, no SLA commitment.", "domain_tag": "b2b-evaluation", "id": "stub-010", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] User cannot restore compressed transcript ███ — support shared decode checklist.", "domain_tag": "customer-support-chat", "id": "stub-011", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Finance asked for list-price token proxy assumptions in ROI appendix.", "domain_tag": "b2b-evaluation", "id": "stub-012", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Developer pasted redacted curl example; keys replaced with ███.", "domain_tag": "developer-support", "id": "stub-013", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Question on repair_v2 vs raw metrics for operational reporting.", "domain_tag": "b2b-evaluation", "id": "stub-014", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Counsel hold noted — external case study blocked until sign-off.", "domain_tag": "legal-hold", "id": "stub-015", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Tenant slug validation for pilot-masked-stub-v1 rehearsal run.", "domain_tag": "internal-ops", "id": "stub-016", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] User asked about Korean/English mixed support transcripts in corpus.", "domain_tag": "customer-support-chat", "id": "stub-017", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Requested Jaccard proxy interpretation — not accuracy guarantee.", "domain_tag": "b2b-evaluation", "id": "stub-018", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Batch job failed checksum on shard zone_a — retry succeeded.", "domain_tag": "ops-incident", "id": "stub-019", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Pilot handoff: swap stub JSONL with customer-masked file when ready.", "domain_tag": "internal-ops", "id": "stub-020", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] FAQ: difference between public-open-web sandbox and customer pilot.", "domain_tag": "b2b-evaluation", "id": "stub-021", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] User shared masked chat with account ███ and product ███ references.", "domain_tag": "customer-support-chat", "id": "stub-022", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Asked for 28-day measurement window definition in ROI report.", "domain_tag": "b2b-evaluation", "id": "stub-023", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Internal note: FAIL-COMP-004 — per-SKU metrics only in external copy.", "domain_tag": "internal-ops", "id": "stub-024", "labels": ["synthetic_stub", "masked", "pilot_only"]}
+{"text": "[masked] Closing thread: awaiting counsel_signoff before ready_for_external_send.", "domain_tag": "legal-hold", "id": "stub-025", "labels": ["synthetic_stub", "masked", "pilot_only"]}

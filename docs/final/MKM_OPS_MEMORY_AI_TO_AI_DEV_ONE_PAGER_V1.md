@@ -80,9 +80,22 @@ py scripts/bench_mkm_ops_memory_index_token_savings_v1.py
 
 # pytest
 py -m pytest tests/test_mkm_ops_memory_index_v1.py tests/test_bench_mkm_ops_memory_index_token_savings_v1.py -q
+
+# web_ops JSON-slice overlay (gate/health → index v1.1) [HYPO]
+py scripts/build_mkm_ops_memory_web_ops_overlay_v1.py
+py scripts/build_mkm_chat_resume_pack_v1.py --lane web_ops
+py scripts/bench_mkm_ops_memory_web_ops_retrieval_v1.py
+
+# 풀스택 fusion (overlay 후 bench‖resume‖meta 병렬)
+py scripts/run_mkm_ops_memory_web_ops_fusion_v1.py --parallel-post-overlay --include-slice
+
+# 주간: web_ops bundle + overlay (Task MKM_WebOps_Regime_Weekly)
+pwsh -File scripts/Invoke-WebOpsRegimeWeeklyRoutine_v1.ps1 -SkipLiveCdp -NoSeedBaselines -RequireDualAlignment -FailOnPointerDrift
 ```
 
-Hygiene hook (optional weekly): `Invoke-MissionLogCentralHygiene_v1.ps1` tail rebuilds index.
+**web_ops 레인 팩:** `LANE_OPS_PACKS.web_ops` = board + CENTRAL + `prism_ops_web_ops_regime_gate` + `prism_ops_web_ops_health` (JSON `json_pointer` slices).
+
+Hygiene hook (optional weekly): `Invoke-MissionLogCentralHygiene_v1.ps1` tail rebuilds index. **`MKM_WebOps_Regime_Weekly`** runs `Invoke-WebOpsRegimeWeeklyRoutine_v1.ps1` (overlay merge after gate refresh).
 
 ---
 
@@ -253,5 +266,6 @@ Prism registry pointers: `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` (`prism
 ## Related docs
 
 - `.cursor/rules/mission-log-combat-ssot.mdc` · `AGENTS.md` (resume pack)
+- `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` (Cursor start/mid/end vs alwaysApply)
 - `docs/final/COMPRESSION_SLA_POLICY_V1.md` (Track A vs B — separate from Ops pins)
 - This one-pager: dev onboarding for **Ops AI↔AI pointer layer** only.
