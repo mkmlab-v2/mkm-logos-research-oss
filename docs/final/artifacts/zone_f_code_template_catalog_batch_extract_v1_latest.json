@@ -1,0 +1,99 @@
+{
+  "schema": "zone_f_code_template_catalog_batch_extract_v1",
+  "generated_at_utc": "2026-06-15T02:27:42Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "merge_policy": "prospect_only_no_auto_merge",
+  "input_count": 4,
+  "per_corpus": [
+    {
+      "input_jsonl": "data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl",
+      "ok": true,
+      "rows_scanned": 5,
+      "candidates_novel": 3,
+      "prospect_template_ids": [
+        "zf_p001",
+        "zf_p002",
+        "zf_p003"
+      ]
+    },
+    {
+      "input_jsonl": "data/compression/stateless_poc_prospect_tactical-b-free-audit-v1_v1.jsonl",
+      "ok": true,
+      "rows_scanned": 25,
+      "candidates_novel": 0,
+      "prospect_template_ids": []
+    },
+    {
+      "input_jsonl": "data/compression/stateless_poc_prospect_customer-pilot-smoke-v1_v1.jsonl",
+      "ok": true,
+      "rows_scanned": 30,
+      "candidates_novel": 0,
+      "prospect_template_ids": []
+    },
+    {
+      "input_jsonl": "data/compression/examples/customer_masked_pilot_smoke_v1.jsonl",
+      "ok": true,
+      "rows_scanned": 30,
+      "candidates_novel": 0,
+      "prospect_template_ids": []
+    }
+  ],
+  "aggregate_stats": {
+    "candidates_raw": 3,
+    "candidates_deduped": 3,
+    "prospect_count": 3
+  },
+  "prospect_rows": [
+    {
+      "template_id": "zf_p001",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def validate_api_schema(payload: dict) -> bool:\n    return payload.get(\"schema\") == \"v1\" and payload.get(\"json\") is True",
+      "must_keep_terms": [
+        "api",
+        "json",
+        "schema"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-code-001",
+      "snippet_sha256": "2c17f9c7170678b7df8468a9f1c87e79ba0243c5cd9bf04aca481741c6bdfb54"
+    },
+    {
+      "template_id": "zf_p002",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "import pytest\n\ndef test_endpoint_health():\n    r = client.get(\"/health\")\n    assert r.status_code == 200\n    assert r.json()[\"api_contract_version\"]",
+      "must_keep_terms": [
+        "api",
+        "endpoint",
+        "json",
+        "pytest"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-code-002",
+      "snippet_sha256": "a3d9cbcc074f8f092dcca912a8ccf10645dcbb390bcf62c08992ebe87533689e"
+    },
+    {
+      "template_id": "zf_p003",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "class WebhookClient:\n    def post_json(self, endpoint: str, body: dict) -> dict:\n        return {\"endpoint\": endpoint, \"json\": body, \"status\": \"ok\"}",
+      "must_keep_terms": [
+        "class",
+        "endpoint",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-code-003",
+      "snippet_sha256": "01413fbb7d5a3ec0f96359411fc29e28a50bd03305b25ad5c3eb6a0a31f14cc0"
+    }
+  ],
+  "prospect_template_ids": [
+    "zf_p001",
+    "zf_p002",
+    "zf_p003"
+  ],
+  "reproduce": "py scripts/run_zone_f_code_template_catalog_batch_extract_v1.py --write-prospect"
+}

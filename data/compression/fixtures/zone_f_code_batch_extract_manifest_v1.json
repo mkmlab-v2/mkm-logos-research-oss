@@ -1,0 +1,9 @@
+{
+  "schema": "zone_f_code_batch_extract_manifest_v1",
+  "input_jsonl": [
+    "data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl",
+    "data/compression/stateless_poc_prospect_tactical-b-free-audit-v1_v1.jsonl",
+    "data/compression/stateless_poc_prospect_customer-pilot-smoke-v1_v1.jsonl",
+    "data/compression/examples/customer_masked_pilot_smoke_v1.jsonl"
+  ]
+}

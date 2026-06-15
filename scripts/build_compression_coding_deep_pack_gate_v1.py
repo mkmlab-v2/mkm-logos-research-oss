@@ -197,6 +197,10 @@ def build_gate(
         "fallback_spec_builder": "scripts/build_compression_coding_deep_pack_fallback_spec_v1.py",
         "corpus_extract_builder": "scripts/build_zone_f_code_template_catalog_from_corpus_v1.py",
         "corpus_extract_artifact": "docs/final/artifacts/zone_f_code_template_catalog_extract_v1_latest.json",
+        "batch_extract_builder": "scripts/run_zone_f_code_template_catalog_batch_extract_v1.py",
+        "batch_extract_artifact": "docs/final/artifacts/zone_f_code_template_catalog_batch_extract_v1_latest.json",
+        "prospect_merge_builder": "scripts/merge_zone_f_code_template_prospect_to_catalog_v1.py",
+        "prospect_merge_artifact": "docs/final/artifacts/zone_f_code_template_catalog_merge_v1_latest.json",
         "cases": cases,
         "extension_cases": extension_cases,
         "summary": {

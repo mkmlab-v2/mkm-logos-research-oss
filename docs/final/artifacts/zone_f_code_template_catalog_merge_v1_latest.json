@@ -1,0 +1,28 @@
+{
+  "schema": "zone_f_code_template_catalog_merge_v1",
+  "generated_at_utc": "2026-06-15T02:27:42Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "human_approve_merge": false,
+  "reviewer": null,
+  "applied": false,
+  "production_catalog": "codebook/templates/zone_f_code_templates_v1.jsonl",
+  "prospect_catalog": "codebook/templates/zone_f_code_templates_prospect_v1.jsonl",
+  "production_before_count": 16,
+  "prospect_input_count": 3,
+  "merge_count": 3,
+  "skipped_count": 0,
+  "production_after_count": 19,
+  "new_template_ids": [
+    "zf_t17",
+    "zf_t18",
+    "zf_t19"
+  ],
+  "skipped": [],
+  "apply_command": "py scripts/merge_zone_f_code_template_prospect_to_catalog_v1.py --human-approve-merge --reviewer commander --rebuild-gate",
+  "forbidden_without_approve": [
+    "automatic_production_catalog_overwrite"
+  ],
+  "reproduce": "py scripts/merge_zone_f_code_template_prospect_to_catalog_v1.py"
+}
