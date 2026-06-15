@@ -1,0 +1,36 @@
+---
+description: M/L delegation — local SSOT first, auto NotebookLM when gate says use_nl_mcp
+alwaysApply: false
+---
+
+# Delegation research assist v1 (NL when needed)
+
+## Purpose
+
+Extend **고차원 위임** with a **deterministic gate** before optional NotebookLM. NL is **assist only** — never Fact-Lock or Track A completion.
+
+## ALWAYS
+
+- **M or L** delegation, or **B-track / narrative** gap after `Read` of relevant `CONSTITUTION_*` section:
+  1. Run `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmDelegationResearchAssistGate_v1.ps1 -Lane <lane> [-Topic "<needle>"]`
+  2. Read `reports/delegation_research_assist_gate_v1_latest.json` → follow `decision` + `agent_steps`
+- If `decision=use_nl_mcp` **and** NotebookLM MCP tools are in **this chat**:
+  1. `get_health` → `authenticated=false` → recovery per `notebooklm-mcp-session-bridge.mdc` (one cycle, then re-gate)
+  2. `select_notebook` / `notebook_id` from `lane_notebook_hint.notebook_mcp_id` + `docs/NotebookLM_sources_manifest.md`
+  3. `ask_question` with `suggested_question`; reuse `session_id` for follow-ups
+  4. End NL-derived claims with **`[HYPO]`** · **`research_only`**; re-verify paths with scripts
+- If MCP **not injected** this chat: **vault_fallback** — manifest + `sync_notebooklm_sources_to_mkm_data_vault` mirror; do not pretend NL ran
+- Session start (optional, same turn as resume): `Invoke-MkmPersonaHealth_v1.ps1 -Persona DelegationResearchAssist` or gate only when gap appears (avoid NL quota burn)
+
+## NEVER
+
+- NL **before** local CONSTITUTION + callable script check for **A-track / implementation / gate** questions
+- Complete delegation from NL text alone (no artifact + exit 0 from **local** runner)
+- Auto `ask_question` on **MS HOLD** lane for promotion/paste narrative (`decision=skip_nl_lane_hold`)
+- Merge NL answer into Track A, live trading, or `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json`
+
+## OPTIONAL
+
+- Persona: **【위임 리서치】** → `Invoke-MkmPersonaHealth_v1.ps1 -Persona DelegationResearchAssist`
+- Weekly NL hygiene: `Run-NotebookLmMkmHybridRecommendedRoutine_v1.ps1` (packs + optional nlm push)
+- Web supplement (external facts only): Exa/web search — still `[HYPO]` until script-backed

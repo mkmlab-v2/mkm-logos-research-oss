@@ -71,8 +71,11 @@
   MultiResIndexDelegation = Invoke-MultiResIndexDelegationRoutine_v1.ps1 (P0 + multi-res pytest + index + ops overlay + delegation)
 
   CursorSessionUpgrade = Invoke-MkmCursorSessionUpgrade_v1.ps1 (solo ops + ops memory index + lane resume pack + human_gate report)
+  HighDelegationPreflight = Invoke-MkmHighDelegationPreflight_v1.ps1 (P0 + MCP host + browser host + NL gate + optional approval map)
 
   BoundedLaneLoopShadow = run_workspace_automation_health.ps1 -BoundedLaneLoopSmokeOnly (P0 + bounded lane pytest + dry-run invoke)
+
+  MkmAgentLoops = Invoke-MkmAgentLoopsRoutine_v1.ps1 (SSOT kickoff md + P0 + context diet strict)
 
   DocSyncSafe = Invoke-MkmDocSyncSafe_v1.ps1
 
@@ -122,7 +125,7 @@ param(
 
     [Parameter(Mandatory = $true, Position = 0)]
 
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'BoundedLaneLoopShadow', 'CursorAutomationsRoutine', 'DocSyncSafe', 'TestRecoverySafe', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'HighDelegationPreflight', 'DelegationResearchAssist', 'HdAutonomousEvolution', 'BoundedLaneLoopShadow', 'MkmAgentLoops', 'CursorAutomationsRoutine', 'DocSyncSafe', 'TestRecoverySafe', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
 
     [string]$Persona
 
@@ -564,6 +567,18 @@ try {
 
         }
 
+        'MkmAgentLoops' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmAgentLoopsRoutine_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script
+
+            exit $LASTEXITCODE
+
+        }
+
         'CursorAutomationsRoutine' {
 
             $script = Join-Path $PSScriptRoot 'Invoke-MkmCursorAutomationsRoutine_v1.ps1'
@@ -667,6 +682,92 @@ try {
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
 
             & $ps @common $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'DelegationResearchAssist' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmDelegationResearchAssistGate_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            $gateArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $script)
+
+            if ($env:MKM_DELEGATION_RESEARCH_LANE) {
+                $gateArgs += @('-Lane', $env:MKM_DELEGATION_RESEARCH_LANE)
+            }
+
+            if ($env:MKM_DELEGATION_RESEARCH_TOPIC) {
+                $gateArgs += @('-Topic', $env:MKM_DELEGATION_RESEARCH_TOPIC)
+            }
+
+            & powershell @gateArgs
+
+            exit $LASTEXITCODE
+
+        }
+
+        'HighDelegationPreflight' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmHighDelegationPreflight_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            $pfArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $script)
+
+            $scale = if ($env:MKM_HIGH_DELEGATION_SCALE) { $env:MKM_HIGH_DELEGATION_SCALE } else { 'M' }
+            $pfArgs += @('-Scale', $scale)
+
+            if ($env:MKM_HIGH_DELEGATION_LANE) {
+                $pfArgs += @('-Lane', $env:MKM_HIGH_DELEGATION_LANE)
+            }
+
+            if ($env:MKM_HIGH_DELEGATION_APPROVAL_MAP) {
+                $pfArgs += @('-ApprovalMap', $env:MKM_HIGH_DELEGATION_APPROVAL_MAP)
+            }
+
+            & powershell @pfArgs
+
+            exit $LASTEXITCODE
+
+        }
+
+        'HdAutonomousEvolution' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmHighDimensionalAutonomousEvolution_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            $aeArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $script)
+
+            $mission = if ($env:MKM_HD_AE_MISSION) {
+                $env:MKM_HD_AE_MISSION
+            } else {
+                'B-track high-delegation intel + swarm stage1 accumulation observability'
+            }
+            $aeArgs += @('-Mission', $mission)
+
+            $lane = if ($env:MKM_HD_AE_LANE) { $env:MKM_HD_AE_LANE } else { 'oracle' }
+            $aeArgs += @('-Lane', $lane)
+
+            $tier = if ($env:MKM_HD_AE_COST_TIER) { $env:MKM_HD_AE_COST_TIER } else { 'tier_0' }
+            $aeArgs += @('-CostTier', $tier)
+
+            if ($env:MKM_HD_AE_MAX_QUALITY_PASSES) {
+                $aeArgs += @('-MaxQualityPasses', $env:MKM_HD_AE_MAX_QUALITY_PASSES)
+            }
+
+            if ($env:MKM_HD_AE_SKIP_SWARM -match '^(1|true|yes|on)$') {
+                $aeArgs += '-SkipSwarmRun'
+            }
+
+            if ($env:MKM_HD_AE_SKIP_LIVE_ATPROTO -match '^(1|true|yes|on)$') {
+                $aeArgs += '-SkipIntelLiveAtproto'
+            }
+
+            & powershell @aeArgs
 
             exit $LASTEXITCODE
 
