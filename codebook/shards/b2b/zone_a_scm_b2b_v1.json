@@ -1,0 +1,40 @@
+{
+  "shard_id": "zone_a_scm_b2b_v1",
+  "domain": "scm_b2b",
+  "parent_legacy_shard": "zone_a_scm",
+  "external_sku": "MKM-SCM-A1",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "routing_keywords": [
+    "공급망",
+    "SCM",
+    "재고",
+    "리드타임",
+    "BOM",
+    "생산계획",
+    "물류",
+    "조달",
+    "납기",
+    "발주"
+  ],
+  "must_keep_hard_terms": [
+    "공급망",
+    "SCM",
+    "재고",
+    "리드타임",
+    "BOM"
+  ],
+  "must_keep_soft_terms": [
+    "생산계획",
+    "물류",
+    "조달",
+    "납기",
+    "발주"
+  ],
+  "guard_tokens": [
+    "필수",
+    "금지",
+    "주의"
+  ],
+  "hangul_principle": true
+}

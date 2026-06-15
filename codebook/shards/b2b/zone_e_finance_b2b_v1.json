@@ -1,0 +1,40 @@
+{
+  "shard_id": "zone_e_finance_b2b_v1",
+  "domain": "finance_disclosure_b2b",
+  "parent_legacy_shard": "zone_e_finance",
+  "external_sku": "MKM-FIN-E1",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "routing_keywords": [
+    "공시",
+    "재무제표",
+    "감사",
+    "규제",
+    "리스크",
+    "컴플라이언스",
+    "ESG",
+    "공시보고서",
+    "disclosure",
+    "compliance"
+  ],
+  "must_keep_hard_terms": [
+    "공시",
+    "재무제표",
+    "감사",
+    "규제",
+    "컴플라이언스"
+  ],
+  "must_keep_soft_terms": [
+    "리스크",
+    "ESG",
+    "공시보고서",
+    "disclosure",
+    "compliance"
+  ],
+  "guard_tokens": [
+    "must",
+    "strict",
+    "required"
+  ],
+  "hangul_principle": false
+}
