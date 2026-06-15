@@ -67,10 +67,18 @@ def build_wire_packet(
 
 
 def apply_literal_slot_renames(snippet: str, literal_slots: dict[str, str]) -> str:
-    out = snippet
-    for old, new in literal_slots.items():
-        out = re.sub(rf"\b{re.escape(old)}\b", new, out)
-    return out
+    """Rename identifiers outside quoted string literals (preserves JSON dict keys)."""
+    parts = re.split(r'("(?:[^"\\]|\\.)*")', snippet)
+    out: list[str] = []
+    for i, part in enumerate(parts):
+        if i % 2 == 1:
+            out.append(part)
+            continue
+        chunk = part
+        for old, new in literal_slots.items():
+            chunk = re.sub(rf"\b{re.escape(old)}\b", new, chunk)
+        out.append(chunk)
+    return "".join(out)
 
 
 def _tokenize_code(text: str) -> list[str]:

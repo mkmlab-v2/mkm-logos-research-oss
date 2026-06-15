@@ -248,6 +248,27 @@ def test_literal_slot_extract_and_roundtrip_unit() -> None:
     assert twin["saving_rate"] > 0.0
 
 
+def test_literal_slot_preserves_quoted_dict_keys() -> None:
+    from scripts.compression_coding_deep_pack_v1_lib import (
+        apply_literal_slot_renames,
+        extract_literal_slots,
+        load_template_catalog,
+        resolve_template_match,
+    )
+
+    rows = load_template_catalog(TEMPLATES)
+    canonical = str(rows[0]["snippet"])
+    partial = (
+        'def get_user_api_endpoint(account_id: str) -> dict:\n'
+        '    """Fetch user JSON schema from REST endpoint."""\n'
+        '    return {"user_id": account_id, "schema": "v1"}'
+    )
+    slots = extract_literal_slots(canonical, partial)
+    assert slots == {"user_id": "account_id"}
+    assert apply_literal_slot_renames(canonical, slots) == partial
+    assert resolve_template_match(partial, rows) == ("zf_t01", {"user_id": "account_id"})
+
+
 def test_coding_deep_pack_fallback_spec_schema() -> None:
     spec_path = ROOT / "docs/final/artifacts/compression_coding_deep_pack_fallback_spec_v1_latest.json"
     assert spec_path.is_file()

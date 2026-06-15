@@ -772,7 +772,8 @@ def test_v2_coding_deep_pack_literal_slot_roundtrip() -> None:
     assert er.json()["text"] == variant
 
 
-def test_v2_coding_deep_pack_literal_slot_uniform_rename_roundtrip() -> None:
+def test_v2_coding_deep_pack_literal_slot_key_rename_falls_back_semantic() -> None:
+    """Renaming quoted dict keys is out of scope for literal-slot wire."""
     variant = (
         'def get_user_api_endpoint(account_id: str) -> dict:\n'
         '    """Fetch user JSON schema from REST endpoint."""\n'
@@ -785,19 +786,13 @@ def test_v2_coding_deep_pack_literal_slot_uniform_rename_roundtrip() -> None:
             "loss_profile": "semantic_general",
             "forced_shard_id": "zone_f_code",
             "sku_class": "mask",
-            "client_request_id": "test-v2-coding-deep-pack-slots-uniform",
+            "client_request_id": "test-v2-coding-deep-pack-slots-key-rename",
         },
     )
     assert cr.status_code == 200, cr.text
-    cj = cr.json()
-    flags = cj["integrity_flags"]
-    assert flags.get("coding_deep_pack_wire_v1") is True
-    assert flags.get("literal_slots") == {"user_id": "account_id"}
-    pkt = cj["compression_packet"]
-    assert "|" in str(pkt["compressed_text"])
-    er = client.post("/v2/expand", json={"compression_packet": pkt})
-    assert er.status_code == 200, er.text
-    assert er.json()["text"] == variant
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("coding_deep_pack_wire_v1") is not True
+    assert flags.get("coding_deep_pack_no_catalog_match") is True
 
 
 def test_v2_coding_deep_pack_no_match_falls_back_semantic() -> None:
