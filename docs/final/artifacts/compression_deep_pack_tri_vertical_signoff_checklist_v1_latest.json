@@ -1,0 +1,69 @@
+{
+  "schema": "compression_deep_pack_tri_vertical_signoff_checklist_v1",
+  "generated_at_utc": "2026-06-15T06:30:31Z",
+  "decision": "READY_FOR_COMMANDER_SIGNOFF",
+  "all_green": true,
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "verticals": {
+    "zone_f_code": {
+      "wire_family": "ZF_MASK",
+      "decision": "READY_FOR_COMMANDER_SIGNOFF",
+      "all_green": true,
+      "checklist_artifact": "docs/final/artifacts/compression_coding_deep_pack_signoff_checklist_v1_latest.json",
+      "coverage_artifact": "docs/final/artifacts/zone_f_code_template_catalog_coverage_v1_latest.json",
+      "coverage_wire_match_rate": 1.0,
+      "pipeline_builder": "scripts/run_zone_f_code_template_catalog_pipeline_v1.py"
+    },
+    "zone_h_en_business_v1": {
+      "wire_family": "BIZ_MASK",
+      "decision": "READY_FOR_COMMANDER_SIGNOFF",
+      "all_green": true,
+      "checklist_artifact": "docs/final/artifacts/compression_en_business_deep_pack_signoff_checklist_v1_latest.json"
+    },
+    "zone_ko_premium_cs_v1": {
+      "wire_family": "CS_MASK",
+      "decision": "READY_FOR_COMMANDER_SIGNOFF",
+      "all_green": true,
+      "checklist_artifact": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_signoff_checklist_v1_latest.json"
+    }
+  },
+  "checklist": {
+    "coding_pack_ready": true,
+    "en_business_pack_ready": true,
+    "ko_premium_cs_pack_ready": true,
+    "all_three_verticals_ready": true,
+    "wire_families_distinct": true,
+    "research_only_all": true,
+    "send_gate_hold_all": true,
+    "track_a_active_untouched_all": true,
+    "human_signoff_not_applied_any": true,
+    "fail_comp_axis_separation_ack": true,
+    "zone_f_coverage_artifact_linked": true,
+    "zone_f_coverage_coding_corpora_full": true,
+    "zone_f_catalog_growth_pipeline_linked": true
+  },
+  "failed_checks": [],
+  "constraints": {
+    "human_review_required": true,
+    "automatic_active_swap": false,
+    "b_to_a_auto_bridge": false,
+    "headline_merge_forbidden": "FAIL-COMP-004"
+  },
+  "commander_review_items": [
+    "Three wire families (ZF_MASK / BIZ_MASK / CS_MASK) remain separate axes.",
+    "Each vertical twin gate uses saving_rate + exact_restore_ok — not Jaccard alone.",
+    "KO CS CS_MASK requires ███ mask exact-restore; wtt shortcap stays hybrid-router only.",
+    "zone_f_code catalog coverage is B-track wire-match evidence only — not customer SLA.",
+    "Rollup approves research envelopes only; ACTIVE swap requires separate Track A gate."
+  ],
+  "btrack_coverage_note": "Wire-match coverage on JSONL corpora is B-track evidence only — not customer SLA or SEND metric.",
+  "reproduce": [
+    "py scripts/run_zone_f_code_template_catalog_coverage_v1.py",
+    "py scripts/build_compression_coding_deep_pack_signoff_checklist_v1.py",
+    "py scripts/build_compression_en_business_deep_pack_gate_v1.py",
+    "py scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
+    "py scripts/build_compression_deep_pack_tri_vertical_signoff_checklist_v1.py"
+  ]
+}
