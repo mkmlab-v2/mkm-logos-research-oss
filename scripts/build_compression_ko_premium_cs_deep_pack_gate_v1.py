@@ -160,6 +160,11 @@ def main() -> int:
         out_reports=args.out_reports,
         out_artifact=args.out_artifact,
     )
+    from scripts.build_compression_ko_premium_cs_deep_pack_spec_v1 import build_spec  # noqa: WPS433
+
+    spec_doc = build_spec()
+    SPEC_ARTIFACT.parent.mkdir(parents=True, exist_ok=True)
+    SPEC_ARTIFACT.write_text(json.dumps(spec_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     from scripts.build_compression_ko_premium_cs_deep_pack_fallback_spec_v1 import build_fallback_spec  # noqa: WPS433
 
     fallback_path = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_fallback_spec_v1_latest.json"
