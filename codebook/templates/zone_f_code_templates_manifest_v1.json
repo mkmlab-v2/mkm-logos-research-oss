@@ -1,9 +1,9 @@
 {
   "schema": "zone_f_code_templates_manifest_v1",
-  "generated_at_utc": "2026-06-15T03:22:17Z",
+  "generated_at_utc": "2026-06-15T04:30:10Z",
   "catalog_path": "codebook/templates/zone_f_code_templates_v1.jsonl",
-  "row_count": 19,
-  "catalog_sha256": "e90c16598312b1fc5babccfe60599428a5042b1dfd568d83637e0407b63c7352",
+  "row_count": 22,
+  "catalog_sha256": "af4f796a244022bab3ce89ce8d3943c1ba7ddb1339289e77c369793373072b8e",
   "template_ids": [
     "zf_t01",
     "zf_t02",
@@ -23,7 +23,10 @@
     "zf_t16",
     "zf_t17",
     "zf_t18",
-    "zf_t19"
+    "zf_t19",
+    "zf_t20",
+    "zf_t21",
+    "zf_t22"
   ],
   "shard_id": "zone_f_code",
   "research_only": true

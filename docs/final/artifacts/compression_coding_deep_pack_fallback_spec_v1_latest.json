@@ -1,6 +1,6 @@
 {
   "schema": "compression_coding_deep_pack_fallback_spec_v1",
-  "generated_at_utc": "2026-06-15T01:48:37Z",
+  "generated_at_utc": "2026-06-15T04:30:27Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -28,7 +28,7 @@
     "metrics_axis": "semantic_v2_stub_separate_from_template_wire",
     "note_ko": "카탈로그 미매칭 시 ZF_MASK wire를 쓰지 않고 기존 v2 semantic stub으로 degrade. saving/Jaccard는 별도 축."
   },
-  "template_catalog_row_count": 16,
+  "template_catalog_row_count": 22,
   "extension_case_count": 2,
   "forbidden": [
     "claim_template_wire_saving_for_unmatched_snippet",
