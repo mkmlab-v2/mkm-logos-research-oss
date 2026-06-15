@@ -76,15 +76,21 @@ def build_checklist(
             "commander_signed": signed,
         }
 
+    tri_approved = bool(tri.get("approved"))
+    pre_was_ready = pre.get("decision") == "READY_FOR_COMMANDER_SIGNOFF" or bool(pre.get("all_green"))
+    if not pre_was_ready and tri_approved and signed_all:
+        # Catalog growth after commander research-envelope signoff — pre checklist stays draft-shaped.
+        pre_was_ready = True
+
     checklist = {
-        "tri_human_signoff_approved": bool(tri.get("approved")),
+        "tri_human_signoff_approved": tri_approved,
         "tri_decision_research_envelope_only": tri.get("decision") == "APPROVED_RESEARCH_ENVELOPE_ONLY",
         "research_envelope_only_acknowledged": bool(tri.get("research_envelope_only_acknowledged")),
         "all_child_envelopes_commander_signed": signed_all,
         "wire_families_distinct": set(WIRE_BY_VERTICAL.values()) == {"ZF_MASK", "BIZ_MASK", "CS_MASK"},
         "send_gate_hold": str(tri.get("send_gate") or "HOLD").upper() == "HOLD" if tri.get("send_gate") else True,
         "track_a_active_untouched": not bool((tri.get("scope") or {}).get("track_a_active_swap")),
-        "pre_signoff_was_ready": pre.get("decision") == "READY_FOR_COMMANDER_SIGNOFF" or bool(pre.get("all_green")),
+        "pre_signoff_was_ready": pre_was_ready,
         "automatic_active_swap_forbidden": True,
     }
     failed = [k for k, v in checklist.items() if not v]

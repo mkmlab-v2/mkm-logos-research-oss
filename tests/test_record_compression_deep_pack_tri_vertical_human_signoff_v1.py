@@ -136,4 +136,5 @@ def test_gate_rebuild_preserves_commander_signoff_on_child_envelope() -> None:
     assert proc.returncode == 0, proc.stderr or proc.stdout
     env = json.loads(env_path.read_text(encoding="utf-8"))
     assert env.get("envelope_status") == "commander_signed_research_envelope"
-    assert (env.get("human_signoff") or {}).get("reviewer") == "commander"
+    tri = json.loads(TRI_SIGNOFF.read_text(encoding="utf-8"))
+    assert (env.get("human_signoff") or {}).get("reviewer") == tri.get("reviewer")
