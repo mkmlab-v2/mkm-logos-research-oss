@@ -1,0 +1,110 @@
+{
+  "schema": "compression_coding_deep_pack_gate_v1",
+  "generated_at_utc": "2026-06-14T20:39:59Z",
+  "track": "B",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "track_a_active_untouched": true,
+  "vertical": "zone_f_code_coding_deep_pack",
+  "policy_shard": "codebook/shards/zone_f_code.json",
+  "template_catalog": {
+    "jsonl": "codebook/templates/zone_f_code_templates_v1.jsonl",
+    "manifest": "codebook/templates/zone_f_code_templates_manifest_v1.json",
+    "catalog_sha256": "68192997a2e18318f362419a62ddf43a5ec14164302ae4008bbd19449641898a",
+    "row_count": 8
+  },
+  "twin_metrics_axis": {
+    "primary_pair": [
+      "saving_rate",
+      "exact_restore_ok"
+    ],
+    "secondary_axis": "jaccard_proxy",
+    "note": "Do not merge Jaccard into exact_restore headline (FAIL-COMP-004)."
+  },
+  "tier_a_status_note": "Tier A operational pass rate (~86.7%) — Golden-40 and open_structured_long are separate axes; not a coding deep pack approval metric.",
+  "adjacent_evidence_not_decision": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json",
+  "cases": [
+    {
+      "template_id": "zf_t01",
+      "ok": true,
+      "saving_rate": 0.707317,
+      "exact_restore_ok": false,
+      "jaccard_proxy": 0.857143,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "zf_t02",
+      "ok": true,
+      "saving_rate": 0.6875,
+      "exact_restore_ok": false,
+      "jaccard_proxy": 0.909091,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "zf_t03",
+      "ok": true,
+      "saving_rate": 0.694444,
+      "exact_restore_ok": false,
+      "jaccard_proxy": 0.916667,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "zf_t04",
+      "ok": true,
+      "saving_rate": 0.555556,
+      "exact_restore_ok": false,
+      "jaccard_proxy": 0.8,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "zf_t05",
+      "ok": true,
+      "saving_rate": 0.854167,
+      "exact_restore_ok": false,
+      "jaccard_proxy": 0.777778,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "zf_t06",
+      "ok": true,
+      "saving_rate": 0.6,
+      "exact_restore_ok": false,
+      "jaccard_proxy": 0.833333,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "zf_t07",
+      "ok": true,
+      "saving_rate": 0.681818,
+      "exact_restore_ok": false,
+      "jaccard_proxy": 0.875,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    },
+    {
+      "template_id": "zf_t08",
+      "ok": true,
+      "saving_rate": 0.777778,
+      "exact_restore_ok": false,
+      "jaccard_proxy": 0.8,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore"
+    }
+  ],
+  "summary": {
+    "case_count": 8,
+    "cases_ok": 8,
+    "exact_restore_pass_count": 0,
+    "mean_saving_rate": 0.694822,
+    "mean_jaccard_proxy": 0.846126
+  },
+  "reproduce": "py scripts/build_compression_coding_deep_pack_gate_v1.py"
+}

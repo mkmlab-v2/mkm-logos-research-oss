@@ -1,0 +1,19 @@
+{
+  "schema": "zone_f_code_templates_manifest_v1",
+  "generated_at_utc": "2026-06-14T20:39:58Z",
+  "catalog_path": "codebook/templates/zone_f_code_templates_v1.jsonl",
+  "row_count": 8,
+  "catalog_sha256": "68192997a2e18318f362419a62ddf43a5ec14164302ae4008bbd19449641898a",
+  "template_ids": [
+    "zf_t01",
+    "zf_t02",
+    "zf_t03",
+    "zf_t04",
+    "zf_t05",
+    "zf_t06",
+    "zf_t07",
+    "zf_t08"
+  ],
+  "shard_id": "zone_f_code",
+  "research_only": true
+}

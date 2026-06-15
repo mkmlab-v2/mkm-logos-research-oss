@@ -54,7 +54,17 @@
         "mean_operational_pass_rate": 0.8667,
         "corpus_ids": ["public_open_web_v1", "wtt_premium_cs_customer_v1"],
         "excluded_from_headline": "open_structured_long_v1",
-        "artifact": "reports/compression_hybrid_router_spike_v1_latest.json"
+        "artifact": "reports/compression_hybrid_router_spike_v1_latest.json",
+        "status_line_en": "Tier A operational pass rate (~86.7%) — separate from Golden-40 and open_structured_long; not a coding deep pack approval metric."
+      },
+      "coding_deep_pack_poc": {
+        "maturity": "seed_poc",
+        "vertical": "zone_f_code",
+        "template_catalog_jsonl": "codebook/templates/zone_f_code_templates_v1.jsonl",
+        "template_manifest": "codebook/templates/zone_f_code_templates_manifest_v1.json",
+        "twin_gate_artifact": "docs/final/artifacts/compression_coding_deep_pack_gate_v1_latest.json",
+        "builder_script": "scripts/build_compression_coding_deep_pack_gate_v1.py",
+        "adjacent_not_decision": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json"
       }
     }
   },

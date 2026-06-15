@@ -665,6 +665,26 @@ def test_v2_lossless_profile_uses_fused_hybrid_codec():
     assert er.json()["text"] == sample
 
 
+def test_v2_compress_zone_f_code_forced_shard_twin_metrics() -> None:
+    sample = "def api_endpoint() -> dict:\n    return {\"schema\": \"v1\", \"json\": True}"
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_f_code",
+            "client_request_id": "test-v2-zone-f-code-twin",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("forced_shard_id") == "zone_f_code"
+    er = client.post("/v2/expand", json={"compression_packet": cr.json()["compression_packet"]})
+    assert er.status_code == 200
+    expanded = er.json()["text"]
+    assert "jaccard_proxy" in flags or "jaccard_proxy" in er.json().get("integrity_flags", {})
+
+
 def test_resolve_latest_codebook_uses_production_pointer() -> None:
     """v2 lexicon rail resolves production SSOT via bench pointer, not highest glob only."""
     pointer = (
