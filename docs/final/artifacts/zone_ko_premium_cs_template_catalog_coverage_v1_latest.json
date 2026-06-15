@@ -5,8 +5,8 @@
   "research_only": true,
   "shard_json": "C:/workspace/codebook/shards/zone_ko_premium_cs_v1.json",
   "catalog_jsonl": "C:/workspace/codebook/templates/zone_ko_premium_cs_templates_v1.jsonl",
-  "catalog_row_count": 25,
-  "input_count": 4,
+  "catalog_row_count": 26,
+  "input_count": 7,
   "missing_inputs": [],
   "min_score": 1,
   "canonical_mask_token": "███",
@@ -58,12 +58,48 @@
       "non_canonical_mask_skipped": 0,
       "canonical_normalized_match_count": 4,
       "misses_sample": []
+    },
+    {
+      "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-icp-synthetic-operator-v1_v1.jsonl",
+      "rows_scanned": 30,
+      "rows_with_snippet_candidates": 2,
+      "snippet_candidates_total": 2,
+      "wire_match_count": 2,
+      "wire_miss_count": 0,
+      "wire_match_rate": 1.0,
+      "non_canonical_mask_skipped": 0,
+      "canonical_normalized_match_count": 2,
+      "misses_sample": []
+    },
+    {
+      "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-icp-synthetic-operator-v1_v1_bodyonly_v1.jsonl",
+      "rows_scanned": 30,
+      "rows_with_snippet_candidates": 2,
+      "snippet_candidates_total": 2,
+      "wire_match_count": 2,
+      "wire_miss_count": 0,
+      "wire_match_rate": 1.0,
+      "non_canonical_mask_skipped": 0,
+      "canonical_normalized_match_count": 2,
+      "misses_sample": []
+    },
+    {
+      "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-premium-cs-compression-v1_v1.jsonl",
+      "rows_scanned": 30,
+      "rows_with_snippet_candidates": 4,
+      "snippet_candidates_total": 4,
+      "wire_match_count": 4,
+      "wire_miss_count": 0,
+      "wire_match_rate": 1.0,
+      "non_canonical_mask_skipped": 0,
+      "canonical_normalized_match_count": 4,
+      "misses_sample": []
     }
   ],
   "aggregate": {
-    "corpus_count": 4,
-    "snippet_candidates_total": 34,
-    "wire_match_count": 34,
+    "corpus_count": 7,
+    "snippet_candidates_total": 42,
+    "wire_match_count": 42,
     "wire_match_rate": 1.0,
     "all_corpora_present": true,
     "full_wire_match": true

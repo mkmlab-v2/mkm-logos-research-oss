@@ -1,13 +1,13 @@
 {
   "schema": "zone_h_en_business_template_catalog_batch_extract_v1",
-  "generated_at_utc": "2026-06-15T08:24:18Z",
+  "generated_at_utc": "2026-06-15T09:33:44Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
   "vertical_id": "zone_h_en_business_v1",
   "wire_family": "BIZ_MASK",
   "merge_policy": "prospect_only_no_auto_merge",
-  "input_count": 2,
+  "input_count": 3,
   "per_corpus": [
     {
       "input_jsonl": "data/compression/fixtures/zone_h_en_business_corpus_extract_fixture_v1.jsonl",
@@ -20,6 +20,13 @@
       "input_jsonl": "data/compression/fixtures/zone_h_en_business_corpus_expand_v1.jsonl",
       "ok": true,
       "rows_scanned": 5,
+      "candidates_novel": 0,
+      "prospect_template_ids": []
+    },
+    {
+      "input_jsonl": "data/compression/fixtures/zone_h_en_business_corpus_expand_v2.jsonl",
+      "ok": true,
+      "rows_scanned": 4,
       "candidates_novel": 0,
       "prospect_template_ids": []
     }

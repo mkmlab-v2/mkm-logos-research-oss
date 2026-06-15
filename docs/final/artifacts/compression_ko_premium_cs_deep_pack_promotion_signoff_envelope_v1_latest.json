@@ -1,6 +1,6 @@
 {
   "schema": "compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1",
-  "generated_at_utc": "2026-06-15T08:55:29Z",
+  "generated_at_utc": "2026-06-15T09:37:53Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -19,17 +19,17 @@
   "promotion_gates_at_apply": {
     "roundtrip_path": "template_catalog_wire_v1",
     "wire_family": "CS_MASK",
-    "template_catalog_row_count": 25,
-    "exact_restore_pass_count_min": 25,
-    "exact_restore_pass_count_observed": 25,
-    "mean_saving_rate_observed": 0.528463,
+    "template_catalog_row_count": 26,
+    "exact_restore_pass_count_min": 26,
+    "exact_restore_pass_count_observed": 26,
+    "mean_saving_rate_observed": 0.491779,
     "mean_saving_rate_min_research": 0.0,
     "mask_token_exact_restore_required": true,
     "jaccard_axis": "separate_from_exact_restore"
   },
   "human_signoff": {
     "reviewer": "commander",
-    "approved_at_utc": "2026-06-15T08:55:29Z",
+    "approved_at_utc": "2026-06-15T09:37:53Z",
     "note": null
   },
   "apply_command_after_signoff": null,

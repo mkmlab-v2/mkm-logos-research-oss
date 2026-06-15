@@ -11,16 +11,19 @@ from typing import Any
 
 from scripts.extract_zone_ko_premium_cs_template_seeds_v1_lib import normalize_snippet
 
-# Keep phone partial masks (010-****-1234) — production catalog kcs_t024 retains them.
+# Keep phone partial masks (010-****-1234) in production kcs_t024 — canon rules target merge/coverage variants only.
 _CANON_RULES: list[tuple[re.Pattern[str], str]] = [
     (re.compile(r"상담\s*진행\s*건"), "상담 건"),
     (re.compile(r"부탁드립니다"), "부탁합니다"),
     (re.compile(r"ORD-\S+"), "███"),
     (re.compile(r"4021-\*{4}-#+"), "███"),
     (re.compile(r"EDU-\*{4}-\d+"), "███"),
+    (re.compile(r"주문번호\s*[\d-]+"), "주문번호 ███"),
     (re.compile(r"이\*민 고객"), "███ 고객"),
     (re.compile(r"a\*\*\*@example\.com"), "███"),
     (re.compile(r"010-\*{4}-\d+ 로 요약"), "███ 으로 요약"),
+    (re.compile(r"010-\*{4}-\d+ 콜백"), "███ 콜백"),
+    (re.compile(r"███\s*로\b"), "███ 으로"),
 ]
 
 MASK_FIX_SNIPPETS: dict[str, str] = {
@@ -54,6 +57,10 @@ def apply_mask_heuristics(snippet: str) -> str:
         return out
     if "이*민 고객" in out:
         out = out.replace("이*민 고객", "███ 고객", 1)
+    if "███" not in out and "주문" in out:
+        out = re.sub(r"주문번호\s*[\d-]+", "주문번호 ███", out, count=1)
+    if "███" not in out:
+        out = f"███ {out}"
     return normalize_snippet(out)
 
 

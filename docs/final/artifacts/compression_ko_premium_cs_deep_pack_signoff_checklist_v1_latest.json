@@ -1,6 +1,6 @@
 {
   "schema": "compression_ko_premium_cs_deep_pack_signoff_checklist_v1",
-  "generated_at_utc": "2026-06-15T08:55:29Z",
+  "generated_at_utc": "2026-06-15T09:37:53Z",
   "decision": "READY_FOR_COMMANDER_SIGNOFF",
   "all_green": true,
   "research_only": true,
@@ -29,13 +29,13 @@
   },
   "failed_checks": [],
   "summary": {
-    "template_catalog_row_count": 25,
-    "exact_restore_pass_count": 25,
-    "mean_saving_rate_observed": 0.528463,
-    "catalog_sha256": "cea4afa8664302f4af6ee14937241743356a2af979e29f3f3dc336cf9408d9a9",
+    "template_catalog_row_count": 26,
+    "exact_restore_pass_count": 26,
+    "mean_saving_rate_observed": 0.491779,
+    "catalog_sha256": "5ab82f39c1957e7bbdfe0b6c17ad0303f35fbc4d437c7671a37fa24303ea31a4",
     "envelope_status": "draft_awaiting_commander",
     "coverage_wire_match_rate": 1.0,
-    "coverage_corpus_count": 4
+    "coverage_corpus_count": 7
   },
   "constraints": {
     "human_review_required": true,

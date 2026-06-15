@@ -15,6 +15,10 @@ TEMPLATES = ROOT / "codebook/templates/zone_ko_premium_cs_templates_v1.jsonl"
 GATE_ARTIFACT = ROOT / "docs/final/artifacts/compression_ko_premium_cs_deep_pack_gate_v1_latest.json"
 
 
+def _template_row_count() -> int:
+    return sum(1 for line in TEMPLATES.read_text(encoding="utf-8").splitlines() if line.strip())
+
+
 def test_build_ko_premium_cs_deep_pack_gate_exit_zero() -> None:
     proc = subprocess.run(
         [sys.executable, str(GATE_BUILDER)],
@@ -29,7 +33,8 @@ def test_build_ko_premium_cs_deep_pack_gate_exit_zero() -> None:
     assert doc["schema"] == "compression_ko_premium_cs_deep_pack_gate_v1"
     assert doc["wire_family"] == "CS_MASK"
     summary = doc["summary"]
-    assert summary["exact_restore_pass_count"] == summary["case_count"] == 25
+    row_count = _template_row_count()
+    assert summary["exact_restore_pass_count"] == summary["case_count"] == row_count
     assert summary["mean_saving_rate"] > 0.0
 
 

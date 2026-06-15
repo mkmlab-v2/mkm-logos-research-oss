@@ -1,0 +1,8 @@
+{"id": "fixture-biz-009", "domain_tag": "en-business-email", "text": "Subject: Escalation — SLA breach on support contract SC-8820\n\nDear Customer Success,\n\nOur enterprise agreement requires response within four hours. Please confirm remediation plan and attached incident timeline before invoice reconciliation.\n\nRegards,\nAlex Reed"}
+
+{"id": "fixture-biz-010", "domain_tag": "en-business-memo", "text": "NOTICE: Vendor security attestation expired for supplier contract VS-3301. Renewal requires compliance review and updated payment authorization before delivery resumes."}
+
+{"id": "fixture-biz-011", "domain_tag": "en-business-email", "text": "Subject: Credit memo request — partial shipment\n\nDear Billing,\n\nInvoice INV-9044 covers units not yet delivered pursuant to purchase order PO-11902. Please issue a credit memo and confirm revised delivery schedule.\n\nSincerely,\nJordan Lee"}
+
+{"id": "fixture-biz-012", "domain_tag": "en-business-memo", "snippet": "NOTICE: Quarterly business review attached. Proposal includes contract extension terms, compliance milestones, and net-45 payment schedule for enterprise delivery."}
+
