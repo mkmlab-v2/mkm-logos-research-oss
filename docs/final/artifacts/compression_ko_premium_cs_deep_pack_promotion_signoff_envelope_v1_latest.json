@@ -1,0 +1,49 @@
+{
+  "schema": "compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1",
+  "generated_at_utc": "2026-06-15T06:20:31Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "envelope_status": "commander_signed_research_envelope",
+  "vertical": "ko_premium_cs_turn",
+  "vertical_id": "zone_ko_premium_cs_v1",
+  "wire_family": "CS_MASK",
+  "gate_artifact": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_gate_v1_latest.json",
+  "vertical_spec": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_spec_v1_latest.json",
+  "separate_from_en_business_signoff": "docs/final/artifacts/compression_en_business_deep_pack_promotion_signoff_envelope_v1_latest.json",
+  "guardrail_ko": "ko premium cs deep pack twin gate는 CS_MASK template-catalog wire 전용. BIZ_MASK en business·ZF_MASK coding·wtt shortcap 헤드라인과 합선 금지 (FAIL-COMP-004). ███ 마스크 토큰 exact-restore 필수.",
+  "guardrail_en": "Ko premium CS deep pack twin gate applies to CS_MASK template-catalog wire only. Do not merge with BIZ_MASK en business, ZF_MASK coding pack, or wtt shortcap headlines. Masked tokens (███) must exact-restore.",
+  "fallback_spec": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_fallback_spec_v1_latest.json",
+  "signoff_checklist": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_signoff_checklist_v1_latest.json",
+  "signoff_checklist_builder": "scripts/build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1.py",
+  "promotion_gates_at_apply": {
+    "roundtrip_path": "template_catalog_wire_v1",
+    "wire_family": "CS_MASK",
+    "template_catalog_row_count": 22,
+    "exact_restore_pass_count_min": 22,
+    "exact_restore_pass_count_observed": 22,
+    "mean_saving_rate_observed": 0.481069,
+    "mean_saving_rate_min_research": 0.0,
+    "mask_token_exact_restore_required": true,
+    "jaccard_axis": "separate_from_exact_restore"
+  },
+  "human_signoff": {
+    "reviewer": "commander",
+    "approved_at_utc": "2026-06-15T05:51:23Z",
+    "note": "tri-vertical deep pack research envelope"
+  },
+  "apply_command_after_signoff": null,
+  "forbidden_in_this_envelope": [
+    "automatic_active_swap",
+    "customer_sla_claim",
+    "en_business_headline_merge",
+    "coding_deep_pack_headline_merge",
+    "wtt_shortcap_only_headline_as_cs_mask_metric",
+    "tier_a_operational_pass_as_cs_pack_metric"
+  ],
+  "reproduce": [
+    "py scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
+    "py scripts/build_compression_ko_premium_cs_deep_pack_signoff_envelope_v1.py",
+    "py scripts/build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1.py"
+  ]
+}

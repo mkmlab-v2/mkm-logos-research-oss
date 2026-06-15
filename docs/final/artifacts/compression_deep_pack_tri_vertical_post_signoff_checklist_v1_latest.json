@@ -1,0 +1,55 @@
+{
+  "schema": "compression_deep_pack_tri_vertical_post_signoff_checklist_v1",
+  "generated_at_utc": "2026-06-15T06:20:46Z",
+  "decision": "COMMANDER_SIGNED_RESEARCH_ENVELOPE_ONLY",
+  "all_green": true,
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "tri_human_signoff": "reports/compression_deep_pack_tri_vertical_human_signoff_latest.json",
+  "pre_signoff_checklist": "docs/final/artifacts/compression_deep_pack_tri_vertical_signoff_checklist_v1_latest.json",
+  "verticals": {
+    "zone_f_code": {
+      "wire_family": "ZF_MASK",
+      "envelope_artifact": "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
+      "envelope_status": "commander_signed_research_envelope",
+      "reviewer": "commander",
+      "commander_signed": true
+    },
+    "zone_h_en_business_v1": {
+      "wire_family": "BIZ_MASK",
+      "envelope_artifact": "docs/final/artifacts/compression_en_business_deep_pack_promotion_signoff_envelope_v1_latest.json",
+      "envelope_status": "commander_signed_research_envelope",
+      "reviewer": "commander",
+      "commander_signed": true
+    },
+    "zone_ko_premium_cs_v1": {
+      "wire_family": "CS_MASK",
+      "envelope_artifact": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1_latest.json",
+      "envelope_status": "commander_signed_research_envelope",
+      "reviewer": "commander",
+      "commander_signed": true
+    }
+  },
+  "checklist": {
+    "tri_human_signoff_approved": true,
+    "tri_decision_research_envelope_only": true,
+    "research_envelope_only_acknowledged": true,
+    "all_child_envelopes_commander_signed": true,
+    "wire_families_distinct": true,
+    "send_gate_hold": true,
+    "track_a_active_untouched": true,
+    "pre_signoff_was_ready": true,
+    "automatic_active_swap_forbidden": true
+  },
+  "failed_checks": [],
+  "constraints": {
+    "active_swap_still_forbidden": true,
+    "b_to_a_auto_bridge_forbidden": true,
+    "headline_merge_forbidden": "FAIL-COMP-004"
+  },
+  "reproduce": [
+    "py scripts/record_compression_deep_pack_tri_vertical_human_signoff_v1.py --reviewer commander --acknowledge-research-envelope-only",
+    "py scripts/build_compression_deep_pack_tri_vertical_post_signoff_checklist_v1.py"
+  ]
+}

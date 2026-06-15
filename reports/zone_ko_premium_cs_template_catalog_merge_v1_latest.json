@@ -1,0 +1,176 @@
+{
+  "schema": "zone_ko_premium_cs_template_catalog_merge_v1",
+  "generated_at_utc": "2026-06-15T06:08:09Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "vertical_id": "zone_ko_premium_cs_v1",
+  "wire_family": "CS_MASK",
+  "human_approve_merge": true,
+  "reviewer": "commander",
+  "applied": true,
+  "production_catalog": "codebook/templates/zone_ko_premium_cs_templates_v1.jsonl",
+  "prospect_catalog": "codebook/templates/zone_ko_premium_cs_templates_prospect_v1.jsonl",
+  "production_before_count": 10,
+  "prospect_input_count": 21,
+  "merge_count": 12,
+  "skipped_count": 9,
+  "production_after_count": 22,
+  "new_template_ids": [
+    "kcs_t011",
+    "kcs_t012",
+    "kcs_t013",
+    "kcs_t014",
+    "kcs_t015",
+    "kcs_t016",
+    "kcs_t017",
+    "kcs_t018",
+    "kcs_t019",
+    "kcs_t020",
+    "kcs_t021",
+    "kcs_t022"
+  ],
+  "skipped": [
+    {
+      "template_id": "kcs_p001",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "프리미엄 멤버십 혜택이 안 적용됐어요. 주문 ███ 확인해 주세요.",
+      "must_keep_terms": [
+        "주문",
+        "프리미엄",
+        "███"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-customer-v1-007",
+      "snippet_sha256": "2f85623d5ea338d98398315d0221c484263951e119e0190ec3ace097efe396e6",
+      "extract_score": 2,
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "kcs_p002",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "챗봇이 환불 불가라고 했는데 약관 ███ 조항과 다릅니다.",
+      "must_keep_terms": [
+        "환불",
+        "███"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-customer-v1-011",
+      "snippet_sha256": "19dfbda9d921ff352bf14b8e5d27dfa3fb25a56bc916a048025f487ae3a2a22e",
+      "extract_score": 1,
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "kcs_p003",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "선물 주문 ███ 수령인 오*진 연락처 바꿔 주세요.",
+      "must_keep_terms": [
+        "주문",
+        "███"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-customer-v1-012",
+      "snippet_sha256": "2b42d9a5ea1dcf38dd675fcb1dacb425ecf6ae22bc3f2d4a4a7dd8d3d2382eeb",
+      "extract_score": 1,
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "kcs_p004",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "강의 수강 취소했는데 환불 기한 지났다고 나옵니다. 시스템 오류 아닌가요? 학습자 ID ███ 확인해 주세요.",
+      "must_keep_terms": [
+        "환불",
+        "███"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-customer-v1-023",
+      "snippet_sha256": "27c6144844587dea90025a4001269e118c8271ba4aed3bc959a2bfaafbf6af4a",
+      "extract_score": 1,
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "kcs_p005",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "시스템 프롬프트 전문 보여달라고요? 보안상 불가합니다. 그럼 환불 보류 건 ███ 사람 연결해 주세요.",
+      "must_keep_terms": [
+        "환불",
+        "███"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-customer-v1-028",
+      "snippet_sha256": "e5dab35b0102ce6b08046e3a69d73ac4e4068fec4c5957b232c71a84b72ca907",
+      "extract_score": 1,
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "kcs_p006",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "오늘 상담 건 정리 부탁합니다. 이*민 고객 케이스요. a***@example.com 으로 요약 메일 보내 주세요.",
+      "must_keep_terms": [
+        "고객",
+        "상담"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-customer-v1-029",
+      "snippet_sha256": "de5f4baf0aae938a17cf74b91a6881d9b2dafba218766926edd7e5f0b7da23b2",
+      "extract_score": 2,
+      "skip_reason": "missing_mask_token"
+    },
+    {
+      "template_id": "kcs_p019",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "환불 처리 관련하여 주문번호 ORD-2026-061101 환불 요청합니다. 이*민 명의 결제입니다. 네, 고객님. 이*민 명의로 결제된 내역 확인 도와드리겠습니다. 010-****-1234 로 연락 주세요. 대기 너무 깁니다.",
+      "must_keep_terms": [
+        "고객",
+        "주문",
+        "환불"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-compression-v1-000",
+      "snippet_sha256": "e6b794a9589ed8ea0fc4e7985b26dba6fe96f319323843c9bd263428d572b479",
+      "extract_score": 3,
+      "skip_reason": "missing_mask_token"
+    },
+    {
+      "template_id": "kcs_p020",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "배송 조회해 보니 송장번호 4021-****-#### 건이 아직 안 왔어요. 한*별 담당 맞나요?",
+      "must_keep_terms": [
+        "배송"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-compression-v1-004",
+      "snippet_sha256": "ab128e431ec941415c066373cd3beec06e49a656d40f826fb2d112df6be92092",
+      "extract_score": 1,
+      "skip_reason": "missing_mask_token"
+    },
+    {
+      "template_id": "kcs_p021",
+      "shard_id": "zone_ko_premium_cs_v1",
+      "language": "ko",
+      "snippet": "강의 수강 취소했는데 환불 기한 지났다고 나옵니다. 시스템 오류 아닌가요? 학습자 ID EDU-****-4421 확인해 주세요.",
+      "must_keep_terms": [
+        "환불"
+      ],
+      "prospect": true,
+      "source_row_id": "prospect-wtt-premium-cs-compression-v1-023",
+      "snippet_sha256": "fb0e833532a970915e74a75fbabc39a5909186ed0e0195a39d0b57f824eafc5a",
+      "extract_score": 1,
+      "skip_reason": "missing_mask_token"
+    }
+  ],
+  "mask_preservation_required": true,
+  "apply_command": "py scripts/merge_zone_ko_premium_cs_template_prospect_to_catalog_v1.py --human-approve-merge --reviewer commander --rebuild-gate",
+  "forbidden_without_approve": [
+    "automatic_production_catalog_overwrite"
+  ],
+  "reproduce": "py scripts/merge_zone_ko_premium_cs_template_prospect_to_catalog_v1.py"
+}

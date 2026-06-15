@@ -118,6 +118,11 @@ def main() -> int:
             if proc.returncode != 0:
                 print(proc.stderr or proc.stdout, file=sys.stderr)
                 return proc.returncode
+        from scripts.compression_deep_pack_tri_vertical_human_signoff_v1_lib import (  # noqa: WPS433
+            reconcile_from_tri_signoff_record,
+        )
+
+        reconcile_from_tri_signoff_record()
     report = build_merge_report(plan=plan, reviewer=reviewer, approved=approved, applied=applied)
     payload = json.dumps(report, indent=2, ensure_ascii=False) + "\n"
     args.report_out.parent.mkdir(parents=True, exist_ok=True)
