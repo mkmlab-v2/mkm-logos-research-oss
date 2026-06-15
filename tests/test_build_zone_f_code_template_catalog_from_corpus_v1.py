@@ -39,15 +39,16 @@ def test_filter_existing_catalog_snippets() -> None:
     existing = {str(r["snippet"]) for r in load_template_catalog(CATALOG)}
     shard = load_zone_f_code_shard(SHARD)
     result = extract_from_jsonl(FIXTURE, shard=shard, existing_snippets=existing, min_score=2)
-    assert result["candidates_novel"] >= 1
-    for row in result["prospect_rows"]:
-        assert row["snippet"] not in existing
+    assert result["candidates_deduped"] == 3
+    assert result["candidates_novel"] == 0
+    assert result["candidates_skipped_existing"] == 3
 
 
 def test_build_catalog_from_corpus_fixture_smoke(tmp_path: Path) -> None:
     import subprocess
     import sys
 
+    empty_catalog = tmp_path / "empty_prod.jsonl"
     report = tmp_path / "extract_report.json"
     prospect = tmp_path / "prospect.jsonl"
     proc = subprocess.run(
@@ -56,6 +57,8 @@ def test_build_catalog_from_corpus_fixture_smoke(tmp_path: Path) -> None:
             str(BUILDER),
             "--input-jsonl",
             str(FIXTURE),
+            "--catalog",
+            str(empty_catalog),
             "--write-prospect",
             "--report-out",
             str(report),
