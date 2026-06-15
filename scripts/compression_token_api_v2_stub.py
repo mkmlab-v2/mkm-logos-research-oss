@@ -81,6 +81,19 @@ LEXICON_WIRE_SCHEMA = "mkm_lexicon_wire_v1"
 V2_JACCARD_TRUST_MIN = 0.73
 _LEGACY_FLAT_KEY_ACCESS_COUNT = 0
 
+CODING_DEEP_PACK_KEY = "coding_deep_pack_wire_v1"
+_TEMPLATES_PATH = ROOT / "codebook" / "templates" / "zone_f_code_templates_v1.jsonl"
+_MANIFEST_PATH = ROOT / "codebook" / "templates" / "zone_f_code_templates_manifest_v1.json"
+
+from scripts.compression_coding_deep_pack_v1_lib import (  # noqa: E402
+    build_wire_packet,
+    expand_template_wire,
+    load_template_catalog,
+    match_template_id_by_snippet,
+    measure_template_wire_twin,
+    wire_to_compact,
+)
+
 SHARDS = ROOT / "codebook" / "shards"
 _router = DomainSpecificRouter(SHARDS)
 
@@ -158,6 +171,14 @@ class CompressRequestV2(BaseModel):
         description=(
             "B-track [HYPO]: evaluate_report candidate pool expansion (41k combo grid best arm). "
             "Also enabled via routing_profile=candidate_pool_on. research_only; not Track A ACTIVE."
+        ),
+    )
+    enable_coding_deep_pack: bool = Field(
+        default=False,
+        description=(
+            "B-track [HYPO]: zone_f_code template-catalog wire (ZF_MASK) when snippet matches "
+            "codebook/templates/zone_f_code_templates_v1.jsonl. Also auto when sku_class=mask "
+            "and routed shard is zone_f_code."
         ),
     )
 
@@ -758,6 +779,114 @@ def health() -> dict[str, Any]:
     }
 
 
+def _load_coding_deep_pack_catalog() -> tuple[list[dict[str, Any]], str]:
+    import json as _json
+
+    manifest = _json.loads(_MANIFEST_PATH.read_text(encoding="utf-8"))
+    rows = load_template_catalog(_TEMPLATES_PATH)
+    return rows, str(manifest["catalog_sha256"])
+
+
+def _coding_deep_pack_lane_active(body: CompressRequestV2, route: ShardRoute) -> bool:
+    if body.enable_coding_deep_pack:
+        return True
+    if body.sku_class == "mask" and route.shard_id == "zone_f_code":
+        return True
+    return False
+
+
+def _try_coding_deep_pack_compress(
+    body: CompressRequestV2,
+    route: ShardRoute,
+    flags: dict[str, Any],
+) -> CompressResponseV2 | None:
+    if not _coding_deep_pack_lane_active(body, route):
+        return None
+    if not _TEMPLATES_PATH.is_file() or not _MANIFEST_PATH.is_file():
+        flags["coding_deep_pack_catalog_missing"] = True
+        return None
+    rows, catalog_sha256 = _load_coding_deep_pack_catalog()
+    template_id = match_template_id_by_snippet(body.text, rows)
+    if not template_id:
+        flags["coding_deep_pack_no_catalog_match"] = True
+        return None
+    twin = measure_template_wire_twin(
+        original_snippet=body.text,
+        template_id=template_id,
+        catalog_sha256=catalog_sha256,
+        catalog_rows=rows,
+    )
+    wire = build_wire_packet(template_id=template_id, catalog_sha256=catalog_sha256)
+    stub_block: dict[str, Any] = {
+        "reconstructed_text": body.text,
+        "global_token_saving_rate": twin["saving_rate"],
+        "reconstruction_fidelity_jaccard": twin["jaccard_proxy"],
+        "exact_restore_ok": twin["exact_restore_ok"],
+    }
+    residual_meta: dict[str, Any] = {
+        RESIDUAL_STUB_KEY: _stub_block_for_packet(stub_block, stateless_packet=body.stateless_packet),
+        "placeholder_map": {},
+        CODING_DEEP_PACK_KEY: wire,
+    }
+    _attach_lexicon_rail(residual_meta, body.text)
+    flags.update(
+        {
+            "coding_deep_pack_wire_v1": True,
+            "roundtrip_path": "template_catalog_wire_v1",
+            "template_id": template_id,
+            "catalog_sha256_short": catalog_sha256[:8],
+            "exact_restore_ok": twin["exact_restore_ok"],
+            "research_only": True,
+        }
+    )
+    if body.sku_class:
+        flags["sku_class"] = body.sku_class
+    packet = CompressionPacket(
+        loss_profile=body.loss_profile,
+        compressed_text=str(twin["wire_compact"]),
+        residual_meta=residual_meta,
+        router_meta={"shard_id": route.shard_id, "domain": route.domain},
+        content_fingerprint=_fingerprint(body.text),
+    )
+    metrics = CompressionMetricsV2(
+        token_in=int(twin["original_token_count"]),
+        token_out=int(twin["wire_token_count"]),
+        savings_ratio=float(twin["saving_rate"]),
+    )
+    return CompressResponseV2(
+        compression_packet=packet,
+        compression_metrics=metrics,
+        integrity_flags=flags,
+    )
+
+
+def _try_expand_coding_deep_pack(pkt: CompressionPacket) -> tuple[str, dict[str, Any]] | None:
+    compact = str(pkt.compressed_text or "")
+    meta = pkt.residual_meta if isinstance(pkt.residual_meta, dict) else {}
+    wire_info = meta.get(CODING_DEEP_PACK_KEY) if isinstance(meta, dict) else None
+    if not compact.startswith("[ZF_MASK:") and not isinstance(wire_info, dict):
+        return None
+    if not _TEMPLATES_PATH.is_file() or not _MANIFEST_PATH.is_file():
+        return None
+    rows, catalog_sha256 = _load_coding_deep_pack_catalog()
+    try:
+        if compact.startswith("[ZF_MASK:"):
+            text = expand_template_wire(compact, rows, expected_catalog_sha256=catalog_sha256)
+        elif isinstance(wire_info, dict):
+            text = expand_template_wire(wire_info, rows, expected_catalog_sha256=catalog_sha256)
+        else:
+            return None
+    except (KeyError, ValueError):
+        return None
+    return text, {
+        "reassembly": "coding_deep_pack_wire_v1",
+        "source": CODING_DEEP_PACK_KEY,
+        "exact_restore_ok": True,
+        "roundtrip_path": "template_catalog_wire_v1",
+        "research_only": True,
+    }
+
+
 @app.post("/v2/compress", response_model=CompressResponseV2)
 def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
     forced_sid = str(body.forced_shard_id or "").strip() or None
@@ -785,6 +914,9 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
         flags["forced_shard_promoted_b2b"] = forced_sid.endswith("_b2b_v1")
     if body.stateless_packet:
         flags["stateless_packet"] = True
+    coding_resp = _try_coding_deep_pack_compress(body, route, flags)
+    if coding_resp is not None:
+        return coding_resp
     try:
         # Fused lane: lossless_text goes through deterministic hybrid codec first.
         if body.loss_profile == "lossless_text":
@@ -1018,6 +1150,12 @@ def expand_v2(body: ExpandRequestV2) -> ExpandResponseV2:
     pkt = body.compression_packet
     mode = body.decode_mode
     flags: dict[str, Any] = {"stub_v2": True, "decode_mode": mode}
+
+    coding = _try_expand_coding_deep_pack(pkt)
+    if coding is not None:
+        text, extra = coding
+        flags.update(extra)
+        return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
 
     if mode == "codebook_only":
         text, cb_flags = _expand_codebook_only(pkt)

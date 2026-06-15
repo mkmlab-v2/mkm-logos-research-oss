@@ -16,6 +16,7 @@ from fastapi.testclient import TestClient
 
 from scripts.compression_token_api_v2_stub import (
     API_CONTRACT_VERSION,
+    CODING_DEEP_PACK_KEY,
     PACKET_FORMAT_VERSION,
     RESIDUAL_STUB_KEY,
     _legacy_flat_key_access_count,
@@ -683,6 +684,38 @@ def test_v2_compress_zone_f_code_forced_shard_twin_metrics() -> None:
     assert er.status_code == 200
     expanded = er.json()["text"]
     assert "jaccard_proxy" in flags or "jaccard_proxy" in er.json().get("integrity_flags", {})
+
+
+def test_v2_coding_deep_pack_wire_roundtrip_exact() -> None:
+    import json
+
+    row = json.loads(
+        (ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl").read_text(encoding="utf-8").splitlines()[0]
+    )
+    sample = str(row["snippet"])
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_f_code",
+            "sku_class": "mask",
+            "client_request_id": "test-v2-coding-deep-pack-1",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    cj = cr.json()
+    flags = cj["integrity_flags"]
+    assert flags.get("coding_deep_pack_wire_v1") is True
+    assert flags.get("exact_restore_ok") is True
+    pkt = cj["compression_packet"]
+    assert str(pkt["compressed_text"]).startswith("[ZF_MASK:")
+    assert CODING_DEEP_PACK_KEY in pkt["residual_meta"]
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200, er.text
+    ej = er.json()
+    assert ej["text"] == sample
+    assert ej["integrity_flags"].get("reassembly") == "coding_deep_pack_wire_v1"
 
 
 def test_resolve_latest_codebook_uses_production_pointer() -> None:
