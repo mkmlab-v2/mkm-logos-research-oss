@@ -1,0 +1,26 @@
+{
+  "schema": "compression_en_business_shadow_router_bind_v1",
+  "generated_at_utc": "2026-06-15T10:30:00Z",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "shadow_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "production_router_unchanged": true,
+  "corpus_tag_primary": "en_biz_v1",
+  "corpus_tag_aliases": [
+    "en_biz_v1",
+    "en-business-email",
+    "en-business-memo",
+    "en_business_formal"
+  ],
+  "shadow_shard_id": "zone_h_en_business_v1",
+  "wire_family": "BIZ_MASK",
+  "deep_pack_wire_path": "template_catalog_wire_v1",
+  "bind_rule": "corpus_tag alias match → route_from_shard_id(shadow_shard_id); baseline keyword route logged for diff only",
+  "separate_from": {
+    "wtt_premium_cs_customer_v1": "CS shortcap hybrid binding — not merged",
+    "hybrid_router_corpus_bindings": "docs/final/artifacts/compression_hybrid_router_spec_v1.json#corpus_bindings"
+  },
+  "reproduce": "py scripts/run_en_business_shadow_router_bind_v1.py"
+}

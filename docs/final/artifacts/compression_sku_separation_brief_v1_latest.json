@@ -84,6 +84,11 @@
         "batch_extract": "scripts/run_zone_h_en_business_template_catalog_batch_extract_v1.py",
         "gated_merge": "scripts/merge_zone_h_en_business_template_prospect_to_catalog_v1.py",
         "catalog_pipeline": "scripts/run_zone_h_en_business_template_catalog_pipeline_v1.py",
+        "hypo_overlay_scan": "scripts/run_en_business_template_overlay_scan_v1.py",
+        "hypo_overlay_artifact": "docs/final/artifacts/en_business_template_overlay_scan_v1_latest.json",
+        "hypo_shadow_router_bind": "scripts/run_en_business_shadow_router_bind_v1.py",
+        "hypo_shadow_router_bind_spec": "docs/final/artifacts/compression_en_business_shadow_router_bind_v1.json",
+        "hypo_shadow_router_bind_artifact": "docs/final/artifacts/en_business_shadow_router_bind_v1_latest.json",
         "builder_script": "scripts/build_compression_en_business_deep_pack_gate_v1.py"
       },
       "ko_premium_cs_deep_pack_poc": {
@@ -99,6 +104,9 @@
         "mask_normalize": "scripts/normalize_zone_ko_premium_cs_prospect_mask_tokens_v1.py",
         "mask_canonicalize_lib": "scripts/normalize_ko_premium_cs_mask_snippet_v1_lib.py",
         "catalog_pipeline": "scripts/run_zone_ko_premium_cs_template_catalog_pipeline_v1.py",
+        "hypo_wtt_overlay_scan": "scripts/run_ko_premium_cs_wtt_template_overlay_scan_v1.py",
+        "hypo_wtt_overlay_manifest": "data/compression/fixtures/zone_ko_premium_cs_wtt_overlay_scan_manifest_v1.json",
+        "hypo_wtt_overlay_artifact": "docs/final/artifacts/ko_premium_cs_wtt_template_overlay_scan_v1_latest.json",
         "tri_vertical_smoke": "scripts/run_compression_deep_pack_tri_vertical_smoke_v1.py",
         "builder_script": "scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
         "icp_synthetic_operator_axis": {

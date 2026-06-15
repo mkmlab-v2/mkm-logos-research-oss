@@ -1,0 +1,82 @@
+{
+  "schema": "compression_spiking_closeout_v1",
+  "generated_at_utc": "2026-06-15T12:00:00Z",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "branch": "feat/compression-sku-ab-a-bc",
+  "baseline_sha": "ab873947e8bda1f61d2d1a02ce73ef11b1802381",
+  "baseline_label": "internal/main BIZ 13-row gate lock (feat/compression expand en business 8→13)",
+  "parent_workspace_sha_at_materialize": "f1e9cadc246e0752ec3573f12bd94ec89b3862ce",
+  "hypo_scripts_committed": true,
+  "fact_lock_block": {
+    "A_tier_artifact_lock": "feat/compression-sku-ab-a-bc 브랜치에 ab873947e8 baseline + HYPO 체인 스크립트 형상 바인딩",
+    "exact_restore_integrity": "MASK 격벽 내 WTT 템플릿 오버레이 스캔 100% 무손실 복원 (BIZ 14/14 · CS WTT 38/38)",
+    "headline_separation": "Core ~40.8% (BIZ catalog gate) vs snippet min 6.7%/12.5% — FAIL-COMP-004 헤드라인 합선 금지",
+    "production_router_status": "domain_router.route() 미수정; shadow bind 평가·로그 전용",
+    "posture_gate": "SEND_GATE HOLD · ACTIVE swap 유예 · research envelope 락"
+  },
+  "hypo_chains": [
+    {
+      "id": "HYPO-1a",
+      "wire_family": "BIZ_MASK",
+      "runner": "scripts/run_en_business_template_overlay_scan_v1.py",
+      "report": "reports/en_business_template_overlay_scan_v1_latest.json",
+      "aggregate": {
+        "wire_match_rate": 1.0,
+        "exact_restore_rate_on_matched": 1.0,
+        "tenant_overlay_rate_on_matched": 1.0,
+        "min_saving_rate_observed": 0.066667,
+        "full_wire_and_twin_pass": true
+      }
+    },
+    {
+      "id": "HYPO-2",
+      "wire_family": "BIZ_MASK",
+      "runner": "scripts/run_en_business_shadow_router_bind_v1.py",
+      "bind_spec": "docs/final/artifacts/compression_en_business_shadow_router_bind_v1.json",
+      "report": "reports/en_business_shadow_router_bind_v1_latest.json",
+      "aggregate": {
+        "shadow_applied_count": 13,
+        "divergence_count": 0,
+        "full_shadow_bind_pass": true
+      }
+    },
+    {
+      "id": "HYPO-1b",
+      "wire_family": "CS_MASK",
+      "runner": "scripts/run_ko_premium_cs_wtt_template_overlay_scan_v1.py",
+      "manifest": "data/compression/fixtures/zone_ko_premium_cs_wtt_overlay_scan_manifest_v1.json",
+      "report": "reports/ko_premium_cs_wtt_template_overlay_scan_v1_latest.json",
+      "icp_synthetic_operator_excluded": true,
+      "aggregate": {
+        "wire_match_rate": 1.0,
+        "exact_restore_rate_on_matched": 1.0,
+        "tenant_overlay_rate_on_matched": 1.0,
+        "min_saving_rate_observed": 0.125,
+        "full_wire_and_twin_pass": true
+      }
+    }
+  ],
+  "biz_gate_pointer": "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json",
+  "biz_gate_summary": {
+    "case_count": 13,
+    "exact_restore_pass_count": 13,
+    "mean_saving_rate": 0.408462
+  },
+  "sku_brief_pointer": "docs/final/artifacts/compression_sku_separation_brief_v1_latest.json",
+  "reproduce": [
+    "py scripts/run_en_business_template_overlay_scan_v1.py",
+    "py scripts/run_en_business_shadow_router_bind_v1.py",
+    "py scripts/run_ko_premium_cs_wtt_template_overlay_scan_v1.py",
+    "py -m pytest tests/test_en_business_template_overlay_scan_v1.py tests/test_en_business_shadow_router_bind_v1.py tests/test_ko_premium_cs_wtt_template_overlay_scan_v1.py -q"
+  ],
+  "verification_exit_code": 0,
+  "forbidden": [
+    "merge_biz_cs_headline_kpi",
+    "production_domain_router_mutation",
+    "active_swap_without_commander_order",
+    "customer_sla_from_hypo_min_saving"
+  ]
+}
