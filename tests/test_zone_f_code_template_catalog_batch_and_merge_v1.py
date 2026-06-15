@@ -29,6 +29,8 @@ def test_batch_extract_fixture_manifest_smoke(tmp_path: Path) -> None:
             str(BATCH_RUNNER),
             "--manifest",
             str(manifest),
+            "--catalog",
+            str(tmp_path / "empty_catalog.jsonl"),
             "--report-out",
             str(report),
             "--artifact-out",
@@ -51,10 +53,10 @@ def test_merge_plan_dry_run_default() -> None:
     production = load_catalog_rows(ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl")
     prospect = load_catalog_rows(ROOT / "codebook/templates/zone_f_code_templates_prospect_v1.jsonl")
     plan = plan_prospect_merge(production_rows=production, prospect_rows=prospect)
-    assert plan["merge_count"] == 3
-    assert plan["production_after_count"] == len(production) + 3
-    ids = [m["new_template_id"] for m in plan["to_merge"]]
-    assert ids == ["zf_t17", "zf_t18", "zf_t19"]
+    assert len(production) == 19
+    assert plan["merge_count"] == 0
+    assert plan["skipped_count"] == len(prospect)
+    assert plan["production_after_count"] == 19
 
 
 def test_merge_requires_reviewer_when_approved(tmp_path: Path) -> None:
@@ -92,9 +94,10 @@ def test_merge_apply_on_tmp_catalog(tmp_path: Path) -> None:
     prospect_src = ROOT / "codebook/templates/zone_f_code_templates_prospect_v1.jsonl"
     prod = tmp_path / "prod.jsonl"
     prospect = tmp_path / "prospect.jsonl"
-    prod.write_text(prod_src.read_text(encoding="utf-8"), encoding="utf-8")
+    pre_merge_lines = [line for line in prod_src.read_text(encoding="utf-8").splitlines() if line.strip()][:16]
+    prod.write_text("\n".join(pre_merge_lines) + "\n", encoding="utf-8")
     prospect.write_text(prospect_src.read_text(encoding="utf-8"), encoding="utf-8")
-    before = sum(1 for line in prod.read_text(encoding="utf-8").splitlines() if line.strip())
+    before = len(pre_merge_lines)
     proc = subprocess.run(
         [
             sys.executable,
