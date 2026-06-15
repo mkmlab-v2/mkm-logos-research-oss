@@ -66,6 +66,8 @@
     "mean_saving_rate": 0.408462
   },
   "sku_brief_pointer": "docs/final/artifacts/compression_sku_separation_brief_v1_latest.json",
+  "shadow_registry_sync": "scripts/run_compression_mask_shadow_registry_sync_v1.py",
+  "shadow_registry_staging": "docs/final/artifacts/compression_mask_shadow_registry_staging_v1.json",
   "reproduce": [
     "py scripts/run_en_business_template_overlay_scan_v1.py",
     "py scripts/run_en_business_shadow_router_bind_v1.py",

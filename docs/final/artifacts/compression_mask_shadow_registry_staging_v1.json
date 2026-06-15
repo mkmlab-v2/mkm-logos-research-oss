@@ -1,0 +1,114 @@
+{
+  "schema": "compression_mask_shadow_registry_v1",
+  "generated_at_utc": "2026-06-15T11:59:28Z",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "shadow_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "production_router_unchanged": true,
+  "workspace_root": "C:/workspace",
+  "git_head_sha": "82609a91b088947f0f94f412ac3ec89018c9b646",
+  "baseline_sha_note": "ab873947e8 BIZ 13-row lock; registry pins manifest hashes for pointer swap",
+  "fail_comp_note": "Staging pointers only — no v2 stub ACTIVE wiring; no secrets in registry.",
+  "entries": [
+    {
+      "entry_id": "biz_template_manifest",
+      "vertical_id": "zone_h_en_business_v1",
+      "wire_family": "BIZ_MASK",
+      "repo_rel_path": "codebook/templates/zone_h_en_business_templates_manifest_v1.json",
+      "staging_env_key": "MKM_BIZ_MASK_CATALOG_MANIFEST",
+      "exists": true,
+      "sha256": "8fcb35fb58210d45a505dbdd4a4a90c58378c16f0702118eaa114dd23955a0a3",
+      "catalog_sha256": "7cbefe0fdcaf172a803362c749ef2bf0e77a96fe433c2f972c4c36ac41bc397e",
+      "row_count": 13
+    },
+    {
+      "entry_id": "biz_template_catalog",
+      "vertical_id": "zone_h_en_business_v1",
+      "wire_family": "BIZ_MASK",
+      "repo_rel_path": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
+      "staging_env_key": "MKM_BIZ_MASK_CATALOG_JSONL",
+      "exists": true,
+      "sha256": "7cbefe0fdcaf172a803362c749ef2bf0e77a96fe433c2f972c4c36ac41bc397e"
+    },
+    {
+      "entry_id": "biz_shadow_bind_spec",
+      "vertical_id": "zone_h_en_business_v1",
+      "wire_family": "BIZ_MASK",
+      "repo_rel_path": "docs/final/artifacts/compression_en_business_shadow_router_bind_v1.json",
+      "staging_env_key": "MKM_BIZ_MASK_SHADOW_BIND_SPEC",
+      "exists": true,
+      "sha256": "aef683609d3ab4be2495f196838ca14dfdaef375406fcb288782cf59f75d1b24",
+      "shadow_shard_id": "zone_h_en_business_v1"
+    },
+    {
+      "entry_id": "cs_template_manifest",
+      "vertical_id": "zone_ko_premium_cs_v1",
+      "wire_family": "CS_MASK",
+      "repo_rel_path": "codebook/templates/zone_ko_premium_cs_templates_manifest_v1.json",
+      "staging_env_key": "MKM_CS_MASK_CATALOG_MANIFEST",
+      "exists": true,
+      "sha256": "d8a764683c2c1cb1660a12fb86597c95fcd2052d910b5b91796b67eb5adafc57",
+      "catalog_sha256": "5ab82f39c1957e7bbdfe0b6c17ad0303f35fbc4d437c7671a37fa24303ea31a4",
+      "row_count": 26
+    },
+    {
+      "entry_id": "cs_template_catalog",
+      "vertical_id": "zone_ko_premium_cs_v1",
+      "wire_family": "CS_MASK",
+      "repo_rel_path": "codebook/templates/zone_ko_premium_cs_templates_v1.jsonl",
+      "staging_env_key": "MKM_CS_MASK_CATALOG_JSONL",
+      "exists": true,
+      "sha256": "5ab82f39c1957e7bbdfe0b6c17ad0303f35fbc4d437c7671a37fa24303ea31a4"
+    },
+    {
+      "entry_id": "cs_wtt_overlay_manifest",
+      "vertical_id": "zone_ko_premium_cs_v1",
+      "wire_family": "CS_MASK",
+      "repo_rel_path": "data/compression/fixtures/zone_ko_premium_cs_wtt_overlay_scan_manifest_v1.json",
+      "staging_env_key": "MKM_CS_WTT_OVERLAY_MANIFEST",
+      "exists": true,
+      "sha256": "65ae0985b27db52720236fbd8596ad23e7c6920df5d7ed8c3f71d29f10d391ef"
+    },
+    {
+      "entry_id": "spiking_closeout",
+      "vertical_id": "compression_sku_ab",
+      "wire_family": "META",
+      "repo_rel_path": "reports/compression_spiking_closeout_v1.json",
+      "staging_env_key": "MKM_COMPRESSION_SPIKING_CLOSEOUT",
+      "exists": true,
+      "sha256": "b5c249633535a6faa6ff671ad8d6fa49e1a5bc04c83d4b82b82afb4e9d5130e3"
+    }
+  ],
+  "hypo_runners": [
+    {
+      "hypo_id": "HYPO-1a",
+      "script": "scripts/run_en_business_template_overlay_scan_v1.py"
+    },
+    {
+      "hypo_id": "HYPO-2",
+      "script": "scripts/run_en_business_shadow_router_bind_v1.py"
+    },
+    {
+      "hypo_id": "HYPO-1b",
+      "script": "scripts/run_ko_premium_cs_wtt_template_overlay_scan_v1.py"
+    }
+  ],
+  "staging_env_pointers": {
+    "MKM_BIZ_MASK_CATALOG_MANIFEST": "codebook/templates/zone_h_en_business_templates_manifest_v1.json",
+    "MKM_BIZ_MASK_CATALOG_JSONL": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
+    "MKM_BIZ_MASK_SHADOW_BIND_SPEC": "docs/final/artifacts/compression_en_business_shadow_router_bind_v1.json",
+    "MKM_CS_MASK_CATALOG_MANIFEST": "codebook/templates/zone_ko_premium_cs_templates_manifest_v1.json",
+    "MKM_CS_MASK_CATALOG_JSONL": "codebook/templates/zone_ko_premium_cs_templates_v1.jsonl",
+    "MKM_CS_WTT_OVERLAY_MANIFEST": "data/compression/fixtures/zone_ko_premium_cs_wtt_overlay_scan_manifest_v1.json",
+    "MKM_COMPRESSION_SPIKING_CLOSEOUT": "reports/compression_spiking_closeout_v1.json",
+    "MKM_COMPRESSION_MASK_SHADOW_REGISTRY_JSON": "docs/final/artifacts/compression_mask_shadow_registry_staging_v1.json"
+  },
+  "aggregate": {
+    "entry_count": 7,
+    "missing_entry_ids": [],
+    "all_entries_present": true
+  },
+  "reproduce": "py scripts/run_compression_mask_shadow_registry_sync_v1.py"
+}
