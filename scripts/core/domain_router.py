@@ -31,7 +31,15 @@ class DomainSpecificRouter:
 
     def __init__(self, shards_root: Path) -> None:
         self._root = shards_root
-        self._shards = self._load_shards()
+        self._shards = self._load_shard_files(sorted(shards_root.glob("zone_*.json"))) if shards_root.is_dir() else []
+        if not self._shards:
+            self._shards = [self._default_shard()]
+        b2b_root = shards_root / "b2b"
+        self._b2b_shards = (
+            self._load_shard_files(sorted(b2b_root.glob("zone_*.json")))
+            if b2b_root.is_dir()
+            else []
+        )
 
     @staticmethod
     def _hangul_ratio(text: str) -> float:
@@ -40,12 +48,18 @@ class DomainSpecificRouter:
         n = sum(1 for ch in text if "\uac00" <= ch <= "\ud7a3")
         return n / len(text)
 
+    def _all_catalog_shards(self) -> list[dict]:
+        return list(self._shards) + list(self._b2b_shards)
+
     def _shard_by_id(self, shard_id: str) -> dict | None:
         sid = str(shard_id).lower()
-        for s in self._shards:
+        for s in self._all_catalog_shards():
             if str(s.get("shard_id", "")).lower() == sid:
                 return s
         return None
+
+    def known_shard_ids(self) -> list[str]:
+        return sorted({str(s.get("shard_id", "")) for s in self._all_catalog_shards() if s.get("shard_id")})
 
     def _shard_dict_to_route(self, best: dict) -> ShardRoute:
         return ShardRoute(
@@ -63,8 +77,7 @@ class DomainSpecificRouter:
         """Build a ShardRoute from a shard JSON by id (ablation / forced-Psi without keyword scoring)."""
         d = self._shard_by_id(shard_id)
         if d is None:
-            known = sorted({str(s.get("shard_id", "")) for s in self._shards if s.get("shard_id")})
-            raise ValueError(f"Unknown shard_id {shard_id!r}; known: {known}")
+            raise ValueError(f"Unknown shard_id {shard_id!r}; known: {self.known_shard_ids()}")
         return self._shard_dict_to_route(d)
 
     def route(self, text: str) -> ShardRoute:
@@ -86,16 +99,20 @@ class DomainSpecificRouter:
                     best = self._preferred_default_shard()
         return self._shard_dict_to_route(best)
 
-    def _load_shards(self) -> list[dict]:
-        if not self._root.is_dir():
-            return [self._default_shard()]
-        files = sorted(self._root.glob("zone_*.json"))
+    @staticmethod
+    def _load_shard_files(files: list[Path]) -> list[dict]:
         out: list[dict] = []
         for f in files:
             try:
                 out.append(json.loads(f.read_text(encoding="utf-8")))
             except Exception:
                 continue
+        return out
+
+    def _load_shards(self) -> list[dict]:
+        if not self._root.is_dir():
+            return [self._default_shard()]
+        out = self._load_shard_files(sorted(self._root.glob("zone_*.json")))
         return out or [self._default_shard()]
 
     def _preferred_default_shard(self) -> dict:
