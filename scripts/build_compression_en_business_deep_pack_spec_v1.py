@@ -62,10 +62,22 @@ def build_spec() -> dict[str, Any]:
                 "template_catalog_prospect": _rel(
                     ROOT / "codebook/templates/zone_h_en_business_templates_prospect_v1.jsonl"
                 ),
-                "template_catalog_production": None,
+                "template_catalog_production": _rel(
+                    ROOT / "codebook/templates/zone_h_en_business_templates_v1.jsonl"
+                ),
+                "template_manifest": _rel(
+                    ROOT / "codebook/templates/zone_h_en_business_templates_manifest_v1.json"
+                ),
+                "twin_gate_artifact": _rel(
+                    ROOT / "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json"
+                ),
+                "fallback_spec": _rel(
+                    ROOT / "docs/final/artifacts/compression_en_business_deep_pack_fallback_spec_v1_latest.json"
+                ),
                 "codec_lib": "scripts/compression_en_business_deep_pack_v1_lib.py",
                 "extract_lib": "scripts/extract_zone_h_en_business_template_seeds_v1_lib.py",
                 "extract_builder": "scripts/build_zone_h_en_business_template_catalog_from_corpus_v1.py",
+                "gate_builder": "scripts/build_compression_en_business_deep_pack_gate_v1.py",
             },
         },
         "axis_separation": {
@@ -97,6 +109,7 @@ def build_spec() -> dict[str, Any]:
         ],
         "reproduce": [
             "py scripts/build_compression_en_business_deep_pack_spec_v1.py",
+            "py scripts/build_compression_en_business_deep_pack_gate_v1.py",
             "py scripts/build_zone_h_en_business_template_catalog_from_corpus_v1.py --input-jsonl data/compression/fixtures/zone_h_en_business_corpus_extract_fixture_v1.jsonl --write-prospect",
         ],
     }

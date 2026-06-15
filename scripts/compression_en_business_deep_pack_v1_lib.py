@@ -117,6 +117,16 @@ def match_template_id_by_snippet(text: str, catalog_rows: list[dict[str, Any]]) 
     return None
 
 
+def resolve_template_match(
+    text: str,
+    catalog_rows: list[dict[str, Any]],
+) -> tuple[str, None] | None:
+    exact = match_template_id_by_snippet(text, catalog_rows)
+    if exact:
+        return exact, None
+    return None
+
+
 def measure_template_wire_twin(
     *,
     original_snippet: str,
