@@ -1,0 +1,40 @@
+{
+  "shard_id": "zone_g_health_b2b_v1",
+  "domain": "health_b2b",
+  "parent_legacy_shard": "zone_g_health",
+  "external_sku": "MKM-MED-G1",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "routing_keywords": [
+    "의료",
+    "임상",
+    "진단",
+    "환자",
+    "바이탈",
+    "Silver Tech",
+    "건강검진",
+    "SOAP",
+    "vitals",
+    "clinical"
+  ],
+  "must_keep_hard_terms": [
+    "의료",
+    "임상",
+    "진단",
+    "환자",
+    "바이탈"
+  ],
+  "must_keep_soft_terms": [
+    "건강검진",
+    "SOAP",
+    "vitals",
+    "clinical",
+    "Silver"
+  ],
+  "guard_tokens": [
+    "금지",
+    "필수",
+    "주의"
+  ],
+  "hangul_principle": true
+}

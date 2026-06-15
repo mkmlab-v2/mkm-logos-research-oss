@@ -1,0 +1,40 @@
+{
+  "shard_id": "zone_d_ssot_b2b_v1",
+  "domain": "chatbot_b2b",
+  "parent_legacy_shard": "zone_d_ssot",
+  "external_sku": "MKM-CHAT-D1",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "routing_keywords": [
+    "대화",
+    "챗봇",
+    "intent",
+    "FAQ",
+    "세션",
+    "응답",
+    "프롬프트",
+    "고객지원",
+    "chatbot",
+    "session"
+  ],
+  "must_keep_hard_terms": [
+    "챗봇",
+    "intent",
+    "FAQ",
+    "세션",
+    "프롬프트"
+  ],
+  "must_keep_soft_terms": [
+    "대화",
+    "응답",
+    "고객지원",
+    "chatbot",
+    "session"
+  ],
+  "guard_tokens": [
+    "must",
+    "cannot",
+    "policy"
+  ],
+  "hangul_principle": true
+}
