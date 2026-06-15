@@ -1,0 +1,52 @@
+{
+  "shard_id": "zone_h_en_business_v1",
+  "domain": "en_business_formal",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "language": "en",
+  "routing_keywords": [
+    "dear",
+    "subject",
+    "regards",
+    "sincerely",
+    "invoice",
+    "purchase",
+    "order",
+    "payment",
+    "delivery",
+    "contract",
+    "compliance",
+    "proposal",
+    "meeting",
+    "schedule",
+    "attached",
+    "pursuant",
+    "notice",
+    "remittance"
+  ],
+  "must_keep_hard_terms": [
+    "invoice",
+    "payment",
+    "contract",
+    "compliance"
+  ],
+  "must_keep_soft_terms": [
+    "regards",
+    "schedule",
+    "delivery",
+    "proposal",
+    "attached",
+    "dear"
+  ],
+  "guard_tokens": [
+    "must",
+    "required",
+    "confidential",
+    "urgent"
+  ],
+  "hangul_principle": false,
+  "separate_from": {
+    "zone_f_code_coding_deep_pack": "template_catalog_wire_v1 + ZF_MASK",
+    "wtt_premium_cs_customer_v1": "ko CS shortcap axis — not merged"
+  }
+}
