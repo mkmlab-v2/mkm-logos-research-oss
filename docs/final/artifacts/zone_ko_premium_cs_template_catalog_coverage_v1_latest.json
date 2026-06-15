@@ -15,11 +15,12 @@
       "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-premium-cs-customer-v1_v1_bodyonly_v1.jsonl",
       "rows_scanned": 30,
       "rows_with_snippet_candidates": 11,
-      "snippet_candidates_total": 10,
-      "wire_match_count": 10,
+      "snippet_candidates_total": 11,
+      "wire_match_count": 11,
       "wire_miss_count": 0,
       "wire_match_rate": 1.0,
-      "non_canonical_mask_skipped": 2,
+      "non_canonical_mask_skipped": 0,
+      "canonical_normalized_match_count": 1,
       "misses_sample": []
     },
     {
@@ -31,6 +32,7 @@
       "wire_miss_count": 0,
       "wire_match_rate": 1.0,
       "non_canonical_mask_skipped": 0,
+      "canonical_normalized_match_count": 0,
       "misses_sample": []
     },
     {
@@ -42,24 +44,26 @@
       "wire_miss_count": 0,
       "wire_match_rate": 1.0,
       "non_canonical_mask_skipped": 0,
+      "canonical_normalized_match_count": 0,
       "misses_sample": []
     },
     {
       "input_jsonl": "C:/workspace/data/compression/stateless_poc_prospect_wtt-premium-cs-compression-v1_v1_bodyonly_v1.jsonl",
       "rows_scanned": 30,
       "rows_with_snippet_candidates": 4,
-      "snippet_candidates_total": 0,
-      "wire_match_count": 0,
+      "snippet_candidates_total": 4,
+      "wire_match_count": 4,
       "wire_miss_count": 0,
       "wire_match_rate": 1.0,
-      "non_canonical_mask_skipped": 4,
+      "non_canonical_mask_skipped": 0,
+      "canonical_normalized_match_count": 4,
       "misses_sample": []
     }
   ],
   "aggregate": {
     "corpus_count": 4,
-    "snippet_candidates_total": 29,
-    "wire_match_count": 29,
+    "snippet_candidates_total": 34,
+    "wire_match_count": 34,
     "wire_match_rate": 1.0,
     "all_corpora_present": true,
     "full_wire_match": true

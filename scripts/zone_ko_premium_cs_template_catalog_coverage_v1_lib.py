@@ -11,7 +11,10 @@ from typing import Any
 
 from scripts.compression_ko_premium_cs_deep_pack_v1_lib import (
     load_template_catalog,
-    resolve_template_match,
+)
+from scripts.normalize_ko_premium_cs_mask_snippet_v1_lib import (
+    canonicalize_ko_cs_mask_snippet,
+    resolve_ko_cs_catalog_match,
 )
 from scripts.extract_zone_ko_premium_cs_template_seeds_v1_lib import (
     extract_seeds_from_row,
@@ -38,6 +41,7 @@ def evaluate_corpus_snippet_coverage(
 
     seen_snippets: set[str] = set()
     non_canonical_skipped = 0
+    canonical_normalized_match = 0
 
     for obj in iter_jsonl_rows(path):
         rows_scanned += 1
@@ -48,6 +52,28 @@ def evaluate_corpus_snippet_coverage(
         rows_with_candidates += 1
         for snippet in snippets:
             if "███" not in snippet:
+                canon = canonicalize_ko_cs_mask_snippet(snippet)
+                if canon != snippet and "███" in canon:
+                    norm = canon.strip()
+                    if norm in seen_snippets:
+                        continue
+                    seen_snippets.add(norm)
+                    snippet_candidates_total += 1
+                    resolved = resolve_ko_cs_catalog_match(snippet, catalog_rows)
+                    if resolved:
+                        wire_match_count += 1
+                        canonical_normalized_match += 1
+                    else:
+                        wire_miss_count += 1
+                        if len(misses) < 12:
+                            misses.append(
+                                {
+                                    "row_id": str(obj.get("id") or obj.get("session_id") or ""),
+                                    "snippet_preview": snippet[:120],
+                                    "reason": "canonical_normalize_no_catalog_match",
+                                }
+                            )
+                    continue
                 non_canonical_skipped += 1
                 continue
             norm = snippet.strip()
@@ -55,7 +81,7 @@ def evaluate_corpus_snippet_coverage(
                 continue
             seen_snippets.add(norm)
             snippet_candidates_total += 1
-            resolved = resolve_template_match(snippet, catalog_rows)
+            resolved = resolve_ko_cs_catalog_match(snippet, catalog_rows)
             if resolved:
                 wire_match_count += 1
             else:
@@ -79,6 +105,7 @@ def evaluate_corpus_snippet_coverage(
         "wire_miss_count": wire_miss_count,
         "wire_match_rate": round(wire_match_count / denom, 6) if denom else 1.0,
         "non_canonical_mask_skipped": non_canonical_skipped,
+        "canonical_normalized_match_count": canonical_normalized_match,
         "misses_sample": misses,
     }
 

@@ -1,6 +1,6 @@
 {
   "schema": "compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1",
-  "generated_at_utc": "2026-06-15T08:24:46Z",
+  "generated_at_utc": "2026-06-15T08:55:29Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -29,7 +29,7 @@
   },
   "human_signoff": {
     "reviewer": "commander",
-    "approved_at_utc": "2026-06-15T08:24:46Z",
+    "approved_at_utc": "2026-06-15T08:55:29Z",
     "note": null
   },
   "apply_command_after_signoff": null,

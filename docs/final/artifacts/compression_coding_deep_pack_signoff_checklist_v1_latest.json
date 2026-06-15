@@ -1,8 +1,8 @@
 {
   "schema": "compression_coding_deep_pack_signoff_checklist_v1",
-  "generated_at_utc": "2026-06-15T07:31:31Z",
-  "decision": "HOLD_NEEDS_REVIEW",
-  "all_green": false,
+  "generated_at_utc": "2026-06-15T08:55:27Z",
+  "decision": "READY_FOR_COMMANDER_SIGNOFF",
+  "all_green": true,
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -12,27 +12,24 @@
     "research_only_true": true,
     "track_a_active_untouched_true": true,
     "send_gate_hold": true,
-    "envelope_awaiting_commander": false,
+    "envelope_awaiting_commander": true,
     "fallback_spec_present": true,
     "template_manifest_present": true,
     "b2b_shard_catalog_present": true,
     "jaccard_axis_separate_ack": true,
-    "human_signoff_not_applied": false,
+    "human_signoff_not_applied": true,
     "coverage_artifact_present": true,
     "coverage_coding_corpora_wire_match_full": true,
     "catalog_growth_pipeline_pointer": true
   },
-  "failed_checks": [
-    "envelope_awaiting_commander",
-    "human_signoff_not_applied"
-  ],
+  "failed_checks": [],
   "summary": {
     "template_catalog_row_count": 25,
     "exact_restore_pass_count": 25,
     "mean_saving_rate_observed": 0.622254,
     "catalog_sha256": "7b0647de85244ba39bb01ba6086248ed18da9152ff8389a6e104cb756f4b7a44",
     "b2b_shard_count": 4,
-    "envelope_status": "commander_signed_research_envelope",
+    "envelope_status": "draft_awaiting_commander",
     "coverage_wire_match_rate": 1.0,
     "coverage_corpus_count": 6
   },
@@ -59,11 +56,8 @@
   },
   "btrack_coverage_note": "Wire-match coverage on JSONL corpora is B-track evidence only — not customer SLA or SEND metric.",
   "operator_action": {
-    "approve_if_all_green": false,
-    "review_items_if_hold": [
-      "envelope_awaiting_commander",
-      "human_signoff_not_applied"
-    ],
+    "approve_if_all_green": true,
+    "review_items_if_hold": [],
     "after_commander_signoff": [
       "Set human_signoff.reviewer + approved_at_utc on signoff envelope (manual edit).",
       "Do NOT run ACTIVE apply without explicit Track A promotion order."

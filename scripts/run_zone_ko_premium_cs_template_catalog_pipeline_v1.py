@@ -17,6 +17,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 BATCH = ROOT / "scripts/run_zone_ko_premium_cs_template_catalog_batch_extract_v1.py"
+NORMALIZE = ROOT / "scripts/normalize_zone_ko_premium_cs_prospect_mask_tokens_v1.py"
 COVERAGE = ROOT / "scripts/run_zone_ko_premium_cs_template_catalog_coverage_v1.py"
 MERGE = ROOT / "scripts/merge_zone_ko_premium_cs_template_prospect_to_catalog_v1.py"
 DEFAULT_PIPELINE_REPORT = ROOT / "reports/zone_ko_premium_cs_template_catalog_pipeline_v1_latest.json"
@@ -47,6 +48,8 @@ def main() -> int:
     if args.write_prospect:
         batch_cmd.append("--write-prospect")
     steps.append(_run(batch_cmd))
+    if args.write_prospect:
+        steps.append(_run([sys.executable, str(NORMALIZE)]))
     steps.append(_run([sys.executable, str(COVERAGE)]))
 
     merge_cmd = [sys.executable, str(MERGE)]
