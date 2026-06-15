@@ -35,7 +35,9 @@
 | 【빠른 헌법 점검】 | `… -Persona P0` |
 | 【암행어사 점검】 | `… -Persona AmsaengHealth` |
 | 【커서 세션 업그레이드】 | `… -Persona CursorSessionUpgrade` |
+| 【고차원 자율진화】 | `… -Persona HdAutonomousEvolution` (env `MKM_HD_AE_MISSION`·`MKM_HD_AE_LANE`; SSOT `docs/final/artifacts/mkm_high_dimensional_autonomous_evolution_v1_latest.json`) |
 | 【Bounded lane shadow】 | `… -Persona BoundedLaneLoopShadow` |
+| 【에이전트 micro-loop】 | `… -Persona MkmAgentLoops` → `docs/final/artifacts/mkm_agent_loops_v1_latest.md` |
 | 【프리미엄 큐 권장】 | `… -Persona PremiumMultilensQueue` |
 | 【Design 레인】 | `… -Persona DesignLane` |
 

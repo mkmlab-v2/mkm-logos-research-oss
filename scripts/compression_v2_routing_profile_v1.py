@@ -16,7 +16,11 @@ HEALTH_COMMANDER_APPROVAL = (
     ROOT / "docs/final/artifacts/mkm_inter_agent_health_domain_commander_approval_v1_latest.json"
 )
 
-RoutingProfile = Literal["default", "track_a_promoted", "b_track_domain_relax"]
+RoutingProfile = Literal["default", "track_a_promoted", "b_track_domain_relax", "candidate_pool_on"]
+
+CANDIDATE_POOL_ON = (
+    ROOT / "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json"
+)
 
 ROUTING_EVAL_EXCLUDE_KEYS = frozenset(
     {
@@ -29,6 +33,8 @@ ROUTING_EVAL_EXCLUDE_KEYS = frozenset(
         "routing_profile_degraded",
         "health_commander_approval_path",
         "approved_variant_id",
+        "candidate_artifact_path",
+        "candidate_id",
     }
 )
 
@@ -132,4 +138,30 @@ def routing_profile_kwargs(profile: RoutingProfile) -> dict[str, Any]:
             "sweep_pointer": LOW_SAVING_SWEEP.relative_to(ROOT).as_posix(),
             "note": "B-track open domain caps — not Track A bench allowlist; do not cite as production default.",
         }
+    if profile == "candidate_pool_on":
+        cand = _load_json(CANDIDATE_POOL_ON)
+        rc = cand.get("run_config") if isinstance(cand.get("run_config"), dict) else {}
+        overrides = dict(rc.get("domain_relaxed_max_saving_overrides") or {})
+        allow = rc.get("domain_relaxed_max_saving_case_allowlist")
+        kw_pool: dict[str, Any] = {
+            "routing_profile": profile,
+            "research_only": True,
+            "hypothesis_tier": "B",
+            "enable_candidate_pool_expansion": True,
+            "use_master_codebook_lexicon_v1": bool(rc.get("use_master_codebook_lexicon_v1", True)),
+            "apply_gematria_4d_bridge_policy": bool(rc.get("apply_gematria_4d_bridge_policy", False)),
+            "candidate_artifact_path": CANDIDATE_POOL_ON.relative_to(ROOT).as_posix(),
+            "candidate_id": cand.get("candidate_id") or "candidate_pool_on",
+            "note": (
+                "41k combo grid best arm — candidate pool expansion + ACTIVE-parity relaxed ssot. "
+                "research_only; does not overwrite Track A ACTIVE."
+            ),
+        }
+        if overrides:
+            kw_pool["domain_relaxed_max_saving_overrides"] = {str(k): float(v) for k, v in overrides.items()}
+        if isinstance(allow, list) and allow:
+            kw_pool["domain_relaxed_max_saving_case_allowlist"] = frozenset(str(x) for x in allow)
+        if not cand:
+            kw_pool["routing_profile_degraded"] = "candidate_pool_artifact_missing"
+        return kw_pool
     return {}

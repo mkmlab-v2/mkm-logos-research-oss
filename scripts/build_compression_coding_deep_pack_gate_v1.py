@@ -195,6 +195,8 @@ def build_gate(
         "signoff_envelope_builder": "scripts/build_compression_coding_deep_pack_signoff_envelope_v1.py",
         "fallback_spec": "docs/final/artifacts/compression_coding_deep_pack_fallback_spec_v1_latest.json",
         "fallback_spec_builder": "scripts/build_compression_coding_deep_pack_fallback_spec_v1.py",
+        "corpus_extract_builder": "scripts/build_zone_f_code_template_catalog_from_corpus_v1.py",
+        "corpus_extract_artifact": "docs/final/artifacts/zone_f_code_template_catalog_extract_v1_latest.json",
         "cases": cases,
         "extension_cases": extension_cases,
         "summary": {

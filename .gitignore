@@ -1,4 +1,6 @@
-# Cursor: track multi-chat SSOT only (rest stays local/untracked noise)
+# External vendor mirrors (read-only; not committed)
+vendor/korean-medicine-texts/
+
 .cursor/**
 !.cursor/current_work_status.md
 !.cursor/mcp.json
@@ -23,6 +25,7 @@
 !.cursor/rules/mkm-wse3-commander-starters.mdc
 # Cursor session validation baseline (alwaysApply; share across clones)
 !.cursor/rules/cursor-session-validation-baseline-v1.mdc
+!.cursor/rules/mkm-delegation-research-assist-v1.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md
@@ -81,6 +84,7 @@ docs/final/artifacts/**
 !docs/final/artifacts/schemas/*.schema.json
 # Ops snapshot body + NotebookLM research index archives (split from docs/final/*.md; Vault sync targets)
 !docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md
+!docs/final/artifacts/mkm_agent_loops_v1_latest.md
 !docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md
 # B-track ensemble baseline (not regenerable *_latest; scripts default to this path)
 !docs/final/artifacts/btrack_lens_ensemble_v1.json
