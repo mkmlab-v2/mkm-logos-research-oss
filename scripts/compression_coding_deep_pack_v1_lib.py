@@ -7,10 +7,12 @@ Twin axis: token saving on wire vs full snippet; exact_restore via catalog looku
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
 WIRE_SCHEMA = "compression_coding_deep_pack_wire_v1"
+_CODE_TOKEN_RE = re.compile(r"\w+|[^\w\s]+", re.UNICODE)
 
 
 def _get_encoder():
@@ -44,9 +46,14 @@ def template_by_id(rows: list[dict[str, Any]], template_id: str) -> dict[str, An
     return None
 
 
-def build_wire_packet(*, template_id: str, catalog_sha256: str) -> dict[str, Any]:
+def build_wire_packet(
+    *,
+    template_id: str,
+    catalog_sha256: str,
+    literal_slots: dict[str, str] | None = None,
+) -> dict[str, Any]:
     short_hash = catalog_sha256[:8]
-    return {
+    wire: dict[str, Any] = {
         "schema": WIRE_SCHEMA,
         "template_id": template_id,
         "catalog_sha256": catalog_sha256,
@@ -54,13 +61,53 @@ def build_wire_packet(*, template_id: str, catalog_sha256: str) -> dict[str, Any
         "shard_id": "zone_f_code",
         "sku_class": "mask",
     }
+    if literal_slots:
+        wire["literal_slots"] = literal_slots
+    return wire
+
+
+def apply_literal_slot_renames(snippet: str, literal_slots: dict[str, str]) -> str:
+    out = snippet
+    for old, new in literal_slots.items():
+        out = re.sub(rf"\b{re.escape(old)}\b", new, out)
+    return out
+
+
+def _tokenize_code(text: str) -> list[str]:
+    return _CODE_TOKEN_RE.findall(text)
+
+
+def extract_literal_slots(canonical: str, variant: str) -> dict[str, str] | None:
+    ct = _tokenize_code(canonical)
+    vt = _tokenize_code(variant)
+    if len(ct) != len(vt):
+        return None
+    slots: dict[str, str] = {}
+    for a, b in zip(ct, vt):
+        if a == b:
+            continue
+        if not (a.isidentifier() and b.isidentifier()):
+            return None
+        if a in slots and slots[a] != b:
+            return None
+        slots[a] = b
+    if not slots:
+        return None
+    if apply_literal_slot_renames(canonical, slots) != variant:
+        return None
+    return slots
 
 
 def wire_to_compact(wire: dict[str, Any]) -> str:
-    """On-wire compact form: bilateral catalog pin + template id only."""
+    """On-wire compact form: bilateral catalog pin + template id (+ optional literal slots)."""
     tid = str(wire["template_id"])
     short_hash = str(wire.get("catalog_sha256_short") or wire["catalog_sha256"][:8])
-    return f"[ZF_MASK:{tid}@{short_hash}]"
+    base = f"[ZF_MASK:{tid}@{short_hash}"
+    slots = wire.get("literal_slots")
+    if isinstance(slots, dict) and slots:
+        payload = json.dumps(slots, ensure_ascii=False, separators=(",", ":"))
+        return f"{base}|{payload}]"
+    return f"{base}]"
 
 
 def wire_to_json(wire: dict[str, Any]) -> str:
@@ -83,7 +130,11 @@ def expand_template_wire(
     row = template_by_id(catalog_rows, template_id)
     if row is None:
         raise KeyError(template_id)
-    return str(row["snippet"])
+    snippet = str(row["snippet"])
+    slots = wire.get("literal_slots")
+    if isinstance(slots, dict) and slots:
+        snippet = apply_literal_slot_renames(snippet, {str(k): str(v) for k, v in slots.items()})
+    return snippet
 
 
 def _expand_compact_wire(
@@ -96,6 +147,13 @@ def _expand_compact_wire(
     if not compact.startswith(prefix) or not compact.endswith("]"):
         raise ValueError(f"invalid compact wire: {compact!r}")
     body = compact[len(prefix) : -1]
+    slots: dict[str, str] | None = None
+    if "|" in body:
+        body, slots_json = body.rsplit("|", 1)
+        parsed = json.loads(slots_json)
+        if not isinstance(parsed, dict):
+            raise ValueError("literal_slots payload must be object")
+        slots = {str(k): str(v) for k, v in parsed.items()}
     if "@" in body:
         template_id, short_hash = body.split("@", 1)
         if expected_catalog_sha256 and not expected_catalog_sha256.startswith(short_hash):
@@ -105,13 +163,41 @@ def _expand_compact_wire(
     row = template_by_id(catalog_rows, template_id)
     if row is None:
         raise KeyError(template_id)
-    return str(row["snippet"])
+    snippet = str(row["snippet"])
+    if slots:
+        snippet = apply_literal_slot_renames(snippet, slots)
+    return snippet
 
 
 def match_template_id_by_snippet(text: str, catalog_rows: list[dict[str, Any]]) -> str | None:
     for row in catalog_rows:
         if str(row.get("snippet")) == text:
             return str(row["template_id"])
+    return None
+
+
+def match_template_with_literal_slots(
+    text: str,
+    catalog_rows: list[dict[str, Any]],
+) -> tuple[str, dict[str, str]] | None:
+    for row in catalog_rows:
+        canonical = str(row.get("snippet") or "")
+        slots = extract_literal_slots(canonical, text)
+        if slots:
+            return str(row["template_id"]), slots
+    return None
+
+
+def resolve_template_match(
+    text: str,
+    catalog_rows: list[dict[str, Any]],
+) -> tuple[str, dict[str, str] | None] | None:
+    exact = match_template_id_by_snippet(text, catalog_rows)
+    if exact:
+        return exact, None
+    lit = match_template_with_literal_slots(text, catalog_rows)
+    if lit:
+        return lit
     return None
 
 
@@ -133,8 +219,13 @@ def measure_template_wire_twin(
     template_id: str,
     catalog_sha256: str,
     catalog_rows: list[dict[str, Any]],
+    literal_slots: dict[str, str] | None = None,
 ) -> dict[str, Any]:
-    wire = build_wire_packet(template_id=template_id, catalog_sha256=catalog_sha256)
+    wire = build_wire_packet(
+        template_id=template_id,
+        catalog_sha256=catalog_sha256,
+        literal_slots=literal_slots,
+    )
     wire_compact = wire_to_compact(wire)
     enc, _ = _get_encoder()
     original_tokens = _encode_n(enc, original_snippet)

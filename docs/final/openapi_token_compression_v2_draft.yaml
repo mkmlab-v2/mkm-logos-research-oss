@@ -305,6 +305,15 @@ components:
           description: |
             Optional SKU class hint. `coord` = pointer/inject pre-sync (SKU-COORD); `mask` = masked
             JSONL + v2/hybrid (SKU-MASK). Default from binding table when omitted.
+        enable_coding_deep_pack:
+          type: boolean
+          default: false
+          description: |
+            B-track [HYPO]: zone_f_code template-catalog wire (`ZF_MASK`) when input matches
+            `codebook/templates/zone_f_code_templates_v1.jsonl` (exact or literal-slot variant).
+            Also auto-enabled when `sku_class=mask` and routed shard is `zone_f_code`. Pair expand
+            with default `decode_mode=stub`; emits `integrity_flags.coding_deep_pack_wire_v1`.
+            research_only · not Track A ACTIVE · not customer SLA.
     CompressResponseV2:
       type: object
       required: [compression_packet, integrity_flags]

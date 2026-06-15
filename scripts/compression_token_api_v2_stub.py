@@ -90,7 +90,9 @@ from scripts.compression_coding_deep_pack_v1_lib import (  # noqa: E402
     expand_template_wire,
     load_template_catalog,
     match_template_id_by_snippet,
+    match_template_with_literal_slots,
     measure_template_wire_twin,
+    resolve_template_match,
     wire_to_compact,
 )
 
@@ -806,17 +808,23 @@ def _try_coding_deep_pack_compress(
         flags["coding_deep_pack_catalog_missing"] = True
         return None
     rows, catalog_sha256 = _load_coding_deep_pack_catalog()
-    template_id = match_template_id_by_snippet(body.text, rows)
-    if not template_id:
+    resolved = resolve_template_match(body.text, rows)
+    if not resolved:
         flags["coding_deep_pack_no_catalog_match"] = True
         return None
+    template_id, literal_slots = resolved
     twin = measure_template_wire_twin(
         original_snippet=body.text,
         template_id=template_id,
         catalog_sha256=catalog_sha256,
         catalog_rows=rows,
+        literal_slots=literal_slots,
     )
-    wire = build_wire_packet(template_id=template_id, catalog_sha256=catalog_sha256)
+    wire = build_wire_packet(
+        template_id=template_id,
+        catalog_sha256=catalog_sha256,
+        literal_slots=literal_slots,
+    )
     stub_block: dict[str, Any] = {
         "reconstructed_text": body.text,
         "global_token_saving_rate": twin["saving_rate"],
@@ -841,6 +849,8 @@ def _try_coding_deep_pack_compress(
     )
     if body.sku_class:
         flags["sku_class"] = body.sku_class
+    if literal_slots:
+        flags["literal_slots"] = literal_slots
     packet = CompressionPacket(
         loss_profile=body.loss_profile,
         compressed_text=str(twin["wire_compact"]),

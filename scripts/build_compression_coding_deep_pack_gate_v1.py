@@ -21,6 +21,7 @@ if str(ROOT) not in sys.path:
 
 from scripts.compression_coding_deep_pack_v1_lib import (  # noqa: E402
     measure_template_wire_twin,
+    resolve_template_match,
 )
 
 TEMPLATES = ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl"
@@ -91,12 +92,14 @@ def _run_template_wire_roundtrip(
     template_id: str,
     catalog_sha256: str,
     catalog_rows: list[dict[str, Any]],
+    literal_slots: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     return measure_template_wire_twin(
         original_snippet=text,
         template_id=template_id,
         catalog_sha256=catalog_sha256,
         catalog_rows=catalog_rows,
+        literal_slots=literal_slots,
     )
 
 
@@ -109,15 +112,23 @@ def build_gate(
 ) -> dict[str, Any]:
     rows = load_templates(templates_path)
     catalog_sha256 = manifest["catalog_sha256"]
-    cases = [
-        _run_template_wire_roundtrip(
-            str(r["snippet"]),
-            template_id=str(r["template_id"]),
-            catalog_sha256=catalog_sha256,
-            catalog_rows=rows,
+    cases = []
+    for r in rows:
+        snippet = str(r["snippet"])
+        resolved = resolve_template_match(snippet, rows)
+        if not resolved:
+            cases.append({"template_id": str(r["template_id"]), "ok": False, "error": "no_template_match"})
+            continue
+        template_id, literal_slots = resolved
+        cases.append(
+            _run_template_wire_roundtrip(
+                snippet,
+                template_id=template_id,
+                catalog_sha256=catalog_sha256,
+                catalog_rows=rows,
+                literal_slots=literal_slots,
+            )
         )
-        for r in rows
-    ]
     ok_cases = [c for c in cases if c.get("ok")]
     doc: dict[str, Any] = {
         "schema": "compression_coding_deep_pack_gate_v1",
