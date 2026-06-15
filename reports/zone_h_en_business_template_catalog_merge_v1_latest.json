@@ -1,0 +1,89 @@
+{
+  "schema": "zone_h_en_business_template_catalog_merge_v1",
+  "generated_at_utc": "2026-06-15T07:35:21Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "vertical_id": "zone_h_en_business_v1",
+  "wire_family": "BIZ_MASK",
+  "human_approve_merge": true,
+  "reviewer": "commander",
+  "applied": true,
+  "production_catalog": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
+  "prospect_catalog": "codebook/templates/zone_h_en_business_templates_prospect_v1.jsonl",
+  "production_before_count": 3,
+  "prospect_input_count": 8,
+  "merge_count": 5,
+  "skipped_count": 3,
+  "production_after_count": 8,
+  "new_template_ids": [
+    "eb_t004",
+    "eb_t005",
+    "eb_t006",
+    "eb_t007",
+    "eb_t008"
+  ],
+  "skipped": [
+    {
+      "template_id": "eb_p001",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "Please find the attached invoice for the Q2 compliance review contract. Payment is due within 30 days pursuant to our agreement.",
+      "must_keep_terms": [
+        "attached",
+        "compliance",
+        "contract",
+        "invoice",
+        "payment",
+        "pursuant"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-001",
+      "snippet_sha256": "2e3d940b4c277ac8684bf2da8a1f0145e25e894224b6753a6d7f729cef21fa22",
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "eb_p002",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "Attached is the delivery schedule for the enterprise proposal. Please confirm compliance with the contract milestones by Friday.",
+      "must_keep_terms": [
+        "attached",
+        "compliance",
+        "contract",
+        "delivery",
+        "proposal",
+        "schedule"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-002",
+      "snippet_sha256": "fbe5d1f84170f9e447c048a50ea689e89cfea09308c9d9e2a8f5726b8886d82e",
+      "skip_reason": "duplicate_snippet"
+    },
+    {
+      "template_id": "eb_p003",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "NOTICE: Purchase order PO-7781 requires payment authorization before delivery. Contact compliance if the invoice amount differs from the contract.",
+      "must_keep_terms": [
+        "compliance",
+        "contract",
+        "delivery",
+        "invoice",
+        "notice",
+        "order",
+        "payment",
+        "purchase"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-003",
+      "snippet_sha256": "2cb892f0b2d579d0906d102ae16a5b6c2b710dea95ec518ba25d2a2e56d7bdb3",
+      "skip_reason": "duplicate_snippet"
+    }
+  ],
+  "apply_command": "py scripts/merge_zone_h_en_business_template_prospect_to_catalog_v1.py --human-approve-merge --reviewer commander --rebuild-gate",
+  "forbidden_without_approve": [
+    "automatic_production_catalog_overwrite"
+  ],
+  "reproduce": "py scripts/merge_zone_h_en_business_template_prospect_to_catalog_v1.py"
+}

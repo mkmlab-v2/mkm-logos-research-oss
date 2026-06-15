@@ -1,13 +1,18 @@
 {
   "schema": "zone_h_en_business_templates_manifest_v1",
-  "generated_at_utc": "2026-06-15T04:51:48Z",
+  "generated_at_utc": "2026-06-15T07:36:57Z",
   "catalog_path": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
-  "row_count": 3,
-  "catalog_sha256": "7b3de30c75942c3f3cf75c24ab18ce54e1596f06197d9b10a834bc0f935ffe64",
+  "row_count": 8,
+  "catalog_sha256": "773d79327340203bdc63440ae509ffb068c050636ec99e5d740e7c52ea51529b",
   "template_ids": [
     "eb_t001",
     "eb_t002",
-    "eb_t003"
+    "eb_t003",
+    "eb_t004",
+    "eb_t005",
+    "eb_t006",
+    "eb_t007",
+    "eb_t008"
   ],
   "shard_id": "zone_h_en_business_v1",
   "wire_family": "BIZ_MASK",
