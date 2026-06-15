@@ -18,6 +18,17 @@ Write-Host "==> build_notebooklm_lens_source_packs_v1.py" -ForegroundColor Cyan
 py scripts/build_notebooklm_lens_source_packs_v1.py
 if ($LASTEXITCODE -ne 0) { throw "lens packs exit $LASTEXITCODE" }
 
+$mapPath = Join-Path $WorkspaceRoot "reports\notebooklm_lens_packs_v1\notebook_ids.json"
+$mapTemplate = Join-Path $WorkspaceRoot "docs\final\notebooklm_lens_pack_push_map_v1.template.json"
+if (-not (Test-Path -LiteralPath $mapPath) -and (Test-Path -LiteralPath $mapTemplate)) {
+  $mapDir = Split-Path -Parent $mapPath
+  if (-not (Test-Path -LiteralPath $mapDir)) {
+    New-Item -ItemType Directory -Force -Path $mapDir | Out-Null
+  }
+  Copy-Item -LiteralPath $mapTemplate -Destination $mapPath -Force
+  Write-Host "Seeded notebook_ids.json from template (was missing after pack build)." -ForegroundColor Yellow
+}
+
 if ($SkipVaultMirror) {
   Write-Host "Skip Vault mirror (-SkipVaultMirror)." -ForegroundColor Yellow
   exit 0

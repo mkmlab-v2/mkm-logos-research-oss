@@ -26,6 +26,10 @@ WHITELIST = ROOT / "docs/final/artifacts/bounded_lane_loop_whitelist_v1.json"
 DEFAULT_PIN = ROOT / "docs/final/artifacts/fixtures/bounded_lane_pin_infra_v1.example.json"
 OUT_SUMMARY = ROOT / "reports/bounded_lane_loop_v1_latest.json"
 OUT_AUDIT = ROOT / "reports/bounded_lane_loop_audit.jsonl"
+OUT_COST = ROOT / "reports/bounded_lane_loop_cost_v1.jsonl"
+DEFAULT_META_ENVELOPE = (
+    ROOT / "docs/final/artifacts/fixtures/mkm_meta_layer_turn_envelope_v1.example.json"
+)
 
 SHADOW_OUTCOMES = frozenset({"shadow_pass", "shadow_warning", "shadow_reject"})
 
@@ -167,11 +171,109 @@ def _append_audit(row: dict[str, Any]) -> None:
         f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def _append_cost(row: dict[str, Any]) -> None:
+    OUT_COST.parent.mkdir(parents=True, exist_ok=True)
+    with OUT_COST.open("a", encoding="utf-8") as f:
+        f.write(json.dumps(row, ensure_ascii=False) + "\n")
+
+
+def _meta_envelope_summary(
+    envelope_path: Path,
+    *,
+    lane: str,
+    append: bool,
+) -> dict[str, Any]:
+    """Optional post-loop meta envelope validate/append — shadow only; never promotes Track A."""
+    summary: dict[str, Any] = {
+        "path": str(envelope_path.relative_to(ROOT)).replace("\\", "/"),
+        "ok": False,
+        "appended": False,
+        "research_only": True,
+    }
+    if not envelope_path.is_file():
+        summary["errors"] = ["file_missing"]
+        return summary
+
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.mkm_meta_layer_envelope_v1 import validate_envelope  # noqa: E402
+
+    try:
+        doc = _load_json(envelope_path)
+    except (OSError, json.JSONDecodeError) as exc:
+        summary["errors"] = [f"read_error:{exc}"]
+        return summary
+
+    errors = validate_envelope(doc)
+    summary["ok"] = len(errors) == 0
+    if errors:
+        summary["errors"] = errors
+    cc = doc.get("contradiction_check") or {}
+    eb = doc.get("execution_barrier_labels") or {}
+    pa = doc.get("premise_audit") or {}
+    summary["risk_tier"] = doc.get("risk_tier")
+    summary["hold_recommendation"] = cc.get("hold_recommendation")
+    summary["execution_allowed"] = eb.get("execution_allowed")
+    summary["premise_fix_one_line"] = pa.get("fix_one_line")
+    summary["lane"] = lane
+
+    if append and summary["ok"]:
+        proc = subprocess.run(
+            [
+                sys.executable,
+                str(ROOT / "scripts/mkm_meta_layer_envelope_v1.py"),
+                "append",
+                "--json-file",
+                str(envelope_path),
+                "--repo-root",
+                str(ROOT),
+                "--mission-id",
+                f"bounded-lane-loop-{lane}",
+                "--actor",
+                "run_bounded_lane_loop_v1",
+            ],
+            cwd=str(ROOT),
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+        )
+        summary["appended"] = proc.returncode == 0
+        if proc.returncode != 0:
+            summary["append_exit_code"] = proc.returncode
+            summary["append_stderr_tail"] = (proc.stderr or "")[-400:]
+            summary["ok"] = False
+            summary.setdefault("errors", []).append("append_failed")
+    return summary
+
+
+def _apply_meta_envelope_outcome(
+    outcome: str,
+    meta_summary: dict[str, Any] | None,
+) -> str:
+    if not meta_summary or meta_summary.get("ok"):
+        return outcome
+    if outcome == "shadow_pass":
+        return "shadow_warning"
+    return outcome
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--pin", type=Path, default=DEFAULT_PIN, help="bounded_lane_pin_v1 JSON")
     ap.add_argument("--whitelist", type=Path, default=WHITELIST)
     ap.add_argument("--dry-run", action="store_true", help="Validate pin + plan only")
+    ap.add_argument(
+        "--meta-layer-envelope-path",
+        type=Path,
+        default=None,
+        help="Optional meta-layer envelope JSON (validate; shadow summary only unless --meta-layer-envelope-append).",
+    )
+    ap.add_argument(
+        "--meta-layer-envelope-append",
+        action="store_true",
+        help="Append validated envelope to reports/agent_decisions_log.jsonl (optional).",
+    )
     args = ap.parse_args()
 
     pin_path: Path = args.pin if args.pin.is_absolute() else ROOT / args.pin
@@ -230,6 +332,22 @@ def main() -> int:
         )
 
     if args.dry_run:
+        meta_summary = None
+        if args.meta_layer_envelope_path:
+            meta_path = (
+                args.meta_layer_envelope_path
+                if args.meta_layer_envelope_path.is_absolute()
+                else ROOT / args.meta_layer_envelope_path
+            )
+            meta_summary = _meta_envelope_summary(
+                meta_path, lane=str(pin.get("lane") or ""), append=False
+            )
+        outcome = _shadow_outcome(
+            pin_ok=pin_ok,
+            policy_violations=policy_violations,
+            step_results=[],
+        )
+        outcome = _apply_meta_envelope_outcome(outcome, meta_summary)
         payload = {
             "schema": "bounded_lane_loop_v1",
             "generated_at_utc": _utc(),
@@ -239,6 +357,8 @@ def main() -> int:
             "lane": pin.get("lane"),
             "next_action_one_line": pin.get("next_action_one_line"),
             "peer_handoff_pointer": pin.get("peer_handoff_pointer"),
+            "ltm_hint": pin.get("ltm_hint"),
+            "meta_layer_envelope": meta_summary,
             "pin_ok": pin_ok,
             "pin_errors": pin_errors,
             "policy_violations": policy_violations,
@@ -247,11 +367,7 @@ def main() -> int:
             "track_a_promote": False,
             "shadow_only": True,
             "human_signoff_required": True,
-            "outcome_class": _shadow_outcome(
-                pin_ok=pin_ok,
-                policy_violations=policy_violations,
-                step_results=[],
-            ),
+            "outcome_class": outcome,
             "reproduce": f"py scripts/run_bounded_lane_loop_v1.py --pin {pin_path.relative_to(ROOT)} --dry-run",
         }
         OUT_SUMMARY.parent.mkdir(parents=True, exist_ok=True)
@@ -303,6 +419,26 @@ def main() -> int:
     if outcome not in SHADOW_OUTCOMES:
         outcome = "shadow_reject"
 
+    loop_wall_seconds = round(time.monotonic() - loop_t0, 3)
+    steps_wall_sum = round(
+        sum(float(s.get("wall_seconds") or 0) for s in step_results),
+        3,
+    )
+
+    meta_summary = None
+    if args.meta_layer_envelope_path:
+        meta_path = (
+            args.meta_layer_envelope_path
+            if args.meta_layer_envelope_path.is_absolute()
+            else ROOT / args.meta_layer_envelope_path
+        )
+        meta_summary = _meta_envelope_summary(
+            meta_path,
+            lane=str(pin.get("lane") or ""),
+            append=bool(args.meta_layer_envelope_append),
+        )
+        outcome = _apply_meta_envelope_outcome(outcome, meta_summary)
+
     summary = {
         "schema": "bounded_lane_loop_v1",
         "generated_at_utc": _utc(),
@@ -312,6 +448,11 @@ def main() -> int:
         "next_action_one_line": pin.get("next_action_one_line"),
         "fact_lock_pointer": pin.get("fact_lock_pointer"),
         "peer_handoff_pointer": pin.get("peer_handoff_pointer"),
+        "ltm_hint": pin.get("ltm_hint"),
+        "meta_layer_envelope": meta_summary,
+        "loop_wall_seconds": loop_wall_seconds,
+        "steps_wall_sum": steps_wall_sum,
+        "step_count": len(step_results),
         "loop_ok": outcome == "shadow_pass",
         "outcome_class": outcome,
         "shadow_only": True,
@@ -332,6 +473,21 @@ def main() -> int:
             "outcome_class": outcome,
             "loop_ok": summary["loop_ok"],
             "step_ids": [s.get("step_id") for s in step_results],
+            "pin_path": summary["pin_path"],
+            "loop_wall_seconds": loop_wall_seconds,
+            "step_count": len(step_results),
+        }
+    )
+    _append_cost(
+        {
+            "schema": "bounded_lane_loop_cost_v1",
+            "ts_utc": summary["generated_at_utc"],
+            "lane": summary["lane"],
+            "dry_run": False,
+            "outcome_class": outcome,
+            "step_count": len(step_results),
+            "loop_wall_seconds": loop_wall_seconds,
+            "steps_wall_sum": steps_wall_sum,
             "pin_path": summary["pin_path"],
         }
     )

@@ -1,0 +1,151 @@
+{
+  "schema": "mkm_ltm_moat_factcheck_v1",
+  "generated_at_utc": "2026-06-15T12:00:00Z",
+  "track": "B",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "track_a_active_untouched": true,
+  "verdict": "CONDITIONAL_COST_MOAT_ONLY",
+  "verdict_ko": "조건부 A2A cost moat + control plane — raw codec·범용 99% SLA 아님",
+  "constraints": {
+    "active_overwriting_forbidden": true,
+    "long_corpus_metric_exclusion": true,
+    "fail_comp_004_axis_separation": true
+  },
+  "sku_separation": {
+    "SKU-COORD": {
+      "label_ko": "선동기화 장부 + ref/pointer wire",
+      "wire_payload": "pointer_plus_fingerprint_or_inject_pins",
+      "original_bulk_to_server_required": false,
+      "bilateral_ground_truth_required": true,
+      "primary_metrics_axis": "LTM_resume_and_tp03_pointer",
+      "forbidden_merged_with": ["Track_A_47pct", "customer_masked_poc_sla"]
+    },
+    "SKU-MASK": {
+      "label_ko": "마스킹 JSONL + v2 stateless/hybrid compress",
+      "wire_payload": "masked_text_or_trust_packet",
+      "original_bulk_to_server_required": true,
+      "bilateral_ground_truth_required": false,
+      "primary_metrics_axis": "Track_A_frozen_and_hybrid_pilot",
+      "forbidden_merged_with": ["LTM_99pct_lane_inject", "tp03_pointer_only"]
+    }
+  },
+  "attest_matrix": [
+    {
+      "claim_id": "topology_count",
+      "prior_error": "59 concepts / 106 edges",
+      "corrected": "63 concepts / 114 edges",
+      "artifact_path": "storage/meta/mkm_long_term_memory_graph_v1.json",
+      "reproduce": "py -c \"import json; g=json.load(open('storage/meta/mkm_long_term_memory_graph_v1.json')); print(len(g['concepts']), len(g['edges']))\""
+    },
+    {
+      "claim_id": "ltm_savings_headline",
+      "prior_error": "single 99.86% universal headline",
+      "corrected": "99.84%–99.87% lane-specific vs naive MISSION+CENTRAL",
+      "artifact_path": "reports/mkm_ltm_resume_lane_token_bench_v1_latest.json",
+      "reproduce": "py scripts/bench_mkm_ltm_resume_lane_token_v1.py"
+    },
+    {
+      "claim_id": "sync_claim",
+      "prior_error": "100% context synchronization",
+      "corrected": "~135 tok essence inject; L1 human exact restore ~57.87%",
+      "artifact_path": "docs/final/artifacts/l1_inverse_decoder_spike_test_summary_latest.json",
+      "reproduce": "scripts/bench_mkm_ltm_resume_lane_token_v1.py + a2a_commander_stack_brief_corrected_v1.json"
+    },
+    {
+      "claim_id": "moat_framing",
+      "prior_error": "독점 Moat 확정 · big-tech unbeatable codec",
+      "corrected": "conditional A2A cost moat + control plane (12M §3)",
+      "artifact_path": "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md",
+      "reproduce": "read §3 Key Learnings item 3–4"
+    },
+    {
+      "claim_id": "sota_compare",
+      "prior_error": "MKM wins saving on all corpora",
+      "corrected": "MKM round-trip Jaccard; LLMLingua-2 higher raw saving on golden40/public-open; hybrid SKU",
+      "artifact_path": "reports/compression_sota_ablation_v1_latest.json",
+      "reproduce": "py scripts/run_compression_sota_ablation_v1.py"
+    },
+    {
+      "claim_id": "tp03_pointer",
+      "prior_error": "merged with LTM 99% without axis label",
+      "corrected": "pointer vs full body ~95.59% reduction (artifact handoff axis)",
+      "artifact_path": "docs/final/artifacts/a2a_tp03_chain_ref_pilot_v1_latest.json",
+      "reproduce": "py scripts/build_a2a_tp03_chain_ref_pilot_v1.py"
+    },
+    {
+      "claim_id": "a2a_dialogue",
+      "prior_error": "omitted from moat matrix",
+      "corrected": "cross-scenario mean saving ~49.23% · stub jaccard ~0.914 (separate axis)",
+      "artifact_path": "docs/final/artifacts/a2a_dialogue_bench_v1_latest.json",
+      "reproduce": "powershell -File scripts/Run-A2aDialogueBenchReproBundle_v1.ps1"
+    },
+    {
+      "claim_id": "track_a_frozen",
+      "prior_error": "used as universal API SLA",
+      "corrected": "promoted global saving ~47.12% · avg J ~0.889 — internal signoff only",
+      "artifact_path": "docs/final/artifacts/multilens_ultra_compression_track_a_promotion_signoff_v1_latest.json",
+      "reproduce": "do not merge into LTM or A2A headlines"
+    },
+    {
+      "claim_id": "hybrid_pilot",
+      "prior_error": "n/a",
+      "corrected": "hybrid routed raw J ~0.792 corpus mean; wtt shortcap 22/30 pass",
+      "artifact_path": "reports/compression_hybrid_router_spike_v1_latest.json",
+      "reproduce": "py scripts/run_compression_hybrid_router_spike_v1.py"
+    },
+    {
+      "claim_id": "privacy_wire",
+      "prior_error": "zero data exfiltration",
+      "corrected": "ref-only wire possible under pre-sync; metadata (path/sha256/essence) still leaks",
+      "artifact_path": "docs/final/artifacts/mkm_inter_agent_wire_profile_v1.json",
+      "reproduce": "SKU-COORD playbook — no bulk original upload claim"
+    }
+  ],
+  "forbidden_headlines": [
+    "99% universal compression API",
+    "100% context synchronization",
+    "59 concept coordinate system",
+    "zero data exfiltration",
+    "big-tech unbeatable compression codec",
+    "Track A 47% equals LTM 99%",
+    "LLMLingua always inferior on all metrics"
+  ],
+  "axis_separation": {
+    "LTM_resume_inject": {
+      "artifact": "reports/mkm_ltm_resume_lane_token_bench_v1_latest.json",
+      "headline_allowed": "lane inject 99.84–99.87% vs naive MISSION+CENTRAL [HYPO]"
+    },
+    "tp03_pointer": {
+      "artifact": "docs/final/artifacts/a2a_tp03_chain_ref_pilot_v1_latest.json",
+      "headline_allowed": "pointer handoff ~95.6% vs full artifact body [HYPO]"
+    },
+    "A2A_dialogue_wire": {
+      "artifact": "docs/final/artifacts/a2a_dialogue_bench_v1_latest.json",
+      "headline_allowed": "~49% saving / ~0.91 J stub roundtrip [HYPO] — not LTM axis"
+    },
+    "Track_A_frozen": {
+      "artifact": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
+      "headline_allowed": "internal Golden-40 ~47.1% — not customer SLA"
+    },
+    "SKU_MASK_hybrid": {
+      "artifact": "reports/compression_hybrid_router_spike_v1_latest.json",
+      "headline_allowed": "corpus-routed hybrid pilot [HYPO] — not Track A promotion"
+    }
+  },
+  "hybrid_router_pointer": "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
+  "reproduce_commands": [
+    "py scripts/bench_mkm_ltm_resume_lane_token_v1.py",
+    "py scripts/run_compression_sota_ablation_v1.py",
+    "py scripts/run_compression_hybrid_router_spike_v1.py",
+    "py scripts/build_mkm_long_term_memory_graph_v1.py",
+    "py scripts/check_ltm_graph_doc_drift_v1.py"
+  ],
+  "notes": [
+    "Customer-side local pin encoder SDK not in repo — SKU-COORD is PoC+.",
+    "open_structured_long excluded from saving KPI (token proxy artifact).",
+    "FAIL-COMP-004: never merge axis KPIs into one headline."
+  ]
+}

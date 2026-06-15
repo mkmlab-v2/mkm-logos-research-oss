@@ -86,6 +86,15 @@ NODE_SPECS: tuple[NodeSpec, ...] = (
         must_keep_tags=("MS", "금지", "HOLD"),
         priority=7,
     ),
+    NodeSpec(
+        node_id="prism_ops_lane_design",
+        file_path="MISSION_LOG.md",
+        anchor_start="| **Design/Showroom** |",
+        anchor_end="| **압축·Moat (GitHub)** |",
+        essence="Design/Showroom 레인 — hub·jemaai·쇼룸 · Track A·% 헤드라인 금지",
+        must_keep_tags=("Track A", "금지", "SEND_GATE: HOLD"),
+        priority=7,
+    ),
 )
 
 LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
@@ -103,6 +112,11 @@ LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_infra",
+    ),
+    "design": (
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_design",
     ),
     "web_ops": (
         "prism_ops_mission_log_board",

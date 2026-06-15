@@ -1,6 +1,6 @@
 {
   "schema": "bounded_lane_pin_v1",
-  "generated_at_utc": "2026-06-13T20:03:51Z",
+  "generated_at_utc": "2026-06-13T20:14:00Z",
   "lane": "oracle",
   "next_action_one_line": "6/13 — sovereignty KEEP/ROLE_PARTIAL/SUPP_ALIGNED · prophecy light refresh exit0 · Pack0B ~233/500 train · P0 refreshed · 다음: locked_eval → raw/repair dual · 금지: promotion_ready·Track A·B→A",
   "fact_lock_pointer": "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
@@ -30,5 +30,11 @@
       ]
     }
   ],
-  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_oracle_v1_latest.md"
+  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_oracle_v1_latest.md",
+  "ltm_hint": {
+    "concept_id": "prophecy_research_only_boundary",
+    "software_layer": "packaging",
+    "blast_radius": "repo",
+    "label_ko": "예언 B-track · research_only 격벽"
+  }
 }

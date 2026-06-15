@@ -1,0 +1,106 @@
+{
+  "schema": "compression_hybrid_router_spec_v1",
+  "generated_at_utc": "2026-06-14T20:20:54Z",
+  "track": "B",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "boundary_ack": "Corpus-tag bindings synced from hybrid spike; v2 stub applies MKM routes including candidate_pool_on.",
+  "source_artifacts": {
+    "sota_ablation": "reports/compression_sota_ablation_v1_latest.json",
+    "hybrid_spike": "reports/compression_hybrid_router_spike_v1_latest.json",
+    "wtt_ablation": "reports/wtt_cs_pilot_compression_ablation_v1_latest.json"
+  },
+  "routing_policy": {
+    "saving_delta_threshold": 0.1,
+    "jaccard_guard": 0.2,
+    "spike_script": "scripts/run_compression_hybrid_router_spike_v1.py",
+    "ablation_script": "scripts/run_compression_sota_ablation_v1.py"
+  },
+  "sku_class_default": "SKU-MASK",
+  "corpus_bindings": [
+    {
+      "corpus_id": "golden40_internal",
+      "corpus_tag": "golden40_internal",
+      "input_path": "docs/final/artifacts/MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
+      "sku_class": "SKU-MASK",
+      "backend": "llmlingua2",
+      "llmlingua_target_rate": 0.5,
+      "reason": "saving_delta=-0.119<=-0.1",
+      "regress_lane": true,
+      "forbidden_as_customer_sla": true
+    },
+    {
+      "corpus_id": "public_open_web_v1",
+      "corpus_tag": "public-open-web-v1",
+      "input_path": "data/compression/stateless_poc_prospect_public-open-web-v1_v1.jsonl",
+      "sku_class": "SKU-MASK",
+      "backend": "mkm_candidate_pool",
+      "compression_profile": "economy",
+      "reason": "41k grid best arm field pass 96.7% vs ACTIVE 90% (Tier A gate corpus)",
+      "pilot_lane": true,
+      "routing_profile": "candidate_pool_on",
+      "enable_candidate_pool_expansion": true,
+      "candidate_artifact": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json"
+    },
+    {
+      "corpus_id": "wtt_premium_cs_customer_v1",
+      "corpus_tag": "wtt-premium-cs-customer-v1",
+      "input_path": "data/compression/stateless_poc_prospect_wtt-premium-cs-customer-v1_v1.jsonl",
+      "sku_class": "SKU-MASK",
+      "backend": "mkm_v2_economy_shortcap",
+      "compression_profile": "economy",
+      "short_context_token_threshold": 30,
+      "short_context_max_saving_rate": 0.3,
+      "must_keep_overlay_json": "docs/final/artifacts/tenant_wtt-premium-cs-customer-v1_must_keep_overlay_v1.json",
+      "reason": "wtt_cs_pilot best_arm economy_shortcap_30_030 (pass_rate leader)",
+      "pilot_lane": true
+    },
+    {
+      "corpus_id": "open_structured_long_v1",
+      "corpus_tag": "open_structured_long",
+      "input_path": "data/compression/stateless_poc_open_structured_long_v1.jsonl",
+      "sku_class": "SKU-MASK",
+      "backend": "mkm_v2_economy_stateless",
+      "compression_profile": "economy",
+      "reason": "jaccard_guard delta=0.422>=0.2",
+      "kpi_saving_eligible": false,
+      "token_proxy_caveat": "minified JSON whitespace proxy artifact"
+    }
+  ],
+  "sku_coord_wire_modes": [
+    {
+      "mode_id": "pointer_plus_fingerprint",
+      "schema_ref": "a2a_tp03_chain_ref_pilot_v1",
+      "artifact": "docs/final/artifacts/a2a_tp03_chain_ref_pilot_v1_latest.json",
+      "requires_bilateral_ssot": true
+    },
+    {
+      "mode_id": "ltm_lane_inject",
+      "schema_ref": "mkm_ltm_inject_contract_v1",
+      "artifact": "docs/final/artifacts/mkm_ltm_inject_contract_v1.json",
+      "requires_bilateral_ssot": true
+    }
+  ],
+  "v2_stub_binding_status": "partial_stub_metadata",
+  "v2_stub_next": [
+    "LLMLingua external backend proxy (metadata-only 422 today)",
+    "routing_profile extension hybrid_mask_pilot (optional)"
+  ],
+  "reproduce": "py scripts/run_compression_hybrid_router_spike_v1.py",
+  "sync_from_spike": {
+    "spike_path": "reports/compression_hybrid_router_spike_v1_latest.json",
+    "spike_generated_at_utc": "2026-06-14T20:20:42Z",
+    "binding_table_digest": "e541654869d74212",
+    "sync_script": "scripts/sync_compression_hybrid_router_spec_from_spike_v1.py"
+  },
+  "tier_a_gate": {
+    "corpus_ids": [
+      "public_open_web_v1",
+      "wtt_premium_cs_customer_v1"
+    ],
+    "excluded_artifact_corpus": "open_structured_long_v1",
+    "mean_operational_pass_rate": 0.8666666666666667,
+    "jaccard_floor": 0.73
+  }
+}

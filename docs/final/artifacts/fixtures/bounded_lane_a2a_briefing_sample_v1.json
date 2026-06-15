@@ -1,0 +1,156 @@
+{
+  "schema": "bounded_lane_a2a_briefing_sample_v1",
+  "generated_at_utc": "2026-06-14T00:57:35Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "classification": "INTERNAL_ONLY",
+  "lane": "infra",
+  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_infra_v1_latest.md",
+  "briefing_one_line": "agent_alpha_prophecy: WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears. Prophecy lane B-track du | agent_beta_executor: ACK: exposure reduction logged. No new long orders until your next packet. Executor standing by; risk profile unchanged;",
+  "dialogue_mock_summary": {
+    "schema": "mkm_inter_agent_dialogue_mock_summary_v1",
+    "all_compress_ok": true,
+    "all_expand_ok": true,
+    "turns_recorded": 2,
+    "boundary_ack": "Simulated agents; plaintext is logged for audit only. On-wire payload is Trust Packet only. Not production A2A. Not Track A trading trigger.",
+    "transcript": [
+      {
+        "turn": 1,
+        "role": "agent_alpha_prophecy",
+        "wire_only": true,
+        "compress_http_status": 200,
+        "trust_packet_redacted": {
+          "packet_format_version": "trust_packet.0.1",
+          "api_contract_version": "2.0.0-draft",
+          "loss_profile": "semantic_general",
+          "compressed_text": "WATCH regime on until gate Prophecy lane track Hold new at Executor standing by risk guardian no A live trigger elevated 20 B macro fragility Recommend REDUCE exposure BTC clears dual leg KOSPI",
+          "residual_meta": {
+            "mk_stub_v2": {
+              "reconstructed_text": "WATCH regime macro fragility elevated Recommend REDUCE exposure 20 on BTC until gate clears Prophecy lane B track dual leg KOSPI BTC Hold new at Executor standing by risk guardian gate WATCH no Track A live trigger",
+              "global_token_saving_rate": 0.44999999999999996,
+              "reconstruction_fidelity_jaccard": 0.7857142857142857
+            },
+            "placeholder_map": {},
+            "mkm_lexicon_rail_v1": {
+              "symbol_key": "atom_id",
+              "atom_id_sequence": [
+                "other::watch",
+                "other::regime",
+                "other::on",
+                "other::until",
+                "other::gate",
+                "other::prophecy",
+                "other::lane",
+                "other::track",
+                "other::hold",
+                "other::new",
+                "other::at",
+                "other::executor",
+                "other::standing",
+                "other::by",
+                "other::guardian",
+                "other::no",
+                "other::live",
+                "other::trigger"
+              ],
+              "lexicon_meta": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
+                "lexicon_term_count": 41700,
+                "atom_id_count": 18,
+                "atom_id_sequence_sample": [
+                  "other::watch",
+                  "other::regime",
+                  "other::on",
+                  "other::until",
+                  "other::gate",
+                  "other::prophecy",
+                  "other::lane",
+                  "other::track",
+                  "other::hold",
+                  "other::new",
+                  "other::at",
+                  "other::executor"
+                ]
+              }
+            }
+          },
+          "router_meta": {
+            "shard_id": "zone_e_finance",
+            "domain": "finance"
+          },
+          "content_fingerprint": "1163a8b16a62cda4403c78b7972363e3"
+        }
+      },
+      {
+        "turn": 2,
+        "role": "agent_beta_executor",
+        "wire_only": true,
+        "compress_http_status": 200,
+        "trust_packet_redacted": {
+          "packet_format_version": "trust_packet.0.1",
+          "api_contract_version": "2.0.0-draft",
+          "loss_profile": "semantic_general",
+          "compressed_text": "No new long orders until your next Executor standing by risk prophecy lane track only WATCH regime on gate ACK exposure profile reduction logged packet unchanged B observability inferred_from_packet macro fragility elevated",
+          "residual_meta": {
+            "mk_stub_v2": {
+              "reconstructed_text": "ACK exposure reduction logged No new long orders until your next packet Executor standing by risk profile unchanged prophecy lane B track observability only inferred_from_packet WATCH regime macro fragility elevated exposure on until gate Prophecy lane B track",
+              "global_token_saving_rate": 0.4181818181818182,
+              "reconstruction_fidelity_jaccard": 0.8205128205128205
+            },
+            "placeholder_map": {},
+            "mkm_lexicon_rail_v1": {
+              "symbol_key": "atom_id",
+              "atom_id_sequence": [
+                "other::no",
+                "other::new",
+                "other::long",
+                "other::orders",
+                "other::until",
+                "other::your",
+                "other::next",
+                "other::executor",
+                "other::standing",
+                "other::by",
+                "other::prophecy",
+                "other::lane",
+                "other::track",
+                "other::only",
+                "other::watch",
+                "other::regime",
+                "other::on",
+                "other::gate"
+              ],
+              "lexicon_meta": {
+                "status": "ok",
+                "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
+                "lexicon_term_count": 41700,
+                "atom_id_count": 18,
+                "atom_id_sequence_sample": [
+                  "other::no",
+                  "other::new",
+                  "other::long",
+                  "other::orders",
+                  "other::until",
+                  "other::your",
+                  "other::next",
+                  "other::executor",
+                  "other::standing",
+                  "other::by",
+                  "other::prophecy",
+                  "other::lane"
+                ]
+              }
+            }
+          },
+          "router_meta": {
+            "shard_id": "zone_e_finance",
+            "domain": "finance"
+          },
+          "content_fingerprint": "0091f2bd9decefdb86cd5658c940d712"
+        }
+      }
+    ]
+  },
+  "reproduce": "py scripts/build_bounded_lane_a2a_briefing_sample_v1.py --lane infra"
+}

@@ -61,6 +61,8 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
         "| **CROSS_REF·DSS [HYPO]** | HOLD |\n"
         "| **Infra/GPU** | **금지:** Track A·live·match% · **HOLD** |\n"
         "| **Clinic·SDIT·Insight** | clinic |\n"
+        "| **Design/Showroom** | **금지:** Track A · **SEND_GATE: HOLD** |\n"
+        "| **압축·Moat (GitHub)** | moat |\n"
         "| **MS** | **HOLD** · **금지:** 에이전트 포털 · **MS** |\n"
         "| **환자·최소영 (Track B)** | patient |\n\n"
         "### 🧠 메타인지\n\n"
@@ -81,7 +83,7 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
 
     doc = build_index_document(tmp_path)
     assert doc["research_only"] is True
-    assert len(doc["nodes"]) == 6
+    assert len(doc["nodes"]) == 7
     errors = verify_index_sources(tmp_path, doc)
     assert errors == []
 
@@ -98,6 +100,8 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
         "| **CROSS_REF·DSS [HYPO]** | hold |\n"
         "| **Infra/GPU** | **금지:** Track A·live · **HOLD** |\n"
         "| **Clinic·SDIT·Insight** | c |\n"
+        "| **Design/Showroom** | **금지:** Track A · **SEND_GATE: HOLD** |\n"
+        "| **압축·Moat (GitHub)** | moat |\n"
         "| **MS** | **HOLD** · **금지:** 에이전트 · **MS** row |\n"
         "| **환자·최소영 (Track B)** | p |\n\n"
         "### 🧠 메타인지\n\n",
@@ -121,6 +125,13 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
     ]
     assert "prism_ops_mission_log_next_one" not in lane_ids
 
+    design_ids = [nid for nid, _ in nodes_for_resume(doc, lane="design")]
+    assert design_ids == [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_design",
+    ]
+
     out = tmp_path / "storage" / "meta" / "index.json"
     out.parent.mkdir(parents=True)
     out.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -138,6 +149,8 @@ def test_nodes_for_resume_commander_default(tmp_path: Path) -> None:
         "**다음 1타 (레인 · 새 채팅):**\n\n"
         "| **Oracle·예언·align-panel** | **금지:** Track A·실매매 · **HOLD** |\n"
         "| **Infra/GPU** | **금지:** Track A·live · **HOLD** · **GPU** |\n"
+        "| **Design/Showroom** | **금지:** Track A · **SEND_GATE: HOLD** |\n"
+        "| **압축·Moat (GitHub)** | moat |\n"
         "| **MS** | **HOLD** · **금지:** portal · **MS** |\n\n"
         "### 🧠 메타인지\n\n",
         encoding="utf-8",

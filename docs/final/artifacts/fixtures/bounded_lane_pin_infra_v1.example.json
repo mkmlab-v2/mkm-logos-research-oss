@@ -1,6 +1,6 @@
 {
   "schema": "bounded_lane_pin_v1",
-  "generated_at_utc": "2026-06-13T20:03:51Z",
+  "generated_at_utc": "2026-06-13T20:14:00Z",
   "lane": "infra",
   "next_action_one_line": "6/13 band gate OK — solo_stack_ready 42 (band 38–48) · tier4 +NewsNeutralizer · Evolution_Lightweight4h Disabled(dup batch) · solo_ops exit0 · pytest 3/3 · `SEND_GATE: HOLD` · 다음: 패시브 관측 · 금지: tier4 미등록 Ready·Track A·live·SEND",
   "fact_lock_pointer": "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
@@ -30,5 +30,11 @@
       ]
     }
   ],
-  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_infra_v1_latest.md"
+  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_infra_v1_latest.md",
+  "ltm_hint": {
+    "concept_id": "infra_solo_scheduler_stack",
+    "software_layer": "machine",
+    "blast_radius": "repo",
+    "label_ko": "Solo scheduler core stack · tier0–3"
+  }
 }

@@ -8399,3 +8399,1164 @@ main.workspace-main {
   color: var(--accent);
   text-decoration: underline;
 }
+
+/* PersonaDiary mobile ops (PWA v0 · local IndexedDB) */
+.pd-main-ops {
+  max-width: 42rem;
+}
+
+.pd-ops-header {
+  margin-bottom: var(--space-6);
+}
+
+.pd-ops-header h1 {
+  font-size: var(--text-2xl);
+  margin: 0 0 var(--space-2);
+}
+
+.pd-ops-lede {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  margin: 0 0 var(--space-3);
+}
+
+.pd-ops-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.pd-ops-section {
+  margin-bottom: var(--space-8);
+}
+
+.pd-ops-section h2 {
+  font-size: var(--text-lg);
+  margin: 0 0 var(--space-3);
+}
+
+.pd-ops-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.pd-ops-input,
+.pd-ops-textarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: inherit;
+  font: inherit;
+}
+
+.pd-ops-textarea {
+  min-height: 5rem;
+  resize: vertical;
+}
+
+.pd-ops-lanes {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.pd-ops-lane {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.pd-ops-lane-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.pd-ops-lane-label {
+  font-weight: 600;
+}
+
+.pd-ops-lane-score {
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+
+.pd-ops-list {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+}
+
+.pd-ops-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--border);
+}
+
+.pd-ops-list li:first-child {
+  border-top: none;
+}
+
+.pd-ops-list li.done span:nth-child(2) {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.pd-ops-hint {
+  font-size: var(--text-xs);
+  color: var(--muted);
+  margin: var(--space-2) 0 0;
+}
+
+.pd-ops-footnote {
+  font-size: var(--text-xs);
+  color: var(--muted);
+  margin-top: var(--space-6);
+}
+
+.pd-ops-hero {
+  margin-bottom: var(--space-6);
+}
+
+.pd-ops-hero h1 {
+  font-size: var(--text-2xl);
+  margin: 0 0 var(--space-2);
+}
+
+.pd-ops-lead {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.pd-ops-muted {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  margin: 0 0 var(--space-2);
+}
+
+.pd-ops-gate {
+  font-family: var(--font-mono, monospace);
+  font-size: var(--text-xs);
+  opacity: 0.85;
+}
+
+.pd-ops-block {
+  margin-bottom: var(--space-6);
+}
+
+.pd-ops-card {
+  padding: var(--space-4);
+}
+
+.pd-ops-lane-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.pd-ops-lane-row .pd-ops-lane {
+  cursor: pointer;
+  text-align: center;
+  padding: var(--space-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.pd-ops-lane-row .pd-ops-lane--active {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+.pd-ops-week-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.pd-ops-week-list li {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.pd-ops-week-check {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+}
+
+.pd-ops-done {
+  text-decoration: line-through;
+  opacity: 0.65;
+}
+
+.pd-ops-field {
+  display: block;
+  margin-bottom: var(--space-3);
+}
+
+.pd-ops-field > span {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  margin-bottom: var(--space-1);
+}
+
+.pd-ops-hypo-tag {
+  font-size: var(--text-xs);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.pd-ops-north-hint {
+  font-size: var(--text-sm);
+  padding: var(--space-2) var(--space-3);
+  margin: 0 0 var(--space-3);
+  border-left: 3px solid var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.pd-ops-guide-lanes {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border);
+}
+
+.pd-ops-guide-lanes-list {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+}
+
+.pd-ops-guide-lanes-list li {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: var(--space-2);
+  padding: var(--space-1) 0;
+  font-size: var(--text-sm);
+}
+
+.pd-ops-guide-lane-name {
+  font-weight: 600;
+}
+
+.pd-ops-error {
+  color: var(--danger, #c0392b);
+}
+
+.pd-ops-loading {
+  padding: var(--space-8);
+  text-align: center;
+  color: var(--muted);
+}
+
+.pd-ops-footer-links .pd-premium-section-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-8);
+}
+
+.pd-ops-onboard {
+  border: 1px dashed var(--accent);
+  border-radius: var(--radius-md);
+}
+
+.pd-ops-export-block {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--border);
+}
+
+.pd-ops-export-block:first-of-type {
+  margin-top: var(--space-2);
+  padding-top: 0;
+  border-top: none;
+}
+
+.pd-ops-export-sub {
+  font-size: var(--text-sm);
+  margin: 0 0 var(--space-2);
+}
+
+.pd-ops-check {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  margin-bottom: var(--space-2);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.pd-ops-check input {
+  margin-top: 0.2rem;
+}
+
+.pd-ops-import-input {
+  display: none;
+}
+
+.pd-ops-inbox-hint code {
+  font-size: 0.85em;
+  word-break: break-all;
+}
+
+.pd-ops-native-hypo {
+  margin-top: var(--space-4);
+}
+
+.pd-ops-voice-hypo {
+  margin-top: var(--space-4);
+}
+
+.pd-ops-voice-segments li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.pd-ops-lane-chip {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--accent, #3d9b84);
+}
+
+.pd-ops-voice-blocked {
+  opacity: 0.55;
+}
+
+.pd-ops-voice-redflag {
+  border-left: 3px solid var(--accent, #3d9b84);
+  padding-left: var(--space-2);
+}
+
+.pd-ops-voice-gate {
+  margin-top: var(--space-3);
+}
+
+.pd-ops-voice-stt-id code {
+  font-size: var(--text-xs);
+  word-break: break-all;
+}
+
+.pd-ops-native-disclaimer {
+  font-size: var(--text-sm);
+  border-left: 3px solid var(--border);
+  padding-left: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.pd-ops-native-status {
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
+}
+
+.pd-ops-native-status code {
+  font-size: 0.85em;
+}
+
+.pd-ops-native-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.pd-ops-pull-window-hint {
+  color: var(--accent, #6b8cce);
+}
+
+.pd-ops-mkmlife-upsell {
+  margin-bottom: var(--space-3);
+  padding: var(--space-3);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md, 8px);
+}
+
+.pd-ops-upsell-title {
+  font-size: var(--text-base);
+  margin: 0 0 var(--space-2);
+}
+
+/* PersonaDiary /ops — iOS-style skin (Design lane · PWA) */
+.pd-main-ops--ios {
+  --pd-ios-bg: #000000;
+  --pd-ios-grouped: #1c1c1e;
+  --pd-ios-grouped-2: #2c2c2e;
+  --pd-ios-separator: rgba(84, 84, 88, 0.65);
+  --pd-ios-label: #8e8e93;
+  --pd-ios-tint: #0a84ff;
+  --pd-ios-text: #f2f2f7;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+}
+
+.pd-main-ops--ios .pd-ops-hero h1 {
+  font-size: clamp(2rem, 8vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+}
+
+.pd-main-ops--ios .pd-ops-lead {
+  font-size: 1rem;
+  color: var(--pd-ios-label);
+}
+
+.pd-main-ops--ios .pd-ops-north-hero {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-4);
+  border-radius: 14px;
+  background: var(--pd-ios-grouped);
+  border: none;
+}
+
+.pd-main-ops--ios .pd-ops-north-hero-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--pd-ios-tint);
+  margin-bottom: var(--space-2);
+}
+
+.pd-main-ops--ios .pd-ops-north-hero-text {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--pd-ios-text);
+}
+
+.pd-main-ops--ios .pd-ops-disclosure {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--pd-ios-label);
+}
+
+.pd-main-ops--ios .pd-ops-disclosure summary {
+  cursor: pointer;
+  color: var(--pd-ios-tint);
+  list-style: none;
+}
+
+.pd-main-ops--ios .pd-ops-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.pd-main-ops--ios .pd-ops-segment-label {
+  margin: 0 0 var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--pd-ios-label);
+}
+
+.pd-main-ops--ios .pd-ops-segment {
+  display: flex;
+  padding: 3px;
+  gap: 2px;
+  border-radius: 10px;
+  background: var(--pd-ios-grouped-2);
+}
+
+.pd-main-ops--ios .pd-ops-segment .pd-ops-lane {
+  flex: 1;
+  min-height: 44px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--pd-ios-label);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pd-main-ops--ios .pd-ops-segment .pd-ops-lane--active {
+  background: #636366;
+  color: var(--pd-ios-text);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.pd-main-ops--ios .pd-ops-card {
+  padding: 0;
+  background: var(--pd-ios-grouped);
+  border: none;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.pd-main-ops--ios .pd-ops-block .pd-premium-section-inner.pd-glass {
+  background: transparent;
+  border: none;
+  backdrop-filter: none;
+}
+
+.pd-main-ops--ios .pd-ops-block h2 {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  padding: var(--space-3) var(--space-4) var(--space-2);
+  margin: 0;
+  border-bottom: 1px solid var(--pd-ios-separator);
+}
+
+.pd-main-ops--ios .pd-premium-section-inner {
+  max-width: 100%;
+  padding: var(--space-4) var(--space-3);
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.pd-main-ops--ios .pd-ops-onboard {
+  border: none;
+  border-radius: 0;
+}
+
+.pd-main-ops--ios .pd-ops-onboard .pd-premium-section-inner.pd-ops-card {
+  padding: 0;
+  margin: 0 var(--space-3);
+  overflow: hidden;
+}
+
+.pd-main-ops--ios .pd-ops-block .pd-ops-muted,
+.pd-main-ops--ios .pd-ops-block .pd-ops-field,
+.pd-main-ops--ios .pd-ops-block .pd-ops-row,
+.pd-main-ops--ios .pd-ops-block .pd-ops-week-list,
+.pd-main-ops--ios .pd-ops-block .btn {
+  margin-left: var(--space-4);
+  margin-right: var(--space-4);
+}
+
+.pd-main-ops--ios .pd-ops-block .pd-ops-field .pd-ops-input,
+.pd-main-ops--ios .pd-ops-block .pd-ops-field .pd-ops-textarea {
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.pd-main-ops--ios .pd-ops-block .pd-ops-muted:first-of-type {
+  margin-top: var(--space-2);
+}
+
+.pd-main-ops--ios .pd-ops-block .btn {
+  margin-bottom: var(--space-4);
+  min-height: 44px;
+  border-radius: 12px;
+}
+
+.pd-main-ops--ios .pd-ops-input,
+.pd-main-ops--ios .pd-ops-textarea {
+  background: var(--pd-ios-grouped-2);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--pd-ios-text);
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.pd-main-ops--ios .pd-ops-offline-banner {
+  margin: 0 var(--space-3) var(--space-3);
+  padding: var(--space-3);
+  border-radius: 12px;
+  background: rgba(255, 159, 10, 0.15);
+  color: #ff9f0a;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.pd-main-ops--ios .pd-ops-pwa-install {
+  margin: 0 var(--space-3) var(--space-4);
+}
+
+.pd-main-ops--ios .pd-ops-pwa-install-inner {
+  position: relative;
+  padding: var(--space-4);
+  border-radius: 14px;
+  background: linear-gradient(145deg, rgba(10, 132, 255, 0.18), rgba(99, 102, 241, 0.12));
+  border: 1px solid rgba(10, 132, 255, 0.35);
+}
+
+.pd-main-ops--ios .pd-ops-pwa-install-title {
+  margin: 0 0 var(--space-2);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.pd-main-ops--ios .pd-ops-pwa-install-copy {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--pd-ios-label);
+}
+
+.pd-main-ops--ios .pd-ops-pwa-install-btn {
+  margin-top: var(--space-3);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border: none;
+  border-radius: 12px;
+  background: var(--pd-ios-tint);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.pd-main-ops--ios .pd-ops-pwa-install-dismiss {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: var(--pd-ios-label);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Ops PWA shell — app-like chrome (Design lane v2) */
+.pd-shell--ops {
+  background: #000000;
+  color: #f2f2f7;
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+.pd-shell--ops .pd-shell--premium,
+.pd-shell--ops.pd-shell--premium {
+  background: #000000;
+}
+
+.pd-shell--ops .pd-header--ops {
+  background: rgba(0, 0, 0, 0.92);
+  border-bottom-color: rgba(84, 84, 88, 0.45);
+  padding-top: env(safe-area-inset-top);
+}
+
+.pd-shell--ops .pd-header-inner {
+  max-width: 42rem;
+  min-height: 44px;
+  padding: 0.5rem max(var(--space-3), env(safe-area-inset-right)) 0.5rem
+    max(var(--space-3), env(safe-area-inset-left));
+}
+
+.pd-shell--ops .pd-brand--ops {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.pd-shell--ops .pd-nav--ops {
+  font-size: 0.9375rem;
+}
+
+.pd-shell--ops .pd-nav--ops a {
+  color: #0a84ff;
+}
+
+.pd-shell--ops .pd-footer--ops {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-3) max(var(--space-6), env(safe-area-inset-bottom));
+  border-top-color: rgba(84, 84, 88, 0.35);
+  font-size: 0.6875rem;
+}
+
+.pd-main-ops--ios {
+  background: var(--pd-ios-bg);
+  color: var(--pd-ios-text);
+  margin: 0 auto;
+  width: 100%;
+  max-width: 42rem;
+  overflow-x: clip;
+  box-sizing: border-box;
+  padding-left: max(var(--space-3), env(safe-area-inset-left));
+  padding-right: max(var(--space-3), env(safe-area-inset-right));
+  padding-bottom: max(var(--space-6), env(safe-area-inset-bottom));
+}
+
+.pd-main-ops--ios .pd-premium-eyebrow {
+  display: none;
+}
+
+.pd-main-ops--ios .pd-ops-hero {
+  padding-top: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.pd-main-ops--ios .pd-ops-block {
+  margin-bottom: var(--space-4);
+}
+
+.pd-main-ops--ios .pd-ops-lanes {
+  margin-bottom: var(--space-4);
+}
+
+.pd-main-ops--ios .btn-primary {
+  background: var(--pd-ios-tint);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+}
+
+.pd-main-ops--ios .btn-ghost {
+  background: var(--pd-ios-grouped-2);
+  border: none;
+  color: var(--pd-ios-tint);
+  font-weight: 600;
+}
+
+.pd-main-ops--ios .pd-ops-week-list li {
+  border-bottom: 1px solid var(--pd-ios-separator);
+  padding: var(--space-3) var(--space-4);
+  margin: 0;
+}
+
+.pd-main-ops--ios .pd-ops-week-list li:last-child {
+  border-bottom: none;
+}
+
+.pd-main-ops--ios .pd-ops-week-check {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pd-ios-tint);
+  font-size: 1rem;
+}
+
+.pd-main-ops--ios .pd-ops-advanced > summary {
+  cursor: pointer;
+  color: var(--pd-ios-tint);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: var(--space-3) var(--space-4);
+  list-style: none;
+}
+
+.pd-main-ops--ios .pd-ops-advanced > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pd-main-ops--ios .pd-ops-export-heading {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  padding: var(--space-2) var(--space-4) var(--space-2);
+  margin: 0;
+  border-top: 1px solid var(--pd-ios-separator);
+}
+
+.pd-main-ops--ios .pd-ops-footer-links .pd-premium-section-inner {
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.pd-main-ops--ios .pd-ops-mkmlife-upsell {
+  border: none;
+  background: var(--pd-ios-grouped-2);
+  border-radius: 12px;
+}
+
+/* PersonaDiary home — iOS bridge (align with /ops · Design v2 phase 3) */
+.pd-main-premium--ios-bridge {
+  --pd-ios-bg: #000000;
+  --pd-ios-grouped: #1c1c1e;
+  --pd-ios-grouped-2: #2c2c2e;
+  --pd-ios-separator: rgba(84, 84, 88, 0.65);
+  --pd-ios-label: #8e8e93;
+  --pd-ios-tint: #0a84ff;
+  --pd-ios-text: #f2f2f7;
+  background: var(--pd-ios-bg);
+  color: var(--pd-ios-text);
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+}
+
+.pd-main-premium--ios-bridge .pd-premium-eyebrow {
+  color: var(--pd-ios-label);
+  letter-spacing: 0.08em;
+}
+
+.pd-home-bridge-hero {
+  border-bottom: 1px solid var(--pd-ios-separator);
+}
+
+.pd-home-bridge-hero .pd-premium-section-inner {
+  max-width: 42rem;
+  padding: var(--space-6) var(--space-4) var(--space-5);
+}
+
+.pd-home-bridge-hero h1 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(2rem, 8vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--pd-ios-text);
+}
+
+.pd-home-bridge-lead {
+  margin: 0 0 var(--space-2);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  color: var(--pd-ios-text);
+}
+
+.pd-home-bridge-sub {
+  margin: 0 0 var(--space-4);
+  font-size: 0.8125rem;
+  color: var(--pd-ios-label);
+  line-height: 1.45;
+}
+
+.pd-home-bridge-cta-row {
+  gap: var(--space-2);
+}
+
+.pd-main-premium--ios-bridge .btn-primary {
+  background: var(--pd-ios-tint);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  min-height: 44px;
+  border-radius: 12px;
+}
+
+.pd-main-premium--ios-bridge .btn-ghost {
+  background: var(--pd-ios-grouped-2);
+  border: none;
+  color: var(--pd-ios-tint);
+  font-weight: 600;
+  min-height: 44px;
+  border-radius: 12px;
+}
+
+.pd-home-bridge-features .pd-premium-section-inner {
+  max-width: 42rem;
+  padding: var(--space-4) var(--space-3) var(--space-6);
+}
+
+.pd-home-bridge-hint {
+  margin: var(--space-3) var(--space-4) var(--space-2);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--pd-ios-label);
+}
+
+.pd-home-bridge-cta-secondary {
+  margin: 0 var(--space-4);
+  width: calc(100% - var(--space-8));
+}
+
+.pd-main-premium--ios-bridge .pd-home-preview-section,
+.pd-main-premium--ios-bridge .pd-home-pillars,
+.pd-main-premium--ios-bridge .pd-premium-safety {
+  border-top: 1px solid var(--pd-ios-separator);
+}
+
+.pd-main-premium--ios-bridge .pd-premium-reflect-section h2,
+.pd-main-premium--ios-bridge .pd-premium-pillars h2,
+.pd-main-premium--ios-bridge .pd-premium-safety h2 {
+  color: var(--pd-ios-text);
+  font-size: 1.0625rem;
+}
+
+.pd-main-premium--ios-bridge .pd-premium-section-lead,
+.pd-main-premium--ios-bridge .pd-premium-aside-muted {
+  color: var(--pd-ios-label);
+}
+
+.pd-main-premium--ios-bridge .pd-premium-section-lead a {
+  color: var(--pd-ios-tint);
+}
+
+.pd-main-premium--ios-bridge .pd-glass {
+  background: var(--pd-ios-grouped);
+  border: 1px solid transparent;
+  border-radius: 14px;
+}
+
+.pd-main-premium--ios-bridge .pd-premium-section-inner {
+  max-width: 42rem;
+}
+
+.pd-main-premium--ios-bridge .pd-pillar-card h3 {
+  color: var(--pd-ios-text);
+}
+
+.pd-main-premium--ios-bridge .pd-pillar-card p {
+  color: var(--pd-ios-label);
+}
+
+.pd-main-premium--ios-bridge .pd-ops-hypo-tag {
+  font-size: 0.75rem;
+  color: var(--pd-ios-label);
+  font-weight: 600;
+}
+
+.pd-main-ops--ios .pd-ios-group-label,
+.pd-main-premium--ios-bridge .pd-ios-group-label {
+  margin: 0 var(--space-4) var(--space-1);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--pd-ios-label);
+}
+
+.pd-main-ops--ios .pd-ios-group-hint,
+.pd-main-premium--ios-bridge .pd-ios-group-hint {
+  margin: 0 var(--space-4) var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--pd-ios-label);
+  line-height: 1.45;
+}
+
+.pd-main-ops--ios .pd-ios-inset,
+.pd-main-premium--ios-bridge .pd-ios-inset {
+  margin: 0 var(--space-3);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--pd-ios-grouped);
+}
+
+.pd-main-ops--ios .pd-ios-row,
+.pd-main-premium--ios-bridge .pd-ios-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  margin: 0;
+}
+
+.pd-main-ops--ios .pd-ios-row--divider,
+.pd-main-premium--ios-bridge .pd-ios-row--divider {
+  border-bottom: 1px solid var(--pd-ios-separator);
+}
+
+.pd-main-ops--ios .pd-ios-row-label,
+.pd-main-premium--ios-bridge .pd-ios-row-label {
+  flex: 0 0 4.5rem;
+  font-size: 0.9375rem;
+  color: var(--pd-ios-text);
+}
+
+.pd-main-ops--ios .pd-ios-row-value,
+.pd-main-premium--ios-bridge .pd-ios-row-value {
+  flex: 1;
+  text-align: right;
+  font-size: 0.875rem;
+  color: var(--pd-ios-label);
+  word-break: break-word;
+}
+
+.pd-main-ops--ios .pd-ios-row-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--pd-ios-label);
+  font: inherit;
+  font-size: 0.9375rem;
+  text-align: right;
+  width: 100%;
+  max-width: 100%;
+}
+
+.pd-main-ops--ios .pd-ios-row-input::placeholder {
+  color: color-mix(in srgb, var(--pd-ios-label) 70%, transparent);
+}
+
+.pd-main-ops--ios .pd-ios-row-input--time {
+  text-align: right;
+  color: var(--pd-ios-tint);
+}
+
+.pd-main-ops--ios .pd-ios-group-action {
+  margin: var(--space-3) var(--space-4) 0;
+  width: calc(100% - var(--space-8));
+}
+
+.pd-main-ops--ios .pd-ops-system-details > summary {
+  cursor: pointer;
+  color: var(--pd-ios-tint);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: var(--space-3) var(--space-4);
+  list-style: none;
+}
+
+.pd-main-ops--ios .pd-ops-system-details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.pd-main-ops--ios .pd-ops-native-repo {
+  margin: var(--space-2) var(--space-4);
+  font-size: 0.75rem;
+}
+
+.pd-main-ops--ios .pd-ops-native-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-3) var(--space-4);
+}
+
+.pd-main-ops--ios .pd-ops-empty {
+  margin: 0;
+  padding: var(--space-4);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--pd-ios-label);
+  text-align: center;
+}
+
+.pd-main-ops--ios .pd-ops-north-hero-empty {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border-radius: 12px;
+  background: var(--pd-ios-grouped);
+  text-align: left;
+}
+
+.pd-main-ops--ios .pd-ops-week-empty {
+  border-bottom: none !important;
+  justify-content: center;
+}
+
+.pd-main-ops--ios .pd-ops-pull-empty {
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-4);
+}
+
+.pd-main-ops--ios .pd-ops-pull-empty .btn {
+  margin: var(--space-2) var(--space-4) 0;
+}
+
+.pd-main-ops--ios .pd-ops-hygiene-empty {
+  padding: var(--space-2) var(--space-4) var(--space-4);
+  text-align: left;
+}
+
+.pd-main-ops--ios .pd-ops-loading--ios {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
+
+.pd-main-ops--ios .pd-ops-loading-pulse {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--pd-ios-grouped-2);
+  animation: pd-ops-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pd-ops-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.pd-main-ops--ios .pd-ops-loading-text {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--pd-ios-label);
+}
+
+.pd-main-ops--ios .pd-ops-skeleton-group {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.pd-main-ops--ios .pd-ops-skeleton {
+  border-radius: 14px;
+  background: linear-gradient(
+    90deg,
+    var(--pd-ios-grouped) 0%,
+    var(--pd-ios-grouped-2) 50%,
+    var(--pd-ios-grouped) 100%
+  );
+  background-size: 200% 100%;
+  animation: pd-ops-shimmer 1.4s ease-in-out infinite;
+}
+
+.pd-main-ops--ios .pd-ops-skeleton--hero {
+  height: 5.5rem;
+}
+
+.pd-main-ops--ios .pd-ops-skeleton--segment {
+  height: 2.75rem;
+}
+
+.pd-main-ops--ios .pd-ops-skeleton--card {
+  height: 7rem;
+}
+
+@keyframes pd-ops-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.pd-main-ops--ios .pd-ops-loading-inline {
+  margin: var(--space-2) var(--space-4) var(--space-3);
+  font-size: 0.875rem;
+  color: var(--pd-ios-label);
+}
+
+@media (max-width: 420px) {
+  .pd-main-ops--ios .pd-ios-row,
+  .pd-main-premium--ios-bridge .pd-ios-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-1);
+  }
+
+  .pd-main-ops--ios .pd-ios-row-label,
+  .pd-main-premium--ios-bridge .pd-ios-row-label {
+    flex: none;
+  }
+
+  .pd-main-ops--ios .pd-ios-row-value,
+  .pd-main-premium--ios-bridge .pd-ios-row-value,
+  .pd-main-ops--ios .pd-ios-row-input,
+  .pd-main-premium--ios-bridge .pd-ios-row-input {
+    text-align: left;
+  }
+}

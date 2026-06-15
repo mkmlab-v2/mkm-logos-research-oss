@@ -2,46 +2,73 @@
 
 import Link from "next/link";
 import { personadiaryCopy } from "@/content/personadiaryCopy";
+import { personadiaryPublicPath } from "@/lib/personadiaryMobileOpsV1";
 import { PersonadiaryHubFooter } from "@/components/personadiary/PersonadiaryHubFooter";
 
 export function PersonadiaryChrome({
   children,
   premium = false,
+  ops = false,
 }: {
   children: React.ReactNode;
   premium?: boolean;
+  /** PWA /ops — minimal chrome (no marketing nav · slim footer) */
+  ops?: boolean;
 }) {
+  const shellClass = [
+    "pd-shell",
+    premium || ops ? "pd-shell--premium" : "",
+    ops ? "pd-shell--ops" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div className={premium ? "pd-shell pd-shell--premium" : "pd-shell"}>
+    <div className={shellClass}>
       <a className="skip" href="#main">
         본문으로 건너뛰기
       </a>
-      <header className="pd-header">
+      <header className={ops ? "pd-header pd-header--ops" : "pd-header"}>
         <div className="pd-header-inner">
-          <Link className="pd-brand" href="/">
-            {personadiaryCopy.brand.name}
-            <span className="pd-tag">{personadiaryCopy.brand.tag}</span>
-          </Link>
-          <nav className="pd-nav" aria-label="Persona Diary">
-            <Link href="/demo">콘셉트 데모</Link>
-            <a
-              href={personadiaryCopy.links.observatory}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              관측소 (v6)
-            </a>
-            <Link href={personadiaryCopy.links.waitlist}>사전 알림</Link>
-            <a href={personadiaryCopy.links.contact}>문의</a>
-          </nav>
+          {ops ? (
+            <>
+              <Link className="pd-brand pd-brand--ops" href={personadiaryPublicPath("/ops")}>
+                Persona Diary
+              </Link>
+              <nav className="pd-nav pd-nav--ops" aria-label="기지">
+                <Link href={personadiaryPublicPath("")}>홈</Link>
+              </nav>
+            </>
+          ) : (
+            <>
+              <Link className="pd-brand" href="/">
+                {personadiaryCopy.brand.name}
+                <span className="pd-tag">{personadiaryCopy.brand.tag}</span>
+              </Link>
+              <nav className="pd-nav" aria-label="Persona Diary">
+                <Link href={personadiaryPublicPath("/ops")}>내 기지</Link>
+                <Link href="/demo">콘셉트 데모</Link>
+                <a
+                  href={personadiaryCopy.links.observatory}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  관측소 (v6)
+                </a>
+                <Link href={personadiaryCopy.links.waitlist}>사전 알림</Link>
+                <a href={personadiaryCopy.links.contact}>문의</a>
+              </nav>
+            </>
+          )}
         </div>
       </header>
       {children}
-      <footer className="pd-footer">
-        <PersonadiaryHubFooter />
+      <footer className={ops ? "pd-footer pd-footer--ops" : "pd-footer"}>
+        {!ops && <PersonadiaryHubFooter />}
         <p>
-          {personadiaryCopy.brand.name} · 콘셉트 프리뷰 · 의료·투자·법률 조언을
-          제공하지 않습니다.
+          {ops
+            ? "preview_only · 로컬 저장 · 의료·투자 조언 아님"
+            : `${personadiaryCopy.brand.name} · 콘셉트 프리뷰 · 의료·투자·법률 조언을 제공하지 않습니다.`}
         </p>
         <p className="pd-footer-links">
           <Link href={personadiaryCopy.links.privacy}>개인정보</Link>

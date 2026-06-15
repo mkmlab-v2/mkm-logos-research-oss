@@ -147,13 +147,26 @@ function useDailyGuideFetch(
 export function PersonadiaryDailyGuideProvider({
   children,
   profileId = DEFAULT_PROFILE,
+  packageOverride = null,
 }: {
   children: ReactNode;
   profileId?: string;
+  /** When set, skip auto-fetch (Pull-only ops). */
+  packageOverride?: DailyGuidePackage | null;
 }) {
-  const value = useDailyGuideFetch(profileId, true);
-  const memo = useMemo(() => value, [value.pkg, value.loading, value.error, value.profileId]);
-  return createElement(DailyGuideContext.Provider, { value: memo }, children);
+  const fetched = useDailyGuideFetch(profileId, !packageOverride);
+  const value = useMemo(() => {
+    if (packageOverride) {
+      return {
+        pkg: packageOverride,
+        loading: false,
+        error: null,
+        profileId,
+      };
+    }
+    return fetched;
+  }, [packageOverride, fetched, profileId]);
+  return createElement(DailyGuideContext.Provider, { value }, children);
 }
 
 export function usePersonadiaryDailyGuide(profileId: string = DEFAULT_PROFILE) {

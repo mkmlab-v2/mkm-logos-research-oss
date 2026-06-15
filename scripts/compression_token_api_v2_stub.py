@@ -30,6 +30,17 @@ from fastapi import FastAPI  # noqa: E402
 from pydantic import BaseModel, Field  # noqa: E402
 from starlette.middleware.cors import CORSMiddleware  # noqa: E402
 
+from scripts.compression_hybrid_codec_router_v1_lib import (  # noqa: E402
+    HYBRID_CODEC_JACCARD_FLOOR,
+    HybridCodecRouter,
+    hybrid_router_integrity_flags,
+    resolve_hybrid_codec_plan,
+)
+from scripts.compression_hybrid_router_spec_v1_lib import (  # noqa: E402
+    HybridRouterResolution,
+    corpus_binding_integrity_flags,
+    resolve_hybrid_router,
+)
 from scripts.compression_profile_v1 import (  # noqa: E402
     CompressionProfile,
     profile_evaluate_report_kwargs_v2,
@@ -46,7 +57,7 @@ from scripts.compression_v2_routing_profile_v1 import (  # noqa: E402
     routing_profile_eval_kwargs,
     routing_profile_kwargs,
 )
-from scripts.core.domain_router import DomainSpecificRouter  # noqa: E402
+from scripts.core.domain_router import DomainSpecificRouter, ShardRoute  # noqa: E402
 from scripts.core.master_codebook_lexicon_v1_bridge import (  # noqa: E402
     lexicon_atom_sequence_for_text,
     resolve_latest_codebook_path,
@@ -70,10 +81,26 @@ LEXICON_WIRE_SCHEMA = "mkm_lexicon_wire_v1"
 V2_JACCARD_TRUST_MIN = 0.73
 _LEGACY_FLAT_KEY_ACCESS_COUNT = 0
 
+CODING_DEEP_PACK_KEY = "coding_deep_pack_wire_v1"
+_TEMPLATES_PATH = ROOT / "codebook" / "templates" / "zone_f_code_templates_v1.jsonl"
+_MANIFEST_PATH = ROOT / "codebook" / "templates" / "zone_f_code_templates_manifest_v1.json"
+
+from scripts.compression_coding_deep_pack_v1_lib import (  # noqa: E402
+    build_wire_packet,
+    expand_template_wire,
+    load_template_catalog,
+    match_template_id_by_snippet,
+    match_template_with_literal_slots,
+    measure_template_wire_twin,
+    resolve_template_match,
+    wire_to_compact,
+)
+
 SHARDS = ROOT / "codebook" / "shards"
 _router = DomainSpecificRouter(SHARDS)
 
 LossProfile = Literal["lossless_text", "semantic_general", "code_equivalent"]
+SkuClass = Literal["coord", "mask"]
 
 app = FastAPI(
     title="MKM Token Compression API v2 (Trust Packet stub)",
@@ -102,6 +129,60 @@ class CompressRequestV2(BaseModel):
     graph_wire_selective_bridge: bool = False
     routing_profile: RoutingProfile = "track_a_promoted"
     stateless_packet: bool = False
+    forced_shard_id: str | None = None
+    corpus_tag: str | None = Field(
+        default=None,
+        description=(
+            "Hybrid router corpus tag (research_only). Resolves backend/profile overrides from "
+            "docs/final/artifacts/compression_hybrid_router_spec_v1.json."
+        ),
+    )
+    sku_class: SkuClass | None = Field(
+        default=None,
+        description="Optional SKU class hint: coord (pointer/inject) or mask (masked JSONL + v2/hybrid).",
+    )
+    must_keep_overlay_terms: list[str] | None = Field(
+        default=None,
+        description="Tenant/B2B overlay terms merged into evaluate_report must_keep (research_only).",
+    )
+    short_context_token_threshold: int | None = Field(
+        default=None,
+        ge=1,
+        description="When token_in_proxy <= threshold, apply short_context_max_saving_rate and optional floor disable.",
+    )
+    short_context_max_saving_rate: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=1.0,
+        description="Cap max saving for short inputs (research B2B PoC).",
+    )
+    short_context_disable_min_saving_floor: bool = Field(
+        default=True,
+        description="When short-context policy applies, set domain min_saving_floor override to 0.",
+    )
+    hybrid_codec_router: HybridCodecRouter = Field(
+        default="off",
+        description="B-track session router [HYPO]: assistant_literal | economy_fallback.",
+    )
+    session_turns: list[dict[str, Any]] | None = Field(
+        default=None,
+        description="Optional chat turns [{role, text}] for hybrid_codec_router heuristics.",
+    )
+    enable_candidate_pool_expansion: bool = Field(
+        default=False,
+        description=(
+            "B-track [HYPO]: evaluate_report candidate pool expansion (41k combo grid best arm). "
+            "Also enabled via routing_profile=candidate_pool_on. research_only; not Track A ACTIVE."
+        ),
+    )
+    enable_coding_deep_pack: bool = Field(
+        default=False,
+        description=(
+            "B-track [HYPO]: zone_f_code template-catalog wire (ZF_MASK) when snippet matches "
+            "codebook/templates/zone_f_code_templates_v1.jsonl. Also auto when sku_class=mask "
+            "and routed shard is zone_f_code."
+        ),
+    )
 
 
 class CompressionPacket(BaseModel):
@@ -231,6 +312,67 @@ def _apply_v2_trust_restoration(
     return raw, raw, ratio_out, jac_after, True
 
 
+def _stateless_codebook_jaccard_proxy(
+    raw_text: str,
+    ev: dict[str, Any],
+    *,
+    loss_profile: LossProfile,
+    route: ShardRoute,
+    stateless_packet: bool,
+) -> float:
+    """PoC-aligned pass gate: codebook_only expand Jaccard (not trust-restored stub)."""
+    comp = str(ev.get("compressed_text") or raw_text)
+    rec = str(ev.get("reconstructed_text") or raw_text)
+    stub_block: dict[str, Any] = {
+        "reconstructed_text": rec,
+        "global_token_saving_rate": ev.get("global_ratio"),
+        "reconstruction_fidelity_jaccard": ev.get("jaccard"),
+    }
+    residual_meta: dict[str, Any] = {
+        RESIDUAL_STUB_KEY: _stub_block_for_packet(stub_block, stateless_packet=stateless_packet),
+        "placeholder_map": {},
+    }
+    _attach_lexicon_rail(residual_meta, raw_text)
+    pkt = CompressionPacket(
+        loss_profile=loss_profile,
+        compressed_text=comp,
+        residual_meta=residual_meta,
+        router_meta={"shard_id": route.shard_id, "domain": route.domain},
+    )
+    expanded, _ = _expand_codebook_only(pkt)
+    return float(_jaccard(raw_text, expanded))
+
+
+def _hybrid_fallback_gate_jaccard(
+    raw_text: str,
+    ev: dict[str, Any],
+    *,
+    loss_profile: LossProfile,
+    route: ShardRoute,
+    stateless_packet: bool,
+    jac_after_trust: float | None,
+) -> float:
+    if stateless_packet:
+        return _stateless_codebook_jaccard_proxy(
+            raw_text, ev, loss_profile=loss_profile, route=route, stateless_packet=stateless_packet
+        )
+    return float(jac_after_trust if jac_after_trust is not None else ev.get("jaccard") or 0.0)
+
+
+def _resolve_router_route(text: str, forced_shard_id: str | None) -> ShardRoute:
+    sid = str(forced_shard_id or "").strip()
+    if sid:
+        return _router.route_from_shard_id(sid)
+    return _router.route(text)
+
+
+def _normalize_optional_shard_id(shard_id: str | None) -> str | None:
+    if shard_id is None:
+        return None
+    sid = str(shard_id).strip()
+    return sid or None
+
+
 def _run_evaluate_for_packet(
     text: str,
     loss_profile: LossProfile,
@@ -240,6 +382,12 @@ def _run_evaluate_for_packet(
     client_request_id: str | None = None,
     routing_profile: RoutingProfile = "track_a_promoted",
     compression_profile: CompressionProfile = "economy",
+    force_shard_id: str | None = None,
+    extra_must_keep: set[str] | None = None,
+    short_context_token_threshold: int | None = None,
+    short_context_max_saving_rate: float | None = None,
+    short_context_disable_min_saving_floor: bool = True,
+    enable_candidate_pool_expansion: bool = False,
 ) -> dict[str, Any]:
     """Run evaluate_report and return payload for Trust Packet fields."""
     prof_kw = profile_evaluate_report_kwargs_v2(
@@ -251,6 +399,20 @@ def _run_evaluate_for_packet(
     general_cap = prof_kw.get("general_max_saving_rate")
     sensitive_cap = prof_kw.get("sensitive_max_saving_rate")
     hangul_cap = prof_kw.get("hangul_max_saving_rate")
+    domain_floor_overrides: dict[str, float] | None = None
+    token_in = _token_count_proxy(text)
+    if (
+        short_context_token_threshold is not None
+        and token_in <= short_context_token_threshold
+    ):
+        if short_context_max_saving_rate is not None:
+            general_cap = sensitive_cap = hangul_cap = short_context_max_saving_rate
+        if short_context_disable_min_saving_floor:
+            try:
+                route_pre = _resolve_router_route(text, _normalize_optional_shard_id(force_shard_id))
+                domain_floor_overrides = {route_pre.domain: 0.0}
+            except ValueError:
+                domain_floor_overrides = {"ssot": 0.0}
     case_id = resolve_v2_case_id(client_request_id)
     t0 = perf_counter()
     doc = {
@@ -266,7 +428,18 @@ def _run_evaluate_for_packet(
     }
     _bp = bool(prof_kw.get("apply_gematria_4d_bridge_policy"))
     route_kw = routing_profile_kwargs(routing_profile)
-    eval_extra = routing_profile_eval_kwargs(routing_profile)
+    eval_extra = dict(routing_profile_eval_kwargs(routing_profile))
+    pool_flag = eval_extra.pop("enable_candidate_pool_expansion", None)
+    pool_on = bool(enable_candidate_pool_expansion or pool_flag)
+    if pool_on:
+        eval_extra["enable_candidate_pool_expansion"] = True
+    lexicon_on = eval_extra.pop("use_master_codebook_lexicon_v1", None)
+    if lexicon_on is not None:
+        prof_kw = dict(prof_kw)
+        prof_kw["use_master_codebook_lexicon_v1"] = bool(lexicon_on)
+    bridge_policy = eval_extra.pop("apply_gematria_4d_bridge_policy", None)
+    if bridge_policy is not None:
+        _bp = bool(bridge_policy)
     case_wire: dict[str, dict[str, Any]] | None = None
     if graph_wire_selective_bridge:
         from scripts.mkm_graph_wire_bridge_influence_v1 import (  # noqa: WPS433
@@ -276,13 +449,16 @@ def _run_evaluate_for_packet(
         inf = build_wire_influence_for_text(text, case_id=case_id)
         if inf:
             case_wire = {case_id: inf}
+    must_keep_base = {"사상의학", "체질", "sasang", "myeongri", "bible"}
+    if extra_must_keep:
+        must_keep_base = must_keep_base | {str(t).strip() for t in extra_must_keep if str(t).strip()}
     report = evaluate_report(
         doc,
         source_input="api:v2_trust_packet",
         mode="experimental",
         strategy=strategy,
         intensity=intensity,
-        must_keep={"사상의학", "체질", "sasang", "myeongri", "bible"},
+        must_keep=must_keep_base,
         jaccard_drop_threshold_pp=1.5,
         baseline_avg_jaccard=_baseline_avg_jaccard(),
         general_max_saving_rate=float(general_cap) if general_cap is not None else None,
@@ -297,6 +473,8 @@ def _run_evaluate_for_packet(
         emit_semantic_pointer=emit_semantic_pointer,
         graph_wire_selective_bridge=graph_wire_selective_bridge,
         case_graph_wire_influence=case_wire,
+        force_shard_id=_normalize_optional_shard_id(force_shard_id),
+        domain_min_saving_floor_overrides=domain_floor_overrides,
         **eval_extra,
     )
     elapsed_ms = round((perf_counter() - t0) * 1000.0, 3)
@@ -333,6 +511,7 @@ def _run_evaluate_for_packet(
         "semantic_pointer": sp_first,
         "compression_profile": compression_profile,
         "apply_gematria_4d_bridge_policy": _bp,
+        "enable_candidate_pool_expansion": pool_on,
     }
     if loss_profile == "lossless_text":
         out["integrity_note"] = "lossless_text_profile_engine_may_still_be_semantic_stub"
@@ -466,7 +645,15 @@ def _expand_codebook_only(pkt: CompressionPacket) -> tuple[str, dict[str, Any]]:
             flags["source"] = "hybrid_codec_v0_payload"
             return restored, flags
 
-    route = _router.route(pkt.compressed_text)
+    rm = pkt.router_meta if isinstance(pkt.router_meta, dict) else {}
+    rm_sid = str(rm.get("shard_id") or "").strip()
+    if rm_sid:
+        try:
+            route = _router.route_from_shard_id(rm_sid)
+        except ValueError:
+            route = _router.route(pkt.compressed_text)
+    else:
+        route = _router.route(pkt.compressed_text)
     flags["shard_id"] = route.shard_id
     flags["domain"] = route.domain
     flags["hangul_principle"] = route.hangul_principle
@@ -516,6 +703,63 @@ def _build_tracka_profile_payload(*, include_legacy_flat_keys: bool) -> dict[str
     return payload
 
 
+def _resolve_hybrid_corpus_binding(body: CompressRequestV2) -> HybridRouterResolution | None:
+    tag = str(body.corpus_tag or "").strip()
+    if not tag:
+        return None
+    res = resolve_hybrid_router(tag, sku_class=body.sku_class)
+    if res is None:
+        from fastapi import HTTPException
+
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "error": "unknown_corpus_tag",
+                "corpus_tag": tag,
+                "hybrid_router_spec": "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
+            },
+        ) from None
+    if not res.stub_can_apply_mkm:
+        from fastapi import HTTPException
+
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "error": "hybrid_router_external_backend",
+                "corpus_tag": tag,
+                "recommended_backend": res.recommended_backend,
+                "message": "v2 stub does not invoke LLMLingua; use scripts/run_compression_hybrid_router_spike_v1.py",
+                "research_only": True,
+            },
+        ) from None
+    return res
+
+
+def _effective_compress_overrides(
+    body: CompressRequestV2,
+    hybrid_res: HybridRouterResolution | None,
+) -> tuple[CompressionProfile, int | None, float | None, set[str]]:
+    profile: CompressionProfile = body.compression_profile
+    short_thr = body.short_context_token_threshold
+    short_max = body.short_context_max_saving_rate
+    overlay_extra = {
+        str(t).strip()
+        for t in (body.must_keep_overlay_terms or [])
+        if isinstance(t, str) and str(t).strip()
+    }
+    if hybrid_res is None:
+        return profile, short_thr, short_max, overlay_extra
+    if hybrid_res.compression_profile in ("economy", "fidelity", "literal"):
+        profile = hybrid_res.compression_profile  # type: ignore[assignment]
+    if hybrid_res.short_context_token_threshold is not None:
+        short_thr = int(hybrid_res.short_context_token_threshold)
+    if hybrid_res.short_context_max_saving_rate is not None:
+        short_max = float(hybrid_res.short_context_max_saving_rate)
+    if hybrid_res.overlay_terms and not body.must_keep_overlay_terms:
+        overlay_extra.update(hybrid_res.overlay_terms)
+    return profile, short_thr, short_max, overlay_extra
+
+
 @app.get("/health")
 def health() -> dict[str, Any]:
     profile_payload = _build_tracka_profile_payload(include_legacy_flat_keys=False)
@@ -527,24 +771,162 @@ def health() -> dict[str, Any]:
         "stub_engine": "evaluate_report",
         "compression_profiles": ["economy", "fidelity", "literal"],
         "compression_profile_default": "economy",
+        "hybrid_codec_router_modes": ["off", "assistant_literal", "economy_fallback"],
+        "hybrid_codec_router_default": "off",
+        "hybrid_router_spec": "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
+        "hybrid_router_stub_binding": "partial_stub_metadata",
         "anchor_ssot": "reports/constitution/btrack_pilot/comp_4d_anchor_ssot_v1.json",
         "legacy_flat_key_access_count": _legacy_flat_key_access_count(),
         **profile_payload,
     }
 
 
+def _load_coding_deep_pack_catalog() -> tuple[list[dict[str, Any]], str]:
+    import json as _json
+
+    manifest = _json.loads(_MANIFEST_PATH.read_text(encoding="utf-8"))
+    rows = load_template_catalog(_TEMPLATES_PATH)
+    return rows, str(manifest["catalog_sha256"])
+
+
+def _coding_deep_pack_lane_active(body: CompressRequestV2, route: ShardRoute) -> bool:
+    if body.enable_coding_deep_pack:
+        return True
+    if body.sku_class == "mask" and route.shard_id == "zone_f_code":
+        return True
+    return False
+
+
+def _try_coding_deep_pack_compress(
+    body: CompressRequestV2,
+    route: ShardRoute,
+    flags: dict[str, Any],
+) -> CompressResponseV2 | None:
+    if not _coding_deep_pack_lane_active(body, route):
+        return None
+    if not _TEMPLATES_PATH.is_file() or not _MANIFEST_PATH.is_file():
+        flags["coding_deep_pack_catalog_missing"] = True
+        return None
+    rows, catalog_sha256 = _load_coding_deep_pack_catalog()
+    resolved = resolve_template_match(body.text, rows)
+    if not resolved:
+        flags["coding_deep_pack_no_catalog_match"] = True
+        return None
+    template_id, literal_slots = resolved
+    twin = measure_template_wire_twin(
+        original_snippet=body.text,
+        template_id=template_id,
+        catalog_sha256=catalog_sha256,
+        catalog_rows=rows,
+        literal_slots=literal_slots,
+    )
+    wire = build_wire_packet(
+        template_id=template_id,
+        catalog_sha256=catalog_sha256,
+        literal_slots=literal_slots,
+    )
+    stub_block: dict[str, Any] = {
+        "reconstructed_text": body.text,
+        "global_token_saving_rate": twin["saving_rate"],
+        "reconstruction_fidelity_jaccard": twin["jaccard_proxy"],
+        "exact_restore_ok": twin["exact_restore_ok"],
+    }
+    residual_meta: dict[str, Any] = {
+        RESIDUAL_STUB_KEY: _stub_block_for_packet(stub_block, stateless_packet=body.stateless_packet),
+        "placeholder_map": {},
+        CODING_DEEP_PACK_KEY: wire,
+    }
+    _attach_lexicon_rail(residual_meta, body.text)
+    flags.update(
+        {
+            "coding_deep_pack_wire_v1": True,
+            "roundtrip_path": "template_catalog_wire_v1",
+            "template_id": template_id,
+            "catalog_sha256_short": catalog_sha256[:8],
+            "exact_restore_ok": twin["exact_restore_ok"],
+            "research_only": True,
+        }
+    )
+    if body.sku_class:
+        flags["sku_class"] = body.sku_class
+    if literal_slots:
+        flags["literal_slots"] = literal_slots
+    packet = CompressionPacket(
+        loss_profile=body.loss_profile,
+        compressed_text=str(twin["wire_compact"]),
+        residual_meta=residual_meta,
+        router_meta={"shard_id": route.shard_id, "domain": route.domain},
+        content_fingerprint=_fingerprint(body.text),
+    )
+    metrics = CompressionMetricsV2(
+        token_in=int(twin["original_token_count"]),
+        token_out=int(twin["wire_token_count"]),
+        savings_ratio=float(twin["saving_rate"]),
+    )
+    return CompressResponseV2(
+        compression_packet=packet,
+        compression_metrics=metrics,
+        integrity_flags=flags,
+    )
+
+
+def _try_expand_coding_deep_pack(pkt: CompressionPacket) -> tuple[str, dict[str, Any]] | None:
+    compact = str(pkt.compressed_text or "")
+    meta = pkt.residual_meta if isinstance(pkt.residual_meta, dict) else {}
+    wire_info = meta.get(CODING_DEEP_PACK_KEY) if isinstance(meta, dict) else None
+    if not compact.startswith("[ZF_MASK:") and not isinstance(wire_info, dict):
+        return None
+    if not _TEMPLATES_PATH.is_file() or not _MANIFEST_PATH.is_file():
+        return None
+    rows, catalog_sha256 = _load_coding_deep_pack_catalog()
+    try:
+        if compact.startswith("[ZF_MASK:"):
+            text = expand_template_wire(compact, rows, expected_catalog_sha256=catalog_sha256)
+        elif isinstance(wire_info, dict):
+            text = expand_template_wire(wire_info, rows, expected_catalog_sha256=catalog_sha256)
+        else:
+            return None
+    except (KeyError, ValueError):
+        return None
+    return text, {
+        "reassembly": "coding_deep_pack_wire_v1",
+        "source": CODING_DEEP_PACK_KEY,
+        "exact_restore_ok": True,
+        "roundtrip_path": "template_catalog_wire_v1",
+        "research_only": True,
+    }
+
+
 @app.post("/v2/compress", response_model=CompressResponseV2)
 def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
-    route = _router.route(body.text)
+    forced_sid = str(body.forced_shard_id or "").strip() or None
+    hybrid_res = _resolve_hybrid_corpus_binding(body)
+    requested_profile, short_thr_override, short_max_override, overlay_extra = _effective_compress_overrides(
+        body, hybrid_res
+    )
+    try:
+        route = _resolve_router_route(body.text, forced_sid)
+    except ValueError as exc:
+        from fastapi import HTTPException
+
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     flags: dict[str, Any] = {
         "stub_v2": True,
         "hangul_principle": route.hangul_principle,
         "loss_profile": body.loss_profile,
-        **profile_meta(body.compression_profile),
+        **profile_meta(requested_profile),
         **_build_tracka_profile_payload(include_legacy_flat_keys=False),
     }
+    if hybrid_res is not None:
+        flags.update(corpus_binding_integrity_flags(hybrid_res))
+    if forced_sid:
+        flags["forced_shard_id"] = forced_sid
+        flags["forced_shard_promoted_b2b"] = forced_sid.endswith("_b2b_v1")
     if body.stateless_packet:
         flags["stateless_packet"] = True
+    coding_resp = _try_coding_deep_pack_compress(body, route, flags)
+    if coding_resp is not None:
+        return coding_resp
     try:
         # Fused lane: lossless_text goes through deterministic hybrid codec first.
         if body.loss_profile == "lossless_text":
@@ -583,18 +965,111 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
                 integrity_flags=flags,
             )
 
+        plan = resolve_hybrid_codec_plan(
+            router=body.hybrid_codec_router,
+            session_turns=body.session_turns,
+            requested_profile=requested_profile,
+            short_context_token_threshold=short_thr_override,
+            short_context_max_saving_rate=short_max_override,
+        )
+        shortcap = plan.get("economy_shortcap") or {}
+        effective_profile: CompressionProfile = plan["effective_profile"]  # type: ignore[assignment]
+        effective_routing: RoutingProfile = body.routing_profile
+        enable_pool = bool(body.enable_candidate_pool_expansion)
+        if hybrid_res is not None:
+            rp = hybrid_res.routing_profile
+            if rp in ("default", "track_a_promoted", "b_track_domain_relax", "candidate_pool_on"):
+                effective_routing = rp  # type: ignore[assignment]
+            if hybrid_res.enable_candidate_pool_expansion:
+                enable_pool = True
         ev = _run_evaluate_for_packet(
             body.text,
             body.loss_profile,
             emit_semantic_pointer=bool(body.emit_semantic_pointer),
             graph_wire_selective_bridge=bool(body.graph_wire_selective_bridge),
             client_request_id=body.client_request_id,
-            routing_profile=body.routing_profile,
-            compression_profile=body.compression_profile,
+            routing_profile=effective_routing,
+            compression_profile=effective_profile,
+            force_shard_id=forced_sid,
+            extra_must_keep=overlay_extra if overlay_extra else None,
+            short_context_token_threshold=shortcap.get("short_context_token_threshold")
+            if shortcap.get("short_context_token_threshold") is not None
+            else short_thr_override,
+            short_context_max_saving_rate=shortcap.get("short_context_max_saving_rate")
+            if shortcap.get("short_context_max_saving_rate") is not None
+            else short_max_override,
+            short_context_disable_min_saving_floor=body.short_context_disable_min_saving_floor,
+            enable_candidate_pool_expansion=enable_pool,
         )
+        gr = ev.get("global_ratio")
+        gr_typed: float | None = float(gr) if gr is not None else None
+        rec_raw = str(ev.get("reconstructed_text") or body.text)
+        comp_raw = str(ev.get("compressed_text") or body.text)
+        comp, rec, ratio_final, jac_after, trust_restored = _apply_v2_trust_restoration(
+            body.text, comp_raw, rec_raw, gr_typed
+        )
+        gate_jac = _hybrid_fallback_gate_jaccard(
+            body.text,
+            ev,
+            loss_profile=body.loss_profile,
+            route=route,
+            stateless_packet=body.stateless_packet,
+            jac_after_trust=jac_after,
+        )
+        if (
+            body.hybrid_codec_router == "economy_fallback"
+            and gate_jac < HYBRID_CODEC_JACCARD_FLOOR
+        ):
+            plan["economy_attempt"] = {
+                "ok": False,
+                "jaccard_proxy": round(float(gate_jac), 6),
+                "compression_profile": "economy",
+                "gate": "stateless_codebook_only" if body.stateless_packet else "trust_restored",
+            }
+            ev = _run_evaluate_for_packet(
+                body.text,
+                body.loss_profile,
+                emit_semantic_pointer=bool(body.emit_semantic_pointer),
+                graph_wire_selective_bridge=bool(body.graph_wire_selective_bridge),
+                client_request_id=body.client_request_id,
+                routing_profile=effective_routing,
+                compression_profile="literal",
+                force_shard_id=forced_sid,
+                extra_must_keep=overlay_extra if overlay_extra else None,
+                short_context_token_threshold=None,
+                short_context_max_saving_rate=None,
+                short_context_disable_min_saving_floor=body.short_context_disable_min_saving_floor,
+                enable_candidate_pool_expansion=enable_pool,
+            )
+            gr = ev.get("global_ratio")
+            gr_typed = float(gr) if gr is not None else None
+            rec_raw = str(ev.get("reconstructed_text") or body.text)
+            comp_raw = str(ev.get("compressed_text") or body.text)
+            comp, rec, ratio_final, jac_after, trust_restored = _apply_v2_trust_restoration(
+                body.text, comp_raw, rec_raw, gr_typed
+            )
+            plan["fallback_used"] = True
+            plan["profiles_tried"] = ["economy", "literal"]
+            plan["route_reason"] = "literal_fallback_after_economy_fail"
+            plan["effective_profile"] = "literal"
+            effective_profile = "literal"
+        if body.must_keep_overlay_terms:
+            flags["must_keep_overlay_terms_count"] = len(body.must_keep_overlay_terms)
+        short_thr = shortcap.get("short_context_token_threshold")
+        if short_thr is not None:
+            flags["short_context_token_threshold"] = short_thr
+            flags["short_context_max_saving_rate"] = shortcap.get("short_context_max_saving_rate")
+            flags["short_context_policy_applied"] = _token_count_proxy(body.text) <= int(short_thr)
         flags["evaluate_report_ms"] = ev.get("elapsed_ms")
-        flags["routing_profile"] = body.routing_profile
-        flags.update(profile_meta(body.compression_profile))
+        flags["routing_profile"] = effective_routing
+        if enable_pool:
+            flags["enable_candidate_pool_expansion"] = True
+        flags.update(profile_meta(effective_profile))
+        flags.update(hybrid_router_integrity_flags(plan))
+        flags["compression_profile_requested"] = requested_profile
+        flags["compression_profile_effective"] = effective_profile
+        if body.hybrid_codec_router != "off":
+            flags["hybrid_codec_gate_jaccard"] = round(float(gate_jac), 6)
         flags["apply_gematria_4d_bridge_policy_effective"] = bool(
             ev.get("apply_gematria_4d_bridge_policy")
         )
@@ -604,15 +1079,12 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
             flags["routing_research_only"] = True
         if route_meta.get("promotion_signoff_path"):
             flags["promotion_signoff_path"] = route_meta["promotion_signoff_path"]
+        if route_meta.get("candidate_artifact_path"):
+            flags["candidate_pool_artifact_path"] = route_meta["candidate_artifact_path"]
+        if ev.get("enable_candidate_pool_expansion") or body.enable_candidate_pool_expansion:
+            flags["enable_candidate_pool_expansion"] = True
         if not ev.get("ok"):
             flags["evaluate_report_degraded"] = True
-        gr = ev.get("global_ratio")
-        gr_typed: float | None = float(gr) if gr is not None else None
-        rec_raw = str(ev.get("reconstructed_text") or body.text)
-        comp_raw = str(ev.get("compressed_text") or body.text)
-        comp, rec, ratio_final, jac_after, trust_restored = _apply_v2_trust_restoration(
-            body.text, comp_raw, rec_raw, gr_typed
-        )
         flags["jaccard_proxy"] = jac_after
         if trust_restored:
             flags["jaccard_trust_restoration"] = True
@@ -688,6 +1160,12 @@ def expand_v2(body: ExpandRequestV2) -> ExpandResponseV2:
     pkt = body.compression_packet
     mode = body.decode_mode
     flags: dict[str, Any] = {"stub_v2": True, "decode_mode": mode}
+
+    coding = _try_expand_coding_deep_pack(pkt)
+    if coding is not None:
+        text, extra = coding
+        flags.update(extra)
+        return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
 
     if mode == "codebook_only":
         text, cb_flags = _expand_codebook_only(pkt)

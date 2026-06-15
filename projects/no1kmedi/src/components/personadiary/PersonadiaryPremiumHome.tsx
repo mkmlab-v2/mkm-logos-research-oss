@@ -2,33 +2,84 @@
 
 import Link from "next/link";
 import { personadiaryCopy } from "@/content/personadiaryCopy";
+import { personadiaryPublicPath } from "@/lib/personadiaryMobileOpsV1";
 import { PersonadiaryDailyGuideCards } from "./PersonadiaryDailyGuideCards";
 import { PersonadiaryReflectTeaser } from "./PersonadiaryReflectTeaser";
 import { PersonadiaryRitualDraw } from "./PersonadiaryRitualDraw";
 import { PersonadiaryDailyGuideProvider } from "./usePersonadiaryDailyGuide";
 
+const HOME_BRIDGE_ROWS = [
+  {
+    label: "4레인",
+    value: "몸·마음·일·쉼 — 한 탭으로 전환",
+  },
+  {
+    label: "Pull 가이드",
+    value: "푸시 없음 · 원할 때만 인출",
+  },
+  {
+    label: "로컬 일기",
+    value: "IndexedDB만 · 서버 업로드 없음",
+  },
+  {
+    label: "격벽",
+    value: "예언·적중·% 단정 없음 · preview_only",
+  },
+] as const;
+
 export function PersonadiaryPremiumHome() {
+  const opsHref = personadiaryPublicPath("/ops");
+
   return (
     <>
-      <section className="pd-premium-hero" aria-labelledby="personadiary-title">
-        <div className="pd-premium-hero-bg" aria-hidden="true" />
-        <div className="pd-premium-hero-inner">
-          <div className="pd-premium-hero-copy">
-            <span className="pd-premium-eyebrow">Persona Diary · Open Beta</span>
-            <h1 id="personadiary-title">오늘의 마음을, 빛의 구슬에 남기다</h1>
-            <p className="pd-premium-lead">
-              AI 마음 일기·하루 리플렉션 프리뷰. 평온을 돕는 가이드형 성찰
-              셸이며, 의료·투자·처방 조언을 대체하지 않습니다.
-            </p>
-            <div className="pd-premium-cta">
-              <a className="btn btn-primary" href={personadiaryCopy.links.waitlist}>
-                사전 알림 등록
-              </a>
-              <Link className="btn btn-ghost" href={personadiaryCopy.links.demo}>
-                전체 데모 체험
-              </Link>
-            </div>
+      <section className="pd-home-bridge-hero" aria-labelledby="personadiary-title">
+        <div className="pd-premium-section-inner">
+          <span className="pd-premium-eyebrow">Persona Diary · Pull-first · preview</span>
+          <h1 id="personadiary-title">내 기지</h1>
+          <p className="pd-home-bridge-lead">
+            비예측형 인지 방화벽 — 주의력은 Pull로만 회수합니다.
+          </p>
+          <p className="pd-home-bridge-sub">
+            4레인 · 주간 5 · 지금 1타 · 로컬 일기 · SEND_GATE: HOLD
+          </p>
+          <div className="pd-premium-cta pd-home-bridge-cta-row">
+            <Link className="btn btn-primary pd-home-bridge-cta-primary" href={opsHref}>
+              내 기지 열기
+            </Link>
+            <a className="btn btn-ghost" href={personadiaryCopy.links.waitlist}>
+              사전 알림
+            </a>
+            <Link className="btn btn-ghost" href={personadiaryCopy.links.demo}>
+              콘셉트 데모
+            </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="pd-home-bridge-features" aria-labelledby="pd-bridge-features-title">
+        <div className="pd-premium-section-inner">
+          <p id="pd-bridge-features-title" className="pd-ios-group-label">
+            기지에서 하는 일
+          </p>
+          <div className="pd-ios-inset pd-home-feature-inset">
+            {HOME_BRIDGE_ROWS.map((row, index) => (
+              <div
+                key={row.label}
+                className={`pd-ios-row pd-ios-row--static${
+                  index < HOME_BRIDGE_ROWS.length - 1 ? " pd-ios-row--divider" : ""
+                }`}
+              >
+                <span className="pd-ios-row-label">{row.label}</span>
+                <span className="pd-ios-row-value">{row.value}</span>
+              </div>
+            ))}
+          </div>
+          <p className="pd-home-bridge-hint">
+            iPhone: Safari에서 열고 <strong>홈 화면에 추가</strong>하면 앱처럼 씁니다.
+          </p>
+          <Link className="btn btn-primary pd-home-bridge-cta-secondary" href={opsHref}>
+            내 기지로 이동
+          </Link>
         </div>
       </section>
 
@@ -36,42 +87,42 @@ export function PersonadiaryPremiumHome() {
         <PersonadiaryRitualDraw />
 
         <section
-          className="pd-premium-reflect-section"
+          className="pd-premium-reflect-section pd-home-preview-section"
           aria-labelledby="pd-reflect-home-title"
         >
           <div className="pd-premium-section-inner">
-            <h2 id="pd-reflect-home-title">지금 이 순간, 가볍게 성찰해 보기</h2>
+            <h2 id="pd-reflect-home-title">홈 미리보기 · 빛의 구슬</h2>
             <p className="pd-premium-section-lead">
-              홈에서 바로 체험할 수 있는 미리보기입니다. 더 깊은 인터랙션은
-              콘셉트 데모에서 이어집니다.
+              아래는 체험용 미리보기입니다. 매일 쓰는 기지는{" "}
+              <Link href={opsHref}>내 기지(/ops)</Link>에서 이어집니다.
             </p>
             <div className="pd-premium-reflect-grid">
               <div className="pd-glass pd-premium-reflect-panel">
                 <PersonadiaryReflectTeaser />
                 <PersonadiaryDailyGuideCards />
               </div>
-            <aside className="pd-glass pd-premium-aside">
-              <h3>마음돌봄 셸</h3>
-              <p>
-                시각·청각 리플렉션만 제공합니다. 일기 영속 저장·결제·임상 연동은
-                오픈베타 범위 밖입니다.
-              </p>
-              <p className="pd-premium-aside-muted">
-                인프라·압축 수치는 B2B 도메인(jema-ai.com · jemaai.cloud)에만
-                노출합니다.
-              </p>
-            </aside>
-          </div>
+              <aside className="pd-glass pd-premium-aside">
+                <h3>성찰 셸 (preview)</h3>
+                <p>
+                  시각·청각 리플렉션만 제공합니다. 영속 저장·결제·임상 연동은 기지 범위와
+                  별도입니다.
+                </p>
+                <p className="pd-premium-aside-muted">
+                  Logos·렌즈는 <span className="pd-ops-hypo-tag">[NON_GATING]</span> · 의료·투자
+                  조언 아님
+                </p>
+              </aside>
+            </div>
           </div>
         </section>
       </PersonadiaryDailyGuideProvider>
 
-      <section
-        className="pd-premium-pillars"
-        aria-labelledby="pd-pillars-title"
-      >
+      <section className="pd-premium-pillars pd-home-pillars" aria-labelledby="pd-pillars-title">
         <div className="pd-premium-section-inner">
           <h2 id="pd-pillars-title">프리뷰 검증 축</h2>
+          <p className="pd-premium-section-lead">
+            유용함 ≠ 예측 적중. B-track 성찰·리듬 보조만 — Track A·실매매 합선 없음.
+          </p>
           <div className="pd-pillar-grid">
             <article className="pd-glass pd-pillar-card">
               <span className="pd-pillar-icon" aria-hidden="true">
@@ -80,10 +131,8 @@ export function PersonadiaryPremiumHome() {
                   <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
                 </svg>
               </span>
-              <h3>찰나의 나</h3>
-              <p>
-                매일 한 줄 리플렉션으로 기록 습관과 감정·상태 리캡을 보조합니다.
-              </p>
+              <h3>한 줄 성찰</h3>
+              <p>매일 짧게 정리하는 로컬 일기·체크포인트 (예언·적중 아님).</p>
             </article>
             <article className="pd-glass pd-pillar-card">
               <span className="pd-pillar-icon" aria-hidden="true">
@@ -91,10 +140,8 @@ export function PersonadiaryPremiumHome() {
                   <path d="M12 3c-4 0-7 2.5-7 6 0 5 7 12 7 12s7-7 7-12c0-3.5-3-6-7-6z" />
                 </svg>
               </span>
-              <h3>개인화 콘텐츠</h3>
-              <p>
-                스트레스·루틴 신호를 바탕으로 오디오·비주얼 추천을 실험합니다.
-              </p>
+              <h3>Pull 가이드</h3>
+              <p>오늘의 흐름·질문거리 — 푸시 없이 버튼으로만 인출합니다.</p>
             </article>
             <article className="pd-glass pd-pillar-card">
               <span className="pd-pillar-icon" aria-hidden="true">
@@ -103,9 +150,10 @@ export function PersonadiaryPremiumHome() {
                   <path d="M8 12h8M12 8v8" />
                 </svg>
               </span>
-              <h3>모먼트 수집</h3>
+              <h3>레인 1탭</h3>
               <p>
-                카드형 수집·공유는 정책·법무·정산 게이트 이후 별도 검증합니다.
+                OS 스크린타임 설정 대신 인지 레인 전환 — v0.9는 차단 stub, Phase 2에서 API 연동
+                [HYPO].
               </p>
             </article>
           </div>

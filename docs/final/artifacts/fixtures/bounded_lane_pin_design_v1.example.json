@@ -1,6 +1,6 @@
 {
   "schema": "bounded_lane_pin_v1",
-  "generated_at_utc": "2026-06-13T20:03:51Z",
+  "generated_at_utc": "2026-06-13T20:40:31Z",
   "lane": "design",
   "next_action_one_line": "6/13 LIVE — developer benchmark+GitHub CTA · gitea `97825001da` · live smoke 12/12 · `SEND_GATE: HOLD` · 다음 1타: 패시브 hub smoke · 금지: 47.5%·9.1% 헤드라인·Track A·SEND",
   "fact_lock_pointer": "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
@@ -17,7 +17,9 @@
       "step_id": "resume_pack",
       "runner": "python",
       "argv": [
-        "scripts/build_mkm_chat_resume_pack_v1.py"
+        "scripts/build_mkm_chat_resume_pack_v1.py",
+        "--lane",
+        "design"
       ]
     },
     {
@@ -27,5 +29,12 @@
         "scripts/verify_p0_constitution_gate_paths.ps1"
       ]
     }
-  ]
+  ],
+  "peer_handoff_pointer": "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_design_v1_latest.md",
+  "ltm_hint": {
+    "concept_id": "design_showroom_domain_portfolio",
+    "software_layer": "packaging",
+    "blast_radius": "lane",
+    "label_ko": "Design/Showroom · 도메인 포트폴리오"
+  }
 }

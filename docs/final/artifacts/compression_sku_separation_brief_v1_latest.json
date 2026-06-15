@@ -1,0 +1,102 @@
+{
+  "schema": "compression_sku_separation_brief_v1",
+  "generated_at_utc": "2026-06-15T20:00:00Z",
+  "track": "B",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "track_a_active_untouched": true,
+  "purpose_ko": "SKU-COORD vs SKU-MASK 격벽 1-pager — GTM %·SLA 약속 없음; FAIL-COMP-004 축 분리만.",
+  "factcheck_pointer": "docs/final/artifacts/ltm_moat_factcheck_v1_latest.json",
+  "hybrid_router_spec": "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
+  "sku_classes": {
+    "SKU-COORD": {
+      "sku_class": "coord",
+      "label_ko": "선동기화 장부 + pointer/inject ref wire",
+      "wire_payload": "pointer_plus_fingerprint_or_ltm_lane_inject",
+      "original_bulk_to_server_required": false,
+      "bilateral_ground_truth_required": true,
+      "deployment_modes": [
+        {
+          "mode_id": "air_gap_on_prem",
+          "maturity": "blueprint",
+          "summary_ko": "LTM Graph OS + codebook 패키지를 고객 VPC/폐쇄망에 설치; 원문 bulk는 MKM SaaS 미수신."
+        },
+        {
+          "mode_id": "edge_encoder_control_plane_relay",
+          "maturity": "blueprint",
+          "summary_ko": "encoder/decoder는 고객 edge; MKM cloud는 control-plane·metering만. 로컬 encoder SDK 미구현."
+        }
+      ],
+      "forbidden_in_this_brief": ["masked_jsonl_poc_metrics", "hybrid_router_tier_a_gate", "track_a_47pct"]
+    },
+    "SKU-MASK": {
+      "sku_class": "mask",
+      "label_ko": "마스킹 JSONL + v2 stateless/hybrid compress",
+      "wire_payload": "masked_text_or_trust_packet",
+      "original_bulk_to_server_required": true,
+      "bilateral_ground_truth_required": false,
+      "deployment_modes": [
+        {
+          "mode_id": "stateless_poc_harness",
+          "maturity": "poc_scripted",
+          "script": "scripts/run_customer_compression_stateless_poc_v1.py"
+        },
+        {
+          "mode_id": "hybrid_corpus_router",
+          "maturity": "spike_synced",
+          "spec": "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
+          "sync_script": "scripts/sync_compression_hybrid_router_spec_from_spike_v1.py"
+        }
+      ],
+      "tier_a_gate": {
+        "mean_operational_pass_rate": 0.8667,
+        "corpus_ids": ["public_open_web_v1", "wtt_premium_cs_customer_v1"],
+        "excluded_from_headline": "open_structured_long_v1",
+        "artifact": "reports/compression_hybrid_router_spike_v1_latest.json",
+        "status_line_en": "Tier A operational pass rate (~86.7%) — separate from Golden-40 and open_structured_long; not a coding deep pack approval metric."
+      },
+      "coding_deep_pack_poc": {
+        "maturity": "seed_poc",
+        "vertical": "zone_f_code",
+        "template_catalog_jsonl": "codebook/templates/zone_f_code_templates_v1.jsonl",
+        "template_manifest": "codebook/templates/zone_f_code_templates_manifest_v1.json",
+        "twin_gate_artifact": "docs/final/artifacts/compression_coding_deep_pack_gate_v1_latest.json",
+        "signoff_envelope": "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
+        "builder_script": "scripts/build_compression_coding_deep_pack_gate_v1.py",
+        "signoff_builder_script": "scripts/build_compression_coding_deep_pack_signoff_envelope_v1.py",
+        "adjacent_not_decision": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json"
+      }
+    }
+  },
+  "axis_separation": {
+    "golden40_bench_evaluate_report": {
+      "headline": "~47.4% global saving [internal signoff only]",
+      "artifact": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json",
+      "not_equal": "v2_stateless_token_proxy"
+    },
+    "v2_stateless_proxy": {
+      "headline": "~6.4% operational proxy on Golden-40 stateless path [HYPO]",
+      "artifact": "reports/compression_sota_ablation_v1_latest.json",
+      "not_equal": "golden40_bench_evaluate_report"
+    }
+  },
+  "forbidden_headlines": [
+    "99% universal compression API",
+    "100% context synchronization",
+    "zero data exfiltration",
+    "Track A 47% equals customer PoC saving",
+    "open_structured_long saving in hybrid Tier A headline",
+    "SKU-COORD SDK fully shipped"
+  ],
+  "pr_firewall": {
+    "include": ["MASK hybrid router", "candidate_pool_on artifact pointer", "tier_a_gate ~86.7%"],
+    "exclude": ["SKU-COORD sales copy beyond boundary", "ACTIVE swap", "open_structured_long KPI merge"]
+  },
+  "reproduce": [
+    "py scripts/sync_compression_hybrid_router_spec_from_spike_v1.py",
+    "py scripts/run_compression_hybrid_router_spike_v1.py",
+    "pytest tests/test_compression_sku_separation_v1.py -q"
+  ]
+}

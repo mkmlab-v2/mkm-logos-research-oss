@@ -286,6 +286,34 @@ components:
             omits `reconstructed_text` (no full-text leak). Pair with `POST /v2/expand` and
             `decode_mode=codebook_only` for round-trip. Allowed structured residual may include
             `hybrid_codec_v0_payload`, `mkm_lexicon_rail_v1`, `placeholder_map`, metrics fields.
+        forced_shard_id:
+          type: string
+          description: |
+            Optional forced domain shard (e.g. B2B catalog `zone_*_b2b_v1`). Skips keyword scoring;
+            uses `DomainSpecificRouter.route_from_shard_id`. B2B shards under `codebook/shards/b2b/`
+            are catalog-only and do not participate in default auto-routing. Research/B2B PoC only —
+            not a Track A frozen bench or customer SLA claim.
+        corpus_tag:
+          type: string
+          description: |
+            Hybrid router corpus tag (research_only). Resolves profile/shortcap/overlay overrides from
+            `docs/final/artifacts/compression_hybrid_router_spec_v1.json`. External backends (e.g.
+            `llmlingua2`) return HTTP 422 with `recommended_backend` — stub does not invoke them.
+        sku_class:
+          type: string
+          enum: [coord, mask]
+          description: |
+            Optional SKU class hint. `coord` = pointer/inject pre-sync (SKU-COORD); `mask` = masked
+            JSONL + v2/hybrid (SKU-MASK). Default from binding table when omitted.
+        enable_coding_deep_pack:
+          type: boolean
+          default: false
+          description: |
+            B-track [HYPO]: zone_f_code template-catalog wire (`ZF_MASK`) when input matches
+            `codebook/templates/zone_f_code_templates_v1.jsonl` (exact or literal-slot variant).
+            Also auto-enabled when `sku_class=mask` and routed shard is `zone_f_code`. Pair expand
+            with default `decode_mode=stub`; emits `integrity_flags.coding_deep_pack_wire_v1`.
+            research_only · not Track A ACTIVE · not customer SLA.
     CompressResponseV2:
       type: object
       required: [compression_packet, integrity_flags]

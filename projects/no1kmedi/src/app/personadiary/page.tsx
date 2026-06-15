@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
 export default function PersonaDiaryPreviewPage() {
   return (
     <PersonadiaryChrome premium>
-      <main id="main" className="pd-main-premium">
+      <main id="main" className="pd-main-premium pd-main-premium--ios-bridge">
         <PersonadiaryPremiumHome />
 
         <PersonadiaryWaitlist embedUrl={personadiaryWaitlistEmbedUrl()} />
@@ -28,6 +28,9 @@ export default function PersonaDiaryPreviewPage() {
                 <li>
                   본 페이지는 콘셉트 프리뷰이며, 의료·투자·법률 의사결정을
                   대체하지 않습니다.
+                </li>
+                <li>
+                  비예측형 성찰 · 명리=오늘의 흐름·질문거리 · 예언·적중·%·운세 단정 없음.
                 </li>
                 <li>
                   성과 보장, 무손실 완성, Track A/실매매 자동 합선 주장을 하지

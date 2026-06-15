@@ -16,6 +16,7 @@ from fastapi.testclient import TestClient
 
 from scripts.compression_token_api_v2_stub import (
     API_CONTRACT_VERSION,
+    CODING_DEEP_PACK_KEY,
     PACKET_FORMAT_VERSION,
     RESIDUAL_STUB_KEY,
     _legacy_flat_key_access_count,
@@ -64,6 +65,142 @@ def test_openapi_v2_contract_has_compression_profile() -> None:
     cp = props["compression_profile"]
     assert cp.get("default") == "economy"
     assert set(cp.get("enum", [])) == {"economy", "fidelity", "literal"}
+
+
+def test_openapi_v2_contract_has_corpus_tag_and_sku_class() -> None:
+    yaml = pytest.importorskip("yaml")
+    spec = yaml.safe_load(OPENAPI_V2.read_text(encoding="utf-8"))
+    props = spec["components"]["schemas"]["CompressRequestV2"]["properties"]
+    assert "corpus_tag" in props
+    assert props["sku_class"]["enum"] == ["coord", "mask"]
+
+
+def test_compress_forced_shard_id_b2b_catalog() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "zzqv nomatch token",
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_g_health_b2b_v1",
+            "client_request_id": "test-v2-forced-b2b",
+        },
+    )
+    assert cr.status_code == 200
+    pkt = cr.json()["compression_packet"]
+    assert pkt["router_meta"]["shard_id"] == "zone_g_health_b2b_v1"
+    assert cr.json()["integrity_flags"].get("forced_shard_id") == "zone_g_health_b2b_v1"
+
+
+def test_compress_corpus_tag_public_open_web_applies_binding() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "public open web corpus sample for hybrid router binding",
+            "loss_profile": "semantic_general",
+            "corpus_tag": "public-open-web-v1",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("corpus_tag") == "public-open-web-v1"
+    assert flags.get("hybrid_router_backend_recommended") == "mkm_candidate_pool"
+    assert flags.get("hybrid_router_stub_applies_mkm") is True
+    assert flags.get("routing_profile_binding") == "candidate_pool_on"
+    assert flags.get("enable_candidate_pool_expansion_binding") is True
+    assert flags.get("sku_class") == "mask"
+
+
+def test_compress_corpus_tag_wtt_applies_shortcap_and_overlay() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "WTT premium CS customer short context sample",
+            "loss_profile": "semantic_general",
+            "corpus_tag": "wtt-premium-cs-customer-v1",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("corpus_tag") == "wtt-premium-cs-customer-v1"
+    assert flags.get("hybrid_router_backend_recommended") == "mkm_v2_economy_shortcap"
+    assert flags.get("short_context_token_threshold") == 30
+    assert flags.get("short_context_max_saving_rate") == 0.3
+    assert "must_keep_overlay_json" in flags
+
+
+def test_compress_corpus_tag_golden40_external_backend_422() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "golden40 internal regression lane",
+            "loss_profile": "semantic_general",
+            "corpus_tag": "golden40_internal",
+        },
+    )
+    assert cr.status_code == 422
+    detail = cr.json()["detail"]
+    assert detail["error"] == "hybrid_router_external_backend"
+    assert detail["recommended_backend"] == "llmlingua2"
+
+
+def test_compress_unknown_corpus_tag_422() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "unknown tag sample",
+            "loss_profile": "semantic_general",
+            "corpus_tag": "no-such-corpus-v99",
+        },
+    )
+    assert cr.status_code == 422
+    assert cr.json()["detail"]["error"] == "unknown_corpus_tag"
+
+
+def test_compress_must_keep_overlay_terms_flag() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "공급망 SCM BOM 리드타임 재고 PoC",
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_a_scm_b2b_v1",
+            "must_keep_overlay_terms": ["BOM", "리드타임", "공급망"],
+            "client_request_id": "test-v2-overlay-mk",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("must_keep_overlay_terms_count") == 3
+
+
+def test_compress_short_context_cap_policy_flag() -> None:
+    sample = "공급망 SCM BOM 리드타임 재고 안전분 policy 범위"
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_a_scm_b2b_v1",
+            "short_context_token_threshold": 40,
+            "short_context_max_saving_rate": 0.35,
+            "client_request_id": "test-v2-short-cap",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("short_context_token_threshold") == 40
+    assert flags.get("short_context_policy_applied") is True
+
+
+def test_compress_forced_shard_id_unknown_422() -> None:
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": "sample",
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_no_such_shard_xyz",
+        },
+    )
+    assert cr.status_code == 422
 
 
 def test_openapi_v2_contract_has_stateless_packet_and_codebook_only() -> None:
@@ -311,6 +448,20 @@ def test_v2_stateless_stub_fallback_is_degraded_not_dod_compliant():
     assert flags.get("source") != RESIDUAL_STUB_KEY
 
 
+def test_v2_compress_no_force_shard_id_none_string():
+    """Regression: str(None) must not become shard_id 'None' in evaluate_report."""
+    sample = "사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference."
+    cr = client.post(
+        "/v2/compress",
+        json={"text": sample, "loss_profile": "semantic_general"},
+    )
+    assert cr.status_code == 200
+    flags = cr.json().get("integrity_flags") or {}
+    assert flags.get("evaluate_report_failed") is not True
+    assert flags.get("error_class") != "ValueError"
+    assert cr.json().get("compression_metrics") is not None
+
+
 def test_v2_compress_emit_semantic_pointer_in_residual():
     sample = "사상의학 체질 분류 예시 텍스트입니다. sasang myeongri bible reference."
     cr = client.post(
@@ -513,6 +664,112 @@ def test_v2_lossless_profile_uses_fused_hybrid_codec():
     er = client.post("/v2/expand", json={"compression_packet": pkt})
     assert er.status_code == 200
     assert er.json()["text"] == sample
+
+
+def test_v2_compress_zone_f_code_forced_shard_twin_metrics() -> None:
+    sample = "def api_endpoint() -> dict:\n    return {\"schema\": \"v1\", \"json\": True}"
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_f_code",
+            "client_request_id": "test-v2-zone-f-code-twin",
+        },
+    )
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("forced_shard_id") == "zone_f_code"
+    er = client.post("/v2/expand", json={"compression_packet": cr.json()["compression_packet"]})
+    assert er.status_code == 200
+    expanded = er.json()["text"]
+    assert "jaccard_proxy" in flags or "jaccard_proxy" in er.json().get("integrity_flags", {})
+
+
+def test_v2_coding_deep_pack_wire_roundtrip_exact() -> None:
+    import json
+
+    row = json.loads(
+        (ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl").read_text(encoding="utf-8").splitlines()[0]
+    )
+    sample = str(row["snippet"])
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_f_code",
+            "sku_class": "mask",
+            "client_request_id": "test-v2-coding-deep-pack-1",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    cj = cr.json()
+    flags = cj["integrity_flags"]
+    assert flags.get("coding_deep_pack_wire_v1") is True
+    assert flags.get("exact_restore_ok") is True
+    pkt = cj["compression_packet"]
+    assert str(pkt["compressed_text"]).startswith("[ZF_MASK:")
+    assert CODING_DEEP_PACK_KEY in pkt["residual_meta"]
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200, er.text
+    ej = er.json()
+    assert ej["text"] == sample
+    assert ej["integrity_flags"].get("reassembly") == "coding_deep_pack_wire_v1"
+
+
+def test_v2_coding_deep_pack_enable_flag_roundtrip() -> None:
+    import json
+
+    row = json.loads(
+        (ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl").read_text(encoding="utf-8").splitlines()[8]
+    )
+    sample = str(row["snippet"])
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": sample,
+            "loss_profile": "semantic_general",
+            "enable_coding_deep_pack": True,
+            "client_request_id": "test-v2-coding-deep-pack-flag",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    cj = cr.json()
+    assert cj["integrity_flags"].get("coding_deep_pack_wire_v1") is True
+    pkt = cj["compression_packet"]
+    assert str(pkt["compressed_text"]).startswith("[ZF_MASK:")
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200
+    assert er.json()["text"] == sample
+
+
+def test_v2_coding_deep_pack_literal_slot_roundtrip() -> None:
+    variant = (
+        'def get_user_api_endpoint(account_id: str) -> dict:\n'
+        '    """Fetch user JSON schema from REST endpoint."""\n'
+        '    return {"account_id": account_id, "schema": "v1"}'
+    )
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": variant,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_f_code",
+            "sku_class": "mask",
+            "client_request_id": "test-v2-coding-deep-pack-slots",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    cj = cr.json()
+    flags = cj["integrity_flags"]
+    assert flags.get("coding_deep_pack_wire_v1") is True
+    assert flags.get("literal_slots") == {"user_id": "account_id"}
+    pkt = cj["compression_packet"]
+    assert "|" in str(pkt["compressed_text"])
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200, er.text
+    assert er.json()["text"] == variant
 
 
 def test_resolve_latest_codebook_uses_production_pointer() -> None:

@@ -72,6 +72,14 @@
 
   CursorSessionUpgrade = Invoke-MkmCursorSessionUpgrade_v1.ps1 (solo ops + ops memory index + lane resume pack + human_gate report)
 
+  BoundedLaneLoopShadow = run_workspace_automation_health.ps1 -BoundedLaneLoopSmokeOnly (P0 + bounded lane pytest + dry-run invoke)
+
+  DocSyncSafe = Invoke-MkmDocSyncSafe_v1.ps1
+
+  TestRecoverySafe = Invoke-MkmTestRecoverySafe_v1.ps1
+
+  CursorAutomationsRoutine = Invoke-MkmCursorAutomationsRoutine_v1.ps1 -Mode recommended (local_only 권장 체인)
+
 
 
 .EXAMPLE
@@ -114,7 +122,7 @@ param(
 
     [Parameter(Mandatory = $true, Position = 0)]
 
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'BoundedLaneLoopShadow', 'CursorAutomationsRoutine', 'DocSyncSafe', 'TestRecoverySafe', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
 
     [string]$Persona
 
@@ -539,6 +547,54 @@ try {
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
 
             & $ps @common $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'BoundedLaneLoopShadow' {
+
+            $script = Join-Path $PSScriptRoot 'run_workspace_automation_health.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -BoundedLaneLoopSmokeOnly
+
+            exit $LASTEXITCODE
+
+        }
+
+        'CursorAutomationsRoutine' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmCursorAutomationsRoutine_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -Mode recommended -WorkspaceRoot $WorkspaceRoot
+
+            exit $LASTEXITCODE
+
+        }
+
+        'DocSyncSafe' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmDocSyncSafe_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+
+            exit $LASTEXITCODE
+
+        }
+
+        'TestRecoverySafe' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmTestRecoverySafe_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
 
             exit $LASTEXITCODE
 
