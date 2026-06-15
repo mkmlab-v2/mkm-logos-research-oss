@@ -83,12 +83,16 @@ def test_build_en_business_spec_smoke() -> None:
 def test_build_catalog_from_corpus_fixture_smoke(tmp_path: Path) -> None:
     report = tmp_path / "extract_report.json"
     prospect = tmp_path / "prospect.jsonl"
+    empty_catalog = tmp_path / "empty_catalog.jsonl"
+    empty_catalog.write_text("", encoding="utf-8")
     proc = subprocess.run(
         [
             sys.executable,
             str(BUILDER),
             "--input-jsonl",
             str(FIXTURE),
+            "--catalog",
+            str(empty_catalog),
             "--write-prospect",
             "--report-out",
             str(report),
