@@ -1,0 +1,135 @@
+{
+  "schema": "zone_h_en_business_template_catalog_extract_v1",
+  "generated_at_utc": "2026-06-15T03:27:59Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "vertical_id": "zone_h_en_business_v1",
+  "wire_family": "BIZ_MASK",
+  "spec_artifact": "docs/final/artifacts/compression_en_business_deep_pack_spec_v1_latest.json",
+  "input_jsonl": "data/compression/fixtures/zone_h_en_business_corpus_extract_fixture_v1.jsonl",
+  "production_catalog": "codebook/templates/zone_h_en_business_templates_v1.jsonl",
+  "production_catalog_row_count": 0,
+  "prospect_catalog_default": "codebook/templates/zone_h_en_business_templates_prospect_v1.jsonl",
+  "merge_policy": "prospect_only_no_auto_merge",
+  "extract_stats": {
+    "rows_scanned": 5,
+    "candidates_raw": 4,
+    "candidates_deduped": 3,
+    "candidates_novel": 3,
+    "candidates_skipped_existing": 0
+  },
+  "prospect_template_ids": [
+    "eb_p001",
+    "eb_p002",
+    "eb_p003"
+  ],
+  "prospect_rows": [
+    {
+      "template_id": "eb_p001",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "Please find the attached invoice for the Q2 compliance review contract. Payment is due within 30 days pursuant to our agreement.",
+      "must_keep_terms": [
+        "attached",
+        "compliance",
+        "contract",
+        "invoice",
+        "payment",
+        "pursuant"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-001",
+      "snippet_sha256": "2e3d940b4c277ac8684bf2da8a1f0145e25e894224b6753a6d7f729cef21fa22"
+    },
+    {
+      "template_id": "eb_p002",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "Attached is the delivery schedule for the enterprise proposal. Please confirm compliance with the contract milestones by Friday.",
+      "must_keep_terms": [
+        "attached",
+        "compliance",
+        "contract",
+        "delivery",
+        "proposal",
+        "schedule"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-002",
+      "snippet_sha256": "fbe5d1f84170f9e447c048a50ea689e89cfea09308c9d9e2a8f5726b8886d82e"
+    },
+    {
+      "template_id": "eb_p003",
+      "shard_id": "zone_h_en_business_v1",
+      "language": "en",
+      "snippet": "NOTICE: Purchase order PO-7781 requires payment authorization before delivery. Contact compliance if the invoice amount differs from the contract.",
+      "must_keep_terms": [
+        "compliance",
+        "contract",
+        "delivery",
+        "invoice",
+        "notice",
+        "order",
+        "payment",
+        "purchase"
+      ],
+      "prospect": true,
+      "source_row_id": "fixture-biz-003",
+      "snippet_sha256": "2cb892f0b2d579d0906d102ae16a5b6c2b710dea95ec518ba25d2a2e56d7bdb3"
+    }
+  ],
+  "twin_preview": {
+    "case_count": 3,
+    "exact_restore_pass_count": 3,
+    "mean_saving_rate": 0.393333
+  },
+  "twin_cases": [
+    {
+      "template_id": "eb_p001",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "wire_family": "BIZ_MASK",
+      "saving_rate": 0.44,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[BIZ_MASK:eb_p001@e659b34d]",
+      "wire_token_count": 14,
+      "original_token_count": 25,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore",
+      "prospect": true
+    },
+    {
+      "template_id": "eb_p002",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "wire_family": "BIZ_MASK",
+      "saving_rate": 0.3,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[BIZ_MASK:eb_p002@e659b34d]",
+      "wire_token_count": 14,
+      "original_token_count": 20,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore",
+      "prospect": true
+    },
+    {
+      "template_id": "eb_p003",
+      "ok": true,
+      "roundtrip_path": "template_catalog_wire_v1",
+      "wire_family": "BIZ_MASK",
+      "saving_rate": 0.44,
+      "exact_restore_ok": true,
+      "jaccard_proxy": 1.0,
+      "wire_compact": "[BIZ_MASK:eb_p003@e659b34d]",
+      "wire_token_count": 14,
+      "original_token_count": 25,
+      "twin_gate_primary": "saving_rate + exact_restore_ok",
+      "jaccard_axis": "separate_from_exact_restore",
+      "prospect": true
+    }
+  ],
+  "reproduce": "py scripts/build_zone_h_en_business_template_catalog_from_corpus_v1.py --input-jsonl data/compression/fixtures/zone_h_en_business_corpus_extract_fixture_v1.jsonl --write-prospect"
+}

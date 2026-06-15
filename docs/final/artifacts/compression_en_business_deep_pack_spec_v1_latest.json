@@ -1,0 +1,70 @@
+{
+  "schema": "compression_en_business_deep_pack_spec_v1",
+  "generated_at_utc": "2026-06-15T03:28:02Z",
+  "track": "B",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "track_a_active_untouched": true,
+  "vertical_id": "zone_h_en_business_v1",
+  "vertical_label": "en_business_formal",
+  "language": "en",
+  "sku_class": "mask",
+  "three_layer_layout": {
+    "core": {
+      "role": "master lexicon lookup (41k+)",
+      "note": "Shared compression core — not vertical-specific claims."
+    },
+    "router": {
+      "shard_policy": "codebook/shards/zone_h_en_business_v1.json",
+      "forced_shard_id": "zone_h_en_business_v1",
+      "auto_route": "keyword scoring on legacy shards only; vertical via forced_shard_id"
+    },
+    "deep_pack": {
+      "wire_prefix": "BIZ_MASK",
+      "wire_schema": "compression_en_business_deep_pack_wire_v1",
+      "template_catalog_prospect": "codebook/templates/zone_h_en_business_templates_prospect_v1.jsonl",
+      "template_catalog_production": null,
+      "codec_lib": "scripts/compression_en_business_deep_pack_v1_lib.py",
+      "extract_lib": "scripts/extract_zone_h_en_business_template_seeds_v1_lib.py",
+      "extract_builder": "scripts/build_zone_h_en_business_template_catalog_from_corpus_v1.py"
+    }
+  },
+  "axis_separation": {
+    "not_equal_zone_f_code": "ZF_MASK coding templates — separate twin gate artifact",
+    "not_equal_wtt_premium_cs": "Korean CS shortcap (≤30 tok) — separate hybrid router binding",
+    "not_equal_tier_a_866": "Tier A operational ~86.7% — FAIL-COMP-004 headline guard",
+    "not_equal_golden40_47": "Golden-40 ~47% bench — internal signoff only",
+    "coding_pack_signoff_pointer": "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json"
+  },
+  "twin_gate_policy": {
+    "primary_pair": [
+      "saving_rate",
+      "exact_restore_ok"
+    ],
+    "secondary_axis": "jaccard_proxy",
+    "literal_slots_v1": "exact_snippet_only",
+    "note": "Business prose name/entity slots deferred to v2; no CS masking tokens in this vertical."
+  },
+  "corpus_bindings": {
+    "fixture_jsonl": "data/compression/fixtures/zone_h_en_business_corpus_extract_fixture_v1.jsonl",
+    "production_jsonl": null,
+    "domain_tags": [
+      "en-business-email",
+      "en-business-memo",
+      "en_business_formal"
+    ]
+  },
+  "forbidden": [
+    "merge_with_coding_deep_pack_signoff",
+    "merge_with_wtt_cs_shortcap_headline",
+    "automatic_active_swap",
+    "customer_sla_claim",
+    "sku_coord_sdk_claim"
+  ],
+  "reproduce": [
+    "py scripts/build_compression_en_business_deep_pack_spec_v1.py",
+    "py scripts/build_zone_h_en_business_template_catalog_from_corpus_v1.py --input-jsonl data/compression/fixtures/zone_h_en_business_corpus_extract_fixture_v1.jsonl --write-prospect"
+  ]
+}

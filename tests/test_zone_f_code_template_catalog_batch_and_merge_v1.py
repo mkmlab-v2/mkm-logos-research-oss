@@ -91,12 +91,38 @@ def test_merge_requires_reviewer_when_approved(tmp_path: Path) -> None:
 
 def test_merge_apply_on_tmp_catalog(tmp_path: Path) -> None:
     prod_src = ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl"
-    prospect_src = ROOT / "codebook/templates/zone_f_code_templates_prospect_v1.jsonl"
     prod = tmp_path / "prod.jsonl"
     prospect = tmp_path / "prospect.jsonl"
     pre_merge_lines = [line for line in prod_src.read_text(encoding="utf-8").splitlines() if line.strip()][:16]
     prod.write_text("\n".join(pre_merge_lines) + "\n", encoding="utf-8")
-    prospect.write_text(prospect_src.read_text(encoding="utf-8"), encoding="utf-8")
+    manifest = tmp_path / "manifest.json"
+    manifest.write_text(
+        json.dumps({"input_jsonl": ["data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl"]}),
+        encoding="utf-8",
+    )
+    batch_report = tmp_path / "batch.json"
+    proc_batch = subprocess.run(
+        [
+            sys.executable,
+            str(BATCH_RUNNER),
+            "--manifest",
+            str(manifest),
+            "--catalog",
+            str(prod),
+            "--prospect-out",
+            str(prospect),
+            "--report-out",
+            str(batch_report),
+            "--artifact-out",
+            str(tmp_path / "batch_art.json"),
+            "--write-prospect",
+        ],
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc_batch.returncode == 0, proc_batch.stderr or proc_batch.stdout
     before = len(pre_merge_lines)
     proc = subprocess.run(
         [
