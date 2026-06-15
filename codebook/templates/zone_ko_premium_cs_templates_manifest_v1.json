@@ -1,9 +1,9 @@
 {
   "schema": "zone_ko_premium_cs_templates_manifest_v1",
-  "generated_at_utc": "2026-06-15T05:54:48Z",
+  "generated_at_utc": "2026-06-15T06:20:30Z",
   "catalog_path": "codebook/templates/zone_ko_premium_cs_templates_v1.jsonl",
-  "row_count": 10,
-  "catalog_sha256": "0a28e9867a8053133156a896833db3c6ee0f0cd853f8b2f5c86dc4fc9dc14dab",
+  "row_count": 22,
+  "catalog_sha256": "e2f30184ee188f8669a686060ab6a729713e85fe66b71ad71eefda7d1d1f9355",
   "template_ids": [
     "kcs_t001",
     "kcs_t002",
@@ -14,7 +14,19 @@
     "kcs_t007",
     "kcs_t008",
     "kcs_t009",
-    "kcs_t010"
+    "kcs_t010",
+    "kcs_t011",
+    "kcs_t012",
+    "kcs_t013",
+    "kcs_t014",
+    "kcs_t015",
+    "kcs_t016",
+    "kcs_t017",
+    "kcs_t018",
+    "kcs_t019",
+    "kcs_t020",
+    "kcs_t021",
+    "kcs_t022"
   ],
   "shard_id": "zone_ko_premium_cs_v1",
   "wire_family": "CS_MASK",

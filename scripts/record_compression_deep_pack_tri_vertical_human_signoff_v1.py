@@ -52,21 +52,9 @@ def _tri_checklist_ready() -> tuple[bool, str]:
 
 
 def _patch_child_envelopes(*, reviewer: str, note: str | None, approved_at: str) -> list[str]:
-    patched: list[str] = []
-    for path in CHILD_ENVELOPES:
-        if not path.is_file():
-            continue
-        doc = _read(path)
-        hs = dict(doc.get("human_signoff") or {})
-        hs["reviewer"] = reviewer
-        hs["approved_at_utc"] = approved_at
-        if note:
-            hs["note"] = note
-        doc["human_signoff"] = hs
-        doc["envelope_status"] = "commander_signed_research_envelope"
-        path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-        patched.append(str(path))
-    return patched
+    from scripts.compression_deep_pack_tri_vertical_human_signoff_v1_lib import patch_child_envelopes
+
+    return patch_child_envelopes(reviewer=reviewer, note=note, approved_at=approved_at)
 
 
 def main() -> int:
@@ -118,6 +106,9 @@ def main() -> int:
             doc["note"] = args.note
         patched = _patch_child_envelopes(reviewer=args.reviewer.strip(), note=args.note or None, approved_at=approved_at)
         doc["patched_child_envelopes"] = patched
+        post_builder = ROOT / "scripts/build_compression_deep_pack_tri_vertical_post_signoff_checklist_v1.py"
+        if post_builder.is_file():
+            subprocess.run([sys.executable, str(post_builder)], cwd=str(ROOT), check=False)
 
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

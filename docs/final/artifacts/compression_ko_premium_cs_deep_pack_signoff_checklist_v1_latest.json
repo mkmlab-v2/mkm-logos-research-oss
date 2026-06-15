@@ -1,0 +1,70 @@
+{
+  "schema": "compression_ko_premium_cs_deep_pack_signoff_checklist_v1",
+  "generated_at_utc": "2026-06-15T06:20:31Z",
+  "decision": "READY_FOR_COMMANDER_SIGNOFF",
+  "all_green": true,
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_active_untouched": true,
+  "vertical_id": "zone_ko_premium_cs_v1",
+  "wire_family": "CS_MASK",
+  "checklist": {
+    "twin_gate_exact_restore_all_pass": true,
+    "wire_family_cs_mask": true,
+    "roundtrip_path_template_catalog_wire_v1": true,
+    "mask_token_in_all_catalog_snippets": true,
+    "research_only_true": true,
+    "track_a_active_untouched_true": true,
+    "send_gate_hold": true,
+    "envelope_awaiting_commander": true,
+    "fallback_spec_present": true,
+    "vertical_spec_present": true,
+    "template_manifest_present": true,
+    "separate_from_en_business_ack": true,
+    "jaccard_axis_separate_ack": true,
+    "human_signoff_not_applied": true
+  },
+  "failed_checks": [],
+  "summary": {
+    "template_catalog_row_count": 22,
+    "exact_restore_pass_count": 22,
+    "mean_saving_rate_observed": 0.481069,
+    "catalog_sha256": "e2f30184ee188f8669a686060ab6a729713e85fe66b71ad71eefda7d1d1f9355",
+    "envelope_status": "draft_awaiting_commander"
+  },
+  "constraints": {
+    "human_review_required": true,
+    "automatic_active_swap": false,
+    "b_to_a_auto_bridge": false,
+    "mask_token_exact_restore_required": true
+  },
+  "commander_review_items": [
+    "Twin gate: saving_rate + exact_restore_ok together (not Jaccard alone).",
+    "CS_MASK wire only — do not merge BIZ_MASK en business or ZF_MASK coding headlines.",
+    "███ masked tokens must round-trip byte-exact; wtt shortcap axis stays separate.",
+    "SKU-COORD remains pointer/meta only — no customer SDK claims.",
+    "Signoff approves research envelope only; ACTIVE swap requires separate Track A gate."
+  ],
+  "evidence_paths": {
+    "gate_artifact": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_gate_v1_latest.json",
+    "signoff_envelope": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1_latest.json",
+    "fallback_spec": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_fallback_spec_v1_latest.json",
+    "vertical_spec": "docs/final/artifacts/compression_ko_premium_cs_deep_pack_spec_v1_latest.json",
+    "template_manifest": "codebook/templates/zone_ko_premium_cs_templates_manifest_v1.json",
+    "en_business_gate_separation": "docs/final/artifacts/compression_en_business_deep_pack_gate_v1_latest.json"
+  },
+  "operator_action": {
+    "approve_if_all_green": true,
+    "review_items_if_hold": [],
+    "after_commander_signoff": [
+      "Set human_signoff.reviewer + approved_at_utc on signoff envelope (manual edit).",
+      "Do NOT run ACTIVE apply without explicit Track A promotion order."
+    ]
+  },
+  "reproduce": [
+    "py scripts/build_compression_ko_premium_cs_deep_pack_gate_v1.py",
+    "py scripts/build_compression_ko_premium_cs_deep_pack_signoff_envelope_v1.py",
+    "py scripts/build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1.py",
+    "py -m pytest tests/test_compression_ko_premium_cs_deep_pack_v1.py tests/test_build_compression_ko_premium_cs_deep_pack_signoff_checklist_v1.py -q"
+  ]
+}

@@ -52,7 +52,7 @@ def test_merge_plan_skips_already_merged_contrib_prospects() -> None:
 
     catalog_path = ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl"
     production = load_catalog_rows(catalog_path)
-    assert len(production) == 22
+    assert len(production) == 25
     # Simulate re-extracted contrib seeds (zf_t20–22) after production merge; repo prospect may be empty.
     contrib_ids = {"zf_t20", "zf_t21", "zf_t22"}
     prospect = [
@@ -71,7 +71,7 @@ def test_merge_plan_skips_already_merged_contrib_prospects() -> None:
     plan = plan_prospect_merge(production_rows=production, prospect_rows=prospect)
     assert plan["merge_count"] == 0
     assert plan["skipped_count"] == 3
-    assert plan["production_after_count"] == 22
+    assert plan["production_after_count"] == 25
 
 
 def test_merge_requires_reviewer_when_approved(tmp_path: Path) -> None:

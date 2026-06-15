@@ -26,3 +26,6 @@ def test_build_coding_deep_pack_signoff_checklist_exit_zero() -> None:
     assert doc["decision"] == "READY_FOR_COMMANDER_SIGNOFF"
     assert doc["constraints"]["human_review_required"] is True
     assert doc["send_gate"] == "HOLD"
+    assert doc["checklist"]["coverage_artifact_present"] is True
+    assert doc["checklist"]["coverage_coding_corpora_wire_match_full"] is True
+    assert doc["checklist"]["catalog_growth_pipeline_pointer"] is True
