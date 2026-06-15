@@ -53,6 +53,40 @@ def test_coding_deep_pack_gate_schema_and_twin_axes() -> None:
     assert float(gate["summary"]["mean_saving_rate"]) > 0.0
 
 
+def test_coding_deep_pack_wire_codec_exact_restore() -> None:
+    from scripts.compression_coding_deep_pack_v1_lib import (
+        expand_template_wire,
+        load_default_catalog,
+        measure_template_wire_twin,
+        wire_to_compact,
+        build_wire_packet,
+    )
+
+    rows, catalog_sha256 = load_default_catalog()
+    row = rows[0]
+    wire = build_wire_packet(template_id=str(row["template_id"]), catalog_sha256=catalog_sha256)
+    compact = wire_to_compact(wire)
+    restored = expand_template_wire(compact, rows, expected_catalog_sha256=catalog_sha256)
+    assert restored == row["snippet"]
+    twin = measure_template_wire_twin(
+        original_snippet=str(row["snippet"]),
+        template_id=str(row["template_id"]),
+        catalog_sha256=catalog_sha256,
+        catalog_rows=rows,
+    )
+    assert twin["exact_restore_ok"] is True
+    assert twin["jaccard_proxy"] == 1.0
+
+
+def test_manifest_idempotent_when_catalog_unchanged() -> None:
+    from scripts.build_compression_coding_deep_pack_gate_v1 import build_manifest
+
+    before = _load(MANIFEST)["generated_at_utc"]
+    rebuilt = build_manifest(TEMPLATES, MANIFEST)
+    after = rebuilt["generated_at_utc"]
+    assert after == before
+
+
 def test_coding_deep_pack_gate_regenerate_smoke() -> None:
     pytest.importorskip("fastapi")
     import subprocess

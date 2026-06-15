@@ -108,6 +108,25 @@ def _expand_compact_wire(
     return str(row["snippet"])
 
 
+def match_template_id_by_snippet(text: str, catalog_rows: list[dict[str, Any]]) -> str | None:
+    for row in catalog_rows:
+        if str(row.get("snippet")) == text:
+            return str(row["template_id"])
+    return None
+
+
+DEFAULT_TEMPLATES_PATH = Path(__file__).resolve().parent.parent / "codebook/templates/zone_f_code_templates_v1.jsonl"
+DEFAULT_MANIFEST_PATH = Path(__file__).resolve().parent.parent / "codebook/templates/zone_f_code_templates_manifest_v1.json"
+
+
+def load_default_catalog() -> tuple[list[dict[str, Any]], str]:
+    import json as _json
+
+    manifest = _json.loads(DEFAULT_MANIFEST_PATH.read_text(encoding="utf-8"))
+    rows = load_template_catalog(DEFAULT_TEMPLATES_PATH)
+    return rows, str(manifest["catalog_sha256"])
+
+
 def measure_template_wire_twin(
     *,
     original_snippet: str,

@@ -59,9 +59,20 @@ def load_templates(path: Path) -> list[dict[str, Any]]:
 def build_manifest(templates_path: Path, manifest_path: Path) -> dict[str, Any]:
     catalog_hash = _sha256_file(templates_path)
     rows = load_templates(templates_path)
+    generated_at = _utc()
+    if manifest_path.is_file():
+        try:
+            prior = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+            if (
+                prior.get("catalog_sha256") == catalog_hash
+                and int(prior.get("row_count") or -1) == len(rows)
+            ):
+                generated_at = str(prior.get("generated_at_utc") or generated_at)
+        except (json.JSONDecodeError, OSError, TypeError, ValueError):
+            pass
     doc = {
         "schema": "zone_f_code_templates_manifest_v1",
-        "generated_at_utc": _utc(),
+        "generated_at_utc": generated_at,
         "catalog_path": templates_path.relative_to(ROOT).as_posix(),
         "row_count": len(rows),
         "catalog_sha256": catalog_hash,
