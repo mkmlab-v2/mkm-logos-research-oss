@@ -20,9 +20,15 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from scripts.compression_coding_deep_pack_v1_lib import (  # noqa: E402
+    apply_literal_slot_renames,
     measure_template_wire_twin,
     resolve_template_match,
 )
+
+EXTENSION_LITERAL_VARIANTS: list[dict[str, Any]] = [
+    {"base_template_id": "zf_t01", "renames": {"user_id": "account_id"}},
+    {"base_template_id": "zf_t12", "renames": {"loss_profile": "lossless_text"}},
+]
 
 TEMPLATES = ROOT / "codebook/templates/zone_f_code_templates_v1.jsonl"
 MANIFEST = ROOT / "codebook/templates/zone_f_code_templates_manifest_v1.json"
@@ -130,6 +136,36 @@ def build_gate(
             )
         )
     ok_cases = [c for c in cases if c.get("ok")]
+    extension_cases: list[dict[str, Any]] = []
+    for spec in EXTENSION_LITERAL_VARIANTS:
+        row = next((r for r in rows if str(r.get("template_id")) == spec["base_template_id"]), None)
+        if row is None:
+            continue
+        canonical = str(row["snippet"])
+        renames = {str(k): str(v) for k, v in (spec.get("renames") or {}).items()}
+        variant = apply_literal_slot_renames(canonical, renames)
+        resolved = resolve_template_match(variant, rows)
+        if not resolved:
+            extension_cases.append(
+                {"base_template_id": spec["base_template_id"], "ok": False, "error": "no_template_match"}
+            )
+            continue
+        template_id, literal_slots = resolved
+        extension_cases.append(
+            {
+                **_run_template_wire_roundtrip(
+                    variant,
+                    template_id=template_id,
+                    catalog_sha256=catalog_sha256,
+                    catalog_rows=rows,
+                    literal_slots=literal_slots,
+                ),
+                "match_kind": "literal_slot_rename",
+                "base_template_id": spec["base_template_id"],
+                "literal_slots": literal_slots,
+            }
+        )
+    ok_ext = [c for c in extension_cases if c.get("ok")]
     doc: dict[str, Any] = {
         "schema": "compression_coding_deep_pack_gate_v1",
         "generated_at_utc": _utc(),
@@ -157,11 +193,16 @@ def build_gate(
         "adjacent_evidence_not_decision": "docs/final/artifacts/compression_candidate_pool_on_track_a_candidate_v1_latest.json",
         "signoff_envelope": "docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
         "signoff_envelope_builder": "scripts/build_compression_coding_deep_pack_signoff_envelope_v1.py",
+        "fallback_spec": "docs/final/artifacts/compression_coding_deep_pack_fallback_spec_v1_latest.json",
+        "fallback_spec_builder": "scripts/build_compression_coding_deep_pack_fallback_spec_v1.py",
         "cases": cases,
+        "extension_cases": extension_cases,
         "summary": {
             "case_count": len(cases),
             "cases_ok": len(ok_cases),
             "exact_restore_pass_count": sum(1 for c in ok_cases if c.get("exact_restore_ok")),
+            "extension_case_count": len(extension_cases),
+            "extension_exact_restore_pass_count": sum(1 for c in ok_ext if c.get("exact_restore_ok")),
             "mean_saving_rate": round(
                 sum(float(c.get("saving_rate") or 0.0) for c in ok_cases) / max(1, len(ok_cases)), 6
             ),
@@ -202,6 +243,11 @@ def main() -> int:
     signoff_doc = build_envelope(gate_path=args.out_artifact)
     signoff_path.parent.mkdir(parents=True, exist_ok=True)
     signoff_path.write_text(json.dumps(signoff_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    from scripts.build_compression_coding_deep_pack_fallback_spec_v1 import build_fallback_spec  # noqa: WPS433
+
+    fallback_path = ROOT / "docs/final/artifacts/compression_coding_deep_pack_fallback_spec_v1_latest.json"
+    fallback_doc = build_fallback_spec(gate_path=args.out_artifact)
+    fallback_path.write_text(json.dumps(fallback_doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(
         json.dumps(
             {

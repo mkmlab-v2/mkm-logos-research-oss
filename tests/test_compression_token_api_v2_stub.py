@@ -748,7 +748,7 @@ def test_v2_coding_deep_pack_literal_slot_roundtrip() -> None:
     variant = (
         'def get_user_api_endpoint(account_id: str) -> dict:\n'
         '    """Fetch user JSON schema from REST endpoint."""\n'
-        '    return {"account_id": account_id, "schema": "v1"}'
+        '    return {"user_id": account_id, "schema": "v1"}'
     )
     cr = client.post(
         "/v2/compress",
@@ -757,7 +757,7 @@ def test_v2_coding_deep_pack_literal_slot_roundtrip() -> None:
             "loss_profile": "semantic_general",
             "forced_shard_id": "zone_f_code",
             "sku_class": "mask",
-            "client_request_id": "test-v2-coding-deep-pack-slots",
+            "client_request_id": "test-v2-coding-deep-pack-slots-partial",
         },
     )
     assert cr.status_code == 200, cr.text
@@ -770,6 +770,55 @@ def test_v2_coding_deep_pack_literal_slot_roundtrip() -> None:
     er = client.post("/v2/expand", json={"compression_packet": pkt})
     assert er.status_code == 200, er.text
     assert er.json()["text"] == variant
+
+
+def test_v2_coding_deep_pack_literal_slot_uniform_rename_roundtrip() -> None:
+    variant = (
+        'def get_user_api_endpoint(account_id: str) -> dict:\n'
+        '    """Fetch user JSON schema from REST endpoint."""\n'
+        '    return {"account_id": account_id, "schema": "v1"}'
+    )
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": variant,
+            "loss_profile": "semantic_general",
+            "forced_shard_id": "zone_f_code",
+            "sku_class": "mask",
+            "client_request_id": "test-v2-coding-deep-pack-slots-uniform",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    cj = cr.json()
+    flags = cj["integrity_flags"]
+    assert flags.get("coding_deep_pack_wire_v1") is True
+    assert flags.get("literal_slots") == {"user_id": "account_id"}
+    pkt = cj["compression_packet"]
+    assert "|" in str(pkt["compressed_text"])
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200, er.text
+    assert er.json()["text"] == variant
+
+
+def test_v2_coding_deep_pack_no_match_falls_back_semantic() -> None:
+    unknown = "def totally_unknown_helper() -> None:\n    pass\n"
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": unknown,
+            "loss_profile": "semantic_general",
+            "enable_coding_deep_pack": True,
+            "forced_shard_id": "zone_f_code",
+            "client_request_id": "test-v2-coding-deep-pack-fallback",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("coding_deep_pack_no_catalog_match") is True
+    assert flags.get("coding_deep_pack_fallback_path") == "semantic_v2_stub"
+    assert flags.get("coding_deep_pack_wire_v1") is not True
+    pkt = cr.json()["compression_packet"]
+    assert not str(pkt["compressed_text"]).startswith("[ZF_MASK:")
 
 
 def test_resolve_latest_codebook_uses_production_pointer() -> None:
