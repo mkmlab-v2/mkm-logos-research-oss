@@ -1,0 +1,42 @@
+{
+  "shard_id": "zone_ko_premium_cs_v1",
+  "domain": "ko_premium_cs_turn",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "language": "ko",
+  "routing_keywords": [
+    "환불",
+    "주문",
+    "프리미엄",
+    "고객",
+    "상담",
+    "VIP",
+    "구독",
+    "배송",
+    "청구서",
+    "티켓",
+    "과금",
+    "해지"
+  ],
+  "must_keep_hard_terms": [
+    "환불",
+    "프리미엄",
+    "고객",
+    "VIP"
+  ],
+  "must_keep_soft_terms": [
+    "상담",
+    "주문",
+    "배송",
+    "구독"
+  ],
+  "guard_tokens": [
+    "███",
+    "****"
+  ],
+  "hangul_principle": true,
+  "separate_from": {
+    "zone_h_en_business_v1": "BIZ_MASK English formal — not merged",
+    "wtt_premium_cs_shortcap": "hybrid router shortcap axis only — deep pack is CS_MASK catalog wire"
+  }
+}

@@ -89,6 +89,10 @@ EN_BUSINESS_DEEP_PACK_KEY = "en_business_deep_pack_wire_v1"
 _EB_TEMPLATES_PATH = ROOT / "codebook" / "templates" / "zone_h_en_business_templates_v1.jsonl"
 _EB_MANIFEST_PATH = ROOT / "codebook" / "templates" / "zone_h_en_business_templates_manifest_v1.json"
 
+KO_PREMIUM_CS_DEEP_PACK_KEY = "ko_premium_cs_deep_pack_wire_v1"
+_KCS_TEMPLATES_PATH = ROOT / "codebook" / "templates" / "zone_ko_premium_cs_templates_v1.jsonl"
+_KCS_MANIFEST_PATH = ROOT / "codebook" / "templates" / "zone_ko_premium_cs_templates_manifest_v1.json"
+
 from scripts.compression_coding_deep_pack_v1_lib import (  # noqa: E402
     build_wire_packet,
     expand_template_wire,
@@ -106,6 +110,14 @@ from scripts.compression_en_business_deep_pack_v1_lib import (  # noqa: E402
     load_template_catalog as eb_load_template_catalog,
     measure_template_wire_twin as eb_measure_template_wire_twin,
     resolve_template_match as eb_resolve_template_match,
+)
+
+from scripts.compression_ko_premium_cs_deep_pack_v1_lib import (  # noqa: E402
+    build_wire_packet as kcs_build_wire_packet,
+    expand_template_wire as kcs_expand_template_wire,
+    load_template_catalog as kcs_load_template_catalog,
+    measure_template_wire_twin as kcs_measure_template_wire_twin,
+    resolve_template_match as kcs_resolve_template_match,
 )
 
 SHARDS = ROOT / "codebook" / "shards"
@@ -201,6 +213,14 @@ class CompressRequestV2(BaseModel):
             "B-track [HYPO]: zone_h_en_business formal template wire (BIZ_MASK) when snippet matches "
             "codebook/templates/zone_h_en_business_templates_v1.jsonl. Also auto when sku_class=mask "
             "and routed shard is zone_h_en_business_v1."
+        ),
+    )
+    enable_ko_premium_cs_deep_pack: bool = Field(
+        default=False,
+        description=(
+            "B-track [HYPO]: zone_ko_premium_cs masked CS template wire (CS_MASK) when snippet matches "
+            "codebook/templates/zone_ko_premium_cs_templates_v1.jsonl. Also auto when sku_class=mask "
+            "and routed shard is zone_ko_premium_cs_v1. Mask tokens (███) must exact-restore."
         ),
     )
 
@@ -973,6 +993,89 @@ def _try_en_business_deep_pack_compress(
     )
 
 
+def _load_ko_premium_cs_deep_pack_catalog() -> tuple[list[dict[str, Any]], str]:
+    import json as _json
+
+    manifest = _json.loads(_KCS_MANIFEST_PATH.read_text(encoding="utf-8"))
+    rows = kcs_load_template_catalog(_KCS_TEMPLATES_PATH)
+    return rows, str(manifest["catalog_sha256"])
+
+
+def _ko_premium_cs_deep_pack_lane_active(body: CompressRequestV2, route: ShardRoute) -> bool:
+    if body.enable_ko_premium_cs_deep_pack:
+        return True
+    if body.sku_class == "mask" and route.shard_id == "zone_ko_premium_cs_v1":
+        return True
+    return False
+
+
+def _try_ko_premium_cs_deep_pack_compress(
+    body: CompressRequestV2,
+    route: ShardRoute,
+    flags: dict[str, Any],
+) -> CompressResponseV2 | None:
+    if not _ko_premium_cs_deep_pack_lane_active(body, route):
+        return None
+    if not _KCS_TEMPLATES_PATH.is_file() or not _KCS_MANIFEST_PATH.is_file():
+        flags["ko_premium_cs_deep_pack_catalog_missing"] = True
+        return None
+    rows, catalog_sha256 = _load_ko_premium_cs_deep_pack_catalog()
+    resolved = kcs_resolve_template_match(body.text, rows)
+    if not resolved:
+        flags["ko_premium_cs_deep_pack_no_catalog_match"] = True
+        return None
+    template_id, _literal_slots = resolved
+    twin = kcs_measure_template_wire_twin(
+        original_snippet=body.text,
+        template_id=template_id,
+        catalog_sha256=catalog_sha256,
+        catalog_rows=rows,
+    )
+    wire = kcs_build_wire_packet(template_id=template_id, catalog_sha256=catalog_sha256)
+    stub_block: dict[str, Any] = {
+        "reconstructed_text": body.text,
+        "global_token_saving_rate": twin["saving_rate"],
+        "reconstruction_fidelity_jaccard": twin["jaccard_proxy"],
+        "exact_restore_ok": twin["exact_restore_ok"],
+    }
+    residual_meta: dict[str, Any] = {
+        RESIDUAL_STUB_KEY: _stub_block_for_packet(stub_block, stateless_packet=body.stateless_packet),
+        "placeholder_map": {},
+        KO_PREMIUM_CS_DEEP_PACK_KEY: wire,
+    }
+    _attach_lexicon_rail(residual_meta, body.text)
+    flags.update(
+        {
+            "ko_premium_cs_deep_pack_wire_v1": True,
+            "roundtrip_path": "template_catalog_wire_v1",
+            "wire_family": "CS_MASK",
+            "template_id": template_id,
+            "catalog_sha256_short": catalog_sha256[:8],
+            "exact_restore_ok": twin["exact_restore_ok"],
+            "research_only": True,
+        }
+    )
+    if body.sku_class:
+        flags["sku_class"] = body.sku_class
+    packet = CompressionPacket(
+        loss_profile=body.loss_profile,
+        compressed_text=str(twin["wire_compact"]),
+        residual_meta=residual_meta,
+        router_meta={"shard_id": route.shard_id, "domain": route.domain},
+        content_fingerprint=_fingerprint(body.text),
+    )
+    metrics = CompressionMetricsV2(
+        token_in=int(twin["original_token_count"]),
+        token_out=int(twin["wire_token_count"]),
+        savings_ratio=float(twin["saving_rate"]),
+    )
+    return CompressResponseV2(
+        compression_packet=packet,
+        compression_metrics=metrics,
+        integrity_flags=flags,
+    )
+
+
 def _try_expand_coding_deep_pack(pkt: CompressionPacket) -> tuple[str, dict[str, Any]] | None:
     compact = str(pkt.compressed_text or "")
     meta = pkt.residual_meta if isinstance(pkt.residual_meta, dict) else {}
@@ -1028,6 +1131,34 @@ def _try_expand_en_business_deep_pack(pkt: CompressionPacket) -> tuple[str, dict
     }
 
 
+def _try_expand_ko_premium_cs_deep_pack(pkt: CompressionPacket) -> tuple[str, dict[str, Any]] | None:
+    compact = str(pkt.compressed_text or "")
+    meta = pkt.residual_meta if isinstance(pkt.residual_meta, dict) else {}
+    wire_info = meta.get(KO_PREMIUM_CS_DEEP_PACK_KEY) if isinstance(meta, dict) else None
+    if not compact.startswith("[CS_MASK:") and not isinstance(wire_info, dict):
+        return None
+    if not _KCS_TEMPLATES_PATH.is_file() or not _KCS_MANIFEST_PATH.is_file():
+        return None
+    rows, catalog_sha256 = _load_ko_premium_cs_deep_pack_catalog()
+    try:
+        if compact.startswith("[CS_MASK:"):
+            text = kcs_expand_template_wire(compact, rows, expected_catalog_sha256=catalog_sha256)
+        elif isinstance(wire_info, dict):
+            text = kcs_expand_template_wire(wire_info, rows, expected_catalog_sha256=catalog_sha256)
+        else:
+            return None
+    except (KeyError, ValueError):
+        return None
+    return text, {
+        "reassembly": "ko_premium_cs_deep_pack_wire_v1",
+        "source": KO_PREMIUM_CS_DEEP_PACK_KEY,
+        "exact_restore_ok": True,
+        "roundtrip_path": "template_catalog_wire_v1",
+        "wire_family": "CS_MASK",
+        "research_only": True,
+    }
+
+
 @app.post("/v2/compress", response_model=CompressResponseV2)
 def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
     forced_sid = str(body.forced_shard_id or "").strip() or None
@@ -1065,6 +1196,11 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
         return en_resp
     if flags.get("en_business_deep_pack_no_catalog_match"):
         flags["en_business_deep_pack_fallback_path"] = "semantic_v2_stub"
+    kcs_resp = _try_ko_premium_cs_deep_pack_compress(body, route, flags)
+    if kcs_resp is not None:
+        return kcs_resp
+    if flags.get("ko_premium_cs_deep_pack_no_catalog_match"):
+        flags["ko_premium_cs_deep_pack_fallback_path"] = "semantic_v2_stub"
     try:
         # Fused lane: lossless_text goes through deterministic hybrid codec first.
         if body.loss_profile == "lossless_text":
@@ -1308,6 +1444,12 @@ def expand_v2(body: ExpandRequestV2) -> ExpandResponseV2:
     en_biz = _try_expand_en_business_deep_pack(pkt)
     if en_biz is not None:
         text, extra = en_biz
+        flags.update(extra)
+        return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
+
+    kcs = _try_expand_ko_premium_cs_deep_pack(pkt)
+    if kcs is not None:
+        text, extra = kcs
         flags.update(extra)
         return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
 
