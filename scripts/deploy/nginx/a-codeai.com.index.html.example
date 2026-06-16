@@ -8,6 +8,12 @@
     name="description"
     content="재무·리스크팀을 위한 거시 리스크 조기경보. KPI 기반 90일 유료 파일럿과 명확한 보상 조건."
   />
+  <link rel="canonical" href="https://a-codeai.com/ko/" />
+  <link rel="alternate" hreflang="en" href="https://a-codeai.com/" />
+  <link rel="alternate" hreflang="ko" href="https://a-codeai.com/ko/" />
+  <link rel="alternate" hreflang="x-default" href="https://a-codeai.com/" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
   <style>
     :root {
       --bg: #081022;

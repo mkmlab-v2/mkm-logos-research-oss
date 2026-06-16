@@ -8,6 +8,12 @@
     name="description"
     content="A-CODEAI 검증 정책: 투명성, 재현성, 한계 고지, 롤백 제어."
   />
+  <link rel="canonical" href="https://a-codeai.com/ko/benchmark/" />
+  <link rel="alternate" hreflang="en" href="https://a-codeai.com/benchmark/" />
+  <link rel="alternate" hreflang="ko" href="https://a-codeai.com/ko/benchmark/" />
+  <link rel="alternate" hreflang="x-default" href="https://a-codeai.com/benchmark/" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
   <style>
     :root {
       --bg: #081022;
@@ -37,6 +43,8 @@
       align-items: center;
     }
     a { color: inherit; }
+    .lang { color: var(--muted); font-size: 13px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
     h1 {
       margin: 0 0 12px;
       font-size: clamp(30px, 4.8vw, 50px);
@@ -88,7 +96,10 @@
   <nav class="topbar" aria-label="Top navigation">
     <div class="container topbar-inner">
       <div><strong>A-CODEAI</strong></div>
-      <div><a href="/ko/">홈</a> · <a href="/ko/pilot">파일럿</a> · <strong>검증</strong></div>
+      <div class="nav-row">
+        <div><a href="/ko/">홈</a> · <a href="/ko/pilot">파일럿</a> · <strong>검증</strong></div>
+        <div class="lang">Language: <a href="/benchmark">EN</a> | <strong>KO</strong></div>
+      </div>
     </div>
   </nav>
 

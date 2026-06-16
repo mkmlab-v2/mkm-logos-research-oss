@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>A-CODEAI | Enterprise 90-Day Pilot</title>
   <meta name="description" content="Enterprise 90-day paid pilot for treasury and risk teams. Fixed KPI gates, protected IP, and production-ready operating rhythm." />
+  <link rel="canonical" href="https://a-codeai.com/pilot/" />
+  <link rel="alternate" hreflang="en" href="https://a-codeai.com/pilot/" />
+  <link rel="alternate" hreflang="ko" href="https://a-codeai.com/ko/pilot/" />
+  <link rel="alternate" hreflang="x-default" href="https://a-codeai.com/pilot/" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="ko_KR" />
   <style>
     :root {
       --bg: #070f22;
@@ -44,6 +50,8 @@
       gap: 12px;
     }
     .brand { font-weight: 700; letter-spacing: 0.02em; }
+    .lang { color: var(--muted); font-size: 13px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
     .hero { padding: 72px 0 46px; border-bottom: 1px solid var(--line); }
     .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
     .badge {
@@ -114,7 +122,10 @@
   <nav class="topbar" aria-label="Top navigation">
     <div class="container topbar-inner">
       <div class="brand">A-CODEAI</div>
-      <div><a href="/">Home</a> · <strong>Pilot</strong> · <a href="/benchmark">Benchmark</a></div>
+      <div class="nav-row">
+        <div><a href="/">Home</a> · <strong>Pilot</strong> · <a href="/benchmark">Benchmark</a></div>
+        <div class="lang">Language: <strong>EN</strong> | <a href="/ko/pilot">KO</a></div>
+      </div>
     </div>
   </nav>
 

@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>A-CODEAI | 엔터프라이즈 90일 파일럿</title>
   <meta name="description" content="재무·리스크팀 전용 90일 유료 파일럿. KPI와 종료 기준을 계약서에 고정하고, 블랙박스 없이 운영합니다." />
+  <link rel="canonical" href="https://a-codeai.com/ko/pilot/" />
+  <link rel="alternate" hreflang="en" href="https://a-codeai.com/pilot/" />
+  <link rel="alternate" hreflang="ko" href="https://a-codeai.com/ko/pilot/" />
+  <link rel="alternate" hreflang="x-default" href="https://a-codeai.com/pilot/" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:locale:alternate" content="en_US" />
   <style>
     :root {
       --bg: #070f22;
@@ -44,6 +50,8 @@
       gap: 12px;
     }
     .brand { font-weight: 700; letter-spacing: 0.02em; }
+    .lang { color: var(--muted); font-size: 13px; }
+    .nav-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
     .hero { padding: 72px 0 46px; border-bottom: 1px solid var(--line); }
     .badge-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
     .badge {
@@ -115,7 +123,10 @@
   <nav class="topbar" aria-label="Top navigation">
     <div class="container topbar-inner">
       <div class="brand">A-CODEAI</div>
-      <div><a href="/ko/">홈</a> · <strong>파일럿</strong> · <a href="/ko/benchmark">검증</a></div>
+      <div class="nav-row">
+        <div><a href="/ko/">홈</a> · <strong>파일럿</strong> · <a href="/ko/benchmark">검증</a></div>
+        <div class="lang">Language: <a href="/pilot">EN</a> | <strong>KO</strong></div>
+      </div>
     </div>
   </nav>
 
