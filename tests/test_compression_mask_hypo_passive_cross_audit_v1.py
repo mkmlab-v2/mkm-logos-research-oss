@@ -29,7 +29,11 @@ def test_passive_cross_audit_exit_zero() -> None:
     assert doc["input_policy"] == "masked_corpus_jsonl_replay_only"
     agg = doc["aggregate"]
     assert agg["all_steps_pass"] is True
-    assert agg["step_count"] == 4
+    assert agg["step_count"] == 5
+    assert agg["mask_step_count"] == 4
+    assert agg["coord_sibling_included"] is True
+    assert doc.get("coord_sibling", {}).get("step_id") == "rib55_coord_passive"
+    assert doc.get("coord_sibling", {}).get("axis") == "SKU-COORD"
 
 
 def test_chain_step_metadata() -> None:

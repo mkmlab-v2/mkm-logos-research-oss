@@ -1,0 +1,81 @@
+# Smoke: rib55 SKU-COORD passive audit + education mock (HYPO, non-gating).
+name: rib55 coord passive audit smoke
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_rib55_coord_passive_audit_v1.py"
+      - "scripts/run_rib55_angle_overlay_passive_smoke_v1.py"
+      - "scripts/rib55_angle_overlay_v1_lib.py"
+      - "scripts/render_rib55_angle_overlay_v1.py"
+      - "scripts/coord_anatomy_overlay_wire_v1_lib.py"
+      - "scripts/build_coord_wire_packet_example_v1.py"
+      - "scripts/build_coord_wire_packet_bench_v1.py"
+      - "scripts/build_rib55_infographic_education_mock_v1.py"
+      - "scripts/build_rib55_infographic_education_mock_all_v1.py"
+      - "scripts/compression_mask_hypo_passive_cross_audit_v1_lib.py"
+      - "tests/test_rib55_coord_passive_audit_v1.py"
+      - "tests/test_render_rib55_angle_overlay_v1.py"
+      - "tests/test_coord_anatomy_overlay_wire_v1_lib.py"
+      - "tests/test_coord_wire_packet_bench_v1.py"
+      - "scripts/validate_mkm_multi_axis_promotion_gate_policy_v1.py"
+      - "docs/final/artifacts/mkm_multi_axis_promotion_gate_policy_v1.md"
+      - "tests/test_mkm_multi_axis_promotion_gate_policy_v1.py"
+      - ".github/workflows/rib55-coord-passive-audit-smoke.yml"
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/run_rib55_coord_passive_audit_v1.py"
+      - "scripts/run_rib55_angle_overlay_passive_smoke_v1.py"
+      - "scripts/rib55_angle_overlay_v1_lib.py"
+      - "scripts/render_rib55_angle_overlay_v1.py"
+      - "scripts/coord_anatomy_overlay_wire_v1_lib.py"
+      - "scripts/build_coord_wire_packet_example_v1.py"
+      - "scripts/build_coord_wire_packet_bench_v1.py"
+      - "scripts/build_rib55_infographic_education_mock_v1.py"
+      - "scripts/build_rib55_infographic_education_mock_all_v1.py"
+      - "scripts/compression_mask_hypo_passive_cross_audit_v1_lib.py"
+      - "tests/test_rib55_coord_passive_audit_v1.py"
+      - "tests/test_render_rib55_angle_overlay_v1.py"
+      - "tests/test_coord_anatomy_overlay_wire_v1_lib.py"
+      - "tests/test_coord_wire_packet_bench_v1.py"
+      - "scripts/validate_mkm_multi_axis_promotion_gate_policy_v1.py"
+      - "docs/final/artifacts/mkm_multi_axis_promotion_gate_policy_v1.md"
+      - "tests/test_mkm_multi_axis_promotion_gate_policy_v1.py"
+      - ".github/workflows/rib55-coord-passive-audit-smoke.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rib55-coord-passive-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rib55-coord-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install pytest pillow jsonschema tiktoken
+      - name: Passive audit chain (skip full pytest on CI)
+        run: python scripts/run_rib55_coord_passive_audit_v1.py --skip-pytest
+      - name: COORD wire bench + education mock
+        run: |
+          python scripts/build_coord_wire_packet_bench_v1.py
+          python scripts/build_rib55_infographic_education_mock_all_v1.py
+      - name: pytest rib55 COORD smoke subset
+        run: |
+          python -m pytest \
+            tests/test_render_rib55_angle_overlay_v1.py \
+            tests/test_coord_anatomy_overlay_wire_v1_lib.py \
+            tests/test_coord_wire_packet_bench_v1.py \
+            tests/test_rib55_infographic_education_mock_v1.py \
+            tests/test_mkm_multi_axis_promotion_gate_policy_v1.py \
+            -q --tb=short

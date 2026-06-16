@@ -9,6 +9,7 @@ typically scores at or near 1.0 when the engine returns full ``reconstructed_tex
 from __future__ import annotations
 
 import copy
+import json
 from pathlib import Path
 
 import pytest
@@ -1033,3 +1034,37 @@ def test_v2_ko_premium_cs_deep_pack_no_match_falls_back_semantic() -> None:
     assert flags.get("ko_premium_cs_deep_pack_no_catalog_match") is True
     assert flags.get("ko_premium_cs_deep_pack_fallback_path") == "semantic_v2_stub"
     assert flags.get("ko_premium_cs_deep_pack_wire_v1") is not True
+
+
+def test_v2_coord_anatomy_overlay_compress_expand_render() -> None:
+    fixture = ROOT / "data/anatomy/fixtures/ninth_rib_lateral2.png"
+    if not fixture.is_file():
+        pytest.skip("ninth_rib fixture missing")
+    example = json.loads(
+        (ROOT / "docs/final/artifacts/coord_wire_packet_example_v1_latest.json").read_text(encoding="utf-8")
+    )
+    wire_text = json.dumps(example["coord_wire_minimal"], ensure_ascii=False)
+    cr = client.post(
+        "/v2/compress",
+        json={
+            "text": wire_text,
+            "loss_profile": "lossless_text",
+            "sku_class": "coord",
+            "client_request_id": "test-v2-coord-anatomy",
+        },
+    )
+    assert cr.status_code == 200, cr.text
+    body = cr.json()
+    flags = body["integrity_flags"]
+    assert flags.get("coord_anatomy_overlay_wire_v1") is True
+    assert flags.get("wire_mode") == "anatomy_overlay_coord_v1"
+    pkt = body["compression_packet"]
+    assert str(pkt["compressed_text"]).startswith("[COORD:anatomy:v1:")
+    er = client.post("/v2/expand", json={"compression_packet": pkt})
+    assert er.status_code == 200, er.text
+    expanded = json.loads(er.json()["text"])
+    assert expanded["schema"] == "coord_anatomy_overlay_expand_v1"
+    out_rel = expanded["render_report"]["output"]
+    out_path = ROOT / out_rel
+    assert out_path.is_file()
+    assert er.json()["integrity_flags"].get("reassembly") == "coord_anatomy_overlay_wire_v1"

@@ -1,0 +1,44 @@
+{
+  "schema": "rib55_overlay_adjudication_record_v1",
+  "entry_id": "pilot_second_rib_lateral2_v0",
+  "decision": "approved_with_reservations",
+  "reviewer_role": "anatomy_reviewer",
+  "reviewer_display": "MKM_COMMANDER",
+  "signed_at_utc": "2026-06-16T00:22:00Z",
+  "clinical_claim_forbidden_ack": true,
+  "send_gate_after_adjudication": "HOLD",
+  "checklist": [
+    {
+      "item_id": "base_license_verified",
+      "passed": true,
+      "note_ko": "Second rib lateral2.png — DBCLS CC-BY-SA-2.1-JP"
+    },
+    {
+      "item_id": "overlay_geometry_plausible",
+      "passed": true,
+      "note_ko": "2번 늑골 lateral — 수동 coord HYPO"
+    },
+    {
+      "item_id": "angle_label_theory_not_measurement",
+      "passed": true,
+      "note_ko": "숫자 각도·55° 미표기"
+    },
+    {
+      "item_id": "no_clinical_diagnosis_claim",
+      "passed": true,
+      "note_ko": "교육용 개념도 only"
+    },
+    {
+      "item_id": "l0_l1_ablation_reviewed",
+      "passed": true,
+      "note_ko": "2번 rib entry — pilot ablation 계열 참고"
+    },
+    {
+      "item_id": "education_use_only_scope",
+      "passed": true,
+      "note_ko": "multi-base COORD bench; SEND HOLD"
+    }
+  ],
+  "notes_ko": "Second rib lateral2 base — multi-base COORD bench entry.",
+  "reservations_ko": "좌표 수동 지정; 9번 pilot와 base·SHA 다름 — wire token delta 검증용"
+}

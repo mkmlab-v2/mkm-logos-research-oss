@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import base64
 import hashlib
+import json
 import os
 import sys
 from pathlib import Path
@@ -123,6 +124,14 @@ from scripts.compression_ko_premium_cs_deep_pack_v1_lib import (  # noqa: E402
     load_template_catalog as kcs_load_template_catalog,
     measure_template_wire_twin as kcs_measure_template_wire_twin,
     resolve_template_match as kcs_resolve_template_match,
+)
+
+from scripts.coord_anatomy_overlay_wire_v1_lib import (  # noqa: E402
+    COORD_WIRE_KEY,
+    WIRE_MODE as COORD_ANATOMY_WIRE_MODE,
+    compact_coord_wire,
+    expand_coord_wire_to_text,
+    parse_coord_wire_text,
 )
 
 SHARDS = ROOT / "codebook" / "shards"
@@ -840,6 +849,7 @@ def health() -> dict[str, Any]:
         "hybrid_codec_router_default": "off",
         "hybrid_router_spec": "docs/final/artifacts/compression_hybrid_router_spec_v1.json",
         "hybrid_router_stub_binding": "partial_stub_metadata",
+        "coord_anatomy_wire_stub": "sku_class=coord + anatomy_overlay_coord_v1 → render expand",
         "shadow_bind_stub_metadata": "corpus_tag→integrity_flags only; production route unchanged",
         "shadow_bind_spec": "docs/final/artifacts/compression_en_business_shadow_router_bind_v1.json",
         "anchor_ssot": "reports/constitution/btrack_pilot/comp_4d_anchor_ssot_v1.json",
@@ -1103,6 +1113,86 @@ def _try_ko_premium_cs_deep_pack_compress(
     )
 
 
+def _coord_anatomy_lane_active(body: CompressRequestV2) -> bool:
+    if body.sku_class == "coord":
+        return True
+    wire = parse_coord_wire_text(body.text)
+    return wire is not None and wire.get("wire_mode") == COORD_ANATOMY_WIRE_MODE
+
+
+def _try_coord_anatomy_compress(
+    body: CompressRequestV2,
+    route: ShardRoute,
+    flags: dict[str, Any],
+) -> CompressResponseV2 | None:
+    if not _coord_anatomy_lane_active(body):
+        return None
+    wire = parse_coord_wire_text(body.text)
+    if not wire or wire.get("wire_mode") != COORD_ANATOMY_WIRE_MODE:
+        flags["coord_anatomy_wire_reject"] = True
+        return None
+    compact = compact_coord_wire(wire)
+    tin = _token_count_proxy(body.text)
+    tout = _token_count_proxy(compact)
+    sr = max(0.0, min(1.0, 1.0 - (float(tout or 0) / float(max(1, tin or 1)))))
+    stub_block: dict[str, Any] = {
+        "reconstructed_text": body.text,
+        "global_token_saving_rate": sr,
+        "reconstruction_fidelity_jaccard": 1.0,
+        "exact_restore_ok": True,
+    }
+    residual_meta: dict[str, Any] = {
+        RESIDUAL_STUB_KEY: _stub_block_for_packet(stub_block, stateless_packet=body.stateless_packet),
+        "placeholder_map": {},
+        COORD_WIRE_KEY: wire,
+    }
+    flags.update(
+        {
+            "coord_anatomy_overlay_wire_v1": True,
+            "sku_class": "coord",
+            "wire_mode": COORD_ANATOMY_WIRE_MODE,
+            "roundtrip_path": "coord_anatomy_render_v1",
+            "research_only": True,
+        }
+    )
+    packet = CompressionPacket(
+        loss_profile=body.loss_profile,
+        compressed_text=compact,
+        residual_meta=residual_meta,
+        router_meta={"shard_id": route.shard_id, "domain": route.domain},
+        content_fingerprint=_fingerprint(body.text),
+    )
+    metrics = CompressionMetricsV2(token_in=tin, token_out=tout, savings_ratio=sr)
+    return CompressResponseV2(
+        compression_packet=packet,
+        compression_metrics=metrics,
+        integrity_flags=flags,
+    )
+
+
+def _try_expand_coord_anatomy(pkt: CompressionPacket) -> tuple[str, dict[str, Any]] | None:
+    meta = pkt.residual_meta if isinstance(pkt.residual_meta, dict) else {}
+    wire = meta.get(COORD_WIRE_KEY) if isinstance(meta, dict) else None
+    if not isinstance(wire, dict):
+        parsed = parse_coord_wire_text(str(pkt.compressed_text or ""))
+        if isinstance(parsed, dict) and not parsed.get("_compact_only"):
+            wire = parsed
+    if not isinstance(wire, dict) or wire.get("wire_mode") != COORD_ANATOMY_WIRE_MODE:
+        return None
+    try:
+        return expand_coord_wire_to_text(wire, workspace_root=ROOT)
+    except (FileNotFoundError, ValueError, OSError) as exc:
+        err = json.dumps(
+            {"schema": "coord_anatomy_overlay_expand_v1", "ok": False, "error": str(exc)},
+            ensure_ascii=False,
+        )
+        return err, {
+            "reassembly": "coord_anatomy_overlay_wire_v1",
+            "coord_render_failed": True,
+            "research_only": True,
+        }
+
+
 def _try_expand_coding_deep_pack(pkt: CompressionPacket) -> tuple[str, dict[str, Any]] | None:
     compact = str(pkt.compressed_text or "")
     meta = pkt.residual_meta if isinstance(pkt.residual_meta, dict) else {}
@@ -1214,6 +1304,9 @@ def compress_v2(body: CompressRequestV2) -> CompressResponseV2:
         flags["forced_shard_promoted_b2b"] = forced_sid.endswith("_b2b_v1")
     if body.stateless_packet:
         flags["stateless_packet"] = True
+    coord_resp = _try_coord_anatomy_compress(body, route, flags)
+    if coord_resp is not None:
+        return coord_resp
     coding_resp = _try_coding_deep_pack_compress(body, route, flags)
     if coding_resp is not None:
         return coding_resp
@@ -1462,6 +1555,12 @@ def expand_v2(body: ExpandRequestV2) -> ExpandResponseV2:
     pkt = body.compression_packet
     mode = body.decode_mode
     flags: dict[str, Any] = {"stub_v2": True, "decode_mode": mode}
+
+    coord = _try_expand_coord_anatomy(pkt)
+    if coord is not None:
+        text, extra = coord
+        flags.update(extra)
+        return ExpandResponseV2(text=text, decode_mode=mode, integrity_flags=flags)
 
     coding = _try_expand_coding_deep_pack(pkt)
     if coding is not None:

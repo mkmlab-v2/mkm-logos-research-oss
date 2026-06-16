@@ -1,0 +1,44 @@
+{
+  "schema": "rib55_overlay_adjudication_record_v1",
+  "entry_id": "pilot_ninth_rib_55deg_v0",
+  "decision": "pending",
+  "reviewer_role": "clinic_director",
+  "reviewer_display": "",
+  "signed_at_utc": "",
+  "clinical_claim_forbidden_ack": true,
+  "send_gate_after_adjudication": "HOLD",
+  "checklist": [
+    {
+      "item_id": "base_license_verified",
+      "passed": false,
+      "note_ko": "Commons CC-BY-SA-2.1-JP · attribution footer 확인"
+    },
+    {
+      "item_id": "overlay_geometry_plausible",
+      "passed": false,
+      "note_ko": "a/b/c(p1/p2/p0) 3점이 해부 방향과 모순 없는지 육안"
+    },
+    {
+      "item_id": "angle_label_theory_not_measurement",
+      "passed": false,
+      "note_ko": "숫자 각도 미표기; rib sweep [HYPO]; 임상 실측·ISA 혼동 없음"
+    },
+    {
+      "item_id": "no_clinical_diagnosis_claim",
+      "passed": false,
+      "note_ko": "infographic_field_v1 pedagogical frame; 진단·치료 효능 문구 없음"
+    },
+    {
+      "item_id": "l0_l1_ablation_reviewed",
+      "passed": false,
+      "note_ko": "R1 ablation PNG·angle_delta 검토"
+    },
+    {
+      "item_id": "education_use_only_scope",
+      "passed": false,
+      "note_ko": "건강교육·내부 연수; 환자-facing·외부 송출 HOLD"
+    }
+  ],
+  "notes_ko": "원장 서명 전 pending — 자동 게이트 해제 없음",
+  "reservations_ko": ""
+}

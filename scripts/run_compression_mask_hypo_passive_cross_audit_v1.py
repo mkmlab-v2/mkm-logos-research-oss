@@ -26,9 +26,13 @@ def main() -> int:
     ap.add_argument("--workspace-root", type=Path, default=ROOT)
     ap.add_argument("--report-out", type=Path, default=DEFAULT_REPORT)
     ap.add_argument("--artifact-out", type=Path, default=DEFAULT_ARTIFACT)
+    ap.add_argument("--skip-coord-sibling", action="store_true")
     args = ap.parse_args()
 
-    report = run_passive_cross_audit(workspace_root=args.workspace_root)
+    report = run_passive_cross_audit(
+        workspace_root=args.workspace_root,
+        include_coord_sibling=not args.skip_coord_sibling,
+    )
     write_cross_audit_report(report, report_path=args.report_out, artifact_path=args.artifact_out)
     agg = report["aggregate"]
     print(

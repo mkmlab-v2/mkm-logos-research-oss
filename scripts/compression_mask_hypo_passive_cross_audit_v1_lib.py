@@ -14,7 +14,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 
-CHAIN_STEPS: list[dict[str, str]] = [
+CHAIN_STEPS: list[dict[str, str | list[str]]] = [
     {
         "step_id": "registry_sync",
         "hypo_id": "HYPO-3",
@@ -41,6 +41,16 @@ CHAIN_STEPS: list[dict[str, str]] = [
     },
 ]
 
+# SKU-COORD sibling — axis isolated from MASK KPI (FAIL-COMP-004)
+COORD_SIBLING_STEP: dict[str, str | list[str]] = {
+    "step_id": "rib55_coord_passive",
+    "hypo_id": "COORD-1",
+    "script": "scripts/run_rib55_coord_passive_audit_v1.py",
+    "script_args": ["--skip-pytest"],
+    "report_glob": "docs/final/artifacts/rib55_coord_passive_audit_v1_latest.json",
+    "axis": "SKU-COORD",
+}
+
 
 def _utc() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -59,15 +69,16 @@ def _parse_stdout_json(text: str) -> dict[str, Any] | None:
 
 
 def run_chain_step(
-    meta: dict[str, str],
+    meta: dict[str, str | list[str]],
     *,
     workspace_root: Path,
     python_exe: str | None = None,
 ) -> dict[str, Any]:
-    script_path = workspace_root / meta["script"]
+    script_path = workspace_root / str(meta["script"])
     py = python_exe or sys.executable
+    cmd = [py, str(script_path)] + list(meta.get("script_args") or [])
     proc = subprocess.run(
-        [py, str(script_path)],
+        cmd,
         cwd=str(workspace_root),
         capture_output=True,
         text=True,
@@ -88,7 +99,8 @@ def run_chain_step(
             report_summary = None
     return {
         "step_id": meta["step_id"],
-        "hypo_id": meta["hypo_id"],
+        "hypo_id": meta.get("hypo_id"),
+        "axis": meta.get("axis"),
         "script": meta["script"],
         "exit_code": int(proc.returncode),
         "ok": proc.returncode == 0,
@@ -104,11 +116,18 @@ def run_passive_cross_audit(
     *,
     workspace_root: Path = ROOT,
     python_exe: str | None = None,
+    include_coord_sibling: bool = True,
 ) -> dict[str, Any]:
     steps: list[dict[str, Any]] = []
     for meta in CHAIN_STEPS:
         steps.append(run_chain_step(meta, workspace_root=workspace_root, python_exe=python_exe))
+    coord_sibling: dict[str, Any] | None = None
+    if include_coord_sibling:
+        coord_sibling = run_chain_step(COORD_SIBLING_STEP, workspace_root=workspace_root, python_exe=python_exe)
     failed = [s["step_id"] for s in steps if not s["ok"]]
+    coord_failed = coord_sibling is not None and not coord_sibling.get("ok")
+    if coord_failed and coord_sibling:
+        failed.append(coord_sibling["step_id"])
     return {
         "schema": "compression_mask_hypo_passive_cross_audit_v1",
         "generated_at_utc": _utc(),
@@ -123,15 +142,19 @@ def run_passive_cross_audit(
             "live_trade_traffic",
             "production_domain_router_mutation",
             "customer_sla_headline_from_hypo_min_saving",
+            "mask_kpi_merge_with_coord_sibling",
         ],
         "workspace_root": workspace_root.as_posix(),
         "steps": steps,
+        "coord_sibling": coord_sibling,
         "aggregate": {
-            "step_count": len(steps),
-            "pass_count": sum(1 for s in steps if s["ok"]),
+            "step_count": len(steps) + (1 if coord_sibling else 0),
+            "pass_count": sum(1 for s in steps if s["ok"]) + (1 if coord_sibling and coord_sibling.get("ok") else 0),
             "fail_count": len(failed),
             "failed_step_ids": failed,
             "all_steps_pass": len(failed) == 0,
+            "mask_step_count": len(steps),
+            "coord_sibling_included": coord_sibling is not None,
         },
         "reproduce": "py scripts/run_compression_mask_hypo_passive_cross_audit_v1.py",
     }

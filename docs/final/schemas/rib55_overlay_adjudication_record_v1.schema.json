@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "rib55_overlay_adjudication_record_v1.schema.json",
+  "title": "rib55 overlay human adjudication record v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "entry_id",
+    "decision",
+    "reviewer_role",
+    "clinical_claim_forbidden_ack",
+    "checklist"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": { "const": "rib55_overlay_adjudication_record_v1" },
+    "entry_id": { "type": "string", "minLength": 3 },
+    "decision": {
+      "type": "string",
+      "enum": ["pending", "approved_education_internal", "approved_with_reservations", "rejected"]
+    },
+    "reviewer_role": {
+      "type": "string",
+      "enum": ["clinic_director", "han_physician", "anatomy_reviewer"]
+    },
+    "reviewer_display": { "type": "string", "maxLength": 120 },
+    "signed_at_utc": { "type": "string" },
+    "clinical_claim_forbidden_ack": { "const": true },
+    "checklist": {
+      "type": "array",
+      "minItems": 6,
+      "items": { "$ref": "#/definitions/checklist_item" }
+    },
+    "notes_ko": { "type": "string", "maxLength": 4000 },
+    "reservations_ko": { "type": "string", "maxLength": 2000 },
+    "send_gate_after_adjudication": {
+      "type": "string",
+      "enum": ["HOLD", "HOLD_LEGAL_REVIEW"]
+    }
+  },
+  "definitions": {
+    "checklist_item": {
+      "type": "object",
+      "required": ["item_id", "passed"],
+      "additionalProperties": false,
+      "properties": {
+        "item_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]{2,48}$" },
+        "passed": { "type": "boolean" },
+        "note_ko": { "type": "string", "maxLength": 500 }
+      }
+    }
+  }
+}

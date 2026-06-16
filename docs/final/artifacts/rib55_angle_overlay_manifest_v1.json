@@ -1,0 +1,442 @@
+{
+  "schema": "rib55_angle_overlay_manifest_v1",
+  "version": "v1",
+  "status": "HYPO",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "economic_edge_claim_allowed": false,
+  "coord_spec": "anatomy_overlay_coord_v1",
+  "policy_pointer": "docs/final/artifacts/anatomy_image_hallucination_control_protocol_hypo_v1_latest.md",
+  "public_copy_pointer": "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+  "generated_at": "2026-06-15",
+  "notes_ko": "오버레이 좌표는 사람 지정·원장 adjudication 전제. angle_deg/숫자 라벨은 임상 실측 아님. costal-angle 3점법은 골학·측정 문헌 참고 개념도만.",
+  "overlay_layer_schema": {
+    "type": {
+      "enum": [
+        "angle_arc",
+        "arrow",
+        "label",
+        "dashed_guide"
+      ]
+    },
+    "angle_deg": {
+      "type": "number|null",
+      "description": "null=대외 각도 숫자 미표기. legacy 내부 태그만 angle_deg_legacy_tag."
+    },
+    "points_norm": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2
+      },
+      "description": "[[x,y],...] 0.0-1.0. index 0=꼭짓점(p0/c), 1=p1/a, 2=p2/b"
+    },
+    "point_roles": {
+      "type": "array",
+      "description": "anatomical_reference_points_v1.points 와 동기"
+    },
+    "show_angle_arc": {
+      "type": "boolean",
+      "default": true
+    },
+    "show_degree_label": {
+      "type": "boolean",
+      "default": false
+    },
+    "stroke": {
+      "type": "string"
+    },
+    "label_text": {
+      "type": "string"
+    }
+  },
+  "entries": [
+    {
+      "entry_id": "pilot_ninth_rib_55deg_v0",
+      "status": "adjudicated_l0_v1_g0_pass",
+      "track": "track_a_adjacent",
+      "source": {
+        "title": "Ninth rib lateral2.png",
+        "url": "https://commons.wikimedia.org/wiki/File:Ninth_rib_lateral2.png",
+        "license": "CC-BY-SA-2.1-JP",
+        "attribution_required": true,
+        "attribution_text": "BodyParts3D / Anatomography — Database Center for Life Science (DBCLS), CC BY-SA 2.1 JP",
+        "attribution_footer": "Base: DBCLS (CC BY-SA 2.1 JP)"
+      },
+      "base_image": {
+        "local_path": "data/anatomy/fixtures/ninth_rib_lateral2.png",
+        "sha256": "82dc7d64e87caed9ff257414aa6db76371d20dab637e56df00f67e2fcdb0ddde",
+        "fetch_status": "downloaded"
+      },
+      "infographic_field_v1": {
+        "headline_ko": "갈비뼈가 꺾이는 지점을 보는 교육용 그림",
+        "subtitle_ko": "갈비뼈가 둥글게 휘어지는 방향 [교육용·참고]",
+        "footer_ko": "[교육용 · 비진단 · 임상 측정 아님] · theory tag [HYPO]",
+        "system_label": "rib sweep — [HYPO]",
+        "pedagogical_frame": "health_education_metaphor",
+        "physiology_percent_marketing": false,
+        "target_audience": "elementary_health_education",
+        "policy_ack": "PUBLIC_FACING §3 pedagogical isomorphisms only; no physiology-% marketing"
+      },
+      "anatomical_reference_points_v1": {
+        "vertex_index": 0,
+        "measurement_construct": "costal_angle_interior_at_vertex",
+        "literature_note_ko": "골학·측정 문헌상 3점 기준 개념도; 본 PNG 좌표는 교육용 수동 지정·실측·진단 아님",
+        "ninth_vs_second_rib_ko": "도판=9번 늑골 측면. 문헌 costal-angle 예시는 2번 늑골 등 — 특정 각도 수치 대외 인용 없음",
+        "isa_warning_ko": "하늑각(ISA) 등 임상 지표와 혼동 금지",
+        "points": [
+          {
+            "id": "p0",
+            "infographic_id": "c",
+            "points_norm_index": 0,
+            "role": "costal_angle_vertex",
+            "label_ko": "늑골각(꺾임)",
+            "definition_ko": "늑골각(Costal angle)의 내장면 중간점 — 가장 많이 꺾이는 모서리",
+            "definition_en": "The midheight point of the visceral surface of the costal angle"
+          },
+          {
+            "id": "p1",
+            "infographic_id": "a",
+            "points_norm_index": 1,
+            "role": "rib_head_medial",
+            "label_ko": "늑골두(척추 쪽)",
+            "definition_ko": "늑골 머리의 가장 안쪽(medial) 돌출부",
+            "definition_en": "The most medially protruding point of the rib head"
+          },
+          {
+            "id": "p2",
+            "infographic_id": "b",
+            "points_norm_index": 2,
+            "role": "sternal_end_visceral_mid",
+            "label_ko": "흉골端(앞가슴 쪽)",
+            "definition_ko": "늑골 흉골 끝의 내장면 중간점",
+            "definition_en": "The midheight point of the visceral surface of the rib sternal end"
+          }
+        ]
+      },
+      "overlays": [
+        {
+          "layer_id": "rib9_sweep_hypo",
+          "type": "angle_arc",
+          "angle_deg": null,
+          "angle_deg_legacy_tag": 55,
+          "angle_deg_note": "legacy internal theory tag only; NOT on-image. 2nd-rib refs in literature; 9th rib PNG not cited for degrees.",
+          "show_angle_arc": true,
+          "show_degree_label": false,
+          "points_norm": [
+            [
+              0.4,
+              0.54
+            ],
+            [
+              0.43,
+              0.51
+            ],
+            [
+              0.58,
+              0.71
+            ]
+          ],
+          "point_roles": [
+            {
+              "id": "p0",
+              "infographic_id": "c",
+              "points_norm_index": 0
+            },
+            {
+              "id": "p1",
+              "infographic_id": "a",
+              "points_norm_index": 1
+            },
+            {
+              "id": "p2",
+              "infographic_id": "b",
+              "points_norm_index": 2
+            }
+          ],
+          "stroke": "#E11D48",
+          "label_text": "rib sweep — [HYPO]"
+        }
+      ],
+      "caption_ko": "9번 늑골 측면: a·b·c(=p1·p2·p0) 삼각 구도로 꺾임 방향만 표시. 갈비뼈가 둥글게 휘어지는 방향 [교육용·참고]. 숫자 각도·임상 진단·ISA 혼동 금지.",
+      "literature_reference_hypo": {
+        "costal_angle_3point": "J-STAGE Anthropological Science 133(2) — (a) rib head medial, (b) sternal end visceral mid, (c) costal angle visceral mid",
+        "isa_warning": "Clinical costal/infrasternal angle (ISA) is a different construct; not this overlay",
+        "url": "https://www.jstage.jst.go.jp/article/ase/133/2/133_250227/_html/-char/en"
+      },
+      "adjudication": {
+        "required": true,
+        "status": "G0_PASS",
+        "signed_by": "MKM_COMMANDER",
+        "signed_at": "2026-06-15T15:35:00+00:00",
+        "notes": "L0 rib sweep HYPO; 55deg removed from image; infographic_field_v1 + anatomical_reference_points_v1; SEND_GATE HOLD"
+      }
+    },
+    {
+      "entry_id": "pilot_ninth_rib_education_alt_v0",
+      "status": "rendered_pending_adjudication",
+      "track": "track_a_adjacent",
+      "source": {
+        "title": "Ninth rib lateral2.png",
+        "url": "https://commons.wikimedia.org/wiki/File:Ninth_rib_lateral2.png",
+        "license": "CC-BY-SA-2.1-JP",
+        "attribution_required": true,
+        "attribution_text": "BodyParts3D / Anatomography — Database Center for Life Science (DBCLS), CC BY-SA 2.1 JP",
+        "attribution_footer": "Base: DBCLS (CC BY-SA 2.1 JP)"
+      },
+      "base_image": {
+        "local_path": "data/anatomy/fixtures/ninth_rib_lateral2.png",
+        "sha256": "82dc7d64e87caed9ff257414aa6db76371d20dab637e56df00f67e2fcdb0ddde",
+        "fetch_status": "local_fixture"
+      },
+      "infographic_field_v1": {
+        "headline_ko": "등에서 가슴으로 뻗어 나오는 갈비뼈 방향 [참고용]",
+        "subtitle_ko": "숨쉬기를 돕는 갈비뼈의 움직임 패턴 (이론적 비유)",
+        "footer_ko": "[교육용 · 비진단 · 임상 측정 아님] · theory tag [HYPO]",
+        "system_label": "rib sweep alt — [HYPO]",
+        "pedagogical_frame": "health_education_metaphor",
+        "physiology_percent_marketing": false,
+        "target_audience": "elementary_health_education",
+        "policy_ack": "bench entry for COORD wire token compare; same licensed base"
+      },
+      "anatomical_reference_points_v1": {
+        "vertex_index": 0,
+        "measurement_construct": "costal_angle_interior_at_vertex",
+        "literature_note_ko": "벤치용 alt 좌표 — 교육용 수동 지정",
+        "ninth_vs_second_rib_ko": "동일 9번 늑골 base; overlay 좌표만 alt",
+        "isa_warning_ko": "하늑각(ISA) 등 임상 지표와 혼동 금지",
+        "points": [
+          {
+            "id": "p0",
+            "infographic_id": "c",
+            "points_norm_index": 0,
+            "role": "costal_angle_vertex",
+            "label_ko": "늑골각(꺾임)",
+            "definition_ko": "늑골각의 내장면 중간점"
+          },
+          {
+            "id": "p1",
+            "infographic_id": "a",
+            "points_norm_index": 1,
+            "role": "rib_head_medial",
+            "label_ko": "늑골두(척추 쪽)",
+            "definition_ko": "늑골 머리 medial 돌출부"
+          },
+          {
+            "id": "p2",
+            "infographic_id": "b",
+            "points_norm_index": 2,
+            "role": "sternal_end_visceral_mid",
+            "label_ko": "흉골端(앞가슴 쪽)",
+            "definition_ko": "흉골 끝 내장면 중간점"
+          }
+        ]
+      },
+      "overlays": [
+        {
+          "layer_id": "rib9_sweep_alt_hypo",
+          "type": "angle_arc",
+          "angle_deg": null,
+          "show_angle_arc": true,
+          "show_degree_label": false,
+          "points_norm": [
+            [
+              0.38,
+              0.52
+            ],
+            [
+              0.45,
+              0.5
+            ],
+            [
+              0.6,
+              0.68
+            ]
+          ],
+          "point_roles": [
+            {
+              "id": "p0",
+              "infographic_id": "c",
+              "points_norm_index": 0
+            },
+            {
+              "id": "p1",
+              "infographic_id": "a",
+              "points_norm_index": 1
+            },
+            {
+              "id": "p2",
+              "infographic_id": "b",
+              "points_norm_index": 2
+            }
+          ],
+          "stroke": "#2563EB",
+          "label_text": "rib sweep alt — [HYPO]"
+        }
+      ],
+      "caption_ko": "벤치 alt entry: 동일 base, 다른 coord_inject — COORD wire 토큰 비교용.",
+      "adjudication": {
+        "required": true,
+        "status": "pending",
+        "notes": "bench entry; adjudication pending"
+      }
+    },
+    {
+      "entry_id": "pilot_second_rib_lateral2_v0",
+      "status": "rendered_pending_adjudication",
+      "track": "track_a_adjacent",
+      "source": {
+        "title": "Second rib lateral2.png",
+        "url": "https://commons.wikimedia.org/wiki/File:Second_rib_lateral2.png",
+        "license": "CC-BY-SA-2.1-JP",
+        "attribution_required": true,
+        "attribution_text": "BodyParts3D / Anatomography — Database Center for Life Science (DBCLS), CC BY-SA 2.1 JP",
+        "attribution_footer": "Base: DBCLS (CC BY-SA 2.1 JP)"
+      },
+      "base_image": {
+        "local_path": "data/anatomy/fixtures/second_rib_lateral2.png",
+        "fetch_status": "pending_fetch"
+      },
+      "infographic_field_v1": {
+        "headline_ko": "2번 갈비뼈 — 휘어지는 방향 [교육용·참고]",
+        "subtitle_ko": "문헌 costal-angle 개념과 같은 3점법; 숫자 각도는 표시하지 않음",
+        "footer_ko": "[교육용 · 비진단 · 임상 측정 아님] · theory tag [HYPO]",
+        "system_label": "rib2 sweep — [HYPO]",
+        "pedagogical_frame": "health_education_metaphor",
+        "physiology_percent_marketing": false,
+        "target_audience": "elementary_health_education",
+        "policy_ack": "multi-base COORD bench — distinct base_sha256 from 9th rib pilot"
+      },
+      "anatomical_reference_points_v1": {
+        "vertex_index": 0,
+        "measurement_construct": "costal_angle_interior_at_vertex",
+        "literature_note_ko": "2번 늑골 lateral — 교육용 수동 coord",
+        "ninth_vs_second_rib_ko": "2번 늑골 PNG; 9번 pilot와 base SHA 분리",
+        "isa_warning_ko": "하늑각(ISA) 등 임상 지표와 혼동 금지",
+        "points": [
+          {
+            "id": "p0",
+            "infographic_id": "c",
+            "points_norm_index": 0,
+            "role": "costal_angle_vertex",
+            "label_ko": "늑골각(꺾임)",
+            "definition_ko": "늑골각의 내장면 중간점"
+          },
+          {
+            "id": "p1",
+            "infographic_id": "a",
+            "points_norm_index": 1,
+            "role": "rib_head_medial",
+            "label_ko": "늑골두(척추 쪽)",
+            "definition_ko": "늑골 머리 medial 돌출부"
+          },
+          {
+            "id": "p2",
+            "infographic_id": "b",
+            "points_norm_index": 2,
+            "role": "sternal_end_visceral_mid",
+            "label_ko": "흉골端(앞가슴 쪽)",
+            "definition_ko": "흉골 끝 내장면 중간점"
+          }
+        ]
+      },
+      "overlays": [
+        {
+          "layer_id": "rib2_sweep_hypo",
+          "type": "angle_arc",
+          "angle_deg": null,
+          "show_angle_arc": true,
+          "show_degree_label": false,
+          "points_norm": [
+            [
+              0.42,
+              0.55
+            ],
+            [
+              0.46,
+              0.48
+            ],
+            [
+              0.62,
+              0.7
+            ]
+          ],
+          "point_roles": [
+            {
+              "id": "p0",
+              "infographic_id": "c",
+              "points_norm_index": 0
+            },
+            {
+              "id": "p1",
+              "infographic_id": "a",
+              "points_norm_index": 1
+            },
+            {
+              "id": "p2",
+              "infographic_id": "b",
+              "points_norm_index": 2
+            }
+          ],
+          "stroke": "#059669",
+          "label_text": "rib2 sweep — [HYPO]"
+        }
+      ],
+      "caption_ko": "2번 늑골 lateral2: multi-base COORD wire bench — base SHA ≠ 9th rib.",
+      "adjudication": {
+        "required": true,
+        "status": "pending",
+        "notes": "multi-base bench; pending until render+review"
+      }
+    }
+  ],
+  "verification": {
+    "render_script": "scripts/render_rib55_angle_overlay_v1.py",
+    "pytest_module": "tests/test_render_rib55_angle_overlay_v1.py",
+    "last_exit_code": 0,
+    "last_verified_at": "2026-06-16T01:14:29+00:00",
+    "last_output": "docs/final/artifacts/rib55_overlay_pilot_ninth_rib_55deg_v0_latest.png",
+    "last_output_sha256": "0207c7b8c4cf9a0a3ee1e0f8f17e6697e2eb532595767ee7d9539636be4b2279",
+    "g0_adjudication": "G0_PASS",
+    "r1_ablation_pointer": "docs/final/artifacts/rib55_l0_l1_ablation_v1_latest.json",
+    "coord_v2_validation_pointer": "docs/final/artifacts/anatomy_overlay_coord_v2_validation_v1_latest.json"
+  },
+  "coord_spec_v2": "anatomy_overlay_coord_v2",
+  "coord_v2_schema_pointer": "docs/final/artifacts/anatomy_overlay_coord_v2_schema_v1.json",
+  "coord_v2": {
+    "schema": "anatomy_overlay_coord_v2",
+    "generated_at_utc": "2026-06-16T01:14:32Z",
+    "clamp_policy": {
+      "lane": "L1_sasang_clamp",
+      "angle_bounds_deg": [
+        40.0,
+        70.0
+      ],
+      "point_nudge_max": 0.04,
+      "sasang_lens_pointer": "docs/final/artifacts/sasang_independent_lens_latest.json",
+      "function": "scripts.rib55_angle_overlay_v1_lib.apply_sasang_l1_clamp"
+    },
+    "r1_ablation": {
+      "artifact": "docs/final/artifacts/rib55_l0_l1_ablation_v1_latest.json",
+      "entry_id": "pilot_ninth_rib_55deg_v0",
+      "angle_delta": 49.25,
+      "pixels_differ": true,
+      "l0_output": "docs/final/artifacts/rib55_ablation_l0_pilot_ninth_rib_55deg_v0_latest.png",
+      "l1_output": "docs/final/artifacts/rib55_ablation_l1_pilot_ninth_rib_55deg_v0_latest.png"
+    },
+    "layer_modes": {
+      "rib9_sweep_hypo": {
+        "L0_geometry_only": {
+          "angle_deg": 0.0
+        },
+        "L1_sasang_clamp": {
+          "angle_deg": 49.25
+        }
+      }
+    },
+    "adjudication_required": true,
+    "ready_for_external_send": false
+  }
+}
