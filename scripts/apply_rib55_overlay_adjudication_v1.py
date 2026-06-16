@@ -58,9 +58,9 @@ def main() -> int:
         return 1
 
     try:
-        record_rel = str(args.record_json.relative_to(ROOT)).replace("\\", "/")
+        record_rel = args.record_json.relative_to(ROOT).as_posix()
     except ValueError:
-        record_rel = str(args.record_json)
+        record_rel = args.record_json.as_posix()
 
     updated = False
     for entry in manifest.get("entries") or []:

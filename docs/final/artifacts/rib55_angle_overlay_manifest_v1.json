@@ -55,7 +55,7 @@
   "entries": [
     {
       "entry_id": "pilot_ninth_rib_55deg_v0",
-      "status": "adjudicated_l0_v1_g0_pass",
+      "status": "adjudicated_education_internal",
       "track": "track_a_adjacent",
       "source": {
         "title": "Ninth rib lateral2.png",
@@ -168,15 +168,50 @@
       },
       "adjudication": {
         "required": true,
-        "status": "G0_PASS",
         "signed_by": "MKM_COMMANDER",
-        "signed_at": "2026-06-15T15:35:00+00:00",
-        "notes": "L0 rib sweep HYPO; 55deg removed from image; infographic_field_v1 + anatomical_reference_points_v1; SEND_GATE HOLD"
+        "reviewer_role": "clinic_director",
+        "signed_at": "2026-06-15T18:25:00Z",
+        "decision": "approved_education_internal",
+        "notes": "G1: infographic_field_v1 + anatomical_reference_points_v1 반영 후 education_internal 승인. send_gate HOLD 유지.",
+        "reservations": "9번 늑골 PNG 좌표는 수동 지정; 2번 늑골 문헌 각도 수치 대외 인용 없음.",
+        "checklist": [
+          {
+            "item_id": "base_license_verified",
+            "passed": true,
+            "note_ko": "Commons CC-BY-SA-2.1-JP · attribution footer 확인"
+          },
+          {
+            "item_id": "overlay_geometry_plausible",
+            "passed": true,
+            "note_ko": "a/b/c(p1/p2/p0) 3점·rib sweep 방향 육안 — 9번 늑골 측면 개념도"
+          },
+          {
+            "item_id": "angle_label_theory_not_measurement",
+            "passed": true,
+            "note_ko": "이미지·카피에 숫자 각도 없음; rib sweep [HYPO]; ISA·임상 실측 혼동 없음"
+          },
+          {
+            "item_id": "no_clinical_diagnosis_claim",
+            "passed": true,
+            "note_ko": "infographic_field_v1 pedagogical frame; 진단·치료 효능 문구 없음"
+          },
+          {
+            "item_id": "l0_l1_ablation_reviewed",
+            "passed": true,
+            "note_ko": "R1 ablation PNG·angle_delta 49.25 검토 — L1 sasang-clamp 연구용"
+          },
+          {
+            "item_id": "education_use_only_scope",
+            "passed": true,
+            "note_ko": "초등 건강교육·내부 연수; 환자-facing·외부 송출 HOLD"
+          }
+        ],
+        "record_path": "docs/final/artifacts/rib55_overlay_adjudication_record_g1_infographic_v1.json"
       }
     },
     {
       "entry_id": "pilot_ninth_rib_education_alt_v0",
-      "status": "rendered_pending_adjudication",
+      "status": "adjudicated_with_reservations",
       "track": "track_a_adjacent",
       "source": {
         "title": "Ninth rib lateral2.png",
@@ -279,13 +314,50 @@
       "caption_ko": "벤치 alt entry: 동일 base, 다른 coord_inject — COORD wire 토큰 비교용.",
       "adjudication": {
         "required": true,
-        "status": "pending",
-        "notes": "bench entry; adjudication pending"
+        "signed_by": "MKM_COMMANDER",
+        "reviewer_role": "clinic_director",
+        "signed_at": "2026-06-16T00:20:00Z",
+        "decision": "approved_with_reservations",
+        "notes": "COORD wire token bench alt entry — approved_with_reservations.",
+        "reservations": "동일 base SHA; coords bench-only; 별도 clinical sign-off 불필요",
+        "checklist": [
+          {
+            "item_id": "base_license_verified",
+            "passed": true,
+            "note_ko": "동일 Commons base — CC-BY-SA-2.1-JP"
+          },
+          {
+            "item_id": "overlay_geometry_plausible",
+            "passed": true,
+            "note_ko": "alt coord bench — 육상 plausible"
+          },
+          {
+            "item_id": "angle_label_theory_not_measurement",
+            "passed": true,
+            "note_ko": "숫자 각도 없음 · rib sweep alt [HYPO]"
+          },
+          {
+            "item_id": "no_clinical_diagnosis_claim",
+            "passed": true,
+            "note_ko": "벤치·토큰 compare 전용"
+          },
+          {
+            "item_id": "l0_l1_ablation_reviewed",
+            "passed": true,
+            "note_ko": "pilot ablation 참고; alt는 L0 only"
+          },
+          {
+            "item_id": "education_use_only_scope",
+            "passed": true,
+            "note_ko": "내부 bench; 환자-facing·송출 HOLD"
+          }
+        ],
+        "record_path": "docs/final/artifacts/rib55_overlay_adjudication_record_alt_bench_v1.json"
       }
     },
     {
       "entry_id": "pilot_second_rib_lateral2_v0",
-      "status": "rendered_pending_adjudication",
+      "status": "adjudicated_with_reservations",
       "track": "track_a_adjacent",
       "source": {
         "title": "Second rib lateral2.png",
@@ -387,8 +459,45 @@
       "caption_ko": "2번 늑골 lateral2: multi-base COORD wire bench — base SHA ≠ 9th rib.",
       "adjudication": {
         "required": true,
-        "status": "pending",
-        "notes": "multi-base bench; pending until render+review"
+        "signed_by": "MKM_COMMANDER",
+        "reviewer_role": "anatomy_reviewer",
+        "signed_at": "2026-06-16T00:22:00Z",
+        "decision": "approved_with_reservations",
+        "notes": "Second rib lateral2 base — multi-base COORD bench entry.",
+        "reservations": "좌표 수동 지정; 9번 pilot와 base·SHA 다름 — wire token delta 검증용",
+        "checklist": [
+          {
+            "item_id": "base_license_verified",
+            "passed": true,
+            "note_ko": "Second rib lateral2.png — DBCLS CC-BY-SA-2.1-JP"
+          },
+          {
+            "item_id": "overlay_geometry_plausible",
+            "passed": true,
+            "note_ko": "2번 늑골 lateral — 수동 coord HYPO"
+          },
+          {
+            "item_id": "angle_label_theory_not_measurement",
+            "passed": true,
+            "note_ko": "숫자 각도·55° 미표기"
+          },
+          {
+            "item_id": "no_clinical_diagnosis_claim",
+            "passed": true,
+            "note_ko": "교육용 개념도 only"
+          },
+          {
+            "item_id": "l0_l1_ablation_reviewed",
+            "passed": true,
+            "note_ko": "2번 rib entry — pilot ablation 계열 참고"
+          },
+          {
+            "item_id": "education_use_only_scope",
+            "passed": true,
+            "note_ko": "multi-base COORD bench; SEND HOLD"
+          }
+        ],
+        "record_path": "docs/final/artifacts/rib55_overlay_adjudication_record_second_rib_v1.json"
       }
     }
   ],
@@ -396,7 +505,7 @@
     "render_script": "scripts/render_rib55_angle_overlay_v1.py",
     "pytest_module": "tests/test_render_rib55_angle_overlay_v1.py",
     "last_exit_code": 0,
-    "last_verified_at": "2026-06-16T01:14:29+00:00",
+    "last_verified_at": "2026-06-16T01:49:06+00:00",
     "last_output": "docs/final/artifacts/rib55_overlay_pilot_ninth_rib_55deg_v0_latest.png",
     "last_output_sha256": "0207c7b8c4cf9a0a3ee1e0f8f17e6697e2eb532595767ee7d9539636be4b2279",
     "g0_adjudication": "G0_PASS",
@@ -407,7 +516,7 @@
   "coord_v2_schema_pointer": "docs/final/artifacts/anatomy_overlay_coord_v2_schema_v1.json",
   "coord_v2": {
     "schema": "anatomy_overlay_coord_v2",
-    "generated_at_utc": "2026-06-16T01:14:32Z",
+    "generated_at_utc": "2026-06-16T01:49:10Z",
     "clamp_policy": {
       "lane": "L1_sasang_clamp",
       "angle_bounds_deg": [
@@ -438,5 +547,6 @@
     },
     "adjudication_required": true,
     "ready_for_external_send": false
-  }
+  },
+  "adjudication_applied_at_utc": "2026-06-16T01:49:18Z"
 }

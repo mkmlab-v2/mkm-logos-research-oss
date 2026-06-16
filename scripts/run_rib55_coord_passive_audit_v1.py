@@ -53,6 +53,33 @@ STEPS: list[tuple[str, list[str]]] = [
             "print('template schema ok')",
         ],
     ),
+    (
+        "apply_adjudication_g1",
+        [
+            sys.executable,
+            "scripts/apply_rib55_overlay_adjudication_v1.py",
+            "--record-json",
+            "docs/final/artifacts/rib55_overlay_adjudication_record_g1_infographic_v1.json",
+        ],
+    ),
+    (
+        "apply_adjudication_alt_bench",
+        [
+            sys.executable,
+            "scripts/apply_rib55_overlay_adjudication_v1.py",
+            "--record-json",
+            "docs/final/artifacts/rib55_overlay_adjudication_record_alt_bench_v1.json",
+        ],
+    ),
+    (
+        "apply_adjudication_second_rib",
+        [
+            sys.executable,
+            "scripts/apply_rib55_overlay_adjudication_v1.py",
+            "--record-json",
+            "docs/final/artifacts/rib55_overlay_adjudication_record_second_rib_v1.json",
+        ],
+    ),
 ]
 
 
