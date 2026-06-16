@@ -1,0 +1,35 @@
+{
+  "schema": "anatomy_overlay_coord_v2_schema_v1",
+  "generated_at_utc": "2026-06-15",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "extends": "anatomy_overlay_coord_v1",
+  "description": "Optional v2 fields for sasang-clamp provenance and R1 ablation linkage. v1 loaders ignore unknown keys.",
+  "required_root_fields": [
+    "coord_spec_v2",
+    "coord_v2"
+  ],
+  "coord_v2_fields": {
+    "clamp_policy": {
+      "lane": "L1_sasang_clamp",
+      "angle_bounds_deg": [40, 70],
+      "point_nudge_max": 0.04,
+      "sasang_lens_pointer": "docs/final/artifacts/sasang_independent_lens_latest.json"
+    },
+    "r1_ablation": {
+      "artifact": "docs/final/artifacts/rib55_l0_l1_ablation_v1_latest.json",
+      "pixels_differ": "boolean",
+      "angle_delta": "number"
+    },
+    "layer_modes": {
+      "description": "per entry_id.layer_id render mode registry",
+      "L0_geometry_only": "manifest overlays unchanged",
+      "L1_sasang_clamp": "apply_sasang_l1_clamp before render"
+    }
+  },
+  "forbidden_claims": [
+    "verification_complete_without_adjudication",
+    "clinical_diagnosis_from_overlay",
+    "ai_generated_anatomy_pixels"
+  ]
+}
