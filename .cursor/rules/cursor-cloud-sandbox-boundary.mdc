@@ -1,6 +1,7 @@
 ---
 title: Cursor Cloud Agent · Sandbox · Dev Environment (MKM boundary v1)
-alwaysApply: true
+description: Cursor Cloud Agent · Sandbox · multi-repo dev env — no live keys · no Track A auto-merge
+alwaysApply: false
 priority: 3
 ---
 

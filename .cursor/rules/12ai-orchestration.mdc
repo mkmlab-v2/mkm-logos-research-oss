@@ -1,6 +1,7 @@
 ---
 title: 12AI Orchestration v1.3 — 4+1 Router, Loop, A/B Gates
-alwaysApply: true
+description: Multi-step DoD loops · S/L/K/M routing · promotion gates — complex implementation or multi-agent tasks
+alwaysApply: false
 priority: 3
 ---
 

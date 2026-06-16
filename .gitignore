@@ -180,9 +180,12 @@ secrets/
 storage/MKM_ARCHIVE_FROM_F/
 
 # Local LoRA / Unsloth training venvs & compile cache (large; regenerable)
+.venv/
 .venv_lora/
 .venv_lora_local128/
 .venv-nemotron-wsl/
+.venv-btrack-docling/
+.venv-btrack-sherpa-onnx/
 unsloth_compiled_cache/
 # Deterministic LoRA Pack0b timestamped run dirs under workspace storage (regenerable; not SSOT)
 storage/adapters/myeongri_deterministic_lora_v0/run_*/
@@ -377,7 +380,7 @@ reports/notebooklm_fusion_hub_bulk_push.log
 
 # B-track blind replay one-off exports (timestamped local runs; regenerable)
 reports/constitution/btrack_pilot/blind_replay/blind_replay_answer_key_20*.jsonl
-reports/constitution/btrack_pilot/blind_replay/blind_replay_public_20*.jsonl
+reports/constitution/btrack_pilot/sherpa_onnx_models/
 
 # aistudio-mcp-server local npm pack/extract (regenerable; do not commit)
 reports/aistudio-mcp-server-*.tgz

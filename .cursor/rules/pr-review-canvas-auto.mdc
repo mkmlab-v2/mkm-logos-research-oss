@@ -1,6 +1,6 @@
 ---
 description: Local/gitea branch review → PR Review Canvas (internal-first; GitHub minimal)
-alwaysApply: true
+alwaysApply: false
 ---
 
 # PR Review Canvas — 자동 (internal-first)
