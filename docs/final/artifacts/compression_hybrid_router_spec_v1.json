@@ -1,6 +1,6 @@
 {
   "schema": "compression_hybrid_router_spec_v1",
-  "generated_at_utc": "2026-06-14T20:20:54Z",
+  "generated_at_utc": "2026-06-16T02:42:41Z",
   "track": "B",
   "research_only": true,
   "send_gate": "HOLD",
@@ -80,6 +80,13 @@
       "schema_ref": "mkm_ltm_inject_contract_v1",
       "artifact": "docs/final/artifacts/mkm_ltm_inject_contract_v1.json",
       "requires_bilateral_ssot": true
+    },
+    {
+      "mode_id": "anatomy_overlay_coord_v1",
+      "schema_ref": "rib55_angle_overlay_manifest_v1",
+      "artifact": "docs/final/artifacts/coord_wire_packet_example_v1_latest.json",
+      "requires_bilateral_ssot": true,
+      "example_builder": "scripts/build_coord_wire_packet_example_v1.py"
     }
   ],
   "v2_stub_binding_status": "partial_stub_metadata",
@@ -90,7 +97,7 @@
   "reproduce": "py scripts/run_compression_hybrid_router_spike_v1.py",
   "sync_from_spike": {
     "spike_path": "reports/compression_hybrid_router_spike_v1_latest.json",
-    "spike_generated_at_utc": "2026-06-14T20:20:42Z",
+    "spike_generated_at_utc": "2026-06-16T02:42:20Z",
     "binding_table_digest": "e541654869d74212",
     "sync_script": "scripts/sync_compression_hybrid_router_spec_from_spike_v1.py"
   },
@@ -100,7 +107,7 @@
       "wtt_premium_cs_customer_v1"
     ],
     "excluded_artifact_corpus": "open_structured_long_v1",
-    "mean_operational_pass_rate": 0.8666666666666667,
+    "mean_operational_pass_rate": 0.85,
     "jaccard_floor": 0.73
   }
 }

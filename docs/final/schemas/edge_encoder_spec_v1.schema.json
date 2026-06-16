@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/edge_encoder_spec_v1.schema.json",
+  "title": "MKM Edge Encoder client contract v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "track",
+    "research_only",
+    "send_gate",
+    "maturity",
+    "boundary_ack",
+    "client_obligations",
+    "server_forbidden",
+    "coord_wire_schema",
+    "deterministic_sync",
+    "ssot_pointers",
+    "reproduce"
+  ],
+  "properties": {
+    "schema": { "const": "edge_encoder_spec_v1" },
+    "generated_at_utc": { "type": "string" },
+    "track": { "const": "B" },
+    "research_only": { "const": true },
+    "hypothesis_tier": { "const": "B" },
+    "send_gate": { "const": "HOLD" },
+    "ready_for_external_send": { "const": false },
+    "maturity": { "enum": ["blueprint", "sdk_alpha", "sdk_beta"] },
+    "boundary_ack": { "type": "string", "minLength": 20 },
+    "fail_comp_004": { "type": "string" },
+    "client_obligations": {
+      "type": "object",
+      "required": [
+        "retain_original_locally",
+        "pre_sync_base_catalog",
+        "emit_coord_wire_only",
+        "verify_base_sha256_before_send"
+      ],
+      "properties": {
+        "retain_original_locally": { "type": "boolean" },
+        "pre_sync_base_catalog": { "type": "boolean" },
+        "emit_coord_wire_only": { "type": "boolean" },
+        "verify_base_sha256_before_send": { "type": "boolean" },
+        "allowed_upload_surfaces": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "forbidden_upload_surfaces": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "server_forbidden": {
+      "type": "object",
+      "required": ["original_bulk_to_mkm_saas", "unlicensed_base_image_bytes"],
+      "properties": {
+        "original_bulk_to_mkm_saas": { "const": true },
+        "unlicensed_base_image_bytes": { "const": true },
+        "note_ko": { "type": "string" }
+      }
+    },
+    "coord_wire_schema": {
+      "type": "object",
+      "required": ["path", "wire_mode", "example_artifact"],
+      "properties": {
+        "path": { "type": "string" },
+        "wire_mode": { "type": "string" },
+        "example_artifact": { "type": "string" },
+        "token_proxy_cl100k_reference": { "type": "integer" }
+      }
+    },
+    "deterministic_sync": {
+      "type": "object",
+      "required": ["status", "gate_script", "checks"],
+      "properties": {
+        "status": { "enum": ["not_started", "smoke_only", "bench_ready"] },
+        "gate_script": { "type": "string" },
+        "checks": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "mask_hybrid_determinism": {
+      "type": "object",
+      "required": ["status", "gate_script", "backend", "corpus_tag"],
+      "properties": {
+        "status": { "enum": ["not_started", "smoke_only", "bench_ready"] },
+        "gate_script": { "type": "string" },
+        "backend": { "type": "string" },
+        "corpus_tag": { "type": "string" },
+        "checks": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "ssot_pointers": {
+      "type": "object",
+      "minProperties": 3
+    },
+    "reproduce": {
+      "type": "array",
+      "minItems": 2,
+      "items": { "type": "string" }
+    }
+  }
+}
