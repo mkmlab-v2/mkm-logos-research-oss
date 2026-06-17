@@ -1,5 +1,7 @@
 # Open-bench contributions (compression + prophecy)
 
+**Quick start:** `python3 scripts/run_compression_open_bench_onboard_smoke_v1.py` (~10 min visitor path)
+
 **Lane:** `contributor_provided` · **Track:** B-track · **SEND:** HOLD · `[HYPO]` / `research_only`
 
 This repo accepts **community contributions** for research benches — not contracted customer data.

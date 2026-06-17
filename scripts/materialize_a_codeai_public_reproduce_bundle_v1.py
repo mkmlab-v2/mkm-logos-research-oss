@@ -36,14 +36,10 @@ jobs:
           python-version: "3.11"
       - name: Install minimal deps
         run: pip install -q -r requirements-public-reproduce.txt
-      - name: Run open-bench evidence chain (handoff skipped)
-        run: python3 scripts/run_compression_evidence_lv1_chain_v1.py --skip-handoff
+      - name: Onboard smoke (evidence + contributor validate)
+        run: python3 scripts/run_compression_open_bench_onboard_smoke_v1.py
       - name: Verify reproduce pack
         run: test -f docs/final/artifacts/compression_public_reproduce_pack_v1_latest.json
-      - name: Contributor open-bench validate smoke
-        run: |
-          python3 scripts/validate_compression_contributor_jsonl_v1.py --jsonl data/compression/examples/compression_contributor_example_v1.jsonl --min-rows 10
-          python3 scripts/validate_prophecy_contributor_jsonl_v1.py --jsonl data/prophecy/examples/prophecy_contributor_example_v1.jsonl --min-rows 5
 """
 
 REQUIREMENTS_TXT = """fastapi>=0.100
@@ -264,6 +260,14 @@ def materialize(
         "```bash\n"
         "python3 scripts/run_compression_open_bench_chain_v1.py --skip-expand\n"
         "```\n\n"
+        "## 10-minute onboard smoke (visitor + contributor validate)\n\n"
+        "```bash\n"
+        "pip install -r requirements-public-reproduce.txt\n"
+        "python3 scripts/run_compression_open_bench_onboard_smoke_v1.py\n"
+        "```\n\n"
+        "Windows: `powershell -File scripts/Invoke-CompressionOpenBenchOnboardSmoke_v1.ps1`\n\n"
+        "Does not run commander mirror push or default customer n50 path. "
+        "Contribute via PR — see `CONTRIBUTING_OPEN_BENCH.md`.\n\n"
         "FAIL-COMP-004: per-SKU metrics only; never merge Track A / handoff / prospect %.\n\n"
         "## Enterprise pre-audit intake (web form · separate funnel)\n\n"
         "- Tier-0 **free pre-audit** queue (masked JSONL sample review): "
