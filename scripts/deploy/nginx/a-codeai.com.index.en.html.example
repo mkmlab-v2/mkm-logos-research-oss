@@ -16,26 +16,49 @@
   <meta property="og:locale:alternate" content="ko_KR" />
   <style>
     :root {
-      --bg: #081022;
+      --bg: #070e1f;
       --bg-soft: #0f1a33;
       --panel: #121f3d;
       --text: #edf2ff;
       --muted: #a7b6d8;
       --line: #263a66;
+      --line-strong: #38518a;
       --primary: #86abff;
       --primary-dark: #0a1738;
       --ok: #7ff0c3;
       --warn: #ffd27a;
+      --card-shadow: 0 10px 30px rgba(6, 13, 28, 0.35);
     }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: "Segoe UI", "Noto Sans", Arial, sans-serif;
       color: var(--text);
-      background: radial-gradient(1200px 500px at 80% -10%, #173063 0%, transparent 60%), linear-gradient(180deg, var(--bg), #0b1733 55%, #0d1c3f);
+      background: radial-gradient(1200px 500px at 85% -10%, #173063 0%, transparent 60%), linear-gradient(180deg, var(--bg), #0b1733 55%, #0d1c3f);
       line-height: 1.55;
     }
     a { color: inherit; }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus-visible {
+      left: 12px;
+      top: 12px;
+      z-index: 50;
+      width: auto;
+      height: auto;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: var(--primary-dark);
+      font-weight: 700;
+      text-decoration: none;
+    }
     .container { width: min(1080px, 92vw); margin: 0 auto; }
     .topbar {
       position: sticky;
@@ -55,6 +78,22 @@
     .brand { font-weight: 700; letter-spacing: 0.02em; }
     .lang { color: var(--muted); font-size: 13px; }
     .hero { padding: 72px 0 44px; border-bottom: 1px solid var(--line); }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .hero-main,
+    .hero-side {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: color-mix(in oklab, var(--panel), black 10%);
+      box-shadow: var(--card-shadow);
+      padding: 18px;
+    }
+    .hero-side .label { margin-top: 0; }
+    .hero-side ul { margin-top: 8px; }
     .badge-row {
       display: flex;
       flex-wrap: wrap;
@@ -103,6 +142,10 @@
       border-color: var(--line);
       background: color-mix(in oklab, var(--panel), black 6%);
     }
+    .btn-secondary:hover {
+      border-color: var(--line-strong);
+      text-decoration: none;
+    }
     section { padding: 42px 0; border-bottom: 1px solid var(--line); }
     h2 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.01em; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
@@ -111,6 +154,7 @@
       border-radius: 14px;
       background: color-mix(in oklab, var(--panel), black 8%);
       padding: 16px;
+      box-shadow: var(--card-shadow);
     }
     .label {
       margin: 0 0 6px;
@@ -153,14 +197,53 @@
       background: color-mix(in oklab, var(--panel), black 8%);
     }
     footer { padding: 24px 0 36px; color: var(--muted); font-size: 13px; }
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .ecosystem-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: color-mix(in oklab, var(--bg-soft), black 3%);
+      padding: 14px;
+    }
+    .ecosystem-item a {
+      color: #d5e3ff;
+      font-weight: 700;
+    }
+    .ecosystem-item p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
     .focus-link:focus-visible,
     .btn:focus-visible {
       outline: 2px solid var(--primary);
       outline-offset: 2px;
     }
+    @media (prefers-reduced-motion: no-preference) {
+      .card,
+      .trust-item,
+      .ecosystem-item {
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .card:hover,
+      .trust-item:hover,
+      .ecosystem-item:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+      }
+    }
+    @media (max-width: 840px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <nav class="topbar" aria-label="Top navigation">
     <div class="container topbar-inner">
       <div class="brand">A-CODEAI</div>
@@ -170,26 +253,38 @@
 
   <header class="hero">
     <div class="container">
-      <div class="badge-row">
-        <span class="badge">Enterprise Treasury Focus</span>
-        <span class="badge">Not Investment Advice</span>
-        <span class="badge">Paid 90-Day Pilot</span>
-      </div>
-      <h1 id="pg-hero-title">See macro shocks earlier.<br />Decide faster with less noise.</h1>
-      <p class="subtitle" id="pg-hero-subtitle">
-        A-CODEAI helps treasury and risk teams detect FX, commodity, and supply-chain stress earlier,
-        with a KPI-defined 90-day pilot and explicit miss-handling terms.
-      </p>
-      <p class="small" id="pg-status-line">Status: Controlled Beta (Fact-Lock)</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#contact">Book a 20-min call</a>
-        <a class="btn btn-secondary" href="/pilot">View 90-day pilot</a>
-        <a class="btn btn-secondary" href="/benchmark">See verification policy</a>
+      <div class="hero-grid">
+        <div class="hero-main">
+          <div class="badge-row">
+            <span class="badge">Enterprise Treasury Focus</span>
+            <span class="badge">Not Investment Advice</span>
+            <span class="badge">Paid 90-Day Pilot</span>
+          </div>
+          <h1 id="pg-hero-title">A-CODEAI Open Bench (Controlled Beta + Waitlist)</h1>
+          <p class="subtitle" id="pg-hero-subtitle">
+            Measured compression gains are published with reproducible evidence, while SEND_GATE remains HOLD and onboarding stays waitlist-first.
+          </p>
+          <p class="small" id="pg-status-line">Current status: controlled beta waitlist; SEND_GATE=HOLD.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#contact">Book a 20-min call</a>
+            <a class="btn btn-secondary" href="/pilot">View 90-day pilot</a>
+            <a class="btn btn-secondary" href="/benchmark">See verification policy</a>
+          </div>
+        </div>
+        <aside class="hero-side" aria-label="Trust snapshot">
+          <p class="label">Trust Snapshot</p>
+          <p class="small">Track A active benchmark and contributor lane are separated by policy and reporting.</p>
+          <ul>
+            <li>Track A active: 47.54% token saving, min jaccard 0.714</li>
+            <li>Contributor lane: 25.1% saving, raw alignment pass 63.3%</li>
+            <li>SEND_GATE HOLD and waitlist-first onboarding remain enforced</li>
+          </ul>
+        </aside>
       </div>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <section id="fit">
       <div class="container">
         <h2>Who this is for</h2>
@@ -282,10 +377,10 @@
           </article>
         </div>
         <div class="trust-list" style="margin-top:14px">
-          <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">Commercial Readiness</span> `l1_inverse_decoder_commercialization_checklist_v1.json` reports <strong>READY_FOR_BROAD_ROLLOUT</strong> (3/3 criteria passed).</div>
-          <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">Hard-Case Gain</span> In `swap_typo` stress mode, objective v4 improves both exact and recovery by <strong>+0.0667</strong>.</div>
-          <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">Safety Control</span> Improved path is default-on, with immediate rollback via `--disable-swap-typo-objective-v4`.</div>
-          <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">Fit Boundary</span> Best for meaning-centric workloads (summarization, search, logs). For 100% fidelity workloads (payments/legal originals), use the literal-preserve lane.</div>
+          <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">Fact-Lock</span> Conditional improvements are claimed only inside validated operating zones.</div>
+          <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">Safety Fallback</span> Traffic is downgraded to HOLD/track_a_primary whenever readiness or health checks fail.</div>
+          <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">Waitlist First</span> Controlled beta onboarding is limited to scoped B2B pilots with monitoring acceptance.</div>
+          <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">No Mixed Headline</span> Track A active metrics and contributor open-bench metrics are never merged into one claim.</div>
         </div>
       </div>
     </section>
@@ -325,12 +420,33 @@
       </div>
     </section>
 
+    <section id="ecosystem">
+      <div class="container">
+        <h2>MKM ecosystem connection</h2>
+        <p class="small">A-CODEAI is the B2B compression and verification surface. Other domains stay role-separated by policy.</p>
+        <div class="ecosystem-grid">
+          <article class="ecosystem-item">
+            <a href="https://jema-ai.com/" target="_blank" rel="noopener noreferrer">jema-ai.com</a>
+            <p>Brand and enterprise hub for partner entry and product routing.</p>
+          </article>
+          <article class="ecosystem-item">
+            <a href="https://mkmlife.com/" target="_blank" rel="noopener noreferrer">mkmlife.com</a>
+            <p>Consumer one-question report funnel and wellness-oriented UX.</p>
+          </article>
+          <article class="ecosystem-item">
+            <a href="https://jemaai.cloud/" target="_blank" rel="noopener noreferrer">jemaai.cloud</a>
+            <p>Public observation board only, non-trading and non-advisory surface.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <section id="contact">
       <div class="container">
         <div class="final-cta">
           <div>
-            <h2 style="margin-bottom:8px" id="pg-cta-label">Start with one 20-minute decision call</h2>
-            <p class="small" id="pg-cta-note">We align scope, KPI, compensation terms, and the first pilot start date.</p>
+            <h2 style="margin-bottom:8px" id="pg-cta-label">Join Waitlist for Controlled Beta</h2>
+            <p class="small" id="pg-cta-note">Pilot onboarding is waitlist-first and limited to scoped B2B workloads with monitoring, guardrail acceptance, and SEND_GATE HOLD compliance.</p>
           </div>
           <div class="cta-row" style="margin:0">
             <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%2090-day%20macro%20risk%20pilot%20inquiry">Email us</a>

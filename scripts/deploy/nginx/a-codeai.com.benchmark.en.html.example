@@ -16,15 +16,17 @@
   <meta property="og:locale:alternate" content="ko_KR" />
   <style>
     :root {
-      --bg: #081022;
+      --bg: #070e1f;
       --panel: #121f3d;
       --text: #edf2ff;
       --muted: #a7b6d8;
       --line: #263a66;
+      --line-strong: #38518a;
       --primary: #86abff;
       --primary-dark: #0a1738;
       --ok: #7ef0c2;
       --warn: #ffd27a;
+      --card-shadow: 0 10px 30px rgba(6, 13, 28, 0.35);
     }
     * { box-sizing: border-box; }
     body {
@@ -33,6 +35,27 @@
       color: var(--text);
       background: linear-gradient(180deg, #081022, #0d1c3f);
       line-height: 1.55;
+    }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus-visible {
+      left: 12px;
+      top: 12px;
+      z-index: 50;
+      width: auto;
+      height: auto;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: var(--primary-dark);
+      font-weight: 700;
+      text-decoration: none;
     }
     .container { width: min(980px, 92vw); margin: 0 auto; }
     .topbar { border-bottom: 1px solid var(--line); background: rgba(7, 16, 36, 0.9); }
@@ -61,6 +84,7 @@
       background: rgba(18, 31, 61, 0.65);
       padding: 14px;
       margin-bottom: 12px;
+      box-shadow: var(--card-shadow);
     }
     .pill {
       display: inline-block;
@@ -89,10 +113,44 @@
     }
     .btn-primary { background: var(--primary); color: var(--primary-dark); }
     .btn-ghost { border-color: var(--line); background: rgba(18, 31, 61, 0.45); }
+    .btn-ghost:hover { border-color: var(--line-strong); text-decoration: none; }
     footer { padding: 26px 0 34px; color: var(--muted); font-size: 13px; }
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .ecosystem-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(16, 28, 58, 0.36);
+      padding: 14px;
+      box-shadow: var(--card-shadow);
+    }
+    .ecosystem-item a {
+      color: #d5e3ff;
+      font-weight: 700;
+    }
+    .ecosystem-item p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .card,
+      .ecosystem-item {
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .card:hover,
+      .ecosystem-item:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <nav class="topbar" aria-label="Top navigation">
     <div class="container topbar-inner">
       <div><strong>A-CODEAI</strong></div>
@@ -105,15 +163,14 @@
 
   <header class="hero">
     <div class="container">
-      <h1>Evidence first.<br />Marketing second.</h1>
+      <h1>A-CODEAI Open Bench (Controlled Beta + Waitlist)</h1>
       <p class="subtitle">
-        We publish verification rules, known limits, and rollback controls so decision makers can
-        evaluate signal quality with fewer assumptions.
+        Measured compression gains are published with reproducible evidence, while SEND_GATE remains HOLD and onboarding stays waitlist-first.
       </p>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <section>
       <div class="container">
         <h2>Verification principles</h2>
@@ -136,13 +193,13 @@
       <div class="container">
         <h2>Current evidence snapshots</h2>
         <div class="card">
-          <p class="small"><span class="pill pill-ok">Readiness</span> `l1_inverse_decoder_commercialization_checklist_v1.json` → <strong>READY_FOR_BROAD_ROLLOUT</strong> (3/3 criteria passed).</p>
+          <p class="small"><span class="pill pill-ok">Track A Active (separate lane)</span> 47.54% token saving with min jaccard 0.714 in the active codec profile.</p>
         </div>
         <div class="card">
-          <p class="small"><span class="pill pill-ok">Hard-case gain</span> `swap_typo` stress mode with objective v4 improved exact/recovery by <strong>+0.0667</strong>.</p>
+          <p class="small"><span class="pill pill-ok">Contributor Open-Bench (separate lane)</span> 25.1% saving with raw alignment pass 63.3% (19/30).</p>
         </div>
         <div class="card">
-          <p class="small"><span class="pill pill-warn">Scope boundary</span> Meaning-centric workloads first. 100% literal-fidelity workloads should use literal-preserve lanes.</p>
+          <p class="small"><span class="pill pill-warn">No mixed headline</span> Track A active metrics and contributor metrics are never merged into one claim.</p>
         </div>
       </div>
     </section>
@@ -151,9 +208,9 @@
       <div class="container">
         <h2>Operational safety controls</h2>
         <ul>
-          <li>Improved path is default-on with immediate rollback switch.</li>
-          <li>Track A and Track B are separated for governance and promotion control.</li>
-          <li>No direct commercialization claim without reproducible artifacts.</li>
+          <li>Automatic safety fallback to HOLD/track_a_primary when readiness or health checks fail.</li>
+          <li>Track A and Track B remain separated for governance and promotion control.</li>
+          <li>No broad outbound campaign while SEND_GATE is HOLD.</li>
         </ul>
       </div>
     </section>
@@ -238,9 +295,29 @@
           <p class="small">Request a pilot pre-check pack including route checks, benchmark reading guide, and operation boundary checklist.</p>
         </div>
         <div class="cta-row">
-          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20free%20validation%20pack%20request">Request free validation pack</a>
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20controlled%20beta%20waitlist%20request">Join controlled beta waitlist</a>
           <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20open%20validation%20pack%20request">Request validation pack</a>
           <a class="btn btn-ghost" href="/pilot">Pilot policy</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="ecosystem">
+      <div class="container">
+        <h2>MKM ecosystem connection</h2>
+        <div class="ecosystem-grid">
+          <article class="ecosystem-item">
+            <a href="https://jema-ai.com/" target="_blank" rel="noopener noreferrer">jema-ai.com</a>
+            <p>Brand and enterprise hub for partner entry and product routing.</p>
+          </article>
+          <article class="ecosystem-item">
+            <a href="https://mkmlife.com/" target="_blank" rel="noopener noreferrer">mkmlife.com</a>
+            <p>Consumer one-question report funnel and wellness-oriented UX.</p>
+          </article>
+          <article class="ecosystem-item">
+            <a href="https://jemaai.cloud/" target="_blank" rel="noopener noreferrer">jemaai.cloud</a>
+            <p>Public observation board only, non-trading and non-advisory surface.</p>
+          </article>
         </div>
       </div>
     </section>

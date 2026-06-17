@@ -16,15 +16,17 @@
   <meta property="og:locale:alternate" content="en_US" />
   <style>
     :root {
-      --bg: #081022;
+      --bg: #070e1f;
       --panel: #121f3d;
       --text: #edf2ff;
       --muted: #a7b6d8;
       --line: #263a66;
+      --line-strong: #38518a;
       --primary: #86abff;
       --primary-dark: #0a1738;
       --ok: #7ef0c2;
       --warn: #ffd27a;
+      --card-shadow: 0 10px 30px rgba(6, 13, 28, 0.35);
     }
     * { box-sizing: border-box; }
     body {
@@ -33,6 +35,27 @@
       color: var(--text);
       background: linear-gradient(180deg, #081022, #0d1c3f);
       line-height: 1.55;
+    }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus-visible {
+      left: 12px;
+      top: 12px;
+      z-index: 50;
+      width: auto;
+      height: auto;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: var(--primary-dark);
+      font-weight: 700;
+      text-decoration: none;
     }
     .container { width: min(980px, 92vw); margin: 0 auto; }
     .topbar { border-bottom: 1px solid var(--line); background: rgba(7, 16, 36, 0.9); }
@@ -61,6 +84,7 @@
       background: rgba(18, 31, 61, 0.65);
       padding: 14px;
       margin-bottom: 12px;
+      box-shadow: var(--card-shadow);
     }
     .pill {
       display: inline-block;
@@ -89,10 +113,44 @@
     }
     .btn-primary { background: var(--primary); color: var(--primary-dark); }
     .btn-ghost { border-color: var(--line); background: rgba(18, 31, 61, 0.45); }
+    .btn-ghost:hover { border-color: var(--line-strong); text-decoration: none; }
     footer { padding: 26px 0 34px; color: var(--muted); font-size: 13px; }
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .ecosystem-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(16, 28, 58, 0.36);
+      padding: 14px;
+      box-shadow: var(--card-shadow);
+    }
+    .ecosystem-item a {
+      color: #d5e3ff;
+      font-weight: 700;
+    }
+    .ecosystem-item p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .card,
+      .ecosystem-item {
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .card:hover,
+      .ecosystem-item:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
   <nav class="topbar" aria-label="Top navigation">
     <div class="container topbar-inner">
       <div><strong>A-CODEAI</strong></div>
@@ -105,14 +163,14 @@
 
   <header class="hero">
     <div class="container">
-      <h1>먼저 증거를 공개합니다.<br />그 다음에 영업합니다.</h1>
+      <h1>A-CODEAI Open Bench (Controlled Beta + Waitlist)</h1>
       <p class="subtitle">
-        의사결정자가 가정에 의존하지 않도록 검증 규칙, 한계, 롤백 제어를 문서화해 공개합니다.
+        측정된 압축 성능은 재현 가능한 근거와 함께 공개하며, SEND_GATE는 HOLD를 유지하고 온보딩은 대기명단 우선으로 운영합니다.
       </p>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <section>
       <div class="container">
         <h2>검증 원칙</h2>
@@ -135,13 +193,13 @@
       <div class="container">
         <h2>현재 증거 스냅샷</h2>
         <div class="card">
-          <p class="small"><span class="pill pill-ok">상용 준비도</span> `l1_inverse_decoder_commercialization_checklist_v1.json` 기준 <strong>READY_FOR_BROAD_ROLLOUT</strong> (3/3 PASS).</p>
+          <p class="small"><span class="pill pill-ok">Track A Active (분리 레인)</span> active codec 기준 토큰 절감 47.54%, min jaccard 0.714.</p>
         </div>
         <div class="card">
-          <p class="small"><span class="pill pill-ok">극한 구간 개선</span> `swap_typo` 스트레스 구간에서 objective v4 적용 시 exact/recovery <strong>+0.0667</strong>.</p>
+          <p class="small"><span class="pill pill-ok">Contributor Open-Bench (분리 레인)</span> 토큰 절감 25.1%, raw alignment pass 63.3% (19/30).</p>
         </div>
         <div class="card">
-          <p class="small"><span class="pill pill-warn">적용 경계</span> 의미 전달형 도메인 우선. 100% 리터럴 보존이 필요한 워크로드는 리터럴 보존 레인 권장.</p>
+          <p class="small"><span class="pill pill-warn">헤드라인 혼합 금지</span> Track A active 지표와 contributor 지표를 하나의 문구로 합치지 않습니다.</p>
         </div>
       </div>
     </section>
@@ -150,9 +208,9 @@
       <div class="container">
         <h2>운영 안전장치</h2>
         <ul>
-          <li>개선 경로 ON이 기본이며 롤백 스위치로 즉시 복구 가능</li>
+          <li>readiness/health 미충족 시 HOLD/track_a_primary로 자동 폴백</li>
           <li>Track A / Track B 분리 운영으로 승격 거버넌스 유지</li>
-          <li>재현 가능한 산출물 없이는 상용 주장 금지</li>
+          <li>SEND_GATE가 HOLD인 동안 대중 아웃바운드 캠페인 금지</li>
         </ul>
       </div>
     </section>
@@ -237,9 +295,29 @@
           <p class="small">파일럿 전 점검을 위해 라우트 점검, 벤치 읽기 가이드, 운영 경계 체크리스트를 요청할 수 있습니다.</p>
         </div>
         <div class="cta-row">
-          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20%EB%AC%B4%EB%A3%8C%20%EA%B2%80%EC%A6%9D%20%ED%8C%A9%20%EC%8B%A0%EC%B2%AD">무료 검증 팩 신청</a>
+          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20Controlled%20Beta%20%EB%8C%80%EA%B8%B0%EB%AA%85%EB%8B%A8%20%EC%8B%A0%EC%B2%AD">Controlled Beta 대기명단 신청</a>
           <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20%EC%98%A4%ED%94%88%20%EA%B2%80%EC%A6%9D%20%ED%8C%A8%ED%82%A4%EC%A7%80%20%EC%9A%94%EC%B2%AD">검증 패키지 요청</a>
           <a class="btn btn-ghost" href="/ko/pilot">파일럿 정책 보기</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="ecosystem">
+      <div class="container">
+        <h2>MKM 도메인 연결</h2>
+        <div class="ecosystem-grid">
+          <article class="ecosystem-item">
+            <a href="https://jema-ai.com/" target="_blank" rel="noopener noreferrer">jema-ai.com</a>
+            <p>브랜드/엔터프라이즈 허브. 파트너·제품 진입 분기.</p>
+          </article>
+          <article class="ecosystem-item">
+            <a href="https://mkmlife.com/" target="_blank" rel="noopener noreferrer">mkmlife.com</a>
+            <p>소비자 원퀘스천 리포트 및 웰니스 중심 UX.</p>
+          </article>
+          <article class="ecosystem-item">
+            <a href="https://jemaai.cloud/" target="_blank" rel="noopener noreferrer">jemaai.cloud</a>
+            <p>비실매매 공개 관측 보드 전용 표면.</p>
+          </article>
         </div>
       </div>
     </section>

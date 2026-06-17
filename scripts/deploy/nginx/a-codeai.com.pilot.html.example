@@ -19,10 +19,12 @@
       --text: #edf3ff;
       --muted: #a8badf;
       --line: #2a3f6e;
+      --line-strong: #3a548f;
       --brand: #86abff;
       --brand-ink: #0b1738;
       --ok: #86f4cc;
       --warn: #ffd889;
+      --card-shadow: 0 10px 30px rgba(6, 13, 28, 0.35);
     }
     * { box-sizing: border-box; }
     body {
@@ -33,6 +35,27 @@
       line-height: 1.6;
     }
     a { color: inherit; }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus-visible {
+      left: 12px;
+      top: 12px;
+      z-index: 50;
+      width: auto;
+      height: auto;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--brand);
+      color: var(--brand-ink);
+      font-weight: 700;
+      text-decoration: none;
+    }
     .container { width: min(1080px, 92vw); margin: 0 auto; }
     .topbar {
       position: sticky;
@@ -88,6 +111,7 @@
     }
     .btn-primary { background: var(--brand); color: var(--brand-ink); }
     .btn-ghost { border-color: var(--line); background: rgba(19, 36, 72, 0.42); }
+    .btn-ghost:hover { border-color: var(--line-strong); text-decoration: none; }
     section { padding: 42px 0; border-bottom: 1px solid var(--line); }
     h2 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.01em; }
     .grid {
@@ -100,6 +124,7 @@
       border-radius: 14px;
       padding: 16px;
       background: rgba(19, 36, 72, 0.62);
+      box-shadow: var(--card-shadow);
     }
     .label { margin: 0 0 6px; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; }
     .kpi { margin: 0; font-size: 30px; font-weight: 800; }
@@ -117,9 +142,42 @@
     .pill-ok { color: #0f2a1c; background: var(--ok); }
     .pill-warn { color: #2b2006; background: var(--warn); }
     footer { padding: 28px 0 38px; color: var(--muted); font-size: 13px; }
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .ecosystem-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(16, 28, 58, 0.36);
+      padding: 14px;
+      box-shadow: var(--card-shadow);
+    }
+    .ecosystem-item a {
+      color: #d5e3ff;
+      font-weight: 700;
+    }
+    .ecosystem-item p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .card,
+      .ecosystem-item {
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .card:hover,
+      .ecosystem-item:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
   <nav class="topbar" aria-label="Top navigation">
     <div class="container topbar-inner">
       <div class="brand">A-CODEAI</div>
@@ -150,7 +208,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
     <section>
       <div class="container">
         <h2>파일럿 설계 원칙</h2>
@@ -219,6 +277,26 @@
           <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%2090%EC%9D%BC%20%ED%8C%8C%EC%9D%BC%EB%9F%BF%20%EB%AC%B8%EC%9D%98">이메일 문의</a>
           <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20%EB%AC%B4%EB%A3%8C%20%EA%B2%80%EC%A6%9D%20%ED%8C%A9%20%EC%8B%A0%EC%B2%AD">무료 검증 팩 신청</a>
           <a class="btn btn-ghost" href="/ko/">홈으로</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="ecosystem">
+      <div class="container">
+        <h2>MKM 도메인 연결</h2>
+        <div class="ecosystem-grid">
+          <article class="ecosystem-item">
+            <a href="https://jema-ai.com/" target="_blank" rel="noopener noreferrer">jema-ai.com</a>
+            <p>브랜드/엔터프라이즈 허브. 파트너·제품 진입 분기.</p>
+          </article>
+          <article class="ecosystem-item">
+            <a href="https://mkmlife.com/" target="_blank" rel="noopener noreferrer">mkmlife.com</a>
+            <p>소비자 원퀘스천 리포트 및 웰니스 중심 UX.</p>
+          </article>
+          <article class="ecosystem-item">
+            <a href="https://jemaai.cloud/" target="_blank" rel="noopener noreferrer">jemaai.cloud</a>
+            <p>비실매매 공개 관측 보드 전용 표면.</p>
+          </article>
         </div>
       </div>
     </section>

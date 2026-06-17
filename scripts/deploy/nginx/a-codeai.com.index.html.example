@@ -16,16 +16,18 @@
   <meta property="og:locale:alternate" content="en_US" />
   <style>
     :root {
-      --bg: #081022;
+      --bg: #070e1f;
       --bg-soft: #0f1a33;
       --panel: #121f3d;
       --text: #edf2ff;
       --muted: #a7b6d8;
       --line: #263a66;
+      --line-strong: #38518a;
       --primary: #86abff;
       --primary-dark: #0a1738;
       --ok: #7ef0c2;
       --warn: #ffd27a;
+      --card-shadow: 0 10px 30px rgba(6, 13, 28, 0.35);
     }
     * { box-sizing: border-box; }
     body {
@@ -36,6 +38,27 @@
       line-height: 1.55;
     }
     a { color: inherit; }
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: auto;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+    }
+    .skip-link:focus-visible {
+      left: 12px;
+      top: 12px;
+      z-index: 50;
+      width: auto;
+      height: auto;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: var(--primary-dark);
+      font-weight: 700;
+      text-decoration: none;
+    }
     .container {
       width: min(1080px, 92vw);
       margin: 0 auto;
@@ -61,6 +84,22 @@
       padding: 72px 0 44px;
       border-bottom: 1px solid var(--line);
     }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .hero-main,
+    .hero-side {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: color-mix(in oklab, var(--panel), black 10%);
+      box-shadow: var(--card-shadow);
+      padding: 18px;
+    }
+    .hero-side .label { margin-top: 0; }
+    .hero-side ul { margin-top: 8px; }
     .badge-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
     .badge {
       font-size:12px;
@@ -108,6 +147,10 @@
       border-color: var(--line);
       background: color-mix(in oklab, var(--panel), black 6%);
     }
+    .btn-ghost:hover {
+      border-color: var(--line-strong);
+      text-decoration: none;
+    }
     section { padding: 44px 0; border-bottom: 1px solid var(--line); }
     h2 { margin: 0 0 12px; font-size: 28px; letter-spacing: -0.01em; }
     .grid {
@@ -120,6 +163,7 @@
       border: 1px solid var(--line);
       border-radius: 14px;
       padding: 16px;
+      box-shadow: var(--card-shadow);
     }
     .label {
       font-size: 12px;
@@ -162,14 +206,53 @@
       background: color-mix(in oklab, var(--panel), black 8%);
     }
     footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    .ecosystem-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: color-mix(in oklab, var(--bg-soft), black 3%);
+      padding: 14px;
+    }
+    .ecosystem-item a {
+      color: #d5e3ff;
+      font-weight: 700;
+    }
+    .ecosystem-item p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
     .focus-link:focus-visible,
     .btn:focus-visible {
       outline: 2px solid var(--primary);
       outline-offset: 2px;
     }
+    @media (prefers-reduced-motion: no-preference) {
+      .card,
+      .trust-item,
+      .ecosystem-item {
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .card:hover,
+      .trust-item:hover,
+      .ecosystem-item:hover {
+        transform: translateY(-2px);
+        border-color: var(--line-strong);
+      }
+    }
+    @media (max-width: 840px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">본문으로 건너뛰기</a>
   <nav class="topbar" aria-label="Top navigation">
     <div class="container topbar-inner">
       <div class="brand">A-CODEAI</div>
@@ -179,26 +262,38 @@
 
   <header class="hero">
     <div class="container">
-      <div class="badge-row">
-        <span class="badge">엔터프라이즈 재무팀 특화</span>
-        <span class="badge">투자자문 아님</span>
-        <span class="badge">90일 유료 파일럿</span>
-      </div>
-      <h1 id="pg-hero-title">거시 충격을 더 빨리 보고,<br />의사결정은 더 빠르게.</h1>
-      <p class="subtitle" id="pg-hero-subtitle">
-        A-CODEAI는 환율·원자재·공급망 변동에 노출된 재무/리스크팀을 위해
-        조기경보 신호를 제공하고, KPI·한계·미달 시 보상 조건을 파일럿 계약에 명시합니다.
-      </p>
-      <p class="small" id="pg-status-line">상태: Controlled Beta (Fact-Lock 기준)</p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#contact">20분 미팅 신청</a>
-        <a class="btn btn-ghost" href="/pilot">90일 파일럿 보기</a>
-        <a class="btn btn-ghost" href="/benchmark">검증 기준 보기</a>
+      <div class="hero-grid">
+        <div class="hero-main">
+          <div class="badge-row">
+            <span class="badge">엔터프라이즈 재무팀 특화</span>
+            <span class="badge">투자자문 아님</span>
+            <span class="badge">90일 유료 파일럿</span>
+          </div>
+          <h1 id="pg-hero-title">A-CODEAI Open Bench (Controlled Beta + Waitlist)</h1>
+          <p class="subtitle" id="pg-hero-subtitle">
+            측정된 압축 성능은 재현 가능한 근거와 함께 공개하며, SEND_GATE는 HOLD를 유지하고 온보딩은 대기명단 우선으로 운영합니다.
+          </p>
+          <p class="small" id="pg-status-line">상태: Controlled beta waitlist · SEND_GATE=HOLD</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#contact">20분 미팅 신청</a>
+            <a class="btn btn-ghost" href="/pilot">90일 파일럿 보기</a>
+            <a class="btn btn-ghost" href="/benchmark">검증 기준 보기</a>
+          </div>
+        </div>
+        <aside class="hero-side" aria-label="신뢰 스냅샷">
+          <p class="label">신뢰 스냅샷</p>
+          <p class="small">Track A active와 contributor 레인은 정책상 분리 보고됩니다.</p>
+          <ul>
+            <li>Track A active: 토큰 절감 47.54%, 최소 jaccard 0.714</li>
+            <li>Contributor 레인: 절감 25.1%, raw alignment pass 63.3%</li>
+            <li>SEND_GATE HOLD와 waitlist-first 온보딩 유지</li>
+          </ul>
+        </aside>
       </div>
     </div>
   </header>
 
-  <main>
+  <main id="main-content">
   <section id="fit">
     <div class="container">
       <h2>누가 쓰면 효과가 큰가</h2>
@@ -253,10 +348,10 @@
         <article class="card"><p class="label">한계 고지</p><p class="small">오탐/미탐 가능성을 선고지</p></article>
       </div>
       <div class="trust-list" style="margin-top:14px">
-        <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">상용화 판정</span> `l1_inverse_decoder_commercialization_checklist_v1.json` 기준 <strong>READY_FOR_BROAD_ROLLOUT</strong> 판정(3조건 PASS).</div>
-        <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">핵심 개선</span> `swap_typo` 극한 구간에서 objective v4 적용 시 exact/recovery가 각각 <strong>+0.0667</strong> 개선.</div>
-        <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">운영 안전장치</span> 기본은 개선 경로 ON, 필요 시 `--disable-swap-typo-objective-v4`로 즉시 롤백 가능.</div>
-        <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">적용 범위</span> 의미 전달 중심(요약/검색/로그) 도메인에 최적화. 100% 무결성이 필요한 결제/법무 원문은 별도 리터럴 라인 권장.</div>
+        <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">Fact-Lock</span> 조건이 검증된 구간에서만 개선 수치를 주장합니다.</div>
+        <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">안전 폴백</span> readiness/health가 미충족이면 HOLD/track_a_primary로 자동 강등됩니다.</div>
+        <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">Waitlist 우선</span> Controlled beta는 모니터링 수락된 B2B 파일럿 대기명단으로만 온보딩합니다.</div>
+        <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">헤드라인 분리</span> Track A active 지표와 contributor open-bench 지표를 하나의 성과 문구로 합치지 않습니다.</div>
       </div>
     </div>
   </section>
@@ -296,12 +391,33 @@
     </div>
   </section>
 
+  <section id="ecosystem">
+    <div class="container">
+      <h2>MKM 도메인 연결</h2>
+      <p class="small">A-CODEAI는 B2B 압축/검증 표면이며, 나머지 도메인은 역할 분리 정책을 유지합니다.</p>
+      <div class="ecosystem-grid">
+        <article class="ecosystem-item">
+          <a href="https://jema-ai.com/" target="_blank" rel="noopener noreferrer">jema-ai.com</a>
+          <p>브랜드/엔터프라이즈 허브. 파트너·제품 진입 분기.</p>
+        </article>
+        <article class="ecosystem-item">
+          <a href="https://mkmlife.com/" target="_blank" rel="noopener noreferrer">mkmlife.com</a>
+          <p>소비자 원퀘스천 리포트 및 웰니스 중심 UX.</p>
+        </article>
+        <article class="ecosystem-item">
+          <a href="https://jemaai.cloud/" target="_blank" rel="noopener noreferrer">jemaai.cloud</a>
+          <p>비실매매 공개 관측 보드 전용 표면.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
   <section id="contact">
     <div class="container">
       <div class="final-cta">
         <div>
-          <h2 style="margin-bottom:8px" id="pg-cta-label">20분 의사결정 미팅으로 시작</h2>
-          <p class="small" id="pg-cta-note">범위, KPI, 보상 조건, 시작일을 한 번에 맞춥니다.</p>
+          <h2 style="margin-bottom:8px" id="pg-cta-label">Controlled Beta 대기명단 신청</h2>
+          <p class="small" id="pg-cta-note">온보딩은 waitlist-first이며, 모니터링·가드레일 수락 및 SEND_GATE HOLD 준수 범위에서만 진행합니다.</p>
         </div>
         <div class="cta-row" style="margin:0">
           <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%2090%EC%9D%BC%20%EA%B1%B0%EC%8B%9C%20%EB%A6%AC%EC%8A%A4%ED%81%AC%20%ED%8C%8C%EC%9D%BC%EB%9F%BF%20%EB%AC%B8%EC%9D%98">이메일 문의</a>
