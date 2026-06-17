@@ -21,6 +21,29 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _section_from_copy(copy: dict[str, Any]) -> dict[str, Any]:
+    claims = copy.get("claims", [])
+    claim_map = {str(c.get("title", "")).lower(): c.get("items", []) for c in claims if isinstance(c, dict)}
+    if isinstance(copy.get("claims"), list) and copy["claims"] and not isinstance(copy["claims"][0], dict):
+        claim_items = copy.get("claims", [])
+        non_claim_items = copy.get("non_claims", [])
+    else:
+        claim_items = claim_map.get("what we claim", [])
+        non_claim_items = claim_map.get("what we do not claim", [])
+
+    return {
+        "hero": {
+            "title": copy.get("hero"),
+            "subtitle": copy.get("subtitle"),
+            "status_line": copy.get("status_line"),
+        },
+        "fact_lock_bullets": copy.get("bullets", []),
+        "claims": claim_items,
+        "non_claims": non_claim_items,
+        "cta": copy.get("cta", {}),
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--copy-json", type=Path, default=IN_DEFAULT)
@@ -34,27 +57,19 @@ def main() -> int:
         raise SystemExit("input schema mismatch")
 
     copy = src.get("copy", {})
-    claims = copy.get("claims", [])
-    claim_map = {str(c.get("title", "")).lower(): c.get("items", []) for c in claims if isinstance(c, dict)}
+    copy_ko = src.get("copy_ko", {})
 
     payload = {
         "schema": "a_codeai_public_copy_web_payload_v1",
         "generated_at_utc": _now_utc(),
         "source_copy_json": str(in_path),
-        "sections": {
-            "hero": {
-                "title": copy.get("hero"),
-                "subtitle": copy.get("subtitle"),
-                "status_line": copy.get("status_line"),
-            },
-            "fact_lock_bullets": copy.get("bullets", []),
-            "claims": claim_map.get("what we claim", []),
-            "non_claims": claim_map.get("what we do not claim", []),
-            "cta": copy.get("cta", {}),
-        },
+        "sections": _section_from_copy(copy),
+        "sections_ko": _section_from_copy(copy_ko) if copy_ko else None,
         "meta": {
             "readiness_all_ok": bool(src.get("status", {}).get("readiness_all_ok", False)),
             "executive_read_decision": src.get("status", {}).get("executive_read_decision"),
+            "send_gate": src.get("status", {}).get("send_gate", "HOLD"),
+            "lane_metrics": src.get("lane_metrics"),
         },
     }
 

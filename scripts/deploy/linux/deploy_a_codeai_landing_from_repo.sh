@@ -31,10 +31,12 @@ need_file "$TEMPLATE_DIR/a-codeai.com.benchmark.en.html.example"
 need_file "$TEMPLATE_DIR/a-codeai.com.index.html.example"
 need_file "$TEMPLATE_DIR/a-codeai.com.pilot.html.example"
 need_file "$TEMPLATE_DIR/a-codeai.com.benchmark.html.example"
+need_file "$TEMPLATE_DIR/a-codeai.com.legal.en.html.example"
+need_file "$TEMPLATE_DIR/a-codeai.com.legal.html.example"
 need_file "$REPO_ROOT/docs/final/artifacts/a_codeai_public_copy_web_payload_latest.json"
 need_file "$REPO_ROOT/docs/final/artifacts/a_codeai_public_bench_landing_payload_v1_latest.json"
 
-sudo mkdir -p "$WEB_ROOT/pilot" "$WEB_ROOT/benchmark" "$WEB_ROOT/ko/pilot" "$WEB_ROOT/ko/benchmark"
+sudo mkdir -p "$WEB_ROOT/pilot" "$WEB_ROOT/benchmark" "$WEB_ROOT/ko/pilot" "$WEB_ROOT/ko/benchmark" "$WEB_ROOT/legal" "$WEB_ROOT/ko/legal"
 
 # EN routes
 sudo cp "$TEMPLATE_DIR/a-codeai.com.index.en.html.example" "$WEB_ROOT/index.html"
@@ -45,6 +47,8 @@ sudo cp "$TEMPLATE_DIR/a-codeai.com.benchmark.en.html.example" "$WEB_ROOT/benchm
 sudo cp "$TEMPLATE_DIR/a-codeai.com.index.html.example" "$WEB_ROOT/ko/index.html"
 sudo cp "$TEMPLATE_DIR/a-codeai.com.pilot.html.example" "$WEB_ROOT/ko/pilot/index.html"
 sudo cp "$TEMPLATE_DIR/a-codeai.com.benchmark.html.example" "$WEB_ROOT/ko/benchmark/index.html"
+sudo cp "$TEMPLATE_DIR/a-codeai.com.legal.en.html.example" "$WEB_ROOT/legal/index.html"
+sudo cp "$TEMPLATE_DIR/a-codeai.com.legal.html.example" "$WEB_ROOT/ko/legal/index.html"
 
 # Shared dynamic payload for runtime copy binding
 sudo cp "$REPO_ROOT/docs/final/artifacts/a_codeai_public_copy_web_payload_latest.json" "$WEB_ROOT/a_codeai_public_copy_web_payload_latest.json"

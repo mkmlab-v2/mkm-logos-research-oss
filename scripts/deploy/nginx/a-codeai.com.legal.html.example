@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A-CODEAI | 법적 고지 및 운영 주체</title>
+  <meta name="description" content="A-CODEAI 법적 고지, 운영 주체, 서비스 범위, 개인정보 처리 안내." />
+  <link rel="canonical" href="https://a-codeai.com/ko/legal/" />
+  <link rel="alternate" hreflang="en" href="https://a-codeai.com/legal/" />
+  <link rel="alternate" hreflang="ko" href="https://a-codeai.com/ko/legal/" />
+  <link rel="alternate" hreflang="x-default" href="https://a-codeai.com/legal/" />
+  <style>
+    :root {
+      --bg: #070e1f;
+      --panel: #121f3d;
+      --text: #edf2ff;
+      --muted: #a7b6d8;
+      --line: #263a66;
+      --primary: #86abff;
+      --primary-dark: #0a1738;
+      --warn: #ffd27a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans KR", Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #081022, #0d1c3f);
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .container { width: min(760px, 92vw); margin: 0 auto; }
+    .topbar { border-bottom: 1px solid var(--line); background: rgba(7, 16, 36, 0.9); }
+    .topbar-inner {
+      min-height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .lang { color: var(--muted); font-size: 13px; }
+    .hero { padding: 48px 0 28px; border-bottom: 1px solid var(--line); }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 40px); }
+    .subtitle { margin: 0; color: var(--muted); }
+    section { padding: 28px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      background: rgba(18, 31, 61, 0.55);
+      margin-bottom: 12px;
+    }
+    .small { color: var(--muted); font-size: 14px; margin: 0; }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      margin-right: 6px;
+      background: rgba(255, 210, 122, 0.15);
+      color: var(--warn);
+    }
+    footer { padding: 28px 0 40px; color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="상단 내비게이션">
+    <div class="container topbar-inner">
+      <div><strong>A-CODEAI</strong></div>
+      <div class="lang">언어: <a href="/legal">EN</a> | <strong>KO</strong> · <a href="/ko/">홈</a></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <h1>법적 고지 및 운영 주체</h1>
+      <p class="subtitle">A-CODEAI 오픈벤치 서비스 범위, 운영자 정보, 개인정보 처리 안내입니다.</p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <h2>서비스 범위</h2>
+        <div class="card">
+          <p class="small">
+            A-CODEAI는 B2B 토큰 압축 평가 API, 오픈벤치 근거, controlled-beta 대기명단 온보딩을 제공합니다.
+            <strong>투자자문·포트폴리오 운용·재무 자동화·매매권유가 아닙니다.</strong>
+          </p>
+        </div>
+        <div class="card">
+          <p class="small">
+            공개 지표는 <strong>조건부·레인 분리</strong>(Track A active vs contributor open-bench) 기준이며,
+            레인을 하나의 헤드라인으로 합치지 않습니다. 최종 도입 결정 책임은 고객사에 있습니다.
+          </p>
+        </div>
+        <div class="card">
+          <p class="small"><span class="pill">SEND_GATE</span> 대외 발송은 HOLD 상태입니다. HOLD 동안 대량 마케팅을 하지 않습니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>운영 주체</h2>
+        <div class="card">
+          <p class="small">
+            주식회사 목소리네트워크<br />
+            대표 이기륜<br />
+            사업자등록번호 628-86-01742<br />
+            주소: 경기도 광명시 디지털로 24, 102동 2301호<br />
+            문의: <a href="mailto:contact@a-codeai.com">contact@a-codeai.com</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>개인정보</h2>
+        <div class="card">
+          <p class="small">
+            대기명단·enterprise apply 경로에서 회사명·이메일·사용 목적 등 연락처가 수집될 수 있습니다.
+            처리 기준은
+            <a href="https://jema-ai.com/privacy" target="_blank" rel="noopener noreferrer">jema-ai.com/privacy</a>
+            개인정보처리방침을 따릅니다.
+          </p>
+        </div>
+        <p class="small">열람·정정 요청은 <a href="mailto:contact@a-codeai.com">contact@a-codeai.com</a>으로 문의해 주세요.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>관련 페이지</h2>
+        <p class="small">
+          <a href="/ko/benchmark">검증 정책</a> ·
+          <a href="/ko/pilot">파일럿 안내</a> ·
+          <a href="/ko/">홈</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 주식회사 목소리네트워크. 무단 복제를 금지합니다.</p>
+    </div>
+  </footer>
+</body>
+</html>

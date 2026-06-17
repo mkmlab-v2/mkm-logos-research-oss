@@ -1,36 +1,81 @@
 {
   "schema": "a_codeai_public_copy_web_payload_v1",
-  "generated_at_utc": "2026-04-28T10:16:41+00:00",
+  "generated_at_utc": "2026-06-17T11:37:37+00:00",
   "source_copy_json": "C:\\workspace\\docs\\final\\artifacts\\a_codeai_fact_lock_public_copy_latest.json",
   "sections": {
     "hero": {
-      "title": "PointerGuard Router (Controlled Beta)",
-      "subtitle": "Condition-based token/input compression with automatic fallback and operational guardrails.",
-      "status_line": "Current status: readiness=green, controlled beta recommended."
+      "title": "A-CODEAI Open Bench (Controlled Beta + Waitlist)",
+      "subtitle": "Measured compression gains are published with reproducible evidence, while SEND_GATE remains HOLD and onboarding stays waitlist-first.",
+      "status_line": "Current status: controlled beta waitlist; SEND_GATE=HOLD."
     },
     "fact_lock_bullets": [
-      "This service is promoted with measured evidence only (Fact-Lock).",
-      "When guard conditions are unmet, traffic is downgraded to safe fallback mode automatically.",
-      "Public benchmark uses synthetic/anonymized input scope only.",
-      "No guarantee of universal uplift outside validated operating conditions."
+      "Fact-Lock only: every headline is backed by reproducible artifacts and CI checks.",
+      "Track A active codec benchmark is 47.54% token saving with min jaccard 0.714 (separate lane).",
+      "Contributor open-bench lane reports 25.1% saving with raw alignment pass 63.3% (19/30).",
+      "Public benchmark uses synthetic/anonymized scope only; no customer corpus or secrets are exposed.",
+      "SEND_GATE remains HOLD: no broad outbound campaign or customer-case headline rollout."
     ],
     "claims": [
       "Conditional cost and latency improvement in validated operating zones.",
       "Automatic safety fallback (HOLD/track_a_primary) when readiness or health checks fail.",
-      "Operational transparency via timestamped benchmark and readiness artifacts."
+      "Operational transparency via timestamped benchmark, readiness, and signoff artifacts.",
+      "Waitlist-first onboarding for scoped B2B pilots."
     ],
     "non_claims": [
       "No unconditional global performance guarantee.",
       "No claim that all workloads receive equal benefit.",
-      "No exposure of private corpora, secrets, or internal codebook internals."
+      "No exposure of private corpora, secrets, or internal codebook internals.",
+      "No mixing of Track A active metrics and contributor benchmark metrics into one headline."
     ],
     "cta": {
-      "label": "Request Controlled Beta",
-      "note": "Pilot onboarding is limited to scoped B2B workloads with monitoring and guardrail acceptance."
+      "label": "Join Waitlist for Controlled Beta",
+      "note": "Pilot onboarding is waitlist-first and limited to scoped B2B workloads with monitoring, guardrail acceptance, and SEND_GATE HOLD compliance.",
+      "apply_href": "https://app.jema-ai.com/enterprise/apply",
+      "reproduce_href": "https://github.com/mkmlab-v2/a-codeai-compression-reproduce"
+    }
+  },
+  "sections_ko": {
+    "hero": {
+      "title": "A-CODEAI Open Bench (Controlled Beta + 대기명단)",
+      "subtitle": "측정된 압축 성능은 재현 가능한 근거와 함께 공개하며, SEND_GATE는 HOLD를 유지하고 온보딩은 대기명단 우선으로 운영합니다.",
+      "status_line": "상태: Controlled beta waitlist · SEND_GATE=HOLD"
+    },
+    "fact_lock_bullets": [
+      "Fact-Lock: 모든 헤드라인은 재현 가능한 아티팩트와 CI 검증에 기반합니다.",
+      "Track A active 코덱 벤치: 토큰 절감 47.54%, 최소 jaccard 0.714 (분리 레인).",
+      "Contributor open-bench 레인: 절감 25.1%, raw alignment pass 63.3% (19/30).",
+      "공개 벤치는 합성·익명 범위만 사용하며 고객 코퍼스·비밀은 노출하지 않습니다.",
+      "SEND_GATE HOLD: 대량 아웃바운드·고객사례 헤드라인 롤아웃 없음."
+    ],
+    "claims": [
+      "검증된 운영 구간에서만 조건부 비용·지연 개선을 주장합니다.",
+      "readiness/health 미충족 시 HOLD/track_a_primary로 자동 강등됩니다.",
+      "벤치·readiness·signoff 아티팩트를 타임스탬프와 함께 공개합니다.",
+      "Controlled beta 온보딩은 범위 한정 B2B 파일럿 대기명단으로만 진행합니다."
+    ],
+    "non_claims": [
+      "무조건적 전역 성능 보장을 주장하지 않습니다.",
+      "모든 워크로드에 동일한 이득이 있다고 주장하지 않습니다.",
+      "비공개 코퍼스·비밀·내부 코드북을 노출하지 않습니다.",
+      "Track A active 지표와 contributor 벤치 지표를 하나의 헤드라인으로 합치지 않습니다."
+    ],
+    "cta": {
+      "label": "Controlled Beta 대기명단 신청",
+      "note": "온보딩은 waitlist-first이며, 모니터링·가드레일 수락 및 SEND_GATE HOLD 준수 범위에서만 진행합니다.",
+      "apply_href": "https://app.jema-ai.com/enterprise/apply",
+      "reproduce_href": "https://github.com/mkmlab-v2/a-codeai-compression-reproduce"
     }
   },
   "meta": {
     "readiness_all_ok": true,
-    "executive_read_decision": "CONTROLLED_BETA_ONLY"
+    "executive_read_decision": "CONTROLLED_BETA_ONLY",
+    "send_gate": "HOLD",
+    "lane_metrics": {
+      "track_a_saving_pct": "47.54",
+      "track_a_min_jaccard": "0.714",
+      "contributor_saving_pct": "25.1",
+      "contributor_raw_alignment_pct": "63.3",
+      "contributor_pass_fraction": "19/30"
+    }
   }
 }

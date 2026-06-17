@@ -295,8 +295,8 @@
           <p class="small">Request a pilot pre-check pack including route checks, benchmark reading guide, and operation boundary checklist.</p>
         </div>
         <div class="cta-row">
-          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20controlled%20beta%20waitlist%20request">Join controlled beta waitlist</a>
-          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20open%20validation%20pack%20request">Request validation pack</a>
+          <a class="btn btn-primary" href="https://app.jema-ai.com/enterprise/apply">Apply for controlled beta</a>
+          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20open%20validation%20pack%20request">Request validation pack</a>
           <a class="btn btn-ghost" href="/pilot">Pilot policy</a>
         </div>
       </div>
@@ -325,8 +325,8 @@
     <section>
       <div class="container">
         <div class="cta-row">
-          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%2090-day%20pilot%20inquiry">Start 90-day pilot inquiry</a>
-          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20free%20validation%20pack%20request">Request free validation pack</a>
+          <a class="btn btn-primary" href="https://app.jema-ai.com/enterprise/apply">Apply for controlled beta</a>
+          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20compression%20scoped%20pilot%20inquiry">Email pilot inquiry</a>
           <a class="btn btn-ghost" href="/pilot">See pilot terms</a>
         </div>
       </div>
@@ -334,7 +334,11 @@
   </main>
 
   <footer>
-    <div class="container">A-CODEAI · Benchmark page</div>
+    <div class="container">
+      <p>주식회사 목소리네트워크 · 사업자등록번호 628-86-01742 · <a href="mailto:contact@a-codeai.com">contact@a-codeai.com</a></p>
+      <p><a href="https://jema-ai.com/privacy" target="_blank" rel="noopener noreferrer">Privacy policy</a> · <a href="/legal">Legal</a> · <a href="/">Home</a></p>
+      <p>© 2026 주식회사 목소리네트워크.</p>
+    </div>
   </footer>
   <script>
     (async function () {

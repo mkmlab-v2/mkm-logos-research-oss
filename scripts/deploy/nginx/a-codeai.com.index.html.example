@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A-CODEAI | 재무팀용 거시 리스크 조기경보</title>
+  <title>A-CODEAI | 토큰 압축 Open Bench (Controlled Beta)</title>
   <meta
     name="description"
-    content="재무·리스크팀을 위한 거시 리스크 조기경보. KPI 기반 90일 유료 파일럿과 명확한 보상 조건."
+    content="재현 가능한 벤치마크 기반 B2B 토큰 압축 오픈벤치. 대기명단 우선 Controlled beta · SEND_GATE=HOLD."
   />
   <link rel="canonical" href="https://a-codeai.com/ko/" />
   <link rel="alternate" hreflang="en" href="https://a-codeai.com/" />
@@ -206,6 +206,9 @@
       background: color-mix(in oklab, var(--panel), black 8%);
     }
     footer { padding: 28px 0 40px; color: var(--muted); font-size: 13px; }
+    .footer-meta { margin: 0 0 8px; line-height: 1.6; }
+    .footer-meta a { color: #c5d8ff; }
+    .footer-links { margin: 8px 0 0; }
     .ecosystem-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -265,28 +268,28 @@
       <div class="hero-grid">
         <div class="hero-main">
           <div class="badge-row">
-            <span class="badge">엔터프라이즈 재무팀 특화</span>
-            <span class="badge">투자자문 아님</span>
-            <span class="badge">90일 유료 파일럿</span>
+            <span class="badge">B2B 압축 API</span>
+            <span class="badge">Fact-Lock 근거</span>
+            <span class="badge">SEND_GATE HOLD</span>
           </div>
-          <h1 id="pg-hero-title">A-CODEAI Open Bench (Controlled Beta + Waitlist)</h1>
+          <h1 id="pg-hero-title">A-CODEAI Open Bench (Controlled Beta + 대기명단)</h1>
           <p class="subtitle" id="pg-hero-subtitle">
             측정된 압축 성능은 재현 가능한 근거와 함께 공개하며, SEND_GATE는 HOLD를 유지하고 온보딩은 대기명단 우선으로 운영합니다.
           </p>
           <p class="small" id="pg-status-line">상태: Controlled beta waitlist · SEND_GATE=HOLD</p>
           <div class="cta-row">
-            <a class="btn btn-primary" href="#contact">20분 미팅 신청</a>
-            <a class="btn btn-ghost" href="/pilot">90일 파일럿 보기</a>
-            <a class="btn btn-ghost" href="/benchmark">검증 기준 보기</a>
+            <a class="btn btn-primary" href="#contact">대기명단 신청</a>
+            <a class="btn btn-ghost" href="/benchmark">벤치마크 정책</a>
+            <a class="btn btn-ghost" href="https://github.com/mkmlab-v2/a-codeai-compression-reproduce" target="_blank" rel="noopener noreferrer">GitHub 재현</a>
           </div>
         </div>
         <aside class="hero-side" aria-label="신뢰 스냅샷">
           <p class="label">신뢰 스냅샷</p>
           <p class="small">Track A active와 contributor 레인은 정책상 분리 보고됩니다.</p>
           <ul>
-            <li>Track A active: 토큰 절감 47.54%, 최소 jaccard 0.714</li>
-            <li>Contributor 레인: 절감 25.1%, raw alignment pass 63.3%</li>
-            <li>SEND_GATE HOLD와 waitlist-first 온보딩 유지</li>
+            <li id="pg-trust-lane-1">Track A active: 토큰 절감 47.54%, 최소 jaccard 0.714 (분리 레인)</li>
+            <li id="pg-trust-lane-2">Contributor 레인: 절감 25.1%, raw alignment pass 63.3% (19/30)</li>
+            <li id="pg-trust-lane-3">SEND_GATE HOLD와 waitlist-first 온보딩 유지</li>
           </ul>
         </aside>
       </div>
@@ -298,43 +301,42 @@
     <div class="container">
       <h2>누가 쓰면 효과가 큰가</h2>
       <div class="grid">
-        <article class="card"><p class="label">핵심 담당자</p><p class="small">CFO, 자금팀, 리스크관리 조직</p></article>
-        <article class="card"><p class="label">주요 목적</p><p class="small">리스크위원회 의사결정 시간 단축, 충격 이벤트 선제 대응</p></article>
-        <article class="card"><p class="label">전달 방식</p><p class="small">주간 브리프 + 임계치 경보 + 월간 오탐/미탐 리포트</p></article>
+        <article class="card"><p class="label">플랫폼 팀</p><p class="small">LLM 토큰 비용을 측정 가능한 압축 프로파일로 줄이려는 API·플랫폼 조직</p></article>
+        <article class="card"><p class="label">평가 범위</p><p class="small">오픈벤치 재현·헬스체크·범위 한정 파일럿 준비 — 전역 SLA 주장 아님</p></article>
+        <article class="card"><p class="label">온보딩</p><p class="small">모니터링·가드레일 수락 기반 waitlist-first controlled beta</p></article>
       </div>
     </div>
   </section>
 
   <section id="trust">
     <div class="container">
-      <h2>왜 비용을 지불할 수 있나</h2>
+      <h2>왜 평가하는가</h2>
       <div class="trust-list">
-        <div class="trust-item"><span class="pill pill-ok">리스크 리버설</span> KPI 미달 시 크레딧/연장 조건을 사전에 계약서에 명시합니다.</div>
-        <div class="trust-item"><span class="pill pill-ok">블랙박스 금지</span> 성공 사례만이 아니라 실패/오탐/미탐을 함께 공개합니다.</div>
-        <div class="trust-item"><span class="pill pill-ok">조달 친화</span> 범위, 지표, 보상, 면책까지 초기에 고정해 내부 승인 마찰을 줄입니다.</div>
-        <div class="trust-item"><span class="pill pill-warn">한계 고지</span> 불확실성을 숨기지 않고 공개합니다.</div>
+        <div class="trust-item"><span class="pill pill-ok">재현 우선</span> 주장은 명령·아티팩트·CI 검증과 함께 공개됩니다.</div>
+        <div class="trust-item"><span class="pill pill-ok">레인 분리</span> Track A active와 contributor open-bench 지표를 합치지 않습니다.</div>
+        <div class="trust-item"><span class="pill pill-ok">안전 폴백</span> readiness/health 미충족 시 HOLD/track_a_primary로 강등됩니다.</div>
+        <div class="trust-item"><span class="pill pill-warn">SEND HOLD</span> counsel·실고객 측정 게이트 전까지 대량 마케팅 없음.</div>
       </div>
     </div>
   </section>
 
   <section id="flow">
     <div class="container">
-      <h2>파일럿 진행 방식</h2>
+      <h2>Controlled beta 진행 방식</h2>
       <div class="grid">
-        <article class="card"><p class="label">1주차</p><p class="small">리스크 범위, 임계치, 리포트 수신 책임자 확정</p></article>
-        <article class="card"><p class="label">2~10주차</p><p class="small">주간 브리프 + 임계치 경보 + 이벤트 리뷰 운영</p></article>
-        <article class="card"><p class="label">11~12주차</p><p class="small">오탐/미탐 리포트와 연장·확장 여부 공동 판단</p></article>
+        <article class="card"><p class="label">1단계</p><p class="small">공개 재현 명령 실행 및 /health·API 라우트 동작 확인</p></article>
+        <article class="card"><p class="label">2단계</p><p class="small">벤치 정책 검토 — Track A·contributor 레인 분리 보고</p></article>
+        <article class="card"><p class="label">3단계</p><p class="small">내부 수락 검토 후 범위 한정 B2B 파일럿 대기명단 신청</p></article>
       </div>
     </div>
   </section>
 
   <section id="pilot">
     <div class="container">
-      <h2>상업 조건 요약</h2>
-      <div class="grid">
-        <article class="card"><p class="label">월 구독료</p><p class="kpi">₩4,900,000</p></article>
-        <article class="card"><p class="label">이벤트 경보</p><p class="kpi">₩250,000</p><p class="small">건당, 월 상한 ₩2,000,000</p></article>
-        <article class="card"><p class="label">최소 계약</p><p class="kpi">90일</p><p class="small">총 ₩14,700,000 최소</p></article>
+      <h2>파일럿·상업 조건</h2>
+      <p class="small">가격·90일 파일럿 조항은 파일럿 페이지에 정리되어 있습니다. SEND_GATE HOLD 동안 홈은 오픈벤치 평가와 대기명단 온보딩에 집중합니다.</p>
+      <div class="cta-row" style="margin-top:14px">
+        <a class="btn btn-ghost" href="/pilot">파일럿 상세 보기</a>
       </div>
     </div>
   </section>
@@ -348,10 +350,10 @@
         <article class="card"><p class="label">한계 고지</p><p class="small">오탐/미탐 가능성을 선고지</p></article>
       </div>
       <div class="trust-list" style="margin-top:14px">
-        <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">Fact-Lock</span> 조건이 검증된 구간에서만 개선 수치를 주장합니다.</div>
-        <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">안전 폴백</span> readiness/health가 미충족이면 HOLD/track_a_primary로 자동 강등됩니다.</div>
-        <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">Waitlist 우선</span> Controlled beta는 모니터링 수락된 B2B 파일럿 대기명단으로만 온보딩합니다.</div>
-        <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">헤드라인 분리</span> Track A active 지표와 contributor open-bench 지표를 하나의 성과 문구로 합치지 않습니다.</div>
+        <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">Fact-Lock</span><span id="pg-claim-1-text"> 조건이 검증된 구간에서만 개선 수치를 주장합니다.</span></div>
+        <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">안전 폴백</span><span id="pg-claim-2-text"> readiness/health가 미충족이면 HOLD/track_a_primary로 자동 강등됩니다.</span></div>
+        <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">Waitlist 우선</span><span id="pg-claim-3-text"> Controlled beta는 모니터링 수락된 B2B 파일럿 대기명단으로만 온보딩합니다.</span></div>
+        <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">헤드라인 분리</span><span id="pg-non-claim-1-text"> Track A active 지표와 contributor open-bench 지표를 하나의 성과 문구로 합치지 않습니다.</span></div>
       </div>
     </div>
   </section>
@@ -420,33 +422,54 @@
           <p class="small" id="pg-cta-note">온보딩은 waitlist-first이며, 모니터링·가드레일 수락 및 SEND_GATE HOLD 준수 범위에서만 진행합니다.</p>
         </div>
         <div class="cta-row" style="margin:0">
-          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%2090%EC%9D%BC%20%EA%B1%B0%EC%8B%9C%20%EB%A6%AC%EC%8A%A4%ED%81%AC%20%ED%8C%8C%EC%9D%BC%EB%9F%BF%20%EB%AC%B8%EC%9D%98">이메일 문의</a>
+          <a class="btn btn-primary" id="pg-cta-apply" href="https://app.jema-ai.com/enterprise/apply">Controlled beta 신청</a>
+          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5B%ED%9A%8C%EC%82%AC%EB%AA%85%5D%20%EC%95%95%EC%B6%95%20%EC%98%A4%ED%94%88%EB%B2%A4%EC%B9%98%20%EB%8C%80%EA%B8%B0%EB%AA%85%EB%8B%A8">이메일 문의</a>
           <a class="btn btn-ghost" href="/pilot">파일럿 상세</a>
         </div>
       </div>
     </div>
   </section>
 
-  <section>
+  <section id="legal">
     <div class="container legal">
       <strong>법적 고지</strong>
-      <p>본 서비스는 투자자문/매매권유가 아닌 리스크 모니터링 정보 서비스입니다. 최종 의사결정 책임은 고객사에 있습니다.</p>
+      <p>본 서비스는 B2B 토큰 압축 평가 API 및 오픈벤치 근거를 제공합니다. 투자자문·매매권유가 아니며, 측정 이득은 조건부·레인 분리 기준입니다. 최종 도입 결정 책임은 고객사에 있습니다.</p>
+      <p style="margin-top:14px"><strong>운영 주체</strong></p>
+      <p class="small" style="margin-top:6px">
+        주식회사 목소리네트워크 · 대표 이기륜<br />
+        사업자등록번호 628-86-01742<br />
+        주소: 경기도 광명시 디지털로 24, 102동 2301호<br />
+        문의: <a href="mailto:contact@a-codeai.com">contact@a-codeai.com</a>
+      </p>
+      <p class="small footer-links">
+        <a href="https://jema-ai.com/privacy" target="_blank" rel="noopener noreferrer">개인정보처리방침 (jema-ai.com)</a>
+        · <a href="/ko/legal">법적 고지</a>
+        · <a href="/pilot">파일럿 안내</a>
+        · <a href="/benchmark">검증 정책</a>
+      </p>
+      <p class="small" style="margin-top:10px">
+        대기명단·enterprise apply 경로에서 연락처가 수집될 수 있으며, 처리 기준은 상기 개인정보처리방침을 따릅니다.
+        SEND_GATE는 HOLD이며 대량 마케팅은 하지 않습니다.
+      </p>
     </div>
   </section>
   </main>
 
   <footer>
     <div class="container">
-      <p>A-CODEAI · 엔터프라이즈 재무팀을 위한 공학 기반 리스크 모니터링.</p>
+      <p class="footer-meta">A-CODEAI · Fact-Lock 운영 원칙의 B2B 토큰 압축 오픈벤치.</p>
+      <p class="footer-meta">© 2026 주식회사 목소리네트워크. 무단 복제를 금지합니다.</p>
     </div>
   </footer>
 <script>
   (async function () {
+    const lang = (document.documentElement.lang || 'en').toLowerCase();
+    const isKo = lang.startsWith('ko');
     try {
       const res = await fetch('/a_codeai_public_copy_web_payload_latest.json', { cache: 'no-store' });
       if (!res.ok) return;
       const data = await res.json();
-      const sections = data.sections || {};
+      const sections = (isKo && data.sections_ko) ? data.sections_ko : (data.sections || {});
       const hero = sections.hero || {};
       const setText = (id, v) => {
         if (!v) return;
@@ -457,16 +480,38 @@
       setText('pg-hero-subtitle', hero.subtitle);
       setText('pg-status-line', hero.status_line);
 
+      const lanes = (data.meta || {}).lane_metrics || {};
+      if (lanes.track_a_saving_pct) {
+        setText(
+          'pg-trust-lane-1',
+          isKo
+            ? `Track A active: 토큰 절감 ${lanes.track_a_saving_pct}%, 최소 jaccard ${lanes.track_a_min_jaccard} (분리 레인)`
+            : `Track A active: ${lanes.track_a_saving_pct}% token saving, min jaccard ${lanes.track_a_min_jaccard} (separate lane)`
+        );
+      }
+      if (lanes.contributor_saving_pct) {
+        setText(
+          'pg-trust-lane-2',
+          isKo
+            ? `Contributor 레인: 절감 ${lanes.contributor_saving_pct}%, raw alignment pass ${lanes.contributor_raw_alignment_pct}% (${lanes.contributor_pass_fraction})`
+            : `Contributor lane: ${lanes.contributor_saving_pct}% saving, raw alignment pass ${lanes.contributor_raw_alignment_pct}% (${lanes.contributor_pass_fraction})`
+        );
+      }
+
       const claims = sections.claims || [];
       const nonClaims = sections.non_claims || [];
-      setText('pg-claim-1', claims[0]);
-      setText('pg-claim-2', claims[1]);
-      setText('pg-claim-3', claims[2]);
-      setText('pg-non-claim-1', nonClaims[0]);
+      setText('pg-claim-1-text', claims[0] ? ` ${claims[0]}` : null);
+      setText('pg-claim-2-text', claims[1] ? ` ${claims[1]}` : null);
+      setText('pg-claim-3-text', claims[2] ? ` ${claims[2]}` : null);
+      setText('pg-non-claim-1-text', nonClaims[0] ? ` ${nonClaims[0]}` : null);
 
       const cta = sections.cta || {};
       setText('pg-cta-label', cta.label);
       setText('pg-cta-note', cta.note);
+      if (cta.apply_href) {
+        const apply = document.getElementById('pg-cta-apply');
+        if (apply) apply.href = cta.apply_href;
+      }
     } catch (_) {
       // Keep static fallback copy.
     }

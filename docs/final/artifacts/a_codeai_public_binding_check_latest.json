@@ -1,10 +1,14 @@
 {
   "schema": "a_codeai_public_binding_check_v1",
-  "generated_at_utc": "2026-05-04T22:23:07+00:00",
+  "generated_at_utc": "2026-06-17T11:51:44+00:00",
   "target": {
     "base_url": "https://a-codeai.com",
     "home_url": "https://a-codeai.com/",
     "ko_url": "https://a-codeai.com/ko/",
+    "pilot_url": "https://a-codeai.com/pilot/",
+    "pilot_ko_url": "https://a-codeai.com/ko/pilot/",
+    "legal_url": "https://a-codeai.com/legal/",
+    "legal_ko_url": "https://a-codeai.com/ko/legal/",
     "payload_url": "https://a-codeai.com/a_codeai_public_copy_web_payload_latest.json"
   },
   "all_ok": true,
@@ -30,10 +34,53 @@
         "contract_variant": "sectioned_v1",
         "reason": "ok"
       }
+    },
+    "content_parity": {
+      "ok": true,
+      "details": {
+        "repo_payload_present": true,
+        "live_payload_present": true,
+        "hero_title_repo_vs_live_ok": true,
+        "hero_title_static_home_ok": true,
+        "hero_title_static_ko_present_ok": true,
+        "send_gate_hold_ok": true,
+        "forbidden_legacy_copy_absent_ok": true,
+        "operator_footer_ok": true,
+        "expected_title": "A-CODEAI Open Bench (Controlled Beta + Waitlist)",
+        "live_title": "A-CODEAI Open Bench (Controlled Beta + Waitlist)",
+        "home_h1": "A-CODEAI Open Bench (Controlled Beta + Waitlist)",
+        "ko_h1": "A-CODEAI Open Bench (Controlled Beta + 대기명단)",
+        "forbidden_hits": []
+      }
+    },
+    "pilot_narrative": {
+      "ok": true,
+      "details": {
+        "pilot_en_reachable": true,
+        "pilot_ko_reachable": true,
+        "enterprise_apply_en_ok": true,
+        "enterprise_apply_ko_ok": true,
+        "operator_footer_en_ok": true,
+        "operator_footer_ko_ok": true,
+        "forbidden_legacy_copy_absent_ok": true,
+        "forbidden_hits": []
+      }
+    },
+    "legal_page": {
+      "ok": true,
+      "details": {
+        "legal_en_reachable": true,
+        "legal_ko_reachable": true,
+        "operator_en_ok": true,
+        "operator_ko_ok": true,
+        "privacy_link_ok": true,
+        "send_gate_hold_mentioned_ok": true
+      }
     }
   },
   "notes": [
     "FAIL means payload is not fully wired into the published landing HTML yet.",
-    "Use this check after deploy to prove runtime binding is active on both '/' and '/ko/'."
+    "Use this check after deploy to prove runtime binding is active on both '/' and '/ko/'.",
+    "content_parity compares live payload/static H1 against repo SSOT artifact."
   ]
 }

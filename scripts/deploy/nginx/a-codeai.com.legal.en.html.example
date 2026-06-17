@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>A-CODEAI | Legal Notice &amp; Operator</title>
+  <meta name="description" content="A-CODEAI legal notice, operator details, service boundaries, and privacy policy pointer." />
+  <link rel="canonical" href="https://a-codeai.com/legal/" />
+  <link rel="alternate" hreflang="en" href="https://a-codeai.com/legal/" />
+  <link rel="alternate" hreflang="ko" href="https://a-codeai.com/ko/legal/" />
+  <link rel="alternate" hreflang="x-default" href="https://a-codeai.com/legal/" />
+  <style>
+    :root {
+      --bg: #070e1f;
+      --panel: #121f3d;
+      --text: #edf2ff;
+      --muted: #a7b6d8;
+      --line: #263a66;
+      --primary: #86abff;
+      --primary-dark: #0a1738;
+      --warn: #ffd27a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Noto Sans", Arial, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #081022, #0d1c3f);
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    .container { width: min(760px, 92vw); margin: 0 auto; }
+    .topbar { border-bottom: 1px solid var(--line); background: rgba(7, 16, 36, 0.9); }
+    .topbar-inner {
+      min-height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .lang { color: var(--muted); font-size: 13px; }
+    .hero { padding: 48px 0 28px; border-bottom: 1px solid var(--line); }
+    h1 { margin: 0 0 10px; font-size: clamp(28px, 4vw, 40px); }
+    .subtitle { margin: 0; color: var(--muted); }
+    section { padding: 28px 0; border-bottom: 1px solid var(--line); }
+    h2 { margin: 0 0 10px; font-size: 20px; }
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      background: rgba(18, 31, 61, 0.55);
+      margin-bottom: 12px;
+    }
+    .small { color: var(--muted); font-size: 14px; margin: 0; }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 12px;
+      margin-right: 6px;
+      background: rgba(255, 210, 122, 0.15);
+      color: var(--warn);
+    }
+    footer { padding: 28px 0 40px; color: var(--muted); font-size: 14px; }
+  </style>
+</head>
+<body>
+  <nav class="topbar" aria-label="Top navigation">
+    <div class="container topbar-inner">
+      <div><strong>A-CODEAI</strong></div>
+      <div class="lang">Language: <strong>EN</strong> | <a href="/ko/legal">KO</a> · <a href="/">Home</a></div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="container">
+      <h1>Legal notice &amp; operator</h1>
+      <p class="subtitle">Service boundaries, operator identity, and privacy handling for the A-CODEAI open bench.</p>
+    </div>
+  </header>
+
+  <main>
+    <section>
+      <div class="container">
+        <h2>Service scope</h2>
+        <div class="card">
+          <p class="small">
+            A-CODEAI provides B2B token compression evaluation APIs, open-bench evidence, and controlled-beta waitlist onboarding.
+            It is <strong>not</strong> investment advisory, portfolio management, treasury automation, or trade recommendation.
+          </p>
+        </div>
+        <div class="card">
+          <p class="small">
+            Published metrics are <strong>conditional and lane-separated</strong> (Track A active vs contributor open-bench).
+            Do not merge lanes into a single headline claim. Final adoption decisions remain with the client.
+          </p>
+        </div>
+        <div class="card">
+          <p class="small"><span class="pill">SEND_GATE</span> External send remains HOLD. No broad outbound marketing while HOLD is active.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Operator</h2>
+        <div class="card">
+          <p class="small">
+            Moksori Network Co., Ltd. (주식회사 목소리네트워크)<br />
+            Representative: Lee Gi-ryun (이기륜)<br />
+            Business registration no. 628-86-01742<br />
+            Address: 경기도 광명시 디지털로 24, 102동 2301호<br />
+            Contact: <a href="mailto:contact@a-codeai.com">contact@a-codeai.com</a>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Privacy</h2>
+        <div class="card">
+          <p class="small">
+            Waitlist and enterprise apply flows may collect contact details (company name, email, use-case notes).
+            Processing follows the group privacy policy at
+            <a href="https://jema-ai.com/privacy" target="_blank" rel="noopener noreferrer">jema-ai.com/privacy</a>.
+          </p>
+        </div>
+        <p class="small">For data requests or corrections, email <a href="mailto:contact@a-codeai.com">contact@a-codeai.com</a>.</p>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <h2>Related pages</h2>
+        <p class="small">
+          <a href="/benchmark">Verification policy</a> ·
+          <a href="/pilot">Pilot policy</a> ·
+          <a href="/">Home</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>© 2026 주식회사 목소리네트워크. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

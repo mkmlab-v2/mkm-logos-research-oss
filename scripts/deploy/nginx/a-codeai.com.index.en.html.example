@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A-CODEAI | Macro Risk Early Warning for Treasury Teams</title>
+  <title>A-CODEAI | Token Compression Open Bench (Controlled Beta)</title>
   <meta
     name="description"
-    content="Macro risk early warning for treasury and risk teams. Start with a KPI-based 90-day pilot and clear compensation terms."
+    content="B2B token compression open bench with reproducible benchmarks. Waitlist-first controlled beta; SEND_GATE=HOLD."
   />
   <link rel="canonical" href="https://a-codeai.com/" />
   <link rel="alternate" hreflang="en" href="https://a-codeai.com/" />
@@ -197,6 +197,9 @@
       background: color-mix(in oklab, var(--panel), black 8%);
     }
     footer { padding: 24px 0 36px; color: var(--muted); font-size: 13px; }
+    .footer-meta { margin: 0 0 8px; line-height: 1.6; }
+    .footer-meta a { color: #c5d8ff; }
+    .footer-links { margin: 8px 0 0; }
     .ecosystem-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -256,9 +259,9 @@
       <div class="hero-grid">
         <div class="hero-main">
           <div class="badge-row">
-            <span class="badge">Enterprise Treasury Focus</span>
-            <span class="badge">Not Investment Advice</span>
-            <span class="badge">Paid 90-Day Pilot</span>
+            <span class="badge">B2B Compression API</span>
+            <span class="badge">Fact-Lock Evidence</span>
+            <span class="badge">SEND_GATE HOLD</span>
           </div>
           <h1 id="pg-hero-title">A-CODEAI Open Bench (Controlled Beta + Waitlist)</h1>
           <p class="subtitle" id="pg-hero-subtitle">
@@ -266,18 +269,18 @@
           </p>
           <p class="small" id="pg-status-line">Current status: controlled beta waitlist; SEND_GATE=HOLD.</p>
           <div class="cta-row">
-            <a class="btn btn-primary" href="#contact">Book a 20-min call</a>
-            <a class="btn btn-secondary" href="/pilot">View 90-day pilot</a>
-            <a class="btn btn-secondary" href="/benchmark">See verification policy</a>
+            <a class="btn btn-primary" href="#contact">Join waitlist</a>
+            <a class="btn btn-secondary" href="/benchmark">Benchmark policy</a>
+            <a class="btn btn-secondary" href="https://github.com/mkmlab-v2/a-codeai-compression-reproduce" target="_blank" rel="noopener noreferrer">Reproduce on GitHub</a>
           </div>
         </div>
         <aside class="hero-side" aria-label="Trust snapshot">
           <p class="label">Trust Snapshot</p>
           <p class="small">Track A active benchmark and contributor lane are separated by policy and reporting.</p>
           <ul>
-            <li>Track A active: 47.54% token saving, min jaccard 0.714</li>
-            <li>Contributor lane: 25.1% saving, raw alignment pass 63.3%</li>
-            <li>SEND_GATE HOLD and waitlist-first onboarding remain enforced</li>
+            <li id="pg-trust-lane-1">Track A active: 47.54% token saving, min jaccard 0.714 (separate lane)</li>
+            <li id="pg-trust-lane-2">Contributor lane: 25.1% saving, raw alignment pass 63.3% (19/30)</li>
+            <li id="pg-trust-lane-3">SEND_GATE HOLD and waitlist-first onboarding remain enforced</li>
           </ul>
         </aside>
       </div>
@@ -290,16 +293,16 @@
         <h2>Who this is for</h2>
         <div class="grid">
           <article class="card">
-            <p class="label">Ideal Buyer</p>
-            <p class="small">CFO, Treasury, and Risk teams at firms exposed to cross-border volatility.</p>
+            <p class="label">Platform Teams</p>
+            <p class="small">API/platform owners reducing LLM token cost with measurable compression profiles.</p>
           </article>
           <article class="card">
-            <p class="label">Use Cases</p>
-            <p class="small">FX exposure monitoring, commodity shock alerts, and faster risk committee decisions.</p>
+            <p class="label">Evaluation Scope</p>
+            <p class="small">Open-bench reproduction, health checks, and scoped pilot readiness — not a global SLA claim.</p>
           </article>
           <article class="card">
-            <p class="label">Delivery</p>
-            <p class="small">Weekly brief, threshold alerts, and monthly review with wins and misses together.</p>
+            <p class="label">Onboarding</p>
+            <p class="small">Waitlist-first controlled beta with monitoring acceptance and guardrail compliance.</p>
           </article>
         </div>
       </div>
@@ -307,19 +310,19 @@
 
     <section id="flow">
       <div class="container">
-        <h2>How the pilot runs</h2>
+        <h2>How controlled beta works</h2>
         <div class="grid">
           <article class="card">
-            <p class="label">Week 1</p>
-            <p class="small">Align risk scope, thresholds, and reporting owners.</p>
+            <p class="label">Step 1</p>
+            <p class="small">Run public reproduce commands and verify /health plus API route behavior.</p>
           </article>
           <article class="card">
-            <p class="label">Weeks 2-10</p>
-            <p class="small">Run weekly brief + threshold alerts + event review.</p>
+            <p class="label">Step 2</p>
+            <p class="small">Review benchmark policy with Track A and contributor lanes reported separately.</p>
           </article>
           <article class="card">
-            <p class="label">Weeks 11-12</p>
-            <p class="small">Deliver false positive / miss report and renewal recommendation.</p>
+            <p class="label">Step 3</p>
+            <p class="small">Join the waitlist for a scoped B2B pilot after internal acceptance checks.</p>
           </article>
         </div>
       </div>
@@ -327,34 +330,22 @@
 
     <section id="trust">
       <div class="container">
-        <h2>Why teams pay for this</h2>
+        <h2>Why teams evaluate this</h2>
         <div class="trust-list">
-          <div class="trust-item"><span class="pill pill-ok">Risk Reversal</span> KPI misses trigger pre-defined credit/extension terms.</div>
-          <div class="trust-item"><span class="pill pill-ok">No Black Box</span> You see false positives and misses, not only success stories.</div>
-          <div class="trust-item"><span class="pill pill-ok">Procurement-Ready</span> Scope, metric, compensation, and legal notice are contract-ready from day one.</div>
-          <div class="trust-item"><span class="pill pill-warn">Known Limits</span> Uncertainty is explicitly disclosed, not hidden.</div>
+          <div class="trust-item"><span class="pill pill-ok">Repro-First</span> Claims ship with commands, artifacts, and CI-backed checks.</div>
+          <div class="trust-item"><span class="pill pill-ok">Lane Separation</span> Track A active metrics never merge with contributor open-bench metrics.</div>
+          <div class="trust-item"><span class="pill pill-ok">Safety Fallback</span> HOLD/track_a_primary when readiness or health checks fail.</div>
+          <div class="trust-item"><span class="pill pill-warn">SEND HOLD</span> No broad outbound marketing until counsel and customer measurement gates clear.</div>
         </div>
       </div>
     </section>
 
     <section id="pilot">
       <div class="container">
-        <h2>Commercial terms at a glance</h2>
-        <div class="grid">
-          <article class="card">
-            <p class="label">Monthly Fee</p>
-            <p class="kpi">KRW 4,900,000</p>
-          </article>
-          <article class="card">
-            <p class="label">Event Alert</p>
-            <p class="kpi">KRW 250,000</p>
-            <p class="small">Per event, capped at KRW 2,000,000/month</p>
-          </article>
-          <article class="card">
-            <p class="label">Minimum Term</p>
-            <p class="kpi">90 Days</p>
-            <p class="small">KRW 14,700,000 minimum contract value</p>
-          </article>
+        <h2>Pilot and commercial terms</h2>
+        <p class="small">Commercial pricing and 90-day pilot clauses are documented on the pilot page. Homepage stays on open-bench evaluation and waitlist onboarding while SEND_GATE remains HOLD.</p>
+        <div class="cta-row" style="margin-top:14px">
+          <a class="btn btn-secondary" href="/pilot">View pilot details</a>
         </div>
       </div>
     </section>
@@ -377,10 +368,10 @@
           </article>
         </div>
         <div class="trust-list" style="margin-top:14px">
-          <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">Fact-Lock</span> Conditional improvements are claimed only inside validated operating zones.</div>
-          <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">Safety Fallback</span> Traffic is downgraded to HOLD/track_a_primary whenever readiness or health checks fail.</div>
-          <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">Waitlist First</span> Controlled beta onboarding is limited to scoped B2B pilots with monitoring acceptance.</div>
-          <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">No Mixed Headline</span> Track A active metrics and contributor open-bench metrics are never merged into one claim.</div>
+          <div class="trust-item" id="pg-claim-1"><span class="pill pill-ok">Fact-Lock</span><span id="pg-claim-1-text"> Conditional improvements are claimed only inside validated operating zones.</span></div>
+          <div class="trust-item" id="pg-claim-2"><span class="pill pill-ok">Safety Fallback</span><span id="pg-claim-2-text"> Traffic is downgraded to HOLD/track_a_primary whenever readiness or health checks fail.</span></div>
+          <div class="trust-item" id="pg-claim-3"><span class="pill pill-ok">Waitlist First</span><span id="pg-claim-3-text"> Controlled beta onboarding is limited to scoped B2B pilots with monitoring acceptance.</span></div>
+          <div class="trust-item" id="pg-non-claim-1"><span class="pill pill-warn">No Mixed Headline</span><span id="pg-non-claim-1-text"> Track A active metrics and contributor open-bench metrics are never merged into one claim.</span></div>
         </div>
       </div>
     </section>
@@ -449,19 +440,38 @@
             <p class="small" id="pg-cta-note">Pilot onboarding is waitlist-first and limited to scoped B2B workloads with monitoring, guardrail acceptance, and SEND_GATE HOLD compliance.</p>
           </div>
           <div class="cta-row" style="margin:0">
-            <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%2090-day%20macro%20risk%20pilot%20inquiry">Email us</a>
+            <a class="btn btn-primary" id="pg-cta-apply" href="https://app.jema-ai.com/enterprise/apply">Apply for controlled beta</a>
+            <a class="btn btn-secondary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20compression%20open%20bench%20waitlist">Email us</a>
             <a class="btn btn-secondary" href="/pilot">Pilot details</a>
           </div>
         </div>
       </div>
     </section>
 
-    <section>
+    <section id="legal">
       <div class="container legal">
         <strong>Legal notice</strong>
         <p>
-          A-CODEAI is a risk monitoring information service. It is not investment advisory,
-          portfolio management, or trade recommendation. Final decision responsibility remains with the client.
+          A-CODEAI provides B2B token compression evaluation APIs and open-bench evidence.
+          It is not investment advisory, portfolio management, or trade recommendation.
+          Measured gains are conditional and lane-separated; final adoption decisions remain with the client.
+        </p>
+        <p style="margin-top:14px"><strong>Operator</strong></p>
+        <p class="small" style="margin-top:6px">
+          Moksori Network Co., Ltd. (주식회사 목소리네트워크) · Representative: Lee Gi-ryun (이기륜)<br />
+          Business registration no. 628-86-01742<br />
+          Address: 경기도 광명시 디지털로 24, 102동 2301호<br />
+          Contact: <a href="mailto:contact@a-codeai.com">contact@a-codeai.com</a>
+        </p>
+        <p class="small footer-links">
+          <a href="https://jema-ai.com/privacy" target="_blank" rel="noopener noreferrer">Privacy policy (jema-ai.com)</a>
+          · <a href="/legal">Legal notice</a>
+          · <a href="/pilot">Pilot overview</a>
+          · <a href="/benchmark">Verification policy</a>
+        </p>
+        <p class="small" style="margin-top:10px">
+          Waitlist and enterprise apply flows may collect contact details under the linked privacy policy.
+          SEND_GATE remains HOLD; no broad outbound marketing.
         </p>
       </div>
     </section>
@@ -469,16 +479,19 @@
 
   <footer>
     <div class="container">
-      <p>A-CODEAI · Engineering-grade risk monitoring for enterprise treasury teams.</p>
+      <p class="footer-meta">A-CODEAI · B2B token compression open bench with Fact-Lock operating discipline.</p>
+      <p class="footer-meta">© 2026 주식회사 목소리네트워크. All rights reserved.</p>
     </div>
   </footer>
 <script>
   (async function () {
+    const lang = (document.documentElement.lang || 'en').toLowerCase();
+    const isKo = lang.startsWith('ko');
     try {
       const res = await fetch('/a_codeai_public_copy_web_payload_latest.json', { cache: 'no-store' });
       if (!res.ok) return;
       const data = await res.json();
-      const sections = data.sections || {};
+      const sections = (isKo && data.sections_ko) ? data.sections_ko : (data.sections || {});
       const hero = sections.hero || {};
       const setText = (id, v) => {
         if (!v) return;
@@ -489,16 +502,38 @@
       setText('pg-hero-subtitle', hero.subtitle);
       setText('pg-status-line', hero.status_line);
 
+      const lanes = (data.meta || {}).lane_metrics || {};
+      if (lanes.track_a_saving_pct) {
+        setText(
+          'pg-trust-lane-1',
+          isKo
+            ? `Track A active: 토큰 절감 ${lanes.track_a_saving_pct}%, 최소 jaccard ${lanes.track_a_min_jaccard} (분리 레인)`
+            : `Track A active: ${lanes.track_a_saving_pct}% token saving, min jaccard ${lanes.track_a_min_jaccard} (separate lane)`
+        );
+      }
+      if (lanes.contributor_saving_pct) {
+        setText(
+          'pg-trust-lane-2',
+          isKo
+            ? `Contributor 레인: 절감 ${lanes.contributor_saving_pct}%, raw alignment pass ${lanes.contributor_raw_alignment_pct}% (${lanes.contributor_pass_fraction})`
+            : `Contributor lane: ${lanes.contributor_saving_pct}% saving, raw alignment pass ${lanes.contributor_raw_alignment_pct}% (${lanes.contributor_pass_fraction})`
+        );
+      }
+
       const claims = sections.claims || [];
       const nonClaims = sections.non_claims || [];
-      setText('pg-claim-1', claims[0]);
-      setText('pg-claim-2', claims[1]);
-      setText('pg-claim-3', claims[2]);
-      setText('pg-non-claim-1', nonClaims[0]);
+      setText('pg-claim-1-text', claims[0] ? ` ${claims[0]}` : null);
+      setText('pg-claim-2-text', claims[1] ? ` ${claims[1]}` : null);
+      setText('pg-claim-3-text', claims[2] ? ` ${claims[2]}` : null);
+      setText('pg-non-claim-1-text', nonClaims[0] ? ` ${nonClaims[0]}` : null);
 
       const cta = sections.cta || {};
       setText('pg-cta-label', cta.label);
       setText('pg-cta-note', cta.note);
+      if (cta.apply_href) {
+        const apply = document.getElementById('pg-cta-apply');
+        if (apply) apply.href = cta.apply_href;
+      }
     } catch (_) {
       // Keep static fallback copy.
     }

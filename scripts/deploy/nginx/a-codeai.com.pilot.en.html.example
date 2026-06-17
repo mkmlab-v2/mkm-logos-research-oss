@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>A-CODEAI | Enterprise 90-Day Pilot</title>
-  <meta name="description" content="Enterprise 90-day paid pilot for treasury and risk teams. Fixed KPI gates, protected IP, and production-ready operating rhythm." />
+  <title>A-CODEAI | B2B Compression Scoped Pilot</title>
+  <meta name="description" content="Scoped B2B token compression pilot with fixed evaluation gates, lane-separated metrics, and waitlist-first onboarding while SEND_GATE=HOLD." />
   <link rel="canonical" href="https://a-codeai.com/pilot/" />
   <link rel="alternate" hreflang="en" href="https://a-codeai.com/pilot/" />
   <link rel="alternate" hreflang="ko" href="https://a-codeai.com/ko/pilot/" />
@@ -190,19 +190,19 @@
   <header class="hero">
     <div class="container">
       <div class="badge-row">
-        <span class="badge">Enterprise treasury/risk</span>
-        <span class="badge">No black-box operations</span>
-        <span class="badge">90-day paid pilot</span>
+        <span class="badge">B2B compression API</span>
+        <span class="badge">Fact-Lock evaluation</span>
+        <span class="badge">Waitlist-first · SEND_GATE HOLD</span>
       </div>
-      <h1>Contract-grade KPI gates,<br />protected implementation IP.</h1>
+      <h1>Scoped compression pilot<br />with fixed evaluation gates.</h1>
       <p class="subtitle">
-        A-CODEAI pilot is designed for production decisions: fixed KPI gates, fixed review rhythm,
-        and explicit remediation terms, without exposing proprietary internals.
+        Evaluate token compression on scoped, masked corpora with lane-separated reporting and reproducible evidence.
+        Pilot onboarding is waitlist-first while SEND_GATE remains HOLD; pricing below is reference-only until counsel and customer measurement gates clear.
       </p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="#contact">Book 20-min call</a>
-        <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20free%20validation%20pack%20request">Request free validation pack</a>
-        <a class="btn btn-ghost" href="/benchmark">View validation policy</a>
+        <a class="btn btn-primary" href="https://app.jema-ai.com/enterprise/apply">Apply for controlled beta</a>
+        <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20compression%20open%20bench%20validation%20pack">Request validation pack</a>
+        <a class="btn btn-ghost" href="/benchmark">Benchmark policy</a>
       </div>
     </div>
   </header>
@@ -210,44 +210,45 @@
   <main id="main-content">
     <section>
       <div class="container">
-        <h2>Pilot architecture</h2>
+        <h2>Pilot evaluation model</h2>
         <div class="grid">
-          <article class="card"><p class="label">KPI fixed</p><p class="small">Decision gates are fixed at kickoff and not shifted mid-cycle.</p></article>
-          <article class="card"><p class="label">IP protected</p><p class="small">Internal algorithms stay private; contractual scope focuses on outcomes and operating evidence.</p></article>
-          <article class="card"><p class="label">Risk reversal</p><p class="small">Credit/extension clauses are defined upfront for underperformance cases.</p></article>
+          <article class="card"><p class="label">KPI fixed</p><p class="small">Compression pass-rate, saving proxy, and jaccard floors are fixed at kickoff per corpus profile.</p></article>
+          <article class="card"><p class="label">Lane separated</p><p class="small">Track A active, contributor open-bench, and customer PoC metrics are never merged into one headline.</p></article>
+          <article class="card"><p class="label">Safety fallback</p><p class="small">HOLD/track_a_primary when readiness or health checks fail during the pilot window.</p></article>
         </div>
       </div>
     </section>
 
     <section>
       <div class="container">
-        <h2>90-day operating cadence</h2>
+        <h2>90-day evaluation cadence</h2>
         <div class="grid">
-          <article class="card"><p class="label">Week 1</p><p class="small">Scope, thresholds, owners, and rollback policy alignment.</p></article>
-          <article class="card"><p class="label">Weeks 2-10</p><p class="small">Weekly brief, event alerts, and miss/false-positive logging.</p></article>
-          <article class="card"><p class="label">Weeks 11-12</p><p class="small">Joint audit and renew/expand/stop decision.</p></article>
+          <article class="card"><p class="label">Week 1</p><p class="small">Corpus scope, compression profile, pass floors, and rollback policy alignment.</p></article>
+          <article class="card"><p class="label">Weeks 2-10</p><p class="small">Weekly KPI report, drift log, and fallback events on masked evaluation sets.</p></article>
+          <article class="card"><p class="label">Weeks 11-12</p><p class="small">Joint audit and renew/expand/stop decision with wins and misses together.</p></article>
         </div>
       </div>
     </section>
 
     <section>
       <div class="container">
-        <h2>Commercial terms</h2>
+        <h2>Reference commercial terms (draft)</h2>
+        <p class="small" style="margin-bottom:14px">Internal reference figures only while SEND_GATE=HOLD. Final terms are scoped per waitlist-approved pilot.</p>
         <div class="grid">
-          <article class="card"><p class="label">Monthly fee</p><p class="kpi">KRW 4,900,000</p></article>
-          <article class="card"><p class="label">Event alert</p><p class="kpi">KRW 250,000</p><p class="small">Per alert, capped at KRW 2,000,000/month</p></article>
-          <article class="card"><p class="label">Minimum term</p><p class="kpi">90 days</p><p class="small">Minimum contract value KRW 14,700,000</p></article>
+          <article class="card"><p class="label">Monthly platform (ref.)</p><p class="kpi">KRW 4,900,000</p></article>
+          <article class="card"><p class="label">Per eval batch (ref.)</p><p class="kpi">KRW 250,000</p><p class="small">Per batch, capped at KRW 2,000,000/month</p></article>
+          <article class="card"><p class="label">Minimum term</p><p class="kpi">90 days</p><p class="small">Minimum contract value KRW 14,700,000 (reference)</p></article>
         </div>
       </div>
     </section>
 
     <section>
       <div class="container">
-        <h2>Free validation to paid conversion rule</h2>
+        <h2>Open bench to pilot path</h2>
         <div class="grid">
-          <article class="card"><p class="label">Free validation</p><p class="small">30 sample validations/month, delayed response, no team workflow features.</p></article>
-          <article class="card"><p class="label">Paid conversion</p><p class="small">Upgrade when your team needs production response time, SLA, and contractual protection.</p></article>
-          <article class="card"><p class="label">Conversion path</p><p class="small">Request free validation pack -> 20-minute review call -> start 90-day pilot.</p></article>
+          <article class="card"><p class="label">Open bench</p><p class="small">Reproduce public commands, verify /health and API routes, review lane-separated benchmark policy.</p></article>
+          <article class="card"><p class="label">Waitlist review</p><p class="small">Join controlled beta waitlist after internal acceptance of scope, monitoring, and guardrails.</p></article>
+          <article class="card"><p class="label">Scoped pilot</p><p class="small">Validation pack review → scoped 90-day compression evaluation on masked corpora.</p></article>
         </div>
       </div>
     </section>
@@ -255,7 +256,7 @@
     <section>
       <div class="container">
         <h2>Decision checklist</h2>
-        <div class="notice"><span class="pill pill-ok">Required</span>Quality gate pass, integrity stability, operating lead-time, and committee fit.</div>
+        <div class="notice"><span class="pill pill-ok">Required</span> Readiness green, lane-separated metrics, corpus fit, and monitoring acceptance before pilot start.</div>
       </div>
     </section>
 
@@ -271,10 +272,10 @@
 
     <section id="contact">
       <div class="container">
-        <h2>Start with a 20-minute call</h2>
+        <h2>Join the waitlist</h2>
         <div class="cta-row">
-          <a class="btn btn-primary" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%2090-day%20pilot%20inquiry">Email us</a>
-          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20free%20validation%20pack%20request">Request free validation pack</a>
+          <a class="btn btn-primary" href="https://app.jema-ai.com/enterprise/apply">Apply for controlled beta</a>
+          <a class="btn btn-ghost" href="mailto:contact@a-codeai.com?subject=%5BCompany%5D%20compression%20scoped%20pilot%20inquiry">Email us</a>
           <a class="btn btn-ghost" href="/">Back to home</a>
         </div>
       </div>
@@ -302,13 +303,17 @@
 
     <section>
       <div class="container">
-        <div class="notice"><span class="pill pill-warn">Legal</span>A-CODEAI is a risk monitoring information service, not investment advisory or trade recommendation.</div>
+        <div class="notice"><span class="pill pill-warn">Legal</span>A-CODEAI provides B2B token compression evaluation. Measured gains are conditional and lane-separated; not investment advisory or a global performance SLA.</div>
       </div>
     </section>
   </main>
 
   <footer>
-    <div class="container">A-CODEAI · Pilot page (EN)</div>
+    <div class="container">
+      <p>주식회사 목소리네트워크 · 사업자등록번호 628-86-01742 · <a href="mailto:contact@a-codeai.com">contact@a-codeai.com</a></p>
+      <p><a href="https://jema-ai.com/privacy" target="_blank" rel="noopener noreferrer">Privacy policy</a> · <a href="/legal">Legal</a> · <a href="/">Home</a></p>
+      <p>© 2026 주식회사 목소리네트워크.</p>
+    </div>
   </footer>
 
   <script>

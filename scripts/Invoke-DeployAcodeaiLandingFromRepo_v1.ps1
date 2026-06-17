@@ -51,6 +51,8 @@ $need = @(
     (Join-Path $nginx "a-codeai.com.index.html.example"),
     (Join-Path $nginx "a-codeai.com.pilot.html.example"),
     (Join-Path $nginx "a-codeai.com.benchmark.html.example"),
+    (Join-Path $nginx "a-codeai.com.legal.en.html.example"),
+    (Join-Path $nginx "a-codeai.com.legal.html.example"),
     (Join-Path $art "a_codeai_public_copy_web_payload_latest.json"),
     (Join-Path $art "a_codeai_public_bench_landing_payload_v1_latest.json")
 )
@@ -73,6 +75,8 @@ New-Item -ItemType Directory -Force -Path (Join-Path $staging "pilot") | Out-Nul
 New-Item -ItemType Directory -Force -Path (Join-Path $staging "benchmark") | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $staging "ko\pilot") | Out-Null
 New-Item -ItemType Directory -Force -Path (Join-Path $staging "ko\benchmark") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $staging "legal") | Out-Null
+New-Item -ItemType Directory -Force -Path (Join-Path $staging "ko\legal") | Out-Null
 
 Copy-Item (Join-Path $nginx "a-codeai.com.index.en.html.example") (Join-Path $staging "index.html")
 Copy-Item (Join-Path $nginx "a-codeai.com.pilot.en.html.example") (Join-Path $staging "pilot\index.html")
@@ -80,6 +84,8 @@ Copy-Item (Join-Path $nginx "a-codeai.com.benchmark.en.html.example") (Join-Path
 Copy-Item (Join-Path $nginx "a-codeai.com.index.html.example") (Join-Path $staging "ko\index.html")
 Copy-Item (Join-Path $nginx "a-codeai.com.pilot.html.example") (Join-Path $staging "ko\pilot\index.html")
 Copy-Item (Join-Path $nginx "a-codeai.com.benchmark.html.example") (Join-Path $staging "ko\benchmark\index.html")
+Copy-Item (Join-Path $nginx "a-codeai.com.legal.en.html.example") (Join-Path $staging "legal\index.html")
+Copy-Item (Join-Path $nginx "a-codeai.com.legal.html.example") (Join-Path $staging "ko\legal\index.html")
 Copy-Item (Join-Path $art "a_codeai_public_copy_web_payload_latest.json") $staging
 Copy-Item (Join-Path $art "a_codeai_public_bench_landing_payload_v1_latest.json") $staging
 
@@ -90,7 +96,7 @@ if ($DryRun) {
     exit 0
 }
 
-& ssh @($sshArgs + @($remote, "mkdir -p $WebRoot/pilot $WebRoot/benchmark $WebRoot/ko/pilot $WebRoot/ko/benchmark"))
+& ssh @($sshArgs + @($remote, "mkdir -p $WebRoot/pilot $WebRoot/benchmark $WebRoot/ko/pilot $WebRoot/ko/benchmark $WebRoot/legal $WebRoot/ko/legal"))
 if ($LASTEXITCODE -ne 0) { throw "ssh mkdir failed" }
 
 & scp @($scpArgs + @("-r", "$staging/*", "${remote}:${WebRoot}/"))

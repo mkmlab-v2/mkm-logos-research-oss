@@ -13,6 +13,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DEFAULT = ROOT / "docs/final/artifacts/a_codeai_open_bench_binding_check_latest.json"
+LEGAL_SIGNOFF = ROOT / "docs/final/artifacts/compression_b2b_legal_send_signoff_v1_latest.json"
 
 
 def _now_utc() -> str:
@@ -34,8 +35,26 @@ def _fetch_text(url: str, timeout: float) -> tuple[bool, str]:
         return False, ""
 
 
+def _legal_send_open() -> bool:
+    if not LEGAL_SIGNOFF.is_file():
+        return False
+    try:
+        doc = json.loads(LEGAL_SIGNOFF.read_text(encoding="utf-8"))
+    except Exception:
+        return False
+    return (
+        str(doc.get("send_gate", "")).upper() == "OPEN"
+        and bool(doc.get("ready_for_external_send", False))
+    )
+
+
 def _check_bench_payload(body: str) -> tuple[bool, dict[str, Any]]:
-    details: dict[str, Any] = {"json_parse_ok": False, "schema_ok": False, "send_gate_hold": False}
+    details: dict[str, Any] = {
+        "json_parse_ok": False,
+        "schema_ok": False,
+        "send_gate": None,
+        "send_gate_ok": False,
+    }
     try:
         doc = json.loads(body)
     except json.JSONDecodeError:
@@ -43,9 +62,14 @@ def _check_bench_payload(body: str) -> tuple[bool, dict[str, Any]]:
     details["json_parse_ok"] = True
     schema_ok = str(doc.get("schema")) == "a_codeai_public_bench_landing_payload_v1"
     details["schema_ok"] = schema_ok
-    details["send_gate_hold"] = str(doc.get("send_gate", "")).upper() == "HOLD"
+    send_gate = str(doc.get("send_gate", "")).upper()
+    details["send_gate"] = send_gate
+    legal_open = _legal_send_open()
+    details["legal_send_open"] = legal_open
+    gate_ok = send_gate == "HOLD" or (send_gate == "OPEN" and legal_open)
+    details["send_gate_ok"] = gate_ok
     details["public_sku_count"] = len((doc.get("sections") or {}).get("public_skus") or [])
-    ok = schema_ok and details["send_gate_hold"] and details["public_sku_count"] >= 3
+    ok = schema_ok and gate_ok and details["public_sku_count"] >= 3
     return ok, details
 
 
