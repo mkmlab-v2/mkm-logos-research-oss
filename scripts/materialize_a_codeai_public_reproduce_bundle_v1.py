@@ -228,11 +228,33 @@ def materialize(
         except (json.JSONDecodeError, OSError):
             research_note = ""
 
+    customer_note = ""
+    cust_poc_path = ROOT / "reports/customer_compression_stateless_poc_wtt-premium-cs-customer-v1_v1_latest.json"
+    if cust_poc_path.is_file():
+        try:
+            cust = json.loads(cust_poc_path.read_text(encoding="utf-8"))
+            agg = cust.get("aggregate") or {}
+            saving = float(agg.get("mean_token_saving_rate_proxy") or 0) * 100
+            jacc = agg.get("mean_jaccard_proxy")
+            passed = cust.get("cases_passed")
+            total = cust.get("case_count")
+            customer_note = (
+                "\n## Customer-provided pilot (internal lane only · `customer_provided`)\n\n"
+                f"- **wtt-premium-cs-customer-v1** · N={total} · pass {passed}/{total}\n"
+                f"- raw token saving: **{saving:.2f}%** · Jaccard **{jacc}**\n"
+                "- Separate from Track A active ~47.5% and contributor open-bench.\n"
+                "- Rows 031-050 may be `[HYPO]` pilot derivations — not a new live customer upload.\n"
+                "- Reproduce expand: `python3 scripts/expand_wtt_premium_cs_customer_live_n50_v1.py --write`\n"
+                "- Artifact: `reports/customer_compression_stateless_poc_wtt-premium-cs-customer-v1_v1_latest.json`\n\n"
+            )
+        except (json.JSONDecodeError, OSError, TypeError, ValueError):
+            customer_note = ""
+
     readme = (
         "# A-CODEAI public reproduce export (slim)\n\n"
         "SEND_GATE: HOLD — do not use as customer case study or merged marketing headline.\n"
         "`research_only` · B→A auto-merge prohibited.\n\n"
-        f"{routed_note}{research_note}"
+        f"{routed_note}{research_note}{customer_note}"
         "## One command (from repo root)\n\n"
         "```bash\n"
         "pip install -r requirements-public-reproduce.txt\n"
