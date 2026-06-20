@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-20T20:41:45Z
+- **last_updated_utc:** 2026-06-20T21:05:12Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-13:** push **11/11** OK). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -122,6 +122,11 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
+- **2026-06-20T21:05:12Z** — Phase12 omni parallel exit0: RAG L3 ACK, bridge signoff 19/19, envelope+closure ok; mkmlife public deploy pending; send_gate HOLD
+- **2026-06-20T21:01:25Z** — Phase11-G live Ollama stress32 hit93.75pct gap6.25pct golden16 route0 preserved exit0 send_gate HOLD
+- **2026-06-20T20:58:45Z** — Phase12 live bundle exit0: jemaai core 200, load probe ok_rate 1.0 p95 439ms; send_gate HOLD
+- **2026-06-20T20:57:30Z** — Phase 11-G live Ollama stress32 gap=0.0625 hit=93.75%; evidence pack refresh; golden16 route restored; send_gate HOLD
+- **2026-06-20T20:50:33Z** — Phase11-F NSM wire oracle_gap0 sidecar ablation v2 17 configs no regression GATE_SPEC exit0 send_gate HOLD
 - **2026-06-20T20:41:45Z** — 41k vs 31k lane isolation brief locked CENTRAL + mkm_anchor_map lane_isolation_brief_ko 2026-06-21
 - **2026-06-20T20:38:17Z** — Phase11-E DeepNSM shadow remap distortion 1.4pct prime_hit 97.9pct GATE_SPEC v1.1.0 exit0 send_gate HOLD
 - **2026-06-20T20:24:38Z** — Phase11-A-2 MDL prune PoC 15pct sweep Jaccard floor pass GATE_SPEC v1.1.0 exit0
@@ -137,11 +142,6 @@
 - **2026-06-20T19:13:20Z** — HN paste v2 rebuilt ko50 v3 merge union internal draft send_gate HOLD
 - **2026-06-20T19:07:06Z** — Phase8 signoff sync+Phase9 oracle gap dual gold eval chain exit0 full-stack 11 steps pytest pass
 - **2026-06-20T19:04:45Z** — Track A v3 merge apply exit0 ko50 production 41708 swapped ACTIVE unchanged send_gate HOLD
-- **2026-06-20T18:58:51Z** — Phase8 commander signoff 18/18 bridges + subgraph gold Hit@8 91.7% + full stack 11 steps exit0
-- **2026-06-20T18:56:16Z** — Track A v3 merge preflight chain exit0 ADVANCE_TRACK_A_MERGE_CANDIDATE ko42->50 prod pointer HOLD
-- **2026-06-20T18:47:25Z** — P3 weekly task registered Sun 09:45; live weekly exit0; commander B-track v3 signoff (prod swap false per pilot)
-- **2026-06-20T18:47:23Z** — Phase7 gematria router v1.9 sidecar + concept_bridge human gate queue + full stack 9 steps exit0
-- **2026-06-20T18:40:36Z** — A infra preflight+git sanity ok; B paste rebuild exit0 send_gate HOLD; browser host chat-only gap
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
