@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-20T10:09:42Z
+- **last_updated_utc:** 2026-06-20T10:37:24Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-13:** push **11/11** OK). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -122,6 +122,8 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
+- **2026-06-20T10:37:24Z** — solo_ops GREEN: diet+scheduler+vscdb OK; MCP plugin diet 316→72; janitor 0 candidates
+- **2026-06-20T10:24:21Z** — deep live exit0 router_hit 1.0 oracle_gap 0.0; P1 registry internal push 3844e3e; MERGED 4-Vault fusion gate exit0; solo_ops FAIL diet strict
 - **2026-06-20T10:09:42Z** — MERGED lit review linked to Vault2 registry + federated catalog research_ssot cross-ref exit 0
 - **2026-06-20T10:09:21Z** — Oracle shallow B-A-C closed: reproduce bundle+golden16 pushed; next chat=deep live+NEXT_GEN lit review fusion; GitHub HOLD
 - **2026-06-20T10:02:32Z** — P1 reference pointer registry 5 PoC + federated knowledge catalog v1 exit 0
@@ -140,8 +142,6 @@
 - **2026-06-20T07:05:46Z** — Solo OSS all-lanes default v1.1: counsel DEPRECATED unless commander explicit; alwaysApply rule; MISSION_LOG all lanes aligned
 - **2026-06-20T07:02:50Z** — Solo OSS pivot: counsel DEPRECATED; MIT+README+policy; SEND_GATE OPEN oss_github_release only; counsel chat suggest forbidden
 - **2026-06-20T06:57:44Z** — LTM auto-push: gold 12/12 pass; cap×gold guard=baseline_production only (minimal 7/12); bundle+counsel manifest 17 exit 0; pytest 4/4
-- **2026-06-20T06:52:08Z** — Ollama shallow router v1: schema+modelfile+bench+handoff+pytest exit0 [HYPO]
-- **2026-06-20T06:50:37Z** — LTM orchestration bundle exit 0: cap ablation ultra_min -56% vs baseline insight; prior-art JSONL seeded 4 rows; pytest 3/3
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 

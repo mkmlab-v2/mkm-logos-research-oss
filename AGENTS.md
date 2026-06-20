@@ -13,14 +13,17 @@
 
 - 구현·통과 주장 = CONSTITUTION + 스크립트·pytest만. NL·채팅 요약 단독 근거 금지.
 - Track A(운영) vs B(연구/`[HYPO]`) — **B→A·실매매 자동 합선 금지**.
+- **솔로 OSS (전 레인 기본):** MIT+README+secret check · counsel/변호사 **지휘관 명시 시만** — `mkm_solo_oss_release_policy_v1_latest.json`.
 - 렌즈: `사상` / `명리` / `성경(Logos)` — Final Action = 1차 `regime_map` + 운영 게이트.
-- MKM = **4AI core + Absolute Balance Coordinator Mode** (제5 AI/체질 아님).
+- **렌즈 활용 SSOT:** `docs/final/LENS_UTILIZATION_CHARTER_V1.md` (도메인 매트릭스·위임·ablation).
+- MKM = **4AI core + Absolute Balance Coordinator Mode** (제5 AI/체질 아님) · Shallow=ops pin+LTM · Deep=anchor≤3 · inject=trust/`semantic_rag_bridge_insight_bundle` · 4D `S-L-K-M` · 상세 `INTERNAL_SEMANTIC_RAG_4D_ARCH_OUTLINE_V1.md`.
 
 ## 재개 · 종료 (SSOT: `.cursor/rules/central-agent-memory.mdc`)
 
 | 트리거 | 동작 |
 |--------|------|
 | 장기기억 맥락이어 · 미션로그 이어서 · CENTRAL 기준 (동등) | `powershell -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1` (`-Lane` 있으면) → Read `docs/final/artifacts/mkm_chat_resume_pack_latest.md` — **MISSION_LOG 통째 금지** |
+| **장기기억 맥락이어 고급해석** | `…Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle -ResumeMode AdvancedLogos` → resume pack · `[HYPO]` why 단답·SEND·Track A 금지 · `mkm_commander_resume_triggers_v1.json` |
 | 장기기억 저장 · 체크포인트 | `py scripts/athena_checkpoint.py "<한 줄>"` (exit 0) |
 | 의미 있는 진행 후 | `MISSION_LOG.md` **해당 레인** 다음 Action **1줄**만 (`mission-log-combat-ssot.mdc`) |
 
@@ -37,9 +40,20 @@
 | 【커서 세션 업그레이드】 | `… -Persona CursorSessionUpgrade` |
 | 【고차원 자율진화】 | `… -Persona HdAutonomousEvolution` (env `MKM_HD_AE_MISSION`·`MKM_HD_AE_LANE`; SSOT `docs/final/artifacts/mkm_high_dimensional_autonomous_evolution_v1_latest.json`) |
 | 【Bounded lane shadow】 | `… -Persona BoundedLaneLoopShadow` |
+| 【사상 스택】 | `… -Persona SasangRailStack` |
+| 【사상 마스터】 | `… -Persona SasangRailMaster` |
+| 【사상 P9】 | `… -Persona SasangRailP9` |
+| 【사상 P10】 | `… -Persona SasangRailP10` |
+| 【사상 P11】 | `… -Persona SasangRailP11` |
+| 【사상 P12】 | `… -Persona SasangRailP12` |
+| 【사상 P13】 | `… -Persona SasangRailP13` |
+| 【사상 P14】 | `… -Persona SasangRailP14` |
+| 【사상 P15】 | `… -Persona SasangRailP15` |
+| 【사상 P16】 | `… -Persona SasangRailP16` |
 | 【에이전트 micro-loop】 | `… -Persona MkmAgentLoops` → `docs/final/artifacts/mkm_agent_loops_v1_latest.md` |
 | 【프리미엄 큐 권장】 | `… -Persona PremiumMultilensQueue` |
 | 【Design 레인】 | `… -Persona DesignLane` |
+| **딥리서치** · deep research · 논문 조사 | **Tier 0** Gemini→`docs/research/raw/` · **Tier 1** `mkm-deep-research/SKILL.md`(LIT_REVIEW md) · **0→1 merge** `*_MERGED_LIT_REVIEW_*.md` SSOT · **Tier 2** pytest exit 0 |
 
 → 나머지 40+ 행: **`AGENTS_REFERENCE_V1.md` 「페르소나 단축 호출」**
 
@@ -52,6 +66,7 @@
 | 로컬↔VPS | `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` |
 | Fact-Lock 번들 | `scripts/run_fact_lock_bundle.ps1` |
 | Cursor 세션 baseline | `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` |
+| **딥리서치 (논문·학술)** | Tier 0 `docs/research/raw/` · Tier 1 `mkm-deep-research/SKILL.md` · Tier 2 exit 0 |
 | 인프라·GPU·PC 경로 | `docs/final/LOCAL_MACHINE_POINTER_V1.md` (비추적) |
 
 ## Git · 원격 (한 줄)

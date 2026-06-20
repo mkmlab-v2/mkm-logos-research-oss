@@ -21,6 +21,8 @@ vendor/korean-medicine-texts/
 !.cursor/rules/infra-lane.mdc
 !.cursor/rules/design-lane.mdc
 !.cursor/rules/mission-log-combat-ssot.mdc
+# Solo OSS operator default (agent-requestable; context diet — not core alwaysApply stack)
+!.cursor/rules/mkm-solo-oss-operator-default-v1.mdc
 # WSE-3 Cursor commander starters (alwaysApply false; clone/CI P0 parity)
 !.cursor/rules/mkm-wse3-commander-starters.mdc
 # Cursor session validation baseline (alwaysApply; share across clones)
