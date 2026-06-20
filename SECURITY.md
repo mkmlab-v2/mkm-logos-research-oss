@@ -46,10 +46,16 @@ Use `.env.example` placeholders only. Store live secrets via DPAPI (`scripts/sec
 | `gitleaks` + `.gitleaks.toml` | Optional deeper scan when binary is installed |
 | `.pre-commit-config.yaml` | Local hook: gitleaks + pattern scan on `git commit` |
 
-Install hooks:
+Install hooks (when `core.hooksPath` is unset):
 
 ```powershell
 pre-commit install
+```
+
+When `gitleaks` is not on PATH, use the hook cache:
+
+```powershell
+pre-commit run gitleaks --all-files
 ```
 
 ## Scope limits
