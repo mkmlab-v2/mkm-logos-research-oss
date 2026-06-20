@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/ollama_shallow_router_output_v1.schema.json",
+  "title": "Ollama shallow router output v1 (local preprocess, B-track)",
+  "description": "Local Ollama shallow routing packet only. Not Deep Fetch, not SEND, not Track A promotion. Coordinates use gematria_bridge_v1 S-L-K-M axes (0-1, sum~1 advisory).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "research_only",
+    "send_gate",
+    "domain_tag",
+    "coordinates",
+    "anchor_ids",
+    "parse_status"
+  ],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "ollama_shallow_router_output_v1"
+    },
+    "research_only": {
+      "type": "boolean",
+      "const": true
+    },
+    "send_gate": {
+      "type": "string",
+      "const": "HOLD"
+    },
+    "hypothesis_class": {
+      "type": "string",
+      "const": "HYPO"
+    },
+    "domain_tag": {
+      "type": "string",
+      "enum": [
+        "logos",
+        "myeongni",
+        "sasang",
+        "oracle",
+        "infra",
+        "devops",
+        "design"
+      ]
+    },
+    "coordinates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["S", "L", "K", "M"],
+      "properties": {
+        "S": { "type": "number", "minimum": 0, "maximum": 1 },
+        "L": { "type": "number", "minimum": 0, "maximum": 1 },
+        "K": { "type": "number", "minimum": 0, "maximum": 1 },
+        "M": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "anchor_ids": {
+      "type": "array",
+      "maxItems": 3,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 128,
+        "pattern": "^[a-z0-9_./-]+$"
+      }
+    },
+    "parse_status": {
+      "type": "string",
+      "const": "raw"
+    }
+  }
+}

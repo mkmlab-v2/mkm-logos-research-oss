@@ -1,0 +1,15 @@
+{
+  "schema": "ollama_shallow_router_output_v1",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "hypothesis_class": "HYPO",
+  "domain_tag": "logos",
+  "coordinates": {
+    "S": 0.25,
+    "L": 0.25,
+    "K": 0.25,
+    "M": 0.25
+  },
+  "anchor_ids": ["prism_ops_logos_cosmic_anchor_bridge"],
+  "parse_status": "raw"
+}

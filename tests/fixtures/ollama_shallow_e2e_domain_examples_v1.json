@@ -1,0 +1,51 @@
+{
+  "schema": "ollama_shallow_e2e_domain_examples_v1",
+  "version": "1.0.0",
+  "examples": [
+    {
+      "id": "infra_cleanup",
+      "expected_lens_id": "infra",
+      "expected_calibration_kind": "prism_slkm_pointer",
+      "shallow": {
+        "schema": "ollama_shallow_router_output_v1",
+        "research_only": true,
+        "send_gate": "HOLD",
+        "hypothesis_class": "HYPO",
+        "domain_tag": "infra",
+        "coordinates": { "S": 0.2, "L": 0.3, "K": 0.25, "M": 0.25 },
+        "anchor_ids": ["prism_ops_infra_disk_cleanup"],
+        "parse_status": "raw"
+      }
+    },
+    {
+      "id": "design_showroom",
+      "expected_lens_id": "design",
+      "expected_calibration_kind": "prism_slkm_pointer",
+      "shallow": {
+        "schema": "ollama_shallow_router_output_v1",
+        "research_only": true,
+        "send_gate": "HOLD",
+        "hypothesis_class": "HYPO",
+        "domain_tag": "design",
+        "coordinates": { "S": 0.3, "L": 0.2, "K": 0.25, "M": 0.25 },
+        "anchor_ids": ["showroom_trust_viz_public_copy"],
+        "parse_status": "raw"
+      }
+    },
+    {
+      "id": "sasang_intensity",
+      "expected_lens_id": "sasang",
+      "expected_calibration_kind": "market_sasang_lens_snapshot",
+      "shallow": {
+        "schema": "ollama_shallow_router_output_v1",
+        "research_only": true,
+        "send_gate": "HOLD",
+        "hypothesis_class": "HYPO",
+        "domain_tag": "sasang",
+        "coordinates": { "S": 0.35, "L": 0.15, "K": 0.25, "M": 0.25 },
+        "anchor_ids": ["market_sasang_lens_snapshot"],
+        "parse_status": "raw"
+      }
+    }
+  ]
+}

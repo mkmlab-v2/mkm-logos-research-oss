@@ -1,0 +1,46 @@
+{
+  "schema": "ollama_shallow_router_golden_v1",
+  "version": "1.1.0",
+  "fixtures": [
+    {
+      "id": "logos_job_theme",
+      "input": "성경 Logos 렌즈: 욥기 3장 고통 테마 노드만 shallow 태깅해줘. 성경/구절 분석.",
+      "expected_domain_tag": "logos"
+    },
+    {
+      "id": "logos_verse_citation",
+      "input": "verse_id와 quote_hash 인용 무결성만 Logos 성경 렌즈로 라우팅해줘.",
+      "expected_domain_tag": "logos"
+    },
+    {
+      "id": "oracle_tier2_prep",
+      "input": "Oracle lane Tier-2 cursor inject readiness와 heavenly council fusion memo 준비 상태만 태깅.",
+      "expected_domain_tag": "oracle"
+    },
+    {
+      "id": "infra_cleanup",
+      "input": "워크스페이스 infra: 디스크 용량 정리 및 logos_reval 임시 폴더 청소 스크립트 실행.",
+      "expected_domain_tag": "infra"
+    },
+    {
+      "id": "devops_ci_smoke",
+      "input": "devops: github workflow dual-regime smoke와 pre-push gate만 실행 계획 태깅.",
+      "expected_domain_tag": "devops"
+    },
+    {
+      "id": "myeongni_direction",
+      "input": "명리(myeongni) 중기 방향: 사주 계절 기운 흐름만 shallow 태깅.",
+      "expected_domain_tag": "myeongni"
+    },
+    {
+      "id": "sasang_intensity",
+      "input": "사상(sasang) 四象 단기 강도: taeyang/taeeum 체질 편향만 shallow 라우팅.",
+      "expected_domain_tag": "sasang"
+    },
+    {
+      "id": "design_showroom",
+      "input": "design lane: jemaai showroom trust viz public copy와 pixel sprite gate만 태깅.",
+      "expected_domain_tag": "design"
+    }
+  ]
+}
