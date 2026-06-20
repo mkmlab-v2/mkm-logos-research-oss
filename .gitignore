@@ -53,6 +53,12 @@ scripts/.env.jema12_alert
 # Pre-pull backup folders (local untracked file backup)
 _pre_pull_backup_*/
 
+# Public research SSOT (GitHub Related Work — overrides local exclude on docs/research/)
+!docs/research/
+!docs/research/**
+!docs/research/raw/
+!docs/research/raw/**
+
 # Logs (MCP/서비스 잠금 방지)
 logs/
 
