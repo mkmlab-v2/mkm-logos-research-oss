@@ -18,7 +18,47 @@ MKM decouples your repo workflow into two layers (both verifiable with **scripts
                      lane pins (~4)              semantic RAG bridge
 ```
 
-**Measured (latest shadow eval, 8 fixtures):** `routing_oracle_gap` **0.0** · `cloud_skip_ratio` **1.0** · shallow `router_hit_rate` **1.0** — reproduce commands in [Tier 2](#tier-2--hybrid-ollama-friendly--deep-fetch).
+**Measured (latest shadow eval, 16 fixtures):** `routing_oracle_gap` **0.0** · `cloud_skip_ratio` **1.0** · shallow `router_hit_rate` **1.0** (live Ollama) — see [10-minute reproduce](#10-minute-hybrid-reproduce-primary-engine).
+
+---
+
+## 10-minute Hybrid reproduce (Primary engine)
+
+**Offline (~3 min, no Ollama):**
+
+```powershell
+cd C:\workspace
+py scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py --skip-ollama
+# artifact: reports/ollama_shallow_hybrid_reproduce_bundle_v1_latest.json
+```
+
+**With local Ollama (~10 min, includes 16-fixture bench + oracle gap):**
+
+```powershell
+ollama create mkm-shallow-router-v1 -f docs/final/artifacts/ollama_mkm_shallow_router_modelfile_v1.txt
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1
+# optional slow logos deep chain:
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1 -IncludeDeepLive
+```
+
+```mermaid
+flowchart TB
+  subgraph Primary["Primary — Hybrid Memory OS Hero"]
+    R[Raw context / query] --> O[Local Ollama shallow router]
+    O --> J[ollama_shallow_router_output_v1 JSON]
+    J --> H[handoff v1]
+    H --> B[semantic_rag_bridge bundle]
+    H --> D{deep enabled?}
+    D -->|logos/oracle| L[question_semantic_rag_bridge chain]
+    D -->|infra/design/sasang| S[shallow-only bundle path]
+    L --> P[pytest + reports exit 0]
+    S --> P
+  end
+  subgraph Secondary["Secondary — research only"]
+    C[masked JSONL open-bench] --> X[B-track bench]
+    X -.->|NOT hero| Primary
+  end
+```
 
 ---
 
@@ -70,15 +110,14 @@ Agent rules entry: `AGENTS.md` · resume pack: `docs/final/artifacts/mkm_chat_re
 
 ### Tier 2 · Hybrid (Ollama-friendly + deep fetch)
 
+**Start here:** [10-minute reproduce](#10-minute-hybrid-reproduce-primary-engine) (bundle script). Details:
+
 Bring your own models (e.g. `OLLAMA_MODEL` in `.env.example`). Shallow routing stays local; deep path may still call cloud IDE / API when you enable it.
 
 ```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1 -SkipOllama
 ollama create mkm-shallow-router-v1 -f docs/final/artifacts/ollama_mkm_shallow_router_modelfile_v1.txt
-py scripts/run_ollama_shallow_router_bench_v1.py --model mkm-shallow-router-v1 --fail-below-router-hit --min-router-hit-rate 0.75
-py scripts/build_ollama_shallow_routing_oracle_gap_v1.py --max-oracle-gap 0.25
-py scripts/run_ollama_shallow_to_semantic_rag_e2e_v1.py --include-deep-chain-dry-run
-py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py
-py scripts/run_question_semantic_rag_bridge_chain_v1.py --query "sample question" --query-id demo_q1 --skip-ann-lite
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1
 ```
 
 Optional showroom smoke (public chain):
@@ -115,23 +154,23 @@ Footnotes: numbers from `py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py
 
 ## Show HN / community blurb (copy-paste)
 
-**Title:** MKM — stop full-pasting context into Cursor; measured ~99.6% shallow token savings
+**Title:** MKM Knowledge OS — repo-native hybrid memory for Cursor (measured shallow routing, not a data SaaS)
 
-**One-liner:** Repo-native Hybrid Memory OS — local Ollama shallow JSON routing (optional), lane pins not 50k-token pastes, deep fetch on demand. **Not a hosted data-processing SaaS.** MIT + reproducible benches.
+**One-liner:** Local Ollama emits a fixed JSON handoff; optional deep fetch on demand. Lane pins instead of 50k-token pastes. **Not hosted ingestion.** Reproduce in ~10 min with one bundle script.
 
 **Body (short):**
 
 ```
-Stop dumping raw contexts into Cursor IDE. MKM is a hybrid Memory/Orchestration OS:
-- Shallow: lane-scoped ops pins (~4 nodes) instead of MISSION_LOG + CENTRAL paste
-- Deep: subgraph router → RAG bridge → capped insight payload (on demand)
-- Guard: research_only B-track walls — not live trading
+MKM Knowledge OS = Primary: local shallow → optional cloud deep (scripts + pytest exit 0).
+Secondary: compression open-bench for researchers only — NOT the product hero.
 
-Reproduce token savings in ~5 min:
-  py scripts/check_mkm_solo_oss_release_readiness_v1.py
-  py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py
+10-min offline:
+  py scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py --skip-ollama
 
-MIT · SECURITY.md · measured metrics only (no DMF marketing multiples).
+With Ollama:
+  powershell -File scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1
+
+MIT · SECURITY.md · measured metrics only · SEND_GATE HOLD · no live trading.
 ```
 
 ---

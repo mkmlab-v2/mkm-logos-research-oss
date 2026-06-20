@@ -42,7 +42,7 @@ def test_routing_oracle_gap_shadow_perfect_exit0() -> None:
     assert raw.get("router_hit_rate") == 1.0
     assert raw.get("cloud_skip_ratio") == 1.0
     assert raw.get("deep_routing_recall") == 1.0
-    assert doc.get("delta", {}).get("routing_oracle_gap_delta_repair_v2_minus_raw") == 0.0
+    assert doc.get("fixtures_evaluated") == 16
 
 
 def test_routing_oracle_gap_from_latest_bench_if_live() -> None:

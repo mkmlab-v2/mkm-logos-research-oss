@@ -6,53 +6,21 @@
   "mode": "shadow_perfect",
   "fixtures_path": "tests/fixtures/ollama_shallow_router_golden_v1.json",
   "rows": [
-    {
-      "fixture_id": "logos_job_theme",
-      "expected_domain_tag": "logos",
-      "router_hit": true,
-      "parsed_domain_tag": "logos"
-    },
-    {
-      "fixture_id": "logos_verse_citation",
-      "expected_domain_tag": "logos",
-      "router_hit": true,
-      "parsed_domain_tag": "logos"
-    },
-    {
-      "fixture_id": "oracle_tier2_prep",
-      "expected_domain_tag": "oracle",
-      "router_hit": true,
-      "parsed_domain_tag": "oracle"
-    },
-    {
-      "fixture_id": "infra_cleanup",
-      "expected_domain_tag": "infra",
-      "router_hit": true,
-      "parsed_domain_tag": "infra"
-    },
-    {
-      "fixture_id": "devops_ci_smoke",
-      "expected_domain_tag": "devops",
-      "router_hit": true,
-      "parsed_domain_tag": "devops"
-    },
-    {
-      "fixture_id": "myeongni_direction",
-      "expected_domain_tag": "myeongni",
-      "router_hit": true,
-      "parsed_domain_tag": "myeongni"
-    },
-    {
-      "fixture_id": "sasang_intensity",
-      "expected_domain_tag": "sasang",
-      "router_hit": true,
-      "parsed_domain_tag": "sasang"
-    },
-    {
-      "fixture_id": "design_showroom",
-      "expected_domain_tag": "design",
-      "router_hit": true,
-      "parsed_domain_tag": "design"
-    }
+    {"fixture_id": "logos_job_theme", "expected_domain_tag": "logos", "router_hit": true, "parsed_domain_tag": "logos"},
+    {"fixture_id": "logos_verse_citation", "expected_domain_tag": "logos", "router_hit": true, "parsed_domain_tag": "logos"},
+    {"fixture_id": "logos_psalm_only", "expected_domain_tag": "logos", "router_hit": true, "parsed_domain_tag": "logos"},
+    {"fixture_id": "logos_not_oracle_ops", "expected_domain_tag": "logos", "router_hit": true, "parsed_domain_tag": "logos"},
+    {"fixture_id": "oracle_tier2_prep", "expected_domain_tag": "oracle", "router_hit": true, "parsed_domain_tag": "oracle"},
+    {"fixture_id": "oracle_resume_pack", "expected_domain_tag": "oracle", "router_hit": true, "parsed_domain_tag": "oracle"},
+    {"fixture_id": "infra_cleanup", "expected_domain_tag": "infra", "router_hit": true, "parsed_domain_tag": "infra"},
+    {"fixture_id": "infra_ollama_disk", "expected_domain_tag": "infra", "router_hit": true, "parsed_domain_tag": "infra"},
+    {"fixture_id": "devops_ci_smoke", "expected_domain_tag": "devops", "router_hit": true, "parsed_domain_tag": "devops"},
+    {"fixture_id": "devops_pre_commit", "expected_domain_tag": "devops", "router_hit": true, "parsed_domain_tag": "devops"},
+    {"fixture_id": "myeongni_direction", "expected_domain_tag": "myeongni", "router_hit": true, "parsed_domain_tag": "myeongni"},
+    {"fixture_id": "myeongni_not_sasang", "expected_domain_tag": "myeongni", "router_hit": true, "parsed_domain_tag": "myeongni"},
+    {"fixture_id": "sasang_intensity", "expected_domain_tag": "sasang", "router_hit": true, "parsed_domain_tag": "sasang"},
+    {"fixture_id": "sasang_not_myeongni", "expected_domain_tag": "sasang", "router_hit": true, "parsed_domain_tag": "sasang"},
+    {"fixture_id": "design_showroom", "expected_domain_tag": "design", "router_hit": true, "parsed_domain_tag": "design"},
+    {"fixture_id": "design_ui_copy", "expected_domain_tag": "design", "router_hit": true, "parsed_domain_tag": "design"}
   ]
 }

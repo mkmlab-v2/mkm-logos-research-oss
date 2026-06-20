@@ -48,6 +48,9 @@
         "tests/test_ollama_shallow_router_bench_v1.py",
         "tests/test_ollama_shallow_to_semantic_rag_e2e_v1.py",
         "tests/test_ollama_shallow_routing_oracle_gap_v1.py",
+    "scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py",
+    "scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1",
+    "tests/test_ollama_shallow_hybrid_reproduce_bundle_v1.py",
         "tests/fixtures/ollama_shallow_router_golden_v1.json",
         "scripts/run_question_semantic_rag_bridge_chain_v1.py",
         "scripts/run_showroom_job_topology_wiring_chain_v1.py",
@@ -89,7 +92,8 @@
     "powershell -File scripts/run_mkm_secret_scan_v1.ps1",
     "powershell -File scripts/Verify-GitWorkspaceSanity.ps1",
     "py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py",
-    "py -m pytest tests/test_ollama_shallow_routing_oracle_gap_v1.py -q",
+    "py -m pytest tests/test_ollama_shallow_hybrid_reproduce_bundle_v1.py -q",
+    "py scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py --skip-ollama",
     "scripts/Push-GitHub-Explicit.ps1 -Acknowledge"
   ],
   "default_choice_ko": "B_subset — Hero=Hybrid Memory OS; compression contributor=2차 연구 레인"

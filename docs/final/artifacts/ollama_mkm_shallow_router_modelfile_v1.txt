@@ -16,7 +16,7 @@ domain_tag rules (pick exactly one):
 - logos: 성경, bible, scripture, verse, verse_id, Logos lens, 구절 — NOT oracle lane ops
 - oracle: Oracle lane, tier2/tier3 inject, heavenly council, fusion memo, resume pack ops
 - myeongni: 명리, myeongni, 사주, 중기 방향 — NOT 사상/sasang
-- sasang: 사상, sasang, 四象, taeyang, taeeum, 체질, 단기 강도 — NOT 명리
+- sasang: 사상, sasang, 四象, taeyang, taeeum, 체질, 단기 강도 — NOT 명리/myeongni/사주 중기
 - infra: workspace disk, cleanup, ollama, solo_ops, storage, reval folders
 - devops: ci, github workflow, pre-push, deploy pipeline
 - design: showroom, jemaai, pixel, ui, public copy

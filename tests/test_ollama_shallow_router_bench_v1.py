@@ -29,7 +29,13 @@ def test_shallow_router_output_example_validates() -> None:
 def test_golden_fixture_count() -> None:
     doc = json.loads((ROOT / "tests/fixtures/ollama_shallow_router_golden_v1.json").read_text(encoding="utf-8"))
     fixtures = doc.get("fixtures", [])
-    assert len(fixtures) >= 8
+    assert len(fixtures) >= 16
+
+
+def test_golden_covers_all_domain_tags() -> None:
+    doc = json.loads((ROOT / "tests/fixtures/ollama_shallow_router_golden_v1.json").read_text(encoding="utf-8"))
+    tags = {str(r.get("expected_domain_tag")) for r in doc.get("fixtures", []) if isinstance(r, dict)}
+    assert tags == {"logos", "oracle", "infra", "devops", "myeongni", "sasang", "design"}
 
 
 def test_extract_json_object_brace_block() -> None:
