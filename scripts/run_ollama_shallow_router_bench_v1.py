@@ -10,6 +10,7 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 import urllib.error
@@ -337,7 +338,28 @@ def run_bench(args: argparse.Namespace) -> int:
         return 3
     if args.fail_below_router_hit and report["raw"]["router_hit_rate"] < args.min_router_hit_rate:
         return 4
+    if report.get("mode") == "live" and not args.skip_oracle_gap:
+        gap_rc = _run_oracle_gap_shadow(args.out_json, args.fixtures)
+        report["oracle_gap_shadow"] = {"exit_code": gap_rc, "ok": gap_rc == 0}
+        args.out_json.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        if gap_rc != 0:
+            return gap_rc
     return 0
+
+
+def _run_oracle_gap_shadow(bench_json: Path, fixtures: Path) -> int:
+    cmd = [
+        sys.executable,
+        str(ROOT / "scripts/build_ollama_shallow_routing_oracle_gap_v1.py"),
+        "--bench-json",
+        str(bench_json),
+        "--fixtures",
+        str(fixtures),
+        "--max-oracle-gap",
+        "0.25",
+    ]
+    proc = subprocess.run(cmd, cwd=str(ROOT), capture_output=True, text=True)
+    return int(proc.returncode)
 
 
 def main() -> int:
@@ -356,6 +378,7 @@ def main() -> int:
     ap.add_argument("--min-router-hit-rate", type=float, default=0.0)
     ap.add_argument("--fail-below-router-hit", action="store_true")
     ap.add_argument("--min-parse-ok-rate", type=float, default=0.5)
+    ap.add_argument("--skip-oracle-gap", action="store_true")
     args = ap.parse_args()
     return run_bench(args)
 
