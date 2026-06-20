@@ -1,0 +1,29 @@
+---
+description: Solo OSS operator default — all lanes; counsel/lawyer only when commander explicitly asks
+alwaysApply: false
+---
+
+# Solo OSS operator default v1 (all lanes)
+
+**SSOT:** `docs/final/artifacts/mkm_solo_oss_release_policy_v1_latest.json` · `mkm_send_gate_vocabulary_v1_latest.json`
+
+## Default (all lanes: Oracle · MS · Infra · Design · web_ops · …)
+
+- **Release gate:** MIT + root `README.md` disclaimer + `.gitignore` secret wall + `check_mkm_solo_oss_release_readiness_v1.py` — **not** paid legal counsel / `counsel_signoff` / lawyer email bundles.
+- **Public send:** `oss_github_release` → `SEND_GATE: OPEN` (GitHub explicit push only: `Push-GitHub-Explicit.ps1 -Acknowledge`).
+- **Still HOLD/LOCKED:** grants · customer contracts · Track A · live trading — OSS OPEN does not lift these.
+
+## ALWAYS (chat · MISSION_LOG next-action)
+
+- Propose OSS path: README · LICENSE · bench reproduce · secret check · explicit GitHub push when relevant.
+- Treat counsel handoff chains, worksheets, legal email drafts as **legacy reference only**.
+
+## NEVER (unless commander explicitly requests lawyer/counsel/legal review)
+
+- Do **not** suggest counsel submission, lawyer signoff, legal review bundles, or 「법무팀 송부」 as the default next step in **any** lane.
+- Do **not** resurrect deprecated paths because artifacts exist on disk.
+- Do **not** ask 「변호사 필요하신가요?」 proactively.
+
+## Override (commander-only)
+
+- Run counsel/legal workflows **only** when the user **explicitly** asks (e.g. 「변호사 검수 필요」, 「counsel bundle」, 「legal review」).
