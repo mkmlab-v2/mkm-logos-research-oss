@@ -1,0 +1,102 @@
+{
+  "schema": "mkm_reference_pointer_registry_v1",
+  "registry_version": "1.0",
+  "track": "B",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "boundary_ack": "[HYPO] Vault 2 reference cold — pointer only; ops_memory_index merge forbidden",
+  "last_updated_utc": "2026-06-20T10:05:00Z",
+  "max_pointers": 64,
+  "forbidden_governance_needles": [
+    "Track A",
+    "SEND_GATE",
+    "FAIL-COMP-004",
+    "live trading"
+  ],
+  "pointers": [
+    {
+      "schema": "mkm_reference_pointer_v1",
+      "id": "ref:python:asyncio:TaskGroup",
+      "resource_path": "memory/obsidian_vault/llm_wiki/raw/py311_asyncio_taskgroup_pointer.md",
+      "external_url": "https://docs.python.org/3/library/asyncio-task.html#task-groups",
+      "domain_tags": ["python", "stdlib", "async"],
+      "velocity": "high",
+      "akl_status": "draft",
+      "inject_policy": "on_demand_only",
+      "omega_score": 0.1,
+      "research_only": true,
+      "forbidden_merge_into": ["ops_memory_index", "must_keep_tags"],
+      "essence": "Python 3.11+ asyncio TaskGroup structured concurrency pointer"
+    },
+    {
+      "schema": "mkm_reference_pointer_v1",
+      "id": "ref:python:pathlib:Path",
+      "resource_path": "memory/obsidian_vault/llm_wiki/raw/py311_pathlib_path_pointer.md",
+      "external_url": "https://docs.python.org/3/library/pathlib.html",
+      "domain_tags": ["python", "stdlib", "filesystem"],
+      "velocity": "high",
+      "akl_status": "draft",
+      "inject_policy": "on_demand_only",
+      "omega_score": 0.1,
+      "research_only": true,
+      "forbidden_merge_into": ["ops_memory_index", "must_keep_tags"],
+      "essence": "pathlib.Path cross-platform path operations pointer"
+    },
+    {
+      "schema": "mkm_reference_pointer_v1",
+      "id": "ref:cursor:sandbox:boundary",
+      "resource_path": "memory/obsidian_vault/llm_wiki/raw/cursor_cloud_sandbox_boundary_pointer.md",
+      "repo_path": ".cursor/rules/cursor-cloud-sandbox-boundary.mdc",
+      "domain_tags": ["cursor", "ide", "sandbox"],
+      "velocity": "medium",
+      "akl_status": "draft",
+      "inject_policy": "on_demand_only",
+      "omega_score": 0.2,
+      "research_only": true,
+      "forbidden_merge_into": ["ops_memory_index", "must_keep_tags"],
+      "essence": "Cursor Cloud/Sandbox boundary rule pointer to repo mdc"
+    },
+    {
+      "schema": "mkm_reference_pointer_v1",
+      "id": "ref:cursor:session:baseline",
+      "resource_path": "memory/obsidian_vault/llm_wiki/raw/cursor_session_validation_baseline_pointer.md",
+      "repo_path": "docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md",
+      "domain_tags": ["cursor", "session", "ops"],
+      "velocity": "low",
+      "akl_status": "draft",
+      "inject_policy": "on_demand_only",
+      "omega_score": 0.3,
+      "research_only": true,
+      "forbidden_merge_into": ["ops_memory_index", "must_keep_tags"],
+      "essence": "Cursor session validation baseline SSOT pointer"
+    },
+    {
+      "schema": "mkm_reference_pointer_v1",
+      "id": "ref:mkm:ollama:shallow_router",
+      "resource_path": "memory/obsidian_vault/llm_wiki/raw/mkm_ollama_shallow_router_schema_pointer.md",
+      "repo_path": "docs/final/schemas/ollama_shallow_router_output_v1.schema.json",
+      "domain_tags": ["mkm", "ollama", "routing"],
+      "velocity": "medium",
+      "akl_status": "validated",
+      "inject_policy": "on_demand_only",
+      "omega_score": 0.5,
+      "research_only": true,
+      "forbidden_merge_into": ["ops_memory_index", "must_keep_tags"],
+      "essence": "Local Ollama shallow router JSON handoff schema pointer"
+    },
+    {
+      "schema": "mkm_reference_pointer_v1",
+      "id": "ref:research:nextgen_hybrid_merged",
+      "resource_path": "memory/obsidian_vault/llm_wiki/raw/nextgen_hybrid_ai_merged_lit_review_pointer.md",
+      "repo_path": "docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md",
+      "domain_tags": ["research", "hybrid-ai", "memory-os"],
+      "velocity": "low",
+      "akl_status": "validated",
+      "inject_policy": "on_demand_only",
+      "omega_score": 0.6,
+      "research_only": true,
+      "forbidden_merge_into": ["ops_memory_index", "must_keep_tags"],
+      "essence": "Next-gen hybrid AI MERGED lit review research SSOT pointer"
+    }
+  ]
+}

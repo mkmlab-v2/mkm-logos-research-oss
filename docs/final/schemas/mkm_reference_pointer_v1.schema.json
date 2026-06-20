@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/mkm_reference_pointer_v1.schema.json",
+  "title": "MKM reference pointer v1 (Vault 2 cold catalog)",
+  "description": "Lightweight external/dev doc pointer. B-track research_only. Never merge body into ops_memory_index.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "id",
+    "resource_path",
+    "domain_tags",
+    "velocity",
+    "akl_status",
+    "inject_policy",
+    "research_only",
+    "forbidden_merge_into"
+  ],
+  "properties": {
+    "schema": { "type": "string", "const": "mkm_reference_pointer_v1" },
+    "id": {
+      "type": "string",
+      "pattern": "^ref:[a-z0-9_./:-]+$"
+    },
+    "resource_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "external_url": { "type": "string", "format": "uri" },
+    "repo_path": { "type": "string", "minLength": 1 },
+    "domain_tags": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": { "type": "string", "pattern": "^[a-z0-9_/-]+$" }
+    },
+    "velocity": { "type": "string", "enum": ["low", "medium", "high"] },
+    "akl_status": { "type": "string", "enum": ["draft", "validated", "core"] },
+    "inject_policy": { "type": "string", "const": "on_demand_only" },
+    "omega_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "research_only": { "type": "boolean", "const": true },
+    "forbidden_merge_into": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "essence": { "type": "string", "maxLength": 240 }
+  }
+}

@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-20T07:53:35Z
+- **last_updated_utc:** 2026-06-20T10:09:42Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-13:** push **11/11** OK). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -122,6 +122,13 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
+- **2026-06-20T10:09:42Z** — MERGED lit review linked to Vault2 registry + federated catalog research_ssot cross-ref exit 0
+- **2026-06-20T10:09:21Z** — Oracle shallow B-A-C closed: reproduce bundle+golden16 pushed; next chat=deep live+NEXT_GEN lit review fusion; GitHub HOLD
+- **2026-06-20T10:02:32Z** — P1 reference pointer registry 5 PoC + federated knowledge catalog v1 exit 0
+- **2026-06-20T10:02:11Z** — deep research P0-P2 + MERGED SSOT gate chain exit 0: explore/LIT_REVIEW/citation_lock/fact_support/router→Ollama handoff on NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md
+- **2026-06-20T09:57:44Z** — B-A-C done: 10min reproduce bundle exit0, golden 16 router_hit 1.0 live, GitHub push still HOLD
+- **2026-06-20T09:52:33Z** — Hybrid Memory OS architecture synthesis validated and locked-in v1
+- **2026-06-20T09:39:11Z** — GitHub GTM hero=Hybrid Memory OS; compression contributor demoted to secondary B-track lane
 - **2026-06-20T07:53:35Z** — P1 done: README EN hybrid narrative+PartV table, pre-commit gitleaks OK, internal push 0863eca
 - **2026-06-20T07:49:22Z** — solo OSS prep done (README Tier/SECURITY/secret/bench exit 0); GitHub push HOLD until next-gen hybrid fusion+bench lock in other chat; handoff docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md
 - **2026-06-20T07:43:39Z** — P0 done: secret scan+MCP ok, routing_oracle_gap 0.0, internal push feat/compression-sku-ab-a-bc
@@ -135,13 +142,6 @@
 - **2026-06-20T06:57:44Z** — LTM auto-push: gold 12/12 pass; cap×gold guard=baseline_production only (minimal 7/12); bundle+counsel manifest 17 exit 0; pytest 4/4
 - **2026-06-20T06:52:08Z** — Ollama shallow router v1: schema+modelfile+bench+handoff+pytest exit0 [HYPO]
 - **2026-06-20T06:50:37Z** — LTM orchestration bundle exit 0: cap ablation ultra_min -56% vs baseline insight; prior-art JSONL seeded 4 rows; pytest 3/3
-- **2026-06-20T04:58:46Z** — pointerguard all_ok via OPS/N8N/SLACK chain; sasang mirror synced+artifact reset; worktrees pruned
-- **2026-06-20T04:49:34Z** — 4-forces Matching Layer: 3-layer A/B/C locked; lexicon-aligned HYPO slot exit 0; counsel bundle pre-submit HOLD
-- **2026-06-20T04:10:18Z** — worktree prune 2 merged; pointerguard checker .env fallback; _pr_sasang_promotion kept (dirty)
-- **2026-06-20T04:06:51Z** — workspace layout hygiene: logos_reval 108 del, tmp/logos_reval script+ephemeral patch, AGENTS diet, prism stub, PointerGuard task
-- **2026-06-20T03:33:50Z** — P1-5 done: counsel pack+dual-mode pixel+CI+LTM graph+audio gate refresh · HOLD
-- **2026-06-20T03:21:40Z** — pixel gate GREEN + external B2B meeting kit READY · counsel signoff pending · HOLD
-- **2026-06-20T03:15:38Z** — domain_adapters_v1 LIVE — sync_bridge pixel+lens_audio overlay design lane · smoke exit 0
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
