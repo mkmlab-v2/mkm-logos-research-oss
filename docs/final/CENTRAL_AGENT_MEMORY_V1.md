@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-20T10:37:24Z
+- **last_updated_utc:** 2026-06-20T20:41:45Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-13:** push **11/11** OK). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -122,26 +122,26 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
-- **2026-06-20T10:37:24Z** — solo_ops GREEN: diet+scheduler+vscdb OK; MCP plugin diet 316→72; janitor 0 candidates
-- **2026-06-20T10:24:21Z** — deep live exit0 router_hit 1.0 oracle_gap 0.0; P1 registry internal push 3844e3e; MERGED 4-Vault fusion gate exit0; solo_ops FAIL diet strict
-- **2026-06-20T10:09:42Z** — MERGED lit review linked to Vault2 registry + federated catalog research_ssot cross-ref exit 0
-- **2026-06-20T10:09:21Z** — Oracle shallow B-A-C closed: reproduce bundle+golden16 pushed; next chat=deep live+NEXT_GEN lit review fusion; GitHub HOLD
-- **2026-06-20T10:02:32Z** — P1 reference pointer registry 5 PoC + federated knowledge catalog v1 exit 0
-- **2026-06-20T10:02:11Z** — deep research P0-P2 + MERGED SSOT gate chain exit 0: explore/LIT_REVIEW/citation_lock/fact_support/router→Ollama handoff on NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md
-- **2026-06-20T09:57:44Z** — B-A-C done: 10min reproduce bundle exit0, golden 16 router_hit 1.0 live, GitHub push still HOLD
-- **2026-06-20T09:52:33Z** — Hybrid Memory OS architecture synthesis validated and locked-in v1
-- **2026-06-20T09:39:11Z** — GitHub GTM hero=Hybrid Memory OS; compression contributor demoted to secondary B-track lane
-- **2026-06-20T07:53:35Z** — P1 done: README EN hybrid narrative+PartV table, pre-commit gitleaks OK, internal push 0863eca
-- **2026-06-20T07:49:22Z** — solo OSS prep done (README Tier/SECURITY/secret/bench exit 0); GitHub push HOLD until next-gen hybrid fusion+bench lock in other chat; handoff docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md
-- **2026-06-20T07:43:39Z** — P0 done: secret scan+MCP ok, routing_oracle_gap 0.0, internal push feat/compression-sku-ab-a-bc
-- **2026-06-20T07:36:53Z** — shallow router A-B-C: modelfile tracked, commit 5c3afd, deep live+domain matrix pytest 9/9
-- **2026-06-20T07:30:51Z** — shallow->semantic_rag E2E v1: smoke+pytest exit0; handoff+bundle+deep dry-run wired
-- **2026-06-20T07:26:36Z** — shallow router golden v1.1: 8 fixtures router_hit 1.0 raw parse_ok 1.0
-- **2026-06-20T07:10:10Z** — OSS P0 done: readiness+bench+git sanity+showroom smoke exit0; scope B_subset; push waits Ack
-- **2026-06-20T07:09:52Z** — Ollama shallow router live bench: parse_ok 1.0 schema_ok 1.0 router_hit 0.5 format json+512
-- **2026-06-20T07:05:46Z** — Solo OSS all-lanes default v1.1: counsel DEPRECATED unless commander explicit; alwaysApply rule; MISSION_LOG all lanes aligned
-- **2026-06-20T07:02:50Z** — Solo OSS pivot: counsel DEPRECATED; MIT+README+policy; SEND_GATE OPEN oss_github_release only; counsel chat suggest forbidden
-- **2026-06-20T06:57:44Z** — LTM auto-push: gold 12/12 pass; cap×gold guard=baseline_production only (minimal 7/12); bundle+counsel manifest 17 exit 0; pytest 4/4
+- **2026-06-20T20:41:45Z** — 41k vs 31k lane isolation brief locked CENTRAL + mkm_anchor_map lane_isolation_brief_ko 2026-06-21
+- **2026-06-20T20:38:17Z** — Phase11-E DeepNSM shadow remap distortion 1.4pct prime_hit 97.9pct GATE_SPEC v1.1.0 exit0 send_gate HOLD
+- **2026-06-20T20:24:38Z** — Phase11-A-2 MDL prune PoC 15pct sweep Jaccard floor pass GATE_SPEC v1.1.0 exit0
+- **2026-06-20T20:24:25Z** — Phase11-C nsm_prime_tags wire schema+handoff oracle_gap=0 distortion HOLD send_gate HOLD
+- **2026-06-20T20:17:24Z** — Phase 11-A-1 done: NSM500 distortion 80.61% gate fail; gold48 Hit@1 97.92% q31 miss; replacement HOLD jaccard -19pp; next 11-A-2 GATE_SPEC+MDL PoC
+- **2026-06-20T20:16:43Z** — Phase11-B UNIVERSAL_ROOT_GATE_SPEC_V1.json gate eval distortion FAIL retrieve+route PASS send_gate HOLD
+- **2026-06-20T20:13:16Z** — Phase10-C gold48 holdout sidecar ablation shallow stress router v2.0.2 Hit@1/3/8=100% exit0
+- **2026-06-20T20:03:12Z** — Phase11-A NSM500 distortion80.6% gold48 Hit@8=100% Gemini raw filtered send_gate HOLD
+- **2026-06-20T19:54:20Z** — Tier1 DR Universal Root Lexicon Matrix Layer A/B/C LIT_REVIEW+cursor sweep exit0
+- **2026-06-20T19:48:56Z** — Phase10-B gold24 Luke22 bridge themed_dan signoff router v2.0.1 Hit@1/3/8=100% exit0
+- **2026-06-20T19:25:34Z** — Phase10-A router v2.0 miss-tune Hit@1/3/8=100% dan_aramaic registry forensics chain exit0
+- **2026-06-20T19:22:19Z** — parallel: P3 weekly manual exit0 + automation_registry drift_count 0
+- **2026-06-20T19:13:20Z** — HN paste v2 rebuilt ko50 v3 merge union internal draft send_gate HOLD
+- **2026-06-20T19:07:06Z** — Phase8 signoff sync+Phase9 oracle gap dual gold eval chain exit0 full-stack 11 steps pytest pass
+- **2026-06-20T19:04:45Z** — Track A v3 merge apply exit0 ko50 production 41708 swapped ACTIVE unchanged send_gate HOLD
+- **2026-06-20T18:58:51Z** — Phase8 commander signoff 18/18 bridges + subgraph gold Hit@8 91.7% + full stack 11 steps exit0
+- **2026-06-20T18:56:16Z** — Track A v3 merge preflight chain exit0 ADVANCE_TRACK_A_MERGE_CANDIDATE ko42->50 prod pointer HOLD
+- **2026-06-20T18:47:25Z** — P3 weekly task registered Sun 09:45; live weekly exit0; commander B-track v3 signoff (prod swap false per pilot)
+- **2026-06-20T18:47:23Z** — Phase7 gematria router v1.9 sidecar + concept_bridge human gate queue + full stack 9 steps exit0
+- **2026-06-20T18:40:36Z** — A infra preflight+git sanity ok; B paste rebuild exit0 send_gate HOLD; browser host chat-only gap
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -599,7 +599,42 @@
 
 **대외 6문장 + HBM 비유 (2026-05-31 · B2B SaaS 정체성 · `[HYPO]` positioning SSOT):** `docs/final/artifacts/mkm_b2b_compression_positioning_external_v1_latest.json` — **Fab·MKM 칩·양산 단정 금지**; HBM=**구조 비유만**; 수치=40건 동결 벤치·**대외 % 약속 금지**; RQ-023.
 
-**운영·지휘관 앵커 맵 1페이지 (2026-05-31 · Fact-Lock):** `docs/final/artifacts/mkm_anchor_map_operator_v1_latest.json` — **3대 엔진**(Track A 41k+compressed_text / Logos 31102 NON_GATING / general_prophecy) · **9행 anchor_rows** · **3금기 합선** · CROSS_REF·주간 거버넌스 우선순위; RQ-024. 에이전트·운영자는 「성경 앵커」통칭 금지 — 본 JSON 먼저.
+**운영·지휘관 앵커 맵 1페이지 (2026-05-31 · Fact-Lock):** `docs/final/artifacts/mkm_anchor_map_operator_v1_latest.json` — **3대 엔진**(Track A 41k+compressed_text / Logos 31102 NON_GATING / general_prophecy) · **9행 anchor_rows** · **`lane_isolation_brief_ko`**(41k/31k 격벽 결산) · **3금기 합선** · CROSS_REF·주간 거버넌스 우선순위; RQ-024. 에이전트·운영자는 「성경 앵커」통칭 금지 — 본 JSON 먼저.
+
+### 41k vs 31k 격벽 명세 및 운영 시나리오 결산 (2026-06-21 · 지휘관 확정 · Fact-Lock)
+
+**에이전트:** 「41k Ollama」「압축=RAG」「성경 앵커 하나」·repair→raw 승격·Lens uplift→compression headline **금지**. 본 절 + `mkm_anchor_map_operator_v1_latest.json` **`lane_isolation_brief_ko`** 먼저.
+
+| 자산 | 실체 | 선로 | Shallow (`gemma4:e2b`) |
+|------|------|------|------------------------|
+| **Track A 렉시콘** | **41,658종** 고유 표면형 | 압축 lookup 연료 · shard · `domain_router` | **무관** (사전 매핑) |
+| **Logos 코퍼스** | **31,102** `verse_id` | B-track RAG/ANN/그래프 · `[NON_GATING]` | **간접** (매 요청 대용량 로드 ❌) |
+| **Ollama Shallow** | Modelfile · `mkm-shallow-router-v1` | domain_tag · S-L-K-M 좌표 · `research_only` | 문지기 (41k/31k lookup 엔진 ❌) |
+
+**Layer (연구·PoC · `[HYPO]`):** **A**=NSM/shallow gate (Hit@K·`routing_oracle_gap`·`cloud_skip_ratio`) · **B**=41k corpus anchor(압축 연료) · **C**=MDL prune(41k redundancy) · **31k retrieval**=Layer B와 **별 층**(lemma sidecar·ANN). NSM 100쌍 감사: 41k=고전 Export **연료** ≠ universal root.
+
+**V2 Compress:** `41,658 lookup + domain_router` **만** — Logos ANN 31102 **미포함** (`MKM_COMMANDER` §4–5 · anchor map `forbidden_merges_ko`).
+
+| 시나리오 | 정체성 | GPU·확장 | GTM |
+|----------|--------|----------|-----|
+| **A Hero** | `B_subset` · `run_ollama_shallow_hybrid_reproduce_bundle_v1.py` | Fork **분산**(중앙 추론 SaaS ❌) · 지휘관 PC reproduce 시 **로컬 GPU/CPU 사용** | Hero ✅ |
+| **B 부록** | `philosophy/rag-pilot` → 로컬 Python spawn | **호스트 집중** · 동시성↑=큐·GPU 병목 | Hero ❌ · `send_gate`≠유료 API GO · Track A 승격 ❌ |
+
+**동결 KPI (Track A · SSOT):** `MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json` — saving **~47.5%** · floor **0.47** · Jaccard proxy · **`apply_gematria_4d_bridge_policy: false`**. Golden 40·9장·22장과 **혼용 금지** — `41k · 압축 · LG` 절.
+
+**레인별 KPI 천장 (헤드라인 합산 금지 · FAIL-COMP-004):**
+
+| 레인 | KPI | 합선 금지 |
+|------|-----|-----------|
+| Track A 압축 | saving · Jaccard · floor 0.47 · **raw** primary | repair_v2→raw 승격 |
+| Logos B | Hit@1/3/8 · 인용 품질 | 41k uplift→RAG headline |
+| Shallow/Hybrid | hit-rate · oracle_gap | Logos Hit@K·47% 합산 |
+| Multi-lens ablation | KOSPI/WF variant | uplift→compression headline |
+| 예언 B | Brier · ECE | 예언→압축 마진 합산 |
+
+**업그레이드:** 더 나은 조합 **수용 가능** — **pytest + bench exit 0 + (Track A) frozen KPI(raw)** 통과 후 아티팩트·SSOT만 갱신. Track A·실매매·외부 SEND **자동 GO 없음**.
+
+**조종실 한 줄:** Track A **41,658 연료**와 B-track **31,102 코퍼스**는 격벽 자산 · 벤치 게이트·`exit 0`으로만 장부 갱신 · 외부 송출·실매매 **HOLD**.
 
 **Biblical/DSS 보조 앵커 인벤토리 (2026-06-07 · Fact-Lock):** `reports/mkm_moat_apocrypha_fact_lock_brief_v1_latest.md` §7 — **48k**(외경 word-token 48,684·H-DSS1) · **200**(DSS ETCBC `max_tokens`·fusion leg·`etcbc-dss` blocked) · **Golden-40/31k/41k**와 **단위·레일 혼용 금지** · H-PL1/H-DSS1=우선 · H-PR1/H-AR1=커버리지 0 보류 · 3-arm moat=`multilens_equal_weight_sandbox_3arm_v1_latest.json`(arm_b neutral만 FACT·「모방 불가능」단정 금지) · `smoke_bootstrap_likely: false` · `track_a_promotion: blocked`.
 
