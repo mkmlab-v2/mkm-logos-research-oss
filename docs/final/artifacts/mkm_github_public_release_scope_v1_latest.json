@@ -1,0 +1,96 @@
+{
+  "schema": "mkm_github_public_release_scope_v1",
+  "version": "1.1.0",
+  "updated_at_utc": "2026-06-20T08:00:00Z",
+  "operator_model": "solo_developer",
+  "recommended_tier": "B_subset",
+  "release_target": "B_subset",
+  "primary_hero_identity": "Hybrid_Memory_Orchestration_OS",
+  "contributor_intake_gate": {
+    "status": "demoted_to_secondary_research_lane",
+    "gating_rule": "SEND_GATE_HOLD_MANDATORY",
+    "description_ko": "masked JSONL open-bench는 2차 B-track 연구 레인. 메인 GTM Hero에서 데이터 수집·가공 SaaS 오해 금지.",
+    "description_en": "Masked JSONL open-bench is secondary B-track research only — not the public product hero or hosted ingestion SaaS."
+  },
+  "forbidden_public_hero_claims": [
+    "hosted_data_processing_saas",
+    "zero_cloud_raw_tokens_all_paths",
+    "coordinates_only_all_paths",
+    "universal_quote_hash_firewall"
+  ],
+  "tiers": {
+    "A_core_minimal": {
+      "description_ko": "스타·fork 유도용 최소면 — Hybrid OS 벤치 재현 + 면책",
+      "include_globs": [
+        "README.md",
+        "LICENSE",
+        "AGENTS.md",
+        "scripts/check_mkm_solo_oss_release_readiness_v1.py",
+        "scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py",
+        "scripts/build_mkm_ltm_orchestration_bench_v1.py",
+        "scripts/build_mkm_ltm_insight_cap_ablation_bench_v1.py",
+        "scripts/build_mkm_ltm_insight_cap_gold_regression_v1.py",
+        "docs/final/artifacts/mkm_solo_oss_release_policy_v1_latest.json"
+      ],
+      "exclude_always": [".env", "MISSION_LOG.md", "reports/*_latest.json", "docs/final/artifacts/*_latest.json"]
+    },
+    "B_subset": {
+      "description_ko": "권장 Hero — Hybrid Memory OS + shallow router + Logos B-track smoke (counsel·compression contributor hero 제외)",
+      "extends": "A_core_minimal",
+      "include_globs": [
+        "scripts/run_ollama_shallow_router_bench_v1.py",
+        "scripts/build_ollama_shallow_router_handoff_v1.py",
+        "scripts/run_ollama_shallow_to_semantic_rag_e2e_v1.py",
+        "scripts/build_ollama_shallow_routing_oracle_gap_v1.py",
+        "docs/final/artifacts/ollama_mkm_shallow_router_modelfile_v1.txt",
+        "docs/final/schemas/ollama_shallow_router_output_v1.schema.json",
+        "docs/final/schemas/ollama_shallow_router_output_v1.example.json",
+        "tests/test_ollama_shallow_router_bench_v1.py",
+        "tests/test_ollama_shallow_to_semantic_rag_e2e_v1.py",
+        "tests/test_ollama_shallow_routing_oracle_gap_v1.py",
+        "tests/fixtures/ollama_shallow_router_golden_v1.json",
+        "scripts/run_question_semantic_rag_bridge_chain_v1.py",
+        "scripts/run_showroom_job_topology_wiring_chain_v1.py",
+        "scripts/check_showroom_trust_viz_public_chain_v1.py",
+        "scripts/Verify-GitWorkspaceSanity.ps1",
+        "scripts/check_mkm_secret_patterns_v1.py",
+        "scripts/run_mkm_secret_scan_v1.ps1",
+        "SECURITY.md",
+        ".gitleaks.toml",
+        ".pre-commit-config.yaml",
+        "scripts/Push-GitHub-Explicit.ps1",
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+        "docs/final/schemas/mkm_prior_art_search_log_row_v1.schema.json",
+        "docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md",
+        "docs/research/nextgen_ltm_knowledge_os/PRIOR_ART_SEARCH_LOG_TEMPLATE.jsonl",
+        "tests/test_mkm_ltm_orchestration_bench_bundle_v1.py"
+      ],
+      "exclude_globs": [
+        "docs/final/artifacts/logos_gtm_counsel_*",
+        "scripts/Invoke-LogosGtmCounselHandoffChain_v1.ps1",
+        "scripts/build_logos_gtm_counsel_*",
+        "scripts/Run-CompressionPublicOpenPilotIntake_v1.ps1",
+        "projects/bitcoin-trading/**",
+        "vendor/**",
+        ".vendor/**"
+      ],
+      "secondary_lane_pointers": [
+        "docs/final/artifacts/compression_open_bench_contributor_kit_v1_latest.json"
+      ]
+    },
+    "C_full_monorepo": {
+      "description_ko": "비권장 1차 — secret·노이즈·WIP 리스크",
+      "note_ko": "Verify-GitWorkspaceSanity WARN 참고; subset 정리 후 검토"
+    }
+  },
+  "pre_push_gate": [
+    "py scripts/check_mkm_solo_oss_release_readiness_v1.py",
+    "py scripts/check_mkm_secret_patterns_v1.py",
+    "powershell -File scripts/run_mkm_secret_scan_v1.ps1",
+    "powershell -File scripts/Verify-GitWorkspaceSanity.ps1",
+    "py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py",
+    "py -m pytest tests/test_ollama_shallow_routing_oracle_gap_v1.py -q",
+    "scripts/Push-GitHub-Explicit.ps1 -Acknowledge"
+  ],
+  "default_choice_ko": "B_subset — Hero=Hybrid Memory OS; compression contributor=2차 연구 레인"
+}

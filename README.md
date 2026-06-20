@@ -1,10 +1,34 @@
-# MKM — Memory / Orchestration OS (Solo OSS)
+# MKM Knowledge OS — Repo-Native Hybrid Memory OS (Solo OSS)
 
-**Hybrid context architecture for Cursor (and any IDE):** local shallow routing first, cloud deep fetch on demand — MIT, no counsel gate, no live-trading hooks.
+**Stop dumping raw contexts into cloud IDEs.** Mount a deterministic shallow-routing pack on local Ollama (optional), inject lane-scoped pins instead of full-paste, and treat Cursor as orchestration — not a token incinerator. MIT · no counsel gate · no live-trading hooks.
 
 License: **MIT License** — see [LICENSE](LICENSE)
 
-> **Hook:** Stop dumping raw contexts into Cursor. Layer a lightweight routing pack on local Ollama (optional), use lane-scoped pins instead of full-paste, and treat the IDE as orchestration — not a token incinerator.
+---
+
+## Primary engine: local shallow → optional cloud deep
+
+MKM decouples your repo workflow into two layers (both verifiable with **scripts + pytest exit 0**):
+
+1. **Shallow routing (local Ollama, optional):** Emits fixed JSON (`ollama_shallow_router_output_v1`) with domain tag + `S/L/K/M` coordinates + anchor pointers — **metadata handoff intent** `[HYPO]`, not a hosted ingestion service.
+2. **Deep fetch (Cursor / cloud when enabled):** Subgraph router → semantic RAG bridge → capped insight payload. **Queries and subgraph text can still leave the machine on this path** — not “coordinates-only for all paths.”
+
+```text
+[Raw context] → (local Ollama: shallow JSON) → [handoff v1] → (optional deep chain) → [pytest / artifacts]
+                     lane pins (~4)              semantic RAG bridge
+```
+
+**Measured (latest shadow eval, 8 fixtures):** `routing_oracle_gap` **0.0** · `cloud_skip_ratio` **1.0** · shallow `router_hit_rate` **1.0** — reproduce commands in [Tier 2](#tier-2--hybrid-ollama-friendly--deep-fetch).
+
+---
+
+## Secondary research lane (optional — not the product hero)
+
+**Compression open-bench contributor kit** — for researchers verifying macro context compression on **masked JSONL** (`research_only`, B-track). This is **not** a data-processing SaaS, commercial ingestion service, or “send us your documents” pipeline. `SEND_GATE: HOLD` · no auto Track A promotion.
+
+Pointers: `docs/final/artifacts/compression_open_bench_contributor_kit_v1_latest.json` · separate mirror `a-codeai-compression-reproduce` when publishing compression-only demos.
+
+**Related work (B-track):** [`docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md`](docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md)
 
 ---
 
@@ -15,7 +39,7 @@ License: **MIT License** — see [LICENSE](LICENSE)
 | **0 · Smoke** | Fork curious | MIT, disclaimer, secret wall | `py scripts/check_mkm_solo_oss_release_readiness_v1.py` |
 | **1 · Cursor-only** | Generic Cursor user | Stop pasting MISSION_LOG-sized blobs; lane inject (~4 pins) | `powershell -File scripts/Invoke-MkmCursorSessionUpgrade_v1.ps1` then bench below |
 | **2 · Hybrid** | Ollama + IDE | Local classify / shallow path + Logos deep fetch (B-track) | `py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py` + optional chain in Tier 2 block |
-| **3 · Contributor** | Extending the monorepo | Full scripts + tests per `B_subset` scope | `docs/final/artifacts/mkm_github_public_release_scope_v1_latest.json` |
+| **3 · Monorepo** | Extending this repo | Full scripts + tests per `B_subset` scope | `docs/final/artifacts/mkm_github_public_release_scope_v1_latest.json` |
 
 ### Tier 0 · Smoke (~5 min)
 
@@ -64,7 +88,7 @@ py scripts/run_showroom_job_topology_wiring_chain_v1.py --skip-pytest
 py scripts/check_showroom_trust_viz_public_chain_v1.py
 ```
 
-### Tier 3 · Contributor
+### Tier 3 · Monorepo extender
 
 Recommended first public slice: **`B_subset`** (bench + showroom + Logos smoke; counsel legacy excluded). Before any public push:
 
@@ -93,7 +117,7 @@ Footnotes: numbers from `py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py
 
 **Title:** MKM — stop full-pasting context into Cursor; measured ~99.6% shallow token savings
 
-**One-liner:** Layer a routing pack on local Ollama (optional), inject lane pins instead of 50k-token pastes, deep-fetch only what you need — MIT, reproducible benches included.
+**One-liner:** Repo-native Hybrid Memory OS — local Ollama shallow JSON routing (optional), lane pins not 50k-token pastes, deep fetch on demand. **Not a hosted data-processing SaaS.** MIT + reproducible benches.
 
 **Body (short):**
 

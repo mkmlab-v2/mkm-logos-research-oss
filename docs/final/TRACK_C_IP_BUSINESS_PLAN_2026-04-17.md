@@ -159,6 +159,40 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 **공고 병렬 레인 (Track C 1차 매출과 분리):** MSME AI+ OpenData **제2026-327** — 제출 SSOT `docs/final/artifacts/ai_opendata_challenge_2026_327_business_plan_submission_v1.md` · PDF `reports/opendata_327_part_b_v1.pdf` 등 · 병렬 체크 `docs/final/artifacts/opendata_327_parallel_lane_checklist_v1_latest.json` — **§3.8 B2B 매크로·§3.1 압축 우선 파도와 합선하지 않음**.
 
+#### 3.1.6 Sovereign IAM-lite — Control Plane only (`[HYPO]` · **HOLD** · 2026-06-16)
+
+**상태:** B-track 연구·내부 PoC만. **1차 매출 파도·대외 GTM 아님** — `send_gate: HOLD` · `ready_for_external_send: false`.
+
+- **포지션:** 크롬·1Password 등 **Data Plane(금고) 대체 아님** — 계정 메타·정책·posture 점수·복구 런북 **권고만** (credential 원문 **미수집**).
+- **판정 (2026-06-16):** 손입력 JSON MVP는 **본인 점검용**; 단독 B2C 구독·크롬 대체 SKU로 **승격 보류**. 상용화는 **ISMS-P·사이버보험 증거 리포트 번들** 또는 Workspace 메타 자동화(Phase 2) 이후만 재검토.
+- **격벽:** **§3.1 압축·B2B paste·GPU 브로커(Ollama/코코링크 하이브리드 SKU)와 합선 금지** — 본선 GTM = **압축 토큰절감 + B2B 폼/파일럿 + 정부 과제(병렬)**.
+- **구현 SSOT:** `scripts/build_sovereign_iam_lite_posture_v1.py` → `reports/sovereign_iam_lite_posture_latest.json` · 연구 큐 **`RQ-023` HOLD**.
+
+#### 3.1.7 1인 개발자 · GitHub GTM (Hero realigned · 2026-06-20)
+
+**상태:** `[FACT]` 운영 정책. **엔터프라이즈 세일즈·데이터 가공 SaaS와 혼동 금지.**
+
+- **Hero (본선):** **Hybrid Memory/Orchestration OS** — README Primary · shallow router · bench/pytest 재현 · `mkm_github_public_release_scope_v1` `B_subset`. **공개 히어로에서 “데이터 수집·중앙 가공 SaaS” 금지.**
+- **2차 (연구):** Compression open-bench contributor masked JSONL · `a-codeai.com` / reproduce mirror — **히어로 아님** (`compression_open_bench_contributor_kit_v1`, `SEND_GATE: HOLD`).
+- **부록 (인바운드 1건만):** MS 제안서 ZIP·counsel 팩 — **기본 GTM 아님.**
+- **본선 채널 (DO):** GitHub README·Issues/PR · Hybrid OS reproduce · optional `a-codeai-compression-reproduce` mirror for compression-only demos
+- **금지:** hosted ingestion SaaS 히어로 · zero-cloud-tokens · universal quote_hash · 「SEND OPEN」= 영업 메일 GO · MS 아웃바운드 기본값
+- **SSOT:** `CENTRAL` 「1인 GitHub GTM vs MS」·`mkm_github_public_release_scope_v1_latest.json`
+
+#### 3.1.8 Neuro-Symbolic B2B 구조 검증 (Logos Track B · `[HYPO]` · 2026-06-17)
+
+- **Integrity Orb 쇼룸:** `https://api.jemaai.cloud/public_showroom_logos_integrity_orb_v1.html?product=1` — ENTRY_13/16 artifact-bound · `py scripts/build_showroom_logos_integrity_orb_slice_v1.py` · 번들 chain 9/9.
+
+**상태:** 연구 PoC · **Track C 1차 매출 파도와 합선 금지** · **MS 헤드라인·압축 KPI 합산 금지** (FAIL-COMP-004).
+
+- **포지션:** 고전·장문 말뭉치의 **상호참조·경로 검증 패턴**을 B2B 제안서·전략 문서 **구조 감사기**로 이식한다. **Neuro**(LLM 초안) + **Symbolic**(그래프·규칙·citation lock) + **Human**(HITL) — 대외에는 **「모델 훈련」이 아니라 「검증 배관」**으로만 설명한다.
+- **대외 1페이지 SSOT:** `docs/final/artifacts/logos_neuro_symbolic_b2b_public_one_pager_ko_v1.md` — 법무 검토 전 · `PUBLIC_FACING` §2–3 정렬.
+- **머신 포인터:** `docs/final/artifacts/logos_neuro_symbolic_b2b_gtm_pointer_v1_latest.json`
+- **운영 재현:** `py scripts/run_logos_track_b_hot_reload_v1.py --verbose` → `reports/logos_hot_reload_operator_board_v1_latest.md` · completion gate ≥90.
+- **GTM:** **§3.1.7 GitHub 본선** 유지. 본 절은 **인바운드 B2B 부록·데크·파일럿 설명**만 — `external_validation_ms_evidence_pack`의 `logos_track_b/` 서브번들과 **분리 표기** (로고스 통찰을 MS 원페이저 헤드라인에 넣지 않음).
+- **금지:** 신학·교리 카피 · 투자·수익 단정 · Track A·실매매 자동 승격 · 「Google/MS 동급 LLM」 표현.
+- **격벽:** Track B `research_only` · `theology_to_sales_forbidden` · 구현 판정은 `CONSTITUTION`·스크립트 exit 0만.
+
 ### 3.2 축 B — 초고난도 비정형 텍스트 기반 사업 (고급 해설형)
 
 - 고객: 프리미엄 콘텐츠 구독층, 리서치 독자층, 교육·인문 IP 수요층.

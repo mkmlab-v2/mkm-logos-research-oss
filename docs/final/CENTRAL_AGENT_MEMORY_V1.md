@@ -24,13 +24,33 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-13T19:42:37Z
+- **last_updated_utc:** 2026-06-20T07:53:35Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-13:** push **11/11** OK). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
 - **external_briefing_ref_v2:** `athena_memory_bank_v2.md` (time-series partition + firewall)
 - **지휘관 보좌 프로필 (초개인화 v1):** `docs/final/schemas/commander_profile_v1.schema.json` · `docs/final/artifacts/commander_profile_v1.example.json` — `birth_anchor`·`myeongni_fact_ref`=엔진 Fact; `cognition_hypothesis`·`assist_coaching_v1`=`[HYPO]`·격벽만. 사주로 GTM·실매매·임상 단정 금지. 가족 앵커는 `family_anchors_ref`(딸 등).
+- **지휘관 개인정보 export 격벽 (2026-06-15 · 지휘관 확정):** AI 장기기억·컨텍스트 export의 「사용자/지휘관에 대한 정보」= **지휘관 본인 + 가족 앵커(`family_anchor_*`)까지만**. **환자 케이스**(`patient_reference_*`·`patient_care_bundle`·임상 레일)는 지휘관 개인정보와 **무관** — export·인구통계·`commander_profile`에 **합선 금지**; 임상 SSOT·`patient-track-b`만.
 - **dogfood 네임스페이스 (혼동 금지):** **(1) A2A·Cursor** — `a2a_*` Tier3 wire handoff · `check_a2a_cursor_dogfood_peer_brief_v1.py` · `[HYPO]` · **(2) B2B compression** — `mkm-internal-dogfood-v{1,2,3}` · tactical-B proxy · **(3) Prism/Cursor shim** — `run_prism_meta_channel_dogfood_session_v1.py` · chat shim upstream. 서로 %·J·Track A 헤드라인 **합선 금지**.
+
+## 1인 GitHub GTM vs 엔터프라이즈 MS 아웃바운드 (영구 격벽 · 2026-06-17 · **Hero realigned 2026-06-20**)
+
+**한 줄 (본선 Hero · 2026-06-20):** GitHub 공개 **1차 정체성 = Hybrid Memory/Orchestration OS** — 로컬 shallow router + 레포 네이티브 bench/pytest 재현. **「데이터 수집·중앙 가공 SaaS」 히어로 금지.** Compression open-bench contributor JSONL = **2차 B-track 연구 레인** (`research_only`, `SEND_GATE: HOLD`, Track A 자동 승격 없음). **MS ZIP·법무팩·대량 메일·CTO 아웃바운드는 기본 채널이 아님** (인바운드 1건 부록만).
+
+**선언 (Fact-Lock):** MKM은 사용자 원문을 외부 서버로 모아 “가공해 돌려주는” 레거시 SaaS 모델을 **공개 GTM에서 배제**한다. 가치는 **리포지터리 내부 재현 가능 벤치**·**pytest exit 0**·**고정 JSON handoff 스키마**로 실증한다. Deep path 활성 시 query/subgraph는 IDE·클라우드로 갈 수 있음 — “좌표만·원문 0바이트” 주장 **금지**.
+
+| 구분 | **A — 본선 (1인·GitHub Hero)** | **B — 부록 (엔터프라이즈·인바운드만)** |
+|------|-------------------------------|----------------------------------------|
+| **목적** | fork·star·재현 — Hybrid OS + bench 신뢰 | 특정 중견/공공 **문의가 왔을 때** 근거 첨부 |
+| **채널** | GitHub README·`B_subset` · shallow router/E2E pytest · Issues/PR | MS 원페이저·증거팩 — **지휘관이 해당 건에만** 수동 첨부 |
+| **2차 (연구)** | `a-codeai.com` / compression reproduce mirror · masked JSONL open-bench — **히어로 아님** | — |
+| **금지 (에이전트 NEVER)** | hosted ingestion SaaS·zero-cloud-tokens·universal quote_hash 히어로 | **MS 증거 ZIP 메일 발송 워크플로 기본값** · `cto_outreach_send` · counsel ZIP **아웃바운드 캠페인** |
+| **SSOT** | `mkm_github_public_release_scope_v1_latest.json` · README Primary/Secondary · merged lit review | `external_validation_ms_evidence_pack_v1_latest/` — **서랍** |
+| **send_gate 의미** | 공개 벤치·재현 문구 — **≠** 유료 API·청구 GO · **≠** contributor lane = main product | `ready_for_external_send` **≠** 영업 메일 GO |
+
+**에이전트 ALWAYS (GTM·압축·외부검증):** `lane=hybrid_memory_os_hero` vs `lane=compression_open_bench_secondary` vs `lane=enterprise_inbound_appendix` **먼저** 분류. Hero 패치·README·scope는 전자. Contributor JSONL bench는 중자(2차). MS 팩은 후자만·**지휘관 건명시**.
+
+**교차참조:** `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.1.7 · `compression_b2b_recommended_workflow_v1.json` `solo_ops_policy` · `.cursor/rules/central-agent-memory.mdc` 항목 15.
 
 ## CF jemaai rulesets — 재발 방지 (Fact-Lock · 2026-05-22)
 
@@ -69,58 +89,65 @@
 
 ---
 
+## NVIDIA Inception · 계정·메일·크레딧 (Fact-Lock · 2026-06-19)
+
+**한 줄:** Inception 포털 = **`moksorinw@no1kmedi.com`** · org **`moksorinetwork`** · 파트너 메일/GCP OAuth = **`moksorinw@gmail.com`(Gmail u/1)** · **`jema12@mkmlife.com` = Vertex Free Trial 별도(≠ Inception)** · Phoenix **「NVIDIA Confirmed — Follow up with the partner」= 파트너 claim 전**(청구 가능 크레딧 아님).
+
+| 구분 | SSOT |
+|------|------|
+| **장문 SSOT JSON** | `reports/nvidia_inception_email_credit_routing_ssot_v1_latest.json` |
+| **Phoenix 라이브 스냅샷** | `reports/nvidia_phoenix_portal_live_latest.json` · `py scripts/nvidia_phoenix_portal_snapshot_v1.py` |
+| **포인터·스크립트** | `reports/nvidia_inception_account_pointer_v1.json` |
+| **GCP 결제 (Inception/MKM Lab)** | billing `019340-DD2318-993817` · project `mkm-lab-agi-2025` · **연체 정지 없음(2026-06-19)** |
+| **메일 검색 순서** | `moksorinw@gmail.com` u/1 → no1kmedi forward · **giryun288에 Inception 메일 없음** |
+
+**Phoenix Benefits (CDP live 2026-06-19):** org `moksorinetwork` · requestor `giryun lee` · 5건 **NVIDIA Confirmed — Follow up with the partner** (6/8/26): AWS $100K · GCP $2K–$350K · Nebius $5K+$150K GPU saving · Lambda $7.5K · Azure $5K · **Innovation Lab = Under Review** (6/2/26).
+
+| 파트너 | Phoenix 상태 | 파트너 크레딧 실수령 (6/19) |
+|--------|--------------|------------------------------|
+| AWS | Confirmed → follow-up | **Activate 거절** (Gmail: does not meet requirements) |
+| GCP | Confirmed → follow-up | **Startup Apply 제출 완료** (6/19) — 승인 메일 대기 |
+| Lambda | Confirmed → follow-up | **nvidia-inception 폼 제출 완료** (6/19) · Billing Credits **$0 → 승인 대기** |
+| Nebius | Confirmed → follow-up | CDP 세션 만료 · $25 prepaid만 |
+| Azure | Confirmed → follow-up | **`?tenant=e984d55e…` + GitHub 로그인** · `MKM-Startups-Prod` · Inception $5K 추가 신청 |
+| Innovation Lab | Under Review | `@nvidia.com` 수락 대기 |
+
+**GPU 정책:** `reports/nvidia_gpu_smoke_dod_v1_latest.json` — partner credit/Lab 전 GPU spinup OFF.
+
+**에이전트 NEVER:** `jema12@mkmlife.com`을 Inception 크레딧 계정으로 안내 · `giryun288@gmail.com`만 검색하고 moksorinw 생략 · Phoenix Confirmed = 「지금 바로 크레딧 사용 가능」 단정 · 포털 requestor `giryun lee`를 로그인 이메일과 혼동(로그인=`no1kmedi`, 메일=`gmail u/1`).
+
+---
+
 ## 운영 체크포인트 (자동, 1줄)
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
-- **2026-06-13T20:05:52Z** — A2A dogfood 4/4; gitea merge conflict resolve (CENTRAL+mkm-life+hub TS)
-- **2026-06-13T19:42:37Z** — P0+P1 LTM audit: CENTRAL resume-pack handoff, MISSION next_1ta A2A+stale refresh, resume pack READY≠SEND label
-- **2026-06-13T19:17:23Z** — Harness v2 순서 완료: mkmlife HTTP smoke 3105 OK; Qwen2.5-7B interpret smoke limit5 pillars+envelope 100%
-- **2026-06-13T19:11:58Z** — A2A 1-6 순서: IR+dogfood check+web_ops lossless+tp02/03 weekly
-- **2026-06-13T19:05:32Z** — Lambda Cloud signup moksorinw@no1kmedi.com workspace e8b029… credit reply sent; SSOT pointer updated; 15min meeting HOLD
-- **2026-06-13T19:00:46Z** — Harness v2: locked100 template+dual-pass dry-run 100% OK; mkmlife harness-v2-template route+smoke; routing SSOT reports/myeongni_rnd_operational_routing_closure_v1_latest.json
-- **2026-06-13T18:56:54Z** — Turnstile free path: no1kmedi VPS deploy + env sync + live /enterprise/apply smoke OK
-- **2026-06-13T18:52:39Z** — A2A Tier3 per-lane briefs + expand J fix; dogfood alerts cleared
-- **2026-06-13T18:46:32Z** — Harness v2 PoC: template chain 25/25 OK, pillars_emphasis outcome FAILED, interpret LoRA smoke RUN [HYPO]
-- **2026-06-13T18:43:04Z** — Pack0B Harness v2 locked: LoRA align 0% vs engine 100% — route harness_v2_engine_plus_interpret [HYPO]
-- **2026-06-13T18:41:59Z** — A2A dogfood auto: Tier3 all lanes + longitudinal report + session Tier3 auto on -Lane
-- **2026-06-13T18:30:30Z** — Pack0B pillars_emphasis locked100 align=0% parse=100% — LoRA E2E fail; Plan B Harness v2 next [HYPO]
-- **2026-06-13T18:23:50Z** — Tier3 Cursor wire handoff pilot oracle lane + session upgrade hook exit 0
-- **2026-06-13T18:19:44Z** — Tier2 L2 shadow: session upgrade append log + resume pack hook exit 0
-- **2026-06-13T18:06:53Z** — local_only automations closure: registry rows + weekly verify + routine persona exit0
-- **2026-06-13T18:05:53Z** — A2A recommended: trading routing AB in bench + tp01-03 weekly bundle + trading fixture fix exit 0
-- **2026-06-13T18:04:32Z** — Cursor Automations recommended local_only: mode env set, routine persona exit0, cloud webhook skipped
-- **2026-06-13T18:00:55Z** — Cursor Automations bootstrap exit0: local tasks Ready, DocSync+TestRecovery personas OK, Doc Sync UI paste copied+opened
-- **2026-06-13T17:57:17Z** — RQ-019 weekly smoke +IncludeA2aExtendedRepro exit 0; scheduled task re-registered with extended repro
-- **2026-06-13T17:55:09Z** — A2A full weekly repro bundle exit 0: dialogue bench pytest3 + L1L2 4 lanes + tp01 log + stack map
-- **2026-06-13T17:49:35Z** — Cursor Automations D-layer: workflows SSOT + webhook bridge + command package hook + DocSyncSafe persona exit 0
-- **2026-06-12T05:59:45Z** — Hub UI Chassis v3 shipped: 3-pane inspector /hub+/hub/logos, pill discover, /hub/compression [DRAFT] demo, shell contract locked, live smoke 11/11
-- **2026-06-12T05:59:11Z** — scheduler band gate wired: solo_ops+Sunday EnforceSoloBand; solo_stack_ready=41 band ok
-- **2026-06-12T05:50:34Z** — /hub/logos VPS deploy+live smoke 11/11; Logos 4D topology hub JSON live
-- **2026-06-12T05:48:44Z** — Wave7/final scheduler: MKM Ready 181->38; tier4 SSOT; prophecy holdout+showroom VPS trim; total stack 41 Ready
-- **2026-06-12T05:47:30Z** — Cursor 컨텍스트 다이어트 완료: AGENTS 2층(76줄)·cursorrules Slim v2(60)·core8 rules·diet+CI·User Rules minimal v1·재시작 후 strict PASS
-- **2026-06-12T05:41:16Z** — P0 Logos 4D topology batch(28741 verses) + /hub/logos observatory plugin·contract·DesignLane exit 0
-- **2026-06-12T05:39:55Z** — Wave6 scheduler: Ready 181->47 (-74%); 12 batches weekly/review_other; solo_target_band 55-70; reconcile ok
-- **2026-06-12T05:33:40Z** — Moat PR-gate prep: pr-strict manifest OK; prophecy bench Brier 0.222; a-codeai READY_FOR_PUBLIC_OPEN_BENCH 9/9; external community PR next; SEND HOLD
-- **2026-06-12T05:29:40Z** — Moat SSOT: GitHub contributor_provided 본선(실고객 없음); passive loop_ok hub 10/10 Moat 13/30 pass_rate_met false; SEND HOLD
-- **2026-06-12T05:27:28Z** — Wave5 scheduler: Ready 181->100 (-81); 12 batches research/ops dup; Aramaic daily registry Disabled; reconcile ok
-- **2026-06-12T05:21:30Z** — User Rules minimal v1.txt·MCP 카탈로그 가이드 AGENTS 반영
-- **2026-06-12T05:17:04Z** — cursorrules Slim v2(147→60줄)·diet cursorrules+template drift·CI 연동 완료
-- **2026-06-12T05:03:06Z** — Design hub: gitea/main 1aeb25518e package CTA+smoke 10-check; live 10/10; SSOT/canvas 10/10; SEND HOLD
-- **2026-06-12T04:57:23Z** — Wave4 scheduler: Ready 181->144 (-37); myeongni/logos/kospi/btrack99 batches; triage regen; reconcile ok
-- **2026-06-12T04:52:29Z** — MS/Compression: VPS deploy exit0·hub live smoke 10/10 customize CTA live·SEND HOLD·다음 Moat PR
-- **2026-06-12T04:47:16Z** — MS/Compression: customize pillar+package CTA·DesignLane exit0·pilot auto-local chain_ok 25; prophecy closure safe_ops degraded; SEND HOLD
-- **2026-06-12T04:37:44Z** — scheduler wave2-3: Ready 181→160; triage JSON; LiveSync registry Disabled
-- **2026-06-12T04:36:57Z** — 채팅종료 RQ-031/032 [HYPO]: 연대기×역사→era chain exit0; RQ-032 KOSPI 제거·text_blind locked 9.1% MS cite; ops·Track A·SEND 무관
-- **2026-06-12T04:32:08Z** — RQ-032 인류역사→era 전용 [HYPO]: KOSPI 제거; text_blind locked 9.1% MS cite; gold_tags 70.2% 상한; quad strict 0%; ops·Track A 무관
-- **2026-06-12T04:28:32Z** — RQ-031 long KOSPI: 7261d·Pillar A combined strict 8.1%·B stress vol 1.68·era 70.2%/locked 45.5%; ops·Track A 미변경
-- **2026-06-11T05:27:33Z** — open-bench monorepo 커밋 79a26e5 gitea push + binding weekly task + export manifest canon_singularity 제외
-- **2026-06-10T12:39:15Z** — Media Fact Sheet 3종+index(SKU 분리·SEND_GATE HOLD)
+<!-- CENTRAL checkpoint block -->
+- **2026-06-20T07:53:35Z** — P1 done: README EN hybrid narrative+PartV table, pre-commit gitleaks OK, internal push 0863eca
+- **2026-06-20T07:49:22Z** — solo OSS prep done (README Tier/SECURITY/secret/bench exit 0); GitHub push HOLD until next-gen hybrid fusion+bench lock in other chat; handoff docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md
+- **2026-06-20T07:43:39Z** — P0 done: secret scan+MCP ok, routing_oracle_gap 0.0, internal push feat/compression-sku-ab-a-bc
+- **2026-06-20T07:36:53Z** — shallow router A-B-C: modelfile tracked, commit 5c3afd, deep live+domain matrix pytest 9/9
+- **2026-06-20T07:30:51Z** — shallow->semantic_rag E2E v1: smoke+pytest exit0; handoff+bundle+deep dry-run wired
+- **2026-06-20T07:26:36Z** — shallow router golden v1.1: 8 fixtures router_hit 1.0 raw parse_ok 1.0
+- **2026-06-20T07:10:10Z** — OSS P0 done: readiness+bench+git sanity+showroom smoke exit0; scope B_subset; push waits Ack
+- **2026-06-20T07:09:52Z** — Ollama shallow router live bench: parse_ok 1.0 schema_ok 1.0 router_hit 0.5 format json+512
+- **2026-06-20T07:05:46Z** — Solo OSS all-lanes default v1.1: counsel DEPRECATED unless commander explicit; alwaysApply rule; MISSION_LOG all lanes aligned
+- **2026-06-20T07:02:50Z** — Solo OSS pivot: counsel DEPRECATED; MIT+README+policy; SEND_GATE OPEN oss_github_release only; counsel chat suggest forbidden
+- **2026-06-20T06:57:44Z** — LTM auto-push: gold 12/12 pass; cap×gold guard=baseline_production only (minimal 7/12); bundle+counsel manifest 17 exit 0; pytest 4/4
+- **2026-06-20T06:52:08Z** — Ollama shallow router v1: schema+modelfile+bench+handoff+pytest exit0 [HYPO]
+- **2026-06-20T06:50:37Z** — LTM orchestration bundle exit 0: cap ablation ultra_min -56% vs baseline insight; prior-art JSONL seeded 4 rows; pytest 3/3
+- **2026-06-20T04:58:46Z** — pointerguard all_ok via OPS/N8N/SLACK chain; sasang mirror synced+artifact reset; worktrees pruned
+- **2026-06-20T04:49:34Z** — 4-forces Matching Layer: 3-layer A/B/C locked; lexicon-aligned HYPO slot exit 0; counsel bundle pre-submit HOLD
+- **2026-06-20T04:10:18Z** — worktree prune 2 merged; pointerguard checker .env fallback; _pr_sasang_promotion kept (dirty)
+- **2026-06-20T04:06:51Z** — workspace layout hygiene: logos_reval 108 del, tmp/logos_reval script+ephemeral patch, AGENTS diet, prism stub, PointerGuard task
+- **2026-06-20T03:33:50Z** — P1-5 done: counsel pack+dual-mode pixel+CI+LTM graph+audio gate refresh · HOLD
+- **2026-06-20T03:21:40Z** — pixel gate GREEN + external B2B meeting kit READY · counsel signoff pending · HOLD
+- **2026-06-20T03:15:38Z** — domain_adapters_v1 LIVE — sync_bridge pixel+lens_audio overlay design lane · smoke exit 0
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
 ## 질문 유형별 답변 라우팅 (권장 · 지휘관·에이전트 복붙)
 
-**한 문단 템플릿:** 질문을 먼저 **A(운영·본선·경로·게이트·수치)** vs **B(연구·가설·내러티브·탐색)**로 나눈다. **A**이면 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능한 `scripts/*.py`·`exit code`·`pytest`로만 답하고, **구현·통과·본선 반영 여부는 RAG·NotebookLM·채팅 요약 단독으로 단정하지 않는다.** **B**이면 내부 RAG·LLM·NotebookLM은 **보조 근거**로만 쓰고, 답마다 **`[FACT]`**(SSOT·스크립트와 일치)·**`[HYPO]`**(가설)·**`research_only`**(연구 격리) 중 하나를 붙인다. **한의 원전·Proxy B**, **DNA B-track**, **성경(Logos) 보조 해설**은 **실매매·Track A·프로덕션 자동 합선 금지**를 답변 끝에 한 줄로 명시한다. NotebookLM MCP는 채팅에 도구가 없으면 **로컬 매니페스트·Vault·CONSTITUTION**으로 폴백한다.
+**한 문단 템플릿:** 질문을 먼저 **A(운영·본선·경로·게이트·수치)** vs **B(연구·가설·내러티브·탐색)**로 나눈다. **A**이면 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`와 호출 가능한 `scripts/*.py`·`exit code`·`pytest`로만 답하고, **구현·통과·본선 반영 여부는 RAG·NotebookLM·채팅 요약 단독으로 단정하지 않는다.** **B**이면 내부 RAG·LLM·NotebookLM은 **보조 근거**로만 쓰고, **`[FACT]`**(SSOT·스크립트와 일치)·**`[HYPO]`**(가설)·**`research_only`**(연구 격리) 중 필요한 것만 붙인다 — **스레드 첫 소개 1회면 충분**, 매 턴 반복 금지. **채팅 톤:** 지휘관은 **실매매 미운영** — 일반 Q&A 끝에 「실거래 연결 없음」·「Track A·실매매 금지」 류 **루틴 면책을 매 답변마다 붙이지 않는다** (`commander_chat_tone_prefs_v1_latest.json` · `.cursor/rules/mkm-commander-chat-tone-v1.mdc`). **실매매·Track A·SEND·대외 투자 카피·live deploy**를 **주제로 다룰 때만** 격벽을 명시한다. NotebookLM MCP는 채팅에 도구가 없으면 **로컬 매니페스트·Vault·CONSTITUTION**으로 폴백한다.
 
 | 질문 예시 | 먼저 볼 것 | RAG·NL |
 |-----------|------------|--------|
@@ -152,7 +179,7 @@
 - **우리 딸 (가족·실명 미기록):** **2012-03-28 10:20 서울** · 소음인(관찰) · 만14~15세 — `playbook` `family_anchor_our_daughter_v1` · 사주 **임진·계묘·무자·정사** · `reports/tmp_daughter_myeongni_full_v1.json`. **환자 김하은과 동일인 아님.**
 - **우리 아들 이강민 (가족 anchor · 2026-06-07):** **2014-05-09 01:26 서울** · GH·당 관리 중 · 사주 **갑오·기사·경진·정축(일간 庚)** · `family_anchor_son_kangmin_v1` → `docs/final/artifacts/family_anchor_lived_calibration_son_kangmin_v1_latest.json` (**v1.1.0** · `clinical_labs_l0` 143/38 confirmed · lab numeric pending clinician SSOT) · 통합가이드 **`reports/kangmin_son_integrated_guide_v1.md`** · apply `scripts/apply_family_anchor_son_kangmin_lived_fact_check_v1.py` · **1순위=키·혈당·GH 연속성** · 소양/태양 [HYPO] · `auto_apply=none`.
 - **딸 통합 가이드 v4-minimal (2026-05-25 · B-track):** SSOT `daughter_2026_integrated_guide_v4_minimal_latest.json` + `family_anchor` v1.3.0 — **순서:** v3 학교·멘토 → 명리 핵심월(재물·또래) → **사상 생활 4줄** → **Logos 2줄 [NON_GATING]**; **제품 브리지 [FACT]:** `build_family_anchor_insight_bridge_v1.py` · mkmlife `/oracle-sphere?profile=family` · blueprint `saving_the_news_blueprint_v1.md` §9; **금지:** 12칸 3렌즈 합선·오행%→체질·6월충 연애통제·11월 냉증 처방 · `auto_apply=none`.
-- **환자 김하은 (진료 케이스):** **2008-02-03 14:00 서울** · 고3·소음인 등 — `playbook` `patient_reference_kim_haeun_v1` · **정해·계축·계유·기미** · `reports/tmp_kim_haeun_myeongni_full_v1.json`.
+- **환자 김하은 (진료 케이스 · 지휘관 개인정보 ≠):** **2008-02-03 14:00 서울** · 고3·소음인 등 — `playbook` `patient_reference_kim_haeun_v1` · **정해·계축·계유·기미** · `reports/tmp_kim_haeun_myeongni_full_v1.json`. **임상 레일만** — commander export·가족 프로필에 포함 **금지**.
 - **상담 톤:** 「고정밀 센서」·따뜻한 입력·마이크로 투두 — **「사주 강하니 버텨」·합격 단정·사주 인과」 금지** (`patient_care_bundle` 정책과 동일).
 - **엔진:** 표·대운 → `run_saju_global_birth_v1` / `build_myeongni_full_report_v1`; 임상 강약·용신 → **변증·외부 만세력(조후·억부)**, MKM `yongsin_hypothesis`는 **연구 로그만**.
 
@@ -406,6 +433,7 @@
 |------|--------|
 | 3+1 | 파이프라인 층: **Seed·Label·Formula·Field** — 만물이론·단일 방정식 완성 **아님** (Fact-Lock). |
 | **세계관 v1** | Logos=말씀·초압축→만물; 역추론=신앙·해석; AI우주=창조 모방; 성경=경영프로그램·명리=우주통찰·사상=소우주·금화교역=변화심장 — `MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` |
+| **Logos hybrid OS** | 딥리서치=탐험선 → `topology_sidecar` Layer A ingest `[HYPO]`; MKM=항구·재현; 상징망=에이전트 메타인지 내비 — miswire·SEND·Track A·실매매·patient-facing 직결 금지; gap·why 단답 거부 |
 | 4D Seed | 순수 뼈대 `[S,L,K,M]` — 코드 4D와 Prism 논리 색인 혼동 금지. |
 | Field | **“지금이 어떤 판인가?”** — 레짐은 역사 고유명(IMF·리먼·IT버블·코로나 등), 안정/주의/위험만으로 끝내지 않음. |
 | 레짐 주·보 | **1차** `regime_map` 실물 **주** · **2차** 성경 매트릭스 **보** — 2차는 해설·리포트, **실전 트리거 금지**. |
@@ -417,6 +445,7 @@
 | TITAN | Command-by-negation — 저위험은 합리적 기본값·사후 보고; 고위험만 승인. |
 | 정체성 답변 규칙 | 전략·답변·코드 모두 **위 지문과 충돌 시 지문·SSOT 우선** — “그럴듯한 확장” 금지. |
 | 에이전트 연속성 | **In-Turn:** 한 요청 안 다단계(토큰·시간·정책 상한). **Ops:** `scripts`·스케줄·exit code — 채팅 세션과 동일시 금지. **≠** 사람 새 입력 없는 무한 채팅 루프. 맥락 복구는 **이 파일·Git** + 「작업 맥락 레슨」(약 328-334행). |
+| **1인 GitHub GTM** | **Hero** = Hybrid Memory OS (README Primary) — **NOT** ingestion SaaS. Compression contributor = **2차 연구**. MS = **인바운드 부록만**. CENTRAL 「1인 GitHub GTM vs MS」절. |
 
 ---
 

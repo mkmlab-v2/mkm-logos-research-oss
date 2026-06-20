@@ -1,11 +1,19 @@
 {
   "schema": "compression_open_bench_contributor_kit_v1",
-  "generated_at_utc": "2026-06-11T12:00:00Z",
+  "generated_at_utc": "2026-06-17T11:26:19Z",
   "send_gate": "HOLD",
   "ready_for_external_send": false,
-  "labels": ["DRAFT", "research_only", "contributor_provided", "btrack_learning", "[HYPO]"],
-  "purpose_ko": "GitHub/open-bench 기여 JSONL → B-track 벤치 → 승격 후보 → 지휘관 human apply (Track A active 자동 갱신 없음)",
-  "purpose_en": "Masked contributor JSONL → B-track bench → promotion candidate → commander --human-approve-promotion (no auto active report)",
+  "labels": [
+    "DRAFT",
+    "research_only",
+    "contributor_provided",
+    "btrack_learning",
+    "[HYPO]"
+  ],
+  "purpose_ko": "[2차 B-track 연구 레인] masked JSONL open-bench → 벤치 → 승격 후보 → 지휘관 human apply. 메인 GitHub Hero 아님 · 데이터 수집·가공 SaaS 아님 · Track A active 자동 갱신 없음",
+  "purpose_en": "[Secondary B-track research lane] Masked contributor JSONL → bench → promotion candidate → commander --human-approve-promotion. NOT the public product hero · NOT hosted ingestion SaaS · no auto active report",
+  "gtm_tier": "secondary_research_lane",
+  "hero_identity_excluded": true,
   "lane_matrix": {
     "public_open": {
       "role": "practice_sandbox",
@@ -23,6 +31,13 @@
       "manifest_check": "py scripts/check_compression_contributions_manifest_v1.py [--pr-strict] [--validate-reference]",
       "validate": "py scripts/validate_compression_contributor_jsonl_v1.py --jsonl <PATH> --min-rows 10",
       "bench_chain": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-CompressionContributorBenchChain_v1.ps1 -ContributorJsonl <PATH>",
+      "overlay_policy": "docs/final/artifacts/compression_open_bench_overlay_policy_v1_latest.json",
+      "open_bench_poc_defaults": {
+        "extract_must_keep_if_missing": true,
+        "short_context_token_threshold": 30,
+        "short_context_max_saving_rate": 0.3,
+        "note_ko": "overlay 없으면 community seed saving 0% 정상 — 정책 SSOT 참조"
+      },
       "promotion_candidate": "docs/final/artifacts/compression_contributor_promotion_candidate_v1_latest.json",
       "human_apply_bridge": "py scripts/apply_compression_contributor_track_a_promotion_v1.py --human-approve-promotion --reviewer commander",
       "multilens_codec_apply_separate": "py scripts/apply_multilens_ultra_compression_track_a_promotion_v1.py --human-approve-promotion"
@@ -54,7 +69,11 @@
     "text": "string min 40 chars masked",
     "contributor_provided": true,
     "customer_provided": false,
-    "labels": ["contributor_provided", "research_only", "btrack_learning_v1"]
+    "labels": [
+      "contributor_provided",
+      "research_only",
+      "btrack_learning_v1"
+    ]
   },
   "sibling_lanes": {
     "prophecy_contributor_moat": "docs/final/artifacts/prophecy_open_bench_contributor_kit_v1_latest.json"
@@ -86,5 +105,23 @@
     "apply_compression_contributor_track_a_promotion_v1.py --human-approve-promotion",
     "sync_compression_contributor_btrack_observability_v1.py (auto unless --skip-obs-sync)",
     "optional: run_ultra_compression_promotion_sweep_v1.py + apply_multilens_ultra_compression_track_a_promotion_v1.py"
-  ]
+  ],
+  "logos_audit_smoke_appendix": {
+    "attached_at_utc": "2026-06-17T11:26:19Z",
+    "artifact": "docs/final/artifacts/compression_open_bench_logos_audit_smoke_v1_latest.json",
+    "metrics_snapshot": {
+      "finish_ok": true,
+      "finish_tier": "commercial_finish_complete",
+      "commercial_depth_closure_ok": true,
+      "citation_valid_themes": 12,
+      "theme_preset_count": 12,
+      "graphrag_seed_organic": "42/42",
+      "thematic_hit_at_1": 0.916666667,
+      "key_verse_v2_rows": 256,
+      "canon_book_count": 66,
+      "macula_edges_built": 4746
+    },
+    "forbidden_headline_merge": true,
+    "reproduce": "py scripts/sync_compression_bench_to_audit_smoke_v1.py --attach-smoke"
+  }
 }
