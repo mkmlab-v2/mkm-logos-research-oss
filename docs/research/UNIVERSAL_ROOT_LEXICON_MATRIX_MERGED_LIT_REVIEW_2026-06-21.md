@@ -59,6 +59,23 @@ Query → Layer A (NSM gate / domain_tag / primes≤3) [HYPO]
 
 ---
 
+## Phase 11-E — NSM crosswalk repair (2026-06-21)
+
+**Command:** `py scripts/run_logos_graphrag_phase11e_nsm_crosswalk_repair_chain_v1.py` · exit **0**
+
+| Metric | raw (latin baseline) | shadow (DeepNSM explication sidecar) | Δ shadow−raw |
+|--------|---------------------|--------------------------------------|--------------|
+| `prime_hit_rate` | 0.0701 | 0.979 | +0.9089 |
+| `english_only_distortion_rate` | 0.8061 | 0.014 | −0.7921 |
+| `gate_ok` | **false** | **true** | — |
+| `aligned_original_language_count` | 30 | 419 | — |
+
+**GATE_SPEC:** `research_ready_decision=B_TRACK_RESEARCH_READY` · enabled planes all OK · **`send_gate: HOLD`** · **`track_a_promotion_forbidden: true`**
+
+**Interpretation:** Shadow metrics are **operational (post-explication sidecar included)** — not raw NSM string lookup quality. Track A promotion still requires **raw** distortion trend, not repair-only uplift alone.
+
+---
+
 ## Conflict table (Tier 0 vs Tier 1)
 
 | Claim | Tier 0 (Gemini) | MKM ruling |
@@ -77,9 +94,9 @@ Query → Layer A (NSM gate / domain_tag / primes≤3) [HYPO]
 | ID | Action | Status |
 |----|--------|--------|
 | D11-1 | `UNIVERSAL_ROOT_GATE_SPEC_V1.json` + `check_universal_root_gate_spec_v1.py` | **done** |
-| D11-2 | NSM 500-pair audit + gold re-eval | **run** `run_logos_graphrag_phase11a_chain_v1.py` |
-| D11-4 | MDL prune PoC + Jaccard gate | **run** `run_logos_graphrag_phase11d_mdl_prune_chain_v1.py` |
-| D11-3 | DeepNSM 1B shadow explication JSONL | P1 · GPU-adjacent |
+| D11-2 | NSM 500-pair audit + gold re-eval | **done** — raw `gate_ok=false`; shadow repair **done** (11-E) |
+| D11-3 | DeepNSM 1B shadow explication JSONL | **done** — `run_logos_graphrag_phase11e_nsm_crosswalk_repair_chain_v1.py` |
+| D11-4 | MDL prune PoC + Jaccard gate | **done** — Phase 11-D |
 | D11-5 | Shallow `nsm_prime_tags[]` wire | **done** |
 | D11-6 | Gold 12→48 fixture | **done** |
 
