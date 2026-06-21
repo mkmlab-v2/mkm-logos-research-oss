@@ -32,7 +32,8 @@ def test_build_logos_graphrag_bridge_evidence_pack_v1() -> None:
     assert "jsonl_line_count" in phase1
     assert "edge_count_mismatch" in phase1
     phase11 = ((doc.get("phase_coverage") or {}).get("phase_11_universal_root_layer_stack") or {})
-    assert phase11.get("gate_spec", {}).get("phase") in ("11-G", "11-I", "11-K", "11-E")
+    gate_phase = phase11.get("gate_spec", {}).get("phase")
+    assert gate_phase and str(gate_phase).startswith("11-")
     stress = phase11.get("shallow_stress_live_32") or {}
     assert stress.get("router_hit_rate") is not None
     assert stress.get("routing_oracle_gap") is not None

@@ -23,6 +23,18 @@
 
 ---
 
+## Key papers (fact_support catalog)
+
+| arxiv_id | title |
+|----------|-------|
+| 2003.03131 | Morfessor EM+Prune: Improved Subword Segmentation with Expectation Maximization and Pruning |
+| 2304.12404 | Semantic Tokenizer for Enhanced Natural Language Processing |
+| 2505.11764 | Towards Universal Semantics With Large Language Models |
+| 2406.18665 | RouteLLM: Learning to Route LLMs with Preference Data |
+| 2403.12031 | RouterBench: A Benchmark for Multi-LLM Routing System |
+
+---
+
 ## Executive synthesis (field vs MKM)
 
 **Field consensus (salvageable):**
@@ -73,6 +85,26 @@ Query → Layer A (NSM gate / domain_tag / primes≤3) [HYPO]
 **GATE_SPEC:** `research_ready_decision=B_TRACK_RESEARCH_READY` · enabled planes all OK · **`send_gate: HOLD`** · **`track_a_promotion_forbidden: true`**
 
 **Interpretation:** Shadow metrics are **operational (post-explication sidecar included)** — not raw NSM string lookup quality. Track A promotion still requires **raw** distortion trend, not repair-only uplift alone.
+
+---
+
+## Raw distortion experiments (2026-06-21)
+
+**Flag:** `--orig-probes-only` on `run_nsm_41k_lexicon_crosswalk_audit_v1.py` — ignore English probe when greek/hebrew exist.
+
+| Mode | prime_hit | distortion | gaps | gate_ok |
+|------|-----------|------------|------|---------|
+| raw_latin (baseline) | 7.01% | **80.61%** | 53 | false |
+| orig_probes_only (no EN) | 7.01% | **0%** | 398 | false |
+| orig_probes_only + shadow sidecar | **97.9%** | **0%** | 9 | true |
+
+**Takeaway:** English probe was the distortion *signal* (80.6%); without EN, raw latin greek/hebrew rarely hit 41k (398 gaps). **Original-language alignment** (gematria sidecar) is the repair path — not deleting EN alone.
+
+Reproduce:
+```powershell
+py scripts/run_nsm_41k_lexicon_crosswalk_audit_v1.py --orig-probes-only --expected-pairs 500 --out reports/nsm_41k_lexicon_crosswalk_audit_orig_only_v1_latest.json
+py scripts/run_nsm_41k_lexicon_crosswalk_audit_v1.py --orig-probes-only --explication-sidecar docs/final/artifacts/deepnsm_shadow_explication_v1.jsonl --expected-pairs 500 --out reports/nsm_41k_lexicon_crosswalk_audit_orig_only_shadow_v1_latest.json
+```
 
 ---
 
