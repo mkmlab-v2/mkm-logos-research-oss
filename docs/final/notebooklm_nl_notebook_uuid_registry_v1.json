@@ -1,0 +1,132 @@
+{
+  "schema": "notebooklm_nl_notebook_uuid_registry_v1",
+  "version": "1.3.0",
+  "updated_at_utc": "2026-06-21T02:00:00Z",
+  "display_name_note": "name = Google NL title seq 01-13 (NOTEBOOKLM_MINIMAL_PORTFOLIO v1.3)",
+  "portfolio_ssot": "docs/final/NOTEBOOKLM_MINIMAL_PORTFOLIO_V1.json",
+  "note": "Canonical NL notebook UUIDs for push scripts. MKM_CORE_FACT Track A; COMPRESSION_BTRACK dedicated B-track lane.",
+  "notebooks": {
+    "OPS_COMMAND": {
+      "uuid": "9bc26140-70c4-47d0-b9ea-bd3a394916a9",
+      "name": "01 · 지휘·운영",
+      "seq": 1,
+      "legacy_name": "00_OPS_COMMAND_ANCHOR_A_2026Q2",
+      "mcp_id": "00-ops-2026q2",
+      "data_lane": "ops_fact_lock"
+    },
+    "MKM_CORE_FACT": {
+      "uuid": "9cd23971-3e4b-4ca7-99b4-64e80accbf7f",
+      "name": "03 · 압축A Fact",
+      "seq": 3,
+      "legacy_name": "22_CORE_FACT_A_2026Q2",
+      "mcp_id": "22-acodeai-mkm-core-fact-2026q",
+      "data_lane": "mkm_core_fact",
+      "push_script": "scripts/push_notebooklm_core_fact_pack_nlm_v1.py",
+      "pack_dir": "reports/notebooklm_core_fact_sync_pack_v1"
+    },
+    "PHYSICIAN_GOLD": {
+      "uuid": "f9503fe6-d53d-4981-9094-874aa6baa76b",
+      "name": "06 · 임상 Physician",
+      "seq": 6,
+      "legacy_name": "20_CLINICIAN_PHYSICIAN_GOLD_A_2026Q2",
+      "mcp_id": "20-clinician-physician-gold-20",
+      "data_lane": "physician_gold"
+    },
+    "CONSUMER_SURVEY": {
+      "uuid": "45cfd207-18ad-4897-ae88-675eecdb16ab",
+      "name": "07 · MKMlife B2C",
+      "seq": 7,
+      "legacy_name": "21_MKMLIFE_CONSUMER_SURVEY_B_2026Q2",
+      "mcp_id": "21-mkmlife-consumer-survey-202",
+      "data_lane": "consumer_survey_only"
+    },
+    "MKM_CORE_INTELLIGENCE_V1_LEGACY": {
+      "uuid": "aba1f8b1-be62-4367-ac7f-b1a997bb77d4",
+      "name": "MKM_CORE_INTELLIGENCE_V1",
+      "status": "NOT_FOUND",
+      "superseded_by": "MKM_CORE_FACT",
+      "note": "Google API NOT_FOUND as of 2026-06-01; do not reference in push maps."
+    },
+    "COMPRESSION_BTRACK": {
+      "uuid": "8b0cf18f-1843-438e-8a76-709974e93c43",
+      "name": "04 · 압축B HYPO",
+      "seq": 4,
+      "legacy_name": "23_COMPRESSION_BTRACK_B_2026Q2",
+      "mcp_id": "23-compression-btrack-2026q2",
+      "data_lane": "compression_btrack",
+      "push_script": "scripts/push_notebooklm_compression_btrack_pack_nlm_v1.py",
+      "pack_dir": "reports/notebooklm_compression_btrack_sync_pack_v1"
+    },
+    "IJEOMA_BTRACK": {
+      "uuid": "71f55a03-09d0-411f-b365-0ce2a2064c24",
+      "name": "Fusion Insight Hub - Bible x Myeongri x Sasang",
+      "note": "Fallback when af639d3e dedicated notebook fails nlm add."
+    },
+    "ARCHIVE_MKM": {
+      "uuid": "9d463afb-328a-4496-b348-a65ca62bd8f7",
+      "name": "13 · 아카이브",
+      "seq": 13,
+      "legacy_name": "99_ARCHIVE_MKM_2026Q2",
+      "mcp_id": "99-archive-mkm-2026q2",
+      "data_lane": "archive_read_only",
+      "supersedes_stale_uuid": "9de651e6-199d-4ea7-88d5-cbca2f177312",
+      "register_script": "scripts/register_notebooklm_archive_mcp_v1.py",
+      "note": "nlm list 2026-06-01; no new production queries."
+    },
+    "TRACKC_BIZ": {
+      "uuid": "8aaccea1-a2e2-4080-b8c1-6bfc65ffcd8e",
+      "name": "02 · TrackC 사업",
+      "seq": 2,
+      "legacy_name": "24_TRACKC_BIZ_AB_2026Q2",
+      "mcp_id": "24-trackc-biz-ab-2026q2",
+      "data_lane": "trackc_biz"
+    },
+    "LENS_MYEONGNI": {
+      "uuid": "d87af9c2-bba3-4165-ad5b-de9314de1440",
+      "name": "09 · 명리 렌즈",
+      "seq": 9,
+      "legacy_name": "30_LENS_MYEONGNI_B_2026Q2",
+      "mcp_id": "30-lens-myeongni-b-2026q2",
+      "data_lane": "lens_myeongni"
+    },
+    "LENS_SASANG": {
+      "uuid": "90132f48-febd-471a-82a1-b6ec80d98618",
+      "name": "10 · 사상 렌즈",
+      "seq": 10,
+      "legacy_name": "31_LENS_SASANG_B_2026Q2",
+      "mcp_id": "31-lens-sasang-b-2026q2",
+      "data_lane": "lens_sasang"
+    },
+    "LENS_LOGOS": {
+      "uuid": "93e825c7-7d48-41f7-aedf-33e5fa59c2db",
+      "name": "11 · 성경 렌즈",
+      "seq": 11,
+      "legacy_name": "32_LENS_LOGOS_B_2026Q2",
+      "mcp_id": "32-lens-logos-b-2026q2",
+      "data_lane": "lens_logos"
+    },
+    "PROPHECY_BTRACK": {
+      "uuid": "beb8bdbb-0b89-4ed2-a6fa-d586a9bee546",
+      "name": "12 · 예언 관측",
+      "seq": 12,
+      "legacy_name": "07_PROPHECY_AB_2026Q2",
+      "mcp_id": "07-prophecy-ab-2026q2",
+      "data_lane": "prophecy_btrack",
+      "status": "observation_only",
+      "note": "Legacy 3e95ca50 superseded. Prophecy scoring SSOT = repo scripts."
+    },
+    "RESEARCH_SANDBOX": {
+      "uuid": "47ffa7da-9bd1-460b-8cac-48361715e48d",
+      "name": "14 · 리서치 샌드박스 (Universal Lexicon DR)",
+      "seq": 14,
+      "legacy_name": "05 · 리서치 샌드박스",
+      "mcp_id": "14-universal-lexicon-dr",
+      "data_lane": "research_sandbox",
+      "research_mode": "sandbox_only",
+      "status": "active_on_demand",
+      "register_script": "scripts/register_notebooklm_research_sandbox_mcp_v1.py",
+      "registry_alias": "NL_RESEARCH_SANDBOX",
+      "note": "Tier0 Universal Lexicon [HYPO] · excluded from 7-lens Push-NotebooklmLensPacks refresh · send_gate HOLD"
+    }
+  }
+}

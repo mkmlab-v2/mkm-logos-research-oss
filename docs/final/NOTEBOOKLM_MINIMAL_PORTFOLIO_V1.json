@@ -1,0 +1,255 @@
+{
+  "schema": "notebooklm_minimal_portfolio_v1",
+  "version": "1.3.1",
+  "updated_at_utc": "2026-06-21T02:00:00Z",
+  "synced_from": "Google NL — seq 01-14 (v1.3.1 research sandbox registered)",
+  "ssot_pointers": {
+    "manifest_v2": "docs/NotebookLM_sources_manifest.md",
+    "uuid_registry": "docs/final/notebooklm_nl_notebook_uuid_registry_v1.json",
+    "operator_board": "reports/notebooklm_portfolio_status_latest.md",
+    "rename_checklist": "reports/notebooklm_rename_checklist_latest.md",
+    "google_rename_script": "scripts/Invoke-NotebookLmGoogleRenameBatch_v1.ps1"
+  },
+  "naming_convention": {
+    "pattern": "{seq:02d} · {짧은제목}",
+    "max_chars_target": 24,
+    "note": "01부터 연속. 우선순위=매일→주간→프로젝트→도메인→렌즈→관측→아카이브. internal key(00_OPS 등)는 스크립트용 고정.",
+    "seq_order": "pin_daily → weekly → project → on_demand(clinical→product→lens) → observation → archive",
+    "google_rename": "nlm notebook rename (Invoke-NotebookLmGoogleRenameBatch_v1.ps1). MCP update_notebook은 library.json만."
+  },
+  "source_budget": {
+    "pro_plan_max_per_notebook": 300,
+    "recommended_active_max": 60,
+    "prune_targets": [
+      {"key": "00_OPS", "ui_sources": 77, "target_max": 50},
+      {"key": "99_ARCHIVE", "ui_sources": 181, "target_max": 20, "action": "move_legacy_to_archive_only"},
+      {"key": "06_SFARM", "ui_sources": 87, "target_max": 80}
+    ]
+  },
+  "usage_tiers": {
+    "pin_daily": ["00_OPS", "24_TRACKC"],
+    "weekly": ["22_CORE", "23_COMP_B"],
+    "on_demand": ["30_LENS_MYEONGNI", "31_LENS_SASANG", "32_LENS_LOGOS", "20_CLINICIAN", "21_MKMLIFE", "25_PERSONADIARY"],
+    "project": ["06_SFARM"],
+    "observation_only": ["07_PROPHECY"],
+    "archive_no_query": ["99_ARCHIVE", "SBA_ARCHIVED"],
+    "sandbox_on_demand": ["05_SANDBOX"]
+  },
+  "notebooks": [
+    {
+      "seq": 1,
+      "key": "00_OPS",
+      "canonical_name": "01 · 지휘·운영",
+      "legacy_name": "00 · 지휘·운영",
+      "status": "active_daily",
+      "tier": "A_core",
+      "uuid": "9bc26140-70c4-47d0-b9ea-bd3a394916a9",
+      "mcp_id": "00-ops-2026q2",
+      "lens_pack": "OPS_COMMAND_ANCHOR",
+      "ui_sources_approx": 77,
+      "source_budget_max": 50,
+      "source_action": "prune_duplicate_ops_snapshots",
+      "research_mode": "repo_only",
+      "when_to_use": "매일 — MISSION_LOG·게이트·다음 1타"
+    },
+    {
+      "seq": 2,
+      "key": "24_TRACKC",
+      "canonical_name": "02 · TrackC 사업",
+      "legacy_name": "24 · TrackC 사업",
+      "status": "active_daily",
+      "tier": "A_core",
+      "uuid": "8aaccea1-a2e2-4080-b8c1-6bfc65ffcd8e",
+      "mcp_id": "24-trackc-biz-ab-2026q2",
+      "lens_pack": "TRACKC_BIZ",
+      "ui_sources_approx": 10,
+      "source_budget_max": 50,
+      "research_mode": "curated_web",
+      "when_to_use": "사업·GTM·OpenData·B2B"
+    },
+    {
+      "seq": 3,
+      "key": "22_CORE",
+      "canonical_name": "03 · 압축A Fact",
+      "legacy_name": "22 · 압축A Fact",
+      "status": "active_weekly",
+      "tier": "A_core",
+      "uuid": "9cd23971-3e4b-4ca7-99b4-64e80accbf7f",
+      "mcp_id": "22-acodeai-mkm-core-fact-2026q",
+      "lens_pack": "MKM_CORE_FACT",
+      "ui_sources_approx": 57,
+      "source_budget_max": 60,
+      "research_mode": "forbidden",
+      "when_to_use": "압축 A·Inter-Agent — 웹 add 금지"
+    },
+    {
+      "seq": 4,
+      "key": "23_COMP_B",
+      "canonical_name": "04 · 압축B HYPO",
+      "legacy_name": "23 · 압축B HYPO",
+      "status": "active_weekly",
+      "tier": "A_core",
+      "uuid": "8b0cf18f-1843-438e-8a76-709974e93c43",
+      "mcp_id": "23-compression-btrack-2026q2",
+      "lens_pack": "COMPRESSION_BTRACK",
+      "ui_sources_approx": 46,
+      "source_budget_max": 55,
+      "research_mode": "repo_only",
+      "when_to_use": "압축 B-track [HYPO] 주간"
+    },
+    {
+      "seq": 5,
+      "key": "06_SFARM",
+      "canonical_name": "05 · 금산 스마트팜",
+      "legacy_name": "06 · 금산 스마트팜",
+      "status": "active_project",
+      "tier": "B_dynamic",
+      "uuid": "96865180-769e-4a77-89bb-5f03a8083ac3",
+      "mcp_id": "06-2026q2",
+      "pack_dir": "reports/notebooklm_smartfarm_geumsan_sync_pack_v1",
+      "ui_sources_approx": 87,
+      "source_budget_max": 80,
+      "source_action": "prune_below_80",
+      "research_mode": "curated_web",
+      "when_to_use": "금산 RFQ·벤더"
+    },
+    {
+      "seq": 6,
+      "key": "20_CLINICIAN",
+      "canonical_name": "06 · 임상 Physician",
+      "legacy_name": "20 · 임상 Physician",
+      "status": "active_on_demand",
+      "tier": "clinical",
+      "uuid": "f9503fe6-d53d-4981-9094-874aa6baa76b",
+      "mcp_id": "20-clinician-physician-gold-20",
+      "ui_sources_approx": 10,
+      "when_to_use": "한의사 gold — consumer와 cross-cite 금지"
+    },
+    {
+      "seq": 7,
+      "key": "21_MKMLIFE",
+      "canonical_name": "07 · MKMlife B2C",
+      "legacy_name": "21 · MKMlife B2C",
+      "status": "active_on_demand",
+      "tier": "clinical",
+      "uuid": "45cfd207-18ad-4897-ae88-675eecdb16ab",
+      "mcp_id": "21-mkmlife-consumer-survey-202",
+      "ui_sources_approx": 12,
+      "when_to_use": "B2C 설문·MAI — physician과 cross-cite 금지"
+    },
+    {
+      "seq": 8,
+      "key": "25_PERSONADIARY",
+      "canonical_name": "08 · PersonaDiary",
+      "legacy_name": "25 · PersonaDiary",
+      "status": "active_on_demand",
+      "tier": "product",
+      "uuid": "a82d394b-5c21-462c-ba3a-817b7cde064d",
+      "mcp_id": "25-personadiary-b2cip-ab-2026q",
+      "ui_sources_approx": 8,
+      "when_to_use": "PersonaDiary IP·브랜드"
+    },
+    {
+      "seq": 9,
+      "key": "30_LENS_MYEONGNI",
+      "canonical_name": "09 · 명리 렌즈",
+      "legacy_name": "30 · 명리 렌즈",
+      "status": "active_on_demand",
+      "tier": "B_lens",
+      "uuid": "d87af9c2-bba3-4165-ad5b-de9314de1440",
+      "mcp_id": "30-lens-myeongni-b-2026q2",
+      "lens_pack": "LENS_MYEONGNI",
+      "ui_sources_approx": 22,
+      "when_to_use": "명리 [HYPO] — 개인정보 업로드 금지"
+    },
+    {
+      "seq": 10,
+      "key": "31_LENS_SASANG",
+      "canonical_name": "10 · 사상 렌즈",
+      "legacy_name": "31 · 사상 렌즈",
+      "status": "active_on_demand",
+      "tier": "B_lens",
+      "uuid": "90132f48-febd-471a-82a1-b6ec80d98618",
+      "mcp_id": "31-lens-sasang-b-2026q2",
+      "lens_pack": "LENS_SASANG",
+      "ui_sources_approx": 5,
+      "when_to_use": "사상 [HYPO]"
+    },
+    {
+      "seq": 11,
+      "key": "32_LENS_LOGOS",
+      "canonical_name": "11 · 성경 렌즈",
+      "legacy_name": "32 · 성경 렌즈",
+      "status": "active_on_demand",
+      "tier": "B_lens",
+      "uuid": "93e825c7-7d48-41f7-aedf-33e5fa59c2db",
+      "mcp_id": "32-lens-logos-b-2026q2",
+      "lens_pack": "LENS_LOGOS",
+      "ui_sources_approx": 5,
+      "tag": "[NON_GATING]",
+      "when_to_use": "성경 해설 — 실전 트리거 금지"
+    },
+    {
+      "seq": 12,
+      "key": "07_PROPHECY",
+      "canonical_name": "12 · 예언 관측",
+      "legacy_name": "07 · 예언 관측",
+      "status": "observation_only",
+      "tier": "B_prophecy",
+      "uuid": "beb8bdbb-0b89-4ed2-a6fa-d586a9bee546",
+      "mcp_id": "07-prophecy-ab-2026q2",
+      "lens_pack": "LENS_PROPHECY",
+      "ui_sources_approx": 20,
+      "research_mode": "sandbox_only",
+      "when_to_use": "예언 [HYPO] — 채점 SSOT는 레포만"
+    },
+    {
+      "seq": 13,
+      "key": "99_ARCHIVE",
+      "canonical_name": "13 · 아카이브",
+      "legacy_name": "99 · 아카이브",
+      "status": "archive_read_only",
+      "tier": "archive",
+      "uuid": "9d463afb-328a-4496-b348-a65ca62bd8f7",
+      "mcp_id": "99-archive-mkm-2026q2",
+      "ui_sources_approx": 181,
+      "source_action": "no_new_adds_prune_if_possible",
+      "when_to_use": "레거시 조회만 — 질의 금지"
+    },
+    {
+      "seq": 14,
+      "key": "05_SANDBOX",
+      "canonical_name": "14 · 리서치 샌드박스 (Universal Lexicon DR)",
+      "legacy_name": "05 · 리서치 샌드박스",
+      "status": "active_on_demand",
+      "tier": "B_dynamic",
+      "uuid": "47ffa7da-9bd1-460b-8cac-48361715e48d",
+      "mcp_id": "14-universal-lexicon-dr",
+      "registry_key": "RESEARCH_SANDBOX",
+      "note": "Tier0 Universal Lexicon DR · MCP registered 2026-06-21 · not in lens-pack auto-refresh",
+      "research_mode": "sandbox_only",
+      "when_to_use": "Tier0/B-track [HYPO] 격리 — Universal Lexicon·NSM·MDL·shallow router"
+    }
+  ],
+  "mcp_only_archived": [
+    {
+      "key": "SBA_ARCHIVED",
+      "canonical_name": "SBA · 챌린지(보관)",
+      "legacy_name": "[ARCHIVED] SBA 2026 모두의 챌린지",
+      "uuid": "b25977f3-1f92-4075-8dfe-d4074ca708a7",
+      "action": "hide_from_daily_use"
+    }
+  ],
+  "deprecated": [
+    {"uuid": "aba1f8b1-be62-4367-ac7f-b1a997bb77d4", "was": "MKM_CORE_INTELLIGENCE_V1", "superseded_by": "22_CORE"},
+    {"uuid": "347e5cbe-0ade-4615-9aac-8747d4fa644e", "was": "00_MASTER_TRACKC_BOARD", "superseded_by": "24_TRACKC"},
+    {"uuid": "71f55a03-09d0-411f-b365-0ce2a2064c24", "was": "Fusion Hub", "superseded_by": "30/31/32_LENS"},
+    {"uuid": "3e95ca50-66f8-4b54-b0ef-81821c199518", "was": "07_PROPHECY legacy", "superseded_by": "07_PROPHECY"}
+  ],
+  "operator_routine": {
+    "daily_notebooks": ["01 · 지휘·운영", "02 · TrackC 사업"],
+    "weekly_script": "powershell -File scripts/Invoke-NotebookLmPortfolioRoutine_v1.ps1",
+    "google_rename_script": "powershell -File scripts/Invoke-NotebookLmGoogleRenameBatch_v1.ps1",
+    "ui_cleanup_priority": ["00_OPS prune 77→50", "99_ARCHIVE freeze", "06_SFARM prune 87→80"]
+  }
+}
