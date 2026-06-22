@@ -49,6 +49,13 @@
       "notes_ko": "jema-ai(no1kmedi) 내부 API 규격: internal-api-auth.ts·.env.example 통신 계약 정적 검사. 선택적 Security Agent(DPAPI) 프로브는 환경 AMSAENG_NO1KMEDI_SECURITY_AGENT_PROBE=1 일 때만 거버넌스 주기에서 활성."
     },
     {
+      "id": "marketing_ip_governance",
+      "tier": "observe",
+      "scripts": ["scripts/check_mkm_marketing_ip_governance_v1.py"],
+      "artifacts": ["reports/mkm_marketing_ip_governance_gate_v1_latest.json"],
+      "notes_ko": "P0 showroom/marketing IP blocklist + positioning Fact-Lock; sync_showroom pre-scp gate parity. Invoke-AmsaengEosaGovernanceCycle 기본 포함."
+    },
+    {
       "id": "monitoring_bundle",
       "tier": "automate_low_risk",
       "scripts": ["scripts/Run-AmsaengEosaMonitoringBundleTask.ps1"],

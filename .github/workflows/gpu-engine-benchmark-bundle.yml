@@ -67,6 +67,10 @@ jobs:
     name: benchmark (hosted fallback-allowed)
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    env:
+      BENCHMARK_BTC_START: ${{ inputs.btc_start || '2026-03-20' }}
+      BENCHMARK_BTC_END: ${{ inputs.btc_end || '2026-04-18' }}
+      BENCHMARK_PROPHECY_TOP_K: ${{ inputs.prophecy_top_k || '5' }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-python@v6
@@ -77,9 +81,9 @@ jobs:
       - name: Run unified benchmark bundle builder
         run: >
           python3 scripts/build_gpu_engine_benchmark_bundle_v1.py
-          --btc-start "${{ inputs.btc_start }}"
-          --btc-end "${{ inputs.btc_end }}"
-          --prophecy-top-k "${{ inputs.prophecy_top_k }}"
+          --btc-start "${{ env.BENCHMARK_BTC_START }}"
+          --btc-end "${{ env.BENCHMARK_BTC_END }}"
+          --prophecy-top-k "${{ env.BENCHMARK_PROPHECY_TOP_K }}"
       - name: Upload benchmark artifact
         if: ${{ github.event_name == 'schedule' || inputs.upload_artifacts == true }}
         uses: actions/upload-artifact@v6
@@ -111,6 +115,12 @@ jobs:
     if: ${{ github.event_name == 'schedule' || inputs.run_self_hosted_gpu == true }}
     runs-on: [self-hosted, gpu]
     timeout-minutes: 240
+    env:
+      BENCHMARK_BTC_START: ${{ inputs.btc_start || '2026-03-20' }}
+      BENCHMARK_BTC_END: ${{ inputs.btc_end || '2026-04-18' }}
+      BENCHMARK_PROPHECY_TOP_K: ${{ inputs.prophecy_top_k || '5' }}
+      BENCHMARK_SAMPLE_COUNT: ${{ inputs.sample_count || '5' }}
+      BENCHMARK_MAX_REGRESSION_PCT: ${{ inputs.max_regression_pct || '10' }}
     steps:
       - uses: actions/checkout@v5
       - name: Detect Python on self-hosted runner
@@ -122,18 +132,18 @@ jobs:
       - name: Run unified benchmark bundle builder
         run: >
           python scripts/build_gpu_engine_benchmark_bundle_v1.py
-          --btc-start "${{ inputs.btc_start }}"
-          --btc-end "${{ inputs.btc_end }}"
-          --prophecy-top-k "${{ inputs.prophecy_top_k }}"
+          --btc-start "${{ env.BENCHMARK_BTC_START }}"
+          --btc-end "${{ env.BENCHMARK_BTC_END }}"
+          --prophecy-top-k "${{ env.BENCHMARK_PROPHECY_TOP_K }}"
       - name: Run repeated GPU benchmark samples (self-hosted)
         run: |
           New-Item -ItemType Directory -Path tmp/gpu-regression-samples -Force | Out-Null
-          $sampleCount = [int]"${{ inputs.sample_count }}"
+          $sampleCount = [int]"${{ env.BENCHMARK_SAMPLE_COUNT }}"
           if ($sampleCount -lt 1 -or $sampleCount -gt 9) {
             throw "sample_count must be between 1 and 9. got=$sampleCount"
           }
           for ($i = 1; $i -le $sampleCount; $i++) {
-            python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ inputs.btc_start }}" --btc-end "${{ inputs.btc_end }}" --prophecy-top-k "${{ inputs.prophecy_top_k }}" --output "tmp/gpu-regression-samples/sample_$i.json"
+            python scripts/build_gpu_engine_benchmark_bundle_v1.py --btc-start "${{ env.BENCHMARK_BTC_START }}" --btc-end "${{ env.BENCHMARK_BTC_END }}" --prophecy-top-k "${{ env.BENCHMARK_PROPHECY_TOP_K }}" --output "tmp/gpu-regression-samples/sample_$i.json"
           }
       - name: Enforce CUDA usage on GPU runner
         if: ${{ inputs.require_cuda_on_gpu_runner == true }}
@@ -141,7 +151,7 @@ jobs:
           python -c "import json,pathlib,sys; p=pathlib.Path('docs/final/artifacts/gpu_engine_benchmark_bundle_v1_latest.json'); doc=json.loads(p.read_text(encoding='utf-8')); bad=[]; runs=(doc.get('runs') or {}); [bad.append((name,(run.get('engine') or {}).get('used'))) for name,run in runs.items() if ((run.get('engine') or {}).get('requested')=='cuda' and (run.get('engine') or {}).get('used')!='cuda')]; [print(f'ERROR: {name} expected cuda but used={used}') for name,used in bad]; sys.exit(1 if bad else 0)"
       - name: Check GPU performance regression vs baseline
         run: |
-          $sampleCount = [int]"${{ inputs.sample_count }}"
+          $sampleCount = [int]"${{ env.BENCHMARK_SAMPLE_COUNT }}"
           if ($sampleCount -lt 1 -or $sampleCount -gt 9) {
             throw "sample_count must be between 1 and 9. got=$sampleCount"
           }
@@ -149,7 +159,7 @@ jobs:
           for ($i = 1; $i -le $sampleCount; $i++) {
             $bundleArgs += @("--bundle", "tmp/gpu-regression-samples/sample_$i.json")
           }
-          python scripts/check_gpu_engine_benchmark_regression.py @bundleArgs --baseline docs/final/artifacts/gpu_engine_benchmark_baseline_v1.json --max-regression-pct "${{ github.event_name == 'schedule' && '10' || inputs.max_regression_pct }}"
+          python scripts/check_gpu_engine_benchmark_regression.py @bundleArgs --baseline docs/final/artifacts/gpu_engine_benchmark_baseline_v1.json --max-regression-pct "${{ github.event_name == 'schedule' && env.BENCHMARK_MAX_REGRESSION_PCT || inputs.max_regression_pct }}"
       - name: Upload benchmark artifact
         if: ${{ always() && (github.event_name == 'schedule' || inputs.upload_artifacts == true) }}
         uses: actions/upload-artifact@v6

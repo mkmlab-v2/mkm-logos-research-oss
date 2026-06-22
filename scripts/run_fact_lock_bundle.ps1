@@ -37,6 +37,11 @@
   5c2b. `py -m pytest tests/test_generate_linkedin_b2b_copy_v1.py tests/test_check_linkedin_b2b_draft_copy_v1.py` — LinkedIn B2B draft queue v1(로컬 JSON·assemble/Gemini·카피 가드; 자동 발행 없음). `-SkipLinkedInB2bDraftSmoke` 로 생략.
   5c3. `py -m pytest tests/test_semantic_rag_bridge_insight_bundle_schema_v1.py tests/test_build_semantic_rag_bridge_insight_bundle_v1.py` — 내부 시맨틱+RAG 번역 브리지 번들 v1(스키마·Premium/철학 병합 CLI; `dual-regime-integrity.yml` 동일 단계).
   5d. `py -m pytest tests/test_mkm_control_integrity_pipeline_smoke_v1.py` — Control-Integrity Golden/LoRA 파이프라인 스모크(aggregate·프로모션 게이트·오라클 추론 타이밍; GPU 불필요). `-SkipMkmControlIntegritySmoke` 로 생략.
+  5f. (선택) `-IncludeDeepResearchBenchSmoke` — DR bench mini offline pytest + offline harness(`--require-entry-level`) + ops paste md/json(B-track; arXiv 네트워크 없음). 주간 online은 `Invoke-MkmDeepResearchBenchWeekly_v1.ps1`.
+  5g. (선택) `-IncludeKoShortsSmoke` — ko shorts STT 자막 파이프라인 offline pytest 9종(B-track; whisper 미실행). 원클릭: `py scripts/run_ko_shorts_full_chain_v1.py --include-delegate --include-drift-kpi`.
+  5h. (선택) `-IncludeMkmDeploymentAxisIsolationSmoke` — mkmlife CF vs jema/logos DNS deploy-axis 격벽 probe pytest + live chain(`--profile core`; B-track `[HYPO]`). 주간 Task `MKM_Deployment_Axis_Isolation_Weekly`.
+  5i. (선택) `-IncludeMagicOrbDesignReadiness` — Magic Orb **design/UX** Playwright screenshot + `magic_orb_design_readiness_v1` merge(B-track; `consumer_ready` false면 holistic 「잘 됨」 금지). chain `run_magic_orb_design_readiness_chain_v1.py`.
+  5j. (선택) `-IncludeMarketingIpGovernance` — P0 marketing/showroom IP gate + pytest (`check_mkm_marketing_ip_governance_v1.py`; sync_showroom pre-scp와 동일).
   5d2. `py -m pytest tests/test_va_fusion_control_integrity_chain_v1.py tests/test_va_fusion_policy_golden_v1.py` — VA→fusion→감사 체인 + `va_tag_boost_v1` 정책 골든(CONSTITUTION §3.8.4). `-SkipVaFusionControlIntegritySmoke` 로 생략.
   5e. 사상–사주 조인트 문헌·큐레이트 회귀 **9**개 파일(Europe PMC 픽스처·오프라인 **7** + 인제스트 **1** + staleness **1**; CONSTITUTION §3.3 표「사상체질↔문헌↔사주 조인트」). `-SkipSasangSajuJointLiteraturePipeline` 로 생략.
   6. (기본) 명리·멀티렌즈 **권장 스택** — CI `multilens-independent-lens-smoke`와 동일 **15**개 pytest 파일(선행: 일일 브리프 1 + Thin 브리지 1; 이어 배치 13에 Yang 2015 B-track 스키마·벤치 포함). `-SkipMyeongniLensRecommendedStack` 로 생략.
@@ -181,6 +186,15 @@
 .PARAMETER SkipSchedulerSoloCoreStackSmoke
   MKM solo scheduler SSOT band gate pytest 3종(`tests/test_mkm_scheduler_solo_core_stack_audit_v1.py`; 오프라인+EnforceSoloBand 스모크) 생략.
 
+.PARAMETER IncludeDeepResearchBenchSmoke
+  DR bench mini offline smoke: pytest(`test_mkm_deep_research_bench_mini_v1` + `test_build_mkm_deep_research_bench_ops_paste_v1`) + offline harness + ops paste. B-track only; no arXiv network.
+
+.PARAMETER IncludeKoShortsSmoke
+  ko shorts STT subtitle pipeline offline pytest (semantic chunk, gate/burn-in, scholarly guard, Cursor QA, full chain planner, alignment routing, target wav resolve/delegate, drift KPI). B-track; no whisper. Full run: `py scripts/run_ko_shorts_full_chain_v1.py --include-delegate --include-drift-kpi`.
+
+.PARAMETER IncludeMarketingIpGovernance
+  P0 marketing/showroom IP governance: `py scripts/check_mkm_marketing_ip_governance_v1.py` + `tests/test_mkm_marketing_ip_governance_v1.py` (sync_showroom pre-scp gate parity).
+
 .PARAMETER SkipSafeOpsSurfaceCheck
   말미 권장 단계 `Invoke-SafeOpsSurfaceCheck.ps1`(운영 표면·신선도·Verify-Trading) 생략.
 
@@ -218,6 +232,24 @@ param(
     # Optional: general_prophecy registry/export pytest + weather triplet smoke (see scripts\Run-BTrackDomainFeedbackSmoke.ps1).
     # When default news smoke ran above, invokes -SkipNews on that wrapper to avoid duplicate news steps.
     [switch]$IncludeBTrackDomainFeedbackSmoke,
+
+    # Optional: DR bench mini offline + ops paste (B-track; no arXiv network)
+    [switch]$IncludeDeepResearchBenchSmoke,
+
+    # Optional: ko shorts STT subtitle pipeline offline pytest (B-track; no whisper)
+    [switch]$IncludeKoShortsSmoke,
+
+    # Optional: mkmlife CF vs jema/logos DNS deploy-axis isolation (offline pytest + live probe chain)
+    [switch]$IncludeMkmDeploymentAxisIsolationSmoke,
+
+    # Optional: Magic Orb design/UX readiness (Playwright + merge; consumer_ready gate)
+    [switch]$IncludeMagicOrbDesignReadiness,
+
+    # Optional: P0 marketing IP governance gate (showroom public copy blocklist + positioning Fact-Lock)
+    [switch]$IncludeMarketingIpGovernance,
+
+    # Domain adapter pointer smoke (pixel_battalion + lens_audio · sync_bridge + ops overlay)
+    [switch]$IncludeDomainAdapterPointerSmoke,
 
     # Myeongni / multilens recommended CI parity (9 pytests, excluding daily brief + thin bridge already run above)
     [switch]$SkipMyeongniLensRecommendedStack,
@@ -275,6 +307,9 @@ param(
 
     # Gitea/internal merge precheck summary (1 pytest; research_only)
     [switch]$SkipCodingIntentGiteaMergePrecheckSmoke,
+
+    # TKM encounter_sequence P18–P26 gate smoke (match_rate + delta + weekly; research_only)
+    [switch]$SkipTkmEncounterSequenceSmoke,
 
     # Recommended tail: Invoke-SafeOpsSurfaceCheck.ps1 after pytest bundle (exit 2 fails; exit 1 warns only).
     [switch]$SkipSafeOpsSurfaceCheck,
@@ -403,6 +438,12 @@ $mkmDomainDesignOfflinePytests = @(
     (Join-Path $workspaceRoot 'tests\test_mkmlife_skim_read_preference_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_mkm_consumer_facade_v1.py')
 )
+$domainAdapterPointerPytests = @(
+    (Join-Path $workspaceRoot 'tests\test_mkm_ops_memory_domain_adapters_overlay_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_check_mkm_ops_sync_bridge_domain_adapters_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_apply_mkmlife_pixel_language_local_sprite_paths_v1.py')
+)
+$domainAdapterPointerSmoke = Join-Path $workspaceRoot 'scripts\Run-DomainAdapterPointerSmoke_v1.ps1'
 $mkmDomainDesignTokensScript = Join-Path $workspaceRoot 'scripts\check_mkm_domain_design_tokens_v1.py'
 $myeongniThinBridgeTest = Join-Path $workspaceRoot 'tests\test_emit_myeongni_thin_bridge_line_v1.py'
 $mkmBriefingGuardrailsTest = Join-Path $workspaceRoot 'tests\test_validate_mkm_personal_briefing_guardrails_v1.py'
@@ -505,6 +546,12 @@ if (-not $SkipCursorRulesContextDiet) {
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }
+}
+
+Write-Host '== Fact-Lock: check_logos_track_a_miswire_guard_v1.py ==' -ForegroundColor Cyan
+& py (Join-Path $workspaceRoot 'scripts\check_logos_track_a_miswire_guard_v1.py')
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
 }
 
 Write-Host '== Fact-Lock: run_prophecy_alignment_pytest.ps1 ==' -ForegroundColor Cyan
@@ -879,6 +926,22 @@ if (-not $SkipMkmDomainDesignOfflineSmoke) {
     }
 }
 
+if ($IncludeDomainAdapterPointerSmoke) {
+    if (-not (Test-Path -LiteralPath $domainAdapterPointerSmoke)) {
+        throw "Domain adapter pointer smoke not found: $domainAdapterPointerSmoke"
+    }
+    foreach ($t in $domainAdapterPointerPytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "Domain adapter pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: Run-DomainAdapterPointerSmoke_v1.ps1 ==' -ForegroundColor Cyan
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $domainAdapterPointerSmoke
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
 if (-not (Test-Path -LiteralPath $myeongniThinBridgeTest)) {
     throw "Myeongni thin bridge pytest not found: $myeongniThinBridgeTest"
 }
@@ -1128,6 +1191,120 @@ if (-not $SkipSchedulerSoloCoreStackSmoke) {
     else {
         Write-Host '== Fact-Lock: MKM scheduler solo core stack band gate (pytest) ==' -ForegroundColor Cyan
         & py -m pytest $schedulerPytest -q
+        if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+        }
+    }
+}
+
+if ($IncludeKoShortsSmoke) {
+    $koShortsPytests = @(
+        (Join-Path $workspaceRoot 'tests\test_media_stt_transcription_lib_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_subtitle_gate_and_burnin_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_scholarly_mode_guard_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_cursor_ide_qa_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_full_chain_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_alignment_backend_spike_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_target_wav_validate_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_alignment_routing_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_target_wav_resolve_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_timing_drift_kpi_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_ko_shorts_pause_chunk_grid_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_check_ko_shorts_preview_health_v1.py')
+    )
+    foreach ($t in $koShortsPytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "ko shorts smoke pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock (optional): ko shorts STT subtitle pipeline offline pytest (B-track) ==' -ForegroundColor Cyan
+    & py -m pytest @koShortsPytests -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeDeepResearchBenchSmoke) {
+    $drBenchPytests = @(
+        (Join-Path $workspaceRoot 'tests\test_mkm_deep_research_bench_mini_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_build_mkm_deep_research_bench_ops_paste_v1.py')
+    )
+    $drBenchScript = Join-Path $workspaceRoot 'scripts\run_mkm_deep_research_bench_mini_v1.py'
+    $drPasteScript = Join-Path $workspaceRoot 'scripts\build_mkm_deep_research_bench_ops_paste_v1.py'
+    foreach ($t in $drBenchPytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "DR bench smoke pytest not found: $t"
+        }
+    }
+    if (-not (Test-Path -LiteralPath $drBenchScript)) {
+        throw "DR bench harness not found: $drBenchScript"
+    }
+    if (-not (Test-Path -LiteralPath $drPasteScript)) {
+        throw "DR bench ops paste builder not found: $drPasteScript"
+    }
+    Write-Host '== Fact-Lock (optional): DR bench mini offline + ops paste (B-track) ==' -ForegroundColor Cyan
+    & py -m pytest @drBenchPytests -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+    & py $drBenchScript --offline --include-router --require-entry-level
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+    & py $drPasteScript
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeMkmDeploymentAxisIsolationSmoke) {
+    $axisPytest = Join-Path $workspaceRoot 'tests\test_probe_mkm_deployment_axis_isolation_v1.py'
+    $axisChain = Join-Path $workspaceRoot 'scripts\run_mkm_deployment_axis_isolation_chain_v1.py'
+    if (-not (Test-Path -LiteralPath $axisPytest)) {
+        throw "deployment axis isolation pytest not found: $axisPytest"
+    }
+    if (-not (Test-Path -LiteralPath $axisChain)) {
+        throw "deployment axis isolation chain not found: $axisChain"
+    }
+    Write-Host '== Fact-Lock (optional): MKM deployment axis isolation (offline pytest + live probe) ==' -ForegroundColor Cyan
+    & py -m pytest $axisPytest -q --tb=short
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+    & py $axisChain --profile core
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeMagicOrbDesignReadiness) {
+    $designChain = Join-Path $workspaceRoot 'scripts\run_magic_orb_design_readiness_chain_v1.py'
+    if (-not (Test-Path -LiteralPath $designChain)) {
+        throw "magic orb design readiness chain not found: $designChain"
+    }
+    Write-Host '== Fact-Lock (optional): Magic Orb design readiness (probe + Playwright + SSOT merge) ==' -ForegroundColor Cyan
+    & py $designChain
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeMarketingIpGovernance) {
+  Write-Host '== Fact-Lock (optional): Marketing IP governance (P0 showroom gate) ==' -ForegroundColor Cyan
+  & py (Join-Path $workspaceRoot 'scripts\check_mkm_marketing_ip_governance_v1.py')
+  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+  & py -m pytest (Join-Path $workspaceRoot 'tests\test_mkm_marketing_ip_governance_v1.py') -q --tb=short
+  if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+if (-not $SkipTkmEncounterSequenceSmoke) {
+    $tkmEncounterSmoke = Join-Path $workspaceRoot 'scripts\run_tkm_encounter_sequence_fact_lock_smoke_v1.py'
+    if (-not (Test-Path -LiteralPath $tkmEncounterSmoke)) {
+        Write-Host "WARN: TKM encounter_sequence smoke missing; skip: $tkmEncounterSmoke" -ForegroundColor Yellow
+    }
+    else {
+        Write-Host '== Fact-Lock: TKM encounter_sequence gate smoke (P18–P26) ==' -ForegroundColor Cyan
+        & py $tkmEncounterSmoke
         if ($LASTEXITCODE -ne 0) {
             exit $LASTEXITCODE
         }

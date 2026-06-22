@@ -15,7 +15,7 @@
 .PARAMETER SoftFail
   최종 exit 0 (reports JSON 에 would_exit 기록). 번들 말단 연동용.
 
-.PARAMETER SkipSafeOps / SkipMcpHygiene / SkipSecretHygiene / SkipNo1kmediApiProbe
+.PARAMETER SkipSafeOps / SkipMcpHygiene / SkipSecretHygiene / SkipNo1kmediApiProbe / SkipMarketingIpGovernance
   단계 생략.
 
 .PARAMETER SkipAlertLog
@@ -29,6 +29,7 @@ param(
     [switch]$SkipMcpHygiene,
     [switch]$SkipSecretHygiene,
     [switch]$SkipNo1kmediApiProbe,
+    [switch]$SkipMarketingIpGovernance,
     [switch]$SoftFail,
     [switch]$SkipAlertLog,
     [string]$OutJson = ""
@@ -111,6 +112,18 @@ if (-not $SkipNo1kmediApiProbe) {
     }
     else {
         Add-Phase "no1kmedi_internal_api_contract" -1
+    }
+}
+
+if (-not $SkipMarketingIpGovernance) {
+    $ipGate = Join-Path $WorkspaceRoot "scripts\check_mkm_marketing_ip_governance_v1.py"
+    if (Test-Path -LiteralPath $ipGate) {
+        $py = if (Get-Command py -ErrorAction SilentlyContinue) { "py" } else { "python" }
+        & $py $ipGate
+        Add-Phase "marketing_ip_governance" $LASTEXITCODE
+    }
+    else {
+        Add-Phase "marketing_ip_governance" -1
     }
 }
 
