@@ -37,6 +37,18 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify_p0_constituti
 
 Default is **one clone = monorepo root**. Add extra repos in Dashboard only when a task truly spans repos (see `AGENTS.md` 도메인 핸드오프).
 
+## /in-cloud (Cursor 3.7+)
+
+| Use cloud (`/in-cloud`) | Keep local |
+| --- | --- |
+| Full Fact-Lock bundle · long pytest | `MISSION_LOG` · resume pack · checkpoint |
+| B-track explore · CI fix PR (`/babysit`) | NotebookLM auth · DPAPI · `.env` |
+| Large refactor / codebase search | Browser Tier 3 · ECC `athena_run_v1` |
+
+SSOT matrix: `docs/final/artifacts/mkm_in_cloud_offload_matrix_v1_latest.json`
+
+Onboard (steps 1–3): `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmCursor39Onboard_v1.ps1`
+
 ## Guardrails
 
 `.cursor/rules/cursor-cloud-sandbox-boundary.mdc` · Changelog map: `projects/bitcoin-trading/ops/v2/CURSOR_CHANGELOG_INTEGRATION_PLAN_2026-03-24.md` §3.4.

@@ -3,7 +3,10 @@ param(
     [switch]$SetUpstream,
     # When false (default), after a successful push (or already-up-to-date), run
     # scripts/Invoke-GiteaRedundantDevBranchPrune_v1.ps1 if remote "gitea" exists.
-    [switch]$NoAutoPruneRedundantDev
+    [switch]$NoAutoPruneRedundantDev,
+    # Cursor 3.7+ /review ack required (scripts/Invoke-CursorPrePushReview_v1.ps1 -Ack after /review in chat).
+    [switch]$RequirePrePushReview,
+    [switch]$SkipPrePushReviewCheck
 )
 
 $ErrorActionPreference = "Stop"
@@ -38,6 +41,21 @@ if (-not $remoteName) {
 Write-Host "[INFO] Repo:   $repoRoot" -ForegroundColor Cyan
 Write-Host "[INFO] Branch: $branch" -ForegroundColor Cyan
 Write-Host "[INFO] Push -> $remoteName ($remoteUrl)" -ForegroundColor Cyan
+
+if (-not $SkipPrePushReviewCheck) {
+    $reviewScript = Join-Path $PSScriptRoot "Invoke-CursorPrePushReview_v1.ps1"
+    if (Test-Path -LiteralPath $reviewScript) {
+        & $reviewScript -CheckOnly
+        $reviewExit = $LASTEXITCODE
+        if ($reviewExit -ne 0) {
+            $msg = "Pre-push /review ack missing for current HEAD. Run /review in Cursor, then: powershell -File scripts\Invoke-CursorPrePushReview_v1.ps1 -Ack"
+            if ($RequirePrePushReview) {
+                throw $msg
+            }
+            Write-Warning $msg
+        }
+    }
+}
 
 function Invoke-PostPushGiteaRedundantDevPrune {
     if ($NoAutoPruneRedundantDev) { return }
