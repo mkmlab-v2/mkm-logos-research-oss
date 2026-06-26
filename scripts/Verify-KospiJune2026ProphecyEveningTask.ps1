@@ -22,6 +22,8 @@ param(
 
     [string]$WorkspaceRoot = "C:\workspace",
 
+    [string]$YearMonth = "2026-06",
+
     [switch]$EveningOnly
 
 )
@@ -86,7 +88,7 @@ function Test-KospiJuneTask {
 
     $phaseOk = ($args -match "-Phase\s+$ExpectedPhase")
 
-    $yearOk = ($args -match "-YearMonth\s+2026-06")
+    $yearOk = ($args -match "-YearMonth\s+$([regex]::Escape($YearMonth))")
 
     $skipOk = if ($RequireSkipHeavy) { ($args -match "-SkipHeavyResearch") } else { $true }
 
@@ -106,7 +108,7 @@ function Test-KospiJuneTask {
 
     Write-Output ("skip_heavy_research_ok={0}" -f $skipOk)
 
-    Write-Output ("year_month_2026_06_ok={0}" -f $yearOk)
+    Write-Output ("year_month_{0}_ok={1}" -f ($YearMonth -replace '-', '_'), $yearOk)
 
     Write-Output ("evening_loop_action_ok={0}" -f $loopOk)
 
