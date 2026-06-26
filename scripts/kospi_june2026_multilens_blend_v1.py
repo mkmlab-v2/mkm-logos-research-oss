@@ -250,6 +250,7 @@ def blend_v2_multilens(
     if abs(blended_score) <= neutral_band * 0.5 and winner in ("bull", "bear"):
         if votes.get("neutral", 0) >= votes.get(winner, 0) * 0.85:
             winner = "neutral"
+            resolution_mode = "neutral_plurality"
 
     detail = {
         "profile": "v2_multilens",
