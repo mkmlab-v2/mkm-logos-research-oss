@@ -39,11 +39,26 @@ def test_bundle_matches_schema_and_labels():
     assert gate.get("track") == "B"
     ids = {s["axis_id"] for s in doc["sections"]}
     assert "geumhwagyoyeok" in ids and "bomyung_jiju" in ids and "prediction" in ids
-    assert doc["version"] == "1.1.0"
+    assert doc["version"] == "1.5.0"
     syn = doc.get("synthesis_v1") or {}
     assert len(syn.get("how_to_synthesize_ko", "")) >= 80
+    assert "force_hold" in syn.get("disagreement_protocol_ko", "")
     for s in doc["sections"]:
         assert len(s.get("interpretive_depth_ko", "")) >= 60
+    ids = {s["axis_id"] for s in doc["sections"]}
+    assert "regime_mkm_split_v1" in ids
+    byeong = next(s for s in doc["sections"] if s["axis_id"] == "byeongjeung_yakri")
+    sw = byeong.get("symptom_weights_v1") or {}
+    assert sw.get("schema") == "sasang_byeongjeung_symptom_weights_v1"
+    assert sw.get("auto_clinical_trigger") is False
+    assert "jeongchung" in (sw.get("by_constitution", {}).get("taeeum_in", {}).get("weights") or {})
+    assert "persona_diary_myeongni_sasang_lane" in ids
+    assert "fabba_sidecar_ngram_lut" in ids
+    fabba = next(s for s in doc["sections"] if s["axis_id"] == "fabba_sidecar_ngram_lut")
+    ptr = fabba.get("shadow_metrics_pointer") or {}
+    if ptr.get("present"):
+        assert ptr.get("vote_participation") == "none"
+        assert ptr.get("non_gating") is True
 
 
 def test_builder_cli_writes_json(tmp_path: Path) -> None:

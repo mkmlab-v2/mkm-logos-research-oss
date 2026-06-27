@@ -95,7 +95,11 @@
               "byeongjeung_yakri",
               "prediction",
               "sasang_lens_core",
-              "market_sasang_lens"
+              "market_sasang_lens",
+              "sasang_rail_gates",
+              "regime_mkm_split_v1",
+              "persona_diary_myeongni_sasang_lane",
+              "fabba_sidecar_ngram_lut"
             ]
           },
           "title_ko": { "type": "string" },
@@ -125,7 +129,16 @@
               }
             }
           },
-          "rail_note_ko": { "type": "string" }
+          "rail_note_ko": { "type": "string" },
+          "symptom_weights_v1": {
+            "type": "object",
+            "description": "Optional 병증약리 symptom reference weights (정충·부종); byeongjeung_yakri axis only.",
+            "additionalProperties": true
+          },
+          "shadow_metrics_pointer": {
+            "type": ["object", "null"],
+            "description": "Optional read-only pointer to phase3 shadow metrics (B-track)."
+          }
         }
       }
     }

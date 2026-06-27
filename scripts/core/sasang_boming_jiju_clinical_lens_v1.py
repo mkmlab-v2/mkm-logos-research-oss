@@ -32,6 +32,18 @@ KO_LABEL_TO_ID: dict[str, str] = {
     "소양인": "soyang_in",
 }
 
+# encounter_sequence ai_hypothesis short romanized labels (B-track only).
+ROMANIZED_LABEL_TO_ID: dict[str, str] = {
+    "taeeum": "taeeum_in",
+    "taeeumin": "taeeum_in",
+    "taeyang": "taeyang_in",
+    "taeyangin": "taeyang_in",
+    "soeum": "soeum_in",
+    "soeumin": "soeum_in",
+    "soyang": "soyang_in",
+    "soyangin": "soyang_in",
+}
+
 CONSTITUTION_STATIC: dict[str, dict[str, Any]] = {
     "soeum_in": {
         "organ_axis_ko": "腎大脾小 (비·신 축)",
@@ -137,6 +149,9 @@ def resolve_constitution_id(label: str) -> str | None:
     head = re.split(r"[\s(（]", raw, maxsplit=1)[0].strip()
     if head in KO_LABEL_TO_ID:
         return KO_LABEL_TO_ID[head]
+    roman = head.lower()
+    if roman in ROMANIZED_LABEL_TO_ID:
+        return ROMANIZED_LABEL_TO_ID[roman]
     for ko, cid in KO_LABEL_TO_ID.items():
         if ko in raw:
             return cid
