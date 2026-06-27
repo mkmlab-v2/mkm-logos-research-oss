@@ -5,7 +5,12 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AppWorkspaceShell } from "@/components/AppWorkspaceShell";
 import { MinimalClinicianShell } from "@/components/MinimalClinicianShell";
-import { JEMA_AI_PUBLIC_ORIGIN } from "@/lib/no1kmedi-portal-host";
+import {
+  CLINICIAN_PASTE_CHART_PANEL,
+  defaultClinicianPanelForHost,
+  JEMA_AI_PUBLIC_ORIGIN,
+  normalizeRequestHost,
+} from "@/lib/no1kmedi-portal-host";
 import { ClinicianPersistedChat } from "@/components/ClinicianPersistedChat";
 import { ClinicianEncounterGoldPanel } from "@/components/ClinicianEncounterGoldPanel";
 import { ClinicianSimpleCopilotPanel } from "@/components/ClinicianSimpleCopilotPanel";
@@ -161,13 +166,32 @@ function ClinicianSafetyPanel({
 type ClinicianWorkspaceClientProps = {
   /** no1kmedi.com / clinic.* (or localhost dev simulate) — ChatGPT-minimal chrome */
   minimalShell?: boolean;
+  /** Request host — drives Paste Chart default on clinic.* / dev clinic simulate */
+  requestHost?: string;
 };
 
-export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWorkspaceClientProps) {
+function resolveClinicianPanel(
+  panelParam: string | null,
+  fallback: "gold" | "copilot",
+): string {
+  if (panelParam === "copilot" || panelParam === "patient" || panelParam === "bundle" || panelParam === "gold" || panelParam === "safety") {
+    return panelParam;
+  }
+  if (panelParam === "chat") return "chat";
+  return fallback;
+}
+
+export function ClinicianWorkspaceClient({
+  minimalShell = false,
+  requestHost = "",
+}: ClinicianWorkspaceClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const nav = minimalShell ? NAV_MINIMAL : NAV_BASE;
   const canvasLayout = searchParams.get("canvas") === "1";
+  const defaultPanel = defaultClinicianPanelForHost(
+    requestHost || (typeof window !== "undefined" ? normalizeRequestHost(window.location.host) : ""),
+  );
   const {
     ready,
     threads,
@@ -180,12 +204,9 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
     updateThreadMeta,
   } = useClinicianThreads();
 
-  const [activeId, setActiveId] = useState<string>(() => {
-    const p = searchParams.get("panel");
-    if (p === "copilot" || p === "patient" || p === "bundle" || p === "gold" || p === "safety") return p;
-    if (p === "chat") return "chat";
-    return "copilot";
-  });
+  const [activeId, setActiveId] = useState<string>(() =>
+    resolveClinicianPanel(searchParams.get("panel"), defaultPanel),
+  );
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [accessEmail, setAccessEmail] = useState("");
   const [accessBusy, setAccessBusy] = useState(false);
@@ -204,15 +225,17 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
   }, [activeThread?.lastCds?.requestId]);
 
   useEffect(() => {
-    const p = searchParams.get("panel");
-    const next =
-      p === "copilot" || p === "patient" || p === "bundle" || p === "gold" || p === "safety"
-        ? p
-        : p === "chat"
-          ? "chat"
-          : "copilot";
+    const next = resolveClinicianPanel(searchParams.get("panel"), defaultPanel);
     setActiveId((cur) => (cur === next ? cur : next));
-  }, [searchParams]);
+  }, [searchParams, defaultPanel]);
+
+  useEffect(() => {
+    if (searchParams.get("panel")) return;
+    if (defaultPanel !== CLINICIAN_PASTE_CHART_PANEL) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("panel", CLINICIAN_PASTE_CHART_PANEL);
+    router.replace(`/clinician?${params.toString()}`, { scroll: false });
+  }, [defaultPanel, router, searchParams]);
 
   useEffect(() => {
     try {

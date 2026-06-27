@@ -12,9 +12,26 @@ export type ChartPasteSection = {
 type ClinicianChartPastePanelProps = {
   sections: ChartPasteSection[];
   disabled?: boolean;
+  /** Paste Chart v1 — compact SOAP slot grid (Antigravity mockup) */
+  variant?: "default" | "paste-chart";
 };
 
-export function ClinicianChartPastePanel({ sections, disabled }: ClinicianChartPastePanelProps) {
+function soapSlotKey(section: ChartPasteSection): string {
+  const t = section.title.trim();
+  const head = t.charAt(0).toUpperCase();
+  if (head === "S" || head === "O" || head === "A" || head === "P") return head;
+  if (section.id === "subjective" || section.id.includes("subjective")) return "S";
+  if (section.id === "objective" || section.id.includes("objective")) return "O";
+  if (section.id === "assessment" || section.id.includes("assessment")) return "A";
+  if (section.id === "plan" || section.id.includes("plan")) return "P";
+  return t.slice(0, 1).toUpperCase() || "?";
+}
+
+export function ClinicianChartPastePanel({
+  sections,
+  disabled,
+  variant = "default",
+}: ClinicianChartPastePanelProps) {
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [copyError, setCopyError] = useState<string | null>(null);
 
@@ -34,6 +51,42 @@ export function ClinicianChartPastePanel({ sections, disabled }: ClinicianChartP
 
   const visible = sections.filter((s) => s.text.trim());
   if (visible.length === 0) return null;
+
+  if (variant === "paste-chart") {
+    return (
+      <div className="soap-panel" aria-labelledby="paste-chart-soap-title">
+        <div className="soap-panel-head">
+          <h4 id="paste-chart-soap-title" className="soap-panel-title">
+            SOAP · EMR 슬롯 복사
+          </h4>
+          <p className="soap-panel-subtitle">복사 후 한의사랑·EMR 해당 칸에 붙여넣기 (초안)</p>
+        </div>
+        {copyError ? <p className="consult-error paste-chart-soap-error">{copyError}</p> : null}
+        {visible.map((section) => {
+          const key = soapSlotKey(section);
+          return (
+            <div key={section.id} className="soap-slot">
+              <span className="soap-slot-key" aria-hidden>
+                {key}
+              </span>
+              <div className="soap-slot-content">
+                <div className="soap-slot-label">{section.title}</div>
+                <div className="soap-slot-text">{section.text}</div>
+              </div>
+              <button
+                type="button"
+                className={`soap-slot-copy${copiedId === section.id ? " copied" : ""}`}
+                disabled={disabled}
+                onClick={() => copySection(section)}
+              >
+                {copiedId === section.id ? "복사됨 ✓" : "복사"}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   return (
     <div className="chart-paste-panel" aria-labelledby="chart-paste-panel-title">

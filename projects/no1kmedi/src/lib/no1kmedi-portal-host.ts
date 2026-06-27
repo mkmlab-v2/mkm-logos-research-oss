@@ -91,6 +91,14 @@ export function shouldUseMinimalClinicianShell(host: string): boolean {
   return isClinicNo1kmediHost(h);
 }
 
+/** Paste Chart v1 bookmark — Antigravity scope applies only on this panel. */
+export const CLINICIAN_PASTE_CHART_PANEL = "gold" as const;
+
+/** Clinic portal / minimal shell: land on Paste Chart, not legacy 진료 분석. */
+export function defaultClinicianPanelForHost(host: string): "gold" | "copilot" {
+  return shouldUseMinimalClinicianShell(host) ? CLINICIAN_PASTE_CHART_PANEL : "copilot";
+}
+
 /** National KM ask surface paths on apex (must not redirect to /clinician). */
 export function isNationalKmAskPath(pathname: string): boolean {
   return pathname === "/ask" || pathname.startsWith("/ask/");

@@ -28,7 +28,7 @@ export default function ClinicianPage() {
           </div>
         }
       >
-        <ClinicianWorkspaceClient minimalShell={minimalShell} />
+        <ClinicianWorkspaceClient minimalShell={minimalShell} requestHost={host} />
       </Suspense>
     </>
   );

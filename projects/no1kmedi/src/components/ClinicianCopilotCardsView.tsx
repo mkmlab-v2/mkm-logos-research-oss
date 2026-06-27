@@ -71,6 +71,19 @@ export function ClinicianCopilotCardsView({
 
   return (
     <div className={`paste-chart-advice${compact ? " paste-chart-advice--compact" : ""}`}>
+      {compact ? (
+        <div className="copilot-action-row paste-chart-advice-copy-row">
+          {education ? (
+            <button
+              type="button"
+              className="copilot-action-btn copilot-action-btn--primary btn-copy-primary"
+              onClick={() => void copyText("edu", education)}
+            >
+              {copyOk === "edu" ? "환자 안내문 복사됨 ✓" : "환자 안내문 복사"}
+            </button>
+          ) : null}
+        </div>
+      ) : null}
       {medicalCalc ? (
         <div className="copilot-meta-strip">
           <span className="copilot-meta-chip">{medicalCalc.triage_label_ko}</span>
@@ -84,7 +97,7 @@ export function ClinicianCopilotCardsView({
       ) : null}
 
       <div className="copilot-action-row">
-        {education ? (
+        {!compact && education ? (
           <button
             type="button"
             className="copilot-action-btn copilot-action-btn--primary"

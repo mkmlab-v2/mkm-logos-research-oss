@@ -3547,6 +3547,708 @@ section h2 {
   font-weight: 600;
 }
 
+/* ── Paste Chart v1 (Antigravity mockup → ClinicianEncounterGoldPanel) ── */
+.paste-chart-v1 {
+  --pc-bg: #0a1210;
+  --pc-surface: #111a17;
+  --pc-surface-card: #162019;
+  --pc-surface-input: #0d1714;
+  --pc-surface-hover: #1a2822;
+  --pc-text-dim: #b8c5bc;
+  --pc-muted-dim: #6b7d76;
+  --pc-accent-glow: rgba(61, 155, 132, 0.16);
+  --pc-accent-border: rgba(61, 155, 132, 0.28);
+  --pc-accent-gold: #c5a057;
+  --pc-gold-dim: rgba(197, 160, 87, 0.13);
+  --pc-gold-border: rgba(197, 160, 87, 0.35);
+  --pc-danger: #e05252;
+  --pc-danger-bg: rgba(224, 82, 82, 0.1);
+  --pc-danger-border: rgba(224, 82, 82, 0.38);
+  --pc-line-accent: rgba(61, 155, 132, 0.22);
+  --pc-r-sm: 6px;
+  --pc-r-md: 10px;
+  --pc-r-lg: 14px;
+  --pc-r-xl: 18px;
+  margin-top: 0;
+  padding: 0;
+  border: none;
+  background: var(--pc-bg);
+  color: var(--text, #e2e8f0);
+  border-radius: var(--pc-r-xl);
+  overflow: hidden;
+}
+
+.paste-chart-v1.card {
+  background: var(--pc-bg);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+}
+
+.paste-chart-v1 .pc-header {
+  background: rgba(10, 18, 16, 0.92);
+  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  padding: 0 1.25rem;
+}
+
+.paste-chart-v1 .pc-header-inner {
+  max-width: 76rem;
+  margin: 0 auto;
+  min-height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.paste-chart-v1 .pc-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.paste-chart-v1 .pc-brand-mark {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent, #3d9b84) 0%, #2a6b5c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.paste-chart-v1 .pc-brand-name {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.paste-chart-v1 .pc-brand-sub {
+  margin: 0;
+  font-size: 0.66rem;
+  color: var(--muted, #9aa9a3);
+  letter-spacing: 0.04em;
+}
+
+.paste-chart-v1 .pc-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.paste-chart-v1 .track-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--pc-gold-border);
+  background: var(--pc-gold-dim);
+  color: var(--pc-accent-gold);
+  letter-spacing: 0.05em;
+}
+
+.paste-chart-v1 .human-gold-badge {
+  font-size: 0.62rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--pc-accent-border);
+  background: var(--pc-accent-glow);
+  color: var(--accent, #3d9b84);
+}
+
+.paste-chart-v1 .paste-chart-shell {
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.paste-chart-v1 .block-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pc-muted-dim);
+  margin: 0 0 0.35rem;
+}
+
+.paste-chart-v1 .pc-patient-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.paste-chart-v1 .pc-patient-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 14rem;
+  max-width: 24rem;
+}
+
+.paste-chart-v1 .pc-patient-field label {
+  font-size: 0.75rem;
+  color: var(--muted, #9aa9a3);
+  font-weight: 500;
+}
+
+.paste-chart-v1 .pc-input,
+.paste-chart-v1 .pc-textarea {
+  width: 100%;
+  background: var(--pc-surface-input);
+  border: 1px solid var(--pc-line-accent);
+  border-radius: var(--pc-r-md);
+  color: var(--text, #e2e8f0);
+  padding: 0.65rem 0.85rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  line-height: 1.65;
+  outline: none;
+  transition: border-color 180ms, box-shadow 180ms;
+}
+
+.paste-chart-v1 .pc-textarea {
+  min-height: 9rem;
+  resize: vertical;
+  border-radius: var(--pc-r-lg);
+  line-height: 1.72;
+}
+
+.paste-chart-v1 .pc-textarea--sm {
+  min-height: 4rem;
+}
+
+.paste-chart-v1 .pc-input:focus,
+.paste-chart-v1 .pc-textarea:focus {
+  border-color: var(--accent, #3d9b84);
+  box-shadow: 0 0 0 3px rgba(61, 155, 132, 0.13);
+}
+
+.paste-chart-v1 .pc-input::placeholder,
+.paste-chart-v1 .pc-textarea::placeholder {
+  color: var(--pc-muted-dim);
+}
+
+.paste-chart-v1 .btn-secondary {
+  padding: 0.6rem 1rem;
+  border-radius: var(--pc-r-md);
+  border: 1px solid var(--pc-line-accent);
+  background: var(--pc-surface);
+  color: var(--pc-text-dim);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.paste-chart-v1 .btn-secondary:hover:not(:disabled) {
+  border-color: var(--pc-accent-border);
+  background: var(--pc-surface-hover);
+  color: var(--text, #e2e8f0);
+}
+
+.paste-chart-v1 .btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paste-chart-v1 .patient-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.55rem;
+  flex-wrap: wrap;
+}
+
+.paste-chart-v1 .patient-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.15rem 0.65rem;
+  border-radius: 999px;
+  background: var(--pc-accent-glow);
+  border: 1px solid var(--pc-accent-border);
+  font-size: 0.75rem;
+  color: var(--accent, #3d9b84);
+  font-weight: 500;
+}
+
+.paste-chart-v1 .chip-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent, #3d9b84);
+}
+
+.paste-chart-v1 .chip-sep {
+  color: var(--pc-muted-dim);
+  font-size: 0.7rem;
+}
+
+.paste-chart-v1 .chip-ok {
+  font-size: 0.7rem;
+  color: var(--accent, #3d9b84);
+}
+
+.paste-chart-v1 .pc-divider {
+  height: 1px;
+  border: none;
+  background: var(--line, rgba(255, 255, 255, 0.07));
+  margin: 0;
+}
+
+.paste-chart-v1 .pc-paste-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.paste-chart-v1 .paste-label-sub {
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--muted, #9aa9a3);
+}
+
+.paste-chart-v1 .obj-details,
+.paste-chart-v1 .more-details {
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  border-radius: var(--pc-r-md);
+  overflow: hidden;
+  margin-top: 0.5rem;
+}
+
+.paste-chart-v1 .obj-summary,
+.paste-chart-v1 .more-summary {
+  padding: 0.55rem 0.85rem;
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--muted, #9aa9a3);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  user-select: none;
+}
+
+.paste-chart-v1 .obj-summary::-webkit-details-marker,
+.paste-chart-v1 .more-summary::-webkit-details-marker {
+  display: none;
+}
+
+.paste-chart-v1 details[open] .obj-arrow,
+.paste-chart-v1 details[open] .more-arrow {
+  transform: rotate(90deg);
+}
+
+.paste-chart-v1 .obj-arrow,
+.paste-chart-v1 .more-arrow {
+  display: inline-block;
+  font-size: 0.55rem;
+  transition: transform 150ms;
+  color: var(--pc-muted-dim);
+}
+
+.paste-chart-v1 .obj-body {
+  padding: 0 0.85rem 0.75rem;
+}
+
+.paste-chart-v1 .btn-analyze {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  border-radius: var(--pc-r-lg);
+  border: none;
+  background: linear-gradient(135deg, var(--accent, #3d9b84) 0%, #2a6b5c 100%);
+  color: #fff;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(61, 155, 132, 0.26);
+}
+
+.paste-chart-v1 .btn-analyze:hover:not(:disabled) {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.paste-chart-v1 .btn-analyze:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.paste-chart-v1 .analyze-loading {
+  width: 100%;
+  margin-top: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  border-radius: var(--pc-r-lg);
+  background: var(--pc-surface);
+  border: 1px solid var(--pc-line-accent);
+  color: var(--muted, #9aa9a3);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.paste-chart-v1 .spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 2px solid var(--pc-line-accent);
+  border-top-color: var(--accent, #3d9b84);
+  border-radius: 50%;
+  animation: paste-chart-spin 700ms linear infinite;
+}
+
+@keyframes paste-chart-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.paste-chart-v1 .error-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--pc-danger-border);
+  border-radius: var(--pc-r-md);
+  background: var(--pc-danger-bg);
+  margin-top: 0.65rem;
+}
+
+.paste-chart-v1 .error-text {
+  font-size: 0.8125rem;
+  color: #f5a0a0;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.paste-chart-v1 .paste-chart-advice-warning {
+  margin: 0.5rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--muted, #9aa9a3);
+}
+
+.paste-chart-v1 .pc-results-grid {
+  display: grid;
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (min-width: 960px) {
+  .paste-chart-v1 .pc-results-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.paste-chart-v1 .soap-panel {
+  background: var(--pc-surface);
+  border: 1px solid var(--pc-line-accent);
+  border-radius: var(--pc-r-xl);
+  overflow: hidden;
+}
+
+.paste-chart-v1 .soap-panel-head {
+  padding: 0.85rem 1.1rem 0.7rem;
+  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+}
+
+.paste-chart-v1 .soap-panel-title {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.paste-chart-v1 .soap-panel-subtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.68rem;
+  color: var(--muted, #9aa9a3);
+}
+
+.paste-chart-v1 .paste-chart-soap-error {
+  margin: 0.5rem 1rem;
+}
+
+.paste-chart-v1 .soap-slot {
+  padding: 0.7rem 1.1rem;
+  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.paste-chart-v1 .soap-slot:last-child {
+  border-bottom: none;
+}
+
+.paste-chart-v1 .soap-slot-key {
+  min-width: 1.25rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent, #3d9b84);
+  padding-top: 0.15rem;
+}
+
+.paste-chart-v1 .soap-slot-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.paste-chart-v1 .soap-slot-label {
+  font-size: 0.68rem;
+  color: var(--muted, #9aa9a3);
+  margin-bottom: 0.2rem;
+}
+
+.paste-chart-v1 .soap-slot-text {
+  font-size: 0.8125rem;
+  color: var(--pc-text-dim);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.paste-chart-v1 .soap-slot-copy {
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--pc-r-sm);
+  border: 1px solid var(--pc-line-accent);
+  background: transparent;
+  color: var(--muted, #9aa9a3);
+  font-size: 0.68rem;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.paste-chart-v1 .soap-slot-copy:hover,
+.paste-chart-v1 .soap-slot-copy.copied {
+  border-color: var(--pc-accent-border);
+  color: var(--accent, #3d9b84);
+  background: var(--pc-accent-glow);
+}
+
+.paste-chart-v1 .advice-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.paste-chart-v1 .advice-panel-head {
+  padding: 0 0.15rem 0.25rem;
+}
+
+.paste-chart-v1 .advice-panel-title {
+  margin: 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.paste-chart-v1 .paste-chart-empty {
+  padding: 1.25rem;
+  border: 1px dashed var(--pc-line-accent);
+  border-radius: var(--pc-r-lg);
+  text-align: center;
+  color: var(--muted, #9aa9a3);
+  font-size: 0.875rem;
+}
+
+.paste-chart-v1 .paste-chart-empty strong {
+  display: block;
+  color: var(--text, #e2e8f0);
+  margin-bottom: 0.35rem;
+}
+
+.paste-chart-v1 .paste-chart-empty p {
+  margin: 0;
+  font-size: 0.8125rem;
+}
+
+.paste-chart-v1 .more-body {
+  padding: 0.65rem 0.85rem 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+}
+
+.paste-chart-v1 .more-action-btn {
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--pc-r-sm);
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  background: transparent;
+  color: var(--muted, #9aa9a3);
+  font-size: 0.75rem;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.paste-chart-v1 .more-action-btn:hover:not(:disabled) {
+  border-color: var(--pc-line-accent);
+  color: var(--pc-text-dim);
+}
+
+.paste-chart-v1 .more-body-hint {
+  padding: 0 0.85rem 0.75rem;
+  margin: 0;
+}
+
+.paste-chart-v1 .paste-chart-muted {
+  margin: 0;
+  font-size: 0.75rem;
+  color: var(--muted, #9aa9a3);
+}
+
+.paste-chart-v1 .paste-chart-artifact-grid {
+  padding: 0 0.85rem 0.85rem;
+}
+
+.paste-chart-v1 .encounter-gold-artifact-card {
+  background: var(--pc-surface-card);
+  border-color: var(--line, rgba(255, 255, 255, 0.07));
+}
+
+.paste-chart-v1 .pc-footer-disclaimer {
+  font-size: 0.68rem;
+  color: var(--pc-muted-dim);
+  line-height: 1.6;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  margin: 0;
+}
+
+.paste-chart-v1 .copilot-card {
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  border-radius: var(--pc-r-lg);
+  background: var(--pc-surface-card);
+  overflow: hidden;
+}
+
+.paste-chart-v1 .copilot-card--primary {
+  border-color: var(--pc-accent-border);
+  box-shadow: 0 4px 16px rgba(61, 155, 132, 0.08);
+}
+
+.paste-chart-v1 .copilot-card-head {
+  padding: 0.65rem 1rem 0.55rem;
+  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  background: transparent;
+}
+
+.paste-chart-v1 .copilot-card-title {
+  font-size: 0.78rem;
+  color: var(--text, #e2e8f0);
+}
+
+.paste-chart-v1 .copilot-card-badge {
+  font-size: 0.62rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid var(--pc-gold-border);
+  background: var(--pc-gold-dim);
+  color: var(--pc-accent-gold);
+}
+
+.paste-chart-v1 .copilot-card-body {
+  padding: 0.75rem 1rem;
+}
+
+.paste-chart-v1 .copilot-item-list li p,
+.paste-chart-v1 .copilot-empty,
+.paste-chart-v1 .copilot-disclaimer {
+  color: var(--muted, #9aa9a3);
+}
+
+.paste-chart-v1 .copilot-item-list li strong {
+  color: var(--text, #e2e8f0);
+  font-size: 0.78rem;
+}
+
+.paste-chart-v1 .copilot-checklist {
+  padding-left: 0;
+  list-style: none;
+}
+
+.paste-chart-v1 .copilot-checklist li {
+  font-size: 0.75rem;
+  color: var(--pc-text-dim);
+  padding-left: 1rem;
+  position: relative;
+}
+
+.paste-chart-v1 .copilot-checklist li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--accent, #3d9b84);
+  font-size: 0.8rem;
+}
+
+.paste-chart-v1 .copilot-meta-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.25rem;
+}
+
+.paste-chart-v1 .copilot-meta-chip {
+  font-size: 0.68rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--pc-line-accent);
+  color: var(--muted, #9aa9a3);
+}
+
+.paste-chart-v1 .copilot-action-btn {
+  padding: 0.4rem 0.85rem;
+  border-radius: var(--pc-r-md);
+  border: 1px solid var(--pc-accent-border);
+  background: var(--pc-accent-glow);
+  color: var(--accent, #3d9b84);
+  font-size: 0.78rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.paste-chart-v1 .copilot-action-btn--primary:hover {
+  background: rgba(61, 155, 132, 0.24);
+}
+
+.paste-chart-v1 .paste-chart-md-preview {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.paste-chart-v1 .paste-chart-md-preview pre {
+  max-height: 8rem;
+  overflow: auto;
+  font-size: 0.7rem;
+}
+
+.paste-chart-v1 .btn-copy-primary {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 0.35rem;
+}
+
 .consult-summary {
   margin: 0;
   color: var(--text);
