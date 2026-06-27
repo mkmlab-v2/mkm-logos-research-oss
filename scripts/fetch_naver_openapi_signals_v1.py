@@ -23,6 +23,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SIGNALS_OUT = ROOT / "docs/final/artifacts/naver_openapi_signals_latest.json"
 DEFAULT_NEWS_OUT = ROOT / "docs/final/artifacts/naver_news_feed_latest.json"
 DEFAULT_PRE_NEWS_INPUT = ROOT / "docs/final/artifacts/pre_news_shadow_input_latest.json"
+PREMARKET_CONFIG = ROOT / "data/commander/kospi_premarket_news_ingest_v1.json"
 
 
 def _load_env() -> None:
@@ -89,6 +90,47 @@ def _strip_markup(text: str) -> str:
     return html.unescape(text).strip()
 
 
+def load_premarket_profile(path: Path | None = None) -> dict[str, Any]:
+    p = path or PREMARKET_CONFIG
+    doc = _read_json(p)
+    if not doc or doc.get("schema") != "kospi_premarket_news_ingest_v1":
+        return {}
+    return doc
+
+
+def _normalize_headline_key(title: str, link: str = "") -> str:
+    t = re.sub(r"\s+", " ", (title or "").strip().lower())
+    if link:
+        return f"{t}|{link.strip().lower()}"
+    return t
+
+
+def merge_news_feed_items(
+    batches: list[tuple[str, list[dict[str, Any]]]],
+    *,
+    max_items: int,
+) -> list[dict[str, Any]]:
+    """Dedupe merged Naver news rows by title+link; preserve first-seen query tag."""
+    seen: set[str] = set()
+    out: list[dict[str, Any]] = []
+    for query, items in batches:
+        for item in items:
+            title = str(item.get("title") or "").strip()
+            link = str(item.get("link") or "").strip()
+            if not title:
+                continue
+            key = _normalize_headline_key(title, link)
+            if key in seen:
+                continue
+            seen.add(key)
+            row = dict(item)
+            row["query"] = query
+            out.append(row)
+            if len(out) >= max_items:
+                return out
+    return out
+
+
 def _build_news_feed_doc(query: str, response: dict[str, Any], max_items: int) -> dict[str, Any]:
     items = response.get("items")
     normalized: list[dict[str, Any]] = []
@@ -122,6 +164,29 @@ def _build_news_feed_doc(query: str, response: dict[str, Any], max_items: int) -
         },
         "boundary_ack": True,
         "note": "B-track research_only news feed from Naver Search OpenAPI.",
+    }
+
+
+def _build_merged_news_feed_doc(
+    queries: list[str],
+    merged_items: list[dict[str, Any]],
+    *,
+    profile_id: str | None = None,
+) -> dict[str, Any]:
+    return {
+        "schema": "naver_news_feed_v1",
+        "ts_utc": _utc_now(),
+        "query": queries[0] if len(queries) == 1 else "merged",
+        "queries": queries,
+        "profile_id": profile_id,
+        "items_count": len(merged_items),
+        "data": merged_items,
+        "policy_scope": {
+            "trading_primary_asset": "KOSPI",
+            "kospi_role": "premarket_observation",
+        },
+        "boundary_ack": True,
+        "note": "Merged KOSPI premarket news feed (multi-query, deduped). research_only.",
     }
 
 
@@ -294,22 +359,28 @@ def _sync_pre_news_shadow_input(news_doc: dict[str, Any], out_path: Path) -> int
                 "headline": headline,
                 "link": item.get("link"),
                 "pub_date": item.get("pub_date"),
+                "query": item.get("query") or news_doc.get("query"),
             }
         )
     if not rows:
         return 0
+    ingest: dict[str, Any] = {
+        "adapter": "fetch_naver_openapi_signals_v1",
+        "naver_news_feed_schema": news_doc.get("schema"),
+        "query": news_doc.get("query"),
+        "items_count": news_doc.get("items_count"),
+    }
+    if news_doc.get("queries"):
+        ingest["queries"] = news_doc.get("queries")
+    if news_doc.get("profile_id"):
+        ingest["profile_id"] = news_doc.get("profile_id")
     doc = {
         "schema": "pre_news_shadow_input_v1",
         "generated_at_utc": _utc_now(),
         "research_only": True,
         "promotion_required": True,
         "source_track": "K",
-        "ingest": {
-            "adapter": "fetch_naver_openapi_signals_v1",
-            "naver_news_feed_schema": news_doc.get("schema"),
-            "query": news_doc.get("query"),
-            "items_count": news_doc.get("items_count"),
-        },
+        "ingest": ingest,
         "rows": rows,
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -323,6 +394,18 @@ def main(argv: list[str] | None = None) -> int:
         argv = sys.argv[1:]
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--news-query", default="")
+    ap.add_argument(
+        "--news-queries",
+        default="",
+        help="Comma-separated news queries (merged deduped feed). Overrides --news-query when set.",
+    )
+    ap.add_argument(
+        "--profile",
+        choices=("kospi_premarket",),
+        default="",
+        help="Load query/trend SSOT from data/commander/kospi_premarket_news_ingest_v1.json",
+    )
+    ap.add_argument("--premarket-config", type=Path, default=PREMARKET_CONFIG)
     ap.add_argument("--trend-keywords", default="")
     ap.add_argument("--trend-weights", default="")
     ap.add_argument("--lookback-days", type=int, default=30)
@@ -348,9 +431,31 @@ def main(argv: list[str] | None = None) -> int:
         "X-Naver-Client-Id": client_id,
         "X-Naver-Client-Secret": client_secret,
     }
+    profile_doc: dict[str, Any] = {}
+    if args.profile == "kospi_premarket":
+        profile_doc = load_premarket_profile(args.premarket_config)
+        if not profile_doc:
+            print(f"ERROR: missing or invalid premarket config: {args.premarket_config}", file=sys.stderr)
+            return 2
+
+    news_queries_raw = args.news_queries.strip()
+    if not news_queries_raw and profile_doc:
+        news_queries_raw = ",".join(str(q) for q in (profile_doc.get("news_queries") or []) if str(q).strip())
+    news_queries = [q.strip() for q in news_queries_raw.split(",") if q.strip()]
+
     news_query = args.news_query.strip() or _env("MKM_NAVER_NEWS_QUERY", "비트코인")
+    if news_queries:
+        news_query = news_queries[0]
+
     trend_keywords_raw = args.trend_keywords.strip() or _env("MKM_NAVER_TREND_KEYWORDS", "비트코인,환율,코스피")
     trend_weights_raw = args.trend_weights.strip() or _env("MKM_NAVER_TREND_WEIGHTS", "비트코인=0.75,환율=0.15,코스피=0.10")
+    if profile_doc:
+        if profile_doc.get("trend_keywords"):
+            trend_keywords_raw = ",".join(str(k) for k in profile_doc.get("trend_keywords") or [])
+        if profile_doc.get("trend_weights"):
+            trend_weights_raw = str(profile_doc.get("trend_weights"))
+        if profile_doc.get("lookback_days"):
+            args.lookback_days = int(profile_doc.get("lookback_days"))
 
     trend_keywords = [x.strip() for x in trend_keywords_raw.split(",") if x.strip()]
     if not trend_keywords:
@@ -359,14 +464,23 @@ def main(argv: list[str] | None = None) -> int:
     trend_weights = _parse_trend_weights(trend_weights_raw, trend_keywords)
     trend_payload = _build_trend_payload(trend_keywords, args.lookback_days)
     trend_url = "https://openapi.naver.com/v1/datalab/search"
-    q = parse.urlencode({"query": news_query, "display": int(max(1, min(args.news_display, 100))), "sort": "date"})
-    news_url = f"https://openapi.naver.com/v1/search/news.json?{q}"
+    per_query_display = int(max(1, min(args.news_display, 100)))
+    if profile_doc.get("news_display_per_query"):
+        per_query_display = int(max(1, min(int(profile_doc["news_display_per_query"]), 100)))
+    max_merged = int(profile_doc.get("max_merged_news_items") or 40) if profile_doc else per_query_display
 
     trend_resp: dict[str, Any] | None = None
-    news_resp: dict[str, Any] | None = None
+    news_batches: list[tuple[str, list[dict[str, Any]]]] = []
+    queries_to_fetch = news_queries if news_queries else [news_query]
     try:
         trend_resp = _request_json(trend_url, method="POST", headers=hdr, payload=trend_payload)
-        news_resp = _request_json(news_url, method="GET", headers=hdr)
+        for qtext in queries_to_fetch:
+            q = parse.urlencode({"query": qtext, "display": per_query_display, "sort": "date"})
+            news_url = f"https://openapi.naver.com/v1/search/news.json?{q}"
+            news_resp = _request_json(news_url, method="GET", headers=hdr)
+            partial = _build_news_feed_doc(qtext, news_resp or {"items": []}, per_query_display)
+            data = partial.get("data") if isinstance(partial.get("data"), list) else []
+            news_batches.append((qtext, [x for x in data if isinstance(x, dict)]))
     except (error.HTTPError, error.URLError, TimeoutError, json.JSONDecodeError, RuntimeError) as exc:
         if not args.allow_cache_fallback:
             print(f"ERROR: Naver API request failed: {exc}", file=sys.stderr)
@@ -377,10 +491,24 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR: Naver API failed and no valid cache fallback: {exc}", file=sys.stderr)
             return 1
         trend_resp = {"results": []}
-        news_resp = {"items": []}
+        cached_data = cached_news.get("data") if isinstance(cached_news.get("data"), list) else []
+        news_batches = [(str(cached_news.get("query") or "cache"), [x for x in cached_data if isinstance(x, dict)])]
 
     signals_doc = _build_signals_doc(trend_keywords, trend_weights, trend_resp or {"results": []}, args.lookback_days)
-    news_doc = _build_news_feed_doc(news_query, news_resp or {"items": []}, args.news_display)
+    merged = merge_news_feed_items(
+        news_batches,
+        max_items=max_merged if (profile_doc or len(queries_to_fetch) > 1) else per_query_display,
+    )
+    if len(queries_to_fetch) > 1 or profile_doc:
+        news_doc = _build_merged_news_feed_doc(
+            queries_to_fetch,
+            merged,
+            profile_id=str(profile_doc.get("profile_id") or args.profile or "") or None,
+        )
+    else:
+        news_doc = _build_news_feed_doc(queries_to_fetch[0], {"items": []}, per_query_display)
+        news_doc["data"] = merged
+        news_doc["items_count"] = len(merged)
 
     if args.dry_run:
         print(

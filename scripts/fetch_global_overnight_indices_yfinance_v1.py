@@ -11,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUT_DIR = ROOT / "research" / "market_data"
 
 INDEX_SPECS: list[tuple[str, str, str]] = [
+    ("dow", "^DJI", "dow_daily_external_yf.csv"),
+    ("sp500", "^GSPC", "sp500_daily_external_yf.csv"),
+    ("nasdaq", "^IXIC", "nasdaq_daily_external_yf.csv"),
     ("nikkei225", "^N225", "nikkei225_daily_external_yf.csv"),
     ("hang_seng", "^HSI", "hang_seng_daily_external_yf.csv"),
     ("shanghai", "000001.SS", "shanghai_daily_external_yf.csv"),
