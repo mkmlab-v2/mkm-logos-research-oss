@@ -32,6 +32,16 @@ assert(sample3.display_name === "김민수", "inline name");
 assert(sample3.age_years === 36, "age years");
 assert(sample3.sex === "M", "inline sex");
 
+const sample4 = extractPasteChartDraftV1(
+  "김민수 / 1988-03-12 / 남 / 36세 / 요통 3주\n\n[주소] 서울 강남\n[CC] 요추부 통증, 3주 전부터 악화. 앉아 있을 때 더 아픔.",
+);
+assert(sample4.display_name === "김민수", "slash header name");
+assert(sample4.birthdate === "1988-03-12", "slash header birthdate");
+assert(sample4.sex === "M", "slash header sex");
+assert(sample4.age_years === 36, "slash header age");
+assert(sample4.confidence === "high", "slash header high confidence");
+assert(Boolean(sample4.chief_complaint?.includes("요추부 통증")), "chief from [CC] section");
+
 const instant = birthdateToBirthInstantUtc("1990-03-15");
 assert(Boolean(instant?.includes("T")), "birth instant iso");
 

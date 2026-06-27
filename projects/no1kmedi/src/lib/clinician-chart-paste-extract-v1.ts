@@ -19,6 +19,8 @@ export type PasteExtractDraftV1 = {
 
 const NAME_LABEL_RE = /(?:환자명|성명|이름|환자)\s*[:：]\s*([가-힣○●◯〇]{2,4})/;
 const NAME_WITH_SEX_RE = /([가-힣]{2,3}[○●◯〇]?)\s*(?:\/|,|\s)\s*(\d{1,3})\s*(?:세|M|F|남|여)/;
+const ISO_DATE_RE = /^(19|20)(\d{2})-(\d{2})-(\d{2})$/;
+const CC_SECTION_RE = /\[CC\]\s*([^\n\[]+)/i;
 const BIRTH_FULL_RE = /(19|20)(\d{2})[.\-/년]\s*(\d{1,2})[.\-/월]?\s*(\d{1,2})?/;
 const BIRTH_YEARSUFFIX_RE = /(?:^|[^\d])(\d{2})년생(?:\s*(남|여|남성|여성))?/;
 const AGE_RE = /만\s*(\d{1,3})\s*세|(\d{1,3})\s*세\s*(남|여|남성|여성)?/;
@@ -47,7 +49,72 @@ function parseSexToken(token?: string): "M" | "F" | undefined {
   return undefined;
 }
 
+function parseSlashHeaderLine(line: string): {
+  name?: string;
+  birthdate?: string;
+  sex?: "M" | "F";
+  age?: number;
+  chief_complaint?: string;
+  source?: string;
+} | null {
+  const trimmed = line.trim();
+  if (!trimmed.includes("/")) return null;
+  const parts = trimmed.split("/").map((p) => p.trim()).filter(Boolean);
+  if (parts.length < 3) return null;
+  if (!/^[가-힣]{2,4}$/.test(parts[0]!)) return null;
+
+  let birthdate: string | undefined;
+  let sex: "M" | "F" | undefined;
+  let age: number | undefined;
+  const tail: string[] = [];
+
+  for (const part of parts.slice(1)) {
+    const iso = ISO_DATE_RE.exec(part);
+    if (!birthdate && iso) {
+      birthdate = normalizeBirthdate(
+        Number(`${iso[1]}${iso[2]}`),
+        Number(iso[3]),
+        Number(iso[4]),
+      );
+      continue;
+    }
+
+    const birthHit = extractBirthdate(part);
+    if (!birthdate && birthHit.birthdate) {
+      birthdate = birthHit.birthdate;
+      continue;
+    }
+
+    const ageMatch = /^(\d{1,3})\s*세$/.exec(part);
+    if (ageMatch) {
+      age = Number(ageMatch[1]);
+      continue;
+    }
+
+    const sexToken = parseSexToken(part);
+    if (!sex && sexToken) {
+      sex = sexToken;
+      continue;
+    }
+
+    tail.push(part);
+  }
+
+  return {
+    name: parts[0],
+    birthdate,
+    sex,
+    age,
+    chief_complaint: tail.join(" / ").trim() || undefined,
+    source: trimmed,
+  };
+}
+
 function extractDisplayName(text: string): { name?: string; source?: string } {
+  const firstLine = text.split("\n")[0]?.trim() ?? "";
+  const slash = parseSlashHeaderLine(firstLine);
+  if (slash?.name) return { name: slash.name, source: slash.source };
+
   const label = NAME_LABEL_RE.exec(text);
   if (label?.[1]) return { name: label[1].trim(), source: label[0] };
 
@@ -145,6 +212,24 @@ export function formatPasteExtractChipLabel(draft: PasteExtractDraftV1): string 
   return parts.join(" / ");
 }
 
+export function extractChiefComplaintFromPaste(text: string): string | undefined {
+  const cc = CC_SECTION_RE.exec(text);
+  if (cc?.[1]?.trim()) return cc[1].trim().slice(0, 800);
+
+  const firstLine = text.split("\n")[0]?.trim() ?? "";
+  const slash = parseSlashHeaderLine(firstLine);
+  if (slash?.chief_complaint) return slash.chief_complaint.slice(0, 800);
+
+  const body =
+    slash && text.includes("\n")
+      ? text.replace(/\r\n/g, "\n").split("\n").slice(1).join("\n").trim()
+      : text;
+
+  const chief = buildChiefComplaintFromPaste(body || text);
+  if (slash && chief === firstLine) return slash.chief_complaint?.slice(0, 800);
+  return chief || undefined;
+}
+
 export function extractPasteChartDraftV1(text: string): PasteExtractDraftV1 {
   const raw = text.replace(/\r\n/g, "\n").trim();
   const sources: string[] = [];
@@ -160,6 +245,9 @@ export function extractPasteChartDraftV1(text: string): PasteExtractDraftV1 {
   const nameHit = extractDisplayName(raw);
   if (nameHit.source) sources.push(nameHit.source);
 
+  const firstLine = raw.split("\n")[0]?.trim() ?? "";
+  const slashHeader = parseSlashHeaderLine(firstLine);
+
   const birthHit = extractBirthdate(raw);
   if (birthHit.source) sources.push(birthHit.source);
 
@@ -169,18 +257,19 @@ export function extractPasteChartDraftV1(text: string): PasteExtractDraftV1 {
   const sexHit = extractSex(raw);
   if (sexHit.source) sources.push(sexHit.source);
 
-  let birthdate = birthHit.birthdate;
+  let birthdate = slashHeader?.birthdate || birthHit.birthdate;
   if (!birthdate && ageHit.age) {
     const y = inferBirthYearFromAge(ageHit.age);
     if (y) birthdate = normalizeBirthdate(y, 1, 1);
   }
 
-  const sex = ageHit.sex || sexHit.sex || "unknown";
-  const chief = buildChiefComplaintFromPaste(raw);
+  const sex = slashHeader?.sex || ageHit.sex || sexHit.sex || "unknown";
+  const ageYears = slashHeader?.age ?? ageHit.age;
+  const chief = extractChiefComplaintFromPaste(raw);
 
   let confidence: PasteExtractConfidenceV1 = "low";
   if (nameHit.name && birthdate) confidence = "high";
-  else if (nameHit.name && ageHit.age && sex !== "unknown") confidence = "high";
+  else if (nameHit.name && ageYears && sex !== "unknown") confidence = "high";
   else if (nameHit.name || birthdate || chief) confidence = "low";
 
   return {
@@ -188,7 +277,7 @@ export function extractPasteChartDraftV1(text: string): PasteExtractDraftV1 {
     display_name: nameHit.name,
     birthdate,
     sex,
-    age_years: ageHit.age,
+    age_years: ageYears,
     chief_complaint: chief || undefined,
     confidence,
     sources,
