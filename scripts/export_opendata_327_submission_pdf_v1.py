@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -19,6 +20,28 @@ REPORTS = ROOT / "reports"
 GATES_LATEST = REPORTS / "opendata_327_pre_export_gates_latest.json"
 
 STRIP_HEADINGS = ("(부록) 우선 준비", "변경 이력")
+STRIP_LINE_PATTERNS = (
+    r"^-\s+\*\*schema:",
+    r"^-\s+\*\*용도:",
+    r"^-\s+\*\*전체 로드맵:",
+    r"^-\s+\*\*과제 상세:",
+    r"^-\s+\*\*Fact-Lock:",
+    r"`docs/",
+    r"`reports/",
+    r"moksori_mega_commercialization",
+    r"mkmlife",
+    r"연계 로드맵",
+    r"범위 주의",
+    r"^-\s+\*\*연계",
+    r"^-\s+\*\*범위",
+    r"a-codeai\.com",
+    r"P0_COMMERCIALIZATION",
+    r"MKM_DOMAIN_PORTFOLIO",
+    r"PERSONADIARY",
+    r"AGENTS\.md",
+    r"붙여 넣기용",
+    r"붙여넣기용",
+)
 
 NEXT_HUMAN_KO = [
     "K-Startup 표지(A) 양식 수동 병합 + Annex(D) 선택",
@@ -56,8 +79,19 @@ def _strip_md(text: str) -> str:
             continue
         if "제출 시 삭제" in line or "파란색 안내" in line:
             continue
+        if any(re.search(p, line) for p in STRIP_LINE_PATTERNS):
+            continue
+        if line.strip().startswith("※"):
+            continue
+        if "Phase 2" in line and "B2B" in line:
+            continue
         lines.append(line)
-    return "\n".join(lines).strip() + "\n"
+    out = "\n".join(lines).strip()
+    out = re.sub(r"^#{1,6}\s+", "", out, flags=re.MULTILINE)
+    out = re.sub(r"\*\*([^*]+)\*\*", r"\1", out)
+    out = re.sub(r"`([^`]+)`", r"\1", out)
+    out = re.sub(r"\n{3,}", "\n\n", out)
+    return out.strip() + "\n"
 
 
 def _md_to_html(md_text: str, title: str) -> str:

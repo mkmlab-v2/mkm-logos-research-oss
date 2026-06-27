@@ -81,6 +81,7 @@ def evaluate_ng40_lane(
     use_master_codebook_lexicon_v1: bool = False,
     active_track_parity: bool = False,
     master_codebook_lexicon_path: Path | None = None,
+    archetype_prior_must_keep: set[str] | frozenset[str] | None = None,
 ) -> tuple[dict[str, Any], dict[str, Any]]:
     """Run one NG-40 bench eval. Returns (aggregate_metrics, full_report)."""
     domain_relaxed: dict[str, float] | None = None
@@ -96,13 +97,16 @@ def evaluate_ng40_lane(
     gem_meta = include_gematria = include_cee = False
     if active_track_parity and use_master_codebook_lexicon_v1:
         gem_meta = include_gematria = include_cee = True
+    must_keep = set(_MUST_KEEP)
+    if archetype_prior_must_keep:
+        must_keep.update(archetype_prior_must_keep)
     report = evaluate_report(
         doc,
         source_input=str(bench_input.relative_to(ROOT)).replace("\\", "/"),
         mode="experimental",
         strategy=strategy,
         intensity=intensity,
-        must_keep=set(_MUST_KEEP),
+        must_keep=must_keep,
         jaccard_drop_threshold_pp=2.0,
         baseline_avg_jaccard=baseline_j,
         general_max_saving_rate=general_cap,

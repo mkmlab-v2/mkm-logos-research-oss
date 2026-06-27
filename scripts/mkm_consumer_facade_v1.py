@@ -71,6 +71,45 @@ PUBLIC_UI_EN = {
     "footer_context": "Context demo",
 }
 
+# Mirror projects/mkm/mkm-life/lib/mkmlife-consumer-vocabulary-v1.ts + guard-v1.server.ts
+CONSUMER_FORBIDDEN_DECK_SURFACE_STRINGS = frozenset(
+    {
+        "속보",
+        "실시간 속보",
+        "Live News",
+        "breaking news",
+        "언론사 제휴",
+    }
+)
+
+CONSUMER_FORBIDDEN_SURFACE_STRINGS = frozenset(
+    {
+        "Logos",
+        "성경",
+        "사주",
+        "명리",
+        "태양인",
+        "태음인",
+        "소양인",
+        "소음인",
+        "마법구슬",
+    }
+)
+
+# Frozen Track A KPI — consumer surface must not cite as product proof
+TRACK_A_FORBIDDEN_SURFACE_NUMBERS = frozenset({"47.5%", "56.5%", "0.890"})
+
+# Promotion-style trading phrases (negated disclaimers like "실매매 근거 아님" are OK)
+TRADING_FORBIDDEN_SURFACE_PHRASES = frozenset(
+    {
+        "실매매 GO",
+        "live trading enabled",
+        "매매 신호 확정",
+        "투자 확정",
+        "자동 매매 실행",
+    }
+)
+
 _LANE_LABEL_KO: dict[str, str] = {
     "field_regime": "거시·운영 관측",
     "personal_wellness": "웰니스 리듬",

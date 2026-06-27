@@ -6,7 +6,7 @@ B-track isolated probe: fetch Bluesky (ATProto) posts for Bitcoin/crypto discour
 CRITICAL: Output is experiment-lane only. Do not wire scores into live trading or
 start_24h_daemon.py without constitution gates and explicit promotion.
 
-Requires: pip install atproto
+Requires: pip install "atproto>=0.0.67"  (gallery embed; older SDK fails pydantic on search_posts)
 Auth:     BSKY_HANDLE or BSKY_EMAIL (or BLUESKY_*), plus BSKY_APP_PASSWORD (Bluesky App Password)
 
 Default out: projects/bitcoin-trading/memory/v2/btrack/raw_feeds/atproto/YYYYMMDD_atproto_sentiment_raw.jsonl
@@ -27,6 +27,7 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any, Iterable
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -79,6 +80,46 @@ def _load_client():
     return client
 
 
+def _namespace_from_dict(value: Any) -> Any:
+    """Best-effort dict → attribute object for raw search_posts fallback."""
+    if isinstance(value, dict):
+        return SimpleNamespace(**{k: _namespace_from_dict(v) for k, v in value.items()})
+    if isinstance(value, list):
+        return [_namespace_from_dict(v) for v in value]
+    return value
+
+
+def _search_posts_page(client: Any, kwargs: dict[str, Any]) -> tuple[list[Any], str | None]:
+    """Typed search with raw JSON fallback when pydantic rejects newer embed lexicons."""
+    from atproto_client.models.app.bsky.feed.search_posts import Params  # type: ignore
+
+    try:
+        res = client.app.bsky.feed.search_posts(Params(**kwargs))
+        posts = getattr(res, "posts", None) or []
+        cursor = getattr(res, "cursor", None)
+        return list(posts), cursor
+    except Exception as exc:
+        name = type(exc).__name__
+        if name not in {"ValidationError"} and "validation" not in str(exc).lower():
+            raise
+        raw = client.invoke_query("app.bsky.feed.searchPosts", params=kwargs)
+        if isinstance(raw, dict):
+            posts_raw = raw.get("posts") or []
+            cursor = raw.get("cursor")
+        else:
+            posts_raw = getattr(raw, "posts", None) or []
+            cursor = getattr(raw, "cursor", None)
+        posts: list[Any] = []
+        for item in posts_raw:
+            if hasattr(item, "record"):
+                posts.append(item)
+            elif isinstance(item, dict):
+                posts.append(_namespace_from_dict(item))
+            else:
+                posts.append(item)
+        return posts, cursor
+
+
 def _iter_search_batches(
     client: Any,
     *,
@@ -89,8 +130,6 @@ def _iter_search_batches(
     sort: str,
 ) -> Iterable[Any]:
     """Paginate search_posts until max_posts or no cursor."""
-    from atproto_client.models.app.bsky.feed.search_posts import Params  # type: ignore
-
     cursor: str | None = None
     got = 0
     while got < max_posts:
@@ -104,14 +143,12 @@ def _iter_search_batches(
             kwargs["tag"] = tag
         if cursor:
             kwargs["cursor"] = cursor
-        res = client.app.bsky.feed.search_posts(Params(**kwargs))
-        posts = getattr(res, "posts", None) or []
+        posts, cursor = _search_posts_page(client, kwargs)
         for p in posts:
             yield p
             got += 1
             if got >= max_posts:
                 return
-        cursor = getattr(res, "cursor", None)
         if not cursor or not posts:
             return
 

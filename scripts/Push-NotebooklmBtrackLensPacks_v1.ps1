@@ -5,7 +5,7 @@
 .NOTES
   Notebook IDs (SSOT pointers):
   - COMPRESSION_BTRACK -> MKM_CORE_INTELLIGENCE_V1 (aba1f8b1-...)
-  - IJEOMA_BTRACK -> 이제마 B research (af639d3e-... per comp_ijeoma_btrack_nl_pack_v1.json)
+  - IJEOMA_BTRACK -> 이제마 B research (e6c1f050-... per comp_ijeoma_btrack_nl_pack_v1.py)
 #>
 param(
   [string]$WorkspaceRoot = (Split-Path -Parent $PSScriptRoot),
@@ -25,7 +25,7 @@ if (-not $LogPath) {
 $packRoot = Join-Path $WorkspaceRoot "reports\notebooklm_lens_packs_v1"
 $lensMap = @{
   "COMPRESSION_BTRACK" = "aba1f8b1-be62-4367-ac7f-b1a997bb77d4"
-  "IJEOMA_BTRACK"      = "af639d3e-b455-4f3f-8e25-47f58d962c60"
+  "IJEOMA_BTRACK"      = "e6c1f050-40ef-49f0-8b2c-c509b8570cf4"
 }
 
 if (-not $DryRun -and -not (Get-Command nlm -ErrorAction SilentlyContinue)) {

@@ -5,6 +5,11 @@
 
 | Tier | File | Role |
 |------|------|------|
+| **0x** | `docs/research/raw/universal_root_lexicon_matrix_gemini_report_2026-06-21.md` | Incremental raw drop (2026-06-22) |
+| **0x** | `docs/research/raw/universal_root_lexicon_matrix_gemini_prompt_v1.md` | Incremental raw drop (2026-06-22) |
+| **0x** | `docs/research/raw/universal_root_lexicon_matrix_cursor_sweep_2026-06-21.md` | Incremental raw drop (2026-06-22) |
+| **0x** | `docs/research/raw/notion_sandbox_usage_checklist_v1.md` | Incremental raw drop (2026-06-22) |
+| **0x** | `docs/research/raw/cloudflare_dns_weekly_token_scope_v1.md` | Incremental raw drop (2026-06-22) |
 | **0a** | `docs/research/raw/tier0_hybrid_ai_web_sweep_2026-06-20.md` | Extended web/Exa forest (8 rounds) |
 | **0b** | `docs/research/raw/delegation_hcm_4vault_moat_deep_sweep_2026-06-20.md` | Cursor delegation sweep (32 sources) |
 | **0c** | `docs/research/raw/gemini_hcm_4vault_monetization_2026-06-20.md` | Gemini Deep Research supplement (**filter Part X**) |
@@ -12,7 +17,7 @@
 | **1b** | `docs/research/DELEGATION_HCM_4VAULT_MOAT_LIT_REVIEW_2026-06-20.md` | Delegation synthesis + monetization reality |
 
 **Track:** B-track · `research_only` · `send_gate: HOLD`  
-**Stats:** **~70 papers/systems** (62 base + Gemini/delegation delta) · surveys + systems + benchmarks + OSS
+**Stats:** **~47 papers/systems** (incremental re-merge 2026-06-22)
 
 > **Note:** Tier 0c = Commander Gemini paste ingested 2026-06-20. **Never** paste Gemini prose into README without Part X filter.
 
@@ -328,6 +333,15 @@ LOCKED → track_a_live_trading
 | 70 | delegation sweep | Monetization reality (GitGuardian·Continue·ByteRover) | B-track GTM `[HYPO]` |
 
 ---
+## Part VI.G — Incremental raw drop (2026-06-22)
+
+| # | ID | Title | Source raw | MKM tag |
+|---|-----|-------|------------|---------|
+| 71 | 2505.11764 | 2505.11764 | `docs/research/raw/universal_root_lexicon_matrix_cursor_sweep_2026-06-21.md` | raw_drop `[HYPO]` |
+| 72 | 2304.12404 | 2304.12404 | `docs/research/raw/universal_root_lexicon_matrix_cursor_sweep_2026-06-21.md` | raw_drop `[HYPO]` |
+| 73 | 2601.08881 | 2601.08881 | `docs/research/raw/universal_root_lexicon_matrix_cursor_sweep_2026-06-21.md` | raw_drop `[HYPO]` |
+| 74 | 2404.16130 | 2404.16130 | `docs/research/raw/universal_root_lexicon_matrix_cursor_sweep_2026-06-21.md` | raw_drop `[HYPO]` |
+| 75 | 2505.11764 | 2505.11764 | `docs/research/raw/universal_root_lexicon_matrix_gemini_prompt_v1.md` | raw_drop `[HYPO]` |
 
 ## Part VII — Implementation roadmap (merged priority)
 
@@ -443,3 +457,9 @@ py scripts/run_mkm_merged_lit_review_gate_chain_v1.py --input docs/research/NEXT
 ---
 
 *Classification: B-track · Not legal advice · Track A live LOCKED · `[HYPO]` where noted*
+
+## Re-merge manifest (auto)
+
+- last_remerge_utc: `2026-06-22T09:39:57Z`
+- merge_mode: `incremental_patch_full_gate`
+- raw_file_count: `8`

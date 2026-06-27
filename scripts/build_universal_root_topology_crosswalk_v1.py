@@ -94,6 +94,12 @@ def _lexicon_hit(audit_row: dict[str, Any]) -> bool:
 
 def _topology_tokens(sample: dict[str, Any], audit_row: dict[str, Any]) -> list[str]:
     tokens: list[str] = []
+    extra = sample.get("topology_probe_tokens")
+    if isinstance(extra, list):
+        for tok in extra:
+            tok_s = str(tok or "").strip()
+            if tok_s:
+                tokens.append(tok_s)
     for hit in audit_row.get("hits_sample") or []:
         hit_s = str(hit or "").strip()
         if hit_s:
@@ -106,6 +112,36 @@ def _topology_tokens(sample: dict[str, Any], audit_row: dict[str, Any]) -> list[
     return tokens
 
 
+def _lexicon_hit_for_sample(
+    sample: dict[str, Any],
+    audit_row: dict[str, Any],
+    *,
+    lexicon_atom_ids: frozenset[str],
+) -> bool:
+    if str(sample.get("control") or "") == "negative":
+        return False
+    aid = str(sample.get("atom_id") or "").strip()
+    if aid and aid in lexicon_atom_ids:
+        return True
+    return _lexicon_hit(audit_row)
+
+
+def _load_lexicon_atom_id_set(lexicon_path: Path | None) -> frozenset[str]:
+    if lexicon_path is None or not lexicon_path.is_file():
+        return frozenset()
+    try:
+        doc = json.loads(lexicon_path.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        return frozenset()
+    out: set[str] = set()
+    for ent in doc.get("entries") or []:
+        if isinstance(ent, dict):
+            aid = str(ent.get("atom_id") or "").strip()
+            if aid:
+                out.add(aid)
+    return frozenset(out)
+
+
 def build_crosswalk(
     *,
     fixture: dict[str, Any],
@@ -113,10 +149,12 @@ def build_crosswalk(
     token_to_atoms: dict[str, set[str]],
     atom_verse_count: dict[str, int],
     corpus_summary: dict[str, int],
+    lexicon_atom_ids: frozenset[str] | None = None,
 ) -> dict[str, Any]:
     audit_rows = ((audit.get("baseline") or {}).get("rows")) or []
     rows_by_prime = {str(r.get("prime_en") or ""): r for r in audit_rows if r.get("prime_en")}
     samples = fixture.get("samples") or []
+    atom_ids = lexicon_atom_ids or frozenset()
 
     pair_rows: list[dict[str, Any]] = []
     non_control = 0
@@ -151,7 +189,7 @@ def build_crosswalk(
             continue
 
         non_control += 1
-        lh = _lexicon_hit(audit_row)
+        lh = _lexicon_hit_for_sample(sample, audit_row, lexicon_atom_ids=atom_ids)
         th = _topology_hit(_topology_tokens(sample, audit_row), token_to_atoms, atom_verse_count)
         if lh:
             lexicon_hits += 1
@@ -181,12 +219,19 @@ def build_crosswalk(
         )
 
     lexicon_base = audit.get("baseline") or {}
+    atom_linked = any(
+        isinstance(s, dict) and s.get("atom_id") and str(s.get("control") or "") != "negative" for s in samples
+    )
+    prime_hit_rate = lexicon_base.get("prime_hit_rate")
+    if atom_linked and non_control:
+        prime_hit_rate = round(lexicon_hits / non_control, 4)
     lexicon_plane = {
         "plane": "lexicon_41k",
         "pair_count": int(fixture.get("pair_count") or len(samples)),
         "non_control_pairs": non_control,
         "negative_control_pairs": neg_controls,
-        "prime_hit_rate": lexicon_base.get("prime_hit_rate"),
+        "prime_hit_rate": prime_hit_rate,
+        "prime_hit_rate_source": "crosswalk_atom_linkage" if atom_linked else "lexicon_audit_baseline",
         "english_only_distortion_rate": lexicon_base.get("english_only_distortion_rate"),
         "negative_control_leak_count": lexicon_base.get("negative_control_leak_count"),
         "audit_mode": audit.get("audit_mode"),
@@ -268,12 +313,21 @@ def main() -> int:
         print(json.dumps({"ok": False, "error": "missing_verse_atom_jsonl"}))
         return 2
 
+    lexicon_path = ROOT / "reports/constitution/btrack_pilot/master_codebook_lexicon_v1_41708_rows_latest.json"
+    if not lexicon_path.is_file():
+        from scripts.core.master_codebook_lexicon_v1_bridge import resolve_latest_codebook_path  # noqa: WPS433
+
+        resolved = resolve_latest_codebook_path()
+        lexicon_path = resolved if resolved is not None else lexicon_path
+    lexicon_atom_ids = _load_lexicon_atom_id_set(lexicon_path)
+
     doc = build_crosswalk(
         fixture=fixture,
         audit=audit,
         token_to_atoms=token_to_atoms,
         atom_verse_count=atom_verse_count,
         corpus_summary=corpus_summary,
+        lexicon_atom_ids=lexicon_atom_ids,
     )
     doc["lexicon_plane"]["audit_pointer"] = _rel(args.lexicon_audit)
     doc["inputs"] = {

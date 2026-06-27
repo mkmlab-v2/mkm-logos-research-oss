@@ -30,6 +30,7 @@ MKMLIFE_INTERNAL = ROOT / "projects/mkm/mkm-life/data/internal/three_lens_sphere
 
 HUB_V6 = "https://jemaai.cloud/public_showroom_logos_oracle_v6.html?product=1"
 HUB_TOPOLOGY = "https://jemaai.cloud/public_showroom_meaning_topology_graph_v1.html"
+HUB_SHADOW_LANE_V3 = "https://api.jemaai.cloud/public_showroom_research_shadow_lane_v3.html"
 HUB_MKMLIFE = "https://mkmlife.com/oracle-sphere"
 
 VERSION = "1.0.0"
@@ -299,6 +300,7 @@ def assemble(
         "hub_links": {
             "jemaai_logos_v6_product": HUB_V6,
             "jemaai_meaning_topology_graph": HUB_TOPOLOGY,
+            "jemaai_research_shadow_lane_v3": HUB_SHADOW_LANE_V3,
             "mkmlife_oracle_sphere": HUB_MKMLIFE,
         },
         "graph_viz": {

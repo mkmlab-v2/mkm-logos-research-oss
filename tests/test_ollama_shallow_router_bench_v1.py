@@ -92,6 +92,7 @@ def test_handoff_from_example_exit0() -> None:
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["schema"] == "ollama_shallow_router_handoff_v1"
     assert doc["lens_route_hint"]["lens_id"] == "logos"
+    assert doc.get("nsm_prime_tags")
 
 
 def test_thermo_leak_detector() -> None:

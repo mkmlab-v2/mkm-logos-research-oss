@@ -34,6 +34,9 @@
 .PARAMETER SleepMs
   Delay between `nlm` invocations (default 400).
 
+.PARAMETER Refresh
+  Delete same-title sources before add (latest sync).
+
 .PARAMETER LogPath
   Append log path (default reports/notebooklm_lens_pack_push_latest.log).
 #>
@@ -44,7 +47,8 @@ param(
   [switch]$DryRun,
   [int]$MaxNotebookSources = 300,
   [int]$SleepMs = 400,
-  [string]$LogPath = ""
+  [string]$LogPath = "",
+  [switch]$Refresh
 )
 
 $ErrorActionPreference = "Stop"
@@ -95,7 +99,7 @@ if (-not $raw.lens_notebook_id) {
 
 $map = @{}
 foreach ($k in $LensKeys) {
-  $nid = $raw.lens_notebook_id.$k
+  $nid = $raw.lens_notebook_id.$($k)
   if ([string]::IsNullOrWhiteSpace([string]$nid)) {
     throw "Map missing or empty notebook id for lens '$k' in $NotebookMapPath"
   }
@@ -167,6 +171,15 @@ if (-not (Test-Path -LiteralPath $tmpUploadDir)) {
   New-Item -ItemType Directory -Path $tmpUploadDir -Force | Out-Null
 }
 
+function Remove-SourceByTitle([string]$notebookId, [string]$title) {
+  $parsed = Get-SourceList $notebookId
+  $ids = @($parsed | Where-Object { [string]$_.title -eq $title } | ForEach-Object { [string]$_.id })
+  if ($ids.Count -eq 0) { return 0 }
+  & nlm source delete @ids --confirm 2>$null | Out-Null
+  if ($LASTEXITCODE -eq 0) { return $ids.Count }
+  return 0
+}
+
 function Resolve-NlmUploadFile {
   param([System.IO.FileInfo]$FileInfo, [string]$DisplayTitle)
   $ext = $FileInfo.Extension.ToLowerInvariant()
@@ -203,10 +216,17 @@ foreach ($lens in $LensKeys) {
     $full = $upload.Path
     $nlmTitle = $upload.Title
     $existing = $existingTitlesByNotebook[$nid]
-    if ($existing -and ($existing.Contains($title) -or $existing.Contains($nlmTitle))) {
+    if (-not $Refresh -and $existing -and ($existing.Contains($title) -or $existing.Contains($nlmTitle))) {
       "[SKIP exists] $lens $nlmTitle" | Tee-Object -FilePath $LogPath -Append
       $skip++
       continue
+    }
+    if ($Refresh -and -not $DryRun) {
+      $del1 = Remove-SourceByTitle $nid $title
+      $del2 = Remove-SourceByTitle $nid $nlmTitle
+      if (($del1 + $del2) -gt 0) {
+        "[REFRESH deleted] $lens $nlmTitle count=$($del1 + $del2)" | Tee-Object -FilePath $LogPath -Append
+      }
     }
     if ($DryRun) {
       "[DRY] nlm source add $nid --file `"$full`" --title `"$nlmTitle`" --wait" | Tee-Object -FilePath $LogPath -Append

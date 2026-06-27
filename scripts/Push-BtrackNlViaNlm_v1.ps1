@@ -14,7 +14,7 @@ if (-not $LogPath) {
 $packRoot = Join-Path $WorkspaceRoot "reports\notebooklm_lens_packs_v1"
 $map = @{
   "COMPRESSION_BTRACK" = "aba1f8b1-be62-4367-ac7f-b1a997bb77d4"
-  "IJEOMA_BTRACK"      = "af639d3e-b455-4f3f-8e25-47f58d962c60"
+  "IJEOMA_BTRACK"      = "e6c1f050-40ef-49f0-8b2c-c509b8570cf4"
 }
 if (-not (Get-Command nlm -ErrorAction SilentlyContinue)) {
   throw "nlm not on PATH"

@@ -91,6 +91,14 @@ if (-not $SkipMonorepoPathsFromLocal) {
     $relFiles = @(
         "scripts/build_km_physician_cds_assist_envelope_v1.py",
         "scripts/build_patient_care_bundle_from_km_cds_chain_v1.py",
+        "scripts/encode_logos_studio_query_embedding_v1.py",
+        "scripts/encode_logos_studio_query_graphrag_v1.py",
+        "scripts/export_showroom_qa_router_paths_v1.py",
+        "scripts/logos_studio_embedding_sidecar_v1.py",
+        "scripts/logos_ann_lite_embedding_v1.py",
+        "scripts/compute_logos_reasoning_path_v1.py",
+        "scripts/logos_verse_ref_canonical_v1.py",
+        "scripts/logos_gematria_lexicon_router_lib_v1.py",
         "scripts/assemble_patient_care_bundle_with_myeongni_v1.py",
         "scripts/build_myeongni_full_report_v1.py",
         "scripts/run_saju_global_birth_v1.py",
@@ -104,7 +112,22 @@ if (-not $SkipMonorepoPathsFromLocal) {
         "docs/final/artifacts/patient_care_bundle_slot_templates_ko_v1.json",
         "docs/final/artifacts/patient_care_bundle_generation_policy_v1.default.json",
         "docs/final/artifacts/clinic_constitution_survey_item_bank_v1.json",
-        "tests/fixtures/patient_care_bundle_soap_stub_v1.example.json"
+        "tests/fixtures/patient_care_bundle_soap_stub_v1.example.json",
+        "docs/final/artifacts/showroom_meaning_topology_qa_presets_v1_latest.json",
+        "docs/final/artifacts/showroom_meaning_topology_qa_router_sidecar_v1_latest.json",
+        "docs/final/artifacts/showroom_meaning_topology_graph_slice_v1_latest.json",
+        "docs/final/artifacts/logos_studio_preset_taxonomy_v1_latest.json",
+        "docs/final/artifacts/logos_studio_semantic_router_lexical_index_v1_latest.json",
+        "docs/final/artifacts/logos_studio_semantic_router_embedding_index_v1_latest.json",
+        "docs/final/artifacts/logos_concept_bridge_registry_v1_latest.json",
+        "docs/final/artifacts/logos_lemma_verse_edges_v1.jsonl",
+        "docs/final/artifacts/logos_graph_seed_chain_v1_latest.json",
+        "docs/final/artifacts/lens_context_mesh_hop_index_logos_v1_latest.json",
+        "docs/final/artifacts/showroom_era_insight_lattice_genesis_v1_latest.json",
+        "docs/final/artifacts/logos_cross_ref_sample_shard_v1_latest.json",
+        "docs/final/artifacts/bigset_studio_conflict_sidecar_v1_latest.json",
+        "docs/final/artifacts/logos_studio_verse_citation_shard_v1_latest.json",
+        "docs/final/artifacts/logos_studio_a4_synthesis_bundle_v1_latest.json"
     )
     Write-Host "[no1kmedi-tarball] scp monorepo CDS/bundle paths from local" -ForegroundColor Cyan
     if (-not $DryRun) {
@@ -177,7 +200,18 @@ touch "`$ENV_FILE"
 grep -q '^MKM_WORKSPACE_ROOT=' "`$ENV_FILE" && sed -i 's|^MKM_WORKSPACE_ROOT=.*|MKM_WORKSPACE_ROOT=$vpsDestinyRepo|' "`$ENV_FILE" || echo "MKM_WORKSPACE_ROOT=$vpsDestinyRepo" >> "`$ENV_FILE"
 grep -q '^KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN=' "`$ENV_FILE" || echo 'KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN=1' >> "`$ENV_FILE"
 grep -q '^MKM_PYTHON=' "`$ENV_FILE" && sed -i 's|^MKM_PYTHON=.*|MKM_PYTHON=/usr/bin/python3|' "`$ENV_FILE" || echo 'MKM_PYTHON=/usr/bin/python3' >> "`$ENV_FILE"
+grep -q '^LOGOS_STUDIO_EMBEDDING_SIDECAR=' "`$ENV_FILE" || echo 'LOGOS_STUDIO_EMBEDDING_SIDECAR=1' >> "`$ENV_FILE"
+grep -q '^LOGOS_STUDIO_EMBEDDING_SIDECAR_PORT=' "`$ENV_FILE" || echo 'LOGOS_STUDIO_EMBEDDING_SIDECAR_PORT=18765' >> "`$ENV_FILE"
+grep -q '^LOGOS_STUDIO_GRAPHRAG_ROUTER=' "`$ENV_FILE" || echo 'LOGOS_STUDIO_GRAPHRAG_ROUTER=1' >> "`$ENV_FILE"
+grep -q '^LOGOS_AGENT_AUTH_JWT_SECRET=' "`$ENV_FILE" || echo "LOGOS_AGENT_AUTH_JWT_SECRET=`$(openssl rand -hex 32)" >> "`$ENV_FILE"
 grep -q '^NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=' "`$ENV_FILE" || echo 'NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=1' >> "`$ENV_FILE"
+if [ -f $vpsDestinyRepo/scripts/logos_studio_embedding_sidecar_v1.py ]; then
+  if pm2 describe logos-embedding-sidecar >/dev/null 2>&1; then
+    pm2 restart logos-embedding-sidecar --update-env || true
+  else
+    pm2 start $vpsDestinyRepo/scripts/logos_studio_embedding_sidecar_v1.py --name logos-embedding-sidecar --interpreter /usr/bin/python3 --cwd $vpsDestinyRepo -- --port 18765 --preload || true
+  fi
+fi
 pm2 restart no1kmedi-com --update-env || pm2 start npm --name no1kmedi-com --cwd $vpsDest -- start
 pm2 save
 rm -f $tarRemote
@@ -241,9 +275,34 @@ if ($RunApiSmoke) {
     if ($bundleCode -ne "200") { throw "patient-care-bundle smoke failed http $bundleCode" }
     $bundle = Get-Content $bundleOut -Raw -Encoding UTF8 | ConvertFrom-Json
     if (-not $bundle.success) { throw "patient-care-bundle success=false" }
-    $mdLen = ($bundle.patient_facing_markdown | Out-String).Trim().Length
-    if ($mdLen -lt 20) { throw "patient_facing_markdown too short ($mdLen)" }
-    Write-Host "[no1kmedi-tarball] API smoke OK (md_len=$mdLen)" -ForegroundColor Green
+$mdLen = ($bundle.patient_facing_markdown | Out-String).Trim().Length
+if ($mdLen -lt 20) { throw "patient_facing_markdown too short ($mdLen)" }
+
+Write-Host "[no1kmedi-tarball] smoke POST clinician/graph/build-from-cds" -ForegroundColor Cyan
+$graphBuildReq = @{
+    schema = "clinician_graph_build_from_cds_request_v1"
+    request_id = "deploy_smoke_graph_$stamp"
+    cds_envelope = $consult.km_cds.envelope
+    reasoning = @{
+        syndrome_hypothesis = ($consult.draft.reasoning.syndrome_hypothesis | Out-String).Trim()
+        care_direction = ($consult.draft.reasoning.care_direction | Out-String).Trim()
+        caution = ($consult.draft.reasoning.caution | Out-String).Trim()
+    }
+    patient_care_bundle = $bundle.patient_care_bundle
+    options = @{
+        include_sasang_hint = $true
+        include_conflict_paths = $true
+        include_bundle_slots = $true
+    }
+} | ConvertTo-Json -Depth 30 -Compress
+$graphBuildFile = Join-Path $env:TEMP "no1kmedi-deploy-graph-build-$stamp.json"
+[System.IO.File]::WriteAllText($graphBuildFile, $graphBuildReq, [System.Text.UTF8Encoding]::new($false))
+$graphBuildOut = Join-Path $env:TEMP "no1kmedi-deploy-graph-build-out-$stamp.json"
+$graphBuildCode = (& curl.exe -s -o $graphBuildOut -w "%{http_code}" --max-time 60 -X POST "https://app.jema-ai.com/api/clinician/graph/build-from-cds" -H "Content-Type: application/json; charset=utf-8" -H "Origin: https://app.jema-ai.com" --data-binary "@$graphBuildFile")
+if ($graphBuildCode -ne "200") { throw "graph build-from-cds smoke failed http $graphBuildCode" }
+$graphBuild = Get-Content $graphBuildOut -Raw -Encoding UTF8 | ConvertFrom-Json
+if (-not $graphBuild.success) { throw "graph build-from-cds success=false" }
+Write-Host "[no1kmedi-tarball] API smoke OK (md_len=$mdLen graph_nodes=$($graphBuild.graph_bundle_v1.nodes.Count))" -ForegroundColor Green
 }
 
 Remove-Item $tarLocal -Force -ErrorAction SilentlyContinue

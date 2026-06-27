@@ -32,6 +32,9 @@ if (-not (Test-Path $meter)) {
 & py (Join-Path $root "scripts/run_track_a_shadow_corpus_eval.py") --workspace-root $root
 if ($LASTEXITCODE -ne 0) { throw "shadow corpus eval failed: $LASTEXITCODE" }
 
+& py (Join-Path $root "scripts/run_track_a_metering_live_wire_v1.py") --workspace-root $root
+if ($LASTEXITCODE -ne 0) { throw "metering live wire failed: $LASTEXITCODE" }
+
 & py (Join-Path $root "scripts/run_track_a_metering_summary.py") --workspace-root $root
 if ($LASTEXITCODE -ne 0) { throw "metering summary failed: $LASTEXITCODE" }
 

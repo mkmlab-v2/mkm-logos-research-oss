@@ -10,11 +10,15 @@ from __future__ import annotations
 import os
 from collections import deque
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any, Literal
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 from starlette.middleware.cors import CORSMiddleware
+
+from scripts.normalize_qubics_coconet_v1 import normalize_qubics_coconet, qubics_ack_body
+from scripts.smartfarm_persist_jsonl_v1 import append_jsonl
 
 API_CONTRACT_VERSION = "1.0.0"
 SCHEMA_VERSION = "v1"
@@ -182,6 +186,95 @@ def _zone_key(farm_id: str, zone_id: str) -> str:
     return f"{farm_id}:{zone_id}"
 
 
+def _qubics_pilot_farm_id() -> str:
+    return os.environ.get("SMARTFARM_PILOT_FARM_ID", "geumsan_farm_01")
+
+
+def _qubics_pilot_zone_id() -> str:
+    return os.environ.get("SMARTFARM_PILOT_ZONE_ID", "zone_01")
+
+
+def _qubics_pilot_timezone() -> str:
+    return os.environ.get("SMARTFARM_PILOT_TIMEZONE", "Asia/Seoul")
+
+
+def _qubics_comm_ok_max_age_sec() -> int:
+    raw = os.environ.get("SMARTFARM_QUBICS_COMM_OK_MAX_AGE_SEC", "900").strip()
+    try:
+        return max(60, int(raw))
+    except ValueError:
+        return 900
+
+
+def _qubics_raw_jsonl_path() -> Path | None:
+    raw = os.environ.get("SMARTFARM_QUBICS_RAW_JSONL", "").strip()
+    if not raw:
+        raw = os.environ.get("SMARTFARM_EVENT_JSONL_PATH", "").strip()
+    return Path(raw) if raw else None
+
+
+def _store_telemetry_envelope(envelope: dict[str, Any]) -> TelemetryIngestPayload:
+    payload = envelope["payload"]
+    body = TelemetryIngestPayload(**payload)
+    zone_key = _zone_key(body.farm_id, body.zone_id)
+    LATEST_TELEMETRY_BY_ZONE[zone_key] = body
+    _append_event(
+        zone_key,
+        "telemetry_ingest",
+        {
+            "source": "qubics_coconet",
+            "soil_moisture_pct": body.soil_moisture_pct,
+            "soil_temp_c": body.soil_temp_c,
+            "soil_ec_us_cm": body.soil_ec_us_cm,
+            "comm_ok": body.comm_ok,
+            "vendor_meta": envelope.get("vendor_meta"),
+        },
+    )
+    return body
+
+
+def _qubics_zone_id_for_payload(vendor_payload: dict[str, Any]) -> str:
+    from scripts.smartfarm_qubics_device_resolver_v1 import manifest_path_from_env, resolve_zone_id, load_manifest
+
+    path = manifest_path_from_env()
+    if path is not None:
+        zone = resolve_zone_id(load_manifest(path), vendor_payload)
+        if zone:
+            return zone
+    return _qubics_pilot_zone_id()
+
+
+def _process_qubics_ingest(vendor_payload: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
+    try:
+        ack = qubics_ack_body(vendor_payload)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    zone_id = _qubics_zone_id_for_payload(vendor_payload)
+    farm_id = _qubics_pilot_farm_id()
+    try:
+        normalized = normalize_qubics_coconet(
+            vendor_payload,
+            farm_id=farm_id,
+            zone_id=zone_id,
+            timezone=_qubics_pilot_timezone(),
+            comm_ok_max_age_sec=_qubics_comm_ok_max_age_sec(),
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    _store_telemetry_envelope(normalized)
+    append_jsonl(
+        _qubics_raw_jsonl_path(),
+        {
+            "event_type": "qubics_vendor_ingest",
+            "zone_key": _zone_key(farm_id, zone_id),
+            "vendor_payload": vendor_payload,
+            "normalized": normalized,
+            "ack": ack,
+        },
+    )
+    return ack, normalized
+
+
 def _append_event(zone_key: str, event_type: str, payload: dict[str, Any]) -> None:
     EVENT_LOG.append(
         {
@@ -337,6 +430,20 @@ def _evaluate_auto_decision(body: AutoEvaluateRequest) -> AutoEvaluateResponse:
         suggested_command=suggested_command,
         state_snapshot=snapshot,
     )
+
+
+@app.post("/")
+def qubics_root_post(body: dict[str, Any]) -> dict[str, Any]:
+    """QuBICS gateway default POST target — ACK only per sensor manual."""
+    ack, _ = _process_qubics_ingest(body)
+    return ack
+
+
+@app.post("/v1/vendor/qubics/ingest")
+def qubics_named_ingest(body: dict[str, Any]) -> dict[str, Any]:
+    """MKM named ingest — returns vendor ACK plus normalized telemetry envelope."""
+    ack, normalized = _process_qubics_ingest(body)
+    return {"ack": ack, "normalized": normalized}
 
 
 @app.get("/health")

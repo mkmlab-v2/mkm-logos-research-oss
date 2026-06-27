@@ -53,6 +53,11 @@ if ($UseN8nSource) {
 }
 if ($LASTEXITCODE -ne 0) { throw "sync_fact_safe_risk_profile exit $LASTEXITCODE" }
 
+Write-Host "==> 1b/3 check_logos_track_a_miswire_guard_v1" -ForegroundColor Cyan
+$miswire = Join-Path $WorkspaceRoot "scripts\check_logos_track_a_miswire_guard_v1.py"
+& $py $miswire
+if ($LASTEXITCODE -ne 0) { throw "check_logos_track_a_miswire_guard_v1 exit $LASTEXITCODE" }
+
 Write-Host "==> 2/3 conditional_action_gate (api dry-run, no backend)$(if ($ExitZeroOnNoGo) { ' (--dry-run-exit-zero-on-block)' })" -ForegroundColor Cyan
 $gateArgs = @("--backend", "api", "--dry-run", "--skip-human-approval", "--skip-frame-payload")
 if ($ExitZeroOnNoGo) { $gateArgs += "--dry-run-exit-zero-on-block" }

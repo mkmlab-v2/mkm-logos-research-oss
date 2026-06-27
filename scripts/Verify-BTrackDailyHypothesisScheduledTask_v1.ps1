@@ -24,6 +24,7 @@ function New-MissingTaskPayload {
         arguments_contain_include_phase3_leading_sensors = $false
         arguments_contain_skip_phase3_network_fetch      = $false
         arguments_contain_include_market_myeongni_overlay = $false
+        arguments_contain_include_science_core_lane     = $false
         research_evaluation_instrument                   = $null
         next_run_time                                    = $null
     }
@@ -47,6 +48,9 @@ if ($argStr -match '(^|\s)-SkipPhase3NetworkFetch(\s|$)') { $skipPhase3Fetch = $
 $includeMarketMyeongni = $false
 if ($argStr -match '(^|\s)-IncludeMarketMyeongniOverlay(\s|$)') { $includeMarketMyeongni = $true }
 
+$includeScienceCoreLane = $false
+if ($argStr -match '(^|\s)-IncludeScienceCoreLane(\s|$)') { $includeScienceCoreLane = $true }
+
 $instrument = $null
 if ($argStr -match '(^|\s)-ResearchEvaluationInstrument\s+(btc|kospi|multi)(\s|$)') {
     $instrument = $Matches[2]
@@ -62,6 +66,7 @@ $out = [pscustomobject]@{
     arguments_contain_include_phase3_leading_sensors = $includePhase3
     arguments_contain_skip_phase3_network_fetch      = $skipPhase3Fetch
     arguments_contain_include_market_myeongni_overlay = $includeMarketMyeongni
+    arguments_contain_include_science_core_lane     = $includeScienceCoreLane
     research_evaluation_instrument                   = $instrument
     next_run_time                                    = $nextRun
 }

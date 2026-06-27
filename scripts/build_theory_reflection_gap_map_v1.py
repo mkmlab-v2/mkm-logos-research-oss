@@ -10,6 +10,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 FORMULAS = ROOT / "docs/final/artifacts/mkm12_75_formulas_ssot_v1_latest.json"
 FUSION = ROOT / "reports/multi_res_fusion_bench_v1_latest.json"
+BRIDGE = ROOT / "docs/final/artifacts/worldview_formula_crosslink_bridge_v1_latest.json"
 DEFAULT_OUT = ROOT / "reports/theory_reflection_gap_map_v1_latest.json"
 
 
@@ -29,10 +30,27 @@ def main() -> int:
     if FUSION.is_file():
         fusion = json.loads(FUSION.read_text(encoding="utf-8-sig"))
 
-    unrecovered = formulas.get("unrecovered_slots") or formulas.get("vault_pending") or []
-    if isinstance(unrecovered, dict):
-        unrecovered = list(unrecovered.keys())
-    n_unrecovered = len(unrecovered) if isinstance(unrecovered, list) else 51
+    unrecovered = int(formulas.get("unrecovered_slots", 51))
+    documented_with_expr = int(formulas.get("documented_with_expr", 0))
+    l3_status = "complete" if unrecovered == 0 else "vault_pending"
+
+    ops_index = ROOT / "storage/meta/mkm_ops_memory_index_v1.json"
+    l1_status = "partial"
+    l1_evidence = "reports/mkm_ops_memory_index_token_bench_v1_latest.json"
+    if ops_index.is_file():
+        idx = json.loads(ops_index.read_text(encoding="utf-8-sig"))
+        nodes = idx.get("nodes") or {}
+        if "prism_ops_theory_mathematization_gate" in nodes:
+            l1_status = "implemented_pointer"
+            l1_evidence = "storage/meta/mkm_ops_memory_index_v1.json#prism_ops_theory_mathematization_gate"
+
+    l4_status = "pointer_only"
+    l4_evidence = "docs/final/MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md"
+    if BRIDGE.is_file():
+        bridge = json.loads(BRIDGE.read_text(encoding="utf-8-sig"))
+        if bridge.get("ok"):
+            l4_status = "implemented_pointer"
+            l4_evidence = "docs/final/artifacts/worldview_formula_crosslink_bridge_v1_latest.json"
 
     doc = {
         "schema": "theory_reflection_gap_map_v1",
@@ -42,9 +60,9 @@ def main() -> int:
         "boundary_ack": "[HYPO] gap map — Cursor rules reflect ops pattern, not full 75-formula TOE",
         "lanes": {
             "L1_ops_inject": {
-                "status": "partial",
-                "evidence": "reports/mkm_ops_memory_index_token_bench_v1_latest.json",
-                "cursor_surface": "alwaysApply rules + CENTRAL one-liners",
+                "status": l1_status,
+                "evidence": l1_evidence,
+                "cursor_surface": "alwaysApply rules + CENTRAL one-liners + ops memory theory overlay",
             },
             "L2_multi_res_fills": {
                 "status": "implemented_bench",
@@ -52,20 +70,26 @@ def main() -> int:
                 "fused_reduction_percent": (fusion.get("fused") or {}).get("reduction_percent"),
             },
             "L3_unrecovered_formula_slots": {
-                "status": "vault_pending",
-                "count": n_unrecovered,
+                "status": l3_status,
+                "count": unrecovered,
+                "documented_with_expr": documented_with_expr,
                 "policy": "Do not promote empty UNRECOVERED slots to alwaysApply",
             },
             "L4_worldview_full_constitution": {
-                "status": "pointer_only",
-                "evidence": "docs/final/MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md",
-                "cursor_surface": "central-agent-memory.mdc §1.0.5 pointer",
+                "status": l4_status,
+                "evidence": l4_evidence,
+                "cursor_surface": "WORLDVIEW §5 ↔ 75 JSON bidirectional bridge",
             },
             "L5_todo_coordinate_harness": {
                 "status": "implemented_bench",
                 "evidence": "reports/multi_res_todo_index_v1_latest.json",
                 "replay_contract": "reports/multi_res_harness_moss_replay_contract_v1_latest.json",
                 "policy": "[HYPO] evidence→replay→human GO; no todo_queue auto-enqueue",
+            },
+            "L6_theory_promotion_registry": {
+                "status": "implemented_pointer",
+                "evidence": "docs/final/artifacts/mkm_theory_formula_promotion_registry_v1_latest.json",
+                "policy": "promotion_to_a_track_allowed=false; B-track gate pointers only",
             },
         },
         "multi_res_link": {

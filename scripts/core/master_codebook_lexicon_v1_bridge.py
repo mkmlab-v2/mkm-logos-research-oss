@@ -150,6 +150,7 @@ def lexicon_hits_for_text(
     *,
     min_token_len: int = 2,
     include_cjk_bigrams: bool = False,
+    include_hangul_tokenizer_harness: bool = False,
 ) -> tuple[set[str], dict[str, Any]]:
     """Return (terms to add to must_keep, meta for route_info)."""
     if not path.is_file():
@@ -157,9 +158,20 @@ def lexicon_hits_for_text(
     forms = _load_normalized_forms(str(path.resolve()))
     if not forms:
         return set(), {"status": "skipped", "reason": "empty_or_invalid_schema", "path": str(path.resolve())}
-    toks = unicode_word_tokens(raw)
-    if include_cjk_bigrams:
-        toks = toks | cjk_bigram_tokens(raw)
+    if include_hangul_tokenizer_harness:
+        from scripts.core.hangul_lexicon_tokenizer_harness_v1 import harness_lookup_tokens
+
+        toks, harness_meta = harness_lookup_tokens(
+            raw,
+            use_hangul_harness=True,
+            unicode_word_toks=unicode_word_tokens(raw),
+        )
+        meta_base = harness_meta
+    else:
+        toks = unicode_word_tokens(raw)
+        if include_cjk_bigrams:
+            toks = toks | cjk_bigram_tokens(raw)
+        meta_base = {}
     hits = {h for h in (toks & forms) if len(h) >= min_token_len}
     meta = {
         "status": "ok",
@@ -168,7 +180,9 @@ def lexicon_hits_for_text(
         "hit_count": len(hits),
         "min_token_len": min_token_len,
         "include_cjk_bigrams": include_cjk_bigrams,
+        "include_hangul_tokenizer_harness": include_hangul_tokenizer_harness,
         "hits_sample": sorted(hits)[:24],
+        **meta_base,
     }
     return hits, meta
 

@@ -20,6 +20,45 @@ STEPS: list[tuple[str, list[str]]] = [
     ("validate_coord_v2", [sys.executable, "scripts/validate_anatomy_overlay_coord_v2_v1.py"]),
     ("coord_wire_example", [sys.executable, "scripts/build_coord_wire_packet_example_v1.py"]),
     ("coord_wire_bench", [sys.executable, "scripts/build_coord_wire_packet_bench_v1.py"]),
+    ("edge_encoder_spec", [sys.executable, "scripts/build_edge_encoder_spec_v1.py"]),
+    (
+        "edge_encoder_coord_determinism",
+        [sys.executable, "scripts/check_edge_encoder_coord_wire_determinism_v1.py"],
+    ),
+    (
+        "edge_encoder_mask_hybrid_determinism",
+        [sys.executable, "scripts/check_edge_encoder_mask_hybrid_determinism_v1.py"],
+    ),
+    ("edge_encoder_air_gap_pack", [sys.executable, "scripts/build_edge_encoder_air_gap_poc_pack_v1.py"]),
+    ("edge_encoder_air_gap_bundle", [sys.executable, "scripts/build_edge_encoder_air_gap_bundle_v1.py"]),
+    ("edge_encoder_air_gap_verify", [sys.executable, "scripts/check_edge_encoder_air_gap_bundle_v1.py"]),
+    (
+        "edge_encoder_cross_process_http",
+        [sys.executable, "scripts/check_edge_encoder_cross_process_determinism_v1.py"],
+    ),
+    ("edge_encoder_pyinstaller_readiness", [sys.executable, "scripts/build_edge_encoder_sdk_pyinstaller_v1.py"]),
+    (
+        "edge_encoder_pyinstaller_gate",
+        [sys.executable, "scripts/check_edge_encoder_pyinstaller_readiness_v1.py"],
+    ),
+    ("edge_encoder_vpc_runbook", [sys.executable, "scripts/build_edge_encoder_vpc_deploy_runbook_v1.py"]),
+    ("edge_encoder_vpc_checklist_html", [sys.executable, "scripts/build_edge_encoder_vpc_checklist_html_v1.py"]),
+    (
+        "edge_encoder_pyinstaller_binary_smoke",
+        [sys.executable, "scripts/check_edge_encoder_pyinstaller_binary_smoke_v1.py"],
+    ),
+    ("edge_encoder_sdk_smoke", [sys.executable, "scripts/run_edge_encoder_sdk_cli_v1.py", "smoke"]),
+    (
+        "pytest_edge_encoder",
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "tests/test_edge_encoder_spec_v1.py",
+            "tests/test_edge_encoder_sdk_v1.py",
+            "-q",
+        ],
+    ),
     ("education_mock_html", [sys.executable, "scripts/build_rib55_infographic_education_mock_all_v1.py"]),
     (
         "pytest_coord_v2",
@@ -106,7 +145,7 @@ def main() -> int:
     rows: list[dict] = []
     ok = True
     for name, cmd in STEPS:
-        if args.skip_pytest and name == "pytest_coord_v2":
+        if args.skip_pytest and name in ("pytest_coord_v2", "pytest_edge_encoder"):
             rows.append({"step": name, "skipped": True})
             continue
         row = _run(name, cmd)

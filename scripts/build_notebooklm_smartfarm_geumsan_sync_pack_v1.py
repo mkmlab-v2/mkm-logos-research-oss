@@ -18,7 +18,26 @@ NOTEBOOK_URL = "https://notebooklm.google.com/notebook/96865180-769e-4a77-89bb-5
 NOTEBOOK_MCP_ID = "06-2026q2"
 
 # Repo-relative paths to mirror into pack (skip missing)
+PACK_PDF_SOURCES: list[str] = [
+    "reports/smartfarm_vendor_replies/QuBICS_CoCoNET_6CH_릴레이_컨트롤러_매뉴얼.pdf",
+    "reports/smartfarm_vendor_replies/QuBICS_CoCoNET_ETH형_MQTT_게이트웨이_매뉴얼.pdf",
+    "reports/smartfarm_vendor_replies/QuBICS_CoCoNET_릴레이_제어_MQTT_프로토콜_설명서.pdf",
+    "reports/smartfarm_vendor_replies/QuBICS_CoCoNET_토양온습도센서기기_매뉴얼.pdf",
+    "reports/smartfarm_vendor_replies/QuBICS_CoCoNET_센서데이터_송수신_설명서_2604.pdf",
+    "reports/smartfarm_vendor_replies/QuBICS_CoCoNET_WiFi형_MQTT_게이트웨이_매뉴얼_20260520.pdf",
+]
+
 PACK_SOURCES: list[str] = [
+    "docs/final/artifacts/smartfarm_geumsan_artifact_index_v1.json",
+    "docs/final/artifacts/smartfarm_qubics_contract_signed_v1.json",
+    "docs/final/artifacts/smartfarm_qubics_device_manifest_v1.json",
+    "docs/final/artifacts/smartfarm_qubics_http_ingest_spec_v1.json",
+    "docs/final/artifacts/smartfarm_qubics_mqtt_control_spec_v1.example.json",
+    "docs/final/artifacts/smartfarm_geumsan_6channel_valve_mapping_v1.json",
+    "docs/final/artifacts/smartfarm_geumsan_field_install_checklist_owner_v1.md",
+    "docs/final/artifacts/smartfarm_geumsan_3channel_valve_mapping_v1.json",
+    "docs/final/artifacts/smartfarm_geumsan_gateway_commissioning_v1.example.json",
+    "docs/final/artifacts/smartfarm_llm_vs_mkm_gate_checklist_v1.md",
     "docs/final/artifacts/smartfarm_geumsan_vendor_rfq_v2_2026-05-18.md",
     "docs/final/artifacts/smartfarm_geumsan_vendor_proposal_request_v1.md",
     "docs/final/artifacts/smartfarm_geumsan_vendor_outreach_execution_v1.md",
@@ -30,9 +49,12 @@ PACK_SOURCES: list[str] = [
     "reports/smartfarm_geumsan_vendor_reply_gonogo_eval_latest.json",
     "reports/smartfarm_geumsan_parallel_vendor_brief_v1.json",
     "reports/smartfarm_vendor_outreach_log_v1.jsonl",
+    "reports/qubics_pdf_extract_latest.json",
+    "reports/smartfarm_qubics_mqtt_uplink_dry_run_latest.json",
+    "reports/smartfarm_qubics_phase0_e2e_latest.json",
     "reports/notebooklm_golden40_compression_watch_v1.md",
     "reports/compression_track_a_headline_policy_v1_latest.json",
-    "docs/final/artifacts/AI_SMARTFARM_CONTROL_SAFETY_POLICY.yaml",
+    "docs/final/AI_SMARTFARM_CONTROL_SAFETY_POLICY.yaml",
 ]
 
 # Generated in pack only
@@ -75,10 +97,11 @@ def _write_ops_snippet(dest: Path) -> None:
         f"extracted_utc: {datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')}",
         "source: MISSION_LOG.md — 작전 보드 발췌 only",
         "",
-        "## 금산·현장 (다음 1타)",
-        "- 수정견적 메일 발송: reports/smartfarm_geumsan_revision_email_outbox_v1.json",
-        "- 발송 후: quote_revision_sent log, 큐빅스 수정 PDF, eval 재실행",
-        "- 군 PDF: reports/county_grant_pdfs/ P1–P3",
+        "## 금산·CoCoNET (2026-06-26)",
+        "- SSOT: smartfarm_qubics_device_manifest_v1.json (D301/D302/D202/G300, smartfarm)",
+        "- MQTT qbsv4 spec confirmed; subscriber dry-run pass",
+        "- 체크리스트: smartfarm_llm_vs_mkm_gate_checklist_v1.md",
+        "- 다음: VPS MQTT broker + 현장 cid commission",
         "",
         "## 핸드오프 요약 (2026-05-22~23)",
         "- 큐빅스 Go/No-Go: verdict=no_go (K3 API PDF, K7 출장, 3밸브 vs RFQ 2밸브)",
@@ -111,7 +134,7 @@ def main() -> int:
     missing: list[str] = []
     file_meta: list[dict] = []
 
-    for rel in PACK_SOURCES:
+    for rel in PACK_SOURCES + PACK_PDF_SOURCES:
         src = ROOT / rel.replace("/", "\\") if "\\" in rel else ROOT / rel
         if not src.is_file():
             missing.append(rel)

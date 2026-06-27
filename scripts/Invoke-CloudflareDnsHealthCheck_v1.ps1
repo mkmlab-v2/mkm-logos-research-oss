@@ -25,14 +25,19 @@
 .PARAMETER OutJson
   Summary path (default reports/cloudflare_dns_health_check_latest.json).
 
+.PARAMETER WeeklyHttpsPrimary
+  Weekly solo monitor: pass when token active + zones visible + HTTPS OK even if DNS list API returns 403 (tunnel-scoped token). Skips DNS ensure chain.
+
 .NOTES
   Requires CLOUDFLARE_API_TOKEN or CF_API_TOKEN (User env preferred; see other Cloudflare scripts).
+  Full DNS mutate path: docs/research/raw/cloudflare_dns_weekly_token_scope_v1.md
 #>
 param(
     [string]$ZoneNames = "jema-ai.com,no1kmedi.com,jemaai.cloud",
     [switch]$ChainAllowDeleteConflictingWwwHost,
     [switch]$SkipDnsEnsureChain,
     [switch]$SkipHttpsHead,
+    [switch]$WeeklyHttpsPrimary,
     [string[]]$HttpsUrls = @("https://jemaai.cloud/", "https://www.jemaai.cloud/"),
     [string]$OutJson = ""
 )
@@ -52,18 +57,27 @@ $chainScript  = Join-Path $PSScriptRoot "Run-CloudflareDnsEnsureChain_v1.ps1"
 if (-not (Test-Path -LiteralPath $verifyScript)) { throw "Missing: $verifyScript" }
 if (-not (Test-Path -LiteralPath $chainScript)) { throw "Missing: $chainScript" }
 
+if ($WeeklyHttpsPrimary) {
+    $SkipDnsEnsureChain = $true
+}
+
 $out = [ordered]@{
     schema           = "cloudflare_dns_health_check_v1"
     generated_at_utc = ""
     zone_names       = $ZoneNames.Trim()
+    weekly_https_primary = [bool]$WeeklyHttpsPrimary
     verify           = @{ exit_code = $null; report = (Join-Path $root "reports\cloudflare_api_token_verify_latest.json") }
     chain            = @{ skipped = [bool]$SkipDnsEnsureChain; exit_code = $null; report = (Join-Path $root "reports\cloudflare_dns_ensure_chain_latest.json") }
     https            = @()
     gates            = [ordered]@{
+        verify_token_active  = $false
         verify_all_probes_ok = $false
+        dns_api_read_ok      = $false
         chain_ok             = $false
         https_all_ok         = $false
     }
+    degraded         = $false
+    degraded_reason  = $null
     overall_ok       = $false
 }
 
@@ -73,12 +87,26 @@ $out.verify.exit_code = 0
 $vpath = $out.verify.report
 if (-not (Test-Path -LiteralPath $vpath)) { throw "Verify report missing: $vpath" }
 $vj = Get-Content -LiteralPath $vpath -Raw -Encoding UTF8 | ConvertFrom-Json
-$probeOk = $true
+$zonesOk = $true
+$dnsReadOk = $true
 foreach ($p in @($vj.dns_probes)) {
-    if (-not $p.zone_found -or -not $p.dns_list_ok) { $probeOk = $false; break }
+    if (-not $p.zone_found) { $zonesOk = $false }
+    if (-not $p.dns_list_ok) { $dnsReadOk = $false }
 }
-$out.gates.verify_all_probes_ok = $probeOk
-if (-not $probeOk) { $out.verify.exit_code = 1 }
+$tokenActive = ([string]$vj.status -eq "active")
+$out.gates.verify_token_active = $tokenActive
+$out.gates.dns_api_read_ok = $dnsReadOk
+if ($WeeklyHttpsPrimary) {
+    $out.gates.verify_all_probes_ok = ($tokenActive -and $zonesOk)
+    if (-not $dnsReadOk) {
+        $out.degraded = $true
+        $out.degraded_reason = "dns_list_403_tunnel_token_weekly_https_primary"
+    }
+}
+else {
+    $out.gates.verify_all_probes_ok = ($tokenActive -and $zonesOk -and $dnsReadOk)
+}
+if (-not $out.gates.verify_all_probes_ok) { $out.verify.exit_code = 1 }
 
 if (-not $SkipDnsEnsureChain) {
     $argList = @(

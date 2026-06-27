@@ -27,3 +27,10 @@ def test_rib55_coord_passive_audit_skip_pytest_exit0():
     step_names = [s.get("step") for s in doc["steps"]]
     assert "l0_l1_ablation" in step_names
     assert "coord_wire_example" in step_names
+    assert "edge_encoder_coord_determinism" in step_names
+    assert "edge_encoder_air_gap_bundle" in step_names
+    assert "edge_encoder_air_gap_verify" in step_names
+    assert "edge_encoder_cross_process_http" in step_names
+    assert "edge_encoder_vpc_runbook" in step_names
+    assert "edge_encoder_vpc_checklist_html" in step_names
+    assert "edge_encoder_sdk_smoke" in step_names

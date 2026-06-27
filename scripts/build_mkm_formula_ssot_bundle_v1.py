@@ -15,6 +15,19 @@ CORE20 = VAULT_INGEST / "formula_precision_core20"
 OUT_DIR = ROOT / "docs/final/artifacts"
 SUMMARY_PATH = ROOT / "docs/verified_knowledge_base/mkm12_mathematics/core_formulas_summary.json"
 OUT_75_MD = ROOT / "docs/final/MKM12_75개_수학공식_전체목록_2026-01-31.md"
+VAULT_75_CATALOG = (
+    ROOT / "docs/final/vault_mirror/mkm12_mathematics/MKM12_75개_수학공식_전체목록_2026-01-31.md"
+)
+VAULT_FORMULA_INDEX = (
+    ROOT / "docs/final/vault_mirror/mkm12_mathematics/MKM12_수학공식_인덱스_2026-01-31.md"
+)
+CONSTITUTION_FULL = ROOT / "docs/final/MKM12_수학_헌법_2026-01-31.md"
+
+CHAPTER_HDR_RE = re.compile(r"^### 제(\d+)장:\s*([^-]+)\s*-\s*(\d+)개")
+CATALOG_LINE_RE = re.compile(r"^(\d+)\.\s+(.+)$")
+INDEX_HDR_RE = re.compile(r"^#### 공식 (\d+-\d+):\s*(.+)$")
+CONSTITUTION_HDR_RE = re.compile(r"^### 공식 (\d+-\d+):\s*(.+)$")
+SUB_LABEL_RE = re.compile(r"^\*\*(.+?)\*\*:?\s*$")
 
 LATEX_RE = re.compile(r"\$[^$]+\$|\\\[[\s\S]*?\\\]|\\\([^)]+\\\)")
 CODE_ASSIGN = re.compile(r"^\s*(?:[a-zA-Z_][\w.]*\s*=\s*.+|return\s+.+)")
@@ -168,6 +181,234 @@ def task2_core20_lines(ts: str) -> tuple[int, Path, Path]:
     return len(core_rows), csv_path, md_path
 
 
+def _normalize_name(s: str) -> str:
+    return re.sub(r"\s+", "", s.lower().replace("→", "").replace("(", "").replace(")", ""))
+
+
+def _parse_vault_75_catalog(path: Path) -> list[dict[str, object]]:
+    if not path.is_file():
+        return []
+    current_chapter = "vault_pending"
+    current_chapter_name = ""
+    by_slot: dict[int, dict[str, object]] = {}
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        ch = CHAPTER_HDR_RE.match(line.strip())
+        if ch:
+            current_chapter = f"chapter_{ch.group(1)}"
+            current_chapter_name = ch.group(2).strip()
+            continue
+        row = CATALOG_LINE_RE.match(line.strip())
+        if not row:
+            continue
+        slot = int(row.group(1))
+        if slot < 1 or slot > 75:
+            continue
+        by_slot[slot] = {
+            "slot": slot,
+            "id": f"F-{slot:03d}",
+            "category": current_chapter,
+            "chapter_name": current_chapter_name,
+            "name": row.group(2).strip(),
+            "formula": "",
+            "purpose": current_chapter_name,
+            "grade": "HYPO",
+            "source": str(path.relative_to(ROOT)).replace("\\", "/"),
+        }
+    return [by_slot[i] for i in sorted(by_slot)]
+
+
+def _parse_formula_index_exprs(path: Path) -> dict[str, dict[str, str]]:
+    """Parse core-24 index: id -> {name, formula}."""
+    if not path.is_file():
+        return {}
+    text = path.read_text(encoding="utf-8", errors="replace")
+    out: dict[str, dict[str, str]] = {}
+    current_id = ""
+    current_name = ""
+    buf: list[str] = []
+    in_block = False
+
+    def flush() -> None:
+        nonlocal current_id, current_name, buf, in_block
+        if not current_id:
+            return
+        expr = " ".join(buf).strip()
+        expr = re.sub(r"\s+", " ", expr)[:500]
+        out[current_id] = {"name": current_name, "formula": expr}
+        current_id = ""
+        current_name = ""
+        buf = []
+        in_block = False
+
+    for line in text.splitlines():
+        hdr = INDEX_HDR_RE.match(line.strip())
+        if hdr:
+            flush()
+            current_id = hdr.group(1)
+            current_name = hdr.group(2).strip()
+            continue
+        if line.strip() == "$$":
+            if in_block:
+                flush()
+            else:
+                in_block = True
+            continue
+        if in_block and line.strip():
+            buf.append(line.strip())
+    flush()
+    return out
+
+
+def _store_constitution_expr(
+    out: dict[str, dict[str, str]],
+    key: str,
+    current_id: str,
+    current_name: str,
+    expr: str,
+) -> None:
+    if not key or not expr:
+        return
+    norm = _normalize_name(key)
+    if norm in out:
+        return
+    out[norm] = {
+        "id": current_id,
+        "name": current_name if key == current_name else key,
+        "formula": expr[:500],
+    }
+
+
+def _parse_constitution_exprs(path: Path) -> dict[str, dict[str, str]]:
+    """Parse full constitution: normalized name/label -> {id, formula}."""
+    if not path.is_file():
+        return {}
+    out: dict[str, dict[str, str]] = {}
+    current_id = ""
+    current_name = ""
+    current_sublabel = ""
+    buf: list[str] = []
+    in_block = False
+    section_has_primary = False
+
+    def flush_block() -> None:
+        nonlocal buf, in_block, section_has_primary, current_sublabel
+        if not current_id:
+            buf = []
+            in_block = False
+            return
+        expr = re.sub(r"\s+", " ", " ".join(buf).strip())[:500]
+        if expr:
+            if not section_has_primary:
+                _store_constitution_expr(out, current_name, current_id, current_name, expr)
+                section_has_primary = True
+            if current_sublabel:
+                _store_constitution_expr(
+                    out, current_sublabel, current_id, current_name, expr
+                )
+        buf = []
+        in_block = False
+
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        hdr = CONSTITUTION_HDR_RE.match(line.strip())
+        if hdr:
+            flush_block()
+            current_id = hdr.group(1)
+            current_name = hdr.group(2).strip()
+            current_sublabel = ""
+            section_has_primary = False
+            continue
+        if not current_id:
+            continue
+        sub = SUB_LABEL_RE.match(line.strip())
+        if sub:
+            flush_block()
+            current_sublabel = sub.group(1).strip()
+            continue
+        if line.strip() == "$$":
+            if in_block:
+                flush_block()
+            else:
+                in_block = True
+            continue
+        if in_block and line.strip():
+            buf.append(line.strip())
+    flush_block()
+    return out
+
+
+def _enrich_from_constitution(
+    expanded: list[dict[str, object]],
+    constitution_exprs: dict[str, dict[str, str]],
+) -> None:
+    alias_keys: dict[str, list[str]] = {
+        "사전확률계산": ["사전확률강도적용", "prior", "사전확률"],
+        "사후확률계산": ["사후확률계산", "posterior", "사후확률"],
+        "lambda기반예측": ["명리λ예측", "예측보정", "lambda기반예측"],
+    }
+
+    def _pick_meta(norm: str) -> dict[str, str] | None:
+        for key, meta in constitution_exprs.items():
+            if key in norm or norm in key:
+                return meta
+        for aliases in alias_keys.values():
+            if norm in aliases or any(a in norm for a in aliases):
+                for alias in aliases:
+                    if alias in constitution_exprs:
+                        return constitution_exprs[alias]
+        for alias_list in alias_keys.values():
+            if norm in alias_list:
+                for alias in alias_list:
+                    for key, meta in constitution_exprs.items():
+                        if alias in key or key in alias:
+                            return meta
+        if norm in alias_keys:
+            for alias in alias_keys[norm]:
+                for key, meta in constitution_exprs.items():
+                    if alias in key or key in alias:
+                        return meta
+        return None
+
+    for entry in expanded:
+        if entry.get("formula"):
+            continue
+        name = str(entry.get("name", ""))
+        norm = _normalize_name(name)
+        best = _pick_meta(norm)
+        if not best:
+            continue
+        entry["formula"] = best.get("formula", "")
+        entry["constitution_id"] = best.get("id", "")
+        entry["source"] = (
+            str(CONSTITUTION_FULL.relative_to(ROOT)).replace("\\", "/")
+            + f"#{best.get('id', '')}"
+        )
+
+
+def _enrich_from_index_and_summary(
+    expanded: list[dict[str, object]],
+    index_exprs: dict[str, dict[str, str]],
+    summary_by_name: dict[str, dict[str, str]],
+) -> None:
+    for entry in expanded:
+        name = str(entry.get("name", ""))
+        norm = _normalize_name(name)
+        for fid, meta in index_exprs.items():
+            if _normalize_name(meta["name"]) in norm or norm in _normalize_name(meta["name"]):
+                entry["id"] = fid
+                if meta.get("formula"):
+                    entry["formula"] = meta["formula"]
+                entry["source"] = (
+                    str(VAULT_FORMULA_INDEX.relative_to(ROOT)).replace("\\", "/")
+                    + f"#{fid}"
+                )
+                break
+        sm = summary_by_name.get(norm)
+        if sm and not entry.get("formula"):
+            entry["formula"] = sm.get("formula", "")
+            if sm.get("id"):
+                entry["id"] = sm["id"]
+
+
 def _vault_source_candidates() -> list[str]:
     hits: list[str] = []
     mc = VAULT_INGEST / "math_constitution_theory_focus"
@@ -185,72 +426,114 @@ def _vault_source_candidates() -> list[str]:
 
 def task3_75_formulas(ts: str) -> tuple[int, Path, Path, Path]:
     summary = json.loads(SUMMARY_PATH.read_text(encoding="utf-8"))
-    expanded: list[dict[str, object]] = []
-    idx = 0
-    for cat_key, cat in (summary.get("formula_categories") or {}).items():
-        count = int(cat.get("count", 0))
-        existing = cat.get("formulas", [])
-        for i in range(count):
-            idx += 1
-            if i < len(existing):
-                e = existing[i]
-                expanded.append(
-                    {
-                        "slot": idx,
-                        "id": e.get("id", f"{cat_key}-{i + 1}"),
-                        "category": cat_key,
-                        "name": e.get("name", ""),
-                        "formula": e.get("formula", e.get("value", "")),
-                        "purpose": e.get("purpose", ""),
-                        "grade": "HYPO",
-                        "source": "core_formulas_summary.json",
-                    }
-                )
-            else:
-                expanded.append(
-                    {
-                        "slot": idx,
-                        "id": f"{cat_key}-{i + 1}",
-                        "category": cat_key,
-                        "name": f"(slot) {cat.get('description', cat_key)} #{i + 1}",
-                        "formula": "",
-                        "purpose": cat.get("description", ""),
-                        "grade": "HYPO",
-                        "source": "core_formulas_summary.json (count-only)",
-                    }
-                )
-
-    documented = len(expanded)
     total_target = int(summary.get("verification_status", {}).get("total_formulas", 75))
     refs = summary.get("references", {})
-    for slot in range(documented + 1, total_target + 1):
-        expanded.append(
-            {
-                "slot": slot,
-                "id": f"UNRECOVERED-{slot:03d}",
-                "category": "vault_pending",
-                "name": "(원천 미동기화)",
-                "formula": "",
-                "purpose": "See references.all_75_formulas / vault seal doc",
-                "grade": "HYPO",
-                "source": str(refs.get("all_75_formulas", "mkm_vertex_ai_upload (not in workspace)")),
+
+    summary_by_name: dict[str, dict[str, str]] = {}
+    for cat in (summary.get("formula_categories") or {}).values():
+        for e in cat.get("formulas", []):
+            name = str(e.get("name", ""))
+            summary_by_name[_normalize_name(name)] = {
+                "id": str(e.get("id", "")),
+                "formula": str(e.get("formula", e.get("value", ""))),
             }
-        )
+
+    vault_catalog = _parse_vault_75_catalog(VAULT_75_CATALOG)
+    index_exprs = _parse_formula_index_exprs(VAULT_FORMULA_INDEX)
+    constitution_exprs = _parse_constitution_exprs(CONSTITUTION_FULL)
+    expanded: list[dict[str, object]] = []
+
+    if len(vault_catalog) == total_target:
+        expanded = vault_catalog
+        _enrich_from_index_and_summary(expanded, index_exprs, summary_by_name)
+        _enrich_from_constitution(expanded, constitution_exprs)
+        documented = len(expanded)
+        unrecovered = 0
+    else:
+        idx = 0
+        for cat_key, cat in (summary.get("formula_categories") or {}).items():
+            count = int(cat.get("count", 0))
+            existing = cat.get("formulas", [])
+            for i in range(count):
+                idx += 1
+                if i < len(existing):
+                    e = existing[i]
+                    expanded.append(
+                        {
+                            "slot": idx,
+                            "id": e.get("id", f"{cat_key}-{i + 1}"),
+                            "category": cat_key,
+                            "name": e.get("name", ""),
+                            "formula": e.get("formula", e.get("value", "")),
+                            "purpose": e.get("purpose", ""),
+                            "grade": "HYPO",
+                            "source": "core_formulas_summary.json",
+                        }
+                    )
+                else:
+                    expanded.append(
+                        {
+                            "slot": idx,
+                            "id": f"{cat_key}-{i + 1}",
+                            "category": cat_key,
+                            "name": f"(slot) {cat.get('description', cat_key)} #{i + 1}",
+                            "formula": "",
+                            "purpose": cat.get("description", ""),
+                            "grade": "HYPO",
+                            "source": "core_formulas_summary.json (count-only)",
+                        }
+                    )
+        documented = len(expanded)
+        for slot in range(documented + 1, total_target + 1):
+            expanded.append(
+                {
+                    "slot": slot,
+                    "id": f"UNRECOVERED-{slot:03d}",
+                    "category": "vault_pending",
+                    "name": "(원천 미동기화)",
+                    "formula": "",
+                    "purpose": "See references.all_75_formulas / vault seal doc",
+                    "grade": "HYPO",
+                    "source": str(
+                        refs.get("all_75_formulas", "mkm_vertex_ai_upload (not in workspace)")
+                    ),
+                }
+            )
+        unrecovered = max(0, total_target - documented)
 
     vault_hits = _vault_source_candidates()
+    documented_with_expr = sum(1 for x in expanded if x.get("formula"))
     json_path = OUT_DIR / "mkm12_75_formulas_ssot_v1_latest.json"
+    refs = dict(summary.get("references", {}))
+    refs.update(
+        {
+            "worldview_constitution": "docs/final/MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md",
+            "worldview_section": "5",
+            "ascii_ssot_pointer": "docs/final/MKM12_75_FORMULAS_SSOT_V1.md",
+            "theory_mathematization_canon": (
+                "docs/final/artifacts/mkm_theory_mathematization_canon_v1_latest.md"
+            ),
+            "promotion_registry": (
+                "docs/final/artifacts/mkm_theory_formula_promotion_registry_v1_latest.json"
+            ),
+            "crosslink_bridge": (
+                "docs/final/artifacts/worldview_formula_crosslink_bridge_v1_latest.json"
+            ),
+        }
+    )
     payload = {
         "schema": "mkm12_75_formulas_ssot_v1",
         "generated_at_utc": ts,
         "constitution_version": summary["mkm12_mathematics"]["version"],
         "total_slots": total_target,
         "documented_from_summary": documented,
-        "unrecovered_slots": max(0, total_target - documented),
-        "documented_with_expr": sum(1 for x in expanded if x.get("formula")),
+        "unrecovered_slots": unrecovered,
+        "vault_catalog_slots": len(vault_catalog),
+        "documented_with_expr": documented_with_expr,
         "axis_note": (
             "Planning C(소음) vs runtime M(Material): production wiring uses S-L-K-M only."
         ),
-        "references": summary.get("references", {}),
+        "references": refs,
         "vault_source_candidates": vault_hits,
         "formulas": expanded,
         "repo_implemented_facts": [
@@ -285,6 +568,16 @@ def task3_75_formulas(ts: str) -> tuple[int, Path, Path, Path]:
     )
 
     mk = summary["mkm12_mathematics"]
+    if unrecovered:
+        recovery_note = (
+            f"> **복구 상태:** 카테고리 JSON에서 **{documented}**식 명시 + "
+            f"**{unrecovered}**식은 원천(`{refs.get('final_sealed_version', 'Vault')}`) 미러 대기."
+        )
+    else:
+        recovery_note = (
+            f"> **복구 상태:** Vault 75식 카탈로그 **{len(vault_catalog)}**슬롯 입고 · "
+            f"수식 문자열 **{documented_with_expr}**식 · UNRECOVERED **0**."
+        )
     md_lines = [
         "# MKM12 75개 수학공식 전체목록 (SSOT 복구 v1)",
         "",
@@ -301,6 +594,8 @@ def task3_75_formulas(ts: str) -> tuple[int, Path, Path, Path]:
         "",
         "## 75 슬롯",
         "",
+        recovery_note,
+        "",
         "| slot | id | category | name | formula/value | grade |",
         "|---:|---|---|---|---|---|",
     ]
@@ -309,10 +604,6 @@ def task3_75_formulas(ts: str) -> tuple[int, Path, Path, Path]:
         md_lines.append(
             f"| {x['slot']} | {x['id']} | {x['category']} | {str(x['name'])[:32]} | {f} | {x['grade']} |"
         )
-    md_lines.insert(
-        14,
-        f"\n> **복구 상태:** 카테고리 JSON에서 **{documented}**식 명시 + **{total_target - documented}**식은 원천(`{refs.get('final_sealed_version', 'Vault')}`) 미러 대기.\n",
-    )
     md_lines.extend(["", "## 레포 FACT 구현", ""])
     for r in payload["repo_implemented_facts"]:
         md_lines.append(f"- **{r['id']}** (`{r['grade']}`): `{r['path']}` — `{r['expr']}`")

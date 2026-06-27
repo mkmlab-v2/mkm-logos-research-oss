@@ -15,14 +15,21 @@
 .PARAMETER WhatIf
   삭제하지 않고 제거 대상 source id와 제목만 출력합니다.
 
+.PARAMETER BatchSize
+  `nlm source delete` 배치 크기. 대량 id 일괄 삭제 실패 시 8 권장. 0 = 한 번에 전부.
+
 .EXAMPLE
   powershell -File scripts\notebooklm_dedupe_sources_by_title.ps1 -WhatIf
 
 .EXAMPLE
   powershell -File scripts\notebooklm_dedupe_sources_by_title.ps1 -Confirm
+
+.EXAMPLE
+  powershell -File scripts\notebooklm_dedupe_sources_by_title.ps1 -NotebookId e6c1f050-40ef-49f0-8b2c-c509b8570cf4 -Confirm -BatchSize 8
 #>
 param(
     [string]$NotebookId = "347e5cbe-0ade-4615-9aac-8747d4fa644e",
+    [int]$BatchSize = 8,
     [switch]$WhatIf,
     [switch]$Confirm
 )
@@ -93,9 +100,31 @@ if (-not $Confirm) {
     throw "Refusing to delete without -Confirm. Re-run with -Confirm or use -WhatIf first."
 }
 
-& nlm source delete @toDelete --confirm
-if ($LASTEXITCODE -ne 0) {
-    throw "nlm source delete failed with exit $LASTEXITCODE"
+$removed = 0
+$failed = @()
+if ($BatchSize -le 0) {
+    $batches = ,@($toDelete)
+} else {
+    $batches = @()
+    for ($i = 0; $i -lt $toDelete.Count; $i += $BatchSize) {
+        $end = [Math]::Min($i + $BatchSize - 1, $toDelete.Count - 1)
+        $batches += ,@($toDelete[$i..$end])
+    }
 }
 
-Write-Host "Done. Removed $($toDelete.Count) duplicate source(s)."
+foreach ($batch in $batches) {
+    & nlm source delete @batch --confirm
+    if ($LASTEXITCODE -ne 0) {
+        $failed += $batch
+        Write-Warning "nlm source delete batch failed (size=$($batch.Count)); exit $LASTEXITCODE"
+    } else {
+        $removed += $batch.Count
+    }
+    if ($BatchSize -gt 0) { Start-Sleep -Seconds 1 }
+}
+
+if ($failed.Count -gt 0) {
+    throw "nlm source delete failed for $($failed.Count) id(s); removed $removed/$($toDelete.Count)."
+}
+
+Write-Host "Done. Removed $removed duplicate source(s)."

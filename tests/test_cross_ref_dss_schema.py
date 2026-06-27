@@ -22,7 +22,7 @@ _SCHEMA = _ROOT / "docs" / "final" / "CROSS_REF_DRAFT_V2_DOCUMENT.schema.json"
 _LOGOS_ASSIGN = _ROOT / "docs" / "final" / "artifacts" / "LOGOS_STATE_MAPPING_V1.json"
 _ETCBC_ALIGN = _ROOT / "data" / "etcbc-dss" / "log" / "align-2020-07-14.txt"
 
-_CORPUS = frozenset({"dss", "apocrypha", "pseudepigrapha", "myeongni_probe"})
+_CORPUS = frozenset({"dss", "apocrypha", "pseudepigrapha", "myeongni_probe", "mt"})
 _LINKS = frozenset(
     {
         "thematic",
@@ -152,17 +152,23 @@ def test_entry_15_partial_anchor_verified_gate() -> None:
     assert "Gen.49.1-8 (4Q1/4Q5)" in sat
 
 
-def test_entry_12_13_partial_anchor_verified_gates() -> None:
-    """ENTRY_12/13 keep verse-line TBD but record 11Q5 line-bucket anchors."""
+def test_entry_12_13_post_p8_anchor_gates() -> None:
+    """ENTRY_12 mt_only; ENTRY_13 4Q98b commander shadow witness (P8/hg-05 apply)."""
     doc = json.loads(_DRAFT.read_text(encoding="utf-8"))
-    for eid, verse in (("ENTRY_12", "Ps.4.6"), ("ENTRY_13", "Ps.5.2")):
-        row = next(e for e in doc["entries"] if e.get("entry_id") == eid)
-        sat = str(row.get("satellite_ref", ""))
-        assert "status=partial_anchor_verified (scroll+line-buckets)" in sat
-        assert "11Q5-18 line-buckets" in sat
-        assert "not exposed in consulted public 11Q5 transcription" in sat
-        assert "Qumran-Digital 11Q5 transcription (2025-03-11)" in sat
-        assert verse in sat
+    e12 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_12")
+    e13 = next(e for e in doc["entries"] if e.get("entry_id") == "ENTRY_13")
+    sat12 = str(e12.get("satellite_ref", ""))
+    sat13 = str(e13.get("satellite_ref", ""))
+    assert e12.get("canonical_ref") == "Ps.4.6"
+    assert e13.get("canonical_ref") == "Ps.5.2"
+    assert "status=mt_only_no_qumran_witness" in sat12
+    assert "prior_bench=11Q5(hypothesis_retired)" in sat12
+    assert e12.get("corpus_type") == "mt"
+    assert "status=commander_verified_shadow_witness" in sat13
+    assert "4Q98b" in sat13
+    assert "shadow_verse_anchor=Ps.5.8-9" in sat13
+    assert "witness_id=dss_etcbc_line_1601488" in sat13
+    assert "verified_anchor" not in sat13
 
 
 def test_entry_06_07_08_10_partial_anchor_gates() -> None:
@@ -174,8 +180,6 @@ def test_entry_06_07_08_10_partial_anchor_gates() -> None:
         "ENTRY_08": "status=partial_anchor_verified (sigla+plates)",
         "ENTRY_10": "status=partial_anchor_verified (plates+line)",
         "ENTRY_09": "status=partial_anchor_verified (frag+col+line-range)",
-        "ENTRY_12": "status=partial_anchor_verified (scroll+line-buckets)",
-        "ENTRY_13": "status=partial_anchor_verified (scroll+line-buckets)",
         "ENTRY_15": "status=partial_anchor_verified (witness-set+plates+chapter-range)",
     }
     for eid, marker in expected.items():
@@ -216,8 +220,6 @@ def test_waiting_queue_entries_keep_explicit_open_source_gap_markers() -> None:
     checks = {
         "ENTRY_07": "public line-level transcription unavailable in consulted open sources",
         "ENTRY_08": "public line transcription unavailable in consulted open sources",
-        "ENTRY_12": "not exposed in consulted public 11Q5 transcription",
-        "ENTRY_13": "not exposed in consulted public 11Q5 transcription",
         "ENTRY_16": "no extant DSS witness for Ezra.2.54 list",
     }
     for eid, marker in checks.items():

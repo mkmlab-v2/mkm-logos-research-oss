@@ -27,6 +27,18 @@ Constructing a **“Universal Minimal Core Lexicon” that replaces a 41k corpus
 
 ---
 
+## Key papers (fact_support catalog)
+
+| arxiv_id | title |
+|----------|-------|
+| 2003.03131 | Morfessor EM+Prune: Improved Subword Segmentation with Expectation Maximization and Pruning |
+| 2304.12404 | Semantic Tokenizer for Enhanced Natural Language Processing |
+| 2505.11764 | Towards Universal Semantics With Large Language Models |
+| 2406.18665 | RouteLLM: Learning to Route LLMs with Preference Data |
+| 2403.12031 | RouterBench: A Benchmark for Multi-LLM Routing System |
+
+---
+
 ## Section 1 — Information theory vs 41k anchors
 
 ### 1.1 What 41k actually is (Fact-Lock)

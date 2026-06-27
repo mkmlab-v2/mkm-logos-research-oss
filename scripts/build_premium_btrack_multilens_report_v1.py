@@ -549,12 +549,89 @@ def render_synthesis_md(
     return "\n".join(lines)
 
 
+def _load_shock_ablation_json(path: Path) -> dict[str, Any] | None:
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8-sig"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def render_shock_ablation_md(doc: dict[str, Any]) -> str:
+    """Render 3-arm soft hit rates table from shock ablation artifact."""
+    arms = doc.get("arms") if isinstance(doc.get("arms"), dict) else {}
+    arm_order = ("active", "fusion_always", "fusion_shock_only")
+    lines: list[str] = [
+        "> `[HYPO]` · B-track · `send_gate: HOLD` · research_only",
+        "",
+        "| arm | n_scored | shock_days | soft_hit_rate |",
+        "| --- | ---: | ---: | ---: |",
+    ]
+    for aid in arm_order:
+        arm = arms.get(aid) if isinstance(arms.get(aid), dict) else {}
+        n = arm.get("n_scored", "—")
+        shock_n = arm.get("shock_days", "—")
+        rate = arm.get("soft_hit_rate")
+        rate_s = f"{float(rate):.4f}" if rate is not None else "—"
+        lines.append(f"| `{aid}` | {n} | {shock_n} | {rate_s} |")
+    comp = doc.get("comparison") if isinstance(doc.get("comparison"), dict) else {}
+    thresholds = doc.get("shock_thresholds") if isinstance(doc.get("shock_thresholds"), dict) else {}
+    lines.extend(
+        [
+            "",
+            f"- **delta_shock_only_minus_active**: {comp.get('delta_shock_only_minus_active', '—')}",
+            f"- **delta_always_minus_active**: {comp.get('delta_always_minus_active', '—')}",
+            f"- **promotion_candidate**: `{doc.get('promotion_candidate')}`",
+            f"- **verdict_ko**: {doc.get('verdict_ko', '—')}",
+        ]
+    )
+    if thresholds:
+        lines.append(
+            f"- shock thresholds: |return|>={thresholds.get('abs_return_pct')}% · prior<={thresholds.get('prior_kospi_pct')}%"
+        )
+    lines.append("")
+    return "\n".join(lines)
+
+
+def render_field_band_stack_md(doc: dict[str, Any]) -> str:
+    """Thin slice: Field band conformal stack (vol-widen + RWC/CPTC union) [HYPO]."""
+    stack = doc.get("stack") if isinstance(doc.get("stack"), dict) else doc
+    hold_base = stack.get("holdout_band_base")
+    hold_rwc = stack.get("holdout_band_rwc")
+    hold_cptc = stack.get("holdout_band_cptc")
+    hold_union = stack.get("holdout_band_stack_union") or stack.get("holdout_band_stack")
+    lines: list[str] = [
+        "> `[HYPO]` · B-track · `send_gate: HOLD` · band layer only · direction unchanged",
+        "",
+        "| layer | holdout band_hit_rate |",
+        "| --- | ---: |",
+        f"| baseline (vol-widen) | {hold_base if hold_base is not None else '—'} |",
+        f"| RWC-lite | {hold_rwc if hold_rwc is not None else '—'} |",
+        f"| CPTC-lite | {hold_cptc if hold_cptc is not None else '—'} |",
+        f"| stack_union | {hold_union if hold_union is not None else '—'} |",
+        "",
+        f"- **best_band_layer**: `{stack.get('best_band_layer', '—')}`",
+        f"- **finstress_recommendation**: `{stack.get('finstress_recommendation', '—')}`",
+        f"- **l3_ack_ready**: `{stack.get('l3_ack_ready', '—')}`",
+        "",
+        "_Not PnL·not live inject·science_core backfill rows may apply in extended panel._",
+        "",
+    ]
+    return "\n".join(lines)
+
+
 def render_package_md(
     report: dict[str, Any],
     slice_contents: dict[str, str],
     synthesis_text: str,
     *,
     mode: Mode,
+    four_lens_fusion_section: str | None = None,
+    shock_ablation_section: str | None = None,
+    shock_fusion_wf_section: str | None = None,
+    field_band_stack_section: str | None = None,
 ) -> str:
     tw = report.get("track_wall", [])
     tw_s = ", ".join(str(x) for x in tw) if isinstance(tw, list) else str(tw)
@@ -589,6 +666,34 @@ def render_package_md(
     lines.append("")
     lines.append(synthesis_text)
     lines.append("")
+    if four_lens_fusion_section:
+        lines.append("---")
+        lines.append("")
+        lines.append("## Four-lens GraphRAG fusion (KOSPI PoC)")
+        lines.append("")
+        lines.append(four_lens_fusion_section)
+        lines.append("")
+    if shock_ablation_section:
+        lines.append("---")
+        lines.append("")
+        lines.append("## Shock-conditional fusion ablation")
+        lines.append("")
+        lines.append(shock_ablation_section)
+        lines.append("")
+    if shock_fusion_wf_section:
+        lines.append("---")
+        lines.append("")
+        lines.append("## Shock-day-only fusion walkforward (KOSPI June 2026)")
+        lines.append("")
+        lines.append(shock_fusion_wf_section)
+        lines.append("")
+    if field_band_stack_section:
+        lines.append("---")
+        lines.append("")
+        lines.append("## Field band conformal stack (late conditioning)")
+        lines.append("")
+        lines.append(field_band_stack_section)
+        lines.append("")
     lines.append("---")
     lines.append("")
     lines.append("## Disclaimers")
@@ -748,6 +853,10 @@ def build_report(
     async_job_id: str | None = None,
     async_queue_enqueue: bool = False,
     async_queue_path: Path | None = None,
+    four_lens_fusion_md: Path | None = None,
+    shock_ablation_json: Path | None = None,
+    shock_fusion_wf_md: Path | None = None,
+    field_band_stack_json: Path | None = None,
 ) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     main_md_path = out_dir / "premium_btrack_multilens_report_v1.md"
@@ -807,6 +916,54 @@ def build_report(
     synthesis_path.write_text(synthesis_text, encoding="utf-8")
     coord["synthesis_markdown_path"] = _posix_under_root(synthesis_path, root)
 
+    fusion_section: str | None = None
+    fusion_attach: str | None = None
+    if four_lens_fusion_md is not None and four_lens_fusion_md.is_file():
+        fusion_section = four_lens_fusion_md.read_text(encoding="utf-8")
+        fusion_attach = _posix_under_root(four_lens_fusion_md, root)
+        caveats = coord.get("caveats")
+        if not isinstance(caveats, list):
+            caveats = []
+            coord["caveats"] = caveats
+        caveats.append(f"four_lens_fusion_attached: {fusion_attach} [HYPO·NON_GATING]")
+
+    shock_section: str | None = None
+    shock_ablation_attach: str | None = None
+    if shock_ablation_json is not None and shock_ablation_json.is_file():
+        shock_doc = _load_shock_ablation_json(shock_ablation_json)
+        if shock_doc:
+            shock_section = render_shock_ablation_md(shock_doc)
+            shock_ablation_attach = _posix_under_root(shock_ablation_json, root)
+            caveats = coord.get("caveats")
+            if not isinstance(caveats, list):
+                caveats = []
+                coord["caveats"] = caveats
+            caveats.append(f"shock_ablation_attached: {shock_ablation_attach} [HYPO·NON_GATING]")
+
+    shock_wf_section: str | None = None
+    shock_wf_attach: str | None = None
+    if shock_fusion_wf_md is not None and shock_fusion_wf_md.is_file():
+        shock_wf_section = shock_fusion_wf_md.read_text(encoding="utf-8")
+        shock_wf_attach = _posix_under_root(shock_fusion_wf_md, root)
+        caveats = coord.get("caveats")
+        if not isinstance(caveats, list):
+            caveats = []
+            coord["caveats"] = caveats
+        caveats.append(f"shock_fusion_wf_attached: {shock_wf_attach} [HYPO·research_only]")
+
+    field_band_section: str | None = None
+    field_band_attach: str | None = None
+    if field_band_stack_json is not None and field_band_stack_json.is_file():
+        fb_doc = _load_shock_ablation_json(field_band_stack_json)
+        if fb_doc:
+            field_band_section = render_field_band_stack_md(fb_doc)
+            field_band_attach = _posix_under_root(field_band_stack_json, root)
+            caveats = coord.get("caveats")
+            if not isinstance(caveats, list):
+                caveats = []
+                coord["caveats"] = caveats
+            caveats.append(f"field_band_stack_attached: {field_band_attach} [HYPO·band_only·NON_GATING]")
+
     report = copy.deepcopy(example)
     report["generated_at_utc"] = _utc_z()
     report.pop("async_job", None)
@@ -816,15 +973,36 @@ def build_report(
     report["lenses"] = lenses
     report["coordinator"] = coord
 
-    package_md = render_package_md(report, slice_contents, synthesis_text, mode=mode)
+    package_md = render_package_md(
+        report,
+        slice_contents,
+        synthesis_text,
+        mode=mode,
+        four_lens_fusion_section=fusion_section,
+        shock_ablation_section=shock_section,
+        shock_fusion_wf_section=shock_wf_section,
+        field_band_stack_section=field_band_section,
+    )
     main_md_path.write_text(package_md, encoding="utf-8")
     md_hash = _sha256_bytes(main_md_path.read_bytes())
 
-    report["package_artifacts"] = {
+    pkg_art: dict[str, Any] = {
         "report_json_path": _posix_under_root(main_json_path, root),
         "report_markdown_path": _posix_under_root(main_md_path, root),
         "manifest_sha256": md_hash,
     }
+    attachments: list[str] = []
+    if fusion_attach:
+        attachments.append(fusion_attach)
+    if shock_ablation_attach:
+        attachments.append(shock_ablation_attach)
+    if shock_wf_attach:
+        attachments.append(shock_wf_attach)
+    if field_band_attach:
+        attachments.append(field_band_attach)
+    if attachments:
+        pkg_art["attachments"] = attachments
+    report["package_artifacts"] = pkg_art
 
     pl = report.get("pipeline")
     if isinstance(pl, list):
@@ -930,6 +1108,30 @@ def main() -> int:
         help="Queue JSONL path (default: reports/premium_multilens_job_queue_v0.jsonl under workspace root).",
     )
     ap.add_argument("--no-validate", action="store_true", help="Skip jsonschema validation when available")
+    ap.add_argument(
+        "--four-lens-fusion-md",
+        type=Path,
+        default=None,
+        help="Attach KOSPI four-lens GraphRAG fusion markdown section (best-effort default if present).",
+    )
+    ap.add_argument(
+        "--shock-ablation-json",
+        type=Path,
+        default=None,
+        help="Shock-conditional fusion ablation JSON for premium report section (best-effort default if present).",
+    )
+    ap.add_argument(
+        "--shock-fusion-wf-md",
+        type=Path,
+        default=None,
+        help="Shock-day-only fusion walkforward markdown section for premium report.",
+    )
+    ap.add_argument(
+        "--field-band-stack-json",
+        type=Path,
+        default=None,
+        help="Field band stack_compare JSON for premium report section (best-effort default if present).",
+    )
     args = ap.parse_args()
 
     out_dir = args.out_dir
@@ -980,6 +1182,50 @@ def main() -> int:
             rs = (root / rs).resolve()
         rag_scan = rs
 
+    fusion_md: Path | None = None
+    if args.four_lens_fusion_md is not None:
+        fp = Path(args.four_lens_fusion_md)
+        if not fp.is_absolute():
+            fp = (root / fp).resolve()
+        fusion_md = fp if fp.is_file() else None
+    elif mode == "best-effort":
+        cand_f = root / "reports" / "kospi_four_lens_graphrag_fusion_v1_latest.md"
+        if cand_f.is_file():
+            fusion_md = cand_f
+
+    shock_json: Path | None = None
+    if args.shock_ablation_json is not None:
+        sp = Path(args.shock_ablation_json)
+        if not sp.is_absolute():
+            sp = (root / sp).resolve()
+        shock_json = sp if sp.is_file() else None
+    elif mode == "best-effort":
+        cand_s = root / "reports" / "kospi_four_lens_shock_conditional_ablation_v1_latest.json"
+        if cand_s.is_file():
+            shock_json = cand_s
+
+    shock_wf_md: Path | None = None
+    if args.shock_fusion_wf_md is not None:
+        wp = Path(args.shock_fusion_wf_md)
+        if not wp.is_absolute():
+            wp = (root / wp).resolve()
+        shock_wf_md = wp if wp.is_file() else None
+    elif mode == "best-effort":
+        cand_w = root / "reports" / "kospi_four_lens_shock_fusion_walkforward_v1_latest.md"
+        if cand_w.is_file():
+            shock_wf_md = cand_w
+
+    field_band_json: Path | None = None
+    if args.field_band_stack_json is not None:
+        bp = Path(args.field_band_stack_json)
+        if not bp.is_absolute():
+            bp = (root / bp).resolve()
+        field_band_json = bp if bp.is_file() else None
+    elif mode == "best-effort":
+        cand_b = root / "reports" / "kospi_field_band_stack_compare_v1_latest.json"
+        if cand_b.is_file():
+            field_band_json = cand_b
+
     return build_report(
         root=root,
         out_dir=out_dir,
@@ -993,6 +1239,10 @@ def main() -> int:
         async_job_id=(str(args.async_job_id).strip() if args.async_job_id else None),
         async_queue_enqueue=bool(args.async_queue_enqueue),
         async_queue_path=(Path(args.async_queue_path) if args.async_queue_path else None),
+        four_lens_fusion_md=fusion_md,
+        shock_ablation_json=shock_json,
+        shock_fusion_wf_md=shock_wf_md,
+        field_band_stack_json=field_band_json,
     )
 
 

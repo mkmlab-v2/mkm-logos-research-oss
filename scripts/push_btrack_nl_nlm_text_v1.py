@@ -17,9 +17,9 @@ OUT = ROOT / "reports/constitution/btrack_pilot/comp_nl_auto_upload_result_v1.js
 CHUNK = 6_000  # Windows CreateProcess cmdline limit (~8191)
 
 LENS_NOTEBOOK = {
-    "COMPRESSION_BTRACK": "aba1f8b1-be62-4367-ac7f-b1a997bb77d4",
-    # Dedicated B notebook (af639d3e) often fails nlm add; Fusion Hub fallback works.
-    "IJEOMA_BTRACK": "71f55a03-09d0-411f-b365-0ce2a2064c24",
+    "COMPRESSION_BTRACK": "8b0cf18f-1843-438e-8a76-709974e93c43",
+    "IJEOMA_BTRACK": "e6c1f050-40ef-49f0-8b2c-c509b8570cf4",
+    "LENS_SASANG": "90132f48-febd-471a-82a1-b6ec80d98618",
 }
 
 

@@ -37,6 +37,45 @@ Gemini produced a long-form report covering:
 
 Full prose was pasted by commander in chat 2026-06-21. This file is the **indexed raw ingest**; do not cite Gemini percentages in Track A or PUBLIC_FACING copy.
 
+Quantitative claims below are routed through `## Digested facts` for Mastication (table heuristic disabled for duplicates).
+
+## Digested facts
+
+### fact_id: gemini_b3_dual_plane_floor
+- metric_name: dual_plane_aligned_rate
+- value: 0.5
+- unit: ratio
+- comparison_arm: MKM_B3_floor
+- verification_status: Right
+- verification_method: fixture_trusted
+- baseline_plane: B3_dual_plane
+- artifact_path: reports/universal_root_phase1a_baseline_compare_v1_latest.json
+- artifact_field: methods.B3.primary_value
+- assertion: gte
+
+### fact_id: mem0_gemini_longmemeval_968_claim
+- metric_name: longmemeval_recall
+- value: 96.8
+- unit: percent
+- comparison_arm: Mem0 Gemini table (unsourced)
+- arxiv_id: 2504.19413
+- verification_status: Unknown
+
+### fact_id: mem0_paper_token_savings_90
+- metric_name: token_cost_reduction_pct
+- value: 90
+- unit: percent
+- comparison_arm: Mem0 arXiv 2504.19413 abstract
+- arxiv_id: 2504.19413
+- verification_status: Unknown
+
+### fact_id: gemini_proposed_matrix_token_942
+- metric_name: token_savings_pct
+- value: 94.2
+- unit: percent
+- comparison_arm: Proposed matrix Gemini (no arXiv)
+- verification_status: Unknown
+
 ---
 
 ## Reproduce (MKM validated path)

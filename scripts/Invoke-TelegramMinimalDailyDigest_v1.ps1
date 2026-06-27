@@ -36,8 +36,17 @@ foreach ($n in @("TELEGRAM_BOT_TOKEN", "TELEGRAM_CHAT_ID", "MKM_TELEGRAM_MINIMAL
 [Environment]::SetEnvironmentVariable("MKM_TELEGRAM_DIGEST_STYLE", "prophecy", "Process")
 [Environment]::SetEnvironmentVariable("MKM_TELEGRAM_INCLUDE_PERSONAL_FORTUNE", "0", "Process")
 [Environment]::SetEnvironmentVariable("MKM_TELEGRAM_MORNING_KOSPI_ONLY", "1", "Process")
+foreach ($n in @("MKM_TELEGRAM_PROPHECY_INCLUDE_FORTUNE", "MKM_TELEGRAM_PROPHECY_SLIM")) {
+    $u = [Environment]::GetEnvironmentVariable($n, "User")
+    if ($u) {
+        [Environment]::SetEnvironmentVariable($n, $u, "Process")
+    } elseif ($n -eq "MKM_TELEGRAM_PROPHECY_INCLUDE_FORTUNE") {
+        [Environment]::SetEnvironmentVariable($n, "0", "Process")
+    } elseif ($n -eq "MKM_TELEGRAM_PROPHECY_SLIM") {
+        [Environment]::SetEnvironmentVariable($n, "1", "Process")
+    }
+}
 foreach ($k in @(
-    "MKM_TELEGRAM_PROPHECY_INCLUDE_FORTUNE",
     "MKM_TELEGRAM_PROPHECY_INCLUDE_RIBL",
     "MKM_TELEGRAM_PROPHECY_INCLUDE_OPS_CONTEXT",
     "MKM_TELEGRAM_PROPHECY_INCLUDE_DEV_COACH",

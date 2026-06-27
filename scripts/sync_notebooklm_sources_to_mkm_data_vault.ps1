@@ -303,12 +303,42 @@ $SourceFiles = @(
     "docs\final\artifacts\original_singularity_gloss_report_v3.json",
     "docs\final\artifacts\original_singularity_gloss_report_v4.json",
     "docs\final\artifacts\hebrew_singularity_gloss_overrides_v1.json",
-    "docs\final\artifacts\master_codebook_lexicon_v1_export_pointer_latest.json"
+    "docs\final\artifacts\master_codebook_lexicon_v1_export_pointer_latest.json",
+    "docs\final\artifacts\mkm_theory_mathematization_canon_v1_latest.md",
+    "docs\final\artifacts\mkm12_75_formulas_ssot_v1_latest.json",
+    "docs\final\MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md"
 )
 
 $SourceDirs = @(
-    "data\logos\aruljohn_kjv"
+    "data\logos\aruljohn_kjv",
+    "reports\notebooklm_theory_mathematization_pack_v1"
 )
+
+# Korean paths: docs/final/artifacts/notebooklm_vault_sync_utf8_extra_paths_v1_latest.json
+# (build: py scripts/build_notebooklm_vault_sync_utf8_manifest_v1.py)
+$utf8Manifest = Join-Path $WorkspaceRoot "docs\final\artifacts\notebooklm_vault_sync_utf8_extra_paths_v1_latest.json"
+if (Test-Path -LiteralPath $utf8Manifest) {
+    try {
+        $utf8Raw = [System.IO.File]::ReadAllText($utf8Manifest, [System.Text.Encoding]::UTF8)
+        $utf8Doc = $utf8Raw | ConvertFrom-Json
+        foreach ($rel in @($utf8Doc.source_files)) {
+            $s = [string]$rel
+            if ($s -and ($SourceFiles -notcontains $s)) {
+                $SourceFiles += $s
+            }
+        }
+        foreach ($rel in @($utf8Doc.source_dirs)) {
+            $s = [string]$rel
+            if ($s -and ($SourceDirs -notcontains $s)) {
+                $SourceDirs += $s
+            }
+        }
+    } catch {
+        Write-Warning "UTF-8 vault manifest load failed: $_"
+    }
+} else {
+    Write-Warning "UTF-8 vault manifest missing: $utf8Manifest"
+}
 
 # Same strings as $SourceFiles; absent in many clones — document in NotebookLM_sources_manifest.md
 $OptionalMissingRel = [string[]]@(

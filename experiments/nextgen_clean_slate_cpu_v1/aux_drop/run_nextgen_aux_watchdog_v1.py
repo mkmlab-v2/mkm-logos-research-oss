@@ -64,6 +64,33 @@ def _start_servers(share: Path) -> list[dict]:
     ]
 
 
+def _sync_workspace_from_share(share: Path) -> dict:
+    copy_cmd = share / "COPY_WORKSPACE_BUNDLE.cmd"
+    script = WORKSPACE / "scripts/run_nextgen_ng40_golden40_shard_eval_v1.py"
+    if not copy_cmd.is_file():
+        if script.is_file():
+            return {"status": "ok", "reason": "workspace_present_no_bundle_cmd"}
+        return {
+            "status": "fail",
+            "reason": "missing COPY_WORKSPACE_BUNDLE.cmd on share",
+            "hint": "Main: py scripts/build_nextgen_aux_workspace_bundle_v1.py && deploy aux_drop",
+        }
+    proc = subprocess.run(
+        ["cmd", "/c", str(copy_cmd)],
+        cwd=str(share),
+        capture_output=True,
+        text=True,
+        timeout=600,
+    )
+    ok = proc.returncode == 0 and script.is_file()
+    return {
+        "status": "ok" if ok else "fail",
+        "exit_code": proc.returncode,
+        "stdout_tail": (proc.stdout or "")[-300:],
+        "stderr_tail": (proc.stderr or "")[-200:],
+    }
+
+
 def _run_ng40_shard1(share: Path) -> dict:
     out_json = share / "ng40_golden40_shard1_v1_latest.json"
     stamp = share / "ng40_shard1_publish_from_main_v1.json"
@@ -72,12 +99,16 @@ def _run_ng40_shard1(share: Path) -> dict:
             stamp.unlink()
         except OSError:
             pass
+    sync = _sync_workspace_from_share(share)
+    if sync.get("status") != "ok":
+        return {**sync, "phase": "workspace_sync"}
     script = WORKSPACE / "scripts/run_nextgen_ng40_golden40_shard_eval_v1.py"
     if not script.is_file():
         return {
             "status": "fail",
-            "reason": "C:\\workspace clone missing on aux",
-            "hint": "Clone repo to C:\\workspace on DESKTOP-AP1DC83",
+            "reason": "C:\\workspace clone missing on aux after sync",
+            "hint": "Check workspace_bundle on share and COPY_WORKSPACE_BUNDLE.cmd",
+            "sync": sync,
         }
     cmd = [
         sys.executable,
@@ -95,6 +126,7 @@ def _run_ng40_shard1(share: Path) -> dict:
         "status": "ok" if proc.returncode == 0 else "fail",
         "exit_code": proc.returncode,
         "out_json": str(out_json),
+        "workspace_sync": sync,
         "stdout_tail": (proc.stdout or "")[-400:],
         "stderr_tail": (proc.stderr or "")[-200:],
     }

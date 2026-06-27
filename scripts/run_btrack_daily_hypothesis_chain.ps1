@@ -36,6 +36,8 @@
 # Longer window: -IncludeDawnScore (30 trading days for score rows).
 # KOSPI stress observation (default ON): build_kospi_stress_observation_hypothesis_v1.py after prophecy_health_status
 # (5d vol + monthly foreign_net_buy proxy; observation_only). Use -SkipKospiStressObservation to omit.
+# July scenario band tracker (default ON): build_kospi_july_scenario_band_tracker_v1.py after stress observation.
+# Use -SkipKospiJulyScenarioBandTracker to omit.
 # KOSPI shock-cutoff score observation (default ON; research_only side artifact; does not replace main score):
 #   build_btrack_prophecy_score_kospi_shock_cutoff_obs_latest.json + eval sidecar.
 #   Use -SkipKospiShockCutoffObservation to omit. Env MKM_BTRACK_KOSPI_SHOCK_CUTOFF_OBS=0|false also disables.
@@ -71,6 +73,8 @@ param(
   [switch]$SkipKpiBShadowEval,
   # Skip commander-approved KPI-B operational headline promote (shadow-only posture).
   [switch]$SkipKpiBOperationalHeadlinePromote,
+  # Mission C shadow (180d + srcdir/expanded WF; reports/* only; prod headline unchanged).
+  [switch]$SkipMissionCShadowEval,
   [switch]$IncludeDawnScore,
   [switch]$SkipPerDateDirections,
   [switch]$SkipExternalFeedValidation,
@@ -111,6 +115,7 @@ param(
   [switch]$SkipModelSwapHarness,
   [double]$Panel24hMinHitRate = 0.60,
   [switch]$SkipKospiStressObservation,
+  [switch]$SkipKospiJulyScenarioBandTracker,
   # Ensemble v2 recommended eval (strict 0.55 gates); also MKM_BTRACK_ENSEMBLE_V2_DAILY=1 in .env.
   [switch]$IncludeEnsembleV2RecommendedEval,
   # Logos B-track observational bundle (upstream JSON/JSONL may be absent; non-blocking WARN).
@@ -370,6 +375,12 @@ if ($LASTEXITCODE -ne 0) { throw "run_lens_logos exit $LASTEXITCODE" }
 Write-Host "==> report_independent_lens_fusion_stub_v0.py"
 py scripts/report_independent_lens_fusion_stub_v0.py
 if ($LASTEXITCODE -ne 0) { throw "fusion stub exit $LASTEXITCODE" }
+
+Write-Host "==> run_mkm_parallel_advisory_chain_v1.py (finance domain brief; B-track)"
+py scripts/run_mkm_parallel_advisory_chain_v1.py --skip-fusion
+if ($LASTEXITCODE -ne 0) {
+  Write-Host "WARN: run_mkm_parallel_advisory_chain_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+}
 
 Write-Host "==> build_lens_conflict_day_decision_snapshot_v1.py (B-track conflict-day operator posture; human gate)"
 py scripts/build_lens_conflict_day_decision_snapshot_v1.py
@@ -641,6 +652,21 @@ if (-not $SkipHitRate) {
         Write-Host "WARN: KPI-B shadow eval exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
       }
     }
+    if (-not $SkipMissionCShadowEval -and -not [string]::IsNullOrWhiteSpace($btcResolved)) {
+      Write-Host "==> run_mission_c_srcdir_expanded_shadow_v1.py (Mission C shadow; prod headline unchanged)" -ForegroundColor Cyan
+      py scripts/run_mission_c_srcdir_expanded_shadow_v1.py --btc-csv $btcResolved
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: Mission C shadow exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+      }
+    }
+    $missionCOps = Join-Path $WorkspaceRoot "reports\mission_c_shadow_ops_status_v1_latest.json"
+    if (Test-Path -LiteralPath $missionCOps) {
+      Write-Host "==> check_mission_c_shadow_passive_alerts_v1.py (Mission C passive; milestone/regression only)" -ForegroundColor DarkCyan
+      py scripts/check_mission_c_shadow_passive_alerts_v1.py
+      if ($LASTEXITCODE -ne 0) {
+        Write-Host "WARN: Mission C passive alerts exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+      }
+    }
     }
   } else {
     Write-Host "Skip OHLCV-backed hit rate (missing KOSPI CSV): $kospiCsv" -ForegroundColor Yellow
@@ -729,6 +755,14 @@ if (-not $SkipKospiStressObservation) {
   py scripts/build_kospi_stress_observation_hypothesis_v1.py --append-log
   if ($LASTEXITCODE -ne 0) {
     Write-Host "WARN: build_kospi_stress_observation_hypothesis_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
+  }
+}
+
+if (-not $SkipKospiJulyScenarioBandTracker) {
+  Write-Host "==> build_kospi_july_scenario_band_tracker_v1.py (B-track [HYPO] July 3-axis scenario band; observation_only)"
+  py scripts/build_kospi_july_scenario_band_tracker_v1.py --append-log
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "WARN: build_kospi_july_scenario_band_tracker_v1 exit $LASTEXITCODE; continuing." -ForegroundColor Yellow
   }
 }
 
@@ -927,6 +961,15 @@ if (-not $SkipModelSwapHarness) {
 }
 
 if ($IncludeScienceCoreLane) {
+  $sciDailyPassive = Join-Path $WorkspaceRoot "scripts\Run-ScienceCoreDailyPassive_v1.ps1"
+  if (Test-Path -LiteralPath $sciDailyPassive) {
+    $dateTo = (Get-Date -Format "yyyy-MM-dd")
+    Write-Host "==> Run-ScienceCoreDailyPassive_v1.ps1 (OHLCV + governance; research_only)" -ForegroundColor Cyan
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $sciDailyPassive -DateTo $dateTo
+    if ($LASTEXITCODE -ne 0) {
+      Write-Host "WARN: science core daily passive exit $LASTEXITCODE; continuing chain (non-gating)." -ForegroundColor Yellow
+    }
+  }
   Write-Host "==> run_science_core_prophecy_combo_attach_v1.py (governance-gated science combo; research_only)" -ForegroundColor Cyan
   py scripts/run_science_core_prophecy_combo_attach_v1.py --force-run
   if ($LASTEXITCODE -ne 0) {

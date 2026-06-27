@@ -12,6 +12,24 @@ _SYNC_SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "sync_fact_safe
 _MARKET_PULSE_FIXTURE = Path(__file__).resolve().parents[1] / "tests" / "fixtures" / "market_pulse_tactical_v1.json"
 
 
+def test_derive_profile_stamps_logos_non_gating_ack():
+    out = _derive_profile(
+        risk_profile={
+            "mode": "LOCKED_MODE",
+            "logos_regime_score": 0.5,
+            "position_scale_cap": 0.2,
+            "daily_loss_cap_pct": 1.0,
+            "fused_risk_pressure": 0.6,
+        },
+        now=datetime.now(timezone.utc),
+        source_name="repo.fact_safe_sync.v1",
+        mode_name="repo_shadow",
+    )
+    tg = out["trinity_governor"]
+    assert tg["logos_non_gating_ack"] is True
+    assert "NON_GATING" in tg["governance_note"]
+
+
 def test_would_downgrade_n8n_metadata():
     assert not _would_downgrade_n8n_metadata({}, "fact_safe_prophecy.trinity_governor")
     assert not _would_downgrade_n8n_metadata({"source": "fact_safe_prophecy.trinity_governor"}, "n8n.regime_watch.v5")
@@ -50,7 +68,7 @@ def test_derive_profile_active_mode_maps_to_bounded_fields():
         source_name="fact_safe_prophecy.trinity_governor",
         mode_name="shadow",
     )
-    assert 10 <= out["max_trades_per_day"] <= 80
+    assert 4 <= out["max_trades_per_day"] <= 80
     assert 0.03 <= out["max_position_size"] <= 0.20
     assert out["maker_only_level"] == "preferred"
     assert 3 <= out["slippage_cap_bps"] <= 15

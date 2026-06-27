@@ -41,7 +41,7 @@ if ($Remove) {
     exit 0
 }
 
-$argLine = "-NoProfile -ExecutionPolicy Bypass -File `"$runner`""
+$argLine = "-NoProfile -ExecutionPolicy Bypass -File `"$runner`" -WeeklyHttpsPrimary"
 if ($DryRun) {
     Write-Host "[DryRun] Would register: $TaskName"
     Write-Host "  Weekly: $DayOfWeek at $AtLocalTime (local)"

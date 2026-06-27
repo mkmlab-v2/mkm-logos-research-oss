@@ -1,5 +1,6 @@
 param(
-    [int[]]$Ports = @(3010, 5678),
+    # no1kmedi Next sprawl (3010-3030, 3199-3203) + stubs + n8n — solo memory guard
+    [int[]]$Ports = $(3010..3030) + $(3199..3203) + @(8010, 8765, 8877, 8796, 5678),
     [switch]$IncludeNpxMcp,
     [switch]$DryRun
 )
@@ -59,8 +60,10 @@ foreach ($port in $Ports) {
 }
 
 # Common local dev launch patterns in this workspace.
-$totalStopped += Stop-CimByPattern -Pattern "next\dist\\bin\\next.*\sdev(\s|$)" -Label "next-dev" -DryRunMode:$DryRun
+$totalStopped += Stop-CimByPattern -Pattern "next\dist\\bin\\next.*\s(start|dev)(\s|$)" -Label "next" -DryRunMode:$DryRun
 $totalStopped += Stop-CimByPattern -Pattern "\\bn8n(\.cmd)?\b.*\bstart\b" -Label "n8n-start" -DryRunMode:$DryRun
+$totalStopped += Stop-CimByPattern -Pattern "python\.exe -m http\.server" -Label "http-server" -DryRunMode:$DryRun
+$totalStopped += Stop-CimByPattern -Pattern "compression_token_api_stub" -Label "compression-stub" -DryRunMode:$DryRun
 
 if ($IncludeNpxMcp) {
     $totalStopped += Stop-CimByPattern -Pattern "@modelcontextprotocol|cursor-mobile-bridge" -Label "npx-mcp" -DryRunMode:$DryRun

@@ -24,6 +24,7 @@ CORE_ALWAYS_APPLY = frozenset(
         "mkm-automation-gate.mdc",
         "mkm-browser-automation-v1.mdc",
         "mkm-solo-background-ops-auto.mdc",
+        "mkm-commander-chat-tone-v1.mdc",
         "raw-repair-dual-reporting-v1.mdc",
         "tracka-raw-gate-guard-v1.mdc",
     }
@@ -37,8 +38,10 @@ LANE_REQUESTABLE = frozenset(
         "compression-narrative-fact-lock-v1.mdc",
         "cursor-cloud-sandbox-boundary.mdc",
         "gut-brain-metaphor-agent-v1.mdc",
+        "local-lock-security-guard-v1.mdc",
         "mkm-cognitive-architecture-v1.mdc",
         "mkm-delegation-research-assist-v1.mdc",
+        "mkm-paper-disk-verdict-four-slot-v1.mdc",
         "notebooklm-mcp-session-bridge.mdc",
         "parallel-passive-loop-v1.mdc",
         "pr-review-canvas-auto.mdc",

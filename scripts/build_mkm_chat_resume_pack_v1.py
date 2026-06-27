@@ -23,6 +23,7 @@ from mkm_long_term_memory_graph_lib_v1 import (
     merge_graph_routing_summary,
     nodes_for_topic_resume,
 )
+from mkm_cursor_self_audit_lib_v1 import lane_default_topic_query
 from mkm_sidecar_constitution_lib_v1 import (
     CONSTITUTION_REL,
     DEFAULT_SIDECAR_PATH,
@@ -30,7 +31,44 @@ from mkm_sidecar_constitution_lib_v1 import (
 )
 
 SCRIPT_ROOT = Path(__file__).resolve().parents[1]
+LOGOS_WIRING_REL = "docs/final/artifacts/logos_theory_implementation_wiring_v1.json"
+ORACLE_MODULE_RULE = ".cursor/rules/logos-oracle-module-tier2-prep-v1.mdc"
+TIER1_READINESS_REL = "docs/final/artifacts/logos_oracle_cursor_inject_tier1_readiness_v1_latest.json"
+TIER2_PROTOCOL_REL = "docs/final/artifacts/logos_oracle_tier2_incremental_append_protocol_v1_latest.json"
+TIER3_PROTOCOL_REL = "docs/final/artifacts/logos_oracle_tier3_narrative_upgrade_protocol_v1_latest.json"
+TIER2_MANIFEST_REL = "reports/logos_oracle_tier2_cursor_inject_manifest_v1_latest.json"
+A2A_ORACLE_BRIEF_REL = "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_oracle_v1_latest.md"
+NARRATIVE_OBS_REL = "docs/final/artifacts/logos_oracle_narrative_closure_observability_v1_latest.json"
+ORACLE_MODULE_EDGE_IDS = (
+    "oracle_cursor_inject_tier1_readiness",
+    "oracle_tier2_incremental_append_protocol",
+    "oracle_tier3_narrative_upgrade_protocol",
+    "oracle_narrative_closure_observability",
+    "han_vocology_km_vhi_pilot_observability",
+)
+COMMANDER_TRIGGERS_REL = "docs/final/artifacts/mkm_commander_resume_triggers_v1.json"
+COMMANDER_CHAT_TONE_REL = "docs/final/artifacts/commander_chat_tone_prefs_v1_latest.json"
+SEND_GATE_VOCAB_REL = "docs/final/artifacts/mkm_send_gate_vocabulary_v1_latest.json"
 
+
+def _load_commander_chat_tone(root: Path) -> Dict[str, Any]:
+    path = root / COMMANDER_CHAT_TONE_REL
+    if not path.is_file():
+        return {}
+    doc = _read_json(path)
+    return doc if doc.get("schema") == "commander_chat_tone_prefs_v1" else {}
+
+
+def _promotion_decision_agent_label(decision: str | None) -> str | None:
+    if not decision:
+        return None
+    labels = {
+        "GO_FINAL_V2": "INTERNAL_V2_READY",
+        "HOLD": "HOLD",
+        "GO": "INTERNAL_GO",
+        "NO_GO": "NO_GO",
+    }
+    return labels.get(str(decision), str(decision))
 
 def _read_json(path: Path) -> Dict[str, Any]:
     if not path.exists():
@@ -65,6 +103,31 @@ def _synthetic_repair_query(
         for tag in node.get("must_keep_tags") or []:
             parts.append(str(tag))
     return " ".join(parts)
+
+
+def _load_cursor_host_hygiene(root: Path) -> Dict[str, Any] | None:
+    path = root / "reports" / "cursor_host_hygiene_latest.json"
+    if not path.is_file():
+        return None
+    doc = _read_json(path)
+    if doc.get("schema") != "cursor_host_hygiene_v1":
+        return None
+    return doc
+
+
+def _cursor_host_alert_lines(hygiene: Dict[str, Any] | None) -> List[str]:
+    if not hygiene:
+        return []
+    if not (hygiene.get("degraded") or hygiene.get("reload_required")):
+        return []
+    reasons = hygiene.get("reasons") or []
+    reason_text = "; ".join(str(r) for r in reasons[:4]) or "see hygiene json"
+    return [
+        "> **[!] ATTENTION: Cursor Reload Required** — host hygiene degraded "
+        f"({reason_text}). Quit Cursor fully, then **Reload Window** or restart. "
+        "SSOT: `reports/cursor_host_hygiene_latest.json`.",
+        "",
+    ]
 
 
 def _load_nl_ltm_sync_status(root: Path) -> Dict[str, Any] | None:
@@ -229,6 +292,14 @@ def _load_a2a_chain_refs(root: Path) -> Dict[str, Any] | None:
     }
 
 
+def _load_commander_resume_triggers(root: Path) -> Dict[str, Any]:
+    path = root / COMMANDER_TRIGGERS_REL
+    if not path.is_file():
+        return {}
+    doc = _read_json(path)
+    return doc if doc.get("schema") == "mkm_commander_resume_triggers_v1" else {}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--top-n", type=int, default=3)
@@ -248,6 +319,11 @@ def main() -> int:
         help="Optional query/topic for repair_v2 relevance (lane routing uses --lane).",
     )
     ap.add_argument(
+        "--infer-topic-from-lane",
+        action="store_true",
+        help="When --lane set and --topic empty: build LTM graph query from lane topic hints.",
+    )
+    ap.add_argument(
         "--slice-max-chars",
         type=int,
         default=1200,
@@ -265,11 +341,23 @@ def main() -> int:
         help="Without --lane: use legacy top-N pins instead of board+CENTRAL+next-one table.",
     )
     ap.add_argument(
+        "--resume-mode",
+        choices=["standard", "advanced_logos"],
+        default="standard",
+        help="Commander trigger mode: standard vs Logos advanced interp (forces --lane oracle).",
+    )
+    ap.add_argument(
         "--append-l2-shadow",
         action="store_true",
         help="[HYPO] Tier 2: append L2 compress shadow log after pack write (human MD unchanged).",
     )
     args = ap.parse_args()
+
+    if args.resume_mode == "advanced_logos" and args.lane is None:
+        args.lane = "oracle"
+
+    if args.infer_topic_from_lane and args.lane and not args.topic.strip():
+        args.topic = lane_default_topic_query(args.lane)
 
     if args.slice_max_chars < 64:
         print("FAIL: --slice-max-chars must be >= 64", file=sys.stderr)
@@ -316,6 +404,7 @@ def main() -> int:
 
     if ops_pins and inject_text:
         index_path = root / DEFAULT_INDEX_PATH.relative_to(SCRIPT_ROOT)
+        index_nodes = (_read_json(index_path).get("nodes") or {}) if index_path.is_file() else {}
         gate_cmd = [
             sys.executable,
             str(root / "scripts" / "check_mkm_ops_memory_must_keep_gate_v1.py"),
@@ -327,7 +416,11 @@ def main() -> int:
             inject_text,
         ]
         for pin in ops_pins:
-            gate_cmd.extend(["--node-id", pin["node_id"]])
+            node_id = pin["node_id"]
+            # Overlay pins (e.g. theory/json slices) may not exist in the base index file.
+            # Gate only known nodes here; overlay tags are still present in inject_text itself.
+            if node_id in index_nodes:
+                gate_cmd.extend(["--node-id", node_id])
         proc = subprocess.run(gate_cmd, capture_output=True, text=True, cwd=str(root))
         if proc.returncode != 0:
             print(proc.stdout, file=sys.stderr)
@@ -335,6 +428,16 @@ def main() -> int:
             print("FAIL: ops memory inject gate (phase=inject)", file=sys.stderr)
             return 1
         print("ops memory inject gate (phase=inject): OK")
+
+    cursor_host_hygiene = _load_cursor_host_hygiene(root)
+    commander_triggers = _load_commander_resume_triggers(root)
+    commander_chat_tone = _load_commander_chat_tone(root)
+    active_mode = args.resume_mode
+    mode_doc = (commander_triggers.get("modes") or {}).get(
+        "advanced_logos_interp" if active_mode == "advanced_logos" else "standard"
+    ) or {}
+    end_mode_id = "advanced_logos_interp" if active_mode == "advanced_logos" else "standard"
+    end_doc = (commander_triggers.get("session_end_modes") or {}).get(end_mode_id) or {}
 
     resume: Dict[str, Any] = {
         "schema": "mkm_chat_resume_pack_v1",
@@ -354,12 +457,45 @@ def main() -> int:
             "lane": args.lane,
         },
         "commander_briefing": {
-            "trigger_ko": "장기기억 맥락이어",
+            "trigger_ko": mode_doc.get("trigger_ko", ["장기기억 맥락이어"])[0]
+            if mode_doc.get("trigger_ko")
+            else "장기기억 맥락이어",
+            "session_end_trigger_ko": end_doc.get("trigger_ko", ["마무리해줘"])[0]
+            if end_doc.get("trigger_ko")
+            else "마무리해줘",
+            "pairing_ko": commander_triggers.get("pairing_ko"),
+            "resume_mode": active_mode,
+            "mode_id": mode_doc.get("mode_id", "standard"),
+            "label_ko": mode_doc.get("label_ko"),
             "mission_log_mode": "next_one_table_pin_only — never paste full MISSION_LOG.md",
             "fact_lock": "CONSTITUTION + scripts + exit 0 only — NL answer is not pass/fail",
             "send_gate": "HOLD",
+            "send_gate_vocab": SEND_GATE_VOCAB_REL,
+            "promotion_decision_note": "INTERNAL_V2_READY = internal v2 readiness only — not SEND or live trading",
             "nl_ltm_sync": _load_nl_ltm_sync_status(root),
+            "cursor_host_hygiene": cursor_host_hygiene,
+            "chat_tone": {
+                "ssot": COMMANDER_CHAT_TONE_REL,
+                "routine_disclaimer_suppress": (
+                    (commander_chat_tone.get("routine_disclaimer_suppress") or {}).get("enabled")
+                ),
+                "agent_contract_ko": commander_chat_tone.get("agent_contract_ko"),
+            },
         },
+        "commander_resume_triggers_ssot": COMMANDER_TRIGGERS_REL,
+        "commander_chat_tone_ssot": COMMANDER_CHAT_TONE_REL,
+        "send_gate_vocabulary_ssot": SEND_GATE_VOCAB_REL,
+        "commander_chat_tone": commander_chat_tone or None,
+        "commander_resume_mode": {
+            "mode_id": mode_doc.get("mode_id", active_mode),
+            "label_ko": mode_doc.get("label_ko"),
+            "agent_contract_ko": mode_doc.get("agent_contract_ko"),
+            "session_upgrade": mode_doc.get("session_upgrade"),
+            "pipeline_steps": mode_doc.get("pipeline_steps"),
+            "artifact_pointers": mode_doc.get("artifact_pointers"),
+        }
+        if mode_doc
+        else {"mode_id": active_mode},
         "quick_refs": {
             "central_memory": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
             "ops_memory_index": "storage/meta/mkm_ops_memory_index_v1.json",
@@ -370,7 +506,6 @@ def main() -> int:
             "runbook_checklist_md": "docs/final/artifacts/mkm_trackc_operations_runbook_checklist_latest.md",
             "core_prompt_gemini_athena": "docs/final/artifacts/MKM_CORE_PROMPT_GEMINI_ATHENA_V1.md",
         },
-        "ops_memory_pins": ops_pins,
         "constitution_path_pins": constitution_pins,
         "constitution_sidecar_path": str(
             DEFAULT_SIDECAR_PATH.relative_to(SCRIPT_ROOT)
@@ -381,6 +516,9 @@ def main() -> int:
         "latest_status": {
             "system_status": (dashboard.get("system") or {}).get("status"),
             "promotion_decision": (dashboard.get("system") or {}).get("promotion_decision"),
+            "promotion_decision_agent_label": _promotion_decision_agent_label(
+                (dashboard.get("system") or {}).get("promotion_decision")
+            ),
             "trackc_packet_status": (dashboard.get("trackc") or {}).get("packet_status"),
             "acceptance_status": acceptance.get("status"),
         },
@@ -392,12 +530,78 @@ def main() -> int:
             "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-MkmOpsMemoryIndexRoutine_v1.ps1 -RepairV2Slice",
         ],
     }
+    resume["ops_memory_pins"] = ops_pins
+
+    if args.lane == "oracle":
+        resume["quick_refs"]["logos_theory_wiring"] = LOGOS_WIRING_REL
+        resume["quick_refs"]["oracle_module_tier2_readiness"] = TIER1_READINESS_REL
+        resume["quick_refs"]["oracle_tier2_protocol"] = TIER2_PROTOCOL_REL
+        resume["quick_refs"]["oracle_tier3_protocol"] = TIER3_PROTOCOL_REL
+        resume["quick_refs"]["oracle_tier2_manifest"] = TIER2_MANIFEST_REL
+        resume["quick_refs"]["oracle_a2a_tier3_brief"] = A2A_ORACLE_BRIEF_REL
+        resume["quick_refs"]["oracle_narrative_closure_observability"] = NARRATIVE_OBS_REL
+        resume["quick_refs"]["oracle_module_cursor_rule"] = ORACLE_MODULE_RULE
+        wiring_doc = _read_json(root / LOGOS_WIRING_REL)
+        readiness_doc = _read_json(root / TIER1_READINESS_REL)
+        tier2_doc = _read_json(root / TIER2_PROTOCOL_REL)
+        tier3_doc = _read_json(root / TIER3_PROTOCOL_REL)
+        observability_doc = _read_json(root / NARRATIVE_OBS_REL)
+        snap = readiness_doc.get("tier2_pin_schema_snapshot") or {}
+        resume["logos_theory_wiring"] = {
+            "registry": LOGOS_WIRING_REL,
+            "verify_command": wiring_doc.get("verify_command"),
+            "edge_ids": [e.get("edge_id") for e in wiring_doc.get("canonical_edges") or []],
+            "agent_rule_ko": wiring_doc.get("agent_rule_ko"),
+        }
+        resume["oracle_module_lane"] = {
+            "cursor_rule": ORACLE_MODULE_RULE,
+            "tier1_readiness": TIER1_READINESS_REL,
+            "tier2_protocol": TIER2_PROTOCOL_REL,
+            "tier3_protocol": TIER3_PROTOCOL_REL,
+            "tier2_manifest": TIER2_MANIFEST_REL,
+            "a2a_tier3_oracle_brief": A2A_ORACLE_BRIEF_REL,
+            "narrative_closure_observability": NARRATIVE_OBS_REL,
+            "send_gate": readiness_doc.get("send_gate"),
+            "tier1_module_ssot_ready": readiness_doc.get("tier1_module_ssot_ready"),
+            "tier2_prep_ready": readiness_doc.get("tier2_prep_ready"),
+            "tier2_cursor_rules_full_upgrade_ready": readiness_doc.get(
+                "tier2_cursor_rules_full_upgrade_ready"
+            ),
+            "tier3_constitution_narrative_full_upgrade_ready": readiness_doc.get(
+                "tier3_constitution_narrative_full_upgrade_ready"
+            ),
+            "tier2_blockers_released": sum(
+                1 for b in (tier2_doc.get("blocker_release_matrix") or []) if b.get("released")
+            ),
+            "tier3_blockers_released": sum(
+                1 for b in (tier3_doc.get("blocker_release_matrix") or []) if b.get("released")
+            ),
+            "resonance_cap_read_only": snap.get("resonance_cap"),
+            "hd_mission_version": snap.get("hd_mission_version"),
+            "observation_pass": observability_doc.get("observation_pass"),
+            "module_wiring_edge_ids": list(ORACLE_MODULE_EDGE_IDS),
+            "weekly_routine": "scripts/Invoke-MkmOracleModuleObservabilityWeeklyRoutine_v1.ps1",
+            "repro_commands": [
+                "py scripts/run_logos_oracle_tier2_incremental_append_protocol_chain_v1.py --require-tier2-unlock",
+                "py scripts/run_logos_oracle_tier3_narrative_upgrade_protocol_chain_v1.py",
+                "py scripts/build_logos_oracle_tier2_cursor_inject_manifest_v1.py",
+                "py scripts/run_logos_oracle_cursor_inject_tier1_readiness_chain_v1.py --skip-overlay-refresh",
+                "py scripts/run_logos_oracle_narrative_closure_observability_chain_v1.py",
+                "py scripts/run_mkm_hd_oracle_module_vocology_chain_v1.py --skip-overlay-refresh",
+            ],
+        }
+        resume["resume_commands"].insert(
+            0, "py scripts/check_logos_theory_implementation_wiring_v1.py"
+        )
+        resume["resume_commands"].insert(
+            0, "py scripts/run_logos_oracle_narrative_closure_observability_chain_v1.py"
+        )
 
     out_json = art / "mkm_chat_resume_pack_latest.json"
     out_md = art / "mkm_chat_resume_pack_latest.md"
     out_json.write_text(json.dumps(resume, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    md_lines = [
+    md_lines = _cursor_host_alert_lines(cursor_host_hygiene) + [
         "# MKM Chat Resume Pack",
         "",
         f"- generated_at_utc: `{resume['generated_at_utc']}`",
@@ -405,7 +609,8 @@ def main() -> int:
         f"- include_slice: `{use_raw_slice}`",
         f"- repair_v2_slice: `{use_repair_v2}`",
         f"- system_status: `{resume['latest_status'].get('system_status')}`",
-        f"- promotion_decision: `{resume['latest_status'].get('promotion_decision')}`",
+        f"- promotion_decision: `{resume['latest_status'].get('promotion_decision')}` "
+        f"(agent: `{resume['latest_status'].get('promotion_decision_agent_label')}`)",
         f"- trackc_packet_status: `{resume['latest_status'].get('trackc_packet_status')}` "
         f"(artifact READY ≠ SEND; see SEND_GATE below)",
         f"- acceptance_status: `{resume['latest_status'].get('acceptance_status')}`",
@@ -417,10 +622,41 @@ def main() -> int:
             "## Commander Resume (`장기기억 맥락이어`)",
             "",
             f"- trigger: `{briefing.get('trigger_ko')}`",
+            f"- session_end: `{briefing.get('session_end_trigger_ko', '마무리해줘')}`",
+            f"- resume_mode: `{briefing.get('resume_mode', 'standard')}` · `{briefing.get('label_ko') or briefing.get('mode_id')}`",
             f"- mission_log: {briefing.get('mission_log_mode')}",
             f"- fact_lock: {briefing.get('fact_lock')}",
             f"- SEND_GATE: `{briefing.get('send_gate')}`",
         ]
+        if briefing.get("send_gate_vocab"):
+            md_lines.append(
+                f"- send_gate_vocab: `{briefing.get('send_gate_vocab')}` "
+                f"(narrative_lane_open ≠ SEND · promotion GO ≠ live)"
+            )
+        chat_tone = briefing.get("chat_tone") or {}
+        if chat_tone.get("routine_disclaimer_suppress"):
+            md_lines += [
+                f"- chat_tone: routine live-trading disclaimer **suppress ON** · `{chat_tone.get('ssot')}`",
+            ]
+            if chat_tone.get("agent_contract_ko"):
+                md_lines.append(f"- chat_tone_contract: {chat_tone.get('agent_contract_ko')}")
+        mode_block = resume.get("commander_resume_mode") or {}
+        if briefing.get("resume_mode") == "advanced_logos" and mode_block:
+            md_lines += [
+                "",
+                "### Logos 고급 해석 모드 (`장기기억 맥락이어 고급해석`)",
+                "",
+                f"- contract: {mode_block.get('agent_contract_ko')}",
+                f"- upgrade: `{mode_block.get('session_upgrade')}`",
+            ]
+            if mode_block.get("pipeline_steps"):
+                md_lines.append("- pipeline:")
+                for step in mode_block["pipeline_steps"]:
+                    md_lines.append(f"  - `{step}`")
+            if mode_block.get("artifact_pointers"):
+                md_lines.append("- artifacts:")
+                for p in mode_block["artifact_pointers"]:
+                    md_lines.append(f"  - `{p}`")
         nl_sync = briefing.get("nl_ltm_sync") or {}
         if nl_sync:
             md_lines.append(
@@ -456,6 +692,32 @@ def main() -> int:
             if paths:
                 md_lines.append(f"  - paths: {paths}")
         md_lines.append("")
+
+    logos_wiring = resume.get("logos_theory_wiring")
+    if logos_wiring:
+        md_lines += [
+            "## Logos Theory→Implementation Wiring (re-invention guard)",
+            "",
+            f"- registry: `{logos_wiring.get('registry')}`",
+            f"- verify: `{logos_wiring.get('verify_command')}`",
+            f"- rule: {logos_wiring.get('agent_rule_ko')}",
+            f"- edge_ids: {', '.join(f'`{e}`' for e in logos_wiring.get('edge_ids') or [])}",
+            "",
+        ]
+
+    module_lane = resume.get("oracle_module_lane")
+    if module_lane:
+        md_lines += [
+            "## Oracle Module Lane (Tier-2 prep · read-only cap)",
+            "",
+            f"- cursor_rule: `{module_lane.get('cursor_rule')}`",
+            f"- tier1_ready: `{module_lane.get('tier1_module_ssot_ready')}` · tier2_prep: `{module_lane.get('tier2_prep_ready')}`",
+            f"- resonance_cap (read-only): `{module_lane.get('resonance_cap_read_only')}` · HD: `{module_lane.get('hd_mission_version')}`",
+            f"- observability_pass: `{module_lane.get('observation_pass')}`",
+            f"- module edges: {', '.join(f'`{e}`' for e in module_lane.get('module_wiring_edge_ids') or [])}",
+            f"- weekly: `{module_lane.get('weekly_routine')}`",
+            "",
+        ]
 
     md_lines += ["## Quick Refs"]
     for _, path in resume["quick_refs"].items():

@@ -13,6 +13,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "scripts"))
 
 DEFAULT_JSONL = ROOT / "docs/final/artifacts/mkm_inter_agent_dialogue_mock_latest.jsonl"
 DEFAULT_SUMMARY = ROOT / "docs/final/artifacts/mkm_inter_agent_dialogue_mock_summary_latest.json"
@@ -73,6 +74,39 @@ BETA_LINES_LEXICON_DENSE = [
 ]
 
 
+def _logos_math_dialogue_lines(root: Path) -> tuple[list[str], list[str], dict[str, Any]]:
+    from logos_a2a_wire_lib_v1 import build_logos_wire_plaintext, load_logos_wire_refs
+
+    refs = load_logos_wire_refs(root)
+    base = build_logos_wire_plaintext(refs)
+    v4 = refs.get("vector_4d") or {}
+    alpha = [
+        base,
+        (
+            f"Logos router structural brief [HYPO]: bloom_cap={refs.get('bloom_cap')} "
+            f"router_hit_rate={refs.get('router_hit_rate')} gold structural gate only. "
+            f"vector_4d S={v4.get('S')} L={v4.get('L')} K={v4.get('K')} M={v4.get('M')}. "
+            f"anchor_ids={', '.join(refs.get('anchor_ids') or [])}. "
+            f"policy_tag={refs.get('policy_tag')} send_gate={refs.get('send_gate')} "
+            "no Track A live trigger gematria_bridge_v1 research_only."
+            + " structural overlap gate not alignment_pass_rate. " * 6
+        ).strip(),
+    ]
+    beta = [
+        (
+            "ACK: Logos wire refs received — vector_4d + anchor_ids only; full corpus omitted. "
+            f"regime_tag={refs.get('regime_tag')} [NON_GATING] assist. Executor standing by."
+            + " research_only B-track no live merge. " * 8
+        ).strip(),
+        (
+            "ACK: structural router/gold gates noted; not prophecy accuracy or Track A promotion. "
+            f"kernel_recipe_id={refs.get('kernel_recipe_id')} bloom_cap={refs.get('bloom_cap')}."
+            + " send_gate HOLD maintained. " * 8
+        ).strip(),
+    ]
+    return alpha, beta, refs
+
+
 def _utc_now() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
@@ -106,12 +140,15 @@ def run_dialogue(
     last_packet: dict[str, Any] | None = None
     all_packet_only = True
     all_expand_ok = True
+    logos_wire_refs: dict[str, Any] | None = None
     if scenario == "health":
         alpha_lines = ALPHA_LINES_HEALTH
         beta_lines = BETA_LINES_HEALTH
     elif scenario == "lexicon_dense":
         alpha_lines = ALPHA_LINES_LEXICON_DENSE
         beta_lines = BETA_LINES_LEXICON_DENSE
+    elif scenario == "logos_math":
+        alpha_lines, beta_lines, logos_wire_refs = _logos_math_dialogue_lines(ROOT)
     else:
         alpha_lines = ALPHA_LINES_TRADING
         beta_lines = BETA_LINES_TRADING
@@ -203,7 +240,7 @@ def run_dialogue(
         else:
             all_expand_ok = False
 
-    return {
+    result: dict[str, Any] = {
         "schema": "mkm_inter_agent_dialogue_mock_summary_v1",
         "generated_at_utc": _utc_now(),
         "classification": "INTERNAL_ONLY",
@@ -226,13 +263,17 @@ def run_dialogue(
             "tests/test_run_mkm_inter_agent_dialogue_mock_v1.py",
         ],
     }
+    if logos_wire_refs is not None:
+        result["logos_wire_refs"] = logos_wire_refs
+        result["evidence_paths"].append("scripts/logos_a2a_wire_lib_v1.py")
+    return result
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="MKM inter-agent A2A dialogue mock (Trust Packet only).")
     ap.add_argument("--turns", type=int, default=4)
     ap.add_argument("--routing-profile", default="track_a_promoted")
-    ap.add_argument("--scenario", choices=("trading", "health", "lexicon_dense"), default="trading")
+    ap.add_argument("--scenario", choices=("trading", "health", "lexicon_dense", "logos_math"), default="trading")
     ap.add_argument("--jsonl-out", type=Path, default=DEFAULT_JSONL)
     ap.add_argument("--summary-out", type=Path, default=DEFAULT_SUMMARY)
     args = ap.parse_args()

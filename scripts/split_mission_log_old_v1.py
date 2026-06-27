@@ -17,6 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LOG = ROOT / "MISSION_LOG.md"
 OLD = ROOT / "MISSION_LOG.old.md"
 BACKUP = ROOT / "MISSION_LOG.pre_split_backup.md"
+ARCHIVE_MARKER = "## (작전 보드 이후 — 아카이브·자동진행 등)"
 
 KEEP_START = "## 🚀 전술 작전 보드"
 # First top-level ## after keep block that starts bulk history (exclusive).
@@ -102,11 +103,15 @@ def main() -> int:
     )
 
     old_body: list[str] = []
+    if OLD.is_file():
+        prior = OLD.read_text(encoding="utf-8")
+        if prior.strip():
+            old_body.append(prior.rstrip() + "\n\n---\n\n")
     if prefix:
         old_body.append("## (이전 상단 — 작전 보드 이전)\n\n")
         old_body.extend(prefix)
         old_body.append("\n---\n\n")
-    old_body.append("## (작전 보드 이후 — 아카이브·자동진행 등)\n\n")
+    old_body.append(f"{ARCHIVE_MARKER}\n\n")
     old_body.extend(suffix)
 
     new_log = header + "".join(keep)

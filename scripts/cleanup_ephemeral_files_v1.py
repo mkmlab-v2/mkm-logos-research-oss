@@ -61,6 +61,9 @@ def collect_candidates(root: Path, now: datetime, retention_days: int) -> List[C
         ("out", "out_tree"),
         ("logs", "logs_tree"),
     ]
+    root_dir_globs = [
+        ("logos_reval_*", "logos_reval_root"),
+    ]
     file_rules = [
         ("tmp_*.html", "tmp_html"),
         ("tmp_*.css", "tmp_css"),
@@ -94,6 +97,11 @@ def collect_candidates(root: Path, now: datetime, retention_days: int) -> List[C
         if p.exists():
             append_candidate(p, rule)
 
+    for pattern, rule in root_dir_globs:
+        for p in collect_by_glob(root, pattern):
+            if p.is_dir():
+                append_candidate(p, rule)
+
     for pattern, rule in file_rules:
         for p in collect_by_glob(root, pattern):
             append_candidate(p, rule)
@@ -112,7 +120,7 @@ def filter_by_allowed_roots(candidates: List[Candidate], allowed_roots: List[str
     out: List[Candidate] = []
     for c in candidates:
         root_name = c.path.parts[0].lower() if c.path.parts else ""
-        if root_name in allowed:
+        if root_name in allowed or c.rule == "logos_reval_root":
             out.append(c)
     return out
 

@@ -11,6 +11,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "reports" / "constitution" / "btrack_pilot" / "ijeoma_corpus_restore_v1.json"
 
+G_BTRACK_DOCS = [
+    "IJEOMA_GEUKCHIGO_YUGO_SECONDARY_INSIGHT_2026-03-29.md",
+    "IJEOMA_GEUKCHI_CHEONYU_PAPER_PROXY_LAYER_2026-03-29.md",
+    "SCISPACE_SASANG_LITERATURE_HELPFUL_ITEMS_2026-03-29.md",
+    "IJEOMA_BOUNDARY_SSOT_2026-03-29.md",
+    "KOREAN_MEDICAL_CANON_INGEST_HANDOFF_2026-03-28.md",
+]
+
 REL_COPIES = [
     (
         "data/corpus/ijeoma/_inventory/IJEOMA_CHUNK_TABLE_2026-03-29.jsonl",
@@ -42,17 +50,54 @@ def discover_g_vault() -> Path | None:
     return None
 
 
+def discover_g_data_root(vault: Path) -> Path | None:
+    """MKM_DATA_VAULT root (parent of vault/) for data/corpus/ijeoma mirrors."""
+    if vault.name == "vault" and vault.parent.is_dir():
+        return vault.parent
+    return None
+
+
 def main() -> int:
     vault = discover_g_vault()
     if not vault:
         print("MKM_DATA_VAULT not mounted", file=__import__("sys").stderr)
         return 2
 
-    mirror_root = vault / "notebooklm_sources" / "data" / "corpus" / "ijeoma"
+    data_root = discover_g_data_root(vault)
+    g_btrack = data_root / "notebooklm_sources" / "이제마_B_Track" if data_root else None
     copied: list[str] = []
     missing: list[str] = []
     stub_rel = "data/corpus/ijeoma/originals/sasang_extension_unified_field_research.md"
     stub_dest = ROOT / stub_rel.replace("/", os.sep)
+
+    mirror_root = vault / "notebooklm_sources" / "data" / "corpus" / "ijeoma"
+    if g_btrack and g_btrack.is_dir():
+        for name in G_BTRACK_DOCS:
+            src = g_btrack / name
+            dest = ROOT / "docs" / "final" / name
+            if not src.is_file():
+                missing.append(str(src))
+                continue
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            if dest.is_file() and dest.stat().st_size == src.stat().st_size:
+                continue
+            shutil.copy2(src, dest)
+            copied.append(f"docs/final/{name}")
+
+    if data_root:
+        e_mirror = data_root / "data" / "corpus" / "ijeoma" / "e_drive_mirror"
+        if e_mirror.is_dir():
+            for src in e_mirror.rglob("*"):
+                if not src.is_file():
+                    continue
+                rel = src.relative_to(e_mirror)
+                dest = ROOT / "data" / "corpus" / "ijeoma" / "e_drive_mirror" / rel
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                if dest.is_file() and dest.stat().st_size == src.stat().st_size:
+                    continue
+                shutil.copy2(src, dest)
+                copied.append(f"data/corpus/ijeoma/e_drive_mirror/{rel.as_posix()}")
+
     if mirror_root.is_dir():
         for src in mirror_root.rglob("*"):
             if not src.is_file():

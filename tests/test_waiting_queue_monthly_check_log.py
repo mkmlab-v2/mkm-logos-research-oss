@@ -29,23 +29,30 @@ def test_waiting_queue_log_exists_and_has_rows() -> None:
 
 def test_waiting_queue_log_row_contract() -> None:
     rows = list(_rows(_LOG))
-    for i, row in enumerate(rows):
+    monthly_rows = [r for r in rows if "checked_at_utc" in r]
+    assert monthly_rows, "waiting queue log must include at least one monthly-check row"
+    for i, row in enumerate(monthly_rows):
         for key in ("checked_at_utc", "bundle_mode", "cross_ref_test", "runner"):
-            assert key in row, f"row[{i}] missing key: {key}"
-            assert str(row[key]).strip(), f"row[{i}] empty value: {key}"
+            assert key in row, f"monthly row[{i}] missing key: {key}"
+            assert str(row[key]).strip(), f"monthly row[{i}] empty value: {key}"
 
         datetime.fromisoformat(str(row["checked_at_utc"]).replace("Z", "+00:00"))
-        assert row["bundle_mode"] in {"skip_bundle", "full_bundle"}, f"row[{i}] invalid bundle_mode"
-        assert row["cross_ref_test"] == "pass", f"row[{i}] cross_ref_test must be pass"
+        assert row["bundle_mode"] in {"skip_bundle", "full_bundle"}, f"monthly row[{i}] invalid bundle_mode"
+        assert row["cross_ref_test"] == "pass", f"monthly row[{i}] cross_ref_test must be pass"
         assert str(row["runner"]) == "scripts/run_waiting_queue_monthly_check.ps1", (
-            f"row[{i}] runner mismatch"
+            f"monthly row[{i}] runner mismatch"
         )
 
         bundle_test = str(row.get("bundle_test", ""))
         if row["bundle_mode"] == "skip_bundle":
-            assert bundle_test in {"skipped", "pass"}, f"row[{i}] invalid skip bundle_test"
+            assert bundle_test in {"skipped", "pass"}, f"monthly row[{i}] invalid skip bundle_test"
         else:
-            assert bundle_test == "pass", f"row[{i}] full bundle_test must be pass"
+            assert bundle_test == "pass", f"monthly row[{i}] full bundle_test must be pass"
+
+    sidecar_rows = [r for r in rows if "checked_at_utc" not in r]
+    for i, row in enumerate(sidecar_rows):
+        assert str(row.get("schema") or "").strip(), f"sidecar row[{i}] must declare schema"
+        assert str(row.get("runner") or "").strip(), f"sidecar row[{i}] must declare runner"
 
 
 def test_entry07_entry08_cross_ref_summaries_on_disk() -> None:

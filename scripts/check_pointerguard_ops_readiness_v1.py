@@ -166,6 +166,45 @@ def _check_task() -> dict[str, Any]:
     return {"ok": status.lower() in {"ready", "running"}, "reason": "ok", "status": status, "next_run_time": next_run}
 
 
+def _read_dotenv_keys(path: Path) -> dict[str, str]:
+    if not path.is_file():
+        return {}
+    out: dict[str, str] = {}
+    for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
+        s = line.strip()
+        if not s or s.startswith("#") or "=" not in s:
+            continue
+        key, val = s.split("=", 1)
+        key = key.strip()
+        val = val.strip().strip('"').strip("'")
+        if key and val:
+            out[key] = val
+    return out
+
+
+def _resolve_pointerguard_webhook() -> str:
+    for key in (
+        "POINTERGUARD_OPS_WEBHOOK_URL",
+        "OPS_ALARM_WEBHOOK_URL",
+        "N8N_WEBHOOK_URL",
+        "SLACK_WEBHOOK_URL",
+    ):
+        val = os.getenv(key, "").strip()
+        if val:
+            return val
+    dotenv = _read_dotenv_keys(ROOT / ".env")
+    for key in (
+        "POINTERGUARD_OPS_WEBHOOK_URL",
+        "OPS_ALARM_WEBHOOK_URL",
+        "N8N_WEBHOOK_URL",
+        "SLACK_WEBHOOK_URL",
+    ):
+        val = dotenv.get(key, "").strip()
+        if val:
+            return val
+    return ""
+
+
 def main() -> int:
     checks = []
     checks.append(_check_file(ART / "genesis_pointer_routing_control_chain_latest.json", "genesis_pointer_routing_control_chain_v1"))
@@ -180,11 +219,17 @@ def main() -> int:
     task_check = _check_task()
     checks.append({"ok": task_check.get("ok", False), "path": f"task://{TASK_NAME}", "reason": task_check.get("reason"), "detail": task_check})
 
-    webhook = os.getenv("POINTERGUARD_OPS_WEBHOOK_URL", "").strip() or os.getenv("OPS_ALARM_WEBHOOK_URL", "").strip()
+    webhook = _resolve_pointerguard_webhook()
     webhook_check = {
         "ok": bool(webhook),
         "path": "env://POINTERGUARD_OPS_WEBHOOK_URL|OPS_ALARM_WEBHOOK_URL",
         "reason": "ok" if webhook else "missing_webhook_env",
+        "fallback_chain": [
+            "POINTERGUARD_OPS_WEBHOOK_URL",
+            "OPS_ALARM_WEBHOOK_URL",
+            "N8N_WEBHOOK_URL",
+            "SLACK_WEBHOOK_URL",
+        ],
     }
     checks.append(webhook_check)
 

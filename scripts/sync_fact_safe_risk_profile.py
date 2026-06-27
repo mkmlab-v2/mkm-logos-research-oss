@@ -112,6 +112,19 @@ def _governance_caps(governance: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _stamp_logos_non_gating_contract(risk_profile: dict[str, Any]) -> dict[str, Any]:
+    """Mark Logos trinity scores as observation-only; never a Final Action trigger."""
+    out = dict(risk_profile)
+    if out.get("logos_regime_score") is None:
+        return out
+    out["logos_non_gating_ack"] = True
+    note = str(out.get("governance_note") or "").strip()
+    marker = "[NON_GATING] logos scores observation-only; cannot unlock Final Action or live trade."
+    if marker not in note and "non_gating" not in note.lower():
+        out["governance_note"] = f"{note} | {marker}".strip(" |") if note else marker
+    return out
+
+
 def _derive_profile(
     risk_profile: dict[str, Any],
     now: datetime,
@@ -120,6 +133,7 @@ def _derive_profile(
     governance: dict[str, Any] | None = None,
     trinity_evolution: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    risk_profile = _stamp_logos_non_gating_contract(risk_profile)
     mode = str(risk_profile.get("mode") or "LOCKED_MODE").upper()
     core_decision = str(risk_profile.get("core_decision") or "HOLD").upper()
     core_score = float(risk_profile.get("core_score") or 0.0)

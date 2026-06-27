@@ -16,6 +16,8 @@ param(
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
+Import-Module Microsoft.PowerShell.Security -ErrorAction Stop
+
 function Get-SecretStorePath {
     $root = Join-Path $env:APPDATA "MKM"
     if (-not (Test-Path -LiteralPath $root)) {
@@ -73,8 +75,26 @@ switch ($Action) {
         if ([string]::IsNullOrWhiteSpace($Key)) {
             throw "Key is required for action 'set'."
         }
-        if ($null -eq $Value) {
-            throw "Value is required for action 'set'."
+        if ($Key -notmatch '^[A-Z][A-Z0-9_]+$') {
+            throw @"
+Key must be an env var NAME (e.g. MKM_X_API_SECRET), not the secret value.
+You passed Key='$Key'. Run:
+  powershell -File scripts\Invoke-EncryptedSecretStore.ps1 -Action set -Key MKM_X_API_SECRET
+then paste the X console secret at the hidden prompt.
+"@
+        }
+        if ($null -eq $Value -or [string]::IsNullOrWhiteSpace($Value)) {
+            $secure = Read-Host "Paste secret for '$Key' (hidden; Enter when done)" -AsSecureString
+            $bstr = [Runtime.InteropServices.Marshal]::SecureStringToBSTR($secure)
+            try {
+                $Value = [Runtime.InteropServices.Marshal]::PtrToStringBSTR($bstr)
+            }
+            finally {
+                [Runtime.InteropServices.Marshal]::ZeroFreeBSTR($bstr)
+            }
+            if ([string]::IsNullOrWhiteSpace($Value)) {
+                throw "Empty value for key '$Key'. Copy from X console, then paste again."
+            }
         }
 
         $cipher = Protect-PlainText -Plain $Value

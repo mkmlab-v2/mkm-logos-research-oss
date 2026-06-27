@@ -15,7 +15,7 @@ READINESS = PILOT / "comp_corpus01_readiness_v1.json"
 G5 = PILOT / "comp_sasang_g5_join_poc_v1.json"
 QUERY_SET = ROOT / "data/corpus/ijeoma/_inventory/IJEOMA_NOTEBOOKLM_QUERY_SET_2026-03-29.md"
 SASANG = ROOT / "docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json"
-NOTEBOOK_B_URL = "https://notebooklm.google.com/notebook/af639d3e-b455-4f3f-8e25-47f58d962c60"
+NOTEBOOK_B_URL = "https://notebooklm.google.com/notebook/e6c1f050-40ef-49f0-8b2c-c509b8570cf4"
 NOTEBOOK_PROPHECY_ID = "07-prophecy-btrack-2026q2"
 
 

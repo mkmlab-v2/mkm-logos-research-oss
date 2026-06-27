@@ -20,6 +20,11 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.ollama_shallow_router_nsm_v1 import enrich_shallow_output, nsm_wire_ok  # noqa: E402
+
 ENV_PATH = ROOT / ".env"
 DEFAULT_OUT = ROOT / "reports/ollama_shallow_router_bench_v1_latest.json"
 DEFAULT_FIXTURES = ROOT / "tests/fixtures/ollama_shallow_router_golden_v1.json"
@@ -178,11 +183,13 @@ def _build_report(
     parse_ok = sum(1 for r in rows if r.get("parse_ok"))
     router_hit = sum(1 for r in rows if r.get("router_hit"))
     schema_ok = sum(1 for r in rows if r.get("schema_ok"))
+    nsm_wire_ok_count = sum(1 for r in rows if r.get("nsm_wire_ok"))
     leak_count = sum(1 for r in rows if r.get("leak_violation"))
     raw = {
         "parse_ok_rate": round(parse_ok / total, 4) if total else 0.0,
         "router_hit_rate": round(router_hit / total, 4) if total else 0.0,
         "schema_ok_rate": round(schema_ok / total, 4) if total else 0.0,
+        "nsm_wire_ok_rate": round(nsm_wire_ok_count / total, 4) if total else 0.0,
         "rows": total,
     }
     return {
@@ -203,6 +210,7 @@ def _build_report(
             "parse_ok_rate": raw["parse_ok_rate"],
             "router_hit_rate": raw["router_hit_rate"],
             "schema_ok_rate": raw["schema_ok_rate"],
+            "nsm_wire_ok_rate": raw["nsm_wire_ok_rate"],
             "rows": raw["rows"],
         },
         "delta": {
@@ -310,8 +318,12 @@ def run_bench(args: argparse.Namespace) -> int:
             )
             row["leak_violation"] = _has_thermo_leak(output_text)
             if parsed is not None:
+                parsed = enrich_shallow_output(parsed, input_text=fix["input"])
                 row["parsed_domain_tag"] = parsed.get("domain_tag")
                 row["parsed_output"] = parsed
+                row["nsm_prime_tags"] = parsed.get("nsm_prime_tags")
+                row["nsm_wire_ok"] = nsm_wire_ok(parsed)
+                row["schema_ok"] = _validate_output_schema(parsed, args.schema)
         except (urllib.error.URLError, TimeoutError, OSError, json.JSONDecodeError) as exc:
             row["parse_ok"] = False
             row["schema_ok"] = False

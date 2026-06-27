@@ -33,6 +33,8 @@
 | RQ-020 | OPEN | **Bible Oracle AI (Logos Observatory) 스핀오프** — MS-Track(5/28)과 **시간·대외·코드 격벽**; 6월 MVP 범위·별도 레포 시점 | 1인 기업 리소스 한정; Oracle v3는 이미 배포됐으나 B2C·상용·원고는 미확정 | `docs/research/BIBLE_ORACLE_AI_SPINOFF_WORK_PLAN_V1.md` · https://jemaai.cloud/public_showroom_logos_oracle_v3.html · `scripts/Invoke-LogosChronologyParallelBundle_v1.ps1` · `TRACK_C` §3(성경 해설 프레임) | 5/28 전 **era 프리셋·LLM** 착수 여부; 6월에 **별도 repo** vs 모노레포 mirror |
 | RQ-021 | OPEN (B-track **signed**) | **고대 코퍼스·cooc·SRE 브리지** — 지휘관 **B-track 승인**(`rq021_commander_btrack_signoff_v1_latest.json`); blended N=400·ACTIVE·MS는 **별도 HOLD** | **2026-05-23 post-signoff:** pointer·per-lane report refresh · `rq021_post_signoff_bundle_v1_latest.json` · gc **0.873** · blended **FAIL** | signoff JSON · wave5 · per-lane report · post-signoff bundle | **운영:** hypo-cooc-sidecar + per-lane SSOT; **금지:** P4 promote · ACTIVE · MS paste |
 | RQ-022 | OPEN | **Saving the News** — **Phase1–3 내부 PoC COMPLETE** · 대외·CMS·라이브 **미실시** | `Run-SavingTheNewsFullRoadmap_v1.ps1` · Phase3 `combined_all_passed` · **cms_publish_allowed: false** · public-event stub | blueprint · Track C 1p · CONSTITUTION | 법무 sign-off · CMS · 라이브 스트림 · Track A 엔진 재벤치 |
+| RQ-023 | **HOLD** | **Sovereign IAM-lite** (Control Plane only · credential 원문 미수집) — MVP 실물·pytest 통과 · **단독 B2C GTM·크롬 대체 아님** | `scripts/build_sovereign_iam_lite_posture_v1.py` · `docs/final/schemas/sovereign_iam_lite_accounts_registry_v1.schema.json` · `sovereign_iam_lite_policy_v1_draft.json` · `TRACK_C` §3.1.6 | Phase 2(Workspace/HIBP 자동) 전 **번들·ISMS 증거 리포트**로만 재개할지; 지금은 **압축 B2B·정부 과제 우선** |
+| RQ-024 | OPEN | **`[HYPO]` KampoBench 6축 → han_physician 교차 eval** — L0–L6 **rename 금지** · 안전·PRO 시계열·처방 후보(단정 없음) 평가 앵커 | 2026-06 일본 JSOM 심포지엄(TOMRASS2·KampoBench·KAMPO365) 참고; MKM turn 레이어 의미와 1:1 불일치 — 교차표만 고정 · **scorer 구현됨** | `.cursor/rules/han-physician-clinical-assist-v1.mdc` · `scripts/build_han_physician_clinical_assist_turn_v1.py` · `scripts/score_han_physician_turn_kampo_crosscut_v1.py` · `docs/final/artifacts/fixtures/kampo_bench_eval_crosscut_v1.example.json` · `reports/lee_bomi_kampo_bench_eval_report_v1.json` · **아래 RQ-024 교차표** | eval JSON 스키마를 CONSTITUTION §9로 승격할지, B-track pytest 픽스처만 유지할지 |
 | RQ-019 | **CLOSED** | **MKM Inter-Agent Encoding** (「MKM Language」/ Lingua Franca `[VISION]`) — SOTA 4축(시맨틱·신경압축·슈퍼토큰·프롬프트 경제)과 **레포 층** 정렬·승격 조건 | **2026-05-19:** 체크리스트 #7 `COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY` · `mkm_inter_agent_legal_counsel_signoff_v1_latest.json` · `mkm_inter_agent_rq019_commander_close_v1_latest.json` · encoding smoke 36 passed | `mkm_inter_agent_legal_handoff_pack_latest.json` · `mkm_inter_agent_rq019_closure_readiness_latest.json` (`closure_allowed: true`) | 대외 한 줄은 `TRACK_C` §3.1.5·`PUBLIC_FACING` v1.7 경로만; Track A 벤치·실매매 자동 합선 없음 |
 
 ### RQ-019 — **CLOSED** (2026-05-19 · counsel `COUNSEL-FINAL-SIGNOFF-2026-05-19-RELEASE-READY`)
@@ -106,8 +108,26 @@
 
 ---
 
+### RQ-024 — KampoBench 6축 × `han_physician` L0–L6 교차표 `[HYPO]`
+
+**금지:** turn 빌더의 L1–L6 의미를 아래 Kampo 축으로 **덮어쓰기**(rename). 본 표는 **평가 차원(eval cross-cut)** 만 고정한다.
+
+| KampoBench eval 축 | 주 교차 레이어 | 검증 기전 (B-track) | 제어 |
+| --- | --- | --- | --- |
+| 레드플래그 인지 | **L0** · intake SOAP S | 한방 단독 치료 불가·응급 배제 스크리닝 | `FORCE_HOLD` |
+| 증·시계열 기초 | **L1–L3** · `symptom_timeseries_v1` | 주증상 강도·누락·재진 Δ(optional) | `WATCH` |
+| 변증 적절성 | SOAP A · 사상 슬롯 · **L2–L3** | 기전·허실·한열 논리 연결(비단정) | `RESEARCH_ONLY` |
+| 논리 일관성 | SOAP A/P · **L1–L3** | 치료 원칙 vs 관찰 모순 체크 | `RESEARCH_ONLY` |
+| 처방 타당성 | plan 초안 · `next_physician_actions` | 후보군·가감 아이디어(탕명 확정 금지) | 단정 금지 |
+| 상호작용·부작용 | **L0** 에스컬레이션 · 복약 필드 | 감초 중복·마황 등 안전 크로스체크 | `VETO_GATE` |
+| PRO 시계열 | **L6** · lifestyle `weekly_self_check` | `symptom_scale_0_10` · `visit_delta` optional | `WATCH` |
+
+**스모크 앵커:** `py scripts/build_han_physician_clinical_assist_turn_v1.py --slug lee_bomi --validate-schema --update-pointer` · `py scripts/score_han_physician_turn_kampo_crosscut_v1.py --han-turn-json reports/lee_bomi_han_physician_assist_turn_v1.json --out-json reports/lee_bomi_kampo_bench_eval_report_v1.json` · `tests/test_han_physician_clinical_assist_v1.py` · `tests/test_score_han_physician_turn_kampo_crosscut_v1.py` · `tests/test_l0_red_flag_router_v1.py`
+
+---
+
 ## 메타
 
 - **schema:** `research_open_questions_v1`
-- **last_reviewed_utc:** 2026-05-23 — **RQ-021 OPEN (B-track commander signoff recorded)**; commercial P4/MS lanes HOLD. (이전: 2026-05-19 RQ-019 CLOSED.)
+- **last_reviewed_utc:** 2026-06-26 — **RQ-024 OPEN** (KampoBench eval cross-cut · lee_bomi smoke). (이전: 2026-05-23 RQ-021 B-track signoff.)
 - **mirror (optional):** 로컬 그래프용 `memory/obsidian_vault/UNIVERSE_MKm/INBOX_연구_토의큐.md` — Git과 자동 동기화하지 않는다.
