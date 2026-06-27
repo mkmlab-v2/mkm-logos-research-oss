@@ -52,6 +52,54 @@ def test_runner_emits_axes_and_gate(tmp_path: Path) -> None:
     assert "X.1.1" in str(axes.get("axis_03_cross_reference_echo"))
 
 
+def test_commander_prefers_distill_verse_ids(tmp_path: Path) -> None:
+    logos = tmp_path / "logos.json"
+    logos.write_text(
+        json.dumps(
+            {
+                "schema": "logos_independent_lens_v0",
+                "scores": {"direction_score": 0.0, "confidence": 0.2},
+                "evidence_refs": [{"verse_id": "sample-001"}, {"verse_id": "sample-002"}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    distill = tmp_path / "distill.json"
+    distill.write_text(
+        json.dumps(
+            {
+                "evidence_refs": [{"verse_id": "Jhn.1.1"}, {"verse_id": "Jhn.1.2"}],
+                "graph_paths": [{"verse_ids": ["Jhn.1.1", "Jhn.1.2"]}],
+            }
+        ),
+        encoding="utf-8",
+    )
+    out = tmp_path / "rep.json"
+    cp = subprocess.run(
+        [
+            sys.executable,
+            str(_RUNNER),
+            "--logos",
+            str(logos),
+            "--distill-json",
+            str(distill),
+            "--no-fusion",
+            "--no-market-sasang",
+            "--output",
+            str(out),
+        ],
+        cwd=str(_ROOT),
+        capture_output=True,
+        text=True,
+    )
+    assert cp.returncode == 0, cp.stderr
+    doc = json.loads(out.read_text(encoding="utf-8"))
+    axis = (doc.get("report_axes_v1") or {}).get("axis_01_original_language_semantics") or {}
+    vids = axis.get("evidence_verse_ids") or []
+    assert "Jhn.1.1" in vids
+    assert "sample-001" not in vids
+
+
 def test_contract_and_schema_exist() -> None:
     c = _ROOT / "docs" / "final" / "artifacts" / "LOGOS_TRACK_B_COMMANDER_DEEP_REPORT_V1_CONTRACT.json"
     s = _ROOT / "docs" / "final" / "schemas" / "logos_track_b_commander_deep_report_v1.schema.json"

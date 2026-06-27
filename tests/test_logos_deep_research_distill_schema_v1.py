@@ -148,7 +148,7 @@ def test_emitted_template_validates_against_schema(tmp_path: Path) -> None:
     assert cp.returncode == 0
     instance = json.loads(out.read_text(encoding="utf-8"))
     jsonschema.Draft7Validator(schema).validate(instance)
-    assert instance.get("version") == "1.0.1"
+    assert instance.get("version") == "1.0.2"
     assert (instance.get("review_gate") or {}).get("status") == "pending"
 
 

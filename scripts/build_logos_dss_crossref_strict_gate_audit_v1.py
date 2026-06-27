@@ -22,8 +22,8 @@ STRICT_PARTIAL_MARKERS: dict[str, str] = {
     "ENTRY_08": "status=partial_anchor_verified (sigla+plates)",
     "ENTRY_09": "status=partial_anchor_verified (frag+col+line-range)",
     "ENTRY_10": "status=partial_anchor_verified (plates+line)",
-    "ENTRY_12": "status=partial_anchor_verified (scroll+line-buckets)",
-    "ENTRY_13": "status=partial_anchor_verified (scroll+line-buckets)",
+    "ENTRY_12": "status=mt_only_no_qumran_witness",
+    "ENTRY_13": "status=commander_verified_shadow_witness",
     "ENTRY_14": "status=partial_anchor_verified (witness-set+plates+line)",
     "ENTRY_15": "status=partial_anchor_verified (witness-set+plates+chapter-range)",
 }

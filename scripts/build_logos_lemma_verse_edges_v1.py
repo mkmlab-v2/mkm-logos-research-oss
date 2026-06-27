@@ -14,12 +14,50 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from scripts.logos_verse_ref_canonical_v1 import canonical_verse_ref
+
+DEFAULT_CORPUS_MANIFEST = ROOT / "docs/final/artifacts/logos_corpus_manifest_v1_latest.json"
 DEFAULT_BRIDGE = ROOT / "docs/final/artifacts/logos_concept_bridge_semiconductor_poc_v1_latest.json"
 DEFAULT_GRAPH_NODES = ROOT / "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/logos_lemma_verse_edges_v1.jsonl"
 DEFAULT_MANIFEST = ROOT / "docs/final/artifacts/logos_lemma_verse_edges_v1_latest.json"
 
 TOK_RE = re.compile(r"[\u0590-\u05FF]{3,}")
+
+
+def _corpus_verse_ids(manifest_path: Path) -> set[str]:
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    rel = manifest.get("input_path")
+    if not isinstance(rel, str):
+        return set()
+    corpus_path = ROOT / rel.replace("/", "\\")
+    if not corpus_path.is_file():
+        return set()
+    data = json.loads(corpus_path.read_text(encoding="utf-8"))
+    if not isinstance(data, list):
+        return set()
+    return {
+        str(row.get("verse_id")).strip()
+        for row in data
+        if isinstance(row, dict) and isinstance(row.get("verse_id"), str) and row.get("verse_id").strip()
+    }
+
+
+def _filter_edges_to_corpus(
+    rows: list[dict[str, Any]],
+    corpus_ids: set[str],
+) -> tuple[list[dict[str, Any]], list[str]]:
+    if not corpus_ids:
+        return rows, []
+    kept: list[dict[str, Any]] = []
+    dropped: list[str] = []
+    for row in rows:
+        dst = str(row.get("dst_node_id") or "").strip()
+        et = str(row.get("edge_type") or "")
+        if et == "CONTAIN" and dst and dst not in corpus_ids:
+            dropped.append(dst)
+            continue
+        kept.append(row)
+    return kept, dropped
 
 
 def _is_lemma_step(sid: str) -> bool:
@@ -53,9 +91,9 @@ def build_edges(bridge_path: Path) -> tuple[list[dict[str, Any]], dict[str, Any]
         nid = str(node.get("node_id") or "")
         vid = node.get("verse_id")
         if nid.startswith("verse:") and vid:
-            verse_by_short[nid] = str(vid)
+            verse_by_short[nid] = canonical_verse_ref(str(vid))
         elif node.get("kind") == "verse_ref" and nid:
-            verse_by_short[nid] = str(vid or nid.replace("verse:", ""))
+            verse_by_short[nid] = canonical_verse_ref(str(vid or nid))
 
     rows: list[dict[str, Any]] = []
     edge_i = 0
@@ -222,6 +260,13 @@ def main() -> int:
     ap.add_argument("--graph-tokens-per-verse", type=int, default=2)
     ap.add_argument("--out-jsonl", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--manifest-json", type=Path, default=DEFAULT_MANIFEST)
+    ap.add_argument(
+        "--corpus-manifest",
+        type=Path,
+        default=DEFAULT_CORPUS_MANIFEST,
+        help="When set and present, drop CONTAIN edges whose dst is not in corpus.",
+    )
+    ap.add_argument("--no-corpus-filter", action="store_true")
     args = ap.parse_args()
 
     if args.registry_json:
@@ -237,6 +282,12 @@ def main() -> int:
         )
         rows.extend(graph_rows)
         manifest["graph_heuristic_edges"] = len(graph_rows)
+    if not args.no_corpus_filter and args.corpus_manifest.is_file():
+        corpus_ids = _corpus_verse_ids(args.corpus_manifest)
+        rows, dropped = _filter_edges_to_corpus(rows, corpus_ids)
+        if dropped:
+            manifest["dropped_not_in_corpus_count"] = len(dropped)
+            manifest["dropped_not_in_corpus_sample"] = dropped[:16]
     manifest["edge_count"] = len(rows)
     manifest["note"] = (
         "Bridge proxy + optional corpus graph heuristic tokens; not morphology-verified."

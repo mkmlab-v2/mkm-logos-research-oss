@@ -95,6 +95,12 @@ def main() -> int:
             "auto_trade_enable": False,
             "live_trading_enabled_by_this_artifact": False,
         },
+        "track_l_advisory": {
+            "label": "Track L",
+            "non_gating": True,
+            "shadow_advisory_only": True,
+            "research_only": True,
+        },
         "limitations": (
             "This artifact records human acknowledgment for next-stage planning only. "
             "It does not modify exchange credentials, order routers, or A-track gates."

@@ -26,6 +26,8 @@ def test_normalize_verse_in_builder_module() -> None:
     assert mod.normalize_verse_ref("node_verse_ps23_3") == "Ps.23.3"
     assert mod.normalize_verse_ref("node_verse_jer30_18") == "Jer.30.18"
     assert mod.normalize_verse_ref("node_verse_job5_24") == "Job.5.24"
+    assert mod.normalize_verse_ref("node:verse_ref:psalm_103_8") == "Ps.103.8"
+    assert mod.normalize_verse_ref("node:verse_lamentations_3_22_23") == "Lam.3.22"
 
 
 def test_gold_eval_report_builds() -> None:

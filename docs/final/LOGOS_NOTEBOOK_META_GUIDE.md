@@ -26,3 +26,11 @@
 | `[NON-MEDICAL]` | 비의료 고지 | 원어·수치 통찰은 **의학적 조언·진단·치료 효능 주장 아님** |
 
 답변 작성 시: 학술적 설명은 `[FACT]` 또는 일반 서술, 프로젝트 가설은 `[HYPO]` 접두를 붙인다.
+
+---
+
+## Cosmic Meta-Architecture (B-track 포인터만)
+
+- **서사 앵커:** `docs/final/artifacts/logos_cosmic_meta_architecture_draft_v1.md` · 머신 포인터 `logos_cosmic_meta_architecture_draft_v1_latest.json` — **`[HYPO]` · `forbidden_synthesis`**.
+- **운영 4D SSOT:** `S-L-K-M` (`gematria_bridge_v1`) — `$E_i,P_f,D_d,H_c$`·4대힘↔체질은 **교육용 별칭**(`logos_fundamental_force_lexicon_v1.json`)이며 본 노 답변에 **체질·물리 단정으로 인용하지 않는다**.
+- **UI:** cosmic anchor `kernel_alignment` → `mkmlifeCosmicAnchorV1.ts` orb draft — 신학·체질 해석은 **원어·역본 우선**(항목 1·6)이며 resonance 수치는 리듬·여백 힌트만.

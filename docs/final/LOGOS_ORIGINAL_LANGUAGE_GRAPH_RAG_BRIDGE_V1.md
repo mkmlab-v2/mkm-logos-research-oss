@@ -46,6 +46,8 @@
 | Wire PoC | `build_mkm_graph_wire_rag_poc_v1.py` · `honest_metrics` | 브릿지→wire 자동 체인 |
 | 글로벌 GraphRAG | `run_graphrag_pilot_router_v1.py` | 성경 서브그래프 전용 |
 | **Phase 0** | `build_logos_concept_bridge_semiconductor_poc_v1.py` → `logos_concept_bridge_semiconductor_poc_v1_latest.json` | 1 query 고정·수치 없음 |
+| **Path Ledger** | `logos_query_path_ledger_v1.py` · `build_logos_path_contribution_scores_v1.py` · schema `logos_query_path_ledger_v1.schema.json` | query-time path 기록·EvoRAG stub; 그래프 자동 변이 없음 |
+| **Path feedback** | `/api/v1/magic-orb/path-feedback` · `ingest_magic_orb_path_feedback_to_ledger_v1.py` · schema `magic_orb_path_feedback_v1.schema.json` | UI UP/DOWN → JSONL → ledger ingest (B-track) |
 
 ---
 
@@ -74,6 +76,10 @@
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Run-LogosOlGraphBridgeParallel_v1.ps1
+py scripts/run_logos_ol_graph_bridge_phase1_chain_v1.py
+py scripts/run_logos_ol_graph_bridge_phase2_chain_v1.py
+py scripts/run_logos_ol_graph_bridge_phase3_chain_v1.py
+py scripts/run_logos_ol_graph_bridge_post_phase3_closure_v1.py
 ```
 
 ---
@@ -84,3 +90,5 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Run-LogosOlGraphBrid
 - 본 브릿지: Track C·B2B 부록 **“semantic path demo”** 슬롯만 — 법무 sign-off 전 send 금지.
 
 **CDIM (병렬):** `LOGOS_CROSS_DOMAIN_INTERFACE_MAPPER_V1.md` — lemma/verse GraphRAG와 **코퍼스 오염 없이** 렌즈 융합만 중계.
+
+**도메인 킬러 맵:** 제품·사업계획서 혼동 방지 — `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1c** · `TRACK_C` **§3.0d** (성경=logos 연구 홈 · 초개인화=mkmlife 구슬 · personadiary=별 킬러·API 분리).

@@ -16,12 +16,17 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.logos_deep_research_graph_evidence_v1 import build_enriched_distill_fields
+
 CONTRACT = ROOT / "docs" / "final" / "artifacts" / "LOGOS_DEEP_RESEARCH_DISTILL_CONTRACT_V1.json"
 SCHEMA = ROOT / "docs" / "final" / "schemas" / "logos_deep_research_distill_v1.schema.json"
 DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "logos_deep_research_distill_latest.json"
 
 ARTIFACT_SCHEMA = "logos_deep_research_distill_v1"
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 
 
 def _manifest_digest(paths: list[Path]) -> str:
@@ -170,6 +175,29 @@ def main() -> int:
         metavar="PATH",
         help="Optional query smoke JSON from query_logos_vector_index_ann_lite_v1.py.",
     )
+    ap.add_argument(
+        "--enrich-graph",
+        action="store_true",
+        help="Attach graph paths + verse evidence_refs from bible_meaning_graph (no LLM).",
+    )
+    ap.add_argument(
+        "--max-graph-edges",
+        type=int,
+        default=24,
+        help="With --enrich-graph: top weighted edges to include.",
+    )
+    ap.add_argument(
+        "--theology-baseline",
+        type=Path,
+        default=ROOT / "docs/final/artifacts/LOGOS_MKM_THEOLOGY_BASELINE_V1.json",
+        help="MKM theology baseline JSON for interpretation stub.",
+    )
+    ap.add_argument(
+        "--theme",
+        type=str,
+        default="",
+        help="Theme preset id (dan_aramaic, john_1_logos) from LOGOS_TRACK_B_THEME_PRESETS_V1.json.",
+    )
     args = ap.parse_args()
 
     if not CONTRACT.is_file():
@@ -209,6 +237,24 @@ def main() -> int:
         doc = _minimal_distill_template(args.build_id, args.slice_id, merged if merged else None)
         if provenance_extra is None:
             doc["provenance"]["input_manifest_sha256"] = digest
+        if args.enrich_graph and args.bundle_json is not None:
+            enrich_kw: dict[str, Any] = {
+                "bundle_path": args.bundle_json,
+                "max_edges": max(1, args.max_graph_edges),
+                "theology_baseline_path": args.theology_baseline,
+            }
+            if args.theme.strip():
+                enrich_kw["theme_id"] = args.theme.strip()
+            enriched = build_enriched_distill_fields(**enrich_kw)
+            for key, val in enriched.items():
+                doc[key] = val
+            runner_note = "scripts/run_lens_logos_deep_fusion.py --enrich-graph"
+            if args.theme.strip():
+                runner_note += f" --theme {args.theme.strip()}"
+            doc["provenance"]["runner"] = runner_note
+            doc["provenance"]["notes"] = (
+                "graph-enriched distill v1; commander review required; NON_GATING"
+            )
         text = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
         if args.write_template is not None:
             args.write_template.parent.mkdir(parents=True, exist_ok=True)

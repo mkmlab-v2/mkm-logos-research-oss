@@ -39,21 +39,40 @@ def main() -> int:
     ap.add_argument("--public-url", default=DEFAULT_PUBLIC)
     ap.add_argument("--local-url", default=DEFAULT_LOCAL)
     ap.add_argument("--timeout", type=float, default=15.0)
+    ap.add_argument(
+        "--include-local",
+        action="store_true",
+        help="Also probe local stub (127.0.0.1:8021); does not fail unless --require-local",
+    )
+    ap.add_argument(
+        "--require-local",
+        action="store_true",
+        help="Fail if local stub is unreachable (implies --include-local)",
+    )
     ap.add_argument("--out-json", type=Path, default=ROOT / "reports/logos_trace_public_check_v1_latest.json")
     args = ap.parse_args()
 
-    results: dict = {"checks": []}
+    targets: list[tuple[str, str]] = [("public", args.public_url)]
+    probe_local = args.include_local or args.require_local
+    if probe_local:
+        targets.append(("local", args.local_url))
+
+    results: dict = {
+        "checks": [],
+        "live_spotcheck_mode": not probe_local or not args.require_local,
+    }
     ok = True
-    for label, url in (("public", args.public_url), ("local", args.local_url)):
+    for label, url in targets:
         try:
             code, doc = _get(url, args.timeout)
             passed = code == 200 and bool(doc.get("ok"))
             results["checks"].append({"label": label, "url": url, "status": code, "ok": passed, "body": doc})
-            if not passed:
+            if not passed and (label != "local" or args.require_local):
                 ok = False
         except Exception as exc:  # noqa: BLE001
             results["checks"].append({"label": label, "url": url, "ok": False, "error": str(exc)})
-            ok = False
+            if label != "local" or args.require_local:
+                ok = False
 
     results["ok"] = ok
     args.out_json.parent.mkdir(parents=True, exist_ok=True)

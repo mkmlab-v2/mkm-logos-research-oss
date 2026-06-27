@@ -70,9 +70,11 @@ def main() -> int:
         policy["human_signoff_by"] = args.signoff_by
         policy["signoff_lane"] = signoff_lane
         path.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        entry["human_reviewed"] = True
         updated.append(rel)
 
-    reg["human_reviewed_count"] = len(updated)
+    present = [e for e in reg.get("entries") or [] if isinstance(e, dict) and e.get("present")]
+    reg["human_reviewed_count"] = len([e for e in present if e.get("human_reviewed")])
     n = len([e for e in reg.get("entries") or [] if isinstance(e, dict) and e.get("present")])
     reg["human_reviewed_ratio"] = round(reg["human_reviewed_count"] / n, 4) if n else 0.0
     reg["governance_warning_zero_human"] = reg["human_reviewed_count"] == 0

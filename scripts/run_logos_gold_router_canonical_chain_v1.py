@@ -34,7 +34,12 @@ def _run(script: str, extra: list[str] | None = None) -> dict:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--promote-gold-prefix-first", action="store_true")
+    ap.add_argument(
+        "--promote-gold-prefix-first",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Reorder router verse_ids: gold ids/prefixes first (default on)",
+    )
     ap.add_argument("--out-json", type=Path, default=OUT)
     args = ap.parse_args()
 

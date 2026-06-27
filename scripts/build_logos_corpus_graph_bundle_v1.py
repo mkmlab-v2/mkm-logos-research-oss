@@ -16,6 +16,10 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.logos_verse_ref_canonical_v1 import canonical_verse_ref
 
 DEFAULT_MANIFEST = ROOT / "docs/final/artifacts/logos_corpus_manifest_v1_latest.json"
 DEFAULT_NODES = ROOT / "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl"
@@ -194,10 +198,14 @@ def main() -> int:
                     alignment["skipped_alignment_reason"] = f"corpus load failed: {e}"
                     corpus_ids = set()
                 if alignment.get("skipped_alignment_reason") is None:
-                    in_corpus = graph_refs & corpus_ids
-                    not_in = sorted(graph_refs - corpus_ids)
+                    corpus_ids_canon = {canonical_verse_ref(v) for v in corpus_ids}
+                    graph_refs_canon = {canonical_verse_ref(v) for v in graph_refs}
+                    in_corpus = graph_refs_canon & corpus_ids_canon
+                    not_in = sorted(graph_refs_canon - corpus_ids_canon)
                     alignment["graph_refs_in_corpus_count"] = len(in_corpus)
                     alignment["graph_refs_not_in_corpus_sample"] = not_in[:16]
+                    if graph_refs != graph_refs_canon or corpus_ids != corpus_ids_canon:
+                        alignment["verse_ref_canonicalization_applied"] = True
 
     snap = {
         "manifest_path": _rel_to_root(mf),

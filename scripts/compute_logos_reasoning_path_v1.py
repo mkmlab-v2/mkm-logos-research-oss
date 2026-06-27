@@ -125,8 +125,24 @@ def attach_paths_to_presets(presets_doc: dict, graph: dict) -> dict:
     presets = []
     for p in presets_doc.get("presets") or []:
         row = dict(p)
+        row.pop("router_path_v1", None)
         seeds = list(row.get("highlight_node_ids") or [])
-        if len(seeds) >= 2:
+        verse_seeds = [s for s in seeds if not str(s).startswith("era::")]
+        era_seeds = [s for s in seeds if str(s).startswith("era::")]
+        if row.get("slice_gap") and era_seeds:
+            era_label = str(row.get("answer_title_ko") or row.get("prompt_ko") or "era hub")
+            row["reasoning_path_v1"] = {
+                "schema_version": "logos_reasoning_path_v1",
+                "node_ids": era_seeds[:1],
+                "edges": [],
+                "path_label_ko": era_label.replace("연대기 · ", ""),
+            }
+        elif verse_seeds:
+            path_seeds = list(dict.fromkeys(verse_seeds + era_seeds))
+            row["reasoning_path_v1"] = compute_reasoning_path(
+                graph, path_seeds, max_nodes=min(5, len(path_seeds))
+            )
+        elif len(seeds) >= 2:
             max_n = 3 if row.get("id") == "p3_theme_regime" else 5
             row["reasoning_path_v1"] = compute_reasoning_path(graph, seeds, max_nodes=max_n)
         presets.append(row)

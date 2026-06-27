@@ -18,8 +18,15 @@ URLS: dict[str, str] = {
     "meaning_topology_json": "https://jemaai.cloud/showroom_meaning_topology_graph_slice_v1.json",
     "chronology_overlay": "https://jemaai.cloud/showroom_logos_chronology_overlay_v1.json",
     "trace_health": "https://api.jemaai.cloud/v1/logos/health",
-    "mkmlife_envelope": "https://mkmlife.com/data/three_lens_sphere_envelope_v1.json",
+    "mkmlife_envelope": "https://mkmlife.com/data/three_lens_sphere_envelope_public_v1.json",
 }
+
+LOCAL_MKMLIFE_ENVELOPE = (
+    ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_public_v1.json"
+)
+LOCAL_MKMLIFE_ENVELOPE_LEGACY = (
+    ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_v1.json"
+)
 
 
 def _head_or_get(url: str, timeout: float = 20.0) -> dict:
@@ -63,7 +70,7 @@ def main() -> int:
 
     envelope_schema_ok = False
     mk = steps.get("mkmlife_envelope")
-    if isinstance(mk, dict) and mk.get("ok") and mk.get("method") == "GET":
+    if isinstance(mk, dict) and mk.get("ok"):
         try:
             req = urllib.request.Request(URLS["mkmlife_envelope"], method="GET")
             req.add_header("User-Agent", "mkm-logos-phase12-live/1")
@@ -75,7 +82,7 @@ def main() -> int:
         except Exception as e:
             errors.append(f"mkmlife_envelope parse: {e}")
 
-    local_env = ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_v1.json"
+    local_env = LOCAL_MKMLIFE_ENVELOPE if LOCAL_MKMLIFE_ENVELOPE.is_file() else LOCAL_MKMLIFE_ENVELOPE_LEGACY
     local_ok = local_env.is_file()
     local_schema_ok = False
     if local_ok:

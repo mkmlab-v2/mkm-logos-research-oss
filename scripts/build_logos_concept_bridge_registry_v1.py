@@ -32,6 +32,7 @@ DEFAULT_BRIDGE_PATHS = (
     ART / "logos_concept_bridge_gold_q13_passion_blood_water_symbolism_v1_latest.json",
     ART / "logos_concept_bridge_gold_q04_judgment_covenant_remnant_v1_latest.json",
     ART / "logos_concept_bridge_gold_q08_suffering_comfort_pattern_v1_latest.json",
+    ART / "logos_concept_bridge_themed_dan_aramaic_v1_latest.json",
 )
 
 

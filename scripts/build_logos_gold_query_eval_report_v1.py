@@ -47,8 +47,11 @@ def _parse_verse_ref_slug(body: str) -> str:
 
 
 def _parse_node_verse_slug(body: str) -> str:
-    """node_verse body: john_19_34 → John.19.34; ps23_3 → Ps.23.3."""
+    """node_verse body: john_19_34 → John.19.34; lamentations_3_22_23 → Lam.3.22."""
     parts = body.split("_")
+    if len(parts) >= 4 and parts[-1].isdigit() and parts[-2].isdigit() and parts[-3].isdigit():
+        book = "_".join(parts[:-3])
+        return f"{_title_book(book)}.{parts[-3]}.{parts[-2]}"
     if len(parts) >= 3 and parts[-1].isdigit() and parts[-2].isdigit():
         book = "_".join(parts[:-2])
         return f"{_title_book(book)}.{parts[-2]}.{parts[-1]}"
@@ -70,16 +73,31 @@ def normalize_verse_ref(raw: str) -> str:
         s = _parse_verse_ref_slug(s[3:])
     if s.lower().startswith("verse:"):
         s = s.split(":", 1)[1]
-    if s.startswith("node_verse_"):
-        return _parse_node_verse_slug(s[len("node_verse_") :])
+    if s.lower().startswith("ref:"):
+        s = s.split(":", 1)[1]
     if s.startswith("node:verse_ref:"):
         s = s[len("node:verse_ref:") :]
         parts = s.split("_")
         if len(parts) >= 3 and parts[-2].isdigit() and parts[-1].isdigit():
             book = "_".join(parts[:-2])
             return f"{_title_book(book)}.{parts[-2]}.{parts[-1]}"
+    if s.startswith("node_verse_"):
+        return _parse_node_verse_slug(s[len("node_verse_") :])
+    if s.startswith("node:verse_"):
+        return _parse_node_verse_slug(s[len("node:verse_") :])
+    if s.startswith("verse_"):
+        return _parse_node_verse_slug(s[len("verse_") :])
     if "::" in s:
         s = s.split("::", 1)[1]
+    m = re.match(r"^([A-Za-z0-9]+)_(\d+)\.(\d+)\.(\d+)$", s)
+    if m:
+        return f"{_title_book(m.group(1))}.{m.group(2)}.{m.group(3)}"
+    m = re.match(r"^([a-z]+)(\d+)\.(\d+)$", s, flags=re.IGNORECASE)
+    if m:
+        return f"{_title_book(m.group(1))}.{m.group(2)}.{m.group(3)}"
+    m = re.match(r"^([A-Za-z0-9]+)\.(\d+)\.(\d+)-", s)
+    if m:
+        return f"{_title_book(m.group(1))}.{m.group(2)}.{m.group(3)}"
     # Full book names from bridge nodes: Jeremiah.31.33 → Jer.31.33
     m = re.match(r"^([A-Za-z0-9]+)\.(\d+)\.(\d+)$", s)
     if m:
@@ -112,7 +130,10 @@ def _title_book(book: str) -> str:
         "daniel": "Dan",
         "job": "Job",
         "prov": "Prov",
+        "proverbs": "Prov",
         "eccl": "Eccl",
+        "lam": "Lam",
+        "lamentations": "Lam",
         "num": "Num",
         "exod": "Exod",
         "deut": "Deut",

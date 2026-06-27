@@ -1,6 +1,6 @@
 {
   "schema": "logos_gold_query_eval_v1",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "hypothesis_tier": "B",
   "research_only": true,
   "non_gating": true,
@@ -282,6 +282,819 @@
       },
       "notes_ko": "[HYPO] Dan.2 empire_transition — human sign-off promoted; gold_required eval; not Track A / live trading trigger.",
       "promotion_signoff_utc": "2026-06-05T22:29:08Z"
+    },
+    {
+      "id": "q13",
+      "query_ko": "십자가 수난 중 흘린 물과 피의 상징은 어떤 성경 경로로 연결되는가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "John.19.34",
+        "Lev.17.11",
+        "Ezek.36.25",
+        "1John.5.6"
+      ],
+      "gold_verse_prefixes": [
+        "John.19",
+        "Lev.17",
+        "Ezek.36",
+        "1John.5"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q13_passion_blood_water_symbolism_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] Passion bridge holdout; distinct from q06 wording."
+    },
+    {
+      "id": "q14",
+      "query_ko": "장기적 압박 속 소망의 징표는 어떤 성경 경로로 드러나는가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.27.14",
+        "Jer.30.7",
+        "Lam.3.22"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.27",
+        "Jer.30",
+        "Lam.3"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q05_hope_prolonged_stress_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q15",
+      "query_ko": "유동성 수축 압박 속 신중함과 대비는 어떤 성경 경로인가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Prov.22.3",
+        "Jer.17.7",
+        "Prov.21.20"
+      ],
+      "gold_verse_prefixes": [
+        "Prov.22",
+        "Jer.17",
+        "Prov.21"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q09_prudence_liquidity_stress_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q16",
+      "query_ko": "혼란과 상실 이후의 긍휴와 자비는 어떤 성경 경로로 연결되는가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.103.8",
+        "Jer.31.20",
+        "Rev.21.4"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.103",
+        "Jer.31",
+        "Rev.21"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_mercy_compassion_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q17",
+      "query_ko": "클라우드·인프라 복원력은 어떤 성경 경로 은유로 연결되는가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Job.28.17",
+        "Dan.2.33",
+        "Rev.21.2"
+      ],
+      "gold_verse_prefixes": [
+        "Job.28",
+        "Dan.2",
+        "Rev.21"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_cloud_resilience_poc_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q18",
+      "query_ko": "반도체 공급망 변동성과 단단한 재료·연결은 어떤 성경 경로인가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Job.28.17",
+        "Zech.3.9",
+        "Dan.2.43"
+      ],
+      "gold_verse_prefixes": [
+        "Job.28",
+        "Zech.3",
+        "Dan.2"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_semiconductor_poc_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q19",
+      "query_ko": "불확실성 속 지혜와 분별은 어떤 성경 경로로 연결되는가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Job.28.28",
+        "Dan.1.17",
+        "Ps.56.3"
+      ],
+      "gold_verse_prefixes": [
+        "Job.28",
+        "Dan.1",
+        "Ps.56"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_wisdom_uncertainty_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q20",
+      "query_ko": "디지털 신뢰와 진실성은 어떤 성경 경로로 연결되는가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.119.86",
+        "Job.2.3",
+        "Jer.4.2"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.119",
+        "Job.2",
+        "Jer.4"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_digital_trust_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q21",
+      "query_ko": "변동성 속 절제와 인내는 어떤 성경 경로인가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.37.7",
+        "Jer.9.24",
+        "Dan.10.19"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.37",
+        "Jer.9",
+        "Dan.10"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q06_discipline_in_volatility_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q22",
+      "query_ko": "capitulation 이후 회복력과 소망은 어떤 성경 경로인가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Dan.10.19",
+        "Jer.31.10",
+        "Lam.3.21"
+      ],
+      "gold_verse_prefixes": [
+        "Dan.10",
+        "Jer.31",
+        "Lam.3"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q10_resilience_capitulation_phase_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q23",
+      "query_ko": "다니엘 2장 아람어 궁정 해석과 왕의 꿈은 어떤 구절 경로인가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Dan.2.10",
+        "Dan.2.31"
+      ],
+      "gold_verse_prefixes": [
+        "Dan.2"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_themed_dan_aramaic_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      }
+    },
+    {
+      "id": "q24",
+      "query_ko": "배신·음모 속 경계와 깨어 있음은 어떤 성경 경로인가?",
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Luke.22.4",
+        "Luke.22.46",
+        "Rev.16.15"
+      ],
+      "gold_verse_prefixes": [
+        "Luke.22",
+        "Rev.16"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_regime_watchfulness_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "notes_ko": "[HYPO] Luke.22 betrayal watch lane; complements q11."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.89.28",
+        "Jer.31.33",
+        "Isa.40.8",
+        "Job.24.19"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.",
+        "Isa.",
+        "Jer."
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_covenant_crisis_poc_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q25",
+      "query_ko": "위기 속에서도 언약과 신실하심이 유지되는 성경 경로는?",
+      "holdout_source_id": "q01",
+      "notes_ko": "[HYPO] holdout paraphrase of q01; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Jer.1.10",
+        "Dan.5.25",
+        "Rev.18.2",
+        "Job.24.19"
+      ],
+      "gold_verse_prefixes": [
+        "Jer.",
+        "Dan.",
+        "Rev.",
+        "Prov."
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q02_judgment_warning_collapse_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q26",
+      "query_ko": "무너짐 직전의 경고와 심판 신호는 어디서 드러나는가?",
+      "holdout_source_id": "q02",
+      "notes_ko": "[HYPO] holdout paraphrase of q02; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Jer.31.31",
+        "Jer.31.33",
+        "Hos.11.8",
+        "Isa.40.1"
+      ],
+      "gold_verse_prefixes": [
+        "Jer.",
+        "Hos.",
+        "Isa."
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q04_judgment_covenant_remnant_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q27",
+      "query_ko": "심판 경고와 회복 약속이 동시에 나타나는 경로는?",
+      "holdout_source_id": "q03",
+      "notes_ko": "[HYPO] holdout paraphrase of q03; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Jer.31.31",
+        "Jer.31.33",
+        "Rom.11.2",
+        "Rom.11.5"
+      ],
+      "gold_verse_prefixes": [
+        "Jer.31",
+        "Rom.11"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q04_judgment_covenant_remnant_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q28",
+      "query_ko": "심판 이후에도 남는 언약 잔류의 논증 경로는?",
+      "holdout_source_id": "q04",
+      "notes_ko": "[HYPO] holdout paraphrase of q04; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Rev.18.10",
+        "Ezek.27.27",
+        "Dan.4.30",
+        "Job.20.5"
+      ],
+      "gold_verse_prefixes": [
+        "Rev.18",
+        "Ezek.27",
+        "Dan.4",
+        "Job.20"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q12_risk_excess_cycle_unwind_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q29",
+      "query_ko": "hubris·trade 붕괴와 변동성 쇼크를 잇는 Logos 대응 경로는?",
+      "holdout_source_id": "q05",
+      "notes_ko": "[HYPO] holdout paraphrase of q05; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "John.19.34",
+        "John.19.35",
+        "Lev.17.11",
+        "1John.5.6",
+        "1John.5.8",
+        "Ezek.36.25"
+      ],
+      "gold_verse_prefixes": [
+        "John.19"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q13_passion_blood_water_symbolism_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q30",
+      "query_ko": "십자가에서 흘린 물과 피의 상징을 연결하는 구절 경로는?",
+      "holdout_source_id": "q06",
+      "notes_ko": "[HYPO] holdout paraphrase of q06; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "1Cor.13.4",
+        "Eph.4.32",
+        "Jer.31.34",
+        "Ps.103.12"
+      ],
+      "gold_verse_prefixes": [
+        "1Cor.",
+        "Eph.",
+        "Jer.31",
+        "Ps."
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q07_restoration_after_disruption_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q31",
+      "query_ko": "언약 안에서 사랑과 용서가 연결되는 경로는?",
+      "holdout_source_id": "q07",
+      "notes_ko": "[HYPO] holdout paraphrase of q07; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "2Cor.1.3",
+        "2Cor.1.4",
+        "Ps.23.4",
+        "Isa.40.1"
+      ],
+      "gold_verse_prefixes": [
+        "2Cor.1",
+        "Ps.23",
+        "Isa.40",
+        "Isa.61"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q08_suffering_comfort_pattern_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 0,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q32",
+      "query_ko": "고난 중 위로가 함께하는 성경 패턴 경로는?",
+      "holdout_source_id": "q08",
+      "notes_ko": "[HYPO] holdout paraphrase of q08; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Neh.4.9",
+        "Rev.16.15",
+        "1Chr.12.32"
+      ],
+      "gold_verse_prefixes": [
+        "Neh.",
+        "Rev.16",
+        "1Chr."
+      ],
+      "bridge_artifact_hint": "docs/final/artifacts/logos_concept_bridge_regime_watchfulness_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q33",
+      "query_ko": "선거·전환기 공동체 경계와 시대 분별 경로는?",
+      "holdout_source_id": "q09",
+      "notes_ko": "[HYPO] holdout paraphrase of q09; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.23.3",
+        "Jer.30.18",
+        "Job.5.24"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.23",
+        "Jer.30",
+        "Job.5"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q11_stability_after_volatility_shock_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q34",
+      "query_ko": "야간 변동성 충격 속 위로와 견고함 경로는?",
+      "holdout_source_id": "q10",
+      "notes_ko": "[HYPO] holdout paraphrase of q10; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Luke.22.4",
+        "Ps.89.28",
+        "Jer.31.33"
+      ],
+      "gold_verse_prefixes": [
+        "Luke.22",
+        "Ps.89",
+        "Jer.31"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_regime_watchfulness_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q35",
+      "query_ko": "WATCH 구간에서 경계와 분별의 성경 경로는?",
+      "holdout_source_id": "q11",
+      "notes_ko": "[HYPO] holdout paraphrase of q11; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Dan.2.10",
+        "Dan.2.31"
+      ],
+      "gold_verse_prefixes": [
+        "Dan.2"
+      ],
+      "bridge_artifact_hint": "bible_meaning_insight_candidates_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q36",
+      "query_ko": "Dan 2 왕국 전환 상징과 궁정 위기 경로는?",
+      "holdout_source_id": "q12",
+      "notes_ko": "[HYPO] holdout paraphrase of q12; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "John.19.34",
+        "Lev.17.11",
+        "Ezek.36.25",
+        "1John.5.6"
+      ],
+      "gold_verse_prefixes": [
+        "John.19",
+        "Lev.17",
+        "Ezek.36",
+        "1John.5"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q13_passion_blood_water_symbolism_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q37",
+      "query_ko": "수난 중 물·피 상징의 성경 연결 경로는?",
+      "holdout_source_id": "q13",
+      "notes_ko": "[HYPO] holdout paraphrase of q13; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.27.14",
+        "Jer.30.7",
+        "Lam.3.22"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.27",
+        "Jer.30",
+        "Lam.3"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q05_hope_prolonged_stress_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q38",
+      "query_ko": "장기 압박 속 소망 징표의 성경 경로는?",
+      "holdout_source_id": "q14",
+      "notes_ko": "[HYPO] holdout paraphrase of q14; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Prov.22.3",
+        "Jer.17.7",
+        "Prov.21.20"
+      ],
+      "gold_verse_prefixes": [
+        "Prov.22",
+        "Jer.17",
+        "Prov.21"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q09_prudence_liquidity_stress_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q39",
+      "query_ko": "유동성 압박 속 신중함과 대비의 경로는?",
+      "holdout_source_id": "q15",
+      "notes_ko": "[HYPO] holdout paraphrase of q15; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.103.8",
+        "Jer.31.20",
+        "Rev.21.4"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.103",
+        "Jer.31",
+        "Rev.21"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_mercy_compassion_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q40",
+      "query_ko": "혼란 이후 긍휴·자비가 드러나는 경로는?",
+      "holdout_source_id": "q16",
+      "notes_ko": "[HYPO] holdout paraphrase of q16; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Job.28.17",
+        "Dan.2.33",
+        "Rev.21.2"
+      ],
+      "gold_verse_prefixes": [
+        "Job.28",
+        "Dan.2",
+        "Rev.21"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_cloud_resilience_poc_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q41",
+      "query_ko": "인프라 복원력 은유의 성경 연결 경로는?",
+      "holdout_source_id": "q17",
+      "notes_ko": "[HYPO] holdout paraphrase of q17; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Job.28.17",
+        "Zech.3.9",
+        "Dan.2.43"
+      ],
+      "gold_verse_prefixes": [
+        "Job.28",
+        "Zech.3",
+        "Dan.2"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_semiconductor_poc_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q42",
+      "query_ko": "반도체 공급망·단단한 재료의 성경 경로는?",
+      "holdout_source_id": "q18",
+      "notes_ko": "[HYPO] holdout paraphrase of q18; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Job.28.28",
+        "Dan.1.17",
+        "Ps.56.3"
+      ],
+      "gold_verse_prefixes": [
+        "Job.28",
+        "Dan.1",
+        "Ps.56"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_wisdom_uncertainty_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q43",
+      "query_ko": "불확실성 속 지혜·분별의 경로는?",
+      "holdout_source_id": "q19",
+      "notes_ko": "[HYPO] holdout paraphrase of q19; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.119.86",
+        "Job.2.3",
+        "Jer.4.2"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.119",
+        "Job.2",
+        "Jer.4"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_digital_trust_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q44",
+      "query_ko": "디지털 신뢰·진실성의 성경 경로는?",
+      "holdout_source_id": "q20",
+      "notes_ko": "[HYPO] holdout paraphrase of q20; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Ps.37.7",
+        "Jer.9.24",
+        "Dan.10.19"
+      ],
+      "gold_verse_prefixes": [
+        "Ps.37",
+        "Jer.9",
+        "Dan.10"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q06_discipline_in_volatility_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q45",
+      "query_ko": "변동성 속 절제·인내의 경로는?",
+      "holdout_source_id": "q21",
+      "notes_ko": "[HYPO] holdout paraphrase of q21; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Dan.10.19",
+        "Jer.31.10",
+        "Lam.3.21"
+      ],
+      "gold_verse_prefixes": [
+        "Dan.10",
+        "Jer.31",
+        "Lam.3"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_gold_q10_resilience_capitulation_phase_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q46",
+      "query_ko": "capitulation 이후 회복·소망 경로는?",
+      "holdout_source_id": "q22",
+      "notes_ko": "[HYPO] holdout paraphrase of q22; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Dan.2.10",
+        "Dan.2.31"
+      ],
+      "gold_verse_prefixes": [
+        "Dan.2"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_themed_dan_aramaic_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q47",
+      "query_ko": "다니엘 2 아람어 궁정·왕의 꿈 경로는?",
+      "holdout_source_id": "q23",
+      "notes_ko": "[HYPO] holdout paraphrase of q23; anti-overfit split."
+    },
+    {
+      "eval_tier": "gold_required",
+      "gold_verse_ids": [
+        "Luke.22.4",
+        "Luke.22.46",
+        "Rev.16.15"
+      ],
+      "gold_verse_prefixes": [
+        "Luke.22",
+        "Rev.16"
+      ],
+      "bridge_artifact_hint": "logos_concept_bridge_regime_watchfulness_gemini_v1_latest.json",
+      "gate": {
+        "router_path_hit_min": 1,
+        "router_verse_hit_min": 1,
+        "ann_top8_hit_min": 0
+      },
+      "id": "q48",
+      "query_ko": "배신·음모 속 깨어 있음과 경계 경로는?",
+      "holdout_source_id": "q24",
+      "notes_ko": "[HYPO] holdout paraphrase of q24; anti-overfit split."
     }
-  ]
+  ],
+  "merged_at_utc": "2026-06-20T20:04:14Z",
+  "extension_source": "C:/workspace/docs/final/fixtures/logos_gold_query_eval_extension_v2.json",
+  "item_count": 48
 }

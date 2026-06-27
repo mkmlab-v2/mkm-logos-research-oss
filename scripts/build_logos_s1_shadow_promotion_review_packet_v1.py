@@ -172,6 +172,13 @@ def main() -> int:
             "auto_trade_enable": False,
             "human_review_required": True,
         },
+        "track_l_advisory": {
+            "label": "Track L",
+            "non_gating": True,
+            "shadow_advisory_only": True,
+            "research_only": True,
+            "logos_graph_studio_demo_spine": "docs/final/artifacts/jemaai_showroom_public_urls_v1_latest.json#logos_demo_spine",
+        },
         "human_review_fields": [
             "reviewer_id_or_initials",
             "review_timestamp_utc",
@@ -225,6 +232,7 @@ def main() -> int:
         f"- alert_should_alert: `{summary['alert'].get('should_alert')}`",
         f"- response_policy_check: `{summary['response_policy_check'].get('status')}`",
         f"- resonance_shadow: `{summary['regime_resonance_shadow'].get('status')}`",
+        f"- track_l_advisory: `Track L` · non_gating=`true`",
         "",
     ]
     if human_approval:
