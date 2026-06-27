@@ -47,6 +47,12 @@ from scripts.kospi_june2026_multilens_blend_v1 import (  # noqa: E402
     load_ensemble_kospi_per_date,
     load_static_lenses,
 )
+from scripts.kospi_lens_ablation_graphrag_sidebar_v1 import (  # noqa: E402
+    DEFAULT_MYEONGNI_ROUTER,
+    DEFAULT_SASANG_ROUTER,
+    build_graphrag_sidebar_pack,
+    compare_scoring_invariant,
+)
 
 DEFAULT_PANEL_FULL = ROOT / "reports/btrack_session_myeongni_panel_full_window_v1.csv"
 DEFAULT_PANEL_252 = ROOT / "reports/btrack_session_myeongni_panel_252d_v1.csv"
@@ -268,11 +274,13 @@ def run_ablation(
 
     return {
         "schema": "kospi_lens_ablation_backtest_v1",
+        "schema_minor": "1.1.0",
         "generated_at_utc": _utc_now(),
         "hypothesis_tier": "B",
         "research_only": True,
         "track_wall": "no_track_a_live_auto_merge",
         "watch_ablation_run": True,
+        "graphrag_sidebar_wires_scoring": False,
         "lens_source": lens_source,
         "include_macro_per_date": include_macro_per_date,
         "lens_jsonl_meta": lens_jsonl_meta,
@@ -347,6 +355,59 @@ def _verdict_ko(
     )
 
 
+def _attach_graphrag_ablation(
+    doc: dict[str, Any],
+    *,
+    mode: str,
+    myeongni_router: Path,
+    sasang_router: Path,
+) -> dict[str, Any]:
+    """Attach GraphRAG sidebar metadata; never mutates arms/metrics."""
+    out = dict(doc)
+    if mode == "off":
+        out["graphrag_ablation"] = {
+            "mode": "off",
+            "enabled": False,
+            "wires_to_scoring_core": False,
+            "prophecy_vote": "none",
+        }
+        return out
+
+    sidebar_on = build_graphrag_sidebar_pack(
+        myeongni_router=myeongni_router,
+        sasang_router=sasang_router,
+        enabled=True,
+    )
+    if mode == "on":
+        out["graphrag_ablation"] = {
+            "mode": "on",
+            "enabled": True,
+            "wires_to_scoring_core": False,
+            "sidebar": sidebar_on,
+        }
+        return out
+
+    # compare: single scoring run + invariant proof (sidebar is audit-only)
+    sidebar_off = build_graphrag_sidebar_pack(
+        myeongni_router=myeongni_router,
+        sasang_router=sasang_router,
+        enabled=False,
+    )
+    doc_off = {**doc, "graphrag_ablation": {"mode": "off", "enabled": False, "sidebar": sidebar_off}}
+    doc_on = {**doc, "graphrag_ablation": {"mode": "on", "enabled": True, "sidebar": sidebar_on}}
+    invariant = compare_scoring_invariant(doc_off, doc_on)
+    out["graphrag_ablation"] = {
+        "mode": "compare",
+        "enabled": True,
+        "wires_to_scoring_core": False,
+        "sidebar_off": sidebar_off,
+        "sidebar_on": sidebar_on,
+        "scoring_invariant_check": invariant,
+        "token_budget_proxy_on": sidebar_on.get("token_budget_proxy"),
+    }
+    return out
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--panel-csv", type=Path, default=DEFAULT_PANEL_FULL)
@@ -375,6 +436,14 @@ def main(argv: list[str] | None = None) -> int:
         metavar="FROM:TO:TAG",
         help="Extra window e.g. 2025-11-01:2026-05-30:recent140d",
     )
+    ap.add_argument(
+        "--graphrag-sidebar",
+        choices=("off", "on", "compare"),
+        default="off",
+        help="GraphRAG sidebar layer: off (default) | on (audit paths only) | compare (invariant check).",
+    )
+    ap.add_argument("--myeongni-graphrag-router", type=Path, default=DEFAULT_MYEONGNI_ROUTER)
+    ap.add_argument("--sasang-graphrag-router", type=Path, default=DEFAULT_SASANG_ROUTER)
     args = ap.parse_args(argv)
 
     if not args.panel_csv.is_file():
@@ -445,6 +514,12 @@ def main(argv: list[str] | None = None) -> int:
         "primary_window_tag": "main",
         "extra_windows": extra_windows,
     }
+    doc = _attach_graphrag_ablation(
+        doc,
+        mode=args.graphrag_sidebar,
+        myeongni_router=args.myeongni_graphrag_router,
+        sasang_router=args.sasang_graphrag_router,
+    )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -462,10 +537,18 @@ def main(argv: list[str] | None = None) -> int:
 
     best = doc.get("best_arm") or {}
     m = best.get("metrics") or {}
+    gr = doc.get("graphrag_ablation") or {}
+    gr_tail = ""
+    if gr.get("mode") == "compare":
+        inv = (gr.get("scoring_invariant_check") or {}).get("scoring_invariant")
+        gr_tail = f" graphrag=compare invariant={inv}"
+    elif gr.get("mode") == "on":
+        gr_tail = " graphrag=on"
     print(
         f"WROTE: {args.output.resolve()} window={args.date_from}..{args.date_to} "
         f"n={doc['window']['n_calendar_days']} best={best.get('arm_id')} "
         f"soft={m.get('soft_hit_rate')} overlay_uplift_pp={doc.get('four_ai_overlay_uplift_pp_vs_lens3_runtime')}"
+        f"{gr_tail}"
     )
     for ew in extra_windows:
         b = ew.get("best_arm") or {}

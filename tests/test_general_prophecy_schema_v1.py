@@ -195,9 +195,9 @@ def test_biblical_history_research_hypotheses_pack_skeleton() -> None:
     assert doc.get("hypothesis_tier") == "[HYPO]"
     assert doc.get("gating_status") == "NON_GATING"
     hyps = doc.get("hypotheses")
-    assert isinstance(hyps, list) and len(hyps) == 5
+    assert isinstance(hyps, list) and len(hyps) == 6
     ids = {h.get("id") for h in hyps}
-    assert ids == {"H-AX1", "H-BC1", "H-PL1", "H-PR1", "H-AR1"}
+    assert ids == {"H-AX1", "H-BC1", "H-PL1", "H-PR1", "H-AR1", "H-DSS1"}
     for h in hyps:
         assert h.get("anchor_symbol")
         assert isinstance(h.get("keyword_groups_any"), list) and h["keyword_groups_any"]
@@ -205,7 +205,7 @@ def test_biblical_history_research_hypotheses_pack_skeleton() -> None:
         assert status == "draft_skeleton" or (
             isinstance(status, str) and status.startswith("has_chronology_sidecar")
         ), f"unexpected status for {h.get('id')}: {status}"
-        if h.get("id") in {"H-AX1", "H-PL1", "H-BC1"} and status != "draft_skeleton":
+        if h.get("id") in {"H-AX1", "H-PL1", "H-BC1", "H-DSS1"} and status != "draft_skeleton":
             assert h.get("chronology_sidecar_ref")
 
 

@@ -365,6 +365,12 @@ def main() -> int:
     ap.add_argument("--sasang-dynamics-jsonl", type=Path, default=DEFAULT_SASANG_DYNAMICS_JSONL)
     ap.add_argument("--myeongni-experiment-jsonl", type=Path, default=DEFAULT_MYEONGNI_EXPERIMENT_JSONL)
     ap.add_argument(
+        "--logos-per-date-jsonl",
+        type=Path,
+        default=None,
+        help="Optional per-date Logos macro gate JSONL (science_core extend chain).",
+    )
+    ap.add_argument(
         "--skip-dated-jsonl-aux",
         action="store_true",
         help="Do not attach dated_source_snapshots_asof_eval_date from sasang/myeongni JSONLs.",
@@ -388,9 +394,12 @@ def main() -> int:
 
     sasang_by_day: dict[str, dict[str, Any]] | None = None
     myeongni_exp_by_day: dict[str, dict[str, Any]] | None = None
+    logos_by_day: dict[str, dict[str, Any]] | None = None
     if not args.skip_dated_jsonl_aux:
         sasang_by_day = _jsonl_last_row_by_calendar_day(args.sasang_dynamics_jsonl) or None
         myeongni_exp_by_day = _jsonl_last_row_by_calendar_day(args.myeongni_experiment_jsonl) or None
+        if args.logos_per_date_jsonl and args.logos_per_date_jsonl.is_file():
+            logos_by_day = _jsonl_last_row_by_calendar_day(args.logos_per_date_jsonl) or None
 
     per_date: list[dict[str, Any]] | None
     if args.skip_per_date:
@@ -404,6 +413,7 @@ def main() -> int:
             insight_per_day,
             sasang_by_day if not args.skip_dated_jsonl_aux else None,
             myeongni_exp_by_day if not args.skip_dated_jsonl_aux else None,
+            logos_by_day if not args.skip_dated_jsonl_aux else None,
         )
 
     dated_jsonl_aux_sources: dict[str, Any] | None = None
@@ -411,6 +421,9 @@ def main() -> int:
         dated_jsonl_aux_sources = {
             "sasang_dynamics_jsonl": _rel(args.sasang_dynamics_jsonl) if args.sasang_dynamics_jsonl.is_file() else None,
             "myeongni_16_state_jsonl": _rel(args.myeongni_experiment_jsonl) if args.myeongni_experiment_jsonl.is_file() else None,
+            "logos_per_date_jsonl": _rel(args.logos_per_date_jsonl)
+            if args.logos_per_date_jsonl and args.logos_per_date_jsonl.is_file()
+            else None,
         }
 
     nb_summary: dict[str, Any] | None = None

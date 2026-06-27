@@ -50,6 +50,13 @@ def last_krx_trading_day_on_or_before(d: date, *, non_trading_path: Path | None 
     return days[-1] if days else None
 
 
+def next_krx_trading_day_on_or_after(d: date, *, non_trading_path: Path | None = None) -> str | None:
+    """Next KRX trading session on or after ``d`` (YYYY-MM-DD)."""
+    d1 = d + timedelta(days=14)
+    days = krx_trading_days(d, d1, non_trading_path=non_trading_path)
+    return days[0] if days else None
+
+
 def exclude_krx_non_trading(days: list[str], *, non_trading_path: Path | None = None) -> tuple[list[str], list[str]]:
     holidays = load_krx_non_trading_days(
         str(non_trading_path or DEFAULT_NON_TRADING) if non_trading_path else None

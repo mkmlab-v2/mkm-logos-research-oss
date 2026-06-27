@@ -57,6 +57,13 @@ def main() -> int:
 
     payload: dict[str, Any] = {
         "schema": "prophecy_lens_combo_backtest_30y_guard_v1",
+        "artifact_display_name": "prophecy_lens_combo_backtest_long_horizon_guard",
+        "artifact_display_name_ko": "예언 렌즈 콤보 장기 구간 가드 (BTC CSV 기준 — KOSPI 30년 아님)",
+        "instrument_scope": "BTC_daily_csv_only",
+        "do_not_confuse_ko": (
+            "파일명의 30y는 BTC 일봉 CSV 가용 연수 가드이며, "
+            "KOSPI multilens 30년 백테스트와 혼동 금지."
+        ),
         "generated_at_utc": _utc_now(),
         "research_only": True,
         "source_backtest_v1_json": str(BACKTEST_V1),

@@ -20,6 +20,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 ART = ROOT / "docs" / "final" / "artifacts"
+LOGOS_REVAL_TMP_ROOT = ROOT / "tmp" / "logos_reval"
 
 DEFAULT_SCORE_JSON = ART / "btrack_prophecy_score_30y_dual_latest.json"
 DEFAULT_SIDECAR_JSON = ART / "btrack_prophecy_score_insight_sidecar_30y_latest.json"
@@ -83,7 +84,9 @@ def _write_temp_score_variant(score_json: Path, target_instrument: str, allowed_
             filt.append(r)
     out_doc = dict(src)
     out_doc["rows"] = filt
-    tmp = Path(tempfile.mkdtemp(prefix="logos_reval_", dir=str(ROOT))) / f"score_{target_instrument}_{'_'.join(sorted(allowed_dirs))}.json"
+    LOGOS_REVAL_TMP_ROOT.mkdir(parents=True, exist_ok=True)
+    tmp_dir = Path(tempfile.mkdtemp(prefix="run_", dir=str(LOGOS_REVAL_TMP_ROOT)))
+    tmp = tmp_dir / f"score_{target_instrument}_{'_'.join(sorted(allowed_dirs))}.json"
     tmp.write_text(json.dumps(out_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return tmp
 

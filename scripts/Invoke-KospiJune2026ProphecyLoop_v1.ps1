@@ -83,8 +83,28 @@ if ($runEvening) {
         }
     }
 
-    Invoke-Step "eval_kospi_daily_prophecy ($YearMonth)" {
+    Invoke-Step "kospi_evening_briefing_primary (GraphRAG parallel advisory)" {
+        & $py scripts/run_kospi_evening_briefing_chain_v1.py --session-date $lastKrxSessionKst
+    }
+
+    Invoke-Step "eval_kospi_daily_prophecy ($YearMonth) [scoring_shadow]" {
         & $py scripts/eval_kospi_june2026_daily_prophecy_v1.py --calendar-json $calendarJson --as-of-kst $lastKrxSessionKst
+    }
+
+    Invoke-Step "kospi_oos_significance_appendix (Wilson/CP)" {
+        & $py scripts/build_kospi_june2026_oos_significance_v1.py --year-month $YearMonth
+    }
+
+    Invoke-Step "kospi_briefing_vs_scoring_lane_compare (direction_merge 금지)" {
+        & $py scripts/build_kospi_briefing_vs_scoring_lane_compare_v1.py --year-month $YearMonth
+    }
+
+    Invoke-Step "kospi_prophecy_neutral_band_fee_sensitivity (bps grid)" {
+        & $py scripts/build_kospi_prophecy_neutral_band_fee_sensitivity_v1.py --year-month $YearMonth --as-of-kst $lastKrxSessionKst
+    }
+
+    Invoke-Step "kospi_july_forward_oos_readiness" {
+        & $py scripts/build_kospi_july_forward_oos_readiness_v1.py --as-of-kst $lastKrxSessionKst
     }
 
     if ($YearMonth -eq "2026-06") {
@@ -95,6 +115,9 @@ if ($runEvening) {
         if (Test-Path -LiteralPath $backtestScript) {
             Invoke-Step "run_kospi_multilens_blend_backtest (shadow refresh)" {
                 & $py $backtestScript --date-from 2025-11-01 --date-to 2026-05-30
+            }
+            Invoke-Step "sync_kospi_prophecy_evolution_backtest_ref (140d SSOT)" {
+                & $py scripts/sync_kospi_prophecy_evolution_backtest_ref_v1.py
             }
         }
         Invoke-Step "run_kospi_june2026_weight_candidate_compare (dry-run)" {
@@ -108,6 +131,9 @@ if ($runEvening) {
         }
         Invoke-Step "build_kospi_june2026_channel_input_audit (B-track)" {
             & $py scripts/build_kospi_june2026_channel_input_audit_v1.py --calendar-json $calendarJson --year-month $YearMonth
+        }
+        Invoke-Step "extend_manseryeok_session_jsonl (per-date lens CF)" {
+            & $py scripts/extend_manseryeok_session_jsonl_v1.py --through-date "2026-07-31"
         }
         Invoke-Step "build_kospi_june2026_per_date_lens_counterfactual (PoC)" {
             & $py scripts/build_kospi_june2026_per_date_lens_counterfactual_v1.py --calendar-json $calendarJson --year-month $YearMonth --no-write-counter-calendar
@@ -128,6 +154,18 @@ if ($runEvening) {
         }
         Invoke-Step "build_kospi_june2026_shadow_panel_rollup" {
             & $py scripts/build_kospi_june2026_shadow_panel_rollup_v1.py --year-month $YearMonth
+        }
+        Invoke-Step "build_kospi_june2026_stress_conditional_shadow_replay (field+momentum)" {
+            & $py scripts/build_kospi_june2026_stress_conditional_shadow_replay_v1.py --year-month $YearMonth
+        }
+        Invoke-Step "build_kospi_june2026_stress_shadow_lens_4ai_cross" {
+            & $py scripts/build_kospi_june2026_stress_shadow_lens_4ai_cross_v1.py --year-month $YearMonth --as-of-kst $lastKrxSessionKst
+        }
+        Invoke-Step "build_kospi_june2026_unlock_diff_macro_panel (7d lock/unlock)" {
+            & $py scripts/build_kospi_june2026_unlock_diff_macro_panel_v1.py --year-month $YearMonth --as-of-kst $lastKrxSessionKst
+        }
+        Invoke-Step "build_kospi_june2026_conditional_unlock_shadow" {
+            & $py scripts/build_kospi_june2026_conditional_unlock_shadow_v1.py --year-month $YearMonth --as-of-kst $lastKrxSessionKst
         }
         Invoke-Step "build_kospi_june2026_promotion_readiness" {
             & $py scripts/build_kospi_june2026_promotion_readiness_v1.py --year-month $YearMonth
@@ -210,6 +248,58 @@ if ($runEvening) {
     }
 
     Invoke-June4AiReportChain
+
+    if ($YearMonth -eq "2026-06") {
+        Invoke-Step "kospi_evening_miss_insight_chain (FAIL -> probe + reflect)" {
+            $missArgs = @(
+                "scripts/run_kospi_june2026_evening_miss_insight_chain_v1.py",
+                "--as-of-kst", $lastKrxSessionKst,
+                "--calendar-json", $calendarJson
+            )
+            if ($SkipHeavyResearch) { $missArgs += "--skip-llm" }
+            & $py @missArgs
+        }
+    }
+
+    Invoke-Step "hero_shock_gate_shadow (evening PoC)" {
+        $sgArgs = @(
+            "scripts/build_kospi_hero_shock_gate_shadow_v1.py",
+            "--year-month", $YearMonth,
+            "--as-of-kst", $lastKrxSessionKst,
+            "--append-log"
+        )
+        & $py @sgArgs
+    }
+
+    Invoke-Step "direction_rule_shadow_panel (weight rules + shock ref)" {
+        & $py scripts/build_kospi_direction_rule_shadow_panel_v1.py `
+            --year-month $YearMonth --as-of-kst $lastKrxSessionKst
+    }
+
+    Invoke-Step "parallel_shadow_bundle (composite bear+conditional [HYPO])" {
+        & $py scripts/build_kospi_june2026_parallel_shadow_bundle_v1.py `
+            --year-month $YearMonth --as-of-kst $lastKrxSessionKst `
+            --calendar-json $calendarJson
+    }
+
+    if ($YearMonth -eq "2026-06") {
+        Invoke-Step "cpcv_shadow_promotion_poc (merged 2026-01..06)" {
+            & $py scripts/build_kospi_cpcv_shadow_promotion_poc_v1.py --as-of-kst $lastKrxSessionKst
+        }
+    }
+
+    if ($YearMonth -eq "2026-07") {
+        Invoke-Step "july_forward_oos_readiness" {
+            & $py scripts/build_kospi_july_forward_oos_readiness_v1.py --as-of-kst $lastKrxSessionKst
+        }
+    }
+
+    if ($YearMonth -eq "2026-06") {
+        Invoke-Step "weight_counterfactual (latest FAIL session)" {
+            & $py scripts/build_kospi_june2026_weight_counterfactual_v1.py `
+                --year-month $YearMonth --session-date $lastKrxSessionKst
+        }
+    }
 
     if (-not $SkipGovernorObs) {
         $govBundle = Join-Path $WorkspaceRoot "scripts\Run-ACodeGovernorResearchBundle_v1.ps1"

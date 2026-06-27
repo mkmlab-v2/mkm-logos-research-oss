@@ -141,6 +141,12 @@ def _dir_sign(v: Any) -> int:
     return 0
 
 
+def _source_direction_value(row: dict[str, Any], field: str | None) -> Any:
+    if field:
+        return row.get(field)
+    return row.get("predicted_direction")
+
+
 def _predict(
     row: dict[str, Any],
     params: tuple[float, ...],
@@ -151,6 +157,7 @@ def _predict(
     *,
     include_source_direction_signal: bool,
     include_expanded_prior_features: bool,
+    source_direction_field: str | None = None,
 ) -> str:
     if include_source_direction_signal and include_expanded_prior_features:
         (
@@ -185,7 +192,11 @@ def _predict(
         self_r, cross_r, bias = bm.get(ed), km.get(ed), 0.0
         self_f = bf.get(ed) or {}
         cross_f = kf.get(ed) or {}
-    src_sig = _dir_sign(row.get("predicted_direction")) if include_source_direction_signal else 0
+    src_sig = (
+        _dir_sign(_source_direction_value(row, source_direction_field))
+        if include_source_direction_signal
+        else 0
+    )
     score = (w_self * _sign(self_r, dz_self)) + (w_cross * _sign(cross_r, dz_cross)) + (w_source * src_sig) + bias
     if include_expanded_prior_features:
         self_mom_sig = (
@@ -218,6 +229,7 @@ def _acc(
     *,
     include_source_direction_signal: bool,
     include_expanded_prior_features: bool,
+    source_direction_field: str | None = None,
 ) -> tuple[float, int]:
     h = 0
     for r in rows:
@@ -230,6 +242,7 @@ def _acc(
             bf,
             include_source_direction_signal=include_source_direction_signal,
             include_expanded_prior_features=include_expanded_prior_features,
+            source_direction_field=source_direction_field,
         ) == str(r.get("actual_direction") or "").strip().lower():
             h += 1
     return (h / len(rows)) if rows else 0.0, h
@@ -289,6 +302,7 @@ def _best_params_on_train(
     train_objective: str,
     include_source_direction_signal: bool,
     include_expanded_prior_features: bool,
+    source_direction_field: str | None = None,
 ) -> tuple[float, tuple[float, ...]] | None:
     best: tuple[float, float, tuple[float, ...] | None] = (-1.0, -1.0, None)
     bull_train = sum(1 for r in train_rows if str(r.get("actual_direction") or "").strip().lower() == "bull") / len(train_rows) if train_rows else 0.0
@@ -305,6 +319,7 @@ def _best_params_on_train(
             bf,
             include_source_direction_signal=include_source_direction_signal,
             include_expanded_prior_features=include_expanded_prior_features,
+            source_direction_field=source_direction_field,
         )
         if train_objective == "margin_vs_bull":
             primary = a - bull_train
@@ -411,8 +426,14 @@ def main() -> int:
         action="store_true",
         help="Include multi-horizon returns and vol spread features in grid search.",
     )
+    ap.add_argument(
+        "--source-direction-field",
+        default=None,
+        help="Score row field for source-direction signal (default predicted_direction).",
+    )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
+    source_direction_field = str(args.source_direction_field).strip() or None
 
     if args.n_folds < 2:
         raise SystemExit("--n-folds must be >= 2")
@@ -462,6 +483,7 @@ def main() -> int:
             train_objective=args.train_objective,
             include_source_direction_signal=bool(args.include_source_direction_signal),
             include_expanded_prior_features=bool(args.include_expanded_prior_features),
+            source_direction_field=source_direction_field,
         )
         if fitted is None:
             raise SystemExit(f"fold {fi}: no candidate params")
@@ -475,6 +497,7 @@ def main() -> int:
             bf,
             include_source_direction_signal=bool(args.include_source_direction_signal),
             include_expanded_prior_features=bool(args.include_expanded_prior_features),
+            source_direction_field=source_direction_field,
         )
         test_acc, test_hit = _acc(
             test,
@@ -485,6 +508,7 @@ def main() -> int:
             bf,
             include_source_direction_signal=bool(args.include_source_direction_signal),
             include_expanded_prior_features=bool(args.include_expanded_prior_features),
+            source_direction_field=source_direction_field,
         )
         bull_test = sum(1 for r in test if str(r.get("actual_direction") or "").strip().lower() == "bull") / len(test) if test else 0.0
         beats = test_acc > bull_test
@@ -534,6 +558,7 @@ def main() -> int:
             "train_objective": args.train_objective,
             "include_source_direction_signal": bool(args.include_source_direction_signal),
             "include_expanded_prior_features": bool(args.include_expanded_prior_features),
+            "source_direction_field": source_direction_field,
             "n_rows_after_target_filter": len(rows),
             "n_folds": n_folds_effective,
             "n_folds_requested": n_folds_requested,

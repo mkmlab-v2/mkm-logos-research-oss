@@ -116,6 +116,12 @@ if (-not $SkipObservabilityRefresh) {
             $obsRefresh.steps += [ordered]@{ step = "kpi_b_shadow_eval"; exit_code = $LASTEXITCODE }
         }
     }
+    $missionCSummary = Join-Path $WorkspaceRoot "reports\mission_c_srcdir_expanded_shadow_summary_v1_latest.json"
+    if (Test-Path -LiteralPath $missionCSummary) {
+        Write-Host "==> build_mission_c_shadow_ops_status_v1.py (Mission C panel observability)" -ForegroundColor DarkCyan
+        py scripts/build_mission_c_shadow_ops_status_v1.py
+        $obsRefresh.steps += [ordered]@{ step = "build_mission_c_shadow_ops_status_v1"; exit_code = $LASTEXITCODE }
+    }
 }
 
 $hitPath = Join-Path $WorkspaceRoot "docs\final\artifacts\prophecy_hit_rate_eval_daily_operational_latest.json"

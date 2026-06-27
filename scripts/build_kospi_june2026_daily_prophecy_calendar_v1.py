@@ -28,6 +28,7 @@ from scripts.build_myeongni_jsonl_from_manseryeok_session_v1 import (  # noqa: E
     _mapping_from_score,
     _score_from_session_pillars,
 )
+from scripts.kospi_prophecy_lane_routing_v1 import attach_lane_routing_metadata  # noqa: E402
 from scripts.kospi_june2026_multilens_blend_v1 import (  # noqa: E402
     blend_v2_multilens,
     default_weights_v2,
@@ -38,6 +39,8 @@ from scripts.kospi_june2026_multilens_blend_v1 import (  # noqa: E402
 
 EVOLUTION_RULES = ROOT / "data/commander/kospi_june2026_prophecy_evolution_v1.json"
 KOSPI_CSV = ROOT / "research/market_data/kospi_daily_external_yf.csv"
+DEFAULT_MYEONGNI_JSONL = ROOT / "data/myeongni/myeongni_16_state_experiment_v1.manseryeok_session_30y_v1.jsonl"
+DEFAULT_SASANG_JSONL = ROOT / "data/sasang/sasang_dynamics_regime_mapping_v1.manseryeok_session_30y_v1.jsonl"
 
 
 def _parse_year_month(year_month: str) -> tuple[str, date, date]:
@@ -266,6 +269,9 @@ def build_calendar(
     weights_candidate_id: str | None = None,
     myeongni_lens_json: Path | None = None,
     sasang_lens_json: Path | None = None,
+    lens_mode: str = "static",
+    myeongni_jsonl: Path | None = None,
+    sasang_jsonl: Path | None = None,
 ) -> dict[str, Any]:
     ym, month_start, month_end = _parse_year_month(year_month)
     rules = _read_json(EVOLUTION_RULES)
@@ -303,11 +309,26 @@ def build_calendar(
 
     closes = _load_closes(KOSPI_CSV)
     logos_dir, logos_score = _logos_direction()
-    static_lenses = (
+    lens_mode_norm = str(lens_mode or "static").strip().lower()
+    if lens_mode_norm not in ("static", "per_date"):
+        raise ValueError(f"lens_mode must be static|per_date, got {lens_mode!r}")
+    global_static_lenses = (
         load_static_lenses(myeongni_path=myeongni_lens_json, sasang_path=sasang_lens_json)
         if profile == "v2_multilens"
         else {}
     )
+    myeongni_by_day: dict[str, dict[str, Any]] = {}
+    sasang_by_day: dict[str, dict[str, Any]] = {}
+    lens_jsonl_meta: dict[str, Any] = {}
+    if profile == "v2_multilens" and lens_mode_norm == "per_date":
+        from scripts.kospi_lens_per_date_static_v1 import (  # noqa: WPS433
+            load_lens_jsonl_by_day,
+            static_lenses_for_eval_date,
+        )
+
+        my_path = myeongni_jsonl or DEFAULT_MYEONGNI_JSONL
+        sa_path = sasang_jsonl or DEFAULT_SASANG_JSONL
+        myeongni_by_day, sasang_by_day, lens_jsonl_meta = load_lens_jsonl_by_day(my_path, sa_path)
     ensemble_by_date = (
         load_ensemble_kospi_per_date(trading_days) if profile == "v2_multilens" else {}
     )
@@ -326,16 +347,29 @@ def build_calendar(
         mom_dir, mom_val = _momentum_overlay(closes, dk)
         if profile == "v2_multilens":
             blend_policy = rules.get("blend_policy_v2") if isinstance(rules.get("blend_policy_v2"), dict) else {}
+            if lens_mode_norm == "per_date":
+                from scripts.kospi_lens_per_date_static_v1 import static_lenses_for_eval_date  # noqa: WPS433
+
+                lenses_for_day = static_lenses_for_eval_date(
+                    dk,
+                    baseline=global_static_lenses,
+                    myeongni_by_day=myeongni_by_day,
+                    sasang_by_day=sasang_by_day,
+                )
+            else:
+                lenses_for_day = global_static_lenses
             pred_dir, blend_score, blend_detail = blend_v2_multilens(
                 session_map=session_map,
                 session_score=session_score,
                 momentum_dir=mom_dir,
-                static_lenses=static_lenses,
+                static_lenses=lenses_for_day,
                 ensemble_row=ensemble_by_date.get(dk),
                 weights=weights,
                 neutral_band=neutral_band,
                 blend_policy=blend_policy,
             )
+            if lens_mode_norm == "per_date" and isinstance(blend_detail, dict):
+                blend_detail = {**blend_detail, "lens_mode": "per_date"}
             blend_note = blend_detail
         else:
             pred_dir, blend_score, blend_note = _blend_direction(
@@ -410,13 +444,22 @@ def build_calendar(
         "daily_scoring_hook": "scripts/eval_kospi_june2026_daily_prophecy_v1.py",
         "evolution_hook": "scripts/run_kospi_june2026_prophecy_evolution_v1.py",
     }
+    doc["lens_mode"] = lens_mode_norm
+    doc["auto_apply"] = False
+    if lens_mode_norm == "per_date":
+        doc["shadow_calendar"] = True
+        doc["published_calendar_forbidden"] = True
+        doc["lens_jsonl_meta"] = lens_jsonl_meta
+        doc["note_ko"] = (
+            "per_date JSONL causal replay shadow — active v2_lens3_heavy published calendar 덮어쓰기 금지."
+        )
     if profile == "v2_multilens":
-        doc["static_lenses_snapshot"] = static_lenses
+        doc["static_lenses_snapshot"] = global_static_lenses
         doc["ensemble_kospi_causal_dates"] = sorted(ensemble_by_date.keys())
         doc["integration_maturity"] = integration_maturity_rubric(
-            static_lenses, len(ensemble_by_date), len(trading_days)
+            global_static_lenses, len(ensemble_by_date), len(trading_days)
         )
-    return doc
+    return attach_lane_routing_metadata(doc, context="calendar")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -444,9 +487,22 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument("--myeongni-lens-json", type=Path, default=None, help="Research override for myeongni lens artifact")
     ap.add_argument("--sasang-lens-json", type=Path, default=None, help="Research override for sasang lens artifact")
+    ap.add_argument(
+        "--lens-mode",
+        choices=("static", "per_date"),
+        default="static",
+        help="static=*_latest.json tail; per_date=manseryeok 30y JSONL as-of (shadow only)",
+    )
+    ap.add_argument("--myeongni-jsonl", type=Path, default=None, help="Per-date myeongni JSONL (default 30y session)")
+    ap.add_argument("--sasang-jsonl", type=Path, default=None, help="Per-date sasang JSONL (default 30y session)")
     args = ap.parse_args(argv)
 
     report_out, art_out = _paths_for_month(args.year_month)
+    force_output_only = False
+    if args.lens_mode == "per_date" and args.output is None:
+        tag = str(args.year_month).strip().replace("-", "")
+        report_out = ROOT / f"reports/kospi_{tag}_per_date_lens_shadow_calendar_v1.json"
+        force_output_only = True
     if args.output is not None:
         report_out = args.output
     legacy_june = (
@@ -463,11 +519,18 @@ def main(argv: list[str] | None = None) -> int:
         weights_candidate_id=args.weights_candidate_id,
         myeongni_lens_json=args.myeongni_lens_json,
         sasang_lens_json=args.sasang_lens_json,
+        lens_mode=args.lens_mode,
+        myeongni_jsonl=args.myeongni_jsonl,
+        sasang_jsonl=args.sasang_jsonl,
     )
     payload = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
     report_out.parent.mkdir(parents=True, exist_ok=True)
     report_out.write_text(payload, encoding="utf-8")
-    if not args.output_only:
+    if force_output_only:
+        art_shadow = ROOT / "docs/final/artifacts" / report_out.name.replace(".json", "_latest.json")
+        art_shadow.parent.mkdir(parents=True, exist_ok=True)
+        art_shadow.write_text(payload, encoding="utf-8")
+    if not args.output_only and not force_output_only:
         art_out.parent.mkdir(parents=True, exist_ok=True)
         art_out.write_text(payload, encoding="utf-8")
         if legacy_june is not None:

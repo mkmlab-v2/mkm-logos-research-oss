@@ -18,6 +18,7 @@ FIELDS = (
     "institution_net_buy",
     "program_net_buy",
     "individual_net_buy",
+    "pension_proxy_net_buy",
     "source_note",
 )
 
@@ -29,6 +30,12 @@ def main() -> int:
     ap.add_argument("--institution", type=float, default=0.0, help="Institution net buy (억 KRW)")
     ap.add_argument("--program", type=float, default=0.0, help="Program net buy (억 KRW)")
     ap.add_argument("--individual", type=float, default=0.0, help="Individual net buy (억 KRW, optional)")
+    ap.add_argument(
+        "--pension-proxy",
+        type=float,
+        default=0.0,
+        help="연기금등 net buy proxy (억 KRW; not NPS-isolated)",
+    )
     ap.add_argument("--source-note", default="", help="Provenance note")
     ap.add_argument("--csv", type=Path, default=DEFAULT_CSV)
     args = ap.parse_args()
@@ -46,7 +53,10 @@ def main() -> int:
             for r in rd:
                 if str(r.get("date") or "").strip()[:10] == date:
                     continue
-                rows.append({k: str(r.get(k) or "") for k in FIELDS})
+                row_out = {k: str(r.get(k) or "") for k in FIELDS}
+                if not row_out.get("pension_proxy_net_buy"):
+                    row_out["pension_proxy_net_buy"] = "0"
+                rows.append(row_out)
 
     rows.append(
         {
@@ -55,6 +65,7 @@ def main() -> int:
             "institution_net_buy": str(float(args.institution)),
             "program_net_buy": str(float(args.program)),
             "individual_net_buy": str(float(args.individual)),
+            "pension_proxy_net_buy": str(float(args.pension_proxy)),
             "source_note": str(args.source_note or "").strip(),
         }
     )

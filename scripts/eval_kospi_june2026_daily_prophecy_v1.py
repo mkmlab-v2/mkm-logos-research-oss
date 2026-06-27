@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.kospi_prophecy_lane_routing_v1 import attach_lane_routing_metadata  # noqa: E402
+
 KST = ZoneInfo("Asia/Seoul")
 CALENDAR_DEFAULT = ROOT / "reports/kospi_june2026_daily_prophecy_calendar_v1.json"
 KOSPI_CSV = ROOT / "research/market_data/kospi_daily_external_yf.csv"
@@ -125,9 +127,13 @@ def eval_calendar(
     calendar_path: Path | None = None,
     as_of_kst: str | None = None,
     neutral_bps: float = 5.0,
+    neutral_bps_override: float | None = None,
 ) -> dict[str, Any]:
     rules = _read_json(EVOLUTION_RULES)
-    neutral_bps = float(rules.get("neutral_bps", neutral_bps))
+    if neutral_bps_override is not None:
+        neutral_bps = float(neutral_bps_override)
+    else:
+        neutral_bps = float(rules.get("neutral_bps", neutral_bps))
     as_of = as_of_kst or _default_as_of_kst()
     from scripts.kospi_krx_calendar_v1 import exclude_krx_non_trading, load_krx_non_trading_days
 
@@ -201,7 +207,7 @@ def eval_calendar(
     hit_rate = hits / n_dir if n_dir else None
     soft = (hits + 0.5 * neutral) / len(scored) if scored else None
 
-    return {
+    doc = {
         "schema": "kospi_june2026_daily_prophecy_eval_v1",
         "generated_at_utc": _utc_now(),
         "as_of_kst": as_of,
@@ -237,6 +243,7 @@ def eval_calendar(
         },
         "rows": scored,
     }
+    return attach_lane_routing_metadata(doc, context="eval")
 
 
 def _append_log(row: dict[str, Any], score_log: Path) -> None:
