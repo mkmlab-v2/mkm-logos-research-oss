@@ -1,6 +1,6 @@
 {
   "schema": "compression_jaccard_loss_patterns_v1",
-  "ts_utc": "2026-05-23T22:00:04.648545+00:00",
+  "ts_utc": "2026-06-27T22:00:05.430688+00:00",
   "sla_track": "literal",
   "sources": {
     "input": "docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
@@ -10,7 +10,7 @@
   },
   "summary": {
     "case_count": 40,
-    "avg_words_lost": 0.5
+    "avg_words_lost": 0.425
   },
   "cases": [
     {
@@ -78,16 +78,14 @@
       "id": "cmp2_005",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7857142857142857,
-      "token_saving_rate": 0.2666666666666667,
+      "reconstruction_fidelity_jaccard": 0.9285714285714286,
+      "token_saving_rate": 0.1333333333333333,
       "raw_word_count": 14,
-      "recon_word_count": 11,
-      "words_lost_count": 3,
+      "recon_word_count": 13,
+      "words_lost_count": 1,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "external",
-        "monthly",
-        "updates"
+        "monthly"
       ],
       "words_extra_sample": []
     },
@@ -110,15 +108,14 @@
       "id": "cmp2_007",
       "domain": "timing",
       "shard_id": "zone_b_timing",
-      "reconstruction_fidelity_jaccard": 0.8571428571428571,
-      "token_saving_rate": 0.19999999999999996,
+      "reconstruction_fidelity_jaccard": 0.9285714285714286,
+      "token_saving_rate": 0.1333333333333333,
       "raw_word_count": 14,
-      "recon_word_count": 12,
-      "words_lost_count": 2,
+      "recon_word_count": 13,
+      "words_lost_count": 1,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "rows",
-        "thresholds"
+        "rows"
       ],
       "words_extra_sample": []
     },
@@ -177,7 +174,7 @@
       "domain": "health",
       "shard_id": "zone_g_health",
       "reconstruction_fidelity_jaccard": 1.0,
-      "token_saving_rate": 0.2777777777777778,
+      "token_saving_rate": 0.2222222222222222,
       "raw_word_count": 16,
       "recon_word_count": 16,
       "words_lost_count": 0,
@@ -307,7 +304,7 @@
       "domain": "hangul",
       "shard_id": "zone_c_hangul",
       "reconstruction_fidelity_jaccard": 1.0,
-      "token_saving_rate": 0.19999999999999996,
+      "token_saving_rate": 0.15000000000000002,
       "raw_word_count": 19,
       "recon_word_count": 19,
       "words_lost_count": 0,
@@ -333,7 +330,7 @@
       "domain": "scm",
       "shard_id": "zone_a_scm",
       "reconstruction_fidelity_jaccard": 1.0,
-      "token_saving_rate": 0.1875,
+      "token_saving_rate": 0.125,
       "raw_word_count": 15,
       "recon_word_count": 15,
       "words_lost_count": 0,

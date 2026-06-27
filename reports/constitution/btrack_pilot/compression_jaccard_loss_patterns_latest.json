@@ -1,6 +1,6 @@
 {
   "schema": "compression_jaccard_loss_patterns_v1",
-  "ts_utc": "2026-05-23T23:05:28.914314+00:00",
+  "ts_utc": "2026-06-27T22:00:05.144278+00:00",
   "sla_track": "universal",
   "sources": {
     "input": "docs\\final\\artifacts\\MULTILENS_PERFORMANCE_EVAL_INPUT_V2.json",
@@ -10,7 +10,7 @@
   },
   "summary": {
     "case_count": 40,
-    "avg_words_lost": 1.975
+    "avg_words_lost": 1.75
   },
   "cases": [
     {
@@ -33,16 +33,14 @@
       "id": "cmp2_002",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.8235294117647058,
-      "token_saving_rate": 0.26315789473684215,
+      "reconstruction_fidelity_jaccard": 0.9411764705882353,
+      "token_saving_rate": 0.1578947368421053,
       "raw_word_count": 17,
-      "recon_word_count": 14,
-      "words_lost_count": 3,
+      "recon_word_count": 16,
+      "words_lost_count": 1,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "proxy",
-        "requires",
-        "traceability"
+        "proxy"
       ],
       "words_extra_sample": []
     },
@@ -50,17 +48,16 @@
       "id": "cmp2_003",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7142857142857143,
-      "token_saving_rate": 0.4117647058823529,
+      "reconstruction_fidelity_jaccard": 0.7857142857142857,
+      "token_saving_rate": 0.3529411764705882,
       "raw_word_count": 14,
-      "recon_word_count": 10,
-      "words_lost_count": 4,
+      "recon_word_count": 11,
+      "words_lost_count": 3,
       "words_extra_count": 0,
       "words_lost_sample": [
         "b",
-        "caveats",
         "especially",
-        "notes"
+        "preserving"
       ],
       "words_extra_sample": []
     },
@@ -68,16 +65,15 @@
       "id": "cmp2_004",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7333333333333333,
-      "token_saving_rate": 0.3125,
+      "reconstruction_fidelity_jaccard": 0.8,
+      "token_saving_rate": 0.25,
       "raw_word_count": 15,
-      "recon_word_count": 11,
-      "words_lost_count": 4,
+      "recon_word_count": 12,
+      "words_lost_count": 3,
       "words_extra_count": 0,
       "words_lost_sample": [
         "claim",
         "explicitly",
-        "reproduce",
         "reviews"
       ],
       "words_extra_sample": []
@@ -86,18 +82,14 @@
       "id": "cmp2_005",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.6428571428571429,
-      "token_saving_rate": 0.4,
+      "reconstruction_fidelity_jaccard": 0.9285714285714286,
+      "token_saving_rate": 0.1333333333333333,
       "raw_word_count": 14,
-      "recon_word_count": 9,
-      "words_lost_count": 5,
+      "recon_word_count": 13,
+      "words_lost_count": 1,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "cadence",
-        "external",
-        "monthly",
-        "override",
-        "updates"
+        "monthly"
       ],
       "words_extra_sample": []
     },
@@ -121,33 +113,28 @@
       "id": "cmp2_007",
       "domain": "timing",
       "shard_id": "zone_b_timing",
-      "reconstruction_fidelity_jaccard": 0.7857142857142857,
-      "token_saving_rate": 0.2666666666666667,
+      "reconstruction_fidelity_jaccard": 1.0,
+      "token_saving_rate": 0.06666666666666665,
       "raw_word_count": 14,
-      "recon_word_count": 11,
-      "words_lost_count": 3,
+      "recon_word_count": 14,
+      "words_lost_count": 0,
       "words_extra_count": 0,
-      "words_lost_sample": [
-        "matrix",
-        "thresholds",
-        "transition"
-      ],
+      "words_lost_sample": [],
       "words_extra_sample": []
     },
     {
       "id": "cmp2_008",
       "domain": "ssot",
       "shard_id": "zone_d_ssot",
-      "reconstruction_fidelity_jaccard": 0.7142857142857143,
-      "token_saving_rate": 0.4444444444444444,
+      "reconstruction_fidelity_jaccard": 0.7857142857142857,
+      "token_saving_rate": 0.38888888888888884,
       "raw_word_count": 14,
-      "recon_word_count": 10,
-      "words_lost_count": 4,
+      "recon_word_count": 11,
+      "words_lost_count": 3,
       "words_extra_count": 0,
       "words_lost_sample": [
         "alignment",
-        "constitution",
-        "constraints",
+        "include",
         "timing"
       ],
       "words_extra_sample": []
@@ -192,13 +179,15 @@
       "id": "cmp2_011",
       "domain": "health",
       "shard_id": "zone_g_health",
-      "reconstruction_fidelity_jaccard": 0.9375,
+      "reconstruction_fidelity_jaccard": 0.8125,
       "token_saving_rate": 0.5555555555555556,
       "raw_word_count": 16,
-      "recon_word_count": 15,
-      "words_lost_count": 1,
+      "recon_word_count": 13,
+      "words_lost_count": 3,
       "words_extra_count": 0,
       "words_lost_sample": [
+        "시간에",
+        "피해야",
         "한다"
       ],
       "words_extra_sample": []
@@ -289,13 +278,14 @@
       "id": "cmp2_017",
       "domain": "scm",
       "shard_id": "zone_a_scm",
-      "reconstruction_fidelity_jaccard": 0.8823529411764706,
+      "reconstruction_fidelity_jaccard": 0.8235294117647058,
       "token_saving_rate": 0.5555555555555556,
       "raw_word_count": 17,
-      "recon_word_count": 15,
-      "words_lost_count": 2,
+      "recon_word_count": 14,
+      "words_lost_count": 3,
       "words_extra_count": 0,
       "words_lost_sample": [
+        "먼저",
         "배치해야",
         "한다"
       ],
@@ -381,7 +371,7 @@
       "domain": "scm",
       "shard_id": "zone_a_scm",
       "reconstruction_fidelity_jaccard": 0.9333333333333333,
-      "token_saving_rate": 0.5,
+      "token_saving_rate": 0.4375,
       "raw_word_count": 15,
       "recon_word_count": 14,
       "words_lost_count": 1,
@@ -424,13 +414,16 @@
       "id": "cmp2_026",
       "domain": "hangul",
       "shard_id": "zone_c_hangul",
-      "reconstruction_fidelity_jaccard": 1.0,
+      "reconstruction_fidelity_jaccard": 0.8823529411764706,
       "token_saving_rate": 0.5555555555555556,
       "raw_word_count": 17,
-      "recon_word_count": 17,
-      "words_lost_count": 0,
+      "recon_word_count": 15,
+      "words_lost_count": 2,
       "words_extra_count": 0,
-      "words_lost_sample": [],
+      "words_lost_sample": [
+        "금칙",
+        "체질별"
+      ],
       "words_extra_sample": []
     },
     {
@@ -454,17 +447,16 @@
       "id": "cmp2_028",
       "domain": "scm",
       "shard_id": "zone_a_scm",
-      "reconstruction_fidelity_jaccard": 0.7333333333333333,
-      "token_saving_rate": 0.5294117647058824,
+      "reconstruction_fidelity_jaccard": 0.8,
+      "token_saving_rate": 0.47058823529411764,
       "raw_word_count": 15,
-      "recon_word_count": 11,
-      "words_lost_count": 4,
+      "recon_word_count": 12,
+      "words_lost_count": 3,
       "words_extra_count": 0,
       "words_lost_sample": [
         "규칙을",
         "기본값으로",
-        "두는",
-        "보존"
+        "두는"
       ],
       "words_extra_sample": []
     },
@@ -542,16 +534,14 @@
       "id": "cmp2_034",
       "domain": "hangul",
       "shard_id": "zone_c_hangul",
-      "reconstruction_fidelity_jaccard": 0.8,
+      "reconstruction_fidelity_jaccard": 0.9333333333333333,
       "token_saving_rate": 0.5882352941176471,
       "raw_word_count": 15,
-      "recon_word_count": 12,
-      "words_lost_count": 3,
+      "recon_word_count": 14,
+      "words_lost_count": 1,
       "words_extra_count": 0,
       "words_lost_sample": [
-        "복원",
-        "시",
-        "점검"
+        "한다"
       ],
       "words_extra_sample": []
     },
@@ -631,13 +621,14 @@
       "id": "cmp2_040",
       "domain": "scm",
       "shard_id": "zone_a_scm",
-      "reconstruction_fidelity_jaccard": 0.9375,
+      "reconstruction_fidelity_jaccard": 0.875,
       "token_saving_rate": 0.5555555555555556,
       "raw_word_count": 16,
-      "recon_word_count": 15,
-      "words_lost_count": 1,
+      "recon_word_count": 14,
+      "words_lost_count": 2,
       "words_extra_count": 0,
       "words_lost_sample": [
+        "제어해야",
         "한다"
       ],
       "words_extra_sample": []

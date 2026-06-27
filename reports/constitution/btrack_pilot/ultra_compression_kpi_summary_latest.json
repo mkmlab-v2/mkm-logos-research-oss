@@ -1,6 +1,6 @@
 {
   "schema": "ultra_compression_kpi_summary_v1",
-  "ts_utc": "2026-05-23T23:05:27.769123+00:00",
+  "ts_utc": "2026-06-27T22:00:03.765522+00:00",
   "sources": {
     "round2": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ROUND2_V1.json",
     "decision": "docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
@@ -22,8 +22,8 @@
     }
   },
   "active_kpi": {
-    "global_token_saving_rate": 0.49085794655414905,
-    "avg_reconstruction_fidelity_jaccard": 0.8727418293565741,
+    "global_token_saving_rate": 0.47116736990154706,
+    "avg_reconstruction_fidelity_jaccard": 0.8893218363593751,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,
@@ -35,8 +35,8 @@
     "sensitive_integrity_ok": true
   },
   "literal_kpi": {
-    "global_token_saving_rate": 0.240506329113924,
-    "avg_reconstruction_fidelity_jaccard": 0.9669276556776557,
+    "global_token_saving_rate": 0.23206751054852326,
+    "avg_reconstruction_fidelity_jaccard": 0.9722847985347987,
     "avg_sensitive_integrity": 1.0,
     "jaccard_drop_pp": 0.0,
     "jaccard_guardrail_ok": true,

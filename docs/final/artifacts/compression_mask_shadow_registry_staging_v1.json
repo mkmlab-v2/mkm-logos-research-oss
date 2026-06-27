@@ -1,6 +1,6 @@
 {
   "schema": "compression_mask_shadow_registry_v1",
-  "generated_at_utc": "2026-06-15T11:59:28Z",
+  "generated_at_utc": "2026-06-27T18:15:03Z",
   "hypothesis_tier": "B",
   "research_only": true,
   "shadow_only": true,
@@ -8,7 +8,7 @@
   "track_a_active_untouched": true,
   "production_router_unchanged": true,
   "workspace_root": "C:/workspace",
-  "git_head_sha": "82609a91b088947f0f94f412ac3ec89018c9b646",
+  "git_head_sha": "8927edb74f434ccdb61a23522d9e2449819fee6b",
   "baseline_sha_note": "ab873947e8 BIZ 13-row lock; registry pins manifest hashes for pointer swap",
   "fail_comp_note": "Staging pointers only — no v2 stub ACTIVE wiring; no secrets in registry.",
   "entries": [
@@ -19,7 +19,7 @@
       "repo_rel_path": "codebook/templates/zone_h_en_business_templates_manifest_v1.json",
       "staging_env_key": "MKM_BIZ_MASK_CATALOG_MANIFEST",
       "exists": true,
-      "sha256": "8fcb35fb58210d45a505dbdd4a4a90c58378c16f0702118eaa114dd23955a0a3",
+      "sha256": "5811c8a929783ab5a7feac985561a3a559afe99c7a0e25947abbe6a037e528d1",
       "catalog_sha256": "7cbefe0fdcaf172a803362c749ef2bf0e77a96fe433c2f972c4c36ac41bc397e",
       "row_count": 13
     },
@@ -49,7 +49,7 @@
       "repo_rel_path": "codebook/templates/zone_ko_premium_cs_templates_manifest_v1.json",
       "staging_env_key": "MKM_CS_MASK_CATALOG_MANIFEST",
       "exists": true,
-      "sha256": "d8a764683c2c1cb1660a12fb86597c95fcd2052d910b5b91796b67eb5adafc57",
+      "sha256": "50b312bcdb7a5730ad78a322bb2baf6843279d3265b1f9530bc76e42433f2ca3",
       "catalog_sha256": "5ab82f39c1957e7bbdfe0b6c17ad0303f35fbc4d437c7671a37fa24303ea31a4",
       "row_count": 26
     },
@@ -78,7 +78,7 @@
       "repo_rel_path": "reports/compression_spiking_closeout_v1.json",
       "staging_env_key": "MKM_COMPRESSION_SPIKING_CLOSEOUT",
       "exists": true,
-      "sha256": "b5c249633535a6faa6ff671ad8d6fa49e1a5bc04c83d4b82b82afb4e9d5130e3"
+      "sha256": "f29c29db162b3d11939555f334c9ba4820a562e2f8c9a0af165f207446273b63"
     }
   ],
   "hypo_runners": [

@@ -1,6 +1,6 @@
 {
   "schema": "compression_mask_hypo_passive_cross_audit_v1",
-  "generated_at_utc": "2026-06-15T12:38:13Z",
+  "generated_at_utc": "2026-06-27T18:15:52Z",
   "hypothesis_tier": "B",
   "research_only": true,
   "shadow_only": true,
@@ -11,22 +11,24 @@
   "forbidden": [
     "live_trade_traffic",
     "production_domain_router_mutation",
-    "customer_sla_headline_from_hypo_min_saving"
+    "customer_sla_headline_from_hypo_min_saving",
+    "mask_kpi_merge_with_coord_sibling"
   ],
   "workspace_root": "C:/workspace",
   "steps": [
     {
       "step_id": "registry_sync",
       "hypo_id": "HYPO-3",
+      "axis": null,
       "script": "scripts/run_compression_mask_shadow_registry_sync_v1.py",
       "exit_code": 0,
       "ok": true,
-      "stdout_tail": "{\"ok\": true, \"all_entries_present\": true, \"git_head_sha\": \"181d19fb6c029f692e79f78efd3309cf7123882f\", \"entry_count\": 7, \"report_out\": \"C:\\\\workspace\\\\reports\\\\compression_mask_shadow_registry_v1_latest.json\", \"staging_out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\compression_mask_shadow_registry_staging_v1.json\", \"mirror_copied\": 7}\n",
+      "stdout_tail": "{\"ok\": true, \"all_entries_present\": true, \"git_head_sha\": \"8927edb74f434ccdb61a23522d9e2449819fee6b\", \"entry_count\": 7, \"report_out\": \"C:\\\\workspace\\\\reports\\\\compression_mask_shadow_registry_v1_latest.json\", \"staging_out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\compression_mask_shadow_registry_staging_v1.json\", \"mirror_copied\": 7}\n",
       "stderr_tail": "",
       "stdout_json": {
         "ok": true,
         "all_entries_present": true,
-        "git_head_sha": "181d19fb6c029f692e79f78efd3309cf7123882f",
+        "git_head_sha": "8927edb74f434ccdb61a23522d9e2449819fee6b",
         "entry_count": 7,
         "report_out": "C:\\workspace\\reports\\compression_mask_shadow_registry_v1_latest.json",
         "staging_out": "C:\\workspace\\docs\\final\\artifacts\\compression_mask_shadow_registry_staging_v1.json",
@@ -45,6 +47,7 @@
     {
       "step_id": "biz_overlay",
       "hypo_id": "HYPO-1a",
+      "axis": null,
       "script": "scripts/run_en_business_template_overlay_scan_v1.py",
       "exit_code": 0,
       "ok": true,
@@ -80,6 +83,7 @@
     {
       "step_id": "biz_shadow_bind",
       "hypo_id": "HYPO-2",
+      "axis": null,
       "script": "scripts/run_en_business_shadow_router_bind_v1.py",
       "exit_code": 0,
       "ok": true,
@@ -110,6 +114,7 @@
     {
       "step_id": "cs_wtt_overlay",
       "hypo_id": "HYPO-1b",
+      "axis": null,
       "script": "scripts/run_ko_premium_cs_wtt_template_overlay_scan_v1.py",
       "exit_code": 0,
       "ok": true,
@@ -143,12 +148,34 @@
       }
     }
   ],
+  "coord_sibling": {
+    "step_id": "rib55_coord_passive",
+    "hypo_id": "COORD-1",
+    "axis": "SKU-COORD",
+    "script": "scripts/run_rib55_coord_passive_audit_v1.py",
+    "exit_code": 0,
+    "ok": true,
+    "stdout_tail": "{\"ok\": true, \"out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\rib55_coord_passive_audit_v1_latest.json\", \"steps\": 28}\n",
+    "stderr_tail": "",
+    "stdout_json": {
+      "ok": true,
+      "out": "C:\\workspace\\docs\\final\\artifacts\\rib55_coord_passive_audit_v1_latest.json",
+      "steps": 28
+    },
+    "report_path": "C:/workspace/docs/final/artifacts/rib55_coord_passive_audit_v1_latest.json",
+    "report_summary": {
+      "schema": "rib55_coord_passive_audit_v1",
+      "aggregate": null
+    }
+  },
   "aggregate": {
-    "step_count": 4,
-    "pass_count": 4,
+    "step_count": 5,
+    "pass_count": 5,
     "fail_count": 0,
     "failed_step_ids": [],
-    "all_steps_pass": true
+    "all_steps_pass": true,
+    "mask_step_count": 4,
+    "coord_sibling_included": true
   },
   "reproduce": "py scripts/run_compression_mask_hypo_passive_cross_audit_v1.py"
 }
