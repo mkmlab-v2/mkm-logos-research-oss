@@ -123,6 +123,7 @@ export function ClinicianEncounterGoldPanel({
   const [error, setError] = useState<string | null>(null);
   const [payload, setPayload] = useState<EncounterArtifactsResponse | null>(null);
   const [copyOk, setCopyOk] = useState<string | null>(null);
+  const [ephemeralEncounter, setEphemeralEncounter] = useState(false);
 
   const chartSections = useMemo(() => {
     const fromDraft = cdsDraft ? buildChartPasteSectionsFromCdsDraft(cdsDraft) : [];
@@ -195,7 +196,7 @@ export function ClinicianEncounterGoldPanel({
   function friendlyPasteChartError(code?: string): string {
     if (!code) return "Paste Chart 분석에 실패했습니다.";
     if (code.startsWith("unknown_display")) {
-      return "등록된 Human Gold 환자가 아닙니다. 고급에서 slug를 연결하거나, 이름·생년 칩을 확인해 주세요. (익명 1회 분석은 Phase 1)";
+      return "이름·생년 칩을 확인해 주세요. Human Gold 환자는 고급에서 slug 연결도 가능합니다.";
     }
     if (code.includes("birth_profile_missing")) {
       return "생년월일을 칩에서 확인·수정해 주세요. ISO 타임스탬프 직접 입력은 필요 없습니다.";
@@ -217,21 +218,28 @@ export function ClinicianEncounterGoldPanel({
       setError("이름을 칩에서 확인하거나, 고급에서 Human Gold slug를 연결하세요.");
       return;
     }
+    const birthIso = resolveBirthInstantForRequest();
+    const hasSlug = "slug" in lookupBody || "ref_token" in lookupBody;
+    if (!hasSlug && !birthIso) {
+      setError("익명 1회 분석에는 생년월일 칩 확인이 필요합니다.");
+      return;
+    }
 
     setAnalyzeBusy(true);
     setError(null);
     setAdvice(null);
     setAdviceWarning(null);
     setFusionMarkdown(null);
+    setEphemeralEncounter(false);
     try {
       const body: Record<string, unknown> = {
         schema: "clinician_paste_chart_request_v1",
         chart_text: text,
+        allow_ephemeral: true,
         options: { validate_schema: true, validate_policy: true, render_md: true },
         ...lookupBody,
       };
       if (objectiveDraft.trim()) body.objective_draft = objectiveDraft.trim();
-      const birthIso = resolveBirthInstantForRequest();
       if (birthIso) {
         body.birth_instant_utc = birthIso;
         body.iana_tz = ianaTz.trim() || "Asia/Seoul";
@@ -250,6 +258,7 @@ export function ClinicianEncounterGoldPanel({
         advice_error?: string;
         slug?: string;
         display_label?: string;
+        ephemeral?: boolean;
         patient_care_bundle?: Record<string, unknown>;
         patient_facing_markdown?: string;
         advice?: PasteChartAdvice | null;
@@ -262,8 +271,16 @@ export function ClinicianEncounterGoldPanel({
       setFusionBundle(json.patient_care_bundle);
       setFusionMarkdown(json.patient_facing_markdown || null);
       setAdvice(json.advice || null);
+      setEphemeralEncounter(Boolean(json.ephemeral));
       if (json.advice_error) {
         setAdviceWarning(`SOAP는 생성됨 · 조언 체인: ${json.advice_error}`);
+      }
+      if (json.ephemeral) {
+        setAdviceWarning((prev) =>
+          prev
+            ? `${prev} · 1회성 익명 encounter (Human Gold 미연결)`
+            : "1회성 익명 encounter — Human Gold 교부물·slug 검증 없음",
+        );
       }
       onFusionBundleReady?.(json.patient_care_bundle);
 
@@ -376,6 +393,7 @@ export function ClinicianEncounterGoldPanel({
           </div>
           <div className="pc-header-meta">
             <span className="track-badge">Track B · 초안</span>
+            {ephemeralEncounter ? <span className="track-badge track-badge--ephemeral">1회성 encounter</span> : null}
             <span className="human-gold-badge">Human Gold 확정 필요</span>
           </div>
         </div>

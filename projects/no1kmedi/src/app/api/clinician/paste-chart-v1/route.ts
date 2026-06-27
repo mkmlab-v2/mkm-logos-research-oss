@@ -23,6 +23,7 @@ type Body = {
   is_male?: boolean;
   sasang_label?: string;
   skip_advice?: boolean;
+  allow_ephemeral?: boolean;
   options?: {
     validate_schema?: boolean;
     validate_policy?: boolean;
@@ -72,6 +73,7 @@ export async function POST(request: NextRequest) {
       isMale: body.is_male,
       sasangLabel: body.sasang_label,
       skipAdvice: body.skip_advice,
+      allowEphemeral: body.allow_ephemeral !== false,
       validateSchema: opts.validate_schema,
       validatePolicy: opts.validate_policy,
       renderMd: opts.render_md,
@@ -98,6 +100,7 @@ export async function POST(request: NextRequest) {
       slug: result.slug,
       display_label: result.displayLabel,
       ref_token: result.refToken,
+      ephemeral: Boolean(result.ephemeral),
       paths: { bundle_json: result.bundlePath },
       patient_care_bundle: result.bundle,
       clinical_soap_v1: result.soap,
