@@ -26,21 +26,32 @@
 .PARAMETER SkipTier3WireHandoff
   Skip Tier 3 parallel-chat wire handoff when -Lane is set (default: Tier 3 runs automatically with -Lane).
 
+.PARAMETER ResumeMode
+  Standard (default) or AdvancedLogos — maps to commander trigger 「장기기억 맥락이어 고급해석」 (forces -Lane oracle when omitted).
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle
 #>
 param(
     [ValidateSet("", "oracle", "ms", "infra", "web_ops")]
     [string]$Lane = "",
+    [ValidateSet("", "Standard", "AdvancedLogos")]
+    [string]$ResumeMode = "",
     [switch]$SkipSoloOps,
     [switch]$SkipIndexRebuild,
     [switch]$SkipL2Shadow,
-    [switch]$SkipTier3WireHandoff
+    [switch]$SkipTier3WireHandoff,
+    [switch]$SkipBrowserAutoFix
 )
 
 $ErrorActionPreference = "Stop"
 $root = if ($env:MKM_WORKSPACE_ROOT) { $env:MKM_WORKSPACE_ROOT.TrimEnd('\', '/') } else { "C:\workspace" }
 Set-Location -LiteralPath $root
+
+if ($ResumeMode -eq "AdvancedLogos" -and -not $Lane) {
+    $Lane = "oracle"
+}
+$resumeModePy = if ($ResumeMode -eq "AdvancedLogos") { "advanced_logos" } else { "standard" }
 
 $steps = [ordered]@{}
 $ok = $true
@@ -84,11 +95,39 @@ if (-not $SkipSoloOps -and (Test-Path -LiteralPath $soloStatePath)) {
     $soloRan = $true
 }
 
+# --- IDE Browser: warmup (no reload) then full auto-fix if still not ready (non-fatal) ---
+if (-not $SkipBrowserAutoFix) {
+    $warmup = Join-Path $root "scripts\Invoke-CursorIdeBrowserWarmup_v1.ps1"
+    $browserFix = Join-Path $root "scripts\Invoke-CursorIdeBrowserAutoFix_v1.ps1"
+    if (Test-Path -LiteralPath $warmup) {
+        powershell -NoProfile -ExecutionPolicy Bypass -File $warmup -WorkspaceRoot $root | Out-Null
+        $warmupExit = if ($null -eq $LASTEXITCODE) { 0 } else { [int]$LASTEXITCODE }
+        $steps["ide_browser_warmup"] = @{ exit_code = $warmupExit; non_fatal = $true }
+    }
+    $readinessPath = Join-Path $root "reports\cursor_ide_browser_readiness_latest.json"
+    $hostReady = $false
+    if (Test-Path -LiteralPath $readinessPath) {
+        try {
+            $rd = Get-Content -LiteralPath $readinessPath -Raw -Encoding UTF8 | ConvertFrom-Json
+            $hostReady = [bool]$rd.host_ready_for_new_chat
+        } catch { }
+    }
+    if (-not $hostReady -and (Test-Path -LiteralPath $browserFix)) {
+        Write-Host "Browser host not ready after warmup — running AUTO fix with Reload..." -ForegroundColor Yellow
+        powershell -NoProfile -ExecutionPolicy Bypass -File $browserFix -WorkspaceRoot $root | Out-Null
+        $browserFixExit = if ($null -eq $LASTEXITCODE) { 0 } else { [int]$LASTEXITCODE }
+        $steps["ide_browser_auto_fix"] = @{ exit_code = $browserFixExit; non_fatal = $true }
+        if ($browserFixExit -ne 0) {
+            Write-Host "WARN: ide_browser_auto_fix exit $browserFixExit — NEW Agent chat after Reload" -ForegroundColor Yellow
+        }
+    }
+}
+
 # --- S2: ops memory index + resume pack (coordinate inject) ---
 $opsRoutine = Join-Path $root "scripts\Invoke-MkmOpsMemoryIndexRoutine_v1.ps1"
 if ($SkipIndexRebuild) {
-    $packArgs = @("py", "scripts/build_mkm_chat_resume_pack_v1.py")
-    if ($Lane) { $packArgs += @("--lane", $Lane) }
+    $packArgs = @("py", "scripts/build_mkm_chat_resume_pack_v1.py", "--resume-mode", $resumeModePy)
+    if ($Lane) { $packArgs += @("--lane", $Lane, "--infer-topic-from-lane") }
     Invoke-Step "resume_pack_only" {
         & $packArgs[0] $packArgs[1..($packArgs.Length - 1)]
     } | Out-Null
@@ -98,6 +137,7 @@ if ($SkipIndexRebuild) {
         "-SkipBench"
     )
     if ($Lane) { $routineArgs += @("-Lane", $Lane) }
+    if ($ResumeMode) { $routineArgs += @("-ResumeMode", $ResumeMode) }
     Invoke-Step "ops_memory_index_and_resume_pack" {
         powershell @routineArgs
     } | Out-Null
@@ -121,6 +161,22 @@ if ($Lane -and -not $SkipTier3WireHandoff) {
         powershell @tier3Args
     } | Out-Null
 }
+
+# --- Pillar A: LTM deep handoff envelope (resume + handoff + tier3 path only) ---
+$envelopeLane = if ($Lane) { $Lane } else { "infra" }
+$envelopeArgs = @("py", "scripts/build_mkm_cursor_deep_handoff_envelope_v1.py", "--lane", $envelopeLane)
+Invoke-Step "deep_handoff_envelope" {
+    & $envelopeArgs[0] $envelopeArgs[1..($envelopeArgs.Length - 1)]
+} | Out-Null
+
+# --- Pillar A: graph resolve → patch envelope deep_fetch (suspect-first coordinates) ---
+$resolveArgs = @("py", "scripts/resolve_deep_fetch_from_handoff_v1.py", "--lane", $envelopeLane, "--patch-envelope")
+Invoke-Step "deep_fetch_resolve_patch" {
+    & $resolveArgs[0] $resolveArgs[1..($resolveArgs.Length - 1)]
+} | Out-Null
+
+$envelopeArtifact = Join-Path $root "docs\final\artifacts\mkm_cursor_deep_handoff_envelope_v1_latest.json"
+$envelopeReports = Join-Path $root "reports\mkm_cursor_deep_handoff_envelope_v1_latest.json"
 
 # --- Context diet audit (report only; strict gate is separate CI/pytest) ---
 Invoke-Step "cursor_rules_context_diet" {
@@ -161,8 +217,15 @@ if (Test-Path -LiteralPath $resumePackJson) {
 }
 
 $contextDiet = [ordered]@{
-    commander_trigger_ko = "장기기억 맥락이어"
+    commander_trigger_ko = if ($ResumeMode -eq "AdvancedLogos") { "장기기억 맥락이어 고급해석" } else { "장기기억 맥락이어" }
+    commander_triggers_ssot = "docs/final/artifacts/mkm_commander_resume_triggers_v1.json"
+    resume_mode = $resumeModePy
     read_first = $resumePackMd
+    read_second = $envelopeArtifact
+    read_third = "MISSION_LOG.md"
+    required_ssot_contract = "docs/final/artifacts/mkm_meta_coordinator_turn_contract_v1_latest.md"
+    agent_self_check = "suspect_first — doubt chat memory; verify CONSTITUTION+exit0; envelope.agent_self_check"
+    session_end_command = 'py scripts/run_mkm_cursor_session_end_v1.py --lane <lane> --continuity-id <id> --message "<line>"'
     read_fallback = "docs/final/CENTRAL_AGENT_MEMORY_V1.md (checkpoint block only)"
     never_on_resume = "Full MISSION_LOG.md paste; alwaysApply expansion"
     mission_log_mode = "resume pack next_one table pin only (commander default)"
@@ -171,12 +234,17 @@ $contextDiet = [ordered]@{
     token_bench_ssot = "reports/mkm_ops_memory_index_token_bench_v1_latest.json"
 }
 
+$reproCmd = "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1"
+if ($Lane) { $reproCmd += " -Lane $Lane" }
+if ($ResumeMode) { $reproCmd += " -ResumeMode $ResumeMode" }
+
 $latest = [ordered]@{
     schema = "mkm_cursor_session_upgrade_v1"
     generated_at_utc = $utcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ")
     last_run_local_date = $localDate
     ok = $ok
     lane = if ($Lane) { $Lane } else { $null }
+    resume_mode = if ($ResumeMode) { $ResumeMode } else { "Standard" }
     solo_ops_ran = $soloRan
     solo_ops_skipped_already_ok = $soloSkipped
     resume_pack_pins = $pinCount
@@ -185,7 +253,9 @@ $latest = [ordered]@{
     human_gate = $humanGate
     steps = $steps
     boundary_ack = '[HYPO] ops memory inject - Track A live trading auto-merge forbidden'
-    reproducible_command = "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1" + $(if ($Lane) { " -Lane $Lane" } else { "" })
+    deep_handoff_envelope = $envelopeArtifact
+    deep_handoff_envelope_reports = $envelopeReports
+    reproducible_command = $reproCmd
 }
 
 $reportDir = Join-Path $root "reports"

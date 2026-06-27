@@ -127,6 +127,11 @@ param(
     # Shortcut profile: P0 paths + premium multilens report pytest only.
     [switch]$PremiumBtrackMultilensReportSmokeOnly,
 
+    # Optional: DR bench mini offline smoke (pytest + offline harness --require-entry-level + ops paste; B-track; no arXiv).
+    [switch]$IncludeDeepResearchBenchSmoke,
+    # Shortcut profile: P0 paths + DR bench offline smoke only (Fact-Lock -IncludeDeepResearchBenchSmoke parity).
+    [switch]$DeepResearchBenchSmokeOnly,
+
     # Optional: Bounded lane loop shadow smoke (pytest + dry-run invoke; CONSTITUTION §1.4.3).
     [switch]$IncludeBoundedLaneLoopSmoke,
     # Shortcut profile: P0 paths + bounded lane loop smoke only.
@@ -134,10 +139,50 @@ param(
     [ValidateSet("ms", "oracle", "infra", "design", "ops")]
     [string]$BoundedLaneLoopSmokeLane = "infra",
 
+    # Optional: Pillar A Cursor continuity smoke (turn_meta audit + continuity/route bench + context diet strict).
+    [switch]$IncludePillarACursorContinuitySmoke,
+    # Shortcut profile: P0 paths + Pillar A cursor health smoke only.
+    [switch]$PillarACursorContinuitySmokeOnly,
+    # Optional: turn_meta jsonl audit only (sparse_log WARN ok).
+    [switch]$IncludeCursorTurnMetaAudit,
+    # Shortcut profile: P0 paths + turn_meta audit only.
+    [switch]$CursorTurnMetaAuditOnly,
+
     # Optional: GPU-adjacent recommended bundle (Control-Integrity oracle chain + Pack 0-B pytest); CONSTITUTION §1.2.1.
     [switch]$IncludeMkmGpuRecommendedBundle,
     # Shortcut profile: P0 + automation registry reconcile + Run-MkmGpuRecommendedBundle_v1.ps1, then exit 0.
     [switch]$MkmGpuRecommendedBundleOnly,
+
+    # Optional: Oracle module lane observability smoke (narrative/closure + coexistence; B-track HOLD).
+    [switch]$IncludeOracleModuleObservabilitySmoke,
+    [switch]$OracleModuleObservabilitySmokeOnly,
+
+    # Optional: mkmlife CF Workers vs jema-ai/logos VPS DNS/deploy axis isolation live probe.
+    [switch]$IncludeMkmDeploymentAxisIsolationSmoke,
+    [switch]$MkmDeploymentAxisIsolationSmokeOnly,
+
+    # Optional: Entry B han clinic owner onboarding (infra gate + card chain; research_only HOLD).
+    [switch]$IncludeHanClinicEntryBOnboardingSmoke,
+    [switch]$HanClinicEntryBOnboardingSmokeOnly,
+
+    # Optional: KOSPI lens ablation GraphRAG sidebar compare (scoring invariant; research_only HOLD).
+    [switch]$IncludeKospiLensAblationGraphragCompare,
+    [switch]$KospiLensAblationGraphragCompareOnly,
+
+    # Optional: KOSPI DART MD&A PoC multi-corp live smoke (fixture Gate A + 3-corp observational; needs DART_API_KEY).
+    [switch]$IncludeKospiDartMdaPocMultiCorpSmoke,
+    [switch]$KospiDartMdaPocMultiCorpSmokeOnly,
+
+    [switch]$IncludeMyeongniSasangGraphragOllamaBench,
+    [switch]$MyeongniSasangGraphragOllamaBenchOnly,
+
+    # Optional: mkmlife + personadiary consumer onboarding Playwright (local dev :3105/:3010).
+    [switch]$IncludeConsumerOnboardingPlaywrightSmoke,
+    [switch]$ConsumerOnboardingPlaywrightSmokeOnly,
+
+    # Optional: Magic Orb design/UX readiness (Playwright + SSOT merge; B-track [HYPO]).
+    [switch]$IncludeMagicOrbDesignReadiness,
+    [switch]$MagicOrbDesignReadinessOnly,
 
     # Optional: NotebookLM MCP hygiene probe (prereq + JSON; no MCP get_health in probe).
     [switch]$IncludeMcpHygieneProbe,
@@ -149,6 +194,11 @@ param(
     [switch]$IncludePrSasangPromotionMirrorSync,
     # Shortcut profile: P0 + _pr_sasang_promotion mirror only (then exit 0).
     [switch]$PrSasangPromotionMirrorSyncOnly,
+
+    # Optional: Sasang rail full stack (containment + P2 + P3 + stack gate); CONSTITUTION B-track [HYPO].
+    [switch]$IncludeSasangRailStack,
+    # Shortcut profile: P0 + Sasang rail stack chain only (then exit 0).
+    [switch]$SasangRailStackOnly,
 
     # Optional: VPS SSH disk smoke (Invoke-VpsOpsSmoke_v1.ps1; unset MKM_VPS_HOST = skip).
     [switch]$IncludeVpsOpsSmoke,
@@ -245,8 +295,32 @@ if ($PremiumBtrackMultilensReportSmokeOnly) {
     $SkipNewsObservationContractSmoke = $true
 }
 
+if ($DeepResearchBenchSmokeOnly) {
+    $IncludeDeepResearchBenchSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
 if ($BoundedLaneLoopSmokeOnly) {
     $IncludeBoundedLaneLoopSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
+if ($CursorTurnMetaAuditOnly) {
+    $IncludeCursorTurnMetaAudit = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
+if ($PillarACursorContinuitySmokeOnly) {
+    $IncludePillarACursorContinuitySmoke = $true
     $SkipVaultMirror = $true
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
@@ -259,6 +333,78 @@ if ($MkmGpuRecommendedBundleOnly) {
     $SkipMkmMemoryInventory = $true
     $SkipPhase1Readiness = $true
     $SkipNewsObservationContractSmoke = $true
+}
+
+if ($OracleModuleObservabilitySmokeOnly) {
+    $IncludeOracleModuleObservabilitySmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSchedulerSoloBandGate = $true
+}
+
+if ($MkmDeploymentAxisIsolationSmokeOnly) {
+    $IncludeMkmDeploymentAxisIsolationSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSchedulerSoloBandGate = $true
+}
+
+if ($HanClinicEntryBOnboardingSmokeOnly) {
+    $IncludeHanClinicEntryBOnboardingSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSchedulerSoloBandGate = $true
+}
+
+if ($KospiLensAblationGraphragCompareOnly) {
+    $IncludeKospiLensAblationGraphragCompare = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSchedulerSoloBandGate = $true
+}
+
+if ($KospiDartMdaPocMultiCorpSmokeOnly) {
+    $IncludeKospiDartMdaPocMultiCorpSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSchedulerSoloBandGate = $true
+}
+
+if ($MyeongniSasangGraphragOllamaBenchOnly) {
+    $IncludeMyeongniSasangGraphragOllamaBench = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSchedulerSoloBandGate = $true
+}
+
+if ($ConsumerOnboardingPlaywrightSmokeOnly) {
+    $IncludeConsumerOnboardingPlaywrightSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSchedulerSoloBandGate = $true
+}
+
+if ($MagicOrbDesignReadinessOnly) {
+    $IncludeMagicOrbDesignReadiness = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $SkipSchedulerSoloBandGate = $true
 }
 
 if ($SchedulerSoloBandGateOnly) {
@@ -287,8 +433,17 @@ if ($PrSasangPromotionMirrorSyncOnly) {
     $IncludeBTrackDomainFeedbackSmoke = $false
 }
 
+if ($SasangRailStackOnly) {
+    $IncludeSasangRailStack = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+    $IncludeBTrackDomainFeedbackSmoke = $false
+}
+
 # Recommended default: run SafeOps on full health runs; shortcut profiles skip unless explicit Include* / IncludeWithVps.
-$shortcutProfiles = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmGpuRecommendedBundleOnly -or $SchedulerSoloBandGateOnly
+$shortcutProfiles = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $DeepResearchBenchSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $CursorTurnMetaAuditOnly -or $PillarACursorContinuitySmokeOnly -or $PrSasangPromotionMirrorSyncOnly -or $SasangRailStackOnly -or $MkmGpuRecommendedBundleOnly -or $OracleModuleObservabilitySmokeOnly -or $HanClinicEntryBOnboardingSmokeOnly -or $KospiLensAblationGraphragCompareOnly -or $KospiDartMdaPocMultiCorpSmokeOnly -or $MyeongniSasangGraphragOllamaBenchOnly -or $ConsumerOnboardingPlaywrightSmokeOnly -or $SchedulerSoloBandGateOnly
 $shortcutForSafeOps = $shortcutProfiles
 $runSafeOps = $false
 $runSafeOpsWithVps = $false
@@ -429,6 +584,26 @@ try {
         exit 0
     }
 
+    if ($IncludeSasangRailStack) {
+        $stackChain = Join-Path $root "scripts\run_sasang_rail_stack_chain_v1.py"
+        if (Test-Path -LiteralPath $stackChain) {
+            Step "Sasang rail stack (containment + P2 + P3 + stack gate)" {
+                & py $stackChain
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Sasang rail stack ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_sasang_rail_stack_chain_v1.py not found"
+        }
+    }
+
+    if ($SasangRailStackOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] SasangRailStackOnly: finished after P0 + stack chain." -ForegroundColor Green
+        exit 0
+    }
+
     if ($IncludeMcpHygieneProbe) {
         $mcpProbe = Join-Path $root "scripts\Invoke-McpHygieneProbe.ps1"
         $mcpOut = Join-Path $root "reports\mcp_hygiene_probe_latest.json"
@@ -536,7 +711,7 @@ try {
         exit 0
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly -and -not $BoundedLaneLoopSmokeOnly -and -not $MkmGpuRecommendedBundleOnly -and -not $SchedulerSoloBandGateOnly) {
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly -and -not $DeepResearchBenchSmokeOnly -and -not $BoundedLaneLoopSmokeOnly -and -not $MkmGpuRecommendedBundleOnly -and -not $OracleModuleObservabilitySmokeOnly -and -not $HanClinicEntryBOnboardingSmokeOnly -and -not $KospiLensAblationGraphragCompareOnly -and -not $ConsumerOnboardingPlaywrightSmokeOnly -and -not $SchedulerSoloBandGateOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -550,7 +725,7 @@ try {
         }
     }
 
-    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $MkmGpuRecommendedBundleOnly -or $SchedulerSoloBandGateOnly
+    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $DeepResearchBenchSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $MkmGpuRecommendedBundleOnly -or $OracleModuleObservabilitySmokeOnly -or $HanClinicEntryBOnboardingSmokeOnly -or $KospiLensAblationGraphragCompareOnly -or $ConsumerOnboardingPlaywrightSmokeOnly -or $SchedulerSoloBandGateOnly
     if ($IncludeBTrackDomainFeedbackSmoke -and -not $btProfileSkip) {
         $bt = Join-Path $root "scripts\Run-BTrackDomainFeedbackSmoke.ps1"
         if (Test-Path -LiteralPath $bt) {
@@ -633,7 +808,7 @@ try {
         }
     }
 
-    if (-not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly) {
+    if (-not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $OracleModuleObservabilitySmokeOnly) {
         Write-Host ""
         Write-Host "=== Automation registry reconcile ===" -ForegroundColor Cyan
         $rec = Join-Path $root "projects\bitcoin-trading\ops\windows-rehearsal\reconcile_automation_registry.ps1"
@@ -663,6 +838,104 @@ try {
     if ($MkmGpuRecommendedBundleOnly) {
         Write-Host ""
         Write-Host "[run_workspace_automation_health] MkmGpuRecommendedBundleOnly: finished after P0 + reconcile + GPU recommended bundle." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($IncludeOracleModuleObservabilitySmoke) {
+        Step "Oracle module observability smoke (B-track HOLD)" {
+            & py (Join-Path $root "scripts\run_logos_oracle_narrative_closure_observability_chain_v1.py") --skip-pytest
+            & py (Join-Path $root "scripts\build_mkm_oracle_module_scheduler_coexistence_v1.py")
+        }
+    }
+
+    if ($OracleModuleObservabilitySmokeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] OracleModuleObservabilitySmokeOnly: finished after P0 + observability smoke." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($IncludeMkmDeploymentAxisIsolationSmoke) {
+        Step "MKM deployment axis isolation smoke (mkmlife CF vs jema/logos DNS)" {
+            & py (Join-Path $root "scripts\run_mkm_deployment_axis_isolation_chain_v1.py") --profile core
+        }
+    }
+
+    if ($MkmDeploymentAxisIsolationSmokeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] MkmDeploymentAxisIsolationSmokeOnly: finished after P0 + axis isolation probe." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($IncludeHanClinicEntryBOnboardingSmoke) {
+        Step "Han clinic Entry B onboarding smoke (infra gate + card chain; research_only HOLD)" {
+            & py (Join-Path $root "scripts\run_han_clinic_owner_entry_b_onboarding_chain_v1.py")
+        }
+    }
+
+    if ($HanClinicEntryBOnboardingSmokeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] HanClinicEntryBOnboardingSmokeOnly: finished after P0 + Entry B onboarding chain." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($IncludeKospiLensAblationGraphragCompare) {
+        Step "KOSPI lens ablation GraphRAG sidebar compare (scoring invariant; research_only HOLD)" {
+            & py -m pytest (Join-Path $root "tests\test_kospi_lens_ablation_graphrag_sidebar_v1.py") -q --tb=short
+        }
+    }
+
+    if ($IncludeMyeongniSasangGraphragOllamaBench) {
+        Step "Myeongni+Sasang GraphRAG Ollama live bench gate (artifact; wires_to_scoring_core false)" {
+            & py (Join-Path $root "scripts\check_myeongni_sasang_graphrag_ollama_live_bench_gate_v1.py")
+            & py -m pytest (Join-Path $root "tests\test_myeongni_sasang_graphrag_ollama_live_bench_gate_v1.py") -q --tb=short
+        }
+    }
+
+    if ($MyeongniSasangGraphragOllamaBenchOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] MyeongniSasangGraphragOllamaBenchOnly: finished after P0 + GraphRAG Ollama bench gate." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($KospiLensAblationGraphragCompareOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] KospiLensAblationGraphragCompareOnly: finished after P0 + GraphRAG ablation compare." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($IncludeKospiDartMdaPocMultiCorpSmoke) {
+        Step "KOSPI DART MD&A PoC multi-corp live (fixture chain + 3-corp observational; research_only HOLD)" {
+            & py (Join-Path $root "scripts\run_kospi_dart_mda_poc_followup_chain_v1.py")
+        }
+    }
+
+    if ($KospiDartMdaPocMultiCorpSmokeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] KospiDartMdaPocMultiCorpSmokeOnly: finished after P0 + KOSPI DART MD&A multi-corp followup chain." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($IncludeConsumerOnboardingPlaywrightSmoke) {
+        Step "Consumer onboarding Playwright (mkmlife :3105 + personadiary :3010)" {
+            & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\Run-ConsumerOnboardingPlaywrightSmoke_v1.ps1")
+        }
+    }
+
+    if ($ConsumerOnboardingPlaywrightSmokeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] ConsumerOnboardingPlaywrightSmokeOnly: finished after P0 + consumer onboarding Playwright." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($IncludeMagicOrbDesignReadiness) {
+        Step "Magic Orb design readiness (Playwright + engineering merge)" {
+            & py (Join-Path $root "scripts\run_magic_orb_design_readiness_chain_v1.py")
+        }
+    }
+
+    if ($MagicOrbDesignReadinessOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] MagicOrbDesignReadinessOnly: finished after P0 + design readiness chain." -ForegroundColor Green
         exit 0
     }
 
@@ -883,9 +1156,49 @@ try {
         }
     }
 
+    if ($IncludeCursorTurnMetaAudit) {
+        $turnMetaAudit = Join-Path $root "scripts\check_mkm_cursor_turn_meta_audit_v1.py"
+        if (Test-Path -LiteralPath $turnMetaAudit) {
+            Step "Pillar A turn_meta jsonl audit (suspect_first; sparse_log WARN ok)" {
+                & py $turnMetaAudit
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Pillar A turn_meta audit ===" -ForegroundColor Yellow
+            Write-Host "SKIP: check_mkm_cursor_turn_meta_audit_v1.py not found"
+        }
+    }
+
+    if ($IncludePillarACursorContinuitySmoke) {
+        $pillarSmoke = Join-Path $root "scripts\run_mkm_pillar_a_cursor_health_smoke_v1.py"
+        if (Test-Path -LiteralPath $pillarSmoke) {
+            Step "Pillar A cursor continuity health smoke (audit + continuity/route bench + diet strict)" {
+                & py $pillarSmoke
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Pillar A cursor continuity health smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_mkm_pillar_a_cursor_health_smoke_v1.py not found"
+        }
+    }
+
     if ($BoundedLaneLoopSmokeOnly) {
         Write-Host ""
         Write-Host "[run_workspace_automation_health] BoundedLaneLoopSmokeOnly: finished after P0 + bounded lane loop shadow smoke." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($CursorTurnMetaAuditOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] CursorTurnMetaAuditOnly: finished after P0 + turn_meta audit." -ForegroundColor Green
+        exit 0
+    }
+
+    if ($PillarACursorContinuitySmokeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] PillarACursorContinuitySmokeOnly: finished after P0 + pillar A cursor health smoke." -ForegroundColor Green
         exit 0
     }
 
@@ -950,6 +1263,45 @@ try {
             Write-Host ""
             Write-Host "=== Premium B-track multilens report smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: premium multilens pytest file(s) missing"
+        }
+    }
+
+    if ($IncludeDeepResearchBenchSmoke) {
+        $drBenchPytests = @(
+            (Join-Path $root "tests\test_mkm_deep_research_bench_mini_v1.py"),
+            (Join-Path $root "tests\test_build_mkm_deep_research_bench_ops_paste_v1.py")
+        )
+        $drBenchScript = Join-Path $root "scripts\run_mkm_deep_research_bench_mini_v1.py"
+        $drPasteScript = Join-Path $root "scripts\build_mkm_deep_research_bench_ops_paste_v1.py"
+        $drMissing = $false
+        foreach ($t in $drBenchPytests) {
+            if (-not (Test-Path -LiteralPath $t)) {
+                Write-Host "SKIP: DR bench pytest missing: $t" -ForegroundColor Yellow
+                $drMissing = $true
+            }
+        }
+        if (-not (Test-Path -LiteralPath $drBenchScript)) {
+            Write-Host "SKIP: DR bench harness missing: $drBenchScript" -ForegroundColor Yellow
+            $drMissing = $true
+        }
+        if (-not (Test-Path -LiteralPath $drPasteScript)) {
+            Write-Host "SKIP: DR bench ops paste builder missing: $drPasteScript" -ForegroundColor Yellow
+            $drMissing = $true
+        }
+        if (-not $drMissing) {
+            Step "DR bench mini offline smoke (pytest + offline harness --require-entry-level + ops paste; B-track)" {
+                & py -m pytest @drBenchPytests -q --tb=short
+                if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+                & py $drBenchScript --offline --include-router --require-entry-level
+                if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+                & py $drPasteScript
+                if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== DR bench mini offline smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: DR bench file(s) missing"
         }
     }
 

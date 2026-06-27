@@ -22,8 +22,9 @@ def test_merge_checkpoint_inner_prepends_and_caps():
     inner = "\n- **2026-01-01T00:00:00Z** — old one\n"
     out = mod._merge_checkpoint_inner(inner, "2026-02-02T00:00:00Z", "new one", max_lines=3)
     lines = out.splitlines()
-    assert lines[0] == "- **2026-02-02T00:00:00Z** — new one"
-    assert lines[1] == "- **2026-01-01T00:00:00Z** — old one"
+    assert lines[0] == mod.CENTRAL_MARKER
+    assert lines[1] == "- **2026-02-02T00:00:00Z** — new one"
+    assert lines[2] == "- **2026-01-01T00:00:00Z** — old one"
 
 
 def test_merge_checkpoint_inner_trims_oldest_when_over_cap():
@@ -34,10 +35,11 @@ def test_merge_checkpoint_inner_trims_oldest_when_over_cap():
     )
     out = mod._merge_checkpoint_inner(inner, "2026-12-12T00:00:00Z", "fresh", max_lines=3)
     lines = out.splitlines()
-    assert len(lines) == 3
-    assert "fresh" in lines[0]
-    assert "line1" in lines[1]
-    assert "line2" in lines[2]
+    assert len(lines) == 4
+    assert lines[0] == mod.CENTRAL_MARKER
+    assert "fresh" in lines[1]
+    assert "line1" in lines[2]
+    assert "line2" in lines[3]
     assert "line3" not in out
 
 

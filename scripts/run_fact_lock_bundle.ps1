@@ -26,7 +26,9 @@
   3d3b-hub. `py scripts/check_mkm_universe_hub_shell_v2.py` + universe hub UX pytest 6종(CI `Universe Hub v2 UX gate` 단계; `4c` domain design offline pytest에 포함). `-SkipMkmDomainDesignOfflineSmoke` 로 생략.
   3e. `py -m pytest …` — 한의 의사 CDS 봉투 v1 스키마·빌더·JSONL 배치 + 환자 통합 번들(`patient_care_bundle_v1`) 스키마·assemble·CDS 체인·슬롯 템플릿/정책/MD 렌더(`test_patient_care_bundle_templates_policy_render_v1`)·원클릭 `Invoke-PatientCareBundleAssemblePatientFacing_v1.ps1` + `tests/test_automation_registry_json_v1.py`(자동화 레지스트리 MKM 태스크명; dual-regime 동일 단계). `-SkipKmPhysicianCdsEnvelope` 로 생략.
   4. `py -m pytest tests/test_build_daily_execution_insight_brief_v1.py` — 일일 실행 인사이트 브리프 머티리얼라이저(CONSTITUTION §3.3)
+  4a. `py -m pytest tests/test_mkm_parallel_advisory_brief_v1.py tests/test_lens_context_mesh_v1.py tests/test_lens_context_mesh_myeongni_v1.py tests/test_four_lens_yinyang_regularization_v1.py` — Parallel Advisory + lens context mesh + 5-slot LIT (Obsidian local graph; B-track)
   4b. `py -m pytest tests/test_premium_btrack_multilens_report_schema_v1.py tests/test_build_premium_btrack_multilens_report_v1.py tests/test_premium_multilens_job_queue_stub_v1.py tests/test_build_premium_multilens_queue_promotion_gate_v1.py` — Premium B-track multi-lens report v1(스키마·동기 빌더 subprocess·파일 큐 스텁·S1 승격 게이트 회귀); 직후 **`py scripts/premium_multilens_job_queue_stub_v1.py drain --allow-missing-queue`**(큐 없으면 SKIP·exit 0)·**`py scripts/build_premium_multilens_queue_promotion_gate_v1.py --skip-pytest`**(S1_SHADOW 승격 게이트 산출); 일상 원클릭은 **`scripts/Invoke-PremiumMultilensQueueRoutine_v1.ps1`**; `dual-regime-integrity.yml` 동일 pytest+drain+gate 단계
+  4b-bigset. `py -m pytest tests/test_bigset_ingest_spike_chain_v1.py tests/test_check_bigset_tier0_timeline_order_v1.py tests/test_bigset_tier0_timeline_repair_and_atypical_v1.py tests/test_bigset_logos_fusion_chain_v1.py tests/test_bigset_tier0_atypical_human_review_queue_stub_v1.py tests/test_bigset_tier0_csv_accumulate_v1.py tests/test_filter_bigset_tier0_csv_by_topic_v1.py` — BigSet Tier-0 ingest triple gate + fusion + human review queue stub + CSV accumulate + topic filter(CI `BigSet Tier-0 ingest triple gate` 단계와 동일). `-SkipBigsetIngestTripleGateSmoke` 로 생략.
   4c. `py scripts/check_mkm_domain_design_tokens_v1.py` + domain design offline pytest 8종(tokens·personadiary·mkmlife facade). `-SkipMkmDomainDesignOfflineSmoke` 로 생략. 라이브 결선은 **`Invoke-MkmDomainDesignClosureBundle_v1.ps1`**.
   5. `py -m pytest tests/test_emit_myeongni_thin_bridge_line_v1.py` — 명리 독립 렌즈 → Thin JSONL 브리지(§3.6)
   5b. `py -m pytest tests/test_validate_mkm_personal_briefing_guardrails_v1.py` — 개인 인사이트 브리핑 Fact-Lock 휴리스틱(운영 단계 라벨·시장↔부채 합선)
@@ -41,6 +43,8 @@
   5g. (선택) `-IncludeKoShortsSmoke` — ko shorts STT 자막 파이프라인 offline pytest 9종(B-track; whisper 미실행). 원클릭: `py scripts/run_ko_shorts_full_chain_v1.py --include-delegate --include-drift-kpi`.
   5h. (선택) `-IncludeMkmDeploymentAxisIsolationSmoke` — mkmlife CF vs jema/logos DNS deploy-axis 격벽 probe pytest + live chain(`--profile core`; B-track `[HYPO]`). 주간 Task `MKM_Deployment_Axis_Isolation_Weekly`.
   5i. (선택) `-IncludeMagicOrbDesignReadiness` — Magic Orb **design/UX** Playwright screenshot + `magic_orb_design_readiness_v1` merge(B-track; `consumer_ready` false면 holistic 「잘 됨」 금지). chain `run_magic_orb_design_readiness_chain_v1.py`.
+  5i2. (선택) `-IncludeHanClinicEntryBOnboardingSmoke` — Entry B 원장 온보딩 체인(`run_han_clinic_owner_entry_b_onboarding_chain_v1.py`; infra gate + card; `research_only` HOLD).
+  5i3. (선택) `-IncludeKospiLensAblationGraphragCompare` — KOSPI lens ablation GraphRAG sidebar On/Off compare(`run_kospi_lens_ablation_backtest_v1.py --graphrag-sidebar compare` + pytest; `scoring_invariant` 격벽; `research_only` HOLD).
   5j. (선택) `-IncludeMarketingIpGovernance` — P0 marketing/showroom IP gate + pytest (`check_mkm_marketing_ip_governance_v1.py`; sync_showroom pre-scp와 동일).
   5d2. `py -m pytest tests/test_va_fusion_control_integrity_chain_v1.py tests/test_va_fusion_policy_golden_v1.py` — VA→fusion→감사 체인 + `va_tag_boost_v1` 정책 골든(CONSTITUTION §3.8.4). `-SkipVaFusionControlIntegritySmoke` 로 생략.
   5e. 사상–사주 조인트 문헌·큐레이트 회귀 **9**개 파일(Europe PMC 픽스처·오프라인 **7** + 인제스트 **1** + staleness **1**; CONSTITUTION §3.3 표「사상체질↔문헌↔사주 조인트」). `-SkipSasangSajuJointLiteraturePipeline` 로 생략.
@@ -245,6 +249,12 @@ param(
     # Optional: Magic Orb design/UX readiness (Playwright + merge; consumer_ready gate)
     [switch]$IncludeMagicOrbDesignReadiness,
 
+    # Optional: Entry B han clinic owner onboarding chain smoke (infra gate + card; research_only HOLD)
+    [switch]$IncludeHanClinicEntryBOnboardingSmoke,
+
+    # Optional: KOSPI lens ablation GraphRAG sidebar compare (scoring invariant; research_only HOLD)
+    [switch]$IncludeKospiLensAblationGraphragCompare,
+
     # Optional: P0 marketing IP governance gate (showroom public copy blocklist + positioning Fact-Lock)
     [switch]$IncludeMarketingIpGovernance,
 
@@ -325,6 +335,9 @@ param(
 
     # MKM multi-domain design tokens + personadiary/mkmlife offline pytest (no live HTTP)
     [switch]$SkipMkmDomainDesignOfflineSmoke,
+
+    # BigSet Tier-0 ingest triple gate + fusion chain dry-run pytest (4 files; CI parity)
+    [switch]$SkipBigsetIngestTripleGateSmoke,
 
     # Cursor rules context diet + slim AGENTS.md line budget (default on)
     [switch]$SkipCursorRulesContextDiet
@@ -414,6 +427,12 @@ $sttRoutingAuditShowroomTrustSlicePytests = @(
     (Join-Path $workspaceRoot 'tests\test_build_showroom_trust_visualization_slice_v1.py')
 )
 $dailyExecutionInsightBriefTest = Join-Path $workspaceRoot 'tests\test_build_daily_execution_insight_brief_v1.py'
+$parallelAdvisoryLensMeshPytests = @(
+    (Join-Path $workspaceRoot 'tests\test_mkm_parallel_advisory_brief_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_lens_context_mesh_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_lens_context_mesh_myeongni_v1.py'),
+    (Join-Path $workspaceRoot 'tests\test_four_lens_yinyang_regularization_v1.py')
+)
 $premiumBtrackMultilensReportPytests = @(
     (Join-Path $workspaceRoot 'tests\test_premium_btrack_multilens_report_schema_v1.py'),
     (Join-Path $workspaceRoot 'tests\test_build_premium_btrack_multilens_report_v1.py'),
@@ -874,6 +893,17 @@ if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
+foreach ($t in $parallelAdvisoryLensMeshPytests) {
+    if (-not (Test-Path -LiteralPath $t)) {
+        throw "Parallel advisory / lens mesh pytest not found: $t"
+    }
+}
+Write-Host '== Fact-Lock: parallel_advisory + lens_context_mesh (B-track) ==' -ForegroundColor Cyan
+& py -m pytest @parallelAdvisoryLensMeshPytests -q --tb=short
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
+
 foreach ($t in $premiumBtrackMultilensReportPytests) {
     if (-not (Test-Path -LiteralPath $t)) {
         throw "Premium B-track multilens report pytest not found: $t"
@@ -897,6 +927,29 @@ if (Test-Path -LiteralPath $premiumQueueStub) {
 if (Test-Path -LiteralPath $premiumQueuePromotionGate) {
     Write-Host '== Fact-Lock: premium_multilens queue promotion gate v1 (S1 shadow; --skip-pytest) ==' -ForegroundColor Cyan
     & py $premiumQueuePromotionGate --skip-pytest --root $workspaceRoot
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if (-not $SkipBigsetIngestTripleGateSmoke) {
+    $bigsetIngestTripleGatePytests = @(
+        (Join-Path $workspaceRoot 'tests\test_bigset_ingest_spike_chain_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_check_bigset_tier0_timeline_order_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_bigset_tier0_timeline_repair_and_atypical_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_bigset_logos_fusion_chain_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_bigset_tier0_atypical_human_review_queue_stub_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_bigset_tier0_csv_accumulate_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_filter_bigset_tier0_csv_by_topic_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_bigset_studio_conflict_sidecar_smoke_v1.py')
+    )
+    foreach ($t in $bigsetIngestTripleGatePytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "BigSet ingest triple gate pytest not found: $t"
+        }
+    }
+    Write-Host '== Fact-Lock: BigSet Tier-0 ingest triple gate + fusion chain (dual-regime parity) ==' -ForegroundColor Cyan
+    & py -m pytest @bigsetIngestTripleGatePytests -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }
@@ -1284,6 +1337,34 @@ if ($IncludeMagicOrbDesignReadiness) {
     }
     Write-Host '== Fact-Lock (optional): Magic Orb design readiness (probe + Playwright + SSOT merge) ==' -ForegroundColor Cyan
     & py $designChain
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeHanClinicEntryBOnboardingSmoke) {
+    $entryBChain = Join-Path $workspaceRoot 'scripts\run_han_clinic_owner_entry_b_onboarding_chain_v1.py'
+    if (-not (Test-Path -LiteralPath $entryBChain)) {
+        throw "han clinic Entry B onboarding chain not found: $entryBChain"
+    }
+    Write-Host '== Fact-Lock (optional): Han clinic Entry B onboarding chain (infra gate + card) ==' -ForegroundColor Cyan
+    & py $entryBChain
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeKospiLensAblationGraphragCompare) {
+    $ablationScript = Join-Path $workspaceRoot 'scripts\run_kospi_lens_ablation_backtest_v1.py'
+    $graphragPytest = Join-Path $workspaceRoot 'tests\test_kospi_lens_ablation_graphrag_sidebar_v1.py'
+    if (-not (Test-Path -LiteralPath $ablationScript)) {
+        throw "KOSPI lens ablation script not found: $ablationScript"
+    }
+    if (-not (Test-Path -LiteralPath $graphragPytest)) {
+        throw "KOSPI lens ablation GraphRAG pytest not found: $graphragPytest"
+    }
+    Write-Host '== Fact-Lock (optional): KOSPI lens ablation GraphRAG sidebar compare (invariant; research_only) ==' -ForegroundColor Cyan
+    & py -m pytest $graphragPytest -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

@@ -49,24 +49,21 @@ def test_build_index_document_with_fixtures(tmp_path: Path) -> None:
     mission = tmp_path / "MISSION_LOG.md"
     mission.write_text(
         "# MISSION_LOG\n\n"
+        "**다음 1타 (레인 · 재개용 핀):**\n\n"
+        "| **Oracle·Logos** | **금지:** Track A·live · **HOLD** |\n"
+        "| **MS·지원사업** | **SEND_GATE: HOLD** · **금지:** grant paste |\n"
+        "**Design/Showroom (아카이브·패시브):** **금지:** Track A · **SEND_GATE: HOLD**\n\n"
         "## 🚀 전술 작전 보드\n\n"
-        "**금지:** offline_4d bulk 500 merge · Track A·실매매\n"
-        "FAIL-COMP-004 active report only.\n"
+        "### 💼 MS\n\n"
+        "**금지:** Track A · FAIL-COMP-004\n"
         "SEND_GATE: HOLD\n\n"
-        "### 📦 핸드오ff · 다른 채팅 융합\n\n"
-        "handoff tail\n\n"
-        "**다음 1타 (레인 · 새 채팅):**\n\n"
-        "| 레인 | 다음 1타 |\n"
-        "| **Oracle·예언·align-panel** | **금지:** Track A·실매매 · **HOLD** |\n"
-        "| **CROSS_REF·DSS [HYPO]** | HOLD |\n"
-        "| **Infra/GPU** | **금지:** Track A·live·match% · **HOLD** |\n"
-        "| **Clinic·SDIT·Insight** | clinic |\n"
-        "| **Design/Showroom** | **금지:** Track A · **SEND_GATE: HOLD** |\n"
-        "| **압축·Moat (GitHub)** | moat |\n"
-        "| **MS** | **HOLD** · **금지:** 에이전트 포털 · **MS** |\n"
-        "| **환자·최소영 (Track B)** | patient |\n\n"
-        "### 🧠 메타인지\n\n"
-        "meta tail\n",
+        "### 🧭 Cursor IDE\n\n"
+        "cursor\n\n"
+        "### 🔮 Oracle\n\n"
+        "**금지:** Track A · B-track only\n\n"
+        "### 🖥️ Infra\n\n"
+        "**금지:** Track A · solo stack\n\n"
+        "<!-- MISSION_LOG_BOARD_END -->\n",
         encoding="utf-8",
     )
     central_dir = tmp_path / "docs" / "final"
@@ -92,19 +89,19 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
     mission = tmp_path / "MISSION_LOG.md"
     mission.write_text(
         "# MISSION_LOG\n\n"
+        "**다음 1타 (레인 · 재개용 핀):**\n\n"
+        "| **Oracle·Logos** | **금지:** Track A · **HOLD** |\n"
+        "**Design/Showroom (아카이브·패시브):** **금지:** Track A · **SEND_GATE: HOLD**\n\n"
         "## 🚀 전술 작전 보드\n\n"
         "FAIL-COMP-004 · Track A · SEND_GATE: HOLD\n\n"
-        "### 📦 핸드오ff · 다른 채팅 융합\n\n"
-        "**다음 1타 (레인 · 새 채팅):**\n\n"
-        "| **Oracle·예언·align-panel** | **금지:** Track A·실매매 · **HOLD** |\n"
-        "| **CROSS_REF·DSS [HYPO]** | hold |\n"
-        "| **Infra/GPU** | **금지:** Track A·live · **HOLD** |\n"
-        "| **Clinic·SDIT·Insight** | c |\n"
-        "| **Design/Showroom** | **금지:** Track A · **SEND_GATE: HOLD** |\n"
-        "| **압축·Moat (GitHub)** | moat |\n"
-        "| **MS** | **HOLD** · **금지:** 에이전트 · **MS** row |\n"
-        "| **환자·최소영 (Track B)** | p |\n\n"
-        "### 🧠 메타인지\n\n",
+        "### 💼 MS\n\n"
+        "**MS** row · **금지:** portal · SEND_GATE HOLD\n\n"
+        "### 🧭 Cursor IDE\n\n"
+        "### 🔮 Oracle\n\n"
+        "**금지:** Track A · B-track\n\n"
+        "### 🖥️ Infra\n\n"
+        "**금지:** Track A · solo\n\n"
+        "<!-- MISSION_LOG_BOARD_END -->\n",
         encoding="utf-8",
     )
     central_dir = tmp_path / "docs" / "final"
@@ -117,42 +114,73 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     doc = build_index_document(tmp_path)
-    lane_ids = [nid for nid, _ in nodes_for_resume(doc, lane="oracle")]
+    lane_ids = [nid for nid, _ in nodes_for_resume(doc, lane="ms")]
     assert lane_ids == [
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
-        "prism_ops_lane_oracle",
+        "prism_ops_lane_ms",
     ]
     assert "prism_ops_mission_log_next_one" not in lane_ids
 
-    design_ids = [nid for nid, _ in nodes_for_resume(doc, lane="design")]
+    reports = tmp_path / "reports"
+    reports.mkdir(parents=True)
+    (reports / "mkmlife_pixel_sprite_urls_gate_v1_latest.json").write_text(
+        json.dumps(
+            {
+                "overall_ok": True,
+                "ok_count": 1,
+                "fail_count": 0,
+                "track_wall": "B-track UI",
+                "hypothesis_tag": "[HYPO]",
+                "lane": "research_only",
+            }
+        ),
+        encoding="utf-8",
+    )
+    (reports / "audio_gate_latest.json").write_text(
+        json.dumps(
+            {
+                "decision": "PASS",
+                "track": "B",
+                "metrics": {"lens_alignment_pass": True},
+                "provenance": {"commercial_terms_tag": "apache2_self_host_weights_v1"},
+            }
+        ),
+        encoding="utf-8",
+    )
+    design_ids = [nid for nid, _ in nodes_for_resume(doc, lane="design", root=tmp_path)]
     assert design_ids == [
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_design",
+        "prism_ops_pixel_battalion_gate",
+        "prism_ops_lens_audio_gate",
     ]
 
     out = tmp_path / "storage" / "meta" / "index.json"
     out.parent.mkdir(parents=True)
     out.write_text(json.dumps(doc, ensure_ascii=False, indent=2), encoding="utf-8")
     loaded = json.loads(out.read_text(encoding="utf-8"))
-    assert loaded["nodes"]["prism_ops_mission_log_board"]["line_range"][0] == 3
+    assert loaded["nodes"]["prism_ops_mission_log_board"]["line_range"][0] == 8
 
 
 def test_nodes_for_resume_commander_default(tmp_path: Path) -> None:
     mission = tmp_path / "MISSION_LOG.md"
     mission.write_text(
         "# MISSION_LOG\n\n"
+        "**다음 1타 (레인 · 재개용 핀):**\n\n"
+        "| **Oracle·Logos** | **금지:** Track A · **HOLD** |\n"
+        "**Design/Showroom (아카이브·패시브):** **금지:** Track A · **SEND_GATE: HOLD**\n\n"
         "## 🚀 전술 작전 보드\n\n"
         "FAIL-COMP-004 · Track A · SEND_GATE: HOLD\n\n"
-        "### 📦 핸드오ff · 다른 채팅 융합\n\n"
-        "**다음 1타 (레인 · 새 채팅):**\n\n"
-        "| **Oracle·예언·align-panel** | **금지:** Track A·실매매 · **HOLD** |\n"
-        "| **Infra/GPU** | **금지:** Track A·live · **HOLD** · **GPU** |\n"
-        "| **Design/Showroom** | **금지:** Track A · **SEND_GATE: HOLD** |\n"
-        "| **압축·Moat (GitHub)** | moat |\n"
-        "| **MS** | **HOLD** · **금지:** portal · **MS** |\n\n"
-        "### 🧠 메타인지\n\n",
+        "### 💼 MS\n\n"
+        "**MS** · **금지:** portal · SEND_GATE HOLD\n\n"
+        "### 🧭 Cursor IDE\n\n"
+        "### 🔮 Oracle\n\n"
+        "**금지:** Track A · B-track\n\n"
+        "### 🖥️ Infra\n\n"
+        "**금지:** Track A · solo\n\n"
+        "<!-- MISSION_LOG_BOARD_END -->\n",
         encoding="utf-8",
     )
     central_dir = tmp_path / "docs" / "final"
@@ -176,10 +204,12 @@ def test_nodes_for_resume_commander_default(tmp_path: Path) -> None:
 def test_gate_fails_when_tag_stripped(tmp_path: Path) -> None:
     mission = tmp_path / "MISSION_LOG.md"
     mission.write_text(
+        "**다음 1타 (레인 · 재개용 핀):**\n\n"
+        "| lane | next |\n\n"
         "## 🚀 전술 작전 보드\n\n"
         "Track A only — bulk tag removed\n\n"
         "SEND_GATE: HOLD\n\n"
-        "### 📦 핸드오ff · 다른 채팅 융합\n",
+        "<!-- MISSION_LOG_BOARD_END -->\n",
         encoding="utf-8",
     )
     central_dir = tmp_path / "docs" / "final"

@@ -25,6 +25,11 @@
   Max chars per anchor slice preview (default 1200).
 .PARAMETER IncludeA2aPilot
   [HYPO] tp01 — run build_mkm_chat_resume_a2a_pilot_v1.py after token bench (B-track wire only).
+.PARAMETER Lane
+  oracle | ms | infra | web_ops — pass to resume pack builder.
+
+.PARAMETER ResumeMode
+  Standard (default) or AdvancedLogos — 「장기기억 맥락이어 고급해석」 (forces oracle lane when AdvancedLogos).
 #>
 param(
     [switch]$SkipBench,
@@ -33,13 +38,20 @@ param(
     [switch]$RepairV2Slice,
     [switch]$IncludeA2aPilot,
     [int]$SliceMaxChars = 1200,
-    [ValidateSet("oracle", "ms", "infra", "web_ops")]
-    [string]$Lane = ""
+    [ValidateSet("oracle", "ms", "infra", "web_ops", "design")]
+    [string]$Lane = "",
+    [ValidateSet("", "Standard", "AdvancedLogos")]
+    [string]$ResumeMode = ""
 )
 
 $ErrorActionPreference = "Stop"
 $root = "C:\workspace"
 Set-Location -LiteralPath $root
+
+if ($ResumeMode -eq "AdvancedLogos" -and -not $Lane) {
+    $Lane = "oracle"
+}
+$resumeModePy = if ($ResumeMode -eq "AdvancedLogos") { "advanced_logos" } else { "standard" }
 
 function Invoke-Step {
     param([string]$Name, [string[]]$Command)
@@ -63,9 +75,19 @@ if (-not $DryRunIndex) {
     Invoke-Step -Name "must_keep_gate_source" -Command @(
         "py", "scripts/check_mkm_ops_memory_must_keep_gate_v1.py", "--phase", "source"
     )
-    $resumeArgs = @("py", "scripts/build_mkm_chat_resume_pack_v1.py")
+    if ($Lane -eq "oracle") {
+        Invoke-Step -Name "merge_logos_math_overlay_oracle" -Command @(
+            "py", "scripts/build_mkm_ops_memory_logos_math_overlay_v1.py"
+        )
+    }
+    if ($Lane -eq "design") {
+        Invoke-Step -Name "merge_domain_adapters_overlay_design" -Command @(
+            "py", "scripts/build_mkm_ops_memory_domain_adapters_overlay_v1.py"
+        )
+    }
+    $resumeArgs = @("py", "scripts/build_mkm_chat_resume_pack_v1.py", "--resume-mode", $resumeModePy)
     if ($Lane) {
-        $resumeArgs += @("--lane", $Lane)
+        $resumeArgs += @("--lane", $Lane, "--infer-topic-from-lane")
     }
     if ($RepairV2Slice) {
         $resumeArgs += @("--repair-v2-slice", "--slice-max-chars", "$SliceMaxChars")

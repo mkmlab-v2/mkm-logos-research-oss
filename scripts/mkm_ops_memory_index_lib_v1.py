@@ -36,8 +36,8 @@ NODE_SPECS: tuple[NodeSpec, ...] = (
         node_id="prism_ops_mission_log_board",
         file_path="MISSION_LOG.md",
         anchor_start="## 🚀 전술 작전 보드",
-        anchor_end="### 📦 핸드오프 · 다른 채팅 융합",
-        essence="작전 보드 SSOT — 사업화·압축 격벽·Track A 금지·B2B SEND_GATE HOLD",
+        anchor_end="<!-- MISSION_LOG_BOARD_END -->",
+        essence="작전 보드 SSOT — active lanes only · Track A 금지 · SEND_GATE HOLD",
         must_keep_tags=("FAIL-COMP-004", "Track A", "SEND_GATE: HOLD"),
         priority=10,
     ),
@@ -53,45 +53,45 @@ NODE_SPECS: tuple[NodeSpec, ...] = (
     NodeSpec(
         node_id="prism_ops_mission_log_next_one",
         file_path="MISSION_LOG.md",
-        anchor_start="**다음 1타 (레인 · 새 채팅):**",
-        anchor_end="### 🧠 메타인지",
-        essence="레인별 다음 1타 SSOT — 재개 복붙·HOLD·Track A·실매매 금지",
+        anchor_start="**다음 1타 (레인 · 재개용 핀):**",
+        anchor_end="## 🚀 전술 작전 보드",
+        essence="레인별 다음 1타 SSOT — 재개 핀 · HOLD · Track A·실매매 금지",
         must_keep_tags=("Track A", "HOLD", "금지"),
         priority=8,
     ),
     NodeSpec(
         node_id="prism_ops_lane_oracle",
         file_path="MISSION_LOG.md",
-        anchor_start="| **Oracle·예언·align-panel** |",
-        anchor_end="| **CROSS_REF·DSS [HYPO]** |",
-        essence="Oracle 레인 다음 1타 — 예언·진화·Inception 관측 · Track A·실매매 금지",
-        must_keep_tags=("Track A", "실매매", "금지"),
+        anchor_start="### 🔮 Oracle",
+        anchor_end="### 🖥️ Infra",
+        essence="Oracle 레인 — Logos·align-panel · narrative_lane_open · Track A·live 금지",
+        must_keep_tags=("Track A", "금지", "B-track"),
         priority=7,
     ),
     NodeSpec(
         node_id="prism_ops_lane_infra",
         file_path="MISSION_LOG.md",
-        anchor_start="| **Infra/GPU** |",
-        anchor_end="| **Clinic·SDIT·Insight** |",
-        essence="Infra/GPU 레인 — Interpret·DailyOpsPatrol · Track A·live·match% 헤드라인 금지",
-        must_keep_tags=("Track A", "금지", "GPU"),
+        anchor_start="### 🖥️ Infra",
+        anchor_end="<!-- MISSION_LOG_BOARD_END -->",
+        essence="Infra 레인 — solo stack·scheduler band · Track A·live 금지",
+        must_keep_tags=("Track A", "금지", "solo"),
         priority=7,
     ),
     NodeSpec(
         node_id="prism_ops_lane_ms",
         file_path="MISSION_LOG.md",
-        anchor_start="| **MS** |",
-        anchor_end="| **환자·최소영 (Track B)** |",
-        essence="MS 레인 — 지휘관 수동 제출만 · 에이전트 포털·% 헤드라인 금지",
-        must_keep_tags=("MS", "금지", "HOLD"),
+        anchor_start="### 💼 MS",
+        anchor_end="### 🧭 Cursor IDE",
+        essence="MS 레인 — 지원사업 CLOSED·B2B HOLD · 에이전트 제출 금지",
+        must_keep_tags=("MS", "SEND_GATE", "금지"),
         priority=7,
     ),
     NodeSpec(
         node_id="prism_ops_lane_design",
         file_path="MISSION_LOG.md",
-        anchor_start="| **Design/Showroom** |",
-        anchor_end="| **압축·Moat (GitHub)** |",
-        essence="Design/Showroom 레인 — hub·jemaai·쇼룸 · Track A·% 헤드라인 금지",
+        anchor_start="**Design/Showroom (아카이브",
+        anchor_end="## 🚀 전술 작전 보드",
+        essence="Design/Showroom 레인 — 아카이브·패시브 · SEND_GATE HOLD",
         must_keep_tags=("Track A", "금지", "SEND_GATE: HOLD"),
         priority=7,
     ),
@@ -102,6 +102,15 @@ LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_oracle",
+        "prism_ops_theory_mathematization_gate",
+        "prism_ops_theory_formula_ssot",
+        "prism_ops_logos_cosmic_anchor_bridge",
+        "prism_ops_logos_narrative_router_eval",
+        "prism_ops_logos_router_regression_bundle",
+        "prism_ops_logos_four_force_report",
+        "prism_ops_logos_gematria_dual_gate",
+        "prism_ops_logos_oracle_module_tier2_prep",
+        "prism_ops_logos_narrative_closure_observability",
     ),
     "ms": (
         "prism_ops_mission_log_board",
@@ -117,6 +126,9 @@ LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_design",
+        "prism_ops_pixel_battalion_gate",
+        "prism_ops_lens_audio_gate",
+        "prism_ops_clinic_landing_gate",
     ),
     "web_ops": (
         "prism_ops_mission_log_board",
@@ -189,6 +201,54 @@ WEB_OPS_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
     ),
 )
 
+DOMAIN_ADAPTER_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_pixel_battalion_gate",
+        file_path="reports/mkmlife_pixel_sprite_urls_gate_v1_latest.json",
+        json_pointers=(
+            "/overall_ok",
+            "/ok_count",
+            "/fail_count",
+            "/track_wall",
+            "/hypothesis_tag",
+            "/lane",
+        ),
+        essence="Pixel Battalion gate — sprite URL hard gate · B-track UI · not Track A",
+        must_keep_tags=("[HYPO]", "overall_ok", "track_wall"),
+        priority=6,
+        field_tags=("design", "pixel", "showroom", "mkmlife", "btrack"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_lens_audio_gate",
+        file_path="reports/audio_gate_latest.json",
+        json_pointers=(
+            "/decision",
+            "/track",
+            "/metrics/lens_alignment_pass",
+            "/provenance/commercial_terms_tag",
+        ),
+        essence="Lens Audio gate — lens_safe_tempo_clamp BGM PoC · research_only B-track",
+        must_keep_tags=("lens_alignment_pass", "decision", "track"),
+        priority=6,
+        field_tags=("design", "audio", "bgm", "music", "lens", "btrack"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_clinic_landing_gate",
+        file_path="reports/clinic_km_mmp_landing_gate_v1_latest.json",
+        json_pointers=(
+            "/ok",
+            "/decision",
+            "/lane_status",
+            "/send_gate",
+            "/ready_for_external_send",
+        ),
+        essence="Clinic LOI landing gate — DTCG v2 · forbidden copy · contrast · HOLD wedge",
+        must_keep_tags=("ok", "decision", "send_gate"),
+        priority=6,
+        field_tags=("design", "clinic", "landing", "trust_composition", "btrack"),
+    ),
+)
+
 FILLS_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
     JsonSliceSpec(
         node_id="prism_ops_fills_multi_res_summary",
@@ -204,6 +264,231 @@ FILLS_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
         must_keep_tags=("research_only", "n_fill_rows"),
         priority=4,
         field_tags=("btrack", "fills", "multi_res", "execution"),
+    ),
+)
+
+THEORY_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_theory_mathematization_gate",
+        file_path="docs/final/artifacts/mkm_theory_formula_promotion_gate_dryrun_v1_latest.json",
+        json_pointers=(
+            "/promotion_to_a_track_allowed",
+            "/track_b_only",
+            "/ok",
+            "/checks/5/entries",
+            "/checks/5/promotion_to_a_track_allowed",
+        ),
+        essence="이론 75식 승격 게이트 dryrun — B-track only · promotion_to_a_track_allowed=false",
+        must_keep_tags=("promotion_to_a_track_allowed", "track_b_only"),
+        priority=5,
+        field_tags=("theory", "btrack", "formula", "promotion_gate"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_theory_formula_ssot",
+        file_path="docs/final/artifacts/mkm12_75_formulas_ssot_v1_latest.json",
+        json_pointers=(
+            "/unrecovered_slots",
+            "/documented_with_expr",
+            "/repo_implemented_facts",
+        ),
+        essence="75식 SSOT 스냅샷 — catalog expr vs 4 repo FACT · HYPO index",
+        must_keep_tags=("unrecovered_slots", "documented_with_expr"),
+        priority=5,
+        field_tags=("theory", "formula", "hypo"),
+    ),
+)
+
+LOGOS_MATH_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_logos_cosmic_anchor_bridge",
+        file_path="docs/final/artifacts/logos_cosmic_anchor_graph_bridge_v1_latest.json",
+        json_pointers=(
+            "/kernel_recipe_id",
+            "/summary/lemma_hit_anchors",
+            "/summary/narrative_sample_count",
+            "/summary/resonance_edge_count",
+            "/research_only",
+            "/track_a_blocked",
+        ),
+        essence="Logos cosmic anchor bridge — 339 anchors · 200 narratives · gematria_bridge_v1 · B-track",
+        must_keep_tags=("gematria_bridge_v1", "research_only", "narrative_sample_count"),
+        priority=7,
+        field_tags=("logos", "anchor", "graph", "gematria", "btrack"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_logos_four_force_report",
+        file_path="docs/final/artifacts/logos_fundamental_force_primitive_report_v1_latest.json",
+        json_pointers=(
+            "/kernel_recipe_id",
+            "/pedagogical_isomorphism_only",
+            "/summary/force_top1_counts",
+            "/summary/harmony_top1_share",
+            "/disclaimer_ko",
+        ),
+        essence="4힘 교육용 동형 리포트 [HYPO] — gematria_bridge_v1 커널 · Track A 금지",
+        must_keep_tags=("gematria_bridge_v1", "pedagogical_isomorphism_only", "[HYPO]"),
+        priority=6,
+        field_tags=("logos", "four_force", "hypo", "gematria"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_logos_4d_state",
+        file_path="docs/final/artifacts/logos_4d_state_v1_latest.json",
+        json_pointers=(
+            "/quadrant_info/regime_tag",
+            "/narrative_oracle/policy_tag",
+            "/narrative_oracle/action",
+            "/coordinates",
+        ),
+        essence="Logos 4D daily state — WATCH quadrant · [NON_GATING] narrative assist",
+        must_keep_tags=("[NON_GATING]", "regime_tag"),
+        priority=6,
+        field_tags=("logos", "4d", "regime", "non_gating"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_logos_narrative_router_eval",
+        file_path="docs/final/artifacts/logos_narrative_path_eval_v1_latest.json",
+        json_pointers=(
+            "/summary/router_hit_rate",
+            "/summary/sample_pass_rate",
+            "/narrative_sample_count",
+            "/research_only",
+            "/send_gate",
+        ),
+        essence="Narrative router eval 200/200 — structural overlap · NOT alignment_pass_rate",
+        must_keep_tags=("router_hit_rate", "research_only", "send_gate"),
+        priority=7,
+        field_tags=("logos", "router", "graphrag", "btrack"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_logos_router_regression_bundle",
+        file_path="reports/logos_router_regression_bundle_v1_latest.json",
+        json_pointers=(
+            "/chain_pass",
+            "/send_gate",
+            "/bloom_cap",
+            "/narrative_eval/router_hit_rate",
+            "/gold_eval/gold_required_all_pass",
+        ),
+        essence="P21 router regression bundle — bloom guard + gold 12/12 · HOLD",
+        must_keep_tags=("chain_pass", "send_gate", "gold_required_all_pass"),
+        priority=8,
+        field_tags=("logos", "router", "gold", "regression"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_logos_gold_eval",
+        file_path="reports/logos_gold_query_eval_v1_latest.json",
+        json_pointers=(
+            "/summary/gold_required_all_pass",
+            "/summary/gold_required_count",
+            "/research_only",
+            "/non_gating",
+        ),
+        essence="Gold query eval 12 required — router/ANN Hit@k · non-gating",
+        must_keep_tags=("gold_required_all_pass", "research_only", "non_gating"),
+        priority=6,
+        field_tags=("logos", "gold", "retrieval", "btrack"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_logos_gematria_dual_gate",
+        file_path="docs/final/artifacts/logos_anchor_resonance_dual_gate_latest.json",
+        json_pointers=(
+            "/gates/gate_b_geometry_production/recipe_id",
+            "/gates/gate_b_geometry_production/pass",
+            "/gates/gate_b_prime_geometry_sandbox/recipe_id",
+            "/research_only",
+        ),
+        essence="Gematria 4D dual gate — production vs sandbox spread · research_only",
+        must_keep_tags=("gematria_bridge_v1", "research_only"),
+        priority=6,
+        field_tags=("logos", "gematria", "4d", "gate"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_logos_oracle_module_tier2_prep",
+        file_path="docs/final/artifacts/logos_oracle_cursor_inject_tier1_readiness_v1_latest.json",
+        json_pointers=(
+            "/tier1_module_ssot_ready",
+            "/tier2_prep_ready",
+            "/tier2_pin_schema_snapshot/resonance_cap",
+            "/tier2_pin_schema_snapshot/hd_mission_version",
+            "/hypothesis_class",
+            "/send_gate",
+            "/repro_one_shot",
+        ),
+        essence="Oracle module Tier-2 prep — Cursor inject SSOT · cap cross-SSOT read-only · HOLD",
+        must_keep_tags=("tier1_module_ssot_ready", "send_gate", "HYPO"),
+        priority=9,
+        field_tags=("logos", "oracle", "cursor", "module", "tier2"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_logos_narrative_closure_observability",
+        file_path="docs/final/artifacts/logos_oracle_narrative_closure_observability_v1_latest.json",
+        json_pointers=(
+            "/observation_pass",
+            "/observations_pass_count",
+            "/snapshot/resonance_cap",
+            "/snapshot/narrative_samples",
+            "/snapshot/read_only",
+            "/send_gate",
+            "/repro_one_shot",
+        ),
+        essence="Narrative+closure observability aggregate — read-only · NOT cap bump",
+        must_keep_tags=("observation_pass", "send_gate", "read_only"),
+        priority=8,
+        field_tags=("logos", "oracle", "observability", "closure"),
+    ),
+)
+
+LTM_A2A_NODE_CONCEPT_IDS: dict[str, str] = {
+    "ltm_ops_inject_to_a2a_wire": "ltm_ops_inject_to_a2a_wire",
+    "ltm_a2a_two_layer_architecture_ssot": "a2a_two_layer_architecture_ssot",
+    "ltm_inter_agent_encoding_smoke_chain": "inter_agent_encoding_smoke_chain",
+    "ltm_a2a_ltm_track_wall": "a2a_ltm_track_wall",
+}
+
+LTM_A2A_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="ltm_ops_inject_to_a2a_wire",
+        file_path="docs/final/artifacts/mkm_chat_resume_a2a_pilot_v1_latest.json",
+        json_pointers=(
+            "/compress_result/decision",
+            "/compress_result/compression_metrics/savings_ratio",
+            "/boundary_ack",
+        ),
+        essence="LTM tp01 resume → A2A v2 compress pilot — wire handoff only",
+        must_keep_tags=("[HYPO]", "boundary_ack"),
+        priority=8,
+        field_tags=("a2a", "ltm", "ops_memory", "tp01"),
+    ),
+    JsonSliceSpec(
+        node_id="ltm_a2a_two_layer_architecture_ssot",
+        file_path="docs/final/artifacts/mkm_a2a_two_layer_architecture_v1_latest.json",
+        json_pointers=("/schema", "/research_only", "/layers"),
+        essence="A2A 2-layer architecture — ops memory vs inter-agent wire",
+        must_keep_tags=("research_only", "layers"),
+        priority=8,
+        field_tags=("a2a", "meta_routing", "research"),
+    ),
+    JsonSliceSpec(
+        node_id="ltm_inter_agent_encoding_smoke_chain",
+        file_path="docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json",
+        json_pointers=(
+            "/rq_019",
+            "/rq_019_milestones_wire_layer_ready",
+            "/boundary_ack",
+        ),
+        essence="Inter-Agent encoding smoke status — RQ-019 milestones",
+        must_keep_tags=("boundary_ack",),
+        priority=7,
+        field_tags=("a2a", "compression", "fuel"),
+    ),
+    JsonSliceSpec(
+        node_id="ltm_a2a_ltm_track_wall",
+        file_path="docs/final/artifacts/ltm_a2a_bridge_wall_v1.json",
+        json_pointers=("/forbidden_auto_merge", "/allowed_uses", "/boundary_ack"),
+        essence="A2A·LTM track wall — no Track A·live·MS headline merge",
+        must_keep_tags=("forbidden_auto_merge", "live_trading_enable"),
+        priority=9,
+        field_tags=("a2a", "governance", "fact_lock"),
     ),
 )
 
@@ -920,12 +1205,64 @@ def build_web_ops_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
     return nodes
 
 
+def build_domain_adapter_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build JSON-slice nodes for Pixel Battalion + Lens Audio adapters ([HYPO])."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in DOMAIN_ADAPTER_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "domain_adapters_v1"
+            nodes[spec.node_id] = entry
+        except FileNotFoundError:
+            continue
+    return nodes
+
+
 def build_fills_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
     """Build JSON-slice nodes from multi-res fills index (skip missing files)."""
     nodes: dict[str, dict[str, Any]] = {}
     for spec in FILLS_JSON_SPECS:
         try:
             nodes[spec.node_id] = build_json_slice_node_entry(root, spec)
+        except FileNotFoundError:
+            continue
+    return nodes
+
+
+def build_theory_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build JSON-slice nodes from theory mathematization gate + 75-formula SSOT."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in THEORY_JSON_SPECS:
+        try:
+            nodes[spec.node_id] = build_json_slice_node_entry(root, spec)
+        except FileNotFoundError:
+            continue
+    return nodes
+
+
+def build_logos_math_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build JSON-slice nodes from Logos 4D/gematria/anchor/router artifacts ([HYPO])."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in LOGOS_MATH_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "logos_math"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
+def build_ltm_a2a_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build ltm_* JSON-slice nodes for LTM ↔ A2A bridge map ([HYPO] / B-track)."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in LTM_A2A_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "ltm_a2a"
+            concept_id = LTM_A2A_NODE_CONCEPT_IDS.get(spec.node_id, spec.node_id)
+            entry["ltm_concept_id"] = concept_id
+            nodes[spec.node_id] = entry
         except FileNotFoundError:
             continue
     return nodes
@@ -965,18 +1302,34 @@ def ensure_lane_pack_index(
     missing = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in nodes]
     if not missing:
         return index
+    merged = index
+    # web_ops lane requires JSON slice overlays from *_latest artifacts.
     if lane_key == "web_ops":
         overlay = build_web_ops_overlay_nodes(root)
         if overlay:
-            merged = merge_overlay_nodes(index, overlay)
-            still = [
-                nid
-                for nid in LANE_OPS_PACKS[lane_key]
-                if nid not in (merged.get("nodes") or {})
-            ]
-            if not still:
-                return merged
-            missing = still
+            merged = merge_overlay_nodes(merged, overlay, overlay_label="web_ops_v1")
+    # oracle lane can include theory gate/ssot JSON slices.
+    if lane_key == "oracle":
+        theory_overlay = build_theory_overlay_nodes(root)
+        if theory_overlay:
+            merged = merge_overlay_nodes(
+                merged, theory_overlay, overlay_label="theory_v1"
+            )
+        logos_overlay = build_logos_math_overlay_nodes(root)
+        if logos_overlay:
+            merged = merge_overlay_nodes(
+                merged, logos_overlay, overlay_label="logos_math_v1"
+            )
+    if lane_key == "design":
+        adapter_overlay = build_domain_adapter_overlay_nodes(root)
+        if adapter_overlay:
+            merged = merge_overlay_nodes(
+                merged, adapter_overlay, overlay_label="domain_adapters_v1"
+            )
+    still = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in (merged.get("nodes") or {})]
+    if not still:
+        return merged
+    missing = still
     raise KeyError(f"lane pack missing node: {missing[0]}")
 
 
@@ -1109,6 +1462,17 @@ LANE_TOPIC_HINTS: dict[str, tuple[str, ...]] = {
         "쇼룸",
         "portfolio",
         "domain",
+        "pixel",
+        "pixel battalion",
+        "sprite",
+        "mkmlife",
+        "audio",
+        "bgm",
+        "music",
+        "musicgen",
+        "lens audio",
+        "tempo",
+        "lens_safe_tempo",
     ),
     "oracle": (
         "oracle",
