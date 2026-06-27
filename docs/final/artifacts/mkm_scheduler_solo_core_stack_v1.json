@@ -50,7 +50,11 @@
     "\\MKM_BtrackDailyHeroBoard_Evening",
     "\\MKM_BtrackDailyHeroBoard_Morning",
     "\\MKM_Kospi_July2026_Prophecy_Evening",
-    "\\MKM_Kospi_July2026_Prophecy_Morning"
+    "\\MKM_Kospi_July2026_Prophecy_Morning",
+    "\\MKM_Kospi_Daily_Premarket_Ingest_Sunday_v1",
+    "\\MKM_Kospi_Daily_Prophecy_Evolution_Evening_v1",
+    "\\MKM_Kospi_Daily_Prophecy_Evolution_Morning_v1",
+    "\\MKM_Kospi_Daily_Prophecy_Evolution_Weekend_v1"
   ],
   "disable_batches": {
     "btrack_dup_daily": {
