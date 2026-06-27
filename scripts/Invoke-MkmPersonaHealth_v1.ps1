@@ -126,7 +126,7 @@ param(
 
     [Parameter(Mandatory = $true, Position = 0)]
 
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'HighDelegationPreflight', 'DelegationResearchAssist', 'HdAutonomousEvolution', 'BoundedLaneLoopShadow', 'MkmAgentLoops', 'CursorAutomationsRoutine', 'AutonomousPatrol', 'DocSyncSafe', 'TestRecoverySafe', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LogosGraphStudioPilotDay', 'SoloLogosStudioDemo', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'HighDelegationPreflight', 'DelegationResearchAssist', 'HdAutonomousEvolution', 'BoundedLaneLoopShadow', 'SasangRailStack', 'SasangRailMaster', 'SasangRailP9', 'SasangRailP10', 'SasangRailP11', 'SasangRailP12', 'SasangRailP13', 'SasangRailP14', 'SasangRailP15', 'SasangRailP16', 'TkmEncounterSequenceStack', 'MkmAgentLoops', 'CursorAutomationsRoutine', 'AutonomousPatrol', 'DocSyncSafe', 'TestRecoverySafe', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'ConsumerOnboardingPlaywright', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
 
     [string]$Persona
 
@@ -376,6 +376,30 @@ try {
 
         }
 
+        'LogosGraphStudioPilotDay' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-LogosGraphStudioB2bPilotDay_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SoloLogosStudioDemo' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmSoloLogosStudioDemoRoutine_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot
+
+            exit $LASTEXITCODE
+
+        }
+
         'LocalGpuWeeklyRoutine' {
 
             $script = Join-Path $PSScriptRoot 'Run-LocalGpuWeeklyRoutine_v1.ps1'
@@ -568,6 +592,138 @@ try {
 
         }
 
+        'SasangRailStack' {
+
+            $script = Join-Path $PSScriptRoot 'run_workspace_automation_health.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -SasangRailStackOnly
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailMaster' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_master_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailP9' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_p9_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailP10' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_p10_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailP11' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_p11_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script --apply-promote
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailP12' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_p12_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script --apply-promote
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailP13' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_p13_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script --apply-promote --seed-drift-baseline
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailP14' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_p14_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailP15' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_p15_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'SasangRailP16' {
+
+            $script = Join-Path $PSScriptRoot 'run_sasang_rail_p16_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'TkmEncounterSequenceStack' {
+
+            $script = Join-Path $PSScriptRoot 'run_tkm_encounter_sequence_post_p68_maintenance_chain_v1.py'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & py $script --skip-http
+
+            exit $LASTEXITCODE
+
+        }
+
         'MkmAgentLoops' {
 
             $script = Join-Path $PSScriptRoot 'Invoke-MkmAgentLoopsRoutine_v1.ps1'
@@ -655,6 +811,18 @@ try {
         'PersonadiaryPortalDesign' {
 
             $script = Join-Path $PSScriptRoot 'Run-PersonadiaryPortalDesignSmoke_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script
+
+            exit $LASTEXITCODE
+
+        }
+
+        'ConsumerOnboardingPlaywright' {
+
+            $script = Join-Path $PSScriptRoot 'Run-ConsumerOnboardingPlaywrightSmoke_v1.ps1'
 
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
 
