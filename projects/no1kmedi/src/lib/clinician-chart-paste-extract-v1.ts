@@ -232,6 +232,24 @@ export function extractChiefComplaintFromPaste(text: string): string | undefined
 
 const TAGGED_SECTION_RE = /\[([A-Za-z가-힣]+)\]\s*([^\n\[]+)/g;
 
+const SITUATION_TAG_KEYS = new Set(["주소", "ADDR", "ADDRESS", "거주", "지역", "LOCATION"]);
+
+function collectTaggedSections(raw: string): Array<{ tag: string; body: string }> {
+  const out: Array<{ tag: string; body: string }> = [];
+  for (const match of raw.matchAll(TAGGED_SECTION_RE)) {
+    const tag = String(match[1] || "").trim();
+    const body = String(match[2] || "").trim();
+    if (tag && body) out.push({ tag, body });
+  }
+  return out;
+}
+
+function isSituationTag(tag: string): boolean {
+  const upper = tag.toUpperCase();
+  if (SITUATION_TAG_KEYS.has(tag) || SITUATION_TAG_KEYS.has(upper)) return true;
+  return tag.includes("주소");
+}
+
 export function buildStructuredIntakeFromPaste(text: string): {
   symptoms: string[];
   situation: string;
@@ -242,18 +260,11 @@ export function buildStructuredIntakeFromPaste(text: string): {
   const paste = parseIntakePasteText(raw);
   const firstLine = raw.split("\n")[0]?.trim() ?? "";
   const slashHeader = parseSlashHeaderLine(firstLine);
+  const tagged = collectTaggedSections(raw);
 
-  const symptoms: string[] = [];
-  if (draft.chief_complaint?.trim()) {
-    symptoms.push(draft.chief_complaint.trim());
-  }
-
-  for (const match of raw.matchAll(TAGGED_SECTION_RE)) {
-    const tag = String(match[1] || "").trim();
-    const body = String(match[2] || "").trim();
-    if (!body || tag.toUpperCase() === "CC") continue;
-    symptoms.push(`[${tag}] ${body}`.slice(0, 500));
-  }
+  const ccTagged = tagged.find((t) => t.tag.toUpperCase() === "CC");
+  const chief = (ccTagged?.body || draft.chief_complaint || "").trim();
+  const symptoms: string[] = chief ? [chief.slice(0, 500)] : [];
 
   const situationParts: string[] = [];
   if (draft.display_name) situationParts.push(draft.display_name);
@@ -261,22 +272,34 @@ export function buildStructuredIntakeFromPaste(text: string): {
   if (draft.sex === "M") situationParts.push("남");
   else if (draft.sex === "F") situationParts.push("여");
   if (draft.age_years) situationParts.push(`${draft.age_years}세`);
+  for (const { tag, body } of tagged) {
+    if (isSituationTag(tag)) situationParts.push(body.slice(0, 200));
+  }
   const situation = situationParts.length ? situationParts.join(" · ") : paste.situation;
 
-  const bodyNotes =
-    slashHeader && raw.includes("\n")
-      ? raw.split("\n").slice(1).join("\n").trim()
-      : paste.subjective_notes;
-  const subjective_notes = (bodyNotes || draft.chief_complaint || raw).slice(0, 8000);
+  const noteLines: string[] = [];
+  for (const { tag, body } of tagged) {
+    if (tag.toUpperCase() === "CC" || isSituationTag(tag)) continue;
+    noteLines.push(`[${tag}] ${body}`.slice(0, 500));
+  }
 
-  if (symptoms.length) {
+  const bodyLines =
+    slashHeader && raw.includes("\n") ? raw.split("\n").slice(1) : raw.split("\n").slice(1);
+  for (const line of bodyLines) {
+    const trimmed = line.trim();
+    if (!trimmed || /^\[[A-Za-z가-힣]+\]/.test(trimmed)) continue;
+    noteLines.push(trimmed.slice(0, 500));
+  }
+  const subjective_notes = noteLines.join("\n").trim().slice(0, 8000);
+
+  if (symptoms.length || subjective_notes || situationParts.length) {
     return { symptoms, situation, subjective_notes };
   }
 
   return {
     symptoms: paste.symptoms,
     situation: situation || paste.situation,
-    subjective_notes,
+    subjective_notes: paste.subjective_notes,
   };
 }
 

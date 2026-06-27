@@ -45,10 +45,19 @@ function validateSoapSubjective(text) {
   assert(raw.includes("요추부"), "SOAP S missing CC chief");
   const headerHits = (raw.match(/김민수\s*\/\s*1988-03-12/g) || []).length;
   assert(headerHits <= 1, `SOAP S repeats slash header ${headerHits}x`);
+  const ccHits = (raw.match(/요추부 통증, 3주 전부터 악화/g) || []).length;
+  assert(ccHits === 1, `SOAP S repeats CC chief ${ccHits}x`);
   assert(raw.includes("현재 상황"), "SOAP S missing 현재 상황");
+  const symptomLine = raw.split("\n").find((l) => l.includes("호소·증상")) || "";
+  assert(!symptomLine.includes("[주소]"), "symptoms must not include address tag");
+  assert(!symptomLine.includes("[Hx]"), "symptoms must not include Hx tag");
   const situationLine = raw.split("\n").find((l) => l.includes("현재 상황")) || "";
   assert(situationLine.includes("김민수"), "situation missing name");
+  assert(situationLine.includes("서울"), "situation missing address");
   assert(!situationLine.includes("[CC]"), "situation must not include [CC] block");
+  const notesLine = raw.split("\n").find((l) => l.startsWith("- 기타:")) || "";
+  assert(!notesLine.includes("[CC]"), "notes must not duplicate CC block");
+  assert(notesLine.includes("[Hx]") || notesLine.includes("진통제"), "notes missing Hx");
 }
 
 async function postPasteChart() {
