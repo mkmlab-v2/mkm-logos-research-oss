@@ -81,9 +81,11 @@ function Sync-TauriLocalEnv {
 $probeUrl = "$localUrl"
 $panelUrl = "$localUrl&email=$([uri]::EscapeDataString($Email))"
 
-Write-Host "[paste-chart-auto] 1/5 env + clipboard" -ForegroundColor Cyan
+Write-Host "[paste-chart-auto] 1/5 env + clipboard (UTF-8 fixture)" -ForegroundColor Cyan
 Sync-TauriLocalEnv
 Set-Clipboard -Value $sample
+& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $root "scripts\Test-PasteChartClipboardUtf8_v1.ps1")
+if ($LASTEXITCODE -ne 0) { throw "Test-PasteChartClipboardUtf8 failed exit $LASTEXITCODE" }
 
 Write-Host "[paste-chart-auto] 2/5 ensure :$port dev server" -ForegroundColor Cyan
 if (-not (Test-PortListening $port)) {
