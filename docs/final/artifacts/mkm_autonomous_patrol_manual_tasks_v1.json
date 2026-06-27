@@ -1,0 +1,72 @@
+{
+  "schema": "mkm_autonomous_patrol_manual_tasks_v1",
+  "version": "1.0.0",
+  "generated_note": "자율점검(AutonomousPatrol)이 자동 실행하지 않는 Tier-3 human 항목. 오케스트레이터가 조건 충족 시 manual_queue에 주입.",
+  "always_human_tier3": [
+    {
+      "id": "github_explicit_push",
+      "label_ko": "GitHub mirror push (internal-first 예외)",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Push-GitHub-Explicit.ps1 -Branch <branch> -GitHubRepo git@github.com:mkmlab-v2/mkm-destiny-ai-41e38ec6.git -Acknowledge",
+      "trigger": "github_main_drift_commits >= 5 OR user requests mirror"
+    },
+    {
+      "id": "athena_fact_lock_weekly",
+      "label_ko": "주간 Fact-Lock pytest 번들 (~45분)",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle",
+      "trigger": "weekly_sunday OR pre_merge_large_change"
+    },
+    {
+      "id": "billing_patrol",
+      "label_ko": "GCP 과금 순찰 (유료 API)",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-MkmCommandPackage_v1.ps1 -Package BillingPatrol",
+      "trigger": "weekly_sunday OR credit_anomaly"
+    },
+    {
+      "id": "lifecycle_apply_safe",
+      "label_ko": "디스크·ephemeral 정리 ApplySafe (승인 후)",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-MkmWorkspaceLifecycleRoutine_v1.ps1 -ApplySafe",
+      "trigger": "disk_hygiene_warn OR commander_approval"
+    },
+    {
+      "id": "cursor_automations_cloud",
+      "label_ko": "Cursor Automations cloud webhook (local_only 기본 OFF)",
+      "command": "Set MKM_CURSOR_AUTOMATIONS_MODE=cloud_optional + scripts\\Invoke-SyncMkmCursorAutomationWebhooks_v1.ps1",
+      "trigger": "patrol_fail AND want_cloud_triage"
+    },
+    {
+      "id": "nl_mcp_login",
+      "label_ko": "NotebookLM MCP 브라우저 로그인 (Tier 3)",
+      "command": "NotebookLM MCP setup_auth (전용 Chrome)",
+      "trigger": "nl_prereqs_fail AND need_nl_research"
+    },
+    {
+      "id": "gitea_merge_main",
+      "label_ko": "feature → gitea/main 머지 (clean tree 필요)",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\SoloDev-MergeFeatureToGiteaMain.ps1",
+      "trigger": "feature_ready AND working_tree_clean"
+    },
+    {
+      "id": "pre_push_review_chat",
+      "label_ko": "Cursor /review 후 push ack (Bugbot)",
+      "command": "/review in chat → scripts\\Invoke-CursorPrePushReview_v1.ps1 -Ack → push-internal.ps1",
+      "trigger": "before_push_internal AND RequirePrePushReview"
+    }
+  ],
+  "dynamic_triggers": {
+    "dirty_working_tree": {
+      "id": "git_commit_or_stash",
+      "label_ko": "미커밋 변경 정리 (commit / stash / discard)",
+      "hint_ko": "자율점검은 push/merge를 대신하지 않음"
+    },
+    "solo_ops_fail": {
+      "id": "solo_ops_remediation",
+      "label_ko": "solo_ops 실패 step 확인 → reports/mkm_solo_background_ops_latest.json",
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-MkmSoloBackgroundOps_v1.ps1"
+    },
+    "patrol_required_fail": {
+      "id": "patrol_failure_triage",
+      "label_ko": "DailyOpsPatrol required step 실패 — paste JSON·아티팩트 triage",
+      "command": "Read reports/mkm_command_package_paste_latest.json + Cursor 채팅 triage"
+    }
+  }
+}

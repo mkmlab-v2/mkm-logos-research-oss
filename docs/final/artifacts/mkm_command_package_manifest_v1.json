@@ -1,6 +1,6 @@
 {
   "schema": "mkm_command_package_manifest_v1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "generated_note": "지휘관 수동 소환용. 채팅 트리거는 에이전트가 이 파일·Invoke-MkmCommandPackage_v1.ps1을 SSOT로 따른다.",
   "scheduler_task_whitelist_v1": {
     "note": "WeeklyOpsPatrol schtasks guard — Ready=정상. required=false 는 없으면 WARN(exit 2)만.",
@@ -422,6 +422,38 @@
       "aliases": ["암행어사", "암행어사 소환"],
       "chat_triggers": ["【암행어사 점검】"],
       "extends": "DailyOpsPatrol"
+    },
+    "AutonomousPatrol": {
+      "label_ko": "자율점검 · solo_ops + 일/주간 patrol + Git/CI + manual queue",
+      "estimated_minutes": 25,
+      "aliases": ["자율점검", "자율 경영"],
+      "chat_triggers": ["【자율점검】", "자율점검", "autonomous patrol", "자율 경영"],
+      "steps": [
+        {
+          "id": "autonomous_patrol_orchestrator",
+          "title": "자율점검 오케스트레이터 (C-layer)",
+          "command": [
+            "powershell",
+            "-NoProfile",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-File",
+            "scripts/Invoke-MkmAutonomousPatrol_v1.ps1",
+            "-ContinueOnFail"
+          ],
+          "required": true
+        }
+      ],
+      "artifacts_after": [
+        "reports/mkm_autonomous_patrol_latest.json",
+        "reports/mkm_command_package_paste_latest.json",
+        "reports/mkm_solo_background_ops_state.json",
+        "docs/final/artifacts/mkm_chat_resume_pack_latest.md"
+      ],
+      "manual_after": [
+        "Tier-3 only: reports/mkm_autonomous_patrol_latest.json → manual_queue (GitHub push, /review ack, ApplySafe, NL login, AthenaBundle weekly)",
+        "Repro: powershell -File scripts\\Invoke-MkmAutonomousPatrol_v1.ps1 -ContinueOnFail"
+      ]
     }
   }
 }

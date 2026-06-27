@@ -33,6 +33,8 @@ vendor/korean-medicine-texts/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md
 !.cursor/skills/mkm-cursor-session-ops/
 !.cursor/skills/mkm-cursor-session-ops/SKILL.md
+!.cursor/skills/mkm-autonomous-patrol/
+!.cursor/skills/mkm-autonomous-patrol/SKILL.md
 
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)
@@ -188,6 +190,7 @@ secrets/
 
 # F: workspace_archive migration staging (robocopy target; large)
 storage/MKM_ARCHIVE_FROM_F/
+storage/external_kg/
 
 # Local LoRA / Unsloth training venvs & compile cache (large; regenerable)
 .venv/
@@ -196,6 +199,8 @@ storage/MKM_ARCHIVE_FROM_F/
 .venv-nemotron-wsl/
 .venv-btrack-docling/
 .venv-btrack-sherpa-onnx/
+.venv-ko-shorts-*/
+.venv-fabba-linux-repro/
 unsloth_compiled_cache/
 # Deterministic LoRA Pack0b timestamped run dirs under workspace storage (regenerable; not SSOT)
 storage/adapters/myeongri_deterministic_lora_v0/run_*/

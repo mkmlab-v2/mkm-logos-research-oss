@@ -22,7 +22,7 @@
 
 .PARAMETER Package
 
-  OpsSummonLite | AthenaSummon | DailyOpsPatrol | WeeklyOpsPatrol | AthenaSummonFull | AthenaOpsMemory | InterpretBtrackGate | BillingPatrol | AmsaengPatrol
+  OpsSummonLite | AthenaSummon | DailyOpsPatrol | WeeklyOpsPatrol | AthenaSummonFull | AthenaOpsMemory | InterpretBtrackGate | BillingPatrol | AmsaengPatrol | AutonomousPatrol
 
 
 
@@ -76,7 +76,9 @@ param(
 
         'OpsSummonLite', 'AthenaSummon', 'DailyOpsPatrol', 'WeeklyOpsPatrol',
 
-        'AthenaSummonFull', 'AthenaOpsMemory', 'InterpretBtrackGate', 'BillingPatrol', 'AmsaengPatrol'
+        'AthenaSummonFull', 'AthenaOpsMemory', 'InterpretBtrackGate', 'BillingPatrol', 'AmsaengPatrol',
+
+        'AutonomousPatrol'
 
     )]
 

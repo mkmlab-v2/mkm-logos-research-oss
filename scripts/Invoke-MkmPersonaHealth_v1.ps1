@@ -82,6 +82,7 @@
   TestRecoverySafe = Invoke-MkmTestRecoverySafe_v1.ps1
 
   CursorAutomationsRoutine = Invoke-MkmCursorAutomationsRoutine_v1.ps1 -Mode recommended (local_only 권장 체인)
+  AutonomousPatrol = Invoke-MkmAutonomousPatrol_v1.ps1 (-ContinueOnFail; chat 「자율점검」)
 
 
 
@@ -125,7 +126,7 @@ param(
 
     [Parameter(Mandatory = $true, Position = 0)]
 
-    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'HighDelegationPreflight', 'DelegationResearchAssist', 'HdAutonomousEvolution', 'BoundedLaneLoopShadow', 'MkmAgentLoops', 'CursorAutomationsRoutine', 'DocSyncSafe', 'TestRecoverySafe', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
+    [ValidateSet('AthenaBundle', 'PremiumMultilensQueue', 'AmsaengHealth', 'P0', 'AramaicDailyReadiness', 'GpuRecommendedBundle', 'LinkedInB2bWeekly', 'LinkedInB2bWeeklyReadiness', 'MarketingWeeklyBundle', 'MarketingWeeklyBundleReadiness', 'MarketingPublishPhase2', 'ShowroomTrackCHealth', 'BtrackProphecyLightRefresh', 'BtrackProphecyDailyReadiness', 'KospiJune2026DailyReadiness', 'LogosTrackL0', 'LogosTrackL1', 'LocalGpuWeeklyRoutine', 'LocalGpuWeeklyRoutineReadiness', 'TrackCB2bRehearsalPrep', 'ScienceCoreLaneReadiness', 'ScienceCoreWeeklyReadiness', 'ScienceCoreGovernance', 'PrismMetaChannelStaging', 'PrismMetaChannelStagingStatus', 'WebOpsRegimeBundle', 'WebOpsRegimeReadiness', 'OpsMemoryWebOps', 'ParallelPassiveLoop', 'AiToAiGovernanceDelegation', 'MultiResIndexDelegation', 'CursorSessionUpgrade', 'HighDelegationPreflight', 'DelegationResearchAssist', 'HdAutonomousEvolution', 'BoundedLaneLoopShadow', 'MkmAgentLoops', 'CursorAutomationsRoutine', 'AutonomousPatrol', 'DocSyncSafe', 'TestRecoverySafe', 'MkmlifePortalCommercialization', 'MkmlifePortalCommercializationLive', 'PersonadiaryPortalDesign', 'JemaaiShowroomHubFooterLive', 'MkmDomainDesignClosure', 'DesignLane')]
 
     [string]$Persona
 
@@ -586,6 +587,18 @@ try {
             if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
 
             & $ps @common $script -Mode recommended -WorkspaceRoot $WorkspaceRoot
+
+            exit $LASTEXITCODE
+
+        }
+
+        'AutonomousPatrol' {
+
+            $script = Join-Path $PSScriptRoot 'Invoke-MkmAutonomousPatrol_v1.ps1'
+
+            if (-not (Test-Path -LiteralPath $script)) { throw "Missing: $script" }
+
+            & $ps @common $script -WorkspaceRoot $WorkspaceRoot -ContinueOnFail
 
             exit $LASTEXITCODE
 
