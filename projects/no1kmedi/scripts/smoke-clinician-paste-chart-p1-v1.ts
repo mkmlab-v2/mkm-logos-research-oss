@@ -62,7 +62,7 @@ const t1 = createEmptyClinicianThread();
 const backup = buildClinicianThreadsBackup([t1]);
 const roundtrip = parseClinicianThreadsBackup(JSON.stringify(backup));
 assert(roundtrip.ok && roundtrip.threads.length === 1, "backup roundtrip");
-const merged = mergeImportedClinicianThreads([], roundtrip.threads);
+const merged = mergeImportedClinicianThreads([], roundtrip.ok ? roundtrip.threads : []);
 assert(merged.length === 1, "merge import");
 
 console.log(

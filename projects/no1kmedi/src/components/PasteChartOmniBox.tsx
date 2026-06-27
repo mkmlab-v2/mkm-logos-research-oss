@@ -8,8 +8,14 @@ import {
   mergePasteExtractDraft,
   type PasteExtractDraftV1,
 } from "@/lib/clinician-chart-paste-extract-v1";
+import {
+  fetchPasteExtractDraftLlmV1,
+  pasteExtractLlmClientEnabled,
+} from "@/lib/clinician-paste-extract-client-v1";
 
 const EXTRACT_DEBOUNCE_MS = 300;
+const LLM_EXTRACT_DEBOUNCE_MS = 500;
+const LLM_MIN_CHARS = 48;
 
 type PasteChartOmniBoxProps = {
   chartText: string;
@@ -24,6 +30,7 @@ type PasteChartOmniBoxProps = {
   error?: string | null;
   adviceWarning?: string | null;
   advancedSlot?: ReactNode;
+  clinicianEmail?: string;
 };
 
 type ChipField = "display_name" | "birthdate" | "sex" | "chief_complaint";
@@ -41,10 +48,13 @@ export function PasteChartOmniBox({
   error = null,
   adviceWarning = null,
   advancedSlot,
+  clinicianEmail = "",
 }: PasteChartOmniBoxProps) {
   const textareaId = useId();
   const [editingField, setEditingField] = useState<ChipField | null>(null);
   const [editValue, setEditValue] = useState("");
+  const [llmAssist, setLlmAssist] = useState(false);
+  const [llmBusy, setLlmBusy] = useState(false);
 
   useEffect(() => {
     const t = chartText.trim();
@@ -54,6 +64,7 @@ export function PasteChartOmniBox({
         confidence: "low",
         sources: [],
       });
+      setLlmAssist(false);
       return;
     }
     const handle = window.setTimeout(() => {
@@ -61,6 +72,39 @@ export function PasteChartOmniBox({
     }, EXTRACT_DEBOUNCE_MS);
     return () => window.clearTimeout(handle);
   }, [chartText, onDraftChange]);
+
+  useEffect(() => {
+    if (!pasteExtractLlmClientEnabled()) return;
+    const t = chartText.trim();
+    if (t.length < LLM_MIN_CHARS) {
+      setLlmAssist(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    const handle = window.setTimeout(() => {
+      const baseline = extractPasteChartDraftV1(t);
+      if (baseline.confidence === "high") {
+        setLlmAssist(false);
+        return;
+      }
+      void (async () => {
+        setLlmBusy(true);
+        const result = await fetchPasteExtractDraftLlmV1(t, clinicianEmail || undefined);
+        if (controller.signal.aborted) return;
+        setLlmBusy(false);
+        if (result.ok) {
+          onDraftChange(result.draft);
+          setLlmAssist(true);
+        }
+      })();
+    }, EXTRACT_DEBOUNCE_MS + LLM_EXTRACT_DEBOUNCE_MS);
+
+    return () => {
+      controller.abort();
+      window.clearTimeout(handle);
+    };
+  }, [chartText, clinicianEmail, onDraftChange]);
 
   function openEdit(field: ChipField) {
     setEditingField(field);
@@ -128,6 +172,7 @@ export function PasteChartOmniBox({
       <div className="pc-draft-chip-row" aria-label="추출 메타데이터 확인">
         <span className={`pc-draft-confidence pc-draft-confidence--${draft.confidence}`}>
           {draft.confidence === "high" ? "추출 신뢰 높음" : "추출 확인 필요"}
+          {llmBusy ? " · AI 보정 중…" : llmAssist ? " · AI 보정" : ""}
         </span>
         <span className="pc-draft-chip-summary" title={chipSummary}>
           {chipSummary}

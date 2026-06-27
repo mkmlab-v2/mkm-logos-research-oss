@@ -203,6 +203,7 @@ export function ClinicianWorkspaceClient({
     deleteThread,
     commitThread,
     updateThreadMeta,
+    replaceThreads,
   } = useClinicianThreads();
 
   const [activeId, setActiveId] = useState<string>(() =>
@@ -375,12 +376,12 @@ export function ClinicianWorkspaceClient({
 
   const importThreads = useCallback(
     (merged: ClinicianChatThread[]) => {
-      setThreads(merged);
+      replaceThreads(merged);
       if (!merged.find((t) => t.id === activeThreadId)) {
         setActiveThreadId(merged[0]?.id ?? null);
       }
     },
-    [activeThreadId],
+    [activeThreadId, replaceThreads, setActiveThreadId],
   );
 
   const sidebarBody =

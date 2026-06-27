@@ -99,6 +99,12 @@ export function useClinicianThreads() {
     });
   }, []);
 
+  const replaceThreads = useCallback((merged: ClinicianChatThread[]) => {
+    const sorted = [...merged].sort((a, b) => b.updatedAt - a.updatedAt);
+    saveClinicianThreads(sorted);
+    setThreads(sorted);
+  }, []);
+
   return {
     ready,
     threads,
@@ -109,5 +115,6 @@ export function useClinicianThreads() {
     deleteThread,
     commitThread,
     updateThreadMeta,
+    replaceThreads,
   };
 }

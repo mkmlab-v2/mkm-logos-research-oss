@@ -412,6 +412,7 @@ export function ClinicianEncounterGoldPanel({
           disabled={disabled || busy}
           error={error}
           adviceWarning={adviceWarning}
+          clinicianEmail={clinicianEmail}
           advancedSlot={
             <>
               <div className="pc-patient-row">
