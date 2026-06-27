@@ -92,6 +92,26 @@ async function postPasteChart() {
   return { res, json };
 }
 
+function validateAdviceCoherence(adviceBlock, adviceError) {
+  assert(!adviceError, `advice_error: ${adviceError}`);
+  assert(adviceBlock?.cards, "advice.cards missing");
+
+  const items = adviceBlock.cards.tcm_primary?.items || [];
+  const titles = items.map((i) => String(i.title || ""));
+  const bodies = items.map((i) => String(i.body || ""));
+  const hay = [...titles, ...bodies].join("\n");
+
+  assert(!titles.includes("주소"), 'advice must not use mislabeled slot title "주소"');
+  assert(titles.includes("주증상"), "advice missing 주증상 context card");
+  assert(!hay.includes("성장기"), "adult paste-chart advice must not include 성장기 nodes");
+
+  const lifestylePolicy = items.filter((i) => i.tier === "POLICY" || i.tier === "ACTION");
+  for (const item of lifestylePolicy) {
+    assert(!String(item.title || "").includes("성장기"), `policy/action title: ${item.title}`);
+    assert(!String(item.body || "").includes("성장기"), `policy/action body: ${item.title}`);
+  }
+}
+
 async function main() {
   runOfflineSmoke();
 
@@ -102,6 +122,7 @@ async function main() {
   const soap = json.patient_care_bundle?.clinical_soap_v1;
   const subj = soap?.subjective?.text || "";
   validateSoapSubjective(subj);
+  validateAdviceCoherence(json.advice, json.advice_error);
 
   console.log(
     JSON.stringify(
@@ -112,6 +133,7 @@ async function main() {
         email: EMAIL,
         ephemeral: Boolean(json.ephemeral),
         soap_s_preview: subj.split("\n").slice(0, 6).join("\n"),
+        advice_titles: (json.advice?.cards?.tcm_primary?.items || []).map((i) => i.title).slice(0, 8),
         advice_error: json.advice_error || null,
       },
       null,

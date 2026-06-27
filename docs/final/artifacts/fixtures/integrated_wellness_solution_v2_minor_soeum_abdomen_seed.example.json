@@ -1,0 +1,189 @@
+{
+  "schema": "integrated_wellness_solution_v2",
+  "version": "2.0.0",
+  "metadata": {
+    "generated_at_utc": "2026-06-07T08:35:00Z",
+    "engine_version": "v2.0_core",
+    "falsifiable_flag": true,
+    "solution_id": "iws_v2_minor_soeum_abdomen_001"
+  },
+  "client_profile": {
+    "birth_instant_utc": "2012-04-15T14:30:00Z",
+    "iana_tz": "Asia/Seoul",
+    "computed_age_band": "minor",
+    "gender": "female",
+    "growth_phase": true,
+    "biometrics": {
+      "isa_angle": "narrow",
+      "zoa_status": "compromised"
+    },
+    "sasang_internal": "soeum"
+  },
+  "chief_concern": {
+    "topic_id": "abdominal_adiposity_core",
+    "title_ko": "복부 비만·코어 생체역학 통합"
+  },
+  "boundary_contract": {
+    "track": "research_wellness_b",
+    "physician_final_authority_no1kmedi": true,
+    "no_spot_reduction_claims": true,
+    "no_auto_trading_or_live_clinical_gating": true
+  },
+  "evidence_nodes_seed": [
+    {
+      "node_id": "policy_minor_no_if",
+      "tier": "POLICY",
+      "source_ref": "MKM_Tier0_age_band_guard",
+      "content_payload": {
+        "title": "성장기 간헐적 단식 금지",
+        "body": "미성년·성장기에는 간헐적 단식(16:8 등)을 적용하지 않습니다. 규칙적 3끼 소식을 우선합니다."
+      },
+      "conflict_rules": {
+        "suppress_nodes": ["if_16_8", "if_18_6", "lchf_aggressive"]
+      },
+      "policy_guards": {
+        "required_if_growth_phase": true
+      }
+    },
+    {
+      "node_id": "policy_minor_no_hiit",
+      "tier": "POLICY",
+      "source_ref": "MKM_Tier0_age_band_guard",
+      "content_payload": {
+        "title": "성장기 고강도 발한 운동 제한",
+        "body": "성장기에는 최대심박 80% 이상 HIIT·과발한을 기본 권장에서 제외합니다."
+      },
+      "conflict_rules": {
+        "suppress_tags": ["hiit_high", "excessive_sweat"]
+      },
+      "policy_guards": {
+        "required_if_growth_phase": true
+      }
+    },
+    {
+      "node_id": "metabolic_core_001",
+      "tier": "FACT",
+      "source_ref": "ACSM_metabolic_principle",
+      "content_payload": {
+        "title": "전신 지방 산화 법칙",
+        "body": "특정 부위(복부)만의 국소 감량(Spot reduction)은 불가능하며, 전체 칼로리 결손과 전신 대사 활성화가 선행되어야 합니다."
+      }
+    },
+    {
+      "node_id": "biomech_zoa_adim",
+      "tier": "FACT",
+      "source_ref": "clinical_biomechanics_ISA_ZOA",
+      "content_payload": {
+        "title": "ZOA·ADIM 코어 안정",
+        "body": "횡격막 접합 지대(ZOA) 확보와 복부 드로인(ADIM)은 복벽 기계적 압축·심부 코어 동원에 필수적입니다. Narrow ISA는 측면 흉곽 확장 호흡을 우선 검토합니다."
+      },
+      "action_tags": ["breath", "core_static"]
+    },
+    {
+      "node_id": "if_16_8",
+      "tier": "ACTION",
+      "source_ref": "intermittent_fasting_adult",
+      "content_payload": {
+        "title": "16:8 간헐적 단식 (성인용)",
+        "body": "성인 대상 시간 제한 섭식 예시. 성장기에는 적용하지 않습니다."
+      },
+      "action_tags": ["fasting"],
+      "policy_guards": {
+        "blocked_if_age_band": ["minor"],
+        "blocked_if_growth_phase": true
+      }
+    },
+    {
+      "node_id": "hiit_high_intensity_sweat",
+      "tier": "ACTION",
+      "source_ref": "HIIT_adult_guideline",
+      "content_payload": {
+        "title": "고강도 HIIT (80–90% HRmax)",
+        "body": "성인 비만 관리 시 내장지방 감소에 유리할 수 있는 고강도 인터벌 예시."
+      },
+      "action_tags": ["hiit_high", "excessive_sweat"],
+      "policy_guards": {
+        "blocked_if_age_band": ["minor"],
+        "blocked_if_growth_phase": true
+      }
+    },
+    {
+      "node_id": "sasang_soeum_004",
+      "tier": "HYPO",
+      "source_ref": "Dongui_Susei_Bowon",
+      "content_payload": {
+        "title": "소음인 망양증 가드레일",
+        "body": "소음인은 땀을 과도하게 흘릴 경우 기력 손실(망양)이 두드러질 수 있으므로, 비만 관리 시 과발한을 엄금하고 저강도 하체 활동·규칙적 소식을 우선합니다."
+      },
+      "conflict_rules": {
+        "suppress_nodes": ["hiit_high_intensity_sweat"]
+      },
+      "action_tags": ["soeum_guard"]
+    },
+    {
+      "node_id": "action_minor_regular_meals",
+      "tier": "ACTION",
+      "source_ref": "pediatric_nutrition_pattern",
+      "content_payload": {
+        "title": "규칙적 3끼 소식",
+        "body": "성장기에는 하루 세 끼 규칙적 소식과 충분한 단백질·수분을 우선합니다. 공격적 단식·무염 극단은 피합니다."
+      },
+      "action_tags": ["nutrition"],
+      "policy_guards": {
+        "required_if_growth_phase": true
+      }
+    },
+    {
+      "node_id": "action_low_intensity_lower_body",
+      "tier": "ACTION",
+      "source_ref": "youth_activity_guideline",
+      "content_payload": {
+        "title": "저강도 하체 활동",
+        "body": "걷기·가벼운 등산·줄넘기 등 하체 중심 저강도 활동을 권장합니다. 또래와 함께하는 활동이 지속성에 유리합니다."
+      },
+      "action_tags": ["low_intensity"],
+      "policy_guards": {
+        "required_if_growth_phase": true
+      }
+    },
+    {
+      "node_id": "myeongni_temporal_stub",
+      "tier": "HYPO",
+      "source_ref": "myeongni_engine_placeholder",
+      "content_payload": {
+        "title": "명리 시간축 참고 (스텁)",
+        "body": "출생 instant 기반 중단기 리듬은 만세력 엔진 연동 시 갱신됩니다. 현재는 성장기·회복 우선 밴드로 오버레이합니다."
+      }
+    },
+    {
+      "node_id": "logos_order_stub",
+      "tier": "NON_GATING",
+      "source_ref": "logos_non_gating",
+      "content_payload": {
+        "title": "구조적 질서 메타 (보조)",
+        "body": "생활 리듬의 규칙성은 관측·해설용 참고이며, 임상·투자 트리거가 아닙니다."
+      }
+    }
+  ],
+  "domain_payload_matrix": {
+    "mkmlife": {
+      "render_target": "pdf_one_question_report",
+      "include_sections": ["metabolic_core", "biomechanics", "sasang_deep", "myeongni_temporal"],
+      "disclaimer_required": "tier_a_full",
+      "lexicon_mode": "consumer_a_code"
+    },
+    "personadiary": {
+      "render_target": "ui_blocks_daily_card",
+      "include_sections": ["action_card", "breath", "rhythm"],
+      "disclaimer_required": "tier_b_compact",
+      "lexicon_mode": "consumer_a_code"
+    },
+    "no1kmedi": {
+      "render_target": "clinician_soap_assistant",
+      "target_slot": "patient_slots.lifestyle_draft",
+      "human_confirm_required": true,
+      "disclaimer_required": "clinician_internal_disclaimer",
+      "lexicon_mode": "clinician_native"
+    }
+  }
+}

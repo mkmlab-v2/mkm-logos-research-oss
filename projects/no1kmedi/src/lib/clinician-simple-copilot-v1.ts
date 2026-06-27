@@ -327,7 +327,7 @@ export function mapResolvedToSimpleCopilotCards(
 
   if (chief.title_ko) {
     tcmItems.unshift({
-      title: "주소",
+      title: "주증상",
       body: chief.title_ko,
       tier: "CONTEXT",
     });
