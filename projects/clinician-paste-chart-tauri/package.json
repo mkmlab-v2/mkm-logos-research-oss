@@ -5,7 +5,9 @@
   "description": "MKM Paste Chart P2 — Tauri shell for app.jema-ai.com/clinician (Track B · research_only)",
   "scripts": {
     "smoke:scaffold": "node ./scripts/smoke-tauri-scaffold-v1.mjs",
+    "smoke:p22": "node ./scripts/smoke-tauri-p22-v1.mjs",
     "smoke:build-artifact": "node ./scripts/smoke-tauri-build-artifact-v1.mjs",
+    "smoke:nsis-artifact": "node ./scripts/smoke-tauri-nsis-artifact-v1.mjs",
     "tauri": "tauri",
     "dev": "tauri dev",
     "build": "tauri build",

@@ -3,6 +3,8 @@ use tauri::{
     tray::{MouseButton, MouseButtonState, TrayIconBuilder, TrayIconEvent},
     Manager, WebviewUrl, WebviewWindowBuilder,
 };
+use tauri_plugin_clipboard_manager::ClipboardExt;
+use tauri_plugin_global_shortcut::{GlobalShortcutExt, ShortcutState};
 
 fn build_start_url() -> String {
     let base = std::env::var("KM_CLINICIAN_PASTE_CHART_URL").unwrap_or_else(|_| {
@@ -17,6 +19,31 @@ fn build_start_url() -> String {
     }
     let sep = if base.contains('?') { '&' } else { '?' };
     format!("{base}{sep}email={}", urlencoding::encode(&email))
+}
+
+fn hotkey_binding() -> String {
+    std::env::var("KM_CLINICIAN_HOTKEY").unwrap_or_else(|_| "Ctrl+Shift+V".to_string())
+}
+
+fn build_paste_eval_js(text: &str) -> String {
+    let encoded = serde_json::to_string(text).unwrap_or_else(|_| "\"\"".to_string());
+    format!(
+        r#"(function() {{
+  const text = {encoded};
+  function tryPaste(attempt) {{
+    const el = document.querySelector(".pc-omni-textarea");
+    if (el) {{
+      const setter = Object.getOwnPropertyDescriptor(window.HTMLTextAreaElement.prototype, "value").set;
+      setter.call(el, text);
+      el.dispatchEvent(new Event("input", {{ bubbles: true }}));
+      el.focus();
+      return;
+    }}
+    if (attempt < 24) setTimeout(() => tryPaste(attempt + 1), 250);
+  }}
+  tryPaste(0);
+}})();"#
+    )
 }
 
 fn show_main_window(app: &tauri::AppHandle) {
@@ -36,21 +63,55 @@ fn show_main_window(app: &tauri::AppHandle) {
         .build();
 }
 
+fn paste_clipboard_into_chart(app: &tauri::AppHandle) {
+    show_main_window(app);
+    let app_handle = app.clone();
+    std::thread::spawn(move || {
+        let text = match app_handle.clipboard().read_text() {
+            Ok(value) if !value.trim().is_empty() => value,
+            _ => return,
+        };
+        let js = build_paste_eval_js(&text);
+        let eval_app = app_handle.clone();
+        let _ = app_handle.run_on_main_thread(move || {
+            if let Some(win) = eval_app.get_webview_window("main") {
+                let _ = win.eval(&js);
+            }
+        });
+    });
+}
+
+fn register_paste_hotkey(app: &tauri::AppHandle) {
+    let binding = hotkey_binding();
+    app.global_shortcut()
+        .on_shortcut(binding.as_str(), |triggered_app, _shortcut, event| {
+            if event.state != ShortcutState::Pressed {
+                return;
+            }
+            paste_clipboard_into_chart(triggered_app);
+        })
+        .expect("failed to register KM_CLINICIAN_HOTKEY");
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let _ = dotenvy::dotenv();
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_clipboard_manager::init())
+        .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .setup(|app| {
+            let paste_i = MenuItem::with_id(app, "paste", "클립보드 붙여넣기", true, None::<&str>)?;
             let open_i = MenuItem::with_id(app, "open", "Paste Chart 열기", true, None::<&str>)?;
             let quit_i = MenuItem::with_id(app, "quit", "종료", true, None::<&str>)?;
-            let menu = Menu::with_items(app, &[&open_i, &quit_i])?;
+            let menu = Menu::with_items(app, &[&paste_i, &open_i, &quit_i])?;
 
             let app_handle = app.handle().clone();
             TrayIconBuilder::new()
                 .menu(&menu)
                 .tooltip("MKM Paste Chart")
                 .on_menu_event(move |app, event| match event.id.as_ref() {
+                    "paste" => paste_clipboard_into_chart(app),
                     "open" => show_main_window(app),
                     "quit" => app.exit(0),
                     _ => {}
@@ -67,6 +128,7 @@ pub fn run() {
                 })
                 .build(app)?;
 
+            register_paste_hotkey(&app_handle);
             show_main_window(&app_handle);
             Ok(())
         })

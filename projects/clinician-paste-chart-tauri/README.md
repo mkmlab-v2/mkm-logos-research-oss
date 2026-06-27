@@ -7,6 +7,7 @@ Desktop shell for [Paste Chart v1](https://app.jema-ai.com/clinician?panel=gold)
 - [Rust](https://rustup.rs/) (stable)
 - Node.js 20+
 - Windows: WebView2 (usually preinstalled on Win10+)
+- Windows build: VS Build Tools 2022 (C++ workload)
 
 ## Setup
 
@@ -20,11 +21,17 @@ npm install
 ## Run (dev)
 
 ```powershell
-# .env with KM_CLINICIAN_EMAIL (see .env.example)
-npm run dev
+# MSVC env + .env
+powershell -File C:\workspace\scripts\Invoke-ClinicianPasteChartTauriDev_v1.ps1
 ```
 
 Tray: 좌클릭 또는 「Paste Chart 열기」로 창 표시.
+
+### P2.2 — global hotkey + clipboard paste
+
+- Default hotkey: **Ctrl+Shift+V** (`KM_CLINICIAN_HOTKEY` to override)
+- Action: show window → read system clipboard → inject into `.pc-omni-textarea` (React controlled input)
+- Tray menu: **클립보드 붙여넣기**
 
 ## Check (Rust only)
 
@@ -35,13 +42,17 @@ npm run check:rust
 ## Build
 
 ```powershell
+# MSVC required — portable exe + NSIS installer
 npm run build
+npm run smoke:build-artifact
+npm run smoke:nsis-artifact
 ```
 
 ## Scaffold smoke (no Rust required)
 
 ```powershell
 npm run smoke:scaffold
+npm run smoke:p22
 ```
 
 ## Env
@@ -49,6 +60,7 @@ npm run smoke:scaffold
 | Variable | Purpose |
 |----------|---------|
 | `KM_CLINICIAN_EMAIL` | Appended as `?email=` for Pro gate + API headers |
+| `KM_CLINICIAN_HOTKEY` | Global shortcut (default `Ctrl+Shift+V`) |
 | `KM_CLINICIAN_PASTE_CHART_URL` | Base URL (default prod gold panel) |
 
 Sync VPS allowlist + LLM keys: `powershell -File C:\workspace\scripts\Sync-No1kmediClinicianOpsEnvToVps_v1.ps1`

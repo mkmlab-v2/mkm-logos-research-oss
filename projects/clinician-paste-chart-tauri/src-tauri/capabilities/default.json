@@ -3,5 +3,11 @@
   "identifier": "default",
   "description": "Paste Chart remote webview",
   "windows": ["main"],
-  "permissions": ["core:default"]
+  "permissions": [
+    "core:default",
+    "global-shortcut:allow-register",
+    "global-shortcut:allow-unregister",
+    "global-shortcut:allow-is-registered",
+    "clipboard-manager:allow-read-text"
+  ]
 }
