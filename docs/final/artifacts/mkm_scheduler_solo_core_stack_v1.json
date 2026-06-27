@@ -453,7 +453,7 @@
   },
   "solo_target_ready_band": {
     "min": 38,
-    "max": 92,
-    "note": "2026-06-27: solo_stack_ready=90; tier3 +AutonomousPatrol_Daily +BtrackHero x2 +Kospi_July2026 x2; unauthorized_ready=0"
+    "max": 96,
+    "note": "2026-06-27: solo_stack_ready=94; tier3 +Kospi_Daily_Premarket/Evolution x4; unauthorized_ready=0"
   }
 }
