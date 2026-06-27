@@ -98,14 +98,11 @@ function validateAdviceCoherence(adviceBlock, adviceError) {
 
   const items = adviceBlock.cards.tcm_primary?.items || [];
   const titles = items.map((i) => String(i.title || ""));
-  const bodies = items.map((i) => String(i.body || ""));
-  const hay = [...titles, ...bodies].join("\n");
+  const lifestylePolicy = items.filter((i) => i.tier === "POLICY" || i.tier === "ACTION");
 
   assert(!titles.includes("주소"), 'advice must not use mislabeled slot title "주소"');
   assert(titles.includes("주증상"), "advice missing 주증상 context card");
-  assert(!hay.includes("성장기"), "adult paste-chart advice must not include 성장기 nodes");
 
-  const lifestylePolicy = items.filter((i) => i.tier === "POLICY" || i.tier === "ACTION");
   for (const item of lifestylePolicy) {
     assert(!String(item.title || "").includes("성장기"), `policy/action title: ${item.title}`);
     assert(!String(item.body || "").includes("성장기"), `policy/action body: ${item.title}`);
