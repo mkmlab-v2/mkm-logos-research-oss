@@ -1,0 +1,66 @@
+{
+  "schema": "mkm_solo_oss_release_policy_v1",
+  "version": "1.4.0",
+  "updated_at_utc": "2026-06-21T13:00:00Z",
+  "operator_model": "solo_developer",
+  "applies_to": "all_lanes",
+  "lanes_in_scope": ["oracle", "ms", "infra", "design", "web_ops", "default"],
+  "research_only": true,
+  "send_gate_scope": {
+    "oss_github_release": "OPEN",
+    "grants_customer_contracts": "HOLD",
+    "track_a_live_trading": "LOCKED"
+  },
+  "override_rule_ko": "지휘관이 변호사·counsel·법무 검수·legal review를 명시 요청한 경우에만 레거시 counsel 경로 실행. 그 전까지 모든 레인 기본 제안 금지.",
+  "deprecated_paths": {
+    "legal_counsel_signoff_bundle": {
+      "status": "DEPRECATED",
+      "scope": "all_lanes",
+      "reason_ko": "1인 개발자 — 유료 변호사 검수선 대신 표준 OSS 라이선스 + README 면책 + secret hygiene",
+      "do_not_suggest_in_chat": true,
+      "legacy_scripts_remain": true,
+      "note": "Invoke-LogosGtmCounselHandoffChain_v1.ps1 · compression_b2b_counsel_export — 레거시; 다음 액션 제안 금지"
+    },
+    "b2b_counsel_send_open": {
+      "status": "DEPRECATED",
+      "scope": "all_lanes",
+      "replaced_by": "oss_github_release"
+    }
+  },
+  "public_release_stack": [
+    "LICENSE (MIT at repo root)",
+    "README.md (architecture + MKM-reproduced bench metrics only)",
+    "README disclaimer (research / not investment or medical advice)",
+    ".gitignore secret wall (.env, credentials, local machine pointers)",
+    "Push-GitHub-Explicit.ps1 -Acknowledge when pushing public"
+  ],
+  "forbidden_public_claims": [
+    "DMF 5x-242x as MKM-completed KPI",
+    "legal counsel signoff as release gate",
+    "world-unique TOE / biophysical proof",
+    "Track A live trading readiness from B-track bench"
+  ],
+  "bench_metrics_ssot": {
+    "orchestration_bench": "reports/mkm_ltm_orchestration_bench_v1_latest.json",
+    "cap_ablation": "reports/mkm_ltm_insight_cap_ablation_bench_v1_latest.json",
+    "cap_gold_regression": "reports/mkm_ltm_insight_cap_gold_regression_v1_latest.json",
+    "reproduce": "py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py",
+    "universal_root_oss_smoke": "reports/universal_root_oss_cursor_smoke_v1_latest.json",
+    "universal_root_export_manifest": "docs/final/artifacts/mkm_universal_root_public_export_manifest_v1.json",
+    "universal_root_export_verify": "py scripts/build_mkm_universal_root_public_export_bundle_v1.py --verify-only",
+    "universal_root_export_materialize": "py scripts/build_mkm_universal_root_public_export_bundle_v1.py --materialize"
+  },
+  "oss_launch_gates_v1": {
+    "path_normalization": "relative paths + MKM_WORKSPACE_ROOT env; no C:\\workspace in OSS scope",
+    "path_audit": "py scripts/check_hardcoded_workspace_paths_v1.py --scope oss --strict",
+    "path_normalize_apply": "py scripts/normalize_workspace_paths_v1.py --apply",
+    "fixture_smoke_exit_0": "py scripts/run_universal_root_oss_cursor_smoke_v1.py",
+    "logos_oss_premarket_smoke_exit_0": "py scripts/run_logos_oss_premarket_smoke_v1.py",
+    "logos_oss_export_verify": "py scripts/build_logos_oss_public_export_bundle_v1.py --verify-only",
+    "logos_oss_export_manifest": "docs/final/artifacts/logos_oss_public_export_manifest_v1.json",
+    "logos_oss_github_workflow": "docs/final/artifacts/logos_oss_github_workflow_oss_smoke_v1.yml",
+    "logos_oss_monorepo_ci": ".github/workflows/logos-oss-premarket-smoke.yml",
+    "license_wall": "MIT repo + upstream model licenses (Llama/DeepNSM) in README"
+  },
+  "agent_chat_rule_ko": "모든 레인: 변호사·counsel_signoff·법무 송부를 기본 다음 액션으로 제안하지 않는다. OSS README·LICENSE·secret check·explicit GitHub push. 변호사/법무는 지휘관이 명시할 때만."
+}

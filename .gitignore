@@ -130,6 +130,10 @@ docs/final/artifacts/**
 !docs/final/artifacts/mkm_ops_sync_bridge_v1.json
 !docs/final/artifacts/integrated_governance_config_v1.json
 !docs/final/artifacts/mkm_github_public_release_scope_v1_latest.json
+!docs/final/artifacts/mkm_solo_oss_release_policy_v1_latest.json
+!docs/final/artifacts/logos_oss_public_export_manifest_v1.json
+!docs/final/artifacts/logos_oss_premarket_smoke_guide_v1.md
+!docs/final/artifacts/logos_oss_github_workflow_oss_smoke_v1.yml
 !docs/final/artifacts/ollama_mkm_shallow_router_modelfile_v1.txt
 !docs/final/artifacts/fixtures/
 !docs/final/artifacts/fixtures/live_sync_heartbeat_v1.example.json
@@ -146,6 +150,9 @@ reports/poc_binance_signal_webhook/
 # Keep git status readable: most reports are local/regenerable.
 # (Tracked report logs remain tracked and will still appear as M when edited.)
 reports/**
+
+# Logos bible_full roadmap (W0–W6 SSOT; not regenerable *_latest)
+!reports/logos_bible_full_stack_100_roadmap_v1.json
 
 # MKM internal dogfood compression corpus (scrubbed ops logs; regenerable via build_mkm_internal_dogfood_corpus_v1.py)
 data/compression/mkm_internal_dogfood_v1.jsonl

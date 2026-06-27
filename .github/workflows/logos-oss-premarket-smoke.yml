@@ -1,0 +1,48 @@
+name: Logos OSS premarket smoke
+
+on:
+  push:
+    paths:
+      - "scripts/run_logos_oss_premarket_smoke_v1.py"
+      - "scripts/build_logos_oss_public_export_bundle_v1.py"
+      - "scripts/build_bigset_studio_conflict_sidecar_v1.py"
+      - "scripts/check_logos_studio_conflict_retrieval_gate_v1.py"
+      - "scripts/retrieve_logos_studio_conflict_context_v1.py"
+      - "scripts/synthesize_logos_studio_dynamic_answer_v1.py"
+      - "scripts/ingest_logos_gnosis_kg_lemma_edges_v1.py"
+      - "docs/final/artifacts/logos_oss_public_export_manifest_v1.json"
+      - "docs/final/artifacts/logos_oss_premarket_smoke_guide_v1.md"
+      - "tests/fixtures/gnosis_kg_sample_v1/**"
+      - "tests/test_logos_studio_dynamic_synthesis_v1.py"
+      - "tests/test_logos_verse_ref_canonical_v1.py"
+      - ".github/workflows/logos-oss-premarket-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/run_logos_oss_premarket_smoke_v1.py"
+      - "scripts/build_logos_oss_public_export_bundle_v1.py"
+      - "scripts/build_bigset_studio_conflict_sidecar_v1.py"
+      - "scripts/check_logos_studio_conflict_retrieval_gate_v1.py"
+      - "scripts/retrieve_logos_studio_conflict_context_v1.py"
+      - "scripts/synthesize_logos_studio_dynamic_answer_v1.py"
+      - "scripts/ingest_logos_gnosis_kg_lemma_edges_v1.py"
+      - "docs/final/artifacts/logos_oss_public_export_manifest_v1.json"
+      - "docs/final/artifacts/logos_oss_premarket_smoke_guide_v1.md"
+      - "tests/fixtures/gnosis_kg_sample_v1/**"
+      - "tests/test_logos_studio_dynamic_synthesis_v1.py"
+      - "tests/test_logos_verse_ref_canonical_v1.py"
+      - ".github/workflows/logos-oss-premarket-smoke.yml"
+
+jobs:
+  premarket-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Secret pattern scan
+        run: python3 scripts/check_mkm_secret_patterns_v1.py
+      - name: OSS export manifest verify
+        run: python3 scripts/build_logos_oss_public_export_bundle_v1.py --verify-only
+      - name: Logos OSS premarket smoke
+        run: python3 scripts/run_logos_oss_premarket_smoke_v1.py

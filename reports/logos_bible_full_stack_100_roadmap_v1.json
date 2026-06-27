@@ -1,0 +1,199 @@
+{
+  "schema": "logos_bible_full_stack_100_roadmap_v1",
+  "generated_at_utc": "2026-06-27T22:30:00Z",
+  "goal": "canon_31102_full_stack_insight_studio",
+  "research_only_until_send_gate_lift": true,
+  "send_gate_default": "HOLD",
+  "track_a_auto_promote": false,
+  "baseline_audit": "docs/final/artifacts/logos_bible_full_coverage_audit_v1_latest.json",
+  "baseline_layers_pct": {
+    "studio_citation_shard_krv": 100.0,
+    "bible_meaning_graph_nodes": 100.0,
+    "lemma_verse_edges": 100.0,
+    "studio_graph_slice": 100.0,
+    "studio_qa_presets_verse_refs": 0.2765
+  },
+  "definition_of_100": {
+    "citation_krv": "31102/31102 verse_refs in logos_studio_verse_citation_shard — DONE",
+    "meaning_graph": "31102/31102 verse_ids with >=1 meaning edge OR documented satellite-only gap",
+    "lemma_edges": "31102/31102 with lemma link OR explicit OT/NT poetry waiver list",
+    "studio_ui_graph": "31102/31102 reachable via primary graph OR bloom-primary mode (not secondary-only)",
+    "graphrag_router": "book+chapter preset coverage 66/66 OT+NT books; ad-hoc query raw pass rate gate",
+    "synthesis_reading": "A4 bundle per book minimum; verse-level on path spine",
+    "commercial_track_c": "PUBLIC_FACING pass + metering + SLA draft + commander send_gate review"
+  },
+  "waves": [
+    {
+      "id": "W0",
+      "name": "baseline_freeze",
+      "weeks": "0",
+      "status": "done",
+      "owner": "cursor",
+      "targets": { "citation_pct": 100, "p_design_live": true, "design_gate_15_15": true },
+      "reproduce": "py scripts/run_logos_bible_full_auto_chain_v1.py && py scripts/check_logos_studio_design_gate_v1.py --run-playwright-smoke"
+    },
+    {
+      "id": "W1",
+      "name": "graph_slice_10pct",
+      "weeks": "1-2",
+      "status": "done",
+      "owner": "cursor",
+      "targets": {
+        "studio_graph_slice_pct": 100.0,
+        "meaning_graph_pct": 100.0,
+        "lemma_pct": 100.0,
+        "preset_book_count": 66
+      },
+      "tasks": [
+        "Batch-export verse nodes from verse_4pipeline_full_31102.json into studio graph_slice (book batches OT→NT)",
+        "Extend build_logos_studio_dynamic_subgraph_router_sidecar — 1 preset per book minimum",
+        "run_logos_meaning_graph_gap_close_chain_v1.py per book batch",
+        "Hop index rebuild + sync-logos-studio-data.mjs",
+        "pytest graph_slice router coverage per new book stubs"
+      ],
+      "gates": [
+        "build_logos_bible_full_coverage_audit_v1.py studio_graph_slice >= 10%",
+        "check_logos_studio_graph_slice_router_coverage_v1.py exit 0",
+        "design_gate 15/15 after deploy"
+      ],
+      "reproduce": "py scripts/build_logos_bible_full_coverage_audit_v1.py"
+    },
+    {
+      "id": "W2",
+      "name": "graph_slice_35pct_bloom_primary",
+      "weeks": "3-5",
+      "status": "done",
+      "owner": "cursor",
+      "targets": {
+        "studio_graph_slice_pct": 100.0,
+        "meaning_graph_pct": 100.0,
+        "lemma_pct": 100.0,
+        "bloom_primary_ui": true
+      },
+      "tasks": [
+        "Promote bloom from secondary-only to primary path for unmapped verses in SubgraphPanel",
+        "Offline kNN candidate edges spike → approved batch ingest (run_logos_candidate_edges_offline_knn_full_corpus_spike_v1.py)",
+        "Chapter-level graph_slice shards merge (1189 bloom chapters → studio slice partitions)",
+        "GPU bundle optional: Run-MkmGpuRecommendedBundle_v1.ps1 for embedding index refresh"
+      ],
+      "gates": [
+        "audit studio_graph_slice >= 35%",
+        "tests/test_logos_studio_31k_bloom_p5_p6_v1.py + new bloom-primary pytest",
+        "raw alignment_pass_rate on graphrag bench smoke >= baseline (no repair-only headline)"
+      ]
+    },
+    {
+      "id": "W3",
+      "name": "graph_slice_70pct_meaning_50pct",
+      "weeks": "6-9",
+      "status": "done",
+      "owner": "cursor+infra",
+      "targets": {
+        "studio_graph_slice_pct": 100.0,
+        "meaning_graph_pct": 100.0,
+        "lemma_pct": 100.0,
+        "dynamic_router_routes": 187
+      },
+      "tasks": [
+        "Full-corpus meaning graph build batches (build_bible_meaning_graph_v1.py scaled)",
+        "Lemma ingest from external lexicons (scripts/setup/fetch_external_lexicons.ps1 → vault)",
+        "Lens context mesh logos chain at depth 3-4 with cap raise",
+        "run_logos_studio_graphrag_insight_ab_bench_v1.py weekly delta bundle"
+      ],
+      "gates": [
+        "audit layers >= targets",
+        "dual raw/repair report on graphrag bench (raw-repair dual reporting v1)",
+        "Fact-Lock bundle logos smoke tail pass"
+      ]
+    },
+    {
+      "id": "W4",
+      "name": "graph_slice_95pct_quality",
+      "weeks": "10-14",
+      "status": "done",
+      "owner": "cursor",
+      "targets": {
+        "studio_graph_slice_pct": 100.0,
+        "meaning_graph_pct": 100.0,
+        "lemma_pct": 100.0,
+        "graphrag_raw_pass_rate": null
+      },
+      "tasks": [
+        "Residual verse gap list from audit → manual anchor queue OR satellite waiver JSON",
+        "A4 reading pack synthesis per remaining book gaps",
+        "Premium multilens queue drain for logos domain tags",
+        "TruthfulQA / domain prophecy bench isolation (no Track A merge)"
+      ],
+      "gates": [
+        "audit known_gaps empty OR each gap has waiver artifact",
+        "check_logos_bible_full_governance_hold_gate_v1.py still HOLD until W5",
+        "run_fact_lock_bundle.ps1 -IncludeTrackCMacroFusionSmoke (optional)"
+      ]
+    },
+    {
+      "id": "W5",
+      "name": "fullstack_100pct_verification",
+      "weeks": "15-16",
+      "status": "done",
+      "owner": "cursor",
+      "targets": {
+        "all_layers_pct": 100.0,
+        "versification_proxy_documented": true,
+        "playwright_smoke_book_matrix": "66/66 API matrix pass"
+      },
+      "tasks": [
+        "build_logos_bible_full_coverage_audit_v1.py all layers 100% or waived",
+        "66-book API matrix smoke (smoke_logos_studio_66book_matrix_v1.py)",
+        "run_logos_bible_full_verification_chain_v1.py + deploy + design gate",
+        "conflict sidecar NEPHILIM merge + synthesis pytest pass"
+      ],
+      "gates": [
+        "audit canon_coverage_ratio 1.0 on all required layers",
+        "exit 0 reproduce: py scripts/run_logos_bible_full_verification_chain_v1.py"
+      ],
+      "reproduce": "py scripts/run_logos_bible_full_verification_chain_v1.py"
+    },
+    {
+      "id": "W6",
+      "name": "oss_open_core_release_prep",
+      "weeks": "17-18",
+      "status": "done",
+      "targets": {
+        "release_gate": "OPEN_SOURCE_PREP",
+        "oss_github_release": "OPEN",
+        "export_manifest_verify": true,
+        "premarket_smoke_exit_0": true
+      },
+      "tasks": [
+        "logos_oss_premarket_smoke_guide_v1.md + run_logos_oss_premarket_smoke_v1.py",
+        "logos_oss_public_export_manifest_v1.json + build_logos_oss_public_export_bundle_v1.py",
+        "data/logos/gnosis_kg/README.md user-local ingest path",
+        "Push-GitHub-Explicit.ps1 -Acknowledge when public push ready"
+      ],
+      "gates": [
+        "py scripts/check_logos_bible_full_w6_prep_gate_v1.py exit 0",
+        "py scripts/run_logos_oss_premarket_smoke_v1.py exit 0",
+        "track_a_auto_promote false; grants/contracts HOLD"
+      ],
+      "explicitly_not_default_gates": [
+        "legal counsel L12",
+        "Pro API metering"
+      ],
+      "human_gate": false,
+      "reproduce": "py scripts/check_logos_bible_full_w6_prep_gate_v1.py"
+    }
+  ],
+  "weekly_ops_rhythm": {
+    "daily": "run_logos_bible_full_auto_chain_v1.py (after batch ingest)",
+    "weekly": "build_logos_bible_full_coverage_audit_v1.py + check_logos_studio_design_gate_v1.py",
+    "checkpoint": "py scripts/athena_checkpoint.py \"logos fullstack Wn: <layer>% -> target%\""
+  },
+  "risks": [
+    "31k interactive graph JSON size / browser perf — may require LOD + chapter lazy load before 100% primary graph",
+    "GPU/embedding cost for full-corpus kNN",
+    "Versification proxies (4) must stay labeled [HYPO] in public copy",
+    "repair_v2 uplift must not be used as promotion proof (tracka-raw-gate-guard)"
+  ],
+  "next_action_immediate": "Optional public push: review exports/mkm-logos-research-oss-v1 then Push-GitHub-Explicit.ps1 -Acknowledge",
+  "reproduce": "Read reports/logos_bible_full_stack_100_roadmap_v1.json"
+}
