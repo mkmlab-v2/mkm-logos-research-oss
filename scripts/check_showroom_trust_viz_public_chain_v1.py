@@ -13,9 +13,15 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "reports" / "showroom_trust_viz_public_chain_smoke_latest.json"
+JOB_COSMIC_LOCAL = (
+    ROOT
+    / "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_logos_job_cosmic_code_v1.html"
+)
 
 CANONICAL = "https://jemaai.cloud"
 API_MIRROR = "https://api.jemaai.cloud"
+
+OPTIONAL_LIVE_KEYS = frozenset({"job_cosmic_code_html"})
 
 URLS: dict[str, str] = {
     "trust_html": f"{API_MIRROR}/public_showroom_trust_visualization_v0.html",
@@ -28,6 +34,9 @@ URLS: dict[str, str] = {
     "meaning_qa_v2_mirror": f"{API_MIRROR}/public_showroom_meaning_topology_qa_v2.html",
     "meaning_qa_presets_canonical": f"{CANONICAL}/showroom_meaning_topology_qa_presets_v1.json",
     "meaning_qa_presets_mirror": f"{API_MIRROR}/showroom_meaning_topology_qa_presets_v1.json",
+    "meaning_qa_insight_cards_mirror": f"{API_MIRROR}/showroom_qa_node_insight_cards_v1.json",
+    "cosmic_meta_arch_ui_canonical": f"{CANONICAL}/logos_cosmic_meta_architecture_ui_v1.json",
+    "cosmic_meta_arch_ui_mirror": f"{API_MIRROR}/logos_cosmic_meta_architecture_ui_v1.json",
     "radar_canonical": f"{CANONICAL}/public_showroom_topology_radar_v1.html",
     "radar_mirror": f"{API_MIRROR}/public_showroom_topology_radar_v1.html",
     "oracle_v3_canonical": f"{CANONICAL}/public_showroom_logos_oracle_v3.html",
@@ -35,6 +44,9 @@ URLS: dict[str, str] = {
     "oracle_v5_canonical": f"{CANONICAL}/public_showroom_logos_oracle_v5.html",
     "oracle_v6_canonical": f"{CANONICAL}/public_showroom_logos_oracle_v6.html",
     "oracle_v6_product": f"{CANONICAL}/public_showroom_logos_oracle_v6.html?product=1",
+    "job_reading_pack_html": f"{CANONICAL}/public_showroom_logos_job_reading_pack_v1.html",
+    "job_reading_pack_json": f"{CANONICAL}/showroom_logos_job_reading_pack_slice_v1.json",
+    "job_cosmic_code_html": f"{CANONICAL}/public_showroom_logos_job_cosmic_code_v1.html",
     "chronology_overlay_canonical": f"{CANONICAL}/showroom_logos_chronology_overlay_v1.json",
     "public_events_latest": f"{API_MIRROR}/api/public-events/latest",
 }
@@ -66,6 +78,8 @@ def main() -> int:
         "oracle_v5_canonical",
         "oracle_v6_canonical",
         "oracle_v6_product",
+        "job_reading_pack_html",
+        "job_cosmic_code_html",
     }
     for key, url in URLS.items():
         try:
@@ -75,7 +89,10 @@ def main() -> int:
                 code, body, headers = _fetch(url, head=False)
             steps[key] = {"url": url, "http_status": code, "content_type": headers.get("content-type")}
             if code != 200:
-                errors.append(f"{key}: expected 200 got {code}")
+                if key in OPTIONAL_LIVE_KEYS:
+                    steps[key]["pending_deploy"] = True
+                else:
+                    errors.append(f"{key}: expected 200 got {code}")
             elif key == "public_events_latest":
                 try:
                     doc = json.loads(body.decode("utf-8"))
@@ -90,7 +107,10 @@ def main() -> int:
                     errors.append(f"public_events_latest parse: {e}")
         except urllib.error.HTTPError as e:
             steps[key] = {"url": url, "http_status": e.code, "error": str(e)}
-            errors.append(f"{key}: HTTP {e.code}")
+            if key in OPTIONAL_LIVE_KEYS:
+                steps[key]["pending_deploy"] = True
+            else:
+                errors.append(f"{key}: HTTP {e.code}")
         except Exception as e:
             steps[key] = {"url": url, "error": str(e)}
             errors.append(f"{key}: {e}")
@@ -162,6 +182,91 @@ def main() -> int:
         except Exception as e:
             errors.append(f"meaning_qa_presets_canonical parse: {e}")
 
+    if steps.get("meaning_qa_insight_cards_mirror", {}).get("http_status") == 200:
+        try:
+            _, body, _ = _fetch(URLS["meaning_qa_insight_cards_mirror"])
+            ic = json.loads(body.decode("utf-8"))
+            steps["meaning_qa_insight_cards_payload"] = {
+                "schema_version": ic.get("schema_version"),
+                "card_count": len(ic.get("cards") or {}),
+            }
+            if ic.get("schema_version") != "showroom_qa_node_insight_cards_v1":
+                errors.append("meaning_qa_insight_cards_mirror: schema_version mismatch")
+            if "showroom_job_verse::Job.1.6" not in (ic.get("cards") or {}):
+                errors.append("meaning_qa_insight_cards_mirror: missing Job.1.6 anchor card")
+            if ic.get("schema_version") != "showroom_qa_node_insight_cards_v1":
+                errors.append("meaning_qa_insight_cards_mirror: schema_version mismatch")
+            if "showroom_job_verse::Job.1.6" not in (ic.get("cards") or {}):
+                errors.append("meaning_qa_insight_cards_mirror: missing Job.1.6 anchor card")
+            if "showroom_psalm_verse::Ps.27.14" not in (ic.get("cards") or {}):
+                errors.append("meaning_qa_insight_cards_mirror: missing Ps.27.14 psalm card")
+        except Exception as e:
+            errors.append(f"meaning_qa_insight_cards_mirror parse: {e}")
+
+    for meta_key in ("cosmic_meta_arch_ui_canonical", "cosmic_meta_arch_ui_mirror"):
+        if steps.get(meta_key, {}).get("http_status") == 200:
+            try:
+                _, body, _ = _fetch(URLS[meta_key])
+                doc = json.loads(body.decode("utf-8"))
+                steps[f"{meta_key}_payload"] = {
+                    "schema": doc.get("schema"),
+                    "hypothesis_class": doc.get("hypothesis_class"),
+                    "force_row_count": len(doc.get("force_rows") or []),
+                }
+                if doc.get("schema") != "logos_cosmic_meta_architecture_ui_v1":
+                    errors.append(f"{meta_key}: schema mismatch")
+                if doc.get("hypothesis_class") != "HYPO":
+                    errors.append(f"{meta_key}: hypothesis_class must be HYPO")
+            except Exception as e:
+                errors.append(f"{meta_key} parse: {e}")
+
+    if steps.get("meaning_qa_v2_canonical", {}).get("http_status") == 200:
+        try:
+            _, html_body, _ = _fetch(URLS["meaning_qa_v2_canonical"])
+            html = html_body.decode("utf-8", errors="replace")
+            if "public_observe_v1.html" in html and "insightPanel" not in html:
+                errors.append("meaning_qa_v2_canonical: got observe redirect body not QA studio")
+            if "showInsightPanel" not in html or "insightPanel" not in html:
+                errors.append("meaning_qa_v2_canonical: missing insight panel hooks")
+            if "metaArchPanel" not in html or "META_ARCH_URL" not in html:
+                errors.append("meaning_qa_v2_canonical: missing cosmic meta-arch panel hooks")
+        except Exception as e:
+            errors.append(f"meaning_qa_v2_canonical body: {e}")
+    elif steps.get("meaning_qa_v2_canonical", {}).get("http_status") == 301:
+        loc = steps.get("meaning_qa_v2_canonical", {}).get("location", "")
+        if "public_observe" in str(loc):
+            errors.append("meaning_qa_v2_canonical: 301 to public_observe (legacy redirect not fixed)")
+
+    if steps.get("meaning_qa_v2_mirror", {}).get("http_status") == 200:
+        try:
+            _, html_body, _ = _fetch(URLS["meaning_qa_v2_mirror"])
+            html = html_body.decode("utf-8", errors="replace")
+            if "showInsightPanel" not in html or "insightPanel" not in html:
+                errors.append("meaning_qa_v2_mirror: missing insight panel hooks")
+            if "metaArchPanel" not in html or "META_ARCH_URL" not in html:
+                errors.append("meaning_qa_v2_mirror: missing cosmic meta-arch panel hooks")
+        except Exception as e:
+            errors.append(f"meaning_qa_v2_mirror body: {e}")
+
+    if steps.get("job_reading_pack_json", {}).get("http_status") == 200:
+        try:
+            _, body, _ = _fetch(URLS["job_reading_pack_json"])
+            jp = json.loads(body.decode("utf-8"))
+            steps["job_reading_pack_payload"] = {
+                "schema_version": jp.get("schema_version"),
+                "pack_count": len(jp.get("reading_packs") or []),
+                "why_question_assembled": jp.get("why_question_assembled"),
+                "send_gate": jp.get("send_gate"),
+            }
+            if jp.get("schema_version") != "showroom_logos_job_reading_pack_slice_v1":
+                errors.append("job_reading_pack_json: schema_version mismatch")
+            if jp.get("why_question_assembled") is not False:
+                errors.append("job_reading_pack_json: why_question_assembled must be false")
+            if len(jp.get("reading_packs") or []) != 3:
+                errors.append("job_reading_pack_json: expected 3 reading_packs")
+        except Exception as e:
+            errors.append(f"job_reading_pack_json parse: {e}")
+
     if steps.get("chronology_overlay_canonical", {}).get("http_status") == 200:
         try:
             _, body, _ = _fetch(URLS["chronology_overlay_canonical"])
@@ -176,9 +281,10 @@ def main() -> int:
             errors.append(f"chronology_overlay_canonical parse: {e}")
 
     for ok_key, marker in (
-        ("oracle_v4_canonical", "Visual reasoning path"),
+        # Curated legacy Oracle appendix pages (explicit nginx allowlist; not observe redirect).
+        ("oracle_v3_canonical", "Logos Observatory · Oracle v3"),
+        ("oracle_v4_canonical", "Logos Observatory · Oracle v4"),
         ("oracle_v5_canonical", "Logos Observatory"),
-        ("oracle_v3_canonical", "Logos Observatory"),
     ):
         if steps.get(ok_key, {}).get("http_status") == 200:
             try:
@@ -188,6 +294,23 @@ def main() -> int:
                     errors.append(f"{ok_key}: missing marker {marker!r}")
             except Exception as e:
                 errors.append(f"{ok_key} body: {e}")
+
+    if JOB_COSMIC_LOCAL.is_file():
+        try:
+            local_html = JOB_COSMIC_LOCAL.read_text(encoding="utf-8")
+            has_slider = "jobChapterSlider" in local_html
+            has_link = "public_showroom_logos_job_reading_pack_v1.html" in local_html
+            steps["job_cosmic_code_local"] = {
+                "path": str(JOB_COSMIC_LOCAL.relative_to(ROOT)).replace("\\", "/"),
+                "has_chapter_slider": has_slider,
+                "has_reading_pack_backlink": has_link,
+            }
+            if not has_slider:
+                errors.append("job_cosmic_code_local: missing jobChapterSlider")
+        except Exception as e:
+            errors.append(f"job_cosmic_code_local: {e}")
+    else:
+        errors.append("job_cosmic_code_local: MVP HTML missing")
 
     report = {
         "schema": "showroom_trust_viz_public_chain_smoke_v1",

@@ -13,6 +13,10 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+_SCRIPTS = Path(__file__).resolve().parent
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
+from build_logos_oracle_inference_graph_overlay_v1 import build_overlay  # noqa: E402
 DEFAULT_CANDIDATES = ROOT / "docs/final/artifacts/bible_meaning_insight_candidates_latest.json"
 DEFAULT_NODES = ROOT / "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl"
 DEFAULT_EDGES = ROOT / "docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl"
@@ -21,6 +25,13 @@ DEFAULT_OUT = (
     / "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/showroom_meaning_topology_graph_slice_v1.json"
 )
 DEFAULT_ARTIFACT_MIRROR = ROOT / "docs/final/artifacts/showroom_meaning_topology_graph_slice_v1_latest.json"
+DEFAULT_JOB_BUNDLE = ROOT / "docs/final/artifacts/showroom_job_topology_seed_bundle_v1_latest.json"
+DEFAULT_ERA_BUNDLE = ROOT / "docs/final/artifacts/showroom_chronology_era_topology_seed_bundle_v1_latest.json"
+DEFAULT_CHRONOLOGY = (
+    ROOT
+    / "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp"
+    / "showroom_logos_chronology_overlay_v1.json"
+)
 
 DISCLAIMER = {
     "evidence_tier": "hypo_research_only",
@@ -163,6 +174,102 @@ def _expand_subgraph(
     return selected, edges_out
 
 
+def _bundle_slice_nodes(bundle: dict[str, Any]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for n in bundle.get("nodes") or []:
+        row: dict[str, Any] = {
+            "id": n["id"],
+            "label": n.get("label") or n["id"],
+            "kind": n.get("kind") or "other",
+        }
+        if n.get("ref"):
+            row["ref"] = n["ref"]
+        if n.get("hub_score") is not None:
+            row["hub_score"] = float(n["hub_score"])
+        if n.get("stage_id"):
+            row["stage_id"] = n["stage_id"]
+        rows.append(row)
+    return rows
+
+
+def _merge_seed_bundle(
+    doc: dict[str, Any],
+    bundle: dict[str, Any],
+    *,
+    selection_key: str,
+) -> dict[str, Any]:
+    """Force-inject seed bundle nodes/edges into an existing slice document."""
+    if not bundle:
+        return doc
+    node_by_id = {str(n["id"]): dict(n) for n in doc.get("nodes") or []}
+    for row in _bundle_slice_nodes(bundle):
+        node_by_id[row["id"]] = row
+
+    edge_key = lambda e: (e["src"], e["dst"], e.get("edge_type") or "link")  # noqa: E731
+    edges: list[dict[str, Any]] = list(doc.get("edges") or [])
+    seen = {edge_key(e) for e in edges}
+    for e in bundle.get("edges") or []:
+        key = edge_key(e)
+        if key in seen:
+            continue
+        seen.add(key)
+        edges.append(
+            {
+                "src": e["src"],
+                "dst": e["dst"],
+                "edge_type": e.get("edge_type") or "link",
+                "weight": float(e.get("weight") or 0.5),
+            }
+        )
+
+    kind_counts: dict[str, int] = defaultdict(int)
+    nodes_out = list(node_by_id.values())
+    for n in nodes_out:
+        kind_counts[str(n.get("kind") or "other")] += 1
+
+    doc = dict(doc)
+    doc["nodes"] = nodes_out
+    doc["edges"] = edges
+    stats = dict(doc.get("stats") or {})
+    stats["node_count"] = len(nodes_out)
+    stats["edge_count"] = len(edges)
+    stats["kinds"] = dict(kind_counts)
+    doc["stats"] = stats
+    selection = dict(doc.get("selection") or {})
+    forced = list(bundle.get("node_ids") or [])
+    selection[selection_key] = {
+        "schema": bundle.get("schema"),
+        "forced_node_ids": forced,
+        "verse_ref_count": bundle.get("verse_ref_count"),
+        "era_count": bundle.get("era_count"),
+        "stub_verse_count": bundle.get("stub_verse_count"),
+    }
+    selection["forced_node_ids"] = sorted(set(selection.get("forced_node_ids") or []) | set(forced))
+    doc["selection"] = selection
+    return doc
+
+
+def _merge_job_bundle(
+    doc: dict[str, Any],
+    bundle: dict[str, Any],
+) -> dict[str, Any]:
+    """Force-inject Job spine nodes/edges into an existing slice document."""
+    if not bundle:
+        return doc
+    doc = _merge_seed_bundle(doc, bundle, selection_key="job_seed_bundle")
+    selection = dict(doc.get("selection") or {})
+    job_meta = dict(selection.get("job_seed_bundle") or {})
+    job_meta.update(
+        {
+            "stage_count": bundle.get("stage_count"),
+            "verse_ref_count": bundle.get("verse_ref_count"),
+        }
+    )
+    selection["job_seed_bundle"] = job_meta
+    doc["selection"] = selection
+    return doc
+
+
 def build_slice(
     *,
     candidates_path: Path,
@@ -171,6 +278,8 @@ def build_slice(
     seed_count: int,
     max_nodes: int,
     max_edges: int,
+    job_bundle: dict[str, Any] | None = None,
+    era_bundle: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     if not candidates_path.is_file():
         raise FileNotFoundError(f"candidates missing: {candidates_path}")
@@ -182,21 +291,48 @@ def build_slice(
     candidates_doc = _load_json(candidates_path)
     seeds = _pick_seeds(candidates_doc, seed_count)
     seed_ids = {str(c["source_node_id"]) for c in seeds if c.get("source_node_id")}
+    if job_bundle:
+        seed_ids.update(str(nid) for nid in (job_bundle.get("node_ids") or []))
+    if era_bundle:
+        seed_ids.update(str(nid) for nid in (era_bundle.get("node_ids") or []))
     hub_by_node = {str(c["source_node_id"]): float(c.get("hub_score") or 0) for c in seeds}
     cand_by_node = {str(c["source_node_id"]): str(c.get("candidate_id") or "") for c in seeds}
 
-    selected_ids, edges = _expand_subgraph(seed_ids, edges_path, max_nodes, max_edges)
+    reserved = 0
+    if job_bundle:
+        reserved += len(job_bundle.get("node_ids") or [])
+    if era_bundle:
+        reserved += len(era_bundle.get("node_ids") or [])
+    expand_cap = max(max_nodes, reserved)
+    selected_ids, edges = _expand_subgraph(seed_ids, edges_path, expand_cap, max_edges)
+    if job_bundle:
+        selected_ids.update(str(nid) for nid in (job_bundle.get("node_ids") or []))
+    if era_bundle:
+        selected_ids.update(str(nid) for nid in (era_bundle.get("node_ids") or []))
     nodes_index = _load_nodes_index(nodes_path)
 
     nodes_out: list[dict[str, Any]] = []
     kind_counts: dict[str, int] = defaultdict(int)
+    bundle_by_id: dict[str, dict[str, Any]] = {}
+    for src in (job_bundle, era_bundle):
+        if not src:
+            continue
+        for n in src.get("nodes") or []:
+            bundle_by_id[str(n["id"])] = n
     for node_id in sorted(selected_ids):
-        raw = nodes_index.get(node_id)
+        raw = nodes_index.get(node_id) or bundle_by_id.get(node_id)
         if not raw:
+            continue
+        if node_id in bundle_by_id and "kind" in bundle_by_id[node_id]:
+            kind = str(bundle_by_id[node_id].get("kind") or "other")
+            row = dict(bundle_by_id[node_id])
+            row.setdefault("id", node_id)
+            nodes_out.append(row)
+            kind_counts[kind] += 1
             continue
         kind = _node_kind(raw)
         kind_counts[kind] += 1
-        row: dict[str, Any] = {
+        row = {
             "id": node_id,
             "label": _node_label(raw),
             "kind": kind,
@@ -211,11 +347,13 @@ def build_slice(
         if node_id in hub_by_node:
             row["hub_score"] = hub_by_node[node_id]
             row["candidate_id"] = cand_by_node.get(node_id)
+        elif raw.get("hub_score") is not None:
+            row["hub_score"] = float(raw["hub_score"])
         nodes_out.append(row)
 
     now = datetime.now(timezone.utc).replace(microsecond=0)
     stale = now + timedelta(days=7)
-    return {
+    doc = {
         "schema_version": "showroom_meaning_topology_graph_slice_v1",
         "generated_at_utc": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "stale_after_utc": stale.strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -241,7 +379,13 @@ def build_slice(
         },
         "nodes": nodes_out,
         "edges": edges,
+        "inference_overlay": build_overlay(root=ROOT),
     }
+    if job_bundle:
+        doc = _merge_job_bundle(doc, job_bundle)
+    if era_bundle:
+        doc = _merge_seed_bundle(doc, era_bundle, selection_key="chronology_era_seed_bundle")
+    return doc
 
 
 def main() -> int:
@@ -252,6 +396,19 @@ def main() -> int:
     ap.add_argument("--seed-count", type=int, default=14)
     ap.add_argument("--max-nodes", type=int, default=72)
     ap.add_argument("--max-edges", type=int, default=140)
+    ap.add_argument("--job-seed-bundle", type=Path, default=None)
+    ap.add_argument(
+        "--include-job-spine",
+        action="store_true",
+        help=f"Load default Job seed bundle ({DEFAULT_JOB_BUNDLE.name})",
+    )
+    ap.add_argument("--era-seed-bundle", type=Path, default=None)
+    ap.add_argument(
+        "--include-chronology-era-spine",
+        action="store_true",
+        help=f"Load default chronology era seed bundle ({DEFAULT_ERA_BUNDLE.name})",
+    )
+    ap.add_argument("--chronology-json", type=Path, default=DEFAULT_CHRONOLOGY)
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT)
     ap.add_argument(
         "--mirror-artifact",
@@ -262,6 +419,33 @@ def main() -> int:
     ap.add_argument("--no-mirror-artifact", action="store_true")
     args = ap.parse_args()
 
+    job_bundle = None
+    bundle_path = args.job_seed_bundle
+    if args.include_job_spine and bundle_path is None:
+        bundle_path = DEFAULT_JOB_BUNDLE
+    if bundle_path and bundle_path.is_file():
+        job_bundle = _load_json(bundle_path)
+
+    era_bundle = None
+    era_path = args.era_seed_bundle
+    if args.include_chronology_era_spine and era_path is None:
+        era_path = DEFAULT_ERA_BUNDLE
+    if era_path and era_path.is_file():
+        era_bundle = _load_json(era_path)
+    elif args.include_chronology_era_spine and args.chronology_json.is_file():
+        from scripts.core.showroom_chronology_era_topology_seed_v1 import (  # noqa: E402
+            build_chronology_era_seed_bundle,
+        )
+
+        chrono = _load_json(args.chronology_json)
+        nodes_index = _load_nodes_index(args.graph_nodes_jsonl)
+        edges_index = _iter_jsonl(args.graph_edges_jsonl)
+        era_bundle = build_chronology_era_seed_bundle(
+            chrono,
+            nodes_index=nodes_index,
+            edges_index=edges_index,
+        )
+
     try:
         doc = build_slice(
             candidates_path=args.candidates_json,
@@ -270,6 +454,8 @@ def main() -> int:
             seed_count=args.seed_count,
             max_nodes=args.max_nodes,
             max_edges=args.max_edges,
+            job_bundle=job_bundle,
+            era_bundle=era_bundle,
         )
     except Exception as exc:  # noqa: BLE001
         print(f"build failed: {exc}", file=sys.stderr)

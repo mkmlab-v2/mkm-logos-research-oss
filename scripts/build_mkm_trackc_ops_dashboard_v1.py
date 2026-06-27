@@ -22,6 +22,19 @@ def _read_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def _promotion_decision_agent_label(decision: str | None) -> str | None:
+    """Agent-facing alias — avoids GO_FINAL_V2 misread as customer SEND/live GO."""
+    if not decision:
+        return None
+    labels = {
+        "GO_FINAL_V2": "INTERNAL_V2_READY",
+        "HOLD": "HOLD",
+        "GO": "INTERNAL_GO",
+        "NO_GO": "NO_GO",
+    }
+    return labels.get(str(decision), str(decision))
+
+
 def _lens_music_m32_dashboard_fields(*, hormone_doc: Dict[str, Any], overlay_doc: Dict[str, Any]) -> Dict[str, Any]:
     """Compact M31/M32 audit slice for Track C ops (B-track advisory; no prophecy merge)."""
     ht = hormone_doc.get("gematria_seed_trace")
@@ -617,6 +630,9 @@ def main() -> int:
             "status": status.get("status"),
             "is_final": status.get("is_final"),
             "promotion_decision": decision.get("decision"),
+            "promotion_decision_agent_label": _promotion_decision_agent_label(
+                decision.get("decision")
+            ),
             "promotion_ready": decision.get("promotion_ready"),
             "weekly_pass_rate_percent": status.get("weekly_pass_rate_percent"),
             "weekly_sample_count": status.get("weekly_sample_count"),
@@ -938,7 +954,8 @@ def main() -> int:
         "",
         f"- generated_at_utc: `{dashboard['generated_at_utc']}`",
         f"- system_status: `{dashboard['system']['status']}`",
-        f"- promotion_decision: `{dashboard['system']['promotion_decision']}`",
+        f"- promotion_decision: `{dashboard['system']['promotion_decision']}` "
+        f"(agent: `{dashboard['system'].get('promotion_decision_agent_label')}` — not SEND/live)",
         f"- promotion_ready: `{dashboard['system']['promotion_ready']}`",
         f"- weekly_pass_rate_percent: `{dashboard['system']['weekly_pass_rate_percent']}`",
         f"- weekly_sample_count: `{dashboard['system']['weekly_sample_count']}`",

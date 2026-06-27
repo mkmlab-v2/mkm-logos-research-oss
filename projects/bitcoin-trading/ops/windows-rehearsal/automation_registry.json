@@ -83,7 +83,7 @@
     },
     {
       "name": "\\MKM-AramaicMvp-DailyAudit",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "btrack_research",
       "criticality": "low",
       "optional": true
@@ -117,7 +117,7 @@
     },
     {
       "name": "\\MKM-LiveSync-Heartbeat-Pull",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "ops_sync",
       "criticality": "low"
     },
@@ -172,7 +172,7 @@
     },
     {
       "name": "\\MKM-Trading-Execution-Readiness-Loop-2H",
-      "expected_status": "Ready",
+      "expected_status": "Disabled",
       "owner": "athena_automation",
       "criticality": "medium",
       "optional": true

@@ -49,6 +49,9 @@ def test_build_slice_default_out(tmp_path: Path) -> None:
     assert doc["stats"]["edge_count"] >= 1
     assert doc["nodes"][0]["id"]
     assert doc["edges"][0]["src"]
+    overlay = doc.get("inference_overlay") or {}
+    assert overlay.get("schema") == "logos_oracle_inference_graph_overlay_v1"
+    assert len(overlay.get("four_d_families") or []) == 4
 
 
 def test_build_slice_json_schema(tmp_path: Path) -> None:

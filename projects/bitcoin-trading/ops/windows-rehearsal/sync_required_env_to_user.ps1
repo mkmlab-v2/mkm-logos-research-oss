@@ -116,6 +116,7 @@ $keys = @(
   # Local Ollama (optional; tools / local engine default)
   "OLLAMA_MODEL",
   "OLLAMA_HOST",
+  "OLLAMA_KEEP_ALIVE",
   # Fact-safe monthly / eval (run_waiting_queue_monthly_check.ps1)
   "FACT_SAFE_INPUT_USD_PER_1K_TOKENS",
   "FACT_SAFE_OUTPUT_USD_PER_1K_TOKENS",
@@ -230,9 +231,24 @@ if ([string]::IsNullOrWhiteSpace($opsAlarmCur)) {
   if ([string]::IsNullOrWhiteSpace($mirror)) {
     $mirror = [Environment]::GetEnvironmentVariable("N8N_WEBHOOK_URL", "User")
   }
+  if ([string]::IsNullOrWhiteSpace($mirror) -and $map.ContainsKey("SLACK_WEBHOOK_URL") -and -not [string]::IsNullOrWhiteSpace($map["SLACK_WEBHOOK_URL"])) {
+    $mirror = $map["SLACK_WEBHOOK_URL"].Trim()
+  }
+  if ([string]::IsNullOrWhiteSpace($mirror)) {
+    $mirror = [Environment]::GetEnvironmentVariable("SLACK_WEBHOOK_URL", "User")
+  }
   if (-not [string]::IsNullOrWhiteSpace($mirror)) {
     [Environment]::SetEnvironmentVariable("OPS_ALARM_WEBHOOK_URL", $mirror, "User")
-    Write-Host "MIRROR_USER:OPS_ALARM_WEBHOOK_URL<=N8N_WEBHOOK_URL"
+    $mirrorSrc = if ($map.ContainsKey("N8N_WEBHOOK_URL") -and -not [string]::IsNullOrWhiteSpace($map["N8N_WEBHOOK_URL"])) {
+      "N8N_WEBHOOK_URL"
+    } elseif (-not [string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable("N8N_WEBHOOK_URL", "User"))) {
+      "N8N_WEBHOOK_URL"
+    } elseif ($map.ContainsKey("SLACK_WEBHOOK_URL") -and -not [string]::IsNullOrWhiteSpace($map["SLACK_WEBHOOK_URL"])) {
+      "SLACK_WEBHOOK_URL"
+    } else {
+      "SLACK_WEBHOOK_URL"
+    }
+    Write-Host "MIRROR_USER:OPS_ALARM_WEBHOOK_URL<=$mirrorSrc"
   }
 }
 

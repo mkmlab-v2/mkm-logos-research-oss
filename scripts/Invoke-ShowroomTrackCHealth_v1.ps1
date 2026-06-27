@@ -46,4 +46,12 @@ if (-not $SkipB2bReadiness) {
     }
 }
 
+Invoke-Step "Logos Job Reading Pack self-verify" {
+    py (Join-Path $root "scripts\_self_verify_job_reading_pack_showroom_v1.py")
+}
+
+Invoke-Step "Logos showroom URL SSOT + slice pytest" {
+    py -m pytest (Join-Path $root "tests\test_build_jemaai_showroom_public_urls_v1.py") (Join-Path $root "tests\test_build_showroom_logos_job_reading_pack_slice_v1.py") (Join-Path $root "tests\test_build_showroom_meaning_topology_qa_presets_v1.py") -q --tb=short
+}
+
 Write-Host "[showroom-health] OK"

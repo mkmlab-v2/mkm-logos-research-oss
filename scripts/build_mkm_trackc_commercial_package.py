@@ -70,6 +70,18 @@ def main() -> int:
                 "logos_research",
                 "https://jemaai.cloud/public_showroom_logos_research_v1.html",
             ),
+            "logos_job_reading_pack_v1": _page_canonical(
+                "logos_job_reading_pack",
+                "https://jemaai.cloud/public_showroom_logos_job_reading_pack_v1.html",
+            ),
+            "logos_demo_spine_entry": str(
+                (url_ssot.get("logos_demo_spine") or {}).get("entry_point")
+                or "meaning_topology_qa_v2"
+            ),
+            "commercial_workspace": str(
+                (url_ssot.get("commercial_workspace") or {}).get("product_primary_url")
+                or "https://logos.jema-ai.com"
+            ),
             "public_events_latest": str(
                 (url_ssot.get("api") or {}).get("public_events_latest")
                 or "https://api.jemaai.cloud/api/public-events/latest"
