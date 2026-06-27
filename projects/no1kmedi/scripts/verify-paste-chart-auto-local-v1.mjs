@@ -7,6 +7,7 @@
  */
 
 import { execFileSync } from "node:child_process";
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -14,12 +15,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const BASE_URL = (process.env.NO1KMEDI_BASE_URL || "http://127.0.0.1:3010").replace(/\/$/, "");
 const EMAIL = (process.env.KM_CLINICIAN_SMOKE_EMAIL || "moksorinw@gmail.com").trim();
+const SAMPLE_PATH = path.join(ROOT, "scripts", "fixtures", "paste-chart-sample-ko-v1.txt");
 
-const SAMPLE = `김민수 / 1988-03-12 / 남 / 36세 / 요통 3주
+function loadSample() {
+  if (!fs.existsSync(SAMPLE_PATH)) {
+    throw new Error(`missing UTF-8 fixture: ${SAMPLE_PATH}`);
+  }
+  return fs.readFileSync(SAMPLE_PATH, "utf8").trimEnd();
+}
 
-[주소] 서울 강남
-[CC] 요추부 통증, 3주 전부터 악화. 앉아 있을 때 더 아픔.
-[Hx] 진통제 병력`;
+const SAMPLE = loadSample();
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg);

@@ -19,6 +19,7 @@ function assert(cond, msg) {
 const lib = fs.readFileSync(libRs, "utf8");
 assert(lib.includes("on_shortcut"), "missing global shortcut registration");
 assert(lib.includes("paste_clipboard_into_chart"), "missing clipboard paste handler");
+assert(lib.includes("js_ascii_string_literal"), "missing ASCII-safe eval paste helper");
 assert(lib.includes(".pc-omni-textarea"), "missing omni textarea selector");
 
 const permissions = JSON.parse(fs.readFileSync(cap, "utf8")).permissions;

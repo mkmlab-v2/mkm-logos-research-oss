@@ -18,16 +18,15 @@ param(
 $ErrorActionPreference = "Stop"
 $root = "C:\workspace"
 $no1kmediRoot = Join-Path $root "projects\no1kmedi"
+$sampleFixture = Join-Path $no1kmediRoot "scripts\fixtures\paste-chart-sample-ko-v1.txt"
 $tauriEnv = Join-Path $root "projects\clinician-paste-chart-tauri\.env"
 $localUrl = "http://127.0.0.1:3010/clinician?panel=gold"
 $port = 3010
-$sample = @"
-김민수 / 1988-03-12 / 남 / 36세 / 요통 3주
 
-[주소] 서울 강남
-[CC] 요추부 통증, 3주 전부터 악화. 앉아 있을 때 더 아픔.
-[Hx] 진통제 병력
-"@
+if (-not (Test-Path $sampleFixture)) {
+    throw "missing UTF-8 fixture: $sampleFixture"
+}
+$sample = Get-Content -LiteralPath $sampleFixture -Raw -Encoding UTF8
 
 function Test-PortListening([int]$p) {
     try {

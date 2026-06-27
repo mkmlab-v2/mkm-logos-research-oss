@@ -25,8 +25,25 @@ fn hotkey_binding() -> String {
     std::env::var("KM_CLINICIAN_HOTKEY").unwrap_or_else(|_| "Ctrl+Shift+V".to_string())
 }
 
+fn js_ascii_string_literal(text: &str) -> String {
+    let mut out = String::from('"');
+    for ch in text.chars() {
+        match ch {
+            '"' => out.push_str("\\\""),
+            '\\' => out.push_str("\\\\"),
+            '\n' => out.push_str("\\n"),
+            '\r' => out.push_str("\\r"),
+            '\t' => out.push_str("\\t"),
+            c if c.is_ascii() && !c.is_control() => out.push(c),
+            c => out.push_str(&format!("\\u{:04x}", c as u32)),
+        }
+    }
+    out.push('"');
+    out
+}
+
 fn build_paste_eval_js(text: &str) -> String {
-    let encoded = serde_json::to_string(text).unwrap_or_else(|_| "\"\"".to_string());
+    let encoded = js_ascii_string_literal(text);
     format!(
         r#"(function() {{
   const text = {encoded};
