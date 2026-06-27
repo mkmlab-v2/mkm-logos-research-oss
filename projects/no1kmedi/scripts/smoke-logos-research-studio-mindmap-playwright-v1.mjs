@@ -124,6 +124,23 @@ async function main() {
     await page.locator('[data-logos-hero-mini-mindmap="1"]').waitFor({ state: "visible", timeout: 90000 });
     checks.push(await assertMindmapVisible(page, "hero_landing"));
 
+    step = "studio_omni_entry";
+    await page.goto(`${BASE}/logos-research/studio`, {
+      waitUntil: "domcontentloaded",
+      timeout: 120000,
+    });
+    await page.locator('[data-logos-studio-omni-entry="1"]').waitFor({ timeout: 60000 });
+    const omniMetrics = await page.evaluate(() => ({
+      phase: document.querySelector(".logos-research-page")?.getAttribute("data-logos-studio-phase"),
+      omniEntry: !!document.querySelector('[data-logos-studio-omni-entry="1"]'),
+      trustCanvas: !!document.querySelector('[data-mkm-trust-canvas="1"]'),
+      queryInput: !!document.querySelector("#lr-query"),
+    }));
+    if (omniMetrics.phase !== "omni" || !omniMetrics.omniEntry || omniMetrics.trustCanvas) {
+      throw new Error(`studio_omni_entry_fail_${JSON.stringify(omniMetrics)}`);
+    }
+    checks.push({ label: "studio_omni_entry_idle", ok: true, ...omniMetrics });
+
     step = "studio_job_load";
     await page.goto(
       `${BASE}/logos-research/studio?q=job_job_suffering_reason&autorun=1&demo=1`,

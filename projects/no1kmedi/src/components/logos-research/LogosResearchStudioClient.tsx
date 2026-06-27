@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { LogosCanvasStudioLayout } from "@/components/logos-research/LogosCanvasStudioLayout";
+import { LogosStudioOmniEntry } from "@/components/logos-research/LogosStudioOmniEntry";
 import {
   dispatchScriptoriumVerseSelect,
   LogosStudioScriptoriumInquiry,
@@ -26,6 +27,11 @@ import {
 import { isEmbedDemoPreset, LOGOS_FREE_DAILY_QUOTA } from "@/lib/logosResearchQuotaV1";
 import type { ConflictContextResult } from "@/lib/logosStudioConflictBridgeV1";
 import { buildScriptoriumTopicPills, buildScriptoriumInquirySummary, verseRefShortList } from "@/lib/logosResearchStudioDisplayV1";
+import {
+  LOGOS_STUDIO_OMNI_QUICK_PRESET_IDS,
+  resolveInitialStudioPhase,
+  type LogosStudioPhase,
+} from "@/lib/logosStudioPhaseV1";
 
 type PresetRow = { id: string; prompt_ko: string; slot?: string | null; slot_label_ko?: string | null };
 
@@ -181,6 +187,13 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
   const autorun = searchParams.get("autorun") === "1" || demoFromUrl;
   const legacyLayout = searchParams.get("legacy") === "1";
   const canvasLayout = !embedHero && !legacyLayout;
+  const phaseInit = useMemo(
+    () => ({ canvasLayout, embedHero, autorun, legacyLayout }),
+    [autorun, canvasLayout, embedHero, legacyLayout],
+  );
+  const [studioPhase, setStudioPhase] = useState<LogosStudioPhase>(() =>
+    resolveInitialStudioPhase(phaseInit),
+  );
   const studio = "studio" in logosResearchCopy ? logosResearchCopy.studio : null;
   const [presets, setPresets] = useState<PresetRow[]>([]);
   const [presetsLoading, setPresetsLoading] = useState(true);
@@ -201,6 +214,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
   const [leadMessage, setLeadMessage] = useState("");
   const [gapFocusLabel, setGapFocusLabel] = useState<string | null>(null);
   const [presetSlotFilter, setPresetSlotFilter] = useState<string>("all");
+  const [quotaDisabled, setQuotaDisabled] = useState(false);
   const [audienceMode, setAudienceMode] = useState<LogosStudioAudienceMode>(audienceModeFromUrl);
 
   const audienceCopy =
@@ -214,9 +228,41 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
   );
 
   const quotaLow = remaining != null && remaining <= 2 && !embedHero;
-  const quotaExceeded = error === "quota_exceeded";
+  const quotaExceeded = !quotaDisabled && error === "quota_exceeded";
   const demoPresetEligible = presetId ? isEmbedDemoPreset(presetId) : false;
   const demoModeHref = buildStudioDemoUrl(presetId, query);
+  const queryRunDisabled = loading || presetsLoading || !query.trim() || quotaExceeded;
+
+  const omniQuickPresets = useMemo(() => {
+    const ids = new Set<string>(LOGOS_STUDIO_OMNI_QUICK_PRESET_IDS);
+    return LOGOS_STUDIO_OMNI_QUICK_PRESET_IDS.map((id) => presets.find((p) => p.id === id))
+      .filter((row): row is PresetRow => !!row && ids.has(row.id));
+  }, [presets]);
+
+  const onOmniQuickPreset = useCallback(
+    (id: string) => {
+      const row = presets.find((p) => p.id === id);
+      if (!row) return;
+      setPresetId(id);
+      setQuery(row.prompt_ko);
+      setError(null);
+    },
+    [presets],
+  );
+
+  useEffect(() => {
+    if (!canvasLayout) return;
+    const page = document.querySelector(".logos-research-page.logos-research-studio-theme");
+    if (!page) return;
+    page.setAttribute("data-logos-studio-phase", studioPhase);
+    return () => {
+      page.removeAttribute("data-logos-studio-phase");
+    };
+  }, [canvasLayout, studioPhase]);
+
+  useEffect(() => {
+    setStudioPhase(resolveInitialStudioPhase(phaseInit));
+  }, [phaseInit]);
 
   const presetsForMode = useMemo(
     () => filterPresetsByAudienceMode(presets, audienceMode),
@@ -282,9 +328,22 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
           defaultPreset: defaultPresetIdForAudienceMode(audienceModeFromUrl),
         });
         setPresetId(initial.presetId);
-        setQuery(initial.query);
+        const omniIdle =
+          canvasLayout &&
+          resolveInitialStudioPhase({
+            canvasLayout,
+            embedHero,
+            autorun,
+            legacyLayout,
+          }) === "omni" &&
+          !hubPrefill &&
+          !presetFromUrl;
+        setQuery(omniIdle ? "" : initial.query);
+        if (data.quota_disabled === true) {
+          setQuotaDisabled(true);
+          setError(null);
+        }
         if (typeof data.remaining === "number") setRemaining(data.remaining);
-        setError(null);
       } catch (e: unknown) {
         if (!cancelled) {
           setError(e instanceof Error ? e.message : "presets_load_failed");
@@ -297,7 +356,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
     return () => {
       cancelled = true;
     };
-  }, [audienceModeFromUrl, hubPrefill, presetFromUrl]);
+  }, [audienceModeFromUrl, autorun, canvasLayout, embedHero, hubPrefill, legacyLayout, presetFromUrl]);
 
   const onPresetChange = useCallback(
     (id: string) => {
@@ -318,6 +377,9 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
   }, [audienceMode, filteredPresets, onPresetChange, presetId, presetSlotFilter, presetsForMode]);
 
   const runQuery = useCallback(async () => {
+    if (canvasLayout && studioPhase === "omni") {
+      setStudioPhase("workspace");
+    }
     setLoading(true);
     setError(null);
     try {
@@ -336,6 +398,8 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
       setPresetMatch(typeof data.match === "string" ? data.match : null);
       const nextResult = data.result as QueryResult;
       setResult(nextResult);
+      if (data.quota_disabled === true) setQuotaDisabled(true);
+      if (nextResult.preset_id) setPresetId(nextResult.preset_id);
       void postStudioTelemetry({
         event: "logos_research_query_success_v1",
         page_path: "/logos-research/studio",
@@ -355,7 +419,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
     } finally {
       setLoading(false);
     }
-  }, [demoFromUrl, presetId, query, embedHero]);
+  }, [canvasLayout, demoFromUrl, embedHero, presetId, query, studioPhase]);
 
   useEffect(() => {
     if (!autorun || presetsLoading || autorunDoneRef.current) return;
@@ -407,7 +471,21 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
           defaultPreset: defaultPresetIdForAudienceMode(audienceMode),
         });
         setPresetId(initial.presetId);
-        setQuery(initial.query);
+        const omniIdle =
+          canvasLayout &&
+          resolveInitialStudioPhase({
+            canvasLayout,
+            embedHero,
+            autorun,
+            legacyLayout,
+          }) === "omni" &&
+          !hubPrefill &&
+          !presetFromUrl;
+        setQuery(omniIdle ? "" : initial.query);
+        if (data.quota_disabled === true) {
+          setQuotaDisabled(true);
+          setError(null);
+        }
         if (typeof data.remaining === "number") setRemaining(data.remaining);
       } catch (e: unknown) {
         setError(e instanceof Error ? e.message : "presets_load_failed");
@@ -415,7 +493,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
         setPresetsLoading(false);
       }
     })();
-  }, [audienceMode, hubPrefill, presetFromUrl]);
+  }, [audienceMode, canvasLayout, embedHero, autorun, legacyLayout, hubPrefill, presetFromUrl]);
 
   const submitLead = useCallback(async () => {
     setLeadState("submitting");
@@ -572,7 +650,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
           onChange={(e) => setQuery(e.target.value)}
         />
 
-        {!embedHero ? (
+        {!embedHero && !quotaDisabled ? (
           <div
             className={`lr-studio-quota-banner${quotaLow ? " lr-studio-quota-banner--low" : ""}${quotaExceeded ? " lr-studio-quota-banner--exceeded" : ""}`}
             role="status"
@@ -590,7 +668,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
             type="button"
             className="lr-btn lr-btn-primary"
             onClick={runQuery}
-            disabled={loading || presetsLoading || !query.trim() || !presetId || quotaExceeded}
+            disabled={queryRunDisabled}
           >
             {loading ? (studio?.label_running ?? "실행 중…") : studio?.run_label ?? "경로 질의 실행"}
           </button>
@@ -773,7 +851,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
       onRun={runQuery}
       runLabel={studio?.run_label ?? "질의"}
       running={loading}
-      runDisabled={loading || presetsLoading || !query.trim() || !presetId || quotaExceeded}
+      runDisabled={queryRunDisabled}
       presetSelect={scriptoriumPresetSelect}
       summaryBlock={canvasAnswerBlock}
       verseChips={scriptoriumVerseChips}
@@ -787,8 +865,41 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
   );
 
   return (
-    <div className={`lr-studio${canvasLayout ? " lr-studio--canvas lr-studio--scriptorium" : ""}`}>
-      {canvasLayout ? (
+    <div
+      className={`lr-studio${canvasLayout ? " lr-studio--canvas lr-studio--scriptorium" : ""}${studioPhase === "omni" ? " lr-studio--omni-entry" : " lr-studio--workspace"}`}
+      data-logos-studio-phase={canvasLayout ? studioPhase : undefined}
+    >
+      {canvasLayout && studioPhase === "omni" ? (
+        <LogosStudioOmniEntry
+          title={
+            (studio as { omni_title?: string } | null)?.omni_title ?? "무엇을 연구할까요?"
+          }
+          lead={
+            (studio as { omni_lead?: string } | null)?.omni_lead ??
+            "질문·구절·주제를 입력하세요."
+          }
+          placeholder={
+            (studio as { omni_placeholder?: string } | null)?.omni_placeholder ??
+            "연구 질문을 입력하세요…"
+          }
+          governanceNote={
+            (studio as { omni_governance?: string } | null)?.omni_governance ??
+            "research_only · citation lock · send_gate HOLD"
+          }
+          query={query}
+          onQueryChange={setQuery}
+          onRun={runQuery}
+          runLabel={studio?.run_label ?? "경로 질의 실행"}
+          running={loading}
+          runDisabled={queryRunDisabled}
+          quickPresets={omniQuickPresets}
+          onQuickPreset={onOmniQuickPreset}
+          error={error}
+          quotaRemaining={remaining}
+          quotaTotal={LOGOS_FREE_DAILY_QUOTA}
+          showQuota={!embedHero && !quotaDisabled}
+        />
+      ) : canvasLayout ? (
         <LogosCanvasStudioLayout
           chat={canvasChatPane}
           loading={loading}
@@ -911,7 +1022,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
         </section>
       ) : null}
 
-      {!embedHero ? (
+      {!embedHero && !canvasLayout ? (
       <section className="lr-studio-panel" aria-labelledby="lr-studio-lead-title">
         <h2 id="lr-studio-lead-title">{studio?.lead_title ?? "Pro / 기관 파일럿"}</h2>
         <p className="lr-section-lead">
@@ -956,7 +1067,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
       </section>
       ) : null}
 
-      {!embedHero ? (
+      {!embedHero && !canvasLayout ? (
       <section className="lr-studio-trust" aria-labelledby="lr-studio-trust-title">
         <h2 id="lr-studio-trust-title">{studio?.trust_title ?? "GitHub에서 검증 (OSS)"}</h2>
         <ul>

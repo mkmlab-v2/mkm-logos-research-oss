@@ -14,8 +14,9 @@ const outDir = path.join(pkgRoot, "public", "data", "logos_studio");
 const PAIRS = [
   ["showroom_meaning_topology_qa_presets_v1_latest.json", "qa_presets_v1.json"],
   ["showroom_meaning_topology_qa_router_sidecar_v1_latest.json", "qa_router_sidecar_v1.json"],
-  ["showroom_meaning_topology_graph_slice_v1_latest.json", "graph_slice_v1.json"],
-  ["lens_context_mesh_hop_index_logos_v1_latest.json", "context_mesh_hop_index_v1.json"],
+    ["logos_studio_graph_slice_ui_lite_v1_latest.json", "graph_slice_v1.json"],
+  ["showroom_meaning_topology_graph_slice_v1_latest.json", "graph_slice_full_v1.json"],
+  ["lens_context_mesh_hop_index_logos_ui_lite_v1_latest.json", "context_mesh_hop_index_v1.json"],
   ["showroom_era_insight_lattice_genesis_v1_latest.json", "era_insight_lattice_genesis_v1.json"],
   ["logos_studio_preset_taxonomy_v1_latest.json", "preset_taxonomy_v1.json"],
   ["logos_cross_ref_sample_shard_v1_latest.json", "cross_ref_sample_shard_v1.json"],
@@ -89,10 +90,36 @@ function runRouterVerseStubPatch() {
   }
 }
 
+function runUiLiteGraphSlice() {
+  const litePy = path.join(workspaceRoot, "scripts", "build_logos_studio_graph_slice_ui_lite_v1.py");
+  const pyCandidates =
+    process.platform === "win32"
+      ? [process.env.PYTHON || "py", "python"]
+      : [process.env.PYTHON || "python3", "python", "py"];
+  let res = null;
+  for (const py of pyCandidates) {
+    res = spawnSync(py, [litePy, "--max-nodes", "900"], {
+      cwd: workspaceRoot,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+    if (res.error?.code === "ENOENT") continue;
+    break;
+  }
+  if (!res || res.status !== 0) {
+    console.warn(
+      `[sync-logos-studio-data] ui lite graph build skipped exit=${res?.status ?? "missing"}`,
+      res?.stderr?.trim() || res?.stdout?.trim(),
+    );
+    return;
+  }
+  console.log("[sync-logos-studio-data] ui_lite_graph_slice ok");
+}
+
 try {
   runEmbedRouterSidecarMerge();
   runRouterVerseStubPatch();
-  runRouterVerseStubPatch();
+  runUiLiteGraphSlice();
   await mkdir(outDir, { recursive: true });
   let copied = 0;
   let skipped = 0;

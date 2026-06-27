@@ -3,6 +3,17 @@ import type { NextRequest, NextResponse } from "next/server";
 export const LOGOS_FREE_DAILY_QUOTA = 8;
 export const LOGOS_QUOTA_COOKIE = "lr_q_v1";
 
+function isTruthyEnv(value: string | undefined): boolean {
+  if (!value) return false;
+  const v = value.trim().toLowerCase();
+  return v === "1" || v === "true" || v === "yes" || v === "on";
+}
+
+/** Dev/commander: LOGOS_STUDIO_QUOTA_DISABLED=1 — skip cookie quota (research_only showroom). */
+export function isLogosStudioQuotaDisabled(): boolean {
+  return isTruthyEnv(process.env.LOGOS_STUDIO_QUOTA_DISABLED);
+}
+
 /** Hero iframe / demo=1 — quota-free, preset allowlist only */
 export const LOGOS_EMBED_DEMO_PRESET_ALLOWLIST = new Set([
   "job_job_suffering_reason",
@@ -70,7 +81,7 @@ export function applyQuotaCookie(response: NextResponse, state: QuotaCookie) {
 export function checkAndConsumeQuota(
   request: NextRequest,
 ): { ok: true; state: QuotaCookie; pro: boolean } | { ok: false; state: QuotaCookie; remaining: number } {
-  if (isProApiKey(request)) {
+  if (isLogosStudioQuotaDisabled() || isProApiKey(request)) {
     return { ok: true, state: readQuotaState(request), pro: true };
   }
   const state = readQuotaState(request);
@@ -81,6 +92,6 @@ export function checkAndConsumeQuota(
 }
 
 export function quotaRemaining(state: QuotaCookie, pro: boolean): number {
-  if (pro) return LOGOS_FREE_DAILY_QUOTA;
+  if (pro || isLogosStudioQuotaDisabled()) return LOGOS_FREE_DAILY_QUOTA;
   return Math.max(0, LOGOS_FREE_DAILY_QUOTA - state.n);
 }

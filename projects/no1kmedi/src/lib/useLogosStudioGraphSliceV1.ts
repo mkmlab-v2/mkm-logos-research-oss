@@ -8,9 +8,9 @@ import type { LogosGraphSliceDoc } from "@/lib/logosResearchGraphTypesV1";
 export const LOGOS_GRAPH_SLICE_URL = "/data/logos_studio/graph_slice_v1.json";
 export const LOGOS_HOP_INDEX_URL = "/data/logos_studio/context_mesh_hop_index_v1.json";
 /** Bump when graph_slice / hop_index artifacts change (stub patch · router sidecar). */
-export const LOGOS_STUDIO_GRAPH_DATA_V = "2026-06-26-embed-stub-v1";
+export const LOGOS_STUDIO_GRAPH_DATA_V = "2026-06-27-ui-lite-v1";
 /** Max wait for graph_slice / hop_index fetch before surfacing error (ms). */
-export const LOGOS_STUDIO_GRAPH_FETCH_TIMEOUT_MS = 30_000;
+export const LOGOS_STUDIO_GRAPH_FETCH_TIMEOUT_MS = 90_000;
 
 function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response> {
   const controller = new AbortController();
@@ -48,7 +48,7 @@ export function useLogosStudioGraphSlice(enabled = true) {
       } catch (e: unknown) {
         if (!cancelled) {
           if (e instanceof DOMException && e.name === "AbortError") {
-            setLoadError("graph_slice_timeout_30s");
+            setLoadError("graph_slice_timeout_90s");
           } else {
             setLoadError(e instanceof Error ? e.message : "graph_slice_failed");
           }

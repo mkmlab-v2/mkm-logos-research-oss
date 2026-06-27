@@ -4,6 +4,7 @@ import { listPresetSummaries, loadLogosStudioPresets } from "@/lib/logosResearch
 import { hasLogosProAccess, resolveLogosAccess } from "@/lib/logosResearchAccessV1";
 import {
   LOGOS_FREE_DAILY_QUOTA,
+  isLogosStudioQuotaDisabled,
   quotaRemaining,
   readQuotaState,
 } from "@/lib/logosResearchQuotaV1";
@@ -13,6 +14,7 @@ export async function GET(request: NextRequest) {
     const doc = await loadLogosStudioPresets();
     const access = await resolveLogosAccess(request, "logos.presets.read");
     const pro = hasLogosProAccess(access);
+    const quotaOff = isLogosStudioQuotaDisabled();
     const quotaState = readQuotaState(request);
     return NextResponse.json(
       {
@@ -21,8 +23,9 @@ export async function GET(request: NextRequest) {
         research_only: true,
         send_gate: "HOLD",
         free_daily_quota: LOGOS_FREE_DAILY_QUOTA,
-        remaining: quotaRemaining(quotaState, pro),
-        pro,
+        quota_disabled: quotaOff,
+        remaining: quotaRemaining(quotaState, pro || quotaOff),
+        pro: pro || quotaOff,
         presets: await listPresetSummaries(doc.presets),
         disclaimer: doc.disclaimer ?? null,
       },

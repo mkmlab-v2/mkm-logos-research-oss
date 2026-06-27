@@ -15,7 +15,8 @@
   "brand": {
     "productShort": "LOGOS",
     "productLine": "성경·텍스트 연구 워크스페이스",
-    "legal": "JEMA AI · Track B [HYPO] · research_only"
+    "legal": "JEMA AI · Track B [HYPO] · research_only",
+    "legalStudio": "Track B [HYPO] · research_only"
   },
   "publicUrl": "https://logos.jema-ai.com",
   "pilot_status": {
@@ -46,6 +47,10 @@
     "quota_exceeded_body": "Azure·결제 오류가 아닙니다. 브라우저 쿠키(lr_q_v1) 기준 1일 8회 한도입니다.",
     "quota_demo_cta": "데모 모드로 계속 (allowlist 프리셋 · 쿼터 제외)",
     "quota_reset_hint": "UTC 자정 이후 자동 리셋 · 시크릿 창에서도 재시도 가능",
+    "omni_title": "무엇을 연구할까요?",
+    "omni_lead": "질문·구절·주제를 입력하세요. GraphRAG 경로와 인용 잠금(Citation Lock)으로 구조화합니다.",
+    "omni_placeholder": "예: 욥기 — 고난과 의회, 이사야 6장 부르심, 네피림 주제…",
+    "omni_governance": "research_only · citation lock · send_gate HOLD",
     "placeholder_email": "이메일",
     "placeholder_org": "기관명 (선택)",
     "placeholder_note": "사용 사례 (선택)",

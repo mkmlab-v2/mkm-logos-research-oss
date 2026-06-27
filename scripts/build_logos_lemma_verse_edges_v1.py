@@ -244,6 +244,55 @@ def _edges_from_graph_nodes(
     return rows
 
 
+def _stub_edges_from_meaning_nodes(
+    nodes_path: Path,
+    *,
+    existing_dst: set[str],
+    max_edges: int = 0,
+) -> list[dict[str, Any]]:
+    """One educational stub lemma link per meaning-graph verse ref (Greek/Hebrew agnostic)."""
+    if not nodes_path.is_file():
+        return []
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    edge_i = 0
+    with nodes_path.open("r", encoding="utf-8") as f:
+        for line in f:
+            if max_edges > 0 and len(rows) >= max_edges:
+                break
+            line = line.strip()
+            if not line:
+                continue
+            node = json.loads(line)
+            if not isinstance(node, dict):
+                continue
+            ref = str(node.get("ref") or "")
+            if not ref or not re.match(r"^[A-Za-z0-9]+\.\d+\.\d+", ref):
+                nid = str(node.get("node_id") or "")
+                if "::" in nid:
+                    ref = nid.split("::", 1)[1]
+            ref = canonical_verse_ref(ref)
+            if not ref or ref in existing_dst or ref in seen:
+                continue
+            seen.add(ref)
+            rows.append(
+                {
+                    "schema": "logos_lemma_verse_edge_v1",
+                    "edge_id": f"lemma_verse::canon_stub_{edge_i}",
+                    "src_node_id": f"lemma:canon_stub:{ref}",
+                    "dst_node_id": ref,
+                    "edge_type": "LEMMA_VERSE_CANON_STUB",
+                    "weight": 0.2,
+                    "hypothesis_tier": "B",
+                    "research_only": True,
+                    "source": "bible_meaning_graph_nodes_v1",
+                    "note_ko": "Educational placeholder — not morphology-verified.",
+                }
+            )
+            edge_i += 1
+    return rows
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build logos lemma-verse edges v1 (Phase 1+)")
     ap.add_argument("--bridge-json", type=Path, default=DEFAULT_BRIDGE)
@@ -258,6 +307,11 @@ def main() -> int:
     ap.add_argument("--no-graph-heuristic", action="store_false", dest="include_graph_heuristic")
     ap.add_argument("--graph-max-edges", type=int, default=47)
     ap.add_argument("--graph-tokens-per-verse", type=int, default=2)
+    ap.add_argument(
+        "--meaning-node-stub-edges",
+        action="store_true",
+        help="Add one LEMMA_VERSE_CANON_STUB per meaning-graph verse ref missing from dst set.",
+    )
     ap.add_argument("--out-jsonl", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--manifest-json", type=Path, default=DEFAULT_MANIFEST)
     ap.add_argument(
@@ -282,6 +336,16 @@ def main() -> int:
         )
         rows.extend(graph_rows)
         manifest["graph_heuristic_edges"] = len(graph_rows)
+    if args.meaning_node_stub_edges:
+        covered = {
+            canonical_verse_ref(str(r.get("dst_node_id") or ""))
+            for r in rows
+            if isinstance(r.get("dst_node_id"), str)
+        }
+        covered.discard("")
+        stub_rows = _stub_edges_from_meaning_nodes(args.graph_nodes_jsonl, existing_dst=covered)
+        rows.extend(stub_rows)
+        manifest["meaning_node_stub_edges"] = len(stub_rows)
     if not args.no_corpus_filter and args.corpus_manifest.is_file():
         corpus_ids = _corpus_verse_ids(args.corpus_manifest)
         rows, dropped = _filter_edges_to_corpus(rows, corpus_ids)

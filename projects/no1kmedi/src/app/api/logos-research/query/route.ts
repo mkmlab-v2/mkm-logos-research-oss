@@ -6,6 +6,7 @@ import { hasLogosProAccess, resolveLogosAccess } from "@/lib/logosResearchAccess
 import {
   applyQuotaCookie,
   isEmbedDemoPreset,
+  isLogosStudioQuotaDisabled,
   LOGOS_FREE_DAILY_QUOTA,
   quotaRemaining,
   readQuotaState,
@@ -63,8 +64,9 @@ export async function POST(request: NextRequest) {
 
     const embedDemoOk =
       embedDemo && resolved.preset_id != null && isEmbedDemoPreset(resolved.preset_id);
+    const quotaOff = isLogosStudioQuotaDisabled();
 
-    if (!pro && !embedDemoOk && current.n >= LOGOS_FREE_DAILY_QUOTA) {
+    if (!pro && !embedDemoOk && !quotaOff && current.n >= LOGOS_FREE_DAILY_QUOTA) {
 
       const response = NextResponse.json(
 
@@ -111,7 +113,7 @@ export async function POST(request: NextRequest) {
 
           hint: "Rephrase the question or pick a preset seed.",
 
-          remaining: quotaRemaining(current, pro),
+          remaining: quotaRemaining(current, pro || quotaOff),
 
         },
 
@@ -123,21 +125,22 @@ export async function POST(request: NextRequest) {
 
 
 
-    const nextState = pro || embedDemoOk ? current : { d: current.d, n: current.n + 1 };
+    const nextState = pro || embedDemoOk || quotaOff ? current : { d: current.d, n: current.n + 1 };
     const response = NextResponse.json(
       {
         ok: true,
         api_contract: "logos_studio_v2_dynamic_rag_query_v1",
         api_contract_rev: "2026-06-25",
         match: resolved.match,
-        remaining: quotaRemaining(nextState, pro || embedDemoOk),
-        pro: pro || embedDemoOk,
+        remaining: quotaRemaining(nextState, pro || embedDemoOk || quotaOff),
+        pro: pro || embedDemoOk || quotaOff,
+        quota_disabled: quotaOff,
         embed_demo: embedDemoOk,
         result: payload,
       },
       { headers: { "Cache-Control": "no-store" } },
     );
-    if (!pro && !embedDemoOk) applyQuotaCookie(response, nextState);
+    if (!pro && !embedDemoOk && !quotaOff) applyQuotaCookie(response, nextState);
 
     return response;
 
