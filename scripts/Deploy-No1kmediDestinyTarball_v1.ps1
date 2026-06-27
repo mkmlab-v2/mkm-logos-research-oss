@@ -129,11 +129,31 @@ if (-not $SkipMonorepoPathsFromLocal) {
         "docs/final/artifacts/logos_cross_ref_sample_shard_v1_latest.json",
         "docs/final/artifacts/bigset_studio_conflict_sidecar_v1_latest.json",
         "docs/final/artifacts/logos_studio_verse_citation_shard_v1_latest.json",
-        "docs/final/artifacts/logos_studio_a4_synthesis_bundle_v1_latest.json"
+        "docs/final/artifacts/logos_studio_a4_synthesis_bundle_v1_latest.json",
+        "docs/final/artifacts/logos_studio_graph_slice_ui_lite_v1_latest.json",
+        "docs/final/artifacts/lens_context_mesh_hop_index_logos_ui_lite_v1_latest.json",
+        "docs/final/artifacts/logos_studio_31k_bloom_secondary_fetch_v1_latest.json",
+        "docs/final/artifacts/logos_studio_dynamic_subgraph_router_v1_latest.json",
+        "docs/final/artifacts/logos_krv_versification_sidecar_v1_latest.json",
+        "scripts/build_logos_studio_graph_slice_ui_lite_v1.py",
+        "scripts/lens_context_mesh_v1.py",
+        "scripts/merge_logos_studio_embed_router_sidecar_v1.py",
+        "scripts/patch_logos_studio_graph_slice_router_verse_stubs_v1.py",
+        "scripts/logos_studio_preset_graph_helpers_v1.py",
+        "scripts/integrated_wellness_solution_v2_core.py",
+        "scripts/resolve_integrated_wellness_solution_v2.py",
+        "scripts/render_integrated_wellness_solution_v2.py",
+        "scripts/run_integrated_wellness_solution_v2_chain_v1.py",
+        "scripts/publish_integrated_wellness_solution_v2_exports_v1.py",
+        "scripts/build_integrated_wellness_seed_from_consult_v1.py",
+        "scripts/adapt_integrated_wellness_personadiary_export_v1.py",
+        "docs/final/schemas/integrated_wellness_solution_v2.schema.json",
+        "docs/final/artifacts/a_code_wellness_archetype_lexicon_v1.json",
+        "docs/final/artifacts/fixtures/integrated_wellness_solution_v2_minor_soeum_abdomen_seed.example.json"
     )
-    Write-Host "[no1kmedi-tarball] scp monorepo CDS/bundle paths from local" -ForegroundColor Cyan
+    Write-Host "[no1kmedi-tarball] scp monorepo CDS/bundle/IWS paths from local" -ForegroundColor Cyan
     if (-not $DryRun) {
-        & ssh @($sshArgs + @($remote, "mkdir -p $vpsDestinyRepo/scripts $vpsDestinyRepo/docs/final/schemas $vpsDestinyRepo/docs/final/artifacts $vpsDestinyRepo/tests/fixtures $vpsDestinyRepo/data/myeongni"))
+        & ssh @($sshArgs + @($remote, "mkdir -p $vpsDestinyRepo/scripts $vpsDestinyRepo/docs/final/schemas $vpsDestinyRepo/docs/final/artifacts $vpsDestinyRepo/docs/final/artifacts/fixtures $vpsDestinyRepo/tests/fixtures $vpsDestinyRepo/data/myeongni"))
         foreach ($rel in $relFiles) {
             $localPath = Join-Path $localMono $rel
             if (-not (Test-Path $localPath)) { throw "missing local monorepo file: $localPath" }
