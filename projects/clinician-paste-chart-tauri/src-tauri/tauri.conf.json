@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "com.jemaai.clinician.pastechart",
   "build": {
-    "beforeDevCommand": "",
+    "beforeDevCommand": "npm run dev --prefix ../../no1kmedi",
     "beforeBuildCommand": "",
-    "devUrl": "https://app.jema-ai.com/clinician?panel=gold"
+    "devUrl": "http://127.0.0.1:3010/clinician?panel=gold"
   },
   "app": {
     "windows": [],

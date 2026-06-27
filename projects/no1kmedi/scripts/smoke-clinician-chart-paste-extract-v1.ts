@@ -5,6 +5,7 @@
 
 import {
   birthdateToBirthInstantUtc,
+  buildStructuredIntakeFromPaste,
   extractPasteChartDraftV1,
   formatPasteExtractChipLabel,
 } from "../src/lib/clinician-chart-paste-extract-v1";
@@ -41,6 +42,14 @@ assert(sample4.sex === "M", "slash header sex");
 assert(sample4.age_years === 36, "slash header age");
 assert(sample4.confidence === "high", "slash header high confidence");
 assert(Boolean(sample4.chief_complaint?.includes("요추부 통증")), "chief from [CC] section");
+
+const sample5 = buildStructuredIntakeFromPaste(
+  "김민수 / 1988-03-12 / 남 / 36세 / 요통 3주\n\n[주소] 서울 강남\n[CC] 요추부 통증, 3주 전부터 악화. 앉아 있을 때 더 아픔.",
+);
+assert(sample5.symptoms[0]?.includes("요추부"), "structured chief symptom");
+assert(sample5.situation.includes("김민수"), "structured situation name");
+assert(!sample5.situation.includes("[CC]"), "situation excludes CC block");
+assert(!sample5.subjective_notes.startsWith("김민수 / 1988"), "notes skip slash header");
 
 const instant = birthdateToBirthInstantUtc("1990-03-15");
 assert(Boolean(instant?.includes("T")), "birth instant iso");

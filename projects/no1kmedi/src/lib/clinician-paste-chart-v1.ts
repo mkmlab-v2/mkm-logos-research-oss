@@ -6,6 +6,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { buildChiefComplaintFromPaste } from "@/lib/clinician-intake-paste-v1";
+import { extractChiefComplaintFromPaste } from "@/lib/clinician-chart-paste-extract-v1";
 import type { SimpleCopilotRequestV1 } from "@/lib/clinician-simple-copilot-v1";
 import type { PatientSsotPointer } from "@/lib/clinician-patient-slug-v1";
 import type { EncounterBirthProfileV1 } from "@/lib/km-intake-fusion-draft-bridge-v1";
@@ -92,7 +93,7 @@ export function buildSimpleCopilotRequestFromPaste(args: {
   sasangOverride?: string;
   birthTimeKnown?: boolean;
 }): SimpleCopilotRequestV1 | { error: string } {
-  const chief = buildChiefComplaintFromPaste(args.chartText);
+  const chief = extractChiefComplaintFromPaste(args.chartText) || buildChiefComplaintFromPaste(args.chartText);
   if (!chief) return { error: "chart_text_required" };
 
   const birthFields = birthInstantToClinicBirthFields(

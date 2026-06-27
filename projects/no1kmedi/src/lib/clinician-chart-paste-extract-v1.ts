@@ -2,7 +2,7 @@
  * Paste Chart Omni-box — local regex/heuristic metadata extract (no LLM).
  */
 
-import { buildChiefComplaintFromPaste } from "@/lib/clinician-intake-paste-v1";
+import { buildChiefComplaintFromPaste, parseIntakePasteText } from "@/lib/clinician-intake-paste-v1";
 
 export type PasteExtractConfidenceV1 = "high" | "low";
 
@@ -228,6 +228,56 @@ export function extractChiefComplaintFromPaste(text: string): string | undefined
   const chief = buildChiefComplaintFromPaste(body || text);
   if (slash && chief === firstLine) return slash.chief_complaint?.slice(0, 800);
   return chief || undefined;
+}
+
+const TAGGED_SECTION_RE = /\[([A-Za-z가-힣]+)\]\s*([^\n\[]+)/g;
+
+export function buildStructuredIntakeFromPaste(text: string): {
+  symptoms: string[];
+  situation: string;
+  subjective_notes: string;
+} {
+  const raw = text.replace(/\r\n/g, "\n").trim();
+  const draft = extractPasteChartDraftV1(raw);
+  const paste = parseIntakePasteText(raw);
+  const firstLine = raw.split("\n")[0]?.trim() ?? "";
+  const slashHeader = parseSlashHeaderLine(firstLine);
+
+  const symptoms: string[] = [];
+  if (draft.chief_complaint?.trim()) {
+    symptoms.push(draft.chief_complaint.trim());
+  }
+
+  for (const match of raw.matchAll(TAGGED_SECTION_RE)) {
+    const tag = String(match[1] || "").trim();
+    const body = String(match[2] || "").trim();
+    if (!body || tag.toUpperCase() === "CC") continue;
+    symptoms.push(`[${tag}] ${body}`.slice(0, 500));
+  }
+
+  const situationParts: string[] = [];
+  if (draft.display_name) situationParts.push(draft.display_name);
+  if (draft.birthdate) situationParts.push(draft.birthdate);
+  if (draft.sex === "M") situationParts.push("남");
+  else if (draft.sex === "F") situationParts.push("여");
+  if (draft.age_years) situationParts.push(`${draft.age_years}세`);
+  const situation = situationParts.length ? situationParts.join(" · ") : paste.situation;
+
+  const bodyNotes =
+    slashHeader && raw.includes("\n")
+      ? raw.split("\n").slice(1).join("\n").trim()
+      : paste.subjective_notes;
+  const subjective_notes = (bodyNotes || draft.chief_complaint || raw).slice(0, 8000);
+
+  if (symptoms.length) {
+    return { symptoms, situation, subjective_notes };
+  }
+
+  return {
+    symptoms: paste.symptoms,
+    situation: situation || paste.situation,
+    subjective_notes,
+  };
 }
 
 export function extractPasteChartDraftV1(text: string): PasteExtractDraftV1 {

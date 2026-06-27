@@ -63,6 +63,21 @@ fn show_main_window(app: &tauri::AppHandle) {
         .build();
 }
 
+fn schedule_initial_clipboard_paste(app: &tauri::AppHandle) {
+    let app_handle = app.clone();
+    std::thread::spawn(move || {
+        std::thread::sleep(std::time::Duration::from_millis(3500));
+        let has_text = app_handle
+            .clipboard()
+            .read_text()
+            .ok()
+            .is_some_and(|t| !t.trim().is_empty());
+        if has_text {
+            paste_clipboard_into_chart(&app_handle);
+        }
+    });
+}
+
 fn paste_clipboard_into_chart(app: &tauri::AppHandle) {
     show_main_window(app);
     let app_handle = app.clone();
@@ -130,6 +145,7 @@ pub fn run() {
 
             register_paste_hotkey(&app_handle);
             show_main_window(&app_handle);
+            schedule_initial_clipboard_paste(&app_handle);
             Ok(())
         })
         .run(tauri::generate_context!())

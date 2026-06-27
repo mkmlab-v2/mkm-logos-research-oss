@@ -19,6 +19,12 @@ if (-not $vsPath) { throw "VC Tools not found — run vs_buildtools with Microso
 $vcvars = Join-Path $vsPath "VC\Auxiliary\Build\vcvars64.bat"
 if (-not (Test-Path $vcvars)) { throw "missing $vcvars" }
 
+$cargoBin = Join-Path $env:USERPROFILE ".cargo\bin"
+$cargoExe = Join-Path $cargoBin "cargo.exe"
+if (-not (Test-Path $cargoExe)) {
+    throw "cargo not found at $cargoExe — install Rust stable from https://rustup.rs/ then retry"
+}
+
 Write-Host "[paste-chart-tauri] dev from $ProjectRoot" -ForegroundColor Cyan
-cmd /c "`"$vcvars`" && cd /d `"$ProjectRoot`" && npm run dev"
+cmd /c "`"$vcvars`" && set PATH=%USERPROFILE%\.cargo\bin;%PATH% && cd /d `"$ProjectRoot`" && npm run dev"
 if ($LASTEXITCODE -ne 0) { throw "tauri dev failed exit $LASTEXITCODE" }

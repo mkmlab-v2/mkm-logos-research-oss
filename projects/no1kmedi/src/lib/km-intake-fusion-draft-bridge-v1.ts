@@ -8,7 +8,7 @@ import {
   buildEphemeralEncounterSlug,
   canUseEphemeralEncounter,
 } from "@/lib/clinician-ephemeral-encounter-v1";
-import { parseIntakePasteText } from "@/lib/clinician-intake-paste-v1";
+import { buildStructuredIntakeFromPaste } from "@/lib/clinician-chart-paste-extract-v1";
 import { loadPatientPointer, type PatientSsotPointer } from "@/lib/clinician-patient-slug-v1";
 import { resolveMkmWorkspaceRoot } from "@/lib/km-workspace-root-v1";
 
@@ -142,8 +142,8 @@ export function buildIntakeFusionDraftInput(args: {
   req: IntakeFusionDraftRequestV1;
 }): { doc: Record<string, unknown> } | { error: string } {
   const { root, slug, pointer, req } = args;
-  const paste = parseIntakePasteText(req.intakeText);
-  if (!paste.subjective_notes.trim()) {
+  const structured = buildStructuredIntakeFromPaste(req.intakeText);
+  if (!structured.subjective_notes.trim()) {
     return { error: "intake_text_required" };
   }
 
@@ -183,9 +183,9 @@ export function buildIntakeFusionDraftInput(args: {
 
   doc.intake = {
     ...priorIntake,
-    symptoms: paste.symptoms.length ? paste.symptoms : priorIntake.symptoms || [],
-    situation: paste.situation || priorIntake.situation || "",
-    subjective_notes: paste.subjective_notes,
+    symptoms: structured.symptoms.length ? structured.symptoms : priorIntake.symptoms || [],
+    situation: structured.situation || priorIntake.situation || "",
+    subjective_notes: structured.subjective_notes,
     ...(req.objectiveDraft?.trim()
       ? { objective_draft: req.objectiveDraft.trim().slice(0, 12000) }
       : priorIntake.objective_draft
