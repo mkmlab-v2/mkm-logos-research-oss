@@ -48,3 +48,10 @@ export function parseIntakePasteText(text: string): ParsedIntakePasteV1 {
 
   return { symptoms, situation, subjective_notes };
 }
+
+export function buildChiefComplaintFromPaste(chartText: string): string {
+  const paste = parseIntakePasteText(chartText);
+  if (paste.situation.trim()) return paste.situation.trim().slice(0, 800);
+  if (paste.symptoms.length) return paste.symptoms.join(" · ").slice(0, 800);
+  return paste.subjective_notes.trim().slice(0, 800);
+}

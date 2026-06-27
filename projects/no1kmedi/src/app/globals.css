@@ -3661,6 +3661,12 @@ section h2 {
   color: var(--accent, #3d9b84);
 }
 
+.paste-chart-v1 .track-badge--ephemeral {
+  border-color: rgba(197, 160, 87, 0.45);
+  background: rgba(197, 160, 87, 0.12);
+  color: var(--pc-accent-gold, #c5a057);
+}
+
 .paste-chart-v1 .paste-chart-shell {
   max-width: 76rem;
   margin: 0 auto;
@@ -4779,6 +4785,57 @@ section h2 {
   font-size: var(--text-xs);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  color: var(--muted);
+}
+
+.thread-backup-controls {
+  margin-top: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.thread-backup-label {
+  margin: 0;
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.thread-backup-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.thread-backup-btn {
+  flex: 1;
+  font-size: var(--text-xs);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.thread-backup-btn:hover {
+  border-color: rgba(61, 155, 132, 0.35);
+  background: rgba(61, 155, 132, 0.06);
+}
+
+.thread-backup-status {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--accent);
+}
+
+.thread-backup-hint {
+  margin: 0;
+  font-size: 0.68rem;
+  line-height: 1.45;
   color: var(--muted);
 }
 

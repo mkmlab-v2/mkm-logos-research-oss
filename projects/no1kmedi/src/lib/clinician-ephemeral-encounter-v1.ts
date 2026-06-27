@@ -4,14 +4,9 @@
 
 import type { PatientSsotPointer } from "@/lib/clinician-patient-slug-v1";
 
-export function buildEphemeralEncounterSlug(displayLabel: string): string {
-  const stem = displayLabel
-    .trim()
-    .replace(/\s+/g, "_")
-    .replace(/[^a-zA-Z0-9가-힣_]/g, "")
-    .slice(0, 24);
-  const suffix = Date.now().toString(36).slice(-6);
-  return `ephemeral_${stem || "patient"}_${suffix}`.toLowerCase();
+export function buildEphemeralEncounterSlug(_displayLabel: string): string {
+  const suffix = `${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
+  return `ephemeral_${suffix}`;
 }
 
 export function buildEphemeralEncounterPointer(slug: string, displayLabel: string): PatientSsotPointer {

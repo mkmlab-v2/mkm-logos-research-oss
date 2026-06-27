@@ -2,7 +2,7 @@
  * Paste Chart Omni-box — local regex/heuristic metadata extract (no LLM).
  */
 
-import { buildChiefComplaintFromPaste } from "@/lib/clinician-paste-chart-v1";
+import { buildChiefComplaintFromPaste } from "@/lib/clinician-intake-paste-v1";
 
 export type PasteExtractConfidenceV1 = "high" | "low";
 

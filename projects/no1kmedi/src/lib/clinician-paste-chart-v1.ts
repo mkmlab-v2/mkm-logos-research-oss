@@ -5,7 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { parseIntakePasteText } from "@/lib/clinician-intake-paste-v1";
+import { buildChiefComplaintFromPaste } from "@/lib/clinician-intake-paste-v1";
 import type { SimpleCopilotRequestV1 } from "@/lib/clinician-simple-copilot-v1";
 import type { PatientSsotPointer } from "@/lib/clinician-patient-slug-v1";
 import type { EncounterBirthProfileV1 } from "@/lib/km-intake-fusion-draft-bridge-v1";
@@ -81,13 +81,6 @@ function extractOnsetFromPaste(text: string): string | undefined {
   if (m?.[1]) return m[1].trim();
   if (/급성|갑자기|어제|오늘/.test(text)) return "급성";
   return undefined;
-}
-
-export function buildChiefComplaintFromPaste(chartText: string): string {
-  const paste = parseIntakePasteText(chartText);
-  if (paste.situation.trim()) return paste.situation.trim().slice(0, 800);
-  if (paste.symptoms.length) return paste.symptoms.join(" · ").slice(0, 800);
-  return paste.subjective_notes.trim().slice(0, 800);
 }
 
 export function buildSimpleCopilotRequestFromPaste(args: {

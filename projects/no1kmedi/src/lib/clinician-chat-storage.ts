@@ -151,6 +151,77 @@ export function saveClinicianThreads(threads: ClinicianChatThread[]): void {
   }
 }
 
+export const CLINICIAN_THREADS_BACKUP_SCHEMA = "clinician_threads_backup_v1";
+
+export type ClinicianThreadsBackupV1 = {
+  schema: typeof CLINICIAN_THREADS_BACKUP_SCHEMA;
+  exported_at_utc: string;
+  v: number;
+  threads: ClinicianChatThread[];
+};
+
+export function buildClinicianThreadsBackup(threads: ClinicianChatThread[]): ClinicianThreadsBackupV1 {
+  return {
+    schema: CLINICIAN_THREADS_BACKUP_SCHEMA,
+    exported_at_utc: new Date().toISOString(),
+    v: SCHEMA_VERSION,
+    threads: threads.slice(0, MAX_THREADS).map((t) => ({
+      ...t,
+      turns: trimTurns(t.turns),
+    })),
+  };
+}
+
+export function parseClinicianThreadsBackup(
+  raw: string,
+): { ok: true; threads: ClinicianChatThread[] } | { ok: false; error: string } {
+  try {
+    const parsed = JSON.parse(raw) as ClinicianThreadsBackupV1 | StoredShape;
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      (parsed as ClinicianThreadsBackupV1).schema === CLINICIAN_THREADS_BACKUP_SCHEMA &&
+      Array.isArray((parsed as ClinicianThreadsBackupV1).threads)
+    ) {
+      return {
+        ok: true,
+        threads: normalizeClinicianThreads({ v: SCHEMA_VERSION, threads: (parsed as ClinicianThreadsBackupV1).threads }),
+      };
+    }
+    if (parsed && typeof parsed === "object" && (parsed as StoredShape).v === SCHEMA_VERSION) {
+      return { ok: true, threads: normalizeClinicianThreads(parsed) };
+    }
+    return { ok: false, error: "unsupported_backup_schema" };
+  } catch {
+    return { ok: false, error: "invalid_json" };
+  }
+}
+
+export function mergeImportedClinicianThreads(
+  current: ClinicianChatThread[],
+  imported: ClinicianChatThread[],
+): ClinicianChatThread[] {
+  const byId = new Map<string, ClinicianChatThread>();
+  for (const t of imported) byId.set(t.id, t);
+  for (const t of current) byId.set(t.id, t);
+  return [...byId.values()]
+    .sort((a, b) => b.updatedAt - a.updatedAt)
+    .slice(0, MAX_THREADS);
+}
+
+export function downloadClinicianThreadsBackup(threads: ClinicianChatThread[]): void {
+  if (typeof window === "undefined") return;
+  const payload = buildClinicianThreadsBackup(threads);
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const stamp = new Date().toISOString().slice(0, 10);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `jema-clinician-threads-${stamp}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 export function titleFromClinicianTurns(turns: ClinicianChatTurn[]): string {
   const firstUser = turns.find((x) => x.role === "user");
   if (!firstUser?.message?.trim()) return "새 상담";

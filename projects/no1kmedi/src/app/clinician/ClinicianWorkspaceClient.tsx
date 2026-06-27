@@ -17,6 +17,7 @@ import { ClinicianSimpleCopilotPanel } from "@/components/ClinicianSimpleCopilot
 import { ClinicianCanvasStudioLayout } from "@/components/clinician/ClinicianCanvasStudioLayout";
 import { ClinicianCanvasEmptyLayout } from "@/components/clinician/ClinicianCanvasEmptyLayout";
 import { ClinicianThreadRail } from "@/components/ClinicianThreadRail";
+import { ClinicianThreadBackupControls } from "@/components/ClinicianThreadBackupControls";
 import { JemaWorkspaceCommandPalette, type PaletteAction } from "@/components/JemaWorkspaceCommandPalette";
 
 const panelFallback = (
@@ -64,7 +65,7 @@ const ClinicianGraphPilotKpiStrip = dynamic(
 import { siteCopy } from "@/content/siteCopy";
 import { markClinicianGraphCdsReady } from "@/lib/clinicianGraphPilotKpiV1";
 import { useClinicianThreads } from "@/hooks/useClinicianThreads";
-import type { ClinicianThreadContext } from "@/lib/clinician-chat-types";
+import type { ClinicianChatThread, ClinicianThreadContext } from "@/lib/clinician-chat-types";
 import {
   KM_CDS_UI_ANALYTICS_EVENTS_V1,
   trackKmCdsUiEvent,
@@ -372,19 +373,32 @@ export function ClinicianWorkspaceClient({
     return flags.slice(0, 8);
   }, [activeThread]);
 
+  const importThreads = useCallback(
+    (merged: ClinicianChatThread[]) => {
+      setThreads(merged);
+      if (!merged.find((t) => t.id === activeThreadId)) {
+        setActiveThreadId(merged[0]?.id ?? null);
+      }
+    },
+    [activeThreadId],
+  );
+
   const sidebarBody =
     ready && threads.length ? (
-      <ClinicianThreadRail
-        threads={threads}
-        activeId={activeThreadId}
-        onSelect={(id) => {
-          setActiveThreadId(id);
-          setActiveId("chat");
-          router.replace("/clinician", { scroll: false });
-        }}
-        onDelete={deleteThread}
-        onUpdateMeta={updateThreadMeta}
-      />
+      <>
+        <ClinicianThreadRail
+          threads={threads}
+          activeId={activeThreadId}
+          onSelect={(id) => {
+            setActiveThreadId(id);
+            setActiveId("chat");
+            router.replace("/clinician", { scroll: false });
+          }}
+          onDelete={deleteThread}
+          onUpdateMeta={updateThreadMeta}
+        />
+        <ClinicianThreadBackupControls threads={threads} onThreadsImported={importThreads} />
+      </>
     ) : null;
 
   if (!ready || !activeThread) {
