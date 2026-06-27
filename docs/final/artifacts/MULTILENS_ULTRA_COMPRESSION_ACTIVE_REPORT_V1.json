@@ -84,10 +84,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 13,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "and",
               "but",
@@ -190,10 +191,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 13,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "and",
                   "but",
@@ -235,10 +237,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 11,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "direct",
               "evidence",
@@ -339,10 +342,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 11,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "direct",
                   "evidence",
@@ -382,10 +386,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 6,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "boundary",
               "safety",
@@ -481,10 +486,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 6,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "boundary",
                   "safety",
@@ -519,10 +525,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 8,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "can",
               "every",
@@ -620,10 +627,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 8,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "can",
                   "every",
@@ -660,10 +668,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 8,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "are",
               "confirmed",
@@ -761,10 +770,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 8,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "are",
                   "confirmed",
@@ -801,10 +811,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 12,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "as",
               "be",
@@ -906,10 +917,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 12,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "as",
                   "be",
@@ -950,10 +962,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 6,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "as",
               "beyond",
@@ -1049,10 +1062,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 6,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "as",
                   "beyond",
@@ -1087,10 +1101,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 3,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "all",
               "and",
@@ -1183,10 +1198,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 3,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "all",
                   "and",
@@ -1218,10 +1234,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 9,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "and",
               "between",
@@ -1320,10 +1337,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 9,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "and",
                   "between",
@@ -1361,10 +1379,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 5,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "false",
               "from",
@@ -1459,10 +1478,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 5,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "false",
                   "from",
@@ -1496,10 +1516,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 3,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "소양인에게는",
               "수분",
@@ -1592,10 +1613,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 3,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "소양인에게는",
                   "수분",
@@ -1627,10 +1649,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "소음인의"
             ]
@@ -1721,10 +1744,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "소음인의"
                 ]
@@ -1754,10 +1778,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "태음인은"
             ]
@@ -1848,10 +1873,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "태음인은"
                 ]
@@ -1881,10 +1907,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "수면"
             ]
@@ -1975,10 +2002,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "수면"
                 ]
@@ -2008,10 +2036,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "사상의학"
             ]
@@ -2102,10 +2131,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "사상의학"
                 ]
@@ -2135,10 +2165,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 3,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "명리",
               "사상의학",
@@ -2231,10 +2262,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 3,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "명리",
                   "사상의학",
@@ -2266,10 +2298,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "체질",
               "회복"
@@ -2361,10 +2394,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "체질",
                   "회복"
@@ -2395,10 +2429,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "수면"
             ]
@@ -2489,10 +2524,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "수면"
                 ]
@@ -2522,10 +2558,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "소음인의"
             ]
@@ -2616,10 +2653,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "소음인의"
                 ]
@@ -2649,10 +2687,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "호흡"
             ]
@@ -2743,10 +2782,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "호흡"
                 ]
@@ -2776,10 +2816,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "수분"
             ]
@@ -2870,10 +2911,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "수분"
                 ]
@@ -2903,10 +2945,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "체질"
             ]
@@ -2997,10 +3040,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "체질"
                 ]
@@ -3030,10 +3074,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "사상의학",
               "압축"
@@ -3125,10 +3170,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "사상의학",
                   "압축"
@@ -3159,10 +3205,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "복원"
             ]
@@ -3253,10 +3300,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "복원"
                 ]
@@ -3286,10 +3334,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "복원"
             ]
@@ -3380,10 +3429,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "복원"
                 ]
@@ -3413,10 +3463,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "복원",
               "압축"
@@ -3508,10 +3559,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "복원",
                   "압축"
@@ -3542,10 +3594,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "한글"
             ]
@@ -3636,10 +3689,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "한글"
                 ]
@@ -3669,10 +3723,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "사상의학",
               "조사"
@@ -3764,10 +3819,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "사상의학",
                   "조사"
@@ -3798,10 +3854,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "사상의학을"
             ]
@@ -3892,10 +3949,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "사상의학을"
                 ]
@@ -3925,10 +3983,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "체질"
             ]
@@ -4019,10 +4078,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "체질"
                 ]
@@ -4052,10 +4112,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "압축",
               "조사"
@@ -4147,10 +4208,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "압축",
                   "조사"
@@ -4181,10 +4243,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 3,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "복원",
               "창제",
@@ -4277,10 +4340,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 3,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "복원",
                   "창제",
@@ -4312,10 +4376,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "사상의학",
               "증상"
@@ -4407,10 +4472,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "사상의학",
                   "증상"
@@ -4441,10 +4507,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "복원",
               "조사"
@@ -4536,10 +4603,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "복원",
                   "조사"
@@ -4570,10 +4638,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "체질"
             ]
@@ -4664,10 +4733,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "체질"
                 ]
@@ -4697,10 +4767,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 1,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "사상의학"
             ]
@@ -4791,10 +4862,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 1,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "사상의학"
                 ]
@@ -4824,10 +4896,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "복원",
               "체질"
@@ -4919,10 +4992,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "복원",
                   "체질"
@@ -4953,10 +5027,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 3,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "대비",
               "조사",
@@ -5049,10 +5124,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 3,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "대비",
                   "조사",
@@ -5084,10 +5160,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "대비",
               "복원"
@@ -5179,10 +5256,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "대비",
                   "복원"
@@ -5213,10 +5291,11 @@
           "master_codebook_lexicon_v1": {
             "status": "ok",
             "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-            "lexicon_term_count": 41700,
+            "lexicon_term_count": 41708,
             "hit_count": 2,
             "min_token_len": 2,
             "include_cjk_bigrams": false,
+            "include_hangul_tokenizer_harness": false,
             "hits_sample": [
               "사상의학",
               "압축"
@@ -5308,10 +5387,11 @@
               "master_codebook_lexicon_v1": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "hit_count": 2,
                 "min_token_len": 2,
                 "include_cjk_bigrams": false,
+                "include_hangul_tokenizer_harness": false,
                 "hits_sample": [
                   "사상의학",
                   "압축"
