@@ -1,4 +1,3 @@
-import { resolveEncounterPatient } from "@/lib/clinician-encounter-artifacts-v1";
 import { buildSimpleCopilotRequestFromPaste } from "@/lib/clinician-paste-chart-v1";
 import type { SimpleCopilotCardsV1, SimpleCopilotMedicalCalcV1, SimpleCopilotSajuCalcV1 } from "@/lib/clinician-simple-copilot-v1";
 import {
@@ -27,6 +26,7 @@ export type PasteChartResultV1 =
       slug: string;
       refToken: string;
       displayLabel: string;
+      ephemeral?: boolean;
       bundlePath: string;
       bundle: Record<string, unknown>;
       soap: Record<string, { text?: string }>;
@@ -57,6 +57,7 @@ export async function runPasteChartV1Chain(
       slug: fusion.slug,
       refToken: fusion.refToken,
       displayLabel: fusion.displayLabel,
+      ephemeral: fusion.ephemeral,
       bundlePath: fusion.bundlePath,
       bundle: fusion.bundle,
       soap: fusion.soap,
@@ -65,34 +66,15 @@ export async function runPasteChartV1Chain(
     };
   }
 
-  const resolved = resolveEncounterPatient({
-    root,
-    slug: fusion.slug,
-    refToken: fusion.refToken,
-    display: fusion.displayLabel,
-  });
-  if ("error" in resolved) {
-    return {
-      ok: true,
-      slug: fusion.slug,
-      refToken: fusion.refToken,
-      displayLabel: fusion.displayLabel,
-      bundlePath: fusion.bundlePath,
-      bundle: fusion.bundle,
-      soap: fusion.soap,
-      patientFacingMarkdown: fusion.patientFacingMarkdown,
-      advice: null,
-      advice_error: resolved.error,
-    };
-  }
-
-  const birth = resolveEncounterBirthProfile(root, resolved.pointer, fusionReq);
+  const pointer = fusion.pointer;
+  const birth = resolveEncounterBirthProfile(root, pointer, fusionReq);
   if (!birth) {
     return {
       ok: true,
       slug: fusion.slug,
       refToken: fusion.refToken,
       displayLabel: fusion.displayLabel,
+      ephemeral: fusion.ephemeral,
       bundlePath: fusion.bundlePath,
       bundle: fusion.bundle,
       soap: fusion.soap,
@@ -107,7 +89,7 @@ export async function runPasteChartV1Chain(
     requestId,
     chartText,
     birth,
-    pointer: resolved.pointer,
+    pointer,
     root,
     sasangOverride: req.sasangLabel,
   });
@@ -117,6 +99,7 @@ export async function runPasteChartV1Chain(
       slug: fusion.slug,
       refToken: fusion.refToken,
       displayLabel: fusion.displayLabel,
+      ephemeral: fusion.ephemeral,
       bundlePath: fusion.bundlePath,
       bundle: fusion.bundle,
       soap: fusion.soap,
@@ -133,6 +116,7 @@ export async function runPasteChartV1Chain(
       slug: fusion.slug,
       refToken: fusion.refToken,
       displayLabel: fusion.displayLabel,
+      ephemeral: fusion.ephemeral,
       bundlePath: fusion.bundlePath,
       bundle: fusion.bundle,
       soap: fusion.soap,
@@ -148,6 +132,7 @@ export async function runPasteChartV1Chain(
     slug: fusion.slug,
     refToken: fusion.refToken,
     displayLabel: fusion.displayLabel,
+    ephemeral: fusion.ephemeral,
     bundlePath: fusion.bundlePath,
     bundle: fusion.bundle,
     soap: fusion.soap,

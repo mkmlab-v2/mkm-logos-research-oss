@@ -214,13 +214,29 @@ export function runIntakeFusionDraftChain(
   const root = workspaceRoot?.trim() || resolveMkmWorkspaceRoot();
   if (!root) return { ok: false, error: "workspace_root_not_found" };
 
-  const resolved = resolveEncounterPatient({
+  let resolved = resolveEncounterPatient({
     root,
     slug: req.slug,
     refToken: req.refToken,
     display: req.display,
   });
-  if ("error" in resolved) return { ok: false, error: resolved.error };
+  let ephemeral = false;
+  if ("error" in resolved) {
+    if (
+      canUseEphemeralEncounter({
+        allowEphemeral: req.allowEphemeral,
+        display: req.display,
+        birthInstantUtc: req.birthInstantUtc,
+      })
+    ) {
+      const displayLabel = req.display!.trim();
+      const slug = buildEphemeralEncounterSlug(displayLabel);
+      resolved = { slug, pointer: buildEphemeralEncounterPointer(slug, displayLabel) };
+      ephemeral = true;
+    } else {
+      return { ok: false, error: resolved.error };
+    }
+  }
 
   const built = buildIntakeFusionDraftInput({
     root,
@@ -297,6 +313,8 @@ export function runIntakeFusionDraftChain(
       slug: resolved.slug,
       refToken: String(resolved.pointer.ref_token || resolved.slug),
       displayLabel: String(resolved.pointer.display_label || resolved.slug),
+      pointer: resolved.pointer,
+      ephemeral,
       bundlePath: bundleOut,
       myeongniPath: myeongniOut,
       rationalePath: rationaleOut,
