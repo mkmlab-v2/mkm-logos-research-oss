@@ -25,7 +25,7 @@ assert(Boolean(sample1.chief_complaint?.includes("더부룩")), "chief complaint
 const sample2 = extractPasteChartDraftV1("90년생 남성 이○○ 원장님 소개로 내원 · 상열감");
 assert(sample2.display_name === undefined || sample2.confidence === "low", "ambiguous name low");
 assert(sample2.birthdate === "1990-01-01", "90년생 birth");
-assert(formatPasteExtractChipLabel(sample2).includes("?") || sample2.display_name, "chip tolerates low");
+assert(formatPasteExtractChipLabel(sample2).includes("?") || Boolean(sample2.display_name), "chip tolerates low");
 
 const sample3 = extractPasteChartDraftV1("김민수 / 36세 남 / 요통 3주");
 assert(sample3.display_name === "김민수", "inline name");

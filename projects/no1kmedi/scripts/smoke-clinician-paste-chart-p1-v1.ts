@@ -25,7 +25,7 @@ const slug = buildEphemeralEncounterSlug("박신규");
 assert(slug.startsWith("ephemeral_"), "ephemeral slug prefix");
 
 const ptr = buildEphemeralEncounterPointer(slug, "박신규");
-assert(ptr.ref_token?.startsWith("EPH-"), "ephemeral ref token");
+assert(Boolean(ptr.ref_token?.startsWith("EPH-")), "ephemeral ref token");
 
 assert(
   canUseEphemeralEncounter({
