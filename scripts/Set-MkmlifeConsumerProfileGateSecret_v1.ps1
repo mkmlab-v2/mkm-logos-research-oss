@@ -4,9 +4,10 @@
   Sync MKM_CONSUMER_PROFILE_BASIC_AUTH_* into mkm-life/.env.local and mkmlife Cloudflare Worker secrets.
 
 .DESCRIPTION
-  Consumer profile API uses httpOnly session bind by default. Optional Basic auth adds a second layer
-  for /api/v1/consumer/* (middleware). Local dev with Basic auth enabled: set MKM_CONSUMER_PROFILE_DEV_OPEN=1
-  in projects/mkm/mkm-life/.env.local (see .env.local.example).
+  Consumer profile API uses httpOnly session bind by default (always on unless DEV_OPEN/BIND_SESSION=0).
+  Optional Basic auth adds a second layer for /api/v1/consumer/* (middleware). Use Basic auth on
+  staging/pilot hosts only — public mkmlife.com should rely on session bind alone (do not wrangler-sync Basic auth to prod B2C).
+  Local dev with Basic auth enabled: set MKM_CONSUMER_PROFILE_DEV_OPEN=1 in projects/mkm/mkm-life/.env.local.
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Set-MkmlifeConsumerProfileGateSecret_v1.ps1
