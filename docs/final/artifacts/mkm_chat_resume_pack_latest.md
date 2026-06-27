@@ -6,6 +6,12 @@
 - trackc_packet_status: `READY`
 - acceptance_status: `None`
 
+## Last Ops Patrol (paste helper)
+
+- `[BillingPatrol] 2026-06-28 OK (gem_paste_block:pass; opt_fail:0) | Shadow Only | No Track A/live`
+
+- Stop sequence hints: amsaeng_worst_exit=1
+
 ## Quick Refs
 - `docs/final/CENTRAL_AGENT_MEMORY_V1.md`
 - `docs/final/artifacts/mkm_trackc_ops_dashboard_latest.md`

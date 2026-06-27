@@ -19,5 +19,35 @@
     "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_mkm_trackc_operational_acceptance.ps1",
     "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Set-PaddleOnboardingStatus.ps1 -Status IN_PROGRESS -Note \"Payout/legal onboarding steps in progress.\"",
     "py scripts/build_mkm_chat_resume_pack_v1.py"
-  ]
+  ],
+  "last_ops_patrol": {
+    "schema": "mkm_last_ops_patrol_v1",
+    "paste_line": "[BillingPatrol] 2026-06-28 OK (gem_paste_block:pass; opt_fail:0) | Shadow Only | No Track A/live",
+    "package": "BillingPatrol",
+    "generated_at_local": "2026-06-28T03:19:54.9245794+09:00",
+    "process_exit_code": 0,
+    "optional_fail_count": 0,
+    "required_failed": false,
+    "source_paste_json": "reports/mkm_command_package_paste_latest.json",
+    "stop_sequence_hints": {
+      "schema": "mkm_stop_sequence_hints_v1",
+      "ssot_scope": "docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json",
+      "amsaeng_worst_exit": 1,
+      "amsaeng_phase_exits": {
+        "mcp_notebooklm_hygiene": 0,
+        "repo_secret_hygiene": 0,
+        "no1kmedi_internal_api_contract": 0,
+        "marketing_ip_governance": 1
+      },
+      "mcp_prereq_exit": 0,
+      "notebooklm_stale_count_before": 0,
+      "notebooklm_stale_count_after": 0,
+      "cursor_terminal_stopped_count": 0,
+      "cursor_terminal_skipped_count": 2,
+      "evolution_radar_pending_count": 0,
+      "alert_lines": [
+        "amsaeng_worst_exit=1"
+      ]
+    }
+  }
 }

@@ -23,10 +23,9 @@
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_dss_1QM_col1_excerpt.md",
+      "artifact_path": null,
       "state_candidate_id": 1,
-      "rationale": "B-Track DSS: 빛의 아들들 vs 벨리알·키팀·언약 위반자의 개전 서사. A-Track 비유 후보(가설): 극단적 방향성·돌파 국면 — dual_regime·리스크 캡과 무관.",
-      "note": "P10 sequential rail packet linked."
+      "rationale": "B-Track DSS: 빛의 아들들 vs 벨리알·키팀·언약 위반자의 개전 서사. A-Track 비유 후보(가설): 극단적 방향성·돌파 국면 — dual_regime·리스크 캡과 무관."
     },
     {
       "entry_id": "ENTRY_02",
@@ -36,10 +35,9 @@
       "corpus_type": "apocrypha",
       "link_type": "thematic",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_apocrypha_1enoch_ch10_excerpt.md",
+      "artifact_path": null,
       "state_candidate_id": 15,
-      "rationale": "B-Track Apocrypha: 아자젤 결박·어둠·대심판의 불. A-Track 비유 후보(가설): 청산·극단 공포(Capitulation) — State 16 후보와 인접 축으로 별도 행 구분 가능.",
-      "note": "P10 sequential rail packet linked."
+      "rationale": "B-Track Apocrypha: 아자젤 결박·어둠·대심판의 불. A-Track 비유 후보(가설): 청산·극단 공포(Capitulation) — State 16 후보와 인접 축으로 별도 행 구분 가능."
     },
     {
       "entry_id": "ENTRY_03",
@@ -49,10 +47,9 @@
       "corpus_type": "apocrypha",
       "link_type": "thematic",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_apocrypha_1enoch_judgment_pure.md",
+      "artifact_path": null,
       "state_candidate_id": 2,
-      "rationale": "B-Track Apocrypha: 타락한 땅의 치유 선포·멸망 방지. A-Track 비유 후보(가설): 심판 국면 이후 질서·반등 서사(V·전환) — 확정 신호 아님.",
-      "note": "P10 sequential rail packet linked."
+      "rationale": "B-Track Apocrypha: 타락한 땅의 치유 선포·멸망 방지. A-Track 비유 후보(가설): 심판 국면 이후 질서·반등 서사(V·전환) — 확정 신호 아님."
     },
     {
       "entry_id": "ENTRY_04",
@@ -62,10 +59,9 @@
       "corpus_type": "pseudepigrapha",
       "link_type": "temporal",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_apocrypha_jubilees_ch6_excerpt_charles.md",
+      "artifact_path": null,
       "state_candidate_id": 8,
-      "rationale": "B-Track Apocrypha: 364일·분기·음력과의 긴장, 정해진 절기 질서. A-Track 비유 후보(가설): 하드코딩된 반감기·주기 신뢰·저변동 인내 — 횡보·매집 담론과 병치 가능.",
-      "note": "P10 sequential rail packet linked."
+      "rationale": "B-Track Apocrypha: 364일·분기·음력과의 긴장, 정해진 절기 질서. A-Track 비유 후보(가설): 하드코딩된 반감기·주기 신뢰·저변동 인내 — 횡보·매집 담론과 병치 가능."
     },
     {
       "entry_id": "ENTRY_05",
@@ -75,10 +71,9 @@
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_dss_1QS_sectarian_context.md",
+      "artifact_path": null,
       "state_candidate_id": 3,
-      "rationale": "B-Track DSS: 예언자와 아론·이스라엘의 기름부음 받은 자에 대한 기대. A-Track 비유 후보(가설): 규율·언약 공동체·장기 신념 — HODL 담론은 비유일 뿐 자동 트리거 금지.",
-      "note": "P10 sequential rail packet linked."
+      "rationale": "B-Track DSS: 예언자와 아론·이스라엘의 기름부음 받은 자에 대한 기대. A-Track 비유 후보(가설): 규율·언약 공동체·장기 신념 — HODL 담론은 비유일 뿐 자동 트리거 금지."
     },
     {
       "entry_id": "ENTRY_06",
@@ -88,10 +83,9 @@
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_dss_1QpHab_col7.md",
+      "artifact_path": null,
       "state_candidate_id": 4,
-      "rationale": "B-Track DSS: 하바국 해석(페셔)의 ‘위기를 성경으로 재독’ 레이어. A-Track 비유 후보(가설): 규범·도덕 프레임(칠선 언약 맥락)과 시장 서사 병치 — geometry/trigger 아님; Fact-Lock 벤치만.",
-      "note": "P10 sequential rail packet linked."
+      "rationale": "B-Track DSS: 하바국 해석(페셔)의 ‘위기를 성경으로 재독’ 레이어. A-Track 비유 후보(가설): 규범·도덕 프레임(칠선 언약 맥락)과 시장 서사 병치 — geometry/trigger 아님; Fact-Lock 벤치만."
     },
     {
       "entry_id": "ENTRY_07",
@@ -101,10 +95,10 @@
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_dss_11QT_temple.md",
+      "artifact_path": null,
       "state_candidate_id": 5,
       "rationale": "B-Track DSS: 성전·절기 일정 규범 텍스트. A-Track 대비: Ezra 명단 행은 ‘복귀 코호트’ 스냅샷 — 달력 DSS와 주제만 병치(벤치); 인과·트리거 금지.",
-      "note": "Bench policy: temporal(성전/절기) 후보. 승격 조건=11Q19 cols.XLVI-XLVII의 공개 line 전사 확보 + Ezra.2.45와의 병치 규칙 유지. 반증 훅=절기 규범을 복귀 명단의 직접 인과로 해석하는 경우. Local evidence (2026-03-30): consulted open sources에서 column 표기(XLVI-XLVII)는 확인되나 line-level 전사는 확인되지 않아 line anchor는 TBD 유지. P10 sequential rail packet linked."
+      "note": "Bench policy: temporal(성전/절기) 후보. 승격 조건=11Q19 cols.XLVI-XLVII의 공개 line 전사 확보 + Ezra.2.45와의 병치 규칙 유지. 반증 훅=절기 규범을 복귀 명단의 직접 인과로 해석하는 경우. Local evidence (2026-03-30): consulted open sources에서 column 표기(XLVI-XLVII)는 확인되나 line-level 전사는 확인되지 않아 line anchor는 TBD 유지."
     },
     {
       "entry_id": "ENTRY_08",
@@ -114,10 +108,10 @@
       "corpus_type": "dss",
       "link_type": "temporal",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_dss_4Q319_otot.md",
+      "artifact_path": null,
       "state_candidate_id": 6,
       "rationale": "B-Track DSS: 제사장 주기·신호 표류. A-Track 대비: Nehemiah 복귀자 명단 행 — 인구/재건 흐름과 ‘주기 신호’ 담론만 병치(벤치).",
-      "note": "Bench policy: temporal(주기/신호) 후보. 승격 조건=4Q319 fragment별 line anchor 확보 + Neh.7.56 명단형 메타와의 병치 규칙 유지. 반증 훅=달력 표식을 직접 인과 트리거로 오독하는 경우. Local evidence (2026-03-30): DJD XXI에서 4QOtot의 plate 범위(Pls X-XIII) 확인, IAA 공개 아카이브 페이지에서는 line 전사가 제공되지 않아 line anchor는 TBD 유지. P10 sequential rail packet linked."
+      "note": "Bench policy: temporal(주기/신호) 후보. 승격 조건=4Q319 fragment별 line anchor 확보 + Neh.7.56 명단형 메타와의 병치 규칙 유지. 반증 훅=달력 표식을 직접 인과 트리거로 오독하는 경우. Local evidence (2026-03-30): DJD XXI에서 4QOtot의 plate 범위(Pls X-XIII) 확인, IAA 공개 아카이브 페이지에서는 line 전사가 제공되지 않아 line anchor는 TBD 유지."
     },
     {
       "entry_id": "ENTRY_09",
@@ -127,10 +121,10 @@
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_dss_4Q169_pesh_nah.md",
+      "artifact_path": null,
       "state_candidate_id": 7,
       "rationale": "B-Track DSS: 나훔 페셔의 악행 귀속·심판 화법. A-Track 대비: 시36 ‘악인의 죄’ 서사와 주제 병치 — 수치/심리 트리거 아님.",
-      "note": "Bench policy: thematic(심판/악행 귀속) 후보. 승격 조건=DJD 표기 기준 line crosswalk의 직접 대조 완료. 반증 훅=페셔 정치-역사 문맥을 시편 심리 문맥과 직접 동일시하는 경우. Local evidence (2026-03-30): Qumran-Digital 4Q169 전사에서 frgs 3-4 col.ii line 1-12 연속 구간 확인. P10 sequential rail packet linked."
+      "note": "Bench policy: thematic(심판/악행 귀속) 후보. 승격 조건=DJD 표기 기준 line crosswalk의 직접 대조 완료. 반증 훅=페셔 정치-역사 문맥을 시편 심리 문맥과 직접 동일시하는 경우. Local evidence (2026-03-30): Qumran-Digital 4Q169 전사에서 frgs 3-4 col.ii line 1-12 연속 구간 확인."
     },
     {
       "entry_id": "ENTRY_10",
@@ -140,10 +134,10 @@
       "corpus_type": "dss",
       "link_type": "thematic",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_dss_cd_damascus_boundary.md",
+      "artifact_path": null,
       "state_candidate_id": 9,
       "rationale": "B-Track DSS: 공동체의 언약·지경 담론. A-Track 대비: 여호수아 지파 경계 점과 ‘땅·경계’ 메타만 병치 — 지리≠가격.",
-      "note": "Bench policy: thematic(경계/지경) 후보. 승격 조건=CD-A I-II와 4Q266-273의 직접 line crosswalk 확보. 반증 훅=경계 어휘가 일반 도덕 문맥으로만 남아 Josh.15.22 지경 메타와 구조 정합이 약해지는 경우. Local evidence (2026-03-30): Qumran-Digital 4Q267 frg.2 line 4에서 'מסיגי גבול' 확인되어 line evidence는 partial 반영, CD-A I-II 직결 line은 미확정. P10 sequential rail packet linked."
+      "note": "Bench policy: thematic(경계/지경) 후보. 승격 조건=CD-A I-II와 4Q266-273의 직접 line crosswalk 확보. 반증 훅=경계 어휘가 일반 도덕 문맥으로만 남아 Josh.15.22 지경 메타와 구조 정합이 약해지는 경우. Local evidence (2026-03-30): Qumran-Digital 4Q267 frg.2 line 4에서 'מסיגי גבול' 확인되어 line evidence는 partial 반영, CD-A I-II 직결 line은 미확정."
     },
     {
       "entry_id": "ENTRY_11",
@@ -153,10 +147,10 @@
       "corpus_type": "dss",
       "link_type": "analogy_bench",
       "confidence": 0.82,
-      "artifact_path": "docs/final/btrack_dss_1QM_col1_excerpt.md",
+      "artifact_path": "docs/final/btrack_phase3_cross_ref_snapshot.md",
       "state_candidate_id": 13,
       "rationale": "[HYPO] 금화교역(金火交易) 상전이 벤치: 1Chr.14.6의 '상태'를 에스겔 1:4의 불꽃 환상 및 1QM의 에너지 충돌 서사와 구조적으로 연결. 학계의 비평을 넘어선 '상태 함수' 대칭성 실험용.",
-      "note": "NL v2.1 cross_notebook_query (Apocrypha/DSS/Phase3, 3/3): 관측 요지 — 정렬은 가능하나 반증으로 (1) 희년서 364일 논지의 분리주의·정치 동기 가능성, (2) DSS/히브리 원어에 금화교역 상응 형이상학 어휘 부재, (3) 1Chr.14.6 행정·연대기 맥락과 묵시 텍스트 병치 시 False equivalence 위험. 주요 취약점: 맥락 오염(Context contamination)·제2성전기 이원론 vs 동양 순환 은유의 존재론적 비호환. [HYPO] 승격 보류; A-track·실매매·OOF 자동 합선 금지. NL 2026-03-30 notebook_query 보강: (a) 반증 3종 분류=맥락 오염/존재론적 동치 오류/숫자 은유, (b) 인용 정밀도 감사=1QpHab·11QT(Med), 4Q319·CD-A(High), 열·행·fragment/sigla 보강 필요. Source: 5a0ac312-d9a1-4065-82c1-49455ad0a420 (btrack_phase3_cross_ref_snapshot.md). P10 sequential rail packet linked."
+      "note": "NL v2.1 cross_notebook_query (Apocrypha/DSS/Phase3, 3/3): 관측 요지 — 정렬은 가능하나 반증으로 (1) 희년서 364일 논지의 분리주의·정치 동기 가능성, (2) DSS/히브리 원어에 금화교역 상응 형이상학 어휘 부재, (3) 1Chr.14.6 행정·연대기 맥락과 묵시 텍스트 병치 시 False equivalence 위험. 주요 취약점: 맥락 오염(Context contamination)·제2성전기 이원론 vs 동양 순환 은유의 존재론적 비호환. [HYPO] 승격 보류; A-track·실매매·OOF 자동 합선 금지. NL 2026-03-30 notebook_query 보강: (a) 반증 3종 분류=맥락 오염/존재론적 동치 오류/숫자 은유, (b) 인용 정밀도 감사=1QpHab·11QT(Med), 4Q319·CD-A(High), 열·행·fragment/sigla 보강 필요. Source: 5a0ac312-d9a1-4065-82c1-49455ad0a420 (btrack_phase3_cross_ref_snapshot.md)."
     },
     {
       "entry_id": "ENTRY_12",
@@ -192,10 +186,10 @@
       "corpus_type": "dss",
       "link_type": "lexical",
       "confidence": null,
-      "artifact_path": "docs/final/btrack_dss_deut_raw.md",
+      "artifact_path": null,
       "state_candidate_id": 12,
       "rationale": "B-Track DSS: 신명기 십계·금기 병렬. A-Track: state 12 앵커 Deut.5.19 — 규범 메타만(윤리 트리거 아님).",
-      "note": "Bench policy: lexical/규범 정렬 후보. 승격 조건=4QDeut fragment가 Deut.5.19 금기 문맥에 직접 대응. 반증 훅=fragment 위치 불확정 또는 십계 일반 규범으로만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/sigla anchor 부재 확인. Local evidence (2026-03-30): Qumran-Digital 4Q129 전사에서 frg.1R line 9에 Decalogue 구문(לא תרצח/לא תנאף/לא תגנוב)이 확인되어 Deut.5.19 line anchor를 partial로 상향. P10 sequential rail packet linked."
+      "note": "Bench policy: lexical/규범 정렬 후보. 승격 조건=4QDeut fragment가 Deut.5.19 금기 문맥에 직접 대응. 반증 훅=fragment 위치 불확정 또는 십계 일반 규범으로만 남는 경우. NL notebook_query(2026-03-30, conv 46c6c47a): witness 정합도 M/L, verify 전 단계로 승격 보류. NL cross_notebook_query(2026-03-30): DSS-only/Fusion/Phase3 전부에서 fragment/sigla anchor 부재 확인. Local evidence (2026-03-30): Qumran-Digital 4Q129 전사에서 frg.1R line 9에 Decalogue 구문(לא תרצח/לא תנאף/לא תגנוב)이 확인되어 Deut.5.19 line anchor를 partial로 상향."
     },
     {
       "entry_id": "ENTRY_15",

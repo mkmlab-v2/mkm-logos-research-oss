@@ -1,6 +1,6 @@
 {
   "schema": "insight_effectiveness_scoreboard_v1",
-  "generated_at_utc": "2026-05-14T22:48:38Z",
+  "generated_at_utc": "2026-06-27T18:44:51Z",
   "sources": {
     "fused_history_path": "C:\\workspace\\docs\\final\\artifacts\\fused_paper_cycle_decision_history.jsonl",
     "scoring_distribution_path": "C:\\workspace\\docs\\final\\artifacts\\trinity_scoring_distribution_latest.json",
@@ -14,23 +14,28 @@
   },
   "latest_window_snapshot": {
     "counts": {
-      "HIT": 16,
+      "HIT": 20,
       "FAIL": 0,
-      "NEUTRAL_DRAW": 9,
-      "PENDING_CLOSE": 5
+      "NEUTRAL_DRAW": 10,
+      "PENDING_CLOSE": 0
     },
-    "pending_close_rate_raw": 0.16666666666666666,
-    "hit_rate_resolved_plus_neutral": 0.64,
-    "resolved_plus_neutral_n": 25,
+    "pending_close_rate_raw": 0.0,
+    "hit_rate_resolved_plus_neutral": 0.6666666666666666,
+    "resolved_plus_neutral_n": 30,
     "hit_rate_resolved_plus_neutral_wilson95": {
-      "lower": 0.44518154601046633,
-      "upper": 0.7975234356826436
+      "lower": 0.48779725813830266,
+      "upper": 0.807697044731538
     }
   },
   "monthly_hit_rate_trace": [
     {
       "month_tag": "2026-05",
-      "hit_rate_resolved_plus_neutral": 0.64,
+      "hit_rate_resolved_plus_neutral": 0.7,
+      "sample_size": 23
+    },
+    {
+      "month_tag": "2026-06",
+      "hit_rate_resolved_plus_neutral": 0.6666666666666666,
       "sample_size": 30
     }
   ],
@@ -45,10 +50,10 @@
   },
   "checks": {
     "pending_close_rate_ok": true,
-    "monthly_hit_rate_two_months_ok": false,
+    "monthly_hit_rate_two_months_ok": true,
     "state_signal_wired_ok": true
   },
-  "is_promotion_ready": false,
-  "promotion_status": "KEEP_OBSERVATION_ONLY",
+  "is_promotion_ready": true,
+  "promotion_status": "PROMOTION_APPROVED_6W_PILOT",
   "note": "Daily machine verdict for B-track to A-track promotion readiness."
 }
