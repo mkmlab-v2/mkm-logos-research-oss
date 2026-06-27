@@ -3,7 +3,7 @@
  * Type: UI
  * Vector: {S:0.72, L:0.58, K:0.84, M:0.44}
  * Balance: 90
- * Purpose: Provide patient-facing basic health Q&A linked to clinic guidance.
+ * Purpose: Homepage funnel — optional brief Q&A; presurvey SSOT is /intake only.
  * Keywords: React, chat, intake, clinical guidance, funnel
  */
 "use client";
@@ -31,10 +31,6 @@ type BasicHealthChatCardProps = {
 export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCardProps) {
   const copy = siteCopy.basic_health_chat;
   const [message, setMessage] = useState("");
-  const [painArea, setPainArea] = useState("");
-  const [painScale, setPainScale] = useState("5");
-  const [digestiveNote, setDigestiveNote] = useState("");
-  const [sleepNote, setSleepNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [history, setHistory] = useState<ChatTurn[]>(() => [
@@ -60,10 +56,10 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
           message: userMessage,
           health_data: {
             survey: {
-              pain_area: painArea.trim() || copy.survey_defaults.pain_area_empty,
-              pain_scale_0_10: Number(painScale),
-              digestion_pattern: digestiveNote.trim() || copy.survey_defaults.digestion_empty,
-              sleep_pattern: sleepNote.trim() || copy.survey_defaults.sleep_empty,
+              pain_area: copy.survey_defaults.pain_area_empty,
+              pain_scale_0_10: 0,
+              digestion_pattern: copy.survey_defaults.digestion_empty,
+              sleep_pattern: copy.survey_defaults.sleep_empty,
               vector_4d: { S: 0.25, L: 0.25, K: 0.25, M: 0.25 },
             },
           },
@@ -85,6 +81,26 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
   const isWorkspace = layout === "workspace";
   const ctas = isWorkspace ? copy.ctas.workspace : copy.ctas.marketing;
 
+  const intakeCta = isWorkspace ? (
+    <Link className="btn btn-primary" href={ctas.primary.href}>
+      {ctas.primary.label}
+    </Link>
+  ) : (
+    <a className="btn btn-primary" href={ctas.primary.href}>
+      {ctas.primary.label}
+    </a>
+  );
+
+  const secondaryCta = isWorkspace ? (
+    <Link className="btn btn-ghost" href={ctas.secondary.href}>
+      {ctas.secondary.label}
+    </Link>
+  ) : (
+    <a className="btn btn-ghost" href={ctas.secondary.href}>
+      {ctas.secondary.label}
+    </a>
+  );
+
   return (
     <section
       id="basic-health-chat"
@@ -97,36 +113,11 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
       {isWorkspace ? null : <p className="section-lead">{copy.section_lead}</p>}
 
       <div className={`chat-card${isWorkspace ? " chat-card--workspace" : ""}`}>
-        <div className="chat-profile-grid">
-          <label>
-            {copy.labels.pain_area}
-            <input
-              value={painArea}
-              onChange={(e) => setPainArea(e.target.value)}
-              placeholder={copy.placeholders.pain_area}
-            />
-          </label>
-          <label>
-            {copy.labels.pain_scale}
-            <input value={painScale} onChange={(e) => setPainScale(e.target.value)} type="number" min={0} max={10} />
-          </label>
-          <label>
-            {copy.labels.digestion}
-            <input
-              value={digestiveNote}
-              onChange={(e) => setDigestiveNote(e.target.value)}
-              placeholder={copy.placeholders.digestion}
-            />
-          </label>
-          <label>
-            {copy.labels.sleep}
-            <input
-              value={sleepNote}
-              onChange={(e) => setSleepNote(e.target.value)}
-              placeholder={copy.placeholders.sleep}
-            />
-          </label>
+        <div className="section-cta clinic-intake-home-cta">
+          {intakeCta}
+          {secondaryCta}
         </div>
+        <p className="clinic-intake-hint">{copy.intake_hint}</p>
 
         <div className="chat-log" role="log" aria-live="polite">
           {history.map((turn, idx) => (
@@ -159,28 +150,6 @@ export function BasicHealthChatCard({ layout = "marketing" }: BasicHealthChatCar
           </button>
         </div>
         {error ? <p className="consult-error">{error}</p> : null}
-
-        <div className="section-cta">
-          {isWorkspace ? (
-            <>
-              <Link className="btn btn-primary" href={ctas.primary.href}>
-                {ctas.primary.label}
-              </Link>
-              <Link className="btn btn-ghost" href={ctas.secondary.href}>
-                {ctas.secondary.label}
-              </Link>
-            </>
-          ) : (
-            <>
-              <a className="btn btn-primary" href={ctas.primary.href}>
-                {ctas.primary.label}
-              </a>
-              <a className="btn btn-ghost" href={ctas.secondary.href}>
-                {ctas.secondary.label}
-              </a>
-            </>
-          )}
-        </div>
       </div>
     </section>
   );

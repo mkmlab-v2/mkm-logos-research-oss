@@ -1,0 +1,19 @@
+{
+  "measured_proxy": {
+    "case_count": 25,
+    "mean_token_saving_rate_proxy": 0.139971,
+    "mean_jaccard_proxy": 0.854433,
+    "metering_global_saving_rate": 0.47619,
+    "events_in_band_40_50": 3
+  },
+  "customer_dollar_roi": {
+    "monthly_savings_usd": 0.07,
+    "monthly_savings_krw": 95
+  },
+  "forbidden_as_headline": [
+    "Track A 47.5%를 고객 ROI로 단정",
+    "repair-only uplift를 core 품질로 표기",
+    "SEND 해제 전 대외 case study",
+    "무손실·100% 복원 보장"
+  ]
+}

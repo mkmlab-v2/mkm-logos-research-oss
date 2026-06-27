@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { personadiaryCopy } from "@/content/personadiaryCopy";
-import type { DailyGuidePackage } from "./usePersonadiaryDailyGuide";
+import type { DailyGuidePackage } from "@/lib/personadiaryDailyGuide";
 
 const DEFAULT_PROFILE =
   (typeof process !== "undefined" &&

@@ -1,0 +1,17 @@
+{
+  "appId": "com.jemaai.logos.research",
+  "appName": "Logos Studio",
+  "webDir": "www",
+  "server": {
+    "url": "https://logos.jema-ai.com/logos-research/studio",
+    "cleartext": false,
+    "allowNavigation": ["logos.jema-ai.com", "jema-ai.com", "*.jema-ai.com"]
+  },
+  "android": {
+    "allowMixedContent": false,
+    "adjustMarginsForEdgeToEdge": "auto"
+  },
+  "ios": {
+    "contentInset": "automatic"
+  }
+}

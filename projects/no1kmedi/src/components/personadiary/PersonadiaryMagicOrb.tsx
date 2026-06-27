@@ -21,14 +21,20 @@ type Point = { x: number; y: number; z: number; c: string };
 export function PersonadiaryMagicOrb({
   size = 300,
   showTone = true,
+  showLegend = true,
+  showStatus = true,
   onOrbActivate,
   activateLabel = "구슬을 눌러 호흡 맞추기",
+  onToneChange,
 }: {
   size?: number;
   showTone?: boolean;
+  showLegend?: boolean;
+  showStatus?: boolean;
   /** Touch/click on orb canvas (ritual gate-in). */
   onOrbActivate?: () => void;
   activateLabel?: string;
+  onToneChange?: (enabled: boolean) => void;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ptsRef = useRef<Point[]>([]);
@@ -126,6 +132,7 @@ export function PersonadiaryMagicOrb({
         }
         audioRef.current = null;
         setToneOn(false);
+        onToneChange?.(false);
         setStatus("호흡과 함께 · 준비됨");
       }, 450);
       return;
@@ -150,8 +157,9 @@ export function PersonadiaryMagicOrb({
     gain.gain.exponentialRampToValueAtTime(0.04, ctx.currentTime + 1.2);
     audioRef.current = { ctx, osc, gain };
     setToneOn(true);
+    onToneChange?.(true);
     setStatus("부드러운 톤 · 호흡에 맞춰");
-  }, [toneOn]);
+  }, [toneOn, onToneChange]);
 
   return (
     <div className="pd-orb-wrap">
@@ -175,15 +183,17 @@ export function PersonadiaryMagicOrb({
             : undefined
         }
       />
-      <div className="pd-orb-legend">
-        {LEGEND.map((item) => (
-          <span key={item.key}>
-            <i style={{ background: item.color }} />
-            {item.label}
-          </span>
-        ))}
-      </div>
-      <p className="pd-orb-status">{status}</p>
+      {showLegend ? (
+        <div className="pd-orb-legend">
+          {LEGEND.map((item) => (
+            <span key={item.key}>
+              <i style={{ background: item.color }} />
+              {item.label}
+            </span>
+          ))}
+        </div>
+      ) : null}
+      {showStatus ? <p className="pd-orb-status">{status}</p> : null}
       {showTone ? (
         <button
           type="button"

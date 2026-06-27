@@ -10,27 +10,9 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import type { DailyGuideBlock } from "@/lib/personadiaryDailyGuide";
+import type { DailyGuidePackage } from "@/lib/personadiaryDailyGuide";
 
-export type MomentPresetPolishBlock = {
-  presets?: Record<
-    string,
-    {
-      canonical_query?: string;
-      summary_ko_polished?: string | null;
-    }
-  >;
-  hero?: { body_ko_polished?: string | null };
-};
-
-export type DailyGuidePackage = {
-  calendar_kst?: string;
-  concept_ko?: string;
-  ui_blocks?: DailyGuideBlock[];
-  reflect_template_ko?: string;
-  disclaimer_ko?: string;
-  moment_preset_polish_v1?: MomentPresetPolishBlock;
-};
+export type { DailyGuidePackage };
 
 type DailyGuideContextValue = {
   pkg: DailyGuidePackage | null;
@@ -171,12 +153,10 @@ export function PersonadiaryDailyGuideProvider({
 
 export function usePersonadiaryDailyGuide(profileId: string = DEFAULT_PROFILE) {
   const ctx = useContext(DailyGuideContext);
-  const standalone = useDailyGuideFetch(profileId, !ctx);
+  const useCtx = Boolean(ctx && ctx.profileId === profileId);
+  const standalone = useDailyGuideFetch(profileId, !useCtx);
 
-  if (ctx) {
-    if (ctx.profileId !== profileId) {
-      return { pkg: null, loading: true, error: null, profileId };
-    }
+  if (useCtx && ctx) {
     return ctx;
   }
 

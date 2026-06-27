@@ -1,4 +1,8 @@
 import { hubLifeInternalRoute, isMkmlifeEmbedEnabled } from "@/lib/universeHubMkmlifeEmbedV2";
+import {
+  buildLogosStudioHubRoute,
+  questionMatchesLogosCommercial,
+} from "@/lib/universeHubLogosCommercialV1";
 
 import { buildMkmlifeAskOneHubDeepLink } from "@/lib/universeHubPluginsV2";
 
@@ -154,6 +158,10 @@ export function resolveHubAskRoute(
 
   const trimmed = question.trim();
 
+  if (trimmed && questionMatchesLogosCommercial(trimmed)) {
+    return buildLogosStudioHubRoute(trimmed);
+  }
+
   const intent = selectedIntent ?? (trimmed ? inferIntentFromQuestion(trimmed) : "life");
 
   const hubSource = "source=jema_hub_v2";
@@ -161,13 +169,9 @@ export function resolveHubAskRoute(
 
 
   if (intent === "observe") {
-
     return trimmed
-
       ? `/hub/oracle?prefill=${encodeURIComponent(trimmed)}&${hubSource}`
-
       : "/hub/oracle";
-
   }
 
   if (intent === "developer") {

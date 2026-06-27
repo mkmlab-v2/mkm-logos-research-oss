@@ -18,6 +18,9 @@ export default function ClinicianPage() {
   return (
     <>
       <div data-clinician-pilot-route="v2" data-clinician-sidebar-mode="gpt-persist" hidden aria-hidden="true" />
+      <p className="clinician-trust-footer-marker" hidden data-trust-footer="trust_composition_v1">
+        artifact·게이트 연결 시에만 보조 초안을 제공합니다.
+      </p>
       <Suspense
         fallback={
           <div className="workspace-fallback" role="status" aria-live="polite">

@@ -5,6 +5,7 @@ export type HubDiscoverLocale = "ko" | "en";
 type HubDiscoverStrings = {
   title: string;
   tagline: string;
+  trustWedge: string;
   lead: string;
   placeholder: string;
   submit: string;
@@ -26,6 +27,7 @@ function mapLocale(locale: HubDiscoverLocale): HubDiscoverStrings {
   return {
     title: block.title,
     tagline: block.tagline,
+    trustWedge: block.trust_wedge ?? "",
     lead: block.lead,
     placeholder: block.placeholder,
     submit: block.submit,

@@ -7,7 +7,6 @@ import { ConsumerPersistedChat } from "@/components/ConsumerPersistedChat";
 import { ConsumerThreadRail } from "@/components/ConsumerThreadRail";
 import { JemaDifferentiationStrip } from "@/components/JemaDifferentiationStrip";
 import { JemaWorkspaceCommandPalette, type PaletteAction } from "@/components/JemaWorkspaceCommandPalette";
-import { PatientPreSurveyForm } from "@/components/PatientPreSurveyForm";
 import { useConsumerThreads } from "@/hooks/useConsumerThreads";
 import { siteCopy } from "@/content/siteCopy";
 import {
@@ -17,7 +16,6 @@ import {
 
 const NAV = [
   { id: "chat", label: "대화" },
-  { id: "survey", label: "상세 문진" },
   { id: "safety", label: "안전·고지" },
 ] as const;
 
@@ -42,6 +40,9 @@ function ConsumerSafetyPanel() {
         응급 증상이 의심되면 즉시 119 또는 응급실을 이용해 주세요. 본 화면은 의료행위를 대체하지 않습니다.
       </p>
       <p className="workspace-muted">
+        사전 문진은 <a href="/intake">/intake</a>에서 작성합니다. 제출 후 문진 코드(PIN)를 접수·진료실에 알려 주세요.
+      </p>
+      <p className="workspace-muted">
         대화 기록은 <strong>이 기기 브라우저 localStorage</strong>에만 저장됩니다. 다른 기기·브라우저와 동기화되지
         않으며, 운영 정책에 따라 서버 영속 저장으로 전환할 수 있습니다.
       </p>
@@ -57,7 +58,7 @@ export function ConsumerWorkspaceClient() {
 
   const [activeId, setActiveId] = useState<string>(() => {
     const p = searchParams.get("panel");
-    return p === "survey" || p === "safety" ? p : "chat";
+    return p === "safety" ? p : "chat";
   });
 
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -80,8 +81,14 @@ export function ConsumerWorkspaceClient() {
   const smartfarmBudget = searchParams.get("budget") ?? "0";
 
   useEffect(() => {
+    if (searchParams.get("panel") === "survey") {
+      router.replace("/intake");
+    }
+  }, [searchParams, router]);
+
+  useEffect(() => {
     const p = searchParams.get("panel");
-    const next = p === "survey" || p === "safety" ? p : "chat";
+    const next = p === "safety" ? p : "chat";
     setActiveId((cur) => (cur === next ? cur : next));
   }, [searchParams]);
 
@@ -164,7 +171,7 @@ export function ConsumerWorkspaceClient() {
   const paletteActions: PaletteAction[] = useMemo(
     () => [
       { id: "chat", label: "대화 화면", hint: "panel", run: () => onSelect("chat") },
-      { id: "survey", label: "상세 문진", hint: "panel", run: () => onSelect("survey") },
+      { id: "intake", label: "사전 문진 (/intake)", hint: "이동", run: () => router.push("/intake") },
       { id: "safety", label: "안전·고지", hint: "panel", run: () => onSelect("safety") },
       { id: "new", label: "새 대화", hint: "스레드", run: () => startNewChat() },
       { id: "home", label: "랜딩으로", hint: "/", run: () => router.push("/") },
@@ -250,11 +257,6 @@ export function ConsumerWorkspaceClient() {
             ) : null}
             <JemaDifferentiationStrip />
             <ConsumerPersistedChat thread={activeThread} onCommit={commitThread} />
-          </div>
-        ) : null}
-        {activeId === "survey" ? (
-          <div className="workspace-scroll-panel">
-            <PatientPreSurveyForm intakeMode="clinic_v1" />
           </div>
         ) : null}
         {activeId === "safety" ? <ConsumerSafetyPanel /> : null}

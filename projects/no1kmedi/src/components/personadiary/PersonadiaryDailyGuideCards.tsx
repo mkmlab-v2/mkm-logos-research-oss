@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { usePersonadiaryDailyGuide } from "./usePersonadiaryDailyGuide";
 import { sanitizeGuideBody } from "@/lib/personadiaryMomentDisplay";
+import { derivePersonadiaryAcodeProfile } from "@/lib/personadiaryAcodeProfileV1";
+import { toConsumerGuideTitle } from "@/lib/personadiaryConsumerGuideLabelsV1";
 import { PersonadiaryFeedbackStrip } from "./PersonadiaryFeedbackStrip";
 import type { DailyGuideBlock } from "@/lib/personadiaryDailyGuide";
 
@@ -52,15 +54,21 @@ export function PersonadiaryDailyGuideCards() {
       !isBodyRhythmCard(b)
   );
   const bodyRhythmTeaser = bodyRhythmCards[0]?.body_ko?.split("\n")[0]?.trim();
+  const acode = derivePersonadiaryAcodeProfile(pkg);
 
   return (
     <div className="pd-daily-guide">
       <p className="pd-reflect-label pd-daily-guide-label">
         오늘의 마음 가이드 · {pkg.calendar_kst || "—"}
       </p>
+      <p className="pd-guide-acode-chip" aria-label="오늘 A-Code">
+        <span className="pd-guide-acode-code">{acode.public_code}</span>
+        <span className="pd-guide-acode-title">{acode.title_ko}</span>
+        <span className="pd-guide-acode-tone">{acode.moment_tone_ko}</span>
+      </p>
       {hero ? (
         <article className="pd-guide-hero pd-glass">
-          <h3>{hero.title_ko}</h3>
+          <h3>{toConsumerGuideTitle(hero.title_ko ?? "")}</h3>
           <p className="pd-guide-hero-body">
             {heroPolish || sanitizeGuideBody(hero.body_ko ?? "", 200)}
           </p>
@@ -87,7 +95,7 @@ export function PersonadiaryDailyGuideCards() {
         <div className="pd-guide-expanded">
           {newsMeHypo ? (
             <article className="pd-guide-hero pd-guide-news-me pd-glass">
-              <h3>{newsMeHypo.title_ko}</h3>
+              <h3>{toConsumerGuideTitle(newsMeHypo.title_ko ?? "")}</h3>
               <p className="pd-guide-hero-body">
                 {sanitizeGuideBody(newsMeHypo.body_ko ?? "", 280)}
               </p>
@@ -153,7 +161,7 @@ export function PersonadiaryDailyGuideCards() {
                 key={`${block.type}-${block.title_ko}`}
                 className="pd-guide-card pd-glass"
               >
-                <h4>{block.title_ko}</h4>
+                <h4>{toConsumerGuideTitle(block.title_ko ?? "")}</h4>
                 {block.ref ? <p className="pd-guide-ref">{block.ref}</p> : null}
                 <p className="pd-guide-card-body">
                   {sanitizeGuideBody(block.body_ko ?? "", 140)}

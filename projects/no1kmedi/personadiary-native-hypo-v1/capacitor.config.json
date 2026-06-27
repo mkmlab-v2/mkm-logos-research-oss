@@ -1,0 +1,16 @@
+{
+  "appId": "com.mkmlife.personadiary.hypo",
+  "appName": "Persona Diary Ops Hypo",
+  "webDir": "www",
+  "server": {
+    "url": "https://personadiary.com/ops",
+    "cleartext": false,
+    "allowNavigation": ["personadiary.com", "*.personadiary.com"]
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "automatic"
+  }
+}

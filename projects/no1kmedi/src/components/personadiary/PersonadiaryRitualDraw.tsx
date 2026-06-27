@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   appendRitualDrawLog,
@@ -30,6 +30,14 @@ import {
 import { sanitizeMomentLine } from "@/lib/personadiaryMomentDisplay";
 import { PersonadiaryLatticeOverlay } from "./PersonadiaryLatticeOverlay";
 import { PersonadiaryMagicOrb } from "./PersonadiaryMagicOrb";
+import { PersonadiaryReasoningTheatre } from "./PersonadiaryReasoningTheatre";
+import {
+  fetchMkmlifeReasoningTheatreSteps,
+  PD_REASONING_THEATRE_STEPS,
+  personadiaryPhaseToTheatreStep,
+  playPdReasoningTheatreStepTone,
+  type PdReasoningTheatreStep,
+} from "@/lib/personadiaryReasoningTheatreV1";
 import { usePersonadiaryDailyGuide } from "./usePersonadiaryDailyGuide";
 
 const USER_DISCLAIMER =
@@ -51,6 +59,10 @@ export function PersonadiaryRitualDraw() {
   const [result, setResult] = useState<RitualDrawResult | null>(null);
   const [flipped, setFlipped] = useState(false);
   const [gateHint, setGateHint] = useState<string | null>(null);
+  const [orbToneOn, setOrbToneOn] = useState(false);
+  const [theatreSteps, setTheatreSteps] = useState<PdReasoningTheatreStep[]>(
+    PD_REASONING_THEATRE_STEPS,
+  );
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const breathStartRef = useRef(0);
@@ -97,6 +109,34 @@ export function PersonadiaryRitualDraw() {
 
   useEffect(() => () => clearTimers(), [clearTimers]);
 
+  const theatreStep = personadiaryPhaseToTheatreStep(phase);
+  const theatreLayerOpacity =
+    phase === "shatter" || phase === "vortex"
+      ? 0.32
+      : phase === "breath"
+        ? 0.62
+        : 1;
+
+  const ritualStatus = useMemo((): { text: string; kind: "hint" | "warn" | "phase" } | null => {
+    if (gateHint) return { text: gateHint, kind: "warn" };
+    if (phase === "shatter") return { text: "분쇄 · 말 조각 분리…", kind: "phase" };
+    if (phase === "vortex") return { text: "흡수 · 구슬 중심으로 수렴…", kind: "phase" };
+    if (phase === "breath") {
+      const sec = Math.ceil(((100 - breathPct) / 100) * (LATTICE_BREATH_MS / 1000));
+      return { text: `호흡 맞추기… ${sec}초`, kind: "phase" };
+    }
+    if (phase === "converge") return { text: "공명 맵 정렬…", kind: "phase" };
+    if (phase === "idle" || phase === "ready") {
+      return { text: "질문을 적은 뒤 구슬을 터치하세요.", kind: "hint" };
+    }
+    return null;
+  }, [gateHint, phase, breathPct]);
+
+  useEffect(() => {
+    if (!theatreStep) return;
+    void playPdReasoningTheatreStepTone(theatreStep, orbToneOn);
+  }, [phase, theatreStep, orbToneOn]);
+
   const runTimedPhase = useCallback(
     (from: LatticePhase, onComplete: () => void) => {
       const ms = latticePhaseDurationMs(from);
@@ -134,6 +174,9 @@ export function PersonadiaryRitualDraw() {
     if (phase !== "idle" && phase !== "ready") return;
     setGateHint(null);
     clearTimers();
+    void fetchMkmlifeReasoningTheatreSteps(q).then((remote) => {
+      if (remote) setTheatreSteps(remote);
+    });
 
     const tokens = shatterQuestionTokens(q);
     setShatterTokens(tokens);
@@ -232,7 +275,11 @@ export function PersonadiaryRitualDraw() {
   return (
     <section className="pd-ritual-draw" aria-labelledby="pd-ritual-title">
       <div className="pd-ritual-draw-inner pd-glass">
-        <p className="pd-reflect-label">Lattice Convergence · Major 22 [HYPO]</p>
+        <p className="pd-ritual-kicker">
+          <span className="pd-ritual-kicker-en">Lattice Convergence · Major 22</span>
+          <span className="pd-ritual-kicker-hypo">[HYPO]</span>
+        </p>
+        <p className="pd-ritual-eyebrow">행운·리추얼 카드</p>
         <h2 id="pd-ritual-title">빛의 구슬 앞에서, 오늘 카드 한 장</h2>
         <p className="pd-ritual-lead">
           질문을 적고 구슬을 누르면 말 조각이 흡수된 뒤 공명 맵이 정렬됩니다. LLM 즉흥이
@@ -243,10 +290,23 @@ export function PersonadiaryRitualDraw() {
           <div className="pd-ritual-orb-stack">
             <PersonadiaryMagicOrb
               size={ORB_SIZE}
+              showLegend={false}
+              showStatus={false}
               showTone
+              onToneChange={setOrbToneOn}
               onOrbActivate={orbActive ? startLatticeGate : undefined}
-              activateLabel="질문을 적은 뒤 구슬을 눌러 흡수 시작"
+              activateLabel="질문을 적은 뒤 구슬을 터치하세요"
             />
+            {theatreStep ? (
+              <PersonadiaryReasoningTheatre
+                size={ORB_SIZE}
+                activeStepId={theatreStep}
+                steps={theatreSteps}
+                breathPct={phase === "breath" ? breathPct : 0}
+                layerOpacity={theatreLayerOpacity}
+                className="pd-reasoning-theatre-overlay"
+              />
+            ) : null}
             <PersonadiaryLatticeOverlay
               size={ORB_SIZE}
               phase={phase}
@@ -255,36 +315,33 @@ export function PersonadiaryRitualDraw() {
               convergePct={convergePct}
             />
           </div>
-          {phase === "shatter" ? (
-            <p className="pd-ritual-phase" role="status">
-              분쇄 · 말 조각 분리…
-            </p>
-          ) : null}
-          {phase === "vortex" ? (
-            <p className="pd-ritual-phase" role="status">
-              흡수 · 구슬 중심으로 수렴…
-            </p>
-          ) : null}
-          {phase === "breath" ? (
-            <div className="pd-ritual-breath" role="status" aria-live="polite">
-              <div className="pd-ritual-breath-bar" aria-hidden>
-                <span style={{ width: `${breathPct}%` }} />
+          <div
+            className="pd-ritual-status-slot"
+            data-testid="pd-ritual-status-slot"
+            aria-live="polite"
+            role="status"
+          >
+            {phase === "breath" ? (
+              <div className="pd-ritual-breath">
+                <div className="pd-ritual-breath-bar" aria-hidden>
+                  <span style={{ width: `${breathPct}%` }} />
+                </div>
+                {ritualStatus ? (
+                  <p className={`pd-ritual-status-line pd-ritual-status-line--${ritualStatus.kind}`}>
+                    {ritualStatus.text}
+                  </p>
+                ) : null}
               </div>
-              <p>
-                호흡 맞추기… {Math.ceil(((100 - breathPct) / 100) * (LATTICE_BREATH_MS / 1000))}
-                초
+            ) : ritualStatus ? (
+              <p className={`pd-ritual-status-line pd-ritual-status-line--${ritualStatus.kind}`}>
+                {ritualStatus.text}
               </p>
-            </div>
-          ) : null}
-          {phase === "converge" ? (
-            <p className="pd-ritual-phase" role="status">
-              공명 맵 정렬…
-            </p>
-          ) : null}
-          {phase === "idle" ? (
-            <p className="pd-ritual-hint">질문을 적은 뒤 구슬을 터치하세요.</p>
-          ) : null}
-          {gateHint ? <p className="pd-ritual-hint pd-ritual-hint--warn">{gateHint}</p> : null}
+            ) : (
+              <p className="pd-ritual-status-line pd-ritual-status-line--placeholder" aria-hidden="true">
+                &nbsp;
+              </p>
+            )}
+          </div>
         </div>
 
         {matchedHubs.length > 0 &&

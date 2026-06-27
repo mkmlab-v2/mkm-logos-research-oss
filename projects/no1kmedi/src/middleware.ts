@@ -1,16 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
+  isNationalKmAskPath,
   isPublicPatientSurfacePath,
   JEMA_AI_HUB_HOSTS,
   normalizeRequestHost,
   shouldRedirectRootToHubHome,
   shouldRewriteRootToClinician,
+  shouldRewriteRootToNationalKmAsk,
 } from "@/lib/no1kmedi-portal-host";
 import { JEMAAI_CLOUD_PUBLIC_OBSERVE_URL } from "@/lib/jemaaiShowroomPublicV1";
 
 const FARM_HOSTS = new Set(["farm.jema-ai.com", "www.farm.jema-ai.com"]);
 const FARM_CANONICAL_ORIGIN = "https://farm.jema-ai.com";
+const LOGOS_HOSTS = new Set(["logos.jema-ai.com", "www.logos.jema-ai.com"]);
+const LOGOS_CANONICAL_ORIGIN = "https://logos.jema-ai.com";
 /** Hub hosts: /smartfarm on apex/app is redirected to farm.jema-ai.com (B2B canonical). */
 /** O-P5: /studio on hub hosts → public text-only observe surface on jemaai.cloud */
 const STUDIO_ORACLE_V6_URL = JEMAAI_CLOUD_PUBLIC_OBSERVE_URL;
@@ -80,6 +84,17 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(`${FARM_CANONICAL_ORIGIN}${suffix}`, 308);
   }
 
+  if (
+    JEMA_AI_HUB_HOSTS.has(host) &&
+    (pathname === "/logos-research" || pathname.startsWith("/logos-research/"))
+  ) {
+    const suffix =
+      pathname === "/logos-research" || pathname === "/logos-research/"
+        ? "/"
+        : pathname.replace(/^\/logos-research/, "");
+    return NextResponse.redirect(`${LOGOS_CANONICAL_ORIGIN}${suffix}`, 308);
+  }
+
   if (!host) {
     return NextResponse.next();
   }
@@ -89,6 +104,27 @@ export function middleware(request: NextRequest) {
     url.pathname = "/hub";
     url.search = "";
     return NextResponse.redirect(url);
+  }
+
+  if (shouldRewriteRootToNationalKmAsk(host)) {
+    if (shouldPassThroughStaticOrApi(pathname)) {
+      return NextResponse.next();
+    }
+    if (isNationalKmAskPath(pathname)) {
+      return NextResponse.next();
+    }
+    if (isPublicPatientSurfacePath(pathname)) {
+      return NextResponse.next();
+    }
+    if (pathname === "/clinician" || pathname.startsWith("/clinician/")) {
+      return NextResponse.next();
+    }
+    if (pathname === "/") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/ask";
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
   }
 
   if (shouldRewriteRootToClinician(host)) {
@@ -114,19 +150,54 @@ export function middleware(request: NextRequest) {
       url.pathname = "/personadiary-concept-demo.html";
       return NextResponse.rewrite(url);
     }
+    if (pathname === "/favicon.ico") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/personadiary/icon-192.svg";
+      return NextResponse.rewrite(url);
+    }
+    if (pathname === "/home" || pathname === "/home/") {
+      return NextResponse.redirect(new URL("/", request.url), 308);
+    }
     if (shouldPassThroughStaticOrApi(pathname)) {
       return NextResponse.next();
     }
-    if (pathname === "/personadiary" || pathname.startsWith("/personadiary/")) {
+    if (
+      pathname === "/personadiary/manifest.webmanifest" ||
+      pathname === "/personadiary/sw.js" ||
+      pathname.startsWith("/personadiary/icon-")
+    ) {
       return NextResponse.next();
+    }
+    if (pathname === "/personadiary" || pathname === "/personadiary/") {
+      return NextResponse.redirect(new URL("/", request.url), 308);
+    }
+    if (pathname.startsWith("/personadiary/")) {
+      const rest = pathname.slice("/personadiary".length) || "/";
+      return NextResponse.redirect(new URL(rest, request.url), 308);
     }
     const url = request.nextUrl.clone();
     url.pathname = pathname === "/" ? "/personadiary" : `/personadiary${pathname}`;
     return NextResponse.rewrite(url);
   }
 
-  if (!FARM_HOSTS.has(host)) {
+  if (!FARM_HOSTS.has(host) && !LOGOS_HOSTS.has(host)) {
     return NextResponse.next();
+  }
+
+  if (LOGOS_HOSTS.has(host)) {
+    if (
+      pathname.startsWith("/_next") ||
+      pathname.startsWith("/api") ||
+      pathname.includes(".")
+    ) {
+      return NextResponse.next();
+    }
+    if (pathname === "/logos-research" || pathname.startsWith("/logos-research/")) {
+      return NextResponse.next();
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === "/" ? "/logos-research" : `/logos-research${pathname}`;
+    return NextResponse.rewrite(url);
   }
 
   if (
@@ -147,5 +218,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: ["/((?!_next/static|_next/image).*)"],
 };

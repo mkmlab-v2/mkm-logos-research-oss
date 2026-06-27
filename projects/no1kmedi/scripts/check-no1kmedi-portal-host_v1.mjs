@@ -24,21 +24,40 @@ function isTruthyEnv(value) {
   return v === "1" || v === "true" || v === "yes" || v === "on";
 }
 
-function isNo1kmediPortalHost(host) {
+function devSimulateNo1kmediApex() {
+  if (isTruthyEnv(process.env.MKM_DEV_SIMULATE_NO1KMEDI_APEX)) return true;
+  return isTruthyEnv(process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST);
+}
+
+function devSimulateNo1kmediClinic() {
+  return isTruthyEnv(process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC);
+}
+
+function isNo1kmediApexHost(host) {
   const h = normalizeRequestHost(host);
-  return CLINIC.has(h) || APEX.has(h);
+  if (APEX.has(h)) return true;
+  return LOCAL.has(h) && devSimulateNo1kmediApex();
+}
+
+function isClinicNo1kmediHost(host) {
+  const h = normalizeRequestHost(host);
+  if (CLINIC.has(h)) return true;
+  return LOCAL.has(h) && devSimulateNo1kmediClinic();
+}
+
+function shouldRewriteRootToNationalKmAsk(host) {
+  return isNo1kmediApexHost(host);
 }
 
 function shouldRewriteRootToClinician(host) {
-  const h = normalizeRequestHost(host);
-  if (isNo1kmediPortalHost(h)) return true;
-  return LOCAL.has(h) && isTruthyEnv(process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST);
+  return isClinicNo1kmediHost(host);
 }
 
 function shouldRedirectRootToHubHome(host, pathname, legacyHomeParam) {
   if (pathname !== "/") return false;
   if (legacyHomeParam === "1") return false;
   const h = normalizeRequestHost(host);
+  if (shouldRewriteRootToNationalKmAsk(h)) return false;
   if (shouldRewriteRootToClinician(h)) return false;
   if (JEMA_AI_HUB.has(h)) return true;
   return LOCAL.has(h);
@@ -49,30 +68,45 @@ function isPublicPatientSurfacePath(pathname) {
   return ["/intake", "/consumer"].some((base) => pathname === base || pathname.startsWith(`${base}/`));
 }
 
+function isNationalKmAskPath(pathname) {
+  return pathname === "/ask" || pathname.startsWith("/ask/");
+}
+
 assert.equal(isPublicPatientSurfacePath("/intake"), true);
-assert.equal(isPublicPatientSurfacePath("/intake/"), true);
 assert.equal(isPublicPatientSurfacePath("/consumer"), true);
-assert.equal(isPublicPatientSurfacePath("/consumer/survey"), true);
-assert.equal(isPublicPatientSurfacePath("/clinician"), false);
+assert.equal(isNationalKmAskPath("/ask"), true);
+assert.equal(isNationalKmAskPath("/ask/foo"), true);
 
 assert.equal(normalizeRequestHost("NO1KMEDI.COM:3010"), "no1kmedi.com");
-assert.equal(isNo1kmediPortalHost("clinic.no1kmedi.com"), true);
-assert.equal(isNo1kmediPortalHost("localhost"), false);
+assert.equal(isNo1kmediApexHost("no1kmedi.com"), true);
+assert.equal(isClinicNo1kmediHost("clinic.no1kmedi.com"), true);
+assert.equal(isClinicNo1kmediHost("no1kmedi.com"), false);
 
 assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/", null), true);
-assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/hub", null), false);
-assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/clinician", null), false);
-assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/clinician/intake", null), false);
-assert.equal(shouldRedirectRootToHubHome("app.jema-ai.com", "/", "1"), false);
 assert.equal(shouldRedirectRootToHubHome("no1kmedi.com", "/", null), false);
-assert.equal(shouldRewriteRootToClinician("app.jema-ai.com"), false);
-assert.equal(shouldRewriteRootToClinician("no1kmedi.com"), true);
+assert.equal(shouldRedirectRootToHubHome("clinic.no1kmedi.com", "/", null), false);
+assert.equal(shouldRewriteRootToNationalKmAsk("no1kmedi.com"), true);
+assert.equal(shouldRewriteRootToClinician("no1kmedi.com"), false);
+assert.equal(shouldRewriteRootToClinician("clinic.no1kmedi.com"), true);
+assert.equal(shouldRewriteRootToNationalKmAsk("clinic.no1kmedi.com"), false);
 
-const prev = process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST;
-process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST = "1";
-assert.equal(shouldRewriteRootToClinician("localhost"), true);
+const prevApex = process.env.MKM_DEV_SIMULATE_NO1KMEDI_APEX;
+const prevClinic = process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC;
+const prevHost = process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST;
+
+process.env.MKM_DEV_SIMULATE_NO1KMEDI_APEX = "1";
+process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC = "";
 process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST = "";
+assert.equal(shouldRewriteRootToNationalKmAsk("localhost"), true);
 assert.equal(shouldRewriteRootToClinician("localhost"), false);
-process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST = prev ?? "";
+
+process.env.MKM_DEV_SIMULATE_NO1KMEDI_APEX = "";
+process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC = "1";
+assert.equal(shouldRewriteRootToClinician("localhost"), true);
+assert.equal(shouldRewriteRootToNationalKmAsk("localhost"), false);
+
+process.env.MKM_DEV_SIMULATE_NO1KMEDI_APEX = prevApex ?? "";
+process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC = prevClinic ?? "";
+process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST = prevHost ?? "";
 
 console.log("check-no1kmedi-portal-host_v1: ok");

@@ -84,7 +84,8 @@ async function main() {
   assert(["routine", "priority", "emergency"].includes(submit.json?.triage_level), "triage_level invalid");
   assert(submit.json?.kakao_summary?.receipt_id === submit.json?.survey_id, "kakao_summary.receipt_id mismatch");
   assert(submit.json?.birth_resolved === true, "birth_resolved must be true when birthdate provided");
-  assert(typeof submit.json?.birth_resolved === "boolean", "birth_resolved field required");
+  assert(typeof submit.json?.send_gate === "string", "send_gate field required");
+  assert(submit.json?.notification_lane, "notification_lane required");
 
   const intakePin = submit.json.intake_pin;
   const pinLookup = await request(

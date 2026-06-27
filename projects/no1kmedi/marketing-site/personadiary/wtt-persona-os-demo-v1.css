@@ -1,0 +1,376 @@
+/* WTT Persona OS demo — operator panel shell (design-only · [HYPO]) */
+.wtt-page {
+  --wtt-panel: #0f1815;
+  --wtt-elevated: #151f1c;
+  --wtt-glow: rgba(61, 155, 132, 0.35);
+  --wtt-risk-low: #3d9b84;
+  --wtt-risk-med: #c9a227;
+  --wtt-risk-high: #d45d5d;
+  --wtt-risk-human: #c084fc;
+  max-width: 1180px;
+}
+
+.wtt-page main {
+  max-width: none;
+  padding-bottom: 3rem;
+}
+
+.wtt-hero {
+  padding: 2.5rem 0 2rem;
+}
+
+.wtt-hero-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(180deg, black 30%, transparent 100%);
+}
+
+.wtt-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.wtt-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: rgba(9, 16, 14, 0.7);
+}
+
+.wtt-pill.hold {
+  border-color: rgba(200, 160, 80, 0.35);
+  color: #e8c98a;
+  background: rgba(200, 160, 80, 0.08);
+}
+
+.wtt-pill.live-stub::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--wtt-glow);
+}
+
+.wtt-hero h1 {
+  font-size: clamp(1.55rem, 3.5vw, 2.15rem);
+  margin-bottom: 0.75rem;
+}
+
+.wtt-hero-lead {
+  max-width: 42rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.wtt-dashboard {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) 1fr minmax(240px, 280px);
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (max-width: 960px) {
+  .wtt-dashboard {
+    grid-template-columns: 1fr;
+  }
+}
+
+.wtt-panel-card {
+  background: linear-gradient(165deg, var(--wtt-elevated) 0%, var(--wtt-panel) 100%);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 1.1rem 1.15rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.22);
+}
+
+.wtt-panel-card h2 {
+  margin: 0 0 0.85rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.wtt-scenario-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.wtt-scenario-btn {
+  width: 100%;
+  text-align: left;
+  padding: 0.65rem 0.75rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.86rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.wtt-scenario-btn:hover {
+  border-color: var(--line);
+  background: rgba(61, 155, 132, 0.06);
+}
+
+.wtt-scenario-btn.is-active {
+  border-color: rgba(61, 155, 132, 0.45);
+  background: rgba(61, 155, 132, 0.1);
+}
+
+.wtt-scenario-btn small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.wtt-workspace textarea {
+  width: 100%;
+  min-height: 6.5rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  resize: vertical;
+  line-height: 1.55;
+}
+
+.wtt-workspace textarea:focus {
+  outline: 2px solid rgba(61, 155, 132, 0.45);
+  outline-offset: 1px;
+}
+
+.wtt-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin: 0.85rem 0;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid var(--line);
+}
+
+.wtt-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.wtt-slider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.wtt-slider-wrap input[type="range"] {
+  width: 120px;
+  accent-color: var(--accent);
+}
+
+.wtt-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.75rem;
+}
+
+.wtt-thread {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--line);
+}
+
+.wtt-thread h3 {
+  margin: 0 0 0.6rem;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+}
+
+.wtt-bubble {
+  max-width: 92%;
+  padding: 0.65rem 0.85rem;
+  border-radius: 12px 12px 12px 4px;
+  font-size: 0.9rem;
+  margin-bottom: 0.45rem;
+  background: rgba(61, 155, 132, 0.12);
+  border: 1px solid rgba(61, 155, 132, 0.2);
+}
+
+.wtt-gauge-wrap {
+  margin-bottom: 1rem;
+}
+
+.wtt-gauge-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+.wtt-gauge-track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+}
+
+.wtt-gauge-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--wtt-risk-low), var(--wtt-risk-med), var(--wtt-risk-high));
+  transition: width 0.35s ease;
+}
+
+.wtt-status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.45rem;
+  margin-bottom: 1rem;
+}
+
+.wtt-badge {
+  font-size: 0.78rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.wtt-badge.risk-low { border-color: rgba(61, 155, 132, 0.35); color: #9fe3d2; }
+.wtt-badge.risk-medium { border-color: rgba(201, 162, 39, 0.4); color: #f0d78a; }
+.wtt-badge.risk-high { border-color: rgba(212, 93, 93, 0.45); color: #f5a8a8; }
+.wtt-badge.risk-human_gate_hold { border-color: rgba(192, 132, 252, 0.45); color: #e9c4ff; }
+
+.wtt-fsm-ladder {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1rem;
+}
+
+.wtt-fsm-step {
+  flex: 1;
+  text-align: center;
+  font-size: 0.68rem;
+  padding: 0.45rem 0.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.wtt-fsm-step.is-active {
+  border-color: rgba(61, 155, 132, 0.5);
+  background: rgba(61, 155, 132, 0.12);
+  color: var(--text);
+}
+
+.wtt-mitigation {
+  font-size: 0.86rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(61, 155, 132, 0.25);
+  background: rgba(61, 155, 132, 0.08);
+  margin-bottom: 0.85rem;
+}
+
+.wtt-mitigation[hidden] {
+  display: none !important;
+}
+
+.wtt-log {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.45;
+  background: #060a09;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.75rem;
+  max-height: 11rem;
+  overflow-y: auto;
+  color: #a8bdb5;
+}
+
+.wtt-log pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.wtt-flow-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 1.25rem 0 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.wtt-flow-strip span {
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.wtt-flow-strip .arrow {
+  border: none;
+  background: none;
+  color: var(--accent-dim);
+  padding: 0;
+}
+
+.wtt-header-nav {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.88rem;
+}
+
+.wtt-header-nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.wtt-header-nav a:hover {
+  color: var(--text);
+}

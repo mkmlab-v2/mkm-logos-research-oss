@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  distDir: process.env.MKM_NEXT_DIST_DIR || ".next",
   reactStrictMode: true,
   // Middleware (Edge) does not read .env.local unless inlined here.
   env: {
@@ -17,6 +18,21 @@ const nextConfig = {
       {
         source: "/personadiary/manifest.webmanifest",
         headers: [{ key: "Cache-Control", value: "public, max-age=3600" }],
+      },
+      {
+        source: "/personadiary",
+        headers: [{ key: "Cache-Control", value: "no-store, must-revalidate" }],
+      },
+      {
+        source: "/personadiary/:path*",
+        headers: [{ key: "Cache-Control", value: "no-store, must-revalidate" }],
+      },
+      {
+        source: "/auth.md",
+        headers: [
+          { key: "Content-Type", value: "text/markdown; charset=utf-8" },
+          { key: "Cache-Control", value: "public, max-age=300" },
+        ],
       },
     ];
   },

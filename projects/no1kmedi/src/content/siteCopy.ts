@@ -72,6 +72,33 @@ export type EnterpriseCopy = {
 
 export type HubLink = { href: string; label: string; sublabel: string };
 
+export type PatientWellnessCta = {
+  label: string;
+  href: string;
+  external: boolean;
+};
+
+export type PatientWellnessCard =
+  | { variant: "provide"; title: string; items: string[] }
+  | { variant: "forbid"; title: string; items: string[] }
+  | {
+      variant: "rhythm";
+      title: string;
+      body: string;
+      cta_primary: PatientWellnessCta;
+      cta_secondary: PatientWellnessCta;
+      cta_ghost: PatientWellnessCta;
+    };
+
+export type PatientWellnessEntryCopy = {
+  seo: { title: string; description: string };
+  badge_non_medical: string;
+  hero: { eyebrow: string; title: string; lead: string };
+  cards: PatientWellnessCard[];
+  kakao_blocks: { intro: string; links: string };
+  disclaimer: { title: string; body: string; items: string[] };
+};
+
 export type PositioningV1Copy = {
   schema: string;
   snippets_doc: string;
@@ -86,6 +113,7 @@ export type PositioningV1Copy = {
 export type HubDiscoverLocaleCopy = {
   title: string;
   tagline: string;
+  trust_wedge?: string;
   lead: string;
   placeholder: string;
   focus_badge: string;
@@ -107,16 +135,19 @@ export type SiteCopy = {
     premium_mkmlife: HubLink;
     b2b_acodeai: HubLink;
     farm_b2b_smartfarm?: HubLink;
+    research_logos?: HubLink;
     research_mkmlab?: HubLink;
     personadiary_preview?: HubLink;
     wtt_persona_os_demo?: HubLink;
     compression_roi_dashboard?: HubLink;
+    evidence_pack_v0?: HubLink;
     showroom_topology_radar?: HubLink;
     showroom_meaning_graph?: HubLink;
     showroom_meaning_qa_v2?: HubLink;
     clinician_support?: HubLink;
     clinician_no1kmedi_portal?: HubLink;
     mai_profile_card?: HubLink;
+    patient_wellness_entry?: HubLink;
   };
   header: { brand_name: string; brand_tagline: string };
   seo: { title: string; description: string };
@@ -143,6 +174,7 @@ export type SiteCopy = {
     hub?: string;
     classic_home?: string;
     consumer: string;
+    wellness?: string;
     clinician: string;
     reception: string;
     enterprise?: string;
@@ -179,6 +211,7 @@ export type SiteCopy = {
     lead: string;
     consumer: { title: string; body: string; cta: string; href: string };
     clinician: { title: string; body: string; cta: string; href: string };
+    wellness?: { title: string; body: string; cta: string; href: string };
   };
   why_mkm_ai: {
     title: string;
@@ -198,6 +231,7 @@ export type SiteCopy = {
   basic_health_chat: {
     title: string;
     section_lead: string;
+    intake_hint: string;
     assistant_greeting: string;
     labels: {
       pain_area: string;
@@ -308,6 +342,7 @@ export type SiteCopy = {
     rights: string;
   };
   compression_pilot_audit_apply?: CompressionPilotAuditApplyCopy;
+  patient_wellness_entry?: PatientWellnessEntryCopy;
 };
 
 export type CompressionPilotAuditApplyCopy = {

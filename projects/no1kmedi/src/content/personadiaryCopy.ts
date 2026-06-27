@@ -6,11 +6,11 @@ export const personadiaryCopy = {
   seo: {
     title: "personadiary.com | AI 마음 일기 · 리플렉션 프리뷰",
     description:
-      "명리·4AI·라이프·성경 앵커를 융합한 오늘의 마음 가이드 프리뷰. 의료·투자 조언이 아닙니다.",
+      "A-Code·라이프·세상 맥락을 융합한 오늘의 마음 가이드 프리뷰. 의료·투자 조언이 아닙니다.",
   },
   dailyGuide: {
     conceptKo:
-      "오늘의 마음 일기 — 명리 일운·MKM 4AI·라이프·성경 앵커(Logos) 가이드형 답변",
+      "오늘의 마음 일기 — A-Code 12·라이프·세상 맥락 기반 가이드형 답변",
     apiPath: "/api/personadiary/daily-guide",
     feedbackApiPath: "/api/personadiary/feedback",
     packageSchema: "personadiary_daily_response_package_v1",

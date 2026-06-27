@@ -22,6 +22,7 @@
     "ko": {
       "title": "가장 중요한 질문을 한 문장으로",
       "tagline": "무한 챗봇이 아니라, 짧고 검증 가능한 신뢰 인프라",
+      "trust_wedge": "artifact·게이트 연결 시에만 라우팅합니다.",
       "lead": "원퀘스천 엔진은 단발 리포트로 완결됩니다. 무한 대화가 아닙니다.",
       "placeholder": "가장 중요한 질문을 한 문장으로",
       "focus_badge": "Focus · 규칙 라우터",
@@ -37,6 +38,7 @@
     "en": {
       "title": "Ask your one most important question",
       "tagline": "We optimize for time-to-trust, not infinite chat.",
+      "trust_wedge": "We route only when artifact and gate paths are connected.",
       "lead": "One-question engine ends in a single report — not endless chat.",
       "placeholder": "Ask your one most important question",
       "focus_badge": "Focus · rule router",
@@ -53,8 +55,8 @@
   "hub_links": {
     "showroom_jemaai": {
       "href": "https://jemaai.cloud/public_observe_v1.html",
-      "label": "공개 관측 (텍스트)",
-      "sublabel": "Time-to-Trust · 차트·전광판 없음 · API 스냅샷만 · research_only"
+      "label": "공개 관측 보드 보기",
+      "sublabel": "Topology·매크로 관측 데모 · Time-to-Trust · 투자·주문·수익 보장 아님 · research_only"
     },
     "premium_mkmlife": {
       "href": "https://mkmlife.com",
@@ -86,25 +88,45 @@
       "label": "압축 B2B Pilot ROI 보드",
       "sublabel": "정적 목업 · 아티팩트 경로 링크 · 청구·헤드라인 수치 아님"
     },
+    "evidence_pack_v0": {
+      "href": "/enterprise/apply",
+      "label": "Evidence Pack v0 (Tier-0 사전 감사)",
+      "sublabel": "MKM-Compression-Evidence-Pack-v0 · DRAFT · publish_allowed=false · 테넌트 PoC 프록시만"
+    },
     "farm_b2b_smartfarm": {
       "href": "https://farm.jema-ai.com",
       "label": "농업 IoT · 스마트관수 (B2B)",
       "sublabel": "노지·시설 SI · 하드웨어 파트너·API 연동 · 충남 금산 파일럿 · 투자·의료 조언 아님"
+    },
+    "research_logos": {
+      "href": "https://logos.jema-ai.com",
+      "label": "성경·텍스트 연구 워크스페이스 (Logos)",
+      "sublabel": "상호참조 GraphRAG · citation lock · Track B [HYPO] research_only · 투자·실매매·교리 판매 아님"
     },
     "clinician_support": {
       "href": "https://app.jema-ai.com/clinician",
       "label": "한의사 진료 보조 · 문진",
       "sublabel": "SOAP·care bundle·체질 가설 — 원장 확정 전제 · 진단·처방 대체 아님 · 제안서·대외 URL은 jema-ai"
     },
+    "national_km_ask": {
+      "href": "https://no1kmedi.com/ask",
+      "label": "대국민 한의학 AI",
+      "sublabel": "한의학 질문·이해 참고 · 진단·처방 대체 아님 · 한의사는 clinic.no1kmedi.com"
+    },
     "clinician_no1kmedi_portal": {
-      "href": "https://clinic.no1kmedi.com",
-      "label": "한의사 진료 보조 (JEMA AI)",
-      "sublabel": "현장 북마크용 · app.jema-ai.com/clinician 과 동일 앱 · PayApp·api 호스트와 분리"
+      "href": "https://clinic.no1kmedi.com/clinician",
+      "label": "한의사 진료 보조 (인증 모드)",
+      "sublabel": "진료 분석·SOAP·차트 초안 · no1kmedi.com 대국민 Q&A와 분리"
     },
     "mai_profile_card": {
       "href": "https://mkmlife.com/ask-one",
       "label": "A·Code 12 패턴 스냅샷",
       "sublabel": "실행·회복·인지 패턴 참고 설문 · 성격검사·임상·투자 판단 아님"
+    },
+    "patient_wellness_entry": {
+      "href": "/wellness",
+      "label": "환자 웰니스 · 일상 리듬",
+      "sublabel": "비진단 · 성찰·페이스 참고 · mkmlife 연결 · 의료·투자·사주 체질 단정 아님"
     }
   },
   "header": {
@@ -138,6 +160,7 @@
     "hub": "/hub",
     "classic_home": "/home",
     "consumer": "/consumer",
+    "wellness": "/wellness",
     "clinician": "/clinician",
     "reception": "/reception",
     "enterprise": "/enterprise",
@@ -172,6 +195,13 @@
         "cta": "의료진 보조 입장",
         "href": "/clinician",
         "variant": "ghost"
+      },
+      {
+        "title": "일상 리듬 · 웰니스",
+        "body": "비진단 · 성찰·페이스 참고만. mkmlife 리듬과 연결되며, 증상·치료는 한의원 진료를 이용해 주세요.",
+        "cta": "웰니스 안내",
+        "href": "/wellness",
+        "variant": "ghost"
       }
     ]
   },
@@ -189,6 +219,12 @@
       "body": "대화 중심 CDSS·SOAP 초안·환자 번들. 상세 설정은 사이드 메뉴에서, 진단·처방은 한의사가 확정합니다.",
       "cta": "한의사 보조 열기",
       "href": "/clinician"
+    },
+    "wellness": {
+      "title": "일상 리듬 · 웰니스",
+      "body": "비진단 · 성찰·페이스 참고만. mkmlife 리듬과 연결되며, 증상·치료는 한의원 진료를 이용해 주세요.",
+      "cta": "웰니스 안내 보기",
+      "href": "/wellness"
     }
   },
   "governance_flow": {
@@ -240,15 +276,15 @@
   },
   "quick_start": {
     "title": "일반인 홍보·상담 안내와 한의사 진료보조를 분리 운영합니다",
-    "section_lead": "홈페이지에서는 일반인에게 간단 건강상담을 제공하고, 상세 문진은 카카오 설문으로 수집해 한의사 화면에 구조화 전달합니다.",
+    "section_lead": "홈에서는 안내·연결만 제공하고, 사전 문진은 /intake 단일 경로로 수집해 PIN으로 한의사 화면에 전달합니다.",
     "cards": [
       {
-        "title": "1차 상담 (홈페이지)",
-        "body": "주요 불편 부위·통증·수면/소화 상태를 짧게 입력해 사전 안내를 받습니다."
+        "title": "1차 안내 (홈페이지)",
+        "body": "간단 질문·연결 안내만 제공합니다. 증상·생활습관 정리는 사전 문진으로 이어갑니다."
       },
       {
-        "title": "2차 문진 (카카오 설문)",
-        "body": "기본 환자 정보, 건강 정보, 체질 판단 최소 문항을 빠르게 완료합니다."
+        "title": "2차 문진 (/intake)",
+        "body": "모바일 칩 선택형 사전 문진(약 2분). 제출 후 문진 코드(PIN)를 접수·진료실에 전달합니다."
       },
       {
         "title": "3차 진료 (한의사 최종 판단)",
@@ -257,8 +293,8 @@
     ],
     "ctas": [
       {
-        "label": "카카오 설문 시작하기",
-        "href": "/consumer?panel=survey#patient-intake",
+        "label": "진료 전 사전 문진 (2분)",
+        "href": "/intake",
         "variant": "primary"
       },
       {
@@ -275,7 +311,8 @@
   },
   "basic_health_chat": {
     "title": "AI 기본 건강상담 안내",
-    "section_lead": "간단한 건강 질문에 답하고, 필요 시 상세 문진과 한의원 상담 단계로 연결됩니다.",
+    "section_lead": "진료 전 사전 문진은 /intake에서 작성합니다. 아래는 참고용 간단 질문만 제공합니다.",
+    "intake_hint": "증상·수면·소화를 정리하려면 위 「사전 문진」 버튼을 이용해 주세요. 진단·처방이 아닙니다.",
     "assistant_greeting": "기본 건강 정보를 바탕으로 상담 전 안내를 도와드립니다. 응급 증상은 즉시 119/응급실을 이용해 주세요.",
     "labels": {
       "pain_area": "주요 불편 부위",
@@ -295,7 +332,7 @@
       "busy_message": "답변을 준비 중입니다...",
       "send_busy": "전송 중...",
       "send_idle": "질문하기",
-      "error_message": "AI 응답이 지연되고 있습니다. 아래 문진 입력으로 바로 상담 연결을 진행해 주세요."
+      "error_message": "AI 응답이 지연되고 있습니다. /intake 사전 문진으로 바로 이어가 주세요."
     },
     "survey_defaults": {
       "pain_area_empty": "미입력",
@@ -304,11 +341,11 @@
     },
     "ctas": {
       "marketing": {
-        "primary": { "label": "상세 문진으로 이어가기", "href": "#patient-intake" },
+        "primary": { "label": "진료 전 사전 문진 (2분)", "href": "/intake" },
         "secondary": { "label": "한의원 상담 연결 문의", "href": "#contact" }
       },
       "workspace": {
-        "primary": { "label": "상세 문진 작성하기", "href": "/consumer?panel=survey#patient-intake" },
+        "primary": { "label": "사전 문진 작성하기", "href": "/intake" },
         "secondary": { "label": "문의", "href": "/#contact" }
       }
     }
@@ -444,7 +481,7 @@
   "workflow": {
     "title": "서비스 흐름",
     "section_lead": "일반인과 한의사의 사용 흐름을 분리해 운영합니다.",
-    "steps": ["일반인 간단 상담", "카카오 상세 문진", "한의사 진료보조 확인"]
+    "steps": ["일반인 간단 상담", "사전 문진 (/intake)", "한의사 진료보조 확인"]
   },
   "clinic_o2o": {
     "title": "한의원 QR 접수 운영 가이드",
@@ -466,7 +503,7 @@
     "ctas": [
       {
         "label": "QR용 환자 문진 화면 열기",
-        "href": "/consumer",
+        "href": "/intake",
         "variant": "primary"
       },
       {
@@ -498,6 +535,60 @@
     ],
     "cta_primary": "일반인 체험 시작",
     "cta_secondary": "한의사 보조 열기"
+  },
+  "patient_wellness_entry": {
+    "seo": {
+      "title": "환자 웰니스 · 일상 리듬 | JEMA AI",
+      "description": "비진단 · 일상 리듬·성찰 참고 안내. 의료 진단·치료·처방·사주 체질 단정을 제공하지 않습니다."
+    },
+    "badge_non_medical": "비임상 · 웰니스 · NON_MEDICAL",
+    "hero": {
+      "eyebrow": "환자·일반인 안내",
+      "title": "오늘의 리듬, 가볍게 정리하는 참고 공간",
+      "lead": "JEMA AI 환자 웰니스 안내는 의료행위가 아닙니다. 무한 AI 상담이 아니라, 짧고 고정된 안내와 mkmlife 일상 리듬 도구로 연결합니다. 불편하거나 증상이 있으면 한의원·응급의료를 이용해 주세요."
+    },
+    "cards": [
+      {
+        "variant": "provide",
+        "title": "제공하는 것",
+        "items": [
+          "일상 페이스·성찰 질문 (비진단)",
+          "mkmlife.com 리듬·원퀘스천 참고 (해당 사이트 면책)",
+          "한의원 사전 문진 연결 — 원장 확정 전 정리"
+        ]
+      },
+      {
+        "variant": "forbid",
+        "title": "제공하지 않는 것",
+        "items": [
+          "AI 진단·체질 확정·처방",
+          "사주·만세력 기반 질병·예후 해석",
+          "NotebookLM·내부 R&D·무필터 LLM 건강 답변",
+          "실명·차트·EMR 클라우드 업로드 (기본 OFF)"
+        ]
+      },
+      {
+        "variant": "rhythm",
+        "title": "다음 단계",
+        "body": "리듬은 mkmlife에서, 진료 전 정리는 consumer 문진에서 이어집니다.",
+        "cta_primary": { "label": "mkmlife 리듬 보기", "href": "https://mkmlife.com", "external": true },
+        "cta_secondary": { "label": "상담 전 문진", "href": "/consumer", "external": false },
+        "cta_ghost": { "label": "한의사·원장 안내 (의료진용)", "href": "/clinician", "external": false }
+      }
+    ],
+    "kakao_blocks": {
+      "intro": "[한의원 웰니스 안내 · 비진단]\n\n이 채널은 질병 진단·치료·처방을 하지 않습니다.\n일상 리듬·성찰 참고와 진료 전 안내 링크만 제공합니다.\n증상·치료 문의 → 내원·전화·응급실을 이용해 주세요.",
+      "links": "▶ 오늘의 리듬 참고 (비임상)\nhttps://jema-ai.com/wellness\n\n▶ mkmlife 리듬·원퀘스천\nhttps://mkmlife.com\n(면책·약관은 해당 사이트 정책)"
+    },
+    "disclaimer": {
+      "title": "면책 · 배포 통제",
+      "body": "본 페이지·채널·링크는 의료 진단·치료·처방을 제공하지 않습니다.",
+      "items": [
+        "AI 정확도 ○○%·체질·사주 확정 표현을 사용하지 않습니다.",
+        "법무·의료광고 검토 전 대외·단톡 무단 배포 금지 (SEND_GATE: HOLD).",
+        "임상·KoGES·EMR 연동은 원장·진료실 로컬 경로만 (환자면 미제공)."
+      ]
+    }
   },
   "contact": {
     "title": "도입·문의",
@@ -655,7 +746,7 @@
     },
     "footer": {
       "legal_entity": "주식회사 목소리네트워크",
-      "brand_line": "MKMLAB · JEMA AI",
+      "brand_line": "MKM Labs (R&D) · A-CodeAI (Developer) · JEMA AI (Product)",
       "rights": "© 2026 주식회사 목소리네트워크. 무단 복제를 금지합니다."
     },
     "disclaimer": {
@@ -671,7 +762,7 @@
   "compression_pilot_audit_apply": {
     "seo": {
       "title": "JEMA AI | 토큰 압축 무료 사전 감사 신청",
-      "description": "마스킹 JSONL 기반 1:1 PoC 영수증. SLA·47% 보장·실API 무료 한 달이 아닌 Tier-0 사전 감사 프로그램."
+      "description": "마스킹 JSONL 기반 1:1 측정 리포트. SLA·특정 절감률 보장·실API 무료 한 달이 아닌 Tier-0 사전 감사 프로그램."
     },
     "nav": {
       "back_enterprise": "기업·파트너 소개",
@@ -680,7 +771,7 @@
     "hero": {
       "eyebrow": "Tier 0 · 무료 사전 감사",
       "title": "토큰 압축 파일럿 — 마스킹 데이터 사전 감사 신청",
-      "subtitle": "Google for Startups·NVIDIA Inception과 유사하게, 웹 양식으로 접수합니다. 승인 후 마스킹 JSONL(20–50행)을 안전 채널로 받고 1:1 절감·복원(Jaccard) 프록시 영수증을 드립니다. 계약·SLA·Track A 47% 헤드라인 보장이 아닙니다.",
+      "subtitle": "온라인으로 신청하세요. 검토·승인 후 마스킹 JSONL(20–50행)을 안전 채널로 받아, 귀사 코퍼스만 대상으로 토큰 절감과 의미 유사도(복원 지표)를 측정한 리포트를 드립니다. 무료 사전 감사이며, 유료 계약·SLA·특정 절감률 보장이 아닙니다.",
       "steps_label": "절차",
       "steps": [
         "온라인 신청 (본 페이지)",
@@ -716,7 +807,7 @@
       "pii_scrub_ack": "PII·실키·내부 경로를 제거한 마스킹 샘플만 제출하겠습니다.",
       "nda_ack": "NDA 또는 데이터 처리 약정 검토에 동의합니다.",
       "not_sla_ack": "본 프로그램은 무료 사전 감사이며 SLA·청구 확약·프로덕션 API 1개월 무료가 아님을 이해합니다.",
-      "no_guarantee_ack": "Track A 내부 벤치(~47%)와 별개이며, 고객별 측정 결과만 유효함을 이해합니다."
+      "no_guarantee_ack": "내부 연구용 벤치마크(~47%)와 별개이며, 귀사 데이터로 측정한 결과만 유효함을 이해합니다."
     },
     "options": {
       "company_stage": [
@@ -785,13 +876,13 @@
       "items": [
         "본 신청은 Tier-0 무료 사전 감사 대기열 접수입니다. 자동 승인·자동 PoC 실행·실API 개통이 아닙니다.",
         "제출 JSONL은 Git 커밋·공개 저장소 업로드 금지. 안내드리는 보안 채널만 사용합니다.",
-        "SEND_GATE: HOLD — counsel 검토 전 대외 성과·47% 헤드라인 인용 금지."
+        "SEND_GATE: HOLD — counsel 검토 전 대외 성과·내부 벤치마크 수치 인용 금지."
       ]
     }
   },
   "footer": {
     "company_line": "주식회사 목소리네트워크",
-    "brand_subline": "MKMLAB · JEMA AI",
+    "brand_subline": "MKM Labs (R&D) · A-CodeAI (Developer) · JEMA AI (Product)",
     "address_label": "주소",
     "address": "경기도 광명시 디지털로 24, 102동 2301호",
     "biz_reg_label": "사업자등록번호",

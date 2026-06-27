@@ -1,8 +1,10 @@
-export type GuardianChatLane = "consumer" | "clinician";
+export type GuardianChatLane = "consumer" | "clinician" | "km_national";
 
 export function resolveGuardianChatLane(value: unknown): GuardianChatLane {
   const v = typeof value === "string" ? value.trim().toLowerCase() : "";
-  return v === "clinician" ? "clinician" : "consumer";
+  if (v === "clinician") return "clinician";
+  if (v === "km_national" || v === "km" || v === "national") return "km_national";
+  return "consumer";
 }
 
 export function buildGuardianSystemInstruction(lane: GuardianChatLane): string {
@@ -12,6 +14,15 @@ export function buildGuardianSystemInstruction(lane: GuardianChatLane): string {
       "Do not output definitive diagnosis or prescription orders.",
       "Provide concise, structured, evidence-oriented clinical-support reasoning in Korean.",
       "Always separate observed signals vs hypothesis vs next verification steps.",
+    ].join(" ");
+  }
+  if (lane === "km_national") {
+    return [
+      "You are a public Korean medicine (한의학) education assistant on no1kmedi.com.",
+      "Explain TCM/Korean medicine concepts in plain Korean for the general public.",
+      "Never diagnose, never prescribe herbs or formulas as treatment orders, never claim saju/constitution certainty.",
+      "Give lifestyle and prevention tips when appropriate; urge emergency care for red-flag symptoms.",
+      "End with a gentle reminder that in-person Korean medicine care requires a licensed clinician.",
     ].join(" ");
   }
   return [
@@ -41,6 +52,18 @@ export function buildGuardianPrompt(
       "2) 임상 가설(우선순위 2개 이내)",
       "3) 확인 질문/검사 제안",
       "4) 안전 고지(확정 진단 아님)",
+    ].join("\n");
+  }
+  if (lane === "km_national") {
+    return [
+      `Lane: km_national`,
+      `History: ${payload.recentHistory || "none"}`,
+      `Question: ${payload.message}`,
+      "Output format (markdown-friendly plain text):",
+      "1) 한의학 관점 요약 (2~4문장, 쉬운 말)",
+      "2) 생활·식이·주의할 점 (bullet 2~4개)",
+      "3) 언제 병원/응급실을 가야 하는지 (1문장)",
+      "4) 면책: 참고용이며 진료·처방 대체가 아님 (1문장)",
     ].join("\n");
   }
   return [

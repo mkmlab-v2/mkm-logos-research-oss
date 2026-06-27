@@ -181,5 +181,39 @@ for (const [needle, label] of phase7TokenChecks) {
   }
 }
 
+const pdAndroidTokens = join(
+  root,
+  "../../docs/final/artifacts/personadiary_android_design_tokens_v1_latest.json"
+);
+try {
+  const pdTok = JSON.parse(readFileSync(pdAndroidTokens, "utf8"));
+  if (pdTok.schema !== "personadiary_android_design_tokens_v1") {
+    throw new Error("unexpected personadiary android tokens schema");
+  }
+  if (!globals.includes("personadiary-android-design-tokens-v1")) {
+    throw new Error("globals.css missing personadiary-android-design-tokens-v1 marker");
+  }
+} catch (e) {
+  console.error("[check-design-tokens-smoke] personadiary android tokens:", e.message);
+  process.exit(1);
+}
+
+const pdFigmaMap = join(
+  root,
+  "../../docs/final/artifacts/personadiary_figma_token_map_v1.json"
+);
+try {
+  const pdMap = JSON.parse(readFileSync(pdFigmaMap, "utf8"));
+  if (pdMap.schema !== "personadiary_figma_token_map_v1") {
+    throw new Error("unexpected personadiary figma token map schema");
+  }
+  if (!pdMap.figma_file_key || !pdMap.figma_file_url?.includes("figma.com/design")) {
+    throw new Error("personadiary figma file pointer missing");
+  }
+} catch (e) {
+  console.error("[check-design-tokens-smoke] personadiary figma map:", e.message);
+  process.exit(1);
+}
+
 console.log("[check-design-tokens-smoke] passed.");
 process.exit(0);

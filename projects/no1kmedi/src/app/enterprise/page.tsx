@@ -26,6 +26,7 @@ export default function EnterprisePage() {
   const api = c.hub_links.b2b_acodeai;
   const wttDemo = c.hub_links.wtt_persona_os_demo;
   const compressionRoi = c.hub_links.compression_roi_dashboard;
+  const evidencePack = c.hub_links.evidence_pack_v0;
 
   return (
     <div className={`${presetClass} enterprise-page`}>
@@ -292,6 +293,16 @@ export default function EnterprisePage() {
                 </span>
               </a>
             ) : null}
+            {evidencePack ? (
+              <a className="enterprise-proof-card enterprise-proof-card--primary" href={evidencePack.href}>
+                <span className="enterprise-proof-card-label">Evidence</span>
+                <strong>{evidencePack.label}</strong>
+                <p>{evidencePack.sublabel}</p>
+                <span className="enterprise-proof-card-arrow" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            ) : null}
             <a className="enterprise-proof-card enterprise-proof-card--internal" href="/">
               <span className="enterprise-proof-card-label">허브</span>
               <strong>{e.nav.back_home}</strong>
@@ -319,6 +330,11 @@ export default function EnterprisePage() {
               <li key={item}>{item}</li>
             ))}
           </ul>
+          {c.positioning_v1?.footer_strip_ko ? (
+            <p className="enterprise-positioning-footer-strip" role="note">
+              {c.positioning_v1.footer_strip_ko}
+            </p>
+          ) : null}
           <p className="enterprise-contact-hint">
             {e.contact.label}:{" "}
             <a href={`mailto:${e.contact.email}`}>{e.contact.email}</a>
@@ -332,13 +348,18 @@ export default function EnterprisePage() {
           <a href={`mailto:${c.footer.email}`}>{c.footer.email}</a>
         </p>
         {c.positioning_v1 ? (
-          <p className="enterprise-positioning-tagline">
-            {c.positioning_v1.tagline_ko}
-            <span className="enterprise-positioning-tagline-en">
-              {" "}
-              · {c.positioning_v1.tagline_en}
-            </span>
-          </p>
+          <>
+            <p className="enterprise-positioning-tagline">
+              {c.positioning_v1.tagline_ko}
+              <span className="enterprise-positioning-tagline-en">
+                {" "}
+                · {c.positioning_v1.tagline_en}
+              </span>
+            </p>
+            {c.positioning_v1.footer_strip_ko ? (
+              <p className="enterprise-positioning-footer-strip">{c.positioning_v1.footer_strip_ko}</p>
+            ) : null}
+          </>
         ) : null}
         <p className="footer-muted">
           {c.footer.company_line} · {c.footer.brand_subline}

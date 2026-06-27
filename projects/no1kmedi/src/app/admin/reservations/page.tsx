@@ -575,6 +575,17 @@ export default function AdminReservationsPage() {
       <section className="admin-panel" aria-labelledby="admin-reservation-title">
         <h1 id="admin-reservation-title" className="admin-title">예약 요청 운영 대시보드</h1>
         <p className="section-lead">제휴 한의원 예약 요청을 조회하고 상태를 변경합니다.</p>
+        <div className="admin-kpi-alert-banner" role="region" aria-label="사전 문진 PoC">
+          <p>예약 확정 후 환자에게 <strong>/intake</strong> 사전 문진 링크를 보냅니다. (외부 대량 발송은 SEND_GATE HOLD)</p>
+          <div className="admin-kpi-alert-actions">
+            <a className="btn btn-ghost btn-sm" href="/intake" target="_blank" rel="noreferrer">
+              환자 문진 미리보기
+            </a>
+            <a className="btn btn-primary btn-sm" href="/demo/patient_intake_paste_assistant_v1.html" target="_blank" rel="noreferrer">
+              SMS·카카오 붙여넣기 보조
+            </a>
+          </div>
+        </div>
 
         <div className="admin-controls">
           <label>

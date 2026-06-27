@@ -18,11 +18,13 @@ type TelemetryPayload = {
   effective_level?: string;
   access_gate?: string;
   response_len?: number;
+  ecs_v1?: number;
+  ecs_band?: string;
   [k: string]: unknown;
 };
 
 function sanitize(payload: TelemetryPayload) {
-  const safe = {
+  const safe: Record<string, unknown> = {
     event: String(payload.event || "").slice(0, 80),
     session_id: String(payload.session_id || "").slice(0, 120),
     page_path: String(payload.page_path || "").slice(0, 200),
@@ -35,7 +37,36 @@ function sanitize(payload: TelemetryPayload) {
     response_len: Number.isFinite(Number(payload.response_len))
       ? Math.max(0, Math.min(20000, Number(payload.response_len)))
       : 0,
+    ecs_v1: Number.isFinite(Number(payload.ecs_v1))
+      ? Math.max(0, Math.min(100, Number(payload.ecs_v1)))
+      : null,
+    ecs_band: String(payload.ecs_band || "").slice(0, 16),
+    encounter_ref: String(payload.encounter_ref || "").slice(0, 120),
+    target_id: String(payload.target_id || "").slice(0, 120),
+    feedback: String(payload.feedback || "").slice(0, 16),
+    reason_code: String(payload.reason_code || "").slice(0, 64),
+    view_mode: String(payload.view_mode || "").slice(0, 16),
+    node_count: Number.isFinite(Number(payload.node_count))
+      ? Math.max(0, Math.min(500, Number(payload.node_count)))
+      : undefined,
+    edge_count: Number.isFinite(Number(payload.edge_count))
+      ? Math.max(0, Math.min(2000, Number(payload.edge_count)))
+      : undefined,
+    conflict_group_count: Number.isFinite(Number(payload.conflict_group_count))
+      ? Math.max(0, Math.min(50, Number(payload.conflict_group_count)))
+      : undefined,
+    has_bundle_slots:
+      typeof payload.has_bundle_slots === "boolean" ? payload.has_bundle_slots : undefined,
+    duration_since_cds_ready_ms: Number.isFinite(Number(payload.duration_since_cds_ready_ms))
+      ? Math.max(0, Math.min(86_400_000, Number(payload.duration_since_cds_ready_ms)))
+      : undefined,
+    duration_since_graph_build_ms: Number.isFinite(Number(payload.duration_since_graph_build_ms))
+      ? Math.max(0, Math.min(86_400_000, Number(payload.duration_since_graph_build_ms)))
+      : undefined,
   };
+  for (const key of Object.keys(safe)) {
+    if (safe[key] === undefined) delete safe[key];
+  }
   return safe;
 }
 

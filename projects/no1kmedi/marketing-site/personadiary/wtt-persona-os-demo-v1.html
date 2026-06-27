@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WTT Persona OS — 운영자 패널 데모 | Persona Diary</title>
+    <meta
+      name="description"
+      content="비의료 B-track [HYPO] 운영자 패널 UI — 과부하 스캔·쿨다운·FSM 시뮬레이션. 실서비스·SEND 아님."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="wtt-persona-os-demo-v1.css" />
+  </head>
+  <body class="wtt-page">
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="index.html">Persona Diary <span>Persona OS</span></a>
+        <nav class="wtt-header-nav" aria-label="데모 내비게이션">
+          <a href="index.html">허브</a>
+          <a href="https://jema-ai.com/enterprise" target="_blank" rel="noopener noreferrer">B2B 허브</a>
+          <a href="https://mkmlife.com" target="_blank" rel="noopener noreferrer">MKM LIFE</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero wtt-hero" aria-labelledby="wtt-title">
+        <div class="wtt-hero-grid" aria-hidden="true"></div>
+        <div class="wtt-hero-meta">
+          <span class="wtt-pill">[HYPO] · research_only</span>
+          <span class="wtt-pill">비의료 · 비위기개입</span>
+          <span class="wtt-pill hold">SEND_GATE HOLD</span>
+          <span class="wtt-pill live-stub">브라우저 스텁</span>
+        </div>
+        <h1 id="wtt-title">Governed AI Customization — 운영자 패널</h1>
+        <p class="wtt-hero-lead">
+          프리미엄 CS 시나리오를 브라우저 규칙으로 시뮬레이션합니다. 과부하 신호·누적 위험도·FSM 완화 액션을
+          <strong>디자인·교육용</strong>으로 미리 봅니다. 임상·투자·실매매 트리거가 아닙니다.
+        </p>
+        <div class="wtt-flow-strip" aria-hidden="true">
+          <span>입력</span>
+          <span class="arrow">→</span>
+          <span>EPB 스캔</span>
+          <span class="arrow">→</span>
+          <span>누적 위험</span>
+          <span class="arrow">→</span>
+          <span>FSM 완화</span>
+          <span class="arrow">→</span>
+          <span>휴먼 큐(데모)</span>
+        </div>
+      </section>
+
+      <section class="wtt-dashboard" aria-label="운영자 패널">
+        <aside class="wtt-panel-card" aria-labelledby="scenarios-title">
+          <h2 id="scenarios-title">시나리오 프리셋</h2>
+          <p class="section-lead" style="margin: 0 0 0.75rem; font-size: 0.82rem">
+            마스킹된 CS 대화 샘플 — 클릭 시 워크스페이스에 로드
+          </p>
+          <ul class="wtt-scenario-list" id="scenarioList"></ul>
+        </aside>
+
+        <div class="wtt-panel-card wtt-workspace" aria-labelledby="workspace-title">
+          <h2 id="workspace-title">워크스페이스</h2>
+          <div class="wtt-controls">
+            <label class="wtt-toggle">
+              <input type="checkbox" id="cooldownToggle" checked />
+              <span>warm_only_cooldown arm</span>
+            </label>
+            <div class="wtt-slider-wrap">
+              <label for="intensityCap">톤 상한</label>
+              <input type="range" id="intensityCap" min="0.3" max="1" step="0.05" value="0.72" />
+              <strong id="intensityLabel">0.72</strong>
+            </div>
+          </div>
+          <label for="userText" class="visually-hidden">사용자 발화</label>
+          <textarea
+            id="userText"
+            placeholder="발화를 입력하거나 왼쪽 시나리오를 선택하세요."
+            aria-describedby="workspace-hint"
+          ></textarea>
+          <p id="workspace-hint" style="margin: 0.45rem 0 0; font-size: 0.8rem; color: var(--muted)">
+            예: 환불·이중결제·휴먼 핸드오프 요청 — 규칙 스텁만 반응합니다.
+          </p>
+          <div class="wtt-actions">
+            <button type="button" class="btn btn-primary" id="scanBtn">스캔 + FSM 턴</button>
+            <button type="button" class="btn btn-ghost" id="resetBtn">세션 리셋</button>
+          </div>
+          <div class="wtt-thread" id="threadBox" hidden>
+            <h3>로드된 턴</h3>
+            <div id="threadBubbles"></div>
+          </div>
+        </div>
+
+        <aside class="wtt-panel-card" aria-labelledby="telemetry-title">
+          <h2 id="telemetry-title">텔레메트리</h2>
+          <div class="wtt-gauge-wrap">
+            <div class="wtt-gauge-label">
+              <span>누적 위험 (데모)</span>
+              <span id="cumLabel">0.00</span>
+            </div>
+            <div class="wtt-gauge-track" role="meter" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0" id="cumMeter">
+              <div class="wtt-gauge-fill" id="cumFill"></div>
+            </div>
+          </div>
+          <div class="wtt-fsm-ladder" id="fsmLadder" aria-label="FSM 상태">
+            <div class="wtt-fsm-step" data-state="normal">normal</div>
+            <div class="wtt-fsm-step" data-state="elevated">elevated</div>
+            <div class="wtt-fsm-step" data-state="cooldown">cooldown</div>
+            <div class="wtt-fsm-step" data-state="human_queue">human</div>
+          </div>
+          <div class="wtt-status-grid">
+            <span class="wtt-badge" id="riskBadge">risk —</span>
+            <span class="wtt-badge" id="armBadge">arm —</span>
+            <span class="wtt-badge" id="fsmBadge">fsm normal</span>
+            <span class="wtt-badge" id="cumBadge">cum 0.00</span>
+          </div>
+          <p id="mitigationLine" class="wtt-mitigation" hidden></p>
+          <div class="wtt-log" aria-live="polite" aria-label="감사 로그">
+            <pre id="logPre"></pre>
+          </div>
+        </aside>
+      </section>
+
+      <section id="safety" aria-labelledby="safety-title">
+        <h2 id="safety-title">면책 · 범위</h2>
+        <div class="notice-box">
+          <ul>
+            <li>의료·치료·투자·실거래 조언이 아닙니다. 위기 시 전문 상담·휴먼 운영 경로를 사용하세요.</li>
+            <li>본 UI는 <strong>디자인·교육용 쇼룸</strong>이며 SEND·실고객 데이터·Track A 승격과 무관합니다.</li>
+            <li>런타임 SSOT(비 UI): <code>scripts/run_warmth_trigger_dialog_risk_fsm_v1.py</code></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">MKM · WTT Persona OS Phase 4c (design stub)</div>
+        <div class="footer-legal">© 2026 · B-track demo only · publish_allowed=false</div>
+      </div>
+    </footer>
+
+    <style>
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+    </style>
+
+    <script>
+      const SCENARIOS = [
+        {
+          id: "op-panel-cs-001",
+          label: "환불 · 마스킹 주문",
+          preview: "주문번호 · 이*민 명의",
+          turns: ["주문번호 20260611-999 환불 요청합니다. 이*민 명의 결제입니다.", "010-****-1001 콜백 부탁합니다."],
+        },
+        {
+          id: "op-panel-cs-003",
+          label: "VIP 대기 · 휴먼 요청",
+          preview: "복붙 답변 불만",
+          turns: [
+            "VIP인데 상담 대기 20분째입니다. 티켓 번호 #8291 확인해 봐요.",
+            "복붙 답변 그만하고 사람 연결해 주세요.",
+          ],
+        },
+        {
+          id: "op-panel-cs-004",
+          label: "이중 과금",
+          preview: "해지 후 정기결제",
+          turns: ["구독 해지했는데 지난 5월달 정기 결제일에도 과금됐습니다."],
+        },
+        {
+          id: "op-panel-cs-007",
+          label: "에스컬레이션",
+          preview: "매니저 연결",
+          turns: ["같은 안내 세 번째입니다. 매니저 연결해 주세요.", "최*우 팀장 아니면 다른 분 연결해 주세요."],
+        },
+        {
+          id: "op-panel-wellness-01",
+          label: "웰니스 · 불안 톤",
+          preview: "비위기 감정 표현",
+          turns: ["요즘 너무 불안하고 잠이 안 와요. 괜찮을까요?"],
+        },
+        {
+          id: "op-panel-crisis-demo",
+          label: "위기 키워드 (데모)",
+          preview: "휴먼 게이트 시연용",
+          turns: ["너무 절망적이고 죽고 싶다는 생각이 들어요."],
+        },
+      ];
+
+      const SIGNALS = [
+        { id: "crisis", tokens: ["자해", "죽고 싶", "살고 싶지", "목숨"], i: 0.45, human: true },
+        { id: "despair", tokens: ["절망", "무너", "포기"], i: 0.32, human: false },
+        { id: "anger", tokens: ["화나", "짜증", "미치", "열받"], i: 0.28, human: false },
+        { id: "anxiety", tokens: ["불안", "걱정", "초조"], i: 0.2, human: false },
+        { id: "escalate", tokens: ["사람 연결", "매니저", "팀장", "복붙"], i: 0.22, human: false },
+      ];
+      const DRIFT = ["역할 무시", "시스템 프롬프트", "탈옥", "jailbreak"];
+      const INC = { low: 0.06, medium: 0.18, high: 0.38, human_gate_hold: 1.0 };
+      const TH = { inject: 0.42, reset: 0.58, handoff: 0.82, cooldown: 0.35 };
+      const DECAY = 0.88;
+      let cumulative = 0;
+      let activeScenarioId = null;
+
+      function norm(t) {
+        return t.trim().toLowerCase().replace(/\s+/g, " ");
+      }
+
+      function scan(text) {
+        let intensity = 0.25,
+          human = false;
+        const n = norm(text);
+        for (const s of SIGNALS) {
+          if (s.tokens.some((tok) => n.includes(tok))) {
+            intensity += s.i;
+            if (s.human) human = true;
+          }
+        }
+        intensity = Math.min(1, intensity);
+        let risk = "low",
+          arm = "standard";
+        if (human) {
+          risk = "human_gate_hold";
+          arm = "human_gate_hold";
+        } else if (intensity >= 0.72) {
+          risk = "high";
+          arm = "warm_only_cooldown";
+        } else if (intensity >= 0.55) {
+          risk = "medium";
+          arm = "re_dose_or_lower_intensity";
+        }
+        return { intensity, risk, arm };
+      }
+
+      function fsmStep(text, cooldownOn) {
+        cumulative *= DECAY;
+        const s = scan(text);
+        const drift = DRIFT.some((d) => norm(text).includes(d.toLowerCase())) ? 0.22 : 0;
+        cumulative = Math.min(1.5, cumulative + (INC[s.risk] || 0.1) + drift);
+        let action = "none",
+          state = "normal",
+          msg = "";
+        if (s.risk === "human_gate_hold" || cumulative >= TH.handoff) {
+          state = "human_queue";
+          action = "human_handoff";
+          msg = "휴먼 운영자 큐로 이관(데모 UI). 실서비스 라우팅 아님.";
+        } else if (cumulative >= TH.reset) {
+          state = "cooldown";
+          action = "reset_context";
+          cumulative = 0;
+          msg = "컨텍스트 리셋(데모): 누적 위험도 초기화.";
+        } else if (cooldownOn && cumulative >= TH.cooldown && (s.risk === "high" || s.risk === "medium")) {
+          state = "cooldown";
+          action = "warm_only_cooldown";
+          msg = "warm_only_cooldown — 낮은 강도 톤만 허용(데모).";
+        } else if (cumulative >= TH.inject) {
+          state = "elevated";
+          action = "inject_reminder";
+          msg = "시스템 리마인더 주입(데모).";
+        }
+        return { ...s, drift, action, state, msg };
+      }
+
+      const logPre = document.getElementById("logPre");
+      function log(line) {
+        const ts = new Date().toISOString().slice(11, 19);
+        logPre.textContent = (logPre.textContent ? logPre.textContent + "\n" : "") + "[" + ts + "] " + line;
+        logPre.parentElement.scrollTop = logPre.parentElement.scrollHeight;
+      }
+
+      function setFsmLadder(state) {
+        document.querySelectorAll(".wtt-fsm-step").forEach((el) => {
+          el.classList.toggle("is-active", el.dataset.state === state);
+        });
+      }
+
+      function updateGauge(val) {
+        const pct = Math.min(100, (val / 1) * 100);
+        document.getElementById("cumFill").style.width = pct + "%";
+        document.getElementById("cumLabel").textContent = val.toFixed(2);
+        const meter = document.getElementById("cumMeter");
+        meter.setAttribute("aria-valuenow", String(Math.min(1, val).toFixed(2)));
+      }
+
+      function renderScenarios() {
+        const list = document.getElementById("scenarioList");
+        SCENARIOS.forEach((sc) => {
+          const li = document.createElement("li");
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "wtt-scenario-btn";
+          btn.dataset.id = sc.id;
+          btn.innerHTML = sc.label + "<small>" + sc.preview + "</small>";
+          btn.addEventListener("click", () => loadScenario(sc));
+          li.appendChild(btn);
+          list.appendChild(li);
+        });
+      }
+
+      function loadScenario(sc) {
+        activeScenarioId = sc.id;
+        document.querySelectorAll(".wtt-scenario-btn").forEach((b) => {
+          b.classList.toggle("is-active", b.dataset.id === sc.id);
+        });
+        document.getElementById("userText").value = sc.turns[sc.turns.length - 1];
+        const box = document.getElementById("threadBox");
+        const bubbles = document.getElementById("threadBubbles");
+        bubbles.innerHTML = "";
+        sc.turns.forEach((t) => {
+          const div = document.createElement("div");
+          div.className = "wtt-bubble";
+          div.textContent = t;
+          bubbles.appendChild(div);
+        });
+        box.hidden = false;
+        log("scenario=" + sc.id + " turns=" + sc.turns.length);
+      }
+
+      document.getElementById("intensityCap").addEventListener("input", (e) => {
+        document.getElementById("intensityLabel").textContent = e.target.value;
+      });
+
+      document.getElementById("scanBtn").addEventListener("click", () => {
+        const text = document.getElementById("userText").value;
+        if (!text.trim()) return;
+        const cap = parseFloat(document.getElementById("intensityCap").value);
+        const cooldownOn = document.getElementById("cooldownToggle").checked;
+        const r = fsmStep(text, cooldownOn);
+        if (r.intensity > cap && r.arm === "warm_only_cooldown") {
+          r.msg += " (톤 상한 " + cap + " 적용)";
+        }
+        const riskEl = document.getElementById("riskBadge");
+        const riskClass = r.risk.includes("human") ? "human_gate_hold" : r.risk;
+        riskEl.textContent = "risk " + r.risk.replace(/_/g, " ");
+        riskEl.className = "wtt-badge risk-" + riskClass;
+        document.getElementById("armBadge").textContent = "arm " + r.arm.replace(/_/g, " ");
+        document.getElementById("fsmBadge").textContent = "fsm " + r.state;
+        document.getElementById("cumBadge").textContent = "cum " + cumulative.toFixed(2);
+        updateGauge(cumulative);
+        setFsmLadder(r.state);
+        const mit = document.getElementById("mitigationLine");
+        if (r.msg) {
+          mit.hidden = false;
+          mit.textContent = r.msg;
+        } else {
+          mit.hidden = true;
+        }
+        log(r.state + " · " + r.action + " · risk=" + r.risk + " · cum=" + cumulative.toFixed(2));
+      });
+
+      document.getElementById("resetBtn").addEventListener("click", () => {
+        cumulative = 0;
+        activeScenarioId = null;
+        logPre.textContent = "";
+        document.getElementById("fsmBadge").textContent = "fsm normal";
+        document.getElementById("cumBadge").textContent = "cum 0.00";
+        document.getElementById("mitigationLine").hidden = true;
+        document.querySelectorAll(".wtt-scenario-btn").forEach((b) => b.classList.remove("is-active"));
+        document.getElementById("threadBox").hidden = true;
+        updateGauge(0);
+        setFsmLadder("normal");
+        log("session_reset");
+      });
+
+      renderScenarios();
+      setFsmLadder("normal");
+      log("panel_ready · SEND_HOLD · design_stub");
+    </script>
+  </body>
+</html>

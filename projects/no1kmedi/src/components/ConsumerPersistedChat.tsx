@@ -194,7 +194,7 @@ export function ConsumerPersistedChat({ thread, onCommit }: ConsumerPersistedCha
         {error ? <p className="consult-error">{error}</p> : null}
 
         <div className="section-cta">
-          <Link className="btn btn-primary" href="/consumer?panel=survey#patient-intake">
+          <Link className="btn btn-primary" href="/intake">
             사전문진·연결 단계
           </Link>
           <Link className="btn btn-ghost" href="/#contact">

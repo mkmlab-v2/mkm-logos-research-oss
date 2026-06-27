@@ -1,0 +1,223 @@
+{
+  "_meta": {
+    "locale": "ko-KR",
+    "public_domain": "logos.jema-ai.com",
+    "lane": "track_b_hypo",
+    "note": "Scripture research workspace — structure transplant only; not doctrine product."
+  },
+  "nav": {
+    "skip": "본문으로 건너뛰기",
+    "docs": "문서",
+    "studio": "스튜디오",
+    "metrics": "지표",
+    "tiers": "티어"
+  },
+  "brand": {
+    "productShort": "LOGOS",
+    "productLine": "성경·텍스트 연구 워크스페이스",
+    "legal": "JEMA AI · Track B [HYPO] · research_only"
+  },
+  "publicUrl": "https://logos.jema-ai.com",
+  "pilot_status": {
+    "badge": "Commercial beta · solo OSS",
+    "lead": "On-domain Graph Studio + GitHub reproduce. Paid SEND/billing remains send_gate HOLD until commander enables.",
+    "send_gate": "HOLD",
+    "ready_for_external_send": false
+  },
+  "studio": {
+    "hero_eyebrow": "상용 워크스페이스 · logos.jema-ai.com",
+    "hero_title": "Graph Studio — 온도메인 경로 질의",
+    "hero_lead": "질문 → query-time GraphRAG 경로 → citation lock 구절. 50 프리셋 시드 + 동적 브릿지 — TSK 전량·open LLM 아님.",
+    "query_mode_badge": "query-time GraphRAG",
+    "hero_cta_primary": "Graph Studio 열기 (온도메인)",
+    "default_preset_id": "job_job_suffering_reason",
+    "title": "경로 질의 실행",
+    "lead": "프리셋을 선택하거나 질문을 수정하세요. 감사용 JSON보내기. 무료: 1일 8회.",
+    "badge": "[HYPO] · research_only · NON_GATING · preset + GraphRAG",
+    "run_label": "경로 질의 실행",
+    "label_preset": "프리셋",
+    "label_question": "질문",
+    "label_running": "실행 중…",
+    "result_title": "경로 결과",
+    "reasoning_spine": "추론 spine",
+    "export_json": "JSON보내기",
+    "quota_remaining": "오늘 남은 무료 쿼터",
+    "quota_exceeded_title": "오늘 무료 8회를 모두 사용했습니다",
+    "quota_exceeded_body": "Azure·결제 오류가 아닙니다. 브라우저 쿠키(lr_q_v1) 기준 1일 8회 한도입니다.",
+    "quota_demo_cta": "데모 모드로 계속 (allowlist 프리셋 · 쿼터 제외)",
+    "quota_reset_hint": "UTC 자정 이후 자동 리셋 · 시크릿 창에서도 재시도 가능",
+    "placeholder_email": "이메일",
+    "placeholder_org": "기관명 (선택)",
+    "placeholder_note": "사용 사례 (선택)",
+    "loading": "스튜디오 로딩 중…",
+    "lead_title": "Pro / 기관 파일럿",
+    "lead_body": "API 키 베타, 상향 쿼터, private slice — 리드 캡처(자동 과금 없음).",
+    "lead_cta": "파일럿 접근 요청",
+    "label_sending": "전송 중…",
+    "trust_title": "GitHub에서 검증 (OSS)",
+    "trust_links": [
+      {
+        "label": "mkm-universal-root",
+        "href": "https://github.com/mkmlab-v2/mkm-universal-root"
+      },
+      {
+        "label": "B2B 파일럿 스펙 (공개)",
+        "href": "https://github.com/mkmlab-v2/mkm-universal-root/blob/main/docs/MKM_B2B_PILOT_INQUIRY_SPEC_PUBLIC_v1.md"
+      },
+      {
+        "label": "5K holdout 검증 (README)",
+        "href": "https://github.com/mkmlab-v2/mkm-universal-root#b2b-verify--mkm-ur-bench-5k-holdout-3-commands"
+      }
+    ],
+    "bench_note": "UR-Bench-5K: B0·B3를 별도 보고 — 하나의 헤드라인 정확도로 합치지 마세요.",
+    "audience_modes": {
+      "group_label": "사용 맥락",
+      "academic": "학술 연구",
+      "pastoral": "묵상·고민",
+      "pastoral_disclaimer": "[research_only] 성경 텍스트·경로 관측 도구입니다. 목회 상담·심리 치료·의료·투자 조언이 아닙니다. ECS·렌즈는 [NON_GATING] 설명 보조.",
+      "pastoral_lead": "개인적 고민을 성경 구절·경로로 읽는 관측 모드입니다. 상담·치료·교리 판매가 아닙니다.",
+      "scope_label_pastoral": "Logos Canvas · 묵상·고민",
+      "scope_detail_pastoral": "320-node slice · citation lock · 관측 전용 [NON_GATING]"
+    },
+    "subgraph": {
+      "title": "Deep Research · 의미 경로 망",
+      "badge": "프로그램 시각화 · preset 경로 엔진 · [HYPO]",
+      "engine_live": "경로 엔진 live",
+      "node_count_suffix": "노드 · citation lock",
+      "interact_hint": "드래그 이동 · 스크롤 확대 · 노드 클릭",
+      "layout_simulating": "경로 망 배치 중…",
+      "layout_ready": "고정 · 직접 조작 가능",
+      "zoom_in": "확대",
+      "zoom_out": "축소",
+      "zoom_fit": "맞춤",
+      "autofocus_on": "자동 포커스 켜기",
+      "autofocus_off": "자동 포커스 끄기",
+      "demo_start": "경로 엔진 시동 · preset 로드",
+      "demo_spine": "추론 spine 점등",
+      "demo_verse": "citation lock · 구절 포커스",
+      "demo_complete": "경로 시각화 완료 · [HYPO]",
+      "demo_replay": "경로 데모 재생",
+      "loading": "경로 망 불러오는 중…",
+      "error_prefix": "그래프 슬라이스를 불러올 수 없음:",
+      "verse_refs": "구절 참조",
+      "focus_title": "그래프에서 포커스",
+      "focus_prefix": "포커스 ·",
+      "missing_in_slice": "— 현 슬라이스에 없음 · 컨텍스트 망 유지",
+      "path_prefix": "경로 ·",
+      "highlighted_suffix": "개 노드 강조",
+      "mesh_local": "로컬 망",
+      "mesh_depth": "망 깊이"
+    }
+  },
+  "trust_surface": {
+    "title": "OSS trust · dual-plane benches",
+    "lead": "Marketing numbers must match reproduce artifacts. Fixture scope only — no open-world SLA.",
+    "links": [
+      {
+        "label": "GitHub mkm-universal-root",
+        "href": "https://github.com/mkmlab-v2/mkm-universal-root"
+      },
+      {
+        "label": "GRASP topology stub defense (export)",
+        "href": "https://github.com/mkmlab-v2/mkm-universal-root/tree/main/scripts/decomposer"
+      }
+    ],
+    "bench_note": "Holdout B0 ~12% · B3 ~89% (fixture) — operational post-processor scores are labeled separately."
+  },
+  "hero": {
+    "eyebrow": "Cross-reference Graph · Citation-locked research",
+    "title": "상호참조 지식 그래프 기반\n성경·텍스트 연구 워크스페이스",
+    "lead": "교리 판매가 아니라, 주석·경로·인용 잠금(citation lock)으로 연구 워크플로를 지원합니다. 투자·실매매·Track A와 격리된 B-track 연구 레이어입니다.",
+    "cta_primary": "기관·연구 파일럿 문의",
+    "cta_secondary": "Graph Studio 라이브 데모 (30초)"
+  },
+  "hero_embed": {
+    "title": "Logos Graph Studio — Layer B live demo",
+    "note": "질문 → 답변 + subgraph · Path/Refs citation lock · 30s autoplay (Track C read-only demo)",
+    "preset": "job_job_suffering_reason"
+  },
+  "demo_spine": {
+    "label": "Track C 공개 데모 (읽기 전용 · [HYPO])",
+    "entry_url": "https://logos.jema-ai.com/logos-research/studio?q=job_job_suffering_reason&autorun=1&demo=1",
+    "legacy_qa_v2_url": "https://api.jemaai.cloud/public_showroom_meaning_topology_qa_v2.html?preset=job_job_suffering_reason",
+    "job_reading_pack_url": "https://api.jemaai.cloud/public_showroom_logos_job_reading_pack_v1.html?preset=job_suffering_reason",
+    "job_cosmic_code_url": "https://api.jemaai.cloud/public_showroom_logos_job_cosmic_code_v1.html",
+    "note": "Track C 데모는 api.jemaai.cloud · 상용 워크스페이스는 logos.jema-ai.com"
+  },
+  "graph_studio": {
+    "title": "Graph Studio — 질문에서 경로·그래프까지",
+    "lead": "프리셋 선택 → 답변 + live subgraph 동시 표시. Path/Refs 클릭으로 근거 구절·테마 노드 citation lock. 상용 워크스페이스는 logos.jema-ai.com 온도메인.",
+    "entry_url": "https://logos.jema-ai.com/logos-research/studio?q=job_job_suffering_reason&autorun=1&demo=1",
+    "legacy_qa_v2_url": "https://api.jemaai.cloud/public_showroom_meaning_topology_qa_v2.html?preset=job_job_suffering_reason",
+    "job_pack_url": "https://api.jemaai.cloud/public_showroom_logos_job_reading_pack_v1.html?preset=job_suffering_reason",
+    "job_cosmic_url": "https://api.jemaai.cloud/public_showroom_logos_job_cosmic_code_v1.html",
+    "badge": "[HYPO] · research_only · NON_GATING · preset demo (not live LLM)",
+    "bullets": [
+      "질문 → 답변 + subgraph — 예언 챗봇이 아닌 경로 가시화 데모",
+      "Path / Refs 클릭 — ECharts 노드 pulse · citation lock",
+      "Job · Psalm 노드 — Reading Pack / Router insight 카드",
+      "why_question_assembled: false — 인과 단답 조립 없음"
+    ],
+    "demo_steps": [
+      "0–8s: 프리셋 로드 (콜드 스타트 스켈레톤)",
+      "8–18s: Path/Refs → 그래프 점등",
+      "18–22s: Job.1.6 → Pack insight",
+      "26–30s: logos.jema-ai.com 파일럿 문의"
+    ],
+    "meta_arch": {
+      "badge": "[HYPO] · Cosmic Meta-Architecture",
+      "body": "B-track [HYPO] 접힘 패널: 이기종 domain을 S-L-K-M 구조 좌표로 **읽는 설계 은유**입니다. 4대 힘↔체질 표는 **교육용 별칭**이며 물리·신학·체질·투자 **단정이 아닙니다**. research_only · NON_GATING. Graph Studio 데모 상단 패널에서 요약 표를 확인할 수 있습니다."
+    }
+  },
+  "metrics_section": {
+    "title": "Fact-Lock metrics (live snapshot)",
+    "lead": "아래 수치는 배포 시 동기화된 검증 스냅샷입니다. 마케팅 추정치가 아닙니다."
+  },
+  "contact": {
+    "email": "support@mkmlife.com",
+    "mail_subject": "Logos Graph Studio — institution pilot inquiry"
+  },
+  "tiers": {
+    "title": "상용 티어 (초안 · pricing TBD)",
+    "items": [
+      {
+        "id": "demo",
+        "name": "Demo",
+        "audience": "누구나",
+        "note": "logos.jema-ai.com 온도메인 Studio · citation lock · NON_GATING · 무료"
+      },
+      {
+        "id": "pilot",
+        "name": "Pilot",
+        "audience": "기관·연구소 (1건)",
+        "note": "맞춤 preset 5–10 · private slice · 4–8주 · SOW 협의"
+      },
+      {
+        "id": "workspace",
+        "name": "Workspace",
+        "audience": "기관·출판·세미나리",
+        "note": "logos.jema-ai.com/studio · 8 free queries/day · Pro API key beta (manual)"
+      }
+    ]
+  },
+  "disclaimer": {
+    "title": "면책 · 격벽",
+    "items": [
+      "본 제품은 연구·해설 보조 도구이며 투자·의료·실매매 지시가 아닙니다.",
+      "성경 본문의 교리적 확정·예언 실현을 상품으로 판매하지 않습니다.",
+      "Logic Layer만 B2B 문서 검증에 이식 가능하며 MS 압축 헤드라인과 합산하지 않습니다.",
+      "렌즈 입력은 [NON_GATING] — 최종 운영 액션은 human gate가 필요합니다.",
+      "On-domain Studio uses curated presets — not a live LLM oracle or doctrine product."
+    ]
+  },
+  "footer": {
+    "hub": "https://jema-ai.com",
+    "hub_label": "JEMA AI 브랜드 허브",
+    "showroom": "https://logos.jema-ai.com/logos-research/studio?q=job_job_suffering_reason&autorun=1&demo=1",
+    "showroom_label": "Graph Studio · on-domain demo",
+    "legacy_showroom": "https://api.jemaai.cloud/public_showroom_meaning_topology_qa_v2.html?preset=job_job_suffering_reason",
+    "legacy_showroom_label": "Legacy Q&A Studio (jemaai.cloud)",
+    "job_reading_pack": "https://api.jemaai.cloud/public_showroom_logos_job_reading_pack_v1.html?preset=job_suffering_reason",
+    "job_reading_pack_label": "Job Reading Pack (3-Pack)"
+  }
+}

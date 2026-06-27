@@ -39,6 +39,7 @@ export default function SmartfarmPage() {
             <a href="#scale">{c.nav.scale}</a>
             <a href="#partnership">{c.nav.partnership}</a>
             <a href="#pilot">{c.nav.pilot}</a>
+            <a href="/smartfarm/operator">{c.nav.operator}</a>
             <a href="#contact">{c.nav.contact}</a>
             <a className="sf-nav-muted" href={c.footer.hub}>
               {c.nav.enterprise}

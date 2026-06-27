@@ -53,6 +53,9 @@ export function UniverseCenterAskV2() {
             JEMA AI
           </h1>
           <p className="universe-hub-ask-minimal-tagline">{copy.tagline}</p>
+          {copy.trustWedge ? (
+            <p className="universe-hub-ask-trust-wedge">{copy.trustWedge}</p>
+          ) : null}
           <button
             type="button"
             className="universe-hub-locale-toggle universe-hub-locale-toggle--minimal"
@@ -80,6 +83,10 @@ export function UniverseCenterAskV2() {
 
       {!discoverMinimal ? <p className="universe-hub-ask-lead">{copy.lead}</p> : null}
 
+      {!discoverMinimal && copy.trustWedge ? (
+        <p className="universe-hub-ask-trust-wedge">{copy.trustWedge}</p>
+      ) : null}
+
       {!discoverMinimal ? (
         <p className="universe-hub-ask-b2b">
           {copy.b2bPrefix}{" "}
@@ -100,7 +107,7 @@ export function UniverseCenterAskV2() {
         </label>
         {discoverMinimal ? (
           <div
-            className={`universe-hub-ask-capsule${isSubmitting ? " is-submitting" : ""}`}
+            className={`universe-hub-ask-capsule${isSubmitting ? " is-submitting" : ""}${submitError ? " has-error" : ""}`}
           >
             <input
               id="universe-hub-question"
@@ -141,7 +148,7 @@ export function UniverseCenterAskV2() {
           </div>
         ) : (
           <div
-            className={`universe-hub-ask-pill${isSubmitting ? " is-submitting" : ""}`}
+            className={`universe-hub-ask-pill${isSubmitting ? " is-submitting" : ""}${submitError ? " has-error" : ""}`}
           >
             <input
               id="universe-hub-question"

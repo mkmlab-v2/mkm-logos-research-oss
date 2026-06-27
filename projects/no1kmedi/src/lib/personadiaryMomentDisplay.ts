@@ -4,7 +4,7 @@
 import type { MomentCard, MomentIntent } from "./personadiaryMoment";
 
 const INTENT_HEADLINE: Record<MomentIntent, string> = {
-  meal: "오늘 점심 한 줄",
+  meal: "오늘 메뉴 한 줄",
   weather_fit: "오늘 입기 좋은 톤",
   mood: "지금 마음 돌보기",
   world_me: "세상과 나",

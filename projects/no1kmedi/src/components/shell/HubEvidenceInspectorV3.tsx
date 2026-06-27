@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HUB_INSPECTOR_ARTIFACTS_V1 } from "@/lib/universeHubInspectorArtifactsV1";
 import {
+  LOGOS_RESEARCH_STUDIO,
+} from "@/lib/universeHubLogosCommercialV1";
+import {
   UNIVERSE_HUB_LOGOS_TOPOLOGY_PATH,
   type LogosTopologyHubV1,
   isLogosTopologyHubV1,
@@ -52,32 +55,65 @@ export function HubEvidenceInspectorV3() {
         <p className="universe-hub-inspector-meta">
           [HYPO] · research_only · 성경 렌즈 [NON_GATING]
         </p>
-        <ul className="universe-hub-inspector-list">
-          {HUB_INSPECTOR_ARTIFACTS_V1.map((artifact) => (
-            <li key={artifact.id}>
-              {artifact.external ? (
-                <a href={artifact.href} target="_blank" rel="noopener noreferrer">
-                  {artifact.labelKo}
-                </a>
-              ) : (
-                <Link href={artifact.href}>{artifact.labelKo}</Link>
-              )}
-              {artifact.repoPath ? (
-                <div className="universe-hub-artifact-path">{artifact.repoPath}</div>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-        {topology ? (
-          <p className="universe-hub-inspector-meta">
-            topology loaded · {topology.n_verses?.toLocaleString() ?? "—"} verses
-            {topology.generated_at_utc ? ` · ${topology.generated_at_utc}` : ""}
-          </p>
+        {!onDiscover ? (
+          <>
+            <p className="universe-hub-inspector-cta-row">
+              <Link href={LOGOS_RESEARCH_STUDIO} className="universe-hub-inspector-cta-primary">
+                Graph Studio 열기 (상용 · on-domain)
+              </Link>
+            </p>
+            <ul className="universe-hub-inspector-list">
+              {HUB_INSPECTOR_ARTIFACTS_V1.map((artifact) => (
+                <li key={artifact.id}>
+                  {artifact.external ? (
+                    <a href={artifact.href} target="_blank" rel="noopener noreferrer">
+                      {artifact.labelKo}
+                    </a>
+                  ) : (
+                    <Link href={artifact.href}>{artifact.labelKo}</Link>
+                  )}
+                  {artifact.repoPath ? (
+                    <div className="universe-hub-artifact-path">{artifact.repoPath}</div>
+                  ) : null}
+                </li>
+              ))}
+            </ul>
+            {topology ? (
+              <p className="universe-hub-inspector-meta">
+                topology loaded · {topology.n_verses?.toLocaleString() ?? "—"} verses
+                {topology.generated_at_utc ? ` · ${topology.generated_at_utc}` : ""}
+              </p>
+            ) : (
+              <p className="universe-hub-inspector-muted">
+                JSON 미배포 — <code>logos_corpus_4d_topology_hub_v1.json</code> 또는{" "}
+                <Link href="/hub/logos">/hub/logos</Link> spoke 참고.
+              </p>
+            )}
+          </>
         ) : (
-          <p className="universe-hub-inspector-muted">
-            JSON 미배포 — <code>logos_corpus_4d_topology_hub_v1.json</code> 또는{" "}
-            <Link href="/hub/logos">/hub/logos</Link> spoke 참고.
-          </p>
+          <div className="universe-hub-inspector-discover-summary" data-hub-inspector-discover-summary="1">
+            <p className="universe-hub-inspector-cta-row">
+              <Link href={LOGOS_RESEARCH_STUDIO} className="universe-hub-inspector-cta-primary">
+                Graph Studio 열기
+              </Link>
+            </p>
+            <ul className="universe-hub-inspector-list">
+              {HUB_INSPECTOR_ARTIFACTS_V1.slice(0, 3).map((artifact) => (
+                <li key={artifact.id}>
+                  {artifact.external ? (
+                    <a href={artifact.href} target="_blank" rel="noopener noreferrer">
+                      {artifact.labelKo}
+                    </a>
+                  ) : (
+                    <Link href={artifact.href}>{artifact.labelKo}</Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <p className="universe-hub-inspector-more-link">
+              <Link href="/hub/logos">Logos Observatory 더 보기 →</Link>
+            </p>
+          </div>
         )}
       </section>
 
@@ -118,30 +154,22 @@ export function HubEvidenceInspectorV3() {
             </p>
           )}
         </section>
-      ) : onDiscover ? (
-        <section className="universe-hub-inspector-block" aria-labelledby="inspector-discover-heading">
-          <h3 id="inspector-discover-heading" className="universe-hub-inspector-subtitle">
-            Discover 라우팅
-          </h3>
-          <ul className="universe-hub-inspector-list">
-            <li>단발 제출 → 플러그인·mkmlife로 분기</li>
-            <li>무한 대화 아님 · 허브 LLM 없음</li>
-            <li>SEND_GATE: HOLD</li>
-          </ul>
-        </section>
       ) : null}
 
+      {!onDiscover ? (
       <section className="universe-hub-inspector-block" aria-labelledby="inspector-cta-heading">
         <h3 id="inspector-cta-heading" className="universe-hub-inspector-subtitle">
           B2B 스포크
         </h3>
         <nav className="universe-hub-inspector-links">
+          <Link href={LOGOS_RESEARCH_STUDIO}>Graph Studio (상용)</Link>
           <Link href="/hub/compression">압축 데모 [DRAFT]</Link>
           <Link href="/hub/logos">Logos 관측소</Link>
           <Link href="/hub/life">라이프 케어</Link>
           <Link href="/hub/customize">패키지 라더 · 상담</Link>
         </nav>
       </section>
+      ) : null}
     </div>
   );
 }

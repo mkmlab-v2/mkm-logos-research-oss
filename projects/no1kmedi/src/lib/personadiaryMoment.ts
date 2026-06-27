@@ -2,116 +2,28 @@
  * PersonaDiary moment intent + response (Phase B) — TS mirror of scripts/*_v1.py
  */
 import type { DailyGuidePackage, DailyGuideSection } from "./personadiaryDailyGuide";
+import {
+  derivePersonadiaryAcodeProfile,
+  type PersonadiaryAcodePersonaV1,
+} from "./personadiaryAcodeProfileV1";
+import { buildMomentMealMenuRecommendation } from "./personadiaryMomentMealMenuV1";
+import {
+  INTENT_KEYWORDS,
+  INTENT_PRIORITY,
+  INTENT_WEIGHTS,
+  isNonGatingSection,
+  PROPHECY_VOTE_NONE,
+  SECTION_TITLES,
+  type MomentIntentFromSsot,
+} from "./personadiaryMomentIntentWeightsV1";
+import {
+  resolveMomentBundle,
+  type MomentBundleResolved,
+} from "./personadiaryMomentBundleV1";
 
-export type MomentIntent =
-  | "meal"
-  | "weather_fit"
-  | "mood"
-  | "world_me"
-  | "reflect";
+export type MomentIntent = MomentIntentFromSsot;
 
-const INTENT_KEYWORDS: Record<Exclude<MomentIntent, "reflect">, string[]> = {
-  meal: [
-    "점심",
-    "저녁",
-    "아침",
-    "뭐 먹",
-    "뭘 먹",
-    "식사",
-    "메뉴",
-    "맛집",
-    "국밥",
-    "배고",
-    "먹을까",
-    "먹지",
-    "라면",
-    "밥",
-  ],
-  weather_fit: [
-    "날씨",
-    "옷",
-    "입을",
-    "입어",
-    "컬러",
-    "색",
-    "따뜻",
-    "춥",
-    "더워",
-    "우산",
-    "비",
-    "외출",
-    "코디",
-  ],
-  mood: [
-    "기분",
-    "마음",
-    "불안",
-    "우울",
-    "스트레스",
-    "피곤",
-    "슬프",
-    "걱정",
-    "지침",
-    "무기력",
-    "짜증",
-    "외로",
-  ],
-  world_me: [
-    "뉴스",
-    "세상",
-    "코스피",
-    "비트코인",
-    "btc",
-    "시장",
-    "헤드라인",
-    "정치",
-    "거시",
-    "경제",
-    "속보",
-  ],
-};
-
-// world_me before mood — news-linked anxiety routes to world_me, not pure mood
-const PRIORITY: Exclude<MomentIntent, "reflect">[] = [
-  "meal",
-  "weather_fit",
-  "world_me",
-  "mood",
-];
-
-const INTENT_WEIGHTS: Record<MomentIntent, Record<string, number>> = {
-  meal: { lifestyle: 0.45, myeongni: 0.35, mkm_4ai: 0.15, logos_anchor: 0.05 },
-  weather_fit: { lifestyle: 0.5, mkm_4ai: 0.3, myeongni: 0.15, logos_anchor: 0.05 },
-  mood: {
-    mkm_4ai: 0.35,
-    myeongni: 0.25,
-    logos_anchor: 0.25,
-    user_condition: 0.15,
-  },
-  world_me: {
-    world_pulse: 0.45,
-    hypothesis_stream: 0.25,
-    myeongni: 0.2,
-    logos_anchor: 0.1,
-  },
-  reflect: {
-    myeongni: 0.25,
-    mkm_4ai: 0.2,
-    lifestyle: 0.2,
-    world_pulse: 0.2,
-    logos_anchor: 0.15,
-  },
-};
-
-const SECTION_TITLES: Record<string, string> = {
-  myeongni: "명리 한 줄",
-  mkm_4ai: "마음 에너지 (4AI)",
-  lifestyle: "라이프·날씨",
-  logos_anchor: "성경 앵커",
-  world_pulse: "찰나의 나라",
-  hypothesis_stream: "초론 스트림",
-  user_condition: "컨디션 틸트",
-};
+const PRIORITY = INTENT_PRIORITY;
 
 const MEAL_PRIMARY = [
   "점심 추천",
@@ -169,6 +81,7 @@ export type MomentResponse = {
   preview_only: true;
   non_gating: true;
   lane: "research_only";
+  prophecy_vote: "none";
   regime_field: "regime_personadiary_moment_exploration";
   query_text: string;
   intent: MomentIntent;
@@ -178,10 +91,12 @@ export type MomentResponse = {
   profile_id: string;
   cards: MomentCard[];
   summary_ko: string;
+  acode_persona?: PersonadiaryAcodePersonaV1;
   summary_ko_polished?: string | null;
   polish_meta?: MomentPolishMeta;
   disclaimer_ko: string;
   generated_at_utc: string;
+  moment_bundle: MomentBundleResolved;
 };
 
 function applyPresetPolish(
@@ -310,7 +225,8 @@ function sectionBody(
 export function assembleMomentResponse(
   pkg: DailyGuidePackage,
   query: string,
-  classification?: IntentClassification
+  classification?: IntentClassification,
+  options?: { requestProfileId?: string | null; surveyResponses?: Record<string, number> }
 ): MomentResponse {
   const clf = classification || classifyIntent(query);
   const intent = clf.intent;
@@ -331,13 +247,18 @@ export function assembleMomentResponse(
       title_ko: SECTION_TITLES[sid] || sid,
       body_ko: body,
       weight: Math.round(weight * 100) / 100,
-      badge_ko: sid === "logos_anchor" ? "[NON_GATING][가설]" : "[가설]",
+      badge_ko: isNonGatingSection(sid) ? "[NON_GATING][가설]" : "[가설]",
     });
   }
 
   let summary_ko = "";
   if (intent === "meal") {
-    summary_ko = firstMealSummary(cards);
+    summary_ko = buildMomentMealMenuRecommendation(pkg, {
+      surveyResponses: options?.surveyResponses,
+    });
+    if (!summary_ko) {
+      summary_ko = firstMealSummary(cards);
+    }
   }
   if (!summary_ko) {
     const summaryParts = cards
@@ -348,6 +269,14 @@ export function assembleMomentResponse(
       summaryParts.join(" · ") || "오늘 가이드에서 순간 성찰만 비춥니다.";
   }
 
+  const acodePersona = derivePersonadiaryAcodeProfile(pkg, {
+    surveyResponses: options?.surveyResponses,
+  });
+  const resolvedProfileId =
+    options?.requestProfileId?.trim() ||
+    pkg.profile_id ||
+    "commander";
+
   const base: MomentResponse = {
     schema: "personadiary_moment_response_v1",
     product: "personadiary.com",
@@ -355,19 +284,26 @@ export function assembleMomentResponse(
     preview_only: true,
     non_gating: true,
     lane: "research_only",
+    prophecy_vote: PROPHECY_VOTE_NONE,
     regime_field: "regime_personadiary_moment_exploration",
     query_text: query.trim().slice(0, 500),
     intent,
     intent_classification: clf,
     calendar_kst: pkg.calendar_kst,
     city_default: pkg.city_default,
-    profile_id: pkg.profile_id || "commander",
+    profile_id: resolvedProfileId,
     cards: cards.slice(0, 4),
     summary_ko: summary_ko.slice(0, 400),
+    acode_persona: acodePersona,
     disclaimer_ko:
       pkg.disclaimer_ko ||
       "[가설]·[NON_GATING] 마음돌봄·순간 가이드 전용. preview_only.",
     generated_at_utc: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"),
+    moment_bundle: resolveMomentBundle(
+      pkg,
+      intent,
+      pkg.calendar_kst || new Date().toISOString().slice(0, 10)
+    ),
   };
   return applyPresetPolish(pkg, base, query);
 }

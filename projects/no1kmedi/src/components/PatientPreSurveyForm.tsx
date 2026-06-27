@@ -68,7 +68,7 @@ type PatientPreSurveyFormProps = {
   intakeMode?: "legacy" | "clinic_v1";
 };
 
-export function PatientPreSurveyForm({ intakeMode = "legacy" }: PatientPreSurveyFormProps) {
+export function PatientPreSurveyForm({ intakeMode = "clinic_v1" }: PatientPreSurveyFormProps) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [birthdate, setBirthdate] = useState("");

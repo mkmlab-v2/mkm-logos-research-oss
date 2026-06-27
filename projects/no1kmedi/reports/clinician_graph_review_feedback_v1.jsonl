@@ -1,0 +1,1 @@
+{"schema":"clinician_graph_review_feedback_event_v1","ts":"2026-06-25T11:33:33.674Z","encounter_ref":"graph_smoke_1782387212606","target_id":"pattern:syndrome_hypothesis","target_kind":"node","feedback":"hold","reason_code":"deploy_smoke","clinician_note":null,"queued_for_review":true,"auto_model_apply":false}

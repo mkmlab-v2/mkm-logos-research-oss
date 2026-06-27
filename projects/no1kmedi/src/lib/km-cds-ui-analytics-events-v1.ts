@@ -29,6 +29,12 @@ export const KM_CDS_UI_ANALYTICS_EVENTS_V1 = {
   ADMIN_KPI_PRIORITY_ACTION_CLICK_V1: "admin_kpi_priority_action_click_v1",
   /** Clinician workspace: patient_care_bundle from CDS envelope. */
   CDS_BUNDLE_GENERATE_V1: "cds_bundle_generate_v1",
+  /** Clinician graph pilot KPI (Track B · internal). */
+  CLINICIAN_GRAPH_BUILD_V1: "clinician_graph_build_v1",
+  CLINICIAN_GRAPH_VIEW_MODE_V1: "clinician_graph_view_mode_v1",
+  CLINICIAN_GRAPH_REVIEW_FEEDBACK_V1: "clinician_graph_review_feedback_v1",
+  CLINICIAN_GRAPH_SIGNOFF_V1: "clinician_graph_signoff_v1",
+  CLINICIAN_GRAPH_REVIEW_TIMING_V1: "clinician_graph_review_timing_v1",
 } as const;
 
 export type KmCdsUiAnalyticsEventNameV1 =
@@ -39,6 +45,17 @@ export type KmCdsUiAnalyticsPayloadV1 = {
   surface?: "modal" | "fullscreen" | "settings" | "workspace";
   locale?: string;
   copy_bundle_id?: string;
+  encounter_ref?: string;
+  target_id?: string;
+  feedback?: string;
+  reason_code?: string;
+  view_mode?: string;
+  node_count?: number;
+  edge_count?: number;
+  conflict_group_count?: number;
+  has_bundle_slots?: boolean;
+  duration_since_cds_ready_ms?: number;
+  duration_since_graph_build_ms?: number;
 };
 
 export function trackKmCdsUiEvent(

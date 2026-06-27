@@ -19,6 +19,7 @@ type PatientCareBundlePreviewProps = {
   draft: ConsultDraftSlice;
   cdsEnvelope: Record<string, unknown> | undefined;
   kmCdsValidationOk: boolean;
+  onBundleReady?: (bundle: Record<string, unknown>) => void;
 };
 
 type BundleApiResponse = {
@@ -60,6 +61,7 @@ export function PatientCareBundlePreview({
   draft,
   cdsEnvelope,
   kmCdsValidationOk,
+  onBundleReady,
 }: PatientCareBundlePreviewProps) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -113,6 +115,9 @@ export function PatientCareBundlePreview({
         return;
       }
       setResponse(json);
+      if (json.patient_care_bundle) {
+        onBundleReady?.(json.patient_care_bundle as Record<string, unknown>);
+      }
     } catch {
       setError("환자 번들 생성 중 네트워크 오류가 발생했습니다.");
     } finally {

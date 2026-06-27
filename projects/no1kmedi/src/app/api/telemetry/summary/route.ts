@@ -10,6 +10,20 @@ const SUMMARY_PATH = path.join(
   "commercialization",
   "km_cds_ui_events_daily_summary_latest.json",
 );
+const LOGOS_ECS_SUMMARY_PATH = path.join(
+  process.cwd(),
+  "docs",
+  "final",
+  "artifacts",
+  "logos_studio_ecs_telemetry_summary_latest.json",
+);
+const LOGOS_FEEDBACK_SUMMARY_PATH = path.join(
+  process.cwd(),
+  "docs",
+  "final",
+  "artifacts",
+  "logos_studio_feedback_summary_latest.json",
+);
 
 type KpiSummary = {
   schema?: string;
@@ -28,6 +42,57 @@ type DailyTrendPoint = {
   admin_reco_click_consumer: number;
   admin_reco_click_safety: number;
   ack_rate: number;
+};
+
+type LogosEcsSummary = {
+  schema?: string;
+  generated_at_utc?: string;
+  window_days?: number;
+  event_contract?: {
+    event_name?: string;
+    events_in_window?: number;
+    ecs_observed_count?: number;
+    ecs_missing_count?: number;
+    ecs_observed_rate?: number;
+  };
+  ecs_stats?: {
+    count?: number;
+    min?: number;
+    p10?: number;
+    median?: number;
+    mean?: number;
+    p90?: number;
+    max?: number;
+  };
+  band_counts?: Record<string, number>;
+  query_mode_counts?: Record<string, number>;
+  access_gate_counts?: Record<string, number>;
+  research_only?: boolean;
+  send_gate?: string;
+  non_gating?: boolean;
+};
+
+type LogosFeedbackSummary = {
+  schema?: string;
+  generated_at_utc?: string;
+  window_days?: number;
+  counts?: { up?: number; down?: number; unknown?: number; total?: number };
+  ratios?: { up_rate?: number; down_rate?: number; agreement_rate?: number };
+  top_issue_types?: Record<string, number>;
+  top_anchors?: Array<{ evidence_anchor?: string; total?: number; up?: number; down?: number }>;
+  windows?: {
+    w7?: {
+      counts?: { up?: number; down?: number; unknown?: number; total?: number };
+      ratios?: { up_rate?: number; down_rate?: number; agreement_rate?: number };
+    };
+    w30?: {
+      counts?: { up?: number; down?: number; unknown?: number; total?: number };
+      ratios?: { up_rate?: number; down_rate?: number; agreement_rate?: number };
+    };
+  };
+  research_only?: boolean;
+  send_gate?: string;
+  non_gating?: boolean;
 };
 
 function countAlertDays(trend: DailyTrendPoint[]): number {
@@ -70,8 +135,14 @@ function buildDailyTrend(countsByDay: Record<string, Record<string, number>>, da
 
 export async function GET() {
   try {
-    const raw = await fs.readFile(SUMMARY_PATH, "utf8");
+    const [raw, ecsRaw, feedbackRaw] = await Promise.all([
+      fs.readFile(SUMMARY_PATH, "utf8"),
+      fs.readFile(LOGOS_ECS_SUMMARY_PATH, "utf8").catch(() => null),
+      fs.readFile(LOGOS_FEEDBACK_SUMMARY_PATH, "utf8").catch(() => null),
+    ]);
     const parsed = JSON.parse(raw) as KpiSummary;
+    const ecs = ecsRaw ? (JSON.parse(ecsRaw) as LogosEcsSummary) : null;
+    const feedback = feedbackRaw ? (JSON.parse(feedbackRaw) as LogosFeedbackSummary) : null;
     const counts = parsed.counts_by_day || {};
     const mount = sumEvent(counts, "public_workspace_mount_v1");
     const ack = sumEvent(counts, "public_mode_enter_ack_v1");
@@ -120,6 +191,36 @@ export async function GET() {
           admin_priority_action_exec_rate: priorityActionExecRate,
         },
         trend_7d: trend7d,
+        logos_studio_ecs: ecs
+          ? {
+              schema: ecs.schema ?? "logos_studio_ecs_telemetry_summary_v1",
+              generated_at_utc: ecs.generated_at_utc ?? null,
+              window_days: ecs.window_days ?? 30,
+              event_contract: ecs.event_contract ?? null,
+              ecs_stats: ecs.ecs_stats ?? null,
+              band_counts: ecs.band_counts ?? {},
+              query_mode_counts: ecs.query_mode_counts ?? {},
+              access_gate_counts: ecs.access_gate_counts ?? {},
+              research_only: ecs.research_only ?? true,
+              send_gate: ecs.send_gate ?? "HOLD",
+              non_gating: ecs.non_gating ?? true,
+            }
+          : null,
+        logos_studio_feedback: feedback
+          ? {
+              schema: feedback.schema ?? "logos_studio_feedback_summary_v1",
+              generated_at_utc: feedback.generated_at_utc ?? null,
+              window_days: feedback.window_days ?? 30,
+              counts: feedback.counts ?? { up: 0, down: 0, unknown: 0, total: 0 },
+              ratios: feedback.ratios ?? { up_rate: 0, down_rate: 0, agreement_rate: 0 },
+              top_issue_types: feedback.top_issue_types ?? {},
+              top_anchors: feedback.top_anchors ?? [],
+              windows: feedback.windows ?? null,
+              research_only: feedback.research_only ?? true,
+              send_gate: feedback.send_gate ?? "HOLD",
+              non_gating: feedback.non_gating ?? true,
+            }
+          : null,
       },
       { status: 200, headers: { "Cache-Control": "no-store" } },
     );

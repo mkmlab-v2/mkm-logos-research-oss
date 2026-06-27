@@ -8,6 +8,7 @@ export const HUB_PRIMARY_KEYS = [
   "mai_profile_card",
   "b2b_acodeai",
   "farm_b2b_smartfarm",
+  "research_logos",
   "research_mkmlab",
   "personadiary_preview",
 ] as const;
@@ -18,6 +19,7 @@ export const HUB_FOOTER_KEYS = [
   "showroom_jemaai",
   "premium_mkmlife",
   "b2b_acodeai",
+  "research_logos",
   "research_mkmlab",
   "clinician_support",
 ] as const;

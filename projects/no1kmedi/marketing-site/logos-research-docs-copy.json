@@ -1,0 +1,276 @@
+{
+  "_meta": {
+    "schema": "logos_research_public_docs_v1",
+    "locale": "ko-KR",
+    "status": "PUBLIC_DRAFT",
+    "send_gate": "HOLD",
+    "ready_for_external_send": false,
+    "tags": ["HYPO", "research_only", "NON_GATING"],
+    "note": "Curated public docs only — not a mirror of internal repo docs."
+  },
+  "nav": {
+    "home": "/logos-research",
+    "docs_hub": "/logos-research/docs",
+    "items": [
+      { "id": "how-it-works", "href": "/logos-research/docs/how-it-works", "label": "How it works" },
+      { "id": "pilot-scope", "href": "/logos-research/docs/pilot-scope", "label": "Pilot scope" },
+      { "id": "glossary", "href": "/logos-research/docs/glossary", "label": "Glossary" },
+      { "id": "faq", "href": "/logos-research/docs/faq", "label": "FAQ" }
+    ]
+  },
+  "footer_disclaimer": {
+    "ko": "관측·연구 데모 [HYPO] · Logos [NON_GATING] · 투자·치료·종교적 단정 아님.",
+    "en": "Not investment advice. No buy/sell instructions. Logos layers are [NON_GATING]. Observational research only. send_gate: HOLD. ready_for_external_send: false."
+  },
+  "demo_url": "https://api.jemaai.cloud/public_showroom_meaning_topology_qa_v2.html?preset=job_job_suffering_reason",
+  "hub": {
+    "title": "Logos Public Docs",
+    "lead": "Graph Studio·citation lock·파일럿 범위를 설명하는 공개 문서입니다. 내부 수식·코드북·레포 경로는 포함하지 않습니다.",
+    "cards": [
+      {
+        "id": "how-it-works",
+        "title": "How it works",
+        "summary": "질문 → subgraph → Path/Refs citation lock. 30초 Job 프리셋 흐름.",
+        "href": "/logos-research/docs/how-it-works"
+      },
+      {
+        "id": "pilot-scope",
+        "title": "Pilot scope",
+        "summary": "Demo / Pilot / Workspace 티어 · 포함·제외 · send_gate HOLD.",
+        "href": "/logos-research/docs/pilot-scope"
+      },
+      {
+        "id": "glossary",
+        "title": "Glossary",
+        "summary": "S-L-K-M · Matching Layer · Parable vs Prophecy · 사용 가능/금지 용어.",
+        "href": "/logos-research/docs/glossary"
+      },
+      {
+        "id": "faq",
+        "title": "FAQ",
+        "summary": "일반 AI 인용 리스크 · YouVersion-class 오류 · 면책.",
+        "href": "/logos-research/docs/faq"
+      }
+    ]
+  },
+  "how_it_works": {
+    "title": "How it works",
+    "eyebrow": "L1 · Evidence-first demo",
+    "sections": [
+      {
+        "heading": "무엇을 보여주나",
+        "paragraphs": [
+          "Logos Graph Studio는 성경·텍스트 연구용 **경로 가시화** 데모입니다. 질문(프리셋)을 고르면 **답변과 live subgraph**가 함께 표시됩니다.",
+          "예언 챗봇·투자 오라클·종교적 단정 제품이 **아닙니다**. Track B · research_only · [HYPO] · [NON_GATING] 관측 레이어입니다."
+        ]
+      },
+      {
+        "heading": "Citation lock (3단)",
+        "steps": [
+          "Path / Refs — 답변 아래 칩을 누르면 근거 구절·테마 노드가 그래프에서 강조됩니다.",
+          "Node click — Job · Psalm 등 노드를 누르면 Reading Pack 발췌 또는 router stub **insight card**가 표시됩니다.",
+          "Verification posture — 워크스페이스는 **verse 식별자·인용 해시**로 검증 가능한 경로를 우선합니다. (일반 생성 AI의 미검증 인용과 대비)"
+        ]
+      },
+      {
+        "heading": "30초 Job spine (라이브 데모)",
+        "steps": [
+          "0–8s: job_job_suffering_reason 프리셋 로드 → 답변 + subgraph",
+          "8–18s: Path/Refs 클릭 → 노드 pulse",
+          "18–22s: Job.1.6 → insight card",
+          "22–26s: Ps.27.14 (또는 Ps.23.3) → Psalm bridge stub",
+          "26–30s: Job Reading Pack 링크 · logos.jema-ai.com 파일럿 문의"
+        ],
+        "demo_cta_label": "Open Graph Studio (live demo)"
+      },
+      {
+        "heading": "어디서 체험하나",
+        "paragraphs": [
+          "**체험(데모):** api.jemaai.cloud — 읽기 전용 Track C Graph Studio.",
+          "**워크스페이스(상용 표면):** logos.jema-ai.com — 기관 파일럿·SOW 협의 대상 (billing TBD, counsel 전)."
+        ]
+      }
+    ]
+  },
+  "pilot_scope": {
+    "title": "Pilot scope",
+    "eyebrow": "PoC boundaries · send_gate HOLD",
+    "included": [
+      "Curated presets (예: Job suffering-reason spine)",
+      "Public subgraph slice (데모 한정 노드·엣지 상한)",
+      "Insight cards · Reading Pack excerpt bridge",
+      "Artifact refresh 주기 · 재현 가능한 smoke posture (내부 검증)"
+    ],
+    "excluded": [
+      "실시간 LLM Q&A (open chat)",
+      "Live trading · Track A · 실매매 트리거",
+      "종교적 교리 판매 · 투자·매매 권유",
+      "ready_for_external_send: true 상태의 대외 SEND · paid mass campaign (counsel 전)",
+      "코어 수식·codebook·미공개 pipeline 공개"
+    ],
+    "tiers": [
+      {
+        "id": "demo",
+        "name": "Demo",
+        "audience": "누구나",
+        "note": "jemaai.cloud Q&A Studio · citation lock · 무료 · NON_GATING"
+      },
+      {
+        "id": "pilot",
+        "name": "Pilot",
+        "audience": "기관·연구소 (1건)",
+        "note": "맞춤 preset 5–10 · private slice · SOW 협의 · 4–8주"
+      },
+      {
+        "id": "workspace",
+        "name": "Workspace",
+        "audience": "기관·출판·세미나리",
+        "note": "logos.jema-ai.com · 감사 로그 · billing TBD (counsel 후)"
+      }
+    ],
+    "governance": [
+      "commander-approved internal B2B pilot — institution meeting · SOW only",
+      "counsel_signoff 전 ready_for_external_send: false",
+      "why_question_assembled: false — 인과 단답 조립 없음"
+    ]
+  },
+  "glossary": {
+    "title": "Glossary",
+    "eyebrow": "L2 · Metaphor with fences",
+    "intro": "아래 용어는 **공개 설명용**입니다. 물리·신학·의료·투자 **단정**이 아닙니다.",
+    "terms": [
+      {
+        "term": "S-L-K-M (4D structure coordinates)",
+        "tier": "L1 engineering label",
+        "definition": "텍스트·맥락을 읽기 위한 **구조적 좌표** 네 축(Seed 계열). 공개 데모에서는 subgraph·경로 강조에만 사용합니다.",
+        "not": "입자물리 스펙 · 체질 확정 · 매매 신호"
+      },
+      {
+        "term": "Matching Layer",
+        "tier": "L2 design metaphor",
+        "definition": "이기종 domain(물리·사상·Logos)을 **동일 실체로 합치지 않고**, 팽창/수축·교환·밀도·여백으로 **읽는 설계 체계** (은유).",
+        "not": "단일 만물이론 완성 · Track A 자동 합선"
+      },
+      {
+        "term": "우주 경영 (cosmic stewardship metaphor)",
+        "tier": "L2 brand narrative",
+        "definition": "말씀·정보·구조를 **존중하는 연구 OS** 브랜드 은유. Logos·codebook **참조** 레이어를 가리킬 때 씁니다.",
+        "not": "실매매·임상·자동 트리거 · “AI가 우주/자산을 운영”"
+      },
+      {
+        "term": "Cosmic Meta-Architecture",
+        "tier": "B-track [HYPO]",
+        "definition": "데모 UI의 **접힘 패널** — 4대 힘↔체질 **교육용 별칭** 표. research_only · NON_GATING.",
+        "not": "과학 입증 칩 · 광고 헤드라인 FACT"
+      },
+      {
+        "term": "Citation lock",
+        "tier": "L1 product",
+        "definition": "Path/Refs · insight card로 **어떤 구절·노드가 답에 연결됐는지** 눈으로 확인하는 UX·검증 자세.",
+        "not": "영적 권위 단정 · 100% 무환각 보장 (counsel·evidence pack 별도)"
+      },
+      {
+        "term": "Logos (성경 렌즈)",
+        "tier": "Lens · NON_GATING",
+        "definition": "거시 **게이트·서사·codebook 참조** 보조 입력. 해설·관측용.",
+        "not": "실전 주문·투자·치료 트리거"
+      },
+      {
+        "term": "Parable vs Prophecy",
+        "tier": "L2 boundary",
+        "definition": "**Parable(비유):** 일상 서사·윤리·맥락 enrichment. **Prophecy(예언):** 격벽된 연구 레일 — literal 미래 점치기 **아님**.",
+        "not": "시장 연대기·자산 chronology 합선 · SEND"
+      },
+      {
+        "term": "router_hit_rate",
+        "tier": "Internal metric — not for ads",
+        "definition": "그래프 **배선 통과율**(구조적 경로 검증). **적중률·예언 성능이 아닙니다.**",
+        "not": "광고 문구 “미래 적중 ○○%”"
+      },
+      {
+        "term": "Graph Studio",
+        "tier": "L1 product",
+        "definition": "프리셋 질문 → **답변 + live subgraph**를 동시에 보여주는 Track C **읽기 전용** 데모 UI.",
+        "not": "실시간 open chat · 예언 챗봇 · 투자 오라클"
+      },
+      {
+        "term": "Track B · research_only",
+        "tier": "Lane boundary",
+        "definition": "Logos·성경 연구 **관측 레이어**. Track A(운영·실매매)와 **격벽**.",
+        "not": "실매매 트리거 · Track A 자동 합선"
+      },
+      {
+        "term": "Track C (public demo)",
+        "tier": "L1 demo surface",
+        "definition": "api.jemaai.cloud **공개 쇼룸** — subgraph·citation lock 체험. billing·SOW와 분리.",
+        "not": "상용 workspace SLA · paid SEND"
+      },
+      {
+        "term": "send_gate",
+        "tier": "Governance",
+        "definition": "대외 SEND·paid campaign **승인 상태**. 현재 **HOLD** — counsel sign-off 전.",
+        "not": "ready_for_external_send: true (counsel 전)"
+      },
+      {
+        "term": "Insight card",
+        "tier": "L1 product UX",
+        "definition": "그래프 노드 클릭 시 표시되는 **발췌·stub 카드** — 경로 근거를 따라가게 함.",
+        "not": "영적 권위 단정 · 무검증 LLM 장문"
+      },
+      {
+        "term": "Reading Pack",
+        "tier": "L1 demo artifact",
+        "definition": "Job 등 **테마별 발췌·3-Pack** 공개 데모. Graph Studio와 링크로 연결.",
+        "not": "교리 판매 패키지 · 투자 리포트"
+      },
+      {
+        "term": "NON_GATING",
+        "tier": "Lens contract",
+        "definition": "Logos·성경 렌즈는 **보조 입력** — 최종 운영·투자·치료 **트리거가 아님**.",
+        "not": "실전 주문 · 매매 GO"
+      },
+      {
+        "term": "invisible core, visible evidence",
+        "tier": "Public security posture",
+        "definition": "코어 수식·미승격 catalog는 **비공개**; 데모·경로·citation lock은 **공개 근거**.",
+        "not": "레포·codebook 전체 공개"
+      }
+    ],
+    "forbidden_in_public_ads": [
+      "thermodynamic alias (Ei, Pf, Dd, Hc) · gamma transition — FACT처럼 표현",
+      "75식 전부 상용 · TOE 완성 · 수익 보장",
+      "경쟁사명 + “항상 틀린다” 단정",
+      "ready_for_external_send: true (counsel 전)"
+    ]
+  },
+  "faq": {
+    "title": "FAQ",
+    "eyebrow": "Risk · citations · compliance",
+    "items": [
+      {
+        "q": "일반 AI(ChatGPT 등)와 무엇이 다른가요?",
+        "a": "일반 생성 AI는 구절·맥락을 **검증 없이** 섞어 낼 수 있습니다. Logos 워크스페이스는 **경로·노드·insight card**로 근거를 **눈으로 따라가게** 하는 연구 데모에 초점을 둡니다. “항상 옳다/틀리다”가 아니라 **검증 가능한 경로** posture입니다."
+      },
+      {
+        "q": "YouVersion·앱 Store 구절 오류와 어떤 관련이 있나요?",
+        "a": "공개 앱·일반 LLM 모두 **인용 무결성** 이슈가 보고됩니다. 우리는 **citation lock UX + 검증 자세**를 제품 차별점으로 제시합니다. 타 서비스 **품질 단정**은 하지 않습니다."
+      },
+      {
+        "q": "우주 경영·4D를 믿어야 하나요?",
+        "a": "**아닙니다.** 브랜드·설계 **은유**이며, 데모는 **S-L-K-M 좌표 + subgraph** 수준입니다. 신학·물리 **완결 주장**을 하지 않습니다."
+      },
+      {
+        "q": "투자·치료·예언에 쓸 수 있나요?",
+        "a": "**아닙니다.** Not investment advice. No buy/sell. Logos [NON_GATING]. 임상·실매매·Track A와 **격리**된 research_only 레이어입니다."
+      },
+      {
+        "q": "지금 대외 마케팅·paid 광고 가능한가요?",
+        "a": "**send_gate: HOLD** · ready_for_external_send: false. Organic B2B·데모 링크·본 docs는 가능; **counsel sign-off 전** paid mass SEND는 하지 않습니다."
+      },
+      {
+        "q": "내부 문서·수식을 공개하나요?",
+        "a": "**아닙니다.** 공개 docs는 **요약·면책·데모 범위**만. 코어 codebook·미승격 catalog·내부 경로는 **비공개** (invisible core, visible evidence)."
+      }
+    ]
+  }
+}

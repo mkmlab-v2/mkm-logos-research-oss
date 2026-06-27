@@ -7,6 +7,10 @@ import { AppWorkspaceShell } from "@/components/AppWorkspaceShell";
 import { MinimalClinicianShell } from "@/components/MinimalClinicianShell";
 import { JEMA_AI_PUBLIC_ORIGIN } from "@/lib/no1kmedi-portal-host";
 import { ClinicianPersistedChat } from "@/components/ClinicianPersistedChat";
+import { ClinicianEncounterGoldPanel } from "@/components/ClinicianEncounterGoldPanel";
+import { ClinicianSimpleCopilotPanel } from "@/components/ClinicianSimpleCopilotPanel";
+import { ClinicianCanvasStudioLayout } from "@/components/clinician/ClinicianCanvasStudioLayout";
+import { ClinicianCanvasEmptyLayout } from "@/components/clinician/ClinicianCanvasEmptyLayout";
 import { ClinicianThreadRail } from "@/components/ClinicianThreadRail";
 import { JemaWorkspaceCommandPalette, type PaletteAction } from "@/components/JemaWorkspaceCommandPalette";
 
@@ -31,7 +35,29 @@ const PatientCareBundlePreview = dynamic(
     })),
   { loading: () => panelFallback },
 );
+const ClinicianConsultGraphPanel = dynamic(
+  () =>
+    import("@/components/ClinicianConsultGraphPanel").then((m) => ({
+      default: m.ClinicianConsultGraphPanel,
+    })),
+  { loading: () => panelFallback },
+);
+const ClinicianGraphConflictSheet = dynamic(
+  () =>
+    import("@/components/ClinicianGraphConflictSheet").then((m) => ({
+      default: m.ClinicianGraphConflictSheet,
+    })),
+  { loading: () => panelFallback },
+);
+const ClinicianGraphPilotKpiStrip = dynamic(
+  () =>
+    import("@/components/ClinicianGraphPilotKpiStrip").then((m) => ({
+      default: m.ClinicianGraphPilotKpiStrip,
+    })),
+  { loading: () => panelFallback },
+);
 import { siteCopy } from "@/content/siteCopy";
+import { markClinicianGraphCdsReady } from "@/lib/clinicianGraphPilotKpiV1";
 import { useClinicianThreads } from "@/hooks/useClinicianThreads";
 import type { ClinicianThreadContext } from "@/lib/clinician-chat-types";
 import {
@@ -39,12 +65,16 @@ import {
   trackKmCdsUiEvent,
 } from "@/lib/km-cds-ui-analytics-events-v1";
 
-const NAV = [
+const NAV_BASE = [
+  { id: "copilot", label: "진료 분석" },
   { id: "chat", label: "대화" },
   { id: "patient", label: "환자·설정" },
   { id: "bundle", label: "환자 번들" },
+  { id: "gold", label: "Paste Chart" },
   { id: "safety", label: "안전·고지" },
 ] as const;
+
+const NAV_MINIMAL = [...NAV_BASE] as const;
 
 type MemberAccessStatusResponse = {
   success: boolean;
@@ -54,7 +84,20 @@ type MemberAccessStatusResponse = {
   can_use_pro_clinical_assist?: boolean;
 };
 
-function ClinicianSafetyPanel() {
+function ClinicianSafetyPanel({
+  redFlags = [],
+  requestId,
+}: {
+  redFlags?: string[];
+  requestId?: string;
+}) {
+  const [checks, setChecks] = useState({
+    notAutoDiagnosis: false,
+    reviewedRedFlags: false,
+    physicianFinal: false,
+  });
+  const ready = checks.notAutoDiagnosis && checks.reviewedRedFlags && checks.physicianFinal;
+
   return (
     <div className="workspace-panel workspace-panel--prose">
       <h2 className="workspace-panel-title">{siteCopy.safety.title}</h2>
@@ -65,9 +108,52 @@ function ClinicianSafetyPanel() {
           ))}
         </ul>
       </div>
+      {redFlags.length ? (
+        <div className="notice-box">
+          <strong>Red flags (CDS 봉투)</strong>
+          <ul>
+            {redFlags.map((flag) => (
+              <li key={flag}>{flag}</li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
       <p className="workspace-muted">
         CDSS는 보조 도구입니다. 최종 진단·처방·기록은 한의사가 확정합니다. 명리·보조 슬롯은 [HYPO] 참고용입니다.
       </p>
+      <div className="consult-signoff-block">
+        <strong>원장 sign-off 체크리스트</strong>
+        <div className="consult-bundle-options">
+          <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <input
+              type="checkbox"
+              checked={checks.notAutoDiagnosis}
+              onChange={(e) => setChecks((s) => ({ ...s, notAutoDiagnosis: e.target.checked }))}
+            />
+            자동 확정·자동 처방이 아님을 확인했습니다
+          </label>
+          <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <input
+              type="checkbox"
+              checked={checks.reviewedRedFlags}
+              onChange={(e) => setChecks((s) => ({ ...s, reviewedRedFlags: e.target.checked }))}
+            />
+            Red flag·주의 사항을 검토했습니다
+          </label>
+          <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <input
+              type="checkbox"
+              checked={checks.physicianFinal}
+              onChange={(e) => setChecks((s) => ({ ...s, physicianFinal: e.target.checked }))}
+            />
+            최종 판단 책임이 한의사에게 있음을 확인했습니다
+          </label>
+        </div>
+        {ready && requestId ? (
+          <p className="consult-source-chip">encounter_ref: {requestId} · sign-off 준비 완료 (번들 탭에서 확정 기록 가능)</p>
+        ) : null}
+        <ClinicianGraphPilotKpiStrip />
+      </div>
     </div>
   );
 }
@@ -80,6 +166,8 @@ type ClinicianWorkspaceClientProps = {
 export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWorkspaceClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const nav = minimalShell ? NAV_MINIMAL : NAV_BASE;
+  const canvasLayout = searchParams.get("canvas") === "1";
   const {
     ready,
     threads,
@@ -94,19 +182,35 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
 
   const [activeId, setActiveId] = useState<string>(() => {
     const p = searchParams.get("panel");
-    if (p === "patient" || p === "bundle" || p === "safety") return p;
-    return "chat";
+    if (p === "copilot" || p === "patient" || p === "bundle" || p === "gold" || p === "safety") return p;
+    if (p === "chat") return "chat";
+    return "copilot";
   });
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [accessEmail, setAccessEmail] = useState("");
   const [accessBusy, setAccessBusy] = useState(false);
   const [accessStatus, setAccessStatus] = useState<MemberAccessStatusResponse | null>(null);
+  const [patientCareBundle, setPatientCareBundle] = useState<Record<string, unknown> | null>(null);
 
   const canUseAdvancedConsult = accessStatus?.success === true && accessStatus?.can_use_pro_clinical_assist === true;
 
   useEffect(() => {
+    setPatientCareBundle(null);
+  }, [activeThreadId, activeThread?.lastCds?.requestId]);
+
+  useEffect(() => {
+    const requestId = activeThread?.lastCds?.requestId;
+    if (requestId) markClinicianGraphCdsReady(requestId);
+  }, [activeThread?.lastCds?.requestId]);
+
+  useEffect(() => {
     const p = searchParams.get("panel");
-    const next = p === "patient" || p === "bundle" || p === "safety" ? p : "chat";
+    const next =
+      p === "copilot" || p === "patient" || p === "bundle" || p === "gold" || p === "safety"
+        ? p
+        : p === "chat"
+          ? "chat"
+          : "copilot";
     setActiveId((cur) => (cur === next ? cur : next));
   }, [searchParams]);
 
@@ -182,9 +286,11 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
 
   const paletteActions: PaletteAction[] = useMemo(
     () => [
+      { id: "copilot", label: "진료 분석", hint: "panel", run: () => onSelect("copilot") },
       { id: "chat", label: "대화", hint: "panel", run: () => onSelect("chat") },
       { id: "patient", label: "환자·설정", hint: "panel", run: () => onSelect("patient") },
       { id: "bundle", label: "환자 번들", hint: "panel", run: () => onSelect("bundle") },
+      { id: "gold", label: "Paste Chart", hint: "panel", run: () => onSelect("gold") },
       { id: "safety", label: "안전·고지", hint: "panel", run: () => onSelect("safety") },
       { id: "new", label: "새 상담", hint: "스레드", run: () => startNewConsult() },
       {
@@ -202,6 +308,17 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
     ],
     [minimalShell, onSelect, router, startNewConsult],
   );
+
+  const cdsRedFlags = useMemo(() => {
+    const env = activeThread?.lastCds?.envelope;
+    if (!env) return [];
+    const flags = Array.isArray(env.red_flags_and_escalation)
+      ? env.red_flags_and_escalation.filter((x): x is string => typeof x === "string")
+      : [];
+    const caution = activeThread?.lastCds?.reasoning?.caution;
+    if (caution && !flags.includes(caution)) flags.unshift(caution);
+    return flags.slice(0, 8);
+  }, [activeThread]);
 
   const sidebarBody =
     ready && threads.length ? (
@@ -236,6 +353,52 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
 
   const panelContent = (
     <>
+      {activeId === "copilot" ? (
+        <div className="workspace-scroll-panel">
+          {canvasLayout && activeThread.lastCds?.envelope ? (
+            <ClinicianCanvasStudioLayout
+              requestId={activeThread.lastCds.requestId}
+              envelope={activeThread.lastCds.envelope}
+              reasoning={activeThread.lastCds.reasoning}
+              clinicalSummary={activeThread.lastCds.clinicalSummary}
+              validationOk={activeThread.lastCds.validationOk}
+              patientCareBundle={patientCareBundle}
+              chat={
+                <>
+                  <h2 className="workspace-panel-title">Encounter</h2>
+                  <p className="workspace-muted">
+                    Trust Canvas stub · CDS 봉투 기준 그래프·갈등 시트. 전체 폼은{" "}
+                    <button
+                      type="button"
+                      className="workspace-link-btn"
+                      onClick={() => router.replace("/clinician?panel=copilot", { scroll: false })}
+                    >
+                      클래식 뷰
+                    </button>
+                  </p>
+                  {activeThread.lastCds.clinicalSummary ? (
+                    <p className="clinician-canvas-chat-summary">{activeThread.lastCds.clinicalSummary}</p>
+                  ) : null}
+                </>
+              }
+            />
+          ) : canvasLayout ? (
+            <ClinicianCanvasEmptyLayout onOpenChat={() => onSelect("chat")} />
+          ) : (
+            <>
+              <ClinicianSimpleCopilotPanel />
+              {activeThread.lastCds?.envelope ? (
+                <ClinicianConsultGraphPanel
+                  requestId={activeThread.lastCds.requestId}
+                  envelope={activeThread.lastCds.envelope}
+                  reasoning={activeThread.lastCds.reasoning}
+                  patientCareBundle={patientCareBundle}
+                />
+              ) : null}
+            </>
+          )}
+        </div>
+      ) : null}
       {activeId === "chat" ? (
         <div className="workspace-chat-column">
           <ClinicianPersistedChat
@@ -263,13 +426,22 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
       {activeId === "bundle" ? (
         <div className="workspace-scroll-panel">
           {draftForBundle && activeThread.lastCds?.envelope ? (
-            <PatientCareBundlePreview
-              enabled={canUseAdvancedConsult}
-              formState={activeThread.context}
-              draft={draftForBundle}
-              cdsEnvelope={activeThread.lastCds.envelope}
-              kmCdsValidationOk={activeThread.lastCds.validationOk}
-            />
+            <>
+              <PatientCareBundlePreview
+                enabled={canUseAdvancedConsult}
+                formState={activeThread.context}
+                draft={draftForBundle}
+                cdsEnvelope={activeThread.lastCds.envelope}
+                kmCdsValidationOk={activeThread.lastCds.validationOk}
+                onBundleReady={setPatientCareBundle}
+              />
+              <ClinicianGraphConflictSheet
+                requestId={activeThread.lastCds.requestId}
+                envelope={activeThread.lastCds.envelope}
+                reasoning={activeThread.lastCds.reasoning}
+                patientCareBundle={patientCareBundle}
+              />
+            </>
           ) : (
             <div className="workspace-panel notice-box">
               <p>먼저 「대화」에서 진료 보조 초안을 생성한 뒤, SSOT 봉투가 준비되면 번들을 만들 수 있습니다.</p>
@@ -277,7 +449,22 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
           )}
         </div>
       ) : null}
-      {activeId === "safety" ? <ClinicianSafetyPanel /> : null}
+      {activeId === "gold" ? (
+        <div className="workspace-scroll-panel">
+          <ClinicianEncounterGoldPanel
+            clinicianEmail={accessEmail}
+            defaultSlug={activeThread.context.ssotSlug || ""}
+            birthInstantUtc={activeThread.context.birthInstantUtc || ""}
+            ianaTz={activeThread.context.ianaTz || "Asia/Seoul"}
+            cdsDraft={draftForBundle}
+            patientCareBundle={patientCareBundle}
+            onFusionBundleReady={setPatientCareBundle}
+          />
+        </div>
+      ) : null}
+      {activeId === "safety" ? (
+        <ClinicianSafetyPanel redFlags={cdsRedFlags} requestId={activeThread.lastCds?.requestId} />
+      ) : null}
     </>
   );
 
@@ -287,7 +474,7 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
       {minimalShell ? (
         <MinimalClinicianShell
           roleLabel="한의사"
-          nav={[...NAV]}
+          nav={[...nav]}
           activeId={activeId}
           onSelect={onSelect}
           sidebarBody={sidebarBody}
@@ -299,7 +486,7 @@ export function ClinicianWorkspaceClient({ minimalShell = false }: ClinicianWork
         <AppWorkspaceShell
           homeHref="/"
           roleLabel="한의사"
-          nav={[...NAV]}
+          nav={[...nav]}
           activeId={activeId}
           onSelect={onSelect}
           sidebarBody={sidebarBody}

@@ -47,7 +47,7 @@ export function PersonadiaryChrome({
               </Link>
               <nav className="pd-nav" aria-label="Persona Diary">
                 <Link href={personadiaryPublicPath("/ops")}>내 기지</Link>
-                <Link href="/demo">콘셉트 데모</Link>
+                <Link href={personadiaryCopy.links.demo}>콘셉트 데모</Link>
                 <a
                   href={personadiaryCopy.links.observatory}
                   target="_blank"
@@ -85,6 +85,9 @@ export function PersonadiaryChrome({
         .pd-shell--premium {
           background: #030712;
           color: #e2e8f0;
+        }
+        .pd-shell--ops.pd-shell--premium {
+          background: #000000;
         }
         .pd-shell--premium .pd-header {
           background: rgba(3, 7, 18, 0.88);

@@ -5,6 +5,8 @@
  */
 
 import { JEMAAI_CLOUD_PUBLIC_OBSERVE_URL } from "@/lib/jemaaiShowroomPublicV1";
+import { LOGOS_RESEARCH_STUDIO } from "@/lib/universeHubLogosCommercialV1";
+import { MYEONGNI_RESEARCH_STUDIO } from "@/lib/universeHubMyeongniCommercialV1";
 import { buildUniverseHubMkmlifeDeepLinks } from "@/lib/mkmlife-hub-origin-v1";
 
 export const UNIVERSE_HUB_SHELL_ID = "universe_hub_v2" as const;
@@ -14,6 +16,7 @@ export type UniverseHubPluginId =
   | "governed_customization"
   | "oracle_observatory"
   | "logos_observatory"
+  | "myeongni_observatory"
   | "mkm_life"
   | "personadiary_preview"
   | "a_code_sandbox"
@@ -84,7 +87,14 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
     id: "logos_observatory",
     labelKo: "Logos 관측소",
     href: "/hub/logos",
-    laneNote: "B-track · 4D topology [HYPO]",
+    laneNote: "B-track · Hub 관측 + Studio 상용",
+    navGroup: "consumer",
+  },
+  {
+    id: "myeongni_observatory",
+    labelKo: "명리 관측소",
+    href: "/hub/myeongni",
+    laneNote: "B-track · 중기 방향 [HYPO]",
     navGroup: "consumer",
   },
   {
@@ -149,6 +159,8 @@ export const UNIVERSE_HUB_DEEP_LINKS = {
   enterpriseWttPersonaOs: "/enterprise#wtt-persona-os",
   compressionPilotApply: "/enterprise/apply",
   wttPersonaOsDemo: "https://personadiary.com/wtt-persona-os-demo-v1.html",
+  logosResearchStudio: LOGOS_RESEARCH_STUDIO,
+  myeongniResearchStudio: MYEONGNI_RESEARCH_STUDIO,
 } as const;
 
 /** Hub → mkmlife 원퀘스천 (open-beta guest; no signup). */

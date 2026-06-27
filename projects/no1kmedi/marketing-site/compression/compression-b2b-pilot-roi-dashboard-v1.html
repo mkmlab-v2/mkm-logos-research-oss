@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Compression B2B Pilot ROI | JEMA AI</title>
+    <meta
+      name="description"
+      content="압축 B2B pilot ROI 정적 관측 보드 — 내부 검토용. 청구·대외 헤드라인 수치 아님."
+    />
+    <link rel="stylesheet" href="compression-b2b-pilot-roi-dashboard-v1.css" />
+  </head>
+  <body class="roi-dashboard-page">
+    <a class="skip" href="#main">본문으로 건너뛰기</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="/enterprise">JEMA AI <span>Compression B2B</span></a>
+        <nav class="roi-nav">
+          <a href="/enterprise">기업·파트너</a>
+          <a href="https://a-codeai.com" target="_blank" rel="noopener noreferrer">a-codeai.com</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="roi-main">
+      <section class="hero roi-hero">
+        <div class="roi-hero-meta">
+          <span class="roi-pill hold">SEND_GATE HOLD</span>
+          <span class="roi-pill">research_only</span>
+          <span class="roi-pill">pilot_intake_measured</span>
+        </div>
+        <h1>Pilot ROI 관측 보드</h1>
+        <p class="hero-lead">
+          <code>compression-pilot-v1</code> 테넌트의 masked 코퍼스·미터링 부록 프록시입니다.
+          아래 수치는 <strong>디자인·내부 검토용 스냅샷</strong>이며 청구·광고 헤드라인으로 쓰지 않습니다.
+        </p>
+      </section>
+
+      <section class="roi-grid" aria-label="측정 프록시">
+        <article class="roi-card">
+          <h2>코퍼스</h2>
+          <dl>
+            <div><dt>cases</dt><dd id="metric-cases">25</dd></div>
+            <div><dt>mean saving proxy</dt><dd id="metric-saving">~14.0%</dd></div>
+            <div><dt>mean Jaccard proxy</dt><dd id="metric-jaccard">~0.85</dd></div>
+          </dl>
+          <p class="roi-card-note">operational (post-processor included) · Track A 헤드라인 아님</p>
+        </article>
+        <article class="roi-card">
+          <h2>미터링 교차</h2>
+          <dl>
+            <div><dt>global saving (metering)</dt><dd id="metric-meter">47.6%</dd></div>
+            <div><dt>events in 40–50% band</dt><dd id="metric-band">3</dd></div>
+            <div><dt>SKU</dt><dd>MKM-CHAT-D1</dd></div>
+          </dl>
+          <p class="roi-card-note">벤치 frozen KPI와 혼동 금지 (FAIL-COMP-004)</p>
+        </article>
+        <article class="roi-card">
+          <h2>달러/KRW 프록시</h2>
+          <dl>
+            <div><dt>monthly savings USD</dt><dd id="metric-usd">$0.07</dd></div>
+            <div><dt>monthly savings KRW</dt><dd id="metric-krw">₩95</dd></div>
+            <div><dt>status</dt><dd>customer_measured</dd></div>
+          </dl>
+          <p class="roi-card-note">Token proxy + list prices — not a billing commitment</p>
+        </article>
+      </section>
+
+      <section class="roi-artifacts" aria-labelledby="artifacts-title">
+        <h2 id="artifacts-title">아티팩트 SSOT (레포 경로)</h2>
+        <p class="section-lead">구현·수치 확정은 아래 JSON·스크립트 exit code만 SSOT입니다.</p>
+        <ul class="roi-artifact-list">
+          <li>
+            <code>docs/final/artifacts/compression_b2b_pilot_roi_report_v1_latest.json</code>
+          </li>
+          <li>
+            <code>reports/customer_compression_stateless_poc_compression-pilot-v1_v1_latest.json</code>
+          </li>
+          <li>
+            <code>reports/compression_b2b_prospect_poc_corpus_compression-pilot-v1_v1.json</code>
+          </li>
+          <li>
+            <code>data/compression/stateless_poc_prospect_compression-pilot-v1_v1.jsonl</code>
+          </li>
+          <li>
+            <code>docs/final/artifacts/compression_b2b_pilot_metering_appendix_compression-pilot-v1_latest.json</code>
+          </li>
+        </ul>
+        <p class="roi-repro">
+          재현:
+          <code
+            >powershell -File scripts\Run-CompressionCustomerPilotIntake_v1.ps1 -TenantId compression-pilot-v1</code
+          >
+        </p>
+      </section>
+
+      <section id="safety">
+        <h2>금지 문구 (forbidden_as_headline)</h2>
+        <div class="notice-box">
+          <ul id="forbidden-list">
+            <li>Track A 47.5%를 고객 ROI로 단정</li>
+            <li>repair-only uplift를 core 품질로 표기</li>
+            <li>SEND 해제 전 대외 case study</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">MKM Compression B2B · design dashboard v1</div>
+        <div class="footer-legal">© 2026 · publish_allowed=false</div>
+      </div>
+    </footer>
+
+    <script>
+      fetch("/compression/compression-b2b-pilot-roi-dashboard-v1.snapshot.json")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          if (!d) return;
+          const m = d.measured_proxy || {};
+          const usd = d.customer_dollar_roi || {};
+          const el = (id, val) => {
+            const n = document.getElementById(id);
+            if (n && val != null) n.textContent = val;
+          };
+          if (m.case_count != null) el("metric-cases", m.case_count);
+          if (m.mean_token_saving_rate_proxy != null)
+            el("metric-saving", (m.mean_token_saving_rate_proxy * 100).toFixed(1) + "%");
+          if (m.mean_jaccard_proxy != null) el("metric-jaccard", m.mean_jaccard_proxy.toFixed(2));
+          if (m.metering_global_saving_rate != null)
+            el("metric-meter", (m.metering_global_saving_rate * 100).toFixed(1) + "%");
+          if (m.events_in_band_40_50 != null) el("metric-band", m.events_in_band_40_50);
+          if (usd.monthly_savings_usd != null) el("metric-usd", "$" + usd.monthly_savings_usd);
+          if (usd.monthly_savings_krw != null) el("metric-krw", "₩" + usd.monthly_savings_krw);
+          const forb = d.forbidden_as_headline;
+          if (Array.isArray(forb) && forb.length) {
+            const ul = document.getElementById("forbidden-list");
+            ul.innerHTML = forb.map((x) => "<li>" + x + "</li>").join("");
+          }
+        })
+        .catch(() => {});
+    </script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+[
+  {
+    "updatedAt": "2026-06-16T01:50:00.000Z",
+    "createdAt": "2026-06-16T01:50:00.000Z",
+    "id": "PtIntakeNotify01",
+    "name": "patient-intake-notification-webhook",
+    "description": "Internal PoC relay for /intake kakao_summary + Solapi dry probe (SEND_GATE READY_INTERNAL_POC only at app layer).",
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "path": "patient-intake-notification",
+          "httpMethod": "POST",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "Webhook_In",
+        "name": "Webhook In",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [260, 300],
+        "webhookId": "patient-intake-notification"
+      },
+      {
+        "parameters": {
+          "jsCode": "const payload = $json.body ?? $json;\nconst receipt = payload.receipt_id || payload.survey_id || 'unknown';\nconst pin = payload.intake_pin || payload.pin || '';\nconst triage = payload.triage_level || 'routine';\nconst gate = payload.send_gate || 'HOLD';\nconst lane = payload.notification_lane || payload.lane || 'internal_poc';\nconst isProbe = payload.event === 'patient_intake_notification_dry_v1';\nconst text = isProbe\n  ? `[문진 PoC 프로브] gate=${gate} lane=${lane}`\n  : `[한의원 사전 문진 접수]\\n` +\n    `접수 ID: ${receipt}\\n` +\n    `문진 PIN: ${pin || '(미발급)'}\\n` +\n    `트리아지: ${triage}\\n` +\n    `게이트: ${gate} / ${lane}\\n` +\n    `※ 내부 PoC · 대외 대량 발송 아님`;\nreturn [{\n  json: {\n    ok: true,\n    lane: 'patient_intake_notification',\n    receipt_id: receipt,\n    intake_pin: pin,\n    triage_level: triage,\n    send_gate: gate,\n    notification_lane: lane,\n    received_at_utc: new Date().toISOString(),\n    text,\n    skip_telegram: isProbe,\n  },\n}];"
+        },
+        "id": "Normalize_Payload",
+        "name": "Normalize Payload",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [560, 300]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ { ok: true, lane: 'patient_intake_notification', received_at_utc: new Date().toISOString() } }}"
+        },
+        "id": "Respond_OK",
+        "name": "Respond OK",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [860, 300]
+      }
+    ],
+    "connections": {
+      "Webhook In": {
+        "main": [[{ "node": "Normalize Payload", "type": "main", "index": 0 }]]
+      },
+      "Normalize Payload": {
+        "main": [[{ "node": "Respond OK", "type": "main", "index": 0 }]]
+      }
+    },
+    "settings": { "executionOrder": "v1" },
+    "staticData": null,
+    "meta": { "templateCredsSetupCompleted": true },
+    "pinData": {},
+    "versionId": "patient-intake-notification-v1",
+    "tags": []
+  }
+]

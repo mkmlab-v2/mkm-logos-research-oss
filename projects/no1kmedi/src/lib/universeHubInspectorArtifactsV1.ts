@@ -4,6 +4,10 @@
  */
 
 import { JEMAAI_CLOUD_PUBLIC_OBSERVE_URL } from "@/lib/jemaaiShowroomPublicV1";
+import {
+  LOGOS_RESEARCH_HOME,
+  LOGOS_RESEARCH_STUDIO,
+} from "@/lib/universeHubLogosCommercialV1";
 import { UNIVERSE_HUB_LOGOS_TOPOLOGY_PATH } from "@/lib/universeHubLogosTopologyV1";
 
 export type HubInspectorArtifactV1 = {
@@ -16,6 +20,18 @@ export type HubInspectorArtifactV1 = {
 };
 
 export const HUB_INSPECTOR_ARTIFACTS_V1: HubInspectorArtifactV1[] = [
+  {
+    id: "logos_studio_commercial",
+    labelKo: "Graph Studio · 상용 워크스페이스 (on-domain)",
+    href: LOGOS_RESEARCH_STUDIO,
+    hypo: true,
+  },
+  {
+    id: "logos_research_home",
+    labelKo: "Logos Scripture Research (랜딩)",
+    href: LOGOS_RESEARCH_HOME,
+    hypo: true,
+  },
   {
     id: "logos_topology_json",
     labelKo: "Logos 4D topology JSON",

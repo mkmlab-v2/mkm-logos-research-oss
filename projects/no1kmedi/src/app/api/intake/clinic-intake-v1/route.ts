@@ -8,7 +8,7 @@ import {
   validateClinicIntakeV1,
   type ClinicIntakeV1Payload,
 } from "@/lib/clinic-intake-v1-contract";
-import { deliverKakaoIntakeSummary } from "@/lib/kakao-intake-adapter";
+import { deliverClinicIntakeNotifications } from "@/lib/patient-intake-notification-v1";
 import { extractSajuLabelFromVerifyLite, resolveClinicBirthInstant } from "@/lib/clinic-intake-birth-v1";
 import { runVerifyLiteEngine } from "@/lib/manseryeok-verify-lite-engine";
 
@@ -135,7 +135,7 @@ export async function POST(request: NextRequest) {
     record.meta = { ...(record.meta || {}), kakao_summary: kakaoSummary };
     rows[0] = record;
     await savePreSurveys(rows);
-    const kakaoDelivery = await deliverKakaoIntakeSummary(process.env.KAKAO_CLINIC_INTAKE_WEBHOOK_URL, kakaoSummary);
+    const notification = await deliverClinicIntakeNotifications({ kakaoSummary });
 
     return NextResponse.json(
       {
@@ -147,7 +147,9 @@ export async function POST(request: NextRequest) {
         saju_label: saju_label || null,
         saju_source: saju_source || null,
         kakao_summary: kakaoSummary,
-        kakao_delivery: kakaoDelivery,
+        kakao_delivery: notification.kakao_delivery,
+        send_gate: notification.gate.send_gate,
+        notification_lane: notification.policy.lane,
       },
       { status: 200, headers: { "Cache-Control": "no-store" } },
     );
