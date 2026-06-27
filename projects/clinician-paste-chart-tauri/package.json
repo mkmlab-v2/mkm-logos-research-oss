@@ -1,0 +1,15 @@
+{
+  "name": "clinician-paste-chart-tauri",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MKM Paste Chart P2 — Tauri shell for app.jema-ai.com/clinician (Track B · research_only)",
+  "scripts": {
+    "smoke:scaffold": "node ./scripts/smoke-tauri-scaffold-v1.mjs",
+    "tauri": "tauri",
+    "dev": "tauri dev",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.4.0"
+  }
+}

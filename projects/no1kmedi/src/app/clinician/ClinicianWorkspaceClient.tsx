@@ -214,6 +214,7 @@ export function ClinicianWorkspaceClient({
   const [accessBusy, setAccessBusy] = useState(false);
   const [accessStatus, setAccessStatus] = useState<MemberAccessStatusResponse | null>(null);
   const [patientCareBundle, setPatientCareBundle] = useState<Record<string, unknown> | null>(null);
+  const [urlEmailPrefilled, setUrlEmailPrefilled] = useState(false);
 
   const canUseAdvancedConsult = accessStatus?.success === true && accessStatus?.can_use_pro_clinical_assist === true;
 
@@ -297,6 +298,20 @@ export function ClinicianWorkspaceClient({
       setAccessBusy(false);
     }
   }, [accessEmail]);
+
+  useEffect(() => {
+    const fromUrl = (searchParams.get("email") || searchParams.get("clinician_email") || "")
+      .trim()
+      .toLowerCase();
+    if (!fromUrl || urlEmailPrefilled) return;
+    setAccessEmail(fromUrl);
+    setUrlEmailPrefilled(true);
+  }, [searchParams, urlEmailPrefilled]);
+
+  useEffect(() => {
+    if (!urlEmailPrefilled || !accessEmail.trim()) return;
+    void checkAccessStatus();
+  }, [urlEmailPrefilled, accessEmail, checkAccessStatus]);
 
   const patchContext = useCallback(
     (patch: Partial<ClinicianThreadContext>) => {

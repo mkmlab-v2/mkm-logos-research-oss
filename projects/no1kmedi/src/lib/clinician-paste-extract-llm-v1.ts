@@ -24,22 +24,29 @@ type LlmChipJson = {
 };
 
 function parseLlmJson(text: string): LlmChipJson | null {
-  const trimmed = text.trim();
+  const trimmed = text.trim().replace(/^\uFEFF/, "");
   const fence = trimmed.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  const raw = fence?.[1]?.trim() || trimmed;
-  try {
-    const parsed = JSON.parse(raw) as LlmChipJson;
-    return parsed && typeof parsed === "object" ? parsed : null;
-  } catch {
+  const candidates = [fence?.[1]?.trim(), trimmed].filter(Boolean) as string[];
+
+  for (const raw0 of candidates) {
+    let raw = raw0.trim();
+    raw = raw.replace(/,\s*([}\]])/g, "$1");
+    const attempts = [raw];
     const start = raw.indexOf("{");
     const end = raw.lastIndexOf("}");
-    if (start < 0 || end <= start) return null;
-    try {
-      return JSON.parse(raw.slice(start, end + 1)) as LlmChipJson;
-    } catch {
-      return null;
+    if (start >= 0 && end > start) {
+      attempts.push(raw.slice(start, end + 1));
+    }
+    for (const attempt of attempts) {
+      try {
+        const parsed = JSON.parse(attempt) as LlmChipJson;
+        if (parsed && typeof parsed === "object") return parsed;
+      } catch {
+        // try next slice
+      }
     }
   }
+  return null;
 }
 
 function normalizeSex(raw?: string): "M" | "F" | "unknown" | undefined {
@@ -67,7 +74,7 @@ export async function extractPasteChartDraftLlmV1(chartText: string): Promise<Pa
   }
 
   const systemInstruction = `You extract clinician paste-chart metadata for Korean EMR/chat snippets.
-Return ONLY one JSON object with keys: display_name (string|omit), birthdate (YYYY-MM-DD|omit), sex (M|F|unknown|omit), age_years (number|omit), chief_complaint (short string|omit).
+Return ONLY one JSON object (no markdown fences, no prose) with keys: display_name (string|omit), birthdate (YYYY-MM-DD|omit), sex (M|F|unknown|omit), age_years (number|omit), chief_complaint (short string|omit).
 Do not diagnose. Do not invent data absent from the text. research_only human_confirm.`;
 
   const prompt = `Extract patient metadata chips from this pasted chart text:\n\n${text}`;

@@ -283,7 +283,7 @@ $graphBuild = Get-Content $graphBuildOut -Raw -Encoding UTF8 | ConvertFrom-Json
 if (-not $graphBuild.success) { throw "graph build-from-cds success=false" }
 Write-Host "[no1kmedi-tarball] smoke POST clinician/paste-extract-v1 (LLM chip)" -ForegroundColor Cyan
 $pasteExtractBody = Join-Path $env:TEMP "no1kmedi-deploy-paste-extract-$stamp.json"
-$pasteExtractJson = '{"chart_text":"김민수 / 1988-03-12 / 남 / 36세 / 요통 3주"}'
+$pasteExtractJson = '{"chart_text":"Kim Minsu / 1988-03-12 / male / age 36 / back pain 3 weeks"}'
 [System.IO.File]::WriteAllText($pasteExtractBody, $pasteExtractJson, [System.Text.UTF8Encoding]::new($false))
 $pasteExtractOut = Join-Path $env:TEMP "no1kmedi-deploy-paste-extract-out-$stamp.json"
 $pasteExtractCode = (& curl.exe -s -o $pasteExtractOut -w "%{http_code}" --max-time 90 -X POST "https://app.jema-ai.com/api/clinician/paste-extract-v1" -H "Content-Type: application/json; charset=utf-8" -H "Origin: https://app.jema-ai.com" -H "Referer: https://app.jema-ai.com/clinician?panel=gold" -H "x-clinician-email: smoke-paste-chart@local.test" --data-binary "@$pasteExtractBody")

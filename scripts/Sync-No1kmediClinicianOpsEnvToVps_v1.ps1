@@ -18,7 +18,9 @@
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Sync-No1kmediClinicianOpsEnvToVps_v1.ps1 -PostSmoke
 #>
 param(
-    [string]$Allowlist = "smoke-paste-chart@local.test,admin@no1kmedi.com",
+    [string]$Allowlist = "",
+    [string[]]$ExtraEmails = @("smoke-paste-chart@local.test", "admin@no1kmedi.com", "moksorinw@gmail.com"),
+    [switch]$SyncLocalEnv,
     [switch]$PostSmoke,
     [switch]$WhatIfOnly
 )
@@ -54,13 +56,42 @@ foreach ($k in $llmKeys) {
     if (-not $v) { $v = Read-DotEnvKey $workspaceEnv $k }
     if ($v) { $pairs[$k] = $v }
 }
-$pairs["KM_CLINICIAN_PRO_EMAIL_ALLOWLIST"] = $Allowlist.Trim()
+$pairs["KM_CLINICIAN_PRO_EMAIL_ALLOWLIST"] = if ($Allowlist.Trim()) {
+    $Allowlist.Trim()
+} else {
+    ($ExtraEmails | ForEach-Object { $_.Trim().ToLower() } | Where-Object { $_ } | Select-Object -Unique) -join ","
+}
 
 if ($pairs.Count -lt 2) {
     throw "Need at least allowlist + one LLM key in projects/no1kmedi/.env.local or .env"
 }
 
 Write-Host "[clinician-ops-vps] keys: $($pairs.Keys -join ', ') (values redacted)" -ForegroundColor Cyan
+
+function Upsert-DotEnvKeyLocal([string]$path, [string]$key, [string]$value) {
+    $lines = [System.Collections.Generic.List[string]]@()
+    if (Test-Path -LiteralPath $path) {
+        $lines = [System.Collections.Generic.List[string]]@(Get-Content -LiteralPath $path -Encoding UTF8)
+    }
+    $pattern = "^\s*$([regex]::Escape($key))\s*="
+    $idx = -1
+    for ($i = 0; $i -lt $lines.Count; $i++) {
+        if ($lines[$i] -match $pattern) { $idx = $i; break }
+    }
+    $newLine = "$key=$value"
+    if ($idx -ge 0) { $lines[$idx] = $newLine } else { $lines.Add($newLine) }
+    $dir = Split-Path -Parent $path
+    if ($dir -and -not (Test-Path -LiteralPath $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+    Set-Content -LiteralPath $path -Value ($lines -join "`n") -Encoding UTF8 -NoNewline
+    Add-Content -LiteralPath $path -Value "`n" -Encoding UTF8
+}
+
+if ($SyncLocalEnv) {
+    Upsert-DotEnvKeyLocal $localEnv "KM_CLINICIAN_PRO_EMAIL_ALLOWLIST" $pairs["KM_CLINICIAN_PRO_EMAIL_ALLOWLIST"]
+    Write-Host "[clinician-ops-vps] updated local $localEnv allowlist" -ForegroundColor Green
+}
 
 if ($WhatIfOnly) {
     Write-Host "[clinician-ops-vps] WhatIf: would SSH upsert on VPS .env.local + pm2 restart no1kmedi-com"
