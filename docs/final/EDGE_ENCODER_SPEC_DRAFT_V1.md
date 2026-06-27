@@ -76,6 +76,29 @@ py scripts/check_edge_encoder_air_gap_bundle_v1.py
 Artifacts:
 - `docs/final/artifacts/edge_encoder_air_gap_poc_pack_v1_latest.json` — `deployment_mode: air_gap_on_prem`
 - `reports/edge_encoder_air_gap_bundle_v1_latest/` — local base + `wire/wire_only_export.json` (`original_bulk_sent: false`)
+- `reports/edge_encoder_sdk_portable_launcher_v1_latest/` — `edge-smoke.ps1` · `edge-encode-manifest.ps1`
+
+## Cross-process HTTP determinism
+
+```text
+py scripts/check_edge_encoder_cross_process_determinism_v1.py
+py scripts/run_edge_encoder_sdk_cli_v1.py http-roundtrip
+```
+
+Ephemeral `uvicorn` v2 stub vs in-process `TestClient` — `compression_packet` fingerprint + expand text parity.
+
+## PyInstaller scaffold + VPC runbook
+
+```text
+py scripts/build_edge_encoder_sdk_pyinstaller_v1.py
+py scripts/check_edge_encoder_pyinstaller_readiness_v1.py
+py scripts/build_edge_encoder_vpc_deploy_runbook_v1.py
+```
+
+- Spec: `reports/edge_encoder_sdk_pyinstaller_v1_latest/edge_encoder_sdk_cli_v1.spec`
+- Frozen entrypoint: `scripts/edge_encoder_sdk_frozen_entrypoint_v1.py` (encode/validate; v2 stub via HTTP only)
+- VPC runbook: `docs/final/artifacts/edge_encoder_vpc_deploy_runbook_v1_latest.json`
+- Operator HTML: `reports/demo/edge_encoder_vpc_deploy_checklist_v1.html` (`build_edge_encoder_vpc_checklist_html_v1.py`)
 
 ## FAIL-COMP-004
 

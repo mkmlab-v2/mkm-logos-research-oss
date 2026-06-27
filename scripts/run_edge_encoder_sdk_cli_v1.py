@@ -77,6 +77,27 @@ def _cmd_local_roundtrip(args: argparse.Namespace) -> int:
     return 0 if rt.get("ok") else 1
 
 
+def _cmd_http_roundtrip(args: argparse.Namespace) -> int:
+    ws = _workspace_root(args)
+    sys.path.insert(0, str(ROOT))
+    from scripts.edge_encoder_http_roundtrip_v1_lib import check_cross_process_determinism
+    from scripts.edge_encoder_sdk_v1_lib import encode_from_manifest_entry
+
+    result = encode_from_manifest_entry(
+        args.entry_id, manifest_path=args.manifest, workspace_root=ws
+    )
+    if result.validation_errors:
+        print(json.dumps({"ok": False, "validation_errors": result.validation_errors}, ensure_ascii=False))
+        return 1
+    errors, summary = check_cross_process_determinism(
+        result.wire,
+        workspace_root=ws,
+        base_url=args.base_url,
+    )
+    print(json.dumps({"ok": not errors, "errors": errors, **summary}, ensure_ascii=False))
+    return 0 if not errors else 1
+
+
 def _cmd_smoke(args: argparse.Namespace) -> int:
     sys.path.insert(0, str(ROOT))
     from scripts.edge_encoder_sdk_v1_lib import encode_from_manifest_entry, local_roundtrip_v2_stub
@@ -123,6 +144,13 @@ def main() -> int:
     p_rt.add_argument("--manifest", type=Path, default=ROOT / "docs/final/artifacts/rib55_angle_overlay_manifest_v1.json")
     _add_workspace_root(p_rt)
     p_rt.set_defaults(func=_cmd_local_roundtrip)
+
+    p_http = sub.add_parser("http-roundtrip", help="TestClient vs real HTTP determinism (ephemeral uvicorn).")
+    p_http.add_argument("--entry-id", default="pilot_ninth_rib_55deg_v0")
+    p_http.add_argument("--manifest", type=Path, default=ROOT / "docs/final/artifacts/rib55_angle_overlay_manifest_v1.json")
+    p_http.add_argument("--base-url", default=None, help="Existing v2 stub base URL (skip ephemeral server).")
+    _add_workspace_root(p_http)
+    p_http.set_defaults(func=_cmd_http_roundtrip)
 
     p_smoke = sub.add_parser("smoke", help="Default entry encode + roundtrip smoke.")
     p_smoke.set_defaults(func=_cmd_smoke)

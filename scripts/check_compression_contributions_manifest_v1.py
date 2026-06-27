@@ -90,6 +90,23 @@ def _entry_jsonl_paths(manifest: dict[str, Any]) -> list[str]:
     return paths
 
 
+def _entry_min_rows_map(manifest: dict[str, Any], default_min_rows: int) -> dict[str, int]:
+    entries = manifest.get("entries") or []
+    out: dict[str, int] = {}
+    for ent in entries:
+        if not isinstance(ent, dict):
+            continue
+        p = ent.get("jsonl") or ent.get("path")
+        if not isinstance(p, str) or not p.strip():
+            continue
+        min_rows = ent.get("min_rows")
+        if isinstance(min_rows, int) and min_rows > 0:
+            out[p.strip().replace("\\", "/")] = min_rows
+        else:
+            out[p.strip().replace("\\", "/")] = default_min_rows
+    return out
+
+
 def _discover_contribution_jsonls(contributions_dir: Path) -> list[Path]:
     if not contributions_dir.is_dir():
         return []
@@ -121,6 +138,7 @@ def main() -> int:
     min_rows = int((manifest.get("validate") or {}).get("min_rows") or 10)
     contributions_dir = _contributions_dir(manifest)
     manifest_paths = set(_entry_jsonl_paths(manifest))
+    entry_min_rows_map = _entry_min_rows_map(manifest, min_rows)
     on_disk = _discover_contribution_jsonls(contributions_dir)
     on_disk_rels = {_rel(p) for p in on_disk}
 
@@ -162,11 +180,13 @@ def main() -> int:
             issues.append({"code": "missing_jsonl", "path": key, "message": "file not found"})
             continue
         out_report = ROOT / "reports" / f"compression_contributions_manifest_validate_{path.stem}_v1.json"
-        code, detail = _run_validate(path, min_rows=min_rows, out_json=out_report)
+        current_min_rows = entry_min_rows_map.get(key, min_rows)
+        code, detail = _run_validate(path, min_rows=current_min_rows, out_json=out_report)
         row = {
             "path": key,
             "exit_code": code,
             "validation_ok": bool(detail and detail.get("validation_ok")) if detail else code == 0,
+            "min_rows": current_min_rows,
         }
         if detail:
             row["row_count"] = detail.get("row_count")

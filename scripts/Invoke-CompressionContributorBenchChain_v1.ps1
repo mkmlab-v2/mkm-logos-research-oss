@@ -11,7 +11,12 @@ param(
     [string]$CompressionProfile = "economy",
     [switch]$RelaxPassGate,
     [switch]$SkipIntake,
-    [switch]$DryRun
+    [switch]$DryRun,
+    [string]$MustKeepOverlayJson = "",
+    [int]$ShortContextTokenThreshold = 30,
+    [double]$ShortContextMaxSavingRate = 0.30,
+    [switch]$NoOverlay,
+    [switch]$NoShortContextCap
 )
 
 $ErrorActionPreference = "Stop"
@@ -58,6 +63,21 @@ if (-not $SkipIntake) {
 }
 
 Write-Host "=== Step 3/4: stateless PoC on tenant corpus ===" -ForegroundColor Cyan
+$overlayPath = $MustKeepOverlayJson
+if (-not $NoOverlay) {
+    if (-not $overlayPath) {
+        $overlayPath = Join-Path $WorkspaceRoot "docs/final/artifacts/tenant_${TenantId}_must_keep_overlay_v1.json"
+    } elseif (-not [System.IO.Path]::IsPathRooted($overlayPath)) {
+        $overlayPath = Join-Path $WorkspaceRoot ($overlayPath -replace '/', '\')
+    }
+    if (-not (Test-Path -LiteralPath $overlayPath)) {
+        Write-Host "=== Step 3a/4: extract must_keep overlay (missing) ===" -ForegroundColor Cyan
+        & py scripts/extract_tenant_must_keep_from_corpus_v1.py `
+            --tenant-id $TenantId `
+            --input-jsonl $CorpusJsonl
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    }
+}
 $pocArgs = @(
     "scripts/run_customer_compression_stateless_poc_v1.py",
     "--input-jsonl", $CorpusJsonl,
@@ -66,6 +86,15 @@ $pocArgs = @(
     "--compression-profile", $CompressionProfile,
     "--sku", $Sku
 )
+if (-not $NoOverlay -and (Test-Path -LiteralPath $overlayPath)) {
+    $pocArgs += @("--must-keep-overlay-json", ($overlayPath -replace '\\', '/'))
+}
+if (-not $NoShortContextCap) {
+    $pocArgs += @(
+        "--short-context-token-threshold", "$ShortContextTokenThreshold",
+        "--short-context-max-saving-rate", "$ShortContextMaxSavingRate"
+    )
+}
 if ($RelaxPassGate) { $pocArgs += "--relax-pass-gate" }
 & py @pocArgs
 if ($LASTEXITCODE -ne 0) {

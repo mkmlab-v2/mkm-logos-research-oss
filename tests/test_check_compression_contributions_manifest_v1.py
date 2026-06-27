@@ -22,8 +22,16 @@ def _run(*args: str) -> subprocess.CompletedProcess[str]:
 
 
 def test_empty_manifest_passes(tmp_path: Path) -> None:
+    empty_contributions = tmp_path / "contributions"
+    empty_contributions.mkdir()
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    manifest["contributions_dir"] = str(empty_contributions.resolve())
+    manifest["entries"] = []
+    man_path = tmp_path / "manifest.json"
+    man_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
     out = tmp_path / "check.json"
-    proc = _run("--out-json", str(out))
+    proc = _run("--manifest", str(man_path), "--out-json", str(out))
     assert proc.returncode == 0, proc.stderr + proc.stdout
     doc = json.loads(out.read_text(encoding="utf-8"))
     assert doc["check_ok"] is True

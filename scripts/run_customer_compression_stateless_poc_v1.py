@@ -21,6 +21,7 @@ if str(ROOT) not in sys.path:
 
 TOKEN_RE = re.compile(r"\S+")
 DEFAULT_OUT = ROOT / "reports/customer_compression_stateless_poc_v1_latest.json"
+DEFAULT_SKU_SPEC = ROOT / "docs/final/artifacts/compression_b2b_off_the_shelf_shard_sku_v1.json"
 V2_JACCARD_FLOOR = 0.73
 
 
@@ -40,6 +41,73 @@ def _row_text(obj: dict[str, Any]) -> str | None:
     return None
 
 
+def _resolve_sku_context(
+    *,
+    workspace_root: Path,
+    external_sku: str | None,
+    sku_spec_json: Path | None,
+) -> dict[str, Any]:
+    if not external_sku:
+        return {}
+    from scripts.compression_b2b_off_the_shelf_shard_sku_v1_lib import build_sku_context
+
+    spec_path = sku_spec_json or DEFAULT_SKU_SPEC
+    try:
+        ctx = build_sku_context(
+            workspace_root=workspace_root,
+            spec_path=spec_path,
+            external_sku=external_sku,
+            shard_json_override=None,
+        )
+    except (FileNotFoundError, KeyError, ValueError) as exc:
+        print(f"error: sku resolution failed: {exc}", file=sys.stderr)
+        raise SystemExit(2) from exc
+    if ctx.get("forced_shard_id"):
+        ctx["routing_wiring"] = "forced_shard_id_v1"
+        ctx["routing_note_ko"] = (
+            "PoC /v2/compress에 forced_shard_id 전달 — B2B off-the-shelf SKU 샤드 고정."
+        )
+    return ctx
+
+
+def _resolve_overlay_terms(
+    *,
+    workspace_root: Path,
+    external_sku: str | None,
+    auto_b2b_overlay: bool,
+    must_keep_overlay_json: Path | None,
+) -> tuple[list[str], dict[str, Any]]:
+    overlay_meta: dict[str, Any] = {"applied": False}
+    if must_keep_overlay_json is not None:
+        path = must_keep_overlay_json.resolve()
+        if not path.is_file():
+            print(f"error: missing overlay json: {path}", file=sys.stderr)
+            raise SystemExit(2)
+        from scripts.compression_b2b_must_keep_overlay_v1_lib import load_overlay_terms
+
+        terms = load_overlay_terms(path)
+        overlay_meta = {
+            "applied": bool(terms),
+            "source": str(path.relative_to(workspace_root)).replace("\\", "/"),
+        }
+        return terms, overlay_meta
+    if auto_b2b_overlay and external_sku:
+        from scripts.compression_b2b_must_keep_overlay_v1_lib import (
+            load_overlay_terms,
+            overlay_path_for_external_sku,
+        )
+
+        path = overlay_path_for_external_sku(external_sku, workspace_root=workspace_root)
+        if path.is_file():
+            terms = load_overlay_terms(path)
+            overlay_meta = {
+                "applied": bool(terms),
+                "source": str(path.relative_to(workspace_root)).replace("\\", "/"),
+            }
+            return terms, overlay_meta
+    return [], overlay_meta
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Customer JSONL stateless V2 compression PoC.")
     ap.add_argument("--workspace-root", type=Path, default=ROOT)
@@ -50,15 +118,46 @@ def main() -> int:
         help="JSONL with text/raw_text per line",
     )
     ap.add_argument("--max-cases", type=int, default=200)
-    ap.add_argument("--loss-profile", default="semantic_general", choices=["semantic_general", "lossless_text", "code_equivalent"])
+    ap.add_argument(
+        "--loss-profile",
+        default="semantic_general",
+        choices=["semantic_general", "lossless_text", "code_equivalent"],
+    )
+    ap.add_argument(
+        "--compression-profile",
+        default="economy",
+        choices=["economy", "fidelity", "literal"],
+    )
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--jaccard-floor", type=float, default=V2_JACCARD_FLOOR)
+    ap.add_argument("--sku", default=None, help="B2B external SKU (e.g. MKM-SCM-A1).")
+    ap.add_argument("--sku-spec-json", type=Path, default=None)
+    ap.add_argument("--auto-b2b-overlay", action="store_true")
+    ap.add_argument("--must-keep-overlay-json", type=Path, default=None)
+    ap.add_argument("--relax-pass-gate", action="store_true")
+    ap.add_argument("--graph-wire-selective-bridge", action="store_true")
+    ap.add_argument("--short-context-token-threshold", type=int, default=None)
+    ap.add_argument("--short-context-max-saving-rate", type=float, default=None)
     args = ap.parse_args()
 
+    workspace_root = args.workspace_root.resolve()
     inp = args.input_jsonl.resolve()
     if not inp.is_file():
         print(f"error: missing input: {inp}", file=sys.stderr)
         return 2
+
+    sku_context = _resolve_sku_context(
+        workspace_root=workspace_root,
+        external_sku=args.sku,
+        sku_spec_json=args.sku_spec_json,
+    )
+    overlay_terms, overlay_meta = _resolve_overlay_terms(
+        workspace_root=workspace_root,
+        external_sku=args.sku,
+        auto_b2b_overlay=args.auto_b2b_overlay,
+        must_keep_overlay_json=args.must_keep_overlay_json,
+    )
+    forced_shard_id = sku_context.get("forced_shard_id")
 
     from fastapi.testclient import TestClient
     from scripts.compression_token_api_v2_stub import RESIDUAL_STUB_KEY, app
@@ -82,15 +181,25 @@ def main() -> int:
         if not text:
             continue
         row_id = str(obj.get("id") or f"row_{i}")
-        cr = client.post(
-            "/v2/compress",
-            json={
-                "text": text,
-                "loss_profile": args.loss_profile,
-                "client_request_id": f"poc-{row_id}",
-                "stateless_packet": True,
-            },
-        )
+        compress_body: dict[str, Any] = {
+            "text": text,
+            "loss_profile": args.loss_profile,
+            "compression_profile": args.compression_profile,
+            "client_request_id": f"poc-{row_id}",
+            "stateless_packet": True,
+        }
+        if forced_shard_id:
+            compress_body["forced_shard_id"] = forced_shard_id
+        if overlay_terms:
+            compress_body["must_keep_overlay_terms"] = overlay_terms
+        if args.graph_wire_selective_bridge:
+            compress_body["graph_wire_selective_bridge"] = True
+        if args.short_context_token_threshold is not None:
+            compress_body["short_context_token_threshold"] = args.short_context_token_threshold
+        if args.short_context_max_saving_rate is not None:
+            compress_body["short_context_max_saving_rate"] = args.short_context_max_saving_rate
+
+        cr = client.post("/v2/compress", json=compress_body)
         if cr.status_code != 200:
             failures += 1
             rows.append({"id": row_id, "ok": False, "error": cr.text[:200]})
@@ -119,8 +228,9 @@ def main() -> int:
             ok = exact_restore
         else:
             ok = jac >= args.jaccard_floor
-        if not ok:
+        if not ok and not args.relax_pass_gate:
             failures += 1
+        router_meta = pkt.get("router_meta") if isinstance(pkt.get("router_meta"), dict) else {}
         rows.append(
             {
                 "id": row_id,
@@ -131,6 +241,7 @@ def main() -> int:
                 "token_saving_rate_proxy": round(saving, 6),
                 "jaccard_proxy": round(jac, 6),
                 "reassembly": (er.json().get("integrity_flags") or {}).get("reassembly"),
+                "router_shard_id": router_meta.get("shard_id"),
             }
         )
 
@@ -146,11 +257,13 @@ def main() -> int:
         "boundary_ack": "Per-customer JSONL only; not Golden 40 or Track A 47.5% claim.",
         "input_jsonl": str(inp).replace("\\", "/"),
         "loss_profile": args.loss_profile,
+        "compression_profile": args.compression_profile,
         "case_count": n,
         "cases_passed": n_ok,
         "cases_passed_jaccard_floor": n_ok,
         "jaccard_floor": args.jaccard_floor,
         "pass_criterion": "exact_restore" if args.loss_profile == "lossless_text" else "jaccard_floor",
+        "relax_pass_gate": bool(args.relax_pass_gate),
         "aggregate": {
             "mean_token_saving_rate_proxy": round(avg_saving, 6),
             "mean_jaccard_proxy": round(avg_jac, 6),
@@ -159,12 +272,24 @@ def main() -> int:
         "cases": rows[:50],
         "cases_truncated": len(rows) > 50,
     }
+    if sku_context:
+        doc["sku_context"] = sku_context
+    if overlay_meta.get("applied") or args.auto_b2b_overlay or args.must_keep_overlay_json:
+        doc["must_keep_overlay"] = overlay_meta
+
     out_path = args.out_json.resolve()
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(doc, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"Wrote {out_path}")
     print(f"cases={n} passed_jaccard={n_ok} mean_saving_proxy={avg_saving:.4f} mean_jaccard={avg_jac:.4f}")
-    return 0 if n > 0 and failures == 0 and n_ok == n else 1
+
+    if n == 0:
+        return 1
+    if failures > 0:
+        return 1
+    if args.relax_pass_gate:
+        return 0
+    return 0 if n_ok == n else 1
 
 
 if __name__ == "__main__":

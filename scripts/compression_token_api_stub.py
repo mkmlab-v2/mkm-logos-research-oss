@@ -72,6 +72,10 @@ from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
 from scripts.run_hybrid_codec_v0_spike import (  # noqa: E402
     encode_packet_dict as hybrid_encode_packet_dict,
 )
+from scripts.herbs_formulas_alias_table_v1 import (  # noqa: E402
+    default_table_path as herbs_alias_default_table_path,
+    resolve_alias_queries,
+)
 
 API_CONTRACT_VERSION = "1.0.0"
 
@@ -186,6 +190,25 @@ class L1SideChannelWireRequest(BaseModel):
 class L1SideChannelWireResponse(BaseModel):
     envelope_schema: str = Field(default="l1_side_channel_secure_wire_v1", alias="schema")
     envelope: dict[str, Any]
+    integrity_flags: dict[str, Any] = Field(default_factory=dict)
+
+
+class HerbsFormulasAliasResolveRequest(BaseModel):
+    queries: list[str] = Field(min_length=1, max_length=32)
+    include_formula_composition: bool = False
+
+
+class HerbsFormulasAliasResolveResponse(BaseModel):
+    schema_version: str = "herbs_formulas_alias_resolve_v1"
+    research_only: bool = True
+    track_b_only: bool = True
+    send_gate: str = "HOLD"
+    expert_review_required: bool = True
+    boundary_ack: str
+    table_path: str
+    table_schema: str
+    include_formula_composition: bool
+    results: list[dict[str, Any]]
     integrity_flags: dict[str, Any] = Field(default_factory=dict)
 
 
@@ -657,6 +680,13 @@ def health() -> dict[str, Any]:
                 "b_track": "MKM_ENVELOPE_B_TRACK_KEY_B64",
             },
         },
+        "herbs_formulas_alias_proxy": {
+            "enabled": herbs_alias_default_table_path().is_file(),
+            "endpoint": "/v1/research/herbs_formulas/alias-resolve",
+            "default_table_path": herbs_alias_default_table_path().as_posix(),
+            "research_only": True,
+            "send_gate": "HOLD",
+        },
     }
 
 
@@ -999,4 +1029,67 @@ def encode_l1_side_channel_secure_wire(body: L1SideChannelWireRequest) -> L1Side
             "codec_variant": codec_variant,
             "wire_payload_bytes": len(wire_bytes),
         },
+    )
+
+
+@app.post("/v1/research/herbs_formulas/alias-resolve", response_model=HerbsFormulasAliasResolveResponse)
+def herbs_formulas_alias_resolve(body: HerbsFormulasAliasResolveRequest) -> HerbsFormulasAliasResolveResponse:
+    """B-track alias/포제 lookup proxy (fixture table; not full materia medica or Logos lexicon)."""
+    try:
+        doc = resolve_alias_queries(
+            body.queries,
+            include_formula_composition=body.include_formula_composition,
+        )
+    except FileNotFoundError as exc:
+        return HerbsFormulasAliasResolveResponse(
+            boundary_ack="Alias table missing on disk.",
+            table_path=str(exc),
+            table_schema="herbs_formulas_alias_table_v1",
+            include_formula_composition=body.include_formula_composition,
+            results=[
+                {
+                    "query": q,
+                    "match_type": "error",
+                    "error": "alias_table_missing",
+                }
+                for q in body.queries
+            ],
+            integrity_flags={
+                "research_lane": True,
+                "alias_proxy_error": True,
+                "error_class": "FileNotFoundError",
+            },
+        )
+    except ValueError as exc:
+        return HerbsFormulasAliasResolveResponse(
+            boundary_ack="Alias table schema invalid.",
+            table_path=herbs_alias_default_table_path().as_posix(),
+            table_schema="herbs_formulas_alias_table_v1",
+            include_formula_composition=body.include_formula_composition,
+            results=[
+                {
+                    "query": q,
+                    "match_type": "error",
+                    "error": "alias_table_invalid",
+                }
+                for q in body.queries
+            ],
+            integrity_flags={
+                "research_lane": True,
+                "alias_proxy_error": True,
+                "error_class": "ValueError",
+                "error_message": str(exc),
+            },
+        )
+
+    flags = dict(doc.get("integrity_flags") or {})
+    flags["research_lane"] = True
+    flags["alias_proxy_8010"] = True
+    return HerbsFormulasAliasResolveResponse(
+        boundary_ack=str(doc.get("boundary_ack") or ""),
+        table_path=str(doc.get("table_path") or ""),
+        table_schema=str(doc.get("table_schema") or ""),
+        include_formula_composition=bool(doc.get("include_formula_composition")),
+        results=list(doc.get("results") or []),
+        integrity_flags=flags,
     )

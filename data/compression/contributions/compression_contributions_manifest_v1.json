@@ -24,6 +24,25 @@
       "row_count": 30,
       "added_at_utc": "2026-06-11T16:30:00Z",
       "note": "Masked synthetic CS scenarios — contributor_provided community seed; not customer_provided SEND evidence"
+    },
+    {
+      "id": "premium_cs_live_contributor_v1",
+      "jsonl": "data/compression/contributions/premium_cs_live_contributor_v1.jsonl",
+      "contributor": "mkm-maintainers",
+      "domain": "premium_cs_live_chat",
+      "row_count": 30,
+      "added_at_utc": "2026-06-17T07:47:01Z",
+      "note": "Contributor-provided live-style CS corpus for B-track bench replay only"
+    },
+    {
+      "id": "open_bench_coding_snippet_seed_v1",
+      "jsonl": "data/compression/contributions/open_bench_coding_snippet_seed_v1.jsonl",
+      "contributor": "mkm-maintainers",
+      "domain": "coding_snippet_open_bench",
+      "row_count": 3,
+      "min_rows": 3,
+      "added_at_utc": "2026-06-17T07:47:01Z",
+      "note": "Mini seed corpus kept for open-bench snippet smoke; below promotion min_rows"
     }
   ],
   "policy": {

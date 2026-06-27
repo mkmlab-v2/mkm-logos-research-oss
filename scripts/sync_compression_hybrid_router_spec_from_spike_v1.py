@@ -32,6 +32,7 @@ SPIKE_TO_SPEC_BACKEND: dict[str, str] = {
     "mkm_economy_shortcap": "mkm_v2_economy_shortcap",
     "mkm_economy": "mkm_v2_economy_stateless",
     "mkm_v2_economy_stateless": "mkm_v2_economy_stateless",
+    "mkm_conditional_fusion_v3_ssot_guard": "mkm_conditional_fusion_v3_ssot_guard",
 }
 
 
@@ -58,6 +59,8 @@ def _route_fields(route: dict[str, Any]) -> dict[str, Any]:
         "short_context_token_threshold",
         "short_context_max_saving_rate",
         "must_keep_overlay_json",
+        "conditional_fusion_pointer",
+        "policy",
     ):
         if route.get(key) is not None:
             out[key] = route[key]
@@ -65,6 +68,10 @@ def _route_fields(route: dict[str, Any]) -> dict[str, Any]:
         out["candidate_artifact"] = CANDIDATE_ARTIFACT
         out.setdefault("routing_profile", "candidate_pool_on")
         out.setdefault("enable_candidate_pool_expansion", True)
+    if route.get("corpus_id") == "golden40_internal" and backend == "mkm_conditional_fusion_v3_ssot_guard":
+        out["research_lane"] = True
+        out["forbidden_as_customer_sla"] = True
+        out.setdefault("regress_lane", False)
     if route.get("corpus_id") == "open_structured_long_v1":
         out["kpi_saving_eligible"] = False
         out.setdefault("token_proxy_caveat", "minified JSON whitespace proxy artifact")
@@ -77,6 +84,8 @@ def sync_spec(
     spec_path: Path,
     dry_run: bool = False,
 ) -> dict[str, Any]:
+    spike_path = spike_path.resolve()
+    spec_path = spec_path.resolve()
     spike = json.loads(spike_path.read_text(encoding="utf-8"))
     spec = json.loads(spec_path.read_text(encoding="utf-8-sig"))
     routes = {

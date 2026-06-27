@@ -30,6 +30,8 @@ class HybridRouterResolution:
     short_context_max_saving_rate: float | None = None
     must_keep_overlay_json: str | None = None
     overlay_terms: list[str] = field(default_factory=list)
+    conditional_fusion_pointer: str | None = None
+    conditional_fusion_policy: str | None = None
     research_only: bool = True
 
 
@@ -77,6 +79,7 @@ def resolve_hybrid_router(
         backend.startswith("mkm_v2")
         or backend.startswith("mkm_candidate")
         or backend.startswith("mkm_economy")
+        or backend == "mkm_conditional_fusion_v3_ssot_guard"
     )
     overlay_terms: list[str] = []
     overlay_rel = binding.get("must_keep_overlay_json")
@@ -92,14 +95,20 @@ def resolve_hybrid_router(
         binding=binding,
         recommended_backend=backend,
         stub_can_apply_mkm=stub_mkm,
-        compression_profile=binding.get("compression_profile"),
-        routing_profile=binding.get("routing_profile"),
+        compression_profile=binding.get("compression_profile") or (
+            "economy" if backend == "mkm_conditional_fusion_v3_ssot_guard" else None
+        ),
+        routing_profile=binding.get("routing_profile") or (
+            "track_a_promoted" if backend == "mkm_conditional_fusion_v3_ssot_guard" else None
+        ),
         enable_candidate_pool_expansion=bool(binding.get("enable_candidate_pool_expansion")),
         candidate_artifact=binding.get("candidate_artifact"),
         short_context_token_threshold=binding.get("short_context_token_threshold"),
         short_context_max_saving_rate=binding.get("short_context_max_saving_rate"),
         must_keep_overlay_json=str(overlay_rel) if overlay_rel else None,
         overlay_terms=overlay_terms,
+        conditional_fusion_pointer=binding.get("conditional_fusion_pointer"),
+        conditional_fusion_policy=binding.get("policy"),
         research_only=bool(spec.get("research_only", True)),
     )
 
@@ -123,4 +132,10 @@ def corpus_binding_integrity_flags(res: HybridRouterResolution) -> dict[str, Any
         flags["enable_candidate_pool_expansion_binding"] = True
     if res.candidate_artifact:
         flags["candidate_artifact"] = res.candidate_artifact
+    if res.conditional_fusion_pointer:
+        flags["conditional_fusion_pointer"] = res.conditional_fusion_pointer
+        flags["conditional_fusion_research_lane"] = True
+        flags["apply_active_forbidden"] = True
+    if res.conditional_fusion_policy:
+        flags["conditional_fusion_policy"] = res.conditional_fusion_policy
     return flags

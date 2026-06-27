@@ -158,19 +158,24 @@ def test_compress_corpus_tag_wtt_applies_shortcap_and_overlay() -> None:
     assert "must_keep_overlay_json" in flags
 
 
-def test_compress_corpus_tag_golden40_external_backend_422() -> None:
+def test_compress_corpus_tag_golden40_conditional_fusion_v3_binding() -> None:
     cr = client.post(
         "/v2/compress",
         json={
-            "text": "golden40 internal regression lane",
+            "text": "golden40 internal eval lane with SSOT bleed guard",
             "loss_profile": "semantic_general",
             "corpus_tag": "golden40_internal",
         },
     )
-    assert cr.status_code == 422
-    detail = cr.json()["detail"]
-    assert detail["error"] == "hybrid_router_external_backend"
-    assert detail["recommended_backend"] == "llmlingua2"
+    assert cr.status_code == 200
+    flags = cr.json()["integrity_flags"]
+    assert flags.get("corpus_tag") == "golden40_internal"
+    assert flags.get("hybrid_router_backend_recommended") == "mkm_conditional_fusion_v3_ssot_guard"
+    assert flags.get("hybrid_router_stub_applies_mkm") is True
+    assert flags.get("conditional_fusion_research_lane") is True
+    assert flags.get("conditional_fusion_policy") == "pick_policy_ssot_only"
+    assert flags.get("apply_active_forbidden") is True
+    assert "conditional_fusion_pointer" in flags
 
 
 def test_compress_unknown_corpus_tag_422() -> None:

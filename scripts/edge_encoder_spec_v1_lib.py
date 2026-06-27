@@ -22,14 +22,13 @@ def validate_coord_wire_minimal(wire: dict[str, Any]) -> list[str]:
     errors: list[str] = []
     try:
         jsonschema = __import__("jsonschema")
-    except ImportError:
+        schema = _load_schema(COORD_WIRE_SCHEMA)
+        validator = jsonschema.Draft202012Validator(schema)
+        for err in sorted(validator.iter_errors(wire), key=lambda e: e.path):
+            errors.append(f"coord_wire: {err.message}")
+        return errors
+    except Exception:
         return _validate_coord_wire_fallback(wire)
-
-    schema = _load_schema(COORD_WIRE_SCHEMA)
-    validator = jsonschema.Draft202012Validator(schema)
-    for err in sorted(validator.iter_errors(wire), key=lambda e: e.path):
-        errors.append(f"coord_wire: {err.message}")
-    return errors
 
 
 def _validate_coord_wire_fallback(wire: dict[str, Any]) -> list[str]:

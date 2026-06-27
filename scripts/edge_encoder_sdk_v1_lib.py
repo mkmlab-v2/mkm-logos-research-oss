@@ -15,6 +15,27 @@ DEFAULT_BUNDLE_DIR = ROOT / "reports/edge_encoder_air_gap_bundle_v1_latest"
 DEFAULT_PILOT_ENTRY_ID = "pilot_ninth_rib_55deg_v0"
 
 
+def wire_compress_request_body(wire: dict[str, Any]) -> dict[str, Any]:
+    wire_json = json.dumps(wire, ensure_ascii=False, separators=(",", ":"))
+    entry_id = (wire.get("coord_inject") or {}).get("entry_id", "pilot")
+    return {
+        "text": wire_json,
+        "loss_profile": "lossless_text",
+        "sku_class": "coord",
+        "stateless_packet": True,
+        "client_request_id": f"edge-sdk-{entry_id}",
+    }
+
+
+def compression_packet_fingerprint(packet: dict[str, Any]) -> str:
+    subset = {
+        "compressed_text": packet.get("compressed_text"),
+        "router_meta": packet.get("router_meta"),
+        "loss_profile": packet.get("loss_profile"),
+    }
+    return json.dumps(subset, sort_keys=True, ensure_ascii=False)
+
+
 @dataclass
 class EdgeEncodeResult:
     wire: dict[str, Any]
@@ -48,6 +69,29 @@ def _token_proxy(text: str) -> int | None:
         return len(tiktoken.get_encoding("cl100k_base").encode(text))
     except Exception:
         return None
+
+
+def frozen_smoke(*, workspace_root: Path = ROOT) -> tuple[bool, dict[str, Any]]:
+    """Encode + validate only — no TestClient (frozen-friendly)."""
+    from scripts.edge_encoder_spec_v1_lib import (
+        check_coord_wire_determinism,
+        validate_coord_wire_minimal,
+    )
+
+    result = encode_from_manifest_entry(DEFAULT_PILOT_ENTRY_ID, workspace_root=workspace_root)
+    errors = list(result.validation_errors)
+    if not errors:
+        errors = validate_coord_wire_minimal(result.wire) + check_coord_wire_determinism(
+            result.wire, workspace_root=workspace_root
+        )
+    summary = {
+        "ok": not errors and result.token_proxy_cl100k is not None,
+        "tokens": result.token_proxy_cl100k,
+        "original_bulk_sent": False,
+        "mode": "frozen_encode_validate",
+        "errors": errors,
+    }
+    return summary["ok"], summary
 
 
 def build_coord_wire(
@@ -143,17 +187,7 @@ def local_roundtrip_v2_stub(
     from scripts.coord_anatomy_overlay_wire_v1_lib import materialize_coord_wire
 
     client = TestClient(app)
-    wire_json = json.dumps(wire, ensure_ascii=False, separators=(",", ":"))
-    cr = client.post(
-        "/v2/compress",
-        json={
-            "text": wire_json,
-            "loss_profile": "lossless_text",
-            "sku_class": "coord",
-            "stateless_packet": True,
-            "client_request_id": f"edge-sdk-{wire.get('coord_inject', {}).get('entry_id', 'pilot')}",
-        },
-    )
+    cr = client.post("/v2/compress", json=wire_compress_request_body(wire))
     out: dict[str, Any] = {
         "compress_status": cr.status_code,
         "research_only": True,
@@ -219,6 +253,8 @@ def build_air_gap_poc_pack(*, workspace_root: Path = ROOT) -> dict[str, Any]:
         "bundle_builder": "scripts/build_edge_encoder_air_gap_bundle_v1.py",
         "bundle_gate": "scripts/check_edge_encoder_air_gap_bundle_v1.py",
         "invoke_chain": "scripts/Invoke-EdgeEncoderAirGapPoC_v1.ps1",
+        "cross_process_http_gate": "scripts/check_edge_encoder_cross_process_determinism_v1.py",
+        "portable_launcher": "scripts/build_edge_encoder_sdk_portable_launcher_v1.py",
         "reproduce": [
             "powershell -File scripts/Invoke-EdgeEncoderAirGapPoC_v1.ps1",
             "py scripts/build_edge_encoder_air_gap_poc_pack_v1.py",

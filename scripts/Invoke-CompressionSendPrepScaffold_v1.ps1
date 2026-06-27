@@ -17,7 +17,8 @@ param(
     [string]$StubTenantId = "pilot-masked-stub-v1",
     [int]$MinCases = 20,
     [switch]$RunStubRehearsal,
-    [switch]$RelaxPassGate
+    [switch]$RelaxPassGate,
+    [switch]$BuildCounselEnvelope
 )
 
 $ErrorActionPreference = "Stop"
@@ -53,6 +54,17 @@ Write-Host "  1. Receive 20-50 customer-masked JSONL (local path; do not commit 
 Write-Host "  2. Run-CompressionCustomerPilotIntake_v1.ps1 -TenantId <slug> -CustomerJsonl <path>"
 Write-Host "  3. apply_compression_b2b_legal_send_signoff_v1.py --counsel-acknowledge (after counsel)"
 Write-Host ""
+
+if ($BuildCounselEnvelope) {
+    Write-Host "=== Counsel envelope (SEND prep · HOLD) ===" -ForegroundColor Cyan
+    py scripts/build_compression_b2b_send_prep_counsel_envelope_v1.py
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    py scripts/build_compression_b2b_counsel_export_manifest_v1.py --fail-if-missing
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    py scripts/build_compression_b2b_counsel_zip_pack_v1.py
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    Write-Host "[OK] counsel envelope zip ready (send_gate still HOLD)" -ForegroundColor Green
+}
 
 if (-not $RunStubRehearsal) {
     Write-Host "[OK] validate-only complete" -ForegroundColor Green

@@ -36,6 +36,8 @@ Representative evidence (not exhaustive):
    - Route policy, isolation, fallback, audit artifacts are defensible operational value.
 5. **Backend reality**
    - In current 10MB bench, native zstd dictionary path outperformed pointer pipeline (`tracka_vs_zstd_native_bench_latest.json`).
+6. **Longitudinal harness pattern (external ref, B-track)**
+| Persly EMR longitudinal harness analog (B-track playbook §3) | Tier 0 `docs/research/raw/persly_emr_longitudinal_harness_tier0_2026-06-24.md`; BigSet accumulate `scripts/merge_bigset_tier0_csv_accumulate_v1.py`·`scripts/run_bigset_live_row_accumulate_chain_v1.py` → `reports/bigset_live_row_accumulate_chain_v1_latest.json`; Azure live `scripts/Invoke-BigSetAzureStart_v1.ps1`; N-loop `scripts/Invoke-BigSetLiveAccumulateLoop_v1.ps1` → `reports/bigset_live_accumulate_loop_v1_latest.json`; medical OIH≠Logos; no `src/processor/` merge |
 
 ## 4) Anti-Repeat Guardrails (Mandatory)
 
