@@ -20,7 +20,16 @@ npm install
 ## Run (dev)
 
 ```powershell
+# .env with KM_CLINICIAN_EMAIL (see .env.example)
 npm run dev
+```
+
+Tray: 좌클릭 또는 「Paste Chart 열기」로 창 표시.
+
+## Check (Rust only)
+
+```powershell
+npm run check:rust
 ```
 
 ## Build

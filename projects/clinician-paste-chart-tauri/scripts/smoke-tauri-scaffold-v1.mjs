@@ -19,6 +19,7 @@ const required = [
   "src-tauri/src/lib.rs",
   "src-tauri/capabilities/default.json",
   "src-tauri/icons/icon.png",
+  "src-tauri/icons/icon.ico",
 ];
 
 function assert(cond, msg) {
