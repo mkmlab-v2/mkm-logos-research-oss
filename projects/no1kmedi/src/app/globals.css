@@ -3770,39 +3770,47 @@ section h2 {
 .paste-chart-v1 .patient-chip-row {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.55rem;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
   flex-wrap: wrap;
 }
 
 .paste-chart-v1 .patient-chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.15rem 0.65rem;
+  gap: 0.35rem;
+  padding: 0.2rem 0.75rem;
   border-radius: 999px;
-  background: var(--pc-accent-glow);
-  border: 1px solid var(--pc-accent-border);
+  background: rgba(61, 155, 132, 0.08);
+  border: 1px solid rgba(61, 155, 132, 0.28);
   font-size: 0.75rem;
-  color: var(--accent, #3d9b84);
-  font-weight: 500;
+  color: #3d9b84;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.paste-chart-v1 .patient-chip:hover {
+  background: rgba(61, 155, 132, 0.14);
+  border-color: #3d9b84;
 }
 
 .paste-chart-v1 .chip-dot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--accent, #3d9b84);
+  background: #3d9b84;
 }
 
 .paste-chart-v1 .chip-sep {
   color: var(--pc-muted-dim);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
+  opacity: 0.6;
 }
 
 .paste-chart-v1 .chip-ok {
-  font-size: 0.7rem;
-  color: var(--accent, #3d9b84);
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #3d9b84;
 }
 
 .paste-chart-v1 .pc-divider {
@@ -3955,7 +3963,7 @@ section h2 {
 
 .paste-chart-v1 .pc-results-grid {
   display: grid;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: start;
 }
 
@@ -3970,6 +3978,23 @@ section h2 {
   border: 1px solid var(--pc-line-accent);
   border-radius: var(--pc-r-xl);
   overflow: hidden;
+  animation: pc-panel-fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.paste-chart-v1 .advice-panel {
+  animation: pc-panel-fade-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+@keyframes pc-panel-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paste-chart-v1 .soap-panel,
+  .paste-chart-v1 .advice-panel {
+    animation: none;
+  }
 }
 
 .paste-chart-v1 .soap-panel-head {
@@ -4200,23 +4225,37 @@ section h2 {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.35rem 0.55rem;
+  padding: 0.35rem 0.75rem;
   border-radius: 999px;
-  border: 1px solid var(--pc-accent-border, rgba(61, 155, 132, 0.35));
-  background: rgba(61, 155, 132, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
   color: var(--text, #e2e8f0);
   font-size: 0.75rem;
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.paste-chart-v1 .pc-draft-chip:hover {
+  border-color: rgba(61, 155, 132, 0.45);
+  background: rgba(61, 155, 132, 0.08);
+  color: #e2e8f0;
+  transform: translateY(-1px);
 }
 
 .paste-chart-v1 .pc-draft-chip.is-uncertain {
-  border-color: rgba(197, 160, 87, 0.45);
+  border-color: rgba(197, 160, 87, 0.25);
+  background: transparent;
+}
+
+.paste-chart-v1 .pc-draft-chip.is-uncertain:hover {
+  border-color: rgba(197, 160, 87, 0.5);
   background: rgba(197, 160, 87, 0.08);
 }
 
 .paste-chart-v1 .pc-draft-chip-key {
   color: var(--muted, #9aa9a3);
   font-size: 0.65rem;
+  opacity: 0.75;
 }
 
 .paste-chart-v1 .pc-draft-chip-val {
@@ -4225,7 +4264,8 @@ section h2 {
 
 .paste-chart-v1 .pc-draft-chip-edit {
   font-size: 0.65rem;
-  opacity: 0.85;
+  opacity: 0.75;
+  margin-left: 0.2rem;
 }
 
 .paste-chart-v1 .pc-draft-inline-edit {
@@ -4254,26 +4294,36 @@ section h2 {
 }
 
 .paste-chart-v1 .copilot-card {
-  border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: var(--pc-r-lg);
   background: var(--pc-surface-card);
   overflow: hidden;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .paste-chart-v1 .copilot-card--primary {
-  border-color: var(--pc-accent-border);
-  box-shadow: 0 4px 16px rgba(61, 155, 132, 0.08);
+  border-color: rgba(61, 155, 132, 0.22);
+  box-shadow: 0 4px 20px rgba(61, 155, 132, 0.04);
+}
+
+.paste-chart-v1 .copilot-card--primary:hover {
+  border-color: rgba(61, 155, 132, 0.38);
+  box-shadow: 0 6px 24px rgba(61, 155, 132, 0.08);
 }
 
 .paste-chart-v1 .copilot-card-head {
-  padding: 0.65rem 1rem 0.55rem;
-  border-bottom: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  padding: 0.75rem 1.15rem 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .paste-chart-v1 .copilot-card-title {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   color: var(--text, #e2e8f0);
+  font-weight: 700;
 }
 
 .paste-chart-v1 .copilot-card-badge {
@@ -4283,10 +4333,11 @@ section h2 {
   border: 1px solid var(--pc-gold-border);
   background: var(--pc-gold-dim);
   color: var(--pc-accent-gold);
+  font-weight: 600;
 }
 
 .paste-chart-v1 .copilot-card-body {
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1.15rem;
 }
 
 .paste-chart-v1 .copilot-item-list li p,
@@ -4306,18 +4357,21 @@ section h2 {
 }
 
 .paste-chart-v1 .copilot-checklist li {
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   color: var(--pc-text-dim);
-  padding-left: 1rem;
+  padding-left: 1.15rem;
   position: relative;
+  line-height: 1.6;
+  margin-bottom: 0.35rem;
 }
 
 .paste-chart-v1 .copilot-checklist li::before {
   content: "✓";
   position: absolute;
   left: 0;
-  color: var(--accent, #3d9b84);
-  font-size: 0.8rem;
+  color: #3d9b84;
+  font-size: 0.84rem;
+  font-weight: 700;
 }
 
 .paste-chart-v1 .copilot-meta-strip {
