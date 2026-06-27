@@ -44,6 +44,7 @@
     "smoke:clinician-paste-chart-p1": "npx --yes tsx ./scripts/smoke-clinician-paste-chart-p1-v1.ts",
     "smoke:clinician-paste-extract-llm": "npx --yes tsx ./scripts/smoke-clinician-paste-extract-llm-v1.ts",
     "smoke:clinician-paste-chart-http": "node ./scripts/smoke-clinician-paste-chart-http.mjs",
+    "smoke:clinician-paste-extract-http": "node ./scripts/smoke-clinician-paste-extract-http.mjs",
     "verify:clinician-paste-chart-http": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/run-clinician-paste-chart-http-smoke.ps1",
     "verify:clinician-paste-chart-http:offline": "powershell -NoProfile -ExecutionPolicy Bypass -File ./scripts/run-clinician-paste-chart-http-smoke.ps1 -SkipHttp",
     "smoke:clinician-cds-bundle-http:strict": "node ./scripts/smoke-clinician-cds-bundle-http.mjs --require-validate",

@@ -9,8 +9,10 @@
     1. Commit + push monorepo to internal (scripts/push-internal.ps1) so VPS can ff-only pull scripts/data/schemas.
     2. Run this script (tarball overwrites projects/no1kmedi; monorepo root is synced via git pull on VPS).
 
-  Sets on VPS .env.local (never shipped in tarball): MKM_WORKSPACE_ROOT, MKM_PYTHON, KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN.
-  Webhook env: run scripts\Sync-CompressionPilotAuditWebhook_v1.ps1 -SyncVps before or after deploy.
+  Sets on VPS .env.local (never shipped in tarball): MKM_WORKSPACE_ROOT, MKM_PYTHON,
+  KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN, KM_CLINICIAN_PASTE_EXTRACT_LLM (before npm build).
+  Clinician LLM keys + Pro allowlist: scripts\Sync-No1kmediClinicianOpsEnvToVps_v1.ps1
+  Webhook env: scripts\Sync-CompressionPilotAuditWebhook_v1.ps1 -SyncVps
 
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Deploy-No1kmediDestinyTarball_v1.ps1
@@ -188,37 +190,14 @@ Write-Host "[no1kmedi-tarball] scp" -ForegroundColor Cyan
 & scp @($sshArgs + @($tarLocal, "${remote}:${tarRemote}"))
 if ($LASTEXITCODE -ne 0) { throw "scp failed" }
 
-$remoteCmd = (@"
-mkdir -p $vpsParent
-rm -rf ${vpsDest}.bak.${stamp} 2>/dev/null || true
-test -d $vpsDest && mv $vpsDest ${vpsDest}.bak.${stamp} || true
-mkdir -p $vpsDest
-tar -xzf $tarRemote -C $vpsParent
-cd $vpsDest && npm ci && npm run build
-ENV_FILE="$vpsDest/.env.local"
-touch "`$ENV_FILE"
-grep -q '^MKM_WORKSPACE_ROOT=' "`$ENV_FILE" && sed -i 's|^MKM_WORKSPACE_ROOT=.*|MKM_WORKSPACE_ROOT=$vpsDestinyRepo|' "`$ENV_FILE" || echo "MKM_WORKSPACE_ROOT=$vpsDestinyRepo" >> "`$ENV_FILE"
-grep -q '^KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN=' "`$ENV_FILE" || echo 'KM_PATIENT_CARE_BUNDLE_TRUST_SAME_ORIGIN=1' >> "`$ENV_FILE"
-grep -q '^MKM_PYTHON=' "`$ENV_FILE" && sed -i 's|^MKM_PYTHON=.*|MKM_PYTHON=/usr/bin/python3|' "`$ENV_FILE" || echo 'MKM_PYTHON=/usr/bin/python3' >> "`$ENV_FILE"
-grep -q '^LOGOS_STUDIO_EMBEDDING_SIDECAR=' "`$ENV_FILE" || echo 'LOGOS_STUDIO_EMBEDDING_SIDECAR=1' >> "`$ENV_FILE"
-grep -q '^LOGOS_STUDIO_EMBEDDING_SIDECAR_PORT=' "`$ENV_FILE" || echo 'LOGOS_STUDIO_EMBEDDING_SIDECAR_PORT=18765' >> "`$ENV_FILE"
-grep -q '^LOGOS_STUDIO_GRAPHRAG_ROUTER=' "`$ENV_FILE" || echo 'LOGOS_STUDIO_GRAPHRAG_ROUTER=1' >> "`$ENV_FILE"
-grep -q '^LOGOS_AGENT_AUTH_JWT_SECRET=' "`$ENV_FILE" || echo "LOGOS_AGENT_AUTH_JWT_SECRET=`$(openssl rand -hex 32)" >> "`$ENV_FILE"
-grep -q '^NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=' "`$ENV_FILE" || echo 'NEXT_PUBLIC_UNIVERSE_HUB_MKMLIFE_EMBED=1' >> "`$ENV_FILE"
-if [ -f $vpsDestinyRepo/scripts/logos_studio_embedding_sidecar_v1.py ]; then
-  if pm2 describe logos-embedding-sidecar >/dev/null 2>&1; then
-    pm2 restart logos-embedding-sidecar --update-env || true
-  else
-    pm2 start $vpsDestinyRepo/scripts/logos_studio_embedding_sidecar_v1.py --name logos-embedding-sidecar --interpreter /usr/bin/python3 --cwd $vpsDestinyRepo -- --port 18765 --preload || true
-  fi
-fi
-pm2 restart no1kmedi-com --update-env || pm2 start npm --name no1kmedi-com --cwd $vpsDest -- start
-pm2 save
-rm -f $tarRemote
-"@).Replace("`r`n", "`n").Replace("`r", "`n").TrimEnd() + "`n"
+$remoteShLocal = Join-Path $WorkspaceRoot "scripts\deploy-no1kmedi-remote-build_v1.sh"
+if (-not (Test-Path $remoteShLocal)) { throw "missing remote build script: $remoteShLocal" }
+$remoteShRemote = "/tmp/deploy-no1kmedi-remote-build_v1.sh"
 
 Write-Host "[no1kmedi-tarball] remote build + pm2" -ForegroundColor Cyan
-& ssh @($sshArgs + @($remote, $remoteCmd))
+& scp @($sshArgs + @($remoteShLocal, "${remote}:${remoteShRemote}"))
+if ($LASTEXITCODE -ne 0) { throw "scp remote build script failed" }
+& ssh @($sshArgs + @($remote, "sed -i 's/\r$//' $remoteShRemote && bash $remoteShRemote $vpsParent $vpsDest $vpsDestinyRepo $tarRemote $stamp"))
 if ($LASTEXITCODE -ne 0) { throw "remote deploy failed" }
 
 Start-Sleep -Seconds 6
@@ -302,6 +281,22 @@ $graphBuildCode = (& curl.exe -s -o $graphBuildOut -w "%{http_code}" --max-time 
 if ($graphBuildCode -ne "200") { throw "graph build-from-cds smoke failed http $graphBuildCode" }
 $graphBuild = Get-Content $graphBuildOut -Raw -Encoding UTF8 | ConvertFrom-Json
 if (-not $graphBuild.success) { throw "graph build-from-cds success=false" }
+Write-Host "[no1kmedi-tarball] smoke POST clinician/paste-extract-v1 (LLM chip)" -ForegroundColor Cyan
+$pasteExtractBody = Join-Path $env:TEMP "no1kmedi-deploy-paste-extract-$stamp.json"
+$pasteExtractJson = '{"chart_text":"김민수 / 1988-03-12 / 남 / 36세 / 요통 3주"}'
+[System.IO.File]::WriteAllText($pasteExtractBody, $pasteExtractJson, [System.Text.UTF8Encoding]::new($false))
+$pasteExtractOut = Join-Path $env:TEMP "no1kmedi-deploy-paste-extract-out-$stamp.json"
+$pasteExtractCode = (& curl.exe -s -o $pasteExtractOut -w "%{http_code}" --max-time 90 -X POST "https://app.jema-ai.com/api/clinician/paste-extract-v1" -H "Content-Type: application/json; charset=utf-8" -H "Origin: https://app.jema-ai.com" -H "Referer: https://app.jema-ai.com/clinician?panel=gold" -H "x-clinician-email: smoke-paste-chart@local.test" --data-binary "@$pasteExtractBody")
+if ($pasteExtractCode -eq "503") {
+    Write-Host "[no1kmedi-tarball] paste-extract LLM disabled (503) — run Sync-No1kmediClinicianOpsEnvToVps_v1.ps1" -ForegroundColor Yellow
+} elseif ($pasteExtractCode -ne "200") {
+    throw "paste-extract smoke failed http $pasteExtractCode"
+} else {
+    $pasteExtract = Get-Content $pasteExtractOut -Raw -Encoding UTF8 | ConvertFrom-Json
+    if (-not $pasteExtract.success) { throw "paste-extract success=false" }
+    Write-Host "[no1kmedi-tarball] paste-extract OK (provider=$($pasteExtract.provider))" -ForegroundColor Green
+}
+
 Write-Host "[no1kmedi-tarball] API smoke OK (md_len=$mdLen graph_nodes=$($graphBuild.graph_bundle_v1.nodes.Count))" -ForegroundColor Green
 }
 
