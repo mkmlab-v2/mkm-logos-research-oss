@@ -70,7 +70,7 @@
         },
         "corpus_type": {
           "type": "string",
-          "enum": ["dss", "apocrypha", "pseudepigrapha", "myeongni_probe"]
+          "enum": ["dss", "apocrypha", "pseudepigrapha", "myeongni_probe", "mt"]
         },
         "link_type": {
           "type": "string",

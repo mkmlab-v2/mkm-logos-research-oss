@@ -8,6 +8,19 @@
 2. **Bench(모의·테스트) 기본**: 실거래·라이브 실행 전환은 **명시적 지시**가 있을 때만.
 3. **팩트 SSOT**: 통과 건수·경로는 **실행 로그** 또는 **트래킹된 파일**이 없으면 인용하지 않는다.
 
+### Y1 GTM — Universal Root North Star (2026-06-21 · TRACK_C §3.0b)
+
+**Hero:** `mkm-universal-root` OSS · dual-plane fixture smoke · `send_gate: HOLD` · **압축 47.5%와 헤드라인 합산 금지**.
+
+| 마일스톤 | DoD | SSOT |
+|----------|-----|------|
+| UR-W1 커뮤니티 | Reddit/X ✅ · Discussions external repro ≥1 · **H-1 stub export ready** (~1.3MB) | `reports/universal_root_community_gtm_v1_latest.json` |
+| UR-W2 문서 | TRACK_C v3 §3.0b + investor deck + appendix | `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` · **완료 2026-06-21** |
+| UR-W3 contributor | validate+bench+pytest exit 0 ✅ · **commander PR merge pending** | `mkm_universal_root_contributing_en_v1.md` · `reports/universal_root_contributor_bench_v1_latest.json` |
+| UR-Y2 SDK | Docker/on-prem smoke exit 0 | `[HYPO]` · investor appendix §4 |
+
+**재현:** `py scripts/run_universal_root_oss_cursor_smoke_v1.py` → `reports/universal_root_oss_cursor_smoke_v1_latest.json`
+
 ### 권장 작업 순서 (압축·예언·합선 — 기억용)
 
 1. **먼저 (호출 가능 경로·격벽 유지):** P0 경로 게이트 `scripts/verify_p0_constitution_gate_paths.ps1`; 압축 자동화 `run_compression_automation_chain.ps1`(V2 Trust Packet pytest 포함); CI `dual-regime-integrity.yml`(워크스페이스 job **tail** 스텝 순서는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §6 **CI tail 포인터** + 동 워크플로 YAML SSOT — §6 표에 1:1 전개 강제 안 함; `MULTI_LENS_INTERMEDIATE_LAYER_WORKLIST.md` 「CI 잡」절). 일반 예언(B 레일) 최소 체인: `generate_general_prophecy_v1.py` → `build_general_prophecy_brief.py` → `eval_general_prophecy_brier_score.py` → `export_general_prophecy_to_jsonl.py`(LoRA용 JSONL; `data/training/*.jsonl` `.gitignore`) — **압축 엔진·토큰 스텁과 레지스트리를 코드에서 자동 합선하지 않음**(`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` 다중 렌즈·비단정과 동일 선상).
@@ -18,7 +31,8 @@
 
 1. **1차(연구·회귀·비용 민감)**: 벤치·게이트·스모크는 **로컬 또는 자체 호스팅 추론**(예: Ollama·`OLLAMA_MODEL` 등 문서화된 경로)을 기본으로 삼는다. 재현성·비용·데이터 유출 최소화가 목적이다.
 2. **상용·대외 품질 확정 전**: 고급 클라우드 모델(예: `AGENTS.md`의 Gemini MCP·배치 CLI 라우팅)은 **소표본 섀도우·교차 검증**에만 사용한다. **로컬 통과만으로 상용 SLA·대외 품질을 단정하지 않는다**(프롬프트·컨텍스트·도구 호출 차이로 드리프트 가능).
-3. **격벽**: 연구(B-track)·샌드박스와 상용(Track A)·본선 경계는 `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 및 `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`를 따른다.
+3. **데이터 등급 라우팅 (v1 정책):** `docs/final/MKM_HYBRID_LLM_DATA_ROUTER_V1.md` · `docs/final/artifacts/mkm_hybrid_llm_data_router_v1_latest.json` — DC-PUBLIC~SOVEREIGN × MR-LOCAL/SaaS; **구현 전** · B-track.
+4. **격벽**: 연구(B-track)·샌드박스와 상용(Track A)·본선 경계는 `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md` §9 및 `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`를 따른다.
 
 ### 증거 경로 빠른 참조 (게이트 통과·감사 시)
 

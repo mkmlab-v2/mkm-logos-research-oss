@@ -36,6 +36,7 @@
 |---|------|--------|------|-----------|
 | S1 | 재개 트리거(「장기기억 맥락 이어」·`@CENTRAL`·`@MISSION_LOG`) | Read `CENTRAL` + 작전 보드 1블록 | 맥락 1줄 브리핑 | 단순 Q&A 1턴 |
 | S2 | 레인 작업(MS/Oracle/Infra/web_ops) | `py scripts/build_mkm_chat_resume_pack_v1.py --lane <lane>` | exit 0 · `mkm_chat_resume_pack_latest.json` | 동일 레인 짧은 후속 1턴 |
+| S2b | 재개 트리거 후 (Pillar A LTM) | `Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane <lane>` → Read pack → envelope → `MISSION_LOG` 다음 1타 | exit 0 · `mkm_cursor_deep_handoff_envelope_v1_latest.json` · `required_ssot_refs` | Oracle graph_slice 채팅 |
 | S3 | MISSION_LOG 재개 + 오늘 solo ops 미실행 | `powershell -File scripts\Invoke-MkmSoloBackgroundOps_v1.ps1` | `reports/mkm_solo_background_ops_state.json` `last_ok` 오늘 | 이미 `last_ok` 오늘 |
 | S4 | 구현·경로 주장 전 | `verify_p0_constitution_gate_paths.ps1` 또는 【빠른 헌법 점검】 | exit 0 | 문서만 읽기 |
 
@@ -50,9 +51,14 @@
 
 ### 3.3 세션 종료 (의미 있는 진행 후)
 
+**지휘관 트리거:** `마무리` · `마무리해줘` (레거시: `장기기억 저장` · `체크포인트`) — SSOT `mkm_commander_resume_triggers_v1.json` `session_end_modes` · 시작과 짝: `장기기억 맥락이어`.
+
 | # | When | Action | Pass |
 |---|------|--------|------|
-| E1 | 정책·분기 1줄 | `py scripts/athena_checkpoint.py "<한 줄>"` | exit 0 · CENTRAL checkpoint |
+| E1 | 정책·분기 1줄 | `py scripts/athena_checkpoint.py --continuity-id <id> "<한 줄>"` | exit 0 · CENTRAL checkpoint |
+| E1b | 턴 메타 (Infra LTM) | `py scripts/append_mkm_cursor_turn_meta_v1.py --continuity-id <id> ...` 또는 `run_mkm_cursor_session_end_v1.py` | `mkm_cursor_turn_meta_log.jsonl` · `self_audit` |
+| E1c | 턴 메타 감사 (주기) | `py scripts/check_mkm_cursor_turn_meta_audit_v1.py` | `mkm_cursor_turn_meta_audit_v1_latest.json` · sparse=WARN |
+| H1 | Pillar A 회귀 (헬스) | `run_workspace_automation_health.ps1 -PillarACursorContinuitySmokeOnly` | `run_mkm_pillar_a_cursor_health_smoke_v1.py` exit 0 |
 | E2 | 레인 다음 1타 | `MISSION_LOG.md` **해당 블록만** 갱신 | 1 action line |
 | E3 | (선택) 크로스 채팅 핸드오프 | `@CURRENT_OPS_SNAPSHOT` Ops slice 3줄 | 지휘관이 「핸드오프」 요청 시만 |
 

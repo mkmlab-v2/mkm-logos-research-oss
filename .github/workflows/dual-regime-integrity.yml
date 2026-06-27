@@ -982,6 +982,19 @@ jobs:
       - name: CROSS_REF draft vs LOGOS_STATE_MAPPING (canonical_ref join Fact-Lock)
         run: python -m pytest tests/test_cross_ref_dss_schema.py -q --tb=short
 
+      - name: BigSet Tier-0 ingest triple gate (B-track smoke)
+        run: |
+          python -m pytest \
+            tests/test_bigset_ingest_spike_chain_v1.py \
+            tests/test_check_bigset_tier0_timeline_order_v1.py \
+            tests/test_bigset_tier0_timeline_repair_and_atypical_v1.py \
+            tests/test_bigset_logos_fusion_chain_v1.py \
+            tests/test_bigset_tier0_atypical_human_review_queue_stub_v1.py \
+            tests/test_bigset_tier0_csv_accumulate_v1.py \
+            tests/test_filter_bigset_tier0_csv_by_topic_v1.py \
+            tests/test_bigset_studio_conflict_sidecar_smoke_v1.py \
+            -q --tb=short
+
       - name: B-track Hypothesis Inventory schema
         run: python -m pytest tests/test_b_track_hypothesis_inventory.py -q --tb=short
 

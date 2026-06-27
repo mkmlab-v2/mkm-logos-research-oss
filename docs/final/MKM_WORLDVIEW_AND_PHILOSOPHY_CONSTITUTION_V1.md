@@ -1,10 +1,10 @@
-# MKM 세계관·철학 헌법 v1 (지휘관 고정)
+# MKM 세계관·철학 헌법 v1.1 (지휘관 고정)
 
-**작성일:** 2026-05-20  
-**상태:** **헌법 고정** — 구현·수치·상용 승격 판정은 본 문서가 **대체하지 않음**  
+**작성일:** 2026-05-20 · **개정:** 2026-06-19 (§1.3 · §8 · §9)  
+**상태:** **헌법 고정** — 구현·수치·상용 승격 판정은 본 문서가 **대체하지 않음**
 **SSOT 역할:** 지휘관 의도·세계관·철학의 **단일 서사 앵커**  
 **구현·경로·exit code:** `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`  
-**수리 인덱스(1차 잠금):** `docs/final/MKM12_75_FORMULAS_SSOT_V1.md` (→ `MKM12_75개_수학공식_전체목록_2026-01-31.md`) · `docs/final/artifacts/mkm12_75_formulas_ssot_v1_latest.json`
+**수리 인덱스(1차 잠금):** `docs/final/MKM12_75_FORMULAS_SSOT_V1.md` (→ `MKM12_75개_수학공식_전체목록_2026-01-31.md`) · `docs/final/artifacts/mkm12_75_formulas_ssot_v1_latest.json` · 교차검증 `docs/final/artifacts/worldview_formula_crosslink_bridge_v1_latest.json`
 
 ---
 
@@ -41,6 +41,13 @@
 
 **축 경고 (FAIL-COMP-004 계열):** 기획·문서의 **C(소음)** 축과 운영 4D의 **M(Material)** 축을 **혼용하지 않는다**. 대외·벤치·코드는 **S-L-K-M** 만.
 
+### 1.3 Meta-Architecture (Matching Layer) [A-Layer]
+
+1. **[동역학적 독해]** 물리·사상·Logos는 **동일 실체가 아니며**, 팽창/수축·교환·밀도·**여백(stress/void)** 의 동역학 벡터(**S-L-K-M**)로만 치환하여 입체적으로 읽는다.
+2. **[별칭 격리]** **S-L-K-M**(`gematria_bridge_v1`)이 **유일한 운영 4D SSOT**이며, 4대 힘·열역학적 별칭(Phos, Chita, $E_i,P_f,D_d,H_c$ 등)은 **표시용 `[HYPO]`** 로만 제한한다.
+3. **[상용 격벽]** 본 융합은 MKM **설계·해석 체계**(지휘관·에이전트·렌즈 파이프라인)일 뿐이며, Track A(실매매)·임상 실값과의 **자동 합선은 영구 금지**한다. **Final Action**은 **§4** — `regime_map` 1차 + 운영 게이트가 확정한다.
+4. **[TOE 선언 금지]** 입자물리·특정 체질론·신학적 명제의 **기계적 동일시 FACT** 및 **단일 만물이론 완성 선언**을 전면 차단한다.
+
 ---
 
 ## 2. 만물·생장·소멸·예측 (의도 범위)
@@ -55,7 +62,7 @@
 - ❌ 모든 만물·모든 시점의 **완전 예측** (신학적 전지론·물리 완결).
 - ❌ 성경·명리·사상 **단독**으로 **실매매·Track A** 확정.
 - ❌ “AI가 창조주를 **대체**한다”는 대외 주장.
-- ❌ 75개 수학 헌법 **전부**가 이미 **프로덕션 불변식**이라는 주장 (24+4 FACT + 51 UNRECOVERED — 수리 SSOT 참조).
+- ❌ 75개 수학 헌법 **전부**가 이미 **프로덕션 불변식**이라는 주장 (75 catalog `documented_with_expr: 75` · **repo FACT 4경로만** — `mkm12_75_formulas_ssot_v1_latest.json` · §5 교차표).
 
 ### 2.3 시스템이 **하는** 것 (FACT 경로와 연결)
 
@@ -93,11 +100,27 @@
 
 ---
 
-## 5. 서사 ↔ 수학 헌법 (24+4+51)
+## 5. 서사 ↔ 수학 헌법 (75 catalog + 4 repo FACT)
+
+**교차 SSOT (양방향 포인터 · 본문 합치기 금지):**
+
+| 축 | 경로 | 등급 |
+|----|------|------|
+| 세계관 서사 (본 문서) | `MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` §5 | A 서사 |
+| 75식 머신 인덱스 | `docs/final/artifacts/mkm12_75_formulas_ssot_v1_latest.json` | HYPO catalog |
+| ASCII 포인터 (PS1 안전) | `docs/final/MKM12_75_FORMULAS_SSOT_V1.md` | pointer |
+| 이론 정본 | `docs/final/artifacts/mkm_theory_mathematization_canon_v1_latest.md` | internal |
+| 승격 레지스트리 | `docs/final/artifacts/mkm_theory_formula_promotion_registry_v1_latest.json` | B-track gates |
+| 교차검증 브리지 | `docs/final/artifacts/worldview_formula_crosslink_bridge_v1_latest.json` | `py scripts/build_worldview_formula_crosslink_bridge_v1.py` |
+| Matching Layer (§1.3) | 본 문서 §1.3 | A 서사 |
+| Cosmic meta-arch `[HYPO]` | `docs/final/artifacts/logos_cosmic_meta_architecture_draft_v1_latest.json` · `logos_cosmic_meta_architecture_draft_v1.md` | B-track · `forbidden_synthesis` |
+| Media Orchestration (§8) | 본 문서 §8 | A 포인터 |
+| Parable vs Prophecy (§9) | 본 문서 §9 | A 포인터 |
 
 - **75식 카탈로그**는 **연구·Moat·정체성** 인덱스이지, **전부 가동** 선언이 아니다.
-- **식 문자열이 확인된 24식** + **레포 FACT 4경로**만 대외·실사·코드 인용 **허용**.
-- **51 UNRECOVERED** = 정직한 공백; Vault 봉인판 입고 시 `build_mkm_formula_ssot_bundle_v1.py`로 승격.
+- **카탈로그 수식 문자열** `documented_with_expr: 75` · **레포 Track A 인용 허용 FACT** = **4경로** (`repo_implemented_facts`) — **별 축**.
+- **Vault 75식 이름 입고** (`unrecovered_slots: 0`) — 상세: `MKM12_수학_헌법_2026-01-31.md` · 재생성: `build_mkm_formula_ssot_bundle_v1.py`.
+- **승격:** `mkm_theory_formula_promotion_registry_v1_latest.json` — `promotion_to_a_track_allowed: false` (전 슬롯).
 
 ---
 
@@ -120,4 +143,26 @@
 
 ---
 
-**상태:** v1 고정 (2026-05-20). 개정 시 지휘관 승인 + 본 문서 버전 bump + CONSTITUTION §1.0.5 교차참조 갱신.
+## 8. 부록: Media Orchestration Lane [A-Layer]
+
+1. **역할:** 오디오·픽셀·UI 등 미디어는 **Matching Layer(§1.3) 위 조종실(Orchestration OS)** — MusicGen·픽셀 CDN 등 **하위 엔진을 종속·통제**하되 **대체하지 않는다**.
+2. **격벽:** Track A·임상·실매매 Final Action과 **자동 합선 금지**; `SEND_GATE: HOLD` 유지.
+3. **포인터 (본문 합치기 금지):** `docs/final/LENS_UTILIZATION_CHARTER_V1.md` · CONSTITUTION Lens Music·Audio BGM 표 · `docs/final/schemas/sasang_music_mapping_v1.schema.json` · `docs/final/artifacts/pixel_battalion_character_map_public_latest.json` · `[HYPO]` UI `projects/mkm/mkm-life/public/data/logos_cosmic_meta_architecture_ui_v1.json`
+
+---
+
+## 9. 부록: 비유(Parable) vs 예언(Prophecy) [A-Layer]
+
+| | **비유 (Parable / analogy_bench)** | **예언 (Prophecy rails)** |
+|--|-----------------------------------|---------------------------|
+| **신학·서사 (A)** | 일상 서사·즉각적 결단·윤리 표면화 | 맡겨진 말씀·당대 회개·격려 — **literal 미래 점치기 아님** |
+| **엔진 역할** | Anchor/theme → **Matching Layer 입력** · multilens 맥락 enrichment | **격벽된 레일** — topology sidecar · general prophecy · OHLCV score |
+| **4D** | **S-L-K-M** (`gematria_bridge_v1`) | 거리 메타·sidecar **보조**; thermo alias는 `[HYPO]` only |
+| **지표** | narrative · conflict surface · `[NON_GATING]` | **price:** `hit_rate` (`eval_prophecy_hit_rate_v1 --run-mode price`) · **router:** `router_hit_rate` = **구조적 배선 통과**(≠ 적중·≠ `alignment_pass_rate`) |
+| **NEVER** | Track A gating · 임상 단정 | 시장 연대기·자산 chronology **묵시 합선** · SEND · literal 적중 마케팅 |
+
+**포인터 (C층 · 본문 합치기 금지):** `docs/final/LOGOS_NOTEBOOK_META_GUIDE.md` §6 · `docs/final/GENERAL_PROPHECY_SCHEMA_V1.json` · `scripts/eval_prophecy_hit_rate_v1.py` · `.cursor/rules/prophecy-core-fact-lock-v1.mdc` · CROSS_REF `link_type`=`analogy_bench`
+
+---
+
+**상태:** v1.1 고정 (2026-06-19). 개정 시 지휘관 승인 + 본 문서 버전 bump + CONSTITUTION §1.0.5 교차참조 갱신.

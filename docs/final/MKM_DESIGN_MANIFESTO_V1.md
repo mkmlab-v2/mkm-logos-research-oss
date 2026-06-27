@@ -82,9 +82,11 @@ All five surfaces share one token system and one motion language.
 
 ## 6) Governance
 
+- **Design philosophy charter (Decide layer):** `docs/final/MKM_DESIGN_PHILOSOPHY_CONSTITUTION_V1.md`
+- **Sasang primitive kernel (machine params):** `docs/final/artifacts/sasang_design_primitive_kernel_v1_latest.json` · gate: `scripts/check_sasang_design_primitive_kernel_v1.py`
 - Strategy anchor: `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`
 - Public copy/security anchor: `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`
 - Domain-role anchor: `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md`
-- Token source: `docs/final/artifacts/mkm_design_tokens_v1.json`
+- Host token source: `docs/final/artifacts/mkm_domain_design_tokens_v1.json`
 
 Violation of this manifesto is treated as a **design review blocker** for public surfaces.

@@ -1,6 +1,7 @@
 ---
 title: 레짐 필드(Regime Field) 헌법 — 3+1 구조 제4축
-alwaysApply: true
+description: Regime Field 3+1 · regime_map primary · biblical/myeongri assistive only — regime/prophecy/trading lens work
+alwaysApply: false
 priority: 1
 ---
 
@@ -41,6 +42,9 @@ priority: 1
 - ✅ 레짐별 표준 지문 테이블(`regime_map.json`) 확정 후 실시간 (φ, λ, 4D)와 유사도 매칭해 현재 레짐 판별.
 - ✅ 3+1 구조(Seed, Label, Formula, **Field**)로 문서·코드 일관 유지.
 - ✅ **1차 레짐(실물, regime_map) 주(主)·2차 레짐(성경, biblical_regime_matrix) 보(補)**. 2차 성경 레짐은 가설·리포트/해설용만, **실전 시그널·트리거에는 사용 금지**.
+- ✅ **렌즈별 도메인 활용·위임·ablation:** `docs/final/LENS_UTILIZATION_CHARTER_V1.md` (Field ≠ 4번째 렌즈).
+- ✅ **Advisory 4 perspectives (인문3+Science@{domain}):** `docs/final/MKM_PARALLEL_ADVISORY_LENS_CONTRACT_V1.md` — 통찰 병렬·`no_lens_supremacy`·direction merge 금지; Final Action은 Field만.
+- ✅ **인식론·Epistemic Mismatch:** `docs/final/MKM_LENS_ONTOLOGY_CONSTITUTION_V1.md` — 삼중 평면·4AI≠4 perspectives·Anti-Hype 쌍대 원칙.
 
 ## NEVER
 

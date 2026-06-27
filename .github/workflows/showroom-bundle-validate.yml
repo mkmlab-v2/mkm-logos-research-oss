@@ -93,5 +93,8 @@ jobs:
             tests/test_build_showroom_topology_radar_snapshot_v1.py \
             tests/test_build_showroom_meaning_topology_graph_slice_v1.py \
             tests/test_build_showroom_macro_horizon_2030_slice_v1.py \
+            tests/test_build_jemaai_showroom_public_urls_v1.py \
+            tests/test_build_showroom_logos_job_reading_pack_slice_v1.py \
+            tests/test_build_showroom_meaning_topology_qa_presets_v1.py \
             -q --tb=short
 

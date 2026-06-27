@@ -62,10 +62,10 @@
     },
     {
       "id": "prism_notebooklm_mega_insights_10gb_jsonl",
-      "path": "reports/notebooklm/btrack_mega_insights_10gb.jsonl",
+      "path": "docs/final/artifacts/btrack_notebooklm_jsonl_kpi_latest.json",
       "prism_axis": "K",
       "agent_access": "b_track_only",
-      "summary_ko": "B-track NotebookLM 메가 인사이트 JSONL"
+      "summary_ko": "B-track NotebookLM mega JSONL KPI 포인터(원본 reports/notebooklm/btrack_mega_insights_10gb.jsonl 온디맨드)"
     },
     {
       "id": "prism_myeongni_insight_observation_log",

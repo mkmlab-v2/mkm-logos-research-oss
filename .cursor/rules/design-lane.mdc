@@ -20,7 +20,8 @@ description: Design/Showroom·jemaai·no1kmedi UI 작업 시 — MISSION_LOG Des
 2. `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` — **§1.1·§1.1b** (도메인 역할·CTA).
 3. `projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` — 공개 vs 비공개 경계.
 4. `projects/no1kmedi` 편집 시: `.cursor/rules/mkm-no1kmedi-design-guardrail-v1.mdc` (globs 자동) + `npm run check:design-tokens`(해당 디렉터리).
-5. 카피·IP: `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.7 — 과장·%·이론 비노출.
+5. **Trust Composition(레퍼런스→토큰→gate):** `.cursor/rules/mkm-trust-composition-design-v1.mdc` · `docs/final/MKM_TRUST_COMPOSITION_DESIGN_PIPELINE_V1.md`.
+6. 카피·IP: `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.7 — 과장·%·이론 비노출.
 
 **웹 스모크:** `mkm-browser-automation-v1.mdc` — API·`browser_*` Tier 2; CF 대시보드 로그인은 Tier 3(지휘관).
 

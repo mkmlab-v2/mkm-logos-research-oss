@@ -18,7 +18,8 @@
 | **mkmlab.space** | **퇴역 예정** — **301 → `research.no1kmedi.com`** (등록 만료 ~2026-06-20). 콘텐츠 SSOT는 `mkmlab-redesign/` → `/var/www/mkmlab`. | `MKM_DOMAIN_CLINICAL_LANE_V1.md` · `apply_mkmlab_space_retire_301_v1.sh` | 갱신 중단 전 **research** vhost·DNS ensure · `Invoke-No1kmediDomainParallelMigrate_v1.ps1` |
 | **research.no1kmedi.com** | **분자한의학 연구소·생산 제품** (구 mkmlab.space). | 동 상위 · `reports/mkmlab_space_readiness_latest.json` | VPS static · CF zone **no1kmedi.com** |
 | **jema-ai.com** | **공개 브랜드·Next `metadataBase`**. B2B **`/enterprise`** · 한의사 보조 **`/clinician`**(채팅+CDSS·환자 번들). 소스 `projects/no1kmedi`. | `JEMA_AI_DOMAIN_POINTER_V1.md` · CF DNS ensure 산출: `reports/cloudflare_dns_ensure_jema-ai_com.json`(요약 체인: `reports/cloudflare_dns_ensure_chain_latest.json`) | **실측(2026-05-16):** upstream `127.0.0.1:3010` · PM2 `no1kmedi-com` **`cwd=/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi`**. 배포: `Deploy-No1kmediDestinyTarball_v1.ps1` (`-RunApiSmoke` 권장). VPS `.env.local`: `MKM_WORKSPACE_ROOT`·`MKM_PYTHON`·`KM_CLINICIAN_PRO_EMAIL_ALLOWLIST`. |
-| **personadiary.com** | B2C 일기·리플렉션 **프리뷰** — `no1kmedi` `/personadiary` · Phase 2 lattice/ritual UI · MKM 패밀리 허브 푸터(제품 격벽 문구). **데이터 본선·결제 미확정**. | `PERSONADIARY_DOMAIN_POINTER_V1.md` · `artifacts/personadiary_preview_ops_v1_latest.json` · `artifacts/mkm_domain_design_tokens_v1.json` | **본선 연결 전** DB·결제 **합선 금지**. mkmlife API/DB 공유 가정 금지. **결선:** `Invoke-MkmDomainDesignClosureBundle_v1.ps1` → `reports/mkm_domain_design_closure_v1_latest.json`. |
+| **logos.jema-ai.com** | **성경·텍스트 연구 워크스페이스** (Track B 상용 표면) — GraphRAG·citation lock·기관 파일럿. **교리 판매·Track A·실매매 격리.** | `docs/final/artifacts/logos_research_commercial_product_v1_latest.json` · `projects/no1kmedi/src/app/logos-research/page.tsx` · 메트릭 `reports/logos_research_product_metrics_v1_latest.json` | **farm.jema-ai.com** 과 동일: Next middleware rewrite `/` → `/logos-research` · apex `jema-ai.com/logos-research` → **308** canonical 서브도메인. DNS: jema-ai.com zone CNAME `logos` → 동일 origin. |
+| **personadiary.com** | B2C **찰나의 나라** — 뉴스·날씨·거시×지금의 나 융합 일상 동반 · moment 질문·리추얼·일기(HYPO) · `no1kmedi` `/personadiary`. **데이터·결제 미확정**. | `PERSONADIARY_DOMAIN_POINTER_V1.md` · `artifacts/personadiary_b2c_business_plan_v1_latest.md` · `personadiary_preview_ops_v1_latest.json` | **본선 연결 전** DB·결제 **합선 금지**. mkmlife API/DB 공유 가정 금지. |
 
 **Cloudflare — 레포 앵커 (최소):** `scripts/data/hostinger_full_exit/`에 **`schema: *_cloudflare_zone_v1` JSON**이 있는 apex는 **no1kmedi.com, mkmlife.com, mkmlab.space, a-codeai.com, jema12.com, personadiary.com** (파일명 접두와 동일). **`jema-ai.com`·`jemaai.cloud`는 이 폴더에 별도 zone 픽스처 파일이 없음** — DNS 레코드 ensure·점검 산출은 위 표 행의 `reports/cloudflare_dns_ensure_*.json` 및 `reports/cloudflare_dns_ensure_chain_latest.json`을 우선한다. 토큰·Redirect·메일 라우팅 등 절차는 `docs/final/JEMA12_PUBLIC_DOMAIN_AND_DEPLOY_HANDOFF_2026-04-07.md`, `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`(Cloudflare/Email Routing 표행)와 `scripts/Invoke-Cloudflare*.ps1` 포인터를 병행한다.
 
@@ -33,8 +34,10 @@ Track C·공개 쇼룸 논의와 동일 선상: **실매매·조종실은 어디
 | **브랜드·허브·진입** — 회사 소개, 깊은 링크, 문서 하단 디스클레이머 | **jema-ai.com** | 라이트 마케팅 랜딩; **CTA는 mkmlife/jemaai로 분기** | 쇼룸 **실시간 전광판 UI**는 기본 **여기에 두지 않음**(혼잡·이중 유지보수 방지) | `JEMA_AI_DOMAIN_POINTER_V1.md` |
 | **B2B 압축·API 대외면** | **a-codeai.com** (및 정책에 따른 API 호스트) | 정적 랜딩 vs `/v1` API **경로 분리** | apex 스텁만 노출 404 류 | `P0_COMMERCIALIZATION_TRACKER.md`·nginx 예시 |
 | **분자한의학 연구소·생산 제품** | **research.no1kmedi.com** (구 mkmlab.space) | 연구·제조 스토리; **상업·B2B는 jema-ai.com** | AI 쇼룸·실매매 **합선 금지** | `mkmlab-redesign/` · `TRACK_C` §3.0 |
+| **성경·텍스트 연구 워크스페이스** | **logos.jema-ai.com** | 학술·연구 톤; Fact-Lock 메트릭 스냅샷 | 교리 판매·투자·Track A **금지** | `logos_research_commercial_product_v1_latest.json` |
 | **한의사 진료 보조** | **clinic.no1kmedi.com** · **no1kmedi.com** apex | SOAP·CDSS·/clinician; **공식 URL은 app.jema-ai.com** | consumer·MAI **합선 금지** | `MKM_DOMAIN_CLINICAL_LANE_V1.md` |
 | **백엔드 API·PayApp** | **api.no1kmedi.com** | Express·결제 — **UI 없음** | apex 포털 nginx와 **vhost 분리** | `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` §1 |
+| **찰나의 나라 일상 동반** | **personadiary.com** | 따뜻·귀여움 · 뉴스·날씨·거시×지금의 나 **융합 카드** · moment 질문·리추얼 | 뉴스 포털·운세·투자·mkmlife 결제 **합선 금지** | `personadiary_b2c_business_plan_v1_latest.md` |
 
 **와이어·카피 순서(Track C 고정):** JSON 계약(허용/금지 필드) → 와이어프레임 → 카피 (`TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.6·실행 항목 참조). 초안 자산: `docs/final/artifacts/mkm_ai_sales_kit_v1/MKM_AI_SHOWROOM_WIREFRAME_V1.md`(있을 때).
 
@@ -51,11 +54,52 @@ Track C·공개 쇼룸 논의와 동일 선상: **실매매·조종실은 어디
 | **mkmlife.com** (필요 시) | jemaai.cloud | 「라이브 데모·공개 보드」(선택) | **소비자 본 퍼널**은 리포트 구매; 쇼룸은 **신뢰·채널** 보조. |
 | **jema-ai.com** | **research.no1kmedi.com** | 「MKM LAB 분자한의학 연구소·생산 제품」 | 연구소·R&D; **AI·압축 수치 합선 금지** (`TRACK_C` §3.0). |
 | **research.no1kmedi.com** | **jema-ai.com** | 「도입·파트너·B2B·클리닉 문의」 | 상업·Track C는 **jema-ai**; 연구소는 **소개·제품만**. |
+| **jema-ai.com** | **logos.jema-ai.com** | 「성경·텍스트 연구 워크스페이스 (Logos)」·「Scripture Research Workspace」 | GraphRAG·citation lock · **research_only** · 교리·투자·실매매 **아님**. |
+| **logos.jema-ai.com** (푸터) | **jema-ai.com** | 「JEMA AI 소개」·「Enterprise」 | 브랜드 허브; 압축 %·MS 헤드라인 **합산 금지**. |
+| **jema-ai.com** | **personadiary.com** (`/personadiary`) | 「Persona Diary · 찰나의 나라」 | 일상 동반·리플렉션 **프리뷰**; 운세·투자·mkmlife 결제 **아님** (`personadiary_b2c_business_plan_v1_latest.md`). |
 | **jema-ai.com** | **clinic.no1kmedi.com** | 「한의사 포털 (no1kmedi)」 | 현장 북마크; **제안서 URL은 app.jema-ai.com/clinician**. |
 
 `jema-ai.com` 전용 상세·미확정 항목: `JEMA_AI_DOMAIN_POINTER_V1.md` — CTA는 **이 표(1.1b)와 `§1.1` 역할**에 맞출 것.
 
-**구현 원천(코드):** `projects/no1kmedi/marketing-site/public-copy.json` — `research_mkmlab` → **`https://research.no1kmedi.com`** · `clinician_no1kmedi_portal` → **`https://clinic.no1kmedi.com`**. 표(1.1b)와 불일치 시 **먼저 JSON을 고치고** 본 표를 개정한다.
+**구현 원천(코드):** `projects/no1kmedi/marketing-site/public-copy.json` — `research_mkmlab` → **`https://research.no1kmedi.com`** · `research_logos` → **`https://logos.jema-ai.com`** · `clinician_no1kmedi_portal` → **`https://clinic.no1kmedi.com`**. 표(1.1b)와 불일치 시 **먼저 JSON을 고치고** 본 표를 개정한다.
+
+#### 1.1c 공통 엔진 vs 도메인 어댑터 (킬러 아이템 · 혼동 방지, 2026-06-22)
+
+**목적:** 「성경 GraphRAG = logos」「초개인화 = mkmlife」「personadiary = 같은 엔진·다른 배선」을 **한 표**로 고정한다. **모노레포 파이프라인 공유 ≠ 제품·DB·결제·면책 합선.**
+
+**공통 엔진 (B-track · 모노레포 scripts):**
+
+```text
+Query → Subgraph router / GraphRAG → Insight (four-slot 등) → Visualization → Feedback (path ledger stub)
+```
+
+| 단계 | 대표 SSOT |
+|------|-----------|
+| Router | `scripts/run_logos_subgraph_graphrag_router_v1.py` |
+| 체인 | `scripts/run_question_semantic_rag_bridge_chain_v1.py` |
+| 경로 기록 | `scripts/logos_query_path_ledger_v1.py` · `ingest_magic_orb_path_feedback_to_ledger_v1.py` |
+| 코퍼스 레인 | 31k manifest · meaning graph(부분 PoC) · concept_bridge — **물리 merge 아님** (`mkm_three_exit_branding_matrix_v1` `shared_backend`) |
+
+**도메인 어댑터 (제품마다 교체):** `corpus_lane` · 킬러 UX · 카피·면책·SKU · `send_gate` / `research_only` 정책.
+
+| 도메인 | 킬러 표면 | 주 목적 | 코퍼스·배선 | 배관(router·path) 노출 |
+|--------|-----------|---------|-------------|------------------------|
+| **logos.jema-ai.com** | GraphRAG **연구 워크스페이스** | 성경·텍스트 **연구 통찰 생성** · citation lock | concept_bridge · 원어 · 31k lane | **보임** |
+| **jemaai.cloud** v6 | 로고스 **관측소** (출구2) | 목회·연구가 · 재현·게이트·XAI | 동일 corpus lane · honest_metrics | **보임** |
+| **mkmlife.com** `/oracle-sphere` | **마법구슬** (출구1) | 초개인화 **대중 체험** · 다중렌즈 리포트 | Logos subgraph + **명리 내장**(별도 학술 UI 없음) | **숨김** (consumer) |
+| **personadiary.com** | Daily Guide · Ritual/Lattice | **찰나의 나라** · 일상 동반 | `commander_daily_fortune` 등 upstream 빌드 | **숨김** · `preview_only` |
+
+**`jema-ai.com`:** 브랜드 **허브만** — 위 표면으로 **CTA 분기**(§1.1b). 성경 연구 홈·초개인화 홈 **아님**.
+
+**혼동 금지 (에이전트 · 사업계획서 · NL 이관 공통):**
+
+1. **mkmlife Logos 렌즈** ≠ **logos.jema-ai.com** 연구 워크스페이스 (같은 코퍼스 레인을 쓸 수 있으나 **표면·SKU·면책 분리**).
+2. **personadiary** ≠ mkmlife **API·DB·결제** — upstream 빌드 공유만 (`PERSONADIARY_DOMAIN_POINTER_V1.md`).
+3. **성경 meaning graph** = query-time subgraph + Path Ledger **방향** — 31k 전수 그래프 **미완** (`LOGOS_ORIGINAL_LANGUAGE_GRAPH_RAG_BRIDGE_V1.md` GAP).
+4. **FAIL-COMP-004:** Universal Root · 압축 KPI · Logos path 점수 **한 헤드라인 합산 금지**.
+5. **Y1 Hero** = GitHub `mkm-universal-root` — 위 B2C 킬러와 **별 Plane** (`TRACK_C` §3.0b).
+
+**교차 SSOT:** `docs/final/artifacts/mkm_three_exit_branding_matrix_v1_latest.json` · `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.0d** · `K_STARTUP_DOMAIN_SERVICE_MAPPING_V1_DRAFT.md` §1.1.
 
 ---
 

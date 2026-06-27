@@ -4,6 +4,35 @@
 
 License: **MIT License** — see [LICENSE](LICENSE)
 
+> **Public export hero (`mkm-universal-root`):** English README SSOT → [`docs/final/artifacts/mkm_universal_root_readme_hero_en_v1.md`](docs/final/artifacts/mkm_universal_root_readme_hero_en_v1.md) · verify → `py scripts/build_mkm_universal_root_public_export_bundle_v1.py --verify-only`
+
+---
+
+## Universal Root — neuro-symbolic integrity kit (export hero · EN)
+
+**Public repo:** https://github.com/mkmlab-v2/mkm-universal-root · ![OSS smoke](https://github.com/mkmlab-v2/mkm-universal-root/actions/workflows/oss-smoke.yml/badge.svg)
+
+**Track B `[HYPO]` · `research_only`** — not GPT-4 replacement · not fake-news firewall · not live trading.
+
+```bash
+git clone https://github.com/mkmlab-v2/mkm-universal-root.git && cd mkm-universal-root
+pip install -r requirements.txt
+python3 scripts/run_universal_root_oss_cursor_smoke_v1.py   # ~20s · exit 0
+```
+
+**Fixture bench (500 pairs, raw — do not collapse planes):**
+
+| Plane | Metric | Observed |
+|-------|--------|----------|
+| Lexicon 41k | `prime_hit_rate` | **99.53%** |
+| Lexicon 41k | `english_only_distortion_rate` | **0.47%** |
+| Topology 31k | `verse_reachable_rate` | **99.53%** |
+| Walls | exception cards | **2** |
+
+**Dual-plane integrity:** `collapsed_combined_score: null` — lexicon and topology stay separate.
+
+Full export README · manifest · materialize: see [`mkm_universal_root_readme_hero_en_v1.md`](docs/final/artifacts/mkm_universal_root_readme_hero_en_v1.md) · [`mkm_universal_root_public_export_manifest_v1.json`](docs/final/artifacts/mkm_universal_root_public_export_manifest_v1.json)
+
 ---
 
 ## Primary engine: local shallow → optional cloud deep
@@ -22,12 +51,63 @@ MKM decouples your repo workflow into two layers (both verifiable with **scripts
 
 ---
 
+## 7-second Hero bench TUI (no Ollama)
+
+Orchestration token-diet replay for README GIF / Show HN — **Hero lane only** (not Cursor traffic):
+
+```powershell
+# from repo root (after git clone)
+py scripts/run_mkm_bench_tui_spike_v1.py --replay-only
+# full refresh + TUI: py scripts/run_mkm_bench_tui_spike_v1.py
+# plain text: py scripts/run_mkm_bench_tui_spike_v1.py --replay-only --plain
+```
+
+Artifact: `reports/mkm_bench_tui_spike_v1_latest.json` · pytest: `tests/test_mkm_bench_tui_spike_v1.py`
+
+**Demo capture (GIF source):**
+
+```powershell
+# from repo root:
+py scripts/run_mkm_bench_tui_spike_v1.py --replay-only
+powershell -File scripts/Invoke-MkmBenchTuiDemoCapture_v1.ps1
+# transcript: docs/final/artifacts/mkm_bench_tui_demo_transcript_v1.txt
+# optional GIF: vhs docs/final/artifacts/mkm_bench_tui_demo_v1.tape
+```
+
+---
+
+## Universal Root neuro-symbolic PoC (fixture smoke · no HF/Ollama)
+
+See **[export hero (EN)](#universal-root--neuro-symbolic-integrity-kit-export-hero--en)** above for GitHub-facing copy. Details:
+
+```powershell
+# from repo root (Windows: py · Linux/macOS: python3)
+py scripts/run_universal_root_oss_cursor_smoke_v1.py
+# includes Launch Gate #1 path audit (--skip-path-audit to omit)
+# artifact: reports/universal_root_oss_cursor_smoke_v1_latest.json
+```
+
+**Latest raw metrics (fixture path, dual-report — do not collapse):**
+
+| plane | metric | value |
+|-------|--------|-------|
+| lexicon (raw) | `prime_hit_rate` | 99.53% |
+| lexicon (raw) | `english_only_distortion_rate` | 0.47% |
+| topology | `verse_reachable_rate` | 99.53% |
+| walls | exception cards | 2 (`heal`, `learn`) |
+
+Optional full Phase 17 chain (requires oracle tier-1 readiness): `py scripts/run_logos_graphrag_phase17_closure_observability_chain_v1.py`
+
+**License note:** Repo is **MIT**. Optional local SLM paths (e.g. Meta Llama 3.2 / DeepNSM) are subject to **their upstream licenses** — see model card before redistribution.
+
+---
+
 ## 10-minute Hybrid reproduce (Primary engine)
 
 **Offline (~3 min, no Ollama):**
 
 ```powershell
-cd C:\workspace
+# from repo root (after git clone)
 py scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py --skip-ollama
 # artifact: reports/ollama_shallow_hybrid_reproduce_bundle_v1_latest.json
 ```
@@ -84,7 +164,7 @@ Pointers: `docs/final/artifacts/compression_open_bench_contributor_kit_v1_latest
 ### Tier 0 · Smoke (~5 min)
 
 ```powershell
-cd C:\workspace
+# from repo root (after git clone)
 py scripts/check_mkm_solo_oss_release_readiness_v1.py
 py scripts/check_mkm_secret_patterns_v1.py
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_mkm_secret_scan_v1.ps1
@@ -154,23 +234,49 @@ Footnotes: numbers from `py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py
 
 ## Show HN / community blurb (copy-paste)
 
-**Title:** MKM Knowledge OS — repo-native hybrid memory for Cursor (measured shallow routing, not a data SaaS)
+**SSOT (compression / 41k lexicon bench — paste v2):** `reports/hangul_ko_lemma_hn_launch_paste_v1_latest.md`  
+Regenerate: `py scripts/build_hangul_ko_lemma_hn_launch_paste_v1.py` · Launch checklist: `py scripts/build_hn_public_launch_checklist_v1.py`
 
-**One-liner:** Local Ollama emits a fixed JSON handoff; optional deep fetch on demand. Lane pins instead of 50k-token pastes. **Not hosted ingestion.** Reproduce in ~10 min with one bundle script.
+**Title (lexicon bench lane):** MKM — deterministic context diet for Cursor/IDE (41k Logos lexicon + evidence-backed 18-ko overlay)
+
+**One-liner (lexicon bench lane):** Three separate benches (never merge): ~**99.62%** LTM pin skim (live E2E), ~**47.12%** Golden-40 offline compress (SSOT), Ollama **16/16** fixtures + live **8-row** chain OK — short E2E payloads hit **<4000 token gatekeeper bypass** (0% saving by design). Reproduce after public repo — not `git clone` today.
+
+**Body (short — see paste SSOT for full MAIN):**
+
+```
+Three benches: context pin skim (tiktoken) · Golden-40 offline compress (Logos lexicon, not a Korean dictionary) · local Ollama router.
+Live integrated smoke: 8/8 hops HTTP 200; bypass on short payloads is by design (<4k tokens).
+Honest drift: disk ACTIVE 47.54% vs pointer intent 48.8% — cite lane, do not average.
+MIT · SECURITY.md · SEND_GATE HOLD · no live trading.
+```
+
+---
+
+### Show HN (Knowledge OS / hybrid memory lane — legacy blurb)
+
+**Title:** MKM Knowledge OS — repo-native hybrid context layer for Cursor (measured bench, not a data SaaS)
+
+**One-liner:** I got tired of pasting 50k-token ops logs into cloud IDEs. MKM injects lane-scoped pins and optional local Ollama shallow JSON handoff — **~99.6% token diet vs our naive-paste baseline** (repro script; not a cloud bill guarantee). No MKM-hosted ingestion server.
 
 **Body (short):**
 
 ```
-MKM Knowledge OS = Primary: local shallow → optional cloud deep (scripts + pytest exit 0).
-Secondary: compression open-bench for researchers only — NOT the product hero.
+Show HN: MKM Knowledge OS — repo-native hybrid memory for Cursor (measured, not SaaS)
 
-10-min offline:
+Hero bench (no Ollama):
+  py scripts/run_mkm_bench_tui_spike_v1.py --replay-only
+
+Full hybrid reproduce (~10 min offline):
   py scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py --skip-ollama
 
-With Ollama:
+With local Ollama Modelfile (gemma4:e2b):
   powershell -File scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1
 
-MIT · SECURITY.md · measured metrics only · SEND_GATE HOLD · no live trading.
+Measured: shallow ~99.6% vs naive paste; orchestrated ~33%. routing_oracle_gap 0.0 on 16 golden in-domain fixtures only. OOD + Cursor proxy savings not claimed yet.
+
+Secondary: compression open-bench — NOT the product hero.
+
+MIT · SECURITY.md · SEND_GATE HOLD · no live trading.
 ```
 
 ---
@@ -218,7 +324,7 @@ These numbers are **from this repo's scripts**, not external DMF/Mem0 marketing 
 Reproduce:
 
 ```powershell
-cd C:\workspace
+# from repo root (after git clone)
 py scripts/run_mkm_ltm_orchestration_bench_bundle_v1.py
 ```
 
@@ -261,7 +367,7 @@ Prior-art log template: `docs/research/nextgen_ltm_knowledge_os/PRIOR_ART_SEARCH
 ## Full local smoke (all tiers)
 
 ```powershell
-cd C:\workspace
+# from repo root (after git clone)
 py scripts/check_mkm_solo_oss_release_readiness_v1.py
 py scripts/check_mkm_secret_patterns_v1.py
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_mkm_secret_scan_v1.ps1

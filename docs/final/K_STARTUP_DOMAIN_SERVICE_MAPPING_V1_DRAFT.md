@@ -1,14 +1,28 @@
 # MKM 도메인–서비스 매핑 (대외 제출용 부록 1장) · [DRAFT]
 
 **Status:** `[DRAFT]` — 법무·`ready_for_external_send` 통과 전 대외 send 금지.  
-**SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` · `docs/final/artifacts/mkm_three_exit_branding_matrix_v1_latest.json` · `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.0**(도메인 분리) · §3.1·§3.6·§3.8 · §4  
+**SSOT:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` · `docs/final/artifacts/mkm_three_exit_branding_matrix_v1_latest.json` · `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.0**(도메인 분리) · **§3.0d**(공통 엔진·킬러 어댑터) · §3.1·§3.6·§3.8 · §4  
 **Paste copy:** `reports/kstartup_majung_paste_ready/kstartup_domain_service_mapping_v1_draft.md` (동기 유지)
 
 ---
 
 ## 1. 한 줄 요약
 
-MKM은 **8개 apex 도메인**으로 B2C 체험·공개 쇼룸·B2B API·브랜드 허브·**연구소·제품(mkmlab.space)**·레거시·옵션을 **물리 분리**한다. **연구소 홈 ≠ AI 홈:** `mkmlab.space` / `jema-ai.com` — `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.0. 백엔드는 공유할 수 있으나 **UI·브랜드·실매매·결제·의료 트리거는 합선하지 않는다.**
+MKM은 **8개 apex 도메인**으로 B2C 체험·공개 쇼룸·B2B API·브랜드 허브·**연구소·제품(mkmlab.space)**·레거시·옵션을 **물리 분리**한다. **연구소 홈 ≠ AI 홈:** `mkmlab.space` / `jema-ai.com` — `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.0. 백엔드는 공유할 수 있으나 **UI·브랜드·실매매·결제·의료 트리거는 합선하지 않는다.** **제품 엔진 돌려쓰기·킬러 분리:** `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1c** · `TRACK_C` **§3.0d**.
+
+---
+
+## 1.1 공통 엔진 vs 킬러 (부록 요약 · §1.1c 동기)
+
+| 라인 | 도메인 | 킬러 | 주 목적 |
+|------|--------|------|---------|
+| 성경 연구 | logos.jema-ai.com | GraphRAG 워크스페이스 | 연구 통찰 생성 |
+| 성경 관측 | jemaai.cloud v6 | 로고스 관측소 | 재현·게이트·리드 |
+| 초개인화 | mkmlife.com | 마법구슬 | 대중 다중렌즈 리포트 |
+| 일상 동반 | personadiary.com | Daily Guide | 찰나의 나라 (preview) |
+| 허브 | jema-ai.com | CTA 분기 | 브랜드·B2B 라우팅 |
+
+**금지 한 줄:** personadiary·mkmlife **API/DB/결제 합선 없음** · mkmlife Logos 렌즈 ≠ logos 연구 홈 · UR Y1 Hero ≠ B2C 킬러 KPI 합산.
 
 ---
 
@@ -16,10 +30,11 @@ MKM은 **8개 apex 도메인**으로 B2C 체험·공개 쇼룸·B2B API·브랜�
 
 | 도메인 | 서비스·표면 | 대상 | Track C / GTM | 합선 금지 |
 |--------|-------------|------|---------------|-----------|
-| **jema-ai.com** | 브랜드 허브 · `app.jema-ai.com/enterprise` B2B · `/clinician` (내부) | 기업·파트너 | §3.8 **1차 유료 파도**(매크로 경보 구독) 영업면 | 쇼룸 UI·실매매·실키 |
+| **github.com/mkmlab-v2/mkm-universal-root** | **Y1 public hero** — Dual-Plane Neuro-Symbolic OSS · ~20s smoke · MIT | 개발자·커뮤니티 | **§3.0b** reproduce→trust · `research_only` | 압축 KPI·유료 SKU·hosted ingestion SaaS |
+| **jema-ai.com** | 브랜드 허브 · `app.jema-ai.com/enterprise` B2B · `/clinician` (내부) | 기업·파트너 | §3.8 **1차 유료 파도**(매크로 경보 구독) 영업면 · **압축 hero 아님** | 쇼룸 UI·실매매·실키 |
 | **jemaai.cloud** | 공개 쇼룸 · Logos Oracle v6 · Topology Radar · `public-event.v1` | 대중·리서치·리드 | §3.6 쇼룸 · §3.5 관측 지표 | 주문·체결·실키·확정 예측 |
 | **mkmlife.com** | 원퀘스천 · **`/oracle-sphere` 마법구슬 B2C** | 소비자 | §3.3 명리(구슬 내장) · 출구1 DECOY-P0 | 실거래·투자 조언·Track A |
-| **a-codeai.com** | **P1 압축·토큰 API** · `/` 정적 · `/v1`·`/health` API (nginx 분리) | B2B·엔터프라이즈 | **§3.1 축 A (기술 1순위)** | B2C UI·쇼룸 임베드 |
+| **a-codeai.com** | **P1 압축·토큰 API** · `/` 정적 · `/v1`·`/health` API (nginx 분리) | B2B·엔터프라이즈 | **§3.1 Parallel Lane** (인바운드·기존 B2B) · Y1 Hero **아님** | B2C UI·쇼룸 임베드 · UR KPI 합산 |
 | **no1kmedi.com** | Express API · PayApp 축 (레거시 내부 식별) | 인프라 | API 백엔드 | 공개 브랜드명·쇼룸 본거지 아님 |
 | **jema12.com** | 레거시 **301 → jema-ai.com** · `/studio` → v6 데모 진입 | 레거시 유입 | 진입 전용 · CF 에지 301 권장 | 제품 본거지 아님 |
 | **mkmlab.space** | **MKM LAB 분자한의학 연구소** — 발효 NO 대사체·연구소 생산 제품 소개 | 실물·R&D·건기식(부종목) | **Track C와 별 축** (`TRACK_C` §3.0) | AI·쇼룸·압축 API **본거지 아님** · **VPS+Cloudflare** (`Sync-MkmlabRedesignToVps_v1.ps1`) |

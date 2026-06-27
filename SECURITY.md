@@ -13,59 +13,60 @@ This repository is **research and developer tooling** — not a hosted SaaS with
 If you believe you found a security issue in **published** MKM OSS code:
 
 1. **Do not** open a public GitHub issue with exploit details or live secrets.
-2. Email the maintainer with: affected path, reproduction steps, impact, and your contact.
+2. Use [GitHub Security Advisories](https://github.com/mkmlab-v2/mkm-universal-root/security/advisories/new) (preferred) or email the maintainer with: affected path, reproduction steps, impact, and your contact.
 3. Allow reasonable time for triage before public disclosure.
 
 For accidental secret commits: rotate the credential immediately — scanning cannot un-leak a key.
 
 ## Secret hygiene (operators)
 
-Before fork or public push:
+Before fork or public push, from repo root:
 
-```powershell
-cd C:\workspace
-py scripts/check_mkm_secret_patterns_v1.py
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_mkm_secret_scan_v1.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Verify-GitWorkspaceSanity.ps1
-pre-commit run --all-files   # optional, after: pre-commit install
+```bash
+python3 scripts/check_mkm_secret_patterns_v1.py
+python3 scripts/check_hardcoded_workspace_paths_v1.py --scope oss --strict
+python3 scripts/run_universal_root_oss_cursor_smoke_v1.py
 ```
+
+Windows: use `py` instead of `python3`.
 
 Never commit:
 
-- `.env`, API keys, DPAPI exports, exchange credentials
-- Local `MISSION_LOG.md`, machine-specific pointers
+- `.env`, API keys, bearer tokens, exchange credentials
 - Patient, grant, or trading-approval artifacts
+- Local operator logs or machine-specific pointers
 
-Use `.env.example` placeholders only. Store live secrets via DPAPI (`scripts/security_agent_manager.py`) or your OS secret store — not in git.
+Use `.env.example` placeholders only. Store live secrets in your OS secret store — not in git.
 
-## Automated scanning
+## Automated scanning (in this repo)
 
 | Tool | Role |
 | ---- | ---- |
-| `scripts/check_mkm_secret_patterns_v1.py` | High-confidence pattern scan (always runnable) |
-| `gitleaks` + `.gitleaks.toml` | Optional deeper scan when binary is installed |
-| `.pre-commit-config.yaml` | Local hook: gitleaks + pattern scan on `git commit` |
+| `scripts/check_mkm_secret_patterns_v1.py` | High-confidence pattern scan (stdlib + git; no extra deps) |
+| `scripts/check_hardcoded_workspace_paths_v1.py --scope oss --strict` | Launch Gate #1 — no hardcoded monorepo paths |
+| `.github/workflows/oss-smoke.yml` | CI: path audit + smoke + contributor stub pytest |
 
-Install hooks (when `core.hooksPath` is unset):
-
-```powershell
-pre-commit install
-```
-
-When `gitleaks` is not on PATH, use the hook cache:
-
-```powershell
-pre-commit run gitleaks --all-files
-```
+Optional (maintainers): install `gitleaks` locally for deeper scans before push.
 
 ## Scope limits
 
 - B-track `[HYPO]` outputs are **not** operational security controls.
 - MIT license — no warranty. See [README.md](README.md) disclaimer.
-- **Track A live trading** remains LOCKED in this workspace; OSS does not enable exchange execution by default.
+- This OSS subset does **not** enable exchange execution or auto-promotion to production.
 
-## Related docs
+## Community FAQ (Show HN / GitHub discussions)
 
-- Public copy checklist: `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md`
+**Do you run a central server that ingests my code?**  
+No MKM-hosted ingestion service ships in this repo. Smoke tests and benches run on your machine only.
+
+**What leaves my machine?**  
+Nothing required for the hero smoke path. Optional local SLM tiers are your choice and subject to **your** provider egress policies.
+
+**Is 0.47% a global hallucination rate?**  
+No. It is `english_only_distortion_rate` on a **500-pair closed fixture** (lexicon plane). See `reports/universal_root_oss_cursor_smoke_v1_latest.json` after smoke.
+
+## Related docs (in this export)
+
 - OSS release policy: `docs/final/artifacts/mkm_solo_oss_release_policy_v1_latest.json`
-- Hybrid AI related work (B-track): `docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md`
+- Public GTM pointer (OSS-safe): `docs/final/artifacts/mkm_universal_root_public_gtm_pointer_v1.json`
+- Contributor guide: `CONTRIBUTING.md`

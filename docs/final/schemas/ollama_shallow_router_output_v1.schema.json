@@ -64,6 +64,17 @@
         "pattern": "^[a-z0-9_./-]+$"
       }
     },
+    "nsm_prime_tags": {
+      "type": "array",
+      "maxItems": 3,
+      "description": "Optional Layer A NSM semantic prime tags (≤3). Advisory gating only; not Track A promotion.",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 32,
+        "pattern": "^[a-z][a-z0-9_]*$"
+      }
+    },
     "parse_status": {
       "type": "string",
       "const": "raw"

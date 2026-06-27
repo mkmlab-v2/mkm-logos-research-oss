@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-20T21:07:34Z
+- **last_updated_utc:** 2026-06-27T10:06:08Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-21:** lens pack push **54/54** OK · OPS `CENTRAL_AGENT_MEMORY_V1` refreshed incl. 41k/31k 격벽 절). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1 -Refresh` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -108,13 +108,32 @@
 | AWS | Confirmed → follow-up | **Activate 거절** (Gmail: does not meet requirements) |
 | GCP | Confirmed → follow-up | **Startup Apply 제출 완료** (6/19) — 승인 메일 대기 |
 | Lambda | Confirmed → follow-up | **nvidia-inception 폼 제출 완료** (6/19) · Billing Credits **$0 → 승인 대기** |
-| Nebius | Confirmed → follow-up | CDP 세션 만료 · $25 prepaid만 |
-| Azure | Confirmed → follow-up | **`?tenant=e984d55e…` + GitHub 로그인** · `MKM-Startups-Prod` · Inception $5K 추가 신청 |
+| Nebius | Confirmed → follow-up | **`console.nebius.com` + `moksorinw@gmail.com` Google OAuth** · Balance **$25** · tenant `amber-rat-tenant-5cf` · **`tokenfactory.nebius.com` ≠ 콘솔(재결제 아님)** · Inception $5K 미반영 |
+| Azure | Confirmed → **claimed** | **`giryun288` + GitHub** · `MKM-Startups-Prod` · **Azure startup sponsorship credit `US$4,998.91` / `₩7,502,864` 잔액** (원금 $5K · 적용 2026-05-20 · 만료 **2027-02-14**) · 지휘관 청구 포털 확인 **2026-06-25** · SSOT `reports/mkm_azure_startup_credit_ssot_v1_latest.json` |
 | Innovation Lab | Under Review | `@nvidia.com` 수락 대기 |
 
 **GPU 정책:** `reports/nvidia_gpu_smoke_dod_v1_latest.json` — partner credit/Lab 전 GPU spinup OFF.
 
-**에이전트 NEVER:** `jema12@mkmlife.com`을 Inception 크레딧 계정으로 안내 · `giryun288@gmail.com`만 검색하고 moksorinw 생략 · Phoenix Confirmed = 「지금 바로 크레딧 사용 가능」 단정 · 포털 requestor `giryun lee`를 로그인 이메일과 혼동(로그인=`no1kmedi`, 메일=`gmail u/1`).
+**Nebius 혼동 방지 (6/23 CDP):** GPU·Billing SSOT = **`console.nebius.com`** + **`moksorinw@gmail.com`** · `tokenfactory.nebius.com` Profile/카드 = **별 SSO** · **$25 재결제 금지** · 상세 `reports/nvidia_inception_email_credit_routing_ssot_v1_latest.json` → `nebius_dual_login_path_v1`.
+
+**에이전트 NEVER:** `jema12@mkmlife.com`을 Inception 크레딧 계정으로 안내 · `giryun288@gmail.com`만 검색하고 moksorinw 생략 · Nebius를 giryun288/Azure 계정으로 안내 · Token Factory 온보딩 = 「다른 계정/재결제 필요」 단정 · Phoenix Confirmed = 「지금 바로 크레딧 사용 가능」 단정 · 포털 requestor `giryun lee`를 로그인 이메일과 혼동(로그인=`no1kmedi`, 메일=`gmail u/1`).
+
+---
+
+## BigSet LLM harness (B-track · send_gate HOLD)
+
+**에이전트 ALWAYS (BigSet/Azure/TinyFish 턴):** 먼저 `py scripts/invoke_mkm_harness_read_ssot_v1.py` — `.env`·CENTRAL에 있는 키·구독을 **재질문 금지** (`mkm_harness_read_ssot_v1_latest.json` · `agent_never_reask_if_present`).
+
+| 슬롯 | SSOT | 비고 |
+|------|------|------|
+| **Azure OpenAI** | workspace `.env` `AZURE_OPENAI_*` · `MKM_LLM_PRIORITY=azure_first` · 구독 `MKM-Startups-Prod` · 리소스 `mkm-openai-eastus2` · deployment `gpt-4o-mini` | 개인 OpenRouter 카드 불필요 · **하이브리드 3층 SSOT** `reports/mkm_hybrid_three_layer_ops_metaphor_v1_latest.json` |
+| **BigSet Azure** | `BIGSET_LLM_PROFILE=azure_openai` · `apply_bigset_free_tier_profile_v1.py --mode azure` · `Invoke-BigSetAzureStart_v1.ps1` | backend 재시작 필수 |
+| **BigSet Ollama** | `BIGSET_LLM_PROFILE=ollama` · `athena-merged-v2:latest` (live 1행 검증) · `gemma4` 스키마 실패 | intent router 전용 소형 모델과 분리 |
+| **Intent router** | `py scripts/mkm_intent_router_local_v1.py --query "..."` | `local_math` → Exa/BigSet 스킵 |
+| **파이프라인** | `py scripts/run_mkm_bigset_harness_chain_v1.py --query "..."` | read_ssot → route → fusion |
+| **스킬** | `.cursor/skills/mkm-harness-read-ssot` · `mkm-intent-router` · `mkm-bigset-azure-live` | teo 하네스: 한 턴=한 산출물 |
+
+**에이전트 NEVER:** Azure endpoint/배포/키를 채팅으로 요청(`.env` 있음) · OpenRouter 402 시 Azure 프로필 미시도 · B-track live를 Track A 승격으로 서술.
 
 ---
 
@@ -122,27 +141,47 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
-- **2026-06-20T21:07:34Z** — Phase 11-H: logos GraphRAG bridge evidence pack refresh with Phase 11 layer stack snapshot
-- **2026-06-20T21:05:12Z** — Phase12 omni parallel exit0: RAG L3 ACK, bridge signoff 19/19, envelope+closure ok; mkmlife public deploy pending; send_gate HOLD
-- **2026-06-20T21:01:25Z** — Phase11-G live Ollama stress32 hit93.75pct gap6.25pct golden16 route0 preserved exit0 send_gate HOLD
-- **2026-06-20T20:58:45Z** — Phase12 live bundle exit0: jemaai core 200, load probe ok_rate 1.0 p95 439ms; send_gate HOLD
-- **2026-06-20T20:57:30Z** — Phase 11-G live Ollama stress32 gap=0.0625 hit=93.75%; evidence pack refresh; golden16 route restored; send_gate HOLD
-- **2026-06-20T20:50:33Z** — Phase11-F NSM wire oracle_gap0 sidecar ablation v2 17 configs no regression GATE_SPEC exit0 send_gate HOLD
-- **2026-06-20T20:41:45Z** — 41k vs 31k lane isolation brief locked CENTRAL + mkm_anchor_map lane_isolation_brief_ko 2026-06-21
-- **2026-06-20T20:38:17Z** — Phase11-E DeepNSM shadow remap distortion 1.4pct prime_hit 97.9pct GATE_SPEC v1.1.0 exit0 send_gate HOLD
-- **2026-06-20T20:24:38Z** — Phase11-A-2 MDL prune PoC 15pct sweep Jaccard floor pass GATE_SPEC v1.1.0 exit0
-- **2026-06-20T20:24:25Z** — Phase11-C nsm_prime_tags wire schema+handoff oracle_gap=0 distortion HOLD send_gate HOLD
-- **2026-06-20T20:17:24Z** — Phase 11-A-1 done: NSM500 distortion 80.61% gate fail; gold48 Hit@1 97.92% q31 miss; replacement HOLD jaccard -19pp; next 11-A-2 GATE_SPEC+MDL PoC
-- **2026-06-20T20:16:43Z** — Phase11-B UNIVERSAL_ROOT_GATE_SPEC_V1.json gate eval distortion FAIL retrieve+route PASS send_gate HOLD
-- **2026-06-20T20:13:16Z** — Phase10-C gold48 holdout sidecar ablation shallow stress router v2.0.2 Hit@1/3/8=100% exit0
-- **2026-06-20T20:03:12Z** — Phase11-A NSM500 distortion80.6% gold48 Hit@8=100% Gemini raw filtered send_gate HOLD
-- **2026-06-20T19:54:20Z** — Tier1 DR Universal Root Lexicon Matrix Layer A/B/C LIT_REVIEW+cursor sweep exit0
-- **2026-06-20T19:48:56Z** — Phase10-B gold24 Luke22 bridge themed_dan signoff router v2.0.1 Hit@1/3/8=100% exit0
-- **2026-06-20T19:25:34Z** — Phase10-A router v2.0 miss-tune Hit@1/3/8=100% dan_aramaic registry forensics chain exit0
-- **2026-06-20T19:22:19Z** — parallel: P3 weekly manual exit0 + automation_registry drift_count 0
-- **2026-06-20T19:13:20Z** — HN paste v2 rebuilt ko50 v3 merge union internal draft send_gate HOLD
-- **2026-06-20T19:07:06Z** — Phase8 signoff sync+Phase9 oracle gap dual gold eval chain exit0 full-stack 11 steps pytest pass
+- **2026-06-27T10:06:08Z** — 2026-06 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
+- **2026-06-27T09:34:53Z** — Design Logos-v5: Scriptorium L2/L3 consolidated surface live
+- **2026-06-27T08:09:20Z** — KOSPI v2 shadow 2026-06-26 bear HIT route=tier_a_momentum_bear_rescue · ym=2026-06 evening_score [HYPO research_only]
+- **2026-06-27T07:58:22Z** — KRV 31102/31102(100%)+versification 4 proxy+deploy+gate15/15 HOLD
+- **2026-06-27T07:29:47Z** — KRV 31098/31102(99.99%)+versification proxy 22+bloom UI hint+governance HOLD gate; deploy+gate15/15
+- **2026-06-27T07:21:44Z** — Handoff-Logos-v3-Scriptorium-live-gate-15-15
+- **2026-06-27T05:28:43Z** — Design Logos-v3: Antigravity Scriptorium mockup parity live; gate 15/15; 28-72 grid CSS patch
+- **2026-06-27T05:28:38Z** — Logos bible_full 마무리: P3 413-node+KRV 30908(99.38% Jhn fix)+deploy+gate15/15; 194 versification gap only
+- **2026-06-27T05:03:48Z** — Logos bible_full P5/P6 done: 1189 bloom shards + 67 dynamic routes + lemma 503; KRV 30029/31102 (96.6%) bskorea gap remains
+- **2026-06-27T04:45:33Z** — continuity=LEE-HEECHEOL-2026-001 · lee_heecheol patient_track_b_memory_v1.json 등록·PATIENT_TRACK_B index·지휘관 export 격벽 확인 exit0
+- **2026-06-27T03:18:56Z** — continuity=LEE-HEECHEOL-2026-001 · lee_heecheol: 설문14 taeeum·태음 체질·단삼NO+람노서스 유산균·환자/원장 종합처방전 v1 SSOT 저장 exit0
+- **2026-06-27T02:44:48Z** — Handoff: Logos-L2 live gate 14/14; embed_demo+isaiah merge; VPS bak cleaned; next=31k corpus P1 or commander screen
+- **2026-06-27T02:34:23Z** — Logos v2 Scriptorium+Antigravity CSS cleanup redeployed; gate 14/14 live
+- **2026-06-27T02:23:45Z** — Logos scriptorium mockup layout live: inquiry left, report default, Citation Lock dock
+- **2026-06-27T01:56:20Z** — Design Logos-v2: Antigravity Scriptorium surface live on logos.jema-ai.com
+- **2026-06-27T00:38:57Z** — Logos bible_full HD complete: KRV 27646/31102(88.9%) regex fix+auto chain+deploy+commercial closure; P5/P6 research pending
+- **2026-06-26T17:45:54Z** — Logos deploy OK: 21650 KRV citation+50 presets live logos.jema-ai.com; Deploy script artifact scp fix
+- **2026-06-26T16:49:22Z** — Design Logos-L2: Antigravity Commercial Finish live
+- **2026-06-26T16:19:02Z** — Logos bible_full AUTO: KRV bskorea fetch+5864 citation shard+50 presets+400-node graph+A4 bundle; VPS deploy ENOSPC blocked
+- **2026-06-26T16:15:57Z** — 지휘관 signoff: KOSPI composite_bear_conditional shadow July OOS — send_gate HOLD active weights unchanged
 <!-- ATHENA_CHECKPOINT_V1_END -->
+---
+
+## Trust Composition · Design 레인 (신뢰 작곡 · 2026-06-24)
+
+**정의:** BGM seed→gate · Pixel Battalion과 **동형** — `Reference Seed → DTCG 3층 → Gate exit 0`.  
+**헌법 SSOT:** `docs/final/MKM_TRUST_COMPOSITION_DESIGN_PIPELINE_V1.md` · **규칙:** `.cursor/rules/mkm-trust-composition-design-v1.mdc`  
+**Structure:** 토스 1웨지·단일 CTA · **Surface:** Manifesto+clinical green · **Trust:** HOLD·chunk·[A/B/C]  
+**adapter:** `design_surface` · gate `check_clinic_km_mmp_landing_gate_v1.py` · chain `Run-ClinicLoiLandingDesignChain_v1.ps1`  
+**clinic LOI:** `frozen_deferred` · `send_gate: HOLD` — 외부 송출 금지 · glass/blur 1차 보류  
+**딥리서치:** `docs/research/MKM_CONVERSATIONAL_TRUST_DESIGN_COMPOSER_LIT_REVIEW_2026-06-24.md`
+
+---
+
+## 포스트·홍보·초안 UI (작업 틀 · 2026-06-26)
+
+**용도:** AI 지능이 아니라 **카톡·랜딩·쇼룸 카피/초안 UI** 방향 고정 — 세미나식 **5줄 브리프 → 본문 → 발송 게이트**.  
+**템플릿:** `reports/templates/mkm_promo_post_draft_template_v1.md` · **워크플로:** `docs/final/artifacts/mkm_promo_post_draft_workflow_v1_latest.json`  
+**exemplar:** `reports/lee_bomi_clinic_kakao_postpartum_care_v1.md` · **웹 UI:** Design lane + Trust Composition (위 절).  
+**격벽:** 환자=`patient-track-b` · 대외=`PUBLIC_FACING` · `reports/` 로컬 SSOT, 자동 배포 없음.
+
 ---
 
 ## 질문 유형별 답변 라우팅 (권장 · 지휘관·에이전트 복붙)
@@ -203,7 +242,8 @@
 | 트리거 | 할 일 |
 |--------|--------|
 | 대외 카피·보안·IP | `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` + `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` (**§3.9–§3.10** 상징→오디오·감정 VA `[HYPO]`·비임상·Track Wall) |
-| **어느 도메인에 어떤 쇼룸·허브 CTA 문구** | `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1**·**§1.1b** (표·CTA 초안); `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` §4.1 — **jema-ai.com Next 카피 원천(코드):** `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`; 공개 보드 권장 URL은 미니멀 HTML, `CONSTITUTION` Public Event Gateway 행 참조) |
+| **어느 도메인에 어떤 쇼룸·허브 CTA 문구** | `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1**·**§1.1b**·**§1.1c**(공통 엔진 vs 킬러 어댑터) (표·CTA·금지 5줄); `docs/final/JEMA_AI_DOMAIN_POINTER_V1.md` §4.1 — **jema-ai.com Next 카피 원천(코드):** `projects/no1kmedi/marketing-site/public-copy.json` (`hub_links`; 공개 보드 권장 URL은 미니멀 HTML, `CONSTITUTION` Public Event Gateway 행 참조) |
+| **성경 GraphRAG vs mkmlife 구슬 vs personadiary 혼동** | **§1.1c** 한 표: logos.jema-ai.com=연구 통찰 · mkmlife/oracle-sphere=초개인화 킬러 · personadiary=일상 동반(preview, API/DB 분리) · jema-ai.com=허브만 · `TRACK_C` §3.0d |
 | 공개 이벤트 스키마·지연 | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md`(bitcoin-trading `jemaai-cloud-mvp`) |
 | 로컬 검증 번들 | `scripts/verify_p0_constitution_gate_paths.ps1` → exit 0; 필요 시 `scripts/run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` |
 | 원격 반영 | **토폴로지 SSOT:** `MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md` — compute **Hostinger VPS만** · edge **Cloudflare만**. Git: `push-internal.ps1`. VPS scp: `sync_showroom_to_vps.ps1`, `Sync-MkmlabRedesignToVps_v1.ps1` (`MKM_VPS_HOST`·`vps-mkmlife`는 표기만 다를 수 있음). **hPanel `public_html` 금지.** — 에이전트는 **명시 요청 시에만** |
@@ -214,6 +254,20 @@
 | **NotebookLM MCP 사용 턴** | (재발 방지 v1, 2026-05-09) **첫 호출 자가진단**: `notebooklm.get_health` 시도 → `tool_not_found`/timeout이면 **그 턴 안에 보고**하고 로컬 SSOT 폴백. 사용자에게 안내할 복구 순서: ① `scripts/check_notebooklm_mcp_prereqs.ps1` ② `scripts/repair_notebooklm_mcp_auth_stuck.ps1 -StaleNodeMaxHours 12` ③ Cursor Settings→MCP `notebooklm` toggle off/on ④ **새 채팅** 시작(도구 카탈로그는 채팅 시작 시 결정) ⑤ 그 채팅에서 `setup_auth`→`get_health`. `.cursor/mcp.json`은 **`npx -y …@latest` 금지**·**node + 핀버전 직접 실행** 고정(`MKM_NOTEBOOKLM_MCP_PINNED_VERSION` env). 로그오프 자동 정리: `MKM_RepairNotebookLmMcpStale_OnLogoff` (`scripts/register_notebooklm_mcp_repair_logoff_task.ps1`). |
 | **Cursor MCP lean 프로필 (2026-05-31 · 응급 SSOT)** | **기본 7서버만:** filesystem · **athena-core(MKM12_LTM_DB_TYPE=file)** · sequential-thinking · athena-manseryeok · compression-server · devops-mcp · notebooklm. **복구 카드:** `docs/final/artifacts/mcp_lean_profile_emergency_recovery_v1.json` · 점검 `scripts/run_mkm_ai_v2_readiness_check.ps1` → `overall_passed=true`. **영구 제거(복원 금지):** `hostinger-website-manager`. **기본 제외:** `openchrome`(81 tools) — 필요 시 `scripts/Switch-McpProfile.ps1 -Profile with-openchrome` 후 Reload. **금지(기본):** playwright · manseryeok-mcp. **browser_tabs:** mcp.json 아님 → Features→Browser ON + **새 채팅**. VPS=devops-mcp+스크립트; Hostinger API=`scripts/run_hostinger_mcp.ps1` 수동만. |
 | **MISSION_LOG·CENTRAL hygiene (2026-05-31 · 주간)** | **원클릭:** `scripts/Invoke-MissionLogCentralHygiene_v1.ps1` → 세션 **14줄** cap(`MISSION_LOG.sessions.md`) · CENTRAL 「분기별 한 줄」 **45행** cap(`docs/final/artifacts/central_timeline_archive_v1.md`) · **320줄** 초과 시 `split_mission_log_old_v1.py`. **예약:** `Register-MissionLogCentralHygieneWeeklyTask.ps1`(일 **06:30**) · 점검 `Verify-MissionLogCentralHygieneScheduledTask_v1.ps1` · 리포트 `reports/mission_log_central_hygiene_latest.json`. **재개:** `@MISSION_LOG.md` 작전 보드 + 최근 세션만. |
+
+### 도메인 제품 — 공통 엔진 vs 킬러 어댑터 (2026-06-22 · 혼동 방지)
+
+**한 줄:** 모노레포 **엔진**(query→router→insight→viz→feedback)은 **돌려쓰고**, **도메인별 코퍼스·킬러 UX·면책·SKU만 교체** — **백엔드 공유 ≠ 제품 합선.**
+
+| 라인 | 도메인 | 킬러 | 주 목적 |
+|------|--------|------|---------|
+| 성경 연구 | **logos.jema-ai.com** | GraphRAG 워크스페이스 | 연구 통찰·citation lock |
+| 성경 관측 | **jemaai.cloud** v6 | 로고스 관측소 (출구2) | 재현·게이트 |
+| 초개인화 | **mkmlife.com** `/oracle-sphere` | 마법구슬 (출구1) | 다중렌즈 리포트 · 명리 내장 |
+| 일상 동반 | **personadiary.com** | Daily Guide · Ritual | 찰나의 나라 · `preview_only` |
+| 허브 | **jema-ai.com** | CTA | 분기만 — 킬러 본거지 **아님** |
+
+**금지:** mkmlife Logos 렌즈 = logos 연구 홈 **아님** · personadiary ≠ mkmlife API/DB/결제 · UR Y1 ≠ B2C KPI 합산(FAIL-COMP-004) · 성경 graph **미완 PoC**(query-time path). **SSOT:** `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1c · `TRACK_C` §3.0d · `mkm_three_exit_branding_matrix_v1_latest.json`.
 
 ---
 
@@ -232,6 +286,23 @@
 | 5. 답변 | 에이전트는 **이 파일의 지문·표**를 우선하고, NotebookLM 내용은 **이미 이관·검증된 것**으로만 취급. |
 
 **금지:** NotebookLM 출력만 보고 “구현됨/통과”라고 **이 파일에 적지 않는다.**
+
+### IJEOMA B-track NotebookLM (2026-06-24 · 혼동 방지 · Track B)
+
+> **상태 SSOT:** `docs/final/artifacts/ijeoma_nl_notebook_state_ssot_v1_latest.json` — 소스 수·경로는 **본 JSON + `nlm notebook get`** 만. 채팅·NL 답변 단독 단정 금지.
+
+| 구분 | 값 |
+|------|-----|
+| **노트북 (canon·원전)** | `e6c1f050-…` · MCP `15-b-track-ijeoma-1` · **죽은 UUID `71f55a03`·`332586f9` 사용 금지** |
+| **사상 렌즈 (engineering)** | `90132f48-…` · canon 발췌 **금지** |
+| **G: Vault** | `MKM_DATA_VAULT/notebooklm_sources/이제마_B_Track/` (격치고·유고·천유초 **2차 MD**) · `data/corpus/ijeoma/e_drive_mirror/` (동의수세보원 HWP) |
+| **동의수세보원 정본** | `docs/sasang-origin/정교동의수세보원원문.txt` + 청크 테이블 |
+| **격치고·천유초·유고초** | **한자 원전 workspace/G 미입수** — NL은 `[SECONDARY]`·`[PAPER_PROXY]`만 (`GEUKCHIGO_YUGO`·`CHEONYU` MD). **동무유고**=2차 서지·카페 HWP 언급, canon 아님 |
+| **복원** | `py scripts/restore_ijeoma_corpus_from_vault_v1.py` |
+| **QUERY_SET** | Q01–Q24 pass · `reports/constitution/btrack_pilot/ijeoma_query_set_run_v1*.jsonl` |
+| **NL 스냅샷 (2026-06-24)** | **283소스** · 동의보감 vendor **164/164** · 격치고 `[SECONDARY]`/`[PAPER_PROXY]` 5건 · cap 여유 위해 `SASANG_CROSS_REF_DRAFT` NL 50건 prune(디스크 유지) |
+
+**에이전트 NEVER:** 격치고 한자 원문 인용 · IJEOMA canon을 사상 렌즈 노트북에 합침 · NL 300한도를 채팅만으로 추정.
 
 ### 옵시디언 볼트 vs 본 파일 (개인 SSOT · 격벽)
 
@@ -434,6 +505,7 @@
 | 3+1 | 파이프라인 층: **Seed·Label·Formula·Field** — 만물이론·단일 방정식 완성 **아님** (Fact-Lock). |
 | **세계관 v1** | Logos=말씀·초압축→만물; 역추론=신앙·해석; AI우주=창조 모방; 성경=경영프로그램·명리=우주통찰·사상=소우주·금화교역=변화심장 — `MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` |
 | **Logos hybrid OS** | 딥리서치=탐험선 → `topology_sidecar` Layer A ingest `[HYPO]`; MKM=항구·재현; 상징망=에이전트 메타인지 내비 — miswire·SEND·Track A·실매매·patient-facing 직결 금지; gap·why 단답 거부 |
+| **이중평면 명명** | **MKM AI**=전체(4AI+Absolute Balance) · **융합층**=`MKM 이중평면 Neuro-Symbolic`(Neuro→Symbolic→Human·`send_gate`) · **대외**=`Dual-Plane Neuro-Symbolic Integrity Kit` · **금지:** 「4D AI」단독·「차세대 AI」SSOT 앵커 |
 | 4D Seed | 순수 뼈대 `[S,L,K,M]` — 코드 4D와 Prism 논리 색인 혼동 금지. |
 | Field | **“지금이 어떤 판인가?”** — 레짐은 역사 고유명(IMF·리먼·IT버블·코로나 등), 안정/주의/위험만으로 끝내지 않음. |
 | 레짐 주·보 | **1차** `regime_map` 실물 **주** · **2차** 성경 매트릭스 **보** — 2차는 해설·리포트, **실전 트리거 금지**. |
@@ -445,7 +517,7 @@
 | TITAN | Command-by-negation — 저위험은 합리적 기본값·사후 보고; 고위험만 승인. |
 | 정체성 답변 규칙 | 전략·답변·코드 모두 **위 지문과 충돌 시 지문·SSOT 우선** — “그럴듯한 확장” 금지. |
 | 에이전트 연속성 | **In-Turn:** 한 요청 안 다단계(토큰·시간·정책 상한). **Ops:** `scripts`·스케줄·exit code — 채팅 세션과 동일시 금지. **≠** 사람 새 입력 없는 무한 채팅 루프. 맥락 복구는 **이 파일·Git** + 「작업 맥락 레슨」(약 328-334행). |
-| **1인 GitHub GTM** | **Hero** = Hybrid Memory OS (README Primary) — **NOT** ingestion SaaS. Compression contributor = **2차 연구**. MS = **인바운드 부록만**. CENTRAL 「1인 GitHub GTM vs MS」절. |
+- **1인 GitHub GTM** | **Hero** = §3.0b Y1 Universal Root + Y1b Hybrid Memory OS — **NOT** ingestion SaaS. Compression = **parallel inbound lane**. MS = **인바운드 부록만**. CENTRAL 「1인 GitHub GTM vs MS」절 · `TRACK_C` §3.0b.
 
 ---
 
@@ -497,6 +569,7 @@
 
 ### MKM AI (4AI 코어 + Absolute Balance Coordinator Mode)
 
+- **명명 3층 (2026-06-22 고정):** (1) **MKM AI** — 4AI core + Absolute Balance Coordinator Mode **전체 브랜드** (`CONSTITUTION` §1.1.4). (2) **MKM 이중평면 Neuro-Symbolic** — Ollama(Neuro) + 4D/토폴로지·Fact-Lock(Symbolic) + Human(`send_gate`) **융합 실행층**; 줄여 「이중평면 방식」. (3) **Dual-Plane Neuro-Symbolic Integrity Kit** — OSS·레딧·HN **대외 hero** (`mkm_github_public_release_scope_v1_latest.json`). **금지:** 「4D AI」단독(명리·압축·Prism 4D와 충돌) · 「차세대 AI 방식」을 SSOT 앵커로 사용.
 - **층 분리:** 상위 절 「MKM AI 고도화 · 자체 LLM」과 동일 — 규칙·게이트·스키마가 **행동 고정**; 파인튜닝·어댑터는 **별 ROI·eval 전제**.
 - **혼동 방지:** `mkm_ai_status_pointer_latest.json` 등 **운영 승격 스택**은 인프라·게이트 준비도이며, **명리 예측력·만세력 정확도 증명으로 읽지 않음**.
 - **인덱스·P0:** `MKM_TRINITY_INDEX_V1.json`의 `lenses.myeongni.validation_pointers`에 본 파일(`docs/final/CENTRAL_AGENT_MEMORY_V1.md`) 포함; `verify_p0_constitution_gate_paths.ps1`이 동 파일 **존재**를 검사; `tests/test_mkm_trinity_index_v1.py`가 포인터 경로 **파일 존재**를 회귀 고정.
@@ -805,6 +878,8 @@ flowchart TD
 
 | 기간 | 핵심 한 줄 (무엇을 확정/중단/승격했는지) |
 |------|----------------------------------------|
+| 2026-06-26 (금산 CoCoNET · LLM vs MKM) | **내부 체크리스트** `smartfarm_llm_vs_mkm_gate_checklist_v1.md` — LLM=연동·PoC(L1–L6) vs MKM 게이트(G1–G12)·현장 승격 6항; artifact_index 등록 — Track A/live **없음**. |
+| 2026-06-26 (금산 CoCoNET · 큐빅스) | **이유민 매뉴얼·사전설정** 반영: D301/D302/D202/G300·N300·`smartfarm` → `smartfarm_qubics_device_manifest_v1.json`; MQTT **qbsv4** uplink/downlink·`req`/`cmd` relay → `smartfarm_qubics_mqtt_control_spec_v1.example.json` **confirmed_from_pdf**; `erth_th_mtr`(`ertht`/`erthh`) normalize alias; MQTT subscriber dry-run pass — **다음** VPS broker·현장 cid — SSOT `smartfarm_geumsan_artifact_index_v1.json` · Track A/live **없음**. |
 | 2026-06-07 (Lens audio hook · Track C B2B · 1인) | **Functional BGM PoC `[HYPO]`:** hp sweep **4/4 PASS** · RTX MusicGen **3/3** · `lens_safe_tempo_clamp` · `_local_gpu_weekly/` · 주간 `MKM_Local_Gpu_Weekly_Routine`; **B2B pack** counsel ZIP **32** · 15min rehearsal **checked** · Persona **`TrackCB2bRehearsalPrep`**; **1인 정책:** counsel/법무 제출·CTO 송부 **`폐기`** · `SEND_GATE: HOLD` · 서랍 보관 — Track A/live·대외 send **없음**. |
 | 2026-06-07 (Track A·multilens·Logos PoC) | **gitea/main `1248fa40ef`:** Active shard tune **47.12%/0.889** floor OK(운영·human sign-off; Decision V1 **47.5%** 동결 유지); **일일 multilens blend LOCK Baseline A**(`v2_default_4ai_current`·logos 0)·equal Logos sandbox **REJECT**; Logos per-date macro-gate PoC `[HYPO]`·`[NON_GATING]`·Track A/auto-apply **없음**; 이강민 anchor **lived_fact_check**→`reports/kangmin_son_integrated_guide_v1.md`. |
 | 2026-06-01 (금산 1,000평 FaaS · B-track 사업) | **V10-lite** 확정: MKM=IT·일지·1회 150만+월 99k·**세무 미보장**; 물리 **4작물·6ch(4+2)**·앱 가상 10; 큐빅스 **3ch 계약=no_go**(6ch 개정 견적 대기); SSOT `smartfarm_geumsan_artifact_index_v1.json` — **대외 §6·7·자격보장 금지**. |
@@ -850,9 +925,6 @@ flowchart TD
 | 2026-Q1 (레포 타임라인) | Mar~Apr `feat`/`docs`/`chore` 커밋이 다수 + `reports`·`docs`·`scripts` 경로 변경이 두드러짐 → **산출·스냅샷·자동화**를 한 사이클로 밀어붙인 분기 (`docs/final/artifacts/memory_revival_gap_scan_latest.json`와 대조). |
 | 2025-05~2026-02 (갭·NL 검증) | NotebookLM `압축` 노트(`c5f9aef1-6cd6-4c3b-9c57-d1f2a62e3201`) 교차질의가 인용한 source id는 **현재 `nlm source list` 제목**(예: 2026-04-09 H: 매니페스트·`top10_curated`)과 시점이 맞지 않음 → **날짜별 “결정 연대기”는 미승격**; 동 구간 본 레포 `git log` **0건** 재확인. |
 | 2026-04 (Cursor · 크로스 채팅) | `.cursor/rules/central-agent-memory.mdc`에 **SSOT 핵심 5줄**(Fact-Lock·투트랙·레짐 주·보·Multi-Lens·압축 서술)을 **매 턴 자동 포함**으로 고정; 압축 대외 서사는 **실행층=휴리스틱·게마/4D 브리지=계측·사원수=trackb 실험축**으로 Fact-Lock 정렬. 채팅 간 맥락 누적은 **본 파일·Git** — 세션 로그 자동 병합 아님. |
-| 2026-04 (국방 제안 브리핑 · 검증 가능 주장만) | **합성 UAV 하이브리드 벤치** `run_defense_hybrid_compression_bench.py`→`defense_hybrid_compression_bench_v0.json`: `critical_field_integrity=1.0`, `mean_payload_compression_ratio≈25.46%`, `research_only`; 크리티컬 경로는 msgpack 무손실·시맨틱 레인은 literal Track B·**라우터/코드북/게마트리아 비활성**. 대외: 타사 좌표오차 비교·「4D=암호」·스푸핑 차단 단정 금지 — `ATHENA_AUDITOR_REALITY_ALIGNED_EXTERNAL_V1_2026-04-09.md`·아티팩트 note 정합. |
-| 2026-04-19 (B-track insight + LG 골든 + Vault) | **Vault:** `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1` 성공(복사 50). **레포(Fact-Lock·경로):** B-track 캘린더 스텁 JSONL·렌즈/사이드카 기본 경로 정합, `Run-BtrackInsightSidecarChain`에 overlay(`btrack_prophecy_score_insight_overlay_view_v1`)·`register_btrack_insight_sidecar_chain_task.ps1`, P0 게이트 경로 확장(~129), Prism/인벤토리/프로모션 브리지 갱신; LG 워셔 골든 `validate`+CI+P0+브리지 `lg_washer_voice_golden`, 관련 스크립트 `ROOT` repo-relative; 예언 dual refresh·live_ab·defense_edge·`docs/verified_knowledge_base/update_all.py`·codepack step2·`crypto_nitro_live_strategy`/`auto_evolution_engine`의 `C:/workspace` 제거(환경변수 폴백). **승격·walkforward 게이트 입력은 기존 점수 JSON만** — overlay는 관측용. |
-| 2026-04-19 (A-track go/nogo + getenv) | `python scripts/build_a_track_go_nogo_status.py --on-system-error hold_s1`로 `docs/final/artifacts/a_track_go_nogo_status_latest.json` 재생성: 로컬에 `data/chronos_forward_training/holdout_2026_result.json` 있으면 `input_errors` 비움·방향일치율 스냅샷 반영; **S2는** `prophecy_2026_monthly_kospi_btc_fact_safe_v1.json` meta의 `high_reliability_decision=HOLD`·`price_output_locked=true` 및 S3/S4 플레이스홀더로 계속 HOLD/S1. `build_manseryeok_database_from_sajupy_advanced.py`·`trading_wisdom_loader.py`·`build_standard_codebook.py`에서 `os.getenv(...,"C:/workspace")` 제거( repo-relative 또는 `WORKSPACE_ROOT`만). **`/data/`는 gitignore** — 클론만으로 chronos JSON은 없을 수 있음. |
 
 ---
 

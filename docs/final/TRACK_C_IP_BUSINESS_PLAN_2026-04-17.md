@@ -1,11 +1,11 @@
-# Track C IP Business Plan (v2)
+# Track C IP Business Plan (v3)
 
 Date: 2026-05-05  
-Revised: 2026-05-21 — **§3.0 도메인·채널 분리**(mkmlab.space 연구소·제품 vs jema-ai/mkmlife/jemaai). (2026-05-19 — §3.1.3 **C-S2→9장 v1.1(Moat/Plugin)**) · §3.1.5 **Inter-Agent RQ-019 IR 포인터** · §10 OpenData 병렬·법무 handoff. (2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
+Revised: 2026-06-21 — **§3.0b North Star realign** — Y1 Dual-Plane Neuro-Symbolic OSS hero · §3.1 압축 **Parallel Lane** 강등 · §3.0c Y1 GTM 마일스톤 · `NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md` 정렬. (2026-05-21 — **§3.0 도메인·채널 분리**(mkmlab.space 연구소·제품 vs jema-ai/mkmlife/jemaai). (2026-05-19 — §3.1.3 **C-S2→9장 v1.1(Moat/Plugin)**) · §3.1.5 **Inter-Agent RQ-019 IR 포인터** · §10 OpenData 병렬·법무 handoff. (2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
-**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-05-19 개정** 처리한다(§3.1.3 C-S2·§3.1.5·§10 포인터; **RQ-019·OpenData는 Track C 1차 매출 파도와 합선하지 않음**). §3.7.2 **(C)** COGS·법무 **승격 전** 단계는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트」** 표만 상세 — 본 §는 정책·동결 지연만. §3.6 Visualization v0 **역참조** + §3.7.2 민감 액션 **구조 Lock** + KPI·면책 **대외 동결 지연** 유지. **2026-05-15** §3.7.2 **(B)/(C)**·RQ-009·**2026-05-11** §3.11·**2026-05-10** §3.9–§3.10 등 이전 동결분은 유지. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시. `§3.7`은 영업·마케팅·개발 파이프라인 **공통 지침**.
+**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-06-21 v3 North Star** 개정 처리한다. **공개 GTM 1차 Hero = §3.0b Y1 Universal Root** · **압축(§3.1) = Parallel Enterprise Lane**(인바운드·기존 B2B). §3.1.3 C-S2·§3.1.5·§10 포인터 유지; **RQ-019·OpenData는 Y1 Hero와 합선하지 않음**. §3.7.2 **(C)** COGS·법무 **승격 전** 단계는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트」** 표만 상세 — 본 §는 정책·동결 지연만. §3.6 Visualization v0 **역참조** + §3.7.2 민감 액션 **구조 Lock** + KPI·면책 **대외 동결 지연** 유지. **2026-05-15** §3.7.2 **(B)/(C)**·RQ-009·**2026-05-11** §3.11·**2026-05-10** §3.9–§3.10 등 이전 동결분은 유지. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시. `§3.7`은 영업·마케팅·개발 파이프라인 **공통 지침**.
 
 ## 1) Fact-Locked Baseline
 
@@ -18,7 +18,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
   - `Final decisions remain with client operators`
 - **대외 단정 금지:** 관할·업종·표현에 따라 규제 해석이 달라질 수 있으므로 **「규제 회피 완료」「법적 리스크 제로」** 등 절대화 표현을 마케팅·제안서에 쓰지 않는다. 계약·랜딩 전 **법무 검토**를 절차로 둔다.
 - **Evidence pack lock (검증 스크립트 정합):** `Not investment advice; final decisions remain with client operators.`
-- **대외 카피 규율 (웹·PDF·랜딩·제안서·정적 쇼룸):** `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **전 절(특히 §3)**을 Track C 대외 표면의 **최소 준수 SSOT**로 따른다 — 본 문서 §3.5–3.6 부록과 **양방 정렬**; 세부 금지 예시·버전은 동 체크리스트가 우선한다.
+- **대외 카피 규율 (웹·PDF·랜딩·제안서·정적 쇼룸):** `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **전 절(특히 §3 · v1.8 dual-plane)**을 Track C 대외 표면의 **최소 준수 SSOT**로 따른다
 
 ## 2) NotebookLM + 장기기억 연계 점검 결과
 
@@ -28,9 +28,10 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - **체화 기준**: 장기기억 SSOT는 `docs/final/CENTRAL_AGENT_MEMORY_V1.md`와 Git 이력이다.
 - **승격 조건**: NotebookLM에서 나온 내용은 반드시 레포 경로·아티팩트로 교차 검증 후 Track C 계획에 반영한다.
 
-### 2.2 이번 개정에 반영한 원칙
+### 2.2 이번 개정에 반영한 원칙 (v3 · 2026-06-21)
 
-- 즉시 매출화 후보는 `압축·토큰절감`을 1순위로 둔다.
+- **공개 GTM 1순위:** **Dual-Plane Neuro-Symbolic Integrity** — `mkm-universal-root` OSS · reproduce→trust→human-gated fixture PR (`§3.0b` · `send_gate: HOLD`).
+- **Parallel Enterprise Lane:** `압축·토큰절감`(§3.1) — Track A 검증된 **인바운드 B2B** · Universal Root·Y1 Hero KPI **합산 금지** (FAIL-COMP-004).
 - `초고난도 비정형 텍스트(성경·사해사본 등)/명리/사상`은 Track C에서 **리스크 포지셔닝/서사/해설형 인텔리전스**로 패키징하되, 투자조언/자동매매 문구는 금지한다.
 - `신시장지표`는 관측/경보형 서비스로 제한하고, 예측 단정·성과 보증이나 수익 약속을 암시하는 문구는 금지한다.
 
@@ -46,15 +47,16 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 ### 3.0 도메인·채널 분리 (사업계획서·제안서 혼선 방지, 2026-05-21)
 
-**목적:** 평가·투자·정부 제출 문서에서 **「회사 홈페이지」「제품」「AI 사업」**이 한 URL로 뭉개지지 않도록 고정한다. **단일 SSOT 표:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1·§1.1·§1.1b.
+**목적:** 평가·투자·정부 제출 문서에서 **「회사 홈페이지」「제품」「AI 사업」**이 한 URL로 뭉개지지 않도록 고정한다. **단일 SSOT 표:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1·§1.1·§1.1b·**§1.1c**(공통 엔진 vs 킬러 어댑터).
 
 | 도메인 | 공개 역할 (한 줄) | 사업계획서에 쓸 때 | 이 도메인이 **아닌 것** |
 |--------|-------------------|-------------------|------------------------|
+| **github.com/mkmlab-v2/mkm-universal-root** | **Y1 public hero** — Dual-Plane Neuro-Symbolic OSS · ~20s smoke | **§3.0b** · reproduce→trust · `research_only` | 압축 API · 유료 SKU · hosted ingestion SaaS |
 | **mkmlab.space** | **MKM LAB 분자한의학 연구소** — 발효 **산화질소 대사체**·허브 발효 플랫폼·**연구소 생산 제품** 소개(구혈단·엔오플렉스 등) | **실물·R&D·건강기능식품 제조·유통** 설명·IR·협력 제안의 **연구소 정면** | AI 압축 API·쇼룸·원퀘스천 리포트·Track C B2B **본거지 아님** |
-| **jema-ai.com** (`app.`) | **JEMA AI** 브랜드 허브 — B2B **`/enterprise`** · 한의사 보조 **`/clinician`**(진료 대체 아님) | **§3.1 압축·§3.8 매크로 B2B** 등 **소프트웨어·인사이트** 영업면 | 연구소 제품 카탈로그·건기식 효능 단정·실매매 조종실 |
+| **jema-ai.com** (`app.`) | **JEMA AI** 브랜드 허브 — B2B **`/enterprise`** · 한의사 보조 **`/clinician`**(진료 대체 아님) | **§3.8 매크로 B2B** · enterprise/clinician **라우팅** | Y1 OSS hero · 연구소 제품 카탈로그·실매매 조종실 |
 | **mkmlife.com** | 소비자 **원퀘스천·단건 리포트** (다중 렌즈, 면책 고정) | B2C **디지털 제품** 퍼널 | 연구소 생산 라인업 **공식 홈** 아님 |
 | **jemaai.cloud** / **api.jemaai.cloud** | 공개 **관측·쇼룸** (Topology·Trust·Logos 데모, `[NON_GATING]`) | §3.6 **체험·리드** · 신뢰·재현 아티팩트 | 투자 권유·주문·연구소 제품 판매 페이지 |
-| **a-codeai.com** | **P1** 토큰·압축 API (`/` 랜딩 vs `/v1` 분리) | §3.1 **기술 1순위** B2B API | 연구소·소비자 UI |
+| **a-codeai.com** | **Parallel Lane A** — 토큰·압축 API (`/` 랜딩 vs `/v1` 분리) | §3.1 **인바운드 B2B API** · Evidence Pack | **Y1 public hero** · 연구소·소비자 UI |
 | **no1kmedi.com** | **레거시 내부 식별자** — Express·PayApp 등 **백엔드 축** | 문서·코드 경로 설명만; **대외 브랜드명으로 쓰지 않음** | 공개 회사 홈·연구소 소개 |
 | **jema12.com** | **301 → jema-ai.com** (레거시 유입) | 과거 링크·스튜디오 진입만 | 제품·연구소 SSOT 아님 |
 
@@ -63,13 +65,83 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - **정체:** (주)목소리네트워크 산하 **MKM LAB 분자한의학 연구소** — 미래바이오 협력 레거시와 MKM 운영 체계 융합(2024~). **핵심 기술:** 발효 산화질소 대사체, 허브 발효, ODF·비침습 연계 **연구**.
 - **제품:** 연구소 **생산·유통 라인** 소개(외부 판매 채널 링크). **건강기능식품 제조·유통**은 사업자등록 **부종목**과 정합(`business_registration_plan_v1.md` §1).
 - **대외 경계:** 본 사이트는 **의료 행위·진단·치료·처방 대체 아님**. 제품 효능·표시는 **각 채널 공식 표기** 준수 — `MKM_HEALTH_WELLNESS_COPY_GUARDRAILS_KR_V1.md`.
-- **상업·B2B·AI 문의:** **jema-ai.com** (도입·파트너·클리닉 채널). **압축 API:** a-codeai.com. **관측 데모:** jemaai.cloud.
+- **상업·B2B·AI 문의:** **jema-ai.com** (도입·파트너·클리닉 채널). **Y1 OSS hero:** GitHub `mkm-universal-root`. **압축 API (parallel inbound):** a-codeai.com. **관측 데모:** jemaai.cloud.
 - **구현·배포:** 정적 소스 `mkmlab-redesign/` · **Hostinger VPS** `Sync-MkmlabRedesignToVps_v1.ps1`(기본 `/var/www/mkmlab`) + nginx LE SSL + **Cloudflare** NS/DNS · 점검 `probe_mkmlab_space_readiness_v1.py` · 원클릭 `Invoke-MkmlabSpaceGoLiveAuto_v1.ps1` / `Invoke-MkmlabSpacePhase2_v1.ps1`. (2026-05-21 공개 **https OK**; CF 존 **pending** 시 `finalize_mkmlab_cloudflare_zone_v1.py`.)
 
 **Track C와의 관계 (합선 금지):**
 
-- **Track C 1차 매출 파도** = §3.1 압축 API · §3.8 매크로 B2B · §3.6 쇼룸 리드 (**소프트웨어·인사이트**).
+- **Y1 공개 Hero (2026-06-21)** = §3.0b Universal Root OSS · GitHub repro · 커뮤니티 GTM — **매출보다 신뢰 자산 우선**.
+- **Parallel lanes (인바운드·별 SKU)** = §3.1 압축 API · §3.8 매크로 B2B · §3.6 쇼룸 리드 · §3.1.8 Logos B2B 부록.
 - **mkmlab.space** = **실물 R&D·제품·연구소 브랜드** — Track C 계약·NDA·역공학 조항(§9A)과 **동일 SKU로 묶지 않음**. 제안서에 두 축을 넣을 때 **표를 분리**하고 URL을 **각각 명시**.
+
+### 3.0d 공통 엔진 · 도메인 킬러 어댑터 (사업계획서·제품 혼선 방지, 2026-06-22)
+
+**한 줄:** MKM은 **한 엔진**(질문→경로→인사이트→시각화→피드백)을 모노레포에서 돌리고, **도메인별로 코퍼스·킬러 UX·면책·SKU만 교체**한다. **백엔드 공유 ≠ 하나의 제품.**
+
+| 제품 라인 | 도메인 | 킬러 | 사업계획서에 쓸 주 목적 | 합선 금지 |
+|-----------|--------|------|-------------------------|-----------|
+| 성경·텍스트 연구 | **logos.jema-ai.com** | GraphRAG 연구 워크스페이스 | 연구 통찰·citation lock · 기관 파일럿 | 교리 판매 · Track A · 투자 조언 |
+| 성경 관측 쇼룸 | **jemaai.cloud** v6 | 로고스 관측소 (출구2) | 재현·게이트·리드 | mkmlife 소비자 퍼널과 **동일 SKU** 서술 |
+| 초개인화 B2C | **mkmlife.com** | 마법구슬 `/oracle-sphere` (출구1) | 원퀘스천·다중렌즈 리포트 | logos 연구 홈 · 연구소 제품 홈 |
+| 일상 동반 B2C | **personadiary.com** | Daily Guide · Ritual | 찰나의 나라 · preview_only | mkmlife **API·DB·결제** |
+| 브랜드 허브 | **jema-ai.com** | CTA·enterprise·clinician | 분기·B2B 라우팅 | 위 킬러 **본거지 아님** |
+| Y1 신뢰 자산 | **github.com/.../mkm-universal-root** | fixture smoke OSS | reproduce→trust | B2C 킬러·압축 % **합산** |
+
+**구현 메모 (Fact-Lock):** 성경 meaning graph는 **부분 PoC** — 전략은 query-time subgraph + Path Ledger (`LOGOS_ORIGINAL_LANGUAGE_GRAPH_RAG_BRIDGE_V1.md`). Magic Orb path UP/DOWN → ledger ingest는 **B-track stub** — 그래프 자동 변이·Track A 승격 없음.
+
+**상세 표·금지 5줄:** `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1c** · 3출구 매트릭스 `mkm_three_exit_branding_matrix_v1_latest.json`.
+
+### 3.0b North Star — 차세대 AI OS (v3 SSOT · 2026-06-21)
+
+**상태:** `[FACT]` Y1 OSS live · Y2/Y3 `[HYPO]` · `send_gate: HOLD` · Track A·실매매 자동 승격 없음.
+
+**한 줄:** **Neuro(초안) → Symbolic(규칙·그래프) → Human(승인)** — lexicon·topology **dual-plane** 측정 · `collapsed_combined_score: null` (KPI non-merge by design).
+
+| Year | Product lane | Tag | SSOT |
+|------|--------------|-----|------|
+| **Y1** | `mkm-universal-root` — fixture smoke · MIT OSS | `[FACT]` live | https://github.com/mkmlab-v2/mkm-universal-root · `run_universal_root_oss_cursor_smoke_v1.py` |
+| **Y1b** | Hybrid Memory / 4-Vault Orchestration OS | `[FACT]` monorepo `B_subset` | `mkm_github_public_release_scope_v1_latest.json` · MERGED LIT REVIEW |
+| **Y2** | On-prem SDK / Docker · compliance wedge | `[HYPO]` | Investor appendix §4 · **가격 SSOT 없음** |
+| **Y3** | Media / shorts SaaS | `[HYPO]` · **별 레인** | ko_shorts 등 — Y1 fixture KPI **합산 금지** |
+
+**3레인 파이프라인 (대외 복붙):**
+
+```text
+Neuro (optional local SLM draft) → Symbolic (lexicon + topology crosswalk) → Human (send_gate · counsel)
+```
+
+**Y1 verified metrics (fixture 500-pair · raw only):**
+
+| plane | metric | value |
+|-------|--------|-------|
+| lexicon | `prime_hit_rate` | **99.53%** |
+| lexicon | `english_only_distortion_rate` | **0.47%** |
+| topology | `verse_reachable_rate` | **99.53%** |
+| integrity | `collapsed_combined_score` | **null** |
+
+**재현:** `python3 scripts/run_universal_root_oss_cursor_smoke_v1.py` · artifact `reports/universal_root_oss_cursor_smoke_v1_latest.json`
+
+**금지 (FAIL-COMP-004 · `.cursor/rules/dual-plane-kpi-non-merge-v1.mdc`):**
+
+- Universal Root 99.53% + compression 47.5% **한 슬라이드·한 헤드라인**
+- 「환각 N% 차단」「GPT-4 replacement」「hosted ingestion SaaS hero」
+- user count → auto-training · telemetry hero
+
+**교차 SSOT:** `docs/research/MKM_UNIVERSAL_ROOT_INVESTOR_FACT_LOCK_CORRECTION_APPENDIX_EN_V1.md` · `docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md` · `logos_neuro_symbolic_b2b_gtm_pointer_v1_latest.json`
+
+### 3.0c Y1 GTM 마일스톤 (2026-06-21 · Phase 0)
+
+**역할:** §6 `30-60-90`과 **병행**. 통과 = exit 0 + artifact path.
+
+| ID | 기간 | 상태 | DoD | 경로 |
+|----|------|------|-----|------|
+| **UR-W1** | 2026-06 | **부분 완료** | Reddit ✅ · X ✅ · Discussions repro **수집 중** | `reports/universal_root_community_gtm_v1_latest.json` · launch pack |
+| **UR-W2** | 2026-06 | **완료** | TRACK_C v3 · investor deck · Fact-Lock · SSOT sync | §3.0b · `MKM_UNIVERSAL_ROOT_INVESTOR_DECK_SKELETON_KO_V1.md` |
+| **UR-W3** | 2026-07 | **대기** | Contributor fixture PR ≥1 (human-gated) | `CONTRIBUTING.md` · `mkm_universal_root_contributing_en_v1.md` |
+| **UR-W4** | TBD | **대기** | HN Show (account gate 해소 후) | `MKM_UNIVERSAL_ROOT_SHOW_HN_SUBMIT_PACK_EN_V1.md` |
+| **UR-Y2** | 2026-H2 | **`[HYPO]`** | On-prem Docker smoke exit 0 | appendix §4 roadmap only |
+
+**금지:** MS ZIP 아웃바운드 기본값 · `send_gate OPEN` = 영업 GO.
 
 **금지 (제출·발표):**
 
@@ -77,7 +149,9 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 - mkmlab 제품 페이지에 **압축 47.5%·쇼룸·예언 적중률** 등 Track C 수치를 **같은 퍼널**처럼 기재.
 - **no1kmedi**를 고객-facing 브랜드로 표기 (`JEMA_AI_DOMAIN_POINTER_V1.md` 명명 계약).
 
-### 3.1 축 A — 압축·토큰절감 사업 (최우선)
+### 3.1 Parallel Lane A — 압축·토큰절감 (Enterprise · 인바운드)
+
+**역할 (v3):** Track A 검증된 **Parallel Enterprise Lane** — **§3.0b Y1 Hero 아님**. LG·MS·a-codeai 인바운드·기존 B2B만.
 
 - 고객: LLM 비용이 큰 B2B(컨택센터, SaaS, 리서치팀, AI 자동화팀).
 - 제품: 토큰 절감 API + 비용 리포트 + 품질·복원 투명성 보고서.
@@ -165,14 +239,15 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 - **포지션:** 크롬·1Password 등 **Data Plane(금고) 대체 아님** — 계정 메타·정책·posture 점수·복구 런북 **권고만** (credential 원문 **미수집**).
 - **판정 (2026-06-16):** 손입력 JSON MVP는 **본인 점검용**; 단독 B2C 구독·크롬 대체 SKU로 **승격 보류**. 상용화는 **ISMS-P·사이버보험 증거 리포트 번들** 또는 Workspace 메타 자동화(Phase 2) 이후만 재검토.
-- **격벽:** **§3.1 압축·B2B paste·GPU 브로커(Ollama/코코링크 하이브리드 SKU)와 합선 금지** — 본선 GTM = **압축 토큰절감 + B2B 폼/파일럿 + 정부 과제(병렬)**.
+- **격벽:** **§3.1 압축·B2B paste·GPU 브로커와 합선 금지** — **본선 GTM = §3.0b Y1 Universal Root** · 압축 = parallel inbound only.
 - **구현 SSOT:** `scripts/build_sovereign_iam_lite_posture_v1.py` → `reports/sovereign_iam_lite_posture_latest.json` · 연구 큐 **`RQ-023` HOLD**.
 
-#### 3.1.7 1인 개발자 · GitHub GTM (Hero realigned · 2026-06-20)
+#### 3.1.7 1인 개발자 · GitHub GTM (Hero realigned · 2026-06-21)
 
 **상태:** `[FACT]` 운영 정책. **엔터프라이즈 세일즈·데이터 가공 SaaS와 혼동 금지.**
 
-- **Hero (본선):** **Hybrid Memory/Orchestration OS** — README Primary · shallow router · bench/pytest 재현 · `mkm_github_public_release_scope_v1` `B_subset`. **공개 히어로에서 “데이터 수집·중앙 가공 SaaS” 금지.**
+- **Y1 Hero (공개 1차):** **`mkm-universal-root`** — Dual-Plane Neuro-Symbolic Integrity Kit · ~20s smoke · `§3.0b`.
+- **Y1b (monorepo `B_subset`):** **Hybrid Memory/Orchestration OS** — shallow router · 4-Vault · MERGED LIT REVIEW · `mkm_github_public_release_scope_v1`. **공개 히어로에서 “데이터 수집·중앙 가공 SaaS” 금지.**
 - **2차 (연구):** Compression open-bench contributor masked JSONL · `a-codeai.com` / reproduce mirror — **히어로 아님** (`compression_open_bench_contributor_kit_v1`, `SEND_GATE: HOLD`).
 - **부록 (인바운드 1건만):** MS 제안서 ZIP·counsel 팩 — **기본 GTM 아님.**
 - **본선 채널 (DO):** GitHub README·Issues/PR · Hybrid OS reproduce · optional `a-codeai-compression-reproduce` mirror for compression-only demos
@@ -183,15 +258,17 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 - **Integrity Orb 쇼룸:** `https://api.jemaai.cloud/public_showroom_logos_integrity_orb_v1.html?product=1` — ENTRY_13/16 artifact-bound · `py scripts/build_showroom_logos_integrity_orb_slice_v1.py` · 번들 chain 9/9.
 
-**상태:** 연구 PoC · **Track C 1차 매출 파도와 합선 금지** · **MS 헤드라인·압축 KPI 합산 금지** (FAIL-COMP-004).
+**상태:** Y1 OSS PoC live · **§3.0b North Star와 동일 축** · **MS 헤드라인·압축 KPI 합산 금지** (FAIL-COMP-004).
 
 - **포지션:** 고전·장문 말뭉치의 **상호참조·경로 검증 패턴**을 B2B 제안서·전략 문서 **구조 감사기**로 이식한다. **Neuro**(LLM 초안) + **Symbolic**(그래프·규칙·citation lock) + **Human**(HITL) — 대외에는 **「모델 훈련」이 아니라 「검증 배관」**으로만 설명한다.
 - **대외 1페이지 SSOT:** `docs/final/artifacts/logos_neuro_symbolic_b2b_public_one_pager_ko_v1.md` — 법무 검토 전 · `PUBLIC_FACING` §2–3 정렬.
 - **머신 포인터:** `docs/final/artifacts/logos_neuro_symbolic_b2b_gtm_pointer_v1_latest.json`
 - **운영 재현:** `py scripts/run_logos_track_b_hot_reload_v1.py --verbose` → `reports/logos_hot_reload_operator_board_v1_latest.md` · completion gate ≥90.
+- **Universal Root OSS smoke (Phase 15–17 · fixture · HF/Ollama 불필요):** `py scripts/run_universal_root_oss_cursor_smoke_v1.py` → `reports/universal_root_oss_cursor_smoke_v1_latest.json` · raw dual-plane: lexicon `prime_hit_rate` 99.53% · distortion 0.47% · topology `verse_reachable_rate` 99.53% · wall exceptions 2 — **벤치 fixture only** · Track A·MS 헤드라인 합산 금지.
 - **GTM:** **§3.1.7 GitHub 본선** 유지. 본 절은 **인바운드 B2B 부록·데크·파일럿 설명**만 — `external_validation_ms_evidence_pack`의 `logos_track_b/` 서브번들과 **분리 표기** (로고스 통찰을 MS 원페이저 헤드라인에 넣지 않음).
 - **금지:** 신학·교리 카피 · 투자·수익 단정 · Track A·실매매 자동 승격 · 「Google/MS 동급 LLM」 표현.
 - **격벽:** Track B `research_only` · `theology_to_sales_forbidden` · 구현 판정은 `CONSTITUTION`·스크립트 exit 0만.
+- **가격·Azure·성숙도 정렬 (2026-06-25):** `reports/mkm_logos_b2b_business_plan_alignment_v1_2026-06-25.md` — §3.1.8 전용 · §3.7(6) 크레딧과 연동 · 압축·Y1 Hero KPI **합산 금지**.
 
 ### 3.2 축 B — 초고난도 비정형 텍스트 기반 사업 (고급 해설형)
 
@@ -292,6 +369,20 @@ MKM AI가 제공하는 것은 **정답 생성기**가 아니라, 엔터프라이
 
 - 연구·탐색 산출물(B-track)과 상용 패키징(Track C)은 **합선하지 않는다** (`§1 Fact-Locked Baseline`).
 - **난제·증명 작업**에서 자동 생성되는 lemma 의존 그래프·소요 시간 산출 등 **환각 리스크가 높은 자동 서술**은 Track C 제품 서사에 넣지 않는다. 필요 시 **인간 수학자·Lean 전문가 검토 후**만 별도 연구 자료로 다룬다.
+
+#### (6) 클라우드 크레딧·인프라 예산 SSOT (2026-06-25 · Fact-Lock)
+
+사업계획·제안서의 **인프라 비용·파일럿 COGS** 서술 시 아래 디스크 SSOT만 인용한다(채팅·추정 금지).
+
+| 항목 | SSOT |
+|------|------|
+| **Azure startup sponsorship** | `reports/mkm_azure_startup_credit_ssot_v1_latest.json` — **USD 4,998.91** 잔액 / 원금 USD 5,000 · 적용 2026-05-20 · 만료 **2027-02-14** · 구독 `MKM-Startups-Prod` · 로그인 `giryun288@gmail.com` |
+| **용도 (허용)** | Logos Studio B2B 파일럿 · Azure OpenAI · 연구 GPU 스모크(쿼터 허용 시) |
+| **용도 (금지)** | 환자 PHI · 실매매 런타임 · Track A 승격 주장 |
+
+NVIDIA Inception Phoenix의 Azure 행 = **본 크레딧 claim 성공**을 의미한다(전화 영업 아님). 다른 파트너(AWS/GCP/Lambda/Nebius)는 `reports/nvidia_inception_email_credit_routing_ssot_v1_latest.json` 별도.
+
+**Logos B2B 가격·성숙도·인프라 정렬 (혼동 방지 · 2026-06-25):** `reports/mkm_logos_b2b_business_plan_alignment_v1_2026-06-25.md` — §3.1.8 레인에서만 인용 · 파일럿 견적만 즉시 · Starter/Pro는 KPI·레퍼런스 게이트 · LLM COGS≠순이익.
 
 #### (5) 세일즈·제안서에 넣을 한 단락 (복붙용)
 

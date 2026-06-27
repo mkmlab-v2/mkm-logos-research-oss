@@ -10,20 +10,14 @@ priority: 3
 
 ## SSOT (운영)
 
-| 역할 | 파일 | 정책 |
-|------|------|------|
-| **유일 운영판** | `MISSION_LOG.md` (로컬·비추적) | IDE 상시 오픈 · 채팅 `@MISSION_LOG.md` |
-| **장기기억(정책)** | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` | 격벽·분기 한 줄 · Phase 표 **금지** |
-| **스냅샷** | `CURRENT_OPS_SNAPSHOT.md` | **레거시 · 기본 미사용** — 「핸드오프」도 **작전 보드** 갱신으로 대체 |
-| **일기** | `reports/daily_thread_work_*` | **레거시 · 기본 미사용** |
-| **ARCHIVE** | `MISSION_LOG.md` 하단 | CENTRAL **자동 이관 없음** |
+- **유일 운영판:** `MISSION_LOG.md` (로컬) — 스냅샷·일기 **미사용** · ARCHIVE→CENTRAL 자동 이관 없음.
+- **정책:** `CENTRAL_AGENT_MEMORY_V1.md` (Phase 표 금지).
 
-## 재개 트리거 (지휘관 한 줄 · 이 구문이면 **먼저** `MISSION_LOG.md` Read)
+## 재개 트리거 → **먼저** `MISSION_LOG.md` Read
 
-**동등 트리거:** 「**미션로그 이어서**」「**미션로그 이어서 작업해**」「**MISSION_LOG 이어서**」「`@MISSION_LOG.md` 이어서」  
-**선택 한정:** 같은 메시지에 **`MS`** / **`Oracle`** / **`M-ORACLE`** / **`M-MS`** 가 있으면 해당 **섹션만** 갱신. **`Infra`** / **`GPU`** / **`Design`** / **`Showroom`** → `MISSION_LOG` **해당 레인 행만** + `.cursor/rules/infra-lane.mdc` 또는 `design-lane.mdc`.
+「미션로그 이어서」·`@MISSION_LOG.md` 이어서 — 동등. 레인 태그(`MS`/`Oracle`/`Infra`/`Design` 등) 있으면 **해당 섹션만** + lane `.mdc`.
 
-**에이전트 순서:** (1) `MISSION_LOG.md` 맨 위 작전 보드 Read (2) 담당 섹션 Phase·다음 Action 확인 (3) 작업 (4) 작전 보드 **다음 1타**만 갱신 — 스냅샷·일기 **열지 않음**.
+순서: 작전 보드 Read → 담당 다음 Action → 작업 → **다음 1타**만 갱신.
 
 ## ALWAYS
 

@@ -59,6 +59,13 @@
       "query_key_hint": "logos_suffering_comfort_pattern_v1",
       "expand_graph": true,
       "hypothesis_note": "[HYPO][NON_GATING] open-domain sample; not clinical or trading trigger."
+    },
+    {
+      "id": "job_suffering_reason",
+      "query_ko": "욥이 고난을 받은 이유",
+      "query_key_hint": "dc73c2c367199e48",
+      "expand_graph": true,
+      "hypothesis_note": "[HYPO][NON_GATING] Shadow Lane v3 + comparative theology four-slot; verified_anchor=false; send_gate HOLD."
     }
   ]
 }

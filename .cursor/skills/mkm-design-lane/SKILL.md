@@ -1,6 +1,6 @@
 ---
 name: mkm-design-lane
-description: Design/Showroom lane — Lovable-style Cursor UI workflow (CSS token SSOT, anchor pinning, smoke lock-in). Use for no1kmedi Hub, jemaai showroom, mkmlife consumer portal UI, or when user mentions Lovable concept, discover v3, or Design lane.
+description: Design/Showroom lane — Lovable-style Cursor UI workflow (CSS token SSOT, anchor pinning, smoke lock-in). Use for no1kmedi Hub, jemaai showroom, mkmlife consumer portal UI, Trust Composition reference→token→gate, clinic LOI landing, or when user mentions Lovable concept, discover v3, or Design lane.
 ---
 
 # MKM Design Lane — Lovable-style in Cursor
@@ -83,7 +83,20 @@ Bootstrap: `powershell -File scripts\Invoke-HubMkmlifeLocalDevPair_v1.ps1 -Boots
 
 MKM **4AI core** is domain/lens — not UI routing labels.
 
+## Trust Composition (reference → token → gate)
+
+**SSOT:** `docs/final/MKM_TRUST_COMPOSITION_DESIGN_PIPELINE_V1.md` · rule `@mkm-trust-composition-design-v1`
+
+| Step | Action |
+| --- | --- |
+| Seed | `design_reference_seed_v1` + audience profile |
+| Tokens | DTCG 3-layer JSON (not flat hex paste) |
+| Gate | `Run-ClinicLoiLandingDesignChain_v1.ps1` exit 0 |
+
+Clinic LOI reference impl: `reports/clinic_km_mmp_landing_tokens_v2.dtcg.json` · `frozen_deferred` · `send_gate: HOLD`.
+
 ## Related rules
 
 - `.cursor/rules/design-lane.mdc`
+- `.cursor/rules/mkm-trust-composition-design-v1.mdc`
 - `.cursor/rules/mkm-browser-automation-v1.mdc` (Tier 2 smoke only)

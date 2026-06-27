@@ -11,6 +11,7 @@ Run the **minimum validation baseline** for a Cursor chat session: separate in-c
 Use when the user:
 
 - Starts a large session or says 「장기기억 맥락 이어」「CENTRAL 기준」「미션로그 이어서」
+- Logos advanced: 「장기기억 맥락이어 고급해석」→ `-Lane oracle -ResumeMode AdvancedLogos`
 - Asks whether Cursor auto-validates theory / AI-to-AI memory
 - Ends a meaningful work block (checkpoint, handoff)
 - Works a **lane**: MS · Oracle · Infra · web_ops · Design/Showroom
@@ -26,6 +27,7 @@ Use when the user:
    ```powershell
    py scripts/build_mkm_chat_resume_pack_v1.py --lane oracle
    ```
+   Logos advanced: `powershell -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle -ResumeMode AdvancedLogos`
    Lanes: `oracle` | `ms` | `infra` | `web_ops` (omit `--lane` for default 3-node pins).
 4. **P0** (before implementation claims):
    ```powershell
@@ -57,10 +59,12 @@ Report one line: `solo_ops: ok|fail · date` · resume pack exit · P0 exit.
 - **B-track `[HYPO]`** — no Track A / live trading auto-merge.
 - Full chain: `MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md`
 
-## Fact-Lock footer (mandatory on baseline answers)
+## Fact-Lock footer (baseline / resume answers only)
 
-End with:
+Use on **resume·헌법 점검·구현 판정** 답변. 일반 코딩·연구 Q&A에는 **루틴 live-trading 면책 생략** (`commander_chat_tone_prefs_v1_latest.json`).
+
+When used, end with:
 
 1. **Layer:** A (rules only) / B (disk+inject) / C (schedule/CI) — which applied this turn.
 2. **Evidence:** script paths + exit codes actually run (or 「미실행」).
-3. **Boundary:** B-track / Track A / live trading — one line.
+3. **Boundary:** only if trading·SEND·live deploy was in scope — otherwise omit.

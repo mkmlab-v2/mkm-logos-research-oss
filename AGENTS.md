@@ -24,7 +24,8 @@
 |--------|------|
 | 장기기억 맥락이어 · 미션로그 이어서 · CENTRAL 기준 (동등) | `powershell -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1` (`-Lane` 있으면) → Read `docs/final/artifacts/mkm_chat_resume_pack_latest.md` — **MISSION_LOG 통째 금지** |
 | **장기기억 맥락이어 고급해석** | `…Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle -ResumeMode AdvancedLogos` → resume pack · `[HYPO]` why 단답·SEND·Track A 금지 · `mkm_commander_resume_triggers_v1.json` |
-| 장기기억 저장 · 체크포인트 | `py scripts/athena_checkpoint.py "<한 줄>"` (exit 0) |
+| **마무리 · 마무리해줘** | `run_mkm_cursor_session_end_v1.py` (`--lane`·`--continuity-id`·한 줄) — alias `장기기억 저장` · `체크포인트` |
+| Pillar A 주간 회귀 (Infra) | `run_workspace_automation_health.ps1 -PillarACursorContinuitySmokeOnly` |
 | 의미 있는 진행 후 | `MISSION_LOG.md` **해당 레인** 다음 Action **1줄**만 (`mission-log-combat-ssot.mdc`) |
 
 - **solo_ops:** 재개 시 `reports/mkm_solo_background_ops_state.json` 오늘 `last_ok` 아니면 `Invoke-MkmSoloBackgroundOps_v1.ps1` (`mkm-solo-background-ops-auto.mdc`).
@@ -54,19 +55,21 @@
 | 【프리미엄 큐 권장】 | `… -Persona PremiumMultilensQueue` |
 | 【Design 레인】 | `… -Persona DesignLane` |
 | **딥리서치** · deep research · 논문 조사 | **Tier 0** Gemini→`docs/research/raw/` · **Tier 1** `mkm-deep-research/SKILL.md`(LIT_REVIEW md) · **0→1 merge** `*_MERGED_LIT_REVIEW_*.md` SSOT · **Tier 2** pytest exit 0 |
+| **논문 디스크 4칸** · paper verdict · tier 절단 · LIT_REVIEW 대조 | `@.cursor/rules/mkm-paper-disk-verdict-four-slot-v1.mdc` — Disk verdict · Reproduce · raw/repair_v2 · Promotion; support-fire only; `send_gate: HOLD` default |
 
 → 나머지 40+ 행: **`AGENTS_REFERENCE_V1.md` 「페르소나 단축 호출」**
 
 ## 핵심 SSOT 포인터
-
 | 주제 | 경로 |
 |------|------|
 | 정체성·분기 | `docs/final/CENTRAL_AGENT_MEMORY_V1.md` |
 | 작전 보드 | `MISSION_LOG.md` (로컬) |
 | 로컬↔VPS | `docs/final/LOCAL_VS_VPS_ONE_RULE_WORKFLOW.md` |
 | Fact-Lock 번들 | `scripts/run_fact_lock_bundle.ps1` |
+| Trust Composition Design | `docs/final/MKM_TRUST_COMPOSITION_DESIGN_PIPELINE_V1.md` · `Run-ClinicLoiLandingDesignChain_v1.ps1` |
 | Cursor 세션 baseline | `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` |
-| **딥리서치 (논문·학술)** | Tier 0 `docs/research/raw/` · Tier 1 `mkm-deep-research/SKILL.md` · Tier 2 exit 0 |
+| Pillar A LTM · suspect_first | `reports/mkm_bench_2026_003_pillar_a_signoff_v1_latest.json` · `mkm_meta_coordinator_turn_contract_v1_latest.md` |
+| **딥리서치 (논문·학술)** | Tier 0 `docs/research/raw/` · Tier 1 `mkm-deep-research/SKILL.md` · Tier 2 exit 0 · **DR bench 헬스/Fact-Lock:** `-IncludeDeepResearchBenchSmoke` / `-DeepResearchBenchSmokeOnly` (`run_workspace_automation_health.ps1`) · CONSTITUTION DR bench mini 표 |
 | 인프라·GPU·PC 경로 | `docs/final/LOCAL_MACHINE_POINTER_V1.md` (비추적) |
 
 ## Git · 원격 (한 줄)
@@ -89,6 +92,4 @@
 
 - SSOT 템플릿: `docs/final/artifacts/cursorrules_slim_ssot_v1.txt` — 루트 `.cursorrules`와 **동기 유지** (`py scripts/enforce_cursorrules_slim_ssot.py` · drift: `check_cursorrules_template_drift_v1.py` · diet `--strict`에 포함).
 
-## 확장 읽기 (레인별)
-
-압축·B-track·쇼룸·예언·Gemini·도메인 핸드오프·병렬 작전 → **`docs/final/AGENTS_REFERENCE_V1.md`** 해당 절. `CLAUDE.md` = 개발 진입 요약(중복 최소화).
+## 확장 읽기 (레인별) — 압축·B-track·쇼룸·예언·Gemini·도메인 핸드오프·병렬 작전 → **`docs/final/AGENTS_REFERENCE_V1.md`** 해당 절. `CLAUDE.md` = 개발 진입 요약.

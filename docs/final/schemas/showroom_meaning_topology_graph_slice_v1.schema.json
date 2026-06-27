@@ -60,7 +60,7 @@
         "properties": {
           "id": { "type": "string", "minLength": 1 },
           "label": { "type": "string" },
-          "kind": { "type": "string", "enum": ["verse", "theme", "regime", "other"] },
+          "kind": { "type": "string", "enum": ["verse", "theme", "regime", "stage", "other"] },
           "corpus": { "type": "string" },
           "ref": { "type": "string" },
           "hub_score": { "type": "number", "minimum": 0, "maximum": 1 },

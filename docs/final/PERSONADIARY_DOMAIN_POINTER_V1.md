@@ -56,7 +56,8 @@
 
 | 항목 | SSOT |
 |------|------|
-| **제품 콘셉트** | 명리 일운 + MKM 4AI + 라이프(날씨·컬러·식사) + 성경 앵커(Logos) 융합 **가이드형** 답변 — 의료·투자·실매매·예언% **단정 없음** |
+| **제품 콘셉트** | **찰나의 나라** — 뉴스·날씨·거시(세상) × 지금의 나(마음·리듬·4AI·선택 명리) 융합 일상 동반 — 의료·투자·실매매·예언% **단정 없음** |
+| **사업구상 SSOT** | `docs/final/artifacts/personadiary_b2c_business_plan_v1_latest.md` · `personadiary_b2c_business_plan_v1_latest.json` |
 | **계약** | `docs/final/artifacts/PERSONADIARY_DAILY_RESPONSE_PACKAGE_V1_CONTRACT.json` |
 | **빌드** | `scripts/build_commander_daily_fortune_v1.py` → `scripts/assemble_personadiary_daily_response_package_v1.py` |
 | **산출** | `docs/final/artifacts/personadiary_daily_response_package_v1_latest.json` · `projects/no1kmedi/public/data/personadiary_daily_response_package_v1.json` |
@@ -70,9 +71,23 @@
 
 **VPS 배포:** `scripts/Invoke-PersonadiaryParallelBundle_v1.ps1 -Deploy` (가이드 갱신 → `npm run build` → `Deploy-No1kmediDestinyTarball_v1.ps1`). SSOT 호스트: `personadiary_preview_ops_v1_latest.json` → `vps-mkmlife` · PM2 `no1kmedi-com`.
 
+**로컬 라이브 (Design · HMR):** `projects/no1kmedi` → `npm run dev` (`:3010`) · **http://localhost:3010/personadiary** — Next Fast Refresh. 워치·스모크: `npm run dev:personadiary:live` 또는 루트 `scripts/Invoke-PersonadiaryDesignLiveDev_v1.ps1` (`-SkipDevStart` · `-OpenBrowser`).
+
 ---
 
-## 5) 교차 참조
+## 5) B2C 사업구상 (찰나의 나라 · 2026-06-17)
+
+| 항목 | SSOT |
+|------|------|
+| **한 줄** | 뉴스·날씨·거시 × 지금의 나 → 하루 한 번 **찰나의 나라** |
+| **본문** | `docs/final/artifacts/personadiary_b2c_business_plan_v1_latest.md` |
+| **기계 계약** | `docs/final/artifacts/personadiary_b2c_business_plan_v1_latest.json` |
+| **로드맵** | P0 preview → P1 찰나 UX·동네 POI → P2 자동 일기·페르소나 카드 → P3 AI 음악·영상·Plus |
+| **격벽** | Track C 부록 · OpenData 327 제출문 **미포함** · mkmlife/jema 결제·API **합선 금지** |
+
+---
+
+## 6) 교차 참조
 
 - **mkmlife.com** 원퀘스천·단건 과금 락 — `NO1KMEDI_MKMLIFE_REPO_PATH_SSOT_2026-04-08.md` §11 — personadiary 와 **합쳐서 서술 금지** (제품이 다르면).
 - **jemaai.cloud** 공개 쇼룸 — 실매매·조종실 격벽; personadiary 와 **동일 “관측 파이프”로 합선 금지** (역할이 다르면).

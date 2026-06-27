@@ -58,9 +58,12 @@
       "pack_dir": "reports/notebooklm_compression_btrack_sync_pack_v1"
     },
     "IJEOMA_BTRACK": {
-      "uuid": "71f55a03-09d0-411f-b365-0ce2a2064c24",
-      "name": "Fusion Insight Hub - Bible x Myeongri x Sasang",
-      "note": "Fallback when af639d3e dedicated notebook fails nlm add."
+      "uuid": "e6c1f050-40ef-49f0-8b2c-c509b8570cf4",
+      "name": "15 · 이제마 B-track (IJEOMA)",
+      "mcp_id": "15-b-track-ijeoma",
+      "data_lane": "ijeoma_btrack",
+      "state_ssot": "docs/final/artifacts/ijeoma_nl_notebook_state_ssot_v1_latest.json",
+      "note": "Created 2026-06-23 via nlm notebook create. Supersedes NOT_FOUND 71f55a03. Commander NL paid tier ~300 sources (not free 50)."
     },
     "ARCHIVE_MKM": {
       "uuid": "9d463afb-328a-4496-b348-a65ca62bd8f7",
