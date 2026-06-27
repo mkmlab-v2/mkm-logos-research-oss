@@ -4,6 +4,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { ClinicianChartPastePanel } from "@/components/ClinicianChartPastePanel";
 import { ClinicianCopilotCardsView } from "@/components/ClinicianCopilotCardsView";
+import { PasteChartOmniBox } from "@/components/PasteChartOmniBox";
+import {
+  birthdateToBirthInstantUtc,
+  type PasteExtractDraftV1,
+} from "@/lib/clinician-chart-paste-extract-v1";
 import {
   buildChartPasteSectionsFromBundle,
   buildChartPasteSectionsFromCdsDraft,
@@ -40,6 +45,17 @@ type PasteChartAdvice = {
   patient_education_copy: string;
 };
 
+export type PasteChartSessionSyncV1 = {
+  patientLabel: string;
+  title: string;
+  chartSnippet: string;
+  summarySnippet: string;
+  birthInstantUtc?: string;
+  ianaTz?: string;
+  chiefComplaint?: string;
+  slug?: string;
+};
+
 type ClinicianEncounterGoldPanelProps = {
   clinicianEmail?: string;
   defaultSlug?: string;
@@ -52,6 +68,7 @@ type ClinicianEncounterGoldPanelProps = {
   } | null;
   patientCareBundle?: Record<string, unknown> | null;
   onFusionBundleReady?: (bundle: Record<string, unknown>) => void;
+  onPasteChartSession?: (session: PasteChartSessionSyncV1) => void;
   disabled?: boolean;
 };
 
@@ -84,10 +101,16 @@ export function ClinicianEncounterGoldPanel({
   cdsDraft,
   patientCareBundle,
   onFusionBundleReady,
+  onPasteChartSession,
   disabled,
 }: ClinicianEncounterGoldPanelProps) {
   const [lookup, setLookup] = useState(defaultSlug);
   const [chartText, setChartText] = useState("");
+  const [extractDraft, setExtractDraft] = useState<PasteExtractDraftV1>({
+    schema: "paste_extract_draft_v1",
+    confidence: "low",
+    sources: [],
+  });
   const [objectiveDraft, setObjectiveDraft] = useState("");
   const [analyzeBusy, setAnalyzeBusy] = useState(false);
   const [deliverablesBusy, setDeliverablesBusy] = useState(false);
@@ -143,15 +166,55 @@ export function ClinicianEncounterGoldPanel({
     }
   }, [clinicianEmail, lookup]);
 
+  function resolveBirthInstantForRequest(): string {
+    const fromChip = extractDraft.birthdate
+      ? birthdateToBirthInstantUtc(extractDraft.birthdate, ianaTz.trim() || "Asia/Seoul")
+      : null;
+    if (fromChip) return fromChip;
+    if (birthInstantUtc.trim()) return birthInstantUtc.trim();
+    return "";
+  }
+
+  function resolvePatientLookup(): Record<string, string> | null {
+    const slug = payload?.slug || defaultSlug.trim() || (lookup.trim().includes("_") ? lookup.trim() : "");
+    if (slug && /^[a-z][a-z0-9_]*$/i.test(slug)) {
+      return patientLookupBody(slug, payload?.slug);
+    }
+    const refQ = lookup.trim();
+    if (refQ && refQ.includes("-") && /^[A-Z0-9-]+$/i.test(refQ)) {
+      return patientLookupBody(refQ, payload?.slug);
+    }
+    const display =
+      extractDraft.display_name?.trim() ||
+      payload?.display_label?.trim() ||
+      (lookup.trim() && !lookup.includes("_") ? lookup.trim() : "");
+    if (display) return { display };
+    return null;
+  }
+
+  function friendlyPasteChartError(code?: string): string {
+    if (!code) return "Paste Chart 분석에 실패했습니다.";
+    if (code.startsWith("unknown_display")) {
+      return "등록된 Human Gold 환자가 아닙니다. 고급에서 slug를 연결하거나, 이름·생년 칩을 확인해 주세요. (익명 1회 분석은 Phase 1)";
+    }
+    if (code.includes("birth_profile_missing")) {
+      return "생년월일을 칩에서 확인·수정해 주세요. ISO 타임스탬프 직접 입력은 필요 없습니다.";
+    }
+    if (code.startsWith("slug_ref_token_or_display_required")) {
+      return "차트에서 이름을 추출하지 못했습니다. 이름 칩을 수정하거나 고급에서 slug를 연결하세요.";
+    }
+    return code;
+  }
+
   async function runPasteChartAnalysis() {
     const text = chartText.trim();
     if (!text) {
       setError("EMR·차트·상담 메모를 붙여넣으세요.");
       return;
     }
-    const q = lookup.trim() || payload?.slug || defaultSlug.trim();
-    if (!q) {
-      setError("먼저 환자 식별자를 검증하세요.");
+    const lookupBody = resolvePatientLookup();
+    if (!lookupBody) {
+      setError("이름을 칩에서 확인하거나, 고급에서 Human Gold slug를 연결하세요.");
       return;
     }
 
@@ -165,12 +228,15 @@ export function ClinicianEncounterGoldPanel({
         schema: "clinician_paste_chart_request_v1",
         chart_text: text,
         options: { validate_schema: true, validate_policy: true, render_md: true },
-        ...patientLookupBody(q, payload?.slug),
+        ...lookupBody,
       };
       if (objectiveDraft.trim()) body.objective_draft = objectiveDraft.trim();
-      if (birthInstantUtc.trim()) {
-        body.birth_instant_utc = birthInstantUtc.trim();
+      const birthIso = resolveBirthInstantForRequest();
+      if (birthIso) {
+        body.birth_instant_utc = birthIso;
         body.iana_tz = ianaTz.trim() || "Asia/Seoul";
+        if (extractDraft.sex === "M") body.is_male = true;
+        if (extractDraft.sex === "F") body.is_male = false;
       }
 
       const res = await fetch("/api/clinician/paste-chart-v1", {
@@ -182,13 +248,15 @@ export function ClinicianEncounterGoldPanel({
         success?: boolean;
         error?: string;
         advice_error?: string;
+        slug?: string;
+        display_label?: string;
         patient_care_bundle?: Record<string, unknown>;
         patient_facing_markdown?: string;
         advice?: PasteChartAdvice | null;
       };
       if (!res.ok || !json.success || !json.patient_care_bundle) {
         setFusionBundle(null);
-        setError(json.error || "Paste Chart 분석에 실패했습니다.");
+        setError(friendlyPasteChartError(json.error));
         return;
       }
       setFusionBundle(json.patient_care_bundle);
@@ -198,6 +266,27 @@ export function ClinicianEncounterGoldPanel({
         setAdviceWarning(`SOAP는 생성됨 · 조언 체인: ${json.advice_error}`);
       }
       onFusionBundleReady?.(json.patient_care_bundle);
+
+      const patientLabel =
+        extractDraft.display_name?.trim() || json.display_label?.trim() || lookup.trim() || "환자";
+      const soap = json.patient_care_bundle.clinical_soap_v1 as
+        | Record<string, { text?: string }>
+        | undefined;
+      const summarySnippet =
+        soap?.assessment?.text?.trim() ||
+        soap?.subjective?.text?.trim()?.slice(0, 120) ||
+        extractDraft.chief_complaint?.trim() ||
+        "Paste Chart 분석 완료";
+      onPasteChartSession?.({
+        patientLabel,
+        title: patientLabel,
+        chartSnippet: text.slice(0, 500),
+        summarySnippet: summarySnippet.slice(0, 280),
+        birthInstantUtc: birthIso || undefined,
+        ianaTz: ianaTz.trim() || "Asia/Seoul",
+        chiefComplaint: extractDraft.chief_complaint?.trim(),
+        slug: json.slug || payload?.slug || defaultSlug.trim() || undefined,
+      });
     } catch {
       setFusionBundle(null);
       setError("네트워크 오류 — Python 체인·MKM_WORKSPACE_ROOT를 확인하세요.");
@@ -293,111 +382,61 @@ export function ClinicianEncounterGoldPanel({
       </header>
 
       <main className="paste-chart-shell">
-        <section className="paste-chart-block" aria-labelledby="lbl-block-a">
-          <p className="block-label" id="lbl-block-a">
-            A — 환자 식별
-          </p>
-          <div className="pc-patient-row">
-            <div className="pc-patient-field">
-              <label htmlFor="paste-chart-lookup">환자 이름 / 식별자</label>
-              <input
-                id="paste-chart-lookup"
-                type="text"
-                className="pc-input"
-                value={lookup}
-                onChange={(e) => setLookup(e.target.value)}
-                placeholder="slug · ref_token · 이름"
-                disabled={disabled || busy}
-                autoComplete="off"
-              />
-            </div>
-            <button
-              type="button"
-              className="btn-secondary"
-              onClick={() => void loadArtifacts()}
-              disabled={disabled || busy}
-            >
-              {busy ? "검증 중…" : "식별자 검증"}
-            </button>
-          </div>
-          {payload?.success ? (
-            <div className="patient-chip-row">
-              <span className="patient-chip">
-                <span className="chip-dot" aria-hidden />
-                {payload.display_label}
-              </span>
-              <span className="chip-sep">·</span>
-              <span className="patient-chip">{payload.ref_token}</span>
-              <span className="chip-sep">·</span>
-              <span className="patient-chip">slug={payload.slug}</span>
-              <span className="chip-ok">✓ 검증됨</span>
-            </div>
-          ) : null}
-        </section>
-
-        <hr className="pc-divider" />
-
-        <section className="paste-chart-block" aria-labelledby="lbl-block-b">
-          <p className="block-label" id="lbl-block-b">
-            B — 차트 붙여넣기
-          </p>
-          <label htmlFor="paste-chart-text" className="pc-paste-label">
-            EMR · 차트 · 상담 메모 붙여넣기
-            <span className="paste-label-sub">카톡·설문·EMR 텍스트 그대로</span>
-          </label>
-          <textarea
-            id="paste-chart-text"
-            className="pc-textarea"
-            rows={8}
-            value={chartText}
-            onChange={(e) => setChartText(e.target.value)}
-            placeholder="EMR S/O/A/P·진료 메모·카톡 상담을 그대로 붙여넣으세요."
-            disabled={disabled || analyzeBusy}
-          />
-          <details className="obj-details">
-            <summary>
-              <span className="obj-arrow" aria-hidden>
-                ▶
-              </span>
-              O · 객관 초안 (선택)
-            </summary>
-            <div className="obj-body">
-              <label htmlFor="paste-chart-objective">맥·설진 스태프 메모</label>
-              <textarea
-                id="paste-chart-objective"
-                className="pc-textarea pc-textarea--sm"
-                rows={2}
-                value={objectiveDraft}
-                onChange={(e) => setObjectiveDraft(e.target.value)}
-                placeholder="객관 소견 초안"
-                disabled={disabled || analyzeBusy}
-              />
-            </div>
-          </details>
-
-          {error ? (
-            <div className="error-banner" role="alert">
-              <span className="error-text">{error}</span>
-            </div>
-          ) : null}
-          {adviceWarning ? <p className="paste-chart-advice-warning">{adviceWarning}</p> : null}
-
-          {analyzeBusy ? (
-            <div className="analyze-loading" aria-live="polite">
-              <span className="spinner" aria-hidden />
-              분석 중…
-            </div>
-          ) : (
-            <button
-              type="button"
-              className="btn-analyze"
-              onClick={() => void runPasteChartAnalysis()}
-              disabled={disabled || busy}
-            >
-              분석
-            </button>
-          )}
-        </section>
+        <PasteChartOmniBox
+          chartText={chartText}
+          onChartTextChange={setChartText}
+          draft={extractDraft}
+          onDraftChange={setExtractDraft}
+          objectiveDraft={objectiveDraft}
+          onObjectiveDraftChange={setObjectiveDraft}
+          onAnalyze={() => void runPasteChartAnalysis()}
+          analyzeBusy={analyzeBusy}
+          disabled={disabled || busy}
+          error={error}
+          adviceWarning={adviceWarning}
+          advancedSlot={
+            <>
+              <div className="pc-patient-row">
+                <div className="pc-patient-field">
+                  <label htmlFor="paste-chart-lookup">slug · ref_token · 이름 (SSOT)</label>
+                  <input
+                    id="paste-chart-lookup"
+                    type="text"
+                    className="pc-input"
+                    value={lookup}
+                    onChange={(e) => setLookup(e.target.value)}
+                    placeholder="lee_heecheol · REF-… · 환자 이름"
+                    disabled={disabled || busy}
+                    autoComplete="off"
+                  />
+                </div>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => void loadArtifacts()}
+                  disabled={disabled || busy}
+                >
+                  {busy ? "검증 중…" : "Human Gold 검증"}
+                </button>
+              </div>
+              {payload?.success ? (
+                <div className="patient-chip-row">
+                  <span className="patient-chip">
+                    <span className="chip-dot" aria-hidden />
+                    {payload.display_label}
+                  </span>
+                  <span className="chip-sep">·</span>
+                  <span className="patient-chip">{payload.ref_token}</span>
+                  <span className="chip-sep">·</span>
+                  <span className="patient-chip">slug={payload.slug}</span>
+                  <span className="chip-ok">✓ 검증됨</span>
+                </div>
+              ) : (
+                <p className="paste-chart-muted">연구·Human Gold 케이스만 slug 검증이 필요합니다.</p>
+              )}
+            </>
+          }
+        />
 
         {hasResults ? (
           <div className="pc-results-grid">
@@ -423,7 +462,7 @@ export function ClinicianEncounterGoldPanel({
         ) : (
           <div className="paste-chart-empty" role="status">
             <strong>분석 후 SOAP·조언이 여기에 표시됩니다</strong>
-            <p>환자 식별 검증 → 차트 붙여넣기 → 「분석」 한 번</p>
+            <p>차트 통째 붙여넣기 → 칩 확인 → 「분석」 한 번</p>
           </div>
         )}
 

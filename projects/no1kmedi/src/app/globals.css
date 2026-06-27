@@ -4134,6 +4134,119 @@ section h2 {
   margin: 0;
 }
 
+.paste-chart-v1 .paste-chart-omni {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.paste-chart-v1 .pc-omni-lead {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted, #9aa9a3);
+  line-height: 1.5;
+}
+
+.paste-chart-v1 .pc-omni-textarea {
+  min-height: 220px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.paste-chart-v1 .pc-draft-chip-row {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  border-radius: var(--pc-r-md);
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.paste-chart-v1 .pc-draft-confidence {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.paste-chart-v1 .pc-draft-confidence--high {
+  color: var(--accent, #3d9b84);
+}
+
+.paste-chart-v1 .pc-draft-confidence--low {
+  color: var(--pc-gold, #c5a057);
+}
+
+.paste-chart-v1 .pc-draft-chip-summary {
+  font-size: 0.72rem;
+  color: var(--muted, #9aa9a3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.paste-chart-v1 .pc-draft-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.paste-chart-v1 .pc-draft-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--pc-accent-border, rgba(61, 155, 132, 0.35));
+  background: rgba(61, 155, 132, 0.08);
+  color: var(--text, #e2e8f0);
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.paste-chart-v1 .pc-draft-chip.is-uncertain {
+  border-color: rgba(197, 160, 87, 0.45);
+  background: rgba(197, 160, 87, 0.08);
+}
+
+.paste-chart-v1 .pc-draft-chip-key {
+  color: var(--muted, #9aa9a3);
+  font-size: 0.65rem;
+}
+
+.paste-chart-v1 .pc-draft-chip-val {
+  font-weight: 600;
+}
+
+.paste-chart-v1 .pc-draft-chip-edit {
+  font-size: 0.65rem;
+  opacity: 0.85;
+}
+
+.paste-chart-v1 .pc-draft-inline-edit {
+  display: grid;
+  gap: 0.5rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px dashed var(--line, rgba(255, 255, 255, 0.12));
+  border-radius: var(--pc-r-md);
+}
+
+.paste-chart-v1 .pc-draft-inline-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.paste-chart-v1 .pc-advanced-details {
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
+  border-radius: var(--pc-r-md);
+  overflow: hidden;
+}
+
+.paste-chart-v1 .pc-advanced-body {
+  padding: 0.75rem;
+  display: grid;
+  gap: 0.65rem;
+}
+
 .paste-chart-v1 .copilot-card {
   border: 1px solid var(--line, rgba(255, 255, 255, 0.07));
   border-radius: var(--pc-r-lg);

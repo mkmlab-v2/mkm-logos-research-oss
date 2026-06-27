@@ -3,6 +3,11 @@ import fs from "node:fs";
 import path from "node:path";
 
 import { resolveEncounterPatient } from "@/lib/clinician-encounter-artifacts-v1";
+import {
+  buildEphemeralEncounterPointer,
+  buildEphemeralEncounterSlug,
+  canUseEphemeralEncounter,
+} from "@/lib/clinician-ephemeral-encounter-v1";
 import { parseIntakePasteText } from "@/lib/clinician-intake-paste-v1";
 import { loadPatientPointer, type PatientSsotPointer } from "@/lib/clinician-patient-slug-v1";
 import { resolveMkmWorkspaceRoot } from "@/lib/km-workspace-root-v1";
@@ -17,6 +22,8 @@ export type IntakeFusionDraftRequestV1 = {
   ianaTz?: string;
   isMale?: boolean;
   sasangLabel?: string;
+  /** P1: allow SOAP fusion without Human Gold slug when display + birth are provided */
+  allowEphemeral?: boolean;
   validateSchema?: boolean;
   validatePolicy?: boolean;
   renderMd?: boolean;
@@ -29,6 +36,8 @@ export type IntakeFusionDraftResultV1 =
       slug: string;
       refToken: string;
       displayLabel: string;
+      pointer: PatientSsotPointer;
+      ephemeral?: boolean;
       bundlePath: string;
       myeongniPath: string;
       rationalePath: string;

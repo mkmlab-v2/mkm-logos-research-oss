@@ -38,7 +38,7 @@ export function defaultClinicianContext(): ClinicianThreadContext {
 const OPENING_TURN: ClinicianChatTurn = {
   role: "assistant",
   message:
-    "한의 진료 보조 대화입니다. 주증상을 입력하면 CDSS 초안·근거 요약을 돌려드립니다. 최종 진단·처방은 한의사가 확정합니다. 출생·문진은 왼쪽 메뉴 「환자·설정」에서 맞춰 주세요.",
+    "한의 진료 보조 대화입니다. Paste Chart 탭에서 차트를 통째 붙여넣으면 SOAP·조언 초안을 돌려드립니다. 최종 진단·처방은 한의사가 확정합니다.",
 };
 
 export function defaultOpeningTurns(): ClinicianChatTurn[] {

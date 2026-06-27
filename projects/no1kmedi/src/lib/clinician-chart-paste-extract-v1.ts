@@ -1,0 +1,196 @@
+/**
+ * Paste Chart Omni-box — local regex/heuristic metadata extract (no LLM).
+ */
+
+import { buildChiefComplaintFromPaste } from "@/lib/clinician-paste-chart-v1";
+
+export type PasteExtractConfidenceV1 = "high" | "low";
+
+export type PasteExtractDraftV1 = {
+  schema: "paste_extract_draft_v1";
+  display_name?: string;
+  birthdate?: string;
+  sex?: "M" | "F" | "unknown";
+  age_years?: number;
+  chief_complaint?: string;
+  confidence: PasteExtractConfidenceV1;
+  sources: string[];
+};
+
+const NAME_LABEL_RE = /(?:환자명|성명|이름|환자)\s*[:：]\s*([가-힣○●◯〇]{2,4})/;
+const NAME_WITH_SEX_RE = /([가-힣]{2,3}[○●◯〇]?)\s*(?:\/|,|\s)\s*(\d{1,3})\s*(?:세|M|F|남|여)/;
+const BIRTH_FULL_RE = /(19|20)(\d{2})[.\-/년]\s*(\d{1,2})[.\-/월]?\s*(\d{1,2})?/;
+const BIRTH_YEARSUFFIX_RE = /(?:^|[^\d])(\d{2})년생(?:\s*(남|여|남성|여성))?/;
+const AGE_RE = /만\s*(\d{1,3})\s*세|(\d{1,3})\s*세\s*(남|여|남성|여성)?/;
+const SEX_RE = /(남성|여성|남자|여자|남|여)(?!\w)/;
+
+function pad2(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
+function normalizeBirthdate(y: number, m: number, d: number): string | undefined {
+  if (y < 1900 || y > 2100 || m < 1 || m > 12 || d < 1 || d > 31) return undefined;
+  return `${y}-${pad2(m)}-${pad2(d)}`;
+}
+
+function inferBirthYearFromAge(age: number): number | undefined {
+  const now = new Date();
+  const y = now.getFullYear() - age;
+  if (y < 1900 || y > now.getFullYear()) return undefined;
+  return y;
+}
+
+function parseSexToken(token?: string): "M" | "F" | undefined {
+  if (!token) return undefined;
+  if (/남|M/i.test(token)) return "M";
+  if (/여|F/i.test(token)) return "F";
+  return undefined;
+}
+
+function extractDisplayName(text: string): { name?: string; source?: string } {
+  const label = NAME_LABEL_RE.exec(text);
+  if (label?.[1]) return { name: label[1].trim(), source: label[0] };
+
+  const inline = NAME_WITH_SEX_RE.exec(text);
+  if (inline?.[1]) return { name: inline[1].trim(), source: inline[0] };
+
+  return {};
+}
+
+function extractBirthdate(text: string): { birthdate?: string; source?: string } {
+  const full = BIRTH_FULL_RE.exec(text);
+  if (full) {
+    const century = full[1];
+    const yy = Number(full[2]);
+    const y = Number(`${century}${pad2(yy)}`);
+    const m = Number(full[3]);
+    const d = full[4] ? Number(full[4]) : 1;
+    const birthdate = normalizeBirthdate(y, m, d);
+    if (birthdate) return { birthdate, source: full[0] };
+  }
+
+  const suffix = BIRTH_YEARSUFFIX_RE.exec(text);
+  if (suffix?.[1]) {
+    const yy = Number(suffix[1]);
+    const y = yy >= 0 && yy <= 30 ? 2000 + yy : 1900 + yy;
+    const birthdate = normalizeBirthdate(y, 1, 1);
+    if (birthdate) return { birthdate, source: suffix[0] };
+  }
+
+  return {};
+}
+
+function extractAge(text: string): { age?: number; sex?: "M" | "F"; source?: string } {
+  const m = AGE_RE.exec(text);
+  if (!m) return {};
+  const age = Number(m[1] || m[2]);
+  if (!Number.isFinite(age) || age < 1 || age > 120) return {};
+  const sex = parseSexToken(m[3]);
+  return { age, sex, source: m[0] };
+}
+
+function extractSex(text: string): { sex?: "M" | "F"; source?: string } {
+  const m = SEX_RE.exec(text);
+  if (!m?.[1]) return {};
+  const sex = parseSexToken(m[1]);
+  return sex ? { sex, source: m[0] } : {};
+}
+
+export function birthdateToBirthInstantUtc(birthdate: string, ianaTz = "Asia/Seoul"): string | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(birthdate.trim());
+  if (!m) return null;
+  const tz = ianaTz.trim() || "Asia/Seoul";
+  const d = new Date(`${m[1]}-${m[2]}-${m[3]}T00:00:00`);
+  if (Number.isNaN(d.getTime())) return null;
+  if (tz === "Asia/Seoul") {
+    return new Date(`${m[1]}-${m[2]}-${m[3]}T00:00:00+09:00`).toISOString();
+  }
+  return d.toISOString();
+}
+
+export function mergePasteExtractDraft(
+  base: PasteExtractDraftV1,
+  overrides: Partial<PasteExtractDraftV1>,
+): PasteExtractDraftV1 {
+  const merged: PasteExtractDraftV1 = {
+    ...base,
+    ...overrides,
+    schema: "paste_extract_draft_v1",
+    sources: overrides.sources ?? base.sources,
+    confidence: overrides.confidence ?? base.confidence,
+  };
+  if (merged.display_name || merged.birthdate || (merged.age_years && merged.sex !== "unknown")) {
+    merged.confidence = "high";
+  } else if (merged.display_name || merged.chief_complaint) {
+    merged.confidence = "low";
+  }
+  return merged;
+}
+
+export function formatPasteExtractChipLabel(draft: PasteExtractDraftV1): string {
+  const parts: string[] = [];
+  parts.push(draft.display_name?.trim() || "?");
+  if (draft.birthdate) {
+    parts.push(draft.birthdate);
+  } else if (draft.age_years) {
+    parts.push(`만${draft.age_years}세`);
+  } else {
+    parts.push("?");
+  }
+  const sex =
+    draft.sex === "M" ? "M" : draft.sex === "F" ? "F" : "?";
+  parts.push(sex);
+  const cc = draft.chief_complaint?.trim();
+  if (cc) parts.push(cc.length > 18 ? `${cc.slice(0, 18)}…` : cc);
+  return parts.join(" / ");
+}
+
+export function extractPasteChartDraftV1(text: string): PasteExtractDraftV1 {
+  const raw = text.replace(/\r\n/g, "\n").trim();
+  const sources: string[] = [];
+
+  if (!raw) {
+    return {
+      schema: "paste_extract_draft_v1",
+      confidence: "low",
+      sources: [],
+    };
+  }
+
+  const nameHit = extractDisplayName(raw);
+  if (nameHit.source) sources.push(nameHit.source);
+
+  const birthHit = extractBirthdate(raw);
+  if (birthHit.source) sources.push(birthHit.source);
+
+  const ageHit = extractAge(raw);
+  if (ageHit.source) sources.push(ageHit.source);
+
+  const sexHit = extractSex(raw);
+  if (sexHit.source) sources.push(sexHit.source);
+
+  let birthdate = birthHit.birthdate;
+  if (!birthdate && ageHit.age) {
+    const y = inferBirthYearFromAge(ageHit.age);
+    if (y) birthdate = normalizeBirthdate(y, 1, 1);
+  }
+
+  const sex = ageHit.sex || sexHit.sex || "unknown";
+  const chief = buildChiefComplaintFromPaste(raw);
+
+  let confidence: PasteExtractConfidenceV1 = "low";
+  if (nameHit.name && birthdate) confidence = "high";
+  else if (nameHit.name && ageHit.age && sex !== "unknown") confidence = "high";
+  else if (nameHit.name || birthdate || chief) confidence = "low";
+
+  return {
+    schema: "paste_extract_draft_v1",
+    display_name: nameHit.name,
+    birthdate,
+    sex,
+    age_years: ageHit.age,
+    chief_complaint: chief || undefined,
+    confidence,
+    sources,
+  };
+}

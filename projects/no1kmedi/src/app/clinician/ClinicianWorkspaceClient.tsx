@@ -12,7 +12,7 @@ import {
   normalizeRequestHost,
 } from "@/lib/no1kmedi-portal-host";
 import { ClinicianPersistedChat } from "@/components/ClinicianPersistedChat";
-import { ClinicianEncounterGoldPanel } from "@/components/ClinicianEncounterGoldPanel";
+import { ClinicianEncounterGoldPanel, type PasteChartSessionSyncV1 } from "@/components/ClinicianEncounterGoldPanel";
 import { ClinicianSimpleCopilotPanel } from "@/components/ClinicianSimpleCopilotPanel";
 import { ClinicianCanvasStudioLayout } from "@/components/clinician/ClinicianCanvasStudioLayout";
 import { ClinicianCanvasEmptyLayout } from "@/components/clinician/ClinicianCanvasEmptyLayout";
@@ -307,6 +307,35 @@ export function ClinicianWorkspaceClient({
     [activeThread, commitThread],
   );
 
+  const syncPasteChartSession = useCallback(
+    (session: PasteChartSessionSyncV1) => {
+      if (!activeThread) return;
+      const userTurn = { role: "user" as const, message: session.chartSnippet };
+      const assistantTurn = { role: "assistant" as const, message: session.summarySnippet };
+      const turns = [...activeThread.turns, userTurn, assistantTurn].slice(-48);
+      commitThread({
+        id: activeThread.id,
+        title: session.title,
+        patientLabel: session.patientLabel,
+        titlePinned: true,
+        turns,
+        context: {
+          ...activeThread.context,
+          ssotSlug: session.slug || activeThread.context.ssotSlug,
+          birthInstantUtc: session.birthInstantUtc || activeThread.context.birthInstantUtc,
+          ianaTz: session.ianaTz || activeThread.context.ianaTz,
+          chiefComplaint: session.chiefComplaint || activeThread.context.chiefComplaint,
+        },
+      });
+      updateThreadMeta(activeThread.id, {
+        patientLabel: session.patientLabel,
+        title: session.title,
+        titlePinned: true,
+      });
+    },
+    [activeThread, commitThread, updateThreadMeta],
+  );
+
   const paletteActions: PaletteAction[] = useMemo(
     () => [
       { id: "copilot", label: "진료 분석", hint: "panel", run: () => onSelect("copilot") },
@@ -482,6 +511,7 @@ export function ClinicianWorkspaceClient({
             cdsDraft={draftForBundle}
             patientCareBundle={patientCareBundle}
             onFusionBundleReady={setPatientCareBundle}
+            onPasteChartSession={syncPasteChartSession}
           />
         </div>
       ) : null}
