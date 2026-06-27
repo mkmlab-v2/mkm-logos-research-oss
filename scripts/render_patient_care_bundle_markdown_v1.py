@@ -19,7 +19,24 @@ def _md_escape_title(s: str) -> str:
     return s.replace("\n", " ").strip()
 
 
-def render_bundle_markdown(bundle: dict) -> str:
+def _resolve_encounter_sequence(bundle: dict, encounter_sequence: dict | None) -> dict | None:
+    if encounter_sequence is not None:
+        return encounter_sequence
+    try:
+        import importlib.util
+
+        router_path = Path(__file__).resolve().parent / "l0_red_flag_router_v1.py"
+        spec = importlib.util.spec_from_file_location("l0_red_flag_router_v1", router_path)
+        if spec is None or spec.loader is None:
+            return None
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return mod.load_sequence_for_bundle(bundle)
+    except Exception:
+        return None
+
+
+def render_bundle_markdown(bundle: dict, *, encounter_sequence: dict | None = None) -> str:
     lines: list[str] = []
     bid = bundle.get("bundle_id", "")
     gen = bundle.get("generated_at_utc", "")
@@ -28,6 +45,22 @@ def render_bundle_markdown(bundle: dict) -> str:
         f"- **generated_at_utc:** `{_md_escape_title(str(gen))}`\n"
     )
     lines.append(PATIENT_FACING_TRACK_B_BARRIER_KO)
+    seq = _resolve_encounter_sequence(bundle, encounter_sequence)
+    if seq is not None:
+        try:
+            import importlib.util
+
+            router_path = Path(__file__).resolve().parent / "l0_red_flag_router_v1.py"
+            spec = importlib.util.spec_from_file_location("l0_red_flag_router_v1", router_path)
+            if spec and spec.loader:
+                mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(mod)
+                l0_state = mod.collect_l0_state_from_sequence(seq)
+                l0_block = mod.format_patient_markdown_block(l0_state)
+                if l0_block:
+                    lines.append(l0_block)
+        except Exception:
+            pass
     prov = bundle.get("provenance") or {}
     if prov:
         lines.append("## 출처\n\n")
@@ -62,10 +95,14 @@ def render_bundle_markdown(bundle: dict) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser(description="Render patient_care_bundle_v1 as Markdown")
     ap.add_argument("--bundle-json", type=Path, required=True)
+    ap.add_argument("--encounter-sequence-json", type=Path, default=None, help="Optional encounter_sequence_v1 JSON")
     ap.add_argument("--out-md", type=Path, help="Write Markdown; default stdout")
     args = ap.parse_args()
     bundle = json.loads(args.bundle_json.read_text(encoding="utf-8-sig"))
-    text = render_bundle_markdown(bundle)
+    seq = None
+    if args.encounter_sequence_json and args.encounter_sequence_json.is_file():
+        seq = json.loads(args.encounter_sequence_json.read_text(encoding="utf-8-sig"))
+    text = render_bundle_markdown(bundle, encounter_sequence=seq)
     if args.out_md:
         args.out_md.parent.mkdir(parents=True, exist_ok=True)
         args.out_md.write_text(text, encoding="utf-8")

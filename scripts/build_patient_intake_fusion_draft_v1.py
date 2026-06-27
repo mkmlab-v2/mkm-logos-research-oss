@@ -29,6 +29,8 @@ ASSEMBLE_PATH = ROOT / "scripts" / "assemble_patient_care_bundle_with_myeongni_v
 APPLY_SLOT_TEMPLATES = ROOT / "scripts" / "apply_patient_care_bundle_slot_templates_v1.py"
 VALIDATE_POLICY = ROOT / "scripts" / "validate_patient_care_bundle_against_policy_v1.py"
 RENDER_BUNDLE_MD = ROOT / "scripts" / "render_patient_care_bundle_markdown_v1.py"
+BUILD_ENCOUNTER_SEQUENCE = ROOT / "scripts" / "build_encounter_sequence_from_intake_v1.py"
+PATCH_ENCOUNTER_REF = ROOT / "scripts" / "patch_patient_care_bundle_encounter_sequence_ref_v1.py"
 DEFAULT_POLICY_JSON = ROOT / "docs" / "final" / "artifacts" / "patient_care_bundle_generation_policy_v1.default.json"
 SLOT_TEMPLATES_JSON = ROOT / "docs" / "final" / "artifacts" / "patient_care_bundle_slot_templates_ko_v1.json"
 
@@ -959,6 +961,16 @@ def main() -> int:
     ap.add_argument("--validate-schema", action="store_true")
     ap.add_argument("--validate-policy", action="store_true")
     ap.add_argument("--render-md-out", type=Path, default=None)
+    ap.add_argument(
+        "--with-encounter-sequence",
+        action="store_true",
+        help="Build encounter_sequence_v1 from intake, patch bundle provenance, pass to render.",
+    )
+    ap.add_argument(
+        "--encounter-sequence-out",
+        type=Path,
+        default=ROOT / "reports" / "patient_intake_fusion_encounter_sequence_latest.json",
+    )
     ap.add_argument("--apply-slot-templates", action="store_true", help="Overwrite/fill from KO templates")
     ap.add_argument(
         "--apply-slot-templates-fill-empty-only",
@@ -1038,6 +1050,31 @@ def main() -> int:
     args.bundle_out.parent.mkdir(parents=True, exist_ok=True)
     args.bundle_out.write_text(json.dumps(bundle, ensure_ascii=False, indent=2), encoding="utf-8")
 
+    encounter_sequence_path: Path | None = None
+    if args.with_encounter_sequence:
+        _run_helper(
+            BUILD_ENCOUNTER_SEQUENCE,
+            ["--intake-json", str(args.intake_json), "--out", str(args.encounter_sequence_out)],
+            "build_encounter_sequence_from_intake",
+        )
+        encounter_sequence_path = args.encounter_sequence_out
+        seq_doc = json.loads(encounter_sequence_path.read_text(encoding="utf-8-sig"))
+        enc_block = seq_doc.get("encounter") if isinstance(seq_doc.get("encounter"), dict) else {}
+        _run_helper(
+            PATCH_ENCOUNTER_REF,
+            [
+                "--bundle",
+                str(args.bundle_out),
+                "--encounter-sequence-id",
+                str(enc_block.get("sequence_id") or ""),
+                "--encounter-ref",
+                str(enc_block.get("ref_token") or ""),
+                "--out",
+                str(args.bundle_out),
+            ],
+            "patch_encounter_sequence_ref",
+        )
+
     if args.apply_slot_templates:
         ts_argv = [
             "--bundle-in",
@@ -1066,11 +1103,10 @@ def main() -> int:
         )
 
     if args.render_md_out is not None:
-        _run_helper(
-            RENDER_BUNDLE_MD,
-            ["--bundle-json", str(args.bundle_out), "--out-md", str(args.render_md_out)],
-            "render_markdown",
-        )
+        render_argv = ["--bundle-json", str(args.bundle_out), "--out-md", str(args.render_md_out)]
+        if encounter_sequence_path is not None and encounter_sequence_path.is_file():
+            render_argv.extend(["--encounter-sequence-json", str(encounter_sequence_path)])
+        _run_helper(RENDER_BUNDLE_MD, render_argv, "render_markdown")
 
     bundle_schema_checked_ok: None | bool = None
     if args.validate_schema:
@@ -1088,6 +1124,7 @@ def main() -> int:
         "slot_templates_ran_this_process": bool(args.apply_slot_templates),
         "generation_policy_validated": bool(args.validate_policy),
         "patient_md_render_requested": args.render_md_out is not None,
+        "encounter_sequence_built": bool(args.with_encounter_sequence),
         "bundle_json_schema_validated_and_passed_last": bundle_schema_checked_ok,
     }
 

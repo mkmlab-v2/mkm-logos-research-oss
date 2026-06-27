@@ -23,4 +23,10 @@ KM_CDS_UI_ANALYTICS_EVENTS_V1: Final[dict[str, str]] = {
     "ADMIN_KPI_CHECKLIST_TOGGLE_V1": "admin_kpi_checklist_toggle_v1",
     "ADMIN_KPI_PRIORITY_ACTION_SHOW_V1": "admin_kpi_priority_action_show_v1",
     "ADMIN_KPI_PRIORITY_ACTION_CLICK_V1": "admin_kpi_priority_action_click_v1",
+    "CDS_BUNDLE_GENERATE_V1": "cds_bundle_generate_v1",
+    "CLINICIAN_GRAPH_BUILD_V1": "clinician_graph_build_v1",
+    "CLINICIAN_GRAPH_VIEW_MODE_V1": "clinician_graph_view_mode_v1",
+    "CLINICIAN_GRAPH_REVIEW_FEEDBACK_V1": "clinician_graph_review_feedback_v1",
+    "CLINICIAN_GRAPH_SIGNOFF_V1": "clinician_graph_signoff_v1",
+    "CLINICIAN_GRAPH_REVIEW_TIMING_V1": "clinician_graph_review_timing_v1",
 }

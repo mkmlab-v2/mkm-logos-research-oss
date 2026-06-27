@@ -6,12 +6,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_POLICY = ROOT / "docs" / "final" / "artifacts" / "patient_care_bundle_generation_policy_v1.default.json"
+
+_PRESCRIPTION_CLAIM_RE = re.compile(
+    r"(?:[\uac00-\ud7a3]{2,}탕\b|복용\b|剂量|方名)",
+)
 
 
 def _collect_texts(bundle: dict[str, Any]) -> str:
@@ -70,6 +75,33 @@ def main() -> int:
                 if req and req not in body:
                     print(f"FAIL: slot {sid} (included) missing {req!r}", file=sys.stderr)
                     return 1
+
+    provenance = bundle.get("provenance") or {}
+    classic_refs = provenance.get("classic_refs") or []
+    if classic_refs:
+        for ref in classic_refs:
+            if not isinstance(ref, dict):
+                print("FAIL: classic_refs entries must be objects", file=sys.stderr)
+                return 1
+            if ref.get("citation_valid") is not True:
+                print(
+                    "FAIL: provenance.classic_refs requires citation_valid=true",
+                    file=sys.stderr,
+                )
+                return 1
+
+    if policy.get("require_classic_refs_for_prescription_claims") and _PRESCRIPTION_CLAIM_RE.search(hay):
+        valid_refs = [
+            r
+            for r in classic_refs
+            if isinstance(r, dict) and r.get("citation_valid") is True
+        ]
+        if not valid_refs:
+            print(
+                "FAIL: prescription-like claim requires provenance.classic_refs with citation_valid=true",
+                file=sys.stderr,
+            )
+            return 1
 
     print("OK: policy checks passed")
     return 0

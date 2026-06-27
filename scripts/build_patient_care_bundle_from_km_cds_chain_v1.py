@@ -16,13 +16,14 @@ import argparse
 import json
 import subprocess
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CDS_SCHEMA = ROOT / "docs" / "final" / "schemas" / "km_physician_cds_assist_envelope_v1.schema.json"
 ASSEMBLE = ROOT / "scripts" / "assemble_patient_care_bundle_with_myeongni_v1.py"
 DEFAULT_SOAP = ROOT / "tests" / "fixtures" / "patient_care_bundle_soap_stub_v1.example.json"
+CLASSICS_AUDIT = ROOT / "reports" / "km_classics_citation_audit_v1.jsonl"
 
 
 def _validate_cds(doc: dict, schema_path: Path) -> None:
@@ -85,6 +86,28 @@ def main() -> int:
         default=None,
         help="Forward to assemble: write Markdown after policy pass",
     )
+    ap.add_argument(
+        "--classic-index-json",
+        type=Path,
+        default=None,
+        help="Optional km_classics_index_hypo_v1 for provenance.classic_refs (on-demand)",
+    )
+    ap.add_argument(
+        "--classic-source-ids",
+        nargs="*",
+        default=None,
+        help="Resolve classic refs by source_id (requires --classic-index-json)",
+    )
+    ap.add_argument(
+        "--append-classics-audit",
+        action="store_true",
+        help="Append classics resolution audit line to reports/km_classics_citation_audit_v1.jsonl",
+    )
+    ap.add_argument(
+        "--request-id",
+        default=None,
+        help="Optional audit correlation id (with --append-classics-audit)",
+    )
     args = ap.parse_args()
 
     env_path = args.cds_envelope_json
@@ -136,7 +159,42 @@ def main() -> int:
         cmd.extend(["--render-md-out", str(args.render_md_out)])
 
     cp = subprocess.run(cmd, cwd=str(ROOT))
-    return int(cp.returncode)
+    if cp.returncode != 0:
+        return int(cp.returncode)
+
+    if args.classic_index_json is not None:
+        scripts_dir = str(ROOT / "scripts")
+        if scripts_dir not in sys.path:
+            sys.path.insert(0, scripts_dir)
+        from resolve_km_classics_citations_hypo_v1 import load_index, resolve_classic_refs
+
+        if not args.classic_index_json.is_file():
+            raise SystemExit(f"classic-index-json not found: {args.classic_index_json}")
+        if not args.classic_source_ids:
+            raise SystemExit("--classic-source-ids required with --classic-index-json")
+
+        index_doc = load_index(args.classic_index_json)
+        refs = resolve_classic_refs(index_doc, source_ids=list(args.classic_source_ids))
+        bundle_doc = json.loads(args.bundle_out.read_text(encoding="utf-8-sig"))
+        provenance = dict(bundle_doc.get("provenance") or {})
+        provenance["classic_refs"] = refs
+        bundle_doc["provenance"] = provenance
+        args.bundle_out.write_text(json.dumps(bundle_doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+        if args.append_classics_audit:
+            audit_row = {
+                "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                "request_id": args.request_id or "cds-chain",
+                "classic_index_json": str(args.classic_index_json.relative_to(ROOT)).replace("\\", "/"),
+                "classic_source_ids": list(args.classic_source_ids),
+                "classic_refs_count": len(refs),
+                "bundle_out": str(args.bundle_out.relative_to(ROOT)).replace("\\", "/"),
+            }
+            CLASSICS_AUDIT.parent.mkdir(parents=True, exist_ok=True)
+            with CLASSICS_AUDIT.open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps(audit_row, ensure_ascii=False) + "\n")
+
+    return 0
 
 
 if __name__ == "__main__":

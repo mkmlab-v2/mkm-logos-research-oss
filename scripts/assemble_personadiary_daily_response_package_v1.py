@@ -21,7 +21,7 @@ PUBLIC_MIRROR = (
     ROOT / "projects" / "no1kmedi" / "public" / "data" / "personadiary_daily_response_package_v1.json"
 )
 CONCEPT_KO = (
-    "오늘의 마음 일기 — 명리·4AI·라이프·성경 앵커·찰나의 나라(뉴스·코스피·거시) 융합 가이드"
+    "오늘의 마음 일기 — A-Code 12·라이프·세상 맥락·찰나의 나라(뉴스·거시) 융합 가이드"
 )
 DISCLAIMER_KO = (
     "[가설]·[NON_GATING] 마음돌봄·리플렉션 전용. "
@@ -60,10 +60,10 @@ def _section_id_from_header(line: str) -> Optional[str]:
 
 def _parse_telegram_sections(lines: List[str]) -> List[Dict[str, Any]]:
     titles = {
-        "myeongni": "오늘의 팔자 (명리)",
-        "mkm_4ai": "마음 에너지 (MKM 4AI)",
+        "myeongni": "오늘의 흐름",
+        "mkm_4ai": "마음 리듬",
         "lifestyle": "오늘의 라이프",
-        "logos_anchor": "오늘의 성경 앵커",
+        "logos_anchor": "앵커 한 줄",
         "world_pulse": "찰나의 나라 (세상×나)",
         "hypothesis_stream": "오늘 초론 스트림",
         "user_condition": "컨디션·바이어스 틸트",
@@ -150,7 +150,7 @@ def _build_ui_blocks(
     tilt_ko = str((cond_meta.get("advisory_investment_bias_tilt") or {}).get("tilt_ko") or "")
     fusion_line = str(world_meta.get("fusion_one_liner_ko") or "").strip()
     synthesis = str(hypo_meta.get("synthesis_ko") or "").strip()
-    hero_body = fusion_line or myeongni or "명리 일운을 불러오는 중입니다."
+    hero_body = fusion_line or myeongni or "오늘 흐름을 불러오는 중입니다."
     if synthesis and synthesis not in hero_body:
         hero_body = f"{synthesis}\n\n{hero_body}"
     if myeongni and fusion_line and myeongni not in hero_body:
@@ -225,7 +225,7 @@ def _reflect_template(sections: List[Dict[str, Any]], user_snippet: str = "{user
             break
     parts = [
         f"오늘 당신이 남긴 마음: \"{user_snippet}\"",
-        f"명리 한 줄: {myeongni[:100]}" if myeongni else "",
+        f"오늘 흐름: {myeongni[:100]}" if myeongni else "",
         f"찰나의 판: {world[:100]}" if world else "",
         f"라이프: {life[:80]}" if life else "",
         f"성경 앵커: {verse}" if verse else "",

@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_NODES = ROOT / "docs/final/artifacts/bible_meaning_graph_nodes_v1.jsonl"
 DEFAULT_EDGES = ROOT / "docs/final/artifacts/bible_meaning_graph_edges_v1.jsonl"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/magic_orb_graph_bloom_v1_latest.json"
+DEFAULT_HERO_SLICES = ROOT / "docs/final/artifacts/magic_orb_hero_slices_v1_latest.json"
 
 SCHEMA = "magic_orb_graph_bloom_v1"
 VERSION = "1.0.0"
@@ -28,6 +29,40 @@ DISCLAIMER_KO = (
     "질문 기준 활성화 부분 망(observation)입니다. [HYPO][NON_GATING] — "
     "신학·예언 확정·실매매·Track A 근거 아님."
 )
+
+EDGE_INTEGRITY_TIER_BY_TYPE: dict[str, str] = {
+    "cross_lens_confirm": "confirmed",
+    "parallel": "parallel_evidence",
+    "timeline_anchor": "chrono_anchor",
+    "hub_anchor": "anchor",
+    "query_anchor": "anchor",
+    "path_step": "path_inferred",
+    "seed_chain": "seed_inferred",
+    "seed_chain_anchor": "seed_inferred",
+    "verse_ref": "reference",
+    "ann_lite": "reference",
+}
+
+
+def annotate_bloom_edge_integrity(doc: dict[str, Any]) -> dict[str, Any]:
+    """Attach integrity_tier per edge for Phase 3 canvas coloring ([HYPO], visual only)."""
+    for edge in doc.get("edges") or []:
+        if not isinstance(edge, dict):
+            continue
+        et = str(edge.get("edge_type") or "")
+        edge["integrity_tier"] = EDGE_INTEGRITY_TIER_BY_TYPE.get(et, "observation")
+    doc["edge_integrity_policy"] = {
+        "schema": "magic_orb_graph_bloom_edge_integrity_v1",
+        "hypothesis_tier": "[HYPO]",
+        "research_only": True,
+        "non_gating": True,
+        "note_ko": "시각적 관측 등급이며 신학·예언 확정·Track A 근거 아님.",
+    }
+    return doc
+
+
+def _finalize_bloom(doc: dict[str, Any]) -> dict[str, Any]:
+    return annotate_bloom_edge_integrity(doc)
 
 
 def _utc_now() -> str:
@@ -205,6 +240,103 @@ def _enforce_caps(
     return trimmed_nodes, trimmed_edges
 
 
+def _bloom_is_sparse(nodes: list[dict[str, Any]], edges: list[dict[str, Any]]) -> bool:
+    verse_count = sum(1 for n in nodes if n.get("kind") == "verse")
+    return verse_count == 0 or len(edges) == 0
+
+
+def _apply_seed_chain_fallback(
+    router: dict[str, Any],
+    *,
+    add_node,
+    add_edge,
+    label_lookup: _BridgeLabelLookup,
+) -> None:
+    """When router paths miss, wire seed_chain_verse_sample into a minimal chain bloom."""
+    seeds = [v for v in (router.get("seed_chain_verse_sample") or []) if isinstance(v, str) and v.strip()]
+    if not seeds:
+        return
+    prev: str | None = None
+    for vid in seeds:
+        norm = _normalize_hub_verse_id(vid.strip())
+        nid = _verse_node_id(norm)
+        vlko = label_lookup.label_for_verse_id(norm)
+        vlabel = vlko or _verse_label(norm)
+        row: dict[str, Any] = {
+            "id": nid,
+            "label": vlabel,
+            "kind": "verse",
+            "hub_score": 0.68,
+            "ref": vlabel,
+        }
+        if vlko:
+            row["label_ko"] = vlko
+        if "::" in norm:
+            row["corpus"] = norm.split("::")[0]
+        add_node(row)
+        if prev:
+            add_edge(prev, nid, "seed_chain", 0.62)
+        else:
+            add_edge("query::center", nid, "seed_chain_anchor", 0.78)
+        prev = nid
+
+
+def _pick_hero_slice_id(router: dict[str, Any] | None, query: str) -> str:
+    seeds = [str(v) for v in (router or {}).get("seed_chain_verse_sample") or []]
+    if any(v.upper().startswith("DAN.") or "DAN." in v.upper() for v in seeds):
+        return "DAN2_CLUSTER_v1"
+    q = query.strip().lower()
+    if any(k in q for k in ("passion", "synoptic", "수난", "공관")):
+        return "SYNOPTIC_PASSION_WEEK_v1"
+    if any(k in q for k in ("daniel", "dan.", "다니엘", "dan 2", "dan2")):
+        return "DAN2_CLUSTER_v1"
+    return "SYNOPTIC_PASSION_WEEK_v1"
+
+
+def _hero_slice_bloom_fallback(
+    query: str,
+    router: dict[str, Any] | None,
+    *,
+    hero_slices_path: Path = DEFAULT_HERO_SLICES,
+) -> dict[str, Any] | None:
+    if not hero_slices_path.is_file():
+        return None
+    try:
+        bundle = json.loads(hero_slices_path.read_text(encoding="utf-8-sig"))
+    except json.JSONDecodeError:
+        return None
+    if bundle.get("schema") != "magic_orb_hero_slices_v1":
+        return None
+    slice_id = _pick_hero_slice_id(router, query)
+    for entry in bundle.get("slices") or []:
+        if not isinstance(entry, dict) or entry.get("slice_id") != slice_id:
+            continue
+        bloom = entry.get("graph_bloom")
+        if not isinstance(bloom, dict) or bloom.get("schema") != "magic_orb_graph_bloom_v1":
+            continue
+        out = json.loads(json.dumps(bloom))
+        q = query.strip()
+        if q:
+            for n in out.get("nodes") or []:
+                if n.get("id") == "query::center":
+                    n["label"] = q[:120]
+                    break
+            else:
+                out.setdefault("nodes", []).insert(
+                    0,
+                    {"id": "query::center", "label": q[:120], "kind": "query", "hub_score": 1.0},
+                )
+            out["seed_query"] = q
+        src = out.get("source") if isinstance(out.get("source"), dict) else {}
+        out["source"] = {
+            **src,
+            "fallback": "magic_orb_hero_slices_v1",
+            "hero_slice_id": slice_id,
+        }
+        return out
+    return None
+
+
 def bloom_from_router_paths(
     query: str,
     router: dict[str, Any],
@@ -327,9 +459,18 @@ def bloom_from_router_paths(
         if "query::center" in seen_nodes:
             add_edge("query::center", nid, "ann_lite", 0.45)
 
+    if _bloom_is_sparse(nodes, edges):
+        _apply_seed_chain_fallback(
+            router,
+            add_node=add_node,
+            add_edge=add_edge,
+            label_lookup=label_lookup,
+        )
+
     nodes, edges = _enforce_caps(nodes, edges, pinned_ids=pinned_ids)
 
-    return {
+    return _finalize_bloom(
+        {
         "schema": SCHEMA,
         "version": VERSION,
         "generated_at_utc": _utc_now(),
@@ -344,6 +485,7 @@ def bloom_from_router_paths(
         "edges": edges,
         "source": {"kind": "logos_subgraph_router_paths", "router_schema": router.get("schema")},
     }
+    )
 
 
 def _expand_graph_seeds(
@@ -481,7 +623,7 @@ def merge_bloom(
     out["edges"] = edges
     out["stats"] = {"node_count": len(nodes), "edge_count": len(edges)}
     out["generated_at_utc"] = _utc_now()
-    return out
+    return _finalize_bloom(out)
 
 
 def bloom_from_topology_slice(slice_doc: dict[str, Any], query: str) -> dict[str, Any]:
@@ -497,7 +639,8 @@ def bloom_from_topology_slice(slice_doc: dict[str, Any], query: str) -> dict[str
                 0,
                 {"id": "query::center", "label": query.strip()[:48], "kind": "query", "hub_score": 1.0},
             )
-    return {
+    return _finalize_bloom(
+        {
         "schema": SCHEMA,
         "version": VERSION,
         "generated_at_utc": _utc_now(),
@@ -511,6 +654,7 @@ def bloom_from_topology_slice(slice_doc: dict[str, Any], query: str) -> dict[str
         "edges": edges,
         "source": {"kind": "showroom_meaning_topology_graph_slice_v1"},
     }
+    )
 
 
 def build_bloom(
@@ -539,11 +683,15 @@ def build_bloom(
             ann_top_verse_ids=ann_top_verse_ids,
             hub_verse_refs=hub_verse_refs,
         )
+        if _bloom_is_sparse(list(base.get("nodes") or []), list(base.get("edges") or [])):
+            hero = _hero_slice_bloom_fallback(query, router)
+            if hero and not _bloom_is_sparse(list(hero.get("nodes") or []), list(hero.get("edges") or [])):
+                base = hero
     else:
         raise ValueError("router or topology_slice required")
 
     if not expand_graph or not router:
-        return base
+        return _finalize_bloom(base)
 
     seeds: set[str] = set()
     for vid in router.get("verse_ids") or []:
@@ -560,7 +708,7 @@ def build_bloom(
 
     room = NODE_CAP - len(base.get("nodes") or [])
     if room < 4 or not nodes_path.is_file() or not edges_path.is_file():
-        return base
+        return _finalize_bloom(base)
 
     extra_nodes, extra_edges = _expand_graph_seeds(
         seeds,

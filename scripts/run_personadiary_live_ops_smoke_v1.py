@@ -24,8 +24,20 @@ HUB_FOOTER_MARKERS = (
 )
 HUB_FOOTER_BOUNDARY = "합치지 않습니다"
 
+COMMERCIAL_HTML_MARKERS = (
+    "pd-commercial-home-v1",
+    "pd-moment-nation-hero",
+    "moment-meal-menu-v1",
+    "pd-acode-persona-v1",
+    "세상 속의 나",
+    "persona-visual-card-v1",
+    "pd-moment-quota-v1",
+    "pd-plus-teaser",
+)
+
 PHASE2_HTML_MARKERS = (
     "pd-ritual-draw",
+    "pd-ritual-status-slot",
     "Lattice Convergence",
     "빛의 구슬",
 )
@@ -33,11 +45,16 @@ PHASE2_LUT_SCHEMA = "personadiary_ritual_draw_lut_major22_v1"
 PHASE2_BLOOM_SCHEMA = "magic_orb_graph_bloom_v1"
 OPS_HTML_MARKERS = (
     "pd-main-ops",
+    "pd-ops-commercial-v1",
     "Persona Diary",
     "pd-ops-export",
     "pd-ops-import",
+    "pd-ops-cache-hint",
     "pd-ops-native-hypo",
+    "pd-ops-native-intent-hypo",
     "pd-ops-voice-hypo",
+    "pd-ops-fab-v1",
+    "pd-android-edge-to-edge-v1",
 )
 
 
@@ -75,6 +92,31 @@ def _fetch(
         return {"ok": False, "status": 0, "text": "", "error": str(e)}
 
 
+def _fetch_no_redirect(url: str, *, timeout: int = 20) -> dict:
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            return None
+
+    opener = urllib.request.build_opener(NoRedirect)
+    req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "*/*"}, method="GET")
+    try:
+        with opener.open(req, timeout=timeout) as resp:
+            return {
+                "ok": True,
+                "status": resp.status,
+                "location": resp.headers.get("Location", ""),
+            }
+    except urllib.error.HTTPError as e:
+        return {
+            "ok": False,
+            "status": e.code,
+            "location": e.headers.get("Location", "") if e.headers else "",
+            "error": str(e),
+        }
+    except Exception as e:
+        return {"ok": False, "status": 0, "location": "", "error": str(e)}
+
+
 def main() -> int:
     probes: dict[str, dict] = {}
 
@@ -98,6 +140,24 @@ def main() -> int:
             f"markers ok ({', '.join(OPS_HTML_MARKERS)})"
             if not ops_missing
             else f"missing: {', '.join(ops_missing)}"
+        ),
+    }
+
+    pd_ops_redirect = _fetch_no_redirect(f"{APEX}/personadiary/ops")
+    home_redirect = _fetch_no_redirect(f"{APEX}/home")
+    favicon = _fetch(f"{APEX}/favicon.ico")
+    probes["apex_route_canonical"] = {
+        "url": APEX,
+        "ok": (
+            pd_ops_redirect.get("status") == 308
+            and str(pd_ops_redirect.get("location") or "").rstrip("/").endswith("/ops")
+            and home_redirect.get("status") == 308
+            and favicon.get("ok")
+            and favicon.get("status") == 200
+        ),
+        "detail": (
+            f"personadiary/ops→{pd_ops_redirect.get('status')} {pd_ops_redirect.get('location')}; "
+            f"home→{home_redirect.get('status')}; favicon→{favicon.get('status')}"
         ),
     }
 
@@ -130,6 +190,17 @@ def main() -> int:
             f"markers ok ({', '.join(PHASE2_HTML_MARKERS)})"
             if not phase2_missing
             else f"missing: {', '.join(phase2_missing)}"
+        ),
+    }
+
+    commercial_missing = [m for m in COMMERCIAL_HTML_MARKERS if m not in page_text]
+    probes["commercial_home_html"] = {
+        "url": f"{APEX}/",
+        "ok": page.get("ok") and page.get("status") == 200 and not commercial_missing,
+        "detail": (
+            f"markers ok ({', '.join(COMMERCIAL_HTML_MARKERS)})"
+            if not commercial_missing
+            else f"missing: {', '.join(commercial_missing)}"
         ),
     }
 
@@ -218,6 +289,11 @@ def main() -> int:
     moment_ok = False
     intent = None
     card_count = 0
+    poi_hint_ok = False
+    acode_summary_ok = False
+    acode_persona_ok = False
+    moment_polish_applied = False
+    moment_polish_backend = None
     if moment.get("ok") and moment.get("status") == 200:
         try:
             mj = json.loads(moment["text"])
@@ -225,14 +301,38 @@ def main() -> int:
             intent = m.get("intent")
             card_count = len(m.get("cards") or [])
             moment_ok = mj.get("ok") is True and intent == "meal" and card_count >= 1
+            summary = str(m.get("summary_ko") or "")
+            acode_summary_ok = "AC-" in summary
+            acode = m.get("acode_persona") or {}
+            acode_persona_ok = (
+                acode.get("schema") == "personadiary_acode_persona_v1"
+                and str(acode.get("public_code", "")).startswith("AC-")
+            )
+            moment_polish_applied = bool(m.get("summary_ko_polished"))
+            moment_polish_backend = (m.get("polish_meta") or {}).get("backend")
+            poi_hint_ok = any(k in summary for k in ("국물", "곰탕", "메뉴", "찌개", "—"))
+            meal_menu_ok = "역" not in summary and "골목" not in summary
+            poi_hint_ok = poi_hint_ok and meal_menu_ok
         except json.JSONDecodeError:
             moment_ok = False
+            poi_hint_ok = False
+            acode_summary_ok = False
+            acode_persona_ok = False
+    else:
+        poi_hint_ok = False
+        acode_summary_ok = False
+        acode_persona_ok = False
     probes["moment_api"] = {
         "url": f"{APEX}/api/personadiary/moment",
         "status": moment.get("status"),
         "intent": intent,
         "card_count": card_count,
-        "ok": moment_ok,
+        "poi_hint_ok": poi_hint_ok,
+        "acode_summary_ok": acode_summary_ok,
+        "acode_persona_ok": acode_persona_ok,
+        "moment_polish_applied": moment_polish_applied,
+        "moment_polish_backend": moment_polish_backend,
+        "ok": moment_ok and poi_hint_ok and acode_summary_ok and acode_persona_ok,
     }
 
     smoke = {

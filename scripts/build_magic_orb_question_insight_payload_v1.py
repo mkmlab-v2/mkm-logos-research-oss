@@ -22,8 +22,8 @@ DEFAULT_OUT_ART = ROOT / "docs/final/artifacts/magic_orb_question_insight_v1_lat
 DEFAULT_OUT_PUBLIC = ROOT / "projects/mkm/mkm-life/public/data/magic_orb_question_insight_v1_latest.json"
 
 SCHEMA = "magic_orb_question_insight_v1"
-VERSION = "1.1.0"
-GENERATOR = "build_magic_orb_question_insight_payload_v1.py@1.2.0"
+VERSION = "1.2.0"
+GENERATOR = "build_magic_orb_question_insight_payload_v1.py@1.4.0"
 HUD_SCHEMA = "magic_orb_search_hud_v1"
 HUD_VERSION = "1.0.0"
 DEFAULT_CORPUS_BUNDLE = ROOT / "docs/final/artifacts/logos_corpus_graph_bundle_v1_latest.json"
@@ -31,6 +31,9 @@ DEFAULT_ATOMS_SUMMARY = (
     ROOT / "reports/constitution/btrack_pilot/original_language_master_atoms_summary_latest.json"
 )
 DEFAULT_VERSE_JSONL = ROOT / "data/logos/verse_decoded_v2_single_anchor_v1.jsonl"
+DEFAULT_ENVELOPE = ROOT / "projects/mkm/mkm-life/public/data/three_lens_sphere_envelope_public_v1.json"
+DEFAULT_SHADOW = ROOT / "docs/final/artifacts/research_shadow_lane_hypothesis_tree_v1_latest.json"
+DEFAULT_DIGEST = ROOT / "docs/final/artifacts/comparative_theology_panorama_digest_v1_latest.json"
 SNIPPET_EXCERPT_MAX = 140
 
 
@@ -38,13 +41,19 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-def _path_sort_key(path: dict[str, Any]) -> tuple[int, str]:
+def _path_sort_key(path: dict[str, Any]) -> tuple[float, int, str]:
+    rank = path.get("rank_score")
+    if rank is not None:
+        try:
+            return (-float(rank), 0, str(path.get("path_id") or ""))
+        except (TypeError, ValueError):
+            pass
     raw = path.get("match_score")
     try:
         score = int(raw)
     except (TypeError, ValueError):
         score = 0
-    return (-score, str(path.get("path_id") or ""))
+    return (-score, 0, str(path.get("path_id") or ""))
 
 
 class _VerseSnippetCache:
@@ -297,12 +306,18 @@ def _slots_from_query(
     summary = "Logos subgraph router: no router artifact."
     if router:
         meta = rag_meta or {}
+        shadow = router.get("four_d_shadow_v1") if isinstance(router.get("four_d_shadow_v1"), dict) else {}
+        mean_coh = shadow.get("mean_four_d_coherence")
+        coh_s = f"{mean_coh:.3f}" if isinstance(mean_coh, (int, float)) else "n/a"
+        macro = shadow.get("macro_4d_state") if isinstance(shadow.get("macro_4d_state"), dict) else {}
+        quadrant = macro.get("quadrant") or "n/a"
         summary = (
             f"Logos subgraph router: bridges_matched={router.get('bridges_matched')}, "
             f"paths={len(router.get('paths') or [])}, verse_ids={len(router.get('verse_ids') or [])}; "
             f"rag_fusion paths_included={meta.get('router_paths_included', 0)}/"
             f"{meta.get('router_paths_available', 0)}; "
-            "router_kind=token_overlap_logos_subgraph_v1; ranked match_score desc. [HYPO][NON_GATING]"
+            f"4d_shadow mean_coherence={coh_s} quadrant={quadrant}; "
+            "router_kind=token_overlap_logos_subgraph_v1; ranked match_score+4d desc. [HYPO][NON_GATING]"
         )
     return [
         {"slot_id": "query.intent", "text": query},
@@ -395,6 +410,9 @@ def build_search_hud_v1(
     paths = int(subgraph_summary.get("paths") or 0)
     top_match = _top_router_match_score(router)
     pair_display = _format_pairspace_upper(pairspace_upper)
+    shadow = (router or {}).get("four_d_shadow_v1") if isinstance((router or {}).get("four_d_shadow_v1"), dict) else {}
+    mean_coh = shadow.get("mean_four_d_coherence")
+    coh_display = f"{mean_coh:.3f}" if isinstance(mean_coh, (int, float)) else "n/a"
 
     display_lines = [
         (
@@ -404,7 +422,7 @@ def build_search_hud_v1(
         f"[THEORETICAL] Pairspace upper {pair_display} · Mode: offline_4d_knn [HYPO]",
         (
             f"[THIS QUERY]  Bridges {bridges} · Paths {paths} · Bloom {bloom_nodes}/{bloom_edges} · "
-            f"Match {top_match}"
+            f"Match {top_match} · 4Dcoh {coh_display}"
         ),
     ]
 
@@ -436,6 +454,7 @@ def build_search_hud_v1(
             "top_match_score": top_match,
             "ann_status": ann_status,
             "router_kind": str(subgraph_summary.get("router_kind") or "token_overlap_logos_subgraph_v1"),
+            "mean_four_d_coherence": mean_coh,
         },
         "display_lines": display_lines,
     }
@@ -464,6 +483,11 @@ def build_payload(
     router: dict[str, Any] | None,
     graph_bloom: dict[str, Any] | None,
     caps: dict[str, Any] | None = None,
+    envelope_path: Path = DEFAULT_ENVELOPE,
+    shadow: dict[str, Any] | None = None,
+    digest: dict[str, Any] | None = None,
+    primary_anchor: str = "Job.1.6",
+    enrich_four_slot: bool = True,
 ) -> dict[str, Any]:
     default_caps = {
         "rag_evidence": 24,
@@ -499,6 +523,21 @@ def build_payload(
         "artifact_path_rel": "docs/final/artifacts/logos_4d_state_v1_latest.json",
         "summary_line": f"question_chain query_len={len(query)} rag={len(rag)}",
     }
+    if router and isinstance(router.get("four_d_shadow_v1"), dict):
+        shadow = router["four_d_shadow_v1"]
+        calibration = {
+            **calibration,
+            "kind": "logos_4d_state_v1",
+            "four_d_shadow_schema": shadow.get("schema"),
+            "mean_path_coherence": shadow.get("mean_four_d_coherence"),
+            "human_review_hint_count": shadow.get("human_review_hint_count"),
+            "macro_4d_state": shadow.get("macro_4d_state"),
+            "summary_line": (
+                f"question_chain query_len={len(query)} rag={len(rag)} "
+                f"4d_mean={shadow.get('mean_four_d_coherence')} "
+                f"rerank={shadow.get('rerank_applied')}"
+            ),
+        }
 
     ann_status = "skipped_flag"
     ann_top: list[str] = []
@@ -552,13 +591,48 @@ def build_payload(
     }
     if graph_bloom and graph_bloom.get("schema") == "magic_orb_graph_bloom_v1":
         payload["graph_bloom"] = graph_bloom
+    if router and isinstance(router.get("four_d_shadow_v1"), dict):
+        payload["logos_4d_shadow_v1"] = router["four_d_shadow_v1"]
     payload["search_hud_v1"] = build_search_hud_v1(
         router=router,
         graph_bloom=graph_bloom,
         subgraph_summary=subgraph_summary,
         ann_status=ann_status,
     )
+    _attach_reasoning_theatre_v1(payload, envelope_path=envelope_path)
+    if enrich_four_slot:
+        from magic_orb_four_slot_assembler_v1 import enrich_magic_orb_payload
+
+        payload = enrich_magic_orb_payload(
+            payload,
+            shadow=shadow,
+            digest=digest,
+            router=router,
+            primary_anchor=primary_anchor,
+        )
     return payload
+
+
+def _attach_reasoning_theatre_v1(payload: dict[str, Any], *, envelope_path: Path) -> None:
+    spec = importlib.util.spec_from_file_location(
+        "build_magic_orb_reasoning_theatre_v1",
+        SCRIPTS / "build_magic_orb_reasoning_theatre_v1.py",
+    )
+    if spec is None or spec.loader is None:
+        return
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    envelope = None
+    if envelope_path.is_file():
+        envelope = json.loads(envelope_path.read_text(encoding="utf-8"))
+    theatre = mod.build_reasoning_theatre(
+        seed_query=str(payload.get("query") or ""),
+        envelope=envelope,
+        insight=payload,
+        active_step_id="ingest",
+        public_logos_only=True,
+    )
+    payload["reasoning_theatre_v1"] = theatre
 
 
 def main() -> int:
@@ -574,6 +648,10 @@ def main() -> int:
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT_ART)
     ap.add_argument("--sync-public", action="store_true")
     ap.add_argument("--ann-rag-json", type=Path, default=None, help="ANN-lite rag rows sidecar")
+    ap.add_argument("--shadow-json", type=Path, default=None)
+    ap.add_argument("--digest-json", type=Path, default=None)
+    ap.add_argument("--primary-anchor", default="Job.1.6")
+    ap.add_argument("--skip-four-slot", action="store_true")
     args = ap.parse_args()
 
     bundle = _load_json(args.bundle_json)
@@ -629,6 +707,9 @@ def main() -> int:
             hub_verse_refs=list((caps or {}).get("hub_verse_ids") or []) or None,
         )
 
+    shadow = _load_json(args.shadow_json) if args.shadow_json else _load_json(DEFAULT_SHADOW)
+    digest = _load_json(args.digest_json) if args.digest_json else _load_json(DEFAULT_DIGEST)
+
     payload = build_payload(
         query=args.query,
         query_id=args.query_id,
@@ -637,6 +718,10 @@ def main() -> int:
         router=router,
         graph_bloom=bloom,
         caps={**(chain.get("caps") if chain else {}), **(inline_caps or {})},
+        shadow=shadow,
+        digest=digest,
+        primary_anchor=args.primary_anchor,
+        enrich_four_slot=not args.skip_four_slot,
     )
 
     args.out_json.parent.mkdir(parents=True, exist_ok=True)

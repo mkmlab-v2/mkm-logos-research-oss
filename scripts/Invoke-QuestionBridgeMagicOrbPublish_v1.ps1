@@ -39,6 +39,10 @@ if ($fixtureQuery) {
     $Query = "위기 가운데 언약의 안정과 신실"
 }
 
+$queryFile = Join-Path $env:TEMP "mkm_magic_orb_query_$QueryId.txt"
+[System.IO.File]::WriteAllText($queryFile, $Query, [System.Text.UTF8Encoding]::new($false))
+$env:PYTHONUTF8 = "1"
+
 if ($Batch) {
     $batchArgs = @("-3", "scripts/run_magic_orb_question_insight_batch_v1.py", "--primary-query-id", $QueryId)
     if ($ExpandGraph) { $batchArgs += "--expand-graph" }
@@ -55,17 +59,24 @@ $runSingleChain = (-not $Batch) -and ($RebuildInsight -or -not $deployOnly)
 
 $chainArgs = @(
     "-3", "scripts/run_question_semantic_rag_bridge_chain_v1.py",
-    "--query", $Query,
+    "--query-file", $queryFile,
     "--query-id", $QueryId,
     "--skip-ann-lite"
 )
-if ($ExpandGraph) { $chainArgs += "--expand-graph" }
+if ($ExpandGraph -or $QueryId -like "job_*") { $chainArgs += "--expand-graph" }
 if ($SyncPublic) { $chainArgs += "--sync-public" }
 if ($DryRun) { $chainArgs += "--dry-run" }
 
 if ($runSingleChain) {
     & $py @chainArgs
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    if (-not $DryRun) {
+        $validateArgs = @("-3", "scripts/validate_magic_orb_four_slot_v1.py")
+        $isJobQuery = ($QueryId -in @("job_suffering_reason", "job_prologue_suffering")) -or ($Query -match "욥|job")
+        if (-not $isJobQuery) { $validateArgs += "--allow-missing-four-slot" }
+        & $py @validateArgs
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    }
     Write-Host "OK: insight -> docs/final/artifacts + projects/mkm/mkm-life/public/data (if -SyncPublic)" -ForegroundColor Green
 } elseif (-not $Batch -and $deployOnly -and -not $RebuildInsight) {
     Write-Host "Skip: single-query chain (deploy/smoke/verify only; use -RebuildInsight to regenerate q01 insight)" -ForegroundColor DarkGray

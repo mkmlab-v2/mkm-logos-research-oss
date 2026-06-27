@@ -21,7 +21,9 @@ def test_event_keys_stable() -> None:
     assert m.KM_CDS_UI_ANALYTICS_EVENTS_V1["ADMIN_KPI_CHECKLIST_TOGGLE_V1"] == "admin_kpi_checklist_toggle_v1"
     assert m.KM_CDS_UI_ANALYTICS_EVENTS_V1["ADMIN_KPI_PRIORITY_ACTION_SHOW_V1"] == "admin_kpi_priority_action_show_v1"
     assert m.KM_CDS_UI_ANALYTICS_EVENTS_V1["ADMIN_KPI_PRIORITY_ACTION_CLICK_V1"] == "admin_kpi_priority_action_click_v1"
-    assert len(m.KM_CDS_UI_ANALYTICS_EVENTS_V1) == 13
+    assert m.KM_CDS_UI_ANALYTICS_EVENTS_V1["CDS_BUNDLE_GENERATE_V1"] == "cds_bundle_generate_v1"
+    assert m.KM_CDS_UI_ANALYTICS_EVENTS_V1["CLINICIAN_GRAPH_BUILD_V1"] == "clinician_graph_build_v1"
+    assert len(m.KM_CDS_UI_ANALYTICS_EVENTS_V1) == 19
 
 
 def test_ts_file_contains_same_strings() -> None:
@@ -48,5 +50,8 @@ def test_ts_file_contains_same_strings() -> None:
         "admin_kpi_checklist_toggle_v1",
         "admin_kpi_priority_action_show_v1",
         "admin_kpi_priority_action_click_v1",
+        "cds_bundle_generate_v1",
+        "clinician_graph_build_v1",
+        "clinician_graph_signoff_v1",
     ):
         assert s in text
