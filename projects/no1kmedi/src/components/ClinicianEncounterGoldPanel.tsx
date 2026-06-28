@@ -266,7 +266,7 @@ export function ClinicianEncounterGoldPanel({
         schema: "clinician_paste_chart_request_v1",
         chart_text: text,
         allow_ephemeral: true,
-        options: { validate_schema: true, validate_policy: false, render_md: true },
+        options: { validate_schema: true, validate_policy: true, render_md: true },
         ...lookupBody,
       };
       if (objectiveDraft.trim()) body.objective_draft = objectiveDraft.trim();

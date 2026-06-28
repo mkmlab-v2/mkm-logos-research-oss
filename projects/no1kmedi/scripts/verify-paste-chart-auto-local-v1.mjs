@@ -81,7 +81,7 @@ async function postPasteChart(body) {
       schema: "clinician_paste_chart_request_v1",
       allow_ephemeral: true,
       iana_tz: "Asia/Seoul",
-      options: { validate_schema: true, validate_policy: false, render_md: true },
+      options: { validate_schema: true, validate_policy: true, render_md: true },
       ...body,
     }),
   });

@@ -1,4 +1,5 @@
-import { buildSimpleCopilotRequestFromPaste, inferSasangCandidateFromLabel } from "@/lib/clinician-paste-chart-v1";
+import { buildSimpleCopilotRequestFromPaste } from "@/lib/clinician-paste-chart-server-v1";
+import { inferSasangCandidateFromLabel, resolveSasangLabelForFusion } from "@/lib/clinician-sasang-infer-v1";
 import {
   patchSoapAssessmentSasangFromIws,
   type SimpleCopilotCardsV1,
@@ -52,7 +53,12 @@ export async function runPasteChartV1Chain(
   const chartText = String(req.chartText || req.intakeText || "").trim();
   if (!chartText) return { ok: false, error: "chart_text_required" };
 
-  const fusionReq: IntakeFusionDraftRequestV1 = { ...req, intakeText: chartText };
+  const sasangLabelForFusion = resolveSasangLabelForFusion(chartText, req.sasangLabel);
+  const fusionReq: IntakeFusionDraftRequestV1 = {
+    ...req,
+    intakeText: chartText,
+    sasangLabel: sasangLabelForFusion,
+  };
   const fusion = runIntakeFusionDraftChain(fusionReq, root);
   if (!fusion.ok) return fusion;
 
@@ -96,7 +102,7 @@ export async function runPasteChartV1Chain(
     birth,
     pointer,
     root,
-    sasangOverride: req.sasangLabel,
+    sasangOverride: sasangLabelForFusion || req.sasangLabel,
   });
   if ("error" in copilotBody) {
     return {
@@ -136,6 +142,7 @@ export async function runPasteChartV1Chain(
   let bundle = fusion.bundle;
   const sasangForPatch =
     advice.sasangInternal ||
+    (sasangLabelForFusion ? inferSasangCandidateFromLabel(sasangLabelForFusion) : undefined) ||
     (copilotBody.sasang_candidate && copilotBody.sasang_candidate !== "unknown"
       ? copilotBody.sasang_candidate
       : undefined) ||

@@ -24,6 +24,10 @@ export function buildPasteChartFusionAssistantMessage(
   return [session.summarySnippet, adviceLine].filter(Boolean).join("\n\n") || "Paste Chart 분석 완료";
 }
 
+export function shouldPasteChartFusionNavigateToChat(embed: string | null | undefined): boolean {
+  return embed !== "tauri";
+}
+
 export function buildPasteChartFusionContext(
   session: PasteChartSessionSyncV1,
 ): PasteChartFusionContextV1 {

@@ -11,7 +11,7 @@ import {
   JEMA_AI_PUBLIC_ORIGIN,
   normalizeRequestHost,
 } from "@/lib/no1kmedi-portal-host";
-import { buildPasteChartFusionAssistantMessage, buildPasteChartFusionContext, type PasteChartSessionSyncV1 } from "@/lib/clinician-paste-chart-fusion-v1";
+import { buildPasteChartFusionAssistantMessage, buildPasteChartFusionContext, shouldPasteChartFusionNavigateToChat, type PasteChartSessionSyncV1 } from "@/lib/clinician-paste-chart-fusion-v1";
 import { ClinicianEncounterGoldPanel } from "@/components/ClinicianEncounterGoldPanel";
 import { ClinicianPersistedChat } from "@/components/ClinicianPersistedChat";
 import { ClinicianSimpleCopilotPanel } from "@/components/ClinicianSimpleCopilotPanel";
@@ -272,8 +272,7 @@ export function ClinicianWorkspaceClient({
   const onSelect = useCallback(
     (id: string) => {
       setActiveId(id);
-      const path = id === "chat" ? "/clinician" : `/clinician?panel=${encodeURIComponent(id)}`;
-      router.replace(path, { scroll: false });
+      router.replace(`/clinician?panel=${encodeURIComponent(id)}`, { scroll: false });
     },
     [router],
   );
@@ -281,7 +280,7 @@ export function ClinicianWorkspaceClient({
   const startNewConsult = useCallback(() => {
     createThread();
     setActiveId("chat");
-    router.replace("/clinician", { scroll: false });
+    router.replace("/clinician?panel=chat", { scroll: false });
   }, [createThread, router]);
 
   const checkAccessStatus = useCallback(async () => {
@@ -376,21 +375,19 @@ export function ClinicianWorkspaceClient({
     [activeThread, commitThread, updateThreadMeta],
   );
 
-  const tauriEmbed = searchParams.get("embed") === "tauri";
-
   const finishPasteChartFusion = useCallback(() => {
     setActiveId("chat");
-    router.replace("/clinician", { scroll: false });
+    router.replace("/clinician?panel=chat", { scroll: false });
   }, [router]);
 
   const handlePasteChartSession = useCallback(
     (session: PasteChartSessionSyncV1) => {
       syncPasteChartSession(session);
-      if (!tauriEmbed) {
+      if (shouldPasteChartFusionNavigateToChat(searchParams.get("embed"))) {
         finishPasteChartFusion();
       }
     },
-    [syncPasteChartSession, finishPasteChartFusion, tauriEmbed],
+    [syncPasteChartSession, finishPasteChartFusion, searchParams],
   );
 
   const paletteActions: PaletteAction[] = useMemo(

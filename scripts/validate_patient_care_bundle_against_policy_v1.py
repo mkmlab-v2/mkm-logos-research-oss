@@ -15,8 +15,24 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_POLICY = ROOT / "docs" / "final" / "artifacts" / "patient_care_bundle_generation_policy_v1.default.json"
 
 _PRESCRIPTION_CLAIM_RE = re.compile(
-    r"(?:[\uac00-\ud7a3]{2,}탕\b|복용\b|剂量|方名)",
+    r"(?:[\uac00-\ud7a3]{2,}탕\b|剂量|方名)",
 )
+_RX_VERB_BOKYONG_RE = re.compile(r"복용\b")
+
+
+def _collect_rx_claim_texts(bundle: dict[str, Any]) -> str:
+    """Plan text only — subjective Hx and Track B slot echoes must not trigger Rx gate."""
+    soap = bundle.get("clinical_soap_v1") or {}
+    plan = soap.get("plan") or {}
+    if isinstance(plan.get("text"), str):
+        return plan["text"]
+    return ""
+
+
+def _has_prescription_claim(bundle: dict[str, Any], hay_all: str) -> bool:
+    if _PRESCRIPTION_CLAIM_RE.search(hay_all):
+        return True
+    return bool(_RX_VERB_BOKYONG_RE.search(_collect_rx_claim_texts(bundle)))
 
 
 def _collect_texts(bundle: dict[str, Any]) -> str:
@@ -90,7 +106,7 @@ def main() -> int:
                 )
                 return 1
 
-    if policy.get("require_classic_refs_for_prescription_claims") and _PRESCRIPTION_CLAIM_RE.search(hay):
+    if policy.get("require_classic_refs_for_prescription_claims") and _has_prescription_claim(bundle, hay):
         valid_refs = [
             r
             for r in classic_refs

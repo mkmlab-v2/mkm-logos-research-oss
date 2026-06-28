@@ -6,7 +6,9 @@
 import {
   buildPasteChartFusionAssistantMessage,
   buildPasteChartFusionContext,
+  shouldPasteChartFusionNavigateToChat,
 } from "../src/lib/clinician-paste-chart-fusion-v1";
+import { resolveSasangLabelForFusion } from "../src/lib/clinician-sasang-infer-v1";
 
 function assert(cond: boolean, msg: string) {
   if (!cond) throw new Error(msg);
@@ -30,6 +32,12 @@ assert(assistant.includes("소음인 망양증"), "assistant includes guardrail 
 const ctx = buildPasteChartFusionContext(session);
 assert(ctx.patientLabel === "김민수", "fusion context patient");
 assert(ctx.adviceTitles.length === 2, "fusion advice titles");
+
+assert(shouldPasteChartFusionNavigateToChat(null), "web navigates to chat");
+assert(!shouldPasteChartFusionNavigateToChat("tauri"), "tauri stays on panel");
+
+const fromChart = resolveSasangLabelForFusion("소음인 체질 · 요추 통증", undefined);
+assert(fromChart === "소음인", "resolve sasang from chart text");
 
 console.log(
   JSON.stringify(
