@@ -195,6 +195,9 @@ export function ClinicianEncounterGoldPanel({
 
   function friendlyPasteChartError(code?: string): string {
     if (!code) return "Paste Chart 분석에 실패했습니다.";
+    if (code === "unauthorized") {
+      return "Pro 권한 이메일이 필요합니다. 「환자·설정」에서 등록 이메일 입력·확인 후 다시 시도하거나 URL에 ?email= 을 추가하세요.";
+    }
     if (code.startsWith("unknown_display")) {
       return "이름·생년 칩을 확인해 주세요. Human Gold 환자는 고급에서 slug 연결도 가능합니다.";
     }
@@ -211,6 +214,12 @@ export function ClinicianEncounterGoldPanel({
     const text = chartText.trim();
     if (!text) {
       setError("EMR·차트·상담 메모를 붙여넣으세요.");
+      return;
+    }
+    if (!clinicianEmail?.trim()) {
+      setError(
+        "Pro 권한 이메일이 없습니다. 「환자·설정」 탭에서 이메일을 입력·확인하거나 URL에 ?email=your@email 을 추가하세요.",
+      );
       return;
     }
     const lookupBody = resolvePatientLookup();

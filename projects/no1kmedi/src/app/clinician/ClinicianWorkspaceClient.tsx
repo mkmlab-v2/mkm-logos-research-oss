@@ -70,6 +70,7 @@ import {
   KM_CDS_UI_ANALYTICS_EVENTS_V1,
   trackKmCdsUiEvent,
 } from "@/lib/km-cds-ui-analytics-events-v1";
+import { loadSavedClinicianEmail, saveClinicianEmail } from "@/lib/clinician-access-v1";
 
 const NAV_BASE = [
   { id: "copilot", label: "진료 분석" },
@@ -303,10 +304,23 @@ export function ClinicianWorkspaceClient({
     const fromUrl = (searchParams.get("email") || searchParams.get("clinician_email") || "")
       .trim()
       .toLowerCase();
-    if (!fromUrl || urlEmailPrefilled) return;
-    setAccessEmail(fromUrl);
-    setUrlEmailPrefilled(true);
-  }, [searchParams, urlEmailPrefilled]);
+    if (fromUrl) {
+      setAccessEmail(fromUrl);
+      saveClinicianEmail(fromUrl);
+      setUrlEmailPrefilled(true);
+      return;
+    }
+    const saved = loadSavedClinicianEmail().trim().toLowerCase();
+    if (saved) {
+      setAccessEmail((cur) => cur.trim() || saved);
+      setUrlEmailPrefilled(true);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    const email = accessEmail.trim().toLowerCase();
+    if (email) saveClinicianEmail(email);
+  }, [accessEmail]);
 
   useEffect(() => {
     if (!urlEmailPrefilled || !accessEmail.trim()) return;
