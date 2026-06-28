@@ -94,8 +94,18 @@ def verify_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
 
 
 def materialize(manifest: dict[str, Any], out_dir: Path) -> dict[str, Any]:
-    if out_dir.exists():
-        shutil.rmtree(out_dir)
+    git_dir = out_dir / ".git"
+    preserve_git = git_dir.is_dir() and any(git_dir.iterdir())
+    if out_dir.exists() and not preserve_git:
+        if git_dir.exists():
+            shutil.rmtree(git_dir, ignore_errors=True)
+        for child in out_dir.iterdir():
+            if child.name == ".git":
+                continue
+            if child.is_dir():
+                shutil.rmtree(child)
+            else:
+                child.unlink()
     out_dir.mkdir(parents=True, exist_ok=True)
     copied: list[str] = []
     for rel in manifest.get("paths") or []:

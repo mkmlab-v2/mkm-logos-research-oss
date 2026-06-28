@@ -8,12 +8,11 @@
     -RefreshMaterialize -VerifyChain -CreateRepoIfMissing -Acknowledge
 
 .NOTES
+  Uses isolated push dir exports/_push-mkm-logos-research-oss (not monorepo git).
   Export SSOT: docs/final/artifacts/logos_oss_public_export_manifest_v1.json
-  Materialize: exports/mkm-logos-research-oss-v1/
-  SEND_GATE HOLD for grants/contracts; oss_github_release OPEN per solo OSS policy.
 #>
 param(
-    [string]$ExportDir = "exports/mkm-logos-research-oss-v1",
+    [string]$ExportDir = "exports/_push-mkm-logos-research-oss",
     [string]$GitHubRepo = "git@github.com:mkmlab-v2/mkm-logos-research-oss.git",
     [string]$GitHubOwnerRepo = "mkmlab-v2/mkm-logos-research-oss",
     [switch]$RefreshMaterialize,
@@ -34,12 +33,16 @@ if ($GitHubRepo -notmatch "github\.com[:/]") {
 }
 
 $abs = Join-Path $root $ExportDir
-if (-not (Test-Path $abs)) { throw "export dir missing: $abs" }
 
 if ($RefreshMaterialize) {
+    if (Test-Path $abs) {
+        Remove-Item -Recurse -Force $abs
+    }
     & py scripts/build_logos_oss_public_export_bundle_v1.py --materialize --out-dir $ExportDir
     if ($LASTEXITCODE -ne 0) { throw "materialize failed (exit $LASTEXITCODE)" }
 }
+
+if (-not (Test-Path $abs)) { throw "export dir missing: $abs (run with -RefreshMaterialize)" }
 
 if ($VerifyChain) {
     & py scripts/check_mkm_secret_patterns_v1.py
@@ -52,49 +55,46 @@ if ($VerifyChain) {
 
 Push-Location $abs
 try {
-    $exportGit = Join-Path (Get-Location).Path ".git"
-    if (-not (Test-Path $exportGit)) {
-        Write-Host "[INFO] initializing isolated git repo in export dir" -ForegroundColor Cyan
-        git init -b main
-        git add -A
-        git commit -m "feat(logos): open-core conflict/synthesis harness (OPEN_SOURCE_PREP)"
-        if ($LASTEXITCODE -ne 0) { throw "initial export commit failed (exit $LASTEXITCODE)" }
-    }
+    if (Test-Path ".git") { Remove-Item -Recurse -Force ".git" }
+    git init -b main
+    if ($LASTEXITCODE -ne 0) { throw "git init failed (exit $LASTEXITCODE)" }
 
-    if ($CreateRepoIfMissing) {
-        $prevEap = $ErrorActionPreference
-        $ErrorActionPreference = "Continue"
-        gh repo view $GitHubOwnerRepo 1>$null 2>$null
-        $repoExists = ($LASTEXITCODE -eq 0)
-        $ErrorActionPreference = $prevEap
-        if (-not $repoExists) {
-            Write-Host "[INFO] creating public repo $GitHubOwnerRepo" -ForegroundColor Cyan
-            gh repo create $GitHubOwnerRepo --public `
-                --description "Logos Research open-core: conflict retrieval + synthesis harness (research_only · SEND_GATE HOLD)" `
-                --source . --remote github
-            if ($LASTEXITCODE -ne 0) { throw "gh repo create failed (exit $LASTEXITCODE)" }
-        } elseif (-not (git remote get-url github 2>$null)) {
-            git remote add github $GitHubRepo
-        }
-    } else {
-        if (-not (git remote get-url github 2>$null)) {
-            git remote add github $GitHubRepo
-        }
+    $topLevel = (git rev-parse --show-toplevel).Replace("\", "/")
+    $cwd = (Get-Location).Path.Replace("\", "/")
+    if ($topLevel -ne $cwd) {
+        throw "git isolation failed: toplevel=$topLevel cwd=$cwd"
     }
 
     git add -A
-    $porcelain = git status --porcelain
-    if ($porcelain) {
-        $stamp = Get-Date -Format "yyyy-MM-ddTHH:mm:ssZ"
-        git commit -m "chore(logos-oss): export refresh $stamp (OPEN_SOURCE_PREP)"
-        if ($LASTEXITCODE -ne 0) { throw "export commit failed (exit $LASTEXITCODE)" }
-        Write-Host "[INFO] committed export changes before push" -ForegroundColor Cyan
-    } else {
-        Write-Host "[INFO] export tree clean — nothing to commit" -ForegroundColor DarkGray
-    }
+    git commit -m "feat(logos): open-core conflict/synthesis harness (OPEN_SOURCE_PREP)"
+    if ($LASTEXITCODE -ne 0) { throw "export commit failed (exit $LASTEXITCODE)" }
 
-    git push -u github main
-    if ($LASTEXITCODE -ne 0) { throw "git push github main failed (exit $LASTEXITCODE)" }
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    gh repo view $GitHubOwnerRepo 1>$null 2>$null
+    $repoExists = ($LASTEXITCODE -eq 0)
+    $ErrorActionPreference = $prevEap
+
+    if (-not $repoExists) {
+        if (-not $CreateRepoIfMissing) {
+            throw "GitHub repo missing: $GitHubOwnerRepo (use -CreateRepoIfMissing)"
+        }
+        Write-Host "[INFO] creating public repo $GitHubOwnerRepo" -ForegroundColor Cyan
+        gh repo create $GitHubOwnerRepo --public `
+            --description "Logos Research open-core: conflict retrieval + synthesis harness (research_only · SEND_GATE HOLD)" `
+            --source . --remote github
+        if ($LASTEXITCODE -ne 0) { throw "gh repo create failed (exit $LASTEXITCODE)" }
+    } else {
+        $ErrorActionPreference = "Continue"
+        git remote get-url github 2>$null | Out-Null
+        $hasRemote = ($LASTEXITCODE -eq 0)
+        $ErrorActionPreference = $prevEap
+        if (-not $hasRemote) {
+            git remote add github $GitHubRepo
+        }
+        git push -u github main --force
+        if ($LASTEXITCODE -ne 0) { throw "git push github main failed (exit $LASTEXITCODE)" }
+    }
 
     Write-Host "[DONE] GitHub push OK: $GitHubRepo (branch main)" -ForegroundColor Green
     Write-Host "[NOTE] research_only · grants/contracts HOLD · not full Scriptorium/KRV/Track A." -ForegroundColor Yellow

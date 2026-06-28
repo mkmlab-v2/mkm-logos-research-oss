@@ -332,6 +332,7 @@ staging/
 # Slim public reproduce mirrors (materialize only; do not commit to monorepo)
 exports/a-codeai-public-reproduce-v2/
 exports/mkm-logos-research-oss-v1/
+exports/_push-mkm-logos-research-oss/
 !docs/final/artifacts/a_codeai_public_reproduce_apache2_LICENSE.txt
 !docs/final/artifacts/a_codeai_public_reproduce_export_manifest_v1.json
 

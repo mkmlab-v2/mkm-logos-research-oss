@@ -29,6 +29,7 @@
     "projects/no1kmedi/public/data/logos_studio/bigset_conflict_sidecar_v1.json",
     "tests/fixtures/gnosis_kg_sample_v1/hebrew-words.json",
     "tests/fixtures/gnosis_kg_sample_v1/greek-words.json",
+    "tests/fixtures/logos_studio_conflict_presets_oss_v1.json",
     "scripts/run_logos_oss_premarket_smoke_v1.py",
     "scripts/build_logos_oss_public_export_bundle_v1.py",
     "scripts/ingest_logos_gnosis_kg_lemma_edges_v1.py",
