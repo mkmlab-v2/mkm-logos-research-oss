@@ -13,7 +13,7 @@ const outDir = path.join(pkgRoot, "public", "data", "logos_studio");
 
 /** When artifact mirror is gitignored/missing on VPS, copy from rehearsal SSOT. */
 const ARTIFACT_FALLBACK = {
-  showroom_logos_job_reading_pack_slice_v1_latest.json: path.join(
+  "showroom_logos_job_reading_pack_slice_v1_latest.json": path.join(
     workspaceRoot,
     "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/showroom_logos_job_reading_pack_slice_v1.json",
   ),
