@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -138,6 +139,26 @@ def build_answer_ko(
     return "\n".join(lines)
 
 
+def _anchors_from_path(path: dict[str, Any]) -> list[str]:
+    refs: list[str] = []
+    for raw in path.get("verse_refs") or []:
+        norm = _norm_verse(str(raw))
+        if norm:
+            refs.append(norm)
+    if not refs:
+        for nid in path.get("node_ids") or []:
+            norm = _norm_verse(str(nid))
+            if norm and re.match(r"^[A-Za-z0-9]+\.\d+\.\d+$", norm):
+                refs.append(norm)
+    out: list[str] = []
+    seen: set[str] = set()
+    for ref in refs:
+        if ref not in seen:
+            seen.add(ref)
+            out.append(ref)
+    return out[:24]
+
+
 def synthesize_lemma_bridge(
     payload: dict[str, Any],
     *,
@@ -146,7 +167,7 @@ def synthesize_lemma_bridge(
 ) -> dict[str, Any]:
     query = str(payload.get("query") or "").strip()
     path = payload.get("path") if isinstance(payload.get("path"), dict) else {}
-    anchor_refs = list(path.get("verse_refs") or [])
+    anchor_refs = _anchors_from_path(path)
     if not anchor_refs:
         return {"ok": False, "error": "lemma_bridge_skipped", "reason": "no_anchor_verse_refs"}
     if not index_path.is_file():

@@ -50,7 +50,8 @@ export async function synthesizeLogosStudioLemmaBridge(
   if (!root) return { ok: false, error: "workspace_root_missing" };
 
   const verseRefs = payload.path?.verse_refs ?? [];
-  if (!verseRefs.length) {
+  const nodeIds = payload.path?.node_ids ?? [];
+  if (!verseRefs.length && !nodeIds.length) {
     return { ok: false, error: "lemma_bridge_skipped", reason: "no_anchor_verse_refs" };
   }
 

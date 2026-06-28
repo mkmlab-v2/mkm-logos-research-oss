@@ -995,7 +995,7 @@ export async function buildStudioQueryWithGraphrag(
     payload &&
     logosStudioLemmaBridgeEnabled() &&
     q &&
-    (payload.path.verse_refs?.length ?? 0) > 0
+    ((payload.path.verse_refs?.length ?? 0) > 0 || (payload.path.node_ids?.length ?? 0) > 0)
   ) {
     const bridge = await synthesizeLogosStudioLemmaBridge(payload, q);
     if (bridge.ok && (bridge.neighbor_count ?? 0) > 0) {
