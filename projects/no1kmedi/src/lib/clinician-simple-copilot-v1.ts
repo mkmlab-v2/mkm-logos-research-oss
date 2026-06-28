@@ -37,6 +37,13 @@ export type CopilotCardItemV1 = {
   node_id?: string;
 };
 
+export type IwsSuppressionLogEntryV1 = {
+  node_id: string;
+  reason: string;
+  tier?: string;
+  triggered_by?: string;
+};
+
 export type SimpleCopilotCardsV1 = {
   schema: "simple_copilot_cards_v1";
   pack: typeof HAN_MEDICINE_LORA_PACK_V0;
@@ -44,9 +51,48 @@ export type SimpleCopilotCardsV1 = {
   modern_explain: { title: string; items: CopilotCardItemV1[]; non_gating: true };
   saju_aux: { title: string; items: CopilotCardItemV1[]; non_gating: true };
   physician_checklist: { title: string; items: string[] };
+  /** IWS resolver suppressions — not mixed into physician_checklist (collapsible UI). */
+  iws_suppression_log?: IwsSuppressionLogEntryV1[];
   disclaimer: string;
   human_confirm_required: boolean;
 };
+
+const SASANG_INTERNAL_TO_KO: Record<string, string> = {
+  taeyang: "태양인",
+  soyang: "소양인",
+  soyag: "소양인",
+  taeum: "태음인",
+  taeeum: "태음인",
+  soeum: "소음인",
+};
+
+export function formatSasangInternalLabel(code: string): string | null {
+  const key = code.trim().toLowerCase();
+  if (!key || key === "unknown") return null;
+  return SASANG_INTERNAL_TO_KO[key] || null;
+}
+
+export function patchSoapAssessmentSasangFromIws(
+  soap: Record<string, { text?: string }>,
+  sasangInternal: string,
+  source = "iws_resolver_v2",
+): Record<string, { text?: string }> {
+  const label = formatSasangInternalLabel(sasangInternal);
+  if (!label) return soap;
+  const assessment = soap.assessment?.text;
+  if (!assessment || !assessment.includes("미입력")) return soap;
+
+  const patchedText = assessment.replace(
+    /\*\*미입력\*\*\s*\(출처 메모:\s*[^)]+\)/,
+    `**${label}** (출처 메모: ${source})`,
+  );
+  if (patchedText === assessment) return soap;
+
+  return {
+    ...soap,
+    assessment: { ...soap.assessment, text: patchedText },
+  };
+}
 
 export type SimpleCopilotMedicalCalcV1 = {
   pain_scale_0_10: number;
@@ -335,9 +381,10 @@ export function mapResolvedToSimpleCopilotCards(
 
   const sasang = profile.sasang_internal;
   if (typeof sasang === "string" && sasang !== "unknown") {
+    const sasangDisplay = formatSasangInternalLabel(sasang) || sasang;
     tcmItems.unshift({
       title: "사상 체질 후보",
-      body: `${sasang} (입력·resolver 기준, 확정 아님)`,
+      body: `${sasangDisplay} (입력·resolver 기준, 확정 아님)`,
       tier: "CONTEXT",
     });
   }
@@ -350,9 +397,19 @@ export function mapResolvedToSimpleCopilotCards(
   if (boundary.physician_final_authority_no1kmedi) {
     checklist.push("원장 최종 권한(physician_final_authority) 적용됨.");
   }
+
+  const iwsSuppressionLog: IwsSuppressionLogEntryV1[] = [];
   for (const entry of suppressed) {
     if (entry.node_id && entry.reason) {
-      checklist.push(`제외 권고: ${entry.node_id} — ${entry.reason}`);
+      iwsSuppressionLog.push({
+        node_id: entry.node_id,
+        reason: entry.reason,
+        tier: typeof (entry as { tier?: string }).tier === "string" ? (entry as { tier?: string }).tier : undefined,
+        triggered_by:
+          typeof (entry as { triggered_by?: string }).triggered_by === "string"
+            ? (entry as { triggered_by?: string }).triggered_by
+            : undefined,
+      });
     }
   }
 
@@ -374,6 +431,7 @@ export function mapResolvedToSimpleCopilotCards(
       title: "원장 확인 체크리스트",
       items: checklist,
     },
+    ...(iwsSuppressionLog.length ? { iws_suppression_log: iwsSuppressionLog } : {}),
     disclaimer:
       draftDisclaimer ||
       "본 출력은 연구·보조(B-track) 초안입니다. 최종 진료 판단은 한의사가 확정하며, 응급·중증 의심 시 대면 진료를 우선하세요.",

@@ -4156,6 +4156,20 @@ section h2 {
   border-color: var(--line, rgba(255, 255, 255, 0.07));
 }
 
+.paste-chart-v1 .pc-why-not-auto-body {
+  padding-top: 0;
+}
+
+.paste-chart-v1 .pc-why-not-auto-list {
+  margin: 0;
+  padding: 0 0 0 1.1rem;
+  font-size: 0.78rem;
+  color: var(--muted, #9aa9a3);
+  line-height: 1.55;
+  display: grid;
+  gap: 0.45rem;
+}
+
 .paste-chart-v1 .pc-footer-disclaimer {
   font-size: 0.68rem;
   color: var(--pc-muted-dim);
@@ -4163,6 +4177,14 @@ section h2 {
   padding-top: 0.75rem;
   border-top: 1px solid var(--line, rgba(255, 255, 255, 0.07));
   margin: 0;
+}
+
+.paste-chart-v1 .pc-footer-disclaimer p {
+  margin: 0;
+}
+
+.paste-chart-v1 .pc-footer-disclaimer p + p {
+  margin-top: 0.35rem;
 }
 
 .paste-chart-v1 .paste-chart-omni {

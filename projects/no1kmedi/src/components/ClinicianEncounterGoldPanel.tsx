@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { ClinicianChartPastePanel } from "@/components/ClinicianChartPastePanel";
 import { ClinicianCopilotCardsView } from "@/components/ClinicianCopilotCardsView";
 import { PasteChartOmniBox } from "@/components/PasteChartOmniBox";
+import { PASTE_CHART_PUBLIC_COPY_V1 } from "@/lib/paste-chart-public-copy-v1";
 import {
   birthdateToBirthInstantUtc,
   type PasteExtractDraftV1,
@@ -86,6 +87,15 @@ function clinicianHeaders(email?: string): HeadersInit {
   return h;
 }
 
+function isEphemeralEncounterSlug(value: string): boolean {
+  return value.trim().toLowerCase().startsWith("ephemeral_");
+}
+
+function humanGoldLookupSeed(defaultSlug: string): string {
+  const s = defaultSlug.trim();
+  return isEphemeralEncounterSlug(s) ? "" : s;
+}
+
 function patientLookupBody(q: string, payloadSlug?: string): Record<string, string> {
   if (payloadSlug) return { slug: payloadSlug };
   if (/^[A-Z0-9-]+$/i.test(q) && q.includes("-")) return { ref_token: q };
@@ -104,7 +114,7 @@ export function ClinicianEncounterGoldPanel({
   onPasteChartSession,
   disabled,
 }: ClinicianEncounterGoldPanelProps) {
-  const [lookup, setLookup] = useState(defaultSlug);
+  const [lookup, setLookup] = useState(() => humanGoldLookupSeed(defaultSlug));
   const [chartText, setChartText] = useState("");
   const [extractDraft, setExtractDraft] = useState<PasteExtractDraftV1>({
     schema: "paste_extract_draft_v1",
@@ -125,6 +135,12 @@ export function ClinicianEncounterGoldPanel({
   const [copyOk, setCopyOk] = useState<string | null>(null);
   const [ephemeralEncounter, setEphemeralEncounter] = useState(false);
 
+  useEffect(() => {
+    const s = defaultSlug.trim();
+    if (!s || isEphemeralEncounterSlug(s)) return;
+    setLookup((cur) => (cur.trim() ? cur : s));
+  }, [defaultSlug]);
+
   const chartSections = useMemo(() => {
     const fromDraft = cdsDraft ? buildChartPasteSectionsFromCdsDraft(cdsDraft) : [];
     const fromBundle = patientCareBundle ? buildChartPasteSectionsFromBundle(patientCareBundle) : [];
@@ -142,6 +158,12 @@ export function ClinicianEncounterGoldPanel({
     const q = lookup.trim();
     if (!q) {
       setError("slug · ref_token · 환자 이름 중 하나를 입력하세요.");
+      return;
+    }
+    if (isEphemeralEncounterSlug(q)) {
+      setError(
+        "1회성 encounter(ephemeral_…)는 Human Gold 검증 대상이 아닙니다. 차트 붙여넣기 → 「분석」만 사용하세요.",
+      );
       return;
     }
     setBusy(true);
@@ -177,9 +199,12 @@ export function ClinicianEncounterGoldPanel({
   }
 
   function resolvePatientLookup(): Record<string, string> | null {
-    const slug = payload?.slug || defaultSlug.trim() || (lookup.trim().includes("_") ? lookup.trim() : "");
-    if (slug && /^[a-z][a-z0-9_]*$/i.test(slug)) {
-      return patientLookupBody(slug, payload?.slug);
+    const slugCandidate =
+      payload?.slug ||
+      (!isEphemeralEncounterSlug(defaultSlug) ? defaultSlug.trim() : "") ||
+      (lookup.trim().includes("_") && !isEphemeralEncounterSlug(lookup) ? lookup.trim() : "");
+    if (slugCandidate && /^[a-z][a-z0-9_]*$/i.test(slugCandidate)) {
+      return patientLookupBody(slugCandidate, payload?.slug);
     }
     const refQ = lookup.trim();
     if (refQ && refQ.includes("-") && /^[A-Z0-9-]+$/i.test(refQ)) {
@@ -206,6 +231,9 @@ export function ClinicianEncounterGoldPanel({
     }
     if (code.startsWith("slug_ref_token_or_display_required")) {
       return "차트에서 이름을 추출하지 못했습니다. 이름 칩을 수정하거나 고급에서 slug를 연결하세요.";
+    }
+    if (code.startsWith("unknown_slug:ephemeral_")) {
+      return "1회성 encounter는 Human Gold slug가 아닙니다. 고급 slug 칸을 비우고 차트 붙여넣기 → 「분석」을 사용하세요.";
     }
     return code;
   }
@@ -245,7 +273,7 @@ export function ClinicianEncounterGoldPanel({
         schema: "clinician_paste_chart_request_v1",
         chart_text: text,
         allow_ephemeral: true,
-        options: { validate_schema: true, validate_policy: true, render_md: true },
+        options: { validate_schema: true, validate_policy: false, render_md: true },
         ...lookupBody,
       };
       if (objectiveDraft.trim()) body.objective_draft = objectiveDraft.trim();
@@ -397,7 +425,7 @@ export function ClinicianEncounterGoldPanel({
               <h2 id="paste-chart-title" className="pc-brand-name">
                 Paste Chart
               </h2>
-              <p className="pc-brand-sub">EMR 복붙 · 로컬 SSOT · Track B 초안</p>
+              <p className="pc-brand-sub">{PASTE_CHART_PUBLIC_COPY_V1.brandSub}</p>
             </div>
           </div>
           <div className="pc-header-meta">
@@ -562,8 +590,25 @@ export function ClinicianEncounterGoldPanel({
           )}
         </details>
 
+        <details className="more-details pc-why-not-auto">
+          <summary>
+            <span className="more-arrow" aria-hidden>
+              ▶
+            </span>
+            {PASTE_CHART_PUBLIC_COPY_V1.whyNotAutoSummary}
+          </summary>
+          <div className="more-body pc-why-not-auto-body">
+            <ul className="pc-why-not-auto-list">
+              {PASTE_CHART_PUBLIC_COPY_V1.whyNotAutoBullets.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          </div>
+        </details>
+
         <footer className="pc-footer-disclaimer">
-          Track B 초안 · 원장 Human Gold 확정 후 EMR 기록 · 진단·처방 확정 아님 · EMR 자동 기록 없음
+          <p>{PASTE_CHART_PUBLIC_COPY_V1.footerDisclaimer}</p>
+          <p>{PASTE_CHART_PUBLIC_COPY_V1.footerDisclaimerSecondary}</p>
         </footer>
       </main>
     </div>

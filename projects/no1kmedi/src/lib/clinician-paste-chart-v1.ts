@@ -103,10 +103,11 @@ export function buildSimpleCopilotRequestFromPaste(args: {
   );
   if (!birthFields) return { error: "invalid_birth_profile" };
 
+  const sasangFromChart = inferSasangCandidateFromLabel(args.chartText);
   const sasang =
     args.sasangOverride?.trim() ||
     loadSasangHintFromPointer(args.root, args.pointer) ||
-    "unknown";
+    (sasangFromChart !== "unknown" ? sasangFromChart : "unknown");
 
   return {
     schema: "simple_copilot_request_v1",

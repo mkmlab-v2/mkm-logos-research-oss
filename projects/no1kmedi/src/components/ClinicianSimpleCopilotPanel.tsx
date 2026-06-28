@@ -6,6 +6,7 @@ import {
   buildFullCopilotCopy,
   buildPatientEducationCopy,
   HAN_MEDICINE_LORA_PACK_V0,
+  type IwsSuppressionLogEntryV1,
   type SimpleCopilotMedicalCalcV1,
   type SimpleCopilotCardsV1,
   type SimpleCopilotSajuCalcV1,
@@ -385,6 +386,34 @@ export function ClinicianSimpleCopilotPanel() {
               ))}
             </ul>
           </CopilotCard>
+
+          {cards.iws_suppression_log?.length ? (
+            <details className="consult-iws-suppression">
+              <summary>제외된 권고 (suppression_log) — {cards.iws_suppression_log.length}건</summary>
+              <table className="consult-iws-suppression-table">
+                <thead>
+                  <tr>
+                    <th scope="col">node_id</th>
+                    <th scope="col">tier</th>
+                    <th scope="col">trigger</th>
+                    <th scope="col">reason</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {cards.iws_suppression_log.map((entry: IwsSuppressionLogEntryV1) => (
+                    <tr key={`${entry.node_id}-${entry.triggered_by || entry.reason}`}>
+                      <td>
+                        <code>{entry.node_id}</code>
+                      </td>
+                      <td>{entry.tier || "—"}</td>
+                      <td>{entry.triggered_by || "—"}</td>
+                      <td>{entry.reason}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </details>
+          ) : null}
 
           <p className="copilot-disclaimer">{cards.disclaimer}</p>
         </div>

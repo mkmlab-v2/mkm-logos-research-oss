@@ -65,27 +65,24 @@ function validateSoapSubjective(text) {
   assert(notesLine.includes("[Hx]") || notesLine.includes("진통제"), "notes missing Hx");
 }
 
-async function postPasteChart() {
-  const birthInstant = birthdateToBirthInstantUtc("1988-03-12");
-  assert(birthInstant, "birth instant missing");
+const SAMPLE6 =
+  "김민정 1988.06.25 양력 서울 오후 4시 출생 여자 168에 58키로  혈압 120에 83/ 최근 불면, 설진상 습울, 상열, 안면 홍조, , 불면, 두통/ 생리통, 복직근 긴장. 중완 압통, 때떄로 타이레놀 복용/ 흉곽 예각 설하정맥 얇은 편, 수족 냉한 편/ 소음인 추정/";
 
+async function postPasteChart(body) {
   const res = await fetch(`${BASE_URL}/api/clinician/paste-chart-v1`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Origin: BASE_URL,
-      Referer: `${BASE_URL}/clinician?panel=gold`,
+      Referer: `${BASE_URL}/clinician?panel=gold&email=${encodeURIComponent(EMAIL)}`,
       "x-clinician-email": EMAIL,
     },
     body: JSON.stringify({
       schema: "clinician_paste_chart_request_v1",
-      chart_text: SAMPLE,
-      display: "김민수",
       allow_ephemeral: true,
-      birth_instant_utc: birthInstant,
       iana_tz: "Asia/Seoul",
-      is_male: true,
-      options: { validate_schema: true, validate_policy: true, render_md: true },
+      options: { validate_schema: true, validate_policy: false, render_md: true },
+      ...body,
     }),
   });
   const json = await res.json();
@@ -99,9 +96,11 @@ function validateAdviceCoherence(adviceBlock, adviceError) {
   const items = adviceBlock.cards.tcm_primary?.items || [];
   const titles = items.map((i) => String(i.title || ""));
   const lifestylePolicy = items.filter((i) => i.tier === "POLICY" || i.tier === "ACTION");
+  const checklist = adviceBlock.cards.physician_checklist?.items || [];
 
   assert(!titles.includes("주소"), 'advice must not use mislabeled slot title "주소"');
   assert(titles.includes("주증상"), "advice missing 주증상 context card");
+  assert(!checklist.some((line) => String(line).startsWith("제외 권고:")), "suppression must not appear in checklist");
 
   for (const item of lifestylePolicy) {
     assert(!String(item.title || "").includes("성장기"), `policy/action title: ${item.title}`);
@@ -109,17 +108,54 @@ function validateAdviceCoherence(adviceBlock, adviceError) {
   }
 }
 
+function validatePasteChartPayload(json, { expectSasangKo = false } = {}) {
+  const soap = json.patient_care_bundle?.clinical_soap_v1;
+  validateAdviceCoherence(json.advice, json.advice_error);
+  const checklist = json.advice?.cards?.physician_checklist?.items || [];
+  assert(!checklist.some((line) => String(line).startsWith("제외 권고:")), "suppression must not appear in checklist");
+  const assessment = soap?.assessment?.text || "";
+  if (expectSasangKo) {
+    assert(assessment.includes("소음인"), "SOAP A missing 소음인 when chart hints soeum");
+    assert(!assessment.includes("**미입력**"), "SOAP A still 미입력 when soeum hinted");
+  }
+  return {
+    suppression_count: json.advice?.cards?.iws_suppression_log?.length ?? 0,
+    assessment_line: assessment.split("\n")[1] || "",
+    advice_titles: (json.advice?.cards?.tcm_primary?.items || []).map((i) => i.title).slice(0, 8),
+  };
+}
+
 async function main() {
   runOfflineSmoke();
 
-  const { res, json } = await postPasteChart();
+  const birthInstant = birthdateToBirthInstantUtc("1988-03-12");
+  assert(birthInstant, "birth instant missing");
+
+  const { res, json } = await postPasteChart({
+    chart_text: SAMPLE,
+    display: "김민수",
+    birth_instant_utc: birthInstant,
+    is_male: true,
+  });
   assert(res.status === 200, `paste-chart status ${res.status}: ${json?.error}`);
   assert(json.success === true, `paste-chart failed: ${json?.error}`);
 
-  const soap = json.patient_care_bundle?.clinical_soap_v1;
-  const subj = soap?.subjective?.text || "";
+  const subj = json.patient_care_bundle?.clinical_soap_v1?.subjective?.text || "";
   validateSoapSubjective(subj);
-  validateAdviceCoherence(json.advice, json.advice_error);
+  const kimMinsoo = validatePasteChartPayload(json);
+
+  const birthInstant6 = birthdateToBirthInstantUtc("1988-06-25");
+  assert(birthInstant6, "kim minjeong birth instant missing");
+  const res6 = await postPasteChart({
+    chart_text: SAMPLE6,
+    display: "김민정",
+    birth_instant_utc: birthInstant6,
+    is_male: false,
+  });
+  assert(res6.res.status === 200, `kim minjeong status ${res6.res.status}: ${res6.json?.error}`);
+  assert(res6.json.success === true, `kim minjeong failed: ${res6.json?.error}`);
+  const kimMinjeong = validatePasteChartPayload(res6.json, { expectSasangKo: true });
+  assert(res6.json.display_label?.includes("김민정") || res6.json.slug, "kim minjeong encounter missing");
 
   console.log(
     JSON.stringify(
@@ -130,7 +166,8 @@ async function main() {
         email: EMAIL,
         ephemeral: Boolean(json.ephemeral),
         soap_s_preview: subj.split("\n").slice(0, 6).join("\n"),
-        advice_titles: (json.advice?.cards?.tcm_primary?.items || []).map((i) => i.title).slice(0, 8),
+        kim_minsoo: kimMinsoo,
+        kim_minjeong: kimMinjeong,
         advice_error: json.advice_error || null,
       },
       null,

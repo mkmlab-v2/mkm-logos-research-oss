@@ -352,7 +352,10 @@ export function ClinicianWorkspaceClient({
         turns,
         context: {
           ...activeThread.context,
-          ssotSlug: session.slug || activeThread.context.ssotSlug,
+          ssotSlug:
+            session.slug && !session.slug.startsWith("ephemeral_")
+              ? session.slug
+              : activeThread.context.ssotSlug,
           birthInstantUtc: session.birthInstantUtc || activeThread.context.birthInstantUtc,
           ianaTz: session.ianaTz || activeThread.context.ianaTz,
           chiefComplaint: session.chiefComplaint || activeThread.context.chiefComplaint,

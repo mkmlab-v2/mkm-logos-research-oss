@@ -19,6 +19,10 @@ export type PasteExtractDraftV1 = {
 
 const NAME_LABEL_RE = /(?:환자명|성명|이름|환자)\s*[:：]\s*([가-힣○●◯〇]{2,4})/;
 const NAME_WITH_SEX_RE = /([가-힣]{2,3}[○●◯〇]?)\s*(?:\/|,|\s)\s*(\d{1,3})\s*(?:세|M|F|남|여)/;
+/** e.g. 김민정 1988.06.25 양력 … (slash-free EMR dump) */
+const NAME_BIRTH_LEADING_RE = /^([가-힣]{2,4})\s+((?:19|20)\d{2}[.\-/년]\s*\d{1,2}[.\-/월]?\s*\d{1,2})/;
+const CLINICAL_ANCHOR_RE =
+  /(?:^|[\s/])(최근\s+|불면|두통|복통|요통|생리통|설진|상열|습울|피로|어지|구토|메스꺼|변비|설사|복직근|\[CC\])/i;
 const ISO_DATE_RE = /^(19|20)(\d{2})-(\d{2})-(\d{2})$/;
 const CC_SECTION_RE = /\[CC\]\s*([^\n\[]+)/i;
 const BIRTH_FULL_RE = /(19|20)(\d{2})[.\-/년]\s*(\d{1,2})[.\-/월]?\s*(\d{1,2})?/;
@@ -115,6 +119,9 @@ function extractDisplayName(text: string): { name?: string; source?: string } {
   const slash = parseSlashHeaderLine(firstLine);
   if (slash?.name) return { name: slash.name, source: slash.source };
 
+  const leading = NAME_BIRTH_LEADING_RE.exec(firstLine);
+  if (leading?.[1]) return { name: leading[1].trim(), source: leading[0] };
+
   const label = NAME_LABEL_RE.exec(text);
   if (label?.[1]) return { name: label[1].trim(), source: label[0] };
 
@@ -122,6 +129,23 @@ function extractDisplayName(text: string): { name?: string; source?: string } {
   if (inline?.[1]) return { name: inline[1].trim(), source: inline[0] };
 
   return {};
+}
+
+function extractClinicalChiefFromFreeform(text: string): string | undefined {
+  const m = CLINICAL_ANCHOR_RE.exec(text);
+  if (!m || m.index === undefined) return undefined;
+  let start = m.index;
+  if (text[start] === "/" || text[start] === " ") start += 1;
+  while (start < text.length && /[\s/]/.test(text[start]!)) start += 1;
+  const slice = text.slice(start).trim();
+  return slice ? slice.slice(0, 800) : undefined;
+}
+
+function shouldUseFreeformClinicalExtract(text: string): boolean {
+  const firstLine = text.split("\n")[0]?.trim() ?? "";
+  if (NAME_BIRTH_LEADING_RE.test(firstLine)) return true;
+  if (!text.includes("\n") && firstLine.includes("/") && firstLine.length > 80) return true;
+  return false;
 }
 
 function extractBirthdate(text: string): { birthdate?: string; source?: string } {
@@ -220,6 +244,9 @@ export function extractChiefComplaintFromPaste(text: string): string | undefined
   const slash = parseSlashHeaderLine(firstLine);
   if (slash?.chief_complaint) return slash.chief_complaint.slice(0, 800);
 
+  const clinical = shouldUseFreeformClinicalExtract(text) ? extractClinicalChiefFromFreeform(text) : undefined;
+  if (clinical) return clinical;
+
   const body =
     slash && text.includes("\n")
       ? text.replace(/\r\n/g, "\n").split("\n").slice(1).join("\n").trim()
@@ -227,6 +254,9 @@ export function extractChiefComplaintFromPaste(text: string): string | undefined
 
   const chief = buildChiefComplaintFromPaste(body || text);
   if (slash && chief === firstLine) return slash.chief_complaint?.slice(0, 800);
+  if (NAME_BIRTH_LEADING_RE.test(firstLine) && chief === firstLine) {
+    return extractClinicalChiefFromFreeform(firstLine) || chief.slice(0, 800);
+  }
   return chief || undefined;
 }
 
@@ -290,7 +320,7 @@ export function buildStructuredIntakeFromPaste(text: string): {
     if (!trimmed || /^\[[A-Za-z가-힣]+\]/.test(trimmed)) continue;
     noteLines.push(trimmed.slice(0, 500));
   }
-  const subjective_notes = noteLines.join("\n").trim().slice(0, 8000);
+  const subjective_notes = (noteLines.join("\n").trim() || raw).slice(0, 8000);
 
   if (symptoms.length || subjective_notes || situationParts.length) {
     return { symptoms, situation, subjective_notes };

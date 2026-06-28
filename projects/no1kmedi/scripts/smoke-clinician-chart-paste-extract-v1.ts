@@ -59,12 +59,24 @@ assert(!sample5.subjective_notes.startsWith("김민수 / 1988"), "notes skip sla
 const instant = birthdateToBirthInstantUtc("1990-03-15");
 assert(Boolean(instant?.includes("T")), "birth instant iso");
 
+const sample6 =
+  "김민정 1988.06.25 양력 서울 오후 4시 출생 여자 168에 58키로  혈압 120에 83/ 최근 불면, 설진상 습울, 상열, 안면 홍조, , 불면, 두통/ 생리통, 복직근 긴장. 중완 압통, 때떄로 타이레놀 복용/ 흉곽 예각 설하정맥 얇은 편, 수족 냉한 편/ 소음인 추정/";
+const sample6Draft = extractPasteChartDraftV1(sample6);
+assert(sample6Draft.display_name === "김민정", "freeform leading name");
+assert(sample6Draft.birthdate === "1988-06-25", "freeform birthdate");
+assert(sample6Draft.sex === "F", "freeform sex");
+assert(sample6Draft.confidence === "high", "freeform name+birth high");
+assert(Boolean(sample6Draft.chief_complaint?.includes("불면")), "freeform clinical chief");
+assert(!sample6Draft.chief_complaint?.startsWith("김민정 1988"), "chief excludes demographics");
+const sample6Structured = buildStructuredIntakeFromPaste(sample6);
+assert(Boolean(sample6Structured.subjective_notes.trim()), "freeform subjective_notes");
+
 console.log(
   JSON.stringify(
     {
       schema: "smoke_clinician_chart_paste_extract_v1",
       ok: true,
-      samples: { sample1, sample2, sample3, instant },
+      samples: { sample1, sample2, sample3, sample6Draft, instant },
     },
     null,
     2,

@@ -1,5 +1,10 @@
-import { buildSimpleCopilotRequestFromPaste } from "@/lib/clinician-paste-chart-v1";
-import type { SimpleCopilotCardsV1, SimpleCopilotMedicalCalcV1, SimpleCopilotSajuCalcV1 } from "@/lib/clinician-simple-copilot-v1";
+import { buildSimpleCopilotRequestFromPaste, inferSasangCandidateFromLabel } from "@/lib/clinician-paste-chart-v1";
+import {
+  patchSoapAssessmentSasangFromIws,
+  type SimpleCopilotCardsV1,
+  type SimpleCopilotMedicalCalcV1,
+  type SimpleCopilotSajuCalcV1,
+} from "@/lib/clinician-simple-copilot-v1";
 import {
   resolveEncounterBirthProfile,
   runIntakeFusionDraftChain,
@@ -127,6 +132,37 @@ export async function runPasteChartV1Chain(
     };
   }
 
+  let soap = fusion.soap;
+  let bundle = fusion.bundle;
+  const sasangForPatch =
+    advice.sasangInternal ||
+    (copilotBody.sasang_candidate && copilotBody.sasang_candidate !== "unknown"
+      ? copilotBody.sasang_candidate
+      : undefined) ||
+    (() => {
+      const inferred = inferSasangCandidateFromLabel(chartText);
+      return inferred !== "unknown" ? inferred : undefined;
+    })() ||
+    (() => {
+      for (const item of advice.cards.tcm_primary.items) {
+        const hit = inferSasangCandidateFromLabel(`${item.title} ${item.body}`);
+        if (hit !== "unknown") return hit;
+      }
+      return undefined;
+    })();
+  if (sasangForPatch) {
+    soap = patchSoapAssessmentSasangFromIws(soap, sasangForPatch);
+    if (bundle.clinical_soap_v1 && typeof bundle.clinical_soap_v1 === "object") {
+      bundle = {
+        ...bundle,
+        clinical_soap_v1: patchSoapAssessmentSasangFromIws(
+          bundle.clinical_soap_v1 as Record<string, { text?: string }>,
+          sasangForPatch,
+        ),
+      };
+    }
+  }
+
   return {
     ok: true,
     slug: fusion.slug,
@@ -134,8 +170,8 @@ export async function runPasteChartV1Chain(
     displayLabel: fusion.displayLabel,
     ephemeral: fusion.ephemeral,
     bundlePath: fusion.bundlePath,
-    bundle: fusion.bundle,
-    soap: fusion.soap,
+    bundle,
+    soap,
     patientFacingMarkdown: fusion.patientFacingMarkdown,
     advice: {
       cards: advice.cards,

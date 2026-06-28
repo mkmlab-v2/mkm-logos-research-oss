@@ -22,6 +22,7 @@ export type SimpleCopilotAdviceResultV1 =
       medicalCalc: SimpleCopilotMedicalCalcV1;
       sajuCalc: SimpleCopilotSajuCalcV1;
       patientEducationCopy: string;
+      sasangInternal?: string;
     }
   | { ok: false; error: string; stderr?: string };
 
@@ -108,5 +109,13 @@ export async function runSimpleCopilotAdviceChain(
     saju: sajuCalc,
   });
 
-  return { ok: true, cards, medicalCalc, sajuCalc, patientEducationCopy };
+  const profile = (resolved.client_profile || {}) as Record<string, unknown>;
+  const sasangInternal =
+    typeof profile.sasang_internal === "string" && profile.sasang_internal !== "unknown"
+      ? profile.sasang_internal
+      : built.sasang !== "unknown"
+        ? built.sasang
+        : undefined;
+
+  return { ok: true, cards, medicalCalc, sajuCalc, patientEducationCopy, sasangInternal };
 }

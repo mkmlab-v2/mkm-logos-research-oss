@@ -12,6 +12,7 @@ import {
   fetchPasteExtractDraftLlmV1,
   pasteExtractLlmClientEnabled,
 } from "@/lib/clinician-paste-extract-client-v1";
+import { PASTE_CHART_PUBLIC_COPY_V1 } from "@/lib/paste-chart-public-copy-v1";
 
 const EXTRACT_DEBOUNCE_MS = 300;
 const LLM_EXTRACT_DEBOUNCE_MS = 500;
@@ -154,7 +155,7 @@ export function PasteChartOmniBox({
       <p className="block-label" id="paste-chart-omni-title">
         차트 붙여넣기
       </p>
-      <p className="pc-omni-lead">EMR·카톡·메모를 통째로 붙여넣으세요. 이름·생년·주증상은 아래 칩에서 확인·수정합니다.</p>
+      <p className="pc-omni-lead">{PASTE_CHART_PUBLIC_COPY_V1.omniLead}</p>
 
       <label htmlFor={textareaId} className="pc-paste-label sr-only">
         EMR 차트 붙여넣기
