@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import sys
 from pathlib import Path
 
@@ -230,6 +231,60 @@ def test_truncate_anchor_slice_marks_overflow() -> None:
     assert truncated is True
     assert "HYPO slice truncated" in preview
     assert len(preview) <= 50
+
+
+def test_reapply_persisted_overlays_restores_logos_math_after_base_rebuild() -> None:
+    from mkm_ops_memory_index_lib_v1 import (  # noqa: E402
+        load_index,
+        reapply_persisted_overlays,
+    )
+
+    index = load_index(ROOT / "storage/meta/mkm_ops_memory_index_v1.json")
+    base_nodes = {
+        k: v
+        for k, v in (index.get("nodes") or {}).items()
+        if not str(k).startswith("prism_ops_logos_")
+    }
+    stripped = {**index, "nodes": base_nodes, "overlays": [], "index_version": "1.0"}
+    restored = reapply_persisted_overlays(ROOT, stripped, ["logos_math_v1"])
+    nodes = restored.get("nodes") or {}
+    assert "prism_ops_logos_cosmic_anchor_bridge" in nodes
+    assert "logos_math_v1" in (restored.get("overlays") or [])
+    assert sum(1 for k in nodes if str(k).startswith("prism_ops_logos_")) >= 4
+
+
+def test_build_index_preserves_logos_overlay_on_disk(tmp_path: Path) -> None:
+    """Bare index rebuild must not wipe logos_math_v1 when prior index had it."""
+    live_index = ROOT / "storage/meta/mkm_ops_memory_index_v1.json"
+    if not live_index.is_file():
+        pytest.skip("live ops index missing")
+
+    prior = json.loads(live_index.read_text(encoding="utf-8-sig"))
+    if "logos_math_v1" not in (prior.get("overlays") or []):
+        pytest.skip("logos_math_v1 overlay not present on disk")
+
+    out = tmp_path / "mkm_ops_memory_index_v1.json"
+    out.write_text(json.dumps(prior, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    proc = subprocess.run(
+        [
+            sys.executable,
+            "scripts/build_mkm_ops_memory_index_v1.py",
+            "--workspace-root",
+            str(ROOT),
+            "--out",
+            str(out),
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert proc.returncode == 0, proc.stderr or proc.stdout
+    doc = json.loads(out.read_text(encoding="utf-8-sig"))
+    nodes = doc.get("nodes") or {}
+    assert "logos_math_v1" in (doc.get("overlays") or [])
+    assert "prism_ops_logos_cosmic_anchor_bridge" in nodes
 
 
 def test_repair_v2_noise_guard_falls_back_to_baseline() -> None:

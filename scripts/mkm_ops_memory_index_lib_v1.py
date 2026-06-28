@@ -1268,6 +1268,48 @@ def build_ltm_a2a_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
     return nodes
 
 
+OVERLAY_BUILDERS: dict[str, Any] = {}
+
+
+def _register_overlay_builders() -> None:
+    """Lazy registry — populated after builder functions are defined."""
+    if OVERLAY_BUILDERS:
+        return
+    OVERLAY_BUILDERS.update(
+        {
+            "logos_math_v1": build_logos_math_overlay_nodes,
+            "web_ops_v1": build_web_ops_overlay_nodes,
+            "theory_v1": build_theory_overlay_nodes,
+            "theory_mathematization_v1": build_theory_overlay_nodes,
+            "domain_adapters_v1": build_domain_adapter_overlay_nodes,
+            "fills_multi_res_v1": build_fills_overlay_nodes,
+            "ltm_a2a_v1": build_ltm_a2a_overlay_nodes,
+        }
+    )
+
+
+def reapply_persisted_overlays(
+    root: Path,
+    index: dict[str, Any],
+    overlay_labels: list[str] | tuple[str, ...],
+) -> dict[str, Any]:
+    """Re-merge JSON-slice overlays after a bare base-index rebuild.
+
+    Prevents ``build_mkm_ops_memory_index_v1.py`` from wiping lane overlays
+    (e.g. ``logos_math_v1``) when other routines only refresh anchor nodes.
+    """
+    _register_overlay_builders()
+    merged = index
+    for label in overlay_labels:
+        builder = OVERLAY_BUILDERS.get(label)
+        if builder is None:
+            continue
+        overlay_nodes = builder(root)
+        if overlay_nodes:
+            merged = merge_overlay_nodes(merged, overlay_nodes, overlay_label=label)
+    return merged
+
+
 def merge_overlay_nodes(
     index: dict[str, Any],
     overlay_nodes: dict[str, dict[str, Any]],

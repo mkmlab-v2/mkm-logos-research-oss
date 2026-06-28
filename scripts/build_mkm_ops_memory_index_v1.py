@@ -16,6 +16,8 @@ from pathlib import Path
 from mkm_ops_memory_index_lib_v1 import (
     DEFAULT_INDEX_PATH,
     build_index_document,
+    load_index,
+    reapply_persisted_overlays,
     verify_index_sources,
 )
 
@@ -41,11 +43,23 @@ def main() -> int:
         print("Local-only SSOT (gitignored) — fail-fast.", file=sys.stderr)
         return 1
 
+    prior_overlays: list[str] = []
+    if args.out.is_file():
+        try:
+            prior = load_index(args.out)
+            prior_overlays = list(prior.get("overlays") or [])
+        except (json.JSONDecodeError, OSError):
+            prior_overlays = []
+
     try:
         doc = build_index_document(root)
     except (FileNotFoundError, ValueError) as exc:
         print(f"FAIL: index build: {exc}", file=sys.stderr)
         return 1
+
+    if prior_overlays:
+        doc = reapply_persisted_overlays(root, doc, prior_overlays)
+        print(f"OK: re-applied overlays={prior_overlays}")
 
     if not args.skip_post_gate:
         errors = verify_index_sources(root, doc)
