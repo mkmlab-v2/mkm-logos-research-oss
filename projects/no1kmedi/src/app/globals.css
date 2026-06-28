@@ -4199,6 +4199,21 @@ section h2 {
   line-height: 1.5;
 }
 
+.paste-chart-v1 .pc-email-gate-hint {
+  margin: 0;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--pc-r-md);
+  border: 1px solid rgba(197, 160, 87, 0.35);
+  background: rgba(197, 160, 87, 0.08);
+  font-size: 0.78rem;
+  color: var(--pc-gold, #c5a057);
+  line-height: 1.45;
+}
+
+.paste-chart-v1 .pc-email-gate-hint code {
+  font-size: 0.85em;
+}
+
 .paste-chart-v1 .pc-omni-textarea {
   min-height: 220px;
   font-size: 0.9rem;
@@ -5422,6 +5437,31 @@ main.workspace-main {
 .clinician-chat-toolbar-actions {
   display: flex;
   gap: 0.35rem;
+}
+
+.paste-chart-fusion-strip {
+  display: grid;
+  gap: 0.35rem;
+  margin-bottom: var(--space-sm);
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(61, 155, 132, 0.35);
+  border-radius: var(--radius-md);
+  background: rgba(61, 155, 132, 0.08);
+  font-size: var(--text-sm);
+}
+
+.paste-chart-fusion-strip strong {
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.paste-chart-fusion-assessment {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  line-height: 1.45;
 }
 
 .clinician-chat-hint {

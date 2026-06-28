@@ -46,16 +46,9 @@ type PasteChartAdvice = {
   patient_education_copy: string;
 };
 
-export type PasteChartSessionSyncV1 = {
-  patientLabel: string;
-  title: string;
-  chartSnippet: string;
-  summarySnippet: string;
-  birthInstantUtc?: string;
-  ianaTz?: string;
-  chiefComplaint?: string;
-  slug?: string;
-};
+import type { PasteChartSessionSyncV1 } from "@/lib/clinician-paste-chart-fusion-v1";
+
+export type { PasteChartSessionSyncV1 };
 
 type ClinicianEncounterGoldPanelProps = {
   clinicianEmail?: string;
@@ -331,6 +324,10 @@ export function ClinicianEncounterGoldPanel({
         soap?.subjective?.text?.trim()?.slice(0, 120) ||
         extractDraft.chief_complaint?.trim() ||
         "Paste Chart 분석 완료";
+      const adviceTitles =
+        json.advice?.cards?.tcm_primary?.items?.map((item) => String(item.title || "").trim()).filter(Boolean) ||
+        [];
+      const assessmentLine = soap?.assessment?.text?.split("\n").find((l) => l.includes("체질"))?.trim();
       onPasteChartSession?.({
         patientLabel,
         title: patientLabel,
@@ -340,6 +337,9 @@ export function ClinicianEncounterGoldPanel({
         ianaTz: ianaTz.trim() || "Asia/Seoul",
         chiefComplaint: extractDraft.chief_complaint?.trim(),
         slug: json.slug || payload?.slug || defaultSlug.trim() || undefined,
+        adviceTitles,
+        assessmentLine,
+        ephemeral: Boolean(json.ephemeral),
       });
     } catch {
       setFusionBundle(null);

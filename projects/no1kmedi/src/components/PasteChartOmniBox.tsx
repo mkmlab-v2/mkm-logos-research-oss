@@ -157,6 +157,12 @@ export function PasteChartOmniBox({
       </p>
       <p className="pc-omni-lead">{PASTE_CHART_PUBLIC_COPY_V1.omniLead}</p>
 
+      {!clinicianEmail?.trim() ? (
+        <p className="pc-email-gate-hint" role="status">
+          Pro 이메일이 필요합니다. 「환자·설정」에서 확인하거나 URL에 <code>?email=</code>을 추가하세요.
+        </p>
+      ) : null}
+
       <label htmlFor={textareaId} className="pc-paste-label sr-only">
         EMR 차트 붙여넣기
       </label>
@@ -282,7 +288,7 @@ export function PasteChartOmniBox({
           type="button"
           className="btn-analyze"
           onClick={onAnalyze}
-          disabled={disabled || !chartText.trim()}
+          disabled={disabled || analyzeBusy || !clinicianEmail?.trim()}
         >
           분석
         </button>

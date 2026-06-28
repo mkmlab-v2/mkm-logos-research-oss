@@ -44,6 +44,7 @@ try {
     $libRs = Join-Path $ProjectRoot "src-tauri\src\lib.rs"
     $conf = Join-Path $ProjectRoot "src-tauri\tauri.conf.json"
     Assert-FileContains $libRs "schedule_initial_clipboard_paste" "lib.rs auto paste"
+    Assert-FileContains $libRs "embed=tauri" "lib.rs tauri embed query"
     Assert-FileContains $conf "127.0.0.1:3010/clinician?panel=gold" "tauri.conf local devUrl"
 
     Write-Host "[paste-chart-tauri-verify] OK" -ForegroundColor Green

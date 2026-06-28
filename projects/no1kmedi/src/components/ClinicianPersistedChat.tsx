@@ -30,6 +30,7 @@ type ClinicianPersistedChatProps = {
   canUseAdvancedConsult: boolean;
   onOpenPatientSettings: () => void;
   onOpenBundle: () => void;
+  onOpenPasteChart?: () => void;
 };
 
 export function ClinicianPersistedChat({
@@ -38,6 +39,7 @@ export function ClinicianPersistedChat({
   canUseAdvancedConsult,
   onOpenPatientSettings,
   onOpenBundle,
+  onOpenPasteChart,
 }: ClinicianPersistedChatProps) {
   const [turns, setTurns] = useState<ClinicianChatTurn[]>(thread.turns);
   const [message, setMessage] = useState("");
@@ -82,8 +84,11 @@ export function ClinicianPersistedChat({
     if (ctx.ianaTz.trim()) chips.push(ctx.ianaTz.trim());
     if (ctx.loadedSurveyContext) chips.push(`PIN ${ctx.loadedSurveyContext.intakePin}`);
     if (ctx.chiefComplaint.trim()) chips.push(`주호소 설정됨`);
+    if (ctx.pasteChartFusion?.patientLabel) chips.push(`Paste Chart · ${ctx.pasteChartFusion.patientLabel}`);
     return chips;
   }, [ctx]);
+
+  const pasteFusion = ctx.pasteChartFusion;
 
   const runConsult = useCallback(async () => {
     if (!canSend) return;
@@ -167,6 +172,11 @@ export function ClinicianPersistedChat({
             <p className="workspace-muted clinician-chat-hint">출생·문진은 「환자·설정」에서 입력하세요.</p>
           )}
           <div className="clinician-chat-toolbar-actions">
+            {pasteFusion && onOpenPasteChart ? (
+              <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenPasteChart}>
+                Paste Chart
+              </button>
+            ) : null}
             <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenPatientSettings}>
               환자·설정
             </button>
@@ -180,6 +190,26 @@ export function ClinicianPersistedChat({
 
         {!canUseAdvancedConsult ? (
           <p className="consult-error">Pro 임상 보조 권한 확인 후 대화를 사용할 수 있습니다. 「환자·설정」에서 이메일을 확인하세요.</p>
+        ) : null}
+
+        {pasteFusion ? (
+          <div className="paste-chart-fusion-strip" role="status">
+            <strong>Paste Chart 연동</strong>
+            <span>
+              {pasteFusion.patientLabel}
+              {pasteFusion.adviceTitles?.length
+                ? ` · ${pasteFusion.adviceTitles.slice(0, 4).join(" · ")}`
+                : ""}
+            </span>
+            {pasteFusion.assessmentLine ? (
+              <span className="paste-chart-fusion-assessment">{pasteFusion.assessmentLine}</span>
+            ) : null}
+            {onOpenPasteChart ? (
+              <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenPasteChart}>
+                SOAP·조언 다시 보기
+              </button>
+            ) : null}
+          </div>
         ) : null}
 
         {ctx.loadedSurveyContext ? (

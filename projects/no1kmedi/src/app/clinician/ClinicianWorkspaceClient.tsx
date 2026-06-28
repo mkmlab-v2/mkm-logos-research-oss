@@ -11,8 +11,9 @@ import {
   JEMA_AI_PUBLIC_ORIGIN,
   normalizeRequestHost,
 } from "@/lib/no1kmedi-portal-host";
+import { buildPasteChartFusionAssistantMessage, buildPasteChartFusionContext, type PasteChartSessionSyncV1 } from "@/lib/clinician-paste-chart-fusion-v1";
+import { ClinicianEncounterGoldPanel } from "@/components/ClinicianEncounterGoldPanel";
 import { ClinicianPersistedChat } from "@/components/ClinicianPersistedChat";
-import { ClinicianEncounterGoldPanel, type PasteChartSessionSyncV1 } from "@/components/ClinicianEncounterGoldPanel";
 import { ClinicianSimpleCopilotPanel } from "@/components/ClinicianSimpleCopilotPanel";
 import { ClinicianCanvasStudioLayout } from "@/components/clinician/ClinicianCanvasStudioLayout";
 import { ClinicianCanvasEmptyLayout } from "@/components/clinician/ClinicianCanvasEmptyLayout";
@@ -341,8 +342,12 @@ export function ClinicianWorkspaceClient({
   const syncPasteChartSession = useCallback(
     (session: PasteChartSessionSyncV1) => {
       if (!activeThread) return;
+      const assistantBody = buildPasteChartFusionAssistantMessage(session);
       const userTurn = { role: "user" as const, message: session.chartSnippet };
-      const assistantTurn = { role: "assistant" as const, message: session.summarySnippet };
+      const assistantTurn = {
+        role: "assistant" as const,
+        message: assistantBody,
+      };
       const turns = [...activeThread.turns, userTurn, assistantTurn].slice(-48);
       commitThread({
         id: activeThread.id,
@@ -359,6 +364,7 @@ export function ClinicianWorkspaceClient({
           birthInstantUtc: session.birthInstantUtc || activeThread.context.birthInstantUtc,
           ianaTz: session.ianaTz || activeThread.context.ianaTz,
           chiefComplaint: session.chiefComplaint || activeThread.context.chiefComplaint,
+          pasteChartFusion: buildPasteChartFusionContext(session),
         },
       });
       updateThreadMeta(activeThread.id, {
@@ -368,6 +374,23 @@ export function ClinicianWorkspaceClient({
       });
     },
     [activeThread, commitThread, updateThreadMeta],
+  );
+
+  const tauriEmbed = searchParams.get("embed") === "tauri";
+
+  const finishPasteChartFusion = useCallback(() => {
+    setActiveId("chat");
+    router.replace("/clinician", { scroll: false });
+  }, [router]);
+
+  const handlePasteChartSession = useCallback(
+    (session: PasteChartSessionSyncV1) => {
+      syncPasteChartSession(session);
+      if (!tauriEmbed) {
+        finishPasteChartFusion();
+      }
+    },
+    [syncPasteChartSession, finishPasteChartFusion, tauriEmbed],
   );
 
   const paletteActions: PaletteAction[] = useMemo(
@@ -506,6 +529,7 @@ export function ClinicianWorkspaceClient({
             canUseAdvancedConsult={canUseAdvancedConsult}
             onOpenPatientSettings={() => onSelect("patient")}
             onOpenBundle={() => onSelect("bundle")}
+            onOpenPasteChart={() => onSelect("gold")}
           />
         </div>
       ) : null}
@@ -558,7 +582,7 @@ export function ClinicianWorkspaceClient({
             cdsDraft={draftForBundle}
             patientCareBundle={patientCareBundle}
             onFusionBundleReady={setPatientCareBundle}
-            onPasteChartSession={syncPasteChartSession}
+            onPasteChartSession={handlePasteChartSession}
           />
         </div>
       ) : null}

@@ -7,9 +7,19 @@ export type ClinicianChatTurn = {
   message: string;
 };
 
+export type PasteChartFusionContextV1 = {
+  syncedAt: number;
+  patientLabel: string;
+  adviceTitles: string[];
+  assessmentLine?: string;
+  ephemeral?: boolean;
+};
+
 export type ClinicianThreadContext = ClinicianConsultFormState & {
   lensMode: "neutral" | "integrated" | "compare";
   includeScripture: boolean;
+  /** Last Paste Chart analyze → chat thread fusion (Track B). */
+  pasteChartFusion?: PasteChartFusionContextV1 | null;
 };
 
 export type ClinicianCdsSnapshot = {

@@ -14,11 +14,16 @@ fn build_start_url() -> String {
         .unwrap_or_default()
         .trim()
         .to_lowercase();
-    if email.is_empty() {
-        return base;
+    let mut url = base;
+    if !url.contains("embed=tauri") {
+        let sep = if url.contains('?') { '&' } else { '?' };
+        url = format!("{url}{sep}embed=tauri");
     }
-    let sep = if base.contains('?') { '&' } else { '?' };
-    format!("{base}{sep}email={}", urlencoding::encode(&email))
+    if !email.is_empty() {
+        let sep = if url.contains('?') { '&' } else { '?' };
+        url = format!("{url}{sep}email={}", urlencoding::encode(&email));
+    }
+    url
 }
 
 fn hotkey_binding() -> String {
