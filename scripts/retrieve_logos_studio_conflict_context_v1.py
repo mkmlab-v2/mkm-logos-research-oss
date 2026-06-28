@@ -75,6 +75,22 @@ GROUP_KEYWORDS: dict[str, list[str]] = {
         "job.1.6",
         "job 1:6",
     ],
+    "MKM_CONCEPT_ISAIAH_YOUTUBE": [
+        "isaiah",
+        "이사야",
+        "이사야서",
+        "isa.6.8",
+        "isa 6:8",
+        "66장",
+        "66권",
+        "임마누엘",
+        "53장",
+        "위로하라",
+        "youtube",
+        "유튜브",
+        "16챕터",
+        "spine",
+    ],
 }
 
 

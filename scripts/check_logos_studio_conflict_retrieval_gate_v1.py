@@ -73,6 +73,21 @@ CASES: list[dict[str, Any]] = [
         "expect_groups": [],
         "forbid_groups": ["MKM_CONCEPT_NEPHILIM"],
     },
+    {
+        "id": "isaiah_youtube_spine_positive",
+        "query": "이사야 66장 spine",
+        "preset_id": "isaiah_youtube_spine_v1",
+        "expect_groups": ["MKM_CONCEPT_ISAIAH_YOUTUBE"],
+        "match_mode": "preset_boost",
+        "forbid_groups": ["MKM_CONCEPT_NEPHILIM"],
+    },
+    {
+        "id": "isaiah_youtube_freeform",
+        "query": "이사야서 16챕터 유튜브 강해",
+        "preset_id": None,
+        "expect_groups": ["MKM_CONCEPT_ISAIAH_YOUTUBE"],
+        "forbid_groups": ["MKM_CONCEPT_JOB_SUFFERING"],
+    },
 ]
 
 

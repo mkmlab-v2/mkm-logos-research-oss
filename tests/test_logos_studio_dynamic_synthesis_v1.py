@@ -97,6 +97,50 @@ def test_deterministic_synthesis_job_suffering():
     assert len(doc["answer_ko"]) > 200
 
 
+def test_deterministic_synthesis_isaiah_youtube_spine():
+    rproc = subprocess.run(
+        [
+            sys.executable,
+            str(RETRIEVE),
+            "--query",
+            "이사야 66장 spine",
+            "--preset-id",
+            "isaiah_youtube_spine_v1",
+            "--no-embedding",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    conflict = json.loads(rproc.stdout)
+    assert conflict["group_count"] >= 1
+    payload = {
+        "query": "이사야서 16챕터 spine",
+        "preset_id": "isaiah_youtube_spine_v1",
+        "path": {
+            "note_ko": "Isa.6.8 → Isa.40.1 → Isa.53.5 spine",
+            "verse_refs": ["Isa.6.8", "Isa.40.1", "Isa.53.5", "Isa.65.17", "Rev.21.2"],
+            "steps": [],
+        },
+        "conflict_context": conflict,
+    }
+    proc = subprocess.run(
+        [sys.executable, str(SYNTH), "--stdin-json"],
+        cwd=ROOT,
+        input=json.dumps(payload, ensure_ascii=False),
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stdout + proc.stderr
+    doc = json.loads(proc.stdout)
+    assert doc["ok"] is True
+    assert doc["synthesis_mode"] == "deterministic_conflict_parallel"
+    assert doc["citation_valid"] is True
+    assert "[HYPO]" in doc["answer_ko"]
+    assert "학파 병렬" in doc["answer_ko"] or "Isaiah" in doc["answer_ko"] or "이사야" in doc["answer_ko"]
+    assert len(doc["answer_ko"]) > 200
+
+
 def test_llm_auto_falls_back_to_deterministic_without_ollama():
     rproc = subprocess.run(
         [
