@@ -12,6 +12,7 @@
   "public_export_manifest": "docs/final/artifacts/logos_oss_public_export_manifest_v1.json",
   "export_materialize_dir": "exports/mkm-logos-research-oss-v1",
   "repo_target_name": "mkm-logos-research-oss",
+  "github_repo_url": "https://github.com/mkmlab-v2/mkm-logos-research-oss",
   "entry_smoke": "py scripts/run_logos_oss_premarket_smoke_v1.py",
   "export_verify": "py scripts/build_logos_oss_public_export_bundle_v1.py --verify-only",
   "export_materialize": "py scripts/build_logos_oss_public_export_bundle_v1.py --materialize",

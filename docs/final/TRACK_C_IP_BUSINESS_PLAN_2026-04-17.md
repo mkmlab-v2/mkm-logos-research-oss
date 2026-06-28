@@ -248,7 +248,7 @@ Neuro (optional local SLM draft) → Symbolic (lexicon + topology crosswalk) →
 
 - **Y1 Hero (공개 1차):** **`mkm-universal-root`** — Dual-Plane Neuro-Symbolic Integrity Kit · ~20s smoke · `§3.0b`.
 - **Y1b (monorepo `B_subset`):** **Hybrid Memory/Orchestration OS** — shallow router · 4-Vault · MERGED LIT REVIEW · `mkm_github_public_release_scope_v1`. **공개 히어로에서 “데이터 수집·중앙 가공 SaaS” 금지.**
-- **Y1c (별도 public repo `D_logos_harness`):** **`mkm-logos-research-oss`** — conflict retrieval + dynamic synthesis harness · fixture-only smoke · `logos_oss_public_export_manifest_v1.json` → `exports/mkm-logos-research-oss-v1/`. **logos.jema-ai.com Scriptorium·KRV·31k graph·Track A 아님** · counsel/metering **기본 gate 아님** (`OPEN_SOURCE_PREP`).
+- **Y1c (별도 public repo `D_logos_harness`):** **`mkm-logos-research-oss`** — https://github.com/mkmlab-v2/mkm-logos-research-oss · conflict retrieval + dynamic synthesis harness · fixture-only smoke · `logos_oss_public_export_manifest_v1.json` → `exports/mkm-logos-research-oss-v1/`. **logos.jema-ai.com Scriptorium·KRV·31k graph·Track A 아님** · counsel/metering **기본 gate 아님** (`OPEN_SOURCE_PREP`).
 - **2차 (연구):** Compression open-bench contributor masked JSONL · `a-codeai.com` / reproduce mirror — **히어로 아님** (`compression_open_bench_contributor_kit_v1`, `SEND_GATE: HOLD`).
 - **부록 (인바운드 1건만):** MS 제안서 ZIP·counsel 팩 — **기본 GTM 아님.**
 - **본선 채널 (DO):** GitHub README·Issues/PR · Hybrid OS reproduce · optional `a-codeai-compression-reproduce` mirror for compression-only demos

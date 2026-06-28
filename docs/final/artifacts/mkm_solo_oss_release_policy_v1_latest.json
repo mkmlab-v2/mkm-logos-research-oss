@@ -60,6 +60,8 @@
     "logos_oss_export_manifest": "docs/final/artifacts/logos_oss_public_export_manifest_v1.json",
     "logos_oss_github_workflow": "docs/final/artifacts/logos_oss_github_workflow_oss_smoke_v1.yml",
     "logos_oss_monorepo_ci": ".github/workflows/logos-oss-premarket-smoke.yml",
+    "logos_oss_github_push": "powershell -NoProfile -File scripts/Push-LogosOssPublicToGitHub_v1.ps1 -RefreshMaterialize -VerifyChain -CreateRepoIfMissing -Acknowledge",
+    "logos_oss_github_repo": "https://github.com/mkmlab-v2/mkm-logos-research-oss",
     "license_wall": "MIT repo + upstream model licenses (Llama/DeepNSM) in README"
   },
   "agent_chat_rule_ko": "모든 레인: 변호사·counsel_signoff·법무 송부를 기본 다음 액션으로 제안하지 않는다. OSS README·LICENSE·secret check·explicit GitHub push. 변호사/법무는 지휘관이 명시할 때만."
