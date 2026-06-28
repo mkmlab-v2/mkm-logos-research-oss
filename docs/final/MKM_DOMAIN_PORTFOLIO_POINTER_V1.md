@@ -98,6 +98,7 @@ Query → Subgraph router / GraphRAG → Insight (four-slot 등) → Visualizati
 3. **성경 meaning graph** = query-time subgraph + Path Ledger **방향** — 31k 전수 그래프 **미완** (`LOGOS_ORIGINAL_LANGUAGE_GRAPH_RAG_BRIDGE_V1.md` GAP).
 4. **FAIL-COMP-004:** Universal Root · 압축 KPI · Logos path 점수 **한 헤드라인 합산 금지**.
 5. **Y1 Hero** = GitHub `mkm-universal-root` — 위 B2C 킬러와 **별 Plane** (`TRACK_C` §3.0b).
+6. **OSS export** = **`mkm-logos-research-oss`** harness only (`exports/mkm-logos-research-oss-v1/`) — **logos.jema-ai.com 제품 URL·Scriptorium UI·KRV full ≠ public repo scope**.
 
 **교차 SSOT:** `docs/final/artifacts/mkm_three_exit_branding_matrix_v1_latest.json` · `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.0d** · `K_STARTUP_DOMAIN_SERVICE_MAPPING_V1_DRAFT.md` §1.1.
 

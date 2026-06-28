@@ -47,7 +47,9 @@ py scripts/run_logos_bible_full_verification_chain_v1.py --skip-live-smoke
 py scripts/check_logos_bible_full_w6_prep_gate_v1.py
 ```
 
-## Optional: 66-book API matrix (dev server)
+## Optional: 66-book API matrix (monorepo maintainer only)
+
+Not included in public OSS export (`monorepo_only_paths` in manifest). Requires local studio artifacts + `expand_logos_bible_full_corpus_batch_v1.py`.
 
 ```powershell
 cd projects/no1kmedi

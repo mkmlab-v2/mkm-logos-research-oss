@@ -70,11 +70,12 @@
 | Cursor 세션 baseline | `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` |
 | Pillar A LTM · suspect_first | `reports/mkm_bench_2026_003_pillar_a_signoff_v1_latest.json` · `mkm_meta_coordinator_turn_contract_v1_latest.md` |
 | **딥리서치 (논문·학술)** | Tier 0 `docs/research/raw/` · Tier 1 `mkm-deep-research/SKILL.md` · Tier 2 exit 0 · **DR bench 헬스/Fact-Lock:** `-IncludeDeepResearchBenchSmoke` / `-DeepResearchBenchSmokeOnly` (`run_workspace_automation_health.ps1`) · CONSTITUTION DR bench mini 표 |
+| **Logos OSS (open-core harness)** | `py scripts/run_logos_oss_premarket_smoke_v1.py` · `py scripts/build_logos_oss_public_export_bundle_v1.py --materialize` → `exports/mkm-logos-research-oss-v1/` · manifest `logos_oss_public_export_manifest_v1.json` · **monorepo GitHub push ≠ export** |
 | 인프라·GPU·PC 경로 | `docs/final/LOCAL_MACHINE_POINTER_V1.md` (비추적) |
 
 ## Git · 원격 (한 줄)
 
-- 기본 push: `scripts/push-internal.ps1` → **gitea/internal** only. GitHub: `Push-GitHub-Explicit.ps1 -Acknowledge` 예외만.
+- 기본 push: `scripts/push-internal.ps1` → **gitea/internal** only. GitHub: `Push-GitHub-Explicit.ps1 -Acknowledge` 예외만 — **curated export** (`exports/mkm-logos-research-oss-v1/` 등) 우선; monorepo 전체 push 비권장.
 - `1작업=1브랜치=1PR` 권장 · 솔로는 `SoloDev-MergeFeatureToGiteaMain.ps1` 참고.
 
 ## User Rules (Cursor Settings · 레포 밖)

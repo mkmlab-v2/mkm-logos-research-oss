@@ -1,11 +1,11 @@
 {
   "schema": "logos_oss_public_export_manifest_v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Curated Logos Research open-core export — harness, fixtures, conflict/synthesis gates. No KRV full text, no Gnosis full morphology, no trading weights.",
   "repo_target_name": "mkm-logos-research-oss",
   "entry_smoke": "scripts/run_logos_oss_premarket_smoke_v1.py",
   "guide_ssot": "docs/final/artifacts/logos_oss_premarket_smoke_guide_v1.md",
-  "solo_oss_policy": "docs/final/artifacts/mkm_solo_oss_release_policy_v1_latest.json",
+  "solo_oss_policy": "docs/final/artifacts/logos_oss_release_policy_v1.json",
   "pre_push_gate": [
     "py scripts/check_mkm_secret_patterns_v1.py",
     "py scripts/build_logos_oss_public_export_bundle_v1.py --verify-only",
@@ -22,11 +22,10 @@
     "LICENSE",
     "docs/final/artifacts/logos_oss_premarket_smoke_guide_v1.md",
     "docs/final/artifacts/logos_oss_public_export_manifest_v1.json",
-    "docs/final/artifacts/mkm_solo_oss_release_policy_v1_latest.json",
+    "docs/final/artifacts/logos_oss_release_policy_v1.json",
     "docs/final/artifacts/bigset_studio_conflict_sidecar_v1_latest.json",
     "docs/final/artifacts/bigset_conflict_surface_v1_latest.json",
     "docs/final/artifacts/bigset_multi_topic_conflict_surface_v1_latest.json",
-    "docs/final/artifacts/bigset_tier0_atypical_human_review_pending_v1_latest.json",
     "projects/no1kmedi/public/data/logos_studio/bigset_conflict_sidecar_v1.json",
     "tests/fixtures/gnosis_kg_sample_v1/hebrew-words.json",
     "tests/fixtures/gnosis_kg_sample_v1/greek-words.json",
@@ -39,11 +38,24 @@
     "scripts/synthesize_logos_studio_dynamic_answer_v1.py",
     "scripts/logos_verse_ref_canonical_v1.py",
     "scripts/check_mkm_secret_patterns_v1.py",
-    "scripts/smoke_logos_studio_66book_matrix_v1.py",
     "tests/test_logos_studio_dynamic_synthesis_v1.py",
     "tests/test_logos_verse_ref_canonical_v1.py",
     "data/logos/gnosis_kg/README.md",
     "docs/final/artifacts/logos_oss_github_workflow_oss_smoke_v1.yml"
+  ],
+  "monorepo_only_paths": [
+    {
+      "path": "scripts/smoke_logos_studio_66book_matrix_v1.py",
+      "reason": "Requires expand_logos_bible_full_corpus_batch_v1.py + local studio artifacts; monorepo maintainer smoke only"
+    },
+    {
+      "path": "scripts/run_logos_bible_full_verification_chain_v1.py",
+      "reason": "Full W5 stack; not standalone clone scope"
+    },
+    {
+      "path": "docs/final/artifacts/bigset_tier0_atypical_human_review_pending_v1_latest.json",
+      "reason": "Empty observability stub; sidecar embeds pending_count"
+    }
   ],
   "user_provided_local": {
     "gnosis_full_morphology": {
@@ -75,7 +87,8 @@
     "track_a_live_trading_ready",
     "legal_counsel_signoff_as_gate",
     "full_gnosis_in_repo",
-    "krv_full_text_in_repo"
+    "krv_full_text_in_repo",
+    "full_scriptorium_31102_in_repo"
   ],
   "lemma_coverage_note": "100% lemma in W5 audit may include LEMMA_VERSE_CANON_STUB — not morphology-verified unless user ingests Gnosis locally."
 }

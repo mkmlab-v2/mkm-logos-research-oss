@@ -20,7 +20,7 @@
     "studio_ui_graph": "31102/31102 reachable via primary graph OR bloom-primary mode (not secondary-only)",
     "graphrag_router": "book+chapter preset coverage 66/66 OT+NT books; ad-hoc query raw pass rate gate",
     "synthesis_reading": "A4 bundle per book minimum; verse-level on path spine",
-    "commercial_track_c": "PUBLIC_FACING pass + metering + SLA draft + commander send_gate review"
+    "commercial_track_c": "Track C 상용 send (PUBLIC_FACING + metering + SLA + commander send_gate review) — W6 OSS OPEN_SOURCE_PREP와 분리; grants/contracts HOLD until lift"
   },
   "waves": [
     {

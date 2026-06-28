@@ -132,6 +132,7 @@ docs/final/artifacts/**
 !docs/final/artifacts/mkm_github_public_release_scope_v1_latest.json
 !docs/final/artifacts/mkm_solo_oss_release_policy_v1_latest.json
 !docs/final/artifacts/logos_oss_public_export_manifest_v1.json
+!docs/final/artifacts/logos_oss_release_policy_v1.json
 !docs/final/artifacts/logos_oss_premarket_smoke_guide_v1.md
 !docs/final/artifacts/logos_oss_github_workflow_oss_smoke_v1.yml
 !docs/final/artifacts/ollama_mkm_shallow_router_modelfile_v1.txt
@@ -328,8 +329,9 @@ tmp_*.css
 tmp_*.html
 staging/
 
-# Slim public reproduce mirror (nested git → GitHub mkmlab-v2/a-codeai-compression-reproduce)
+# Slim public reproduce mirrors (materialize only; do not commit to monorepo)
 exports/a-codeai-public-reproduce-v2/
+exports/mkm-logos-research-oss-v1/
 !docs/final/artifacts/a_codeai_public_reproduce_apache2_LICENSE.txt
 !docs/final/artifacts/a_codeai_public_reproduce_export_manifest_v1.json
 

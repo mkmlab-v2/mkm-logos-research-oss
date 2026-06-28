@@ -1,17 +1,34 @@
 {
   "schema": "mkm_github_public_release_scope_v1",
-  "version": "1.1.0",
-  "updated_at_utc": "2026-06-20T08:00:00Z",
+  "version": "1.2.0",
+  "updated_at_utc": "2026-06-28T00:00:00Z",
   "operator_model": "solo_developer",
   "recommended_tier": "B_subset",
   "release_target": "B_subset",
   "primary_hero_identity": "Hybrid_Memory_Orchestration_OS",
+  "push_rule_ko": "GitHub 공개 = tier별 curated export 또는 explicit subset만. monorepo 전체 Push-GitHub-Explicit 금지( secret·WIP·아티팩트 노이즈 ). Logos = exports/mkm-logos-research-oss-v1/ 별도 repo.",
   "contributor_intake_gate": {
     "status": "demoted_to_secondary_research_lane",
     "gating_rule": "SEND_GATE_HOLD_MANDATORY",
     "description_ko": "masked JSONL open-bench는 2차 B-track 연구 레인. 메인 GTM Hero에서 데이터 수집·가공 SaaS 오해 금지.",
     "description_en": "Masked JSONL open-bench is secondary B-track research only — not the public product hero or hosted ingestion SaaS."
   },
+  "secondary_public_repos": [
+    {
+      "repo_target_name": "mkm-universal-root",
+      "tier_id": "Y1_hero",
+      "manifest": "docs/final/artifacts/mkm_universal_root_public_export_manifest_v1.json",
+      "materialize": "exports/mkm-universal-root-v1/"
+    },
+    {
+      "repo_target_name": "mkm-logos-research-oss",
+      "tier_id": "D_logos_harness",
+      "manifest": "docs/final/artifacts/logos_oss_public_export_manifest_v1.json",
+      "materialize": "exports/mkm-logos-research-oss-v1/",
+      "policy": "docs/final/artifacts/logos_oss_release_policy_v1.json",
+      "note_ko": "conflict/synthesis harness only — not logos.jema-ai.com full Scriptorium·KRV·Track A"
+    }
+  ],
   "forbidden_public_hero_claims": [
     "hosted_data_processing_saas",
     "zero_cloud_raw_tokens_all_paths",
@@ -48,9 +65,9 @@
         "tests/test_ollama_shallow_router_bench_v1.py",
         "tests/test_ollama_shallow_to_semantic_rag_e2e_v1.py",
         "tests/test_ollama_shallow_routing_oracle_gap_v1.py",
-    "scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py",
-    "scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1",
-    "tests/test_ollama_shallow_hybrid_reproduce_bundle_v1.py",
+        "scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py",
+        "scripts/Run-OllamaShallowHybridReproduceBundle_v1.ps1",
+        "tests/test_ollama_shallow_hybrid_reproduce_bundle_v1.py",
         "tests/fixtures/ollama_shallow_router_golden_v1.json",
         "scripts/run_question_semantic_rag_bridge_chain_v1.py",
         "scripts/run_showroom_job_topology_wiring_chain_v1.py",
@@ -81,6 +98,17 @@
         "docs/final/artifacts/compression_open_bench_contributor_kit_v1_latest.json"
       ]
     },
+    "D_logos_harness": {
+      "description_ko": "별도 public repo — Logos conflict/synthesis open-core harness (Scriptorium UI·KRV·31k graph 제외)",
+      "materialize_only": true,
+      "manifest": "docs/final/artifacts/logos_oss_public_export_manifest_v1.json",
+      "materialize_dir": "exports/mkm-logos-research-oss-v1/",
+      "pre_push_gate": [
+        "py scripts/build_logos_oss_public_export_bundle_v1.py --verify-only",
+        "py scripts/run_logos_oss_premarket_smoke_v1.py"
+      ],
+      "exclude_from_monorepo_push": true
+    },
     "C_full_monorepo": {
       "description_ko": "비권장 1차 — secret·노이즈·WIP 리스크",
       "note_ko": "Verify-GitWorkspaceSanity WARN 참고; subset 정리 후 검토"
@@ -96,5 +124,5 @@
     "py scripts/run_ollama_shallow_hybrid_reproduce_bundle_v1.py --skip-ollama",
     "scripts/Push-GitHub-Explicit.ps1 -Acknowledge"
   ],
-  "default_choice_ko": "B_subset — Hero=Hybrid Memory OS; compression contributor=2차 연구 레인"
+  "default_choice_ko": "B_subset — Hero=Hybrid Memory OS; Logos=D_logos_harness 별도 repo; compression contributor=2차 연구 레인"
 }
