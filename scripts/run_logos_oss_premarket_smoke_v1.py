@@ -76,12 +76,20 @@ def main() -> int:
     )
     steps.append(_run("conflict_sidecar_build", [PY, "scripts/build_bigset_studio_conflict_sidecar_v1.py"]))
     steps.append(_run("conflict_retrieval_gate", [PY, "scripts/check_logos_studio_conflict_retrieval_gate_v1.py"]))
+    steps.append(_run("lemma_neighbor_index", [PY, "scripts/build_logos_studio_lemma_neighbor_index_v1.py"]))
+    steps.append(_run("lemma_bridge_gate", [PY, "scripts/check_logos_studio_lemma_bridge_gate_v1.py"]))
 
     if not args.skip_pytest:
         steps.append(
             _run(
                 "pytest_synthesis",
                 [PY, "-m", "pytest", "tests/test_logos_studio_dynamic_synthesis_v1.py", "-q", "--tb=short"],
+            )
+        )
+        steps.append(
+            _run(
+                "pytest_lemma_bridge",
+                [PY, "-m", "pytest", "tests/test_logos_studio_lemma_bridge_v1.py", "-q", "--tb=short"],
             )
         )
         steps.append(

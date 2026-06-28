@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import pickle
 import re
 import sys
 from collections import defaultdict
@@ -20,6 +21,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INDEX = ROOT / "docs/final/artifacts/logos_studio_lemma_neighbor_index_v1_latest.json"
+DEFAULT_PKL = ROOT / "docs/final/artifacts/logos_studio_lemma_neighbor_index_v1_latest.pkl"
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -39,9 +41,19 @@ def _norm_verse(raw: str) -> str:
 
 def _load_index(path: Path) -> dict[str, Any]:
     global _INDEX_CACHE
-    key = str(path.resolve())
+    pkl_path = path.with_suffix(".pkl")
+    if path == DEFAULT_INDEX and DEFAULT_PKL.is_file():
+        pkl_path = DEFAULT_PKL
+    key = str(pkl_path.resolve() if pkl_path.is_file() else path.resolve())
     if _INDEX_CACHE is not None and _INDEX_CACHE.get("_cache_key") == key:
         return _INDEX_CACHE
+    if pkl_path.is_file():
+        with pkl_path.open("rb") as fh:
+            core = pickle.load(fh)
+        doc = dict(core)
+        doc["_cache_key"] = key
+        _INDEX_CACHE = doc
+        return doc
     doc = json.loads(path.read_text(encoding="utf-8-sig"))
     doc["_cache_key"] = key
     _INDEX_CACHE = doc

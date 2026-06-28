@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import pickle
 import sys
 from collections import defaultdict
 from datetime import datetime, timezone
@@ -17,6 +18,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_EDGES = ROOT / "docs/final/artifacts/logos_lemma_verse_edges_v1.jsonl"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/logos_studio_lemma_neighbor_index_v1_latest.json"
+DEFAULT_PKL = ROOT / "docs/final/artifacts/logos_studio_lemma_neighbor_index_v1_latest.pkl"
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -77,11 +79,23 @@ def main() -> int:
     doc = build_index(args.edges)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    pkl_path = DEFAULT_PKL if args.out.resolve() == DEFAULT_OUT.resolve() else args.out.with_suffix(".pkl")
+    with pkl_path.open("wb") as fh:
+        pickle.dump(
+            {
+                "schema": doc["schema"],
+                "verse_to_lemmas": doc["verse_to_lemmas"],
+                "lemma_to_verses": doc["lemma_to_verses"],
+            },
+            fh,
+            protocol=pickle.HIGHEST_PROTOCOL,
+        )
     print(
         json.dumps(
             {
                 "ok": True,
                 "out": str(args.out.resolve().relative_to(ROOT.resolve())).replace("\\", "/"),
+                "pkl": str(pkl_path.resolve().relative_to(ROOT.resolve())).replace("\\", "/"),
                 "verse_count": doc["verse_count"],
                 "lemma_count": doc["lemma_count"],
             },

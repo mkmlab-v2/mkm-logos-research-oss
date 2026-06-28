@@ -54,6 +54,11 @@ grep -q '^LOGOS_STUDIO_DYNAMIC_SYNTHESIS=' "$ENV_FILE" \
 grep -q '^LOGOS_STUDIO_LEMMA_BRIDGE=' "$ENV_FILE" \
   || echo 'LOGOS_STUDIO_LEMMA_BRIDGE=1' >> "$ENV_FILE"
 
+if [ -f "$vpsDestinyRepo/docs/final/artifacts/logos_lemma_verse_edges_v1.jsonl" ]; then
+  /usr/bin/python3 "$vpsDestinyRepo/scripts/build_logos_studio_lemma_neighbor_index_v1.py" \
+    || echo '[no1kmedi-remote] WARN: lemma neighbor index build skipped'
+fi
+
 cd "$vpsDest" && npm ci && npm run build
 
 if [ -f "$vpsDestinyRepo/scripts/logos_studio_embedding_sidecar_v1.py" ]; then
