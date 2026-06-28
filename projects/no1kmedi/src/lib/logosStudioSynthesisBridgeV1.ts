@@ -56,9 +56,9 @@ export async function synthesizeLogosStudioDynamicAnswer(
 
   const py = resolvePythonExecutable();
   const script = path.join(root, "scripts", "synthesize_logos_studio_dynamic_answer_v1.py");
-  const preferLlm = (process.env.LOGOS_STUDIO_DYNAMIC_SYNTHESIS_LLM || "").trim().toLowerCase();
+  const preferLlm = (process.env.LOGOS_STUDIO_DYNAMIC_SYNTHESIS_LLM || "auto").trim().toLowerCase();
   const args = [script, "--stdin-json"];
-  if (["1", "true", "yes", "on"].includes(preferLlm)) args.push("--prefer-llm");
+  if (!["0", "false", "no", "off"].includes(preferLlm)) args.push("--prefer-llm");
 
   const stdinPayload = JSON.stringify({
     query: query.trim(),
@@ -67,7 +67,10 @@ export async function synthesizeLogosStudioDynamicAnswer(
     conflict_context: conflict,
   });
 
-  const timeoutMs = Number(process.env.LOGOS_STUDIO_SYNTHESIS_TIMEOUT_MS || "25000");
+  const llmPreferred = !["0", "false", "no", "off"].includes(preferLlm);
+  const timeoutMs = Number(
+    process.env.LOGOS_STUDIO_SYNTHESIS_TIMEOUT_MS || (llmPreferred ? "90000" : "25000"),
+  );
 
   return new Promise((resolve) => {
     const child = spawn(py, args, {

@@ -1,0 +1,42 @@
+{
+  "schema": "job_studio_conflict_surface_v1",
+  "generated_at_utc": "2026-06-28T12:00:00Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "non_gating": true,
+  "source": "showroom_logos_job_reading_pack_slice_v1",
+  "groups": [
+    {
+      "conflict_group_id": "MKM_CONCEPT_JOB_SUFFERING",
+      "lexicon_base": "Job suffering · reading pack 3-way",
+      "school_count": 3,
+      "schools": [
+        {
+          "school_tier": "Pack 1",
+          "interpretation_ko": "욥기 전권을 하나의 인과 공식이 아니라 다섯 개념 노드(순전함·주권·침묵·고난·회복)가 위상을 바꿔 가며 닫힌 인과응보 체계→붕괴→교착→scope reset→Bridge→새로운 닫힘으로 재조립되는 서사 기계로 읽습니다. 질문은 「왜 고난인가?」가 아니라 「어떤 질서가 깨지고, 무엇으로 다시 닫히는가?」입니다. Job.1.6 하늘 회의·Job.38.4 scope reset·Job.42.5–10 Bridge.",
+          "citation_lock_anchors": ["Job.1.6", "Job.38.4", "Job.42.5", "Job.42.10"],
+          "verse_refs": ["Job.1.6", "Job.1.8", "Job.1.12", "Job.38.4", "Job.42.5", "Job.42.10"],
+          "traditions": ["integrated_topology", "MKM reading pack"],
+          "labels": ["research_only", "NON_GATING", "why_question_assembled=false"]
+        },
+        {
+          "school_tier": "Pack 2",
+          "interpretation_ko": "욥기 38–41장은 고난 원인 공개가 아니라 질문 프레임(scope) 강제 리셋으로 읽습니다. 「왜(why) 고난인가?」 인과 단답 조립을 거부하고, 「어디서/무엇을 알았는가?」— 인간 사법·환원주의 법정의 관할권 박탈로 대체합니다. 친구(은밀한 죄)와 욥(신의 불의) 모두 why→because 인과 체인에 갇혀 있으며, Job.38.4에서 질문 형식 자체가 거부됩니다.",
+          "citation_lock_anchors": ["Job.38.4", "Job.2.3"],
+          "verse_refs": ["Job.2.3", "Job.4.7", "Job.8.20", "Job.38.4", "Job.40.15"],
+          "traditions": ["scope_reset_no_why", "MKM reading pack"],
+          "labels": ["research_only", "NON_GATING", "why_question_assembled=false"]
+        },
+        {
+          "school_tier": "Pack 3",
+          "interpretation_ko": "Job 1:6–2:6의 하늘 회의·허가 서술만 문자·의회 프레임으로 읽습니다. 출석·서림·고발자(השטן) 등장·허가·상한(1:12·2:6)을 기록하되 「왜 고난?」 인과 답·지휘 은유·이원신론 단정은 확장하지 않습니다. Pack 1 위상학·Pack 2 scope reset과 격벽 유지.",
+          "citation_lock_anchors": ["Job.1.6", "Job.1.12", "Job.2.6"],
+          "verse_refs": ["Job.1.6", "Job.1.12", "Job.2.6"],
+          "traditions": ["literal_council_only", "MKM reading pack"],
+          "labels": ["research_only", "NON_GATING", "why_question_assembled=false"]
+        }
+      ]
+    }
+  ]
+}

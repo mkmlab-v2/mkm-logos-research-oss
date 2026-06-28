@@ -39,6 +39,7 @@ import {
   synthesizeLogosStudioDynamicAnswer,
   type SynthesisResult,
 } from "./logosStudioSynthesisBridgeV1";
+import { resolveReadingPackAnswerForPreset } from "./logosStudioReadingPackBridgeV1";
 
 
 
@@ -63,6 +64,8 @@ export type LogosStudioPreset = {
   keywords?: string[];
 
   bigset_conflict_group_id?: string;
+
+  job_reading_pack_preset_id?: string;
 
   reasoning_path_v1?: LogosReasoningPathV1;
 
@@ -894,6 +897,44 @@ export async function buildStudioQueryWithGraphrag(
       };
     } else if (synthesis.ok) {
       payload = { ...payload, synthesis_meta: null };
+    }
+  }
+
+  if (payload) {
+    const activePayload = payload;
+    const presetsDoc = await loadLogosStudioPresets();
+    const activePresetId = activePayload.preset_id;
+    const presetRow = activePresetId
+      ? presetsDoc.presets.find((p) => p.id === activePresetId)
+      : null;
+    const packAnswer = await resolveReadingPackAnswerForPreset(
+      activePresetId,
+      presetRow?.job_reading_pack_preset_id,
+      q,
+      activePayload.conflict_context?.groups?.[0]?.conflict_group_id,
+    );
+    if (packAnswer) {
+      const synthesized = Boolean(
+        activePayload.synthesis_meta &&
+          typeof activePayload.synthesis_meta === "object" &&
+          "synthesis_mode" in activePayload.synthesis_meta,
+      );
+      const packSectionsStart = packAnswer.indexOf("###");
+      const packSections =
+        packSectionsStart >= 0 ? packAnswer.slice(packSectionsStart).trim() : packAnswer;
+      if (synthesized && packSections) {
+        payload = {
+          ...activePayload,
+          answer: `${activePayload.answer}\n\n${packSections}`,
+          query_mode: `${activePayload.query_mode || "preset"}+reading_pack`,
+        };
+      } else {
+        payload = {
+          ...activePayload,
+          answer: packAnswer,
+          query_mode: `${activePayload.query_mode || "preset"}+reading_pack`,
+        };
+      }
     }
   }
 

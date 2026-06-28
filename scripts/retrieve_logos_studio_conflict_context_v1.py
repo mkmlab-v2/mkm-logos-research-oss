@@ -60,6 +60,21 @@ GROUP_KEYWORDS: dict[str, list[str]] = {
         "창세기 6",
         "genesis 6",
     ],
+    "MKM_CONCEPT_JOB_SUFFERING": [
+        "욥",
+        "욥기",
+        "job",
+        "고난",
+        "suffering",
+        "scope reset",
+        "하늘 회의",
+        "의회",
+        "why question",
+        "왜 고난",
+        "고통",
+        "job.1.6",
+        "job 1:6",
+    ],
 }
 
 

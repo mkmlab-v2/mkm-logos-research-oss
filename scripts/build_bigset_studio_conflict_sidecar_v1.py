@@ -21,6 +21,7 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_IN = ROOT / "docs/final/artifacts/bigset_conflict_surface_v1_latest.json"
 DEFAULT_SUPPLEMENT = ROOT / "docs/final/artifacts/bigset_multi_topic_conflict_surface_v1_latest.json"
+DEFAULT_JOB_SUPPLEMENT = ROOT / "docs/final/artifacts/job_studio_conflict_surface_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/bigset_studio_conflict_sidecar_v1_latest.json"
 DEFAULT_STUDIO = (
     ROOT / "projects/no1kmedi/public/data/logos_studio/bigset_conflict_sidecar_v1.json"
@@ -33,6 +34,7 @@ DEFAULT_HUMAN_REVIEW_PENDING = (
 DEFAULT_PRESET_LINKS: dict[str, list[str]] = {
     "MKM_CONCEPT_SONS_OF_GOD": ["era_genesis_order_and_fall"],
     "MKM_CONCEPT_NEPHILIM": ["bigset_topic_nephilim"],
+    "MKM_CONCEPT_JOB_SUFFERING": ["job_job_suffering_reason", "job_existential_suffering"],
 }
 
 
@@ -145,6 +147,12 @@ def main() -> int:
         default=DEFAULT_SUPPLEMENT,
         help="Merge missing conflict groups (e.g. MKM_CONCEPT_NEPHILIM)",
     )
+    ap.add_argument(
+        "--job-conflict-supplement",
+        type=Path,
+        default=DEFAULT_JOB_SUPPLEMENT,
+        help="Merge Job reading-pack conflict group (MKM_CONCEPT_JOB_SUFFERING)",
+    )
     ap.add_argument("--out-artifact", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--studio-mirror", type=Path, default=DEFAULT_STUDIO)
     ap.add_argument("--skip-studio-mirror", action="store_true")
@@ -163,6 +171,10 @@ def main() -> int:
     if args.conflict_surface_supplement.is_file():
         supplement = json.loads(args.conflict_surface_supplement.read_text(encoding="utf-8"))
     conflict = _merge_conflict_groups(conflict, supplement)
+    job_supplement = None
+    if args.job_conflict_supplement.is_file():
+        job_supplement = json.loads(args.job_conflict_supplement.read_text(encoding="utf-8"))
+    conflict = _merge_conflict_groups(conflict, job_supplement)
     pending_path = args.human_review_pending
     pending_count = _read_human_review_pending_count(pending_path)
     pending_source = None

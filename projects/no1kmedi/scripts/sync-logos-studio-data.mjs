@@ -11,6 +11,14 @@ const workspaceRoot = path.resolve(pkgRoot, "..", "..");
 const artifactDir = path.join(workspaceRoot, "docs", "final", "artifacts");
 const outDir = path.join(pkgRoot, "public", "data", "logos_studio");
 
+/** When artifact mirror is gitignored/missing on VPS, copy from rehearsal SSOT. */
+const ARTIFACT_FALLBACK = {
+  showroom_logos_job_reading_pack_slice_v1_latest.json: path.join(
+    workspaceRoot,
+    "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/showroom_logos_job_reading_pack_slice_v1.json",
+  ),
+};
+
 const PAIRS = [
   ["showroom_meaning_topology_qa_presets_v1_latest.json", "qa_presets_v1.json"],
   ["showroom_meaning_topology_qa_router_sidecar_v1_latest.json", "qa_router_sidecar_v1.json"],
@@ -21,6 +29,7 @@ const PAIRS = [
   ["logos_studio_preset_taxonomy_v1_latest.json", "preset_taxonomy_v1.json"],
   ["logos_cross_ref_sample_shard_v1_latest.json", "cross_ref_sample_shard_v1.json"],
   ["bigset_studio_conflict_sidecar_v1_latest.json", "bigset_conflict_sidecar_v1.json"],
+  ["showroom_logos_job_reading_pack_slice_v1_latest.json", "job_reading_pack_slice_v1.json"],
   ["logos_studio_semantic_router_lexical_index_v1_latest.json", "semantic_router_lexical_index_v1.json"],
   ["logos_studio_semantic_router_embedding_index_v1_latest.json", "semantic_router_embedding_index_v1.json"],
   ["logos_studio_verse_citation_shard_v1_latest.json", "verse_citation_shard_v1.json"],
@@ -124,7 +133,7 @@ try {
   let copied = 0;
   let skipped = 0;
   for (const [srcName, destName] of PAIRS) {
-    const src = path.join(artifactDir, srcName);
+    let src = path.join(artifactDir, srcName);
     const dest = path.join(outDir, destName);
     try {
       await copyFile(src, dest);
@@ -132,6 +141,17 @@ try {
       copied += 1;
     } catch (error) {
       if (error && typeof error === "object" && "code" in error && error.code === "ENOENT") {
+        const fallback = ARTIFACT_FALLBACK[srcName];
+        if (fallback) {
+          try {
+            await copyFile(fallback, dest);
+            console.log(`[sync-logos-studio-data] ${destName} (fallback)`);
+            copied += 1;
+            continue;
+          } catch {
+            /* fall through to skip */
+          }
+        }
         console.warn(`[sync-logos-studio-data] skip missing ${srcName} (keep existing ${destName})`);
         skipped += 1;
         continue;

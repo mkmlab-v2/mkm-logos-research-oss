@@ -1,0 +1,188 @@
+{
+  "schema_version": "showroom_logos_job_reading_pack_slice_v1",
+  "generated_at_utc": "2026-06-28T11:11:39Z",
+  "stale_after_utc": "2026-07-05T11:11:39Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "why_question_assembled": false,
+  "disclaimer": {
+    "evidence_tier": "hypo_research_only",
+    "gating_status": "NON_GATING",
+    "no_trade_signals": true,
+    "note_ko": "욥기 reading pack 3종 연구 스냅샷입니다. 종교·신학적 진리·투자·임상·실매매(Track A) 근거가 아니며 「왜 고난?」 인과 단답을 제공하지 않습니다. why_question_assembled=false."
+  },
+  "query_id": "job_suffering_reason",
+  "query_ko": "욥이 고난을 받은 이유",
+  "anchor_ref": "Job.1.6",
+  "export_gate": {
+    "reading_pack_verify_ok": true,
+    "topology_send_gate": "HOLD"
+  },
+  "reading_packs": [
+    {
+      "pack_id": "integrated_topology",
+      "label_ko": "통합 위상학 읽기 (딥리서치)",
+      "summary_ko": "5노드 변이 + 5구간 병목 + 42:5–6 Bridge — 인과 시스템 붕괴·재조립 서사.",
+      "utterance_class": "imagination_path",
+      "card_excerpt_ko": "**Query:** 욥이 고난을 받은 이유 · **query_id:** `job_suffering_reason`  \n**Pack:** `integrated_topology` · **utterance_class:** `imagination_path`  \n**Governance:** `[HYPO][NON_GATING]` · B-track · `send_gate: HOLD` · `why_question_assembled: false`\n\n\n0. Pack 1이 보는 것\n\n욥기 전권을 **하나의 인과 공식**이 아니라, **다섯 개념 노드가 위상(phase)을 바꿔 가며**  \n**닫힌 인과응보 체계 → 붕괴 → 교착 → scope reset → Bridge → 새로운 닫힘**  \n으로 **재조립되는 서사 기계**로 읽습니다.\n\n질문은 「왜 고난인가?」가 아니라 **「어떤 질서가 깨지고, 무엇으로 다시 닫히는가?」** 입니다.\n\n\nI. 프롤로그 — 인과 번영 체계의 붕괴 (Job 1–2)\n\n**앵커 Job 1:6:** 하늘 회의. `בני האלהים` + `השטן`(관사·검사적 고발자).\n\n사탄의 핵심 문장은 실질적으로: *「욥이 어찌 **까닭 없이** 하나님을 경외하겠는가?」*  \n즉 지상 종교가 **give-and-take(상벌 거래)** 위에 서 있었다는 **고발**입니다.  \n허가가 내려지자 욥의 **축복·몸·명성**이 한꺼번에 깨집니다 — 주체는 **죄로 설명되기 전**에 **영점(零點)** 으로 내려앉습니다.\n\n| 노드 | 닫힌 쪽 | 열리기 시작 |\n|------|---------|-------------|\n| **순전함 (Tummah)** | 「선하면 재앙 없다」 | 순전함이 **상벌과 분리** (1:8·2:3) |\n| **주권 (Shaddai)** | 계약 법정의 신 | **허가·상한**이 드러난 Shaddai (1:12·2:6) |\n| **침묵·고난** | — | **발가벗김·상실** = 탈영토화 전실 |\n\n1:21 「여호와께서 주셨으니…」는 **아직 닫힌 체계 안**에서의 순응이지만, **이미 인과 축은 끊긴 뒤**입니다.\n\n\nII. 3–31장 — 인간 법정의 교착 (Human Debate Loop)\n\n엘리바스·빌dad·소발은 **같은 대전제**를 공유: *의인은 형통하고, 악인은 망한다.*\n\n- **친구:** 고난 = **은밀한 죄**의 증거 → 욥을 **죄인**으로.\n- **욥:** 무죄한 고…"
+    },
+    {
+      "pack_id": "scope_reset_no_why",
+      "label_ko": "MKM scope reset (why-frame denied)",
+      "summary_ko": "38:4에서 why 조립 거부 — lemma망·theme_39 blameless outage와 병렬.",
+      "utterance_class": "imagination_path",
+      "card_excerpt_ko": "**Query:** 욥이 고난을 받은 이유 · **query_id:** `job_suffering_reason`  \n**Pack:** `scope_reset_no_why` · **utterance_class:** `imagination_path`  \n**Governance:** `[HYPO][NON_GATING]` · B-track · `send_gate: HOLD` · `why_question_assembled: false`\n\n**Pack 1 접합:** scope reset(본 pack) → **Bridge 42:5–6**(Pack 1) — 「왜?」 거부 후 **인식·관계 피벗**.\n\n\n0. Pack 2가 보는 것\n\nPack 2는 욥기 **38–41장**을 「고난 **원인** 공개」가 아니라 **질문 프레임(scope) 강제 리셋**으로 읽습니다.\n\n- **거부:** 「왜(why) 고난인가?」에 대한 **인과 단답 조립**\n- **대체:** 「**어디서/무엇을** 알았는가?」— 인간 **사법·환원주의 법정**의 **관할권 박탈**\n\nMKM contract: `intentional_causal_gap.why_question_assembled: false` — Pack 2는 이 가드의 **서사적 정당화층**입니다.\n\n\nI. why-frame — 욥·친구가 공유한 함정\n\n3–37장까지 욥과 친구는 **같은 질문 유형**에 갇혀 있습니다:\n\n| 화자 | 암묵적 질문 | 기대 답 |\n|------|-------------|---------|\n| **친구** | 왜 의인이 고난받는가? | **은밀한 죄** |\n| **욥** | 왜 무죄한 자가 고난받는가? | **신의 불의** |\n\n둘 다 **why → because** 인과 체인을 요구합니다.  \nPack 2 진단: 문제는 **답의 내용**이 아니라 **질문의 형식**입니다.\n\n\nII. blameless outage — theme_39 병렬 [HYPO ops]\n\n**theme_39** ([internal-ssot]):\n\n| 노드 | 구절 | ops 은유 |\n|------|------|----------|\n| innocence | Job 2:3 `תם וישר` | **SLO green yet outage** |\n| scope reset | Job 38:4 | **postmortem…"
+    },
+    {
+      "pack_id": "literal_council_only",
+      "label_ko": "문자·의회 프레임만",
+      "summary_ko": "1:6 의회·허가 서술 — 인과 확장·지휘 은유 승격 없음.",
+      "utterance_class": "imagination_path",
+      "card_excerpt_ko": "**Query:** 욥이 고난을 받은 이유 · **query_id:** `job_suffering_reason`  \n**Pack:** `literal_council_only` · **utterance_class:** `imagination_path`  \n**Governance:** `[HYPO][NON_GATING]` · B-track · `send_gate: HOLD` · `why_question_assembled: false`\n\n**격벽:** 본 pack은 **문자·의회 서술만** — Pack 1 위상학·Pack 2 scope reset **승격·합선 금지**.\n\n\n0. Pack 3이 보는 것\n\nPack 3은 **Job 1:6–2:6**의 **하늘 회의·허가 서술**을 **그대로** 읽습니다.\n\n- **읽는 것:** 출석 · 서림 · 고발자 등장 · **허가·상한**\n- **읽지 않는 것:** 「왜 고난?」 인과 답 · 지휘 은유 · 이원신론 · Track A 트리거\n\nsidecar `anchor_ref`: **Job.1.6**\n\n\nI. Job 1:6 — 의회 장면 (corpus floor)\n\n**BHS:** `וַ/יְהִי הַ/יּוֹם וַ/יָּבֹאוּ בְּנֵי הָ/אֱלֹהִים לְ/הִתְיַצֵּב עַל יְהוָה וַ/יָּב֥וֹא גַֽם הַ/שָּׂטָ֖ן בְּ/תוֹכָֽ/ם`\n\n| 표면 | 문자 읽기 |\n|------|-----------|\n| **בני האלהים** | 「하나님의 아들들」— **신적 의회 출석** (구성·정체는 본 pack **미확장**) |\n| **להתיצב על יהוה** | 여호와 **앞에 서림** — 회의 절차 |\n| **השטן** (관사 **ה**) | **the satan** — 고발자·대적자 **역할** (독립 신격 **단정 안 함**) |\n| **בתוכם** | 의회 **내부** 등장 |\n\nPack 3: **사건 opener** — 인과 체인의 **시작점 기록**이지 **원인 공식 아님**.\n\n\nII. Job 1:12 · 2:6 — 허가·상한 (bounded permission)\n\n**1:12** — 재산·자녀: `הנה כל אשר לו בידך רק אליו אל תשלח ידך`  \n- **범위:** 욥의 소유 **손에 맡김**  \n- **상한:** **욥本人**에게 손 대지 말 것\n\n**2:6** — 몸: `הנו…"
+    }
+  ],
+  "narrative_route_public": [
+    {
+      "stage_id": "prologue_heavenly_council",
+      "order": 1,
+      "label_ko": "천상 회의와 원인 없는 고난",
+      "bottleneck_ko": "사탄의 give-and-take 고발로 인과 축복 체계 붕괴.",
+      "verse_refs": [
+        "Job.1.6",
+        "Job.1.8",
+        "Job.1.12",
+        "Job.1.21"
+      ]
+    },
+    {
+      "stage_id": "human_debate_loop",
+      "order": 2,
+      "label_ko": "세 친구 3회전 격론",
+      "bottleneck_ko": "공유 대전제(의인 형통) 때문에 교착 — 3주기 소발 생략.",
+      "verse_refs": [
+        "Job.4.7",
+        "Job.8.20",
+        "Job.11.7",
+        "Job.20.22"
+      ]
+    },
+    {
+      "stage_id": "elihu_buffer",
+      "order": 3,
+      "label_ko": "엘리후 중재",
+      "bottleneck_ko": "지적 매개 한계 — 에필로그에서 배제되는 소음성 병목.",
+      "verse_refs": [
+        "Job.32.2",
+        "Job.33.12",
+        "Job.37.14"
+      ]
+    },
+    {
+      "stage_id": "divine_speech_grid",
+      "order": 4,
+      "label_ko": "폭풍 속 여호와 현현",
+      "bottleneck_ko": "도덕 환원주의 무력화 — 베헤못·리워야단 야생 주권.",
+      "verse_refs": [
+        "Job.38.4",
+        "Job.38.26",
+        "Job.40.15",
+        "Job.41.1"
+      ]
+    },
+    {
+      "stage_id": "epilogue_closure",
+      "order": 5,
+      "label_ko": "갑절 회복과 서사 닫힘",
+      "bottleneck_ko": "단순 복구가 아닌 급진적 은총 — 딸 이름·상속 파격.",
+      "verse_refs": [
+        "Job.42.5",
+        "Job.42.10",
+        "Job.42.15",
+        "Num.27.8"
+      ]
+    }
+  ],
+  "anchor_nodes_public": [
+    {
+      "node_id": "integrity_tummah",
+      "label_ko": "순전함 (Tummah)",
+      "closed_system_ko": "규범·계약 이행과 재앙 회피를 위한 사법적 안전장치.",
+      "open_system_ko": "상벌 체계와 무관한 실존적 영점 중립성·주체 독립."
+    },
+    {
+      "node_id": "justice_mishpat",
+      "label_ko": "공의 (Mishpat)",
+      "closed_system_ko": "도덕 행위와 물리적 상벌의 선형 환류 f(x)=y.",
+      "open_system_ko": "혼돈·질서를 유기 통합하는 우주적 균형 — 인간 중심 사법 초월."
+    },
+    {
+      "node_id": "sovereignty_shaddai",
+      "label_ko": "주권 (Shaddai)",
+      "closed_system_ko": "계약 법정의 가부장적 통치자·최고 집행관.",
+      "open_system_ko": "예측 거부·유용성 초월의 야생적 창조 에너지 — 고난을 존재론적 조우로."
+    },
+    {
+      "node_id": "silence_suffering",
+      "label_ko": "침묵·고난",
+      "closed_system_ko": "범죄의 신벌·부재의 기호적 암흑.",
+      "open_system_ko": "유한 사유 해체·신적 현현 수용을 위한 탈영토화 공간."
+    },
+    {
+      "node_id": "restoration_closure",
+      "label_ko": "회복·닫힘",
+      "closed_system_ko": "상실 이전 상태 회귀·인과응보 계약 복구.",
+      "open_system_ko": "조건 없는 은총·미학적 가치 — 가부장 율법 초월."
+    }
+  ],
+  "bridge_pivot_public": {
+    "verse_ref": "Job.42.5",
+    "label_ko": "귀로 듣던 것을 눈으로 봄",
+    "reading_ko": "명제적·인과론적 hearsay에서 실존적 presence로 — 사법적 청구(מאס) 폐기와 피조성 영점의 안식(נחם)."
+  },
+  "highlight_presets": [
+    {
+      "preset_id": "job_suffering_reason",
+      "label_ko": "욥 — 고난·의회·scope reset",
+      "keywords_ko": [
+        "욥",
+        "고난",
+        "의회",
+        "scope",
+        "bridge",
+        "회복"
+      ],
+      "pack_ids": [
+        "integrated_topology",
+        "scope_reset_no_why",
+        "literal_council_only"
+      ],
+      "narrative_stage_ids": [
+        "prologue_heavenly_council",
+        "human_debate_loop",
+        "elihu_buffer",
+        "divine_speech_grid",
+        "epilogue_closure"
+      ]
+    },
+    {
+      "preset_id": "existential_suffering",
+      "label_ko": "실존적 고난 (데모)",
+      "keywords_ko": [
+        "실존",
+        "고난",
+        "교착",
+        "침묵"
+      ],
+      "pack_ids": [
+        "integrated_topology",
+        "scope_reset_no_why"
+      ],
+      "narrative_stage_ids": [
+        "human_debate_loop",
+        "divine_speech_grid",
+        "epilogue_closure"
+      ]
+    }
+  ]
+}
