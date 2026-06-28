@@ -40,6 +40,15 @@ import {
   type SynthesisResult,
 } from "./logosStudioSynthesisBridgeV1";
 import { resolveReadingPackAnswerForPreset } from "./logosStudioReadingPackBridgeV1";
+import {
+  logosStudioLemmaBridgeEnabled,
+  synthesizeLogosStudioLemmaBridge,
+  type LemmaBridgeResult,
+} from "./logosStudioLemmaBridgeV1";
+import {
+  applyPresetQueryGuard,
+  type LogosPresetQueryGuardV1,
+} from "./logosStudioPresetQueryGuardV1";
 
 
 
@@ -365,6 +374,20 @@ export function resolvePresetId(
 
 
 
+export type LogosStudioPresetResolveMatch =
+  | "id"
+  | "text"
+  | "lexical"
+  | "embedding"
+  | "none"
+  | `query_guard_${string}`;
+
+export type LogosStudioPresetResolveResult = {
+  preset_id: string | null;
+  match: LogosStudioPresetResolveMatch;
+  preset_guard?: LogosPresetQueryGuardV1 | null;
+};
+
 export async function resolvePresetIdAsync(
 
   presets: LogosStudioPreset[],
@@ -375,38 +398,67 @@ export async function resolvePresetIdAsync(
 
   embeddingIndex?: LogosStudioEmbeddingIndex | null,
 
-): Promise<{ preset_id: string | null; match: "id" | "text" | "lexical" | "embedding" | "none" }> {
+): Promise<LogosStudioPresetResolveResult> {
+
+  const requestedId = opts.preset_id?.trim();
+  const queryTrim = opts.query?.trim() ?? "";
+
+  if (requestedId && queryTrim) {
+    const queryRoute = await resolvePresetIdAsync(
+      presets,
+      { query: queryTrim },
+      lexicalIndex,
+      embeddingIndex,
+    );
+    const guarded = applyPresetQueryGuard({
+      presets,
+      requestedPresetId: requestedId,
+      query: queryTrim,
+      queryRoutedPresetId: queryRoute.preset_id,
+      queryMatch: queryRoute.match.replace(/^query_guard_/, ""),
+    });
+    if (guarded.preset_guard?.action === "auto_route") {
+      return {
+        preset_id: guarded.preset_id,
+        match: guarded.match as LogosStudioPresetResolveMatch,
+        preset_guard: guarded.preset_guard,
+      };
+    }
+    if (guarded.preset_guard?.action === "aligned") {
+      return { preset_id: requestedId, match: "id", preset_guard: null };
+    }
+  }
 
   const tier01 = resolvePresetId(presets, opts, lexicalIndex);
 
-  if (tier01.match === "id") return tier01;
+  if (tier01.match === "id") return { ...tier01, preset_guard: null };
 
-  if (tier01.preset_id?.startsWith("bigset_topic_")) return tier01;
+  if (tier01.preset_id?.startsWith("bigset_topic_")) return { ...tier01, preset_guard: null };
 
-  if (!opts.query?.trim()) return tier01;
+  if (!opts.query?.trim()) return { ...tier01, preset_guard: null };
 
-  if (!logosStudioEmbeddingRouterEnabled()) return tier01;
+  if (!logosStudioEmbeddingRouterEnabled()) return { ...tier01, preset_guard: null };
 
   const index = embeddingIndex ?? (await loadLogosStudioEmbeddingIndex());
 
-  if (!index.vectors?.length) return tier01;
+  if (!index.vectors?.length) return { ...tier01, preset_guard: null };
 
   const encoded = await encodeLogosStudioQueryEmbedding(opts.query.trim());
 
-  if (!encoded.ok) return tier01;
+  if (!encoded.ok) return { ...tier01, preset_guard: null };
 
   const embedded = resolvePresetFromEmbeddingIndex(encoded.vector, index);
 
-  if (!embedded.preset_id) return tier01;
+  if (!embedded.preset_id) return { ...tier01, preset_guard: null };
 
   const weakTier01 =
     !tier01.preset_id ||
     tier01.preset_id.startsWith("era_") ||
     tier01.preset_id.startsWith("topic_");
 
-  if (weakTier01) return { preset_id: embedded.preset_id, match: "embedding" };
+  if (weakTier01) return { preset_id: embedded.preset_id, match: "embedding", preset_guard: null };
 
-  return tier01;
+  return { ...tier01, preset_guard: null };
 
 }
 
@@ -548,6 +600,7 @@ export type StudioQueryPayload = {
   };
   conflict_context?: Extract<ConflictContextResult, { ok: true }> | null;
   synthesis_meta?: Extract<SynthesisResult, { ok: true }> | null;
+  lemma_bridge_meta?: Extract<LemmaBridgeResult, { ok: true }> | null;
   evidence_confidence?: {
     ecs_v1: number;
     band: "low" | "mid" | "high";
@@ -933,6 +986,44 @@ export async function buildStudioQueryWithGraphrag(
           ...activePayload,
           answer: packAnswer,
           query_mode: `${activePayload.query_mode || "preset"}+reading_pack`,
+        };
+      }
+    }
+  }
+
+  if (
+    payload &&
+    logosStudioLemmaBridgeEnabled() &&
+    q &&
+    (payload.path.verse_refs?.length ?? 0) > 0
+  ) {
+    const bridge = await synthesizeLogosStudioLemmaBridge(payload, q);
+    if (bridge.ok && (bridge.neighbor_count ?? 0) > 0) {
+      const mode = payload.query_mode || "preset";
+      const hasSynthesis = Boolean(
+        payload.synthesis_meta &&
+          typeof payload.synthesis_meta === "object" &&
+          "synthesis_mode" in payload.synthesis_meta,
+      );
+      const isGraphragThin =
+        mode === "graphrag_only" ||
+        (mode.includes("graphrag") && !hasSynthesis && (payload.answer?.length ?? 0) < 360);
+      if (isGraphragThin) {
+        payload = {
+          ...payload,
+          answer: bridge.answer_ko,
+          query_mode: `${mode}+lemma_bridge`,
+          lemma_bridge_meta: bridge,
+        };
+      } else {
+        const sectionStart = bridge.answer_ko.indexOf("### 2.");
+        const neighborBlock =
+          sectionStart >= 0 ? bridge.answer_ko.slice(sectionStart).trim() : bridge.answer_ko;
+        payload = {
+          ...payload,
+          answer: `${payload.answer}\n\n${neighborBlock}`,
+          query_mode: `${mode}+lemma_bridge`,
+          lemma_bridge_meta: bridge,
         };
       }
     }

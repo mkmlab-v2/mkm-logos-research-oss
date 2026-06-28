@@ -94,6 +94,8 @@ def main() -> int:
     steps.append(_run("bloom_31k", [PY, "scripts/build_logos_studio_31k_bloom_secondary_fetch_v1.py"]))
     steps.append(_run("dynamic_router", [PY, "scripts/build_logos_studio_dynamic_subgraph_router_sidecar_v1.py"]))
     steps.append(_run("conflict_sidecar", [PY, "scripts/build_bigset_studio_conflict_sidecar_v1.py"]))
+    steps.append(_run("lemma_neighbor_index", [PY, "scripts/build_logos_studio_lemma_neighbor_index_v1.py"]))
+    steps.append(_run("lemma_bridge_gate", [PY, "scripts/check_logos_studio_lemma_bridge_gate_v1.py"]))
     steps.append(_run("oss_premarket_smoke", [PY, "scripts/run_logos_oss_premarket_smoke_v1.py"], timeout=180))
 
     # 5: audit + governance
@@ -123,6 +125,7 @@ def main() -> int:
                 "tests/test_build_logos_bible_full_coverage_audit_v1.py",
                 "tests/test_logos_verse_ref_canonical_v1.py",
                 "tests/test_logos_studio_dynamic_synthesis_v1.py",
+                "tests/test_logos_studio_lemma_bridge_v1.py",
                 "-q",
             ],
             timeout=120,
