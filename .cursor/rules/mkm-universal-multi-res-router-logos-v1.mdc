@@ -1,0 +1,49 @@
+---
+description: Logos·성경·gematria 토픽 시 universal_multi_res_router_v1 의무 호출 + domain_plugin Read (U2b). [NON_GATING] 격벽.
+alwaysApply: false
+---
+
+# Universal Multi-Res Router — Logos 레인 U2b 훅
+
+**SSOT:** `scripts/universal_multi_res_router_v1.py` · `docs/final/schemas/universal_multi_res_router_v1.schema.json`  
+**플러그인:** `domain_plugin.plugin_id: logos_lens_v1` · lite_plus inventory · `[NON_GATING]`
+
+## When
+
+- **Logos·성경·gematria·GraphRAG·topology_sidecar** 토픽
+- 경로 `scripts/*logos*` · `docs/final/artifacts/logos_*` 조작·질문
+- gold eval · NL fact-lock guard · cross-domain interface 논의
+
+`@mkm-universal-multi-res-router-logos-v1` 또는 본 파일 Read 후 진행.
+
+## ALWAYS
+
+1. `py scripts/universal_multi_res_router_v1.py --query "<의도 한 줄>"`
+2. Read `docs/final/artifacts/universal_multi_res_router_v1_latest.json`
+3. **`hold_gate`** → 중단; `forbidden_hits` 인용
+4. **`high_res`** → `agent_read_order` 전 경로 Read:
+   - `docs/final/artifacts/logos_expectation_vs_fact_matrix_v1_lite.md`
+   - `docs/final/artifacts/logos_context_inventory_v1_latest.json`
+   - `docs/final/artifacts/LOGOS_INDEPENDENT_LENS_V0_CONTRACT.json`
+   - `docs/final/artifacts/logos_independent_lens_latest.json`
+   - `docs/final/artifacts/notebooklm_lens_logos_nl_fact_lock_guard_v1_latest.md`
+5. 주장 시 **L1–L4** row · `[HYPO]` vs `[FACT]` · **`[NON_GATING]`** 유지
+
+## NEVER
+
+- Logos를 **실매매·예언·Track A 트리거**로 승격
+- `gematria` / `vector_4d` → 사상 stress **커널 합선** (`routing_hints_only` 위반)
+- NL·NotebookLM 단독으로 구현·통과 **단정**
+- Ollama shallow를 구현 SSOT로 승격
+
+## Optional
+
+- stale inventory: `py scripts/logos_context_inventory_v1.py` 후 라우터 재실행
+- `--shallow-json reports/ollama_shallow_router_handoff_v1_latest.json`
+
+## 재현
+
+```powershell
+py scripts/universal_multi_res_router_v1.py --query "Logos GraphRAG gold spot check"
+py -m pytest tests/test_mkm_universal_multi_res_router_logos_hook_v1.py -q
+```

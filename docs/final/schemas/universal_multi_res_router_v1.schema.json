@@ -1,0 +1,189 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/universal_multi_res_router_v1.schema.json",
+  "title": "Universal multi-resolution router v1 (B-track SSOT)",
+  "description": "Deterministic routing SSOT: resolution tier, epistemic grade, domain plugin pointers. Ollama shallow router is an optional inference_adapter — not the SSOT. Commercial gateway fields are stub-only until explicit promotion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "rail",
+    "research_only",
+    "send_gate",
+    "promotion_to_a_track_allowed",
+    "input",
+    "infrastructure_mode",
+    "inference_adapter",
+    "commercial_gateway_hooks",
+    "governance_override",
+    "resolution_tier",
+    "epistemic_grade",
+    "domain_tag",
+    "fixed_schema_pass",
+    "required_ltm_depth",
+    "complexity_score",
+    "forbidden_hits",
+    "routing_overlay_policy",
+    "domain_plugin",
+    "plugin_registry_ref",
+    "reproduce_command"
+  ],
+  "properties": {
+    "schema": { "const": "universal_multi_res_router_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "rail": { "const": "B_TRACK" },
+    "research_only": { "const": true },
+    "send_gate": { "const": "HOLD" },
+    "promotion_to_a_track_allowed": { "const": false },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["query"],
+      "properties": {
+        "query": { "type": "string" },
+        "command": { "type": "string" }
+      }
+    },
+    "infrastructure_mode": {
+      "type": "string",
+      "enum": ["local_pc", "headless_ci", "cloud_vps_api"]
+    },
+    "inference_adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provider", "model_version_pin", "fallback_triggered"],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "enum": ["ollama", "cloud_managed_llm", "keyword_heuristics"]
+        },
+        "model_version_pin": { "type": "string" },
+        "fallback_triggered": { "type": "boolean" },
+        "ollama_host": { "type": "string" },
+        "shallow_router_schema_compat": {
+          "type": "string",
+          "const": "ollama_shallow_router_output_v1"
+        }
+      }
+    },
+    "commercial_gateway_hooks": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["api_route", "metering_enabled", "quota_limit_bypass", "stub_status"],
+      "properties": {
+        "api_route": { "type": "string", "const": "/api/v1/lens/route" },
+        "metering_enabled": { "const": false },
+        "quota_limit_bypass": { "const": false },
+        "stub_status": { "type": "string", "const": "pre_registration_only" }
+      }
+    },
+    "governance_override": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["send_gate", "promotion_to_a_track_allowed", "human_review_required"],
+      "properties": {
+        "send_gate": { "const": "HOLD" },
+        "promotion_to_a_track_allowed": { "const": false },
+        "human_review_required": { "const": true }
+      }
+    },
+    "resolution_tier": {
+      "type": "string",
+      "enum": ["low_res", "high_res", "hold_gate"]
+    },
+    "epistemic_grade": {
+      "type": "string",
+      "enum": ["FACT", "HYPO", "VISION", "FORBIDDEN"]
+    },
+    "domain_tag": {
+      "type": "string",
+      "enum": [
+        "sasang",
+        "logos",
+        "myeongni",
+        "oracle",
+        "compression",
+        "science",
+        "infra",
+        "devops",
+        "design",
+        "ops",
+        "unclassified"
+      ]
+    },
+    "fixed_schema_pass": { "type": "boolean" },
+    "required_ltm_depth": { "type": "number", "minimum": 0, "maximum": 1 },
+    "complexity_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "forbidden_hits": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "routing_overlay_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "must_not_merge_into_kernel"],
+      "properties": {
+        "mode": { "const": "routing_hints_only" },
+        "must_not_merge_into_kernel": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "sidecar_schema_ref": { "type": "string" }
+      }
+    },
+    "shallow_router_compat": {
+      "type": "object",
+      "description": "Optional absorbed ollama_shallow_router_output_v1 fields (advisory only).",
+      "properties": {
+        "domain_tag": { "type": "string" },
+        "coordinates": {
+          "type": "object",
+          "properties": {
+            "S": { "type": "number" },
+            "L": { "type": "number" },
+            "K": { "type": "number" },
+            "M": { "type": "number" }
+          }
+        },
+        "anchor_ids": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "domain_plugin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plugin_id", "agent_read_order", "low_res_runners"],
+      "properties": {
+        "plugin_id": { "type": "string" },
+        "agent_read_order": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "low_res_runners": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "expectation_matrix_ref": { "type": "string" },
+        "inventory_artifact_ref": { "type": "string" },
+        "contract_ref": { "type": "string" },
+        "hold_flags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "u3_tier": { "type": "string" }
+      }
+    },
+    "plugin_registry_ref": { "type": "string", "minLength": 1 },
+    "low_res_action": {
+      "type": "object",
+      "properties": {
+        "runner": { "type": "string" },
+        "reason_ko": { "type": "string" }
+      }
+    },
+    "reproduce_command": { "type": "string", "minLength": 1 }
+  }
+}

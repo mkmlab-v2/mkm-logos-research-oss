@@ -1,0 +1,47 @@
+---
+description: 명리·사주·만세력 토픽 시 universal_multi_res_router_v1 의무 호출 + domain_plugin Read (U2c). 학파 충돌 격벽.
+alwaysApply: false
+---
+
+# Universal Multi-Res Router — 명리 레인 U2c 훅
+
+**SSOT:** `scripts/universal_multi_res_router_v1.py`  
+**플러그인:** `domain_plugin.plugin_id: myeongni_lens_v1` · lite tier · conflict arbitration runtime
+
+## When
+
+- **명리·사주·만세력·십신·육친·학파 충돌** 토픽
+- 경로 `scripts/*myeongni*` · `data/myeongni/*` · `MYEONGNI_INDEPENDENT_LENS` 조작·질문
+
+`@mkm-universal-multi-res-router-myeongni-v1` 또는 본 파일 Read 후 진행.
+
+## ALWAYS
+
+1. `py scripts/universal_multi_res_router_v1.py --query "<의도 한 줄>"`
+2. Read `docs/final/artifacts/universal_multi_res_router_v1_latest.json`
+3. **`hold_gate`** → 중단
+4. **`high_res`** → Read:
+   - `docs/final/artifacts/myeongni_expectation_vs_fact_matrix_v1_lite.md`
+   - `docs/final/artifacts/myeongni_context_inventory_v1_latest.json`
+   - `docs/final/artifacts/MYEONGNI_INDEPENDENT_LENS_V0_CONTRACT.json`
+   - `docs/final/artifacts/myeongni_independent_lens_latest.json`
+   - `reports/myeongni_conflict_arbitration_runtime_mode_latest.json`
+5. **학파 충돌**은 `myeongni_conflict_arbitration` 정책·runtime 스탬프 인용
+
+## NEVER
+
+- 명리 16 → 사상 12 **동일 인물 맵** 단정
+- 시장 지수 → 출생 차트 **대체**
+- 예언·Track A **자동 승격**
+- 풀 리포트 없이 명리 **단정 답변** (`myeongni-full-report-ssot` 위반)
+
+## Optional
+
+- `py scripts/myeongni_context_inventory_v1.py` · `py scripts/build_myeongni_full_report_v1.py`
+
+## 재현
+
+```powershell
+py scripts/universal_multi_res_router_v1.py --query "명리 학파 충돌"
+py -m pytest tests/test_mkm_universal_multi_res_router_myeongni_hook_v1.py -q
+```

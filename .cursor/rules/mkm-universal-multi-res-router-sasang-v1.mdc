@@ -1,0 +1,52 @@
+---
+description: 사상·sasang 토픽 시 universal_multi_res_router_v1 의무 호출 + domain_plugin Read 순서 (U2). Multi-resolution router hook.
+alwaysApply: false
+---
+
+# Universal Multi-Res Router — 사상 레인 U2 훅
+
+**SSOT:** `scripts/universal_multi_res_router_v1.py` · `docs/final/schemas/universal_multi_res_router_v1.schema.json`  
+**플러그인:** `domain_plugin.plugin_id: sasang_context_v1` · expectation matrix · 908 인벤토리
+
+## When (로드·적용 트리거)
+
+- 사용자 메시지에 **사상·sasang·사상동역학·체질·병증·금화교역·보명지주** 등
+- 경로 `scripts/*sasang*` · `docs/final/artifacts/sasang_*` · `SASANG_DYNAMICS` 조작·질문
+- 구현·통과·「완료」·마일스톤 범위를 **사상 레인**으로 논할 때
+
+`@mkm-universal-multi-res-router-sasang-v1` 또는 본 파일 Read 후 진행.
+
+## ALWAYS (답변·구현 주장 전)
+
+1. **라우터 실행** (인프라 자동 감지 실패 시 `headless_ci` 폴백 허용):
+   ```powershell
+   py scripts/universal_multi_res_router_v1.py --query "<사용자 의도 한 줄>"
+   ```
+2. **Read** `docs/final/artifacts/universal_multi_res_router_v1_latest.json`
+3. **`hold_gate`** (`epistemic_grade: FORBIDDEN|VISION`) → 구현·승격·실행 **중단**; `forbidden_hits` 인용; `send_gate: HOLD`만
+4. **`high_res`** → `domain_plugin.agent_read_order` **전 경로 Read** 후 범위·팩트 주장:
+   - `docs/final/artifacts/sasang_expectation_vs_fact_matrix_v1.md`
+   - `docs/final/artifacts/sasang_context_inventory_v1_latest.json`
+   - `docs/final/artifacts/SASANG_DYNAMICS_V1_CONTRACT.json`
+   - `docs/final/artifacts/sasang_dynamics_btrack_milestone_v1_latest.json`
+5. **`low_res`** → `low_res_action.runner` 또는 `low_res_runners`만; **여전히** Track A·임상·live 승격 주장 금지
+6. 주장 시 **E1–E6** (`expectation_vs_fact_matrix`) 중 해당 row · `[HYPO]` vs `[FACT]` 라벨
+
+## NEVER
+
+- 「최근 3턴만」으로 사상 271/908 자산·마일스톤 **단정** (인벤토리·라우터 생략)
+- `routing_overlay_policy` 위반 — **gematria `vector_4d`·Track A 커널 합선**
+- 채팅만으로 `send_gate` / `promotion_to_a_track_allowed` **해제**
+- Ollama shallow 출력을 **구현 SSOT**로 승격 (어댑터·`[HYPO]`만)
+
+## Optional
+
+- Ollama 산출 흡수: `--shallow-json reports/ollama_shallow_router_handoff_v1_latest.json` (있을 때만)
+- stale 인벤토리: `py scripts/sasang_context_inventory_v1.py` 후 라우터 재실행
+
+## 재현
+
+```powershell
+py scripts/universal_multi_res_router_v1.py --query "사상 stress 계산"
+py -m pytest tests/test_universal_multi_res_router_v1.py -q
+```

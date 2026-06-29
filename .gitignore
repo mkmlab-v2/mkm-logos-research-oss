@@ -25,6 +25,10 @@ vendor/korean-medicine-texts/
 !.cursor/rules/mkm-solo-oss-operator-default-v1.mdc
 # WSE-3 Cursor commander starters (alwaysApply false; clone/CI P0 parity)
 !.cursor/rules/mkm-wse3-commander-starters.mdc
+# Universal multi-res router lane hooks (opt-in; Y1b B-track HOLD)
+!.cursor/rules/mkm-universal-multi-res-router-sasang-v1.mdc
+!.cursor/rules/mkm-universal-multi-res-router-logos-v1.mdc
+!.cursor/rules/mkm-universal-multi-res-router-myeongni-v1.mdc
 # Cursor session validation baseline (alwaysApply; share across clones)
 !.cursor/rules/cursor-session-validation-baseline-v1.mdc
 !.cursor/rules/mkm-delegation-research-assist-v1.mdc
@@ -95,6 +99,10 @@ docs/final/artifacts/**
 # Ops snapshot body + NotebookLM research index archives (split from docs/final/*.md; Vault sync targets)
 !docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md
 !docs/final/artifacts/mkm_agent_loops_v1_latest.md
+!docs/final/artifacts/universal_multi_res_router_y1b_position_v1_latest.md
+!docs/final/artifacts/logos_expectation_vs_fact_matrix_v1_lite.md
+!docs/final/artifacts/myeongni_expectation_vs_fact_matrix_v1_lite.md
+!docs/final/artifacts/notebooklm_lens_logos_nl_fact_lock_guard_v1_latest.md
 !docs/final/artifacts/research_history_notebooklm_snapshot_2026-04-12.md
 # B-track ensemble baseline (not regenerable *_latest; scripts default to this path)
 !docs/final/artifacts/btrack_lens_ensemble_v1.json

@@ -240,6 +240,9 @@ param(
     # Optional: DR bench mini offline + ops paste (B-track; no arXiv network)
     [switch]$IncludeDeepResearchBenchSmoke,
 
+    # Optional: Y1b universal multi-res router + plugin registry pytest (B-track HOLD)
+    [switch]$IncludeUniversalMultiResRouterSmoke,
+
     # Optional: ko shorts STT subtitle pipeline offline pytest (B-track; no whisper)
     [switch]$IncludeKoShortsSmoke,
 
@@ -1305,6 +1308,34 @@ if ($IncludeDeepResearchBenchSmoke) {
         exit $LASTEXITCODE
     }
     & py $drPasteScript
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+
+if ($IncludeUniversalMultiResRouterSmoke) {
+    $umrPytests = @(
+        (Join-Path $workspaceRoot 'tests\test_universal_multi_res_router_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_universal_multi_res_plugin_registry_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_mkm_universal_multi_res_router_sasang_hook_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_mkm_universal_multi_res_router_logos_hook_v1.py'),
+        (Join-Path $workspaceRoot 'tests\test_mkm_universal_multi_res_router_myeongni_hook_v1.py')
+    )
+    $umrRegistry = Join-Path $workspaceRoot 'scripts\build_universal_multi_res_plugin_registry_v1.py'
+    foreach ($t in $umrPytests) {
+        if (-not (Test-Path -LiteralPath $t)) {
+            throw "universal multi-res router pytest not found: $t"
+        }
+    }
+    if (-not (Test-Path -LiteralPath $umrRegistry)) {
+        throw "universal multi-res plugin registry builder not found: $umrRegistry"
+    }
+    Write-Host '== Fact-Lock (optional): universal multi-res router Y1b smoke (B-track HOLD) ==' -ForegroundColor Cyan
+    & py $umrRegistry
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+    & py -m pytest @umrPytests -q --tb=short
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
     }

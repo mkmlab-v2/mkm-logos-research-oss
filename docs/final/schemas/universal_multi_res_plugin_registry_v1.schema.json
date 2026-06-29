@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/universal_multi_res_plugin_registry_v1.schema.json",
+  "title": "Universal multi-res plugin registry v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "rail",
+    "research_only",
+    "send_gate",
+    "promotion_to_a_track_allowed",
+    "router_schema_ref",
+    "plugins",
+    "reproduce_command"
+  ],
+  "properties": {
+    "schema": { "const": "universal_multi_res_plugin_registry_v1" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "rail": { "const": "B_TRACK" },
+    "research_only": { "const": true },
+    "send_gate": { "const": "HOLD" },
+    "promotion_to_a_track_allowed": { "const": false },
+    "router_schema_ref": { "type": "string" },
+    "position_ref": { "type": "string" },
+    "plugins": {
+      "type": "object",
+      "minProperties": 4,
+      "additionalProperties": { "$ref": "#/$defs/plugin" }
+    },
+    "reproduce_command": { "type": "string" }
+  },
+  "$defs": {
+    "plugin": {
+      "type": "object",
+      "required": [
+        "plugin_id",
+        "lane_id",
+        "lane_label_ko",
+        "agent_read_order",
+        "low_res_runners",
+        "hold_flags",
+        "u3_tier"
+      ],
+      "properties": {
+        "plugin_id": { "type": "string" },
+        "lane_id": { "type": "string" },
+        "lane_label_ko": { "type": "string" },
+        "time_horizon_ko": { "type": "string" },
+        "expectation_matrix_ref": { "type": ["string", "null"] },
+        "inventory_artifact_ref": { "type": ["string", "null"] },
+        "contract_ref": { "type": ["string", "null"] },
+        "agent_read_order": { "type": "array", "items": { "type": "string" } },
+        "low_res_runners": { "type": "array", "items": { "type": "string" } },
+        "hold_flags": { "type": "array", "items": { "type": "string" } },
+        "u3_tier": { "type": "string", "enum": ["full", "lite_plus", "lite", "stub"] },
+        "stub_status": { "type": "string" },
+        "anchors_ok": { "type": "object" }
+      }
+    }
+  }
+}
