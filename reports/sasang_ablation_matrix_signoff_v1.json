@@ -2,7 +2,7 @@
   "schema": "sasang_ablation_matrix_signoff_v1",
   "version": "1.0.0",
   "protocol_id": "SPEC-MKM-2026-06A",
-  "generated_at_utc": "2026-06-29T17:38:50Z",
+  "generated_at_utc": "2026-06-29T17:30:30Z",
   "research_only": true,
   "send_gate": "HOLD",
   "merge_allowed": true,
@@ -67,6 +67,8 @@
   "boundary_ack": "Ablation matrix only — not Track A · not clinical diagnosis · not main _latest overwrite.",
   "reproduce": "py scripts/run_lens_sasang_ablation_bench_v1.py --baseline-report C:\\workspace\\reports\\mkm_ltm_route_accuracy_bench_v1_latest.json",
   "commander_preapproved": true,
+  "commander_approval_phrase_ko": "지휘관 승인 — B-track interpretive 승격만; Track A·CDSS·send_gate SEND 금지",
+  "commander_approved_at_utc": "2026-06-29T17:30:30Z",
   "promotion_artifacts": {
     "paper_verdict": "experiments/sasang-head-btrack/artifacts/sasang_pyobyeong_promotion_paper_verdict_v1.json",
     "charter_amendment": "experiments/sasang-head-btrack/CHARTER_AMENDMENT_DRAFT_v1.md",
