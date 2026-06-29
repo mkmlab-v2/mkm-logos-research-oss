@@ -1,0 +1,31 @@
+{
+  "schema": "logos_studio_b2b_demo_preset_allowlist_v1",
+  "generated_at_utc": "2026-06-29T01:45:00Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "description_ko": "B2B 데모·일일 smoke 배치 — quota-free embed allowlist와 동기",
+  "preset_ids": [
+    "job_job_suffering_reason",
+    "isaiah_youtube_spine_v1",
+    "bigset_topic_nephilim",
+    "topic_ezra_1_anchor",
+    "era_gospel_logos_incarnate"
+  ],
+  "min_answer_chars": 80,
+  "min_verse_refs": 1,
+  "min_highlight_nodes": 1,
+  "preset_gates": {
+    "bigset_topic_nephilim": {
+      "min_verse_refs": 0,
+      "min_highlight_nodes": 10,
+      "min_answer_chars": 200,
+      "note": "BigSet synthesis — path verse_refs optional; highlight slice required"
+    },
+    "era_gospel_logos_incarnate": {
+      "min_verse_refs": 0,
+      "min_highlight_nodes": 1,
+      "min_answer_chars": 80,
+      "note": "Era anchor — compact answer; verse_refs optional"
+    }
+  }
+}

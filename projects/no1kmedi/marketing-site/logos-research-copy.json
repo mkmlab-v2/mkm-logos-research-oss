@@ -144,6 +144,14 @@
     "cta_primary": "기관·연구 파일럿 문의",
     "cta_secondary": "Graph Studio 라이브 데모 (30초)"
   },
+  "landing": {
+    "value_title": "핵심 가치 — 경로가 보이는 주석 워크스페이스",
+    "value_lead": "생성형 답변 대신 GraphRAG 경로·citation lock·학파 격벽을 한 화면에서 검증합니다.",
+    "pilot_title": "기관 파일럿 프로그램",
+    "pilot_lead": "맞춤 preset 5–10 · private slice · 4–8주 · SOW 협의. 자동 과금·SEND 없음(send_gate HOLD).",
+    "architecture_title": "기술 아키텍처 · Fact-Lock",
+    "architecture_lead": "curated graph slice(~900 nodes) · 31k 코퍼스 엔진 격벽 · OSS 재현 경로."
+  },
   "hero_embed": {
     "title": "Logos Graph Studio — Layer B live demo",
     "note": "질문 → 답변 + subgraph · Path/Refs citation lock · 30s autoplay (Track C read-only demo)",

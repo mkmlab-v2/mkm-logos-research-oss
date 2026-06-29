@@ -17046,6 +17046,118 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   }
 }
 
+/* B2B onboarding overlay (omni entry) */
+.logos-research-page .lr-studio-onboarding {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.logos-research-page .lr-studio-onboarding__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.logos-research-page .lr-studio-onboarding__panel {
+  position: relative;
+  width: min(32rem, 100%);
+  border-radius: 16px;
+  background: #fff;
+  border: 1px solid rgba(45, 122, 104, 0.22);
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18);
+  padding: 1.35rem 1.5rem;
+}
+
+.logos-research-page .lr-studio-onboarding__eyebrow {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin: 0 0 0.35rem;
+}
+
+.logos-research-page .lr-studio-onboarding__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+  color: #1e4d42;
+}
+
+.logos-research-page .lr-studio-onboarding__lead {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #44403c;
+}
+
+.logos-research-page .lr-studio-onboarding__choices {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.logos-research-page .lr-studio-onboarding__choice {
+  text-align: left;
+  border: 1px solid rgba(91, 74, 50, 0.14);
+  border-radius: 12px;
+  padding: 0.75rem 0.9rem;
+  background: #faf7f2;
+  cursor: pointer;
+}
+
+.logos-research-page .lr-studio-onboarding__choice strong {
+  display: block;
+  font-size: 0.92rem;
+  color: #292524;
+}
+
+.logos-research-page .lr-studio-onboarding__choice span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #78716c;
+}
+
+.logos-research-page .lr-studio-onboarding__choice--active {
+  border-color: rgba(45, 122, 104, 0.45);
+  background: rgba(45, 122, 104, 0.08);
+}
+
+.logos-research-page .lr-studio-onboarding__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  margin-top: 1.15rem;
+}
+
+/* Landing IA compact */
+.logos-research-page .lr-metrics-grid--compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.logos-research-page .lr-tier-card--pilot {
+  max-width: 36rem;
+  margin: 1rem 0;
+  padding: 1rem 1.15rem;
+  border-radius: 12px;
+  border: 1px solid rgba(45, 122, 104, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.logos-research-page .lr-disclaimer-fold {
+  margin-top: 1.25rem;
+}
+
+.logos-research-page .lr-trust-inline {
+  margin-top: 1rem;
+}
+
+@media (max-width: 720px) {
+  .logos-research-page .lr-metrics-grid--compact {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* 7. Floating Citation Lock */
 .logos-research-page.logos-research-studio-theme--scriptorium .mkm-trust-canvas-citation-dock {
   position: absolute;
