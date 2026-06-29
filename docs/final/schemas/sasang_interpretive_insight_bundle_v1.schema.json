@@ -99,7 +99,9 @@
               "sasang_rail_gates",
               "regime_mkm_split_v1",
               "persona_diary_myeongni_sasang_lane",
-              "fabba_sidecar_ngram_lut"
+              "fabba_sidecar_ngram_lut",
+              "sasang_persona_grid_v1",
+              "sasang_reading_anchor_v1"
             ]
           },
           "title_ko": { "type": "string" },
@@ -138,6 +140,18 @@
           "shadow_metrics_pointer": {
             "type": ["object", "null"],
             "description": "Optional read-only pointer to phase3 shadow metrics (B-track)."
+          },
+          "persona_grid_pointer": {
+            "type": ["object", "null"],
+            "description": "Optional pointer to sasang_persona_grid_v1 artifact (sasang_persona_grid_v1 axis only)."
+          },
+          "reading_anchor_pointer": {
+            "type": ["object", "null"],
+            "description": "Optional pointer to sasang_reading_anchor manifest (sasang_reading_anchor_v1 axis only)."
+          },
+          "pyobyeong_dr_pointer_v1": {
+            "type": ["object", "null"],
+            "description": "Optional pointer to ijeoma pyobyeong DR insight cards (byeongjeung_yakri axis only)."
           }
         }
       }

@@ -39,7 +39,7 @@ def test_bundle_matches_schema_and_labels():
     assert gate.get("track") == "B"
     ids = {s["axis_id"] for s in doc["sections"]}
     assert "geumhwagyoyeok" in ids and "bomyung_jiju" in ids and "prediction" in ids
-    assert doc["version"] == "1.5.0"
+    assert doc["version"] == "1.7.0"
     syn = doc.get("synthesis_v1") or {}
     assert len(syn.get("how_to_synthesize_ko", "")) >= 80
     assert "force_hold" in syn.get("disagreement_protocol_ko", "")
@@ -51,8 +51,19 @@ def test_bundle_matches_schema_and_labels():
     sw = byeong.get("symptom_weights_v1") or {}
     assert sw.get("schema") == "sasang_byeongjeung_symptom_weights_v1"
     assert sw.get("auto_clinical_trigger") is False
+    ptr = byeong.get("pyobyeong_dr_pointer_v1") or {}
+    if ptr.get("present"):
+        assert ptr.get("send_gate") == "HOLD"
+        assert ptr.get("auto_clinical_trigger") is False
+        assert "IC-08" in (ptr.get("highlight_card_ids") or [])
+        assert "IC-09" in (ptr.get("highlight_card_ids") or [])
     assert "jeongchung" in (sw.get("by_constitution", {}).get("taeeum_in", {}).get("weights") or {})
     assert "persona_diary_myeongni_sasang_lane" in ids
+    assert "sasang_persona_grid_v1" in ids
+    assert "sasang_reading_anchor_v1" in ids
+    grid_sec = next(s for s in doc["sections"] if s["axis_id"] == "sasang_persona_grid_v1")
+    ptr = grid_sec.get("persona_grid_pointer") or {}
+    assert ptr.get("cell_count") == 12
     assert "fabba_sidecar_ngram_lut" in ids
     fabba = next(s for s in doc["sections"] if s["axis_id"] == "fabba_sidecar_ngram_lut")
     ptr = fabba.get("shadow_metrics_pointer") or {}

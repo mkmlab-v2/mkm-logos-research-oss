@@ -1,0 +1,11 @@
+{
+  "schema": "ijeoma_pyobyeong_query_run_v1_summary",
+  "generated_at_utc": "2026-06-29T17:39:07Z",
+  "dry_run": true,
+  "notebook_uuid": "e6c1f050-40ef-49f0-8b2c-c509b8570cf4",
+  "total": 8,
+  "ok": 8,
+  "fail": 0,
+  "jsonl": "experiments/sasang-head-btrack/artifacts/ijeoma_pyobyeong_query_run_v1.jsonl",
+  "query_set": "experiments/sasang-head-btrack/research/ijeoma_pyobyeong_query_set_v1.json"
+}

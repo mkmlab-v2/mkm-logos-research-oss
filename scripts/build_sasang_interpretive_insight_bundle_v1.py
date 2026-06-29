@@ -20,7 +20,7 @@ from scripts.track_b_commander_gate_v1 import HUMAN_COMMANDER_GATE_V1
 ART = ROOT / "docs" / "final" / "artifacts"
 DEFAULT_OUT = ART / "sasang_interpretive_insight_bundle_v1_latest.json"
 
-VERSION = "1.5.0"
+VERSION = "1.7.0"
 SCHEMA_ID = "sasang_interpretive_insight_bundle_v1"
 
 DISCLAIMER_KO = (
@@ -36,12 +36,13 @@ SYNTHESIS_V1: dict[str, str] = {
         "② 보명지주 렉시콘은 『언어·개념 정렬』용이며, 명리 사주 판정이나 사상 사중 세력을 자동 대입하지 않습니다. "
         "③ 병증·약리·원전 교차참조는 『문헌 앵커』일 뿐이며, 라벨 코호트·실전 분류와 자동 합선하지 않습니다. "
         "④ 일반 예언 레일은 시간·확률 슬롯 관측용입니다. "
-        "⑤ 사상 독립 렌즈→(선택) 시장 사상 렌즈 순으로 『동역학→시장 4분면』을 읽되, 성·명·사 3렌즈 역할 계약(성경 비게이팅·명리 중기·사상 단기)과 혼동하지 않습니다. "
+        "⑤ 사상 12 페르소나 그리드(4체질×初·中·末)는 유동 톤·라우팅 벤치이며 명리 16상·A-Code 12AI·PersonaDiary 12셀과 identity 합선 금지입니다. "
+        "⑥ 사상 독립 렌즈→(선택) 시장 사상 렌즈 순으로 『동역학→시장 4분면』을 읽되, 성·명·사 3렌즈 역할 계약(성경 비게이팅·명리 중기·사상 단기)과 혼동하지 않습니다. "
         "최종 액션 문장은 사용자가 작성합니다—기계는 스코어·불확실도·금지 플래그만 제시합니다."
     ),
     "axis_order_rationale_ko": (
-        "금화교역(운영 참조) → 보명지주(어휘) → 병증·약리(문헌 경계) → 예측(비가격 슬롯) → 사상 코어 → 시장 사상 순은 "
-        "『외부 레짐·언어·의료 격벽·시간축·체질 동역학·시장 투영』으로 범주를 넓혀 가며, 나중 축이 앞 축을 덮어쓰지 않습니다."
+        "금화교역(운영 참조) → 보명지주(어휘) → 병증·약리(문헌 경계) → 12 페르소나 그리드(톤·라우팅) → 예측(비가격 슬롯) → 사상 코어 → 시장 사상 순은 "
+        "『외부 레짐·언어·의료 격벽·페르소나 메타·시간축·체질 동역학·시장 투영』으로 범주를 넓혀 가며, 나중 축이 앞 축을 덮어쓰지 않습니다."
     ),
     "disagreement_protocol_ko": (
         "축 간 불일치 시: (1) 임상·처방 관련은 원전·지휘관 검토 없이 단정 금지. "
@@ -56,11 +57,14 @@ SYNTHESIS_V1: dict[str, str] = {
         "금화교역 수치만으로 체질 단정; 보명지주 어휘만으로 처방 근거 확정; "
         "SASANG_CROSS_REF_DRAFT 한 줄로 임상 코호트 라벨 치환; "
         "symptom_weights_v1 정충·부종 표만으로 체질·처방 단정; "
+        "ijeoma_pyobyeong IC-08/09(사심신물·CPG orthogonal)을 체질·처방·CDSS 입력으로 승격; "
         "사상·시장 사상 렌즈만으로 주문·레버리지 확정; "
         "일반 예언 확률을 사상 스코어에 선형 합성; "
         "force_hold를 단독 매도·현금·영구 관망 신호로 collapse; "
         "PersonaDiary myeongni+sasang Sharpe를 prophecy vote·실매매 sizing에 직접 승격; "
-        "fABBA ngram_lut dual-leg HR을 Arm A quant SSOT로 승격; merged LUT fabba 컬럼을 prophecy vote에 자동 주입—위 모두 금지(B-track)."
+        "fABBA ngram_lut dual-leg HR을 Arm A quant SSOT로 승격; merged LUT fabba 컬럼을 prophecy vote에 자동 주입; "
+        "사상 12셀을 명리 16상 state_id 또는 A-Code 12AI orchestration cell과 1:1 동일시; "
+        "active_cell_id만으로 임상 체질·처방·실매매 확정—위 모두 금지(B-track)."
     ),
 }
 
@@ -142,6 +146,9 @@ def _upstream_flags() -> dict[str, Any]:
     fusion_ablation_p = "reports/sasang_regime_conditional_fusion_ablation_v1_latest.json"
     phase3_p = "reports/prophecy_lens_profile_shadow_ablation_phase3_v1_latest.json"
     fabba_reg_p = "reports/prophecy_fabba_ngram_lut_sidecar_registration_v1_latest.json"
+    persona_grid_p = "docs/final/artifacts/sasang_persona_grid_v1_latest.json"
+    reading_anchor_p = "docs/final/artifacts/sasang_reading_anchor_v1_latest.json"
+    reading_prereg_p = "docs/final/artifacts/sasang_reading_anchor_prereg_v1_latest.json"
     return {
         "sasang_independent_lens_latest": {"path": sasang_p, "present": _exists(sasang_p)},
         "market_sasang_lens_latest": {"path": market_p, "present": _exists(market_p)},
@@ -167,6 +174,51 @@ def _upstream_flags() -> dict[str, Any]:
             "path": fabba_reg_p,
             "present": _exists(fabba_reg_p),
         },
+        "sasang_persona_grid_v1_latest": {
+            "path": persona_grid_p,
+            "present": _exists(persona_grid_p),
+        },
+        "sasang_reading_anchor_v1_latest": {
+            "path": reading_anchor_p,
+            "present": _exists(reading_anchor_p),
+        },
+        "sasang_reading_anchor_prereg_v1_latest": {
+            "path": reading_prereg_p,
+            "present": _exists(reading_prereg_p),
+        },
+        "sasang_pyobyeong_insight_cards_v1": {
+            "path": "docs/final/artifacts/sasang_pyobyeong_insight_cards_v1_latest.json",
+            "present": _exists("docs/final/artifacts/sasang_pyobyeong_insight_cards_v1_latest.json"),
+        },
+        "ijeoma_pyobyeong_lit_review_v1": {
+            "path": "docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md",
+            "present": _exists("docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md"),
+        },
+    }
+
+
+def _pyobyeong_dr_pointer_v1() -> dict[str, Any]:
+    cards_p = ART / "sasang_pyobyeong_insight_cards_v1_latest.json"
+    lit_p = ROOT / "docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md"
+    pack_p = ROOT / "experiments/sasang-head-btrack/artifacts/ijeoma_pyobyeong_dr_pack_v1_latest.json"
+    cards = _read_json_optional(cards_p)
+    card_rows = cards.get("cards") or []
+    card_ids = [str(c.get("card_id")) for c in card_rows if c.get("card_id")]
+    return {
+        "schema": "ijeoma_pyobyeong_dr_pointer_v1",
+        "present": cards_p.is_file(),
+        "send_gate": cards.get("send_gate", "HOLD"),
+        "research_only": cards.get("research_only", True),
+        "advisory_only": True,
+        "auto_clinical_trigger": False,
+        "insight_cards_artifact": str(cards_p.relative_to(ROOT)).replace("\\", "/"),
+        "lit_review_md": str(lit_p.relative_to(ROOT)).replace("\\", "/") if lit_p.is_file() else None,
+        "dr_pack_manifest": str(pack_p.relative_to(ROOT)).replace("\\", "/") if pack_p.is_file() else None,
+        "card_count": len(card_ids),
+        "highlight_card_ids": [cid for cid in ("IC-08", "IC-09") if cid in card_ids],
+        "forbidden_merge_ko": (
+            "사심신물↔표리 브리지·CPG orthogonal matrix를 체질·처방·CDSS·Track A·실매매로 승격 금지"
+        ),
     }
 
 
@@ -250,9 +302,108 @@ def build_bundle() -> dict[str, Any]:
                     "ref": "docs/final/artifacts/sasang_boming_jiju_clinical_lens_pack_v1_latest.json",
                     "note_ko": "체질별 보명지주·원전 포인터 2차 패킹.",
                 },
+                {
+                    "kind": "artifact_json",
+                    "ref": "docs/final/artifacts/sasang_pyobyeong_insight_cards_v1_latest.json",
+                    "note_ko": "IC-08 사심신물↔표리 [HYPO] · IC-09 CPG orthogonal [SECONDARY] — advisory_only.",
+                },
+                {
+                    "kind": "handoff_doc",
+                    "ref": "docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md",
+                    "note_ko": "LIT_REVIEW v1.1 — human_only · CDSS·Track A 금지.",
+                },
             ],
             "symptom_weights_v1": build_symptom_weights_v1(),
+            "pyobyeong_dr_pointer_v1": _pyobyeong_dr_pointer_v1(),
             "rail_note_ko": "임상 트리거·자동 처방 금지.",
+        },
+        {
+            "axis_id": "sasang_persona_grid_v1",
+            "title_ko": "사상 12 페르소나 그리드 (4체질 × 初·中·末)",
+            "availability": "linked" if up.get("sasang_persona_grid_v1_latest", {}).get("present") else "partial",
+            "summary_ko": (
+                "동의수세보원 병증약리 3단(울광·망양 등)을 4체질 격자로 모델링한 B-track 메타데이터—"
+                "유동 페르소나 톤·라우팅 벤치이며 임상·Track A 트리거가 아닙니다."
+            ),
+            "interpretive_depth_ko": (
+                "12셀은 원전의 初證·中證·末證 서술을 『기호학적 슬롯』으로만 옮긴 것입니다. "
+                "輕證·險證·危證(경·험·위)은 별축 severity로 sidecar에 붙으며 初中末과 동일시하지 마십시오. "
+                "명리 16상(state_id)·LOGOS_STATE_MAPPING·4×4 analogy_bench는 사상 레인에 identity 매핑하지 않습니다—"
+                "명리는 명리 레인에서만 읽습니다. "
+                "A_CODE_12AI_CLINICAL_PATHOLOGY_MATRIX·personadiary_acode_persona와 셀 ID를 공유해도 "
+                "역할이 다르며 naming_firewall를 반드시 확인합니다. "
+                "run_lens_sasang 산출의 sasang_persona_grid_sidecar_v1.active_cell_id는 힌트일 뿐 최종 판단은 지휘관입니다."
+            ),
+            "evidence_refs": [
+                {
+                    "kind": "artifact_json",
+                    "ref": "docs/final/artifacts/sasang_persona_grid_v1_latest.json",
+                    "note_ko": "12셀 SSOT — build_sasang_persona_grid_v1.py",
+                },
+                {
+                    "kind": "schema",
+                    "ref": "docs/final/schemas/sasang_persona_grid_v1.schema.json",
+                },
+                {
+                    "kind": "handoff_doc",
+                    "ref": "docs/sasang-origin/정교동의수세보원원문.txt",
+                    "note_ko": "588–593행 鬱狂/亡陽 初中末; 600–602행 輕險危.",
+                },
+                {
+                    "kind": "artifact_json",
+                    "ref": "docs/final/protocols/A_CODE_12AI_CLINICAL_PATHOLOGY_MATRIX_V2_5.json",
+                    "note_ko": "오케스트레이션 12셀 — 사상 12와 합선 금지.",
+                },
+            ],
+            "persona_grid_pointer": {
+                "artifact": "docs/final/artifacts/sasang_persona_grid_v1_latest.json",
+                "cell_count": 12,
+                "naming_firewall_ko": (
+                    "sasang_persona_grid_v1 ≠ personadiary_acode_persona_v1 ≠ "
+                    "a_code_12ai_clinical_pathology_matrix_v2_5 ≠ myeongri_16_state"
+                ),
+            },
+            "rail_note_ko": "[HYPO] fluid persona bench; send_gate HOLD; human_only.",
+        },
+        {
+            "axis_id": "sasang_reading_anchor_v1",
+            "title_ko": "사상 읽기 앵커 (성경 2차 오버레이)",
+            "availability": "linked" if up.get("sasang_reading_anchor_v1_latest", {}).get("present") else "partial",
+            "summary_ko": (
+                "verse_refs 인용 잠금 + 사상 12셀 읽기 톤 [HYPO] — 교리·체질·Track A 승격이 아닌 2차 앵커."
+            ),
+            "interpretive_depth_ko": (
+                "읽기 앵커는 Logos 게마트리아 4D·gold router 결과를 대체하지 않습니다. "
+                "각 행은 equivalence_claim=false, link_type=reading_overlay|analogy_bench로 사전등록됩니다. "
+                "신학 [FACT] 행(theology_fact_refs)과 사상 [HYPO] posture는 문단·필드를 분리합니다. "
+                "계시록 12–14 논문·동의수세보원 鬱狂/亡陽 初中末 원전 행은 병치 참고만이며 임상·매매 트리거가 아닙니다. "
+                "OOS spot-check(q01/q02/q06)로 GraphRAG encode가 유지되는지 reports/sasang_logos_gold_oos_spot_check_v1_latest.json에서 확인합니다."
+            ),
+            "evidence_refs": [
+                {
+                    "kind": "artifact_json",
+                    "ref": "docs/final/artifacts/sasang_reading_anchor_v1_latest.json",
+                },
+                {
+                    "kind": "artifact_json",
+                    "ref": "docs/final/artifacts/sasang_reading_anchor_prereg_v1_latest.json",
+                    "note_ko": "사전등록 SSOT",
+                },
+                {
+                    "kind": "schema",
+                    "ref": "docs/final/schemas/sasang_reading_anchor_v1.schema.json",
+                },
+                {
+                    "kind": "repo_path",
+                    "ref": "scripts/run_sasang_logos_gold_oos_spot_check_v1.py",
+                },
+            ],
+            "reading_anchor_pointer": {
+                "manifest": "docs/final/artifacts/sasang_reading_anchor_v1_latest.json",
+                "seed_jsonl": "data/sasang/sasang_reading_anchor_v1_seed.jsonl",
+                "equivalence_claim": False,
+            },
+            "rail_note_ko": "2차 앵커 only; human_only; send_gate HOLD.",
         },
         {
             "axis_id": "prediction",

@@ -1,7 +1,7 @@
 {
   "schema": "ijeoma_pyobyeong_dr_pack_v1",
   "version": "1.1.0",
-  "generated_at_utc": "2026-06-29T17:15:25Z",
+  "generated_at_utc": "2026-06-29T17:39:07Z",
   "rail": "B_TRACK",
   "research_only": true,
   "send_gate": "HOLD",
@@ -12,8 +12,8 @@
     "cross_ref": "C:/workspace/docs/final/artifacts/SASANG_CROSS_REF_DRAFT.json",
     "top10_proxy": "C:/workspace/docs/research/raw/SASANG_PYOBYEONG_TOP10_NL_PROXY_2026-06-24.md",
     "contract_pathology_stage": "sasang_pathology_stage_v1",
-    "query_set": "C:/mkm-sasang-ablation/experiments/sasang-head-btrack/research/ijeoma_pyobyeong_query_set_v1.json",
-    "tier0_ingest": "C:/mkm-sasang-ablation/experiments/sasang-head-btrack/research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md"
+    "query_set": "C:/workspace/experiments/sasang-head-btrack/research/ijeoma_pyobyeong_query_set_v1.json",
+    "tier0_ingest": "C:/workspace/experiments/sasang-head-btrack/research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md"
   },
   "outputs": {
     "lit_review_md": "experiments/sasang-head-btrack/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md",

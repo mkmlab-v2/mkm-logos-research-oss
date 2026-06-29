@@ -1,6 +1,6 @@
 {
   "schema": "sasang_ablation_promotion_gate_v1",
-  "generated_at_utc": "2026-06-29T17:24:04Z",
+  "generated_at_utc": "2026-06-29T17:30:30Z",
   "promotion_ready": true,
   "merge_allowed": true,
   "track_a_promotion_allowed": false,
