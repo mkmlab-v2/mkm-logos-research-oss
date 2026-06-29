@@ -24,6 +24,7 @@ DEFAULT_SIGNALS_OUT = ROOT / "docs/final/artifacts/naver_openapi_signals_latest.
 DEFAULT_NEWS_OUT = ROOT / "docs/final/artifacts/naver_news_feed_latest.json"
 DEFAULT_PRE_NEWS_INPUT = ROOT / "docs/final/artifacts/pre_news_shadow_input_latest.json"
 PREMARKET_CONFIG = ROOT / "data/commander/kospi_premarket_news_ingest_v1.json"
+PRE_NEWS_SHADOW_CONFIG = ROOT / "data/commander/pre_news_shadow_naver_ingest_v1.json"
 
 
 def _load_env() -> None:
@@ -90,10 +91,21 @@ def _strip_markup(text: str) -> str:
     return html.unescape(text).strip()
 
 
-def load_premarket_profile(path: Path | None = None) -> dict[str, Any]:
+def load_news_ingest_profile(path: Path | None = None) -> dict[str, Any]:
     p = path or PREMARKET_CONFIG
     doc = _read_json(p)
-    if not doc or doc.get("schema") != "kospi_premarket_news_ingest_v1":
+    if not doc:
+        return {}
+    schema = str(doc.get("schema") or "")
+    if schema in ("kospi_premarket_news_ingest_v1", "pre_news_shadow_naver_ingest_v1"):
+        return doc
+    return {}
+
+
+def load_premarket_profile(path: Path | None = None) -> dict[str, Any]:
+    p = path or PREMARKET_CONFIG
+    doc = load_news_ingest_profile(p)
+    if doc.get("schema") != "kospi_premarket_news_ingest_v1":
         return {}
     return doc
 
@@ -401,11 +413,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     ap.add_argument(
         "--profile",
-        choices=("kospi_premarket",),
+        choices=("kospi_premarket", "pre_news_shadow"),
         default="",
-        help="Load query/trend SSOT from data/commander/kospi_premarket_news_ingest_v1.json",
+        help="Load query/trend SSOT from commander ingest JSON (premarket or pre-news shadow).",
     )
     ap.add_argument("--premarket-config", type=Path, default=PREMARKET_CONFIG)
+    ap.add_argument("--pre-news-config", type=Path, default=PRE_NEWS_SHADOW_CONFIG)
     ap.add_argument("--trend-keywords", default="")
     ap.add_argument("--trend-weights", default="")
     ap.add_argument("--lookback-days", type=int, default=30)
@@ -436,6 +449,11 @@ def main(argv: list[str] | None = None) -> int:
         profile_doc = load_premarket_profile(args.premarket_config)
         if not profile_doc:
             print(f"ERROR: missing or invalid premarket config: {args.premarket_config}", file=sys.stderr)
+            return 2
+    elif args.profile == "pre_news_shadow":
+        profile_doc = load_news_ingest_profile(args.pre_news_config)
+        if not profile_doc:
+            print(f"ERROR: missing or invalid pre-news config: {args.pre_news_config}", file=sys.stderr)
             return 2
 
     news_queries_raw = args.news_queries.strip()
