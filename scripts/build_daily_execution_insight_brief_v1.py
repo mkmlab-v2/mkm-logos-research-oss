@@ -20,6 +20,7 @@ DEFAULT_OUT = WORKSPACE_ROOT / "reports" / "daily_execution_insight_brief_latest
 _ART = WORKSPACE_ROOT / "docs" / "final" / "artifacts"
 DEFAULT_MYEONGNI_LENS = _ART / "myeongni_independent_lens_latest.json"
 DEFAULT_SASANG_LENS = _ART / "sasang_independent_lens_latest.json"
+DEFAULT_SASANG_INTERPRETIVE_BUNDLE = _ART / "sasang_interpretive_insight_bundle_v1_latest.json"
 DEFAULT_MARKET_SASANG_LENS = _ART / "market_sasang_lens_latest.json"
 DEFAULT_MARKET_MYEONGNI_LENS = _ART / "market_myeongni_lens_latest.json"
 DEFAULT_LOGOS_INDEPENDENT_LENS = _ART / "logos_independent_lens_latest.json"
@@ -167,6 +168,35 @@ def _lines_sasang(doc: dict[str, Any] | None, path: Path) -> tuple[list[str], bo
         lines.append(
             f"*(block missing — regenerate with `scripts/run_lens_sasang.py`; lens file `{path.as_posix()}`)*"
         )
+    lines.append("")
+    return lines, True
+
+
+def _lines_sasang_interpretive_bundle(doc: dict[str, Any] | None, path: Path) -> tuple[list[str], bool]:
+    lines: list[str] = []
+    lines.append("#### Sasang interpretive bundle (`sasang_interpretive_insight_bundle_v1`)")
+    lines.append("")
+    if not doc:
+        lines.append(f"*(missing — `{path.as_posix()}`)*")
+        lines.append("")
+        return lines, False
+    syn = doc.get("synthesis_v1") if isinstance(doc.get("synthesis_v1"), dict) else {}
+    lines.append("| field | value |")
+    lines.append("|-------|-------|")
+    lines.append(f"| `version` | {_md_cell(doc.get('version'))} |")
+    lines.append(f"| `rail` | {_md_cell(doc.get('rail'))} |")
+    lines.append(f"| `decision_authority` | {_md_cell(doc.get('decision_authority'))} |")
+    lines.append(f"| `send_gate` | `{_md_cell(doc.get('send_gate') or 'HOLD')}` |")
+    forbidden = syn.get("forbidden_synthesis_ko")
+    if forbidden:
+        excerpt = str(forbidden)
+        if len(excerpt) > 220:
+            excerpt = excerpt[:217] + "..."
+        lines.append(f"| `forbidden_synthesis_ko` (excerpt) | {_md_cell(excerpt)} |")
+    lines.append("")
+    lines.append(
+        "> `[NON_GATING]` 축·금지합성 참조 — direction merge·Track A·실매매 트리거 금지."
+    )
     lines.append("")
     return lines, True
 
@@ -521,6 +551,8 @@ def build_markdown(
     myeongni_path: Path | None = None,
     sasang: dict[str, Any] | None = None,
     sasang_path: Path | None = None,
+    sasang_interpretive_bundle: dict[str, Any] | None = None,
+    sasang_interpretive_bundle_path: Path | None = None,
     market_sasang: dict[str, Any] | None = None,
     market_sasang_path: Path | None = None,
     market_myeongni: dict[str, Any] | None = None,
@@ -652,12 +684,15 @@ def build_markdown(
     crp = myeongni_conflict_runtime_path or DEFAULT_MYEONGNI_CONFLICT_RUNTIME
     lcr, ok_cr = _lines_myeongni_conflict_runtime(myeongni_conflict_runtime, crp)
     ls, ok_s = _lines_sasang(sasang, sp)
+    sip = sasang_interpretive_bundle_path or DEFAULT_SASANG_INTERPRETIVE_BUNDLE
+    lsib, ok_sib = _lines_sasang_interpretive_bundle(sasang_interpretive_bundle, sip)
     lms, ok_ms = _lines_market_sasang(market_sasang, msp)
     ll, ok_l = _lines_logos_independent(logos_independent, lp)
     lines.extend(lm)
     lines.extend(lmm)
     lines.extend(lcr)
     lines.extend(ls)
+    lines.extend(lsib)
     lines.extend(lms)
     lines.extend(ll)
     atp = a_track_gonogo_path or DEFAULT_A_TRACK_GONOGO
@@ -698,7 +733,7 @@ def build_markdown(
     lines.append("| `final_action_label` | *(operator)* |")
     ev_paths = (
         f"`{thin_path.as_posix()}`; `{fusion_path.as_posix()}`; "
-        f"`{mp.as_posix()}`; `{mmp.as_posix()}`; `{crp.as_posix()}`; `{sp.as_posix()}`; `{msp.as_posix()}`; "
+        f"`{mp.as_posix()}`; `{mmp.as_posix()}`; `{crp.as_posix()}`; `{sp.as_posix()}`; `{sip.as_posix()}`; `{msp.as_posix()}`; "
         f"`{lp.as_posix()}`; `{atp.as_posix()}`; `{v2p.as_posix()}`"
     )
     lines.append(f"| `evidence_paths` | {ev_paths} |")
@@ -710,6 +745,7 @@ def build_markdown(
         "market_myeongni": ok_mm,
         "myeongni_conflict_runtime": ok_cr,
         "sasang": ok_s,
+        "sasang_interpretive_bundle": ok_sib,
         "market_sasang": ok_ms,
         "logos_independent": ok_l,
         "governance_factlock": ok_g,
@@ -732,6 +768,11 @@ def main() -> None:
     p.add_argument("--thin-json", type=Path, default=DEFAULT_THIN)
     p.add_argument("--myeongni-json", type=Path, default=DEFAULT_MYEONGNI_LENS)
     p.add_argument("--sasang-json", type=Path, default=DEFAULT_SASANG_LENS)
+    p.add_argument(
+        "--sasang-interpretive-bundle-json",
+        type=Path,
+        default=DEFAULT_SASANG_INTERPRETIVE_BUNDLE,
+    )
     p.add_argument("--market-sasang-json", type=Path, default=DEFAULT_MARKET_SASANG_LENS)
     p.add_argument("--market-myeongni-json", type=Path, default=DEFAULT_MARKET_MYEONGNI_LENS)
     p.add_argument("--logos-independent-json", type=Path, default=DEFAULT_LOGOS_INDEPENDENT_LENS)
@@ -779,6 +820,7 @@ def main() -> None:
     thin_path = _abs_under_root(root, args.thin_json)
     myeongni_path = _abs_under_root(root, args.myeongni_json)
     sasang_path = _abs_under_root(root, args.sasang_json)
+    sasang_interpretive_bundle_path = _abs_under_root(root, args.sasang_interpretive_bundle_json)
     market_sasang_path = _abs_under_root(root, args.market_sasang_json)
     market_myeongni_path = _abs_under_root(root, args.market_myeongni_json)
     logos_independent_path = _abs_under_root(root, args.logos_independent_json)
@@ -795,6 +837,7 @@ def main() -> None:
     thin = _read_json(thin_path)
     myeongni = _read_json(myeongni_path)
     sasang = _read_json(sasang_path)
+    sasang_interpretive_bundle = _read_json(sasang_interpretive_bundle_path)
     market_sasang = _read_json(market_sasang_path)
     market_myeongni = _read_json(market_myeongni_path)
     logos_independent = _read_json(logos_independent_path)
@@ -819,6 +862,8 @@ def main() -> None:
         myeongni_path=myeongni_path,
         sasang=sasang,
         sasang_path=sasang_path,
+        sasang_interpretive_bundle=sasang_interpretive_bundle,
+        sasang_interpretive_bundle_path=sasang_interpretive_bundle_path,
         market_sasang=market_sasang,
         market_sasang_path=market_sasang_path,
         market_myeongni=market_myeongni,

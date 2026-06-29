@@ -12,6 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = ROOT / "docs/final/artifacts/mkm_parallel_advisory_lens_manifest_v1_latest.json"
 DEFAULT_FUSION = ROOT / "reports/kospi_four_lens_graphrag_fusion_v1_latest.json"
 DEFAULT_SCIENCE_KOSPI = ROOT / "reports/btrack_science_core_per_date_kospi_v1.jsonl"
+DEFAULT_SASANG_INTERPRETIVE_BUNDLE = (
+    ROOT / "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json"
+)
 
 
 def _utc() -> str:
@@ -187,6 +190,66 @@ DISK_EPISTEMIC_ANCHORS = {
 }
 
 
+def _extract_pyobyeong_dr_pointer(bundle: dict[str, Any]) -> dict[str, Any] | None:
+    for sec in bundle.get("sections") or []:
+        if not isinstance(sec, dict):
+            continue
+        ptr = sec.get("pyobyeong_dr_pointer_v1")
+        if isinstance(ptr, dict):
+            return dict(ptr)
+    return None
+
+
+def load_sasang_interpretive_bundle(
+    path: Path = DEFAULT_SASANG_INTERPRETIVE_BUNDLE,
+) -> dict[str, Any] | None:
+    return _read(path)
+
+
+def build_sasang_interpretive_advisory_enrichment(
+    bundle: dict[str, Any] | None,
+    *,
+    bundle_pointer: str = "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json",
+) -> dict[str, Any] | None:
+    if not bundle:
+        return None
+    syn = bundle.get("synthesis_v1") if isinstance(bundle.get("synthesis_v1"), dict) else {}
+    pyo = _extract_pyobyeong_dr_pointer(bundle)
+    return {
+        "schema": "sasang_interpretive_advisory_enrichment_v1",
+        "bundle_pointer": bundle_pointer,
+        "bundle_version": bundle.get("version"),
+        "rail": bundle.get("rail"),
+        "decision_authority": bundle.get("decision_authority"),
+        "send_gate": bundle.get("send_gate") or "HOLD",
+        "non_gating": True,
+        "gating_eligible": False,
+        "in_sample_narrative": True,
+        "synthesis_v1": {
+            "how_to_synthesize_ko": syn.get("how_to_synthesize_ko"),
+            "axis_order_rationale_ko": syn.get("axis_order_rationale_ko"),
+            "disagreement_protocol_ko": syn.get("disagreement_protocol_ko"),
+            "forbidden_synthesis_ko": syn.get("forbidden_synthesis_ko"),
+        },
+        "pyobyeong_dr_pointer_v1": pyo,
+        "human_commander_gate_v1": bundle.get("human_commander_gate_v1"),
+        "honest_note_ko": (
+            "사상 통찰 번들 축·금지합성 — direction merge·Track A·실매매 트리거 금지"
+        ),
+    }
+
+
+def enrich_sasang_slice_with_interpretive_bundle(
+    sl: dict[str, Any],
+    bundle: dict[str, Any] | None,
+) -> dict[str, Any]:
+    out = dict(sl)
+    enrichment = build_sasang_interpretive_advisory_enrichment(bundle)
+    if enrichment:
+        out["interpretive_bundle_enrichment"] = enrichment
+    return out
+
+
 def _tag_humanist_slice(sl: dict[str, Any], lens_id: str) -> dict[str, Any]:
     out = dict(sl)
     out["in_sample_narrative"] = True
@@ -354,12 +417,17 @@ def build_parallel_advisory_brief(
         if field_sl:
             slices["field"] = field_sl
 
+    sasang_bundle = load_sasang_interpretive_bundle() if "sasang" in active else None
+
     for lid in ("sasang", "myeongni", "logos"):
         if lid not in active:
             continue
         sl = _lens_slice_from_fusion(fusion, lid)
         if sl:
-            slices[lid] = _tag_humanist_slice(sl, lid)
+            tagged = _tag_humanist_slice(sl, lid)
+            if lid == "sasang":
+                tagged = enrich_sasang_slice_with_interpretive_bundle(tagged, sasang_bundle)
+            slices[lid] = tagged
         else:
             excluded.append({"lens_id": lid, "reason": "fusion_slice_missing"})
 
@@ -410,6 +478,18 @@ def build_parallel_advisory_brief(
             "manifest": "docs/final/artifacts/mkm_parallel_advisory_lens_manifest_v1_latest.json",
             "fusion": "reports/kospi_four_lens_graphrag_fusion_v1_latest.json",
             "contract": "docs/final/MKM_PARALLEL_ADVISORY_LENS_CONTRACT_V1.md",
+            "sasang_interpretive_bundle": (
+                "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json"
+                if sasang_bundle
+                else None
+            ),
+        },
+        "interpretive_bundle_pointers": {
+            "sasang": (
+                "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json"
+                if sasang_bundle
+                else None
+            ),
         },
         "reproduce": "py scripts/run_mkm_parallel_advisory_chain_v1.py",
     }

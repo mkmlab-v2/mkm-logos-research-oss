@@ -4,7 +4,7 @@
 
 ## 0) Meta
 
-| `brief_date_utc` | 2026-05-23 |
+| `brief_date_utc` | 2026-06-29 |
 | `workspace_anchor` | BTC spot / operator anchor — set via CLI if needed |
 | `mode` | `OBSERVATION_ONLY` |
 
@@ -26,13 +26,13 @@ dual_regime: gate_profile=balanced; PSI=0.60 (warn>0.60, crisis>0.80); bible_ris
 
 - **Source:** `C:/workspace/docs/final/artifacts/independent_lens_fusion_stub_latest.json`
 
-- **`minority_lens_ids`:** `["logos"]`
+- **`minority_lens_ids`:** `["myeongni", "logos", "market_myeongni"]`
 - **`logos_evidence_verse_ids`:** `["sample-001", "sample-002", "sample-003"]`
 
 **`conflict_narrative_guarded`:**
 
 ```
-Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_count=1. Minority vs majority: logos differ from majority_sign=bull. Breakdown: myeongni: sign=bull, score=0.080000, conf=0.685520; sasang: sign=bull, score=0.170000, conf=0.711500; logos: sign=bear, score=-0.323333, conf=0.200000; market_sasang: sign=bull, score=0.170000, conf=0.081912. Logos evidence verse_id anchors (batch-bound): sample-001, sample-002, sample-003. Logos hash-tagged snippet (clipped): [#sample-001] [#sample-002] [#sample-003]
+Lens direction alignment: majority_sign=bull, agreement_rate=0.4, conflict_count=3. Minority vs majority: myeongni, logos, market_myeongni differ from majority_sign=bull. Breakdown: myeongni: sign=neutral, score=0.080000, conf=0.685520; sasang: sign=bull, score=0.170000, conf=0.711500; logos: sign=bear, score=-0.323333, conf=0.200000; market_sasang: sign=bull, score=0.170000, conf=0.081912; market_myeongni: sign=neutral, score=0.053600, conf=0.603258. Demote trace: R1_conflict_count_ge_2: lens-only conflict_count>=2; R2_shock_overnight: risk_off + index move >=3%; R5_humanist_vote_weight_zero: myeongni/sasang/market_* capped. Headline gating: raw consensus non-gating; use headline_sign=bear. Logos evidence verse_id anchors (batch-bound): sample-001, sample-002, sample-003. Logos hash-tagged snippet (clipped): [#sample-001] [#sample-002] [#sample-003]
 ```
 
 ### 1c) Independent lens snapshots (latest JSON — numeric / structured facts only)
@@ -41,7 +41,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-23T22:20:02Z |
+| `ts_utc` | 2026-06-29T00:15:28Z |
 | `schema` | myeongni_independent_lens_v0 |
 | `direction_score` | 0.08 |
 | `confidence` | 0.6855 |
@@ -52,7 +52,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-23T22:20:03Z |
+| `ts_utc` | 2026-06-28T23:00:26Z |
 | `direction_score` (overlay) | 0.0536 |
 | `confidence` (overlay) | 0.6033 |
 | `direction_sign` | neutral |
@@ -71,14 +71,14 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 | `mode` | neutral |
 | `verification_pass` | True |
 | `policy_hash` | `e3b54f77be6e…` |
-| `generated_at_utc` | 2026-05-23T21:00:05Z |
+| `generated_at_utc` | 2026-06-11T21:00:02Z |
 | `policy_path` | `C:\workspace\data\myeongni\myeongni_conflict_arbitration_v1.json` |
 
 #### Sasang (`sasang_independent_lens_latest`)
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-23T22:20:02Z |
+| `ts_utc` | 2026-06-29T08:12:56Z |
 | `mapping_target` | sideways |
 | `regime_hypothesis` | phase_transition |
 | `direction_score` | 0.17 |
@@ -98,11 +98,23 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 > 동역학 JSONL machine_readables 파생 프록시만; 보명지조·금화교역 본론 정량 아님.
 
+#### Sasang interpretive bundle (`sasang_interpretive_insight_bundle_v1`)
+
+| field | value |
+|-------|-------|
+| `version` | 1.7.0 |
+| `rail` | B_TRACK |
+| `decision_authority` | human_only |
+| `send_gate` | `HOLD` |
+| `forbidden_synthesis_ko` (excerpt) | 금화교역 수치만으로 체질 단정; 보명지주 어휘만으로 처방 근거 확정; SASANG_CROSS_REF_DRAFT 한 줄로 임상 코호트 라벨 치환; symptom_weights_v1 정충·부종 표만으로 체질·처방 단정; ijeoma_pyobyeong IC-08/09(사심신물·CPG orthogonal)을 체질·처방·CDSS 입력으로 승격; 사상·시장 사상 렌즈만으로 주문·레버리지 확정; 일... |
+
+> `[NON_GATING]` 축·금지합성 참조 — direction merge·Track A·실매매 트리거 금지.
+
 #### Market Sasang (`market_sasang_lens_latest`)
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-23T22:20:02Z |
+| `ts_utc` | 2026-06-28T23:00:27Z |
 
 - **human_commander banner:** [TRACK B / HYPO] 연구용·비자동 — 최종 채택은 지휘관 판단 대기
 - **`veto.force_hold`:** `True` · `reason_codes` = `["HIGH_ENTROPY_SOFTMAX"]`
@@ -119,7 +131,7 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value |
 |-------|-------|
-| `ts_utc` | 2026-05-23T22:20:03Z |
+| `ts_utc` | 2026-06-29T00:15:29Z |
 | `direction_score` | -0.3233 |
 | `confidence` | 0.2 |
 | `evidence_refs_count` | 3 |
@@ -134,14 +146,14 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 
 | field | value | source |
 |-------|-------|--------|
-| `overall_go_no_go` | `GO` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
-| `recommended_stage` | `S4_LIMITED_LIVE` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
-| `failed_reasons` | `[]` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
-| `high_reliability_decision` | `PASS` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
-| `price_output_locked` | `False` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
-| `price_output_unlocked(check)` | `True` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
-| `prophecy.meta.high_reliability_decision` | `PASS` | `C:/workspace/docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json` |
-| `prophecy.meta.price_output_locked` | `False` | `C:/workspace/docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json` |
+| `overall_go_no_go` | `HOLD` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
+| `recommended_stage` | `S1_SHADOW` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
+| `failed_reasons` | `["high_reliability_decision_is_hold", "price_output_locked_true"]` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
+| `high_reliability_decision` | `HOLD` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
+| `price_output_locked` | `True` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
+| `price_output_unlocked(check)` | `False` | `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json` |
+| `prophecy.meta.high_reliability_decision` | `HOLD` | `C:/workspace/docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json` |
+| `prophecy.meta.price_output_locked` | `True` | `C:/workspace/docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json` |
 | `best_strategy.strategy_id` | `myeongni+sasang` | `C:/workspace/docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json` |
 | `best_strategy.metrics.n_days` | `29` | `C:/workspace/docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json` |
 | `best_strategy.metrics.mdd` | `-0.0363` | `C:/workspace/docs/final/artifacts/prophecy_lens_combo_backtest_v1_latest.json` |
@@ -190,8 +202,8 @@ Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_coun
 | field | value |
 |-------|-------|
 | `final_action_label` | *(operator)* |
-| `evidence_paths` | `C:/workspace/docs/final/artifacts/multilens_eval_v2_thin_report_latest.json`; `C:/workspace/docs/final/artifacts/independent_lens_fusion_stub_latest.json`; `C:/workspace/docs/final/artifacts/myeongni_independent_lens_latest.json`; `C:/workspace/docs/final/artifacts/market_myeongni_lens_latest.json`; `C:/workspace/reports/myeongni_conflict_arbitration_runtime_mode_latest.json`; `C:/workspace/docs/final/artifacts/sasang_independent_lens_latest.json`; `C:/workspace/docs/final/artifacts/market_sasang_lens_latest.json`; `C:/workspace/docs/final/artifacts/logos_independent_lens_latest.json`; `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json`; `C:/workspace/reports/myeongri_core_v2_upgrade_latest.json` |
+| `evidence_paths` | `C:/workspace/docs/final/artifacts/multilens_eval_v2_thin_report_latest.json`; `C:/workspace/docs/final/artifacts/independent_lens_fusion_stub_latest.json`; `C:/workspace/docs/final/artifacts/myeongni_independent_lens_latest.json`; `C:/workspace/docs/final/artifacts/market_myeongni_lens_latest.json`; `C:/workspace/reports/myeongni_conflict_arbitration_runtime_mode_latest.json`; `C:/workspace/docs/final/artifacts/sasang_independent_lens_latest.json`; `C:/workspace/docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json`; `C:/workspace/docs/final/artifacts/market_sasang_lens_latest.json`; `C:/workspace/docs/final/artifacts/logos_independent_lens_latest.json`; `C:/workspace/docs/final/artifacts/a_track_go_nogo_status_latest.json`; `C:/workspace/reports/myeongri_core_v2_upgrade_latest.json` |
 
 ---
 
-_Generator flags:_ `thin_ok=True` `calendar_pick=2023-03-10` `fusion_ok=True` `independent_lens_ok={"myeongni": true, "market_myeongni": true, "myeongni_conflict_runtime": true, "sasang": true, "market_sasang": true, "logos_independent": true, "governance_factlock": true, "myeongri_v2_upgrade": true}`
+_Generator flags:_ `thin_ok=True` `calendar_pick=2023-03-10` `fusion_ok=True` `independent_lens_ok={"myeongni": true, "market_myeongni": true, "myeongni_conflict_runtime": true, "sasang": true, "sasang_interpretive_bundle": true, "market_sasang": true, "logos_independent": true, "governance_factlock": true, "myeongri_v2_upgrade": true}`

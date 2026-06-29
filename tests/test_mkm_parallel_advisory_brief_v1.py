@@ -72,6 +72,49 @@ def test_humanist_slices_non_gating(fusion_minimal):
     assert ep["science_signal"]["gating_eligible"] is False
 
 
+def test_sasang_interpretive_bundle_enrichment_on_brief(fusion_minimal):
+    from scripts.mkm_parallel_advisory_lens_v1 import build_parallel_advisory_brief, load_manifest
+
+    bundle_path = ROOT / "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json"
+    if not bundle_path.is_file():
+        pytest.skip("sasang interpretive bundle missing on disk")
+
+    brief = build_parallel_advisory_brief(manifest=load_manifest(), fusion=fusion_minimal)
+    sasang = brief["parallel_lens_slices"]["sasang"]
+    enrichment = sasang.get("interpretive_bundle_enrichment")
+    assert isinstance(enrichment, dict)
+    assert enrichment.get("schema") == "sasang_interpretive_advisory_enrichment_v1"
+    assert enrichment.get("send_gate") == "HOLD"
+    assert enrichment.get("gating_eligible") is False
+    syn = enrichment.get("synthesis_v1") or {}
+    assert syn.get("forbidden_synthesis_ko")
+    assert brief["interpretive_bundle_pointers"]["sasang"]
+    assert brief["upstream_pointers"]["sasang_interpretive_bundle"]
+
+
+def test_build_sasang_interpretive_advisory_enrichment_minimal():
+    from scripts.mkm_parallel_advisory_lens_v1 import build_sasang_interpretive_advisory_enrichment
+
+    out = build_sasang_interpretive_advisory_enrichment(
+        {
+            "version": "1.7.0",
+            "rail": "B_TRACK",
+            "decision_authority": "human_only",
+            "synthesis_v1": {"forbidden_synthesis_ko": "test forbidden"},
+            "sections": [
+                {
+                    "pyobyeong_dr_pointer_v1": {
+                        "highlight_card_ids": ["IC-08", "IC-09"],
+                        "send_gate": "HOLD",
+                    }
+                }
+            ],
+        }
+    )
+    assert out is not None
+    assert out["pyobyeong_dr_pointer_v1"]["highlight_card_ids"] == ["IC-08", "IC-09"]
+
+
 def test_validate_epistemic_wiring_catches_gating_leak():
     from scripts.mkm_parallel_advisory_lens_v1 import validate_epistemic_wiring
 
