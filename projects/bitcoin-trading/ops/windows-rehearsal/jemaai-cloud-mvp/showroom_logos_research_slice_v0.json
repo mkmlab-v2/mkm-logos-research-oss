@@ -1,13 +1,13 @@
 {
   "schema_version": "showroom_logos_research_slice_v0",
-  "generated_at_utc": "2026-05-24T00:32:07Z",
+  "generated_at_utc": "2026-06-29T00:32:10Z",
   "disclaimer": {
     "evidence_tier": "hypo_research_only",
     "gating_status": "NON_GATING",
     "note_ko": "연구용 상징 연결망 스냅샷입니다. 종교·신학적 진리·투자·임상·실매매(Track A) 근거가 아닙니다. research_metaphor_* 필드는 운영 게이트와 무관합니다."
   },
   "source_db_dir": "docs/research/logos_metaphor_db_v1",
-  "theme_count": 1556,
+  "theme_count": 1566,
   "themes": [
     {
       "theme_id": "theme_01_blood_and_water",
@@ -38857,6 +38857,192 @@
       "commander_insight": "Philadelphia Open Door (Track B) — Track B backlog expand (NON_GATING)."
     },
     {
+      "theme_id": "theme_1557_tree_of_life_monthly_fruit",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "월간 배치·릴리스 비유이며 [HYPO] Track A·실매매 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_TREE_OF_LIFE_MONTHLY_FRUIT",
+        "theme": "생명나무 열매 (Tree Of Life Monthly Fruit)",
+        "ref": "요한계시록 22:2",
+        "text": "그 잎사귀는 만민을"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_TREE_OF_LIFE_MONTHLY_FRUIT_01",
+          "ref": "요한계시록 22:2",
+          "text": "그 잎사귀는 만민을",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_TREE_OF_LIFE_MONTHLY_FRUIT",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_tree_of_life_monthly_fruit"
+        },
+        {
+          "node_id": "NODE_TREE_OF_LIFE_MONTHLY_FRUIT_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_TREE_OF_LIFE_MONTHLY_FRUIT",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_tree_of_life_monthly_fruit"
+        },
+        {
+          "node_id": "NODE_TREE_OF_LIFE_MONTHLY_FRUIT_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_TREE_OF_LIFE_MONTHLY_FRUIT",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_tree_of_life_monthly_fruit"
+        },
+        {
+          "node_id": "NODE_TREE_OF_LIFE_MONTHLY_FRUIT_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_TREE_OF_LIFE_MONTHLY_FRUIT",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_tree_of_life_monthly_fruit"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "tree_of_life_monthly_fruit_no_track_a_gating"
+      },
+      "commander_insight": "생명나무 열매 (Tree Of Life Monthly Fruit) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1558_moses_bronze_serpent_lift",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "Moses Bronze Serpent Lift 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_MOSES_BRONZE_SERPENT_LIFT",
+        "theme": "Moses Bronze Serpent Lift (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_MOSES_BRONZE_SERPENT_LIFT_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_MOSES_BRONZE_SERPENT_LIFT",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_moses_bronze_serpent_lift"
+        },
+        {
+          "node_id": "NODE_MOSES_BRONZE_SERPENT_LIFT_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_MOSES_BRONZE_SERPENT_LIFT",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_moses_bronze_serpent_lift"
+        },
+        {
+          "node_id": "NODE_MOSES_BRONZE_SERPENT_LIFT_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_MOSES_BRONZE_SERPENT_LIFT",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_moses_bronze_serpent_lift"
+        },
+        {
+          "node_id": "NODE_MOSES_BRONZE_SERPENT_LIFT_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_MOSES_BRONZE_SERPENT_LIFT",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_moses_bronze_serpent_lift"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "moses_bronze_serpent_lift_no_track_a_gating"
+      },
+      "commander_insight": "Moses Bronze Serpent Lift (Track B) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1559_aaron_rod_swallow_snakes",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "Aaron Rod Swallow Snakes 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_AARON_ROD_SWALLOW_SNAKES",
+        "theme": "Aaron Rod Swallow Snakes (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_AARON_ROD_SWALLOW_SNAKES_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_AARON_ROD_SWALLOW_SNAKES",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_aaron_rod_swallow_snakes"
+        },
+        {
+          "node_id": "NODE_AARON_ROD_SWALLOW_SNAKES_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_AARON_ROD_SWALLOW_SNAKES",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_aaron_rod_swallow_snakes"
+        },
+        {
+          "node_id": "NODE_AARON_ROD_SWALLOW_SNAKES_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_AARON_ROD_SWALLOW_SNAKES",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_aaron_rod_swallow_snakes"
+        },
+        {
+          "node_id": "NODE_AARON_ROD_SWALLOW_SNAKES_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_AARON_ROD_SWALLOW_SNAKES",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_aaron_rod_swallow_snakes"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "aaron_rod_swallow_snakes_no_track_a_gating"
+      },
+      "commander_insight": "Aaron Rod Swallow Snakes (Track B) — Track B backlog expand (NON_GATING)."
+    },
+    {
       "theme_id": "theme_155_cursed_fig_tree",
       "schema": "mkm_logos_research_thin_slice_v0.2.1",
       "meta": {
@@ -38917,6 +39103,440 @@
         "research_metaphor_non_gating_rule": "cursed_fig_tree_no_track_a_gating"
       },
       "commander_insight": "무화과나무 저주 (Cursed Fig Tree) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1560_joshua_circumcision_gilgal",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "Joshua Circumcision Gilgal 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_JOSHUA_CIRCUMCISION_GILGAL",
+        "theme": "Joshua Circumcision Gilgal (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_JOSHUA_CIRCUMCISION_GILGAL_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_JOSHUA_CIRCUMCISION_GILGAL",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_joshua_circumcision_gilgal"
+        },
+        {
+          "node_id": "NODE_JOSHUA_CIRCUMCISION_GILGAL_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_JOSHUA_CIRCUMCISION_GILGAL",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_joshua_circumcision_gilgal"
+        },
+        {
+          "node_id": "NODE_JOSHUA_CIRCUMCISION_GILGAL_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_JOSHUA_CIRCUMCISION_GILGAL",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_joshua_circumcision_gilgal"
+        },
+        {
+          "node_id": "NODE_JOSHUA_CIRCUMCISION_GILGAL_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_JOSHUA_CIRCUMCISION_GILGAL",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_joshua_circumcision_gilgal"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "joshua_circumcision_gilgal_no_track_a_gating"
+      },
+      "commander_insight": "Joshua Circumcision Gilgal (Track B) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1561_ruth_kinsman_redeemer",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "Ruth Kinsman Redeemer 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_RUTH_KINSMAN_REDEEMER",
+        "theme": "Ruth Kinsman Redeemer (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_RUTH_KINSMAN_REDEEMER_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_RUTH_KINSMAN_REDEEMER",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_ruth_kinsman_redeemer"
+        },
+        {
+          "node_id": "NODE_RUTH_KINSMAN_REDEEMER_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_RUTH_KINSMAN_REDEEMER",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_ruth_kinsman_redeemer"
+        },
+        {
+          "node_id": "NODE_RUTH_KINSMAN_REDEEMER_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_RUTH_KINSMAN_REDEEMER",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_ruth_kinsman_redeemer"
+        },
+        {
+          "node_id": "NODE_RUTH_KINSMAN_REDEEMER_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_RUTH_KINSMAN_REDEEMER",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_ruth_kinsman_redeemer"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "ruth_kinsman_redeemer_no_track_a_gating"
+      },
+      "commander_insight": "Ruth Kinsman Redeemer (Track B) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1562_boaz_sandal_transaction",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "Boaz Sandal Transaction 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_BOAZ_SANDAL_TRANSACTION",
+        "theme": "Boaz Sandal Transaction (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_BOAZ_SANDAL_TRANSACTION_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_BOAZ_SANDAL_TRANSACTION",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_boaz_sandal_transaction"
+        },
+        {
+          "node_id": "NODE_BOAZ_SANDAL_TRANSACTION_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_BOAZ_SANDAL_TRANSACTION",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_boaz_sandal_transaction"
+        },
+        {
+          "node_id": "NODE_BOAZ_SANDAL_TRANSACTION_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_BOAZ_SANDAL_TRANSACTION",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_boaz_sandal_transaction"
+        },
+        {
+          "node_id": "NODE_BOAZ_SANDAL_TRANSACTION_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_BOAZ_SANDAL_TRANSACTION",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_boaz_sandal_transaction"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "boaz_sandal_transaction_no_track_a_gating"
+      },
+      "commander_insight": "Boaz Sandal Transaction (Track B) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1563_hannah_prayed_eli_mistook",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "Hannah Prayed Eli Mistook 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_HANNAH_PRAYED_ELI_MISTOOK",
+        "theme": "Hannah Prayed Eli Mistook (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_HANNAH_PRAYED_ELI_MISTOOK_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_HANNAH_PRAYED_ELI_MISTOOK",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_hannah_prayed_eli_mistook"
+        },
+        {
+          "node_id": "NODE_HANNAH_PRAYED_ELI_MISTOOK_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_HANNAH_PRAYED_ELI_MISTOOK",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_hannah_prayed_eli_mistook"
+        },
+        {
+          "node_id": "NODE_HANNAH_PRAYED_ELI_MISTOOK_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_HANNAH_PRAYED_ELI_MISTOOK",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_hannah_prayed_eli_mistook"
+        },
+        {
+          "node_id": "NODE_HANNAH_PRAYED_ELI_MISTOOK_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_HANNAH_PRAYED_ELI_MISTOOK",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_hannah_prayed_eli_mistook"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "hannah_prayed_eli_mistook_no_track_a_gating"
+      },
+      "commander_insight": "Hannah Prayed Eli Mistook (Track B) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1564_saul_prophesying_naked",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "Saul Prophesying Naked 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_SAUL_PROPHESYING_NAKED",
+        "theme": "Saul Prophesying Naked (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_SAUL_PROPHESYING_NAKED_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_SAUL_PROPHESYING_NAKED",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_saul_prophesying_naked"
+        },
+        {
+          "node_id": "NODE_SAUL_PROPHESYING_NAKED_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_SAUL_PROPHESYING_NAKED",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_saul_prophesying_naked"
+        },
+        {
+          "node_id": "NODE_SAUL_PROPHESYING_NAKED_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_SAUL_PROPHESYING_NAKED",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_saul_prophesying_naked"
+        },
+        {
+          "node_id": "NODE_SAUL_PROPHESYING_NAKED_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_SAUL_PROPHESYING_NAKED",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_saul_prophesying_naked"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "saul_prophesying_naked_no_track_a_gating"
+      },
+      "commander_insight": "Saul Prophesying Naked (Track B) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1565_david_danced_ark_return",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "David Danced Ark Return 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_DAVID_DANCED_ARK_RETURN",
+        "theme": "David Danced Ark Return (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_DAVID_DANCED_ARK_RETURN_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_DAVID_DANCED_ARK_RETURN",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_david_danced_ark_return"
+        },
+        {
+          "node_id": "NODE_DAVID_DANCED_ARK_RETURN_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_DAVID_DANCED_ARK_RETURN",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_david_danced_ark_return"
+        },
+        {
+          "node_id": "NODE_DAVID_DANCED_ARK_RETURN_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_DAVID_DANCED_ARK_RETURN",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_david_danced_ark_return"
+        },
+        {
+          "node_id": "NODE_DAVID_DANCED_ARK_RETURN_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_DAVID_DANCED_ARK_RETURN",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_david_danced_ark_return"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "david_danced_ark_return_no_track_a_gating"
+      },
+      "commander_insight": "David Danced Ark Return (Track B) — Track B backlog expand (NON_GATING)."
+    },
+    {
+      "theme_id": "theme_1566_solomon_two_mothers_sword",
+      "schema": "mkm_logos_research_thin_slice_v0.2.1",
+      "meta": {
+        "evidence_tier": "hypo_research_only",
+        "gating_status": "NON_GATING",
+        "weight_source": "commander_assigned_v1",
+        "ops_analogy_note": "Solomon Two Mothers Sword 은유는 B-track ops·거버넌스 비유이며 [HYPO] 단정 아님."
+      },
+      "golden_anchor": {
+        "node_id": "ANCHOR_SOLOMON_TWO_MOTHERS_SWORD",
+        "theme": "Solomon Two Mothers Sword (Track B)",
+        "ref": "시편 119:105",
+        "text": "주의 말씀은 내 발에 등이요"
+      },
+      "semantic_nodes": [
+        {
+          "node_id": "NODE_SOLOMON_TWO_MOTHERS_SWORD_01",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "is_linked_to",
+          "target_node": "ANCHOR_SOLOMON_TWO_MOTHERS_SWORD",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "anchor link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_solomon_two_mothers_sword"
+        },
+        {
+          "node_id": "NODE_SOLOMON_TWO_MOTHERS_SWORD_02",
+          "ref": "시편 119:105",
+          "text": "주의 말씀은 내 발에 등이요",
+          "edge_type": "supports_anchor",
+          "target_node": "ANCHOR_SOLOMON_TWO_MOTHERS_SWORD",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "support link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_solomon_two_mothers_sword"
+        },
+        {
+          "node_id": "NODE_SOLOMON_TWO_MOTHERS_SWORD_03",
+          "ref": "잠언 3:5",
+          "text": "너는 마음을 다하여 여호와를 신뢰하라",
+          "edge_type": "context_for",
+          "target_node": "ANCHOR_SOLOMON_TWO_MOTHERS_SWORD",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "context link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_solomon_two_mothers_sword"
+        },
+        {
+          "node_id": "NODE_SOLOMON_TWO_MOTHERS_SWORD_04",
+          "ref": "이사야 40:31",
+          "text": "오직 여호와를 앙망하는 자는",
+          "edge_type": "echoes_anchor",
+          "target_node": "ANCHOR_SOLOMON_TWO_MOTHERS_SWORD",
+          "impact_weight": 0.8,
+          "research_metaphor_logic_connection": "echo link — ops metaphor",
+          "research_metaphor_domain": "research_metaphor_solomon_two_mothers_sword"
+        }
+      ],
+      "governance_mapping": {
+        "research_metaphor_non_gating_rule": "solomon_two_mothers_sword_no_track_a_gating"
+      },
+      "commander_insight": "Solomon Two Mothers Sword (Track B) — Track B backlog expand (NON_GATING)."
     },
     {
       "theme_id": "theme_156_lazarus_raise",

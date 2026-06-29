@@ -1,6 +1,6 @@
 {
     "schema":  "showroom_public_bundle_v1",
-    "generated_at_utc":  "2026-06-07T15:19:56.5939453+00:00",
+    "generated_at_utc":  "2026-06-29T00:35:09.4107928+00:00",
     "runner":  "projects/bitcoin-trading/ops/windows-rehearsal/build_showroom_display_bundle.ps1",
     "sources":  {
                     "showroom_macro_horizon_2030_slice_v1":  "C:\\workspace\\docs\\final\\artifacts\\showroom_macro_horizon_2030_slice_v1_latest.json",
@@ -28,7 +28,7 @@
                           "direction_source":  "c2",
                           "ops_fusion_overall_ok":  true,
                           "runtime_overall_ok":  true,
-                          "snapshot_as_of_utc":  "2026-06-07T15:19:56.5939453+00:00",
+                          "snapshot_as_of_utc":  "2026-06-29T00:35:09.4107928+00:00",
                           "context_age_seconds":  0,
                           "context_ttl_seconds":  14400,
                           "context_stale":  false,
@@ -43,26 +43,26 @@
                                                    "schema":  "showroom_logos_graph_meta_v1",
                                                    "hypothesis_tier":  "B",
                                                    "source_schema":  "logos_corpus_graph_bundle_v1",
-                                                   "dedupe_bundle_key_sha256":  "99b18325a1332aa98309a31e73c56208079df6fef2500b449bd78c6fa1938379",
-                                                   "ts_utc":  "2026-06-07T13:08:38Z",
+                                                   "dedupe_bundle_key_sha256":  "ec53ced6afcd710b8caf8ef7a7afd2cd4613c59e028cfbc53631523e20f07eb6",
+                                                   "ts_utc":  "2026-05-30T22:20:02Z",
                                                    "nodes_line_count":  1192,
-                                                   "edges_line_count":  1196
+                                                   "edges_line_count":  1241
                                                },
                           "track_b_non_gating":  true,
                           "logos_freshness_sidecar_present":  true,
-                          "logos_freshness_staleness_seconds":  6689,
-                          "logos_freshness_generated_at_utc":  "2026-06-07T15:00:07Z",
+                          "logos_freshness_staleness_seconds":  2513521,
+                          "logos_freshness_generated_at_utc":  "2026-06-29T00:32:03Z",
                           "topology_radar_snapshot_present":  true,
-                          "topology_radar_snapshot_generated_at_utc":  "2026-06-07T15:00:07Z",
-                          "topology_radar_snapshot_stale_after_utc":  "2026-06-08T15:00:07Z",
+                          "topology_radar_snapshot_generated_at_utc":  "2026-06-29T00:32:03Z",
+                          "topology_radar_snapshot_stale_after_utc":  "2026-06-30T00:32:03Z",
                           "topology_radar_snapshot_hypo_banner":  "[HYPO] Topology snapshot (read-only graph / sidecar proximity)",
                           "topology_radar_snapshot_artifact_ref_count":  5,
                           "topology_radar_snapshot_no_trade_signals":  true,
                           "topology_radar_snapshot_disclaimer_ref":  "jemaai_showroom_v1",
                           "topology_radar_snapshot_stub":  false,
                           "macro_horizon_2030_snapshot_present":  true,
-                          "macro_horizon_2030_snapshot_generated_at_utc":  "2026-06-07T15:19:55Z",
-                          "macro_horizon_2030_snapshot_stale_after_utc":  "2026-06-08T15:19:55Z",
+                          "macro_horizon_2030_snapshot_generated_at_utc":  "2026-06-29T00:32:05Z",
+                          "macro_horizon_2030_snapshot_stale_after_utc":  "2026-06-30T00:32:05Z",
                           "macro_horizon_2030_snapshot_hypo_banner":  "[HYPO] Macro horizon 2030 read-only map (narrative_template; not calibrated joint distribution)",
                           "macro_horizon_2030_snapshot_final_action":  "WATCH",
                           "macro_horizon_2030_snapshot_btc_base_weight":  0.27,
@@ -71,11 +71,11 @@
                           "macro_horizon_2030_snapshot_disclaimer_ref":  "jemaai_showroom_v1",
                           "lens_audio_observability_present":  true,
                           "lens_audio_playback_id":  "LM_HP050_SOYANG_IDLE_V1",
-                          "lens_audio_gate_decision":  "WATCH",
+                          "lens_audio_gate_decision":  "PASS",
                           "lens_audio_track_b_hypo":  true,
                           "lens_video_observability_present":  true,
                           "lens_video_playback_id":  "LV_HP050_SOYANG_IDLE_V1",
-                          "lens_video_gate_decision":  "WATCH",
+                          "lens_video_gate_decision":  "PASS",
                           "lens_video_track_b_hypo":  true
                       },
     "public_ui":  {
@@ -96,35 +96,35 @@
                       "logos_y_fragility_0_100":  59
                   },
     "public_event_v1":  {
-                            "timestamp":  "2026-06-07T15:19:56.5939453+00:00",
+                            "timestamp":  "2026-06-29T00:35:09.4107928+00:00",
                             "active_character_id":  "dragon_quant",
                             "risk_level":  "INFO",
                             "public_signal_direction":  "HOLD",
-                            "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | logos_x=MID quad=Q1 [NON_GATING] | logos_graph_bundle=B [NON_GATING] | topology_radar_snapshot=B [NON_GATING] | macro_horizon_2030=WATCH btc_base_stress=0.27/0.73 [HYPO][NON_GATING] | lens_audio=LM_HP050_SOYANG_IDLE_V1 gate=WATCH lens_video=LV_HP050_SOYANG_IDLE_V1 gate_v=WATCH [HYPO][NON_GATING]",
+                            "abstract_reason":  "C2=GREEN_HOLD | score_obs=0.40342 | exploratory monitor | no investment advice. | logos_x=MID quad=Q1 [NON_GATING] | logos_graph_bundle=B [NON_GATING] | topology_radar_snapshot=B [NON_GATING] | macro_horizon_2030=WATCH btc_base_stress=0.27/0.73 [HYPO][NON_GATING] | lens_audio=LM_HP050_SOYANG_IDLE_V1 gate=PASS lens_video=LV_HP050_SOYANG_IDLE_V1 gate_v=PASS [HYPO][NON_GATING]",
                             "schema_version":  "public-event.v1",
-                            "event_id":  "showroom-20260607T151956-900f9827",
+                            "event_id":  "showroom-20260629T003509-b335201e",
                             "source":  "ops_showroom_bundle_v1",
                             "system_status":  "online",
                             "active_strategies_count":  1,
                             "delayed_metrics":  {
                                                     "delay_seconds":  180,
-                                                    "as_of_utc":  "2026-06-07T15:19:56.5939453+00:00",
+                                                    "as_of_utc":  "2026-06-29T00:35:09.4107928+00:00",
                                                     "logos_x_index_0_100":  51,
                                                     "logos_x_band":  "MID",
                                                     "logos_quadrant":  "Q1",
                                                     "logos_y_fragility_0_100":  59,
-                                                    "logos_4d_state_generated_at_utc":  "2026-06-07T03:45:44.904843Z",
+                                                    "logos_4d_state_generated_at_utc":  "2026-06-28T22:28:08.609466Z",
                                                     "logos_graph_bundle_present":  true,
                                                     "logos_graph_nodes_line_count":  1192,
-                                                    "logos_graph_edges_line_count":  1196,
-                                                    "logos_graph_bundle_dedupe_sha256":  "99b18325a1332aa98309a31e73c56208079df6fef2500b449bd78c6fa1938379",
-                                                    "logos_graph_bundle_ts_utc":  "2026-06-07T13:08:38Z",
-                                                    "logos_graph_staleness_seconds":  6689,
-                                                    "logos_freshness_sidecar_generated_at_utc":  "2026-06-07T15:00:07Z"
+                                                    "logos_graph_edges_line_count":  1241,
+                                                    "logos_graph_bundle_dedupe_sha256":  "ec53ced6afcd710b8caf8ef7a7afd2cd4613c59e028cfbc53631523e20f07eb6",
+                                                    "logos_graph_bundle_ts_utc":  "2026-05-30T22:20:02Z",
+                                                    "logos_graph_staleness_seconds":  2513521,
+                                                    "logos_freshness_sidecar_generated_at_utc":  "2026-06-29T00:32:03Z"
                                                 },
                             "direction_abstract":  "flat",
                             "disclaimer_ref":  "jemaai_showroom_v1",
-                            "last_ok_utc":  "2026-06-07T15:19:56.5939453+00:00",
+                            "last_ok_utc":  "2026-06-29T00:35:09.4107928+00:00",
                             "order_summary_public":  {
                                                          "trades_24h_count":  0,
                                                          "latest_trade_utc":  null,
@@ -157,30 +157,30 @@
                                                                 "non_gating":  true,
                                                                 "clinical_claims":  false,
                                                                 "playback_id":  "LM_HP050_SOYANG_IDLE_V1",
-                                                                "playback_lut_version":  "jemaai_lens_audio_playback_lut_v1@2026-06-07",
+                                                                "playback_lut_version":  "jemaai_lens_audio_playback_lut_v1@2026-06-10-mg32",
                                                                 "showroom_display_mode_bind":  "idle",
                                                                 "gate":  {
-                                                                             "decision":  "WATCH",
-                                                                             "audio_gate_report_ref":  "c5e2e10494e24a0b",
-                                                                             "lens_alignment_pass":  true,
-                                                                             "loop_seamlessness_pass":  true,
-                                                                             "lufs_target_match":  true,
-                                                                             "commercial_license_verified":  true
+                                                                             "decision":  "PASS",
+                                                                             "audio_gate_report_ref":  "00000000",
+                                                                             "lens_alignment_pass":  false,
+                                                                             "loop_seamlessness_pass":  false,
+                                                                             "lufs_target_match":  false,
+                                                                             "commercial_license_verified":  false,
+                                                                             "source":  "jemaai_lens_audio_playback_lut_v1"
                                                                          },
                                                                 "conditioning_meta":  {
                                                                                           "hp_pct":  0.5,
                                                                                           "sasang_primary":  "soyang",
                                                                                           "numeric_mode":  "melody",
-                                                                                          "tempo_bpm_target":  101.76,
-                                                                                          "bpm_observed":  180.01125070316894
+                                                                                          "tempo_bpm_target":  91.58
                                                                                       },
                                                                 "trend_meta":  {
                                                                                    "hormone_trend_state":  "NODATA",
                                                                                    "gematria_trace_present":  false
                                                                                },
                                                                 "disclaimer_ref":  "jemaai_lens_audio_hypo_v1",
-                                                                "generated_at_utc":  "2026-06-07T15:19:56Z",
-                                                                "baked_asset_week":  "2026-W23"
+                                                                "generated_at_utc":  "2026-06-29T00:35:09Z",
+                                                                "baked_asset_week":  "2026-W27"
                                                             },
                             "research_only":  true,
                             "lens_video_observability_v1":  {
@@ -191,22 +191,22 @@
                                                                 "clinical_claims":  false,
                                                                 "video_playback_id":  "LV_HP050_SOYANG_IDLE_V1",
                                                                 "audio_playback_id_mirror":  "LM_HP050_SOYANG_IDLE_V1",
-                                                                "playback_lut_version":  "jemaai_lens_video_playback_lut_v1@2026-06-07",
+                                                                "playback_lut_version":  "jemaai_lens_video_playback_lut_v1@2026-06-08",
                                                                 "showroom_display_mode_bind":  "idle",
                                                                 "gate":  {
-                                                                             "decision":  "WATCH",
-                                                                             "video_gate_report_ref":  "c5e2e10494e24a0b",
-                                                                             "loop_seamlessness_pass":  true,
-                                                                             "visual_alignment_pass":  true,
-                                                                             "commercial_license_verified":  true
+                                                                             "decision":  "PASS",
+                                                                             "video_gate_report_ref":  "00000000",
+                                                                             "loop_seamlessness_pass":  false,
+                                                                             "visual_alignment_pass":  false,
+                                                                             "commercial_license_verified":  false
                                                                          },
                                                                 "conditioning_meta":  {
                                                                                           "sasang_primary":  "soyang",
                                                                                           "showroom_display_mode":  "idle"
                                                                                       },
                                                                 "disclaimer_ref":  "jemaai_lens_video_hypo_v1",
-                                                                "generated_at_utc":  "2026-06-07T15:19:56Z",
-                                                                "baked_asset_week":  "2026-W23"
+                                                                "generated_at_utc":  "2026-06-29T00:35:09Z",
+                                                                "baked_asset_week":  "2026-W27"
                                                             }
                         }
 }

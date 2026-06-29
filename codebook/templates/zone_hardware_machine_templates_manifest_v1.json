@@ -1,0 +1,10 @@
+{
+  "schema": "zone_hardware_machine_templates_manifest_v1",
+  "generated_at_utc": "2026-06-16T10:46:42Z",
+  "shard_id": "zone_hardware_machine",
+  "catalog_path": "C:/workspace/codebook/templates/zone_hardware_machine_templates_prospect_v1.jsonl",
+  "catalog_sha256": "53ba42f9701cee4e4f2293516b02796c4dc51892e116646cc4024880d8645c48",
+  "row_count": 9,
+  "prospect_only": true,
+  "send_gate": "HOLD"
+}

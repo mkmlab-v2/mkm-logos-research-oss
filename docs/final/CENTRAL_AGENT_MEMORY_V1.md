@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-27T10:06:08Z
+- **last_updated_utc:** 2026-06-29T04:34:40Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-21:** lens pack push **54/54** OK · OPS `CENTRAL_AGENT_MEMORY_V1` refreshed incl. 41k/31k 격벽 절). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1 -Refresh` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -141,26 +141,26 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
-- **2026-06-27T10:06:08Z** — 2026-06 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
-- **2026-06-27T09:34:53Z** — Design Logos-v5: Scriptorium L2/L3 consolidated surface live
-- **2026-06-27T08:09:20Z** — KOSPI v2 shadow 2026-06-26 bear HIT route=tier_a_momentum_bear_rescue · ym=2026-06 evening_score [HYPO research_only]
-- **2026-06-27T07:58:22Z** — KRV 31102/31102(100%)+versification 4 proxy+deploy+gate15/15 HOLD
-- **2026-06-27T07:29:47Z** — KRV 31098/31102(99.99%)+versification proxy 22+bloom UI hint+governance HOLD gate; deploy+gate15/15
-- **2026-06-27T07:21:44Z** — Handoff-Logos-v3-Scriptorium-live-gate-15-15
-- **2026-06-27T05:28:43Z** — Design Logos-v3: Antigravity Scriptorium mockup parity live; gate 15/15; 28-72 grid CSS patch
-- **2026-06-27T05:28:38Z** — Logos bible_full 마무리: P3 413-node+KRV 30908(99.38% Jhn fix)+deploy+gate15/15; 194 versification gap only
-- **2026-06-27T05:03:48Z** — Logos bible_full P5/P6 done: 1189 bloom shards + 67 dynamic routes + lemma 503; KRV 30029/31102 (96.6%) bskorea gap remains
-- **2026-06-27T04:45:33Z** — continuity=LEE-HEECHEOL-2026-001 · lee_heecheol patient_track_b_memory_v1.json 등록·PATIENT_TRACK_B index·지휘관 export 격벽 확인 exit0
-- **2026-06-27T03:18:56Z** — continuity=LEE-HEECHEOL-2026-001 · lee_heecheol: 설문14 taeeum·태음 체질·단삼NO+람노서스 유산균·환자/원장 종합처방전 v1 SSOT 저장 exit0
-- **2026-06-27T02:44:48Z** — Handoff: Logos-L2 live gate 14/14; embed_demo+isaiah merge; VPS bak cleaned; next=31k corpus P1 or commander screen
-- **2026-06-27T02:34:23Z** — Logos v2 Scriptorium+Antigravity CSS cleanup redeployed; gate 14/14 live
-- **2026-06-27T02:23:45Z** — Logos scriptorium mockup layout live: inquiry left, report default, Citation Lock dock
-- **2026-06-27T01:56:20Z** — Design Logos-v2: Antigravity Scriptorium surface live on logos.jema-ai.com
-- **2026-06-27T00:38:57Z** — Logos bible_full HD complete: KRV 27646/31102(88.9%) regex fix+auto chain+deploy+commercial closure; P5/P6 research pending
-- **2026-06-26T17:45:54Z** — Logos deploy OK: 21650 KRV citation+50 presets live logos.jema-ai.com; Deploy script artifact scp fix
-- **2026-06-26T16:49:22Z** — Design Logos-L2: Antigravity Commercial Finish live
-- **2026-06-26T16:19:02Z** — Logos bible_full AUTO: KRV bskorea fetch+5864 citation shard+50 presets+400-node graph+A4 bundle; VPS deploy ENOSPC blocked
-- **2026-06-26T16:15:57Z** — 지휘관 signoff: KOSPI composite_bear_conditional shadow July OOS — send_gate HOLD active weights unchanged
+- **2026-06-29T04:34:40Z** — continuity=smartfarm-qubics-cid-2026-06-29 · 큐빅스 CID manifest·fixture SSOT 반영 · phase0 chain exit0 · G300 broker 현장 보류
+- **2026-06-29T04:29:12Z** — continuity=logos-preset-query-guard-2026-06-28 · Logos B2B pilot closed: prod+daily smoke exit0, lead n8n dedicated 7be92ccf3; smartfarm G300 cid deferred by commander
+- **2026-06-29T03:31:31Z** — farm verify exit0 · logos lead n8n dedicated+sync · mosquitto 127.0.0.1:1883 VPS · G300 cid=TBD Tier3
+- **2026-06-29T03:25:34Z** — continuity=haan-master · HAAN master closed; 3-lens NL+gematria+wire/bundle done; cheonyucho deferred_skipped
+- **2026-06-29T03:20:14Z** — continuity=logos-preset-query-guard-2026-06-28 · HD AE tier_0 quality_ok · internal push 22b56a4 · prod smoke+daily exit0 · smartfarm phase0 exit0 · G300 cid=TBD Tier3 HOLD
+- **2026-06-29T02:25:18Z** — continuity=logos-preset-query-guard-2026-06-28 · A L1핀 rule·B commit 60955453+deploy PM2 ok·로컬 smoke0·prod presets500·C smartfarm phase0 dry-run0 — 다음채팅: prod logos 500 triage+nephilim auto_route
+- **2026-06-29T00:03:33Z** — continuity=logos-preset-query-guard-2026-06-28 · Logos preset-query guard: job+nephilim auto_route exit0 smoke; uncommitted 7 files — commit+Deploy-No1kmedi; Paste Chart v1 prior commit 62e1245a46 prod ok
+- **2026-06-28T13:25:24Z** — continuity=cheonyucho-haan-2026-06-28 · 천유초 P0: 하안28권+NLK서지 정찰 완료·한자본문0·hanja_canon not_acquired; 재개=이창일1999 ISBN9788988473092 011천유초 또는 장서각§3 p139-150
+- **2026-06-28T12:50:33Z** — Y1c GTM: OSS README+Discussions#1+CI green; Human Gold lee_heecheol live; VPS Ollama env+distill script staged
+- **2026-06-28T12:19:31Z** — Logos Job live closed: MISSION_LOG pin, deploy reading-pack scp, OSS smoke+gate exit0, VPS rebuild job_reading_pack ok
+- **2026-06-28T10:06:16Z** — 2026-06 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
+- **2026-06-28T09:50:57Z** — continuity=design-paste-chart-v1-2026-06-28 · Paste Chart v1 closed: validate_policy·fusion SSOT·panel=chat·Playwright prod exit0 commit 62e1245a46
+- **2026-06-28T04:31:03Z** — continuity=design-paste-chart-v1-2026-06-28 · Paste Chart: freeform 이름+생년 추출(김민정) fix·why-not-auto 카피 SSOT/UI·Pro email 게이트=분석 전 필수(?email=allowlist)
+- **2026-06-28T04:12:04Z** — continuity=session-2026-06-28-logos-oss · W6 OSS public repo live; CI green; optional gitea main merge
+- **2026-06-28T04:11:26Z** — Logos OSS public: mkmlab-v2/mkm-logos-research-oss CI green; W6 OPEN_SOURCE_PREP closed; push via Push-LogosOssPublicToGitHub_v1.ps1
+- **2026-06-28T03:58:44Z** — MKM H: USB historical 5-file mirror — docs/research/raw/mkm_usb_lab_historical_v1 [HISTORICAL only]
+- **2026-06-28T03:53:18Z** — H: MKM_LAB_COMMON historical reference indexed — docs/final/artifacts/mkm_h_usb_lab_historical_reference_v1.json [reference-only, not SSOT]
+- **2026-06-27T23:20:15Z** — continuity=session-2026-06-28-solo-logos · Sunday solo: gitea main merge + Logos Studio prod smoke exit0 (isaiah preset·ui_lite embed pin·VPS deploy); next commit ui_lite pin diff + stash resolve HOLD
+- **2026-06-27T23:13:41Z** — continuity=paste-chart-advice-gate-v1 · Paste Chart prod exit0: SOAP S + IWS adult gate + 주증상 label; Deploy tarball IWS sync 3b0b3358df internal
+- **2026-06-27T23:07:46Z** — W6 done: logos OSS CI workflow + export bundle 25 paths materialized
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
