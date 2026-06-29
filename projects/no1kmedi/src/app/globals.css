@@ -14331,6 +14331,80 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   line-height: 1.5;
 }
 
+.logos-research-page .lr-sasang-edge-mini-trend {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(197, 160, 87, 0.28);
+  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.logos-research-page .lr-sasang-edge-mini-trend-title {
+  margin: 0 0 0.55rem;
+  font-size: 0.72rem;
+  color: rgba(226, 232, 240, 0.92);
+}
+
+.logos-research-page .lr-sasang-edge-mini-trend-row + .lr-sasang-edge-mini-trend-row {
+  margin-top: 0.5rem;
+}
+
+.logos-research-page .lr-sasang-edge-mini-trend-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.66rem;
+  color: rgba(203, 213, 225, 0.9);
+  margin-bottom: 0.2rem;
+}
+
+.logos-research-page .lr-sasang-edge-mini-trend-track {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(30, 41, 59, 0.9);
+  overflow: hidden;
+}
+
+.logos-research-page .lr-sasang-edge-mini-trend-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(61, 155, 132, 0.85), rgba(252, 211, 77, 0.85));
+}
+
+.logos-research-page .lr-sasang-edge-mini-trend-hint {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 0.6rem;
+  color: rgba(148, 163, 184, 0.88);
+}
+
+.logos-research-page .lr-sasang-kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.45rem;
+  margin: 0 0 0.65rem;
+}
+
+.logos-research-page .lr-sasang-kpi-strip-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.45rem 0.6rem;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  background: rgba(15, 23, 42, 0.45);
+}
+
+.logos-research-page .lr-sasang-kpi-strip-item span {
+  font-size: 0.62rem;
+  color: rgba(148, 163, 184, 0.92);
+}
+
+.logos-research-page .lr-sasang-kpi-strip-item strong {
+  font-size: 0.8rem;
+  color: rgba(241, 245, 249, 0.95);
+}
+
 .logos-research-page .lr-studio-graph-meta {
   margin: 0.25rem 0 0;
   font-size: 0.65rem;

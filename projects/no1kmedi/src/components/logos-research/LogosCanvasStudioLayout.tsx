@@ -6,6 +6,10 @@ import { LogosResearchCitationSidecarPanel } from "@/components/logos-research/L
 import { LogosResearchConflictSidecarPanel } from "@/components/logos-research/LogosResearchConflictSidecarPanel";
 import { LogosResearchInsightLatticePanel } from "@/components/logos-research/LogosResearchInsightLatticePanel";
 import {
+  LogosResearchSasangNetworkKpiStrip,
+  LogosResearchSasangNetworkSummaryPanel,
+} from "@/components/logos-research/LogosResearchSasangNetworkSummaryPanel";
+import {
   LogosResearchSubgraphPanel,
   type LogosSubgraphCitationSlotPayload,
 } from "@/components/logos-research/LogosResearchSubgraphPanel";
@@ -54,14 +58,17 @@ export function LogosCanvasStudioLayout({
   const thinkingSteps = buildScriptoriumThinkingSteps();
 
   const canvasBody = result ? (
-    <LogosResearchSubgraphPanel
-      result={result}
-      autoDemoOnMount={autorun}
-      productDemoMode={false}
-      citationPlacement="external"
-      scriptoriumMode
-      onCitationSlotChange={setCitationSlot}
-    />
+    <>
+      <LogosResearchSasangNetworkKpiStrip />
+      <LogosResearchSubgraphPanel
+        result={result}
+        autoDemoOnMount={autorun}
+        productDemoMode={false}
+        citationPlacement="external"
+        scriptoriumMode
+        onCitationSlotChange={setCitationSlot}
+      />
+    </>
   ) : loading ? (
     <div className="mkm-trust-canvas-placeholder" aria-busy="true">
       <p className="mkm-trust-canvas-placeholder-title">경로 엔진 실행 중…</p>
@@ -85,6 +92,7 @@ export function LogosCanvasStudioLayout({
           activePresetId={activePresetId}
           onGapChipClick={onGapChipClick}
         />
+        <LogosResearchSasangNetworkSummaryPanel />
         {gapFocusLabel ? (
           <p className="lr-studio-gap-focus" role="status">
             {gapFocusLabel}

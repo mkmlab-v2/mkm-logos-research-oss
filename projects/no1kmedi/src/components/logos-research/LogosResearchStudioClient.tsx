@@ -12,6 +12,10 @@ import {
 } from "@/components/logos-research/LogosStudioScriptoriumInquiry";
 import { LogosResearchConflictSidecarPanel } from "@/components/logos-research/LogosResearchConflictSidecarPanel";
 import { LogosResearchInsightLatticePanel } from "@/components/logos-research/LogosResearchInsightLatticePanel";
+import {
+  LogosResearchSasangNetworkKpiStrip,
+  LogosResearchSasangNetworkSummaryPanel,
+} from "@/components/logos-research/LogosResearchSasangNetworkSummaryPanel";
 import { LogosResearchSubgraphPanel } from "@/components/logos-research/LogosResearchSubgraphPanel";
 import Link from "next/link";
 
@@ -1110,10 +1114,12 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
 
             {!embedHero ? (
               <>
+                <LogosResearchSasangNetworkKpiStrip />
                 <LogosResearchInsightLatticePanel
                   activePresetId={result.preset_id}
                   onGapChipClick={(chip) => setGapFocusLabel(chip.bridge_question_ko || chip.label_ko)}
                 />
+                <LogosResearchSasangNetworkSummaryPanel />
                 {gapFocusLabel ? (
                   <p className="lr-studio-gap-focus" role="status">
                     {gapFocusLabel}
