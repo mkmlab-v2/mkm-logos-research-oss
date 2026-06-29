@@ -1,0 +1,37 @@
+---
+description: 사상동역학 B-track opt-in 실험 렌즈 (SPEC-MKM-2026-06A) — 4AI 오버라이드 금지
+alwaysApply: false
+---
+
+# Sasang core engine (ablation opt-in) [HYPO]
+
+**Invoke:** 사용자가 `@experiments/sasang-head-btrack/sasang_core_engine` 또는 `@sasang-ablation-btrack` 로 명시할 때만.
+
+## Boundaries
+
+- **4AI core + Coordinator는 유지** — 사상 12셀·4체질을 제5 AI/헤드로 승격하지 않는다.
+- **Final Action = Field (`regime_map` + ops gate)만** — 본 규칙은 advisory slice `[NON_GATING]`.
+- **가중 보정 상한:** 출력에서 사상 전용 서술 비중은 **≤15%** (나머지는 Fact-Lock·artifact pointer).
+- **금지:** 임상 진단·처방 · live/Track A 트리거 · `forbidden_merges` (CONSTITUTION·`SASANG_DYNAMICS_V1_CONTRACT`).
+
+## When active
+
+1. `query → router → paths → citation_lock` spine 유지 (`MKM_PARALLEL_ADVISORY_LENS_CONTRACT`).
+2. stress/stage는 **disk SSOT**만: `run_lens_sasang.py` · `sasang_persona_grid_v1_latest.json`.
+3. 성경 앵커는 `sasang_reading_anchor_v1` verse_refs **인용 잠금** — 탈루 금지.
+4. 충돌은 `conflict_surface`에 솔직히 — direction merge 금지.
+
+## Pyobyeong / byeongjeung-yakri DR (B-track)
+
+표리병증·병증약리 딥리서치 팩 — **worktree only**, main `_latest` 미오염.
+
+1. **Build:** `py scripts/build_ijeoma_pyobyeong_dr_pack_v1.py`
+2. **Read:** `experiments/sasang-head-btrack/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md`
+3. **Cards:** `experiments/sasang-head-btrack/artifacts/ijeoma_pyobyeong_insight_cards_v1_latest.json`
+4. **NL batch:** `py scripts/run_ijeoma_pyobyeong_query_set_v1.py` (IJEOMA_BTRACK; `--dry-run` stub 가능)
+5. **격벽:** `sasang_byeongjeung_yakri_proxy_table` = 시장 은유 ≠ 임상 표리; 처방·체질 단정 금지.
+
+## Reporting
+
+- 구현·통과 = `CONSTITUTION` + script exit 0 only.
+- Ablation bench: `py scripts/run_lens_sasang_ablation_bench_v1.py` (worktree only).
