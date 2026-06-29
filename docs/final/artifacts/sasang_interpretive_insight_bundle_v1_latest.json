@@ -1,7 +1,7 @@
 {
   "schema": "sasang_interpretive_insight_bundle_v1",
   "version": "1.7.0",
-  "generated_at_utc": "2026-06-29T17:21:25Z",
+  "generated_at_utc": "2026-06-29T17:30:30Z",
   "rail": "B_TRACK",
   "decision_authority": "human_only",
   "opinion_kind": "multi_axis_reference_bundle_v1",
