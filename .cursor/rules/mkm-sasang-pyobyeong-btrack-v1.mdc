@@ -1,0 +1,32 @@
+---
+description: SPEC-MKM-2026-06A opt-in — 표리병증·병증약리 DR + ablation signoff (B-track HOLD)
+alwaysApply: false
+---
+
+# Sasang pyobyeong / ablation B-track (opt-in)
+
+Invoke: `@mkm-sasang-pyobyeong-btrack-v1` or `@sasang-ablation-btrack`
+
+- B-track only · `send_gate: HOLD` · Track A·CDSS·자동처방 금지
+- U2 hook: `@mkm-universal-multi-res-router-sasang-v1` (라우터 `agent_read_order`에 pyobyeong 경로 포함)
+- IC-08 사심신물↔표리 `[HYPO]` · IC-09 CPG orthogonal 2D `[SECONDARY]`
+- DR pack: `scripts/build_ijeoma_pyobyeong_dr_pack_v1.py`
+- Unified adapter (mainline): `py scripts/run_sasang_dynamics_unified_adapter_v1.py --profile mainline` → `reports/sasang_dynamics_unified_v1_latest.json`
+- Daily chain: `py scripts/run_sasang_unified_adapter_daily_chain_v1.py`
+- Signoff: `reports/sasang_ablation_matrix_signoff_v1_latest.json`
+- Promotion gate (지휘관 ack): `scripts/run_sasang_ablation_promotion_gate_v1.py --commander-ack`
+- LIT_REVIEW: `docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md`
+- Interpretive bundle: `pyobyeong_dr_pointer_v1` in `sasang_interpretive_insight_bundle_v1_latest.json`
+
+## NEVER
+
+- 전층 선형 합성(철학+임상+엔진 1식) — `forbidden_synthesis` 준수
+- `promotion_to_a_track_allowed` / clinical gating 해제
+
+## 재현
+
+```powershell
+py scripts/sasang_context_inventory_v1.py
+py scripts/build_universal_multi_res_plugin_registry_v1.py
+py -m pytest tests/test_ijeoma_pyobyeong_dr_pack_v1.py tests/test_sasang_pyobyeong_non_gating_lint_v1.py tests/test_sasang_interpretive_insight_bundle_v1.py -q
+```
