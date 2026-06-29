@@ -29,6 +29,7 @@ vendor/korean-medicine-texts/
 !.cursor/rules/mkm-universal-multi-res-router-sasang-v1.mdc
 !.cursor/rules/mkm-universal-multi-res-router-logos-v1.mdc
 !.cursor/rules/mkm-universal-multi-res-router-myeongni-v1.mdc
+!.cursor/rules/mkm-sasang-pyobyeong-btrack-v1.mdc
 # Cursor session validation baseline (alwaysApply; share across clones)
 !.cursor/rules/cursor-session-validation-baseline-v1.mdc
 !.cursor/rules/mkm-delegation-research-assist-v1.mdc
@@ -39,6 +40,8 @@ vendor/korean-medicine-texts/
 !.cursor/skills/mkm-cursor-session-ops/SKILL.md
 !.cursor/skills/mkm-autonomous-patrol/
 !.cursor/skills/mkm-autonomous-patrol/SKILL.md
+!.cursor/skills/mkm-sasang-lane-ops/
+!.cursor/skills/mkm-sasang-lane-ops/SKILL.md
 
 # 워크스페이스 루트 - 민감 정보·로컬 설정
 # Ephemeral mission checklist (tracked template: MISSION_LOG.template.md)

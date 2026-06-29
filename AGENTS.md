@@ -35,8 +35,10 @@
 | 구분자 | 명령 (루트 `C:\workspace`) |
 |--------|------------------------------|
 | 【아테나 점검】 | `powershell -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` |
+| 【아테나 UMR 신뢰성】 | `… -Persona AthenaUniversalMultiResReliability` |
 | 【빠른 헌법 점검】 | `… -Persona P0` |
 | 【암행어사 점검】 | `… -Persona AmsaengHealth` |
+| 【암행어사 UMR 신뢰성】 | `… -Persona AmsaengUniversalMultiResReliability` |
 | 【커서 세션 업그레이드】 | `… -Persona CursorSessionUpgrade` |
 | 【고차원 자율진화】 | `… -Persona HdAutonomousEvolution` (env `MKM_HD_AE_MISSION`·`MKM_HD_AE_LANE`; SSOT `docs/final/artifacts/mkm_high_dimensional_autonomous_evolution_v1_latest.json`) |
 | 【Bounded lane shadow】 | `… -Persona BoundedLaneLoopShadow` |
@@ -50,6 +52,7 @@
 | 【사상 P14】 | `… -Persona SasangRailP14` |
 | 【사상 P15】 | `… -Persona SasangRailP15` |
 | 【사상 P16】 | `… -Persona SasangRailP16` |
+| **【사상 작업 시작】** · 사상 레인 work-start | UMR sasang + read_order + bundle HOLD + unified `_latest` · `@.cursor/skills/mkm-sasang-lane-ops/SKILL.md` · `@mkm-universal-multi-res-router-sasang-v1` |
 | 【에이전트 micro-loop】 | `… -Persona MkmAgentLoops` → `docs/final/artifacts/mkm_agent_loops_v1_latest.md` |
 | 【프리미엄 큐 권장】 | `… -Persona PremiumMultilensQueue` |
 | 【Design 레인】 | `… -Persona DesignLane` |
@@ -68,6 +71,7 @@
 | Fact-Lock 번들 | `scripts/run_fact_lock_bundle.ps1` |
 | Trust Composition Design | `docs/final/MKM_TRUST_COMPOSITION_DESIGN_PIPELINE_V1.md` · `Run-ClinicLoiLandingDesignChain_v1.ps1` |
 | Cursor 세션 baseline | `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` |
+| **UMR G2 (U2 포인터)** | `@.cursor/rules/mkm_universal_os_g2.mdc` · G2 `g2a_*` 아티팩트 |
 | Pillar A LTM · suspect_first | `reports/mkm_bench_2026_003_pillar_a_signoff_v1_latest.json` · `mkm_meta_coordinator_turn_contract_v1_latest.md` |
 | **딥리서치 (논문·학술)** | Tier 0 `docs/research/raw/` · Tier 1 `mkm-deep-research/SKILL.md` · Tier 2 exit 0 · **DR bench 헬스/Fact-Lock:** `-IncludeDeepResearchBenchSmoke` / `-DeepResearchBenchSmokeOnly` (`run_workspace_automation_health.ps1`) · CONSTITUTION DR bench mini 표 |
 | **Logos OSS (open-core harness)** | `py scripts/run_logos_oss_premarket_smoke_v1.py` · `py scripts/build_logos_oss_public_export_bundle_v1.py --materialize` → `exports/mkm-logos-research-oss-v1/` · manifest `logos_oss_public_export_manifest_v1.json` · **monorepo GitHub push ≠ export** |
@@ -75,18 +79,15 @@
 
 ## Git · 원격 (한 줄)
 
-- 기본 push: `scripts/push-internal.ps1` → **gitea/internal** only. GitHub: `Push-GitHub-Explicit.ps1 -Acknowledge` 예외만 — **curated export** (`exports/mkm-logos-research-oss-v1/` 등) 우선; monorepo 전체 push 비권장.
-- `1작업=1브랜치=1PR` 권장 · 솔로는 `SoloDev-MergeFeatureToGiteaMain.ps1` 참고.
+- 기본 push: `scripts/push-internal.ps1` → **gitea/internal** only · GitHub `Push-GitHub-Explicit.ps1 -Acknowledge` 예외 · `1작업=1브랜치=1PR` · 솔로 `SoloDev-MergeFeatureToGiteaMain.ps1`.
 
 ## User Rules (Cursor Settings · 레포 밖)
 
-- **권장(컨텍스트 다이어트):** `docs/final/artifacts/cursor_user_rules_minimal_v1.txt` → User 탭에 **그대로 복붙** (5줄·충돌 시 레포 규칙 우선).
-- 장문 합본(핸드오프·일기 분기 포함): **`AGENTS_REFERENCE_V1.md` 「Recommended Cursor User Rules」** — User Rules에 **이중 주입 금지**(slim + 합본 동시 X).
+- 권장: `docs/final/artifacts/cursor_user_rules_minimal_v1.txt` User 탭 복붙 · 장문 `AGENTS_REFERENCE_V1.md` 「Recommended Cursor User Rules」— **이중 주입 금지**
 
 ## MCP · 도구 카탈로그 (컨텍스트)
 
-- **워크스페이스 SSOT:** `.cursor/mcp.json` (MKM lean 7). `openchrome`·`hostinger-website-manager`는 **요청 시**만 추가.
-- **MCP:** lean 7(`.cursor/mcp.json`) · 미사용 플러그인 MCP OFF · NL `@notebooklm-mcp-session-bridge` · 웹검색 `@autonomous-web-search-v1` · `check_notebooklm_mcp_prereqs.ps1` · `Invoke-McpHygieneProbe.ps1`
+- lean 7 `.cursor/mcp.json` · NL `@notebooklm-mcp-session-bridge` · 웹 `@autonomous-web-search-v1` · `check_notebooklm_mcp_prereqs.ps1` · `Invoke-McpHygieneProbe.ps1` · openchrome/hostinger **요청 시만**
 
 ## `.cursorrules` (TITAN · Slim v2)
 

@@ -10,11 +10,16 @@ alwaysApply: false
 
 ## When (로드·적용 트리거)
 
-- 사용자 메시지에 **사상·sasang·사상동역학·체질·병증·금화교역·보명지주** 등
+- 사용자 메시지에 **사상·sasang·사상동역학·체질·병증·표리병증·병증약리·금화교역·보명지주·pyobyeong** 등
 - 경로 `scripts/*sasang*` · `docs/final/artifacts/sasang_*` · `SASANG_DYNAMICS` 조작·질문
 - 구현·통과·「완료」·마일스톤 범위를 **사상 레인**으로 논할 때
 
 `@mkm-universal-multi-res-router-sasang-v1` 또는 본 파일 Read 후 진행.
+
+## Suspect-first (재개·범위 주장)
+
+- **재개**(`장기기억 맥락이어`·`@MISSION_LOG`) 또는 **구현·통과·범위 단정** 전: 라우터 JSON **미확인**이면 suspect — Read `docs/final/artifacts/mkm_chat_resume_pack_latest.md` + 아래 ALWAYS 1–2.
+- 감사 trail: `reports/universal_multi_res_router_replay_v1_summary_latest.json` (있을 때) · 선택 `--append-replay`.
 
 ## ALWAYS (답변·구현 주장 전)
 
@@ -29,8 +34,13 @@ alwaysApply: false
    - `docs/final/artifacts/sasang_context_inventory_v1_latest.json`
    - `docs/final/artifacts/SASANG_DYNAMICS_V1_CONTRACT.json`
    - `docs/final/artifacts/sasang_dynamics_btrack_milestone_v1_latest.json`
+   - `docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json`
+   - `docs/final/artifacts/sasang_pyobyeong_insight_cards_v1_latest.json` (IC-08/09)
+   - `docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md`
+   - `reports/sasang_ablation_matrix_signoff_v1_latest.json`
 5. **`low_res`** → `low_res_action.runner` 또는 `low_res_runners`만; **여전히** Track A·임상·live 승격 주장 금지
 6. 주장 시 **E1–E6** (`expectation_vs_fact_matrix`) 중 해당 row · `[HYPO]` vs `[FACT]` 라벨
+7. 선택 감사: `--append-replay` → `reports/universal_multi_res_router_replay_v1.jsonl`
 
 ## NEVER
 
@@ -43,6 +53,8 @@ alwaysApply: false
 
 - Ollama 산출 흡수: `--shallow-json reports/ollama_shallow_router_handoff_v1_latest.json` (있을 때만)
 - stale 인벤토리: `py scripts/sasang_context_inventory_v1.py` 후 라우터 재실행
+- 일일 동역학: `reports/sasang_dynamics_unified_v1_latest.json` · `py scripts/run_sasang_unified_adapter_daily_chain_v1.py`
+- work-start 스킬: `@.cursor/skills/mkm-sasang-lane-ops/SKILL.md` (【사상 작업 시작】)
 
 ## 재현
 
