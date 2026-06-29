@@ -1,6 +1,6 @@
 {
   "schema": "pre_news_shadow_projection_v1",
-  "generated_at_utc": "2026-06-28T21:30:11Z",
+  "generated_at_utc": "2026-06-29T04:39:02Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
@@ -9,15 +9,15 @@
     "pre_news_input_json": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_input_latest.json"
   },
   "summary": {
-    "rows_total": 20,
+    "rows_total": 17,
     "source_mode": "verse_level_ingest"
   },
   "projections": [
     {
       "row_id": "naver_001",
-      "headline": "[외신 헤드라인] AI 투자 열풍의 명암",
+      "headline": "코스피 변동성지수 급등…금융위기 이후 최고치 경신",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -45,9 +45,9 @@
     },
     {
       "row_id": "naver_002",
-      "headline": "비트버니 퀴즈 6월 29일 정답은",
+      "headline": "[더벨]KB운용 국민연금 잭팟…전례 없는 성과보수",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -75,9 +75,9 @@
     },
     {
       "row_id": "naver_003",
-      "headline": "비트코인(BTC), CME 옵션 미결제 약정 1년 만에 최저치...6만 달러 방어...",
+      "headline": "코스닥은 7% 급등에 매수 사이드카⋯코스피는 ‘삼전닉스’ 약세에 8200...",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -105,9 +105,9 @@
     },
     {
       "row_id": "naver_004",
-      "headline": "\"한국형 스테이블코인 선점\"…헥토, 서클 연동 '결제 허브' 승부수",
+      "headline": "환율 급등·입찰 부담에 국고채 약세…국고 3년 3.6bp 상승",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -135,9 +135,9 @@
     },
     {
       "row_id": "naver_005",
-      "headline": "긴축 장기화 우려에 비트코인 흔들 '바닥 확인은 아직'",
+      "headline": "[食전食후] 코스피, 삼전닉스 약세에 1%대 하락…코스닥은 7% 급등·910선...",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -165,9 +165,9 @@
     },
     {
       "row_id": "naver_006",
-      "headline": "솔라나, 70달러 지지선 유지하며 토큰화 증권 거래량 30억 달러 돌파",
+      "headline": "국민성장펀드發 바이오 랠리…투자심리 회복 기대",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -195,9 +195,9 @@
     },
     {
       "row_id": "naver_007",
-      "headline": "비트코인 급락에도 불공정거래 신고 급증, 시세조종 경계 심화",
+      "headline": "메타케어, '연 매출 923억' 테크랩스 품었다…하반기 실적 연결 편입 효...",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -225,9 +225,9 @@
     },
     {
       "row_id": "naver_008",
-      "headline": "[머니콘서트 2026] 홍성욱 연구원 \"비트코인, 매력 사라진 것 아냐...다시...",
+      "headline": "리미니스트리트, 평화홀딩스에 ERP 제3자 서비스 제공",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -255,9 +255,9 @@
     },
     {
       "row_id": "naver_009",
-      "headline": "상반기 투자자 울린 금·은·비트코인…하반기엔 다시 오를까",
+      "headline": "\"판 깔 땐 언제고\" 단일종목 레버리지 ETF 논란에 증권업계 부글부글",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -285,9 +285,9 @@
     },
     {
       "row_id": "naver_010",
-      "headline": "코인 침체기 불공정거래 신고는 급증…시세조종만 50건",
+      "headline": "[속보] 한화솔루션 VI 발동, 주가 주초장 껑충…코스피 약세 국면속",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -315,9 +315,9 @@
     },
     {
       "row_id": "naver_011",
-      "headline": "비트코인 6만달러 또 붕괴…이러다 정말 사라지나",
+      "headline": "플레이디, AI 기반 광고 제작·검색 최적화 사업 확대",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -345,9 +345,9 @@
     },
     {
       "row_id": "naver_012",
-      "headline": "코인 침체기 불공정거래 신고는 급증…시세조종만 50건",
+      "headline": "대명에너지 주가, 급등세... 이유는?",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -375,9 +375,9 @@
     },
     {
       "row_id": "naver_013",
-      "headline": "6월 29일 출근길 팟캐스트 3억2671만달러 롱 청산, 비트코인 5만9천달러...",
+      "headline": "[진단_노인복지업계 ③테라젠이텍스] 매출 성장에도 수익성 후퇴... 고진...",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -405,9 +405,9 @@
     },
     {
       "row_id": "naver_014",
-      "headline": "비트코인·XRP 보유자까지 흡수?...카르다노(ADA), 미드나잇(NIGHT) '승부...",
+      "headline": "꿈비, 토박스코리아 인수 추진",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -435,9 +435,9 @@
     },
     {
       "row_id": "naver_015",
-      "headline": "[모닝 시세브리핑] 암호화폐 시장 혼조세… 비트코인 59,366달러, 이더리...",
+      "headline": "피노, 이차전지 강세 속 장중 13%대 상승[특징주]",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -465,9 +465,9 @@
     },
     {
       "row_id": "naver_016",
-      "headline": "암호화폐 시장, 24시간 동안 레버리지 포지션 3억 2671만 달러 청산",
+      "headline": "SOOP, 플레이디 앞세워 AI 마케팅 사업 강화",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
@@ -495,99 +495,9 @@
     },
     {
       "row_id": "naver_017",
-      "headline": "샘슨 모우 \"비트코인(BTC) 추가 붕괴, 5만 8,000달러가 막았다\"",
+      "headline": "[알로이스 인수전 막전막후 ⑤] 로아앤코그룹, 연속 상폐에 이어 또 상...",
       "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
-      "top_resonance": {
-        "stage": "genesis",
-        "resonance_score": 0.0,
-        "edge_count": 72676,
-        "node_count": 512,
-        "phase_transition_signal": "weak"
-      },
-      "top2_resonance": [
-        {
-          "stage": "genesis",
-          "resonance_score": 0.0,
-          "edge_count": 72676,
-          "node_count": 512,
-          "phase_transition_signal": "weak"
-        },
-        {
-          "stage": "torah",
-          "resonance_score": 0.0,
-          "edge_count": 1164516,
-          "node_count": 2048,
-          "phase_transition_signal": "weak"
-        }
-      ],
-      "insight": "Pre-News shadow resonance points first to `genesis` under current network topology."
-    },
-    {
-      "row_id": "naver_018",
-      "headline": "\"회의론자들은 비웃어라\"… 비트코인 맹신 마이크로스트래티지, 추가 매...",
-      "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
-      "top_resonance": {
-        "stage": "genesis",
-        "resonance_score": 0.0,
-        "edge_count": 72676,
-        "node_count": 512,
-        "phase_transition_signal": "weak"
-      },
-      "top2_resonance": [
-        {
-          "stage": "genesis",
-          "resonance_score": 0.0,
-          "edge_count": 72676,
-          "node_count": 512,
-          "phase_transition_signal": "weak"
-        },
-        {
-          "stage": "torah",
-          "resonance_score": 0.0,
-          "edge_count": 1164516,
-          "node_count": 2048,
-          "phase_transition_signal": "weak"
-        }
-      ],
-      "insight": "Pre-News shadow resonance points first to `genesis` under current network topology."
-    },
-    {
-      "row_id": "naver_019",
-      "headline": "\"4년 반감기 법칙 깨졌다\"… 월가 경고 비웃은 비트코인 거물의 '바닥론...",
-      "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
-      "top_resonance": {
-        "stage": "genesis",
-        "resonance_score": 0.0,
-        "edge_count": 72676,
-        "node_count": 512,
-        "phase_transition_signal": "weak"
-      },
-      "top2_resonance": [
-        {
-          "stage": "genesis",
-          "resonance_score": 0.0,
-          "edge_count": 72676,
-          "node_count": 512,
-          "phase_transition_signal": "weak"
-        },
-        {
-          "stage": "torah",
-          "resonance_score": 0.0,
-          "edge_count": 1164516,
-          "node_count": 2048,
-          "phase_transition_signal": "weak"
-        }
-      ],
-      "insight": "Pre-News shadow resonance points first to `genesis` under current network topology."
-    },
-    {
-      "row_id": "naver_020",
-      "headline": "[모닝 뉴스브리핑] 루미스 美 상원의원 “미국은 클래리티법 갖게 될 것...",
-      "source": "naver_news_search_api_v1",
-      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "timestamp_utc": "2026-06-29T04:38:38Z",
       "top_resonance": {
         "stage": "genesis",
         "resonance_score": 0.0,
