@@ -1,0 +1,76 @@
+{
+  "schema": "sasang_ablation_matrix_signoff_v1",
+  "version": "1.0.0",
+  "protocol_id": "SPEC-MKM-2026-06A",
+  "generated_at_utc": "2026-06-29T17:16:54Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "merge_allowed": true,
+  "track_a_promotion_allowed": false,
+  "worktree_root": "C:\\mkm-sasang-ablation",
+  "ltm_graph_read": "C:\\workspace\\storage\\meta\\mkm_long_term_memory_graph_v1.json",
+  "ltm_corpus_read": "C:\\workspace\\docs\\final\\artifacts\\mkm_ltm_route_accuracy_corpus_v1.json",
+  "baseline_report": "C:\\workspace\\reports\\mkm_ltm_route_accuracy_bench_v1_latest.json",
+  "target_report": "C:\\mkm-sasang-ablation\\reports\\mkm_ltm_route_accuracy_bench_ablation_v1.json",
+  "target_bench_exit_code": 0,
+  "target_bench_tail": "graph_top1_hit_rate=1.0 blind_top1_hit_rate=0.88 delta=0.12 graph_only_hits=3 lane_hit_rate=1.0",
+  "metrics": {
+    "ltm_route_parity": {
+      "shared_case_count": 25,
+      "graph_top1_parity_jaccard_mean": 1.0,
+      "graph_top1_mismatch_count": 0,
+      "mismatches": [],
+      "baseline_graph_top1_hit_rate": 1.0,
+      "target_graph_top1_hit_rate": 1.0,
+      "delta_target_minus_baseline_graph_rate": 0.0,
+      "sasang_subset": {
+        "case_count": 7,
+        "baseline_hits": 7,
+        "target_hits": 7,
+        "case_ids": [
+          "a2a_track_wall",
+          "four_ai_lens",
+          "sasang_gematria_forbidden_edges",
+          "sasang_gematria_graph_disambiguation",
+          "sasang_gematria_sidecar_routing",
+          "taeyang_containment",
+          "twelve_ai_meta_routing"
+        ]
+      }
+    },
+    "citation_lock": {
+      "ok": true,
+      "anchor_count": 6,
+      "verse_ref_unique_count": 12,
+      "malformed_ref_count": 0,
+      "citation_leak_rate": 0.0,
+      "sample_refs": [
+        "Isa.40.1",
+        "John.19.34",
+        "John.19.35",
+        "Ps.23.4",
+        "Rev.11.15",
+        "Rev.11.6",
+        "Rev.12.1",
+        "Rev.12.15"
+      ]
+    }
+  },
+  "gates": {
+    "ltm_graph_top1_parity": true,
+    "citation_lock_intact": true,
+    "charter_amendment_required_before_merge": false,
+    "static_non_gating_verified": true,
+    "b_track_merge_approved": true
+  },
+  "promotion_ready": true,
+  "boundary_ack": "Ablation matrix only — not Track A · not clinical diagnosis · not main _latest overwrite.",
+  "reproduce": "py scripts/run_lens_sasang_ablation_bench_v1.py --baseline-report C:\\workspace\\reports\\mkm_ltm_route_accuracy_bench_v1_latest.json",
+  "commander_preapproved": true,
+  "promotion_artifacts": {
+    "paper_verdict": "experiments/sasang-head-btrack/artifacts/sasang_pyobyeong_promotion_paper_verdict_v1.json",
+    "charter_amendment": "experiments/sasang-head-btrack/CHARTER_AMENDMENT_DRAFT_v1.md",
+    "unified_adapter": "experiments/sasang-head-btrack/artifacts/sasang_dynamics_unified_ablation_v1.json",
+    "pyobyeong_insight_cards": "experiments/sasang-head-btrack/artifacts/ijeoma_pyobyeong_insight_cards_v1_ablation_latest.json"
+  }
+}
