@@ -1,6 +1,6 @@
 {
   "schema": "mkm_chat_resume_pack_v1",
-  "generated_at_utc": "2026-06-29T04:12:27.837744Z",
+  "generated_at_utc": "2026-06-29T04:22:22.268469Z",
   "research_only": true,
   "boundary_ack": "[HYPO] resume pack — ops index pins are B-track; no Track A·live merge",
   "ops_memory_options": {
@@ -326,22 +326,22 @@
   ],
   "last_ops_patrol": {
     "schema": "mkm_last_ops_patrol_v1",
-    "paste_line": "[DailyOpsPatrol] 2026-06-29 WARN (Remote:pass, P0:pass, Git:pass, Resume:pass, Athena:aligned, Env:pass, Amsaeng:fail, NL-MCP:pass, Secrets:pass; opt_fail:1) | Shadow Only | No Track A/live",
+    "paste_line": "[DailyOpsPatrol] 2026-06-29 OK (Remote:pass, P0:pass, Git:pass, Resume:pass, Athena:aligned, Env:pass, Amsaeng:pass, NL-MCP:pass, Secrets:pass; opt_fail:0) | Shadow Only | No Track A/live",
     "package": "DailyOpsPatrol",
-    "generated_at_local": "2026-06-29T13:14:45.4354374+09:00",
-    "process_exit_code": 1,
-    "optional_fail_count": 1,
+    "generated_at_local": "2026-06-29T13:24:42.4439477+09:00",
+    "process_exit_code": 0,
+    "optional_fail_count": 0,
     "required_failed": false,
     "source_paste_json": "reports/mkm_command_package_paste_latest.json",
     "stop_sequence_hints": {
       "schema": "mkm_stop_sequence_hints_v1",
       "ssot_scope": "docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json",
-      "amsaeng_worst_exit": 1,
+      "amsaeng_worst_exit": 0,
       "amsaeng_phase_exits": {
         "mcp_notebooklm_hygiene": 0,
         "repo_secret_hygiene": 0,
         "no1kmedi_internal_api_contract": 0,
-        "marketing_ip_governance": 1
+        "marketing_ip_governance": 0
       },
       "mcp_prereq_exit": 0,
       "notebooklm_stale_count_before": 0,
@@ -349,9 +349,7 @@
       "cursor_terminal_stopped_count": 0,
       "cursor_terminal_skipped_count": 2,
       "evolution_radar_pending_count": 0,
-      "alert_lines": [
-        "amsaeng_worst_exit=1"
-      ]
+      "alert_lines": []
     }
   }
 }

@@ -1,6 +1,6 @@
 # MKM Chat Resume Pack
 
-- generated_at_utc: `2026-06-29T04:12:27.837744Z`
+- generated_at_utc: `2026-06-29T04:22:22.268469Z`
 - research_only: `True`
 - include_slice: `False`
 - repair_v2_slice: `False`
@@ -24,8 +24,7 @@
 
 ## Last Ops Patrol (paste helper)
 
-- `[DailyOpsPatrol] 2026-06-29 WARN (Remote:pass, P0:pass, Git:pass, Resume:pass, Athena:aligned, Env:pass, Amsaeng:fail, NL-MCP:pass, Secrets:pass; opt_fail:1) | Shadow Only | No Track A/live`
-- Stop sequence hints: amsaeng_worst_exit=1
+- `[DailyOpsPatrol] 2026-06-29 OK (Remote:pass, P0:pass, Git:pass, Resume:pass, Athena:aligned, Env:pass, Amsaeng:pass, NL-MCP:pass, Secrets:pass; opt_fail:0) | Shadow Only | No Track A/live`
 
 ## Ops Memory Pins ([HYPO])
 

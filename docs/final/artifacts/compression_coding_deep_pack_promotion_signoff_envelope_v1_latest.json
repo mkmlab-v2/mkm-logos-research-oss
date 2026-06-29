@@ -1,6 +1,6 @@
 {
   "schema": "compression_coding_deep_pack_promotion_signoff_envelope_v1",
-  "generated_at_utc": "2026-06-27T18:44:56Z",
+  "generated_at_utc": "2026-06-29T04:27:33Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -25,7 +25,7 @@
   },
   "human_signoff": {
     "reviewer": "commander",
-    "approved_at_utc": "2026-06-27T18:44:59Z",
+    "approved_at_utc": "2026-06-29T04:27:36Z",
     "note": null
   },
   "apply_command_after_signoff": null,
