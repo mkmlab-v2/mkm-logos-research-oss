@@ -1,0 +1,35 @@
+{
+  "schema": "mkm_marketing_ip_governance_gate_v1",
+  "generated_at_utc": "2026-06-29T04:21:40Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "ok": true,
+  "gate_pass": true,
+  "gate_failures": [],
+  "charter_path": "docs/final/artifacts/mkm_marketing_ip_governance_charter_draft_v1.json",
+  "blocklist_count": 6,
+  "positioning_gate": {
+    "ok": true,
+    "gate_failures": [],
+    "out_path": "reports/logos_showroom_positioning_fact_lock_gate_v1_latest.json"
+  },
+  "p0_internal_term_scan": [
+    {
+      "path": "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/logos_cosmic_meta_architecture_ui_v1.json",
+      "missing": false,
+      "internal_term_hits": []
+    },
+    {
+      "path": "projects/bitcoin-trading/ops/windows-rehearsal/.showroom_staging/logos_cosmic_meta_architecture_ui_v1.json",
+      "missing": false,
+      "internal_term_hits": []
+    },
+    {
+      "path": "projects/mkm/mkm-life/public/data/logos_cosmic_meta_architecture_ui_v1.json",
+      "missing": false,
+      "internal_term_hits": []
+    }
+  ],
+  "reproducible_command": "py scripts/check_mkm_marketing_ip_governance_v1.py"
+}

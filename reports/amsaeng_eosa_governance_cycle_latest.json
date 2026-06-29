@@ -1,0 +1,26 @@
+﻿{
+    "schema":  "amsaeng_eosa_governance_cycle_v1",
+    "generated_at_utc":  "2026-06-29T04:20:47.1570275Z",
+    "workspace_root":  "C:\\workspace",
+    "include_vps_smoke":  false,
+    "phases":  [
+                   {
+                       "name":  "mcp_notebooklm_hygiene",
+                       "exit_code":  0
+                   },
+                   {
+                       "name":  "repo_secret_hygiene",
+                       "exit_code":  0
+                   },
+                   {
+                       "name":  "no1kmedi_internal_api_contract",
+                       "exit_code":  0
+                   },
+                   {
+                       "name":  "marketing_ip_governance",
+                       "exit_code":  1
+                   }
+               ],
+    "worst_exit":  1,
+    "scope_registry":  "docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json"
+}
