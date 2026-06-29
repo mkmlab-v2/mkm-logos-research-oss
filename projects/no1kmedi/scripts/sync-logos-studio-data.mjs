@@ -30,6 +30,10 @@ const PAIRS = [
   ["logos_cross_ref_sample_shard_v1_latest.json", "cross_ref_sample_shard_v1.json"],
   ["bigset_studio_conflict_sidecar_v1_latest.json", "bigset_conflict_sidecar_v1.json"],
   ["showroom_logos_job_reading_pack_slice_v1_latest.json", "job_reading_pack_slice_v1.json"],
+  [
+    "showroom_logos_isaiah_youtube_reading_pack_slice_v1_latest.json",
+    "isaiah_youtube_reading_pack_slice_v1.json",
+  ],
   ["logos_studio_semantic_router_lexical_index_v1_latest.json", "semantic_router_lexical_index_v1.json"],
   ["logos_studio_semantic_router_embedding_index_v1_latest.json", "semantic_router_embedding_index_v1.json"],
   ["logos_studio_verse_citation_shard_v1_latest.json", "verse_citation_shard_v1.json"],

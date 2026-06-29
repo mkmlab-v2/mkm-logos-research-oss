@@ -54,6 +54,13 @@ async function runPasteAnalyze(page, { embed } = {}) {
   await page.locator(".pc-draft-chip-val", { hasText: "김민수" }).waitFor({ timeout: 30000 });
   await page.locator(".pc-draft-chip-val", { hasText: "1988-03-12" }).waitFor({ timeout: 30000 });
 
+  const pipeline = page.locator(".paste-chart-omni .omni-pipeline-chips");
+  await pipeline.waitFor({ timeout: 15000 });
+  const pipelineCount = await pipeline.locator(".omni-pipeline-chip").count();
+  if (pipelineCount < 6) {
+    throw new Error(`pipeline_chip_count_expected_6 got=${pipelineCount}`);
+  }
+
   const analyzeBtn = page.locator(".paste-chart-omni .btn-analyze");
   await analyzeBtn.waitFor({ timeout: 30000 });
   await analyzeBtn.click();
@@ -95,6 +102,12 @@ async function main() {
 
     step = "web_analyze_to_chat_fusion";
     await runPasteAnalyze(page);
+    const pipelineOk = (await page.locator(".paste-chart-omni .omni-pipeline-chip--ok").count()) >= 3;
+    checks.push({
+      id: "web_pipeline_chips",
+      ok: pipelineOk,
+      ok_chips: await page.locator(".paste-chart-omni .omni-pipeline-chip--ok").count(),
+    });
     await page.locator(".paste-chart-fusion-strip").waitFor({ timeout: 180000 });
     const fusionText = await page.locator(".paste-chart-fusion-strip").innerText();
     checks.push({

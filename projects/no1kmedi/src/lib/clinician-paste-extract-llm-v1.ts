@@ -9,6 +9,7 @@ import {
   mergePasteExtractDraft,
   type PasteExtractDraftV1,
 } from "@/lib/clinician-chart-paste-extract-v1";
+import { resolvePasteExtractLlmPriority } from "@/lib/clinician-paste-chart-tier-routing-v1";
 
 export function pasteExtractLlmEnabled(): boolean {
   const v = (process.env.KM_CLINICIAN_PASTE_EXTRACT_LLM || "").trim().toLowerCase();
@@ -79,16 +80,27 @@ Do not diagnose. Do not invent data absent from the text. research_only human_co
 
   const prompt = `Extract patient metadata chips from this pasted chart text:\n\n${text}`;
 
-  try {
-    const gen = await generateClinicalText({
+  async function runTier(baselineConfidence: "low" | "high", tier1Failed: boolean) {
+    const route = resolvePasteExtractLlmPriority({ baselineConfidence, tier1Failed });
+    return generateClinicalText({
       prompt,
       systemInstruction,
       temperature: 0.1,
       maxOutputTokens: 320,
-      feature: "clinician_paste_extract_v1",
+      feature: route.taskId,
+      priorityOverride: route.priority,
     });
+  }
 
-    const parsed = parseLlmJson(gen.text);
+  try {
+    const tier1 = await runTier(baseline.confidence, false);
+    let gen = tier1;
+    let parsed = parseLlmJson(gen.text);
+    if (!parsed && baseline.confidence === "low") {
+      const tier2 = await runTier(baseline.confidence, true);
+      gen = tier2;
+      parsed = parseLlmJson(gen.text);
+    }
     if (!parsed) {
       return { ok: false, error: "llm_json_parse_failed", regex_baseline: baseline };
     }

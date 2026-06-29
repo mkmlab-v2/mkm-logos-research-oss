@@ -132,6 +132,7 @@ export async function POST(request: NextRequest) {
         api_contract: "logos_studio_v2_dynamic_rag_query_v1",
         api_contract_rev: "2026-06-25",
         match: resolved.match,
+        preset_guard: resolved.preset_guard ?? null,
         remaining: quotaRemaining(nextState, pro || embedDemoOk || quotaOff),
         pro: pro || embedDemoOk || quotaOff,
         quota_disabled: quotaOff,

@@ -68,6 +68,25 @@ async function main() {
     throw new Error(`nephilim_query_mismatch_${nephilimBody.result?.preset_id ?? "none"}`);
   }
 
+  const mismatchQuery = await fetch(`${base}/api/logos-research/query`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      preset_id: "job_job_suffering_reason",
+      query: "네피림",
+    }),
+  });
+  if (!mismatchQuery.ok) throw new Error(`mismatch_query_http_${mismatchQuery.status}`);
+  const mismatchBody = await mismatchQuery.json();
+  if (!mismatchBody.ok || mismatchBody.result?.preset_id !== "bigset_topic_nephilim") {
+    throw new Error(
+      `mismatch_auto_route_failed_${mismatchBody.result?.preset_id ?? "none"}_${mismatchBody.preset_guard?.action ?? "no_guard"}`,
+    );
+  }
+  if (mismatchBody.preset_guard?.action !== "auto_route") {
+    throw new Error(`mismatch_guard_action_${mismatchBody.preset_guard?.action ?? "none"}`);
+  }
+
   const embeddingQuery = await fetch(`${base}/api/logos-research/query`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -121,6 +140,12 @@ async function main() {
     throw new Error(`graphrag_mode_missing_${graphragMode}`);
   }
   if (graphragRefs < 3) throw new Error("graphrag_verse_refs_short");
+  const lemmaBridgeMode = graphragBody.result?.query_mode || "";
+  const lemmaNeighbors = graphragBody.result?.lemma_bridge_meta?.neighbor_count || 0;
+  if (!String(lemmaBridgeMode).includes("lemma_bridge")) {
+    throw new Error(`lemma_bridge_mode_missing_${lemmaBridgeMode}`);
+  }
+  if (lemmaNeighbors < 1) throw new Error("lemma_bridge_neighbors_empty");
 
   const nephilimConflict = nephilimBody.result?.conflict_context;
   if (!nephilimConflict?.ok || (nephilimConflict.group_count || 0) < 1) {
@@ -188,6 +213,7 @@ async function main() {
       graph_nodes: sliceBody.nodes.length,
       graphrag_mode: graphragMode,
       graphrag_verse_refs: graphragRefs,
+      lemma_bridge_neighbors: lemmaNeighbors,
       conflict_match_mode: nephilimConflict.match_mode,
       conflict_group_count: nephilimConflict.group_count,
       synthesis_mode: synthMode,

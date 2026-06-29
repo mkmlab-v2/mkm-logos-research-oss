@@ -13,6 +13,10 @@ import {
   pasteExtractLlmClientEnabled,
 } from "@/lib/clinician-paste-extract-client-v1";
 import { PASTE_CHART_PUBLIC_COPY_V1 } from "@/lib/paste-chart-public-copy-v1";
+import {
+  OmniPipelineStatusChips,
+  type OmniPipelineChipV1,
+} from "@/components/OmniPipelineStatusChips";
 
 const EXTRACT_DEBOUNCE_MS = 300;
 const LLM_EXTRACT_DEBOUNCE_MS = 500;
@@ -32,6 +36,8 @@ type PasteChartOmniBoxProps = {
   adviceWarning?: string | null;
   advancedSlot?: ReactNode;
   clinicianEmail?: string;
+  pipelineStages?: OmniPipelineChipV1[];
+  analyzeStageLabel?: string;
 };
 
 type ChipField = "display_name" | "birthdate" | "sex" | "chief_complaint";
@@ -50,6 +56,8 @@ export function PasteChartOmniBox({
   adviceWarning = null,
   advancedSlot,
   clinicianEmail = "",
+  pipelineStages = [],
+  analyzeStageLabel,
 }: PasteChartOmniBoxProps) {
   const textareaId = useId();
   const [editingField, setEditingField] = useState<ChipField | null>(null);
@@ -271,6 +279,10 @@ export function PasteChartOmniBox({
         </details>
       ) : null}
 
+      {pipelineStages.length ? (
+        <OmniPipelineStatusChips stages={pipelineStages} variant="paste-chart" />
+      ) : null}
+
       {error ? (
         <div className="error-banner" role="alert">
           <span className="error-text">{error}</span>
@@ -281,7 +293,7 @@ export function PasteChartOmniBox({
       {analyzeBusy ? (
         <div className="analyze-loading" aria-live="polite">
           <span className="spinner" aria-hidden />
-          분석 중…
+          {analyzeStageLabel ? `${analyzeStageLabel} 중…` : "분석 중…"}
         </div>
       ) : (
         <button

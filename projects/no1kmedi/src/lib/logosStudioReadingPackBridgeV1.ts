@@ -3,35 +3,85 @@ import path from "node:path";
 
 import { LOGOS_STUDIO_DATA_DIR } from "./logosResearchStudioV1";
 
-export type JobReadingPackRow = {
+export type ReadingPackRow = {
   pack_id: string;
   label_ko: string;
   summary_ko: string;
   card_excerpt_ko?: string;
   utterance_class?: string;
+  verse_refs?: string[];
 };
 
-export type JobReadingPackSlice = {
+export type ReadingPackSlice = {
   schema_version: string;
   query_id: string;
   query_ko: string;
   why_question_assembled?: boolean;
-  reading_packs: JobReadingPackRow[];
+  reading_packs: ReadingPackRow[];
   disclaimer?: { note_ko?: string };
 };
 
-let sliceCache: JobReadingPackSlice | null = null;
+/** @deprecated use ReadingPackRow */
+export type JobReadingPackRow = ReadingPackRow;
+/** @deprecated use ReadingPackSlice */
+export type JobReadingPackSlice = ReadingPackSlice;
 
-export async function loadJobReadingPackSlice(): Promise<JobReadingPackSlice | null> {
-  if (sliceCache) return sliceCache;
-  const filePath = path.join(LOGOS_STUDIO_DATA_DIR, "job_reading_pack_slice_v1.json");
+type SliceRegistryEntry = {
+  fileName: string;
+  queryId: string;
+  introLineKo: string;
+};
+
+const SLICE_REGISTRY: SliceRegistryEntry[] = [
+  {
+    fileName: "job_reading_pack_slice_v1.json",
+    queryId: "job_suffering_why",
+    introLineKo:
+      "「왜 고난?」 인과 단답 없음(why_question_assembled=false). 아래 Pack별 읽기 프레임만 제시합니다.",
+  },
+  {
+    fileName: "isaiah_youtube_reading_pack_slice_v1.json",
+    queryId: "isaiah_youtube_16chapter",
+    introLineKo:
+      "66=66 1:1 압축·단일 독해 단정 없음. 아래 Pack별 spine 읽기 프레임만 제시합니다 [NON_GATING].",
+  },
+];
+
+const PRESET_TO_SLICE_FILE: Record<string, string> = {
+  job_job_suffering_reason: "job_reading_pack_slice_v1.json",
+  job_existential_suffering: "job_reading_pack_slice_v1.json",
+  isaiah_youtube_spine_v1: "isaiah_youtube_reading_pack_slice_v1.json",
+};
+
+const CONFLICT_GROUP_TO_SLICE_FILE: Record<string, string> = {
+  MKM_CONCEPT_JOB_SUFFERING: "job_reading_pack_slice_v1.json",
+  MKM_CONCEPT_ISAIAH_YOUTUBE: "isaiah_youtube_reading_pack_slice_v1.json",
+};
+
+const sliceCache = new Map<string, ReadingPackSlice>();
+
+function registryEntry(fileName: string): SliceRegistryEntry | undefined {
+  return SLICE_REGISTRY.find((e) => e.fileName === fileName);
+}
+
+export async function loadReadingPackSlice(fileName: string): Promise<ReadingPackSlice | null> {
+  if (sliceCache.has(fileName)) {
+    return sliceCache.get(fileName) ?? null;
+  }
+  const filePath = path.join(LOGOS_STUDIO_DATA_DIR, fileName);
   try {
     const raw = await readFile(filePath, "utf8");
-    sliceCache = JSON.parse(raw) as JobReadingPackSlice;
-    return sliceCache;
+    const slice = JSON.parse(raw) as ReadingPackSlice;
+    sliceCache.set(fileName, slice);
+    return slice;
   } catch {
     return null;
   }
+}
+
+/** @deprecated use loadReadingPackSlice("job_reading_pack_slice_v1.json") */
+export async function loadJobReadingPackSlice(): Promise<ReadingPackSlice | null> {
+  return loadReadingPackSlice("job_reading_pack_slice_v1.json");
 }
 
 function truncateExcerpt(text: string, maxChars = 520): string {
@@ -43,14 +93,20 @@ function truncateExcerpt(text: string, maxChars = 520): string {
   return `${trimmed}…`;
 }
 
-/** Build scriptorium-friendly markdown from reading pack cards (step 3). */
+/** Build scriptorium-friendly markdown from reading pack cards. */
 export function buildReadingPackScriptoriumAnswer(
-  slice: JobReadingPackSlice,
+  slice: ReadingPackSlice,
   query: string,
+  introLineKo?: string,
 ): string {
+  const entry = SLICE_REGISTRY.find((e) => e.queryId === slice.query_id);
+  const intro =
+    introLineKo ||
+    entry?.introLineKo ||
+    "아래 Pack별 읽기 프레임만 제시합니다 [NON_GATING].";
   const lines: string[] = [
     `[HYPO] ${slice.query_ko || query} — reading pack ${slice.reading_packs.length}종 병렬.`,
-    "「왜 고난?」 인과 단답 없음(why_question_assembled=false). 아래 Pack별 읽기 프레임만 제시합니다.",
+    intro,
   ];
 
   slice.reading_packs.forEach((pack, index) => {
@@ -73,26 +129,41 @@ export function buildReadingPackScriptoriumAnswer(
   return lines.join("\n");
 }
 
+function resolveSliceFileName(
+  presetId: string | null | undefined,
+  readingPackQueryId: string | null | undefined,
+  conflictGroupId?: string | null,
+): string | null {
+  if (conflictGroupId && CONFLICT_GROUP_TO_SLICE_FILE[conflictGroupId]) {
+    return CONFLICT_GROUP_TO_SLICE_FILE[conflictGroupId];
+  }
+  if (presetId && PRESET_TO_SLICE_FILE[presetId]) {
+    return PRESET_TO_SLICE_FILE[presetId];
+  }
+  if (readingPackQueryId) {
+    const byQuery = SLICE_REGISTRY.find((e) => e.queryId === readingPackQueryId.trim());
+    if (byQuery) return byQuery.fileName;
+  }
+  return null;
+}
+
 export async function resolveReadingPackAnswerForPreset(
   presetId: string | null | undefined,
-  jobReadingPackPresetId: string | null | undefined,
+  readingPackQueryId: string | null | undefined,
   query: string,
   conflictGroupId?: string | null,
 ): Promise<string | null> {
-  const jobConflict = conflictGroupId === "MKM_CONCEPT_JOB_SUFFERING";
-  const jobPreset =
-    presetId === "job_job_suffering_reason" ||
-    presetId === "job_existential_suffering" ||
-    Boolean(jobReadingPackPresetId);
-  if (!jobPreset && !jobConflict) return null;
+  const sliceFile = resolveSliceFileName(presetId, readingPackQueryId, conflictGroupId);
+  if (!sliceFile) return null;
 
-  const slice = await loadJobReadingPackSlice();
+  const slice = await loadReadingPackSlice(sliceFile);
   if (!slice?.reading_packs?.length) return null;
 
-  const queryId = jobReadingPackPresetId?.trim();
-  if (queryId && slice.query_id !== queryId && !jobConflict && !jobPreset) {
+  const entry = registryEntry(sliceFile);
+  const queryId = readingPackQueryId?.trim();
+  if (queryId && slice.query_id !== queryId && !conflictGroupId && !presetId) {
     return null;
   }
 
-  return buildReadingPackScriptoriumAnswer(slice, query);
+  return buildReadingPackScriptoriumAnswer(slice, query, entry?.introLineKo);
 }
