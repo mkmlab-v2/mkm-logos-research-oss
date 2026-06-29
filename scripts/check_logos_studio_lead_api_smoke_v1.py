@@ -51,6 +51,7 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", default="https://logos.jema-ai.com")
     ap.add_argument("--out", default=str(DEFAULT_OUT))
+    ap.add_argument("--require-webhook", action="store_true")
     args = ap.parse_args()
 
     base = args.base.rstrip("/")
@@ -72,8 +73,14 @@ def main() -> int:
         },
     )
     lead_id = ok_body.get("lead_id")
+    webhook = ok_body.get("webhook") or {}
     if ok_code != 200 or not ok_body.get("ok") or not lead_id:
         failures.append(f"submit_failed_{ok_code}")
+    if args.require_webhook:
+        if not webhook.get("enabled"):
+            failures.append("webhook_not_enabled")
+        elif not webhook.get("delivered"):
+            failures.append(f"webhook_not_delivered_{webhook.get('error', 'unknown')}")
 
     out_doc = {
         "schema": "logos_studio_lead_api_smoke_v1",
@@ -83,6 +90,7 @@ def main() -> int:
         "gate_failures": failures,
         "invalid_email_status": bad_code,
         "lead_id": lead_id,
+        "webhook": webhook if ok_code == 200 else None,
         "reproduce": f"py scripts/check_logos_studio_lead_api_smoke_v1.py --base {base}",
     }
     out_path = Path(args.out)
