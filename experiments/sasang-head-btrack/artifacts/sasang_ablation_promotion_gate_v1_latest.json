@@ -1,0 +1,22 @@
+{
+  "schema": "sasang_ablation_promotion_gate_v1",
+  "generated_at_utc": "2026-06-29T17:24:04Z",
+  "promotion_ready": true,
+  "merge_allowed": true,
+  "track_a_promotion_allowed": false,
+  "send_gate": "HOLD",
+  "steps": [],
+  "checks": {
+    "charter_amendment_present": true,
+    "paper_verdict_present": true,
+    "unified_adapter_artifact": true,
+    "pyobyeong_cards_ablation": true,
+    "commander_ack": true,
+    "paper_promotion_merge_allowed": true,
+    "paper_track_a_blocked": true,
+    "ltm_parity": true,
+    "citation_lock": true,
+    "static_non_gating": true
+  },
+  "signoff": "C:/workspace/reports/sasang_ablation_matrix_signoff_v1.json"
+}

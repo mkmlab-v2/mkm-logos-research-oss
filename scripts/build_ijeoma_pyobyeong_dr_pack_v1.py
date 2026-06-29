@@ -556,6 +556,10 @@ def build_pack(workspace_root: Path) -> dict[str, Any]:
     cross_ref = _read_json(workspace_root / CROSS_REF_REL)
     contract = _read_json(workspace_root / CONTRACT_REL)
     query_doc = _read_json(ROOT / QUERY_SET_REL if (ROOT / QUERY_SET_REL).is_file() else RESEARCH / "ijeoma_pyobyeong_query_set_v1.json")
+    if not query_doc.get("questions"):
+        alt = ROOT / "docs/research/ijeoma_pyobyeong_query_set_v1.json"
+        if alt.is_file():
+            query_doc = _read_json(alt)
 
     canon_anchors = _extract_canon_anchors(canon_path)
     cross_rows = _cross_ref_pyobyeong_rows(cross_ref)

@@ -1,0 +1,372 @@
+{
+  "schema": "ijeoma_pyobyeong_insight_cards_v1",
+  "version": "1.1.0",
+  "generated_at_utc": "2026-06-29T17:22:57Z",
+  "rail": "B_TRACK",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "decision_authority": "human_only",
+  "advisory_only": true,
+  "tier0_ingest": "C:/workspace/experiments/sasang-head-btrack/research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md",
+  "pinned_secondary_v1": [
+    {
+      "source_id": "SRC-OAK-ULGWANG",
+      "title_ko": "소음인체질병증 임상진료지침: 울광병",
+      "tier": "SECONDARY",
+      "pin_kind": "oak_repository"
+    },
+    {
+      "source_id": "SRC-KCI-SOYANG-SANGPUNG",
+      "title_ko": "소양인체질병증 임상진료지침: 소양상풍병",
+      "tier": "SECONDARY",
+      "pin_kind": "kci_journal"
+    },
+    {
+      "source_id": "SRC-KCI-SOYANG-MANGEUM",
+      "title_ko": "소양인 망음병 CPG",
+      "tier": "SECONDARY",
+      "pin_kind": "kci_journal"
+    },
+    {
+      "source_id": "SRC-ENCYK-MANGYANG",
+      "title_ko": "망양병 (한국민족문화대백과)",
+      "tier": "SECONDARY",
+      "pin_kind": "encykorea"
+    },
+    {
+      "source_id": "SRC-ENCYK-ULGWANG",
+      "title_ko": "울광병 (한국민족문화대백과)",
+      "tier": "SECONDARY",
+      "pin_kind": "encykorea"
+    },
+    {
+      "source_id": "SRC-KCI-PIYUE",
+      "title_ko": "『동의수세보원』脾約에 관하여",
+      "tier": "SECONDARY",
+      "pin_kind": "kci_journal"
+    },
+    {
+      "source_id": "SRC-TOP10-Lee-Song",
+      "title_ko": "SciSpace TOP10 #1 표리병증 역사 (Lee & Song)",
+      "tier": "SECONDARY",
+      "pin_kind": "scispace_proxy"
+    }
+  ],
+  "tier_c_excluded_hosts": [
+    "ko.wikipedia.org",
+    "namu.wiki",
+    "m.cafe.daum.net",
+    "buya.kr",
+    "mkhealth.co.kr",
+    "egangdong.kr",
+    "imaeil.com"
+  ],
+  "orthogonal_matrix_hypo_v1": {
+    "schema": "ijeoma_pyobyeong_orthogonal_matrix_hypo_v1",
+    "version": "1.0.0",
+    "tier": "SECONDARY",
+    "axes": {
+      "stage": [
+        "cho",
+        "jung",
+        "mal"
+      ],
+      "exposure": [
+        "pyo",
+        "ri"
+      ]
+    },
+    "forbidden": "linear_fusion_of_stage_and_exposure",
+    "rows": [
+      {
+        "constitution_id": "soeum_in",
+        "branch_id": "ulgwang",
+        "label_ko": "소음인 울광병",
+        "cpg_pin": "SRC-OAK-ULGWANG",
+        "stage_notes_ko": {
+          "cho": "배표 통증·오한·신열·무한",
+          "jung": "오한 소실·신열 심화·대변비조",
+          "mal": "조열·광언·미천직시·집연한출"
+        }
+      },
+      {
+        "constitution_id": "soeum_in",
+        "branch_id": "mangyang",
+        "label_ko": "소음인 망양병",
+        "cpg_pin": "SRC-ENCYK-MANGYANG",
+        "stage_notes_ko": {
+          "cho": "발열·오한·자한·소변 청리",
+          "jung": "오한 없음·오열·자한·소변 자리",
+          "mal": "발열·오한·집연한출·소변적삽"
+        },
+        "edition_note_ko": "[SECONDARY] 갑오→신축: 위중도 지표 땀→소변 청리/적삽 (원전 행 pin 전 UNVERIFIED)"
+      },
+      {
+        "constitution_id": "soyang_in",
+        "branch_id": "sangpung",
+        "label_ko": "소양인 소양상풍병",
+        "cpg_pin": "SRC-KCI-SOYANG-SANGPUNG",
+        "stage_notes_ko": {
+          "cho": "표한·외감 초기",
+          "jung": "외한포리열·결흉 초입",
+          "mal": "결흉조갈섬어증"
+        }
+      },
+      {
+        "constitution_id": "soyang_in",
+        "branch_id": "mangeum",
+        "label_ko": "소양인 망음병",
+        "cpg_pin": "SRC-KCI-SOYANG-MANGEUM",
+        "stage_notes_ko": {
+          "cho": "대장한기·하복통·설사",
+          "jung": "신국음기 손상·건망·불안",
+          "mal": "신한복통망음우증"
+        }
+      }
+    ],
+    "disclaimer_ko": "CPG·백과 요약 — interpretive_notes_ko·human_only. 처방·CDSS·Track A 금지."
+  },
+  "canon_anchors": [
+    {
+      "anchor_id": "CANON-01",
+      "tier": "FACT",
+      "label_ko": "腹背表裏·三陰三陽 변증",
+      "source_path": "C:/workspace/docs/sasang-origin/정교동의수세보원원문.txt",
+      "line_ref": "397",
+      "excerpt_ko": "三陰三陽者 辨證之同異也 其理 在於腹背表裏而 不必究其經絡之變也"
+    },
+    {
+      "anchor_id": "CANON-02",
+      "tier": "FACT",
+      "label_ko": "少陰人 腎受熱 表熱病論",
+      "source_path": "C:/workspace/docs/sasang-origin/정교동의수세보원원문.txt",
+      "line_ref": "438-446",
+      "excerpt_ko": "少陰人 腎受熱 表熱病論 ○ 發熱 惡寒 脈浮者 屬表 卽 太陽證也 (張仲景 傷寒論) ○ 太陽傷風 脈陽浮而陰弱 陽浮者 熱自發 陰弱者 汗自出 嗇嗇惡寒 淅淅惡風 翕翕發熱 鼻鳴乾嘔者 桂枝湯主之 (張仲景 傷寒論) ○ 四時瘟疫 當用 香蘇散 (危亦林 得效方) ○ 傷寒 頭痛 身疼 不分表裏證 當用 藿香正氣散 (龔信 醫鑑) ♣ 論曰 張仲景所論 太陽傷風 發熱惡寒者 卽 少陰人 腎受熱 表熱病也 此證 發熱惡寒而 無汗者 當用 桂枝湯 川芎桂枝湯 香蘇散 芎歸香蘇散 藿香正氣散"
+    },
+    {
+      "anchor_id": "CANON-03",
+      "tier": "FACT",
+      "label_ko": "少陽人 脾受寒 表寒病論",
+      "source_path": "C:/workspace/docs/sasang-origin/정교동의수세보원원문.txt",
+      "line_ref": "1269-1273",
+      "excerpt_ko": "少陽人 脾受寒 表寒病論 ○ 太陽病 脈浮緊 發熱 惡寒 身痛 不汗出而 煩躁者 大靑龍湯主之 (張仲景) ♣ 論曰 發熱 惡寒 脈浮緊 身痛 不汗出而 煩躁者 卽 少陽人 脾受寒 表寒病也 此證 不當用 大靑龍湯 當用 荊防敗毒散"
+    },
+    {
+      "anchor_id": "CANON-04",
+      "tier": "FACT",
+      "label_ko": "表寒病 甘遂 vs 裡熱病 石膏",
+      "source_path": "C:/workspace/docs/sasang-origin/정교동의수세보원원문.txt",
+      "line_ref": "1328",
+      "excerpt_ko": "♣ 甘遂 表寒病 破水結之藥也    表病 可用甘遂而 不用石膏"
+    },
+    {
+      "anchor_id": "CANON-05",
+      "tier": "FACT",
+      "label_ko": "少陰·太陰 表裏俱病 vs 裡病表不病",
+      "source_path": "C:/workspace/docs/sasang-origin/정교동의수세보원원문.txt",
+      "line_ref": "742-743",
+      "excerpt_ko": "少陰病 有身體痛 骨節痛 表證 此則 表裏俱病而    大腸寒氣 必勝胃中溫氣而 上升也 太陰病 無身體痛 骨節痛 表證 此則 裡病 表不病而 胃中溫氣 猶勝大腸寒氣而 下降也"
+    }
+  ],
+  "cross_ref_pyobyeong_sample_count": 14,
+  "cards": [
+    {
+      "card_id": "IC-01",
+      "title_ko": "표리는 부위 라벨이 아니라 노출·깊이 축",
+      "insight_ko": "동의수세보원은 腹背表裏·三陰三陽 변증을 경락 미시추구 없이 읽는다. 2차 문헌(TOP10 #1)은 외감을 환경·감각, 내상을 감정·대인으로 요약한다. MKM에서는 사심신物(事心身物)과 병치하되 동일식 합선(E1)은 금지.",
+      "tier": "HYPO",
+      "axes": [
+        "pyobyeong",
+        "byeongjeung_yakri",
+        "sasim_sinmul"
+      ],
+      "reading_order_hint": "금화(외곽) → 보명(어휘) → 본 카드 → persona 12셀 → stress/stage",
+      "evidence_refs": [
+        {
+          "kind": "canon_anchor",
+          "ref": "CANON-01"
+        },
+        {
+          "kind": "secondary",
+          "ref": "docs/research/raw/SASANG_PYOBYEONG_TOP10_NL_PROXY_2026-06-24.md#1"
+        }
+      ],
+      "forbidden_merge_note_ko": "표리 축만으로 체질·처방·실매매 확정 금지."
+    },
+    {
+      "card_id": "IC-02",
+      "title_ko": "체질마다 표리 문법이 다름 — 소음 표열 vs 소양 표한",
+      "insight_ko": "少陰人 腎受熱 表熱病論과 少陽人 脾受寒 表寒病論은 서두 제목부터 대칭이 아니다. cross_ref 청크는 소음 신수열·표열, 소양 비수한·표한, 태음 위완수한·표한을 분리 보관한다. 한 체질의 표리 규칙을 타 체질 persona cell에 복사하면 FAIL.",
+      "tier": "FACT",
+      "axes": [
+        "pyobyeong",
+        "four_constitutions"
+      ],
+      "evidence_refs": [
+        {
+          "kind": "canon_anchor",
+          "ref": "CANON-02"
+        },
+        {
+          "kind": "canon_anchor",
+          "ref": "CANON-03"
+        },
+        {
+          "kind": "cross_ref",
+          "ref": "SASANG_CROSS_REF_DRAFT entries (표한/表熱 서두)"
+        }
+      ],
+      "forbidden_merge_note_ko": "12셀 active_cell_id만으로 표리 판정 금지."
+    },
+    {
+      "card_id": "IC-03",
+      "title_ko": "병증약리 핵심 = 표리 약성 오용 경고",
+      "insight_ko": "이마는 表寒病에 甘遂, 裡熱病에 石膏처럼 표·리별 약성을 명시한다. cross_ref에는 표리 불분·표리 병겸·감수·석고 표리약 대조·화열 급변 경계 청크가 있다. 엔지니어링 번역: force_hold·veto는 『추격·오용 금지』 전술 leg이지 처방 엔진이 아님.",
+      "tier": "HYPO",
+      "axes": [
+        "byeongjeung_yakri",
+        "pyobyeong"
+      ],
+      "evidence_refs": [
+        {
+          "kind": "canon_anchor",
+          "ref": "CANON-04"
+        },
+        {
+          "kind": "cross_ref",
+          "ref": "chunks 00005, 00014, 00019, 00046"
+        }
+      ],
+      "forbidden_merge_note_ko": "symptom_weights·market proxy table과 임상 병증약리 동일시 금지."
+    },
+    {
+      "card_id": "IC-04",
+      "title_ko": "初中末 × 표리 = 직교 2D 읽기",
+      "insight_ko": "contract pathology_stage(cho|jung|mal|anjeong)는 stress 밴드에서 유도. 표리는 감염·노출 vs 내상 축. 같은 중증이라도 中證+表病과 中證+裡病은 다른 문헌 맥락. persona grid 12셀은 톤·라우팅 메타이지 표리 축 대체가 아님.",
+      "tier": "FACT",
+      "axes": [
+        "byeongjeung_yakri",
+        "persona_grid",
+        "pathology_stage"
+      ],
+      "evidence_refs": [
+        {
+          "kind": "contract",
+          "ref": "SASANG_DYNAMICS_V1_CONTRACT.json formulas_v1.pathology_stage"
+        },
+        {
+          "kind": "cross_ref",
+          "ref": "망양·망음 예방 청크 00035"
+        }
+      ],
+      "forbidden_merge_note_ko": "stress 단일 스코어로 표리·初中末 선형 합성 금지."
+    },
+    {
+      "card_id": "IC-05",
+      "title_ko": "張仲景 인용 = 사상 四象 재매핑 레이어",
+      "insight_ko": "원전은 傷寒論 구절을 인용한 뒤 論曰로 少陰人/少陽人 병증으로 재해석한다. 이는 동의보감식 분류를 그대로 따르지 않겠다는 경계. RAG는 인용사(仲景·龔信)별 격벽 유지 필요.",
+      "tier": "FACT",
+      "axes": [
+        "pyobyeong",
+        "zhang_zhongjing_bridge"
+      ],
+      "evidence_refs": [
+        {
+          "kind": "canon_anchor",
+          "ref": "CANON-02"
+        },
+        {
+          "kind": "canon_anchor",
+          "ref": "CANON-05"
+        }
+      ],
+      "forbidden_merge_note_ko": "TCM 태양병 라벨을 사상 체질과 1:1 동일시 금지."
+    },
+    {
+      "card_id": "IC-06",
+      "title_ko": "판본·시간에 따른 병증약리 진화",
+      "insight_ko": "2차 논문(TOP10 #2, #9)은 갑오본↔신축본에서 亡陰證·복통설사 등 분류가 정제됨을 서술. 레포 primary 한자 격치고·천유초는 미입수 — 판본 단정은 [UNVERIFIED] until canon acquired.",
+      "tier": "SECONDARY",
+      "axes": [
+        "byeongjeung_yakri",
+        "edition_drift"
+      ],
+      "evidence_refs": [
+        {
+          "kind": "secondary",
+          "ref": "SASANG_PYOBYEONG_TOP10 #2"
+        },
+        {
+          "kind": "secondary",
+          "ref": "SASANG_PYOBYEONG_TOP10 #9"
+        }
+      ],
+      "forbidden_merge_note_ko": "판본 차이를 Track A·임상 SSOT로 승격 금지."
+    },
+    {
+      "card_id": "IC-07",
+      "title_ko": "시장 byeongjeung proxy ≠ 임상 표리병증",
+      "insight_ko": "sasang_byeongjeung_yakri_proxy_table_v1은 VIX·volume 은유로 sweating/chills 등을 만든 B-track Step-1 frozen table이다. 본 딥리서치 팩의 표리·병증약리 통찰과 인과 단정·합선 금지.",
+      "tier": "FACT",
+      "axes": [
+        "track_wall"
+      ],
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "ref": "docs/final/artifacts/sasang_byeongjeung_yakri_proxy_table_v1_latest.json"
+        }
+      ],
+      "forbidden_merge_note_ko": "step12 leakage pass를 임상 검증으로 읽지 말 것."
+    },
+    {
+      "card_id": "IC-08",
+      "title_ko": "사심신물 ↔ 표리 노출 축 (격치고 브리지)",
+      "insight_ko": "DR Tier0: 表病≈事·身(외부·감각·환경 노출), 裏病≈心·物(정서·대인·내적 집착). 격치고 partial(SP-01 物宅身也…)와 정합 가능하나 primary 한자 미입수 — [HYPO] 교육·interpretive_notes만. S-L-K-M·regime_map·stress 식과 동일식 합선(E1/E2) 금지.",
+      "tier": "HYPO",
+      "axes": [
+        "sasim_sinmul",
+        "pyobyeong",
+        "worldview_annotation"
+      ],
+      "evidence_refs": [
+        {
+          "kind": "tier0_ingest",
+          "ref": "experiments/sasang-head-btrack/research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md"
+        },
+        {
+          "kind": "partial_canon",
+          "ref": "IJEOMA_SECONDARY_PROXY_v1 SP-01"
+        },
+        {
+          "kind": "canon_anchor",
+          "ref": "CANON-01"
+        }
+      ],
+      "forbidden_merge_note_ko": "사심신물 브리지를 체질 라벨·처방·CDSS 입력으로 승격 금지."
+    },
+    {
+      "card_id": "IC-09",
+      "title_ko": "CPG 직교 2D 매트릭스 (울광/망양·상풍/망음 × 초중말)",
+      "insight_ko": "Commander DR의 2D 표를 orthogonal_matrix_hypo_v1로 구조화. stage 축=contract pathology_stage(cho|jung|mal); exposure 축=표·리·분기(울광|망양 등). Advisory Only — pinned SECONDARY(KCI/OAK/encyk)만; Tier C 출처 미사용.",
+      "tier": "SECONDARY",
+      "axes": [
+        "pyobyeong",
+        "byeongjeung_yakri",
+        "persona_grid",
+        "cpg_matrix"
+      ],
+      "evidence_refs": [
+        {
+          "kind": "matrix",
+          "ref": "orthogonal_matrix_hypo_v1"
+        },
+        {
+          "kind": "pinned_secondary",
+          "ref": "pinned_secondary_v1"
+        }
+      ],
+      "forbidden_merge_note_ko": "매트릭스 셀→처방·active_cell_id 자동 매핑 금지."
+    }
+  ]
+}

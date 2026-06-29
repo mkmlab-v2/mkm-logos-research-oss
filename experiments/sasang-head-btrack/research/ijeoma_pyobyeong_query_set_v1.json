@@ -1,0 +1,58 @@
+{
+  "schema": "ijeoma_pyobyeong_query_set_v1",
+  "version": "1.0.0",
+  "rail": "B_TRACK",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "notebook_id": "IJEOMA_BTRACK",
+  "notebook_uuid_hint": "e6c1f050-40ef-49f0-8b2c-c509b8570cf4",
+  "decision_authority": "human_only",
+  "guardrail_ko": "업로드된 IJEOMA 소스만 근거. 인용·행번호 없으면 '근거 부족'만. 처방·체질 단정·Track A 금지.",
+  "reproduce": [
+    "py scripts/build_ijeoma_pyobyeong_dr_pack_v1.py",
+    "py scripts/run_ijeoma_pyobyeong_query_set_v1.py --dry-run",
+    "py scripts/run_ijeoma_pyobyeong_query_set_v1.py"
+  ],
+  "questions": [
+    {
+      "query_id": "PBQ01",
+      "topic": "pyobyeong_definition",
+      "question_ko": "동의수세보원에서 표(表)·리(裡)·표리병증(表裡病證)의 판별 기준을 원문 인용과 함께 정리하라. 환경·감각(外)과 감정·대인(內) 축이 언급되면 구분해 쓰라. 인용 없으면 '근거 부족'만 답하라."
+    },
+    {
+      "query_id": "PBQ02",
+      "topic": "four_constitutions_pyobyeong",
+      "question_ko": "四象人 각 체질의 표열·표한·表熱病論·表寒病論 서두에서 장부·한열 논리가 어떻게 다른지 원문 구절을 나란히 비교하라. 소음(少陰) vs 소양(少陽) 표·리 구분을 특히 강조하라."
+    },
+    {
+      "query_id": "PBQ03",
+      "topic": "pyobyeong_ambiguity",
+      "question_ko": "표리 불분(表裡不分)·표리同病·表裡不解가 나오는 맥락을 각각 한 사례씩 인용하고, 이마가 방제 오용을 경고하는 논지를 요약하라. 처방 확정은 하지 말 것."
+    },
+    {
+      "query_id": "PBQ04",
+      "topic": "stage_x_pyobyeong",
+      "question_ko": "병증약리에서 初證·中證·末證(울광·망양 등)과 표·리 축은 어떤 관계로 서술되는가? 한 축이 다른 축을 대체한다고 단정하지 말고 교차표 형태로만 정리하라."
+    },
+    {
+      "query_id": "PBQ05",
+      "topic": "zhang_zhongjing_diff",
+      "question_ko": "張仲景·傷寒論 인용이 나올 때 이마가 사상체질(四象)로 재해석하는 패턴을 예 2건 인용하라. 동의보감·後世方書과의 차별 지점만."
+    },
+    {
+      "query_id": "PBQ06",
+      "topic": "byeongjeung_yakri_principle",
+      "question_ko": "病證藥理(병증약리)에서 '증에 맞는 약' 원칙과 표리 오용 금지(예: 表病에 裡藥, 裡病에 表藥) 논지를 원문·2차 논문 근거로 bullet 정리하라."
+    },
+    {
+      "query_id": "PBQ07",
+      "topic": "edition_drift",
+      "question_ko": "갑오본·신축본 등 판본 차이로 표리·병증 분류가 달라진다고 알려진 사례(예: 亡陰證·복통설사)를 업로드 소스 범위에서만 요약하라. 확정 불가 시 [UNVERIFIED] 표기."
+    },
+    {
+      "query_id": "PBQ08",
+      "topic": "rag_guardrails",
+      "question_ko": "표리병증 구절을 RAG가 한 줄만 인용할 때 생기는 맥락 단절 위험 3가지와, 이를 줄이기 위한 후속 질문 템플릿 3개를 제시하라. 임상·자가진단 유도 문구 금지."
+    }
+  ]
+}

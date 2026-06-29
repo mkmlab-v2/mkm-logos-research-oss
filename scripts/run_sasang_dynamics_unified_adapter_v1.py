@@ -14,6 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 EXP = ROOT / "experiments" / "sasang-head-btrack"
+DEFAULT_WS = Path(r"C:\workspace")
 sys.path.insert(0, str(EXP))
 
 from sasang_dynamics_unified_adapter_v1 import (  # noqa: E402
@@ -22,8 +23,8 @@ from sasang_dynamics_unified_adapter_v1 import (  # noqa: E402
 )
 
 DEFAULT_LENS = EXP / "artifacts/sasang_independent_lens_ablation_v1.json"
+FALLBACK_LENS = DEFAULT_WS / "docs/final/artifacts/sasang_independent_lens_latest.json"
 DEFAULT_OUT = EXP / "artifacts/sasang_dynamics_unified_ablation_v1.json"
-DEFAULT_WS = Path(r"C:\workspace")
 
 
 def main() -> int:
@@ -32,6 +33,9 @@ def main() -> int:
     ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--workspace-root", type=Path, default=DEFAULT_WS)
     args = ap.parse_args()
+
+    if not args.lens_json.is_file() and FALLBACK_LENS.is_file():
+        args.lens_json = FALLBACK_LENS
 
     if not args.lens_json.is_file():
         print(json.dumps({"ok": False, "error": f"missing lens: {args.lens_json}"}))
