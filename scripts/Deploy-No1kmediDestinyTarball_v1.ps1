@@ -163,6 +163,7 @@ if (-not $SkipMonorepoPathsFromLocal) {
         "scripts/adapt_integrated_wellness_personadiary_export_v1.py",
         "docs/final/schemas/integrated_wellness_solution_v2.schema.json",
         "docs/final/artifacts/a_code_wellness_archetype_lexicon_v1.json",
+        "docs/final/artifacts/clinician_ijeoma_eight_channel_weight_contract_v1.json",
         "docs/final/artifacts/fixtures/integrated_wellness_solution_v2_minor_soeum_abdomen_seed.example.json"
     )
     Write-Host "[no1kmedi-tarball] scp monorepo CDS/bundle/IWS paths from local" -ForegroundColor Cyan

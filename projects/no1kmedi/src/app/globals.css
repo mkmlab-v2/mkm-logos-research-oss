@@ -4220,6 +4220,59 @@ section h2 {
   line-height: 1.55;
 }
 
+.paste-chart-v1 .omni-pipeline-chips--paste-chart {
+  margin-top: 0.15rem;
+}
+
+.paste-chart-v1 .omni-pipeline-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.paste-chart-v1 .omni-pipeline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--line, rgba(255, 255, 255, 0.08));
+  color: var(--muted, #9aa9a3);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.paste-chart-v1 .omni-pipeline-chip--ok {
+  border-color: rgba(61, 155, 132, 0.45);
+  color: #9fd9c8;
+}
+
+.paste-chart-v1 .omni-pipeline-chip--active {
+  border-color: rgba(61, 155, 132, 0.65);
+  color: #e2e8f0;
+  background: rgba(61, 155, 132, 0.12);
+}
+
+.paste-chart-v1 .omni-pipeline-chip--warn {
+  border-color: rgba(197, 160, 87, 0.5);
+  color: #e8d4a8;
+}
+
+.paste-chart-v1 .omni-pipeline-chip--fail {
+  border-color: rgba(248, 113, 113, 0.45);
+  color: #fecaca;
+}
+
+.paste-chart-v1 .omni-pipeline-active-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.72rem;
+  color: var(--muted, #9aa9a3);
+}
+
 .paste-chart-v1 .pc-draft-chip-row {
   display: grid;
   gap: 0.5rem;
@@ -13892,6 +13945,17 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   background: #fef2f2;
 }
 
+.logos-research-page .lr-studio-preset-guard {
+  margin: 0.55rem 0 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: var(--tc-radius-lg, 12px);
+  border: 1px solid color-mix(in srgb, var(--tc-hold, #f59e0b) 40%, transparent);
+  background: var(--tc-hold-bg, #fff8eb);
+  color: var(--tc-text, #1c1917);
+  font-size: var(--text-sm, 0.875rem);
+  line-height: 1.5;
+}
+
 .logos-research-page .lr-studio-quota-recovery {
   margin-top: 0.65rem;
   padding: 0.65rem 0.75rem;
@@ -16850,6 +16914,138 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   border-color: rgba(45, 122, 104, 0.3);
 }
 
+/* B2B P0 — split narrative + path (Scriptorium) */
+.logos-research-page .lr-studio-insight-shell--split .lr-studio-split-viz {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  min-height: 420px;
+}
+
+.logos-research-page .lr-studio-split-viz__narrative,
+.logos-research-page .lr-studio-split-viz__path {
+  min-width: 0;
+  border: 1px solid rgba(91, 74, 50, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.75rem 0.85rem;
+}
+
+.logos-research-page .lr-studio-explore-exp-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.65rem;
+}
+
+.logos-research-page .lr-studio-explore-exp-btn {
+  font-size: 0.78rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  border: 1px dashed rgba(100, 116, 139, 0.45);
+  background: rgba(248, 250, 252, 0.9);
+  color: #64748b;
+  cursor: pointer;
+}
+
+.logos-research-page .lr-studio-explore-exp-btn:hover:not(:disabled) {
+  border-color: rgba(45, 122, 104, 0.45);
+  color: #1e4d42;
+}
+
+.logos-research-page .lr-studio-explore-exp-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.logos-research-page .lr-studio-ref-chip--slice-out {
+  border-style: dashed;
+  background: linear-gradient(135deg, rgba(148, 163, 184, 0.12), rgba(186, 230, 253, 0.18));
+  color: #64748b;
+}
+
+.logos-research-page .lr-studio-slice-boundary-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.logos-research-page .lr-studio-slice-boundary-dialog__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.logos-research-page .lr-studio-slice-boundary-dialog__panel {
+  position: relative;
+  max-width: 28rem;
+  width: 100%;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid rgba(45, 122, 104, 0.22);
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.18);
+  padding: 1.25rem 1.35rem;
+}
+
+.logos-research-page .lr-studio-slice-boundary-dialog__panel h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  color: #1e4d42;
+}
+
+.logos-research-page .lr-studio-slice-boundary-ref {
+  font-family: ui-monospace, monospace;
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0 0 0.75rem;
+}
+
+.logos-research-page .lr-studio-slice-boundary-body,
+.logos-research-page .lr-studio-slice-boundary-note {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  margin: 0 0 0.65rem;
+  color: #292524;
+}
+
+.logos-research-page .lr-studio-slice-boundary-note {
+  font-size: 0.78rem;
+  color: #78716c;
+}
+
+.logos-research-page .lr-studio-slice-boundary-actions {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  margin-top: 0.85rem;
+}
+
+.logos-research-page .lr-studio-slice-boundary-cta {
+  display: inline-flex;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  background: #2d7a68;
+  color: #fff;
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.logos-research-page .lr-studio-slice-boundary-dismiss {
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+@media (max-width: 960px) {
+  .logos-research-page .lr-studio-insight-shell--split .lr-studio-split-viz {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* 7. Floating Citation Lock */
 .logos-research-page.logos-research-studio-theme--scriptorium .mkm-trust-canvas-citation-dock {
   position: absolute;
@@ -17028,6 +17224,61 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   margin-top: 0.9rem;
   padding-top: 0.9rem;
   border-top: 1px solid rgba(91, 74, 50, 0.09);
+}
+
+.omni-pipeline-chips--logos-studio {
+  text-align: left;
+  margin-top: 0.35rem;
+}
+
+.omni-pipeline-chips--logos-studio .omni-pipeline-chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  justify-content: center;
+}
+
+.omni-pipeline-chips--logos-studio .omni-pipeline-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.22rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  border: 1px solid rgba(91, 74, 50, 0.14);
+  color: #6b5c4a;
+  background: rgba(255, 255, 255, 0.65);
+}
+
+.omni-pipeline-chips--logos-studio .omni-pipeline-chip--ok {
+  border-color: rgba(45, 122, 104, 0.35);
+  color: #2d7a68;
+}
+
+.omni-pipeline-chips--logos-studio .omni-pipeline-chip--active {
+  border-color: rgba(45, 122, 104, 0.55);
+  color: #1f4f44;
+  background: rgba(45, 122, 104, 0.08);
+}
+
+.omni-pipeline-chips--logos-studio .omni-pipeline-chip--warn {
+  border-color: rgba(180, 130, 50, 0.4);
+  color: #8a6420;
+}
+
+.omni-pipeline-chips--logos-studio .omni-pipeline-chip--fail {
+  border-color: rgba(185, 60, 60, 0.35);
+  color: #9f3030;
+}
+
+.omni-pipeline-chips--logos-studio .omni-pipeline-active-hint {
+  margin: 0.4rem 0 0;
+  font-size: 0.75rem;
+  color: #6b5c4a;
+  text-align: center;
 }
 
 .lr-studio-omni-run {

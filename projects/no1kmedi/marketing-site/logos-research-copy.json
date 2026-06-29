@@ -7,8 +7,9 @@
   },
   "nav": {
     "skip": "본문으로 건너뛰기",
-    "docs": "문서",
-    "studio": "스튜디오",
+    "home": "홈",
+    "docs": "학술 라이브러리",
+    "studio": "연구 스튜디오",
     "metrics": "지표",
     "tiers": "티어"
   },
@@ -82,7 +83,8 @@
       "pastoral_disclaimer": "[research_only] 성경 텍스트·경로 관측 도구입니다. 목회 상담·심리 치료·의료·투자 조언이 아닙니다. ECS·렌즈는 [NON_GATING] 설명 보조.",
       "pastoral_lead": "개인적 고민을 성경 구절·경로로 읽는 관측 모드입니다. 상담·치료·교리 판매가 아닙니다.",
       "scope_label_pastoral": "Logos Canvas · 묵상·고민",
-      "scope_detail_pastoral": "320-node slice · citation lock · 관측 전용 [NON_GATING]"
+      "scope_detail_pastoral": "curated graph slice · ~900 nodes · citation lock · 관측 전용 [NON_GATING]",
+      "scope_detail_academic": "curated graph slice · ~900 nodes · citation lock · ECS [NON_GATING]"
     },
     "subgraph": {
       "title": "Deep Research · 의미 경로 망",
@@ -107,7 +109,13 @@
       "verse_refs": "구절 참조",
       "focus_title": "그래프에서 포커스",
       "focus_prefix": "포커스 ·",
-      "missing_in_slice": "— 현 슬라이스에 없음 · 컨텍스트 망 유지",
+      "missing_in_slice": "슬라이스 범위 외 · 파일럿 확장 영역",
+      "slice_boundary_title": "데이터 범위 외부 · 기관 파일럿 확장 팩",
+      "slice_boundary_body": "본 구절의 전후 맥락·관련 주석·전권 라이브러리는 기관 파일럿(SOW 협의) 도입 시 확장됩니다. 현재 curated slice(~900 nodes)는 citation lock·경로 검증 데모용입니다.",
+      "slice_boundary_cta": "파일럿 접근 요청",
+      "slice_boundary_note": "research_only · 자동 과금 없음 · send_gate HOLD",
+      "explore_experimental_label": "3D 공간 탐색기 (Experimental)",
+      "explore_experimental_back": "구조화 뷰로 돌아가기",
       "path_prefix": "경로 ·",
       "highlighted_suffix": "개 노드 강조",
       "mesh_local": "로컬 망",

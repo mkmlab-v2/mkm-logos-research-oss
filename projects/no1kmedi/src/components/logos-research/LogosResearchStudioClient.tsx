@@ -32,6 +32,11 @@ import {
   resolveInitialStudioPhase,
   type LogosStudioPhase,
 } from "@/lib/logosStudioPhaseV1";
+import {
+  createLogosQueryPipeline,
+  patchLogosQueryPipeline,
+  resetLogosQueryPipeline,
+} from "@/lib/logos-studio-pipeline-v1";
 
 type PresetRow = { id: string; prompt_ko: string; slot?: string | null; slot_label_ko?: string | null };
 
@@ -146,6 +151,7 @@ function buildStudioDemoUrl(presetId: string, queryText: string): string {
 
 function presetMatchLabel(match: string | undefined): string {
   if (!match || match === "none") return "";
+  if (match.startsWith("query_guard_")) return "질의 spine 자동 전환";
   if (match === "embedding") return "의미 라우터 (tier-2)";
   if (match === "lexical") return "키워드 매칭";
   if (match === "text") return "질문 일치";
@@ -200,10 +206,17 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
   const [presetId, setPresetId] = useState("");
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [queryPipeline, setQueryPipeline] = useState(createLogosQueryPipeline);
   const [error, setError] = useState<string | null>(null);
   const [remaining, setRemaining] = useState<number | null>(null);
   const [result, setResult] = useState<QueryResult | null>(null);
   const [presetMatch, setPresetMatch] = useState<string | null>(null);
+  const [presetGuard, setPresetGuard] = useState<{
+    action: string;
+    message_ko?: string;
+    requested_preset_id?: string;
+    routed_preset_id?: string;
+  } | null>(null);
   const resultRef = useRef<HTMLElement | null>(null);
   const autorunDoneRef = useRef(false);
 
@@ -380,8 +393,20 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
     if (canvasLayout && studioPhase === "omni") {
       setStudioPhase("workspace");
     }
+    const trimmed = query.trim();
+    let pipeline = resetLogosQueryPipeline();
+    if (!trimmed) {
+      pipeline = patchLogosQueryPipeline(pipeline, "query_nonempty", "fail");
+      setQueryPipeline(pipeline);
+      setError("질문을 입력하세요.");
+      return;
+    }
+    pipeline = patchLogosQueryPipeline(pipeline, "query_nonempty", "ok");
+    pipeline = patchLogosQueryPipeline(pipeline, "path_engine", "active");
+    setQueryPipeline(pipeline);
     setLoading(true);
     setError(null);
+    setPresetGuard(null);
     try {
       const data = await fetchStudioJson("/api/logos-research/query", {
         method: "POST",
@@ -394,12 +419,25 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
         }),
       });
       if (data.ok !== true) throw new Error(String(data.error || "query_failed"));
+      pipeline = patchLogosQueryPipeline(pipeline, "path_engine", "ok");
+      pipeline = patchLogosQueryPipeline(pipeline, "citation_lock", "active");
       setRemaining(typeof data.remaining === "number" ? data.remaining : null);
       setPresetMatch(typeof data.match === "string" ? data.match : null);
+      if (data.preset_guard && typeof data.preset_guard === "object") {
+        setPresetGuard(data.preset_guard as typeof presetGuard);
+      }
       const nextResult = data.result as QueryResult;
       setResult(nextResult);
       if (data.quota_disabled === true) setQuotaDisabled(true);
       if (nextResult.preset_id) setPresetId(nextResult.preset_id);
+      const hasPath = Boolean(nextResult.path?.verse_refs?.length);
+      pipeline = patchLogosQueryPipeline(
+        pipeline,
+        "citation_lock",
+        hasPath ? "ok" : "warn",
+      );
+      pipeline = patchLogosQueryPipeline(pipeline, "result_ready", "ok");
+      setQueryPipeline(pipeline);
       void postStudioTelemetry({
         event: "logos_research_query_success_v1",
         page_path: "/logos-research/studio",
@@ -416,6 +454,13 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
       if (msg === "quota_exceeded") setRemaining(0);
       setResult(null);
       setPresetMatch(null);
+      setPresetGuard(null);
+      setQueryPipeline((prev) => {
+        let next = patchLogosQueryPipeline(prev, "path_engine", "fail");
+        next = patchLogosQueryPipeline(next, "citation_lock", "skipped");
+        next = patchLogosQueryPipeline(next, "result_ready", "skipped");
+        return next;
+      });
     } finally {
       setLoading(false);
     }
@@ -591,7 +636,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
         <label className="lr-studio-label" htmlFor="lr-preset">
           {studio?.label_preset ?? "프리셋"}
         </label>
-        {canvasLayout && presetSlotOptions.length > 0 && audienceMode === "academic" ? (
+        {presetSlotOptions.length > 0 ? (
           <div
             className="lr-studio-preset-slot-filters"
             role="group"
@@ -700,6 +745,11 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
             <button type="button" className="lr-studio-retry-btn" onClick={reloadPresets}>
               다시 시도
             </button>
+          </p>
+        ) : null}
+        {presetGuard?.action === "auto_route" && presetGuard.message_ko ? (
+          <p className="lr-studio-preset-guard" role="status" data-logos-preset-guard="auto_route">
+            {presetGuard.message_ko}
           </p>
         ) : null}
       </div>
@@ -898,6 +948,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
           quotaRemaining={remaining}
           quotaTotal={LOGOS_FREE_DAILY_QUOTA}
           showQuota={!embedHero && !quotaDisabled}
+          pipelineStages={queryPipeline}
         />
       ) : canvasLayout ? (
         <LogosCanvasStudioLayout
@@ -950,6 +1001,11 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
           <header className="lr-studio-result-head">
             <div>
               <h2 id="lr-studio-result">{studio?.result_title ?? "통찰 경로"}</h2>
+              {presetGuard?.action === "auto_route" && presetGuard.message_ko ? (
+                <p className="lr-studio-preset-guard" role="status" data-logos-preset-guard="auto_route">
+                  {presetGuard.message_ko}
+                </p>
+              ) : null}
               {result.query_mode || presetMatch ? (
                 <p className="lr-studio-query-mode" role="status">
                   {presetMatchLabel(presetMatch ?? undefined) ? (
