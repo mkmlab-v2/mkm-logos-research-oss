@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-/** Smoke: logos-research studio API routes (dev: `npm run dev:studio` on 3020). */
+/** Smoke: logos-research studio API routes (dev: `npm run dev:studio` on 3020).
+ *  Prod (PowerShell): $env:LOGOS_STUDIO_SMOKE_BASE='https://logos.jema-ai.com'; npm run smoke:logos-studio
+ */
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -26,13 +28,28 @@ function gateFor(spec, presetId, key) {
   return defaults[key];
 }
 
+const SMOKE_HEADERS = {
+  "User-Agent": SMOKE_UA,
+  Accept: "application/json",
+};
+
+async function getJson(url) {
+  const res = await fetch(url, { headers: SMOKE_HEADERS });
+  const body = await res.json().catch(() => ({}));
+  return { res, body };
+}
+
+async function getText(url) {
+  const res = await fetch(url, { headers: { "User-Agent": SMOKE_UA } });
+  return { res, text: await res.text() };
+}
+
 async function postJson(url, payload) {
   const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "User-Agent": SMOKE_UA,
-      Accept: "application/json",
+      ...SMOKE_HEADERS,
     },
     body: JSON.stringify(payload),
   });
@@ -41,9 +58,9 @@ async function postJson(url, payload) {
 }
 
 async function assertChunkNeedles(studioBase, needles, label) {
-  const studioPage = await fetch(`${studioBase}/logos-research/studio`);
-  if (!studioPage.ok) throw new Error(`${label}_studio_http_${studioPage.status}`);
-  const html = await studioPage.text();
+  const studioPage = await getText(`${studioBase}/logos-research/studio`);
+  if (!studioPage.res.ok) throw new Error(`${label}_studio_http_${studioPage.res.status}`);
+  const html = studioPage.text;
   const chunkSet = new Set();
   for (const m of html.matchAll(/\/_next\/static\/chunks\/[^"']+\.js/g)) {
     chunkSet.add(m[0]);
@@ -51,9 +68,9 @@ async function assertChunkNeedles(studioBase, needles, label) {
   const hitChunks = [];
   for (const rel of [...chunkSet].slice(0, 28)) {
     try {
-      const chunkRes = await fetch(`${studioBase}${rel}`);
-      if (!chunkRes.ok) continue;
-      const body = await chunkRes.text();
+      const chunkRes = await getText(`${studioBase}${rel}`);
+      if (!chunkRes.res.ok) continue;
+      const body = chunkRes.text;
       if (needles.some((n) => body.includes(n))) {
         hitChunks.push(rel.split("/").pop());
       }
@@ -96,9 +113,9 @@ async function assertB2bDemoPresetAllowlist() {
 }
 
 async function assertLandingIa() {
-  const landing = await fetch(`${base}/logos-research`);
-  if (!landing.ok) throw new Error(`landing_http_${landing.status}`);
-  const html = await landing.text();
+  const landing = await getText(`${base}/logos-research`);
+  if (!landing.res.ok) throw new Error(`landing_http_${landing.res.status}`);
+  const html = landing.text;
   for (const id of ["value", "pilot", "architecture", "lead"]) {
     if (!html.includes(`id="${id}"`)) throw new Error(`landing_section_missing_${id}`);
   }
@@ -128,9 +145,9 @@ async function assertLeadApi() {
 
 async function assertMindmapBundles(studioBase) {
   const studioUrl = `${studioBase}/logos-research/studio?q=job_job_suffering_reason&demo=1`;
-  const studioPage = await fetch(studioUrl);
-  if (!studioPage.ok) throw new Error(`mindmap_studio_http_${studioPage.status}`);
-  const html = await studioPage.text();
+  const studioPage = await getText(studioUrl);
+  if (!studioPage.res.ok) throw new Error(`mindmap_studio_http_${studioPage.res.status}`);
+  const html = studioPage.text;
 
   const chunkSet = new Set();
   for (const m of html.matchAll(/\/_next\/static\/chunks\/[^"']+\.js/g)) {
@@ -141,9 +158,9 @@ async function assertMindmapBundles(studioBase) {
   const hitChunks = [];
   for (const rel of chunks.slice(0, 24)) {
     try {
-      const chunkRes = await fetch(`${studioBase}${rel}`);
-      if (!chunkRes.ok) continue;
-      const body = await chunkRes.text();
+      const chunkRes = await getText(`${studioBase}${rel}`);
+      if (!chunkRes.res.ok) continue;
+      const body = chunkRes.text;
       if (MINDMAP_NEEDLES.some((n) => body.includes(n))) {
         hitChunks.push(rel.split("/").pop());
       }
@@ -168,9 +185,8 @@ async function assertMindmapBundles(studioBase) {
 }
 
 async function main() {
-  const presets = await fetch(`${base}/api/logos-research/presets`);
+  const { res: presets, body: presetsBody } = await getJson(`${base}/api/logos-research/presets`);
   if (!presets.ok) throw new Error(`presets_http_${presets.status}`);
-  const presetsBody = await presets.json();
   if (!presetsBody.ok || !Array.isArray(presetsBody.presets) || presetsBody.presets.length < 50) {
     throw new Error(`presets_body_invalid_count_${presetsBody.presets?.length ?? 0}`);
   }
@@ -179,27 +195,23 @@ async function main() {
     .filter((id) => typeof id === "string" && id.startsWith("bigset_topic_"));
   if (bigsetIds.length < 5) throw new Error("bigset_presets_missing");
 
-  const nephilimQuery = await fetch(`${base}/api/logos-research/query`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query: "네피림이 뭐야?" }),
-  });
+  const { res: nephilimQuery, body: nephilimBody } = await postJson(
+    `${base}/api/logos-research/query`,
+    { query: "네피림이 뭐야?" },
+  );
   if (!nephilimQuery.ok) throw new Error(`nephilim_query_http_${nephilimQuery.status}`);
-  const nephilimBody = await nephilimQuery.json();
   if (!nephilimBody.ok || nephilimBody.result?.preset_id !== "bigset_topic_nephilim") {
     throw new Error(`nephilim_query_mismatch_${nephilimBody.result?.preset_id ?? "none"}`);
   }
 
-  const mismatchQuery = await fetch(`${base}/api/logos-research/query`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+  const { res: mismatchQuery, body: mismatchBody } = await postJson(
+    `${base}/api/logos-research/query`,
+    {
       preset_id: "job_job_suffering_reason",
       query: "네피림",
-    }),
-  });
+    },
+  );
   if (!mismatchQuery.ok) throw new Error(`mismatch_query_http_${mismatchQuery.status}`);
-  const mismatchBody = await mismatchQuery.json();
   if (!mismatchBody.ok || mismatchBody.result?.preset_id !== "bigset_topic_nephilim") {
     throw new Error(
       `mismatch_auto_route_failed_${mismatchBody.result?.preset_id ?? "none"}_${mismatchBody.preset_guard?.action ?? "no_guard"}`,
@@ -209,34 +221,28 @@ async function main() {
     throw new Error(`mismatch_guard_action_${mismatchBody.preset_guard?.action ?? "none"}`);
   }
 
-  const embeddingQuery = await fetch(`${base}/api/logos-research/query`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
+  const { res: embeddingQuery, body: embeddingBody } = await postJson(
+    `${base}/api/logos-research/query`,
+    {
       query: "타락한 천사가 인간 여성과 결혼했다는 고대 전통",
-    }),
-  });
+    },
+  );
   if (!embeddingQuery.ok) throw new Error(`embedding_query_http_${embeddingQuery.status}`);
-  const embeddingBody = await embeddingQuery.json();
   const embPreset = embeddingBody.result?.preset_id;
   if (!embeddingBody.ok || !String(embPreset || "").startsWith("bigset_topic_")) {
     throw new Error(`embedding_query_mismatch_${embPreset ?? "none"}`);
   }
 
-  const manifest = await fetch(`${base}/logos-research/manifest.webmanifest`);
+  const { res: manifest, body: manifestBody } = await getJson(`${base}/logos-research/manifest.webmanifest`);
   if (!manifest.ok) throw new Error(`manifest_http_${manifest.status}`);
-  const manifestBody = await manifest.json();
   if (!manifestBody.start_url?.includes("/logos-research/studio")) {
     throw new Error("manifest_start_url_invalid");
   }
 
-  const query = await fetch(`${base}/api/logos-research/query`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ preset_id: "job_job_suffering_reason" }),
+  const { res: query, body: queryBody } = await postJson(`${base}/api/logos-research/query`, {
+    preset_id: "job_job_suffering_reason",
   });
   if (!query.ok) throw new Error(`query_http_${query.status}`);
-  const queryBody = await query.json();
   if (!queryBody.ok || !queryBody.result?.preset_id) throw new Error("query_body_invalid");
 
   const highlightCount = (queryBody.result.highlight_node_ids || []).length;
@@ -249,13 +255,11 @@ async function main() {
   const spineIds = queryBody.result.path?.reasoning_path_v1?.node_ids || [];
   if (spineIds.length < 2) throw new Error("reasoning_spine_short");
 
-  const graphragQuery = await fetch(`${base}/api/logos-research/query`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ query: "소망과 인내 시편 연결 경로" }),
-  });
+  const { res: graphragQuery, body: graphragBody } = await postJson(
+    `${base}/api/logos-research/query`,
+    { query: "소망과 인내 시편 연결 경로" },
+  );
   if (!graphragQuery.ok) throw new Error(`graphrag_query_http_${graphragQuery.status}`);
-  const graphragBody = await graphragQuery.json();
   const graphragMode = graphragBody.result?.query_mode || "";
   const graphragRefs = (graphragBody.result?.path?.verse_refs || []).length;
   if (!graphragBody.ok || !String(graphragMode).includes("graphrag")) {
@@ -287,16 +291,22 @@ async function main() {
   const answerLen = String(nephilimBody.result?.answer || "").length;
   if (answerLen < 200) throw new Error(`nephilim_answer_short_${answerLen}`);
 
-  const studioPage = await fetch(`${base}/logos-research/studio`);
-  if (!studioPage.ok) throw new Error(`studio_html_${studioPage.status}`);
-  const studioHtml = await studioPage.text();
-  if (
-    !studioHtml.includes("data-logos-studio-shell") &&
-    !studioHtml.includes("logos-research-page") &&
-    !studioHtml.includes("lr-studio")
-  ) {
-    throw new Error("studio_shell_missing");
-  }
+  const studioPage = await getText(`${base}/logos-research/studio`);
+  if (!studioPage.res.ok) throw new Error(`studio_html_${studioPage.res.status}`);
+  const studioHtml = studioPage.text;
+  const studioShellHtmlMarker =
+    studioHtml.includes("data-logos-studio-route") ||
+    studioHtml.includes("logos-research-studio-route") ||
+    studioHtml.includes("data-logos-studio-shell") ||
+    studioHtml.includes("logos-research-page") ||
+    studioHtml.includes("lr-studio");
+  const studioShellProbe = studioShellHtmlMarker
+    ? { studio_shell: "html", studio_shell_html_marker: true }
+    : await assertChunkNeedles(
+        base,
+        ["data-logos-studio-shell", "logos-research-page", "lr-studio"],
+        "studio_shell",
+      );
 
   const mindmapProbe = await assertMindmapBundles(base);
   const onboardingProbe = await assertChunkNeedles(base, ONBOARDING_NEEDLES, "onboarding");
@@ -304,16 +314,16 @@ async function main() {
   const landingProbe = await assertLandingIa();
   const leadProbe = await assertLeadApi();
 
-  const slice = await fetch(`${base}${queryBody.result.subgraph.graph_slice_url}`);
+  const { res: slice, body: sliceBody } = await getJson(`${base}${queryBody.result.subgraph.graph_slice_url}`);
   if (!slice.ok) throw new Error(`graph_slice_http_${slice.status}`);
-  const sliceBody = await slice.json();
   if (!Array.isArray(sliceBody.nodes) || sliceBody.nodes.length < 10) {
     throw new Error("graph_slice_nodes_invalid");
   }
 
-  const sidecar = await fetch(`${base}/data/logos_studio/bigset_conflict_sidecar_v1.json`);
+  const { res: sidecar, body: sidecarBody } = await getJson(
+    `${base}/data/logos_studio/bigset_conflict_sidecar_v1.json`,
+  );
   if (!sidecar.ok) throw new Error(`sidecar_http_${sidecar.status}`);
-  const sidecarBody = await sidecar.json();
   if (sidecarBody.schema !== "bigset_studio_conflict_sidecar_v1") {
     throw new Error("sidecar_schema_invalid");
   }
@@ -347,6 +357,7 @@ async function main() {
       sidecar_groups: sidecarBody.groups.length,
       sidecar_pending: sidecarBody.observability?.human_review_pending_count ?? null,
       ...mindmapProbe,
+      ...studioShellProbe,
       onboarding_chunk_hits: onboardingProbe.chunk_hits,
       onboarding_html_marker: onboardingProbe.html_marker,
       ...allowlistProbe,
