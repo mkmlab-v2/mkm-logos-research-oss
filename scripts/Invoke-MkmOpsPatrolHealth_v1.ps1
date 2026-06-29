@@ -16,5 +16,6 @@ if (-not (Test-Path -LiteralPath $health)) {
 }
 
 & powershell -NoProfile -ExecutionPolicy Bypass -File $health `
-    -SkipGateAlert -SkipExodusSourceFetch -SkipCompressionKpi -SkipGitSanity
+    -SkipGateAlert -SkipExodusSourceFetch -SkipCompressionKpi -SkipGitSanity `
+    -SafeOpsShadowSolo
 exit $LASTEXITCODE

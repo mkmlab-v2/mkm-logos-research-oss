@@ -36,7 +36,9 @@ param(
     # Optional strict mode: require MKM-Security-Integrity-Check-5min to be enabled.
     [switch]$StrictSecurityIntegrityTaskEnabled,
     # Forwarded to Verify-TradingAutomationHealth (Prophecy lane closure / local dev).
-    [switch]$AllowDisabledSecurityIntegrityTask
+    [switch]$AllowDisabledSecurityIntegrityTask,
+    # Solo OSS shadow: skip live_sync/daemon staleness warnings + pass AllowShadowSoloPosture to verify.
+    [switch]$ShadowSoloOps
 )
 
 Set-StrictMode -Version Latest
@@ -46,6 +48,11 @@ if ([string]::IsNullOrWhiteSpace($WorkspaceRoot)) {
     $WorkspaceRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 }
 Set-Location -LiteralPath $WorkspaceRoot
+
+if ($ShadowSoloOps) {
+    $IgnoreLiveSync = $true
+    Write-Host "[safe-ops] ShadowSoloOps -> -IgnoreLiveSync + AllowShadowSoloPosture (solo OSS; no live trade)" -ForegroundColor DarkGray
+}
 
 # Local dev: security integrity task is often Disabled intentionally; auto-waive unless strict audit.
 if (-not $AllowDisabledSecurityIntegrityTask -and -not $StrictTradingGoNoGo) {
@@ -174,6 +181,9 @@ if (Test-Path -LiteralPath $verifyScript) {
     if ($AllowDisabledSecurityIntegrityTask) {
         $verifyArgs += "-AllowDisabledSecurityIntegrityTask"
     }
+    if ($ShadowSoloOps) {
+        $verifyArgs += "-AllowShadowSoloPosture"
+    }
     & powershell.exe @verifyArgs
     $verifyExit = $LASTEXITCODE
 }
@@ -206,6 +216,7 @@ $report = [ordered]@{
     free_ram_gb        = $freeGb
     min_free_ram_gb    = $MinFreeRamGb
     inference_batch_duplicate_count = $infCount
+    shadow_solo_ops       = [bool]$ShadowSoloOps
     verify_trading_automation_exit_code = $verifyExit
     staleness          = $staleness
     messages           = @{

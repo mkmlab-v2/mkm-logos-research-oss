@@ -12,7 +12,7 @@ DEFAULT_MAX_ALWAYS_APPLY = 10
 DEFAULT_MAX_ALWAYS_APPLY_LINES = 320
 DEFAULT_MAX_AGENTS_MD_LINES = 95
 DEFAULT_MAX_CLAUDE_MD_LINES = 110
-DEFAULT_MAX_CURSORRULES_LINES = 70
+DEFAULT_MAX_CURSORRULES_LINES = 150
 CURSORRULES_TEMPLATE_REL = "docs/final/artifacts/cursorrules_slim_ssot_v1.txt"
 
 # Core stack — keep alwaysApply (context diet SSOT; change only with this script + review).
@@ -41,6 +41,7 @@ LANE_REQUESTABLE = frozenset(
         "local-lock-security-guard-v1.mdc",
         "mkm-cognitive-architecture-v1.mdc",
         "mkm-delegation-research-assist-v1.mdc",
+        "mkm-paper-digest-trigger-v1.mdc",
         "mkm-paper-disk-verdict-four-slot-v1.mdc",
         "notebooklm-mcp-session-bridge.mdc",
         "parallel-passive-loop-v1.mdc",
