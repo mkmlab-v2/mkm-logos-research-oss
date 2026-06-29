@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useReducer, useState } from "react";
 
 import { ClinicianChartPastePanel } from "@/components/ClinicianChartPastePanel";
 import { ClinicianCopilotCardsView } from "@/components/ClinicianCopilotCardsView";
@@ -10,6 +10,18 @@ import {
   birthdateToBirthInstantUtc,
   type PasteExtractDraftV1,
 } from "@/lib/clinician-chart-paste-extract-v1";
+import {
+  buildEncounterEnvelopeForLedger,
+  createInitialEncounterSessionEnvelope,
+  encounterPipelineToOmniChips,
+  encounterSessionEnvelopeReducer,
+  resolveAdviceGateStatus,
+  validateCdsBundle,
+  validateChartNonempty,
+  validateExtractDraftOk,
+} from "@/lib/clinician-encounter-session-envelope-v1";
+import { buildEightChannelAuditV1 } from "@/lib/clinician-paste-chart-eight-channel-audit-v1";
+import { appendPasteChartEncounterLedger } from "@/lib/clinician-paste-chart-ledger-client-v1";
 import {
   buildChartPasteSectionsFromBundle,
   buildChartPasteSectionsFromCdsDraft,
@@ -107,14 +119,33 @@ export function ClinicianEncounterGoldPanel({
   onPasteChartSession,
   disabled,
 }: ClinicianEncounterGoldPanelProps) {
-  const [lookup, setLookup] = useState(() => humanGoldLookupSeed(defaultSlug));
-  const [chartText, setChartText] = useState("");
-  const [extractDraft, setExtractDraft] = useState<PasteExtractDraftV1>({
-    schema: "paste_extract_draft_v1",
-    confidence: "low",
-    sources: [],
-  });
-  const [objectiveDraft, setObjectiveDraft] = useState("");
+  const [envelope, dispatchEnvelope] = useReducer(
+    encounterSessionEnvelopeReducer,
+    defaultSlug,
+    (slug) =>
+      createInitialEncounterSessionEnvelope({
+        patient: { lookup: humanGoldLookupSeed(slug) },
+      }),
+  );
+  const chartText = envelope.input.chartText;
+  const objectiveDraft = envelope.input.objectiveDraft;
+  const extractDraft = envelope.extract;
+  const lookup = envelope.patient.lookup;
+  const pipelineChips = useMemo(() => encounterPipelineToOmniChips(envelope.pipeline), [envelope.pipeline]);
+
+  const setChartText = useCallback((value: string) => {
+    dispatchEnvelope({ type: "set_chart_text", value });
+  }, []);
+  const setObjectiveDraft = useCallback((value: string) => {
+    dispatchEnvelope({ type: "set_objective", value });
+  }, []);
+  const setExtractDraft = useCallback((draft: PasteExtractDraftV1) => {
+    dispatchEnvelope({ type: "set_extract", draft });
+  }, []);
+  const setLookup = useCallback((value: string) => {
+    dispatchEnvelope({ type: "set_lookup", value });
+  }, []);
+
   const [analyzeBusy, setAnalyzeBusy] = useState(false);
   const [deliverablesBusy, setDeliverablesBusy] = useState(false);
   const [fusionBundle, setFusionBundle] = useState<Record<string, unknown> | null>(null);
@@ -131,8 +162,8 @@ export function ClinicianEncounterGoldPanel({
   useEffect(() => {
     const s = defaultSlug.trim();
     if (!s || isEphemeralEncounterSlug(s)) return;
-    setLookup((cur) => (cur.trim() ? cur : s));
-  }, [defaultSlug]);
+    if (!envelope.patient.lookup.trim()) setLookup(s);
+  }, [defaultSlug, envelope.patient.lookup, setLookup]);
 
   const chartSections = useMemo(() => {
     const fromDraft = cdsDraft ? buildChartPasteSectionsFromCdsDraft(cdsDraft) : [];
@@ -174,6 +205,11 @@ export function ClinicianEncounterGoldPanel({
         return;
       }
       setPayload(json);
+      dispatchEnvelope({
+        type: "set_patient_meta",
+        slug: json.slug,
+        displayLabel: json.display_label,
+      });
     } catch {
       setPayload(null);
       setError("네트워크 오류 — MKM_WORKSPACE_ROOT와 서버 로그를 확인하세요.");
@@ -233,27 +269,48 @@ export function ClinicianEncounterGoldPanel({
 
   async function runPasteChartAnalysis() {
     const text = chartText.trim();
-    if (!text) {
+    dispatchEnvelope({ type: "begin_analyze" });
+
+    const chartCheck = validateChartNonempty(text);
+    if (!chartCheck.ok) {
+      dispatchEnvelope({
+        type: "set_pipeline_stage",
+        id: "chart_nonempty",
+        status: "fail",
+        error_code: chartCheck.error_code,
+      });
       setError("EMR·차트·상담 메모를 붙여넣으세요.");
       return;
     }
-    if (!clinicianEmail?.trim()) {
-      setError(
-        "Pro 권한 이메일이 없습니다. 「환자·설정」 탭에서 이메일을 입력·확인하거나 URL에 ?email=your@email 을 추가하세요.",
-      );
-      return;
-    }
+    dispatchEnvelope({ type: "set_pipeline_stage", id: "chart_nonempty", status: "ok" });
+
     const lookupBody = resolvePatientLookup();
-    if (!lookupBody) {
-      setError("이름을 칩에서 확인하거나, 고급에서 Human Gold slug를 연결하세요.");
-      return;
-    }
     const birthIso = resolveBirthInstantForRequest();
-    const hasSlug = "slug" in lookupBody || "ref_token" in lookupBody;
-    if (!hasSlug && !birthIso) {
-      setError("익명 1회 분석에는 생년월일 칩 확인이 필요합니다.");
+    const hasSlug = lookupBody ? "slug" in lookupBody || "ref_token" in lookupBody : false;
+    const extractCheck = validateExtractDraftOk({
+      clinicianEmail,
+      hasPatientLookup: Boolean(lookupBody),
+      hasBirthOrSlug: Boolean(hasSlug || birthIso),
+    });
+    if (!extractCheck.ok) {
+      dispatchEnvelope({
+        type: "set_pipeline_stage",
+        id: "extract_draft_ok",
+        status: "fail",
+        error_code: extractCheck.error_code,
+      });
+      if (extractCheck.error_code === "clinician_email_required") {
+        setError(
+          "Pro 권한 이메일이 없습니다. 「환자·설정」 탭에서 이메일을 입력·확인하거나 URL에 ?email=your@email 을 추가하세요.",
+        );
+      } else if (extractCheck.error_code === "patient_lookup_required") {
+        setError("이름을 칩에서 확인하거나, 고급에서 Human Gold slug를 연결하세요.");
+      } else {
+        setError("익명 1회 분석에는 생년월일 칩 확인이 필요합니다.");
+      }
       return;
     }
+    dispatchEnvelope({ type: "set_pipeline_stage", id: "extract_draft_ok", status: "ok" });
 
     setAnalyzeBusy(true);
     setError(null);
@@ -261,13 +318,14 @@ export function ClinicianEncounterGoldPanel({
     setAdviceWarning(null);
     setFusionMarkdown(null);
     setEphemeralEncounter(false);
+    dispatchEnvelope({ type: "set_pipeline_stage", id: "cds_request_sent", status: "active" });
     try {
       const body: Record<string, unknown> = {
         schema: "clinician_paste_chart_request_v1",
         chart_text: text,
         allow_ephemeral: true,
         options: { validate_schema: true, validate_policy: true, render_md: true },
-        ...lookupBody,
+        ...lookupBody!,
       };
       if (objectiveDraft.trim()) body.objective_draft = objectiveDraft.trim();
       if (birthIso) {
@@ -282,6 +340,7 @@ export function ClinicianEncounterGoldPanel({
         headers: { "Content-Type": "application/json", ...clinicianHeaders(clinicianEmail) },
         body: JSON.stringify(body),
       });
+      dispatchEnvelope({ type: "set_pipeline_stage", id: "cds_request_sent", status: "ok" });
       const json = (await res.json()) as {
         success?: boolean;
         error?: string;
@@ -293,30 +352,46 @@ export function ClinicianEncounterGoldPanel({
         patient_facing_markdown?: string;
         advice?: PasteChartAdvice | null;
       };
-      if (!res.ok || !json.success || !json.patient_care_bundle) {
+      const cdsCheck = validateCdsBundle(json.patient_care_bundle);
+      if (!res.ok || !json.success || !cdsCheck.ok) {
+        dispatchEnvelope({
+          type: "set_pipeline_stage",
+          id: "cds_response_valid",
+          status: "fail",
+          error_code: cdsCheck.error_code || json.error,
+        });
         setFusionBundle(null);
-        setError(friendlyPasteChartError(json.error));
+        dispatchEnvelope({ type: "clear_output" });
+        setError(friendlyPasteChartError(json.error || cdsCheck.error_code));
         return;
       }
-      setFusionBundle(json.patient_care_bundle);
+      const bundle = json.patient_care_bundle!;
+      dispatchEnvelope({ type: "set_pipeline_stage", id: "cds_response_valid", status: "ok" });
+      setFusionBundle(bundle);
       setFusionMarkdown(json.patient_facing_markdown || null);
       setAdvice(json.advice || null);
       setEphemeralEncounter(Boolean(json.ephemeral));
+      let nextAdviceWarning: string | null = null;
       if (json.advice_error) {
-        setAdviceWarning(`SOAP는 생성됨 · 조언 체인: ${json.advice_error}`);
+        nextAdviceWarning = `SOAP는 생성됨 · 조언 체인: ${json.advice_error}`;
+        setAdviceWarning(nextAdviceWarning);
       }
       if (json.ephemeral) {
-        setAdviceWarning((prev) =>
-          prev
-            ? `${prev} · 1회성 익명 encounter (Human Gold 미연결)`
-            : "1회성 익명 encounter — Human Gold 교부물·slug 검증 없음",
-        );
+        nextAdviceWarning = nextAdviceWarning
+          ? `${nextAdviceWarning} · 1회성 익명 encounter (Human Gold 미연결)`
+          : "1회성 익명 encounter — Human Gold 교부물·slug 검증 없음";
+        setAdviceWarning(nextAdviceWarning);
       }
-      onFusionBundleReady?.(json.patient_care_bundle);
+      dispatchEnvelope({
+        type: "set_pipeline_stage",
+        id: "advice_gate_passed",
+        status: resolveAdviceGateStatus(json.advice_error, Boolean(json.advice)),
+      });
+      onFusionBundleReady?.(bundle);
 
       const patientLabel =
         extractDraft.display_name?.trim() || json.display_label?.trim() || lookup.trim() || "환자";
-      const soap = json.patient_care_bundle.clinical_soap_v1 as
+      const soap = bundle.clinical_soap_v1 as
         | Record<string, { text?: string }>
         | undefined;
       const summarySnippet =
@@ -341,8 +416,73 @@ export function ClinicianEncounterGoldPanel({
         assessmentLine,
         ephemeral: Boolean(json.ephemeral),
       });
+      dispatchEnvelope({
+        type: "set_pipeline_stage",
+        id: "fusion_synced",
+        status: onPasteChartSession ? "ok" : "skipped",
+      });
+      dispatchEnvelope({
+        type: "set_output",
+        patch: {
+          fusionSynced: Boolean(onPasteChartSession),
+          requestId: cdsCheck.requestId,
+          hasAdvice: Boolean(json.advice),
+          adviceWarning: nextAdviceWarning,
+        },
+      });
+
+      const adviceGateStatus = resolveAdviceGateStatus(json.advice_error, Boolean(json.advice));
+      const fusionStageStatus = onPasteChartSession ? "ok" : "skipped";
+      const ledgerEnvelope = buildEncounterEnvelopeForLedger(envelope, {
+        input: { chartText: text, objectiveDraft: objectiveDraft.trim() },
+        patient: {
+          lookup,
+          slug: json.slug || payload?.slug || defaultSlug.trim() || undefined,
+          displayLabel: json.display_label || extractDraft.display_name,
+        },
+        pipeline: [
+          { id: "chart_nonempty", status: "ok" },
+          { id: "extract_draft_ok", status: "ok" },
+          { id: "cds_request_sent", status: "ok" },
+          { id: "cds_response_valid", status: "ok" },
+          { id: "advice_gate_passed", status: adviceGateStatus },
+          { id: "fusion_synced", status: fusionStageStatus },
+        ],
+        output: {
+          fusionSynced: Boolean(onPasteChartSession),
+          requestId: cdsCheck.requestId,
+          hasAdvice: Boolean(json.advice),
+          adviceWarning: nextAdviceWarning,
+        },
+      });
+      const eightChannelAudit = buildEightChannelAuditV1(ledgerEnvelope, {
+        hasAdvice: Boolean(json.advice),
+      });
+      void appendPasteChartEncounterLedger(
+        {
+          slug: json.slug || payload?.slug || defaultSlug.trim() || undefined,
+          display_label: json.display_label || extractDraft.display_name,
+          ephemeral: Boolean(json.ephemeral),
+          request_id: cdsCheck.requestId,
+          session_envelope: ledgerEnvelope,
+          eight_channel_audit_v1: eightChannelAudit,
+          patient_care_bundle: bundle,
+        },
+        clinicianEmail,
+      ).then((ledgerResult) => {
+        if (!ledgerResult.ok && process.env.NODE_ENV === "development") {
+          console.warn("[paste-chart-ledger]", ledgerResult.error);
+        }
+      });
     } catch {
+      dispatchEnvelope({
+        type: "set_pipeline_stage",
+        id: "cds_response_valid",
+        status: "fail",
+        error_code: "network_error",
+      });
       setFusionBundle(null);
+      dispatchEnvelope({ type: "clear_output" });
       setError("네트워크 오류 — Python 체인·MKM_WORKSPACE_ROOT를 확인하세요.");
     } finally {
       setAnalyzeBusy(false);
@@ -450,6 +590,12 @@ export function ClinicianEncounterGoldPanel({
           error={error}
           adviceWarning={adviceWarning}
           clinicianEmail={clinicianEmail}
+          pipelineStages={pipelineChips}
+          analyzeStageLabel={
+            analyzeBusy
+              ? envelope.pipeline.find((s) => s.status === "active")?.label_ko || "분석"
+              : undefined
+          }
           advancedSlot={
             <>
               <div className="pc-patient-row">

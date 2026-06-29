@@ -42,6 +42,11 @@ function runOfflineSmoke() {
     stdio: "inherit",
     shell: true,
   });
+  execFileSync("npx", ["--yes", "tsx", "./scripts/smoke-clinician-encounter-envelope-v1.ts"], {
+    cwd: ROOT,
+    stdio: "inherit",
+    shell: true,
+  });
 }
 
 function validateSoapSubjective(text) {
