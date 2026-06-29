@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { appendFile, mkdir } from "node:fs/promises";
 import path from "node:path";
 
+import { deliverLeadWebhook, resolveLeadWebhookUrl } from "@/lib/leadWebhookDeliveryV1";
+
 type LeadBody = {
   email: string;
   name?: string;
@@ -21,6 +23,15 @@ function validate(body: LeadBody): string | null {
   return null;
 }
 
+function resolveLogosResearchLeadWebhook() {
+  return resolveLeadWebhookUrl(
+    process.env.LOGOS_RESEARCH_LEAD_WEBHOOK_URL,
+    process.env.FREE_VALIDATION_LEAD_WEBHOOK_URL,
+    process.env.OPS_ALARM_WEBHOOK_URL,
+    process.env.SLACK_WEBHOOK_URL,
+  );
+}
+
 async function persistLead(row: Record<string, unknown>) {
   const dataDir =
     process.env.LOGOS_RESEARCH_LEAD_DATA_DIR?.trim() || path.join(process.cwd(), ".data");
@@ -28,23 +39,6 @@ async function persistLead(row: Record<string, unknown>) {
   const file = path.join(dataDir, "logos_research_pilot_leads_v1.jsonl");
   await appendFile(file, `${JSON.stringify(row)}\n`, "utf8");
   return file;
-}
-
-async function sendWebhook(url: string, payload: Record<string, unknown>) {
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-      cache: "no-store",
-    });
-    return { delivered: response.ok, status: response.status };
-  } catch (error: unknown) {
-    return {
-      delivered: false,
-      error: error instanceof Error ? error.message : "webhook_failed",
-    };
-  }
 }
 
 export async function POST(request: NextRequest) {
@@ -67,15 +61,21 @@ export async function POST(request: NextRequest) {
       host: request.headers.get("host") || "",
       research_only: true,
       send_gate: "HOLD",
+      lane: "logos_research_pilot_lead_v1",
     };
 
     const storedAt = await persistLead(normalized);
-    const webhookUrl = process.env.LOGOS_RESEARCH_LEAD_WEBHOOK_URL?.trim();
-    const webhook = webhookUrl
-      ? { enabled: true, ...(await sendWebhook(webhookUrl, normalized)) }
-      : { enabled: false, delivered: false };
+    const resolved = resolveLogosResearchLeadWebhook();
+    let webhook: Record<string, unknown> = { enabled: false, delivered: false };
+    if (resolved) {
+      const delivery = await deliverLeadWebhook(resolved.url, normalized, {
+        slackHeadline: `Logos pilot lead · ${normalized.organization || normalized.email}`,
+        retries: 2,
+      });
+      webhook = { ...delivery, target: resolved.target };
+    }
 
-    console.log("[logos-research-lead]", JSON.stringify({ ...normalized, stored_at: storedAt }));
+    console.log("[logos-research-lead]", JSON.stringify({ ...normalized, stored_at: storedAt, webhook }));
 
     return NextResponse.json(
       { ok: true, lead_id: normalized.lead_id, webhook },

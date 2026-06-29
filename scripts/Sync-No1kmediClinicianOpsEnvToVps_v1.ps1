@@ -61,6 +61,7 @@ $pairs["KM_CLINICIAN_PRO_EMAIL_ALLOWLIST"] = if ($Allowlist.Trim()) {
 } else {
     ($ExtraEmails | ForEach-Object { $_.Trim().ToLower() } | Where-Object { $_ } | Select-Object -Unique) -join ","
 }
+$pairs["KM_CLINICIAN_PASTE_EXTRACT_LLM"] = "1"
 
 if ($pairs.Count -lt 2) {
     throw "Need at least allowlist + one LLM key in projects/no1kmedi/.env.local or .env"

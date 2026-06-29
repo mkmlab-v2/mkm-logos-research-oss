@@ -96,9 +96,10 @@
     "title": "Pilot scope",
     "eyebrow": "PoC boundaries · send_gate HOLD",
     "included": [
-      "Curated presets (예: Job suffering-reason spine)",
-      "Public subgraph slice (데모 한정 노드·엣지 상한)",
+      "기관 맞춤 preset 5–10 (curated · allowlist smoke 5종 참조)",
+      "Public subgraph slice (데모 한정 노드·엣지 상한 · ~900 nodes curated)",
       "Insight cards · Reading Pack excerpt bridge",
+      "Lead capture (jsonl + webhook · send_gate HOLD · 자동 과금 없음)",
       "Artifact refresh 주기 · 재현 가능한 smoke posture (내부 검증)"
     ],
     "excluded": [
@@ -113,7 +114,7 @@
         "id": "demo",
         "name": "Demo",
         "audience": "누구나",
-        "note": "jemaai.cloud Q&A Studio · citation lock · 무료 · NON_GATING"
+        "note": "logos.jema-ai.com Studio · citation lock · 무료 · NON_GATING"
       },
       {
         "id": "pilot",
