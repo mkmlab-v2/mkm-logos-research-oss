@@ -1,0 +1,149 @@
+[
+  {
+    "updatedAt": "2026-06-29T03:30:00.000Z",
+    "createdAt": "2026-06-29T03:00:00.000Z",
+    "id": "LrLdWhk001Pilot1",
+    "name": "logos-research-lead-webhook",
+    "description": "Logos Research B2B pilot lead intake (dedicated lane; send_gate HOLD metadata only).",
+    "active": true,
+    "isArchived": false,
+    "nodes": [
+      {
+        "parameters": {
+          "path": "logos-research-lead",
+          "httpMethod": "POST",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "Webhook_In",
+        "name": "Webhook In",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [260, 300],
+        "webhookId": "logos-research-lead"
+      },
+      {
+        "parameters": {
+          "jsCode": "const payload = $json.body ?? $json;\nconst leadId = payload.lead_id || 'unknown';\nconst email = payload.email || 'unknown';\nconst org = payload.organization || '';\nconst tier = payload.tier || 'pilot';\nconst note = payload.note || '';\nconst gate = payload.send_gate || 'HOLD';\nconst isProbe = payload.probe === true;\nconst text = isProbe\n  ? ''\n  : `[Logos Research 파일럿 리드]\\n` +\n    `ID: ${leadId}\\n` +\n    `이메일: ${email}\\n` +\n    `조직: ${org || '(미입력)'}\\n` +\n    `티어: ${tier}\\n` +\n    `메모: ${note || '(없음)'}\\n` +\n    `게이트: ${gate}\\n` +\n    `※ 자동 과금·SEND 아님 · 대기열 접수만`;\nreturn [{\n  json: {\n    ok: true,\n    lane: 'logos_research_pilot_lead_v1',\n    lead_id: leadId,\n    email,\n    organization: org,\n    tier,\n    note,\n    send_gate: gate,\n    research_only: true,\n    received_at_utc: new Date().toISOString(),\n    text,\n    skip_telegram: isProbe,\n  },\n}];"
+        },
+        "id": "Normalize_Payload",
+        "name": "Normalize Payload",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [560, 300]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "skip_telegram_false",
+                "leftValue": "={{ $json.skip_telegram }}",
+                "rightValue": false,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "IF_Notify",
+        "name": "IF Notify",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.2,
+        "position": [820, 180]
+      },
+      {
+        "parameters": {
+          "chatId": "1762952901",
+          "text": "={{$json.text}}",
+          "additionalFields": {}
+        },
+        "id": "Telegram_Send",
+        "name": "Telegram Send KO",
+        "type": "n8n-nodes-base.telegram",
+        "typeVersion": 1.2,
+        "position": [1080, 160],
+        "credentials": {
+          "telegramApi": {
+            "id": "a0055919-48e0-4305-b474-2d76b12ee623",
+            "name": "telegram-default"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{$json}}",
+          "options": {}
+        },
+        "id": "Respond_OK",
+        "name": "Respond OK",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1.1,
+        "position": [820, 420]
+      }
+    ],
+    "connections": {
+      "Webhook In": {
+        "main": [
+          [
+            {
+              "node": "Normalize Payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Normalize Payload": {
+        "main": [
+          [
+            {
+              "node": "IF Notify",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Respond OK",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "IF Notify": {
+        "main": [
+          [
+            {
+              "node": "Telegram Send KO",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      }
+    },
+    "settings": {
+      "executionOrder": "v1"
+    },
+    "meta": {
+      "template": true,
+      "lane": "logos-research-lead"
+    },
+    "versionId": "c3d4e5f6-a7b8-9012-cdef-234567890123",
+    "activeVersionId": "c3d4e5f6-a7b8-9012-cdef-234567890123",
+    "versionCounter": 1,
+    "triggerCount": 1
+  }
+]

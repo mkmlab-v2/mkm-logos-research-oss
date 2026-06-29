@@ -303,6 +303,9 @@ export default function SmartfarmPage() {
         <p className="sf-footer-muted">
           {c.brand.legal} · {c.brand.product}
         </p>
+        <p className="sf-sr-only" aria-hidden="true">
+          {c.contact.email}
+        </p>
       </footer>
     </div>
   );
