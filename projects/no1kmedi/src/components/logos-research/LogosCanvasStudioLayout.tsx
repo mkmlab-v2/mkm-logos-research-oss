@@ -104,12 +104,15 @@ export function LogosCanvasStudioLayout({
           label: audienceCopy?.scope_label_pastoral ?? "Logos Canvas · 묵상·고민",
           detail:
             audienceCopy?.scope_detail_pastoral ??
-            "320-node slice · citation lock · 관측 전용 [NON_GATING]",
+            audienceCopy?.scope_detail_pastoral ??
+            "curated graph slice · ~900 nodes · citation lock · 관측 전용 [NON_GATING]",
           tags: ["research_only", "not_counseling", "send_gate HOLD"],
         }
       : {
           label: "Logos Canvas · curated graph slice",
-          detail: "320-node slice · citation lock · ECS [NON_GATING]",
+          detail:
+            audienceCopy?.scope_detail_academic ??
+            "curated graph slice · ~900 nodes · citation lock · ECS [NON_GATING]",
           tags: ["research_only", "send_gate HOLD"],
         };
 

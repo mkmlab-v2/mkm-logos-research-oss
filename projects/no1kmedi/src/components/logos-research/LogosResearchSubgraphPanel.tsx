@@ -135,9 +135,11 @@ export function LogosResearchSubgraphPanel({
   const [demoRunning, setDemoRunning] = useState(false);
   const [demoProgress, setDemoProgress] = useState(0);
   const [demoLabel, setDemoLabel] = useState("");
-  const [activeView, setActiveView] = useState<"storyboard" | "mindmap" | "explore">(
+  const [activeView, setActiveView] = useState<"storyboard" | "mindmap">(
     productDemoMode || scriptoriumMode ? "storyboard" : "mindmap",
   );
+  const [exploreExperimentalOpen, setExploreExperimentalOpen] = useState(false);
+  const [boundaryPopupRef, setBoundaryPopupRef] = useState<string | null>(null);
   const [pulseVerseRef, setPulseVerseRef] = useState<string | null>(null);
   const [citationSelection, setCitationSelection] = useState<CitationSelection | null>(null);
   const demoTimersRef = useRef<number[]>([]);
@@ -263,6 +265,30 @@ export function LogosResearchSubgraphPanel({
 
   const focusPrefix = sg?.focus_prefix ?? "포커스 ·";
   const missingInSlice = sg?.missing_in_slice ?? "슬라이스 외 · reading pack·sidecar 해설만";
+  const sliceBoundaryTitle =
+    sg && "slice_boundary_title" in sg && typeof sg.slice_boundary_title === "string"
+      ? sg.slice_boundary_title
+      : "데이터 범위 외부 · 기관 파일럿 확장 팩";
+  const sliceBoundaryBody =
+    sg && "slice_boundary_body" in sg && typeof sg.slice_boundary_body === "string"
+      ? sg.slice_boundary_body
+      : "본 구절은 curated slice 범위 밖입니다. 전권·주석 확장은 기관 파일럿(SOW)에서 제공됩니다.";
+  const sliceBoundaryCta =
+    sg && "slice_boundary_cta" in sg && typeof sg.slice_boundary_cta === "string"
+      ? sg.slice_boundary_cta
+      : "파일럿 접근 요청";
+  const sliceBoundaryNote =
+    sg && "slice_boundary_note" in sg && typeof sg.slice_boundary_note === "string"
+      ? sg.slice_boundary_note
+      : "research_only · send_gate HOLD";
+  const exploreExperimentalLabel =
+    sg && "explore_experimental_label" in sg && typeof sg.explore_experimental_label === "string"
+      ? sg.explore_experimental_label
+      : "3D 공간 탐색기 (Experimental)";
+  const exploreExperimentalBack =
+    sg && "explore_experimental_back" in sg && typeof sg.explore_experimental_back === "string"
+      ? sg.explore_experimental_back
+      : "구조화 뷰로 돌아가기";
   const pathPrefix = sg?.path_prefix ?? "경로 ·";
   const highlightedSuffix = sg?.highlighted_suffix ?? "개 노드 강조";
 
@@ -389,12 +415,13 @@ export function LogosResearchSubgraphPanel({
         setMeshFocusId(ids[0]);
         setFocusBar(`${focusPrefix}${ref}`);
         setFocusMode("ok");
-        if (openExplore) setActiveView("explore");
+        if (openExplore) setExploreExperimentalOpen(true);
       } else {
         setPulseIds([]);
         setMeshFocusId(null);
         setFocusBar(`${focusPrefix}${ref} · ${missingInSlice}`);
         setFocusMode("warn");
+        setBoundaryPopupRef(ref);
       }
     },
     [focusPrefix, missingInSlice, refToNodeIds, stopDemo],
@@ -409,7 +436,7 @@ export function LogosResearchSubgraphPanel({
       setPulseIds([nodeId]);
       setFocusBar(`${pathPrefix}${nodeLabelFromSlice(nodeId, nodeById)}`);
       setFocusMode("ok");
-      setActiveView("explore");
+      setExploreExperimentalOpen(true);
     },
     [nodeById, pathPrefix, stopDemo],
   );
@@ -448,9 +475,9 @@ export function LogosResearchSubgraphPanel({
 
   const openExploreWithRef = useCallback(
     (ref: string) => {
-      selectVerse(ref, isRefInSlice(ref));
+      selectVerse(ref, !scriptoriumMode && isRefInSlice(ref));
     },
-    [isRefInSlice, selectVerse],
+    [isRefInSlice, scriptoriumMode, selectVerse],
   );
 
   const openCitationExplore = useCallback(() => {
@@ -570,7 +597,7 @@ export function LogosResearchSubgraphPanel({
   useEffect(() => {
     if (!autoFocusOn || highlightIds.length <= 1) return;
     if (prefersReducedMotion()) return;
-    if (activeView !== "explore") return;
+    if (!exploreExperimentalOpen) return;
 
     let idx = 0;
     const id = window.setInterval(() => {
@@ -581,7 +608,7 @@ export function LogosResearchSubgraphPanel({
       setFocusBar(`${pathPrefix}${nodeLabelFromSlice(nodeId, nodeById)}`);
     }, 2800);
     return () => window.clearInterval(id);
-  }, [activeView, autoFocusOn, highlightIds, nodeById, pathPrefix]);
+  }, [exploreExperimentalOpen, autoFocusOn, highlightIds, nodeById, pathPrefix]);
 
   const renderVerseRefChip = useCallback(
     (ref: string, opts: { keyPrefix?: string; openExploreOnClick?: boolean } = {}) => {
@@ -761,114 +788,172 @@ export function LogosResearchSubgraphPanel({
     </>
   );
 
+  const mindmapPanel = (
+    <LogosResearchPathMindmapPanel
+      query={result.query ?? ""}
+      presetId={result.preset_id}
+      pathSteps={result.path.steps}
+      verseRefs={result.path.verse_refs}
+      spineItems={mindmapSpineItems}
+      meshSummary={{
+        graphDoc,
+        hopIndex,
+        seedIds: meshSeedIds,
+        nodeById,
+      }}
+      pulseGraphNodeIds={pulseIds}
+      pulseVerseRef={pulseVerseRef}
+      demoProgress={demoProgress}
+      demoLabel={demoLabel}
+      demoRunning={demoRunning}
+      onVerseClick={onMindmapVerseClick}
+      onReplayDemo={startEntryDemo}
+    />
+  );
+
+  const storyboardPanel = (
+    <LogosResearchStoryboardPanel
+      result={storyboardPayload}
+      coverage={sliceCoverage}
+      onVerseRefClick={openExploreWithRef}
+      showAuditorHint={!scriptoriumMode}
+      variant={scriptoriumMode ? "scriptorium" : "default"}
+      bloomSecondaryHintKo={scriptoriumMode ? bloomSecondaryHint : undefined}
+    />
+  );
+
   return (
     <div
-      className={`lr-studio-insight-shell${productDemoMode ? " lr-studio-insight-shell--product-demo" : ""}${scriptoriumMode ? " lr-studio-insight-shell--scriptorium" : ""}`}
+      className={`lr-studio-insight-shell${productDemoMode ? " lr-studio-insight-shell--product-demo" : ""}${scriptoriumMode ? " lr-studio-insight-shell--scriptorium" : ""}${scriptoriumMode && !exploreExperimentalOpen ? " lr-studio-insight-shell--split" : ""}`}
       data-product-demo={productDemoMode ? "1" : undefined}
       aria-labelledby="lr-studio-insight-shell-title"
     >
-      <div className="lr-studio-view-tabs" role="tablist" aria-label="통찰 뷰 전환">
-        <button
-          type="button"
-          role="tab"
-          id="lr-studio-tab-storyboard"
-          aria-selected={activeView === "storyboard"}
-          aria-controls="lr-studio-panel-storyboard"
-          className={`lr-studio-view-tab${activeView === "storyboard" ? " lr-studio-view-tab--active" : ""}`}
-          onClick={() => {
-            stopDemo();
-            setActiveView("storyboard");
-          }}
-        >
-          {scriptoriumMode ? "구조화 분석" : "통찰 스토리보드"}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          id="lr-studio-tab-mindmap"
-          aria-selected={activeView === "mindmap"}
-          aria-controls="lr-studio-panel-mindmap"
-          className={`lr-studio-view-tab${activeView === "mindmap" ? " lr-studio-view-tab--active" : ""}`}
-          onClick={() => {
-            stopDemo();
-            setActiveView("mindmap");
-          }}
-        >
-          {scriptoriumMode ? "경로 마인드맵" : "경로 마인드맵"}
-        </button>
-        <button
-          type="button"
-          role="tab"
-          id="lr-studio-tab-explore"
-          aria-selected={activeView === "explore"}
-          aria-controls="lr-studio-panel-explore"
-          className={`lr-studio-view-tab${activeView === "explore" ? " lr-studio-view-tab--active" : ""}`}
-          onClick={() => setActiveView("explore")}
-          disabled={!graphDoc && !loadError}
-        >
-          {scriptoriumMode ? "망 탐색" : productDemoMode ? "입체 관계망 (Beta)" : "망 탐색"}
-        </button>
+      <div className="lr-studio-explore-exp-bar">
+        {exploreExperimentalOpen ? (
+          <button
+            type="button"
+            className="lr-studio-explore-exp-btn lr-studio-explore-exp-btn--back"
+            onClick={() => setExploreExperimentalOpen(false)}
+          >
+            {exploreExperimentalBack}
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="lr-studio-explore-exp-btn"
+            onClick={() => setExploreExperimentalOpen(true)}
+            disabled={!graphDoc && !loadError}
+            data-logos-explore-experimental="1"
+          >
+            {exploreExperimentalLabel}
+          </button>
+        )}
       </div>
 
-      <div
-        id="lr-studio-panel-mindmap"
-        role="tabpanel"
-        aria-labelledby="lr-studio-tab-mindmap"
-        hidden={activeView !== "mindmap"}
-        className="lr-studio-graph-panel lr-studio-graph-panel--mindmap"
-      >
-        {activeView === "mindmap" ? (
-          <LogosResearchPathMindmapPanel
-            query={result.query ?? ""}
-            presetId={result.preset_id}
-            pathSteps={result.path.steps}
-            verseRefs={result.path.verse_refs}
-            spineItems={mindmapSpineItems}
-            meshSummary={{
-              graphDoc,
-              hopIndex,
-              seedIds: meshSeedIds,
-              nodeById,
-            }}
-            pulseGraphNodeIds={pulseIds}
-            pulseVerseRef={pulseVerseRef}
-            demoProgress={demoProgress}
-            demoLabel={demoLabel}
-            demoRunning={demoRunning}
-            onVerseClick={onMindmapVerseClick}
-            onReplayDemo={startEntryDemo}
-          />
-        ) : null}
-      </div>
+      {exploreExperimentalOpen ? (
+        <div
+          id="lr-studio-panel-explore"
+          className="lr-studio-graph-panel lr-studio-graph-panel--explore lr-studio-graph-panel--experimental"
+          aria-label={exploreExperimentalLabel}
+        >
+          {renderExploreView()}
+        </div>
+      ) : scriptoriumMode ? (
+        <div className="lr-studio-split-viz" data-logos-split-viz="1">
+          <div
+            className="lr-studio-split-viz__narrative"
+            aria-label="서술형 논리 전개"
+          >
+            {storyboardPanel}
+          </div>
+          <div className="lr-studio-split-viz__path" aria-label="시각적 입증 선로">
+            {mindmapPanel}
+          </div>
+        </div>
+      ) : (
+        <>
+          <div className="lr-studio-view-tabs" role="tablist" aria-label="통찰 뷰 전환">
+            <button
+              type="button"
+              role="tab"
+              id="lr-studio-tab-storyboard"
+              aria-selected={activeView === "storyboard"}
+              aria-controls="lr-studio-panel-storyboard"
+              className={`lr-studio-view-tab${activeView === "storyboard" ? " lr-studio-view-tab--active" : ""}`}
+              onClick={() => {
+                stopDemo();
+                setActiveView("storyboard");
+              }}
+            >
+              통찰 스토리보드
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="lr-studio-tab-mindmap"
+              aria-selected={activeView === "mindmap"}
+              aria-controls="lr-studio-panel-mindmap"
+              className={`lr-studio-view-tab${activeView === "mindmap" ? " lr-studio-view-tab--active" : ""}`}
+              onClick={() => {
+                stopDemo();
+                setActiveView("mindmap");
+              }}
+            >
+              경로 마인드맵
+            </button>
+          </div>
 
-      <div
-        id="lr-studio-panel-storyboard"
-        role="tabpanel"
-        aria-labelledby="lr-studio-tab-storyboard"
-        hidden={activeView !== "storyboard"}
-        className="lr-studio-graph-panel lr-studio-graph-panel--storyboard"
-      >
-        {activeView === "storyboard" ? (
-          <LogosResearchStoryboardPanel
-            result={storyboardPayload}
-            coverage={sliceCoverage}
-            onVerseRefClick={openExploreWithRef}
-            showAuditorHint={!scriptoriumMode}
-            variant={scriptoriumMode ? "scriptorium" : "default"}
-            bloomSecondaryHintKo={scriptoriumMode ? bloomSecondaryHint : undefined}
-          />
-        ) : null}
-      </div>
+          <div
+            id="lr-studio-panel-mindmap"
+            role="tabpanel"
+            aria-labelledby="lr-studio-tab-mindmap"
+            hidden={activeView !== "mindmap"}
+            className="lr-studio-graph-panel lr-studio-graph-panel--mindmap"
+          >
+            {activeView === "mindmap" ? mindmapPanel : null}
+          </div>
 
-      <div
-        id="lr-studio-panel-explore"
-        role="tabpanel"
-        aria-labelledby="lr-studio-tab-explore"
-        hidden={activeView !== "explore"}
-        className="lr-studio-graph-panel lr-studio-graph-panel--explore"
-      >
-        {activeView === "explore" ? renderExploreView() : null}
-      </div>
+          <div
+            id="lr-studio-panel-storyboard"
+            role="tabpanel"
+            aria-labelledby="lr-studio-tab-storyboard"
+            hidden={activeView !== "storyboard"}
+            className="lr-studio-graph-panel lr-studio-graph-panel--storyboard"
+          >
+            {activeView === "storyboard" ? storyboardPanel : null}
+          </div>
+        </>
+      )}
+
+      {boundaryPopupRef ? (
+        <div
+          className="lr-studio-slice-boundary-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="lr-studio-slice-boundary-title"
+          data-logos-slice-boundary="1"
+        >
+          <div className="lr-studio-slice-boundary-dialog__backdrop" aria-hidden="true" />
+          <div className="lr-studio-slice-boundary-dialog__panel">
+            <h4 id="lr-studio-slice-boundary-title">{sliceBoundaryTitle}</h4>
+            <p className="lr-studio-slice-boundary-ref">{boundaryPopupRef}</p>
+            <p className="lr-studio-slice-boundary-body">{sliceBoundaryBody}</p>
+            <p className="lr-studio-slice-boundary-note">{sliceBoundaryNote}</p>
+            <div className="lr-studio-slice-boundary-actions">
+              <a className="lr-studio-slice-boundary-cta" href="/logos-research#lead">
+                {sliceBoundaryCta}
+              </a>
+              <button
+                type="button"
+                className="lr-studio-slice-boundary-dismiss"
+                onClick={() => setBoundaryPopupRef(null)}
+              >
+                닫기
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {!scriptoriumMode && result.path.verse_refs.length ? (
         <div className="lr-studio-graph-refs lr-studio-graph-refs--shared">

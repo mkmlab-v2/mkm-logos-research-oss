@@ -25,22 +25,18 @@ export function LogosResearchSiteChrome({ active = "home", studioFocus = false }
             <small>{legalLine}</small>
           </a>
           <nav className="lr-nav" aria-label="Logos research">
-            <a href="/logos-research/docs" aria-current={active === "docs" ? "page" : undefined}>
-              {c.nav?.docs ?? "문서"}
+            <a href="/logos-research" aria-current={active === "home" ? "page" : undefined}>
+              {c.nav?.home ?? "홈"}
             </a>
             <a
               href="/logos-research/studio"
               aria-current={active === "studio" ? "page" : undefined}
             >
-              {c.nav?.studio ?? "스튜디오"}
+              {c.nav?.studio ?? "연구 스튜디오"}
             </a>
-            <a href="/logos-research#metrics">{c.nav?.metrics ?? "지표"}</a>
-            <a href="/logos-research#tiers">{c.nav?.tiers ?? "티어"}</a>
-            {studioFocus ? null : (
-              <a className="lr-nav-muted" href={c.footer.hub}>
-                {c.footer.hub_label}
-              </a>
-            )}
+            <a href="/logos-research/docs" aria-current={active === "docs" ? "page" : undefined}>
+              {c.nav?.docs ?? "학술 라이브러리"}
+            </a>
           </nav>
         </div>
       </header>
