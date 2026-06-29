@@ -1,6 +1,6 @@
 {
   "schema": "blind_historical_replay_score_v1",
-  "generated_at_utc": "2026-05-24T01:05:24Z",
+  "generated_at_utc": "2026-06-29T01:05:47Z",
   "exploratory_only": true,
   "a_track_binding_forbidden": true,
   "input": {
@@ -12,23 +12,23 @@
     "answer_key_total": 60,
     "predictions_total": 60,
     "matched": 60,
-    "hit": 21,
-    "miss": 39,
+    "hit": 25,
+    "miss": 35,
     "unresolved": 0
   },
   "metrics": {
-    "hit_rate": 0.35,
+    "hit_rate": 0.416667,
     "coverage_rate": 1.0,
-    "balanced_accuracy": 0.286111
+    "balanced_accuracy": 0.317204
   },
   "per_label": {
     "total": {
-      "DOWN_STRONG": 25,
-      "UP_STRONG": 24,
-      "NEUTRAL": 11
+      "DOWN_STRONG": 31,
+      "UP_STRONG": 22,
+      "NEUTRAL": 7
     },
     "hit": {
-      "DOWN_STRONG": 10,
+      "DOWN_STRONG": 14,
       "UP_STRONG": 11,
       "NEUTRAL": 0
     }
@@ -36,10 +36,10 @@
   "samples_preview": [
     {
       "sample_id": "BR_00001",
-      "truth": "UP_STRONG",
+      "truth": "DOWN_STRONG",
       "pred": "UP_STRONG",
-      "is_hit": true,
-      "confidence_0_1": 0.95
+      "is_hit": false,
+      "confidence_0_1": 0.8667
     },
     {
       "sample_id": "BR_00002",
@@ -50,24 +50,24 @@
     },
     {
       "sample_id": "BR_00003",
-      "truth": "UP_STRONG",
+      "truth": "DOWN_STRONG",
       "pred": "UP_STRONG",
-      "is_hit": true,
+      "is_hit": false,
       "confidence_0_1": 0.95
     },
     {
       "sample_id": "BR_00004",
-      "truth": "UP_STRONG",
+      "truth": "DOWN_STRONG",
       "pred": "DOWN_STRONG",
-      "is_hit": false,
+      "is_hit": true,
       "confidence_0_1": 0.5333
     },
     {
       "sample_id": "BR_00005",
-      "truth": "NEUTRAL",
-      "pred": "UP_STRONG",
-      "is_hit": false,
-      "confidence_0_1": 0.8667
+      "truth": "DOWN_STRONG",
+      "pred": "DOWN_STRONG",
+      "is_hit": true,
+      "confidence_0_1": 0.95
     },
     {
       "sample_id": "BR_00006",
@@ -79,30 +79,30 @@
     {
       "sample_id": "BR_00007",
       "truth": "NEUTRAL",
-      "pred": "DOWN_STRONG",
+      "pred": "UP_STRONG",
       "is_hit": false,
       "confidence_0_1": 0.95
     },
     {
       "sample_id": "BR_00008",
-      "truth": "NEUTRAL",
+      "truth": "DOWN_STRONG",
       "pred": "UP_STRONG",
       "is_hit": false,
       "confidence_0_1": 0.95
     },
     {
       "sample_id": "BR_00009",
-      "truth": "NEUTRAL",
+      "truth": "DOWN_STRONG",
       "pred": "DOWN_STRONG",
-      "is_hit": false,
+      "is_hit": true,
       "confidence_0_1": 0.95
     },
     {
       "sample_id": "BR_00010",
-      "truth": "UP_STRONG",
+      "truth": "NEUTRAL",
       "pred": "UP_STRONG",
-      "is_hit": true,
-      "confidence_0_1": 0.95
+      "is_hit": false,
+      "confidence_0_1": 0.8667
     }
   ],
   "note": "Exploratory benchmark only. Do not promote to live trigger path."

@@ -3,7 +3,7 @@
   "approved": true,
   "decision": "APPROVED_RESEARCH_ENVELOPE_ONLY",
   "reviewer": "commander",
-  "approved_at_utc": "2026-06-27T18:44:59Z",
+  "approved_at_utc": "2026-06-29T04:27:36Z",
   "note": null,
   "research_envelope_only_acknowledged": true,
   "scope": {
@@ -30,7 +30,7 @@
     "docs/final/artifacts/compression_ko_premium_cs_deep_pack_promotion_signoff_envelope_v1_latest.json"
   ],
   "note_template": "Research envelope signoff only. Does not authorize Track A ACTIVE swap or SEND unlock.",
-  "recorded_at_utc": "2026-06-27T18:44:59Z",
+  "recorded_at_utc": "2026-06-29T04:27:36Z",
   "patched_child_envelopes": [
     "C:/workspace/docs/final/artifacts/compression_coding_deep_pack_promotion_signoff_envelope_v1_latest.json",
     "C:/workspace/docs/final/artifacts/compression_en_business_deep_pack_promotion_signoff_envelope_v1_latest.json",

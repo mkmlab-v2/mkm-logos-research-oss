@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "amsaeng_eosa_governance_cycle_v1",
-    "generated_at_utc":  "2026-06-29T04:20:47.1570275Z",
+    "generated_at_utc":  "2026-06-29T04:24:36.4082769Z",
     "workspace_root":  "C:\\workspace",
     "include_vps_smoke":  false,
     "phases":  [
@@ -18,9 +18,9 @@
                    },
                    {
                        "name":  "marketing_ip_governance",
-                       "exit_code":  1
+                       "exit_code":  0
                    }
                ],
-    "worst_exit":  1,
+    "worst_exit":  0,
     "scope_registry":  "docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json"
 }

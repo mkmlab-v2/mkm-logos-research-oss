@@ -1,6 +1,6 @@
 ﻿{
     "schema":  "fragility_macro_risk_daily_run_v1",
-    "ts_utc":  "2026-05-23T22:28:02.4620521Z",
+    "ts_utc":  "2026-06-28T22:28:02.2905007Z",
     "status":  "pass",
     "chain":  {
                   "script":  "C:\\workspace\\scripts\\run_fragility_macro_risk_chain_v1.ps1",

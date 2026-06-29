@@ -14,7 +14,7 @@
 
 - source JSON: `C:\workspace\docs\final\artifacts\logos_track_b_commander_deep_report_latest.json`
 - schema: `logos_track_b_commander_deep_report_v1` version `1.1.0`
-- ts_utc: `2026-05-23T23:05:08Z`
+- ts_utc: `2026-06-28T23:00:30Z`
 
 ## 기계 역할
 
@@ -24,9 +24,7 @@
 
 ### 원어·어휘층 (레마·의미역)
 
-[HYPO] 본 축은 히브리/헬라 어근·의미역 후보를 원문 근거와 함께 정리하는 자리다. 현재 배치에서 evidence_refs 기준 앵커 수=3. 게마트리아·숫자 읽기는 동일 문단에 불확실성 라벨을 붙일 것.
-
-*verse_id 앵커:* sample-001, sample-002, sample-003
+[HYPO] 본 축은 히브리/헬라 어근·의미역 후보를 원문 근거와 함께 정리하는 자리다. 현재 배치에서 evidence_refs 기준 앵커 수=0. 게마트리아·숫자 읽기는 동일 문단에 불확실성 라벨을 붙일 것.
 
 ### 문맥·문학 장르
 
@@ -34,7 +32,7 @@
 
 ### 교차 참조·구조적 에코
 
-동일 공동체·동일 문헌 군 내 반복 모티프와 verse_id 앵커를 표 형태로 확장한다. 샘플 verse_id: sample-001, sample-002, sample-003
+동일 공동체·동일 문헌 군 내 반복 모티프와 verse_id 앵커를 표 형태로 확장한다. graph_paths(증류)=0. 샘플 verse_id: (없음)
 
 ### 역사·편집·수용층 [HYPO]
 
@@ -42,7 +40,7 @@
 
 ### 타 렌즈 충돌 지도
 
-융합 스텁 consensus_sign=bull, agreement_rate=0.75. 시장 사상 렌즈 방향 힌트=bull, veto=True. 명리·사상·로고스는 합선 금지—방향 불일치는 ‘충돌 지도’로만 기록.
+융합 스텁 consensus_sign=bull, agreement_rate=0.4. 시장 사상 렌즈 방향 힌트=bull, veto=True. 명리·사상·로고스는 합선 금지—방향 불일치는 ‘충돌 지도’로만 기록.
 
 ---
 *끝 — 장문 해석·외부 검색은 Track B 후속(지휘관 승인 하).*
