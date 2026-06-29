@@ -1,32 +1,336 @@
 {
   "schema": "mkm_chat_resume_pack_v1",
-  "generated_at_utc": "2026-05-18T14:20:35.763013Z",
+  "generated_at_utc": "2026-06-29T04:12:27.837744Z",
+  "research_only": true,
+  "boundary_ack": "[HYPO] resume pack — ops index pins are B-track; no Track A·live merge",
+  "ops_memory_options": {
+    "include_slice": false,
+    "repair_v2_slice": false,
+    "commander_default": true,
+    "commander_trigger_ko": "장기기억 맥락이어",
+    "slice_max_chars": 1200,
+    "topic": null,
+    "top_n": 3,
+    "lane": null
+  },
+  "commander_briefing": {
+    "trigger_ko": "장기기억 맥락이어",
+    "session_end_trigger_ko": "마무리",
+    "pairing_ko": "시작=장기기억 맥락이어 · 종료=마무리(해줘)",
+    "resume_mode": "standard",
+    "mode_id": "standard",
+    "label_ko": "일반 재개",
+    "mission_log_mode": "next_one_table_pin_only — never paste full MISSION_LOG.md",
+    "fact_lock": "CONSTITUTION + scripts + exit 0 only — NL answer is not pass/fail",
+    "send_gate": "HOLD",
+    "send_gate_vocab": "docs/final/artifacts/mkm_send_gate_vocabulary_v1_latest.json",
+    "promotion_decision_note": "INTERNAL_V2_READY = internal v2 readiness only — not SEND or live trading",
+    "nl_ltm_sync": {
+      "notebook_name": "01 · 지휘·운영",
+      "notebook_id": "9bc26140-70c4-47d0-b9ea-bd3a394916a9",
+      "push_ok": 11,
+      "push_fail": 0,
+      "generated_at_utc": "2026-06-13T09:49:51Z",
+      "repro_push": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-NotebookLmLtmGraphOpsSetup_v1.ps1 -PushNlm",
+      "nl_mcp_note": "Read 참모 — 통과 판정은 Cursor exit 0만"
+    },
+    "cursor_host_hygiene": {
+      "schema": "cursor_host_hygiene_v1",
+      "generated_at_utc": "2026-06-29T03:30:06Z",
+      "cursor_running": true,
+      "global_storage_dir": "C:\\Users\\PRO\\AppData\\Roaming\\Cursor\\User\\globalStorage",
+      "files_gb": {
+        "state_vscdb": 4.662,
+        "state_vscdb_backup": null,
+        "corrupt_bak_total": 0,
+        "corrupt_bak_count": 0
+      },
+      "memory": {
+        "ram_used_pct": 73.7,
+        "committed_pct": 68.6
+      },
+      "thresholds": {
+        "warn_vscdb_gb": 20,
+        "warn_backup_gb": 10,
+        "warn_committed_pct": 85,
+        "warn_ram_used_pct": 85
+      },
+      "degraded": false,
+      "reload_required": false,
+      "reasons": [],
+      "verify_command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\check_cursor_state_vscdb_hygiene_v1.ps1",
+      "janitor_command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-CursorStateVscdbJanitor_v1.ps1 -Apply"
+    },
+    "chat_tone": {
+      "ssot": "docs/final/artifacts/commander_chat_tone_prefs_v1_latest.json",
+      "routine_disclaimer_suppress": true,
+      "agent_contract_ko": "채팅은 간결하게. 내부 격벽은 코드·아티팩트·고위험 실행 시에만 말한다. 지휘관은 실매매 안 함."
+    }
+  },
+  "commander_resume_triggers_ssot": "docs/final/artifacts/mkm_commander_resume_triggers_v1.json",
+  "commander_chat_tone_ssot": "docs/final/artifacts/commander_chat_tone_prefs_v1_latest.json",
+  "send_gate_vocabulary_ssot": "docs/final/artifacts/mkm_send_gate_vocabulary_v1_latest.json",
+  "commander_chat_tone": {
+    "schema": "commander_chat_tone_prefs_v1",
+    "version": "1.0.0",
+    "updated_at_utc": "2026-06-19T06:50:00Z",
+    "research_only": true,
+    "send_gate": "HOLD",
+    "commander_context_ko": "실매매 미운영 · Track A trading LOCKED/NO_GO · 가설은 참고용",
+    "routine_disclaimer_suppress": {
+      "enabled": true,
+      "suppress_patterns_ko": [
+        "실거래 연결 없음",
+        "실매매 연결 없음",
+        "live trading 없음",
+        "Track A·실매매 금지",
+        "실매매·Track A·프로덕션 자동 합선 금지"
+      ],
+      "when_to_skip_routine_footer": [
+        "일반 코딩·문서·연구·재개·명리·Logos·한의·인프라 Q&A",
+        "이미 [HYPO] 또는 research_only로 맥락이 분명한 연속 턴",
+        "지휘관이 실매매·트레이딩을 주제로 묻지 않은 경우"
+      ],
+      "when_still_required": [
+        "live deploy·VPS 실매매·start_live_trading 실행 논의",
+        "Track A 승격·SEND·대외 투자·매매 카피·PUBLIC_FACING",
+        "ECC·athena_run_v1·실거래 게이트 경로 실행"
+      ]
+    },
+    "hypo_labeling": {
+      "mode": "on_first_intro_only",
+      "note_ko": "가설·B-track 산출은 첫 소개 시 [HYPO] 1회면 충분. 매 턴 격벽 문구 반복 금지."
+    },
+    "agent_contract_ko": "채팅은 간결하게. 내부 격벽은 코드·아티팩트·고위험 실행 시에만 말한다. 지휘관은 실매매 안 함."
+  },
+  "commander_resume_mode": {
+    "mode_id": "standard",
+    "label_ko": "일반 재개",
+    "agent_contract_ko": "SSOT 재개 · MISSION_LOG 통째 금지 · Fact-Lock · send_gate HOLD · routine live-trading disclaimer suppress ON",
+    "session_upgrade": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-MkmCursorSessionUpgrade_v1.ps1",
+    "pipeline_steps": null,
+    "artifact_pointers": null
+  },
   "quick_refs": {
     "central_memory": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+    "ops_memory_index": "storage/meta/mkm_ops_memory_index_v1.json",
+    "long_term_memory_graph": "storage/meta/mkm_long_term_memory_graph_v1.json",
     "ops_dashboard_md": "docs/final/artifacts/mkm_trackc_ops_dashboard_latest.md",
     "ops_dashboard_exec_md": "docs/final/artifacts/mkm_trackc_ops_dashboard_exec_latest.md",
     "acceptance_json": "docs/final/artifacts/mkm_trackc_operational_acceptance_latest.json",
     "runbook_checklist_md": "docs/final/artifacts/mkm_trackc_operations_runbook_checklist_latest.md",
     "core_prompt_gemini_athena": "docs/final/artifacts/MKM_CORE_PROMPT_GEMINI_ATHENA_V1.md"
   },
+  "constitution_path_pins": [
+    {
+      "segment_id": "fact_lock_p0_pointer",
+      "essence": "Stale CONSTITUTION prose is not law — scripts/verify_p0_constitution_gate_paths.ps1 required list wins",
+      "must_keep_tags": [
+        "verify_p0_constitution_gate_paths.ps1"
+      ],
+      "line_range": [
+        110,
+        123
+      ],
+      "path_count": 33,
+      "top_paths": [
+        "scripts/verify_p0_constitution_gate_paths.ps1",
+        "scripts/run_aramaic_mvp_chain_v1.ps1",
+        "scripts/run_two_track_submission_pack_v1.ps1",
+        ".github/workflows/dual-regime-integrity.yml",
+        "scripts/extract_aramaic_core_corpus_v1.py",
+        "tests/test_extract_aramaic_core_corpus_v1.py",
+        "scripts/spec_bio_sample_paper_snp_join_gate_v1.py",
+        ".github/workflows/bio-paper-snp-sidecar-smoke.yml",
+        "tests/test_bio_paper_snp_join_chain_smoke_v1.py",
+        "tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py"
+      ]
+    },
+    {
+      "segment_id": "logos_ops_memory_cursor_inject",
+      "essence": "Oracle Logos Cursor inject Tier-1 module SSOT — overlay + readiness gate; ≠ CONSTITUTION full rewrite; B-track HOLD; Logos [NON_GATING]",
+      "must_keep_tags": [
+        "run_logos_oracle_cursor_inject_tier1_readiness_chain_v1.py",
+        "logos_theory_implementation_wiring_v1.json"
+      ],
+      "line_range": [
+        13,
+        36
+      ],
+      "path_count": 64,
+      "top_paths": [
+        "scripts/build_mkm_ops_memory_logos_math_overlay_v1.py",
+        "scripts/run_mkm_ops_memory_logos_math_overlay_chain_v1.py",
+        "storage/meta/mkm_ops_memory_index_v1.json",
+        "docs/final/artifacts/mkm_chat_resume_pack_latest.md",
+        "docs/final/artifacts/logos_theory_implementation_wiring_v1.json",
+        "scripts/run_logos_oracle_cursor_inject_tier1_readiness_chain_v1.py",
+        "docs/final/artifacts/logos_oracle_cursor_inject_tier1_readiness_v1_latest.json",
+        "scripts/run_mkm_logos_math_ltm_a2a_chain_v1.py",
+        "scripts/run_mkm_gematria_4d_ablation_chain_v1.py",
+        "projects/mkm/mkm-life/scripts/capture-magic-orb-design-readiness-playwright.mjs"
+      ]
+    },
+    {
+      "segment_id": "compression_factlock_table",
+      "essence": "Track A/B compression SSOT paths (SLA, interpretation fact-lock, bundles)",
+      "must_keep_tags": [
+        "COMPRESSION_SLA_POLICY_V1.md",
+        "COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK"
+      ],
+      "line_range": [
+        131,
+        173
+      ],
+      "path_count": 64,
+      "top_paths": [
+        "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
+        "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md",
+        "docs/final/COMPRESSION_SLA_POLICY_V1.md",
+        "docs/final/openapi_token_compression_v2_draft.yaml",
+        "scripts/compression_token_api_v2_stub.py",
+        "tests/test_compression_token_api_v2_stub.py",
+        "tests/test_v2_graph_wire_selective_bridge_v1.py",
+        "scripts/comp_atom05_*_sweep_v1.py",
+        "scripts/build_mkm_inter_agent_encoding_status_v1.py",
+        "docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json"
+      ]
+    }
+  ],
+  "constitution_sidecar_path": "storage/meta/mkm_sidecar_constitution_paths_v1.json",
+  "constitution_source_ssot": "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+  "long_term_memory_routing": null,
+  "a2a_chain_refs": {
+    "schema": "mkm_chat_resume_a2a_chain_refs_v1",
+    "source_pilot": "docs/final/artifacts/a2a_tp03_chain_ref_pilot_v1_latest.json",
+    "research_only": true,
+    "boundary_ack": "[HYPO] A2A machine block only — pointer+fingerprint refs for agent context. Human MD resume pack unchanged. Not Track A·live merge.",
+    "artifacts_present": 5,
+    "artifacts_missing": 1,
+    "reduction_percent_if_pointers_only": 95.6,
+    "aggregate_pointer_vs_full": {
+      "tokens_saved_sum": 18733,
+      "reduction_percent": 95.6
+    },
+    "pointer_rows": [
+      {
+        "artifact_id": "trackc_ops_dashboard",
+        "artifact_path": "docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json",
+        "sha256": "552c01e3dfd40a7765c8b9309f2d415d77612ba2f977a840e27f1796fa03dbe1",
+        "chain_step": "Invoke-TrackCMacroDailyFusion_v1.ps1 (terminal dashboard)",
+        "handoff_mode": "pointer_plus_fingerprint",
+        "essence_line": "schema=mkm_trackc_ops_dashboard_v1 generated_at_utc=2026-06-27T23:30:02.981153Z system.status=HOLD_OPERATIONAL_V1 system.promotion_decision=HOLD_OPERATIONAL_V1 trackc.packet_status=READY",
+        "schema": "mkm_trackc_ops_dashboard_v1"
+      },
+      {
+        "artifact_id": "logos_insight_bundle",
+        "artifact_path": "docs/final/artifacts/logos_insight_bundle_v1_latest.json",
+        "sha256": "b3e8e5c03c7ebcd0395fb8f4f34dd1ad4b09c2e98ac5a28c26635c7ecd1e8c5b",
+        "chain_step": "build_logos_insight_bundle_v1.py",
+        "handoff_mode": "pointer_plus_fingerprint",
+        "essence_line": "schema=logos_insight_bundle_v1 generated_at_utc=2026-06-27T23:00:26Z",
+        "schema": "logos_insight_bundle_v1"
+      },
+      {
+        "artifact_id": "showroom_macro_horizon_2030_slice",
+        "artifact_path": "docs/final/artifacts/showroom_macro_horizon_2030_slice_v1_latest.json",
+        "sha256": "ddbe0b52181d2ec4e8bc67bf76e70cf3b6973ee008100f53e56336442801e159",
+        "chain_step": "build_showroom_macro_horizon_2030_slice_v1.py",
+        "handoff_mode": "pointer_plus_fingerprint",
+        "essence_line": "schema=showroom_macro_horizon_2030_slice generated_at_utc=2026-06-27T00:32:05Z final_action=WATCH"
+      },
+      {
+        "artifact_id": "logos_macro_horizon_2030",
+        "artifact_path": "docs/final/artifacts/logos_macro_horizon_2030_scenario_v1_latest.json",
+        "sha256": "419b78742476c0f8319782a36181eb2c0b507906259e35aca3d04cfa7f437db4",
+        "chain_step": "build_logos_macro_horizon_2030_scenario_v1.py",
+        "handoff_mode": "pointer_plus_fingerprint",
+        "essence_line": "schema=logos_macro_horizon_2030_scenario_v1 generated_at_utc=2026-06-20T23:30:19.775411Z",
+        "schema": "logos_macro_horizon_2030_scenario_v1"
+      },
+      {
+        "artifact_id": "inter_agent_trackc_rq019_slice",
+        "artifact_path": "docs/final/artifacts/mkm_inter_agent_trackc_rq019_slice_v1_latest.json",
+        "sha256": "998d54b64a9f73a0a2c1485c2daf3808c90c1f185f407892266979f4b3f024ce",
+        "chain_step": "build_mkm_inter_agent_trackc_rq019_slice_v1.py",
+        "handoff_mode": "pointer_plus_fingerprint",
+        "essence_line": "schema=mkm_inter_agent_trackc_rq019_slice_v1 generated_at_utc=2026-06-13T09:30:34Z research_only=True",
+        "schema": "mkm_inter_agent_trackc_rq019_slice_v1"
+      }
+    ]
+  },
   "latest_status": {
-    "system_status": "APPROVED_FINAL_V2",
-    "promotion_decision": "GO_FINAL_V2",
+    "system_status": "HOLD_OPERATIONAL_V1",
+    "promotion_decision": "HOLD_OPERATIONAL_V1",
+    "promotion_decision_agent_label": "HOLD_OPERATIONAL_V1",
     "trackc_packet_status": "READY",
     "acceptance_status": null
   },
   "resume_commands": [
-    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/run_mkm_trackc_operational_acceptance.ps1",
-    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Set-PaddleOnboardingStatus.ps1 -Status IN_PROGRESS -Note \"Payout/legal onboarding steps in progress.\"",
-    "py scripts/build_mkm_chat_resume_pack_v1.py"
+    "py scripts/build_mkm_long_term_memory_graph_v1.py",
+    "py scripts/build_mkm_ops_memory_index_v1.py",
+    "py scripts/build_mkm_ops_memory_doctrine_overlay_v1.py",
+    "py scripts/build_mkm_chat_resume_pack_v1.py --repair-v2-slice",
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/Invoke-MkmOpsMemoryIndexRoutine_v1.ps1 -RepairV2Slice"
+  ],
+  "ops_memory_pins": [
+    {
+      "node_id": "prism_ops_mission_log_board",
+      "essence": "작전 보드 SSOT — active lanes only · Track A 금지 · SEND_GATE HOLD",
+      "must_keep_tags": [
+        "FAIL-COMP-004",
+        "Track A",
+        "SEND_GATE: HOLD"
+      ],
+      "file_path": "MISSION_LOG.md",
+      "line_range": [
+        25,
+        147
+      ]
+    },
+    {
+      "node_id": "prism_ops_central_checkpoint",
+      "essence": "CENTRAL 최신 운영 체크포인트 블록 — athena_checkpoint·격벽 스냅샷",
+      "must_keep_tags": [
+        "ATHENA_CHECKPOINT",
+        "CENTRAL"
+      ],
+      "file_path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
+      "line_range": [
+        142,
+        163
+      ],
+      "slice_preview": "<!-- ATHENA_CHECKPOINT_V1_START -->\n<!-- CENTRAL checkpoint block -->\n- **2026-06-29T03:31:31Z** — farm verify exit0 · logos lead n8n dedicated+sync · mosquitto 127.0.0.1:1883 VPS · G300 cid=TBD Tier3\n- **2026-06-29T03:25:34Z** — continuity=haan-master · HAAN master closed; 3-lens NL+gematria+wire/bundle done; cheonyucho deferred_skipped\n- **2026-06-29T03:20:14Z** — continuity=logos-preset-query-guard-2026-06-28 · HD AE tier_0 quality_ok · internal push 22b56a4 · prod smoke+daily exit0 · smartfarm phase0 exit0 · G300 cid=TBD Tier3 HOLD\n- **2026-06-29T02:25:18Z** — continuity=logos-preset-query-guard-2026-06-28 · A L1핀 rule·B commit 60955453+deploy PM2 ok·로컬 smoke0·prod presets500·C smartfarm phase0 dry-run0 — 다음채팅: prod logos 500 triage+nephilim auto_route\n- **2026-06-29T00:03:33Z** — continuity=logos-preset-query-guard-2026-06-28 · Logos preset-query guard: job+nephilim auto_route exit0 smoke; uncommitted 7 files — commit+Deploy-No1kmedi; Paste Chart v1 prior commit 62e1245a46 prod ok\n- **2026-06-28T13:25:24Z** — continuity=cheonyucho-haan-2026-06-28 · 천유초 P0: 하안28권+NLK서지 정찰 완료·한자본문0·hanja_canon not_acquired; 재개=이창일1999 ISBN9788988473092 011천유초 또는 장서각§3 p\n… [HYPO slice truncated]\n",
+      "slice_truncated": true,
+      "slice_max_chars": 1200,
+      "slice_mode": "commander_default"
+    },
+    {
+      "node_id": "prism_ops_mission_log_next_one",
+      "essence": "레인별 다음 1타 SSOT — 재개 핀 · HOLD · Track A·실매매 금지",
+      "must_keep_tags": [
+        "Track A",
+        "HOLD",
+        "금지"
+      ],
+      "file_path": "MISSION_LOG.md",
+      "line_range": [
+        10,
+        24
+      ],
+      "slice_preview": "**다음 1타 (레인 · 재개용 핀):**\n\n| 레인 | 다음 1타 |\n|------|----------|\n| **MS·KOSPI Field band [HYPO]** | **PoC closed** — MD&A 인용만·예측 격벽 확정 · B-track 예언=체점 O·auto-evolve X · 재개 시 `followup_chain` · **HOLD** |\n| **Oracle·Logos** | **HAAN master closed** · **prod B2B smoke exit0** (5 presets incl. nephilim) · cheonyucho `deferred_skipped` · **다음** (선택) 천유초 실물 P0 재개 · continuity `haan-master` · **HOLD** |\n| **Design/Showroom** | **Human Gold lee_heecheol live smoke ok** — app.jema-ai.com paste-chart · **다음** (선택) 원장 서명·PDF 교부 · **HOLD** |\n| **MS·지원사업** | **K-Startup 6건 제출완료 SSOT** `mkm_kstartup_portal_submissions_v1_latest.json` · 심사 **패시브** · 본선 통보 시 **해당 task_id만** |\n| **MS·B2B 압축** | **counsel zip exit0** (16 files) · Path A fact sheet in pack · OI 심사 패시브 · **금지:** counsel 송부·47% paste |\n| **Infra·solo** | **6ch SSOT·operator PWA** exit0 · ch4=50주 데모(상업농 금지) · **다음** VPS Mosquitto + G300 브로커 연결·현장 cid 반영 · **HOLD** |\n| **Track B·임상보조 [HYPO]** | **lee_heecheol closed** — 설문14·taeeum·태음·명리(을사임오병오)·환자/원장 종합처방전 v1 · **다음** 환자판 PDF 교부 + 야간단삼/유산균증량 **원장 서명** 또는 출생시각 확정 시 명리 재계산 · **`SEND_GATE: HOLD`** |\n| **한의음성학 [HYPO]** | **P1+preview control closed** · health gate·Skip\n… [HYPO slice truncated]\n",
+      "slice_truncated": true,
+      "slice_max_chars": 1200,
+      "slice_mode": "commander_default"
+    }
   ],
   "last_ops_patrol": {
     "schema": "mkm_last_ops_patrol_v1",
-    "paste_line": "[BillingPatrol] 2026-06-28 OK (gem_paste_block:pass; opt_fail:0) | Shadow Only | No Track A/live",
-    "package": "BillingPatrol",
-    "generated_at_local": "2026-06-28T03:19:54.9245794+09:00",
-    "process_exit_code": 0,
-    "optional_fail_count": 0,
+    "paste_line": "[DailyOpsPatrol] 2026-06-29 WARN (Remote:pass, P0:pass, Git:pass, Resume:pass, Athena:aligned, Env:pass, Amsaeng:fail, NL-MCP:pass, Secrets:pass; opt_fail:1) | Shadow Only | No Track A/live",
+    "package": "DailyOpsPatrol",
+    "generated_at_local": "2026-06-29T13:14:45.4354374+09:00",
+    "process_exit_code": 1,
+    "optional_fail_count": 1,
     "required_failed": false,
     "source_paste_json": "reports/mkm_command_package_paste_latest.json",
     "stop_sequence_hints": {
