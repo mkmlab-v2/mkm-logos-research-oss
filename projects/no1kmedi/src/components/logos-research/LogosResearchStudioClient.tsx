@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 import { LogosCanvasStudioLayout } from "@/components/logos-research/LogosCanvasStudioLayout";
 import { LogosStudioOmniEntry } from "@/components/logos-research/LogosStudioOmniEntry";
+import { LogosStudioOnboardingOverlay } from "@/components/logos-research/LogosStudioOnboardingOverlay";
 import {
   dispatchScriptoriumVerseSelect,
   LogosStudioScriptoriumInquiry,
@@ -32,6 +33,11 @@ import {
   resolveInitialStudioPhase,
   type LogosStudioPhase,
 } from "@/lib/logosStudioPhaseV1";
+import {
+  markLogosStudioOnboardingComplete,
+  shouldShowLogosStudioOnboarding,
+  type LogosStudioOnboardingResult,
+} from "@/lib/logosStudioOnboardingV1";
 import {
   createLogosQueryPipeline,
   patchLogosQueryPipeline,
@@ -229,6 +235,7 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
   const [presetSlotFilter, setPresetSlotFilter] = useState<string>("all");
   const [quotaDisabled, setQuotaDisabled] = useState(false);
   const [audienceMode, setAudienceMode] = useState<LogosStudioAudienceMode>(audienceModeFromUrl);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   const audienceCopy =
     studio && "audience_modes" in studio
@@ -323,6 +330,43 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
   useEffect(() => {
     setAudienceMode(audienceModeFromUrl);
   }, [audienceModeFromUrl]);
+
+  useEffect(() => {
+    if (
+      !canvasLayout ||
+      studioPhase !== "omni" ||
+      autorun ||
+      hubPrefill ||
+      presetFromUrl ||
+      presetsLoading
+    ) {
+      setShowOnboarding(false);
+      return;
+    }
+    setShowOnboarding(shouldShowLogosStudioOnboarding());
+  }, [autorun, canvasLayout, hubPrefill, presetFromUrl, presetsLoading, studioPhase]);
+
+  const applyOnboarding = useCallback(
+    (payload: LogosStudioOnboardingResult) => {
+      markLogosStudioOnboardingComplete();
+      setShowOnboarding(false);
+      onAudienceModeChange(payload.audienceMode);
+      const row = presets.find((p) => p.id === payload.topic.preset_id);
+      if (row) {
+        setPresetId(row.id);
+        setQuery(row.prompt_ko);
+        if (payload.topic.slot_label_ko && payload.audienceMode === "academic") {
+          setPresetSlotFilter(payload.topic.slot_label_ko);
+        }
+      }
+    },
+    [onAudienceModeChange, presets],
+  );
+
+  const skipOnboarding = useCallback(() => {
+    markLogosStudioOnboardingComplete();
+    setShowOnboarding(false);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -919,6 +963,9 @@ export function LogosResearchStudioClient({ embedHero = false }: Props) {
       className={`lr-studio${canvasLayout ? " lr-studio--canvas lr-studio--scriptorium" : ""}${studioPhase === "omni" ? " lr-studio--omni-entry" : " lr-studio--workspace"}`}
       data-logos-studio-phase={canvasLayout ? studioPhase : undefined}
     >
+      {canvasLayout && studioPhase === "omni" && showOnboarding ? (
+        <LogosStudioOnboardingOverlay onComplete={applyOnboarding} onSkip={skipOnboarding} />
+      ) : null}
       {canvasLayout && studioPhase === "omni" ? (
         <LogosStudioOmniEntry
           title={
