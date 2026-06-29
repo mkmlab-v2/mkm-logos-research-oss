@@ -49,7 +49,8 @@ if (-not $SkipPresetBatch) {
 $failures = @()
 foreach ($step in $steps) {
     Write-Host "[logos-b2b-daily] $($step.id)" -ForegroundColor Cyan
-    & @($step.cmd)
+    $cmd = @($step.cmd)
+    & $cmd[0] @($cmd[1..($cmd.Length - 1)])
     if ($LASTEXITCODE -ne 0) {
         $failures += $step.id
     }
