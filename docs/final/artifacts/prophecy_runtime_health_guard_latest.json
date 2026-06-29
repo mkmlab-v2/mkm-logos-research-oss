@@ -1,15 +1,15 @@
 {
   "schema": "prophecy_runtime_health_guard_v1",
-  "generated_at_utc": "2026-05-14T21:30:04Z",
+  "generated_at_utc": "2026-06-28T23:18:04Z",
   "status": "red",
   "should_pause_trading": true,
   "summary": {
-    "price_directional_hit_rate": 0.6,
+    "price_directional_hit_rate": 0.566667,
     "n_evaluated": 30,
     "llm_model": "rule_based_ensemble_v1",
     "neutral_ratio": 0.0,
     "max_neutral_streak": 0,
-    "row_count": 30,
+    "row_count": 7,
     "btc_csv_input": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
     "auto_promote_ready": false,
     "all_gates_passed": false,
@@ -37,7 +37,7 @@
     "hit_rate_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_hit_rate_eval_latest.json",
     "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
     "hypothesis_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_hypothesis_prophecy_latest.json",
-    "gates_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_promotion_gates_v1_latest.json",
+    "gates_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_promotion_gates_daily_shadow_v1_latest.json",
     "live_ab_json": "C:\\workspace\\docs\\final\\artifacts\\prophecy_live_ab_summary_v1_latest.json",
     "thresholds": {
       "min_hit_rate": 0.45,

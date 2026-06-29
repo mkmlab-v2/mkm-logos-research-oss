@@ -1,6 +1,6 @@
 {
   "schema": "billing_evidence_v1",
-  "ts_utc": "2026-05-05T00:15:14.294135+00:00",
+  "ts_utc": "2026-06-29T00:15:27.816115+00:00",
   "source_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_benchmark_auto_latest.json",
   "invoice_input": "C:\\workspace\\docs\\final\\artifacts\\billing_invoice_from_env_latest.json",
   "invoice_provenance": "provider_file",

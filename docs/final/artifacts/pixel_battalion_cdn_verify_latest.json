@@ -1,10 +1,11 @@
 {
   "schema": "pixel_battalion_cdn_verify_v1",
-  "checked_at_utc": "2026-05-05T00:06:57Z",
+  "checked_at_utc": "2026-06-29T00:18:04Z",
   "map_path": "C:\\workspace\\docs\\final\\artifacts\\pixel_battalion_character_map_public_latest.json",
   "total": 13,
-  "ok_count": 13,
-  "fail_count": 0,
+  "ok_count": 0,
+  "fail_count": 13,
+  "soft_fail": true,
   "verify_options": {
     "url_retries": 3,
     "url_retry_delay_sec": 8.0,
@@ -14,81 +15,81 @@
   "results": [
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774951700015_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 404,
+      "error": "Not Found"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774951706373_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774954662935_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774954940598_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955152838_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955172444_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955383271_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955517797_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955571752_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955701037_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955721480_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955748157_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     },
     {
       "url": "https://assets.jemaai.cloud/pixel_battalion/refined/generated_image_1774955778951_1.png",
-      "ok": true,
-      "http_status": 200,
-      "error": null
+      "ok": false,
+      "http_status": 525,
+      "error": "<none>"
     }
   ]
 }

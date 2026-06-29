@@ -1,11 +1,11 @@
 # Vibe Daily Status Dashboard (Latest)
 
-- Generated (UTC): 2026-05-03T00:28:58Z
+- Generated (UTC): 2026-06-28T16:20:07Z
 - Overall health: green
 - Gate: ok (raw_output_coverage_check)
 - Gate message: Coverage gate passed.
 - Filled coverage ratio: 1.0
-- Consistency ratio: 0.775
+- Consistency ratio: 0.9
 - Ingested rows: 40
 - Evolution suggestions: 4
 - External input rows: 7

@@ -1,6 +1,6 @@
 {
   "schema": "cost_watch_monitor_v1",
-  "ts_utc": "2026-05-05T00:15:14.498580+00:00",
+  "ts_utc": "2026-06-29T00:15:28.417459+00:00",
   "sources": {
     "compression_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
     "vllm_canary_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\vllm_ab_canary_repeat_latest.json",
@@ -10,14 +10,14 @@
   },
   "compression": {
     "status": "ok",
-    "global_token_saving_rate": 0.4683544303797469,
+    "global_token_saving_rate": 0.47116736990154706,
     "case_count": 40,
-    "avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
+    "avg_reconstruction_fidelity_jaccard": 0.8893218363593751,
     "avg_sensitive_integrity": 1.0
   },
   "vllm_canary": {
-    "status": "missing",
-    "reason": "report_not_found"
+    "status": "skipped",
+    "reason": "endpoint_unavailable: <urlopen error [WinError 10061] 대상 컴퓨터에서 연결을 거부했으므로 연결하지 못했습니다>"
   },
   "turboquant_poc": {
     "status": "missing",

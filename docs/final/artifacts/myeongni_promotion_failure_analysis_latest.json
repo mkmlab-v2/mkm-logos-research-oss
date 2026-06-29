@@ -1,16 +1,23 @@
 {
   "schema": "myeongni_promotion_failure_analysis_v1",
-  "ts_utc": "2026-05-07T11:40:51Z",
+  "ts_utc": "2026-06-29T01:00:06Z",
   "summary": {
     "fail_count": 0,
-    "warn_count": 0,
-    "total_axes": 0
+    "warn_count": 1,
+    "total_axes": 1
   },
-  "axes": [],
+  "axes": [
+    {
+      "axis": "fusion_consistency",
+      "severity": "medium",
+      "status": "WARN",
+      "evidence": "agreement_rate=0.4"
+    }
+  ],
   "snapshot": {
     "readiness": "Ready",
     "quality_status": "PASS",
-    "fusion_agreement_rate": 0.75,
+    "fusion_agreement_rate": 0.4,
     "shadow_override_ratio": 0.0,
     "shadow_override_ratio_limit": 0.01,
     "weather_brier_row_count": 3,

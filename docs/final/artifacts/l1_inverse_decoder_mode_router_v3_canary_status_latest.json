@@ -1,9 +1,9 @@
 {
   "schema": "l1_inverse_decoder_mode_router_v3_canary_status_v1",
-  "generated_at_utc": "2026-04-29T13:43:36+00:00",
+  "generated_at_utc": "2026-06-29T00:16:17+00:00",
   "research_only": true,
-  "phase": "phase_3",
-  "traffic_pct": 100,
+  "phase": "phase_1",
+  "traffic_pct": 10,
   "inputs": {
     "decision_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_mode_router_v3_canary_decision_v1.json",
     "daily_gate_artifact": "C:\\workspace\\docs\\final\\artifacts\\l1_inverse_decoder_daily_gate_v1_latest.json",
@@ -22,8 +22,8 @@
   "metrics": {
     "daily_gate_decision": "GO_KEEP_OBJECTIVE_V4_DEFAULT_ON",
     "longsample_gate_decision": "GO_CANDIDATE_FOR_CANARY",
-    "swap_typo_delta_exact": 0.013333333333333308,
-    "swap_typo_delta_recovery": 0.01750000000000007,
-    "swap_typo_p95_latency_delta_ms": -25.390137499986565
+    "swap_typo_delta_exact": 0.011666666666666714,
+    "swap_typo_delta_recovery": 0.011666666666666714,
+    "swap_typo_p95_latency_delta_ms": -16.734887083536393
   }
 }

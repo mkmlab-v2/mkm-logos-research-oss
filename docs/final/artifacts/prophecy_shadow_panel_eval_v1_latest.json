@@ -1,6 +1,6 @@
 {
   "schema": "prophecy_shadow_panel_eval_v1",
-  "generated_at_utc": "2026-04-29T12:40:01Z",
+  "generated_at_utc": "2026-06-28T23:18:06Z",
   "research_only": true,
   "hypothesis_tag": "[HYPO]",
   "inputs": {
@@ -15,14 +15,14 @@
   "baseline": {
     "lane_id": "current_panel_prediction",
     "metrics": {
-      "price_directional_hit_rate": 0.556485,
-      "n_evaluated": 239,
-      "price_hits": 133
+      "price_directional_hit_rate": 0.571429,
+      "n_evaluated": 7,
+      "price_hits": 4
     }
   },
   "control": {
     "lane_id": "always_bull_control",
-    "price_directional_hit_rate": 0.556485
+    "price_directional_hit_rate": 0.428571
   },
   "lanes": [
     {
@@ -31,11 +31,11 @@
       "source_artifact": "C:\\workspace\\docs\\final\\artifacts\\prophecy_per_date_combo_walkforward_v1_latest.json",
       "metrics_all": null,
       "walkforward_aggregate": {
-        "mean_test_accuracy": 0.504529,
-        "stdev_test_accuracy": 0.079064,
-        "min_test_accuracy": 0.416667,
-        "max_test_accuracy": 0.583333,
-        "fraction_test_beats_always_bull": 0.5
+        "mean_test_accuracy": 0.0,
+        "stdev_test_accuracy": 0.0,
+        "min_test_accuracy": 0.0,
+        "max_test_accuracy": 0.0,
+        "fraction_test_beats_always_bull": 0.0
       },
       "walkforward_fold_count": 4,
       "walkforward_inputs": {
@@ -44,12 +44,15 @@
         "btc_csv": "C:\\workspace\\research\\market_data\\btc_daily_external_yf.csv",
         "target_instrument": "btc",
         "train_objective": "margin_vs_bull",
-        "n_rows_after_target_filter": 119,
+        "include_source_direction_signal": false,
+        "include_expanded_prior_features": false,
+        "source_direction_field": "None",
+        "n_rows_after_target_filter": 7,
         "n_folds": 5,
         "n_folds_requested": 5,
         "n_folds_effective": 5,
         "n_folds_clamped": false,
-        "n_distinct_eval_dates": 119,
+        "n_distinct_eval_dates": 7,
         "n_walkforward_folds": 4,
         "note": "Blocked chronological walk-forward: test block f uses only params fit on dates strictly before that block."
       }

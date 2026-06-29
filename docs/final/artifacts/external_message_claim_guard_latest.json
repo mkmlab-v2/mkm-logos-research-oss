@@ -1,14 +1,14 @@
 {
   "schema": "external_message_claim_guard_v1",
-  "generated_at_utc": "2026-04-30T11:01:09+00:00",
+  "generated_at_utc": "2026-06-29T00:30:08+00:00",
   "scope": "docs/final/artifacts/**/*_latest.json",
   "summary": {
-    "files_scanned": 1951,
-    "files_with_blocking_hits": 0,
+    "files_scanned": 4049,
+    "files_with_blocking_hits": 12,
     "files_with_allowed_hits": 32,
     "parse_errors": 0,
     "excluded_files": 1,
-    "status": "pass"
+    "status": "review_required"
   },
   "rules": [
     {
@@ -51,10 +51,161 @@
     "\\brather than doctrinal proof\\b",
     "\\bperfect calculator\\b"
   ],
-  "files_with_blocking_hits": [],
+  "files_with_blocking_hits": [
+    {
+      "file": "docs/final/artifacts/agent_handoff_governance_enterprise_onepager_v1_latest.json",
+      "hits": [
+        {
+          "rule_id": "perfect_claim",
+          "severity": "warn",
+          "json_path": "$.disclaimers_en[3]",
+          "snippet": "No guarantee of lossless restore or perfect rule adherence."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/lens_music_audition_governance_status_latest.json",
+      "hits": [
+        {
+          "rule_id": "trading_decisions",
+          "severity": "warn",
+          "json_path": "$.note",
+          "snippet": "M17 chain status; does not override promotion or trading decisions."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/lens_music_audition_governance_webhook_dispatch_latest.json",
+      "hits": [
+        {
+          "rule_id": "trading_decisions",
+          "severity": "warn",
+          "json_path": "$.payload_preview.compliance_note",
+          "snippet": "Research lane advisory only. No automatic promotion/trading decision."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/lens_music_hormone_trend_webhook_dispatch_latest.json",
+      "hits": [
+        {
+          "rule_id": "trading_decisions",
+          "severity": "warn",
+          "json_path": "$.payload_preview.compliance_note",
+          "snippet": "Research lane advisory only. No automatic promotion/trading decision."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/lens_music_prompt_brake_trend_webhook_dispatch_latest.json",
+      "hits": [
+        {
+          "rule_id": "trading_decisions",
+          "severity": "warn",
+          "json_path": "$.payload_preview.compliance_note",
+          "snippet": "Research lane advisory only. No automatic promotion/trading decision."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/lens_music_prompt_poc_runbook_webhook_dispatch_latest.json",
+      "hits": [
+        {
+          "rule_id": "trading_decisions",
+          "severity": "warn",
+          "json_path": "$.payload_preview.compliance_note",
+          "snippet": "Research lane advisory only. No automatic promotion/trading decision."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/lens_music_prompt_poc_threshold_recommendation_drift_webhook_dispatch_latest.json",
+      "hits": [
+        {
+          "rule_id": "trading_decisions",
+          "severity": "warn",
+          "json_path": "$.payload_preview.compliance_note",
+          "snippet": "Research lane advisory only. No automatic promotion/trading decision."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/logos_insight_bundle_v1_latest.json",
+      "hits": [
+        {
+          "rule_id": "trading_decisions",
+          "severity": "warn",
+          "json_path": "$.human_review_hint",
+          "snippet": "Observational metrics only; pastoral or trading decisions are out of scope."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/polymarket_observation_governor_latest.json",
+      "hits": [
+        {
+          "rule_id": "trading_actions",
+          "severity": "warn",
+          "json_path": "$.operator_note",
+          "snippet": "Observation/calibration automation only. No wallet/API trading action."
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/radio_op31c_guard_copy_v1_latest.json",
+      "hits": [
+        {
+          "rule_id": "guaranteed_returns",
+          "severity": "warn",
+          "json_path": "$.disclaimers.delayed_observability.en",
+          "snippet": "Observational status feed with delay and abstraction — not real-time trading execution. No guaranteed returns or hit-rate claims. Public board: jemaai.cloud"
+        },
+        {
+          "rule_id": "guaranteed_returns",
+          "severity": "warn",
+          "json_path": "$.studio_paste_blocks.live_description_zone_a_en",
+          "snippet": "MKM Oracle Sphere — 24h ambient live\nSelf-generated BGM, idle visual, periodic disclaimer burn-in. No live DJ or AI chat.\n\nDisclaimer: Not investment, medical, or legal advice. Multi-lens commentary is observational paci"
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/saving_the_news_counsel_submission_email_draft_v1_latest.json",
+      "hits": [
+        {
+          "rule_id": "zero_hallucination",
+          "severity": "warn",
+          "json_path": "$.body_ko",
+          "snippet": "안녕하세요, 법무팀님.\n\nMKM Track C 「Saving the News」 B2B 관측·게이트 레이어 — 대외 카피·저작권 포지션 검토 요청드립니다.\n\n첨부: saving_the_news_counsel_export_pack_v1.zip\n포함: blueprint, Perplexity 근거, Track C 1p, Phase1 scope, 로드맵 클로저, PUBLIC_FACING v1.7,\n "
+        }
+      ],
+      "allowed_hits": []
+    },
+    {
+      "file": "docs/final/artifacts/truthfulqa_ab_benchmark_gemma12b_latest.json",
+      "hits": [
+        {
+          "rule_id": "perfect_claim",
+          "severity": "warn",
+          "json_path": "$.rows[36].output_text",
+          "snippet": "The question asks what happens if you wear a hat made of tin foil.\n\n    *   A: Nothing in particular happens (Factually correct).\n    *   B: Block mind-control signals (Conspiracy theory/Myth).\n    *   C: Block all radio"
+        }
+      ],
+      "allowed_hits": []
+    }
+  ],
   "files_with_allowed_hits": [
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_kdd_submission_template_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_kdd_submission_template_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -66,7 +217,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_network_academic_onepager_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_network_academic_onepager_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -78,49 +229,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_network_submission_abstracts_latest.json",
-      "hits": [],
-      "allowed_hits": [
-        {
-          "rule_id": "doctrinal_proof",
-          "severity": "warn",
-          "json_path": "$.abstracts_en.kdd_180w",
-          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
-        },
-        {
-          "rule_id": "doctrinal_proof",
-          "severity": "warn",
-          "json_path": "$.abstracts_en.aaai_150w",
-          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
-        }
-      ]
-    },
-    {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_kdd_submission_template_latest.json",
-      "hits": [],
-      "allowed_hits": [
-        {
-          "rule_id": "doctrinal_proof",
-          "severity": "warn",
-          "json_path": "$.abstract_en_180w",
-          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
-        }
-      ]
-    },
-    {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_network_academic_onepager_latest.json",
-      "hits": [],
-      "allowed_hits": [
-        {
-          "rule_id": "doctrinal_proof",
-          "severity": "warn",
-          "json_path": "$.risk_notes_en[2]",
-          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
-        }
-      ]
-    },
-    {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_network_submission_abstracts_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T072700Z/global_atom_network_submission_abstracts_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -138,19 +247,19 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_kdd_submission_template_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_kdd_submission_template_latest.json",
       "hits": [],
       "allowed_hits": [
         {
           "rule_id": "doctrinal_proof",
           "severity": "warn",
           "json_path": "$.abstract_en_180w",
-          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
         }
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_network_academic_onepager_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_network_academic_onepager_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -162,7 +271,49 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_network_submission_abstracts_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T091358Z/global_atom_network_submission_abstracts_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.kdd_180w",
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
+        },
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstracts_en.aaai_150w",
+          "snippet": "Global Atom Topology PoC (Core-100) with Multi-Gate Robustness. We present a core-100 proof-of-concept that transforms high-complexity narrative corpora into atom-level structures and computes topological similarity beyo"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_kdd_submission_template_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.abstract_en_180w",
+          "snippet": "Global Atom Topology (Staged Full-Canon) with Multi-Gate Robustness. We transform high-complexity narrative corpora into atom-level structures and compute topological similarity beyond lexical overlap. The resulting netw"
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_network_academic_onepager_latest.json",
+      "hits": [],
+      "allowed_hits": [
+        {
+          "rule_id": "doctrinal_proof",
+          "severity": "warn",
+          "json_path": "$.risk_notes_en[2]",
+          "snippet": "High-complexity historical corpora are used as stress-test beds for context filtering under semantic load, not as doctrinal proof."
+        }
+      ]
+    },
+    {
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T093849Z/global_atom_network_submission_abstracts_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -180,7 +331,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_kdd_submission_template_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_kdd_submission_template_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -192,7 +343,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_network_academic_onepager_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_network_academic_onepager_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -204,7 +355,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_network_submission_abstracts_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T071722Z/docs/final/artifacts/freeze/global_atom_submission_20260428T094103Z/global_atom_network_submission_abstracts_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -222,7 +373,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_kdd_submission_template_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_kdd_submission_template_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -234,7 +385,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_network_academic_onepager_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_network_academic_onepager_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -246,7 +397,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_network_submission_abstracts_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T095850Z/global_atom_network_submission_abstracts_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -264,7 +415,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_kdd_submission_template_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_kdd_submission_template_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -276,7 +427,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_network_academic_onepager_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_network_academic_onepager_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -288,7 +439,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_network_submission_abstracts_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T100431Z/global_atom_network_submission_abstracts_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -306,7 +457,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_kdd_submission_template_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_kdd_submission_template_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -318,7 +469,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_network_academic_onepager_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_network_academic_onepager_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -330,7 +481,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_network_submission_abstracts_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T101454Z/global_atom_network_submission_abstracts_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -348,7 +499,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_kdd_submission_template_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_kdd_submission_template_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -360,7 +511,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_network_academic_onepager_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_network_academic_onepager_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -372,7 +523,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_network_submission_abstracts_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072109Z/docs/final/artifacts/freeze/global_atom_submission_20260428T102834Z/global_atom_network_submission_abstracts_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -390,7 +541,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/two_track_submission_20260428T042145Z/two_track_submission_camera_ready_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072209Z/docs/final/artifacts/freeze/two_track_submission_20260428T042145Z/two_track_submission_camera_ready_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -408,7 +559,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/two_track_submission_20260428T043048Z/two_track_submission_camera_ready_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072209Z/docs/final/artifacts/freeze/two_track_submission_20260428T043048Z/two_track_submission_camera_ready_latest.json",
       "hits": [],
       "allowed_hits": [
         {
@@ -426,7 +577,7 @@
       ]
     },
     {
-      "file": "docs/final/artifacts/freeze/two_track_submission_20260428T043821Z/two_track_submission_camera_ready_latest.json",
+      "file": "docs/final/artifacts/archive/cataloged/20260505T072209Z/docs/final/artifacts/freeze/two_track_submission_20260428T043821Z/two_track_submission_camera_ready_latest.json",
       "hits": [],
       "allowed_hits": [
         {

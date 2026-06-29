@@ -1,6 +1,6 @@
 {
   "schema": "high_reliability_mode_gate_v1",
-  "generated_at_utc": "2026-05-05T00:15:05Z",
+  "generated_at_utc": "2026-06-29T00:15:16Z",
   "inputs": {
     "quality_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_quality_anchor_verified_only_latest.json",
     "btrack_gate_report": "C:\\workspace\\reports\\constitution\\btrack_pilot\\btrack_promotion_gate_anchor_verified_only_latest.json",
@@ -25,6 +25,10 @@
     "entry16_candidate_ready": true,
     "entry16_lock_approved": true,
     "entry16_dss_fact_lock_kept": true
+  },
+  "entry16_path_checks": {
+    "direct_candidate_ready": true,
+    "proxy_candidate_ready": false
   },
   "decision": "PASS",
   "operational_mode": "high_reliability_enabled_with_fact_lock"

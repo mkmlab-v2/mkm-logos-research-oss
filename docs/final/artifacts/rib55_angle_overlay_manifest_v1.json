@@ -505,7 +505,7 @@
     "render_script": "scripts/render_rib55_angle_overlay_v1.py",
     "pytest_module": "tests/test_render_rib55_angle_overlay_v1.py",
     "last_exit_code": 0,
-    "last_verified_at": "2026-06-16T01:49:06+00:00",
+    "last_verified_at": "2026-06-28T18:15:04+00:00",
     "last_output": "docs/final/artifacts/rib55_overlay_pilot_ninth_rib_55deg_v0_latest.png",
     "last_output_sha256": "0207c7b8c4cf9a0a3ee1e0f8f17e6697e2eb532595767ee7d9539636be4b2279",
     "g0_adjudication": "G0_PASS",
@@ -516,7 +516,7 @@
   "coord_v2_schema_pointer": "docs/final/artifacts/anatomy_overlay_coord_v2_schema_v1.json",
   "coord_v2": {
     "schema": "anatomy_overlay_coord_v2",
-    "generated_at_utc": "2026-06-16T01:49:10Z",
+    "generated_at_utc": "2026-06-28T18:15:08Z",
     "clamp_policy": {
       "lane": "L1_sasang_clamp",
       "angle_bounds_deg": [
@@ -548,5 +548,5 @@
     "adjudication_required": true,
     "ready_for_external_send": false
   },
-  "adjudication_applied_at_utc": "2026-06-16T01:49:18Z"
+  "adjudication_applied_at_utc": "2026-06-28T18:15:43Z"
 }

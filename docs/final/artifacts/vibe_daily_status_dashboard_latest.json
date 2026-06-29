@@ -1,6 +1,6 @@
 {
   "schema": "vibe_daily_status_dashboard_v1",
-  "generated_at_utc": "2026-05-03T00:28:58Z",
+  "generated_at_utc": "2026-06-28T16:20:07Z",
   "scope": "research_only",
   "overall_health": "green",
   "summary": {
@@ -8,7 +8,7 @@
     "gate_stage": "raw_output_coverage_check",
     "gate_message": "Coverage gate passed.",
     "filled_coverage_ratio": 1.0,
-    "consistency_ratio": 0.775,
+    "consistency_ratio": 0.9,
     "ingested_rows": 40,
     "evolution_suggestion_count": 4,
     "external_input_rows": 7,

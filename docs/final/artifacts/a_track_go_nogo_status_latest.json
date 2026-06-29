@@ -1,8 +1,8 @@
 {
   "schema": "a_track_go_nogo_status_v1",
   "meta": {
-    "generated_at_utc": "2026-05-04T19:14:10.709023+00:00",
-    "system_error_policy": "no_go",
+    "generated_at_utc": "2026-06-29T00:35:01.124666+00:00",
+    "system_error_policy": "hold_s1",
     "input_paths": {
       "high_reliability_mode_gate": "C:\\workspace\\docs\\final\\artifacts\\high_reliability_mode_gate_latest.json",
       "trinity_track_quality": "C:\\workspace\\docs\\final\\artifacts\\trinity_track_quality_report_latest.json",
@@ -23,11 +23,11 @@
   "snapshot": {
     "high_reliability_mode_gate_decision": "PASS",
     "trinity_overall_decision": "PASS",
-    "high_reliability_decision": "PASS",
-    "price_output_locked": false,
+    "high_reliability_decision": "HOLD",
+    "price_output_locked": true,
     "high_reliability_release_plan_status": "READY_FOR_SIGNOFF",
     "price_unlock_policy_status": "READY_FOR_SIGNOFF",
-    "chronos_holdout_direction_match_rate": 50.857142857142854,
+    "chronos_holdout_direction_match_rate": 50.56497175141242,
     "a_track_promotion_cli": {
       "present": true,
       "path": "C:\\workspace\\reports\\a_track_promotion_decision_latest.json",
@@ -56,8 +56,8 @@
   "checks": {
     "high_reliability_mode_gate_pass": true,
     "trinity_overall_pass": true,
-    "high_reliability_decision_not_hold": true,
-    "price_output_unlocked": true,
+    "high_reliability_decision_not_hold": false,
+    "price_output_unlocked": false,
     "chronos_holdout_direction_match_gte_50": true,
     "high_reliability_release_plan_defined": true,
     "price_unlock_policy_defined": true,
@@ -70,13 +70,16 @@
   },
   "stage_readiness": {
     "s1_shadow_ready": true,
-    "s2_paper_strict_ready": true,
+    "s2_paper_strict_ready": false,
     "s3_paper_scaled_ready": true,
     "s4_limited_live_ready": true
   },
   "result": {
-    "overall_go_no_go": "GO",
-    "recommended_stage": "S4_LIMITED_LIVE",
-    "failed_reasons": []
+    "overall_go_no_go": "HOLD",
+    "recommended_stage": "S1_SHADOW",
+    "failed_reasons": [
+      "high_reliability_decision_is_hold",
+      "price_output_locked_true"
+    ]
   }
 }

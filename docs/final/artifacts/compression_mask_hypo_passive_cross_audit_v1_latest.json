@@ -1,6 +1,6 @@
 {
   "schema": "compression_mask_hypo_passive_cross_audit_v1",
-  "generated_at_utc": "2026-06-27T18:15:52Z",
+  "generated_at_utc": "2026-06-28T18:15:43Z",
   "hypothesis_tier": "B",
   "research_only": true,
   "shadow_only": true,
@@ -23,12 +23,12 @@
       "script": "scripts/run_compression_mask_shadow_registry_sync_v1.py",
       "exit_code": 0,
       "ok": true,
-      "stdout_tail": "{\"ok\": true, \"all_entries_present\": true, \"git_head_sha\": \"8927edb74f434ccdb61a23522d9e2449819fee6b\", \"entry_count\": 7, \"report_out\": \"C:\\\\workspace\\\\reports\\\\compression_mask_shadow_registry_v1_latest.json\", \"staging_out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\compression_mask_shadow_registry_staging_v1.json\", \"mirror_copied\": 7}\n",
+      "stdout_tail": "{\"ok\": true, \"all_entries_present\": true, \"git_head_sha\": \"4a260e99e23059f076a1fdf61bc1f5497d068921\", \"entry_count\": 7, \"report_out\": \"C:\\\\workspace\\\\reports\\\\compression_mask_shadow_registry_v1_latest.json\", \"staging_out\": \"C:\\\\workspace\\\\docs\\\\final\\\\artifacts\\\\compression_mask_shadow_registry_staging_v1.json\", \"mirror_copied\": 7}\n",
       "stderr_tail": "",
       "stdout_json": {
         "ok": true,
         "all_entries_present": true,
-        "git_head_sha": "8927edb74f434ccdb61a23522d9e2449819fee6b",
+        "git_head_sha": "4a260e99e23059f076a1fdf61bc1f5497d068921",
         "entry_count": 7,
         "report_out": "C:\\workspace\\reports\\compression_mask_shadow_registry_v1_latest.json",
         "staging_out": "C:\\workspace\\docs\\final\\artifacts\\compression_mask_shadow_registry_staging_v1.json",

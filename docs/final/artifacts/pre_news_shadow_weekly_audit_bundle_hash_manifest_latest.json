@@ -1,8 +1,8 @@
 {
   "schema": "pre_news_shadow_weekly_audit_bundle_hash_manifest_v1",
-  "generated_at_utc": "2026-05-14T21:30:06Z",
+  "generated_at_utc": "2026-06-28T21:30:17Z",
   "latest_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_latest.json",
-  "latest_bundle_sha256": "8fe6207aec4d80612e392e973b3e1d76ae74f7a0c10d34b62a9fdfb54ad7a24b",
-  "dated_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_2026-05-14.json",
-  "dated_bundle_sha256": "8fe6207aec4d80612e392e973b3e1d76ae74f7a0c10d34b62a9fdfb54ad7a24b"
+  "latest_bundle_sha256": "3ae8a2609634d80c156255f5a6cb25b55e68e6250233eafa0b4f15ae0897a3c4",
+  "dated_bundle_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_weekly_audit_bundle_2026-06-28.json",
+  "dated_bundle_sha256": "3ae8a2609634d80c156255f5a6cb25b55e68e6250233eafa0b4f15ae0897a3c4"
 }

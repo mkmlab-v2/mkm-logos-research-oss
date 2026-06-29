@@ -1,6 +1,6 @@
 {
   "schema": "fast_promotion_gate_v1",
-  "generated_at_utc": "2026-05-04T17:23:27Z",
+  "generated_at_utc": "2026-06-28T23:00:58Z",
   "research_only": true,
   "promotion_required": true,
   "inputs": {
@@ -15,17 +15,17 @@
   },
   "checks": {
     "shadow_has_score_rows": true,
-    "promotion_combined_all_passed": false,
-    "hit_rate_ok": false,
-    "hit_rate_observed": 1.0,
-    "n_evaluated_observed": 1,
-    "external_mode": "latest_ok",
+    "promotion_combined_all_passed": true,
+    "hit_rate_ok": true,
+    "hit_rate_observed": 0.566667,
+    "n_evaluated_observed": 30,
+    "external_mode": "ok",
     "external_live_ok": true
   },
   "result": {
     "shadow_ready": true,
-    "live_ready": false,
-    "recommendation": "shadow_candidate",
+    "live_ready": true,
+    "recommendation": "live_candidate",
     "note": "B-track fast gate only. Human sign-off required before any A-track/live route."
   }
 }

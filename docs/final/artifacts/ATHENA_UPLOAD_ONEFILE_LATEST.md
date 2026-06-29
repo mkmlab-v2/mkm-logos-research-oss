@@ -3,7 +3,7 @@
 Use this single file for Gemini/NotebookLM upload.
 Do not move original artifacts. This file is a derived snapshot only.
 
-Generated At (UTC): 2026-05-09T15:30:01Z
+Generated At (UTC): 2026-06-28T15:40:02Z
 
 ## Source of truth (unchanged original paths)
 - `docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json`
@@ -17,9 +17,9 @@ Generated At (UTC): 2026-05-09T15:30:01Z
 
 ### 1) prophecy_2026_monthly_kospi_btc_fact_safe_v1.json
 - path: `docs/final/artifacts/prophecy_2026_monthly_kospi_btc_fact_safe_v1.json`
-- key/value: `meta.high_reliability_decision` / "PASS"
-- key/value: `meta.price_output_locked` / false
-- key/value: `risk_profile.mode` / "ACTIVE_MODE"
+- key/value: `meta.high_reliability_decision` / "HOLD"
+- key/value: `meta.price_output_locked` / true
+- key/value: `risk_profile.mode` / "LOCKED_MODE"
 
 ### 2) integrated_governance_v1_latest.json
 - path: `docs/final/artifacts/integrated_governance_v1_latest.json`

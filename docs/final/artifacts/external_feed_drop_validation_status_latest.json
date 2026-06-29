@@ -1,11 +1,15 @@
 {
   "schema": "external_feed_drop_validation_status_v1",
-  "checked_at_utc": "2026-04-21T14:11:56Z",
-  "latest_path": "C:\\workspace\\docs\\final\\artifacts\\external_feed_drop_2026_placeholder.json",
-  "selected_path": "C:\\workspace\\docs\\final\\artifacts\\external_feed_drop_2026_placeholder.json",
-  "mode": "latest_ok",
-  "validation_errors": [],
+  "generated_at_utc": "2026-06-29T00:15:02Z",
+  "mode": "ok",
+  "latest_mode": "ok",
   "degraded": false,
-  "research_only": true,
-  "promotion_required": true
+  "used_fallback": false,
+  "items_count": 30,
+  "errors": [],
+  "paths": {
+    "latest": "C:/workspace/docs/final/artifacts/external_feed_drop_latest.json",
+    "validated": "C:/workspace/docs/final/artifacts/external_feed_drop_latest.validated.json"
+  },
+  "research_only": true
 }

@@ -1,17 +1,17 @@
 {
   "schema": "btrack_llm_input_bundle_v1",
-  "version": "1.2.0",
-  "ts_utc": "2026-05-05T08:27:57Z",
+  "version": "1.5.0",
+  "ts_utc": "2026-06-29T02:47:18Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "label": "[HYPO] LLM input bundle — not A-track; no live trigger.",
   "artifacts": {
     "myeongni_independent_lens": {
       "schema": "myeongni_independent_lens_v0",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "lens_id": "myeongni",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-05-05T08:27:56Z",
+      "ts_utc": "2026-06-29T00:15:28Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "scores": {
@@ -30,14 +30,92 @@
         "input_path": "C:\\workspace\\data\\myeongni\\myeongni_16_state_experiment_v1.calendar_stub_through_202604.jsonl",
         "row_ts_utc": "2026-04-30T13:00:00Z"
       },
-      "note": "B-track independent lens v0; not A-track / not dual_regime cap; fusion-ready numeric stub only."
+      "note": "B-track independent lens v0; not A-track / not dual_regime cap; fusion-ready numeric stub only.",
+      "advanced": {
+        "coordinator": {
+          "mkm_myeongni_math": {
+            "status": "ok",
+            "day_master_stem": "甲",
+            "surface_ten_god_counts": {
+              "bi_gyeon": 1,
+              "geop_jae": 0,
+              "sik_sin": 0,
+              "sang_gwan": 0,
+              "pyeon_jae": 0,
+              "jeong_jae": 0,
+              "pyeon_gwan": 2,
+              "jeong_gwan": 0,
+              "pyeon_in": 1,
+              "jeong_in": 0
+            },
+            "hidden_ten_god_counts": {
+              "bi_gyeon": 0,
+              "geop_jae": 2,
+              "sik_sin": 0,
+              "sang_gwan": 2,
+              "pyeon_jae": 2,
+              "jeong_jae": 2,
+              "pyeon_gwan": 0,
+              "jeong_gwan": 0,
+              "pyeon_in": 0,
+              "jeong_in": 2
+            },
+            "ten_god_balance": -0.25,
+            "jijangan_pressure": 0.4,
+            "school_disagreement_index": 0.476532,
+            "arbitrated_direction_score": 0.15663,
+            "arbitrated_confidence": 0.488836,
+            "formula": "d_out = clamp(d_school + 0.22*ten_god_balance - 0.18*jijangan_pressure), c_out = c_school*(1-0.35*disagreement)"
+          },
+          "mkm_myeongni_math_provenance": "inject_v0_from_recommended_fusion_birth"
+        }
+      },
+      "myeongni_b_track_quant_block_v0": {
+        "schema": "myeongni_b_track_quant_block_v0",
+        "status": "ok",
+        "disclaimer_ko": "B-track 정량 스냅샷; 임상·실거래·단일 방향 단정 아님.",
+        "five_element_mass_vector_v0": {
+          "목": 0.214286,
+          "화": 0.142857,
+          "토": 0.285714,
+          "금": 0.142857,
+          "수": 0.214286
+        },
+        "five_element_imbalance_entropy_0_1": 0.021958,
+        "five_element_excess_deficit_proxy_v0": {
+          "목": 0.014286,
+          "화": -0.057143,
+          "토": 0.085714,
+          "금": -0.057143,
+          "수": 0.014286
+        },
+        "ten_god_strength_vector_v0": {
+          "bi_gyeon": 0.071429,
+          "geop_jae": 0.142857,
+          "sik_sin": 0.0,
+          "sang_gwan": 0.142857,
+          "pyeon_jae": 0.142857,
+          "jeong_jae": 0.142857,
+          "pyeon_gwan": 0.142857,
+          "jeong_gwan": 0.0,
+          "pyeon_in": 0.071429,
+          "jeong_in": 0.142857
+        },
+        "ten_god_dominance_index_0_1": 0.142857,
+        "stem_branch_element_lock_flags_v0": {},
+        "quant_provenance_v0": {
+          "normalization": "five_element_L1_from_stem_element_counts; ten_god_L1_from_surface_plus_hidden_counts",
+          "engine_component": "mkm_myeongni_math.compute_quant_profile_v0",
+          "schema_version": "0.1.0"
+        }
+      }
     },
     "sasang_independent_lens": {
       "schema": "sasang_independent_lens_v0",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "lens_id": "sasang",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-05-05T08:27:56Z",
+      "ts_utc": "2026-06-29T00:15:29Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "a_track_autobind_forbidden": true,
@@ -55,6 +133,15 @@
         "mapping_target": "sideways",
         "rationale": "B-track sasang regime_hypothesis=phase_transition, mapping_target=sideways; machine_readables averaged for confidence (v0)."
       },
+      "b_track_axis_scores_v1": {
+        "schema": "sasang_b_track_axis_scores_v1",
+        "version": "0.1.0",
+        "heat_proxy": 0.585,
+        "cold_proxy": 0.415,
+        "volatility_rarefaction_proxy": 0.48,
+        "thermal_imbalance_proxy": 0.17,
+        "disclaimer_ko": "동역학 JSONL machine_readables 파생 프록시만; 보명지조·금화교역 본론 정량 아님."
+      },
       "provenance": {
         "source": "sasang_dynamics_jsonl_tail",
         "input_path": "C:\\workspace\\data\\sasang\\sasang_dynamics_regime_mapping_v1.calendar_stub_through_202604.jsonl",
@@ -67,7 +154,7 @@
       "version": "0.2.0",
       "lens_id": "logos",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-05-05T08:27:57Z",
+      "ts_utc": "2026-06-29T00:15:29Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "scores": {
@@ -108,8 +195,8 @@
     },
     "independent_lens_fusion_stub": {
       "schema": "independent_lens_fusion_stub_v0",
-      "version": "0.3.0",
-      "ts_utc": "2026-05-05T08:27:57Z",
+      "version": "0.5.0",
+      "ts_utc": "2026-06-29T00:15:29Z",
       "hypothesis_tier": "B",
       "boundary_ack": true,
       "mode": "observation_only",
@@ -119,9 +206,9 @@
           "available": true,
           "direction_score": 0.08,
           "confidence": 0.68552,
-          "direction_sign": "bull",
+          "direction_sign": "neutral",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-05-05T08:27:56Z",
+          "artifact_ts_utc": "2026-06-29T00:15:28Z",
           "schema": "myeongni_independent_lens_v0"
         },
         {
@@ -131,7 +218,7 @@
           "confidence": 0.7115,
           "direction_sign": "bull",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-05-05T08:27:56Z",
+          "artifact_ts_utc": "2026-06-29T00:15:29Z",
           "schema": "sasang_independent_lens_v0"
         },
         {
@@ -141,7 +228,7 @@
           "confidence": 0.2,
           "direction_sign": "bear",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json",
-          "artifact_ts_utc": "2026-05-05T08:27:57Z",
+          "artifact_ts_utc": "2026-06-29T00:15:29Z",
           "schema": "logos_independent_lens_v0"
         },
         {
@@ -151,7 +238,7 @@
           "confidence": 0.081912195,
           "direction_sign": "bull",
           "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\market_sasang_lens_latest.json",
-          "artifact_ts_utc": "2026-05-05T08:27:56Z",
+          "artifact_ts_utc": "2026-06-28T23:00:27Z",
           "schema": "market_sasang_lens_v1",
           "market_sasang_lens_v1": {
             "state_vector_sasang_softmax": {
@@ -175,20 +262,108 @@
               "machine_output_role": "decision_support_observation_only"
             }
           }
+        },
+        {
+          "lens_id": "market_myeongni",
+          "available": true,
+          "direction_score": 0.0536,
+          "confidence": 0.603258,
+          "direction_sign": "neutral",
+          "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\market_myeongni_lens_latest.json",
+          "artifact_ts_utc": "2026-06-28T23:00:26Z",
+          "schema": "market_myeongni_lens_v1",
+          "market_myeongni_lens_v1": {
+            "base_direction_score": 0.08,
+            "base_confidence": 0.68552,
+            "applied": {
+              "direction_score_scale": 0.92,
+              "confidence_scale": 0.88,
+              "max_abs_direction_score": 0.98,
+              "state_id": 15,
+              "state_id_direction_tilt_applied": -0.02
+            },
+            "upstream_lens_id": "myeongni"
+          }
+        }
+      ],
+      "sidecar_rails": [
+        {
+          "lens_id": "news",
+          "available": true,
+          "direction_score": 0.005102,
+          "confidence": 0.6,
+          "direction_sign": "neutral",
+          "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\news_independent_lens_latest.json",
+          "artifact_ts_utc": "2026-06-28T23:00:31Z",
+          "schema": "news_independent_lens_v0",
+          "role": "observation_only_sidecar",
+          "non_voting": true
+        },
+        {
+          "lens_id": "macro",
+          "available": true,
+          "direction_score": -0.009409,
+          "confidence": 0.6,
+          "direction_sign": "neutral",
+          "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\macro_independent_lens_latest.json",
+          "artifact_ts_utc": "2026-06-28T23:00:31Z",
+          "schema": "macro_independent_lens_v0",
+          "role": "observation_only_sidecar",
+          "non_voting": true
+        },
+        {
+          "lens_id": "overnight",
+          "role": "observation_only_sidecar",
+          "non_voting": true,
+          "available": true,
+          "direction_score": -0.41531,
+          "confidence": 0.65,
+          "direction_sign": "bear",
+          "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\global_market_overnight_signals_v1_latest.json",
+          "artifact_ts_utc": "2026-06-28T23:00:15Z",
+          "schema": "global_market_overnight_signals_v1",
+          "overnight_meta": {
+            "composite_tilt": "risk_off_overnight",
+            "max_abs_index_change_pct": 4.1531,
+            "shock_overnight": true
+          }
         }
       ],
       "consensus": {
-        "available_count": 4,
-        "agreement_rate": 0.75,
-        "conflict_count": 1,
+        "available_count": 5,
+        "agreement_rate": 0.4,
+        "conflict_count": 3,
         "consensus_sign": "bull",
-        "consensus_score": 0.074485,
-        "consensus_confidence": 0.419733
+        "consensus_score": 0.068964,
+        "consensus_confidence": 0.456438
+      },
+      "consensus_effective": {
+        "available_count": 1,
+        "agreement_rate": 1.0,
+        "conflict_count": 0,
+        "consensus_sign": "bear",
+        "consensus_score": -0.147317,
+        "consensus_confidence": 0.616667,
+        "sidecar_override": true
+      },
+      "demote_trace": [
+        "R1_conflict_count_ge_2: lens-only conflict_count>=2",
+        "R2_shock_overnight: risk_off + index move >=3%",
+        "R5_humanist_vote_weight_zero: myeongni/sasang/market_* capped"
+      ],
+      "demote_active": true,
+      "headline_gating": {
+        "non_gating": true,
+        "headline_sign": "bear",
+        "headline_source": "consensus_effective",
+        "raw_consensus_sign": "bull"
       },
       "conflict_summary": {
-        "conflict_narrative_guarded": "Lens direction alignment: majority_sign=bull, agreement_rate=0.75, conflict_count=1. Minority vs majority: logos differ from majority_sign=bull. Breakdown: myeongni: sign=bull, score=0.080000, conf=0.685520; sasang: sign=bull, score=0.170000, conf=0.711500; logos: sign=bear, score=-0.323333, conf=0.200000; market_sasang: sign=bull, score=0.170000, conf=0.081912. Logos evidence verse_id anchors (batch-bound): sample-001, sample-002, sample-003. Logos hash-tagged snippet (clipped): [#sample-001] [#sample-002] [#sample-003]",
+        "conflict_narrative_guarded": "Lens direction alignment: majority_sign=bull, agreement_rate=0.4, conflict_count=3. Minority vs majority: myeongni, logos, market_myeongni differ from majority_sign=bull. Breakdown: myeongni: sign=neutral, score=0.080000, conf=0.685520; sasang: sign=bull, score=0.170000, conf=0.711500; logos: sign=bear, score=-0.323333, conf=0.200000; market_sasang: sign=bull, score=0.170000, conf=0.081912; market_myeongni: sign=neutral, score=0.053600, conf=0.603258. Demote trace: R1_conflict_count_ge_2: lens-only conflict_count>=2; R2_shock_overnight: risk_off + index move >=3%; R5_humanist_vote_weight_zero: myeongni/sasang/market_* capped. Headline gating: raw consensus non-gating; use headline_sign=bear. Logos evidence verse_id anchors (batch-bound): sample-001, sample-002, sample-003. Logos hash-tagged snippet (clipped): [#sample-001] [#sample-002] [#sample-003]",
         "minority_lens_ids": [
-          "logos"
+          "myeongni",
+          "logos",
+          "market_myeongni"
         ],
         "majority_sign": "bull",
         "logos_evidence_verse_ids": [
@@ -198,18 +373,41 @@
         ],
         "narrative_policy": "Deterministic template from lens signs/scores and optional Logos evidence_refs/narrative_snippet_guarded only; no LLM paraphrase; observation_only; not an A-track action."
       },
-      "note": "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. v0.3.0: optional 4th input from market_sasang_lens_v1 when artifact exists (use --no-market-sasang for 3-lens only). No consistency_rate here — use consensus.agreement_rate for lens-direction alignment; optional consistency_rate is defined for myeongni 16-state experiment JSON (separate schema). conflict_summary.* is template-bound narrative + optional Logos batch anchors only. Vector gematria+myeongri geometric spike: scripts/spike_gematria_myeongri_blend_v0.py."
+      "note": "Read-only comparison of independent lens outputs; not A-track auto-fusion or live sizing trigger. v0.5.0: sidecar_rails (news/macro/overnight, non-voting) + consensus_effective demote when shock_overnight+sidecar bear or conflict_count>=2; humanist lens vote_weight=0 on demote. consensus field remains raw lens-only (v0.4 compat); use headline_gating.headline_sign for operator view. Optional market_sasang/market_myeongni via --no-market-sasang / --no-market-myeongni."
     },
     "independent_lens_shadow_minority_monthly": {
       "schema": "independent_lens_shadow_minority_monthly_v1",
       "version": "1.0.0",
-      "ts_utc": "2026-05-05T08:27:57Z",
+      "ts_utc": "2026-06-29T00:15:30Z",
       "hypothesis_tier": "B",
       "source_history_path": "C:\\workspace\\docs\\final\\artifacts\\independent_lens_fusion_shadow_history.jsonl",
-      "history_rows_total": 0,
-      "rows_with_minority_lens_total": 0,
-      "months_observed": [],
-      "by_month": {},
+      "history_rows_total": 128,
+      "rows_with_minority_lens_total": 128,
+      "months_observed": [
+        "2026-05",
+        "2026-06"
+      ],
+      "by_month": {
+        "2026-05": {
+          "total_rows": 27,
+          "rows_with_minority_lens": 27,
+          "minority_lens_counts": {
+            "logos": 27,
+            "market_myeongni": 27
+          },
+          "distinct_narrative_digest_count": 3
+        },
+        "2026-06": {
+          "total_rows": 101,
+          "rows_with_minority_lens": 101,
+          "minority_lens_counts": {
+            "logos": 101,
+            "market_myeongni": 100,
+            "myeongni": 70
+          },
+          "distinct_narrative_digest_count": 11
+        }
+      },
       "note": "UTC month from ts_utc; minority_lens_ids absent in legacy rows counts as no minority; not an A-track trigger."
     },
     "news_independent_lens": {
@@ -217,7 +415,7 @@
       "version": "0.1.0",
       "lens_id": "news",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-05-04T17:23:25Z",
+      "ts_utc": "2026-06-28T23:00:31Z",
       "hypothesis_tier": "B",
       "policy_scope": {
         "trading_primary_asset": "BTCUSDT",
@@ -225,26 +423,30 @@
       },
       "boundary_ack": true,
       "scores": {
-        "direction_score": 0.0,
-        "confidence": 0.18
+        "direction_score": 0.005102,
+        "confidence": 0.6
       },
       "news_stream_outputs": {
         "adapter": "build_btrack_news_macro_lens_adapters_v1",
-        "headline_count": 1,
-        "pre_news_headline_count": 1,
-        "naver_news_text_count": 0,
+        "headline_count": 98,
+        "pre_news_headline_count": 20,
+        "naver_news_text_count": 40,
         "external_news_text_count": 0,
-        "digest": "Global policy coordination expands after crisis signals and market stabilization measures",
+        "global_overnight_headline_count": 12,
+        "exa_macro_text_count": 26,
+        "digest": "[외신 헤드라인] AI 투자 열풍의 명암 | 비트버니 퀴즈 6월 29일 정답은 | 비트코인(BTC), CME 옵션 미결제 약정 1년 만에 최저치...6만 달러 방어... | \"한국형 스테이블코인 선점\"…헥토, 서클 연동 '결제 허브' 승부수 | 긴축 장기화 우려에 비트코인 흔들 '바닥 확인은 아직'",
         "tilt_meta": {
-          "n_texts": 1,
-          "raw_tilt": 0.0
+          "n_texts": 98,
+          "raw_tilt": 1.0
         }
       },
       "provenance": {
         "source": "pre_news_shadow_input_adapter_v1",
         "input_path": "docs\\final\\artifacts\\pre_news_shadow_input_latest.json",
-        "naver_news_input_path": "",
-        "external_news_input_path": "docs\\final\\artifacts\\external_news_feed_latest.json"
+        "naver_news_input_path": "docs\\final\\artifacts\\naver_news_feed_latest.json",
+        "external_news_input_path": "docs\\final\\artifacts\\external_news_feed_latest.json",
+        "global_overnight_input_path": "docs\\final\\artifacts\\global_market_overnight_signals_v1_latest.json",
+        "exa_news_jsonl_path": "reports\\exa_macro_news_observation_staging_v1_latest.jsonl"
       },
       "note": "B-track news lens from pre_news_shadow_input (keyword tilt); research_only; not live trading."
     },
@@ -253,7 +455,7 @@
       "version": "0.1.0",
       "lens_id": "macro",
       "engine_id": "independent_lens_v0",
-      "ts_utc": "2026-05-04T17:23:25Z",
+      "ts_utc": "2026-06-28T23:00:31Z",
       "hypothesis_tier": "B",
       "policy_scope": {
         "trading_primary_asset": "BTCUSDT",
@@ -261,30 +463,34 @@
       },
       "boundary_ack": true,
       "scores": {
-        "direction_score": 0.833333,
-        "confidence": 0.3
+        "direction_score": -0.009409,
+        "confidence": 0.6
       },
       "macro_stream_outputs": {
         "adapter": "build_btrack_news_macro_lens_adapters_v1",
-        "snippet_count": 3,
-        "external_feed_text_count": 0,
-        "naver_signal_seed_count": 0,
+        "snippet_count": 372,
+        "external_feed_text_count": 330,
+        "naver_signal_seed_count": 4,
         "external_macro_seed_count": 1,
         "btc_market_seed_count": 1,
         "btc_alt_public_seed_count": 1,
+        "global_overnight_seed_count": 9,
+        "exa_macro_text_count": 26,
         "tilt_meta": {
-          "n_texts": 3,
-          "raw_tilt": 5.0
+          "n_texts": 372,
+          "raw_tilt": -7.0
         }
       },
       "provenance": {
         "source": "external_feed_drop_adapter_v1",
         "input_path": "docs\\final\\artifacts\\external_feed_drop_latest.validated.json",
-        "items_count": 0,
-        "naver_signals_input_path": "",
+        "items_count": 30,
+        "naver_signals_input_path": "docs\\final\\artifacts\\naver_openapi_signals_latest.json",
         "external_macro_input_path": "docs\\final\\artifacts\\external_macro_signals_latest.json",
         "btc_market_input_path": "docs\\final\\artifacts\\btc_market_signals_latest.json",
-        "btc_alt_public_input_path": "docs\\final\\artifacts\\btc_alt_public_signals_latest.json"
+        "btc_alt_public_input_path": "docs\\final\\artifacts\\btc_alt_public_signals_latest.json",
+        "global_overnight_input_path": "docs\\final\\artifacts\\global_market_overnight_signals_v1_latest.json",
+        "exa_news_jsonl_path": "reports\\exa_macro_news_observation_staging_v1_latest.jsonl"
       },
       "note": "B-track macro lens from external_feed_drop (keyword tilt); research_only; not live trading."
     },
@@ -292,23 +498,184 @@
       "schema": "compression_to_btrack_bridge_slice_v1",
       "bridge_mode": "read_only_observation",
       "track_a_active_kpi": {
-        "global_token_saving_rate": 0.4683544303797469,
-        "avg_reconstruction_fidelity_jaccard": 0.8488363572487027,
-        "ultra_saving_policy_ok": false,
+        "global_token_saving_rate": 0.47116736990154706,
+        "avg_reconstruction_fidelity_jaccard": 0.8893218363593751,
+        "ultra_saving_policy_ok": true,
         "sensitive_integrity_ok": true
       },
       "track_a_selected_candidate": {
         "strategy": "A",
         "intensity": "extreme",
-        "global_token_saving_rate": 0.5274261603375527,
-        "avg_reconstruction_fidelity_jaccard": 0.6946050989559116,
-        "canary_gate_ok": false
+        "global_token_saving_rate": 0.47538677918424754,
+        "avg_reconstruction_fidelity_jaccard": 0.8904921794966301,
+        "canary_gate_ok": true
       },
       "fact_safe_note": "Compression bridge is read-only context for B-track hypothesis explanation. No live trigger and no automatic A-track promotion.",
       "source_paths": {
         "compression_kpi_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\ultra_compression_kpi_summary_latest.json",
         "compression_active_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
         "compression_decision": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
+      }
+    },
+    "sasang_interpretive_bridge_context": {
+      "schema": "sasang_interpretive_bridge_slice_v1",
+      "bridge_mode": "read_only_observation",
+      "auto_weight_adjustment_forbidden": true,
+      "track_a_live_routing_forbidden": true,
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_interpretive_insight_bundle_v1_latest.json",
+      "available": true,
+      "source_bundle_schema": "sasang_interpretive_insight_bundle_v1",
+      "source_bundle_version": "1.5.0",
+      "generated_at_utc": "2026-06-28T23:00:27Z",
+      "decision_authority": "human_only",
+      "rail": "B_TRACK",
+      "axis_count": 10,
+      "sections_slice": [
+        {
+          "axis_id": "geumhwagyoyeok",
+          "title_ko": "금화교역 (운영·코드북 참조)",
+          "availability": "linked",
+          "summary_ko": "금융 샤드·전략 코드에 구현된 『금화교역』 감지—사상 의학의 금·화·목·토 이론과 이름만 우연히 겹칠 수 있으나 동일 개념이 아닙니다."
+        },
+        {
+          "axis_id": "bomyung_jiju",
+          "title_ko": "보명지주 (SCM 렉시콘)",
+          "availability": "linked",
+          "summary_ko": "보명·지주 개념을 정규화한 어휘 레이어—명리 간지·사상 사중과 문자열이 겹치면 『표기 일치』를 의미 고유 일치로 오인하지 않습니다."
+        },
+        {
+          "axis_id": "byeongjeung_yakri",
+          "title_ko": "병증·약리·원전 교차 (격벽)",
+          "availability": "partial",
+          "summary_ko": "원전·교차 매핑 초안은 연구용(HYPO); 라벨 코호트·본선 분류와 역할이 다릅니다."
+        },
+        {
+          "axis_id": "prediction",
+          "title_ko": "예측 (일반 예언 레일)",
+          "availability": "linked",
+          "summary_ko": "비가격 질문·확률·해석 레이어—사상 동역학과 시간 해상도가 다릅니다."
+        },
+        {
+          "axis_id": "sasang_lens_core",
+          "title_ko": "사상 독립 렌즈 코어",
+          "availability": "linked",
+          "summary_ko": "Dynamics JSONL tail에서 추출한 방향·신뢰도—비의료·비트리거 고정."
+        },
+        {
+          "axis_id": "market_sasang_lens",
+          "title_ko": "시장 사상 렌즈",
+          "availability": "linked",
+          "summary_ko": "사상 렌즈 상류 필수; 4분면 softmax·불확실도·veto로 시장 맥락 정렬."
+        },
+        {
+          "axis_id": "sasang_rail_gates",
+          "title_ko": "사상 레일 격벽 게이트 (containment·enrichment·literature)",
+          "availability": "linked",
+          "summary_ko": "P1 containment → P2 enrichment → P3 ablation·문헌 resolver; unified gate로 스택 확인."
+        },
+        {
+          "axis_id": "regime_mkm_split_v1",
+          "title_ko": "Regime MKM Split v1 (구조 leg × 전술 veto)",
+          "availability": "linked",
+          "summary_ko": "supplier_tight(Field/Joseph/geumhwa gated)일 때 구조적 롱; sasang force_hold는 추격 진입만 차단—매도·영구 관망 아님. counterfactual·fusion ablation로 falsifiable."
+        },
+        {
+          "axis_id": "persona_diary_myeongni_sasang_lane",
+          "title_ko": "PersonaDiary / 중기 레인 (myeongni+sasang)",
+          "availability": "linked",
+          "summary_ko": "180d/2bps shadow: myeongni+sasang Sharpe·MDD 위험조정 우위 — prophecy vote·Track A quant와 물리 분리. science+sasang은 Quant SSOT."
+        },
+        {
+          "axis_id": "fabba_sidecar_ngram_lut",
+          "title_ko": "fABBA ngram_lut sidecar (feature LUT join)",
+          "availability": "linked",
+          "summary_ko": "180d/2bps merged LUT의 fabba_ngram_* 컬럼 — dual-leg shadow KOSPI HR 참고용. vote=none · non_gating · Quant SSOT(Arm A) 불변."
+        }
+      ],
+      "synthesis_guardrails_ko": {
+        "forbidden_synthesis_ko": "금화교역 수치만으로 체질 단정; 보명지주 어휘만으로 처방 근거 확정; SASANG_CROSS_REF_DRAFT 한 줄로 임상 코호트 라벨 치환; symptom_weights_v1 정충·부종 표만으로 체질·처방 단정; 사상·시장 사상 렌즈만으로 주문·레버리지 확정; 일반 예언 확률을 사상 스코어에 선형 합성; force_hold를 단독 매도·현금·영구 관망 신호로 collapse; PersonaDiary myeongni+sasang Sharpe를 prophecy vote·실매매 sizing에 직접 승격; fABBA ngram_lut dual-leg HR을 Arm A quant SSOT로 승격; merged LUT fabba 컬럼을 prophecy vote에 자동 주입—위 모두 금지(B-track).",
+        "disagreement_protocol_ko": "축 간 불일치 시: (1) 임상·처방 관련은 원전·지휘관 검토 없이 단정 금지. (2) 시장 관련은 시장 사상 렌즈의 veto·uncertainty를 우선 확인하고, 금화교역 지표와 단일 방정식으로 묶지 않습니다. (3) 예언·사상 스코어가 엇갈리면 『관측 병치』만 하고, 자동 가중치 조정·실매매 트리거는 금지입니다. (4) force_hold(veto)는 『추격·레버리지 금지』 전술 leg이며, supplier_tight(Field/Joseph) 구조 leg와 분리합니다—veto를 매도·영구 관망으로 literal collapse하지 않습니다. (5) PersonaDiary/중기 레인(myeongni+sasang)은 prophecy vote·Track A quant와 격리—Sharpe·MDD 참고만. (6) fABBA ngram_lut sidecar는 merged LUT feature join 전용—prophecy vote·Primary score·Arm A quant에 자동 합류 금지."
+      },
+      "fact_safe_note": "Interpretive bridge is human_only reference. Forbidden: linear merge with sasang direction_score, clinical verdict, or live order sizing."
+    },
+    "market_myeongni_observation_slot": {
+      "schema": "btrack_market_lens_observation_slot_v1",
+      "bridge_mode": "read_only_observation",
+      "lens_id": "market_myeongni",
+      "available": true,
+      "a_track_autotrigger_forbidden": true,
+      "track_a_live_routing_forbidden": true,
+      "fact_safe_note": "Market overlay lens context for B-track hypothesis explanation only. Does not replace myeongni_independent_lens or sasang_independent_lens; no live trigger.",
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\market_myeongni_lens_latest.json",
+      "artifact_ts_utc": "2026-06-28T23:00:26Z",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "direction_score": 0.0536,
+      "confidence": 0.603258,
+      "direction_sign": "neutral",
+      "market_myeongni_summary": {
+        "upstream_lens_id": "myeongni",
+        "base_direction_score": 0.08,
+        "base_confidence": 0.68552,
+        "applied": {
+          "direction_score_scale": 0.92,
+          "confidence_scale": 0.88,
+          "max_abs_direction_score": 0.98,
+          "state_id": 15,
+          "state_id_direction_tilt_applied": -0.02
+        }
+      }
+    },
+    "market_sasang_observation_slot": {
+      "schema": "btrack_market_lens_observation_slot_v1",
+      "bridge_mode": "read_only_observation",
+      "lens_id": "market_sasang",
+      "available": true,
+      "a_track_autotrigger_forbidden": true,
+      "track_a_live_routing_forbidden": true,
+      "fact_safe_note": "Market overlay lens context for B-track hypothesis explanation only. Does not replace myeongni_independent_lens or sasang_independent_lens; no live trigger.",
+      "source_path": "C:\\workspace\\docs\\final\\artifacts\\market_sasang_lens_latest.json",
+      "artifact_ts_utc": "2026-06-28T23:00:27Z",
+      "hypothesis_tier": "B",
+      "boundary_ack": true,
+      "direction_score": 0.17,
+      "confidence": 0.081912195,
+      "direction_sign": "bull",
+      "market_sasang_summary": {
+        "composite_uncertainty": 0.67235122,
+        "veto_force_hold": true,
+        "veto_reason_codes": [
+          "HIGH_ENTROPY_SOFTMAX"
+        ],
+        "state_vector_sasang_softmax": {
+          "taeyang": 0.31447354,
+          "soyang": 0.27881458,
+          "taeeum": 0.19611475,
+          "soeum": 0.21059713
+        },
+        "direction_hint": "bull"
+      }
+    },
+    "haan_master_bridge_context": {
+      "schema": "haan_master_btrack_bridge_slice_v1",
+      "bridge_mode": "read_only_observation",
+      "available": true,
+      "send_gate": "HOLD",
+      "research_only": true,
+      "track_a_live_routing_forbidden": true,
+      "a_track_autotrigger_forbidden": true,
+      "haan_nl_master": "closed",
+      "lane_status": {
+        "logos": "closed",
+        "myeongri": "closed",
+        "ijeoma": "closed"
+      },
+      "sasang_wire_count": 6,
+      "fact_safe_note": "[HYPO] HAAN master NL context for B-track bundle only; no prescription; no Track A merge.",
+      "source_paths": {
+        "haan_master_delegation": "C:\\workspace\\reports\\constitution\\btrack_pilot\\haan_master_delegation_v1_latest.json",
+        "haan_master_brief": "C:\\workspace\\reports\\constitution\\btrack_pilot\\haan_master_nl_insight_brief_v1_latest.md",
+        "haan_sasang_analogy_bench_wire": "C:\\workspace\\docs\\final\\artifacts\\haan_sasang_analogy_bench_wire_v1_latest.json"
       }
     }
   },
@@ -322,7 +689,13 @@
     "macro_independent_lens": "C:\\workspace\\docs\\final\\artifacts\\macro_independent_lens_latest.json",
     "compression_kpi_summary": "C:\\workspace\\reports\\constitution\\btrack_pilot\\ultra_compression_kpi_summary_latest.json",
     "compression_active_report": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json",
-    "compression_decision": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json"
+    "compression_decision": "C:\\workspace\\docs\\final\\artifacts\\MULTILENS_ULTRA_COMPRESSION_DECISION_V1.json",
+    "sasang_interpretive_insight_bundle": "C:\\workspace\\docs\\final\\artifacts\\sasang_interpretive_insight_bundle_v1_latest.json",
+    "market_myeongni_lens": "C:\\workspace\\docs\\final\\artifacts\\market_myeongni_lens_latest.json",
+    "market_sasang_lens": "C:\\workspace\\docs\\final\\artifacts\\market_sasang_lens_latest.json",
+    "haan_master_delegation": "C:\\workspace\\reports\\constitution\\btrack_pilot\\haan_master_delegation_v1_latest.json",
+    "haan_master_brief": "C:\\workspace\\reports\\constitution\\btrack_pilot\\haan_master_nl_insight_brief_v1_latest.md",
+    "haan_sasang_analogy_bench_wire": "C:\\workspace\\docs\\final\\artifacts\\haan_sasang_analogy_bench_wire_v1_latest.json"
   },
-  "note": "Feed summarized fields to LLM; do not merge with live trading. Sasang: [NON-MEDICAL] if referenced. news/macro slots filled when news_independent_lens_latest.json / macro_independent_lens_latest.json exist (run build_btrack_news_macro_lens_adapters_v1.py). compression_bridge_context is read-only."
+  "note": "Feed summarized fields to LLM; do not merge with live trading. Sasang: [NON-MEDICAL] if referenced. news/macro slots filled when news_independent_lens_latest.json / macro_independent_lens_latest.json exist (run build_btrack_news_macro_lens_adapters_v1.py). market_*_observation_slot are read-only overlays (run_market_myeongni_lens_v1.py / run_market_sasang_lens_v1.py); no A-track trigger. compression_bridge_context, sasang_interpretive_bridge_context, and haan_master_bridge_context are read-only; interpretive slice excludes interpretive_depth_ko."
 }

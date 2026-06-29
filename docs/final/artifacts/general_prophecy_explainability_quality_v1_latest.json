@@ -1,15 +1,15 @@
 {
   "schema": "general_prophecy_explainability_quality_v1",
-  "generated_at_utc": "2026-05-13T06:16:48Z",
+  "generated_at_utc": "2026-06-29T01:00:04Z",
   "source_artifact": "C:\\workspace\\docs\\final\\artifacts\\general_prophecy_explainable_latest.json",
   "summary": {
-    "n_questions": 14,
+    "n_questions": 42,
     "coverage_rate": 1.0,
     "direct_match_rate": 1.0,
     "conflict_resolution_rate": 1.0,
-    "reproducible_evidence_rate": 0.928571,
-    "avg_biblical_keyword_coverage": 0.416667,
-    "avg_top_evidence_count": 4.928571
+    "reproducible_evidence_rate": 0.690476,
+    "avg_biblical_keyword_coverage": 0.301587,
+    "avg_top_evidence_count": 4.690476
   },
   "rows": [
     {
@@ -122,6 +122,230 @@
       "conflict_resolution_ok": true,
       "reproducible_evidence_ok": true,
       "biblical_keyword_coverage": 0.5,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "seed.weather.seoul_kma_daily_ge1mm_20260518",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "seed.fin.ndx_wow_positive_20260523",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.166667,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "seed.macro.us_bls_unrate_gt_43_20260606",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.666667,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.fx.usdkrw_close_ge_1400_20260731",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.166667,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.fx.eurusd_close_lt_108_20260815",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.fx.usdjpy_close_ge_160_20260831",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.eq.kospi_close_up_wow_20260704",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.eq.spx_close_up_wow_20260711",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.eq.ndx_close_up_wow_20260718",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.eq.kosdaq_close_up_wow_20260725",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.macro.us_bls_cpi_yoy_ge_3_20260715",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 1.0,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.macro.bok_policy_rate_unchanged_20260814",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 1.0,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.macro.fomc_cut_before_sep_2026",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.5,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.rates.us10y_yield_ge_45_20260815",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.166667,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.rates.kr3y_ktb_yield_ge_30_20260831",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.166667,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.commod.wti_close_ge_85_20260731",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.commod.gold_close_ge_2400_20260831",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.166667,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.crypto.btc_close_up_7d_20260707",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.geo.us_china_tariff_headline_20260731",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.geo.opec_cut_announce_20260831",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.news.fomc_surprise_hike_20260801",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.sector.sk_hynix_outperform_kospi_20260718",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.sector.samsung_underperform_ndx_20260711",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.weather.seoul_precip_ge_5mm_20260720",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "max.macro.imf_weo_growth_downgrade_20260831",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.333333,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.macro.eurozone_hicp_yoy_lt_2_20260731",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.5,
+      "top_evidence_count": 5
+    },
+    {
+      "question_id": "max.flow.kospi_foreign_net_buy_positive_20260731",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": false,
+      "biblical_keyword_coverage": 0.0,
+      "top_evidence_count": 4
+    },
+    {
+      "question_id": "hero.macro.us_cpi_yoy_ge_3_20260715",
+      "coverage_ok": true,
+      "conflict_resolution_ok": true,
+      "reproducible_evidence_ok": true,
+      "biblical_keyword_coverage": 0.666667,
       "top_evidence_count": 5
     }
   ]
