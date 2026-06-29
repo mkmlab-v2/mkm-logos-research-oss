@@ -15,7 +15,13 @@ Set-Location -LiteralPath $WorkspaceRoot
 $py = if (Test-Path "$env:WINDIR\py.exe") { "$env:WINDIR\py.exe" } else { "py" }
 
 if (-not $SkipProjectionRun) {
+    & $py scripts/fetch_naver_openapi_signals_v1.py --profile pre_news_shadow --allow-cache-fallback
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "Naver pre-news ingest failed; continuing with existing pre_news_shadow_input."
+    }
     & $py scripts/run_global_atom_pre_news_shadow_chain_v1.py
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+    & $py scripts/build_pre_news_headline_d1_direction_shadow_poc_v1.py
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 

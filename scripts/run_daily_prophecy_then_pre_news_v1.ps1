@@ -222,7 +222,7 @@ if ($EnableCausalThresholdSweep) {
 if ($EnablePreNewsShadow) {
     if (-not $SkipNaverNewsIngest) {
         Write-Host "==> fetch_naver_openapi_signals_v1.py (pre-news upstream ingest)" -ForegroundColor Cyan
-        & py -3 "scripts\fetch_naver_openapi_signals_v1.py" --allow-cache-fallback
+        & py -3 "scripts\fetch_naver_openapi_signals_v1.py" --profile pre_news_shadow --allow-cache-fallback
         if ($LASTEXITCODE -ne 0) {
             Write-Warning "Naver OpenAPI ingest failed; continuing with existing naver/pre_news artifacts."
         }
@@ -267,6 +267,12 @@ if ($EnablePreNewsShadow) {
         -PreNewsInputJson $PreNewsInputJson
     if ($LASTEXITCODE -ne 0) {
         exit $LASTEXITCODE
+    }
+
+    Write-Host "==> build_pre_news_headline_d1_direction_shadow_poc_v1.py (headline D+1 KOSPI shadow score)" -ForegroundColor Cyan
+    & py -3 "scripts\build_pre_news_headline_d1_direction_shadow_poc_v1.py"
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "Pre-news headline D+1 shadow PoC failed; continuing."
     }
 
     if (-not $SkipBiblicalHistoryChronicleRefresh) {

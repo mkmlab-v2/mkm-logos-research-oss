@@ -42,7 +42,7 @@ if (-not $SkipNetworkIngest) {
     Invoke-Step 'Exa macro news chain' { & $exaChain -AppendStaging } -AllowFail:(-not $env:EXA_API_KEY)
   }
   Invoke-Step 'Naver OpenAPI signals' {
-    py (Join-Path $WorkspaceRoot 'scripts\fetch_naver_openapi_signals_v1.py') --allow-cache-fallback
+    py (Join-Path $WorkspaceRoot 'scripts\fetch_naver_openapi_signals_v1.py') --profile pre_news_shadow --allow-cache-fallback
   } -AllowFail
 } else {
   Invoke-Step 'news/macro lens adapters' {
