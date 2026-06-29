@@ -1,0 +1,6 @@
+event_id,label,region,year_bce,year_ce,study_tier,citation_stub
+yamnaya_haak2015,Yamnaya expansion pulse,EurasianSteppe,3000,,peer_review,Haak2015 Nature
+levant_bronze_turnover,LBA Levant turnover,Levant,1150,,peer_review_optional,Lazaridis2016
+philistine_aegean,Philistine Aegean signal,Levant,1100,,peer_review_optional,Feldman2019
+ancient_genome_atlas,Large-scale aDNA atlas era,Global,,2018,peer_review_optional,Reich2018 review
+dead_sea_scrolls_discovery,Dead Sea Scrolls Cave 1,Levant,,1947,historical_primary,DSO discovery record

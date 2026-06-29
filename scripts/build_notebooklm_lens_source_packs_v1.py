@@ -17,6 +17,18 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "reports" / "notebooklm_lens_packs_v1"
+HAAN_BATCH_INDEX = ROOT / "reports/constitution/btrack_pilot/haan_library_downloads_batch_v1_latest.json"
+HAAN_SHARED_PATHS = [
+    "reports/constitution/btrack_pilot/haan_library_downloads_batch_v1_latest.json",
+    "reports/constitution/btrack_pilot/haan_lens_research_fusion_v1_latest.json",
+    "reports/constitution/btrack_pilot/haan_lens_nl_query_sets_v1_latest.json",
+    "reports/constitution/btrack_pilot/haan_master_delegation_v1_latest.json",
+    "reports/constitution/btrack_pilot/haan_master_nl_insight_brief_v1_latest.md",
+    "docs/final/artifacts/haan_lens_coordinate_maps_v1_latest.json",
+    "docs/final/artifacts/haan_sasang_paper_crossref_pointers_v1_latest.json",
+    "data/corpus/ijeoma/_inventory/cheonyucho_downloads_photo_page_map_v1.json",
+    "data/corpus/ijeoma/_inventory/cheonyucho_downloads_photo_inventory_v1.json",
+]
 
 # Lens id -> list of paths relative to ROOT (skip silently if missing)
 PACKS: dict[str, list[str]] = {
@@ -40,6 +52,8 @@ PACKS: dict[str, list[str]] = {
         "docs/final/MKM_LENS_GLOBAL_PROFILE_PROMPT_RAG_INSTRUCTIONS_DRAFT_V1.md",
         "docs/final/artifacts/MANSE_SAJU_STAGE_LAW_CONTRACT_V0.json",
         "data/myeongni/16_STATE_MASTER_PROBE_v1.json",
+        "reports/constitution/btrack_pilot/haan_lens_nl_query_sets_v1_latest.json",
+        "docs/final/artifacts/myeongri_corpus_coordinate_map_v1_latest.json",
     ],
     "LENS_SASANG": [
         "docs/final/schemas/sasang_emotion_mapping_v1.schema.json",
@@ -63,6 +77,9 @@ PACKS: dict[str, list[str]] = {
     "LENS_LOGOS": [
         "AGENTS.md",
         "docs/final/LOGOS_NOTEBOOK_META_GUIDE.md",
+        "reports/constitution/btrack_pilot/haan_lens_nl_query_sets_v1_latest.json",
+        "docs/final/artifacts/logos_corpus_coordinate_map_v1_latest.json",
+        "docs/final/artifacts/haan_logos_gematria_lexicon_join_v1_latest.json",
     ],
     "MKM_CORE_FACT": [
         "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
@@ -105,6 +122,21 @@ PACKS: dict[str, list[str]] = {
         "reports/constitution/btrack_pilot/ijeoma_secondary_proxy_merge_v1_latest.json",
         "reports/constitution/btrack_pilot/cheonyucho_physical_anchor_park1985_v1.json",
         "reports/constitution/btrack_pilot/cheonyucho_physical_proxy_index_v1_latest.json",
+        "reports/constitution/btrack_pilot/haan_ijoeoma_pdf_grep_batch_v1_latest.json",
+        "reports/constitution/btrack_pilot/haan_ijoeoma_pdf_grep_expanded_v1_latest.json",
+        "reports/constitution/btrack_pilot/cheonyucho_auto_scout_v1_latest.json",
+        "docs/research/raw/CHEONYUCHO_AUTO_SCOUT_v1_nl_proxy.md",
+        "docs/research/raw/RHO1998_DONGMUYUGO_HANSI_闡幽草_FOOTNOTE10_EXTRACT_nl_proxy.md",
+        "docs/research/raw/T1-LEE-DONGMUYUGO-1999_kyobo_toc_manual_nl_proxy.md",
+        "reports/constitution/btrack_pilot/haan_lens_research_fusion_v1_latest.json",
+        "docs/final/artifacts/ijeoma_corpus_coordinate_map_v1_latest.json",
+        "docs/final/artifacts/haan_sasang_paper_crossref_pointers_v1_latest.json",
+        "reports/constitution/btrack_pilot/haan_lens_nl_query_sets_v1_latest.json",
+        "docs/final/artifacts/cheonyucho_p0_acquisition_checklist_v1_latest.md",
+        "docs/research/raw/CHEONYUCHO_JANGSEOGAK_VOL2_LEE_BIBLIO_TOC_nl_proxy.md",
+        "reports/constitution/btrack_pilot/jangseogak_vol2_lee_dongmuyugo_biblio_v1_latest.json",
+        "docs/research/raw/CHEONYUCHO_PHYSICAL_JANGSEOGAK_VOL2_LEE_DONGMUYUGO_P145_146_nl_proxy.md",
+        "docs/research/raw/HAAN_GREP_DONGMUYUGO_HANSI_闡幽草_MENTION_nl_proxy.md",
         "reports/constitution/btrack_pilot/cheonyucho_acquisition_probe_v1.json",
         "docs/research/raw/CHEONYUCHO_PHYSICAL_PARK1985_NLK_biblio_2026_nl_proxy.md",
         "docs/research/raw/CHEONYUCHO_PHYSICAL_PARK1985_NLK_reply_2026_nl_proxy.md",
@@ -150,10 +182,53 @@ def _sha256(path: Path) -> str:
     return h.hexdigest()
 
 
+def _haan_proxy_paths_for_lens(lens_key: str) -> list[str]:
+    if not HAAN_BATCH_INDEX.is_file():
+        return []
+    doc = json.loads(HAAN_BATCH_INDEX.read_text(encoding="utf-8"))
+    lane_map = {
+        "LENS_LOGOS": ("logos", "ijeoma_logos_bridge"),
+        "LENS_MYEONGNI": ("myeongri",),
+        "IJEOMA_BTRACK": ("ijeoma", "ijeoma_logos_bridge"),
+    }
+    lanes = lane_map.get(lens_key, ())
+    out: list[str] = []
+    for item in doc.get("items") or []:
+        if item.get("lens") in lanes and isinstance(item.get("nl_proxy"), str):
+            out.append(item["nl_proxy"])
+    return sorted(set(out))
+
+
+def _pack_paths(lens_key: str) -> list[str]:
+    base = list(PACKS.get(lens_key, []))
+    if lens_key in ("LENS_LOGOS", "LENS_MYEONGNI", "IJEOMA_BTRACK"):
+        base.extend(HAAN_SHARED_PATHS)
+        base.extend(_haan_proxy_paths_for_lens(lens_key))
+    # stable dedupe
+    seen: set[str] = set()
+    merged: list[str] = []
+    for rel in base:
+        if rel not in seen:
+            seen.add(rel)
+            merged.append(rel)
+    return merged
+
+
 def main() -> int:
+    preserved_map: str | None = None
+    map_path = OUT / "notebook_ids.json"
+    if map_path.is_file():
+        preserved_map = map_path.read_text(encoding="utf-8")
+    elif HAAN_BATCH_INDEX.parent.exists():
+        template_map = ROOT / "docs/final/notebooklm_lens_pack_push_map_v1.template.json"
+        if template_map.is_file():
+            preserved_map = template_map.read_text(encoding="utf-8")
+
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True, exist_ok=True)
+    if preserved_map:
+        map_path.write_text(preserved_map, encoding="utf-8")
 
     index: dict[str, Any] = {
         "schema": "notebooklm_lens_packs_v1",
@@ -162,7 +237,8 @@ def main() -> int:
         "packs": {},
     }
 
-    for lens, rels in PACKS.items():
+    for lens in PACKS:
+        rels = _pack_paths(lens)
         lens_dir = OUT / lens
         lens_dir.mkdir(parents=True, exist_ok=True)
         files_out: list[dict[str, Any]] = []

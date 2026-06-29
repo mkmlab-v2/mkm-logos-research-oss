@@ -1,0 +1,54 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-04T04:21:48Z",
+  "git_commit_hint": "orchestrator_v0:ai_qqq_logos_v0",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_qqq_new_high_before_0930",
+      "prophecy_track": "financial",
+      "question_text": "2026-09-30 20:00 US/Eastern 이전에 Invesco QQQ Trust(^QQQ) 일봉 종가가 2026-06-03까지의 역사적 최고 종가(동 CSV 기준)를 엄격히 초과한 거래일이 한 번이라도 있는가?",
+      "domain_tags": [
+        "macro",
+        "usa",
+        "equity",
+        "ai",
+        "logos_graphrag"
+      ],
+      "resolution_deadline_utc": "2026-10-01T00:00:00Z",
+      "resolution_criteria": "research/market_data/qqq_daily_external_yf.csv (QQQ Yahoo Finance). reference_high = max(Close) for rows with Date <= 2026-06-03. Window: 2026-06-04 <= Date <= 2026-09-30. TRUE if any Close > reference_high. All window closes <= reference_high => FALSE. CSV unavailable or reference_high undefined => VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_close_gt_reference_high",
+        "false_label": "no_close_gt_reference_high"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T04:21:48Z",
+          "probability_0_1": 0.55,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Logos hubris_trade+judgment; symbol=QQQ; pack=ai_qqq_logos_v0; [NON_GATING]; B-rail.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "reports/logos_graphrag_2026_ai_tower_babel_v1_latest.json",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{"task_id": "327-outline-01", "task_kind": "outline", "grant_program": "opendata_327", "notes": "section skeleton only"}
+{"task_id": "327-table-02", "task_kind": "table_fill", "grant_program": "opendata_327"}
+{"task_id": "327-grep-03", "task_kind": "grep_evidence", "grant_program": "opendata_327"}
+{"task_id": "oi-narrative-01", "task_kind": "narrative_section", "grant_program": "open_innovation"}
+{"task_id": "oi-risk-02", "task_kind": "risk_legal", "grant_program": "open_innovation"}
+{"task_id": "shared-fact-01", "task_kind": "fact_lock_claim", "grant_program": "generic"}
+{"task_id": "shared-legal-01", "task_kind": "legal_guarantee", "grant_program": "generic"}

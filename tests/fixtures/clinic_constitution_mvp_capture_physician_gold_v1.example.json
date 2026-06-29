@@ -1,0 +1,45 @@
+{
+  "schema": "clinic_constitution_mvp_capture_v1",
+  "version": "1.0.0",
+  "ts_utc": "2026-06-18T02:10:00Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "a_track_autobind_forbidden": true,
+  "label_lane": "physician_gold",
+  "encounter": {
+    "ref_token": "ENC-PHYSICIAN-GOLD-P21-01"
+  },
+  "modalities_present": {
+    "survey": true,
+    "face_image": false,
+    "voice_sample": false,
+    "birth_profile": true
+  },
+  "observation_proxies": {
+    "cold_heat_lean": 0.41,
+    "digestion_lean": 0.58,
+    "activity_lean": 0.47,
+    "moisture_lean": 0.52
+  },
+  "ai_hypothesis": {
+    "constitution": "soyang",
+    "confidence": 0.54,
+    "model_id": "clinic_physician_gold_p21_v1",
+    "rationale_short": "[HYPO] 설문·맥 프록시; 원장 판정 대조용 physician_gold 행."
+  },
+  "physician_constitution": {
+    "label": "soeum",
+    "recorded_by_role": "licensed_km_physician",
+    "notes": "맥·문진 기준 소음인; AI 소양 가설과 불일치."
+  },
+  "agreement": {
+    "ai_physician_match": false,
+    "disagreement_code": "modality_insufficient"
+  },
+  "intake_ref": "reports/patient_intake_multiturn_v1.example.json",
+  "patient_facing_copy_ack": true,
+  "meta": {
+    "research_only": true,
+    "physician_gold_demo": true
+  }
+}

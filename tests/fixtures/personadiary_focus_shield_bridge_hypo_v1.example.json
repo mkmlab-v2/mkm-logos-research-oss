@@ -1,0 +1,11 @@
+{
+  "schema": "personadiary_focus_shield_bridge_hypo_v1",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "can_block_apps": false,
+  "can_request_permissions": false,
+  "capability": "unsupported_web",
+  "message_ko": "웹 PWA — Screen Time API 미연결 (stub)",
+  "trigger_hypo": "manual_pull",
+  "north_star_lane": "mind"
+}

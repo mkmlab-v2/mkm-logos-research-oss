@@ -1,0 +1,65 @@
+[
+  {
+    "case_id": "school_tier_island_basic",
+    "rows": [
+      {
+        "verse_ref": "Gen.6.1",
+        "conflict_group_id": "G1",
+        "school_tier": "historical_criticism"
+      },
+      {
+        "verse_ref": "Gen.6.2",
+        "conflict_group_id": "G1",
+        "school_tier": "judaic_mysticism"
+      },
+      {
+        "verse_ref": "Gen.6.3",
+        "conflict_group_id": "G1",
+        "school_tier": "historical_criticism"
+      }
+    ],
+    "expect": {
+      "min_signal_count": 1,
+      "signal_types": ["school_tier_island"]
+    }
+  },
+  {
+    "case_id": "large_verse_gap",
+    "rows": [
+      {
+        "verse_ref": "Gen.6.1",
+        "conflict_group_id": "G2",
+        "school_tier": "historical_criticism"
+      },
+      {
+        "verse_ref": "Gen.12.1",
+        "conflict_group_id": "G2",
+        "school_tier": "historical_criticism"
+      }
+    ],
+    "expect": {
+      "min_signal_count": 1,
+      "signal_types": ["large_verse_gap"]
+    }
+  },
+  {
+    "case_id": "monotonic_no_signals",
+    "rows": [
+      {
+        "verse_ref": "Gen.6.1",
+        "conflict_group_id": "G3",
+        "school_tier": "historical_criticism"
+      },
+      {
+        "verse_ref": "Gen.6.2",
+        "conflict_group_id": "G3",
+        "school_tier": "historical_criticism"
+      }
+    ],
+    "expect": {
+      "min_signal_count": 0,
+      "max_signal_count": 0,
+      "signal_types": []
+    }
+  }
+]

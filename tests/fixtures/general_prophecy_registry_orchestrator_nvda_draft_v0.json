@@ -1,0 +1,55 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-04T04:21:46Z",
+  "git_commit_hint": "orchestrator_v0:ai_nvda_qqq_logos_v0",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_nvda_daily_drop_ge_7pct_q3",
+      "prophecy_track": "financial",
+      "question_text": "2026-07-01 ~ 2026-09-30 US/Eastern 거래일 중 NVDA 일간 수익률이 −7.00% 이하(하락 7%p 이상)인 날이 한 번이라도 있는가?",
+      "domain_tags": [
+        "macro",
+        "usa",
+        "equity",
+        "volatility",
+        "ai",
+        "logos_graphrag"
+      ],
+      "resolution_deadline_utc": "2026-10-01T00:00:00Z",
+      "resolution_criteria": "research/market_data/nvda_daily_external_yf.csv. Daily return (Close_t/Close_{t-1}−1) <= −0.07. on any row with Date in 2026-07-01..2026-09-30. TRUE if >=1 day. FALSE if none. VOID if >=5 consecutive missing rows in window.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_day_return_le_minus_7pct",
+        "false_label": "no_day_return_le_minus_7pct"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T04:21:46Z",
+          "probability_0_1": 0.4,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Logos judgment/unwind (Jer.1.10, Dan.5.25, Rev.18.2); NVDA; [NON_GATING]; B-rail.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "reports/logos_graphrag_2026_ai_industry_hubris_v1_latest.json",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    }
+  ]
+}

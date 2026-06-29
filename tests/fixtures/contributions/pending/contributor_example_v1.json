@@ -1,0 +1,39 @@
+{
+  "schema": "nsm_41k_lexicon_crosswalk_contrib_v1",
+  "version": "1.0.0",
+  "description": "Example contributor shard — synthetic probes only · not merged into canonical 500",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "contributor_id": "example",
+  "pair_count": 3,
+  "source_note": "Synthetic public-domain style probes for validate/bench smoke — replace before real PR",
+  "samples": [
+    {
+      "prime_en": "oss_contrib_probe_a",
+      "probe_tokens": ["oss_contrib_probe_a", "alpha", "aleph"],
+      "lang_probes": {"en": "oss_contrib_probe_a", "greek": "alpha", "hebrew": "aleph"},
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "universal_root_fixture_v1"],
+      "source_note": "synthetic public example row — unique prime not in canonical 500"
+    },
+    {
+      "prime_en": "oss_contrib_probe_b",
+      "probe_tokens": ["oss_contrib_probe_b", "beta", "bet"],
+      "lang_probes": {"en": "oss_contrib_probe_b", "greek": "beta", "hebrew": "bet"},
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "universal_root_fixture_v1"],
+      "source_note": "synthetic public example row — unique prime not in canonical 500"
+    },
+    {
+      "prime_en": "oss_contrib_probe_c",
+      "probe_tokens": ["oss_contrib_probe_c", "gamma", "gimel"],
+      "lang_probes": {"en": "oss_contrib_probe_c", "greek": "gamma", "hebrew": "gimel"},
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "universal_root_fixture_v1"],
+      "source_note": "synthetic public example row — unique prime not in canonical 500"
+    }
+  ]
+}

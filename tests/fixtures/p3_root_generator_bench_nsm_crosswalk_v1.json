@@ -1,0 +1,17 @@
+{
+  "schema": "p3_root_generator_bench_nsm_crosswalk_v1",
+  "description": "Sample NSM-prime → Logos lexicon probe (existence-only, not theological claim).",
+  "source_note": "Inspired by NSM semantic primes literature; mapped to normalized_form lookup only.",
+  "samples": [
+    { "prime_en": "good", "probe_tokens": ["good", "agathos", "tob"] },
+    { "prime_en": "bad", "probe_tokens": ["bad", "kakos", "ra"] },
+    { "prime_en": "big", "probe_tokens": ["big", "megas", "gadol"] },
+    { "prime_en": "small", "probe_tokens": ["small", "mikros", "qatan"] },
+    { "prime_en": "think", "probe_tokens": ["think", "logizomai", "hashav"] },
+    { "prime_en": "know", "probe_tokens": ["know", "ginosko", "yada"] },
+    { "prime_en": "want", "probe_tokens": ["want", "thelo", "chafetz"] },
+    { "prime_en": "say", "probe_tokens": ["say", "lego", "amar"] },
+    { "prime_en": "do", "probe_tokens": ["do", "poieo", "asah"] },
+    { "prime_en": "happen", "probe_tokens": ["happen", "ginomai", "hayah"] }
+  ]
+}

@@ -1,0 +1,4 @@
+source_url,tradition,scholar_school,corpus_tier,verse_ref,excerpt,retrieval_timestamp_utc,conflict_group_id,school_tier,interpretation_ko,citation_lock_anchor
+https://example.org/demo/a,DSS,demo_stub,B,Gen.6.1,[HYPO] demo island row A,2026-06-24T03:00:00Z,MKM_DEMO_ATYPICAL_ISLAND,historical_criticism,[HYPO] 데모 A,https://example.org/demo/a
+https://example.org/demo/b,PSEUDEPIGRAPHA,demo_stub,C,Gen.6.2,[HYPO] demo island row B (island),2026-06-24T03:00:01Z,MKM_DEMO_ATYPICAL_ISLAND,judaic_mysticism,[HYPO] 데모 B,https://example.org/demo/b
+https://example.org/demo/c,LXX,demo_stub,B,Gen.6.3,[HYPO] demo island row C,2026-06-24T03:00:02Z,MKM_DEMO_ATYPICAL_ISLAND,historical_criticism,[HYPO] 데모 C,https://example.org/demo/c

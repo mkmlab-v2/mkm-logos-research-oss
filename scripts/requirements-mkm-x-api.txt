@@ -1,0 +1,2 @@
+# X (Twitter) official API — scripts/post_x_api_v1.py
+tweepy>=4.14,<5

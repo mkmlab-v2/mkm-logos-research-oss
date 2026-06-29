@@ -22,8 +22,24 @@ def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8-sig"))
 
 
+def _slack_webhook_body(url: str, payload: dict[str, Any]) -> bytes:
+    host = url.split("://", 1)[-1].split("/", 1)[0].lower()
+    if host != "hooks.slack.com":
+        return json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    failed = payload.get("failed_check_keys") or []
+    metrics = payload.get("metrics_snapshot") or {}
+    text = (
+        f"[MKM] general_prophecy holdout gate: {payload.get('decision', 'UNKNOWN')}\n"
+        f"profile={payload.get('profile', 'unknown')} all_pass={payload.get('all_pass', False)}\n"
+        f"failed={', '.join(str(x) for x in failed) or 'none'}\n"
+        f"repro={metrics.get('holdout_reproducible_evidence_rate')} "
+        f"coverage={metrics.get('holdout_avg_biblical_keyword_coverage')}"
+    )
+    return json.dumps({"text": text}, ensure_ascii=False).encode("utf-8")
+
+
 def post_webhook(url: str, payload: dict[str, Any]) -> tuple[bool, str]:
-    data = json.dumps(payload, ensure_ascii=False).encode("utf-8")
+    data = _slack_webhook_body(url, payload)
     req = request.Request(url, data=data, headers={"Content-Type": "application/json"}, method="POST")
     try:
         with request.urlopen(req, timeout=10) as resp:  # nosec - controlled webhook call

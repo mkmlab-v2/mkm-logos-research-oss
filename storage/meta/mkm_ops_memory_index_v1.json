@@ -1,37 +1,37 @@
 {
   "schema": "mkm_ops_memory_index_v1",
-  "index_version": "1.0",
+  "index_version": "1.1",
   "track": "B",
   "research_only": true,
   "hypothesis_tier": "B",
   "boundary_ack": "[HYPO] ops memory index — Track A·live trading auto-merge forbidden",
-  "last_updated_utc": "2026-06-13T20:40:24.266259Z",
+  "last_updated_utc": "2026-06-29T03:26:43.650403Z",
   "nodes": {
     "prism_ops_mission_log_board": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "## 🚀 전술 작전 보드",
-      "anchor_end": "### 📦 핸드오프 · 다른 채팅 융합",
+      "anchor_end": "<!-- MISSION_LOG_BOARD_END -->",
       "line_range": [
-        144,
-        1147
+        25,
+        147
       ],
-      "essence": "작전 보드 SSOT — 사업화·압축 격벽·Track A 금지·B2B SEND_GATE HOLD",
+      "essence": "작전 보드 SSOT — active lanes only · Track A 금지 · SEND_GATE HOLD",
       "must_keep_tags": [
         "FAIL-COMP-004",
         "Track A",
         "SEND_GATE: HOLD"
       ],
       "priority": 10,
-      "char_count": 63703,
-      "content_sha256_prefix": "9fd788f10de91a20"
+      "char_count": 7358,
+      "content_sha256_prefix": "5e5f33f048a0a710"
     },
     "prism_ops_central_checkpoint": {
       "file_path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
       "anchor_start": "<!-- ATHENA_CHECKPOINT_V1_START -->",
       "anchor_end": "<!-- ATHENA_CHECKPOINT_V1_END -->",
       "line_range": [
-        74,
-        94
+        142,
+        163
       ],
       "essence": "CENTRAL 최신 운영 체크포인트 블록 — athena_checkpoint·격벽 스냅샷",
       "must_keep_tags": [
@@ -39,98 +39,346 @@
         "CENTRAL"
       ],
       "priority": 9,
-      "char_count": 2540,
-      "content_sha256_prefix": "8013fda4e0dfa0c7"
+      "char_count": 3176,
+      "content_sha256_prefix": "033a146b23f68748"
     },
     "prism_ops_mission_log_next_one": {
       "file_path": "MISSION_LOG.md",
-      "anchor_start": "**다음 1타 (레인 · 새 채팅):**",
-      "anchor_end": "### 🧠 메타인지",
+      "anchor_start": "**다음 1타 (레인 · 재개용 핀):**",
+      "anchor_end": "## 🚀 전술 작전 보드",
       "line_range": [
-        1242,
-        1293
+        10,
+        24
       ],
-      "essence": "레인별 다음 1타 SSOT — 재개 복붙·HOLD·Track A·실매매 금지",
+      "essence": "레인별 다음 1타 SSOT — 재개 핀 · HOLD · Track A·실매매 금지",
       "must_keep_tags": [
         "Track A",
         "HOLD",
         "금지"
       ],
       "priority": 8,
-      "char_count": 9623,
-      "content_sha256_prefix": "a3181dcaef7c8b3e"
+      "char_count": 1441,
+      "content_sha256_prefix": "f660ff8efba066a2"
     },
     "prism_ops_lane_oracle": {
       "file_path": "MISSION_LOG.md",
-      "anchor_start": "| **Oracle·예언·align-panel** |",
-      "anchor_end": "| **CROSS_REF·DSS [HYPO]** |",
+      "anchor_start": "### 🔮 Oracle",
+      "anchor_end": "### 🖥️ Infra",
       "line_range": [
-        1250,
-        1255
+        79,
+        128
       ],
-      "essence": "Oracle 레인 다음 1타 — 예언·진화·Inception 관측 · Track A·실매매 금지",
+      "essence": "Oracle 레인 — Logos·align-panel · narrative_lane_open · Track A·live 금지",
       "must_keep_tags": [
         "Track A",
-        "실매매",
-        "금지"
+        "금지",
+        "B-track"
       ],
       "priority": 7,
-      "char_count": 1534,
-      "content_sha256_prefix": "ebd4b7b6ad2847a8"
+      "char_count": 3109,
+      "content_sha256_prefix": "99a3d2df41a7dac1"
     },
     "prism_ops_lane_infra": {
       "file_path": "MISSION_LOG.md",
-      "anchor_start": "| **Infra/GPU** |",
-      "anchor_end": "| **Clinic·SDIT·Insight** |",
+      "anchor_start": "### 🖥️ Infra",
+      "anchor_end": "<!-- MISSION_LOG_BOARD_END -->",
       "line_range": [
-        1261,
-        1261
+        129,
+        147
       ],
-      "essence": "Infra/GPU 레인 — Interpret·DailyOpsPatrol · Track A·live·match% 헤드라인 금지",
+      "essence": "Infra 레인 — solo stack·scheduler band · Track A·live 금지",
       "must_keep_tags": [
         "Track A",
         "금지",
-        "GPU"
+        "solo"
       ],
       "priority": 7,
-      "char_count": 259,
-      "content_sha256_prefix": "ec052d32f0124082"
+      "char_count": 1160,
+      "content_sha256_prefix": "d420d5cfa21dfcea"
     },
     "prism_ops_lane_ms": {
       "file_path": "MISSION_LOG.md",
-      "anchor_start": "| **MS** |",
-      "anchor_end": "| **환자·최소영 (Track B)** |",
+      "anchor_start": "### 💼 MS",
+      "anchor_end": "### 🧭 Cursor IDE",
       "line_range": [
-        1272,
-        1272
+        30,
+        60
       ],
-      "essence": "MS 레인 — 지휘관 수동 제출만 · 에이전트 포털·% 헤드라인 금지",
+      "essence": "MS 레인 — 지원사업 CLOSED·B2B HOLD · 에이전트 제출 금지",
       "must_keep_tags": [
         "MS",
-        "금지",
-        "HOLD"
+        "SEND_GATE",
+        "금지"
       ],
       "priority": 7,
-      "char_count": 166,
-      "content_sha256_prefix": "8074d31fd78d9a9d"
+      "char_count": 1661,
+      "content_sha256_prefix": "5da7d9f39f5817b2"
     },
     "prism_ops_lane_design": {
       "file_path": "MISSION_LOG.md",
-      "anchor_start": "| **Design/Showroom** |",
-      "anchor_end": "| **압축·Moat (GitHub)** |",
+      "anchor_start": "**Design/Showroom (아카이브",
+      "anchor_end": "## 🚀 전술 작전 보드",
       "line_range": [
-        1264,
-        1264
+        23,
+        24
       ],
-      "essence": "Design/Showroom 레인 — hub·jemaai·쇼룸 · Track A·% 헤드라인 금지",
+      "essence": "Design/Showroom 레인 — 아카이브·패시브 · SEND_GATE HOLD",
       "must_keep_tags": [
         "Track A",
         "금지",
         "SEND_GATE: HOLD"
       ],
       "priority": 7,
-      "char_count": 210,
-      "content_sha256_prefix": "4a1c46240c20d309"
+      "char_count": 165,
+      "content_sha256_prefix": "c43d332eb6684029"
+    },
+    "prism_ops_logos_cosmic_anchor_bridge": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/logos_cosmic_anchor_graph_bridge_v1_latest.json",
+      "json_pointers": [
+        "/kernel_recipe_id",
+        "/summary/lemma_hit_anchors",
+        "/summary/narrative_sample_count",
+        "/summary/resonance_edge_count",
+        "/research_only",
+        "/track_a_blocked"
+      ],
+      "essence": "Logos cosmic anchor bridge — 339 anchors · 200 narratives · gematria_bridge_v1 · B-track",
+      "must_keep_tags": [
+        "gematria_bridge_v1",
+        "research_only",
+        "narrative_sample_count"
+      ],
+      "priority": 7,
+      "field_tags": [
+        "logos",
+        "anchor",
+        "graph",
+        "gematria",
+        "btrack"
+      ],
+      "char_count": 188,
+      "content_sha256_prefix": "9007bd2d8a40222b",
+      "overlay_role": "logos_math"
+    },
+    "prism_ops_logos_four_force_report": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/logos_fundamental_force_primitive_report_v1_latest.json",
+      "json_pointers": [
+        "/kernel_recipe_id",
+        "/pedagogical_isomorphism_only",
+        "/summary/force_top1_counts",
+        "/summary/harmony_top1_share",
+        "/disclaimer_ko"
+      ],
+      "essence": "4힘 교육용 동형 리포트 [HYPO] — gematria_bridge_v1 커널 · Track A 금지",
+      "must_keep_tags": [
+        "gematria_bridge_v1",
+        "pedagogical_isomorphism_only",
+        "[HYPO]"
+      ],
+      "priority": 6,
+      "field_tags": [
+        "logos",
+        "four_force",
+        "hypo",
+        "gematria"
+      ],
+      "char_count": 298,
+      "content_sha256_prefix": "116a302f85e3501e",
+      "overlay_role": "logos_math"
+    },
+    "prism_ops_logos_4d_state": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/logos_4d_state_v1_latest.json",
+      "json_pointers": [
+        "/quadrant_info/regime_tag",
+        "/narrative_oracle/policy_tag",
+        "/narrative_oracle/action",
+        "/coordinates"
+      ],
+      "essence": "Logos 4D daily state — WATCH quadrant · [NON_GATING] narrative assist",
+      "must_keep_tags": [
+        "[NON_GATING]",
+        "regime_tag"
+      ],
+      "priority": 6,
+      "field_tags": [
+        "logos",
+        "4d",
+        "regime",
+        "non_gating"
+      ],
+      "char_count": 200,
+      "content_sha256_prefix": "55dde0a00a2df5a8",
+      "overlay_role": "logos_math"
+    },
+    "prism_ops_logos_narrative_router_eval": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/logos_narrative_path_eval_v1_latest.json",
+      "json_pointers": [
+        "/summary/router_hit_rate",
+        "/summary/sample_pass_rate",
+        "/narrative_sample_count",
+        "/research_only",
+        "/send_gate"
+      ],
+      "essence": "Narrative router eval 200/200 — structural overlap · NOT alignment_pass_rate",
+      "must_keep_tags": [
+        "router_hit_rate",
+        "research_only",
+        "send_gate"
+      ],
+      "priority": 7,
+      "field_tags": [
+        "logos",
+        "router",
+        "graphrag",
+        "btrack"
+      ],
+      "char_count": 129,
+      "content_sha256_prefix": "f52967e4324f3ce4",
+      "overlay_role": "logos_math"
+    },
+    "prism_ops_logos_router_regression_bundle": {
+      "slice_kind": "json_pointer",
+      "file_path": "reports/logos_router_regression_bundle_v1_latest.json",
+      "json_pointers": [
+        "/chain_pass",
+        "/send_gate",
+        "/bloom_cap",
+        "/narrative_eval/router_hit_rate",
+        "/gold_eval/gold_required_all_pass"
+      ],
+      "essence": "P21 router regression bundle — bloom guard + gold 12/12 · HOLD",
+      "must_keep_tags": [
+        "chain_pass",
+        "send_gate",
+        "gold_required_all_pass"
+      ],
+      "priority": 8,
+      "field_tags": [
+        "logos",
+        "router",
+        "gold",
+        "regression"
+      ],
+      "char_count": 177,
+      "content_sha256_prefix": "66d08a40fcd43dd7",
+      "overlay_role": "logos_math"
+    },
+    "prism_ops_logos_gold_eval": {
+      "slice_kind": "json_pointer",
+      "file_path": "reports/logos_gold_query_eval_v1_latest.json",
+      "json_pointers": [
+        "/summary/gold_required_all_pass",
+        "/summary/gold_required_count",
+        "/research_only",
+        "/non_gating"
+      ],
+      "essence": "Gold query eval 12 required — router/ANN Hit@k · non-gating",
+      "must_keep_tags": [
+        "gold_required_all_pass",
+        "research_only",
+        "non_gating"
+      ],
+      "priority": 6,
+      "field_tags": [
+        "logos",
+        "gold",
+        "retrieval",
+        "btrack"
+      ],
+      "char_count": 110,
+      "content_sha256_prefix": "377f6230d0c25f43",
+      "overlay_role": "logos_math"
+    },
+    "prism_ops_logos_gematria_dual_gate": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/logos_anchor_resonance_dual_gate_latest.json",
+      "json_pointers": [
+        "/gates/gate_b_geometry_production/recipe_id",
+        "/gates/gate_b_geometry_production/pass",
+        "/gates/gate_b_prime_geometry_sandbox/recipe_id",
+        "/research_only"
+      ],
+      "essence": "Gematria 4D dual gate — production vs sandbox spread · research_only",
+      "must_keep_tags": [
+        "gematria_bridge_v1",
+        "research_only"
+      ],
+      "priority": 6,
+      "field_tags": [
+        "logos",
+        "gematria",
+        "4d",
+        "gate"
+      ],
+      "char_count": 209,
+      "content_sha256_prefix": "46542a9e7d4e2459",
+      "overlay_role": "logos_math"
+    },
+    "prism_ops_logos_oracle_module_tier2_prep": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/logos_oracle_cursor_inject_tier1_readiness_v1_latest.json",
+      "json_pointers": [
+        "/tier1_module_ssot_ready",
+        "/tier2_prep_ready",
+        "/tier2_pin_schema_snapshot/resonance_cap",
+        "/tier2_pin_schema_snapshot/hd_mission_version",
+        "/hypothesis_class",
+        "/send_gate",
+        "/repro_one_shot"
+      ],
+      "essence": "Oracle module Tier-2 prep — Cursor inject SSOT · cap cross-SSOT read-only · HOLD",
+      "must_keep_tags": [
+        "tier1_module_ssot_ready",
+        "send_gate",
+        "HYPO"
+      ],
+      "priority": 9,
+      "field_tags": [
+        "logos",
+        "oracle",
+        "cursor",
+        "module",
+        "tier2"
+      ],
+      "char_count": 289,
+      "content_sha256_prefix": "d7bf8f909bcbc561",
+      "overlay_role": "logos_math"
+    },
+    "prism_ops_logos_narrative_closure_observability": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/logos_oracle_narrative_closure_observability_v1_latest.json",
+      "json_pointers": [
+        "/observation_pass",
+        "/observations_pass_count",
+        "/snapshot/resonance_cap",
+        "/snapshot/narrative_samples",
+        "/snapshot/read_only",
+        "/send_gate",
+        "/repro_one_shot"
+      ],
+      "essence": "Narrative+closure observability aggregate — read-only · NOT cap bump",
+      "must_keep_tags": [
+        "observation_pass",
+        "send_gate",
+        "read_only"
+      ],
+      "priority": 8,
+      "field_tags": [
+        "logos",
+        "oracle",
+        "observability",
+        "closure"
+      ],
+      "char_count": 250,
+      "content_sha256_prefix": "00a2740d753415f5",
+      "overlay_role": "logos_math"
     }
-  }
+  },
+  "overlays": [
+    "logos_math_v1"
+  ]
 }

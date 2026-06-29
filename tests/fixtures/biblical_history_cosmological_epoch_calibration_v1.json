@@ -1,0 +1,25 @@
+{
+  "schema": "biblical_history_cosmological_epoch_calibration_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "hypothesis_tier": "[HYPO]",
+  "gating_status": "NON_GATING",
+  "generated_at_utc": "2026-06-07T04:00:00Z",
+  "fact_lock_notice": "Hyperparameter matrix for epoch-date rescaling smoke only. Not a relativistic or block-universe physics engine. Do not auto-bind to Track A or live trading.",
+  "model_family": "linear_epoch_rescale_stub_v1",
+  "formula": "date_mid' = centroid + (date_mid - centroid) * span_scale + mid_shift_years",
+  "calibrations": {
+    "H-BC1": {
+      "mid_shift_bce_years": 0,
+      "span_scale": 1.0,
+      "window_expand_bce_years": 0,
+      "note": "identity baseline for permutation A/B"
+    },
+    "H-AX1": {
+      "mid_shift_bce_years": -12,
+      "span_scale": 0.97,
+      "window_expand_bce_years": 25,
+      "note": "[HYPO] mild axial-corridor compression stub"
+    }
+  }
+}

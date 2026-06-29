@@ -1,0 +1,62 @@
+{
+  "schema": "herbs_formulas_extract_v1",
+  "version": "1.0.0",
+  "domain_lane": "herbs_formulas",
+  "output_lane": "multi",
+  "research_only": true,
+  "track_b_only": true,
+  "promotion_to_a_track_allowed": false,
+  "send_gate": "HOLD",
+  "expert_review_required": true,
+  "boundary_ack": "Draft structured extract only; physician must verify before clinical use.",
+  "payload": {
+    "clinical": {
+      "primary_pathology": "表虚证",
+      "representative_symptoms": ["恶风", "汗出", "脉浮"],
+      "formula_composition_and_roles": "桂枝(君) · 芍药(臣) · 生姜·大枣·甘草(佐使)",
+      "differential_diagnosis": ["麻黄汤", "小青龙汤"],
+      "safety_precautions": ["表实无汗者慎用", "需对照原典与教材"],
+      "tongue_pulse_signals": ["脉浮"],
+      "modification_principles": "汗出过多可调整芍药比例"
+    },
+    "research": {
+      "research_objective": "桂枝汤相关临床研究的证据整理",
+      "study_population": "fixture-only · n not asserted",
+      "methodology_design": "文献回顾 · fixture stub",
+      "primary_outcomes": "症状改善指标(原文 확인 필요)",
+      "limitations_and_interpretation_caution": "실험실 결과를 임상 효능으로 확대 해석 금지",
+      "follow_up_questions": [
+        "표본 수가 충분한 RCT가 있는가?",
+        "포제·용량 차이를 통제했는가?"
+      ]
+    },
+    "education": {
+      "learning_objectives": [
+        "桂枝汤의 병기·구성·감별점을 설명할 수 있다"
+      ],
+      "core_concepts": [
+        "表虚",
+        "군신좌사",
+        "감별처방"
+      ],
+      "comparison_points": [
+        "桂枝汤 vs 麻黄汤: 有汗/无汗"
+      ],
+      "discussion_questions": [
+        "표虚와 표실을 어떤 임상 징후로 구분할 것인가?"
+      ],
+      "quiz_items": [
+        "桂枝汤의 군약은 무엇인가?"
+      ]
+    }
+  },
+  "provenance": {
+    "source_material_ids": [
+      "fixture:lecture_bangje_2026_section4_demo"
+    ],
+    "uncertainty_flags": [
+      "fixture_only_not_from_live_llm"
+    ],
+    "extraction_notes": "Minimal instance for schema validation; not a clinical recommendation."
+  }
+}

@@ -1,0 +1,4 @@
+date,swarm_panic_ratio,swarm_fomo_index,swarm_consensus_strength,seed_event_id
+2024-06-12,0.2,0.3,0.7,hypo_smoke_20240612
+2024-06-13,0.55,0.45,0.5,hypo_smoke_20240613
+2024-06-14,0.9,0.8,0.85,hypo_smoke_20240614

@@ -1,0 +1,70 @@
+{
+  "schema": "layer1_only_brier_bench_poc_v1",
+  "version": "1.0.0",
+  "poc_meta": {
+    "cohort_id": "layer1_only_brier_bench_poc_v1",
+    "track": "B",
+    "track_wall": "B",
+    "auto_bridge_to_a": false,
+    "created_at_utc": "2026-06-14T23:15:00Z",
+    "research_rail": "B",
+    "boundary_ack": true
+  },
+  "forecasts": [
+    {
+      "question_id": "poc.un_pact_http_2xx_20261231",
+      "question_class": "goldilocks",
+      "probability_model_p": 0.86,
+      "model_source_kind": "mechanical_reference_class_v1",
+      "model_source_detail": "public_org_portal_uptime_reference_class",
+      "probability_baseline_p": 0.5,
+      "base_rate_p": 0.72,
+      "status": "resolved",
+      "outcome": 1
+    },
+    {
+      "question_id": "poc.oecd_foresight_pdf_headings_2027",
+      "question_class": "goldilocks",
+      "probability_model_p": 0.44,
+      "model_source_kind": "mechanical_reference_class_v1",
+      "model_source_detail": "policy_pdf_toc_depth_reference_class",
+      "probability_baseline_p": 0.5,
+      "base_rate_p": 0.38,
+      "status": "resolved",
+      "outcome": 0
+    },
+    {
+      "question_id": "poc.python314_final_before_20261231",
+      "question_class": "goldilocks",
+      "probability_model_p": 0.58,
+      "model_source_kind": "mechanical_reference_class_v1",
+      "model_source_detail": "cpython_minor_release_cadence_table_v1",
+      "probability_baseline_p": 0.5,
+      "base_rate_p": 0.42,
+      "status": "resolved",
+      "outcome": 0
+    },
+    {
+      "question_id": "poc.ecb_mro_above_3_5_before_20261231",
+      "question_class": "goldilocks",
+      "probability_model_p": 0.33,
+      "model_source_kind": "mechanical_reference_class_v1",
+      "model_source_detail": "ecb_rate_path_implied_from_futures_stub_v1",
+      "probability_baseline_p": 0.5,
+      "base_rate_p": 0.29,
+      "status": "resolved",
+      "outcome": 1
+    },
+    {
+      "question_id": "poc.us_unemployment_below_4pct_2026h2",
+      "question_class": "goldilocks",
+      "probability_model_p": 0.41,
+      "model_source_kind": "mechanical_reference_class_v1",
+      "model_source_detail": "bls_u3_monthly_threshold_reference_class_v1",
+      "probability_baseline_p": 0.5,
+      "base_rate_p": 0.36,
+      "status": "resolved",
+      "outcome": 1
+    }
+  ]
+}

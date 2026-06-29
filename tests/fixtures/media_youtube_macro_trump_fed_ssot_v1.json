@@ -1,0 +1,47 @@
+{
+  "schema": "media_youtube_macro_trump_fed_ssot_v1",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "hypothesis_class": "HYPO",
+  "title": "트럼프·연준·금리·부채·AI 매크로 (오건영)",
+  "youtube_url": "https://www.youtube.com/watch?v=EEKl2MU7kes",
+  "video_id": "EEKl2MU7kes",
+  "fixture_transcript": "tests/fixtures/youtube_trump_fed_ai_macro_v1.txt",
+  "default_task_id": "EEKl2MU7kes-MACRO",
+  "theme": "트럼프·연준·금리·부채·AI 매크로 (오건영 YT)",
+  "theme_keywords": [
+    "연준",
+    "트럼프",
+    "금리",
+    "부채",
+    "물가",
+    "인플레이션",
+    "생산성",
+    "그린스폰",
+    "AI",
+    "고용",
+    "GDP",
+    "관세",
+    "칩플레이션"
+  ],
+  "negative_keywords": [
+    "들릴수록",
+    "똑똑해드는",
+    "지식뉴스",
+    "잘부탁드립니다"
+  ],
+  "multilens_keywords": [
+    "일본",
+    "다컴버블",
+    "디플레이션",
+    "거시",
+    "매크로",
+    "버블",
+    "칩플레이션",
+    "구슬리"
+  ],
+  "merge_min_chars": 650,
+  "merge_max_chars": 1300,
+  "logos_query_id": "trump_fed_ai_macro_eekl2mu7kes",
+  "reproduce": "py scripts/run_media_youtube_macro_ingest_chain_v1.py"
+}

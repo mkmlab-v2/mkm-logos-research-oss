@@ -1,0 +1,20 @@
+{
+  "schema": "lee_bomi_l0_intake_snippet_v1",
+  "version": "1.0.0",
+  "rail": "Track B",
+  "research_only": true,
+  "ref_token": "LEE-BOMI-2026-001",
+  "purpose_ko": "L0-L1 스모크 — 산후 2주 intake 요약(익명·교육용). 카톡 MD 역파싱 아님; bundle SOAP SSOT.",
+  "subjective_digest": "36세 산후 약 2주. 순환 불편·손발 차고 추위. 상열하한·부종. 맞춤 한약+단삼+유산균 복용 중.",
+  "negative_controls_ko": [
+    "고열 없음",
+    "대량 출혈 없음",
+    "극심한 복통 없음"
+  ],
+  "positive_l0_triggers_ko": [
+    "고열 39도",
+    "대량 출혈",
+    "심한 하복부 통증"
+  ],
+  "bundle_pointer": "reports/lee_bomi_patient_care_bundle_latest.json"
+}

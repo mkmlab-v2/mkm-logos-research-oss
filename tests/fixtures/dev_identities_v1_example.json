@@ -1,0 +1,25 @@
+{
+  "supabase_dev": {
+    "account_class": "development",
+    "email": "tester-dummy-01@example.com",
+    "login_url": "https://supabase.com/dashboard/sign-in",
+    "env_var_name": "DATABASE_URL",
+    "browser_tier": 3,
+    "aliases": ["supabase", "sb", "수파베이스"],
+    "autofill": {
+      "mode": "email_only",
+      "email_selector": "input[type=\"email\"]",
+      "password_selector": "input[type=\"password\"]"
+    }
+  },
+  "aws_test_db": {
+    "account_class": "testing",
+    "email": "company-dev-service@example.com",
+    "login_url": "https://aws.amazon.com/console/",
+    "env_var_name": "AWS_TEST_DB_URL",
+    "browser_tier": 2,
+    "autofill": {
+      "mode": "clipboard_email"
+    }
+  }
+}

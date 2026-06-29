@@ -1,0 +1,87 @@
+{
+  "schema": "mkm_deep_research_bench_tasks_v1",
+  "version": "1.2.0",
+  "description": "DeepResearch Bench-inspired 7-task mini harness (MKM FACT-lite + TCM + digestion engine, B-track)",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "min_aggregate_citation_pass_rate": 0.85,
+  "min_aggregate_support_pass_rate": 0.85,
+  "min_difficulty_baseline_citation_pass_rate": 0.85,
+  "min_difficulty_baseline_support_pass_rate": 0.85,
+  "min_difficulty_challenge_citation_pass_rate": 0.8,
+  "min_difficulty_challenge_support_pass_rate": 0.8,
+  "min_digestion_gate_pass_rate_mean": 1.0,
+  "require_digestion_tasks_ok": true,
+  "tasks": [
+    {
+      "id": "drb_memory_os",
+      "label": "Memory OS agents (MemGPT cluster)",
+      "query": "memory OS agents MemGPT hierarchical context",
+      "jsonl": "tests/fixtures/dr_bench_mini/memory_os_v1.jsonl",
+      "research_plane": "research_memory"
+    },
+    {
+      "id": "drb_llm_routing",
+      "label": "LLM routing and cost (RouterBench cluster)",
+      "query": "LLM routing RouterBench oracle gap",
+      "jsonl": "tests/fixtures/dr_bench_mini/routing_v1.jsonl",
+      "research_plane": "research_benchmarks"
+    },
+    {
+      "id": "drb_edge_cloud",
+      "label": "Edge-cloud hybrid SLM offload",
+      "query": "edge cloud hybrid SLM LLM offload",
+      "jsonl": "tests/fixtures/dr_bench_mini/edge_cloud_v1.jsonl",
+      "research_plane": "research_edge"
+    },
+    {
+      "id": "drb_dr_eval",
+      "label": "Deep research agent evaluation",
+      "query": "deep research agent evaluation FACT citation",
+      "jsonl": "tests/fixtures/dr_bench_mini/deep_research_eval_v1.jsonl",
+      "research_plane": "research_benchmarks"
+    },
+    {
+      "id": "drb_context_compress",
+      "label": "Context compression for long horizon",
+      "query": "context compression LLMLingua long context",
+      "jsonl": "tests/fixtures/dr_bench_mini/context_compress_v1.jsonl",
+      "research_plane": "research_memory"
+    },
+    {
+      "id": "drb_herbs_formulas_tcm",
+      "label": "Herbs/formulas TCM vertical (extract + multi-rail + alias)",
+      "query": "herbs formulas TCM citation verification workflow",
+      "jsonl": "tests/fixtures/dr_bench_mini/herbs_formulas_tcm_v1.jsonl",
+      "research_plane": "research_benchmarks",
+      "domain_lane": "herbs_formulas",
+      "extensions": {
+        "herbs_extract_md": "tests/fixtures/herbs_formulas_lecture_dual_citation_v1.md",
+        "alias_expect": [
+          {"query": "桂枝汤", "match_type": "formula"},
+          {"query": "麻黄汤", "match_type": "formula"},
+          {"query": "unknown-x", "match_type": "none"}
+        ]
+      }
+    },
+    {
+      "id": "drb_digestion_wiring",
+      "label": "Digestion engine wiring (Tier 0 → JSON → gate)",
+      "query": "MKM digestion engine digested facts wiring pytest gate",
+      "jsonl": "tests/fixtures/dr_bench_mini/digestion_wiring_v1.jsonl",
+      "research_plane": "research_benchmarks",
+      "domain_lane": "digestion_engine",
+      "extensions": {
+        "digestion_md": "tests/fixtures/mkm_digestion_tier0_input_v1.md",
+        "digestion_expect": {
+          "min_fact_count": 3,
+          "min_wired_count": 1,
+          "gate_ok": true,
+          "min_wiring_rate": 0.15,
+          "min_gate_pass_rate": 1.0,
+          "min_verification_right_rate": 0.15
+        }
+      }
+    }
+  ]
+}

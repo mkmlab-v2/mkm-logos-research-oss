@@ -1,0 +1,24 @@
+{
+  "schema": "btrack_ensemble_per_date_directions_v1",
+  "research_only": true,
+  "rows": [
+    {
+      "eval_date": "2026-01-10",
+      "instrument": "btc",
+      "predicted_direction": "bull",
+      "confidence": 0.55,
+      "weighted_score": 0.12,
+      "preliminary_direction": "bull",
+      "ensemble_mode": "v1"
+    },
+    {
+      "eval_date": "2026-01-12",
+      "instrument": "btc",
+      "predicted_direction": "bear",
+      "confidence": 0.4,
+      "weighted_score": -0.08,
+      "preliminary_direction": "bear",
+      "ensemble_mode": "v1"
+    }
+  ]
+}

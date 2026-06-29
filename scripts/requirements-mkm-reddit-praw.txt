@@ -1,0 +1,2 @@
+# Reddit official API (PRAW) — scripts/post_reddit_praw_v1.py
+praw>=7.7,<8

@@ -1,0 +1,3 @@
+# [STUB] 방약합편 발췌 자리표시자 — Stage A inventory smoke only.
+
+방명: (스텁) — 탕명·剂量 단정 출력 금지

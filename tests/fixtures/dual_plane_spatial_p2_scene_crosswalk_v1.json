@@ -1,0 +1,499 @@
+{
+  "schema": "dual_plane_spatial_p2_scene_crosswalk_v1",
+  "version": "1.1.0",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "hypothesis_class": "HYPO",
+  "scene_label": "grid_8x8_occlusion_stub",
+  "grid_size": 8,
+  "wall_cells": [
+    9,
+    10,
+    11,
+    17,
+    18,
+    19,
+    25,
+    26,
+    27,
+    33,
+    34,
+    35,
+    41,
+    42,
+    43
+  ],
+  "buffer_defaults": {
+    "max_delta_chebyshev": 2
+  },
+  "samples": [
+    {
+      "id": "legal_step_east",
+      "last_cell": 0,
+      "neural_draft_cell": 1,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "legal_step_south",
+      "last_cell": 1,
+      "neural_draft_cell": 9,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "illegal_wall_draft",
+      "last_cell": 0,
+      "neural_draft_cell": 18,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "illegal_oob_high",
+      "last_cell": 7,
+      "neural_draft_cell": 64,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "illegal_oob_neg",
+      "last_cell": 56,
+      "neural_draft_cell": -1,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "large_jump_neural",
+      "last_cell": 0,
+      "neural_draft_cell": 40,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "buffer_clamp_then_project",
+      "last_cell": 6,
+      "neural_draft_cell": 62,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "already_legal",
+      "last_cell": 48,
+      "neural_draft_cell": 49,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "wall_adjacent_draft",
+      "last_cell": 8,
+      "neural_draft_cell": 17,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "corner_clip",
+      "last_cell": 63,
+      "neural_draft_cell": 62,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "illegal_interior_wall",
+      "last_cell": 16,
+      "neural_draft_cell": 26,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "legal_diagonal_skip",
+      "last_cell": 2,
+      "neural_draft_cell": 11,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2"
+      ]
+    },
+    {
+      "id": "synthetic_wall_012",
+      "last_cell": 0,
+      "neural_draft_cell": 33,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_013",
+      "last_cell": 1,
+      "neural_draft_cell": 4,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_014",
+      "last_cell": 2,
+      "neural_draft_cell": 16,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_015",
+      "last_cell": 3,
+      "neural_draft_cell": 9,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_016",
+      "last_cell": 4,
+      "neural_draft_cell": 7,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_017",
+      "last_cell": 5,
+      "neural_draft_cell": 22,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_018",
+      "last_cell": 6,
+      "neural_draft_cell": 41,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_019",
+      "last_cell": 7,
+      "neural_draft_cell": 13,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_020",
+      "last_cell": 8,
+      "neural_draft_cell": 28,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_021",
+      "last_cell": 12,
+      "neural_draft_cell": 17,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_022",
+      "last_cell": 13,
+      "neural_draft_cell": 16,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_023",
+      "last_cell": 14,
+      "neural_draft_cell": 31,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_024",
+      "last_cell": 15,
+      "neural_draft_cell": 25,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_025",
+      "last_cell": 16,
+      "neural_draft_cell": 22,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_026",
+      "last_cell": 20,
+      "neural_draft_cell": 37,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_027",
+      "last_cell": 21,
+      "neural_draft_cell": 33,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_028",
+      "last_cell": 22,
+      "neural_draft_cell": 28,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_029",
+      "last_cell": 23,
+      "neural_draft_cell": 40,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_030",
+      "last_cell": 24,
+      "neural_draft_cell": 9,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_031",
+      "last_cell": 28,
+      "neural_draft_cell": 31,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_032",
+      "last_cell": 29,
+      "neural_draft_cell": 46,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_033",
+      "last_cell": 30,
+      "neural_draft_cell": 41,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_034",
+      "last_cell": 31,
+      "neural_draft_cell": 37,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_035",
+      "last_cell": 32,
+      "neural_draft_cell": 49,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_036",
+      "last_cell": 36,
+      "neural_draft_cell": 17,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_037",
+      "last_cell": 37,
+      "neural_draft_cell": 40,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_038",
+      "last_cell": 38,
+      "neural_draft_cell": 52,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_039",
+      "last_cell": 39,
+      "neural_draft_cell": 25,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_040",
+      "last_cell": 40,
+      "neural_draft_cell": 46,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_041",
+      "last_cell": 44,
+      "neural_draft_cell": 55,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_042",
+      "last_cell": 45,
+      "neural_draft_cell": 33,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_043",
+      "last_cell": 46,
+      "neural_draft_cell": 49,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_044",
+      "last_cell": 47,
+      "neural_draft_cell": 58,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_wall_045",
+      "last_cell": 48,
+      "neural_draft_cell": 9,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_046",
+      "last_cell": 49,
+      "neural_draft_cell": 52,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_047",
+      "last_cell": 50,
+      "neural_draft_cell": 61,
+      "labels": [
+        "research_only",
+        "dual_plane_spatial_p2",
+        "synthetic_v1_1"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "btrack_theory_to_gp_orchestrator_spec_v0",
+  "version": "0.1.0",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "purpose_ko": "Logos/4D motif + market CSV → general_prophecy 이진 명제 초안. Track A·실매매 합선 금지.",
+  "track_wall": "B_track_not_track_A",
+  "non_gating": true,
+  "pipeline_stages": [
+    {
+      "id": "pack_load",
+      "required": true,
+      "description": "Load pack JSON (topic, templates, motif p_prior, layer3 refs)."
+    },
+    {
+      "id": "market_csv_gate",
+      "required": false,
+      "description": "Optional: verify research/market_data CSV exists; emit reference_high audit."
+    },
+    {
+      "id": "graphrag_optional",
+      "required": false,
+      "description": "Optional subprocess run_logos_subgraph_graphrag_router_v1.py; never overwrites L1 p from cosine."
+    },
+    {
+      "id": "proposition_build",
+      "required": true,
+      "description": "Render templates → general_prophecy_registry_v1 fragment."
+    },
+    {
+      "id": "schema_validate",
+      "required": true,
+      "description": "Validate against GENERAL_PROPHECY_SCHEMA_V1.json."
+    },
+    {
+      "id": "registry_merge_optional",
+      "required": false,
+      "description": "Optional: generate_general_prophecy_v1.py --merge-from draft (human-approved)."
+    }
+  ],
+  "forbidden": [
+    "cosine_as_hit_rate",
+    "auto_track_a_promotion",
+    "live_trading_trigger",
+    "llm_generated_resolution_criteria_without_template"
+  ],
+  "outputs": {
+    "draft_registry_json": "tests/fixtures or reports/",
+    "audit_json": "reports/btrack_theory_to_gp_orchestrator_v0_latest.json"
+  },
+  "existing_wrappers": {
+    "graphrag": "scripts/run_logos_subgraph_graphrag_router_v1.py",
+    "resonance_4d": "scripts/build_logos_topic_4d_resonance_spike_v1.py",
+    "gp_merge": "scripts/generate_general_prophecy_v1.py",
+    "brier": "scripts/eval_general_prophecy_brier_score.py"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "btrack_gp_proposition_templates_v0",
+  "version": "0.1.0",
+  "templates": {
+    "sox_new_high_before_deadline": {
+      "question_id": "gp_2026_logos_sox_new_high_before_0930",
+      "prophecy_track": "financial",
+      "motif_key": "hubris_trade_melt_up",
+      "question_text": "{deadline_label} 이전에 PHLX Semiconductor Index(^SOX) 일봉 종가가 {reference_date}까지의 역사적 최고 종가(동 CSV 기준)를 엄격히 초과한 거래일이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "usa", "equity", "semiconductor", "ai", "logos_graphrag"],
+      "resolution_deadline_utc": "{resolution_deadline_utc}",
+      "resolution_criteria": "{market_csv_rel} (^SOX Yahoo Finance). reference_high = max(Close) for rows with Date <= {reference_date}. Window: {window_start} <= Date <= {window_end} (NYSE 거래일). TRUE if any Close > reference_high. All window closes <= reference_high => FALSE. CSV unavailable or reference_high undefined => VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_close_gt_reference_high",
+        "false_label": "no_close_gt_reference_high"
+      },
+      "source_detail_template": "[HYPO] Logos {motif_lanes} + pack={pack_id}; melt-up before Dan.5 weigh; [NON_GATING]; B-rail."
+    },
+    "sox_daily_drop_ge_pct_window": {
+      "question_id": "gp_2026_logos_sox_daily_drop_ge_5pct_q3",
+      "prophecy_track": "financial",
+      "motif_key": "judgment_unwind_daily",
+      "question_text": "{drop_window_label} US/Eastern 거래일 중 ^SOX 일간 수익률이 −{drop_pct}.00% 이하(하락 {drop_pct}%p 이상)인 날이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "usa", "equity", "semiconductor", "volatility", "ai", "logos_graphrag"],
+      "resolution_deadline_utc": "{resolution_deadline_utc}",
+      "resolution_criteria": "{market_csv_rel}. Daily return (Close_t/Close_{t-1}−1) <= −{drop_pct_decimal}. on any row with Date in {drop_window_start}..{drop_window_end}. TRUE if >=1 day. FALSE if none. VOID if >=5 consecutive missing rows in window.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_day_return_le_minus_{drop_pct}pct",
+        "false_label": "no_day_return_le_minus_{drop_pct}pct"
+      },
+      "source_detail_template": "[HYPO] Logos judgment/unwind ({seed_verses}); motif={motif_lanes}; [NON_GATING]; B-rail."
+    },
+    "sox_close_below_ref_minus_pct": {
+      "question_id": "gp_2026_logos_sox_close_below_ref_minus_10pct_by_0930",
+      "prophecy_track": "financial",
+      "motif_key": "hub_collapse_ref_drawdown",
+      "question_text": "{deadline_label} 이전에 ^SOX 종가가 ({reference_date}까지 CSV 역사적 최고 종가 대비 {drawdown_pct}% 이상 하락한 수준, 즉 Close <= {drawdown_multiplier} * reference_high)으로 마감한 거래일이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "usa", "equity", "semiconductor", "ai", "logos_graphrag"],
+      "resolution_deadline_utc": "{resolution_deadline_utc}",
+      "resolution_criteria": "{market_csv_rel}. reference_high = max(Close) for Date <= {reference_date}. Threshold = {drawdown_multiplier} * reference_high. Window {window_start}..{window_end}: TRUE if any Close <= threshold. FALSE if all Close > threshold. VOID if reference_high undefined.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_close_le_{drawdown_pct}pct_of_ref_high",
+        "false_label": "all_closes_gt_{drawdown_pct}pct_of_ref_high"
+      },
+      "source_detail_template": "[HYPO] Logos Rev.18/Babylon hub + Dan.2:43 iron_clay; pack={pack_id}; [NON_GATING]; B-rail."
+    },
+    "equity_new_high_before_deadline": {
+      "question_id_suffix": "new_high_before_0930",
+      "prophecy_track": "financial",
+      "motif_key": "hubris_trade_melt_up",
+      "question_text": "{deadline_label} 이전에 {index_label} 일봉 종가가 {reference_date}까지의 역사적 최고 종가(동 CSV 기준)를 엄격히 초과한 거래일이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "usa", "equity", "ai", "logos_graphrag"],
+      "resolution_deadline_utc": "{resolution_deadline_utc}",
+      "resolution_criteria": "{market_csv_rel} ({symbol_yahoo} Yahoo Finance). reference_high = max(Close) for rows with Date <= {reference_date}. Window: {window_start} <= Date <= {window_end}. TRUE if any Close > reference_high. All window closes <= reference_high => FALSE. CSV unavailable or reference_high undefined => VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_close_gt_reference_high",
+        "false_label": "no_close_gt_reference_high"
+      },
+      "source_detail_template": "[HYPO] Logos {motif_lanes}; symbol={symbol_yahoo}; pack={pack_id}; [NON_GATING]; B-rail."
+    },
+    "equity_daily_drop_ge_pct_window": {
+      "question_id_suffix": "daily_drop_ge_{drop_pct}pct_q3",
+      "prophecy_track": "financial",
+      "motif_key": "judgment_unwind_daily",
+      "question_text": "{drop_window_label} US/Eastern 거래일 중 {index_label} 일간 수익률이 −{drop_pct}.00% 이하(하락 {drop_pct}%p 이상)인 날이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "usa", "equity", "volatility", "ai", "logos_graphrag"],
+      "resolution_deadline_utc": "{resolution_deadline_utc}",
+      "resolution_criteria": "{market_csv_rel}. Daily return (Close_t/Close_{t-1}−1) <= −{drop_pct_decimal}. on any row with Date in {drop_window_start}..{drop_window_end}. TRUE if >=1 day. FALSE if none. VOID if >=5 consecutive missing rows in window.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_day_return_le_minus_{drop_pct}pct",
+        "false_label": "no_day_return_le_minus_{drop_pct}pct"
+      },
+      "source_detail_template": "[HYPO] Logos judgment/unwind ({seed_verses}); {index_label}; [NON_GATING]; B-rail."
+    }
+  }
+}

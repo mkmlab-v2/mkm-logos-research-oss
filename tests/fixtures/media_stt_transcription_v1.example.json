@@ -1,0 +1,40 @@
+{
+  "schema": "media_stt_transcription_v1",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "hypothesis_class": "HYPO",
+  "wav_source": "data/audio/raw/education_session_20260621.wav",
+  "theme": "원내 회고 문화 (Retrospective Co-op)",
+  "target_suite": "CapCut Desktop & AntiGravity",
+  "theme_keywords": ["회고", "시스템", "팩트", "에이전트", "장부"],
+  "segments": [
+    {
+      "id": "seg_01",
+      "start": "00:00:10.00",
+      "end": "00:00:25.00",
+      "duration_sec": 15.0,
+      "text": "어... 그러니까 오늘 진료 끝나고 저기 원내 교육 녹음을 진행해 보겠습니다. 음... 잘 부탁드립니다."
+    },
+    {
+      "id": "seg_02",
+      "start": "00:01:14.20",
+      "end": "00:01:30.50",
+      "duration_sec": 16.3,
+      "text": "저희 원내 회고 문화의 핵심은 비난이 아니라 시스템 보완입니다. 팩트 장부를 봐야 합니다."
+    },
+    {
+      "id": "seg_03",
+      "start": "00:01:31.00",
+      "end": "00:01:55.00",
+      "duration_sec": 24.0,
+      "text": "원장과 직원이 동등하게 시스템 결함을 분석하고 다음 액션 아이템을 결정하죠. 그래야 에이전트가 돌아요."
+    },
+    {
+      "id": "seg_04",
+      "start": "00:02:40.00",
+      "end": "00:02:45.00",
+      "duration_sec": 5.0,
+      "text": "그럼 이만 마칠게요. 수고하셨습니다."
+    }
+  ]
+}

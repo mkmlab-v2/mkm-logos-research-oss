@@ -1,0 +1,31 @@
+{
+  "schema": "btrack_fills_daily_feature_cache_v1",
+  "research_only": true,
+  "stats": { "n_fill_rows": 3, "n_daily_buckets": 2 },
+  "daily_by_utc_date": {
+    "2026-01-10": {
+      "fill_count": 2,
+      "buy_fill_count": 1,
+      "sell_fill_count": 1,
+      "buy_sell_imbalance": 0.0,
+      "maker_ratio": 0.5,
+      "quote_qty_sum": 100.0,
+      "realized_pnl_sum": 1.5,
+      "commission_sum": 0.1,
+      "price_mean": 50000.0,
+      "price_dispersion": 10.0
+    },
+    "2026-01-11": {
+      "fill_count": 1,
+      "buy_fill_count": 0,
+      "sell_fill_count": 1,
+      "buy_sell_imbalance": -1.0,
+      "maker_ratio": 0.0,
+      "quote_qty_sum": 50.0,
+      "realized_pnl_sum": -0.5,
+      "commission_sum": 0.05,
+      "price_mean": 51000.0,
+      "price_dispersion": 0.0
+    }
+  }
+}

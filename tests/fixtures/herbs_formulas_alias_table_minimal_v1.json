@@ -1,0 +1,61 @@
+{
+  "schema": "herbs_formulas_alias_table_v1",
+  "version": "1.0.0",
+  "research_only": true,
+  "track_b_only": true,
+  "send_gate": "HOLD",
+  "expert_review_required": true,
+  "boundary_ack": "Fixture alias table for PoC only; not a clinical prescription or full materia medica index.",
+  "herbs": [
+    {
+      "canonical_id": "herb:guizhi",
+      "canonical_name_hans": "桂枝",
+      "canonical_name_ko": "계지",
+      "aliases": ["Gui Zhi", "gui zhi", "계 지"],
+      "pinyin": "guizhi"
+    },
+    {
+      "canonical_id": "herb:shaoyao",
+      "canonical_name_hans": "芍药",
+      "canonical_name_ko": "작약",
+      "aliases": ["Shao Yao", "shao yao"],
+      "pinyin": "shaoyao"
+    },
+    {
+      "canonical_id": "herb:gancao",
+      "canonical_name_hans": "甘草",
+      "canonical_name_ko": "감초",
+      "aliases": ["Gan Cao", "gan cao"],
+      "pinyin": "gancao"
+    },
+    {
+      "canonical_id": "herb:shengjiang",
+      "canonical_name_hans": "生姜",
+      "canonical_name_ko": "생강",
+      "aliases": ["Sheng Jiang", "sheng jiang"],
+      "pinyin": "shengjiang"
+    },
+    {
+      "canonical_id": "herb:dazao",
+      "canonical_name_hans": "大枣",
+      "canonical_name_ko": "대추",
+      "aliases": ["Da Zao", "da zao"],
+      "pinyin": "dazao"
+    }
+  ],
+  "formulas": [
+    {
+      "formula_id": "formula:guizhitang",
+      "canonical_name_hans": "桂枝汤",
+      "canonical_name_ko": "계지탕",
+      "aliases": ["Gui Zhi Tang", "gui zhi tang", "桂枝湯"],
+      "composition": [
+        {"herb_id": "herb:guizhi", "role": "jun", "name_hans": "桂枝"},
+        {"herb_id": "herb:shaoyao", "role": "chen", "name_hans": "芍药"},
+        {"herb_id": "herb:shengjiang", "role": "zuo", "name_hans": "生姜"},
+        {"herb_id": "herb:dazao", "role": "zuo", "name_hans": "大枣"},
+        {"herb_id": "herb:gancao", "role": "shi", "name_hans": "甘草"}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "schema": "han_vocology_km_vhi_pilot_cohort_gate_v1",
+  "ok": true,
+  "track": "B",
+  "send_gate": "HOLD",
+  "cohort_count": 3,
+  "cohorts_with_week8": 3,
+  "excellent_at_week8": 2,
+  "cohorts": [
+    {
+      "pseudonym_id": "FIXTURE-001",
+      "delta_pct_week8": 25.0,
+      "band_week8": "excellent"
+    },
+    {
+      "pseudonym_id": "FIXTURE-002",
+      "delta_pct_week8": 22.0,
+      "band_week8": "excellent"
+    },
+    {
+      "pseudonym_id": "FIXTURE-003",
+      "delta_pct_week8": 12.0,
+      "band_week8": "partial"
+    }
+  ],
+  "note": "HYPO fixture for L4 pytest only"
+}

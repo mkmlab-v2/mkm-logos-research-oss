@@ -1,0 +1,533 @@
+{
+  "schema": "dual_plane_p3_merkle_audit_crosswalk_v1",
+  "version": "1.1.0",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "hypothesis_class": "HYPO",
+  "lane_label": "edge_symbolic_token_audit_stub",
+  "buffer_defaults": {},
+  "samples": [
+    {
+      "id": "clean_short",
+      "canonical_tokens": [
+        "t001",
+        "t002",
+        "t003"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "tamper_swap_mid",
+      "canonical_tokens": [
+        "t010",
+        "t011",
+        "t012",
+        "t013"
+      ],
+      "tampered": true,
+      "tamper_index": 2,
+      "tamper_value": "t999"
+    },
+    {
+      "id": "clean_longer",
+      "canonical_tokens": [
+        "a1",
+        "a2",
+        "a3",
+        "a4",
+        "a5"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "tamper_head",
+      "canonical_tokens": [
+        "b1",
+        "b2",
+        "b3"
+      ],
+      "tampered": true,
+      "tamper_index": 0,
+      "tamper_value": "bx"
+    },
+    {
+      "id": "tamper_tail",
+      "canonical_tokens": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "tampered": true,
+      "tamper_index": 3,
+      "tamper_value": "cz"
+    },
+    {
+      "id": "clean_single",
+      "canonical_tokens": [
+        "solo"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "tamper_insert",
+      "canonical_tokens": [
+        "d1",
+        "d2"
+      ],
+      "tampered": true,
+      "tamper_mode": "append",
+      "tamper_value": "dX"
+    },
+    {
+      "id": "clean_grid",
+      "canonical_tokens": [
+        "g00",
+        "g01",
+        "g10",
+        "g11"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "tamper_swap",
+      "canonical_tokens": [
+        "e1",
+        "e2",
+        "e3",
+        "e4",
+        "e5"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "eZ"
+    },
+    {
+      "id": "clean_merkle_edge",
+      "canonical_tokens": [
+        "m1",
+        "m2"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "tamper_dup",
+      "canonical_tokens": [
+        "f1",
+        "f2",
+        "f3"
+      ],
+      "tampered": true,
+      "tamper_index": 2,
+      "tamper_value": "f2"
+    },
+    {
+      "id": "clean_audit_ok",
+      "canonical_tokens": [
+        "z1",
+        "z2",
+        "z3",
+        "z4",
+        "z5",
+        "z6"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_clean_000",
+      "canonical_tokens": [
+        "x0",
+        "y0",
+        "z0",
+        "w0"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_001",
+      "canonical_tokens": [
+        "x1",
+        "y1",
+        "z1",
+        "w1"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T1"
+    },
+    {
+      "id": "syn_clean_002",
+      "canonical_tokens": [
+        "x2",
+        "y2",
+        "z2",
+        "w2"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_003",
+      "canonical_tokens": [
+        "x3",
+        "y3",
+        "z3",
+        "w3"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T3"
+    },
+    {
+      "id": "syn_clean_004",
+      "canonical_tokens": [
+        "x4",
+        "y4",
+        "z4",
+        "w4"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_005",
+      "canonical_tokens": [
+        "x5",
+        "y5",
+        "z5",
+        "w5"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T5"
+    },
+    {
+      "id": "syn_clean_006",
+      "canonical_tokens": [
+        "x6",
+        "y6",
+        "z6",
+        "w6"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_007",
+      "canonical_tokens": [
+        "x7",
+        "y7",
+        "z7",
+        "w7"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T7"
+    },
+    {
+      "id": "syn_clean_008",
+      "canonical_tokens": [
+        "x8",
+        "y8",
+        "z8",
+        "w8"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_009",
+      "canonical_tokens": [
+        "x9",
+        "y9",
+        "z9",
+        "w9"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T9"
+    },
+    {
+      "id": "syn_clean_010",
+      "canonical_tokens": [
+        "x10",
+        "y10",
+        "z10",
+        "w10"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_011",
+      "canonical_tokens": [
+        "x11",
+        "y11",
+        "z11",
+        "w11"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T11"
+    },
+    {
+      "id": "syn_clean_012",
+      "canonical_tokens": [
+        "x12",
+        "y12",
+        "z12",
+        "w12"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_013",
+      "canonical_tokens": [
+        "x13",
+        "y13",
+        "z13",
+        "w13"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T13"
+    },
+    {
+      "id": "syn_clean_014",
+      "canonical_tokens": [
+        "x14",
+        "y14",
+        "z14",
+        "w14"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_015",
+      "canonical_tokens": [
+        "x15",
+        "y15",
+        "z15",
+        "w15"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T15"
+    },
+    {
+      "id": "syn_clean_016",
+      "canonical_tokens": [
+        "x16",
+        "y16",
+        "z16",
+        "w16"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_017",
+      "canonical_tokens": [
+        "x17",
+        "y17",
+        "z17",
+        "w17"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T17"
+    },
+    {
+      "id": "syn_clean_018",
+      "canonical_tokens": [
+        "x18",
+        "y18",
+        "z18",
+        "w18"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_019",
+      "canonical_tokens": [
+        "x19",
+        "y19",
+        "z19",
+        "w19"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T19"
+    },
+    {
+      "id": "syn_clean_020",
+      "canonical_tokens": [
+        "x20",
+        "y20",
+        "z20",
+        "w20"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_021",
+      "canonical_tokens": [
+        "x21",
+        "y21",
+        "z21",
+        "w21"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T21"
+    },
+    {
+      "id": "syn_clean_022",
+      "canonical_tokens": [
+        "x22",
+        "y22",
+        "z22",
+        "w22"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_023",
+      "canonical_tokens": [
+        "x23",
+        "y23",
+        "z23",
+        "w23"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T23"
+    },
+    {
+      "id": "syn_clean_024",
+      "canonical_tokens": [
+        "x24",
+        "y24",
+        "z24",
+        "w24"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_025",
+      "canonical_tokens": [
+        "x25",
+        "y25",
+        "z25",
+        "w25"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T25"
+    },
+    {
+      "id": "syn_clean_026",
+      "canonical_tokens": [
+        "x26",
+        "y26",
+        "z26",
+        "w26"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_027",
+      "canonical_tokens": [
+        "x27",
+        "y27",
+        "z27",
+        "w27"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T27"
+    },
+    {
+      "id": "syn_clean_028",
+      "canonical_tokens": [
+        "x28",
+        "y28",
+        "z28",
+        "w28"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_029",
+      "canonical_tokens": [
+        "x29",
+        "y29",
+        "z29",
+        "w29"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T29"
+    },
+    {
+      "id": "syn_clean_030",
+      "canonical_tokens": [
+        "x30",
+        "y30",
+        "z30",
+        "w30"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_031",
+      "canonical_tokens": [
+        "x31",
+        "y31",
+        "z31",
+        "w31"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T31"
+    },
+    {
+      "id": "syn_clean_032",
+      "canonical_tokens": [
+        "x32",
+        "y32",
+        "z32",
+        "w32"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_033",
+      "canonical_tokens": [
+        "x33",
+        "y33",
+        "z33",
+        "w33"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T33"
+    },
+    {
+      "id": "syn_clean_034",
+      "canonical_tokens": [
+        "x34",
+        "y34",
+        "z34",
+        "w34"
+      ],
+      "tampered": false
+    },
+    {
+      "id": "syn_tamper_035",
+      "canonical_tokens": [
+        "x35",
+        "y35",
+        "z35",
+        "w35"
+      ],
+      "tampered": true,
+      "tamper_index": 1,
+      "tamper_value": "T35"
+    }
+  ]
+}

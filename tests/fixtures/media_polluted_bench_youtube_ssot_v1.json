@@ -1,0 +1,22 @@
+{
+  "schema": "media_polluted_bench_youtube_ssot_v1",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "hypothesis_class": "HYPO",
+  "title": "성경 기원 논쟁 (조로아스터교 vs 수메르 음모론)",
+  "book": {
+    "title": "교회에서 쉬쉬하는 그리스도교 이야기",
+    "publisher": "대원",
+    "published": "2002-03-09",
+    "author": "이리유카바 최"
+  },
+  "youtube_url_env": "MKM_POLLUTED_BENCH_YOUTUBE_URL",
+  "youtube_url": null,
+  "fixture_transcript": "tests/fixtures/youtube_transcript_polluted_full_v0.txt",
+  "baseline_stt_fixture": "tests/fixtures/media_stt_transcription_polluted_bench_v1.json",
+  "fingerprint_keywords": ["조로", "시친", "엘로힘", "니비루", "오피", "릴리스"],
+  "fingerprint_min_hits": 4,
+  "default_task_id": "20260621-YT-FULL",
+  "reproduce_fixture": "py scripts/run_media_polluted_bench_live_ingest_v0.py",
+  "reproduce_live": "set MKM_POLLUTED_BENCH_YOUTUBE_URL=https://youtu.be/VIDEO_ID && py scripts/run_media_polluted_bench_live_ingest_v0.py --live"
+}

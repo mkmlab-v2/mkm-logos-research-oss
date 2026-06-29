@@ -1,0 +1,136 @@
+{
+  "schema": "micro_signal_observation_bundle_v1",
+  "generated_at_utc": "2026-06-14T02:00:00Z",
+  "research_rail": "B",
+  "hypothesis_tag": "[HYPO]",
+  "boundary_ack": true,
+  "lens_partition_ack": true,
+  "fusion_forbidden_ack": true,
+  "observations": [
+    {
+      "schema": "micro_signal_observation_row_v1",
+      "observation_id": "market_ohlcv.micro_vol.kospi.fixture",
+      "domain": "market_ohlcv",
+      "lens_id": "field",
+      "signal_kind": "micro_volatility_3d",
+      "observed_at_utc": "2026-06-14T02:00:00Z",
+      "magnitude_0_1": 0.42,
+      "signed_delta_-1_1": -0.18,
+      "confidence_0_1": 0.55,
+      "precursor_hint": "bear",
+      "instrument": "kospi",
+      "provenance": {
+        "source_kind": "fixture",
+        "ref": "tests/fixtures/micro_signal_observation_bundle_v1.example.json",
+        "note": "offline example"
+      },
+      "governance": {
+        "research_only": true,
+        "non_gating": false,
+        "a_track_autobind_forbidden": true
+      }
+    },
+    {
+      "schema": "micro_signal_observation_row_v1",
+      "observation_id": "myeongni_time.jijangan_pressure.fixture",
+      "domain": "myeongni_time",
+      "lens_id": "myeongni",
+      "signal_kind": "jijangan_pressure",
+      "observed_at_utc": "2026-06-14T02:00:00Z",
+      "magnitude_0_1": 0.4,
+      "signed_delta_-1_1": 0.15,
+      "confidence_0_1": 0.54,
+      "precursor_hint": "watch",
+      "provenance": {
+        "source_kind": "fixture",
+        "ref": "tests/fixtures/micro_signal_observation_bundle_v1.example.json"
+      },
+      "governance": {
+        "research_only": true,
+        "a_track_autobind_forbidden": true
+      }
+    },
+    {
+      "schema": "micro_signal_observation_row_v1",
+      "observation_id": "sasang_constitution.thermal_imbalance.fixture",
+      "domain": "sasang_constitution",
+      "lens_id": "sasang",
+      "signal_kind": "thermal_imbalance_proxy",
+      "observed_at_utc": "2026-06-14T02:00:00Z",
+      "magnitude_0_1": 0.17,
+      "signed_delta_-1_1": 0.17,
+      "confidence_0_1": 0.71,
+      "precursor_hint": "phase_transition",
+      "provenance": {
+        "source_kind": "fixture",
+        "ref": "tests/fixtures/micro_signal_observation_bundle_v1.example.json"
+      },
+      "governance": {
+        "research_only": true,
+        "a_track_autobind_forbidden": true
+      }
+    },
+    {
+      "schema": "micro_signal_observation_row_v1",
+      "observation_id": "logos_text.archetype_resonance.fixture",
+      "domain": "logos_text",
+      "lens_id": "logos",
+      "signal_kind": "archetype_resonance",
+      "observed_at_utc": "2026-06-14T02:00:00Z",
+      "magnitude_0_1": 0.98,
+      "signed_delta_-1_1": 0.1,
+      "confidence_0_1": 0.94,
+      "precursor_hint": "hold",
+      "provenance": {
+        "source_kind": "fixture",
+        "ref": "tests/fixtures/micro_signal_observation_bundle_v1.example.json",
+        "note": "NON_GATING"
+      },
+      "governance": {
+        "research_only": true,
+        "non_gating": true,
+        "a_track_autobind_forbidden": true
+      }
+    },
+    {
+      "schema": "micro_signal_observation_row_v1",
+      "observation_id": "science_core.directional_hit.fixture",
+      "domain": "science_core",
+      "lens_id": "science",
+      "signal_kind": "directional_hit_rate_slice",
+      "observed_at_utc": "2026-06-14T02:00:00Z",
+      "magnitude_0_1": 0.11,
+      "signed_delta_-1_1": -0.19,
+      "confidence_0_1": 0.45,
+      "precursor_hint": "watch",
+      "instrument": "kospi",
+      "provenance": {
+        "source_kind": "fixture",
+        "ref": "tests/fixtures/micro_signal_observation_bundle_v1.example.json"
+      },
+      "governance": {
+        "research_only": true,
+        "a_track_autobind_forbidden": true
+      }
+    }
+  ],
+  "summary": {
+    "n_observations": 5,
+    "domains_present": [
+      "logos_text",
+      "market_ohlcv",
+      "myeongni_time",
+      "sasang_constitution",
+      "science_core"
+    ],
+    "domains_missing": ["weather_env"],
+    "expected_domains": [
+      "market_ohlcv",
+      "weather_env",
+      "myeongni_time",
+      "sasang_constitution",
+      "logos_text",
+      "science_core"
+    ]
+  }
+}

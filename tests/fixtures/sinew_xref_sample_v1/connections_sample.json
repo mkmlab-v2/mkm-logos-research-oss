@@ -1,0 +1,7 @@
+[
+  {"source_verse_id": "John.3.16", "target_verse_id": "Rom.5.8", "type": "cross_reference", "source": "OpenBible", "weight": 85},
+  {"source_verse_id": "John.3.16", "target_verse_id": "1John.4.9", "type": "cross_reference", "source": "OpenBible", "weight": 72},
+  {"source_verse_id": "Job.28.17", "target_verse_id": "Prov.8.19", "type": "cross_reference", "source": "OpenBible", "weight": 45},
+  {"source_verse_id": "Dan.2.43", "target_verse_id": "Rev.17.12", "type": "cross_reference", "source": "OpenBible", "weight": 38},
+  {"source_verse_id": "Gen.1.1", "target_verse_id": "Ps.90.2", "type": "cross_reference", "source": "OpenBible", "weight": 61}
+]

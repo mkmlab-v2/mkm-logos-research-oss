@@ -1,0 +1,36 @@
+{
+  "schema": "p3_root_router_probe_v1",
+  "description": "Domain-router + lexicon coverage probes for P3 root bench (offline).",
+  "probes": [
+    {
+      "id": "hangul_sasang",
+      "input": "사상의학 체질 한의학 sasang myeongri 한글 압축 shallow routing",
+      "expected_shard_domain": "hangul"
+    },
+    {
+      "id": "code_devops",
+      "input": "pytest json schema api endpoint devops CI smoke traceback fix",
+      "expected_shard_domain": "code"
+    },
+    {
+      "id": "finance_risk",
+      "input": "liquidity drawdown volatility finance risk band gate",
+      "expected_shard_domain": "finance"
+    },
+    {
+      "id": "logos_greek_tokens",
+      "input": "logos pneuma charis bible scripture greek hebrew shallow",
+      "expected_shard_domain": "ssot"
+    },
+    {
+      "id": "health_stub",
+      "input": "clinical wellness patient SOAP health guard boundary",
+      "expected_shard_domain": "health"
+    },
+    {
+      "id": "it_extension_tokens",
+      "input": "uvicorn fastapi middleware pytest exit code infra ops",
+      "expected_shard_domain": "code"
+    }
+  ]
+}

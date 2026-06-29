@@ -1,0 +1,130 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-04T02:00:00Z",
+  "git_commit_hint": "fixture:logos_2026_graphrag_pack_v1",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_kospi_close_below_8500_by_0630",
+      "question_text": "2026-06-30 15:30 KST 이전 KOSPI 지수 종가가 8500.00 미만으로 마감한 거래일이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "korea", "equity", "logos_graphrag"],
+      "resolution_deadline_utc": "2026-06-30T06:30:00Z",
+      "resolution_criteria": "research/market_data/kospi_daily_external_yf.csv 또는 동등 공식 일봉 종가(지수 포인트). 2026-06-30 KST 장 마감까지의 행 중 Close < 8500.00 이면 TRUE. 모든 종가가 8500.00 이상이면 FALSE. 휴장일(예: 2026-06-03 지방선거)은 제외. 출처 불가·정의 불가면 VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_close_lt_8500",
+        "false_label": "all_closes_ge_8500"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T02:00:00Z",
+          "probability_0_1": 0.35,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Logos GraphRAG judgment/excess-unwind lane + Phase B bear overlay; [NON_GATING]; B-rail only.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "reports/logos_graphrag_2026_excess_unwind_latest.json",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_nasdaq_daily_drop_ge_3pct_june",
+      "question_text": "2026-06-01 00:00 US/Eastern ~ 2026-06-30 23:59 US/Eastern 구간에 Nasdaq Composite 일간 수익률이 −3.00% 이하(하락 3%p 이상)인 거래일이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "usa", "equity", "volatility", "logos_graphrag"],
+      "resolution_deadline_utc": "2026-07-01T04:00:00Z",
+      "resolution_criteria": "Yahoo Finance ^IXIC 또는 Stooq NDX 일봉 adj close 기준 (Close_t/Close_{t-1}−1) ≤ −0.03. 해당 구간 내 1일이라도 TRUE. 없으면 FALSE. VOID는 연속 결측 3일 이상.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_day_return_le_minus_3pct",
+        "false_label": "no_day_return_le_minus_3pct"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T02:00:00Z",
+          "probability_0_1": 0.42,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Logos GraphRAG risk_off + collapse_warn paths; overnight selloff anchor 2026-06-03; [NON_GATING].",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "reports/logos_graphrag_2026_risk_off_latest.json",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_brent_spot_ge_95_before_0701",
+      "question_text": "2026-07-01 00:00 UTC 이전에 ICE Brent 원유 현물(또는 front-month 연속) 종가가 배럴당 95.00 USD 이상인 날이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "commodities", "energy", "logos_graphrag"],
+      "resolution_deadline_utc": "2026-07-01T05:00:00Z",
+      "resolution_criteria": "Stooq/Investing/Yahoo BZ=F 또는 ICE 공식 Brent spot 일봉 종가 ≥ 95.00 USD. 2026-06-04~2026-06-30 UTC 구간 1일이라도 TRUE. 모두 미만이면 FALSE. VOID는 출처 불가.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_close_ge_95_usd",
+        "false_label": "all_closes_lt_95_usd"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T02:00:00Z",
+          "probability_0_1": 0.40,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] global_market_overnight Middle East oil surge headline + Logos hubris_trade lane; [NON_GATING].",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "reports/logos_graphrag_2026_ai_trade_latest.json",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_vix_close_ge_25_june",
+      "question_text": "2026-06-01 ~ 2026-06-30 US/Eastern 거래일 중 CBOE VIX 종가가 25.00 이상인 날이 한 번이라도 있는가?",
+      "domain_tags": ["macro", "usa", "volatility", "logos_graphrag"],
+      "resolution_deadline_utc": "2026-07-01T04:00:00Z",
+      "resolution_criteria": "Yahoo ^VIX 또는 CBOE 공식 VIX close ≥ 25.00. 2026년 6월 NYSE 거래일 중 1일이라도 TRUE. 없으면 FALSE. VOID는 5거래일 연속 결측.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_vix_close_ge_25",
+        "false_label": "all_vix_close_lt_25"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T02:00:00Z",
+          "probability_0_1": 0.38,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Logos GraphRAG volatility lane (Ps.23:3 stability-after-shock); lehman regime shadow [NON_GATING]; B-rail.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "reports/logos_graphrag_2026_regime_watch_latest.json",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-26T00:00:00Z",
+  "git_commit_hint": "fixture:daily_hero_board_v1_btrack",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hero.macro.us_cpi_yoy_ge_3_20260715",
+      "question_text": "Will the US Bureau of Labor Statistics published Consumer Price Index year-over-year (all items, seasonally adjusted) for the June 2026 reference month be greater than or equal to 3.0 percent?",
+      "domain_tags": ["macro", "inflation", "us", "cpi"],
+      "prophecy_track": "financial",
+      "resolution_deadline_utc": "2026-07-15T14:00:00Z",
+      "resolution_criteria": "TRUE if BLS CPI-U SA YoY for June 2026 release >= 3.0%. FALSE if < 3.0%. VOID if release delayed beyond deadline without preliminary substitute.",
+      "outcome_spec": { "kind": "binary", "true_label": "cpi_yoy_ge_3", "false_label": "cpi_yoy_lt_3" },
+      "forecasts": [{ "issued_at_utc": "2026-06-26T00:00:00Z", "probability_0_1": 0.38, "source_kind": "hybrid", "source_detail": "daily_hero_board_v1_stub", "brier_ready": true }],
+      "resolution": { "status": "pending" },
+      "layer3_interpretation_ref": "internal:hero_board_us_cpi",
+      "epistemic_firewall": { "l1_probability_fields": ["forecasts[].probability_0_1"], "l3_narrative_forbidden_in": ["forecasts", "resolution"] }
+    }
+  ]
+}

@@ -72,7 +72,7 @@ def test_build_btrack_llm_input_bundle_outputs_v13_with_interpretive(tmp_path: P
     cp = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
     assert cp.returncode == 0, cp.stderr + cp.stdout
     data = json.loads(out.read_text(encoding="utf-8"))
-    assert data["version"] == "1.4.0"
+    assert data["version"] == "1.5.0"
     bridge = data["artifacts"]["sasang_interpretive_bridge_context"]
     assert bridge["available"] is True
     assert bridge["auto_weight_adjustment_forbidden"] is True
@@ -137,7 +137,7 @@ def test_build_btrack_llm_input_bundle_market_observation_slots(tmp_path: Path) 
     cp = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
     assert cp.returncode == 0, cp.stderr + cp.stdout
     data = json.loads(out.read_text(encoding="utf-8"))
-    assert data["version"] == "1.4.0"
+    assert data["version"] == "1.5.0"
     mm_slot = data["artifacts"]["market_myeongni_observation_slot"]
     ms_slot = data["artifacts"]["market_sasang_observation_slot"]
     assert mm_slot["available"] is True
@@ -174,3 +174,59 @@ def test_build_btrack_llm_input_bundle_skip_interpretive(tmp_path: Path) -> None
     assert cp.returncode == 0, cp.stderr + cp.stdout
     data = json.loads(out.read_text(encoding="utf-8"))
     assert data["artifacts"]["sasang_interpretive_bridge_context"]["available"] is False
+
+
+def test_build_btrack_llm_input_bundle_haan_master_bridge(tmp_path: Path) -> None:
+    out = tmp_path / "bundle.json"
+    for name in ("m.json", "s.json", "l.json", "f.json", "mm.json"):
+        (tmp_path / name).write_text("{}", encoding="utf-8")
+    haan = tmp_path / "haan_master.json"
+    haan.write_text(
+        json.dumps(
+            {
+                "haan_nl_master": "closed",
+                "send_gate": "HOLD",
+                "lanes": {
+                    "logos": {"triad": "closed"},
+                    "myeongri": {"triad": "closed"},
+                    "ijeoma": {"triad": "closed"},
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    brief = tmp_path / "brief.md"
+    brief.write_text("# HAAN master brief\n", encoding="utf-8")
+    wire = tmp_path / "wire.json"
+    wire.write_text(json.dumps({"wire_count": 6}), encoding="utf-8")
+    cmd = [
+        "py",
+        str(ROOT / "scripts" / "build_btrack_llm_input_bundle.py"),
+        "--myeongni",
+        str(tmp_path / "m.json"),
+        "--sasang",
+        str(tmp_path / "s.json"),
+        "--logos",
+        str(tmp_path / "l.json"),
+        "--fusion",
+        str(tmp_path / "f.json"),
+        "--minority-monthly",
+        str(tmp_path / "mm.json"),
+        "--skip-interpretive",
+        "--haan-master",
+        str(haan),
+        "--haan-brief",
+        str(brief),
+        "--haan-sasang-wire",
+        str(wire),
+        "--output",
+        str(out),
+    ]
+    cp = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, check=False)
+    assert cp.returncode == 0, cp.stderr + cp.stdout
+    data = json.loads(out.read_text(encoding="utf-8"))
+    slot = data["artifacts"]["haan_master_bridge_context"]
+    assert slot["available"] is True
+    assert slot["haan_nl_master"] == "closed"
+    assert slot["sasang_wire_count"] == 6
+    assert slot["track_a_live_routing_forbidden"] is True

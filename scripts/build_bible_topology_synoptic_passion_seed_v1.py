@@ -1,0 +1,157 @@
+#!/usr/bin/env python3
+"""Build Tier A SYNOPTIC_PASSION_WEEK_v1 seed shard (manual parallel groups · synthetic crosswalk).
+
+Reproducible maintainer seed — not Harrison DB scrape · not full 63k corpus.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_OUT = ROOT / "tests/fixtures/bible_topology/sample/sample_topology_synoptic_passion_v1.json"
+
+# Anchor verses for passion-week synoptic parallels (public verse refs · maintainer curated).
+PARALLEL_GROUPS: list[list[str]] = [
+    ["MAT.26.36", "MRK.14.32", "LUK.22.39"],
+    ["MAT.26.39", "MRK.14.35", "LUK.22.42"],
+    ["MAT.26.40", "MRK.14.37", "LUK.22.45"],
+    ["MAT.26.47", "MRK.14.43", "LUK.22.47", "JHN.18.3"],
+    ["MAT.26.50", "MRK.14.46", "LUK.22.54", "JHN.18.12"],
+    ["MAT.26.57", "MRK.14.53", "LUK.22.54", "JHN.18.13"],
+    ["MAT.26.59", "MRK.14.55", "LUK.22.66"],
+    ["MAT.26.63", "MRK.14.61", "LUK.22.67"],
+    ["MAT.26.65", "MRK.14.63", "LUK.22.71"],
+    ["MAT.26.69", "MRK.14.66", "LUK.22.55", "JHN.18.15"],
+    ["MAT.26.71", "MRK.14.69", "LUK.22.58", "JHN.18.17"],
+    ["MAT.26.73", "MRK.14.70", "LUK.22.59", "JHN.18.26"],
+    ["MAT.26.75", "MRK.14.72", "LUK.22.62", "JHN.18.27"],
+    ["MAT.27.1", "MRK.15.1", "LUK.23.1", "JHN.18.28"],
+    ["MAT.27.11", "MRK.15.2", "LUK.23.3", "JHN.18.33"],
+    ["MAT.27.15", "MRK.15.6", "LUK.23.17", "JHN.18.39"],
+    ["MAT.27.26", "MRK.15.15", "LUK.23.25", "JHN.19.16"],
+    ["MAT.27.27", "MRK.15.16"],
+    ["MAT.27.32", "MRK.15.21", "LUK.23.26", "JHN.19.17"],
+    ["MAT.27.35", "MRK.15.24", "LUK.23.33", "JHN.19.18"],
+    ["MAT.27.39", "MRK.15.29", "LUK.23.35"],
+    ["MAT.27.45", "MRK.15.33", "LUK.23.44"],
+    ["MAT.27.46", "MRK.15.34", "LUK.23.46"],
+    ["MAT.27.50", "MRK.15.37", "LUK.23.46", "JHN.19.30"],
+    ["MAT.27.51", "MRK.15.38", "LUK.23.45"],
+    ["MAT.27.54", "MRK.15.39", "LUK.23.47"],
+    ["MAT.27.57", "MRK.15.42", "LUK.23.50", "JHN.19.38"],
+    ["MAT.27.59", "MRK.15.46", "LUK.23.53", "JHN.19.40"],
+    ["MAT.27.60", "MRK.15.46", "LUK.23.53", "JHN.19.41"],
+]
+
+QUOTATION_EDGES: list[tuple[str, str, str]] = [
+    ("MAT.27.46", "MRK.15.34", "quotation"),
+]
+
+CROSS_REF_EDGES: list[tuple[str, str, str]] = [
+    ("MAT.26.31", "MAT.26.32", "cross_ref"),
+    ("MRK.14.27", "MRK.14.28", "cross_ref"),
+    ("JHN.19.36", "JHN.19.37", "cross_ref"),
+    ("MAT.27.62", "MAT.27.66", "cross_ref"),
+    ("MRK.15.43", "MRK.15.47", "cross_ref"),
+    ("LUK.23.54", "LUK.23.56", "cross_ref"),
+]
+
+
+def _utc() -> str:
+    return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+
+
+def _edge(src: str, dst: str, relation: str, *, note: str) -> dict[str, Any]:
+    return {
+        "src_ref": src,
+        "dst_ref": dst,
+        "relation": relation,
+        "contributor_provided": True,
+        "customer_provided": False,
+        "labels": ["contributor_provided", "research_only", "bible_topology_shard_v1"],
+        "source_note": note,
+    }
+
+
+def build_edges() -> list[dict[str, Any]]:
+    edges: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, str]] = set()
+
+    def add(src: str, dst: str, relation: str, note: str) -> None:
+        if src == dst:
+            return
+        key = (src, dst, relation)
+        rev = (dst, src, relation)
+        if key in seen or (relation == "parallel" and rev in seen):
+            return
+        seen.add(key)
+        if relation == "parallel":
+            seen.add(rev)
+        edges.append(_edge(src, dst, relation, note=note))
+
+    for group in PARALLEL_GROUPS:
+        for i, a in enumerate(group):
+            for b in group[i + 1 :]:
+                src, dst = (a, b) if a < b else (b, a)
+                add(
+                    src,
+                    dst,
+                    "parallel",
+                    "maintainer curated synoptic passion parallel anchor — public verse ref",
+                )
+
+    for src, dst, relation in CROSS_REF_EDGES + QUOTATION_EDGES:
+        add(
+            src,
+            dst,
+            relation,
+            "maintainer curated intra-pericope cross_ref — synthetic seed v1",
+        )
+
+    return edges
+
+
+def build_doc() -> dict[str, Any]:
+    edges = build_edges()
+    return {
+        "schema": "bible_topology_shard_v1",
+        "version": "1.0.0",
+        "description": "Tier A seed — synoptic passion week parallel anchors · research_only",
+        "research_only": True,
+        "send_gate": "HOLD",
+        "slice_id": "SYNOPTIC_PASSION_WEEK_v1",
+        "tier": "A",
+        "edge_count": len(edges),
+        "edge_budget_max": 500,
+        "provenance_ref": "tests/fixtures/bible_topology/DATA_PROVENANCE.md#tier-a-synoptic-passion-v1",
+        "labels": ["contributor_provided", "research_only", "bible_topology_shard_v1"],
+        "source_note": "Generated by build_bible_topology_synoptic_passion_seed_v1.py — manual parallel groups",
+        "generated_at_utc": _utc(),
+        "edges": edges,
+    }
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--out-json", type=Path, default=DEFAULT_OUT)
+    ap.add_argument("--stdout-only", action="store_true")
+    args = ap.parse_args()
+
+    doc = build_doc()
+    text = json.dumps(doc, ensure_ascii=False, indent=2) + "\n"
+
+    if not args.stdout_only:
+        args.out_json.parent.mkdir(parents=True, exist_ok=True)
+        args.out_json.write_text(text, encoding="utf-8")
+
+    print(json.dumps({"edge_count": doc["edge_count"], "out_json": str(args.out_json)}, ensure_ascii=False))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

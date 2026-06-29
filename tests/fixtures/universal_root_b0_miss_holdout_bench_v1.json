@@ -1,0 +1,864 @@
+{
+  "schema": "universal_root_b0_miss_holdout_bench_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-06-23T00:34:20Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "bench_name": "UR-B0-MISS-HOLDOUT-v1",
+  "bench_ssot": "docs/final/artifacts/universal_root_named_public_bench_v1.json",
+  "parent_fixture": "tests/fixtures/nsm_41k_lexicon_crosswalk_500_v1.json",
+  "parent_fixture_sha256": "edf1206bea45022c5366898a7849749ddef44ddeaf3dc84ef29a0be13ba44404",
+  "pair_count": 94,
+  "non_control_pairs": 428,
+  "b0_hit_rate": 0.7804,
+  "b0_miss_rate": 0.2196,
+  "pairs": [
+    {
+      "prime_en": "i",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "big",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "move",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "inside",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "water",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "earth",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "king",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "love",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "peace",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "sin",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "righteous",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "covenant",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "spirit",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "bread",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "blood",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "light",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "faith",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "mercy",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "sheep",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "love",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "love",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "covenant",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "covenant",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "spirit",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "spirit",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "righteous",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "righteous",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "sin",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "sin",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "faith",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "faith",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "mercy",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "mercy",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "peace",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "peace",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "light",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "light",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "blood",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "blood",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "bread",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "bread",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "water",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "water",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "king",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "king",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "sheep",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "sheep",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "love",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "word",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "spirit",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "covenant",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "righteous",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "sin",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "faith",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "mercy",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "peace",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "light",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "king",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "bread",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "blood",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "water",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "earth",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "heaven",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "life",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "death",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "road",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "devil",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "slave",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "miracle",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "deaf",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "lame",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "passover",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "vineyard",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "garden",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "snake",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "donkey",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "camel",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "cat",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "bone",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "often",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "seldom",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "empty",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "cold",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "wet",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "sour",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "loose",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "measure",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "borrow",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "steal",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "swear",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "disobey",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "doubt",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "gentleness",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    },
+    {
+      "prime_en": "longsuffering",
+      "probe_en": null,
+      "lexicon_hit": true,
+      "topology_reachable": true,
+      "wall_status": "aligned_both_planes",
+      "audit_status": "aligned_original_language",
+      "expected_evaluator": "english_only_naive_miss"
+    }
+  ],
+  "reproduce": "py scripts/build_universal_root_b0_miss_holdout_bench_v1.py"
+}

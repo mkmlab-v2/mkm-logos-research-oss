@@ -1,0 +1,14 @@
+{
+  "schema": "p3_root_generator_bench_oov_cases_v1",
+  "description": "Modern/domain probe tokens for root lexicon OOV hit rate (B-track fixture).",
+  "cases": [
+    { "id": "it_uvicorn", "domain": "it_log", "tokens": ["uvicorn", "fastapi", "pytest"] },
+    { "id": "it_next", "domain": "it_log", "tokens": ["next", "start", "webpack"] },
+    { "id": "ko_hangul_sample", "domain": "hangul", "tokens": ["사상의학", "체질", "한의학"] },
+    { "id": "ko_lemma_probe", "domain": "hangul", "tokens": ["말씀", "언약", "거룩"] },
+    { "id": "logos_greek", "domain": "logos_original", "tokens": ["logos", "pneuma", "charis"] },
+    { "id": "logos_hebrew", "domain": "logos_original", "tokens": ["torah", "hesed", "shalom"] },
+    { "id": "finance_stub", "domain": "finance", "tokens": ["liquidity", "drawdown", "volatility"] },
+    { "id": "legal_stub", "domain": "legal", "tokens": ["indemnity", "jurisdiction", "arbitration"] }
+  ]
+}

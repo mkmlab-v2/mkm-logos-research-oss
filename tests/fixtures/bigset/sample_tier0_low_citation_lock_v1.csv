@@ -1,0 +1,5 @@
+source_url,tradition,scholar_school,corpus_tier,verse_ref,excerpt,retrieval_timestamp_utc,conflict_group_id,school_tier,interpretation_ko,citation_lock_anchor,hypothesis_tier,research_only,send_gate_row
+,DSS,historical_criticism_stub,B,Gen.6.1-4,[HYPO] missing anchor row.,2026-06-23T00:00:00Z,MKM_CONCEPT_SONS_OF_GOD,historical_criticism,[HYPO] no URL.,,B,true,HOLD
+https://example.org/ok-row,LXX,historical_criticism_stub,B,Gen.6.4,[HYPO] one good row.,2026-06-23T00:00:00Z,MKM_CONCEPT_SONS_OF_GOD,historical_criticism,[HYPO] ok.,https://example.org/ok-row,B,true,HOLD
+not-a-url,PSEUDEPIGRAPHA,mysticism_stub,C,Gen.6.1,[HYPO] bad scheme.,2026-06-23T00:00:00Z,MKM_CONCEPT_SONS_OF_GOD,judaic_mysticism,[HYPO] bad.,not-a-url,B,true,HOLD
+ftp://example.org/bad-scheme,RABBINIC,mysticism_stub,C,Gen.6.2,[HYPO] ftp scheme.,2026-06-23T00:00:00Z,MKM_CONCEPT_SONS_OF_GOD,judaic_mysticism,[HYPO] ftp.,ftp://example.org/bad-scheme,B,true,HOLD

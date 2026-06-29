@@ -1,0 +1,10 @@
+{
+  "schema": "ko_shorts_target_wav_delegation_v1",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "enabled": true,
+  "case_id": "target_custom_v1",
+  "wav": null,
+  "domain_hint": "standard_speech",
+  "notes": "Set wav to your path, or drop file at reports/audio/ko_shorts_target_inbox_v1.wav or reports/audio/inbox/*.wav"
+}

@@ -1,0 +1,3 @@
+# [STUB] 동의보감 발췌 자리표시자 — PoC 인벤토리용. 실제 원전은 Raphael-KR/korean-medicine-texts 미러 후 교체.
+
+보양편 · 임상 인용 테스트 금지 · physician_gold adjudication 전용

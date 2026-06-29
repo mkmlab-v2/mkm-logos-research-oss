@@ -1,0 +1,182 @@
+{
+  "schema": "encounter_sequence_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-06-18T01:00:00Z",
+  "hypothesis_tier": "B",
+  "domain_lane": "tkm_korean_han_medicine",
+  "sasang_primary": true,
+  "external_reference_tcm": {
+    "role": "benchmark_reference_only",
+    "note_ko": "TCMChat/Qibo는 중의학 LLM 벤치 참고만. TKM(한의·사상) 임상 SSOT 아님.",
+    "citation_ids": ["TCMChat_PharmacolRes_2024_ref", "Qibo_ESWA_2025_ref"]
+  },
+  "boundary_contract": {
+    "physician_final_authority": true,
+    "ai_hypothesis_reference_only": true,
+    "no_prescription_output": true,
+    "no_emergency_autodispatch": true,
+    "track_a_autobind_forbidden": true
+  },
+  "encounter": {
+    "ref_token": "ENC-DEMO-2026-0618-01",
+    "sequence_id": "SEQ-2026-0618-01",
+    "cohort_id": "tkm_sasang_pilot_v1"
+  },
+  "l0_router_events": [
+    {
+      "ts_utc": "2026-06-18T00:58:00Z",
+      "router_stage": "pre_turn",
+      "turn_index": 0,
+      "triggered": false,
+      "keyword_hits": [],
+      "non_gating": true
+    },
+    {
+      "ts_utc": "2026-06-18T01:00:00Z",
+      "router_stage": "per_turn",
+      "turn_index": 2,
+      "triggered": true,
+      "keyword_hits": ["severe_abdominal_pain"],
+      "escalation_copy_id": "l0_red_flag_escalation_ko_v1",
+      "non_gating": true
+    }
+  ],
+  "turns": [
+    {
+      "turn_index": 0,
+      "ts_utc": "2026-06-18T00:59:00Z",
+      "turn_kind": "initial_survey",
+      "modalities_present": {
+        "survey": true,
+        "face_image": false,
+        "voice_sample": false,
+        "birth_profile": true
+      },
+      "observation_proxies": {
+        "cold_heat_lean": 0.42,
+        "digestion_lean": 0.55,
+        "activity_lean": 0.5,
+        "moisture_lean": 0.48
+      },
+      "ai_hypothesis": {
+        "constitution": "uncertain",
+        "confidence": 0.38,
+        "model_id": "tkm_sasang_hypothesis_stub_v0",
+        "rationale_short": "[HYPO] 초기 설문만; 사상 4체질 가설 미확정."
+      },
+      "subjective_digest": "복부 불편·소화 저하 자가 보고; 응급 키워드 없음."
+    },
+    {
+      "turn_index": 1,
+      "ts_utc": "2026-06-18T00:59:45Z",
+      "turn_kind": "follow_up_question",
+      "modalities_present": {
+        "survey": true,
+        "face_image": false,
+        "voice_sample": false,
+        "birth_profile": true
+      },
+      "observation_proxies": {
+        "cold_heat_lean": 0.4,
+        "digestion_lean": 0.62,
+        "activity_lean": 0.46,
+        "moisture_lean": 0.52
+      },
+      "observation_delta_from_prior": {
+        "cold_heat_lean": -0.02,
+        "digestion_lean": 0.07,
+        "activity_lean": -0.04,
+        "moisture_lean": 0.04
+      },
+      "ai_hypothesis": {
+        "constitution": "soeum",
+        "confidence": 0.52,
+        "delta_confidence_from_prior": 0.14,
+        "label_changed_from_prior": true,
+        "model_id": "tkm_sasang_hypothesis_stub_v0",
+        "rationale_short": "[HYPO] 소화·한열 프록시 보강; 여전히 가설."
+      },
+      "subjective_digest": "추가 문진: 식후 더부룩함, 수면 얕음."
+    },
+    {
+      "turn_index": 2,
+      "ts_utc": "2026-06-18T01:00:00Z",
+      "turn_kind": "follow_up_question",
+      "modalities_present": {
+        "survey": true,
+        "face_image": false,
+        "voice_sample": false,
+        "birth_profile": true
+      },
+      "observation_proxies": {
+        "cold_heat_lean": 0.38,
+        "digestion_lean": 0.68,
+        "activity_lean": 0.44,
+        "moisture_lean": 0.54
+      },
+      "observation_delta_from_prior": {
+        "cold_heat_lean": -0.02,
+        "digestion_lean": 0.06,
+        "activity_lean": -0.02,
+        "moisture_lean": 0.02
+      },
+      "ai_hypothesis": {
+        "constitution": "soeum",
+        "confidence": 0.61,
+        "delta_confidence_from_prior": 0.09,
+        "label_changed_from_prior": false,
+        "model_id": "tkm_sasang_hypothesis_stub_v0",
+        "rationale_short": "[HYPO] 라벨 유지·confidence 상승; 처방 연결 없음."
+      },
+      "l0_red_flag": {
+        "ts_utc": "2026-06-18T01:00:00Z",
+        "router_stage": "per_turn",
+        "turn_index": 2,
+        "triggered": true,
+        "keyword_hits": ["severe_abdominal_pain"],
+        "escalation_copy_id": "l0_red_flag_escalation_ko_v1",
+        "non_gating": true
+      },
+      "subjective_digest": "통증 강도 상승 키워드 감지 → L0 에스컬레이션 문구만; AI 진단·처방 없음."
+    }
+  ],
+  "sequence_summary": {
+    "turn_count": 3,
+    "constitution_trajectory": ["uncertain", "soeum", "soeum"],
+    "confidence_trajectory": [0.38, 0.52, 0.61],
+    "final_ai_constitution": "soeum",
+    "final_ai_confidence": 0.61,
+    "stability_score": 0.67
+  },
+  "physician_closure": {
+    "ts_utc": "2026-06-18T01:15:00Z",
+    "physician_constitution": {
+      "label": "soeum",
+      "recorded_by_role": "licensed_km_physician",
+      "notes": "문진·맥 참고; AI 가설과 일치. 처방은 진료실에서만 확정."
+    },
+    "agreement": {
+      "ai_physician_match": true,
+      "disagreement_code": "none"
+    },
+    "clinic_capture_ref": "data/clinic/clinic_constitution_mvp_v1.sample.jsonl"
+  },
+  "curated_learning_pointer": {
+    "disagreement_recorded": false,
+    "curated_path_status": "not_applicable",
+    "note_ko": "일치 케이스; 불일치 시 pending_human_review로 전환."
+  },
+  "l5_myeongni_ref": {
+    "hypothesis_tier": "B",
+    "non_gating": true,
+    "birth_profile_present": true,
+    "myeongni_report_ref": "reports/myeongni_physician_gold_stub_v1_latest.json",
+    "cross_check_status": "not_computed",
+    "sasang_lens_separation_ok": true,
+    "note_ko": "[HYPO] L5 명리 보조층; 사상 ai_hypothesis와 자동 합선 금지."
+  },
+  "provenance": {
+    "generator_id": "encounter_sequence_design_v1",
+    "model_id": "tkm_sasang_hypothesis_stub_v0"
+  }
+}

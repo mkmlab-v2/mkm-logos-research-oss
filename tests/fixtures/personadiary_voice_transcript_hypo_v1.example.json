@@ -1,0 +1,13 @@
+{
+  "schema": "personadiary_voice_transcript_hypo_v1",
+  "version": 1,
+  "hypothesis_tier": "B",
+  "preview_only": true,
+  "active_lane_hint": "mind",
+  "stt_event_id": "00000000-0000-4000-8000-000000000001",
+  "utterances": [
+    "오늘 새벽 두 시까지 숏폼만 봤어요. 네 시간밖에 못 잤네요.",
+    "회의가 세 개나 있어서 프로젝트 마감이 부담돼요.",
+    "저녁에는 산책하고 명상으로 좀 쉬려고 해요."
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "schema": "patient_intake_fusion_draft_v1",
+  "version": "1.0.0",
+  "encounter": {
+    "ref_token": "ENC-PHYSICIAN-GOLD-AUTO-03"
+  },
+  "profile": {
+    "birth_instant_utc": "1970-04-12T06:00:00Z",
+    "iana_tz": "Asia/Seoul",
+    "is_male": false
+  },
+  "intake": {
+    "symptoms": ["피로", "수면장애", "소화불량"],
+    "situation": "TKM P25 physician_gold multiturn AUTO-03",
+    "subjective_notes": "non-PHI [HYPO] manual autofill",
+    "sasang_estimate": {
+      "label": "태음인",
+      "source": "설문 추정"
+    }
+  },
+  "consultation_turns": [
+    {
+      "turn_index": 0,
+      "ts_utc": "2026-06-18T02:30:00Z",
+      "turn_kind": "initial_survey",
+      "ai_hypothesis": {
+        "constitution": "uncertain",
+        "confidence": 0.36,
+        "model_id": "physician_gold_manual_autofill_v1"
+      },
+      "subjective_digest": "초기: 만성 피로·소화불량"
+    },
+    {
+      "turn_index": 1,
+      "ts_utc": "2026-06-18T02:32:00Z",
+      "turn_kind": "follow_up_question",
+      "ai_hypothesis": {
+        "constitution": "soyang",
+        "confidence": 0.49,
+        "delta_confidence_from_prior": 0.13,
+        "model_id": "physician_gold_manual_autofill_v1"
+      },
+      "subjective_digest": "추가: 식후 더부룩함"
+    },
+    {
+      "turn_index": 2,
+      "ts_utc": "2026-06-18T02:34:00Z",
+      "turn_kind": "follow_up_question",
+      "ai_hypothesis": {
+        "constitution": "taeeum",
+        "confidence": 0.61,
+        "delta_confidence_from_prior": 0.12,
+        "label_changed_from_prior": true,
+        "model_id": "physician_gold_manual_autofill_v1"
+      },
+      "subjective_digest": "라벨 태음으로 수렴; 원장 판정 대조 예정"
+    }
+  ],
+  "options": {
+    "annual_start_year": 2026,
+    "annual_years": 1,
+    "monthly_months_per_year": 3
+  }
+}

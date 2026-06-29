@@ -1,0 +1,1169 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-07T18:30:00Z",
+  "git_commit_hint": "fixture:civilization_apocalypse_v1_t1_15q+t2_8q+t3_4q=27q; sovereign_stack_t1_3q; regime_on_device_sovereignty_prior_infrastructure",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.tech.bci_therapeutic_patients_10k_2032",
+      "question_text": "Will the cumulative count of patients with a regulatory-approved therapeutic brain-computer interface implant (FDA PMA or international equivalent) reach at least 10,000 worldwide on or before 2032-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "tech",
+        "bci",
+        "health"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2033-02-28T00:00:00Z",
+      "resolution_criteria": "TRUE if at least two independent public sources (national regulator database plus manufacturer or peer-reviewed registry) corroborate cumulative approved therapeutic BCI implants >= 10,000 through 2032-12-31. FALSE if confirmed count remains below 10,000. VOID if no authoritative count exists by deadline or major jurisdictions withdraw all approvals without replacement.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "bci_patients_ge_10k",
+        "false_label": "bci_patients_lt_10k"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.58,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_seal_mark_phase",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/seal_mark_rev7_13_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.tech.fusion_grid_100mw_30d_2032",
+      "question_text": "Will a fusion power installation deliver at least 100 MW net electrical power to a commercial transmission grid continuously for 30 days on or before 2032-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "tech",
+        "energy",
+        "fusion"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2033-02-28T00:00:00Z",
+      "resolution_criteria": "TRUE if operator or national regulator publishes verified net-to-grid >= 100 MW sustained 30 consecutive days by 2032-12-31. FALSE if never achieved. VOID if records are disputed without independent audit or plant never connected to a commercial grid.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "fusion_100mw_30d_achieved",
+        "false_label": "fusion_100mw_30d_not_achieved"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.22,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_four_horsemen_energy",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/four_horsemen_white_horse_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.space.mars_uncrewed_landing_2032",
+      "question_text": "Will a government or private space mission achieve a controlled uncrewed landing on the Martian surface with published telemetry confirmation on or before 2032-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "space",
+        "mars"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2033-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if mission operator and at least one independent space agency acknowledge successful controlled uncrewed surface landing by 2032-12-31. FALSE if no such landing occurs. VOID if landing claim lacks surface telemetry and remains disputed through deadline.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "mars_uncrewed_landing",
+        "false_label": "no_mars_uncrewed_landing"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.48,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_lampstands_expansion",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/seven_lampstands_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.tech.ai_companion_dau_1b_2030",
+      "question_text": "Will the combined reported daily active users of the three largest consumer AI companion applications worldwide reach at least one billion on any single calendar day on or before 2030-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "tech",
+        "ai",
+        "social"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2031-02-28T00:00:00Z",
+      "resolution_criteria": "TRUE if credible public filings or audited metrics show top-3 AI companion apps sum DAU >= 1e9 on at least one day by 2030-12-31. FALSE if peak sum remains below 1e9. VOID if fewer than two of the top three publish comparable DAU definitions.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "ai_companion_dau_ge_1b",
+        "false_label": "ai_companion_dau_lt_1b"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.52,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_beast_platform_precursor",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/beast_sea_platform_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.gov.ai_assisted_courts_oecd3_2035",
+      "question_text": "Will at least three OECD member countries have a national statute or supreme-court-approved framework allowing AI-assisted judicial drafting or sentencing analytics in routine civil or criminal trial courts on or before 2035-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "governance",
+        "ai",
+        "law"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2036-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if official legal gazettes or supreme court records document operational AI-assisted court analytics in >=3 OECD members by 2035-12-31. FALSE if fewer than three. VOID if frameworks exist only as pilots without binding court rules.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "ai_courts_oecd3",
+        "false_label": "ai_courts_oecd_lt3"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.44,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_beast_land_enforcement",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/beast_land_state_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.bio.senolytic_fda_2033",
+      "question_text": "Will the U.S. FDA grant traditional or accelerated approval to at least one senolytic or senomorphic drug for an age-related or chronic disease indication on or before 2033-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "bio",
+        "longevity",
+        "health"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2034-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if FDA approval letter lists senolytic/senomorphic mechanism for an age-related indication by 2033-12-31. FALSE if no such approval. VOID if approval is withdrawn before deadline without successor label.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "senolytic_fda_approved",
+        "false_label": "senolytic_fda_not_approved"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.41,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_seal_mark_commodity",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/seal_mark_rev13_17_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.bio.longevity_access_gini_g7_2035",
+      "question_text": "Will at least three G7 countries show a statistically significant widening (p<0.05) in a published top-decile versus median healthy-life expectancy or anti-aging therapy access index between 2024 and 2035?",
+      "domain_tags": [
+        "civilization",
+        "bio",
+        "inequality",
+        "longevity"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2036-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if peer-reviewed or national statistics office publications document significant widening in >=3 G7 countries using consistent methodology. FALSE if fewer than three. VOID if no comparable cross-country index exists.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "longevity_inequality_widens_g7_3",
+        "false_label": "longevity_inequality_not_g7_3"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.67,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_mark_commodification",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:Dan2_empire_transition_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.finance.cbdc_retail_oecd10_2035",
+      "question_text": "Will retail CBDC settlement account for at least 10 percent of total retail payment transaction value in at least five OECD economies on an annual basis on or before 2035-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "finance",
+        "cbdc",
+        "governance"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2036-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if central bank or BIS published statistics show >=10% retail payment value via CBDC in >=5 OECD members for any full calendar year ending by 2035. FALSE otherwise. VOID if CBDC metrics are not separately reported.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "cbdc_retail_ge_10pct_oecd5",
+        "false_label": "cbdc_retail_lt_threshold"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.38,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_mark_economy_binding",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/seal_mark_rev13_17_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.gov.digital_id_treaty_g7plus_2040",
+      "question_text": "Will the G7 plus China and India sign a multilateral treaty or MOU establishing interoperable digital identity credentials for cross-border public services on or before 2040-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "governance",
+        "identity",
+        "diplomacy"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2041-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if deposited treaty text or official joint communique documents interoperable digital ID standards adopted by G7+China+India by 2040-12-31. FALSE if not signed. VOID if signature occurs without published technical interoperability spec.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "digital_id_treaty_signed",
+        "false_label": "digital_id_treaty_unsigned"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.35,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_seal_mark_2038_2050",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/seal_mark_triple_binding_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.infra.cloud_triple_outage_6h_2045",
+      "question_text": "Will at least three hyperscale cloud provider regions each serving more than 5 million active customer workloads experience simultaneous control-plane unavailability exceeding six continuous hours on or before 2045-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "infrastructure",
+        "cloud",
+        "babylon"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2046-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if provider postmortems or independent outage trackers confirm >=3 regions with >6h control-plane outage in overlapping 24h window by 2045-12-31. FALSE if never occurs. VOID if outage definitions differ materially across providers without reconciliation.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "triple_cloud_outage_6h",
+        "false_label": "no_triple_cloud_outage_6h"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.42,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_babylon_fallen_2065",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/babylon_fallen_rev18_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.finance.cash_retail_ban_g7_one_2040",
+      "question_text": "Will at least one G7 country enact nationwide legislation prohibiting retail merchants from accepting physical cash for goods and services, with enforcement beginning on or before 2040-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "finance",
+        "governance",
+        "mark"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2041-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if national legal gazette publishes enforceable retail cash ban with start date <=2040-12-31 in a G7 member. FALSE if no G7 member enacts. VOID if ban is enacted then repealed before enforcement begins.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "g7_cash_retail_ban",
+        "false_label": "no_g7_cash_retail_ban"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.33,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_mark_no_buy_sell_2048",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/mark_rev13_17_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.geo.fao_food_nominal_50pct_spike_2038",
+      "question_text": "Will the FAO Food Price Index monthly nominal value exceed 150 percent of its January 2024 level on any month on or before 2038-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "macro",
+        "food",
+        "four_horsemen"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2039-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if official FAO FPI release shows any month >150% of Jan-2024 baseline by 2038-12-31. FALSE if peak remains <=150%. VOID if FAO changes index methodology without published back-adjustment.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "fao_fpi_spike_ge_150pct",
+        "false_label": "fao_fpi_spike_lt_150pct"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:00:00Z",
+          "probability_0_1": 0.46,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_black_horse_famine",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/four_horsemen_black_horse_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.gov.ondevice_did_mandate_oecd3_2035",
+      "question_text": "Will at least three OECD member states enact nationally enforceable regulation requiring consumer devices sold after a published effective date to include hardware-backed decentralized identity (DID) or secure-element key storage for personal credentials, with enforcement beginning on or before 2035-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "governance",
+        "sovereign_stack",
+        "identity",
+        "t1"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2036-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if national legal gazettes or regulator rulebooks in >=3 OECD members publish enforceable on-device hardware-backed DID or secure-element credential mandates with effective date <=2035-12-31. FALSE if fewer than three. VOID if mandates exist only as voluntary industry guidelines without statutory or regulator-enforceable penalties.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "ondevice_did_mandate_oecd3_ge_3",
+        "false_label": "ondevice_did_mandate_oecd3_lt_3"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T18:30:00Z",
+          "probability_0_1": 0.3,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_sovereign_stack_john_baptist_precursor",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/john_baptist_precursor_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.tech.e2ee_default_messenger_dau_1b_2032",
+      "question_text": "Will at least one messaging service with end-to-end encryption enabled by default for all one-to-one and group chats report at least one billion daily active users worldwide on or before 2032-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "tech",
+        "sovereign_stack",
+        "privacy",
+        "t1"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2033-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if operator-published metrics or two independent third-party estimates corroborate >=1e9 DAU on a messaging service with E2EE default for all standard chat modes through 2032-12-31. FALSE if no service meets both conditions. VOID if DAU definitions differ materially without reconciliation or operator stops publishing comparable metrics.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "e2ee_messenger_dau_ge_1b",
+        "false_label": "e2ee_messenger_dau_lt_1b"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T18:30:00Z",
+          "probability_0_1": 0.52,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_sovereign_stack_wilderness_comms",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/wilderness_stack_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.finance.self_custody_wallet_oecd5_50pct_2038",
+      "question_text": "Will at least five OECD economies each report that at least 50 percent of households with internet access hold at least one active self-custody digital asset wallet (user-controlled private keys not solely custodied by a regulated exchange), according to official survey or regulator statistics, on or before 2038-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "finance",
+        "sovereign_stack",
+        "self_custody",
+        "t1"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2039-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if national statistical offices, central banks, or financial regulators in >=5 OECD members publish household surveys showing >=50% of internet-connected households with >=1 active self-custody wallet through 2038-12-31. FALSE if fewer than five meet threshold. VOID if wallet definitions exclude hardware wallets or conflate exchange accounts without key-export rights.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "self_custody_wallet_oecd5_50pct_yes",
+        "false_label": "self_custody_wallet_oecd5_50pct_no"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T18:30:00Z",
+          "probability_0_1": 0.36,
+          "source_kind": "baseline",
+          "source_detail": "civilization_apocalypse_v1_t1_sovereign_stack_off_ledger_survivability",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/off_ledger_survivability_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.tech.humanoid_robot_deployed_gt_pop_2045",
+      "question_text": "Will the global count of deployed humanoid or general-purpose service robots in active operation exceed the world human population on any day on or before 2045-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "tech",
+        "robotics",
+        "labor"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2046-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if at least two industry associations or national statistical agencies publish corroborated counts showing operational humanoid/service robots > world population on a single day by 2045-12-31. FALSE if never exceeded. VOID if definitions of deployed/operational differ irreconcilably across sources.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "robots_gt_population",
+        "false_label": "robots_le_population"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:30:00Z",
+          "probability_0_1": 0.31,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_beast_labor_2045",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/beast_sea_platform_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.tech.memory_write_clinical_ph3_2048",
+      "question_text": "Will any invasive memory-encoding or memory-write neural interface intervention reach Phase III clinical trial status in a major public trial registry on or before 2048-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "tech",
+        "neuro",
+        "memory"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2049-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if ClinicalTrials.gov or WHO ICTRP lists Phase III for memory-write neural intervention by 2048-12-31. FALSE if none reach Phase III. VOID if trial is halted for safety without successor registration.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "memory_write_ph3",
+        "false_label": "memory_write_no_ph3"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:30:00Z",
+          "probability_0_1": 0.28,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_memory_hack_2048",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/mark_rev13_17_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.ai.agi_benchmark_suite_80pct_2040",
+      "question_text": "Will an independent audit report certify that at least one general AI system achieves at least 80 percent expert-level success on a published multi-domain AGI evaluation suite on or before 2040-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "ai",
+        "agi",
+        "benchmark"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2041-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if audit from accredited lab or consortium documents >=80% expert-level aggregate on named public suite by 2040-12-31. FALSE if not achieved. VOID if suite changes mid-evaluation without frozen protocol hash.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "agi_benchmark_ge_80pct",
+        "false_label": "agi_benchmark_lt_80pct"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:30:00Z",
+          "probability_0_1": 0.35,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_beast_awakening_2040",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/beast_land_state_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.space.mars_pop_1m_independence_2050",
+      "question_text": "Will the documented resident population of Mars reach at least one million and will a Mars governing body declare political independence from Earth national sovereignties on or before 2050-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "space",
+        "mars",
+        "governance"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2051-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE only if both conditions met by 2050-12-31: population >=1e6 per UN or space-agency endorsed census AND independence declaration recognized by >=2 UN members. FALSE if either condition fails. VOID if population counts remain classified without public audit.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "mars_1m_and_independent",
+        "false_label": "mars_not_1m_or_not_independent"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:30:00Z",
+          "probability_0_1": 0.09,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_empire_transition_2050",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:Dan2_empire_transition_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.gov.global_ai_emergency_pause_30d_2042",
+      "question_text": "Will at least five G7-equivalent economies jointly impose a coordinated emergency pause of at least 30 consecutive days on frontier large-model training or public deployment on or before 2042-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "governance",
+        "ai",
+        "regulation"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2043-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if official joint statement plus national enforcement orders document >=30 day coordinated pause by 2042-12-31. FALSE if no such pause. VOID if pause is announced but not enforced in >=3 jurisdictions.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "global_ai_pause_30d",
+        "false_label": "no_global_ai_pause_30d"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:30:00Z",
+          "probability_0_1": 0.4,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_seven_seals_2042",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/seven_seals_scroll_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.bio.deextinction_viable_embryo_2045",
+      "question_text": "Will peer-reviewed science document a viable embryo of an extinct mammalian species produced via synthetic or ancient-DNA methods with survival beyond 72 hours ex vivo on or before 2045-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "bio",
+        "deextinction",
+        "genetics"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2046-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if published in indexed journal with independent replication note and embryo viability >72h by 2045-12-31. FALSE if not demonstrated. VOID if paper retracted for fraud before deadline.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "deextinction_viable_embryo",
+        "false_label": "no_deextinction_viable_embryo"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:30:00Z",
+          "probability_0_1": 0.25,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_restoration_ecology_2045",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/four_horsemen_pale_horse_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.tech.neural_wallet_default_payment_oecd5_2048",
+      "question_text": "Will at least five OECD countries report that neural-linked or implant-mediated wallet payments exceed 5 percent of national retail transaction count for any calendar year ending on or before 2048-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "tech",
+        "finance",
+        "bci"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2049-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if central bank or national payments authority publishes neural/implant-mediated payments >=5% of retail transaction count in >=5 OECD members for any year through 2048. FALSE otherwise. VOID if metric is not separately disclosed.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "neural_wallet_ge_5pct_oecd5",
+        "false_label": "neural_wallet_lt_threshold"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:30:00Z",
+          "probability_0_1": 0.3,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_seal_triple_binding_2048",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/seal_mark_triple_binding_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.geo.bio_digital_schism_treaty_2055",
+      "question_text": "Will the United Nations or an equivalent multilateral body deposit a treaty recognizing separate legal personhood tracks for biological humans versus substrate-independent digital persons on or before 2055-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "governance",
+        "identity",
+        "eschatology"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2056-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if deposited treaty text defines distinct personhood tracks for biological humans and substrate-independent digital persons by 2055-12-31. FALSE if no such treaty. VOID if treaty is signed but not deposited or lacks operative definitions.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "bio_digital_schism_treaty",
+        "false_label": "no_bio_digital_schism_treaty"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T12:30:00Z",
+          "probability_0_1": 0.18,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v2_armageddon_identity_2055",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/woman_dragon_rev12_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.t3.greenfield_governance_stack_majority_2100",
+      "question_text": "Will at least three of the five largest national economies by nominal GDP (IMF WEO, 2099 reference year) route a majority of retail and wholesale payment settlement volume through post-2030 greenfield governance stacks that bypass legacy bank-regulator clearing intermediaries, as measured on or before 2100-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "eschatology",
+        "t3"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2101-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if at least three of the top-five 2099 economies publish regulator or central-bank audited statistics showing >50% of domestic payment settlement volume cleared via greenfield protocols (defined as stacks launched after 2030-01-01 without legacy correspondent-bank rails as primary path) through 2100-12-31. FALSE if fewer than three meet the threshold by deadline. VOID if fewer than two top-five economies publish comparable settlement-rail definitions by 2101-03-31 or IMF discontinues comparable GDP ranking.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "greenfield_governance_stack_majority_2100_yes",
+        "false_label": "greenfield_governance_stack_majority_2100_no"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-06T17:13:40Z",
+          "probability_0_1": 0.18,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v3_t3_2100_promoted",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/greenfield_rev21_22_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.t3.mortality_engineering_slo_public_2100",
+      "question_text": "Will at least one OECD member health ministry or equivalent national health authority publicly classify aging-related mortality as an engineering defect class with a published remediation SLO target date, and maintain that classification continuously from first publication through 2100-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "eschatology",
+        "t3"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2101-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if an OECD-scale authority publishes an official document labeling aging-related mortality as an engineering or systems defect with a dated remediation SLO, and no subsequent official retraction occurs before 2100-12-31. FALSE if no such publication exists or all such classifications are officially retracted before 2100-12-31. VOID if OECD membership structure changes such that no comparable authority exists, or defect-class terminology cannot be verified from primary sources by 2101-03-31.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "mortality_engineering_slo_public_2100_yes",
+        "false_label": "mortality_engineering_slo_public_2100_no"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-06T17:13:40Z",
+          "probability_0_1": 0.12,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v3_t3_2100_promoted",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/terminal_slo_rev21_4_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.t3.brain_substrate_upload_minority_2100",
+      "question_text": "Will fewer than 25% of humans with recognized legal personhood in the five most populous UN member states rely on non-biological primary cognitive substrate (whole-brain emulation, substrate upload, or equivalent) as their primary legal identity substrate, as officially reported on or before 2100-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "eschatology",
+        "t3"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2101-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if aggregated official census or civil-registry statistics from the five most populous states show <25% of legally recognized persons using non-biological primary cognitive substrate through 2100-12-31. FALSE if >=25% in aggregate. VOID if fewer than three of the five publish substrate-classification statistics with comparable definitions by 2101-03-31.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "brain_substrate_upload_minority_2100_yes",
+        "false_label": "brain_substrate_upload_minority_2100_no"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-06T17:13:40Z",
+          "probability_0_1": 0.72,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v3_t3_2100_promoted",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/matrioshka_upload_hypothesis_REJECTED_BASE",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.t3.planetary_energy_harness_below_type1_2100",
+      "question_text": "Will humanity's verified planetary primary energy harness remain below 10^17 watts (order-of-magnitude Kardashev Type I threshold) according to at least two independent global energy balance assessments, as of 2100-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "eschatology",
+        "t3"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2101-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if at least two independent assessments (e.g. IEA successor, peer-reviewed planetary energy budget consortium) report primary energy harness <10^17 W through 2100-12-31. FALSE if two or more independent assessments report >=10^17 W sustained for at least one calendar year ending on or before 2100-12-31. VOID if no two independent assessments publish comparable planetary primary-energy totals by 2101-03-31.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "planetary_energy_harness_below_type1_2100_yes",
+        "false_label": "planetary_energy_harness_below_type1_2100_no"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-06T17:13:40Z",
+          "probability_0_1": 0.65,
+          "source_kind": "other",
+          "source_detail": "structural_prior_apocalypse_v3_t3_2100_promoted",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/kardashev_type1_deferred_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    }
+  ]
+}

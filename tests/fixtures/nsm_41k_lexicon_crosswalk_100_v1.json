@@ -1,0 +1,1296 @@
+{
+  "schema": "nsm_41k_lexicon_crosswalk_100_v1",
+  "version": "1.0.0",
+  "description": "100-pair NSM prime → Logos lexicon probe catalog (existence-only lookup).",
+  "source_note": "DeepNSM-inspired manual crosswalk; distortion audit via run_nsm_41k_lexicon_crosswalk_audit_v1.py",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "pair_count": 100,
+  "samples": [
+    {
+      "prime_en": "i",
+      "probe_tokens": [
+        "i",
+        "ego",
+        "ani"
+      ],
+      "lang_probes": {
+        "en": "i",
+        "greek": "ego",
+        "hebrew": "ani"
+      }
+    },
+    {
+      "prime_en": "you",
+      "probe_tokens": [
+        "you",
+        "su",
+        "attah"
+      ],
+      "lang_probes": {
+        "en": "you",
+        "greek": "su",
+        "hebrew": "attah"
+      }
+    },
+    {
+      "prime_en": "someone",
+      "probe_tokens": [
+        "someone",
+        "tis",
+        "ish"
+      ],
+      "lang_probes": {
+        "en": "someone",
+        "greek": "tis",
+        "hebrew": "ish"
+      }
+    },
+    {
+      "prime_en": "people",
+      "probe_tokens": [
+        "people",
+        "laos",
+        "am"
+      ],
+      "lang_probes": {
+        "en": "people",
+        "greek": "laos",
+        "hebrew": "am"
+      }
+    },
+    {
+      "prime_en": "something",
+      "probe_tokens": [
+        "something",
+        "ti",
+        "davar"
+      ],
+      "lang_probes": {
+        "en": "something",
+        "greek": "ti",
+        "hebrew": "davar"
+      }
+    },
+    {
+      "prime_en": "body",
+      "probe_tokens": [
+        "body",
+        "soma",
+        "basar"
+      ],
+      "lang_probes": {
+        "en": "body",
+        "greek": "soma",
+        "hebrew": "basar"
+      }
+    },
+    {
+      "prime_en": "kind",
+      "probe_tokens": [
+        "kind",
+        "genos",
+        "min"
+      ],
+      "lang_probes": {
+        "en": "kind",
+        "greek": "genos",
+        "hebrew": "min"
+      }
+    },
+    {
+      "prime_en": "part",
+      "probe_tokens": [
+        "part",
+        "meros",
+        "helek"
+      ],
+      "lang_probes": {
+        "en": "part",
+        "greek": "meros",
+        "hebrew": "helek"
+      }
+    },
+    {
+      "prime_en": "this",
+      "probe_tokens": [
+        "this",
+        "houtos",
+        "zeh"
+      ],
+      "lang_probes": {
+        "en": "this",
+        "greek": "houtos",
+        "hebrew": "zeh"
+      }
+    },
+    {
+      "prime_en": "the_same",
+      "probe_tokens": [
+        "same",
+        "autos",
+        "zeh"
+      ],
+      "lang_probes": {
+        "en": "same",
+        "greek": "autos",
+        "hebrew": "zeh"
+      }
+    },
+    {
+      "prime_en": "other",
+      "probe_tokens": [
+        "other",
+        "allos",
+        "acher"
+      ],
+      "lang_probes": {
+        "en": "other",
+        "greek": "allos",
+        "hebrew": "acher"
+      }
+    },
+    {
+      "prime_en": "one",
+      "probe_tokens": [
+        "one",
+        "heis",
+        "echad"
+      ],
+      "lang_probes": {
+        "en": "one",
+        "greek": "heis",
+        "hebrew": "echad"
+      }
+    },
+    {
+      "prime_en": "two",
+      "probe_tokens": [
+        "two",
+        "duo",
+        "shnayim"
+      ],
+      "lang_probes": {
+        "en": "two",
+        "greek": "duo",
+        "hebrew": "shnayim"
+      }
+    },
+    {
+      "prime_en": "much",
+      "probe_tokens": [
+        "much",
+        "polus",
+        "rab"
+      ],
+      "lang_probes": {
+        "en": "much",
+        "greek": "polus",
+        "hebrew": "rab"
+      }
+    },
+    {
+      "prime_en": "little",
+      "probe_tokens": [
+        "little",
+        "oligos",
+        "me'at"
+      ],
+      "lang_probes": {
+        "en": "little",
+        "greek": "oligos",
+        "hebrew": "me'at"
+      }
+    },
+    {
+      "prime_en": "good",
+      "probe_tokens": [
+        "good",
+        "agathos",
+        "tob"
+      ],
+      "lang_probes": {
+        "en": "good",
+        "greek": "agathos",
+        "hebrew": "tob"
+      }
+    },
+    {
+      "prime_en": "bad",
+      "probe_tokens": [
+        "bad",
+        "kakos",
+        "ra"
+      ],
+      "lang_probes": {
+        "en": "bad",
+        "greek": "kakos",
+        "hebrew": "ra"
+      }
+    },
+    {
+      "prime_en": "big",
+      "probe_tokens": [
+        "big",
+        "megas",
+        "gadol"
+      ],
+      "lang_probes": {
+        "en": "big",
+        "greek": "megas",
+        "hebrew": "gadol"
+      }
+    },
+    {
+      "prime_en": "small",
+      "probe_tokens": [
+        "small",
+        "mikros",
+        "qatan"
+      ],
+      "lang_probes": {
+        "en": "small",
+        "greek": "mikros",
+        "hebrew": "qatan"
+      }
+    },
+    {
+      "prime_en": "think",
+      "probe_tokens": [
+        "think",
+        "logizomai",
+        "hashav"
+      ],
+      "lang_probes": {
+        "en": "think",
+        "greek": "logizomai",
+        "hebrew": "hashav"
+      }
+    },
+    {
+      "prime_en": "know",
+      "probe_tokens": [
+        "know",
+        "ginosko",
+        "yada"
+      ],
+      "lang_probes": {
+        "en": "know",
+        "greek": "ginosko",
+        "hebrew": "yada"
+      }
+    },
+    {
+      "prime_en": "want",
+      "probe_tokens": [
+        "want",
+        "thelo",
+        "chafetz"
+      ],
+      "lang_probes": {
+        "en": "want",
+        "greek": "thelo",
+        "hebrew": "chafetz"
+      }
+    },
+    {
+      "prime_en": "feel",
+      "probe_tokens": [
+        "feel",
+        "aisthanomai",
+        "chash"
+      ],
+      "lang_probes": {
+        "en": "feel",
+        "greek": "aisthanomai",
+        "hebrew": "chash"
+      }
+    },
+    {
+      "prime_en": "see",
+      "probe_tokens": [
+        "see",
+        "blepo",
+        "raah"
+      ],
+      "lang_probes": {
+        "en": "see",
+        "greek": "blepo",
+        "hebrew": "raah"
+      }
+    },
+    {
+      "prime_en": "hear",
+      "probe_tokens": [
+        "hear",
+        "akouo",
+        "shama"
+      ],
+      "lang_probes": {
+        "en": "hear",
+        "greek": "akouo",
+        "hebrew": "shama"
+      }
+    },
+    {
+      "prime_en": "say",
+      "probe_tokens": [
+        "say",
+        "lego",
+        "amar"
+      ],
+      "lang_probes": {
+        "en": "say",
+        "greek": "lego",
+        "hebrew": "amar"
+      }
+    },
+    {
+      "prime_en": "words",
+      "probe_tokens": [
+        "words",
+        "logos",
+        "dabar"
+      ],
+      "lang_probes": {
+        "en": "words",
+        "greek": "logos",
+        "hebrew": "dabar"
+      }
+    },
+    {
+      "prime_en": "true",
+      "probe_tokens": [
+        "true",
+        "alethes",
+        "emet"
+      ],
+      "lang_probes": {
+        "en": "true",
+        "greek": "alethes",
+        "hebrew": "emet"
+      }
+    },
+    {
+      "prime_en": "do",
+      "probe_tokens": [
+        "do",
+        "poieo",
+        "asah"
+      ],
+      "lang_probes": {
+        "en": "do",
+        "greek": "poieo",
+        "hebrew": "asah"
+      }
+    },
+    {
+      "prime_en": "happen",
+      "probe_tokens": [
+        "happen",
+        "ginomai",
+        "hayah"
+      ],
+      "lang_probes": {
+        "en": "happen",
+        "greek": "ginomai",
+        "hebrew": "hayah"
+      }
+    },
+    {
+      "prime_en": "move",
+      "probe_tokens": [
+        "move",
+        "kineo",
+        "halakh"
+      ],
+      "lang_probes": {
+        "en": "move",
+        "greek": "kineo",
+        "hebrew": "halakh"
+      }
+    },
+    {
+      "prime_en": "be",
+      "probe_tokens": [
+        "be",
+        "eimi",
+        "hayah"
+      ],
+      "lang_probes": {
+        "en": "be",
+        "greek": "eimi",
+        "hebrew": "hayah"
+      }
+    },
+    {
+      "prime_en": "there_is",
+      "probe_tokens": [
+        "there",
+        "esti",
+        "yesh"
+      ],
+      "lang_probes": {
+        "en": "there",
+        "greek": "esti",
+        "hebrew": "yesh"
+      }
+    },
+    {
+      "prime_en": "live",
+      "probe_tokens": [
+        "live",
+        "zao",
+        "chayah"
+      ],
+      "lang_probes": {
+        "en": "live",
+        "greek": "zao",
+        "hebrew": "chayah"
+      }
+    },
+    {
+      "prime_en": "die",
+      "probe_tokens": [
+        "die",
+        "apothnesko",
+        "mut"
+      ],
+      "lang_probes": {
+        "en": "die",
+        "greek": "apothnesko",
+        "hebrew": "mut"
+      }
+    },
+    {
+      "prime_en": "when",
+      "probe_tokens": [
+        "when",
+        "hote",
+        "matay"
+      ],
+      "lang_probes": {
+        "en": "when",
+        "greek": "hote",
+        "hebrew": "matay"
+      }
+    },
+    {
+      "prime_en": "now",
+      "probe_tokens": [
+        "now",
+        "nun",
+        "attah"
+      ],
+      "lang_probes": {
+        "en": "now",
+        "greek": "nun",
+        "hebrew": "attah"
+      }
+    },
+    {
+      "prime_en": "before",
+      "probe_tokens": [
+        "before",
+        "pro",
+        "lifnei"
+      ],
+      "lang_probes": {
+        "en": "before",
+        "greek": "pro",
+        "hebrew": "lifnei"
+      }
+    },
+    {
+      "prime_en": "after",
+      "probe_tokens": [
+        "after",
+        "meta",
+        "acharei"
+      ],
+      "lang_probes": {
+        "en": "after",
+        "greek": "meta",
+        "hebrew": "acharei"
+      }
+    },
+    {
+      "prime_en": "long_time",
+      "probe_tokens": [
+        "long",
+        "polus",
+        "orekh"
+      ],
+      "lang_probes": {
+        "en": "long",
+        "greek": "polus",
+        "hebrew": "orekh"
+      }
+    },
+    {
+      "prime_en": "short_time",
+      "probe_tokens": [
+        "short",
+        "oligos",
+        "qatzar"
+      ],
+      "lang_probes": {
+        "en": "short",
+        "greek": "oligos",
+        "hebrew": "qatzar"
+      }
+    },
+    {
+      "prime_en": "moment",
+      "probe_tokens": [
+        "moment",
+        "hora",
+        "regah"
+      ],
+      "lang_probes": {
+        "en": "moment",
+        "greek": "hora",
+        "hebrew": "regah"
+      }
+    },
+    {
+      "prime_en": "where",
+      "probe_tokens": [
+        "where",
+        "pou",
+        "eifoh"
+      ],
+      "lang_probes": {
+        "en": "where",
+        "greek": "pou",
+        "hebrew": "eifoh"
+      }
+    },
+    {
+      "prime_en": "here",
+      "probe_tokens": [
+        "here",
+        "hode",
+        "poh"
+      ],
+      "lang_probes": {
+        "en": "here",
+        "greek": "hode",
+        "hebrew": "poh"
+      }
+    },
+    {
+      "prime_en": "above",
+      "probe_tokens": [
+        "above",
+        "epano",
+        "malah"
+      ],
+      "lang_probes": {
+        "en": "above",
+        "greek": "epano",
+        "hebrew": "malah"
+      }
+    },
+    {
+      "prime_en": "below",
+      "probe_tokens": [
+        "below",
+        "kato",
+        "mattah"
+      ],
+      "lang_probes": {
+        "en": "below",
+        "greek": "kato",
+        "hebrew": "mattah"
+      }
+    },
+    {
+      "prime_en": "far",
+      "probe_tokens": [
+        "far",
+        "makran",
+        "rachok"
+      ],
+      "lang_probes": {
+        "en": "far",
+        "greek": "makran",
+        "hebrew": "rachok"
+      }
+    },
+    {
+      "prime_en": "near",
+      "probe_tokens": [
+        "near",
+        "engus",
+        "qarov"
+      ],
+      "lang_probes": {
+        "en": "near",
+        "greek": "engus",
+        "hebrew": "qarov"
+      }
+    },
+    {
+      "prime_en": "side",
+      "probe_tokens": [
+        "side",
+        "meros",
+        "tsad"
+      ],
+      "lang_probes": {
+        "en": "side",
+        "greek": "meros",
+        "hebrew": "tsad"
+      }
+    },
+    {
+      "prime_en": "inside",
+      "probe_tokens": [
+        "inside",
+        "esothen",
+        "betok"
+      ],
+      "lang_probes": {
+        "en": "inside",
+        "greek": "esothen",
+        "hebrew": "betok"
+      }
+    },
+    {
+      "prime_en": "touch",
+      "probe_tokens": [
+        "touch",
+        "hapto",
+        "naga"
+      ],
+      "lang_probes": {
+        "en": "touch",
+        "greek": "hapto",
+        "hebrew": "naga"
+      }
+    },
+    {
+      "prime_en": "not",
+      "probe_tokens": [
+        "not",
+        "ou",
+        "lo"
+      ],
+      "lang_probes": {
+        "en": "not",
+        "greek": "ou",
+        "hebrew": "lo"
+      }
+    },
+    {
+      "prime_en": "maybe",
+      "probe_tokens": [
+        "maybe",
+        "isos",
+        "ulai"
+      ],
+      "lang_probes": {
+        "en": "maybe",
+        "greek": "isos",
+        "hebrew": "ulai"
+      }
+    },
+    {
+      "prime_en": "can",
+      "probe_tokens": [
+        "can",
+        "dunamai",
+        "yachol"
+      ],
+      "lang_probes": {
+        "en": "can",
+        "greek": "dunamai",
+        "hebrew": "yachol"
+      }
+    },
+    {
+      "prime_en": "because",
+      "probe_tokens": [
+        "because",
+        "hoti",
+        "ki"
+      ],
+      "lang_probes": {
+        "en": "because",
+        "greek": "hoti",
+        "hebrew": "ki"
+      }
+    },
+    {
+      "prime_en": "if",
+      "probe_tokens": [
+        "if",
+        "ean",
+        "im"
+      ],
+      "lang_probes": {
+        "en": "if",
+        "greek": "ean",
+        "hebrew": "im"
+      }
+    },
+    {
+      "prime_en": "very",
+      "probe_tokens": [
+        "very",
+        "lian",
+        "meod"
+      ],
+      "lang_probes": {
+        "en": "very",
+        "greek": "lian",
+        "hebrew": "meod"
+      }
+    },
+    {
+      "prime_en": "more",
+      "probe_tokens": [
+        "more",
+        "pleion",
+        "yoter"
+      ],
+      "lang_probes": {
+        "en": "more",
+        "greek": "pleion",
+        "hebrew": "yoter"
+      }
+    },
+    {
+      "prime_en": "like",
+      "probe_tokens": [
+        "like",
+        "homoios",
+        "kemo"
+      ],
+      "lang_probes": {
+        "en": "like",
+        "greek": "homoios",
+        "hebrew": "kemo"
+      }
+    },
+    {
+      "prime_en": "way",
+      "probe_tokens": [
+        "way",
+        "hodos",
+        "derekh"
+      ],
+      "lang_probes": {
+        "en": "way",
+        "greek": "hodos",
+        "hebrew": "derekh"
+      }
+    },
+    {
+      "prime_en": "water",
+      "probe_tokens": [
+        "water",
+        "hydor",
+        "mayim"
+      ],
+      "lang_probes": {
+        "en": "water",
+        "greek": "hydor",
+        "hebrew": "mayim"
+      }
+    },
+    {
+      "prime_en": "fire",
+      "probe_tokens": [
+        "fire",
+        "pur",
+        "esh"
+      ],
+      "lang_probes": {
+        "en": "fire",
+        "greek": "pur",
+        "hebrew": "esh"
+      }
+    },
+    {
+      "prime_en": "earth",
+      "probe_tokens": [
+        "earth",
+        "ge",
+        "eretz"
+      ],
+      "lang_probes": {
+        "en": "earth",
+        "greek": "ge",
+        "hebrew": "eretz"
+      }
+    },
+    {
+      "prime_en": "sky",
+      "probe_tokens": [
+        "sky",
+        "ouranos",
+        "shamayim"
+      ],
+      "lang_probes": {
+        "en": "sky",
+        "greek": "ouranos",
+        "hebrew": "shamayim"
+      }
+    },
+    {
+      "prime_en": "sun",
+      "probe_tokens": [
+        "sun",
+        "helios",
+        "shemesh"
+      ],
+      "lang_probes": {
+        "en": "sun",
+        "greek": "helios",
+        "hebrew": "shemesh"
+      }
+    },
+    {
+      "prime_en": "night",
+      "probe_tokens": [
+        "night",
+        "nux",
+        "laylah"
+      ],
+      "lang_probes": {
+        "en": "night",
+        "greek": "nux",
+        "hebrew": "laylah"
+      }
+    },
+    {
+      "prime_en": "day",
+      "probe_tokens": [
+        "day",
+        "hemera",
+        "yom"
+      ],
+      "lang_probes": {
+        "en": "day",
+        "greek": "hemera",
+        "hebrew": "yom"
+      }
+    },
+    {
+      "prime_en": "child",
+      "probe_tokens": [
+        "child",
+        "paidion",
+        "yeled"
+      ],
+      "lang_probes": {
+        "en": "child",
+        "greek": "paidion",
+        "hebrew": "yeled"
+      }
+    },
+    {
+      "prime_en": "man",
+      "probe_tokens": [
+        "man",
+        "anthropos",
+        "adam"
+      ],
+      "lang_probes": {
+        "en": "man",
+        "greek": "anthropos",
+        "hebrew": "adam"
+      }
+    },
+    {
+      "prime_en": "woman",
+      "probe_tokens": [
+        "woman",
+        "gune",
+        "ishah"
+      ],
+      "lang_probes": {
+        "en": "woman",
+        "greek": "gune",
+        "hebrew": "ishah"
+      }
+    },
+    {
+      "prime_en": "house",
+      "probe_tokens": [
+        "house",
+        "oikos",
+        "bayit"
+      ],
+      "lang_probes": {
+        "en": "house",
+        "greek": "oikos",
+        "hebrew": "bayit"
+      }
+    },
+    {
+      "prime_en": "king",
+      "probe_tokens": [
+        "king",
+        "basileus",
+        "melekh"
+      ],
+      "lang_probes": {
+        "en": "king",
+        "greek": "basileus",
+        "hebrew": "melekh"
+      }
+    },
+    {
+      "prime_en": "god",
+      "probe_tokens": [
+        "god",
+        "theos",
+        "elohim"
+      ],
+      "lang_probes": {
+        "en": "god",
+        "greek": "theos",
+        "hebrew": "elohim"
+      }
+    },
+    {
+      "prime_en": "love",
+      "probe_tokens": [
+        "love",
+        "agape",
+        "ahavah"
+      ],
+      "lang_probes": {
+        "en": "love",
+        "greek": "agape",
+        "hebrew": "ahavah"
+      }
+    },
+    {
+      "prime_en": "peace",
+      "probe_tokens": [
+        "peace",
+        "eirene",
+        "shalom"
+      ],
+      "lang_probes": {
+        "en": "peace",
+        "greek": "eirene",
+        "hebrew": "shalom"
+      }
+    },
+    {
+      "prime_en": "sin",
+      "probe_tokens": [
+        "sin",
+        "hamartia",
+        "chet"
+      ],
+      "lang_probes": {
+        "en": "sin",
+        "greek": "hamartia",
+        "hebrew": "chet"
+      }
+    },
+    {
+      "prime_en": "righteous",
+      "probe_tokens": [
+        "righteous",
+        "dikaios",
+        "tsaddiq"
+      ],
+      "lang_probes": {
+        "en": "righteous",
+        "greek": "dikaios",
+        "hebrew": "tsaddiq"
+      }
+    },
+    {
+      "prime_en": "covenant",
+      "probe_tokens": [
+        "covenant",
+        "diatheke",
+        "berit"
+      ],
+      "lang_probes": {
+        "en": "covenant",
+        "greek": "diatheke",
+        "hebrew": "berit"
+      }
+    },
+    {
+      "prime_en": "spirit",
+      "probe_tokens": [
+        "spirit",
+        "pneuma",
+        "ruach"
+      ],
+      "lang_probes": {
+        "en": "spirit",
+        "greek": "pneuma",
+        "hebrew": "ruach"
+      }
+    },
+    {
+      "prime_en": "bread",
+      "probe_tokens": [
+        "bread",
+        "artos",
+        "lechem"
+      ],
+      "lang_probes": {
+        "en": "bread",
+        "greek": "artos",
+        "hebrew": "lechem"
+      }
+    },
+    {
+      "prime_en": "blood",
+      "probe_tokens": [
+        "blood",
+        "haima",
+        "dam"
+      ],
+      "lang_probes": {
+        "en": "blood",
+        "greek": "haima",
+        "hebrew": "dam"
+      }
+    },
+    {
+      "prime_en": "light",
+      "probe_tokens": [
+        "light",
+        "phos",
+        "or"
+      ],
+      "lang_probes": {
+        "en": "light",
+        "greek": "phos",
+        "hebrew": "or"
+      }
+    },
+    {
+      "prime_en": "dark",
+      "probe_tokens": [
+        "dark",
+        "skotos",
+        "choshekh"
+      ],
+      "lang_probes": {
+        "en": "dark",
+        "greek": "skotos",
+        "hebrew": "choshekh"
+      }
+    },
+    {
+      "prime_en": "name",
+      "probe_tokens": [
+        "name",
+        "onoma",
+        "shem"
+      ],
+      "lang_probes": {
+        "en": "name",
+        "greek": "onoma",
+        "hebrew": "shem"
+      }
+    },
+    {
+      "prime_en": "voice",
+      "probe_tokens": [
+        "voice",
+        "phone",
+        "kol"
+      ],
+      "lang_probes": {
+        "en": "voice",
+        "greek": "phone",
+        "hebrew": "kol"
+      }
+    },
+    {
+      "prime_en": "work",
+      "probe_tokens": [
+        "work",
+        "ergon",
+        "melakhah"
+      ],
+      "lang_probes": {
+        "en": "work",
+        "greek": "ergon",
+        "hebrew": "melakhah"
+      }
+    },
+    {
+      "prime_en": "rest",
+      "probe_tokens": [
+        "rest",
+        "anapausis",
+        "menukhah"
+      ],
+      "lang_probes": {
+        "en": "rest",
+        "greek": "anapausis",
+        "hebrew": "menukhah"
+      }
+    },
+    {
+      "prime_en": "fear",
+      "probe_tokens": [
+        "fear",
+        "phobos",
+        "yirah"
+      ],
+      "lang_probes": {
+        "en": "fear",
+        "greek": "phobos",
+        "hebrew": "yirah"
+      }
+    },
+    {
+      "prime_en": "hope",
+      "probe_tokens": [
+        "hope",
+        "elpis",
+        "tikvah"
+      ],
+      "lang_probes": {
+        "en": "hope",
+        "greek": "elpis",
+        "hebrew": "tikvah"
+      }
+    },
+    {
+      "prime_en": "faith",
+      "probe_tokens": [
+        "faith",
+        "pistis",
+        "emunah"
+      ],
+      "lang_probes": {
+        "en": "faith",
+        "greek": "pistis",
+        "hebrew": "emunah"
+      }
+    },
+    {
+      "prime_en": "mercy",
+      "probe_tokens": [
+        "mercy",
+        "eleos",
+        "chesed"
+      ],
+      "lang_probes": {
+        "en": "mercy",
+        "greek": "eleos",
+        "hebrew": "chesed"
+      }
+    },
+    {
+      "prime_en": "judgment",
+      "probe_tokens": [
+        "judgment",
+        "krisis",
+        "mishpat"
+      ],
+      "lang_probes": {
+        "en": "judgment",
+        "greek": "krisis",
+        "hebrew": "mishpat"
+      }
+    },
+    {
+      "prime_en": "seed",
+      "probe_tokens": [
+        "seed",
+        "sperma",
+        "zera"
+      ],
+      "lang_probes": {
+        "en": "seed",
+        "greek": "sperma",
+        "hebrew": "zera"
+      }
+    },
+    {
+      "prime_en": "tree",
+      "probe_tokens": [
+        "tree",
+        "xulon",
+        "ets"
+      ],
+      "lang_probes": {
+        "en": "tree",
+        "greek": "xulon",
+        "hebrew": "ets"
+      }
+    },
+    {
+      "prime_en": "sheep",
+      "probe_tokens": [
+        "sheep",
+        "probaton",
+        "tso'n"
+      ],
+      "lang_probes": {
+        "en": "sheep",
+        "greek": "probaton",
+        "hebrew": "tso'n"
+      }
+    },
+    {
+      "prime_en": "control_negative_uvicorn",
+      "probe_tokens": [
+        "uvicorn"
+      ],
+      "control": "negative",
+      "lang_probes": {
+        "en": "uvicorn"
+      }
+    },
+    {
+      "prime_en": "control_negative_nextjs",
+      "probe_tokens": [
+        "nextjs"
+      ],
+      "control": "negative",
+      "lang_probes": {
+        "en": "nextjs"
+      }
+    },
+    {
+      "prime_en": "control_negative_pytest",
+      "probe_tokens": [
+        "pytest"
+      ],
+      "control": "negative",
+      "lang_probes": {
+        "en": "pytest"
+      }
+    },
+    {
+      "prime_en": "control_negative_docker",
+      "probe_tokens": [
+        "docker"
+      ],
+      "control": "negative",
+      "lang_probes": {
+        "en": "docker"
+      }
+    },
+    {
+      "prime_en": "control_negative_kubernetes",
+      "probe_tokens": [
+        "kubernetes"
+      ],
+      "control": "negative",
+      "lang_probes": {
+        "en": "kubernetes"
+      }
+    }
+  ]
+}

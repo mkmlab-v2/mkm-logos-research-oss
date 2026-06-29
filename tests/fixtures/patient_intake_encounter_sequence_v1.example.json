@@ -1,0 +1,26 @@
+{
+  "schema": "patient_intake_fusion_draft_v1",
+  "version": "1.0.0",
+  "encounter": {
+    "ref_token": "ENC-INTAKE-L0-01"
+  },
+  "profile": {
+    "birth_instant_utc": "1990-05-15T05:30:00Z",
+    "iana_tz": "Asia/Seoul",
+    "is_male": true
+  },
+  "intake": {
+    "symptoms": ["severe_abdominal_pain", "복통 악화"],
+    "situation": "TKM intake fusion L0 router smoke",
+    "subjective_notes": "non-PHI demo only",
+    "sasang_estimate": {
+      "label": "소음인",
+      "source": "설문 추정"
+    }
+  },
+  "options": {
+    "annual_start_year": 2026,
+    "annual_years": 1,
+    "monthly_months_per_year": 3
+  }
+}

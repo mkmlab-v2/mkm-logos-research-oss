@@ -1,0 +1,4 @@
+{"normalized_form":"uvicorn","lang":"en","source_lane":"p3_probe_it_v1","curated_tier":"it_log_stub"}
+{"normalized_form":"fastapi","lang":"en","source_lane":"p3_probe_it_v1","curated_tier":"it_log_stub"}
+{"normalized_form":"middleware","lang":"en","source_lane":"p3_probe_it_v1","curated_tier":"it_log_stub"}
+{"normalized_form":"계지","lang":"ko","source_lane":"p3_probe_herbs_v1","curated_tier":"tcm_alias_stub","external_ref":"herb:guizhi"}

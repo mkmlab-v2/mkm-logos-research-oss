@@ -1,0 +1,39 @@
+{
+  "schema": "btrack_theory_to_gp_pack_v0",
+  "version": "0.1.0",
+  "pack_id": "ai_qqq_logos_v0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "topic_id": "ai_hubris_trade",
+  "topic_query_graphrag": "타워 바벨 기술 집중 허브 붕괴",
+  "motif_lanes": ["hubris_trade", "judgment"],
+  "seed_verses": ["Jer.1.10", "Dan.5.25", "Rev.18.2"],
+  "market": {
+    "symbol_yahoo": "QQQ",
+    "index_label": "Invesco QQQ Trust(^QQQ)",
+    "csv_rel": "research/market_data/qqq_daily_external_yf.csv",
+    "fetch_script": "scripts/fetch_qqq_yfinance_csv.py"
+  },
+  "reference_date": "2026-06-03",
+  "window_start": "2026-06-04",
+  "window_end": "2026-09-30",
+  "deadline_label": "2026-09-30 20:00 US/Eastern",
+  "resolution_deadline_utc": "2026-10-01T00:00:00Z",
+  "drop_window_label": "2026-07-01 ~ 2026-09-30",
+  "drop_window_start": "2026-07-01",
+  "drop_window_end": "2026-09-30",
+  "drop_pct": 5,
+  "layer3_refs": {
+    "equity_new_high_before_deadline": "reports/logos_graphrag_2026_ai_tower_babel_v1_latest.json"
+  },
+  "graphrag_output_rel": "reports/logos_graphrag_2026_ai_tower_babel_v1_latest.json",
+  "motif_p_prior": {
+    "hubris_trade_melt_up": 0.55
+  },
+  "template_ids": ["equity_new_high_before_deadline"],
+  "template_overrides": {
+    "equity_new_high_before_deadline": {
+      "question_id": "gp_2026_logos_qqq_new_high_before_0930"
+    }
+  }
+}

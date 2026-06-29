@@ -1,0 +1,142 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-07T19:00:00Z",
+  "git_commit_hint": "stub:sovereign_stack_t1_only_3q; canonical_full_registry=tests/fixtures/general_prophecy_registry_civilization_apocalypse_v1.json (27q); do_not_replace_civ_apoc_fixture",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.gov.ondevice_did_mandate_oecd3_2035",
+      "question_text": "Will at least three OECD member states enact nationally enforceable regulation requiring consumer devices sold after a published effective date to include hardware-backed decentralized identity (DID) or secure-element key storage for personal credentials, with enforcement beginning on or before 2035-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "governance",
+        "sovereign_stack",
+        "identity",
+        "t1"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2036-06-30T00:00:00Z",
+      "resolution_criteria": "TRUE if national legal gazettes or regulator rulebooks in >=3 OECD members publish enforceable on-device hardware-backed DID or secure-element credential mandates with effective date <=2035-12-31. FALSE if fewer than three. VOID if mandates exist only as voluntary industry guidelines without statutory or regulator-enforceable penalties.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "ondevice_did_mandate_oecd3_ge_3",
+        "false_label": "ondevice_did_mandate_oecd3_lt_3"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T18:30:00Z",
+          "probability_0_1": 0.3,
+          "source_kind": "baseline",
+          "source_detail": "sovereign_stack_t1_stub_john_baptist_precursor",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/john_baptist_precursor_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.tech.e2ee_default_messenger_dau_1b_2032",
+      "question_text": "Will at least one messaging service with end-to-end encryption enabled by default for all one-to-one and group chats report at least one billion daily active users worldwide on or before 2032-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "tech",
+        "sovereign_stack",
+        "privacy",
+        "t1"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2033-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if operator-published metrics or two independent third-party estimates corroborate >=1e9 DAU on a messaging service with E2EE default for all standard chat modes through 2032-12-31. FALSE if no service meets both conditions. VOID if DAU definitions differ materially without reconciliation or operator stops publishing comparable metrics.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "e2ee_messenger_dau_ge_1b",
+        "false_label": "e2ee_messenger_dau_lt_1b"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T18:30:00Z",
+          "probability_0_1": 0.52,
+          "source_kind": "baseline",
+          "source_detail": "sovereign_stack_t1_stub_wilderness_comms",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/wilderness_stack_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "civ.finance.self_custody_wallet_oecd5_50pct_2038",
+      "question_text": "Will at least five OECD economies each report that at least 50 percent of households with internet access hold at least one active self-custody digital asset wallet (user-controlled private keys not solely custodied by a regulated exchange), according to official survey or regulator statistics, on or before 2038-12-31 UTC?",
+      "domain_tags": [
+        "civilization",
+        "finance",
+        "sovereign_stack",
+        "self_custody",
+        "t1"
+      ],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2039-03-31T00:00:00Z",
+      "resolution_criteria": "TRUE if national statistical offices, central banks, or financial regulators in >=5 OECD members publish household surveys showing >=50% of internet-connected households with >=1 active self-custody wallet through 2038-12-31. FALSE if fewer than five meet threshold. VOID if wallet definitions exclude hardware wallets or conflate exchange accounts without key-export rights.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "self_custody_wallet_oecd5_50pct_yes",
+        "false_label": "self_custody_wallet_oecd5_50pct_no"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-07T18:30:00Z",
+          "probability_0_1": 0.36,
+          "source_kind": "baseline",
+          "source_detail": "sovereign_stack_t1_stub_off_ledger_survivability",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "internal:apocalypse_v2/off_ledger_survivability_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    }
+  ]
+}

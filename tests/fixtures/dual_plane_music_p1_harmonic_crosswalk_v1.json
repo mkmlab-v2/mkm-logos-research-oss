@@ -1,0 +1,492 @@
+{
+  "schema": "dual_plane_music_p1_harmonic_crosswalk_v1",
+  "version": "1.1.0",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "hypothesis_class": "HYPO",
+  "key_label": "C_major",
+  "allowed_root_pcs": [
+    0,
+    2,
+    4,
+    5,
+    7,
+    9,
+    11
+  ],
+  "buffer_defaults": {
+    "max_delta_pc": 2,
+    "min_dwell_steps": 1
+  },
+  "samples": [
+    {
+      "id": "legal_step_iv",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 5,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "legal_step_v",
+      "last_root_pc": 5,
+      "neural_draft_root_pc": 7,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "illegal_tritone_draft",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 6,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "illegal_chromatic_draft",
+      "last_root_pc": 7,
+      "neural_draft_root_pc": 8,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "illegal_draft_large_jump",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 10,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "buffer_clamp_then_project",
+      "last_root_pc": 4,
+      "neural_draft_root_pc": 1,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "already_legal_draft",
+      "last_root_pc": 9,
+      "neural_draft_root_pc": 11,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "illegal_pc_3",
+      "last_root_pc": 2,
+      "neural_draft_root_pc": 3,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "illegal_pc_10",
+      "last_root_pc": 5,
+      "neural_draft_root_pc": 10,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "legal_vi",
+      "last_root_pc": 7,
+      "neural_draft_root_pc": 9,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "illegal_draft_1",
+      "last_root_pc": 11,
+      "neural_draft_root_pc": 1,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "legal_ii",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 2,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_012",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 1,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_013",
+      "last_root_pc": 7,
+      "neural_draft_root_pc": 2,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_014",
+      "last_root_pc": 2,
+      "neural_draft_root_pc": 7,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_015",
+      "last_root_pc": 9,
+      "neural_draft_root_pc": 8,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_016",
+      "last_root_pc": 4,
+      "neural_draft_root_pc": 11,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_017",
+      "last_root_pc": 11,
+      "neural_draft_root_pc": 4,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_018",
+      "last_root_pc": 5,
+      "neural_draft_root_pc": 3,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_019",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 2,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_020",
+      "last_root_pc": 2,
+      "neural_draft_root_pc": 7,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_021",
+      "last_root_pc": 5,
+      "neural_draft_root_pc": 10,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_022",
+      "last_root_pc": 7,
+      "neural_draft_root_pc": 9,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_023",
+      "last_root_pc": 9,
+      "neural_draft_root_pc": 2,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_024",
+      "last_root_pc": 11,
+      "neural_draft_root_pc": 6,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_025",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 0,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_026",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 5,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_027",
+      "last_root_pc": 7,
+      "neural_draft_root_pc": 1,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_028",
+      "last_root_pc": 2,
+      "neural_draft_root_pc": 9,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_029",
+      "last_root_pc": 9,
+      "neural_draft_root_pc": 2,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_030",
+      "last_root_pc": 4,
+      "neural_draft_root_pc": 8,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_031",
+      "last_root_pc": 11,
+      "neural_draft_root_pc": 5,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_032",
+      "last_root_pc": 5,
+      "neural_draft_root_pc": 10,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_033",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 3,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_034",
+      "last_root_pc": 2,
+      "neural_draft_root_pc": 5,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_035",
+      "last_root_pc": 5,
+      "neural_draft_root_pc": 10,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_036",
+      "last_root_pc": 7,
+      "neural_draft_root_pc": 10,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_037",
+      "last_root_pc": 9,
+      "neural_draft_root_pc": 11,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_038",
+      "last_root_pc": 11,
+      "neural_draft_root_pc": 4,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_039",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 6,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_040",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 7,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_041",
+      "last_root_pc": 7,
+      "neural_draft_root_pc": 0,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_042",
+      "last_root_pc": 2,
+      "neural_draft_root_pc": 1,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_043",
+      "last_root_pc": 9,
+      "neural_draft_root_pc": 4,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_044",
+      "last_root_pc": 4,
+      "neural_draft_root_pc": 9,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_illegal_045",
+      "last_root_pc": 11,
+      "neural_draft_root_pc": 8,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_legal_046",
+      "last_root_pc": 5,
+      "neural_draft_root_pc": 0,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    },
+    {
+      "id": "synthetic_jump_047",
+      "last_root_pc": 0,
+      "neural_draft_root_pc": 5,
+      "labels": [
+        "research_only",
+        "dual_plane_music_p1",
+        "synthetic_v1_1"
+      ]
+    }
+  ],
+  "sample_count_note": "12 hand-authored + 36 synthetic C_major progression cases"
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "mkm_video_rig_stub_v1",
+  "version": "1.0.0",
+  "hypothesis_class": "HYPO",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "bounds": {
+    "min": [-2.0, -2.0, 0.0],
+    "max": [5.0, 2.0, 3.0]
+  },
+  "meta": {
+    "fps": 24,
+    "total_frames": 120
+  },
+  "objects": [
+    {
+      "id": "actor_char_01",
+      "class": "human",
+      "bbox_3d_track": [
+        {
+          "t": 0,
+          "center": [0.0, 0.0, 1.2],
+          "extent": [0.6, 0.6, 1.8],
+          "rotation": [0.0, 0.0, 0.0]
+        },
+        {
+          "t": 60,
+          "center": [6.5, 0.0, -0.5],
+          "extent": [0.6, 0.6, 1.8],
+          "rotation": [0.0, 0.0, 20.0]
+        },
+        {
+          "t": 120,
+          "center": [1.0, 0.0, 1.2],
+          "extent": [0.6, 0.6, 1.8],
+          "rotation": [0.0, 0.0, 45.0]
+        }
+      ]
+    }
+  ],
+  "camera": {
+    "pose_track": [
+      {
+        "t": 0,
+        "position": [0.0, -5.0, 1.5],
+        "look_at": [0.0, 0.0, 1.2],
+        "fov": 120.0
+      },
+      {
+        "t": 120,
+        "position": [1.0, -5.0, 1.5],
+        "look_at": [2.5, 0.0, 1.2],
+        "fov": 55.0
+      }
+    ]
+  },
+  "relations": [
+    {
+      "subject": "actor_char_01",
+      "predicate": "moving_towards",
+      "object": "target_point_a",
+      "interval": [0, 120]
+    }
+  ]
+}

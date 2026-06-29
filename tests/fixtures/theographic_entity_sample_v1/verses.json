@@ -1,0 +1,26 @@
+[
+  {
+    "id": "recv1",
+    "fields": {
+      "osisRef": "Exod.4.14",
+      "people": ["rec_person_aaron"],
+      "places": ["rec_place_eden"],
+      "event": ["rec_event_creation"]
+    }
+  },
+  {
+    "id": "recv2",
+    "fields": {
+      "osisRef": "Gen.2.8",
+      "people": ["rec_person_aaron"],
+      "places": ["rec_place_eden"]
+    }
+  },
+  {
+    "id": "recv3",
+    "fields": {
+      "osisRef": "John.3.16",
+      "people": ["rec_person_aaron"]
+    }
+  }
+]

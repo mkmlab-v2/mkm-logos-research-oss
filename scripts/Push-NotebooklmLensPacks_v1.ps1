@@ -54,7 +54,8 @@ param(
 $ErrorActionPreference = "Stop"
 $LensKeys = @(
   "OPS_COMMAND_ANCHOR", "TRACKC_BIZ", "LENS_MYEONGNI",
-  "LENS_SASANG", "LENS_LOGOS", "MKM_CORE_FACT", "COMPRESSION_BTRACK"
+  "LENS_SASANG", "LENS_LOGOS", "MKM_CORE_FACT", "COMPRESSION_BTRACK",
+  "IJEOMA_BTRACK", "LENS_PROPHECY"
 )
 
 if (-not $NotebookMapPath) {

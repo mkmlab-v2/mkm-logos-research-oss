@@ -1,0 +1,12 @@
+{
+  "schema_version": "risk_profile_v0.1",
+  "generated_at": "2026-06-19T12:00:00+00:00",
+  "trinity_governor": {
+    "logos_regime_score": 0.9,
+    "mode": "ACTIVE_MODE",
+    "logos_non_gating_ack": false
+  },
+  "governance_bridge": {
+    "final_action_allowed": true
+  }
+}

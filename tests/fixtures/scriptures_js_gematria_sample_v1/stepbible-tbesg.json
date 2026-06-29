@@ -1,0 +1,35 @@
+{
+  "G0001": {
+    "source": "stepbible-tbesg",
+    "strongsExtended": "G0001",
+    "strongsDisambiguated": "G0001G",
+    "strongsUnified": "G0001G",
+    "lemma": "α, Ἀλφα",
+    "transliteration": "Alpha",
+    "morphology": "G:N-LI",
+    "gloss": "Alpha",
+    "definition": "alpha, the first letter"
+  },
+  "G2316": {
+    "source": "stepbible-tbesg",
+    "strongsExtended": "G2316",
+    "strongsDisambiguated": "G2316G",
+    "strongsUnified": "G2316G",
+    "lemma": "θεός",
+    "transliteration": "theos",
+    "morphology": "G:N-M",
+    "gloss": "God",
+    "definition": "God, a god"
+  },
+  "G3056": {
+    "source": "stepbible-tbesg",
+    "strongsExtended": "G3056",
+    "strongsDisambiguated": "G3056G",
+    "strongsUnified": "G3056G",
+    "lemma": "λόγος",
+    "transliteration": "logos",
+    "morphology": "G:N-M",
+    "gloss": "word",
+    "definition": "word, speech, account"
+  }
+}

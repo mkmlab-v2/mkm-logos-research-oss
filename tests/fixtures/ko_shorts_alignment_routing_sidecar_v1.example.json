@@ -1,0 +1,9 @@
+{
+  "web_pansori": {
+    "domain_hint": "traditional_vocal"
+  },
+  "my_shorts_v1": {
+    "domain_hint": "standard_speech",
+    "alignment_backend_override": null
+  }
+}

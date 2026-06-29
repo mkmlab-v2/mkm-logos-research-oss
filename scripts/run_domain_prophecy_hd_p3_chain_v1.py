@@ -1,0 +1,133 @@
+#!/usr/bin/env python3
+"""HD P3 chain: product surfaces — mkmlife·personadiary·clinical·jemaai [tier_0]."""
+from __future__ import annotations
+
+import argparse
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+ROOT = Path(__file__).resolve().parents[1]
+PY = sys.executable
+HD_OUT = ROOT / "reports/hd_autonomous_evolution_completion_v1_latest.json"
+P3_DOMAINS = (
+    "mkmlife_moment",
+    "personadiary_moment",
+    "clinical_cohort_hypo",
+    "jemaai_showroom_obs",
+)
+REGISTER_DOMAINS = ("mkmlife_moment", "personadiary_moment", "clinical_cohort_hypo")
+
+
+def _utc() -> str:
+    return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _run(name: str, cmd: list[str], *, timeout: int = 900) -> dict[str, Any]:
+    cp = subprocess.run(
+        cmd,
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        timeout=timeout,
+    )
+    return {
+        "step": name,
+        "cmd": cmd,
+        "exit_code": cp.returncode,
+        "tail": ((cp.stdout or "") + (cp.stderr or "")).strip()[-500:],
+    }
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--skip-register", action="store_true")
+    ap.add_argument("--skip-daily-loop", action="store_true")
+    ap.add_argument("--skip-adapter-smoke", action="store_true")
+    args = ap.parse_args()
+
+    steps: list[dict[str, Any]] = []
+
+    if not args.skip_register:
+        for domain_id in REGISTER_DOMAINS:
+            steps.append(
+                _run(
+                    f"register_{domain_id}",
+                    [
+                        PY,
+                        "scripts/register_general_prophecy_domain_v1.py",
+                        "--domain-id",
+                        domain_id,
+                        "--activate-registry",
+                        "--refresh-artifact",
+                    ],
+                )
+            )
+
+    if not args.skip_daily_loop:
+        loop_cmd = [PY, "scripts/run_domain_prophecy_daily_loop_v1.py", "--phase", "evening"]
+        for did in P3_DOMAINS:
+            loop_cmd.extend(["--domain-id", did])
+        steps.append(_run("domain_daily_loop_p3", loop_cmd))
+
+    if not args.skip_adapter_smoke:
+        steps.append(
+            _run(
+                "domain_adapter_pointer_smoke",
+                [
+                    "powershell",
+                    "-NoProfile",
+                    "-ExecutionPolicy",
+                    "Bypass",
+                    "-File",
+                    "scripts/Run-DomainAdapterPointerSmoke_v1.ps1",
+                    "-SkipAudioPytest",
+                ],
+                timeout=600,
+            )
+        )
+
+    steps.append(_run("registry_gate", [PY, "scripts/check_domain_prophecy_registry_v1.py"]))
+    steps.append(_run("pytest_p3", [PY, "-m", "pytest", "tests/test_domain_prophecy_p3_v1.py", "-q"]))
+
+    ok = all(s["exit_code"] == 0 for s in steps)
+    loop_path = ROOT / "reports/domain_prophecy_daily_loop_v1_latest.json"
+    loop_doc: dict[str, Any] = {}
+    if loop_path.is_file():
+        loop_doc = json.loads(loop_path.read_text(encoding="utf-8-sig"))
+
+    completion = {
+        "schema": "hd_autonomous_evolution_completion_v1",
+        "generated_at_utc": _utc(),
+        "mission": "Multi-domain prophecy P3 — mkmlife·personadiary·clinical·jemaai product surfaces",
+        "hypothesis_tier": "B",
+        "research_only": True,
+        "tier": "tier_0",
+        "quality_ok": ok,
+        "ok": ok,
+        "steps": steps,
+        "metrics": {
+            "p3_domains_dispatched": len(loop_doc.get("domains") or []),
+            "domain_loop_quality_ok": loop_doc.get("quality_ok"),
+        },
+        "artifacts": {
+            "registry": "data/commander/domain_prophecy_registry_v1.json",
+            "daily_loop": "reports/domain_prophecy_daily_loop_v1_latest.json",
+            "merge_manifest": "data/commander/domain_prophecy_merge_manifest_v1.json",
+        },
+        "reproduce": "py scripts/run_domain_prophecy_hd_p3_chain_v1.py",
+        "send_gate": "HOLD",
+        "production_apply_authorized": False,
+    }
+    HD_OUT.write_text(json.dumps(completion, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"ok": ok, "metrics": completion["metrics"]}, ensure_ascii=False))
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

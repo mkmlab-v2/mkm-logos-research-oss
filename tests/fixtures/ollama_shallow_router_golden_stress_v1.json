@@ -1,0 +1,88 @@
+{
+  "schema": "ollama_shallow_router_golden_stress_v1",
+  "version": "1.0.0",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "fixtures": [
+    {
+      "id": "adv_logos_oracle_boundary",
+      "input": "Logos 성경 구절 shallow만 — Oracle tier2 inject wire는 빼줘",
+      "expected_domain_tag": "logos"
+    },
+    {
+      "id": "adv_oracle_not_logos_verse",
+      "input": "Oracle resume pack tier2 only, bible verse Logos 분석 아님",
+      "expected_domain_tag": "oracle"
+    },
+    {
+      "id": "adv_logos_en_kr_mix",
+      "input": "bible scripture Logos: 시편 89편 covenant faithfulness shallow tag only",
+      "expected_domain_tag": "logos"
+    },
+    {
+      "id": "adv_oracle_heavenly_council",
+      "input": "Oracle heavenly council fusion memo tier2 prep — scripture verse routing 아님",
+      "expected_domain_tag": "oracle"
+    },
+    {
+      "id": "adv_infra_not_logos",
+      "input": "infra: workspace disk cleanup logos_reval temp — bible Logos 분석 금지",
+      "expected_domain_tag": "infra"
+    },
+    {
+      "id": "adv_devops_not_oracle",
+      "input": "devops CI smoke pre-push gate only — Oracle resume inject 아님",
+      "expected_domain_tag": "devops"
+    },
+    {
+      "id": "adv_myeongni_sasang_trap",
+      "input": "명리 myeongni 중기 방향 사주 계절만 — sasang 四象 단기 강도 아님",
+      "expected_domain_tag": "myeongni"
+    },
+    {
+      "id": "adv_sasang_myeongni_trap",
+      "input": "sasang taeeum 단기 강도 shallow — myeongni 사주 방향 아님",
+      "expected_domain_tag": "sasang"
+    },
+    {
+      "id": "adv_design_not_infra",
+      "input": "design jemaai showroom trust viz copy — infra disk cleanup 아님",
+      "expected_domain_tag": "design"
+    },
+    {
+      "id": "adv_logos_quote_hash",
+      "input": "Logos verse_id quote_hash citation integrity shallow routing only",
+      "expected_domain_tag": "logos"
+    },
+    {
+      "id": "adv_oracle_gap_shadow",
+      "input": "Oracle gap shadow eval tier2 wire readiness — Logos subgraph gold 아님",
+      "expected_domain_tag": "oracle"
+    },
+    {
+      "id": "adv_logos_subgraph_not_ms",
+      "input": "Logos subgraph graphrag bible bridge shallow — MS commercialization 아님",
+      "expected_domain_tag": "logos"
+    },
+    {
+      "id": "adv_infra_ollama_models",
+      "input": "infra lane ollama model pull disk usage solo_ops — oracle tier2 아님",
+      "expected_domain_tag": "infra"
+    },
+    {
+      "id": "adv_devops_fact_lock",
+      "input": "devops fact-lock bundle pytest dual-regime — logos verse shallow 아님",
+      "expected_domain_tag": "devops"
+    },
+    {
+      "id": "adv_logos_watchfulness",
+      "input": "Logos WATCH regime watchfulness bible path shallow tag",
+      "expected_domain_tag": "logos"
+    },
+    {
+      "id": "adv_oracle_advanced_logos",
+      "input": "Oracle AdvancedLogos resume topology sidecar HYPO — bible verse Logos routing 아님",
+      "expected_domain_tag": "oracle"
+    }
+  ]
+}

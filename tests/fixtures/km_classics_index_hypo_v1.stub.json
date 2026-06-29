@@ -1,0 +1,28 @@
+{
+  "schema": "km_classics_index_hypo_v1",
+  "version": 1,
+  "hypothesis_tier": "B",
+  "generated_at_utc": "2026-06-14T12:30:56Z",
+  "vendor_root": "C:\\workspace\\tests\\fixtures\\km_classics_vendor_stub_hypo_v1",
+  "file_count": 2,
+  "entries": [
+    {
+      "source_id": "kmc-05575e6d14e3",
+      "work": "bangyakhabpyeon_excerpt.stub",
+      "relative_path": "bangyakhabpyeon_excerpt.stub.txt",
+      "suffix": ".txt",
+      "size_bytes": 140,
+      "encoding_guess": "utf-8"
+    },
+    {
+      "source_id": "kmc-42edd3fd2d52",
+      "work": "donguibogam_excerpt.stub",
+      "relative_path": "donguibogam_excerpt.stub.txt",
+      "suffix": ".txt",
+      "size_bytes": 225,
+      "encoding_guess": "utf-8"
+    }
+  ],
+  "clinician_lane_only": true,
+  "personadiary_join": false
+}

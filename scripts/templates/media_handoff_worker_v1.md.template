@@ -1,0 +1,49 @@
+# [MKM-HW-{{TASK_ID}}] HANDOFF WORKER BLUEPRINT
+
+- Generated: {{GENERATED_AT}}
+- Rank engine: {{RANK_ENGINE}}
+- Cloud skip pointer: {{CLOUD_SKIP_POINTER}}
+- Target suite: {{TARGET_SUITE}}
+- Security: Track B [HYPO] · send_gate: HOLD
+
+---
+
+## 1. Source verification
+
+- WAV source: `{{WAV_SOURCE}}`
+- Meta JSON: `{{SOURCE_JSON}}`
+- Primary theme: {{THEME}}
+
+---
+
+## 2. Timeline grid (Top-{{TOP_K}} ranked)
+
+Copy timestamps into CapCut / Premiere / AntiGravity.
+
+{{TIMELINE_TABLE}}
+{{MULTILENS_SECTION}}
+{{LAYER_C_MDL_SECTION}}
+
+---
+
+## 3. AntiGravity / diffusion pack
+
+NSM prompt hints (Layer A advisory only): {{NSM_HINTS}}
+
+```text
+{{DIFFUSION_PROMPT}}
+```
+
+---
+
+## 4. Verification checklist
+
+- [ ] Timeline cuts match indexes above
+- [ ] SRT/subtitle sync checked in GUI
+- [ ] Output path: `data/media/output/{{TASK_ID}}_final.mp4`
+
+**Closure command:**
+
+```powershell
+py scripts/verify_handoff_closure_v1.py --task-id {{TASK_ID}}
+```

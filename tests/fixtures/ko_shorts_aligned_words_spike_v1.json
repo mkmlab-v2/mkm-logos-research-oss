@@ -1,0 +1,21 @@
+{
+  "schema": "ko_shorts_aligned_words_spike_fixture_v1",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "wav_source": "fixture://ko_shorts_orphan_merge_v1",
+  "stt_engine": "fixture:aligned_words",
+  "model_name": "small",
+  "pause_gap_sec": 0.4,
+  "max_chars": 28,
+  "min_seg_sec": 0.5,
+  "words": [
+    {"word": "첫째,", "start": 0.0, "end": 0.35},
+    {"word": "잘한", "start": 0.38, "end": 0.62},
+    {"word": "것.", "start": 0.65, "end": 0.9},
+    {"word": "오늘", "start": 1.5, "end": 1.72},
+    {"word": "회고", "start": 1.75, "end": 1.98},
+    {"word": "문화를", "start": 2.0, "end": 2.35},
+    {"word": "짚어", "start": 2.38, "end": 2.62},
+    {"word": "줍니다.", "start": 2.65, "end": 3.1}
+  ]
+}

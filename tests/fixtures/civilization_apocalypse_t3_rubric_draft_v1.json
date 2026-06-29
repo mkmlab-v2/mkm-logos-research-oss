@@ -1,0 +1,67 @@
+{
+  "schema": "civilization_apocalypse_t3_rubric_draft_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-07T14:00:00Z",
+  "hypothesis_tier": "[HYPO]",
+  "gating_status": "NON_GATING",
+  "brier_ready": false,
+  "note": "promoted_to_registry_fixture_2026-06-07_commander_ordered",
+  "companion_pointer_file": "tests/fixtures/civilization_apocalypse_layer3_t3_pointers_v1.json",
+  "registry_companion": "tests/fixtures/general_prophecy_registry_civilization_apocalypse_v1.json",
+  "rubric_drafts": [
+    {
+      "t3_pointer_id": "t3.greenfield_new_jerusalem",
+      "layer3_interpretation_ref": "internal:apocalypse_v2/greenfield_rev21_22_NON_GATING",
+      "rubric_draft": {
+        "proposed_question_id": "civ.t3.greenfield_governance_stack_majority_2100",
+        "proposed_question_text": "Will at least three of the five largest national economies by nominal GDP (IMF WEO, 2099 reference year) route a majority of retail and wholesale payment settlement volume through post-2030 greenfield governance stacks that bypass legacy bank-regulator clearing intermediaries, as measured on or before 2100-12-31 UTC?",
+        "proposed_resolution_criteria": "TRUE if at least three of the top-five 2099 economies publish regulator or central-bank audited statistics showing >50% of domestic payment settlement volume cleared via greenfield protocols (defined as stacks launched after 2030-01-01 without legacy correspondent-bank rails as primary path) through 2100-12-31. FALSE if fewer than three meet the threshold by deadline. VOID if fewer than two top-five economies publish comparable settlement-rail definitions by 2101-03-31 or IMF discontinues comparable GDP ranking.",
+        "proposed_resolution_deadline_utc": "2101-03-31T00:00:00Z",
+        "draft_probability_0_1": 0.18,
+        "promotion_status": "promoted_to_civilization_registry_fixture",
+        "layer3_interpretation_ref": "internal:apocalypse_v2/greenfield_rev21_22_NON_GATING"
+      }
+    },
+    {
+      "t3_pointer_id": "t3.terminal_slo_no_tears",
+      "layer3_interpretation_ref": "internal:apocalypse_v2/terminal_slo_rev21_4_NON_GATING",
+      "rubric_draft": {
+        "proposed_question_id": "civ.t3.mortality_engineering_slo_public_2100",
+        "proposed_question_text": "Will at least one OECD member health ministry or equivalent national health authority publicly classify aging-related mortality as an engineering defect class with a published remediation SLO target date, and maintain that classification continuously from first publication through 2100-12-31 UTC?",
+        "proposed_resolution_criteria": "TRUE if an OECD-scale authority publishes an official document labeling aging-related mortality as an engineering or systems defect with a dated remediation SLO, and no subsequent official retraction occurs before 2100-12-31. FALSE if no such publication exists or all such classifications are officially retracted before 2100-12-31. VOID if OECD membership structure changes such that no comparable authority exists, or defect-class terminology cannot be verified from primary sources by 2101-03-31.",
+        "proposed_resolution_deadline_utc": "2101-03-31T00:00:00Z",
+        "draft_probability_0_1": 0.12,
+        "promotion_status": "promoted_to_civilization_registry_fixture",
+        "layer3_interpretation_ref": "internal:apocalypse_v2/terminal_slo_rev21_4_NON_GATING"
+      }
+    },
+    {
+      "t3_pointer_id": "t3.matrioshka_upload_rejected_base",
+      "layer3_interpretation_ref": "internal:apocalypse_v2/matrioshka_upload_hypothesis_REJECTED_BASE",
+      "rubric_draft": {
+        "proposed_question_id": "civ.t3.brain_substrate_upload_minority_2100",
+        "proposed_question_text": "Will fewer than 25% of humans with recognized legal personhood in the five most populous UN member states rely on non-biological primary cognitive substrate (whole-brain emulation, substrate upload, or equivalent) as their primary legal identity substrate, as officially reported on or before 2100-12-31 UTC?",
+        "proposed_resolution_criteria": "TRUE if aggregated official census or civil-registry statistics from the five most populous states show <25% of legally recognized persons using non-biological primary cognitive substrate through 2100-12-31. FALSE if >=25% in aggregate. VOID if fewer than three of the five publish substrate-classification statistics with comparable definitions by 2101-03-31.",
+        "proposed_resolution_deadline_utc": "2101-03-31T00:00:00Z",
+        "draft_probability_0_1": 0.72,
+        "promotion_status": "promoted_to_civilization_registry_fixture",
+        "layer3_interpretation_ref": "internal:apocalypse_v2/matrioshka_upload_hypothesis_REJECTED_BASE"
+      }
+    },
+    {
+      "t3_pointer_id": "t3.kardashev_type1_deferred",
+      "layer3_interpretation_ref": "internal:apocalypse_v2/kardashev_type1_deferred_NON_GATING",
+      "rubric_draft": {
+        "proposed_question_id": "civ.t3.planetary_energy_harness_below_type1_2100",
+        "proposed_question_text": "Will humanity's verified planetary primary energy harness remain below 10^17 watts (order-of-magnitude Kardashev Type I threshold) according to at least two independent global energy balance assessments, as of 2100-12-31 UTC?",
+        "proposed_resolution_criteria": "TRUE if at least two independent assessments (e.g. IEA successor, peer-reviewed planetary energy budget consortium) report primary energy harness <10^17 W through 2100-12-31. FALSE if two or more independent assessments report >=10^17 W sustained for at least one calendar year ending on or before 2100-12-31. VOID if no two independent assessments publish comparable planetary primary-energy totals by 2101-03-31.",
+        "proposed_resolution_deadline_utc": "2101-03-31T00:00:00Z",
+        "draft_probability_0_1": 0.65,
+        "promotion_status": "promoted_to_civilization_registry_fixture",
+        "layer3_interpretation_ref": "internal:apocalypse_v2/kardashev_type1_deferred_NON_GATING"
+      }
+    }
+  ]
+}

@@ -60,6 +60,30 @@ def test_holdout_alert_warn_dry_run(tmp_path: Path):
     ]
 
 
+def test_holdout_alert_slack_payload_wraps_text():
+    from scripts.alert_general_prophecy_holdout_gate_v1 import _slack_webhook_body
+
+    payload = {
+        "decision": "WARN_HOLDOUT_DRIFT_RISK",
+        "all_pass": False,
+        "profile": "research",
+        "failed_check_keys": ["min_holdout_repro_rate_pass"],
+        "metrics_snapshot": {
+            "holdout_reproducible_evidence_rate": 0.68,
+            "holdout_avg_biblical_keyword_coverage": 0.29,
+        },
+    }
+    body = json.loads(
+        _slack_webhook_body("https://hooks.slack.com/services/T00/B00/xxx", payload).decode("utf-8")
+    )
+    assert isinstance(body.get("text"), str)
+    assert "WARN_HOLDOUT_DRIFT_RISK" in body["text"]
+    generic = json.loads(
+        _slack_webhook_body("https://example.invalid/webhook", payload).decode("utf-8")
+    )
+    assert generic["decision"] == "WARN_HOLDOUT_DRIFT_RISK"
+
+
 def test_holdout_alert_not_needed(tmp_path: Path):
     gate = tmp_path / "gate_ok.json"
     out = tmp_path / "alert_result_ok.json"

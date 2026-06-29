@@ -1,0 +1,40 @@
+{
+  "schema": "clinic_constitution_mvp_capture_v1",
+  "version": "1.0.0",
+  "ts_utc": "2026-05-31T09:15:00Z",
+  "hypothesis_tier": "B",
+  "boundary_ack": true,
+  "a_track_autobind_forbidden": true,
+  "encounter": {
+    "ref_token": "ENC-DEMO-2026-0531-01"
+  },
+  "modalities_present": {
+    "survey": true,
+    "face_image": false,
+    "voice_sample": false,
+    "birth_profile": true
+  },
+  "observation_proxies": {
+    "cold_heat_lean": 0.35,
+    "digestion_lean": 0.62,
+    "activity_lean": 0.48,
+    "moisture_lean": 0.55
+  },
+  "ai_hypothesis": {
+    "constitution": "taeeum",
+    "confidence": 0.58,
+    "model_id": "mvp_stub_v0",
+    "rationale_short": "[HYPO] 설문 프록시만 사용; 얼굴·음성 미수집."
+  },
+  "physician_constitution": {
+    "label": "taeeum",
+    "recorded_by_role": "licensed_km_physician",
+    "notes": "맥·문진 일치; AI 가설 참고만."
+  },
+  "agreement": {
+    "ai_physician_match": true,
+    "disagreement_code": "none"
+  },
+  "intake_ref": "reports/patient_intake_fusion_bundle_draft_latest.json",
+  "patient_facing_copy_ack": true
+}

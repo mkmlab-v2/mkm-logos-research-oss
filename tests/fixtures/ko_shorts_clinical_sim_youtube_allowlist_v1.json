@@ -1,0 +1,17 @@
+{
+  "schema": "ko_shorts_clinical_sim_youtube_allowlist_v1",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "hypothesis_class": "HYPO",
+  "not_patient_data": true,
+  "clinical_sim": true,
+  "proxy_tier": "education_allowlist",
+  "title": "TEDxKR — 흙의 새로운 정의와 가능성 (신근식)",
+  "youtube_url": "https://www.youtube.com/watch?v=8-dSwR5iUyY",
+  "video_id": "8-dSwR5iUyY",
+  "clip_start_sec": 30.0,
+  "clip_duration_sec": 25.0,
+  "license_note": "YouTube public video clip for B-track timing proxy only; not redistribution",
+  "pansori_corpus_crossref": "https://github.com/yc9701/pansori-tedxkr-corpus",
+  "reproduce": "py scripts/fetch_youtube_audio_clip_wav_v1.py"
+}

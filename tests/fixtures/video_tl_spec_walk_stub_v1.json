@@ -1,0 +1,40 @@
+{
+  "schema": "video_tl_spec_stub_v1",
+  "version": "1.0.0",
+  "hypothesis_class": "HYPO",
+  "reference": "NeuS-V-style formal check stub (evaluation only)",
+  "rules": [
+    {
+      "id": "bounds_actor",
+      "kind": "always_in_bounds",
+      "object_id": "actor_char_01",
+      "min": [-2.0, -2.0, 0.0],
+      "max": [5.0, 2.0, 3.0]
+    },
+    {
+      "id": "camera_fov",
+      "kind": "camera_fov_in_range",
+      "min": 30.0,
+      "max": 90.0
+    },
+    {
+      "id": "eventually_forward",
+      "kind": "eventually_x_gt",
+      "object_id": "actor_char_01",
+      "x_gt": 1.0,
+      "by_frame": 120
+    },
+    {
+      "id": "floor_contact",
+      "kind": "always_z_min",
+      "object_id": "actor_char_01",
+      "z_min": 0.0
+    },
+    {
+      "id": "camera_y_negative",
+      "kind": "camera_axis_in_range",
+      "axis": "y",
+      "max": -1.0
+    }
+  ]
+}

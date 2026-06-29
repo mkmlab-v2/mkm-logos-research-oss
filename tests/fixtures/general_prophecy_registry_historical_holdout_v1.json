@@ -1,0 +1,323 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-07T20:00:00Z",
+  "git_commit_hint": "fixture:historical_holdout_v1_8q_resolved; sandbox_eval_only_not_production_merge",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hist.finance.lehman_ch11_filed_2008",
+      "question_text": "Did Lehman Brothers Holdings Inc. file for Chapter 11 bankruptcy protection in a United States court on or before 2008-09-16 UTC?",
+      "domain_tags": ["history", "finance", "holdout", "macro_stress"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2008-10-01T00:00:00Z",
+      "resolution_criteria": "TRUE if Lehman Brothers filed Chapter 11 (or equivalent court record) on or before 2008-09-16 per SEC filing, court docket, or two independent financial news archives. FALSE if no such filing occurred by deadline. VOID if filing date cannot be established from authoritative records.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "lehman_ch11_filed",
+        "false_label": "lehman_ch11_not_filed"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2008-06-01T12:00:00Z",
+          "probability_0_1": 0.22,
+          "source_kind": "baseline",
+          "source_detail": "historical_holdout_v1_pre_crisis_base_rate",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "resolved",
+        "resolved_at_utc": "2008-09-16T00:00:00Z",
+        "outcome_binary": true,
+        "resolver_notes": "Lehman filed Chapter 11 on 2008-09-15; holdout anchor for global-atom news network replay.",
+        "evidence_uris": [
+          "https://www.sec.gov/Archives/edgar/data/806085/000119312508203903/d10q.htm",
+          "https://en.wikipedia.org/wiki/Bankruptcy_of_Lehman_Brothers"
+        ]
+      },
+      "layer3_interpretation_ref": "internal:logos/historical_holdout_lehman_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hist.health.who_covid_pheic_jan2020",
+      "question_text": "Did the World Health Organization declare COVID-19 a Public Health Emergency of International Concern (PHEIC) on or before 2020-01-31 UTC?",
+      "domain_tags": ["history", "health", "holdout", "pandemic"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2020-02-15T00:00:00Z",
+      "resolution_criteria": "TRUE if WHO official statement or situation report records PHEIC declaration date on or before 2020-01-31. FALSE if declaration occurred later or never. VOID if WHO archives are inaccessible and no corroborating official record exists.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "covid_pheic_declared",
+        "false_label": "covid_pheic_not_declared"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2020-01-10T12:00:00Z",
+          "probability_0_1": 0.35,
+          "source_kind": "baseline",
+          "source_detail": "historical_holdout_v1_pre_pheic_base_rate",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "resolved",
+        "resolved_at_utc": "2020-01-31T00:00:00Z",
+        "outcome_binary": true,
+        "resolver_notes": "WHO declared PHEIC on 2020-01-30; holdout anchor for COVID news-network replay.",
+        "evidence_uris": [
+          "https://www.who.int/news/item/30-01-2020-statement-on-the-second-meeting-of-the-international-health-regulations-(2005)-emergency-committee-regarding-the-outbreak-of-novel-coronavirus-(2019-ncov)"
+        ]
+      },
+      "layer3_interpretation_ref": "internal:logos/historical_holdout_covid_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hist.pol.berlin_wall_opened_1989",
+      "question_text": "Did East Germany open the Berlin Wall for general civilian passage on or before 1989-11-10 UTC?",
+      "domain_tags": ["history", "politics", "holdout", "regime_change"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "1989-12-01T00:00:00Z",
+      "resolution_criteria": "TRUE if authoritative chronicles (Bundesarchiv, contemporary wire services, or consensus historical reference) record unrestricted civilian crossing at Berlin Wall checkpoints on or before 1989-11-10. FALSE otherwise. VOID if date of opening cannot be established.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "wall_opened",
+        "false_label": "wall_not_opened"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "1989-06-01T12:00:00Z",
+          "probability_0_1": 0.18,
+          "source_kind": "baseline",
+          "source_detail": "historical_holdout_v1_cold_war_base_rate",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "resolved",
+        "resolved_at_utc": "1989-11-10T00:00:00Z",
+        "outcome_binary": true,
+        "resolver_notes": "Wall opened evening of 1989-11-09; widely recorded as 9-10 Nov 1989.",
+        "evidence_uris": [
+          "https://en.wikipedia.org/wiki/Fall_of_the_Berlin_Wall"
+        ]
+      },
+      "layer3_interpretation_ref": "internal:logos/historical_holdout_regime_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hist.science.apollo11_lunar_landing_1969",
+      "question_text": "Did the Apollo 11 mission achieve a crewed lunar landing on the Moon on or before 1969-07-21 UTC?",
+      "domain_tags": ["history", "science", "holdout"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "1969-08-01T00:00:00Z",
+      "resolution_criteria": "TRUE if NASA mission logs or contemporaneous official records confirm Eagle lunar module touchdown with crew on lunar surface on or before 1969-07-21. FALSE if no landing by deadline. VOID if records are disputed without consensus resolution.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "apollo11_landed",
+        "false_label": "apollo11_not_landed"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "1968-01-01T12:00:00Z",
+          "probability_0_1": 0.55,
+          "source_kind": "baseline",
+          "source_detail": "historical_holdout_v1_apollo_program_base_rate",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "resolved",
+        "resolved_at_utc": "1969-07-21T00:00:00Z",
+        "outcome_binary": true,
+        "resolver_notes": "Landing 1969-07-20 UTC (evening US); resolved TRUE.",
+        "evidence_uris": [
+          "https://www.nasa.gov/mission_pages/apollo/apollo11.html"
+        ]
+      },
+      "layer3_interpretation_ref": "internal:logos/historical_holdout_science_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hist.arch.constantinople_fell_1453",
+      "question_text": "Did Ottoman forces capture Constantinople (Istanbul) on or before 1453-05-30 UTC (Julian calendar equivalent for siege end)?",
+      "domain_tags": ["history", "archaeology", "holdout", "regime_change"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "1453-06-15T00:00:00Z",
+      "resolution_criteria": "TRUE if mainstream Byzantine/Ottoman historiography records city capture on or before 1453-05-29 (proleptic Gregorian alignment). FALSE if city remained Byzantine-held past deadline. VOID if capture date disputed without scholarly consensus.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "constantinople_captured",
+        "false_label": "constantinople_not_captured"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "1450-01-01T12:00:00Z",
+          "probability_0_1": 0.42,
+          "source_kind": "baseline",
+          "source_detail": "historical_holdout_v1_siege_base_rate",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "resolved",
+        "resolved_at_utc": "1453-05-30T00:00:00Z",
+        "outcome_binary": true,
+        "resolver_notes": "Fall dated 1453-05-29; ancient-history holdout for chronicle resonance eval.",
+        "evidence_uris": [
+          "https://en.wikipedia.org/wiki/Fall_of_Constantinople"
+        ]
+      },
+      "layer3_interpretation_ref": "internal:logos/historical_holdout_ancient_regime_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hist.climate.paris_agreement_adopted_2015",
+      "question_text": "Was the Paris Agreement adopted at UNFCCC COP21 on or before 2015-12-13 UTC?",
+      "domain_tags": ["history", "climate", "holdout", "policy"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2015-12-20T00:00:00Z",
+      "resolution_criteria": "TRUE if UNFCCC official record shows adoption at COP21 on or before 2015-12-13. FALSE if not adopted by deadline. VOID if adoption date cannot be verified from UNFCCC primary sources.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "paris_adopted",
+        "false_label": "paris_not_adopted"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2015-06-01T12:00:00Z",
+          "probability_0_1": 0.62,
+          "source_kind": "baseline",
+          "source_detail": "historical_holdout_v1_cop_base_rate",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "resolved",
+        "resolved_at_utc": "2015-12-13T00:00:00Z",
+        "outcome_binary": true,
+        "resolver_notes": "Adopted 2015-12-12 at Le Bourget.",
+        "evidence_uris": [
+          "https://unfccc.int/process-and-meetings/the-paris-agreement/the-paris-agreement"
+        ]
+      },
+      "layer3_interpretation_ref": "internal:logos/historical_holdout_policy_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hist.arch.dead_sea_scrolls_cave1_1947",
+      "question_text": "Were Hebrew manuscript fragments (later catalogued as Dead Sea Scrolls Cave 1) discovered in the Judean Desert on or before 1947-12-31 UTC?",
+      "domain_tags": ["history", "archaeology", "holdout", "biblical_text"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "1948-06-01T00:00:00Z",
+      "resolution_criteria": "TRUE if Israel Antiquities Authority, scholarly consensus, or two independent archaeological references confirm initial Cave 1 discovery in 1947. FALSE if earliest discovery post-dates 1947. VOID if discovery year disputed without consensus.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "dss_cave1_discovered_1947",
+        "false_label": "dss_cave1_not_1947"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "1945-01-01T12:00:00Z",
+          "probability_0_1": 0.05,
+          "source_kind": "baseline",
+          "source_detail": "historical_holdout_v1_archaeology_base_rate",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "resolved",
+        "resolved_at_utc": "1947-12-31T00:00:00Z",
+        "outcome_binary": true,
+        "resolver_notes": "Bedouin discovery 1947 Qumran Cave 1; biblical-text archaeology holdout.",
+        "evidence_uris": [
+          "https://en.wikipedia.org/wiki/Dead_Sea_Scrolls"
+        ]
+      },
+      "layer3_interpretation_ref": "internal:logos/historical_holdout_biblical_text_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "hist.science.higgs_boson_discovery_2012",
+      "question_text": "Did CERN announce observation of a new particle consistent with the Higgs boson on or before 2012-07-05 UTC?",
+      "domain_tags": ["history", "science", "holdout"],
+      "prophecy_track": "general",
+      "resolution_deadline_utc": "2012-08-01T00:00:00Z",
+      "resolution_criteria": "TRUE if CERN press release or peer-reviewed ATLAS/CMS papers dated on or before 2012-07-05 announce Higgs-like particle at ~125 GeV. FALSE if no such announcement by deadline. VOID if announcement date ambiguous in primary sources.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "higgs_announced",
+        "false_label": "higgs_not_announced"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2011-01-01T12:00:00Z",
+          "probability_0_1": 0.48,
+          "source_kind": "baseline",
+          "source_detail": "historical_holdout_v1_lhc_base_rate",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "resolved",
+        "resolved_at_utc": "2012-07-05T00:00:00Z",
+        "outcome_binary": true,
+        "resolver_notes": "Announcement 2012-07-04; resolved TRUE for rubric deadline.",
+        "evidence_uris": [
+          "https://home.cern/news/press-release/cern/new-results-indicate-new-particle-discovered"
+        ]
+      },
+      "layer3_interpretation_ref": "internal:logos/historical_holdout_science_NON_GATING",
+      "epistemic_firewall": {
+        "l1_probability_fields": ["forecasts[].probability_0_1"],
+        "l3_narrative_forbidden_in": ["forecasts", "resolution"]
+      }
+    }
+  ]
+}

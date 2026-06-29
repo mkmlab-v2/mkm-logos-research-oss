@@ -1,0 +1,146 @@
+{
+  "schema": "general_prophecy_registry_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-04T04:11:15Z",
+  "git_commit_hint": "orchestrator_v0:ai_sox_logos_v0",
+  "questions": [
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_sox_new_high_before_0930",
+      "prophecy_track": "financial",
+      "question_text": "2026-09-30 20:00 US/Eastern 이전에 PHLX Semiconductor Index(^SOX) 일봉 종가가 2026-06-03까지의 역사적 최고 종가(동 CSV 기준)를 엄격히 초과한 거래일이 한 번이라도 있는가?",
+      "domain_tags": [
+        "macro",
+        "usa",
+        "equity",
+        "semiconductor",
+        "ai",
+        "logos_graphrag"
+      ],
+      "resolution_deadline_utc": "2026-10-01T00:00:00Z",
+      "resolution_criteria": "research/market_data/sox_daily_external_yf.csv (^SOX Yahoo Finance). reference_high = max(Close) for rows with Date <= 2026-06-03. Window: 2026-06-04 <= Date <= 2026-09-30 (NYSE 거래일). TRUE if any Close > reference_high. All window closes <= reference_high => FALSE. CSV unavailable or reference_high undefined => VOID.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_close_gt_reference_high",
+        "false_label": "no_close_gt_reference_high"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T04:11:15Z",
+          "probability_0_1": 0.52,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Logos hubris_trade+judgment + pack=ai_sox_logos_v0; melt-up before Dan.5 weigh; [NON_GATING]; B-rail.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "reports/logos_graphrag_2026_ai_trade_latest.json",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_sox_daily_drop_ge_5pct_q3",
+      "prophecy_track": "financial",
+      "question_text": "2026-07-01 ~ 2026-09-30 US/Eastern 거래일 중 ^SOX 일간 수익률이 −5.00% 이하(하락 5%p 이상)인 날이 한 번이라도 있는가?",
+      "domain_tags": [
+        "macro",
+        "usa",
+        "equity",
+        "semiconductor",
+        "volatility",
+        "ai",
+        "logos_graphrag"
+      ],
+      "resolution_deadline_utc": "2026-10-01T00:00:00Z",
+      "resolution_criteria": "research/market_data/sox_daily_external_yf.csv. Daily return (Close_t/Close_{t-1}−1) <= −0.05. on any row with Date in 2026-07-01..2026-09-30. TRUE if >=1 day. FALSE if none. VOID if >=5 consecutive missing rows in window.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_day_return_le_minus_5pct",
+        "false_label": "no_day_return_le_minus_5pct"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T04:11:15Z",
+          "probability_0_1": 0.44,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Logos judgment/unwind (Jer.1.10, Dan.5.25, Rev.18.2); motif=hubris_trade+judgment; [NON_GATING]; B-rail.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "reports/logos_graphrag_2026_ai_tower_babel_v1_latest.json",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    },
+    {
+      "schema": "general_prophecy_question_v1",
+      "research_rail": "B",
+      "boundary_ack": true,
+      "question_id": "gp_2026_logos_sox_close_below_ref_minus_10pct_by_0930",
+      "prophecy_track": "financial",
+      "question_text": "2026-09-30 20:00 US/Eastern 이전에 ^SOX 종가가 (2026-06-03까지 CSV 역사적 최고 종가 대비 10% 이상 하락한 수준, 즉 Close <= 0.90 * reference_high)으로 마감한 거래일이 한 번이라도 있는가?",
+      "domain_tags": [
+        "macro",
+        "usa",
+        "equity",
+        "semiconductor",
+        "ai",
+        "logos_graphrag"
+      ],
+      "resolution_deadline_utc": "2026-10-01T00:00:00Z",
+      "resolution_criteria": "research/market_data/sox_daily_external_yf.csv. reference_high = max(Close) for Date <= 2026-06-03. Threshold = 0.90 * reference_high. Window 2026-06-04..2026-09-30: TRUE if any Close <= threshold. FALSE if all Close > threshold. VOID if reference_high undefined.",
+      "outcome_spec": {
+        "kind": "binary",
+        "true_label": "any_close_le_10pct_of_ref_high",
+        "false_label": "all_closes_gt_10pct_of_ref_high"
+      },
+      "forecasts": [
+        {
+          "issued_at_utc": "2026-06-04T04:11:15Z",
+          "probability_0_1": 0.38,
+          "source_kind": "hybrid",
+          "source_detail": "[HYPO] Logos Rev.18/Babylon hub + Dan.2:43 iron_clay; pack=ai_sox_logos_v0; [NON_GATING]; B-rail.",
+          "brier_ready": true
+        }
+      ],
+      "resolution": {
+        "status": "pending"
+      },
+      "layer3_interpretation_ref": "reports/logos_2026_ai_industry_max_util_insight_v1_latest.md",
+      "epistemic_firewall": {
+        "l1_probability_fields": [
+          "forecasts[].probability_0_1"
+        ],
+        "l3_narrative_forbidden_in": [
+          "forecasts",
+          "resolution"
+        ]
+      }
+    }
+  ]
+}

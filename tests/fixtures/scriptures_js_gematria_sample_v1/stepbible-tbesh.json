@@ -1,0 +1,35 @@
+{
+  "H0001": {
+    "source": "stepbible-tbesh",
+    "strongsExtended": "H0001",
+    "strongsDisambiguated": "H0001G",
+    "strongsUnified": "H0001G",
+    "lemma": "אָב",
+    "transliteration": "av",
+    "morphology": "H:N-M",
+    "gloss": "father",
+    "definition": "father of an individual"
+  },
+  "H0430": {
+    "source": "stepbible-tbesh",
+    "strongsExtended": "H0430",
+    "strongsDisambiguated": "H0430G",
+    "strongsUnified": "H0430G",
+    "lemma": "אֱלֹהִים",
+    "transliteration": "elohiym",
+    "morphology": "H:N-M-P",
+    "gloss": "God",
+    "definition": "God"
+  },
+  "H7225": {
+    "source": "stepbible-tbesh",
+    "strongsExtended": "H7225",
+    "strongsDisambiguated": "H7225G",
+    "strongsUnified": "H7225G",
+    "lemma": "רֵאשִׁית",
+    "transliteration": "reshith",
+    "morphology": "H:N-F-S",
+    "gloss": "beginning",
+    "definition": "beginning, first"
+  }
+}

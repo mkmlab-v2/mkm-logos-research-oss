@@ -1,0 +1,43 @@
+{
+  "schema": "bible_topology_shard_v1",
+  "version": "1.0.0",
+  "description": "Example contributor shard — synthetic passion parallel rows · not merged into Tier A seed",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "slice_id": "SYNOPTIC_PASSION_WEEK_v1",
+  "tier": "A",
+  "edge_count": 3,
+  "edge_budget_max": 500,
+  "provenance_ref": "tests/fixtures/bible_topology/DATA_PROVENANCE.md#tier-a-synoptic-passion-v1",
+  "labels": ["contributor_provided", "research_only", "bible_topology_shard_v1"],
+  "source_note": "Synthetic public example for validate/CI smoke — replace before real PR",
+  "edges": [
+    {
+      "src_ref": "JHN.18.1",
+      "dst_ref": "MAT.26.36",
+      "relation": "parallel",
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "bible_topology_shard_v1"],
+      "source_note": "synthetic example parallel edge for contributor CI smoke"
+    },
+    {
+      "src_ref": "LUK.22.44",
+      "dst_ref": "MAT.26.42",
+      "relation": "parallel",
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "bible_topology_shard_v1"],
+      "source_note": "synthetic example parallel edge for contributor CI smoke"
+    },
+    {
+      "src_ref": "MAT.27.46",
+      "dst_ref": "MRK.15.34",
+      "relation": "quotation",
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "bible_topology_shard_v1"],
+      "source_note": "synthetic example quotation edge for contributor CI smoke"
+    }
+  ]
+}

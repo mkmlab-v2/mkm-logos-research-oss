@@ -1,0 +1,37 @@
+{
+  "schema": "myeongni_full_report_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-06-18T04:00:00Z",
+  "birth_engine": {
+    "resolution": {
+      "birth_instant_utc": "1970-04-12T06:00:00Z",
+      "iana_tz": "Asia/Seoul",
+      "local_iso": "1970-04-12T15:00:00+09:00",
+      "engine_inputs": { "year": 1970, "month": 4, "day": 12, "hour": 15 },
+      "warnings": [],
+      "meta": { "mode": "local_civil", "dst_fold": 0 }
+    },
+    "calculation_method": "standard_db_primary",
+    "note": "[HYPO] physician_gold stub — non-PHI B-track sidecar only"
+  },
+  "pillars": {
+    "year": "경술",
+    "month": "경진",
+    "day": "임술",
+    "hour": "무신"
+  },
+  "day_master": {
+    "stem_hangul": "임",
+    "stem_element_hint": "수(陽)"
+  },
+  "structure_analysis": {
+    "element_profile": {
+      "element_counts_visible": { "목": 1, "화": 0, "토": 2, "금": 1, "수": 2 }
+    }
+  },
+  "meta": {
+    "research_only": true,
+    "stub": true,
+    "lane": "physician_gold_sidecar"
+  }
+}

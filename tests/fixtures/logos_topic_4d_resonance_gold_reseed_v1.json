@@ -1,0 +1,172 @@
+{
+  "schema": "logos_topic_4d_resonance_topics_v1",
+  "version": "1.0.0",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "generated_at_utc": "2026-06-05T09:42:28Z",
+  "note": "Gold-reseed: prefer lowest dup_cluster_size from gold_verse_ids",
+  "topics": [
+    {
+      "topic_id": "risk_off_overnight",
+      "seed_verse_ids": [
+        "Isa.40.1",
+        "Job.24.19",
+        "2Cor.1.3"
+      ],
+      "seed_meta": [
+        {
+          "verse_id": "Isa.40.1",
+          "gold_query_id": "q08",
+          "dup_cluster_size": 1
+        },
+        {
+          "verse_id": "Job.24.19",
+          "gold_query_id": "q01",
+          "dup_cluster_size": 7
+        },
+        {
+          "verse_id": "2Cor.1.3",
+          "gold_query_id": "q08",
+          "dup_cluster_size": 12
+        }
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_risk_off_overnight_gold_reseed_latest.json",
+      "reseed_from": "docs/final/fixtures/logos_gold_query_eval_v1.json"
+    },
+    {
+      "topic_id": "election_20260603",
+      "seed_verse_ids": [
+        "Job.24.19",
+        "Jer.31.33",
+        "Dan.5.25"
+      ],
+      "seed_meta": [
+        {
+          "verse_id": "Job.24.19",
+          "gold_query_id": "q02",
+          "dup_cluster_size": 7
+        },
+        {
+          "verse_id": "Jer.31.33",
+          "gold_query_id": "q04",
+          "dup_cluster_size": 20
+        },
+        {
+          "verse_id": "Dan.5.25",
+          "gold_query_id": "q02",
+          "dup_cluster_size": 22
+        }
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_election_20260603_gold_reseed_latest.json",
+      "reseed_from": "docs/final/fixtures/logos_gold_query_eval_v1.json"
+    },
+    {
+      "topic_id": "ai_hubris_trade",
+      "seed_verse_ids": [
+        "Dan.4.30",
+        "Ezek.27.27",
+        "Rev.18.10"
+      ],
+      "seed_meta": [
+        {
+          "verse_id": "Dan.4.30",
+          "gold_query_id": "q05",
+          "dup_cluster_size": 22
+        },
+        {
+          "verse_id": "Ezek.27.27",
+          "gold_query_id": "q05",
+          "dup_cluster_size": 26
+        },
+        {
+          "verse_id": "Rev.18.10",
+          "gold_query_id": "q05",
+          "dup_cluster_size": 31
+        }
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_ai_hubris_trade_gold_reseed_latest.json",
+      "reseed_from": "docs/final/fixtures/logos_gold_query_eval_v1.json"
+    },
+    {
+      "topic_id": "collapse_warn",
+      "seed_verse_ids": [
+        "Job.24.19",
+        "Dan.5.25",
+        "Jer.1.10"
+      ],
+      "seed_meta": [
+        {
+          "verse_id": "Job.24.19",
+          "gold_query_id": "q02",
+          "dup_cluster_size": 7
+        },
+        {
+          "verse_id": "Dan.5.25",
+          "gold_query_id": "q02",
+          "dup_cluster_size": 22
+        },
+        {
+          "verse_id": "Jer.1.10",
+          "gold_query_id": "q02",
+          "dup_cluster_size": 30
+        }
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_collapse_warn_gold_reseed_latest.json",
+      "reseed_from": "docs/final/fixtures/logos_gold_query_eval_v1.json"
+    },
+    {
+      "topic_id": "excess_unwind",
+      "seed_verse_ids": [
+        "Dan.4.30",
+        "Ezek.27.27",
+        "Rev.18.10"
+      ],
+      "seed_meta": [
+        {
+          "verse_id": "Dan.4.30",
+          "gold_query_id": "q05",
+          "dup_cluster_size": 22
+        },
+        {
+          "verse_id": "Ezek.27.27",
+          "gold_query_id": "q05",
+          "dup_cluster_size": 26
+        },
+        {
+          "verse_id": "Rev.18.10",
+          "gold_query_id": "q05",
+          "dup_cluster_size": 31
+        }
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_excess_unwind_gold_reseed_latest.json",
+      "reseed_from": "docs/final/fixtures/logos_gold_query_eval_v1.json"
+    },
+    {
+      "topic_id": "regime_watch_lehman_shadow",
+      "seed_verse_ids": [
+        "Job.24.19",
+        "Jer.31.33",
+        "Rom.11.5"
+      ],
+      "seed_meta": [
+        {
+          "verse_id": "Job.24.19",
+          "gold_query_id": "q01",
+          "dup_cluster_size": 7
+        },
+        {
+          "verse_id": "Jer.31.33",
+          "gold_query_id": "q01",
+          "dup_cluster_size": 20
+        },
+        {
+          "verse_id": "Rom.11.5",
+          "gold_query_id": "q04",
+          "dup_cluster_size": 24
+        }
+      ],
+      "graphrag_ref": "reports/logos_graphrag_2026_regime_watch_lehman_shadow_gold_reseed_latest.json",
+      "reseed_from": "docs/final/fixtures/logos_gold_query_eval_v1.json"
+    }
+  ]
+}

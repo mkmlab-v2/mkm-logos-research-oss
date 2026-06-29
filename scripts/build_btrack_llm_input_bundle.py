@@ -29,6 +29,9 @@ DEFAULT_COMPRESSION_DECISION = ROOT / "docs/final/artifacts/MULTILENS_ULTRA_COMP
 DEFAULT_INTERPRETIVE = ROOT / "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json"
 DEFAULT_MARKET_MYEONGNI = ROOT / "docs/final/artifacts/market_myeongni_lens_latest.json"
 DEFAULT_MARKET_SASANG = ROOT / "docs/final/artifacts/market_sasang_lens_latest.json"
+DEFAULT_HAAN_MASTER = ROOT / "reports/constitution/btrack_pilot/haan_master_delegation_v1_latest.json"
+DEFAULT_HAAN_BRIEF = ROOT / "reports/constitution/btrack_pilot/haan_master_nl_insight_brief_v1_latest.md"
+DEFAULT_HAAN_SASANG_WIRE = ROOT / "docs/final/artifacts/haan_sasang_analogy_bench_wire_v1_latest.json"
 
 
 def _read(path: Path) -> dict[str, Any] | None:
@@ -160,6 +163,40 @@ def _market_lens_observation_slot(
     return slot
 
 
+def _haan_master_bridge_payload(
+    *,
+    delegation_path: Path,
+    brief_path: Path,
+    sasang_wire_path: Path,
+) -> dict[str, Any]:
+    delegation = _read(delegation_path) or {}
+    brief_exists = brief_path.is_file()
+    wire = _read(sasang_wire_path) or {}
+    lanes = delegation.get("lanes") if isinstance(delegation.get("lanes"), dict) else {}
+    return {
+        "schema": "haan_master_btrack_bridge_slice_v1",
+        "bridge_mode": "read_only_observation",
+        "available": bool(delegation) and delegation.get("haan_nl_master") == "closed",
+        "send_gate": delegation.get("send_gate") or "HOLD",
+        "research_only": True,
+        "track_a_live_routing_forbidden": True,
+        "a_track_autotrigger_forbidden": True,
+        "haan_nl_master": delegation.get("haan_nl_master"),
+        "lane_status": {
+            k: (v.get("triad") or v.get("status") if isinstance(v, dict) else None) for k, v in lanes.items()
+        },
+        "sasang_wire_count": wire.get("wire_count"),
+        "fact_safe_note": "[HYPO] HAAN master NL context for B-track bundle only; no prescription; no Track A merge.",
+        "source_paths": {
+            "haan_master_delegation": str(delegation_path.resolve()),
+            "haan_master_brief": str(brief_path.resolve()) if brief_exists else None,
+            "haan_sasang_analogy_bench_wire": str(sasang_wire_path.resolve())
+            if sasang_wire_path.is_file()
+            else None,
+        },
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Build btrack_llm_input_bundle_latest.json for LLM hypothesis step.")
     ap.add_argument("--myeongni", type=Path, default=DEFAULT_MYEONGNI)
@@ -189,6 +226,14 @@ def main() -> int:
         "--skip-market-sasang",
         action="store_true",
         help="Omit market_sasang_observation_slot even if artifact exists.",
+    )
+    ap.add_argument("--haan-master", type=Path, default=DEFAULT_HAAN_MASTER)
+    ap.add_argument("--haan-brief", type=Path, default=DEFAULT_HAAN_BRIEF)
+    ap.add_argument("--haan-sasang-wire", type=Path, default=DEFAULT_HAAN_SASANG_WIRE)
+    ap.add_argument(
+        "--skip-haan-master",
+        action="store_true",
+        help="Omit haan_master_bridge_context even if delegation exists.",
     )
     ap.add_argument("--output", type=Path, default=DEFAULT_OUT)
     args = ap.parse_args()
@@ -230,9 +275,24 @@ def main() -> int:
         }
     )
 
+    haan_master_bridge = (
+        _haan_master_bridge_payload(
+            delegation_path=args.haan_master,
+            brief_path=args.haan_brief,
+            sasang_wire_path=args.haan_sasang_wire,
+        )
+        if not args.skip_haan_master
+        else {
+            "schema": "haan_master_btrack_bridge_slice_v1",
+            "bridge_mode": "read_only_observation",
+            "available": False,
+            "skipped": True,
+        }
+    )
+
     bundle = {
         "schema": "btrack_llm_input_bundle_v1",
-        "version": "1.4.0",
+        "version": "1.5.0",
         "ts_utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "hypothesis_tier": "B",
         "boundary_ack": True,
@@ -253,6 +313,7 @@ def main() -> int:
             "sasang_interpretive_bridge_context": interpretive_bridge,
             "market_myeongni_observation_slot": market_myeongni_slot,
             "market_sasang_observation_slot": market_sasang_slot,
+            "haan_master_bridge_context": haan_master_bridge,
         },
         "artifact_paths": {
             "myeongni": str(args.myeongni.resolve()),
@@ -268,12 +329,15 @@ def main() -> int:
             "sasang_interpretive_insight_bundle": str(args.interpretive.resolve()),
             "market_myeongni_lens": str(args.market_myeongni_lens.resolve()),
             "market_sasang_lens": str(args.market_sasang_lens.resolve()),
+            "haan_master_delegation": str(args.haan_master.resolve()),
+            "haan_master_brief": str(args.haan_brief.resolve()),
+            "haan_sasang_analogy_bench_wire": str(args.haan_sasang_wire.resolve()),
         },
         "note": "Feed summarized fields to LLM; do not merge with live trading. Sasang: [NON-MEDICAL] if referenced. "
         "news/macro slots filled when news_independent_lens_latest.json / macro_independent_lens_latest.json exist "
         "(run build_btrack_news_macro_lens_adapters_v1.py). market_*_observation_slot are read-only overlays "
         "(run_market_myeongni_lens_v1.py / run_market_sasang_lens_v1.py); no A-track trigger. "
-        "compression_bridge_context and sasang_interpretive_bridge_context are read-only; "
+        "compression_bridge_context, sasang_interpretive_bridge_context, and haan_master_bridge_context are read-only; "
         "interpretive slice excludes interpretive_depth_ko.",
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)

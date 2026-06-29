@@ -1,0 +1,10 @@
+{
+  "schema": "logos_topic_4d_fixture_v1",
+  "topics": [
+    {
+      "topic_id": "ai_hubris_trade",
+      "seed_verse_ids": ["Jer.1.10", "Dan.5.25", "Rev.18.2"],
+      "graphrag_ref": "reports/logos_graphrag_2026_ai_industry_hubris_v1_latest.json"
+    }
+  ]
+}

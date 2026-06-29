@@ -1,0 +1,49 @@
+{
+  "schema": "civilization_apocalypse_layer3_only_v1",
+  "version": "1.0.0",
+  "research_rail": "B",
+  "boundary_ack": true,
+  "generated_at_utc": "2026-06-07T12:30:00Z",
+  "hypothesis_tier": "[HYPO]",
+  "gating_status": "NON_GATING",
+  "registry_companion": "tests/fixtures/general_prophecy_registry_civilization_apocalypse_v1.json",
+  "note": "T3 narrative pointers only. No forecasts, no Brier-ready questions, no Track A or live trading merge.",
+  "t3_pointers": [
+    {
+      "id": "t3.greenfield_new_jerusalem",
+      "layer3_interpretation_ref": "internal:apocalypse_v2/greenfield_rev21_22_NON_GATING",
+      "theme": "New Jerusalem greenfield protocol descent",
+      "biblical_anchor": "Rev 21:2, 21:22",
+      "scenario_band_2100": "greenfield governance stack replaces legacy intermediaries",
+      "brier_ready": true,
+      "resolution_rubric": "promoted_as_general_prophecy_question_v1_in_registry_fixture"
+    },
+    {
+      "id": "t3.terminal_slo_no_tears",
+      "layer3_interpretation_ref": "internal:apocalypse_v2/terminal_slo_rev21_4_NON_GATING",
+      "theme": "Terminal SLO — death and suffering as engineering defects",
+      "biblical_anchor": "Rev 21:4",
+      "scenario_band_2100": "post-crisis civilization treats mortality as bug class",
+      "brier_ready": true,
+      "resolution_rubric": "promoted_as_general_prophecy_question_v1_in_registry_fixture"
+    },
+    {
+      "id": "t3.matrioshka_upload_rejected_base",
+      "layer3_interpretation_ref": "internal:apocalypse_v2/matrioshka_upload_hypothesis_REJECTED_BASE",
+      "theme": "Substrate upload as minority path not civilizational default",
+      "biblical_anchor": "Rev 12 woman vs dragon (existential schism)",
+      "scenario_band_2100": "upload cult exists; not majority outcome in base scenario",
+      "brier_ready": true,
+      "resolution_rubric": "promoted_as_general_prophecy_question_v1_in_registry_fixture"
+    },
+    {
+      "id": "t3.kardashev_type1_deferred",
+      "layer3_interpretation_ref": "internal:apocalypse_v2/kardashev_type1_deferred_NON_GATING",
+      "theme": "Planetary energy mastery deferred past 22nd century",
+      "biblical_anchor": "Dan 2 feet iron/clay fracture",
+      "scenario_band_2100": "technological unity brittle; full planetary control unlikely",
+      "brier_ready": true,
+      "resolution_rubric": "promoted_as_general_prophecy_question_v1_in_registry_fixture"
+    }
+  ]
+}
