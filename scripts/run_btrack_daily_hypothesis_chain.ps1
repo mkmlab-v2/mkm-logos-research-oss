@@ -351,6 +351,10 @@ Write-Host "==> run_lens_sasang.py"
 py scripts/run_lens_sasang.py
 if ($LASTEXITCODE -ne 0) { throw "run_lens_sasang exit $LASTEXITCODE" }
 
+Write-Host "==> run_sasang_dynamics_unified_adapter_v1.py (mainline daily; stress/stage HOLD)"
+py scripts/run_sasang_dynamics_unified_adapter_v1.py --profile mainline
+if ($LASTEXITCODE -ne 0) { throw "sasang unified adapter mainline exit $LASTEXITCODE" }
+
 Write-Host "==> run_market_sasang_lens_v1.py"
 py scripts/run_market_sasang_lens_v1.py
 if ($LASTEXITCODE -ne 0) { throw "run_market_sasang_lens_v1 exit $LASTEXITCODE" }

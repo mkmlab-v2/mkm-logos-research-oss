@@ -127,6 +127,16 @@ param(
     # Shortcut profile: P0 paths + premium multilens report pytest only.
     [switch]$PremiumBtrackMultilensReportSmokeOnly,
 
+    # Optional: Sasang pyobyeong DR + interpretive bundle B-track smoke (inventory + pytest subset; HOLD).
+    [switch]$IncludeSasangPyobyeongBtrackSmoke,
+    # Shortcut profile: P0 paths + sasang pyobyeong B-track smoke only.
+    [switch]$SasangPyobyeongBtrackSmokeOnly,
+
+    # Optional: universal multi-res router reliability evidence pack (phase4 gate + replay/metering/public-facing rollup; Fact-Lock parity).
+    [switch]$IncludeUniversalMultiResReliabilityEvidenceSmoke,
+    # Shortcut profile: P0 paths + universal multi-res reliability evidence pack only.
+    [switch]$UniversalMultiResReliabilityEvidenceSmokeOnly,
+
     # Optional: DR bench mini offline smoke (pytest + offline harness --require-entry-level + ops paste; B-track; no arXiv).
     [switch]$IncludeDeepResearchBenchSmoke,
     # Shortcut profile: P0 paths + DR bench offline smoke only (Fact-Lock -IncludeDeepResearchBenchSmoke parity).
@@ -299,6 +309,22 @@ if ($PremiumBtrackMultilensReportSmokeOnly) {
     $SkipNewsObservationContractSmoke = $true
 }
 
+if ($SasangPyobyeongBtrackSmokeOnly) {
+    $IncludeSasangPyobyeongBtrackSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
+if ($UniversalMultiResReliabilityEvidenceSmokeOnly) {
+    $IncludeUniversalMultiResReliabilityEvidenceSmoke = $true
+    $SkipVaultMirror = $true
+    $SkipMkmMemoryInventory = $true
+    $SkipPhase1Readiness = $true
+    $SkipNewsObservationContractSmoke = $true
+}
+
 if ($DeepResearchBenchSmokeOnly) {
     $IncludeDeepResearchBenchSmoke = $true
     $SkipVaultMirror = $true
@@ -447,7 +473,7 @@ if ($SasangRailStackOnly) {
 }
 
 # Recommended default: run SafeOps on full health runs; shortcut profiles skip unless explicit Include* / IncludeWithVps.
-$shortcutProfiles = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $DeepResearchBenchSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $CursorTurnMetaAuditOnly -or $PillarACursorContinuitySmokeOnly -or $PrSasangPromotionMirrorSyncOnly -or $SasangRailStackOnly -or $MkmGpuRecommendedBundleOnly -or $OracleModuleObservabilitySmokeOnly -or $HanClinicEntryBOnboardingSmokeOnly -or $KospiLensAblationGraphragCompareOnly -or $KospiDartMdaPocMultiCorpSmokeOnly -or $MyeongniSasangGraphragOllamaBenchOnly -or $ConsumerOnboardingPlaywrightSmokeOnly -or $SchedulerSoloBandGateOnly
+$shortcutProfiles = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $XaiContractGateOnly -or $OnePlusThreeGateOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $SasangPyobyeongBtrackSmokeOnly -or $UniversalMultiResReliabilityEvidenceSmokeOnly -or $DeepResearchBenchSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $CursorTurnMetaAuditOnly -or $PillarACursorContinuitySmokeOnly -or $PrSasangPromotionMirrorSyncOnly -or $SasangRailStackOnly -or $MkmGpuRecommendedBundleOnly -or $OracleModuleObservabilitySmokeOnly -or $HanClinicEntryBOnboardingSmokeOnly -or $KospiLensAblationGraphragCompareOnly -or $KospiDartMdaPocMultiCorpSmokeOnly -or $MyeongniSasangGraphragOllamaBenchOnly -or $ConsumerOnboardingPlaywrightSmokeOnly -or $SchedulerSoloBandGateOnly
 $shortcutForSafeOps = $shortcutProfiles
 $runSafeOps = $false
 $runSafeOpsWithVps = $false
@@ -717,7 +743,7 @@ try {
         exit 0
     }
 
-    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly -and -not $DeepResearchBenchSmokeOnly -and -not $BoundedLaneLoopSmokeOnly -and -not $MkmGpuRecommendedBundleOnly -and -not $OracleModuleObservabilitySmokeOnly -and -not $HanClinicEntryBOnboardingSmokeOnly -and -not $KospiLensAblationGraphragCompareOnly -and -not $ConsumerOnboardingPlaywrightSmokeOnly -and -not $SchedulerSoloBandGateOnly) {
+    if (-not $SkipNewsObservationContractSmoke -and -not $BioSnpOnly -and -not $BitcoinTradingOtelSmokeOnly -and -not $TrackCMacroFusionSmokeOnly -and -not $McpHygieneProbeOnly -and -not $PrSasangPromotionMirrorSyncOnly -and -not $MkmControlIntegritySmokeOnly -and -not $KmPhysicianCdsEnvelopeSmokeOnly -and -not $VaFusionControlIntegritySmokeOnly -and -not $PremiumBtrackMultilensReportSmokeOnly -and -not $SasangPyobyeongBtrackSmokeOnly -and -not $UniversalMultiResReliabilityEvidenceSmokeOnly -and -not $DeepResearchBenchSmokeOnly -and -not $BoundedLaneLoopSmokeOnly -and -not $MkmGpuRecommendedBundleOnly -and -not $OracleModuleObservabilitySmokeOnly -and -not $HanClinicEntryBOnboardingSmokeOnly -and -not $KospiLensAblationGraphragCompareOnly -and -not $ConsumerOnboardingPlaywrightSmokeOnly -and -not $SchedulerSoloBandGateOnly) {
         $ns = Join-Path $root "scripts\Run-NewsObservationContractSmoke.ps1"
         if (Test-Path -LiteralPath $ns) {
             Step "B-track news_observation contract smoke (default)" {
@@ -731,7 +757,7 @@ try {
         }
     }
 
-    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $DeepResearchBenchSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $MkmGpuRecommendedBundleOnly -or $OracleModuleObservabilitySmokeOnly -or $HanClinicEntryBOnboardingSmokeOnly -or $KospiLensAblationGraphragCompareOnly -or $ConsumerOnboardingPlaywrightSmokeOnly -or $SchedulerSoloBandGateOnly
+    $btProfileSkip = $BioSnpOnly -or $BitcoinTradingOtelSmokeOnly -or $TrackCMacroFusionSmokeOnly -or $McpHygieneProbeOnly -or $PrSasangPromotionMirrorSyncOnly -or $MkmControlIntegritySmokeOnly -or $KmPhysicianCdsEnvelopeSmokeOnly -or $VaFusionControlIntegritySmokeOnly -or $PremiumBtrackMultilensReportSmokeOnly -or $SasangPyobyeongBtrackSmokeOnly -or $UniversalMultiResReliabilityEvidenceSmokeOnly -or $DeepResearchBenchSmokeOnly -or $BoundedLaneLoopSmokeOnly -or $MkmGpuRecommendedBundleOnly -or $OracleModuleObservabilitySmokeOnly -or $HanClinicEntryBOnboardingSmokeOnly -or $KospiLensAblationGraphragCompareOnly -or $ConsumerOnboardingPlaywrightSmokeOnly -or $SchedulerSoloBandGateOnly
     if ($IncludeBTrackDomainFeedbackSmoke -and -not $btProfileSkip) {
         $bt = Join-Path $root "scripts\Run-BTrackDomainFeedbackSmoke.ps1"
         if (Test-Path -LiteralPath $bt) {
@@ -1270,6 +1296,52 @@ try {
             Write-Host "=== Premium B-track multilens report smoke ===" -ForegroundColor Yellow
             Write-Host "SKIP: premium multilens pytest file(s) missing"
         }
+    }
+
+    if ($IncludeSasangPyobyeongBtrackSmoke) {
+        $inv = Join-Path $root "scripts\sasang_context_inventory_v1.py"
+        $tPyobyeong = @(
+            (Join-Path $root "tests\test_ijeoma_pyobyeong_dr_pack_v1.py"),
+            (Join-Path $root "tests\test_sasang_pyobyeong_non_gating_lint_v1.py"),
+            (Join-Path $root "tests\test_sasang_interpretive_insight_bundle_v1.py"),
+            (Join-Path $root "tests\test_sasang_dynamics_unified_adapter_v1.py"),
+            (Join-Path $root "tests\test_sasang_unified_adapter_daily_chain_v1.py")
+        )
+        if ($tPyobyeong | Where-Object { -not (Test-Path -LiteralPath $_) }) {
+            Write-Host ""
+            Write-Host "=== Sasang pyobyeong B-track smoke ===" -ForegroundColor Yellow
+            Write-Host "SKIP: sasang pyobyeong pytest file(s) missing"
+        }
+        else {
+            if (Test-Path -LiteralPath $inv) {
+                Step "Sasang context inventory v1 (pyobyeong anchors)" {
+                    & py $inv
+                }
+            }
+            Step "Sasang pyobyeong B-track pytest subset (DR pack + lint + interpretive + unified adapter)" {
+                & py -m pytest @tPyobyeong -q --tb=short
+            }
+        }
+    }
+
+    if ($IncludeUniversalMultiResReliabilityEvidenceSmoke) {
+        $umrReliability = Join-Path $root "scripts\run_universal_multi_res_router_reliability_evidence_pack_v1.py"
+        if (Test-Path -LiteralPath $umrReliability) {
+            Step "Universal multi-res router reliability evidence pack (phase4 + replay + metering + public-facing)" {
+                & py $umrReliability
+            }
+        }
+        else {
+            Write-Host ""
+            Write-Host "=== Universal multi-res reliability evidence pack ===" -ForegroundColor Yellow
+            Write-Host "SKIP: run_universal_multi_res_router_reliability_evidence_pack_v1.py not found"
+        }
+    }
+
+    if ($UniversalMultiResReliabilityEvidenceSmokeOnly) {
+        Write-Host ""
+        Write-Host "[run_workspace_automation_health] UniversalMultiResReliabilityEvidenceSmokeOnly: finished after P0 + reliability evidence pack." -ForegroundColor Green
+        exit 0
     }
 
     if ($IncludeDeepResearchBenchSmoke) {

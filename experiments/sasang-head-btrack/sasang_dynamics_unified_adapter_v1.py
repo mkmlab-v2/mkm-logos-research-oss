@@ -23,6 +23,7 @@ from sasang_persona_grid_v1 import (  # noqa: E402
 )
 
 SCHEMA = "sasang_dynamics_unified_ablation_v1"
+MAINLINE_SCHEMA = "sasang_dynamics_unified_v1"
 VERSION = "1.0.0"
 
 
@@ -63,6 +64,7 @@ def build_unified_output(
     *,
     workspace_root: Path,
     input_provenance: dict[str, Any] | None = None,
+    schema: str = SCHEMA,
 ) -> dict[str, Any]:
     heat = machine_readables.get("heat_proxy")
     vol = machine_readables.get("volatility_rarefaction_proxy")
@@ -76,7 +78,7 @@ def build_unified_output(
     geumhwa = _read_geumhwa_gate(workspace_root)
 
     return {
-        "schema": SCHEMA,
+        "schema": schema,
         "version": VERSION,
         "generated_at_utc": _utc(),
         "rail": "B_TRACK",
