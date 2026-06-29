@@ -19,6 +19,14 @@
       "path": "tests/fixtures/contributions/pending/contributor_example_v1.json",
       "status": "example_only",
       "promoted_to_canonical": false
+    },
+    {
+      "id": "contrib_commander_v1",
+      "path": "tests/fixtures/contributions/pending/nsm_41k_lexicon_crosswalk_contrib_commander_v1.json",
+      "status": "pending_pr",
+      "promoted_to_canonical": false,
+      "contributor_id": "commander",
+      "ur_w3_demo": true
     }
   ]
 }

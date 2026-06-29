@@ -1,0 +1,39 @@
+{
+  "schema": "nsm_41k_lexicon_crosswalk_contrib_v1",
+  "version": "1.0.0",
+  "description": "Commander demo contributor shard — synthetic probes for UR-W3 human-gated PR",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "contributor_id": "commander",
+  "pair_count": 3,
+  "source_note": "MKM commander demo row set for validate/bench/PR body — not merged into canonical 500",
+  "samples": [
+    {
+      "prime_en": "commander_contrib_probe_grace",
+      "probe_tokens": ["commander_contrib_probe_grace", "charis", "chen"],
+      "lang_probes": {"en": "grace", "greek": "charis", "hebrew": "chen"},
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "universal_root_fixture_v1", "commander_demo"],
+      "source_note": "synthetic commander demo — unique prime not in canonical 500"
+    },
+    {
+      "prime_en": "commander_contrib_probe_peace",
+      "probe_tokens": ["commander_contrib_probe_peace", "eirene", "shalom"],
+      "lang_probes": {"en": "peace", "greek": "eirene", "hebrew": "shalom"},
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "universal_root_fixture_v1", "commander_demo"],
+      "source_note": "synthetic commander demo — unique prime not in canonical 500"
+    },
+    {
+      "prime_en": "commander_contrib_probe_truth",
+      "probe_tokens": ["commander_contrib_probe_truth", "aletheia", "emet"],
+      "lang_probes": {"en": "truth", "greek": "aletheia", "hebrew": "emet"},
+      "contributor_provided": true,
+      "customer_provided": false,
+      "labels": ["contributor_provided", "research_only", "universal_root_fixture_v1", "commander_demo"],
+      "source_note": "synthetic commander demo — unique prime not in canonical 500"
+    }
+  ]
+}
