@@ -1,19 +1,19 @@
 {
   "schema": "prophecy_hit_rate_eval_report_v2",
-  "generated_at_utc": "2026-06-09T01:13:04Z",
+  "generated_at_utc": "2026-06-28T23:00:55Z",
   "run_mode": "price",
   "status": "ok",
   "zeroing_note": "price: directional match rate over provided rows.",
   "inputs": {
     "run_mode": "price",
-    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_latest.json",
+    "score_json": "C:\\workspace\\docs\\final\\artifacts\\btrack_prophecy_score_kpi_b_shadow_v1_latest.json",
     "registry_glob": null,
-    "headline_instrument": "btc"
+    "headline_instrument": "auto"
   },
   "metrics": {
-    "price_directional_hit_rate": 0.477778,
-    "n_evaluated": 180,
-    "price_hits": 86
+    "price_directional_hit_rate": 0.566667,
+    "n_evaluated": 30,
+    "price_hits": 17
   },
   "sources": {
     "oracle_path": null,

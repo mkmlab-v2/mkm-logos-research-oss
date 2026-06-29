@@ -1,11 +1,11 @@
 {
   "schema": "pre_news_shadow_stage_threshold_policy_state_v1",
-  "updated_at_utc": "2026-05-14T21:30:05Z",
+  "updated_at_utc": "2026-06-28T21:30:16Z",
   "policy_path": "C:\\workspace\\docs\\final\\artifacts\\pre_news_shadow_stage_threshold_policy_v1.json",
-  "policy_fingerprint_sha256": "",
-  "policy_version": null,
-  "approved_by": null,
-  "approved_by_1": null,
-  "approved_by_2": null,
-  "effective_from_utc": null
+  "policy_fingerprint_sha256": "6eb8c7814ffa19189536353bfdbc89a1f439e25351be55bb139fb192f76d38fe",
+  "policy_version": "v1",
+  "approved_by": "commander",
+  "approved_by_1": "commander",
+  "approved_by_2": "athena-sentinel",
+  "effective_from_utc": "2026-01-01T00:00:00Z"
 }

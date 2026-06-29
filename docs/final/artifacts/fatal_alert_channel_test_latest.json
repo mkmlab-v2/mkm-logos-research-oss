@@ -1,14 +1,14 @@
 ﻿{
     "schema":  "fatal_alert_channel_test_v1",
-    "checked_at_utc":  "2026-04-22T17:11:00.6284332+00:00",
-    "mode":  "dry_run",
+    "checked_at_utc":  "2026-06-29T00:05:00.9331665+00:00",
+    "mode":  "send",
     "ready":  {
-                  "slack":  false,
+                  "slack":  true,
                   "telegram":  true
               },
     "sent":  {
-                 "slack":  false,
-                 "telegram":  false
+                 "slack":  true,
+                 "telegram":  true
              },
     "errors":  [
 

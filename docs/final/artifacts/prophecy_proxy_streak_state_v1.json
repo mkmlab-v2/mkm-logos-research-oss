@@ -1,7 +1,7 @@
 {
   "schema": "prophecy_proxy_streak_state_v1",
   "version": "1.0.0",
-  "updated_at_utc": "2026-05-05T08:27:58Z",
+  "updated_at_utc": "2026-06-28T23:01:00Z",
   "consecutive_degraded_days": 0,
   "last_increment_calendar_date_utc": null,
   "last_operational_path": "price",

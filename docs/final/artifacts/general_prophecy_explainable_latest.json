@@ -1,6 +1,6 @@
 {
   "schema": "general_prophecy_explainable_registry_v1",
-  "generated_at_utc": "2026-05-13T06:16:47Z",
+  "generated_at_utc": "2026-06-29T01:00:04Z",
   "source_registry_path": "C:\\workspace\\docs\\final\\artifacts\\general_prophecy_latest.json",
   "questions": [
     {
@@ -1224,6 +1224,2582 @@
           "gematria_resonance:65.0",
           "myeongri_phase:기준선/탐색:pillar_fit=0.4:cycle_alignment=0.56",
           "sasang_state:탄력회복:response_strength=0.68875"
+        ]
+      }
+    },
+    {
+      "question_id": "seed.weather.seoul_kma_daily_ge1mm_20260518",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.635974,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.35,
+        "centered": -0.15,
+        "fused_signal": -0.121227
+      },
+      "explanation": {
+        "why_summary": "seed.weather.seoul_kma_daily_ge1mm_20260518는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.263,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "korea",
+                "a1z26": 50
+              },
+              {
+                "word": "meteorological",
+                "a1z26": 150
+              },
+              {
+                "word": "administration",
+                "a1z26": 166
+              },
+              {
+                "word": "asos",
+                "a1z26": 54
+              },
+              {
+                "word": "daily",
+                "a1z26": 51
+              },
+              {
+                "word": "climate",
+                "a1z26": 63
+              },
+              {
+                "word": "table",
+                "a1z26": 40
+              }
+            ],
+            "resonance": 78.75
+          }
+        },
+        "myeongri": {
+          "score": 0.838,
+          "phase": "압박/방어",
+          "pillar_fit": 0.76,
+          "cycle_alignment": 0.82,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.67455,
+          "stress_response": 0.44,
+          "balance_response": 0.775,
+          "state_hint": "탄력회복",
+          "response_strength": 0.62425
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:78.75",
+          "myeongri_phase:압박/방어:pillar_fit=0.76:cycle_alignment=0.82",
+          "sasang_state:탄력회복:response_strength=0.62425"
+        ]
+      }
+    },
+    {
+      "question_id": "seed.fin.ndx_wow_positive_20260523",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.544949,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.52,
+        "centered": 0.02,
+        "fused_signal": 0.016768
+      },
+      "explanation": {
+        "why_summary": "seed.fin.ndx_wow_positive_20260523는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.3968,
+          "keyword_coverage": 0.166667,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "official",
+                "a1z26": 61
+              },
+              {
+                "word": "cash",
+                "a1z26": 31
+              },
+              {
+                "word": "closing",
+                "a1z26": 79
+              },
+              {
+                "word": "level",
+                "a1z26": 56
+              },
+              {
+                "word": "nasdaq-100",
+                "a1z26": 56
+              },
+              {
+                "word": "index",
+                "a1z26": 56
+              },
+              {
+                "word": "trading",
+                "a1z26": 73
+              }
+            ],
+            "resonance": 58.5
+          }
+        },
+        "myeongri": {
+          "score": 0.793,
+          "phase": "압박/방어",
+          "pillar_fit": 0.66,
+          "cycle_alignment": 0.82,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.7875,
+          "stress_response": 0.62,
+          "balance_response": 0.97,
+          "state_hint": "탄력회복",
+          "response_strength": 0.8125
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.166667",
+          "gematria_resonance:58.5",
+          "myeongri_phase:압박/방어:pillar_fit=0.66:cycle_alignment=0.82",
+          "sasang_state:탄력회복:response_strength=0.8125"
+        ]
+      }
+    },
+    {
+      "question_id": "seed.macro.us_bls_unrate_gt_43_20260606",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.728861,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.28,
+        "centered": -0.22,
+        "fused_signal": -0.189824
+      },
+      "explanation": {
+        "why_summary": "seed.macro.us_bls_unrate_gt_43_20260606는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.6126,
+          "keyword_coverage": 0.666667,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "season",
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "season",
+                "release"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "bureau",
+                "a1z26": 68
+              },
+              {
+                "word": "labor",
+                "a1z26": 48
+              },
+              {
+                "word": "statistics",
+                "a1z26": 139
+              },
+              {
+                "word": "employment",
+                "a1z26": 138
+              },
+              {
+                "word": "situation",
+                "a1z26": 128
+              },
+              {
+                "word": "news",
+                "a1z26": 61
+              },
+              {
+                "word": "release",
+                "a1z26": 65
+              },
+              {
+                "word": "reference",
+                "a1z26": 79
+              }
+            ],
+            "resonance": 90.75
+          }
+        },
+        "myeongri": {
+          "score": 0.793,
+          "phase": "압박/방어",
+          "pillar_fit": 0.66,
+          "cycle_alignment": 0.82,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.6885,
+          "stress_response": 0.62,
+          "balance_response": 0.67,
+          "state_hint": "탄력회복",
+          "response_strength": 0.6475
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:season,macro",
+          "biblical_keyword_coverage:0.666667",
+          "gematria_resonance:90.75",
+          "myeongri_phase:압박/방어:pillar_fit=0.66:cycle_alignment=0.82",
+          "sasang_state:탄력회복:response_strength=0.6475"
+        ]
+      }
+    },
+    {
+      "question_id": "max.fx.usdkrw_close_ge_1400_20260731",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.539199,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.48,
+        "centered": -0.02,
+        "fused_signal": -0.016521
+      },
+      "explanation": {
+        "why_summary": "max.fx.usdkrw_close_ge_1400_20260731는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.4139,
+          "keyword_coverage": 0.166667,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "change"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "seoul",
+                "a1z26": 72
+              },
+              {
+                "word": "foreign-exchange",
+                "a1z26": 141
+              },
+              {
+                "word": "closing",
+                "a1z26": 79
+              },
+              {
+                "word": "reference",
+                "a1z26": 79
+              },
+              {
+                "word": "rate",
+                "a1z26": 44
+              },
+              {
+                "word": "published",
+                "a1z26": 96
+              },
+              {
+                "word": "seoul",
+                "a1z26": 72
+              }
+            ],
+            "resonance": 79.875
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.7389,
+          "stress_response": 0.44,
+          "balance_response": 0.97,
+          "state_hint": "탄력회복",
+          "response_strength": 0.7315
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:change",
+          "biblical_keyword_coverage:0.166667",
+          "gematria_resonance:79.875",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.7315"
+        ]
+      }
+    },
+    {
+      "question_id": "max.fx.eurusd_close_lt_108_20260815",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.573116,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.42,
+        "centered": -0.08,
+        "fused_signal": -0.063696
+      },
+      "explanation": {
+        "why_summary": "max.fx.eurusd_close_lt_108_20260815는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.261334,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "reuters",
+                "a1z26": 106
+              },
+              {
+                "word": "london",
+                "a1z26": 74
+              },
+              {
+                "word": "strictly",
+                "a1z26": 126
+              },
+              {
+                "word": "less",
+                "a1z26": 55
+              },
+              {
+                "word": "than",
+                "a1z26": 43
+              }
+            ],
+            "resonance": 76.667
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.7092,
+          "stress_response": 0.44,
+          "balance_response": 0.88,
+          "state_hint": "탄력회복",
+          "response_strength": 0.682
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:76.667",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.682"
+        ]
+      }
+    },
+    {
+      "question_id": "max.fx.usdjpy_close_ge_160_20260831",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.549519,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.55,
+        "centered": 0.05,
+        "fused_signal": 0.039839
+      },
+      "explanation": {
+        "why_summary": "max.fx.usdjpy_close_ge_160_20260831는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.2538,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "tokyo",
+                "a1z26": 86
+              },
+              {
+                "word": "closing",
+                "a1z26": 79
+              },
+              {
+                "word": "spot",
+                "a1z26": 70
+              },
+              {
+                "word": "reference",
+                "a1z26": 79
+              },
+              {
+                "word": "rate",
+                "a1z26": 44
+              },
+              {
+                "word": "published",
+                "a1z26": 96
+              },
+              {
+                "word": "bank",
+                "a1z26": 28
+              }
+            ],
+            "resonance": 67.25
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.72405,
+          "stress_response": 0.44,
+          "balance_response": 0.925,
+          "state_hint": "탄력회복",
+          "response_strength": 0.70675
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:67.25",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.70675"
+        ]
+      }
+    },
+    {
+      "question_id": "max.eq.kospi_close_up_wow_20260704",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.510876,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.5,
+        "centered": 0.0,
+        "fused_signal": 0.0
+      },
+      "explanation": {
+        "why_summary": "max.eq.kospi_close_up_wow_20260704는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.2513,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "kospi",
+                "a1z26": 70
+              },
+              {
+                "word": "index",
+                "a1z26": 56
+              },
+              {
+                "word": "official",
+                "a1z26": 61
+              },
+              {
+                "word": "closing",
+                "a1z26": 79
+              },
+              {
+                "word": "level",
+                "a1z26": 56
+              },
+              {
+                "word": "next",
+                "a1z26": 63
+              },
+              {
+                "word": "seoul",
+                "a1z26": 72
+              }
+            ],
+            "resonance": 64.125
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.7488,
+          "stress_response": 0.44,
+          "balance_response": 1.0,
+          "state_hint": "탄력회복",
+          "response_strength": 0.748
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:64.125",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.748"
+        ]
+      }
+    },
+    {
+      "question_id": "max.eq.spx_close_up_wow_20260711",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.527032,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.52,
+        "centered": 0.02,
+        "fused_signal": 0.015997
+      },
+      "explanation": {
+        "why_summary": "max.eq.spx_close_up_wow_20260711는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.2607,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "index",
+                "a1z26": 56
+              },
+              {
+                "word": "official",
+                "a1z26": 61
+              },
+              {
+                "word": "closing",
+                "a1z26": 79
+              },
+              {
+                "word": "level",
+                "a1z26": 56
+              },
+              {
+                "word": "trading",
+                "a1z26": 73
+              },
+              {
+                "word": "session",
+                "a1z26": 100
+              },
+              {
+                "word": "strictly",
+                "a1z26": 126
+              }
+            ],
+            "resonance": 75.875
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.7389,
+          "stress_response": 0.44,
+          "balance_response": 0.97,
+          "state_hint": "탄력회복",
+          "response_strength": 0.7315
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:75.875",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.7315"
+        ]
+      }
+    },
+    {
+      "question_id": "max.eq.ndx_close_up_wow_20260718",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.518027,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.51,
+        "centered": 0.01,
+        "fused_signal": 0.007976
+      },
+      "explanation": {
+        "why_summary": "max.eq.ndx_close_up_wow_20260718는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.2441,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "nasdaq-100",
+                "a1z26": 56
+              },
+              {
+                "word": "index",
+                "a1z26": 56
+              },
+              {
+                "word": "official",
+                "a1z26": 61
+              },
+              {
+                "word": "cash",
+                "a1z26": 31
+              },
+              {
+                "word": "closing",
+                "a1z26": 79
+              },
+              {
+                "word": "level",
+                "a1z26": 56
+              },
+              {
+                "word": "exceed",
+                "a1z26": 46
+              }
+            ],
+            "resonance": 55.125
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.74385,
+          "stress_response": 0.44,
+          "balance_response": 0.985,
+          "state_hint": "탄력회복",
+          "response_strength": 0.73975
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:55.125",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.73975"
+        ]
+      }
+    },
+    {
+      "question_id": "max.eq.kosdaq_close_up_wow_20260725",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.519527,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.49,
+        "centered": -0.01,
+        "fused_signal": -0.008009
+      },
+      "explanation": {
+        "why_summary": "max.eq.kosdaq_close_up_wow_20260725는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.2634,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "kosdaq",
+                "a1z26": 67
+              },
+              {
+                "word": "composite",
+                "a1z26": 115
+              },
+              {
+                "word": "official",
+                "a1z26": 61
+              },
+              {
+                "word": "closing",
+                "a1z26": 79
+              },
+              {
+                "word": "level",
+                "a1z26": 56
+              },
+              {
+                "word": "strictly",
+                "a1z26": 126
+              },
+              {
+                "word": "greater",
+                "a1z26": 74
+              }
+            ],
+            "resonance": 79.25
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.74385,
+          "stress_response": 0.44,
+          "balance_response": 0.985,
+          "state_hint": "탄력회복",
+          "response_strength": 0.73975
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:79.25",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.73975"
+        ]
+      }
+    },
+    {
+      "question_id": "max.macro.us_bls_cpi_yoy_ge_3_20260715",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.652763,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.38,
+        "centered": -0.12,
+        "fused_signal": -0.105706
+      },
+      "explanation": {
+        "why_summary": "max.macro.us_bls_cpi_yoy_ge_3_20260715는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.7756,
+          "keyword_coverage": 1.0,
+          "match_count": 3,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "change",
+                "season",
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "season",
+                "release"
+              ]
+            },
+            {
+              "ref": "Luke 14:28",
+              "theme": "cost_accounting",
+              "matched_keywords": [
+                "inflation"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "news",
+                "a1z26": 61
+              },
+              {
+                "word": "release",
+                "a1z26": 65
+              },
+              {
+                "word": "june",
+                "a1z26": 50
+              },
+              {
+                "word": "typically",
+                "a1z26": 123
+              },
+              {
+                "word": "mid-july",
+                "a1z26": 94
+              },
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "seasonally",
+                "a1z26": 123
+              },
+              {
+                "word": "adjusted",
+                "a1z26": 84
+              }
+            ],
+            "resonance": 82.0
+          }
+        },
+        "myeongri": {
+          "score": 0.688,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.52,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.738,
+          "stress_response": 0.62,
+          "balance_response": 0.82,
+          "state_hint": "탄력회복",
+          "response_strength": 0.73
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:change,season,macro",
+          "biblical_keyword_coverage:1.0",
+          "gematria_resonance:82.0",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.52:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.73"
+        ]
+      }
+    },
+    {
+      "question_id": "max.macro.bok_policy_rate_unchanged_20260814",
+      "fusion_decision": "lean_true",
+      "fusion_confidence": 0.666073,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.62,
+        "centered": 0.12,
+        "fused_signal": 0.108535
+      },
+      "explanation": {
+        "why_summary": "max.macro.bok_policy_rate_unchanged_20260814는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_true로 판정되었다.",
+        "biblical": {
+          "score": 0.9135,
+          "keyword_coverage": 1.0,
+          "match_count": 4,
+          "verse_matches": [
+            {
+              "ref": "Matthew 24:32",
+              "theme": "watchfulness",
+              "matched_keywords": [
+                "main"
+              ]
+            },
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "change",
+                "policy",
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before",
+                "rates"
+              ]
+            },
+            {
+              "ref": "Proverbs 21:5",
+              "theme": "disciplined_execution",
+              "matched_keywords": [
+                "policy"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "bank",
+                "a1z26": 28
+              },
+              {
+                "word": "korea",
+                "a1z26": 50
+              },
+              {
+                "word": "monetary",
+                "a1z26": 111
+              },
+              {
+                "word": "policy",
+                "a1z26": 80
+              },
+              {
+                "word": "board",
+                "a1z26": 40
+              },
+              {
+                "word": "meeting",
+                "a1z26": 73
+              },
+              {
+                "word": "concluding",
+                "a1z26": 102
+              },
+              {
+                "word": "before",
+                "a1z26": 51
+              }
+            ],
+            "resonance": 66.875
+          }
+        },
+        "myeongri": {
+          "score": 0.688,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.52,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.738,
+          "stress_response": 0.62,
+          "balance_response": 0.82,
+          "state_hint": "탄력회복",
+          "response_strength": 0.73
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Matthew 24:32:main",
+          "biblical_keyword_coverage:1.0",
+          "gematria_resonance:66.875",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.52:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.73"
+        ]
+      }
+    },
+    {
+      "question_id": "max.macro.fomc_cut_before_sep_2026",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.576545,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.45,
+        "centered": -0.05,
+        "fused_signal": -0.042572
+      },
+      "explanation": {
+        "why_summary": "max.macro.fomc_cut_before_sep_2026는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.5779,
+          "keyword_coverage": 0.5,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before",
+                "rates"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "before",
+                "a1z26": 51
+              },
+              {
+                "word": "eastern",
+                "a1z26": 82
+              },
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "federal",
+                "a1z26": 51
+              },
+              {
+                "word": "reserve",
+                "a1z26": 92
+              },
+              {
+                "word": "announce",
+                "a1z26": 87
+              },
+              {
+                "word": "reduction",
+                "a1z26": 109
+              },
+              {
+                "word": "federal",
+                "a1z26": 51
+              }
+            ],
+            "resonance": 72.375
+          }
+        },
+        "myeongri": {
+          "score": 0.688,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.52,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.77265,
+          "stress_response": 0.62,
+          "balance_response": 0.925,
+          "state_hint": "탄력회복",
+          "response_strength": 0.78775
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.5",
+          "gematria_resonance:72.375",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.52:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.78775"
+        ]
+      }
+    },
+    {
+      "question_id": "max.rates.us10y_yield_ge_45_20260815",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.549615,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.47,
+        "centered": -0.03,
+        "fused_signal": -0.024917
+      },
+      "explanation": {
+        "why_summary": "max.rates.us10y_yield_ge_45_20260815는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.4083,
+          "keyword_coverage": 0.166667,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "rates"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "treasury",
+                "a1z26": 127
+              },
+              {
+                "word": "year",
+                "a1z26": 49
+              },
+              {
+                "word": "constant",
+                "a1z26": 106
+              },
+              {
+                "word": "maturity",
+                "a1z26": 127
+              },
+              {
+                "word": "yield",
+                "a1z26": 55
+              },
+              {
+                "word": "fred",
+                "a1z26": 33
+              },
+              {
+                "word": "dgs10",
+                "a1z26": 30
+              }
+            ],
+            "resonance": 72.875
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.78255,
+          "stress_response": 0.62,
+          "balance_response": 0.955,
+          "state_hint": "탄력회복",
+          "response_strength": 0.80425
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Ecclesiastes 3:1:rates",
+          "biblical_keyword_coverage:0.166667",
+          "gematria_resonance:72.875",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.80425"
+        ]
+      }
+    },
+    {
+      "question_id": "max.rates.kr3y_ktb_yield_ge_30_20260831",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.572872,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.44,
+        "centered": -0.06,
+        "fused_signal": -0.049637
+      },
+      "explanation": {
+        "why_summary": "max.rates.kr3y_ktb_yield_ge_30_20260831는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.4,
+          "keyword_coverage": 0.166667,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "rates"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "korea",
+                "a1z26": 50
+              },
+              {
+                "word": "year",
+                "a1z26": 49
+              },
+              {
+                "word": "benchmark",
+                "a1z26": 75
+              },
+              {
+                "word": "yield",
+                "a1z26": 55
+              },
+              {
+                "word": "published",
+                "a1z26": 96
+              },
+              {
+                "word": "korea",
+                "a1z26": 50
+              },
+              {
+                "word": "financial",
+                "a1z26": 69
+              }
+            ],
+            "resonance": 62.5
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.7677,
+          "stress_response": 0.62,
+          "balance_response": 0.91,
+          "state_hint": "탄력회복",
+          "response_strength": 0.7795
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Ecclesiastes 3:1:rates",
+          "biblical_keyword_coverage:0.166667",
+          "gematria_resonance:62.5",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.7795"
+        ]
+      }
+    },
+    {
+      "question_id": "max.commod.wti_close_ge_85_20260731",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.607696,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.4,
+        "centered": -0.1,
+        "fused_signal": -0.083046
+      },
+      "explanation": {
+        "why_summary": "max.commod.wti_close_ge_85_20260731는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.4332,
+          "keyword_coverage": 0.333333,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Luke 14:28",
+              "theme": "cost_accounting",
+              "matched_keywords": [
+                "energy",
+                "commodities"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "nymex",
+                "a1z26": 81
+              },
+              {
+                "word": "crude",
+                "a1z26": 51
+              },
+              {
+                "word": "front-month",
+                "a1z26": 143
+              },
+              {
+                "word": "settlement",
+                "a1z26": 133
+              },
+              {
+                "word": "price",
+                "a1z26": 51
+              },
+              {
+                "word": "greater",
+                "a1z26": 74
+              },
+              {
+                "word": "than",
+                "a1z26": 43
+              }
+            ],
+            "resonance": 79.0
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.7479,
+          "stress_response": 0.62,
+          "balance_response": 0.85,
+          "state_hint": "탄력회복",
+          "response_strength": 0.7465
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Luke 14:28:energy,commodities",
+          "biblical_keyword_coverage:0.333333",
+          "gematria_resonance:79.0",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.7465"
+        ]
+      }
+    },
+    {
+      "question_id": "max.commod.gold_close_ge_2400_20260831",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.554668,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.46,
+        "centered": -0.04,
+        "fused_signal": -0.032954
+      },
+      "explanation": {
+        "why_summary": "max.commod.gold_close_ge_2400_20260831는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.4085,
+          "keyword_coverage": 0.166667,
+          "match_count": 1,
+          "verse_matches": [
+            {
+              "ref": "Luke 14:28",
+              "theme": "cost_accounting",
+              "matched_keywords": [
+                "commodities"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "comex",
+                "a1z26": 60
+              },
+              {
+                "word": "gold",
+                "a1z26": 38
+              },
+              {
+                "word": "active-month",
+                "a1z26": 130
+              },
+              {
+                "word": "settlement",
+                "a1z26": 133
+              },
+              {
+                "word": "price",
+                "a1z26": 51
+              },
+              {
+                "word": "greater",
+                "a1z26": 74
+              },
+              {
+                "word": "than",
+                "a1z26": 43
+              }
+            ],
+            "resonance": 73.125
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.729,
+          "stress_response": 0.44,
+          "balance_response": 0.94,
+          "state_hint": "탄력회복",
+          "response_strength": 0.715
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Luke 14:28:commodities",
+          "biblical_keyword_coverage:0.166667",
+          "gematria_resonance:73.125",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.715"
+        ]
+      }
+    },
+    {
+      "question_id": "max.crypto.btc_close_up_7d_20260707",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.511119,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.5,
+        "centered": 0.0,
+        "fused_signal": 0.0
+      },
+      "explanation": {
+        "why_summary": "max.crypto.btc_close_up_7d_20260707는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.2545,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "bitcoin",
+                "a1z26": 72
+              },
+              {
+                "word": "close",
+                "a1z26": 54
+              },
+              {
+                "word": "coin",
+                "a1z26": 41
+              },
+              {
+                "word": "metrics",
+                "a1z26": 87
+              },
+              {
+                "word": "primary",
+                "a1z26": 100
+              },
+              {
+                "word": "index",
+                "a1z26": 56
+              },
+              {
+                "word": "reference",
+                "a1z26": 79
+              }
+            ],
+            "resonance": 68.125
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.7488,
+          "stress_response": 0.44,
+          "balance_response": 1.0,
+          "state_hint": "탄력회복",
+          "response_strength": 0.748
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:68.125",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.748"
+        ]
+      }
+    },
+    {
+      "question_id": "max.geo.us_china_tariff_headline_20260731",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.656553,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.35,
+        "centered": -0.15,
+        "fused_signal": -0.12642
+      },
+      "explanation": {
+        "why_summary": "max.geo.us_china_tariff_headline_20260731는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.5594,
+          "keyword_coverage": 0.333333,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Matthew 24:32",
+              "theme": "watchfulness",
+              "matched_keywords": [
+                "main"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "before",
+                "a1z26": 51
+              },
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "reuters",
+                "a1z26": 106
+              },
+              {
+                "word": "bloomberg",
+                "a1z26": 89
+              },
+              {
+                "word": "headline",
+                "a1z26": 58
+              },
+              {
+                "word": "report",
+                "a1z26": 92
+              },
+              {
+                "word": "tariff",
+                "a1z26": 60
+              },
+              {
+                "word": "measure",
+                "a1z26": 82
+              }
+            ],
+            "resonance": 74.25
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.67455,
+          "stress_response": 0.44,
+          "balance_response": 0.775,
+          "state_hint": "탄력회복",
+          "response_strength": 0.62425
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Matthew 24:32:main",
+          "biblical_keyword_coverage:0.333333",
+          "gematria_resonance:74.25",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.62425"
+        ]
+      }
+    },
+    {
+      "question_id": "max.geo.opec_cut_announce_20260831",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.700277,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.3,
+        "centered": -0.2,
+        "fused_signal": -0.169052
+      },
+      "explanation": {
+        "why_summary": "max.geo.opec_cut_announce_20260831는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.5562,
+          "keyword_coverage": 0.333333,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before"
+              ]
+            },
+            {
+              "ref": "Luke 14:28",
+              "theme": "cost_accounting",
+              "matched_keywords": [
+                "energy"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "before",
+                "a1z26": 51
+              },
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "opec",
+                "a1z26": 39
+              },
+              {
+                "word": "opec",
+                "a1z26": 39
+              },
+              {
+                "word": "issue",
+                "a1z26": 73
+              },
+              {
+                "word": "official",
+                "a1z26": 61
+              },
+              {
+                "word": "communique",
+                "a1z26": 131
+              },
+              {
+                "word": "announcing",
+                "a1z26": 112
+              }
+            ],
+            "resonance": 70.25
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.6984,
+          "stress_response": 0.62,
+          "balance_response": 0.7,
+          "state_hint": "탄력회복",
+          "response_strength": 0.664
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Ecclesiastes 3:1:before",
+          "biblical_keyword_coverage:0.333333",
+          "gematria_resonance:70.25",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.664"
+        ]
+      }
+    },
+    {
+      "question_id": "max.news.fomc_surprise_hike_20260801",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.836603,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.12,
+        "centered": -0.38,
+        "fused_signal": -0.313906
+      },
+      "explanation": {
+        "why_summary": "max.news.fomc_surprise_hike_20260801는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.5499,
+          "keyword_coverage": 0.333333,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "fomc",
+                "a1z26": 37
+              },
+              {
+                "word": "decision",
+                "a1z26": 78
+              },
+              {
+                "word": "announced",
+                "a1z26": 91
+              },
+              {
+                "word": "before",
+                "a1z26": 51
+              },
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "federal",
+                "a1z26": 51
+              },
+              {
+                "word": "funds",
+                "a1z26": 64
+              },
+              {
+                "word": "target",
+                "a1z26": 71
+              }
+            ],
+            "resonance": 62.375
+          }
+        },
+        "myeongri": {
+          "score": 0.688,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.52,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.6093,
+          "stress_response": 0.62,
+          "balance_response": 0.43,
+          "state_hint": "압박완충",
+          "response_strength": 0.5155
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.333333",
+          "gematria_resonance:62.375",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.52:cycle_alignment=0.68",
+          "sasang_state:압박완충:response_strength=0.5155"
+        ]
+      }
+    },
+    {
+      "question_id": "max.sector.sk_hynix_outperform_kospi_20260718",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.526405,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.48,
+        "centered": -0.02,
+        "fused_signal": -0.01597
+      },
+      "explanation": {
+        "why_summary": "max.sector.sk_hynix_outperform_kospi_20260718는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.2528,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "over",
+                "a1z26": 60
+              },
+              {
+                "word": "seoul",
+                "a1z26": 72
+              },
+              {
+                "word": "trading",
+                "a1z26": 73
+              },
+              {
+                "word": "week",
+                "a1z26": 44
+              },
+              {
+                "word": "ending",
+                "a1z26": 53
+              },
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "hynix",
+                "a1z26": 80
+              },
+              {
+                "word": "listing",
+                "a1z26": 90
+              }
+            ],
+            "resonance": 66.0
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.7389,
+          "stress_response": 0.44,
+          "balance_response": 0.97,
+          "state_hint": "탄력회복",
+          "response_strength": 0.7315
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:66.0",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.7315"
+        ]
+      }
+    },
+    {
+      "question_id": "max.sector.samsung_underperform_ndx_20260711",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.534702,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.53,
+        "centered": 0.03,
+        "fused_signal": 0.023974
+      },
+      "explanation": {
+        "why_summary": "max.sector.samsung_underperform_ndx_20260711는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.2603,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "over",
+                "a1z26": 60
+              },
+              {
+                "word": "trading",
+                "a1z26": 73
+              },
+              {
+                "word": "week",
+                "a1z26": 44
+              },
+              {
+                "word": "ending",
+                "a1z26": 53
+              },
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "samsung",
+                "a1z26": 94
+              },
+              {
+                "word": "electronics",
+                "a1z26": 123
+              },
+              {
+                "word": "primary",
+                "a1z26": 100
+              }
+            ],
+            "resonance": 75.375
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.73395,
+          "stress_response": 0.44,
+          "balance_response": 0.955,
+          "state_hint": "탄력회복",
+          "response_strength": 0.72325
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:75.375",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.72325"
+        ]
+      }
+    },
+    {
+      "question_id": "max.weather.seoul_precip_ge_5mm_20260720",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.700984,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.25,
+        "centered": -0.25,
+        "fused_signal": -0.196354
+      },
+      "explanation": {
+        "why_summary": "max.weather.seoul_precip_ge_5mm_20260720는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.2603,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "asos",
+                "a1z26": 54
+              },
+              {
+                "word": "station",
+                "a1z26": 98
+              },
+              {
+                "word": "seoul",
+                "a1z26": 72
+              },
+              {
+                "word": "daily",
+                "a1z26": 51
+              },
+              {
+                "word": "precipitation",
+                "a1z26": 155
+              },
+              {
+                "word": "greater",
+                "a1z26": 74
+              },
+              {
+                "word": "than",
+                "a1z26": 43
+              }
+            ],
+            "resonance": 75.375
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.62505,
+          "stress_response": 0.44,
+          "balance_response": 0.625,
+          "state_hint": "중립조정",
+          "response_strength": 0.54175
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:75.375",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:중립조정:response_strength=0.54175"
+        ]
+      }
+    },
+    {
+      "question_id": "max.macro.imf_weo_growth_downgrade_20260831",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.607423,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.41,
+        "centered": -0.09,
+        "fused_signal": -0.076094
+      },
+      "explanation": {
+        "why_summary": "max.macro.imf_weo_growth_downgrade_20260831는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.5577,
+          "keyword_coverage": 0.333333,
+          "match_count": 2,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "before"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "world",
+                "a1z26": 72
+              },
+              {
+                "word": "economic",
+                "a1z26": 77
+              },
+              {
+                "word": "outlook",
+                "a1z26": 109
+              },
+              {
+                "word": "update",
+                "a1z26": 67
+              },
+              {
+                "word": "published",
+                "a1z26": 96
+              },
+              {
+                "word": "before",
+                "a1z26": 51
+              },
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "global",
+                "a1z26": 49
+              }
+            ],
+            "resonance": 72.125
+          }
+        },
+        "myeongri": {
+          "score": 0.688,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.52,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.75285,
+          "stress_response": 0.62,
+          "balance_response": 0.865,
+          "state_hint": "탄력회복",
+          "response_strength": 0.75475
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.333333",
+          "gematria_resonance:72.125",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.52:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.75475"
+        ]
+      }
+    },
+    {
+      "question_id": "max.macro.eurozone_hicp_yoy_lt_2_20260731",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.663465,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.36,
+        "centered": -0.14,
+        "fused_signal": -0.121667
+      },
+      "explanation": {
+        "why_summary": "max.macro.eurozone_hicp_yoy_lt_2_20260731는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.7137,
+          "keyword_coverage": 0.5,
+          "match_count": 3,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "release"
+              ]
+            },
+            {
+              "ref": "Luke 14:28",
+              "theme": "cost_accounting",
+              "matched_keywords": [
+                "inflation"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "eurostat",
+                "a1z26": 119
+              },
+              {
+                "word": "flash",
+                "a1z26": 46
+              },
+              {
+                "word": "estimate",
+                "a1z26": 92
+              },
+              {
+                "word": "july",
+                "a1z26": 68
+              },
+              {
+                "word": "euro-area",
+                "a1z26": 84
+              },
+              {
+                "word": "hicp",
+                "a1z26": 36
+              },
+              {
+                "word": "released",
+                "a1z26": 69
+              },
+              {
+                "word": "typically",
+                "a1z26": 123
+              }
+            ],
+            "resonance": 79.625
+          }
+        },
+        "myeongri": {
+          "score": 0.688,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.52,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.7281,
+          "stress_response": 0.62,
+          "balance_response": 0.79,
+          "state_hint": "탄력회복",
+          "response_strength": 0.7135
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:macro",
+          "biblical_keyword_coverage:0.5",
+          "gematria_resonance:79.625",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.52:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.7135"
+        ]
+      }
+    },
+    {
+      "question_id": "max.flow.kospi_foreign_net_buy_positive_20260731",
+      "fusion_decision": "neutral",
+      "fusion_confidence": 0.542201,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.46,
+        "centered": -0.04,
+        "fused_signal": -0.031925
+      },
+      "explanation": {
+        "why_summary": "max.flow.kospi_foreign_net_buy_positive_20260731는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 neutral로 판정되었다.",
+        "biblical": {
+          "score": 0.258,
+          "keyword_coverage": 0.0,
+          "match_count": 0,
+          "verse_matches": [],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "aggregated",
+                "a1z26": 75
+              },
+              {
+                "word": "foreign",
+                "a1z26": 74
+              },
+              {
+                "word": "investor",
+                "a1z26": 122
+              },
+              {
+                "word": "purchase",
+                "a1z26": 91
+              },
+              {
+                "word": "value",
+                "a1z26": 61
+              },
+              {
+                "word": "kospi",
+                "a1z26": 70
+              },
+              {
+                "word": "cash",
+                "a1z26": 31
+              }
+            ],
+            "resonance": 72.5
+          }
+        },
+        "myeongri": {
+          "score": 0.733,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.62,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.08
+        },
+        "sasang": {
+          "score": 0.729,
+          "stress_response": 0.44,
+          "balance_response": 0.94,
+          "state_hint": "탄력회복",
+          "response_strength": 0.715
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical_keyword_coverage:0.0",
+          "gematria_resonance:72.5",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.62:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.715"
+        ]
+      }
+    },
+    {
+      "question_id": "hero.macro.us_cpi_yoy_ge_3_20260715",
+      "fusion_decision": "lean_false",
+      "fusion_confidence": 0.648574,
+      "lane_weights": {
+        "biblical": 0.38,
+        "myeongri": 0.34,
+        "sasang": 0.28
+      },
+      "fusion_calibration": {
+        "probability_input": 0.38,
+        "centered": -0.12,
+        "fused_signal": -0.104815
+      },
+      "explanation": {
+        "why_summary": "hero.macro.us_cpi_yoy_ge_3_20260715는 성경(구절·키워드·게마트리아), 명리(시기/경계), 사상(스트레스 반응) 축을 결합한 결과 lean_false로 판정되었다.",
+        "biblical": {
+          "score": 0.7322,
+          "keyword_coverage": 0.666667,
+          "match_count": 3,
+          "verse_matches": [
+            {
+              "ref": "Daniel 2:21",
+              "theme": "regime_shift",
+              "matched_keywords": [
+                "season",
+                "macro"
+              ]
+            },
+            {
+              "ref": "Ecclesiastes 3:1",
+              "theme": "timing_window",
+              "matched_keywords": [
+                "season"
+              ]
+            },
+            {
+              "ref": "Luke 14:28",
+              "theme": "cost_accounting",
+              "matched_keywords": [
+                "inflation"
+              ]
+            }
+          ],
+          "gematria": {
+            "method": "a1z26",
+            "tokens": [
+              {
+                "word": "will",
+                "a1z26": 56
+              },
+              {
+                "word": "bureau",
+                "a1z26": 68
+              },
+              {
+                "word": "labor",
+                "a1z26": 48
+              },
+              {
+                "word": "statistics",
+                "a1z26": 139
+              },
+              {
+                "word": "published",
+                "a1z26": 96
+              },
+              {
+                "word": "consumer",
+                "a1z26": 108
+              },
+              {
+                "word": "price",
+                "a1z26": 51
+              },
+              {
+                "word": "index",
+                "a1z26": 56
+              }
+            ],
+            "resonance": 77.75
+          }
+        },
+        "myeongri": {
+          "score": 0.688,
+          "phase": "재정비/경쟁",
+          "pillar_fit": 0.52,
+          "cycle_alignment": 0.68,
+          "boundary_risk": 0.18
+        },
+        "sasang": {
+          "score": 0.738,
+          "stress_response": 0.62,
+          "balance_response": 0.82,
+          "state_hint": "탄력회복",
+          "response_strength": 0.73
+        },
+        "conflict_resolution": "성경 점수와 명리 점수가 충돌하면 명리의 boundary_risk를 우선 반영하고, 사상 축은 확신도 보정에만 사용한다.",
+        "top_evidence": [
+          "biblical:Daniel 2:21:season,macro",
+          "biblical_keyword_coverage:0.666667",
+          "gematria_resonance:77.75",
+          "myeongri_phase:재정비/경쟁:pillar_fit=0.52:cycle_alignment=0.68",
+          "sasang_state:탄력회복:response_strength=0.73"
         ]
       }
     }

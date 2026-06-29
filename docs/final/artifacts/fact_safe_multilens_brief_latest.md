@@ -1,12 +1,12 @@
 # Fact-Safe Multi-Lens Brief
 
 ## 메타 고정 헤더
-- generated_at_utc: 2026-05-05T00:15:14Z
+- generated_at_utc: 2026-06-29T00:15:27Z
 - engine_id: V2_Precision_MCP
 - boundary_rule: observatory_ephemeris_v1
-- reliability_badge: MID
-- high_reliability_decision: PASS
-- gate_reason: monthly_check_gate
+- reliability_badge: LOW
+- high_reliability_decision: HOLD
+- gate_reason: low_badge_forced_hold
 
 ## 제1~4장 사전 예측 근거 (Pre-Execution)
 - [FACT] 실물 레짐 베이스라인: waiting queue/verified gate/overlap drift 결과를 기준으로 보수 운영.
@@ -16,15 +16,15 @@
 
 ## 제5장 사후 실행 성과 (Post-Execution Evidence)
 - exchange_snapshot_24h.available: True
-- fills_count: 5
-- realized_pnl: -1.2296
-- commission: 0.3556173
-- funding_fee: 0.00862528
-- net: -0.86535742
+- fills_count: 0
+- realized_pnl: 0
+- commission: 0
+- funding_fee: 0.0
+- net: 0.0
 - net_source: exchange_snapshot_24h
-- history samples: 503
-- history net_delta: -0.88049556
-- history avg_net_per_fill_latest: -0.17307148
+- history samples: 7
+- history net_delta: 0.0
+- history avg_net_per_fill_latest: None
 - backtest_available: True
 - backtest_sample_count: 317
 - backtest_win_rate: 0.425868
@@ -32,12 +32,12 @@
 - backtest_profit_factor: 0.800345
 - backtest_sweep_available: True
 - backtest_sweep_best_period: 2026-01-01..2026-12-31
-- backtest_sweep_best_sample_count: 102
-- backtest_sweep_best_net_return_pct: 2.620719
-- backtest_sweep_best_profit_factor: 1.156384
+- backtest_sweep_best_sample_count: 157
+- backtest_sweep_best_net_return_pct: 5.691631
+- backtest_sweep_best_profit_factor: 1.245576
 
 ## 운영 게이트 결론
-- reliability_badge: MID
+- reliability_badge: LOW
 - high_reliability_decision_raw(monthly_check): PASS
-- high_reliability_decision_effective: PASS
-- gate_reason: monthly_check_gate
+- high_reliability_decision_effective: HOLD
+- gate_reason: low_badge_forced_hold

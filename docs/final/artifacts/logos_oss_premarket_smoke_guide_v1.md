@@ -1,7 +1,22 @@
 # Logos Research OSS — Premarket Smoke Guide v1
 
+![OSS smoke](https://github.com/mkmlab-v2/mkm-logos-research-oss/actions/workflows/oss-smoke.yml/badge.svg)
+
 **Open-core harness** for local-first Bible GraphRAG / Scriptorium structure.  
 **Not** investment advice, medical advice, or doctrinal authority.
+
+## At a glance
+
+**What:** Offline **fixture smoke** for conflict retrieval + school-parallel synthesis — research PoC, not hosted Scriptorium or Track A.
+
+| Try this | Where |
+|----------|--------|
+| **~60s repro** (no API keys) | [Quickstart](#60-second-clone-smoke-fixture-only) — clone → `run_logos_oss_premarket_smoke_v1.py` → `exit 0` |
+| **Observe-only UI** (~30s, no install) | [Logos Studio — Job preset](https://logos.jema-ai.com/logos-research/studio?q=job_job_suffering_reason&autorun=1&demo=1) |
+| **Sibling Y1 Hero** | [mkm-universal-root](https://github.com/mkmlab-v2/mkm-universal-root) — dual-plane lexicon/topology bench |
+| **Third-party repro** | [Discussions](https://github.com/mkmlab-v2/mkm-logos-research-oss/discussions) — paste `exit 0` + pytest tail |
+
+Live Studio is **read-only observation** — reproducible gates for this repo stay on the **offline fixture bench** below. `send_gate: HOLD` · `[NON_GATING]` · not doctrinal authority.
 
 ## Release gates (solo OSS)
 
@@ -70,7 +85,7 @@ Output: `exports/mkm-logos-research-oss-v1/`
 ## Public GitHub push (explicit only)
 
 ```powershell
-powershell -File scripts/Push-GitHub-Explicit.ps1 -Acknowledge
+powershell -File scripts/Push-LogosOssPublicToGitHub_v1.ps1 -RefreshMaterialize -VerifyChain -Acknowledge
 ```
 
 Standalone export repo includes `.github/workflows/oss-smoke.yml` (materialized from `logos_oss_github_workflow_oss_smoke_v1.yml`).

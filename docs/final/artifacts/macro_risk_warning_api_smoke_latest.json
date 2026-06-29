@@ -1,8 +1,8 @@
 {
   "api_contract_version": "1.0.0",
   "schema_version": "macro_risk_warning_api_response_contract_v1",
-  "request_id": "mrw_20260514_222804",
-  "timestamp_utc": "2026-05-14T22:28:04.089149Z",
+  "request_id": "mrw_20260628_222805",
+  "timestamp_utc": "2026-06-28T22:28:05.714044Z",
   "asset_scope": "BTC-USD",
   "decision_state": "WATCH",
   "risk_warning_level": "elevated",
@@ -24,7 +24,7 @@
   "recommended_operator_posture": "watch_tighten",
   "evidence_ref": {
     "artifact_path": "docs/final/artifacts/integrated_governance_v1_latest.json",
-    "artifact_hash_sha256": "e52e386ad99629a90822293d6673e8324e8ac428abc7cfab2def4bdad0a5fc4a"
+    "artifact_hash_sha256": "9e1c80a5524b208be1ebf4f62b4ed1ecf851d213eb90caa4f7ef15a5c5d401c5"
   },
   "fragility_composite": {
     "schema_version": "fragility_composite_v1",

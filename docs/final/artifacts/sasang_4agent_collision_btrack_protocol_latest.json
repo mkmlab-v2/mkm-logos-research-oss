@@ -1,6 +1,6 @@
 {
   "schema": "sasang_4agent_collision_btrack_protocol_v1",
-  "generated_at_utc": "2026-04-30T18:33:04Z",
+  "generated_at_utc": "2026-06-28T00:00:05Z",
   "mode": "research_only",
   "policy_label": "NON_GATING",
   "architecture": {
@@ -22,31 +22,31 @@
   },
   "experiment": {
     "seed": 42,
-    "ticks": 7232,
-    "bootstrap_trials": 400,
-    "data_mode": "timeseries_file_adapter",
+    "ticks": 400,
+    "bootstrap_trials": 100,
+    "data_mode": "synthetic",
     "real_backtest_json": null,
-    "timeseries_file": "research/market_data/kospi_daily_external_yf.csv",
+    "timeseries_file": null,
     "baseline": "single_momentum_policy",
     "candidate": "4agent_collision_with_asymmetric_veto"
   },
   "results": {
-    "topological_variance_mean": 0.3316629307929753,
-    "topological_variance_p95": 0.889393198451268,
-    "hold_ratio": 0.6798949115044248,
-    "mdd_baseline": 0.09486774593055088,
-    "mdd_model": 0.03033729425557928,
-    "mdd_reduction_abs": 0.0645304516749716,
-    "mdd_reduction_pct_of_baseline": 0.6802148722096962,
+    "topological_variance_mean": 0.29749716715712027,
+    "topological_variance_p95": 0.90240851835542,
+    "hold_ratio": 0.71,
+    "mdd_baseline": 0.04202502495303153,
+    "mdd_model": 0.008332152724501758,
+    "mdd_reduction_abs": 0.03369287222852977,
+    "mdd_reduction_pct_of_baseline": 0.8017335448625187,
     "regime_topological_variance_mean": {
-      "rate_hike": 0.08949325771126766,
-      "pre_stress": 0.26064771145399046,
-      "recovery": 0.5525785608832037,
-      "pandemic_crash": 0.04356921205601788,
-      "sideways": 0.24496077313961906
+      "pre_stress": 0.34672045145231595,
+      "pandemic_crash": 0.3527168590734307,
+      "recovery": 0.31128737258700895,
+      "rate_hike": 0.23335361817726197,
+      "sideways": 0.24340753449558453
     },
-    "mdd_reduction_p_value_bootstrap": 0.4325,
-    "mdd_reduction_p_value_permutation": 0.0225,
+    "mdd_reduction_p_value_bootstrap": 0.36,
+    "mdd_reduction_p_value_permutation": 0.01,
     "statistical_significance_pass_p_lt_0_05": true,
     "sample_size_warning_low_ticks": false
   },

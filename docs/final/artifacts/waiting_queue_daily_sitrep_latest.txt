@@ -3566,3 +3566,57 @@
 - walk_forward_backfilled_history: disabled
 - policy: soft-fail (non-core optional tasks)
 
+[2026-06-28T00:05:33.7215697+00:00] waiting_queue_daily soft-fail summary
+- WARN: Biblical external reality profile dependencies missing; skipped
+- WARN: run_multiline_prophecy_delegated_bundle_v0.py missing; skipped
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- WARN: walk-forward/comparison script missing; skipped
+- allow_lens_fallback: disabled
+- walk_forward_backfilled_history: disabled
+- policy: soft-fail (non-core optional tasks)
+
+[2026-06-28T00:10:30.7927250+00:00] waiting_queue_daily soft-fail summary
+- WARN: Biblical external reality profile dependencies missing; skipped
+- WARN: run_multiline_prophecy_delegated_bundle_v0.py missing; skipped
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- WARN: walk-forward/comparison script missing; skipped
+- allow_lens_fallback: disabled
+- walk_forward_backfilled_history: disabled
+- policy: soft-fail (non-core optional tasks)
+
+[2026-06-28T00:15:33.1228859+00:00] waiting_queue_daily soft-fail summary
+- WARN: Biblical external reality profile dependencies missing; skipped
+- WARN: run_multiline_prophecy_delegated_bundle_v0.py missing; skipped
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- WARN: walk-forward/comparison script missing; skipped
+- allow_lens_fallback: disabled
+- walk_forward_backfilled_history: disabled
+- policy: soft-fail (non-core optional tasks)
+
+[2026-06-29T00:05:36.4519202+00:00] waiting_queue_daily soft-fail summary
+- WARN: Biblical external reality profile dependencies missing; skipped
+- WARN: run_multiline_prophecy_delegated_bundle_v0.py missing; skipped
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- WARN: walk-forward/comparison script missing; skipped
+- allow_lens_fallback: disabled
+- walk_forward_backfilled_history: disabled
+- policy: soft-fail (non-core optional tasks)
+
+[2026-06-29T00:10:35.7321084+00:00] waiting_queue_daily soft-fail summary
+- WARN: Biblical external reality profile dependencies missing; skipped
+- WARN: run_multiline_prophecy_delegated_bundle_v0.py missing; skipped
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- WARN: walk-forward/comparison script missing; skipped
+- allow_lens_fallback: disabled
+- walk_forward_backfilled_history: disabled
+- policy: soft-fail (non-core optional tasks)
+
+[2026-06-29T00:15:34.0453563+00:00] waiting_queue_daily soft-fail summary
+- WARN: Biblical external reality profile dependencies missing; skipped
+- WARN: run_multiline_prophecy_delegated_bundle_v0.py missing; skipped
+- WARN: high-sample vLLM eval enabled but required scripts are missing; skipped
+- WARN: walk-forward/comparison script missing; skipped
+- allow_lens_fallback: disabled
+- walk_forward_backfilled_history: disabled
+- policy: soft-fail (non-core optional tasks)
+

@@ -1,11 +1,13 @@
 {
   "schema": "myeongni_shadow_governance_v1",
-  "ts_utc": "2026-05-07T11:40:51Z",
+  "ts_utc": "2026-06-29T01:00:06Z",
   "decision": "HUMAN_REVIEW_REQUIRED_FOR_PROMOTION",
   "allow_a_track_binding": false,
   "allow_live_trigger": false,
   "blockers": [],
-  "warnings": [],
+  "warnings": [
+    "fusion_consistency"
+  ],
   "linked_inputs": {
     "weather_quality": "C:\\workspace\\docs\\final\\artifacts\\general_prophecy_explainability_quality_v1_latest.json",
     "gematria_blend": "C:\\workspace\\docs\\final\\artifacts\\gematria_myeongri_spike_blend_latest.json",

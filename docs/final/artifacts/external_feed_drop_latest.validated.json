@@ -1,26 +1,323 @@
 {
   "schema": "external_feed_drop_v1",
   "schema_version": "v1",
-  "generated_at_utc": "2026-04-21T14:11:45Z",
+  "generated_at_utc": "2026-06-11T22:30:02Z",
   "source": {
-    "provider": "manual",
-    "dataset": "external_feed_placeholder",
-    "fetch_mode": "manual",
-    "note": "placeholder feed for gate continuity"
+    "provider": "bbc_world+bbc_business",
+    "dataset": "rss_news_fusion_poc",
+    "fetch_mode": "http_rss"
   },
   "collection_window_utc": {
-    "start": "2026-04-21T14:11:45Z",
-    "end": "2026-04-21T14:11:45Z"
+    "start": "2026-06-11T22:30:02Z",
+    "end": "2026-06-11T22:30:02Z"
   },
   "status": "ok",
-  "items_count": 0,
-  "data": [],
+  "items_count": 30,
+  "data": [
+    {
+      "id": "6ecbee7b-21c0-4829-b7eb-bc969393b640",
+      "headline": "El Niño under way and threatens weather extremes, scientists say",
+      "title": "El Niño under way and threatens weather extremes, scientists say",
+      "description": "An El Niño event has officially started, say US scientists, raising fears of extreme weather and higher temperatures.",
+      "url": "https://www.bbc.com/news/articles/c75ylx7g00xo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T13:26:24Z"
+    },
+    {
+      "id": "40347e1e-5d6a-4c77-bec7-8f975cfa8c36",
+      "headline": "Deadly Sudan drone strike targets funeral procession",
+      "title": "Deadly Sudan drone strike targets funeral procession",
+      "description": "Rights groups accuse the RSF paramilitary group of killing civilians in el-Obeid, a city on the civil war's front line.",
+      "url": "https://www.bbc.com/news/articles/c70yeee2jvqo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T15:57:04Z"
+    },
+    {
+      "id": "8b142105-2c39-4358-b337-81a89acf7ebf",
+      "headline": "World Cup kicks off in Mexico with Shakira, performers and vibrant fans",
+      "title": "World Cup kicks off in Mexico with Shakira, performers and vibrant fans",
+      "description": "A star-studded opening ceremony featured artists from the World Cup's official soundtrack.",
+      "url": "https://www.bbc.com/news/articles/c2ly928xz8go?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T20:26:06Z"
+    },
+    {
+      "id": "c133df33-266e-423a-af90-25725d9cd663",
+      "headline": "Nigeria evacuates citizens from South Africa as anti-migrant sentiment rises",
+      "title": "Nigeria evacuates citizens from South Africa as anti-migrant sentiment rises",
+      "description": "Nigeria is the latest African state to repatriate citizens following reports of xenophobic attacks.",
+      "url": "https://www.bbc.com/news/articles/cq512vgyzl9o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T16:25:17Z"
+    },
+    {
+      "id": "9b8b63c3-066b-42fa-8ae4-474fd8bd1a12",
+      "headline": "The furious dispute over what caused Air India flight 171 to crash",
+      "title": "The furious dispute over what caused Air India flight 171 to crash",
+      "description": "The final conclusions of the investigation have yet to be published, although more could become apparent in the coming days.",
+      "url": "https://www.bbc.com/news/articles/cwyk9exxp2qo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-10T23:10:11Z"
+    },
+    {
+      "id": "86985ea1-d37f-4398-bd9f-220796c9d2c0",
+      "headline": "Vance says Israeli PM Netanyahu 'has got some things wrong'",
+      "title": "Vance says Israeli PM Netanyahu 'has got some things wrong'",
+      "description": "The US vice-president says the Israeli leader \"aggressively asserts\" his country's interests, but they do not always align with those of the US.",
+      "url": "https://www.bbc.com/news/articles/c9q2lq3vv7zo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T10:26:59Z"
+    },
+    {
+      "id": "55c98bd0-d4b1-4e62-a62f-2959b3b2e441",
+      "headline": "Artan to referee Uefa Super Cup after losing World Cup role",
+      "title": "Artan to referee Uefa Super Cup after losing World Cup role",
+      "description": "Somali referee Omar Artan is appointed to take charge of the Uefa Super Cup match between Paris St-Germain and Aston Villa later this summer after being denied a spot at the World Cup.",
+      "url": "https://www.bbc.com/sport/football/articles/c2kyx0l0499o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T14:24:58Z"
+    },
+    {
+      "id": "56ee2f2f-23a0-4ddd-8306-8db19dd5d09b",
+      "headline": "Pope Leo visits Canary Islands to highlight perilous journeys of migrants",
+      "title": "Pope Leo visits Canary Islands to highlight perilous journeys of migrants",
+      "description": "The Pope is appealing for a humane approach and respectful welcome for migrants seeking a better life.",
+      "url": "https://www.bbc.com/news/articles/cn59w6p3vd0o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T17:04:16Z"
+    },
+    {
+      "id": "60485917-0ba3-4c70-9842-53c7beb59cbb",
+      "headline": "Knicks fans go wild as New York team makes biggest comeback in NBA Finals history",
+      "title": "Knicks fans go wild as New York team makes biggest comeback in NBA Finals history",
+      "description": "Wednesday's result means the team are now just one win away from a famous Finals win.",
+      "url": "https://www.bbc.com/news/articles/cr47lyzr4q9o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T11:58:14Z"
+    },
+    {
+      "id": "1c127f46-03d3-4df3-a8cf-68f5a594a505",
+      "headline": "Olivia Rodrigo sings about heartbreak but she's already chosen her wedding song",
+      "title": "Olivia Rodrigo sings about heartbreak but she's already chosen her wedding song",
+      "description": "The pop star discusses the difficulty of writing happy songs, and her Glastonbury anxiety attack.",
+      "url": "https://www.bbc.com/news/articles/cly83elvz70o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-10T23:09:25Z"
+    },
+    {
+      "id": "0f79d732-22f7-46e9-abbd-65e74d415b6b",
+      "headline": "Four days of extreme rain killed 7% of world's rarest orangutans, study says",
+      "title": "Four days of extreme rain killed 7% of world's rarest orangutans, study says",
+      "description": "Climate change-induced weather events are pushing orangutan populations to extinction, says a study.",
+      "url": "https://www.bbc.com/news/articles/ce8jde20v83o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T15:02:34Z"
+    },
+    {
+      "id": "988e1e10-8ae4-467f-b23e-70bc7e966267",
+      "headline": "Thai court sentences two men to death over Bangkok shrine bombing",
+      "title": "Thai court sentences two men to death over Bangkok shrine bombing",
+      "description": "Twenty people died and 120 others were injured in the explosion at the Erawan shrine 11 years ago.",
+      "url": "https://www.bbc.com/news/articles/ckg8v51g9lno?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T06:45:10Z"
+    },
+    {
+      "id": "53433ce8-f2cd-401d-8c94-e4cd7f107a3d",
+      "headline": "French singer Patrick Bruel under formal investigation for rape",
+      "title": "French singer Patrick Bruel under formal investigation for rape",
+      "description": "Bruel was released from custody under judicial supervision while an examining magistrate looks more deeply into the case.",
+      "url": "https://www.bbc.com/news/articles/c3ey8d3jwglo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-11T08:29:57Z"
+    },
+    {
+      "id": "7a7b03d2-b2d8-4e8a-826d-c50da5eba8ee",
+      "headline": "Israeli strikes in southern Lebanon kill 17, reports say",
+      "title": "Israeli strikes in southern Lebanon kill 17, reports say",
+      "description": "Nine of them were killed in a series of attacks in the town of Tayr Debba, according to Lebanon's state news agency.",
+      "url": "https://www.bbc.com/news/articles/cpq3d44l907o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-10T14:44:49Z"
+    },
+    {
+      "id": "b87db74a-3677-432b-9198-7097c6d9e791",
+      "headline": "Whale graveyard dating back five million years discovered",
+      "title": "Whale graveyard dating back five million years discovered",
+      "description": "The Indian Ocean site is \"far beyond anything we had imagined\", one researcher says.",
+      "url": "https://www.bbc.com/news/articles/c75ylx4xn10o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_world",
+      "category": "world",
+      "published_utc": "2026-06-10T18:24:09Z"
+    },
+    {
+      "id": "42935e30-48f5-4d12-8629-24d8dbf2908c",
+      "headline": "Elon Musk's SpaceX valued at nearly $1.8tn ahead of record share sale",
+      "title": "Elon Musk's SpaceX valued at nearly $1.8tn ahead of record share sale",
+      "description": "The public sale is also expected to make Elon Musk the world's first trillionaire.",
+      "url": "https://www.bbc.com/news/articles/cwy034q89j4o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-11T21:10:14Z"
+    },
+    {
+      "id": "132b1cc9-f108-4cee-b99d-eb3ed8b2c184",
+      "headline": "Ryanair investigated over charging parents to sit with children",
+      "title": "Ryanair investigated over charging parents to sit with children",
+      "description": "The UK's competition regulator is investigating the airline over charges it imposes on parents to sit next to their child.",
+      "url": "https://www.bbc.com/news/articles/czj87rvx349o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-11T16:58:39Z"
+    },
+    {
+      "id": "b83544d1-9308-436f-837c-549ddcb74387",
+      "headline": "The furious dispute over what caused Air India flight 171 to crash",
+      "title": "The furious dispute over what caused Air India flight 171 to crash",
+      "description": "The final conclusions of the investigation have yet to be published, although more could become apparent in the coming days.",
+      "url": "https://www.bbc.com/news/articles/cwyk9exxp2qo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-10T23:10:11Z"
+    },
+    {
+      "id": "2ac1d4b0-5e12-4cc0-b692-04a21da254f1",
+      "headline": "Mike Ashley's Frasers offers £1.73bn to buy all of Hugo Boss",
+      "title": "Mike Ashley's Frasers offers £1.73bn to buy all of Hugo Boss",
+      "description": "The retail group already owns just over a quarter of the German fashion brand but wants to buy the rest of it.",
+      "url": "https://www.bbc.com/news/articles/c07y92gplmyo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-10T23:04:46Z"
+    },
+    {
+      "id": "0f4ce88b-6798-4a43-8188-b1f57d2207c1",
+      "headline": "SpaceX IPO: Preparing for the biggest liftoff yet?",
+      "title": "SpaceX IPO: Preparing for the biggest liftoff yet?",
+      "description": "It’s not just about rockets: what SpaceX does and why its IPO matters",
+      "url": "https://www.bbc.co.uk/sounds/play/w3ct8gld?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-10T20:30:00Z"
+    },
+    {
+      "id": "42785ec5-6b88-4f37-a104-c4a21557792b",
+      "headline": "New candy stores are popping up across NYC. Why?",
+      "title": "New candy stores are popping up across NYC. Why?",
+      "description": "While US consumer confidence is at an historic low the Big Apple's sweet shops are expanding.",
+      "url": "https://www.bbc.com/news/articles/c30ylzlygngo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-10T23:01:54Z"
+    },
+    {
+      "id": "094c797a-e55c-4726-97eb-f65a87d7d469",
+      "headline": "I'd have vetoed foreign sale of UK tech giant, says Business Secretary",
+      "title": "I'd have vetoed foreign sale of UK tech giant, says Business Secretary",
+      "description": "Peter Kyle's comments come as the government sets out how it would back British technology companies.",
+      "url": "https://www.bbc.com/news/articles/cd0mg79ggm0o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-10T23:01:38Z"
+    },
+    {
+      "id": "815f228f-5e77-4a90-b16c-cc2a6ba6910d",
+      "headline": "Villagers take fight against Lidl store plans to Welsh government",
+      "title": "Villagers take fight against Lidl store plans to Welsh government",
+      "description": "Residents in the area do not want a store on land separating Llantwit Major and Llanmaes.",
+      "url": "https://www.bbc.com/news/articles/c78y55dkny3o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-11T18:07:30Z"
+    },
+    {
+      "id": "4596aea5-858d-45c8-84c2-89441827e36a",
+      "headline": "Trump says 'I love the inflation' as US prices rise at fastest rate in three years",
+      "title": "Trump says 'I love the inflation' as US prices rise at fastest rate in three years",
+      "description": "The US president later said he had meant that he actually loved that inflation was not higher.",
+      "url": "https://www.bbc.com/news/articles/c0myzxjkw99o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-11T09:14:13Z"
+    },
+    {
+      "id": "6cc7cd6c-d142-45d2-aa9b-423b18e8dee5",
+      "headline": "Social media on trial: Four important cases to watch",
+      "title": "Social media on trial: Four important cases to watch",
+      "description": "Social media firms face thousands of lawsuits, the BBC looks at four which could be significant.",
+      "url": "https://www.bbc.com/news/articles/c9q39l447l4o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-11T05:02:29Z"
+    },
+    {
+      "id": "68ca8f60-4cfb-4b5f-b8e6-0ff811b60611",
+      "headline": "Korea fines e-commerce giant $400m over data breach affecting millions",
+      "title": "Korea fines e-commerce giant $400m over data breach affecting millions",
+      "description": "The record fine comes after around 37.5 million users had their private data exposed.",
+      "url": "https://www.bbc.com/news/articles/cvgj4rgz2n2o?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-11T07:32:57Z"
+    },
+    {
+      "id": "01bb765b-979e-42c9-90c9-46fa34fe5f16",
+      "headline": "World Cup expected to be the biggest betting event in history",
+      "title": "World Cup expected to be the biggest betting event in history",
+      "description": "The expansion of the number of games being played is set to drive a surge in the amount of bets placed on this year's World Cup.",
+      "url": "https://www.bbc.com/news/articles/cwydgwdx83yo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-10T18:39:31Z"
+    },
+    {
+      "id": "8e276dc1-a418-48be-bc75-d6665cf44449",
+      "headline": "Bill debt soars but many don't know help is available",
+      "title": "Bill debt soars but many don't know help is available",
+      "description": "The majority of billpayers are unaware of special tariffs for water and broadband, the spending watchdog says.",
+      "url": "https://www.bbc.com/news/articles/cdjkevgv9rzo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-09T23:03:32Z"
+    },
+    {
+      "id": "025eeeaa-c612-46c9-9376-56d96fe1a0ae",
+      "headline": "Illegal mini-marts to shut for up to 12 months under law change prompted by BBC",
+      "title": "Illegal mini-marts to shut for up to 12 months under law change prompted by BBC",
+      "description": "Under current rules, shops breaking the law can only be closed for up to six months in England and Wales.",
+      "url": "https://www.bbc.com/news/articles/cqj1rkqqrgro?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-10T04:17:02Z"
+    },
+    {
+      "id": "3f1ad45e-ba37-46bf-a5bd-c749139e2087",
+      "headline": "World's largest chipmaker does not rule out price rises as costs increase",
+      "title": "World's largest chipmaker does not rule out price rises as costs increase",
+      "description": "In a rare interview, a senior executive at TSMC discusses the AI boom, the geopolitics of chips and what it means for the price of electronics.",
+      "url": "https://www.bbc.com/news/articles/ce3ez4zzzlvo?at_medium=RSS&at_campaign=rss",
+      "source_feed_id": "bbc_business",
+      "category": "finance",
+      "published_utc": "2026-06-09T22:00:24Z"
+    }
+  ],
   "checksum_scope": "data_canonical_json_sha256",
-  "checksum_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+  "checksum_sha256": "0c275ec4b7d3f7e5a9600ed39c80911f6e77d52ffd5c09f65b6c5c90db06ff7c",
   "research_only": true,
   "promotion_required": true,
-  "tags": [
-    "placeholder",
-    "fact_safe"
-  ]
+  "fetch_errors": []
 }

@@ -1,6 +1,6 @@
 {
   "schema": "vibe_raw_output_coverage_v1",
-  "generated_at_utc": "2026-05-03T00:28:56Z",
+  "generated_at_utc": "2026-06-28T16:20:03Z",
   "scope": "research_only",
   "runs_file": "C:/workspace/docs/final/artifacts/vibe_runs_raw/vibe_prompt_runs_latest.jsonl",
   "raw_dir": "C:/workspace/docs/final/artifacts/vibe_runs_raw/athena_raw_outputs",

@@ -1,13 +1,13 @@
 {
   "schema": "mkm_inter_agent_dialogue_mock_summary_v1",
-  "generated_at_utc": "2026-06-13T16:31:33Z",
+  "generated_at_utc": "2026-06-28T00:31:08Z",
   "classification": "INTERNAL_ONLY",
   "hypothesis_tier": "B",
   "boundary_ack": "Simulated agents; plaintext is logged for audit only. On-wire payload is Trust Packet only. Not production A2A. Not Track A trading trigger.",
   "routing_profile": "track_a_promoted",
   "scenario": "trading",
-  "turns_requested": 4,
-  "turns_recorded": 4,
+  "turns_requested": 2,
+  "turns_recorded": 2,
   "all_compress_ok": true,
   "all_expand_packet_only": true,
   "all_expand_ok": true,
@@ -15,34 +15,34 @@
     {
       "turn": 1,
       "role": "agent_alpha_prophecy",
-      "internal_plaintext": "WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears.",
+      "internal_plaintext": "WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears. Prophecy lane B-track dual-leg KOSPI BTC divergence noted. Hold new longs; review at 09:00 KST. Executor standing by; risk profile unchanged; guardian gate WATCH; no Track A live trigger.",
       "wire_only": true,
       "compress": {
         "http_status": 200,
         "loss_profile": "semantic_general",
         "routing_profile": "track_a_promoted",
-        "lexicon_atom_id_count": 5,
+        "lexicon_atom_id_count": 18,
         "compression_metrics": {
-          "token_in": 18,
-          "token_out": 18,
-          "savings_ratio": 0.0
+          "token_in": 60,
+          "token_out": 33,
+          "savings_ratio": 0.44999999999999996
         },
         "integrity_flags": {
           "routing_research_only": null,
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "shard_id": "zone_e_finance",
+          "domain": "finance"
         }
       },
       "trust_packet_redacted": {
         "packet_format_version": "trust_packet.0.1",
         "api_contract_version": "2.0.0-draft",
         "loss_profile": "semantic_general",
-        "compressed_text": "WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears.",
+        "compressed_text": "WATCH regime on until gate Prophecy lane track Hold new at Executor standing by risk guardian no A live trigger elevated 20 B macro fragility Recommend REDUCE exposure BTC clears dual leg KOSPI",
         "residual_meta": {
           "mk_stub_v2": {
-            "reconstructed_text": "WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears.",
-            "global_token_saving_rate": 0.0,
-            "reconstruction_fidelity_jaccard": 1.0
+            "reconstructed_text": "WATCH regime macro fragility elevated Recommend REDUCE exposure 20 on BTC until gate clears Prophecy lane B track dual leg KOSPI BTC Hold new at Executor standing by risk guardian gate WATCH no Track A live trigger",
+            "global_token_saving_rate": 0.44999999999999996,
+            "reconstruction_fidelity_jaccard": 0.7857142857142857
           },
           "placeholder_map": {},
           "mkm_lexicon_rail_v1": {
@@ -52,61 +52,81 @@
               "other::regime",
               "other::on",
               "other::until",
-              "other::gate"
+              "other::gate",
+              "other::prophecy",
+              "other::lane",
+              "other::track",
+              "other::hold",
+              "other::new",
+              "other::at",
+              "other::executor",
+              "other::standing",
+              "other::by",
+              "other::guardian",
+              "other::no",
+              "other::live",
+              "other::trigger"
             ],
             "lexicon_meta": {
               "status": "ok",
               "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-              "lexicon_term_count": 41700,
-              "atom_id_count": 5,
+              "lexicon_term_count": 41708,
+              "atom_id_count": 18,
               "atom_id_sequence_sample": [
                 "other::watch",
                 "other::regime",
                 "other::on",
                 "other::until",
-                "other::gate"
+                "other::gate",
+                "other::prophecy",
+                "other::lane",
+                "other::track",
+                "other::hold",
+                "other::new",
+                "other::at",
+                "other::executor"
               ]
             }
           }
         },
         "router_meta": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "shard_id": "zone_e_finance",
+          "domain": "finance"
         },
-        "content_fingerprint": "106af6d0edc5e0b05fd086ae379c694c"
+        "content_fingerprint": "1163a8b16a62cda4403c78b7972363e3"
       }
     },
     {
       "turn": 2,
       "role": "agent_beta_executor",
-      "internal_plaintext": "ACK: exposure reduction logged. No new long orders until your next packet. [inferred_from_packet: WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears.]",
+      "internal_plaintext": "ACK: exposure reduction logged. No new long orders until your next packet. Executor standing by; risk profile unchanged; prophecy lane B-track observability only. [inferred_from_packet: WATCH regime macro fragility elevated Recommend REDUCE exposure 20 on BTC until gate clears Prophecy lane B track dual l]",
       "wire_only": true,
       "compress": {
         "http_status": 200,
         "loss_profile": "semantic_general",
         "routing_profile": "track_a_promoted",
-        "lexicon_atom_id_count": 11,
+        "lexicon_atom_id_count": 18,
         "compression_metrics": {
-          "token_in": 37,
-          "token_out": 19,
-          "savings_ratio": 0.4864864864864865
+          "token_in": 55,
+          "token_out": 32,
+          "savings_ratio": 0.4181818181818182
         },
         "integrity_flags": {
           "routing_research_only": null,
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot"
+          "shard_id": "zone_e_finance",
+          "domain": "finance"
         }
       },
       "trust_packet_redacted": {
         "packet_format_version": "trust_packet.0.1",
         "api_contract_version": "2.0.0-draft",
         "loss_profile": "semantic_general",
-        "compressed_text": "No new long orders until your next WATCH regime on gate ACK exposure reduction logged packet inferred_from_packet macro fragility",
+        "compressed_text": "No new long orders until your next Executor standing by risk prophecy lane track only WATCH regime on gate ACK exposure profile reduction logged packet unchanged B observability inferred_from_packet macro fragility elevated",
         "residual_meta": {
           "mk_stub_v2": {
-            "reconstructed_text": "ACK exposure reduction logged No new long orders until your next packet inferred_from_packet WATCH regime macro fragility exposure on until gate",
-            "global_token_saving_rate": 0.4864864864864865,
-            "reconstruction_fidelity_jaccard": 0.76
+            "reconstructed_text": "ACK exposure reduction logged No new long orders until your next packet Executor standing by risk profile unchanged prophecy lane B track observability only inferred_from_packet WATCH regime macro fragility elevated exposure on until gate Prophecy lane B track",
+            "global_token_saving_rate": 0.4181818181818182,
+            "reconstruction_fidelity_jaccard": 0.8205128205128205
           },
           "placeholder_map": {},
           "mkm_lexicon_rail_v1": {
@@ -119,6 +139,13 @@
               "other::until",
               "other::your",
               "other::next",
+              "other::executor",
+              "other::standing",
+              "other::by",
+              "other::prophecy",
+              "other::lane",
+              "other::track",
+              "other::only",
               "other::watch",
               "other::regime",
               "other::on",
@@ -127,8 +154,8 @@
             "lexicon_meta": {
               "status": "ok",
               "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-              "lexicon_term_count": 41700,
-              "atom_id_count": 11,
+              "lexicon_term_count": 41708,
+              "atom_id_count": 18,
               "atom_id_sequence_sample": [
                 "other::no",
                 "other::new",
@@ -137,170 +164,11 @@
                 "other::until",
                 "other::your",
                 "other::next",
-                "other::watch",
-                "other::regime",
-                "other::on",
-                "other::gate"
-              ]
-            }
-          }
-        },
-        "router_meta": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot"
-        },
-        "content_fingerprint": "d309e66e0c9b74641582dd3d4e368969"
-      },
-      "expand_inbound_packet_only": {
-        "from_role": "agent_alpha_prophecy",
-        "to_role": "agent_beta_executor",
-        "http_status": 200,
-        "expanded_text_preview": "WATCH regime: macro fragility elevated. Recommend REDUCE exposure 20% on BTC until gate clears.",
-        "expand_equals_stub_reconstructed": true,
-        "jaccard_internal_vs_expanded": 0.56,
-        "original_text_on_request": false
-      }
-    },
-    {
-      "turn": 3,
-      "role": "agent_alpha_prophecy",
-      "internal_plaintext": "Prophecy lane B-track: dual-leg KOSPI/BTC divergence noted. Hold new longs; review at 09:00 KST.",
-      "wire_only": true,
-      "compress": {
-        "http_status": 200,
-        "loss_profile": "semantic_general",
-        "routing_profile": "track_a_promoted",
-        "lexicon_atom_id_count": 6,
-        "compression_metrics": {
-          "token_in": 26,
-          "token_out": 26,
-          "savings_ratio": 0.0
-        },
-        "integrity_flags": {
-          "routing_research_only": null,
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot"
-        }
-      },
-      "trust_packet_redacted": {
-        "packet_format_version": "trust_packet.0.1",
-        "api_contract_version": "2.0.0-draft",
-        "loss_profile": "semantic_general",
-        "compressed_text": "Prophecy lane B-track: dual-leg KOSPI/BTC divergence noted. Hold new longs; review at 09:00 KST.",
-        "residual_meta": {
-          "mk_stub_v2": {
-            "reconstructed_text": "Prophecy lane B-track: dual-leg KOSPI/BTC divergence noted. Hold new longs; review at 09:00 KST.",
-            "global_token_saving_rate": 0.0,
-            "reconstruction_fidelity_jaccard": 1.0
-          },
-          "placeholder_map": {},
-          "mkm_lexicon_rail_v1": {
-            "symbol_key": "atom_id",
-            "atom_id_sequence": [
-              "other::prophecy",
-              "other::lane",
-              "other::track",
-              "other::hold",
-              "other::new",
-              "other::at"
-            ],
-            "lexicon_meta": {
-              "status": "ok",
-              "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-              "lexicon_term_count": 41700,
-              "atom_id_count": 6,
-              "atom_id_sequence_sample": [
-                "other::prophecy",
-                "other::lane",
-                "other::track",
-                "other::hold",
-                "other::new",
-                "other::at"
-              ]
-            }
-          }
-        },
-        "router_meta": {
-          "shard_id": "zone_d_ssot",
-          "domain": "ssot"
-        },
-        "content_fingerprint": "3b4b294415bc9ad70bc06c46a336129c"
-      },
-      "expand_inbound_packet_only": {
-        "from_role": "agent_beta_executor",
-        "to_role": "agent_alpha_prophecy",
-        "http_status": 200,
-        "expanded_text_preview": "ACK exposure reduction logged No new long orders until your next packet inferred_from_packet WATCH regime macro fragility exposure on until gate",
-        "expand_equals_stub_reconstructed": true,
-        "jaccard_internal_vs_expanded": 0.027777777777777776,
-        "original_text_on_request": false
-      }
-    },
-    {
-      "turn": 4,
-      "role": "agent_beta_executor",
-      "internal_plaintext": "ACK: dual-leg brief received. Executor standing by; risk profile unchanged. [inferred_from_packet: Prophecy lane B-track: dual-leg KOSPI/BTC divergence noted. Hold new longs; review at 09:00 KST.]",
-      "wire_only": true,
-      "compress": {
-        "http_status": 200,
-        "loss_profile": "semantic_general",
-        "routing_profile": "track_a_promoted",
-        "lexicon_atom_id_count": 11,
-        "compression_metrics": {
-          "token_in": 46,
-          "token_out": 21,
-          "savings_ratio": 0.5434782608695652
-        },
-        "integrity_flags": {
-          "routing_research_only": null,
-          "shard_id": "zone_e_finance",
-          "domain": "finance"
-        }
-      },
-      "trust_packet_redacted": {
-        "packet_format_version": "trust_packet.0.1",
-        "api_contract_version": "2.0.0-draft",
-        "loss_profile": "semantic_general",
-        "compressed_text": "brief received Executor standing by risk Prophecy lane track Hold new at ACK dual divergence leg profile unchanged inferred_from_packet B KOSPI",
-        "residual_meta": {
-          "mk_stub_v2": {
-            "reconstructed_text": "ACK dual leg brief received Executor standing by risk profile unchanged inferred_from_packet Prophecy lane B track dual leg KOSPI divergence Hold new at",
-            "global_token_saving_rate": 0.5434782608695652,
-            "reconstruction_fidelity_jaccard": 0.75
-          },
-          "placeholder_map": {},
-          "mkm_lexicon_rail_v1": {
-            "symbol_key": "atom_id",
-            "atom_id_sequence": [
-              "other::brief",
-              "other::received",
-              "other::executor",
-              "other::standing",
-              "other::by",
-              "other::prophecy",
-              "other::lane",
-              "other::track",
-              "other::hold",
-              "other::new",
-              "other::at"
-            ],
-            "lexicon_meta": {
-              "status": "ok",
-              "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-              "lexicon_term_count": 41700,
-              "atom_id_count": 11,
-              "atom_id_sequence_sample": [
-                "other::brief",
-                "other::received",
                 "other::executor",
                 "other::standing",
                 "other::by",
                 "other::prophecy",
-                "other::lane",
-                "other::track",
-                "other::hold",
-                "other::new",
-                "other::at"
+                "other::lane"
               ]
             }
           }
@@ -309,15 +177,15 @@
           "shard_id": "zone_e_finance",
           "domain": "finance"
         },
-        "content_fingerprint": "3dda3b334bcf443c91b73401fb07a643"
+        "content_fingerprint": "0091f2bd9decefdb86cd5658c940d712"
       },
       "expand_inbound_packet_only": {
         "from_role": "agent_alpha_prophecy",
         "to_role": "agent_beta_executor",
         "http_status": 200,
-        "expanded_text_preview": "Prophecy lane B-track: dual-leg KOSPI/BTC divergence noted. Hold new longs; review at 09:00 KST.",
+        "expanded_text_preview": "WATCH regime macro fragility elevated Recommend REDUCE exposure 20 on BTC until gate clears Prophecy lane B track dual leg KOSPI BTC Hold new at Executor standing by risk guardian gate WATCH no Track ",
         "expand_equals_stub_reconstructed": true,
-        "jaccard_internal_vs_expanded": 0.6428571428571429,
+        "jaccard_internal_vs_expanded": 0.5319148936170213,
         "original_text_on_request": false
       }
     }

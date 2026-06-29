@@ -1,16 +1,195 @@
 {
   "schema": "pre_news_shadow_input_v1",
-  "generated_at_utc": "2026-04-28T10:34:00Z",
+  "generated_at_utc": "2026-06-28T21:30:06Z",
   "research_only": true,
   "promotion_required": true,
   "source_track": "K",
+  "ingest": {
+    "adapter": "fetch_naver_openapi_signals_v1",
+    "naver_news_feed_schema": "naver_news_feed_v1",
+    "query": "비트코인",
+    "items_count": 20
+  },
   "rows": [
     {
-      "row_id": "sample_001",
-      "timestamp_utc": "2026-04-28T10:34:00Z",
-      "source": "manual_sample",
-      "headline": "Global policy coordination expands after crisis signals and market stabilization measures"
+      "row_id": "naver_001",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "[외신 헤드라인] AI 투자 열풍의 명암",
+      "link": "https://biz.sbs.co.kr/article_hub/20000319333?division=NAVER",
+      "pub_date": "Mon, 29 Jun 2026 06:28:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_002",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "비트버니 퀴즈 6월 29일 정답은",
+      "link": "https://www.namdonews.com/news/articleView.html?idxno=915035",
+      "pub_date": "Mon, 29 Jun 2026 06:22:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_003",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "비트코인(BTC), CME 옵션 미결제 약정 1년 만에 최저치...6만 달러 방어...",
+      "link": "http://coinreaders.com/244972",
+      "pub_date": "Mon, 29 Jun 2026 06:22:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_004",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "\"한국형 스테이블코인 선점\"…헥토, 서클 연동 '결제 허브' 승부수",
+      "link": "https://www.news1.kr/industry/sb-founded/6209779",
+      "pub_date": "Mon, 29 Jun 2026 06:20:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_005",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "긴축 장기화 우려에 비트코인 흔들 '바닥 확인은 아직'",
+      "link": "https://www.khgames.co.kr/news/articleView.html?idxno=305834",
+      "pub_date": "Mon, 29 Jun 2026 06:14:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_006",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "솔라나, 70달러 지지선 유지하며 토큰화 증권 거래량 30억 달러 돌파",
+      "link": "https://www.tokenpost.kr/news/cryptocurrency/373500",
+      "pub_date": "Mon, 29 Jun 2026 06:08:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_007",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "비트코인 급락에도 불공정거래 신고 급증, 시세조종 경계 심화",
+      "link": "https://www.tokenpost.kr/news/cryptocurrency/373499",
+      "pub_date": "Mon, 29 Jun 2026 06:04:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_008",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "[머니콘서트 2026] 홍성욱 연구원 \"비트코인, 매력 사라진 것 아냐...다시...",
+      "link": "https://magazine.hankyung.com/money/article/202606292596c",
+      "pub_date": "Mon, 29 Jun 2026 06:02:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_009",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "상반기 투자자 울린 금·은·비트코인…하반기엔 다시 오를까",
+      "link": "http://www.fnnews.com/news/202606281607394352",
+      "pub_date": "Mon, 29 Jun 2026 06:01:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_010",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "코인 침체기 불공정거래 신고는 급증…시세조종만 50건",
+      "link": "https://biz.sbs.co.kr/article_hub/20000319329?division=NAVER",
+      "pub_date": "Mon, 29 Jun 2026 06:00:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_011",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "비트코인 6만달러 또 붕괴…이러다 정말 사라지나",
+      "link": "https://www.dt.co.kr/article/12069922?ref=naver",
+      "pub_date": "Mon, 29 Jun 2026 05:53:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_012",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "코인 침체기 불공정거래 신고는 급증…시세조종만 50건",
+      "link": "https://www.yna.co.kr/view/AKR20260626171800002?input=1195m",
+      "pub_date": "Mon, 29 Jun 2026 05:51:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_013",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "6월 29일 출근길 팟캐스트 3억2671만달러 롱 청산, 비트코인 5만9천달러...",
+      "link": "https://www.tokenpost.kr/news/insights/373496",
+      "pub_date": "Mon, 29 Jun 2026 05:42:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_014",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "비트코인·XRP 보유자까지 흡수?...카르다노(ADA), 미드나잇(NIGHT) '승부...",
+      "link": "http://coinreaders.com/244967",
+      "pub_date": "Mon, 29 Jun 2026 05:22:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_015",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "[모닝 시세브리핑] 암호화폐 시장 혼조세… 비트코인 59,366달러, 이더리...",
+      "link": "https://www.tokenpost.kr/news/briefing/373493",
+      "pub_date": "Mon, 29 Jun 2026 05:02:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_016",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "암호화폐 시장, 24시간 동안 레버리지 포지션 3억 2671만 달러 청산",
+      "link": "https://www.tokenpost.kr/news/cryptocurrency/373494",
+      "pub_date": "Mon, 29 Jun 2026 05:02:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_017",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "샘슨 모우 \"비트코인(BTC) 추가 붕괴, 5만 8,000달러가 막았다\"",
+      "link": "http://coinreaders.com/244966",
+      "pub_date": "Mon, 29 Jun 2026 05:02:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_018",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "\"회의론자들은 비웃어라\"… 비트코인 맹신 마이크로스트래티지, 추가 매...",
+      "link": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=463712",
+      "pub_date": "Mon, 29 Jun 2026 04:58:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_019",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "\"4년 반감기 법칙 깨졌다\"… 월가 경고 비웃은 비트코인 거물의 '바닥론...",
+      "link": "https://www.pinpointnews.co.kr/news/articleView.html?idxno=463711",
+      "pub_date": "Mon, 29 Jun 2026 04:54:00 +0900",
+      "query": "비트코인"
+    },
+    {
+      "row_id": "naver_020",
+      "timestamp_utc": "2026-06-28T21:30:06Z",
+      "source": "naver_news_search_api_v1",
+      "headline": "[모닝 뉴스브리핑] 루미스 美 상원의원 “미국은 클래리티법 갖게 될 것...",
+      "link": "https://www.tokenpost.kr/news/briefing/373492",
+      "pub_date": "Mon, 29 Jun 2026 04:52:00 +0900",
+      "query": "비트코인"
     }
   ]
 }
-

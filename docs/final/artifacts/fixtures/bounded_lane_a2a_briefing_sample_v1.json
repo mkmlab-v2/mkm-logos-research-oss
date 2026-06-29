@@ -1,6 +1,6 @@
 {
   "schema": "bounded_lane_a2a_briefing_sample_v1",
-  "generated_at_utc": "2026-06-14T00:57:35Z",
+  "generated_at_utc": "2026-06-28T00:31:08Z",
   "research_only": true,
   "hypothesis_tier": "B",
   "classification": "INTERNAL_ONLY",
@@ -56,7 +56,7 @@
               "lexicon_meta": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "atom_id_count": 18,
                 "atom_id_sequence_sample": [
                   "other::watch",
@@ -124,7 +124,7 @@
               "lexicon_meta": {
                 "status": "ok",
                 "path": "C:\\workspace\\reports\\constitution\\btrack_pilot\\master_codebook_lexicon_v1_41708_rows_latest.json",
-                "lexicon_term_count": 41700,
+                "lexicon_term_count": 41708,
                 "atom_id_count": 18,
                 "atom_id_sequence_sample": [
                   "other::no",

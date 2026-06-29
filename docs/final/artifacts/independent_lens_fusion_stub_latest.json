@@ -1,7 +1,7 @@
 {
   "schema": "independent_lens_fusion_stub_v0",
   "version": "0.5.0",
-  "ts_utc": "2026-06-27T18:34:26Z",
+  "ts_utc": "2026-06-29T00:15:29Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "mode": "observation_only",
@@ -13,7 +13,7 @@
       "confidence": 0.68552,
       "direction_sign": "neutral",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\myeongni_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-05-14T22:20:02Z",
+      "artifact_ts_utc": "2026-06-29T00:15:28Z",
       "schema": "myeongni_independent_lens_v0"
     },
     {
@@ -23,7 +23,7 @@
       "confidence": 0.7115,
       "direction_sign": "bull",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\sasang_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-05-14T22:20:02Z",
+      "artifact_ts_utc": "2026-06-29T00:15:29Z",
       "schema": "sasang_independent_lens_v0"
     },
     {
@@ -33,7 +33,7 @@
       "confidence": 0.2,
       "direction_sign": "bear",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\logos_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-05-14T22:20:02Z",
+      "artifact_ts_utc": "2026-06-29T00:15:29Z",
       "schema": "logos_independent_lens_v0"
     },
     {
@@ -43,7 +43,7 @@
       "confidence": 0.081912195,
       "direction_sign": "bull",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\market_sasang_lens_latest.json",
-      "artifact_ts_utc": "2026-05-14T22:20:02Z",
+      "artifact_ts_utc": "2026-06-28T23:00:27Z",
       "schema": "market_sasang_lens_v1",
       "market_sasang_lens_v1": {
         "state_vector_sasang_softmax": {
@@ -75,7 +75,7 @@
       "confidence": 0.603258,
       "direction_sign": "neutral",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\market_myeongni_lens_latest.json",
-      "artifact_ts_utc": "2026-06-26T23:00:22Z",
+      "artifact_ts_utc": "2026-06-28T23:00:26Z",
       "schema": "market_myeongni_lens_v1",
       "market_myeongni_lens_v1": {
         "base_direction_score": 0.08,
@@ -95,11 +95,11 @@
     {
       "lens_id": "news",
       "available": true,
-      "direction_score": 0.1228,
+      "direction_score": 0.005102,
       "confidence": 0.6,
-      "direction_sign": "bull",
+      "direction_sign": "neutral",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\news_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-06-27T12:08:29Z",
+      "artifact_ts_utc": "2026-06-28T23:00:31Z",
       "schema": "news_independent_lens_v0",
       "role": "observation_only_sidecar",
       "non_voting": true
@@ -107,11 +107,11 @@
     {
       "lens_id": "macro",
       "available": true,
-      "direction_score": 0.126392,
+      "direction_score": -0.009409,
       "confidence": 0.6,
-      "direction_sign": "bull",
+      "direction_sign": "neutral",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\macro_independent_lens_latest.json",
-      "artifact_ts_utc": "2026-06-27T12:08:29Z",
+      "artifact_ts_utc": "2026-06-28T23:00:31Z",
       "schema": "macro_independent_lens_v0",
       "role": "observation_only_sidecar",
       "non_voting": true
@@ -125,7 +125,7 @@
       "confidence": 0.65,
       "direction_sign": "bear",
       "artifact_path": "C:\\workspace\\docs\\final\\artifacts\\global_market_overnight_signals_v1_latest.json",
-      "artifact_ts_utc": "2026-06-27T12:08:29Z",
+      "artifact_ts_utc": "2026-06-28T23:00:15Z",
       "schema": "global_market_overnight_signals_v1",
       "overnight_meta": {
         "composite_tilt": "risk_off_overnight",
@@ -146,9 +146,9 @@
     "available_count": 1,
     "agreement_rate": 1.0,
     "conflict_count": 0,
-    "consensus_sign": "neutral",
-    "consensus_score": -0.194217,
-    "consensus_confidence": 0.2,
+    "consensus_sign": "bear",
+    "consensus_score": -0.147317,
+    "consensus_confidence": 0.616667,
     "sidecar_override": true
   },
   "demote_trace": [
@@ -159,12 +159,12 @@
   "demote_active": true,
   "headline_gating": {
     "non_gating": true,
-    "headline_sign": "neutral",
+    "headline_sign": "bear",
     "headline_source": "consensus_effective",
     "raw_consensus_sign": "bull"
   },
   "conflict_summary": {
-    "conflict_narrative_guarded": "Lens direction alignment: majority_sign=bull, agreement_rate=0.4, conflict_count=3. Minority vs majority: myeongni, logos, market_myeongni differ from majority_sign=bull. Breakdown: myeongni: sign=neutral, score=0.080000, conf=0.685520; sasang: sign=bull, score=0.170000, conf=0.711500; logos: sign=bear, score=-0.323333, conf=0.200000; market_sasang: sign=bull, score=0.170000, conf=0.081912; market_myeongni: sign=neutral, score=0.053600, conf=0.603258. Demote trace: R1_conflict_count_ge_2: lens-only conflict_count>=2; R2_shock_overnight: risk_off + index move >=3%; R5_humanist_vote_weight_zero: myeongni/sasang/market_* capped. Headline gating: raw consensus non-gating; use headline_sign=neutral. Logos evidence verse_id anchors (batch-bound): sample-001, sample-002, sample-003. Logos hash-tagged snippet (clipped): [#sample-001] [#sample-002] [#sample-003]",
+    "conflict_narrative_guarded": "Lens direction alignment: majority_sign=bull, agreement_rate=0.4, conflict_count=3. Minority vs majority: myeongni, logos, market_myeongni differ from majority_sign=bull. Breakdown: myeongni: sign=neutral, score=0.080000, conf=0.685520; sasang: sign=bull, score=0.170000, conf=0.711500; logos: sign=bear, score=-0.323333, conf=0.200000; market_sasang: sign=bull, score=0.170000, conf=0.081912; market_myeongni: sign=neutral, score=0.053600, conf=0.603258. Demote trace: R1_conflict_count_ge_2: lens-only conflict_count>=2; R2_shock_overnight: risk_off + index move >=3%; R5_humanist_vote_weight_zero: myeongni/sasang/market_* capped. Headline gating: raw consensus non-gating; use headline_sign=bear. Logos evidence verse_id anchors (batch-bound): sample-001, sample-002, sample-003. Logos hash-tagged snippet (clipped): [#sample-001] [#sample-002] [#sample-003]",
     "minority_lens_ids": [
       "myeongni",
       "logos",
