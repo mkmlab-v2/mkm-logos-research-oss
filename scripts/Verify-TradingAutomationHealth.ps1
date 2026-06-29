@@ -7,7 +7,9 @@ param(
   # trinity_governor / LOCKED_MODE only (expected policy posture). Still requires fresh generated_at_utc.
   [switch]$AllowPolicyLockedGoNoGo,
   # When set: MKM-Security-Integrity-Check-5min in Disabled state counts as ok (local dev / closure bundle).
-  [switch]$AllowDisabledSecurityIntegrityTask
+  [switch]$AllowDisabledSecurityIntegrityTask,
+  # Solo OSS / shadow: Disabled execution-readiness + LOCKED_MODE disk NO_GO are expected (no live trade).
+  [switch]$AllowShadowSoloPosture
 )
 
 $ErrorActionPreference = "Stop"
@@ -48,6 +50,13 @@ function Get-TaskHealth([string]$TaskName) {
   ) {
     $ok = $true
     $reason = "intentionally_disabled"
+  }
+  if (
+    -not $ok -and $AllowShadowSoloPosture -and
+    $TaskName -eq "MKM-Trading-Execution-Readiness-Loop-2H" -and $state -eq "Disabled"
+  ) {
+    $ok = $true
+    $reason = "shadow_solo_intentionally_disabled"
   }
 
   return [pscustomobject]@{
@@ -117,6 +126,10 @@ if ($goNoGo -and $goNoGo.generated_at_utc) {
     $goNoGoOk = ($age.TotalHours -le $MaxGoNoGoAgeHours)
     $goNoGoPolicyLockedBypass = $true
   }
+  if (-not $goNoGoOk -and $AllowShadowSoloPosture -and $goNoGo -and "$($goNoGo.risk_mode)" -eq "LOCKED_MODE") {
+    $goNoGoOk = ($age.TotalHours -le $MaxGoNoGoAgeHours)
+    $goNoGoPolicyLockedBypass = $true
+  }
 }
 
 $securityOk = $false
@@ -158,6 +171,7 @@ $report = [ordered]@{
   security_reason = $securityReason
   go_no_go_ok = $goNoGoOk
   go_no_go_policy_locked_bypass = $goNoGoPolicyLockedBypass
+  shadow_solo_posture = [bool]$AllowShadowSoloPosture
   go_no_go_age_hours = $goNoGoAgeHours
   max_go_no_go_age_hours = $MaxGoNoGoAgeHours
   go_no_go = if ($goNoGo) { $goNoGo.go_no_go } else { $null }

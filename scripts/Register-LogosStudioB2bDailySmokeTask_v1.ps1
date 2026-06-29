@@ -29,6 +29,6 @@ if ($existing) {
 
 $trigger = New-ScheduledTaskTrigger -Daily -At $DailyAt
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable
-Register-ScheduledTask -TaskName $taskName -Action (New-ScheduledTaskAction -Execute "powershell.exe" -Argument $args) -Trigger $trigger -Settings $settings -Description "Logos B2B daily smoke: deploy verify + lemma live + demo preset batch; NON_GATING"
+Register-ScheduledTask -TaskName $taskName -Action (New-ScheduledTaskAction -Execute "powershell.exe" -Argument $args) -Trigger $trigger -Settings $settings -Description "Logos B2B daily smoke: deploy verify + lemma live + demo preset batch; NON_GATING. SSOT: mkm_scheduler_solo_core_stack_v1.json tier3_optional_active"
 Write-Host "Registered: $taskName at $DailyAt"
 Write-Host "Manual: powershell -File scripts\Invoke-LogosStudioB2bDailySmoke_v1.ps1"

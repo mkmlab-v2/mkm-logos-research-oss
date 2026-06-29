@@ -28,8 +28,7 @@
 | Pillar A 주간 회귀 (Infra) | `run_workspace_automation_health.ps1 -PillarACursorContinuitySmokeOnly` |
 | 의미 있는 진행 후 | `MISSION_LOG.md` **해당 레인** 다음 Action **1줄**만 (`mission-log-combat-ssot.mdc`) |
 
-- **solo_ops:** 재개 시 `reports/mkm_solo_background_ops_state.json` 오늘 `last_ok` 아니면 `Invoke-MkmSoloBackgroundOps_v1.ps1` (`mkm-solo-background-ops-auto.mdc`).
-- **WSE-3 스타터:** `@.cursor/rules/mkm-wse3-commander-starters.mdc`
+- **solo_ops / WSE-3:** 재개 시 solo_ops `last_ok` 확인(`mkm-solo-background-ops-auto.mdc`) · 스타터 `@mkm-wse3-commander-starters.mdc`
 
 ## 페르소나 트리거 (요약 — 전체 표는 REFERENCE)
 
@@ -55,6 +54,7 @@
 | 【프리미엄 큐 권장】 | `… -Persona PremiumMultilensQueue` |
 | 【Design 레인】 | `… -Persona DesignLane` |
 | **딥리서치** · deep research · 논문 조사 | **Tier 0** Gemini→`docs/research/raw/` · **Tier 1** `mkm-deep-research/SKILL.md`(LIT_REVIEW md) · **0→1 merge** `*_MERGED_LIT_REVIEW_*.md` SSOT · **Tier 2** pytest exit 0 |
+| **소화** · 논문 소화 · digest paper | `py scripts/run_mkm_paper_digest_v1.py --pdf <path> --lens logos\|myeongri\|ijeoma` 또는 `--lens logos` (HAAN 배치) → Tier0 + digestion chain · SSOT `mkm_paper_digest_run_v1_latest.json` · 규칙 `mkm-paper-digest-trigger-v1.mdc` |
 | **논문 디스크 4칸** · paper verdict · tier 절단 · LIT_REVIEW 대조 | `@.cursor/rules/mkm-paper-disk-verdict-four-slot-v1.mdc` — Disk verdict · Reproduce · raw/repair_v2 · Promotion; support-fire only; `send_gate: HOLD` default |
 
 → 나머지 40+ 행: **`AGENTS_REFERENCE_V1.md` 「페르소나 단축 호출」**
@@ -86,8 +86,7 @@
 ## MCP · 도구 카탈로그 (컨텍스트)
 
 - **워크스페이스 SSOT:** `.cursor/mcp.json` (MKM lean 7). `openchrome`·`hostinger-website-manager`는 **요청 시**만 추가.
-- **Cursor 플러그인 MCP**(Figma·Datadog·Slack·Postman 등): 채팅 시작 시 도구 목록에 합류 — **안 쓰면 Settings에서 OFF**.
-- NL: `@notebooklm-mcp-session-bridge` · 자율 웹검색: `@autonomous-web-search-v1` · 점검: `scripts/check_notebooklm_mcp_prereqs.ps1` · `scripts/Invoke-McpHygieneProbe.ps1`
+- **MCP:** lean 7(`.cursor/mcp.json`) · 미사용 플러그인 MCP OFF · NL `@notebooklm-mcp-session-bridge` · 웹검색 `@autonomous-web-search-v1` · `check_notebooklm_mcp_prereqs.ps1` · `Invoke-McpHygieneProbe.ps1`
 
 ## `.cursorrules` (TITAN · Slim v2)
 

@@ -211,6 +211,10 @@ param(
     [switch]$IncludeSafeOpsSurfaceCheckWithVps,
     # Pass -StrictTradingGoNoGo into SafeOps (Trinity LOCKED disk NO_GO fails verify; audit-only).
     [switch]$SafeOpsStrictTradingGoNoGo,
+    # Pass -IgnoreLiveSync into SafeOps (local without VPS mirror; pairs with prophecy closure).
+    [switch]$SafeOpsIgnoreLiveSync,
+    # Solo OSS shadow posture: IgnoreLiveSync + AllowShadowSoloPosture on verify (daily patrol default).
+    [switch]$SafeOpsShadowSolo,
 
     # Optional: heartbeat / bundle-cycle JSON staleness (runs outside bundle success tail; see scripts/check_amsaeng_eosa_artifact_staleness_v1.py).
     [switch]$IncludeAmsaengArtifactStaleness,
@@ -660,6 +664,8 @@ try {
             $safeOpsCli = @("-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $safeOps, "-WorkspaceRoot", $root)
             if ($runSafeOpsWithVps) { $safeOpsCli += "-IncludeVpsSmoke" }
             if ($SafeOpsStrictTradingGoNoGo) { $safeOpsCli += "-StrictTradingGoNoGo" }
+            if ($SafeOpsIgnoreLiveSync) { $safeOpsCli += "-IgnoreLiveSync" }
+            if ($SafeOpsShadowSolo) { $safeOpsCli += "-ShadowSoloOps" }
             & powershell @safeOpsCli
             $safeExit = $LASTEXITCODE
             if ($safeExit -eq 2) {
