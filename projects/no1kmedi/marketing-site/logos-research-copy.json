@@ -150,7 +150,8 @@
     "pilot_title": "기관 파일럿 프로그램",
     "pilot_lead": "맞춤 preset 5–10 · private slice · 4–8주 · SOW 협의. 자동 과금·SEND 없음(send_gate HOLD).",
     "architecture_title": "기술 아키텍처 · Fact-Lock",
-    "architecture_lead": "curated graph slice(~900 nodes) · 31k 코퍼스 엔진 격벽 · OSS 재현 경로."
+    "architecture_lead": "curated graph slice(~900 nodes) · 31k 코퍼스 엔진 격벽 · OSS 재현 경로.",
+    "lead_mail_fallback": "이메일로 문의"
   },
   "hero_embed": {
     "title": "Logos Graph Studio — Layer B live demo",

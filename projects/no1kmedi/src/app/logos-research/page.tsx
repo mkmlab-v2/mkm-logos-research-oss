@@ -3,6 +3,7 @@ import path from "node:path";
 
 import { LogosResearchSiteChrome } from "@/components/logos-research/LogosResearchSiteChrome";
 import { logosResearchCopy, type LogosResearchMetrics } from "@/content/logosResearchCopy";
+import { LogosResearchLandingLeadForm } from "@/components/logos-research/LogosResearchLandingLeadForm";
 import { LogosGraphStudioHeroInlineDemo } from "@/components/logos/LogosGraphStudioHeroInlineDemo";
 import { LOGOS_GRAPH_STUDIO_DEFAULT_PRESET } from "@/lib/logosGraphStudioEmbed";
 import { DEFAULT_HOMEPAGE_PRESET, homepagePresetClassMap } from "@/lib/homepagePreset";
@@ -130,11 +131,17 @@ export default async function LogosResearchPage() {
               <p>{pilotTier.note}</p>
             </div>
           ) : null}
-          <div className="lr-hero-cta" id="lead">
-            <a className="lr-btn lr-btn-primary" href={mailHref}>
-              {c.hero.cta_primary}
-            </a>
-            <a className="lr-btn lr-btn-ghost" href="/logos-research/docs/pilot-scope">
+          <div className="lr-landing-lead-wrap" id="lead">
+            <LogosResearchLandingLeadForm
+              cta={studio?.lead_cta ?? c.hero.cta_primary}
+              placeholderEmail={studio?.placeholder_email ?? "이메일"}
+              placeholderOrg={studio?.placeholder_org ?? "기관명 (선택)"}
+              placeholderNote={studio?.placeholder_note ?? "사용 사례 (선택)"}
+              labelSending={studio?.label_sending ?? "전송 중…"}
+              mailFallbackHref={mailHref}
+              mailFallbackLabel={landing?.lead_mail_fallback ?? "이메일로 문의"}
+            />
+            <a className="lr-btn lr-btn-ghost lr-landing-lead__docs" href="/logos-research/docs/pilot-scope">
               파일럿 범위 (Docs)
             </a>
           </div>

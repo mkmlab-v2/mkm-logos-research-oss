@@ -46,6 +46,14 @@ if (-not $SkipPresetBatch) {
     }
 }
 
+$steps += @{
+    id = "lead_api_smoke"
+    cmd  = @(
+        "py", (Join-Path $WorkspaceRoot "scripts\check_logos_studio_lead_api_smoke_v1.py"),
+        "--base", $BaseUrl
+    )
+}
+
 $failures = @()
 foreach ($step in $steps) {
     Write-Host "[logos-b2b-daily] $($step.id)" -ForegroundColor Cyan
