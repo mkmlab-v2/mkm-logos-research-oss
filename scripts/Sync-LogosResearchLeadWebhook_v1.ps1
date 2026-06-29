@@ -130,6 +130,7 @@ echo '[logos-lead-webhook] VPS env updated'
 }
 
 if ($PostSmoke) {
+    Start-Sleep -Seconds 8
     & py (Join-Path $root "scripts\check_logos_studio_lead_api_smoke_v1.py") --base "https://logos.jema-ai.com" --require-webhook
     if ($LASTEXITCODE -ne 0) { throw "logos lead webhook smoke failed exit $LASTEXITCODE" }
 }
