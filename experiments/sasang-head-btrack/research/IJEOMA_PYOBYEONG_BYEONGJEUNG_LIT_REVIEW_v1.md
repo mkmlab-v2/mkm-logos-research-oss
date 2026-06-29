@@ -1,6 +1,6 @@
 # IJEOMA · 표리병증·병증약리 LIT_REVIEW v1.1
 
-**generated_at_utc:** 2026-06-29T17:15:25Z
+**generated_at_utc:** 2026-06-29T17:30:46Z
 **pack_version:** 1.1.0
 **rail:** B_TRACK · **research_only** · `send_gate: HOLD`
 **decision_authority:** human_only · **advisory_only** — CDSS·자동 처방·Track A 아님

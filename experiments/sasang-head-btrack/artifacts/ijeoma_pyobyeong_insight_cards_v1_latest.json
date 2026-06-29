@@ -1,13 +1,13 @@
 {
   "schema": "ijeoma_pyobyeong_insight_cards_v1",
   "version": "1.1.0",
-  "generated_at_utc": "2026-06-29T17:15:25Z",
+  "generated_at_utc": "2026-06-29T17:30:46Z",
   "rail": "B_TRACK",
   "research_only": true,
   "send_gate": "HOLD",
   "decision_authority": "human_only",
   "advisory_only": true,
-  "tier0_ingest": "C:/mkm-sasang-ablation/experiments/sasang-head-btrack/research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md",
+  "tier0_ingest": "C:/workspace/_pr_sasang_promotion/experiments/sasang-head-btrack/research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md",
   "pinned_secondary_v1": [
     {
       "source_id": "SRC-OAK-ULGWANG",

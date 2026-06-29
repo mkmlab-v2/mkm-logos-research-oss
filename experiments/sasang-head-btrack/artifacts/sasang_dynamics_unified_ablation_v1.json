@@ -1,7 +1,7 @@
 {
   "schema": "sasang_dynamics_unified_ablation_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-06-29T17:15:25Z",
+  "generated_at_utc": "2026-06-29T17:30:46Z",
   "rail": "B_TRACK",
   "research_only": true,
   "send_gate": "HOLD",
@@ -15,7 +15,7 @@
     "geumhwa_monitor_read_only"
   ],
   "input_provenance": {
-    "lens_json": "C:/mkm-sasang-ablation/experiments/sasang-head-btrack/artifacts/sasang_independent_lens_ablation_v1.json",
+    "lens_json": "C:/workspace/_pr_sasang_promotion/experiments/sasang-head-btrack/artifacts/sasang_independent_lens_ablation_v1.json",
     "lens_schema": "sasang_independent_lens_v0"
   },
   "machine_readables": {
