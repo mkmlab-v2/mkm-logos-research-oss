@@ -75,8 +75,15 @@ PACKS: dict[str, list[str]] = {
         "docs/final/artifacts/notebooklm_lens_sasang_ijoeoma_secondary_proxy_pointer_v1.md",
     ],
     "LENS_LOGOS": [
-        "AGENTS.md",
+        "docs/final/artifacts/notebooklm_lens_logos_nl_fact_lock_guard_v1_latest.md",
         "docs/final/LOGOS_NOTEBOOK_META_GUIDE.md",
+        "docs/final/artifacts/mkm_theory_mathematization_canon_v1_latest.md",
+        "docs/final/artifacts/logos_theory_implementation_wiring_v1.json",
+        "docs/final/artifacts/shadow_lane_gematria_gate_v1_latest.json",
+        "docs/final/artifacts/sasang_routing_sidecar_on_gematria_path_v1_latest.json",
+        "docs/final/artifacts/logos_cosmic_meta_architecture_draft_v1_latest.json",
+        "docs/final/artifacts/sasang12_promotion_candidate_gate_latest.json",
+        "AGENTS.md",
         "reports/constitution/btrack_pilot/haan_lens_nl_query_sets_v1_latest.json",
         "docs/final/artifacts/logos_corpus_coordinate_map_v1_latest.json",
         "docs/final/artifacts/haan_logos_gematria_lexicon_join_v1_latest.json",
@@ -215,6 +222,12 @@ def _pack_paths(lens_key: str) -> list[str]:
 
 
 def main() -> int:
+    guard_script = ROOT / "scripts/build_notebooklm_lens_logos_nl_fact_lock_guard_v1.py"
+    if guard_script.is_file():
+        import subprocess
+
+        subprocess.run([sys.executable, str(guard_script)], cwd=ROOT, check=False)
+
     preserved_map: str | None = None
     map_path = OUT / "notebook_ids.json"
     if map_path.is_file():

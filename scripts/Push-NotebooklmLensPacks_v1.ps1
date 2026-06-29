@@ -37,6 +37,9 @@
 .PARAMETER Refresh
   Delete same-title sources before add (latest sync).
 
+.PARAMETER Lens
+  Push only this lens folder key (e.g. LENS_LOGOS). Default: all lens keys.
+
 .PARAMETER LogPath
   Append log path (default reports/notebooklm_lens_pack_push_latest.log).
 #>
@@ -48,7 +51,8 @@ param(
   [int]$MaxNotebookSources = 300,
   [int]$SleepMs = 400,
   [string]$LogPath = "",
-  [switch]$Refresh
+  [switch]$Refresh,
+  [string]$Lens = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -193,10 +197,18 @@ function Resolve-NlmUploadFile {
   return @{ Path = $FileInfo.FullName; Title = $DisplayTitle }
 }
 
+$pushLensKeys = $LensKeys
+if (-not [string]::IsNullOrWhiteSpace($Lens)) {
+  if ($LensKeys -notcontains $Lens) {
+    throw "Unknown -Lens '$Lens'. Valid: $($LensKeys -join ', ')"
+  }
+  $pushLensKeys = @($Lens)
+}
+
 $ok = 0
 $fail = 0
 $skip = 0
-foreach ($lens in $LensKeys) {
+foreach ($lens in $pushLensKeys) {
   $dir = Join-Path $packRoot $lens
   if (-not (Test-Path -LiteralPath $dir)) {
     "[SKIP no dir] $lens" | Tee-Object -FilePath $LogPath -Append
