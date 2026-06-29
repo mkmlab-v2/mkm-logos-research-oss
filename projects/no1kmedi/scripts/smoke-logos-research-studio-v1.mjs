@@ -1,8 +1,130 @@
 #!/usr/bin/env node
 /** Smoke: logos-research studio API routes (dev: `npm run dev:studio` on 3020). */
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 const base = process.env.LOGOS_STUDIO_SMOKE_BASE || "http://127.0.0.1:3020";
+const WORKSPACE_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
+const ALLOWLIST_PATH = path.join(
+  WORKSPACE_ROOT,
+  "tests/fixtures/logos_studio_b2b_demo_preset_allowlist_v1.json",
+);
+const SMOKE_UA = "MKM-LogosStudioSmoke/1.0";
+const ONBOARDING_NEEDLES = ["lr-studio-onboarding", "LogosStudioOnboarding"];
 
 const MINDMAP_NEEDLES = ["data-logos-path-mindmap", "경로 마인드맵", "lr-studio-mindmap"];
+
+function gateFor(spec, presetId, key) {
+  const defaults = {
+    min_answer_chars: Number(spec.min_answer_chars ?? 80),
+    min_verse_refs: Number(spec.min_verse_refs ?? 1),
+    min_highlight_nodes: Number(spec.min_highlight_nodes ?? 1),
+  };
+  const override = spec.preset_gates?.[presetId] ?? {};
+  if (key in override) return Number(override[key]);
+  return defaults[key];
+}
+
+async function postJson(url, payload) {
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "User-Agent": SMOKE_UA,
+      Accept: "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  const body = await res.json().catch(() => ({}));
+  return { res, body };
+}
+
+async function assertChunkNeedles(studioBase, needles, label) {
+  const studioPage = await fetch(`${studioBase}/logos-research/studio`);
+  if (!studioPage.ok) throw new Error(`${label}_studio_http_${studioPage.status}`);
+  const html = await studioPage.text();
+  const chunkSet = new Set();
+  for (const m of html.matchAll(/\/_next\/static\/chunks\/[^"']+\.js/g)) {
+    chunkSet.add(m[0]);
+  }
+  const hitChunks = [];
+  for (const rel of [...chunkSet].slice(0, 28)) {
+    try {
+      const chunkRes = await fetch(`${studioBase}${rel}`);
+      if (!chunkRes.ok) continue;
+      const body = await chunkRes.text();
+      if (needles.some((n) => body.includes(n))) {
+        hitChunks.push(rel.split("/").pop());
+      }
+    } catch {
+      /* skip */
+    }
+  }
+  const htmlMarker = needles.some((n) => html.includes(n));
+  if (hitChunks.length < 1 && !htmlMarker) {
+    throw new Error(`${label}_bundle_missing`);
+  }
+  return { chunk_hits: hitChunks.length, html_marker: htmlMarker, sample_chunks: hitChunks.slice(0, 3) };
+}
+
+async function assertB2bDemoPresetAllowlist() {
+  const spec = JSON.parse(readFileSync(ALLOWLIST_PATH, "utf8"));
+  const presetIds = spec.preset_ids || [];
+  if (presetIds.length < 1) throw new Error("allowlist_empty");
+  const rows = [];
+  for (const presetId of presetIds) {
+    const { res, body } = await postJson(`${base}/api/logos-research/query`, { preset_id: presetId });
+    if (!res.ok) throw new Error(`allowlist_${presetId}_http_${res.status}`);
+    if (!body.ok) throw new Error(`allowlist_${presetId}_api_not_ok`);
+    const result = body.result || {};
+    const answerLen = String(result.answer || "").length;
+    const verseRefs = (result.path?.verse_refs || []).length;
+    const highlights = (result.highlight_node_ids || []).length;
+    if (answerLen < gateFor(spec, presetId, "min_answer_chars")) {
+      throw new Error(`allowlist_${presetId}_answer_short_${answerLen}`);
+    }
+    if (verseRefs < gateFor(spec, presetId, "min_verse_refs")) {
+      throw new Error(`allowlist_${presetId}_verse_refs_${verseRefs}`);
+    }
+    if (highlights < gateFor(spec, presetId, "min_highlight_nodes")) {
+      throw new Error(`allowlist_${presetId}_highlight_${highlights}`);
+    }
+    rows.push({ preset_id: presetId, answer_len: answerLen, verse_refs: verseRefs, highlights });
+  }
+  return { allowlist_count: rows.length, allowlist_rows: rows };
+}
+
+async function assertLandingIa() {
+  const landing = await fetch(`${base}/logos-research`);
+  if (!landing.ok) throw new Error(`landing_http_${landing.status}`);
+  const html = await landing.text();
+  for (const id of ["value", "pilot", "architecture", "lead"]) {
+    if (!html.includes(`id="${id}"`)) throw new Error(`landing_section_missing_${id}`);
+  }
+  if (!html.includes("LogosResearchLandingLeadForm") && !html.includes("lr-landing-lead")) {
+    throw new Error("landing_lead_form_missing");
+  }
+  return { landing_sections: ["value", "pilot", "architecture", "lead"] };
+}
+
+async function assertLeadApi() {
+  const bad = await postJson(`${base}/api/logos-research/lead`, { email: "not-an-email" });
+  if (bad.res.status !== 400 || bad.body.ok !== false) {
+    throw new Error(`lead_invalid_email_gate_${bad.res.status}`);
+  }
+  const ok = await postJson(`${base}/api/logos-research/lead`, {
+    email: `smoke+${Date.now()}@example.com`,
+    organization: "smoke-test",
+    note: "automated smoke — safe to ignore",
+    source: "logos-research-smoke-v1",
+    tier: "pilot",
+  });
+  if (!ok.res.ok || !ok.body.ok || !ok.body.lead_id) {
+    throw new Error(`lead_submit_failed_${ok.res.status}`);
+  }
+  return { lead_id: ok.body.lead_id };
+}
 
 async function assertMindmapBundles(studioBase) {
   const studioUrl = `${studioBase}/logos-research/studio?q=job_job_suffering_reason&demo=1`;
@@ -177,6 +299,10 @@ async function main() {
   }
 
   const mindmapProbe = await assertMindmapBundles(base);
+  const onboardingProbe = await assertChunkNeedles(base, ONBOARDING_NEEDLES, "onboarding");
+  const allowlistProbe = await assertB2bDemoPresetAllowlist();
+  const landingProbe = await assertLandingIa();
+  const leadProbe = await assertLeadApi();
 
   const slice = await fetch(`${base}${queryBody.result.subgraph.graph_slice_url}`);
   if (!slice.ok) throw new Error(`graph_slice_http_${slice.status}`);
@@ -221,6 +347,11 @@ async function main() {
       sidecar_groups: sidecarBody.groups.length,
       sidecar_pending: sidecarBody.observability?.human_review_pending_count ?? null,
       ...mindmapProbe,
+      onboarding_chunk_hits: onboardingProbe.chunk_hits,
+      onboarding_html_marker: onboardingProbe.html_marker,
+      ...allowlistProbe,
+      ...landingProbe,
+      ...leadProbe,
     }),
   );
 }

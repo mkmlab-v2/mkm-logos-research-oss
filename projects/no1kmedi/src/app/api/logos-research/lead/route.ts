@@ -8,6 +8,7 @@ type LeadBody = {
   organization?: string;
   tier?: string;
   note?: string;
+  source?: string;
 };
 
 function isNonEmpty(value: unknown): value is string {
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
     const normalized = {
       lead_id: `lr_lead_${Date.now()}`,
       ts_utc: new Date().toISOString(),
-      source: "logos-research-studio-v1",
+      source: (body.source || "logos-research-studio-v1").trim(),
       email: body.email.trim().toLowerCase(),
       name: (body.name || "").trim(),
       organization: (body.organization || "").trim(),

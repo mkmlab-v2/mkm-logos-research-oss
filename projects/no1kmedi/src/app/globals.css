@@ -17046,6 +17046,21 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   }
 }
 
+/* B2B landing lead form (#lead) */
+.logos-research-page .lr-landing-lead-wrap {
+  margin-top: 1.25rem;
+  max-width: 36rem;
+}
+
+.logos-research-page .lr-landing-lead__alt {
+  margin-top: 0.75rem;
+}
+
+.logos-research-page .lr-landing-lead__docs {
+  display: inline-flex;
+  margin-top: 0.75rem;
+}
+
 /* B2B onboarding overlay (omni entry) */
 .logos-research-page .lr-studio-onboarding {
   position: fixed;
