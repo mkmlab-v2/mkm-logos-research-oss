@@ -26,12 +26,52 @@ COPY_MAP: list[tuple[Path, Path]] = [
         Path("docs/final/artifacts/sasang_pyobyeong_insight_cards_v1_latest.json"),
     ),
     (
+        EXP / "artifacts/ijeoma_pyobyeong_insight_cards_v1_latest.json",
+        Path("experiments/sasang-head-btrack/artifacts/ijeoma_pyobyeong_insight_cards_v1_latest.json"),
+    ),
+    (
+        EXP / "artifacts/ijeoma_pyobyeong_dr_pack_v1_latest.json",
+        Path("experiments/sasang-head-btrack/artifacts/ijeoma_pyobyeong_dr_pack_v1_latest.json"),
+    ),
+    (
+        EXP / "artifacts/sasang_dynamics_unified_ablation_v1.json",
+        Path("experiments/sasang-head-btrack/artifacts/sasang_dynamics_unified_ablation_v1.json"),
+    ),
+    (
+        EXP / "artifacts/sasang_independent_lens_ablation_v1.json",
+        Path("experiments/sasang-head-btrack/artifacts/sasang_independent_lens_ablation_v1.json"),
+    ),
+    (
         EXP / "research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md",
         Path("docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md"),
     ),
     (
+        EXP / "research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md",
+        Path("experiments/sasang-head-btrack/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md"),
+    ),
+    (
+        EXP / "research/ijeoma_pyobyeong_query_set_v1.json",
+        Path("experiments/sasang-head-btrack/research/ijeoma_pyobyeong_query_set_v1.json"),
+    ),
+    (
         EXP / "research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md",
         Path("docs/research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md"),
+    ),
+    (
+        EXP / "research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md",
+        Path("experiments/sasang-head-btrack/research/raw/PYOBYEONG_SASIM_SINMUL_DR_TIER0_20260629.md"),
+    ),
+    (
+        EXP / "artifacts/sasang_pyobyeong_promotion_paper_verdict_v1.json",
+        Path("experiments/sasang-head-btrack/artifacts/sasang_pyobyeong_promotion_paper_verdict_v1.json"),
+    ),
+    (
+        EXP / "CHARTER_AMENDMENT_DRAFT_v1.md",
+        Path("experiments/sasang-head-btrack/CHARTER_AMENDMENT_DRAFT_v1.md"),
+    ),
+    (
+        ROOT / "reports/sasang_ablation_matrix_signoff_v1.json",
+        Path("reports/sasang_ablation_matrix_signoff_v1.json"),
     ),
     (
         EXP / "artifacts/sasang_pyobyeong_promotion_paper_verdict_v1.json",
@@ -67,6 +107,7 @@ TEST_COPY = [
     "tests/test_ijeoma_pyobyeong_dr_pack_v1.py",
     "tests/test_sasang_dynamics_unified_adapter_v1.py",
     "tests/test_sasang_ablation_promotion_gate_v1.py",
+    "tests/test_sasang_pyobyeong_non_gating_lint_v1.py",
 ]
 
 

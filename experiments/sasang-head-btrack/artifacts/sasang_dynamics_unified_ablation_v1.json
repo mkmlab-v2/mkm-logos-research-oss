@@ -1,0 +1,54 @@
+{
+  "schema": "sasang_dynamics_unified_ablation_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-06-29T17:15:25Z",
+  "rail": "B_TRACK",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "promotion_to_a_track_allowed": false,
+  "decision_authority": "human_only",
+  "pipeline_v1": [
+    "machine_readables",
+    "stress_from_machine_readables",
+    "pathology_stage_from_stress",
+    "severity_from_stress",
+    "geumhwa_monitor_read_only"
+  ],
+  "input_provenance": {
+    "lens_json": "C:/mkm-sasang-ablation/experiments/sasang-head-btrack/artifacts/sasang_independent_lens_ablation_v1.json",
+    "lens_schema": "sasang_independent_lens_v0"
+  },
+  "machine_readables": {
+    "heat_proxy": 0.585,
+    "cold_proxy": 0.415,
+    "volatility_rarefaction_proxy": 0.48
+  },
+  "stress_v1": 0.5429999999999999,
+  "pathology_stage_v1": {
+    "pathology_stage_id": "cho",
+    "pathology_stage_ko": "초증",
+    "pathology_stage_hanja": "初證"
+  },
+  "severity_v1": {
+    "severity_id": "watch",
+    "severity_ko": "관찰",
+    "severity_hanja": "觀察"
+  },
+  "geumhwa_gate_v1": {
+    "threshold": 0.58,
+    "score": 0.5677599775441191,
+    "breach": false,
+    "force_hold_tactical": false,
+    "provenance": {
+      "monitor_policy": "C:/workspace/docs/final/artifacts/sasang_4agent_monitor_policy_v1.json",
+      "fusion_gate": "C:/workspace/docs/final/artifacts/sasang_4agent_fusion_gate_latest.json"
+    },
+    "note_ko": "geumhwa gate = 4-agent monitor 은유; 체질·임상·Track A 아님."
+  },
+  "forbidden_merges_ack": [
+    "clinical_diagnosis_output",
+    "live_trading_trigger",
+    "track_a_compression_floor"
+  ],
+  "contract_ref": "docs/final/artifacts/SASANG_DYNAMICS_V1_CONTRACT.json"
+}
