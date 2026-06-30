@@ -2,6 +2,7 @@ import type { HubLink, SiteCopy } from "@/content/siteCopy";
 
 export const HUB_PRIMARY_KEYS = [
   "showroom_jemaai",
+  "jema_os_enterprise",
   "premium_mkmlife",
   "clinician_support",
   "clinician_no1kmedi_portal",
@@ -16,6 +17,7 @@ export const HUB_PRIMARY_KEYS = [
 export const HUB_SECONDARY_KEYS = [] as const;
 
 export const HUB_FOOTER_KEYS = [
+  "jema_os_enterprise",
   "showroom_jemaai",
   "premium_mkmlife",
   "b2b_acodeai",

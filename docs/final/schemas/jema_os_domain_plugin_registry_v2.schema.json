@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/jema_os_domain_plugin_registry_v2.schema.json",
+  "title": "JEMA OS domain plugin registry v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "rail",
+    "research_only",
+    "send_gate",
+    "promotion_to_a_track_allowed",
+    "umr_registry_v1_ref",
+    "intake_policy_ref",
+    "slots",
+    "isolation_rules",
+    "reproduce_command"
+  ],
+  "properties": {
+    "schema": { "const": "jema_os_domain_plugin_registry_v2" },
+    "version": { "type": "string" },
+    "generated_at_utc": { "type": "string" },
+    "rail": { "const": "B_TRACK" },
+    "research_only": { "const": true },
+    "send_gate": { "const": "HOLD" },
+    "promotion_to_a_track_allowed": { "const": false },
+    "live_llm_on_surface": { "const": false },
+    "umr_registry_v1_ref": { "type": "string" },
+    "intake_policy_ref": { "type": "string" },
+    "enterprise_template_ref": { "type": "string" },
+    "slots": {
+      "type": "object",
+      "minProperties": 4,
+      "additionalProperties": { "$ref": "#/$defs/slot" }
+    },
+    "isolation_rules": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/isolation_rule" }
+    },
+    "reproduce_command": { "type": "string" }
+  },
+  "$defs": {
+    "knowledge_pin": {
+      "type": "object",
+      "required": [
+        "freeze_manifest_ref",
+        "freeze_checker",
+        "min_line_count_floor"
+      ],
+      "properties": {
+        "freeze_manifest_ref": { "type": "string" },
+        "freeze_checker": { "type": "string" },
+        "integrity_guard_module": { "type": "string" },
+        "min_line_count_floor": { "type": "integer", "minimum": 1 },
+        "edges_asset_key": { "type": "string" }
+      }
+    },
+    "slot": {
+      "type": "object",
+      "required": [
+        "slot_id",
+        "slot_kind",
+        "lane_label_ko",
+        "umr_lane",
+        "plugin_id",
+        "hold_flags",
+        "anchors_ok"
+      ],
+      "properties": {
+        "slot_id": { "type": "string" },
+        "slot_kind": {
+          "type": "string",
+          "enum": ["lens_knowledge_pin", "lens_inventory", "enterprise_knowledge_pin"]
+        },
+        "lane_label_ko": { "type": "string" },
+        "time_horizon_ko": { "type": "string" },
+        "umr_lane": { "type": "string" },
+        "spec_gap_intake_lane": { "type": ["string", "null"] },
+        "spec_gap_intent_chip": { "type": ["string", "null"] },
+        "plugin_id": { "type": "string" },
+        "u3_tier": { "type": "string" },
+        "knowledge_pin": { "$ref": "#/$defs/knowledge_pin" },
+        "inventory_artifact_ref": { "type": ["string", "null"] },
+        "contract_ref": { "type": ["string", "null"] },
+        "low_res_runners": { "type": "array", "items": { "type": "string" } },
+        "hold_flags": { "type": "array", "items": { "type": "string" } },
+        "anchors_ok": { "type": "object" }
+      }
+    },
+    "isolation_rule": {
+      "type": "object",
+      "required": ["rule_id", "description_ko", "slot_ids"],
+      "properties": {
+        "rule_id": { "type": "string" },
+        "description_ko": { "type": "string" },
+        "slot_ids": { "type": "array", "items": { "type": "string" }, "minItems": 2 }
+      }
+    }
+  }
+}

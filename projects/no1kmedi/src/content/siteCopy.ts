@@ -5,6 +5,7 @@ export type EnterpriseCopy = {
   nav: {
     brand_tagline: string;
     back_home: string;
+    jema_os?: string;
     pillars: string;
     proof: string;
     research: string;
@@ -18,6 +19,20 @@ export type EnterpriseCopy = {
     subtitle: string;
     cta_primary: string;
     cta_secondary: string;
+  };
+  jema_os?: {
+    section_label: string;
+    title: string;
+    lead: string;
+    pipeline: { stage: string; label: string; body: string }[];
+    composition: {
+      title: string;
+      items: { share: string; label: string; detail: string }[];
+    };
+    bullets: string[];
+    not_claims: string[];
+    oss_cta: { label: string; href: string; sublabel: string };
+    footnote: string;
   };
   principles: { title: string; body: string }[];
   composition: {
@@ -123,6 +138,12 @@ export type HubDiscoverLocaleCopy = {
   routing_note: string;
   b2b_prefix: string;
   b2b_link: string;
+  jema_os_prefix?: string;
+  jema_os_link?: string;
+  read_depth_skim?: string;
+  read_depth_deep?: string;
+  coordinate_envelope_note?: string;
+  coordinate_envelope_disclaimer?: string;
   locale_toggle: string;
   validation_missing: string;
 };
@@ -134,6 +155,7 @@ export type SiteCopy = {
     showroom_jemaai: HubLink;
     premium_mkmlife: HubLink;
     b2b_acodeai: HubLink;
+    jema_os_enterprise?: HubLink;
     farm_b2b_smartfarm?: HubLink;
     research_logos?: HubLink;
     research_mkmlab?: HubLink;

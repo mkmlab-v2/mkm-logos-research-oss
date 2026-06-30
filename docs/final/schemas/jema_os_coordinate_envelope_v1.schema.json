@@ -1,0 +1,172 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mkm12.local/schemas/jema_os_coordinate_envelope_v1.schema.json",
+  "title": "JEMA OS coordinate envelope v1",
+  "description": "Surface↔kernel structured pointer bag. B-track middleware contract — not inference quality proof, not Track A promotion, not KPI merge (FAIL-COMP-004).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "version",
+    "generated_at_utc",
+    "send_gate",
+    "research_only",
+    "track_a_promotion_allowed",
+    "read_depth",
+    "umr_binding",
+    "postit_pointer",
+    "ltm_pin",
+    "fail_comp_004_guard",
+    "provenance",
+    "reproduce"
+  ],
+  "properties": {
+    "schema": { "const": "jema_os_coordinate_envelope_v1" },
+    "version": { "type": "string", "minLength": 1 },
+    "generated_at_utc": { "type": "string", "minLength": 10 },
+    "send_gate": { "type": "string", "enum": ["HOLD", "OPEN"] },
+    "research_only": { "type": "boolean" },
+    "track_a_promotion_allowed": { "type": "boolean" },
+    "read_depth": {
+      "type": "string",
+      "enum": ["skim", "deep", "hold"]
+    },
+    "umr_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "resolution_tier",
+        "required_ltm_depth",
+        "domain_tag",
+        "epistemic_grade"
+      ],
+      "properties": {
+        "resolution_tier": {
+          "type": "string",
+          "enum": ["low_res", "high_res", "hold_gate"]
+        },
+        "required_ltm_depth": { "type": "number", "minimum": 0, "maximum": 1 },
+        "domain_tag": { "type": "string", "minLength": 1 },
+        "epistemic_grade": {
+          "type": "string",
+          "enum": ["FACT", "HYPO", "VISION", "FORBIDDEN"]
+        },
+        "umr_artifact_ref": { "type": "string" },
+        "resume_mode_hint": {
+          "type": "string",
+          "description": "Cursor/oracle lane hint only — not universal deep mode for all domains."
+        }
+      }
+    },
+    "postit_pointer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "evidence_mode", "pointer"],
+      "properties": {
+        "schema": { "const": "postit_pointer_v1" },
+        "evidence_mode": {
+          "type": "string",
+          "enum": ["FACT_LOCK", "OPS_AUTOMATED", "HYPO", "DRAFT"]
+        },
+        "lane": { "type": "string" },
+        "pointer": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": false,
+          "properties": {
+            "zone_id": {
+              "type": "string",
+              "pattern": "^zone_[a-z0-9_]+$"
+            },
+            "verse_id": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9.]*\\.[0-9]+\\.[0-9]+$"
+            },
+            "atom_id": {
+              "type": "string",
+              "pattern": "^(greek|hebrew|other)::.+$"
+            },
+            "codebook_shard_rel": {
+              "type": "string",
+              "pattern": "^codebook/shards/zone_[a-z0-9_]+\\.json$"
+            }
+          }
+        },
+        "metric_scope": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "ltm_pin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["concept_id", "software_layer", "inject_policy"],
+      "properties": {
+        "concept_id": { "type": "string", "minLength": 1 },
+        "software_layer": { "type": "string", "minLength": 1 },
+        "inject_policy": {
+          "type": "string",
+          "enum": ["single_node_only", "forbidden_full_graph"]
+        },
+        "graph_ref": { "type": "string" },
+        "lane": { "type": "string" }
+      }
+    },
+    "a2a_peer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["optional", "peer_handoff_pointer"],
+      "properties": {
+        "optional": { "const": true },
+        "peer_handoff_pointer": { "type": ["string", "null"] },
+        "lane": { "type": "string" },
+        "bounded_lane_loop_ref": { "type": "string" },
+        "bounded_lane_pin_ref": { "type": "string" },
+        "ltm_hint_cross_ref": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "domain_plugin_slot_v2": { "type": "object" },
+    "jema_os_plugin_registry_v2_ref": { "type": "string" },
+    "fail_comp_004_guard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "compression_kpi_weight_in_inference",
+        "lens_score_headline_merge",
+        "collapsed_combined_score"
+      ],
+      "properties": {
+        "compression_kpi_weight_in_inference": { "type": "number", "maximum": 0 },
+        "lens_score_headline_merge": { "const": false },
+        "collapsed_combined_score": { "type": "null" },
+        "notes_ko": { "type": "string" }
+      }
+    },
+    "surface_hints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hub_llm_enabled": { "type": "boolean" },
+        "allowed_surfaces": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hybrid_middleware_chain_ref", "brand_pointer_ref"],
+      "properties": {
+        "hybrid_middleware_chain_ref": { "type": "string" },
+        "brand_pointer_ref": { "type": "string" },
+        "shallow_handoff_ref": { "type": "string" }
+      }
+    },
+    "reproduce": { "type": "string", "minLength": 1 }
+  }
+}

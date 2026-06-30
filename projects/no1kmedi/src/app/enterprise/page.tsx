@@ -40,6 +40,7 @@ export default function EnterprisePage() {
           </a>
           <nav className="nav-main enterprise-nav" aria-label={e.nav.main_aria_label}>
             <a href="/">{e.nav.back_home}</a>
+            {e.jema_os ? <a href="#jema-os">{e.nav.jema_os ?? e.jema_os.section_label}</a> : null}
             <a href="#pillars">{e.nav.pillars}</a>
             <a href="#wtt-persona-os">Persona OS</a>
             <a href="#compression-roi">Compression</a>
@@ -79,6 +80,62 @@ export default function EnterprisePage() {
             </a>
           </div>
         </section>
+
+        {e.jema_os ? (
+          <section id="jema-os" className="enterprise-jema-os" aria-labelledby="jema-os-title">
+            <p className="enterprise-section-label">{e.jema_os.section_label}</p>
+            <h2 id="jema-os-title">{e.jema_os.title}</h2>
+            <p className="section-lead">{e.jema_os.lead}</p>
+            <ol className="enterprise-jema-os-pipeline" aria-label="Neuro Symbolic Human pipeline">
+              {e.jema_os.pipeline.map((step) => (
+                <li key={step.stage} className="enterprise-jema-os-pipeline-step">
+                  <span className="enterprise-jema-os-stage">{step.stage}</span>
+                  <div>
+                    <strong>{step.label}</strong>
+                    <p>{step.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <h3 className="enterprise-jema-os-composition-title">{e.jema_os.composition.title}</h3>
+            <ol className="enterprise-composition-track enterprise-jema-os-composition">
+              {e.jema_os.composition.items.map((row) => (
+                <li key={row.label} className="enterprise-composition-row">
+                  <span className="enterprise-composition-share">{row.share}</span>
+                  <div>
+                    <strong>{row.label}</strong>
+                    <p>{row.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <ul className="enterprise-jema-os-bullets">
+              {e.jema_os.bullets.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <div className="enterprise-jema-os-not-claims" role="note">
+              <span className="enterprise-jema-os-not-label">주장하지 않음</span>
+              <ul>
+                {e.jema_os.not_claims.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="enterprise-jema-os-actions">
+              <a
+                className="btn btn-primary enterprise-btn-primary"
+                href={e.jema_os.oss_cta.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={e.jema_os.oss_cta.sublabel}
+              >
+                {e.jema_os.oss_cta.label}
+              </a>
+            </div>
+            <p className="enterprise-jema-os-footnote">{e.jema_os.footnote}</p>
+          </section>
+        ) : null}
 
         <section className="enterprise-principles" aria-label={e.nav.principles_aria_label}>
           <ul className="enterprise-principles-grid">

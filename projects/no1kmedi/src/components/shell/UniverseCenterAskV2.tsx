@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { HubAskSubmitIcon } from "@/components/shell/HubAskSubmitIcon";
+import { HubCoordinateEnvelopePanel } from "@/components/shell/HubCoordinateEnvelopePanel";
 import { useHubDiscoverLayout } from "@/components/shell/HubDiscoverLayoutContext";
 import { IntentChipRowV2 } from "@/components/shell/IntentChipRowV2";
 import { UniverseHubDisclaimerCollapsible } from "@/components/shell/UniverseHubDisclaimerCollapsible";
@@ -10,7 +11,26 @@ import {
   HUB_DISCOVER_COPY,
   type HubDiscoverLocale,
 } from "@/lib/universeHubDiscoverCopyV2";
+import { siteCopy } from "@/content/siteCopy";
 import { resolveHubAskRoute, type HubIntentId } from "@/lib/universeHubIntentRouterV2";
+
+const ENTERPRISE_HREF = siteCopy.links.enterprise ?? "/enterprise";
+const JEMA_OS_SUBLABEL = siteCopy.hub_links.jema_os_enterprise?.sublabel;
+
+function HubJemaOsHook({ prefix, linkLabel }: { prefix: string; linkLabel: string }) {
+  return (
+    <p className="universe-hub-ask-jema-os">
+      {prefix}{" "}
+      <Link
+        href={ENTERPRISE_HREF}
+        className="universe-hub-ask-b2b-link"
+        title={JEMA_OS_SUBLABEL}
+      >
+        {linkLabel}
+      </Link>
+    </p>
+  );
+}
 
 export function UniverseCenterAskV2() {
   const { discoverMinimal } = useHubDiscoverLayout();
@@ -56,6 +76,7 @@ export function UniverseCenterAskV2() {
           {copy.trustWedge ? (
             <p className="universe-hub-ask-trust-wedge">{copy.trustWedge}</p>
           ) : null}
+          <HubJemaOsHook prefix={copy.jemaOsPrefix} linkLabel={copy.jemaOsLink} />
           <button
             type="button"
             className="universe-hub-locale-toggle universe-hub-locale-toggle--minimal"
@@ -86,6 +107,16 @@ export function UniverseCenterAskV2() {
       {!discoverMinimal && copy.trustWedge ? (
         <p className="universe-hub-ask-trust-wedge">{copy.trustWedge}</p>
       ) : null}
+
+      <HubJemaOsHook prefix={copy.jemaOsPrefix} linkLabel={copy.jemaOsLink} />
+
+      <HubCoordinateEnvelopePanel
+        locale={locale}
+        skimLabel={copy.readDepthSkim}
+        deepLabel={copy.readDepthDeep}
+        panelNote={copy.coordinateEnvelopeNote}
+        holdDisclaimer={copy.coordinateEnvelopeDisclaimer}
+      />
 
       {!discoverMinimal ? (
         <p className="universe-hub-ask-b2b">

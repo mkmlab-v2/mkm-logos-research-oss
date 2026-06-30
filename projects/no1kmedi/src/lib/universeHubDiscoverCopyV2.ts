@@ -15,6 +15,12 @@ type HubDiscoverStrings = {
   routingNote: string;
   b2bPrefix: string;
   b2bLink: string;
+  jemaOsPrefix: string;
+  jemaOsLink: string;
+  readDepthSkim: string;
+  readDepthDeep: string;
+  coordinateEnvelopeNote: string;
+  coordinateEnvelopeDisclaimer: string;
   localeToggle: string;
   validationMissing: string;
 };
@@ -37,6 +43,14 @@ function mapLocale(locale: HubDiscoverLocale): HubDiscoverStrings {
     routingNote: block.routing_note,
     b2bPrefix: block.b2b_prefix,
     b2bLink: block.b2b_link,
+    jemaOsPrefix: block.jema_os_prefix ?? "JEMA OS v2 ·",
+    jemaOsLink: block.jema_os_link ?? "Verification middleware",
+    readDepthSkim: block.read_depth_skim ?? "Skim",
+    readDepthDeep: block.read_depth_deep ?? "Deep",
+    coordinateEnvelopeNote: block.coordinate_envelope_note ?? "Coordinate envelope (read-only)",
+    coordinateEnvelopeDisclaimer:
+      block.coordinate_envelope_disclaimer ??
+      "Plumbing proof only — not GA or live-trading promotion.",
     localeToggle: block.locale_toggle,
     validationMissing: block.validation_missing,
   };

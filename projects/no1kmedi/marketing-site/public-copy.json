@@ -32,6 +32,12 @@
       "routing_note": "한 문장 → 관측·리포트 라우팅 · 허브 LLM 없음 · artifact·게이트 기반(Time-to-Trust)",
       "b2b_prefix": "B2B ·",
       "b2b_link": "AI 맞춤·가드 (WTT Persona OS)",
+      "jema_os_prefix": "JEMA OS v2 ·",
+      "jema_os_link": "로컬에서 가볍게, 규칙으로 무겁게 (검증 미들웨어)",
+      "read_depth_skim": "Skim",
+      "read_depth_deep": "Deep",
+      "coordinate_envelope_note": "좌표 봉투 · UMR·LTM·post-it 포인터 (읽기 전용)",
+      "coordinate_envelope_disclaimer": "exit 0·handoff는 배관 증명이며 GA·실매매 승격이 아닙니다.",
       "locale_toggle": "EN",
       "validation_missing": "질문을 입력하거나 위 의도 칩을 선택해 주세요. 빈 제출로 외부 사이트로 이동하지 않습니다."
     },
@@ -48,6 +54,12 @@
       "routing_note": "One sentence → observation/report · no hub LLM · artifact-bound gates (time-to-trust)",
       "b2b_prefix": "B2B ·",
       "b2b_link": "Governed customization (WTT Persona OS)",
+      "jema_os_prefix": "JEMA OS v2 ·",
+      "jema_os_link": "Light locally, strict by rules (verification middleware)",
+      "read_depth_skim": "Skim",
+      "read_depth_deep": "Deep",
+      "coordinate_envelope_note": "Coordinate envelope · UMR·LTM·post-it pointers (read-only)",
+      "coordinate_envelope_disclaimer": "exit 0 and handoff prove plumbing only — not GA or live-trading promotion.",
       "locale_toggle": "KO",
       "validation_missing": "Enter a question or pick an intent chip above. Empty submit will not redirect externally."
     }
@@ -59,14 +71,19 @@
       "sublabel": "Topology·매크로 관측 데모 · Time-to-Trust · 투자·주문·수익 보장 아님 · research_only"
     },
     "premium_mkmlife": {
-      "href": "https://mkmlife.com",
+      "href": "https://mkmlife.com/oracle-sphere",
       "label": "원퀘스천 프리미엄 리포트",
-      "sublabel": "소비자 제품·면책·퍼널은 mkmlife.com 정책(대체 진료·투자 조언 아님)"
+      "sublabel": "질문 한 개·다중 렌즈 관측 리포트 · JEMA OS v2 연결 스냅샷 · 대체 진료·투자 조언·실매매 아님"
     },
     "b2b_acodeai": {
       "href": "https://a-codeai.com",
       "label": "토큰·압축 API (B2B)",
       "sublabel": "정적 랜딩과 API 경로 분리·도입 문의는 해당 도메인 정책 따름"
+    },
+    "jema_os_enterprise": {
+      "href": "/enterprise",
+      "label": "JEMA OS v2 · 검증 미들웨어",
+      "sublabel": "Neuro → Symbolic → Human · send_gate HOLD · exit 0·handoff는 배관 증명(GA 아님)"
     },
     "research_mkmlab": {
       "href": "https://research.no1kmedi.com",
@@ -628,25 +645,84 @@
   },
   "enterprise": {
     "seo": {
-      "title": "JEMA AI | 기업·파트너 — 운영 안전 게이트",
-      "description": "자동화·AI 제어의 안전 운영 계층. Fact-Lock 게이트·관측 보드·B2B API. 투자·의료 조언·실매매 연동이 아닙니다."
+      "title": "JEMA AI | JEMA OS v2 — 검증 미들웨어 (기업·파트너)",
+      "description": "로컬 Neuro(올라마) 초안 → Symbolic Fact-Lock·플러그인 슬롯 → Human send_gate. 토큰 효율·OSS Harness는 병렬 레인. 투자·의료·실매매·환각 0% 주장 아님."
     },
     "nav": {
-      "brand_tagline": "기업 · 파트너",
+      "brand_tagline": "JEMA OS v2 · 기업",
       "back_home": "임상·소비자 허브",
+      "jema_os": "JEMA OS",
       "pillars": "핵심 가치",
       "proof": "확인 경로",
       "research": "연구",
       "contact": "문의",
-      "main_aria_label": "기업·파트너",
+      "main_aria_label": "JEMA OS · 기업·파트너",
       "principles_aria_label": "핵심 원칙"
     },
     "hero": {
-      "eyebrow": "B2B · 운영 안전",
-      "title": "자동화와 AI 제어가 위험해질 때, 먼저 멈추는 운영 게이트",
-      "subtitle": "제조·스마트홈·엔터프라이즈 API에 단계적으로 도입할 수 있는 Fact-Lock 기반 안전·관측 계층입니다. 성능 과시가 아니라 운영 리스크 통제를 우선합니다.",
+      "eyebrow": "JEMA OS v2 · 검증 미들웨어",
+      "title": "로컬에서 가볍게, 규칙으로 무겁게",
+      "subtitle": "클라우드 LLM 앞에 두는 운영 미들웨어 OS입니다. 로컬 올라마로 초안(Neuro)만 만들고, Fact-Lock·플러그인 슬롯(Symbolic)으로 검증한 뒤, send_gate(Human) 없이는 밖으로 나가지 않습니다. Powered by MKM kernel · on-prem friendly.",
       "cta_primary": "공개 관측 보기",
       "cta_secondary": "B2B API · 문서"
+    },
+    "jema_os": {
+      "section_label": "JEMA OS v2",
+      "title": "Neuro → Symbolic → Human",
+      "lead": "겉(JEMA OS)은 요새·배관·플러그인 사물함. 속(MKM kernel)은 연산·렌즈·게이트. exit 0·handoff JSON은 배관 도킹 증명이며 상용 GA·매출과 무관합니다.",
+      "pipeline": [
+        {
+          "stage": "Neuro",
+          "label": "로컬 초안",
+          "body": "온프레미스 올라마 등 경량 모델로 초안만 생성합니다. 41k·31k lookup 엔진이 아니라 클라우드 호출 전 문지기입니다."
+        },
+        {
+          "stage": "Symbolic",
+          "label": "규칙·플러그인",
+          "body": "Fact-Lock, domain_plugin_slot_v2, 아티팩트·exit code 정합으로 걸러냅니다. 브리핑만으로 “완성”을 말하지 않습니다."
+        },
+        {
+          "stage": "Human",
+          "label": "send_gate",
+          "body": "사람 승인 없이는 외부 송출·실행 경로로 나가지 않습니다. research_only · HOLD가 기본값입니다."
+        }
+      ],
+      "composition": {
+        "title": "JEMA OS 완성 정의 (G축)",
+        "items": [
+          {
+            "share": "70%",
+            "label": "미들웨어·플러그인 슬롯",
+            "detail": "공통 코어 1벌 + 도메인 어댑터 규격 — Phase 3 scaffolding freeze"
+          },
+          {
+            "share": "20%",
+            "label": "토큰 효율 (병렬 레인)",
+            "detail": "압축·렉시콘 — 동결 벤치 ~47%는 MKM AI 종합 지능·SLA와 헤드라인 합산 금지"
+          },
+          {
+            "share": "10%",
+            "label": "OSS Harness Kit",
+            "detail": "재현 pytest smoke — 알맹이(Invisible Core)는 서버 격리"
+          }
+        ]
+      },
+      "bullets": [
+        "L0 handoff = 방 간 데이터 주소록 도킹 증명 — 비즈니스 매출·GA 깊이와 무관",
+        "readiness pass = 조종석·규율 준비 — raw 추론 만점·주가 예측 성공이 아님",
+        "lexicon plane · topology plane — 지표 분리 보고 (KPI non-merge by design)"
+      ],
+      "not_claims": [
+        "환각 0% · GPT 대체 · 전역 환각 차단율 %",
+        "exit 0 = 상용 서비스 출시 · 시장 개통",
+        "47% 압축 + fixture % 한 슬라이드 합산"
+      ],
+      "oss_cta": {
+        "label": "Dual-Plane Harness Kit (OSS)",
+        "href": "https://github.com/mkmlab-v2/mkm-universal-root",
+        "sublabel": "research PoC · reproduce → exit 0 · 제품 전체·KRV·31k 그래프 아님"
+      },
+      "footnote": "연구·PoC · send_gate HOLD · 투자·의료·실행 자동화 아님."
     },
     "principles": [
       {
@@ -752,7 +828,10 @@
     "disclaimer": {
       "title": "고지",
       "items": [
-        "본 `/enterprise` 페이지는 B2B·기술·거버넌스 소개용입니다. 투자 자문·특정 자산 매매 지시·수익 보장을 제공하지 않으며, 임상·의료 판단이 필요한 서비스는 mkmlife.com 등 **제품 도메인**의 면책·이용약관을 따릅니다.",
+        "본 `/enterprise` 페이지는 **JEMA OS v2** B2B·기술·거버넌스 소개용입니다. 투자 자문·특정 자산 매매 지시·수익 보장을 제공하지 않으며, 임상·의료 판단이 필요한 서비스는 mkmlife.com 등 **제품 도메인**의 면책·이용약관을 따릅니다.",
+        "자동화 테스트 통과(exit 0)·L0 handoff·Phase 3 closed는 **인프라·배관 증명**이며, 대외 상용 GA·매출 개통을 의미하지 않습니다.",
+        "환각 **완전 차단**·GPT 대체·전역 환각 차단율 %를 주장하지 않습니다. 리스크는 Neuro→Symbolic→Human·Fact-Lock **운영 층**에서 완화합니다.",
+        "토큰 절감(~47% 동결 벤치)은 **압축 병렬 레인** 수치이며, MKM AI 종합 지능 지수·고객 SLA와 헤드라인 합산하지 않습니다.",
         "도입·파트너 문의는 **본 페이지에 표기된 회사 메일(`support@mkmlife.com`)만** 사용합니다. 개인 메일·비공식 채널로의 연락은 정책상 대응하지 않을 수 있습니다.",
         "관측·데모·공개 보드는 교육·검증 목적이며, 주문·체결·API·실거래 비밀(실키)을 공개하지 않습니다.",
         "성능·정확도·적중률 등 수치는 동결된 sales kit·검증 아티팩트 없이 단정하지 않습니다."

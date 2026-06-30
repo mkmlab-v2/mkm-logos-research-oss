@@ -1,4 +1,5 @@
 import { HubDomainCrossLinks, HUB_FOOTER_KEYS } from "@/components/HubDomainCrossLinks";
+import { JemaAiHubBrandHandoffStrip } from "@/components/shell/JemaAiHubBrandHandoffStrip";
 import { siteCopy } from "@/content/siteCopy";
 
 /** SSR portfolio CTA + positioning strip for /hub (MKM_DOMAIN_PORTFOLIO §1.1b). */
@@ -7,6 +8,7 @@ export function HubDiscoverGtmFooter() {
 
   return (
     <div className="hub-discover-gtm-footer">
+      <JemaAiHubBrandHandoffStrip locale="ko" />
       {positioning ? (
         <p className="universe-hub-positioning-strip hub-discover-gtm-positioning" role="note">
           {positioning}

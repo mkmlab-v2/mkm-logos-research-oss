@@ -23,6 +23,17 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.core.logos_umr_lookup_context_v1 import build_logos_umr_lookup_context  # noqa: E402
+from scripts.core.jema_os_domain_plugin_registry_v2_lib_v1 import (  # noqa: E402
+    build_slot_overlay,
+    known_umr_lanes,
+    plugin_row_from_v2_slot,
+    registry_v2_ref,
+    resolve_slot_for_umr_domain,
+)
 DEFAULT_OUT = ROOT / "docs/final/artifacts/universal_multi_res_router_v1_latest.json"
 PLUGIN_REGISTRY = ROOT / "docs/final/artifacts/universal_multi_res_plugin_registry_v1_latest.json"
 SHALLOW_OUTPUT_SCHEMA = "ollama_shallow_router_output_v1"
@@ -64,6 +75,10 @@ DOMAIN_PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("sasang", re.compile(r"사상|sasang|체질|병증|금화교역|보명지주", re.I)),
     ("logos", re.compile(r"logos|성경|게마트리아|gematria|창세기|요한계시", re.I)),
     ("myeongni", re.compile(r"명리|사주|만세력|myeongni|십신|육친", re.I)),
+    (
+        "enterprise_herbs_formulas",
+        re.compile(r"한방|본초|방제|탕액|herbs|formulas|처방전", re.I),
+    ),
     ("science", re.compile(r"\buft\b|unified.?field|물리\s*엔진|geumhwa|금화교역\s*인덱스", re.I)),
     ("oracle", re.compile(r"oracle|예언|prophecy|brier", re.I)),
     ("compression", re.compile(r"압축|compression|token\s*api|prism", re.I)),
@@ -98,11 +113,17 @@ _FALLBACK_PLUGINS: dict[str, dict[str, Any]] = {
             "docs/final/artifacts/sasang_context_inventory_v1_latest.json",
             "docs/final/artifacts/SASANG_DYNAMICS_V1_CONTRACT.json",
             "docs/final/artifacts/sasang_dynamics_btrack_milestone_v1_latest.json",
+            "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json",
+            "docs/final/artifacts/sasang_pyobyeong_insight_cards_v1_latest.json",
+            "docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md",
+            "reports/sasang_ablation_matrix_signoff_v1_latest.json",
         ],
         "low_res_runners": [
             "scripts/build_sasang_persona_grid_v1.py",
             "scripts/run_lens_sasang.py",
             "scripts/sasang_context_inventory_v1.py",
+            "scripts/build_ijeoma_pyobyeong_dr_pack_v1.py",
+            "scripts/run_sasang_dynamics_unified_adapter_v1.py",
         ],
         "hold_flags": [],
         "u3_tier": "full",
@@ -116,8 +137,20 @@ _FALLBACK_PLUGINS: dict[str, dict[str, Any]] = {
             "docs/final/artifacts/logos_context_inventory_v1_latest.json",
             "docs/final/artifacts/LOGOS_INDEPENDENT_LENS_V0_CONTRACT.json",
             "docs/final/artifacts/logos_independent_lens_latest.json",
+            "docs/final/artifacts/logos_verse_lexicon_join_sidecar_v2_corpus_full_latest.json",
+            "reports/logos_graphrag_router_axis_order_regression_v1_latest.json",
         ],
-        "low_res_runners": ["scripts/run_lens_logos.py", "scripts/logos_context_inventory_v1.py"],
+        "sidecar_v2_corpus_full_ref": (
+            "docs/final/artifacts/logos_verse_lexicon_join_sidecar_v2_corpus_full_latest.json"
+        ),
+        "graphrag_axis_order_audit_ref": (
+            "reports/logos_graphrag_router_axis_order_regression_v1_latest.json"
+        ),
+        "low_res_runners": [
+            "scripts/run_lens_logos.py",
+            "scripts/logos_context_inventory_v1.py",
+            "scripts/check_logos_graphrag_router_axis_order_regression_v1.py",
+        ],
         "hold_flags": [],
         "u3_tier": "lite_plus",
     },
@@ -280,9 +313,16 @@ def ollama_reachable(host: str = OLLAMA_HOST_DEFAULT, timeout_sec: float = 0.8) 
 
 
 def classify_domain(query: str, shallow: dict[str, Any] | None) -> str:
+    v2_lanes = known_umr_lanes()
     if shallow and shallow.get("domain_tag"):
         tag = str(shallow["domain_tag"]).strip().lower()
-        if tag in DOMAIN_PLUGINS or tag in {"oracle", "infra", "devops", "design", "science"}:
+        if tag in DOMAIN_PLUGINS or tag in v2_lanes or tag in {
+            "oracle",
+            "infra",
+            "devops",
+            "design",
+            "science",
+        }:
             return tag
     for name, pat in DOMAIN_PATTERNS:
         if pat.search(query):
@@ -308,8 +348,12 @@ def complexity_score(query: str, *, high_signals: int, low_signals: int, forbidd
 
 
 def resolve_plugin(domain: str) -> dict[str, Any]:
-    if domain in DOMAIN_PLUGINS:
-        plug = dict(DOMAIN_PLUGINS[domain])
+    lane = "logos" if domain == "oracle" else domain
+    v2_slot = resolve_slot_for_umr_domain(lane)
+    if lane in DOMAIN_PLUGINS:
+        plug = dict(DOMAIN_PLUGINS[lane])
+    elif v2_slot:
+        plug = plugin_row_from_v2_slot(v2_slot)
     else:
         plug = dict(DOMAIN_PLUGINS["ops"])
         plug["plugin_id"] = f"ops_fallback_for_{domain or 'unclassified'}"
@@ -322,6 +366,8 @@ def resolve_plugin(domain: str) -> dict[str, Any]:
     }
     for k, v in plug.items():
         if k.endswith("_ref") and v:
+            out[k] = v
+        if k in {"slot_id", "slot_kind"} and v:
             out[k] = v
     return out
 
@@ -445,6 +491,8 @@ def route_query(
         },
         "domain_plugin": plugin,
         "plugin_registry_ref": _plugin_registry_ref(),
+        "jema_os_plugin_registry_v2_ref": registry_v2_ref(),
+        "domain_plugin_slot_v2": build_slot_overlay(domain if domain != "unclassified" else "ops"),
         "reproduce_command": (
             f'py scripts/universal_multi_res_router_v1.py --query "{query.replace(chr(34), "")}"'
         ),
@@ -453,6 +501,8 @@ def route_query(
         doc["shallow_router_compat"] = shallow_compat
     if low_res_action:
         doc["low_res_action"] = low_res_action
+    if domain in ("logos", "oracle"):
+        doc["logos_lookup_context"] = build_logos_umr_lookup_context()
     return doc
 
 
@@ -467,6 +517,17 @@ def main() -> int:
         default=None,
     )
     ap.add_argument("-o", "--out", type=Path, default=DEFAULT_OUT)
+    ap.add_argument(
+        "--append-replay",
+        action="store_true",
+        help="Append validated audit row to universal_multi_res_router replay JSONL",
+    )
+    ap.add_argument(
+        "--replay-jsonl",
+        type=Path,
+        default=None,
+        help="Replay JSONL path (default: reports/universal_multi_res_router_replay_v1.jsonl)",
+    )
     args = ap.parse_args()
 
     infra = args.infrastructure_mode or detect_infrastructure_mode()
@@ -482,6 +543,26 @@ def main() -> int:
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(doc, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"WROTE: {args.out}")
+    if args.append_replay:
+        import importlib.util
+
+        replay_lib_path = Path(__file__).resolve().parent / "universal_multi_res_router_replay_lib_v1.py"
+        spec = importlib.util.spec_from_file_location(
+            "universal_multi_res_router_replay_lib_v1", replay_lib_path
+        )
+        if spec is None or spec.loader is None:
+            raise RuntimeError(f"failed to load replay lib: {replay_lib_path}")
+        replay_mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(replay_mod)
+        row = replay_mod.append_replay_row(
+            doc,
+            source_artifact_path=args.out,
+            jsonl_path=args.replay_jsonl,
+        )
+        replay_path = args.replay_jsonl or (
+            Path(__file__).resolve().parents[1] / "reports/universal_multi_res_router_replay_v1.jsonl"
+        )
+        print(f"REPLAY: {replay_path} event_id={row['event_id']}")
     print(
         json.dumps(
             {
