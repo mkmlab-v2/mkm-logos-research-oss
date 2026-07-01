@@ -1,0 +1,78 @@
+name: Logos Open Beta — product feedback
+description: Report from logos.jema-ai.com/ask (text Q&A beta) — not OSS harness bugs
+title: "[beta] "
+labels: ["beta", "logos-inquiry", "research-only"]
+body:
+  - type: markdown
+    value: |
+      **Surface:** [logos.jema-ai.com/logos-research/ask](https://logos.jema-ai.com/logos-research/ask) · **Lane:** Track B · `research_only` · `send_gate: HOLD`
+
+      For **OSS clone / pytest** issues use label `oss-harness` and paste `py scripts/run_logos_oss_premarket_smoke_v1.py` output.
+
+      Do **not** paste API keys, emails, or full copyrighted Bible text.
+
+  - type: dropdown
+    id: feedback_type
+    attributes:
+      label: Feedback type
+      options:
+        - UX / onboarding
+        - Report quality (S1–S4)
+        - Quota / errors
+        - Performance
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: browser
+    attributes:
+      label: Browser + OS
+      placeholder: e.g. Chrome 137 / Windows 11
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question you asked (or tried to ask)
+      description: Minimum ~12 characters for intake gate
+      placeholder: e.g. 시편 23편 — lemma·경로 관점에서 연구 질문을 구체화해 달라
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened instead
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Repro steps
+      description: URL with ?q= prefill, screenshot, or export JSON snippet (redact PII)
+      placeholder: |
+        1. Open https://logos.jema-ai.com/logos-research/ask?q=...
+        2. Click 질문하기
+        3. ...
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope ack
+      options:
+        - label: This is product beta feedback — not medical, investment, or live-trading advice
+          required: true
+        - label: I understand payment/Pro SKU is deferred until post-OSS verification
+          required: false

@@ -1,0 +1,24 @@
+name: Logos OSS premarket smoke
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install minimal deps
+        run: pip install -r requirements.txt
+      - name: Secret pattern scan
+        run: python3 scripts/check_mkm_secret_patterns_v1.py
+      - name: Export manifest verify
+        run: python3 scripts/build_logos_oss_public_export_bundle_v1.py --verify-only
+      - name: Premarket smoke (fixture-only)
+        run: python3 scripts/run_logos_oss_premarket_smoke_v1.py --skip-export-verify

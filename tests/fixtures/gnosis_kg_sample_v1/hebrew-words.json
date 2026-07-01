@@ -1,0 +1,117 @@
+[
+  {
+    "osis_ref": "Gen.1.1",
+    "words": [
+      {
+        "word_id": "gen_1_1_w1",
+        "text": "בְּרֵאשִׁית",
+        "lemma_raw": "רֵאשִׁית",
+        "strongs_number": "H7225",
+        "morph": "HNcfsa"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Ps.23.1",
+    "words": [
+      {
+        "word_id": "ps_23_1_w1",
+        "text": "רֹעִי",
+        "lemma_raw": "רָעָה",
+        "strongs_number": "H7462",
+        "morph": "HNcmsa"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Ps.23.2",
+    "words": [
+      {
+        "word_id": "ps_23_2_w1",
+        "text": "רֹעִי",
+        "lemma_raw": "רָעָה",
+        "strongs_number": "H7462",
+        "morph": "HNcmsa"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Ps.23.3",
+    "words": [
+      {
+        "word_id": "ps_23_3_w1",
+        "text": "נַפְשִׁי",
+        "lemma_raw": "נֶפֶשׁ",
+        "strongs_number": "H5315",
+        "morph": "HNcbsc"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Ps.23.4",
+    "words": [
+      {
+        "word_id": "ps_23_4_w1",
+        "text": "גֵּיא",
+        "lemma_raw": "גַּיְא",
+        "strongs_number": "H1516",
+        "morph": "HNcmsc"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Dan.2.10",
+    "words": [
+      {
+        "word_id": "dan_2_10_w1",
+        "text": "עָנָה",
+        "lemma_raw": "עָנָה",
+        "strongs_number": "H6032",
+        "morph": "HVqp3ms"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Dan.2.11",
+    "words": [
+      {
+        "word_id": "dan_2_11_w1",
+        "text": "דָּבָר",
+        "lemma_raw": "דָּבָר",
+        "strongs_number": "H1697",
+        "morph": "HNcmsa"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Dan.2.43",
+    "words": [
+      {
+        "word_id": "dan_2_43_w1",
+        "text": "עִיר",
+        "lemma_raw": "עִיר",
+        "strongs_number": "H5892",
+        "morph": "HNcfsa"
+      },
+      {
+        "word_id": "dan_2_43_w2",
+        "text": "דָּבָר",
+        "lemma_raw": "דָּבָר",
+        "strongs_number": "H1697",
+        "morph": "HNcmsa"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Job.28.17",
+    "words": [
+      {
+        "word_id": "job_28_17_w1",
+        "text": "זָכוּךְ",
+        "lemma_raw": "זָכַךְ",
+        "strongs_number": "H2134",
+        "morph": "HAamsa"
+      }
+    ]
+  }
+]

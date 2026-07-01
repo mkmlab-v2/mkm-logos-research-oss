@@ -1,0 +1,427 @@
+{
+  "schema": "bigset_conflict_surface_v1",
+  "generated_at_utc": "2026-06-29T07:49:56Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "no_lens_supremacy": true,
+  "group_count": 3,
+  "groups": [
+    {
+      "conflict_group_id": "MKM_CONCEPT_SONS_OF_GOD",
+      "lexicon_base": "Benei HaElohim",
+      "schools": [
+        {
+          "school_tier": "A",
+          "interpretation_ko": "Genesis 6:1-4’s \"sons of God\" originally denote a divine council of heavenly beings, linked to Psalm 82 and Deut 32:8-9’s divine council motif. Second Temple texts like 1 Enoch and Jubilees develop the Watchers narrative as fallen angels who interact with humans and produce Nephilim. | Nephilim as offspring of fallen angels and human women as per Second Temple interpretation in 1 Enoch, Jubilees, and DSS | Targum Neofiti interprets 'Benei HaElohim' as a category of divine or semi-divine beings with a Jewish interpretive nuance, emphasizing their interaction with human daughters in Genesis 6:1-4.",
+          "citation_lock_anchors": [
+            "https://publish.obsidian.md/thethinkingcup/%F0%9F%93%9A+Topics+to+Study/Sons+of+God/Genesis+6.1-4+-+A+Textual+Study+of+the+Sons+of+God",
+            "https://www.biblicalarchaeology.org/daily/the-nephilim-and-the-sons-of-god/#The-Nephilim-and-the-Sons-of-God",
+            "https://theoluniv.ub.rug.nl/32/7/2013Doedens%20Dissertation.pdf#page=54",
+            "https://intertextual.bible/text/1-enoch-7.1/4q201-1"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4; Psalm 82; Deuteronomy 32:8-9; 1 Enoch 6-11; Jubilees 5",
+            "Genesis 6:1-4",
+            "Genesis 6:1-4; 1 Enoch 7:1; 4Q201 fragment"
+          ],
+          "traditions": [
+            "Jewish, Christian (Second Temple, Early Christian)",
+            "Second Temple",
+            "Targum Neofiti / Jewish Aramaic Targum tradition",
+            "Dead Sea Scrolls"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "B",
+          "interpretation_ko": "The 4Q201 text reflects an early Jewish interpretative tradition associating Benei HaElohim with powerful earthly figures rather than purely angelic beings, emphasizing moral and societal corruption leading to the flood. | Genesis 6's 'sons of God' are interpreted either as the righteous lineage of Seth in later rabbinic tradition or primarily as angelic beings in earlier texts including Enoch, the Dead Sea Scrolls, and Philo's era influenced patristic tradition, supported by Augustine and Targum Neofiti manuscript traditions seen through the prism of complex translations. | Interprets the 'Sons of Angels' as fallen angelic beings implicated in the corruption of humanity and the emergence of Nephilim, consistent across Genesis 6, Book of Watchers, and Jubilees traditions.",
+          "citation_lock_anchors": [
+            "https://www.yu.edu/sites/default/files/inline-files/Conversations%20Issue%2036.pdf#page=14",
+            "https://jkwoods.medium.com/tndl-the-sons-or-elohims-of-the-most-high-god-vs-the-sons-of-perdition-2f5743609703#sons-of-god-interpretations",
+            "https://www.researchgate.net/publication/372953883_Warriors_Cannibals_and_Teachers_of_Evil_The_Sons_of_the_Angels_in_Genesis_6_the_Book_of_the_Watchers_and_the_Book_of_Jubilees",
+            "http://targum.info/neofiti/tg-gn6.htm",
+            "https://biblicalelearning.org/wp-content/uploads/2022/01/Newman-Gen6-GTJ-1984.pdf"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4",
+            "Genesis 6:1-4; Job 1:6, 2:1; Deuteronomy 32:8",
+            "Genesis 6:2,4; 4Q201 fragment"
+          ],
+          "traditions": [
+            "Dead Sea Scrolls / Qumran",
+            "Rabbinic Midrash / Patristic / Dead Sea Scrolls traditions",
+            "Second Temple period texts, Enochic literature, Jubilees",
+            "Targum Neofiti",
+            "Dead Sea Scrolls (DSS) tradition"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "C",
+          "interpretation_ko": "The Targum Neofiti interprets Benei HaElohim in Genesis 6 not as angels but as men from the flood generation or earthly judges, a human rather than celestial interpretation.",
+          "citation_lock_anchors": [
+            "https://www.facebook.com/theancientegy/posts/in-hebrew-the-expression-sons-of-god-is-bene-ha-elohimand-this-expression-appear/991291593657960/"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4"
+          ],
+          "traditions": [
+            "Targum Neofiti"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "Tier 1",
+          "interpretation_ko": "\"Second Temple Jews and early Christians interpreted the sons of God (bene elohim) in Genesis 6:1-4 as fallen angels (Watchers) who corrupted humanity by producing Nephilim with human women, leading to the flood judgment.\"",
+          "citation_lock_anchors": [
+            "https://bcworldview.org/fallen-angels-nephilim-and-the-flood-of-genesis-6/#fallen-angels-view"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4"
+          ],
+          "traditions": [
+            "Second Temple Judaism, Early Christianity"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "Tier 1 - Primary Biblical scholarship",
+          "interpretation_ko": "The 'Sons of God' in Genesis 6:1-4 are interpreted as rebellious divine beings (Watchers) who married human women, producing Nephilim giants, a view supported by biblical cross-references and scholarly consensus in certain theological circles.",
+          "citation_lock_anchors": [
+            "https://www.bereanbiblechurch.org/transcripts/genesis/gen-06_01-04_spiritual-warfare-pt06.htm#Watcher_View"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4"
+          ],
+          "traditions": [
+            "Biblical Christianity"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "established academic",
+          "interpretation_ko": "The source explains that in Second Temple Judaism, the Watchers (sons of God in Genesis 6:1-4) are celestial beings who rebelled, mating with human women producing Nephilim giants, spreading evil on earth, a foundational myth explaining the proliferation of sin beyond the Edenic Fall, and influencing New Testament theology.",
+          "citation_lock_anchors": [
+            "https://israelbiblicalstudies.com/blog/category/jewish-studies/the-book-of-enoch-2-the-sin-of-the-watchers/#the-book-of-the-watchers"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4; 1 Enoch 6-7"
+          ],
+          "traditions": [
+            "Second Temple Judaism"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "historical_criticism",
+          "interpretation_ko": "This paper offers an exegesis of Genesis 6:1-4, exploring the identities of the 'sons of God' and the Nephilim in light of their ancient Near Eastern context. Three interpretations are analyzed: mythological (celestial beings), royal (divine kings), and Sethite (godly lineage). | The 'sons of God' in Genesis 6:1-4 are best understood as heavenly beings or divine entities, supported by textual variants in the Septuagint and Dead Sea Scrolls, and consistent with other biblical and extrabiblical uses of the term. | 역사 비평적 관점에서 창세기 6장의 하나님의 아들은 인간 계보 또는 천사로 해석되며, 네피림은 그들의 자손이나 동시대 인물로 본다.",
+          "citation_lock_anchors": [
+            "https://www.researchgate.net/publication/397973591_The_Identities_of_the_Sons_of_God_and_Nephilim_in_Genesis_6_1-4",
+            "https://bibleinterp.arizona.edu/articles/those-elusive-sons-god-genesis-61-4-revisited",
+            "https://equip.sbts.edu/article/who-are-the-sons-of-god-daughters-of-man-and-nephilim/",
+            "https://www.thetorah.com/article/the-benei-elohim-the-watchers-and-the-origins-of-evil",
+            "https://archive.org/details/Genesis_Apocryphon_Qumran_2ndCenturyBC",
+            "https://www.thegospelcoalition.org/article/who-are-sons-of-god-genesis-6/#interpretation",
+            "https://en.wikipedia.org/wiki/Sons_of_God",
+            "https://biblearchaeology.org/research-articles/who-were-the-sons-of-god-in-genesis-6/#divine-kingship",
+            "https://rsc.byu.edu/creation-sinai/enoch-old-testament-beyond#book-of-the-watchers",
+            "https://www.academia.edu/104308389/The_sons_of_god_in_Genesis_6_1_4",
+            "https://aish.com/sons-of-god-bnei-elohim/",
+            "https://intertextual.bible/text/genesis-6.1/1-enoch-6.1",
+            "https://ftc.co/resource-library/blog-entries/who-are-the-sons-of-god-in-genesis-6/#interpretation",
+            "https://example.org/dss/gen6-hist-stub",
+            "https://www.academia.edu/43930637/Bene_ha_Elohim_in_Genesis_6_1_4_MA_Thesis_Ch_1_",
+            "https://example.org/lxx/gen6-hist-stub",
+            "https://www.spiritandtruth.org/questions/117.htm?x#A117"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4",
+            "Gen 6:1-4",
+            "Gen 6:1-4; 1 Enoch 6-7",
+            "Gen 6:1-4, Jude 6-7, 2 Pet 2:4",
+            "Genesis 6:1-4, Job 1:6, 2:1, Deuteronomy 32:8, 1 Enoch 6:1",
+            "Genesis 6:1-4; 1 Enoch 1-36",
+            "Genesis 6:1-4, Psalms 8:5, Exodus 4:16,7:1,21:6,22:8, Psalms 49:3, Deuteronomy 14:1, Pirkei d’Rabbi Eliezer 22, Talmud Yoma 67b",
+            "Genesis 6:1-4; 1 Enoch 6:1-3",
+            "Gen.6.1-4",
+            "Genesis 6:2",
+            "Gen.6.4",
+            "Genesis 6; Numbers 13:33; Job 1:6; 2:1; 38:7; 1 Peter 3:19-20; 2 Peter 2:4; Jude 1:6-8"
+          ],
+          "traditions": [
+            "Hebrew Bible",
+            "Hebrew Bible, Septuagint (LXX), Dead Sea Scrolls",
+            "Judeo-Christian",
+            "Second Temple Judaism",
+            "Genesis 6 commentary",
+            "Jewish-Christian",
+            "Biblical Theology (Christian)",
+            "1 Enoch",
+            "Biblical Hebrew Genesis 6, Hesychastic and Pseudepigraphal traditions",
+            "Jewish",
+            "Jewish pseudepigraphal",
+            "Christian",
+            "DSS",
+            "Biblical",
+            "LXX"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "judaic_mysticism",
+          "interpretation_ko": "angelic_fall_and_sin | [HYPO] 와처 전통 서사 — 게마트리아 단정 금지. | [HYPO] 신비주의 해석 슬롯 — send_gate HOLD.",
+          "citation_lock_anchors": [
+            "https://thetorah.com/article/the-benei-elohim-the-watchers-and-the-origins-of-evil",
+            "https://example.org/pseudep/enoch-myst-stub",
+            "https://example.org/midrash/gematria-myst-stub"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4; 1 Enoch 6-7; Dead Sea Scrolls fragments 4Q510-511, 4Q444, 11Q11 V.5-11; Daniel 4:10,14,20",
+            "Gen.6.1",
+            "Gen.6.2"
+          ],
+          "traditions": [
+            "Jewish",
+            "PSEUDEPIGRAPHA",
+            "RABBINIC"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "major",
+          "interpretation_ko": "Targum Neofiti interprets bene ha'elohim as divine, supernatural beings (angels or heavenly servants) who cohabited with humans in Genesis 6, producing giants/nephilim, consistent with ancient Jewish and some Christian readings.",
+          "citation_lock_anchors": [
+            "https://meetinggodinthemargin.wordpress.com/2019/11/20/issues-in-genesis-the-sons-of-god-daughters-of-men-part-2/#targum-neofiti-view"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4"
+          ],
+          "traditions": [
+            "Rabbinic Midrash / Jewish-Christian interpretation"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "patristic_exegesis",
+          "interpretation_ko": "LXX 창세기 6장에서는 하나님의 아들들이 천사로 번역되며, 알렉산드리아 전통에서는 창세기 6장 1-4절을 타락한 천사들과 인간 여성들의 혼혈로 해석함. | 천사들이 인간 여성과 결합하여 네피림을 낳았다는 주석, 고대 교부들도 이 해석을 지지함",
+          "citation_lock_anchors": [
+            "https://en.wikipedia.org/wiki/Sons_of_God#Translations",
+            "https://web.archive.org/web/20230601000000/https://totheendsblog.blogspot.com/2023/09/the-sons-of-god-in-genesis-62-4.html"
+          ],
+          "verse_refs": [
+            "Gen 6:1-4 LXX",
+            "Gen 6:2-4, Job 1:6, Psalm 82:1-7, John 10:34-36, 2 Peter 2:4, Jude 1:6"
+          ],
+          "traditions": [
+            "Judeo-Christian Alexandrian tradition",
+            "Judeo-Christian"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "philological_analysis",
+          "interpretation_ko": "supernatural_beings;angelic;translation_nuance;LXX_consistency",
+          "citation_lock_anchors": [
+            "https://www.facebook.com/kerry.wynne.2025/posts/0020-the-nephilim-in-the-canon-the-seventy-hebrew-linguists-who-translaed-the-ol/4570771383155265/"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4"
+          ],
+          "traditions": [
+            "LXX"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "primary",
+          "interpretation_ko": "Targum Neofiti interprets the sons of God in Genesis 6 as 'sons of the Great' involving celestial beings who intermarried with human daughters, producing mighty men and men of renown, consistent with rabbinic traditions linking the passage to angelic figures but with moderated mythic elements. | 4Q201 파편은 창세기 6:1-4에 나오는 하나님의 아들들에 대한 에녹 전통의 해석에 중요한 사본으로, 신적 존재와 인간의 교류를 보여준다. | Rabbinic Midrash interpretation identifies the Sons of God in Genesis 6:1-4 as human judges appointed by God, excluding angelic interpretation in this view.",
+          "citation_lock_anchors": [
+            "https://scholar.open.ac.uk/handle/123456789/sons_of_god_sources#TargumNeofiti",
+            "https://etheses.durham.ac.uk/id/eprint/1275/",
+            "https://www.sefaria.org/Genesis_Rabbah.26.3#3",
+            "https://israelbiblicalstudies.com/blog/category/jewish-studies/the-book-of-enoch-2-the-sin-of-the-watchers/",
+            "https://intertextual.bible/text/1-enoch-7.1/4q201-1"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4",
+            "Genesis 6:1-4; 4Q201 fragment",
+            "Genesis 6:1-4; 1 Enoch 6-7",
+            "Genesis 6"
+          ],
+          "traditions": [
+            "Targum Neofiti",
+            "Dead Sea Scrolls Studies / DSS 4Q201",
+            "Rabbinic Midrash",
+            "1 Enoch, Second Temple reception",
+            "Dead Sea Scrolls"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "secondary",
+          "interpretation_ko": "4Q201 is a Dead Sea Scroll fragment of the Enochic tradition illustrating the Sons of God as heavenly Watchers who transgress by mating with human women, resulting in giants and corruption of humanity before the Flood.",
+          "citation_lock_anchors": [
+            "https://www.deadseascrolls.org.il/explore-the-archive/manuscript/4Q201-1?locale=en_US"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4"
+          ],
+          "traditions": [
+            "Dead Sea Scrolls (DSS)"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "theological_exegesis",
+          "interpretation_ko": "Sons of God as enigmatic beings debated in theological scholarship; connection to Nephilim and divine-human interaction. | divine-human interrelationship, sons of God as heavenly beings, theological narrative",
+          "citation_lock_anchors": [
+            "https://www.pharosjot.com/uploads/7/1/6/3/7163688/article_7_vol_100_2019_nigeria.pdf",
+            "https://scholarlypublishingcollective.org/psup/theological-interpretation/article/16/2/168/319387/Genesis-6-1-4-A-Theological-Interpretation"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-4"
+          ],
+          "traditions": [
+            "Christian (Nigerian Evangelical)",
+            "Christian theological"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "unknown",
+          "interpretation_ko": "The author argues against mythologizing Genesis 6, interpreting the \"sons of God\" as the godly descendants of Seth intermarrying with the ungodly daughters of men, leading to a polluted lineage and widespread wickedness symbolized by the Nephilim who are mighty men of violence, not fallen angels or supernatural beings (Watchers). This emphasizes a historical-theological viewpoint rather than a mythical or angelological interpretation.",
+          "citation_lock_anchors": [
+            "https://chadashby.com/2014/05/05/genesis-6-sons-of-god-nephilim-and-watchers/#The-Two-Seeds",
+            "https://stephencook.com.au/2014/04/04/elohim-in-the-assembly-of-elohim-psalm-82/",
+            "sons-of-god-386ce5ea1630",
+            "The Gods-Complaint: Psalm 82 as a Psalm of Complaint",
+            "https://digitalcommons.liberty.edu/cgi/viewcontent.cgi?article=1277&context=lts_fac_pubs",
+            "https://drmsh.com/elohim-divine-council-psalm-82-ot-monotheism-archive/",
+            "https://www.thetorah.com/article/the-sons-of-israel-or-god-deuteronomy-32-8",
+            "https://digitalcommons.liberty.edu/lts_fac_pubs/278/",
+            "https://www.desiringgod.org/articles/the-divine-council",
+            "https://interpreterfoundation.org/journal/the-divine-council-in-the-hebrew-bible-and-the-book-of-mormon",
+            "https://awkng.com/psalm-82-and-the-gods/",
+            "https://publish.obsidian.md/thethinkingcup/%F0%9F%93%9A+Topics+to+Study/Sons+of+God/Genesis+6.1-4+-+A+Textual+Study+of+the+Sons+God"
+          ],
+          "verse_refs": [
+            "Genesis 6:1-8"
+          ],
+          "traditions": [
+            "Christian"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        }
+      ]
+    },
+    {
+      "conflict_group_id": "UNGROUPED",
+      "lexicon_base": "UNGROUPED",
+      "schools": [
+        {
+          "school_tier": "unknown",
+          "interpretation_ko": "",
+          "citation_lock_anchors": [
+            "https://danielomcclellan.wordpress.com/2010/05/28/angels-and-gods-at-qumran/"
+          ],
+          "verse_refs": [],
+          "traditions": [],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        }
+      ]
+    },
+    {
+      "conflict_group_id": "Sons_of_God_Theological_Interpretation",
+      "lexicon_base": "Sons_of_God_Theological_Interpretation",
+      "schools": [
+        {
+          "school_tier": "textual_criticism",
+          "interpretation_ko": "기독교 전통에서 '하나님의 아들들'은 천사와 인간의 혼혈로 해석되며, 이는 1에noch 9장에서 기술된 천사의 타락과 연결된다.",
+          "citation_lock_anchors": [
+            "https://www.perseus.tufts.edu/hopper/text?doc=Perseus:tlg0019:1enoch"
+          ],
+          "verse_refs": [
+            "1 Enoch 9:1-12"
+          ],
+          "traditions": [
+            "Jewish"
+          ],
+          "labels": [
+            "research_only",
+            "send_gate: HOLD",
+            "NON_GATING"
+          ]
+        }
+      ]
+    }
+  ],
+  "reproduce": "py scripts/build_bigset_conflict_surface_v1.py --csv <tier0.csv>",
+  "source_csvs": [
+    "docs/final/artifacts/bigset_tier0_timeline_repair_v1_latest.csv"
+  ]
+}

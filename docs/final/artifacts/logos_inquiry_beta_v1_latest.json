@@ -1,0 +1,42 @@
+{
+  "schema": "logos_inquiry_beta_v1",
+  "version": "1.1.0",
+  "generated_at_utc": "2026-06-30T12:00:00Z",
+  "phase": "public_beta_recruitment",
+  "product": "logos_inquiry_text_qa",
+  "surface_primary": "/logos-research/ask",
+  "surface_intro": "/logos-research",
+  "graphics_studio": {
+    "status": "deferred",
+    "path": "/logos-research/studio",
+    "note_ko": "베타 범위 외 — Pro SKU · 복잡도상 별도 진화"
+  },
+  "payment": {
+    "status": "deferred",
+    "policy": "post_oss_public_verification",
+    "ui_enabled_env": "LOGOS_INQUIRY_PAYMENT_ENABLED",
+    "note_ko": "결제·Pro SKU는 OSS GitHub 공개·하네스 검증(third-party repro) 후 G12 주입. 베타는 무료 일일 쿼터.",
+    "send_gate": "HOLD"
+  },
+  "free_tier": {
+    "daily_quota": 8,
+    "quota_api": "/api/logos-research/quota"
+  },
+  "feedback": {
+    "github_repo": "https://github.com/mkmlab-v2/mkm-logos-research-oss",
+    "github_issues": "https://github.com/mkmlab-v2/mkm-logos-research-oss/issues/new?template=beta_feedback.yml",
+    "github_discussions": "https://github.com/mkmlab-v2/mkm-logos-research-oss/discussions",
+    "issue_template": "beta_feedback.yml",
+    "third_party_repro_checklist": "docs/final/artifacts/logos_oss_third_party_repro_checklist_v1_latest.json",
+    "recruitment_gate": "docs/final/artifacts/logos_oss_beta_recruitment_gate_v1_latest.json",
+    "recruitment_discussion": "https://github.com/mkmlab-v2/mkm-logos-research-oss/discussions/5"
+  },
+  "oss_scope_note_ko": "UI 베타(ask) ≠ OSS 하네스 전체. OSS는 conflict/synthesis pytest 재현용.",
+  "api": {
+    "post_path": "/api/logos-research/query",
+    "output_format": "inquiry_report_v1",
+    "stream_s4_default": true
+  },
+  "reproduce": "py scripts/run_logos_inquiry_beta_pack_v1.py",
+  "wire_reproduce": "powershell -File scripts/Invoke-LogosInquiryBetaWire_v1.ps1"
+}

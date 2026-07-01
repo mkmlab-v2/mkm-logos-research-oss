@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Product beta (logos.jema-ai.com/ask)
+    url: https://logos.jema-ai.com/logos-research/ask
+    about: Text Q&A open beta — free daily quota · payment deferred
+  - name: OSS 60s smoke (clone repro)
+    url: https://github.com/mkmlab-v2/mkm-logos-research-oss#60-second-clone-smoke-fixture-only
+    about: Run py scripts/run_logos_oss_premarket_smoke_v1.py before harness bugs
+  - name: Third-party repro (Discussions)
+    url: https://github.com/mkmlab-v2/mkm-logos-research-oss/discussions
+    about: Paste exit 0 + pytest tail for external repro credit

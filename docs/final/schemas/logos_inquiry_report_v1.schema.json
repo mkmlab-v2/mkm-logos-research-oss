@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "logos_inquiry_report_v1.schema.json",
+  "title": "Logos inquiry report v1 (Standard tier · S1-S5)",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "tier",
+    "research_only",
+    "non_gating",
+    "send_gate",
+    "query",
+    "sections",
+    "governance"
+  ],
+  "properties": {
+    "schema": { "const": "logos_inquiry_report_v1" },
+    "version": { "type": "string" },
+    "tier": { "const": "standard" },
+    "generated_at_utc": { "type": "string" },
+    "research_only": { "type": "boolean" },
+    "non_gating": { "type": "boolean" },
+    "send_gate": { "type": "string" },
+    "query": { "type": "string" },
+    "preset_id": { "type": ["string", "null"] },
+    "output_format": { "const": "inquiry_report_v1" },
+    "intake": {
+      "type": "object",
+      "properties": {
+        "intake_gate": { "enum": ["PASS", "HOLD"] },
+        "domain_lane": { "type": ["string", "null"] },
+        "intent_chip": { "type": ["string", "null"] },
+        "failed_checks": { "type": "array", "items": { "type": "string" } },
+        "reverse_questions_ko": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "sections": {
+      "type": "object",
+      "required": ["S1", "S2", "S3", "S4", "S5"],
+      "properties": {
+        "S1": {
+          "type": "object",
+          "required": ["section_id", "title_ko", "verse_refs", "citation_lock_anchors"],
+          "properties": {
+            "section_id": { "const": "S1_citation_lock" },
+            "title_ko": { "type": "string" },
+            "verse_refs": { "type": "array", "items": { "type": "string" } },
+            "citation_lock_anchors": { "type": "array", "items": { "type": "string" } },
+            "security_note_ko": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "S2": {
+          "type": "object",
+          "required": ["section_id", "title_ko", "freeze_manifest_pointer", "lemma_edge_line_count"],
+          "properties": {
+            "section_id": { "const": "S2_lexicon_hash" },
+            "title_ko": { "type": "string" },
+            "lemma_edge_line_count": { "type": "integer" },
+            "min_line_count_floor": { "type": "integer" },
+            "floor_pass": { "type": "boolean" },
+            "freeze_manifest_pointer": { "type": "string" },
+            "manifest_sha256": { "type": "string" },
+            "lemma_edges_sha256": { "type": "string" },
+            "sidecar_corpus_sha256": { "type": "string" },
+            "path_token_preview": { "type": "array", "items": { "type": "string" } },
+            "security_note_ko": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "S3": {
+          "type": "object",
+          "required": ["section_id", "title_ko", "groups"],
+          "properties": {
+            "section_id": { "const": "S3_context_divergence" },
+            "title_ko": { "type": "string" },
+            "groups": { "type": "array" },
+            "note_ko": { "type": "string" }
+          }
+        },
+        "S4": {
+          "type": "object",
+          "required": ["section_id", "title_ko", "body_ko"],
+          "properties": {
+            "section_id": { "const": "S4_dynamic_synthesis" },
+            "title_ko": { "type": "string" },
+            "body_ko": { "type": "string" },
+            "bullets_ko": { "type": "array", "items": { "type": "string" } },
+            "streaming_deferred": { "const": "P0-1b" }
+          }
+        },
+        "S5": {
+          "type": "object",
+          "required": [
+            "section_id",
+            "title_ko",
+            "chain_exit_code",
+            "artifact_path",
+            "sections_payload_sha256"
+          ],
+          "properties": {
+            "section_id": { "const": "S5_jema_integrity_signoff" },
+            "title_ko": { "type": "string" },
+            "chain_exit_code": { "type": "integer" },
+            "artifact_path": { "type": "string" },
+            "sections_payload_sha256": { "type": "string" },
+            "freeze_verify_command": { "type": "string" },
+            "signed_at_utc": { "type": "string" }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "governance": {
+      "type": "object",
+      "required": ["disclaimer_ko", "forbidden_claims", "quality_basis_ko"],
+      "properties": {
+        "disclaimer_ko": { "type": "string" },
+        "forbidden_claims": { "type": "array", "items": { "type": "string" } },
+        "quality_basis_ko": { "type": "string" }
+      }
+    },
+    "evidence_confidence": { "type": ["object", "null"] }
+  },
+  "additionalProperties": true
+}

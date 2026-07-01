@@ -1,0 +1,47 @@
+{
+  "schema": "logos_inquiry_query_contract_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-01T01:34:17Z",
+  "continuity_id": "logos-oss-export-ci-2026-06-30",
+  "phase": "P0-security-wire",
+  "endpoint": {
+    "method": "POST",
+    "path": "/api/logos-research/query",
+    "unified": true,
+    "deprecated_alias": "/api/logos-research/qa"
+  },
+  "request": {
+    "query": "string (required for dynamic match)",
+    "preset_id": "optional string",
+    "output_format": "studio_v1 | inquiry_report_v1 (default studio_v1)",
+    "domain_lane": "logos | life | observe (inquiry only)",
+    "intent_chip": "reports | observe | … (inquiry only)",
+    "embed_demo": "boolean (studio only)",
+    "ecs_expand_poc": "boolean (studio only)"
+  },
+  "response_inquiry": {
+    "ok": true,
+    "api_contract": "logos_inquiry_query_v1",
+    "output_format": "inquiry_report_v1",
+    "tier": "standard",
+    "report_schema": "logos_inquiry_report_v1",
+    "report": "logos_inquiry_report_v1 object"
+  },
+  "response_studio_default": {
+    "api_contract": "logos_studio_v2_dynamic_rag_query_v1",
+    "result": "logos_research_studio_query_v1"
+  },
+  "streaming": {
+    "status": "active",
+    "slot": "P0-1b",
+    "contract": "logos_inquiry_stream_v1"
+  },
+  "security_wire": {
+    "s2_freeze_manifest_runtime": true,
+    "s3_sasang_regime_hint_b_track": true,
+    "s4_allowlist": "docs/final/artifacts/logos_inquiry_s4_synthesis_allowlist_v1_latest.json",
+    "inquiry_synthesis_llm_default": "off"
+  },
+  "report_schema_path": "docs/final/schemas/logos_inquiry_report_v1.schema.json",
+  "reproduce": "py scripts/run_logos_inquiry_report_schema_freeze_v1.py"
+}

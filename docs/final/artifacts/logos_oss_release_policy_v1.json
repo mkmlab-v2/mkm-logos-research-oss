@@ -1,0 +1,33 @@
+{
+  "schema": "logos_oss_release_policy_v1",
+  "version": "1.0.0",
+  "updated_at_utc": "2026-06-28T00:00:00Z",
+  "research_only": true,
+  "release_gate": "OPEN_SOURCE_PREP",
+  "send_gate_scope": {
+    "oss_github_release": "OPEN",
+    "grants_customer_contracts": "HOLD",
+    "track_a_live_trading": "LOCKED"
+  },
+  "public_export_manifest": "docs/final/artifacts/logos_oss_public_export_manifest_v1.json",
+  "export_materialize_dir": "exports/mkm-logos-research-oss-v1",
+  "repo_target_name": "mkm-logos-research-oss",
+  "github_repo_url": "https://github.com/mkmlab-v2/mkm-logos-research-oss",
+  "entry_smoke": "py scripts/run_logos_oss_premarket_smoke_v1.py",
+  "export_verify": "py scripts/build_logos_oss_public_export_bundle_v1.py --verify-only",
+  "export_materialize": "py scripts/build_logos_oss_public_export_bundle_v1.py --materialize",
+  "forbidden_public_claims": [
+    "hallucination_zero_percent",
+    "track_a_live_trading_ready",
+    "legal_counsel_signoff_as_gate",
+    "full_gnosis_in_repo",
+    "krv_full_text_in_repo",
+    "full_scriptorium_31102_in_repo",
+    "gpu_cost_seventy_percent_production_sla",
+    "l5_fixture_as_mlperf_sota"
+  ],
+  "l5_bench_note": "OSS L5 chain = synthetic fixtures only (n=8 CS, n=16/32 routing). scenario_hypothesis is not_billing. No customer logs.",
+  "lemma_coverage_note": "100% lemma in W5 audit may include LEMMA_VERSE_CANON_STUB — report stub vs Gnosis-verified separately.",
+  "monorepo_full_policy_pointer": "docs/final/artifacts/mkm_solo_oss_release_policy_v1_latest.json",
+  "note_ko": "공개 Logos OSS repo 전용 슬림 정책. monorepo solo OSS·Universal Root·compression tier는 full policy pointer 참조."
+}

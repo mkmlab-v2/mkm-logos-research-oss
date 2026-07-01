@@ -1,0 +1,89 @@
+{
+  "schema": "mkm_concept_isaiah_youtube_studio_conflict_surface_v1",
+  "generated_at_utc": "2026-06-28T13:31:54Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "non_gating": true,
+  "source": "showroom_logos_isaiah_youtube_reading_pack_slice_v1_latest.json",
+  "groups": [
+    {
+      "conflict_group_id": "MKM_CONCEPT_ISAIAH_YOUTUBE",
+      "lexicon_base": "Isaiah YouTube 16-ch spine · reading pack 3-way",
+      "school_count": 3,
+      "schools": [
+        {
+          "school_tier": "Pack 1",
+          "interpretation_ko": "신약 직접 인용·정경 병렬만 — 66=66 1:1 압축 주장 제외. **Pack:** `canonical_citations_only` · **literal_path**\n\n신약이 **직접 인용**하거나 정경이 병렬하는 구절만 열거합니다.\n66장=66권 1:1 압축 지도 주장은 **의도적으로 제외**합니다.\n\n· Isa.7.14 ↔ Matt.1.23 (임마누엘)\n· Isa.40.3 ↔ Matt.3.3 (광야 외침)\n· Isa.53.5 ↔ Acts.8.32 (고난의 종)\n· Luke.4.18 ↔ Isa.61 (회당 낭독)\n· Isa.65.17 ↔ Rev.21.2 (새",
+          "citation_lock_anchors": [
+            "Isa.7.14",
+            "Matt.1.23",
+            "Isa.40.3",
+            "Matt.3.3"
+          ],
+          "verse_refs": [
+            "Isa.7.14",
+            "Matt.1.23",
+            "Isa.40.3",
+            "Matt.3.3",
+            "Isa.53.5",
+            "Acts.8.32",
+            "Luke.4.18",
+            "Isa.65.17",
+            "Rev.21.2"
+          ],
+          "traditions": [
+            "canonical_citations_only",
+            "MKM reading pack"
+          ],
+          "labels": [
+            "research_only",
+            "NON_GATING",
+            "why_question_assembled=false"
+          ]
+        },
+        {
+          "school_tier": "Pack 2",
+          "interpretation_ko": "6:8 소명 → 40:1 위로 → 53:5 대속 → 65:17 새 창조 → Rev.21.2 완성. **Pack:** `studio_spine_five_anchors` · **[HYPO][NON_GATING]** · `send_gate: HOLD`\n\nMKM 권장 독해 spine — 유튜브 16챕터를 5앵커로 압축합니다.\n\n경로: Isa.6.8 → Isa.40.1 → Isa.53.5 → Isa.65.17 → Rev.21.2\n\n· **Isa.6.8** — 소명(내가 여기 있나이다)\n· **Isa.40.1** — 심판 후 위로 전환\n· **Isa.53.5** — 고난·대속\n· **Isa.65.17**",
+          "citation_lock_anchors": [
+            "Isa.6.8",
+            "Isa.40.1",
+            "Isa.53.5",
+            "Isa.65.17"
+          ],
+          "verse_refs": [
+            "Isa.6.8",
+            "Isa.40.1",
+            "Isa.53.5",
+            "Isa.65.17",
+            "Rev.21.2"
+          ],
+          "traditions": [
+            "studio_spine_five_anchors",
+            "MKM reading pack"
+          ],
+          "labels": [
+            "research_only",
+            "NON_GATING",
+            "why_question_assembled=false"
+          ]
+        },
+        {
+          "school_tier": "Pack 3",
+          "interpretation_ko": "챕터별 MKM bridge·앵커·판정을 순서대로 따라감. **Pack:** `chapter_route_sixteen` · **[HYPO][NON_GATING]**\n\n유튜브 강해 16챕터를 MKM bridge 판정과 함께 순서대로 따라갑니다.\n\n· **ch01** [partial] 성경 66권 전체가 이사야 66장 속에 압축된 설계도\n· **ch02** [pass] 들포도의 배신: 제사는 있지만 마음을 잃어버린 자들\n· **ch03** [pass] 보좌는 비지 않았다: 웃시아 왕의 죽음과 성전 환상\n· **ch04** [pass] 내가 여기 있나이다: 부",
+          "citation_lock_anchors": [],
+          "verse_refs": [],
+          "traditions": [
+            "chapter_route_sixteen",
+            "MKM reading pack"
+          ],
+          "labels": [
+            "research_only",
+            "NON_GATING",
+            "why_question_assembled=false"
+          ]
+        }
+      ]
+    }
+  ]
+}

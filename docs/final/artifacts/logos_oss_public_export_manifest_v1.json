@@ -1,0 +1,123 @@
+{
+  "schema": "logos_oss_public_export_manifest_v1",
+  "version": "1.4.0",
+  "description": "Slim curated Logos Research OSS export — conflict/synthesis harness + fixtures + beta contract pointer only. No L5 bench, no duplicate GitHub YAML copies, no monorepo maintainer docs.",
+  "repo_target_name": "mkm-logos-research-oss",
+  "entry_smoke": "scripts/run_logos_oss_premarket_smoke_v1.py",
+  "readme_ssot": "docs/final/artifacts/logos_oss_public_readme_v1.md",
+  "guide_ssot_monorepo": "docs/final/artifacts/logos_oss_premarket_smoke_guide_v1.md",
+  "solo_oss_policy": "docs/final/artifacts/logos_oss_release_policy_v1.json",
+  "materialized_only_monorepo": [
+    "docs/final/artifacts/logos_oss_github_workflow_oss_smoke_v1.yml",
+    "docs/final/artifacts/logos_oss_github_issue_template_beta_feedback_v1.yml",
+    "docs/final/artifacts/logos_oss_github_issue_template_config_v1.yml"
+  ],
+  "pre_push_gate": [
+    "py scripts/check_mkm_secret_patterns_v1.py",
+    "py scripts/build_logos_oss_public_export_bundle_v1.py --verify-only",
+    "py scripts/run_logos_oss_premarket_smoke_v1.py",
+    "powershell -NoProfile -File scripts/Push-LogosOssPublicToGitHub_v1.ps1 -RefreshMaterialize -VerifyChain -Acknowledge"
+  ],
+  "release_gate": "OPEN_SOURCE_PREP",
+  "send_gate_scope": {
+    "oss_github_release": "OPEN",
+    "grants_customer_contracts": "HOLD",
+    "track_a_live_trading": "LOCKED"
+  },
+  "paths": [
+    "LICENSE",
+    "docs/final/artifacts/logos_oss_public_readme_v1.md",
+    "docs/final/artifacts/logos_oss_public_export_manifest_v1.json",
+    "docs/final/artifacts/logos_oss_release_policy_v1.json",
+    "docs/final/artifacts/bigset_studio_conflict_sidecar_v1_latest.json",
+    "docs/final/artifacts/bigset_conflict_surface_v1_latest.json",
+    "docs/final/artifacts/bigset_multi_topic_conflict_surface_v1_latest.json",
+    "docs/final/artifacts/job_studio_conflict_surface_v1_latest.json",
+    "docs/final/artifacts/isaiah_studio_conflict_surface_v1_latest.json",
+    "projects/no1kmedi/public/data/logos_studio/bigset_conflict_sidecar_v1.json",
+    "tests/fixtures/gnosis_kg_sample_v1/hebrew-words.json",
+    "tests/fixtures/gnosis_kg_sample_v1/greek-words.json",
+    "tests/fixtures/logos_studio_conflict_presets_oss_v1.json",
+    "scripts/run_logos_oss_premarket_smoke_v1.py",
+    "scripts/build_logos_oss_public_export_bundle_v1.py",
+    "scripts/ingest_logos_gnosis_kg_lemma_edges_v1.py",
+    "scripts/build_bigset_studio_conflict_sidecar_v1.py",
+    "scripts/build_logos_studio_reading_pack_conflict_surface_v1.py",
+    "scripts/check_logos_studio_conflict_retrieval_gate_v1.py",
+    "scripts/retrieve_logos_studio_conflict_context_v1.py",
+    "scripts/logos_studio_query_topic_guard_v1.py",
+    "scripts/build_logos_golden_200_anchor_registry_v1.py",
+    "scripts/synthesize_logos_studio_dynamic_answer_v1.py",
+    "scripts/build_logos_studio_lemma_neighbor_index_v1.py",
+    "scripts/synthesize_logos_studio_lemma_bridge_answer_v1.py",
+    "scripts/check_logos_studio_lemma_bridge_gate_v1.py",
+    "scripts/logos_verse_ref_canonical_v1.py",
+    "scripts/check_mkm_secret_patterns_v1.py",
+    "tests/test_logos_studio_dynamic_synthesis_v1.py",
+    "tests/test_logos_studio_lemma_bridge_oss_v1.py",
+    "tests/test_logos_verse_ref_canonical_v1.py",
+    "data/logos/gnosis_kg/README.md",
+    "docs/final/artifacts/logos_inquiry_beta_v1_latest.json",
+    "docs/final/artifacts/logos_inquiry_query_contract_v1_latest.json",
+    "docs/final/schemas/logos_inquiry_report_v1.schema.json",
+    "docs/final/artifacts/logos_oss_third_party_repro_checklist_v1_latest.json"
+  ],
+  "monorepo_only_paths": [
+    {
+      "path": "scripts/smoke_logos_studio_66book_matrix_v1.py",
+      "reason": "Requires expand_logos_bible_full_corpus_batch_v1.py + local studio artifacts"
+    },
+    {
+      "path": "scripts/run_logos_bible_full_verification_chain_v1.py",
+      "reason": "Full W5 stack; not standalone clone scope"
+    },
+    {
+      "path": "scripts/run_logos_oss_l5_bench_chain_v1.py",
+      "reason": "L5 admission bench — monorepo / NVIDIA pack only; not public OSS slim export"
+    },
+    {
+      "path": "docs/final/artifacts/logos_oss_premarket_smoke_guide_v1.md",
+      "reason": "Maintainer guide; public repo uses logos_oss_public_readme_v1.md"
+    },
+    {
+      "path": "docs/final/artifacts/bigset_tier0_atypical_human_review_pending_v1_latest.json",
+      "reason": "Empty observability stub"
+    }
+  ],
+  "user_provided_local": {
+    "gnosis_full_morphology": {
+      "ingest": "py scripts/ingest_logos_gnosis_kg_lemma_edges_v1.py --gnosis-dir <dir> --ack-license-cc-by-sa-4",
+      "license": "CC-BY-SA-4.0 (user responsibility)",
+      "not_in_public_repo": true
+    },
+    "krv_citation_corpus": {
+      "ingest": "py scripts/fetch_logos_krv_corpus_from_bskorea_v1.py (local only)",
+      "not_in_public_repo": true
+    },
+    "trading_regime_weights": {
+      "policy": "never export — projects/bitcoin-trading excluded",
+      "not_in_public_repo": true
+    }
+  },
+  "deny_filename_patterns": [".env", "credentials", "dpapi", ".pem", ".key", "MISSION_LOG"],
+  "deny_path_substrings": [
+    "projects/bitcoin-trading",
+    "data/logos/krv_verses",
+    "verse_4pipeline_full_31102",
+    "showroom_meaning_topology_graph_slice_v1_latest",
+    "logos_lemma_verse_edges_v1.jsonl",
+    "memory/v2",
+    "canon_singularity"
+  ],
+  "forbidden_public_claims": [
+    "hallucination_zero_percent",
+    "track_a_live_trading_ready",
+    "legal_counsel_signoff_as_gate",
+    "full_gnosis_in_repo",
+    "krv_full_text_in_repo",
+    "full_scriptorium_31102_in_repo",
+    "gpu_cost_seventy_percent_production_sla",
+    "l5_fixture_as_mlperf_sota"
+  ],
+  "lemma_coverage_note": "100% lemma in W5 audit may include LEMMA_VERSE_CANON_STUB — not morphology-verified unless user ingests Gnosis locally."
+}

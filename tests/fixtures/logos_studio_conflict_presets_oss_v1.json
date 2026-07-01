@@ -1,0 +1,22 @@
+{
+  "schema": "logos_studio_conflict_presets_oss_v1",
+  "description": "Minimal preset→conflict_group map for OSS export smoke (not full qa_presets_v1.json).",
+  "presets": [
+    {
+      "id": "bigset_topic_nephilim",
+      "bigset_conflict_group_id": "MKM_CONCEPT_NEPHILIM"
+    },
+    {
+      "id": "job_job_suffering_reason",
+      "bigset_conflict_group_id": "MKM_CONCEPT_JOB_SUFFERING"
+    },
+    {
+      "id": "isaiah_youtube_spine_v1",
+      "bigset_conflict_group_id": "MKM_CONCEPT_ISAIAH_YOUTUBE"
+    },
+    {
+      "id": "era_genesis_order_and_fall",
+      "bigset_conflict_group_id": null
+    }
+  ]
+}

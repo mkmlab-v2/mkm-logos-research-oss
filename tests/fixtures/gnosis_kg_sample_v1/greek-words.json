@@ -1,0 +1,33 @@
+[
+  {
+    "osis_ref": "John.1.1",
+    "words": [
+      {
+        "word_id": "jhn_1_1_w1",
+        "text": "Ἐν",
+        "lemma": "ἐν",
+        "strongs_number": "G1722",
+        "morph": "PREP"
+      },
+      {
+        "word_id": "jhn_1_1_w2",
+        "text": "λόγος",
+        "lemma": "λόγος",
+        "strongs_number": "G3056",
+        "morph": "N-NSM"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Rev.1.1",
+    "words": [
+      {
+        "word_id": "rev_1_1_w1",
+        "text": "Ἀποκάλυψις",
+        "lemma": "ἀποκάλυψις",
+        "strongs_number": "G602",
+        "morph": "N-NSF"
+      }
+    ]
+  }
+]
