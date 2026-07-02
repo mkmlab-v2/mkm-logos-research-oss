@@ -14,6 +14,10 @@ import {
   isPublicS4StubPhrase,
   PUBLIC_S4_STUB_PHRASE_RE,
 } from "./logosInquiryPublicS4FilterV1";
+import {
+  detectPsalm23Topic,
+  detectSchoolComparisonIntent,
+} from "./logosInquiryTopicDetectV1";
 
 export type LogosInquiryReportV1 = {
   schema: "logos_inquiry_report_v1";
@@ -420,21 +424,68 @@ function extractAnchors(payload: StudioQueryPayload): string[] {
   return anchors;
 }
 
-function buildSchoolGroups(payload: StudioQueryPayload): Array<Record<string, unknown>> {
+function buildPsalm23PublicSchoolFallback(
+  query: string,
+  verseRefs: string[],
+): Array<Record<string, unknown>> {
+  if (!detectPsalm23Topic(query) && !detectSchoolComparisonIntent(query)) return [];
+  const ps23Refs = verseRefs
+    .map((r) => String(r).trim())
+    .filter((r) => /^Ps\.23/i.test(r.replace(/\s/g, "")));
+  const anchorRefs = ps23Refs.length ? ps23Refs.slice(0, 3) : ["Ps.23.1", "Ps.23.4"];
+  return [
+    {
+      conflict_group_id: "ps23_shepherd_metaphor_public",
+      lexicon_base: "nachah",
+      school_count: 2,
+      schools: [
+        {
+          school_tier: "historical",
+          interpretation_ko:
+            "목자 은유 — 신뢰·인도·풍요의 전통적 독해 (citation lock 앵커 중심)",
+          verse_refs: anchorRefs,
+          citation_lock_anchors: anchorRefs,
+          traditions: ["historical-grammatical"],
+        },
+        {
+          school_tier: "literary",
+          interpretation_ko: "시적 목자·길 안내·골짜기 통과 이미지 — 맥락별 강조 분기",
+          verse_refs: anchorRefs,
+          citation_lock_anchors: anchorRefs,
+          traditions: ["literary", "poetic"],
+        },
+      ],
+    },
+  ];
+}
+
+function countSchoolRowsInGroups(groups: Array<Record<string, unknown>>): number {
+  let n = 0;
+  for (const group of groups) {
+    n += ((group.schools as unknown[] | undefined) ?? []).length;
+  }
+  return n;
+}
+
+function buildSchoolGroups(payload: StudioQueryPayload, query: string): Array<Record<string, unknown>> {
   const conflict = payload.conflict_context as Extract<ConflictContextResult, { ok: true }> | null;
-  if (!conflict?.groups?.length) return [];
-  return conflict.groups.map((group) => ({
-    conflict_group_id: group.conflict_group_id,
-    lexicon_base: group.lexicon_base,
-    school_count: group.school_count ?? group.schools?.length ?? 0,
-    schools: (group.schools ?? []).map((school) => ({
-      school_tier: school.school_tier,
-      interpretation_ko: stripHypo(school.interpretation_ko ?? ""),
-      verse_refs: school.verse_refs ?? [],
-      citation_lock_anchors: school.citation_lock_anchors ?? [],
-      traditions: school.traditions ?? [],
-    })),
-  }));
+  if (conflict?.groups?.length) {
+    const mapped = conflict.groups.map((group) => ({
+      conflict_group_id: group.conflict_group_id,
+      lexicon_base: group.lexicon_base,
+      school_count: group.school_count ?? group.schools?.length ?? 0,
+      schools: (group.schools ?? []).map((school) => ({
+        school_tier: school.school_tier,
+        interpretation_ko: stripHypo(school.interpretation_ko ?? ""),
+        verse_refs: school.verse_refs ?? [],
+        citation_lock_anchors: school.citation_lock_anchors ?? [],
+        traditions: school.traditions ?? [],
+      })),
+    }));
+    if (countSchoolRowsInGroups(mapped) > 0) return mapped;
+  }
+  const verseRefs = (payload.path?.verse_refs ?? []).map((v) => String(v).trim()).filter(Boolean);
+  return buildPsalm23PublicSchoolFallback(query, verseRefs);
 }
 
 function pathTokenPreview(payload: StudioQueryPayload, cap = 16): string[] {
@@ -524,7 +575,7 @@ export function buildLogosInquiryReport(
   const s3 = {
     section_id: "S3_context_divergence" as const,
     title_ko: "Context Divergence (맥락/학파 분기)",
-    groups: buildSchoolGroups(payload),
+    groups: buildSchoolGroups(payload, query),
     note_ko: "[NON_GATING] conflict_context 기반 — Track A·실매매 트리거 아님.",
     ...(sasangHint ? { regime_hint_b_track: sasangHint } : {}),
   };

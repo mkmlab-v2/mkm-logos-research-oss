@@ -12,6 +12,11 @@ import {
   stripPublicResearchTags,
 } from "../src/lib/logosInquiryAskDisplayV1.ts";
 import { applyInquiryS4QualityGate } from "../src/lib/logosInquiryReportV1.ts";
+import {
+  buildLogosInquiryReport,
+  evaluateLogosInquiryIntake,
+  DEFAULT_FREEZE_LEXICON_META,
+} from "../src/lib/logosInquiryReportV1.ts";
 import { buildRev21NewCreationThematicAnswerKo } from "../src/lib/logosInquiryVerseThematicV1.ts";
 import { detectPsalm23Topic } from "../src/lib/logosStudioQueryTopicGuardV1.ts";
 
@@ -82,6 +87,27 @@ const golden = meetsDoneProductGoldenRubric({
   ],
 });
 assert(golden.stub_free, "golden stub_free");
+assert(golden.product_ok, "golden product_ok");
 assert(detectPsalm23Topic("시편 23편 — lemma·경로"), "psalm23 detect smoke question");
+
+const schoolQuery = "시편 23편 — 목자 비유와 학파별 해석";
+const schoolReport = buildLogosInquiryReport(
+  {
+    answer: "시편 23편 목자 비유를 citation lock 중심으로 요약합니다.",
+    path: { verse_refs: ["Ps.23.1", "Ps.23.4"], steps: [], node_ids: [], note_ko: null, bridges_matched: null },
+    research_only: true,
+    non_gating: true,
+    send_gate: "HOLD",
+    preset_id: "topic_ps_23_anchor",
+  } as import("../src/lib/logosResearchStudioV1.ts").StudioQueryPayload,
+  schoolQuery,
+  evaluateLogosInquiryIntake(schoolQuery, "logos", "reports"),
+  DEFAULT_FREEZE_LEXICON_META,
+);
+assert((schoolReport.sections.S3.groups?.length ?? 0) >= 1, "ps23 school fallback groups");
+assert(
+  (schoolReport.sections.S3.groups?.[0]?.schools?.length ?? 0) >= 2,
+  "ps23 school fallback rows",
+);
 
 console.log("[smoke-logos-ask-display-invariants-v1] passed.");
