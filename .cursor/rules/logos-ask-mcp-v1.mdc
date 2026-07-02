@@ -1,0 +1,60 @@
+---
+description: Logos Ask Meta Cognition Pass — Done-Harness floor + Done-Product ceiling; Tier S/M/L for Ring 0 work
+alwaysApply: false
+---
+
+# Logos Ask MCP v1 (Meta Cognition Pass)
+
+**Scope:** `projects/no1kmedi` · `/logos-research/ask` · Ring 0 product surface only.  
+**Not in scope:** Track A promotion, live trade, SEND, `.cursorrules` rewrite.
+
+## Dual completion (non-negotiable)
+
+| Plane | Meaning | SSOT |
+| --- | --- | --- |
+| **Done-Harness (floor)** | `exit 0`, Playwright DOM, stream sequence | `npm run smoke:logos-inquiry-*` |
+| **Done-Product (ceiling)** | Stub-free S4, topic anchor, school cards on Ring 0 | `logosInquiryPublicS4FilterV1.ts`, `meetsDoneProductGoldenRubric`, golden smokes |
+
+Never headline harness pass alone as “product solved.” Report **both** when citing quality.
+
+## Tier routing
+
+| Tier | Examples | Gate |
+| --- | --- | --- |
+| **S** | typo, selector-only smoke fix, scoped CSS under `.logos-research-ask-page` | TITAN auto — post report |
+| **M** | Ring 0 layout, S4 sanitizer, S3 public cards, topic guard, new smoke rubric | **5-line plan + commander approval** before diff |
+| **L** | API schema change, Ring 3 leak, preset routing rewrite | M preflight + explicit approval |
+
+M/L preflight pointer: `.cursor/rules/mkm-high-delegation-preflight-v1.mdc` · `Invoke-MkmHighDelegationPreflight_v1.ps1 -Scale M -Lane web_ops`.
+
+## Tier M — 5-line plan template (paste before Ring 0 diff)
+
+1. **Goal** — one Done-Product outcome (user-visible, not DOM-only).
+2. **Scope** — file paths; **no** Antigravity/CSS if S4 content still stubby.
+3. **Ring** — Ring 0 public vs dev metadata (`lr-ask-dev-metadata` collapsed default).
+4. **Done** — Harness smoke + Product rubric (stub phrase 0, topic anchor, school cards if intent).
+5. **Rollback** — `ASK_UI_REV` bump; display-only revert path.
+
+## Ring contract (Logos Ask)
+
+- **Ring 0:** citation lock, S4 accordion, S3 school cards (when intent), graph, public disclaimer.
+- **Dev/metadata:** S1–S5 pills, gematria, sasang, lemma hash — `<details>` only; never hero.
+- **Hard-drop on public S4:** `Path envelope`, `orphan veto`, `Gematria_Pin` — filter SSOT: `logosInquiryPublicS4FilterV1.ts`.
+
+## Verification (reproducible)
+
+```powershell
+cd projects/no1kmedi
+npx tsx scripts/smoke-logos-ask-display-invariants-v1.ts
+npx tsx scripts/smoke-logos-query-topic-guard-v1.ts
+npm run smoke:logos-inquiry-stream
+npm run smoke:logos-inquiry-ask
+```
+
+Optional: `npm run smoke:logos-inquiry-ask-playwright` (dev server on `:3010`).
+
+## NEVER
+
+- CSS/Antigravity polish **before** S4 stub kill + topic guard when product content is the complaint.
+- Imply MCP chat approval replaces runtime filters or pytest/tsx smokes.
+- Collapse Done-Harness and Done-Product into a single “model score.”

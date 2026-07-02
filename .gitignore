@@ -33,6 +33,8 @@ vendor/korean-medicine-texts/
 # Cursor session validation baseline (alwaysApply; share across clones)
 !.cursor/rules/cursor-session-validation-baseline-v1.mdc
 !.cursor/rules/mkm-delegation-research-assist-v1.mdc
+# Logos Ask MCP — Done-Harness + Done-Product Tier S/M/L (opt-in; Ring 0)
+!.cursor/rules/logos-ask-mcp-v1.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md
