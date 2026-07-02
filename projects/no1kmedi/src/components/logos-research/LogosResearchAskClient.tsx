@@ -38,7 +38,7 @@ type OutputFormat = "text_mvp_report_v1" | "inquiry_report_v1";
 
 type StreamPhase = "idle" | "snapshot" | "s4" | "done";
 
-const ASK_UI_REV = "20260702c";
+const ASK_UI_REV = "20260702d";
 const ASK_TURNS_STORAGE_KEY = "logos_ask_turns_v1";
 
 type PersistedAskStateV1 = {
@@ -218,25 +218,78 @@ function S4PublicInsightSections({
   streaming?: boolean;
 }) {
   const sections = parseS4PublicSections(body);
+  const [openSet, setOpenSet] = useState<Set<number>>(() => new Set([0]));
+
+  useEffect(() => {
+    const len = sections.length;
+    if (!len) return;
+    setOpenSet((prev) => {
+      const next = new Set(prev);
+      if (streaming) {
+        next.add(len - 1);
+      }
+      for (const idx of next) {
+        if (idx >= len) next.delete(idx);
+      }
+      if (!next.size) next.add(0);
+      return next;
+    });
+  }, [sections.length, streaming, body]);
+
+  const toggleSection = useCallback((idx: number) => {
+    setOpenSet((prev) => {
+      const next = new Set(prev);
+      if (next.has(idx)) next.delete(idx);
+      else next.add(idx);
+      return next;
+    });
+  }, []);
+
   if (!sections.length) {
     return <p className="lr-ask-muted">통찰 생성 중…</p>;
   }
+
   return (
-    <div className="lr-ask-s4-sections">
-      {sections.map((section, idx) => (
-        <article
-          key={`${section.title}-${idx}`}
-          className="lr-ask-s4-section"
-          data-lr-ask-s4-section={idx + 1}
-        >
-          <h4 className="lr-ask-s4-section-title">{section.title}</h4>
-          {section.body.split(/\n\n+/).map((para) => (
-            <p key={para.slice(0, 48)} className="lr-ask-s4-section-body">
-              {para}
-            </p>
-          ))}
-        </article>
-      ))}
+    <div
+      className="lr-ask-s4-sections"
+      data-lr-ask-s4-accordion="1"
+      aria-label={`통찰 ${sections.length}개 섹션`}
+    >
+      <p className="lr-ask-s4-sections-kicker">
+        {sections.length}개 관점 · 탭을 열어 S4 통찰을 확인하세요
+      </p>
+      {sections.map((section, idx) => {
+        const isOpen = openSet.has(idx);
+        return (
+          <details
+            key={`${section.title}-${idx}`}
+            className={`lr-ask-s4-section${isOpen ? " lr-ask-s4-section--open" : ""}${streaming && idx === sections.length - 1 ? " lr-ask-s4-section--streaming" : ""}`}
+            data-lr-ask-s4-section={idx + 1}
+            open={isOpen}
+          >
+            <summary
+              className="lr-ask-s4-section-title"
+              onClick={(event) => {
+                event.preventDefault();
+                toggleSection(idx);
+              }}
+            >
+              <span className="lr-ask-s4-section-title-text">
+                <span className="lr-ask-s4-section-index">{idx + 1}</span>
+                {section.title}
+              </span>
+              <span className="lr-ask-s4-section-chevron" aria-hidden="true" />
+            </summary>
+            <div className="lr-ask-s4-section-panel">
+              {section.body.split(/\n\n+/).map((para) => (
+                <p key={para.slice(0, 48)} className="lr-ask-s4-section-body">
+                  {para}
+                </p>
+              ))}
+            </div>
+          </details>
+        );
+      })}
       {streaming ? <span className="lr-ask-stream-cursor" aria-hidden="true" /> : null}
     </div>
   );
