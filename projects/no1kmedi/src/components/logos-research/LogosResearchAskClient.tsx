@@ -38,7 +38,7 @@ type OutputFormat = "text_mvp_report_v1" | "inquiry_report_v1";
 
 type StreamPhase = "idle" | "snapshot" | "s4" | "done";
 
-const ASK_UI_REV = "20260702d";
+const ASK_UI_REV = "20260702e";
 const ASK_TURNS_STORAGE_KEY = "logos_ask_turns_v1";
 
 type PersistedAskStateV1 = {

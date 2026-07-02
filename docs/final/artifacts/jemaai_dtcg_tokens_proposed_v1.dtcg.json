@@ -2,10 +2,10 @@
   "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
   "schema": "jemaai_dtcg_tokens_proposed_v1",
   "version": "1.0.0",
-  "updated_at_utc": "2026-07-02T20:30:00Z",
+  "updated_at_utc": "2026-07-03T05:20:00Z",
   "send_gate": "HOLD",
   "ready_for_external_send": false,
-  "lane_status": "pack_l_ask_p0_cursor_merge",
+  "lane_status": "pack_l_ask_v2_antigravity_merge",
   "design_intent": "JEMA AI multi-surface token SSOT — primitive shared · semantic split (clinical / saas / hub) · component per surface. Antigravity fills *_proposed slots only; Cursor merges to globals.css scoped blocks.",
   "audit_ref": "docs/final/artifacts/jemaai_design_audit_surface_map_v1_latest.json",
   "prompt_pack_ref": "docs/final/artifacts/jemaai_antigravity_design_prompt_packs_v1_latest.md",
@@ -265,51 +265,60 @@
         }
       },
       "logos_ask": {
-        "description": "logos.jema-ai.com /logos-research/ask — Scriptorium cream/teal/gold (Pack L-Ask P0)",
+        "description": "logos.jema-ai.com /logos-research/ask — Scriptorium cream/teal/gold (Pack L-Ask v2)",
         "bg": {
           "$value": "#faf7f2",
           "$type": "color",
-          "maps_to": "--lr-ask-bg"
+          "maps_to": "--lr-ask-bg",
+          "antigravity_proposed": "#faf7f2"
         },
         "surface": {
           "$value": "#ffffff",
           "$type": "color",
-          "maps_to": "--lr-ask-surface"
+          "maps_to": "--lr-ask-surface",
+          "antigravity_proposed": "#ffffff"
         },
         "accent": {
           "$value": "#2d7a68",
           "$type": "color",
-          "maps_to": "--lr-ask-accent"
+          "maps_to": "--lr-ask-accent",
+          "antigravity_proposed": "#2d7a68"
         },
         "gold": {
           "$value": "#c5a057",
           "$type": "color",
-          "maps_to": "--lr-ask-gold"
+          "maps_to": "--lr-ask-gold",
+          "antigravity_proposed": "#c5a057"
         },
         "ink": {
           "$value": "#292524",
           "$type": "color",
-          "maps_to": "--lr-ask-ink"
+          "maps_to": "--lr-ask-ink",
+          "antigravity_proposed": "#292524"
         },
         "ink-soft": {
           "$value": "#57534e",
           "$type": "color",
-          "maps_to": "--lr-ask-ink-soft"
+          "maps_to": "--lr-ask-ink-soft",
+          "antigravity_proposed": "#57534e"
         },
         "error": {
           "$value": "#b91c1c",
           "$type": "color",
-          "maps_to": "--lr-ask-error"
+          "maps_to": "--lr-ask-error",
+          "antigravity_proposed": "#b91c1c"
         },
         "error-bg": {
           "$value": "#fef2f2",
           "$type": "color",
-          "maps_to": "--lr-ask-error-bg"
+          "maps_to": "--lr-ask-error-bg",
+          "antigravity_proposed": "#fef2f2"
         },
         "border": {
           "$value": "rgba(91, 74, 50, 0.12)",
           "$type": "color",
-          "maps_to": "--lr-ask-border"
+          "maps_to": "--lr-ask-border",
+          "antigravity_proposed": "rgba(91, 74, 50, 0.12)"
         }
       }
     },

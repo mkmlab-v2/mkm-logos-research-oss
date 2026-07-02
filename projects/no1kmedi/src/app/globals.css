@@ -18071,7 +18071,7 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   }
 }
 
-/* logos.jema-ai.com — text MVP Q&A (/logos-research/ask) · Pack L-Ask P0 tokens */
+/* logos.jema-ai.com — text MVP Q&A (/logos-research/ask) · Pack L-Ask v2 (Antigravity merge) */
 .logos-research-ask-page {
   --lr-ask-bg: #faf7f2;
   --lr-ask-surface: #ffffff;
@@ -18609,6 +18609,7 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
 
 .logos-research-ask-page .lr-ask-s4-section--open {
   border-color: color-mix(in srgb, var(--lr-ask-accent) 35%, var(--lr-ask-border));
+  background: color-mix(in srgb, var(--lr-ask-surface) 92%, var(--lr-ask-accent));
   box-shadow:
     0 1px 0 rgba(91, 74, 50, 0.04),
     0 8px 24px rgba(45, 122, 104, 0.08);
@@ -18632,6 +18633,16 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   letter-spacing: -0.01em;
   cursor: pointer;
   user-select: none;
+  transition: background-color 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.logos-research-ask-page .lr-ask-s4-section-title:hover {
+  background: color-mix(in srgb, var(--lr-ask-accent) 6%, transparent);
+}
+
+.logos-research-ask-page .lr-ask-s4-section-title:focus-visible {
+  outline: 2px solid var(--lr-ask-accent-border);
+  outline-offset: -2px;
 }
 
 .logos-research-ask-page .lr-ask-s4-section-title::-webkit-details-marker {
@@ -18910,7 +18921,7 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   margin-left: auto;
   font-size: var(--text-xs);
   text-decoration: underline;
-  color: var(--lr-accent, #2563eb);
+  color: var(--lr-ask-accent);
 }
 
 .logos-research-ask-page .lr-ask-post-feedback {
@@ -18946,6 +18957,15 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
     180deg,
     color-mix(in srgb, var(--lr-ask-accent) 10%, var(--lr-ask-surface)) 0%,
     color-mix(in srgb, var(--lr-ask-accent) 4%, var(--lr-ask-bg)) 100%
+  );
+  transition: background 0.15s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.logos-research-ask-page .lr-ask-citation-lock:hover {
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--lr-ask-accent) 14%, var(--lr-ask-surface)) 0%,
+    color-mix(in srgb, var(--lr-ask-accent) 8%, var(--lr-ask-bg)) 100%
   );
 }
 

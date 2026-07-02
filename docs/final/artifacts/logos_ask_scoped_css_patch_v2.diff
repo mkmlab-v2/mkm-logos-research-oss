@@ -1,0 +1,77 @@
+diff --git a/projects/no1kmedi/src/app/globals.css b/projects/no1kmedi/src/app/globals.css
+index 1234567..89abcde 100644
+--- a/projects/no1kmedi/src/app/globals.css
++++ b/projects/no1kmedi/src/app/globals.css
+@@
+-  .logos-research-ask-page {
+-    --lr-ask-bg: #faf7f2;
+-    --lr-ask-surface: #ffffff;
+-    --lr-ask-accent: #2d7a68;
+-    --lr-ask-accent-soft: rgba(45, 122, 104, 0.12);
+-    --lr-ask-accent-border: rgba(45, 122, 104, 0.35);
+-    --lr-ask-gold: #c5a057;
+-    --lr-ask-gold-ring: rgba(197, 160, 87, 0.35);
+-    --lr-ask-ink: #292524;
+-    --lr-ask-ink-soft: #57534e;
+-    --lr-ask-muted: #78716c;
+-    --lr-ask-border: rgba(91, 74, 50, 0.12);
+-    --lr-ask-error: #b91c1c;
+-    --lr-ask-error-bg: #fef2f2;
+-    --lr-ask-hero-muted: var(--lr-ask-ink-soft);
+-    --lr-handoff-bg: var(--lr-ask-surface);
+-    --lr-handoff-border: var(--lr-ask-border);
+-    --lr-handoff-brand: var(--lr-ask-ink);
+-    --lr-handoff-disclaimer: var(--lr-ask-muted);
+-    background-color: var(--lr-ask-bg);
+-    color: var(--lr-ask-ink);
+-  }
++  .logos-research-ask-page {
++    /* Scriptorium token palette */
++    --lr-ask-bg: var(--color-logos-ask-bg, #faf7f2);
++    --lr-ask-surface: var(--color-logos-ask-surface, #ffffff);
++    --lr-ask-accent: var(--color-logos-ask-accent, #2d7a68);
++    --lr-ask-accent-soft: rgba(45, 122, 104, 0.12);
++    --lr-ask-accent-border: rgba(45, 122, 104, 0.35);
++    --lr-ask-gold: var(--color-logos-ask-gold, #c5a057);
++    --lr-ask-gold-ring: rgba(197, 160, 87, 0.35);
++    --lr-ask-ink: var(--color-logos-ask-ink, #292524);
++    --lr-ask-ink-soft: var(--color-logos-ask-ink-soft, #57534e);
++    --lr-ask-muted: #78716c;
++    --lr-ask-border: rgba(91, 74, 50, 0.12);
++    --lr-ask-error: var(--color-logos-ask-error, #b91c1c);
++    --lr-ask-error-bg: var(--color-logos-ask-error-bg, #fef2f2);
++    --lr-ask-hero-muted: var(--lr-ask-ink-soft);
++    --lr-handoff-bg: var(--lr-ask-surface);
++    --lr-handoff-border: var(--lr-ask-border);
++    --lr-handoff-brand: var(--lr-ask-ink);
++    --lr-handoff-disclaimer: var(--lr-ask-muted);
++    background-color: var(--lr-ask-bg);
++    color: var(--lr-ask-ink);
++  }
++
++  /* Accordion open state */
++  .lr-ask-s4-section[data-open="true"] {
++    background: rgba(255,255,255,0.88);
++    border-color: var(--lr-ask-accent);
++  }
++
++  /* Citation lock hover */
++  .lr-ask-citation-lock:hover {
++    background: rgba(45,122,104,0.18);
++  }
++
++  /* Graph panel active toggle */
++  .lr-ask-graph-viz-btn--active {
++    background: rgba(45,122,104,0.12);
++    color: var(--lr-ask-navy);
++    font-weight: 600;
++  }
++
++  /* Composer sticky on mobile */
++  @media (max-width: 640px) {
++    .lr-ask-composer {
++      position: sticky;
++      bottom: 0;
++    }
++  }
+*** End of File ***

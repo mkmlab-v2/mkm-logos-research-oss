@@ -1,6 +1,6 @@
 # Logos `/logos-research/ask` · Component Spec v1 (Pack L-Ask P0)
 
-**Surface:** `logos.jema-ai.com/logos-research/ask` · **ASK_UI_REV:** `20260702c`  
+**Surface:** `logos.jema-ai.com/logos-research/ask` · **ASK_UI_REV:** `20260702e`    
 **Scope:** `.logos-research-ask-page` only · DOM/class names **unchanged**
 
 ---
