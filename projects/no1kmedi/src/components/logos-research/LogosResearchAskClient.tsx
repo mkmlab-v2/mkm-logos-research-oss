@@ -20,8 +20,10 @@ import {
   parseS4PublicSections,
   PUBLIC_INQUIRY_DISCLAIMER_KO,
   researchAuxInsightLines,
+  shouldShowPublicSchoolCards,
   snapshotExecutiveText,
   splitS4PublicBody,
+  type PublicSchoolGroupV1,
 } from "@/lib/logosInquiryAskDisplayV1";
 import { consumeLogosInquirySse } from "@/lib/logosInquiryStreamClientV1";
 import { isLogosInquiryPaymentEnabled } from "@/lib/logosInquiryBetaV1";
@@ -38,7 +40,7 @@ type OutputFormat = "text_mvp_report_v1" | "inquiry_report_v1";
 
 type StreamPhase = "idle" | "snapshot" | "s4" | "done";
 
-const ASK_UI_REV = "20260702e";
+const ASK_UI_REV = "20260703a";
 const ASK_TURNS_STORAGE_KEY = "logos_ask_turns_v1";
 
 type PersistedAskStateV1 = {
@@ -210,6 +212,52 @@ function TextMvpReportSections({ report }: { report: LogosTextMvpReportV1 }) {
   );
 }
 
+function PublicSchoolComparisonSection({
+  groups,
+}: {
+  groups: PublicSchoolGroupV1[];
+}) {
+  if (!groups.length) return null;
+  return (
+    <section
+      className="lr-ask-report-section lr-ask-report-section--schools lr-ask-school-cards--public"
+      aria-label="학파별 해석 비교"
+      data-lr-ask-school-cards="1"
+    >
+      <h3>학파별 해석 비교</h3>
+      <p className="lr-ask-muted">[NON_GATING] conflict surface — 단정·실행 지시 아님.</p>
+      {groups.map((group) => {
+        const schools = group.schools ?? [];
+        if (!schools.length) return null;
+        return (
+          <div
+            key={group.conflict_group_id ?? group.lexicon_base ?? schools[0]?.school_tier}
+            className="lr-ask-school-group"
+          >
+            {schools.map((school) => (
+              <article
+                key={`${school.school_tier}-${school.interpretation_ko?.slice(0, 32)}`}
+                className="lr-ask-school-row lr-ask-school-card"
+              >
+                <p>
+                  <span className="lr-ask-tag">{school.school_tier ?? "school"}</span>{" "}
+                  {school.interpretation_ko}
+                </p>
+                {school.verse_refs?.length ? (
+                  <p className="lr-ask-muted">{school.verse_refs.join(" · ")}</p>
+                ) : null}
+                {school.traditions?.length ? (
+                  <p className="lr-ask-muted">{school.traditions.join(" · ")}</p>
+                ) : null}
+              </article>
+            ))}
+          </div>
+        );
+      })}
+    </section>
+  );
+}
+
 function S4PublicInsightSections({
   body,
   streaming,
@@ -327,6 +375,8 @@ function ReportSections({
 
   const graphVerseRefs = s1?.verse_refs ?? [];
   const graphAnchors = s1?.citation_lock_anchors ?? [];
+  const schoolGroups = (s3?.groups ?? []) as PublicSchoolGroupV1[];
+  const showSchoolCards = shouldShowPublicSchoolCards(inquiryQuery || report?.query || "", schoolGroups);
 
   return (
     <div className="lr-ask-report">
@@ -344,6 +394,8 @@ function ReportSections({
               <p className="lr-ask-muted">통찰 생성 중…</p>
             )}
           </section>
+
+          {showSchoolCards ? <PublicSchoolComparisonSection groups={schoolGroups} /> : null}
 
           {readingPack ? (
             <section className="lr-ask-report-section lr-ask-report-section--packs">
@@ -726,12 +778,15 @@ export function LogosResearchAskClient({
   }, [question, running, outputFormat, surfaceContext, handoffDoc]);
 
   useEffect(() => {
-    if (!autorun || autorunOnceRef.current || running) return;
-    const q = question.trim();
-    if (q.length < 12 || turns.length > 0) return;
+    if (!autorun || autorunOnceRef.current || running || turns.length > 0) return;
+    const typed = question.trim();
+    const fallback = sampleQuestions.map((s) => s.trim()).find((s) => s.length >= 12) ?? "";
+    const pick = typed.length >= 12 ? typed : fallback;
+    if (pick.length < 12) return;
+    if (pick !== typed) setQuestion(pick);
     autorunOnceRef.current = true;
-    void submit();
-  }, [autorun, question, running, turns.length, submit]);
+    void submit(pick);
+  }, [autorun, question, running, turns.length, submit, sampleQuestions]);
 
   const pickSampleQuestion = useCallback(
     (sample: string) => {

@@ -5,12 +5,15 @@
 import {
   buildPublicInquiryDisplayModel,
   formatPublicNarrativeParagraphs,
+  meetsDoneProductGoldenRubric,
   meetsPublicNarrativeQuality,
   parseReadingPackSections,
   splitS4PublicBody,
   stripPublicResearchTags,
 } from "../src/lib/logosInquiryAskDisplayV1.ts";
+import { applyInquiryS4QualityGate } from "../src/lib/logosInquiryReportV1.ts";
 import { buildRev21NewCreationThematicAnswerKo } from "../src/lib/logosInquiryVerseThematicV1.ts";
+import { detectPsalm23Topic } from "../src/lib/logosStudioQueryTopicGuardV1.ts";
 
 function assert(cond: boolean, msg: string) {
   if (!cond) throw new Error(msg);
@@ -54,5 +57,31 @@ assert(quality.narrative_ok, "rev21 meets public narrative quality");
 const model = buildPublicInquiryDisplayModel(`${rev21}\n\n---\n\n${packSample}`);
 assert(model.narrativeParagraphs.length >= 2, "display model narrative");
 assert(model.readingPackSections.length >= 1, "display model packs");
+
+const stubBody = "Path envelope concordance pin for orphan veto routing.";
+const gated = applyInquiryS4QualityGate({
+  body: stubBody,
+  bullets: [stubBody],
+  verseRefs: ["Job.28.12", "Ps.23.1"],
+  query: "시편 23편 — 목자 비유와 학파별 해석",
+});
+assert(!/Path\s*envelope|orphan\s*veto/i.test(gated.body), "S4 stub phrases remain after gate");
+assert(/Ps\.23|시편\s*23|목자/i.test(gated.body), "Psalm 23 fallback missing");
+
+const golden = meetsDoneProductGoldenRubric({
+  query: "시편 23편 — 목자 비유와 학파별 해석",
+  s4Body: gated.body,
+  verseRefs: ["Ps.23.1", "Ps.23.4"],
+  schoolGroups: [
+    {
+      schools: [
+        { school_tier: "historical", interpretation_ko: "목자 은유" },
+        { school_tier: "literary", interpretation_ko: "신뢰·길 안내" },
+      ],
+    },
+  ],
+});
+assert(golden.stub_free, "golden stub_free");
+assert(detectPsalm23Topic("시편 23편 — lemma·경로"), "psalm23 detect smoke question");
 
 console.log("[smoke-logos-ask-display-invariants-v1] passed.");

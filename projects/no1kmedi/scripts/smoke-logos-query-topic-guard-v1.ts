@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   applyQueryTopicMismatchGuard,
   detectAntichrist666Topic,
+  detectPsalm23Topic,
   detectQueryTopicMismatch,
 } from "../src/lib/logosStudioQueryTopicGuardV1";
 import type { StudioQueryPayload } from "../src/lib/logosResearchStudioV1";
@@ -41,5 +42,18 @@ assert(
     guarded.answer.includes("Citation lock 밖 stub"),
   "answer refuses forced-fit",
 );
+
+const ps23Q = "시편 23편 — lemma·경로 관점에서 연구 질문을 구체화해 달라";
+assert(detectPsalm23Topic(ps23Q), "detectPsalm23Topic");
+
+const ps23StubPayload: StudioQueryPayload = {
+  ...jobStubPayload,
+  path: {
+    verse_refs: ["Job.28.12", "Job.2.3", "Jer.4.2"],
+    steps: [],
+  },
+};
+const ps23Mismatch = detectQueryTopicMismatch(ps23Q, ps23StubPayload);
+assert(ps23Mismatch?.code === "psalm_23_vs_suffering_stub", "psalm23 mismatch code");
 
 console.log("[smoke-logos-query-topic-guard-v1] passed.");

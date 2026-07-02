@@ -240,10 +240,11 @@ export async function POST(request: NextRequest) {
                 body: report.sections.S4.body_ko,
                 bullets: report.sections.S4.bullets_ko,
                 verseRefs: report.sections.S1.verse_refs ?? [],
+                query: displayQuery,
               });
               report.sections.S4.body_ko = gate.body;
               report.sections.S4.bullets_ko = report.sections.S4.bullets_ko.filter(
-                (b) => !/lemma:gnosis:|shared_lemma=|Lemma\s*연결\s*이웃\s*구절/i.test(b),
+                (b) => !/lemma:gnosis:|shared_lemma=|Lemma\s*연결\s*이웃\s*구절|Path\s*envelope|orphan\s*veto|Gematria_Pin/i.test(b),
               );
               report.sections.S4.format_gate = {
                 applied: true,
@@ -349,10 +350,11 @@ export async function POST(request: NextRequest) {
           body: report.sections.S4.body_ko,
           bullets: report.sections.S4.bullets_ko,
           verseRefs: report.sections.S1.verse_refs ?? [],
+          query: displayQuery,
         });
         report.sections.S4.body_ko = gate.body;
         report.sections.S4.bullets_ko = report.sections.S4.bullets_ko.filter(
-          (b) => !/lemma:gnosis:|shared_lemma=|Lemma\s*연결\s*이웃\s*구절/i.test(b),
+          (b) => !/lemma:gnosis:|shared_lemma=|Lemma\s*연결\s*이웃\s*구절|Path\s*envelope|orphan\s*veto|Gematria_Pin/i.test(b),
         );
         report.sections.S4.format_gate = {
           applied: true,

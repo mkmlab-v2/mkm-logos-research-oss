@@ -1,7 +1,12 @@
 /** Commander-facing ask UI — 3-line executive summary (display only, not API schema). */
 import type { LogosInquiryReportV1 } from "./logosInquiryReportV1";
+import {
+  isPublicS4StubPhrase,
+  PUBLIC_S4_STUB_PHRASE_RE,
+} from "./logosInquiryPublicS4FilterV1";
 import type { StreamSnapshot } from "./logosInquiryStreamV1";
 import type { SasangRegimeHintBTrack } from "./logosInquiryFreezeMetaV1";
+import { detectPsalm23Topic, detectSchoolComparisonIntent } from "./logosInquiryTopicDetectV1";
 import { isStudioBoilerplateKo } from "./logosStudioBoilerplateV1";
 
 type InquiryAuxS2 = Pick<LogosInquiryReportV1["sections"]["S2"], "path_token_preview"> | null | undefined;
@@ -109,12 +114,14 @@ export function splitS4PublicBody(body: string): { narrative: string; readingPac
 }
 
 const GEMATRIA_OR_META_LINE_RE =
-  /combined_sum|vector_4d|hub_score|state16|Gematria_Pin|topology pin|mispar_|lemma:gnosis:|shared_lemma=|Lemma\s*연결\s*이웃\s*구절|^\*\*(Query|Pack|Governance|query_id|utterance_class):/i;
+  /combined_sum|vector_4d|hub_score|state16|Gematria_Pin|topology pin|mispar_|lemma:gnosis:|shared_lemma=|Lemma\s*연결\s*이웃\s*구절|Path\s*envelope|orphan\s*veto|^\*\*(Query|Pack|Governance|query_id|utterance_class):/i;
+
+export { isPublicS4StubPhrase, PUBLIC_S4_STUB_PHRASE_RE };
 
 export function isGematriaOrMetaLine(line: string): boolean {
   const t = (line || "").trim();
   if (!t) return true;
-  return GEMATRIA_OR_META_LINE_RE.test(t) || isStudioBoilerplateKo(t);
+  return GEMATRIA_OR_META_LINE_RE.test(t) || isStudioBoilerplateKo(t) || isPublicS4StubPhrase(t);
 }
 
 export type S4PublicSectionV1 = {
@@ -275,12 +282,18 @@ export function citationPathLabelKo(label: CitationPathLabelV1): string {
 
 /** Public Trust UI — S1 citation lock (display only; API unchanged). */
 export function buildPublicCitationLockModel(
-  report?: Pick<LogosInquiryReportV1, "preset_id" | "query_mode" | "sections"> | null,
+  report?: Pick<LogosInquiryReportV1, "preset_id" | "query_mode" | "sections" | "query"> | null,
   snapshot?: StreamSnapshot | null,
 ): PublicCitationLockModelV1 | null {
   const s1 = report?.sections?.S1 ?? snapshot?.S1;
   if (!s1) return null;
-  const verseRefs = [...(s1.verse_refs ?? [])].slice(0, 8);
+  let verseRefs = [...(s1.verse_refs ?? [])].slice(0, 8);
+  const query = report?.query ?? "";
+  if (detectPsalm23Topic(query)) {
+    const ps23 = verseRefs.filter((r) => /^Ps\.23/i.test(String(r).replace(/\s/g, "")));
+    const rest = verseRefs.filter((r) => !/^Ps\.23/i.test(String(r).replace(/\s/g, "")));
+    verseRefs = ps23.length ? [...ps23, ...rest] : verseRefs;
+  }
   const anchors = s1.citation_lock_anchors ?? [];
   if (!verseRefs.length && !anchors.length) return null;
 
@@ -425,4 +438,62 @@ export function isPlaceholderAssistantTurn(turn: {
   if (turn.streamPhase && turn.streamPhase !== "done") return false;
   const text = (turn.text || "").trim();
   return text === "" || text === "…";
+}
+
+export type PublicSchoolGroupV1 = {
+  conflict_group_id?: string;
+  lexicon_base?: string;
+  school_count?: number;
+  schools?: Array<{
+    school_tier?: string;
+    interpretation_ko?: string;
+    verse_refs?: string[];
+    traditions?: string[];
+  }>;
+};
+
+export function countPublicSchoolRows(groups: PublicSchoolGroupV1[] | null | undefined): number {
+  let n = 0;
+  for (const group of groups ?? []) {
+    n += group.schools?.length ?? 0;
+  }
+  return n;
+}
+
+export { detectSchoolComparisonIntent } from "./logosInquiryTopicDetectV1";
+
+export function shouldShowPublicSchoolCards(
+  query: string,
+  groups: PublicSchoolGroupV1[] | null | undefined,
+): boolean {
+  const schoolCount = countPublicSchoolRows(groups);
+  if (schoolCount < 1) return false;
+  return detectSchoolComparisonIntent(query) || detectPsalm23Topic(query) || schoolCount >= 2;
+}
+
+/** Done-Product ceiling — complements harness smokes (display/rubric only). */
+export function meetsDoneProductGoldenRubric(input: {
+  query: string;
+  s4Body: string;
+  verseRefs?: string[];
+  schoolGroups?: PublicSchoolGroupV1[] | null;
+}): {
+  product_ok: boolean;
+  stub_free: boolean;
+  psalm23_anchor_ok: boolean;
+  school_cards_ok: boolean;
+} {
+  const { narrative } = splitS4PublicBody(input.s4Body);
+  const stub_free = !PUBLIC_S4_STUB_PHRASE_RE.test(narrative || input.s4Body);
+  const psalm23 = detectPsalm23Topic(input.query);
+  const refs = (input.verseRefs ?? []).map((r) => String(r));
+  const psalm23_anchor_ok = !psalm23 || refs.some((r) => /^Ps\.23/i.test(r.replace(/\s/g, "")));
+  const school_cards_ok =
+    !detectSchoolComparisonIntent(input.query) && !psalm23
+      ? true
+      : countPublicSchoolRows(input.schoolGroups) >= 2 ||
+        (psalm23 && countPublicSchoolRows(input.schoolGroups) >= 1);
+  const narrativeQuality = meetsPublicNarrativeQuality(input.s4Body);
+  const product_ok = stub_free && narrativeQuality.narrative_ok && psalm23_anchor_ok && school_cards_ok;
+  return { product_ok, stub_free, psalm23_anchor_ok, school_cards_ok };
 }
