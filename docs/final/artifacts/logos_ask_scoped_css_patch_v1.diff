@@ -1,0 +1,29 @@
+--- a/projects/no1kmedi/src/app/globals.css (Pack L-Ask P0 summary)
++++ b/projects/no1kmedi/src/app/globals.css
+@@ scoped block `.logos-research-ask-page` only @@
+ 
++/* Root tokens (semantic.trust.logos_ask → CSS vars) */
+ .logos-research-ask-page {
++  --lr-ask-bg: #faf7f2;
++  --lr-ask-surface: #ffffff;
++  --lr-ask-accent: #2d7a68;
++  --lr-ask-accent-soft / --lr-ask-accent-border / --lr-ask-gold / --lr-ask-ink …
++  background-color: var(--lr-ask-bg);
++  color: var(--lr-ask-ink);
+ }
+ 
++/* Frame C — Done report split */
+ .logos-research-ask-page .lr-ask-citation-lock { … accent gradient, --lr-ask-accent-border }
+ .logos-research-ask-page .lr-ask-s4-section { border-left 3px --lr-ask-accent; surface white }
+ .logos-research-ask-page .lr-ask-report-split { 58/42 desktop sticky graph (unchanged structure) }
+ .logos-research-ask-page .lr-ask-graph-panel { cream surface token mix }
+ 
++/* Composer + chips */
+ .logos-research-ask-page .lr-btn-primary { background --lr-ask-accent }
+ .logos-research-ask-page .lr-ask-sample-chip { scriptorium pill teal border }
++.logos-research-ask-page .lr-ask-composer { mobile sticky bottom gradient }
+ 
++/* Chat bubbles */
+ .logos-research-ask-page .lr-ask-turn--user .lr-ask-bubble { --lr-ask-accent }
+ 
+ Applied in-repo 2026-07-02 · ASK_UI_REV 20260702c · full diff = git diff globals.css

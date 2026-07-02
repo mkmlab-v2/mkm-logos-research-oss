@@ -12,6 +12,24 @@ const base = (process.env.NO1KMEDI_SMOKE_BASE_URL || "https://jema-ai.com").repl
 
 const probes = [
   {
+    id: "safety_lane_governance_page",
+    url: `${(process.env.NO1KMEDI_APP_SMOKE_BASE_URL || "https://app.jema-ai.com").replace(/\/$/, "")}/safety`,
+    expectStatus: 200,
+    bodyIncludes: ["도메인 혼선 방지", "공개 레인 라우팅 표", "Article 1.3"],
+  },
+  {
+    id: "safety_lanes_alias_redirect",
+    url: `${(process.env.NO1KMEDI_APP_SMOKE_BASE_URL || "https://app.jema-ai.com").replace(/\/$/, "")}/lanes`,
+    expectStatus: 308,
+    locationIncludes: "/safety",
+  },
+  {
+    id: "validation_ring1_page",
+    url: `${(process.env.NO1KMEDI_APP_SMOKE_BASE_URL || "https://app.jema-ai.com").replace(/\/$/, "")}/validation`,
+    expectStatus: 200,
+    bodyIncludes: ["검증", "Ring 1"],
+  },
+  {
     id: "personadiary_page",
     url: `${base}/personadiary`,
     expectStatus: 200,

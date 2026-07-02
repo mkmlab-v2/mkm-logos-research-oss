@@ -1,0 +1,640 @@
+{
+  "$schema": "https://www.designtokens.org/schemas/2025.10/format.json",
+  "schema": "jemaai_dtcg_tokens_proposed_v1",
+  "version": "1.0.0",
+  "updated_at_utc": "2026-07-02T20:30:00Z",
+  "send_gate": "HOLD",
+  "ready_for_external_send": false,
+  "lane_status": "pack_l_ask_p0_cursor_merge",
+  "design_intent": "JEMA AI multi-surface token SSOT — primitive shared · semantic split (clinical / saas / hub) · component per surface. Antigravity fills *_proposed slots only; Cursor merges to globals.css scoped blocks.",
+  "audit_ref": "docs/final/artifacts/jemaai_design_audit_surface_map_v1_latest.json",
+  "prompt_pack_ref": "docs/final/artifacts/jemaai_antigravity_design_prompt_packs_v1_latest.md",
+  "figma_map_ref": "docs/final/artifacts/no1kmedi_figma_token_map_v1.json",
+  "css_ssot": "projects/no1kmedi/src/app/globals.css",
+  "typescript_ssot": "projects/no1kmedi/src/lib/designTokens.ts",
+  "antigravity_instructions_ko": "primitive는 유지·보강만. semantic trust.clinical / trust.saas / trust.hub 분리 필수. component는 신규 hex 금지 — semantic 참조만. css_var_map_existing 변경 시 rationale 필수.",
+  "antigravity_instructions_en": "Do not collapse accent hues. Propose values only in antigravity_proposed_* blocks. Never output full globals.css.",
+  "shared_primitive": {
+    "spacing": {
+      "xs": {
+        "$value": "4px",
+        "$type": "dimension",
+        "css_var": "--space-xs"
+      },
+      "sm": {
+        "$value": "8px",
+        "$type": "dimension",
+        "css_var": "--space-sm"
+      },
+      "md": {
+        "$value": "16px",
+        "$type": "dimension",
+        "css_var": "--space-md"
+      },
+      "lg": {
+        "$value": "24px",
+        "$type": "dimension",
+        "css_var": "--space-lg"
+      },
+      "xl": {
+        "$value": "32px",
+        "$type": "dimension",
+        "css_var": "--space-xl"
+      },
+      "2xl": {
+        "$value": "64px",
+        "$type": "dimension",
+        "css_var": "--space-2xl"
+      }
+    },
+    "radius": {
+      "sm": {
+        "$value": "6px",
+        "$type": "dimension",
+        "css_var": "--radius-sm"
+      },
+      "md": {
+        "$value": "10px",
+        "$type": "dimension",
+        "css_var": "--radius-md"
+      },
+      "lg": {
+        "$value": "12px",
+        "$type": "dimension",
+        "css_var": "--radius-lg"
+      },
+      "pill": {
+        "$value": "999px",
+        "$type": "dimension",
+        "css_var": "--hub-radius-pill"
+      }
+    },
+    "typography": {
+      "font-family": {
+        "$value": "\"Pretendard Variable\", Pretendard, \"Noto Sans KR\", system-ui, sans-serif",
+        "$type": "fontFamily",
+        "css_var": "--font"
+      },
+      "weight-regular": {
+        "$value": 400,
+        "$type": "fontWeight"
+      },
+      "weight-semibold": {
+        "$value": 600,
+        "$type": "fontWeight"
+      },
+      "weight-bold": {
+        "$value": 700,
+        "$type": "fontWeight"
+      },
+      "text-xs": {
+        "$value": "0.8125rem",
+        "$type": "dimension",
+        "css_var": "--text-xs"
+      },
+      "text-sm": {
+        "$value": "0.875rem",
+        "$type": "dimension",
+        "css_var": "--text-sm"
+      },
+      "text-base": {
+        "$value": "1.0625rem",
+        "$type": "dimension",
+        "css_var": "--text-base"
+      },
+      "text-lg": {
+        "$value": "1.125rem",
+        "$type": "dimension",
+        "css_var": "--text-lg"
+      },
+      "text-xl": {
+        "$value": "1.25rem",
+        "$type": "dimension",
+        "css_var": "--text-xl"
+      },
+      "text-hero": {
+        "$value": "clamp(2rem, 5vw, 3.25rem)",
+        "$type": "dimension",
+        "css_var": "--text-hero"
+      },
+      "leading-tight": {
+        "$value": 1.2,
+        "$type": "number",
+        "css_var": "--leading-tight"
+      },
+      "leading-normal": {
+        "$value": 1.65,
+        "$type": "number",
+        "css_var": "--leading-normal"
+      }
+    },
+    "color": {
+      "clinical-green-500": {
+        "$value": "#3d9b84",
+        "$type": "color",
+        "$description": ":root clinical accent (locked)"
+      },
+      "clinical-green-700": {
+        "$value": "#2a6b5c",
+        "$type": "color",
+        "css_var": "--accent-dim"
+      },
+      "saas-blue-500": {
+        "$value": "#5b8cff",
+        "$type": "color",
+        "$description": ".preset-stripe-linear accent (locked)"
+      },
+      "saas-blue-700": {
+        "$value": "#3f6fdb",
+        "$type": "color"
+      },
+      "hub-green-500": {
+        "$value": "#2d7a68",
+        "$type": "color",
+        "$description": "discover v3 accent"
+      },
+      "hub-gold-500": {
+        "$value": "#c5a057",
+        "$type": "color",
+        "css_var": "--hub-gold"
+      },
+      "hub-cream-50": {
+        "$value": "#faf7f2",
+        "$type": "color",
+        "css_var": "--hub-bg"
+      },
+      "ink-900": {
+        "$value": "#0a1210",
+        "$type": "color",
+        "css_var": "--bg"
+      },
+      "surface-800": {
+        "$value": "#121c19",
+        "$type": "color",
+        "css_var": "--surface"
+      },
+      "text-100": {
+        "$value": "#e8ebe9",
+        "$type": "color",
+        "css_var": "--text"
+      },
+      "muted-400": {
+        "$value": "#9aa9a3",
+        "$type": "color",
+        "css_var": "--muted"
+      },
+      "line-alpha": {
+        "$value": "rgba(255, 255, 255, 0.08)",
+        "$type": "color",
+        "css_var": "--line"
+      }
+    },
+    "motion": {
+      "duration-fast": {
+        "$value": "150ms",
+        "$type": "duration",
+        "antigravity_proposed": "150ms"
+      },
+      "duration-normal": {
+        "$value": "220ms",
+        "$type": "duration",
+        "antigravity_proposed": "220ms"
+      },
+      "easing-standard": {
+        "$value": "cubic-bezier(0.2, 0, 0, 1)",
+        "$type": "cubicBezier",
+        "antigravity_proposed": "cubic-bezier(0.2, 0, 0, 1)"
+      }
+    }
+  },
+  "semantic": {
+    "trust": {
+      "clinical": {
+        "accent": {
+          "$value": "{shared_primitive.color.clinical-green-500}",
+          "$type": "color",
+          "maps_to": ":root --accent"
+        },
+        "accent-dim": {
+          "$value": "{shared_primitive.color.clinical-green-700}",
+          "$type": "color"
+        }
+      },
+      "saas": {
+        "accent": {
+          "$value": "{shared_primitive.color.saas-blue-500}",
+          "$type": "color",
+          "maps_to": ".preset-stripe-linear --accent"
+        },
+        "accent-dim": {
+          "$value": "{shared_primitive.color.saas-blue-700}",
+          "$type": "color",
+          "maps_to": ".preset-stripe-linear --accent-dim"
+        },
+        "glow": {
+          "$value": "rgba(91, 140, 255, 0.35)",
+          "$type": "color",
+          "maps_to": ".enterprise-page --enterprise-glow"
+        }
+      },
+      "hub": {
+        "bg": {
+          "$value": "{shared_primitive.color.hub-cream-50}",
+          "$type": "color",
+          "maps_to": "--hub-bg"
+        },
+        "accent": {
+          "$value": "{shared_primitive.color.hub-green-500}",
+          "$type": "color",
+          "maps_to": "--hub-discover-accent"
+        },
+        "gold": {
+          "$value": "{shared_primitive.color.hub-gold-500}",
+          "$type": "color",
+          "maps_to": "--hub-gold"
+        },
+        "ink": {
+          "$value": "#292524",
+          "$type": "color",
+          "maps_to": "--hub-discover-ink"
+        },
+        "muted": {
+          "$value": "#64748b",
+          "$type": "color",
+          "maps_to": "--hub-discover-muted"
+        }
+      },
+      "logos_ask": {
+        "description": "logos.jema-ai.com /logos-research/ask — Scriptorium cream/teal/gold (Pack L-Ask P0)",
+        "bg": {
+          "$value": "#faf7f2",
+          "$type": "color",
+          "maps_to": "--lr-ask-bg"
+        },
+        "surface": {
+          "$value": "#ffffff",
+          "$type": "color",
+          "maps_to": "--lr-ask-surface"
+        },
+        "accent": {
+          "$value": "#2d7a68",
+          "$type": "color",
+          "maps_to": "--lr-ask-accent"
+        },
+        "gold": {
+          "$value": "#c5a057",
+          "$type": "color",
+          "maps_to": "--lr-ask-gold"
+        },
+        "ink": {
+          "$value": "#292524",
+          "$type": "color",
+          "maps_to": "--lr-ask-ink"
+        },
+        "ink-soft": {
+          "$value": "#57534e",
+          "$type": "color",
+          "maps_to": "--lr-ask-ink-soft"
+        },
+        "error": {
+          "$value": "#b91c1c",
+          "$type": "color",
+          "maps_to": "--lr-ask-error"
+        },
+        "error-bg": {
+          "$value": "#fef2f2",
+          "$type": "color",
+          "maps_to": "--lr-ask-error-bg"
+        },
+        "border": {
+          "$value": "rgba(91, 74, 50, 0.12)",
+          "$type": "color",
+          "maps_to": "--lr-ask-border"
+        }
+      }
+    },
+    "surface": {
+      "marketing-dark-bg": {
+        "$value": "{shared_primitive.color.ink-900}",
+        "$type": "color"
+      },
+      "marketing-dark-surface": {
+        "$value": "{shared_primitive.color.surface-800}",
+        "$type": "color"
+      },
+      "enterprise-surface": {
+        "$value": "rgba(14, 22, 38, 0.72)",
+        "$type": "color",
+        "maps_to": ".enterprise-page --enterprise-surface",
+        "antigravity_proposed": "rgba(14, 22, 38, 0.72)"
+      }
+    },
+    "spacing": {
+      "section-y-mobile": {
+        "$value": "{shared_primitive.spacing.xl}",
+        "$type": "dimension",
+        "css_var": "--section-y-mobile"
+      },
+      "section-y-desktop": {
+        "$value": "{shared_primitive.spacing.2xl}",
+        "$type": "dimension",
+        "css_var": "--section-y"
+      }
+    },
+    "jema_os_layer": {
+      "neuro": {
+        "description": "Input · ask pill · short forms — minimal chrome",
+        "antigravity_proposed": {
+          "focus_ring": "0 0 0 2px rgba(91, 140, 255, 0.4)",
+          "input_height": "{shared_primitive.spacing.xl}"
+        }
+      },
+      "symbolic": {
+        "description": "Badges · metrics · tables · artifact paths — dry monospace-friendly",
+        "antigravity_proposed": {
+          "badge_radius": "{shared_primitive.radius.sm}",
+          "metric_strip_gap": "{shared_primitive.spacing.sm}"
+        }
+      },
+      "human": {
+        "description": "Disclaimers · CTAs · clinician routing — high contrast labels",
+        "antigravity_proposed": {
+          "disclaimer_surface": "rgba(10, 18, 16, 0.95)",
+          "cta_min_width": "10.2rem"
+        }
+      }
+    }
+  },
+  "presets": {
+    "jemaai-marketing-stripe-linear": {
+      "surface_routes": [
+        "/",
+        "/home"
+      ],
+      "css_scope": ".preset-stripe-linear",
+      "antigravity_pack": "C",
+      "semantic_accent_role": "trust.saas",
+      "component": {
+        "hero": {
+          "headline-weight": {
+            "$value": 700,
+            "$type": "fontWeight"
+          },
+          "headline-letter-spacing": {
+            "$value": "-0.028em",
+            "$type": "dimension",
+            "maps_to": ".preset-stripe-linear .hero h1"
+          },
+          "lead-max-width": {
+            "$value": "40rem",
+            "$type": "dimension",
+            "antigravity_proposed": "40rem"
+          },
+          "orb-opacity": {
+            "$value": 0.18,
+            "$type": "number",
+            "antigravity_proposed": 0.18
+          }
+        },
+        "btn-primary": {
+          "bg": {
+            "$value": "{semantic.trust.saas.accent}",
+            "$type": "color"
+          },
+          "radius": {
+            "$value": "{shared_primitive.radius.md}",
+            "$type": "dimension"
+          },
+          "min-width": {
+            "$value": "10.2rem",
+            "$type": "dimension",
+            "maps_to": ".preset-stripe-linear .hero-cta .btn"
+          }
+        },
+        "proof-strip": {
+          "gap": {
+            "$value": "{shared_primitive.spacing.sm}",
+            "$type": "dimension"
+          },
+          "font-size": {
+            "$value": "{shared_primitive.typography.text-xs}",
+            "$type": "dimension"
+          }
+        }
+      }
+    },
+    "jemaai-enterprise-trust": {
+      "surface_routes": [
+        "/enterprise",
+        "/validation",
+        "/safety"
+      ],
+      "css_scope": ".enterprise-page",
+      "antigravity_pack": "D",
+      "semantic_accent_role": "trust.saas",
+      "component": {
+        "eyebrow": {
+          "padding-y": {
+            "$value": "{shared_primitive.spacing.xs}",
+            "$type": "dimension"
+          },
+          "padding-x": {
+            "$value": "{shared_primitive.spacing.md}",
+            "$type": "dimension"
+          },
+          "radius": {
+            "$value": "{shared_primitive.radius.pill}",
+            "$type": "dimension"
+          }
+        },
+        "metric-strip": {
+          "gap": {
+            "$value": "{shared_primitive.spacing.sm}",
+            "$type": "dimension",
+            "maps_to": ".validation-metric-strip"
+          },
+          "value-size": {
+            "$value": "{shared_primitive.typography.text-xl}",
+            "$type": "dimension",
+            "antigravity_proposed": "{shared_primitive.typography.text-xl}"
+          }
+        },
+        "safety-table": {
+          "min-width": {
+            "$value": "52rem",
+            "$type": "dimension",
+            "maps_to": ".safety-lanes-table"
+          },
+          "cell-padding": {
+            "$value": "{shared_primitive.spacing.md}",
+            "$type": "dimension",
+            "antigravity_proposed": "{shared_primitive.spacing.md}"
+          }
+        },
+        "badge": {
+          "radius": {
+            "$value": "{shared_primitive.radius.pill}",
+            "$type": "dimension",
+            "maps_to": ".validation-badge"
+          },
+          "font": {
+            "$value": "ui-monospace, monospace",
+            "$type": "fontFamily"
+          }
+        }
+      }
+    },
+    "jemaai-hub-discover-v3": {
+      "surface_routes": [
+        "/hub",
+        "/hub/*"
+      ],
+      "css_scope": ".universe-hub-page--light-chrome.universe-hub-page--discover-v3",
+      "antigravity_pack": "B",
+      "semantic_accent_role": "trust.hub",
+      "component": {
+        "ask-pill": {
+          "radius": {
+            "$value": "{shared_primitive.radius.pill}",
+            "$type": "dimension"
+          },
+          "shadow": {
+            "$value": "0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06)",
+            "$type": "shadow",
+            "maps_to": "--hub-pill-shadow"
+          },
+          "antigravity_proposed": {
+            "height": "{shared_primitive.spacing.xl}",
+            "focus_ring": "0 0 0 2px rgba(45, 122, 104, 0.4)"
+          }
+        },
+        "inspector-panel": {
+          "surface": {
+            "$value": "{semantic.trust.hub.bg}",
+            "$type": "color",
+            "antigravity_proposed": "{semantic.trust.hub.bg}"
+          },
+          "border": {
+            "$value": "{semantic.trust.hub.gold}",
+            "$type": "color",
+            "antigravity_proposed_opacity": 0.15
+          }
+        },
+        "hub-pill-link": {
+          "antigravity_proposed": {
+            "padding_y": "{shared_primitive.spacing.xs}",
+            "font_size": "{shared_primitive.typography.text-sm}"
+          }
+        }
+      }
+    },
+    "jemaai-logos-research-ask": {
+      "surface_routes": [
+        "/logos-research/ask"
+      ],
+      "css_scope": ".logos-research-ask-page",
+      "antigravity_pack": "L-Ask",
+      "semantic_accent_role": "trust.logos_ask",
+      "component": {
+        "citation-lock": {
+          "border": {
+            "$value": "{semantic.trust.logos_ask.accent}",
+            "$type": "color",
+            "maps_to": "--lr-ask-accent-border"
+          }
+        },
+        "s4-section": {
+          "border-left": {
+            "$value": "{semantic.trust.logos_ask.accent}",
+            "$type": "color",
+            "maps_to": ".lr-ask-s4-section border-left"
+          },
+          "radius": {
+            "$value": "{shared_primitive.radius.md}",
+            "$type": "dimension"
+          }
+        },
+        "composer-primary": {
+          "bg": {
+            "$value": "{semantic.trust.logos_ask.accent}",
+            "$type": "color",
+            "maps_to": ".logos-research-ask-page .lr-btn-primary"
+          }
+        }
+      }
+    }
+  },
+  "css_var_map_existing": {
+    "--bg": {
+      "semantic": "surface.marketing-dark-bg",
+      "locked": true
+    },
+    "--surface": {
+      "semantic": "surface.marketing-dark-surface",
+      "locked": true
+    },
+    "--accent": {
+      "semantic": "trust.clinical.accent",
+      "note": "overridden in .preset-stripe-linear to trust.saas"
+    },
+    "--hub-bg": {
+      "semantic": "trust.hub.bg",
+      "locked": true
+    },
+    "--hub-discover-accent": {
+      "semantic": "trust.hub.accent",
+      "locked": true
+    },
+    "--enterprise-glow": {
+      "semantic": "trust.saas.glow",
+      "locked": true
+    },
+    "--lr-ask-bg": {
+      "semantic": "trust.logos_ask.bg",
+      "maps_to": ".logos-research-ask-page"
+    },
+    "--lr-ask-accent": {
+      "semantic": "trust.logos_ask.accent",
+      "maps_to": ".logos-research-ask-page"
+    },
+    "--lr-ask-gold": {
+      "semantic": "trust.logos_ask.gold",
+      "maps_to": ".logos-research-ask-page"
+    },
+    "--lr-ask-ink": {
+      "semantic": "trust.logos_ask.ink",
+      "maps_to": ".logos-research-ask-page"
+    }
+  },
+  "antigravity_proposed_output_slots": [
+    "shared_primitive.motion.duration-fast",
+    "shared_primitive.motion.duration-normal",
+    "semantic.surface.enterprise-surface",
+    "semantic.jema_os_layer.neuro.antigravity_proposed",
+    "semantic.jema_os_layer.symbolic.antigravity_proposed",
+    "semantic.jema_os_layer.human.antigravity_proposed",
+    "presets.jemaai-marketing-stripe-linear.component.hero.lead-max-width",
+    "presets.jemaai-marketing-stripe-linear.component.hero.orb-opacity",
+    "presets.jemaai-enterprise-trust.component.metric-strip.value-size",
+    "presets.jemaai-enterprise-trust.component.safety-table.cell-padding",
+    "presets.jemaai-hub-discover-v3.component.ask-pill.antigravity_proposed",
+    "presets.jemaai-hub-discover-v3.component.inspector-panel.antigravity_proposed",
+    "presets.jemaai-hub-discover-v3.component.hub-pill-link.antigravity_proposed",
+    "semantic.trust.logos_ask",
+    "presets.jemaai-logos-research-ask"
+  ],
+  "forbidden": [
+    "Single global --accent hex for all surfaces",
+    "Hub gold on /validation or /safety",
+    "globals.css full-file replacement",
+    "Fourth font weight or display font family",
+    "Neuroscience-proof marketing gradients"
+  ],
+  "acceptance_after_cursor_merge": [
+    "cd projects/no1kmedi && node scripts/check-design-tokens-smoke.mjs",
+    "cd projects/no1kmedi && npm run check:marketing-copy",
+    "cd projects/no1kmedi && npm run build"
+  ],
+  "reproduce": "py scripts/check_jemaai_dtcg_proposed_v1.py",
+  "gemini_pack_a_ref": "reports/gemini_batch/jemaai_pack_a_dtcg_fill_v1_raw.md"
+}

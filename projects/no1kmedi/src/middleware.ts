@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import {
+  LOCAL_DEV_HOSTS,
+  devSimulateLogosHost,
   isNationalKmAskPath,
   isPublicPatientSurfacePath,
   JEMA_AI_HUB_HOSTS,
@@ -62,6 +64,7 @@ function hubOperatorAccessDenied(): NextResponse {
 export function middleware(request: NextRequest) {
   const host = normalizeRequestHost(request.headers.get("host"));
   const { pathname } = request.nextUrl;
+  const logosDevHost = LOCAL_DEV_HOSTS.has(host) && devSimulateLogosHost();
 
   if (isHubOperatorPath(pathname)) {
     if (process.env.NEXT_PUBLIC_UNIVERSE_HUB_OPERATOR_PANEL !== "1") {
@@ -180,11 +183,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.rewrite(url);
   }
 
-  if (!FARM_HOSTS.has(host) && !LOGOS_HOSTS.has(host)) {
+  if (!FARM_HOSTS.has(host) && !LOGOS_HOSTS.has(host) && !logosDevHost) {
     return NextResponse.next();
   }
 
-  if (LOGOS_HOSTS.has(host)) {
+  if (LOGOS_HOSTS.has(host) || logosDevHost) {
     if (
       pathname.startsWith("/_next") ||
       pathname.startsWith("/api") ||
@@ -194,6 +197,10 @@ export function middleware(request: NextRequest) {
     }
     if (pathname === "/logos-research" || pathname.startsWith("/logos-research/")) {
       return NextResponse.next();
+    }
+    // Local Logos dev: redirect (not rewrite) so stale `/` HTML cache cannot show legacy HQ/clinician.
+    if (logosDevHost && LOCAL_DEV_HOSTS.has(host) && pathname === "/") {
+      return NextResponse.redirect(new URL("/logos-research", request.url), 307);
     }
     const url = request.nextUrl.clone();
     url.pathname = pathname === "/" ? "/logos-research" : `/logos-research${pathname}`;

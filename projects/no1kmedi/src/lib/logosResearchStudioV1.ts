@@ -39,7 +39,22 @@ import {
   synthesizeLogosStudioDynamicAnswer,
   type SynthesisResult,
 } from "./logosStudioSynthesisBridgeV1";
+import {
+  applyQueryTopicMismatchGuardAsync,
+} from "./logosStudioQueryTopicGuardV1";
+import {
+  loadGolden200AnchorRegistry,
+  matchGoldenHubQuery,
+  shouldSuppressStubEmbeddingRoute,
+} from "./logosGolden200AnchorRegistryV1";
 import { resolveReadingPackAnswerForPreset } from "./logosStudioReadingPackBridgeV1";
+import { applyInquiryVerseThematicLayer } from "./logosInquiryVerseThematicV1";
+import { isStudioBoilerplateKo } from "./logosStudioBoilerplateV1";
+import {
+  GEN2_EVE_PRESET_ID,
+  logosStudioAzureDistillEnabled,
+  synthesizeLogosStudioAzureDistill,
+} from "./logosStudioGen2AzureDistillBridgeV1";
 import {
   logosStudioLemmaBridgeEnabled,
   synthesizeLogosStudioLemmaBridge,
@@ -55,6 +70,118 @@ import {
 export const LOGOS_STUDIO_DATA_DIR = path.join(process.cwd(), "public", "data", "logos_studio");
 
 export const LOGOS_STUDIO_GRAPH_SLICE_URL = "/data/logos_studio/graph_slice_v1.json";
+
+const GEN6_QUERY_OVERRIDE_RE =
+  /네피림|nephilim|창세기\s*6|genesis\s*6|gen\.?\s*6|하나님의\s*아들|sons\s*of\s*god|benei|watcher|감시자/i;
+const EVE_CREATION_OVERRIDE_RE = /하와|갈비|갈비뼈|돕는\s*배필|eve|\brib\b|tsela/i;
+export const LOGOS_TOPIC_GEN2_EVE_PRESET_ID = "topic_gen_2_anchor";
+
+/** Force Gen.2 Eve/rib queries off embedding misroutes to Gen.6 BigSet presets. */
+export function resolveGen2EveCreationPresetOverride(
+  query: string,
+  presets: LogosStudioPreset[],
+): string | null {
+  const q = query.trim();
+  if (!q || GEN6_QUERY_OVERRIDE_RE.test(q)) return null;
+  const eve =
+    EVE_CREATION_OVERRIDE_RE.test(q) || (/아담/.test(q) && /뼈|측/.test(q));
+  if (!eve) return null;
+  return presets.find((p) => p.id === LOGOS_TOPIC_GEN2_EVE_PRESET_ID)?.id ?? null;
+}
+
+function azureDistillMinVerseRefs(): number {
+  const raw = Number(process.env.LOGOS_STUDIO_AZURE_DISTILL_MIN_VERSE_REFS || "1");
+  return Number.isFinite(raw) && raw >= 1 ? Math.floor(raw) : 1;
+}
+
+function azureDistillMinComplexitySignals(): number {
+  const raw = Number(process.env.LOGOS_STUDIO_AZURE_DISTILL_COMPLEXITY_MIN_SIGNALS || "2");
+  return Number.isFinite(raw) && raw >= 1 ? Math.floor(raw) : 2;
+}
+
+/** Phase-1: invoke Azure distill when path envelope exists and answer is still thin. */
+export function shouldInvokeAzureDistill(
+  payload: StudioQueryPayload,
+  opts?: { hasReadingPack?: boolean; mode?: "auto" | "force_on" | "force_off" },
+): boolean {
+  return resolveAzureDistillDecision(payload, opts).invoke;
+}
+
+function azureComplexitySignals(payload: StudioQueryPayload, hasReadingPack: boolean) {
+  const answerLen = (payload.answer || "").trim().length;
+  const refs = payload.path?.verse_refs?.length ?? 0;
+  const steps = payload.path?.steps?.length ?? 0;
+  const groups = payload.conflict_context?.group_count ?? 0;
+  const lowConfidence = (payload.evidence_confidence?.ecs_v1 ?? 100) < 65;
+  const hasSynthesis = String(payload.query_mode || "").includes("+synthesis");
+  const signalCount = [
+    hasReadingPack,
+    groups > 0,
+    refs >= 3,
+    steps >= 3,
+    lowConfidence,
+    hasSynthesis,
+    answerLen >= 220 && answerLen <= 1100,
+  ].filter(Boolean).length;
+  return {
+    answerLen,
+    refs,
+    steps,
+    groups,
+    lowConfidence,
+    hasSynthesis,
+    signalCount,
+  };
+}
+
+export function resolveAzureDistillDecision(
+  payload: StudioQueryPayload,
+  opts?: { hasReadingPack?: boolean; mode?: "auto" | "force_on" | "force_off" },
+): { invoke: boolean; reason: string; signal_count: number } {
+  if (opts?.mode === "force_off") return { invoke: false, reason: "forced_off", signal_count: 0 };
+  if (opts?.mode === "force_on") return { invoke: true, reason: "forced_on", signal_count: 99 };
+  if (!logosStudioAzureDistillEnabled()) return { invoke: false, reason: "env_disabled", signal_count: 0 };
+  const mode = String(payload.query_mode || "");
+  if (mode.includes("azure_distill")) return { invoke: false, reason: "already_distilled", signal_count: 0 };
+  if (mode.includes("topic_mismatch_guard")) return { invoke: false, reason: "topic_mismatch_guard", signal_count: 0 };
+  const verseRefs = payload.path?.verse_refs ?? [];
+  if (verseRefs.length < azureDistillMinVerseRefs()) {
+    return { invoke: false, reason: "insufficient_verse_refs", signal_count: 0 };
+  }
+  const signals = azureComplexitySignals(payload, Boolean(opts?.hasReadingPack));
+  const hasReadingPack = Boolean(opts?.hasReadingPack);
+  const isGraphragPath = mode.includes("graphrag");
+  const isThematicLongtail =
+    mode.includes("inquiry_thematic_rev21") || mode.includes("inquiry_thematic");
+  // Recommended hybrid: longtail GraphRAG without reading_pack → Azure synthesis.
+  if (
+    !hasReadingPack &&
+    isGraphragPath &&
+    verseRefs.length >= azureDistillMinVerseRefs() &&
+    (signals.answerLen < 900 || isThematicLongtail)
+  ) {
+    return { invoke: true, reason: "longtail_no_reading_pack", signal_count: signals.signalCount };
+  }
+  if (signals.answerLen >= 1400) return { invoke: false, reason: "answer_already_long", signal_count: signals.signalCount };
+  const minSignals = azureDistillMinComplexitySignals();
+  if (signals.signalCount >= minSignals) {
+    return { invoke: true, reason: "complexity_threshold_met", signal_count: signals.signalCount };
+  }
+  return { invoke: false, reason: "complexity_threshold_not_met", signal_count: signals.signalCount };
+}
+
+function mergeAzureDistillAnswer(
+  azureBody: string,
+  evidenceBody: string,
+  hasReadingPack: boolean,
+): string {
+  const appendix = (evidenceBody || "").trim();
+  if (!appendix || (!hasReadingPack && isStudioBoilerplateKo(appendix))) return azureBody;
+  const sectionTitle = hasReadingPack
+    ? "### Reading pack (citation-locked evidence)"
+    : "### Citation-locked evidence";
+  return `${azureBody}\n\n---\n\n${sectionTitle}\n\n${appendix}`;
+}
 
 
 
@@ -403,6 +530,11 @@ export async function resolvePresetIdAsync(
   const requestedId = opts.preset_id?.trim();
   const queryTrim = opts.query?.trim() ?? "";
 
+  const gen2Override = resolveGen2EveCreationPresetOverride(queryTrim, presets);
+  if (gen2Override && !requestedId) {
+    return { preset_id: gen2Override, match: "text", preset_guard: null };
+  }
+
   if (requestedId && queryTrim) {
     const queryRoute = await resolvePresetIdAsync(
       presets,
@@ -456,7 +588,21 @@ export async function resolvePresetIdAsync(
     tier01.preset_id.startsWith("era_") ||
     tier01.preset_id.startsWith("topic_");
 
-  if (weakTier01) return { preset_id: embedded.preset_id, match: "embedding", preset_guard: null };
+  if (weakTier01) {
+    const registry = await loadGolden200AnchorRegistry();
+    const hub = registry ? matchGoldenHubQuery(queryTrim, registry) : null;
+    if (
+      hub &&
+      embedded.preset_id &&
+      hub.blocked_preset_ids?.includes(embedded.preset_id)
+    ) {
+      return { preset_id: null, match: "none", preset_guard: null };
+    }
+    if (shouldSuppressStubEmbeddingRoute(queryTrim, embedded.preset_id)) {
+      return { preset_id: null, match: "none", preset_guard: null };
+    }
+    return { preset_id: embedded.preset_id, match: "embedding", preset_guard: null };
+  }
 
   return { ...tier01, preset_guard: null };
 
@@ -613,6 +759,14 @@ export type StudioQueryPayload = {
     requery_poc?: boolean;
   };
   reproduce_note?: string;
+  azure_distill_meta?: {
+    attempted: boolean;
+    mode: "auto" | "force_on" | "force_off";
+    decision_reason: string;
+    decision_signal_count: number;
+    applied: boolean;
+    failure_reason?: string | null;
+  };
 };
 
 function clamp01(v: number): number {
@@ -790,14 +944,13 @@ export function enrichStudioQueryWithGraphrag(
   const dynamicScore = graphrag.bridges_matched;
 
   const customQuery = query.trim() !== (payload.query || "").trim();
+  const preserveCuratedPresetAnswer = payload.preset_id === LOGOS_TOPIC_GEN2_EVE_PRESET_ID;
 
   const shouldOverlay =
-
-    customQuery ||
-
-    dynamicScore > staticScore ||
-
-    (rp.verse_refs?.length ?? 0) > (payload.path.verse_refs?.length ?? 0);
+    !preserveCuratedPresetAnswer &&
+    (customQuery ||
+      dynamicScore > staticScore ||
+      (rp.verse_refs?.length ?? 0) > (payload.path.verse_refs?.length ?? 0));
 
 
 
@@ -833,7 +986,7 @@ export function enrichStudioQueryWithGraphrag(
 
     query: query.trim() || payload.query,
 
-    answer: customQuery ? graphrag.answer_ko : payload.answer,
+    answer: customQuery && !preserveCuratedPresetAnswer ? graphrag.answer_ko : payload.answer,
 
     path: {
 
@@ -874,7 +1027,7 @@ export function enrichStudioQueryWithGraphrag(
 export async function buildStudioQueryWithGraphrag(
   presetId: string | null,
   query: string,
-  opts?: { ecsExpandPoc?: boolean },
+  opts?: { ecsExpandPoc?: boolean; azureDistillMode?: "auto" | "force_on" | "force_off" },
 ): Promise<StudioQueryPayload | null> {
 
   const q = query.trim();
@@ -954,38 +1107,118 @@ export async function buildStudioQueryWithGraphrag(
   }
 
   if (payload) {
-    const activePayload = payload;
+    const activePayload = applyInquiryVerseThematicLayer(payload, q);
+    payload = await applyQueryTopicMismatchGuardAsync(activePayload, q);
+    const topicMismatch = String(payload.query_mode || "").includes("topic_mismatch_guard");
     const presetsDoc = await loadLogosStudioPresets();
-    const activePresetId = activePayload.preset_id;
+    const activePresetId = payload.preset_id;
     const presetRow = activePresetId
       ? presetsDoc.presets.find((p) => p.id === activePresetId)
       : null;
-    const packAnswer = await resolveReadingPackAnswerForPreset(
-      activePresetId,
-      presetRow?.job_reading_pack_preset_id,
-      q,
-      activePayload.conflict_context?.groups?.[0]?.conflict_group_id,
-    );
+    let packAnswer: string | null = null;
+    if (!topicMismatch) {
+      packAnswer = await resolveReadingPackAnswerForPreset(
+        activePresetId,
+        presetRow?.job_reading_pack_preset_id,
+        q,
+        payload.conflict_context?.groups?.[0]?.conflict_group_id,
+      );
+    }
     if (packAnswer) {
       const synthesized = Boolean(
-        activePayload.synthesis_meta &&
-          typeof activePayload.synthesis_meta === "object" &&
-          "synthesis_mode" in activePayload.synthesis_meta,
+        payload.synthesis_meta &&
+          typeof payload.synthesis_meta === "object" &&
+          "synthesis_mode" in payload.synthesis_meta,
       );
       const packSectionsStart = packAnswer.indexOf("###");
       const packSections =
         packSectionsStart >= 0 ? packAnswer.slice(packSectionsStart).trim() : packAnswer;
       if (synthesized && packSections) {
         payload = {
-          ...activePayload,
-          answer: `${activePayload.answer}\n\n${packSections}`,
-          query_mode: `${activePayload.query_mode || "preset"}+reading_pack`,
+          ...payload,
+          answer: `${payload.answer}\n\n${packSections}`,
+          query_mode: `${payload.query_mode || "preset"}+reading_pack`,
         };
       } else {
         payload = {
-          ...activePayload,
+          ...payload,
           answer: packAnswer,
-          query_mode: `${activePayload.query_mode || "preset"}+reading_pack`,
+          query_mode: `${payload.query_mode || "preset"}+reading_pack`,
+        };
+      }
+    }
+
+    const azureDistillMode = opts?.azureDistillMode ?? "auto";
+    const azureDecision =
+      !topicMismatch
+        ? resolveAzureDistillDecision(payload, {
+            hasReadingPack: Boolean(packAnswer),
+            mode: azureDistillMode,
+          })
+        : { invoke: false, reason: "topic_mismatch_guard", signal_count: 0 };
+    payload = {
+      ...payload,
+      azure_distill_meta: {
+        attempted: !topicMismatch,
+        mode: azureDistillMode,
+        decision_reason: azureDecision.reason,
+        decision_signal_count: azureDecision.signal_count,
+        applied: false,
+        failure_reason: null,
+      },
+    };
+    if (!topicMismatch && azureDecision.invoke && q) {
+      const azureDistill = await synthesizeLogosStudioAzureDistill(payload, q);
+      if (
+        azureDistill.ok &&
+        azureDistill.citation_valid !== false &&
+        azureDistill.answer_ko
+      ) {
+        const packBody = payload.answer || "";
+        const patch = azureDistill.insight_patch;
+        const hasReadingPack = Boolean(packAnswer);
+        payload = {
+          ...payload,
+          answer: mergeAzureDistillAnswer(azureDistill.answer_ko, packBody, hasReadingPack),
+          synthesis_meta: azureDistill as Extract<SynthesisResult, { ok: true }>,
+          insight_card: {
+            preset_id: payload.preset_id,
+            slot: payload.insight_card?.slot ?? "azure_distill",
+            slot_label_ko:
+              payload.insight_card?.slot_label_ko ??
+              (activePresetId === GEN2_EVE_PRESET_ID ? "Gen2 Azure 합성" : "Azure 합성"),
+            one_liner_ko: patch?.one_liner_ko ?? payload.insight_card?.one_liner_ko,
+            verse_anchors: payload.path.verse_refs?.slice(0, 12),
+            gap_ko: patch?.gap_ko ?? payload.insight_card?.gap_ko,
+            governance: patch?.governance ?? payload.insight_card?.governance,
+          },
+          query_mode: `${payload.query_mode || "preset"}+azure_distill`,
+          azure_distill_meta: {
+            attempted: true,
+            mode: azureDistillMode,
+            decision_reason: azureDecision.reason,
+            decision_signal_count: azureDecision.signal_count,
+            applied: true,
+            failure_reason: null,
+          },
+        };
+      } else {
+        const failureReason =
+          !azureDistill.ok
+            ? String(azureDistill.error || "azure_distill_failed")
+            : azureDistill.citation_valid === false
+              ? "citation_lint_failed"
+              : "empty_answer";
+        payload = {
+          ...payload,
+          azure_distill_meta: {
+            attempted: true,
+            mode: azureDistillMode,
+            decision_reason: azureDecision.reason,
+            decision_signal_count: azureDecision.signal_count,
+            applied: false,
+            failure_reason: failureReason,
+          },
         };
       }
     }
@@ -995,6 +1228,9 @@ export async function buildStudioQueryWithGraphrag(
     payload &&
     logosStudioLemmaBridgeEnabled() &&
     q &&
+    !String(payload.query_mode || "").includes("reading_pack") &&
+    !String(payload.query_mode || "").includes("azure_distill") &&
+    !String(payload.query_mode || "").includes("topic_mismatch_guard") &&
     ((payload.path.verse_refs?.length ?? 0) > 0 || (payload.path.node_ids?.length ?? 0) > 0)
   ) {
     const bridge = await synthesizeLogosStudioLemmaBridge(payload, q);

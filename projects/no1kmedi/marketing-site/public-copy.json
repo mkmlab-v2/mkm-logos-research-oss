@@ -3,10 +3,78 @@
     "locale": "ko-KR",
     "brand": "JEMA AI",
     "public_domain": "jema-ai.com",
-    "audience": "일반인(AI 한의학 이해·무료 사전 리포트) 및 한의원·한의사(도입·진료보조)",
+    "audience": "엔터프라이즈·파트너 심사관, 개발자(OSS repro), 일반인(한의학 사전 리포트), 한의원·한의사(진료보조)",
     "note": "사용자 노출 문구의 단일 원천. 공개 브랜드는 jema-ai.com이며, 내부 레포 식별자와 공개 브랜드 표기는 분리한다.",
     "ssot_cross_domain_cta": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1·§1.1b (도메인 분기·허브 CTA 초안; 법무 확정 전 가이드)",
-    "positioning_ssot": "docs/final/artifacts/mkm_agentic_engineering_positioning_onepager_v1_latest.md"
+    "positioning_ssot": "docs/final/artifacts/mkm_agentic_engineering_positioning_onepager_v1_latest.md",
+    "identity_constitution": "docs/final/MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md"
+  },
+  "ring0_identity": {
+    "schema": "mkm_ring0_identity_v1",
+    "ring": 0,
+    "constitution_ref": "docs/final/MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md",
+    "ko": {
+      "one_liner": "한국 사상의학 전통을 참고하는, 비임상·보조형 AI 인사이트 도구.",
+      "hero": {
+        "eyebrow": "사상의학 전통 · 비임상 보조 AI",
+        "title": "한국 사상의학 전통을 참고하는, 비임상·보조형 AI 인사이트",
+        "lead": "일반인은 상담 전 참고 리포트를, 한의사는 구조화된 문진·SOAP 보조를 받습니다. 동의수세보원에 뿌리둔 전통은 교육·문화적 맥락으로만 참고하며, 진단·처방·치료를 대체하지 않습니다.",
+        "disclaimer": "본 서비스는 의료 진단·처방·치료를 제공하지 않습니다. 전통 사상의학은 교육·문화적 맥락으로만 참고하며, 건강 관련 결정은 한의사 등 면허 전문가와 상담하십시오."
+      },
+      "ctas": {
+        "validation": {
+          "label": "검증·엔진 스펙 보기",
+          "href": "/validation",
+          "note": "Ring 1 — 중립 엔지니어링·거버넌스 증빙"
+        },
+        "clinician": {
+          "label": "한의사 보조 화면",
+          "href": "/clinician",
+          "note": "Ring 2a — 원장 확정 전제"
+        },
+        "enterprise": {
+          "label": "기업·파트너 소개",
+          "href": "/enterprise",
+          "note": "B2B · JEMA OS v2"
+        },
+        "lane_governance": {
+          "label": "도메인 혼선 방지",
+          "href": "/safety",
+          "note": "Ring 0 — 레인 라우팅·면책 거버넌스"
+        }
+      }
+    },
+    "en": {
+      "one_liner": "A non-clinical, assistive AI insight tool informed by Korean Sasang constitutional medicine tradition.",
+      "hero": {
+        "eyebrow": "Sasang tradition · non-clinical assist",
+        "title": "Assistive AI insights informed by Korean Sasang constitutional medicine",
+        "lead": "Consumers receive pre-visit reference reports; clinicians receive structured intake and SOAP assist drafts. The Donguisusebowon tradition is cited for educational and cultural context only — not diagnosis, prescription, or treatment.",
+        "disclaimer": "This service does not provide medical diagnosis, prescription, or treatment. Sasang constitutional medicine is referenced for educational and cultural context only. Consult a licensed practitioner for health decisions."
+      },
+      "ctas": {
+        "validation": {
+          "label": "View validation & engine spec",
+          "href": "/validation",
+          "note": "Ring 1 — neutral engineering evidence"
+        },
+        "clinician": {
+          "label": "Clinician assist workspace",
+          "href": "/clinician",
+          "note": "Ring 2a — physician-in-the-loop"
+        },
+        "enterprise": {
+          "label": "Enterprise & partners",
+          "href": "/enterprise",
+          "note": "B2B · JEMA OS v2"
+        },
+        "lane_governance": {
+          "label": "Lane routing & confusion prevention",
+          "href": "/safety",
+          "note": "Ring 0 — governance table · what we do NOT do"
+        }
+      }
+    }
   },
   "positioning_v1": {
     "schema": "mkm_positioning_footer_v1",
@@ -39,7 +107,35 @@
       "coordinate_envelope_note": "좌표 봉투 · UMR·LTM·post-it 포인터 (읽기 전용)",
       "coordinate_envelope_disclaimer": "exit 0·handoff는 배관 증명이며 GA·실매매 승격이 아닙니다.",
       "locale_toggle": "EN",
-      "validation_missing": "질문을 입력하거나 위 의도 칩을 선택해 주세요. 빈 제출로 외부 사이트로 이동하지 않습니다."
+      "validation_missing": "질문을 입력하거나 위 의도 칩을 선택해 주세요. 빈 제출로 외부 사이트로 이동하지 않습니다.",
+      "reviewer_section_label": "심사·파트너 30초 경로",
+      "reviewer_blocks": [
+        {
+          "title": "JEMA OS v2",
+          "body": "하이브리드 메모리 · L5 admission · send_gate HOLD · Fact-Lock",
+          "href": "/enterprise",
+          "cta": "검증 미들웨어"
+        },
+        {
+          "title": "Logos 오픈 베타",
+          "body": "문의 Q&A · 스트리밍 계약 · [HYPO] research_only",
+          "href": "https://logos.jema-ai.com/logos-research/ask",
+          "cta": "Ask 베타",
+          "external": true
+        },
+        {
+          "title": "OSS 재현",
+          "body": "서드파티 클론 · exit 0 smoke · harness only",
+          "href": "https://github.com/mkmlab-v2/mkm-logos-research-oss",
+          "cta": "Harness 재현",
+          "external": true
+        }
+      ],
+      "reviewer_enterprise_cta": {
+        "label": "엔터프라이즈 증거 (CS#7 · FM#4 · L5)",
+        "href": "/enterprise#admission-evidence",
+        "body": "artifact 경로 · fixture bench · SLA 아님"
+      }
     },
     "en": {
       "title": "Ask your one most important question",
@@ -61,33 +157,138 @@
       "coordinate_envelope_note": "Coordinate envelope · UMR·LTM·post-it pointers (read-only)",
       "coordinate_envelope_disclaimer": "exit 0 and handoff prove plumbing only — not GA or live-trading promotion.",
       "locale_toggle": "KO",
-      "validation_missing": "Enter a question or pick an intent chip above. Empty submit will not redirect externally."
+      "validation_missing": "Enter a question or pick an intent chip above. Empty submit will not redirect externally.",
+      "reviewer_section_label": "Reviewer path (30s)",
+      "reviewer_blocks": [
+        {
+          "title": "JEMA OS v2",
+          "body": "Hybrid Memory · L5 admission · send_gate HOLD · Fact-Lock",
+          "href": "/enterprise",
+          "cta": "Verification middleware"
+        },
+        {
+          "title": "Logos Open Beta",
+          "body": "Inquiry Q&A · streaming contract · [HYPO] research_only",
+          "href": "https://logos.jema-ai.com/logos-research/ask",
+          "cta": "Open Ask beta",
+          "external": true
+        },
+        {
+          "title": "OSS Repro",
+          "body": "Third-party clone · exit 0 smoke · harness only",
+          "href": "https://github.com/mkmlab-v2/mkm-logos-research-oss",
+          "cta": "Reproduce harness",
+          "external": true
+        }
+      ],
+      "reviewer_enterprise_cta": {
+        "label": "Enterprise evidence (CS#7 · FM#4 · L5)",
+        "href": "/enterprise#admission-evidence",
+        "body": "artifact paths · fixture benches · not SLA"
+      }
+    }
+  },
+  "hub_shell": {
+    "ko": {
+      "sidebar_aria": "MKM 플러그인",
+      "sidebar_expand": "사이드바 펼치기",
+      "sidebar_collapse": "사이드바 접기",
+      "classic_landing": "클래식 소개 랜딩",
+      "footer_ecosystem": "MKM Ecosystem 안내",
+      "footer_legacy": "레거시 데모 (선택)",
+      "footer_links_aria": "MKM 관련 도메인 안내",
+      "footer_legacy_aria": "레거시 데모 링크",
+      "hub_loading": "Hub 로딩 중…",
+      "intent_group_aria": "질문 의도",
+      "inspector_title": "증거 · 관측 패널",
+      "inspector_lead": "읽기 전용. 실매매·Track A SLA·허브 LLM과 합선되지 않습니다.",
+      "inspector_artifacts_heading": "Logos Observatory · 아티팩트",
+      "inspector_meta": "[HYPO] · research_only · 성경 렌즈 [NON_GATING]",
+      "inspector_studio_cta": "Graph Studio 열기 (상용 · on-domain)",
+      "inspector_topology_loaded": "topology loaded · {verses} verses",
+      "inspector_topology_missing": "JSON 미배포 — logos_corpus_4d_topology_hub_v1.json 또는 /hub/logos spoke 참고.",
+      "inspector_logos_more": "Logos Observatory 더 보기 →",
+      "inspector_logos_topology_heading": "Logos 4D topology (live)",
+      "inspector_corpus_snapshot": "코퍼스 {verses}절 · 정적 스냅샷",
+      "inspector_hub_candidates_empty": "hub 후보 없음",
+      "inspector_topology_file_missing": "logos_corpus_4d_topology_hub_v1.json 미배포 — 본문 관측소만 참고.",
+      "inspector_b2b_heading": "B2B 스포크",
+      "inspector_link_compression": "압축 데모 [DRAFT]",
+      "inspector_link_logos": "Logos 관측소",
+      "inspector_link_life": "라이프 케어",
+      "inspector_link_customize": "패키지 라더 · 상담"
+    },
+    "en": {
+      "sidebar_aria": "MKM plugins",
+      "sidebar_expand": "Expand sidebar",
+      "sidebar_collapse": "Collapse sidebar",
+      "classic_landing": "Classic marketing landing",
+      "footer_ecosystem": "MKM ecosystem links",
+      "footer_legacy": "Legacy demos (optional)",
+      "footer_links_aria": "MKM related domains",
+      "footer_legacy_aria": "Legacy demo links",
+      "hub_loading": "Loading hub…",
+      "intent_group_aria": "Question intent",
+      "inspector_title": "Evidence · observation panel",
+      "inspector_lead": "Read-only. Not merged with live trading, Track A SLA, or hub LLM.",
+      "inspector_artifacts_heading": "Logos Observatory · artifacts",
+      "inspector_meta": "[HYPO] · research_only · Logos lens [NON_GATING]",
+      "inspector_studio_cta": "Open Graph Studio (commercial · on-domain)",
+      "inspector_topology_loaded": "topology loaded · {verses} verses",
+      "inspector_topology_missing": "JSON not deployed — see logos_corpus_4d_topology_hub_v1.json or /hub/logos spoke.",
+      "inspector_logos_more": "More Logos Observatory →",
+      "inspector_logos_topology_heading": "Logos 4D topology (live)",
+      "inspector_corpus_snapshot": "Corpus {verses} verses · static snapshot",
+      "inspector_hub_candidates_empty": "No hub candidates",
+      "inspector_topology_file_missing": "logos_corpus_4d_topology_hub_v1.json not deployed — observatory page only.",
+      "inspector_b2b_heading": "B2B spokes",
+      "inspector_link_compression": "Compression demo [DRAFT]",
+      "inspector_link_logos": "Logos observatory",
+      "inspector_link_life": "Life care",
+      "inspector_link_customize": "Package ladder · contact"
     }
   },
   "hub_links": {
+    "validation_engine": {
+      "href": "https://jema-ai.com/validation",
+      "label": "검증·엔진 스펙 보기",
+      "label_en": "Validation & engine spec",
+      "sublabel": "Ring 1 · OOS·HOLD·analysis_only · 엔지니어링 중립 톤 · 투자·실매매 아님"
+    },
+    "lane_governance": {
+      "href": "https://jema-ai.com/safety",
+      "label": "도메인 혼선 방지",
+      "label_en": "Lane routing governance",
+      "sublabel": "Ring 0 · 레인별 하지 않는 일 · identity cluster 분리 · 결합 마케팅 금지"
+    },
     "showroom_jemaai": {
       "href": "https://jemaai.cloud/public_observe_v1.html",
       "label": "공개 관측 보드 보기",
+      "label_en": "Public observe board",
       "sublabel": "Topology·매크로 관측 데모 · Time-to-Trust · 투자·주문·수익 보장 아님 · research_only"
     },
     "premium_mkmlife": {
       "href": "https://mkmlife.com/oracle-sphere",
       "label": "원퀘스천 프리미엄 리포트",
+      "label_en": "One-question premium report",
       "sublabel": "질문 한 개·다중 렌즈 관측 리포트 · JEMA OS v2 연결 스냅샷 · 대체 진료·투자 조언·실매매 아님"
     },
     "b2b_acodeai": {
       "href": "https://a-codeai.com",
       "label": "토큰·압축 API (B2B)",
+      "label_en": "Token · compression API (B2B)",
       "sublabel": "정적 랜딩과 API 경로 분리·도입 문의는 해당 도메인 정책 따름"
     },
     "jema_os_enterprise": {
       "href": "/enterprise",
       "label": "JEMA OS v2 · 검증 미들웨어",
+      "label_en": "JEMA OS v2 · verification middleware",
       "sublabel": "Neuro → Symbolic → Human · send_gate HOLD · exit 0·handoff는 배관 증명(GA 아님)"
     },
     "research_mkmlab": {
       "href": "https://research.no1kmedi.com",
       "label": "MKM LAB 분자한의학 연구소·생산 제품",
+      "label_en": "MKM LAB research · products",
       "sublabel": "발효 NO 대사체·연구소 라인업 · 구 mkmlab.space 이전 · 상업 문의는 jema-ai.com"
     },
     "personadiary_preview": {
@@ -108,6 +309,7 @@
     "evidence_pack_v0": {
       "href": "/enterprise/apply",
       "label": "Evidence Pack v0 (Tier-0 사전 감사)",
+      "label_en": "Evidence Pack v0 (Tier-0 pre-audit)",
       "sublabel": "MKM-Compression-Evidence-Pack-v0 · DRAFT · publish_allowed=false · 테넌트 PoC 프록시만"
     },
     "farm_b2b_smartfarm": {
@@ -116,13 +318,21 @@
       "sublabel": "노지·시설 SI · 하드웨어 파트너·API 연동 · 충남 금산 파일럿 · 투자·의료 조언 아님"
     },
     "research_logos": {
-      "href": "https://logos.jema-ai.com",
-      "label": "성경·텍스트 연구 워크스페이스 (Logos)",
-      "sublabel": "상호참조 GraphRAG · citation lock · Track B [HYPO] research_only · 투자·실매매·교리 판매 아님"
+      "href": "https://logos.jema-ai.com/logos-research/ask",
+      "label": "Logos Scripture · Ask 베타",
+      "label_en": "Logos Scripture · Ask Beta",
+      "sublabel": "Inquiry Q&A beta · citation lock · Track B [HYPO] research_only · payment HOLD"
+    },
+    "logos_beta_ask": {
+      "href": "https://logos.jema-ai.com/logos-research/ask",
+      "label": "Logos Ask · 오픈 베타",
+      "label_en": "Logos Ask · Open Beta",
+      "sublabel": "logos.jema-ai.com · streaming inquiry · OSS repro on GitHub · not live trading"
     },
     "clinician_support": {
       "href": "https://app.jema-ai.com/clinician",
       "label": "한의사 진료 보조 · 문진",
+      "label_en": "Clinician assist · intake",
       "sublabel": "SOAP·care bundle·체질 가설 — 원장 확정 전제 · 진단·처방 대체 아님 · 제안서·대외 URL은 jema-ai"
     },
     "national_km_ask": {
@@ -148,11 +358,11 @@
   },
   "header": {
     "brand_name": "JEMA AI",
-    "brand_tagline": "AI 한의학 · 임상 지원"
+    "brand_tagline": "Hybrid Memory OS · 검증 미들웨어"
   },
   "seo": {
-    "title": "JEMA AI | AI 한의학과 한의 임상 지원",
-    "description": "일반인에게는 한의학 관점의 사전 정리 리포트를, 의료진에게는 근거 기반 진료 준비 초안을 지원합니다. 사상의학 임상 프레임과 생활·패턴 신호를 보조로 결합합니다. 진단·처방을 대신하지 않습니다."
+    "title": "JEMA AI | Sasang-informed assistive AI · clinical workflow support",
+    "description": "Non-clinical, assistive AI informed by Korean Sasang constitutional medicine tradition. Pre-visit reports for consumers and clinician-assist drafts for licensed practitioners — not diagnosis, prescription, or treatment replacement."
   },
   "nav": {
     "service_group": "서비스",
@@ -182,16 +392,19 @@
     "reception": "/reception",
     "enterprise": "/enterprise",
     "developer": "/developer/graph-insights",
-    "contact": "#contact"
+    "contact": "#contact",
+    "validation": "/validation",
+    "safety": "/safety"
   },
   "hero": {
-    "eyebrow": "한의원 진료 보조 워크플로우",
-    "title": "일반인 건강상담 안내와 한의사 진료보조를 함께 제공하는 AI 한의학 플랫폼",
-    "subtitle": "일반인은 홈페이지에서 간단 상담 후 카카오 설문으로 연결되고, 한의사는 구조화된 문진 정보를 바탕으로 진료 판단을 보조받습니다. 최종 진단·처방은 한의사가 수행합니다.",
+    "eyebrow": "사상의학 전통 · 비임상 보조 AI",
+    "title": "한국 사상의학 전통을 참고하는, 비임상·보조형 AI 인사이트",
+    "subtitle": "일반인은 상담 전 참고 리포트를, 한의사는 구조화된 문진·SOAP 보조를 받습니다. 전통 사상의학은 교육·문화적 맥락으로만 참고하며, 최종 진단·처방은 한의사가 수행합니다.",
     "cta_primary": "상담 전 참고 리포트 시작",
     "cta_secondary": "의료진 보조 화면 보기",
     "cta_tertiary": "도입·요금 문의",
-    "cta_quaternary": "리포트/PIN 조회",
+    "cta_quaternary": "검증·엔진 스펙",
+    "cta_validation_href": "/validation",
     "proof_aria_label": "핵심 가치",
     "proof_items": [
       "근거 출처 매핑",
@@ -487,6 +700,13 @@
   ],
   "safety": {
     "title": "안전·법적 고지",
+    "section_lead": "의료·투자·실매매 경계를 먼저 선언합니다. 레인별 역할 분리는 전용 거버넌스 페이지에서 확인하세요.",
+    "lane_governance_cta": {
+      "label": "도메인 혼선 방지 · 레인 라우팅 표",
+      "label_en": "Lane routing governance table",
+      "href": "/safety",
+      "note": "Ring 0 · what we do NOT do per lane"
+    },
     "items": [
       "본 서비스는 의료기기·원격진료가 아닌, 의료진의 의사결정을 보조하는 정보·정리 도구로 제공됩니다.",
       "서비스 결과는 참고용 인사이트이며, 최종 진단·처방·의무기록 확정은 의료진이 직접 수행합니다.",
@@ -643,6 +863,273 @@
     },
     "success": "접수 완료: 1영업일 내에 무료 검증 안내를 드립니다."
   },
+  "validation_engine": {
+    "schema": "mkm_validation_engine_ring1_v1",
+    "ring": 1,
+    "constitution_ref": "docs/final/MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md",
+    "safe_copy_ref": "docs/final/artifacts/JEMAAI_TECH_PROMO_SAFE_COPY_V1.md",
+    "seo": {
+      "title": "JEMA AI | Validation & Engine Spec (Ring 1)",
+      "title_ko": "JEMA AI | 검증·엔진 스펙 (Ring 1)",
+      "description": "Governed multi-lens inference with reproducible B-track validation. analysis_only · HOLD · not investment or live-trading advice.",
+      "description_ko": "재현 가능한 B-track 검증 파이프라인 기반 통제형 멀티 렌즈 추론. analysis_only · HOLD · 투자·실매매 조언 아님."
+    },
+    "nav": {
+      "brand_tagline": "Validation · Ring 1",
+      "back_home": "브랜드 허브",
+      "performance": "성과·OOS",
+      "governance": "거버넌스",
+      "reproduce": "재현 경로",
+      "enterprise": "기업·파트너",
+      "main_aria_label": "검증·엔진 스펙"
+    },
+    "hero": {
+      "eyebrow": "Ring 1 · Engineering evidence",
+      "title": "재현 가능한 검증 파이프라인 기반의 통제된 멀티 렌즈 추론 엔진",
+      "title_en": "A Governed Multi-Lens Inference Engine with Reproducible Validation Pipelines",
+      "metrics": [
+        { "label": "30일 B-track 검증", "value": "+3.33pp", "scope": "candidate vs baseline" },
+        { "label": "252일 B-track 검증", "value": "+3.97pp", "scope": "candidate vs baseline" },
+        { "label": "품질 등급", "value": "A", "scope": "bridge quality composite" }
+      ]
+    },
+    "what_it_does": {
+      "title": "무엇을 하나요",
+      "body": "다층 맥락 앵커와 행동 기반 시장 신호를 결합해, 엄격한 거버넌스 제약 하에서 신뢰도 높은 비자명 의사결정 인사이트를 도출합니다.",
+      "body_en": "Synthesizes multi-layer contextual anchors and behavioral market signals to produce high-fidelity, non-obvious decision insights under strict governance constraints."
+    },
+    "performance": {
+      "title": "검증 및 성과",
+      "lead": "롤링 OOS(Out-of-Sample) 검증으로 회귀 리스크를 낮추고 다중 윈도우 안정성을 점검합니다.",
+      "lead_en": "Rolling Out-of-Sample (OOS) validation reduces regression risk and checks stability across multiple windows.",
+      "rows": [
+        { "label": "30일 candidate vs baseline", "value": "+3.33pp" },
+        { "label": "252일 candidate vs baseline", "value": "+3.97pp" },
+        { "label": "252일 롤링 양수비율", "value": "75.0%" },
+        { "label": "252일 롤링 평균 델타", "value": "+1.7613pp" }
+      ],
+      "scope_note": "B-track · research_only · 특정 자산 수익 보장 아님"
+    },
+    "governance": {
+      "title": "안전·거버넌스",
+      "badges": ["analysis_only", "HOLD", "human-gated promotion"],
+      "body": "엄격한 analysis_only 런타임과 HOLD 거버넌스를 적용합니다. 모든 승격은 사람 중심 게이트와 아티팩트 증빙을 전제로 하며, 무단 SSOT 자동승격 및 직접 자동실행 경로를 허용하지 않습니다.",
+      "body_en": "Strict analysis_only runtime and enforced HOLD governance. Promotions remain human-gated and artifact-evidenced; no ungoverned auto-promotion to SSOT or direct auto-execution paths."
+    },
+    "reproduce": {
+      "title": "재현성",
+      "lead": "핵심 주장은 재현 가능한 아티팩트와 스크립트 검증 경로에 연결됩니다.",
+      "lead_en": "Every key claim is traceable to reproducible artifacts and scripted checks.",
+      "evidence": [
+        {
+          "artifact": "docs/final/artifacts/market_psych_ops_onepage_brief_v1_latest.md",
+          "command": "py scripts/build_market_psych_ops_onepage_brief_v1.py"
+        },
+        {
+          "artifact": "docs/final/artifacts/market_psych_promotion_gate_v2_latest.json",
+          "command": "py scripts/check_market_psych_promotion_gate_v2.py"
+        },
+        {
+          "artifact": "docs/final/artifacts/market_psych_rolling_oos_validation_v1_latest.json",
+          "command": "py scripts/build_market_psych_rolling_oos_validation_v1.py"
+        }
+      ],
+      "gate_command": "py scripts/check_public_facing_copy_gate_v1.py --target projects/no1kmedi/marketing-site/public-copy.json --ring 1"
+    },
+    "cta": {
+      "primary": { "label": "기업·파트너 증거 경로", "href": "/enterprise#admission-evidence" },
+      "secondary": { "label": "도입·문의", "href": "/enterprise#contact" }
+    },
+    "disclaimer": {
+      "title": "고지",
+      "items": [
+        "본 페이지는 Ring 1 엔지니어링·검증 증빙용이며 투자 자문·실매매·의료 판단을 제공하지 않습니다.",
+        "표기 수치는 B-track 검증 윈도우 기준이며 수익·성과 보장이 아닙니다.",
+        "send_gate: HOLD · research_only — 공개 문구 변경 시 combination fingerprint 게이트를 통과해야 합니다."
+      ]
+    }
+  },
+  "lane_governance": {
+    "schema": "mkm_lane_governance_ring0_v1",
+    "ring": 0,
+    "constitution_ref": "docs/final/MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md",
+    "seo": {
+      "title": "JEMA AI | Lane routing & confusion prevention (Ring 0)",
+      "title_ko": "JEMA AI | 도메인 혼선 방지 · 라우팅 거버넌스 (Ring 0)",
+      "description": "What each public lane does NOT do. Domains are routed separately; no combined identity-cluster marketing on a single surface.",
+      "description_ko": "공개 레인별 하지 않는 일과 분리 라우팅을 명시합니다. 단일 마케팅 표면에서 identity cluster 결합 서사를 사용하지 않습니다."
+    },
+    "nav": {
+      "brand_tagline": "Lane governance · Ring 0",
+      "back_home": "브랜드 허브",
+      "lanes": "레인 표",
+      "principles": "원칙",
+      "firewall": "결합 방지",
+      "validation": "검증 증빙",
+      "enterprise": "기업·파트너",
+      "main_aria_label": "도메인 혼선 방지"
+    },
+    "hero": {
+      "eyebrow": "Ring 0 · Risk governance",
+      "title": "도메인 혼선 방지 · 라우팅 거버넌스",
+      "title_en": "Lane routing governance & confusion prevention",
+      "lead": "본 페이지는 공개 레인별 역할 분리와 하지 않는 일을 명시합니다. 단일 히어로·문단·슬라이드에서 결합 마케팅 서사를 사용하지 않습니다.",
+      "lead_en": "This page documents per-lane boundaries and what we do NOT do. We do not combine identity-cluster narratives on a single marketing surface."
+    },
+    "principles": {
+      "title": "거버넌스 원칙",
+      "title_en": "Governance principles",
+      "items": [
+        {
+          "title_ko": "단일 앵커 (Ring 0)",
+          "title_en": "Single anchor (Ring 0)",
+          "body_ko": "jema-ai.com 브랜드 허브는 사상의학 전통을 참고하는 비임상·보조형 AI 한 줄 앵커만 유지합니다.",
+          "body_en": "The jema-ai.com hub keeps one anchor: non-clinical assistive AI informed by Sasang tradition."
+        },
+        {
+          "title_ko": "레인 분리 라우팅",
+          "title_en": "Separated lane routing",
+          "body_ko": "소비자 원퀘스천·연구 워크스페이스·엔지니어링 증빙은 각각 독립 목적지로 분기합니다. 허브 본문에 융합 엔진을 암시하지 않습니다.",
+          "body_en": "Consumer reports, research workspaces, and engineering evidence each route to independent destinations. The hub body does not imply a fused engine."
+        },
+        {
+          "title_ko": "하지 않는 일 명문화",
+          "title_en": "Explicit non-goals",
+          "body_ko": "진단 대체·사주 확정·교리 판매·실매매 연동을 제공하지 않습니다. 규제·심사 관점에서 경계선을 먼저 선언합니다.",
+          "body_en": "We do not provide diagnosis replacement, fortune certainty, doctrine sales, or live trading hooks. Boundaries are declared before capability claims."
+        }
+      ]
+    },
+    "lanes_table": {
+      "title": "공개 레인 라우팅 표",
+      "title_en": "Public lane routing table",
+      "caption": "각 행은 하나의 공개 레인만 설명합니다. 목적지 링크로 이동하세요 — 본 표는 결합 엔진을 설명하지 않습니다.",
+      "caption_en": "Each row describes one public lane only. Follow the destination link — this table does not describe a coupled backend.",
+      "columns": {
+        "lane_ko": "공개 레인",
+        "lane_en": "Public lane",
+        "role_ko": "허브 역할",
+        "role_en": "Hub role",
+        "not_do_ko": "하지 않는 일",
+        "not_do_en": "What we do NOT do",
+        "route_ko": "목적지",
+        "route_en": "Destination"
+      },
+      "rows": [
+        {
+          "lane_id": "sasang_ring0",
+          "public_label_ko": "사상의학 전통 맥락",
+          "public_label_en": "Sasang constitutional tradition",
+          "role_ko": "jema-ai.com 브랜드 허브 (Ring 0)",
+          "role_en": "jema-ai.com brand hub (Ring 0)",
+          "not_do_ko": "진단·처방·체질 확정을 제공하지 않습니다.",
+          "not_do_en": "Does not provide diagnosis, prescription, or constitution typing.",
+          "route_label_ko": "한의사 보조 · 웰니스",
+          "route_label_en": "Clinician assist · wellness",
+          "route_href": "/clinician",
+          "route_external": false
+        },
+        {
+          "lane_id": "myeongri_consumer",
+          "public_label_ko": "명리·만세력 소비자 레인",
+          "public_label_en": "Myeongri · manseryeok consumer lane",
+          "role_ko": "허브 직접 서비스 아님 — 외부 분기",
+          "role_en": "Not a hub-native service — external spoke",
+          "not_do_ko": "사주 확정·투자 결합·진단 근거로 사용하지 않습니다.",
+          "not_do_en": "Not used for fortune certainty, investment coupling, or diagnostic proof.",
+          "route_label_ko": "mkmlife 원퀘스천",
+          "route_label_en": "mkmlife one-question",
+          "route_href": "https://mkmlife.com/oracle-sphere",
+          "route_external": true
+        },
+        {
+          "lane_id": "logos_research",
+          "public_label_ko": "성경 연구 워크스페이스",
+          "public_label_en": "Scripture research workspace",
+          "role_ko": "독립 서브도메인 (Ring 2c)",
+          "role_en": "Independent subdomain (Ring 2c)",
+          "not_do_ko": "교리 판매·투자 결합·사상 체질 단정을 제공하지 않습니다.",
+          "not_do_en": "Does not provide doctrine sales, investment coupling, or Sasang constitution claims.",
+          "route_label_ko": "Logos 연구 Ask",
+          "route_label_en": "Logos research Ask",
+          "route_href": "https://logos.jema-ai.com/logos-research/ask",
+          "route_external": true
+        },
+        {
+          "lane_id": "cognitive_wellness",
+          "public_label_ko": "인지·웰니스 설계 원칙",
+          "public_label_en": "Cognitive · wellness design principles",
+          "role_ko": "교육·UI 설명 보조 (비임상)",
+          "role_en": "Educational · UI explanation assist (non-clinical)",
+          "not_do_ko": "뇌과학적 증명·수익 보장·치료 효능 주장으로 사용하지 않습니다.",
+          "not_do_en": "Not used as neuroscience proof, return guarantee, or treatment efficacy claim.",
+          "route_label_ko": "환자 웰니스 안내",
+          "route_label_en": "Patient wellness entry",
+          "route_href": "/wellness",
+          "route_external": false
+        },
+        {
+          "lane_id": "validation_ring1",
+          "public_label_ko": "엔지니어링·검증 증빙",
+          "public_label_en": "Engineering · validation evidence",
+          "role_ko": "중립 Ring 1 표면",
+          "role_en": "Neutral Ring 1 surface",
+          "not_do_ko": "전통 철학 홍보·투자·실매매 조언 표면으로 사용하지 않습니다.",
+          "not_do_en": "Not used as tradition philosophy promo or investment · live-trading advice surface.",
+          "route_label_ko": "검증·엔진 스펙",
+          "route_label_en": "Validation & engine spec",
+          "route_href": "/validation",
+          "route_external": false
+        },
+        {
+          "lane_id": "observe_showroom",
+          "public_label_ko": "공개 관측 쇼룸",
+          "public_label_en": "Public observation showroom",
+          "role_ko": "지연·추상 신호 데모 (Ring 2d)",
+          "role_en": "Delayed · abstract signal demo (Ring 2d)",
+          "not_do_ko": "실매매·자동 주문 연동·수익 보장을 제공하지 않습니다.",
+          "not_do_en": "Does not provide live trading, auto-execution, or return guarantees.",
+          "route_label_ko": "jemaai.cloud 관측 보드",
+          "route_label_en": "jemaai.cloud observe board",
+          "route_href": "https://jemaai.cloud/public_observe_v1.html",
+          "route_external": true
+        }
+      ]
+    },
+    "firewall": {
+      "title": "결합 fingerprint 방지",
+      "title_en": "Combination fingerprint firewall",
+      "lead": "MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md Article 1.3 — 단일 문단·히어로·CTA 클러스터에서 identity cluster 두 개 이상 결합 금지.",
+      "lead_en": "MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md Article 1.3 — no two or more identity clusters in one paragraph, hero, or CTA cluster.",
+      "rules": [
+        "Article 1.3: C-SASANG cluster — 단독 Ring 0 표면만 허용합니다.",
+        "Article 1.3: C-MYEONGRI cluster — mkmlife 등 소비자 spoke로만 분기합니다.",
+        "Article 1.3: C-LOGOS cluster — logos.jema-ai.com으로만 분기합니다.",
+        "Article 1.3: C-MARKET cluster — 공개 허브 히어로·슬라이드에 사용하지 않습니다.",
+        "Article 1.3: FAIL-COMP-004 — 도메인 간 서사 합산·승격 주장을 공개 카피에 사용하지 않습니다."
+      ],
+      "gate_command": "py scripts/check_public_facing_copy_gate_v1.py --target projects/no1kmedi/marketing-site/public-copy.json --ring 0"
+    },
+    "cta": {
+      "primary": { "label": "검증·엔진 스펙 (Ring 1)", "href": "/validation" },
+      "secondary": { "label": "브랜드 허브", "href": "/" }
+    },
+    "disclaimer": {
+      "title": "고지",
+      "title_en": "Notice",
+      "items": [
+        "본 페이지는 공개 라우팅·면책 거버넌스 문서이며 의료·투자·실매매 조언을 제공하지 않습니다.",
+        "레인 표는 역할 분리 설명용이며 내부 다중 렌즈 결합식·미공개 파이프라인을 공개하지 않습니다.",
+        "문구 변경 시 combination fingerprint 게이트(exit 0)를 통과해야 합니다."
+      ],
+      "items_en": [
+        "This page is a public routing and disclaimer governance document — not medical, investment, or live-trading advice.",
+        "The lane table explains role separation only; it does not disclose internal multi-lens coupling or unreleased pipelines.",
+        "Copy changes must pass the combination fingerprint gate (exit 0)."
+      ]
+    },
+    "legacy_clinical_safety_ref": "safety"
+  },
   "enterprise": {
     "seo": {
       "title": "JEMA AI | JEMA OS v2 — 검증 미들웨어 (기업·파트너)",
@@ -652,6 +1139,7 @@
       "brand_tagline": "JEMA OS v2 · 기업",
       "back_home": "임상·소비자 허브",
       "jema_os": "JEMA OS",
+      "admission_evidence": "L5 · CS#7",
       "pillars": "핵심 가치",
       "proof": "확인 경로",
       "research": "연구",
@@ -663,7 +1151,7 @@
       "eyebrow": "JEMA OS v2 · 검증 미들웨어",
       "title": "로컬에서 가볍게, 규칙으로 무겁게",
       "subtitle": "클라우드 LLM 앞에 두는 운영 미들웨어 OS입니다. 로컬 올라마로 초안(Neuro)만 만들고, Fact-Lock·플러그인 슬롯(Symbolic)으로 검증한 뒤, send_gate(Human) 없이는 밖으로 나가지 않습니다. Powered by MKM kernel · on-prem friendly.",
-      "cta_primary": "공개 관측 보기",
+      "cta_primary": "증거 경로 (L5 · CS#7 · FM#4)",
       "cta_secondary": "B2B API · 문서"
     },
     "jema_os": {
@@ -794,6 +1282,50 @@
     "proof": {
       "title": "말보다 먼저 확인하세요",
       "lead": "지연·스냅샷 기반 관측입니다. “실시간 무지연”·수익 보장 표현을 쓰지 않습니다."
+    },
+    "admission_evidence": {
+      "section_label": "Admission · workflow",
+      "title": "L5 gate · CS#7 · FM#4 (fixture benches)",
+      "lead": "Disk SSOT only — reproducible commands and JSON artifacts. Not production SLA or customer contracts.",
+      "hold_badge": "send_gate HOLD",
+      "items": [
+        {
+          "id": "l5_runner",
+          "label": "L5 runner policy (GPU/LLM admission)",
+          "command": "py scripts/build_jema_os_runner_policy_v1.py",
+          "artifact": "docs/final/artifacts/jema_os_runner_policy_v1_latest.json",
+          "note": "golden16_live_fixture_not_sla · check exit 0"
+        },
+        {
+          "id": "l5_gpu_bench",
+          "label": "L5 GPU efficiency bench (fixture)",
+          "command": "py scripts/run_gpu_inference_efficiency_bench_v1.py",
+          "artifact": "reports/gpu_inference_efficiency_bench_v1_latest.json",
+          "note": "L4 serving KPIs separate — FAIL-COMP-004"
+        },
+        {
+          "id": "cs7_e2e",
+          "label": "CS ticket triage E2E (#7)",
+          "command": "py scripts/run_cs_ticket_triage_e2e_chain_v1.py",
+          "artifact": "reports/cs_ticket_triage_e2e_chain_v1_latest.json",
+          "note": "synthetic v16 · chain_hit_rate fixture · not SLA"
+        },
+        {
+          "id": "fm4_runbook",
+          "label": "FM/PAM runbook handoff (#4)",
+          "command": "py scripts/run_fm_pam_runbook_bench_v1.py",
+          "artifact": "reports/fm_pam_runbook_bench_v1_latest.json",
+          "note": "synthetic v8 · intake_hit_rate fixture · not SLA"
+        },
+        {
+          "id": "oss_repro",
+          "label": "Logos OSS third-party repro",
+          "command": "py scripts/run_logos_oss_third_party_repro_evidence_v1.py",
+          "artifact": "reports/logos_oss_third_party_repro_evidence_v1_latest.json",
+          "note": "harness only · no full corpus · payment HOLD"
+        }
+      ],
+      "disclaimer": "exit 0 proves plumbing and reproducibility — not GA, revenue, live trading, or hallucination-free guarantees."
     },
     "wtt_persona_os": {
       "section_label": "Persona OS",

@@ -60,5 +60,5 @@ export function useLogosStudioGraphSlice(enabled = true) {
     };
   }, [enabled]);
 
-  return { graphDoc, hopIndex, loadError };
+  return { graphDoc, hopIndex, loadError, loading: enabled && graphDoc === null && loadError === null };
 }

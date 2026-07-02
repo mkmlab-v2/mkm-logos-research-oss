@@ -7,9 +7,10 @@
   },
   "nav": {
     "skip": "본문으로 건너뛰기",
-    "home": "홈",
-    "docs": "학술 라이브러리",
-    "studio": "연구 스튜디오",
+    "home": "소개",
+    "ask": "베타 Q&A",
+    "docs": "문서",
+    "studio": "Studio (Pro)",
     "metrics": "지표",
     "tiers": "티어"
   },
@@ -25,6 +26,24 @@
     "lead": "On-domain Graph Studio + GitHub reproduce. Paid SEND/billing remains send_gate HOLD until commander enables.",
     "send_gate": "HOLD",
     "ready_for_external_send": false
+  },
+  "ask": {
+    "eyebrow": "Public Beta v0.1 · 텍스트만",
+    "title": "성경·텍스트 Q&A",
+    "lead": "ChatGPT/Gemini 유사 질문→답변. citation lock · 학파 비교 · lemma 네트워크 · 게마트리아 — 텍스트 리포트 JSON만 (그래픽·Studio 제외).",
+    "sample_questions": [
+      "시편 23편 — 목자 비유와 학파별 해석 차이",
+      "욥기 고난과 의의 문제 — 학파별 해석 차이는 무엇인가?",
+      "이사야 6장 부르심 — 학파·맥락 분기를 citation lock으로 정리해 달라",
+      "요한복음 3:16 — lemma·경로 관점에서 연구 질문을 구체화해 달라"
+    ],
+    "placeholder": "예: 욥기 고난과 의의 — 학파별 해석 차이는? · 일반 고민도 구체적으로 입력",
+    "run_label": "질문하기",
+    "running_label": "분석 중…",
+    "governance": "Track B [HYPO] · research_only · 무료 8회/일 · 결제는 OSS 검증 후",
+    "handoff_label": "mkmlife /oracle-sphere (consumer SKU)",
+    "handoff_url": "https://mkmlife.com/oracle-sphere",
+    "export_json": "리포트 JSON 내보내기"
   },
   "studio": {
     "hero_eyebrow": "상용 워크스페이스 · logos.jema-ai.com",
@@ -138,11 +157,47 @@
     "bench_note": "Holdout B0 ~12% · B3 ~89% (fixture) — operational post-processor scores are labeled separately."
   },
   "hero": {
-    "eyebrow": "Cross-reference Graph · Citation-locked research",
-    "title": "상호참조 지식 그래프 기반\n성경·텍스트 연구 워크스페이스",
-    "lead": "교리 판매가 아니라, 주석·경로·인용 잠금(citation lock)으로 연구 워크플로를 지원합니다. 투자·실매매·Track A와 격리된 B-track 연구 레이어입니다.",
-    "cta_primary": "기관·연구 파일럿 문의",
-    "cta_secondary": "Graph Studio 라이브 데모 (30초)"
+    "eyebrow": "Public Beta · 성경 텍스트 Q&A",
+    "title": "성경 질문 →\n인용·학파·경로 리포트",
+    "lead": "ChatGPT처럼 질문하고 답변을 받습니다. citation lock · 학파 비교 · lemma 메타 — 그래픽 Studio는 베타 이후 별도 SKU입니다. Track B [HYPO] · research_only.",
+    "cta_primary": "베타 Q&A 시작",
+    "cta_secondary": "GitHub 피드백"
+  },
+  "inquiry_beta": {
+    "badge": "Public Beta v0.1",
+    "tagline_ko": "오픈베타 v0.1 — 성경 Q&A 무료 8회/일 · 결제는 OSS 검증 후. Issues로 피드백 주세요.",
+    "github_repo": "https://github.com/mkmlab-v2/mkm-logos-research-oss",
+    "github_issues": "https://github.com/mkmlab-v2/mkm-logos-research-oss/issues/new?template=beta_feedback.yml",
+    "github_discussions": "https://github.com/mkmlab-v2/mkm-logos-research-oss/discussions",
+    "feedback_cta": "GitHub Issues · 피드백",
+    "oss_cta": "OSS 하네스 (GitHub)",
+    "reproduce_hint": "UI 베타(logos.jema-ai.com/ask)와 OSS(mkm-logos-research-oss) 범위는 다릅니다. 하네스는 pytest로 재현 · 제품 피드백은 Issues.",
+    "studio_deferred_title": "Graph Studio (Pro) — 베타 범위 외",
+    "studio_deferred_lead": "경로·그래프·Canvas는 복잡도상 별도 탭. 사용자 모집·피드백 루프는 텍스트 Q&A부터 안정화합니다.",
+    "how_it_works": [
+      {
+        "title": "1. 질문",
+        "body": "구절·주제·고민을 한 문장 이상으로 입력 (최소 12자)."
+      },
+      {
+        "title": "2. 리포트",
+        "body": "S1 인용 lock · S2 lemma 메타 · S3 학파 분기 · S4 통찰 텍스트 — JSON보내기 가능."
+      },
+      {
+        "title": "3. 피드백",
+        "body": "GitHub Issues/Discussions에 재현 단계·스크린샷·질문 예시를 남겨 주세요."
+      }
+    ]
+  },
+  "inquiry_home": {
+    "title": "바로 질문하기 — Standard Q&A",
+    "lead": "ChatGPT/Gemini 유사 텍스트 Q&A. S1–S5 리포트(citation lock · 학파 비교 · lemma 메타) — 그래픽·Studio와 분리.",
+    "cta": "Q&A 페이지 열기",
+    "sample_questions": [
+      "욥기 고난과 의의 문제 — 학파별 해석 차이는 무엇인가?",
+      "이사야 6장 부르심 — 학파·맥락 분기를 citation lock으로 정리해 달라",
+      "시편 23편 — lemma·경로 관점에서 연구 질문을 구체화해 달라"
+    ]
   },
   "landing": {
     "value_title": "핵심 가치 — 경로가 보이는 주석 워크스페이스",
@@ -204,9 +259,15 @@
     "items": [
       {
         "id": "demo",
-        "name": "Demo",
+        "name": "Demo · Q&A",
         "audience": "누구나",
-        "note": "logos.jema-ai.com 온도메인 Studio · citation lock · NON_GATING · 무료"
+        "note": "/logos-research/ask 텍스트 Q&A · 일 8회 쿼터 · citation lock · NON_GATING · 무료"
+      },
+      {
+        "id": "studio",
+        "name": "Graph Studio",
+        "audience": "연구·데모",
+        "note": "/logos-research/studio 경로·그래프 시각화 · Pro 그래픽 SKU (결제는 추후)"
       },
       {
         "id": "pilot",

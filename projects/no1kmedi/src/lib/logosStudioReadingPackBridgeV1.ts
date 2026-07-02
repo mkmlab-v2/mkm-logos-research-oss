@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
+import { getSyncGolden200Registry, matchGoldenHubQuery } from "./logosGolden200HubMatchV1";
 import { LOGOS_STUDIO_DATA_DIR } from "./logosResearchStudioV1";
 
 export type ReadingPackRow = {
@@ -45,12 +46,37 @@ const SLICE_REGISTRY: SliceRegistryEntry[] = [
     introLineKo:
       "66=66 1:1 압축·단일 독해 단정 없음. 아래 Pack별 spine 읽기 프레임만 제시합니다 [NON_GATING].",
   },
+  {
+    fileName: "gen2_eve_reading_pack_slice_v1.json",
+    queryId: "gen2_eve_creation_symbol",
+    introLineKo:
+      "「갈비/측에서 하와」 상징·비유·원어·학파·4D·자동 concordance — Pack 6종 병렬 [NON_GATING].",
+  },
+  {
+    fileName: "passion_crown_reading_pack_slice_v1.json",
+    queryId: "passion_crown_symbol",
+    introLineKo:
+      "가시면류관 수난 서사 — 복음서 앵커(Matt/Mark/John) Pack 3종 병렬 [NON_GATING].",
+  },
+  {
+    fileName: "antichrist_666_reading_pack_slice_v1.json",
+    queryId: "antichrist_666_symbol",
+    introLineKo:
+      "666·적그리스도 — 계시록·요한서신·데살로니가후서 앵커 Pack 3종 병렬 [NON_GATING].",
+  },
+  {
+    fileName: "rev21_new_creation_reading_pack_slice_v1.json",
+    queryId: "rev21_new_creation",
+    introLineKo:
+      "Rev 21 새 하늘·새 땅 — 종말·위로 서사 Pack 3종 병렬 · Job/666 stub 합선 금지 [NON_GATING].",
+  },
 ];
 
 const PRESET_TO_SLICE_FILE: Record<string, string> = {
   job_job_suffering_reason: "job_reading_pack_slice_v1.json",
   job_existential_suffering: "job_reading_pack_slice_v1.json",
   isaiah_youtube_spine_v1: "isaiah_youtube_reading_pack_slice_v1.json",
+  topic_gen_2_anchor: "gen2_eve_reading_pack_slice_v1.json",
 };
 
 const CONFLICT_GROUP_TO_SLICE_FILE: Record<string, string> = {
@@ -84,7 +110,7 @@ export async function loadJobReadingPackSlice(): Promise<ReadingPackSlice | null
   return loadReadingPackSlice("job_reading_pack_slice_v1.json");
 }
 
-function truncateExcerpt(text: string, maxChars = 520): string {
+function truncateExcerpt(text: string, maxChars = 1100): string {
   const clean = text.replace(/\r\n/g, "\n").trim();
   if (clean.length <= maxChars) return clean;
   const cut = clean.slice(0, maxChars);
@@ -129,11 +155,28 @@ export function buildReadingPackScriptoriumAnswer(
   return lines.join("\n");
 }
 
+function hubSliceFileName(hubId: string): string {
+  return `${hubId}_reading_pack_slice_v1.json`;
+}
+
 function resolveSliceFileName(
   presetId: string | null | undefined,
   readingPackQueryId: string | null | undefined,
   conflictGroupId?: string | null,
+  query?: string,
 ): string | null {
+  if (query) {
+    const hub = matchGoldenHubQuery(query, getSyncGolden200Registry());
+    if (hub?.hub_id === "antichrist_666") {
+      return "antichrist_666_reading_pack_slice_v1.json";
+    }
+    if (hub?.hub_id === "passion_crown") {
+      return "passion_crown_reading_pack_slice_v1.json";
+    }
+    if (hub?.reading_pack_artifact) {
+      return hubSliceFileName(hub.hub_id);
+    }
+  }
   if (conflictGroupId && CONFLICT_GROUP_TO_SLICE_FILE[conflictGroupId]) {
     return CONFLICT_GROUP_TO_SLICE_FILE[conflictGroupId];
   }
@@ -153,7 +196,7 @@ export async function resolveReadingPackAnswerForPreset(
   query: string,
   conflictGroupId?: string | null,
 ): Promise<string | null> {
-  const sliceFile = resolveSliceFileName(presetId, readingPackQueryId, conflictGroupId);
+  const sliceFile = resolveSliceFileName(presetId, readingPackQueryId, conflictGroupId, query);
   if (!sliceFile) return null;
 
   const slice = await loadReadingPackSlice(sliceFile);

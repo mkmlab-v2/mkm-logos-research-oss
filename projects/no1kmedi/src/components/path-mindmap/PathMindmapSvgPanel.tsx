@@ -35,11 +35,15 @@ export type PathMindmapSvgPanelProps = {
   gradientOuter?: string;
   leafKinds?: string[];
   onLeafClick?: (node: MindmapLayoutNode) => void;
+  nodeTooltips?: Record<string, string>;
+  disablePulseAnimation?: boolean;
   demoProgress?: number;
   demoLabel?: string;
   demoRunning?: boolean;
   onReplayDemo?: () => void;
   replayLabel?: string;
+  /** When set, query/title renders above the SVG; root circle stays icon-only. */
+  externalRootCaption?: string;
 };
 
 export function PathMindmapSvgPanel({
@@ -60,15 +64,34 @@ export function PathMindmapSvgPanel({
   gradientOuter = "#faf7f2",
   leafKinds = ["verse"],
   onLeafClick,
+  nodeTooltips,
+  disablePulseAnimation = false,
   demoProgress = 0,
   demoLabel,
   demoRunning = false,
   onReplayDemo,
   replayLabel = "경로 데모 재생",
+  externalRootCaption,
 }: PathMindmapSvgPanelProps) {
+  function summarizeNodeLabel(node: MindmapLayoutNode): string {
+    const raw = (node.label || "").replace(/\s+/g, " ").trim();
+    if (!raw) return "";
+    if (node.kind === "verse") {
+      const cap = 22;
+      return raw.length > cap ? `${raw.slice(0, cap - 1)}…` : raw;
+    }
+    if (node.kind === "root") return "";
+    const cap = node.kind === "spine" ? 18 : 20;
+    return raw.length > cap ? `${raw.slice(0, cap - 1)}…` : raw;
+  }
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(720);
   const [pulsePhase, setPulsePhase] = useState(0);
+  const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+
+  const hoveredTooltip =
+    hoveredNodeId && nodeTooltips?.[hoveredNodeId] ? nodeTooltips[hoveredNodeId] : null;
 
   const layout = useMemo(() => {
     if (layoutProp) return layoutProp;
@@ -94,7 +117,7 @@ export function PathMindmapSvgPanel({
   }, []);
 
   useEffect(() => {
-    if (!activeIds.size || prefersReducedMotion()) return;
+    if (!activeIds.size || prefersReducedMotion() || disablePulseAnimation) return;
     let raf = 0;
     const tick = () => {
       setPulsePhase(performance.now() / 1000);
@@ -102,7 +125,7 @@ export function PathMindmapSvgPanel({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [activeIds.size]);
+  }, [activeIds.size, disablePulseAnimation]);
 
   return (
     <div
@@ -130,6 +153,12 @@ export function PathMindmapSvgPanel({
           </div>
           <span className="lr-studio-mindmap-demo-label">{demoLabel}</span>
         </div>
+      ) : null}
+
+      {externalRootCaption ? (
+        <p className="lr-studio-mindmap-root-caption" title={externalRootCaption}>
+          {externalRootCaption}
+        </p>
       ) : null}
 
       <div className="lr-studio-mindmap-stage" style={{ minHeight: height }}>
@@ -183,6 +212,8 @@ export function PathMindmapSvgPanel({
                 <g
                   key={node.id}
                   className={`lr-studio-mindmap-node lr-studio-mindmap-node--mesh${active ? " lr-studio-mindmap-node--active" : ""}`}
+                  onMouseEnter={() => setHoveredNodeId(node.id)}
+                  onMouseLeave={() => setHoveredNodeId((id) => (id === node.id ? null : id))}
                 >
                   <circle
                     cx={node.x}
@@ -213,7 +244,10 @@ export function PathMindmapSvgPanel({
                 onClick={() => {
                   if (clickable) onLeafClick(node);
                 }}
+                onMouseEnter={() => setHoveredNodeId(node.id)}
+                onMouseLeave={() => setHoveredNodeId((id) => (id === node.id ? null : id))}
                 style={{ cursor: clickable ? "pointer" : "default" }}
+                aria-label={nodeTooltips?.[node.id] ?? node.label}
               >
                 <circle
                   cx={node.x}
@@ -224,15 +258,27 @@ export function PathMindmapSvgPanel({
                   strokeWidth={active ? 2.5 : 1.5}
                 />
                 {node.kind === "root" ? (
-                  <text
-                    x={node.x}
-                    y={node.y + 4}
-                    textAnchor="middle"
-                    fill={style?.text ?? "#ffffff"}
-                    className="lr-studio-mindmap-root-text"
-                  >
-                    {node.label.length > 16 ? `${node.label.slice(0, 15)}…` : node.label}
-                  </text>
+                  externalRootCaption ? (
+                    <text
+                      x={node.x}
+                      y={node.y + 5}
+                      textAnchor="middle"
+                      fill={style?.text ?? "#ffffff"}
+                      className="lr-studio-mindmap-root-glyph"
+                    >
+                      Q
+                    </text>
+                  ) : (
+                    <text
+                      x={node.x}
+                      y={node.y + 4}
+                      textAnchor="middle"
+                      fill={style?.text ?? "#ffffff"}
+                      className="lr-studio-mindmap-root-text"
+                    >
+                      {summarizeNodeLabel(node)}
+                    </text>
+                  )
                 ) : (
                   <text
                     x={node.x}
@@ -244,13 +290,19 @@ export function PathMindmapSvgPanel({
                     strokeWidth={3}
                     paintOrder="stroke fill"
                   >
-                    {node.label.length > 20 ? `${node.label.slice(0, 19)}…` : node.label}
+                    <title>{node.label}</title>
+                    {summarizeNodeLabel(node)}
                   </text>
                 )}
               </g>
             );
           })}
         </svg>
+        {hoveredTooltip ? (
+          <div className="lr-studio-mindmap-tooltip" role="tooltip">
+            {hoveredTooltip}
+          </div>
+        ) : null}
       </div>
 
       <p className="lr-studio-mindmap-foot" role="note">

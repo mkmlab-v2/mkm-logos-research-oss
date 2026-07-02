@@ -35,6 +35,20 @@ const requiredPathChecks = [
   "links.contact",
   "homepage_a11y.skip_to_main",
   "hero.eyebrow",
+  "ring0_identity.schema",
+  "ring0_identity.ko.one_liner",
+  "ring0_identity.ko.hero.disclaimer",
+  "ring0_identity.en.one_liner",
+  "validation_engine.seo.title",
+  "validation_engine.hero.title",
+  "validation_engine.reproduce.gate_command",
+  "lane_governance.seo.title",
+  "lane_governance.hero.title",
+  "lane_governance.firewall.gate_command",
+  "links.safety",
+  "safety.section_lead",
+  "safety.lane_governance_cta.label",
+  "safety.lane_governance_cta.href",
   "hero.title",
   "hero.proof_aria_label",
   "hero.subtitle",
@@ -211,7 +225,7 @@ try {
     });
   }
 
-  for (const hubKey of ["showroom_jemaai", "premium_mkmlife", "b2b_acodeai"]) {
+  for (const hubKey of ["lane_governance", "showroom_jemaai", "premium_mkmlife", "b2b_acodeai", "validation_engine"]) {
     const hub = parsed.hub_links?.[hubKey];
     assert(hub != null, `hub_links.${hubKey} is required`, errors);
     assert(

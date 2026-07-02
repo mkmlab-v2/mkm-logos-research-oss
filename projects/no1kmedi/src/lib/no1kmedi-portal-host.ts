@@ -52,6 +52,14 @@ export function devSimulateNo1kmediClinic(): boolean {
   return isTruthyEnv(process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC);
 }
 
+/** Local dev: localhost as logos.jema-ai.com -> /logos-research rewrite. */
+export function devSimulateLogosHost(): boolean {
+  return (
+    isTruthyEnv(process.env.MKM_DEV_SIMULATE_LOGOS_HOST) ||
+    isTruthyEnv(process.env.NEXT_PUBLIC_MKM_DEV_SIMULATE_LOGOS_HOST)
+  );
+}
+
 export function isNo1kmediApexHost(host: string): boolean {
   const h = normalizeRequestHost(host);
   if (NO1KMEDI_APEX_PORTAL_HOSTS.has(h)) return true;
@@ -113,6 +121,7 @@ export function shouldRedirectRootToHubHome(
   if (pathname !== "/") return false;
   if (legacyHomeParam === "1") return false;
   const h = normalizeRequestHost(host);
+  if (LOCAL_DEV_HOSTS.has(h) && devSimulateLogosHost()) return false;
   if (shouldRewriteRootToNationalKmAsk(h)) return false;
   if (shouldRewriteRootToClinician(h)) return false;
   if (JEMA_AI_HUB_HOSTS.has(h)) return true;

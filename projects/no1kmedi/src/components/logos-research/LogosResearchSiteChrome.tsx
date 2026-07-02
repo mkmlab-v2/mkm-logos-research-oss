@@ -1,7 +1,7 @@
 import { logosResearchCopy } from "@/content/logosResearchCopy";
 
 type Props = {
-  active?: "home" | "studio" | "docs";
+  active?: "home" | "ask" | "studio" | "docs";
   /** Studio omni/workspace: LOGOS-first chrome — no hub nav or JEMA AI legal line. */
   studioFocus?: boolean;
 };
@@ -27,6 +27,9 @@ export function LogosResearchSiteChrome({ active = "home", studioFocus = false }
           <nav className="lr-nav" aria-label="Logos research">
             <a href="/logos-research" aria-current={active === "home" ? "page" : undefined}>
               {c.nav?.home ?? "홈"}
+            </a>
+            <a href="/logos-research/ask" aria-current={active === "ask" ? "page" : undefined}>
+              {c.nav?.ask ?? "베타 Q&A"}
             </a>
             <a
               href="/logos-research/studio"

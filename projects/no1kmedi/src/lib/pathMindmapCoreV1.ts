@@ -90,7 +90,7 @@ export function layoutPathMindmapRadial(
     const parentPos = pos.get(parentId) || { x: cx, y: cy, angle: -Math.PI / 2 };
     const gCount = group.length;
     group.forEach((leaf, i) => {
-      const spread = Math.min(0.55, 0.18 * gCount);
+  const spread = Math.min(0.9, 0.22 * gCount);
       const offset = gCount === 1 ? 0 : -spread / 2 + (spread * i) / (gCount - 1);
       const angle = parentPos.angle + offset;
       pos.set(leaf.id, {
