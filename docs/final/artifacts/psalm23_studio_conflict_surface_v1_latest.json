@@ -1,0 +1,42 @@
+{
+  "schema": "psalm23_studio_conflict_surface_v1",
+  "generated_at_utc": "2026-07-03T01:20:00Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "non_gating": true,
+  "source": "showroom_logos_psalm23_reading_pack_slice_v1",
+  "groups": [
+    {
+      "conflict_group_id": "MKM_CONCEPT_PSALM_23_SHEPHERD",
+      "lexicon_base": "Psalm 23 · nachah · shepherd metaphor",
+      "school_count": 3,
+      "schools": [
+        {
+          "school_tier": "Historical-grammatical",
+          "interpretation_ko": "시편 23:1–3의 יהוה·רעי·נחה(인도하다)를 고대 근동 왕-목자·왕국 수호 은유로 읽습니다. 풍요·안전은 정치적 patronage와 목동-왕 신뢰 관계의 언어이며, 신약 그리스도론·1:1 예수=목자 동일시는 이 층위에서 확장하지 않습니다.",
+          "citation_lock_anchors": ["Ps.23.1", "Ps.23.2", "Ps.23.3"],
+          "verse_refs": ["Ps.23.1", "Ps.23.2", "Ps.23.3"],
+          "traditions": ["historical-grammatical", "ANE royal shepherd"],
+          "labels": ["research_only", "NON_GATING"]
+        },
+        {
+          "school_tier": "Literary-poetic",
+          "interpretation_ko": "시편 23:4–6의 골짜기·그늘·상·적·집은 공간 이동과 대비(위험→식탁→안식)로 시 전체를 읽습니다. 목자 은유는 독자의 신뢰·공포·회복 감정선을 끌어가는 문학 장치이며, 역사적 왕정 서사와 1:1 대응 단정은 피합니다.",
+          "citation_lock_anchors": ["Ps.23.4", "Ps.23.5", "Ps.23.6"],
+          "verse_refs": ["Ps.23.4", "Ps.23.5", "Ps.23.6"],
+          "traditions": ["literary", "poetic journey"],
+          "labels": ["research_only", "NON_GATING"]
+        },
+        {
+          "school_tier": "Rabbinic-midrash",
+          "interpretation_ko": "미드라시·전통 주석(예: Tehillim 전통)에서는 목자·초장·상·집을 하나님의 인도·공급·회복에 대한 찬양 프레임으로 읽는 층위가 강합니다. 기독교 christological 1:1·단일 우위 서사와 격벽을 두고, 문자·전통 주석·공동체 찬양의 역사만 병렬합니다.",
+          "citation_lock_anchors": ["Ps.23.1", "Ps.23.4", "Ps.23.6"],
+          "verse_refs": ["Ps.23.1", "Ps.23.4", "Ps.23.6"],
+          "traditions": ["rabbinic", "midrash Tehillim"],
+          "labels": ["research_only", "NON_GATING"]
+        }
+      ]
+    }
+  ]
+}

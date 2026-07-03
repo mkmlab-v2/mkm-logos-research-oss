@@ -23,6 +23,7 @@ DEFAULT_IN = ROOT / "docs/final/artifacts/bigset_conflict_surface_v1_latest.json
 DEFAULT_SUPPLEMENT = ROOT / "docs/final/artifacts/bigset_multi_topic_conflict_surface_v1_latest.json"
 DEFAULT_JOB_SUPPLEMENT = ROOT / "docs/final/artifacts/job_studio_conflict_surface_v1_latest.json"
 DEFAULT_ISAIAH_SUPPLEMENT = ROOT / "docs/final/artifacts/isaiah_studio_conflict_surface_v1_latest.json"
+DEFAULT_PSALM23_SUPPLEMENT = ROOT / "docs/final/artifacts/psalm23_studio_conflict_surface_v1_latest.json"
 DEFAULT_OUT = ROOT / "docs/final/artifacts/bigset_studio_conflict_sidecar_v1_latest.json"
 DEFAULT_STUDIO = (
     ROOT / "projects/no1kmedi/public/data/logos_studio/bigset_conflict_sidecar_v1.json"
@@ -37,6 +38,7 @@ DEFAULT_PRESET_LINKS: dict[str, list[str]] = {
     "MKM_CONCEPT_NEPHILIM": ["bigset_topic_nephilim"],
     "MKM_CONCEPT_JOB_SUFFERING": ["job_job_suffering_reason", "job_existential_suffering"],
     "MKM_CONCEPT_ISAIAH_YOUTUBE": ["isaiah_youtube_spine_v1"],
+    "MKM_CONCEPT_PSALM_23_SHEPHERD": ["topic_ps_23_anchor"],
 }
 
 
@@ -161,6 +163,12 @@ def main() -> int:
         default=DEFAULT_ISAIAH_SUPPLEMENT,
         help="Merge Isaiah YouTube reading-pack conflict group (MKM_CONCEPT_ISAIAH_YOUTUBE)",
     )
+    ap.add_argument(
+        "--psalm23-conflict-supplement",
+        type=Path,
+        default=DEFAULT_PSALM23_SUPPLEMENT,
+        help="Merge Psalm 23 reading-pack conflict group (MKM_CONCEPT_PSALM_23_SHEPHERD)",
+    )
     ap.add_argument("--out-artifact", type=Path, default=DEFAULT_OUT)
     ap.add_argument("--studio-mirror", type=Path, default=DEFAULT_STUDIO)
     ap.add_argument("--skip-studio-mirror", action="store_true")
@@ -187,6 +195,10 @@ def main() -> int:
     if args.isaiah_conflict_supplement.is_file():
         isaiah_supplement = json.loads(args.isaiah_conflict_supplement.read_text(encoding="utf-8"))
     conflict = _merge_conflict_groups(conflict, isaiah_supplement)
+    psalm23_supplement = None
+    if args.psalm23_conflict_supplement.is_file():
+        psalm23_supplement = json.loads(args.psalm23_conflict_supplement.read_text(encoding="utf-8"))
+    conflict = _merge_conflict_groups(conflict, psalm23_supplement)
     pending_path = args.human_review_pending
     pending_count = _read_human_review_pending_count(pending_path)
     pending_source = None

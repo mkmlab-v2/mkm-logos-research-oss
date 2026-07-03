@@ -40,7 +40,7 @@ type OutputFormat = "text_mvp_report_v1" | "inquiry_report_v1";
 
 type StreamPhase = "idle" | "snapshot" | "s4" | "done";
 
-const ASK_UI_REV = "20260703b";
+const ASK_UI_REV = "20260703c";
 const ASK_TURNS_STORAGE_KEY = "logos_ask_turns_v1";
 
 type PersistedAskStateV1 = {
@@ -214,8 +214,10 @@ function TextMvpReportSections({ report }: { report: LogosTextMvpReportV1 }) {
 
 function PublicSchoolComparisonSection({
   groups,
+  conflictSource,
 }: {
   groups: PublicSchoolGroupV1[];
+  conflictSource?: "live" | "fallback" | "none";
 }) {
   if (!groups.length) return null;
   return (
@@ -223,6 +225,7 @@ function PublicSchoolComparisonSection({
       className="lr-ask-report-section lr-ask-report-section--schools lr-ask-school-cards--public"
       aria-label="학파별 해석 비교"
       data-lr-ask-school-cards="1"
+      data-lr-ask-school-source={conflictSource ?? "none"}
     >
       <h3>학파별 해석 비교</h3>
       <p className="lr-ask-muted">해석 관점을 나란히 둡니다. 단일 결론·실행 지시가 아닙니다.</p>
@@ -378,6 +381,8 @@ function ReportSections({
   const graphVerseRefs = s1?.verse_refs ?? [];
   const graphAnchors = s1?.citation_lock_anchors ?? [];
   const schoolGroups = (s3?.groups ?? []) as PublicSchoolGroupV1[];
+  const schoolConflictSource = (s3 as { conflict_source?: "live" | "fallback" | "none" } | undefined)
+    ?.conflict_source;
   const showSchoolCards = shouldShowPublicSchoolCards(inquiryQuery || report?.query || "", schoolGroups);
 
   return (
@@ -401,7 +406,9 @@ function ReportSections({
             )}
           </section>
 
-          {showSchoolCards ? <PublicSchoolComparisonSection groups={schoolGroups} /> : null}
+          {showSchoolCards ? (
+            <PublicSchoolComparisonSection groups={schoolGroups} conflictSource={schoolConflictSource} />
+          ) : null}
 
           {readingPack ? (
             <section className="lr-ask-report-section lr-ask-report-section--packs">

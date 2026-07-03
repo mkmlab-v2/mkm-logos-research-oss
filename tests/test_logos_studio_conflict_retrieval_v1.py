@@ -57,6 +57,25 @@ def test_preset_boost_nephilim():
     assert doc["groups"][0]["conflict_group_id"] == "MKM_CONCEPT_NEPHILIM"
 
 
+def test_psalm_23_school_query_matches_psalm_group():
+    doc = _run("시편 23편 — 목자 비유와 학파별 해석", "topic_ps_23_anchor")
+    assert doc["ok"] is True
+    assert doc["group_count"] >= 1
+    assert doc["match_mode"] == "preset_boost"
+    gids = [g["conflict_group_id"] for g in doc.get("groups") or []]
+    assert "MKM_CONCEPT_PSALM_23_SHEPHERD" in gids
+    schools = doc["groups"][0].get("schools") or []
+    assert len(schools) >= 2
+    tiers = {s.get("school_tier") for s in schools}
+    assert len(tiers) >= 2
+
+
+def test_psalm_23_freeform_query():
+    doc = _run("시편 23편 목자 nachah")
+    gids = [g["conflict_group_id"] for g in doc.get("groups") or []]
+    assert "MKM_CONCEPT_PSALM_23_SHEPHERD" in gids
+
+
 def test_studio_client_no_static_conflict_mount():
     text = CLIENT.read_text(encoding="utf-8")
     assert "LogosResearchConflictSidecarPanel activePresetId" not in text

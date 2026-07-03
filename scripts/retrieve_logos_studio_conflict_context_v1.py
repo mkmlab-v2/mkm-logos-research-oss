@@ -22,6 +22,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.logos_studio_query_topic_guard_v1 import (  # noqa: E402
+    GEN6_CONFLICT_IDS,
+    query_flags,
+)
+
 DEFAULT_SIDECAR = ROOT / "projects/no1kmedi/public/data/logos_studio/bigset_conflict_sidecar_v1.json"
 DEFAULT_PRESETS = ROOT / "projects/no1kmedi/public/data/logos_studio/qa_presets_v1.json"
 OSS_PRESETS_FALLBACK = ROOT / "tests/fixtures/logos_studio_conflict_presets_oss_v1.json"
@@ -90,6 +95,24 @@ GROUP_KEYWORDS: dict[str, list[str]] = {
         "유튜브",
         "16챕터",
         "spine",
+    ],
+    "MKM_CONCEPT_PSALM_23_SHEPHERD": [
+        "psalm 23",
+        "ps 23",
+        "ps.23",
+        "psalm23",
+        "시편 23",
+        "시편23",
+        "시편 23편",
+        "목자",
+        "shepherd",
+        "nachah",
+        "green pasture",
+        "풍요초장",
+        "골짜기",
+        "shadow of death",
+        "학파별",
+        "학파별 해석",
     ],
 }
 
@@ -201,6 +224,9 @@ def retrieve_conflict_context(
         score = _keyword_score(q, group)
         if preset_group and gid == preset_group:
             score += 100.0
+        qflags = query_flags(q)
+        if qflags.get("eve_creation") and gid in GEN6_CONFLICT_IDS:
+            score = 0.0
         if score > 0:
             ranked.append((score, group))
 

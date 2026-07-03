@@ -155,13 +155,15 @@ async function main() {
           : (document.querySelector(".lr-ask-s4-sections")?.textContent || "").trim().length;
         const cards = document.querySelector('[data-lr-ask-school-cards="1"]');
         const rows = document.querySelectorAll(".lr-ask-school-cards--public .lr-ask-school-card");
+        const schoolSource = cards?.getAttribute("data-lr-ask-school-source") || "";
         const err = document.querySelector(".lr-ask-turn--error .lr-ask-bubble")?.textContent?.trim() || "";
         return (
           !running &&
           s4Len > 20 &&
           Boolean(citationLock) &&
           Boolean(cards) &&
-          rows.length >= 1 &&
+          rows.length >= 2 &&
+          schoolSource === "live" &&
           !err
         );
       },
@@ -175,6 +177,7 @@ async function main() {
       return {
         school_cards: Boolean(cards),
         school_card_count: rows.length,
+        school_source: cards?.getAttribute("data-lr-ask-school-source") || "",
         ui_rev: uiRev,
       };
     });
@@ -189,8 +192,9 @@ async function main() {
 
     const productOk =
       schoolSnapshot.school_cards &&
-      schoolSnapshot.school_card_count >= 1 &&
-      schoolSnapshot.ui_rev === "20260703b" &&
+      schoolSnapshot.school_card_count >= 2 &&
+      schoolSnapshot.school_source === "live" &&
+      schoolSnapshot.ui_rev === "20260703c" &&
       ring0Clean;
 
     const finalOk = ok && productOk;

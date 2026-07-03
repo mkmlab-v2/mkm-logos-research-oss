@@ -57,6 +57,7 @@ export type LogosInquiryReportV1 = {
       section_id: "S3_context_divergence";
       title_ko: string;
       groups: Array<Record<string, unknown>>;
+      conflict_source?: "live" | "fallback" | "none";
       note_ko: string;
       regime_hint_b_track?: SasangRegimeHintBTrack | null;
     };
@@ -470,7 +471,10 @@ function countSchoolRowsInGroups(groups: Array<Record<string, unknown>>): number
   return n;
 }
 
-function buildSchoolGroups(payload: StudioQueryPayload, query: string): Array<Record<string, unknown>> {
+function buildSchoolGroupsWithMeta(
+  payload: StudioQueryPayload,
+  query: string,
+): { groups: Array<Record<string, unknown>>; conflict_source: "live" | "fallback" | "none" } {
   const conflict = payload.conflict_context as Extract<ConflictContextResult, { ok: true }> | null;
   if (conflict?.groups?.length) {
     const mapped = conflict.groups.map((group) => ({
@@ -485,10 +489,14 @@ function buildSchoolGroups(payload: StudioQueryPayload, query: string): Array<Re
         traditions: school.traditions ?? [],
       })),
     }));
-    if (countSchoolRowsInGroups(mapped) > 0) return mapped;
+    if (countSchoolRowsInGroups(mapped) > 0) {
+      return { groups: mapped, conflict_source: "live" };
+    }
   }
   const verseRefs = (payload.path?.verse_refs ?? []).map((v) => String(v).trim()).filter(Boolean);
-  return buildPsalm23PublicSchoolFallback(query, verseRefs);
+  const fallback = buildPsalm23PublicSchoolFallback(query, verseRefs);
+  if (fallback.length) return { groups: fallback, conflict_source: "fallback" };
+  return { groups: [], conflict_source: "none" };
 }
 
 function pathTokenPreview(payload: StudioQueryPayload, cap = 16): string[] {
@@ -575,10 +583,12 @@ export function buildLogosInquiryReport(
     path_token_preview: pathTokenPreview(payload),
     security_note_ko: "29만 행 원문 덤프 금지 — line_count·sha256 pin·경로 토큰 preview만.",
   };
+  const s3Meta = buildSchoolGroupsWithMeta(payload, query);
   const s3 = {
     section_id: "S3_context_divergence" as const,
     title_ko: "Context Divergence (맥락/학파 분기)",
-    groups: buildSchoolGroups(payload, query),
+    groups: s3Meta.groups,
+    conflict_source: s3Meta.conflict_source,
     note_ko: "[NON_GATING] conflict_context 기반 — Track A·실매매 트리거 아님.",
     ...(sasangHint ? { regime_hint_b_track: sasangHint } : {}),
   };
