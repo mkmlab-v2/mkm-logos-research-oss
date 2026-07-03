@@ -18,6 +18,7 @@ import {
   detectPsalm23Topic,
   detectSchoolComparisonIntent,
 } from "./logosInquiryTopicDetectV1";
+import { polishInquiryS4EssayBodyMbeta } from "./logosInquiryAskDisplayV1";
 
 export type LogosInquiryReportV1 = {
   schema: "logos_inquiry_report_v1";
@@ -71,6 +72,7 @@ export type LogosInquiryReportV1 = {
         applied: boolean;
         missing_sections: string[];
         recomposed: boolean;
+        essay_layer?: "m_alpha_deterministic" | "m_beta_azure";
       };
     };
     S5: {
@@ -388,14 +390,37 @@ export function applyInquiryS4QualityGate(input: {
   };
 }
 
-function ensureFiveSectionS4Draft(input: {
-  body: string;
-  bullets: string[];
-  verseRefs: string[];
-  query?: string;
-}): string {
-  const built = buildFiveSectionS4(input);
-  return built.body;
+function buildInquiryS4Body(
+  payload: StudioQueryPayload,
+  answer: string,
+  bullets: string[],
+  verseRefs: string[],
+  query: string,
+): {
+  body_ko: string;
+  format_gate: NonNullable<LogosInquiryReportV1["sections"]["S4"]["format_gate"]>;
+} {
+  const trimmedQuery = query.trim();
+  const gate = applyInquiryS4QualityGate({
+    body: answer || "응답 본문을 생성하지 못했습니다.",
+    bullets,
+    verseRefs,
+    query: trimmedQuery,
+  });
+  const azureApplied = Boolean(payload.azure_distill_meta?.applied);
+  const essayLayer: "m_beta_azure" | "m_alpha_deterministic" = azureApplied
+    ? "m_beta_azure"
+    : "m_alpha_deterministic";
+  const body_ko = polishInquiryS4EssayBodyMbeta(gate.body, trimmedQuery);
+  return {
+    body_ko,
+    format_gate: {
+      applied: true,
+      missing_sections: gate.missing_sections,
+      recomposed: gate.recomposed,
+      essay_layer: essayLayer,
+    },
+  };
 }
 
 function extractAnchors(payload: StudioQueryPayload): string[] {
@@ -592,17 +617,14 @@ export function buildLogosInquiryReport(
     note_ko: "[NON_GATING] conflict_context 기반 — Track A·실매매 트리거 아님.",
     ...(sasangHint ? { regime_hint_b_track: sasangHint } : {}),
   };
+  const s4Built = buildInquiryS4Body(payload, answer, bullets, verseRefs, query);
   const s4 = {
     section_id: "S4_dynamic_synthesis" as const,
     title_ko: "Dynamic Synthesis (고차원 통찰)",
-    body_ko: ensureFiveSectionS4Draft({
-      body: answer || "응답 본문을 생성하지 못했습니다.",
-      bullets,
-      verseRefs,
-      query: query.trim(),
-    }),
+    body_ko: s4Built.body_ko,
     bullets_ko: bullets.slice(0, 8),
     streaming_deferred: "active" as const,
+    format_gate: s4Built.format_gate,
   };
   const s1s4 = { S1: s1, S2: s2, S3: s3, S4: s4 };
   const signedAt = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");

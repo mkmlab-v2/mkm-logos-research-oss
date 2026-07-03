@@ -18239,15 +18239,15 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
   padding: var(--space-sm) var(--space-md);
   margin-bottom: var(--space-sm);
   border-radius: var(--radius-md);
-  background: rgba(15, 23, 42, 0.04);
-  border: 1px solid var(--lr-line);
+  background: var(--lr-ask-accent-soft);
+  border: 1px solid var(--lr-ask-accent-border);
 }
 
 .logos-research-ask-page .lr-ask-exec-summary h3 {
   margin: 0 0 var(--space-xs);
   font-size: var(--text-xs);
   font-weight: 700;
-  color: var(--lr-navy);
+  color: var(--lr-ask-accent);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -18820,14 +18820,14 @@ html.pd-capacitor-native .pd-ops-fab-dock::after {
 .logos-research-ask-page .lr-ask-school-cards--public {
   margin-top: var(--space-md);
   padding: var(--space-md);
-  border: 1px solid var(--lr-line);
+  border: 1px solid var(--lr-ask-accent-border);
   border-radius: var(--radius-md);
-  background: rgba(45, 122, 104, 0.04);
+  background: var(--lr-ask-accent-soft);
 }
 
 .logos-research-ask-page .lr-ask-school-cards--public .lr-ask-school-card {
   padding: var(--space-sm) 0;
-  border-bottom: 1px dashed var(--lr-line);
+  border-bottom: 1px dashed var(--lr-ask-border);
 }
 
 .logos-research-ask-page .lr-ask-school-cards--public .lr-ask-school-card:last-child {

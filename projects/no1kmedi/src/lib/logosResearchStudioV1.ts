@@ -49,6 +49,8 @@ import {
 } from "./logosGolden200AnchorRegistryV1";
 import { resolveReadingPackAnswerForPreset } from "./logosStudioReadingPackBridgeV1";
 import { applyInquiryVerseThematicLayer } from "./logosInquiryVerseThematicV1";
+import { applyInquiryS4QualityGate } from "./logosInquiryReportV1";
+import { detectSchoolComparisonIntent } from "./logosInquiryTopicDetectV1";
 import { isStudioBoilerplateKo } from "./logosStudioBoilerplateV1";
 import {
   GEN2_EVE_PRESET_ID,
@@ -149,6 +151,20 @@ export function resolveAzureDistillDecision(
     return { invoke: false, reason: "insufficient_verse_refs", signal_count: 0 };
   }
   const signals = azureComplexitySignals(payload, Boolean(opts?.hasReadingPack));
+  const q = (payload.query || "").trim();
+  const liveConflictGroups = payload.conflict_context?.group_count ?? 0;
+  if (
+    q &&
+    detectSchoolComparisonIntent(q) &&
+    liveConflictGroups >= 1 &&
+    verseRefs.length >= azureDistillMinVerseRefs()
+  ) {
+    return {
+      invoke: true,
+      reason: "school_comparison_live_conflict",
+      signal_count: signals.signalCount + 1,
+    };
+  }
   const hasReadingPack = Boolean(opts?.hasReadingPack);
   const isGraphragPath = mode.includes("graphrag");
   const isThematicLongtail =
@@ -174,13 +190,24 @@ function mergeAzureDistillAnswer(
   azureBody: string,
   evidenceBody: string,
   hasReadingPack: boolean,
+  query = "",
+  verseRefs: string[] = [],
 ): string {
+  let lead = (azureBody || "").trim();
+  if (lead) {
+    lead = applyInquiryS4QualityGate({
+      body: lead,
+      bullets: [],
+      verseRefs,
+      query,
+    }).body;
+  }
   const appendix = (evidenceBody || "").trim();
-  if (!appendix || (!hasReadingPack && isStudioBoilerplateKo(appendix))) return azureBody;
+  if (!appendix || (!hasReadingPack && isStudioBoilerplateKo(appendix))) return lead;
   const sectionTitle = hasReadingPack
     ? "### Reading pack (citation-locked evidence)"
     : "### Citation-locked evidence";
-  return `${azureBody}\n\n---\n\n${sectionTitle}\n\n${appendix}`;
+  return `${lead}\n\n---\n\n${sectionTitle}\n\n${appendix}`;
 }
 
 
@@ -1179,7 +1206,13 @@ export async function buildStudioQueryWithGraphrag(
         const hasReadingPack = Boolean(packAnswer);
         payload = {
           ...payload,
-          answer: mergeAzureDistillAnswer(azureDistill.answer_ko, packBody, hasReadingPack),
+          answer: mergeAzureDistillAnswer(
+            azureDistill.answer_ko,
+            packBody,
+            hasReadingPack,
+            q,
+            payload.path.verse_refs ?? [],
+          ),
           synthesis_meta: azureDistill as Extract<SynthesisResult, { ok: true }>,
           insight_card: {
             preset_id: payload.preset_id,

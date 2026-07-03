@@ -11,6 +11,7 @@ import {
   meetsPublicRing0Cleanliness,
   parseReadingPackSections,
   parseS4PublicSections,
+  polishInquiryS4EssayBodyMbeta,
   PUBLIC_RING0_FORBIDDEN_RE,
   splitS4PublicBody,
   stripPublicResearchTags,
@@ -120,6 +121,33 @@ const bulletS4 = applyInquiryS4QualityGate({
   verseRefs: ["Ps.23.1", "Ps.23.4"],
   query: "시편 23편 — 목자 비유와 학파별 해석",
 });
+const essayPolished = polishInquiryS4EssayBodyMbeta(bulletS4.body, "시편 23편 — 목자 비유와 학파별 해석");
+assert(!/^[-*•]\s+Ps\./m.test(essayPolished), "m-beta essay prose");
+assert(/Ps\.23\.1/.test(essayPolished), "m-beta refs preserved");
+
+const azureReport = buildLogosInquiryReport(
+  {
+    answer: bulletS4.body,
+    path: { verse_refs: ["Ps.23.1", "Ps.23.4"], steps: [], node_ids: [], note_ko: null, bridges_matched: null },
+    research_only: true,
+    non_gating: true,
+    send_gate: "HOLD",
+    preset_id: "topic_ps_23_anchor",
+    azure_distill_meta: {
+      attempted: true,
+      mode: "auto",
+      decision_reason: "school_comparison_live_conflict",
+      decision_signal_count: 3,
+      applied: true,
+      failure_reason: null,
+    },
+  } as import("../src/lib/logosResearchStudioV1.ts").StudioQueryPayload,
+  "시편 23편 — 목자 비유와 학파별 해석",
+  evaluateLogosInquiryIntake("시편 23편 — 목자 비유와 학파별 해석", "logos", "reports"),
+  DEFAULT_FREEZE_LEXICON_META,
+);
+assert(azureReport.sections.S4.format_gate?.essay_layer === "m_beta_azure", "m-beta essay_layer tag");
+
 const essaySections = parseS4PublicSections(bulletS4.body, "시편 23편 — 목자 비유와 학파별 해석");
 const essayText = essaySections.map((s) => s.body).join("\n");
 assert(essaySections.length >= 2, "essay multi-section");

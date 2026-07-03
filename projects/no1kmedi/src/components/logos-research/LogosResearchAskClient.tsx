@@ -40,7 +40,7 @@ type OutputFormat = "text_mvp_report_v1" | "inquiry_report_v1";
 
 type StreamPhase = "idle" | "snapshot" | "s4" | "done";
 
-const ASK_UI_REV = "20260703c";
+const ASK_UI_REV = "20260703d";
 const ASK_TURNS_STORAGE_KEY = "logos_ask_turns_v1";
 
 type PersistedAskStateV1 = {
@@ -639,6 +639,7 @@ export function LogosResearchAskClient({
           domain_lane: surfaceContext.domain_lane,
           domain_surface_hint: surfaceContext.domain_surface_hint,
           intent_chip: "reports",
+          azure_distill_mode: "auto",
         }),
         signal: controller.signal,
       });

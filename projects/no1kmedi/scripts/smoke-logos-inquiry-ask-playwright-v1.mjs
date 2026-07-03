@@ -194,7 +194,7 @@ async function main() {
       schoolSnapshot.school_cards &&
       schoolSnapshot.school_card_count >= 2 &&
       schoolSnapshot.school_source === "live" &&
-      schoolSnapshot.ui_rev === "20260703c" &&
+      schoolSnapshot.ui_rev === "20260703d" &&
       ring0Clean;
 
     const finalOk = ok && productOk;

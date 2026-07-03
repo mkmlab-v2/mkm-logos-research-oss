@@ -379,6 +379,45 @@ export function polishPublicS4SectionBody(body: string, displayQuery?: string): 
   return collapsed.replace(/\n{3,}/g, "\n\n").trim();
 }
 
+const INQUIRY_S4_SECTION_HEADERS = [
+  "### 핵심 주장",
+  "### 근거 구절",
+  "### 반증·대안",
+  "### 한계·주의",
+  "### 다음 행동 제안",
+] as const;
+
+/** M-β — section-aware essay polish for inquiry report S4 (azure or deterministic gate output). */
+export function polishInquiryS4EssayBodyMbeta(body: string, displayQuery?: string): string {
+  const raw = (body || "").trim();
+  if (!raw) return raw;
+  const packSplit = raw.split(/\n---\n/);
+  const mainRaw = packSplit[0]?.trim() ?? raw;
+  const appendix = packSplit.length > 1 ? packSplit.slice(1).join("\n---\n").trim() : "";
+
+  const hasAll = INQUIRY_S4_SECTION_HEADERS.every((h) => mainRaw.includes(h));
+  if (!hasAll) {
+    const polished = polishPublicS4SectionBody(mainRaw, displayQuery);
+    return appendix ? `${polished}\n\n---\n\n${appendix}` : polished;
+  }
+
+  const parts: string[] = [];
+  for (let i = 0; i < INQUIRY_S4_SECTION_HEADERS.length; i += 1) {
+    const header = INQUIRY_S4_SECTION_HEADERS[i];
+    const escaped = header.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const nextHeader = INQUIRY_S4_SECTION_HEADERS[i + 1];
+    const nextEscaped = nextHeader ? nextHeader.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") : null;
+    const sectionRe = nextEscaped
+      ? new RegExp(`${escaped}\\s*\\n([\\s\\S]*?)(?=\\n${nextEscaped}\\s*(?:\\n|$))`)
+      : new RegExp(`${escaped}\\s*\\n([\\s\\S]*)$`);
+    const sectionMatch = sectionRe.exec(mainRaw);
+    const sectionBody = (sectionMatch?.[1] ?? "").trim();
+    parts.push(header, polishPublicS4SectionBody(sectionBody, displayQuery), "");
+  }
+  const main = parts.join("\n").replace(/\n{3,}/g, "\n\n").trim();
+  return appendix ? `${main}\n\n---\n\n${appendix}` : main;
+}
+
 export function buildPublicInquiryDisplayModel(s4Body: string, displayQuery?: string): PublicInquiryDisplayModelV1 {
   const { narrative, readingPack } = splitS4PublicBody(s4Body);
   const narrativeParagraphs = formatPublicNarrativeParagraphs(s4Body, displayQuery);
