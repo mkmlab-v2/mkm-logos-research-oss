@@ -4,10 +4,14 @@
  */
 import {
   buildPublicInquiryDisplayModel,
+  collapseVerseBulletsToProse,
   formatPublicNarrativeParagraphs,
   meetsDoneProductGoldenRubric,
   meetsPublicNarrativeQuality,
+  meetsPublicRing0Cleanliness,
   parseReadingPackSections,
+  parseS4PublicSections,
+  PUBLIC_RING0_FORBIDDEN_RE,
   splitS4PublicBody,
   stripPublicResearchTags,
 } from "../src/lib/logosInquiryAskDisplayV1.ts";
@@ -109,5 +113,20 @@ assert(
   (schoolReport.sections.S3.groups?.[0]?.schools?.length ?? 0) >= 2,
   "ps23 school fallback rows",
 );
+
+const bulletS4 = applyInquiryS4QualityGate({
+  body: "### 핵심 주장\n질문: 시편 23편 — 목자 비유와 학파별 해석 — 학파별 해석 차이·citation lock\n\n### 근거 구절\n- Ps.23.1\n- Ps.23.4\n- Ps.23.6",
+  bullets: [],
+  verseRefs: ["Ps.23.1", "Ps.23.4"],
+  query: "시편 23편 — 목자 비유와 학파별 해석",
+});
+const essaySections = parseS4PublicSections(bulletS4.body, "시편 23편 — 목자 비유와 학파별 해석");
+const essayText = essaySections.map((s) => s.body).join("\n");
+assert(essaySections.length >= 2, "essay multi-section");
+assert(!/^[-*•]\s+Ps\./m.test(essayText), "essay verse-only bullets remain");
+assert(/Ps\.23\.1/.test(essayText || bulletS4.body), "essay refs preserved");
+assert(meetsPublicRing0Cleanliness("출처 고정\n통찰 본문"), "ring0 sample clean");
+assert(!meetsPublicRing0Cleanliness("Hub preset: topic_ps_23_anchor"), "ring0 forbidden detect");
+assert(!PUBLIC_RING0_FORBIDDEN_RE.test(collapseVerseBulletsToProse("- Ps.23.1\n- Ps.23.4")), "collapsed prose clean");
 
 console.log("[smoke-logos-ask-display-invariants-v1] passed.");

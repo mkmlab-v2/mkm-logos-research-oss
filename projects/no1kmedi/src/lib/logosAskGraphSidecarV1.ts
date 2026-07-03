@@ -132,16 +132,16 @@ export function buildAskGraphNodeTooltips(
         (a) => !FORBIDDEN_SEED_RE.test(a) && normalizeRefKey(a) === normalizeRefKey(node.label),
       );
       tips[node.id] = locked || anchorHit
-        ? `Citation lock · ${node.label} · S1 고정 · [NON_GATING]`
-        : `구절 경로 · ${node.label} · research_only`;
+        ? `고정 구절 · ${node.label}`
+        : `구절 경로 · ${node.label}`;
     } else if (node.kind === "mesh") {
       const sliceNode = node.graphNodeId ? nodeById[node.graphNodeId] : undefined;
       const label = sliceNode?.label || node.label || "연결";
-      tips[node.id] = `연결 요약 · ${label} · mesh · [NON_GATING]`;
+      tips[node.id] = `연결 요약 · ${label}`;
     } else if (node.kind === "root") {
-      tips[node.id] = "질의 중심 · citation lock 기준 경로";
+      tips[node.id] = "질의 중심 · 경로 탐색";
     } else {
-      tips[node.id] = `${node.label} · spine · research_only`;
+      tips[node.id] = `${node.label} · spine`;
     }
   }
 

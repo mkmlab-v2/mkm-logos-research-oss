@@ -319,8 +319,8 @@ function buildFiveSectionS4(input: {
     ]) || coreClaimFallback(query, refs);
   const evidenceLine =
     refs.length > 0
-      ? refs.map((ref) => `- ${ref}`).join("\n")
-      : "- 명시 구절이 부족해 재질의가 필요합니다. (권·장·절 앵커 권장)";
+      ? `본문에서는 ${refs.join(" · ")}를 citation lock 앵커로 둡니다.`
+      : "명시 구절이 부족해 재질의가 필요합니다. 권·장·절 앵커를 함께 적어 주세요.";
   const counterLine =
     firstNonStub(bullets.slice(1).concat(sentences.slice(1))) ||
     "대안 해석 가능성을 병기하며 단일 해석을 절대화하지 않습니다.";
@@ -433,6 +433,8 @@ function buildPsalm23PublicSchoolFallback(
     .map((r) => String(r).trim())
     .filter((r) => /^Ps\.23/i.test(r.replace(/\s/g, "")));
   const anchorRefs = ps23Refs.length ? ps23Refs.slice(0, 3) : ["Ps.23.1", "Ps.23.4"];
+  const literaryRefs = anchorRefs.filter((r) => /Ps\.23\.(1|4|6)/.test(r.replace(/\s/g, "")));
+  const historicalRefs = anchorRefs.filter((r) => /Ps\.23\.(1|3|4)/.test(r.replace(/\s/g, "")));
   return [
     {
       conflict_group_id: "ps23_shepherd_metaphor_public",
@@ -442,16 +444,17 @@ function buildPsalm23PublicSchoolFallback(
         {
           school_tier: "historical",
           interpretation_ko:
-            "목자 은유 — 신뢰·인도·풍요의 전통적 독해 (citation lock 앵커 중심)",
-          verse_refs: anchorRefs,
-          citation_lock_anchors: anchorRefs,
-          traditions: ["historical-grammatical"],
+            "고대 근동·왕-목자 은유 맥락에서 신뢰·인도·풍요를 읽습니다. 정치사 1:1 대응은 피합니다.",
+          verse_refs: historicalRefs.length ? historicalRefs : anchorRefs.slice(0, 2),
+          citation_lock_anchors: historicalRefs.length ? historicalRefs : anchorRefs.slice(0, 2),
+          traditions: ["historical-grammatical", "ANE royal metaphor"],
         },
         {
           school_tier: "literary",
-          interpretation_ko: "시적 목자·길 안내·골짜기 통과 이미지 — 맥락별 강조 분기",
-          verse_refs: anchorRefs,
-          citation_lock_anchors: anchorRefs,
+          interpretation_ko:
+            "시편 전체 서사 속 목자·길·골짜기 이미지의 문학적 대비와 독자 호소를 강조합니다.",
+          verse_refs: literaryRefs.length ? literaryRefs : anchorRefs,
+          citation_lock_anchors: literaryRefs.length ? literaryRefs : anchorRefs,
           traditions: ["literary", "poetic"],
         },
       ],

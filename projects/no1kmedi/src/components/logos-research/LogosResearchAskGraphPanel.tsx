@@ -164,7 +164,7 @@ export function LogosResearchAskGraphPanel({
       ) : null}
       {meshUnresolved ? (
         <p className="lr-ask-muted lr-ask-graph-panel-empty">
-          슬라이스에 매칭 노드가 없어 경로(spine) 뷰만 표시합니다. [NON_GATING]
+          슬라이스에 매칭 노드가 없어 경로(spine) 뷰만 표시합니다.
         </p>
       ) : null}
       {showSkeleton ? (

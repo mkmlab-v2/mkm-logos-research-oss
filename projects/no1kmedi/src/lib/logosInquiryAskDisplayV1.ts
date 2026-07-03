@@ -130,7 +130,7 @@ export type S4PublicSectionV1 = {
 };
 
 /** Public S4 — preserve ### section structure for Ask UI (display only). */
-export function parseS4PublicSections(body: string): S4PublicSectionV1[] {
+export function parseS4PublicSections(body: string, displayQuery?: string): S4PublicSectionV1[] {
   const { narrative } = splitS4PublicBody(body);
   const source = narrative || stripPublicResearchTags(body);
   if (!source) return [];
@@ -141,23 +141,15 @@ export function parseS4PublicSections(body: string): S4PublicSectionV1[] {
   for (const chunk of chunks) {
     const heading = /^###\s*(.+?)(?:\n|$)/.exec(chunk);
     if (!heading) {
-      const flat = chunk
-        .replace(/\n+/g, " ")
-        .replace(/\s{2,}/g, " ")
-        .trim();
+      const flat = polishPublicS4SectionBody(chunk, displayQuery);
       if (flat.length > 20 && !isGematriaOrMetaLine(flat)) {
         sections.push({ title: "통찰", body: flat });
       }
       continue;
     }
     const title = stripMarkdownInline(heading[1]);
-    const bodyText = chunk
-      .slice(heading[0].length)
-      .trim()
-      .split(/\n+/)
-      .map((line) => stripMarkdownInline(line))
-      .filter((line) => line.length > 0 && !isGematriaOrMetaLine(line))
-      .join("\n\n");
+    const rawBody = chunk.slice(heading[0].length).trim();
+    const bodyText = polishPublicS4SectionBody(rawBody, displayQuery);
     if (title || bodyText) {
       sections.push({ title: title || "통찰", body: bodyText });
     }
@@ -165,7 +157,7 @@ export function parseS4PublicSections(body: string): S4PublicSectionV1[] {
 
   if (sections.length) return sections;
 
-  const paragraphs = formatPublicNarrativeParagraphs(body);
+  const paragraphs = formatPublicNarrativeParagraphs(body, displayQuery);
   return paragraphs.map((p, i) => ({
     title: i === 0 ? "통찰" : `통찰 ${i + 1}`,
     body: p,
@@ -173,12 +165,13 @@ export function parseS4PublicSections(body: string): S4PublicSectionV1[] {
 }
 
 /** Public narrative — paragraph blocks for primary insight UI (display only). */
-export function formatPublicNarrativeParagraphs(body: string): string[] {
+export function formatPublicNarrativeParagraphs(body: string, displayQuery?: string): string[] {
   const { narrative } = splitS4PublicBody(body);
   const source = narrative || stripPublicResearchTags(body);
   if (!source) return [];
 
-  const blocks = source.split(/\n{2,}|\n(?=###\s+)/).map((p) => p.trim()).filter(Boolean);
+  const polished = polishPublicS4SectionBody(source, displayQuery);
+  const blocks = polished.split(/\n{2,}|\n(?=###\s+)/).map((p) => p.trim()).filter(Boolean);
   const paragraphs: string[] = [];
 
   for (const block of blocks) {
@@ -187,17 +180,16 @@ export function formatPublicNarrativeParagraphs(body: string): string[] {
     if (text.startsWith("###")) {
       const lines = text.split(/\n+/).map((l) => l.trim()).filter(Boolean);
       const title = lines[0]?.replace(/^###\s*\d*\.?\s*/, "").trim() ?? "";
-      const body = lines.slice(1).join(" ").trim();
-      text = [title, body].filter(Boolean).join(" — ");
+      const sectionBody = polishPublicS4SectionBody(lines.slice(1).join("\n"), displayQuery);
+      text = [title, sectionBody].filter(Boolean).join(" — ");
     } else {
-      text = text.replace(/\n+/g, " ").replace(/\s{2,}/g, " ").trim();
+      text = polishPublicS4SectionBody(text, displayQuery);
     }
     if (text.length > 20 && !isGematriaOrMetaLine(text)) paragraphs.push(text);
   }
 
-  if (paragraphs.length === 0 && source.length > 20) {
-    const single = source.replace(/\n+/g, " ").replace(/\s{2,}/g, " ").trim();
-    if (!isGematriaOrMetaLine(single)) paragraphs.push(single);
+  if (paragraphs.length === 0 && polished.length > 20) {
+    if (!isGematriaOrMetaLine(polished)) paragraphs.push(polished);
   }
 
   return paragraphs;
@@ -320,12 +312,76 @@ export function buildPublicCitationLockModel(
 }
 
 export function citationLockVerseTitle(ref: string): string {
-  return `Citation lock · ${ref} · S1 고정 · [NON_GATING]`;
+  return `고정 구절 · ${ref}`;
 }
 
-export function buildPublicInquiryDisplayModel(s4Body: string): PublicInquiryDisplayModelV1 {
+/** Ring 0 must not expose engineering/system tags to general readers. */
+export const PUBLIC_RING0_FORBIDDEN_RE =
+  /\[NON_GATING\]|\[HYPO\]|Hub preset|Golden hub|citation lock anchors?:|\banchor\s*\d+\s*건|research_only|send_gate/i;
+
+export function meetsPublicRing0Cleanliness(text: string): boolean {
+  return !PUBLIC_RING0_FORBIDDEN_RE.test(text || "");
+}
+
+const PIPELINE_QUERY_SUFFIX_RE =
+  /\s*—\s*학파별 해석 차이·citation lock·lemma 네트워크 관점에서 연구 요약해 달라\s*/g;
+
+/** Remove intake enrich echo and duplicated query prefix from public S4 (display only). */
+export function stripPipelineQueryEcho(text: string, displayQuery?: string): string {
+  let t = (text || "").trim();
+  t = t.replace(/^질문:\s*/i, "");
+  t = t.replace(PIPELINE_QUERY_SUFFIX_RE, " ").trim();
+  if (displayQuery) {
+    const dq = displayQuery.trim();
+    if (t.startsWith(dq)) {
+      t = t.slice(dq.length).replace(/^[—–-]\s*/, "").trim();
+    }
+  }
+  return t.replace(/\s{2,}/g, " ").trim();
+}
+
+export function isVerseOnlyBulletLine(line: string): boolean {
+  const t = stripMarkdownInline(line).replace(/^[-*•]\s+/, "").trim();
+  if (!t || t.length > 80) return false;
+  if (/[가-힣]{5,}/.test(t)) return false;
+  return /^(?:[1-3]\s*)?[A-Za-z]+\.\d+(?:\.\d+)?(?:\s*[·,]\s*[A-Za-z]+\.\d+(?:\.\d+)?)*$/.test(t);
+}
+
+/** Collapse `- Ps.23.1` bullet runs into one prose sentence (display only). */
+export function collapseVerseBulletsToProse(text: string): string {
+  const lines = (text || "").split(/\n+/).map((l) => l.trim()).filter(Boolean);
+  const prose: string[] = [];
+  const verseRefs: string[] = [];
+
+  const flushVerses = () => {
+    if (!verseRefs.length) return;
+    prose.push(`본문 근거 구절로 ${verseRefs.join(" · ")}을 둡니다.`);
+    verseRefs.length = 0;
+  };
+
+  for (const line of lines) {
+    if (isVerseOnlyBulletLine(line)) {
+      const ref = stripMarkdownInline(line).replace(/^[-*•]\s+/, "").trim();
+      if (ref && !verseRefs.includes(ref)) verseRefs.push(ref);
+      continue;
+    }
+    flushVerses();
+    const cleaned = stripMarkdownInline(line);
+    if (cleaned.length > 8 && !isGematriaOrMetaLine(cleaned)) prose.push(cleaned);
+  }
+  flushVerses();
+  return prose.join("\n\n");
+}
+
+export function polishPublicS4SectionBody(body: string, displayQuery?: string): string {
+  const stripped = stripPipelineQueryEcho(stripPublicResearchTags(body), displayQuery);
+  const collapsed = collapseVerseBulletsToProse(stripped);
+  return collapsed.replace(/\n{3,}/g, "\n\n").trim();
+}
+
+export function buildPublicInquiryDisplayModel(s4Body: string, displayQuery?: string): PublicInquiryDisplayModelV1 {
   const { narrative, readingPack } = splitS4PublicBody(s4Body);
-  const narrativeParagraphs = formatPublicNarrativeParagraphs(s4Body);
+  const narrativeParagraphs = formatPublicNarrativeParagraphs(s4Body, displayQuery);
   const readingPackSections = parseReadingPackSections(readingPack);
   const readingPackIntro = readingPackIntroLine(readingPack);
   const publicText = [...narrativeParagraphs, readingPackIntro].join("\n");
@@ -340,17 +396,22 @@ export function buildPublicInquiryDisplayModel(s4Body: string): PublicInquiryDis
 /** Aligns with live battery narrative_ok heuristic (display layer). */
 export function meetsPublicNarrativeQuality(
   s4Body: string,
-  opts: { minChars?: number; minParagraphs?: number } = {},
-): { narrative_ok: boolean; char_count: number; paragraph_count: number } {
+  opts: { minChars?: number; minParagraphs?: number; displayQuery?: string } = {},
+): { narrative_ok: boolean; char_count: number; paragraph_count: number; verse_bullet_spam: boolean } {
   const minChars = opts.minChars ?? 120;
   const minParagraphs = opts.minParagraphs ?? 2;
-  const model = buildPublicInquiryDisplayModel(s4Body);
+  const model = buildPublicInquiryDisplayModel(s4Body, opts.displayQuery);
   const char_count = model.publicCharCount;
   const paragraph_count = model.narrativeParagraphs.length;
+  const verse_bullet_spam = /^[-*•]\s+[A-Za-z]+\.\d/m.test(
+    model.narrativeParagraphs.join("\n"),
+  );
   return {
-    narrative_ok: char_count >= minChars && paragraph_count >= minParagraphs,
+    narrative_ok:
+      char_count >= minChars && paragraph_count >= minParagraphs && !verse_bullet_spam,
     char_count,
     paragraph_count,
+    verse_bullet_spam,
   };
 }
 
@@ -482,6 +543,7 @@ export function meetsDoneProductGoldenRubric(input: {
   stub_free: boolean;
   psalm23_anchor_ok: boolean;
   school_cards_ok: boolean;
+  ring0_clean: boolean;
 } {
   const { narrative } = splitS4PublicBody(input.s4Body);
   const stub_free = !PUBLIC_S4_STUB_PHRASE_RE.test(narrative || input.s4Body);
@@ -493,7 +555,15 @@ export function meetsDoneProductGoldenRubric(input: {
       ? true
       : countPublicSchoolRows(input.schoolGroups) >= 2 ||
         (psalm23 && countPublicSchoolRows(input.schoolGroups) >= 1);
-  const narrativeQuality = meetsPublicNarrativeQuality(input.s4Body);
-  const product_ok = stub_free && narrativeQuality.narrative_ok && psalm23_anchor_ok && school_cards_ok;
-  return { product_ok, stub_free, psalm23_anchor_ok, school_cards_ok };
+  const narrativeQuality = meetsPublicNarrativeQuality(input.s4Body, { displayQuery: input.query });
+  const ring0_clean = meetsPublicRing0Cleanliness(
+    [polishPublicS4SectionBody(input.s4Body, input.query), PUBLIC_INQUIRY_DISCLAIMER_KO].join("\n"),
+  );
+  const product_ok =
+    stub_free &&
+    narrativeQuality.narrative_ok &&
+    psalm23_anchor_ok &&
+    school_cards_ok &&
+    ring0_clean;
+  return { product_ok, stub_free, psalm23_anchor_ok, school_cards_ok, ring0_clean };
 }

@@ -116,17 +116,25 @@ export function LogosResearchPathMindmapPanel({
   }, [model, pulseGraphNodeIds, pulseVerseRef]);
 
   const pathNodeCount = baseModel.nodes.length;
-  const meta =
-    vizMode === "path"
+  const meta = compactMeta
+    ? vizMode === "path"
+      ? `경로 포커스 · ${pathNodeCount}노드`
+      : meshShown
+        ? `경로 ${pathNodeCount} · 연결 ${meshShown}/${meshTotal || meshShown}`
+        : "질의 · spine · 구절"
+    : vizMode === "path"
       ? `경로 포커스 · ${pathNodeCount}노드 · [NON_GATING]`
       : meshShown
         ? `경로 ${pathNodeCount} · mesh ${meshShown}/${meshTotal || meshShown} · [HYPO]`
-        : compactMeta
-          ? "질의 · spine · 구절 · [HYPO]"
-          : "질의 중심 · spine · 구절 가지 · [HYPO] research_only";
+        : "질의 중심 · spine · 구절 가지 · [HYPO] research_only";
 
-  const footnote =
-    vizMode === "path"
+  const footnote = compactMeta
+    ? vizMode === "path"
+      ? "경로 포커스 — 구절을 눌러 출처를 확인하세요"
+      : meshShown
+        ? "밝은 노드=경로 · 흐린 점=연결 요약"
+        : "구절 hover → 출처 확인"
+    : vizMode === "path"
       ? "경로 포커스 — mesh 숨김 · 구절 hover → citation lock"
       : meshShown
         ? "밝은 노드=경로 · 흐린 점=mesh 요약 · hover → citation lock"

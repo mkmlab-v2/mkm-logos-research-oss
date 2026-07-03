@@ -40,7 +40,7 @@ type OutputFormat = "text_mvp_report_v1" | "inquiry_report_v1";
 
 type StreamPhase = "idle" | "snapshot" | "s4" | "done";
 
-const ASK_UI_REV = "20260703a";
+const ASK_UI_REV = "20260703b";
 const ASK_TURNS_STORAGE_KEY = "logos_ask_turns_v1";
 
 type PersistedAskStateV1 = {
@@ -225,7 +225,7 @@ function PublicSchoolComparisonSection({
       data-lr-ask-school-cards="1"
     >
       <h3>학파별 해석 비교</h3>
-      <p className="lr-ask-muted">[NON_GATING] conflict surface — 단정·실행 지시 아님.</p>
+      <p className="lr-ask-muted">해석 관점을 나란히 둡니다. 단일 결론·실행 지시가 아닙니다.</p>
       {groups.map((group) => {
         const schools = group.schools ?? [];
         if (!schools.length) return null;
@@ -261,11 +261,13 @@ function PublicSchoolComparisonSection({
 function S4PublicInsightSections({
   body,
   streaming,
+  displayQuery = "",
 }: {
   body: string;
   streaming?: boolean;
+  displayQuery?: string;
 }) {
-  const sections = parseS4PublicSections(body);
+  const sections = parseS4PublicSections(body, displayQuery);
   const [openSet, setOpenSet] = useState<Set<number>>(() => new Set([0]));
 
   useEffect(() => {
@@ -389,7 +391,11 @@ function ReportSections({
           >
             <h3>통찰</h3>
             {s4Body ? (
-              <S4PublicInsightSections body={s4Body} streaming={s4Streaming} />
+              <S4PublicInsightSections
+                body={s4Body}
+                streaming={s4Streaming}
+                displayQuery={inquiryQuery || report?.query || ""}
+              />
             ) : (
               <p className="lr-ask-muted">통찰 생성 중…</p>
             )}

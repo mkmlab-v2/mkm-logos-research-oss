@@ -179,10 +179,19 @@ async function main() {
       };
     });
 
+    const ring0Text = await page.evaluate(() => {
+      const primary = document.querySelector(".lr-ask-report-primary");
+      const lock = document.querySelector(".lr-ask-citation-lock");
+      return `${lock?.textContent || ""}\n${primary?.textContent || ""}`;
+    });
+    const ring0Clean =
+      !/\[NON_GATING\]|\[HYPO\]|Hub preset|citation lock anchors?:|research_only|send_gate/i.test(ring0Text);
+
     const productOk =
       schoolSnapshot.school_cards &&
       schoolSnapshot.school_card_count >= 1 &&
-      schoolSnapshot.ui_rev === "20260703a";
+      schoolSnapshot.ui_rev === "20260703b" &&
+      ring0Clean;
 
     const finalOk = ok && productOk;
 
@@ -201,6 +210,7 @@ async function main() {
           snapshot,
           school_snapshot: schoolSnapshot,
           product_ok: productOk,
+          ring0_clean: ring0Clean,
           generated_at_utc: new Date().toISOString(),
         },
         null,
@@ -213,6 +223,7 @@ async function main() {
         base: BASE,
         out: OUT,
         product_ok: productOk,
+        ring0_clean: ring0Clean,
         ...snapshot,
         ...schoolSnapshot,
       }),

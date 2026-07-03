@@ -75,7 +75,7 @@ const model = buildPathMindmapModel({
 });
 const tips = buildAskGraphNodeTooltips(model, ["Job.42.10"], ["Job.42.10"]);
 const verseTip = Object.values(tips).find((t) => t.includes("Job.42.10"));
-assert(Boolean(verseTip?.includes("Citation lock")), "verse_tooltip_citation_lock");
+assert(Boolean(verseTip?.includes("고정")), "verse_tooltip_public");
 assert(!Object.values(tips).some((t) => /repair_v2/i.test(t)), "no_repair_v2_tooltip");
 
 const pathOnly = filterPathMindmapForVizMode(
@@ -88,7 +88,7 @@ const pathOnly = filterPathMindmapForVizMode(
 );
 assert(!pathOnly.nodes.some((n) => n.kind === "mesh"), "path_mode_strips_mesh");
 
-assert(citationLockVerseTitle("Ps.23.1").includes("[NON_GATING]"), "citation_title");
+assert(citationLockVerseTitle("Ps.23.1").includes("고정 구절"), "citation_title");
 assert(exceedsAskGraphRenderBudget(49), "budget_over");
 assert(!exceedsAskGraphRenderBudget(40), "budget_ok");
 
