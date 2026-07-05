@@ -49,11 +49,11 @@ export function ClinicianThreadBackupControls({
   }
 
   return (
-    <div className="thread-backup-controls" aria-label="대화 기록 백업">
-      <p className="thread-backup-label">로컬 백업 (P0.5)</p>
+    <details className="thread-backup-controls" aria-label="대화 기록 백업">
+      <summary className="thread-backup-label">로컬 백업</summary>
       <div className="thread-backup-actions">
         <button type="button" className="thread-backup-btn" onClick={handleExport}>
-         보내기
+          보내기
         </button>
         <button type="button" className="thread-backup-btn" onClick={() => inputRef.current?.click()}>
           가져오기
@@ -70,7 +70,7 @@ export function ClinicianThreadBackupControls({
         />
       </div>
       {status ? <p className="thread-backup-status">{status}</p> : null}
-      <p className="thread-backup-hint">브라우저 캐시 삭제 전 JSON으로 보관하세요. 이 PC에만 저장됩니다.</p>
-    </div>
+      <p className="thread-backup-hint">이 PC에만 저장됩니다.</p>
+    </details>
   );
 }

@@ -5478,8 +5478,166 @@ main.workspace-main {
   background: rgba(255, 255, 255, 0.06);
 }
 
-.minimal-clinician-shell .clinician-chat-toolbar {
+.clinician-chat-toolbar {
   min-height: 0;
+}
+
+/* Chat-First stage (molting v1) */
+.clinician-chat-stage-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--line);
+}
+
+.clinician-chat-stage-context {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.clinician-chat-stage-context-empty {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+
+.clinician-chat-settings-btn {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--text);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.clinician-chat-settings-btn:hover {
+  border-color: #3d9b84;
+  color: #3d9b84;
+}
+
+.clinician-access-gate {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin: var(--space-sm) var(--space-md) 0;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid color-mix(in srgb, #c9a227 45%, var(--line));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, #c9a227 12%, transparent);
+  font-size: var(--text-sm);
+}
+
+.clinician-access-gate p {
+  margin: 0;
+  flex: 1 1 12rem;
+  color: var(--text);
+}
+
+.clinician-aux-drawer {
+  margin: 0 var(--space-md);
+  font-size: var(--text-xs);
+}
+
+.clinician-aux-drawer summary {
+  cursor: pointer;
+  color: var(--muted);
+  padding: var(--space-xs) 0;
+  user-select: none;
+}
+
+.clinician-aux-drawer-body {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  padding-bottom: var(--space-xs);
+}
+
+.clinician-aux-hint {
+  margin: 0;
+  font-size: var(--text-xs);
+}
+
+.clinician-pilot-empty {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+  color: var(--muted);
+}
+
+.clinician-pilot-empty h2 {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--text-lg);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.clinician-pilot-empty p {
+  margin: 0 0 var(--space-md);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.clinician-pilot-starters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.clinician-pilot-starter-btn {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text);
+  font-size: var(--text-xs);
+  cursor: pointer;
+}
+
+.clinician-pilot-starter-btn:hover {
+  border-color: #3d9b84;
+  color: #3d9b84;
+}
+
+.minimal-clinician-shell .minimal-clinician-main {
+  padding-bottom: 3.5rem;
+}
+
+.minimal-clinician-shell .chat-card--clinician {
+  display: flex;
+  flex-direction: column;
+  min-height: min(72vh, 100%);
+  border: none;
+  box-shadow: none;
+}
+
+.minimal-clinician-shell .clinician-chat-log {
+  flex: 1 1 auto;
+  min-height: 12rem;
+  overflow-y: auto;
+}
+
+.thread-backup-controls summary.thread-backup-label {
+  cursor: pointer;
+  list-style: none;
+}
+
+.thread-backup-controls summary.thread-backup-label::-webkit-details-marker {
+  display: none;
+}
+
+.thread-backup-hint {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin: 0.25rem 0 0;
 }
 
 /* Clinician ChatGPT-style workspace */

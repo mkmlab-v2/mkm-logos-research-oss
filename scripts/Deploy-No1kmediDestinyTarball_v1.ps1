@@ -66,6 +66,7 @@ $tarRemote = "/tmp/no1kmedi-deploy-$stamp.tar.gz"
 
 $monorepoRequiredPaths = @(
     "$vpsDestinyRepo/scripts/build_km_physician_cds_assist_envelope_v1.py",
+    "$vpsDestinyRepo/scripts/km_physician_hospital_sop_overlay_v1.py",
     "$vpsDestinyRepo/scripts/lookup_dssbw_chunks_v1.py",
     "$vpsDestinyRepo/data/corpus/ijeoma/_inventory/IJEOMA_CHUNK_TABLE_2026-03-29.jsonl",
     "$vpsDestinyRepo/scripts/build_patient_care_bundle_from_km_cds_chain_v1.py",
@@ -94,6 +95,7 @@ if (-not $SkipMonorepoPathsFromLocal) {
     $localMono = $WorkspaceRoot
     $relFiles = @(
         "scripts/build_km_physician_cds_assist_envelope_v1.py",
+        "scripts/km_physician_hospital_sop_overlay_v1.py",
         "scripts/lookup_dssbw_chunks_v1.py",
         "data/corpus/ijeoma/_inventory/IJEOMA_CHUNK_TABLE_2026-03-29.jsonl",
         "scripts/build_patient_care_bundle_from_km_cds_chain_v1.py",

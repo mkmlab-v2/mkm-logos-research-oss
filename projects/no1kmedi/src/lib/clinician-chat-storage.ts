@@ -59,7 +59,7 @@ export function createEmptyClinicianThread(): ClinicianChatThread {
     titlePinned: false,
     createdAt: now,
     updatedAt: now,
-    turns: [],
+    turns: defaultOpeningTurns(),
     context: defaultClinicianContext(),
   };
 }

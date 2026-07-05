@@ -46,6 +46,7 @@ export function ClinicianPersistedChat({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [streamBuf, setStreamBuf] = useState<string | null>(null);
+  const [auxOpen, setAuxOpen] = useState(false);
   const requestGen = useRef(0);
   const logRef = useRef<HTMLDivElement | null>(null);
 
@@ -159,37 +160,39 @@ export function ClinicianPersistedChat({
   return (
     <section className="workspace-chat-root clinician-chat-root" aria-label="한의사 진료 보조 대화">
       <div className="chat-card chat-card--workspace chat-card--clinician">
-        <div className="clinician-chat-toolbar">
-          {contextChips.length ? (
-            <div className="clinician-context-chips" aria-label="환자 맥락">
-              {contextChips.map((c) => (
+        <header className="clinician-chat-stage-head">
+          <div className="clinician-chat-stage-context" aria-label="환자 맥락">
+            {contextChips.length ? (
+              contextChips.slice(0, 2).map((c) => (
                 <span key={c} className="clinician-context-chip">
                   {c}
                 </span>
-              ))}
-            </div>
-          ) : (
-            <p className="workspace-muted clinician-chat-hint">출생·문진은 「환자·설정」에서 입력하세요.</p>
-          )}
-          <div className="clinician-chat-toolbar-actions">
-            {pasteFusion && onOpenPasteChart ? (
-              <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenPasteChart}>
-                Paste Chart
-              </button>
-            ) : null}
-            <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenPatientSettings}>
-              환자·설정
-            </button>
-            {thread.lastCds?.validationOk ? (
-              <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenBundle}>
-                환자 번들
-              </button>
-            ) : null}
+              ))
+            ) : (
+              <span className="clinician-chat-stage-context-empty">환자 맥락 미설정</span>
+            )}
           </div>
-        </div>
+          <button
+            type="button"
+            className="clinician-chat-settings-btn"
+            onClick={onOpenPatientSettings}
+            aria-label="환자·설정"
+            title="환자·설정"
+          >
+            ⚙
+          </button>
+        </header>
 
         {!canUseAdvancedConsult ? (
-          <p className="consult-error">Pro 임상 보조 권한 확인 후 대화를 사용할 수 있습니다. 「환자·설정」에서 이메일을 확인하세요.</p>
+          <div className="clinician-access-gate" role="status">
+            <p>
+              Pro 임상 보조 권한 확인 후 CDSS 초안을 생성할 수 있습니다. 「환자·설정」에서 한의사 이메일을
+              입력·확인하세요.
+            </p>
+            <button type="button" className="btn btn-primary btn-sm" onClick={onOpenPatientSettings}>
+              환자·설정 열기
+            </button>
+          </div>
         ) : null}
 
         {pasteFusion ? (
@@ -203,11 +206,6 @@ export function ClinicianPersistedChat({
             </span>
             {pasteFusion.assessmentLine ? (
               <span className="paste-chart-fusion-assessment">{pasteFusion.assessmentLine}</span>
-            ) : null}
-            {onOpenPasteChart ? (
-              <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenPasteChart}>
-                SOAP·조언 다시 보기
-              </button>
             ) : null}
           </div>
         ) : null}
@@ -223,7 +221,7 @@ export function ClinicianPersistedChat({
 
         <div
           ref={logRef}
-          className="chat-log"
+          className="chat-log clinician-chat-log"
           role="log"
           aria-live="polite"
           aria-busy={busy}
@@ -231,24 +229,19 @@ export function ClinicianPersistedChat({
           {turns.length === 0 && !busy && streamBuf === null ? (
             <div className="clinician-pilot-empty">
               <h2>진료 보조 대화</h2>
-              <p>
-                주증상을 입력하면 SOAP·CDSS 참고 초안을 정리합니다. 출생·문진은 「환자·설정」에서 먼저
-                확인하세요.
-              </p>
-              {canUseAdvancedConsult ? (
-                <div className="clinician-pilot-starters" aria-label="예시 질문">
-                  {starterPrompts.map((prompt) => (
-                    <button
-                      key={prompt}
-                      type="button"
-                      className="clinician-pilot-starter-btn"
-                      onClick={() => setMessage(prompt)}
-                    >
-                      {prompt}
-                    </button>
-                  ))}
-                </div>
-              ) : null}
+              <p>주증상을 입력하면 SOAP·CDSS 참고 초안을 정리합니다.</p>
+              <div className="clinician-pilot-starters" aria-label="예시 질문">
+                {starterPrompts.map((prompt) => (
+                  <button
+                    key={prompt}
+                    type="button"
+                    className="clinician-pilot-starter-btn"
+                    onClick={() => setMessage(prompt)}
+                  >
+                    {prompt}
+                  </button>
+                ))}
+              </div>
             </div>
           ) : null}
           {turns.map((turn, idx) => (
@@ -274,6 +267,28 @@ export function ClinicianPersistedChat({
           ) : null}
         </div>
 
+        <details
+          className="clinician-aux-drawer"
+          open={auxOpen}
+          onToggle={(e) => setAuxOpen((e.target as HTMLDetailsElement).open)}
+        >
+          <summary>보조 작업</summary>
+          <div className="clinician-aux-drawer-body">
+            {pasteFusion && onOpenPasteChart ? (
+              <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenPasteChart}>
+                Paste Chart
+              </button>
+            ) : null}
+            {thread.lastCds?.validationOk ? (
+              <button type="button" className="btn btn-ghost btn-sm" onClick={onOpenBundle}>
+                환자 번들
+              </button>
+            ) : (
+              <span className="workspace-muted clinician-aux-hint">CDSS 초안 생성 후 번들을 열 수 있습니다.</span>
+            )}
+          </div>
+        </details>
+
         <ClinicianCdsFeedbackBar
           requestId={thread.lastCds?.requestId}
           disabled={!canUseAdvancedConsult || busy}
@@ -284,7 +299,11 @@ export function ClinicianPersistedChat({
             className="clinician-chat-textarea"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            placeholder="주증상·추가 질문을 입력하세요. Enter로 전송, Shift+Enter 줄바꿈"
+            placeholder={
+              canUseAdvancedConsult
+                ? "주증상·추가 질문을 입력하세요. Enter로 전송, Shift+Enter 줄바꿈"
+                : "질문을 미리 적어 두세요. 전송은 Pro 권한 확인 후 가능합니다."
+            }
             rows={2}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
@@ -293,8 +312,14 @@ export function ClinicianPersistedChat({
               }
             }}
           />
-          <button className="btn btn-primary" type="button" onClick={() => void runConsult()} disabled={!canSend}>
-            {busy ? "생성 중…" : "전송"}
+          <button
+            className="btn btn-primary"
+            type="button"
+            onClick={() => void runConsult()}
+            disabled={!canSend}
+            title={!canUseAdvancedConsult ? "환자·설정에서 Pro 권한을 확인하세요" : undefined}
+          >
+            {busy ? "생성 중…" : canUseAdvancedConsult ? "전송" : "권한 필요"}
           </button>
         </div>
         {error ? <p className="consult-error">{error}</p> : null}
