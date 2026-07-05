@@ -1,7 +1,7 @@
 {
   "schema": "mkm_ai_han_medicine_concept_stack_v1",
   "version": "1.0.0",
-  "generated_at_utc": "2026-07-05T04:08:10Z",
+  "generated_at_utc": "2026-07-05T09:50:07Z",
   "rail": "B_TRACK",
   "send_gate": "HOLD",
   "research_only": true,
@@ -102,11 +102,13 @@
     {
       "layer_id": "L2_embodied_hypo",
       "label_ko": "체화 관측 [HYPO]",
-      "mkm_han_medicine": "함억제복(知) / 두견요둔(行) — UX·수양 좌표 (T0 L17)",
-      "ai_han_medicine": "voice formant · posture · face — observation overlay only",
-      "disk_status": "missing_pipeline",
+      "mkm_han_medicine": "住着處(腰脇·胸腋·脊曲·背隹頁) + 함억/두견/문무 — proxy map only",
+      "ai_han_medicine": "voice formant · posture · rib/thoracic proxy — observation overlay only",
+      "disk_status": "partial",
       "evidence": [
-        "data/corpus/ijeoma/_inventory/ijeoma_philosophy_evolution_report_v1.md"
+        "docs/final/artifacts/mkm_embodied_observation_schema_v1_latest.json",
+        "docs/final/artifacts/ijeoma_jigu_gwan_cheong_insight_units_v1_latest.json",
+        "docs/sasang-origin/정교동의수세보원원문.txt"
       ],
       "forbidden": [
         "constitution_from_rib_angle_cv",
@@ -194,7 +196,9 @@
       "priority": "P2",
       "id": "embodied_observation_schema_only",
       "plane": 1,
-      "status": "hypo"
+      "status": "present",
+      "path": "docs/final/artifacts/mkm_embodied_observation_schema_v1_latest.json",
+      "note_ko": "T0住着處→proxy [HYPO]; pipeline·cohort still missing"
     },
     {
       "priority": "P2",
@@ -216,6 +220,8 @@
     "knowledge_map": "docs/final/artifacts/km_physician_knowledge_map_v1_latest.json",
     "phase_omega": "docs/final/artifacts/mkm_phase_omega_ijoeoma_spec_v1_latest.json",
     "philosophy_report": "docs/final/artifacts/ijeoma_philosophy_evolution_report_v1_latest.json",
+    "embodied_observation_schema": "docs/final/artifacts/mkm_embodied_observation_schema_v1_latest.json",
+    "jigu_gwan_cheong_insight_units": "docs/final/artifacts/ijeoma_jigu_gwan_cheong_insight_units_v1_latest.json",
     "embed_cache": "reports/constitution/btrack_pilot/km_dssbw_chunk_embeddings_cache_v1_latest.json",
     "physician_chain_v4": "reports/constitution/btrack_pilot/km_physician_lane_chain_v4_latest.json",
     "worldview_constitution": "docs/final/MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md"

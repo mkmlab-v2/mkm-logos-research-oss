@@ -1,0 +1,112 @@
+{
+  "schema": "myeongri_jeokcheonsu_human_qa_worksheet_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-05T08:51:54Z",
+  "rail": "B_TRACK",
+  "lane": "myeongri",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "not_ijeoma_primary_canon": true,
+  "spot_pages": [
+    {
+      "page": 1,
+      "verdict": "expected_title_page",
+      "note_ko": "表紙·滴天髓 — 표지; low-hanja 허용",
+      "ocr_hanja": 28,
+      "index_hanja": 28,
+      "chunk_id": "MYEONGRI-JEOKCHEONSU-OCR-p001",
+      "pass": true
+    },
+    {
+      "page": 2,
+      "verdict": "body_ok",
+      "note_ko": "保書序文 — 神殺·子平枝葉 비판 서문",
+      "ocr_hanja": 195,
+      "index_hanja": 195,
+      "chunk_id": "MYEONGRI-JEOKCHEONSU-OCR-p002",
+      "pass": true
+    },
+    {
+      "page": 7,
+      "verdict": "body_ok",
+      "note_ko": "緒言 — 四十五論句 총론 입문",
+      "ocr_hanja": 111,
+      "index_hanja": 111,
+      "chunk_id": "MYEONGRI-JEOKCHEONSU-OCR-p007",
+      "pass": true
+    },
+    {
+      "page": 73,
+      "verdict": "body_ok",
+      "note_ko": "調候論 — 한냉·조후 본문 충분",
+      "ocr_hanja": 128,
+      "index_hanja": 128,
+      "chunk_id": "MYEONGRI-JEOKCHEONSU-OCR-p073",
+      "pass": true
+    },
+    {
+      "page": 119,
+      "verdict": "body_ok",
+      "note_ko": "形象論 — 후반부 논 본문",
+      "ocr_hanja": 81,
+      "index_hanja": 81,
+      "chunk_id": "MYEONGRI-JEOKCHEONSU-OCR-p119",
+      "pass": true
+    },
+    {
+      "page": 132,
+      "verdict": "expected_colophon",
+      "note_ko": "末頁·판권/종지 — low-hanja 허용 가능",
+      "ocr_hanja": 295,
+      "index_hanja": 295,
+      "chunk_id": "MYEONGRI-JEOKCHEONSU-OCR-p132",
+      "pass": true
+    }
+  ],
+  "ocr_qa_flags": [
+    {
+      "code": "LOW_HANJA_PAGE",
+      "count": 2,
+      "sample_chunk_ids": [
+        "MYEONGRI-JEOKCHEONSU-OCR-p065",
+        "MYEONGRI-JEOKCHEONSU-OCR-p101"
+      ],
+      "severity": "medium"
+    }
+  ],
+  "citation_gate_echo": {
+    "citation_allowed": true,
+    "commander_ack": true
+  },
+  "checklist": [
+    {
+      "item_id": "spot_pages_all_pass",
+      "label_ko": "스팟 페이지(p1/2/7/73/119/132) 자동 판정 pass",
+      "status": "pass",
+      "auto": true
+    },
+    {
+      "item_id": "low_hanja_pages",
+      "label_ko": "LOW_HANJA 페이지(p065/p101) 의도 확인",
+      "status": "pending",
+      "auto": false,
+      "hint": "count=2"
+    },
+    {
+      "item_id": "ijeoma_canon_wall",
+      "label_ko": "IJEOMA primary canon과 격벽 확인 (myeongri lane)",
+      "status": "pass",
+      "auto": true
+    },
+    {
+      "item_id": "commander_signoff",
+      "label_ko": "지휘관 OCR 교정·인용 승인 (commander_ack)",
+      "status": "pending",
+      "auto": false,
+      "blocked_by": []
+    }
+  ],
+  "ready_for_citation_flip": true,
+  "flip_command": "py scripts/sync_myeongri_jeokcheonsu_citation_gate_v1.py --human-signoff-ack --apply-units",
+  "reproduce": "py scripts/build_myeongri_jeokcheonsu_human_qa_worksheet_v1.py"
+}

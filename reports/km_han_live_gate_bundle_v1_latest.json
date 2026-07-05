@@ -1,0 +1,40 @@
+{
+  "schema": "km_han_live_gate_bundle_v1",
+  "generated_at_utc": "2026-07-05T12:41:14Z",
+  "bundle_ok": true,
+  "offline_only": false,
+  "allow_live_fail": false,
+  "steps": [
+    {
+      "step": "pack_f_offline",
+      "exit_code": 0,
+      "ok": true,
+      "tail": "\"has_cite_open_button\": true, \"has_chunk_id_in_html\": true, \"has_provenance_tier_a\": true, \"has_crosswalk_mount\": true, \"has_live_cite_mount\": true, \"has_live_wire_script\": true, \"crosswalk_ssot_in_bundle\": true, \"evidence_cards_count\": 3, \"send_gate_hold\": true, \"all_cards_citation_blocked\": true}}"
+    },
+    {
+      "step": "pack_g_offline",
+      "exit_code": 0,
+      "ok": true,
+      "tail": "{\"ok\": true, \"checks\": {\"html_exists\": true, \"ssot_exists\": true, \"has_clinical_group\": true, \"has_l0_badge\": true, \"has_consumer_collapsed\": true, \"has_graphrag_panel\": true, \"has_chunk_chip\": true, \"send_gate_hold\": true, \"clinical_urls_present\": true}}"
+    },
+    {
+      "step": "national_ask_live",
+      "exit_code": 0,
+      "ok": true,
+      "tail": "k\": true,\n  \"recover_hint\": \"VPS: bash scripts/deploy/linux/fix_no1kmedi_domain_recommended_v1.sh && pm2 restart no1kmedi-com — ensure apex vhost proxies :3010 with Host no1kmedi.com; disable conflicting a-codeai/mkmlab apex vhost. Local repro: py scripts/probe_no1kmedi_national_km_ask_live_v1.py\"\n}"
+    },
+    {
+      "step": "clinician_cite_live",
+      "exit_code": 0,
+      "ok": true,
+      "tail": "m/api/clinician/canon-cite-v1?q=%ED%83%9C%EC%96%91%EC%9D%B8&limit=2\",\n    \"ok\": true,\n    \"status\": 200,\n    \"success\": true,\n    \"hit_count\": 2,\n    \"chunk_ids\": [\n      \"IJEOMA-EDT-4P-00007\",\n      \"IJEOMA-EDT-SE-00129\"\n    ]\n  },\n  \"reproduce\": \"py scripts/probe_clinician_canon_cite_live_v1.py\"\n}"
+    },
+    {
+      "step": "hub_clinical_pytest",
+      "exit_code": 0,
+      "ok": true,
+      "tail": "....                                                                     [100%]\n4 passed in 0.79s"
+    }
+  ],
+  "reproduce": "py scripts/run_km_han_live_gate_bundle_v1.py"
+}

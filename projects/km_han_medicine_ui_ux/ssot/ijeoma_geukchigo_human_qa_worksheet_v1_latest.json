@@ -1,0 +1,96 @@
+{
+  "schema": "ijeoma_geukchigo_human_qa_worksheet_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-05T08:51:04Z",
+  "rail": "B_TRACK",
+  "domain_lane": "km_han_medicine",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "spot_pages": [
+    {
+      "page": 1,
+      "verdict": "expected_title_page",
+      "note_ko": "표지·短題 '格致藁 全' — 본문 아님; low-hanja 허용",
+      "ocr_hanja": 4,
+      "index_hanja": 4,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p001",
+      "pass": true
+    },
+    {
+      "page": 114,
+      "verdict": "expected_section_end",
+      "note_ko": "卷之二終 — 구절 마커 7한자 정상",
+      "ocr_hanja": 7,
+      "index_hanja": 7,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p115",
+      "pass": true
+    },
+    {
+      "page": 115,
+      "verdict": "body_ok",
+      "note_ko": "卷之三獨行篇 본문 — OCR 본문 충분",
+      "ocr_hanja": 224,
+      "index_hanja": 224,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p116",
+      "pass": true
+    },
+    {
+      "page": 145,
+      "verdict": "expected_colophon",
+      "note_ko": "함흥 활자 판권(일본어·한글 혼재) — low-hanja 허용",
+      "ocr_hanja": 137,
+      "index_hanja": 137,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p146",
+      "pass": true
+    }
+  ],
+  "ocr_qa_flags": [
+    {
+      "code": "LOW_HANJA_PAGE",
+      "count": 3,
+      "sample_chunk_ids": [
+        "IJEOMA-GEUKCHIGO-FULL-p001",
+        "IJEOMA-GEUKCHIGO-FULL-p115",
+        "IJEOMA-GEUKCHIGO-FULL-p145"
+      ],
+      "severity": "medium"
+    }
+  ],
+  "citation_gate_echo": {
+    "clinical_citation_allowed": true,
+    "commander_ack": true
+  },
+  "checklist": [
+    {
+      "item_id": "spot_pages_all_pass",
+      "label_ko": "스팟 페이지(p1/p114/p115/p145) 자동 판정 pass",
+      "status": "pass",
+      "auto": true
+    },
+    {
+      "item_id": "ocr_dup_page_25",
+      "label_ko": "p.25 중복 chunk 해소 (수동 확인)",
+      "status": "pass",
+      "auto": true,
+      "hint": "duplicate_pages empty"
+    },
+    {
+      "item_id": "low_hanja_pages",
+      "label_ko": "LOW_HANJA 페이지(표지·판권) 의도 확인",
+      "status": "pass",
+      "auto": true,
+      "hint": "count=3; title/colophon expected"
+    },
+    {
+      "item_id": "commander_signoff",
+      "label_ko": "지휘관 OCR 교정·인용 승인 (commander_ack)",
+      "status": "pass",
+      "auto": true,
+      "blocked_by": []
+    }
+  ],
+  "checklist_all_pass": true,
+  "ready_for_citation_flip": true,
+  "flip_command": "py scripts/sync_ijeoma_geukchigo_citation_gate_v1.py --human-signoff-ack --apply-units",
+  "reproduce": "py scripts/build_ijeoma_geukchigo_human_qa_worksheet_v1.py"
+}

@@ -1,6 +1,6 @@
 {
   "schema": "km_han_medicine_mock_pack_gates_v1",
-  "generated_at_utc": "2026-07-05T04:08:30Z",
+  "generated_at_utc": "2026-07-05T12:41:00Z",
   "send_gate": "HOLD",
   "research_only": true,
   "all_ok": true,
@@ -11,7 +11,7 @@
       "exists": true,
       "ok": true,
       "errors": [],
-      "bytes": 684
+      "bytes": 787
     },
     {
       "pack": "PackF-Clinician",
@@ -19,7 +19,7 @@
       "exists": true,
       "ok": true,
       "errors": [],
-      "bytes": 1215
+      "bytes": 18549
     },
     {
       "pack": "PackG-HubClinical",
@@ -27,7 +27,7 @@
       "exists": true,
       "ok": true,
       "errors": [],
-      "bytes": 1184
+      "bytes": 18600
     }
   ],
   "reproduce": "py scripts/check_km_han_medicine_mock_pack_gates_v1.py"

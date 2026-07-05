@@ -1,0 +1,64 @@
+{
+  "schema": "km_han_pack_g_hub_clinical_evidence_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-05T10:58:33Z",
+  "rail": "B_TRACK",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "query": "格致 心宅 觀仁 性命論 四端",
+  "plane_summary": {
+    "ijeoma_dssbw_primary": 5,
+    "geukchigo_insight_units": 5,
+    "geukchigo_full_ocr": 5
+  },
+  "top_paths": [
+    {
+      "path_id": "path_dssbw_1",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-EDT-XM-00041",
+        "section::xingming"
+      ],
+      "note_ko": "性命論 — ◉ 浩然之氣 出於肺脾肝腎 浩然之理 出於心   仁義禮智四臟之氣 擴而充之則 浩然之氣 出於此也   鄙薄貪懦一心之慾",
+      "match_score": 8,
+      "chunk_id": "IJEOMA-EDT-XM-00041",
+      "clinical_citation_allowed": false
+    },
+    {
+      "path_id": "path_dssbw_2",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-EDT-XM-00093",
+        "section::xingming"
+      ],
+      "note_ko": "性命論 — ◉ 心 爲一身之主宰 負隅背心 正向膻中 光明瑩澈    耳目鼻口 無所不察 肺脾肝腎 無所不忖    頷臆臍腹 無所不",
+      "match_score": 8,
+      "chunk_id": "IJEOMA-EDT-XM-00093",
+      "clinical_citation_allowed": false
+    },
+    {
+      "path_id": "path_dssbw_3",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-EDT-XM-00029",
+        "section::xingming"
+      ],
+      "note_ko": "性命論 — ◉ 仁義禮智 忠孝友悌 諸般百善 皆出於慧覺   士農工商 田宅邦國 諸般百用 皆出於資業",
+      "match_score": 7,
+      "chunk_id": "IJEOMA-EDT-XM-00029",
+      "clinical_citation_allowed": false
+    }
+  ],
+  "clinical_urls": {
+    "national_ask_l0": "https://no1kmedi.com/ask",
+    "clinician_l4": "https://clinic.no1kmedi.com/clinician"
+  },
+  "mock_html_target": "projects/km_han_medicine_ui_ux/mocks/PackG-HubClinical/pack_g_hub_clinical.html",
+  "reproduce": "py scripts/inject_km_han_pack_g_hub_evidence_v1.py"
+}

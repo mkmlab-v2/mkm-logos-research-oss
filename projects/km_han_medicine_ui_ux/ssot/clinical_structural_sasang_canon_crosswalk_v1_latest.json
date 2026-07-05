@@ -1,0 +1,255 @@
+{
+  "schema": "clinical_structural_sasang_canon_crosswalk_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-05T11:58:17Z",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "decision_authority": "human_only",
+  "category_error_guard_ko": "8(체질·vector 확장)과 12(4×初中末 병증 슬롯)는 동일 분류 축이 아님. 우열·승패 비교 금지 — tier 격벽만 유지.",
+  "source_secondary": "docs/research/raw/CLINICAL_STRUCTURAL_SASANG_LECTURE_AD_2025-07-04_SECONDARY.md",
+  "tier_legend": [
+    {
+      "tier_id": "A",
+      "label_ko": "Canon Core · 四象 4체질",
+      "ui_badge": "Canon A",
+      "description_ko": "동의수세보원 1차 문법. 체질 하드웨어 4분류만 Track A·RAG 1차 앵커.",
+      "promotion_allowed": false,
+      "track_a_eligible": false
+    },
+    {
+      "tier_id": "B",
+      "label_ko": "MKM Runtime · 12 persona slots",
+      "ui_badge": "Runtime B",
+      "description_ko": "4체질×初·中·末 병증 슬롯. 새 체질론 아님 — 톤·라우팅·severity 힌트.",
+      "promotion_allowed": false,
+      "track_a_eligible": false
+    },
+    {
+      "tier_id": "C",
+      "label_ko": "Secondary · 임구사 8-vector 등",
+      "ui_badge": "Secondary C",
+      "description_ko": "커뮤니티·강의·현대 합성. canon 승격·CDSS·자동 처방 금지.",
+      "promotion_allowed": false,
+      "track_a_eligible": false
+    }
+  ],
+  "framework_rows": [
+    {
+      "row_id": "framework_category_error",
+      "topic_ko": "8(체질 확장) vs 12(병증 슬롯) 우열 비교",
+      "mkm_tier": "meta",
+      "canon_match_status": "not_applicable",
+      "conflation_forbidden": true,
+      "note_ko": "카테고리 오류 — 8=타입론·진단기술, 12=4×初中末 런타임. 동일 축 비교 금지."
+    },
+    {
+      "row_id": "framework_tier_a",
+      "topic_ko": "四象人 4체질",
+      "mkm_tier": "A",
+      "canon_match_status": "aligned",
+      "conflation_forbidden": false,
+      "canon_refs": [
+        {
+          "kind": "text",
+          "ref": "docs/sasang-origin/정교동의수세보원원문.txt",
+          "note_ko": "少陰·少陽·太陰·太陽 諸論"
+        }
+      ]
+    },
+    {
+      "row_id": "framework_tier_b",
+      "topic_ko": "4체질 × 初·中·末 = 12 페르소나 슬롯",
+      "mkm_tier": "B",
+      "canon_match_status": "aligned",
+      "conflation_forbidden": false,
+      "canon_refs": [
+        {
+          "kind": "artifact",
+          "ref": "docs/final/artifacts/sasang_persona_grid_v1_latest.json"
+        },
+        {
+          "kind": "text",
+          "ref": "docs/sasang-origin/정교동의수세보원원문.txt",
+          "note_ko": "初證·中證·末證 서술"
+        }
+      ]
+    },
+    {
+      "row_id": "framework_tier_c",
+      "topic_ko": "음양 8인 · vector · 임상구조사상",
+      "mkm_tier": "C",
+      "canon_match_status": "unverified",
+      "conflation_forbidden": true,
+      "canon_refs": [
+        {
+          "kind": "secondary",
+          "ref": "docs/research/raw/CLINICAL_STRUCTURAL_SASANG_LECTURE_AD_2025-07-04_SECONDARY.md"
+        }
+      ],
+      "note_ko": "2차 학파·상업 강의. 8체질=원전 1차 확정 아님."
+    }
+  ],
+  "topic_rows": [
+    {
+      "row_id": "topic_structural_pulse",
+      "lecture_topic_ko": "구조맥진(맥위·맥형·그래프·초음파)",
+      "imgu_claim_ko": "맥형 vector·체질별 그래프·초음파 보조",
+      "mkm_tier": "C",
+      "canon_match_status": "unverified",
+      "conflation_forbidden": true,
+      "canon_refs": [],
+      "note_ko": "원전 맥진 서술과 1:1 대조 SSOT 없음 — pedagogical only"
+    },
+    {
+      "row_id": "topic_structural_face",
+      "lecture_topic_ko": "구조망진(안면·코 돌출/함몰)",
+      "imgu_claim_ko": "코 형태로 태양/소양 vs 태음/소음 구분",
+      "mkm_tier": "C",
+      "canon_match_status": "unverified",
+      "conflation_forbidden": true,
+      "canon_refs": []
+    },
+    {
+      "row_id": "topic_meridian_structure",
+      "lecture_topic_ko": "12경락 구조론·현가 경혈수기",
+      "imgu_claim_ko": "경락 vector·현가요법 접목",
+      "mkm_tier": "C",
+      "canon_match_status": "partial",
+      "conflation_forbidden": true,
+      "canon_refs": [
+        {
+          "kind": "text",
+          "ref": "docs/sasang-origin/정교동의수세보원원문.txt",
+          "note_ko": "경락·장부 논의 ≠ 현가 2차 합성"
+        }
+      ]
+    },
+    {
+      "row_id": "topic_expansion_vector",
+      "lecture_topic_ko": "확충론 vector · 태양人 복원 · 삼상의학 극복",
+      "imgu_claim_ko": "8인 음양사상으로 4체질 확장",
+      "mkm_tier": "C",
+      "canon_match_status": "tension",
+      "conflation_forbidden": true,
+      "canon_refs": [
+        {
+          "kind": "text",
+          "ref": "docs/sasang-origin/정교동의수세보원원문.txt",
+          "note_ko": "1차=四象; 8=2차 해석"
+        }
+      ]
+    },
+    {
+      "row_id": "topic_pyobyeong_twelve",
+      "lecture_topic_ko": "(강의 미강조) 표리병증·初中末",
+      "imgu_claim_ko": "강의는 체질·구조·vector 중심",
+      "mkm_tier": "B",
+      "canon_match_status": "aligned",
+      "conflation_forbidden": false,
+      "canon_refs": [
+        {
+          "kind": "artifact",
+          "ref": "docs/final/artifacts/sasang_persona_grid_v1_latest.json"
+        },
+        {
+          "kind": "lit_review",
+          "ref": "docs/research/IJEOMA_PYOBYEONG_BYEONGJEUNG_LIT_REVIEW_v1.md"
+        }
+      ],
+      "note_ko": "JEMA OS 12셀 = 이 축의 공학적 코딩"
+    }
+  ],
+  "herb_rows": [
+    {
+      "row_id": "herb_牛膝",
+      "herb_hanja": "牛膝",
+      "lecture_constitution_claim": "태양(太陽)",
+      "mkm_tier": "C",
+      "canon_match_status": "unverified",
+      "dssbw_hit_count": 0,
+      "conflation_forbidden": true,
+      "grep_pointer": "reports/constitution/btrack_pilot/clinical_structural_sasang_herb_grep_v1_latest.json",
+      "note_ko": "강의 약재×체질 표 — canon 단정·처방 트리거 금지"
+    },
+    {
+      "row_id": "herb_甘遂",
+      "herb_hanja": "甘遂",
+      "lecture_constitution_claim": "태양(太陽)",
+      "mkm_tier": "C",
+      "canon_match_status": "unverified",
+      "dssbw_hit_count": 25,
+      "conflation_forbidden": true,
+      "grep_pointer": "reports/constitution/btrack_pilot/clinical_structural_sasang_herb_grep_v1_latest.json",
+      "note_ko": "강의 약재×체질 표 — canon 단정·처방 트리거 금지"
+    },
+    {
+      "row_id": "herb_當歸",
+      "herb_hanja": "當歸",
+      "lecture_constitution_claim": "태양(太陽)",
+      "mkm_tier": "C",
+      "canon_match_status": "aligned",
+      "dssbw_hit_count": 10,
+      "conflation_forbidden": true,
+      "grep_pointer": "reports/constitution/btrack_pilot/clinical_structural_sasang_herb_grep_v1_latest.json",
+      "note_ko": "강의 약재×체질 표 — canon 단정·처방 트리거 금지"
+    },
+    {
+      "row_id": "herb_白朮",
+      "herb_hanja": "白朮",
+      "lecture_constitution_claim": "소음(少陰)",
+      "mkm_tier": "C",
+      "canon_match_status": "aligned",
+      "dssbw_hit_count": 20,
+      "conflation_forbidden": true,
+      "grep_pointer": "reports/constitution/btrack_pilot/clinical_structural_sasang_herb_grep_v1_latest.json",
+      "note_ko": "강의 약재×체질 표 — canon 단정·처방 트리거 금지"
+    },
+    {
+      "row_id": "herb_石膏",
+      "herb_hanja": "石膏",
+      "lecture_constitution_claim": "소양(少陽)",
+      "mkm_tier": "C",
+      "canon_match_status": "aligned",
+      "dssbw_hit_count": 27,
+      "conflation_forbidden": true,
+      "grep_pointer": "reports/constitution/btrack_pilot/clinical_structural_sasang_herb_grep_v1_latest.json",
+      "note_ko": "강의 약재×체질 표 — canon 단정·처방 트리거 금지"
+    },
+    {
+      "row_id": "herb_紅花",
+      "herb_hanja": "紅花",
+      "lecture_constitution_claim": "소음(少陰)",
+      "mkm_tier": "C",
+      "canon_match_status": "unverified",
+      "dssbw_hit_count": 0,
+      "conflation_forbidden": true,
+      "grep_pointer": "reports/constitution/btrack_pilot/clinical_structural_sasang_herb_grep_v1_latest.json",
+      "note_ko": "강의 약재×체질 표 — canon 단정·처방 트리거 금지"
+    },
+    {
+      "row_id": "herb_蒼朮",
+      "herb_hanja": "蒼朮",
+      "lecture_constitution_claim": "소음(少陰)",
+      "mkm_tier": "C",
+      "canon_match_status": "unverified",
+      "dssbw_hit_count": 1,
+      "conflation_forbidden": true,
+      "grep_pointer": "reports/constitution/btrack_pilot/clinical_structural_sasang_herb_grep_v1_latest.json",
+      "note_ko": "강의 약재×체질 표 — canon 단정·처방 트리거 금지"
+    }
+  ],
+  "summary": {
+    "framework_row_count": 4,
+    "topic_row_count": 5,
+    "herb_row_count": 7,
+    "herb_canon_status_counts": {
+      "unverified": 4,
+      "aligned": 3
+    },
+    "grep_summary_pointer": "reports/constitution/btrack_pilot/clinical_structural_sasang_herb_grep_v1_latest.json",
+    "persona_grid_present": true,
+    "dssbw_present": true
+  },
+  "reproduce": "py scripts/build_clinical_structural_sasang_canon_crosswalk_v1.py",
+  "chain_reproduce": "py scripts/run_clinical_structural_sasang_herb_grep_v1.py && py scripts/build_clinical_structural_sasang_canon_crosswalk_v1.py"
+}

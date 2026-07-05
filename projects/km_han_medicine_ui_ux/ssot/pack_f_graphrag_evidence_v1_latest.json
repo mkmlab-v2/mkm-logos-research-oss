@@ -1,0 +1,41 @@
+{
+  "schema": "km_han_pack_f_graphrag_evidence_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-05T11:58:17Z",
+  "rail": "B_TRACK",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "query": "格致 心宅 觀仁 性命論 四端",
+  "union_graphrag_path": "docs/final/artifacts/km_han_dssbw_geukchigo_union_graphrag_v1_latest.json",
+  "evidence_cards": [
+    {
+      "chunk_id": "IJEOMA-EDT-XM-00041",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "note_ko": "性命論 — ◉ 浩然之氣 出於肺脾肝腎 浩然之理 出於心   仁義禮智四臟之氣 擴而充之則 浩然之氣 出於此也   鄙薄貪懦一心之慾",
+      "clinical_citation_allowed": false,
+      "send_gate": "HOLD",
+      "tier_label": "교육·문화 · [HYPO]"
+    },
+    {
+      "chunk_id": "IJEOMA-EDT-XM-00093",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "note_ko": "性命論 — ◉ 心 爲一身之主宰 負隅背心 正向膻中 光明瑩澈    耳目鼻口 無所不察 肺脾肝腎 無所不忖    頷臆臍腹 無所不",
+      "clinical_citation_allowed": false,
+      "send_gate": "HOLD",
+      "tier_label": "교육·문화 · [HYPO]"
+    },
+    {
+      "chunk_id": "IJEOMA-EDT-XM-00029",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "note_ko": "性命論 — ◉ 仁義禮智 忠孝友悌 諸般百善 皆出於慧覺   士農工商 田宅邦國 諸般百用 皆出於資業",
+      "clinical_citation_allowed": false,
+      "send_gate": "HOLD",
+      "tier_label": "교육·문화 · [HYPO]"
+    }
+  ],
+  "mock_html_target": "projects/km_han_medicine_ui_ux/mocks/PackF-Clinician/pack_f_clinician.html",
+  "reproduce": "py scripts/inject_km_han_pack_f_graphrag_evidence_v1.py"
+}

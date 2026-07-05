@@ -1,0 +1,243 @@
+{
+  "schema": "km_han_dssbw_geukchigo_union_graphrag_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-05T08:35:10Z",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "non_gating": true,
+  "domain_lane": "km_han_medicine",
+  "corpus_planes": [
+    "ijeoma_dssbw_primary",
+    "geukchigo_full_ocr+insight_units"
+  ],
+  "query": "格致 心宅 觀仁 性命論 四端",
+  "query_tokens": [
+    "格致",
+    "心宅",
+    "觀仁",
+    "性命論",
+    "四端"
+  ],
+  "dssbw_hits": 5,
+  "geukchigo_unit_hits": 5,
+  "geukchigo_chunk_hits": 5,
+  "path_count": 15,
+  "paths": [
+    {
+      "path_id": "path_dssbw_1",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-EDT-XM-00041",
+        "section::xingming"
+      ],
+      "note_ko": "性命論 — ◉ 浩然之氣 出於肺脾肝腎 浩然之理 出於心   仁義禮智四臟之氣 擴而充之則 浩然之氣 出於此也   鄙薄貪懦一心之慾",
+      "match_score": 8,
+      "chunk_id": "IJEOMA-EDT-XM-00041",
+      "clinical_citation_allowed": false
+    },
+    {
+      "path_id": "path_dssbw_2",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-EDT-XM-00093",
+        "section::xingming"
+      ],
+      "note_ko": "性命論 — ◉ 心 爲一身之主宰 負隅背心 正向膻中 光明瑩澈    耳目鼻口 無所不察 肺脾肝腎 無所不忖    頷臆臍腹 無所不",
+      "match_score": 8,
+      "chunk_id": "IJEOMA-EDT-XM-00093",
+      "clinical_citation_allowed": false
+    },
+    {
+      "path_id": "path_dssbw_3",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-EDT-XM-00029",
+        "section::xingming"
+      ],
+      "note_ko": "性命論 — ◉ 仁義禮智 忠孝友悌 諸般百善 皆出於慧覺   士農工商 田宅邦國 諸般百用 皆出於資業",
+      "match_score": 7,
+      "chunk_id": "IJEOMA-EDT-XM-00029",
+      "clinical_citation_allowed": false
+    },
+    {
+      "path_id": "path_dssbw_4",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-EDT-XM-00019",
+        "section::xingming"
+      ],
+      "note_ko": "性命論 — ◉ 擅心 奪利也  侈心 自尊也  懶心 自卑也  慾心 竊物也",
+      "match_score": 6,
+      "chunk_id": "IJEOMA-EDT-XM-00019",
+      "clinical_citation_allowed": false
+    },
+    {
+      "path_id": "path_dssbw_5",
+      "corpus_plane": "ijeoma_dssbw_primary",
+      "priority": "primary",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-EDT-XM-00026",
+        "section::xingming"
+      ],
+      "note_ko": "性命論 — ◉ 人之耳目鼻口 天也  天 知也   人之肺脾肝腎 人也  人 賢也   我之頷臆臍腹 我自爲心而 未免愚也 我之免愚",
+      "match_score": 6,
+      "chunk_id": "IJEOMA-EDT-XM-00026",
+      "clinical_citation_allowed": false
+    },
+    {
+      "path_id": "geuk_path_unit_1",
+      "corpus_plane": "geukchigo_insight_units",
+      "steps": [
+        "node_km_han_query",
+        "unit::IJEOMA-GC-IU-002",
+        "section::ruyue_preface"
+      ],
+      "note_ko": "儒略 — 物宅身·身宅心·心宅事 — 格致而亂藁; 誠正格致修齊의 4端 구조.",
+      "match_score": 8,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p002",
+      "clinical_citation_allowed": true,
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_unit_2",
+      "corpus_plane": "geukchigo_insight_units",
+      "steps": [
+        "node_km_han_query",
+        "unit::IJEOMA-GC-IU-003",
+        "section::vol1_body"
+      ],
+      "note_ko": "vol1 — [geukchigo] vol1 · p.3 (vol1_body) — ○物萬也身一也心一也事萬也○萬事大也一心小也一",
+      "match_score": 7,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p003",
+      "clinical_citation_allowed": true,
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_unit_3",
+      "corpus_plane": "geukchigo_insight_units",
+      "steps": [
+        "node_km_han_query",
+        "unit::IJEOMA-GC-IU-006",
+        "section::vol1_body"
+      ],
+      "note_ko": "vol1 — [geukchigo] vol1 · p.6 (vol1_body) — ○以其治國平天下之誠爲學所得之也故其私己得之蓋",
+      "match_score": 7,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p006",
+      "clinical_citation_allowed": true,
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_unit_4",
+      "corpus_plane": "geukchigo_insight_units",
+      "steps": [
+        "node_km_han_query",
+        "unit::IJEOMA-GC-IU-027",
+        "section::vol2_body"
+      ],
+      "note_ko": "[格致藁 卷之一 十三] === — [geukchigo] vol2 · p.27 (vol2_body) — ○智在存心是謂意誠意若得其意無意禮在存心是謂",
+      "match_score": 6,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p027",
+      "clinical_citation_allowed": true,
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_unit_5",
+      "corpus_plane": "geukchigo_insight_units",
+      "steps": [
+        "node_km_han_query",
+        "unit::IJEOMA-GC-IU-007",
+        "section::guanren"
+      ],
+      "note_ko": "觀仁 — 觀效·觀周·觀恭·觀敬 — 仁義禮智의 觀(效) 층; 似仁而非仁 경계.",
+      "match_score": 5,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p007",
+      "clinical_citation_allowed": true,
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_chunk_1",
+      "corpus_plane": "geukchigo_full_ocr",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-GEUKCHIGO-FULL-p006",
+        "page::6"
+      ],
+      "note_ko": "p.6 hanja=239",
+      "match_score": 9,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p006",
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_chunk_2",
+      "corpus_plane": "geukchigo_full_ocr",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-GEUKCHIGO-FULL-p002",
+        "page::2"
+      ],
+      "note_ko": "p.2 hanja=179",
+      "match_score": 8,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p002",
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_chunk_3",
+      "corpus_plane": "geukchigo_full_ocr",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-GEUKCHIGO-FULL-p003",
+        "page::3"
+      ],
+      "note_ko": "p.3 hanja=210",
+      "match_score": 7,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p003",
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_chunk_4",
+      "corpus_plane": "geukchigo_full_ocr",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-GEUKCHIGO-FULL-p035",
+        "page::35"
+      ],
+      "note_ko": "p.35 hanja=231",
+      "match_score": 7,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p035",
+      "priority": "secondary"
+    },
+    {
+      "path_id": "geuk_path_chunk_5",
+      "corpus_plane": "geukchigo_full_ocr",
+      "steps": [
+        "node_km_han_query",
+        "chunk::IJEOMA-GEUKCHIGO-FULL-p075",
+        "page::75"
+      ],
+      "note_ko": "p.75 hanja=347",
+      "match_score": 7,
+      "chunk_id": "IJEOMA-GEUKCHIGO-FULL-p075",
+      "priority": "secondary"
+    }
+  ],
+  "policy": {
+    "send_gate": "HOLD",
+    "primary_spine": "dssbw",
+    "secondary_spine": "geukchigo_ocr",
+    "no_clinical_claim": true
+  },
+  "pointers": {
+    "dssbw_table": "C:/workspace/data/corpus/ijeoma/_inventory/IJEOMA_CHUNK_TABLE_2026-03-29.jsonl",
+    "geukchigo_graphrag": "C:/workspace/docs/final/artifacts/km_han_geukchigo_graphrag_v1_latest.json"
+  },
+  "reproduce": "py scripts/build_km_han_dssbw_geukchigo_union_graphrag_v1.py"
+}

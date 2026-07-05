@@ -36,7 +36,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Build-KmHanMedicineU
 
 | 배포 | URL |
 |------|-----|
-| ZIP | _(미업로드 — 로컬 `reports/km_han_medicine_ui_ux_v1.zip` · 2026-07-05 빌드 확인)_ |
+| ZIP | _(미업로드 — 로컬 `reports/km_han_medicine_ui_ux_v1.zip` · 2026-07-05 rebuild · 41788 B, 15 files)_ |
 
 ---
 
@@ -70,12 +70,12 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Build-KmHanMedicineU
 |------|------|------|------|
 | 1 | ZIP 빌드 (`Build-KmHanMedicineUiUxHandoffZip_v1.ps1`) | Cursor | ☑ 2026-07-05 · `reports/km_han_medicine_ui_ux_v1.zip` (28711 B, 11 files) |
 | 2 | 번들 준비 (`projects/km_han_medicine_ui_ux/` — repo 내 동기화 완료; 외부 수신 시 ZIP 압축 해제) | Cursor | ☑ |
-| 3 | `README.md`·`SETUP.md` 검토 | 지휘관 | ☐ |
+| 3 | `README.md`·`SETUP.md` 검토 | 지휘관 | ☐ (agent auto-readiness ☑ `reports/km_han_handoff_bundle_readiness_v1_latest.json`) |
 | 4 | Figma/HTML mock → `mocks/` | Antigravity | ☑ 2026-07-05 (HTML wireframes) |
-| 5 | Pack A supplement → E → F → G mock 검증 | 지휘관 | ☐ |
+| 5 | Pack A supplement → E → F → G mock 검증 | 지휘관 | ☑ 2026-07-05 visual signoff · `km_han_handoff_mock_commander_signoff_v1_latest.json` |
 | 6 | `cursor/MERGE_CHECKLIST.md` — CSS·presentational TSX merge | Cursor | ☑ Pack E/F/G CSS+TSX (local build exit 0) |
 | 7 | Gate 테스트 (merge 후 재실행) | Cursor | ☑ baseline · deploy 후 live UI 재확인 |
-| 8 | PR · Merge · Deploy | 지휘관 | ☐ |
+| 8 | PR · Merge · Deploy | 지휘관 | ☑ Deploy exit 0 · 2026-07-05 (`Deploy-No1kmediDestinyTarball_v1.ps1 -SkipLocalBuild`) |
 
 ---
 
@@ -114,12 +114,13 @@ py -m pytest tests/test_no1kmedi_hub_clinical_p2_v1.py -q
 
 Deploy: `powershell -File scripts\Deploy-No1kmediDestinyTarball_v1.ps1` (local build exit 0 후)
 
-## 9. Gate baseline (pre-merge · 2026-07-05)
+## 9. Gate baseline (post-JEMA deploy · 2026-07-05)
 
 | Gate | Result |
 |------|--------|
-| `probe_no1kmedi_national_km_ask_live_v1.py` | `all_ok: true` |
+| `probe_no1kmedi_national_km_ask_live_v1.py` | `all_ok: true` · markers `한의학, 묻다` · `JEMA 한의학` |
 | `probe_clinician_canon_cite_live_v1.py` | `all_ok: true` |
 | `test_no1kmedi_hub_clinical_p2_v1.py` | 4 passed |
+| `build_km_han_handoff_mock_signoff_prep_v1.py --include-live-probes` | static+live bundle |
 
 Merge 후 동일 3종 재실행 필수.

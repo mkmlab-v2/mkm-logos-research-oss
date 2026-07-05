@@ -1,5 +1,5 @@
 ﻿KM Han Medicine UI/UX - Antigravity pack order
-generated: 2026-07-05T04:11:37.1640069Z
+generated: 2026-07-05T12:40:47.7198217Z
 
 1. Pack A supplement (.km-ask-* -> DTCG trust.clinical)
 2. Pack E - no1kmedi.com/ask (L0 national KM)

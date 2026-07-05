@@ -1,0 +1,18 @@
+{
+  "schema": "km_han_handoff_mock_commander_signoff_v1",
+  "recorded_at_utc": "2026-07-05T11:34:00Z",
+  "commander_reference": "chat-2026-07-05-km-han-handoff-visual",
+  "packs_signed": [
+    "PackE-NationalAsk",
+    "PackF-Clinician",
+    "PackG-HubClinical"
+  ],
+  "scope": "visual_mock_internal",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "status": "COMMANDER_SIGNED",
+  "notes_ko": "Pack E/F/G visual OK; Pack F provenance A/B/C + crosswalk + graphrag 3 cards; file:// live cite fallback noted; send_gate HOLD",
+  "boundary_ack": "Mock signoff ≠ Track A promotion · ≠ live trading · Hub cream/gold ↔ clinician dark 팔레트 무단 혼합 금지 유지",
+  "prep_pointer": "reports/km_han_handoff_mock_signoff_prep_v1_latest.json",
+  "reproduce": "py scripts/record_km_han_handoff_mock_commander_signoff_v1.py --commander-signoff-ack"
+}

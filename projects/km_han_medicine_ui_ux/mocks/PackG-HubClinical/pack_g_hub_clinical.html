@@ -2,25 +2,509 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pack G – Hub Clinical Mock</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
 <style>
-  body {font-family: 'Inter', sans-serif; background:#faf7f2; color:#212529; margin:0; padding:20px;}
-  .sidebar {border-right:1px solid #2d7a68; padding:10px; width:200px; float:left;}
-  .group {margin-bottom:12px;}
-  .badge {background:#3d9b84; color:#fff; padding:2px 6px; font-size:0.75rem; border-radius:3px;}
-  .content {margin-left:220px; padding:10px;}
-  .modal {border:1px solid #c5a057; background:#fff8e1; padding:8px; margin-top:12px;}
+  :root {
+    --hub-bg: #faf7f2;
+    --hub-surface: #ffffff;
+    --hub-surface-elevated: #fffefb;
+    --hub-border: rgba(197, 160, 87, 0.15);
+    --hub-line: rgba(197, 160, 87, 0.15);
+    --hub-ink: #292524;
+    --hub-muted: #64748b;
+    --hub-accent: #2d7a68;
+    --hub-accent-ink: #ffffff;
+    --hub-gold: #c5a057;
+    --hub-clinical: #3d9b84;
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 24px;
+    --space-xl: 32px;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 12px;
+    --font: "Pretendard Variable", Pretendard, "Noto Sans KR", system-ui, sans-serif;
+    --sidebar-w: 240px;
+    --inspector-w: 320px;
+    --pill-shadow: 0 8px 24px rgba(197, 160, 87, 0.08), 0 2px 8px rgba(28, 25, 23, 0.04);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    background: var(--hub-bg);
+    color: var(--hub-ink);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+  .universe-hub-page--discover-v3 { min-height: 100vh; display: flex; flex-direction: column; }
+  .hub-top-strip {
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--hub-line);
+    background: color-mix(in srgb, var(--hub-surface) 92%, var(--hub-bg) 8%);
+    font-size: 0.75rem;
+    color: var(--hub-muted);
+    text-align: center;
+  }
+  .hub-top-strip strong { color: var(--hub-accent); font-weight: 600; }
+  .hub-shell {
+    flex: 1;
+    display: grid;
+    grid-template-columns: var(--sidebar-w) minmax(0, 1fr) var(--inspector-w);
+    min-height: calc(100vh - 36px);
+  }
+  /* Sidebar */
+  .universe-hub-sidebar {
+    background: color-mix(in srgb, var(--hub-surface) 94%, var(--hub-bg) 6%);
+    border-right: 1px solid var(--hub-border);
+    padding: var(--space-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+  .universe-hub-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: -0.02em;
+  }
+  .universe-hub-sidebar-tag {
+    font-size: 0.625rem;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--hub-line);
+    color: var(--hub-muted);
+  }
+  .universe-hub-sidebar-group-label {
+    margin: 0 0 var(--space-xs);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--hub-muted);
+  }
+  .universe-hub-sidebar-list {
+    list-style: none;
+    margin: 0 0 var(--space-md);
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .universe-hub-sidebar-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--hub-ink);
+    text-decoration: none;
+    font-size: 0.8125rem;
+    transition: background 0.15s ease;
+  }
+  .universe-hub-sidebar-link:hover { background: color-mix(in srgb, var(--hub-accent) 8%, transparent); }
+  .universe-hub-sidebar-link.is-active {
+    background: color-mix(in srgb, var(--hub-accent) 14%, var(--hub-surface) 86%);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hub-accent) 35%, transparent 65%);
+  }
+  .universe-hub-lane-badge {
+    font-size: 0.625rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .universe-hub-lane-badge--clinical {
+    color: var(--hub-clinical);
+    border: 1px solid color-mix(in srgb, var(--hub-clinical) 55%, transparent);
+    background: color-mix(in srgb, var(--hub-clinical) 10%, var(--hub-surface));
+  }
+  .universe-hub-lane-badge--hypo {
+    color: var(--hub-muted);
+    border: 1px solid var(--hub-line);
+    background: var(--hub-surface);
+  }
+  .universe-hub-sidebar-group--consumer .universe-hub-sidebar-link { opacity: 0.72; }
+  .universe-hub-sidebar-foot {
+    margin-top: auto;
+    font-size: 0.6875rem;
+    color: var(--hub-muted);
+    padding-top: var(--space-md);
+    border-top: 1px solid var(--hub-line);
+  }
+  /* Center */
+  .hub-center {
+    padding: var(--space-xl) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .hub-center-inner { width: 100%; max-width: 42rem; }
+  .hub-hero-title {
+    margin: 0 0 var(--space-sm);
+    font-size: 1.375rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    text-align: center;
+  }
+  .hub-hero-lead {
+    margin: 0 0 var(--space-lg);
+    text-align: center;
+    color: var(--hub-muted);
+    font-size: 0.875rem;
+  }
+  .universe-hub-ask-capsule {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 6px 6px 6px var(--space-md);
+    border: 1px solid var(--hub-border);
+    border-radius: 999px;
+    background: var(--hub-surface);
+    box-shadow: var(--pill-shadow);
+  }
+  .universe-hub-ask-capsule input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font: inherit;
+    color: var(--hub-ink);
+    outline: none;
+    min-width: 0;
+  }
+  .universe-hub-ask-capsule input::placeholder { color: var(--hub-muted); }
+  .universe-hub-ask-submit {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: var(--hub-accent);
+    color: var(--hub-accent-ink);
+    font-weight: 700;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .hub-intent-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    justify-content: center;
+    margin-top: var(--space-md);
+  }
+  .hub-intent-chip {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--hub-line);
+    background: var(--hub-surface);
+    font-size: 0.8125rem;
+    color: var(--hub-muted);
+    cursor: pointer;
+  }
+  .hub-intent-chip.is-primary {
+    border-color: color-mix(in srgb, var(--hub-accent) 45%, var(--hub-line));
+    color: var(--hub-accent);
+    font-weight: 600;
+    background: color-mix(in srgb, var(--hub-accent) 8%, var(--hub-surface));
+  }
+  .hub-disclaimer {
+    margin-top: var(--space-lg);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--hub-line);
+    background: var(--hub-surface-elevated);
+    font-size: 0.8125rem;
+    color: var(--hub-muted);
+    text-align: center;
+  }
+  /* Inspector */
+  .universe-hub-inspector-v3 {
+    border-left: 1px solid var(--hub-line);
+    background: var(--hub-surface);
+    padding: var(--space-lg) var(--space-md);
+    overflow-y: auto;
+  }
+  .universe-hub-inspector-badge {
+    display: inline-block;
+    margin: 0 0 var(--space-sm);
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--hub-muted);
+    letter-spacing: 0.04em;
+  }
+  .universe-hub-inspector-title {
+    margin: 0 0 var(--space-xs);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+  .universe-hub-inspector-lead {
+    margin: 0 0 var(--space-md);
+    font-size: 0.8125rem;
+    color: var(--hub-muted);
+  }
+  .universe-hub-inspector-subtitle {
+    margin: 0 0 var(--space-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--hub-muted);
+  }
+  .graphrag-evidence-panel {
+    border: 1px solid var(--hub-line);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    background: var(--hub-surface-elevated);
+    margin-bottom: var(--space-md);
+  }
+  .evidence-query {
+    margin: 0 0 var(--space-sm);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--hub-ink);
+  }
+  .evidence-planes {
+    margin: 0 0 var(--space-sm);
+    padding-left: 1.1rem;
+    font-size: 0.75rem;
+    color: var(--hub-muted);
+  }
+  .evidence-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: var(--space-sm); }
+  .chip {
+    font-family: ui-monospace, monospace;
+    font-size: 0.6875rem;
+    padding: 4px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid color-mix(in srgb, var(--hub-clinical) 40%, var(--hub-line));
+    background: color-mix(in srgb, var(--hub-clinical) 8%, var(--hub-surface));
+    color: var(--hub-accent);
+  }
+  .evidence-disclaimer {
+    margin: 0;
+    font-size: 0.6875rem;
+    color: var(--hub-muted);
+  }
+  .inspector-artifact-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.8125rem;
+  }
+  .inspector-artifact-list li { padding: 6px 0; border-bottom: 1px solid var(--hub-line); }
+  .inspector-artifact-list a { color: var(--hub-accent); text-decoration: none; }
+  /* Handoff modal */
+  .handoff-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(41, 37, 36, 0.45);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    z-index: 200;
+  }
+  .handoff-backdrop.is-open { opacity: 1; pointer-events: auto; }
+  .handoff-modal {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -48%) scale(0.96);
+    opacity: 0;
+    pointer-events: none;
+    width: min(420px, calc(100vw - 32px));
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    border: 1px solid color-mix(in srgb, var(--hub-gold) 35%, var(--hub-line));
+    background: var(--hub-surface);
+    box-shadow: 0 24px 48px rgba(28, 25, 23, 0.12);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 201;
+  }
+  .handoff-modal.is-open {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .handoff-modal h2 { margin: 0 0 var(--space-sm); font-size: 1rem; }
+  .handoff-modal p { margin: 0 0 var(--space-md); font-size: 0.875rem; color: var(--hub-muted); }
+  .handoff-modal a { color: var(--hub-accent); }
+  .handoff-modal-actions { display: flex; gap: var(--space-sm); justify-content: flex-end; }
+  .handoff-modal-actions button {
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn-primary { border: none; background: var(--hub-accent); color: #fff; }
+  .btn-ghost { border: 1px solid var(--hub-line); background: var(--hub-surface); color: var(--hub-ink); }
+  @media (max-width: 960px) {
+    .hub-shell { grid-template-columns: var(--sidebar-w) minmax(0, 1fr); }
+    .universe-hub-inspector-v3 { display: none; }
+  }
+  @media (max-width: 640px) {
+    :root { --sidebar-w: 100%; }
+    .hub-shell { grid-template-columns: 1fr; }
+    .universe-hub-sidebar { border-right: none; border-bottom: 1px solid var(--hub-border); }
+    .universe-hub-sidebar-group--consumer .universe-hub-sidebar-list {
+      max-height: 2.5rem;
+      overflow: hidden;
+    }
+    .hub-center { padding: var(--space-lg) var(--space-md); }
+  }
 </style>
 </head>
-<body>
-<div class="sidebar">
-  <div class="group"><strong>임상·한의사</strong><br><span class="badge">L0</span> no1kmedi.com/ask<br><span class="badge">L4</span> clinic.no1kmedi.com/clinician</div>
-  <div class="group"><strong>소비자·관측</strong><br><span class="badge">[HYPO]</span> ... (collapsed)</div>
+<body class="universe-hub-page--discover-v3">
+<div class="hub-top-strip"><strong>Pack G mock</strong> · jema-ai.com/hub · discover v3 · send_gate HOLD · router only</div>
+<div class="hub-shell">
+  <aside class="universe-hub-sidebar" aria-label="Hub navigation">
+    <div class="universe-hub-sidebar-brand">
+      JEMA <span class="universe-hub-sidebar-tag">Hub</span>
+    </div>
+    <div>
+      <p class="universe-hub-sidebar-group-label">Discover</p>
+      <ul class="universe-hub-sidebar-list">
+        <li><a class="universe-hub-sidebar-link is-active" href="#"><span>Discover</span></a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="universe-hub-sidebar-group-label">B2B</p>
+      <ul class="universe-hub-sidebar-list">
+        <li><a class="universe-hub-sidebar-link" href="#"><span>Enterprise</span></a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="universe-hub-sidebar-group-label">임상·한의사</p>
+      <ul class="universe-hub-sidebar-list">
+        <li>
+          <a class="universe-hub-sidebar-link js-handoff" href="https://no1kmedi.com/ask" data-target="대국민 한의학 AI · no1kmedi.com/ask">
+            <span>대국민 한의학 AI</span>
+            <span class="universe-hub-lane-badge universe-hub-lane-badge--clinical">L0</span>
+          </a>
+        </li>
+        <li>
+          <a class="universe-hub-sidebar-link js-handoff" href="https://clinic.no1kmedi.com/clinician" data-target="한의사 보조 · clinic.no1kmedi.com/clinician">
+            <span>한의사 보조</span>
+            <span class="universe-hub-lane-badge universe-hub-lane-badge--clinical">L4</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div class="universe-hub-sidebar-group--consumer">
+      <p class="universe-hub-sidebar-group-label">소비자·관측</p>
+      <ul class="universe-hub-sidebar-list">
+        <li><a class="universe-hub-sidebar-link" href="#"><span>Logos</span><span class="universe-hub-lane-badge universe-hub-lane-badge--hypo">[HYPO]</span></a></li>
+        <li><a class="universe-hub-sidebar-link" href="#"><span>명리</span><span class="universe-hub-lane-badge universe-hub-lane-badge--hypo">[HYPO]</span></a></li>
+        <li><a class="universe-hub-sidebar-link" href="#"><span>PersonaDiary</span><span class="universe-hub-lane-badge universe-hub-lane-badge--hypo">[HYPO]</span></a></li>
+      </ul>
+    </div>
+    <p class="universe-hub-sidebar-foot">clinical · hub handoff only · no SOAP canvas</p>
+  </aside>
+
+  <main class="hub-center">
+    <div class="hub-center-inner">
+      <h1 class="hub-hero-title">무엇을 탐색할까요?</h1>
+      <p class="hub-hero-lead">Hub는 라우터입니다 · 임상 질의는 전용 레인으로 handoff</p>
+      <form class="universe-hub-ask-capsule" onsubmit="return false;">
+        <input type="text" placeholder="格致 心宅 觀仁 性命論 四端 …" aria-label="Hub ask">
+        <button type="submit" class="universe-hub-ask-submit" aria-label="Submit">→</button>
+      </form>
+      <div class="hub-intent-chips">
+        <button type="button" class="hub-intent-chip">라이프·원퀘스천</button>
+        <button type="button" class="hub-intent-chip is-primary js-handoff-chip" data-href="https://clinic.no1kmedi.com/clinician">한의사 보조</button>
+        <button type="button" class="hub-intent-chip">관측·리서치</button>
+        <button type="button" class="hub-intent-chip">B2B</button>
+      </div>
+      <div class="hub-disclaimer">
+        L0/L4 clinical links open external surfaces · 허브 LLM 없음 · 진단·처방 대체 아님
+      </div>
+    </div>
+  </main>
+
+  <aside class="universe-hub-inspector-v3" aria-label="Evidence inspector">
+    <p class="universe-hub-inspector-badge">[HYPO] · Observation Only</p>
+    <h2 class="universe-hub-inspector-title">Corpus paths</h2>
+    <p class="universe-hub-inspector-lead">GraphRAG union · B-track · cite 미연결</p>
+    <!-- KM_HAN_PACK_G_EVIDENCE_START -->
+<div class="graphrag-evidence-panel">
+  <p class="evidence-query"><strong>GraphRAG query:</strong> 格致 心宅 觀仁 性命論 四端</p>
+  <ul class="evidence-planes">
+    <li>geukchigo_full_ocr: 5 path(s)</li>
+    <li>geukchigo_insight_units: 5 path(s)</li>
+    <li>ijeoma_dssbw_primary: 5 path(s)</li>
+  </ul>
+  <div class="evidence-chips">
+    <span class="chip" data-chunk-id="IJEOMA-EDT-XM-00041" title="性命論 — ◉ 浩然之氣 出於肺脾肝腎 浩然之理 出於心   仁義禮智四臟之氣 擴而充之則 浩然之氣 出於此也   鄙薄貪懦一心之慾">IJEOMA-EDT-XM-00041</span>
+    <span class="chip" data-chunk-id="IJEOMA-EDT-XM-00093" title="性命論 — ◉ 心 爲一身之主宰 負隅背心 正向膻中 光明瑩澈    耳目鼻口 無所不察 肺脾肝腎 無所不忖    頷臆臍腹 無所不">IJEOMA-EDT-XM-00093</span>
+    <span class="chip" data-chunk-id="IJEOMA-EDT-XM-00029" title="性命論 — ◉ 仁義禮智 忠孝友悌 諸般百善 皆出於慧覺   士農工商 田宅邦國 諸般百用 皆出於資業">IJEOMA-EDT-XM-00029</span>
+  </div>
+  <p class="evidence-disclaimer">[HYPO] B-track · send_gate HOLD · hub handoff only · clinical cite 미연결</p>
 </div>
-<div class="content">
-  <h1>Hub Clinical – Mock</h1>
-  <p>External link handoff modal example:</p>
-  <div class="modal">임상 레인으로 이동합니다 · no1kmedi/clinic · 허브 LLM 없음<br><button>계속</button> <button>취소</button></div>
+<!-- KM_HAN_PACK_G_EVIDENCE_END -->
+    <h3 class="universe-hub-inspector-subtitle">Artifacts</h3>
+    <ul class="inspector-artifact-list">
+      <li><a href="#">Logos Ask · Open Beta</a></li>
+      <li><a href="#">Graph Studio</a></li>
+      <li><a href="#">Compression sandbox</a></li>
+    </ul>
+  </aside>
 </div>
+
+<div id="handoff-backdrop" class="handoff-backdrop" hidden></div>
+<div id="handoff-modal" class="handoff-modal" role="dialog" aria-modal="true" aria-labelledby="handoff-title" hidden>
+  <h2 id="handoff-title">임상 레인으로 이동</h2>
+  <p id="handoff-body">임상 레인으로 이동합니다 · <span id="handoff-target">clinic.no1kmedi.com/clinician</span> · 허브 LLM 없음</p>
+  <div class="handoff-modal-actions">
+    <button type="button" class="btn-ghost" id="handoff-cancel">취소</button>
+    <button type="button" class="btn-primary" id="handoff-continue">계속</button>
+  </div>
+</div>
+
+<script>
+(function () {
+  var backdrop = document.getElementById('handoff-backdrop');
+  var modal = document.getElementById('handoff-modal');
+  var targetEl = document.getElementById('handoff-target');
+  var pendingHref = '';
+  function openHandoff(href, label) {
+    pendingHref = href;
+    targetEl.textContent = label || href;
+    backdrop.hidden = false;
+    modal.hidden = false;
+    requestAnimationFrame(function () {
+      backdrop.classList.add('is-open');
+      modal.classList.add('is-open');
+    });
+  }
+  function closeHandoff() {
+    backdrop.classList.remove('is-open');
+    modal.classList.remove('is-open');
+    setTimeout(function () { backdrop.hidden = true; modal.hidden = true; pendingHref = ''; }, 200);
+  }
+  document.querySelectorAll('.js-handoff').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      openHandoff(el.getAttribute('href'), el.getAttribute('data-target'));
+    });
+  });
+  document.querySelectorAll('.js-handoff-chip').forEach(function (el) {
+    el.addEventListener('click', function () {
+      openHandoff(el.getAttribute('data-href'), '한의사 보조 · clinic.no1kmedi.com/clinician');
+    });
+  });
+  document.getElementById('handoff-cancel').addEventListener('click', closeHandoff);
+  backdrop.addEventListener('click', closeHandoff);
+  document.getElementById('handoff-continue').addEventListener('click', function () {
+    if (pendingHref) window.open(pendingHref, '_blank', 'noopener,noreferrer');
+    closeHandoff();
+  });
+})();
+</script>
 </body>
 </html>

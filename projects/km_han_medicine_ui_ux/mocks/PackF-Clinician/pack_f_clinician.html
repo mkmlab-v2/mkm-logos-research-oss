@@ -2,29 +2,440 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pack F – Clinician Mock</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
 <style>
-  body {font-family: 'Inter', sans-serif; background:#0a1210; color:#e0f2ff; margin:0; padding:20px;}
-  .trust-strip {background:#3d9b84; color:#fff; padding:4px 8px; font-size:0.85rem;}
-  .nav {display:flex; gap:12px; margin-top:12px;}
-  .nav a {color:#c5a057; text-decoration:none; font-weight:600;}
-  .canon-evidence {margin-top:20px; border:1px solid #3d9b84; padding:10px; background:#0a1a20;}
-  .canon-header {font-weight:600; color:#c5a057;}
-  .canon-footer {font-size:0.75rem; color:#6c757d; margin-top:8px;}
+  :root {
+    --cp-bg: #0a1210;
+    --cp-surface: #111a17;
+    --cp-accent: #3d9b84;
+    --cp-gold: #c5a057;
+    --cp-text: #e0f2ff;
+    --cp-muted: #9aa9a3;
+    --radius-md: 10px;
+    --font: "Pretendard Variable", Pretendard, "Noto Sans KR", system-ui, sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    background: var(--cp-bg);
+    color: var(--cp-text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .trust-strip {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: var(--cp-accent);
+    color: #fff;
+    font-size: 0.75rem;
+  }
+  .trust-strip button {
+    border: 1px solid rgba(255,255,255,0.65);
+    background: transparent;
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.15rem 0.55rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+  .shallow-nav {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .shallow-nav a {
+    text-decoration: none;
+    color: var(--cp-muted);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+  .shallow-nav a.is-active {
+    color: var(--cp-gold);
+    border-color: rgba(61,155,132,0.55);
+    background: rgba(61,155,132,0.14);
+  }
+  .layout {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    min-height: 0;
+  }
+  .sidebar {
+    border-right: 1px solid rgba(255,255,255,0.08);
+    padding: 1rem;
+    background: var(--cp-surface);
+    font-size: 0.8125rem;
+  }
+  .sidebar h2 { margin: 0 0 0.75rem; font-size: 0.875rem; }
+  .sidebar .thread {
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid rgba(61,155,132,0.35);
+    background: rgba(61,155,132,0.1);
+    margin-bottom: 0.5rem;
+  }
+  .main {
+    padding: 1rem 1.25rem 5rem;
+    max-width: 52rem;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .paste-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .paste-header h1 { margin: 0; font-size: 1.125rem; }
+  .paste-header p { margin: 0.25rem 0 0; color: var(--cp-muted); font-size: 0.8125rem; }
+  .badges { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .badge {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid rgba(197,160,87,0.35);
+    color: var(--cp-gold);
+  }
+  .badge--green { border-color: rgba(61,155,132,0.45); color: var(--cp-accent); }
+  .badge--tier-a { border-color: rgba(197,160,87,0.55); color: #e8c878; background: rgba(197,160,87,0.12); }
+  .badge--tier-b { border-color: rgba(61,155,132,0.55); color: #6fd4b8; background: rgba(61,155,132,0.12); }
+  .badge--tier-c { border-color: rgba(148,163,184,0.45); color: #b8c4d0; background: rgba(148,163,184,0.1); }
+  .provenance-tier-strip {
+    display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center;
+    margin: 0.75rem 0 0; padding-top: 0.65rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.6875rem; color: var(--cp-muted);
+  }
+  .provenance-tier-strip span.label { margin-right: 0.25rem; }
+  .crosswalk-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; margin-top: 0.5rem; }
+  .crosswalk-table th, .crosswalk-table td {
+    text-align: left; padding: 0.4rem 0.35rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    vertical-align: top;
+  }
+  .crosswalk-table th { color: var(--cp-gold); font-weight: 600; }
+  .crosswalk-table .tier { font-family: ui-monospace, monospace; white-space: nowrap; }
+  .omni {
+    border: 1px solid rgba(61,155,132,0.28);
+    border-radius: var(--radius-md);
+    background: #0d1714;
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  .omni textarea {
+    width: 100%;
+    min-height: 120px;
+    border: none;
+    background: transparent;
+    color: var(--cp-text);
+    font: inherit;
+    resize: vertical;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.75rem; }
+  .chip {
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 999px;
+    padding: 0.25rem 0.65rem;
+    font-size: 0.75rem;
+    color: var(--cp-muted);
+  }
+  .canon-evidence {
+    margin-top: 1rem;
+    border: 1px solid rgba(61,155,132,0.35);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    background: rgba(61,155,132,0.08);
+  }
+  .canon-header { font-weight: 600; color: var(--cp-gold); margin-bottom: 0.5rem; }
+  .canon-footer { font-size: 0.6875rem; color: var(--cp-muted); font-family: ui-monospace, monospace; margin-top: 0.5rem; }
+  .cite-toolbar { margin-top: 1rem; text-align: center; }
+  #cite-open {
+    background: rgba(10,18,16,0.92);
+    color: var(--cp-text);
+    border: 1px solid rgba(61,155,132,0.45);
+    padding: 0.55rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .cite-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.55);
+    opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 99;
+  }
+  .cite-backdrop.open { opacity: 1; pointer-events: auto; }
+  .cite-sheet {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    max-height: 55vh; background: #0d1a18; border-top: 2px solid var(--cp-accent);
+    padding: 1rem; overflow-y: auto;
+    transform: translateY(100%); transition: transform .25s; z-index: 100;
+  }
+  .cite-sheet.open { transform: translateY(0); }
+  .cite-sheet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+  .cite-sheet-header h2 { margin: 0; font-size: 0.875rem; color: var(--cp-gold); }
+  #cite-close { background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--cp-text); padding: 0.25rem 0.65rem; border-radius: 6px; cursor: pointer; }
+  .cite-row { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 0.65rem 0; font-size: 0.8125rem; }
+  .cite-row .cid { color: var(--cp-gold); font-family: monospace; font-size: 0.75rem; }
+  @media (min-width: 900px) {
+    .cite-sheet {
+      left: auto; top: 0; bottom: 0; width: 360px; max-height: none;
+      transform: translateX(100%); border-top: none; border-left: 2px solid var(--cp-accent);
+    }
+    .cite-sheet.open { transform: translateX(0); }
+  }
 </style>
 </head>
 <body>
-<h1>Clinician – Mock</h1>
-<div class="trust-strip">Trust Strip – human_only · CDSS 보조</div>
-<div class="nav">
-  <a href="#paste">Paste Chart</a>
+<div class="trust-strip">
+  <span>human_only · CDSS 보조 · send_gate HOLD · 진단·처방 확정 아님</span>
+  <button type="button">안전·고지</button>
+</div>
+<nav class="shallow-nav" aria-label="주요 패널">
+  <a href="#paste" class="is-active">Paste Chart</a>
   <a href="#dialogue">대화</a>
+</nav>
+<div class="layout">
+  <aside class="sidebar">
+    <h2>JEMA AI <span style="color:var(--cp-muted);font-weight:500">한의사</span></h2>
+    <button type="button" style="width:100%;margin-bottom:0.75rem;padding:0.45rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:var(--cp-text);cursor:pointer">+ 새 상담</button>
+    <div class="thread">새 상담 · 2026-07-05</div>
+  </aside>
+  <main class="main">
+    <div class="paste-header">
+      <div>
+        <h1>Paste Chart</h1>
+        <p>EMR 복붙 · 로컬 SSOT · Track B 초안</p>
+      </div>
+      <div class="badges">
+        <span class="badge">Track B · 초안</span>
+        <span class="badge badge--green">Human Gold 확정 필요</span>
+        <span class="badge badge--tier-a" title="Canon Core · 四象 4체질">Canon A</span>
+        <span class="badge badge--tier-b" title="Runtime · 12 persona slots">Runtime B</span>
+        <span class="badge badge--tier-c" title="Secondary · 임구사 8-vector">Secondary C</span>
+      </div>
+    </div>
+    <div class="omni">
+      <p style="margin:0 0 0.5rem;font-size:0.8125rem;color:var(--cp-muted)">차트 붙여넣기 — 이름·생년·주증상은 칩에서 확인</p>
+      <textarea placeholder="환자명, 생년, 주증상, 복용약, 맥진 메모…"></textarea>
+      <div class="chips">
+        <span class="chip">이름 ?</span>
+        <span class="chip">생년 ?</span>
+        <span class="chip">성별 ?</span>
+      </div>
+    </div>
+    <div class="canon-evidence">
+      <!-- KM_HAN_GRAPHRAG_EVIDENCE_START -->
+<div class="canon-evidence-list">
+  <article class="canon-card" data-chunk-id="IJEOMA-EDT-XM-00041" data-corpus-plane="ijeoma_dssbw_primary">
+    <div class="canon-header">원전 근거 (1) • 교육·문화 · [HYPO]</div>
+    <p>性命論 — ◉ 浩然之氣 出於肺脾肝腎 浩然之理 出於心   仁義禮智四臟之氣 擴而充之則 浩然之氣 出於此也   鄙薄貪懦一心之慾</p>
+    <div class="canon-footer">IJEOMA-EDT-XM-00041 · send_gate HOLD · citation_allowed=false</div>
+  </article>
+  <article class="canon-card" data-chunk-id="IJEOMA-EDT-XM-00093" data-corpus-plane="ijeoma_dssbw_primary">
+    <div class="canon-header">원전 근거 (2) • 교육·문화 · [HYPO]</div>
+    <p>性命論 — ◉ 心 爲一身之主宰 負隅背心 正向膻中 光明瑩澈    耳目鼻口 無所不察 肺脾肝腎 無所不忖    頷臆臍腹 無所不</p>
+    <div class="canon-footer">IJEOMA-EDT-XM-00093 · send_gate HOLD · citation_allowed=false</div>
+  </article>
+  <article class="canon-card" data-chunk-id="IJEOMA-EDT-XM-00029" data-corpus-plane="ijeoma_dssbw_primary">
+    <div class="canon-header">원전 근거 (3) • 교육·문화 · [HYPO]</div>
+    <p>性命論 — ◉ 仁義禮智 忠孝友悌 諸般百善 皆出於慧覺   士農工商 田宅邦國 諸般百用 皆出於資業</p>
+    <div class="canon-footer">IJEOMA-EDT-XM-00029 · send_gate HOLD · citation_allowed=false</div>
+  </article>
 </div>
-<div class="canon-evidence">
-  <div class="canon-header">원전 근거 (n) • 교육·문화</div>
-  <p>Excerpt preview – first two lines of evidence.</p>
-  <div class="canon-footer">IJEOMA-EDT-12345 (chunk_id)</div>
+<!-- KM_HAN_GRAPHRAG_EVIDENCE_END -->
+      <div class="provenance-tier-strip" aria-label="출처 계층 provenance">
+        <span class="label">provenance:</span>
+        <span class="badge badge--tier-a">A · 四象 4체질</span>
+        <span class="badge badge--tier-b">B · 12 병증 슬롯</span>
+        <span class="badge badge--tier-c">C · 2차 학파 격벽</span>
+        <span style="margin-left:auto">8↔12 합선 금지</span>
+      </div>
+    </div>
+    <div class="cite-toolbar">
+      <button type="button" id="cite-open" aria-controls="cite-sheet">근거 상세 (3)</button>
+    </div>
+  </main>
 </div>
-<aside class="cite-sheet" aria-label="Cite panel placeholder">Cite sheet / bottom drawer — chunk_id · source tier</aside>
+<!-- KM_HAN_CITE_SHEET_START -->
+<div id="cite-backdrop" class="cite-backdrop" hidden></div>
+<aside id="cite-sheet" class="cite-sheet" aria-label="Cite panel" hidden>
+  <div class="cite-sheet-header">
+    <h2>원전 근거 상세 · chunk_id · source tier</h2>
+    <button type="button" id="cite-close" aria-label="닫기">닫기</button>
+  </div>
+  <div id="cite-rows">
+  <div id="cite-graphrag-rows"></div>
+  <div id="cite-live-rows" aria-live="polite"></div>
+  <div id="cite-crosswalk-mount"></div>
+<!-- KM_HAN_CROSSWALK_START -->
+<section class="crosswalk-section" aria-label="Tier crosswalk · offline fallback · SSOT clinical_structural_sasang_canon_crosswalk_v1">
+  <p class="cite-row" style="color:var(--cp-muted);margin:0 0 0.5rem">Tier crosswalk · offline fallback · SSOT clinical_structural_sasang_canon_crosswalk_v1</p>
+  <table class="crosswalk-table">
+    <thead><tr><th>주제</th><th>Tier</th><th>Canon</th><th>합선</th></tr></thead>
+    <tbody>
+      <tr><td>四象人 4체질</td><td class="tier">A</td><td>aligned</td><td>—</td></tr>
+      <tr><td>4체질 × 初·中·末 = 12 페르소나 슬롯</td><td class="tier">B</td><td>aligned</td><td>—</td></tr>
+      <tr><td>음양 8인 · vector · 임상구조사상</td><td class="tier">C</td><td>unverified</td><td>금지</td></tr>
+      <tr><td>牛膝 → 태양(太陽)</td><td class="tier">C</td><td>unverified</td><td>금지</td></tr>
+      <tr><td>甘遂 → 태양(太陽)</td><td class="tier">C</td><td>unverified</td><td>금지</td></tr>
+    </tbody>
+  </table>
+</section>
+<!-- KM_HAN_CROSSWALK_END -->
+
+    <article class="cite-row" data-chunk-id="IJEOMA-EDT-XM-00041">
+      <div class="cid">IJEOMA-EDT-XM-00041</div>
+      <div>性命論 — ◉ 浩然之氣 出於肺脾肝腎 浩然之理 出於心   仁義禮智四臟之氣 擴而充之則 浩然之氣 出於此也   鄙薄貪懦一心之慾</div>
+      <div class="canon-footer">ijeoma_dssbw_primary · 교육·문화 · [HYPO] · send_gate HOLD</div>
+    </article>
+    <article class="cite-row" data-chunk-id="IJEOMA-EDT-XM-00093">
+      <div class="cid">IJEOMA-EDT-XM-00093</div>
+      <div>性命論 — ◉ 心 爲一身之主宰 負隅背心 正向膻中 光明瑩澈    耳目鼻口 無所不察 肺脾肝腎 無所不忖    頷臆臍腹 無所不</div>
+      <div class="canon-footer">ijeoma_dssbw_primary · 교육·문화 · [HYPO] · send_gate HOLD</div>
+    </article>
+    <article class="cite-row" data-chunk-id="IJEOMA-EDT-XM-00029">
+      <div class="cid">IJEOMA-EDT-XM-00029</div>
+      <div>性命論 — ◉ 仁義禮智 忠孝友悌 諸般百善 皆出於慧覺   士農工商 田宅邦國 諸般百用 皆出於資業</div>
+      <div class="canon-footer">ijeoma_dssbw_primary · 교육·문화 · [HYPO] · send_gate HOLD</div>
+    </article>
+  </div>
+</aside>
+<!-- KM_HAN_CITE_SHEET_END -->
+<script>
+(function () {
+  var openBtn = document.getElementById('cite-open');
+  var closeBtn = document.getElementById('cite-close');
+  var sheet = document.getElementById('cite-sheet');
+  var backdrop = document.getElementById('cite-backdrop');
+  function openSheet() {
+    sheet.hidden = false;
+    backdrop.hidden = false;
+    sheet.classList.add('open');
+    backdrop.classList.add('open');
+    openBtn.setAttribute('aria-expanded', 'true');
+  }
+  function closeSheet() {
+    sheet.classList.remove('open');
+    backdrop.classList.remove('open');
+    openBtn.setAttribute('aria-expanded', 'false');
+    setTimeout(function () { sheet.hidden = true; backdrop.hidden = true; }, 250);
+  }
+  openBtn.addEventListener('click', openSheet);
+  closeBtn.addEventListener('click', closeSheet);
+  backdrop.addEventListener('click', closeSheet);
+})();
+</script>
+<!-- KM_HAN_LIVE_WIRE_SCRIPT_START -->
+<script>
+(function () {
+  var CANON_API = "https://clinic.no1kmedi.com/api/clinician/canon-cite-v1";
+  var CROSSWALK_URL = "../../ssot/clinical_structural_sasang_canon_crosswalk_v1_latest.json";
+  var openBtn = document.getElementById("cite-open");
+  var closeBtn = document.getElementById("cite-close");
+  var sheet = document.getElementById("cite-sheet");
+  var backdrop = document.getElementById("cite-backdrop");
+  var liveMount = document.getElementById("cite-live-rows");
+  var crosswalkMount = document.getElementById("cite-crosswalk-mount");
+
+  function esc(s) {
+    return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function renderLiveCite(data) {
+    if (!liveMount) return;
+    liveMount.innerHTML = "";
+    var hdr = document.createElement("p");
+    hdr.className = "cite-row";
+    hdr.style.color = "var(--cp-muted)";
+    hdr.textContent = "Live canon-cite · Tier A · send_gate HOLD";
+    liveMount.appendChild(hdr);
+    var chunks = (data && data.chunks) || [];
+    if (!chunks.length) {
+      var miss = document.createElement("p");
+      miss.className = "cite-row";
+      miss.textContent = "Live cite unavailable — offline mock fallback";
+      liveMount.appendChild(miss);
+      return;
+    }
+    chunks.forEach(function (c, i) {
+      var art = document.createElement("article");
+      art.className = "cite-row";
+      art.innerHTML =
+        '<div class="cid">' + esc(c.chunk_id) + '</div>' +
+        '<div>' + esc((c.excerpt || c.note_ko || "").slice(0, 160)) + '</div>' +
+        '<div class="canon-footer"><span class="badge badge--tier-a" style="font-size:0.625rem">Canon A</span> · live · HOLD</div>';
+      liveMount.appendChild(art);
+    });
+    if (openBtn && chunks.length) {
+      openBtn.textContent = "원전 참고 (" + chunks.length + ") · live";
+    }
+  }
+
+  function renderCrosswalk(doc) {
+    if (!crosswalkMount || !doc) return;
+    var rows = (doc.framework_rows || []).concat(doc.topic_rows || []).concat(doc.herb_rows || []);
+    var pick = rows.filter(function (r) { return r.row_id !== "framework_category_error"; }).slice(0, 8);
+    var html = '<table class="crosswalk-table"><thead><tr><th>주제</th><th>Tier</th><th>Canon</th><th>합선</th></tr></thead><tbody>';
+    pick.forEach(function (r) {
+      var topic = r.topic_ko || r.lecture_topic_ko || r.herb_hanja || "—";
+      if (r.lecture_constitution_claim) topic += " → " + r.lecture_constitution_claim;
+      var conf = r.conflation_forbidden ? "금지" : "—";
+      html += "<tr><td>" + esc(topic) + "</td><td class=\"tier\">" + esc(r.mkm_tier) + "</td><td>" + esc(r.canon_match_status) + "</td><td>" + conf + "</td></tr>";
+    });
+    html += "</tbody></table>";
+    crosswalkMount.innerHTML = html;
+  }
+
+  function fetchLiveCite() {
+    if (!liveMount) return;
+    fetch(CANON_API + "?q=" + encodeURIComponent("태양인") + "&limit=2", { credentials: "omit" })
+      .then(function (r) { return r.json(); })
+      .then(renderLiveCite)
+      .catch(function () { renderLiveCite(null); });
+  }
+
+  function fetchCrosswalk() {
+    fetch(CROSSWALK_URL, { credentials: "omit" })
+      .then(function (r) { return r.json(); })
+      .then(renderCrosswalk)
+      .catch(function () { /* static fallback remains */ });
+  }
+
+  function openSheet() {
+    sheet.hidden = false;
+    backdrop.hidden = false;
+    sheet.classList.add("open");
+    backdrop.classList.add("open");
+    openBtn.setAttribute("aria-expanded", "true");
+    fetchLiveCite();
+  }
+  function closeSheet() {
+    sheet.classList.remove("open");
+    backdrop.classList.remove("open");
+    openBtn.setAttribute("aria-expanded", "false");
+    setTimeout(function () { sheet.hidden = true; backdrop.hidden = true; }, 250);
+  }
+  openBtn.addEventListener("click", openSheet);
+  closeBtn.addEventListener("click", closeSheet);
+  backdrop.addEventListener("click", closeSheet);
+  fetchCrosswalk();
+})();
+</script>
+<!-- KM_HAN_LIVE_WIRE_SCRIPT_END -->
 </body>
 </html>

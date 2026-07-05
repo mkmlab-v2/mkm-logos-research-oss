@@ -1,0 +1,97 @@
+{
+  "schema": "km_han_handoff_mock_signoff_prep_v1",
+  "generated_at_utc": "2026-07-05T12:41:08Z",
+  "send_gate": "HOLD",
+  "static_gate_exit_code": 0,
+  "static_gate_ok": true,
+  "live_probes": {
+    "national_km_ask": {
+      "exit_code": 0,
+      "all_ok": true,
+      "classification": {
+        "good_markers": [
+          "한의학, 묻다",
+          "JEMA 한의학",
+          "대국민 한의학",
+          "NationalKmAsk",
+          "km-ask-app",
+          "km-ask-title"
+        ],
+        "bad_markers": [],
+        "looks_like_national_km_ask": true,
+        "looks_like_acodeai_leak": false
+      }
+    },
+    "clinician_cite": {
+      "exit_code": 0,
+      "all_ok": true,
+      "classification": {
+        "url": "https://clinic.no1kmedi.com/api/clinician/canon-cite-v1?q=%ED%83%9C%EC%96%91%EC%9D%B8&limit=2",
+        "ok": true,
+        "status": 200,
+        "success": true,
+        "hit_count": 2,
+        "chunk_ids": [
+          "IJEOMA-EDT-4P-00007",
+          "IJEOMA-EDT-SE-00129"
+        ]
+      }
+    }
+  },
+  "pack_f_live_parity": {
+    "exit_code": 0,
+    "all_ok": true,
+    "verdict": "parity_ok"
+  },
+  "pack_g_live_parity": {
+    "exit_code": 0,
+    "all_ok": true,
+    "verdict": "parity_ok"
+  },
+  "pack_e_live_parity": {
+    "exit_code": 0,
+    "all_ok": true,
+    "verdict": "parity_ok"
+  },
+  "packs": [
+    {
+      "pack": "PackE-NationalAsk",
+      "html": "projects/km_han_medicine_ui_ux/mocks/PackE-NationalAsk/pack_e_national_ask.html",
+      "exists": true,
+      "bytes": 787
+    },
+    {
+      "pack": "PackF-Clinician",
+      "html": "projects/km_han_medicine_ui_ux/mocks/PackF-Clinician/pack_f_clinician.html",
+      "exists": true,
+      "bytes": 18990
+    },
+    {
+      "pack": "PackG-HubClinical",
+      "html": "projects/km_han_medicine_ui_ux/mocks/PackG-HubClinical/pack_g_hub_clinical.html",
+      "exists": true,
+      "bytes": 19110
+    }
+  ],
+  "commander_signoff": {
+    "schema": "km_han_handoff_mock_commander_signoff_v1",
+    "recorded_at_utc": "2026-07-05T11:34:00Z",
+    "commander_reference": "chat-2026-07-05-km-han-handoff-visual",
+    "packs_signed": [
+      "PackE-NationalAsk",
+      "PackF-Clinician",
+      "PackG-HubClinical"
+    ],
+    "scope": "visual_mock_internal",
+    "send_gate": "HOLD",
+    "research_only": true,
+    "status": "COMMANDER_SIGNED",
+    "notes_ko": "Pack E/F/G visual OK; Pack F provenance A/B/C + crosswalk + graphrag 3 cards; file:// live cite fallback noted; send_gate HOLD",
+    "boundary_ack": "Mock signoff ≠ Track A promotion · ≠ live trading · Hub cream/gold ↔ clinician dark 팔레트 무단 혼합 금지 유지",
+    "prep_pointer": "reports/km_han_handoff_mock_signoff_prep_v1_latest.json",
+    "reproduce": "py scripts/record_km_han_handoff_mock_commander_signoff_v1.py --commander-signoff-ack"
+  },
+  "commander_action_ko": "브라우저로 HTML 3종 열어 레이아웃·금지문구·L0/clinical 배지 확인 후 signoff",
+  "signoff_still_required": false,
+  "reproduce": "py scripts/build_km_han_handoff_mock_signoff_prep_v1.py --include-live-probes --include-pack-e-parity --include-pack-f-parity --include-pack-g-parity"
+}

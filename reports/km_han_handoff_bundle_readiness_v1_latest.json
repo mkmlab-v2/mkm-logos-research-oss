@@ -1,0 +1,65 @@
+{
+  "schema": "km_han_handoff_bundle_readiness_v1",
+  "generated_at_utc": "2026-07-05T12:42:14Z",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "bundle_root": "projects/km_han_medicine_ui_ux",
+  "all_ok": true,
+  "files": [
+    {
+      "path": "README.md",
+      "exists": true,
+      "bytes": 1885,
+      "ok": true,
+      "missing_hints": []
+    },
+    {
+      "path": "SETUP.md",
+      "exists": true,
+      "bytes": 2073,
+      "ok": true,
+      "missing_hints": []
+    },
+    {
+      "path": "prompts/km_han_medicine_antigravity_ui_ux_prompt_v1.md",
+      "exists": true,
+      "bytes": 13310,
+      "ok": true
+    },
+    {
+      "path": "cursor/MERGE_CHECKLIST.md",
+      "exists": true,
+      "bytes": 1540,
+      "ok": true
+    },
+    {
+      "path": "ssot/jemaai_dtcg_tokens_proposed_v1.dtcg.json",
+      "exists": true,
+      "bytes": 19481,
+      "ok": true
+    },
+    {
+      "path": "mocks/PackE-NationalAsk/pack_e_national_ask.html",
+      "exists": true,
+      "bytes": 787,
+      "ok": true
+    },
+    {
+      "path": "mocks/PackF-Clinician/pack_f_clinician.html",
+      "exists": true,
+      "bytes": 18549,
+      "ok": true
+    },
+    {
+      "path": "mocks/PackG-HubClinical/pack_g_hub_clinical.html",
+      "exists": true,
+      "bytes": 18600,
+      "ok": true
+    }
+  ],
+  "commander_signoff_still_required": [
+    "README/SETUP semantic review",
+    "Pack E/F/G visual mock approval"
+  ],
+  "reproduce": "py scripts/check_km_han_handoff_bundle_readiness_v1.py"
+}

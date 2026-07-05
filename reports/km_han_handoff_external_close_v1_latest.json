@@ -1,0 +1,69 @@
+{
+  "schema": "km_han_handoff_external_close_v1",
+  "generated_at_utc": "2026-07-05T12:42:00Z",
+  "rail": "B_TRACK",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "close_ok": true,
+  "summary_ko": "Design handoff ZIP 재빌드 · live gate bundle exit 0 · commander signoff 유효 · p116 handoff/repair_v2 finalize 동기화 완료",
+  "zip": {
+    "path": "reports/km_han_medicine_ui_ux_v1.zip",
+    "bytes": 41801,
+    "files": 15,
+    "sha256_prefix": "71bb633274241873"
+  },
+  "bundle_root": "projects/km_han_medicine_ui_ux",
+  "commander_signoff": {
+    "status": "COMMANDER_SIGNED",
+    "artifact": "docs/final/artifacts/km_han_handoff_mock_commander_signoff_v1_latest.json",
+    "signoff_still_required": false
+  },
+  "gates": {
+    "bundle_readiness": {
+      "exit_code": 0,
+      "artifact": "reports/km_han_handoff_bundle_readiness_v1_latest.json"
+    },
+    "mock_signoff_prep": {
+      "exit_code": 0,
+      "pack_e_verdict": "parity_ok",
+      "pack_f_verdict": "parity_ok",
+      "pack_g_verdict": "parity_ok",
+      "artifact": "reports/km_han_handoff_mock_signoff_prep_v1_latest.json"
+    },
+    "live_gate_bundle": {
+      "exit_code": 0,
+      "bundle_ok": true,
+      "artifact": "reports/km_han_live_gate_bundle_v1_latest.json"
+    }
+  },
+  "ocr_p116_resync": {
+    "exit_code": 0,
+    "handoff_has_meimmu": true,
+    "repair_v2_patches": 3,
+    "artifact": "reports/corpus_ocr_repair_v2_layer_v1_latest.json"
+  },
+  "pr_scope_hint": {
+    "base_branch": "main",
+    "suggested_branch": "feat/km-han-handoff-close-2026-07-05",
+    "note_ko": "현재 체크아웃 feat/compression-sku-ab-a-bc — Design-only PR은 km_han 경로만 cherry-pick 또는 전용 브랜치 권장",
+    "paths": [
+      "projects/km_han_medicine_ui_ux/",
+      "reports/km_han_medicine_ui_ux_v1.zip",
+      "reports/km_han_handoff_mock_signoff_prep_v1_latest.json",
+      "reports/km_han_live_gate_bundle_v1_latest.json",
+      "reports/km_han_handoff_external_close_v1_latest.json",
+      "docs/final/artifacts/km_han_handoff_mock_commander_signoff_v1_latest.json"
+    ]
+  },
+  "commander_next": {
+    "internal_pr_ko": "1) feat/km-han-handoff-close 브랜치 생성 2) 위 paths 스테이징 3) scripts/push-internal.ps1 4) gitea PR",
+    "external_zip_ko": "reports/km_han_medicine_ui_ux_v1.zip 공유 드라이브 업로드 (handoff §2 URL 기록)"
+  },
+  "reproduce": [
+    "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Prepare-KmHanMedicineBundle_v1.ps1 -BuildZip",
+    "py scripts/build_km_han_handoff_mock_signoff_prep_v1.py --include-live-probes --include-pack-e-parity --include-pack-f-parity --include-pack-g-parity",
+    "py scripts/run_km_han_live_gate_bundle_v1.py",
+    "py scripts/restore_corpus_ocr_handoff_records_v1.py",
+    "py scripts/build_corpus_ocr_repair_v2_layer_v1.py"
+  ]
+}
