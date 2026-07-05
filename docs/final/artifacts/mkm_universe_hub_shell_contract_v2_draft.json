@@ -188,6 +188,17 @@
           "note": "Showroom stays on jemaai.cloud per portfolio §1.1 — not duplicated inside hub main canvas by default"
         },
         {
+          "id": "national_km_ask",
+          "icon": "chat",
+          "copy_key_ko": "plugin.national_km_ask.ko",
+          "label_ko": "대국민 한의학 AI",
+          "route": null,
+          "external_url": "https://no1kmedi.com/ask",
+          "surface": "national_km_ask",
+          "backend_lane": "consumer_survey_only",
+          "nav_group": "clinical"
+        },
+        {
           "id": "clinician",
           "icon": "clinic",
           "copy_key_ko": "plugin.clinician.ko",
@@ -195,7 +206,8 @@
           "route": "/clinician",
           "surface": "clinical_lane",
           "backend_lane": "clinical_isolated",
-          "deep_link_fallback": "https://clinic.no1kmedi.com/"
+          "deep_link_fallback": "https://clinic.no1kmedi.com/clinician",
+          "nav_group": "clinical"
         },
         {
           "id": "operator_wtt",
@@ -255,7 +267,7 @@
         "compression_sandbox": "projects/no1kmedi/src/components/shell/UniverseCompressionSandboxV2.tsx",
         "routes_root": "projects/no1kmedi/src/app/hub"
       },
-      "nav_groups": ["discover", "b2b", "consumer", "ops"],
+      "nav_groups": ["discover", "b2b", "clinical", "consumer", "ops"],
       "ux_forbidden_patterns": [
         "infinite_chat_primary",
         "buffet_subscription_copy",

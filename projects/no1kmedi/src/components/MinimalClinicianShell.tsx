@@ -12,6 +12,7 @@ type MinimalClinicianShellProps = {
   onSelect: (id: string) => void;
   sidebarBody?: ReactNode;
   onNewConsult: () => void;
+  onOpenSafety?: () => void;
   children: ReactNode;
 };
 
@@ -22,6 +23,7 @@ export function MinimalClinicianShell({
   onSelect,
   sidebarBody,
   onNewConsult,
+  onOpenSafety,
   children,
 }: MinimalClinicianShellProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -118,6 +120,15 @@ export function MinimalClinicianShell({
               </button>
             </div>
           </header>
+
+          <div className="clinician-trust-strip-v1" role="status">
+            <span>CDSS 보조 · human_only · artifact 연결 시 초안 · [HYPO] 참고</span>
+            {onOpenSafety ? (
+              <button type="button" className="clinician-trust-strip-link" onClick={onOpenSafety}>
+                안전·고지
+              </button>
+            ) : null}
+          </div>
 
           {drawerOpen ? (
             <button

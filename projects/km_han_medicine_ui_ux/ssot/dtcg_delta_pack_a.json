@@ -1,0 +1,11 @@
+{
+  "kmAsk": {
+    "surface": "#f7f8fa",
+    "primary": "#3d9b84",
+    "bubbleUser": "#e0f2ff",
+    "bubbleAssistant": "#f0f8ff",
+    "border": "#d1d5db",
+    "text": "#212529",
+    "textMuted": "#6c757d"
+  }
+}

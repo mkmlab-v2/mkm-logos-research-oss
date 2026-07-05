@@ -19,6 +19,8 @@ import { ClinicianCanvasStudioLayout } from "@/components/clinician/ClinicianCan
 import { ClinicianCanvasEmptyLayout } from "@/components/clinician/ClinicianCanvasEmptyLayout";
 import { ClinicianThreadRail } from "@/components/ClinicianThreadRail";
 import { ClinicianThreadBackupControls } from "@/components/ClinicianThreadBackupControls";
+import { ClinicianCanonCitePanel } from "@/components/clinician/ClinicianCanonCitePanel";
+import { buildKmCanonCiteSuggestedQuery } from "@/lib/km-clinician-canon-cite-query-v1";
 import { JemaWorkspaceCommandPalette, type PaletteAction } from "@/components/JemaWorkspaceCommandPalette";
 
 const panelFallback = (
@@ -82,7 +84,14 @@ const NAV_BASE = [
   { id: "safety", label: "안전·고지" },
 ] as const;
 
-const NAV_MINIMAL = [...NAV_BASE] as const;
+const NAV_MINIMAL = [
+  { id: "gold", label: "Paste Chart" },
+  { id: "chat", label: "대화" },
+  { id: "copilot", label: "진료 분석" },
+  { id: "patient", label: "환자·설정" },
+  { id: "bundle", label: "환자 번들" },
+  { id: "safety", label: "안전·고지" },
+] as const;
 
 type MemberAccessStatusResponse = {
   success: boolean;
@@ -415,6 +424,16 @@ export function ClinicianWorkspaceClient({
     [minimalShell, onSelect, router, startNewConsult],
   );
 
+  const canonCiteSuggestedQuery = useMemo(
+    () =>
+      buildKmCanonCiteSuggestedQuery({
+        chiefComplaint: activeThread?.context.chiefComplaint,
+        syndromeHypothesis: activeThread?.lastCds?.reasoning?.syndrome_hypothesis,
+        clinicalSummary: activeThread?.lastCds?.clinicalSummary,
+      }),
+    [activeThread?.context.chiefComplaint, activeThread?.lastCds],
+  );
+
   const cdsRedFlags = useMemo(() => {
     const env = activeThread?.lastCds?.envelope;
     if (!env) return [];
@@ -593,16 +612,20 @@ export function ClinicianWorkspaceClient({
     <>
       <JemaWorkspaceCommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} actions={paletteActions} />
       {minimalShell ? (
-        <MinimalClinicianShell
-          roleLabel="한의사"
-          nav={[...nav]}
-          activeId={activeId}
-          onSelect={onSelect}
-          sidebarBody={sidebarBody}
-          onNewConsult={startNewConsult}
-        >
-          {panelContent}
-        </MinimalClinicianShell>
+        <>
+          <MinimalClinicianShell
+            roleLabel="한의사"
+            nav={[...nav]}
+            activeId={activeId}
+            onSelect={onSelect}
+            sidebarBody={sidebarBody}
+            onNewConsult={startNewConsult}
+            onOpenSafety={() => onSelect("safety")}
+          >
+            {panelContent}
+          </MinimalClinicianShell>
+          <ClinicianCanonCitePanel suggestedQuery={canonCiteSuggestedQuery} />
+        </>
       ) : (
         <AppWorkspaceShell
           homeHref="/"

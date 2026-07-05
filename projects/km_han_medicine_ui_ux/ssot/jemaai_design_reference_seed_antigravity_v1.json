@@ -1,0 +1,27 @@
+{
+  "schema": "design_reference_seed_v1",
+  "version": "1.0.0",
+  "seed_id": "jemaai_antigravity_pack_a_tokens_v1",
+  "audience_profile": "general_b2b",
+  "structure_reference": {
+    "pattern": "hub_discover_v3",
+    "reference_url": "https://linear.app",
+    "notes_ko": "2026 SaaS Time-to-Trust: 좁은 타이포·8pt·낮은 채도·짧은 증거 strip. Linear/Stripe/Vercel 밀도 참고하되 hex flat copy 금지 — DTCG semantic만."
+  },
+  "surface_reference": {
+    "primary_domain": "jema-ai.com",
+    "surfaces": ["marketing_home", "hub_discover", "enterprise_trust"],
+    "notes_ko": "마케팅(stripe-linear 블루)·Hub(크림/골드)·엔터프라이즈(블루 글로우) 색상 합선 금지. Ring 0 히어로 단일 앵커(사상 비임상)만."
+  },
+  "send_gate": "HOLD",
+  "dtcg_input": "docs/final/artifacts/jemaai_dtcg_tokens_proposed_v1.dtcg.json",
+  "audit_input": "docs/final/artifacts/jemaai_design_audit_surface_map_v1_latest.json",
+  "prompt_pack": "docs/final/artifacts/jemaai_antigravity_design_prompt_packs_v1_latest.md",
+  "antigravity_task": "Fill antigravity_proposed_* null slots in DTCG JSON only. Return updated JSON + 1-page rationale. No HTML/CSS repo dump.",
+  "constraints_ko": [
+    "globals.css 통째 출력 금지",
+    "identity cluster 결합 마케팅 금지",
+    "Track A KPI 수치 UI 금지",
+    "신규 React 셸 컴포넌트 금지"
+  ]
+}

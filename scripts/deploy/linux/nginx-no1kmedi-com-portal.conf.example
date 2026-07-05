@@ -1,4 +1,4 @@
-# no1kmedi.com apex — 한의사 포털 (Next :3010, middleware → /clinician)
+# no1kmedi.com apex — 대국민 한의학 Q&A (Next :3010, middleware → /ask)
 # api.no1kmedi.com remains separate vhost. Install: apply_no1kmedi_com_portal_nginx_v1.sh
 
 server {

@@ -12,8 +12,8 @@
 [브랜드 허브]     jema-ai.com / app.jema-ai.com  (소스 projects/no1kmedi)
         │
         ├── [소비자 B2C]  mkmlife.com     — MAI·14문항 설문 · consumer_survey_only
-        ├── [임상 B2B]    app…/clinician  — SOAP · CDSS · care bundle · physician_gold (제안서·대외 공식 URL)
-        ├── [한의사 포털] clinic.no1kmedi.com · no1kmedi.com(apex) — 동일 Next·/clinician (현장 북마크)
+        ├── [임상 B2B]    app…/clinician · clinic.no1kmedi.com — SOAP · CDSS · physician_gold
+        ├── [대국민 Q&A]  no1kmedi.com/ask — 한의학 이해·생활 참고 (consumer, 진료 대체 아님)
         ├── [관측]        jemaai.cloud    — 쇼룸 · NON_GATING
         ├── [API]         a-codeai.com
         └── [연구소]      research.no1kmedi.com  (구 mkmlab.space → 301)
@@ -33,7 +33,8 @@
 | **jema-ai.com** / **app.** | 허브 · `/enterprise` · **`/clinician`** | `projects/no1kmedi` | **physician_gold** — 사상 4진 · SOAP · care bundle · 원장 확정 → `data/clinic/*.jsonl` |
 | **mkmlife.com** | 원퀘스천 · ask-one | `projects/mkm/mkm-life` | **consumer_survey_only** — 14문항 · **MAI** · 사상/확정 **미노출** |
 | **jemaai.cloud** | 공개 전광판 | 쇼룸 정적·게이트웨이 | 없음 (실매매·임상 합선 금지) |
-| **clinic.no1kmedi.com** · **no1kmedi.com**(apex) | 한의사 진료 보조 · `/clinician` | `projects/no1kmedi` + `middleware.ts` | **physician_gold** — app.jema-ai.com/clinician 과 **동일 앱** |
+| **clinic.no1kmedi.com** | 한의사 진료 보조 · `/clinician` | `projects/no1kmedi` + `middleware.ts` | **physician_gold** — app.jema-ai.com/clinician 과 **동일 앱** |
+| **no1kmedi.com** (apex) | 대국민 한의학 Q&A · `/ask` | `projects/no1kmedi` + `middleware.ts` | **consumer_survey_only** lane — clinic과 **분리** |
 | **research.no1kmedi.com** | MKM LAB 연구소 정적 | `mkmlab-redesign/` → `/var/www/mkmlab` | 제품 스토리만 · AI·실매매 합선 금지 |
 | **api.no1kmedi.com** 등 | PayApp · Express | `payapp-api/` | **UI 없음** — apex/clinic 과 nginx vhost 분리 |
 

@@ -13,9 +13,12 @@ import {
   type UniverseHubNavGroup,
   type UniverseHubPluginId,
   type UniverseHubPluginV2,
-  UNIVERSE_HUB_NAV_GROUP_LABELS,
+  navGroupLabelForLocale,
+  pluginLabelForLocale,
   visibleUniverseHubPlugins,
 } from "@/lib/universeHubPluginsV2";
+import { useHubLocale } from "@/components/shell/HubLocaleContext";
+import { HUB_SHELL_COPY } from "@/lib/universeHubShellCopyV2";
 
 type Props = {
   activeId?: UniverseHubPluginId;
@@ -24,7 +27,7 @@ type Props = {
   onToggleCollapse?: () => void;
 };
 
-const GROUP_ORDER: UniverseHubNavGroup[] = ["discover", "b2b", "consumer", "ops"];
+const GROUP_ORDER: UniverseHubNavGroup[] = ["discover", "b2b", "clinical", "consumer", "ops"];
 
 function isActive(pathname: string, href: string, pluginId: UniverseHubPluginId): boolean {
   if (pluginId === "discover") {
@@ -36,12 +39,19 @@ function isActive(pathname: string, href: string, pluginId: UniverseHubPluginId)
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
+function hubLayerBadge(pluginId: UniverseHubPluginId): string | null {
+  if (pluginId === "national_km_ask") return "L0";
+  if (pluginId === "clinician") return "L4";
+  return null;
+}
+
 function renderLink(
   plugin: UniverseHubPluginV2,
   pathname: string,
   activeId: UniverseHubPluginId | undefined,
   iconRail: boolean | undefined,
   session: ReturnType<typeof useMkmFamilySessionV1>["session"],
+  locale: "ko" | "en",
 ) {
   const href = resolveUniverseHubPluginHref(plugin.id, plugin.href, session);
   const handoff = isMkmFamilyHandoffHref(href);
@@ -50,7 +60,9 @@ function renderLink(
   const className = active
     ? `universe-hub-sidebar-link is-active${b2bEmphasis}${iconRail ? " is-icon-rail" : ""}`
     : `universe-hub-sidebar-link${b2bEmphasis}${iconRail ? " is-icon-rail" : ""}`;
-  const label = plugin.labelKo;
+  const label = pluginLabelForLocale(plugin, locale);
+  const layerBadge = hubLayerBadge(plugin.id);
+  const hypoBadge = plugin.navGroup === "consumer" ? "[HYPO]" : null;
 
   if (plugin.external || handoff) {
     return (
@@ -58,10 +70,18 @@ function renderLink(
         className={className}
         href={href}
         {...(handoff ? {} : { target: "_blank", rel: "noopener noreferrer" })}
-        title={label}
+        title={layerBadge ? `${label} · ${layerBadge}` : label}
         aria-label={label}
       >
-        {iconRail ? <HubPluginIcon pluginId={plugin.id} /> : label}
+        {iconRail ? (
+          <HubPluginIcon pluginId={plugin.id} />
+        ) : (
+          <span className="universe-hub-sidebar-link-inner">
+            <span>{label}</span>
+            {layerBadge ? <span className="universe-hub-lane-badge universe-hub-lane-badge--clinical">{layerBadge}</span> : null}
+            {hypoBadge ? <span className="universe-hub-lane-badge universe-hub-lane-badge--hypo">{hypoBadge}</span> : null}
+          </span>
+        )}
       </a>
     );
   }
@@ -70,10 +90,18 @@ function renderLink(
       className={className}
       href={plugin.href}
       aria-current={active ? "page" : undefined}
-      title={iconRail ? label : undefined}
+      title={iconRail ? label : layerBadge ? `${label} · ${layerBadge}` : undefined}
       aria-label={iconRail ? label : undefined}
     >
-      {iconRail ? <HubPluginIcon pluginId={plugin.id} /> : label}
+      {iconRail ? (
+        <HubPluginIcon pluginId={plugin.id} />
+      ) : (
+        <span className="universe-hub-sidebar-link-inner">
+          <span>{label}</span>
+          {layerBadge ? <span className="universe-hub-lane-badge universe-hub-lane-badge--clinical">{layerBadge}</span> : null}
+          {hypoBadge ? <span className="universe-hub-lane-badge universe-hub-lane-badge--hypo">{hypoBadge}</span> : null}
+        </span>
+      )}
     </Link>
   );
 }
@@ -85,6 +113,8 @@ export function UniverseSidebarV2({
   onToggleCollapse,
 }: Props) {
   const pathname = usePathname() ?? "";
+  const { locale } = useHubLocale();
+  const shell = HUB_SHELL_COPY[locale];
   const { session } = useMkmFamilySessionV1();
   const plugins = visibleUniverseHubPlugins();
 
@@ -98,15 +128,15 @@ export function UniverseSidebarV2({
     : "universe-hub-sidebar";
 
   return (
-    <aside className={asideClass} aria-label="MKM 플러그인">
+    <aside className={asideClass} aria-label={shell.sidebar_aria}>
       {onToggleCollapse ? (
         <button
           type="button"
           className="universe-hub-sidebar-collapse"
           onClick={onToggleCollapse}
           aria-expanded={!collapsed}
-          aria-label={collapsed ? "사이드바 펼치기" : "사이드바 접기"}
-          title={collapsed ? "사이드바 펼치기" : "사이드바 접기"}
+          aria-label={collapsed ? shell.sidebar_expand : shell.sidebar_collapse}
+          title={collapsed ? shell.sidebar_expand : shell.sidebar_collapse}
         >
           {collapsed ? "›" : "‹"}
         </button>
@@ -125,15 +155,18 @@ export function UniverseSidebarV2({
       )}
       <nav>
         {byGroup.map(({ group, items }) => (
-          <div key={group} className="universe-hub-sidebar-group">
+          <div
+            key={group}
+            className={`universe-hub-sidebar-group${group === "consumer" ? " universe-hub-sidebar-group--consumer" : ""}`}
+          >
             {!iconRail && group !== "discover" ? (
               <p className="universe-hub-sidebar-group-label">
-                {UNIVERSE_HUB_NAV_GROUP_LABELS[group as keyof typeof UNIVERSE_HUB_NAV_GROUP_LABELS]}
+                {navGroupLabelForLocale(group as Exclude<UniverseHubNavGroup, "discover">, locale)}
               </p>
             ) : null}
             <ul className="universe-hub-sidebar-list">
               {items.map((plugin) => (
-                <li key={plugin.id}>{renderLink(plugin, pathname, activeId, iconRail, session)}</li>
+                <li key={plugin.id}>{renderLink(plugin, pathname, activeId, iconRail, session, locale)}</li>
               ))}
             </ul>
           </div>
@@ -144,7 +177,7 @@ export function UniverseSidebarV2({
       </div>
       {!iconRail ? (
         <p className="universe-hub-sidebar-foot">
-          <Link href="/home">클래식 소개 랜딩</Link>
+          <Link href="/home">{shell.classic_landing}</Link>
         </p>
       ) : null}
     </aside>

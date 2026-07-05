@@ -1,0 +1,224 @@
+{
+  "schema": "mkm_ai_han_medicine_concept_stack_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-05T04:08:10Z",
+  "rail": "B_TRACK",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "decision_authority": "human_only",
+  "continuity_id": "ijeoma-canon-intake-2026-07-05",
+  "meta_cognition_bridge": {
+    "premise_ko": "메타인지 = tier/gap/wall 분리 유지 + shallow/deep handoff — 지식 포화·T0 승격 착시 금지",
+    "pillar_a_scope": "Thin Core + Pointer LTM Graph OS (에이전트 장기기억)",
+    "km_clinical_scope": "한의 CDS assist · canon RAG · 4AI coordinate — 별 그래프·별 산출",
+    "shared_pattern": "pointer → deep fetch (max 3/turn) · suspect_first · dual raw/repair",
+    "gap_fixed_by_this_stack": [
+      "philosophy_narrative_vs_quant_classifier_miswire (dual_layer_conflict_guard)",
+      "commodity_tcm_llm_vs_sasang_canon_moat separation",
+      "meta_cognition_premise wired to L2 embodied as [HYPO] not SSOT"
+    ],
+    "pointers": {
+      "meta_roadmap": "reports/mkm_meta_cognition_shallow_deep_roadmap_v1_latest.json",
+      "phase_omega_meta_premise": "~100% understanding = tier/gap/wall separation with zero bit collapse, not knowledge saturation or T0 promotion.",
+      "dual_layer_guard": "docs/final/artifacts/sasang_regime_dual_layer_mapping_v1_latest.json"
+    }
+  },
+  "dual_brand": {
+    "mkm_han_medicine": {
+      "definition_ko": "MKM 한의학 — 이제마·사상 원전·철학·체질·方論의 구조화 지식 체계 (corpus + coordinate + tier wall)",
+      "audience": "연구·한의사·에이전트 내부 SSOT",
+      "primary_artifacts": [
+        "docs/final/artifacts/km_physician_knowledge_map_v1_latest.json",
+        "docs/final/artifacts/ijeoma_philosophy_evolution_report_v1_latest.json",
+        "docs/sasang-origin/정교동의수세보원원문.txt"
+      ]
+    },
+    "ai_han_medicine": {
+      "definition_ko": "AI 한의학 — 원전·안전·윤리 게이트 위에서 동작하는 보조 추론·검색·CDS·관측 런타임",
+      "audience": "임상 보조 UI · 4AI 코디 · 공부 기지 PWA [HYPO]",
+      "primary_artifacts": [
+        "docs/final/schemas/km_physician_cds_assist_envelope_v1.schema.json",
+        "docs/final/artifacts/mkm_phase_omega_ijoeoma_spec_v1_latest.json",
+        "reports/constitution/btrack_pilot/km_physician_lane_chain_v4_latest.json"
+      ]
+    },
+    "orthogonality_rule_ko": "이론(MKM 한의학) 축 실패 시 런타임(AI 한의학) 무오염 — degradation_safe"
+  },
+  "stack_layers": [
+    {
+      "layer_id": "L7_governance",
+      "label_ko": "거버넌스·출력 계약",
+      "mkm_han_medicine": "한의학 지식·원전·tier wall — '무엇을 알 수 있는가'",
+      "ai_han_medicine": "CDS envelope · human_only · send_gate — '어떻게 보조할 것인가'",
+      "disk_status": "present",
+      "evidence": [
+        "docs/final/artifacts/km_physician_knowledge_map_v1_latest.json",
+        "docs/final/artifacts/mkm_phase_omega_ijoeoma_spec_v1_latest.json"
+      ]
+    },
+    {
+      "layer_id": "L6_field_ops",
+      "label_ko": "Field + 운영 게이트",
+      "mkm_han_medicine": "regime_map(실물) · red-flag · ECC — Final Action 주",
+      "ai_han_medicine": "C1 triage stub · athena_run_v1 on gated paths",
+      "disk_status": "partial",
+      "evidence": [
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md"
+      ]
+    },
+    {
+      "layer_id": "L5_four_ai",
+      "label_ko": "4AI 사상 동역학",
+      "mkm_han_medicine": "태양/소양/태음/소음 체질·정서 좌표 (이론층)",
+      "ai_han_medicine": "TY anomaly · SY router · TE indexer · SE send_gate controller",
+      "disk_status": "spec_only",
+      "evidence": [
+        "docs/final/artifacts/mkm_phase_omega_ijoeoma_spec_v1_latest.json"
+      ]
+    },
+    {
+      "layer_id": "L4_neuro_symbolic_cds",
+      "label_ko": "Neuro-symbolic CDS",
+      "mkm_han_medicine": "증·方·본초 근거 등급 · canon citation",
+      "ai_han_medicine": "km_physician_cds_assist_envelope_v1 · conflict resolver [HYPO]",
+      "disk_status": "partial",
+      "evidence": [
+        "docs/final/schemas/km_physician_cds_assist_envelope_v1.schema.json",
+        "scripts/build_km_physician_cds_assist_envelope_v1.py"
+      ]
+    },
+    {
+      "layer_id": "L3_canon_rag",
+      "label_ko": "원전·메모리·RAG",
+      "mkm_han_medicine": "DSSBW 579 · 격치고 146p · philosophy 3-tier",
+      "ai_han_medicine": "nomic-embed cache · chunk retrieval · drug crosswalk pilot",
+      "disk_status": "present",
+      "evidence": [
+        "reports/constitution/btrack_pilot/km_dssbw_chunk_embeddings_cache_v1_latest.json",
+        "docs/final/artifacts/ijeoma_philosophy_evolution_report_v1_latest.json",
+        "docs/final/artifacts/km_drug_herb_crosswalk_research_pilot_skip_v1_latest.json"
+      ]
+    },
+    {
+      "layer_id": "L2_embodied_hypo",
+      "label_ko": "체화 관측 [HYPO]",
+      "mkm_han_medicine": "함억제복(知) / 두견요둔(行) — UX·수양 좌표 (T0 L17)",
+      "ai_han_medicine": "voice formant · posture · face — observation overlay only",
+      "disk_status": "missing_pipeline",
+      "evidence": [
+        "data/corpus/ijeoma/_inventory/ijeoma_philosophy_evolution_report_v1.md"
+      ],
+      "forbidden": [
+        "constitution_from_rib_angle_cv",
+        "formant_to_clinical_label_without_cohort",
+        "philosophy_matrix_to_rx_autotrigger"
+      ]
+    },
+    {
+      "layer_id": "L1_edge_privacy",
+      "label_ko": "Edge·프라이버시 경계",
+      "mkm_han_medicine": "환자·임상 데이터 현지 보관 원칙",
+      "ai_han_medicine": "capture manifest · FL prototype [missing]",
+      "disk_status": "policy_only",
+      "evidence": [
+        "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md"
+      ]
+    }
+  ],
+  "orthogonal_axes": [
+    {
+      "axis_id": "WHAT_corpus",
+      "pole_a": "MKM 한의학 — T0/T1/SECONDARY tier",
+      "pole_b": "NL·논문·Gemini — reference only",
+      "final_authority": "disk SSOT + exit 0"
+    },
+    {
+      "axis_id": "HOW_runtime",
+      "pole_a": "AI 한의학 — CDS·RAG·4AI routing",
+      "pole_b": "Commodity TCM LLM (HuatuoGPT/BianCang)",
+      "final_authority": "regime_map + ops gates + human_confirm"
+    },
+    {
+      "axis_id": "BODY_cultivation",
+      "pole_a": "함억제복 — 行其知 (T0 L17)",
+      "pole_b": "두견요둔 — 行其行 (T0 L17)",
+      "final_authority": "philosophy [HYPO] UX only — not phenotyping SSOT"
+    },
+    {
+      "axis_id": "SAFETY_modern",
+      "pole_a": "C1 red-flag · C3 drug-herb",
+      "pole_b": "A-domain canon cite",
+      "final_authority": "integration_order first C1"
+    }
+  ],
+  "integration_order": [
+    "C1_red_flag_triage",
+    "A1_sasang_dssbw_canon",
+    "B2_deidentified_case_cohort",
+    "C3_drug_herb_interaction",
+    "D1_cds_envelope",
+    "human_confirm"
+  ],
+  "philosophy_hamyeok_dugyeon_pin": {
+    "t0_line": "頷臆臍腹 行其知也 頭肩腰臀 行其行也",
+    "t0_path": "docs/sasang-origin/정교동의수세보원원문.txt",
+    "three_tier_row": null,
+    "usage": "UX·수양·공부 기지 copy [HYPO] — not constitution classifier"
+  },
+  "literature_review": {
+    "path": "docs/research/MKM_AI_HAN_MEDICINE_LIT_REVIEW_2026-07-05.md",
+    "tier": 1,
+    "paper_count": 25,
+    "search_date": "2026-07-05"
+  },
+  "proposed_deltas": [
+    {
+      "priority": "P0",
+      "id": "canon_citation_pass_rate_bench",
+      "plane": 3,
+      "status": "needs_experiment"
+    },
+    {
+      "priority": "P0",
+      "id": "cds_mandatory_evidence_chunk_ids",
+      "plane": 2,
+      "status": "needs_experiment"
+    },
+    {
+      "priority": "P1",
+      "id": "bge_m3_km_embed_eval_vs_nomic",
+      "plane": 2,
+      "status": "needs_experiment"
+    },
+    {
+      "priority": "P2",
+      "id": "embodied_observation_schema_only",
+      "plane": 1,
+      "status": "hypo"
+    },
+    {
+      "priority": "P2",
+      "id": "study_base_pwa_wireframe",
+      "plane": 2,
+      "status": "hypo",
+      "note_ko": "공부 기지 — 전면(함억)/후면(두견) 탭 + E2 cite demo; 체질 라벨 금지"
+    }
+  ],
+  "forbidden_claims": [
+    "MKM AI 한의학 = 진단·처방 자동화",
+    "face_or_voice_or_rib_angle_constitution_solved",
+    "repair_layer_headline_as_model_solved",
+    "philosophy_hamyeok_dugyeon_to_track_a_trigger",
+    "c3_crosswalk_verified_when_research_pilot_skip",
+    "commodity_tcm_llm_score_equals_sasang_readiness"
+  ],
+  "pointers": {
+    "knowledge_map": "docs/final/artifacts/km_physician_knowledge_map_v1_latest.json",
+    "phase_omega": "docs/final/artifacts/mkm_phase_omega_ijoeoma_spec_v1_latest.json",
+    "philosophy_report": "docs/final/artifacts/ijeoma_philosophy_evolution_report_v1_latest.json",
+    "embed_cache": "reports/constitution/btrack_pilot/km_dssbw_chunk_embeddings_cache_v1_latest.json",
+    "physician_chain_v4": "reports/constitution/btrack_pilot/km_physician_lane_chain_v4_latest.json",
+    "worldview_constitution": "docs/final/MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md"
+  },
+  "reproduce": "py scripts/build_mkm_ai_han_medicine_concept_stack_v1.py"
+}

@@ -66,6 +66,8 @@ $tarRemote = "/tmp/no1kmedi-deploy-$stamp.tar.gz"
 
 $monorepoRequiredPaths = @(
     "$vpsDestinyRepo/scripts/build_km_physician_cds_assist_envelope_v1.py",
+    "$vpsDestinyRepo/scripts/lookup_dssbw_chunks_v1.py",
+    "$vpsDestinyRepo/data/corpus/ijeoma/_inventory/IJEOMA_CHUNK_TABLE_2026-03-29.jsonl",
     "$vpsDestinyRepo/scripts/build_patient_care_bundle_from_km_cds_chain_v1.py",
     "$vpsDestinyRepo/data/myeongni/myeongni_school_conflict_resolver_v1.json",
     "$vpsDestinyRepo/docs/final/artifacts/patient_care_bundle_slot_templates_ko_v1.json",
@@ -92,6 +94,8 @@ if (-not $SkipMonorepoPathsFromLocal) {
     $localMono = $WorkspaceRoot
     $relFiles = @(
         "scripts/build_km_physician_cds_assist_envelope_v1.py",
+        "scripts/lookup_dssbw_chunks_v1.py",
+        "data/corpus/ijeoma/_inventory/IJEOMA_CHUNK_TABLE_2026-03-29.jsonl",
         "scripts/build_patient_care_bundle_from_km_cds_chain_v1.py",
         "scripts/encode_logos_studio_query_embedding_v1.py",
         "scripts/encode_logos_studio_query_graphrag_v1.py",
@@ -132,6 +136,8 @@ if (-not $SkipMonorepoPathsFromLocal) {
         "docs/final/artifacts/logos_cross_ref_sample_shard_v1_latest.json",
         "docs/final/artifacts/bigset_studio_conflict_sidecar_v1_latest.json",
         "docs/final/artifacts/showroom_logos_job_reading_pack_slice_v1_latest.json",
+        "docs/final/artifacts/showroom_logos_gen2_eve_reading_pack_slice_v1_latest.json",
+        "docs/final/artifacts/showroom_logos_tsela_concordance_v1_latest.json",
         "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/showroom_logos_job_reading_pack_slice_v1.json",
         "docs/final/artifacts/logos_studio_verse_citation_shard_v1_latest.json",
         "docs/final/artifacts/logos_studio_a4_synthesis_bundle_v1_latest.json",
@@ -145,7 +151,11 @@ if (-not $SkipMonorepoPathsFromLocal) {
         "scripts/merge_logos_studio_embed_router_sidecar_v1.py",
         "scripts/patch_logos_studio_graph_slice_router_verse_stubs_v1.py",
         "scripts/retrieve_logos_studio_conflict_context_v1.py",
+        "scripts/logos_studio_query_topic_guard_v1.py",
         "scripts/synthesize_logos_studio_dynamic_answer_v1.py",
+        "scripts/synthesize_logos_studio_gen2_azure_distill_v1.py",
+        "scripts/synthesize_logos_studio_azure_distill_v1.py",
+        "scripts/build_logos_tsela_concordance_v1.py",
         "scripts/build_logos_studio_lemma_neighbor_index_v1.py",
         "scripts/synthesize_logos_studio_lemma_bridge_answer_v1.py",
         "scripts/build_logos_studio_lemma_neighbor_index_v1.py",
@@ -164,11 +174,14 @@ if (-not $SkipMonorepoPathsFromLocal) {
         "docs/final/schemas/integrated_wellness_solution_v2.schema.json",
         "docs/final/artifacts/a_code_wellness_archetype_lexicon_v1.json",
         "docs/final/artifacts/clinician_ijeoma_eight_channel_weight_contract_v1.json",
-        "docs/final/artifacts/fixtures/integrated_wellness_solution_v2_minor_soeum_abdomen_seed.example.json"
+        "docs/final/artifacts/fixtures/integrated_wellness_solution_v2_minor_soeum_abdomen_seed.example.json",
+        "scripts/check_public_facing_copy_gate_v1.py",
+        "docs/final/MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md",
+        "docs/final/artifacts/JEMAAI_TECH_PROMO_SAFE_COPY_V1.md"
     )
     Write-Host "[no1kmedi-tarball] scp monorepo CDS/bundle/IWS paths from local" -ForegroundColor Cyan
     if (-not $DryRun) {
-        & ssh @($sshArgs + @($remote, "mkdir -p $vpsDestinyRepo/scripts $vpsDestinyRepo/docs/final/schemas $vpsDestinyRepo/docs/final/artifacts $vpsDestinyRepo/docs/final/artifacts/fixtures $vpsDestinyRepo/tests/fixtures $vpsDestinyRepo/data/myeongni"))
+        & ssh @($sshArgs + @($remote, "mkdir -p $vpsDestinyRepo/scripts $vpsDestinyRepo/docs/final/schemas $vpsDestinyRepo/docs/final/artifacts $vpsDestinyRepo/docs/final/artifacts/fixtures $vpsDestinyRepo/tests/fixtures $vpsDestinyRepo/data/myeongni $vpsDestinyRepo/data/corpus/ijeoma/_inventory"))
         foreach ($rel in $relFiles) {
             $localPath = Join-Path $localMono $rel
             if (-not (Test-Path $localPath)) { throw "missing local monorepo file: $localPath" }
@@ -237,6 +250,8 @@ if ($LASTEXITCODE -ne 0) { throw "remote deploy failed" }
 
 Start-Sleep -Seconds 6
 $smokeUrls = @(
+    "https://app.jema-ai.com/safety",
+    "https://app.jema-ai.com/validation",
     "https://app.jema-ai.com/enterprise",
     "https://app.jema-ai.com/clinician"
 )
@@ -336,4 +351,10 @@ Write-Host "[no1kmedi-tarball] API smoke OK (md_len=$mdLen graph_nodes=$($graphB
 }
 
 Remove-Item $tarLocal -Force -ErrorAction SilentlyContinue
+
+Write-Host "[no1kmedi-tarball] logos ask quality bundle (shipped + VPS live)" -ForegroundColor Cyan
+$bundlePy = Join-Path $WorkspaceRoot "scripts\run_logos_ask_quality_bundle_v1.py"
+& py $bundlePy --live-vps
+if ($LASTEXITCODE -ne 0) { throw "logos ask quality bundle failed (see reports/logos_ask_quality_bundle_v1_latest.json)" }
+
 Write-Host "[no1kmedi-tarball] OK" -ForegroundColor Green

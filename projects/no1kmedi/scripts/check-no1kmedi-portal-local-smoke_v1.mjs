@@ -1,5 +1,5 @@
 /**
- * Local smoke: no1kmedi portal redirect + minimal clinician shell markers.
+ * Local smoke: no1kmedi portal host routing + minimal clinician shell markers.
  * Run: node scripts/check-no1kmedi-portal-local-smoke_v1.mjs
  * Requires dev server on NO1KMEDI_PORTAL_SMOKE_BASE (default http://localhost:3010).
  */
@@ -7,16 +7,33 @@ import assert from "node:assert/strict";
 
 const base = (process.env.NO1KMEDI_PORTAL_SMOKE_BASE || "http://localhost:3010").replace(/\/$/, "");
 
-async function probeRootRedirect() {
-  const res = await fetch(`${base}/`, { redirect: "manual" });
-  assert.equal(res.status, 307, `expected 307 from / got ${res.status}`);
+async function probeApexAskRedirect() {
+  const res = await fetch(`${base}/`, {
+    redirect: "manual",
+    headers: { Host: "no1kmedi.com" },
+  });
+  assert.ok([307, 308, 302, 301].includes(res.status), `apex expected redirect got ${res.status}`);
+  const loc = res.headers.get("location") || "";
+  assert.ok(loc.includes("/ask"), `expected /ask redirect got ${loc}`);
+  return { status: res.status, location: loc };
+}
+
+async function probeClinicRootRedirect() {
+  const res = await fetch(`${base}/`, {
+    redirect: "manual",
+    headers: { Host: "clinic.no1kmedi.com" },
+  });
+  assert.ok([307, 308, 302, 301].includes(res.status), `clinic expected redirect got ${res.status}`);
   const loc = res.headers.get("location") || "";
   assert.ok(loc.includes("/clinician"), `expected /clinician redirect got ${loc}`);
   return { status: res.status, location: loc };
 }
 
 async function probeClinicianMinimal() {
-  const res = await fetch(`${base}/clinician`, { redirect: "follow" });
+  const res = await fetch(`${base}/clinician`, {
+    redirect: "follow",
+    headers: { Host: "clinic.no1kmedi.com" },
+  });
   assert.equal(res.status, 200, `clinician status ${res.status}`);
   const html = await res.text();
   assert.ok(
@@ -39,7 +56,8 @@ async function probeClinicianMinimal() {
   };
 }
 
-const root = await probeRootRedirect();
+const apex = await probeApexAskRedirect();
+const clinicRoot = await probeClinicRootRedirect();
 const clinician = await probeClinicianMinimal();
 
 console.log(
@@ -48,7 +66,8 @@ console.log(
       schema: "no1kmedi_portal_local_smoke_v1",
       base,
       ok: true,
-      root,
+      apex,
+      clinic_root: clinicRoot,
       clinician,
     },
     null,

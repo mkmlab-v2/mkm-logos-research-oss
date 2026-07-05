@@ -23,14 +23,16 @@ export type UniverseHubPluginId =
   | "compression_sandbox"
   | "my_reports"
   | "showroom"
+  | "national_km_ask"
   | "clinician"
   | "operator_wtt";
 
-export type UniverseHubNavGroup = "discover" | "b2b" | "consumer" | "ops";
+export type UniverseHubNavGroup = "discover" | "b2b" | "clinical" | "consumer" | "ops";
 
 export type UniverseHubPluginV2 = {
   id: UniverseHubPluginId;
   labelKo: string;
+  labelEn: string;
   href: string;
   external?: boolean;
   internalOnly?: boolean;
@@ -40,9 +42,34 @@ export type UniverseHubPluginV2 = {
 
 export const UNIVERSE_HUB_NAV_GROUP_LABELS: Record<Exclude<UniverseHubNavGroup, "discover">, string> = {
   b2b: "B2B · 가드",
+  clinical: "임상 · 한의사",
   consumer: "소비자 · 관측",
   ops: "운영 (internal)",
 };
+
+export const UNIVERSE_HUB_NAV_GROUP_LABELS_EN: Record<
+  Exclude<UniverseHubNavGroup, "discover">,
+  string
+> = {
+  b2b: "B2B · guard",
+  clinical: "Clinical · KM physician",
+  consumer: "Consumer · observe",
+  ops: "Ops (internal)",
+};
+
+export function pluginLabelForLocale(
+  plugin: UniverseHubPluginV2,
+  locale: "ko" | "en",
+): string {
+  return locale === "en" ? plugin.labelEn : plugin.labelKo;
+}
+
+export function navGroupLabelForLocale(
+  group: Exclude<UniverseHubNavGroup, "discover">,
+  locale: "ko" | "en",
+): string {
+  return locale === "en" ? UNIVERSE_HUB_NAV_GROUP_LABELS_EN[group] : UNIVERSE_HUB_NAV_GROUP_LABELS[group];
+}
 
 const PERSONADIARY = "https://personadiary.com";
 const JEMAAI = JEMAAI_CLOUD_PUBLIC_OBSERVE_URL;
@@ -52,12 +79,14 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "discover",
     labelKo: "홈 · 발견",
+    labelEn: "Home · Discover",
     href: "/hub",
     navGroup: "discover",
   },
   {
     id: "governed_customization",
     labelKo: "AI 맞춤·가드 (B2B)",
+    labelEn: "AI customize · guard (B2B)",
     href: "/hub/customize",
     laneNote: "Governed AI Customization · Track C [DRAFT]",
     navGroup: "b2b",
@@ -65,6 +94,7 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "a_code_sandbox",
     labelKo: "개발자 샌드박스",
+    labelEn: "Developer sandbox",
     href: "/hub/developer",
     laneNote: "B2B API",
     navGroup: "b2b",
@@ -72,6 +102,7 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "compression_sandbox",
     labelKo: "압축 데모 샌드박스",
+    labelEn: "Compression demo",
     href: "/hub/compression",
     laneNote: "B2B PoC · [DRAFT] proxy",
     navGroup: "b2b",
@@ -79,6 +110,7 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "oracle_observatory",
     labelKo: "오라클 관측소",
+    labelEn: "Oracle observatory",
     href: "/hub/oracle",
     laneNote: "B-track · research_only",
     navGroup: "consumer",
@@ -86,6 +118,7 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "logos_observatory",
     labelKo: "Logos 관측소",
+    labelEn: "Logos observatory",
     href: "/hub/logos",
     laneNote: "B-track · Hub 관측 + Studio 상용",
     navGroup: "consumer",
@@ -93,6 +126,7 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "myeongni_observatory",
     labelKo: "명리 관측소",
+    labelEn: "Myeongni observatory",
     href: "/hub/myeongni",
     laneNote: "B-track · 중기 방향 [HYPO]",
     navGroup: "consumer",
@@ -100,6 +134,7 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "mkm_life",
     labelKo: "라이프 케어",
+    labelEn: "Life care",
     href: "/hub/life",
     laneNote: "consumer_portal_v1",
     navGroup: "consumer",
@@ -107,6 +142,7 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "personadiary_preview",
     labelKo: "Persona Diary",
+    labelEn: "Persona Diary",
     href: PERSONADIARY,
     external: true,
     laneNote: "preview_only · [HYPO]",
@@ -115,26 +151,40 @@ export const UNIVERSE_HUB_PLUGINS_V2: UniverseHubPluginV2[] = [
   {
     id: "my_reports",
     labelKo: "내 리포트",
+    labelEn: "My reports",
     href: "/hub/reports",
     navGroup: "consumer",
   },
   {
     id: "showroom",
     labelKo: "공개 관측 (텍스트)",
+    labelEn: "Public observe (text)",
     href: JEMAAI,
     external: true,
     navGroup: "consumer",
   },
   {
+    id: "national_km_ask",
+    labelKo: "대국민 한의학 AI",
+    labelEn: "National KM Q&A",
+    href: "https://no1kmedi.com/ask",
+    external: true,
+    laneNote: "consumer_survey_only · no1kmedi apex",
+    navGroup: "clinical",
+  },
+  {
     id: "clinician",
     labelKo: "한의사 보조",
-    href: "/clinician",
-    laneNote: "clinical_isolated",
-    navGroup: "consumer",
+    labelEn: "Clinician assist",
+    href: "https://clinic.no1kmedi.com/clinician",
+    external: true,
+    laneNote: "clinical_isolated · physician_gold",
+    navGroup: "clinical",
   },
   {
     id: "operator_wtt",
     labelKo: "운영자 패널",
+    labelEn: "Operator panel",
     href: "/hub/operator",
     internalOnly: true,
     laneNote: "operator_panel · SEND HOLD",

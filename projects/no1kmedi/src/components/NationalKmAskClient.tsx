@@ -9,6 +9,7 @@ import {
   NATIONAL_KM_ASK_V1,
   NATIONAL_KM_STARTER_PROMPTS,
 } from "@/lib/national-km-ask-v1";
+import { KmAskProvenanceStrip } from "@/components/KmAskProvenanceStrip";
 import { streamTextClient } from "@/lib/consumer-chat-stream";
 
 type Turn = { role: "user" | "assistant"; message: string };
@@ -72,6 +73,8 @@ export function NationalKmAskClient() {
     }
   }, []);
 
+  const userTurnCount = useMemo(() => turns.filter((t) => t.role === "user").length, [turns]);
+  const showSessionHint = userTurnCount >= 5;
   const canAsk = useMemo(() => disclaimerOk && message.trim().length > 1 && !busy, [busy, disclaimerOk, message]);
 
   const sendMessage = useCallback(
@@ -139,7 +142,7 @@ export function NationalKmAskClient() {
           </span>
           <div>
             <h1 className="km-ask-title">{NATIONAL_KM_ASK_V1.product_name_ko}</h1>
-            <p className="km-ask-subtitle">대국민 한의학 이해·생활관리 참고 (진료·처방 대체 아님)</p>
+            <p className="km-ask-subtitle">JEMA AI · 대국민 참고 Q&A (진료·처방 대체 아님)</p>
           </div>
         </div>
         <nav className="km-ask-nav" aria-label="보조 링크">
@@ -151,6 +154,11 @@ export function NationalKmAskClient() {
           </button>
         </nav>
       </header>
+
+      <div className="km-ask-layer-strip" role="status">
+        <span className="km-ask-layer-badge">L0 · 참고용 · 진단·처방 대체 아님</span>
+        <span className="km-ask-layer-hint">Time-to-Trust — 교육·참고 맥락만 제공합니다</span>
+      </div>
 
       <main className="km-ask-main">
         {!disclaimerOk ? (
@@ -185,19 +193,24 @@ export function NationalKmAskClient() {
               ) : null}
 
               {turns.map((turn, i) => (
-                <div
-                  key={`${turn.role}-${i}`}
-                  className={`km-ask-bubble km-ask-bubble--${turn.role === "user" ? "user" : "assistant"}`}
-                >
-                  <span className="km-ask-bubble-role">{turn.role === "user" ? "나" : "한의학 AI"}</span>
-                  <div className="km-ask-bubble-body">{turn.message}</div>
+                <div key={`${turn.role}-${i}`} className="km-ask-turn">
+                  <div
+                    className={`km-ask-bubble km-ask-bubble--${turn.role === "user" ? "user" : "assistant"}`}
+                  >
+                    <span className="km-ask-bubble-role">{turn.role === "user" ? "나" : "한의학 AI"}</span>
+                    <div className="km-ask-bubble-body">{turn.message}</div>
+                  </div>
+                  {turn.role === "assistant" ? <KmAskProvenanceStrip /> : null}
                 </div>
               ))}
 
               {streamBuf ? (
-                <div className="km-ask-bubble km-ask-bubble--assistant">
-                  <span className="km-ask-bubble-role">한의학 AI</span>
-                  <div className="km-ask-bubble-body">{streamBuf}</div>
+                <div className="km-ask-turn">
+                  <div className="km-ask-bubble km-ask-bubble--assistant">
+                    <span className="km-ask-bubble-role">한의학 AI</span>
+                    <div className="km-ask-bubble-body">{streamBuf}</div>
+                  </div>
+                  <KmAskProvenanceStrip />
                 </div>
               ) : null}
 
@@ -209,6 +222,15 @@ export function NationalKmAskClient() {
 
               <div ref={bottomRef} />
             </div>
+
+            {showSessionHint ? (
+              <div className="km-ask-session-hint" role="status">
+                <span>주제를 정리할까요?</span>
+                <button type="button" className="km-ask-session-hint-btn" onClick={clearChat}>
+                  새 대화
+                </button>
+              </div>
+            ) : null}
 
             {error ? (
               <p className="km-ask-error" role="alert">

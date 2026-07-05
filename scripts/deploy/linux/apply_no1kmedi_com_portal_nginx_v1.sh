@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# no1kmedi.com apex portal → Next :3010 (한의사 /clinician). api.* is separate.
+# no1kmedi.com apex portal → Next :3010 (대국민 /ask; clinic.* → /clinician). api.* is separate.
 set -euo pipefail
 
 REPO_ROOT="${MKM_REPO_ROOT:-/opt/mkm-destiny-ai-41e38ec6}"

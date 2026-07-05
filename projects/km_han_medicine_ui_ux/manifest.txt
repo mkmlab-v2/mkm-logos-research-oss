@@ -1,0 +1,15 @@
+﻿KM Han Medicine UI/UX - Antigravity pack order
+generated: 2026-07-05T04:11:37.1640069Z
+
+1. Pack A supplement (.km-ask-* -> DTCG trust.clinical)
+2. Pack E - no1kmedi.com/ask (L0 national KM)
+3. Pack F - clinic.no1kmedi.com/clinician (Paste Chart + cite spine)
+4. Pack G - jema-ai.com/hub clinical group
+
+Mock drop zones:
+  mocks/PackE-NationalAsk/
+  mocks/PackF-Clinician/
+  mocks/PackG-HubClinical/
+
+SSOT: projects/km_han_medicine_ui_ux/ssot/
+Prompt: projects/km_han_medicine_ui_ux/prompts/km_han_medicine_antigravity_ui_ux_prompt_v1.md
