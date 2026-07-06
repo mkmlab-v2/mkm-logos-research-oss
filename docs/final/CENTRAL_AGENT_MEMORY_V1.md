@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-06-29T04:34:40Z
+- **last_updated_utc:** 2026-07-06T17:09:13Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-21:** lens pack push **54/54** OK · OPS `CENTRAL_AGENT_MEMORY_V1` refreshed incl. 41k/31k 격벽 절). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1 -Refresh` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -120,6 +120,24 @@
 
 ---
 
+## NVIDIA Grand Challenge · attachment pack (Fact-Lock · 2026-06-30)
+
+**한 줄:** Pack **v1.7** on disk · repro **`all_ok: true`** · PDF/ZIP `reports/nvidia_grand_challenge_submit_v1/` · **portal upload = 지휘관 Tier 3** · hybrid Azure = **roadmap** (production Logos Ask = VPS Ollama).
+
+| 구분 | SSOT |
+|------|------|
+| **Pack SSOT** | `reports/nvidia_grand_challenge_attachment_pack_v1.md` |
+| **Repro** | `scripts/Run-NvidiaGrandChallengePackRepro_v1.ps1` → `nvidia_grand_challenge_pack_repro_v1_latest.json` |
+| **Submit** | `scripts/Run-NvidiaGrandChallengePackSubmit_v1.ps1` |
+| **Handoff** | `reports/nvidia_grand_challenge_design_lane_handoff_v1_latest.json` · continuity `nvidia-gc-attachment-2026-06-30` |
+| **L5 policy** | `docs/final/artifacts/jema_os_runner_policy_v1_latest.json` |
+| **GPU LIT** | `docs/research/GPU_INFERENCE_STACK_MKM_MERGED_LIT_REVIEW_2026-06-30.md` |
+| **Portal attestation** | `scripts/record_nvidia_grand_challenge_portal_submit_v1.py` (human after upload) |
+
+**에이전트 NEVER:** NVIDIA portal login/upload · L5 fixture pins as GPU billing SLA · compression 47% in GC pack · vLLM/LMCache as implemented without L4 artifact.
+
+---
+
 ## BigSet LLM harness (B-track · send_gate HOLD)
 
 **에이전트 ALWAYS (BigSet/Azure/TinyFish 턴):** 먼저 `py scripts/invoke_mkm_harness_read_ssot_v1.py` — `.env`·CENTRAL에 있는 키·구독을 **재질문 금지** (`mkm_harness_read_ssot_v1_latest.json` · `agent_never_reask_if_present`).
@@ -141,26 +159,26 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
-- **2026-06-29T04:34:40Z** — continuity=smartfarm-qubics-cid-2026-06-29 · 큐빅스 CID manifest·fixture SSOT 반영 · phase0 chain exit0 · G300 broker 현장 보류
-- **2026-06-29T04:29:12Z** — continuity=logos-preset-query-guard-2026-06-28 · Logos B2B pilot closed: prod+daily smoke exit0, lead n8n dedicated 7be92ccf3; smartfarm G300 cid deferred by commander
-- **2026-06-29T03:31:31Z** — farm verify exit0 · logos lead n8n dedicated+sync · mosquitto 127.0.0.1:1883 VPS · G300 cid=TBD Tier3
-- **2026-06-29T03:25:34Z** — continuity=haan-master · HAAN master closed; 3-lens NL+gematria+wire/bundle done; cheonyucho deferred_skipped
-- **2026-06-29T03:20:14Z** — continuity=logos-preset-query-guard-2026-06-28 · HD AE tier_0 quality_ok · internal push 22b56a4 · prod smoke+daily exit0 · smartfarm phase0 exit0 · G300 cid=TBD Tier3 HOLD
-- **2026-06-29T02:25:18Z** — continuity=logos-preset-query-guard-2026-06-28 · A L1핀 rule·B commit 60955453+deploy PM2 ok·로컬 smoke0·prod presets500·C smartfarm phase0 dry-run0 — 다음채팅: prod logos 500 triage+nephilim auto_route
-- **2026-06-29T00:03:33Z** — continuity=logos-preset-query-guard-2026-06-28 · Logos preset-query guard: job+nephilim auto_route exit0 smoke; uncommitted 7 files — commit+Deploy-No1kmedi; Paste Chart v1 prior commit 62e1245a46 prod ok
-- **2026-06-28T13:25:24Z** — continuity=cheonyucho-haan-2026-06-28 · 천유초 P0: 하안28권+NLK서지 정찰 완료·한자본문0·hanja_canon not_acquired; 재개=이창일1999 ISBN9788988473092 011천유초 또는 장서각§3 p139-150
-- **2026-06-28T12:50:33Z** — Y1c GTM: OSS README+Discussions#1+CI green; Human Gold lee_heecheol live; VPS Ollama env+distill script staged
-- **2026-06-28T12:19:31Z** — Logos Job live closed: MISSION_LOG pin, deploy reading-pack scp, OSS smoke+gate exit0, VPS rebuild job_reading_pack ok
-- **2026-06-28T10:06:16Z** — 2026-06 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
-- **2026-06-28T09:50:57Z** — continuity=design-paste-chart-v1-2026-06-28 · Paste Chart v1 closed: validate_policy·fusion SSOT·panel=chat·Playwright prod exit0 commit 62e1245a46
-- **2026-06-28T04:31:03Z** — continuity=design-paste-chart-v1-2026-06-28 · Paste Chart: freeform 이름+생년 추출(김민정) fix·why-not-auto 카피 SSOT/UI·Pro email 게이트=분석 전 필수(?email=allowlist)
-- **2026-06-28T04:12:04Z** — continuity=session-2026-06-28-logos-oss · W6 OSS public repo live; CI green; optional gitea main merge
-- **2026-06-28T04:11:26Z** — Logos OSS public: mkmlab-v2/mkm-logos-research-oss CI green; W6 OPEN_SOURCE_PREP closed; push via Push-LogosOssPublicToGitHub_v1.ps1
-- **2026-06-28T03:58:44Z** — MKM H: USB historical 5-file mirror — docs/research/raw/mkm_usb_lab_historical_v1 [HISTORICAL only]
-- **2026-06-28T03:53:18Z** — H: MKM_LAB_COMMON historical reference indexed — docs/final/artifacts/mkm_h_usb_lab_historical_reference_v1.json [reference-only, not SSOT]
-- **2026-06-27T23:20:15Z** — continuity=session-2026-06-28-solo-logos · Sunday solo: gitea main merge + Logos Studio prod smoke exit0 (isaiah preset·ui_lite embed pin·VPS deploy); next commit ui_lite pin diff + stash resolve HOLD
-- **2026-06-27T23:13:41Z** — continuity=paste-chart-advice-gate-v1 · Paste Chart prod exit0: SOAP S + IWS adult gate + 주증상 label; Deploy tarball IWS sync 3b0b3358df internal
-- **2026-06-27T23:07:46Z** — W6 done: logos OSS CI workflow + export bundle 25 paths materialized
+- **2026-07-06T17:09:13Z** — MS·이제마: geukchigo handoff 41/41 recorded; iteration-hold repair_v2 batch 9p exit0; wave reconciliation signoff
+- **2026-07-06T17:09:09Z** — health 3-axis topic+pillar+daewoon live exit0: Q25 triple C gold B holdout 0% delta0 HOLD
+- **2026-07-06T17:07:34Z** — B-track P13 bomyung fuse: holdout hit 64.7% MDD exploratory 21%↓ fuse crisis-kill-switch calibration exit0; send_gate HOLD
+- **2026-07-06T17:05:56Z** — MS·이제마: vol3 p115-117 repair_v2 re-record signoff exit0; wave 33p; next iteration-hold pages
+- **2026-07-06T17:01:20Z** — Q25 topic+pillar combo live exit0: combo C gold B holdout health 0% n=2 delta0 HOLD
+- **2026-07-06T16:58:31Z** — MS·이제마: vol2 L1067 chain p111-114 signoff exit0; p115 vol3 prior; next vol3 p116-117
+- **2026-07-06T16:54:25Z** — MS·이제마: vol2 p111 diagram+p113 L1067 followup repair_v2 record exit0; handoff 40 cards
+- **2026-07-06T16:50:09Z** — MS·이제마: sixiang boost ablation FAIL best -3.4pp; p111 diagram HITL card+PNG ready; P10 scalar 유지
+- **2026-07-06T16:46:01Z** — MS·이제마: p112 PNG sync+repair_v2 OCR record exit0; L1067 ack; PAGE_CONFIG PNG gap 0
+- **2026-07-06T16:42:05Z** — MS·이제마: L1067 sixiang ack exit0 repair_v2 patched boost=0; p112 PNG blocker; per-date sixiang sidecar wired
+- **2026-07-06T16:19:50Z** — MS·이제마: P13 bomyung WF prereg v1.1 exit0 (3/3 folds, confirm +3.6pp); L1067 p112 HITL card+ack script; PNG blocker
+- **2026-07-06T16:01:27Z** — MS·이제마 v1.6: prereg P13/P14 exit0; nested grid FAIL -3.4pp; P13 fuse 64.7% n=51; P10 scalar 61.1% 유지; L1067 HITL pending
+- **2026-07-06T15:49:32Z** — Phase2 4-nested exit0: P12 vs P10 -3.7pp FAIL; P10 61.1% remains best scalar; nested lib+prereg v1.5
+- **2026-07-06T15:44:15Z** — P10 walk-forward exit0: WF mean +4.6pp 2/3 folds, confirm 61.1%/+9.2pp; hypothesis_supported true B-track HOLD
+- **2026-07-06T15:33:01Z** — MS·이제마 Phase1 exit0: prereg v1.3 P8/P9, tuning grid best P6 61.1%/+9.2pp n=54 exploratory; holdout eval pytest 11
+- **2026-07-06T15:08:40Z** — MS·이제마 핵심: 원전 재독 갭분석 — P6=3-plane proxy not 4-pole ontology; 다음 P6튜닝+P8보명퓨즈 prereg
+- **2026-07-06T15:02:50Z** — timing miss packet 3 rows live daewoon holdout delta0 Q21 live-B rescue Q25 still-miss prereg PASS HOLD
+- **2026-07-06T14:54:58Z** — Oracle 재개 exit0: anchor 3600 HG frozen, Tier1 9/9, obs 10/10, patrol green; continuity logos-anchor-3600-ceiling-2026-07-06
+- **2026-07-06T14:54:44Z** — myeongri timing weak-topic drill exit0: career/health ho 0% n=2/1 prereg PASS HOLD continuity myeongri-timing-prereg-2026-07-06
+- **2026-07-06T14:38:23Z** — v2 kernel 3-plane wire+P6/P7 holdout exit0; hypothesis_supported false HOLD
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -248,6 +266,7 @@
 | 로컬 검증 번들 | `scripts/verify_p0_constitution_gate_paths.ps1` → exit 0; 필요 시 `scripts/run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` |
 | 원격 반영 | **토폴로지 SSOT:** `MKM_HOSTINGER_CLOUDFLARE_TOPOLOGY_V1.md` — compute **Hostinger VPS만** · edge **Cloudflare만**. Git: `push-internal.ps1`. VPS scp: `sync_showroom_to_vps.ps1`, `Sync-MkmlabRedesignToVps_v1.ps1` (`MKM_VPS_HOST`·`vps-mkmlife`는 표기만 다를 수 있음). **hPanel `public_html` 금지.** — 에이전트는 **명시 요청 시에만** |
 | **Google Gen AI · GCP 크레딧·벤치** | 과금 표면 **둘**: (A) Developer API 키 — (B) **Vertex AI** = `GOOGLE_CLOUD_PROJECT` + ADC → **프로젝트 Billing**(프로모션 SKU 범위는 콘솔 확인). 확인 `scripts/check_google_genai_readiness_v1.py check|smoke-vertex`; 채팅 스모크 `scripts/run_gemini_chat_smoke_v1.py --vertex`; 배치·멀티모달 `scripts/gemini_multimodal_batch.py [--vertex]`; **FACTS 벤치 완결(단일 플래그십·Vertex):** `scripts/run_facts_vertex_benchmark_v1.py`(기본 모델 `gemini-2.5-pro`) → 산출 `docs/final/artifacts/facts_vertex_benchmark_latest.json`·원클릭 `scripts/run_facts_vertex_benchmark_e2e_v1.ps1`. 키: `scripts/security_agent_manager.py`의 `resolve_gemini_developer_api_key` — env 우선·동명 DPAPI. **혼동 금지:** AI Studio 키만으로 “크레딧 자동 차감” 단정 금지. |
+| **Gemini 웹 채팅 참모 (Read-only)** | 디스크·터미널 **0%** — `[FACT]` 피드만 인정. 계약 `docs/final/artifacts/MKM_GEMINI_WEB_STAFF_OFFICER_CONTRACT_V1.md` · 매 세션 paste `MKM_GEMINI_WEB_STAFF_OFFICER_PASTE_V1.txt` · 정체성·렌즈는 `MKM_CORE_PROMPT_GEMINI_ATHENA_V2.md`. 집행=지휘관+Cursor. |
 | **LG·압축·41k·이론** | **먼저** `docs/final/MKM_COMMANDER_PLAIN_LANGUAGE_SYSTEM_MAP_V1.md` + 「**41k·압축·LG — 통합 이해 한 장**」절 + factcheck. **6문장 검증**·**고정 응답 틀**만 사용. `이론 0%/100%`·NL 당선확률 **금지**. SSOT: `MULTILENS_*`·`original_language_master_atoms_summary_latest.json`(132万→41658). |
 | **V2 압축 vs Logos RAG (3줄 · 2026-05-23)** | ① **V2 compress** = `evaluate_report` + 41658 lexicon **lookup** + `domain_router` — **Logos ANN 31102 verse RAG 없음**. ② **Logos RAG** = B-track only (`commander_daily_logos_anchor` 선택 ANN · O-P31c 대본 · philosophy/cross_lens 파일럿) — **`[NON_GATING]`**. ③ **`graph_wire_selective_bridge` Track A 기본 `false`** — B-track 스테이징만 `true` 검토. 상세: `MKM_COMMANDER` §4·§5. |
 | **환자·고부하·수험 생활 설계** | `docs/final/artifacts/patient_high_load_daily_optimization_playbook_v1.json` → CENTRAL 「환자·고부하 생활공학」절; 간지만 필요 시 `run_saju_global_birth_v1` |
@@ -297,12 +316,13 @@
 | **사상 렌즈 (engineering)** | `90132f48-…` · canon 발췌 **금지** |
 | **G: Vault** | `MKM_DATA_VAULT/notebooklm_sources/이제마_B_Track/` (격치고·유고·천유초 **2차 MD**) · `data/corpus/ijeoma/e_drive_mirror/` (동의수세보원 HWP) |
 | **동의수세보원 정본** | `docs/sasang-origin/정교동의수세보원원문.txt` + 청크 테이블 |
-| **격치고·천유초·유고초** | **한자 원전 workspace/G 미입수** — NL은 `[SECONDARY]`·`[PAPER_PROXY]`만 (`GEUKCHIGO_YUGO`·`CHEONYU` MD). **동무유고**=2차 서지·카페 HWP 언급, canon 아님 |
+| **격치고·천유초·유고초** | **격치고:** `data/corpus/ijeoma/originals/geukchigo_full/GEUKCHIGO_FULL_OCR_146p.txt` — **146p full OCR indexed** (`full_ocr_indexed`, 33K+ hanja, NL #168) · 청크 `IJEOMA_GEUKCHIGO_FULL_CHUNK_INDEX_v1.jsonl` · **천유초/유고:** partial·`[SECONDARY]`/`[PAPER_PROXY]` only |
+| **canon status SSOT** | `docs/final/artifacts/ijeoma_canon_acquisition_status_v1_latest.json` — rebuild: `py scripts/build_ijeoma_canon_acquisition_status_v1.py` |
 | **복원** | `py scripts/restore_ijeoma_corpus_from_vault_v1.py` |
 | **QUERY_SET** | Q01–Q24 pass · `reports/constitution/btrack_pilot/ijeoma_query_set_run_v1*.jsonl` |
 | **NL 스냅샷 (2026-06-24)** | **283소스** · 동의보감 vendor **164/164** · 격치고 `[SECONDARY]`/`[PAPER_PROXY]` 5건 · cap 여유 위해 `SASANG_CROSS_REF_DRAFT` NL 50건 prune(디스크 유지) |
 
-**에이전트 NEVER:** 격치고 한자 원문 인용 · IJEOMA canon을 사상 렌즈 노트북에 합침 · NL 300한도를 채팅만으로 추정.
+**에이전트 NEVER:** 격치고 OCR을 **교정·canon 승격 없이** 임상 인용 · IJEOMA canon을 사상 렌즈 노트북에 합침 · NL 300한도를 채팅만으로 추정 · L3 concept eval **gold_self_consistency**를 모델 이해도로 단정.
 
 ### 옵시디언 볼트 vs 본 파일 (개인 SSOT · 격벽)
 
@@ -923,8 +943,6 @@ flowchart TD
 | 2026-05-05 (공개 쇼룸 권장안 = 미니멀 보드) | `public_showroom_board_minimal.html` 배포·scp·nginx·SPEC·`CONSTITUTION` Public Event/배포 행·P0 경로·autopilot jemaai 체크에 포함; 허브 `showroom_jemaai.href` → `api.jemaai.cloud/.../public_showroom_board_minimal.html`; `run_jemaai_cloud_completion_chain.ps1 -SkipP1AB` OK. |
 | 2026-05-04 (MKM Trinity index v1) | 렌즈 키 `sasang`/`logos`/`myeongni` + `constitution_anchor` + `validation_pointers[]` + `_meta.schema/version`를 `MKM_TRINITY_INDEX_V1.json`에 박제; jsonschema·`dual-regime-integrity`·`run_fact_lock_bundle`·`verify_p0`에 연결(목차만, FACT는 헌법·스크립트). |
 | 2026-Q1 (레포 타임라인) | Mar~Apr `feat`/`docs`/`chore` 커밋이 다수 + `reports`·`docs`·`scripts` 경로 변경이 두드러짐 → **산출·스냅샷·자동화**를 한 사이클로 밀어붙인 분기 (`docs/final/artifacts/memory_revival_gap_scan_latest.json`와 대조). |
-| 2025-05~2026-02 (갭·NL 검증) | NotebookLM `압축` 노트(`c5f9aef1-6cd6-4c3b-9c57-d1f2a62e3201`) 교차질의가 인용한 source id는 **현재 `nlm source list` 제목**(예: 2026-04-09 H: 매니페스트·`top10_curated`)과 시점이 맞지 않음 → **날짜별 “결정 연대기”는 미승격**; 동 구간 본 레포 `git log` **0건** 재확인. |
-| 2026-04 (Cursor · 크로스 채팅) | `.cursor/rules/central-agent-memory.mdc`에 **SSOT 핵심 5줄**(Fact-Lock·투트랙·레짐 주·보·Multi-Lens·압축 서술)을 **매 턴 자동 포함**으로 고정; 압축 대외 서사는 **실행층=휴리스틱·게마/4D 브리지=계측·사원수=trackb 실험축**으로 Fact-Lock 정렬. 채팅 간 맥락 누적은 **본 파일·Git** — 세션 로그 자동 병합 아님. |
 
 ---
 

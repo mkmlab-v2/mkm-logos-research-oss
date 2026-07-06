@@ -1,0 +1,231 @@
+{
+  "schema": "ijeoma_kernel_v2_mdd_safeguard_walkforward_eval_v1",
+  "prereg_pointer": "docs/final/artifacts/ijeoma_kernel_v2_mdd_safeguard_holdout_prereg_v1_latest.json",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "promotion_to_a_track_allowed": false,
+  "hypothesis_class": "HYPO",
+  "per_date_jsonl": "reports/btrack_market_sasang_per_date_v1.jsonl",
+  "n_per_date_rows": 750,
+  "protocol": {
+    "fold_holdout_days": 72,
+    "n_folds": 3,
+    "confirmatory_holdout_days": 72,
+    "neutral_bps": 5.0,
+    "position_mode": "long_short_proxy",
+    "arms": [
+      "P10_kernel_v2_grid_best",
+      "P8_kernel_v2_bomyung_fuse",
+      "P13_kernel_v2_bomyung_grid_best"
+    ],
+    "note_ko": "P10 frozen baseline; P8/P13 fuse kill-switch only — direction flip 금지"
+  },
+  "walkforward_folds": [
+    {
+      "fold_id": "WF1",
+      "holdout_date_from": "2025-11-30",
+      "holdout_date_to": "2026-03-18",
+      "holdout_n_dates": 72,
+      "per_arm": {
+        "P10_kernel_v2_grid_best": {
+          "holdout": {
+            "max_drawdown": 0.252628,
+            "cumulative_return": 0.245542,
+            "n_dates": 54,
+            "n_active_days": 46,
+            "worst_day_return": -0.120577,
+            "daily_return_volatility": 0.033016,
+            "final_equity": 1.245542
+          },
+          "mdd_reduction_vs_p10": 0.0
+        },
+        "P8_kernel_v2_bomyung_fuse": {
+          "holdout": {
+            "max_drawdown": 0.150156,
+            "cumulative_return": 0.226028,
+            "n_dates": 54,
+            "n_active_days": 41,
+            "worst_day_return": -0.096271,
+            "daily_return_volatility": 0.026033,
+            "final_equity": 1.226028
+          },
+          "mdd_reduction_vs_p10": 0.405624,
+          "mdd_improvement_met": true
+        },
+        "P13_kernel_v2_bomyung_grid_best": {
+          "holdout": {
+            "max_drawdown": 0.150156,
+            "cumulative_return": 0.32067,
+            "n_dates": 54,
+            "n_active_days": 44,
+            "worst_day_return": -0.096271,
+            "daily_return_volatility": 0.0266,
+            "final_equity": 1.32067
+          },
+          "mdd_reduction_vs_p10": 0.405624,
+          "mdd_improvement_met": true
+        }
+      }
+    },
+    {
+      "fold_id": "WF2",
+      "holdout_date_from": "2025-08-12",
+      "holdout_date_to": "2025-11-27",
+      "holdout_n_dates": 72,
+      "per_arm": {
+        "P10_kernel_v2_grid_best": {
+          "holdout": {
+            "max_drawdown": 0.038434,
+            "cumulative_return": 0.136549,
+            "n_dates": 57,
+            "n_active_days": 45,
+            "worst_day_return": -0.028464,
+            "daily_return_volatility": 0.013576,
+            "final_equity": 1.136549
+          },
+          "mdd_reduction_vs_p10": 0.0
+        },
+        "P8_kernel_v2_bomyung_fuse": {
+          "holdout": {
+            "max_drawdown": 0.028612,
+            "cumulative_return": 0.111463,
+            "n_dates": 57,
+            "n_active_days": 34,
+            "worst_day_return": -0.027844,
+            "daily_return_volatility": 0.011171,
+            "final_equity": 1.111463
+          },
+          "mdd_reduction_vs_p10": 0.255555,
+          "mdd_improvement_met": true
+        },
+        "P13_kernel_v2_bomyung_grid_best": {
+          "holdout": {
+            "max_drawdown": 0.038434,
+            "cumulative_return": 0.136549,
+            "n_dates": 57,
+            "n_active_days": 45,
+            "worst_day_return": -0.028464,
+            "daily_return_volatility": 0.013576,
+            "final_equity": 1.136549
+          },
+          "mdd_reduction_vs_p10": 0.0,
+          "mdd_improvement_met": false
+        }
+      }
+    },
+    {
+      "fold_id": "WF3",
+      "holdout_date_from": "2025-04-27",
+      "holdout_date_to": "2025-08-11",
+      "holdout_n_dates": 72,
+      "per_arm": {
+        "P10_kernel_v2_grid_best": {
+          "holdout": {
+            "max_drawdown": 0.032601,
+            "cumulative_return": 0.125275,
+            "n_dates": 54,
+            "n_active_days": 40,
+            "worst_day_return": -0.015964,
+            "daily_return_volatility": 0.009146,
+            "final_equity": 1.125275
+          },
+          "mdd_reduction_vs_p10": 0.0
+        },
+        "P8_kernel_v2_bomyung_fuse": {
+          "holdout": {
+            "max_drawdown": 0.01806,
+            "cumulative_return": 0.150501,
+            "n_dates": 54,
+            "n_active_days": 26,
+            "worst_day_return": -0.013401,
+            "daily_return_volatility": 0.007595,
+            "final_equity": 1.150501
+          },
+          "mdd_reduction_vs_p10": 0.446029,
+          "mdd_improvement_met": true
+        },
+        "P13_kernel_v2_bomyung_grid_best": {
+          "holdout": {
+            "max_drawdown": 0.032601,
+            "cumulative_return": 0.125275,
+            "n_dates": 54,
+            "n_active_days": 40,
+            "worst_day_return": -0.015964,
+            "daily_return_volatility": 0.009146,
+            "final_equity": 1.125275
+          },
+          "mdd_reduction_vs_p10": 0.0,
+          "mdd_improvement_met": false
+        }
+      }
+    }
+  ],
+  "confirmatory_tail": {
+    "date_from": "2026-03-19",
+    "date_to": "2026-07-02",
+    "n_dates": 72,
+    "per_arm": {
+      "P10_kernel_v2_grid_best": {
+        "holdout": {
+          "max_drawdown": 0.200266,
+          "cumulative_return": 0.084149,
+          "n_dates": 55,
+          "n_active_days": 54,
+          "worst_day_return": -0.099918,
+          "daily_return_volatility": 0.03991,
+          "final_equity": 1.084149
+        },
+        "mdd_reduction_vs_p10": 0.0,
+        "delta_cumulative_return_vs_p10": 0.0,
+        "in_sample_params_risk": true
+      },
+      "P8_kernel_v2_bomyung_fuse": {
+        "holdout": {
+          "max_drawdown": 0.157917,
+          "cumulative_return": 0.105538,
+          "n_dates": 55,
+          "n_active_days": 47,
+          "worst_day_return": -0.099918,
+          "daily_return_volatility": 0.034627,
+          "final_equity": 1.105538
+        },
+        "mdd_reduction_vs_p10": 0.211464,
+        "delta_cumulative_return_vs_p10": 0.021389,
+        "in_sample_params_risk": false
+      },
+      "P13_kernel_v2_bomyung_grid_best": {
+        "holdout": {
+          "max_drawdown": 0.157917,
+          "cumulative_return": 0.294375,
+          "n_dates": 55,
+          "n_active_days": 51,
+          "worst_day_return": -0.099918,
+          "daily_return_volatility": 0.036343,
+          "final_equity": 1.294375
+        },
+        "mdd_reduction_vs_p10": 0.211464,
+        "delta_cumulative_return_vs_p10": 0.210226,
+        "in_sample_params_risk": false
+      }
+    }
+  },
+  "aggregation": {
+    "baseline_arm": "P10_kernel_v2_grid_best",
+    "challenger_arm": "P13_kernel_v2_bomyung_grid_best",
+    "p13_wf_mean_mdd_reduction_vs_p10": 0.135208,
+    "p13_wf_folds_mdd_improvement_met": 1,
+    "p13_wf_n_folds": 3,
+    "walkforward_pass": false,
+    "confirmatory_pass": true,
+    "p13_confirm_mdd_reduction_vs_p10": 0.211464,
+    "p13_confirm_cum_delta_vs_p10": 0.210226,
+    "required_wf_mdd_reduction": 0.15,
+    "required_confirm_mdd_reduction": 0.2,
+    "exploratory_supported": false
+  },
+  "hypothesis_supported": false,
+  "exploratory_supported": false,
+  "verdict_ko": "P13_kernel_v2_bomyung_grid_best MDD walk-forward+confirm 실증 미달 — 계약 유지 (B-track)",
+  "repro_command": "py scripts/run_ijeoma_kernel_v2_mdd_safeguard_walkforward_eval_v1.py",
+  "generated_at_utc": "2026-07-06T16:56:57Z"
+}

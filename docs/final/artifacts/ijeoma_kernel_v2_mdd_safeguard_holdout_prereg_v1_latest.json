@@ -1,0 +1,72 @@
+{
+  "schema": "ijeoma_kernel_v2_mdd_safeguard_holdout_prereg_v1",
+  "version": "1.2.0",
+  "registered_at_utc": "2026-07-06T17:00:00Z",
+  "rail": "B_TRACK",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "promotion_to_a_track_allowed": false,
+  "hypothesis_class": "HYPO",
+  "question_ko": "보명 fuse(P8/P13)가 P10 대비 holdout tail-risk(max_drawdown)를 개선하는가?",
+  "theory_ssot": [
+    "scripts/jema_os_kernel_v2_market_signal_lib_v1.py",
+    "docs/final/artifacts/ijeoma_bomyung_fuse_holdout_prereg_v1_latest.json"
+  ],
+  "explicit_exclusions": [
+    "Track A · live trading · SEND auto-open",
+    "direction flip / short mandate for production",
+    "hit_rate-only promotion"
+  ],
+  "instrument": "kospi",
+  "inputs": {
+    "per_date_jsonl": "reports/btrack_market_sasang_per_date_v1.jsonl",
+    "kospi_csv": "research/market_data/kospi_daily_external_yf.csv",
+    "holdout_eval_pointer": "docs/final/artifacts/ijeoma_theory_per_date_fusion_holdout_eval_v1_latest.json"
+  },
+  "holdout_protocol": {
+    "method": "tail_days",
+    "holdout_days": 72,
+    "neutral_bps": 5.0,
+    "position_mode": "long_short_proxy",
+    "position_note_ko": "bull=+1, bear=-1, neutral=0 (B-track 방향 프록시; 실매매 아님)"
+  },
+  "arms": [
+    "P0_per_date_mapping_target",
+    "P6_kernel_v2_direction",
+    "P10_kernel_v2_grid_best",
+    "P8_kernel_v2_bomyung_fuse",
+    "P13_kernel_v2_bomyung_grid_best"
+  ],
+  "compare_baseline_arm": "P10_kernel_v2_grid_best",
+  "challenger_arms": [
+    "P8_kernel_v2_bomyung_fuse",
+    "P13_kernel_v2_bomyung_grid_best"
+  ],
+  "success_criteria": {
+    "primary_challenger_arm": "P13_kernel_v2_bomyung_grid_best",
+    "holdout_max_drawdown_reduction_vs_p10_strict_gte": 0.30,
+    "holdout_max_drawdown_reduction_vs_p10_exploratory_gte": 0.20,
+    "holdout_cumulative_return_floor_vs_p10": -0.05,
+    "min_active_days": 20,
+    "walkforward_mdd_reduction_vs_p10_gte": 0.15,
+    "walkforward_min_folds_non_negative_mdd_improvement": 2,
+    "confirmatory_mdd_reduction_vs_p10_gte": 0.20,
+    "must_not_flip_direction": true
+  },
+  "repro_commands": {
+    "holdout": "py scripts/run_ijeoma_kernel_v2_mdd_safeguard_holdout_eval_v1.py",
+    "walkforward": "py scripts/run_ijeoma_kernel_v2_mdd_safeguard_walkforward_eval_v1.py",
+    "fuse_calibration": "py scripts/run_bomyung_fuse_regime_calibration_v1.py"
+  },
+  "fuse_contract_v1": {
+    "mode": "crisis_conditional_kill_switch",
+    "mode_ko": "위기·스트레스 국면 + 체질 극단(yin collapse / yang fragility) 시에만 neutral 강제",
+    "calm_watch_expectation_ko": "평온·관망 구간에서는 P10≈P13 — WF MDD 동률 정상",
+    "implementation_pointer": "scripts/jema_os_kernel_v2_market_signal_lib_v1.py::compute_bomyung_fuse_tripped",
+    "never_flip_direction": true,
+    "calibration_artifact": "docs/final/artifacts/bomyung_fuse_regime_calibration_v1_latest.json",
+    "wf_interpretation_ko": "MDD WF 통과는 crisis-heavy fold 가중 시에만 기대; calm fold 0% 개선은 계약 위반 아님"
+  },
+  "boundary_ack": "MDD는 방향 프록시 PnL 관측만. hit_rate 개선과 별도 B-track tail-risk 증거."
+
+}

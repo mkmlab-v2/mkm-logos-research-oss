@@ -1,0 +1,165 @@
+{
+  "schema": "ijeoma_kernel_v2_mdd_safeguard_holdout_eval_v1",
+  "prereg_pointer": "docs/final/artifacts/ijeoma_kernel_v2_mdd_safeguard_holdout_prereg_v1_latest.json",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "promotion_to_a_track_allowed": false,
+  "hypothesis_class": "HYPO",
+  "per_date_jsonl": "reports/btrack_market_sasang_per_date_v1.jsonl",
+  "n_per_date_rows": 750,
+  "holdout_protocol": {
+    "holdout_days": 72,
+    "train_n_dates": 678,
+    "holdout_n_dates": 72,
+    "neutral_bps": 5.0,
+    "position_mode": "long_short_proxy"
+  },
+  "per_arm": {
+    "P0_per_date_mapping_target": {
+      "train": {
+        "max_drawdown": 0.459473,
+        "cumulative_return": -0.09712,
+        "n_dates": 516,
+        "n_active_days": 404,
+        "worst_day_return": -0.120577,
+        "daily_return_volatility": 0.014354,
+        "final_equity": 0.90288
+      },
+      "holdout": {
+        "max_drawdown": 0.269459,
+        "cumulative_return": -0.262977,
+        "n_dates": 55,
+        "n_active_days": 52,
+        "worst_day_return": -0.099918,
+        "daily_return_volatility": 0.038761,
+        "final_equity": 0.737023
+      }
+    },
+    "P6_kernel_v2_direction": {
+      "train": {
+        "max_drawdown": 0.252628,
+        "cumulative_return": 0.436402,
+        "n_dates": 516,
+        "n_active_days": 299,
+        "worst_day_return": -0.120577,
+        "daily_return_volatility": 0.013854,
+        "final_equity": 1.436402
+      },
+      "holdout": {
+        "max_drawdown": 0.205813,
+        "cumulative_return": -0.074018,
+        "n_dates": 55,
+        "n_active_days": 50,
+        "worst_day_return": -0.099918,
+        "daily_return_volatility": 0.038113,
+        "final_equity": 0.925982
+      }
+    },
+    "P10_kernel_v2_grid_best": {
+      "train": {
+        "max_drawdown": 0.279431,
+        "cumulative_return": 0.494424,
+        "n_dates": 516,
+        "n_active_days": 414,
+        "worst_day_return": -0.120577,
+        "daily_return_volatility": 0.015426,
+        "final_equity": 1.494424
+      },
+      "holdout": {
+        "max_drawdown": 0.200266,
+        "cumulative_return": 0.084149,
+        "n_dates": 55,
+        "n_active_days": 54,
+        "worst_day_return": -0.099918,
+        "daily_return_volatility": 0.03991,
+        "final_equity": 1.084149
+      }
+    },
+    "P8_kernel_v2_bomyung_fuse": {
+      "train": {
+        "max_drawdown": 0.203059,
+        "cumulative_return": 0.523042,
+        "n_dates": 516,
+        "n_active_days": 297,
+        "worst_day_return": -0.096271,
+        "daily_return_volatility": 0.012384,
+        "final_equity": 1.523042
+      },
+      "holdout": {
+        "max_drawdown": 0.157917,
+        "cumulative_return": 0.105538,
+        "n_dates": 55,
+        "n_active_days": 47,
+        "worst_day_return": -0.099918,
+        "daily_return_volatility": 0.034627,
+        "final_equity": 1.105538
+      }
+    },
+    "P13_kernel_v2_bomyung_grid_best": {
+      "train": {
+        "max_drawdown": 0.279431,
+        "cumulative_return": 0.584564,
+        "n_dates": 516,
+        "n_active_days": 412,
+        "worst_day_return": -0.096271,
+        "daily_return_volatility": 0.01412,
+        "final_equity": 1.584564
+      },
+      "holdout": {
+        "max_drawdown": 0.157917,
+        "cumulative_return": 0.294375,
+        "n_dates": 55,
+        "n_active_days": 51,
+        "worst_day_return": -0.099918,
+        "daily_return_volatility": 0.036343,
+        "final_equity": 1.294375
+      }
+    }
+  },
+  "mdd_comparisons_vs_baseline": {
+    "P8_kernel_v2_bomyung_fuse": {
+      "baseline_arm": "P10_kernel_v2_grid_best",
+      "holdout_max_drawdown": 0.157917,
+      "holdout_cumulative_return": 0.105538,
+      "delta_cumulative_return_vs_baseline": 0.021389,
+      "max_drawdown_reduction_ratio_vs_baseline": 0.211464,
+      "n_active_days": 47,
+      "mdd_threshold_met": false,
+      "cum_return_floor_met": true,
+      "mdd_strict_met": false,
+      "mdd_exploratory_met": true
+    },
+    "P13_kernel_v2_bomyung_grid_best": {
+      "baseline_arm": "P10_kernel_v2_grid_best",
+      "holdout_max_drawdown": 0.157917,
+      "holdout_cumulative_return": 0.294375,
+      "delta_cumulative_return_vs_baseline": 0.210226,
+      "max_drawdown_reduction_ratio_vs_baseline": 0.211464,
+      "n_active_days": 51,
+      "mdd_threshold_met": false,
+      "cum_return_floor_met": true,
+      "mdd_strict_met": false,
+      "mdd_exploratory_met": true
+    }
+  },
+  "aggregation": {
+    "baseline_arm": "P10_kernel_v2_grid_best",
+    "primary_challenger_arm": "P13_kernel_v2_bomyung_grid_best",
+    "baseline_holdout_max_drawdown": 0.200266,
+    "baseline_holdout_cumulative_return": 0.084149,
+    "required_mdd_reduction_strict": 0.3,
+    "required_mdd_reduction_exploratory": 0.2,
+    "required_cum_return_floor_vs_baseline": -0.05,
+    "primary_mdd_reduction_ratio": 0.211464,
+    "primary_cum_delta_vs_baseline": 0.210226,
+    "primary_mdd_strict_met": false,
+    "primary_mdd_exploratory_met": true,
+    "primary_cum_return_floor_met": true,
+    "exploratory_supported": true
+  },
+  "hypothesis_supported": false,
+  "exploratory_supported": true,
+  "verdict_ko": "MDD safeguard exploratory 통과·strict 미달: P13_kernel_v2_bomyung_grid_best MDD↓21.1% (WF 확인 권장 · B-track)",
+  "repro_command": "py scripts/run_ijeoma_kernel_v2_mdd_safeguard_holdout_eval_v1.py",
+  "generated_at_utc": "2026-07-06T17:07:19Z"
+}

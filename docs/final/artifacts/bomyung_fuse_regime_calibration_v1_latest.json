@@ -1,0 +1,298 @@
+{
+  "schema": "bomyung_fuse_regime_calibration_v1",
+  "prereg_pointer": "docs/final/artifacts/ijeoma_kernel_v2_mdd_safeguard_holdout_prereg_v1_latest.json",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "promotion_to_a_track_allowed": false,
+  "hypothesis_class": "HYPO",
+  "fuse_contract_v1": {
+    "mode": "crisis_conditional_kill_switch",
+    "mode_ko": "위기·스트레스 국면 + 체질 극단(yin collapse / yang fragility) 시에만 neutral 강제",
+    "calm_watch_expectation_ko": "평온·관망 구간에서는 P10≈P13 — WF MDD 동률 정상",
+    "implementation_pointer": "scripts/jema_os_kernel_v2_market_signal_lib_v1.py::compute_bomyung_fuse_tripped",
+    "never_flip_direction": true,
+    "calibration_artifact": "docs/final/artifacts/bomyung_fuse_regime_calibration_v1_latest.json",
+    "wf_interpretation_ko": "MDD WF 통과는 crisis-heavy fold 가중 시에만 기대; calm fold 0% 개선은 계약 위반 아님"
+  },
+  "per_date_jsonl": "reports/btrack_market_sasang_per_date_v1.jsonl",
+  "n_per_date_rows": 750,
+  "full_sample": {
+    "n_rows": 750,
+    "tripped_count": 7,
+    "trip_rate": 0.009333,
+    "by_regime": {
+      "calm": {
+        "n_rows": 750,
+        "tripped_count": 7,
+        "trip_rate": 0.009333
+      }
+    },
+    "by_dominant_constitution": {
+      "soeum": {
+        "n_rows": 165,
+        "tripped_count": 0,
+        "trip_rate": 0.0
+      },
+      "taeeum": {
+        "n_rows": 178,
+        "tripped_count": 5,
+        "trip_rate": 0.02809
+      },
+      "taeyang": {
+        "n_rows": 407,
+        "tripped_count": 2,
+        "trip_rate": 0.004914
+      }
+    }
+  },
+  "holdout_tail": {
+    "n_rows": 72,
+    "tripped_count": 4,
+    "trip_rate": 0.055556,
+    "by_regime": {
+      "calm": {
+        "n_rows": 72,
+        "tripped_count": 4,
+        "trip_rate": 0.055556
+      }
+    },
+    "by_dominant_constitution": {
+      "soeum": {
+        "n_rows": 2,
+        "tripped_count": 0,
+        "trip_rate": 0.0
+      },
+      "taeeum": {
+        "n_rows": 22,
+        "tripped_count": 3,
+        "trip_rate": 0.136364
+      },
+      "taeyang": {
+        "n_rows": 48,
+        "tripped_count": 1,
+        "trip_rate": 0.020833
+      }
+    }
+  },
+  "holdout_p10_vs_p13_divergence": {
+    "baseline_arm": "P10_kernel_v2_grid_best",
+    "fuse_arm": "P13_kernel_v2_bomyung_grid_best",
+    "n_rows": 72,
+    "prediction_divergence_count": 4,
+    "prediction_divergence_rate": 0.055556,
+    "fuse_trip_count": 4,
+    "divergence_on_trip_count": 4,
+    "divergence_explained_by_trip_rate": 1.0,
+    "by_regime": {
+      "calm": {
+        "n_rows": 72,
+        "diverged_count": 4,
+        "tripped_count": 4,
+        "divergence_rate": 0.055556
+      }
+    }
+  },
+  "holdout_pnl_proxy_by_fuse_state": {
+    "P10_kernel_v2_grid_best": {
+      "arm": "P10_kernel_v2_grid_best",
+      "fuse_tripped_days": {
+        "n_days": 3,
+        "mean_return": -0.056716,
+        "worst_day": -0.084363
+      },
+      "fuse_not_tripped_days": {
+        "n_days": 52,
+        "mean_return": 0.005671,
+        "worst_day": -0.099918
+      }
+    },
+    "P13_kernel_v2_bomyung_grid_best": {
+      "arm": "P13_kernel_v2_bomyung_grid_best",
+      "fuse_tripped_days": {
+        "n_days": 3,
+        "mean_return": 0.0,
+        "worst_day": 0.0
+      },
+      "fuse_not_tripped_days": {
+        "n_days": 52,
+        "mean_return": 0.005671,
+        "worst_day": -0.099918
+      }
+    }
+  },
+  "walkforward_fold_summaries": [
+    {
+      "fold_id": "WF1",
+      "holdout_date_from": "2025-11-30",
+      "holdout_date_to": "2026-03-18",
+      "regime_trip_stats": {
+        "n_rows": 72,
+        "tripped_count": 2,
+        "trip_rate": 0.027778,
+        "by_regime": {
+          "calm": {
+            "n_rows": 72,
+            "tripped_count": 2,
+            "trip_rate": 0.027778
+          }
+        },
+        "by_dominant_constitution": {
+          "soeum": {
+            "n_rows": 8,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          },
+          "taeeum": {
+            "n_rows": 13,
+            "tripped_count": 1,
+            "trip_rate": 0.076923
+          },
+          "taeyang": {
+            "n_rows": 51,
+            "tripped_count": 1,
+            "trip_rate": 0.019608
+          }
+        }
+      },
+      "p10_vs_p13_divergence": {
+        "baseline_arm": "P10_kernel_v2_grid_best",
+        "fuse_arm": "P13_kernel_v2_bomyung_grid_best",
+        "n_rows": 72,
+        "prediction_divergence_count": 2,
+        "prediction_divergence_rate": 0.027778,
+        "fuse_trip_count": 2,
+        "divergence_on_trip_count": 2,
+        "divergence_explained_by_trip_rate": 1.0,
+        "by_regime": {
+          "calm": {
+            "n_rows": 72,
+            "diverged_count": 2,
+            "tripped_count": 2,
+            "divergence_rate": 0.027778
+          }
+        }
+      }
+    },
+    {
+      "fold_id": "WF2",
+      "holdout_date_from": "2025-08-12",
+      "holdout_date_to": "2025-11-27",
+      "regime_trip_stats": {
+        "n_rows": 72,
+        "tripped_count": 0,
+        "trip_rate": 0.0,
+        "by_regime": {
+          "calm": {
+            "n_rows": 72,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          }
+        },
+        "by_dominant_constitution": {
+          "soeum": {
+            "n_rows": 12,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          },
+          "taeeum": {
+            "n_rows": 16,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          },
+          "taeyang": {
+            "n_rows": 44,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          }
+        }
+      },
+      "p10_vs_p13_divergence": {
+        "baseline_arm": "P10_kernel_v2_grid_best",
+        "fuse_arm": "P13_kernel_v2_bomyung_grid_best",
+        "n_rows": 72,
+        "prediction_divergence_count": 0,
+        "prediction_divergence_rate": 0.0,
+        "fuse_trip_count": 0,
+        "divergence_on_trip_count": 0,
+        "divergence_explained_by_trip_rate": null,
+        "by_regime": {
+          "calm": {
+            "n_rows": 72,
+            "diverged_count": 0,
+            "tripped_count": 0,
+            "divergence_rate": 0.0
+          }
+        }
+      }
+    },
+    {
+      "fold_id": "WF3",
+      "holdout_date_from": "2025-04-27",
+      "holdout_date_to": "2025-08-11",
+      "regime_trip_stats": {
+        "n_rows": 72,
+        "tripped_count": 0,
+        "trip_rate": 0.0,
+        "by_regime": {
+          "calm": {
+            "n_rows": 72,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          }
+        },
+        "by_dominant_constitution": {
+          "soeum": {
+            "n_rows": 15,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          },
+          "taeeum": {
+            "n_rows": 8,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          },
+          "taeyang": {
+            "n_rows": 49,
+            "tripped_count": 0,
+            "trip_rate": 0.0
+          }
+        }
+      },
+      "p10_vs_p13_divergence": {
+        "baseline_arm": "P10_kernel_v2_grid_best",
+        "fuse_arm": "P13_kernel_v2_bomyung_grid_best",
+        "n_rows": 72,
+        "prediction_divergence_count": 0,
+        "prediction_divergence_rate": 0.0,
+        "fuse_trip_count": 0,
+        "divergence_on_trip_count": 0,
+        "divergence_explained_by_trip_rate": null,
+        "by_regime": {
+          "calm": {
+            "n_rows": 72,
+            "diverged_count": 0,
+            "tripped_count": 0,
+            "divergence_rate": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "contract_validation": {
+    "mode": "crisis_conditional_kill_switch",
+    "contract_confirmed": true,
+    "holdout_crisis_trip_rate": null,
+    "holdout_calm_trip_rate": 0.055556,
+    "holdout_stress_trip_rate": null,
+    "holdout_watch_trip_rate": null,
+    "wf_fold_divergence_rates": [
+      0.027778,
+      0.0,
+      0.0
+    ]
+  },
+  "hypothesis_supported": true,
+  "verdict_ko": "fuse 계약 확인: crisis/stress trip_rate > calm/watch 또는 divergence가 trip으로 설명됨 (위기 전용 kill-switch · B-track)",
+  "repro_command": "py scripts/run_bomyung_fuse_regime_calibration_v1.py",
+  "generated_at_utc": "2026-07-06T17:07:20Z"
+}
