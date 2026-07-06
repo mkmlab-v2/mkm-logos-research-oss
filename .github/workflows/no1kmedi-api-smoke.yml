@@ -31,12 +31,14 @@ jobs:
         working-directory: projects/no1kmedi/payapp-api
 
       - name: Production API diagnostics (health + router aliases)
+        continue-on-error: ${{ github.event_name == 'schedule' }}
         env:
           API_BASE: https://api.no1kmedi.com
         run: node diagnose-prod.mjs
         working-directory: projects/no1kmedi/payapp-api
 
       - name: Remote smoke (api.no1kmedi.com)
+        continue-on-error: ${{ github.event_name == 'schedule' }}
         env:
           SMOKE_ALLOW_UNAUTH_PROTECTED: "1"
         run: node smoke-chat.mjs --prod

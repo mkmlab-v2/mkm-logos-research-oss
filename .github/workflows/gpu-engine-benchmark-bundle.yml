@@ -73,6 +73,18 @@ jobs:
       BENCHMARK_PROPHECY_TOP_K: ${{ inputs.prophecy_top_k || '5' }}
     steps:
       - uses: actions/checkout@v5
+      - name: Normalize benchmark inputs (hosted)
+        shell: bash
+        run: |
+          topk="${BENCHMARK_PROPHECY_TOP_K:-}"
+          if [ -z "$topk" ]; then
+            topk="5"
+          fi
+          if ! [[ "$topk" =~ ^[0-9]+$ ]]; then
+            echo "BENCHMARK_PROPHECY_TOP_K must be an integer, got='$topk'" >&2
+            exit 1
+          fi
+          echo "BENCHMARK_PROPHECY_TOP_K=$topk" >> "$GITHUB_ENV"
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
@@ -123,6 +135,17 @@ jobs:
       BENCHMARK_MAX_REGRESSION_PCT: ${{ inputs.max_regression_pct || '10' }}
     steps:
       - uses: actions/checkout@v5
+      - name: Normalize benchmark inputs (self-hosted)
+        shell: pwsh
+        run: |
+          $topK = "${{ env.BENCHMARK_PROPHECY_TOP_K }}".Trim()
+          if ([string]::IsNullOrWhiteSpace($topK)) {
+            $topK = "5"
+          }
+          if ($topK -notmatch '^\d+$') {
+            throw "BENCHMARK_PROPHECY_TOP_K must be an integer, got='$topK'"
+          }
+          "BENCHMARK_PROPHECY_TOP_K=$topK" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: Detect Python on self-hosted runner
         run: |
           python --version
