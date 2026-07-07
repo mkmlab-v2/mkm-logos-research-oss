@@ -15,7 +15,24 @@ DEFAULT_OUT = ROOT / "docs" / "final" / "artifacts" / "logos_independent_lens_la
 
 ARTIFACT_SCHEMA = "logos_independent_lens_v0"
 ENGINE_ID = "independent_lens_v0"
-VERSION = "0.2.0"
+VERSION = "0.3.0"
+
+# Axis policy (falsification-informed, [HYPO] B, [NON_GATING]).
+# Held-out cross-book falsifiers established that only two of the four 4D axes carry
+# an independent signal: K (structural embedding, robust) and S (semantic, independent
+# though low fusion gain). M (gematria) and L (lexical density) were FALSIFIED as
+# book-locality / no-cross-book-signal. direction_score therefore averages ONLY the
+# surviving axes {S, K} (equal weight — NOT K-centric); M and L are excluded, not
+# down-weighted. This stays observation-only / non-gating; it changes a numeric stub,
+# not any gate.
+SURVIVING_AXES: tuple[str, ...] = ("S", "K")
+FALSIFIED_AXES_EXCLUDED: tuple[str, ...] = ("L", "M")
+AXIS_POLICY_REF = (
+    "reports/logos_netmf_embedding_falsifier_v1_latest.json (K), "
+    "reports/logos_semantic_embedding_falsifier_v1_latest.json (S), "
+    "reports/gematria_4d_knn_falsifier_v1_latest.json (M falsified), "
+    "reports/logos_axis_L_and_fusion_v1_latest.json (L falsified)"
+)
 
 MAX_PER_VERSE_SNIPPET = 160
 MAX_NARRATIVE_GUARD_CHARS = 2000
@@ -133,15 +150,20 @@ def _aggregate_batch(path: Path) -> tuple[list[dict[str, float]], int, list[dict
 
 
 def _scores_from_vecs(vecs: list[dict[str, float]]) -> tuple[float, float]:
+    """direction_score from the SURVIVING axes {S, K} only (equal weight).
+
+    M (gematria) and L (lexical density) are excluded as falsified (no independent
+    cross-book signal), not down-weighted. Not K-centric: S and K contribute equally.
+    """
     if not vecs:
         return 0.0, 0.25
-    acc = {"S": 0.0, "L": 0.0, "K": 0.0, "M": 0.0}
+    acc = {k: 0.0 for k in SURVIVING_AXES}
     for v in vecs:
-        for k in acc:
-            acc[k] += v[k]
+        for k in SURVIVING_AXES:
+            acc[k] += float(v.get(k, 0.0))
     n = float(len(vecs))
-    mean_all = sum(acc[k] / n for k in acc) / 4.0
-    direction = max(-1.0, min(1.0, (mean_all - 0.5) * 2.0))
+    mean_surviving = sum(acc[k] / n for k in SURVIVING_AXES) / float(len(SURVIVING_AXES))
+    direction = max(-1.0, min(1.0, (mean_surviving - 0.5) * 2.0))
     conf = min(1.0, max(0.2, len(vecs) / 20.0))
     return round(direction, 6), round(conf, 6)
 
@@ -180,6 +202,18 @@ def main() -> int:
             "direction_score": direction,
             "confidence": conf,
         },
+        "axis_policy": {
+            "surviving_axes_used": list(SURVIVING_AXES),
+            "falsified_axes_excluded": list(FALSIFIED_AXES_EXCLUDED),
+            "weighting": "equal (S and K); not K-centric",
+            "non_gating": True,
+            "rationale": (
+                "Held-out cross-book falsifiers: K structural + S semantic carry "
+                "independent signal; M gematria + L lexical-density falsified "
+                "(book-locality / no cross-book gain). direction_score averages {S,K} only."
+            ),
+            "falsifier_refs": AXIS_POLICY_REF,
+        },
         "evidence_refs": evidence_refs if vecs else [],
         "narrative_snippet_guarded": narrative_guarded,
         "snippet_guard_policy": "Only hash-tagged lines [#verse_id] + optional clipped verse_text from batch; no model paraphrase.",
@@ -188,7 +222,7 @@ def main() -> int:
             "verses_with_simple_4d": len(vecs),
             "batch_rows_total": total_rows,
             "evidence_row_count": len(evidence_refs),
-            "rationale": "Mean of pipeline1_simple_4d vector_4d over batch; Logos root only — no regime/KOSPI mixed in this runner.",
+            "rationale": "Mean of SURVIVING axes {S,K} of pipeline1_simple_4d vector_4d over batch (M,L falsified-excluded); Logos root only — no regime/KOSPI mixed in this runner.",
         },
         "provenance": {
             "source": "4lens_batch_json" if vecs else "empty_fallback",

@@ -1,14 +1,28 @@
 {
   "schema": "logos_independent_lens_v0",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "lens_id": "logos",
   "engine_id": "independent_lens_v0",
-  "ts_utc": "2026-06-29T00:15:29Z",
+  "ts_utc": "2026-07-07T17:44:10Z",
   "hypothesis_tier": "B",
   "boundary_ack": true,
   "scores": {
-    "direction_score": -0.323333,
+    "direction_score": -0.406667,
     "confidence": 0.2
+  },
+  "axis_policy": {
+    "surviving_axes_used": [
+      "S",
+      "K"
+    ],
+    "falsified_axes_excluded": [
+      "L",
+      "M"
+    ],
+    "weighting": "equal (S and K); not K-centric",
+    "non_gating": true,
+    "rationale": "Held-out cross-book falsifiers: K structural + S semantic carry independent signal; M gematria + L lexical-density falsified (book-locality / no cross-book gain). direction_score averages {S,K} only.",
+    "falsifier_refs": "reports/logos_netmf_embedding_falsifier_v1_latest.json (K), reports/logos_semantic_embedding_falsifier_v1_latest.json (S), reports/gematria_4d_knn_falsifier_v1_latest.json (M falsified), reports/logos_axis_L_and_fusion_v1_latest.json (L falsified)"
   },
   "evidence_refs": [
     {
@@ -34,7 +48,7 @@
     "verses_with_simple_4d": 3,
     "batch_rows_total": 3,
     "evidence_row_count": 3,
-    "rationale": "Mean of pipeline1_simple_4d vector_4d over batch; Logos root only — no regime/KOSPI mixed in this runner."
+    "rationale": "Mean of SURVIVING axes {S,K} of pipeline1_simple_4d vector_4d over batch (M,L falsified-excluded); Logos root only — no regime/KOSPI mixed in this runner."
   },
   "provenance": {
     "source": "4lens_batch_json",
