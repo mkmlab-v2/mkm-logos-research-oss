@@ -1,0 +1,68 @@
+{
+  "schema": "logos_graph_studio_layer_b_ux_contract_v1",
+  "version": "1.1.0",
+  "updated_utc": "2026-07-08",
+  "status": "phase3_home_react_primary",
+  "lane": "track_b_hypo",
+  "send_gate": "HOLD",
+  "surface_primary": "projects/no1kmedi/src/components/logos/LogosGraphStudioHeroInlineDemo.tsx",
+  "surface_home_wired": "projects/no1kmedi/src/components/logos-research/LogosResearchStudioDemoFold.tsx",
+  "surface_home_phase2": "projects/no1kmedi/src/app/logos-research/page.tsx",
+  "surface_legacy_static": "projects/bitcoin-trading/ops/windows-rehearsal/jemaai-cloud-mvp/public_showroom_meaning_topology_qa_v2.html",
+  "legacy_static_note": "qa_v2.html(ECharts)은 legacy_static_deprecated · CF 백업만. Layer-B autoplay/citation UX는 더 이상 이 정적 표면이 아니라 on-domain React 인라인 데모에서 제공된다. HTML 마커 게이트는 React 표면으로 retarget됨.",
+  "url_params": {
+    "preset": "job_job_suffering_reason",
+    "embed": "hero | 1",
+    "autoplay": "1",
+    "loop": "0 | 1"
+  },
+  "embed_example": "https://logos.jema-ai.com/logos-research/studio?preset=job_job_suffering_reason&embed=hero&autorun=1",
+  "beat_model": "field_lens_conflict_gap_final_v1",
+  "beat_ssot": "projects/no1kmedi/src/lib/logosStudioHeroDemoBeatsV1.ts",
+  "beats_ms": [
+    { "t0": 0, "t1": 8000, "slot": "field", "note_ko": "프리셋 로드 — Field" },
+    { "t0": 8000, "t1": 18000, "slot": "lens", "note_ko": "Path · ECS — Lens (마인드맵 자동 전환)" },
+    { "t0": 18000, "t1": 22000, "slot": "conflict", "note_ko": "학파 격벽 — Conflict" },
+    { "t0": 22000, "t1": 26000, "slot": "gap", "note_ko": "구조적 Gap" },
+    { "t0": 26000, "t1": 30000, "slot": "final", "note_ko": "한 줄 통찰 · logos.jema-ai.com" }
+  ],
+  "user_initiated_policy": {
+    "note_ko": "B2B 데모 UX 근거(auto-trigger 완주율 31% vs 사용자 시작 67%): 온도메인 히어로 인라인 데모는 <details> fold로 사용자가 펼칠 때만 mount·재생한다. autoplay는 fold open 이후에만, prefers-reduced-motion 시 정지.",
+    "mount_on_open_only": true,
+    "respects_prefers_reduced_motion": true
+  },
+  "governance_ui": {
+    "badges": ["[HYPO]", "NON_GATING", "no_trade_signals"],
+    "why_question_assembled": false,
+    "citation_lock": ["Path", "Refs", "cite-ref", "path-chip", "insightPanel"]
+  },
+  "ontology_kinds": ["verse", "theme", "regime", "stage"],
+  "reduced_motion": {
+    "policy": "instant_reveal_no_autoplay_delay",
+    "match_media": "(prefers-reduced-motion: reduce)"
+  },
+  "smoke": {
+    "offline_script": "scripts/check_logos_graph_studio_layer_b_qa_v2_markers_v1.py",
+    "live_script": "scripts/check_logos_graph_studio_b2b_rehearsal_live_v1.py",
+    "react_surface": "projects/no1kmedi/src/components/logos/LogosGraphStudioHeroInlineDemo.tsx",
+    "react_markers": [
+      "data-layer-b-embed",
+      "data-logos-graph-studio-inline",
+      "prefersReducedMotion",
+      "role=\"progressbar\"",
+      "NON_GATING",
+      "LOGOS_HERO_DEMO_BEATS_V1"
+    ],
+    "wired_by_glob": "projects/no1kmedi/src/components/logos-research/LogosResearchStudioDemoFold.tsx",
+    "legacy_html_markers_deprecated": [
+      "runB2bAutoplayTimeline",
+      "applyEmbedMode",
+      "layerBB2bTimeline",
+      "embed-hero",
+      "citation-reveal",
+      "b2bAutoplayBar"
+    ]
+  },
+  "product_depth_host": "logos.jema-ai.com",
+  "disclaimer_ko": "Track C 데모 · preset · citation lock · 실시간 LLM·투자·종교 단정 아님"
+}

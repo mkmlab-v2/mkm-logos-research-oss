@@ -2,6 +2,7 @@ import { LogosResearchBetaStrip } from "@/components/logos-research/LogosResearc
 import { LogosResearchDeployContractStrip } from "@/components/logos-research/LogosResearchDeployContractStrip";
 import { LogosResearchFooter } from "@/components/logos-research/LogosResearchFooter";
 import { LogosResearchHomeInquirySection } from "@/components/logos-research/LogosResearchHomeInquirySection";
+import { LogosResearchStudioDemoFold } from "@/components/logos-research/LogosResearchStudioDemoFold";
 import { logosResearchCopy } from "@/content/logosResearchCopy";
 
 type BetaCopy = {
@@ -109,20 +110,13 @@ export function LogosResearchInquiryBetaHome() {
           </div>
         </section>
 
-        <details className="lr-section lr-studio-deferred">
-          <summary>
-            <span className="lr-studio-deferred-badge">
-              {beta?.studio_deferred_title ?? "Graph Studio (Pro) — 베타 범위 외"}
-            </span>
-          </summary>
-          <p className="lr-section-lead">
-            {beta?.studio_deferred_lead ??
-              "경로·그래프 시각화는 복잡도상 별도 탭. 베타는 텍스트 Q&A 안정화 우선."}
-          </p>
-          <a className="lr-btn lr-btn-ghost" href="/logos-research/studio">
-            Studio 미리보기 (연구용)
-          </a>
-        </details>
+        <LogosResearchStudioDemoFold
+          title={beta?.studio_deferred_title ?? "Graph Studio (Pro) — 베타 범위 외"}
+          lead={
+            beta?.studio_deferred_lead ??
+            "경로·그래프 시각화는 복잡도상 별도 탭. 베타는 텍스트 Q&A 안정화 우선. 펼치면 30초 스토리보드 데모가 재생됩니다."
+          }
+        />
 
         <details className="lr-disclaimer-fold lr-section">
           <summary>{c.disclaimer.title}</summary>
