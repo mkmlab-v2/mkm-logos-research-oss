@@ -49,6 +49,39 @@ def _normalize_node_id(node_id: str) -> str:
     return s
 
 
+# Schema-allowed keys (mkm_logos_research_thin_slice_v0.2.1). The source theme DB
+# carries extra internal-research enrichment (citation_lock_*, gematria_*, vector_4d,
+# ref_ko/verse_id/coordinate_hash). Those are kept in the source but projected OUT of
+# the public showroom slice: L/M (gematria magnitude, lexical density) are falsified
+# axes (lens v0.3.0) and must not surface as public meaning coordinates.
+_ANCHOR_ALLOWED = {"node_id", "theme", "ref", "text"}
+_NODE_ALLOWED = {
+    "node_id",
+    "ref",
+    "text",
+    "edge_type",
+    "target_node",
+    "impact_weight",
+    "research_metaphor_logic_connection",
+    "research_metaphor_domain",
+}
+
+
+def _core_view(doc: dict[str, Any]) -> dict[str, Any]:
+    """Project a source theme down to the schema-conformant public subset."""
+    return {
+        "schema": doc["schema"],
+        "meta": doc["meta"],
+        "golden_anchor": {k: v for k, v in doc["golden_anchor"].items() if k in _ANCHOR_ALLOWED},
+        "semantic_nodes": [
+            {k: v for k, v in n.items() if k in _NODE_ALLOWED}
+            for n in (doc.get("semantic_nodes") or [])
+        ],
+        "governance_mapping": doc["governance_mapping"],
+        "commander_insight": doc["commander_insight"],
+    }
+
+
 def _theme_summary(path: Path, doc: dict[str, Any]) -> dict[str, Any]:
     anchor = doc["golden_anchor"]
     nodes = []
@@ -75,8 +108,9 @@ def build_slice(db_dir: Path, schema_path: Path) -> dict[str, Any]:
     themes: list[dict[str, Any]] = []
     for path in themes_paths:
         doc = _load(path)
-        _validate(doc, schema_path)
-        themes.append(_theme_summary(path, doc))
+        core = _core_view(doc)
+        _validate(core, schema_path)
+        themes.append(_theme_summary(path, core))
     return {
         "schema_version": "showroom_logos_research_slice_v0",
         "generated_at_utc": datetime.now(timezone.utc).replace(microsecond=0).strftime("%Y-%m-%dT%H:%M:%SZ"),
