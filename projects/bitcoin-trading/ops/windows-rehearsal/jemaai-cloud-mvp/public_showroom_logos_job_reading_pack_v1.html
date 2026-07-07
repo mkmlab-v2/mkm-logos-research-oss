@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA AI · Job Reading Pack · Oracle Insight</title>
+  <style>
+    :root {
+      --bg: #0a0b0d;
+      --surface: #12151a;
+      --border: rgba(255, 255, 255, 0.09);
+      --text: #e8eaef;
+      --muted: #8b919d;
+      --accent: #c5a057;
+      --pack1: #9eb4d4;
+      --pack2: #d4a574;
+      --pack3: #8fbc8f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--text);
+      background: radial-gradient(900px 480px at 20% -10%, rgba(158, 180, 212, 0.08), transparent 55%), var(--bg);
+    }
+    .wrap { max-width: 56rem; margin: 0 auto; padding: 1.5rem 1.1rem 2.5rem; }
+    header { margin-bottom: 1.25rem; padding-bottom: 0.85rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.2rem; margin: 0 0 0.35rem; font-weight: 650; }
+    .lede { margin: 0; font-size: 0.8125rem; color: var(--muted); max-width: 44rem; }
+    .badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.65rem 0 0; }
+    .badge {
+      font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 0.2rem 0.5rem; border-radius: 4px; border: 1px solid var(--border); color: var(--muted);
+    }
+    .badge-warn { border-color: rgba(212, 165, 116, 0.45); color: var(--pack2); }
+    .preset-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin: 1rem 0; }
+    .preset-btn {
+      font-size: 0.75rem; padding: 0.35rem 0.65rem; border-radius: 999px;
+      border: 1px solid var(--border); background: var(--surface); color: var(--text);
+      cursor: pointer;
+    }
+    .preset-btn:hover, .preset-btn.active { border-color: var(--accent); color: var(--accent); }
+    .pack-tabs { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.75rem; }
+    .pack-tab {
+      font-size: 0.72rem; padding: 0.4rem 0.75rem; border-radius: 8px 8px 0 0;
+      border: 1px solid var(--border); border-bottom: none; background: #0e1116; color: var(--muted);
+      cursor: pointer;
+    }
+    .pack-tab.active { background: var(--surface); color: var(--text); border-color: var(--accent); }
+    .pack-tab[data-pack="integrated_topology"].active { border-top: 2px solid var(--pack1); }
+    .pack-tab[data-pack="scope_reset_no_why"].active { border-top: 2px solid var(--pack2); }
+    .pack-tab[data-pack="literal_council_only"].active { border-top: 2px solid var(--pack3); }
+    .card {
+      border: 1px solid var(--border); border-radius: 0 12px 12px 12px;
+      background: linear-gradient(180deg, #151922 0%, var(--surface) 100%);
+      padding: 1rem 1.1rem 1.15rem; min-height: 12rem;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    }
+    .card h2 { font-size: 1rem; margin: 0 0 0.35rem; font-weight: 600; }
+    .card .summary { font-size: 0.78rem; color: var(--muted); margin: 0 0 0.85rem; }
+    .card-body {
+      font-size: 0.8125rem; color: #c8ccd4; max-height: 22rem; overflow-y: auto;
+      white-space: pre-wrap; word-break: break-word;
+    }
+    .card-body strong { color: var(--accent); font-weight: 600; }
+    .timeline { margin-top: 1.25rem; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); padding: 0.85rem 1rem; }
+    .timeline h3 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin: 0 0 0.65rem; }
+    .stage { display: grid; grid-template-columns: 2rem 1fr; gap: 0 0.65rem; margin-bottom: 0.75rem; }
+    .stage:last-child { margin-bottom: 0; }
+    .stage-num {
+      width: 1.75rem; height: 1.75rem; border-radius: 50%; border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--accent);
+    }
+    .stage.active .stage-num { background: rgba(197, 160, 87, 0.15); border-color: var(--accent); }
+    .stage-title { font-size: 0.8125rem; font-weight: 600; margin: 0; }
+    .stage-bottleneck { font-size: 0.72rem; color: var(--muted); margin: 0.2rem 0 0; }
+    .stage-refs { font-size: 0.65rem; font-family: ui-monospace, monospace; color: #6b7280; margin-top: 0.25rem; }
+    .meta-line { font-size: 0.68rem; color: var(--muted); margin-top: 1rem; }
+    .footer-links { font-size: 0.75rem; margin-top: 1.25rem; }
+    .footer-links a { color: var(--accent); text-decoration: none; }
+    .footer-links a:hover { text-decoration: underline; }
+    #loadErr { color: #f87171; font-size: 0.8125rem; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p class="lede" style="text-transform:uppercase;letter-spacing:0.14em;font-size:0.65rem;margin-bottom:0.35rem;">JEMA AI · Track C Showroom</p>
+      <h1>Logos Oracle · Job Reading Pack</h1>
+      <p class="lede" id="disclaimerLine">욥기 3-Pack 통찰 카드 · 정적 스냅샷 · 「왜 고난?」 인과 단답 없음</p>
+      <div class="badges">
+        <span class="badge badge-warn">[HYPO]</span>
+        <span class="badge">NON_GATING</span>
+        <span class="badge">send_gate HOLD</span>
+        <span class="badge">why_question_assembled: false</span>
+      </div>
+    </header>
+
+    <p id="loadStatus" class="meta-line">데이터 로드 중…</p>
+    <p id="loadErr" hidden></p>
+
+    <div class="preset-row" id="presetRow" aria-label="Keyword presets"></div>
+
+    <div class="pack-tabs" id="packTabs" role="tablist"></div>
+    <article class="card" id="packCard" aria-live="polite">
+      <h2 id="cardTitle">—</h2>
+      <p class="summary" id="cardSummary">—</p>
+      <div class="card-body" id="cardBody"></div>
+    </article>
+
+    <section class="timeline" id="timeline" aria-label="Narrative route">
+      <h3>5구간 서사 경로</h3>
+      <div id="stageList"></div>
+    </section>
+
+    <p class="meta-line" id="metaLine">—</p>
+
+    <p class="footer-links">
+      <a href="public_showroom_logos_job_cosmic_code_v1.html">→ 욥기 주제 구조 해석 리딩 (장별 슬라이더 · 해석 데모)</a>
+      ·
+      <a href="https://logos.jema-ai.com" rel="noopener">→ Logos Research Workspace (상용)</a>
+      ·
+      <a id="qaStudioLink" href="public_showroom_meaning_topology_qa_v2.html?preset=job_job_suffering_reason">→ Q&amp;A Studio (그래프 하이라이트)</a>
+      ·
+      <a href="public_showroom_meaning_topology_graph_v1.html">Meaning topology graph</a>
+      ·
+      <a href="public_showroom_topology_radar_v1.html">Risk radar</a>
+    </p>
+  </div>
+
+  <script>
+(function () {
+  "use strict";
+  const SLICE_URL = "showroom_logos_job_reading_pack_slice_v1.json";
+  const PACK_ORDER = ["literal_council_only", "scope_reset_no_why", "integrated_topology"];
+  const STAGE_BY_PRESET = {
+    job_suffering_reason: null,
+    existential_suffering: new Set(["human_debate_loop", "divine_speech_grid", "epilogue_closure"]),
+  };
+
+  function qaPresetIdForJob(jobPresetId) {
+    if (!jobPresetId) return "job_job_suffering_reason";
+    return "job_" + jobPresetId;
+  }
+
+  function qaStudioHref(jobPresetId) {
+    return "public_showroom_meaning_topology_qa_v2.html?preset=" +
+      encodeURIComponent(qaPresetIdForJob(jobPresetId));
+  }
+
+  function updateQaStudioLink(jobPresetId) {
+    var el = document.getElementById("qaStudioLink");
+    if (el) el.href = qaStudioHref(jobPresetId);
+  }
+
+  let doc = null;
+  let activePack = PACK_ORDER[0];
+  let activePreset = null;
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function renderMdLite(text) {
+    return esc(text)
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/`([^`]+)`/g, "<span style='color:#9eb4d4'>$1</span>");
+  }
+
+  function packById(id) {
+    return (doc.reading_packs || []).find(function (p) { return p.pack_id === id; });
+  }
+
+  function renderPack(packId) {
+    activePack = packId;
+    const p = packById(packId);
+    if (!p) return;
+    document.querySelectorAll(".pack-tab").forEach(function (t) {
+      t.classList.toggle("active", t.dataset.pack === packId);
+    });
+    document.getElementById("cardTitle").textContent = p.label_ko || packId;
+    document.getElementById("cardSummary").textContent = p.summary_ko || "";
+    document.getElementById("cardBody").innerHTML = renderMdLite(p.card_excerpt_ko || "");
+    renderStages(activePreset);
+  }
+
+  function renderStages(presetId) {
+    const box = document.getElementById("stageList");
+    box.innerHTML = "";
+    const highlight = presetId ? STAGE_BY_PRESET[presetId] : null;
+    (doc.narrative_route_public || []).forEach(function (s) {
+      const row = document.createElement("div");
+      row.className = "stage" + ((!highlight || highlight.has(s.stage_id)) ? " active" : "");
+      row.innerHTML =
+        "<div class='stage-num'>" + esc(String(s.order || "")) + "</div>" +
+        "<div><p class='stage-title'>" + esc(s.label_ko || s.stage_id) + "</p>" +
+        "<p class='stage-bottleneck'>" + esc(s.bottleneck_ko || "") + "</p>" +
+        "<p class='stage-refs'>" + esc((s.verse_refs || []).join(" · ")) + "</p></div>";
+      box.appendChild(row);
+    });
+  }
+
+  function renderTabs() {
+    const tabs = document.getElementById("packTabs");
+    tabs.innerHTML = "";
+    PACK_ORDER.forEach(function (id) {
+      const p = packById(id);
+      if (!p) return;
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "pack-tab";
+      b.dataset.pack = id;
+      b.setAttribute("role", "tab");
+      b.textContent = p.label_ko.length > 28 ? p.label_ko.slice(0, 26) + "…" : p.label_ko;
+      b.title = p.label_ko;
+      b.addEventListener("click", function () { renderPack(id); });
+      tabs.appendChild(b);
+    });
+  }
+
+  function renderPresets() {
+    const row = document.getElementById("presetRow");
+    row.innerHTML = "";
+    (doc.highlight_presets || []).forEach(function (hp) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "preset-btn";
+      b.textContent = hp.label_ko;
+      b.addEventListener("click", function () {
+        activePreset = hp.preset_id;
+        document.querySelectorAll(".preset-btn").forEach(function (x) { x.classList.remove("active"); });
+        b.classList.add("active");
+        renderStages(hp.preset_id);
+        updateQaStudioLink(hp.preset_id);
+        const packs = hp.pack_ids || [];
+        if (packs.length) renderPack(packs[packs.length - 1]);
+      });
+      row.appendChild(b);
+    });
+  }
+
+  function applyUrlParams() {
+    const params = new URLSearchParams(location.search);
+    const preset = params.get("preset");
+    const pack = params.get("pack");
+    if (pack && packById(pack)) {
+      renderPack(pack);
+    }
+    if (preset) {
+      activePreset = preset;
+      renderStages(preset);
+      document.querySelectorAll(".preset-btn").forEach(function (b) {
+        if (b.textContent && doc.highlight_presets) {
+          const hp = doc.highlight_presets.find(function (h) { return h.preset_id === preset; });
+          if (hp && b.textContent === hp.label_ko) b.classList.add("active");
+        }
+      });
+      const hp = (doc.highlight_presets || []).find(function (h) { return h.preset_id === preset; });
+      if (hp && hp.pack_ids && hp.pack_ids.length && !pack) {
+        renderPack(hp.pack_ids[hp.pack_ids.length - 1]);
+      }
+      updateQaStudioLink(preset);
+    } else {
+      updateQaStudioLink(null);
+    }
+  }
+
+  function boot() {
+    fetch(SLICE_URL)
+      .then(function (r) {
+        if (!r.ok) throw new Error(SLICE_URL + " HTTP " + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        doc = data;
+        if (data.disclaimer && data.disclaimer.note_ko) {
+          document.getElementById("disclaimerLine").textContent = data.disclaimer.note_ko;
+        }
+        var stale = data.stale_after_utc ? (" · stale_after " + data.stale_after_utc) : "";
+        document.getElementById("loadStatus").textContent =
+          (data.query_ko || data.query_id) + " · packs=" + (data.reading_packs || []).length +
+          " · verify=" + (data.export_gate && data.export_gate.reading_pack_verify_ok) + stale;
+        document.getElementById("metaLine").textContent =
+          "generated " + (data.generated_at_utc || "?") + " · anchor " + (data.anchor_ref || "?");
+        renderTabs();
+        renderPresets();
+        renderPack(activePack);
+        applyUrlParams();
+      })
+      .catch(function (err) {
+        document.getElementById("loadStatus").textContent = "";
+        var el = document.getElementById("loadErr");
+        el.hidden = false;
+        el.textContent = "로드 실패: " + err + " — Track C slice를 빌드·배포한 뒤 새로고침하세요.";
+      });
+  }
+
+  boot();
+})();
+  </script>
+</body>
+</html>

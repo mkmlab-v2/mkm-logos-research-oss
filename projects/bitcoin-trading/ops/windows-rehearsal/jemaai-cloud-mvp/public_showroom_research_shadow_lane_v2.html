@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEMA · Shadow Lane v2 · Symbolic Energy + Imagination Rail</title>
+  <style>
+    :root { --bg:#07070c; --surface:#12121a; --border:rgba(255,255,255,.08); --text:#f2f2f6; --muted:#9a9aa8; --gold:#d4b06a; --green:#3dd68c; --yellow:#ffb340; --red:#ff6b5a; --purple:#b794f6; }
+    body { margin:0; font-family:system-ui,"Noto Sans KR",sans-serif; background:var(--bg); color:var(--text); line-height:1.5; }
+    .wrap { max-width:1000px; margin:0 auto; padding:20px 16px 48px; }
+    h1 { font-size:1.4rem; margin:0 0 6px; }
+    .sub { color:var(--muted); font-size:.88rem; margin-bottom:16px; }
+    .tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+    .tab { padding:8px 14px; border-radius:8px; border:1px solid var(--border); background:var(--surface); cursor:pointer; font-size:.8rem; }
+    .tab.active { border-color:var(--gold); color:var(--gold); }
+    .panel { display:none; background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:14px; }
+    .panel.active { display:block; }
+    .panel h2 { font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin:0 0 12px; }
+    table { width:100%; border-collapse:collapse; font-size:.78rem; }
+    th,td { border-bottom:1px solid var(--border); padding:6px 8px; text-align:left; }
+    .hypo { border:1px solid var(--border); border-radius:8px; padding:12px; margin-bottom:10px; }
+    .tag { font-size:.7rem; padding:2px 8px; border-radius:6px; font-weight:600; }
+    .corpus_bound { background:rgba(61,214,140,.12); color:var(--green); }
+    .imagination_path { background:rgba(183,148,246,.15); color:var(--purple); }
+    .unknown_gap { background:rgba(255,179,64,.12); color:var(--yellow); }
+    .fact_locked { background:rgba(59,158,255,.12); color:#7ec8ff; }
+    footer { font-size:.72rem; color:var(--muted); margin-top:20px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <p style="color:var(--gold);font-size:.7rem;font-weight:700;letter-spacing:.06em;">SHADOW LANE V2 · HIGH-DIM</p>
+    <h1 id="title">상징·에너지 + 상상력 레일</h1>
+    <p class="sub" id="subtitle">로딩…</p>
+    <div class="tabs">
+      <button class="tab active" data-tab="energy">에너지 곡선</button>
+      <button class="tab" data-tab="symbolic">고차원 가설</button>
+      <button class="tab" data-tab="imagination">상상력 레일</button>
+      <button class="tab" data-tab="boundary">서사 경계</button>
+    </div>
+    <div id="panel-energy" class="panel active"><h2>Gematria · 4D narrative order <span style="font-size:.7rem;color:#ffb340;font-weight:400">· L,M falsified (reference only) — validated axes = S,K</span></h2><div id="energyBody"></div></div>
+    <div id="panel-symbolic" class="panel"><h2>Symbolic network hypotheses</h2><div id="symbolicBody"></div></div>
+    <div id="panel-imagination" class="panel"><h2>Utterance class (hallucination → imagination)</h2><div id="imaginationBody"></div></div>
+    <div id="panel-boundary" class="panel"><h2>Narrative boundary (v1)</h2><div id="boundaryBody"></div></div>
+    <footer>Precomputed · NON_GATING · no「환각 제거」claim · HITL</footer>
+  </div>
+  <script>
+    const $ = id => document.getElementById(id);
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        $('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+    async function main() {
+      const res = await fetch('showroom_research_shadow_lane_v2.json');
+      if (!res.ok) { $('subtitle').textContent = 'v2 JSON 로드 실패'; return; }
+      const doc = await res.json();
+      const sym = doc.layers?.symbolic_energy || {};
+      const img = doc.layers?.imagination_rail || {};
+      const bnd = doc.layers?.narrative_boundary || {};
+      $('subtitle').textContent = doc.disclaimer?.note_ko || '';
+      const rows = (sym.energy_curve || []).map(p => `<tr>
+        <td>${p.ref}</td><td>${p.act_ko||''}</td><td>${p.speaker}</td>
+        <td>${p.hebrew_value??'—'}</td><td>${(p.normalized_value??0).toFixed?.(3)??p.normalized_value}</td>
+        <td>${p.vector_4d?((p.vector_4d.K??0).toFixed(3)+' / '+(p.vector_4d.M??0).toFixed(3)):'—'}</td>
+      </tr>`).join('');
+      $('energyBody').innerHTML = `<table><thead><tr><th>절</th><th>장면</th><th>화자</th><th>hv</th><th>norm</th><th>K/M</th></tr></thead><tbody>${rows}</tbody></table>
+        <p style="font-size:.8rem;color:var(--muted)">${sym.speaker_4d_split?.observation_ko||''}</p>`;
+      $('symbolicBody').innerHTML = (sym.high_dim_hypotheses||[]).map(h => `<div class="hypo"><strong>${h.label_ko}</strong><br/><span style="font-size:.8rem;color:var(--muted)">${h.prompt_ko||''}</span><pre style="font-size:.7rem;overflow:auto">${JSON.stringify(h.metrics,null,2)}</pre></div>`).join('');
+      $('imaginationBody').innerHTML = `<p style="font-size:.85rem">${img.reframe_contract_ko||''}</p><p>stats: ${JSON.stringify(img.stats||{})}</p>` +
+        (img.slots||[]).slice(0,16).map(s => `<div class="hypo"><span class="tag ${s.utterance_class}">${s.display_label_ko}</span> budget=${s.imagination_budget_0_1} · ${s.slot_id}<br/><span style="font-size:.78rem">${s.text_preview||''}</span></div>`).join('');
+      const bp = bnd.boundary_proof || {};
+      $('boundaryBody').innerHTML = `<p>router: ${bp.router_verdict}<br/>서곡 in top: ${JSON.stringify(bp.prologue_causality_refs_in_router_top||[])}<br/>sample: ${(bp.router_verse_ids_sample||[]).join(', ')}</p>`;
+    }
+    main();
+  </script>
+</body>
+</html>

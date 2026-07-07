@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>욥기 주제 구조 해석 리딩 · Logos Studio (해석 데모)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400&family=Noto+Serif+KR:wght@400;700&display=swap');
+
+        :root {
+            --cosmic-bg: #0f172a;
+            --divine-gold: #fbbf24;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans KR", sans-serif;
+            background-color: var(--cosmic-bg);
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .serif { font-family: "Noto Serif KR", serif; }
+        .mono { font-family: "Fira Code", monospace; }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+            height: 350px;
+            background: rgba(30, 41, 59, 0.5);
+            border-radius: 1rem;
+            padding: 1rem;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-btn {
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .nav-btn.active {
+            border-bottom: 2px solid var(--divine-gold);
+            color: var(--divine-gold);
+        }
+
+        .status-tag {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        .scanner {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--divine-gold), transparent);
+            animation: scan 4s linear infinite;
+            opacity: 0.3;
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/10 py-4 px-6">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-amber-500 rounded flex items-center justify-center text-slate-900 font-bold text-xl">Ω</div>
+                <div>
+                    <h1 class="text-xl font-bold tracking-tight text-white">욥기: 주제 구조 해석 리딩</h1>
+                    <p class="text-[10px] text-amber-400 font-mono tracking-widest uppercase">MKM Logos Insight · 해석 데모 (검증된 법칙 아님)</p>
+                    <p class="mt-1 flex flex-wrap gap-1 text-[10px]">
+                        <span class="px-2 py-0.5 rounded-full border border-amber-500/40 text-amber-200/90 bg-amber-500/10">[HYPO]</span>
+                        <span class="px-2 py-0.5 rounded-full border border-white/10 text-slate-400">NON_GATING</span>
+                        <span class="px-2 py-0.5 rounded-full border border-white/10 text-slate-400">문학·해석 데모</span>
+                    </p>
+                </div>
+            </div>
+            <nav class="flex gap-6 text-xs font-mono">
+                <button type="button" onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn active py-2">DASHBOARD</button>
+                <button type="button" onclick="switchTab('gematria')" id="btn-gematria" class="nav-btn py-2 text-slate-400">GEMATRIA</button>
+                <button type="button" onclick="switchTab('waveform')" id="btn-waveform" class="nav-btn py-2 text-slate-400">WAVEFORM</button>
+                <button type="button" onclick="switchTab('patch')" id="btn-patch" class="nav-btn py-2 text-slate-400">SYSTEM PATCH</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-6 py-10">
+
+        <section id="tab-dashboard" class="tab-content active">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
+                <div class="lg:col-span-2 glass-panel rounded-3xl p-8 relative overflow-hidden">
+                    <div class="scanner"></div>
+                    <h2 class="text-2xl font-bold mb-6 serif">시스템 상태: 엔트로피 역전 분석</h2>
+                    <p class="text-slate-400 text-sm mb-8 leading-relaxed">
+                        욥의 삶은 초기 '인간 중심적 대칭(10-Code)' 상태에서 재난을 통한 '고엔트로피(Chaos)'를 거쳐,
+                        최종적으로 '신적 비대칭(7+3 Grace)'으로 진화합니다. 아래 차트는 각 단계별 시스템 코히어런스(Coherence) 변화를 나타냅니다.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="entropyChart"></canvas>
+                    </div>
+
+                    <div class="glass-panel rounded-2xl p-6 mt-8 border border-amber-500/20">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+                            <h3 class="text-lg font-bold serif text-white">장별 내비게이터 · Phase Transition</h3>
+                            <span id="chapterPhaseTag" class="status-tag bg-amber-500/20 text-amber-400 mono">Phase: Order</span>
+                        </div>
+                        <label for="jobChapterSlider" class="text-xs text-slate-400 mono block mb-2">
+                            욥기 <span id="chapterNum">1</span>장 / 42
+                        </label>
+                        <input type="range" id="jobChapterSlider" min="1" max="42" value="1"
+                            class="w-full accent-amber-400 cursor-pointer" aria-label="욥기 장별 탐색 슬라이더" />
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-5">
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest text-slate-500 mono mb-1">Coherence</p>
+                                <p id="chapterCoherence" class="text-2xl font-bold text-amber-400 mono">90</p>
+                            </div>
+                            <div class="md:col-span-2">
+                                <p class="text-[10px] uppercase tracking-widest text-slate-500 mono mb-1">Insight</p>
+                                <p id="chapterInsight" class="text-sm text-slate-300 leading-relaxed">—</p>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-slate-600 mt-4 mono" id="chapterRefs">—</p>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="glass-panel rounded-2xl p-6 border-l-4 border-amber-500">
+                        <span class="status-tag bg-amber-500/20 text-amber-500">Log: 01</span>
+                        <h3 class="text-lg font-bold mt-2">초기 상태: 10의 법</h3>
+                        <p class="text-xs text-slate-500 mt-1 mono">Status: Normalized Symmetry</p>
+                        <p class="text-sm mt-3 text-slate-300">아들 7, 딸 3 = 총 10. 세속적 완전수와 사법적 질서가 지배하던 닫힌 시스템.</p>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-6 border-l-4 border-emerald-500">
+                        <span class="status-tag bg-emerald-500/20 text-emerald-500">Log: 02</span>
+                        <h3 class="text-lg font-bold mt-2">전환 지점: 40의 시련</h3>
+                        <p class="text-xs text-slate-500 mt-1 mono">Status: Phase Inversion</p>
+                        <p class="text-sm mt-3 text-slate-300">42장으로 구성된 서사. 40이라는 고난의 상수를 통과하며 주체성이 해체되는 구간.</p>
+                    </div>
+                    <div class="glass-panel rounded-2xl p-6 border-l-4 border-blue-500">
+                        <span class="status-tag bg-blue-500/20 text-blue-500">Log: 03</span>
+                        <h3 class="text-lg font-bold mt-2">최종 패치: 은총의 상속</h3>
+                        <p class="text-xs text-slate-500 mt-1 mono">Status: Rapid Realignment</p>
+                        <p class="text-sm mt-3 text-slate-300">딸들의 이름이 코드화됨. 율법(Law)을 넘어선 미학적 자유(Grace)가 시스템에 안착.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-gematria" class="tab-content">
+            <div class="mb-12 text-center">
+                <h2 class="text-3xl font-bold serif text-white">숫자 상징: 해석 렌즈 (문학적 리딩)</h2>
+                <p class="text-slate-400 mt-4 max-w-2xl mx-auto">
+                    욥기의 숫자 상징을 문학적·주제적으로 어떻게 읽을 수 있는지 보여주는 해석 렌즈입니다. 검증된 우주 법칙이나 예측이 아니라 <span class="text-amber-400/80">[HYPO] 해석 데모</span>입니다.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+                <div class="bg-slate-800/50 p-6 rounded-xl border border-white/5 hover:border-amber-500/50 transition-all">
+                    <div class="text-3xl font-bold text-amber-500 mono mb-2">07</div>
+                    <h4 class="font-bold mb-2">하늘의 완전수</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">욥의 7아들, 7일간의 침묵. 시스템이 신적 개입을 위해 완전히 폐쇄(Lock)된 상태를 의미합니다.</p>
+                </div>
+                <div class="bg-slate-800/50 p-6 rounded-xl border border-white/5 hover:border-amber-500/50 transition-all">
+                    <div class="text-3xl font-bold text-amber-500 mono mb-2">03</div>
+                    <h4 class="font-bold mb-2">신적 삼위일체</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">최종 회복에서 강조되는 3명의 딸. '들림'에서 '봄'으로 도약하는 인식의 3단계 전이를 상징합니다.</p>
+                </div>
+                <div class="bg-slate-800/50 p-6 rounded-xl border border-white/5 hover:border-amber-500/50 transition-all">
+                    <div class="text-3xl font-bold text-amber-500 mono mb-2">40+2</div>
+                    <h4 class="font-bold mb-2">시련의 매개수</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">옛 자아가 소멸되는 40의 터널. 42장에서의 회복은 시련을 통과한 주체의 재탄생을 의미합니다.</p>
+                </div>
+                <div class="bg-slate-800/50 p-6 rounded-xl border border-white/5 hover:border-amber-500/50 transition-all">
+                    <div class="text-3xl font-bold text-amber-500 mono mb-2">10²</div>
+                    <h4 class="font-bold mb-2">조직적 충만</h4>
+                    <p class="text-xs text-slate-500 leading-relaxed">갑절로 회복된 가축 수. 시스템의 하드웨어적 복구가 아닌 소프트웨어적 풍요를 수치화한 것입니다.</p>
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-3xl p-10 flex flex-col items-center">
+                <h3 class="text-xl font-bold mb-8 serif">Cosmic Parameter: Justice vs. Grace</h3>
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <p class="text-sm text-slate-400 mt-8 text-center max-w-xl">
+                    인간의 '공의(Justice)' 파라미터는 좁은 사법적 균형에 집중하지만, 신적 '은총(Grace)' 파라미터는 비인간 중심적 광활함을 포괄하며 시스템의 유연성을 극대화합니다.
+                </p>
+            </div>
+        </section>
+
+        <section id="tab-waveform" class="tab-content">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-3xl font-bold serif text-white">폭풍의 시드 파형 (Seed Waveform)</h2>
+                    <p class="text-slate-400 leading-relaxed">
+                        하나님의 질문(욥 38-41장)은 정보를 전달하는 '언어'가 아니라, 인간의 닫힌 논리를 깨뜨리는 <strong>'주파수(Frequency)'</strong>입니다.
+                        인간 OS가 처리할 수 없는 고차원 데이터를 입력함으로써, '인과응보'라는 낡은 하드웨어를 강제로 리셋(Reset)합니다.
+                    </p>
+                    <div class="bg-slate-900 border border-amber-500/30 p-6 rounded-xl font-mono text-sm space-y-4">
+                        <div class="flex justify-between border-b border-white/10 pb-2">
+                            <span class="text-amber-500">Input_Source:</span>
+                            <span>Whirlwind_Voice</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-2">
+                            <span class="text-amber-500">Operation:</span>
+                            <span>Deconstruct_Ego_Logic</span>
+                        </div>
+                        <div class="text-emerald-400">
+                            &gt; "내가 땅의 기초를 놓을 때에 네가 어디 있었느냐?"<br>
+                            &gt; [SYSTEM_ERROR]: Human logic stack overflow.
+                        </div>
+                    </div>
+                </div>
+                <div class="p-10 glass-panel rounded-3xl">
+                    <h4 class="text-center mb-6 font-mono text-xs uppercase tracking-widest text-amber-500">Waveform Alignment Analysis</h4>
+                    <div class="h-64 flex items-end justify-between gap-2">
+                        <div class="w-full bg-amber-500/20 rounded-t h-[20%] animate-pulse"></div>
+                        <div class="w-full bg-amber-500/40 rounded-t h-[60%]"></div>
+                        <div class="w-full bg-amber-500/60 rounded-t h-[40%]"></div>
+                        <div class="w-full bg-amber-500/80 rounded-t h-[90%]"></div>
+                        <div class="w-full bg-amber-500/60 rounded-t h-[50%]"></div>
+                        <div class="w-full bg-amber-500/40 rounded-t h-[70%]"></div>
+                        <div class="w-full bg-amber-500/20 rounded-t h-[30%]"></div>
+                    </div>
+                    <p class="text-center text-[10px] text-slate-500 mt-4 mono">Vibration Frequency: 777Hz — metaphor only</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-patch" class="tab-content">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl font-bold serif text-white">최종 패치: 세 딸의 미학적 이름 코드</h2>
+                    <p class="text-slate-400 mt-2">고난 이후의 회복은 '숫자의 복구'가 아닌 '질서의 혁신'입니다.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                    <div class="p-8 bg-gradient-to-br from-amber-900/40 to-slate-900 rounded-3xl border border-amber-500/20">
+                        <div class="text-amber-500 font-mono text-sm mb-4">Code_01</div>
+                        <h3 class="text-xl font-bold mb-2">여미마</h3>
+                        <p class="text-xs text-slate-500 mb-4 uppercase">Peaceful Dove</p>
+                        <p class="text-sm text-slate-300">사법적 분쟁(Conflict)이 종료되고 시스템에 유입된 '평화'의 파동.</p>
+                    </div>
+                    <div class="p-8 bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl border border-white/10">
+                        <div class="text-slate-500 font-mono text-sm mb-4">Code_02</div>
+                        <h3 class="text-xl font-bold mb-2">기시아</h3>
+                        <p class="text-xs text-slate-500 mb-4 uppercase">Cinnamon Fragrance</p>
+                        <p class="text-sm text-slate-300">희생 제사의 향기. 고난이 소멸이 아닌 '고귀한 가치'로 승화됨을 상징.</p>
+                    </div>
+                    <div class="p-8 bg-gradient-to-br from-amber-900/40 to-slate-900 rounded-3xl border border-amber-500/20">
+                        <div class="text-amber-500 font-mono text-sm mb-4">Code_03</div>
+                        <h3 class="text-xl font-bold mb-2">게렌합북</h3>
+                        <p class="text-xs text-slate-500 mb-4 uppercase">Horn of Eye-Paint</p>
+                        <p class="text-sm text-slate-300">미학적 아름다움. 시스템의 목적이 '생존'에서 '아름다움(Grace)'으로 전이됨.</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-500 text-slate-900 p-8 rounded-3xl shadow-2xl">
+                    <h3 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                        <span aria-hidden="true">🛰️</span>
+                        해석 리딩 요약 · 주제적 통찰
+                    </h3>
+                    <div class="space-y-4 font-medium">
+                        <p>1. 모든 시스템 파국(Catastrophe)은 더 높은 차원의 대칭성을 획득하기 위한 필연적 <strong>엔트로피 전이</strong> 과정입니다.</p>
+                        <p>2. 위기 상황에서 지휘관은 '숫자'와 '법'이라는 닫힌 시스템에 매몰되지 말고, <strong>비인간 중심적(Out-of-box)</strong> 관점에서 새로운 경영 코드를 설계해야 합니다.</p>
+                        <p>3. 진정한 회복은 과거로의 회귀가 아니라, 기존의 율법적 상속 체계를 파괴하고 <strong>미학적 자유(Daughters' Inheritance)</strong>를 부여하는 파격적 질서의 도입입니다.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-white/10 py-8 text-center text-slate-500 text-xs space-y-2">
+        <p>교육·해석 프레임 — Logos Insight SPA · MKM Oracle B-track · [HYPO][NON_GATING]</p>
+        <p class="flex flex-wrap justify-center gap-x-3 gap-y-1">
+            <a href="public_showroom_logos_job_reading_pack_v1.html?preset=job_suffering_reason" class="text-amber-500/80 hover:text-amber-400">← Job Reading Pack</a>
+            <span aria-hidden="true">·</span>
+            <a href="public_showroom_meaning_topology_qa_v2.html?preset=job_job_suffering_reason" class="text-amber-500/80 hover:text-amber-400">Q&amp;A Studio (욥 고난)</a>
+            <span aria-hidden="true">·</span>
+            <a href="public_showroom_meaning_topology_qa_v2.html?preset=job_existential_suffering" class="text-amber-500/80 hover:text-amber-400">Q&amp;A Studio (실존 고난)</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://logos.jema-ai.com/logos-research" rel="noopener" class="text-amber-500/80 hover:text-amber-400">Logos Research Workspace</a>
+        </p>
+    </footer>
+
+    <script>
+        let entropyChart, radarChart;
+
+        const JOB_PHASES = [
+            { id: "order", label: "Order · 10-Code", chMin: 1, chMax: 5, coherenceMin: 88, coherenceMax: 92 },
+            { id: "conflict", label: "Conflict · Debate", chMin: 6, chMax: 14, coherenceMin: 45, coherenceMax: 55 },
+            { id: "chaos", label: "Chaos · Lament", chMin: 15, chMax: 31, coherenceMin: 8, coherenceMax: 18 },
+            { id: "revelation", label: "Revelation · 40 Tunnel", chMin: 32, chMax: 41, coherenceMin: 70, coherenceMax: 88 },
+            { id: "grace", label: "Grace · Daughters", chMin: 42, chMax: 42, coherenceMin: 98, coherenceMax: 100 }
+        ];
+
+        const JOB_CHAPTER_HINTS = {
+            1: { insight: "완전한 인과 OS — 아들 7·딸 3·재산 10의 질서가 가동됩니다.", refs: "욥 1:1–5" },
+            2: { insight: "천상 회의 — 시스템 외부에서 stress test가 예약됩니다.", refs: "욥 1:6–12" },
+            3: { insight: "저주 선언 — 인간 OS가 정상성을 포기하는 첫 패킷.", refs: "욥 3:1–26" },
+            19: { insight: "Redeemer 패킷 — 고난 속에서도 회복 가능성 힌트.", refs: "욥 19:25–27" },
+            32: { insight: "엘리후 등장 — 40 터널 입구, 옛 논리 스택 재컴파일.", refs: "욥 32:1–22" },
+            38: { insight: "폭풍 연설 — 언어가 아닌 주파수로 ego logic overflow.", refs: "욥 38:1–7" },
+            42: { insight: "딸 이름·상속 — 숫자 복구가 아닌 질서 혁신 패치.", refs: "욥 42:10–17" }
+        };
+
+        function phaseForChapter(ch) {
+            return JOB_PHASES.find(p => ch >= p.chMin && ch <= p.chMax) || JOB_PHASES[0];
+        }
+
+        function coherenceForChapter(ch) {
+            const p = phaseForChapter(ch);
+            if (p.chMax === p.chMin) return p.coherenceMax;
+            const t = (ch - p.chMin) / (p.chMax - p.chMin);
+            return Math.round(p.coherenceMin + (p.coherenceMax - p.coherenceMin) * t);
+        }
+
+        function hintForChapter(ch) {
+            if (JOB_CHAPTER_HINTS[ch]) return JOB_CHAPTER_HINTS[ch];
+            const p = phaseForChapter(ch);
+            const defaults = {
+                order: { insight: "세속적 대칭 — 인과응보 OS가 아직 닫혀 있습니다.", refs: "욥 1–2장권" },
+                conflict: { insight: "친구들의 논리 루프 — 정당화 알고리즘이 가동됩니다.", refs: "욥 4–14장권" },
+                chaos: { insight: "욥의 독백 — entropy peak, 설명 프레임 붕괴.", refs: "욥 15–31장권" },
+                revelation: { insight: "40 구간 — 구 argumentation 해체 후 divine parameter 주입.", refs: "욥 32–41장권" },
+                grace: { insight: "은총 OS — 미학·이름·상속으로 law-only를 넘어섭니다.", refs: "욥 42장" }
+            };
+            return defaults[p.id] || { insight: "—", refs: "—" };
+        }
+
+        function updateChapterNavigator(ch) {
+            const phase = phaseForChapter(ch);
+            const coh = coherenceForChapter(ch);
+            const hint = hintForChapter(ch);
+            document.getElementById("chapterNum").textContent = String(ch);
+            document.getElementById("chapterPhaseTag").textContent = "Phase: " + phase.label;
+            document.getElementById("chapterCoherence").textContent = String(coh);
+            document.getElementById("chapterInsight").textContent = hint.insight;
+            document.getElementById("chapterRefs").textContent = hint.refs;
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => {
+                el.classList.remove('active', 'text-amber-400');
+                if (!el.classList.contains('active')) el.classList.add('text-slate-400');
+            });
+
+            document.getElementById('tab-' + tabId).classList.add('active');
+            const btn = document.getElementById('btn-' + tabId);
+            btn.classList.add('active');
+            btn.classList.remove('text-slate-400');
+
+            if (tabId === 'dashboard') initEntropyChart();
+            if (tabId === 'gematria') initRadarChart();
+        }
+
+        function initEntropyChart() {
+            if (entropyChart) entropyChart.destroy();
+            const ctx = document.getElementById("entropyChart").getContext("2d");
+            entropyChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: ["Stage 1: Order", "Stage 2: Conflict", "Stage 3: Chaos", "Stage 4: Revelation", "Stage 5: New Order"],
+                    datasets: [{
+                        label: "System Coherence",
+                        data: [90, 50, 10, 85, 100],
+                        borderColor: "#fbbf24",
+                        backgroundColor: "rgba(251, 191, 36, 0.1)",
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: "#fbbf24"
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: "#94a3b8", font: { family: "Fira Code" } } }
+                    },
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 100,
+                            grid: { color: "rgba(255,255,255,0.05)" },
+                            ticks: { color: "#64748b" }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: "#64748b" }
+                        }
+                    }
+                }
+            });
+            const ch = parseInt(document.getElementById("jobChapterSlider").value, 10) || 1;
+            updateChapterNavigator(ch);
+        }
+
+        function initRadarChart() {
+            if (radarChart) radarChart.destroy();
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Symmetry', 'Justice', 'Entropy', 'Grace', 'Mystery', 'Integrity'],
+                    datasets: [
+                        {
+                            label: 'Human OS (Law)',
+                            data: [95, 90, 20, 30, 10, 85],
+                            backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                            borderColor: '#94a3b8',
+                            pointBackgroundColor: '#94a3b8'
+                        },
+                        {
+                            label: 'Divine OS (Grace)',
+                            data: [70, 60, 95, 100, 100, 95],
+                            backgroundColor: 'rgba(251, 191, 36, 0.2)',
+                            borderColor: '#fbbf24',
+                            pointBackgroundColor: '#fbbf24'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { color: 'rgba(255,255,255,0.1)' },
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            pointLabels: { color: '#94a3b8', font: { size: 12 } },
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#e2e8f0' } }
+                    }
+                }
+            });
+        }
+
+        window.onload = () => {
+            const slider = document.getElementById("jobChapterSlider");
+            slider.addEventListener("input", (e) => updateChapterNavigator(parseInt(e.target.value, 10)));
+            initEntropyChart();
+        };
+    </script>
+</body>
+</html>
