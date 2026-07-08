@@ -1,0 +1,108 @@
+{
+  "schema": "onboarding_schema_crosswalk_v1",
+  "version": "1.1.0",
+  "lane": "consumer_survey_only",
+  "research_only": true,
+  "generated_note_ko": "온보딩 스키마 2원화 해소(P0) — 두 계약을 하나의 SSOT 설문 팩과 단일 단계(onboarding_stage) 모델로 통일한다. 앱 하위호환 유지: 기존 3필드(stress_response/change_preference/sweat_recovery)와 onboarding_stage는 그대로 두고 참조만 추가한다.",
+  "canonical_profile": {
+    "schema": "mkm_consumer_profile_v1",
+    "path": "docs/final/schemas/mkm_consumer_profile_v1.schema.json",
+    "role_ko": "정본 통합 회원 프로필 — 신원+신체계측+건강기초+체질설문(22문항 전체) 1회 온보딩"
+  },
+  "staged_view": {
+    "schema": "mkm_study_onboarding_request_v1",
+    "paths": [
+      "packages/mkm-study-profile-contract/schema/onboarding-request-v1.schema.json",
+      "docs/final/artifacts/schemas/mkm_study_onboarding_request_v1.schema.json"
+    ],
+    "role_ko": "정본 프로필의 단계별(부분집합) 수집 뷰 — 앱 가입 퍼널이 minimal→birth_complete→extended_complete 순으로 채운다",
+    "app_ref": "projects/mkm/mkm-life/app/study-chat/page.tsx"
+  },
+  "personadiary_local_view": {
+    "schema": "mkm_consumer_profile_v1",
+    "role_ko": "PersonaDiary 경량 비임상 프로필 — 정본 프로필의 로컬 전용 부분집합. 신체계측·건강기초(임상) 제외, basic+체질설문(core-5 게이팅)만 클라이언트 localStorage에 캐시. mkmlife API·DB·결제와 격벽.",
+    "app_ref": "projects/no1kmedi/src/lib/personadiaryConsumerProfileV1.ts",
+    "track": "C",
+    "preview_only": true,
+    "storage": {
+      "medium": "browser_localStorage",
+      "server_upload": false,
+      "keys": ["mkm_consumer_profile_v1", "personadiary_user_id_v1"]
+    },
+    "collects": ["basic.nickname", "basic.birth_datetime", "basic.birth_date", "basic.birth_time_known", "basic.iana_tz", "basic.gender", "constitution.responses(core-5 게이팅)"],
+    "excludes_clinical": ["anthropometrics", "health_basics"],
+    "gating": "core_5_sufficient(P4) — core_item_ids 응답 완료 시 온보딩 통과, 22문항 전체 강제 아님",
+    "shared_pack_id": "mkm_constitution_survey_core_v1",
+    "bulkhead_ko": "PersonaDiary는 이 프로필을 mkmlife API/DB/결제와 합선하지 않는다(로컬 캐시 전용). 임상 anthropometrics/health_basics를 절대 수집·저장하지 않는다."
+  },
+  "shared_survey": {
+    "pack_id": "mkm_constitution_survey_core_v1",
+    "item_bank_schema": "clinic_constitution_survey_item_bank_v1",
+    "item_bank_path": "docs/final/artifacts/clinic_constitution_survey_item_bank_v1.json",
+    "expected_full_item_count": 22,
+    "axes": ["cold_heat_lean", "digestion_lean", "activity_lean", "moisture_lean", "zangbu_daeso", "seongjeong"],
+    "response_scale": { "min": 0, "max": 4 }
+  },
+  "onboarding_stage_model": [
+    {
+      "stage": "minimal",
+      "collects": ["constitution_survey(3필드 빠른 트리아지)"],
+      "maps_to_canonical": "constitution.responses 부분 프록시",
+      "note_ko": "가입 즉시 최소 입력 — 3필드 코스 트리아지(정본 22문항의 축 프록시)"
+    },
+    {
+      "stage": "birth_complete",
+      "collects": ["basic.birth_datetime", "basic.gender", "basic.iana_tz"],
+      "maps_to_canonical": "basic",
+      "note_ko": "명리 렌즈 입력 확보(생년월일시·성별·tz)"
+    },
+    {
+      "stage": "extended_complete",
+      "collects": [
+        "constitution.responses(22문항 전체, pack_id=mkm_constitution_survey_core_v1)",
+        "anthropometrics",
+        "health_basics"
+      ],
+      "maps_to_canonical": "constitution / anthropometrics / health_basics",
+      "note_ko": "풀 프로필 완결 — once_at_onboarding 정책 충족"
+    }
+  ],
+  "minimal_field_crosswalk": [
+    {
+      "study_field": "stress_response",
+      "values": ["internalize", "externalize"],
+      "primary_axis": "seongjeong",
+      "related_item_ids": ["sj01", "sj03"],
+      "note_ko": "감정 발산 방향 — externalize↔sj01(화 급발산·少陽), internalize↔sj03(속으로 신중·少陰). 코스 프록시(1:1 아님)."
+    },
+    {
+      "study_field": "change_preference",
+      "values": ["stability", "challenge"],
+      "primary_axis": "activity_lean",
+      "related_item_ids": ["ac03", "ac02", "tb02"],
+      "note_ko": "활력·기세 — challenge↔ac03(급하고 활동적), stability↔ac02(신중·피로 경향). 코스 프록시."
+    },
+    {
+      "study_field": "sweat_recovery",
+      "values": ["fatiguing", "refreshing"],
+      "primary_axis": "moisture_lean",
+      "related_item_ids": ["ms02", "ms03", "ac02"],
+      "note_ko": "발한 후 회복 — 사상 고전 감별. refreshing↔ms02/ms03(습·太陰 개운), fatiguing↔ac02(少陰 지침). 코스 프록시."
+    }
+  ],
+  "backward_compat": {
+    "app_consumer_fields_kept": [
+      "constitution_survey.stress_response",
+      "constitution_survey.change_preference",
+      "constitution_survey.sweat_recovery",
+      "onboarding_stage"
+    ],
+    "additive_only": true,
+    "breaking_change": false
+  },
+  "guardrails_ko": [
+    "consumer_survey_only — 임상 진단·physician_gold 아님",
+    "[HYPO]·research_only — 상용 정확도% 단정 금지",
+    "personadiary는 이 프로필과 DB·결제 합선 금지 — 경량 비임상 프로필은 personadiary_local_view로 정의(로컬 localStorage 전용, 임상 필드 제외)"
+  ]
+}
