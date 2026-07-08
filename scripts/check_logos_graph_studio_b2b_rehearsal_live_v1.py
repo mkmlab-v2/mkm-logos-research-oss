@@ -1,5 +1,17 @@
 #!/usr/bin/env python3
-"""Live preflight for B2B Graph Studio 30s rehearsal (HTTP markers + insight cards)."""
+"""Live preflight for B2B Graph Studio 30s rehearsal (HTTP markers + insight cards).
+
+v2 (2026-07-08): aligned with contract ``logos_graph_studio_layer_b_ux_contract_v1``
+v1.1.0 retarget. The legacy static ``qa_v2.html`` (ECharts) is now
+``legacy_static_deprecated`` (CF backup only), so this gate no longer requires the
+deprecated Layer-B markers (runB2bAutoplayTimeline / applyEmbedMode / layerBB2bTimeline
+/ embed-hero / citation-reveal / b2bAutoplayBar) on the static mirror — it only asserts
+the backup is still reachable (HTTP 200). The live Layer-B signal is now the on-domain
+React inline demo, which mounts on user-initiated fold open; its internal markers are
+therefore NOT present in the initial server HTML. Instead we assert the server-rendered
+fold markers on ``logos.jema-ai.com/logos-research`` that prove the Layer-B storyboard
+UX shipped (``LogosResearchStudioDemoFold`` → ``LogosGraphStudioHeroInlineDemo``).
+"""
 
 from __future__ import annotations
 
@@ -13,6 +25,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "reports/logos_graph_studio_b2b_rehearsal_live_v1_latest.json"
+CONTRACT = ROOT / "docs/final/artifacts/logos_graph_studio_layer_b_ux_contract_v1.json"
 
 QA_URL = (
     "https://api.jemaai.cloud/public_showroom_meaning_topology_qa_v2.html"
@@ -25,24 +38,24 @@ CANONICAL_QA = (
 INSIGHT_URL = "https://api.jemaai.cloud/showroom_qa_node_insight_cards_v1.json"
 LOGOS_RESEARCH = "https://logos.jema-ai.com/logos-research"
 
-HTML_MARKERS = (
-    "insightPanel", "showInsightPanel", "path-chip", "cite-ref", "metaArchPanel", "META_ARCH_URL",
-    "b2bDemoHero", "beginColdStart", "graphSkeleton",
-    "runB2bAutoplayTimeline", "applyEmbedMode", "layerBB2bTimeline", "embed-hero",
-    "citation-reveal", "b2bAutoplayBar", "data-layer-b-contract",
-)
 META_ARCH_URL = "https://api.jemaai.cloud/logos_cosmic_meta_architecture_ui_v1.json"
 INSIGHT_ANCHORS = (
     "showroom_job_verse::Job.1.6",
     "showroom_psalm_verse::Ps.27.14",
     "theme::hope_endurance_psalm",
 )
+# Layer-B markers deprecated on the static mirror by contract v1.1.0 — no longer required
+# here. Kept for provenance / to record their absence, not to fail the gate.
+DEPRECATED_STATIC_MARKERS = (
+    "runB2bAutoplayTimeline", "applyEmbedMode", "layerBB2bTimeline",
+    "embed-hero", "citation-reveal", "b2bAutoplayBar", "data-layer-b-contract",
+)
+# Server-rendered fold markers on logos-research that prove the Layer-B inline demo fold
+# shipped. The demo internals (data-layer-b-embed / role="progressbar" / beats) mount
+# only on user-initiated <details> open, so they are intentionally NOT asserted on GET.
 LOGOS_MARKERS = (
-    "api.jemaai.cloud/public_showroom_meaning_topology_qa_v2.html",
-    "api.jemaai.cloud/public_showroom_logos_job_reading_pack_v1.html",
-    "data-layer-b-embed",
-    "data-logos-graph-studio-embed",
-    "30s autoplay",
+    'data-logos-studio-demo-fold',
+    "/logos-research/studio",
 )
 
 
@@ -68,6 +81,25 @@ def main() -> int:
     errors: list[str] = []
     steps: dict[str, Any] = {}
 
+    # SSOT anchor: keep this live gate consistent with the retarget contract.
+    deprecated_static = list(DEPRECATED_STATIC_MARKERS)
+    if CONTRACT.is_file():
+        try:
+            contract = json.loads(CONTRACT.read_text(encoding="utf-8"))
+            steps["contract"] = {
+                "path": str(CONTRACT.relative_to(ROOT)).replace("\\", "/"),
+                "version": contract.get("version"),
+                "legacy_static_status": contract.get("status"),
+            }
+            deprecated_static = list(
+                (contract.get("smoke") or {}).get("legacy_html_markers_deprecated")
+                or deprecated_static
+            )
+        except (OSError, ValueError) as e:
+            errors.append(f"contract read: {e}")
+    else:
+        errors.append(f"contract missing: {CONTRACT.relative_to(ROOT)}")
+
     for key, url in (
         ("qa_mirror", QA_URL),
         ("canonical_qa", CANONICAL_QA),
@@ -91,10 +123,12 @@ def main() -> int:
             except Exception as e:
                 errors.append(f"insight_cards parse: {e}")
         elif key in ("qa_mirror", "canonical_qa"):
-            missing = [m for m in HTML_MARKERS if m not in body]
-            steps[key]["html_markers_missing"] = missing
-            if missing:
-                errors.append(f"{key}: missing markers {missing}")
+            # legacy_static_deprecated (CF backup only): only require reachability (200
+            # handled above). Record deprecated-marker absence for provenance, do not fail.
+            steps[key]["legacy_static_deprecated"] = True
+            steps[key]["deprecated_markers_absent"] = [
+                m for m in deprecated_static if m not in body
+            ]
         elif key == "cosmic_meta_arch_ui":
             try:
                 doc = json.loads(body)
@@ -106,9 +140,9 @@ def main() -> int:
                 errors.append(f"cosmic_meta_arch_ui parse: {e}")
         elif key == "logos_research":
             missing = [m for m in LOGOS_MARKERS if m not in body]
-            steps[key]["demo_url_markers_missing"] = missing
+            steps[key]["layer_b_fold_markers_missing"] = missing
             if missing:
-                errors.append(f"logos_research: missing demo URLs {missing}")
+                errors.append(f"logos_research: Layer-B fold not shipped, missing {missing}")
 
     report = {
         "schema": "logos_graph_studio_b2b_rehearsal_live_v1",
