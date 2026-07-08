@@ -28,6 +28,10 @@ export type StudyOnboardingRequestV1 = {
   birth_location?: string
   gender?: 'female' | 'male' | 'unspecified'
   constitution_survey?: ConstitutionSurveyV1
+  /** Shared unified pack id (canonical: mkm_constitution_survey_core_v1). The 3-field survey is its coarse proxy. */
+  constitution_pack_id?: string
+  /** Full 22-item responses (item_id -> 0..4), same shape as mkm_consumer_profile_v1.constitution.responses. */
+  constitution_responses?: Record<string, number>
   onboarding_stage?: OnboardingStage
   myeongri_profile?: Record<string, unknown>
 }
@@ -48,15 +52,23 @@ export type StoredStudentProfileFieldsV1 = {
   birthLocation?: string
   gender?: 'female' | 'male' | 'unspecified'
   constitutionSurvey?: ConstitutionSurveyV1
+  /** Shared unified pack id (canonical: mkm_constitution_survey_core_v1). */
+  constitutionPackId?: string
+  /** Full 22-item responses (item_id -> 0..4) when promoted to extended_complete. */
+  constitutionResponses?: Record<string, number>
   myeongriProfile: Record<string, unknown> | null
 }
 
 /** Default ISO-like pattern checks only — full validation stays in each stack. */
 export function inferOnboardingStage(fields: {
   constitutionSurvey?: ConstitutionSurveyV1 | null
+  constitutionResponses?: Record<string, number> | null
   birthDatetime?: string
   birthDate?: string
 }): OnboardingStage {
+  if (fields.constitutionResponses && Object.keys(fields.constitutionResponses).length > 0) {
+    return 'extended_complete'
+  }
   const s = fields.constitutionSurvey
   if (s?.stress_response && s?.change_preference && s?.sweat_recovery) {
     return 'extended_complete'
