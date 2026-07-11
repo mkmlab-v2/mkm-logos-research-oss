@@ -1,0 +1,60 @@
+# Claim-A L0 honesty gates — Claude residual: repo-runnable ≠ chat self-report
+name: Middleware Claim-A honesty smoke
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - "scripts/check_external_facing_fact_lock_v1.py"
+      - "scripts/check_mkm_middleware_headline_reuse_guard_v1.py"
+      - "scripts/apply_mkm_middleware_claim_a_send_open_v1.py"
+      - "scripts/build_mkm_middleware_claim_a_claude_submit_pack_v1.py"
+      - "scripts/run_mkm_middleware_claim_a_honesty_ci_smoke_v1.py"
+      - "tests/test_external_facing_fact_lock_v1.py"
+      - "tests/test_mkm_middleware_claim_a_honesty_ci_smoke_v1.py"
+      - "docs/final/artifacts/mkm_middleware_l0_send_ready_onepager_v1_latest.md"
+      - "docs/final/artifacts/mkm_middleware_claim_a_claude_submit_pack_v1_latest.md"
+      - ".github/workflows/middleware-claim-a-honesty-smoke.yml"
+  pull_request:
+    paths:
+      - "scripts/check_external_facing_fact_lock_v1.py"
+      - "scripts/check_mkm_middleware_headline_reuse_guard_v1.py"
+      - "scripts/apply_mkm_middleware_claim_a_send_open_v1.py"
+      - "scripts/build_mkm_middleware_claim_a_claude_submit_pack_v1.py"
+      - "scripts/run_mkm_middleware_claim_a_honesty_ci_smoke_v1.py"
+      - "tests/test_external_facing_fact_lock_v1.py"
+      - "tests/test_mkm_middleware_claim_a_honesty_ci_smoke_v1.py"
+      - "docs/final/artifacts/mkm_middleware_l0_send_ready_onepager_v1_latest.md"
+      - "docs/final/artifacts/mkm_middleware_claim_a_claude_submit_pack_v1_latest.md"
+      - ".github/workflows/middleware-claim-a-honesty-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  honesty-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pytest
+        run: python -m pip install --upgrade pip pytest
+      - name: Claim-A honesty CI smoke
+        run: python scripts/run_mkm_middleware_claim_a_honesty_ci_smoke_v1.py
+      - name: Upload smoke artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: claim-a-honesty-ci-smoke
+          path: |
+            docs/final/artifacts/mkm_middleware_claim_a_honesty_ci_smoke_v1_latest.json
+            docs/final/artifacts/mkm_middleware_headline_reuse_checklist_v1_latest.json
+          if-no-files-found: warn

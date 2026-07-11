@@ -1,0 +1,204 @@
+{
+  "schema": "mkm_middleware_blind_rubric_key_v1",
+  "version": "1.1.0",
+  "generated_at_utc": "2026-07-11T01:27:21Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "note_ko": "채점자 비공개.",
+  "seed": 42,
+  "provider": "azure",
+  "map": [
+    {
+      "item_id": "blind_01_5753ea98dc",
+      "task_id": "pos_salvation_jhn_rom_0",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_02_28846a1936",
+      "task_id": "pos_salvation_jhn_rom_1",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_03_a17178f908",
+      "task_id": "pos_salvation_jhn_rom_2",
+      "A_arm": "plain_full",
+      "B_arm": "id_only",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_04_a157907967",
+      "task_id": "pos_salvation_jhn_rom_3",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_05_9b013f5129",
+      "task_id": "pos_resurrection_acts_1cor_4",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_06_3ff9fe934c",
+      "task_id": "pos_resurrection_acts_1cor_5",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_07_aff367593d",
+      "task_id": "pos_resurrection_acts_1cor_6",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_08_dece9a6e98",
+      "task_id": "pos_resurrection_acts_1cor_7",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_09_87c8bd0315",
+      "task_id": "pos_shepherd_ps_isa_8",
+      "A_arm": "plain_full",
+      "B_arm": "id_only",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_10_2908ad7e6a",
+      "task_id": "pos_shepherd_ps_isa_9",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_11_2138079b55",
+      "task_id": "pos_shepherd_ps_isa_10",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_12_506bacd096",
+      "task_id": "pos_shepherd_ps_isa_11",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_13_2853b1f130",
+      "task_id": "pos_torah_exod_deut_12",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_14_c83f0f3a47",
+      "task_id": "pos_torah_exod_deut_13",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_15_dd6273c60b",
+      "task_id": "pos_torah_exod_deut_14",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_16_f159e0da65",
+      "task_id": "pos_torah_exod_deut_15",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_17_e2aeb19e55",
+      "task_id": "pos_suffering_job_16",
+      "A_arm": "plain_full",
+      "B_arm": "id_only",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_18_4b9930920c",
+      "task_id": "pos_suffering_job_17",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_19_50e83e3837",
+      "task_id": "pos_suffering_job_18",
+      "A_arm": "plain_full",
+      "B_arm": "id_only",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_20_19af2f0c0e",
+      "task_id": "pos_suffering_job_19",
+      "A_arm": "plain_full",
+      "B_arm": "id_only",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_21_084de2377e",
+      "task_id": "pos_salvation_jhn_rom_0_x20",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_22_ca7808c653",
+      "task_id": "pos_salvation_jhn_rom_0_x21",
+      "A_arm": "id_only",
+      "B_arm": "plain_full",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": false
+    },
+    {
+      "item_id": "blind_23_e4d4bc0d4d",
+      "task_id": "pos_salvation_jhn_rom_0_x22",
+      "A_arm": "plain_full",
+      "B_arm": "id_only",
+      "internal_gate_ok_A": false,
+      "internal_gate_ok_B": true
+    },
+    {
+      "item_id": "blind_24_3406b384b2",
+      "task_id": "pos_salvation_jhn_rom_0_x23",
+      "A_arm": "plain_full",
+      "B_arm": "id_only",
+      "internal_gate_ok_A": true,
+      "internal_gate_ok_B": true
+    }
+  ]
+}

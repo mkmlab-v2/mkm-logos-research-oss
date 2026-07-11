@@ -1,0 +1,34 @@
+{
+  "schema": "mkm_middleware_claim_a_repo_runnable_status_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-11T16:47:00Z",
+  "research_only": true,
+  "claude_verdict_ko": "조건부 종료 — Green Actions URL 요구",
+  "label_required_by_claude": {
+    "composition": "확인(주장+로컬 재현)",
+    "execution_on_github_actions": "미확인"
+  },
+  "local": {
+    "smoke_script": "scripts/run_mkm_middleware_claim_a_honesty_ci_smoke_v1.py",
+    "smoke_artifact": "docs/final/artifacts/mkm_middleware_claim_a_honesty_ci_smoke_v1_latest.json",
+    "last_local_ok": true,
+    "pytest_local": "6 passed (external_facing 5 + honesty_ci_smoke 1)"
+  },
+  "github": {
+    "workflow_path": ".github/workflows/middleware-claim-a-honesty-smoke.yml",
+    "workflow_on_disk": true,
+    "committed": "unknown_or_dirty_tree",
+    "green_run_url": null,
+    "blocker_ko": "그린 URL = 해당 파일만 커밋 후 GitHub push(-Acknowledge) + Actions 실행 필요. 현재 worktree에 무관 dirty 수백 파일 — 전체 커밋 금지."
+  },
+  "grades_unchanged": {
+    "honesty_process": "A-",
+    "external_product": "C+_to_B-",
+    "personal_tool": "B_conditional",
+    "market_GO": false
+  },
+  "not_merged": [
+    "workflow_file_exists",
+    "workflow_ran_green_on_github"
+  ]
+}

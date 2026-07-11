@@ -1,0 +1,19 @@
+{
+  "schema": "mkm_middleware_blind_rubric_ingest_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-11T14:38:28Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "anti_self_grade": true,
+  "n_scores_complete": 24,
+  "blind_rubric_ge_20": true,
+  "blind_rubric_status": "SCORED",
+  "prefer_counts": {
+    "id_only": 10,
+    "plain_full": 14,
+    "tie": 0
+  },
+  "claude_exchange_a_claim_allowed": false,
+  "note_ko": "Blind≥20만 충족해도 Exchange A 불가 — 대외 Fact-Lock 별도. 본 ingest는 체크리스트 한 칸만 채운다.",
+  "scores_path": "docs/final/artifacts/mkm_middleware_blind_rubric_scores_filled_v1_latest.json"
+}

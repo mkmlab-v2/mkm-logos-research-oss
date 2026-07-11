@@ -1,0 +1,64 @@
+{
+  "schema": "mkm_middleware_headline_reuse_checklist_v1",
+  "version": "1.1.0",
+  "generated_at_utc": "2026-07-11T16:49:35Z",
+  "research_only": true,
+  "rule_ko": "Legacy headline core 'Keep the corpus local. Send pointers' MUST NOT appear in external/SEND copy without an adjacent counter-signal marker (plain_full prefer / VALUE-PROP TENSION / Counter-signal / Claim frame). Rev 1.7 preferred Hero: egress boundary ('What leaves your boundary…') — not usefulness for pointer-only answers.",
+  "headline_core": "Keep the corpus local. Send pointers",
+  "egress_hero_core": "Keep the corpus local. What leaves your boundary: pointers, locked citations, and a hard HOLD — never the corpus itself.",
+  "counter_markers": [
+    "Counter-signal",
+    "plain_full",
+    "id_only",
+    "VALUE-PROP TENSION",
+    "not endorsed by commander blind",
+    "challenged, not proven",
+    "buyer-facing headline usefulness",
+    "Claim frame",
+    "egress / security",
+    "not a usefulness claim",
+    "not sell"
+  ],
+  "egress_frame_markers": [
+    "Claim frame",
+    "egress / security",
+    "What leaves your boundary",
+    "not a usefulness claim",
+    "usefulness-proven"
+  ],
+  "egress_hero_aligned_on_onepager": true,
+  "checks": [
+    {
+      "path": "C:\\workspace\\docs\\final\\artifacts\\mkm_middleware_l0_send_ready_onepager_v1_latest.md",
+      "has_headline_core": true,
+      "has_egress_hero_core": true,
+      "has_counter_signal_marker": true,
+      "has_egress_frame_marker": true,
+      "orphan_headline": false,
+      "ok": true
+    },
+    {
+      "path": "C:\\workspace\\docs\\final\\artifacts\\mkm_middleware_claim_a_claude_submit_pack_v1_latest.md",
+      "has_headline_core": true,
+      "has_egress_hero_core": true,
+      "has_counter_signal_marker": true,
+      "has_egress_frame_marker": true,
+      "orphan_headline": false,
+      "ok": true
+    },
+    {
+      "path": "C:\\workspace\\docs\\final\\artifacts\\mkm_middleware_claim_a_claude_rereview_pack_v1_latest.md",
+      "has_headline_core": false,
+      "has_egress_hero_core": false,
+      "has_counter_signal_marker": false,
+      "has_egress_frame_marker": false,
+      "orphan_headline": false,
+      "ok": true
+    }
+  ],
+  "ok": true,
+  "reproduce": [
+    "py scripts/check_mkm_middleware_headline_reuse_guard_v1.py",
+    "py scripts/check_mkm_middleware_headline_reuse_guard_v1.py --check-file <path>"
+  ]
+}

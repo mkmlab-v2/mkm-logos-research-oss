@@ -1,0 +1,56 @@
+{
+  "schema": "mkm_middleware_claim_a_honesty_ci_smoke_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-11T16:49:35Z",
+  "research_only": true,
+  "ok": true,
+  "send_gate": "HOLD",
+  "note_ko": "Claude residual: '5/5 exit0' must be repo-runnable, not chat oral. This artifact is the deterministic log. GitHub workflow: middleware-claim-a-honesty-smoke.yml. ≠ market GO / Track A / product SLA.",
+  "wired_gates": [
+    "scripts/check_mkm_middleware_headline_reuse_guard_v1.py",
+    "scripts/check_external_facing_fact_lock_v1.py (middleware MD)",
+    "scripts/apply_mkm_middleware_claim_a_send_open_v1.py",
+    "scripts/build_mkm_middleware_claim_a_claude_submit_pack_v1.py"
+  ],
+  "checklist_ok": true,
+  "checklist_generated_at_utc": "2026-07-11T16:49:35Z",
+  "checklist_path": "docs/final/artifacts/mkm_middleware_headline_reuse_checklist_v1_latest.json",
+  "steps": [
+    {
+      "id": "pytest_external_facing",
+      "exit_code": 0,
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "-m",
+        "pytest",
+        "tests/test_external_facing_fact_lock_v1.py",
+        "-q",
+        "--tb=line"
+      ],
+      "stdout_tail": ".....                                                                    [100%]\n5 passed in 2.20s\n",
+      "stderr_tail": ""
+    },
+    {
+      "id": "headline_reuse_guard",
+      "exit_code": 0,
+      "cmd": [
+        "C:\\Python311\\python.exe",
+        "scripts/check_mkm_middleware_headline_reuse_guard_v1.py"
+      ],
+      "stdout_tail": "WROTE: C:\\workspace\\docs\\final\\artifacts\\mkm_middleware_blind_prefer_side_crosstab_v1_latest.json\nposition_bias_probe P(A|A=id_only)={'n_arm': 17, 'n_prefer': 9, 'rate': 0.5294} P(A|A=plain)={'n_arm': 7, 'n_prefer': 6, 'rate': 0.8571}\nWROTE: C:\\workspace\\docs\\final\\artifacts\\mkm_middleware_headline_reuse_checklist_v1_latest.json\nheadline_reuse_ok=True\n",
+      "stderr_tail": ""
+    }
+  ],
+  "reproduce": [
+    "py scripts/run_mkm_middleware_claim_a_honesty_ci_smoke_v1.py",
+    "py -m pytest tests/test_external_facing_fact_lock_v1.py -q",
+    "py scripts/check_mkm_middleware_headline_reuse_guard_v1.py"
+  ],
+  "github_workflow": ".github/workflows/middleware-claim-a-honesty-smoke.yml",
+  "not_claimed": [
+    "market_GO",
+    "track_a",
+    "product_SLA",
+    "usefulness_proven_for_pointer_arm"
+  ]
+}
