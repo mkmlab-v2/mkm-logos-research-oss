@@ -1,61 +1,271 @@
 {
   "schema": "zone_f_code_template_catalog_batch_extract_v1",
-  "generated_at_utc": "2026-06-15T06:13:47Z",
+  "generated_at_utc": "2026-07-03T16:28:57Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
   "merge_policy": "prospect_only_no_auto_merge",
-  "input_count": 6,
+  "input_count": 1,
   "per_corpus": [
     {
-      "input_jsonl": "data/compression/fixtures/zone_f_code_corpus_extract_fixture_v1.jsonl",
+      "input_jsonl": "data/compression/fixtures/zone_f_code_curated_monthly_inbox_v1.jsonl",
       "ok": true,
-      "rows_scanned": 5,
-      "candidates_novel": 0,
-      "prospect_template_ids": []
-    },
-    {
-      "input_jsonl": "data/compression/stateless_poc_prospect_tactical-b-free-audit-v1_v1.jsonl",
-      "ok": true,
-      "rows_scanned": 25,
-      "candidates_novel": 0,
-      "prospect_template_ids": []
-    },
-    {
-      "input_jsonl": "data/compression/stateless_poc_prospect_customer-pilot-smoke-v1_v1.jsonl",
-      "ok": true,
-      "rows_scanned": 30,
-      "candidates_novel": 0,
-      "prospect_template_ids": []
-    },
-    {
-      "input_jsonl": "data/compression/examples/customer_masked_pilot_smoke_v1.jsonl",
-      "ok": true,
-      "rows_scanned": 30,
-      "candidates_novel": 0,
-      "prospect_template_ids": []
-    },
-    {
-      "input_jsonl": "data/compression/contributions/open_bench_coding_snippet_seed_v1.jsonl",
-      "ok": true,
-      "rows_scanned": 3,
-      "candidates_novel": 0,
-      "prospect_template_ids": []
-    },
-    {
-      "input_jsonl": "data/compression/fixtures/zone_f_code_dev_support_mixed_v1.jsonl",
-      "ok": true,
-      "rows_scanned": 5,
-      "candidates_novel": 0,
-      "prospect_template_ids": []
+      "rows_scanned": 271,
+      "candidates_novel": 16,
+      "prospect_template_ids": [
+        "zf_p001",
+        "zf_p002",
+        "zf_p003",
+        "zf_p004",
+        "zf_p005",
+        "zf_p006",
+        "zf_p007",
+        "zf_p008",
+        "zf_p009",
+        "zf_p010",
+        "zf_p011",
+        "zf_p012",
+        "zf_p013",
+        "zf_p014",
+        "zf_p015",
+        "zf_p016"
+      ]
     }
   ],
   "aggregate_stats": {
-    "candidates_raw": 0,
-    "candidates_deduped": 0,
-    "prospect_count": 0
+    "candidates_raw": 16,
+    "candidates_deduped": 16,
+    "prospect_count": 16
   },
-  "prospect_rows": [],
-  "prospect_template_ids": [],
+  "prospect_rows": [
+    {
+      "template_id": "zf_p001",
+      "shard_id": "zone_f_code",
+      "language": "typescript",
+      "snippet": "export function resolveSurfaceHint(input: {\n  domain?: string;\n  path?: string;\n  ctaKey?: string;\n}): { endpoint: string; schema: string; hint: string | null } {\n  const endpoint = `${input.domain ?? \"\"}${input.path ?? \"\"}`;\n  return { endpoint, schema: \"surface-v1\", hint: input.ctaKey ?? null };\n}",
+      "must_keep_terms": [
+        "endpoint",
+        "function",
+        "schema"
+      ],
+      "prospect": true,
+      "source_row_id": "inbox-ts-surface-context-001",
+      "snippet_sha256": "ff3708ef9f3a906da2660e23c11bd43e7770d936b25b8eff0c98863d25363743"
+    },
+    {
+      "template_id": "zf_p002",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_regression_watch_snapshot_exit0() -> None:\n    proc = subprocess.run(\n        [PY, \"scripts/build_compression_active_regression_watch_snapshot_v1.py\"],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n    )\n    assert proc.returncode == 0, proc.stderr[-800:]\n    doc = json.loads(OUT.read_text(encoding=\"utf-8\"))\n    assert doc.get(\"watch_case_ids\") == [\"cmp2_002\", \"cmp2_005\", \"cmp2_006\"]\n    assert int(doc.get(\"regression_count\") or 0) == 3\n    assert doc.get(\"active_promoted_variant_id\") == \"dual_cap050_004art_009soft_drift\"",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-60b3554280e0",
+      "snippet_sha256": "60b3554280e0abe959e386c95d6bd98c6c4a265b44f18e6a23a390e4cfb62326"
+    },
+    {
+      "template_id": "zf_p003",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_cmp2_004_mini_sweep_dry_run() -> None:\n    proc = subprocess.run(\n        [\n            PY,\n            \"scripts/run_compression_cmp2_004_mini_sweep_v1.py\",\n            \"--dry-run\",\n            \"--test-cap\",\n            \"0.50\",\n            \"--add-soft-token\",\n            \"artifacts\",\n        ],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n    )\n    assert proc.returncode == 0, proc.stderr[-800:]\n    doc = json.loads(proc.stdout.strip())\n    assert doc.get(\"dry_run\") is True\n    assert int(doc.get(\"variant_count\") or 0) >= 3",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-ef60ae32b542",
+      "snippet_sha256": "ef60ae32b5422faa58e35c8c05fa88928a7214cebe15ddcc95daddedc2ecb12d"
+    },
+    {
+      "template_id": "zf_p004",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_cmp2_004_mini_sweep_sidecar_only() -> None:\n    active_before = json.loads(ACTIVE.read_text(encoding=\"utf-8\"))\n    proc = subprocess.run(\n        [\n            PY,\n            \"scripts/run_compression_cmp2_004_mini_sweep_v1.py\",\n            \"--test-cap\",\n            \"0.50\",\n            \"--add-soft-token\",\n            \"artifacts\",\n        ],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n        timeout=120,\n    )\n    assert proc.returncode == 0, proc.stderr[-1500:]\n    doc = json.loads(OUT.read_text(encoding=\"utf-8\"))\n    assert doc.get(\"apply_active_forbidden\") is True\n    assert doc.get(\"variant_count\", 0) >= 3\n    winner = doc.get(\"recommended_variant\") or {}\n    assert winner.get(\"metrics\")\n    active_after = json.loads(ACTIVE.read_text(encoding=\"utf-8\"))\n    assert active_after.get(\"compression_metrics\") == active_before.get(\"compression_metrics\")",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-636f130392d4",
+      "snippet_sha256": "636f130392d4842c7cd4b9515b06c6fedb65eee6dd28b1cc00a46b21c6ced3ff"
+    },
+    {
+      "template_id": "zf_p005",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_coding_deep_pack_signoff_envelope_separate_from_candidate_pool() -> None:\n\n    assert SIGNOFF.is_file()\n\n    doc = _load(SIGNOFF)\n\n    assert doc[\"schema\"] == \"compression_coding_deep_pack_promotion_signoff_envelope_v1\"\n\n    assert doc[\"track_a_active_untouched\"] is True\n\n    assert doc[\"send_gate\"] == \"HOLD\"\n\n    assert doc[\"separate_from_candidate_pool_signoff\"] == CANDIDATE_POOL_SIGNOFF.relative_to(ROOT).as_posix()\n\n    assert \"candidate_pool_on_headline_merge\" in doc[\"forbidden_in_this_envelope\"]\n\n    if doc.get(\"mainline_pipeline_status\") == \"opt_in_active\":\n        assert doc.get(\"apply_command_after_signoff\")\n    else:\n        assert doc[\"apply_command_after_signoff\"] is None\n\n    gates = doc[\"promotion_gates_at_apply\"]\n\n    assert gates[\"roundtrip_path\"] == \"template_catalog_wire_v1\"\n\n    assert gates[\"exact_restore_pass_count_observed\"] == gates[\"exact_restore_pass_count_min\"]",
+      "must_keep_terms": [
+        "def",
+        "schema"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-55dbcb614213",
+      "snippet_sha256": "55dbcb614213c684b0a94ad68b1fa052a03c5d759eff974add65ab8baaacb189"
+    },
+    {
+      "template_id": "zf_p006",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_dual_pin_sweep_dry_run() -> None:\n    proc = subprocess.run(\n        [PY, \"scripts/run_compression_dual_pin_004_009_mini_sweep_v1.py\", \"--dry-run\"],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n    )\n    assert proc.returncode == 0, proc.stderr[-800:]\n    doc = json.loads(proc.stdout.strip())\n    assert doc.get(\"dry_run\") is True\n    assert int(doc.get(\"variant_count\") or 0) >= 5",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-02f5e3d6e944",
+      "snippet_sha256": "02f5e3d6e94404c0f24c5dbfa899e71fcf1b2016186ce0a1718d6b27f2b429b7"
+    },
+    {
+      "template_id": "zf_p007",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_dual_pin_sweep_with_conservative_fallback() -> None:\n    active_before = json.loads(ACTIVE.read_text(encoding=\"utf-8\"))\n    proc = subprocess.run(\n        [PY, \"scripts/run_compression_dual_pin_004_009_mini_sweep_v1.py\", \"--test-cap\", \"0.50\"],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n        timeout=180,\n    )\n    assert proc.returncode == 0, proc.stderr[-2000:]\n    result = json.loads(proc.stdout.strip())\n    sweep = json.loads(SWEEP_OUT.read_text(encoding=\"utf-8\"))\n    assert sweep.get(\"apply_active_forbidden\") is True\n    if int(sweep.get(\"green_combo_count\") or 0) > 0:\n        assert DUAL_PIN_CANDIDATE.is_file()\n        cand = json.loads(DUAL_PIN_CANDIDATE.read_text(encoding=\"utf-8\"))\n        env = cand.get(\"promotion_candidate_envelope\") or {}\n        assert env.get(\"selected_variant_id\") == sweep[\"recommended_variant\"][\"variant_id\"]\n        assert result.get(\"dual_pin_promotion_candidate\")\n    else:\n        assert CONSERVATIVE.is_file()\n        assert result.get(\"fallback_conservative\")\n    active_after = json.loads(ACTIVE.read_text(encoding=\"utf-8\"))\n    assert active_after.get(\"compression_metrics\") == active_before.get(\"compression_metrics\")",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-5ba5e9ae379f",
+      "snippet_sha256": "5ba5e9ae379f08a727610d51bcd1a4de429a908a96245876d9e70f3e167c7a78"
+    },
+    {
+      "template_id": "zf_p008",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_global_headroom_sweep_dry_run() -> None:\n    proc = subprocess.run(\n        [\n            PY,\n            \"scripts/run_compression_global_headroom_pareto_sweep_v1.py\",\n            \"--dry-run\",\n            \"--min-jaccard-floor\",\n            \"0.725\",\n        ],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n    )\n    assert proc.returncode == 0, proc.stderr[-600:]\n    doc = json.loads(proc.stdout.strip().splitlines()[-1])\n    assert doc.get(\"dry_run\") is True\n    assert int(doc.get(\"variant_count\") or 0) >= 5",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-2dbb0e116d78",
+      "snippet_sha256": "2dbb0e116d781ab6f9cd912780facbf211226dde5281d6da3f9cb850b2409e27"
+    },
+    {
+      "template_id": "zf_p009",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_global_headroom_sweep_sidecar_only(tmp_path: Path) -> None:\n    active_before = json.loads(ACTIVE.read_text(encoding=\"utf-8\"))\n    cand = tmp_path / \"cand.json\"\n    rep = tmp_path / \"rep.json\"\n    proc = subprocess.run(\n        [\n            PY,\n            \"scripts/run_compression_global_headroom_pareto_sweep_v1.py\",\n            \"--min-jaccard-floor\",\n            \"0.725\",\n            \"--out-candidate\",\n            str(cand),\n            \"--out-report\",\n            str(rep),\n        ],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n        timeout=600,\n    )\n    assert proc.returncode == 0, proc.stderr[-1500:]\n    out = json.loads(cand.read_text(encoding=\"utf-8\"))\n    assert out.get(\"apply_active_forbidden\") is True\n    assert len(out.get(\"top3\") or []) == 3\n    active_after = json.loads(ACTIVE.read_text(encoding=\"utf-8\"))\n    assert active_after.get(\"compression_metrics\") == active_before.get(\"compression_metrics\")",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-795325097b1c",
+      "snippet_sha256": "795325097b1c61b98f58051844f8cfb95bfd53627e46754b2d6e8650ffe97fc9"
+    },
+    {
+      "template_id": "zf_p010",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_global_headroom_inspect_variant_diff() -> None:\n    proc = subprocess.run(\n        [\n            PY,\n            \"scripts/run_compression_global_headroom_pareto_sweep_v1.py\",\n            \"--inspect-variant\",\n            \"cap_ssot_0.50\",\n            \"--diff-against-active\",\n        ],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n        timeout=120,\n    )\n    assert proc.returncode == 0, proc.stderr[-1500:]\n    doc = json.loads(proc.stdout)\n    assert doc.get(\"variant_id\") == \"cap_ssot_0.50\"\n    assert doc.get(\"apply_active_forbidden\") is True\n    assert isinstance(doc.get(\"jaccard_regressing_cases\"), list)\n    assert doc.get(\"delta_min_j_vs_active\", 0) < 0",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-e6cf930eefc1",
+      "snippet_sha256": "e6cf930eefc1b3960a7c9deee51002e4edaf8f362780089a6c36e724e49fbf5c"
+    },
+    {
+      "template_id": "zf_p011",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_compression_mistake_sync_standing_guardrails():\n    sys.path.insert(0, str(SCRIPTS))\n    from compression_mistake_registry_lib_v1 import (  # noqa: WPS433\n        SOURCE,\n        sync_compression_deep_pass_report,\n    )\n    from mkm_agent_mistake_registry_lib_v1 import query_guardrails  # noqa: WPS433\n\n    report = {\n        \"chain_ok\": True,\n        \"checks\": {\"kpi_summary_ok\": True, \"governance_embed_ok\": True, \"shadow_auditor_ok\": True},\n        \"dual_report\": {\n            \"raw\": {\"kpi\": {\"jaccard_guardrail_ok\": True}},\n            \"repair_v2\": {\"kpi\": {\"ultra_saving_policy_ok\": False}},\n            \"delta\": {\"global_token_saving_rate\": -0.1},\n            \"shadow_auditor_audit_ok\": True,\n        },\n    }\n    with tempfile.TemporaryDirectory() as td:\n        reg = Path(td) / \"reg.jsonl\"\n        rows = sync_compression_deep_pass_report(\n            report,\n            registry_path=reg,\n            artifact=\"reports/test_deep_pass.json\",\n        )\n        assert len(rows) >= 2\n        guards = query_guardrails(reg, lane=\"ms\", limit=5)\n        assert any(r.get(\"source\") == SOURCE for r in guards)",
+      "must_keep_terms": [
+        "def",
+        "import",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-fb4b05846723",
+      "snippet_sha256": "fb4b058467231fccfc7111afe3e0821d5395624c0067fd386cae474cced6bd7d"
+    },
+    {
+      "template_id": "zf_p012",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_compression_mistake_resume_loop_skip_deep_pass_exit_0():\n    proc = subprocess.run(\n        [\n            PY,\n            str(SCRIPTS / \"run_jema_os_compression_mistake_resume_loop_v1.py\"),\n            \"--skip-deep-pass\",\n        ],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n        timeout=180,\n    )\n    assert proc.returncode == 0, proc.stderr or proc.stdout\n    loop = json.loads((ROOT / \"reports/jema_os_compression_mistake_resume_loop_v1_latest.json\").read_text(encoding=\"utf-8\"))\n    assert loop.get(\"loop_ok\") is True\n    assert loop.get(\"yaml_guardrail_injected\") is True\n    slice_path = ROOT / \"reports/compression_mistake_guardrail_resume_v1_latest.json\"\n    assert slice_path.is_file()\n    pack = json.loads(slice_path.read_text(encoding=\"utf-8\"))\n    mg = pack.get(\"mistake_guardrails\") or {}\n    assert mg.get(\"lane\") == \"ms\"\n    assert mg.get(\"yaml\") or mg.get(\"yaml_doc\")",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-5989f7ec679e",
+      "snippet_sha256": "5989f7ec679eae67ff69ff0c0a639924677863ab26204a3f0dc8a19e216e9adf"
+    },
+    {
+      "template_id": "zf_p013",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_overlay_manifest_tail_cases(case_id: str, field: str, terms: list[str]) -> None:\n    doc = json.loads(OVERLAY.read_text(encoding=\"utf-8\"))\n    spec = (doc.get(\"cases\") or {}).get(case_id) or {}\n    for t in terms:\n        assert t in (spec.get(field) or [])",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-44026fd27239",
+      "snippet_sha256": "44026fd27239ce5fceb67fdd220e8dec0b4c1d74267daac5ad10a373db7fd300"
+    },
+    {
+      "template_id": "zf_p014",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_evaluate_report_case_overlay_improves_cmp2_009_jaccard() -> None:\n    from scripts.report_multilens_performance_eval import evaluate_report\n\n    raw = (\n        \"Fact-lock and codebook drift must stay aligned with docs, scripts, and CI \"\n        \"without manual override.\"\n    )\n    doc = {\n        \"compression_cases\": [{\"id\": \"cmp2_009\", \"raw_text\": raw, \"compressed_text\": \"\", \"reconstructed_text\": \"\"}],\n        \"fusion_answer_cases\": [],\n    }\n    base = evaluate_report(\n        doc,\n        source_input=\"fixture\",\n        mode=\"experimental\",\n        strategy=\"A\",\n        intensity=\"extreme\",\n        use_domain_router=True,\n    )\n    overlay = evaluate_report(\n        doc,\n        source_input=\"fixture\",\n        mode=\"experimental\",\n        strategy=\"A\",\n        intensity=\"extreme\",\n        use_domain_router=True,\n        case_must_keep_overlay={\n            \"cmp2_009\": {\n                \"add_hard\": [\"fact-lock\", \"codebook\"],\n                \"add_soft\": [\"drift\", \"docs\", \"scripts\", \"ci\", \"aligned\"],\n            }\n        },\n    )\n    b_cases = (base.get(\"compression_metrics\") or {}).get(\"cases\") or []\n    o_cases = (overlay.get(\"compression_metrics\") or {}).get(\"cases\") or []\n    assert b_cases and o_cases\n    b_j = float(b_cases[0][\"reconstruction_fidelity_jaccard\"])\n    o_j = float(o_cases[0][\"reconstruction_fidelity_jaccard\"])\n    assert o_j >= b_j",
+      "must_keep_terms": [
+        "def",
+        "import"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-33ff9f5176f1",
+      "snippet_sha256": "33ff9f5176f1f905df43bedce4cb0ee64afac10b1f1acacd7ac11514af89de79"
+    },
+    {
+      "template_id": "zf_p015",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_tail_overlay_bench_chain_exit0(tmp_path: Path) -> None:\n    out = tmp_path / \"overlay_sim.json\"\n    proc = subprocess.run(\n        [\n            PY,\n            \"scripts/run_compression_tail_case_overlay_bench_v1.py\",\n            \"--out\",\n            str(out),\n        ],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n    )\n    assert proc.returncode == 0, proc.stderr[-800:]\n    doc = json.loads(out.read_text(encoding=\"utf-8\"))\n    assert doc.get(\"bench_meta\", {}).get(\"research_only\") is True\n    cm = doc.get(\"compression_metrics\") or {}\n    assert int(cm.get(\"case_count\") or 0) == 40\n    active = json.loads(ACTIVE.read_text(encoding=\"utf-8\"))\n    active_path = ROOT / \"docs/final/artifacts/MULTILENS_ULTRA_COMPRESSION_ACTIVE_REPORT_V1.json\"\n    assert active_path.is_file()\n    # Active file must not be overwritten by bench run\n    active_after = json.loads(active_path.read_text(encoding=\"utf-8\"))\n    assert active_after.get(\"compression_metrics\") == active.get(\"compression_metrics\")",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-72cc032d7dcf",
+      "snippet_sha256": "72cc032d7dcf104f347e6a1b289a4b0af69f377d047f52dde9d13d72579812a6"
+    },
+    {
+      "template_id": "zf_p016",
+      "shard_id": "zone_f_code",
+      "language": "python",
+      "snippet": "def test_pareto_sweep_dry_run_curated() -> None:\n    proc = subprocess.run(\n        [PY, \"scripts/run_compression_tail_case_overlay_pareto_sweep_v1.py\", \"--dry-run\", \"--grid-mode\", \"curated\"],\n        cwd=str(ROOT),\n        capture_output=True,\n        text=True,\n        check=False,\n    )\n    assert proc.returncode == 0, proc.stderr[-500:]\n    doc = json.loads(proc.stdout.strip().splitlines()[-1])\n    assert doc.get(\"dry_run\") is True\n    assert int(doc.get(\"variant_count\") or 0) >= 10",
+      "must_keep_terms": [
+        "def",
+        "json"
+      ],
+      "prospect": true,
+      "source_row_id": "harvest-ws-512942711fb8",
+      "snippet_sha256": "512942711fb808209d4ecf19df060fb0af571ae2a06b72426cef9725731acdc5"
+    }
+  ],
+  "prospect_template_ids": [
+    "zf_p001",
+    "zf_p002",
+    "zf_p003",
+    "zf_p004",
+    "zf_p005",
+    "zf_p006",
+    "zf_p007",
+    "zf_p008",
+    "zf_p009",
+    "zf_p010",
+    "zf_p011",
+    "zf_p012",
+    "zf_p013",
+    "zf_p014",
+    "zf_p015",
+    "zf_p016"
+  ],
   "reproduce": "py scripts/run_zone_f_code_template_catalog_batch_extract_v1.py --write-prospect"
 }

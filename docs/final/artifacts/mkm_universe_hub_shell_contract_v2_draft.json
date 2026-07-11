@@ -1,7 +1,7 @@
 {
   "schema": "mkm_universe_hub_shell_contract_v2_draft",
   "status": "draft_research_only",
-  "updated_utc": "2026-06-12",
+  "updated_utc": "2026-07-12",
   "supersedes_nothing": "mkm_ui_shell_contract_v1.json remains enforced until human sign-off and gate wiring",
   "architecture_note": "Perplexity/Wrtn-style hub on jema-ai.com — central one-question input + left plugin sidebar. NOT infinite chat; NOT backend lane merge.",
   "hq_host": "jema-ai.com",
@@ -21,7 +21,7 @@
         "main": "center_minimal",
         "inspector": "right_read_only_v3",
         "content_pattern": "one_question_then_report",
-        "max_sidebar_plugins": 12,
+        "max_sidebar_plugins": 14,
         "max_primary_nav": 0
       },
       "layout_v3_chassis": {
@@ -118,6 +118,20 @@
           "research_only": true,
           "forbidden_headline_metrics": ["era blind locked_eval as product claim", "Track A compression KPI"],
           "note": "Closed 31k-verse internal 4D geometry — air-gapped from oracle/market lane"
+        },
+        {
+          "id": "myeongni_observatory",
+          "icon": "hex",
+          "copy_key_ko": "plugin.myeongni.ko",
+          "label_ko": "명리 관측소",
+          "route": "/hub/myeongni",
+          "surface": "myeongni_path_mindmap_deck",
+          "backend_lane": "b_track_research_only",
+          "hypothesis_tier": "[HYPO]",
+          "research_only": true,
+          "send_gate": "HOLD",
+          "forbidden_headline_metrics": ["clinical diagnosis claim", "Track A compression KPI", "live trade trigger"],
+          "note": "Myeongni lens hub spoke — advisory [HYPO]; air-gapped from Logos graph slice and Track A gates; mirrors universeHubPluginsV2.ts"
         },
         {
           "id": "mkm_life",

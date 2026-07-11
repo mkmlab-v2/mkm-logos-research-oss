@@ -1,0 +1,27 @@
+---
+description: Commander says 위임 only — agent classifies S/M/L, mode, and high-delegation escalate
+alwaysApply: false
+---
+
+# Commander delegation mode router v1
+
+**SSOT:** `docs/final/artifacts/commander_delegation_mode_router_v1_latest.json`
+
+## Contract
+
+- Commander may say only **「위임」** / **「위임: …」** (scale optional).
+- Agent **classifies** S/M/L, picks Agent vs Plan-propose vs Multitask-hint, and may **escalate to high-delegation** without requiring the words 「고차원 위임」.
+- Announce classification in the **first line** of the work turn (`S · Agent` / `M · …` / `L · 고차원`).
+
+## ALWAYS
+
+- On 위임: judge scale from scope (lanes, duration, NL/browser/host, AUTO chain) — do not ask commander to pick S/M/L.
+- If L (or equivalent): follow `.cursor/rules/mkm-high-delegation-preflight-v1.mdc` before AUTO.
+- Ask Gate unchanged (destructive delete, live trade, paid side effects, irreversible schema/architecture).
+- Multitask: recommend UI toggle when parallel/background wins; when Multitask Mode is already ON, use Task subagents per that mode.
+
+## NEVER
+
+- Force commander to label every task as 고차원 vs 위임.
+- Treat 위임 as Track A / SEND / market GO unlock.
+- Run L AUTO when preflight `ready_for_auto` is false / exit ≠ 0.

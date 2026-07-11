@@ -9,7 +9,15 @@
     "schema",
     "pytest",
     "json",
-    "traceback"
+    "traceback",
+    "model",
+    "handler",
+    "service",
+    "module",
+    "import",
+    "def",
+    "async",
+    "error"
   ],
   "must_keep_hard_terms": [
     "api",
@@ -21,7 +29,9 @@
     "function",
     "class",
     "pytest",
-    "traceback"
+    "traceback",
+    "model",
+    "handler"
   ],
   "guard_tokens": [
     "must",
@@ -29,5 +39,45 @@
     "error",
     "fix"
   ],
-  "hangul_principle": false
+  "hangul_principle": false,
+  "namespace_v1": {
+    "accepted_surfaces": ["coding", "ide"],
+    "sense_overrides": {
+      "model": {
+        "sense_id": "code_data_model",
+        "must_keep_add": ["model", "schema", "class"],
+        "label_ko": "코드 데이터 모델(Pydantic/ORM)"
+      },
+      "schema": {
+        "sense_id": "api_json_schema",
+        "must_keep_add": ["schema", "json", "api"],
+        "label_ko": "OpenAPI/JSON 스키마"
+      },
+      "handler": {
+        "sense_id": "http_request_handler",
+        "must_keep_add": ["handler", "endpoint", "api"],
+        "label_ko": "HTTP/API 핸들러"
+      },
+      "service": {
+        "sense_id": "code_service_layer",
+        "must_keep_add": ["service", "class", "handler"],
+        "label_ko": "서비스 레이어(DI/비즈니스 로직)"
+      },
+      "module": {
+        "sense_id": "python_import_module",
+        "must_keep_add": ["module", "import", "error"],
+        "label_ko": "Python 모듈 import"
+      },
+      "token": {
+        "sense_id": "api_bearer_token",
+        "must_keep_add": ["token", "bearer", "api"],
+        "label_ko": "API Bearer/JWT 토큰"
+      },
+      "chart": {
+        "sense_id": "ui_chart_component",
+        "must_keep_add": ["chart", "schema", "endpoint"],
+        "label_ko": "UI 차트 컴포넌트 props/schema"
+      }
+    }
+  }
 }

@@ -9,6 +9,7 @@ from typing import Any
 
 from scripts.compression_coding_deep_pack_v1_lib import load_template_catalog
 from scripts.extract_zone_f_code_template_seeds_v1_lib import normalize_snippet, snippet_hash
+from scripts.zone_f_code_catalog_provenance_v1_lib import infer_provenance
 
 _TEMPLATE_ID_RE = re.compile(r"^zf_t(\d+)$", re.IGNORECASE)
 
@@ -36,6 +37,7 @@ def production_row_from_prospect(prospect: dict[str, Any], *, template_id: str) 
         "language": str(prospect.get("language") or "python"),
         "snippet": normalize_snippet(str(prospect.get("snippet") or "")),
         "must_keep_terms": list(prospect.get("must_keep_terms") or []),
+        "catalog_provenance": infer_provenance(prospect),
     }
     if prospect.get("source_row_id"):
         row["merged_from_prospect_id"] = str(prospect.get("template_id") or "")

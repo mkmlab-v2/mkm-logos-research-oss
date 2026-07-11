@@ -1,6 +1,6 @@
 {
   "schema": "zone_f_code_template_catalog_merge_v1",
-  "generated_at_utc": "2026-06-15T06:13:47Z",
+  "generated_at_utc": "2026-07-03T16:28:57Z",
   "research_only": true,
   "send_gate": "HOLD",
   "track_a_active_untouched": true,
@@ -9,62 +9,30 @@
   "applied": false,
   "production_catalog": "codebook/templates/zone_f_code_templates_v1.jsonl",
   "prospect_catalog": "codebook/templates/zone_f_code_templates_prospect_v1.jsonl",
-  "production_before_count": 25,
-  "prospect_input_count": 3,
-  "merge_count": 0,
-  "skipped_count": 3,
-  "production_after_count": 25,
-  "new_template_ids": [],
-  "skipped": [
-    {
-      "template_id": "zf_p001",
-      "shard_id": "zone_f_code",
-      "language": "python",
-      "snippet": "def refresh_api_token(endpoint: str, schema_version: str) -> dict:\n    \"\"\"Rotate OAuth token against API endpoint schema.\"\"\"\n    return {\n        \"endpoint\": endpoint,\n        \"schema\": schema_version,\n        \"json\": {\"grant_type\": \"refresh_token\"},\n    }",
-      "must_keep_terms": [
-        "api",
-        "endpoint",
-        "json",
-        "schema"
-      ],
-      "prospect": true,
-      "source_row_id": "dev-mixed-token-001",
-      "snippet_sha256": "75964c63d0ef6df038706065bc8441edfd9e4d17c60eab8ea64e1f5b4af9d537",
-      "skip_reason": "duplicate_snippet"
-    },
-    {
-      "template_id": "zf_p002",
-      "shard_id": "zone_f_code",
-      "language": "python",
-      "snippet": "class RateLimitMiddleware:\n    def enforce(self, path: str, api_key: str) -> dict:\n        return {\n            \"endpoint\": path,\n            \"api\": api_key,\n            \"schema\": \"v1\",\n            \"json\": {\"allowed\": True},\n        }",
-      "must_keep_terms": [
-        "api",
-        "class",
-        "endpoint",
-        "json",
-        "schema"
-      ],
-      "prospect": true,
-      "source_row_id": "dev-mixed-ratelimit-001",
-      "snippet_sha256": "62538d608e2ca0d51fa1d99e99583d787e82696b5d3a8c7665f3a184979efc23",
-      "skip_reason": "duplicate_snippet"
-    },
-    {
-      "template_id": "zf_p003",
-      "shard_id": "zone_f_code",
-      "language": "python",
-      "snippet": "def verify_webhook_hmac(body: bytes, signature: str, schema: str, endpoint: str) -> bool:\n    import hashlib\n    payload = {\"endpoint\": endpoint, \"schema\": schema, \"json\": True}\n    digest = hashlib.sha256(body).hexdigest()\n    return digest == signature and payload[\"json\"] is True",
-      "must_keep_terms": [
-        "endpoint",
-        "json",
-        "schema"
-      ],
-      "prospect": true,
-      "source_row_id": "dev-mixed-webhook-001",
-      "snippet_sha256": "8f2bda9ade59437fd2eebba32563413aaa44c3e6ed5da628a550a5ebbb2f8cd9",
-      "skip_reason": "duplicate_snippet"
-    }
+  "production_before_count": 1233,
+  "prospect_input_count": 16,
+  "merge_count": 16,
+  "skipped_count": 0,
+  "production_after_count": 1249,
+  "new_template_ids": [
+    "zf_t1234",
+    "zf_t1235",
+    "zf_t1236",
+    "zf_t1237",
+    "zf_t1238",
+    "zf_t1239",
+    "zf_t1240",
+    "zf_t1241",
+    "zf_t1242",
+    "zf_t1243",
+    "zf_t1244",
+    "zf_t1245",
+    "zf_t1246",
+    "zf_t1247",
+    "zf_t1248",
+    "zf_t1249"
   ],
+  "skipped": [],
   "apply_command": "py scripts/merge_zone_f_code_template_prospect_to_catalog_v1.py --human-approve-merge --reviewer commander --rebuild-gate",
   "forbidden_without_approve": [
     "automatic_production_catalog_overwrite"

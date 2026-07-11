@@ -11,6 +11,12 @@ import re
 from pathlib import Path
 from typing import Any, Iterator
 
+from scripts.zone_f_code_multilang_extract_v1_lib import (  # noqa: E402
+    detect_fence_lang,
+    infer_snippet_language,
+    looks_like_code_snippet as looks_like_multilang_snippet,
+)
+
 FENCE_RE = re.compile(r"```(?:\w+)?\n(.*?)```", re.DOTALL)
 CODE_LINE_START = re.compile(
     r"^\s*(def |class |import |from |async def |@app\.|@pytest|try:|except |if __name__)",
@@ -67,15 +73,8 @@ def extract_fenced_code_blocks(text: str) -> list[str]:
     return blocks
 
 
-def looks_like_code_snippet(text: str) -> bool:
-    stripped = text.strip()
-    if not stripped or len(stripped) < 20:
-        return False
-    if CODE_LINE_START.search(stripped):
-        return True
-    code_markers = ("->", "):", "({", "[]", "{}", "==", "!=", ".json", "/v2/")
-    hits = sum(1 for m in code_markers if m in stripped)
-    return hits >= 2 and ("\n" in stripped or ";" in stripped)
+def looks_like_code_snippet(text: str, *, lang: str | None = None) -> bool:
+    return looks_like_multilang_snippet(text, lang=lang)
 
 
 def score_snippet(snippet: str, keywords: list[str]) -> int:
@@ -114,7 +113,10 @@ def extract_candidates_from_text(
     if looks_like_code_snippet(text) and not extract_fenced_code_blocks(text):
         candidates.append(normalize_snippet(text))
     out: list[str] = []
+    fence_lang = detect_fence_lang(text)
     for snippet in candidates:
+        if not looks_like_code_snippet(snippet, lang=fence_lang):
+            continue
         if snippet.count("\n") + 1 < min_lines and len(snippet) < 40:
             continue
         if len(snippet) > max_chars:
@@ -137,10 +139,9 @@ def extract_seeds_from_row(
     row_id = source_row_id or str(obj.get("id") or obj.get("case_id") or "")
     seeds: list[dict[str, Any]] = []
     for blob in row_text_blobs(obj):
+        fence_lang = detect_fence_lang(blob)
         for snippet in extract_candidates_from_text(blob, keywords=keywords, min_score=min_score):
-            lang = "python"
-            if "typescript" in blob.lower() or "export async function" in snippet:
-                lang = "typescript"
+            lang = infer_snippet_language(snippet, blob)
             terms = must_keep_terms_for_snippet(snippet, keywords)
             seeds.append(
                 {

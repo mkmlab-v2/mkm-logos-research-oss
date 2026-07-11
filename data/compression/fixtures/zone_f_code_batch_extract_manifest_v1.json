@@ -6,6 +6,12 @@
     "data/compression/stateless_poc_prospect_customer-pilot-smoke-v1_v1.jsonl",
     "data/compression/examples/customer_masked_pilot_smoke_v1.jsonl",
     "data/compression/contributions/open_bench_coding_snippet_seed_v1.jsonl",
-    "data/compression/fixtures/zone_f_code_dev_support_mixed_v1.jsonl"
+    "data/compression/fixtures/zone_f_code_dev_support_mixed_v1.jsonl",
+    "data/compression/fixtures/zone_f_code_namespace_vertical_seed_v1.jsonl",
+    "data/compression/fixtures/zone_f_code_ide_ci_failure_seed_v1.jsonl",
+    "data/compression/fixtures/zone_f_code_typescript_ci_seed_v1.jsonl",
+    "data/compression/fixtures/zone_f_code_ide_ci_failure_seed_v2.jsonl",
+    "data/compression/fixtures/zone_f_code_typescript_ci_seed_v2.jsonl",
+    "data/compression/fixtures/zone_f_code_pilot_corpus_v1.jsonl"
   ]
 }

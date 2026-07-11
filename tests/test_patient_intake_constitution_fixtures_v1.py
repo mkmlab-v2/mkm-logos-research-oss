@@ -27,7 +27,7 @@ CASES = [
         "soyang_in",
         "소양인",
         "담기",
-        "脾大胃小",
+        "脾大腎小",
     ),
     (
         "tests/fixtures/patient_intake_taeyang_clinical_v1.example.json",

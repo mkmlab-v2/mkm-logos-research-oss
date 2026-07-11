@@ -106,6 +106,45 @@ def extract_literal_slots(canonical: str, variant: str) -> dict[str, str] | None
     return slots
 
 
+def _is_string_literal(tok: str) -> bool:
+    return (tok.startswith("'") and tok.endswith("'")) or (
+        tok.startswith('"') and tok.endswith('"')
+    )
+
+
+def extract_extended_literal_slots(canonical: str, variant: str) -> dict[str, str] | None:
+    """Like extract_literal_slots but also allows string literal substitutions."""
+    ct = _tokenize_code(canonical)
+    vt = _tokenize_code(variant)
+    if len(ct) != len(vt):
+        return None
+    id_slots: dict[str, str] = {}
+    str_slots: dict[str, str] = {}
+    for a, b in zip(ct, vt):
+        if a == b:
+            continue
+        if a.isidentifier() and b.isidentifier():
+            if a in id_slots and id_slots[a] != b:
+                return None
+            id_slots[a] = b
+        elif _is_string_literal(a) and _is_string_literal(b):
+            if a in str_slots and str_slots[a] != b:
+                return None
+            str_slots[a] = b
+        else:
+            return None
+    if not id_slots and not str_slots:
+        return None
+    merged = {**id_slots, **str_slots}
+    rebuilt = canonical
+    for old, new in str_slots.items():
+        rebuilt = rebuilt.replace(old, new)
+    rebuilt = apply_literal_slot_renames(rebuilt, id_slots)
+    if rebuilt != variant:
+        return None
+    return merged
+
+
 def wire_to_compact(wire: dict[str, Any]) -> str:
     """On-wire compact form: bilateral catalog pin + template id (+ optional literal slots)."""
     tid = str(wire["template_id"])
@@ -120,6 +159,62 @@ def wire_to_compact(wire: dict[str, Any]) -> str:
 
 def wire_to_json(wire: dict[str, Any]) -> str:
     return wire_to_compact(wire)
+
+
+WIRE_SCHEMA_HYBRID = "compression_coding_deep_pack_hybrid_wire_v1"
+
+
+def build_hybrid_wire_packet(
+    *,
+    template_id: str,
+    catalog_sha256: str,
+    mode: str,
+    similarity: float = 1.0,
+    literal_slots: dict[str, str] | None = None,
+    diff_hints: list[str] | None = None,
+) -> dict[str, Any]:
+    """Build a hybrid wire packet supporting both lossless (exact/slot) and lossy (semantic) modes."""
+    short_hash = catalog_sha256[:8]
+    wire: dict[str, Any] = {
+        "schema": WIRE_SCHEMA_HYBRID,
+        "template_id": template_id,
+        "catalog_sha256_short": short_hash,
+        "shard_id": "zone_f_code",
+        "mode": mode,
+    }
+    if mode == "exact":
+        wire["sku_class"] = "mask"
+    elif mode == "slot":
+        wire["sku_class"] = "mask"
+        if literal_slots:
+            wire["literal_slots"] = literal_slots
+    elif mode == "semantic":
+        wire["sku_class"] = "approx"
+        wire["similarity"] = round(similarity, 4)
+        if diff_hints:
+            wire["diff_hints"] = diff_hints[:8]
+    return wire
+
+
+def hybrid_wire_to_compact(wire: dict[str, Any]) -> str:
+    """Compact string for hybrid wire: [ZF_H:mode:tid@hash|payload]."""
+    mode = wire.get("mode", "exact")
+    tid = str(wire["template_id"])
+    short_hash = str(wire.get("catalog_sha256_short", ""))
+    prefix = f"[ZF_H:{mode[0]}:{tid}@{short_hash}"
+    if mode == "slot":
+        slots = wire.get("literal_slots")
+        if isinstance(slots, dict) and slots:
+            payload = json.dumps(slots, ensure_ascii=False, separators=(",", ":"))
+            return f"{prefix}|{payload}]"
+    elif mode == "semantic":
+        sim = wire.get("similarity", 0)
+        hints = wire.get("diff_hints", [])
+        parts = [f"s={sim:.2f}"]
+        if hints:
+            parts.append(",".join(hints[:4]))
+        return f"{prefix}|{'|'.join(parts)}]"
+    return f"{prefix}]"
 
 
 def expand_template_wire(
@@ -196,6 +291,18 @@ def match_template_with_literal_slots(
     return None
 
 
+def match_template_with_extended_literal_slots(
+    text: str,
+    catalog_rows: list[dict[str, Any]],
+) -> tuple[str, dict[str, str]] | None:
+    for row in catalog_rows:
+        canonical = str(row.get("snippet") or "")
+        slots = extract_extended_literal_slots(canonical, text)
+        if slots:
+            return str(row["template_id"]), slots
+    return None
+
+
 def resolve_template_match(
     text: str,
     catalog_rows: list[dict[str, Any]],
@@ -206,6 +313,63 @@ def resolve_template_match(
     lit = match_template_with_literal_slots(text, catalog_rows)
     if lit:
         return lit
+    ext = match_template_with_extended_literal_slots(text, catalog_rows)
+    if ext:
+        return ext
+    return None
+
+
+_STRUCT_KEYWORDS = re.compile(
+    r"\b(import|from|def|fn|func|fun|class|struct|trait|interface|"
+    r"return|async|await|pub|private|protected|module|package|use|"
+    r"if|else|for|while|match|case|try|catch|raise|throw)\b"
+)
+
+
+def _structural_fingerprint(text: str) -> tuple[str, list[str], int]:
+    """Return (detected_language, sorted_struct_keywords, line_count)."""
+    lines = text.strip().splitlines()
+    lang = "unknown"
+    first_line = lines[0] if lines else ""
+    if first_line.startswith("```"):
+        lang = first_line.lstrip("`").strip().lower() or "unknown"
+        lines = lines[1:]
+    if lines and lines[-1].strip() == "```":
+        lines = lines[:-1]
+    kws = sorted(set(_STRUCT_KEYWORDS.findall("\n".join(lines))))
+    return lang, kws, len(lines)
+
+
+def match_template_semantic(
+    text: str,
+    catalog_rows: list[dict[str, Any]],
+    *,
+    min_similarity: float = 0.55,
+) -> tuple[str, float] | None:
+    """B-track research: structural similarity match (language + keyword overlap + line-count proximity)."""
+    src_lang, src_kws, src_lines = _structural_fingerprint(text)
+    if src_lang == "unknown" or not src_kws:
+        return None
+    best_id: str | None = None
+    best_score: float = 0.0
+    for row in catalog_rows:
+        tgt_lang = str(row.get("language") or "unknown").lower()
+        if tgt_lang != src_lang:
+            continue
+        snippet = str(row.get("snippet") or "")
+        _, tgt_kws, tgt_lines = _structural_fingerprint(snippet)
+        union = set(src_kws) | set(tgt_kws)
+        if not union:
+            continue
+        intersect = set(src_kws) & set(tgt_kws)
+        kw_sim = len(intersect) / len(union)
+        line_sim = 1.0 - min(abs(src_lines - tgt_lines) / max(src_lines, tgt_lines, 1), 1.0)
+        score = 0.7 * kw_sim + 0.3 * line_sim
+        if score > best_score:
+            best_score = score
+            best_id = str(row["template_id"])
+    if best_id and best_score >= min_similarity:
+        return best_id, round(best_score, 4)
     return None
 
 
