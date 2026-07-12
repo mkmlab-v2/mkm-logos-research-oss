@@ -1,0 +1,25 @@
+{
+  "schema": "external_facing_fact_lock_v1",
+  "generated_at_utc": "2026-07-12T18:18:49Z",
+  "ok": true,
+  "files_scanned": 4,
+  "scanned": [
+    "docs/final/artifacts/acodeai_b2b_inbound_poc_onepager_v1_latest.md",
+    "docs/final/artifacts/logos_institution_demo_pro_pilot_onepager_v1_latest.md",
+    "docs/final/artifacts/track_c_combined_b2b_offer_onepager_v1_latest.md",
+    "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md"
+  ],
+  "violation_count": 0,
+  "violations": [],
+  "forbidden_pattern_count": 12,
+  "headline_reuse_guard": {
+    "applied": false,
+    "targets": [],
+    "script": "scripts/check_mkm_middleware_headline_reuse_guard_v1.py",
+    "note_ko": "Claim-A/L0 MD targets: orphan legacy headline → fail (checklist JSON is script output, not manual-only doc)."
+  },
+  "policy_ref": "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md",
+  "contract_header": null,
+  "reproduce": "py scripts/check_external_facing_fact_lock_v1.py --target <draft.md>",
+  "note_ko": "채팅 흥분 문장 금지 — 디스크·exit0·dual report만 대외 SSOT. 법무/지휘관 최종 read 별도."
+}

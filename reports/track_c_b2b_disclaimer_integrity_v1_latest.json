@@ -1,0 +1,148 @@
+{
+  "schema": "track_c_b2b_disclaimer_integrity_v1",
+  "generated_at_utc": "2026-07-12T18:18:48Z",
+  "research_only": true,
+  "boundary_ack": "Automated disclaimer morphology scan; not legal sign-off.",
+  "integrity_ok": true,
+  "tier_b_clear": true,
+  "conditional_tail_fix_cleared": true,
+  "ready_for_external_send": false,
+  "external_send_note": "legal_human_signoff_required — tier_b_clear alone does not auto-enable send",
+  "tier_a_block_count": 0,
+  "tier_b_warn_count": 0,
+  "missing_files": [],
+  "canonical_footer_reference": "docs/final/artifacts/track_c_b2b_meeting_pack_index_v1_latest.md (Disclaimers section)",
+  "files": [
+    {
+      "path": "docs/final/artifacts/track_c_b2b_meeting_pack_index_v1_latest.md",
+      "missing": false,
+      "tier_a_ok": true,
+      "tier_b_ok": true,
+      "ok": true,
+      "tier_a_missing": [],
+      "tier_b_warnings": [],
+      "footer_match": {
+        "canonical_index_style": true,
+        "governance_blockquote": false,
+        "compression_appendix_style": false,
+        "in_tail": true
+      },
+      "waived_tier_a": []
+    },
+    {
+      "path": "docs/final/artifacts/track_c_logos_b2b_exec_summary_slide_v1_latest.md",
+      "missing": false,
+      "tier_a_ok": true,
+      "tier_b_ok": true,
+      "ok": true,
+      "tier_a_missing": [],
+      "tier_b_warnings": [],
+      "footer_match": {
+        "canonical_index_style": true,
+        "governance_blockquote": false,
+        "compression_appendix_style": false,
+        "in_tail": true
+      },
+      "waived_tier_a": []
+    },
+    {
+      "path": "docs/final/artifacts/track_c_logos_redacted_demo_excerpt_v1_latest.md",
+      "missing": false,
+      "tier_a_ok": true,
+      "tier_b_ok": true,
+      "ok": true,
+      "tier_a_missing": [],
+      "tier_b_warnings": [],
+      "footer_match": {
+        "canonical_index_style": true,
+        "governance_blockquote": true,
+        "compression_appendix_style": false,
+        "in_tail": true
+      },
+      "waived_tier_a": []
+    },
+    {
+      "path": "docs/final/artifacts/track_c_combined_b2b_offer_onepager_v1_latest.md",
+      "missing": false,
+      "tier_a_ok": true,
+      "tier_b_ok": true,
+      "ok": true,
+      "tier_a_missing": [],
+      "tier_b_warnings": [],
+      "footer_match": {
+        "canonical_index_style": false,
+        "governance_blockquote": true,
+        "compression_appendix_style": true,
+        "in_tail": true
+      },
+      "waived_tier_a": []
+    },
+    {
+      "path": "docs/final/artifacts/track_c_logos_deep_risk_narrative_offer_onepager_v1_latest.md",
+      "missing": false,
+      "tier_a_ok": true,
+      "tier_b_ok": true,
+      "ok": true,
+      "tier_a_missing": [],
+      "tier_b_warnings": [],
+      "footer_match": {
+        "canonical_index_style": true,
+        "governance_blockquote": true,
+        "compression_appendix_style": false,
+        "in_tail": true
+      },
+      "waived_tier_a": []
+    },
+    {
+      "path": "docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md",
+      "missing": false,
+      "tier_a_ok": true,
+      "tier_b_ok": true,
+      "ok": true,
+      "tier_a_missing": [],
+      "tier_b_warnings": [],
+      "footer_match": {
+        "canonical_index_style": true,
+        "governance_blockquote": true,
+        "compression_appendix_style": false,
+        "in_tail": true
+      },
+      "waived_tier_a": []
+    },
+    {
+      "path": "docs/final/artifacts/track_c_b2b_logos_lens_appendix_v1_latest.md",
+      "missing": false,
+      "tier_a_ok": true,
+      "tier_b_ok": true,
+      "ok": true,
+      "tier_a_missing": [],
+      "tier_b_warnings": [],
+      "footer_match": {
+        "canonical_index_style": true,
+        "governance_blockquote": false,
+        "compression_appendix_style": false,
+        "in_tail": true
+      },
+      "waived_tier_a": []
+    },
+    {
+      "path": "docs/final/artifacts/track_c_b2b_compression_plugin_appendix_v1_latest.md",
+      "missing": false,
+      "tier_a_ok": true,
+      "tier_b_ok": true,
+      "ok": true,
+      "tier_a_missing": [],
+      "tier_b_warnings": [],
+      "footer_match": {
+        "canonical_index_style": false,
+        "governance_blockquote": false,
+        "compression_appendix_style": true,
+        "in_tail": true
+      },
+      "waived_tier_a": [
+        "core_ip",
+        "non_gating"
+      ]
+    }
+  ]
+}

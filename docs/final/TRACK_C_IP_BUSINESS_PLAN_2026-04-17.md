@@ -1,11 +1,68 @@
 # Track C IP Business Plan (v3)
 
 Date: 2026-05-05  
-Revised: 2026-06-21 — **§3.0b North Star realign** — Y1 Dual-Plane Neuro-Symbolic OSS hero · §3.1 압축 **Parallel Lane** 강등 · §3.0c Y1 GTM 마일스톤 · `NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md` 정렬. (2026-05-21 — **§3.0 도메인·채널 분리**(mkmlab.space 연구소·제품 vs jema-ai/mkmlife/jemaai). (2026-05-19 — §3.1.3 **C-S2→9장 v1.1(Moat/Plugin)**) · §3.1.5 **Inter-Agent RQ-019 IR 포인터** · §10 OpenData 병렬·법무 handoff. (2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
+Revised: 2026-07-13 — **§4 H2 supersedes via §0.6** · **§6 30-60-90 → cash cow+passion** · B2B pack disclaimer tail fix. (2026-07-11 — **§0.6b Middleware Infra vs Domain Corpus 격벽**(L0–L3 · 원어≠미들웨어 Moat · check script). (2026-07-10 — **§0.6 2026-07 시장검증·실행 집중**(bootstrap · One cash cow + One passion · 외부 LLM 교차검증 `[ADVISORY]`). (2026-07-07 — **§3.1.9 zone_f_code micro cost counterfactual 포인터** (artifact-bound B2B 팀 달러 절감; 국가 수지·소버린 서사 합산 금지). (2026-06-21 — **§3.0b North Star realign** — Y1 Dual-Plane Neuro-Symbolic OSS hero · §3.1 압축 **Parallel Lane** 강등 · §3.0c Y1 GTM 마일스톤 · `NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md` 정렬. (2026-05-21 — **§3.0 도메인·채널 분리**(mkmlab.space 연구소·제품 vs jema-ai/mkmlife/jemaai). (2026-05-19 — §3.1.3 **C-S2→9장 v1.1(Moat/Plugin)**) · §3.1.5 **Inter-Agent RQ-019 IR 포인터** · §10 OpenData 병렬·법무 handoff. (2026-05-16 — §3.1.2 **글로벌 포지셔닝(Fact-Lock)** · §3.1.3 **통합 실행 일정(2026-05)** · §9 **제조업형 디시플린 카피** · 압축 거버넌스(§3.1.1)·Shadow Auditor(RQ-018) 반영. (2026-05-15 — §3.5–3.6 **부록**(대외 카피: 뇌·신경·장-뇌 은유 금지; `PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` **v1.7**과 양방 역참조). (2026-05-17 — §3.7.2 **(C)** COGS·법무 **승격 전** 운영 단계(면책 초안 → 근거·출처 → 파일럿 측정 → 법무 **(D)** )는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트 (RQ-009 · 팀 내부만)」** 표에만 상세 서술(본 §는 정책·동결 지연 원칙만 유지). (직전 2026-05-16 — §3.6 **Trust Visualization v0** Fact-Lock 역참조(쇼룸 thin·STT 감사·`CONSTITUTION`·CI 3d3a); §3.7.2 **(D)** RQ-009 내부 면책 확장 초안 패킷 `docs/final/artifacts/silver_tech_legal_disclaimer_draft_v1.md` 포인터. (직전 2026-05-15 — §3.7.2 **민감 외부 액션** 구조적 휴먼 게이트 SSOT 동결 + 파일럿 KPI·최종 면책 **대외 동결 지연**(지휘관 승인, RQ-009 정렬). (직전 2026-05-14 — 실버 `[DRAFT]`+RQ-009, `PUBLIC_FACING` §3 역참조; 그 이전 2026-05-13 — §3.6 Topology Radar …)  
 Owner: MKM core team  
 Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난도 비정형 텍스트 스트레스 테스트/명리/사상/압축·토큰절감/신시장지표` 사업축을 우선순위 기반으로 통합 운영한다.
 
-**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-06-21 v3 North Star** 개정 처리한다. **공개 GTM 1차 Hero = §3.0b Y1 Universal Root** · **압축(§3.1) = Parallel Enterprise Lane**(인바운드·기존 B2B). §3.1.3 C-S2·§3.1.5·§10 포인터 유지; **RQ-019·OpenData는 Y1 Hero와 합선하지 않음**. §3.7.2 **(C)** COGS·법무 **승격 전** 단계는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트」** 표만 상세 — 본 §는 정책·동결 지연만. §3.6 Visualization v0 **역참조** + §3.7.2 민감 액션 **구조 Lock** + KPI·면책 **대외 동결 지연** 유지. **2026-05-15** §3.7.2 **(B)/(C)**·RQ-009·**2026-05-11** §3.11·**2026-05-10** §3.9–§3.10 등 이전 동결분은 유지. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시. `§3.7`은 영업·마케팅·개발 파이프라인 **공통 지침**.
+**SSOT / Freeze:** 본 문서는 레포 내 Track C 사업 계획의 **단일 진실 공급원(SSOT)**으로 **2026-06-21 v3 North Star** 개정 처리한다. **포트폴리오 진입·상용화 순서·제품 부록 인덱스**는 `docs/final/MKM_PORTFOLIO_MASTER_INDEX_V1.md` — 본 문서 본문과 **이중 서사 금지**(인덱스=지도, 본문=Track C 서사). 스냅샷: `py scripts/build_mkm_portfolio_status_snapshot_v1.py` → `docs/final/artifacts/mkm_portfolio_status_snapshot_v1_latest.json`.
+
+### §0.5 Portfolio Master Index (2026-07-10)
+
+- **진입:** `MKM_PORTFOLIO_MASTER_INDEX_V1.md` — 도메인 표 · Phase 0–3 상용화 순서 · CLOSED/grant 격리 · 7월 `[HYPO]` 델타.
+- **도메인 SSOT:** `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1c (격물 · personadiary · logos · mkmlife 격벽).
+- **실행 순서:** `P0_COMMERCIALIZATION_TRACKER.md` · 승격 `MKM_PROMOTION_GATE_CHECKLIST_B_TO_A_C_V1.md`.
+- **갱신:** 월 1회 snapshot 빌더 exit 0 권장; 제품 로드맵 변경 시 L2 부록만 개정 — TRACK_C §3.0d 표는 포인터 유지.
+
+### §0.6 시장검증·실행 집중 (2026-07-10 · bootstrap)
+
+**상태:** `[ADVISORY]` — 공개 LLM에 **IP·파이프라인·조합 지문 없이** 제품 가설만 제시한 **3자 시장 교차검증**. **Fact-Lock 아님** — 수치·CAGR·ACV·전환율은 **저장·대외 인용 금지**. 구현·통과는 여전히 `CONSTITUTION`·스크립트 exit 0·아티팩트만.
+
+**회사 규모 가정:** 1인·소규모 팀 · **internal-first** · `send_gate: HOLD` · LG·마중 **CLOSED_REJECT** 본선 재오픈 없음.
+
+| 관점 | 결론 (요지) | MKM 정합 |
+|------|-------------|----------|
+| **Bootstrap / lifestyle** | 다제품·도메인·KPI **격벽**은 리스크 분산에 **합리** | `MKM_PORTFOLIO_MASTER_INDEX` · §3.0d · `PUBLIC_FACING` Concentric Disclosure |
+| **VC hyper-growth** | multi-product solo는 **unfocused**로 보이기 쉬움 — **불리** | Y1 OSS hero + parallel inbound lanes 유지; VC 덱용 KPI **합산 금지** |
+| **2026 실행 집중** | **One cash cow + One passion** — 나머지 Phase 1 최소선 후 **hold** | 아래 2레일 |
+
+**2레일 실행 (2026 H2 · 본선):**
+
+| 레일 | 제품 | 시장검증 요지 (advisory) | MKM 증거 (Fact-Lock) | 다음 1타 |
+|------|------|--------------------------|----------------------|----------|
+| **Cash cow** | a-codeai.com §3.1 | 고볼륨 RAG·내부 AI 팀 WTP; pure compression **crowded** → **gateway sidecar** + vertical PoC | `acodeai_b2b_inbound_evidence_pack_v0_latest.json` **`pack_ok`** · shadow **2건** · 동결 40건 ~47.5% | shadow JSONL **20+** · vertical PoC **1건** · % SLA 금지 |
+| **Passion / niche** | logos.jema-ai.com §3.1.8 | 좁은 니치·기관 시트 WTP; Logos/Accordance 강세 → **graph + citation audit** 틈 | `logos_institution_demo_pro_evidence_pack_v0_latest.json` **`pack_ok`** · path **1.0** · deploy·rehearsal ok | **micro-pilot 3~5교** · 교리 판매 금지 |
+
+**보류·최소선 (Phase 1 #3–4 후 hold):** 격물 family MVP · personadiary preview — **Phase 2** mkmlife·Plus·시니어 확장은 **명시적 hold** (마케팅·인력 분산 금지).
+
+**금지 (본 절에서도):** 외부 LLM이 제시한 시장 규모·CAGR·ACV·전환%를 제안서·랜딩에 **팩트로 쓰지 않음** · 압축 % + Logos path + UR 99.53% **한 덱 합산** · 「독보적 Moat」「무손실 SLA」.
+
+**산출물 포인터:**
+
+- `docs/final/artifacts/acodeai_b2b_inbound_poc_onepager_v1_latest.md`
+- `docs/final/artifacts/logos_institution_demo_pro_pilot_onepager_v1_latest.md`
+- `docs/final/artifacts/mkm_portfolio_status_snapshot_v1_latest.json`
+- CENTRAL 운영 체크포인트 2026-07-10 (B2B·Logos·포트폴리오 전략 3줄)
+- **§0.6b** Middleware Infra vs Domain Corpus wall (아래)
+
+### §0.6b Middleware Infra vs Domain Corpus (격벽 · 2026-07-11)
+
+**목적:** “로컬 전처리·좌표/포인터 압축·egress 보안” **인프라**와 “성경·사상·명리 **도메인 코퍼스**”를 사업계획·할 일·대외 카피에서 **합선하지 않는다.**
+
+| 레인 | 제품/역할 | Exchange | 할 일 | 금지 |
+|------|-----------|----------|-------|------|
+| **L0** Infra middleware | 주소록·Ollama 전처리·budget·egress | 조건부(벤치 전 FREEZE) | Claim-A 측정·얇은 하네스 | 원어/렌즈를 킬러포인트로 판매 |
+| **L1** Cash cow | a-codeai (§0.6) | 본선 | gateway sidecar · vertical PoC | Logos 코퍼스를 피치에 합침 |
+| **L2** Passion | logos.jema-ai.com 도메인 | 니치 수직만 | 코퍼스·graph·citation | “미들웨어 Moat = 원어 좌표” |
+| **L3** Personal OS | 지휘관 닫힌계 Zero-Trust | **없음** | Cursor 방어선 | Exchange-value 주장 |
+
+**대외 한 줄 (허용):** 로컬 전처리 → ID/포인터 압축 → Frontier egress 격벽.  
+**대외 한 줄 (금지):** 고대 원어 벡터화 = 토큰·보안 미들웨어 상품.
+
+**SSOT:** `docs/final/MKM_MIDDLEWARE_INFRA_VS_DOMAIN_CORPUS_WALL_V1.md` · twin `docs/final/artifacts/mkm_middleware_infra_vs_domain_corpus_wall_v1_latest.json` · check `py scripts/check_mkm_middleware_infra_vs_domain_corpus_wall_v1.py --strict`.  
+**교차:** §3.11(미들웨어 포지션) · `COMPRESSION_METACOG_SIDECAR_ONLY_V1.md` · CENTRAL 동명 절. **원어 좌표 > JSON 주소록** N≥30 대조 **미측정 → 주장 금지**.
+
+**SSOT / Freeze (continued):** **공개 GTM 1차 Hero = §3.0b Y1 Universal Root** · **압축(§3.1) = Parallel Enterprise Lane**(인바운드·기존 B2B). §3.1.3 C-S2·§3.1.5·§10 포인터 유지; **RQ-019·OpenData는 Y1 Hero와 합선하지 않음**. §3.7.2 **(C)** COGS·법무 **승격 전** 단계는 `docs/research/silver_tech_cogs_unit_economics_template_v1.md` **「동결 게이트」** 표만 상세 — 본 §는 정책·동결 지연만. §3.6 Visualization v0 **역참조** + §3.7.2 민감 액션 **구조 Lock** + KPI·면책 **대외 동결 지연** 유지. **2026-05-15** §3.7.2 **(B)/(C)**·RQ-009·**2026-05-11** §3.11·**2026-05-10** §3.9–§3.10 등 이전 동결분은 유지. 개정 시 상단 `Date`·`Revised`·본 문단에 **개정 사유·승인 범위**를 명시. `§3.7`은 영업·마케팅·개발 파이프라인 **공통 지침**.
 
 ## 1) Fact-Locked Baseline
 
@@ -47,7 +104,7 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 
 ### 3.0 도메인·채널 분리 (사업계획서·제안서 혼선 방지, 2026-05-21)
 
-**목적:** 평가·투자·정부 제출 문서에서 **「회사 홈페이지」「제품」「AI 사업」**이 한 URL로 뭉개지지 않도록 고정한다. **단일 SSOT 표:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1·§1.1·§1.1b·**§1.1c**(공통 엔진 vs 킬러 어댑터).
+**목적:** 평가·투자·정부 제출 문서에서 **「회사 홈페이지」「제품」「AI 사업」**이 한 URL로 뭉개지지 않도록 고정한다. **단일 SSOT 표:** `docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1·§1.1·§1.1b·**§1.1c**(공통 엔진 vs 킬러 어댑터). **허브 vs `/hub` 혼동 방지:** `docs/final/JEMA_AI_DOMAIN_HUB_CLARITY_V1.md`.
 
 | 도메인 | 공개 역할 (한 줄) | 사업계획서에 쓸 때 | 이 도메인이 **아닌 것** |
 |--------|-------------------|-------------------|------------------------|
@@ -83,13 +140,56 @@ Scope: `Track C (IP licensing and insight products)`를 중심으로, `초고난
 | 성경·텍스트 연구 | **logos.jema-ai.com** | GraphRAG 연구 워크스페이스 | 연구 통찰·citation lock · 기관 파일럿 | 교리 판매 · Track A · 투자 조언 |
 | 성경 관측 쇼룸 | **jemaai.cloud** v6 | 로고스 관측소 (출구2) | 재현·게이트·리드 | mkmlife 소비자 퍼널과 **동일 SKU** 서술 |
 | 초개인화 B2C | **mkmlife.com** | 마법구슬 `/oracle-sphere` (출구1) | 원퀘스천·다중렌즈 리포트 | logos 연구 홈 · 연구소 제품 홈 |
-| 일상 동반 B2C | **personadiary.com** | Daily Guide · Ritual | 찰나의 나라 · preview_only | mkmlife **API·DB·결제** |
-| 브랜드 허브 | **jema-ai.com** | CTA·enterprise·clinician | 분기·B2B 라우팅 | 위 킬러 **본거지 아님** |
+| 일상 동반 B2C | **personadiary.com** | Daily Guide · Ritual | 찰나의 나라 · **젊은이** · preview_only | mkmlife **API·DB·결제** |
+| 시니어 브리핑 PWA | **jema-ai.com/gyeokmul** | 격물 · 음성·뉴스 요약 | Silver-adjacent **관측** · `PUBLIC_FACING` §3 | 투자 지시 · PersonaDiary **동일 SKU** |
+| 브랜드 허브 | **jema-ai.com** | CTA·enterprise·clinician·3입구 | 분기·B2B 라우팅 | 위 킬러 **본거지 아님** |
 | Y1 신뢰 자산 | **github.com/.../mkm-universal-root** | fixture smoke OSS | reproduce→trust | B2C 킬러·압축 % **합산** |
 
 **구현 메모 (Fact-Lock):** 성경 meaning graph는 **부분 PoC** — 전략은 query-time subgraph + Path Ledger (`LOGOS_ORIGINAL_LANGUAGE_GRAPH_RAG_BRIDGE_V1.md`). Magic Orb path UP/DOWN → ledger ingest는 **B-track stub** — 그래프 자동 변이·Track A 승격 없음.
 
 **상세 표·금지 5줄:** `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` **§1.1c** · 3출구 매트릭스 `mkm_three_exit_branding_matrix_v1_latest.json`.
+
+#### 3.0e 멀티도메인 디자인 거버넌스 (UI/UX 차별화, 2026-07-09)
+
+**한 줄:** L0 철학(`MKM_DESIGN_CONSTITUTION_V1.md`)은 공통 · **L3 도메인 프로필**로 연령·밀도·접근성을 분리한다.
+
+| SSOT | 역할 |
+|------|------|
+| `MKM_DESIGN_CONSTITUTION_V1.md` §9.1 | Audience differentiation law |
+| `mkm_domain_audience_persona_matrix_v1_latest.json` | 연령·톤·토큰·금지 합선 |
+| `mkm_multi_domain_design_delegation_master_v1_latest.json` | 고차원 위임 W0–W5 파도 |
+| `PERSONADIARY_DESIGN_GOVERNANCE_V1.md` | **젊은이(18–34)** |
+| `GYEOKMUL_DESIGN_GOVERNANCE_V1.md` | **시니어(60+)** |
+| `JEMA_AI_DESIGN_GOVERNANCE_V1.md` | 허브 3입구 (≠ `/hub` 라우터 혼동: `JEMA_AI_DOMAIN_HUB_CLARITY_V1.md`) |
+
+**금지:** PersonaDiary 청년 UI를 격물에 · 격물 대타입·골드를 PersonaDiary에 · jema-ai Ring 0에 전 제품 히어로 합치기.
+
+**구현 순서:** W0 SSOT 잠금 → W1 허브 P1–P6 → W2 PersonaDiary → W3 격물 → W4 형제 도메인 → W5 검증 번들.
+
+### 3.0e 거시경제 외곽 포지셔닝 (Fact-Lock · 2026-07-04 검증)
+
+**상태:** `[FACT]` 외부 검증 완료 · `send_gate: HOLD` · 시장 기회 ≠ 시장 점유 · 대외 주장 불가
+
+**한 줄:** AI 생산 인프라($725B/yr)와 안전 배치 도구($3~4B/yr)의 **200:1 지출 비대칭**이 검증되었다. JEMA OS는 이 gap의 에지 계측 레이어에 아키텍처적으로 정렬되나, 시장 점유·독점은 확정되지 않았다.
+
+| 외부 팩트 (검증됨, 2026 H1) | 수치 | JEMA OS 아키텍처 대응 | 경쟁 현실 |
+|----------------------------|------|---------------------|-----------|
+| DC CapEx $1T/yr 돌파 (Dell'Oro) | Big4 $725B, YoY +77% | 에지 계측/가드레일 계층 비례 성장 기회 | Lakera·CalypsoAI(F5 $80M 인수)·Arthur AI 등 10+ 경쟁사 존재 |
+| EU CADA Level 3-4 sovereign 요구 (EC 2026-06-03) | 4단계 sovereignty framework | 로컬 SSOT + 데이터 비이동 + 감사 가능 런타임 | EU 자체 생태계(Mistral·ChapsVision) 급성장 중 |
+| LLM Guardrails TAM (GII Research) | $2.6B(2026)→$8.0B(2030), CAGR 32.3% | Inference control + token metering 아키텍처 | 북미 41% 점유, VC-backed 순수 거버넌스 스타트업 다수 |
+| SLM Edge 하이브리드 90/10 표준화 (MarqStats) | $3.4B(2025)→$12.8B(2030), CAGR 30.3% | 압축 + shallow router + 최소 페이로드 | Qualcomm·Apple NPU·MediaTek 하드웨어 생태계 선점 |
+| 프랑스 DGSI/독일 BfV Palantir 철거 (Euronews 2026-06-16) | Anthropic Fable 5 차단이 촉매 | API 독립적 결정론적 가드레일 | ChapsVision·ArgonOS 유럽 대안 부상 |
+
+**우리의 현재 위치 (솔직한 평가):**
+- 압축 active KPI: **47.1%** (50% gate 미달)
+- Universal Root: **99.53%** fixture bench (send_gate HOLD, external_repro=0)
+- 상용 고객: **0건**, 매출: **$0**
+- GTM FREEZE: `external_repro_count >= 1` 미충족
+
+**결론:** TAM은 실재하고 아키텍처 정렬은 건전하나, **시장 기회 ≠ 점유 확정**이다. 이 절의 수치를 `send_gate` 해제·Track A 승격·대외 독점 주장에 단독 사용하는 것은 금지한다.
+
+**SSOT:** `docs/final/artifacts/macro_positioning_evidence_pack_v1.json` · 딥리서치 2026-07-04
+**합선 금지 (FAIL-COMP-004):** 위 TAM과 UR 99.53% 또는 압축 47.1%를 **동일 헤드라인·슬라이드에 합산하지 않는다**.
 
 ### 3.0b North Star — 차세대 AI OS (v3 SSOT · 2026-06-21)
 
@@ -128,6 +228,23 @@ Neuro (optional local SLM draft) → Symbolic (lexicon + topology crosswalk) →
 - user count → auto-training · telemetry hero
 
 **교차 SSOT:** `docs/research/MKM_UNIVERSAL_ROOT_INVESTOR_FACT_LOCK_CORRECTION_APPENDIX_EN_V1.md` · `docs/research/NEXT_GEN_HYBRID_AI_MKM_MERGED_LIT_REVIEW_2026-06-20.md` · `logos_neuro_symbolic_b2b_gtm_pointer_v1_latest.json`
+
+#### 3.0b-1 Logos Ask — 직교 이중축 차별화 (PAR + 사상 오케스트레이션, 2026-07-04)
+
+**상태:** `[FACT]` VPS live · B-track 관측 READY (61건 4/4 gate PASS) · `send_gate: HOLD`(대외 과금 전 단계).
+
+**원리 (Pattern-Anchored Reasoning):** 성경을 '인류의 보편 사건 코드북'으로 구조화하고, 이제마 사상의학의 4가지 인식론적 추론 전략을 **직교하는 HOW 축**으로 부착. 콘텐츠(WHAT)가 틀릴 확률 0에 가깝게 유지하면서, 사용자 인지 유형에 맞는 관점을 자동으로 제공한다.
+
+| 차별화 축 | 경쟁 대비 해자 |
+|-----------|---------------|
+| 200-Hub 정적 코사인 가드 (WHAT) | LLM 환각 물리적 차단 — 구절 팩트 정밀도 0.65/0.45 이중 임계치 |
+| 4AI 전략 모듈레이션 (HOW) | 금화교역 2관점 병렬 출력 — 분류 실패에도 무해 (`degradation_safe`) |
+| 병증약리 깊이 추적 | 세션 context 자동 포맷 전환 (초기→중기→말기) |
+| 56ms P95 레이턴시 | LLM 추가 호출 0 — 순수 로컬 Python heuristic |
+
+**재현:** `py scripts/modulate_logos_strategy_v1.py --query "예정론"` · `py scripts/report_strategy_modulation_observation_v1.py`
+**Fact-Lock:** CONSTITUTION §29 등재 완료.
+**금지:** Track A 상용 과금·실매매 자동 승격 단정 금지. 대외 카피에 「뇌과학 기반」·「AI 자동 치료」 등 합치지 않는다.
 
 ### 3.0c Y1 GTM 마일스톤 (2026-06-21 · Phase 0)
 
@@ -214,6 +331,18 @@ Neuro (optional local SLM draft) → Symbolic (lexicon + topology crosswalk) →
 
 **승격 경계:** 위 일정의 **완료**는 Track A 상용·실매매·OEM 계약 **자동 승격이 아님** — `COMPRESSION_12M_LEARNINGS` §9·`MKM_PROMOTION_GATE_CHECKLIST_B_TO_A_C_V1.md`·휴먼 승인 병행.
 
+#### 3.1.6 Industry 4-SKU PoC · literal routing (Fact-Lock, 2026-07-05)
+
+**상태:** `research_only` · `send_gate: HOLD` · **third-party repro OK** · `ad_headline_ready: false`
+
+- **Internal demo:** industry 4-SKU PoC **4/4 pass** · aux host `DESKTOP-AP1DC83` chain exit 0 — `compression_b2b_industry_third_party_repro_gate_v1_latest.json` (`third_party_repro_ok: true`).
+- **Routing SSOT:** `compression_b2b_off_the_shelf_shard_sku_v1.json` · SCM/CHAT/MED → **literal + overlay** · gate `check_compression_b2b_industry_routing_ssot_v1.py` exit 0.
+- **Prospect rehearsal (not PII):** tenant `b2b-industry-prospect-v1` · **40 rows** · rollup ~**6.4%** saving proxy · J ~**0.93** — `compression_b2b_pilot_roi_report_v1_latest.json`.
+- **금지:** prospect rehearsal = real customer corpus · Track A 47.5% **SLA 약속** · Y1 Universal Root **합산** (FAIL-COMP-004).
+- **다음 human gate:** real masked JSONL **20–50** · `Run-CompressionCustomerPilotIntake_v1.ps1` · counsel signoff 전 **send=false**.
+
+**재현:** `py scripts/run_compression_b2b_sku_industry_poc_bundle_v1.py --use-spec-routing` · `py scripts/run_compression_b2b_industry_prospect_intake_chain_v1.py`
+
 #### 3.1.4 Runtime Assurance — Safety PLC narrative (DRAFT, 2026-05-16)
 
 **상태:** `[DRAFT]` 내부·OEM 아키텍처 미팅용. **압축 1-Pager(`compression_enterprise_executive_summary_v1.md`)와 분리** — 본 절은 **참조 아키텍처·감사·Pre-authorization** 서사만; IEC/ISO 인증·BOM·실기 인터록 완료 단정 금지 (`RQ-013`).
@@ -270,6 +399,31 @@ Neuro (optional local SLM draft) → Symbolic (lexicon + topology crosswalk) →
 - **금지:** 신학·교리 카피 · 투자·수익 단정 · Track A·실매매 자동 승격 · 「Google/MS 동급 LLM」 표현.
 - **격벽:** Track B `research_only` · `theology_to_sales_forbidden` · 구현 판정은 `CONSTITUTION`·스크립트 exit 0만.
 - **가격·Azure·성숙도 정렬 (2026-06-25):** `reports/mkm_logos_b2b_business_plan_alignment_v1_2026-06-25.md` — §3.1.8 전용 · §3.7(6) 크레딧과 연동 · 압축·Y1 Hero KPI **합산 금지**.
+
+##### 3.1.8a 도메인-불문 텍스트 구조 엔진 일반화 (`[HYPO]` · 2026-07-08)
+
+**한 줄:** 성경에서 유일하게 살아남은 신호(**K축 = 구조 임베딩**)를 스크립트 맥락에서 분리해 **임의 텍스트(법률·의학·금융·뉴스) 범용 라이브러리**로 패키징한다. "우주 코드/예언"이 아니라 **재현 가능한 텍스트 관계망 감사기**를 판다.
+
+- **팩트 교정 (서사 팽창 금지 · Fact-Lock):**
+  - 범용 엔진 **기본**은 `TruncatedSVD of adjacency`(스펙트럴 임베딩) — node2vec/gensim 비의존. **멀티홉 강화판**으로 NetMF(Qiu 2018 등가) falsifier가 별도 존재(성경에서 T4 116×, `run_logos_netmf_embedding_falsifier_v1.py`)하나 이는 **성경 검증치**이며 범용 엔진 표준 경로가 아니다 — 대외에 "우리 엔진 = NetMF"로 단정 금지.
+  - **AI 환각을 "원천 차단"하지 않는다.** 자기 귀무(permutation null z·p)를 공개하고 **NO-SIGNAL도 반환**하는 **감사 하네스**다. 그 정직성이 제품.
+  - 성경 코퍼스 결과(홀드아웃 cross-ref **z≈11.63**, `research_only`)는 **자동 전이되지 않는다.** 법률/의학 전이는 해당 도메인 자체 curated 링크로 falsifier를 통과하기 전엔 **미검증 [HYPO]**.
+- **집행 실체 (exit 0):** `scripts/mkm_text_structure_engine_v1.py` — 범용 문서 리스트 → adjacency+overlap 엣지 → 스펙트럴 임베딩 → 홀드아웃 링크예측 귀무검정. 비성경 planted 3-토픽 데모에서 **enrichment 9.23× · z=37.36 · p=0.024 = SIGNAL** (`reports/mkm_text_structure_engine_v1_latest.json`). 테스트 `tests/test_mkm_text_structure_engine_v1.py` 4 passed (무구조 랜덤 코퍼스에는 거짓 SIGNAL 금지 검증 포함).
+- **BM 위치:** §3.1.8 Logos B2B 부록의 **엔진 심장** — 성경은 첫 레퍼런스 도메인, 판매물은 **범용 구조 감사 API**. 가격·성숙도는 여전히 위 §3.1.8 게이트(파일럿만 즉시)를 따르며 **도메인별 전이 검증 전 상용 확정 금지**.
+- **금지:** "NetMF"·"환각 제거"·"성경 z가 법률에도 통함" 단정 · Track A·MS 헤드라인·압축 KPI 합산.
+
+#### 3.1.9 zone_f_code coding deep pack · B2B micro cost counterfactual (Fact-Lock · 2026-07-07)
+
+**상태:** `research_only` · `send_gate: HOLD` · **인바운드 B2B 부품 스펙 포인터만** — 국가 지식서비스수지·소버린 파운데이션 서사·Track A ~47% **합산 금지** (FAIL-COMP-004).
+
+- **포지션:** `zone_f_code` 템플릿 카탈로그 **히트 구간**에서만 `[ZF_MASK:id@hash]` wire로 input 토큰을 줄이는 **결정론적 배관** — 범용 챗·임의 레포 전체 절감이 아님.
+- **Twin gate SSOT:** `docs/final/artifacts/compression_coding_deep_pack_gate_v1_latest.json` — `exact_restore` **1265/1265** · `mean_saving_rate_on_hit` **~0.735** (카탈로그 twin만).
+- **Micro cost counterfactual SSOT:** `docs/final/artifacts/zone_f_code_micro_cost_model_v1_latest.json` — 공식 `effective_input_multiplier = 1 − wire_match_rate × saving_rate_on_hit` · Output 단가 **변경 없음** 가정 · `ollama_shallow_cloud_skip: false` (미측정).
+- **시나리오 스냅샷 (5인 팀·일 Input 5M / Output 1M · $5/$15 per 1M · 20영업일 · artifact-bound):** curated 히트 **~0.887** → 월 절감 **~$326 (~41%)** · moderate **0.70** → **~$257 (~32%)** · conservative **0.50** → **~$184 (~23%)**. **49%·전 Input 78.9% 적용 헤드라인 금지.**
+- **Shallow ↔ stub 통합 벤치 (fixture · live Ollama 불필요):** `docs/final/artifacts/ollama_to_zf_code_stub_integration_v1_latest.json` — `py scripts/run_ollama_to_zf_code_stub_integration_v1.py`
+- **데이터 소버린티 카피:** `docs/final/artifacts/zone_f_code_coding_sovereignty_copy_v1_latest.json` — twin 수치는 gate에서 동기화; pilot SLA 단정 금지 (`PUBLIC_FACING` v1.10).
+- **재현:** `py scripts/build_zone_f_code_micro_cost_model_v1.py` · `py scripts/build_compression_coding_deep_pack_gate_v1.py`
+- **금지:** 국가 무역수지·소버린 AI 구원 투수 · 무조건 팀 비용 반토막 · Ollama shallow=cloud 0원 · 미매칭 구간에 twin `saving_rate` 헤드라인 합산.
 
 ### 3.2 축 B — 초고난도 비정형 텍스트 기반 사업 (고급 해설형)
 
@@ -580,21 +734,23 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 ---
 
 
-## 4) 우선순위 매트릭스 (2026-04)
+## 4) 우선순위 매트릭스 (2026-04 · H2 실행은 §0.6 우선)
 
-**대외 매출 파도(권장, §3.8):** 기업용 **매크로 조기 경보 구독**을 Track C의 **1차 상용 패키징**으로 두고, 기술 축(P1~P6)과 병행하여 영업·납기 계획을 잡는다.
+**2026 H2 실행 우선순위 (supersedes ranking below for staffing/calendar):** §0.6 **One cash cow (a-codeai)** + **One passion (logos.jema-ai.com)**. P2/P3/P4–P6 below remain **packaging backlog / inbound annex** — not parallel full-time GTM until cash-cow shadow≥20 + vertical PoC 1 and Logos micro-pilot 3–5 close or are explicitly re-opened by commander. Snapshot `primary_revenue_wave` labels may still name macro+compression as **packaging wave**; do not read that as “abandon §0.6 focus.”
 
-1. **P1 — 압축·토큰절감**
-   - 이유: 90일 내 매출화 가능성이 가장 높고 Track C 비자문 구조와 정합성이 가장 높다.
-2. **P2 — 신시장지표(관측형)**
-   - 이유: 기업 수요가 높고 Track C의 경보형 패키지로 전개 가능하다.
-3. **P3 — Topology Radar/Resonance Scanner(B2C 쇼룸)**
+**대외 매출 파도(패키징 백로그, §3.8):** 기업용 **매크로 조기 경보 구독**은 Track C **패키징 축**으로 유지하되, **2026 H2 캘린더 본선**은 §0.6 2레일이다.
+
+1. **P1 — 압축·토큰절감** (= cash cow 레일 · §0.6)
+   - 이유: 90일 내 매출화 가능성이 가장 높고 Track C 비자문 구조와 정합성이 가장 높다. **다음 1타:** shadow JSONL **20+** · vertical PoC **1건** · % SLA 금지.
+2. **P2 — 신시장지표(관측형)** *(backlog)*
+   - 이유: 기업 수요가 높고 Track C의 경보형 패키지로 전개 가능하다. H2는 §3.8 시트·면책 정합만 유지.
+3. **P3 — Topology Radar/Resonance Scanner(B2C 쇼룸)** *(backlog)*
    - 이유: 대중 체험 전환율과 차별화가 높고, 비자문·비결정론 구조로 법무 리스크를 상대적으로 낮출 수 있다.
-4. **P4 — 명리학(해설형 패키지)**
+4. **P4 — 명리학(해설형 패키지)** *(backlog)*
    - 이유: 콘텐츠/구독형 전개가 가능하나 법적·표현 리스크 관리를 강하게 요구한다.
-5. **P5 — 초고난도 비정형 텍스트 기반(해설형 패키지)**
-   - 이유: 차별화 포인트는 크지만 상업화는 해설형/리서치형으로 제한하고, B2B에서는 스트레스 테스트 베드 내러티브만 사용해야 안전하다.
-6. **P6 — 사상의학(비의료 IP)**
+5. **P5 — 초고난도 비정형 텍스트 기반(해설형 패키지)** *(= passion 레일 Logos와 인접 · §0.6)*
+   - 이유: 차별화 포인트는 크지만 상업화는 해설형/리서치형으로 제한. **H2 passion 1타:** institution micro-pilot **3~5교** · 교리 판매 금지 · `[NON_GATING]`.
+6. **P6 — 사상의학(비의료 IP)** *(backlog)*
    - 이유: 잠재력은 크지만 규제·오해 리스크가 커서 초기 Track C에서는 제한 운용이 적합하다.
 
 ## 5) Packaging Strategy (하나로 묶고, 필요 시 분할)
@@ -616,25 +772,27 @@ MKM은 추상 기호를 단일 프롬프트로 뭉개지 않고, **버전된 JSO
 - 법무/규제 검토가 사업축별로 달라질 때,
 - 세일즈 조직이 산업군별 플레이북을 따로 요구할 때.
 
-## 6) 30-60-90 Execution (우선순위 반영)
+## 6) 30-60-90 Execution (2026 H2 · §0.6 정렬)
 
-### Day 0-30 (P1 론칭)
+**기준:** §0.6 cash cow + passion. 외부 LLM CAGR/ACV/전환% **인용 금지**. `send_gate: HOLD` until counsel.
 
-- 압축·토큰절감 오퍼 1페이지와 가격표 완성.
-- Track C 공통 디스클레이머를 랜딩/제안서/API 문서에 고정 삽입.
-- 첫 20개 리드 리스트 확정(기존 네트워크 + 인바운드).
+### Day 0-30 (Cash cow · a-codeai)
 
-### Day 31-60 (P2 병행)
+- Inbound PoC onepager + evidence pack 유지 (`pack_ok`); shadow corpus **→20+** 행 적재.
+- Track C 공통 디스클레이머를 랜딩/제안서/API·미팅팩 **document tail**에 고정 (`check_track_c_b2b_disclaimer_integrity_v1.py` exit 0).
+- Vertical PoC **1건** 범위 확정 (KM support / lexicon overlay 중 1) — % SLA 문구 금지.
 
-- 신시장지표 관측형 리포트 베타 론칭(주간 1회, 월간 1회).
-- 디자인 파트너 3~5곳 인터뷰 및 KPI 부록 고정.
-- 압축 API 파일럿 1~2건 유료 전환.
+### Day 31-60 (Passion · logos + cash-cow close)
 
-### Day 61-90 (P3 착수)
+- Logos institution demo/pro evidence 유지; **micro-pilot 3~5교** 초대 원페이지 발송 준비(법무 전 내부만).
+- a-codeai: shadow 20+ 달성 시 gateway sidecar 제안서 1장(압축 %와 Logos path **한 덱 합산 금지**).
+- P2 매크로 경보·P3 Topology는 **시트·쇼룸 정합만** (풀 GTM 금지).
 
-- Topology Radar/Resonance Scanner 공개 베타 출시(입력 제한 + 허용 필드 고정).
-- 엔터프라이즈 API CTA를 `a-codeai.com`으로 연결한 리드 퍼널 A/B 테스트.
-- 파일럿 종료 사용자/법인 리드를 Track C 연간 계약 파이프라인으로 전환.
+### Day 61-90 (전환·보류 선)
+
+- 유료/연간 전환은 cash-cow 파일럿 종료분만; Logos는 research_only·교리 판매 금지 유지.
+- Phase 1 #3–4(격물·personadiary) **최소선 후 hold** — 마케팅·인력 분산 금지.
+- 엔터프라이즈 CTA는 `a-codeai.com` / `jema-ai.com/enterprise` 분리 유지; Y1 OSS KPI와 B2C KPI 합산 금지.
 
 ## 7) KPI Contract (사업축 공통)
 

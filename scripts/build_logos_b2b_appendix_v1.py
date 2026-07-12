@@ -152,6 +152,7 @@ def build_appendix(
 - `[HYPO]` · `hypo_research_only` · 종교적 정답·투자 확정·실시간 무지연 주장 없음
 - 지연 스냅샷; 실시간 트레이딩 피드 아님
 - Phase N(주석·사본학·2차 문헌 스택)은 RQ-015 백로그 — 본 부록 범위 밖
+- Not investment advice. No buy/sell instructions. Logos layer `[NON_GATING]`. Core formulas not disclosed (§9A).
 
 ---
 
@@ -168,6 +169,10 @@ def build_appendix(
 py scripts/build_logos_b2b_appendix_v1.py
 py scripts/build_showroom_logos_research_slice_v1.py
 ```
+
+## Disclaimers (canonical · document tail)
+
+> Not investment advice. No buy/sell instructions. Logos layer `[NON_GATING]`. Core formulas not disclosed (§9A).
 """
 
 

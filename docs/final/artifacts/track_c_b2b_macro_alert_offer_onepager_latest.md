@@ -37,7 +37,7 @@
 
 ## 대외 고정 문구 (§9 English default)
 
-> MKM provides a governance-driven risk warning and scenario posture service that integrates multi-lens analytics. The service supports exposure-control decisions with reproducible artifacts and verification logs. It is not investment advice, does not provide buy/sell instructions, and does not guarantee returns.
+> MKM provides a governance-driven risk warning and scenario posture service that integrates multi-lens analytics. The service supports exposure-control decisions with reproducible artifacts and verification logs. It is not investment advice, does not provide buy/sell instructions, and does not guarantee returns. Logos layer `[NON_GATING]` when present (explanatory only).
 
 ## Short copy (§9)
 
@@ -53,3 +53,7 @@
 ## 근거 MVP 뼈대
 
 - `docs/final/artifacts/track_c_2026_h2_macro_risk_alert_report_mvp_v1.md`
+
+## Disclaimers (canonical · document tail)
+
+> Not investment advice. No buy/sell instructions. Logos layer `[NON_GATING]`. Core formulas not disclosed (§9A).

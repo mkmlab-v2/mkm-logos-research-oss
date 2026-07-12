@@ -1,0 +1,62 @@
+{
+  "schema": "track_c_b2b_meeting_pack_readiness_v1",
+  "generated_at_utc": "2026-07-12T18:18:48Z",
+  "ready_for_internal_meeting": true,
+  "ready_for_external_send": false,
+  "external_send_note": "legal_sign_off_required — DRAFT_AUTO artifacts only",
+  "missing_files": [],
+  "optional_missing_files": [],
+  "checks": [
+    {
+      "id": "file:docs/final/artifacts/track_c_b2b_meeting_pack_index_v1_latest.md",
+      "ok": true
+    },
+    {
+      "id": "file:docs/final/artifacts/track_c_logos_b2b_exec_summary_slide_v1_latest.md",
+      "ok": true
+    },
+    {
+      "id": "file:docs/final/artifacts/track_c_logos_redacted_demo_excerpt_v1_latest.md",
+      "ok": true
+    },
+    {
+      "id": "file:docs/final/artifacts/track_c_combined_b2b_offer_onepager_v1_latest.md",
+      "ok": true
+    },
+    {
+      "id": "file:docs/final/artifacts/track_c_logos_deep_risk_narrative_offer_onepager_v1_latest.md",
+      "ok": true
+    },
+    {
+      "id": "file:docs/final/artifacts/track_c_b2b_macro_alert_offer_onepager_latest.md",
+      "ok": true
+    },
+    {
+      "id": "file:docs/final/artifacts/track_c_b2b_logos_lens_appendix_v1_latest.md",
+      "ok": true
+    },
+    {
+      "id": "optional:docs/final/artifacts/track_c_b2b_logos_multi_orbit_appendix_v1_latest.md",
+      "ok": true,
+      "required": false
+    },
+    {
+      "id": "optional:docs/final/artifacts/logos_multi_orbit_showroom_pack_v1_latest.json",
+      "ok": true,
+      "required": false
+    },
+    {
+      "id": "banner:DRAFT_AUTO",
+      "ok": true
+    },
+    {
+      "id": "demo:no_path_leaks",
+      "ok": true,
+      "patterns_matched": []
+    },
+    {
+      "id": "demo:non_gating_mentioned",
+      "ok": true
+    }
+  ]
+}
