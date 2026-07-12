@@ -106,6 +106,7 @@ py scripts/synthesize_llm_wiki_theory_mathematization_v1.py
         {
             "schema": "llm_wiki_wiki_v1",
             "type": "Theory Canon",
+            "content_type": "synthesis",
             "title": "MKM Theory Mathematization Canon",
             "description": "Internal B-track synthesis of 75-formula canon and WORLDVIEW §5.",
             "resource": "docs/final/artifacts/mkm_theory_mathematization_canon_v1_latest.md",

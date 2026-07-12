@@ -1,0 +1,208 @@
+{
+  "schema": "llm_wiki_lint_v1",
+  "generated_at_utc": "2026-07-12T14:42:46Z",
+  "ok": true,
+  "strict": false,
+  "skipped_empty": false,
+  "roots_checked": [
+    "memory/obsidian_vault/llm_wiki/wiki",
+    "memory/obsidian_vault/llm_wiki/raw",
+    "docs/final/artifacts/okf_bundles"
+  ],
+  "files_scanned": 19,
+  "yaml_pages": 9,
+  "skipped_legacy_no_yaml": 10,
+  "error_count": 0,
+  "warning_count": 18,
+  "files": [
+    {
+      "path": "memory/obsidian_vault/llm_wiki/wiki/mkm_theory_mathematization_canon_v1.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [],
+      "status": "ok",
+      "schema": "llm_wiki_wiki_v1",
+      "content_type": "synthesis"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/2026-06-13_gemini_sql2_bird80_reference.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/2026-06-13_multi_domain_saas_north_star_reference.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/2026-06-15_mkm_theory_mathematization_canon_pointer.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/cursor_cloud_sandbox_boundary_pointer.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/cursor_session_validation_baseline_pointer.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/four_realms_veritas_pointer.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/mkm_ollama_shallow_router_schema_pointer.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/nextgen_hybrid_ai_merged_lit_review_pointer.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/py311_asyncio_taskgroup_pointer.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "memory/obsidian_vault/llm_wiki/raw/py311_pathlib_path_pointer.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "no_yaml_frontmatter"
+      ],
+      "status": "skipped_legacy_no_yaml"
+    },
+    {
+      "path": "docs/final/artifacts/okf_bundles/han_vocology/index.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "missing:content_type"
+      ],
+      "status": "ok",
+      "schema": "okf_concept_v1",
+      "content_type": null
+    },
+    {
+      "path": "docs/final/artifacts/okf_bundles/han_vocology/instruments/index.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "missing:content_type"
+      ],
+      "status": "ok",
+      "schema": "okf_concept_v1",
+      "content_type": null
+    },
+    {
+      "path": "docs/final/artifacts/okf_bundles/han_vocology/instruments/km_vhi_v0_1.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "missing:content_type"
+      ],
+      "status": "ok",
+      "schema": "okf_concept_v1",
+      "content_type": null
+    },
+    {
+      "path": "docs/final/artifacts/okf_bundles/han_vocology/log.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "missing:content_type"
+      ],
+      "status": "ok",
+      "schema": "okf_concept_v1",
+      "content_type": null
+    },
+    {
+      "path": "docs/final/artifacts/okf_bundles/han_vocology/playbooks/appendix_6_km_vhi.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "missing:content_type"
+      ],
+      "status": "ok",
+      "schema": "okf_concept_v1",
+      "content_type": null
+    },
+    {
+      "path": "docs/final/artifacts/okf_bundles/han_vocology/playbooks/index.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "missing:content_type"
+      ],
+      "status": "ok",
+      "schema": "okf_concept_v1",
+      "content_type": null
+    },
+    {
+      "path": "docs/final/artifacts/okf_bundles/ijeoma_5hang_4sang/index.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "missing:content_type"
+      ],
+      "status": "ok",
+      "schema": "okf_concept_v1",
+      "content_type": null
+    },
+    {
+      "path": "docs/final/artifacts/okf_bundles/ijeoma_5hang_4sang/log.md",
+      "ok": true,
+      "errors": [],
+      "warnings": [
+        "missing:content_type"
+      ],
+      "status": "ok",
+      "schema": "okf_concept_v1",
+      "content_type": null
+    }
+  ],
+  "reminder": "raw/ path: no bulk diary/PHI/family dumps; no auto-classification",
+  "reproducible_command": "py scripts/check_llm_wiki_lint_v1.py"
+}
