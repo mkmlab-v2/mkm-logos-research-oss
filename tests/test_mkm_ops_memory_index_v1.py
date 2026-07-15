@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 from mkm_ops_memory_index_lib_v1 import (  # noqa: E402
+    LANE_OPS_PACKS,
     apply_repair_v2_noise_guard,
     build_index_document,
     extract_anchor_block,
@@ -115,13 +116,16 @@ def test_nodes_for_resume_lane_oracle(tmp_path: Path) -> None:
         encoding="utf-8",
     )
     doc = build_index_document(tmp_path)
-    lane_ids = [nid for nid, _ in nodes_for_resume(doc, lane="ms")]
-    assert lane_ids == [
+    lane_ids = [nid for nid, _ in nodes_for_resume(doc, lane="ms", root=tmp_path)]
+    assert lane_ids[:3] == [
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_ms",
     ]
     assert "prism_ops_mission_log_next_one" not in lane_ids
+    assert "prism_ops_lane_oracle" not in lane_ids
+    assert "prism_ops_lane_infra" not in lane_ids
+    assert "prism_ops_lane_design" not in lane_ids
 
     reports = tmp_path / "reports"
     reports.mkdir(parents=True)
@@ -199,6 +203,46 @@ def test_nodes_for_resume_commander_default(tmp_path: Path) -> None:
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_mission_log_next_one",
+    ]
+    # Portfolio pin appears when snapshot exists (commander_default + root).
+    snap_dir = tmp_path / "docs" / "final" / "artifacts"
+    snap_dir.mkdir(parents=True, exist_ok=True)
+    (snap_dir / "mkm_portfolio_status_snapshot_v1_latest.json").write_text(
+        json.dumps(
+            {
+                "commercialization_phases": {
+                    "execution_focus_2026_07": (
+                        "one_cash_cow_acodeai + one_passion_logos; "
+                        "hold mkmlife/personadiary/gyeokmul after phase1 min"
+                    ),
+                    "phase_1": "a-codeai PoC [done] · logos pilot [done]",
+                },
+                "market_validation_advisory_2026_07": {
+                    "status": "ADVISORY_not_fact_lock",
+                    "compression_lane": "wide_market_crowded_evidence_gap",
+                    "logos_lane": "narrow_niche_institution_wtp_unproven_pmf",
+                    "ssot": "TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md §0.6",
+                },
+                "doc_pointers": {
+                    "portfolio_master_index": "docs/final/MKM_PORTFOLIO_MASTER_INDEX_V1.md",
+                    "business_plan_ssot": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
+                },
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    ids_with = [
+        nid
+        for nid, _ in nodes_for_resume(
+            doc, commander_default=True, root=tmp_path
+        )
+    ]
+    assert ids_with == [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_mission_log_next_one",
+        "prism_ops_portfolio_execution_focus",
     ]
 
 
@@ -285,6 +329,25 @@ def test_build_index_preserves_logos_overlay_on_disk(tmp_path: Path) -> None:
     nodes = doc.get("nodes") or {}
     assert "logos_math_v1" in (doc.get("overlays") or [])
     assert "prism_ops_logos_cosmic_anchor_bridge" in nodes
+
+
+def test_lane_packs_do_not_mix_foreign_lane_nodes() -> None:
+    """Each lane inject must not pull another lane's prism_ops_lane_* pin."""
+    lane_node = {
+        "ms": "prism_ops_lane_ms",
+        "oracle": "prism_ops_lane_oracle",
+        "infra": "prism_ops_lane_infra",
+        "design": "prism_ops_lane_design",
+    }
+    for lane, pack in LANE_OPS_PACKS.items():
+        foreign = {nid for other, nid in lane_node.items() if other != lane}
+        assert not (set(pack) & foreign), f"{lane} pack mixes foreign lane nodes"
+
+
+def test_resume_pack_cli_default_top_n_is_three() -> None:
+    src = (ROOT / "scripts" / "build_mkm_chat_resume_pack_v1.py").read_text(encoding="utf-8")
+    assert '"--top-n"' in src or "'--top-n'" in src
+    assert "default=3" in src
 
 
 def test_repair_v2_noise_guard_falls_back_to_baseline() -> None:

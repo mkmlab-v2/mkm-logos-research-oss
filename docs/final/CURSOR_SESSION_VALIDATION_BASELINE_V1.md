@@ -95,7 +95,7 @@
 | 【아테나 점검】 | `-Persona AthenaBundle` |
 | 【쇼룸 헬스】 | `-Persona ShowroomTrackCHealth` |
 
-전체 표: 루트 `AGENTS.md` 「페르소나 단축 호출」.
+전체 표: `docs/final/AGENTS_REFERENCE_V1.md` 「페르소나 단축 호출」(slim `AGENTS.md`는 hot 5만).
 
 ---
 

@@ -1,0 +1,66 @@
+{
+  "schema": "mkm_ops_memory_index_token_bench_v1",
+  "track": "B",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "boundary_ack": "[HYPO] token bench — not commercial SLA; measure only",
+  "generated_at_utc": "2026-07-15T10:35:33.140758Z",
+  "node_count": 7,
+  "top_n_inject_pins": 3,
+  "slice_max_chars": 1200,
+  "comparison_scope": "top_n_inject_pins_full_anchor_vs_inject_off",
+  "full_anchor_slices": {
+    "char_count": 11596,
+    "tokens": 4830,
+    "method": "tiktoken:cl100k_base"
+  },
+  "resume_pack_inject_off": {
+    "label": "essence+must_keep_tags only (no --include-slice)",
+    "char_count": 294,
+    "tokens": 115,
+    "method": "tiktoken:cl100k_base"
+  },
+  "resume_pack_inject_on": {
+    "label": "essence+tags+slice preview (--include-slice --slice-max-chars 1200)",
+    "char_count": 2986,
+    "tokens": 1361,
+    "method": "tiktoken:cl100k_base"
+  },
+  "resume_pack_inject_repair_v2": {
+    "label": "repair_v2 noise guard (top_n=3, slice_max_chars=1200)",
+    "synthetic_query": "작전 보드 SSOT — active lanes only · Track A 금지 · SEND_GATE HOLD FAIL-COMP-004 Track A SEND_GATE: HOLD CENTRAL 최신 운영 체크포인트 블록 — athena_checkpoint·격벽 스냅샷 ATHENA_CHECKPOINT CENTRAL Oracle module Tier-2 prep — Cursor inject SSOT · cap cross-SSOT read-only · HOLD tier1_module_ssot_ready send_gate HYPO",
+    "char_count": 294,
+    "tokens": 115,
+    "method": "tiktoken:cl100k_base",
+    "operational_label": "post-processor included"
+  },
+  "delta_vs_full_slices": {
+    "tokens_saved_pins_off": 4715,
+    "reduction_ratio": 0.9762,
+    "reduction_percent": 97.62
+  },
+  "slice_on_off_ab": {
+    "tokens_added_by_slice": 1246,
+    "inject_off_tokens": 115,
+    "inject_on_tokens": 1361,
+    "overhead_ratio_vs_off": 10.8348,
+    "overhead_percent_vs_off": 1083.48
+  },
+  "raw": {
+    "label": "resume_pack_inject_on (raw slice, no repair guard)",
+    "tokens": 1361
+  },
+  "repair_v2": {
+    "label": "resume_pack_inject_repair_v2",
+    "tokens": 115,
+    "operational_label": "post-processor included"
+  },
+  "delta": {
+    "tokens_repair_v2_minus_raw": -1246,
+    "tokens_saved_by_repair_guard": 1246
+  },
+  "legacy_alias": {
+    "inject_pins_text": "resume_pack_inject_off",
+    "delta": "delta_vs_full_slices"
+  }
+}

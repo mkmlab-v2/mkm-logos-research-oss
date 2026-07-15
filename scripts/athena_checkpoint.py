@@ -20,6 +20,7 @@ Usage:
   py scripts/athena_checkpoint.py --dry-run "message"
   py scripts/athena_checkpoint.py --path docs/final/CENTRAL_AGENT_MEMORY_V1.md "message"
   py scripts/athena_checkpoint.py --replace-all "only this line remains"
+  py scripts/athena_checkpoint.py --origin external_paste "pasted note"
 """
 
 from __future__ import annotations
@@ -33,6 +34,12 @@ from pathlib import Path
 
 WORKSPACE_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CENTRAL = WORKSPACE_ROOT / "docs" / "final" / "CENTRAL_AGENT_MEMORY_V1.md"
+sys.path.insert(0, str(WORKSPACE_ROOT / "scripts"))
+from athena_checkpoint_provenance_v1 import (  # noqa: E402
+    append_provenance_jsonl,
+    build_provenance_row,
+    normalize_provenance,
+)
 
 MARK_START = "<!-- ATHENA_CHECKPOINT_V1_START -->"
 MARK_END = "<!-- ATHENA_CHECKPOINT_V1_END -->"
@@ -42,10 +49,40 @@ CENTRAL_MARKER = "<!-- CENTRAL checkpoint block -->"
 SECTION_HEADER = "## 운영 체크포인트 (자동, 1줄)"
 
 DEFAULT_MAX_CHECKPOINTS = 20
+# Same continuity_id within this window replaces the newest bullet (burst dedupe).
+DEFAULT_SAME_CONTINUITY_BURST_SECONDS = 60
+
+CONTINUITY_PREFIX_RE = re.compile(
+    r"^continuity=([a-z0-9][a-z0-9._-]{2,127})\s*·\s*",
+    re.I,
+)
 
 
 def _utc_now_z() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+
+def _parse_checkpoint_bullet(line: str) -> tuple[str, str, str] | None:
+    """Return (stamp_utc, continuity_id, message_body) or None."""
+    m = re.match(
+        r"^-\s+\*\*(\d{4}-\d{2}-\d{2}T[\d:.]+Z)\*\*\s+—\s+(.+)$",
+        line.strip(),
+    )
+    if not m:
+        return None
+    stamp, message = m.group(1), m.group(2).strip()
+    cont = ""
+    cm = CONTINUITY_PREFIX_RE.match(message)
+    if cm:
+        cont = cm.group(1)
+    return stamp, cont, message
+
+
+def _parse_iso_utc(stamp: str) -> datetime:
+    s = stamp.strip()
+    if s.endswith("Z"):
+        s = s[:-1] + "+00:00"
+    return datetime.fromisoformat(s).astimezone(timezone.utc)
 
 
 def _replace_last_updated(content: str, stamp: str) -> str:
@@ -78,10 +115,43 @@ def _merge_checkpoint_inner(
     stamp: str,
     message: str,
     max_lines: int,
+    *,
+    same_continuity_burst_seconds: int = DEFAULT_SAME_CONTINUITY_BURST_SECONDS,
 ) -> str:
-    """Build inner body (no MARK_* lines): marker comment, new bullet first, then prior bullets."""
+    """Build inner body (no MARK_* lines): marker comment, new bullet first, then prior bullets.
+
+    When the newest prior bullet shares continuity_id with the incoming message and the
+    stamps are within ``same_continuity_burst_seconds``, replace that bullet instead of
+    prepending (burst dedupe).
+    """
     new_line = f"- **{stamp}** — {message.strip()}"
     prev = _checkpoint_bullets_from_inner(inner_between_markers)
+
+    incoming = _parse_checkpoint_bullet(new_line)
+    if incoming and prev and same_continuity_burst_seconds > 0:
+        new_stamp, new_cont, _ = incoming
+        if new_cont:
+            try:
+                new_dt = _parse_iso_utc(new_stamp)
+            except ValueError:
+                new_dt = None
+            if new_dt is not None:
+                for idx, bullet in enumerate(prev):
+                    parsed = _parse_checkpoint_bullet(bullet)
+                    if not parsed:
+                        continue
+                    prev_stamp, prev_cont, _ = parsed
+                    if prev_cont != new_cont:
+                        continue
+                    try:
+                        prev_dt = _parse_iso_utc(prev_stamp)
+                    except ValueError:
+                        continue
+                    delta = abs((new_dt - prev_dt).total_seconds())
+                    if delta <= float(same_continuity_burst_seconds):
+                        prev = prev[:idx] + prev[idx + 1 :]
+                        break
+
     merged = [new_line] + prev
     if len(merged) > max_lines:
         merged = merged[:max_lines]
@@ -123,6 +193,7 @@ def _replace_checkpoint(
     *,
     replace_all: bool,
     max_checkpoints: int,
+    same_continuity_burst_seconds: int = DEFAULT_SAME_CONTINUITY_BURST_SECONDS,
 ) -> str:
     if MARK_START not in content or MARK_END not in content:
         return _insert_section_if_missing(content, stamp, message)
@@ -135,7 +206,13 @@ def _replace_checkpoint(
     if replace_all:
         inner_body = f"- **{stamp}** — {message.strip()}"
     else:
-        inner_body = _merge_checkpoint_inner(inner, stamp, message, max_checkpoints)
+        inner_body = _merge_checkpoint_inner(
+            inner,
+            stamp,
+            message,
+            max_checkpoints,
+            same_continuity_burst_seconds=same_continuity_burst_seconds,
+        )
     replacement = f"{MARK_START}\n{inner_body}\n{MARK_END}"
     return content[: m.start()] + replacement + content[m.end() :]
 
@@ -200,6 +277,16 @@ def main(argv: list[str] | None = None) -> int:
         help=f"Max bullet lines to keep after prepend (default {DEFAULT_MAX_CHECKPOINTS}).",
     )
     p.add_argument(
+        "--same-continuity-burst-seconds",
+        type=int,
+        default=DEFAULT_SAME_CONTINUITY_BURST_SECONDS,
+        metavar="SEC",
+        help=(
+            "Within SEC seconds, a new checkpoint with the same continuity= id "
+            f"replaces the newest prior bullet instead of prepending (default {DEFAULT_SAME_CONTINUITY_BURST_SECONDS})."
+        ),
+    )
+    p.add_argument(
         "--continuity-id",
         default="",
         help="Optional continuity id prefix for multi-chat tasks (prepended to message).",
@@ -214,11 +301,45 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Skip append_mkm_cursor_turn_meta_v1 even when --continuity-id is set.",
     )
+    p.add_argument(
+        "--origin",
+        default="commander",
+        choices=["commander", "agent_summary", "tool", "external_paste"],
+        help="Write-path origin for provenance sidecar (default commander).",
+    )
+    p.add_argument(
+        "--trust",
+        default="",
+        choices=["", "high", "medium", "low", "unknown"],
+        help="Trust label (default by origin).",
+    )
+    p.add_argument(
+        "--allow-act",
+        dest="allow_act",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Consequential-act elevation (default: true only for commander; forced false for external_paste).",
+    )
+    p.add_argument(
+        "--skip-provenance",
+        action="store_true",
+        help="Skip provenance JSONL sidecar (not recommended).",
+    )
     args = p.parse_args(argv)
 
     raw_msg = (args.message or "").strip()
     if not raw_msg:
         print("error: message required, e.g. py scripts/athena_checkpoint.py \"done: X\"", file=sys.stderr)
+        return 1
+
+    try:
+        prov = normalize_provenance(
+            origin=args.origin,
+            trust=args.trust or None,
+            allow_act=args.allow_act,
+        )
+    except ValueError as exc:
+        print(f"error: {exc}", file=sys.stderr)
         return 1
 
     msg = raw_msg
@@ -243,6 +364,24 @@ def main(argv: list[str] | None = None) -> int:
         msg,
         replace_all=args.replace_all,
         max_checkpoints=args.max_checkpoints,
+        same_continuity_burst_seconds=args.same_continuity_burst_seconds,
+    )
+
+    try:
+        relative_central = str(path.resolve().relative_to(WORKSPACE_ROOT.resolve()))
+    except ValueError:
+        relative_central = str(path)
+
+    prov_row = build_provenance_row(
+        stamp_utc=stamp,
+        message=raw_msg,
+        message_written=msg,
+        origin=prov["origin"],
+        trust=prov["trust"],
+        allow_act=prov["allow_act"],
+        continuity_id=args.continuity_id.strip(),
+        lane=(args.lane.strip() or "infra"),
+        central_path=relative_central,
     )
 
     if args.dry_run:
@@ -251,6 +390,12 @@ def main(argv: list[str] | None = None) -> int:
         m = re.search(re.escape(MARK_START) + r"[\s\S]*?" + re.escape(MARK_END), updated)
         print("checkpoint block:")
         print(m.group(0) if m else "(marker block not found — check anchor)")
+        print(
+            f"provenance: origin={prov['origin']} trust={prov['trust']} "
+            f"allow_act={prov['allow_act']}"
+        )
+        if not args.skip_provenance:
+            append_provenance_jsonl(prov_row, dry_run=True)
         if args.continuity_id.strip() and not args.skip_turn_meta:
             _append_turn_meta_after_checkpoint(
                 lane=args.lane.strip() or "infra",
@@ -264,6 +409,18 @@ def main(argv: list[str] | None = None) -> int:
     print(f"OK: {path}")
     print(f"last_updated_utc: {stamp}")
     print(f"checkpoint: {msg}")
+    print(
+        f"provenance: origin={prov['origin']} trust={prov['trust']} "
+        f"allow_act={prov['allow_act']}"
+    )
+
+    if not args.skip_provenance:
+        try:
+            append_provenance_jsonl(prov_row, dry_run=False)
+            print("OK: provenance sidecar reports/athena_checkpoint_provenance_v1.jsonl")
+        except ValueError as exc:
+            print(f"FAIL: provenance {exc}", file=sys.stderr)
+            return 1
 
     if args.continuity_id.strip() and not args.skip_turn_meta:
         return _append_turn_meta_after_checkpoint(

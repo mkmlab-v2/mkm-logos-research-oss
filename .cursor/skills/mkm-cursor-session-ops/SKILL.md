@@ -23,11 +23,12 @@ Use when the user:
    ```powershell
    powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmSoloBackgroundOps_v1.ps1
    ```
-3. **Resume pack** (when lane known):
+3. **Resume pack + JEMA OS kernel** (when lane known):
    ```powershell
-   py scripts/build_mkm_chat_resume_pack_v1.py --lane oracle
+   powershell -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle
    ```
-   Logos advanced: `powershell -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle -ResumeMode AdvancedLogos`
+   (includes `run_jema_os_kernel_chain_v1.py --fast` → `[MISTAKE GUARDRAIL]` in resume pack)
+   Logos advanced: add `-ResumeMode AdvancedLogos`
    Lanes: `oracle` | `ms` | `infra` | `web_ops` (omit `--lane` for default 3-node pins).
 4. **P0** (before implementation claims):
    ```powershell

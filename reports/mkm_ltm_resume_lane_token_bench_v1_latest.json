@@ -1,0 +1,122 @@
+{
+  "schema": "mkm_ltm_resume_lane_token_bench_v1",
+  "track": "B",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "boundary_ack": "[HYPO] lane token bench — not commercial SLA",
+  "generated_at_utc": "2026-07-12T07:24:43.452178Z",
+  "naive_baseline": {
+    "sources": [
+      "MISSION_LOG.md",
+      "docs/final/CENTRAL_AGENT_MEMORY_V1.md"
+    ],
+    "char_count": 114589,
+    "tokens": 59665,
+    "method": "tiktoken:cl100k_base"
+  },
+  "lanes": {
+    "design": {
+      "node_ids": [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_design",
+        "prism_ops_nvidia_gc_pack",
+        "prism_ops_pixel_battalion_gate",
+        "prism_ops_lens_audio_gate",
+        "prism_ops_clinic_landing_gate"
+      ],
+      "char_count": 665,
+      "inject_pins": {
+        "tokens": 236,
+        "method": "tiktoken:cl100k_base"
+      },
+      "saved_tokens_vs_naive_baseline": 59429,
+      "savings_ratio_vs_naive_baseline": 0.996,
+      "purity_flags": []
+    },
+    "infra": {
+      "node_ids": [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_infra",
+        "prism_ops_jema_os_runner_policy",
+        "prism_ops_where_used_gate",
+        "prism_ops_compression_metacog_sidecar"
+      ],
+      "char_count": 622,
+      "inject_pins": {
+        "tokens": 266,
+        "method": "tiktoken:cl100k_base"
+      },
+      "saved_tokens_vs_naive_baseline": 59399,
+      "savings_ratio_vs_naive_baseline": 0.9955,
+      "purity_flags": []
+    },
+    "ms": {
+      "node_ids": [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_ms",
+        "prism_ops_portfolio_execution_focus",
+        "prism_ops_sasang_metacog_grammar",
+        "prism_ops_myeongri_metacog_grammar",
+        "prism_ops_zone_f_code_curated"
+      ],
+      "char_count": 718,
+      "inject_pins": {
+        "tokens": 339,
+        "method": "tiktoken:cl100k_base"
+      },
+      "saved_tokens_vs_naive_baseline": 59326,
+      "savings_ratio_vs_naive_baseline": 0.9943,
+      "purity_flags": []
+    },
+    "oracle": {
+      "node_ids": [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_lane_oracle",
+        "prism_ops_portfolio_execution_focus",
+        "prism_ops_logos_metacog_coord",
+        "prism_ops_theory_mathematization_gate",
+        "prism_ops_theory_formula_ssot",
+        "prism_ops_logos_cosmic_anchor_bridge",
+        "prism_ops_logos_narrative_router_eval",
+        "prism_ops_logos_router_regression_bundle",
+        "prism_ops_logos_four_force_report",
+        "prism_ops_logos_gematria_dual_gate",
+        "prism_ops_logos_oracle_module_tier2_prep",
+        "prism_ops_logos_narrative_closure_observability"
+      ],
+      "char_count": 1575,
+      "inject_pins": {
+        "tokens": 572,
+        "method": "tiktoken:cl100k_base"
+      },
+      "saved_tokens_vs_naive_baseline": 59093,
+      "savings_ratio_vs_naive_baseline": 0.9904,
+      "purity_flags": []
+    },
+    "web_ops": {
+      "node_ids": [
+        "prism_ops_mission_log_board",
+        "prism_ops_central_checkpoint",
+        "prism_ops_web_ops_regime_gate",
+        "prism_ops_web_ops_health"
+      ],
+      "char_count": 399,
+      "inject_pins": {
+        "tokens": 155,
+        "method": "tiktoken:cl100k_base"
+      },
+      "saved_tokens_vs_naive_baseline": 59510,
+      "savings_ratio_vs_naive_baseline": 0.9974,
+      "purity_flags": []
+    }
+  },
+  "aggregate": {
+    "lane_count": 5,
+    "mean_savings_ratio": 0.9947
+  },
+  "purity_errors": []
+}

@@ -1,6 +1,6 @@
 {
   "schema": "llm_wiki_lint_v1",
-  "generated_at_utc": "2026-07-12T14:42:46Z",
+  "generated_at_utc": "2026-07-15T10:38:30Z",
   "ok": true,
   "strict": false,
   "skipped_empty": false,
@@ -10,10 +10,10 @@
     "docs/final/artifacts/okf_bundles"
   ],
   "files_scanned": 19,
-  "yaml_pages": 9,
-  "skipped_legacy_no_yaml": 10,
+  "yaml_pages": 11,
+  "skipped_legacy_no_yaml": 8,
   "error_count": 0,
-  "warning_count": 18,
+  "warning_count": 10,
   "files": [
     {
       "path": "memory/obsidian_vault/llm_wiki/wiki/mkm_theory_mathematization_canon_v1.md",
@@ -47,9 +47,11 @@
       "ok": true,
       "errors": [],
       "warnings": [
-        "no_yaml_frontmatter"
+        "raw_path_no_bulk_diary_phi_family"
       ],
-      "status": "skipped_legacy_no_yaml"
+      "status": "ok",
+      "schema": "llm_wiki_raw_v1",
+      "content_type": "source_summary"
     },
     {
       "path": "memory/obsidian_vault/llm_wiki/raw/cursor_cloud_sandbox_boundary_pointer.md",
@@ -92,9 +94,11 @@
       "ok": true,
       "errors": [],
       "warnings": [
-        "no_yaml_frontmatter"
+        "raw_path_no_bulk_diary_phi_family"
       ],
-      "status": "skipped_legacy_no_yaml"
+      "status": "ok",
+      "schema": "llm_wiki_raw_v1",
+      "content_type": "source_summary"
     },
     {
       "path": "memory/obsidian_vault/llm_wiki/raw/py311_asyncio_taskgroup_pointer.md",
@@ -118,91 +122,84 @@
       "path": "docs/final/artifacts/okf_bundles/han_vocology/index.md",
       "ok": true,
       "errors": [],
-      "warnings": [
-        "missing:content_type"
-      ],
+      "warnings": [],
       "status": "ok",
       "schema": "okf_concept_v1",
-      "content_type": null
+      "content_type": "synthesis"
     },
     {
       "path": "docs/final/artifacts/okf_bundles/han_vocology/instruments/index.md",
       "ok": true,
       "errors": [],
-      "warnings": [
-        "missing:content_type"
-      ],
+      "warnings": [],
       "status": "ok",
       "schema": "okf_concept_v1",
-      "content_type": null
+      "content_type": "synthesis"
     },
     {
       "path": "docs/final/artifacts/okf_bundles/han_vocology/instruments/km_vhi_v0_1.md",
       "ok": true,
       "errors": [],
-      "warnings": [
-        "missing:content_type"
-      ],
+      "warnings": [],
       "status": "ok",
       "schema": "okf_concept_v1",
-      "content_type": null
+      "content_type": "entity"
     },
     {
       "path": "docs/final/artifacts/okf_bundles/han_vocology/log.md",
       "ok": true,
       "errors": [],
-      "warnings": [
-        "missing:content_type"
-      ],
+      "warnings": [],
       "status": "ok",
       "schema": "okf_concept_v1",
-      "content_type": null
+      "content_type": "source_summary"
     },
     {
       "path": "docs/final/artifacts/okf_bundles/han_vocology/playbooks/appendix_6_km_vhi.md",
       "ok": true,
       "errors": [],
-      "warnings": [
-        "missing:content_type"
-      ],
+      "warnings": [],
       "status": "ok",
       "schema": "okf_concept_v1",
-      "content_type": null
+      "content_type": "synthesis"
     },
     {
       "path": "docs/final/artifacts/okf_bundles/han_vocology/playbooks/index.md",
       "ok": true,
       "errors": [],
-      "warnings": [
-        "missing:content_type"
-      ],
+      "warnings": [],
       "status": "ok",
       "schema": "okf_concept_v1",
-      "content_type": null
+      "content_type": "synthesis"
     },
     {
       "path": "docs/final/artifacts/okf_bundles/ijeoma_5hang_4sang/index.md",
       "ok": true,
       "errors": [],
-      "warnings": [
-        "missing:content_type"
-      ],
+      "warnings": [],
       "status": "ok",
       "schema": "okf_concept_v1",
-      "content_type": null
+      "content_type": "synthesis"
     },
     {
       "path": "docs/final/artifacts/okf_bundles/ijeoma_5hang_4sang/log.md",
       "ok": true,
       "errors": [],
-      "warnings": [
-        "missing:content_type"
-      ],
+      "warnings": [],
       "status": "ok",
       "schema": "okf_concept_v1",
-      "content_type": null
+      "content_type": "source_summary"
     }
   ],
-  "reminder": "raw/ path: no bulk diary/PHI/family dumps; no auto-classification",
+  "l1_to_l0_mirror_wall": {
+    "schema": "mkm_l1_to_l0_mirror_wall_v1",
+    "ok": true,
+    "errors": [],
+    "auto_mirror_forbidden": true,
+    "allowed_l0_writer": "scripts/athena_checkpoint.py",
+    "producer_checkpoint_hits": [],
+    "note_ko": "L1 wiki/OKF → L0 CENTRAL은 athena_checkpoint만 — 자동 미러 금지"
+  },
+  "reminder": "raw/ path: no bulk diary/PHI/family dumps; no auto-classification; no wiki→CENTRAL auto-mirror",
   "reproducible_command": "py scripts/check_llm_wiki_lint_v1.py"
 }

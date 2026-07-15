@@ -23,11 +23,22 @@ from mkm_long_term_memory_graph_lib_v1 import (
     merge_graph_routing_summary,
     nodes_for_topic_resume,
 )
+from mkm_agent_mistake_registry_lib_v1 import (  # noqa: E402
+    DEFAULT_REGISTRY,
+    guardrail_lines,
+    query_guardrails,
+)
+from mkm_mistake_guardrail_yaml_v1 import guardrail_inject_block_v1_1  # noqa: E402
 from mkm_cursor_self_audit_lib_v1 import lane_default_topic_query
 from mkm_sidecar_constitution_lib_v1 import (
     CONSTITUTION_REL,
     DEFAULT_SIDECAR_PATH,
     constitution_pins_for_resume,
+)
+from mkm_resume_pin_freshness_v1 import (  # noqa: E402
+    annotate_ops_pins_freshness,
+    build_freshness_report,
+    write_freshness_latest,
 )
 
 SCRIPT_ROOT = Path(__file__).resolve().parents[1]
@@ -300,6 +311,52 @@ def _load_commander_resume_triggers(root: Path) -> Dict[str, Any]:
     return doc if doc.get("schema") == "mkm_commander_resume_triggers_v1" else {}
 
 
+def _where_used_resume_link(root: Path, topic: str) -> Dict[str, Any] | None:
+    """Thin where-used → resume link when --topic matches registry (SSOT paths only)."""
+    topic = (topic or "").strip()
+    if not topic:
+        return None
+    scripts_dir = root / "scripts"
+    if str(scripts_dir) not in sys.path:
+        sys.path.insert(0, str(scripts_dir))
+    try:
+        from mkm_where_used_v1_lib import load_registry, resolve_topic  # noqa: E402
+    except ImportError:
+        return None
+    reg_path = root / "docs/final/artifacts/mkm_where_used_registry_v1.json"
+    if not reg_path.is_file():
+        return None
+    try:
+        doc = load_registry(reg_path)
+    except (OSError, json.JSONDecodeError):
+        return None
+    topics = doc.get("topics") or {}
+    key = topic if topic in topics else None
+    if key is None:
+        lowered = {str(k).lower(): k for k in topics}
+        key = lowered.get(topic.lower())
+    if key is None:
+        return None
+    try:
+        report = resolve_topic(str(key), registry=doc)
+    except KeyError:
+        return None
+    return {
+        "schema": "mkm_chat_resume_where_used_link_v1",
+        "topic": report.get("topic"),
+        "label_ko": report.get("label_ko"),
+        "registry": report.get("registry"),
+        "coverage_ok": report.get("coverage_ok"),
+        "ssot_paths": list(report.get("paths_hit") or [])[:12],
+        "axes_hit": report.get("axes_hit"),
+        "axes_required": report.get("axes_required"),
+        "ops_pin_id": report.get("ops_pin_id"),
+        "reproduce": report.get("reproduce"),
+        "research_only": True,
+        "send_gate": "HOLD",
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--top-n", type=int, default=3)
@@ -351,7 +408,47 @@ def main() -> int:
         action="store_true",
         help="[HYPO] Tier 2: append L2 compress shadow log after pack write (human MD unchanged).",
     )
+    ap.add_argument(
+        "--mistake-registry",
+        type=Path,
+        default=None,
+        help="Grounded mistake registry JSONL for [MISTAKE GUARDRAIL] inject.",
+    )
+    ap.add_argument("--mistake-guardrail-limit", type=int, default=None)
+    ap.add_argument(
+        "--mistake-guardrail-lane",
+        default=None,
+        help="Lane filter for mistake guardrails (defaults to --lane or infra).",
+    )
+    ap.add_argument(
+        "--guardrail-format",
+        choices=["md", "yaml", "both"],
+        default="both",
+        help="Mistake guardrail inject: prose bullets (md), YAML block (yaml), or both (v1.1 default).",
+    )
+    ap.add_argument(
+        "--out-json",
+        type=Path,
+        default=None,
+        help="Optional alternate JSON output path (validate loop).",
+    )
+    ap.add_argument(
+        "--skip-ops-gate",
+        action="store_true",
+        help="Skip ops memory inject gate (validate loop only).",
+    )
     args = ap.parse_args()
+
+    if args.mistake_guardrail_limit is None:
+        budget_path = SCRIPT_ROOT / "docs/final/artifacts/mkm_resume_inject_budget_v1_latest.json"
+        limit = 3
+        if budget_path.is_file():
+            try:
+                bdoc = json.loads(budget_path.read_text(encoding="utf-8"))
+                limit = int((bdoc.get("budgets") or {}).get("max_mistake_guardrails") or 3)
+            except (OSError, json.JSONDecodeError, TypeError, ValueError):
+                limit = 3
+        args.mistake_guardrail_limit = max(1, limit)
 
     if args.resume_mode == "advanced_logos" and args.lane is None:
         args.lane = "oracle"
@@ -382,6 +479,25 @@ def main() -> int:
         slice_max_chars=args.slice_max_chars,
         topic=args.topic,
     )
+    pin_contradictions: list[dict[str, Any]] = []
+    pin_l0_l2_gaps: list[dict[str, Any]] = []
+    pin_freshness_report: dict[str, Any] | None = None
+    if ops_pins:
+        ops_pins, pin_contradictions, pin_l0_l2_gaps = annotate_ops_pins_freshness(
+            ops_pins, root
+        )
+        pin_freshness_report = build_freshness_report(
+            ops_pins,
+            pin_contradictions,
+            l0_l2_claim_gaps=pin_l0_l2_gaps,
+        )
+        try:
+            write_freshness_latest(
+                pin_freshness_report,
+                root / "docs/final/artifacts/mkm_resume_pin_freshness_v1_latest.json",
+            )
+        except ValueError as exc:
+            print(f"WARN: pin freshness artifact skipped: {exc}", file=sys.stderr)
     graph_path = root / DEFAULT_GRAPH_PATH.relative_to(SCRIPT_ROOT)
     graph = _read_json(graph_path) if graph_path.is_file() else {}
     constitution_pins = _load_constitution_pins(root, top_n=min(3, args.top_n))
@@ -402,7 +518,7 @@ def main() -> int:
             for tag in pin.get("must_keep_tags") or []:
                 inject_text += "\n" + tag
 
-    if ops_pins and inject_text:
+    if ops_pins and inject_text and not args.skip_ops_gate:
         index_path = root / DEFAULT_INDEX_PATH.relative_to(SCRIPT_ROOT)
         index_nodes = (_read_json(index_path).get("nodes") or {}) if index_path.is_file() else {}
         gate_cmd = [
@@ -504,7 +620,9 @@ def main() -> int:
             "ops_dashboard_exec_md": "docs/final/artifacts/mkm_trackc_ops_dashboard_exec_latest.md",
             "acceptance_json": "docs/final/artifacts/mkm_trackc_operational_acceptance_latest.json",
             "runbook_checklist_md": "docs/final/artifacts/mkm_trackc_operations_runbook_checklist_latest.md",
-            "core_prompt_gemini_athena": "docs/final/artifacts/MKM_CORE_PROMPT_GEMINI_ATHENA_V1.md",
+            "core_prompt_gemini_athena": "docs/final/artifacts/MKM_CORE_PROMPT_GEMINI_ATHENA_V2.md",
+            "gemini_web_staff_officer_contract": "docs/final/artifacts/MKM_GEMINI_WEB_STAFF_OFFICER_CONTRACT_V1.md",
+            "gemini_web_staff_officer_paste": "docs/final/artifacts/MKM_GEMINI_WEB_STAFF_OFFICER_PASTE_V1.txt",
         },
         "constitution_path_pins": constitution_pins,
         "constitution_sidecar_path": str(
@@ -531,6 +649,19 @@ def main() -> int:
         ],
     }
     resume["ops_memory_pins"] = ops_pins
+    where_used_link = _where_used_resume_link(root, str(args.topic or ""))
+    if where_used_link:
+        resume["where_used"] = where_used_link
+    if pin_freshness_report:
+        resume["pin_freshness"] = {
+            "schema": pin_freshness_report.get("schema"),
+            "artifact": "docs/final/artifacts/mkm_resume_pin_freshness_v1_latest.json",
+            "advisory_summary": pin_freshness_report.get("advisory_summary"),
+            "checkpoint_contradiction_count": len(pin_contradictions),
+            "l0_l2_claim_gap_count": len(pin_l0_l2_gaps),
+            "l0_l2_claim_gaps": pin_l0_l2_gaps[:8],
+            "reproduce": "py scripts/check_mkm_resume_pin_freshness_v1.py",
+        }
 
     if args.lane == "oracle":
         resume["quick_refs"]["logos_theory_wiring"] = LOGOS_WIRING_REL
@@ -597,7 +728,52 @@ def main() -> int:
             0, "py scripts/run_logos_oracle_narrative_closure_observability_chain_v1.py"
         )
 
-    out_json = art / "mkm_chat_resume_pack_latest.json"
+    registry_path = args.mistake_registry or (root / DEFAULT_REGISTRY)
+    guard_lane = args.mistake_guardrail_lane or args.lane or "infra"
+    guard_records = query_guardrails(
+        registry_path, lane=guard_lane, limit=max(1, args.mistake_guardrail_limit)
+    )
+    jema_wall_line = (
+        "Field(regime_map+ops gates)만 Final Action; 사상=단기 톤 보조 [HYPO][NON_GATING]; "
+        "Track A·임상·실매매·단정 트리거 금지."
+    )
+    guard_lines = [f"- {jema_wall_line}"] + guardrail_lines(guard_records)
+    rel_registry = (
+        str(registry_path.relative_to(root)).replace("\\", "/")
+        if registry_path.is_relative_to(root)
+        else str(registry_path).replace("\\", "/")
+    )
+    resume["jema_os_kernel"] = {
+        "schema": "jema_os_kernel_resume_pointer_v1",
+        "runner_policy": "docs/final/artifacts/jema_os_runner_policy_v1_latest.json",
+        "domain_plugins": "docs/final/artifacts/jema_os_domain_plugin_registry_v2_latest.json",
+        "mistake_registry": rel_registry,
+        "kernel_chain": "py scripts/run_jema_os_kernel_chain_v1.py",
+        "research_only": True,
+        "send_gate": "HOLD",
+    }
+    gf = args.guardrail_format
+    if gf == "md":
+        resume["mistake_guardrails"] = {
+            "schema": "mkm_mistake_guardrail_inject_v1",
+            "format": "md",
+            "registry_path": rel_registry,
+            "lane": guard_lane,
+            "lines": guard_lines,
+            "record_count": len(guard_records),
+        }
+    else:
+        block = guardrail_inject_block_v1_1(
+            lane=guard_lane,
+            registry_path=rel_registry,
+            wall_lines=guard_lines,
+            records=guard_records,
+            prose_lines=guard_lines,
+        )
+        block["format"] = gf
+        resume["mistake_guardrails"] = block
+
+    out_json = args.out_json if args.out_json else art / "mkm_chat_resume_pack_latest.json"
     out_md = art / "mkm_chat_resume_pack_latest.md"
     out_json.write_text(json.dumps(resume, ensure_ascii=False, indent=2), encoding="utf-8")
 
@@ -664,12 +840,77 @@ def main() -> int:
                 f"@ `{nl_sync.get('generated_at_utc')}` · repro: `{nl_sync.get('repro_push')}`"
             )
         md_lines.append("")
+    mg = resume.get("mistake_guardrails") or {}
+    if mg.get("lines") or mg.get("yaml"):
+        md_lines += [
+            "## [MISTAKE GUARDRAIL] · JEMA OS kernel ([HYPO])",
+            "",
+            f"- registry: `{mg.get('registry_path')}` · lane: `{mg.get('lane')}` · format: `{mg.get('format', 'md')}`",
+            "",
+        ]
+        yaml_text = str(mg.get("yaml") or "").strip()
+        gf = str(mg.get("format") or "md")
+        if yaml_text and gf in ("yaml", "both", "yaml+md"):
+            md_lines += ["```yaml", yaml_text, "```", ""]
+        if gf in ("md", "both", "yaml+md"):
+            for line in mg.get("lines") or []:
+                md_lines.append(line if line.startswith("-") else f"- {line}")
+            md_lines.append("")
+    if pin_freshness_report:
+        summary = pin_freshness_report.get("advisory_summary") or {}
+        md_lines += [
+            "## Pin Freshness Advisory ([HYPO] · P0.3)",
+            "",
+            f"- stale_pins: `{summary.get('stale_pin_count', 0)}` · "
+            f"checkpoint_contradictions: `{summary.get('contradiction_count', 0)}` · "
+            f"l0_l2_claim_gaps: `{summary.get('l0_l2_claim_gap_count', 0)}` · "
+            f"artifact: `docs/final/artifacts/mkm_resume_pin_freshness_v1_latest.json`",
+            "",
+        ]
+        if pin_l0_l2_gaps:
+            md_lines += [
+                "> **WARN L0↔L2:** essence claims PASS/DONE but L2 artifact/exit evidence missing "
+                "(must_keep alone is not enough).",
+                "",
+            ]
+            for gap in pin_l0_l2_gaps[:5]:
+                md_lines.append(
+                    f"- **l0_l2_claim_gap** (`{gap.get('gap_reason')}`): "
+                    f"`{gap.get('node_id')}` · file=`{gap.get('file_path') or '(none)'}`"
+                )
+            md_lines.append("")
+        for hit in pin_contradictions[:3]:
+            md_lines.append(
+                f"- **contradicts_prior_checkpoint** ({hit.get('collision_reason')}): "
+                f"`{hit.get('newer_stamp_utc')}` vs `{hit.get('older_stamp_utc')}`"
+            )
+        if pin_contradictions:
+            md_lines.append("")
+    where_used = resume.get("where_used") or {}
+    if where_used.get("topic"):
+        paths = ", ".join(f"`{p}`" for p in (where_used.get("ssot_paths") or [])[:8])
+        md_lines += [
+            "## Where-used SSOT ([HYPO])",
+            "",
+            f"- topic: `{where_used.get('topic')}` · coverage_ok: `{where_used.get('coverage_ok')}` · "
+            f"axes: `{where_used.get('axes_hit')}/{where_used.get('axes_required')}`",
+            f"- registry: `{where_used.get('registry')}`",
+            f"- ssot_paths: {paths or '`(none hit)`'}",
+            f"- reproduce: `{where_used.get('reproduce')}`",
+            "",
+        ]
     if ops_pins:
         md_lines += ["## Ops Memory Pins ([HYPO])", ""]
         for pin in ops_pins:
             tags = ", ".join(f"`{t}`" for t in pin.get("must_keep_tags") or [])
+            stale_note = ""
+            if pin.get("stale_advisory"):
+                stale_note = (
+                    f" · **stale_advisory** age={pin.get('age_days')}d"
+                    f">max={pin.get('max_age_days')}d"
+                )
             md_lines.append(
-                f"- **{pin['node_id']}** — {pin.get('essence')} · must_keep: {tags}"
+                f"- **{pin['node_id']}** — {pin.get('essence')} · must_keep: {tags}{stale_note}"
             )
             if pin.get("slice_preview"):
                 truncated = pin.get("slice_truncated")

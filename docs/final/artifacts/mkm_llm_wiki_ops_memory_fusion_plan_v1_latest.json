@@ -1,0 +1,133 @@
+{
+  "schema": "mkm_llm_wiki_ops_memory_fusion_plan_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-07-12T15:20:00Z",
+  "hypothesis_class": "HYPO",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a_promotion": false,
+  "verdict": "NOT a new NL; hybrid = L0 coordinates + L1 semantic export + L2 truth gate",
+  "layers": {
+    "L0_coordinates": {
+      "role": "AI↔AI inject pins (node_id / must_keep / resume pack)",
+      "ssot_human": [
+        "MISSION_LOG.md",
+        "docs/final/CENTRAL_AGENT_MEMORY_V1.md"
+      ],
+      "ssot_machine": [
+        "storage/meta/mkm_ops_memory_index_v1.json",
+        "docs/final/artifacts/mkm_chat_resume_pack_latest.md"
+      ],
+      "one_pager": "docs/final/MKM_OPS_MEMORY_AI_TO_AI_DEV_ONE_PAGER_V1.md",
+      "theory_relevant_existing_pins": [
+        "prism_ops_central_checkpoint",
+        "prism_ops_theory_mathematization_gate",
+        "prism_ops_theory_formula_ssot",
+        "prism_ops_logos_metacog_coord",
+        "prism_ops_logos_cosmic_anchor_bridge"
+      ],
+      "note": "Pin ids listed only when present in resume pack / NODE_SPECS overlays — do not invent pins."
+    },
+    "L1_semantic_export": {
+      "role": "Regenerable wiki + OKF interchange (agent-readable theory)",
+      "schema": "docs/final/LLM_WIKI_SCHEMA.md",
+      "wiki_pages": [
+        "memory/obsidian_vault/llm_wiki/wiki/mkm_theory_mathematization_canon_v1.md"
+      ],
+      "raw_pointers": "memory/obsidian_vault/llm_wiki/raw/",
+      "okf_bundles": [
+        "docs/final/artifacts/okf_bundles/han_vocology/",
+        "docs/final/artifacts/okf_bundles/ijeoma_5hang_4sang/"
+      ],
+      "producers": [
+        "scripts/synthesize_llm_wiki_theory_mathematization_v1.py",
+        "scripts/export_han_vocology_okf_bundle_v1.py",
+        "scripts/check_llm_wiki_lint_v1.py"
+      ],
+      "notion": "rejected_as_agent_ssot"
+    },
+    "L2_truth": {
+      "role": "Implementation / pass-fail only",
+      "ssot": [
+        "docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md",
+        "callable scripts / pytest / exit codes / artifacts"
+      ],
+      "theory_wiring": "docs/final/artifacts/logos_theory_implementation_wiring_v1.json",
+      "wiring_verify": "py scripts/check_logos_theory_implementation_wiring_v1.py"
+    }
+  },
+  "resource_pointer_contract": {
+    "wiki_to_wiring": "docs/final/artifacts/logos_theory_implementation_wiring_v1.json",
+    "wiki_to_canon": "docs/final/artifacts/mkm_theory_mathematization_canon_v1_latest.md",
+    "wiki_to_ops_pins_field": "ops_memory_pin_ids",
+    "rule": "Pointers only — do not balloon wiki pages; do not auto-mirror wiki into CENTRAL"
+  },
+  "promotion_path": {
+    "steps": [
+      "Inbox / raw pointer (optional YAML)",
+      "wiki or OKF synthesis (regenerable)",
+      "structural fact only → athena_checkpoint.py",
+      "CENTRAL checkpoint block (human durable)",
+      "ops memory index rebuild when anchors change"
+    ],
+    "forbidden": [
+      "NL/Obsidian/OKF alone as pass-fail",
+      "auto-mirror wiki → CENTRAL",
+      "B→A or live trade from wiki",
+      "Notion as agent SSOT"
+    ]
+  },
+  "l1_to_l0_mirror_wall": {
+    "auto_mirror_forbidden": true,
+    "allowed_l0_writer": "scripts/athena_checkpoint.py",
+    "check": "py scripts/check_llm_wiki_lint_v1.py",
+    "note_ko": "L1 wiki/OKF regenerable only — L0 CENTRAL은 athena_checkpoint structural fact만; 자동 미러 금지"
+  },
+  "unstructured_inbox_rule": {
+    "flow": "Inbox/raw → optional L1 wiki/OKF → structural fact only → athena_checkpoint → L0 CENTRAL",
+    "forbidden": [
+      "raw diary dump as pass-fail",
+      "auto-mirror wiki/OKF → CENTRAL",
+      "invent new ops pins from inbox alone"
+    ],
+    "note_ko": "비구조 inbox는 L1 선택 합성 후, 구조 팩트만 athena_checkpoint로 L0 반영"
+  },
+  "legacy_raw_policy": {
+    "skipped_legacy_no_yaml": "intentional default; lint warn only",
+    "accepted_contract": true,
+    "count": 8,
+    "count_source": "docs/final/artifacts/llm_wiki_lint_v1_latest.json",
+    "files": [
+      "memory/obsidian_vault/llm_wiki/raw/2026-06-13_gemini_sql2_bird80_reference.md",
+      "memory/obsidian_vault/llm_wiki/raw/2026-06-13_multi_domain_saas_north_star_reference.md",
+      "memory/obsidian_vault/llm_wiki/raw/cursor_cloud_sandbox_boundary_pointer.md",
+      "memory/obsidian_vault/llm_wiki/raw/cursor_session_validation_baseline_pointer.md",
+      "memory/obsidian_vault/llm_wiki/raw/four_realms_veritas_pointer.md",
+      "memory/obsidian_vault/llm_wiki/raw/mkm_ollama_shallow_router_schema_pointer.md",
+      "memory/obsidian_vault/llm_wiki/raw/py311_asyncio_taskgroup_pointer.md",
+      "memory/obsidian_vault/llm_wiki/raw/py311_pathlib_path_pointer.md"
+    ],
+    "normalize_priority": [
+      "2026-06-15_mkm_theory_mathematization_canon_pointer.md",
+      "nextgen_hybrid_ai_merged_lit_review_pointer.md"
+    ],
+    "normalize_priority_status": "done_yaml",
+    "do_not_bulk_rewrite": true
+  },
+  "commander_brief": "docs/final/artifacts/mkm_theory_fuse_via_llm_wiki_commander_brief_v1_latest.md",
+  "commercial_readiness": "docs/final/artifacts/mkm_llm_wiki_commercial_readiness_v1_latest.json",
+  "pytest": [
+    "tests/test_check_llm_wiki_lint_v1.py",
+    "tests/test_export_han_vocology_okf_bundle_v1.py"
+  ],
+  "health_fact_lock_hook": {
+    "status": "deferred",
+    "reason": "pytest standalone is CI-ready; default Fact-Lock/persona include deferred to avoid weekly bundle sprawl"
+  },
+  "verify": {
+    "lint": "py scripts/check_llm_wiki_lint_v1.py",
+    "lint_artifact": "docs/final/artifacts/llm_wiki_lint_v1_latest.json",
+    "synthesize": "py scripts/synthesize_llm_wiki_theory_mathematization_v1.py",
+    "pytest": "py -m pytest tests/test_check_llm_wiki_lint_v1.py tests/test_export_han_vocology_okf_bundle_v1.py -q"
+  }
+}

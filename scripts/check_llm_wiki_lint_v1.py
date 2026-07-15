@@ -17,10 +17,19 @@ ROOT = Path(__file__).resolve().parents[1]
 WIKI_ROOT = ROOT / "memory" / "obsidian_vault" / "llm_wiki"
 OKF_ROOT = ROOT / "docs" / "final" / "artifacts" / "okf_bundles"
 OUT = ROOT / "docs" / "final" / "artifacts" / "llm_wiki_lint_v1_latest.json"
+FUSION_PLAN = ROOT / "docs" / "final" / "artifacts" / "mkm_llm_wiki_ops_memory_fusion_plan_v1_latest.json"
+
+# L1 (wiki/OKF) must not auto-write CENTRAL — only athena_checkpoint path.
+ALLOWED_L0_CHECKPOINT_WRITERS = frozenset({"scripts/athena_checkpoint.py"})
+L1_PRODUCER_SCRIPTS = (
+    "scripts/synthesize_llm_wiki_theory_mathematization_v1.py",
+    "scripts/export_han_vocology_okf_bundle_v1.py",
+)
 
 CONTENT_TYPES = frozenset({"source_summary", "entity", "concept", "synthesis"})
 WIKI_SCHEMAS = frozenset({"llm_wiki_wiki_v1", "llm_wiki_raw_v1", "okf_concept_v1"})
 SCALAR_RE = re.compile(r"^([A-Za-z0-9_]+):\s*(.*)$")
+CHECKPOINT_MARKER = "ATHENA_CHECKPOINT_V1_START"
 
 
 def _utc() -> str:
@@ -127,23 +136,74 @@ def lint_file(path: Path, *, strict: bool) -> dict[str, Any]:
     return row
 
 
+def check_l1_to_l0_mirror_wall(root: Path | None = None) -> dict[str, Any]:
+    """Assert wiki/OKF cannot auto-mirror into CENTRAL (fusion plan + producer scan)."""
+    root = root or ROOT
+    errors: list[str] = []
+    plan_path = root / FUSION_PLAN.relative_to(ROOT)
+    forbidden: list[str] = []
+    allowed_writer = "scripts/athena_checkpoint.py"
+    if not plan_path.is_file():
+        errors.append("missing_fusion_plan")
+    else:
+        plan = json.loads(plan_path.read_text(encoding="utf-8-sig"))
+        forbidden = list((plan.get("promotion_path") or {}).get("forbidden") or [])
+        wall = plan.get("l1_to_l0_mirror_wall") or {}
+        if wall.get("allowed_l0_writer"):
+            allowed_writer = str(wall["allowed_l0_writer"])
+        if "auto-mirror wiki → CENTRAL" not in forbidden:
+            errors.append("fusion_plan_missing_auto_mirror_forbid")
+        if wall and wall.get("auto_mirror_forbidden") is not True:
+            errors.append("fusion_plan_wall_auto_mirror_forbidden_not_true")
+
+    writer_path = root / allowed_writer.replace("\\", "/")
+    if not writer_path.is_file():
+        errors.append(f"missing_allowed_l0_writer:{allowed_writer}")
+    else:
+        writer_text = writer_path.read_text(encoding="utf-8", errors="replace")
+        if CHECKPOINT_MARKER not in writer_text:
+            errors.append("allowed_writer_missing_checkpoint_marker")
+
+    producer_hits: list[str] = []
+    for rel in L1_PRODUCER_SCRIPTS:
+        path = root / rel.replace("\\", "/")
+        if not path.is_file():
+            continue
+        text = path.read_text(encoding="utf-8", errors="replace")
+        if CHECKPOINT_MARKER in text and rel.replace("\\", "/") not in ALLOWED_L0_CHECKPOINT_WRITERS:
+            producer_hits.append(rel)
+            errors.append(f"l1_producer_writes_checkpoint:{rel}")
+
+    return {
+        "schema": "mkm_l1_to_l0_mirror_wall_v1",
+        "ok": len(errors) == 0,
+        "errors": errors,
+        "auto_mirror_forbidden": "auto-mirror wiki → CENTRAL" in forbidden,
+        "allowed_l0_writer": allowed_writer,
+        "producer_checkpoint_hits": producer_hits,
+        "note_ko": "L1 wiki/OKF → L0 CENTRAL은 athena_checkpoint만 — 자동 미러 금지",
+    }
+
+
 def run_lint(*, strict: bool) -> dict[str, Any]:
     roots = [WIKI_ROOT / "wiki", WIKI_ROOT / "raw", OKF_ROOT]
     present = [r for r in roots if r.is_dir()]
     files = _iter_md(present)
+    wall = check_l1_to_l0_mirror_wall(ROOT)
 
     if not present:
         return {
             "schema": "llm_wiki_lint_v1",
             "generated_at_utc": _utc(),
-            "ok": True,
+            "ok": bool(wall.get("ok")),
             "strict": strict,
             "skipped_empty": True,
             "roots_checked": [_rel(r) for r in roots],
             "files_scanned": 0,
-            "error_count": 0,
+            "error_count": 0 if wall.get("ok") else len(wall.get("errors") or []),
             "warning_count": 0,
             "files": [],
+            "l1_to_l0_mirror_wall": wall,
             "reminder": "raw/ path: no bulk diary/PHI/family dumps",
             "reproducible_command": "py scripts/check_llm_wiki_lint_v1.py",
         }
@@ -151,6 +211,8 @@ def run_lint(*, strict: bool) -> dict[str, Any]:
     rows = [lint_file(p, strict=strict) for p in files]
     errors = [e for r in rows for e in r["errors"]]
     warnings = [w for r in rows for w in r["warnings"]]
+    if not wall.get("ok"):
+        errors.extend(wall.get("errors") or [])
     return {
         "schema": "llm_wiki_lint_v1",
         "generated_at_utc": _utc(),
@@ -166,7 +228,8 @@ def run_lint(*, strict: bool) -> dict[str, Any]:
         "error_count": len(errors),
         "warning_count": len(warnings),
         "files": rows,
-        "reminder": "raw/ path: no bulk diary/PHI/family dumps; no auto-classification",
+        "l1_to_l0_mirror_wall": wall,
+        "reminder": "raw/ path: no bulk diary/PHI/family dumps; no auto-classification; no wiki→CENTRAL auto-mirror",
         "reproducible_command": (
             "py scripts/check_llm_wiki_lint_v1.py --strict"
             if strict

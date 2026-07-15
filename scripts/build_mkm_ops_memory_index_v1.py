@@ -16,7 +16,11 @@ from pathlib import Path
 from mkm_ops_memory_index_lib_v1 import (
     DEFAULT_INDEX_PATH,
     build_index_document,
+    build_jema_os_gpu_overlay_nodes,
+    build_portfolio_overlay_nodes,
+    build_where_used_overlay_nodes,
     load_index,
+    merge_overlay_nodes,
     reapply_persisted_overlays,
     verify_index_sources,
 )
@@ -56,6 +60,18 @@ def main() -> int:
     except (FileNotFoundError, ValueError) as exc:
         print(f"FAIL: index build: {exc}", file=sys.stderr)
         return 1
+
+    jema_overlay = build_jema_os_gpu_overlay_nodes(root)
+    if jema_overlay:
+        doc = merge_overlay_nodes(doc, jema_overlay, overlay_label="jema_os_gpu_v1")
+
+    portfolio_overlay = build_portfolio_overlay_nodes(root)
+    if portfolio_overlay:
+        doc = merge_overlay_nodes(doc, portfolio_overlay, overlay_label="portfolio_v1")
+
+    where_used_overlay = build_where_used_overlay_nodes(root)
+    if where_used_overlay:
+        doc = merge_overlay_nodes(doc, where_used_overlay, overlay_label="where_used_v1")
 
     if prior_overlays:
         doc = reapply_persisted_overlays(root, doc, prior_overlays)

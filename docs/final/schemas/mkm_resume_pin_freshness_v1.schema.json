@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mkm.local/schemas/mkm_resume_pin_freshness_v1.schema.json",
+  "title": "MKM Resume Pin Freshness v1",
+  "description": "Staleness advisory + checkpoint contradiction flags for ops resume pins. Zep temporal-invalidation spirit; poisoning temporal decay advisory only. research_only · SEND HOLD.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "generated_at_utc",
+    "research_only",
+    "send_gate",
+    "pins",
+    "checkpoint_contradictions",
+    "l0_l2_claim_gaps",
+    "advisory_summary"
+  ],
+  "properties": {
+    "schema": { "const": "mkm_resume_pin_freshness_v1" },
+    "generated_at_utc": { "type": "string", "minLength": 10, "maxLength": 40 },
+    "research_only": { "const": true },
+    "send_gate": { "const": "HOLD" },
+    "policy_pointer": { "type": "string", "maxLength": 512 },
+    "default_max_age_days": { "type": "number", "minimum": 1, "maximum": 365 },
+    "pins": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/pin_freshness_row" }
+    },
+    "checkpoint_contradictions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/checkpoint_contradiction_row" }
+    },
+    "l0_l2_claim_gaps": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/l0_l2_claim_gap_row" }
+    },
+    "advisory_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["stale_pin_count", "contradiction_count", "l0_l2_claim_gap_count"],
+      "properties": {
+        "stale_pin_count": { "type": "integer", "minimum": 0 },
+        "contradiction_count": { "type": "integer", "minimum": 0 },
+        "l0_l2_claim_gap_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "reproduce": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 512 },
+      "maxItems": 8
+    }
+  },
+  "$defs": {
+    "pin_freshness_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id",
+        "age_days",
+        "max_age_days",
+        "stale_advisory",
+        "as_of_utc",
+        "age_source"
+      ],
+      "properties": {
+        "node_id": { "type": "string", "minLength": 4, "maxLength": 128 },
+        "age_days": { "type": "number", "minimum": 0 },
+        "max_age_days": { "type": "number", "minimum": 1, "maximum": 365 },
+        "stale_advisory": { "type": "boolean" },
+        "as_of_utc": { "type": "string", "minLength": 10, "maxLength": 40 },
+        "age_source": {
+          "type": "string",
+          "enum": [
+            "newest_checkpoint",
+            "index_last_updated",
+            "json_generated_at",
+            "file_mtime",
+            "unknown"
+          ]
+        }
+      }
+    },
+    "checkpoint_contradiction_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "newer_stamp_utc",
+        "older_stamp_utc",
+        "newer_message",
+        "older_message",
+        "contradicts_prior_checkpoint",
+        "collision_reason"
+      ],
+      "properties": {
+        "newer_stamp_utc": { "type": "string", "minLength": 10, "maxLength": 40 },
+        "older_stamp_utc": { "type": "string", "minLength": 10, "maxLength": 40 },
+        "newer_message": { "type": "string", "maxLength": 2000 },
+        "older_message": { "type": "string", "maxLength": 2000 },
+        "contradicts_prior_checkpoint": { "const": true },
+        "collision_reason": {
+          "type": "string",
+          "enum": [
+            "polarity_conflict",
+            "same_continuity_divergent_status",
+            "polarity_conflict+topic_overlap"
+          ]
+        },
+        "shared_tokens": {
+          "type": "array",
+          "items": { "type": "string", "maxLength": 64 },
+          "maxItems": 12
+        },
+        "continuity_id": { "type": "string", "maxLength": 128 }
+      }
+    },
+    "l0_l2_claim_gap_row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "node_id",
+        "essence_preview",
+        "file_path",
+        "gap_reason",
+        "advisory"
+      ],
+      "properties": {
+        "node_id": { "type": "string", "minLength": 0, "maxLength": 128 },
+        "essence_preview": { "type": "string", "maxLength": 240 },
+        "file_path": { "type": "string", "maxLength": 512 },
+        "gap_reason": {
+          "type": "string",
+          "enum": [
+            "missing_file_path",
+            "l0_surface_not_l2_evidence",
+            "missing_l2_artifact",
+            "l2_artifact_unreadable",
+            "l2_artifact_empty"
+          ]
+        },
+        "advisory": { "const": true }
+      }
+    }
+  }
+}

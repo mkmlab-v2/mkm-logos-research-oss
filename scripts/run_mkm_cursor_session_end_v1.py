@@ -11,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 RESOLVE = ROOT / "scripts/resolve_deep_fetch_from_handoff_v1.py"
 APPEND = ROOT / "scripts/append_mkm_cursor_turn_meta_v1.py"
 CHECKPOINT = ROOT / "scripts/athena_checkpoint.py"
+MISTAKE_APPEND = ROOT / "scripts/append_mkm_agent_mistake_v1.py"
+PROMPT_ALIGNMENT_CHECK = ROOT / "scripts/check_commander_prompt_alignment_self_audit_v1.py"
+RECEIPT_APPEND = ROOT / "scripts/append_mkm_tool_receipt_v1.py"
 
 
 def _run(cmd: list[str], *, label: str) -> int:
@@ -31,6 +34,44 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--skip-checkpoint", action="store_true")
     parser.add_argument("--no-patch-envelope", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--mistake", default="", help="Human-recorded mistake summary")
+    parser.add_argument("--remediation", default="", help="Preventive rule for mistake registry")
+    parser.add_argument("--root-cause", default="")
+    parser.add_argument(
+        "--self-audit-prompt",
+        action="store_true",
+        help="Print commander prompt alignment checklist (30s self-audit)",
+    )
+    parser.add_argument(
+        "--alignment-fail-id",
+        default="",
+        help="Comma-separated check ids that failed (e.g. ai_fill_forbidden,lane_tag)",
+    )
+    parser.add_argument(
+        "--emit-tool-receipt",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="P12 always-on: append session_end tool receipt after successful chain (default on; --no-emit-tool-receipt to skip)",
+    )
+    parser.add_argument(
+        "--origin",
+        default="agent_summary",
+        choices=["commander", "agent_summary", "tool", "external_paste"],
+        help="Checkpoint provenance origin (session_end default=agent_summary).",
+    )
+    parser.add_argument(
+        "--trust",
+        default="",
+        choices=["", "high", "medium", "low", "unknown"],
+        help="Optional trust override for checkpoint provenance.",
+    )
+    parser.add_argument(
+        "--allow-act",
+        dest="allow_act",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Pass through to athena_checkpoint provenance (external_paste always false).",
+    )
     args = parser.parse_args(argv)
 
     msg = (args.message or args.message_flag or "").strip()
@@ -44,9 +85,52 @@ def main(argv: list[str] | None = None) -> int:
     if args.dry_run:
         print(
             f"DRY: resolve lane={lane} patch={not args.no_patch_envelope} "
-            f"append continuity={continuity_id} checkpoint msg={msg!r}"
+            f"append continuity={continuity_id} checkpoint msg={msg!r} "
+            f"mistake={args.mistake!r} self_audit_prompt={args.self_audit_prompt} "
+            f"alignment_fail_id={args.alignment_fail_id!r} "
+            f"emit_tool_receipt={args.emit_tool_receipt}"
         )
         return 0
+
+    if args.self_audit_prompt:
+        code = _run(
+            [
+                sys.executable,
+                str(PROMPT_ALIGNMENT_CHECK),
+                "--print-checklist",
+                "--lane",
+                lane,
+            ],
+            label="prompt_alignment_checklist",
+        )
+        if code != 0:
+            return code
+        fail_ids = [x.strip() for x in args.alignment_fail_id.split(",") if x.strip()]
+        if fail_ids:
+            print(f"alignment_fail_ids={fail_ids}", file=sys.stderr)
+
+    if args.mistake.strip() and args.remediation.strip():
+        code = _run(
+            [
+                sys.executable,
+                str(MISTAKE_APPEND),
+                "--lane",
+                lane,
+                "--source",
+                "human",
+                "--mistake",
+                args.mistake.strip(),
+                "--remediation",
+                args.remediation.strip(),
+                "--root-cause",
+                (args.root_cause or "").strip(),
+                "--continuity-id",
+                continuity_id,
+            ],
+            label="append_mistake",
+        )
+        if code != 0:
+            return code
 
     if not args.skip_resolve:
         resolve_cmd = [
@@ -79,18 +163,49 @@ def main(argv: list[str] | None = None) -> int:
             return code
 
     if not args.skip_checkpoint:
+        ck_cmd = [
+            sys.executable,
+            str(CHECKPOINT),
+            "--continuity-id",
+            continuity_id,
+            "--lane",
+            lane,
+            "--skip-turn-meta",
+            "--origin",
+            args.origin,
+        ]
+        if args.trust:
+            ck_cmd.extend(["--trust", args.trust])
+        if args.allow_act is True:
+            ck_cmd.append("--allow-act")
+        elif args.allow_act is False:
+            ck_cmd.append("--no-allow-act")
+        ck_cmd.append(msg)
+        code = _run(ck_cmd, label="athena_checkpoint")
+        if code != 0:
+            return code
+
+    if args.emit_tool_receipt:
         code = _run(
             [
                 sys.executable,
-                str(CHECKPOINT),
-                "--continuity-id",
-                continuity_id,
+                str(RECEIPT_APPEND),
                 "--lane",
                 lane,
-                "--skip-turn-meta",
-                msg,
+                "--continuity-id",
+                continuity_id,
+                "--cmd-summary",
+                f"run_mkm_cursor_session_end_v1 lane={lane}",
+                "--exit-code",
+                "0",
+                "--source",
+                "session_end",
+                "--artifact",
+                "reports/mkm_tool_receipts_v1.jsonl",
+                "--notes",
+                msg[:400],
             ],
-            label="athena_checkpoint",
+            label="append_tool_receipt",
         )
         if code != 0:
             return code

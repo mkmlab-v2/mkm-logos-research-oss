@@ -5,15 +5,15 @@
   "research_only": true,
   "hypothesis_tier": "B",
   "boundary_ack": "[HYPO] ops memory index — Track A·live trading auto-merge forbidden",
-  "last_updated_utc": "2026-06-29T03:26:43.650403Z",
+  "last_updated_utc": "2026-07-15T10:28:25.898768Z",
   "nodes": {
     "prism_ops_mission_log_board": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "## 🚀 전술 작전 보드",
       "anchor_end": "<!-- MISSION_LOG_BOARD_END -->",
       "line_range": [
-        25,
-        147
+        62,
+        188
       ],
       "essence": "작전 보드 SSOT — active lanes only · Track A 금지 · SEND_GATE HOLD",
       "must_keep_tags": [
@@ -22,16 +22,16 @@
         "SEND_GATE: HOLD"
       ],
       "priority": 10,
-      "char_count": 7358,
-      "content_sha256_prefix": "5e5f33f048a0a710"
+      "char_count": 7854,
+      "content_sha256_prefix": "20355186f4fa72e7"
     },
     "prism_ops_central_checkpoint": {
       "file_path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
       "anchor_start": "<!-- ATHENA_CHECKPOINT_V1_START -->",
       "anchor_end": "<!-- ATHENA_CHECKPOINT_V1_END -->",
       "line_range": [
-        142,
-        163
+        183,
+        204
       ],
       "essence": "CENTRAL 최신 운영 체크포인트 블록 — athena_checkpoint·격벽 스냅샷",
       "must_keep_tags": [
@@ -39,16 +39,16 @@
         "CENTRAL"
       ],
       "priority": 9,
-      "char_count": 3176,
-      "content_sha256_prefix": "033a146b23f68748"
+      "char_count": 3439,
+      "content_sha256_prefix": "0c3a32c4efe23c30"
     },
     "prism_ops_mission_log_next_one": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "**다음 1타 (레인 · 재개용 핀):**",
       "anchor_end": "## 🚀 전술 작전 보드",
       "line_range": [
-        10,
-        24
+        12,
+        61
       ],
       "essence": "레인별 다음 1타 SSOT — 재개 핀 · HOLD · Track A·실매매 금지",
       "must_keep_tags": [
@@ -57,16 +57,16 @@
         "금지"
       ],
       "priority": 8,
-      "char_count": 1441,
-      "content_sha256_prefix": "f660ff8efba066a2"
+      "char_count": 6659,
+      "content_sha256_prefix": "72e40a4241361e47"
     },
     "prism_ops_lane_oracle": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "### 🔮 Oracle",
       "anchor_end": "### 🖥️ Infra",
       "line_range": [
-        79,
-        128
+        116,
+        169
       ],
       "essence": "Oracle 레인 — Logos·align-panel · narrative_lane_open · Track A·live 금지",
       "must_keep_tags": [
@@ -75,16 +75,16 @@
         "B-track"
       ],
       "priority": 7,
-      "char_count": 3109,
-      "content_sha256_prefix": "99a3d2df41a7dac1"
+      "char_count": 3605,
+      "content_sha256_prefix": "6342bfe183afb24a"
     },
     "prism_ops_lane_infra": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "### 🖥️ Infra",
       "anchor_end": "<!-- MISSION_LOG_BOARD_END -->",
       "line_range": [
-        129,
-        147
+        170,
+        188
       ],
       "essence": "Infra 레인 — solo stack·scheduler band · Track A·live 금지",
       "must_keep_tags": [
@@ -101,8 +101,8 @@
       "anchor_start": "### 💼 MS",
       "anchor_end": "### 🧭 Cursor IDE",
       "line_range": [
-        30,
-        60
+        67,
+        97
       ],
       "essence": "MS 레인 — 지원사업 CLOSED·B2B HOLD · 에이전트 제출 금지",
       "must_keep_tags": [
@@ -119,8 +119,8 @@
       "anchor_start": "**Design/Showroom (아카이브",
       "anchor_end": "## 🚀 전술 작전 보드",
       "line_range": [
-        23,
-        24
+        60,
+        61
       ],
       "essence": "Design/Showroom 레인 — 아카이브·패시브 · SEND_GATE HOLD",
       "must_keep_tags": [
@@ -131,6 +131,154 @@
       "priority": 7,
       "char_count": 165,
       "content_sha256_prefix": "c43d332eb6684029"
+    },
+    "prism_ops_nvidia_gc_pack": {
+      "slice_kind": "json_pointer",
+      "file_path": "reports/nvidia_grand_challenge_design_lane_handoff_v1_latest.json",
+      "json_pointers": [
+        "/pack_version",
+        "/repro_all_ok",
+        "/portal_attestation",
+        "/perf_upgrade_gate/ready",
+        "/submit_dir",
+        "/send_gate",
+        "/continuity_id"
+      ],
+      "essence": "NVIDIA GC pack v1.7 — repro·PDF/ZIP·portal pending human · Design lane",
+      "must_keep_tags": [
+        "repro_all_ok",
+        "send_gate",
+        "portal_attestation"
+      ],
+      "priority": 8,
+      "field_tags": [
+        "design",
+        "nvidia",
+        "grant",
+        "submit"
+      ],
+      "char_count": 228,
+      "content_sha256_prefix": "87791da2fa57b4be",
+      "overlay_role": "jema_os_gpu_v1"
+    },
+    "prism_ops_jema_os_runner_policy": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/jema_os_runner_policy_v1_latest.json",
+      "json_pointers": [
+        "/fail_comp_004_guard/l5_l4_kpi_linear_merge_forbidden",
+        "/l5_observed_pins/raw/cloud_skip_ratio",
+        "/l5_observed_pins/raw/routing_oracle_gap",
+        "/l5_observed_pins/label",
+        "/send_gate",
+        "/research_only"
+      ],
+      "essence": "JEMA OS L5 runner policy — admission gate · L5≠L4≠compression",
+      "must_keep_tags": [
+        "l5_l4_kpi_linear_merge_forbidden",
+        "research_only",
+        "send_gate"
+      ],
+      "priority": 8,
+      "field_tags": [
+        "infra",
+        "jema_os",
+        "l5",
+        "gpu"
+      ],
+      "char_count": 246,
+      "content_sha256_prefix": "c2aad74b5b2dcba6",
+      "overlay_role": "jema_os_gpu_v1"
+    },
+    "prism_ops_zone_f_code_curated": {
+      "slice_kind": "json_pointer",
+      "file_path": "reports/zone_f_code_curated_headline_v1_latest.json",
+      "json_pointers": [
+        "/raw/catalog_row_count",
+        "/raw/wire_match_rate",
+        "/policy_compliance/curated_target_rows",
+        "/bulk_growth_frozen",
+        "/send_gate"
+      ],
+      "essence": "zone_f_code curated 300/300 — signoff HOLD_NEEDS_REVIEW · no 47% headline",
+      "must_keep_tags": [
+        "curated_target_rows",
+        "bulk_growth_frozen",
+        "send_gate"
+      ],
+      "priority": 7,
+      "field_tags": [
+        "ms",
+        "compression",
+        "zone_f",
+        "b2b"
+      ],
+      "char_count": 147,
+      "content_sha256_prefix": "d48848ba2f6109ea",
+      "overlay_role": "jema_os_gpu_v1"
+    },
+    "prism_ops_portfolio_execution_focus": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/mkm_portfolio_status_snapshot_v1_latest.json",
+      "json_pointers": [
+        "/commercialization_phases/execution_focus_2026_07",
+        "/commercialization_phases/phase_1",
+        "/market_validation_advisory_2026_07/status",
+        "/market_validation_advisory_2026_07/compression_lane",
+        "/market_validation_advisory_2026_07/logos_lane",
+        "/market_validation_advisory_2026_07/ssot",
+        "/doc_pointers/portfolio_master_index",
+        "/doc_pointers/business_plan_ssot"
+      ],
+      "essence": "2026 실행 집중 — One cash cow(a-codeai)+One passion(logos) · 시장검증 ADVISORY · TRACK_C §0.6 · 체크포인트 스크롤 내성",
+      "must_keep_tags": [
+        "one_cash_cow_acodeai",
+        "ADVISORY_not_fact_lock",
+        "TRACK_C_IP_BUSINESS_PLAN"
+      ],
+      "priority": 8,
+      "field_tags": [
+        "portfolio",
+        "acodeai",
+        "logos",
+        "market_validation",
+        "bootstrap",
+        "b2b"
+      ],
+      "char_count": 777,
+      "content_sha256_prefix": "2ab85d25f2911155",
+      "overlay_role": "portfolio_v1"
+    },
+    "prism_ops_where_used_gate": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/mkm_ops_pin_where_used_gate_v1_latest.json",
+      "json_pointers": [
+        "/ops_pin_id",
+        "/essence_ko",
+        "/must_keep_tags",
+        "/registry",
+        "/reproduce",
+        "/send_gate",
+        "/skill"
+      ],
+      "essence": "사용처 → Pass1 resolve+check · Pass2 cited⊆hit synthesis_ok · CENTRAL 장문 금지",
+      "must_keep_tags": [
+        "coverage_ok",
+        "resolve_mkm_where_used_v1.py",
+        "HOLD",
+        "synthesis_ok"
+      ],
+      "priority": 8,
+      "field_tags": [
+        "where_used",
+        "complete_enum",
+        "coverage_ok",
+        "synthesis_ok",
+        "ltm",
+        "infra"
+      ],
+      "char_count": 588,
+      "content_sha256_prefix": "636983bbdfcf610e",
+      "overlay_role": "where_used_v1"
     },
     "prism_ops_logos_cosmic_anchor_bridge": {
       "slice_kind": "json_pointer",
@@ -157,8 +305,8 @@
         "gematria",
         "btrack"
       ],
-      "char_count": 188,
-      "content_sha256_prefix": "9007bd2d8a40222b",
+      "char_count": 190,
+      "content_sha256_prefix": "eb73554e3ce20776",
       "overlay_role": "logos_math"
     },
     "prism_ops_logos_four_force_report": {
@@ -184,8 +332,8 @@
         "hypo",
         "gematria"
       ],
-      "char_count": 298,
-      "content_sha256_prefix": "116a302f85e3501e",
+      "char_count": 300,
+      "content_sha256_prefix": "0f1385db7a0e4456",
       "overlay_role": "logos_math"
     },
     "prism_ops_logos_4d_state": {
@@ -289,8 +437,8 @@
         "retrieval",
         "btrack"
       ],
-      "char_count": 110,
-      "content_sha256_prefix": "377f6230d0c25f43",
+      "char_count": 109,
+      "content_sha256_prefix": "b60942dbe0ffc0b5",
       "overlay_role": "logos_math"
     },
     "prism_ops_logos_gematria_dual_gate": {
@@ -376,9 +524,118 @@
       "char_count": 250,
       "content_sha256_prefix": "00a2740d753415f5",
       "overlay_role": "logos_math"
+    },
+    "prism_ops_web_ops_regime_gate": {
+      "slice_kind": "json_pointer",
+      "file_path": "reports/web_ops_regime_gate_v1_latest.json",
+      "json_pointers": [
+        "/gate_pass",
+        "/research_only",
+        "/track_wall",
+        "/conflict_resolver/worst_final_action",
+        "/cost_policy/no_gpu_spinup",
+        "/cost_policy/no_new_billing_charges",
+        "/cost_policy/nebius_prepaid_only",
+        "/operator_hint_ko"
+      ],
+      "essence": "web_ops 레짐 게이트 — ALLOW_READ·HOLD_PAYMENT·Nebius/Azure 비용·Tier3 Human · research_only",
+      "must_keep_tags": [
+        "no_gpu_spinup",
+        "research_only",
+        "gate_pass"
+      ],
+      "priority": 6,
+      "field_tags": [
+        "infra",
+        "web_ops",
+        "nebius",
+        "cost_audit",
+        "regime_action"
+      ],
+      "char_count": 309,
+      "content_sha256_prefix": "8218fbe7bd881df6"
+    },
+    "prism_ops_web_ops_health": {
+      "slice_kind": "json_pointer",
+      "file_path": "reports/web_ops_regime_health_summary_v1_latest.json",
+      "json_pointers": [
+        "/health_ok",
+        "/gate_pass",
+        "/research_only",
+        "/nebius_balance_usd",
+        "/pointer_drift_detected",
+        "/observation_source",
+        "/worst_final_action"
+      ],
+      "essence": "web_ops 헬스 요약 — worst_final_action·balance·drift·observation_source · B-track",
+      "must_keep_tags": [
+        "research_only",
+        "health_ok"
+      ],
+      "priority": 5,
+      "field_tags": [
+        "infra",
+        "web_ops",
+        "health",
+        "regime_action"
+      ],
+      "char_count": 184,
+      "content_sha256_prefix": "f9b13ac157c5bcee"
+    },
+    "prism_ops_theory_mathematization_gate": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/mkm_theory_formula_promotion_gate_dryrun_v1_latest.json",
+      "json_pointers": [
+        "/promotion_to_a_track_allowed",
+        "/track_b_only",
+        "/ok",
+        "/checks/5/entries",
+        "/checks/5/promotion_to_a_track_allowed"
+      ],
+      "essence": "이론 75식 승격 게이트 dryrun — B-track only · promotion_to_a_track_allowed=false",
+      "must_keep_tags": [
+        "promotion_to_a_track_allowed",
+        "track_b_only"
+      ],
+      "priority": 5,
+      "field_tags": [
+        "theory",
+        "btrack",
+        "formula",
+        "promotion_gate"
+      ],
+      "char_count": 134,
+      "content_sha256_prefix": "79644d35b3c690cf"
+    },
+    "prism_ops_theory_formula_ssot": {
+      "slice_kind": "json_pointer",
+      "file_path": "docs/final/artifacts/mkm12_75_formulas_ssot_v1_latest.json",
+      "json_pointers": [
+        "/unrecovered_slots",
+        "/documented_with_expr",
+        "/repo_implemented_facts"
+      ],
+      "essence": "75식 SSOT 스냅샷 — catalog expr vs 4 repo FACT · HYPO index",
+      "must_keep_tags": [
+        "unrecovered_slots",
+        "documented_with_expr"
+      ],
+      "priority": 5,
+      "field_tags": [
+        "theory",
+        "formula",
+        "hypo"
+      ],
+      "char_count": 731,
+      "content_sha256_prefix": "04c4e0480ad1fb5c"
     }
   },
   "overlays": [
-    "logos_math_v1"
+    "jema_os_gpu_v1",
+    "portfolio_v1",
+    "where_used_v1",
+    "logos_math_v1",
+    "web_ops_v1",
+    "theory_mathematization_v1"
   ]
 }

@@ -1,7 +1,8 @@
 # LLM Wiki Schema v1 (MKM · OKF-aligned)
 
-**Status:** B-track reference · `[HYPO]` export layer  
-**Updated:** 2026-07-12
+**Status:** B-track reference · `[HYPO]` export layer · internal ops shelf (Track C knowledge interchange)  
+**Updated:** 2026-07-13  
+**Discoverability:** CONSTITUTION thin pointer (LLM Wiki lint 보강) · fusion plan `docs/final/artifacts/mkm_llm_wiki_ops_memory_fusion_plan_v1_latest.json` · commercial scorecard `docs/final/artifacts/mkm_llm_wiki_commercial_readiness_v1_latest.json`
 
 Karpathy LLM-wiki pattern for agent-readable knowledge. **Does not replace** implementation SSOT (`CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`) or policy SSOT (`CENTRAL_AGENT_MEMORY_V1.md`).
 
@@ -83,7 +84,7 @@ Hard fail when a **YAML-frontmatter** page is missing:
 Also:
 
 - Empty vault roots → exit **0** with `skipped_empty` (not a failure).
-- Legacy `raw/` pointers **without** YAML frontmatter → counted as `skipped_legacy_no_yaml` (warn), not auto-rewritten.
+- Legacy `raw/` pointers **without** YAML frontmatter → counted as `skipped_legacy_no_yaml` (warn), not auto-rewritten. **Accepted contract** (do not bulk-rewrite): count + paths live in fusion plan JSON `legacy_raw_policy` and lint artifact `skipped_legacy_no_yaml`.
 - Reminder only (not scanned as PII classifier): `raw/` must not host bulk diary / PHI / family dumps.
 
 ## Producers (callable)
@@ -93,6 +94,14 @@ Also:
 | `py scripts/synthesize_llm_wiki_theory_mathematization_v1.py` | `memory/.../wiki/mkm_theory_mathematization_canon_v1.md` |
 | `py scripts/export_han_vocology_okf_bundle_v1.py` | `docs/final/artifacts/okf_bundles/han_vocology/` + `han_vocology_okf_export_v1_latest.json` |
 | `py scripts/check_llm_wiki_lint_v1.py` | `docs/final/artifacts/llm_wiki_lint_v1_latest.json` |
+
+## Regression (CI-friendly)
+
+```powershell
+py -m pytest tests/test_check_llm_wiki_lint_v1.py tests/test_export_han_vocology_okf_bundle_v1.py -q
+```
+
+Fact-Lock bundle / persona health **default include deferred** (opt-in later) — see commercial readiness scorecard.
 
 ## Reserved filenames (OKF)
 

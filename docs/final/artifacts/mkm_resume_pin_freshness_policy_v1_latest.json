@@ -1,0 +1,24 @@
+{
+  "schema": "mkm_resume_pin_freshness_policy_v1",
+  "version": 1,
+  "generated_at_utc": "2026-07-15T05:30:00Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "purpose_ko": "Resume pin max_age_days advisory — temporal decay spirit (poisoning paper); ≠ auto-forget",
+  "default_max_age_days": 7,
+  "max_age_days_by_node_id": {
+    "prism_ops_central_checkpoint": 3,
+    "prism_ops_mission_log_board": 7,
+    "prism_ops_mission_log_next_one": 5,
+    "prism_ops_portfolio_execution_focus": 14,
+    "prism_ops_theory_formula_ssot": 45
+  },
+  "max_age_days_by_prefix": {
+    "prism_ops_lane_": 7,
+    "prism_ops_logos_": 14,
+    "prism_ops_web_ops_": 7
+  },
+  "checkpoint_contradiction_window": 12,
+  "checkpoint_same_continuity_burst_seconds": 60,
+  "note_ko": "stale_advisory=true는 재확인 권고만 — 자동 삭제·Track A 승격 금지; theory_formula_ssot는 봉인 카탈로그라 max_age 45d; same_continuity는 polarity 충돌만 모순(버스트 이중쓰기 제외); essence PASS/DONE인데 L2 artifact 없으면 l0_l2_claim_gaps(advisory·must_keep만으로는 미발화)"
+}

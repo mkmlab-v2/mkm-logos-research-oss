@@ -1,0 +1,69 @@
+{
+  "schema": "mkm_resume_pin_freshness_v1",
+  "generated_at_utc": "2026-07-15T12:10:36Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "policy_pointer": "docs/final/artifacts/mkm_resume_pin_freshness_policy_v1_latest.json",
+  "default_max_age_days": 7,
+  "pins": [
+    {
+      "node_id": "prism_ops_mission_log_board",
+      "age_days": 0.071,
+      "max_age_days": 7,
+      "stale_advisory": false,
+      "as_of_utc": "2026-07-15T10:28:25.898768Z",
+      "age_source": "index_last_updated"
+    },
+    {
+      "node_id": "prism_ops_central_checkpoint",
+      "age_days": 0.07,
+      "max_age_days": 3,
+      "stale_advisory": false,
+      "as_of_utc": "2026-07-15T10:29:44Z",
+      "age_source": "newest_checkpoint"
+    },
+    {
+      "node_id": "prism_ops_mission_log_next_one",
+      "age_days": 0.071,
+      "max_age_days": 5,
+      "stale_advisory": false,
+      "as_of_utc": "2026-07-15T10:28:25.898768Z",
+      "age_source": "index_last_updated"
+    },
+    {
+      "node_id": "prism_ops_portfolio_execution_focus",
+      "age_days": 2.747,
+      "max_age_days": 14,
+      "stale_advisory": false,
+      "as_of_utc": "2026-07-12T18:14:19Z",
+      "age_source": "json_generated_at"
+    },
+    {
+      "node_id": "prism_ops_where_used_gate",
+      "age_days": 5.046,
+      "max_age_days": 7,
+      "stale_advisory": false,
+      "as_of_utc": "2026-07-10T11:05:00Z",
+      "age_source": "json_generated_at"
+    },
+    {
+      "node_id": "prism_ops_absolute_balance_conflict_state",
+      "age_days": 4.931,
+      "max_age_days": 7,
+      "stale_advisory": false,
+      "as_of_utc": "2026-07-10T13:50:00Z",
+      "age_source": "json_generated_at"
+    }
+  ],
+  "checkpoint_contradictions": [],
+  "l0_l2_claim_gaps": [],
+  "advisory_summary": {
+    "stale_pin_count": 0,
+    "contradiction_count": 0,
+    "l0_l2_claim_gap_count": 0
+  },
+  "reproduce": [
+    "py scripts/check_mkm_resume_pin_freshness_v1.py",
+    "py -m pytest tests/test_mkm_resume_pin_freshness_v1.py -q"
+  ]
+}

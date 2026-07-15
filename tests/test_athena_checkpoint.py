@@ -84,3 +84,24 @@ def test_replace_checkpoint_replace_all_single_line():
     )
     assert "- **new** — only" in updated
     assert "gone" not in updated
+
+
+def test_merge_checkpoint_inner_same_continuity_burst_replaces_not_prepends():
+    mod = _load_mod()
+    inner = (
+        "\n"
+        "- **2026-07-15T07:43:48Z** — continuity=demo-burst · homepage LIVE DONE deploy exit0\n"
+    )
+    out = mod._merge_checkpoint_inner(
+        inner,
+        "2026-07-15T07:44:02Z",
+        "continuity=demo-burst · homepage live DONE; next Paddle",
+        max_lines=5,
+        same_continuity_burst_seconds=60,
+    )
+    lines = out.splitlines()
+    assert len(lines) == 2
+    assert lines[0] == mod.CENTRAL_MARKER
+    assert "07:44:02" in lines[1]
+    assert "next Paddle" in lines[1]
+    assert "07:43:48" not in out

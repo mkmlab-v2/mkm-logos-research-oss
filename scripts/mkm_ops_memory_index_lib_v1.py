@@ -102,6 +102,8 @@ LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_oracle",
+        "prism_ops_portfolio_execution_focus",
+        "prism_ops_logos_metacog_coord",
         "prism_ops_theory_mathematization_gate",
         "prism_ops_theory_formula_ssot",
         "prism_ops_logos_cosmic_anchor_bridge",
@@ -116,16 +118,24 @@ LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_ms",
+        "prism_ops_portfolio_execution_focus",
+        "prism_ops_sasang_metacog_grammar",
+        "prism_ops_myeongri_metacog_grammar",
+        "prism_ops_zone_f_code_curated",
     ),
     "infra": (
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_infra",
+        "prism_ops_jema_os_runner_policy",
+        "prism_ops_where_used_gate",
+        "prism_ops_compression_metacog_sidecar",
     ),
     "design": (
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
         "prism_ops_lane_design",
+        "prism_ops_nvidia_gc_pack",
         "prism_ops_pixel_battalion_gate",
         "prism_ops_lens_audio_gate",
         "prism_ops_clinic_landing_gate",
@@ -143,11 +153,47 @@ COMMANDER_DEFAULT_RESUME_NODES: tuple[str, ...] = (
     "prism_ops_mission_log_board",
     "prism_ops_central_checkpoint",
     "prism_ops_mission_log_next_one",
+    "prism_ops_portfolio_execution_focus",
+    "prism_ops_where_used_gate",
+    "prism_ops_absolute_balance_conflict_state",
 )
 COMMANDER_SLICE_NODE_IDS: frozenset[str] = frozenset(
     {
         "prism_ops_central_checkpoint",
         "prism_ops_mission_log_next_one",
+        "prism_ops_portfolio_execution_focus",
+        "prism_ops_where_used_gate",
+        "prism_ops_absolute_balance_conflict_state",
+    }
+)
+
+# Overlay / lane-extension pins — omit when artifact missing (hermetic tests + cold worktrees).
+OPTIONAL_LANE_OVERLAY_NODE_IDS: frozenset[str] = frozenset(
+    {
+        "prism_ops_portfolio_execution_focus",
+        "prism_ops_where_used_gate",
+        "prism_ops_absolute_balance_conflict_state",
+        "prism_ops_compression_metacog_sidecar",
+        "prism_ops_logos_metacog_coord",
+        "prism_ops_theory_mathematization_gate",
+        "prism_ops_theory_formula_ssot",
+        "prism_ops_logos_cosmic_anchor_bridge",
+        "prism_ops_logos_narrative_router_eval",
+        "prism_ops_logos_router_regression_bundle",
+        "prism_ops_logos_four_force_report",
+        "prism_ops_logos_gematria_dual_gate",
+        "prism_ops_logos_oracle_module_tier2_prep",
+        "prism_ops_logos_narrative_closure_observability",
+        "prism_ops_sasang_metacog_grammar",
+        "prism_ops_myeongri_metacog_grammar",
+        "prism_ops_zone_f_code_curated",
+        "prism_ops_jema_os_runner_policy",
+        "prism_ops_nvidia_gc_pack",
+        "prism_ops_pixel_battalion_gate",
+        "prism_ops_lens_audio_gate",
+        "prism_ops_clinic_landing_gate",
+        "prism_ops_web_ops_regime_gate",
+        "prism_ops_web_ops_health",
     }
 )
 
@@ -162,6 +208,234 @@ class JsonSliceSpec:
     priority: int = 6
     field_tags: tuple[str, ...] = ()
 
+
+PORTFOLIO_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_portfolio_execution_focus",
+        file_path="docs/final/artifacts/mkm_portfolio_status_snapshot_v1_latest.json",
+        json_pointers=(
+            "/commercialization_phases/execution_focus_2026_07",
+            "/commercialization_phases/phase_1",
+            "/market_validation_advisory_2026_07/status",
+            "/market_validation_advisory_2026_07/compression_lane",
+            "/market_validation_advisory_2026_07/logos_lane",
+            "/market_validation_advisory_2026_07/ssot",
+            "/doc_pointers/portfolio_master_index",
+            "/doc_pointers/business_plan_ssot",
+        ),
+        essence=(
+            "2026 실행 집중 — One cash cow(a-codeai)+One passion(logos) · "
+            "시장검증 ADVISORY · TRACK_C §0.6 · 체크포인트 스크롤 내성"
+        ),
+        must_keep_tags=(
+            "one_cash_cow_acodeai",
+            "ADVISORY_not_fact_lock",
+            "TRACK_C_IP_BUSINESS_PLAN",
+        ),
+        priority=8,
+        field_tags=(
+            "portfolio",
+            "acodeai",
+            "logos",
+            "market_validation",
+            "bootstrap",
+            "b2b",
+        ),
+    ),
+)
+
+WHERE_USED_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_where_used_gate",
+        file_path="docs/final/artifacts/mkm_ops_pin_where_used_gate_v1_latest.json",
+        json_pointers=(
+            "/ops_pin_id",
+            "/essence_ko",
+            "/must_keep_tags",
+            "/registry",
+            "/reproduce",
+            "/send_gate",
+            "/skill",
+        ),
+        essence=(
+            "사용처 → Pass1 resolve+check · Pass2 cited⊆hit synthesis_ok · "
+            "CENTRAL 장문 금지"
+        ),
+        must_keep_tags=(
+            "coverage_ok",
+            "resolve_mkm_where_used_v1.py",
+            "HOLD",
+            "synthesis_ok",
+        ),
+        priority=8,
+        field_tags=(
+            "where_used",
+            "complete_enum",
+            "coverage_ok",
+            "synthesis_ok",
+            "ltm",
+            "infra",
+        ),
+    ),
+)
+
+LOGOS_METACOG_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_logos_metacog_coord",
+        file_path="docs/final/artifacts/mkm_ops_pin_logos_metacog_coord_v1_latest.json",
+        json_pointers=(
+            "/ops_pin_id",
+            "/essence_ko",
+            "/must_keep_tags",
+            "/ssot_md",
+            "/ssot_json",
+            "/reproduce",
+            "/send_gate",
+            "/non_gating",
+        ),
+        essence=(
+            "Logos=메타인지 좌표 OS · 생존축 S+K만 · L/M falsified · "
+            "never-gate · 압축/매매 합선 금지"
+        ),
+        must_keep_tags=(
+            "NON_GATING",
+            "surviving_axes_SK",
+            "HOLD",
+            "metacog_coord_os",
+        ),
+        priority=9,
+        field_tags=(
+            "logos",
+            "metacog",
+            "NON_GATING",
+            "coordinate_os",
+            "oracle",
+        ),
+    ),
+)
+
+SASANG_METACOG_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_sasang_metacog_grammar",
+        file_path="docs/final/artifacts/mkm_ops_pin_sasang_metacog_grammar_v1_latest.json",
+        json_pointers=(
+            "/ops_pin_id",
+            "/essence_ko",
+            "/must_keep_tags",
+            "/ssot_md",
+            "/where_used_topic",
+            "/reproduce",
+            "/send_gate",
+        ),
+        essence=(
+            "사상=문법 복제(UMR·where-used·handoff) · 분류 라벨만 · "
+            "벡터 합선 금지"
+        ),
+        must_keep_tags=(
+            "HYPO",
+            "classifier_tag_only",
+            "HOLD",
+            "no_vector_merge",
+        ),
+        priority=8,
+        field_tags=("sasang", "metacog", "grammar_clone", "ms"),
+    ),
+)
+
+MYEONGRI_METACOG_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_myeongri_metacog_grammar",
+        file_path="docs/final/artifacts/mkm_ops_pin_myeongri_metacog_grammar_v1_latest.json",
+        json_pointers=(
+            "/ops_pin_id",
+            "/essence_ko",
+            "/must_keep_tags",
+            "/ssot_md",
+            "/where_used_topic",
+            "/reproduce",
+            "/send_gate",
+        ),
+        essence=(
+            "명리=문법 복제(UMR·where-used) · advisory만 · "
+            "벡터 합선·동일인물맵 금지"
+        ),
+        must_keep_tags=(
+            "HYPO",
+            "advisory_only",
+            "HOLD",
+            "no_vector_merge",
+        ),
+        priority=8,
+        field_tags=("myeongri", "myeongni", "metacog", "grammar_clone", "ms"),
+    ),
+)
+
+ABSOLUTE_BALANCE_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_absolute_balance_conflict_state",
+        file_path="docs/final/artifacts/mkm_ops_pin_absolute_balance_conflict_state_v1_latest.json",
+        json_pointers=(
+            "/ops_pin_id",
+            "/essence_ko",
+            "/must_keep_tags",
+            "/ssot_md",
+            "/ssot_json",
+            "/reproduce",
+            "/send_gate",
+        ),
+        essence=(
+            "Absolute Balance=조율 상태 · Field→Lens(3)→Conflict→Final · "
+            "제5 AI 아님 · Final=Field+ops"
+        ),
+        must_keep_tags=(
+            "not_fifth_ai",
+            "state_not_vector",
+            "HOLD",
+            "field_gates_final",
+        ),
+        priority=9,
+        field_tags=(
+            "absolute_balance",
+            "coordinator",
+            "conflict",
+            "not_fifth_ai",
+        ),
+    ),
+)
+
+COMPRESSION_SIDECAR_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_compression_metacog_sidecar",
+        file_path="docs/final/artifacts/mkm_ops_pin_compression_metacog_sidecar_v1_latest.json",
+        json_pointers=(
+            "/ops_pin_id",
+            "/essence_ko",
+            "/must_keep_tags",
+            "/ssot_md",
+            "/ssot_json",
+            "/reproduce",
+            "/send_gate",
+        ),
+        essence=(
+            "압축=메타인지 좌표를 routing/must_keep sidecar만 · "
+            "렌즈점수→raw KPI 합선 금지 · FAIL-COMP-004"
+        ),
+        must_keep_tags=(
+            "sidecar_only",
+            "FAIL-COMP-004",
+            "HOLD",
+            "no_lens_kpi_merge",
+        ),
+        priority=9,
+        field_tags=(
+            "compression",
+            "sidecar",
+            "fail_comp_004",
+            "must_keep",
+            "infra",
+        ),
+    ),
+)
 
 WEB_OPS_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
     JsonSliceSpec(
@@ -438,6 +712,57 @@ LOGOS_MATH_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
     ),
 )
 
+JEMA_OS_GPU_JSON_SPECS: tuple[JsonSliceSpec, ...] = (
+    JsonSliceSpec(
+        node_id="prism_ops_nvidia_gc_pack",
+        file_path="reports/nvidia_grand_challenge_design_lane_handoff_v1_latest.json",
+        json_pointers=(
+            "/pack_version",
+            "/repro_all_ok",
+            "/portal_attestation",
+            "/perf_upgrade_gate/ready",
+            "/submit_dir",
+            "/send_gate",
+            "/continuity_id",
+        ),
+        essence="NVIDIA GC pack v1.7 — repro·PDF/ZIP·portal pending human · Design lane",
+        must_keep_tags=("repro_all_ok", "send_gate", "portal_attestation"),
+        priority=8,
+        field_tags=("design", "nvidia", "grant", "submit"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_jema_os_runner_policy",
+        file_path="docs/final/artifacts/jema_os_runner_policy_v1_latest.json",
+        json_pointers=(
+            "/fail_comp_004_guard/l5_l4_kpi_linear_merge_forbidden",
+            "/l5_observed_pins/raw/cloud_skip_ratio",
+            "/l5_observed_pins/raw/routing_oracle_gap",
+            "/l5_observed_pins/label",
+            "/send_gate",
+            "/research_only",
+        ),
+        essence="JEMA OS L5 runner policy — admission gate · L5≠L4≠compression",
+        must_keep_tags=("l5_l4_kpi_linear_merge_forbidden", "research_only", "send_gate"),
+        priority=8,
+        field_tags=("infra", "jema_os", "l5", "gpu"),
+    ),
+    JsonSliceSpec(
+        node_id="prism_ops_zone_f_code_curated",
+        file_path="reports/zone_f_code_curated_headline_v1_latest.json",
+        json_pointers=(
+            "/raw/catalog_row_count",
+            "/raw/wire_match_rate",
+            "/policy_compliance/curated_target_rows",
+            "/bulk_growth_frozen",
+            "/send_gate",
+        ),
+        essence="zone_f_code curated 300/300 — signoff HOLD_NEEDS_REVIEW · no 47% headline",
+        must_keep_tags=("curated_target_rows", "bulk_growth_frozen", "send_gate"),
+        priority=7,
+        field_tags=("ms", "compression", "zone_f", "b2b"),
+    ),
+)
+
 LTM_A2A_NODE_CONCEPT_IDS: dict[str, str] = {
     "ltm_ops_inject_to_a2a_wire": "ltm_ops_inject_to_a2a_wire",
     "ltm_a2a_two_layer_architecture_ssot": "a2a_two_layer_architecture_ssot",
@@ -672,6 +997,21 @@ def extract_json_slice_from_node(
 
 # Query → JSON pointer coordinates ([HYPO] DSS chunk-cap pattern; not embedding RAG).
 POINTER_QUERY_HINTS: dict[str, tuple[str, ...]] = {
+    "portfolio": (
+        "/commercialization_phases/execution_focus_2026_07",
+        "/market_validation_advisory_2026_07/ssot",
+    ),
+    "포트폴리오": (
+        "/commercialization_phases/execution_focus_2026_07",
+        "/market_validation_advisory_2026_07/status",
+    ),
+    "cash": ("/commercialization_phases/execution_focus_2026_07",),
+    "acodeai": ("/commercialization_phases/execution_focus_2026_07",),
+    "사업계획": ("/doc_pointers/business_plan_ssot", "/market_validation_advisory_2026_07/ssot"),
+    "시장검증": (
+        "/market_validation_advisory_2026_07/status",
+        "/market_validation_advisory_2026_07/compression_lane",
+    ),
     "balance": ("/nebius_balance_usd", "/gate_pass"),
     "잔액": ("/nebius_balance_usd",),
     "prepaid": ("/cost_policy/nebius_prepaid_only", "/nebius_balance_usd"),
@@ -829,13 +1169,43 @@ def nodes_for_resume(
         selected: list[tuple[str, dict[str, Any]]] = []
         for node_id in LANE_OPS_PACKS[lane_key]:
             if node_id not in nodes:
+                if node_id in OPTIONAL_LANE_OVERLAY_NODE_IDS:
+                    continue
                 raise KeyError(f"lane pack missing node: {node_id}")
             selected.append((node_id, nodes[node_id]))
         return selected
     if commander_default:
+        if root is not None and "prism_ops_portfolio_execution_focus" not in nodes:
+            portfolio_overlay = build_portfolio_overlay_nodes(root)
+            if portfolio_overlay:
+                index = merge_overlay_nodes(
+                    index, portfolio_overlay, overlay_label="portfolio_v1"
+                )
+                nodes = index.get("nodes") or {}
+        if root is not None and "prism_ops_where_used_gate" not in nodes:
+            where_used_overlay = build_where_used_overlay_nodes(root)
+            if where_used_overlay:
+                index = merge_overlay_nodes(
+                    index, where_used_overlay, overlay_label="where_used_v1"
+                )
+                nodes = index.get("nodes") or {}
+        if root is not None and "prism_ops_absolute_balance_conflict_state" not in nodes:
+            ab_overlay = build_absolute_balance_overlay_nodes(root)
+            if ab_overlay:
+                index = merge_overlay_nodes(
+                    index, ab_overlay, overlay_label="absolute_balance_v1"
+                )
+                nodes = index.get("nodes") or {}
         selected = []
         for node_id in COMMANDER_DEFAULT_RESUME_NODES:
             if node_id not in nodes:
+                # Portfolio / where-used / absolute-balance pins are durable overlays
+                if node_id in (
+                    "prism_ops_portfolio_execution_focus",
+                    "prism_ops_where_used_gate",
+                    "prism_ops_absolute_balance_conflict_state",
+                ):
+                    continue
                 raise KeyError(f"commander resume missing node: {node_id}")
             selected.append((node_id, nodes[node_id]))
         return selected
@@ -1205,6 +1575,97 @@ def build_web_ops_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
     return nodes
 
 
+def build_portfolio_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build portfolio execution-focus JSON-slice (durable vs CENTRAL checkpoint scroll)."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in PORTFOLIO_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "portfolio_v1"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
+def build_where_used_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build where-used complete-enum gate JSON-slice (Pass1 resolve before answer)."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in WHERE_USED_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "where_used_v1"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
+def build_logos_metacog_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build Logos metacog coordinate OS pin (P1-1; oracle lane)."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in LOGOS_METACOG_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "logos_metacog_v1"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
+def build_sasang_metacog_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build 사상 metacog grammar pin (P2; ms lane)."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in SASANG_METACOG_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "sasang_metacog_v1"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
+def build_myeongri_metacog_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build 명리 metacog grammar pin (P2; ms lane)."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in MYEONGRI_METACOG_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "myeongri_metacog_v1"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
+def build_absolute_balance_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build Absolute Balance conflict-state pin (P3; commander default)."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in ABSOLUTE_BALANCE_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "absolute_balance_v1"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
+def build_compression_sidecar_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build compression metacog sidecar-only pin (P4; infra lane)."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in COMPRESSION_SIDECAR_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "compression_sidecar_v1"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
 def build_domain_adapter_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
     """Build JSON-slice nodes for Pixel Battalion + Lens Audio adapters ([HYPO])."""
     nodes: dict[str, dict[str, Any]] = {}
@@ -1253,6 +1714,19 @@ def build_logos_math_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
     return nodes
 
 
+def build_jema_os_gpu_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
+    """Build JSON-slice nodes for JEMA OS L5 + NVIDIA GC + zone_f curated pins."""
+    nodes: dict[str, dict[str, Any]] = {}
+    for spec in JEMA_OS_GPU_JSON_SPECS:
+        try:
+            entry = build_json_slice_node_entry(root, spec)
+            entry["overlay_role"] = "jema_os_gpu_v1"
+            nodes[spec.node_id] = entry
+        except (FileNotFoundError, ValueError, KeyError):
+            continue
+    return nodes
+
+
 def build_ltm_a2a_overlay_nodes(root: Path) -> dict[str, dict[str, Any]]:
     """Build ltm_* JSON-slice nodes for LTM ↔ A2A bridge map ([HYPO] / B-track)."""
     nodes: dict[str, dict[str, Any]] = {}
@@ -1279,11 +1753,19 @@ def _register_overlay_builders() -> None:
         {
             "logos_math_v1": build_logos_math_overlay_nodes,
             "web_ops_v1": build_web_ops_overlay_nodes,
+            "portfolio_v1": build_portfolio_overlay_nodes,
+            "where_used_v1": build_where_used_overlay_nodes,
+            "logos_metacog_v1": build_logos_metacog_overlay_nodes,
+            "sasang_metacog_v1": build_sasang_metacog_overlay_nodes,
+            "myeongri_metacog_v1": build_myeongri_metacog_overlay_nodes,
+            "absolute_balance_v1": build_absolute_balance_overlay_nodes,
+            "compression_sidecar_v1": build_compression_sidecar_overlay_nodes,
             "theory_v1": build_theory_overlay_nodes,
             "theory_mathematization_v1": build_theory_overlay_nodes,
             "domain_adapters_v1": build_domain_adapter_overlay_nodes,
             "fills_multi_res_v1": build_fills_overlay_nodes,
             "ltm_a2a_v1": build_ltm_a2a_overlay_nodes,
+            "jema_os_gpu_v1": build_jema_os_gpu_overlay_nodes,
         }
     )
 
@@ -1345,6 +1827,72 @@ def ensure_lane_pack_index(
     if not missing:
         return index
     merged = index
+    # Commander default + MS/Oracle packs need durable portfolio focus (survives checkpoint scroll).
+    if "prism_ops_portfolio_execution_focus" in missing:
+        portfolio_overlay = build_portfolio_overlay_nodes(root)
+        if portfolio_overlay:
+            merged = merge_overlay_nodes(
+                merged, portfolio_overlay, overlay_label="portfolio_v1"
+            )
+            nodes = merged.get("nodes") or {}
+            missing = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in nodes]
+            if not missing:
+                return merged
+    if "prism_ops_where_used_gate" in missing:
+        where_used_overlay = build_where_used_overlay_nodes(root)
+        if where_used_overlay:
+            merged = merge_overlay_nodes(
+                merged, where_used_overlay, overlay_label="where_used_v1"
+            )
+            nodes = merged.get("nodes") or {}
+            missing = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in nodes]
+            if not missing:
+                return merged
+    if "prism_ops_absolute_balance_conflict_state" in missing:
+        ab_overlay = build_absolute_balance_overlay_nodes(root)
+        if ab_overlay:
+            merged = merge_overlay_nodes(
+                merged, ab_overlay, overlay_label="absolute_balance_v1"
+            )
+            nodes = merged.get("nodes") or {}
+            missing = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in nodes]
+            if not missing:
+                return merged
+    if "prism_ops_compression_metacog_sidecar" in missing:
+        comp_overlay = build_compression_sidecar_overlay_nodes(root)
+        if comp_overlay:
+            merged = merge_overlay_nodes(
+                merged, comp_overlay, overlay_label="compression_sidecar_v1"
+            )
+            nodes = merged.get("nodes") or {}
+            missing = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in nodes]
+            if not missing:
+                return merged
+    if "prism_ops_logos_metacog_coord" in missing:
+        logos_metacog_overlay = build_logos_metacog_overlay_nodes(root)
+        if logos_metacog_overlay:
+            merged = merge_overlay_nodes(
+                merged, logos_metacog_overlay, overlay_label="logos_metacog_v1"
+            )
+            nodes = merged.get("nodes") or {}
+            missing = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in nodes]
+            if not missing:
+                return merged
+    if "prism_ops_sasang_metacog_grammar" in missing or "prism_ops_myeongri_metacog_grammar" in missing:
+        sasang_overlay = build_sasang_metacog_overlay_nodes(root)
+        myeongri_overlay = build_myeongri_metacog_overlay_nodes(root)
+        if sasang_overlay:
+            merged = merge_overlay_nodes(
+                merged, sasang_overlay, overlay_label="sasang_metacog_v1"
+            )
+        if myeongri_overlay:
+            merged = merge_overlay_nodes(
+                merged, myeongri_overlay, overlay_label="myeongri_metacog_v1"
+            )
+            nodes = merged.get("nodes") or {}
+            missing = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in nodes]
+            if not missing:
+                return merged
     # web_ops lane requires JSON slice overlays from *_latest artifacts.
     if lane_key == "web_ops":
         overlay = build_web_ops_overlay_nodes(root)
@@ -1362,17 +1910,59 @@ def ensure_lane_pack_index(
             merged = merge_overlay_nodes(
                 merged, logos_overlay, overlay_label="logos_math_v1"
             )
+        logos_metacog_overlay = build_logos_metacog_overlay_nodes(root)
+        if logos_metacog_overlay:
+            merged = merge_overlay_nodes(
+                merged, logos_metacog_overlay, overlay_label="logos_metacog_v1"
+            )
     if lane_key == "design":
         adapter_overlay = build_domain_adapter_overlay_nodes(root)
         if adapter_overlay:
             merged = merge_overlay_nodes(
                 merged, adapter_overlay, overlay_label="domain_adapters_v1"
             )
+        jema_overlay = build_jema_os_gpu_overlay_nodes(root)
+        if jema_overlay:
+            merged = merge_overlay_nodes(
+                merged, jema_overlay, overlay_label="jema_os_gpu_v1"
+            )
+    if lane_key == "infra":
+        jema_overlay = build_jema_os_gpu_overlay_nodes(root)
+        if jema_overlay:
+            merged = merge_overlay_nodes(
+                merged, jema_overlay, overlay_label="jema_os_gpu_v1"
+            )
+        where_used_overlay = build_where_used_overlay_nodes(root)
+        if where_used_overlay:
+            merged = merge_overlay_nodes(
+                merged, where_used_overlay, overlay_label="where_used_v1"
+            )
+        comp_overlay = build_compression_sidecar_overlay_nodes(root)
+        if comp_overlay:
+            merged = merge_overlay_nodes(
+                merged, comp_overlay, overlay_label="compression_sidecar_v1"
+            )
+    if lane_key == "ms":
+        jema_overlay = build_jema_os_gpu_overlay_nodes(root)
+        if jema_overlay:
+            merged = merge_overlay_nodes(
+                merged, jema_overlay, overlay_label="jema_os_gpu_v1"
+            )
+        sasang_overlay = build_sasang_metacog_overlay_nodes(root)
+        if sasang_overlay:
+            merged = merge_overlay_nodes(
+                merged, sasang_overlay, overlay_label="sasang_metacog_v1"
+            )
+        myeongri_overlay = build_myeongri_metacog_overlay_nodes(root)
+        if myeongri_overlay:
+            merged = merge_overlay_nodes(
+                merged, myeongri_overlay, overlay_label="myeongri_metacog_v1"
+            )
     still = [nid for nid in LANE_OPS_PACKS[lane_key] if nid not in (merged.get("nodes") or {})]
-    if not still:
-        return merged
-    missing = still
-    raise KeyError(f"lane pack missing node: {missing[0]}")
+    hard_missing = [nid for nid in still if nid not in OPTIONAL_LANE_OVERLAY_NODE_IDS]
+    if hard_missing:
+        raise KeyError(f"lane pack missing node: {hard_missing[0]}")
+    return merged
 
 
 def compute_node_sha_prefix(root: Path, node: dict[str, Any]) -> str:
@@ -1400,6 +1990,28 @@ def verify_index_sha_drift(root: Path, index: dict[str, Any]) -> list[str]:
 
 
 FIELD_TAG_SYNONYMS: dict[str, tuple[str, ...]] = {
+    "portfolio": (
+        "portfolio",
+        "포트폴리오",
+        "cash cow",
+        "acodeai",
+        "a-codeai",
+        "logos",
+        "시장검증",
+        "사업계획",
+        "bootstrap",
+        "one_cash_cow",
+    ),
+    "acodeai": ("acodeai", "a-codeai", "압축", "compression", "b2b", "token"),
+    "logos": ("logos", "성경", "citation", "institution", "기관"),
+    "market_validation": (
+        "시장검증",
+        "market",
+        "advisory",
+        "WTP",
+        "니치",
+        "crowded",
+    ),
     "nebius": ("nebius", "네비우스", "balance", "잔액", "prepaid", "선불", "$25", "billing"),
     "web_ops": (
         "web_ops",

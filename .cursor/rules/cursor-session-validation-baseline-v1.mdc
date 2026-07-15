@@ -10,7 +10,7 @@ alwaysApply: true
 ## ALWAYS
 
 - **구분:** `alwaysApply` 규칙 = **소프트 거버넌스**(매 턴). **실행 검증** = 스크립트 exit 0 · `*_latest.json` · pytest만.
-- **L1 좌표 핀 (매 턴 · 재개 트리거 없어도):** `docs/final/artifacts/mkm_chat_resume_pack_latest.md` 「Ops Memory Pins」3노드 essence만 앵커 — `prism_ops_mission_log_board` · `prism_ops_central_checkpoint` · `prism_ops_mission_log_next_one`. **suspect_first:** 채팅·얕은 기억 의심 → 구현·통과는 CONSTITUTION+exit0. **MISSION_LOG 전문 paste 금지**; 다음 1타 표는 재개·레인 작업 시만 Read.
+- **L1 좌표 핀 (매 턴 · 재개 트리거 없어도):** `docs/final/artifacts/mkm_chat_resume_pack_latest.md` 「Ops Memory Pins」essence 앵커 — `prism_ops_mission_log_board` · `prism_ops_central_checkpoint` · `prism_ops_mission_log_next_one` · `prism_ops_portfolio_execution_focus`(One cash cow+One passion · TRACK_C §0.6 · 체크포인트 스크롤 내성). **suspect_first:** 채팅·얕은 기억 의심 → 구현·통과는 CONSTITUTION+exit0. **MISSION_LOG 전문 paste 금지**; 다음 1타 표는 재개·레인 작업 시만 Read.
 - **재개 트리거**(「장기기억 맥락 이어」·`@CENTRAL`·`@MISSION_LOG`·「미션로그 이어서」): SSOT Read **후** 작업; `reports/mkm_solo_background_ops_state.json` 오늘 `last_ok` 아니면 `Invoke-MkmSoloBackgroundOps_v1.ps1` 1회.
 - **레인 작업:** resume pack `build_mkm_chat_resume_pack_v1.py --lane oracle|ms|infra|web_ops` — 전 MISSION_LOG 붙이지 않음.
 - **종료:** 의미 있는 진행 후 `athena_checkpoint.py` 1줄 + `MISSION_LOG` **해당 레인** 다음 1타만.
