@@ -263,6 +263,15 @@ scripts/sse2_pure_essence/output/**
 pocketbase/pocketbase.exe
 scripts/de440.bsp.download
 
+# GitHub size prune (2026-07-16 filter-repo) — prevent large-path re-commit
+docs/final/artifacts/archive/cataloged/
+cache/huggingface/
+deploy-package-nitro/
+projects/no1kmedi/.next-studio/
+**/.next/
+**/.venv/
+**/venv/
+
 # Node / frontend dependencies (never track workspace-wide)
 **/node_modules/
 
@@ -270,8 +279,6 @@ scripts/de440.bsp.download
 **/tsconfig.tsbuildinfo
 **/backtest_results/
 **/dist/
-projects/**/.next/
-
 # Local Hugging Face / embedding cache (e.g. HF_HOME under workspace)
 .cache/
 
