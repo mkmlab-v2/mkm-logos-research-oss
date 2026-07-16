@@ -6,6 +6,7 @@ export type EnterpriseCopy = {
     brand_tagline: string;
     back_home: string;
     jema_os?: string;
+    admission_evidence?: string;
     pillars: string;
     proof: string;
     research: string;
@@ -59,6 +60,20 @@ export type EnterpriseCopy = {
     link_href: string;
   };
   proof: { title: string; lead: string };
+  admission_evidence?: {
+    section_label: string;
+    title: string;
+    lead: string;
+    hold_badge: string;
+    items: {
+      id: string;
+      label: string;
+      command: string;
+      artifact: string;
+      note: string;
+    }[];
+    disclaimer: string;
+  };
   wtt_persona_os: {
     section_label: string;
     title: string;
@@ -85,7 +100,150 @@ export type EnterpriseCopy = {
   disclaimer: { title: string; items: string[] };
 };
 
-export type HubLink = { href: string; label: string; sublabel: string };
+export type LaneGovernanceRow = {
+  lane_id: string;
+  public_label_ko: string;
+  public_label_en: string;
+  role_ko: string;
+  role_en: string;
+  not_do_ko: string;
+  not_do_en: string;
+  route_label_ko: string;
+  route_label_en: string;
+  route_href: string;
+  route_external: boolean;
+};
+
+export type LaneGovernanceCopy = {
+  schema: string;
+  ring: number;
+  constitution_ref: string;
+  seo: {
+    title: string;
+    title_ko?: string;
+    description: string;
+    description_ko?: string;
+  };
+  nav: {
+    brand_tagline: string;
+    back_home: string;
+    lanes: string;
+    principles: string;
+    firewall: string;
+    validation: string;
+    enterprise: string;
+    main_aria_label: string;
+  };
+  hero: {
+    eyebrow: string;
+    title: string;
+    title_en: string;
+    lead: string;
+    lead_en: string;
+  };
+  principles: {
+    title: string;
+    title_en: string;
+    items: {
+      title_ko: string;
+      title_en: string;
+      body_ko: string;
+      body_en: string;
+    }[];
+  };
+  lanes_table: {
+    title: string;
+    title_en: string;
+    caption: string;
+    caption_en: string;
+    columns: {
+      lane_ko: string;
+      lane_en: string;
+      role_ko: string;
+      role_en: string;
+      not_do_ko: string;
+      not_do_en: string;
+      route_ko: string;
+      route_en: string;
+    };
+    rows: LaneGovernanceRow[];
+  };
+  firewall: {
+    title: string;
+    title_en: string;
+    lead: string;
+    lead_en: string;
+    rules: string[];
+    gate_command: string;
+  };
+  cta: {
+    primary: { label: string; href: string };
+    secondary: { label: string; href: string };
+  };
+  disclaimer: {
+    title: string;
+    title_en: string;
+    items: string[];
+    items_en: string[];
+  };
+  legacy_clinical_safety_ref?: string;
+};
+
+export type ValidationEngineCopy = {
+  schema: string;
+  ring: number;
+  constitution_ref: string;
+  safe_copy_ref: string;
+  seo: {
+    title: string;
+    title_ko?: string;
+    description: string;
+    description_ko?: string;
+  };
+  nav: {
+    brand_tagline: string;
+    back_home: string;
+    performance: string;
+    governance: string;
+    reproduce: string;
+    enterprise: string;
+    main_aria_label: string;
+  };
+  hero: {
+    eyebrow: string;
+    title: string;
+    title_en: string;
+    metrics: { label: string; value: string; scope: string }[];
+  };
+  what_it_does: { title: string; body: string; body_en: string };
+  performance: {
+    title: string;
+    lead: string;
+    lead_en: string;
+    rows: { label: string; value: string }[];
+    scope_note: string;
+  };
+  governance: {
+    title: string;
+    badges: string[];
+    body: string;
+    body_en: string;
+  };
+  reproduce: {
+    title: string;
+    lead: string;
+    lead_en: string;
+    evidence: { artifact: string; command: string }[];
+    gate_command: string;
+  };
+  cta: {
+    primary: { label: string; href: string };
+    secondary: { label: string; href: string };
+  };
+  disclaimer: { title: string; items: string[] };
+};
+
+export type HubLink = { href: string; label: string; sublabel: string; label_en?: string; sublabel_en?: string };
 
 export type PatientWellnessCta = {
   label: string;
@@ -125,6 +283,28 @@ export type PositioningV1Copy = {
   deck_kicker_en: string;
 };
 
+export type HubDiscoverReviewerBlockV1 = {
+  title: string;
+  body: string;
+  href: string;
+  cta: string;
+  external?: boolean;
+};
+
+export type HubAudienceTrifurcationCardV1 = {
+  id: string;
+  title: string;
+  body: string;
+  href: string;
+  cta: string;
+};
+
+export type HubAudienceTrifurcationLocaleCopy = {
+  section_label: string;
+  section_lead?: string;
+  cards: HubAudienceTrifurcationCardV1[];
+};
+
 export type HubDiscoverLocaleCopy = {
   title: string;
   tagline: string;
@@ -146,11 +326,26 @@ export type HubDiscoverLocaleCopy = {
   coordinate_envelope_disclaimer?: string;
   locale_toggle: string;
   validation_missing: string;
+  reviewer_section_label?: string;
+  reviewer_blocks?: HubDiscoverReviewerBlockV1[];
+  reviewer_enterprise_cta?: { label: string; href: string; body: string };
+};
+
+export type ClinicianSurfaceCopy = {
+  schema: string;
+  ssot_ref: string;
+  methodology_footnote_ko: string;
+  methodology_footnote_en: string;
 };
 
 export type SiteCopy = {
   positioning_v1?: PositioningV1Copy;
+  hub_audience_trifurcation?: {
+    ko: HubAudienceTrifurcationLocaleCopy;
+    en: HubAudienceTrifurcationLocaleCopy;
+  };
   hub_discover?: { ko: HubDiscoverLocaleCopy; en: HubDiscoverLocaleCopy };
+  hub_shell?: { ko: Record<string, string>; en: Record<string, string> };
   hub_links: {
     showroom_jemaai: HubLink;
     premium_mkmlife: HubLink;
@@ -158,8 +353,11 @@ export type SiteCopy = {
     jema_os_enterprise?: HubLink;
     farm_b2b_smartfarm?: HubLink;
     research_logos?: HubLink;
+    logos_beta_ask?: HubLink;
     research_mkmlab?: HubLink;
     personadiary_preview?: HubLink;
+    memory_continuity_preview?: HubLink;
+    gyeokmul_preview?: HubLink;
     wtt_persona_os_demo?: HubLink;
     compression_roi_dashboard?: HubLink;
     evidence_pack_v0?: HubLink;
@@ -168,6 +366,8 @@ export type SiteCopy = {
     showroom_meaning_qa_v2?: HubLink;
     clinician_support?: HubLink;
     clinician_no1kmedi_portal?: HubLink;
+    validation_engine?: HubLink;
+    lane_governance?: HubLink;
     mai_profile_card?: HubLink;
     patient_wellness_entry?: HubLink;
   };
@@ -202,8 +402,13 @@ export type SiteCopy = {
     enterprise?: string;
     developer: string;
     contact: string;
+    validation?: string;
+    safety?: string;
   };
+  validation_engine?: ValidationEngineCopy;
+  lane_governance?: LaneGovernanceCopy;
   enterprise?: EnterpriseCopy;
+  clinician_surface?: ClinicianSurfaceCopy;
   homepage_a11y: {
     skip_to_main: string;
     trust_section_label: string;
@@ -321,7 +526,17 @@ export type SiteCopy = {
   };
   about: { title: string; section_lead: string };
   value_props: { title: string; body: string }[];
-  safety: { title: string; items: string[] };
+  safety: {
+    title: string;
+    section_lead?: string;
+    lane_governance_cta?: {
+      label: string;
+      label_en?: string;
+      href: string;
+      note?: string;
+    };
+    items: string[];
+  };
   workflow: { title: string; section_lead: string; steps: string[] };
   clinic_o2o: {
     title: string;

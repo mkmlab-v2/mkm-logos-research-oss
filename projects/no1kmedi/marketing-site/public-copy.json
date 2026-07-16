@@ -5,9 +5,13 @@
     "public_domain": "jema-ai.com",
     "audience": "엔터프라이즈·파트너 심사관, 개발자(OSS repro), 일반인(한의학 사전 리포트), 한의원·한의사(진료보조)",
     "note": "사용자 노출 문구의 단일 원천. 공개 브랜드는 jema-ai.com이며, 내부 레포 식별자와 공개 브랜드 표기는 분리한다.",
+    "hub_clarity_ssot": "docs/final/JEMA_AI_DOMAIN_HUB_CLARITY_V1.md",
+    "hub_realignment_roadmap": "docs/final/artifacts/jema_ai_hub_realignment_roadmap_v1_latest.json",
+    "hub_vs_route_disambiguation_ko": "jema-ai.com 도메인=브랜드 허브(CTA 분기) · /hub 경로=질문 라우터 UI만 — 동일 개념 아님",
     "ssot_cross_domain_cta": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1·§1.1b (도메인 분기·허브 CTA 초안; 법무 확정 전 가이드)",
     "positioning_ssot": "docs/final/artifacts/mkm_agentic_engineering_positioning_onepager_v1_latest.md",
-    "identity_constitution": "docs/final/MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md"
+    "identity_constitution": "docs/final/MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md",
+    "jmkm_clinical_brand_layers_ref": "docs/final/artifacts/jmkm_clinical_brand_layers_v1_latest.json"
   },
   "ring0_identity": {
     "schema": "mkm_ring0_identity_v1",
@@ -86,6 +90,64 @@
     "deck_kicker_ko": "Time-to-Trust · Anti-Slop · Fact-Lock",
     "deck_kicker_en": "Time-to-Trust · Anti-Slop · Fact-Lock"
   },
+  "hub_audience_trifurcation": {
+    "schema": "hub_audience_trifurcation_v1",
+    "ssot_ref": "docs/final/JEMA_AI_DESIGN_GOVERNANCE_V1.md",
+    "ko": {
+      "section_label": "어디로 가시겠어요?",
+      "section_lead": "환자·한의사·파트너 — 목적에 맞는 입구를 선택하세요.",
+      "cards": [
+        {
+          "id": "patient",
+          "title": "환자·방문 전",
+          "body": "모바일 사전 문진 · PIN으로 원장실 전달",
+          "href": "/intake",
+          "cta": "사전 문진 시작"
+        },
+        {
+          "id": "clinician",
+          "title": "한의사·원장",
+          "body": "문진·SOAP·CDSS 보조 — 최종 판단은 원장",
+          "href": "/clinician",
+          "cta": "진료 보조 열기"
+        },
+        {
+          "id": "partner",
+          "title": "파트너·B2B",
+          "body": "JEMA OS · 연합·도입·검증 미들웨어",
+          "href": "/enterprise",
+          "cta": "연합·도입 문의"
+        }
+      ]
+    },
+    "en": {
+      "section_label": "Where do you want to go?",
+      "section_lead": "Patient · clinician · partner — pick the right entry.",
+      "cards": [
+        {
+          "id": "patient",
+          "title": "Patient · pre-visit",
+          "body": "Mobile intake · PIN for the clinic desk",
+          "href": "/intake",
+          "cta": "Start intake"
+        },
+        {
+          "id": "clinician",
+          "title": "Clinician",
+          "body": "Intake · SOAP · CDSS assist — physician decides",
+          "href": "/clinician",
+          "cta": "Open clinician"
+        },
+        {
+          "id": "partner",
+          "title": "Partner · B2B",
+          "body": "JEMA OS · federation · verification middleware",
+          "href": "/enterprise",
+          "cta": "Enterprise inquiry"
+        }
+      ]
+    }
+  },
   "hub_discover": {
     "ko": {
       "title": "가장 중요한 질문을 한 문장으로",
@@ -117,10 +179,10 @@
           "cta": "검증 미들웨어"
         },
         {
-          "title": "Logos 오픈 베타",
-          "body": "문의 Q&A · 스트리밍 계약 · [HYPO] research_only",
+          "title": "성경·텍스트 연구 워크스페이스",
+          "body": "citation lock · research beta · [HYPO] research_only · 교리·투자 아님",
           "href": "https://logos.jema-ai.com/logos-research/ask",
-          "cta": "Ask 베타",
+          "cta": "Logos Ask · research beta",
           "external": true
         },
         {
@@ -167,10 +229,10 @@
           "cta": "Verification middleware"
         },
         {
-          "title": "Logos Open Beta",
-          "body": "Inquiry Q&A · streaming contract · [HYPO] research_only",
+          "title": "Scripture research workspace",
+          "body": "citation lock · research beta · [HYPO] research_only · not doctrine or trading",
           "href": "https://logos.jema-ai.com/logos-research/ask",
-          "cta": "Open Ask beta",
+          "cta": "Logos Ask · research beta",
           "external": true
         },
         {
@@ -296,6 +358,18 @@
       "label": "Persona Diary 프리뷰",
       "sublabel": "초개인화 라이프로그 콘셉트 프리뷰 · 웰니스/리플렉션 · 의료·투자 조언 아님"
     },
+    "memory_continuity_preview": {
+      "href": "/memory",
+      "label": "로컬 메모 연속성 프리뷰",
+      "label_en": "Local memory continuity preview",
+      "sublabel": "어제 메모 → 오늘 한 줄 · 기기 IndexedDB만 · 서버 업로드·LLM·실매매·의료 조언 아님 · preview_only"
+    },
+    "gyeokmul_preview": {
+      "href": "https://gyeokmul.jema-ai.com",
+      "label": "격물 AI · 시니어 뉴스 브리핑",
+      "label_en": "Gyeokmul AI · senior news brief",
+      "sublabel": "편향 없는 다관점 뉴스·증시 AI · 투자 권유·실매매 아님 · research_only"
+    },
     "wtt_persona_os_demo": {
       "href": "https://personadiary.com/wtt-persona-os-demo-v1.html",
       "label": "WTT Persona OS 운영자 패널",
@@ -319,31 +393,32 @@
     },
     "research_logos": {
       "href": "https://logos.jema-ai.com/logos-research/ask",
-      "label": "Logos Scripture · Ask 베타",
-      "label_en": "Logos Scripture · Ask Beta",
-      "sublabel": "Inquiry Q&A beta · citation lock · Track B [HYPO] research_only · payment HOLD"
+      "label": "성경·텍스트 연구 워크스페이스 (Logos)",
+      "label_en": "JEMA Scripture Research Workspace",
+      "sublabel": "citation lock · research beta · [HYPO] research_only · payment HOLD · not doctrine/trading"
     },
     "logos_beta_ask": {
       "href": "https://logos.jema-ai.com/logos-research/ask",
-      "label": "Logos Ask · 오픈 베타",
-      "label_en": "Logos Ask · Open Beta",
-      "sublabel": "logos.jema-ai.com · streaming inquiry · OSS repro on GitHub · not live trading"
+      "label": "Logos Ask · research beta",
+      "label_en": "Logos Ask · research beta",
+      "sublabel": "logos.jema-ai.com · streaming inquiry · OSS harness separate · not live trading"
     },
     "clinician_support": {
       "href": "https://app.jema-ai.com/clinician",
-      "label": "한의사 진료 보조 · 문진",
-      "label_en": "Clinician assist · intake",
-      "sublabel": "SOAP·care bundle·체질 가설 — 원장 확정 전제 · 진단·처방 대체 아님 · 제안서·대외 URL은 jema-ai"
+      "label": "한의사 SOAP 워크스페이스 (대외 공식)",
+      "label_en": "Clinician SOAP workspace (official)",
+      "sublabel": "제안서·대외 URL · SOAP·CDSS·care bundle · 원장 확정 전제 · 진단·처방 대체 아님 · apex no1kmedi.com 의사 랜딩 금지"
     },
     "national_km_ask": {
       "href": "https://no1kmedi.com/ask",
-      "label": "대국민 한의학 AI",
-      "sublabel": "한의학 질문·이해 참고 · 진단·처방 대체 아님 · 한의사는 clinic.no1kmedi.com"
+      "label": "한의학, 묻다",
+      "label_en": "Ask Korean Medicine",
+      "sublabel": "L0 공개 교육·참고 Q&A · Time-to-Trust · 진단·처방 아님 · 원장 포털과 제품 합선 금지"
     },
     "clinician_no1kmedi_portal": {
       "href": "https://clinic.no1kmedi.com/clinician",
-      "label": "한의사 진료 보조 (인증 모드)",
-      "sublabel": "진료 분석·SOAP·차트 초안 · no1kmedi.com 대국민 Q&A와 분리"
+      "label": "원장 전용 포털 (현장 북마크)",
+      "sublabel": "clinic.no1kmedi.com → /clinician · SOAP 워크스페이스 · 대외 공식은 app.jema-ai.com/clinician · /ask와 분리"
     },
     "mai_profile_card": {
       "href": "https://mkmlife.com/ask-one",
@@ -366,10 +441,10 @@
   },
   "nav": {
     "service_group": "서비스",
-    "service_hub": "통합 허브",
+    "service_hub": "질문 라우터",
     "service_consumer": "일반인 상담",
     "service_clinician": "한의사 보조",
-    "service_reception": "접수대 PIN",
+    "service_reception": "사전 문진",
     "service_enterprise": "기업·파트너",
     "service_developer": "개발자 그래프 인사이트",
     "toggle_label": "메뉴",
@@ -389,7 +464,7 @@
     "consumer": "/consumer",
     "wellness": "/wellness",
     "clinician": "/clinician",
-    "reception": "/reception",
+    "reception": "/intake",
     "enterprise": "/enterprise",
     "developer": "/developer/graph-insights",
     "contact": "#contact",
@@ -745,7 +820,7 @@
       },
       {
         "label": "접수대 PIN 조회 화면",
-        "href": "/reception",
+        "href": "/intake",
         "variant": "ghost"
       },
       {
@@ -1366,9 +1441,16 @@
         "토큰 절감(~47% 동결 벤치)은 **압축 병렬 레인** 수치이며, MKM AI 종합 지능 지수·고객 SLA와 헤드라인 합산하지 않습니다.",
         "도입·파트너 문의는 **본 페이지에 표기된 회사 메일(`support@mkmlife.com`)만** 사용합니다. 개인 메일·비공식 채널로의 연락은 정책상 대응하지 않을 수 있습니다.",
         "관측·데모·공개 보드는 교육·검증 목적이며, 주문·체결·API·실거래 비밀(실키)을 공개하지 않습니다.",
-        "성능·정확도·적중률 등 수치는 동결된 sales kit·검증 아티팩트 없이 단정하지 않습니다."
+        "성능·정확도·적중률 등 수치는 동결된 sales kit·검증 아티팩트 없이 단정하지 않습니다.",
+        "**JMKM**(Jema Korean Medicine)은 자기 추론을 투명하게 드러내는 한의학 **프로토콜 구축 중**인 연구·보조 체계이며, 학파 완성·진단·처방 대체를 의미하지 않습니다. PoC 실증: 파트너 클리닉 · 추론 OS: MKM · 대외 허브: JEMA."
       ]
     }
+  },
+  "clinician_surface": {
+    "schema": "clinician_surface_methodology_footnote_v1",
+    "ssot_ref": "docs/final/artifacts/jmkm_clinical_brand_layers_v1_latest.json",
+    "methodology_footnote_ko": "JMKM(Jema Korean Medicine)은 자기 추론을 드러내는 한의학 프로토콜 구축 중인 연구·보조 체계입니다. 학파 완성·진단·처방 대체가 아닙니다. 최종 판단은 한의사가 확정합니다. PoC: 광명백제한의원 · MKM OS · JEMA.",
+    "methodology_footnote_en": "JMKM (Jema Korean Medicine) is a research assist protocol in progress—not a completed school or a substitute for diagnosis or prescription. The licensed clinician decides. PoC: Gwangmyeong Baekje Clinic · MKM OS · JEMA."
   },
   "compression_pilot_audit_apply": {
     "seo": {
@@ -1495,7 +1577,7 @@
     "company_line": "주식회사 목소리네트워크",
     "brand_subline": "MKM Labs (R&D) · A-CodeAI (Developer) · JEMA AI (Product)",
     "address_label": "주소",
-    "address": "경기도 광명시 디지털로 24, 102동 2301호",
+    "address": "경기도 광명시 광명로 880",
     "biz_reg_label": "사업자등록번호",
     "email": "support@mkmlife.com",
     "biz_reg": "628-86-01742",
