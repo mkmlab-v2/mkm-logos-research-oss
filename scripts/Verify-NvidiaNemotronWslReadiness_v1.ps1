@@ -7,9 +7,14 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $outPath = Join-Path $root 'reports\nvidia_nemotron_wsl_readiness_latest.json'
 
-$bash = 'ROOT=/mnt/c/workspace; echo distro_ok=1; (command -v nvidia-smi >/dev/null && nvidia-smi --query-gpu=name,memory.total --format=csv,noheader | head -1) || echo gpu=missing; test -f $ROOT/scripts/wsl/nemotron_local_setup_and_train_v1.sh && echo bootstrap=ok || echo bootstrap=missing; test -f $ROOT/data/nvidia/nemotron-local/nemotron_qlora_train_v1.py && echo train_py=ok || echo train_py=missing; test -d $ROOT/.venv-nemotron-wsl && echo venv=present || echo venv=absent'
+$bash = 'ROOT=/mnt/c/workspace; echo distro_ok=1; (command -v nvidia-smi >/dev/null && nvidia-smi --query-gpu=name,memory.total --format=csv,noheader | head -1) || echo gpu=missing; test -f $ROOT/scripts/wsl/nemotron_local_setup_and_train_v1.sh && echo bootstrap=ok || echo bootstrap=missing; test -f $ROOT/data/nvidia/nemotron-local/nemotron_qlora_train_v1.py && echo train_py=ok || echo train_py=missing; test -d $ROOT/.venv-wsl-nemotron && echo venv=present || echo venv=absent'
 
+# WSL may emit non-fatal stderr (e.g. systemd user session); keep Stop elsewhere.
+$prevEap = $ErrorActionPreference
+$ErrorActionPreference = 'Continue'
 $lines = @(wsl -d $Distro -e bash -lc $bash 2>&1)
+$ErrorActionPreference = $prevEap
+$lines = @($lines | ForEach-Object { "$_" })
 $gpu = ($lines | Where-Object { $_ -match 'Ti|GeForce|RTX' } | Select-Object -First 1)
 $doc = [ordered]@{
     schema           = 'nvidia_nemotron_wsl_readiness_v1'

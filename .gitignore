@@ -222,6 +222,7 @@ storage/external_kg/
 .venv-btrack-sherpa-onnx/
 .venv-ko-shorts-*/
 .venv-fabba-linux-repro/
+.venv-presidio/
 unsloth_compiled_cache/
 # Deterministic LoRA Pack0b timestamped run dirs under workspace storage (regenerable; not SSOT)
 storage/adapters/myeongri_deterministic_lora_v0/run_*/

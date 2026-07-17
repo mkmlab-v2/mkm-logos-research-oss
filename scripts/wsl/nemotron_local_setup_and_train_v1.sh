@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT="/mnt/c/workspace"
-VENV="$ROOT/.venv-nemotron-wsl"
+VENV="$ROOT/.venv-wsl-nemotron"
 TRAIN="$ROOT/data/nvidia/nemotron-local/nemotron_qlora_train_v1.py"
 
 cd "$ROOT"

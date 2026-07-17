@@ -9,14 +9,51 @@ if (-not (Test-Path -LiteralPath $SourceRoot)) {
     throw "Source root not found: $SourceRoot"
 }
 
-if ([string]::IsNullOrWhiteSpace($VaultTargetRoot)) {
-    $vaultBase = Get-ChildItem -Path "G:\" -Directory -Recurse -ErrorAction SilentlyContinue |
-        Where-Object { $_.Name -eq "vault" -and $_.FullName -match "MKM_DATA_VAULT" } |
-        Select-Object -First 1
-    if (-not $vaultBase) {
-        throw "Could not locate MKM_DATA_VAULT\\vault under G:\\"
+function Resolve-VaultTargetRoot {
+    param([string]$ExplicitTarget)
+
+    if (-not [string]::IsNullOrWhiteSpace($ExplicitTarget)) {
+        return $ExplicitTarget.Trim().TrimEnd('\')
     }
-    $VaultTargetRoot = Join-Path $vaultBase.FullName "btrack_artifacts_verified"
+
+    # Prefer MKM_VAULT_ROOT (same wall as run_workspace_automation_health.ps1).
+    $vault = $env:MKM_VAULT_ROOT
+    if ([string]::IsNullOrWhiteSpace($vault)) {
+        $vault = "G:\공유 드라이브\MKM_DATA_VAULT\vault"
+    } else {
+        $vault = $vault.Trim().TrimEnd('\')
+    }
+
+    # Test-Path before Join-Path: Join-Path throws if drive letter is missing.
+    if (Test-Path -LiteralPath $vault) {
+        return (Join-Path $vault "btrack_artifacts_verified")
+    }
+
+    # G: discovery fallback (legacy behavior) — only when drive is mounted.
+    if (Test-Path -LiteralPath "G:\") {
+        $vaultBase = Get-ChildItem -Path "G:\" -Directory -Recurse -ErrorAction SilentlyContinue |
+            Where-Object { $_.Name -eq "vault" -and $_.FullName -match "MKM_DATA_VAULT" } |
+            Select-Object -First 1
+        if ($vaultBase) {
+            return (Join-Path $vaultBase.FullName "btrack_artifacts_verified")
+        }
+    }
+
+    return $null
+}
+
+if ([string]::IsNullOrWhiteSpace($VaultTargetRoot)) {
+    $resolved = Resolve-VaultTargetRoot -ExplicitTarget ""
+    if (-not $resolved) {
+        $vaultHint = if ([string]::IsNullOrWhiteSpace($env:MKM_VAULT_ROOT)) {
+            "G:\공유 드라이브\MKM_DATA_VAULT\vault"
+        } else {
+            $env:MKM_VAULT_ROOT.Trim().TrimEnd('\')
+        }
+        Write-Host "SKIP: Vault not mounted ($vaultHint) - no push (not a C: fake vault)."
+        exit 0
+    }
+    $VaultTargetRoot = $resolved
 }
 
 if (-not (Test-Path -LiteralPath $VaultTargetRoot)) {
