@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-07-17T01:23:47Z
+- **last_updated_utc:** 2026-07-17T13:07:10Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-21:** lens pack push **54/54** OK · OPS `CENTRAL_AGENT_MEMORY_V1` refreshed incl. 41k/31k 격벽 절). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1 -Refresh` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -159,26 +159,26 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
-- **2026-07-17T01:23:47Z** — Internal M2M pipe upgrade RQ-019 · Trust Packet roundtrip · HOLD intact · research_only · SEND HOLD · no multimodal
-- **2026-07-17T01:12:36Z** — Domain A commercial-gap checklist + allowlist v0.2.0 +5 actions; redteam 16/16 false_pass=0; wire OOV HOLD; QE green; S-path FROZEN; SEND HOLD
-- **2026-07-17T01:03:51Z** — Allowlist Domain A dogfood PASS: PASS+OOV wire HOLD + redteam 12/12; glossary QE eval+links still green; S-path FROZEN; CloakPipe/Presidio MISSING, a-codeai redact PoC EXISTS; artifact reports/logos_allowlist_domain_a_dogfood_v1_latest.json
-- **2026-07-17T00:40:07Z** — Oracle: S-path FROZEN; glossary QE v0.1.2 water/wash thin links Hit@K=1.0 FalsePASS=0; FAIL-COMP QE≠dense NDCG; SEND HOLD
-- **2026-07-17T00:34:20Z** — HOLD+StrongQE ledger freeze · thin synonym/parent links v0.1 · False PASS monitor · research_only · SEND HOLD
-- **2026-07-17T00:20:21Z** — Oracle Logos: BGE-M3 ColBERT MaxSim full-31k FLAT/NEG vs best BGE D+S (ΔR50=-0.015); CE skipped; FT retrieval corpus missing; artifact logos_ks_s_bge_m3_colbert_ab_v1_latest.json
-- **2026-07-17T00:09:37Z** — Logos Strong glossary QE v0 · Track B · HOLD wall intact · research_only · SEND HOLD
-- **2026-07-16T23:42:35Z** — HOLD upgrade: PASS ACK + a-codeai wedge line + IFR report + audit viewer · research_only · SEND HOLD
-- **2026-07-16T23:29:01Z** — HOLD dogfood UI commander ACK: wire transfer → OOV_HOLD + audit jsonl · research_only · SEND HOLD
-- **2026-07-16T23:04:04Z** — HOLD dogfood demo pack v0 · research_only · SEND HOLD · ACK pending
-- **2026-07-16T21:46:00Z** — Oracle HyDE-only BGE-M3 D+S FAIL gate (ΔR50=-0.0098 vs non-HyDE); CE SKIP; artifact logos_ks_s_hyde_bge_m3_hybrid_ab_v1_latest; next XOR stop
-- **2026-07-16T21:44:51Z** — Logos HyDE-only→BGE-M3 D+S DONE exit0 NEG/FLAT vs baseline (ΔR50=-0.0098); CE SKIPPED; artifact reports/logos_ks_s_hyde_bge_m3_hybrid_ab_v1_latest.json
-- **2026-07-16T20:18:23Z** — HOLD dogfood+redteam+visible audit UI · research_only · SEND HOLD
-- **2026-07-16T20:03:32Z** — M2M next-1: allowlist+HOLD stub + RQ-019 Trust Packet thin smoke · Track B · SEND HOLD
-- **2026-07-16T19:54:10Z** — Hybrid DD PASS freeze: lexicon≠ontology · HOLD allowlist external · M2M RQ-019 B-only · no Track C/RQ-026
-- **2026-07-16T19:36:00Z** — Logos BGE-M3 Dense+Sparse hybrid FLAT vs nomic (dNDCG+0.0044 dR50+0.0172<0.02); CE skipped; HyDE next XOR stop; research_only HOLD
-- **2026-07-16T19:07:42Z** — Hybrid Security DD digest: partial align (41k/HOLD/0.47 Jaccard FACT); reject O(1)=RAG+crypto-complete+ISO; Tier0 raw; send_gate HOLD
-- **2026-07-16T19:05:08Z** — Logos S Dense A/B BGE-M3 TORCH_HF full 31k: vs nomic FLAT (dNDCG+0.0019 dR50+0.0172<0.02); CE skipped; research_only HOLD
-- **2026-07-16T19:01:13Z** — continuity=clinic-trust-shield-loi-2026-07-17 · clinic-trust HOLD shield+audit+synthetic eval+LOI draft; Logos wall; RQ-026 HYPO alias RQ-019; SEND HOLD
-- **2026-07-16T18:47:55Z** — clinic-trust internal LOI draft v1 DONE — reopen_acked+loi_internal_draft · send_gate HOLD · ₩79k · no kakao/SEND
+- **2026-07-17T13:07:10Z** — Domain A friend-proxy eval via external LLM · cold still DO_NOT_SEND
+- **2026-07-17T12:57:50Z** — Batch A 9ef47691a2: Nemotron WSL venv SSOT (.venv-wsl-nemotron) + vault SKIP when G missing + .venv-presidio gitignore; dirty ~166 left (Batch B Ask or G remount)
+- **2026-07-17T12:55:53Z** — G: vault SKIP exit0 (no fake C: vault); dirty triage 170 → git_dirty_triage_infra_v1_latest.md; Infra next=G remount or Batch A Ask
+- **2026-07-17T12:23:15Z** — kept .venv-wsl-nemotron; removed .venv-nemotron-wsl; C free +7.90GB (278.87→287.35GB)
+- **2026-07-17T12:17:52Z** — Domain A HOLD auto demo capture DONE — PNG+flipbook+mp4 under reports/domain_a_demo_shots; Loom/voice still human; cold DO_NOT_SEND
+- **2026-07-17T12:05:28Z** — Infra: nemotron dual-venv WhatIf (~8.1GB each, both script-referenced, no delete); vault push SKIP graceful when G: unmounted; C free unchanged ~27.9%
+- **2026-07-17T12:05:21Z** — Standalone auth+privacy default system v1 frozen (email-only+intentional onboarding+walls); Hanbi contrast; SEND HOLD
+- **2026-07-17T11:44:31Z** — Infra C-free: before/after 259.7GB 27.9% unchanged; EphemeralCleanup -Apply exit0 deleted=0 (out/logs/staging empty); G: missing OPEN; dirty porcelain=167
+- **2026-07-17T11:23:39Z** — 고차원위임: 재개·순찰 OK · C여유27.9% 압박 · HD quality_ok=false(browser/infra) · 오케업그레이드=기존 Done-card/Persona 강화(신규프레임비추)
+- **2026-07-17T10:16:59Z** — Domain A must-fix: local dogfood+SOP intake+honest outreach · cold SEND still DO_NOT_SEND
+- **2026-07-17T10:05:37Z** — 2026-07 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
+- **2026-07-17T09:59:40Z** — Domain A outreach DO_NOT_SEND · localhost demo only · must-fix shared URL+SOP intake before any outbound
+- **2026-07-17T09:54:57Z** — Domain A HOLD outreach draft READY · 지휘관 발송 1건
+- **2026-07-17T09:46:42Z** — Domain A agent-auto: audit repro 27/27 fp=0 + synthetic 약관 HOLD demo + gap v1.4; product/audit still partial; SEND HOLD
+- **2026-07-17T09:35:18Z** — 2026-07 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
+- **2026-07-17T09:32:30Z** — Logos VPS topical routing fix 666/gen2/job · quality-bundle pass · friend 7/7 · SEND HOLD
+- **2026-07-17T09:05:10Z** — Friend battery 7/7 restore · preset harness aligned · SEND HOLD
+- **2026-07-17T07:52:47Z** — quality-bundle live-vps timeout rail intact · VPS content routing bug found (3 queries wrong anchor) · friend battery 7/7 · SEND HOLD
+- **2026-07-17T07:15:53Z** — continuity=logos-domain-a-pii-2026-07-17 · Oracle Domain A PII close: Allowlist+QE; HYBRID+durable vault+egress thin attach+CloakPipe SKIP+dogfood near-real harness; S FROZEN; m2m excluded; SEND HOLD; ≠ commercial DONE; residual thin allowlist OR Logos QE
+- **2026-07-17T07:14:34Z** — continuity=resume-trackc-commercial-eval-2026-07-17 · Resume+TRACK_C/CONSTITUTION: no full rewrite; portfolio next-1 prose drift optional; a-codeai PARTIAL/PIVOT; Cache-Delta+customer JSONL bottleneck; Logos friend≠PMF; SEND HOLD
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
