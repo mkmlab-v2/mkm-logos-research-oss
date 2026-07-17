@@ -28,11 +28,20 @@ $ErrorActionPreference = "Stop"
 
 function Get-McpInventory {
     param([string]$McpsRoot)
+    # IDE-injected browser MCP is not marketplace plugin sprawl; exclude from budget total.
+    $excludeFromBudget = @('cursor-ide-browser')
     $servers = @()
     $total = 0
+    $budgetTotal = 0
     $pluginTotal = 0
     if (-not (Test-Path -LiteralPath $McpsRoot)) {
-        return @{ servers = $servers; total_tool_count = 0; plugin_tool_count = 0 }
+        return @{
+            servers                 = $servers
+            total_tool_count        = 0
+            budget_tool_count       = 0
+            plugin_tool_count       = 0
+            excluded_from_budget    = @($excludeFromBudget)
+        }
     }
     foreach ($dir in Get-ChildItem -LiteralPath $McpsRoot -Directory) {
         $toolsDir = Join-Path $dir.FullName "tools"
@@ -40,24 +49,29 @@ function Get-McpInventory {
         $count = @(Get-ChildItem -LiteralPath $toolsDir -Filter "*.json" -ErrorAction SilentlyContinue).Count
         if ($count -le 0) { continue }
         $isPlugin = $dir.Name -like "plugin-*"
+        $excluded = $excludeFromBudget -contains $dir.Name
         $servers += [ordered]@{
-            server_folder = $dir.Name
-            tool_count    = $count
-            is_plugin     = $isPlugin
+            server_folder      = $dir.Name
+            tool_count         = $count
+            is_plugin          = $isPlugin
+            excluded_from_budget = [bool]$excluded
         }
         $total += $count
+        if (-not $excluded) { $budgetTotal += $count }
         if ($isPlugin) { $pluginTotal += $count }
     }
     return @{
-        servers           = $servers
-        total_tool_count  = $total
-        plugin_tool_count = $pluginTotal
+        servers              = $servers
+        total_tool_count     = $total
+        budget_tool_count    = $budgetTotal
+        plugin_tool_count    = $pluginTotal
+        excluded_from_budget = @($excludeFromBudget)
     }
 }
 
 $mcps = Join-Path $env:USERPROFILE ".cursor\projects\c-workspace\mcps"
 $before = Get-McpInventory -McpsRoot $mcps
-$overBudget = $before.total_tool_count -gt $MaxTools
+$overBudget = $before.budget_tool_count -gt $MaxTools
 $remediated = $false
 $remediationNote = $null
 
@@ -77,7 +91,7 @@ if ($overBudget -and $AutoRemediate) {
 }
 
 $after = Get-McpInventory -McpsRoot $mcps
-$stillOver = $after.total_tool_count -gt $MaxTools
+$stillOver = $after.budget_tool_count -gt $MaxTools
 
 if (-not $OutJson) {
     $OutJson = Join-Path $WorkspaceRoot "reports\mcp_plugin_tool_budget_gate_latest.json"
@@ -97,14 +111,14 @@ $payload = [ordered]@{
     over_budget_after   = $stillOver
     remediated          = $remediated
     remediation_note    = $remediationNote
-    root_cause_note     = "mcp.json lean (7) is separate from Cursor Marketplace plugin-* MCP servers"
+    root_cause_note     = "Budget uses budget_tool_count (excludes cursor-ide-browser). mcp.json lean separate from Marketplace plugin-*."
     verify_command      = 'powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-McpPluginToolBudgetGate_v1.ps1'
 }
 $payload | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $OutJson -Encoding UTF8
 
 Write-Host "=== MCP plugin tool budget gate ===" -ForegroundColor Cyan
-Write-Host "before: $($before.total_tool_count) tools (plugin $($before.plugin_tool_count))"
-Write-Host "after : $($after.total_tool_count) tools (plugin $($after.plugin_tool_count))"
+Write-Host "before: budget $($before.budget_tool_count) / raw $($before.total_tool_count) (plugin $($before.plugin_tool_count))"
+Write-Host "after : budget $($after.budget_tool_count) / raw $($after.total_tool_count) (plugin $($after.plugin_tool_count))"
 Write-Host "max   : $MaxTools"
 Write-Host "Wrote: $OutJson"
 

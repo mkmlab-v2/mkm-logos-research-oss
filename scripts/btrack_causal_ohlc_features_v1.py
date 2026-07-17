@@ -143,3 +143,44 @@ def actual_direction_at_eval(
     if abs(ret) <= thr:
         return "neutral"
     return "bull" if ret > 0 else "bear"
+
+
+def drawdown_20d_at_eval(
+    closes: dict[str, float],
+    eval_date: str,
+    *,
+    window: int = 20,
+) -> float | None:
+    """(last completed close / peak_N) - 1 using dates strictly before eval_date."""
+    ed = str(eval_date)[:10]
+    dates = sorted(d for d in closes if d < ed)
+    if len(dates) < 2:
+        return None
+    tail = dates[-max(2, int(window)) :]
+    peak = max(closes[d] for d in tail)
+    last = closes[tail[-1]]
+    if peak == 0:
+        return None
+    return last / peak - 1.0
+
+
+def build_causal_feature_map(
+    ohlc_by_date: dict[str, dict[str, float]],
+    *,
+    vol_threshold: float = 0.03,
+) -> dict[str, dict[str, float | bool]]:
+    """Per-date causal feature dict for RQ-024/031 and field-regime OHLCV proxy."""
+    closes = {d: float(bar["close"]) for d, bar in ohlc_by_date.items()}
+    out: dict[str, dict[str, float | bool]] = {}
+    for ed in sorted(ohlc_by_date):
+        vol5 = realized_vol_5d_at_eval(closes, ed)
+        feat: dict[str, float | bool] = {
+            "overnight_return": overnight_return_at_eval(ohlc_by_date, ed) or 0.0,
+            "prior_range_position": prior_range_position_at_eval(ohlc_by_date, ed) or 0.5,
+            "drawdown_20d": drawdown_20d_at_eval(closes, ed) or 0.0,
+            "realized_vol_5d": vol5 or 0.0,
+            "last_daily_return": last_daily_return_at_eval(closes, ed) or 0.0,
+            "vol_regime_high": vol_regime_high(vol5, threshold=vol_threshold),
+        }
+        out[ed] = feat
+    return out

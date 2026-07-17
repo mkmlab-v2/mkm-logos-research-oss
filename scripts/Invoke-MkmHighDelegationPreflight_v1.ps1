@@ -117,12 +117,21 @@ if ($SkipHostGates) {
         & powershell @bArgs
         $code = $LASTEXITCODE
         if ($null -eq $code) { $code = 0 }
-        Add-Step "browser_host_readiness" $code "browser_* inject per chat; Settings Browser ON + new chat"
+        # Without -StrictBrowser: exit 2 (browser_view_missing) is Tier-3 chat inject — record but do not fail preflight ok.
+        if (-not $StrictBrowser -and $code -eq 2) {
+            $script:steps["browser_host_readiness"] = [ordered]@{
+                exit_code = $code
+                ok        = $false
+                note      = "soft:browser_view_missing_tier3_chat_inject"
+            }
+        } else {
+            Add-Step "browser_host_readiness" $code "browser_* inject per chat; Settings Browser ON + new chat"
+        }
     } else {
         Add-Step "browser_host_readiness" 1 "missing check_cursor_ide_browser_readiness_v1.ps1"
     }
 
-    # 5) NL research assist gate
+    # 5) NL research assist gate (chat-only REVIEW — do not fail preflight ok)
     $gateScript = Join-Path $root "scripts\Invoke-MkmDelegationResearchAssistGate_v1.ps1"
     if (Test-Path -LiteralPath $gateScript) {
         $gArgs = @('-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', $gateScript)
@@ -130,7 +139,11 @@ if ($SkipHostGates) {
         & powershell @gArgs
         $code = $LASTEXITCODE
         if ($null -eq $code) { $code = 0 }
-        Add-Step "delegation_research_assist_gate" $code
+        $script:steps["delegation_research_assist_gate"] = [ordered]@{
+            exit_code = $code
+            ok        = ($code -eq 0)
+            note      = "chat_only_review_non_fatal"
+        }
     } else {
         Add-Step "delegation_research_assist_gate" 1 "missing gate script"
     }

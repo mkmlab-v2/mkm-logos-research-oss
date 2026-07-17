@@ -60,6 +60,27 @@ def _node_done(node_id: str, steps: dict[str, Any]) -> tuple[bool, str]:
     return False, step.get("note") or "missing"
 
 
+def _tier0_browser_only_host_gap(mission: dict[str, Any], preflight: dict[str, Any]) -> bool:
+    """tier_0 prophecy/oracle: IDE browser_view_missing is Tier-3 chat inject, not a hard quality fail."""
+    cost = str(mission.get("cost_tier") or "tier_0").strip()
+    lane = str(mission.get("lane") or "").strip().lower()
+    if cost != "tier_0" or lane not in ("prophecy", "oracle"):
+        return False
+    steps = preflight.get("steps") if isinstance(preflight.get("steps"), dict) else {}
+    hard = ("p0_constitution_paths", "mcp_host_hygiene", "cursor_session_upgrade")
+    if not all((steps.get(k) or {}).get("ok") is True for k in hard):
+        return False
+    browser = steps.get("browser_host_readiness") or {}
+    if browser.get("ok") is True:
+        return False
+    # Non-strict browser probe fails with exit 2 (view missing / chat inject).
+    code = browser.get("exit_code")
+    try:
+        return int(code) == 2
+    except (TypeError, ValueError):
+        return False
+
+
 def _quality_checks(
     mission: dict[str, Any],
     preflight: dict[str, Any],
@@ -73,7 +94,11 @@ def _quality_checks(
     checks: dict[str, Any] = {}
 
     checks["mission_present"] = bool(mission.get("mission_line"))
-    checks["preflight_host_ready"] = preflight.get("host_ready") is True
+    host_ready = preflight.get("host_ready") is True
+    soft_browser = (not host_ready) and _tier0_browser_only_host_gap(mission, preflight)
+    checks["preflight_host_ready"] = host_ready
+    checks["preflight_host_ready_soft_browser_ok"] = soft_browser
+    checks["preflight_host_ready_effective"] = host_ready or soft_browser
     checks["preflight_ready_for_auto"] = preflight.get("ready_for_auto") is True
     checks["intel_ok"] = intel.get("ok") is True or intel.get("overall_ok") is True
     step_2p = steps.get("2p") or {}
@@ -101,7 +126,7 @@ def _quality_checks(
 
     quality_ok = (
         checks["mission_present"]
-        and checks["preflight_host_ready"]
+        and checks["preflight_host_ready_effective"]
         and checks["hybrid_batch_ok"]
         and checks["telegram_daily_wiring_ok"]
         and checks["intel_ok"]

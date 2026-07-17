@@ -59,6 +59,11 @@ param(
 $ErrorActionPreference = "Stop"
 Set-Location -LiteralPath $WorkspaceRoot
 
+$btcCsvDefault = Join-Path $WorkspaceRoot "research\market_data\btc_daily_external_yf.csv"
+if (-not $BtcCsvPath -and (Test-Path -LiteralPath $btcCsvDefault)) {
+    $BtcCsvPath = $btcCsvDefault
+}
+
 $evalScript = Join-Path $WorkspaceRoot "scripts\eval_prophecy_hit_rate_v1.py"
 $shadowPanelScript = Join-Path $WorkspaceRoot "scripts\eval_prophecy_shadow_panel_v1.py"
 $walkforwardScript = Join-Path $WorkspaceRoot "scripts\run_prophecy_per_date_combo_walkforward_v1.py"
@@ -126,8 +131,12 @@ if (-not $SkipBuildScore) {
     if ($RecentTradingDays -gt 1) {
         $buildArgs += @("--recent-trading-days", "$RecentTradingDays")
     }
+    $kospiCsvDefault = Join-Path $WorkspaceRoot "research\market_data\kospi_daily_external_yf.csv"
     if ($BtcCsvPath -and (Test-Path -LiteralPath $BtcCsvPath)) {
         $buildArgs += @("--btc-csv", $BtcCsvPath)
+    }
+    if ((Test-Path -LiteralPath $kospiCsvDefault) -and $BtcCsvPath -and (Test-Path -LiteralPath $BtcCsvPath)) {
+        $buildArgs += @("--force-dual-leg-panel")
     }
     Write-Host "==> build_btrack_prophecy_score_from_ohlcv.py"
     & py @buildArgs

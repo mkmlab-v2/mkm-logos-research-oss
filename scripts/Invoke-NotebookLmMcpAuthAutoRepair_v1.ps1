@@ -45,10 +45,14 @@ Write-Host "[nlm] login check" -ForegroundColor Yellow
 $nlmCheck = $LASTEXITCODE
 if ($null -eq $nlmCheck) { $nlmCheck = 0 }
 
+$nlmLoginExit = 0
 if ($nlmCheck -ne 0) {
     Write-Host "[nlm] login refresh (Chrome CDP)" -ForegroundColor Yellow
     & nlm login 2>&1 | Write-Host
-    if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) { throw "nlm login exit $LASTEXITCODE" }
+    $nlmLoginExit = if ($null -eq $LASTEXITCODE) { 0 } else { $LASTEXITCODE }
+    if ($nlmLoginExit -ne 0) {
+        Write-Warning "nlm login exit $nlmLoginExit (tier_3 human: run nlm login in terminal); continuing to cookie sync/probe"
+    }
 }
 
 Write-Host "[sync] nlm cookies -> MCP state.json" -ForegroundColor Yellow

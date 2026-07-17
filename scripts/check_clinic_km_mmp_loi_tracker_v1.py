@@ -47,17 +47,35 @@ def main() -> int:
                 print(f"FAIL: readiness missing {key}")
                 return 1
         if readiness.get("external_send_blocked") is not True:
-            print("FAIL: external_send_blocked must be true while frozen_deferred")
+            print("FAIL: external_send_blocked must be true until external SEND unlocked")
             return 1
         if doc.get("ready_for_external_send") is True:
             print("FAIL: ready_for_external_send must stay false")
             return 1
+        if doc.get("send_gate") != "HOLD":
+            print("FAIL: send_gate must be HOLD")
+            return 1
+        lane = doc.get("lane_status")
+        if lane not in ("frozen_deferred", "prep_reopen", "reopen_acked"):
+            print(f"FAIL: unexpected lane_status={lane}")
+            return 1
+        if lane == "reopen_acked":
+            if doc.get("ready_for_external_send") is not False:
+                print("FAIL: reopen_acked must keep ready_for_external_send false")
+                return 1
+            if readiness.get("kakao_send_blocked") is False:
+                print("FAIL: reopen_acked must keep kakao_send_blocked true")
+                return 1
+            if readiness.get("external_send_blocked") is not True:
+                print("FAIL: reopen_acked must keep external_send_blocked true")
+                return 1
     print(
         json.dumps(
             {
                 "ok": True,
                 "received": received,
                 "pending": 5 - received,
+                "lane_status": doc.get("lane_status"),
                 "readiness_ok": (readiness or {}).get("ok"),
                 "path": str(TRACKER),
             }

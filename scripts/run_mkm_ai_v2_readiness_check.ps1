@@ -23,10 +23,14 @@ function Resolve-NotebooklmSyncMarkerPath {
 
     $candidates = @()
     $candidateRoots = @(
-        "G:\MKM_DATA_VAULT\vault\notebooklm_sources",
-        "G:\vault\notebooklm_sources",
         (Join-Path $WorkspaceRootValue "vault\notebooklm_sources")
     )
+    if (Get-PSDrive -Name G -ErrorAction SilentlyContinue) {
+        $candidateRoots = @(
+            "G:\MKM_DATA_VAULT\vault\notebooklm_sources",
+            "G:\vault\notebooklm_sources"
+        ) + $candidateRoots
+    }
 
     foreach ($root in $candidateRoots) {
         $marker = Join-Path $root "_LAST_SYNC.txt"
@@ -35,10 +39,12 @@ function Resolve-NotebooklmSyncMarkerPath {
         }
     }
 
-    $wildCandidates = Get-ChildItem -LiteralPath "G:\" -Directory -ErrorAction SilentlyContinue |
-        ForEach-Object { Join-Path $_.FullName "MKM_DATA_VAULT\vault\notebooklm_sources\_LAST_SYNC.txt" } |
-        Where-Object { Test-Path -LiteralPath $_ }
-    $candidates += $wildCandidates
+    if (Get-PSDrive -Name G -ErrorAction SilentlyContinue) {
+        $wildCandidates = Get-ChildItem -LiteralPath "G:\" -Directory -ErrorAction SilentlyContinue |
+            ForEach-Object { Join-Path $_.FullName "MKM_DATA_VAULT\vault\notebooklm_sources\_LAST_SYNC.txt" } |
+            Where-Object { Test-Path -LiteralPath $_ }
+        $candidates += $wildCandidates
+    }
 
     if ($candidates.Count -eq 0) {
         return $null

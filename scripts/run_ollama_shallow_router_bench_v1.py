@@ -51,7 +51,13 @@ def _load_dotenv() -> None:
 
 
 def _host() -> str:
-    return (os.getenv("OLLAMA_HOST") or DEFAULT_HOST).rstrip("/").replace("/v1", "")
+    raw = (os.getenv("OLLAMA_HOST") or DEFAULT_HOST).strip().rstrip("/").replace("/v1", "")
+    # 0.0.0.0 is a bind address, not a client URL.
+    if raw in ("0.0.0.0", "http://0.0.0.0", "http://0.0.0.0:11434", "0.0.0.0:11434"):
+        return DEFAULT_HOST
+    if not raw.startswith("http"):
+        return f"http://{raw}" if ":" in raw else f"http://{raw}:11434"
+    return raw
 
 
 def _model_name(override: str | None) -> str:

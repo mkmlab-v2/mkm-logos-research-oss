@@ -32,6 +32,7 @@ Invoke-Step "bench refresh (token+route)" {
 }
 Invoke-Step "ltm graph index md" { py scripts/build_notebooklm_ltm_graph_index_v1.py }
 Invoke-Step "lens packs" { py scripts/build_notebooklm_lens_source_packs_v1.py }
+Invoke-Step "materialize LTM_GRAPH_OPS" { py scripts/build_notebooklm_ltm_graph_ops_pack_v1.py }
 
 $mapPath = Join-Path $WorkspaceRoot "reports\notebooklm_lens_packs_v1\notebook_ids.json"
 if (-not (Test-Path -LiteralPath $mapPath)) {

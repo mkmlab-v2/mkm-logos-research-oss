@@ -28,7 +28,8 @@ param(
     [switch]$SkipLocalBuild,
     [switch]$SkipMonorepoSync,
     [switch]$SkipMonorepoPathsFromLocal,
-    [switch]$RunApiSmoke
+    [switch]$RunApiSmoke,
+    [switch]$SkipLogosAskQualityBundle
 )
 
 $ErrorActionPreference = "Stop"
@@ -355,8 +356,16 @@ Write-Host "[no1kmedi-tarball] API smoke OK (md_len=$mdLen graph_nodes=$($graphB
 Remove-Item $tarLocal -Force -ErrorAction SilentlyContinue
 
 Write-Host "[no1kmedi-tarball] logos ask quality bundle (shipped + VPS live)" -ForegroundColor Cyan
-$bundlePy = Join-Path $WorkspaceRoot "scripts\run_logos_ask_quality_bundle_v1.py"
-& py $bundlePy --live-vps
-if ($LASTEXITCODE -ne 0) { throw "logos ask quality bundle failed (see reports/logos_ask_quality_bundle_v1_latest.json)" }
+if ($SkipLogosAskQualityBundle) {
+    Write-Host "[no1kmedi-tarball] SkipLogosAskQualityBundle set — skipping quality bundle" -ForegroundColor Yellow
+} else {
+    $bundlePy = Join-Path $WorkspaceRoot "scripts\run_logos_ask_quality_bundle_v1.py"
+    & py $bundlePy --live-vps --live-timeout-sec 720
+    $bundleEc = $LASTEXITCODE
+    if ($bundleEc -eq 124) {
+        throw "logos ask quality bundle TIMED OUT (exit 124; see reports/logos_ask_quality_bundle_v1_latest.json timed_out_layers)"
+    }
+    if ($bundleEc -ne 0) { throw "logos ask quality bundle failed exit=$bundleEc (see reports/logos_ask_quality_bundle_v1_latest.json)" }
+}
 
 Write-Host "[no1kmedi-tarball] OK" -ForegroundColor Green

@@ -120,14 +120,32 @@ function Get-GitCiReadiness {
 
     foreach ($pair in @(
         @{ key = "internal_main_sha"; ref = "internal/main" },
-        @{ key = "origin_main_sha"; ref = "origin/main" }
+        @{ key = "origin_main_sha"; ref = "origin/main" },
+        @{ key = "github_main_sha"; ref = "github/main" },
+        @{ key = "hq_main_sha"; ref = "hq/main" }
     )) {
-        $rev = (git rev-parse $pair.ref 2>$null).Trim()
+        $rev = $null
+        try {
+            $rev = (git rev-parse $pair.ref 2>$null).Trim()
+        } catch { }
         if ($rev) { $result[$pair.key] = $rev.Substring(0, [Math]::Min(12, $rev.Length)) }
     }
 
+    if (-not $result.origin_main_sha -and $result.github_main_sha) {
+        $result.origin_main_sha = $result.github_main_sha
+        $result.notes += "origin/main_missing_using_github/main"
+    }
+
     if ($result.internal_main_sha -and $result.origin_main_sha) {
-        $cnt = (git rev-list --count "origin/main..internal/main" 2>$null).Trim()
+        $cnt = $null
+        try {
+            $cnt = (git rev-list --count "origin/main..internal/main" 2>$null).Trim()
+        } catch { }
+        if (-not $cnt -and $result.github_main_sha) {
+            try {
+                $cnt = (git rev-list --count "github/main..internal/main" 2>$null).Trim()
+            } catch { }
+        }
         if ($cnt -match '^\d+$') {
             $result.internal_ahead_of_origin = [int]$cnt
         }
