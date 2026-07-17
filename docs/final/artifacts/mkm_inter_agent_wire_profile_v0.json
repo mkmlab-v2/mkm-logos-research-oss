@@ -33,6 +33,16 @@
       "api_contract_version": "2.0.0-draft",
       "openapi": "docs/final/openapi_token_compression_v2_draft.yaml",
       "stub": "scripts/compression_token_api_v2_stub.py",
+      "research_envelope_v0_2": {
+        "research_only": true,
+        "send_gate": "HOLD",
+        "packet_format_version": "trust_packet.0.2",
+        "module": "scripts/mkm_rq019_trust_packet_v02.py",
+        "schema": "docs/final/schemas/mkm_trust_packet_envelope_v0_2.schema.json",
+        "roundtrip": "scripts/run_rq019_m2m_two_agent_roundtrip_v0.py",
+        "upgrade_artifact": "docs/final/artifacts/mkm_rq019_m2m_pipe_upgrade_v0_latest.json",
+        "note": "Envelope wraps 0.1 compression_packet; does not replace stub default."
+      },
       "required_fields": [
         "packet_format_version",
         "api_contract_version",

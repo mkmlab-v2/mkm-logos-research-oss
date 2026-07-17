@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mkm_trust_packet_envelope_v0_2.schema.json",
+  "title": "mkm_trust_packet_envelope_v0_2",
+  "description": "RQ-019 Trust Packet v0.2 research envelope around existing trust_packet.0.1 compression_packet. Track B research_only · send_gate HOLD. Not multimodal / production SLA.",
+  "type": "object",
+  "required": [
+    "schema",
+    "packet_format_version",
+    "research_only",
+    "send_gate",
+    "codebook_id",
+    "codebook_version",
+    "compression_packet"
+  ],
+  "properties": {
+    "schema": {
+      "const": "mkm_trust_packet_envelope_v0_2"
+    },
+    "packet_format_version": {
+      "const": "trust_packet.0.2"
+    },
+    "research_only": {
+      "const": true
+    },
+    "send_gate": {
+      "const": "HOLD"
+    },
+    "hypothesis_tag": {
+      "type": "string"
+    },
+    "codebook_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "codebook_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowlist_ref": {
+      "type": "string",
+      "description": "Optional Domain A allowlist path/id sidecar — compose only; not merged product."
+    },
+    "hold_decision": {
+      "type": "object",
+      "description": "Optional HOLD sidecar from pin/OOV/policy compose.",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["PASS", "HOLD"]
+        },
+        "reason_code": {
+          "type": "string"
+        },
+        "reason_text": {
+          "type": "string"
+        }
+      }
+    },
+    "oov_tokens": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "agent_id": {
+      "type": "string"
+    },
+    "inner_packet_format_version": {
+      "type": "string",
+      "description": "Existing stub packet format (trust_packet.0.1) — unchanged."
+    },
+    "compression_packet": {
+      "type": "object",
+      "description": "Existing v2 stub CompressionPacket payload.",
+      "required": ["compressed_text"],
+      "properties": {
+        "packet_format_version": {
+          "type": "string"
+        },
+        "compressed_text": {
+          "type": "string"
+        },
+        "residual_meta": {
+          "type": "object"
+        },
+        "loss_profile": {
+          "type": "string"
+        },
+        "content_fingerprint": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}

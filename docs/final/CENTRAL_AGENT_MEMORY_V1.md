@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-07-06T17:09:13Z
+- **last_updated_utc:** 2026-07-17T01:23:47Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-21:** lens pack push **54/54** OK · OPS `CENTRAL_AGENT_MEMORY_V1` refreshed incl. 41k/31k 격벽 절). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1 -Refresh` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -159,26 +159,26 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
-- **2026-07-06T17:09:13Z** — MS·이제마: geukchigo handoff 41/41 recorded; iteration-hold repair_v2 batch 9p exit0; wave reconciliation signoff
-- **2026-07-06T17:09:09Z** — health 3-axis topic+pillar+daewoon live exit0: Q25 triple C gold B holdout 0% delta0 HOLD
-- **2026-07-06T17:07:34Z** — B-track P13 bomyung fuse: holdout hit 64.7% MDD exploratory 21%↓ fuse crisis-kill-switch calibration exit0; send_gate HOLD
-- **2026-07-06T17:05:56Z** — MS·이제마: vol3 p115-117 repair_v2 re-record signoff exit0; wave 33p; next iteration-hold pages
-- **2026-07-06T17:01:20Z** — Q25 topic+pillar combo live exit0: combo C gold B holdout health 0% n=2 delta0 HOLD
-- **2026-07-06T16:58:31Z** — MS·이제마: vol2 L1067 chain p111-114 signoff exit0; p115 vol3 prior; next vol3 p116-117
-- **2026-07-06T16:54:25Z** — MS·이제마: vol2 p111 diagram+p113 L1067 followup repair_v2 record exit0; handoff 40 cards
-- **2026-07-06T16:50:09Z** — MS·이제마: sixiang boost ablation FAIL best -3.4pp; p111 diagram HITL card+PNG ready; P10 scalar 유지
-- **2026-07-06T16:46:01Z** — MS·이제마: p112 PNG sync+repair_v2 OCR record exit0; L1067 ack; PAGE_CONFIG PNG gap 0
-- **2026-07-06T16:42:05Z** — MS·이제마: L1067 sixiang ack exit0 repair_v2 patched boost=0; p112 PNG blocker; per-date sixiang sidecar wired
-- **2026-07-06T16:19:50Z** — MS·이제마: P13 bomyung WF prereg v1.1 exit0 (3/3 folds, confirm +3.6pp); L1067 p112 HITL card+ack script; PNG blocker
-- **2026-07-06T16:01:27Z** — MS·이제마 v1.6: prereg P13/P14 exit0; nested grid FAIL -3.4pp; P13 fuse 64.7% n=51; P10 scalar 61.1% 유지; L1067 HITL pending
-- **2026-07-06T15:49:32Z** — Phase2 4-nested exit0: P12 vs P10 -3.7pp FAIL; P10 61.1% remains best scalar; nested lib+prereg v1.5
-- **2026-07-06T15:44:15Z** — P10 walk-forward exit0: WF mean +4.6pp 2/3 folds, confirm 61.1%/+9.2pp; hypothesis_supported true B-track HOLD
-- **2026-07-06T15:33:01Z** — MS·이제마 Phase1 exit0: prereg v1.3 P8/P9, tuning grid best P6 61.1%/+9.2pp n=54 exploratory; holdout eval pytest 11
-- **2026-07-06T15:08:40Z** — MS·이제마 핵심: 원전 재독 갭분석 — P6=3-plane proxy not 4-pole ontology; 다음 P6튜닝+P8보명퓨즈 prereg
-- **2026-07-06T15:02:50Z** — timing miss packet 3 rows live daewoon holdout delta0 Q21 live-B rescue Q25 still-miss prereg PASS HOLD
-- **2026-07-06T14:54:58Z** — Oracle 재개 exit0: anchor 3600 HG frozen, Tier1 9/9, obs 10/10, patrol green; continuity logos-anchor-3600-ceiling-2026-07-06
-- **2026-07-06T14:54:44Z** — myeongri timing weak-topic drill exit0: career/health ho 0% n=2/1 prereg PASS HOLD continuity myeongri-timing-prereg-2026-07-06
-- **2026-07-06T14:38:23Z** — v2 kernel 3-plane wire+P6/P7 holdout exit0; hypothesis_supported false HOLD
+- **2026-07-17T01:23:47Z** — Internal M2M pipe upgrade RQ-019 · Trust Packet roundtrip · HOLD intact · research_only · SEND HOLD · no multimodal
+- **2026-07-17T01:12:36Z** — Domain A commercial-gap checklist + allowlist v0.2.0 +5 actions; redteam 16/16 false_pass=0; wire OOV HOLD; QE green; S-path FROZEN; SEND HOLD
+- **2026-07-17T01:03:51Z** — Allowlist Domain A dogfood PASS: PASS+OOV wire HOLD + redteam 12/12; glossary QE eval+links still green; S-path FROZEN; CloakPipe/Presidio MISSING, a-codeai redact PoC EXISTS; artifact reports/logos_allowlist_domain_a_dogfood_v1_latest.json
+- **2026-07-17T00:40:07Z** — Oracle: S-path FROZEN; glossary QE v0.1.2 water/wash thin links Hit@K=1.0 FalsePASS=0; FAIL-COMP QE≠dense NDCG; SEND HOLD
+- **2026-07-17T00:34:20Z** — HOLD+StrongQE ledger freeze · thin synonym/parent links v0.1 · False PASS monitor · research_only · SEND HOLD
+- **2026-07-17T00:20:21Z** — Oracle Logos: BGE-M3 ColBERT MaxSim full-31k FLAT/NEG vs best BGE D+S (ΔR50=-0.015); CE skipped; FT retrieval corpus missing; artifact logos_ks_s_bge_m3_colbert_ab_v1_latest.json
+- **2026-07-17T00:09:37Z** — Logos Strong glossary QE v0 · Track B · HOLD wall intact · research_only · SEND HOLD
+- **2026-07-16T23:42:35Z** — HOLD upgrade: PASS ACK + a-codeai wedge line + IFR report + audit viewer · research_only · SEND HOLD
+- **2026-07-16T23:29:01Z** — HOLD dogfood UI commander ACK: wire transfer → OOV_HOLD + audit jsonl · research_only · SEND HOLD
+- **2026-07-16T23:04:04Z** — HOLD dogfood demo pack v0 · research_only · SEND HOLD · ACK pending
+- **2026-07-16T21:46:00Z** — Oracle HyDE-only BGE-M3 D+S FAIL gate (ΔR50=-0.0098 vs non-HyDE); CE SKIP; artifact logos_ks_s_hyde_bge_m3_hybrid_ab_v1_latest; next XOR stop
+- **2026-07-16T21:44:51Z** — Logos HyDE-only→BGE-M3 D+S DONE exit0 NEG/FLAT vs baseline (ΔR50=-0.0098); CE SKIPPED; artifact reports/logos_ks_s_hyde_bge_m3_hybrid_ab_v1_latest.json
+- **2026-07-16T20:18:23Z** — HOLD dogfood+redteam+visible audit UI · research_only · SEND HOLD
+- **2026-07-16T20:03:32Z** — M2M next-1: allowlist+HOLD stub + RQ-019 Trust Packet thin smoke · Track B · SEND HOLD
+- **2026-07-16T19:54:10Z** — Hybrid DD PASS freeze: lexicon≠ontology · HOLD allowlist external · M2M RQ-019 B-only · no Track C/RQ-026
+- **2026-07-16T19:36:00Z** — Logos BGE-M3 Dense+Sparse hybrid FLAT vs nomic (dNDCG+0.0044 dR50+0.0172<0.02); CE skipped; HyDE next XOR stop; research_only HOLD
+- **2026-07-16T19:07:42Z** — Hybrid Security DD digest: partial align (41k/HOLD/0.47 Jaccard FACT); reject O(1)=RAG+crypto-complete+ISO; Tier0 raw; send_gate HOLD
+- **2026-07-16T19:05:08Z** — Logos S Dense A/B BGE-M3 TORCH_HF full 31k: vs nomic FLAT (dNDCG+0.0019 dR50+0.0172<0.02); CE skipped; research_only HOLD
+- **2026-07-16T19:01:13Z** — continuity=clinic-trust-shield-loi-2026-07-17 · clinic-trust HOLD shield+audit+synthetic eval+LOI draft; Logos wall; RQ-026 HYPO alias RQ-019; SEND HOLD
+- **2026-07-16T18:47:55Z** — clinic-trust internal LOI draft v1 DONE — reopen_acked+loi_internal_draft · send_gate HOLD · ₩79k · no kakao/SEND
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
