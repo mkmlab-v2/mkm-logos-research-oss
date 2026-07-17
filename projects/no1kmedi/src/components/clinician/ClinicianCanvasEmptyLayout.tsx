@@ -7,9 +7,11 @@ import { MkmTrustCanvasShell } from "@/components/trust-canvas/MkmTrustCanvasShe
 
 type Props = {
   onOpenChat: () => void;
+  /** Optional — open 진료 분석 (copilot) from empty canvas CTA. */
+  onOpenCopilot?: () => void;
 };
 
-export function ClinicianCanvasEmptyLayout({ onOpenChat }: Props) {
+export function ClinicianCanvasEmptyLayout({ onOpenChat, onOpenCopilot }: Props) {
   const canvasBody = (
     <div className="mkm-trust-canvas-placeholder" data-clinician-canvas-placeholder-canvas="1">
       <p className="mkm-trust-canvas-placeholder-title">CDS 그래프 캔버스</p>
@@ -35,10 +37,24 @@ export function ClinicianCanvasEmptyLayout({ onOpenChat }: Props) {
             <h2 className="workspace-panel-title">Encounter</h2>
             <p className="workspace-muted">
               Trust Canvas · CDS 봉투 대기 중.{" "}
-              <button type="button" className="workspace-link-btn" onClick={onOpenChat}>
-                대화 탭
-              </button>
+              {onOpenCopilot ? (
+                <button type="button" className="workspace-link-btn" onClick={onOpenCopilot}>
+                  진료 분석
+                </button>
+              ) : (
+                <button type="button" className="workspace-link-btn" onClick={onOpenChat}>
+                  대화 탭
+                </button>
+              )}{" "}
               에서 진료 보조를 실행하세요.
+              {onOpenCopilot ? (
+                <>
+                  {" · "}
+                  <button type="button" className="workspace-link-btn" onClick={onOpenChat}>
+                    대화
+                  </button>
+                </>
+              ) : null}
             </p>
           </>
         }

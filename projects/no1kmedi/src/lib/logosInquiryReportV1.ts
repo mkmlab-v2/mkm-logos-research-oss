@@ -91,6 +91,17 @@ export type LogosInquiryReportV1 = {
     disclaimer_ko: string;
     forbidden_claims: string[];
     quality_basis_ko: string;
+    /** Optional Ask UX pin — G0–G3 control intensity (not hallucination %). */
+    control_grade?: {
+      id: string;
+      intensity?: number;
+      label_ko?: string;
+      signal_basis?: string[];
+      score_kind?: string;
+      not_hallucination_pct?: boolean;
+    };
+    honest_control_banner_ko?: string;
+    citation_strength?: "strong" | "soft" | null;
   };
   evidence_confidence?: StudioQueryPayload["evidence_confidence"] | null;
   azure_distill_meta?: StudioQueryPayload["azure_distill_meta"] | null;

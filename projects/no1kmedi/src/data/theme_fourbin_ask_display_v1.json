@@ -1,0 +1,378 @@
+{
+  "schema": "logos_theme_fourbin_ask_display_v1",
+  "generated_at_utc": "2026-07-16T06:06:57Z",
+  "layout_slot": "theme_fourbin_display_sidecar",
+  "sibling_of": "report_split_graph_sidecar",
+  "address_book_merge": false,
+  "research_only": true,
+  "hypo": true,
+  "non_gating": true,
+  "send_gate": "HOLD",
+  "source_ask_wire": "docs/final/artifacts/logos_theme_fourbin_ask_sidecar_wire_v1_latest.json",
+  "verses": [
+    {
+      "id": "gen_1_1_en",
+      "lang": "en",
+      "label_ko": "창세기 1:1 (EN)",
+      "text_preview": "In the beginning God created the heavens and the earth.",
+      "theme_fourbin_display": {
+        "schema": "logos_theme_fourbin_ask_display_v1",
+        "frame_a": {
+          "dominant_bin": "creation",
+          "bin_weights": {
+            "creation": 0.969188,
+            "fall": 0.00653,
+            "redemption": 0.00653,
+            "consummation": 0.017751
+          },
+          "entropy": 0.167605,
+          "spread": 0.030812
+        },
+        "frame_b": {
+          "dominant_bin": "promise",
+          "bin_weights": {
+            "promise": 0.25,
+            "law": 0.25,
+            "sacrifice": 0.25,
+            "kingdom": 0.25
+          },
+          "entropy": 1.386294,
+          "spread": 0.75
+        },
+        "explain_ab_differ_ko": [
+          "Frame A(구원사 4칸) 우세축=`creation`(비중≈0.97) — 창조→타락→구속→완성 이야기 렌즈로 단어를 셉니다.",
+          "Frame B: 약속/법/희생/왕국 4칸이 거의 균등 — 제도 렌즈 사전에 안 잡혀 A와 ‘다른 승자’가 아니라 ‘제도 신호 약함’으로 갈립니다."
+        ]
+      }
+    },
+    {
+      "id": "gen_1_1_ko",
+      "lang": "ko",
+      "label_ko": "창세기 1:1 (KO)",
+      "text_preview": "태초에 하나님이 천지를 창조하시니라.",
+      "theme_fourbin_display": {
+        "schema": "logos_theme_fourbin_ask_display_v1",
+        "frame_a": {
+          "dominant_bin": "creation",
+          "bin_weights": {
+            "creation": 0.870049,
+            "fall": 0.043317,
+            "redemption": 0.043317,
+            "consummation": 0.043317
+          },
+          "entropy": 0.529061,
+          "spread": 0.129951
+        },
+        "frame_b": {
+          "dominant_bin": "promise",
+          "bin_weights": {
+            "promise": 0.25,
+            "law": 0.25,
+            "sacrifice": 0.25,
+            "kingdom": 0.25
+          },
+          "entropy": 1.386294,
+          "spread": 0.75
+        },
+        "explain_ab_differ_ko": [
+          "Frame A(구원사 4칸) 우세축=`creation`(비중≈0.87) — 창조→타락→구속→완성 이야기 렌즈로 단어를 셉니다.",
+          "Frame B: 약속/법/희생/왕국 4칸이 거의 균등 — 제도 렌즈 사전에 안 잡혀 A와 ‘다른 승자’가 아니라 ‘제도 신호 약함’으로 갈립니다."
+        ]
+      }
+    },
+    {
+      "id": "ps_23_1_2_en",
+      "lang": "en",
+      "label_ko": "시편 23:1-2 (EN)",
+      "text_preview": "The Lord is my shepherd; I shall not want. He makes me lie down in green pastures; he leads me beside still waters and r",
+      "theme_fourbin_display": {
+        "schema": "logos_theme_fourbin_ask_display_v1",
+        "frame_a": {
+          "dominant_bin": "redemption",
+          "bin_weights": {
+            "creation": 0.00653,
+            "fall": 0.00653,
+            "redemption": 0.969188,
+            "consummation": 0.017751
+          },
+          "entropy": 0.167605,
+          "spread": 0.030812
+        },
+        "frame_b": {
+          "dominant_bin": "kingdom",
+          "bin_weights": {
+            "promise": 0.174878,
+            "law": 0.174878,
+            "sacrifice": 0.174878,
+            "kingdom": 0.475367
+          },
+          "entropy": 1.268301,
+          "spread": 0.524633
+        },
+        "explain_ab_differ_ko": [
+          "Frame A(구원사 4칸) 우세축=`redemption`(비중≈0.97) — 창조→타락→구속→완성 이야기 렌즈로 단어를 셉니다.",
+          "Frame B 우세축=`kingdom`(비중≈0.48) — 같은 구절이라도 렌즈(이야기 vs 제도)가 바뀌면 우세 칸이 달라집니다."
+        ]
+      }
+    },
+    {
+      "id": "ps_23_1_2_ko",
+      "lang": "ko",
+      "label_ko": "시편 23:1-2 (KO)",
+      "text_preview": "여호와는 나의 목자시니 내가 부족함이 없으리로다. 그가 나를 푸른 풀밭에 누이시며 쉴 만한 물 가로 인도하시는도다.",
+      "theme_fourbin_display": {
+        "schema": "logos_theme_fourbin_ask_display_v1",
+        "frame_a": {
+          "dominant_bin": "redemption",
+          "bin_weights": {
+            "creation": 0.096255,
+            "fall": 0.096255,
+            "redemption": 0.711235,
+            "consummation": 0.096255
+          },
+          "entropy": 0.918284,
+          "spread": 0.288765
+        },
+        "frame_b": {
+          "dominant_bin": "kingdom",
+          "bin_weights": {
+            "promise": 0.174878,
+            "law": 0.174878,
+            "sacrifice": 0.174878,
+            "kingdom": 0.475367
+          },
+          "entropy": 1.268301,
+          "spread": 0.524633
+        },
+        "explain_ab_differ_ko": [
+          "Frame A(구원사 4칸) 우세축=`redemption`(비중≈0.71) — 창조→타락→구속→완성 이야기 렌즈로 단어를 셉니다.",
+          "Frame B 우세축=`kingdom`(비중≈0.48) — 같은 구절이라도 렌즈(이야기 vs 제도)가 바뀌면 우세 칸이 달라집니다."
+        ]
+      }
+    }
+  ],
+  "frames": {
+    "frame_a": {
+      "frame_id": "frame_a_creation_fall_redemption_consummation",
+      "label_ko": "창조 / 타락 / 구속 / 완성",
+      "bins": {
+        "creation": {
+          "lexemes_en": [
+            "create",
+            "created",
+            "creation",
+            "heavens",
+            "earth",
+            "beginning",
+            "garden",
+            "formless",
+            "light",
+            "made"
+          ],
+          "lexemes_ko": [
+            "창조",
+            "천지",
+            "태초",
+            "빛",
+            "만드",
+            "에덴",
+            "하늘과"
+          ]
+        },
+        "fall": {
+          "lexemes_en": [
+            "serpent",
+            "fruit",
+            "forbidden",
+            "curse",
+            "exile",
+            "sin",
+            "death",
+            "shame",
+            "disobey",
+            "fall"
+          ],
+          "lexemes_ko": [
+            "뱀",
+            "선악",
+            "저주",
+            "타락",
+            "죄",
+            "쫓겨",
+            "수치",
+            "불순종"
+          ]
+        },
+        "redemption": {
+          "lexemes_en": [
+            "redeem",
+            "blood",
+            "cross",
+            "forgiveness",
+            "save",
+            "savior",
+            "atonement",
+            "lamb",
+            "grace",
+            "rescue",
+            "shepherd",
+            "pasture",
+            "pastures",
+            "rest",
+            "refuge",
+            "comfort",
+            "green"
+          ],
+          "lexemes_ko": [
+            "구속",
+            "십자가",
+            "속죄",
+            "피",
+            "구원",
+            "어린양",
+            "용서",
+            "은혜",
+            "목자",
+            "풀밭",
+            "안식",
+            "피난처",
+            "쉼",
+            "위로"
+          ]
+        },
+        "consummation": {
+          "lexemes_en": [
+            "new",
+            "heaven",
+            "glory",
+            "restore",
+            "forever",
+            "consummation",
+            "renew",
+            "complete",
+            "throne",
+            "alpha",
+            "dwelling"
+          ],
+          "lexemes_ko": [
+            "새하늘",
+            "완성",
+            "영광",
+            "영원",
+            "회복",
+            "새땅",
+            "오메가",
+            "완성하",
+            "거하"
+          ]
+        }
+      }
+    },
+    "frame_b": {
+      "frame_id": "frame_b_promise_law_sacrifice_kingdom",
+      "label_ko": "약속 / 법 / 희생 / 왕·나라",
+      "bins": {
+        "promise": {
+          "lexemes_en": [
+            "promise",
+            "covenant",
+            "oath",
+            "seed",
+            "blessing",
+            "land",
+            "heir",
+            "faithful",
+            "swore",
+            "Abraham",
+            "refuge",
+            "shelter"
+          ],
+          "lexemes_ko": [
+            "약속",
+            "언약",
+            "맹세",
+            "자손",
+            "축복",
+            "아브라함",
+            "기업",
+            "피난처",
+            "피난"
+          ]
+        },
+        "law": {
+          "lexemes_en": [
+            "law",
+            "commandment",
+            "statute",
+            "torah",
+            "tablet",
+            "ordinance",
+            "decree",
+            "holy",
+            "sabbath",
+            "write"
+          ],
+          "lexemes_ko": [
+            "율법",
+            "계명",
+            "규례",
+            "토라",
+            "안식일",
+            "돌판",
+            "법도"
+          ]
+        },
+        "sacrifice": {
+          "lexemes_en": [
+            "sacrifice",
+            "altar",
+            "offering",
+            "blood",
+            "priest",
+            "lamb",
+            "burnt",
+            "atonement",
+            "passover",
+            "victim"
+          ],
+          "lexemes_ko": [
+            "희생",
+            "제단",
+            "제물",
+            "제사장",
+            "유월절",
+            "번제",
+            "속죄"
+          ]
+        },
+        "kingdom": {
+          "lexemes_en": [
+            "kingdom",
+            "king",
+            "throne",
+            "reign",
+            "nation",
+            "dominion",
+            "messiah",
+            "anointed",
+            "rule",
+            "crown",
+            "shepherd"
+          ],
+          "lexemes_ko": [
+            "나라",
+            "왕국",
+            "왕",
+            "보좌",
+            "통치",
+            "메시아",
+            "기름부음",
+            "목자"
+          ]
+        }
+      }
+    }
+  },
+  "live_score_enabled": true,
+  "mainline_always_on": true
+}

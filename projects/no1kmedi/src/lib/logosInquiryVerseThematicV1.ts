@@ -315,3 +315,11 @@ export function applyInquiryVerseThematicLayer(
     },
   };
 }
+
+/** Gematria freeform topic detect — stub for softmatch gate (research_only · NON_GATING). */
+export const GEMATRIA_WRONG_PACK_PRESET_IDS: ReadonlySet<string> = new Set<string>();
+
+export function detectGematriaMeaningFreeformTopic(query: string): boolean {
+  const q = String(query || '').toLowerCase();
+  return /gematria|게마트리아|수비학|666\s*의미/.test(q);
+}

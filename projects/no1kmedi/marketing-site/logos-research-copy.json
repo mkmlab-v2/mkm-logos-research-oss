@@ -9,16 +9,21 @@
     "skip": "본문으로 건너뛰기",
     "home": "소개",
     "ask": "베타 Q&A",
+    "insight_mobile": "모바일 통찰",
     "docs": "문서",
-    "studio": "Studio (Pro)",
+    "studio": "Studio · 베타 후",
+    "studio_note": "OSS 검증 후",
     "metrics": "지표",
     "tiers": "티어"
   },
   "brand": {
     "productShort": "LOGOS",
-    "productLine": "성경·텍스트 연구 워크스페이스",
-    "legal": "JEMA AI · Track B [HYPO] · research_only",
-    "legalStudio": "Track B [HYPO] · research_only"
+    "productLine": "성경 연구 워크스페이스",
+    "definition_ko": "LOGOS = 성경·텍스트 질문에 인용·학파·경로를 보이는 연구 Ask",
+    "subtitle_en": "LOGOS · scripture research workspace",
+    "legal": "JEMA AI · Public Beta · 연구 참고",
+    "legalStudio": "베타 후 · OSS 검증 후",
+    "note_display_diversion": "Option A 2026-07-15 — customer chrome/title; host logos.jema-ai.com technical only; not Faithlife counsel opinion"
   },
   "publicUrl": "https://logos.jema-ai.com",
   "pilot_status": {
@@ -28,9 +33,11 @@
     "ready_for_external_send": false
   },
   "ask": {
-    "eyebrow": "Public Beta v0.1 · 텍스트만",
-    "title": "성경·텍스트 Q&A",
-    "lead": "ChatGPT/Gemini 유사 질문→답변. citation lock · 학파 비교 · lemma 네트워크 · 게마트리아 — 텍스트 리포트 JSON만 (그래픽·Studio 제외).",
+    "eyebrow": "Public Beta · 성경 연구 Ask",
+    "title": "질문하면, 인용·학파·경로 리포트",
+    "lead": "한 문장만 넣어도 구절 근거를 고정하고 학파별 해석·경로를 한 리포트로 정리합니다. 연구 참고 · 무료 8회/일 · 결제 없음.",
+    "empty_hint": "아래에서 바로 질문하거나, 샘플을 고르세요. 첫 답은 인용 탭부터 확인하면 됩니다.",
+    "cta_samples": "샘플 질문 보기",
     "sample_questions": [
       "시편 23편 — 목자 비유와 학파별 해석 차이",
       "욥기 고난과 의의 문제 — 학파별 해석 차이는 무엇인가?",
@@ -40,13 +47,19 @@
     "placeholder": "예: 욥기 고난과 의의 — 학파별 해석 차이는? · 일반 고민도 구체적으로 입력",
     "run_label": "질문하기",
     "running_label": "분석 중…",
-    "governance": "Track B [HYPO] · research_only · 무료 8회/일 · 결제는 OSS 검증 후",
+    "governance": "연구 참고용 · 무료 8회/일 · Public Beta",
     "handoff_label": "mkmlife /oracle-sphere (consumer SKU)",
     "handoff_url": "https://mkmlife.com/oracle-sphere",
     "export_json": "리포트 JSON 내보내기"
   },
+  "insight_mobile": {
+    "eyebrow": "Mobile insight · preview_only",
+    "title": "모바일 연구 통찰",
+    "lead": "Ask → citation-lock 정렬 그래프 · 실패 시 QUOTA/TIMEOUT/OFFLINE 칩 + 결정론 폴백. SEND·교리 단정 아님.",
+    "hold": "[HYPO] · NON_GATING · SEND HOLD · research_only"
+  },
   "studio": {
-    "hero_eyebrow": "상용 워크스페이스 · logos.jema-ai.com",
+    "hero_eyebrow": "JEMA · scripture research workspace · research beta",
     "hero_title": "Graph Studio — 온도메인 경로 질의",
     "hero_lead": "질문 → query-time GraphRAG 경로 → citation lock 구절. 50 프리셋 시드 + 동적 브릿지 — TSK 전량·open LLM 아님.",
     "query_mode_badge": "query-time GraphRAG",
@@ -99,9 +112,9 @@
       "group_label": "사용 맥락",
       "academic": "학술 연구",
       "pastoral": "묵상·고민",
-      "pastoral_disclaimer": "[research_only] 성경 텍스트·경로 관측 도구입니다. 목회 상담·심리 치료·의료·투자 조언이 아닙니다. ECS·렌즈는 [NON_GATING] 설명 보조.",
+      "pastoral_disclaimer": "[research_only] 성경 텍스트·경로 관측 도구입니다. 특정 교단의 교리적 판결·목회 상담·심리 치료를 대신하지 않습니다. ECS·렌즈는 [NON_GATING] 설명 보조.",
       "pastoral_lead": "개인적 고민을 성경 구절·경로로 읽는 관측 모드입니다. 상담·치료·교리 판매가 아닙니다.",
-      "scope_label_pastoral": "Logos Canvas · 묵상·고민",
+      "scope_label_pastoral": "JEMA Canvas · 묵상·고민",
       "scope_detail_pastoral": "curated graph slice · ~900 nodes · citation lock · 관측 전용 [NON_GATING]",
       "scope_detail_academic": "curated graph slice · ~900 nodes · citation lock · ECS [NON_GATING]"
     },
@@ -157,51 +170,70 @@
     "bench_note": "Holdout B0 ~12% · B3 ~89% (fixture) — operational post-processor scores are labeled separately."
   },
   "hero": {
-    "eyebrow": "Public Beta · 성경 텍스트 Q&A",
-    "title": "성경 질문 →\n인용·학파·경로 리포트",
-    "lead": "ChatGPT처럼 질문하고 답변을 받습니다. citation lock · 학파 비교 · lemma 메타 — 그래픽 Studio는 베타 이후 별도 SKU입니다. Track B [HYPO] · research_only.",
+    "eyebrow": "Public Beta · 성경 연구 Ask",
+    "title": "성경 질문,\n인용·학파·경로가 보이는 답",
+    "lead": "질문하면 구절 인용을 고정하고, 학파별 해석과 경로를 한 리포트로 보여 줍니다. 연구 참고 · 무료 8회/일 · 결제 없음.",
     "cta_primary": "베타 Q&A 시작",
     "cta_secondary": "GitHub 피드백"
   },
+  "story": {
+    "title": "관심 → 문제 → LOGOS",
+    "problem_title": "일반 챗의 한계",
+    "problem_body": "답은 길지만 어느 구절에 기대는지, 학파마다 왜 다른지 한눈에 안 보입니다. 연구·묵상 모두 ‘근거 없는 요약’에 지칩니다.",
+    "solution_title": "LOGOS가 하는 일",
+    "solution_body": "질문 → 인용 고정 → 학파 비교 → 경로·테마 리포트. 교리 판결이나 AI 거버넌스 슬로건이 아니라, 성경 텍스트 연구용 Ask입니다."
+  },
+  "cta_strip": {
+    "title": "다음에 할 일",
+    "ask": "질문하기",
+    "samples": "샘플 질문",
+    "github": "GitHub 피드백",
+    "docs": "작동 방식"
+  },
   "inquiry_beta": {
     "badge": "Public Beta v0.1",
-    "tagline_ko": "오픈베타 v0.1 — 성경 Q&A 무료 8회/일 · 결제는 OSS 검증 후. Issues로 피드백 주세요.",
+    "tagline_ko": "무료 8회/일 · 연구 참고 · 결제·회원가입 없음.",
+    "brand_definition_ko": "LOGOS = 성경·텍스트 질문에 인용·학파·경로를 보이는 연구 Ask",
     "github_repo": "https://github.com/mkmlab-v2/mkm-logos-research-oss",
     "github_issues": "https://github.com/mkmlab-v2/mkm-logos-research-oss/issues/new?template=beta_feedback.yml",
     "github_discussions": "https://github.com/mkmlab-v2/mkm-logos-research-oss/discussions",
     "feedback_cta": "GitHub Issues · 피드백",
     "oss_cta": "OSS 하네스 (GitHub)",
-    "reproduce_hint": "UI 베타(logos.jema-ai.com/ask)와 OSS(mkm-logos-research-oss) 범위는 다릅니다. 하네스는 pytest로 재현 · 제품 피드백은 Issues.",
-    "studio_deferred_title": "Graph Studio (Pro) — 베타 범위 외",
-    "studio_deferred_lead": "경로·그래프·Canvas는 복잡도상 별도 탭. 사용자 모집·피드백 루프는 텍스트 Q&A부터 안정화합니다.",
+    "reproduce_hint": "UI 베타(logos.jema-ai.com)와 OSS(mkm-logos-research-oss) 범위는 다릅니다. 가짜 벤치·저자 없음 · 하네스는 pytest · 제품 피드백은 Issues.",
+    "studio_deferred_title": "Graph Studio — 베타 후 · OSS 검증 후",
+    "studio_deferred_lead": "경로·그래프 시각화는 별도 탭입니다. 지금은 텍스트 Q&A를 먼저 안정화합니다. 결제·회원가입 없음.",
     "how_it_works": [
       {
-        "title": "1. 질문",
-        "body": "구절·주제·고민을 한 문장 이상으로 입력 (최소 12자)."
+        "title": "질문",
+        "body": "구절·주제·고민을 한 문장 이상으로 입력합니다."
       },
       {
-        "title": "2. 리포트",
-        "body": "S1 인용 lock · S2 lemma 메타 · S3 학파 분기 · S4 통찰 텍스트 — JSON보내기 가능."
+        "title": "인용 고정",
+        "body": "리포트 상단에 본문 앵커(구절 참조)를 먼저 고정합니다."
       },
       {
-        "title": "3. 피드백",
-        "body": "GitHub Issues/Discussions에 재현 단계·스크린샷·질문 예시를 남겨 주세요."
+        "title": "학파 비교",
+        "body": "해석 분기를 나란히 두고, 단정 대신 차이를 보여 줍니다."
+      },
+      {
+        "title": "경로·리포트",
+        "body": "테마·경로 관측과 통찰 텍스트를 순서대로 정리합니다. (상세: 문서 › 작동 방식)"
       }
     ]
   },
   "inquiry_home": {
-    "title": "바로 질문하기 — Standard Q&A",
-    "lead": "ChatGPT/Gemini 유사 텍스트 Q&A. S1–S5 리포트(citation lock · 학파 비교 · lemma 메타) — 그래픽·Studio와 분리.",
-    "cta": "Q&A 페이지 열기",
+    "title": "샘플 질문으로 시작",
+    "lead": "고르면 베타 Q&A가 바로 열립니다. 인용 고정·학파 비교는 문서에서도 확인할 수 있습니다.",
+    "cta": "베타 Q&A 시작",
     "sample_questions": [
       "욥기 고난과 의의 문제 — 학파별 해석 차이는 무엇인가?",
-      "이사야 6장 부르심 — 학파·맥락 분기를 citation lock으로 정리해 달라",
-      "시편 23편 — lemma·경로 관점에서 연구 질문을 구체화해 달라"
+      "이사야 6장 부르심 — 학파·맥락 분기를 인용 근거와 함께 정리해 달라",
+      "시편 23편 — 목자 비유를 연구 질문으로 구체화해 달라"
     ]
   },
   "landing": {
-    "value_title": "핵심 가치 — 경로가 보이는 주석 워크스페이스",
-    "value_lead": "생성형 답변 대신 GraphRAG 경로·citation lock·학파 격벽을 한 화면에서 검증합니다.",
+    "value_title": "핵심 가치 — 근거가 보이는 성경 연구 Ask",
+    "value_lead": "일반 요약 대신 인용 고정·학파 비교·경로 리포트를 한 화면에서 확인합니다.",
     "pilot_title": "기관 파일럿 프로그램",
     "pilot_lead": "맞춤 preset 5–10 · private slice · 4–8주 · SOW 협의. 자동 과금·SEND 없음(send_gate HOLD).",
     "architecture_title": "기술 아키텍처 · Fact-Lock",
@@ -209,7 +241,7 @@
     "lead_mail_fallback": "이메일로 문의"
   },
   "hero_embed": {
-    "title": "Logos Graph Studio — Layer B live demo",
+    "title": "JEMA Graph Studio — Layer B live demo",
     "note": "질문 → 답변 + subgraph · Path/Refs citation lock · 30s autoplay (Track C read-only demo)",
     "preset": "job_job_suffering_reason"
   },
@@ -242,8 +274,8 @@
       "26–30s: logos.jema-ai.com 파일럿 문의"
     ],
     "meta_arch": {
-      "badge": "[HYPO] · Cosmic Meta-Architecture",
-      "body": "B-track [HYPO] 접힘 패널: 이기종 domain을 S-L-K-M 구조 좌표로 **읽는 설계 은유**입니다. 4대 힘↔체질 표는 **교육용 별칭**이며 물리·신학·체질·투자 **단정이 아닙니다**. research_only · NON_GATING. Graph Studio 데모 상단 패널에서 요약 표를 확인할 수 있습니다."
+      "badge": "[REMOVED · FAIL-COMP-004]",
+      "body": "REMOVED from Logos surfaces — no 4-force↔체질 mash on scripture Ask/landing/Studio. research_only · NON_GATING."
     }
   },
   "metrics_section": {
@@ -252,7 +284,7 @@
   },
   "contact": {
     "email": "support@mkmlife.com",
-    "mail_subject": "Logos Graph Studio — institution pilot inquiry"
+    "mail_subject": "JEMA Scripture Research — institution pilot inquiry"
   },
   "tiers": {
     "title": "상용 티어 (초안 · pricing TBD)",
@@ -286,10 +318,10 @@
   "disclaimer": {
     "title": "면책 · 격벽",
     "items": [
-      "본 제품은 연구·해설 보조 도구이며 투자·의료·실매매 지시가 아닙니다.",
+      "본 제품은 신학·성경 텍스트 연구 보조 도구이며, 특정 교단의 교리적 판결·목회 상담을 대신하지 않습니다.",
       "성경 본문의 교리적 확정·예언 실현을 상품으로 판매하지 않습니다.",
       "Logic Layer만 B2B 문서 검증에 이식 가능하며 MS 압축 헤드라인과 합산하지 않습니다.",
-      "렌즈 입력은 [NON_GATING] — 최종 운영 액션은 human gate가 필요합니다.",
+      "렌즈 입력은 [NON_GATING] — 최종 해석·운영 판단은 human gate가 필요합니다.",
       "On-domain Studio uses curated presets — not a live LLM oracle or doctrine product."
     ]
   },

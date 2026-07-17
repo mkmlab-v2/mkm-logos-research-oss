@@ -11,6 +11,7 @@ type AskCopy = {
   run_label?: string;
   running_label?: string;
   governance?: string;
+  empty_hint?: string;
   handoff_label?: string;
   handoff_url?: string;
   export_json?: string;
@@ -32,7 +33,8 @@ function AskBodyInner() {
         placeholder={ask?.placeholder ?? "질문을 입력하세요"}
         runLabel={ask?.run_label ?? "질문하기"}
         runningLabel={ask?.running_label ?? "분석 중…"}
-        governance={ask?.governance ?? "Track B [HYPO] · research_only"}
+        governance={ask?.governance ?? "연구 참고용 · 무료 8회/일"}
+        emptyHint={ask?.empty_hint}
         handoffLabel={ask?.handoff_label ?? "mkmlife /oracle-sphere"}
         handoffUrl={ask?.handoff_url ?? "https://mkmlife.com/oracle-sphere"}
         exportLabel={ask?.export_json ?? "리포트 JSON 내보내기"}

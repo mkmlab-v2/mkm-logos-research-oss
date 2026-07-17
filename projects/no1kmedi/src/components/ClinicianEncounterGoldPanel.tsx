@@ -555,6 +555,14 @@ export function ClinicianEncounterGoldPanel({
 
   return (
     <div className="encounter-gold-panel paste-chart-v1" aria-labelledby="paste-chart-title">
+      <div className="notice-box" role="status" style={{ margin: "0.75rem 1rem 0" }}>
+        <strong>실험 탭 (본제품 아님)</strong>
+        <p style={{ margin: "0.35rem 0 0" }}>
+          복붙 차팅 홈은 단독 상품이 아닙니다. 원내 본선은{" "}
+          <a href="/clinic-trust">/clinic-trust</a>(근거 없으면 HOLD · 얇은 UI+미들웨어)입니다. 본
+          패널은 Track B 초안·Human Gold용으로만 유지합니다.
+        </p>
+      </div>
       <header className="pc-header">
         <div className="pc-header-inner">
           <div className="pc-brand">
@@ -563,13 +571,13 @@ export function ClinicianEncounterGoldPanel({
             </div>
             <div>
               <h2 id="paste-chart-title" className="pc-brand-name">
-                Paste Chart
+                차트 보조(실험)
               </h2>
               <p className="pc-brand-sub">{PASTE_CHART_PUBLIC_COPY_V1.brandSub}</p>
             </div>
           </div>
           <div className="pc-header-meta">
-            <span className="track-badge">Track B · 초안</span>
+            <span className="track-badge">Track B · 초안 · demoted</span>
             {ephemeralEncounter ? <span className="track-badge track-badge--ephemeral">1회성 encounter</span> : null}
             <span className="human-gold-badge">Human Gold 확정 필요</span>
           </div>

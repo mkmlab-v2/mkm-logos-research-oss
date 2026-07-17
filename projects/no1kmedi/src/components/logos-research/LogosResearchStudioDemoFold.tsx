@@ -36,7 +36,7 @@ export function LogosResearchStudioDemoFold({ title, lead, presetId }: Props) {
         <LogosGraphStudioHeroInlineDemo
           presetId={presetId}
           className="lr-studio-deferred-demo"
-          note="30초 스토리보드 · 펼쳤을 때만 재생 · citation-locked · [HYPO] NON_GATING"
+          note="30초 스토리보드 · 펼쳤을 때만 재생 · 인용 고정 · 연구 미리보기"
         />
       ) : null}
       <p className="lr-studio-deferred-actions">

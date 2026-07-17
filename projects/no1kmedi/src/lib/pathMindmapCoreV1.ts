@@ -13,6 +13,7 @@ export type MindmapNode = {
 export type MindmapEdge = {
   from: string;
   to: string;
+  relation?: string;
 };
 
 export type PathMindmapModel = {

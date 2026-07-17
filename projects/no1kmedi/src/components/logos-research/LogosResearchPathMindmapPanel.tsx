@@ -152,9 +152,15 @@ export function LogosResearchPathMindmapPanel({
       footnote={footnote}
       svgTitle="Logos 경로 마인드맵"
       height={height}
+      showEdgeLegend={!compactMeta}
+      showEdgeTypeLabels={!compactMeta}
+      labelEdgeBudget={18}
+      pathOrdinalLabels={compactMeta}
       panelDataAttributes={{
         "data-logos-path-mindmap": "1",
         "data-logos-viz-mode": vizMode,
+        "data-logos-d-viz": "2",
+        ...(compactMeta ? { "data-logos-path-ordinals": "1" } : {}),
         ...(meshShown ? { "data-logos-mindmap-mesh-count": String(meshShown) } : {}),
       }}
       gradientId="lr-mm-bg-glow"

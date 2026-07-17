@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { AppWorkspaceShell } from "@/components/AppWorkspaceShell";
 import { MinimalClinicianShell } from "@/components/MinimalClinicianShell";
 import {
-  CLINICIAN_PASTE_CHART_PANEL,
+  CLINICIAN_COPILOT_PANEL,
   defaultClinicianPanelForHost,
   JEMA_AI_PUBLIC_ORIGIN,
   normalizeRequestHost,
@@ -80,16 +80,17 @@ const NAV_BASE = [
   { id: "chat", label: "대화" },
   { id: "patient", label: "환자·설정" },
   { id: "bundle", label: "환자 번들" },
-  { id: "gold", label: "Paste Chart" },
+  { id: "gold", label: "차트 보조(실험)" },
   { id: "safety", label: "안전·고지" },
 ] as const;
 
+/** IA: 진료 분석 first · Paste Chart demoted (experimental tab, not product homepage). */
 const NAV_MINIMAL = [
-  { id: "gold", label: "Paste Chart" },
-  { id: "chat", label: "대화" },
   { id: "copilot", label: "진료 분석" },
+  { id: "chat", label: "대화" },
   { id: "patient", label: "환자·설정" },
   { id: "bundle", label: "환자 번들" },
+  { id: "gold", label: "차트 보조(실험)" },
   { id: "safety", label: "안전·고지" },
 ] as const;
 
@@ -178,7 +179,7 @@ function ClinicianSafetyPanel({
 type ClinicianWorkspaceClientProps = {
   /** no1kmedi.com / clinic.* (or localhost dev simulate) — ChatGPT-minimal chrome */
   minimalShell?: boolean;
-  /** Request host — drives Paste Chart default on clinic.* / dev clinic simulate */
+  /** Request host — clinic.* uses minimal shell; default panel is always copilot (Paste Chart demoted). */
   requestHost?: string;
 };
 
@@ -245,9 +246,9 @@ export function ClinicianWorkspaceClient({
 
   useEffect(() => {
     if (searchParams.get("panel")) return;
-    if (defaultPanel !== CLINICIAN_PASTE_CHART_PANEL) return;
+    if (defaultPanel !== CLINICIAN_COPILOT_PANEL) return;
     const params = new URLSearchParams(searchParams.toString());
-    params.set("panel", CLINICIAN_PASTE_CHART_PANEL);
+    params.set("panel", CLINICIAN_COPILOT_PANEL);
     router.replace(`/clinician?${params.toString()}`, { scroll: false });
   }, [defaultPanel, router, searchParams]);
 
@@ -288,8 +289,8 @@ export function ClinicianWorkspaceClient({
 
   const startNewConsult = useCallback(() => {
     createThread();
-    setActiveId("chat");
-    router.replace("/clinician?panel=chat", { scroll: false });
+    setActiveId(CLINICIAN_COPILOT_PANEL);
+    router.replace(`/clinician?panel=${CLINICIAN_COPILOT_PANEL}`, { scroll: false });
   }, [createThread, router]);
 
   const checkAccessStatus = useCallback(async () => {
@@ -405,7 +406,7 @@ export function ClinicianWorkspaceClient({
       { id: "chat", label: "대화", hint: "panel", run: () => onSelect("chat") },
       { id: "patient", label: "환자·설정", hint: "panel", run: () => onSelect("patient") },
       { id: "bundle", label: "환자 번들", hint: "panel", run: () => onSelect("bundle") },
-      { id: "gold", label: "Paste Chart", hint: "panel", run: () => onSelect("gold") },
+      { id: "gold", label: "차트 보조(실험)", hint: "panel", run: () => onSelect("gold") },
       { id: "safety", label: "안전·고지", hint: "panel", run: () => onSelect("safety") },
       { id: "new", label: "새 상담", hint: "스레드", run: () => startNewConsult() },
       {
@@ -521,7 +522,10 @@ export function ClinicianWorkspaceClient({
               }
             />
           ) : canvasLayout ? (
-            <ClinicianCanvasEmptyLayout onOpenChat={() => onSelect("chat")} />
+            <ClinicianCanvasEmptyLayout
+              onOpenChat={() => onSelect("chat")}
+              onOpenCopilot={() => onSelect("copilot")}
+            />
           ) : (
             <>
               <ClinicianSimpleCopilotPanel />
@@ -614,7 +618,7 @@ export function ClinicianWorkspaceClient({
       {minimalShell ? (
         <>
           <MinimalClinicianShell
-            roleLabel="한의사"
+            roleLabel="SOAP 워크스페이스"
             nav={[...nav]}
             activeId={activeId}
             onSelect={onSelect}
@@ -629,7 +633,7 @@ export function ClinicianWorkspaceClient({
       ) : (
         <AppWorkspaceShell
           homeHref="/"
-          roleLabel="한의사"
+          roleLabel="SOAP 워크스페이스"
           nav={[...nav]}
           activeId={activeId}
           onSelect={onSelect}

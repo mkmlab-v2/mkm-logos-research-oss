@@ -2,6 +2,8 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import { ClinicianPilotDisclaimerFooter } from "@/components/ClinicianPilotDisclaimerFooter";
+import { ClinicianShallowNavV1 } from "@/components/clinician/ClinicianShallowNavV1";
+import { ClinicianTrustStripV1 } from "@/components/clinician/ClinicianTrustStripV1";
 import { JEMA_AI_PUBLIC_ORIGIN } from "@/lib/no1kmedi-portal-host";
 import type { WorkspaceNavItem } from "@/components/AppWorkspaceShell";
 
@@ -27,6 +29,8 @@ export function MinimalClinicianShell({
   children,
 }: MinimalClinicianShellProps) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  /** Primary strip: 진료 분석 + 대화 only. Paste Chart demoted to sidebar (experimental). */
+  const shallowNav = nav.filter((item) => item.id === "copilot" || item.id === "chat");
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -44,7 +48,6 @@ export function MinimalClinicianShell({
 
   function handleNewConsult() {
     onNewConsult();
-    select("chat");
     setDrawerOpen(false);
   }
 
@@ -56,7 +59,7 @@ export function MinimalClinicianShell({
           <span className="minimal-clinician-brand-tag">{roleLabel}</span>
         </div>
         <button type="button" className="minimal-clinician-new-chat" onClick={handleNewConsult}>
-          + 새 상담
+          + 새 분석
         </button>
       </div>
       {sidebarBody ? <div className="minimal-clinician-sidebar-threads">{sidebarBody}</div> : null}
@@ -73,6 +76,9 @@ export function MinimalClinicianShell({
         ))}
       </nav>
       <div className="minimal-clinician-sidebar-foot">
+        <a className="minimal-clinician-ghost-btn minimal-clinician-hub-link" href="/clinic-trust">
+          원내 HOLD Q&A
+        </a>
         <a
           className="minimal-clinician-ghost-btn minimal-clinician-hub-link"
           href={JEMA_AI_PUBLIC_ORIGIN}
@@ -104,6 +110,8 @@ export function MinimalClinicianShell({
         </aside>
 
         <div className="minimal-clinician-column">
+          <ClinicianTrustStripV1 onOpenSafety={onOpenSafety} />
+          <ClinicianShallowNavV1 items={shallowNav} activeId={activeId} onSelect={select} />
           <header className="minimal-clinician-topbar minimal-clinician-topbar--mobile">
             <div className="minimal-clinician-topbar-inner">
               <button
@@ -116,7 +124,7 @@ export function MinimalClinicianShell({
                 대화 목록
               </button>
               <button type="button" className="minimal-clinician-ghost-btn" onClick={handleNewConsult}>
-                새 상담
+                새 분석
               </button>
             </div>
           </header>
@@ -132,11 +140,17 @@ export function MinimalClinicianShell({
 
           <main
             id="minimal-clinician-main"
-            className={`minimal-clinician-main${activeId !== "chat" ? " minimal-clinician-main--panel" : ""}`}
+            className={`minimal-clinician-main${
+              activeId !== "chat" && activeId !== "copilot" ? " minimal-clinician-main--panel" : ""
+            }`}
           >
-            {activeId !== "chat" ? (
-              <button type="button" className="minimal-clinician-back-btn" onClick={() => select("chat")}>
-                ← 대화로
+            {activeId !== "chat" && activeId !== "copilot" ? (
+              <button
+                type="button"
+                className="minimal-clinician-back-btn"
+                onClick={() => select("copilot")}
+              >
+                ← 진료 분석
               </button>
             ) : null}
             {children}

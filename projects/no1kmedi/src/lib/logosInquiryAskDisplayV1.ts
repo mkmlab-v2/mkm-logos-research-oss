@@ -272,6 +272,26 @@ export function citationPathLabelKo(label: CitationPathLabelV1): string {
   return "경로 확인 중";
 }
 
+/** Public Ask UI — no engineering tags (Hub preset / GraphRAG). */
+export function citationPathLabelPublicKo(label: CitationPathLabelV1): string {
+  if (label === "hub_preset") return "주제 경로";
+  if (label === "dynamic_graphrag") return "탐색 경로";
+  return "경로 확인 중";
+}
+
+/** 1-hop display reason for “why this verse” (path provenance only; not doctrine). */
+export function citationWhyVerseOneHopKo(model: PublicCitationLockModelV1): string {
+  const lead = model.verseRefs[0];
+  if (!lead) return "";
+  if (model.pathLabel === "hub_preset") {
+    return `${lead} — 질문과 맞는 주제 경로의 첫 앵커입니다 (연구 참고).`;
+  }
+  if (model.pathLabel === "dynamic_graphrag") {
+    return `${lead} — 질문에서 1홉으로 이어진 근거 구절입니다 (연구 참고).`;
+  }
+  return `${lead} — 리포트 상단 출처 고정 앵커입니다 (연구 참고).`;
+}
+
 /** Public Trust UI — S1 citation lock (display only; API unchanged). */
 export function buildPublicCitationLockModel(
   report?: Pick<LogosInquiryReportV1, "preset_id" | "query_mode" | "sections" | "query"> | null,
@@ -605,4 +625,71 @@ export function meetsDoneProductGoldenRubric(input: {
     school_cards_ok &&
     ring0_clean;
   return { product_ok, stub_free, psalm23_anchor_ok, school_cards_ok, ring0_clean };
+}
+
+/** Scholar-mode chip — intent_compress enrich only (NOT Track A KPI). */
+export function formatIntentCompressChipKo(
+  intent:
+    | {
+        intent_core?: string;
+        topic_id?: string;
+      }
+    | null
+    | undefined,
+): string | null {
+  if (!intent) return null;
+  const core = String(intent.intent_core ?? "").trim();
+  if (!core || core === "(empty)") return null;
+  if (intent.topic_id === "ai_society_symbolism") {
+    return "AI·형상·우상 상징 읽기 [HYPO]";
+  }
+  const oneLine = core.replace(/\s+/g, " ");
+  return oneLine.length > 72 ? `${oneLine.slice(0, 69)}…` : oneLine;
+}
+
+const LOGOS_ASK_ERROR_KO: Record<string, string> = {
+  preset_not_matched:
+    "등록된 성경 앵커에 확실히 연결되지 않았습니다. 권·장·구절을 포함해 구체화해 주세요.",
+  preset_missing:
+    "해당 질문을 바로 연결할 연구 팩이 없습니다. 구절·주제를 조금 더 구체적으로 적어 주세요.",
+  quota_exceeded:
+    "오늘 무료 질문 한도를 모두 사용했습니다. UTC 자정 이후 다시 시도해 주세요.",
+  query_failed: "질문 처리에 실패했습니다. 잠시 후 다시 시도해 주세요.",
+  rate_limited: "요청이 너무 잦습니다. 잠시 후 다시 시도해 주세요.",
+  unauthorized: "인증이 필요합니다. 페이지를 새로고침한 뒤 다시 시도해 주세요.",
+};
+
+/**
+ * Friend-floor Ask errors: prefer Korean hint / reverse Q over raw machine codes.
+ */
+export function formatLogosAskError(
+  error?: string | null,
+  hint?: string | null,
+  reverseQuestionsKo?: string[] | null,
+): string {
+  const rev = (reverseQuestionsKo ?? []).map((q) => String(q || "").trim()).filter(Boolean);
+  if (rev.length) return rev[0];
+
+  const hintTrim = String(hint ?? "").trim();
+  const errTrim = String(error ?? "").trim();
+
+  // Prefer explicit Korean/human hint when present and not a bare snake_case code.
+  if (hintTrim && !/^[a-z][a-z0-9_]*$/i.test(hintTrim)) {
+    return hintTrim;
+  }
+  if (hintTrim && hintTrim !== errTrim) {
+    return hintTrim;
+  }
+
+  if (errTrim && LOGOS_ASK_ERROR_KO[errTrim]) {
+    return LOGOS_ASK_ERROR_KO[errTrim];
+  }
+  // Already human text (e.g. stream onError with hint as message)
+  if (errTrim && !/^[a-z][a-z0-9_]*$/i.test(errTrim)) {
+    return errTrim;
+  }
+  if (errTrim) {
+    return LOGOS_ASK_ERROR_KO.preset_not_matched;
+  }
+  return LOGOS_ASK_ERROR_KO.query_failed;
 }

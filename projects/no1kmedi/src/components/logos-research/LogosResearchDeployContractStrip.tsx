@@ -1,35 +1,24 @@
 import { logosResearchCopy } from "@/content/logosResearchCopy";
 
-/** SSR deploy-verify contract markers — beta landing keeps Graph Studio demoted but verify strings remain. */
+/**
+ * Soft public status line — no internal ops jargon in visible chrome.
+ * FAIL-COMP-004: no Cosmic Meta / 4-force mash on Logos scripture surfaces.
+ */
 export function LogosResearchDeployContractStrip() {
   const pilot = logosResearchCopy.pilot_status;
-  const meta = logosResearchCopy.graph_studio?.meta_arch;
-  const graphTitle = logosResearchCopy.graph_studio?.title ?? "Graph Studio";
 
   return (
     <section
       className="lr-deploy-contract lr-section lr-section--compact"
-      aria-label="Logos Scripture Research workspace"
+      aria-label="LOGOS research workspace status"
     >
       <p className="lr-deploy-contract-lead">
-        <span>{pilot?.badge ?? "Commercial beta"}</span>
+        <span>{pilot?.badge ?? "Public Beta"}</span>
         {" · "}
-        <span>Cross-reference Graph</span>
+        <span>텍스트 Q&A 우선</span>
         {" · "}
-        <span>{graphTitle}</span>
-        {" · research_only · NON_GATING"}
+        <span>Graph Studio는 베타 후</span>
       </p>
-      <details className="lr-meta-arch">
-        <summary>
-          <span className="lr-meta-arch-badge">
-            {meta?.badge ?? "[HYPO] · Cosmic Meta-Architecture"}
-          </span>
-        </summary>
-        <div className="lr-meta-arch-body">
-          {meta?.body ??
-            "B-track [HYPO] design metaphor — research_only · NON_GATING · not doctrine or trading."}
-        </div>
-      </details>
       <div
         className="lr-deploy-contract-embed"
         data-logos-graph-studio-embed="1"

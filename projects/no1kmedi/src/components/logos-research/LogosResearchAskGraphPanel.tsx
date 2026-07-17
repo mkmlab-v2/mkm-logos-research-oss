@@ -29,6 +29,8 @@ type Props = {
   presetId?: string | null;
   streamPhase?: AskGraphStreamPhase;
   height?: number;
+  braidFocusRef?: string | null;
+  onBraidFocusRef?: (ref: string) => void;
 };
 
 export function LogosResearchAskGraphPanel({
@@ -38,6 +40,8 @@ export function LogosResearchAskGraphPanel({
   presetId = null,
   streamPhase = "idle",
   height = 420,
+  braidFocusRef = null,
+  onBraidFocusRef,
 }: Props) {
   const enabled = isLogosAskGraphV1Enabled();
   const boundedRefs = useMemo(
@@ -111,7 +115,7 @@ export function LogosResearchAskGraphPanel({
 
   const pulse = shouldPulseAskGraph(streamPhase) && !prefersReducedMotion();
   const pulseGraphNodeIds = pulse ? seedIds : [];
-  const pulseVerseRef = pulse && boundedRefs[0] ? boundedRefs[0] : null;
+  const pulseVerseRef = braidFocusRef || (pulse && boundedRefs[0] ? boundedRefs[0] : null);
   const graphLoading = mountGraph && loading;
   const meshUnresolved = mountGraph && !loading && Boolean(graphDoc) && seedIds.length === 0;
 
@@ -190,6 +194,7 @@ export function LogosResearchAskGraphPanel({
           compactMeta
           vizMode={effectiveVizMode}
           nodeTooltips={nodeTooltips}
+          onVerseClick={onBraidFocusRef}
         />
       )}
     </aside>

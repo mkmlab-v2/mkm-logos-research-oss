@@ -99,12 +99,15 @@ export function shouldUseMinimalClinicianShell(host: string): boolean {
   return isClinicNo1kmediHost(h);
 }
 
+/** Legacy 진료 분석 (copilot) — product homepage for clinician IA. */
+export const CLINICIAN_COPILOT_PANEL = "copilot" as const;
+
 /** Paste Chart v1 bookmark — Antigravity scope applies only on this panel. */
 export const CLINICIAN_PASTE_CHART_PANEL = "gold" as const;
 
-/** Clinic portal / minimal shell: land on Paste Chart, not legacy 진료 분석. */
+/** Clinic portal / minimal shell: land on 진료 분석 (copilot); Paste Chart demoted. */
 export function defaultClinicianPanelForHost(host: string): "gold" | "copilot" {
-  return shouldUseMinimalClinicianShell(host) ? CLINICIAN_PASTE_CHART_PANEL : "copilot";
+  return CLINICIAN_COPILOT_PANEL;
 }
 
 /** National KM ask surface paths on apex (must not redirect to /clinician). */

@@ -9,10 +9,17 @@ const DISMISS_KEY = "lr_ask_onboarding_dismissed_v1";
 
 type Step = { title: string; body: string };
 
+/** Strip leading "1. "/"2." so badge + title never double-number (P1 layout audit). */
+function stepTitlePlain(title: string): string {
+  return title.replace(/^\s*\d+[.)]\s*/, "").trim() || title;
+}
+
 export function LogosResearchAskOnboarding({
   onPickSample,
+  onDismiss,
 }: {
   onPickSample?: (question: string) => void;
+  onDismiss?: () => void;
 }) {
   const [dismissed, setDismissed] = useState(true);
 
@@ -31,7 +38,8 @@ export function LogosResearchAskOnboarding({
       /* ignore */
     }
     setDismissed(true);
-  }, []);
+    onDismiss?.();
+  }, [onDismiss]);
 
   const beta =
     "inquiry_beta" in logosResearchCopy && logosResearchCopy.inquiry_beta
@@ -57,21 +65,26 @@ export function LogosResearchAskOnboarding({
   return (
     <section className="lr-ask-onboarding" aria-labelledby="lr-ask-onboarding-title">
       <div className="lr-ask-onboarding-head">
-        <h2 id="lr-ask-onboarding-title">오픈베타 — 3단계로 시작</h2>
+        <h2 id="lr-ask-onboarding-title">질문 → 인용 → 학파 → 리포트</h2>
         <button type="button" className="lr-ask-onboarding-dismiss" onClick={dismiss}>
           닫기
         </button>
       </div>
       <ol className="lr-ask-onboarding-steps">
-        {steps.map((step, i) => (
-          <li key={step.title}>
-            <span className="lr-ask-onboarding-num">{i + 1}</span>
-            <div>
-              <strong>{step.title}</strong>
-              <p>{step.body}</p>
-            </div>
-          </li>
-        ))}
+        {steps.map((step, i) => {
+          const title = stepTitlePlain(step.title);
+          return (
+            <li key={step.title} style={{ animationDelay: `${i * 60}ms` }}>
+              <span className="lr-ask-onboarding-num" aria-hidden="true">
+                {i + 1}
+              </span>
+              <div>
+                <strong>{title}</strong>
+                <p>{step.body}</p>
+              </div>
+            </li>
+          );
+        })}
       </ol>
       {samples.length ? (
         <div className="lr-ask-onboarding-samples" role="group" aria-label="첫 질문 예시">

@@ -14,6 +14,9 @@ import {
   commanderSummaryLines,
   commanderSummaryText,
   buildPublicCitationLockModel,
+  formatIntentCompressChipKo,
+  formatLogosAskError,
+  formatPublicNarrativeParagraphs,
   isDevMetadataExpandedDefault,
   isPlaceholderAssistantTurn,
   parseReadingPackSections,
@@ -33,15 +36,32 @@ import { LogosResearchAskOnboarding } from "@/components/logos-research/LogosRes
 import { LogosResearchAskPostFeedbackStrip } from "@/components/logos-research/LogosResearchAskPostFeedbackStrip";
 import { LogosResearchAskCitationLockStrip } from "@/components/logos-research/LogosResearchAskCitationLockStrip";
 import { LogosResearchAskGraphPanel } from "@/components/logos-research/LogosResearchAskGraphPanel";
+import { LogosAskThemeFourbinDisplaySidecar } from "@/components/logos-research/LogosAskThemeFourbinDisplaySidecar";
+import { LogosAskEmptyResearchMapV1 } from "@/components/logos-research/LogosAskEmptyResearchMapV1";
+import {
+  braidRefsEqual,
+  nextBraidFocus,
+  splitEssayByKnownRefs,
+} from "@/lib/logosAskTextGraphBraidV1";
 import type { StreamSnapshot } from "@/lib/logosInquiryStreamV1";
 import type { LogosTextMvpReportV1 } from "@/lib/logosResearchTextMvpV1";
+import { detectCategoryPremiseHint } from "@/lib/logosInquiryCategoryPremiseHintV1";
+import { compressIntentForSchoolRouting } from "@/lib/logosSchoolPanelTopicLockV1";
 
 type OutputFormat = "text_mvp_report_v1" | "inquiry_report_v1";
 
 type StreamPhase = "idle" | "snapshot" | "s4" | "done";
 
-const ASK_UI_REV = "20260703d";
+/** Keep in sync with live Destiny until next ship; killer-viz stamp is separate. */
+const ASK_UI_REV = "20260717a";
+/** P2 calm + theme_fourbin always-on mainline + path tab separation (no gematria merge). */
+const ASK_KILLER_VIZ_REV = "20260716b";
+type AskPathPanelTab = "theme_meaning_net" | "graph_address_path";
 const ASK_TURNS_STORAGE_KEY = "logos_ask_turns_v1";
+const ASK_ONBOARDING_DISMISS_KEY = "lr_ask_onboarding_dismissed_v1";
+const ASK_THREADS_STUB_KEY = "logos_ask_threads_stub_v1";
+
+type InsightViewMode = "essay" | "scholar";
 
 type PersistedAskStateV1 = {
   rev: string;
@@ -120,6 +140,7 @@ type Props = {
   runLabel: string;
   runningLabel: string;
   governance: string;
+  emptyHint?: string;
   handoffLabel: string;
   handoffUrl: string;
   exportLabel: string;
@@ -180,19 +201,22 @@ function TextMvpReportSections({ report }: { report: LogosTextMvpReportV1 }) {
         {s.citations.verse_refs.length ? <p>{s.citations.verse_refs.join(" · ")}</p> : null}
       </section>
       {s.school_comparison.groups.length ? (
-        <section className="lr-ask-report-section">
-          <h3>{s.school_comparison.title_ko}</h3>
-          <p className="lr-ask-muted">{s.school_comparison.note_ko}</p>
-          {s.school_comparison.groups.map((group) => (
-            <div key={group.conflict_group_id ?? group.lexicon_base ?? "g"}>
-              {(group.schools ?? []).map((school) => (
-                <p key={`${school.school_tier}-${school.interpretation_ko?.slice(0, 24)}`}>
-                  <span className="lr-ask-tag">{school.school_tier}</span> {school.interpretation_ko}
-                </p>
-              ))}
-            </div>
-          ))}
-        </section>
+        <details className="lr-ask-details lr-ask-scholar-details">
+          <summary>학자 모드 · 학파 비교</summary>
+          <section className="lr-ask-report-section">
+            <h3>{s.school_comparison.title_ko}</h3>
+            <p className="lr-ask-muted">{s.school_comparison.note_ko}</p>
+            {s.school_comparison.groups.map((group) => (
+              <div key={group.conflict_group_id ?? group.lexicon_base ?? "g"}>
+                {(group.schools ?? []).map((school) => (
+                  <p key={`${school.school_tier}-${school.interpretation_ko?.slice(0, 24)}`}>
+                    <span className="lr-ask-tag">{school.school_tier}</span> {school.interpretation_ko}
+                  </p>
+                ))}
+              </div>
+            ))}
+          </section>
+        </details>
       ) : null}
       <section className="lr-ask-report-section">
         <h3>{s.word_network.title_ko}</h3>
@@ -261,6 +285,68 @@ function PublicSchoolComparisonSection({
   );
 }
 
+function S4EssayInsight({
+  body,
+  streaming,
+  displayQuery = "",
+  knownRefs = [],
+  braidFocusRef = null,
+  onBraidFocusRef,
+}: {
+  body: string;
+  streaming?: boolean;
+  displayQuery?: string;
+  knownRefs?: string[];
+  braidFocusRef?: string | null;
+  onBraidFocusRef?: (ref: string) => void;
+}) {
+  const paragraphs = formatPublicNarrativeParagraphs(body, displayQuery);
+  if (!paragraphs.length) {
+    return <p className="lr-ask-muted">통찰 생성 중…</p>;
+  }
+  return (
+    <div
+      className="lr-ask-s4-essay"
+      aria-label="통찰 본문"
+      data-lr-ask-braid-essay={onBraidFocusRef ? "1" : undefined}
+      data-lr-ask-braid-focus={braidFocusRef || undefined}
+    >
+      {paragraphs.map((para) => {
+        const tokens = onBraidFocusRef
+          ? splitEssayByKnownRefs(para, knownRefs)
+          : ([{ type: "text" as const, value: para }] as const);
+        return (
+          <p key={para.slice(0, 48)} className="lr-ask-narrative-p">
+            {tokens.map((tok, i) => {
+              if (tok.type === "text") {
+                return <span key={`t-${i}`}>{tok.value}</span>;
+              }
+              const active = Boolean(
+                braidFocusRef && braidRefsEqual(braidFocusRef, tok.canonical),
+              );
+              return (
+                <button
+                  key={`r-${i}-${tok.canonical}`}
+                  type="button"
+                  className={`lr-ask-braid-ref${active ? " lr-ask-braid-ref--active" : ""}`}
+                  data-lr-ask-braid-ref={tok.canonical}
+                  data-lr-ask-braid-active={active ? "1" : "0"}
+                  aria-pressed={active}
+                  title={`${tok.canonical} · 경로 지도에서 강조`}
+                  onClick={() => onBraidFocusRef?.(tok.canonical)}
+                >
+                  {tok.value}
+                </button>
+              );
+            })}
+          </p>
+        );
+      })}
+      {streaming ? <span className="lr-ask-stream-cursor" aria-hidden="true" /> : null}
+    </div>
+  );
+}
+
 function S4PublicInsightSections({
   body,
   streaming,
@@ -302,15 +388,21 @@ function S4PublicInsightSections({
     return <p className="lr-ask-muted">통찰 생성 중…</p>;
   }
 
+  // D-GEM-ESSAY-2: gematria meaning path — hide ops-y 「N개 관점·탭」kicker for clean default.
+  const hideOpsKicker =
+    body.includes("수치 확정 아님 · 의미 논쟁 참고") || /의미\s*논쟁/.test(body);
+
   return (
     <div
       className="lr-ask-s4-sections"
       data-lr-ask-s4-accordion="1"
       aria-label={`통찰 ${sections.length}개 섹션`}
     >
-      <p className="lr-ask-s4-sections-kicker">
-        {sections.length}개 관점 · 탭을 열어 S4 통찰을 확인하세요
-      </p>
+      {hideOpsKicker ? null : (
+        <p className="lr-ask-s4-sections-kicker">
+          {sections.length}개 관점 · 탭을 열어 S4 통찰을 확인하세요
+        </p>
+      )}
       {sections.map((section, idx) => {
         const isOpen = openSet.has(idx);
         return (
@@ -348,18 +440,239 @@ function S4PublicInsightSections({
   );
 }
 
-function ReportSections({
+function IntentCompressChip({ line }: { line: string | null }) {
+  if (!line) return null;
+  return (
+    <p className="lr-ask-intent-chip" data-lr-ask-intent-chip="1" aria-label="질문 의도">
+      <span className="lr-ask-intent-chip-label">질문 의도</span>
+      <span className="lr-ask-intent-chip-text">{line}</span>
+    </p>
+  );
+}
+
+/** Right heart pin stack — Citation → G0–G3 → weak banner → path (wireframe pin_order). */
+function AskHeartPinStack({
   report,
   snapshot,
   streamingS4,
   streamPhase = "idle",
   inquiryQuery = "",
+  scholarMode = false,
+  braidFocusRef,
+  onBraidFocusRef,
 }: {
   report?: LogosInquiryReportV1;
   snapshot?: StreamSnapshot;
   streamingS4?: string;
   streamPhase?: StreamPhase;
   inquiryQuery?: string;
+  scholarMode?: boolean;
+  braidFocusRef: string | null;
+  onBraidFocusRef: (ref: string) => void;
+}) {
+  const s1 = report?.sections?.S1 ?? snapshot?.S1;
+  const s4Body = report?.sections?.S4.body_ko ?? streamingS4 ?? "";
+  const gov = report?.governance ?? snapshot?.governance;
+  const citationModel = buildPublicCitationLockModel(report, snapshot);
+  const graphVerseRefs = s1?.verse_refs ?? [];
+  const graphAnchors = s1?.citation_lock_anchors ?? [];
+  const askQuery = report?.query ?? inquiryQuery;
+  const [pathTab, setPathTab] = useState<AskPathPanelTab>("theme_meaning_net");
+
+  if (!s1 && !s4Body && !citationModel && !gov) return null;
+
+  const gradeId = gov?.control_grade?.id?.toLowerCase() ?? "";
+  const grainClass =
+    gradeId === "g3"
+      ? " lr-ask-heart-stack--grain-g3"
+      : gradeId === "g2"
+        ? " lr-ask-heart-stack--grain-g2"
+        : gradeId === "g0"
+          ? " lr-ask-heart-stack--grain-g0"
+          : "";
+
+  return (
+    <div
+      className={`lr-ask-heart-stack${grainClass}${scholarMode ? " lr-ask-heart-stack--scholar" : ""}`}
+      data-lr-ask-heart-stack="1"
+      data-lr-ask-pin-order="citation_list,control_grade_g0g3,weak_citation_banner,path_panel"
+    >
+      <div className="lr-ask-heart-sticky-head" data-lr-ask-sticky-head="1">
+        <div className="lr-ask-heart-pin lr-ask-heart-pin--citation" data-lr-ask-pin="citation_list">
+          {citationModel ? (
+            <LogosResearchAskCitationLockStrip
+              model={citationModel}
+              variant={scholarMode ? "scholar" : "viewport"}
+              braidFocusRef={braidFocusRef}
+              onBraidFocusRef={onBraidFocusRef}
+            />
+          ) : (
+            <p className="lr-ask-muted lr-ask-heart-empty">근거 구절이 아직 없습니다.</p>
+          )}
+        </div>
+
+        {gov?.control_grade ? (
+          <aside
+            className={`lr-ask-control-grade-badge lr-ask-control-grade-badge--${gov.control_grade.id.toLowerCase()} lr-ask-heart-pin lr-ask-heart-pin--grade`}
+            role="status"
+            data-lr-ask-pin="control_grade_g0g3"
+            data-lr-ask-control-grade={gov.control_grade.id}
+            data-lr-ask-control-intensity={gov.control_grade.intensity}
+            data-lr-ask-control-score-kind={gov.control_grade.score_kind}
+            aria-label={`통제 등급 ${gov.control_grade.id}`}
+          >
+            <span className="lr-ask-control-grade-id">{gov.control_grade.id}</span>
+            <span className="lr-ask-control-grade-label">{gov.control_grade.label_ko}</span>
+          </aside>
+        ) : null}
+
+        {gov?.honest_control_banner_ko ? (
+          <aside
+            className="lr-ask-honest-control-banner lr-ask-heart-pin lr-ask-heart-pin--weak"
+            role="status"
+            data-lr-ask-pin="weak_citation_banner"
+            data-lr-ask-honest-control="1"
+            data-lr-ask-citation-strength={gov.citation_strength ?? "soft"}
+          >
+            <p className="lr-ask-honest-control-banner-text">{gov.honest_control_banner_ko}</p>
+          </aside>
+        ) : null}
+      </div>
+
+      <div className="lr-ask-heart-pin lr-ask-heart-pin--path" data-lr-ask-pin="path_panel">
+        {/* W6: theme meaning-net vs graph/address path — separate tabs; no gematria merge */}
+        <div
+          className="lr-ask-path-tab-shell"
+          data-lr-ask-path-tabs="1"
+          data-lr-ask-path-tab-active={pathTab}
+          data-address-book-merge="false"
+        >
+          <div className="lr-ask-path-tablist" role="tablist" aria-label="경로 패널 구분">
+            <button
+              type="button"
+              role="tab"
+              id="lr-ask-tab-theme-meaning-net"
+              className={`lr-ask-path-tab${pathTab === "theme_meaning_net" ? " lr-ask-path-tab--active" : ""}`}
+              aria-selected={pathTab === "theme_meaning_net"}
+              data-lr-ask-path-tab="theme_meaning_net"
+              onClick={() => setPathTab("theme_meaning_net")}
+            >
+              테마 4칸
+            </button>
+            <button
+              type="button"
+              role="tab"
+              id="lr-ask-tab-graph-address-path"
+              className={`lr-ask-path-tab${pathTab === "graph_address_path" ? " lr-ask-path-tab--active" : ""}`}
+              aria-selected={pathTab === "graph_address_path"}
+              data-lr-ask-path-tab="graph_address_path"
+              onClick={() => setPathTab("graph_address_path")}
+            >
+              연결망
+            </button>
+          </div>
+
+          <div
+            role="tabpanel"
+            id="lr-ask-panel-theme-meaning-net"
+            aria-labelledby="lr-ask-tab-theme-meaning-net"
+            hidden={pathTab !== "theme_meaning_net"}
+            className="lr-ask-path-tabpanel lr-ask-path-tabpanel--theme"
+            data-lr-ask-path-panel="theme_meaning_net"
+            data-gematria-merge="false"
+          >
+            <LogosAskThemeFourbinDisplaySidecar
+              verseRefs={graphVerseRefs}
+              query={askQuery}
+              answerText={s4Body}
+              alwaysOnMainline
+            />
+          </div>
+
+          <div
+            role="tabpanel"
+            id="lr-ask-panel-graph-address-path"
+            aria-labelledby="lr-ask-tab-graph-address-path"
+            hidden={pathTab !== "graph_address_path"}
+            className="lr-ask-path-tabpanel lr-ask-path-tabpanel--graph"
+            data-lr-ask-path-panel="graph_address_path"
+          >
+            {graphVerseRefs.length ? (
+              <div className="lr-ask-graph-panel-wrap lr-ask-graph-panel-wrap--heart">
+                <LogosResearchAskGraphPanel
+                  query={askQuery}
+                  verseRefs={graphVerseRefs}
+                  citationLockAnchors={graphAnchors}
+                  presetId={report?.preset_id}
+                  streamPhase={streamPhase}
+                  height={scholarMode ? 360 : 280}
+                  braidFocusRef={braidFocusRef}
+                  onBraidFocusRef={onBraidFocusRef}
+                />
+              </div>
+            ) : (
+              <LogosAskEmptyResearchMapV1 />
+            )}
+          </div>
+        </div>
+      </div>
+
+      <p className="lr-ask-heart-rev" aria-hidden="true">
+        UI {ASK_UI_REV} · killer {ASK_KILLER_VIZ_REV}
+      </p>
+    </div>
+  );
+}
+
+function AskThreadRailStub({
+  sessionTitle,
+  onNewChat,
+}: {
+  sessionTitle: string;
+  onNewChat: () => void;
+}) {
+  return (
+    <aside className="lr-ask-thread-rail" data-lr-ask-thread-rail="1" aria-label="대화 목록 (로컬)">
+      <div className="lr-ask-thread-rail-head">
+        <p className="lr-ask-thread-rail-eyebrow">이 세션</p>
+        <button type="button" className="lr-btn lr-btn-ghost lr-ask-thread-new" onClick={onNewChat}>
+          새 대화
+        </button>
+      </div>
+      <p className="lr-ask-thread-rail-hint">검색·스레드 동기화는 아직 없음</p>
+      <ul className="lr-ask-thread-list" role="list">
+        <li>
+          <button type="button" className="lr-ask-thread-item lr-ask-thread-item--active" aria-current="true">
+            <span className="lr-ask-thread-item-title">{sessionTitle}</span>
+            <span className="lr-ask-thread-item-meta">로컬</span>
+          </button>
+        </li>
+      </ul>
+      <p className="lr-ask-thread-rail-note">로컬만 · 초대 없음</p>
+    </aside>
+  );
+}
+
+function ReportSections({
+  report,
+  snapshot,
+  streamingS4,
+  streamPhase = "idle",
+  inquiryQuery = "",
+  insightView,
+  onInsightViewChange,
+  braidFocusRef,
+  onBraidFocusRef,
+}: {
+  report?: LogosInquiryReportV1;
+  snapshot?: StreamSnapshot;
+  streamingS4?: string;
+  streamPhase?: StreamPhase;
+  inquiryQuery?: string;
+  insightView: InsightViewMode;
+  onInsightViewChange: (mode: InsightViewMode) => void;
+  braidFocusRef: string | null;
+  onBraidFocusRef: (ref: string) => void;
 }) {
   const s = report?.sections;
   const s1 = s?.S1 ?? snapshot?.S1;
@@ -372,64 +685,126 @@ function ReportSections({
   const s4Streaming = streamPhase === "s4" && !report;
   const auxLines = researchAuxInsightLines(s2, s3);
   const { readingPack } = splitS4PublicBody(s4Body);
+  const scholarMode = insightView === "scholar";
+
+  const citationModel = buildPublicCitationLockModel(report, snapshot);
+  const graphVerseRefs = s1?.verse_refs ?? [];
+  const graphAnchors = s1?.citation_lock_anchors ?? [];
+
+  const braidKnownRefs = useMemo(() => {
+    const seen = new Set<string>();
+    const out: string[] = [];
+    for (const r of [...graphVerseRefs, ...graphAnchors, ...(citationModel?.verseRefs ?? [])]) {
+      const t = String(r || "").trim();
+      if (!t || seen.has(t)) continue;
+      seen.add(t);
+      out.push(t);
+    }
+    return out;
+  }, [citationModel?.verseRefs, graphAnchors, graphVerseRefs]);
 
   if (!s1 && !s4Body) return null;
 
   const devMetaDefaultOpen = isDevMetadataExpandedDefault();
-  const citationModel = buildPublicCitationLockModel(report, snapshot);
 
-  const graphVerseRefs = s1?.verse_refs ?? [];
-  const graphAnchors = s1?.citation_lock_anchors ?? [];
   const schoolGroups = (s3?.groups ?? []) as PublicSchoolGroupV1[];
   const schoolConflictSource = (s3 as { conflict_source?: "live" | "fallback" | "none" } | undefined)
     ?.conflict_source;
-  const showSchoolCards = shouldShowPublicSchoolCards(inquiryQuery || report?.query || "", schoolGroups);
+  const showSchoolCards =
+    scholarMode && shouldShowPublicSchoolCards(inquiryQuery || report?.query || "", schoolGroups);
+  const premiseHint = detectCategoryPremiseHint(inquiryQuery || report?.query || "");
+  const intentChip = formatIntentCompressChipKo(
+    (s3 as { intent_compress?: Parameters<typeof formatIntentCompressChipKo>[0] } | undefined)
+      ?.intent_compress ?? compressIntentForSchoolRouting(inquiryQuery || report?.query || ""),
+  );
 
   return (
-    <div className="lr-ask-report">
-      {citationModel ? <LogosResearchAskCitationLockStrip model={citationModel} /> : null}
-      <div className="lr-ask-report-split">
-        <div className="lr-ask-report-primary">
-          <section
-            className={`lr-ask-report-section lr-ask-report-section--primary${s4Streaming ? " lr-ask-s4-streaming" : ""}`}
-            aria-live={s4Streaming ? "polite" : undefined}
+    <div
+      className={`lr-ask-report${scholarMode ? " lr-ask-report--scholar" : " lr-ask-report--clean"}`}
+      data-lr-ask-ux={scholarMode ? "scholar" : "clean"}
+      data-lr-ask-braid="1"
+      data-lr-ask-braid-focus={braidFocusRef || undefined}
+      data-lr-ask-canvas-report="1"
+    >
+      <div className="lr-ask-report-primary">
+        {premiseHint && scholarMode ? (
+          <aside
+            className="lr-ask-premise-hint"
+            role="note"
+            data-lr-ask-premise-hint={premiseHint.code}
+            data-lr-ask-premise-gating={premiseHint.gating_status}
           >
+            <p className="lr-ask-premise-hint-title">{premiseHint.title_ko}</p>
+            <p className="lr-ask-premise-hint-body">{premiseHint.hint_ko}</p>
+            <p className="lr-ask-premise-hint-reframe">{premiseHint.suggested_reframe_ko}</p>
+          </aside>
+        ) : null}
+        {scholarMode ? <IntentCompressChip line={intentChip} /> : null}
+        <section
+          className={`lr-ask-report-section lr-ask-report-section--primary${s4Streaming ? " lr-ask-s4-streaming" : ""}`}
+          aria-live={s4Streaming ? "polite" : undefined}
+        >
+          <div className="lr-ask-insight-head">
             <h3>통찰</h3>
             {s4Body ? (
+              <div className="lr-ask-insight-view-toggle" role="group" aria-label="통찰 보기 방식">
+                <button
+                  type="button"
+                  className={`lr-ask-insight-view-btn${insightView === "essay" ? " lr-ask-insight-view-btn--active" : ""}`}
+                  aria-pressed={insightView === "essay"}
+                  data-lr-ask-view="essay"
+                  onClick={() => onInsightViewChange("essay")}
+                >
+                  기본
+                </button>
+                <button
+                  type="button"
+                  className={`lr-ask-insight-view-btn${insightView === "scholar" ? " lr-ask-insight-view-btn--active" : ""}`}
+                  aria-pressed={insightView === "scholar"}
+                  data-lr-ask-view="scholar"
+                  onClick={() => onInsightViewChange("scholar")}
+                >
+                  학자 모드
+                </button>
+              </div>
+            ) : null}
+          </div>
+          {s4Body ? (
+            scholarMode ? (
               <S4PublicInsightSections
                 body={s4Body}
                 streaming={s4Streaming}
                 displayQuery={inquiryQuery || report?.query || ""}
               />
             ) : (
-              <p className="lr-ask-muted">통찰 생성 중…</p>
-            )}
-          </section>
+              <S4EssayInsight
+                body={s4Body}
+                streaming={s4Streaming}
+                displayQuery={inquiryQuery || report?.query || ""}
+                knownRefs={braidKnownRefs}
+                braidFocusRef={braidFocusRef}
+                onBraidFocusRef={onBraidFocusRef}
+              />
+            )
+          ) : (
+            <p className="lr-ask-muted">통찰 생성 중…</p>
+          )}
+        </section>
 
-          {showSchoolCards ? (
-            <PublicSchoolComparisonSection groups={schoolGroups} conflictSource={schoolConflictSource} />
-          ) : null}
-
-          {readingPack ? (
-            <section className="lr-ask-report-section lr-ask-report-section--packs">
-              <ReadingPackAccordion readingPack={readingPack} />
-            </section>
-          ) : null}
-
-          <p className="lr-ask-governance lr-ask-governance--public">{PUBLIC_INQUIRY_DISCLAIMER_KO}</p>
-        </div>
-
-        {graphVerseRefs.length ? (
-          <LogosResearchAskGraphPanel
-            query={report?.query ?? inquiryQuery}
-            verseRefs={graphVerseRefs}
-            citationLockAnchors={graphAnchors}
-            presetId={report?.preset_id}
-            streamPhase={streamPhase}
-          />
+        {showSchoolCards ? (
+          <PublicSchoolComparisonSection groups={schoolGroups} conflictSource={schoolConflictSource} />
         ) : null}
+
+        {scholarMode && readingPack ? (
+          <section className="lr-ask-report-section lr-ask-report-section--packs">
+            <ReadingPackAccordion readingPack={readingPack} />
+          </section>
+        ) : null}
+
+        <p className="lr-ask-governance lr-ask-governance--public">{PUBLIC_INQUIRY_DISCLAIMER_KO}</p>
       </div>
 
+      {devMetaDefaultOpen ? (
       <details className="lr-ask-dev-metadata" open={devMetaDefaultOpen}>
         <summary>연구원용 검증 메타데이터 (재현성·해시 핀)</summary>
         <div className="lr-ask-dev-metadata-body">
@@ -541,6 +916,7 @@ function ReportSections({
       {gov ? <p className="lr-ask-governance">{gov.disclaimer_ko}</p> : null}
         </div>
       </details>
+      ) : null}
     </div>
   );
 }
@@ -552,6 +928,7 @@ export function LogosResearchAskClient({
   runLabel,
   runningLabel,
   governance,
+  emptyHint,
   handoffLabel,
   handoffUrl,
   exportLabel,
@@ -573,8 +950,66 @@ export function LogosResearchAskClient({
     () => restored?.lastReport ?? null,
   );
   const listRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLTextAreaElement>(null);
   const searchParams = useSearchParams();
   const [handoffDoc, setHandoffDoc] = useState<LogosJemaAiResearchHandoffV1 | null>(null);
+  const [onboardingOpen, setOnboardingOpen] = useState(true);
+  const [insightView, setInsightView] = useState<InsightViewMode>("essay");
+  const [braidFocusRef, setBraidFocusRef] = useState<string | null>(null);
+  const [heartDrawerOpen, setHeartDrawerOpen] = useState(false);
+  const showDevChrome = isDevMetadataExpandedDefault();
+
+  const onBraidFocusRef = useCallback((ref: string) => {
+    setBraidFocusRef((prev) => nextBraidFocus(prev, ref));
+    setHeartDrawerOpen(true);
+    if (typeof document !== "undefined") {
+      window.requestAnimationFrame(() => {
+        const chip = document.querySelector(
+          `[data-lr-ask-braid-ref="${CSS.escape(ref)}"].lr-ask-citation-lock-ref-chip`,
+        );
+        chip?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+        const panel = document.querySelector("[data-logos-ask-graph='1']");
+        panel?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      });
+    }
+  }, []);
+
+  const startNewChat = useCallback(() => {
+    setTurns([]);
+    setLastReport(null);
+    setBraidFocusRef(null);
+    setQuestion("");
+    setChatExpanded(false);
+    setInsightView("essay");
+    try {
+      sessionStorage.removeItem(ASK_TURNS_STORAGE_KEY);
+      localStorage.setItem(
+        ASK_THREADS_STUB_KEY,
+        JSON.stringify({ rev: ASK_UI_REV, active_title: "새 대화", updated_at: Date.now() }),
+      );
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const adjustInputHeight = useCallback(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${Math.min(el.scrollHeight, 168)}px`;
+  }, []);
+
+  useEffect(() => {
+    try {
+      setOnboardingOpen(window.localStorage.getItem(ASK_ONBOARDING_DISMISS_KEY) !== "1");
+    } catch {
+      setOnboardingOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    adjustInputHeight();
+  }, [question, adjustInputHeight]);
 
   useEffect(() => {
     if (!turns.length && !lastReport) return;
@@ -616,7 +1051,7 @@ export function LogosResearchAskClient({
       return [
         ...prev,
         { role: "user" as const, text: q },
-        { role: "assistant" as const, text: "경로·앵커 분석 중…", streamingS4: "", streamPhase: "idle" as const },
+        { role: "assistant" as const, text: "연결 중…", streamingS4: "", streamPhase: "idle" as const },
       ];
     });
 
@@ -648,14 +1083,18 @@ export function LogosResearchAskClient({
       if (!res.ok) {
         const errBody = (await res.json().catch(() => ({}))) as {
           error?: string;
+          hint?: string;
           reverse_questions_ko?: string[];
           remaining?: number;
           free_daily_quota?: number;
         };
-        const err =
+        const err = formatLogosAskError(
+          errBody.error,
           errBody.error === "quota_exceeded"
             ? `오늘 무료 ${errBody.free_daily_quota ?? 8}회를 모두 사용했습니다. UTC 자정 이후 리셋 · GitHub Issues로 피드백 주세요.`
-            : errBody.reverse_questions_ko?.[0] || errBody.error || `http_${res.status}`;
+            : errBody.hint,
+          errBody.reverse_questions_ko,
+        );
         setTurns((prev) => {
           const next = [...prev];
           next[assistantIdx] = { role: "assistant", text: err, error: err };
@@ -670,10 +1109,15 @@ export function LogosResearchAskClient({
           ok?: boolean;
           report?: LogosInquiryReportV1 | LogosTextMvpReportV1;
           error?: string;
+          hint?: string;
           reverse_questions_ko?: string[];
         };
         if (!data.ok || !data.report) {
-          const err = data.reverse_questions_ko?.[0] || data.error || "query_failed";
+          const err = formatLogosAskError(
+            data.error,
+            data.hint,
+            data.reverse_questions_ko,
+          );
           setTurns((prev) => {
             const next = [...prev];
             next[assistantIdx] = { role: "assistant", text: err, error: err };
@@ -771,19 +1215,39 @@ export function LogosResearchAskClient({
             return next;
           });
         },
+        onError: (message) => {
+          const err = formatLogosAskError(message, message);
+          setTurns((prev) => {
+            const next = [...prev];
+            next[assistantIdx] = { role: "assistant", text: err, error: err };
+            return next;
+          });
+        },
       });
     } catch (error: unknown) {
-      const err =
-        error instanceof Error && error.name === "AbortError"
-          ? "응답 시간이 초과되었습니다(3분). 잠시 후 다시 시도하거나 질문을 더 구체화해 주세요."
-          : error instanceof Error
-            ? error.message
-            : "query_failed";
-      setTurns((prev) => {
-        const next = [...prev];
-        next[assistantIdx] = { role: "assistant", text: err, error: err };
-        return next;
-      });
+      if (error instanceof Error && error.name === "AbortError") {
+        const err =
+          "응답 시간이 초과되었습니다(3분). 잠시 후 다시 시도하거나 질문을 더 구체화해 주세요.";
+        setTurns((prev) => {
+          const next = [...prev];
+          next[assistantIdx] = { role: "assistant", text: err, error: err };
+          return next;
+        });
+      } else {
+        const raw = error instanceof Error ? error.message : "query_failed";
+        const err = formatLogosAskError(raw);
+        setTurns((prev) => {
+          const next = [...prev];
+          const painted = next[assistantIdx]?.text || "";
+          // Keep onError Korean paint if already clean; otherwise format.
+          if (!painted || /preset_missing|preset_not_matched|연결 중/i.test(painted)) {
+            next[assistantIdx] = { role: "assistant", text: err, error: err };
+          } else if (/preset_missing|preset_not_matched/i.test(painted)) {
+            next[assistantIdx] = { role: "assistant", text: err, error: err };
+          }
+          return next;
+        });
+      }
     } finally {
       setRunning(false);
       setQuotaRefresh((n) => n + 1);
@@ -854,144 +1318,255 @@ export function LogosResearchAskClient({
       (turn.report != null || turn.snapshot != null),
   );
 
+  const heartSource = useMemo(() => {
+    for (let i = turns.length - 1; i >= 0; i -= 1) {
+      const turn = turns[i];
+      if (turn.role !== "assistant" || turn.error) continue;
+      if (!turn.report && !turn.snapshot) continue;
+      const userQuery = i > 0 && turns[i - 1]?.role === "user" ? turns[i - 1].text : "";
+      return { turn, userQuery };
+    }
+    return null;
+  }, [turns]);
+
+  const sessionTitle = useMemo(() => {
+    const firstUser = turns.find((t) => t.role === "user");
+    if (firstUser?.text?.trim()) {
+      const t = firstUser.text.trim();
+      return t.length > 36 ? `${t.slice(0, 36)}…` : t;
+    }
+    return "새 대화";
+  }, [turns]);
+
   return (
     <div
-      className={`lr-ask${chatExpanded ? " lr-ask--report-expanded" : ""}`}
+      className={`lr-ask lr-ask--hybrid-shell${chatExpanded ? " lr-ask--report-expanded" : ""}${heartDrawerOpen ? " lr-ask--heart-open" : ""}`}
       data-logos-ask-ui-rev={ASK_UI_REV}
+      data-lr-ask-killer-viz={ASK_KILLER_VIZ_REV}
+      data-lr-ask-hybrid-shell="1"
     >
-      <p className="lr-ask-ui-rev-badge" aria-hidden="true">
-        UI {ASK_UI_REV} · Scriptorium · S4 · 경로
-      </p>
-      {turns.length === 0 ? (
-        <LogosResearchAskOnboarding onPickSample={pickSampleQuestion} />
+      <AskThreadRailStub sessionTitle={sessionTitle} onNewChat={startNewChat} />
+
+      {heartDrawerOpen ? (
+        <button
+          type="button"
+          className="lr-ask-heart-drawer-backdrop"
+          aria-label="출처·통제 패널 닫기"
+          onClick={() => setHeartDrawerOpen(false)}
+        />
       ) : null}
-      {hasInquiryReport ? (
+
+      <div className="lr-ask-canvas" data-lr-ask-canvas="1">
+        {showDevChrome ? (
+          <p className="lr-ask-ui-rev-badge" aria-hidden="true">
+            UI {ASK_UI_REV} · killer {ASK_KILLER_VIZ_REV} · TE hybrid
+          </p>
+        ) : null}
+        {turns.length === 0 ? (
+          <div className="lr-ask-first-paint" data-lr-ask-first-paint="1">
+            <LogosResearchAskOnboarding
+              onPickSample={pickSampleQuestion}
+              onDismiss={() => setOnboardingOpen(false)}
+            />
+            {/* Narrow only: heart is drawer below 840 — show one ghost map in canvas */}
+            <div
+              className="lr-ask-first-paint-map lr-ask-first-paint-map--narrow"
+              data-lr-ask-first-paint-map="narrow"
+            >
+              <LogosAskEmptyResearchMapV1 />
+            </div>
+          </div>
+        ) : null}
         <div className="lr-ask-chat-toolbar">
           <button
             type="button"
-            className="lr-btn lr-btn-ghost lr-ask-expand-btn"
-            aria-pressed={chatExpanded}
-            onClick={() => setChatExpanded((open) => !open)}
+            className="lr-btn lr-btn-ghost lr-ask-heart-drawer-toggle"
+            aria-expanded={heartDrawerOpen}
+            aria-controls="lr-ask-heart-rail"
+            onClick={() => setHeartDrawerOpen((open) => !open)}
           >
-            {chatExpanded ? "기본 보기" : "리포트 넓게"}
+            {heartDrawerOpen ? "출처·통제 닫기" : "출처·통제 · 연구 지도"}
           </button>
-        </div>
-      ) : null}
-      <div
-        className={`lr-ask-chat${chatExpanded ? " lr-ask-chat--expanded" : ""}`}
-        ref={listRef}
-        aria-live="polite"
-      >
-        {turns.length === 0 ? (
-          <p className="lr-ask-empty">{governance}</p>
-        ) : (
-          turns.filter((turn) => !isPlaceholderAssistantTurn(turn)).map((turn, i) => (
-            <div
-              key={`${turn.role}-${i}-${turn.text.slice(0, 24)}`}
-              className={`lr-ask-turn lr-ask-turn--${turn.role}${turn.error ? " lr-ask-turn--error" : ""}${turn.streamPhase && turn.streamPhase !== "done" ? " lr-ask-turn--streaming" : ""}`}
+          {hasInquiryReport ? (
+            <button
+              type="button"
+              className="lr-btn lr-btn-ghost lr-ask-expand-btn"
+              aria-pressed={chatExpanded}
+              onClick={() => setChatExpanded((open) => !open)}
             >
-              <span className="lr-ask-role">{turn.role === "user" ? "질문" : "답변"}</span>
-              {turn.role === "assistant" &&
-              turn.report &&
-              (turn.streamPhase === "done" || turn.streamPhase === undefined) ? null : (
-                <div className="lr-ask-bubble lr-ask-bubble--summary">
-                  {turn.text || (turn.role === "assistant" ? "…" : turn.text)}
-                </div>
-              )}
-              {turn.role === "assistant" && turn.textMvpReport ? (
-                <TextMvpReportSections report={turn.textMvpReport} />
-              ) : turn.role === "assistant" && (turn.report || turn.snapshot) ? (
-                <ReportSections
-                  report={turn.report}
-                  snapshot={turn.snapshot}
-                  streamingS4={turn.streamingS4}
-                  streamPhase={turn.streamPhase}
-                  inquiryQuery={
-                    i > 0 && turns[i - 1]?.role === "user" ? turns[i - 1].text : ""
-                  }
-                />
-              ) : null}
-            </div>
-          ))
-        )}
-      </div>
-      {lastReport && !running ? (
-        <LogosResearchAskPostFeedbackStrip queryId={lastReport.generated_at_utc?.slice(0, 19) ?? null} />
-      ) : null}
-      <div className="lr-ask-composer">
-        <LogosResearchAskQuotaBar refreshKey={quotaRefresh} />
-        {sampleQuestions.length ? (
-          <div className="lr-ask-samples" role="group" aria-label="예시 질문">
-            {sampleQuestions.map((sample) => (
-              <button
-                key={sample}
-                type="button"
-                className="lr-ask-sample-chip"
-                disabled={running}
-                onClick={() => pickSampleQuestion(sample)}
-              >
-                {sample}
-              </button>
-            ))}
-          </div>
-        ) : null}
-        <textarea
-          className="lr-studio-textarea lr-ask-input"
-          rows={3}
-          placeholder={placeholder}
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              void submit();
-            }
-          }}
-          disabled={running}
-        />
-        <div className="lr-ask-actions">
-          <button
-            type="button"
-            className="lr-btn lr-btn-primary"
-            onClick={() => void submit()}
-            disabled={running || !question.trim()}
-          >
-            {running ? runningLabel : runLabel}
-          </button>
-          {lastReport ? (
-            <button type="button" className="lr-btn lr-btn-ghost" onClick={exportJson}>
-              {exportLabel}
+              {chatExpanded ? "기본 보기" : "리포트 넓게"}
             </button>
           ) : null}
-          <a className="lr-btn lr-btn-ghost" href={handoffUrl} target="_blank" rel="noopener noreferrer">
-            {handoffLabel}
-          </a>
         </div>
-        {paymentUiEnabled ? (
-          <div className="lr-ask-pro-checkout" aria-label="Logos Pro 결제 (beta)">
-            <p className="lr-ask-muted">Logos Inquiry Pro · 연구 모드 · send_gate HOLD</p>
-            <div className="lr-ask-pro-row">
-              <input
-                type="email"
-                className="lr-ask-pro-email"
-                placeholder="이메일 (결제 영수)"
-                value={checkoutEmail}
-                onChange={(e) => setCheckoutEmail(e.target.value)}
-                disabled={checkoutBusy}
-              />
-              <button
-                type="button"
-                className="lr-btn lr-btn-ghost"
-                disabled={checkoutBusy || !checkoutEmail.trim()}
-                onClick={() => void startProCheckout()}
-              >
-                {checkoutBusy ? "처리 중…" : "Pro 시작 (beta)"}
-              </button>
+        <div
+          className={`lr-ask-chat${chatExpanded ? " lr-ask-chat--expanded" : ""}`}
+          ref={listRef}
+          aria-live="polite"
+        >
+          {turns.length === 0 ? (
+            <div className="lr-ask-empty-block">
+              <p className="lr-ask-empty-vp">
+                {emptyHint ??
+                  "아래에서 바로 질문하거나, 샘플을 고르세요. 첫 답은 인용 탭부터 확인하면 됩니다."}
+              </p>
+              <p className="lr-ask-empty">{governance}</p>
             </div>
-            {checkoutNote ? <p className="lr-ask-muted lr-ask-pro-note">{checkoutNote}</p> : null}
-          </div>
+          ) : (
+            turns.filter((turn) => !isPlaceholderAssistantTurn(turn)).map((turn, i) => (
+              <div
+                key={`${turn.role}-${i}-${turn.text.slice(0, 24)}`}
+                className={`lr-ask-turn lr-ask-turn--${turn.role}${turn.error ? " lr-ask-turn--error" : ""}${turn.streamPhase && turn.streamPhase !== "done" ? " lr-ask-turn--streaming" : ""}`}
+              >
+                <span className="lr-ask-role">{turn.role === "user" ? "질문" : "답변"}</span>
+                {turn.role === "assistant" &&
+                turn.report &&
+                (turn.streamPhase === "done" || turn.streamPhase === undefined) ? null : (
+                  <div className="lr-ask-bubble lr-ask-bubble--summary">
+                    {turn.text || (turn.role === "assistant" ? "…" : turn.text)}
+                  </div>
+                )}
+                {turn.role === "assistant" && turn.textMvpReport ? (
+                  <TextMvpReportSections report={turn.textMvpReport} />
+                ) : turn.role === "assistant" && (turn.report || turn.snapshot) ? (
+                  <ReportSections
+                    report={turn.report}
+                    snapshot={turn.snapshot}
+                    streamingS4={turn.streamingS4}
+                    streamPhase={turn.streamPhase}
+                    inquiryQuery={
+                      i > 0 && turns[i - 1]?.role === "user" ? turns[i - 1].text : ""
+                    }
+                    insightView={insightView}
+                    onInsightViewChange={setInsightView}
+                    braidFocusRef={braidFocusRef}
+                    onBraidFocusRef={onBraidFocusRef}
+                  />
+                ) : null}
+              </div>
+            ))
+          )}
+        </div>
+        {lastReport && !running ? (
+          <LogosResearchAskPostFeedbackStrip queryId={lastReport.generated_at_utc?.slice(0, 19) ?? null} />
         ) : null}
+        <div className="lr-ask-composer" id="lr-ask-composer">
+          <LogosResearchAskQuotaBar refreshKey={quotaRefresh} />
+          <div id="lr-ask-samples-anchor" />
+          {sampleQuestions.length && (turns.length > 0 || !onboardingOpen) ? (
+            <div className="lr-ask-samples" role="group" aria-label="예시 질문">
+              {sampleQuestions.map((sample) => (
+                <button
+                  key={sample}
+                  type="button"
+                  className="lr-ask-sample-chip"
+                  disabled={running}
+                  onClick={() => pickSampleQuestion(sample)}
+                >
+                  {sample}
+                </button>
+              ))}
+            </div>
+          ) : null}
+          <textarea
+            ref={inputRef}
+            className="lr-studio-textarea lr-ask-input"
+            rows={1}
+            placeholder={placeholder}
+            value={question}
+            onChange={(e) => {
+              setQuestion(e.target.value);
+              adjustInputHeight();
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                void submit();
+              }
+            }}
+            disabled={running}
+          />
+          <div className="lr-ask-actions">
+            <button
+              type="button"
+              className="lr-btn lr-btn-primary"
+              onClick={() => void submit()}
+              disabled={running || !question.trim()}
+            >
+              {running ? runningLabel : runLabel}
+            </button>
+            {lastReport ? (
+              <button type="button" className="lr-btn lr-btn-ghost" onClick={exportJson}>
+                {exportLabel}
+              </button>
+            ) : null}
+            <a className="lr-btn lr-btn-ghost" href={handoffUrl} target="_blank" rel="noopener noreferrer">
+              {handoffLabel}
+            </a>
+          </div>
+          {paymentUiEnabled ? (
+            <div className="lr-ask-pro-checkout" aria-label="Logos Pro 결제 (beta)">
+              <p className="lr-ask-muted">Logos Inquiry Pro · 연구 모드 · beta</p>
+              <div className="lr-ask-pro-row">
+                <input
+                  type="email"
+                  className="lr-ask-pro-email"
+                  placeholder="이메일 (결제 영수)"
+                  value={checkoutEmail}
+                  onChange={(e) => setCheckoutEmail(e.target.value)}
+                  disabled={checkoutBusy}
+                />
+                <button
+                  type="button"
+                  className="lr-btn lr-btn-ghost"
+                  disabled={checkoutBusy || !checkoutEmail.trim()}
+                  onClick={() => void startProCheckout()}
+                >
+                  {checkoutBusy ? "처리 중…" : "Pro 시작 (beta)"}
+                </button>
+              </div>
+              {checkoutNote ? <p className="lr-ask-muted lr-ask-pro-note">{checkoutNote}</p> : null}
+            </div>
+          ) : null}
+        </div>
       </div>
+
+      <aside
+        id="lr-ask-heart-rail"
+        className={`lr-ask-heart-rail${heartDrawerOpen ? " lr-ask-heart-rail--open" : ""}`}
+        data-lr-ask-heart-rail="1"
+        aria-label="출처·통제 · Logos 심장"
+      >
+        <header className="lr-ask-heart-rail-head">
+          <p className="lr-ask-heart-rail-eyebrow">Trust pin · JEMA</p>
+          <h2 className="lr-ask-heart-rail-title">출처 · 통제 · 연구 지도</h2>
+          <button
+            type="button"
+            className="lr-btn lr-btn-ghost lr-ask-heart-drawer-close"
+            onClick={() => setHeartDrawerOpen(false)}
+          >
+            닫기
+          </button>
+        </header>
+        {heartSource ? (
+          <AskHeartPinStack
+            report={heartSource.turn.report}
+            snapshot={heartSource.turn.snapshot}
+            streamingS4={heartSource.turn.streamingS4}
+            streamPhase={heartSource.turn.streamPhase}
+            inquiryQuery={heartSource.userQuery}
+            scholarMode={insightView === "scholar"}
+            braidFocusRef={braidFocusRef}
+            onBraidFocusRef={onBraidFocusRef}
+          />
+        ) : (
+          <div className="lr-ask-heart-empty-stack" data-lr-ask-heart-empty="1">
+            <p className="lr-ask-muted lr-ask-heart-placeholder">
+              답변 후 Citation · G0–G3 · 경로가 여기 고정됩니다.
+            </p>
+            <LogosAskEmptyResearchMapV1 />
+          </div>
+        )}
+      </aside>
     </div>
   );
 }

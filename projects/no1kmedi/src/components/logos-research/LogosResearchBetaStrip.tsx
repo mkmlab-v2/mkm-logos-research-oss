@@ -16,7 +16,7 @@ export function LogosResearchBetaStrip() {
   if (!beta) return null;
 
   return (
-    <aside className="lr-beta-strip" role="status" aria-label="Public beta">
+    <aside className="lr-beta-strip" role="status" aria-label="Public Beta">
       <span className="lr-beta-badge">{beta.badge ?? "Public Beta"}</span>
       <span className="lr-beta-tagline">{beta.tagline_ko}</span>
       {beta.github_issues ? (
