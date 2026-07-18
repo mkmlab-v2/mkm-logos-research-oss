@@ -33,6 +33,8 @@ export const smartfarmCopy = {
     pilot: "파일럿",
     contact: "문의",
     operator: "농장 운영",
+    palmpalm: "팜팜팜",
+    nojisim: "노지심",
     enterprise: "기업·기술 허브",
   },
   flow: {
@@ -41,7 +43,7 @@ export const smartfarmCopy = {
       "밭 안은 무선(LoRa 등)으로 모으고, 게이트웨이 1대가 농장 라우터(Ethernet·LTE 등)를 통해 당사 서버에 올립니다. 수집·제어·안전 규칙은 MKM 소프트웨어가 담당합니다. (제조사·면적·프로토콜은 파트너 PDF·현장 스펙에 따름)",
     fieldLabel: "현장 (금산 파일럿 · 점적)",
     cloudLabel: "인터넷 · API / MQTT",
-    serverLabel: "MKM 서버 · 농장주 앱",
+    serverLabel: "MKM 서버 · 노지심(운영) · 팜팜팜(손님)",
     nodes: {
       tanks: "맹물 · 배양액 탱크",
       valves: "밸브 6채널 (맹물·양액·구역 4 — 맹물·양액 동시 OPEN 금지)",
@@ -49,7 +51,7 @@ export const smartfarmCopy = {
       sensors: "토양 센서 2~3",
       gateway: "LoRa → MQTT 게이트웨이 (G300) → 농장 라우터",
       server: "수집 · 이력 · 알람 · 제어 명령 (정책 게이트)",
-      app: "모니터링 · 수동 개폐 · 안전 게이트 (운영 UI 단계적 오픈)",
+      app: "노지심(운영) · 팜팜팜(손님 확인·요청·일지) — SW만 · 재배 대행 아님",
     },
     protocolNote:
       "연동: REST / MQTT / Modbus 중 1종 이상(PDF). Phase 0(약 2주) 벤더 앱 병행 가능 → Phase 1부터 당사 서버·앱.",
@@ -58,7 +60,8 @@ export const smartfarmCopy = {
   },
   roles: {
     title: "시공·소프트웨어 역할 분담",
-    lead: "배관 공사와 IoT 장비, 데이터 운영을 분리해 견적·책임 범위를 명확히 합니다.",
+    lead:
+      "배관·IoT 장비와 데이터 운영을 분리합니다. 앱은 둘: 운영=노지심(사장·전업), 손님=팜팜팜(얇은 확인·요청·일지). MKM은 SW만 · 재배 대행 아님.",
     items: [
       {
         who: "농장주 · 설비",
@@ -72,7 +75,8 @@ export const smartfarmCopy = {
       },
       {
         who: "MKM (당사)",
-        scope: "서버·운영 앱, 6채널 안전 규칙, MQTT/API 연동, 정책 기반 관수(현장 Go-Live·튜닝 후)",
+        scope:
+          "서버·노지심(운영)·팜팜팜(손님), 6채널 안전 규칙, MQTT/API 연동 — SW SI만 · 재배·물·수확 대행 아님 (현장 Go-Live·튜닝 후)",
         tag: "소프트웨어 SI",
       },
     ],
@@ -88,9 +92,14 @@ export const smartfarmCopy = {
       ["LTE/USIM", "게이트웨이 1대당 1장 · 당사 개통", "동일 원칙 · 대수만 증가 가능"],
       ["토양 센서", "2~3", "4~6 (배치 간격은 PDF·실측)"],
       ["LoRa 커버", "벤더 스펙·1구역 면적", "게이트웨이당 권장 거리·평 재확인"],
-      ["견적", "IoT 300~500만 원 상한(USIM·월요금 제외)", "별도 증설 견적"],
+      [
+        "견적",
+        "장비/IoT 견적 밴드 300~500만 원 상한(USIM·월요금 제외 · 손님 현장 위탁비 300만과 다름)",
+        "별도 증설 견적",
+      ],
     ],
-    note: "2,000평 이상은 다구역·릴레이·설비 증설을 별도 RFQ로 검토합니다.",
+    note:
+      "2,000평 이상은 다구역·릴레이·설비 증설을 별도 RFQ로 검토합니다. 「IoT 300~500만」은 장비/IoT 견적 밴드이며, 손님 현장 위탁비와 다릅니다.",
   },
   hero: {
     eyebrow: "B2B · Smart Irrigation SI",
@@ -180,6 +189,7 @@ export const smartfarmCopy = {
       "본 페이지는 B2B·기술·파트너십 소개용입니다. 수확량·투자 수익·의료·임상 효과를 보장하지 않습니다.",
       "자동 관수·알람은 파일럿 조건·현장 튜닝·통신 상태에 따르며, 최종 농작업 판단은 농장주·전문가 책임입니다.",
       "「AI·LLM 자동관수」가 아닌 정책·센서 기반 관수입니다. 성능 수치는 Go-Live KPI 아티팩트 없이 단정하지 않습니다.",
+      "운영=노지심 · 손님=팜팜팜. MKM은 SW만(재배 대행 아님). 표의 IoT 견적 밴드는 손님 현장 위탁비와 다릅니다.",
     ],
   },
   footer: {

@@ -40,6 +40,8 @@ export default function SmartfarmPage() {
             <a href="#partnership">{c.nav.partnership}</a>
             <a href="#pilot">{c.nav.pilot}</a>
             <a href="/smartfarm/operator">{c.nav.operator}</a>
+            <a href="/smartfarm/nojisim">{c.nav.nojisim}</a>
+            <a href="/smartfarm/palmpalm">{c.nav.palmpalm}</a>
             <a href="#contact">{c.nav.contact}</a>
             <a className="sf-nav-muted" href={c.footer.hub}>
               {c.nav.enterprise}
@@ -267,6 +269,17 @@ export default function SmartfarmPage() {
               {c.pilot.status}
             </p>
             <p className="sf-pilot-note">{c.pilot.note}</p>
+            <div className="sf-hero-cta" style={{ marginTop: "1rem" }}>
+              <a className="sf-btn sf-btn-primary" href="/smartfarm/nojisim">
+                노지심 (운영·승인)
+              </a>
+              <a className="sf-btn sf-btn-ghost" href="/smartfarm/palmpalm">
+                팜팜팜 (손님)
+              </a>
+            </div>
+            <p className="sf-pilot-note" style={{ marginTop: "0.75rem" }}>
+              참조용 MVP · Go-Live·상용 완료 아님 · 요청≠자동 관수
+            </p>
           </div>
         </section>
 
