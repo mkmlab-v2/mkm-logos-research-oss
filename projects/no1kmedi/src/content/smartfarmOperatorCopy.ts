@@ -6,11 +6,11 @@ export const smartfarmOperatorCopy = {
   seo: {
     title: "금산 농장 운영 | MKM Agriculture IoT",
     description:
-      "토양 센서·6채널 밸브 모니터링·수동 제어·비상정지. 정책 기반 관수 — LLM 자동 완성 아님.",
+      "토양 센서·밸브 모니터링·수동 제어·비상정지. 정책 기반 관수 — LLM 자동 완성 아님.",
   },
   brand: {
     title: "농장 운영",
-    subtitle: "금산 파일럿 · 6채널",
+    subtitle: "금산 파일럿 · 안전 게이트",
     back: "B2B 소개",
   },
   status: {
@@ -21,7 +21,7 @@ export const smartfarmOperatorCopy = {
   },
   sections: {
     sensors: "토양 센서",
-    valves: "밸브 (6채널)",
+    valves: "밸브 · 안전 게이트",
     safety: "안전",
     events: "최근 이벤트",
     auto: "자동 평가",
@@ -38,7 +38,7 @@ export const smartfarmOperatorCopy = {
   valve: {
     open: "열기",
     close: "닫기",
-    open_blocked: "맹물·양액 동시 개방 불가",
+    open_blocked: "급수·양액 동시 개방 불가",
     pulse_note: "순차 펄스만 · 동시 다채널 금지",
   },
   safety: {
@@ -68,6 +68,6 @@ export const smartfarmOperatorCopy = {
   },
   errors: {
     control_failed: "명령 전송 실패",
-    interlock: "맹물(ch1)과 배양액(ch2)은 동시에 열 수 없습니다.",
+    interlock: "급수와 양액은 동시에 열 수 없습니다.",
   },
 } as const;

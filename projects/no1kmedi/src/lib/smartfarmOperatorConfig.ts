@@ -17,26 +17,26 @@ export type SmartfarmValveChannel = {
 };
 
 export const SMARTFARM_SENSOR_ZONES: SmartfarmSensorZone[] = [
-  { zone_id: "zone_01", label_ko: "구역 1 (D301)", device_nm: "D301" },
-  { zone_id: "zone_02", label_ko: "구역 2 (D302)", device_nm: "D302" },
+  { zone_id: "zone_01", label_ko: "구역 1", device_nm: "D301" },
+  { zone_id: "zone_02", label_ko: "구역 2", device_nm: "D302" },
 ];
 
 export const SMARTFARM_VALVE_CHANNELS: SmartfarmValveChannel[] = [
-  { channel_id: "ch1", relay_index: 1, label_ko: "맹물 (5톤)", role: "fresh_water" },
-  { channel_id: "ch2", relay_index: 2, label_ko: "배양액 (200L)", role: "nutrient" },
-  { channel_id: "ch3", relay_index: 3, label_ko: "노지 두릅", role: "zone_crop", tier: "primary_revenue" },
+  { channel_id: "ch1", relay_index: 1, label_ko: "급수", role: "fresh_water" },
+  { channel_id: "ch2", relay_index: 2, label_ko: "양액", role: "nutrient" },
+  { channel_id: "ch3", relay_index: 3, label_ko: "본선 구역 A", role: "zone_crop", tier: "primary_revenue" },
   {
     channel_id: "ch4",
     relay_index: 4,
-    label_ko: "화분 커피 체험·데모 (50주·~20평)",
+    label_ko: "데모 구역",
     role: "demo_experience",
     tier: "showroom_demo",
   },
-  { channel_id: "ch5", relay_index: 5, label_ko: "잎들깨", role: "zone_crop", tier: "primary_revenue" },
+  { channel_id: "ch5", relay_index: 5, label_ko: "본선 구역 B", role: "zone_crop", tier: "primary_revenue" },
   {
     channel_id: "ch6",
     relay_index: 6,
-    label_ko: "체험 작물",
+    label_ko: "체험 구역",
     role: "demo_experience",
     tier: "showroom_demo",
   },

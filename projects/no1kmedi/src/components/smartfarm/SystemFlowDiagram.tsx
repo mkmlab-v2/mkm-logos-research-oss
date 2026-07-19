@@ -7,7 +7,7 @@ export function SystemFlowDiagram() {
   return (
     <figure className="sf-system-flow">
       <figcaption className="sf-sr-only">
-        토양 센서와 밸브가 게이트웨이로 연결되고 LTE로 MKM 서버와 앱에 데이터가 전달되는 구조
+        토양 센서와 밸브가 게이트웨이로 연결되고 농장 네트워크로 MKM 서버와 앱에 데이터가 전달되는 구조
       </figcaption>
 
       <div className="sf-system-field">
@@ -26,7 +26,7 @@ export function SystemFlowDiagram() {
             <span className="sf-system-chip">{f.nodes.sensors}</span>
           </div>
           <div className="sf-system-gateway">
-            <span className="sf-system-lora">LoRa</span>
+            <span className="sf-system-lora">현장 무선</span>
             <span className="sf-system-gw-box">{f.nodes.gateway}</span>
           </div>
         </div>

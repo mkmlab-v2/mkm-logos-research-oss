@@ -277,7 +277,7 @@ export function SmartfarmOperatorClient() {
                 <article key={z.zone_id} className="sf-operator-card">
                   <header className="sf-operator-card-head">
                     <strong>{z.label_ko}</strong>
-                    <span className="sf-operator-tag">{z.device_nm}</span>
+                    <span className="sf-operator-tag">무선 센서</span>
                   </header>
                   {t ? (
                     <dl className="sf-operator-metrics">

@@ -95,19 +95,19 @@ export default function SmartfarmPage() {
             <div
               className="sf-flow-card"
               role="img"
-              aria-label="맹물 탱크와 배양액 탱크에서 각각 밸브를 거쳐 Y관으로 합류한 뒤 여과와 펌프를 통해 점적 관수"
+              aria-label="급수 탱크와 양액 탱크에서 각각 밸브를 거쳐 합류한 뒤 여과와 펌프를 통해 점적 관수"
             >
               <div className="sf-flow-row">
                 <div className="sf-flow-node sf-flow-node--water">
-                  <span>맹물 탱크</span>
-                  <em>밸브 A</em>
+                  <span>급수 탱크</span>
+                  <em>밸브</em>
                 </div>
                 <div className="sf-flow-join" aria-hidden="true">
-                  <span>Y</span>
+                  <span>합류</span>
                 </div>
                 <div className="sf-flow-node sf-flow-node--nutrient">
-                  <span>배양액 탱크</span>
-                  <em>밸브 B</em>
+                  <span>양액 탱크</span>
+                  <em>밸브</em>
                 </div>
               </div>
               <div className="sf-flow-pipe" aria-hidden="true" />
