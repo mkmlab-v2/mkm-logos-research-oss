@@ -154,6 +154,16 @@ function localTimeoutMs(): number {
   return 120000;
 }
 
+/** Gemini + OpenRouter HTTP fetch ceiling (mirrors Azure default 60s). */
+function geminiOrOpenRouterFetchTimeoutMs(): number {
+  const v = parseInt(
+    process.env.GEMINI_FETCH_TIMEOUT_MS || process.env.OPENROUTER_FETCH_TIMEOUT_MS || "",
+    10,
+  );
+  if (Number.isFinite(v) && v >= 5000) return Math.min(v, 180000);
+  return azureOpenAiFetchTimeoutMs();
+}
+
 async function fetchAzureOpenAi(opts: GenerateClinicalOptions): Promise<GenerateClinicalResult> {
   const cfg = getAzureOpenAiConfig();
   if (!cfg) {
@@ -218,6 +228,8 @@ async function fetchOpenRouter(opts: GenerateClinicalOptions): Promise<GenerateC
     max_tokens: opts.maxOutputTokens ?? 1024,
   };
 
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), geminiOrOpenRouterFetchTimeoutMs());
   try {
     const res = await fetch(endpoint, {
       method: "POST",
@@ -231,6 +243,7 @@ async function fetchOpenRouter(opts: GenerateClinicalOptions): Promise<GenerateC
       },
       body: JSON.stringify(body),
       cache: "no-store",
+      signal: controller.signal,
     });
     if (!res.ok) {
       return buildFallback(`AI 응답 준비 중입니다. (${res.status}) 기본 상담 안내를 먼저 진행해드릴게요.`);
@@ -243,6 +256,8 @@ async function fetchOpenRouter(opts: GenerateClinicalOptions): Promise<GenerateC
     return { text, provider: `openrouter:${model}`, fallbackUsed: false };
   } catch {
     return buildFallback();
+  } finally {
+    clearTimeout(t);
   }
 }
 
@@ -261,6 +276,8 @@ async function fetchGeminiOpenAiCompatible(opts: GenerateClinicalOptions): Promi
     top_p: opts.topP ?? 0.95,
     max_tokens: opts.maxOutputTokens ?? 1024,
   };
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), geminiOrOpenRouterFetchTimeoutMs());
   try {
     const res = await fetch(endpoint, {
       method: "POST",
@@ -270,6 +287,7 @@ async function fetchGeminiOpenAiCompatible(opts: GenerateClinicalOptions): Promi
       },
       body: JSON.stringify(body),
       cache: "no-store",
+      signal: controller.signal,
     });
     if (!res.ok) {
       return buildFallback(`Gemini 응답 준비 중입니다. (${res.status}) 기본 상담 안내를 먼저 진행해드릴게요.`);
@@ -280,6 +298,8 @@ async function fetchGeminiOpenAiCompatible(opts: GenerateClinicalOptions): Promi
     return { text, provider: `gemini:${model}`, fallbackUsed: false };
   } catch {
     return buildFallback();
+  } finally {
+    clearTimeout(t);
   }
 }
 

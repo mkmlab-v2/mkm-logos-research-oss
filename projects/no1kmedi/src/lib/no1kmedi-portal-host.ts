@@ -1,18 +1,33 @@
-/** no1kmedi.com (대국민 한의학 AI) / clinic.no1kmedi.com (한의사 모드) — host detection. */
+/** no1kmedi.com (대국민 한의학 AI) / clinic.no1kmedi.com (원장 전용 포털 북마크) — host detection. */
 
 export const JEMA_AI_PUBLIC_ORIGIN = "https://jema-ai.com";
 
+/** Official clinician URL host (proposals / external). */
+export const APP_JEMA_CLINICIAN_ORIGIN = "https://app.jema-ai.com";
+
 export const CLINIC_NO1KMEDI_ORIGIN = "https://clinic.no1kmedi.com";
+
+/**
+ * Canonical National KM Ask (한의학 묻다) URL — Phase 1 dual-URL.
+ * Not ask.jema-ai.com · not logos.jema-ai.com/logos-research/ask.
+ */
+export const NATIONAL_KM_ASK_CANONICAL_URL = `${JEMA_AI_PUBLIC_ORIGIN}/ask`;
 
 export const CLINIC_NO1KMEDI_HOSTS = new Set([
   "clinic.no1kmedi.com",
   "www.clinic.no1kmedi.com",
 ]);
 
-/** 대국민 한의학 Q&A — apex only (not clinician portal). */
+/** Legacy apex hosts — Phase 1: patient / and /ask 301 → NATIONAL_KM_ASK_CANONICAL_URL. */
 export const NO1KMEDI_APEX_PORTAL_HOSTS = new Set([
   "no1kmedi.com",
   "www.no1kmedi.com",
+]);
+
+/** Brand hub hosts that serve National KM Ask at path /ask (same page as legacy apex). */
+export const JEMA_AI_NATIONAL_KM_ASK_HOSTS = new Set([
+  "jema-ai.com",
+  "www.jema-ai.com",
 ]);
 
 export const LOCAL_DEV_HOSTS = new Set(["localhost", "127.0.0.1"]);
@@ -99,20 +114,49 @@ export function shouldUseMinimalClinicianShell(host: string): boolean {
   return isClinicNo1kmediHost(h);
 }
 
-/** Legacy 진료 분석 (copilot) — product homepage for clinician IA. */
-export const CLINICIAN_COPILOT_PANEL = "copilot" as const;
-
 /** Paste Chart v1 bookmark — Antigravity scope applies only on this panel. */
 export const CLINICIAN_PASTE_CHART_PANEL = "gold" as const;
 
-/** Clinic portal / minimal shell: land on 진료 분석 (copilot); Paste Chart demoted. */
-export function defaultClinicianPanelForHost(host: string): "gold" | "copilot" {
+/** IA v0 primary workspace — 진료 분석 (4-card copilot). Paste Chart remains opt-in tab. */
+export const CLINICIAN_COPILOT_PANEL = "copilot" as const;
+
+/**
+ * Default landing for /clinician (all hosts, incl. clinic.* and app.jema-ai.com minimal shell).
+ * Aligns with `no1kmedi_clinician_copilot_ia_v0_latest` — 진료 분석 first; chat/Paste Chart secondary.
+ */
+export function defaultClinicianPanelForHost(_host: string): "gold" | "copilot" {
   return CLINICIAN_COPILOT_PANEL;
 }
 
 /** National KM ask surface paths on apex (must not redirect to /clinician). */
 export function isNationalKmAskPath(pathname: string): boolean {
   return pathname === "/ask" || pathname.startsWith("/ask/");
+}
+
+/** jema-ai.com / www — serve /ask in-place (hub root still → /hub). */
+export function isJemaAiNationalKmAskHost(host: string): boolean {
+  return JEMA_AI_NATIONAL_KM_ASK_HOSTS.has(normalizeRequestHost(host));
+}
+
+/**
+ * Phase 1: no1kmedi apex patient surfaces (/ and /ask*) → jema-ai.com/ask (301).
+ * Does not touch api./clinic./research. subdomains (separate Host).
+ */
+export function shouldRedirectApexNationalKmAskToJemaAi(
+  host: string,
+  pathname: string,
+): boolean {
+  if (!isNo1kmediApexHost(host)) return false;
+  return pathname === "/" || isNationalKmAskPath(pathname);
+}
+
+/** Build canonical National KM Ask redirect target (path-preserving under /ask). */
+export function nationalKmAskCanonicalRedirectUrl(
+  pathname: string,
+  search: string = "",
+): string {
+  const path = pathname === "/" ? "/ask" : pathname;
+  return `${JEMA_AI_PUBLIC_ORIGIN}${path}${search || ""}`;
 }
 
 /** Redirect `/` → `/hub` on JEMA HQ hosts (and local dev unless simulating no1kmedi hosts). */

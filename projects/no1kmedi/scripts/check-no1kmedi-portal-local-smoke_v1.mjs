@@ -2,20 +2,53 @@
  * Local smoke: no1kmedi portal host routing + minimal clinician shell markers.
  * Run: node scripts/check-no1kmedi-portal-local-smoke_v1.mjs
  * Requires dev server on NO1KMEDI_PORTAL_SMOKE_BASE (default http://localhost:3010).
+ *
+ * Phase 1: apex / and /ask → 301 https://jema-ai.com/ask ; Host jema-ai.com /ask → 200.
  */
 import assert from "node:assert/strict";
 
 const base = (process.env.NO1KMEDI_PORTAL_SMOKE_BASE || "http://localhost:3010").replace(/\/$/, "");
 
 async function probeApexAskRedirect() {
+  const res = await fetch(`${base}/ask`, {
+    redirect: "manual",
+    headers: { Host: "no1kmedi.com" },
+  });
+  assert.ok([301, 307, 308, 302].includes(res.status), `apex /ask expected redirect got ${res.status}`);
+  const loc = res.headers.get("location") || "";
+  assert.ok(
+    loc.startsWith("https://jema-ai.com/ask"),
+    `expected 301 to https://jema-ai.com/ask got ${loc}`,
+  );
+  return { status: res.status, location: loc };
+}
+
+async function probeApexRootRedirect() {
   const res = await fetch(`${base}/`, {
     redirect: "manual",
     headers: { Host: "no1kmedi.com" },
   });
-  assert.ok([307, 308, 302, 301].includes(res.status), `apex expected redirect got ${res.status}`);
+  assert.ok([301, 307, 308, 302].includes(res.status), `apex / expected redirect got ${res.status}`);
   const loc = res.headers.get("location") || "";
-  assert.ok(loc.includes("/ask"), `expected /ask redirect got ${loc}`);
+  assert.ok(
+    loc.startsWith("https://jema-ai.com/ask"),
+    `expected apex / → https://jema-ai.com/ask got ${loc}`,
+  );
   return { status: res.status, location: loc };
+}
+
+async function probeJemaAiAskServes() {
+  const res = await fetch(`${base}/ask`, {
+    redirect: "follow",
+    headers: { Host: "jema-ai.com" },
+  });
+  assert.equal(res.status, 200, `jema-ai.com/ask status ${res.status}`);
+  const html = await res.text();
+  assert.ok(
+    html.includes("한의학") || html.includes("NationalKmAsk") || html.includes("km_national") || html.includes("묻다"),
+    "National KM Ask markers missing on jema-ai.com/ask",
+  );
+  return { status: res.status, bytes: html.length };
 }
 
 async function probeClinicRootRedirect() {
@@ -56,7 +89,9 @@ async function probeClinicianMinimal() {
   };
 }
 
-const apex = await probeApexAskRedirect();
+const apexAsk = await probeApexAskRedirect();
+const apexRoot = await probeApexRootRedirect();
+const jemaAsk = await probeJemaAiAskServes();
 const clinicRoot = await probeClinicRootRedirect();
 const clinician = await probeClinicianMinimal();
 
@@ -66,7 +101,10 @@ console.log(
       schema: "no1kmedi_portal_local_smoke_v1",
       base,
       ok: true,
-      apex,
+      phase1_dual_url: true,
+      apex_ask: apexAsk,
+      apex_root: apexRoot,
+      jema_ai_ask: jemaAsk,
       clinic_root: clinicRoot,
       clinician,
     },

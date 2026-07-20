@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { CLINIC_NO1KMEDI_ORIGIN } from "@/lib/no1kmedi-portal-host";
+import { APP_JEMA_CLINICIAN_ORIGIN, CLINIC_NO1KMEDI_ORIGIN } from "@/lib/no1kmedi-portal-host";
 import {
   NATIONAL_KM_ASK_DISCLAIMER_KEY,
   NATIONAL_KM_ASK_STORAGE_KEY,
@@ -94,6 +94,7 @@ export function NationalKmAskClient() {
         const res = await fetch("/api/guardian/ai-guardian/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          signal: AbortSignal.timeout(90_000),
           body: JSON.stringify({
             audience: "km_national",
             message: userMessage,
@@ -114,9 +115,18 @@ export function NationalKmAskClient() {
         if (gen !== requestGen.current) return;
         persistTurns([...turnsWithUser, { role: "assistant", message: full }]);
         setStreamBuf(null);
-      } catch {
+      } catch (err) {
         if (gen !== requestGen.current) return;
-        setError("답변 준비가 지연되고 있습니다. 잠시 후 다시 시도해 주세요.");
+        const isTimeout =
+          (err instanceof DOMException && err.name === "AbortError") ||
+          (err instanceof Error && err.name === "AbortError");
+        const msg = isTimeout
+          ? "응답 시간이 초과되었습니다(90초). 잠시 후 다시 시도해 주세요."
+          : "답변 준비가 지연되고 있습니다. 잠시 후 다시 시도해 주세요.";
+        setError(msg);
+        if (isTimeout) {
+          persistTurns([...turnsWithUser, { role: "assistant", message: msg }]);
+        }
       } finally {
         if (gen === requestGen.current) {
           setBusy(false);
@@ -142,13 +152,12 @@ export function NationalKmAskClient() {
           </span>
           <div>
             <h1 className="km-ask-title">{NATIONAL_KM_ASK_V1.product_name_ko}</h1>
-            <p className="km-ask-subtitle">JEMA AI · 대국민 참고 Q&A (진료·처방 대체 아님)</p>
+            <p className="km-ask-subtitle">
+              {NATIONAL_KM_ASK_V1.brand_name_ko} · {NATIONAL_KM_ASK_V1.tagline_ko} · 교육·참고 (L0)
+            </p>
           </div>
         </div>
-        <nav className="km-ask-nav" aria-label="보조 링크">
-          <Link href={`${CLINIC_NO1KMEDI_ORIGIN}/clinician`} className="km-ask-nav-link km-ask-nav-link--primary">
-            한의사 모드
-          </Link>
+        <nav className="km-ask-nav" aria-label="대화 도구">
           <button type="button" className="km-ask-nav-link" onClick={clearChat}>
             대화 지우기
           </button>
@@ -156,8 +165,8 @@ export function NationalKmAskClient() {
       </header>
 
       <div className="km-ask-layer-strip" role="status">
-        <span className="km-ask-layer-badge">L0 · 참고용 · 진단·처방 대체 아님</span>
-        <span className="km-ask-layer-hint">Time-to-Trust — 교육·참고 맥락만 제공합니다</span>
+        <span className="km-ask-layer-badge">{NATIONAL_KM_ASK_V1.layer_badge_ko}</span>
+        <span className="km-ask-layer-hint">{NATIONAL_KM_ASK_V1.layer_hint_ko}</span>
       </div>
 
       <main className="km-ask-main">
@@ -174,9 +183,9 @@ export function NationalKmAskClient() {
             <div className="km-ask-thread" role="log" aria-live="polite" aria-relevant="additions">
               {turns.length === 0 && !streamBuf ? (
                 <div className="km-ask-empty">
-                  <p className="km-ask-empty-lead">한의학에 대해 무엇이든 물어보세요.</p>
-                  <p className="km-ask-empty-hint">아래 예시를 눌러 시작할 수 있습니다.</p>
-                  <div className="km-ask-starters">
+                  <p className="km-ask-empty-lead">{NATIONAL_KM_ASK_V1.empty_lead_ko}</p>
+                  <p className="km-ask-empty-hint">{NATIONAL_KM_ASK_V1.empty_hint_ko}</p>
+                  <div className="km-ask-starters" aria-label="교육 Q&A 예시 칩">
                     {NATIONAL_KM_STARTER_PROMPTS.map((prompt) => (
                       <button
                         key={prompt}
@@ -197,7 +206,9 @@ export function NationalKmAskClient() {
                   <div
                     className={`km-ask-bubble km-ask-bubble--${turn.role === "user" ? "user" : "assistant"}`}
                   >
-                    <span className="km-ask-bubble-role">{turn.role === "user" ? "나" : "한의학 AI"}</span>
+                    <span className="km-ask-bubble-role">
+                      {turn.role === "user" ? "나" : NATIONAL_KM_ASK_V1.assistant_role_ko}
+                    </span>
                     <div className="km-ask-bubble-body">{turn.message}</div>
                   </div>
                   {turn.role === "assistant" ? <KmAskProvenanceStrip /> : null}
@@ -207,7 +218,7 @@ export function NationalKmAskClient() {
               {streamBuf ? (
                 <div className="km-ask-turn">
                   <div className="km-ask-bubble km-ask-bubble--assistant">
-                    <span className="km-ask-bubble-role">한의학 AI</span>
+                    <span className="km-ask-bubble-role">{NATIONAL_KM_ASK_V1.assistant_role_ko}</span>
                     <div className="km-ask-bubble-body">{streamBuf}</div>
                   </div>
                   <KmAskProvenanceStrip />
@@ -263,9 +274,18 @@ export function NationalKmAskClient() {
 
       <footer className="km-ask-footer">
         <p>{NATIONAL_KM_ASK_V1.disclaimer_ko}</p>
-        <p>
-          한의사·원장이신가요?{" "}
-          <Link href={`${CLINIC_NO1KMEDI_ORIGIN}/clinician`}>인증 한의사 모드</Link>에서 SOAP·진료 분석을 이용하세요.
+        <p className="km-ask-footer-clinician-cta">
+          {NATIONAL_KM_ASK_V1.clinician_footer_preface_ko}{" "}
+          <Link href={`${APP_JEMA_CLINICIAN_ORIGIN}/clinician`}>
+            {NATIONAL_KM_ASK_V1.clinician_footer_cta_ko}
+          </Link>
+          <span className="km-ask-footer-clinician-note">
+            {" "}
+            · {NATIONAL_KM_ASK_V1.clinician_footer_note_ko} · 공식{" "}
+            <code>app.jema-ai.com/clinician</code>
+            {" · "}
+            <Link href={`${CLINIC_NO1KMEDI_ORIGIN}/clinician`}>현장 북마크</Link>
+          </span>
         </p>
       </footer>
     </div>

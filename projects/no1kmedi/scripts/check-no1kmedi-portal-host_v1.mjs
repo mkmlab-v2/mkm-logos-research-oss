@@ -13,6 +13,8 @@ const JEMA_AI_HUB = new Set([
   "app.jema-ai.com",
   "www.app.jema-ai.com",
 ]);
+const JEMA_AI_NATIONAL_KM_ASK = new Set(["jema-ai.com", "www.jema-ai.com"]);
+const JEMA_AI_PUBLIC_ORIGIN = "https://jema-ai.com";
 
 function normalizeRequestHost(hostHeader) {
   return (hostHeader ?? "").split(":")[0]?.toLowerCase() ?? "";
@@ -72,6 +74,20 @@ function isNationalKmAskPath(pathname) {
   return pathname === "/ask" || pathname.startsWith("/ask/");
 }
 
+function isJemaAiNationalKmAskHost(host) {
+  return JEMA_AI_NATIONAL_KM_ASK.has(normalizeRequestHost(host));
+}
+
+function shouldRedirectApexNationalKmAskToJemaAi(host, pathname) {
+  if (!isNo1kmediApexHost(host)) return false;
+  return pathname === "/" || isNationalKmAskPath(pathname);
+}
+
+function nationalKmAskCanonicalRedirectUrl(pathname, search = "") {
+  const path = pathname === "/" ? "/ask" : pathname;
+  return `${JEMA_AI_PUBLIC_ORIGIN}${path}${search || ""}`;
+}
+
 assert.equal(isPublicPatientSurfacePath("/intake"), true);
 assert.equal(isPublicPatientSurfacePath("/consumer"), true);
 assert.equal(isNationalKmAskPath("/ask"), true);
@@ -90,6 +106,22 @@ assert.equal(shouldRewriteRootToClinician("no1kmedi.com"), false);
 assert.equal(shouldRewriteRootToClinician("clinic.no1kmedi.com"), true);
 assert.equal(shouldRewriteRootToNationalKmAsk("clinic.no1kmedi.com"), false);
 
+assert.equal(isJemaAiNationalKmAskHost("jema-ai.com"), true);
+assert.equal(isJemaAiNationalKmAskHost("www.jema-ai.com"), true);
+assert.equal(isJemaAiNationalKmAskHost("app.jema-ai.com"), false);
+assert.equal(shouldRedirectApexNationalKmAskToJemaAi("no1kmedi.com", "/"), true);
+assert.equal(shouldRedirectApexNationalKmAskToJemaAi("no1kmedi.com", "/ask"), true);
+assert.equal(shouldRedirectApexNationalKmAskToJemaAi("no1kmedi.com", "/intake"), false);
+assert.equal(shouldRedirectApexNationalKmAskToJemaAi("clinic.no1kmedi.com", "/ask"), false);
+assert.equal(
+  nationalKmAskCanonicalRedirectUrl("/"),
+  "https://jema-ai.com/ask",
+);
+assert.equal(
+  nationalKmAskCanonicalRedirectUrl("/ask", "?q=1"),
+  "https://jema-ai.com/ask?q=1",
+);
+
 const prevApex = process.env.MKM_DEV_SIMULATE_NO1KMEDI_APEX;
 const prevClinic = process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC;
 const prevHost = process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST;
@@ -99,6 +131,7 @@ process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC = "";
 process.env.MKM_DEV_SIMULATE_NO1KMEDI_HOST = "";
 assert.equal(shouldRewriteRootToNationalKmAsk("localhost"), true);
 assert.equal(shouldRewriteRootToClinician("localhost"), false);
+assert.equal(shouldRedirectApexNationalKmAskToJemaAi("localhost", "/ask"), true);
 
 process.env.MKM_DEV_SIMULATE_NO1KMEDI_APEX = "";
 process.env.MKM_DEV_SIMULATE_NO1KMEDI_CLINIC = "1";

@@ -3,10 +3,11 @@ import type { NextRequest } from "next/server";
 import {
   LOCAL_DEV_HOSTS,
   devSimulateLogosHost,
-  isNationalKmAskPath,
   isPublicPatientSurfacePath,
   JEMA_AI_HUB_HOSTS,
+  nationalKmAskCanonicalRedirectUrl,
   normalizeRequestHost,
+  shouldRedirectApexNationalKmAskToJemaAi,
   shouldRedirectRootToHubHome,
   shouldRewriteRootToClinician,
   shouldRewriteRootToNationalKmAsk,
@@ -24,6 +25,10 @@ const PERSONADIARY_HOSTS = new Set([
   "personadiary.com",
   "www.personadiary.com",
   "preview.personadiary.com",
+]);
+const GYEOKMUL_HOSTS = new Set([
+  "gyeokmul.jema-ai.com",
+  "www.gyeokmul.jema-ai.com",
 ]);
 
 function rewriteToClinicianPath(pathname: string): string {
@@ -113,19 +118,18 @@ export function middleware(request: NextRequest) {
     if (shouldPassThroughStaticOrApi(pathname)) {
       return NextResponse.next();
     }
-    if (isNationalKmAskPath(pathname)) {
-      return NextResponse.next();
+    // Phase 1 dual-URL: apex / and /ask* → https://jema-ai.com/ask (canonical).
+    if (shouldRedirectApexNationalKmAskToJemaAi(host, pathname)) {
+      return NextResponse.redirect(
+        nationalKmAskCanonicalRedirectUrl(pathname, request.nextUrl.search),
+        301,
+      );
     }
     if (isPublicPatientSurfacePath(pathname)) {
       return NextResponse.next();
     }
     if (pathname === "/clinician" || pathname.startsWith("/clinician/")) {
       return NextResponse.next();
-    }
-    if (pathname === "/") {
-      const url = request.nextUrl.clone();
-      url.pathname = "/ask";
-      return NextResponse.redirect(url);
     }
     return NextResponse.next();
   }
@@ -172,14 +176,47 @@ export function middleware(request: NextRequest) {
       return NextResponse.next();
     }
     if (pathname === "/personadiary" || pathname === "/personadiary/") {
-      return NextResponse.redirect(new URL("/", request.url), 308);
+      /* Preserve ?dogfood=ihwawon (and other query) across apex strip redirect. */
+      const dest = new URL("/", request.url);
+      dest.search = request.nextUrl.search;
+      return NextResponse.redirect(dest, 308);
     }
     if (pathname.startsWith("/personadiary/")) {
       const rest = pathname.slice("/personadiary".length) || "/";
-      return NextResponse.redirect(new URL(rest, request.url), 308);
+      const dest = new URL(rest, request.url);
+      dest.search = request.nextUrl.search;
+      return NextResponse.redirect(dest, 308);
     }
     const url = request.nextUrl.clone();
     url.pathname = pathname === "/" ? "/personadiary" : `/personadiary${pathname}`;
+    return NextResponse.rewrite(url);
+  }
+
+  if (GYEOKMUL_HOSTS.has(host)) {
+    if (pathname === "/favicon.ico") {
+      const url = request.nextUrl.clone();
+      url.pathname = "/gyeokmul/icon-192.svg";
+      return NextResponse.rewrite(url);
+    }
+    if (shouldPassThroughStaticOrApi(pathname)) {
+      return NextResponse.next();
+    }
+    if (
+      pathname === "/gyeokmul/manifest.webmanifest" ||
+      pathname === "/gyeokmul/sw.js" ||
+      pathname.startsWith("/gyeokmul/icon-")
+    ) {
+      return NextResponse.next();
+    }
+    if (pathname === "/gyeokmul" || pathname === "/gyeokmul/") {
+      return NextResponse.redirect(new URL("/", request.url), 308);
+    }
+    if (pathname.startsWith("/gyeokmul/")) {
+      const rest = pathname.slice("/gyeokmul".length) || "/";
+      return NextResponse.redirect(new URL(rest, request.url), 308);
+    }
+    const url = request.nextUrl.clone();
+    url.pathname = pathname === "/" ? "/gyeokmul" : `/gyeokmul${pathname}`;
     return NextResponse.rewrite(url);
   }
 
