@@ -440,7 +440,8 @@
     "\\MKM-TkmPhysicianGold-DailyCapture",
     "\\MKM_UniversalRoot_CommunityGtm_Weekly",
     "\\MKM_HubB_WeeklyMirror",
-    "\\MKM-LiveSync-Heartbeat-Pull"
+    "\\MKM-LiveSync-Heartbeat-Pull",
+    "\\MKM_ContextCoordScheduledRemeasure_Weekly"
   ],
   "register_task_policy_v1": {
     "default_state": "Disabled",
