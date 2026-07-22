@@ -1,0 +1,52 @@
+{
+  "schema": "weather_to_general_prophecy_merge_signoff_gate_v1",
+  "generated_at_utc": "2026-07-22T03:34:16Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "promotion_to_a_track_allowed": false,
+  "ok": true,
+  "merge_decision": "HOLD",
+  "merge_allowed": false,
+  "merge_applied": false,
+  "dry_run_only": true,
+  "signoff": {
+    "path": "docs/final/artifacts/weather_to_general_prophecy_merge_signoff_v1.json",
+    "approved": false,
+    "merge_mode": "class_b_scorable_subset_only",
+    "allow_full_calibration_lab_merge": false,
+    "allowlist_question_ids": []
+  },
+  "counts": {
+    "weather_sidecar_questions": 360,
+    "weather_calibration_lab_questions": 360,
+    "main_questions": 42,
+    "would_add_if_full_merge": 360,
+    "class_b_scorable_not_in_main": 0
+  },
+  "class_b_scorable_question_ids": [],
+  "class_b_scorable_truncated": false,
+  "rationale": [
+    "signoff.approved=false (default HOLD)",
+    "weather sidecar has 360 calibration-lab questions (tags ['triplet_shared_target', 'walkforward_hist', 'weather_calibration_v1']); full dump blocked unless allow_full_calibration_lab_merge=true",
+    "class_b_scorable_subset empty (no non-calibration weather candidates / empty allowlist)"
+  ],
+  "unblock_path": [
+    "1) Keep weather sidecar separate for calibration Brier (default).",
+    "2) For controlled Class-B subset: set signoff.approved=true, fill allowlist_question_ids OR tag questions class_b_scorable_v1 (non-calibration only), then dry-run merge script.",
+    "3) Full n=360 calibration merge: commander must set approved=true AND allow_full_calibration_lab_merge=true AND merge_mode=full_calibration_lab (explicit contamination acceptance).",
+    "4) Generic overdue main-GP items remain manual via resolve_general_prophecy_question_v1.py — not this gate."
+  ],
+  "next_commands": {
+    "gate_refresh": "py scripts/check_weather_to_general_prophecy_merge_signoff_gate_v1.py",
+    "merge_dry_run": "py scripts/merge_weather_to_general_prophecy_v1.py --dry-run",
+    "merge_apply_only_if_gate_ready": [
+      "py scripts/merge_weather_to_general_prophecy_v1.py --apply",
+      "py scripts/eval_general_prophecy_brier_score.py"
+    ]
+  },
+  "inputs": {
+    "signoff": "docs/final/artifacts/weather_to_general_prophecy_merge_signoff_v1.json",
+    "weather_sidecar": "docs/final/artifacts/weather_prophecy_triplet_latest.json",
+    "main_registry": "docs/final/artifacts/general_prophecy_latest.json"
+  }
+}

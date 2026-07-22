@@ -1,0 +1,24 @@
+{
+  "schema": "weather_to_general_prophecy_merge_signoff_v1",
+  "version": "1.0.0",
+  "approved": false,
+  "approved_at_utc": null,
+  "approver": null,
+  "approval_note": "Default HOLD. Set approved=true only after commander review. Full synth/calibration n=360 into main GP remains forbidden unless allow_full_calibration_lab_merge=true.",
+  "source_registry": "docs/final/artifacts/weather_prophecy_triplet_latest.json",
+  "target_registry": "docs/final/artifacts/general_prophecy_latest.json",
+  "merge_mode": "class_b_scorable_subset_only",
+  "allow_full_calibration_lab_merge": false,
+  "expected_questions_added_max": 0,
+  "allowlist_question_ids": [],
+  "track_a_promotion": false,
+  "live_trading_trigger": false,
+  "gating_status": "NON_GATING",
+  "research_rail": "B",
+  "send_gate": "HOLD",
+  "walls": [
+    "weather_calibration_v1 / walkforward_hist / triplet_shared_target = calibration lab sidecar — not operational main GP ledger by default",
+    "Do not mass-merge n=360 into general_prophecy_latest without explicit commander flags",
+    "B→A auto promotion forbidden"
+  ]
+}
