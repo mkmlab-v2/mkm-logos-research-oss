@@ -217,7 +217,9 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 
 ### 2026-04-13 GTM 우선순위 업데이트 (지휘부 정렬)
 
-- **우선 모델(1순위):** 투자 리딩/신호 판매가 아닌 **엔터프라이즈 거시 리스크 조기 경보 SaaS**.
+> **2026 H2 캘린더 supersede (2026-07 thin sync):** 아래 4월 문단은 **역사 기록**으로 유지한다. **지금 스태핑·캘린더 본선**은 `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§0.6** — **One cash cow (a-codeai)** + **One passion (logos.jema-ai.com)**. 매크로 조기경보 SaaS는 **패키징 백로그 / §3.8**이며 H2 인력 #1이 아니다. 한 장 요약: `docs/final/artifacts/mkm_business_plan_sell_rank_onepager_v1_latest.md`.
+
+- **우선 모델(1순위) [2026-04 기록 · H2는 §0.6 우선]:** 투자 리딩/신호 판매가 아닌 **엔터프라이즈 거시 리스크 조기 경보 SaaS** *(→ packaging backlog; not H2 staffing #1)*.
 - **포지셔닝:** `buy/sell` 권유 대신 `risk-off warning` + 운영 리드타임 단축 지표 제공.
 - **법적 방어선:** 투자자문 아님 고지, 의사결정 보조 지표 계약, 실패 시 부분 환불/기간 연장 같은 리스크 리버설 조건 명시.
 - **제품형태(초기):** API 단독보다 `주간 리스크 브리프 + 이벤트 경보` 하이브리드 전달로 파일럿 전환율 우선.
@@ -227,7 +229,8 @@ NotebookLM·브리핑이 아니라 **아래 파일·로그·exit 코드**로만 
 
 - **정의:** Track C는 `직접 매매`가 아니라 `지적재산(IP) 제품화` 레인이다. 출력은 리스크 경보·상태 브리프·라이선스 피처로 제한한다.
 - **실행 문서 SSOT:** `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md`
-- **대외 매출 1차 파도 (동 문서 §3.8):** 기업용 **매크로 조기 경보 구독**(리포트·대시보드·경보); 첫 MVP는 **`2026 H2 매크로 리스크 경보 리포트`** 목차·근거 아티팩트 동결 후 채움. `Track A`/실키 위탁과 합선 금지.
+- **2026 H2 실행 집중 (supersedes staffing #1 · §0.6):** cash cow **a-codeai** + passion **logos.jema-ai.com** · 나머지 Phase1 최소선 후 hold. (`MKM_PORTFOLIO_MASTER_INDEX_V1.md` §6 · sell-rank onepager)
+- **대외 매출 패키징 파도 (동 문서 §3.8 · ≠ H2 캘린더 #1):** 기업용 **매크로 조기 경보 구독**(리포트·대시보드·경보)은 **packaging backlog**; 첫 MVP 시트·면책 정합만 유지. `Track A`/실키 위탁과 합선 금지. Snapshot `primary_revenue_wave` = packaging label — §0.6 포기를 의미하지 않음.
 - **필수 경계:**
   - 투자자문/매수·매도 권유 문구 금지
   - Track A/B 운영 산출과 Track C 대외 산출의 역할 분리
