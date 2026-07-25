@@ -41,6 +41,9 @@ export default function EnterprisePage() {
           <nav className="nav-main enterprise-nav" aria-label={e.nav.main_aria_label}>
             <a href="/">{e.nav.back_home}</a>
             {e.jema_os ? <a href="#jema-os">{e.nav.jema_os ?? e.jema_os.section_label}</a> : null}
+            {e.admission_evidence ? (
+              <a href="#admission-evidence">{e.nav.admission_evidence ?? e.admission_evidence.section_label}</a>
+            ) : null}
             <a href="#pillars">{e.nav.pillars}</a>
             <a href="#wtt-persona-os">Persona OS</a>
             <a href="#compression-roi">Compression</a>
@@ -63,10 +66,7 @@ export default function EnterprisePage() {
           <div className="hero-cta">
             <a
               className="btn btn-primary enterprise-btn-primary"
-              href={showroom.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={showroom.sublabel}
+              href={e.admission_evidence ? "#admission-evidence" : "#jema-os"}
             >
               {e.hero.cta_primary}
             </a>
@@ -294,6 +294,36 @@ export default function EnterprisePage() {
             </div>
           </div>
         </section>
+
+        {e.admission_evidence ? (
+          <section
+            id="admission-evidence"
+            className="enterprise-admission-evidence"
+            aria-labelledby="admission-evidence-title"
+          >
+            <p className="enterprise-section-label">{e.admission_evidence.section_label}</p>
+            <span className="enterprise-admission-hold-badge">{e.admission_evidence.hold_badge}</span>
+            <h2 id="admission-evidence-title">{e.admission_evidence.title}</h2>
+            <p className="section-lead">{e.admission_evidence.lead}</p>
+            <ul className="enterprise-admission-evidence-list">
+              {e.admission_evidence.items.map((item) => (
+                <li key={item.id} className="enterprise-admission-evidence-item">
+                  <strong>{item.label}</strong>
+                  <p className="enterprise-admission-evidence-command">
+                    <code>{item.command}</code>
+                  </p>
+                  <p className="enterprise-admission-evidence-artifact">
+                    <code>{item.artifact}</code>
+                  </p>
+                  <p className="enterprise-admission-evidence-note">{item.note}</p>
+                </li>
+              ))}
+            </ul>
+            <p className="enterprise-admission-evidence-disclaimer" role="note">
+              {e.admission_evidence.disclaimer}
+            </p>
+          </section>
+        ) : null}
 
         <section id="proof" className="enterprise-proof" aria-labelledby="proof-title">
           <h2 id="proof-title">{e.proof.title}</h2>

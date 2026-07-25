@@ -33,8 +33,25 @@ export default function CompanyPage() {
           {positioning}
         </p>
       ) : null}
+      <section
+        aria-labelledby="company-disclaimer-title"
+        style={{ marginTop: "1.75rem", paddingTop: "1.25rem", borderTop: "1px solid #ddd" }}
+      >
+        <h2 id="company-disclaimer-title" style={{ fontSize: "1.05rem", margin: "0 0 0.75rem" }}>
+          안내
+        </h2>
+        <ul style={{ margin: 0, paddingLeft: "1.2rem", fontSize: "0.95rem", color: "#555" }}>
+          <li>본 페이지는 법인·연락 안내입니다. 의료 진단·처방, 투자 권유, 실매매 지시가 아닙니다.</li>
+          <li>제품·서비스는 각 도메인 입구에서 이어지며, 허브에서 하나로 합치지 않습니다.</li>
+          <li>
+            레인·하지 않는 일: <Link href="/safety">안전·고지</Link>
+          </li>
+        </ul>
+      </section>
       <p style={{ marginTop: "1.5rem" }}>
-        <Link href="/hub">허브로</Link>
+        <Link href="/">브랜드 허브</Link>
+        {" · "}
+        <Link href="/hub">질문 안내</Link>
         {" · "}
         <Link href="/privacy">개인정보처리방침</Link>
         {" · "}

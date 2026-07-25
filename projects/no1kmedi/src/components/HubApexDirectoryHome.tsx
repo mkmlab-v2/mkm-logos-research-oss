@@ -93,21 +93,29 @@ export function HubApexDirectoryHome() {
       <HubApexHeader nav={apex.nav} brand={c.header} />
       <main id="main">
         <section className="hub-apex-hero" id="top" aria-labelledby="hub-apex-title">
-          <p className="hub-apex-brand">{apex.brand}</p>
-          <h1 id="hub-apex-title">{apex.title}</h1>
-          <p className="hub-apex-lead">{apex.lead}</p>
-          <div className="hub-apex-cta">
-            <a className="btn btn-primary" href={apex.cta_primary.href}>
-              {apex.cta_primary.label}
-            </a>
-            <a className="btn btn-ghost" href={apex.cta_secondary.href}>
-              {apex.cta_secondary.label}
-            </a>
-            {apex.cta_ask_router ? (
-              <a className="btn btn-ghost" href={apex.cta_ask_router.href}>
-                {apex.cta_ask_router.label}
+          <div className="hub-apex-hero-atmosphere" aria-hidden="true">
+            <div className="hub-apex-hero-noise" />
+            <div className="hub-apex-hero-orb hub-apex-hero-orb-a" />
+            <div className="hub-apex-hero-orb hub-apex-hero-orb-b" />
+            <div className="hub-apex-hero-beam" />
+          </div>
+          <div className="hub-apex-hero-copy">
+            <p className="hub-apex-brand">{apex.brand}</p>
+            <h1 id="hub-apex-title">{apex.title}</h1>
+            <p className="hub-apex-lead">{apex.lead}</p>
+            <div className="hub-apex-cta">
+              <a className="btn btn-primary" href={apex.cta_primary.href}>
+                {apex.cta_primary.label}
               </a>
-            ) : null}
+              <a className="btn btn-ghost hub-apex-cta-secondary" href={apex.cta_secondary.href}>
+                {apex.cta_secondary.label}
+              </a>
+              {apex.cta_ask_router ? (
+                <a className="btn btn-ghost hub-apex-cta-tertiary" href={apex.cta_ask_router.href}>
+                  {apex.cta_ask_router.label}
+                </a>
+              ) : null}
+            </div>
           </div>
         </section>
 

@@ -1282,14 +1282,82 @@ main {
 
 .hub-apex-hero {
   position: relative;
-  padding: var(--section-y) var(--space-lg) var(--space-xl);
-  max-width: 44rem;
+  isolation: isolate;
+  overflow: hidden;
+  padding: clamp(var(--space-2xl), 12vh, 5.5rem) var(--space-lg) var(--space-xl);
+  max-width: 56rem;
   margin: 0 auto;
+  min-height: min(72vh, 36rem);
+  display: flex;
+  align-items: flex-end;
+}
+
+.hub-apex-hero-atmosphere {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 12% 18%, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 62%),
+    radial-gradient(ellipse 55% 45% at 88% 12%, color-mix(in srgb, var(--accent-dim) 18%, transparent) 0%, transparent 58%),
+    linear-gradient(165deg, color-mix(in srgb, var(--surface) 70%, transparent) 0%, transparent 55%);
+}
+
+.hub-apex-hero-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+}
+
+.hub-apex-hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.hub-apex-hero-orb-a {
+  width: clamp(7rem, 22vw, 14rem);
+  height: clamp(7rem, 22vw, 14rem);
+  top: 8%;
+  right: 10%;
+  background: color-mix(in srgb, var(--accent) 28%, transparent);
+  animation: floatSlowA 9s ease-in-out infinite alternate;
+}
+
+.hub-apex-hero-orb-b {
+  width: clamp(5rem, 16vw, 10rem);
+  height: clamp(5rem, 16vw, 10rem);
+  bottom: 18%;
+  left: 6%;
+  background: color-mix(in srgb, var(--accent-dim) 24%, transparent);
+  animation: floatSlowB 11s ease-in-out infinite alternate;
+}
+
+.hub-apex-hero-beam {
+  position: absolute;
+  inset: -20% -10%;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    color-mix(in srgb, var(--accent) 10%, transparent) 48%,
+    transparent 62%
+  );
+  animation: beamSweepA 14s ease-in-out infinite alternate;
+  opacity: 0.55;
+}
+
+.hub-apex-hero-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 36rem;
+  animation: fadeUp 0.7s var(--motion-easing-standard) both;
 }
 
 .hub-apex-brand {
   margin: 0 0 var(--space-md);
-  font-size: clamp(1.65rem, 4.5vw, 2.5rem);
+  font-size: clamp(1.85rem, 6vw, 2.75rem);
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: var(--leading-tight, 1.15);
@@ -1298,12 +1366,12 @@ main {
 
 .hub-apex-hero h1 {
   margin: 0 0 var(--space-md);
-  font-size: clamp(1.15rem, 2.4vw, 1.45rem);
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
   line-height: var(--leading-normal, 1.45);
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--muted);
-  max-width: 36rem;
+  max-width: 34rem;
 }
 
 .hub-apex-lead {
@@ -1311,13 +1379,69 @@ main {
   font-size: var(--text-base);
   line-height: var(--leading-normal, 1.55);
   color: var(--muted);
-  max-width: 36rem;
+  max-width: 34rem;
 }
 
 .hub-apex-cta {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-sm);
+}
+
+.hub-apex-cta .btn {
+  animation: fadeUp 0.75s var(--motion-easing-standard) both;
+}
+
+.hub-apex-cta .btn:nth-child(1) {
+  animation-delay: 0.08s;
+}
+
+.hub-apex-cta .btn:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.hub-apex-cta .btn:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@media (max-width: 640px) {
+  .hub-apex-hero {
+    min-height: auto;
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-lg);
+    align-items: flex-start;
+  }
+
+  .hub-apex-hero-orb-b,
+  .hub-apex-hero-beam {
+    opacity: 0.35;
+  }
+
+  /* First viewport: brand + headline + lead + primary CTA; secondary stays; tertiary deferred */
+  .hub-apex-cta-tertiary {
+    display: none;
+  }
+
+  .hub-apex-cta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hub-apex-cta .btn {
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub-apex-hero-orb-a,
+  .hub-apex-hero-orb-b,
+  .hub-apex-hero-beam,
+  .hub-apex-hero-copy,
+  .hub-apex-cta .btn,
+  .hub-apex-dir-tile {
+    animation: none !important;
+  }
 }
 
 .hub-apex-section {
@@ -1379,12 +1503,15 @@ main {
   background: color-mix(in srgb, var(--surface) 88%, transparent 12%);
   min-height: 5.5rem;
   transition: border-color var(--motion-duration-fast) var(--motion-easing-standard),
-    background-color var(--motion-duration-fast) var(--motion-easing-standard);
+    background-color var(--motion-duration-fast) var(--motion-easing-standard),
+    transform var(--motion-duration-fast) var(--motion-easing-standard);
+  animation: fadeUp 0.55s var(--motion-easing-standard) both;
 }
 
 .hub-apex-dir-tile:hover {
   border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
   background: color-mix(in srgb, var(--surface) 96%, var(--accent-dim) 4%);
+  transform: translateY(-1px);
 }
 
 .hub-apex-dir-tile:hover .hub-apex-dir-label {

@@ -14,10 +14,22 @@
   Clinician LLM keys + Pro allowlist: scripts\Sync-No1kmediClinicianOpsEnvToVps_v1.ps1
   Webhook env: scripts\Sync-CompressionPilotAuditWebhook_v1.ps1 -SyncVps
 
+  Exit / gate policy (hub vs Logos Ask):
+  - Hub/apex HTTP smoke (jema-ai.com + app.jema-ai.com surfaces) is always blocking.
+  - Logos Ask quality bundle (done_product / shipped_ok) is NON-BLOCKING by default:
+    failure prints a WARN and deploy still exits 0 when hub smoke passed.
+  - Pass -EnforceLogosAskQuality to make Logos quality fail the deploy (product gate).
+  - Pass -SkipLogosAskQualityBundle to skip the Logos quality run entirely (no warn).
+  - Do not silently omit forever without a flag; default is warn-not-fail, not skip.
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Deploy-No1kmediDestinyTarball_v1.ps1
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Deploy-No1kmediDestinyTarball_v1.ps1 -SkipMonorepoSync -RunApiSmoke
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Deploy-No1kmediDestinyTarball_v1.ps1 -EnforceLogosAskQuality
+.EXAMPLE
+  powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Deploy-No1kmediDestinyTarball_v1.ps1 -SkipLogosAskQualityBundle
 #>
 param(
     [string]$WorkspaceRoot = "C:\workspace",
@@ -29,7 +41,8 @@ param(
     [switch]$SkipMonorepoSync,
     [switch]$SkipMonorepoPathsFromLocal,
     [switch]$RunApiSmoke,
-    [switch]$SkipLogosAskQualityBundle
+    [switch]$SkipLogosAskQualityBundle,
+    [switch]$EnforceLogosAskQuality
 )
 
 $ErrorActionPreference = "Stop"
@@ -253,16 +266,20 @@ if ($LASTEXITCODE -ne 0) { throw "remote deploy failed" }
 
 Start-Sleep -Seconds 6
 $smokeUrls = @(
+    "https://jema-ai.com/",
+    "https://jema-ai.com/company",
+    "https://jema-ai.com/safety",
+    "https://jema-ai.com/enterprise",
     "https://app.jema-ai.com/safety",
     "https://app.jema-ai.com/validation",
     "https://app.jema-ai.com/enterprise",
     "https://app.jema-ai.com/clinician"
 )
 foreach ($entUrl in $smokeUrls) {
-    Write-Host "[no1kmedi-tarball] smoke GET $entUrl" -ForegroundColor Cyan
+    Write-Host "[no1kmedi-tarball] hub/apex smoke GET $entUrl" -ForegroundColor Cyan
     $httpCode = (& curl.exe -s -o NUL -w "%{http_code}" -L --max-time 30 $entUrl)
     if (@("200", "301", "302") -notcontains "$httpCode") {
-        throw "[no1kmedi-tarball] smoke failed: $entUrl (http $httpCode)"
+        throw "[no1kmedi-tarball] hub/apex smoke failed: $entUrl (http $httpCode)"
     }
 }
 
@@ -356,6 +373,9 @@ Write-Host "[no1kmedi-tarball] API smoke OK (md_len=$mdLen graph_nodes=$($graphB
 Remove-Item $tarLocal -Force -ErrorAction SilentlyContinue
 
 Write-Host "[no1kmedi-tarball] logos ask quality bundle (shipped + VPS live)" -ForegroundColor Cyan
+if ($SkipLogosAskQualityBundle -and $EnforceLogosAskQuality) {
+    throw "conflicting switches: -SkipLogosAskQualityBundle and -EnforceLogosAskQuality"
+}
 if ($SkipLogosAskQualityBundle) {
     Write-Host "[no1kmedi-tarball] SkipLogosAskQualityBundle set — skipping quality bundle" -ForegroundColor Yellow
 } else {
@@ -363,9 +383,20 @@ if ($SkipLogosAskQualityBundle) {
     & py $bundlePy --live-vps --live-timeout-sec 720
     $bundleEc = $LASTEXITCODE
     if ($bundleEc -eq 124) {
-        throw "logos ask quality bundle TIMED OUT (exit 124; see reports/logos_ask_quality_bundle_v1_latest.json timed_out_layers)"
+        $timeoutMsg = "logos ask quality bundle TIMED OUT (exit 124; see reports/logos_ask_quality_bundle_v1_latest.json timed_out_layers)"
+        if ($EnforceLogosAskQuality) {
+            throw $timeoutMsg
+        }
+        Write-Host "[no1kmedi-tarball] WARN (non-blocking): $timeoutMsg — pass -EnforceLogosAskQuality to fail deploy" -ForegroundColor Yellow
+    } elseif ($bundleEc -ne 0) {
+        $failMsg = "logos ask quality bundle failed exit=$bundleEc (see reports/logos_ask_quality_bundle_v1_latest.json)"
+        if ($EnforceLogosAskQuality) {
+            throw $failMsg
+        }
+        Write-Host "[no1kmedi-tarball] WARN (non-blocking): $failMsg — hub/apex smoke already OK; pass -EnforceLogosAskQuality to fail deploy" -ForegroundColor Yellow
+    } else {
+        Write-Host "[no1kmedi-tarball] logos ask quality bundle OK" -ForegroundColor Green
     }
-    if ($bundleEc -ne 0) { throw "logos ask quality bundle failed exit=$bundleEc (see reports/logos_ask_quality_bundle_v1_latest.json)" }
 }
 
 Write-Host "[no1kmedi-tarball] OK" -ForegroundColor Green

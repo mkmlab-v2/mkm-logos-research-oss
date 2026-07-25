@@ -483,6 +483,7 @@
         }
       ],
       "company_links": [
+        { "label": "회사 소개", "href": "/company" },
         { "label": "안전·고지", "href": "/safety" },
         { "label": "문의", "href": "/enterprise#contact" }
       ]
