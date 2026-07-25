@@ -7,7 +7,7 @@
     "note": "사용자 노출 문구의 단일 원천. 공개 브랜드는 jema-ai.com이며, 내부 레포 식별자와 공개 브랜드 표기는 분리한다.",
     "hub_clarity_ssot": "docs/final/JEMA_AI_DOMAIN_HUB_CLARITY_V1.md",
     "hub_realignment_roadmap": "docs/final/artifacts/jema_ai_hub_realignment_roadmap_v1_latest.json",
-    "hub_vs_route_disambiguation_ko": "jema-ai.com 도메인=브랜드 허브(CTA 분기) · /hub 경로=질문 라우터 UI만 — 동일 개념 아님",
+    "hub_vs_route_disambiguation_ko": "jema-ai.com 도메인=/ 브랜드 허브(CTA 디렉터리) · /hub 경로=질문 라우터 UI만 — 동일 개념 아님",
     "ssot_cross_domain_cta": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1·§1.1b (도메인 분기·허브 CTA 초안; 법무 확정 전 가이드)",
     "positioning_ssot": "docs/final/artifacts/mkm_agentic_engineering_positioning_onepager_v1_latest.md",
     "identity_constitution": "docs/final/MKM_PUBLIC_IDENTITY_CONSTITUTION_V1.md",
@@ -345,7 +345,7 @@
       "href": "/enterprise",
       "label": "JEMA OS v2 · 검증 미들웨어",
       "label_en": "JEMA OS v2 · verification middleware",
-      "sublabel": "Neuro → Symbolic → Human · send_gate HOLD · exit 0·handoff는 배관 증명(GA 아님)"
+      "sublabel": "로컬 초안 → 규칙 검증 → 사람 승인 · 배관 증명이지 상용 출시 선언이 아님"
     },
     "research_mkmlab": {
       "href": "https://research.no1kmedi.com",
@@ -417,8 +417,8 @@
     },
     "clinician_no1kmedi_portal": {
       "href": "https://clinic.no1kmedi.com/clinician",
-      "label": "원장 전용 포털 (현장 북마크)",
-      "sublabel": "clinic.no1kmedi.com → /clinician · SOAP 워크스페이스 · 대외 공식은 app.jema-ai.com/clinician · /ask와 분리"
+      "label": "원장 전용 포털 (현장)",
+      "sublabel": "현장 원장용 SOAP 워크스페이스 · 대외 공식 경로와 분리 · 공개 Q&A와 합치지 않음"
     },
     "mai_profile_card": {
       "href": "https://mkmlife.com/ask-one",
@@ -431,13 +431,50 @@
       "sublabel": "비진단 · 성찰·페이스 참고 · mkmlife 연결 · 의료·투자·사주 체질 단정 아님"
     }
   },
+  "hub_apex": {
+    "schema": "jema_ai_hub_apex_directory_v1",
+    "ssot_ref": "docs/final/artifacts/acodeai_jemaai_dual_homepage_4ai_v1_latest.md · MKM_DOMAIN_PORTFOLIO_POINTER_V1.md §1.1b",
+    "brand": "JEMA AI",
+    "title": "언어·연구·인프라를 위한 응용 소프트웨어",
+    "lead": "목적에 맞는 입구만 고르세요. 제품은 각 도메인에서 이어집니다.",
+    "cta_primary": { "label": "입구 전체 보기", "href": "#surfaces" },
+    "cta_secondary": { "label": "기업·파트너", "href": "/enterprise" },
+    "cta_ask_router": { "label": "질문 라우터", "href": "/hub" },
+    "directory": {
+      "section_label": "솔루션 입구",
+      "section_lead": "역할별로 나뉜 공개 입구입니다. 한 제품으로 합치지 않습니다.",
+      "keys": [
+        "b2b_acodeai",
+        "research_logos",
+        "premium_mkmlife",
+        "showroom_jemaai",
+        "research_mkmlab",
+        "personadiary_preview",
+        "clinician_no1kmedi_portal",
+        "jema_os_enterprise"
+      ]
+    },
+    "anti_merge": {
+      "section_label": "이 허브가 아닌 것",
+      "bullets": [
+        "Logos·클리닉·압축·원퀘스천을 하나의 대표 제품으로 합치지 않습니다.",
+        "실매매·투자 권유·의료 진단·처방을 대신하지 않습니다.",
+        "압축·벤치 수치를 고객 SLA나 임상 근거로 쓰지 않습니다."
+      ]
+    },
+    "trust_thin": {
+      "section_label": "신뢰·운영 원칙",
+      "body": "공개 주장은 검증 가능한 산출물·승인 경로로만 합니다. 연구용 입구는 참고용이며, 외부 송출은 사람 승인 전까지 보류합니다."
+    },
+    "footer_note": "관측·운영 안내만 — 투자·의료·실매매 지시가 아닙니다."
+  },
   "header": {
     "brand_name": "JEMA AI",
-    "brand_tagline": "Hybrid Memory OS · 검증 미들웨어"
+    "brand_tagline": "브랜드 허브 · 솔루션 입구"
   },
   "seo": {
-    "title": "JEMA AI | Sasang-informed assistive AI · clinical workflow support",
-    "description": "Non-clinical, assistive AI informed by Korean Sasang constitutional medicine tradition. Pre-visit reports for consumers and clinician-assist drafts for licensed practitioners — not diagnosis, prescription, or treatment replacement."
+    "title": "JEMA AI | 브랜드 허브 · 솔루션 입구",
+    "description": "언어·연구·인프라를 위한 응용 소프트웨어. 브랜드 허브만 — 제품은 각 도메인에서 이어집니다. 의료 진단·투자 권유·실매매 지시가 아닙니다."
   },
   "nav": {
     "service_group": "서비스",
