@@ -1,4 +1,4 @@
-# TITAN Command Core (Slim v1)
+# TITAN Command Core (Slim v2)
 
 ## Mission
 
@@ -37,111 +37,52 @@
 
 ## Execution Governance (§28, Fact-Lock)
 
-- **High-risk paths** (live trade hooks, exchange API materialization, production-affecting artifact overwrite): prefer **`py scripts/athena_run_v1.py -- <child command>`** for repo-local PoC wiring; see `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §28.
-- **After any gated run**, read `docs/final/artifacts/ecc_execution_clearance_latest.json`. If `status` is **DENIED**, explain using **ECC `reason`** plus **`docs/final/artifacts/integrated_governance_v1_latest.json`** (`final_regime`, `final_action_allowed`, `veto_reason_codes`). ECC alone does not contain market narrative (e.g. KOSPI).
-- **Exit codes:** `athena_run_v1` exit **2** = governance/policy denial; exit **1** = usage or missing artifact error — distinguish from generic failures when automating.
-- **Secrets:** never hardcode real API keys into scripts or chat. Use existing SSOT: `scripts/security_agent_manager.py` / DPAPI (`CONSTITUTION` §1.1.2). `athena_run_v1 --target <KEY_NAME> -- ...` resolves **KEY_NAME** from the DPAPI store into the child env only when ECC **APPROVED**; omit `--target` for PoC fake `BINANCE_API_KEY` only.
-- **Bypass:** running the child command **without** `athena_run_v1` skips ECC — state this if the user expects a gate.
-- **Quick status:** `py scripts/athena_doctor_v1.py` (governance + last ECC summary).
-- **Audit trail:** each `athena_run_v1` run appends one line to `reports/athena_ecc_audit.jsonl` (override with `--audit-jsonl`); `py scripts/athena_ecc_logs_v1.py --last 20`. Optional `ATHENA_ECC_AUDIT_WEBHOOK_URL` POSTs a minimal summary after each row (no secrets). Local append-only does not stop tampering — remote webhook adds an off-box witness (not legal non-repudiation by itself).
+- High-risk paths (live trade hooks, exchange API materialization, production-affecting overwrite): prefer `py scripts/athena_run_v1.py -- <cmd>`; after gated runs read `docs/final/artifacts/ecc_execution_clearance_latest.json` (DENIED → ECC `reason` + `integrated_governance_v1_latest.json`). Never hardcode real API keys (DPAPI / `security_agent_manager`).
+- Detail (exit taxonomy, `--target`, audit JSONL, webhook, doctor): `docs/final/AGENTS_REFERENCE_V1.md` 「Athena 실행 거버넌스」 + `CONSTITUTION` §28.
 
 ## MCP Core Contract
 
-- Workspace profile SSOT: `C:/workspace/.cursor/mcp.json`
-- Required core set:
-  - `filesystem`
-  - `openchrome`
-  - `athena-core`
-  - `sequential-thinking`
-  - `athena-manseryeok`
-  - `compression-server`
-  - `hostinger-website-manager`
-  - `devops-mcp`
-- Forbidden in core profile:
-  - `playwright`
-  - `manseryeok-mcp`
-- LTM mode lock:
-  - `athena-core.env.MKM12_LTM_DB_TYPE=file`
+- Profile SSOT: `C:/workspace/.cursor/mcp.json` (required/forbidden set + LTM `MKM12_LTM_DB_TYPE=file`). Do not duplicate the runtime tool list here.
+- NotebookLM session bridge: `.cursor/rules/notebooklm-mcp-session-bridge.mdc`. Catalog pointers: `AGENTS.md` / `AGENTS_REFERENCE_V1.md`.
 
 ## NotebookLM + Memory
 
-- NotebookLM is reference input, not implementation truth.
-- Persistent memory SSOT:
-  - `docs/final/CENTRAL_AGENT_MEMORY_V1.md` + Git history.
-- Vault mirror:
-  - `scripts/sync_notebooklm_sources_to_mkm_data_vault.ps1`
-- Cloud `source_add` remains separate from mirror.
+- NotebookLM = reference input, not implementation truth. Persistent memory SSOT: `docs/final/CENTRAL_AGENT_MEMORY_V1.md` + Git history.
+- Vault mirror / cloud `source_add`: see `AGENTS_REFERENCE_V1.md` (NL + Hub-B).
 
 ## MKM AI v2 Final Governance
 
-- Readiness:
-  - `scripts/run_mkm_ai_v2_readiness_check.ps1`
-- Daily loop:
-  - `scripts/Invoke-MkmAiV2DailyReadiness.ps1`
-- Promotion decision:
-  - `scripts/check_mkm_ai_v2_promotion_decision.py`
-- Promotion lock sync:
-  - `scripts/sync_mkm_ai_v2_promotion_lock.py`
-- Final guard:
-  - `scripts/check_mkm_ai_final_ops_guard.py`
-  - health option: `-IncludeMkmAiFinalOpsGuard`
-  - daily runner: `scripts/Invoke-MkmAiFinalOpsGuard.ps1`
+- Script laundry list + readiness/promotion/final-ops guard: `docs/final/AGENTS_REFERENCE_V1.md` 「MKM AI v2 Final Governance」; day-to-day via AthenaBundle / P0 personas (`AGENTS.md`).
 
 ## Publish + Git Hygiene
 
-- Internal-first publication.
-- GitHub is exception path only:
-  - `scripts/Push-GitHub-Explicit.ps1 -Acknowledge`
-- Prefer 1 task = 1 branch = 1 PR.
-- Use clean worktree for risky multi-step changes.
+- Internal-first publication. GitHub exception only: `scripts/Push-GitHub-Explicit.ps1 -Acknowledge`.
+- Prefer 1 task = 1 branch = 1 PR. Clean worktree for risky multi-step changes.
 
 ## Lens Contract
 
 - Lens names fixed: `사상`, `명리`, `성경(Logos)`.
-- Keep output order:
-  - Field(Regime) -> Lens(3) -> Conflict Resolver -> Final Action
+- Keep output order: Field(Regime) -> Lens(3) -> Conflict Resolver -> Final Action.
 
 ## Gut–brain metaphor (comms only)
 
-- Pedagogical frame for Track C / internal ops — not CONSTITUTION law or neuroscience proof.
-- Policy: `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` v1.7; agent rule `.cursor/rules/gut-brain-metaphor-agent-v1.mdc`.
-- B-track gate taxonomy: `prophecy_promotion_gates_v1_latest.json` (`outcome_class`); no auto bridge B→A or live trade.
+- Track C / internal pedagogy only — not CONSTITUTION law. Policy `PUBLIC_FACING` v1.7; rule `gut-brain-metaphor-agent-v1.mdc`. No B→A / live-trade auto bridge.
 
 ## Scope Guard
 
 - This file stores enforceable behavior policy only.
-- Keep long theory/history in:
-  - `docs/final/CENTRAL_AGENT_MEMORY_V1.md`
-  - domain docs under `docs/final/`
+- Long theory/history → `CENTRAL_AGENT_MEMORY_V1.md` + `docs/final/`; per-turn noise → `AGENTS_REFERENCE_V1.md` / skills.
 
 ## [MKM AI Operating Protocol] — 장기기억 / 이어서
 
-**동등 재개 트리거(tie / same protocol):** 아래 **두 줄은 우선순위가 같다** — 어느 한쪽만 나와도 동일하게 디스크 SSOT에서 맥락을 이은 뒤 진행한다.
+**Canonical resume triggers (synonyms match naturally):** `장기기억` (incl. **장기기억 맥락이어** / 맥락 이어 / 토대로) · `이어서` · `CENTRAL 기준` (also: 팩트락 기준, MKM 장기기억). Detail + session-upgrade script: `AGENTS.md` / `central-agent-memory.mdc`.
 
-- **맥락 이어:** **장기기억 맥락이어라**, **장기기억 맥락 이어** (지휘관 고정 대표어 계열).
-- **토대로:** **장기기억 토대로**, **장기기억 토대로 진행해** (기존 고정 호칭 계열).
+When signaled, **before coding or claiming implementation**:
 
-추가로 동일 프로토콜: **MKM 장기기억**, **이어서**, **CENTRAL 기준**, **CENTRAL 기준으로 진행해**, **팩트락 기준으로 자동 처리해**.
-
-When the user signals resume-from-disk SSOT via **any** of the above (or clearly synonymous), **before coding or claiming implementation**:
-
-1. **Read first** (workspace tools / `Read`):  
-   - `docs/final/CENTRAL_AGENT_MEMORY_V1.md` — identity, lanes, **운영 체크포인트**, 다음 할 일 (**일정·MISSION·Phase 표 본문은 여기 두지 않음** — 앵커는 루트 `MISSION_LOG.md` / 표 SSOT는 `MISSION_LOG.template.md` 「채팅창 작업일정 앵커」).  
-   - `AGENTS.md` — entry pointers, ops protocol, Git/remotes discipline.
-   - (다단계 임무·채팅창 체크리스트가 주제일 때) `MISSION_LOG.template.md` — `MISSION_LOG.md`(비추적)와 `reports/daily_thread_work_*.md`(Ops 한 줄) 역할 분리.
-2. **`docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`** — large SSOT: read **§1 / table of paths / sections relevant to the task**, not necessarily the whole file every turn. Use it for **implementation paths, gates, and Fact-Lock** when answering “does this exist?” or changing prod-facing behavior.
-3. **Brief** the user in a few sentences: last checkpoint (from CENTRAL if present), current focus, Fact-Lock reminder — then proceed.
-
-This replaces mandatory `@` mentions for those phrases when working in this repo; `@CENTRAL.md` remains a valid shortcut. Session end: **`py scripts/athena_checkpoint.py "one-line summary"`** updates CENTRAL for the next chat (human-triggered save).
+1. Read `CENTRAL_AGENT_MEMORY_V1.md` (checkpoint/lanes) + `AGENTS.md`; for multi-step ops use `MISSION_LOG.md` (not Phase tables in CENTRAL).
+2. For implementation/path claims, consult relevant `CONSTITUTION_*` § / runnable scripts — not the whole file every turn.
+3. Brief checkpoint + focus + Fact-Lock reminder, then proceed. `@CENTRAL.md` remains valid.
 
 ### Checkpoint save — “장기기억 저장”
 
-When the user says **장기기억 저장하라**, **장기기억 저장해**, **장기기억에 저장**, **장기기억 저장해줘**, **체크포인트**, **CENTRAL에 저장** (or similar), **write disk SSOT** by running from repo root:
-
-`py scripts/athena_checkpoint.py "<one-line summary>"`
-
-Rules:
-
-1. Use the user’s quoted phrase if they gave one; otherwise compress **this thread’s completed work** into one factual line (no invented metrics).
-2. Execute the command (terminal); confirm **exit code 0** and repeat the line recorded.
-3. If no summary is inferable, ask **one** short question for the checkpoint line, then run.
+On **장기기억 저장** / **체크포인트** / **CENTRAL에 저장** (or similar): `py scripts/athena_checkpoint.py "<one-line summary>"` from repo root — use user quote or compress thread facts; confirm exit 0; if no summary inferable, ask one short question then run. Alias **마무리**: see `AGENTS.md` session-end row.

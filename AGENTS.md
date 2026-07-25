@@ -89,8 +89,6 @@
 
 - lean 7 `.cursor/mcp.json` · NL `@notebooklm-mcp-session-bridge` · 웹 `@autonomous-web-search-v1` · `check_notebooklm_mcp_prereqs.ps1` · `Invoke-McpHygieneProbe.ps1` · openchrome/hostinger **요청 시만**
 
-## `.cursorrules` (TITAN · Slim v2)
+## `.cursorrules` (TITAN · Slim v2) · 확장
 
-- SSOT 템플릿: `docs/final/artifacts/cursorrules_slim_ssot_v1.txt` — 루트 `.cursorrules`와 **동기 유지** (`py scripts/enforce_cursorrules_slim_ssot.py` · drift: `check_cursorrules_template_drift_v1.py` · diet `--strict`에 포함).
-
-## 확장 읽기 (레인별) — 압축·B-track·쇼룸·예언·Gemini·도메인 핸드오프·병렬 작전 → **`docs/final/AGENTS_REFERENCE_V1.md`** 해당 절. `CLAUDE.md` = 개발 진입 요약.
+- SSOT 템플릿: `docs/final/artifacts/cursorrules_slim_ssot_v1.txt` — 루트와 **동기** (`enforce_cursorrules_slim_ssot.py` · `check_cursorrules_template_drift_v1.py` · diet `--strict`). 레인별 확장·압축·B-track·쇼룸 → **`AGENTS_REFERENCE_V1.md`**. `CLAUDE.md` = 개발 진입 요약.

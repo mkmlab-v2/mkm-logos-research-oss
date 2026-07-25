@@ -43,8 +43,8 @@
 ### MKM 초간결 운영 프로토콜 (크로스 채팅 최소 부하)
 
 1. **Cursor User Rules (지휘관 PC, 선택):** Settings → Rules for AI(**User** 탭)에 아래 **「Recommended Cursor User Rules — User 탭 합본」** 코드 펜스 **안의 전체**를 붙인다(레포와 자동 동기화되지 않음). 기존 규칙을 지웠다면 이 합본 **한 번에** 복구 가능.
-2. **시작:** 말 한 줄만으로도 됨 — **고정 재개 트리거(동등·한쪽만 있어도 동일):** (A) 「**장기기억 맥락이어라**」「**장기기억 맥락 이어**」 (B) 「**장기기억 토대로**」「**장기기억 토대로 진행해**」 — **A와 B는 같은 우선순위**로 취급한다. 추가 동일 프로토콜: 「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」「MKM 장기기억」「이어서」「CENTRAL 기준」. 에이전트는 위 **어느 것이든** 받으면 레포 `.cursorrules` **[MKM AI Operating Protocol]** 에 따라 **다른 답변·코딩보다 먼저** `CENTRAL`·`AGENTS`·(필요 시)`CONSTITUTION_*`를 읽고, 운영 체크포인트·분기 한 줄을 근거로 짧게 브리핑한 뒤 작업한다. 또는 `@CENTRAL.md` / `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` + 질문.
-3. **종료 1초 체크포인트:** `py scripts/athena_checkpoint.py "완료/다음 한 줄"` — `CENTRAL`의 **운영 체크포인트** 마커와 `last_updated_utc` 갱신(기본: **새 bullet을 맨 위에 추가**하고 이전 줄은 유지·상한 `--max-checkpoints` 기본 20; 예전처럼 **한 줄만** 남기려면 `--replace-all`). **저위험 MD 편집**이므로 `athena_run_v1.py`로 감쌀 필요 없음(ECC·실거래 경로와 무관). 말로 **「장기기억 저장하라」「장기기억 저장해」「장기기억 저장해줘」「체크포인트」**만 해도 레포 `.cursorrules`에 따라 에이전트가 같은 명령을 실행하도록 고정됨(요약 한 줄은 채팅에 같이 주면 확실).
+2. **시작:** `.cursorrules` Slim v2 canonical 3축 — **`장기기억`** (대표: **장기기억 맥락이어** / 맥락 이어 / 토대로) · **`이어서`** · **`CENTRAL 기준`**. 동의어 동등: 「장기기억 맥락이어라」「장기기억 토대로 진행해」「CENTRAL 기준으로 진행해」「팩트락 기준으로 자동 처리해」「MKM 장기기억」「미션로그 이어서」. 에이전트는 위 **어느 것이든** 받으면 **다른 답변·코딩보다 먼저** resume pack / `CENTRAL`·`AGENTS`·(필요 시)`CONSTITUTION_*`를 읽고 짧게 브리핑한 뒤 작업한다 (`Invoke-MkmCursorSessionUpgrade_v1.ps1` · `AGENTS.md` 재개 표). 또는 `@CENTRAL.md` / `@docs/final/CENTRAL_AGENT_MEMORY_V1.md` + 질문.
+3. **종료 1초 체크포인트:** `py scripts/athena_checkpoint.py "완료/다음 한 줄"` — `CENTRAL`의 **운영 체크포인트** 마커와 `last_updated_utc` 갱신(기본: **새 bullet을 맨 위에 추가**하고 이전 줄은 유지·상한 `--max-checkpoints` 기본 20; 예전처럼 **한 줄만** 남기려면 `--replace-all`). **저위험 MD 편집**이므로 `athena_run_v1.py`로 감쌀 필요 없음(ECC·실거래 경로와 무관). 말로 **「장기기억 저장」「체크포인트」「CENTRAL에 저장」**(및 유사)만 해도 `.cursorrules` 체크포인트 절에 따라 동일 명령 실행; **마무리**는 `AGENTS.md` session-end 행(`run_mkm_cursor_session_end_v1.py`).
 4. **재개 팩(선택):** `py scripts/build_mkm_chat_resume_pack_v1.py` → `docs/final/artifacts/mkm_chat_resume_pack_latest.md` 등 기존 산출과 병용 가능.
 5. **`.cursorrules` 이중 관리:** 일일 `scripts/enforce_cursorrules_slim_ssot.py`는 `docs/final/artifacts/cursorrules_slim_ssot_v1.txt`를 `.cursorrules`에 복사한다. 루트 `.cursorrules`를 손대면 **템플릿도 같이** 맞춘다.
 
@@ -145,8 +145,30 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 - **헌법:** `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §28 — `scripts/athena_run_v1.py`(ECC·`--target`/DPAPI·감사 JSONL·선택 `ATHENA_ECC_AUDIT_WEBHOOK_URL`).
 - **원클릭 스모크:** `py scripts/check_athena_execution_governance_smoke_v1.py` — 스크립트 존재·doctor·HOLD 차단 경로(exit 2) 확인 (실매매·웹훅 전송 없음).
 - **상태 요약:** `py scripts/athena_doctor_v1.py`
-- **규칙:** Cursor·에이전트는 `.cursorrules` 「Execution Governance」; 실키·웹훅 URL은 레포가 아니라 `.env`/스토어.
+- **규칙 (매턴 thin):** `.cursorrules` 「Execution Governance」는 `athena_run_v1` + ECC read + 비밀 비하드코딩만 유지. 아래 상세는 조회용(본 REFERENCE · CONSTITUTION §28).
+- **DENIED 해석:** ECC `reason` + `docs/final/artifacts/integrated_governance_v1_latest.json` (`final_regime`, `final_action_allowed`, `veto_reason_codes`). ECC alone ≠ market narrative (e.g. KOSPI).
+- **Exit codes:** `athena_run_v1` exit **2** = governance/policy denial; exit **1** = usage or missing artifact — distinguish from generic failures when automating.
+- **Secrets / `--target`:** never hardcode real API keys. SSOT `scripts/security_agent_manager.py` / DPAPI (`CONSTITUTION` §1.1.2). `athena_run_v1 --target <KEY_NAME> -- ...` injects KEY into child env only when ECC **APPROVED**; omit `--target` for PoC fake `BINANCE_API_KEY` only.
+- **Bypass:** running the child **without** `athena_run_v1` skips ECC — state this if the user expects a gate.
+- **Audit trail:** each run appends one line to `reports/athena_ecc_audit.jsonl` (`--audit-jsonl` override); `py scripts/athena_ecc_logs_v1.py --last 20`. Optional `ATHENA_ECC_AUDIT_WEBHOOK_URL` POSTs a minimal summary (no secrets). Local append-only ≠ legal non-repudiation; remote webhook = off-box witness only.
 - **CI:** GitHub `dual-regime-integrity` 워크플로가 §28 관련 pytest(`test_athena_run_v1`·`test_athena_doctor_v1`·`test_check_athena_execution_governance_smoke_v1`)를 실행 — 레포 시크릿 `ATHENA_ECC_AUDIT_WEBHOOK_URL`은 선택(현재 스텝은 웹훅 불필요).
+
+## MCP Core Contract (lookup · not every-turn)
+
+- **Profile SSOT:** `C:/workspace/.cursor/mcp.json` — do not duplicate the live tool list into `.cursorrules` or User Rules.
+- **Required core set (profile):** `filesystem`, `openchrome`, `athena-core`, `sequential-thinking`, `athena-manseryeok`, `compression-server`, `hostinger-website-manager`, `devops-mcp`.
+- **Forbidden in core profile:** `playwright`, `manseryeok-mcp`.
+- **LTM mode lock:** `athena-core.env.MKM12_LTM_DB_TYPE=file`.
+- **NotebookLM:** `.cursor/rules/notebooklm-mcp-session-bridge.mdc` — UI green ≠ session inject; `get_health` before ask. Hygiene: `check_notebooklm_mcp_prereqs.ps1` · `Invoke-McpHygieneProbe.ps1`.
+
+## MKM AI v2 Final Governance (lookup · personas)
+
+- **Readiness:** `scripts/run_mkm_ai_v2_readiness_check.ps1`
+- **Daily loop:** `scripts/Invoke-MkmAiV2DailyReadiness.ps1`
+- **Promotion decision:** `scripts/check_mkm_ai_v2_promotion_decision.py`
+- **Promotion lock sync:** `scripts/sync_mkm_ai_v2_promotion_lock.py`
+- **Final guard:** `scripts/check_mkm_ai_final_ops_guard.py` · health `-IncludeMkmAiFinalOpsGuard` · daily `scripts/Invoke-MkmAiFinalOpsGuard.ps1`
+- **Day-to-day:** prefer `Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` / `P0` (`AGENTS.md` 페르소나 표) — do not paste this laundry list into every-turn rules.
 
 ## 세션 핸드오프 (선택)
 
