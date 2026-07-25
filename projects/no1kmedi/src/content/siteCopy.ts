@@ -346,6 +346,43 @@ export type SiteCopy = {
   };
   hub_discover?: { ko: HubDiscoverLocaleCopy; en: HubDiscoverLocaleCopy };
   hub_shell?: { ko: Record<string, string>; en: Record<string, string> };
+  hub_apex?: {
+    schema?: string;
+    ssot_ref?: string;
+    brand: string;
+    title: string;
+    lead: string;
+    cta_primary: { label: string; href: string };
+    cta_secondary: { label: string; href: string };
+    cta_ask_router?: { label: string; href: string };
+    nav?: {
+      solutions_label: string;
+      company_label: string;
+      main_aria_label: string;
+      toggle_label: string;
+      toggle_open_aria: string;
+      toggle_close_aria: string;
+      groups: {
+        id: string;
+        label: string;
+        links: { label: string; href: string }[];
+      }[];
+      company_links: { label: string; href: string }[];
+    };
+    directory: {
+      section_label: string;
+      section_lead: string;
+      keys: string[];
+      groups?: {
+        id: string;
+        label: string;
+        items: { key: string; label: string; blurb?: string }[];
+      }[];
+    };
+    anti_merge: { section_label: string; bullets: string[] };
+    trust_thin: { section_label: string; body: string };
+    footer_note: string;
+  };
   hub_links: {
     showroom_jemaai: HubLink;
     premium_mkmlife: HubLink;

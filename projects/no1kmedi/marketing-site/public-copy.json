@@ -437,21 +437,134 @@
     "brand": "JEMA AI",
     "title": "언어·연구·인프라를 위한 응용 소프트웨어",
     "lead": "목적에 맞는 입구만 고르세요. 제품은 각 도메인에서 이어집니다.",
-    "cta_primary": { "label": "입구 전체 보기", "href": "#surfaces" },
+    "cta_primary": { "label": "솔루션 입구 보기", "href": "#surfaces" },
     "cta_secondary": { "label": "기업·파트너", "href": "/enterprise" },
-    "cta_ask_router": { "label": "질문 라우터", "href": "/hub" },
+    "cta_ask_router": { "label": "질문 안내", "href": "/hub" },
+    "nav": {
+      "solutions_label": "솔루션",
+      "company_label": "회사",
+      "main_aria_label": "주요 메뉴",
+      "toggle_label": "메뉴",
+      "toggle_open_aria": "메뉴 열기",
+      "toggle_close_aria": "메뉴 닫기",
+      "groups": [
+        {
+          "id": "b2b",
+          "label": "B2B",
+          "links": [
+            { "label": "토큰·압축 API", "href": "https://a-codeai.com" },
+            { "label": "기업·파트너", "href": "/enterprise" }
+          ]
+        },
+        {
+          "id": "clinic",
+          "label": "의료·클리닉",
+          "links": [
+            { "label": "한의사 포털", "href": "https://clinic.no1kmedi.com/clinician" },
+            { "label": "사전 문진", "href": "/intake" }
+          ]
+        },
+        {
+          "id": "research",
+          "label": "연구",
+          "links": [
+            { "label": "성경·텍스트 연구", "href": "https://logos.jema-ai.com/logos-research/ask" },
+            { "label": "분자한의학 연구소", "href": "https://research.no1kmedi.com" },
+            { "label": "공개 관측 보드", "href": "https://jemaai.cloud/public_observe_v1.html" }
+          ]
+        },
+        {
+          "id": "life",
+          "label": "생활",
+          "links": [
+            { "label": "원퀘스천 리포트", "href": "https://mkmlife.com/oracle-sphere" },
+            { "label": "일상 기록 프리뷰", "href": "/personadiary" }
+          ]
+        }
+      ],
+      "company_links": [
+        { "label": "안전·고지", "href": "/safety" },
+        { "label": "문의", "href": "/enterprise#contact" }
+      ]
+    },
     "directory": {
       "section_label": "솔루션 입구",
       "section_lead": "역할별로 나뉜 공개 입구입니다. 한 제품으로 합치지 않습니다.",
       "keys": [
         "b2b_acodeai",
-        "research_logos",
-        "premium_mkmlife",
-        "showroom_jemaai",
-        "research_mkmlab",
-        "personadiary_preview",
+        "jema_os_enterprise",
         "clinician_no1kmedi_portal",
-        "jema_os_enterprise"
+        "research_logos",
+        "research_mkmlab",
+        "showroom_jemaai",
+        "premium_mkmlife",
+        "personadiary_preview"
+      ],
+      "groups": [
+        {
+          "id": "b2b",
+          "label": "B2B · 인프라",
+          "items": [
+            {
+              "key": "b2b_acodeai",
+              "label": "토큰·압축 API",
+              "blurb": "기업용 API 입구 · a-codeai.com"
+            },
+            {
+              "key": "jema_os_enterprise",
+              "label": "기업·파트너",
+              "blurb": "도입·검증 미들웨어 소개"
+            }
+          ]
+        },
+        {
+          "id": "clinic",
+          "label": "의료·클리닉",
+          "items": [
+            {
+              "key": "clinician_no1kmedi_portal",
+              "label": "한의사 포털",
+              "blurb": "현장 원장용 보조 화면 · 진단·처방 대체 아님"
+            }
+          ]
+        },
+        {
+          "id": "research",
+          "label": "연구",
+          "items": [
+            {
+              "key": "research_logos",
+              "label": "성경·텍스트 연구",
+              "blurb": "연구 워크스페이스 · 교리·투자 권유 아님"
+            },
+            {
+              "key": "research_mkmlab",
+              "label": "분자한의학 연구소",
+              "blurb": "연구소·생산 제품 소개"
+            },
+            {
+              "key": "showroom_jemaai",
+              "label": "공개 관측 보드",
+              "blurb": "관측 데모 · 투자·주문 권유 아님"
+            }
+          ]
+        },
+        {
+          "id": "life",
+          "label": "생활",
+          "items": [
+            {
+              "key": "premium_mkmlife",
+              "label": "원퀘스천 리포트",
+              "blurb": "질문 한 개 · 참고용 리포트"
+            },
+            {
+              "key": "personadiary_preview",
+              "label": "일상 기록 프리뷰",
+              "blurb": "일상 동반 콘셉트 · 의료·투자 조언 아님"
+            }
+          ]
+        }
       ]
     },
     "anti_merge": {
@@ -463,19 +576,20 @@
       ]
     },
     "trust_thin": {
-      "section_label": "신뢰·운영 원칙",
-      "body": "공개 주장은 검증 가능한 산출물·승인 경로로만 합니다. 연구용 입구는 참고용이며, 외부 송출은 사람 승인 전까지 보류합니다."
+      "section_label": "안내",
+      "body": "공개 주장은 검증 가능한 산출물·승인 경로로만 합니다. 연구·데모 입구는 참고용입니다."
     },
     "footer_note": "관측·운영 안내만 — 투자·의료·실매매 지시가 아닙니다."
   },
   "header": {
     "brand_name": "JEMA AI",
-    "brand_tagline": "브랜드 허브 · 솔루션 입구"
+    "brand_tagline": "브랜드 허브"
   },
   "seo": {
     "title": "JEMA AI | 브랜드 허브 · 솔루션 입구",
     "description": "언어·연구·인프라를 위한 응용 소프트웨어. 브랜드 허브만 — 제품은 각 도메인에서 이어집니다. 의료 진단·투자 권유·실매매 지시가 아닙니다."
   },
+
   "nav": {
     "service_group": "서비스",
     "service_hub": "질문 라우터",
