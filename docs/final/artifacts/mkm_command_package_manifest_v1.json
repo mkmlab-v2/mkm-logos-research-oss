@@ -426,8 +426,11 @@
     "AutonomousPatrol": {
       "label_ko": "자율점검 · solo_ops + 일/주간 patrol + Git/CI + manual queue",
       "estimated_minutes": 25,
-      "aliases": ["자율점검", "자율 경영"],
-      "chat_triggers": ["【자율점검】", "자율점검", "autonomous patrol", "자율 경영"],
+      "aliases": ["자율점검", "자율루프", "오늘 자율루프", "자율 경영"],
+      "chat_triggers": ["【자율점검】", "자율점검", "자율루프", "오늘 자율루프", "autonomous patrol", "자율 경영"],
+      "commander_daily_contract": "docs/final/artifacts/mkm_autonomous_patrol_commander_daily_contract_v1_latest.md",
+      "elementary_paste": "reports/human_paste/mkm_autonomous_loop_daily_elementary_v1.txt",
+      "non_scope_ko": ["≠AthenaBundle daily", "≠Fact-Lock full", "≠PR/merge", "≠Actions green", "≠Polar"],
       "steps": [
         {
           "id": "autonomous_patrol_orchestrator",

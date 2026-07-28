@@ -102,6 +102,56 @@ function Invoke-TrackedStep {
     return $code
 }
 
+function Test-PathMatchesGlob {
+    param([string]$RelPath, [string]$Glob)
+    $norm = ($RelPath -replace '\\', '/').TrimStart('./')
+    $g = ($Glob -replace '\\', '/')
+    # Escape regex specials except * which becomes .*
+    $rx = [regex]::Escape($g) -replace '\\\*', '.*'
+    return [regex]::IsMatch($norm, '^' + $rx + '$', [System.Text.RegularExpressions.RegexOptions]::IgnoreCase)
+}
+
+function Get-DirtyTreeNoiseClassification {
+    param([string[]]$RelPaths, [string]$AllowlistPath)
+    $out = [ordered]@{
+        total_count          = @($RelPaths).Count
+        noise_count          = 0
+        actionable_count     = 0
+        noise_only           = $false
+        allowlist_path       = $AllowlistPath
+        allowlist_loaded     = $false
+        sample_actionable    = @()
+        sample_noise         = @()
+    }
+    $globs = @()
+    if (Test-Path -LiteralPath $AllowlistPath) {
+        try {
+            $doc = Get-Content -LiteralPath $AllowlistPath -Raw -Encoding UTF8 | ConvertFrom-Json
+            if ($doc.path_globs) { $globs = @($doc.path_globs) }
+            $out.allowlist_loaded = $true
+        } catch { }
+    }
+    foreach ($p in @($RelPaths)) {
+        $rel = ($p -replace '\\', '/').TrimStart('./')
+        $isNoise = $false
+        foreach ($g in $globs) {
+            if (Test-PathMatchesGlob -RelPath $rel -Glob ([string]$g)) {
+                $isNoise = $true
+                break
+            }
+        }
+        if ($isNoise) {
+            $out.noise_count++
+            if ($out.sample_noise.Count -lt 5) { $out.sample_noise += $rel }
+        } else {
+            $out.actionable_count++
+            if ($out.sample_actionable.Count -lt 5) { $out.sample_actionable += $rel }
+        }
+    }
+    $out.noise_only = ($out.total_count -gt 0 -and $out.actionable_count -eq 0)
+    return $out
+}
+
 function Get-GitCiReadiness {
     $result = [ordered]@{
         head_sha            = $null
@@ -109,6 +159,7 @@ function Get-GitCiReadiness {
         origin_main_sha     = $null
         internal_ahead_of_origin = $null
         dirty_file_count    = 0
+        dirty_paths         = @()
         branch              = $null
         ok                  = $true
         notes               = @()
@@ -152,8 +203,87 @@ function Get-GitCiReadiness {
     }
 
     $porcelain = @(git status --porcelain 2>$null)
-    $result.dirty_file_count = $porcelain.Count
+    $paths = @()
+    foreach ($line in $porcelain) {
+        if ([string]::IsNullOrWhiteSpace($line)) { continue }
+        # porcelain: XY PATH or XY ORIG -> PATH
+        $rest = $line.Substring(3).Trim()
+        if ($rest -match ' -> ') {
+            $rest = ($rest -split ' -> ', 2)[1]
+        }
+        $paths += ($rest -replace '\\', '/')
+    }
+    $result.dirty_file_count = $paths.Count
+    $result.dirty_paths = $paths
     return $result
+}
+
+function Write-AutonomousPatrolStickyAlert {
+    param(
+        [string]$OutPath,
+        [string]$LocalDate,
+        [object]$TaskInfo,
+        [string]$Overall,
+        [bool]$RequiredFailed,
+        [string]$PasteLine
+    )
+    $lastResult = $null
+    $lastRun = $null
+    $nextRun = $null
+    if ($null -ne $TaskInfo) {
+        try { $lastResult = [int64][uint32]$TaskInfo.LastTaskResult } catch { $lastResult = $TaskInfo.LastTaskResult }
+        $lastRun = $TaskInfo.LastRunTime
+        $nextRun = $TaskInfo.NextRunTime
+    }
+    $alert = $false
+    $reasons = New-Object System.Collections.Generic.List[string]
+    # 267009=SCHED_S_TASK_RUNNING (IgnoreNew collision); 0x41300-0x41308 = scheduler status, not script exit
+    $benignSched = @(267008, 267009, 267010, 267011, 267012, 267013, 267014, 267015, 267016)
+    $lr = if ($null -ne $lastResult) { [int64]$lastResult } else { $null }
+    # exit 2 = AutonomousPatrol WARN (optional fails only) — not sticky alert
+    if ($null -ne $lr -and $lr -eq 2) {
+        [void]$reasons.Add("scheduled_last_task_result_warn_exit_2")
+    } elseif ($null -ne $lr -and $lr -ne 0 -and ($benignSched -notcontains $lr)) {
+        $alert = $true
+        [void]$reasons.Add("scheduled_last_task_result_nonzero")
+    } elseif ($null -ne $lr -and ($benignSched -contains $lr)) {
+        [void]$reasons.Add("scheduled_last_task_result_benign_sched_status")
+    }
+    if ($RequiredFailed -or $Overall -eq "FAIL") {
+        $alert = $true
+        [void]$reasons.Add("this_run_required_fail")
+    }
+    $hint = if ($alert) {
+        "schedule LastTaskResult!=0 or this run FAIL - triage reports/mkm_autonomous_patrol_latest.json + daily.log. AutonomousPatrol != remote Actions green."
+    } elseif ($null -ne $lr -and $lr -eq 2) {
+        "sticky soft-clear - LastTaskResult=2 (WARN optional fails) is not sticky alert"
+    } else {
+        "sticky clear - scheduled LastTaskResult=0 and this run not FAIL"
+    }
+    $doc = [ordered]@{
+        schema              = "mkm_autonomous_patrol_sticky_alert_v1"
+        generated_at_utc    = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ")
+        local_date          = $LocalDate
+        alert               = $alert
+        severity            = $(if ($alert) { "WARN" } else { "OK" })
+        task_name           = "MKM_AutonomousPatrol_Daily"
+        last_task_result    = $lastResult
+        last_run_time       = $(if ($lastRun) { $lastRun.ToString("o") } else { $null })
+        next_run_time       = $(if ($nextRun) { $nextRun.ToString("o") } else { $null })
+        this_run_overall    = $Overall
+        reasons             = @($reasons)
+        paste_line          = $PasteLine
+        commander_hint_ko   = $hint
+        webhook_sent        = $false
+        webhook_note_ko     = "webhook not wired in AutonomousPatrol; JSON+paste only"
+        metacog_before_ok_claim = "py scripts/run_mkm_claim_adversarial_reread_v1.py --claim-text `"...`""
+    }
+    $dir = Split-Path -Parent $OutPath
+    if (-not (Test-Path -LiteralPath $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+    }
+    ($doc | ConvertTo-Json -Depth 6) | Set-Content -LiteralPath $OutPath -Encoding UTF8
+    return $doc
 }
 
 Write-Host "MKM AutonomousPatrol ($localDate) package=$patrolPackage weekly=$runWeekly" -ForegroundColor Green
@@ -187,13 +317,23 @@ if ($SkipSoloOps) {
 
 # --- git / CI readiness (read-only) ---
 $gitCi = Get-GitCiReadiness
+$allowlistPath = Join-Path $WorkspaceRoot "docs\final\artifacts\mkm_ops_dirty_tree_noise_allowlist_v1.json"
+$dirtyClass = Get-DirtyTreeNoiseClassification -RelPaths @($gitCi.dirty_paths) -AllowlistPath $allowlistPath
+$gitCi.dirty_noise = $dirtyClass
 $steps["git_ci_readiness"] = @{ exit_code = 0; snapshot = $gitCi; required = $false }
 Write-Host ""
-Write-Host "==> [git_ci_readiness] branch=$($gitCi.branch) dirty=$($gitCi.dirty_file_count) internal_ahead_origin=$($gitCi.internal_ahead_of_origin)" -ForegroundColor Cyan
+Write-Host "==> [git_ci_readiness] branch=$($gitCi.branch) dirty=$($gitCi.dirty_file_count) noise=$($dirtyClass.noise_count) actionable=$($dirtyClass.actionable_count) internal_ahead_origin=$($gitCi.internal_ahead_of_origin)" -ForegroundColor Cyan
 
 if ($gitCi.dirty_file_count -gt 0) {
-    $dirtyLabel = "uncommitted $($gitCi.dirty_file_count) files - commit or stash before push"
-    Add-ManualItem -Id "git_commit_or_stash" -LabelKo $dirtyLabel -Reason "working_tree_dirty" -Command "git status -sb"
+    if ($dirtyClass.noise_only) {
+        Add-ManualItem -Id "ops_artifact_noise_review" `
+            -LabelKo "생성 아티팩트 dirty $($dirtyClass.noise_count) (allowlist) — commit 강제 아님; stash -u 금지" `
+            -Reason "dirty_noise_only" `
+            -Command "git status -sb; Read docs/final/artifacts/mkm_ops_dirty_tree_noise_allowlist_v1.json"
+    } else {
+        $dirtyLabel = "uncommitted $($dirtyClass.actionable_count) actionable + $($dirtyClass.noise_count) noise - commit/stash(no -u) before push"
+        Add-ManualItem -Id "git_commit_or_stash" -LabelKo $dirtyLabel -Reason "working_tree_dirty" -Command "git status -sb"
+    }
 }
 if ($null -ne $gitCi.internal_ahead_of_origin -and $gitCi.internal_ahead_of_origin -ge 5) {
     $ghReason = "internal/main ahead of origin/main by $($gitCi.internal_ahead_of_origin) commits"
@@ -268,6 +408,26 @@ foreach ($name in $steps.Keys) {
 $pasteDetail = ($pasteParts -join ', ')
 $pasteLine = ('[AutonomousPatrol] {0} {1} ({2}; manual:{3}) | C-layer | No Track A/live' -f $localDate, $overall, $pasteDetail, $manualQueue.Count)
 
+# Sticky alert: surface scheduled LastTaskResult≠0 even when this interactive run looks OK.
+$schedInfo = $null
+try { $schedInfo = Get-ScheduledTaskInfo -TaskName "MKM_AutonomousPatrol_Daily" -ErrorAction SilentlyContinue } catch { }
+$stickyPath = Join-Path $WorkspaceRoot "docs\final\artifacts\mkm_autonomous_patrol_sticky_alert_v1_latest.json"
+$sticky = Write-AutonomousPatrolStickyAlert -OutPath $stickyPath -LocalDate $localDate -TaskInfo $schedInfo `
+    -Overall $overall -RequiredFailed $requiredFailed -PasteLine $pasteLine
+if ($sticky.alert) {
+    Add-ManualItem -Id "patrol_scheduled_last_result" `
+        -LabelKo ("AutonomousPatrol schedule LastTaskResult={0} sticky alert" -f $sticky.last_task_result) `
+        -Reason (($sticky.reasons) -join ',') `
+        -Command "Read docs/final/artifacts/mkm_autonomous_patrol_sticky_alert_v1_latest.json"
+    $pasteLine = ('[AutonomousPatrol] {0} {1} ({2}; manual:{3}; sticky:ALERT) | C-layer | No Track A/live' -f $localDate, $overall, $pasteDetail, $manualQueue.Count)
+}
+
+$metacogReminder = [ordered]@{
+    before_overall_ok_or_done_claim = $true
+    command = "py scripts/run_mkm_claim_adversarial_reread_v1.py --claim-text `"...`""
+    note_ko = "완료/자동화 완료/경영 자율 주장 전 claim adversarial 필수. AutonomousPatrol OK ≠ 회사 경영 자율 DONE ≠ remote Actions green."
+}
+
 $report = [ordered]@{
     schema               = "mkm_autonomous_patrol_v1"
     generated_at_utc     = $utcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ")
@@ -279,10 +439,20 @@ $report = [ordered]@{
     paste_line           = $pasteLine
     steps                = $steps
     git_ci_readiness     = $gitCi
+    sticky_alert         = $sticky
+    sticky_alert_path    = "docs/final/artifacts/mkm_autonomous_patrol_sticky_alert_v1_latest.json"
+    metacog_reminder     = $metacogReminder
     manual_queue         = @($manualQueue)
     manual_ssot          = "docs/final/artifacts/mkm_autonomous_patrol_manual_tasks_v1.json"
     repro_command        = "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmAutonomousPatrol_v1.ps1 -ContinueOnFail"
-    chat_triggers        = @("autonomous patrol", "AutonomousPatrol")
+    chat_triggers        = @("자율루프", "오늘 자율루프", "【자율점검】", "자율점검", "autonomous patrol", "AutonomousPatrol")
+    commander_daily_contract = "docs/final/artifacts/mkm_autonomous_patrol_commander_daily_contract_v1_latest.md"
+    honesty_limits_ko    = @(
+        "ops foundation only — not company-management autonomy DONE",
+        "AutonomousPatrol ≠ dual-regime / GitHub Actions green",
+        "AutonomousPatrol ≠ AthenaBundle / Fact-Lock daily",
+        "PR/CI iron-firewall paste often ~25% policy / ~75% rhetoric — keep Fact-Lock"
+    )
 }
 
 $reportDir = Join-Path $WorkspaceRoot "reports"
@@ -296,6 +466,10 @@ Write-Host ""
 Write-Host "==> paste one-liner" -ForegroundColor Green
 Write-Host "  $pasteLine"
 Write-Host "  file: $latestPath"
+Write-Host "  sticky: $stickyPath alert=$($sticky.alert) last_task_result=$($sticky.last_task_result)"
+if ($overall -eq "OK" -and -not $sticky.alert) {
+    Write-Host "  metacog: before any 완료 claim → run_mkm_claim_adversarial_reread_v1.py" -ForegroundColor DarkGray
+}
 
 if ($manualQueue.Count -gt 0) {
     Write-Host ""

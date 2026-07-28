@@ -39,6 +39,7 @@
 | 【빠른 헌법 점검】 | `… -Persona P0` |
 | 【암행어사 점검】 | `… -Persona AmsaengHealth` |
 | 【암행어사 UMR 신뢰성】 | `… -Persona AmsaengUniversalMultiResReliability` |
+| **【자율점검】** · `자율루프` · `오늘 자율루프` | `… -Persona AutonomousPatrol` → `reports/mkm_autonomous_patrol_latest.json` · 계약 `mkm_autonomous_patrol_commander_daily_contract_v1_latest.md` · ≠AthenaBundle daily · `@.cursor/skills/mkm-autonomous-patrol/SKILL.md` |
 | 【커서 세션 업그레이드】 | `… -Persona CursorSessionUpgrade` |
 | 【고차원 자율진화】 | `… -Persona HdAutonomousEvolution` (env `MKM_HD_AE_MISSION`·`MKM_HD_AE_LANE`; SSOT `docs/final/artifacts/mkm_high_dimensional_autonomous_evolution_v1_latest.json`) |
 | 【Bounded lane shadow】 | `… -Persona BoundedLaneLoopShadow` |
@@ -76,6 +77,8 @@
 | **딥리서치 (논문·학술)** | Tier 0 `docs/research/raw/` · Tier 1 `mkm-deep-research/SKILL.md` · Tier 2 exit 0 · **DR bench 헬스/Fact-Lock:** `-IncludeDeepResearchBenchSmoke` / `-DeepResearchBenchSmokeOnly` (`run_workspace_automation_health.ps1`) · CONSTITUTION DR bench mini 표 |
 | **Logos OSS (open-core harness)** | `py scripts/run_logos_oss_premarket_smoke_v1.py` · `py scripts/build_logos_oss_public_export_bundle_v1.py --materialize` → `exports/mkm-logos-research-oss-v1/` · manifest `logos_oss_public_export_manifest_v1.json` · **monorepo GitHub push ≠ export** |
 | 인프라·GPU·PC 경로 | `docs/final/LOCAL_MACHINE_POINTER_V1.md` (비추적) |
+| **Cursor hub · ops inbox** | `py scripts/run_mkm_ops_event_inbox_v1.py` (`enqueue`/`drain`/`status`) · JSONL `reports/mkm_ops_event_inbox_v1.jsonl` · SSOT `mkm_ops_event_inbox_v1_latest.*` · 초등 `reports/human_paste/mkm_ops_event_inbox_elementary_v1.txt` · ask/forbidden 자동 금지 |
+| **Notion 발행 (API · MCP 아님)** | `NOTION_TOKEN`+`NOTION_PARENT_PAGE_ID` · bot `MKM Baekje A1` · `py scripts/publish_mkm_hallucination_control_notion_pack_v1.py` 또는 inbox `publish_notion_pack` → drain · **Notion MCP 추가 금지(lean)** · Publish to web OFF |
 
 ## Git · 원격 (한 줄)
 
@@ -88,6 +91,7 @@
 ## MCP · 도구 카탈로그 (컨텍스트)
 
 - lean 7 `.cursor/mcp.json` · NL `@notebooklm-mcp-session-bridge` · 웹 `@autonomous-web-search-v1` · `check_notebooklm_mcp_prereqs.ps1` · `Invoke-McpHygieneProbe.ps1` · openchrome/hostinger **요청 시만**
+- **Notion:** MCP 미연결(의도) · 자동화는 **API** (`NOTION_TOKEN`) + ops inbox — 채팅에서 Notion을 자주 편집할 필요가 생기기 전 MCP 추가 금지
 
 ## `.cursorrules` (TITAN · Slim v2) · 확장
 

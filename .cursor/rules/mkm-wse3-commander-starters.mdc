@@ -75,3 +75,4 @@ description: >-
 - 토큰 벤치: `py scripts/bench_mkm_ops_memory_index_token_savings_v1.py`
 - 일상 패키지: `powershell -File scripts/Invoke-MkmCommandPackage_v1.ps1 -Package DailyOpsPatrol`
 - P0 빠른 점검: `scripts/verify_p0_constitution_gate_paths.ps1`
+- **일일 자율루프:** 채팅 `자율루프` / `오늘 자율루프` / `【자율점검】` → `Invoke-MkmPersonaHealth_v1.ps1 -Persona AutonomousPatrol` · 계약 `mkm_autonomous_patrol_commander_daily_contract_v1_latest.md` · 초등 `reports/human_paste/mkm_autonomous_loop_daily_elementary_v1.txt` · ≠AthenaBundle daily

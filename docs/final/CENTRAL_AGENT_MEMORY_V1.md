@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-07-28T15:50:28Z
+- **last_updated_utc:** 2026-07-28T17:39:00Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-21:** lens pack push **54/54** OK · OPS `CENTRAL_AGENT_MEMORY_V1` refreshed incl. 41k/31k 격벽 절). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1 -Refresh` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -159,26 +159,26 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
+- **2026-07-28T17:39:00Z** — 자율루프 daily plumbing READY: MKM_AutonomousPatrol_Daily Ready@07:30 + commander contract/elementary/AGENTS triggers; ≠AthenaBundle daily
+- **2026-07-28T17:35:02Z** — NEW-APOCRYPHA-006 citation-audit shadow stamped · apo∩canon_G=13 thin · cognate both=1 · PASSIVE · SEND HOLD
+- **2026-07-28T17:25:45Z** — AutonomousPatrol sticky cleared: Env flake=Phase1 all_ok=False under DailyOps; OpsPatrolHealth SkipPhase1+SkipNews; sticky ignores 267009/exit2; CommandPackage Start-Process exit; alert=false LTR=2 WARN Athena drift only
+- **2026-07-28T17:22:50Z** — continuity=infra-gpu-verify-ladder-2026-07-26 · AGENTS thin: ops inbox + Notion API(MCP아님) 포인터; Polar HITL next; session end
+- **2026-07-28T17:21:24Z** — AGENTS: ops inbox + Notion API(MCP아님) 포인터 2행 반영
+- **2026-07-28T17:13:15Z** — ops: Cursor hub event inbox v1 (enqueue/drain) smoke DONE · Notion/Polar ask-gate wired
+- **2026-07-28T17:13:13Z** — continuity=acodeai-routing-csi2-myeongri-freeze · a-codeai routing MVP+Audit; CSI-2 myeongri disk-prefer; myeongri FREEZE stamp; 5x BLOCKED pitch≠deck; customer-wait
+- **2026-07-28T17:03:03Z** — Chronos Detached DONE · dir_match~50.9% · completion~96.7% · ≠alpha/live
+- **2026-07-28T16:53:39Z** — Infra: Chronos KOSPI baseline Detached STARTED (Mode=both) · Polar대기 idle#5
+- **2026-07-28T16:47:27Z** — 위임M: Nemotron DryRunLocal DONE (Windows CSV·exit0 rows=8) · broken WSL venv bypass 고정
+- **2026-07-28T16:44:24Z** — patrol sticky wall: Athena drift cleared (WaitingQueue+ProphecyPanel Enabled); Env ops_patrol_health flaky under scheduled DailyOpsPatrol → LastTaskResult=1 alert=true; session work restored ~328
+- **2026-07-28T15:54:57Z** — a-codeai: Notion 권장팩 고정 — 재판정표+교정FAQ (Gemini 동의문 비부착·SEND HOLD)
 - **2026-07-28T15:50:28Z** — a-codeai: 환각제어 6층 내부 FAQ 교정 paste+artifact (≠SLA·SEND HOLD·FC6/Sharpe 오인용 수정)
 - **2026-07-28T15:43:21Z** — patrol manual_queue resolved: git tree + scheduled triage
-- **2026-07-17T13:07:10Z** — Domain A friend-proxy eval via external LLM · cold still DO_NOT_SEND
-- **2026-07-17T12:57:50Z** — Batch A 9ef47691a2: Nemotron WSL venv SSOT (.venv-wsl-nemotron) + vault SKIP when G missing + .venv-presidio gitignore; dirty ~166 left (Batch B Ask or G remount)
-- **2026-07-17T12:55:53Z** — G: vault SKIP exit0 (no fake C: vault); dirty triage 170 → git_dirty_triage_infra_v1_latest.md; Infra next=G remount or Batch A Ask
-- **2026-07-17T12:23:15Z** — kept .venv-wsl-nemotron; removed .venv-nemotron-wsl; C free +7.90GB (278.87→287.35GB)
-- **2026-07-17T12:17:52Z** — Domain A HOLD auto demo capture DONE — PNG+flipbook+mp4 under reports/domain_a_demo_shots; Loom/voice still human; cold DO_NOT_SEND
-- **2026-07-17T12:05:28Z** — Infra: nemotron dual-venv WhatIf (~8.1GB each, both script-referenced, no delete); vault push SKIP graceful when G: unmounted; C free unchanged ~27.9%
-- **2026-07-17T12:05:21Z** — Standalone auth+privacy default system v1 frozen (email-only+intentional onboarding+walls); Hanbi contrast; SEND HOLD
-- **2026-07-17T11:44:31Z** — Infra C-free: before/after 259.7GB 27.9% unchanged; EphemeralCleanup -Apply exit0 deleted=0 (out/logs/staging empty); G: missing OPEN; dirty porcelain=167
-- **2026-07-17T11:23:39Z** — 고차원위임: 재개·순찰 OK · C여유27.9% 압박 · HD quality_ok=false(browser/infra) · 오케업그레이드=기존 Done-card/Persona 강화(신규프레임비추)
-- **2026-07-17T10:16:59Z** — Domain A must-fix: local dogfood+SOP intake+honest outreach · cold SEND still DO_NOT_SEND
-- **2026-07-17T10:05:37Z** — 2026-07 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
-- **2026-07-17T09:59:40Z** — Domain A outreach DO_NOT_SEND · localhost demo only · must-fix shared URL+SOP intake before any outbound
-- **2026-07-17T09:54:57Z** — Domain A HOLD outreach draft READY · 지휘관 발송 1건
-- **2026-07-17T09:46:42Z** — Domain A agent-auto: audit repro 27/27 fp=0 + synthetic 약관 HOLD demo + gap v1.4; product/audit still partial; SEND HOLD
-- **2026-07-17T09:35:18Z** — 2026-07 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
-- **2026-07-17T09:32:30Z** — Logos VPS topical routing fix 666/gen2/job · quality-bundle pass · friend 7/7 · SEND HOLD
-- **2026-07-17T09:05:10Z** — Friend battery 7/7 restore · preset harness aligned · SEND HOLD
-- **2026-07-17T07:52:47Z** — quality-bundle live-vps timeout rail intact · VPS content routing bug found (3 queries wrong anchor) · friend battery 7/7 · SEND HOLD
+- **2026-07-28T15:06:02Z** — 2026-07-29 자율루프: solo_ops OK + AutonomousPatrol overall OK (sticky WARN 예약 LastTaskResult=1, 수동큐 2)
+- **2026-07-28T14:59:11Z** — a-codeai CE 위임: internal alignment 1p+Claude5 market trend 부록+phase2 diet review; fact-lock exit0; SEND HOLD
+- **2026-07-28T14:58:43Z** — CENTRAL Obsidian dormant OK optional personal memo governance
+- **2026-07-28T14:53:00Z** — CENTRAL TOOL_STACK_GOVERNANCE: Notion optional collab HITL only never SSOT
+- **2026-07-28T14:46:22Z** — continuity=gwangmyeong-880-option2-2026-07-28 · 광명880 세션종료: 옵션② M2외피P1+EV통로P2 LOCK, RFQ 4문항·Q-A/B/C 분리견적 반영, M/M2 파사드 컨셉, 비용확정=건축사 답변 후
+- **2026-07-28T14:44:23Z** — MKM Cursor agent triad v1 rule on disk; MCP lens priority advisory
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
@@ -337,6 +337,17 @@
 | **Cursor `@` (세션 격벽)** | 매매·시장 가설(B-track)·실행 코드 논의 세션에서는 **`SPIRIT/10_Daily_Log`·재무 등 사생활 문서를 `@`로 끌어오지 않는다.** 반면 `OPS/`·`CODING/`·`30_Resources/` 류 **운영·코드 메모**는 동일 세션에서 `@` 참조 가능. |
 
 **안 A 경로 고정(한 볼트):** `memory/obsidian_vault/00_Inbox/` · `SPIRIT/10_Daily_Log/` · `20_Projects/` · `30_Resources/` · `SPIRIT/40_Review/` — 상세 표는 지휘관 확정본을 따른다.
+
+> **[TOOL_STACK_GOVERNANCE]**
+> `Notion = optional collab & HITL sharing interface only, NEVER SSOT.`
+> Primary execution & truth boundary remains strictly `Git/CENTRAL + Cursor`.
+> 「Notion = optional collab only, not SSOT」
+
+> **[OBSIDIAN_GOVERNANCE]**
+> Obsidian = optional personal local memo; **dormant/unused is OK** — not an MKM ops failure.
+> Do NOT nag the commander to use Obsidian; do NOT auto-mirror vault to Git/CENTRAL/Notion.
+> Promotion path unchanged: manual one-line to CENTRAL/checkpoint when the commander chooses.
+> Primary stack: `Git/CENTRAL + Cursor` (+ `reports/human_paste/` for HITL paste).
 
 ### 연구·아이디어 인박스 (심사·토의 전용)
 

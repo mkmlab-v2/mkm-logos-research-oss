@@ -160,6 +160,7 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 - **Forbidden in core profile:** `playwright`, `manseryeok-mcp`.
 - **LTM mode lock:** `athena-core.env.MKM12_LTM_DB_TYPE=file`.
 - **NotebookLM:** `.cursor/rules/notebooklm-mcp-session-bridge.mdc` — UI green ≠ session inject; `get_health` before ask. Hygiene: `check_notebooklm_mcp_prereqs.ps1` · `Invoke-McpHygieneProbe.ps1`.
+- **Notion (API only · no MCP):** lean profile에 Notion MCP 없음(의도). 발행 `py scripts/publish_mkm_hallucination_control_notion_pack_v1.py` · 허브 큐 `py scripts/run_mkm_ops_event_inbox_v1.py` — 포인터는 루트 `AGENTS.md` 「핵심 SSOT」.
 
 ## MKM AI v2 Final Governance (lookup · personas)
 
@@ -253,6 +254,7 @@ Cursor/채팅에서 아래 **구분자**가 나오면, 에이전트는 **추측 
 | 【아테나 점검】 | Fact-Lock 번들 (`run_fact_lock_bundle.ps1`, CI에 가까운 순서) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle` |
 | 【프리미엄 큐 권장】 | 프리미엄 멀티렌즈 pytest 4종 + `drain --allow-missing-queue` + S1 승격 게이트(번들 4b·헬스 Premium과 동선) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona PremiumMultilensQueue` |
 | 【암행어사 점검】 | 자동화 헬스 기본 실행 (`run_workspace_automation_health.ps1` 기본 스위치) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AmsaengHealth` |
+| 【자율점검】·`자율루프`·`오늘 자율루프` | 일일 자율루프: solo_ops + Daily/WeeklyOps + Git/CI snapshot + manual_queue (≠AthenaBundle/Fact-Lock 매일) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AutonomousPatrol` |
 | 【빠른 헌법 점검】 | P0 필수 경로 존재만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona P0` |
 | 【아람 일일 준비】 | Aramaic MVP 일일 예약 작업 인자·Track T survivor dry-run 스위치 확인(`Verify-AramaicMvpDailyTaskReadiness.ps1`; 작업 미등록 시 실패) | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona AramaicDailyReadiness` |
 | 【GPU 권장 번들】 | Control-Integrity oracle + Pack 0-B pytest(CONSTITUTION §1.2.1); P0·reconcile 후 번들만 | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmPersonaHealth_v1.ps1 -Persona GpuRecommendedBundle` |
