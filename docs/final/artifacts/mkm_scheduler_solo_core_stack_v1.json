@@ -1,7 +1,7 @@
 {
   "schema": "mkm_scheduler_solo_core_stack_v1",
-  "version": "2026-06-21",
-  "description": "1인 solo dev 권장 스케줄러 코어. 일상: Invoke-MkmSoloBackgroundOps_v1.ps1 + Invoke-MkmSchedulerSoloCoreStackAudit_v1.ps1 -EnforceSoloBand (solo_stack_ready<=max, unauthorized_ready=0). Apply Disable: -ApplyDisable -BatchFilter <id> 만. Track A/live 자동 승격 없음.",
+  "version": "2026-07-28",
+  "description": "1인 solo dev 권장 스케줄러 코어. 일상: Invoke-MkmSoloBackgroundOps_v1.ps1 + Invoke-MkmSchedulerSoloCoreStackAudit_v1.ps1 -EnforceSoloBand (solo_stack_ready<=max, unauthorized_ready=0). Apply Disable: -ApplyDisable -BatchFilter <id> 만. Track A/live 자동 승격 없음. 2026-07-28: legacy MKM-Telegram-Commander-Morning-Dual → MKM-Daily-Dual-Briefing-Telegram (Register-DailyDualBriefingTelegram_v1).",
   "tier0_core_daily": [
     "\\MKM_ParallelPassiveLoop_Daily",
     "\\MKM_SafeOpsSurfaceCheck_Daily",
@@ -57,7 +57,9 @@
     "\\MKM_Kospi_Daily_Premarket_Ingest_Sunday_v1",
     "\\MKM_Kospi_Daily_Prophecy_Evolution_Evening_v1",
     "\\MKM_Kospi_Daily_Prophecy_Evolution_Morning_v1",
-    "\\MKM_Kospi_Daily_Prophecy_Evolution_Weekend_v1"
+    "\\MKM_Kospi_Daily_Prophecy_Evolution_Weekend_v1",
+    "\\MKM-Daily-Dual-Briefing-Telegram",
+    "\\MKM-Daily-PreClose-Briefing-Telegram"
   ],
   "disable_batches": {
     "btrack_dup_daily": {
@@ -421,6 +423,7 @@
     "\\MKM_BTrack_AtprotoBluesky_Weekly",
     "\\MKM_BTrack_SwarmStage1_DailyAccumulation",
     "\\MKM_HdAutonomousEvolution_Weekly",
+    "\\MKM_LogosAsk_ProductGateAuto_Weekly",
     "\\MKM_Oracle_Module_Observability_Weekly",
     "\\MKM_HybridCodec_OperationalSoak_Loop",
     "\\MKM_MyeongniStudioSmoke_Daily",
