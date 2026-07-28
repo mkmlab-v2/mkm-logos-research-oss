@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-07-17T13:07:10Z
+- **last_updated_utc:** 2026-07-28T15:50:28Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-21:** lens pack push **54/54** OK · OPS `CENTRAL_AGENT_MEMORY_V1` refreshed incl. 41k/31k 격벽 절). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1 -Refresh` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -159,6 +159,8 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
+- **2026-07-28T15:50:28Z** — a-codeai: 환각제어 6층 내부 FAQ 교정 paste+artifact (≠SLA·SEND HOLD·FC6/Sharpe 오인용 수정)
+- **2026-07-28T15:43:21Z** — patrol manual_queue resolved: git tree + scheduled triage
 - **2026-07-17T13:07:10Z** — Domain A friend-proxy eval via external LLM · cold still DO_NOT_SEND
 - **2026-07-17T12:57:50Z** — Batch A 9ef47691a2: Nemotron WSL venv SSOT (.venv-wsl-nemotron) + vault SKIP when G missing + .venv-presidio gitignore; dirty ~166 left (Batch B Ask or G remount)
 - **2026-07-17T12:55:53Z** — G: vault SKIP exit0 (no fake C: vault); dirty triage 170 → git_dirty_triage_infra_v1_latest.md; Infra next=G remount or Batch A Ask
@@ -177,8 +179,6 @@
 - **2026-07-17T09:32:30Z** — Logos VPS topical routing fix 666/gen2/job · quality-bundle pass · friend 7/7 · SEND HOLD
 - **2026-07-17T09:05:10Z** — Friend battery 7/7 restore · preset harness aligned · SEND HOLD
 - **2026-07-17T07:52:47Z** — quality-bundle live-vps timeout rail intact · VPS content routing bug found (3 queries wrong anchor) · friend battery 7/7 · SEND HOLD
-- **2026-07-17T07:15:53Z** — continuity=logos-domain-a-pii-2026-07-17 · Oracle Domain A PII close: Allowlist+QE; HYBRID+durable vault+egress thin attach+CloakPipe SKIP+dogfood near-real harness; S FROZEN; m2m excluded; SEND HOLD; ≠ commercial DONE; residual thin allowlist OR Logos QE
-- **2026-07-17T07:14:34Z** — continuity=resume-trackc-commercial-eval-2026-07-17 · Resume+TRACK_C/CONSTITUTION: no full rewrite; portfolio next-1 prose drift optional; a-codeai PARTIAL/PIVOT; Cache-Delta+customer JSONL bottleneck; Logos friend≠PMF; SEND HOLD
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 
