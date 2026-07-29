@@ -49,6 +49,9 @@ TIER2_PROTOCOL_REL = "docs/final/artifacts/logos_oracle_tier2_incremental_append
 TIER3_PROTOCOL_REL = "docs/final/artifacts/logos_oracle_tier3_narrative_upgrade_protocol_v1_latest.json"
 TIER2_MANIFEST_REL = "reports/logos_oracle_tier2_cursor_inject_manifest_v1_latest.json"
 A2A_ORACLE_BRIEF_REL = "docs/final/artifacts/a2a_tier3_cursor_wire_handoff_brief_oracle_v1_latest.md"
+A2A_THIN_MOUNT_REL = "docs/final/artifacts/mkm_cursor_a2a_thin_mount_v1_latest.json"
+A2A_APPLY_ELEMENTARY_REL = "reports/human_paste/mkm_cursor_a2a_wire_apply_elementary_v1.txt"
+A2A_THIN_MOUNT_RULE_REL = ".cursor/rules/mkm-cursor-a2a-thin-mount-v1.mdc"
 NARRATIVE_OBS_REL = "docs/final/artifacts/logos_oracle_narrative_closure_observability_v1_latest.json"
 ORACLE_MODULE_EDGE_IDS = (
     "oracle_cursor_inject_tier1_readiness",
@@ -60,6 +63,10 @@ ORACLE_MODULE_EDGE_IDS = (
 COMMANDER_TRIGGERS_REL = "docs/final/artifacts/mkm_commander_resume_triggers_v1.json"
 COMMANDER_CHAT_TONE_REL = "docs/final/artifacts/commander_chat_tone_prefs_v1_latest.json"
 SEND_GATE_VOCAB_REL = "docs/final/artifacts/mkm_send_gate_vocabulary_v1_latest.json"
+# CURSOR-IDE-002: thin S-L-K-M pin source (gematria_bridge_v1 snapshot; not Final Action).
+GEMATRIA_MATRIX_SNAPSHOT_REL = (
+    "docs/final/artifacts/logos_gematria_matrix_snapshot_v1_latest.json"
+)
 
 
 def _load_commander_chat_tone(root: Path) -> Dict[str, Any]:
@@ -162,6 +169,94 @@ def _load_nl_ltm_sync_status(root: Path) -> Dict[str, Any] | None:
         ),
         "nl_mcp_note": "Read 참모 — 통과 판정은 Cursor exit 0만",
     }
+
+
+def _load_slkm_pin(root: Path) -> Dict[str, Any]:
+    """Thin 1-line S-L-K-M pin for resume pack (CURSOR-IDE-002).
+
+    Prefers gematria_bridge_v1 matrix snapshot mean vector_4d on disk.
+    Does not invent coordinates; missing source → explicit unavailable pin.
+    MUST_NOT: Final Action / live trade / alwaysApply promotion.
+    """
+    path = root / GEMATRIA_MATRIX_SNAPSHOT_REL
+    base: Dict[str, Any] = {
+        "label": "S-L-K-M",
+        "role": "harness_soft_hint_only",
+        "research_only": True,
+        "send_gate": "HOLD",
+        "final_action_forbidden": True,
+        "source_rel": GEMATRIA_MATRIX_SNAPSHOT_REL,
+    }
+    if not path.is_file():
+        line = (
+            "S-L-K-M: unavailable (disk source missing) · "
+            f"fallback_note=`{GEMATRIA_MATRIX_SNAPSHOT_REL}` · "
+            "[HYPO] · NON_GATING · ≠Final Action"
+        )
+        base.update(
+            {
+                "available": False,
+                "fallback": "missing_gematria_matrix_snapshot",
+                "line": line,
+            }
+        )
+        return base
+    doc = _read_json(path)
+    entries = doc.get("entries") if isinstance(doc.get("entries"), list) else []
+    vectors: List[Dict[str, float]] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        v = entry.get("vector_4d")
+        if not isinstance(v, dict):
+            continue
+        try:
+            vectors.append(
+                {
+                    "S": float(v["S"]),
+                    "L": float(v["L"]),
+                    "K": float(v["K"]),
+                    "M": float(v["M"]),
+                }
+            )
+        except (KeyError, TypeError, ValueError):
+            continue
+    if not vectors:
+        line = (
+            "S-L-K-M: unavailable (snapshot has no vector_4d) · "
+            f"source=`{GEMATRIA_MATRIX_SNAPSHOT_REL}` · "
+            "[HYPO] · NON_GATING · ≠Final Action"
+        )
+        base.update(
+            {
+                "available": False,
+                "fallback": "empty_vector_4d_entries",
+                "kernel_recipe_id": doc.get("kernel_recipe_id"),
+                "line": line,
+            }
+        )
+        return base
+    n = len(vectors)
+    mean = {
+        axis: round(sum(v[axis] for v in vectors) / n, 4) for axis in ("S", "L", "K", "M")
+    }
+    line = (
+        f"S-L-K-M: S={mean['S']} L={mean['L']} K={mean['K']} M={mean['M']} · "
+        f"source=gematria_bridge_v1:{GEMATRIA_MATRIX_SNAPSHOT_REL} "
+        f"agg=mean_n={n} · [HYPO] · NON_GATING · ≠Final Action"
+    )
+    base.update(
+        {
+            "available": True,
+            "fallback": None,
+            "kernel_recipe_id": doc.get("kernel_recipe_id") or "gematria_bridge_v1",
+            "aggregation": "mean_vector_4d_over_snapshot_entries",
+            "entry_count_used": n,
+            "vector_4d_mean": mean,
+            "line": line,
+        }
+    )
+    return base
 
 
 def _load_ops_pins(
@@ -601,6 +696,29 @@ def main() -> int:
         "commander_resume_triggers_ssot": COMMANDER_TRIGGERS_REL,
         "commander_chat_tone_ssot": COMMANDER_CHAT_TONE_REL,
         "send_gate_vocabulary_ssot": SEND_GATE_VOCAB_REL,
+        "pin_cue": {
+            "schema": "mkm_chat_resume_pin_cue_v1",
+            "version": 1,
+            "first_reply_three_lines": [
+                "ACTIVE_LANE=<oracle|ms|infra|web_ops|design>",
+                "ONE_SHOT_GOAL=<one measurable goal>",
+                "DONE_WHEN=<before→after or exit0+artifact>",
+            ],
+            "oneshot_contract_cmd": (
+                "py scripts/run_mkm_resume_oneshot_contract_v1.py "
+                '--lane <lane> --goal "..." --done-when "..."'
+            ),
+            "oneshot_contract_ssot": (
+                "docs/final/artifacts/mkm_resume_oneshot_contract_v1_latest.md"
+            ),
+            "authority": (
+                "docs/final/artifacts/cursor_agent_underperform_higher_model_advice_v1_latest.md"
+            ),
+            "note_ko": (
+                "재개 직후 첫 응답은 위 3줄만. 충돌 핀이면 named_conflict 1건 지목 후 "
+                "단일 레인 목표 유지. reload_required면 도구 금지."
+            ),
+        },
         "commander_chat_tone": commander_chat_tone or None,
         "commander_resume_mode": {
             "mode_id": mode_doc.get("mode_id", active_mode),
@@ -649,6 +767,8 @@ def main() -> int:
         ],
     }
     resume["ops_memory_pins"] = ops_pins
+    slkm_pin = _load_slkm_pin(root)
+    resume["slkm_pin"] = slkm_pin
     where_used_link = _where_used_resume_link(root, str(args.topic or ""))
     if where_used_link:
         resume["where_used"] = where_used_link
@@ -670,6 +790,9 @@ def main() -> int:
         resume["quick_refs"]["oracle_tier3_protocol"] = TIER3_PROTOCOL_REL
         resume["quick_refs"]["oracle_tier2_manifest"] = TIER2_MANIFEST_REL
         resume["quick_refs"]["oracle_a2a_tier3_brief"] = A2A_ORACLE_BRIEF_REL
+        resume["quick_refs"]["oracle_a2a_thin_mount"] = A2A_THIN_MOUNT_REL
+        resume["quick_refs"]["oracle_a2a_apply_elementary"] = A2A_APPLY_ELEMENTARY_REL
+        resume["quick_refs"]["oracle_a2a_thin_mount_rule"] = A2A_THIN_MOUNT_RULE_REL
         resume["quick_refs"]["oracle_narrative_closure_observability"] = NARRATIVE_OBS_REL
         resume["quick_refs"]["oracle_module_cursor_rule"] = ORACLE_MODULE_RULE
         wiring_doc = _read_json(root / LOGOS_WIRING_REL)
@@ -677,6 +800,7 @@ def main() -> int:
         tier2_doc = _read_json(root / TIER2_PROTOCOL_REL)
         tier3_doc = _read_json(root / TIER3_PROTOCOL_REL)
         observability_doc = _read_json(root / NARRATIVE_OBS_REL)
+        thin_mount_doc = _read_json(root / A2A_THIN_MOUNT_REL)
         snap = readiness_doc.get("tier2_pin_schema_snapshot") or {}
         resume["logos_theory_wiring"] = {
             "registry": LOGOS_WIRING_REL,
@@ -691,6 +815,14 @@ def main() -> int:
             "tier3_protocol": TIER3_PROTOCOL_REL,
             "tier2_manifest": TIER2_MANIFEST_REL,
             "a2a_tier3_oracle_brief": A2A_ORACLE_BRIEF_REL,
+            "a2a_thin_mount": A2A_THIN_MOUNT_REL,
+            "a2a_apply_elementary": A2A_APPLY_ELEMENTARY_REL,
+            "a2a_thin_mount_rule": A2A_THIN_MOUNT_RULE_REL,
+            "a2a_thin_mount_status": (thin_mount_doc or {}).get("status"),
+            "a2a_thin_mount_essence": (
+                (thin_mount_doc or {}).get("essence_ko")
+                or "A2A thin mount · peer brief @ · NOT alwaysApply · ≠ a-codeai"
+            ),
             "narrative_closure_observability": NARRATIVE_OBS_REL,
             "send_gate": readiness_doc.get("send_gate"),
             "tier1_module_ssot_ready": readiness_doc.get("tier1_module_ssot_ready"),
@@ -734,8 +866,8 @@ def main() -> int:
         registry_path, lane=guard_lane, limit=max(1, args.mistake_guardrail_limit)
     )
     jema_wall_line = (
-        "Field(regime_map+ops gates)만 Final Action; 사상=단기 톤 보조 [HYPO][NON_GATING]; "
-        "Track A·임상·실매매·단정 트리거 금지."
+        "Field(regime_map+ops gates)만 Final Action; 3렌즈=병렬 advisory [HYPO][NON_GATING] "
+        "(예측 호라이즌 매핑 폐기 · Charter); Track A·임상·실매매·단정 트리거 금지."
     )
     guard_lines = [f"- {jema_wall_line}"] + guardrail_lines(guard_records)
     rel_registry = (
@@ -790,6 +922,7 @@ def main() -> int:
         f"- trackc_packet_status: `{resume['latest_status'].get('trackc_packet_status')}` "
         f"(artifact READY ≠ SEND; see SEND_GATE below)",
         f"- acceptance_status: `{resume['latest_status'].get('acceptance_status')}`",
+        f"- {(resume.get('slkm_pin') or {}).get('line') or 'S-L-K-M: unavailable'}",
         "",
     ]
     briefing = resume.get("commander_briefing") or {}
@@ -803,6 +936,10 @@ def main() -> int:
             f"- mission_log: {briefing.get('mission_log_mode')}",
             f"- fact_lock: {briefing.get('fact_lock')}",
             f"- SEND_GATE: `{briefing.get('send_gate')}`",
+            "- oneshot_contract (Day1·Azure HQ underperform advice): first reply **3 lines only** — "
+            "`ACTIVE_LANE=` · `ONE_SHOT_GOAL=` · `DONE_WHEN=` "
+            "(disk: `py scripts/run_mkm_resume_oneshot_contract_v1.py` · "
+            "`docs/final/artifacts/mkm_resume_oneshot_contract_v1_latest.md`)",
         ]
         if briefing.get("send_gate_vocab"):
             md_lines.append(
@@ -840,6 +977,18 @@ def main() -> int:
                 f"@ `{nl_sync.get('generated_at_utc')}` · repro: `{nl_sync.get('repro_push')}`"
             )
         md_lines.append("")
+    # Pin Cue always (force-gate + Day1 oneshot) — independent of briefing block.
+    md_lines += [
+        "## Pin Cue · 재개 시 먼저",
+        "",
+        "1. `ACTIVE_LANE=<oracle|ms|infra|web_ops|design>`",
+        "2. `ONE_SHOT_GOAL=<one measurable goal>`",
+        "3. `DONE_WHEN=<before→after or exit0+artifact>`",
+        "",
+        "- disk: `py scripts/run_mkm_resume_oneshot_contract_v1.py --lane … --goal \"…\" --done-when \"…\"`",
+        "- artifact: `docs/final/artifacts/mkm_resume_oneshot_contract_v1_latest.md`",
+        "",
+    ]
     mg = resume.get("mistake_guardrails") or {}
     if mg.get("lines") or mg.get("yaml"):
         md_lines += [
@@ -957,6 +1106,10 @@ def main() -> int:
             f"- observability_pass: `{module_lane.get('observation_pass')}`",
             f"- module edges: {', '.join(f'`{e}`' for e in module_lane.get('module_wiring_edge_ids') or [])}",
             f"- weekly: `{module_lane.get('weekly_routine')}`",
+            f"- a2a_thin_mount: `{module_lane.get('a2a_thin_mount_status')}` · `{module_lane.get('a2a_thin_mount')}`",
+            f"- a2a_brief: `{module_lane.get('a2a_tier3_oracle_brief')}`",
+            f"- a2a_elementary: `{module_lane.get('a2a_apply_elementary')}` · rule `{module_lane.get('a2a_thin_mount_rule')}`",
+            f"- a2a_essence: {module_lane.get('a2a_thin_mount_essence')}",
             "",
         ]
 

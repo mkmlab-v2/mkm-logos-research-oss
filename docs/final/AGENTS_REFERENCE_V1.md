@@ -95,11 +95,11 @@ Ops 핸드오프 (docs/final/CURRENT_OPS_SNAPSHOT.md)
 - 배제: "일기 반영" 또는 "오늘 일기 동기화"만 있는 메시지는 이 핸드오프 규칙을 적용하지 않고, AGENTS.md 「다중 채팅 작업 일기」절의 athena_daily_thread_log_sync_v1.py 경로를 따른다. 두 요청이 한 턴에 섞이면 사용자에게 어느 쪽인지 한 번만 묻는다.
 ```
 
-## 렌즈 역할 계약 (모든 채팅 공통 · 혼동 금지)
+## 렌즈 계약 (모든 채팅 공통 · Charter · 혼동 금지)
 
 - **렌즈 명칭 고정:** `사상`, `명리`, `성경(Logos)` 3개만 사용한다. `Macro/Regime` 같은 운영 레이어명을 렌즈명처럼 혼용하지 않는다.
-- **역할 고정:** 성경=`거시/레짐 게이트(허용·감쇠)`, 명리=`중기 방향 코어`, 사상=`단기 심리·강도 조절`.
-- **A-track 규칙:** 실전 트리거는 1차 실물 `regime_map`과 운영 게이트가 주도한다. 3렌즈는 보조이며 직접 주문 트리거로 승격하지 않는다.
+- **렌즈 계약 (Charter):** 3렌즈 = 해석·교육·관측 사이드바 `[NON_GATING]` · 병렬 advisory · **시장·가격 예측 호라이즌 매핑 폐기** (`three_lens_horizon_empirical_eval_v2` 0/5). SSOT: `docs/final/LENS_UTILIZATION_CHARTER_V1.md`.
+- **A-track 규칙:** Final Action = Field(`regime_map` + 운영 게이트)만. 3렌즈는 보조이며 직접 주문 트리거·Final weight로 승격하지 않는다.
 - **출력 고정 포맷:** `Field(레짐)` → `Lens(사상/명리/성경)` → `Conflict Resolver` → `Final Action(HOLD/REDUCE/WATCH)` 순서를 유지한다.
 - **명리 고도화(장기기억):** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` 「명리 렌즈 고도화 v1」— 만세력 Fact-Lock·§3.3 결정론 스택·삼고(입력·엔진·출력); 날씨·일반예언(B 레일)은 **캘리브레이션·게이트 원리만** 차용하고 명리 결정론과 **데이터 자동 합선 금지**.
 - **명리 주간 최소 루프(원클릭):** `scripts/Run-MyeongniWeeklyOpsSummary_v1.ps1` → `reports/myeongni_weekly_ops_summary_latest.md`(비권위); KPI는 `independent_lens_shadow_gate_latest.json`(§3.3 표); 선택 `-Include16StateProbe`.

@@ -29,6 +29,12 @@
 .PARAMETER ResumeMode
   Standard (default) or AdvancedLogos — maps to commander trigger 「장기기억 맥락이어 고급해석」 (forces -Lane oracle when omitted).
 
+.PARAMETER SkipResumeForceGate
+  Skip disk resume-force gate (default = "on" meaning gate runs unless this switch or MKM_RESUME_FORCE_GATE=0).
+
+.PARAMETER SkipOneshotContract
+  Skip oneshot contract advisory refresh (ACTIVE_LANE/ONE_SHOT_GOAL/DONE_WHEN + pin/hygiene).
+
 .EXAMPLE
   powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle
 #>
@@ -41,7 +47,9 @@ param(
     [switch]$SkipIndexRebuild,
     [switch]$SkipL2Shadow,
     [switch]$SkipTier3WireHandoff,
-    [switch]$SkipBrowserAutoFix
+    [switch]$SkipBrowserAutoFix,
+    [switch]$SkipResumeForceGate,
+    [switch]$SkipOneshotContract
 )
 
 $ErrorActionPreference = "Stop"
@@ -183,6 +191,11 @@ Invoke-Step "cursor_rules_context_diet" {
     py (Join-Path $root "scripts\check_cursor_rules_context_diet_v1.py")
 } | Out-Null
 
+# --- 3-lens horizon reintro guard (fail-closed: sets upgrade ok=false on non-zero) ---
+Invoke-Step "three_lens_forbidden_reintro_guard" {
+    py (Join-Path $root "scripts\check_mkm_three_lens_forbidden_reintro_guard_v1.py") --strict
+} | Out-Null
+
 # --- Rhythm suggestion (report only — no auto Amsaeng/Athena on session start) ---
 $dow = (Get-Date).DayOfWeek.value__
 $rhythm = [ordered]@{
@@ -225,6 +238,9 @@ $contextDiet = [ordered]@{
     read_third = "MISSION_LOG.md"
     required_ssot_contract = "docs/final/artifacts/mkm_meta_coordinator_turn_contract_v1_latest.md"
     agent_self_check = "suspect_first — doubt chat memory; verify CONSTITUTION+exit0; envelope.agent_self_check"
+    oneshot_first_reply = "ACTIVE_LANE= · ONE_SHOT_GOAL= · DONE_WHEN= (3 lines; Day1 Azure HQ underperform advice)"
+    oneshot_contract_ssot = "docs/final/artifacts/mkm_resume_oneshot_contract_v1_latest.md"
+    oneshot_contract_cmd = 'py scripts/run_mkm_resume_oneshot_contract_v1.py --lane <lane> --goal "..." --done-when "..."'
     session_end_command = 'py scripts/run_mkm_cursor_session_end_v1.py --lane <lane> --continuity-id <id> --message "<line>"'
     read_fallback = "docs/final/CENTRAL_AGENT_MEMORY_V1.md (checkpoint block only)"
     never_on_resume = "Full MISSION_LOG.md paste; alwaysApply expansion"
@@ -238,7 +254,14 @@ $reproCmd = "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-
 if ($Lane) { $reproCmd += " -Lane $Lane" }
 if ($ResumeMode) { $reproCmd += " -ResumeMode $ResumeMode" }
 
-$latest = [ordered]@{
+# --- Resume force gate (default ON; write upgrade stamp first so age check can pass) ---
+$forceGateEnv = ($env:MKM_RESUME_FORCE_GATE | ForEach-Object { "$_".Trim().ToLowerInvariant() })
+$forceGateSkipEnv = @("0", "false", "no", "off") -contains $forceGateEnv
+$oneshotAdvisory = $null
+$forceGateStatus = $null
+
+# Pre-write upgrade stamp so force gate sees a fresh artifact (chicken-egg fix).
+$preWrite = [ordered]@{
     schema = "mkm_cursor_session_upgrade_v1"
     generated_at_utc = $utcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ")
     last_run_local_date = $localDate
@@ -256,17 +279,73 @@ $latest = [ordered]@{
     deep_handoff_envelope = $envelopeArtifact
     deep_handoff_envelope_reports = $envelopeReports
     reproducible_command = $reproCmd
+    prewrite = $true
 }
-
 $reportDir = Join-Path $root "reports"
 if (-not (Test-Path -LiteralPath $reportDir)) {
     New-Item -ItemType Directory -Path $reportDir -Force | Out-Null
 }
 $outPath = Join-Path $reportDir "mkm_cursor_session_upgrade_v1_latest.json"
+($preWrite | ConvertTo-Json -Depth 8) | Set-Content -LiteralPath $outPath -Encoding UTF8
+
+if ((-not [bool]$SkipResumeForceGate) -and -not $forceGateSkipEnv) {
+    Invoke-Step "resume_force_gate" {
+        py (Join-Path $root "scripts\run_mkm_resume_force_gate_v1.py") --trigger-phrase "장기기억 맥락이어"
+    } | Out-Null
+    $fgPath = Join-Path $root "docs\final\artifacts\mkm_resume_force_gate_v1_latest.json"
+    if (Test-Path -LiteralPath $fgPath) {
+        try {
+            $fg = Get-Content -LiteralPath $fgPath -Raw -Encoding UTF8 | ConvertFrom-Json
+            $forceGateStatus = $fg.status
+        } catch { }
+    }
+}
+
+if (-not $SkipOneshotContract) {
+    # Advisory only — do not fail upgrade when oneshot fields unset (agent fills post-resume).
+    $osArgs = @("py", (Join-Path $root "scripts\run_mkm_resume_oneshot_contract_v1.py"), "--check-only")
+    try {
+        & $osArgs[0] $osArgs[1..($osArgs.Length - 1)] | Out-Null
+        $osCode = if ($null -eq $LASTEXITCODE) { 0 } else { [int]$LASTEXITCODE }
+    } catch {
+        $osCode = 1
+    }
+    $steps["resume_oneshot_contract_advisory"] = @{ exit_code = $osCode; non_fatal = $true }
+    $osPath = Join-Path $root "docs\final\artifacts\mkm_resume_oneshot_contract_v1_latest.json"
+    if (Test-Path -LiteralPath $osPath) {
+        try {
+            $oneshotAdvisory = Get-Content -LiteralPath $osPath -Raw -Encoding UTF8 | ConvertFrom-Json
+        } catch { }
+    }
+}
+
+$latest = [ordered]@{
+    schema = "mkm_cursor_session_upgrade_v1"
+    generated_at_utc = $utcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ")
+    last_run_local_date = $localDate
+    ok = $ok
+    lane = if ($Lane) { $Lane } else { $null }
+    resume_mode = if ($ResumeMode) { $ResumeMode } else { "Standard" }
+    solo_ops_ran = $soloRan
+    solo_ops_skipped_already_ok = $soloSkipped
+    resume_pack_pins = $pinCount
+    context_diet = $contextDiet
+    rhythm = $rhythm
+    human_gate = $humanGate
+    steps = $steps
+    resume_force_gate_status = $forceGateStatus
+    resume_oneshot_execution_mode = if ($oneshotAdvisory) { $oneshotAdvisory.execution_mode } else { $null }
+    boundary_ack = '[HYPO] ops memory inject - Track A live trading auto-merge forbidden'
+    deep_handoff_envelope = $envelopeArtifact
+    deep_handoff_envelope_reports = $envelopeReports
+    reproducible_command = $reproCmd
+}
+
 ($latest | ConvertTo-Json -Depth 8) | Set-Content -LiteralPath $outPath -Encoding UTF8
 
 Write-Host "WROTE: $outPath"
 $laneLabel = if ($Lane) { $Lane } else { "default" }
-Write-Host "CURSOR_SESSION_UPGRADE_OK=$ok pins=$pinCount lane=$laneLabel"
+$osMode = if ($oneshotAdvisory) { $oneshotAdvisory.execution_mode } else { "n/a" }
+Write-Host "CURSOR_SESSION_UPGRADE_OK=$ok pins=$pinCount lane=$laneLabel force_gate=$forceGateStatus oneshot_mode=$osMode"
 if (-not $ok) { exit 1 }
 exit 0

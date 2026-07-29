@@ -17,12 +17,12 @@
 - **LLM Wiki (개인 지식 누적):** 규약 `docs/final/LLM_WIKI_SCHEMA.md` — 작업 트리 `memory/obsidian_vault/llm_wiki/raw/`(불변)·`wiki/`(합성). 코드 구현 팩트와 혼동 금지; 구현 SSOT는 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`.
 - **Prism 색인 (Grand Indexing 2.0):** 가독 `docs/final/MKM12_GRAND_INDEX_MAP.md`, 머신 레지스트리 `docs/final/MKM12_PRISM_INDEX_REGISTRY_V1.json` — 코드 4D 벡터 축과 혼동 금지; 상세 `CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md` §14.
 
-### 렌즈 명칭/역할 고정 (크로스 채팅)
+### 렌즈 명칭/계약 고정 (크로스 채팅)
 
 - 렌즈는 `사상/명리/성경(Logos)` 3개로만 말한다. `Macro/Regime`는 렌즈명이 아니라 운영 레이어다.
-- 역할은 성경=`거시 게이트`, 명리=`중기 방향`, 사상=`단기 강도`로 고정한다.
-- A-track 최종 액션은 항상 1차 실물 레짐 + 운영 리스크 게이트가 확정한다. 3렌즈는 보조 입력이다.
-- 보고는 `Field → Lens(3개) → Conflict → Final Action` 순서를 고정하고, 성경 렌즈는 `[NON_GATING]` 태그를 유지한다.
+- 3렌즈 = 해석·교육·관측 사이드바 `[NON_GATING]` · 병렬 advisory · **시장·가격 예측 호라이즌 매핑 폐기** (`three_lens_horizon_empirical_eval_v2` 0/5). SSOT: `docs/final/LENS_UTILIZATION_CHARTER_V1.md`.
+- Final Action = Field(`regime_map` + 운영 리스크 게이트)만. 3렌즈는 Final weight·예측 호라이즌이 아니다.
+- 보고는 `Field → Lens(3개) → Conflict → Final Action` 순서를 고정하고, 3렌즈는 `[NON_GATING]` 태그를 유지한다.
 
 ### 개발 검증 진입점 (권장)
 

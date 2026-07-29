@@ -18,7 +18,7 @@ priority: 4
 4. **Multi-Lens / 멀티레인:** 로고스·명리·사상 **격벽** — 단일 완성 선언·한 레인 실패를 타 레인으로 메우기 금지.
 5. **압축 서술:** Track A vs Track B·ultra-literal **혼합 금지**; 벤치 KPI와 트레이딩 근거 **합선 금지**(FAIL-COMP-004 계열).
 6. **렌즈 용어 계약:** 렌즈 명칭은 `사상/명리/성경(Logos)`로 고정. `Macro/Regime`는 운영 레이어로만 사용하며 렌즈명으로 혼용 금지.
-7. **렌즈 역할 계약:** 성경=거시 게이트(`[NON_GATING]`), 명리=중기 방향, 사상=단기 강도. 최종 액션은 실물 레짐+운영 게이트가 확정.
+7. **렌즈 계약 (Charter):** 3렌즈(사상/명리/성경)=해석·교육·관측 사이드바 `[NON_GATING]` · 병렬 advisory · **시장·가격 예측 호라이즌 매핑 폐기**(`three_lens_horizon_empirical_eval_v2` 0/5). Final Action=`regime_map`+ops gates만 — `LENS_UTILIZATION_CHARTER_V1.md`.
 8. **MKM 4AI 명명 계약:** MKM AI는 `4AI core`(태양/소양/태음/소음) + `Absolute Balance Coordinator Mode`로 고정한다. 조율 모드는 **제5 AI/체질이 아닌 상태(state)** 다.
 9. **장-뇌 은유·게이트 분류:** B-track `outcome_class`·발효 은유는 **Track C/내부 설명용**; `PUBLIC_FACING` v1.7·`.cursor/rules/gut-brain-metaphor-agent-v1.mdc` 준수. CONSTITUTION 본문·실매매 자동 승격 금지.
 10. **세계관·철학 헌법 v1:** `MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` · CONSTITUTION §1.0.5 — **서사≠구현**.
