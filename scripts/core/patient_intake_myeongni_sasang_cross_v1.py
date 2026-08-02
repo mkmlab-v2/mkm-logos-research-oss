@@ -17,25 +17,25 @@ _CONSTITUTION_ELEMENT_HINT: dict[str, dict[str, Any]] = {
         "label_ko": "소음인",
         "weak_elements": ["토", "수"],
         "stress_elements": ["화"],
-        "organ_axis_ko": "비·신 (脾腎)",
+        "organ_axis_ko": "비·신 (腎大脾小)",
     },
     "taeeum_in": {
         "label_ko": "태음인",
         "weak_elements": ["금", "목"],
         "stress_elements": ["화"],
-        "organ_axis_ko": "폐·간 (肺肝)",
+        "organ_axis_ko": "간·폐 (肝大肺小)",
     },
     "soyang_in": {
         "label_ko": "소양인",
         "weak_elements": ["토", "목"],
         "stress_elements": ["화", "수"],
-        "organ_axis_ko": "비·위 (脾胃)",
+        "organ_axis_ko": "비·신 (脾大腎小)",
     },
     "taeyang_in": {
         "label_ko": "태양인",
         "weak_elements": ["수", "토"],
         "stress_elements": ["화"],
-        "organ_axis_ko": "신·위·비 (太陽)",
+        "organ_axis_ko": "폐·간 (肺大肝小)",
     },
 }
 

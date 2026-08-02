@@ -79,7 +79,8 @@ CONSTITUTION_STATIC: dict[str, dict[str, Any]] = {
         ],
     },
     "taeeum_in": {
-        "organ_axis_ko": "肺大肝小 (폐·간 축)",
+        # 四端論: 太陰 · 肝大肺小 (canon SSOT: sasang_pathology_48cell_organ_pair_lit_map_v1)
+        "organ_axis_ko": "肝大肺小 (간·폐 축)",
         "byeongjeung_reading_axes_ko": ["표한·위완수한", "열·담음 경로"],
         "literature_pointers": [
             {
@@ -99,7 +100,8 @@ CONSTITUTION_STATIC: dict[str, dict[str, Any]] = {
         "yakri_lexicon_scan_ko": ["호산지기 관련 문헌 앵커 — 자동 처방 금지"],
     },
     "soyang_in": {
-        "organ_axis_ko": "脾大胃小 (비·위 축)",
+        # 四端論: 少陽 · 脾大腎小
+        "organ_axis_ko": "脾大腎小 (비·신 축)",
         "byeongjeung_reading_axes_ko": ["표한·비수한", "열·한 교차"],
         "literature_pointers": [
             {
@@ -119,8 +121,9 @@ CONSTITUTION_STATIC: dict[str, dict[str, Any]] = {
         "yakri_lexicon_scan_ko": ["담기 관련 문헌 앵커 — 자동 처방 금지"],
     },
     "taeyang_in": {
-        "organ_axis_ko": "脾大胃小·태양 특성 (위·비·신 축)",
-        "byeongjeung_reading_axes_ko": ["표증·열증", "신수·위열"],
+        # 四端論: 太陽 · 肺大肝小
+        "organ_axis_ko": "肺大肝小 (폐·간 축)",
+        "byeongjeung_reading_axes_ko": ["표증·열증", "해역·열격 경로"],
         "literature_pointers": [
             {
                 "title_ko": "동의수세보원 ⟪태양인병론⟫",
@@ -130,10 +133,10 @@ CONSTITUTION_STATIC: dict[str, dict[str, Any]] = {
         ],
         "clinical_priority_questions": [
             {
-                "axis_ko": "열·신수",
-                "prompt_ko": "태양 표증·신수열 변증 감별",
-                "confirm_question_ko": "갈·번갈·요통·소변 이상이 동반됩니까?",
-                "trigger_keywords": ["열", "갈", "요통", "소변"],
+                "axis_ko": "열·간소",
+                "prompt_ko": "태양 표증·해역·열격 변증 감별",
+                "confirm_question_ko": "구토·구역·갈·번열이 동반됩니까?",
+                "trigger_keywords": ["열", "갈", "구토", "구역"],
             },
         ],
         "yakri_lexicon_scan_ko": ["심기 관련 문헌 앵커 — 자동 처방 금지"],

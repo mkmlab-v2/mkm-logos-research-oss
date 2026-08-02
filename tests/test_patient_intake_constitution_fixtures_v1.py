@@ -20,7 +20,7 @@ CASES = [
         "taeeum_in",
         "태음인",
         "호산지기",
-        "폐·간",
+        "肝大肺小",
     ),
     (
         "tests/fixtures/patient_intake_soyang_clinical_v1.example.json",
@@ -34,7 +34,7 @@ CASES = [
         "taeyang_in",
         "태양인",
         "심기",
-        "태양",
+        "肺大肝小",
     ),
 ]
 
