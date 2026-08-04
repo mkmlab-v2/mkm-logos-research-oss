@@ -1,0 +1,29 @@
+name: hd-ae-recurrence-chain-smoke
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "scripts/build_mkm_hd_ae_recurrence_observations_v1.py"
+      - "scripts/run_mkm_hd_ae_recurrence_chain_v1.py"
+      - "scripts/stamp_mkm_hd_ae_regression_rate_v1.py"
+      - "tests/test_mkm_hd_ae_recurrence_observations_v1.py"
+      - "tests/test_mkm_hd_ae_recurrence_chain_v1.py"
+      - "docs/final/artifacts/mkm_hd_ae_recurrence_profile_v1_latest.json"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run recurrence chain tests
+        run: |
+          python -m pytest tests/test_mkm_hd_ae_recurrence_observations_v1.py -q
+          python -m pytest tests/test_mkm_hd_ae_recurrence_chain_v1.py -q
+      - name: Run recurrence chain default + override
+        run: |
+          python scripts/run_mkm_hd_ae_recurrence_chain_v1.py
+          python scripts/run_mkm_hd_ae_recurrence_chain_v1.py --window-days 14 --repeat-threshold 3
