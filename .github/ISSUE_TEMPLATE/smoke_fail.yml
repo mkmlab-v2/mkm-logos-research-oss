@@ -1,0 +1,54 @@
+name: Offline smoke failure
+description: Fixture smoke did not reach exit 0 (reproduce report).
+title: "[smoke] "
+labels: ["reproduce", "research_only"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Research-only harness. Do **not** paste secrets, `.env`, API keys, or customer data.
+        Successful repros: prefer Discussions with `exit 0` + pytest tail.
+  - type: dropdown
+    id: os
+    attributes:
+      label: OS
+      options:
+        - Windows
+        - macOS
+        - Linux
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands run
+      description: Exact clone → smoke commands from README Quickstart.
+      placeholder: |
+        git clone …
+        py scripts/run_logos_oss_premarket_smoke_v1.py
+    validations:
+      required: true
+  - type: input
+    id: exit_code
+    attributes:
+      label: Exit code
+      placeholder: "1"
+    validations:
+      required: true
+  - type: textarea
+    id: pytest_tail
+    attributes:
+      label: Pytest / smoke tail (last ~40 lines)
+      description: Redact paths with secrets. Fixture-only.
+    validations:
+      required: true
+  - type: checkboxes
+    id: honesty
+    attributes:
+      label: Confirm
+      options:
+        - label: No secrets / customer data in this issue
+          required: true
+        - label: I understand send_gate HOLD / research_only (not product SLA)
+          required: true

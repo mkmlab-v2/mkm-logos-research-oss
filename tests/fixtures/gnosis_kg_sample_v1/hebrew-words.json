@@ -1,0 +1,38 @@
+[
+  {
+    "osis_ref": "Gen.1.1",
+    "words": [
+      {
+        "word_id": "gen_1_1_w1",
+        "text": "בְּרֵאשִׁית",
+        "lemma_raw": "רֵאשִׁית",
+        "strongs_number": "H7225",
+        "morph": "HNcfsa"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Dan.2.43",
+    "words": [
+      {
+        "word_id": "dan_2_43_w1",
+        "text": "עִיר",
+        "lemma_raw": "עִיר",
+        "strongs_number": "H5892",
+        "morph": "HNcfsa"
+      }
+    ]
+  },
+  {
+    "osis_ref": "Job.28.17",
+    "words": [
+      {
+        "word_id": "job_28_17_w1",
+        "text": "זָכוּךְ",
+        "lemma_raw": "זָכַךְ",
+        "strongs_number": "H2134",
+        "morph": "HAamsa"
+      }
+    ]
+  }
+]

@@ -1,0 +1,132 @@
+{
+  "schema": "isaiah_studio_conflict_surface_v1",
+  "generated_at_utc": "2026-07-03T19:29:04Z",
+  "research_only": true,
+  "hypothesis_tier": "B",
+  "send_gate": "HOLD",
+  "non_gating": true,
+  "deepened_v2": true,
+  "source": "hub_content_deepen_v2 / isaiah / genre=ot_prophecy",
+  "groups": [
+    {
+      "conflict_group_id": "MKM_CONCEPT_ISAIAH",
+      "lexicon_base": "이사야 · 세리아프 · Isaiah",
+      "genre": "ot_prophecy",
+      "genre_label_ko": "구약 예언서",
+      "theological_tensions_ko": "예언 성취의 시제(과거/현재/미래), 이중 성취론, 이사야 단일/복수 저작론",
+      "school_count": 3,
+      "schools": [
+        {
+          "school_tier": "Historical-grammatical",
+          "interpretation_ko": "예언 텍스트의 원래 역사적 맥락(아시리아 침공, 바빌론 포로 등)을 1차 의미로 확정합니다. 다니엘서의 '하-마쉬이아흐(הַמָּשִׁיחַ, 기름부음 받은 자)' 같은 용어가 원청중에게 어떤 의미였는지를 우선 분석합니다. 특히 Isa.6.1 본문에서 「이사야」 관련 원어 용례와 서사 맥락(Isa)을 1차 분석 대상으로 삼습니다.",
+          "citation_lock_anchors": [
+            "Isa.6.1",
+            "Isa.6.10",
+            "Isa.6.11"
+          ],
+          "verse_refs": [
+            "Isa.6.1",
+            "Isa.6.10",
+            "Isa.6.11",
+            "Isa.6.12",
+            "Isa.6.13",
+            "Isa.6.2"
+          ],
+          "traditions": [
+            "historical-grammatical",
+            "narrative criticism"
+          ],
+          "labels": [
+            "research_only",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "Reformed-evangelical",
+          "interpretation_ko": "구약 예언을 그리스도 중심의 점진적 계시로 읽습니다. 이사야 53장(고난의 종)을 메시아 예수의 대속 예언으로 해석하며, 예언의 이중 성취(역사적 + 종말론적)를 인정하되 최종 성취는 그리스도에게 있습니다. 「이사야」 주제를 Isa.6.1 등의 앵커에서 그리스도 중심의 구속사적 맥락으로 읽으며, Isa 전체의 언약 구조 안에서 해석합니다.",
+          "citation_lock_anchors": [
+            "Isa.6.1",
+            "Isa.6.10",
+            "Isa.6.11"
+          ],
+          "verse_refs": [
+            "Isa.6.1",
+            "Isa.6.10",
+            "Isa.6.11",
+            "Isa.6.12",
+            "Isa.6.13",
+            "Isa.6.2"
+          ],
+          "traditions": [
+            "Reformed",
+            "evangelical",
+            "covenant theology"
+          ],
+          "labels": [
+            "research_only",
+            "NON_GATING"
+          ]
+        },
+        {
+          "school_tier": "Catholic-Orthodox",
+          "interpretation_ko": "예언서를 성경·전통·교도권의 삼중 권위 아래 해석합니다. 교부들의 예표론적 독해(다윗→그리스도, 성전→교회)를 수용하며, 공의회 결정이 예언 해석의 교리적 경계를 확정합니다. 「이사야」에 관한 교부 주석과 공의회 전통을 Isa.6.1 해석에 적용하며, Isa 본문의 전례적·성사적 함의를 함께 읽습니다.",
+          "citation_lock_anchors": [
+            "Isa.6.1",
+            "Isa.6.10",
+            "Isa.6.11"
+          ],
+          "verse_refs": [
+            "Isa.6.1",
+            "Isa.6.10",
+            "Isa.6.11",
+            "Isa.6.12",
+            "Isa.6.13",
+            "Isa.6.2"
+          ],
+          "traditions": [
+            "Catholic magisterium",
+            "Orthodox patristic"
+          ],
+          "labels": [
+            "research_only",
+            "NON_GATING"
+          ]
+        }
+      ]
+    },
+    {
+      "conflict_group_id": "MKM_CONCEPT_ISAIAH_YOUTUBE",
+      "lexicon_base": "이사야 16챕터 유튜브 spine · Isaiah YouTube reading pack",
+      "genre": "ot_prophecy",
+      "genre_label_ko": "구약 예언서 · MKM YouTube 독해 spine",
+      "theological_tensions_ko": "16챕터 강해 spine(5앵커) vs 장↔권 1:1 압축 서사; Tier A 사실 vs Tier C bridge",
+      "school_count": 3,
+      "schools": [
+        {
+          "school_tier": "Historical-grammatical",
+          "interpretation_ko": "유튜브 16챕터 spine은 Isa.6.8·40.1·53.5 등 앵커 구절의 역사-문법 1차 의미를 우선합니다. 66장↔66권 압축 지도는 산술(Tier A)과 서사 bridge(Tier C)를 분리해 읽습니다.",
+          "citation_lock_anchors": ["Isa.6.8", "Isa.40.1", "Isa.53.5", "Isa.65.17"],
+          "verse_refs": ["Isa.6.8", "Isa.40.1", "Isa.53.5", "Isa.65.17", "Isa.66.22"],
+          "traditions": ["historical-grammatical", "youtube_spine_v1"],
+          "labels": ["research_only", "NON_GATING"]
+        },
+        {
+          "school_tier": "Reformed-evangelical",
+          "interpretation_ko": "16챕터 강해 spine은 그리스도 중심 예언 성취선(6:8 부르심 → 40:1 위로 → 53:5 대속 → 65:17 새 창조)으로 읽되, 영상 서사는 [HYPO] bridge로만 참조합니다.",
+          "citation_lock_anchors": ["Isa.6.8", "Isa.40.1", "Isa.53.5"],
+          "verse_refs": ["Isa.6.8", "Isa.40.1", "Isa.53.5", "Isa.65.17"],
+          "traditions": ["Reformed", "evangelical", "isaiah_youtube_spine"],
+          "labels": ["research_only", "NON_GATING"]
+        },
+        {
+          "school_tier": "MKM-bridge",
+          "interpretation_ko": "reports/isaiah_youtube_16chapter_mkm_bridge_map_v1 — 16챕터 verdict·5앵커 spine은 Logos Studio preset `isaiah_youtube_spine_v1`과 reading pack slice로 연결. 단일 학파 우위 없음.",
+          "citation_lock_anchors": ["Isa.6.8", "Isa.40.1", "Isa.53.5", "Isa.65.17", "Rev.21.2"],
+          "verse_refs": ["Isa.6.8", "Isa.40.1", "Isa.53.5", "Isa.65.17", "Rev.21.2"],
+          "traditions": ["mkm_bridge", "youtube_16chapter"],
+          "labels": ["research_only", "NON_GATING", "HYPO"]
+        }
+      ]
+    }
+  ]
+}

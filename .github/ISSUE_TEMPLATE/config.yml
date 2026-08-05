@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Offline smoke Discussions
+    url: https://github.com/mkmlab-v2/mkm-logos-research-oss/discussions
+    about: Prefer Discussions for successful exit 0 / pytest tails (research_only).
+  - name: Logos Studio (observe-only)
+    url: https://logos.jema-ai.com/logos-research/studio?q=job_job_suffering_reason&autorun=1&demo=1
+    about: Read-only observation UI — not a substitute for offline fixture smoke.

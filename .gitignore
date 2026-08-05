@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.env
+data/logos/gnosis_kg/*.json
+!data/logos/gnosis_kg/README.md
