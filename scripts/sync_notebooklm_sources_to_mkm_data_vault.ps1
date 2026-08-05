@@ -306,7 +306,9 @@ $SourceFiles = @(
     "docs\final\artifacts\master_codebook_lexicon_v1_export_pointer_latest.json",
     "docs\final\artifacts\mkm_theory_mathematization_canon_v1_latest.md",
     "docs\final\artifacts\mkm12_75_formulas_ssot_v1_latest.json",
-    "docs\final\MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md"
+    "docs\final\MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md",
+    "docs\final\artifacts\mkm_family_featured_nl_ask_pack_v1_latest.md",
+    "docs\final\artifacts\mkm_family_featured_nl_ask_pack_v1_latest.json"
 )
 
 $SourceDirs = @(

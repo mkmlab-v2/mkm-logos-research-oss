@@ -23,6 +23,7 @@
 | 트리거 | 동작 |
 |--------|------|
 | 장기기억 맥락이어 · 미션로그 이어서 · CENTRAL 기준 (동등) | `powershell -File scripts\Invoke-MkmCursorSessionUpgrade_v1.ps1` (`-Lane` 있으면) → Read `docs/final/artifacts/mkm_chat_resume_pack_latest.md` — **MISSION_LOG 통째 금지** |
+| **개발 세션 (마찰↓·상식)** | **지휘관 env 불필요** · 구현/위임 채팅=에이전트 soft 자동 · 공식 「장기기억 맥락이어」만 OPS hard · SSOT `mkm_dev_session_resume_profile_v1.json` v2 — Fact-Lock/SEND 유지 |
 | **장기기억 맥락이어 고급해석** | `…Invoke-MkmCursorSessionUpgrade_v1.ps1 -Lane oracle -ResumeMode AdvancedLogos` → resume pack · `[HYPO]` why 단답·SEND·Track A 금지 · `mkm_commander_resume_triggers_v1.json` |
 | **마무리 · 마무리해줘** | `run_mkm_cursor_session_end_v1.py` (`--lane`·`--continuity-id`·한 줄) — alias `장기기억 저장` · `체크포인트` |
 | Pillar A 주간 회귀 (Infra) | `run_workspace_automation_health.ps1 -PillarACursorContinuitySmokeOnly` |
@@ -43,16 +44,7 @@
 | 【커서 세션 업그레이드】 | `… -Persona CursorSessionUpgrade` |
 | 【고차원 자율진화】 | `… -Persona HdAutonomousEvolution` (env `MKM_HD_AE_MISSION`·`MKM_HD_AE_LANE`; SSOT `docs/final/artifacts/mkm_high_dimensional_autonomous_evolution_v1_latest.json`) |
 | 【Bounded lane shadow】 | `… -Persona BoundedLaneLoopShadow` |
-| 【사상 스택】 | `… -Persona SasangRailStack` |
-| 【사상 마스터】 | `… -Persona SasangRailMaster` |
-| 【사상 P9】 | `… -Persona SasangRailP9` |
-| 【사상 P10】 | `… -Persona SasangRailP10` |
-| 【사상 P11】 | `… -Persona SasangRailP11` |
-| 【사상 P12】 | `… -Persona SasangRailP12` |
-| 【사상 P13】 | `… -Persona SasangRailP13` |
-| 【사상 P14】 | `… -Persona SasangRailP14` |
-| 【사상 P15】 | `… -Persona SasangRailP15` |
-| 【사상 P16】 | `… -Persona SasangRailP16` |
+| 【사상 스택/마스터/P9–P16】 | `… -Persona SasangRailStack|Master|P9…P16` — 상세 REFERENCE |
 | **【사상 작업 시작】** · 사상 레인 work-start | UMR sasang + read_order + bundle HOLD + unified `_latest` · `@.cursor/skills/mkm-sasang-lane-ops/SKILL.md` · `@mkm-universal-multi-res-router-sasang-v1` |
 | 【에이전트 micro-loop】 | `… -Persona MkmAgentLoops` → `docs/final/artifacts/mkm_agent_loops_v1_latest.md` |
 | 【프리미엄 큐 권장】 | `… -Persona PremiumMultilensQueue` |

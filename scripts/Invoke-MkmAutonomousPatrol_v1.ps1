@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 <#
 .SYNOPSIS
   MKM 자율점검 — solo_ops + 일/주간 patrol + Git/CI readiness + manual queue.

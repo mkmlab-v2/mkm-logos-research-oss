@@ -62,7 +62,29 @@ def main() -> int:
         print("FAIL: audit script missing EnforceSoloBand", file=sys.stderr)
         return 1
 
-    print("OK: register_task_policy_v1 + band SSOT contract")
+    member_ps1 = root / "scripts" / "Test-MkmSoloCoreStackTaskMembership_v1.ps1"
+    if not member_ps1.is_file():
+        print(f"MISSING: {member_ps1}", file=sys.stderr)
+        return 1
+
+    # Fail-closed Ready path must exist on high-churn register scripts.
+    for rel in (
+        "scripts/Register-MkmContextCoordScheduledRemeasureWeeklyTask.ps1",
+        "scripts/Register-MkmAutonomousPatrolDailyTask.ps1",
+    ):
+        p = root / rel
+        if not p.is_file():
+            print(f"MISSING: {rel}", file=sys.stderr)
+            return 1
+        text = p.read_text(encoding="utf-8")
+        if "FAIL-CLOSED" not in text or "StartReady" not in text:
+            print(f"FAIL: {rel} missing FAIL-CLOSED/-StartReady SSOT gate", file=sys.stderr)
+            return 1
+        if "Test-MkmSoloCoreStackTaskMembership_v1.ps1" not in text:
+            print(f"FAIL: {rel} missing membership helper wiring", file=sys.stderr)
+            return 1
+
+    print("OK: register_task_policy_v1 + band SSOT contract + Ready fail-closed helpers")
     return 0
 
 

@@ -3,9 +3,13 @@
 from __future__ import annotations
 
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+from companion_local_store_lib_v1 import env_truthy  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 RESOLVE = ROOT / "scripts/resolve_deep_fetch_from_handoff_v1.py"
@@ -14,6 +18,8 @@ CHECKPOINT = ROOT / "scripts/athena_checkpoint.py"
 MISTAKE_APPEND = ROOT / "scripts/append_mkm_agent_mistake_v1.py"
 PROMPT_ALIGNMENT_CHECK = ROOT / "scripts/check_commander_prompt_alignment_self_audit_v1.py"
 RECEIPT_APPEND = ROOT / "scripts/append_mkm_tool_receipt_v1.py"
+COMPANION_MEANING_DRYRUN = ROOT / "scripts/run_companion_meaning_pack_session_end_dryrun_v1.py"
+COMPANION_APPLY_LOCAL = ROOT / "scripts/run_companion_memory_transplant_apply_local_v1.py"
 
 
 def _run(cmd: list[str], *, label: str) -> int:
@@ -72,6 +78,29 @@ def main(argv: list[str] | None = None) -> int:
         default=None,
         help="Pass through to athena_checkpoint provenance (external_paste always false).",
     )
+    parser.add_argument(
+        "--companion-meaning-pack-dryrun",
+        action="store_true",
+        help=(
+            "Opt-in: after chain, write companion meaning-pack dry-run artifact only "
+            "(applied=false · no Cursor LTM / .cursor/rules write)."
+        ),
+    )
+    parser.add_argument(
+        "--atoms-json",
+        default="",
+        help="Optional atoms JSON for --companion-meaning-pack-dryrun (passed through).",
+    )
+    parser.add_argument(
+        "--companion-meaning-pack-apply-local",
+        action="store_true",
+        help=(
+            "Opt-in: after chain, apply companion atoms to local user store only "
+            "(memory/companion_local_store_v1 · applied=true for local store only · "
+            "no Cursor LTM / agent LTM / PetCompanion phone). "
+            "Also enabled when env MKM_COMPANION_APPLY_ON_SESSION_END=1 (default OFF)."
+        ),
+    )
     args = parser.parse_args(argv)
 
     msg = (args.message or args.message_flag or "").strip()
@@ -81,6 +110,9 @@ def main(argv: list[str] | None = None) -> int:
 
     continuity_id = args.continuity_id.strip()
     lane = args.lane.strip() or "infra"
+    apply_on_end = args.companion_meaning_pack_apply_local or env_truthy(
+        "MKM_COMPANION_APPLY_ON_SESSION_END"
+    )
 
     if args.dry_run:
         print(
@@ -88,7 +120,9 @@ def main(argv: list[str] | None = None) -> int:
             f"append continuity={continuity_id} checkpoint msg={msg!r} "
             f"mistake={args.mistake!r} self_audit_prompt={args.self_audit_prompt} "
             f"alignment_fail_id={args.alignment_fail_id!r} "
-            f"emit_tool_receipt={args.emit_tool_receipt}"
+            f"emit_tool_receipt={args.emit_tool_receipt} "
+            f"companion_meaning_pack_dryrun={args.companion_meaning_pack_dryrun} "
+            f"companion_meaning_pack_apply_local={apply_on_end}"
         )
         return 0
 
@@ -207,6 +241,41 @@ def main(argv: list[str] | None = None) -> int:
             ],
             label="append_tool_receipt",
         )
+        if code != 0:
+            return code
+
+    if args.companion_meaning_pack_dryrun:
+        dry_cmd = [
+            sys.executable,
+            str(COMPANION_MEANING_DRYRUN),
+            "--lane",
+            lane,
+            "--continuity-id",
+            continuity_id,
+            "--message",
+            msg,
+        ]
+        atoms = (args.atoms_json or "").strip()
+        if atoms:
+            dry_cmd.extend(["--atoms-json", atoms])
+        code = _run(dry_cmd, label="companion_meaning_pack_dryrun")
+        if code != 0:
+            return code
+
+    if apply_on_end:
+        apply_cmd = [
+            sys.executable,
+            str(COMPANION_APPLY_LOCAL),
+            "--lane",
+            lane,
+            "--continuity-id",
+            continuity_id,
+            "--message",
+            msg,
+            "--commander-phrase",
+            "실제 이식 진행해",
+        ]
+        code = _run(apply_cmd, label="companion_meaning_pack_apply_local")
         if code != 0:
             return code
 

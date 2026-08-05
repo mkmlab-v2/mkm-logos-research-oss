@@ -1,0 +1,74 @@
+{
+  "schema": "mkm_hitl_ops_apply_allowlist_v1",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-08-05T06:30:00Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "track_a": "FROZEN",
+  "default_mode": "dry_run",
+  "note": "HITL night→morning approve→apply latch. Allowlist-only. Approval stamp ≠ auto-apply. No chat-24h persona, SEND, Track A, live trade, or GitHub push.",
+  "related_patterns": [
+    "docs/final/artifacts/evolution_auto_apply_allowlist_v1_latest.json",
+    "scripts/approve_mkm_evolution_radar_candidate_v1.py",
+    "scripts/build_mkm_ops_queue_morning_brief_v1.py",
+    "scripts/run_mkm_ops_event_inbox_v1.py"
+  ],
+  "allowed_actions": [
+    {
+      "id": "rebuild_morning_brief",
+      "label": "Rebuild ops queue morning brief (read + paste only)",
+      "argv": ["py", "scripts/build_mkm_ops_queue_morning_brief_v1.py"],
+      "shell": false,
+      "cwd": "."
+    },
+    {
+      "id": "ops_inbox_status",
+      "label": "Ops event inbox status (read-only · no drain)",
+      "argv": ["py", "scripts/run_mkm_ops_event_inbox_v1.py", "status"],
+      "shell": false,
+      "cwd": "."
+    },
+    {
+      "id": "patrol_membership_check",
+      "label": "AutonomousPatrol task membership check (scheduler map)",
+      "argv": [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "scripts/Test-MkmSoloCoreStackTaskMembership_v1.ps1",
+        "-TaskName",
+        "MKM_AutonomousPatrol_Daily"
+      ],
+      "shell": false,
+      "cwd": "."
+    }
+  ],
+  "forbidden_action_ids": [
+    "github_explicit_push",
+    "git_commit_or_stash",
+    "ops_inbox_drain",
+    "ops_inbox_drain_destructive",
+    "send_open",
+    "track_a_promote",
+    "live_trade",
+    "push_github",
+    "temporal_install",
+    "cursor_automations_install"
+  ],
+  "walls_ko": [
+    "allowlist 밖 id = 거부 (승인 스탬프 있어도 실행 금지)",
+    "기본 dry-run · 실실행은 --apply 명시",
+    "승인(stamp) ≠ 적용(apply) — 두 단계",
+    "SEND HOLD · Track A FROZEN · 실매매 금지 · GitHub push 금지",
+    "chat idle auto-research / 24h persona = NO",
+    "L Temporal / Cursor Automations = HOLD (문서만)"
+  ],
+  "l_hold": {
+    "status": "HOLD",
+    "scope": "Cursor Automations / Temporal / long-running cloud agents",
+    "this_unlock": false,
+    "note_ko": "야간 본체는 Windows Scheduler(AutonomousPatrol 등). L 설치·배선은 본 unlock에 포함하지 않음."
+  }
+}

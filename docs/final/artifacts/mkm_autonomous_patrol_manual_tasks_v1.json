@@ -56,7 +56,17 @@
     "dirty_working_tree": {
       "id": "git_commit_or_stash",
       "label_ko": "미커밋 변경 정리 (commit / stash / discard)",
-      "hint_ko": "자율점검은 push/merge를 대신하지 않음"
+      "hint_ko": "자율점검은 push/merge를 대신하지 않음 · stash -u 금지 · noise-only는 ops_artifact_noise_review"
+    },
+    "dirty_noise_only": {
+      "id": "ops_artifact_noise_review",
+      "label_ko": "생성 아티팩트 dirty (allowlist) — commit 강제 아님",
+      "hint_ko": "docs/final/artifacts/mkm_ops_dirty_tree_noise_allowlist_v1.json"
+    },
+    "patrol_scheduled_last_result_nonzero": {
+      "id": "patrol_scheduled_last_result",
+      "label_ko": "AutonomousPatrol 스케줄 LastTaskResult≠0 sticky",
+      "hint_ko": "docs/final/artifacts/mkm_autonomous_patrol_sticky_alert_v1_latest.json"
     },
     "solo_ops_fail": {
       "id": "solo_ops_remediation",

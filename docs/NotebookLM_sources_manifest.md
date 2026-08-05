@@ -301,6 +301,7 @@ Gemini/NotebookLM이 "지금 개발이 어디까지 왔는지"를 빠르게 파�
 | Swarm 심리 메트릭 (B-track 데이터 계약) | `docs/final/SWARM_SENTIMENT_METRIC_SCHEMA_DRAFT.json` · `docs/final/dummy_swarm_score.jsonl` · `[HYPO]` 샘플 `docs/final/hypo_test_sentiment.jsonl` · 듀얼렌즈 1호 `[HYPO]` `docs/final/corr_report_001_hypo.jsonl` + 좌측 참고 `docs/final/corr_report_001_left_lens.json` | MiroFish류 군집 출력→이산 수치 JSON 계약(draft-07); 로컬 검증 `py scripts/validate_swarm_sentiment_dummy.py` 및 `--jsonl …`; 일괄: `scripts/Validate-SwarmSentimentBTrack.ps1`; CI: `swarm-sentiment-schema-validate.yml`; A-track 트리거·실매매 합선 금지 |
 | Swarm 메트릭 Hub B 번들 (RAG) | `docs/final/SWARM_SENTIMENT_METRIC_NOTEBOOKLM_BUNDLE_2026-04-04.md` | NotebookLM 금융 Hub B 소스 ID `582bfa0b-ac4d-4715-9073-b170bd7a8719` — JSON 직접 업로드 불가 시 MD 번들로 동일 내용 인제스트 |
 | MKMLIFE 뉴스 토픽 · 질문 스타터 | `docs/final/NOTEBOOKLM_MKMLIFE_NEWS_QUESTION_STARTER_BUNDLE_2026-04-12.md` | B-only; 토픽→질문 아이디어만·A/실매매·압축과 격벽; Vault 동기·NotebookLM 인제스트 후 mkmlife UI는 선택 |
+| 기억구슬 · Family Featured NL ask pack | `docs/final/artifacts/mkm_family_featured_nl_ask_pack_v1_latest.md` · `.json` | B-only `[HYPO]`; Techno(+Atlantic warmth) ask 축적 · ZEIT/Bloomsbury URL HOLD · **Ops/Logos/clinical 합선 금지** · `$SourceFiles` thin mirror |
 
 ### B-Track Major Reference (4D 융합·위성 코퍼스, OBSERVATION_ONLY)
 

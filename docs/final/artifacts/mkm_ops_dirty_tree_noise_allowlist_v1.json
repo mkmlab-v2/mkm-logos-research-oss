@@ -1,0 +1,26 @@
+{
+  "schema": "mkm_ops_dirty_tree_noise_allowlist_v1",
+  "version": "1.0.0",
+  "purpose_ko": "스케줄/패트롤이 다시 쓰는 생성 아티팩트 dirty를 git_commit_or_stash 오경보와 분리. stash -u 금지. real source dirty는 여전히 지휘관.",
+  "research_only": true,
+  "never": [
+    "stash -u",
+    "auto_commit_generated_artifacts",
+    "claim_clean_tree_when_source_dirty"
+  ],
+  "path_globs": [
+    "docs/final/artifacts/*_latest.json",
+    "docs/final/artifacts/*_latest.md",
+    "reports/mkm_*_latest.json",
+    "reports/mkm_autonomous_patrol_*.json",
+    "reports/mkm_solo_background_ops*.json",
+    "reports/mkm_command_package_paste_latest.json",
+    "reports/mkm_scheduler_solo_core_stack_audit_v1_latest.json",
+    "docs/final/artifacts/mkm_chat_resume_pack_latest.md"
+  ],
+  "notes_ko": [
+    "Allowlist match만 있으면 manual_queue id=ops_artifact_noise_review (soft).",
+    "Allowlist 밖 파일이 1개라도 있으면 id=git_commit_or_stash 유지.",
+    "커밋은 지휘관/명시 요청만 — 자동 커밋 없음."
+  ]
+}
