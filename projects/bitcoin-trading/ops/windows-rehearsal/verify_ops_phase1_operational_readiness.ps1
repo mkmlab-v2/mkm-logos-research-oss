@@ -71,6 +71,41 @@ else {
     $logon = Get-SchtasksFieldValue -Lines $raw -Labels @("Logon Mode", "로그온 모드")
     $lastRunValue = Get-SchtasksFieldValue -Lines $raw -Labels @("Last Run Time", "마지막 실행 시간")
     $lastResultValue = Get-SchtasksFieldValue -Lines $raw -Labels @("Last Result", "마지막 결과")
+    # schtasks /V LIST wraps long "Task To Run" on narrow/redirected consoles (Task Scheduler session).
+    # Prefer Get-ScheduledTask action string when schtasks field looks truncated or missing flags.
+    $trLooksTruncated = [string]::IsNullOrWhiteSpace($tr) -or
+        ($tr -notmatch "IncludeConstitutionGates") -or
+        ($tr -notmatch "(^|\s)-Strict(\s|$)")
+    if ($trLooksTruncated) {
+        try {
+            $tn = $TaskName.TrimStart('\')
+            $st = Get-ScheduledTask -TaskName $tn -ErrorAction Stop
+            $parts = @()
+            foreach ($a in @($st.Actions)) {
+                $exe = [string]$a.Execute
+                $arg = [string]$a.Arguments
+                if (-not [string]::IsNullOrWhiteSpace($exe) -or -not [string]::IsNullOrWhiteSpace($arg)) {
+                    $parts += (($exe + " " + $arg).Trim())
+                }
+            }
+            $trCmd = ($parts -join " ").Trim()
+            if (-not [string]::IsNullOrWhiteSpace($trCmd)) {
+                $tr = $trCmd
+            }
+            if ([string]::IsNullOrWhiteSpace($logon) -and $st.Principal) {
+                $logon = [string]$st.Principal.LogonType
+            }
+            $info = Get-ScheduledTaskInfo -TaskName $tn -ErrorAction SilentlyContinue
+            if ($null -ne $info) {
+                if ([string]::IsNullOrWhiteSpace($lastRunValue) -and $info.LastRunTime) {
+                    $lastRunValue = $info.LastRunTime.ToString()
+                }
+                if ([string]::IsNullOrWhiteSpace($lastResultValue)) {
+                    $lastResultValue = [string]$info.LastTaskResult
+                }
+            }
+        } catch { }
+    }
     $checks += [ordered]@{
         id     = "task_to_run"
         ok     = if ($RequireConstitutionGates) { ($tr -match "IncludeConstitutionGates") } else { $true }
