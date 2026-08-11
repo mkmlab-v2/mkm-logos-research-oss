@@ -1,3 +1,12 @@
+---
+name: mkm-cursor-session-ops
+description: >-
+  Run MKM Cursor session baseline — resume pack, solo ops, P0 gate, checkpoint,
+  MISSION_LOG. Use when the user says 장기기억 맥락 이어, 장기기억 맥락이어,
+  CENTRAL 기준, 미션로그 이어서, 세션 재개, 세션 시작, checkpoint 저장,
+  athena_checkpoint, 핸드오프, Design 레인, Oracle 레인, or asks whether Cursor
+  auto-validates / AI-to-AI memory. Logos advanced: 장기기억 맥락이어 고급해석.
+---
 # MKM Cursor Session Ops
 
 ## Purpose
@@ -5,6 +14,16 @@
 Run the **minimum validation baseline** for a Cursor chat session: separate in-chat rules from executable gates, wire long-term memory inject, and close with checkpoint + MISSION_LOG lane update.
 
 **SSOT:** `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md`
+
+## Slash commands (Customize / chat `/`)
+
+| Command file | Hint | Alias |
+|---|---|---|
+| `.cursor/commands/mkm-resume.md` | `/mkm-resume` | 장기기억 맥락이어 |
+| `.cursor/commands/mkm-session-end.md` | `/mkm-session-end` | 마무리 |
+| `.cursor/commands/mkm-p0.md` | `/mkm-p0` | 【빠른 헌법 점검】 |
+
+`sessionStart` JEMA kernel is throttled (default 4h): `scripts/run_jema_os_kernel_session_start_throttled_v1.py` · stamp `docs/final/artifacts/jema_os_kernel_session_start_throttle_v1_latest.json`.
 
 ## Triggers
 
