@@ -4,6 +4,8 @@ vendor/korean-medicine-texts/
 .cursor/**
 !.cursor/current_work_status.md
 !.cursor/mcp.json
+# Parent dir must be un-ignored or later !.cursor/rules/*.mdc cannot re-include (git)
+!.cursor/rules/
 # Org NotebookLM account policy (alwaysApply rule; share across clones)
 !.cursor/rules/notebooklm-mcp-session-bridge.mdc
 # Cross-chat SSOT: resume/save triggers (alwaysApply; share across clones)
@@ -35,6 +37,9 @@ vendor/korean-medicine-texts/
 !.cursor/rules/mkm-delegation-research-assist-v1.mdc
 # Logos Ask MCP — Done-Harness + Done-Product Tier S/M/L (opt-in; Ring 0)
 !.cursor/rules/logos-ask-mcp-v1.mdc
+# Force-claim gates (alwaysApply; clone/CI must see the same files)
+!.cursor/rules/mkm-complete-claim-gate-v1.mdc
+!.cursor/rules/mkm-automation-gate.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md
@@ -69,6 +74,13 @@ _pre_pull_backup_*/
 !docs/research/**
 !docs/research/raw/
 !docs/research/raw/**
+
+# NCKM 2022 full CPG binary (~95MB) — keep printed-page sidecar only
+docs/research/raw/nckm_cpg_fulltext/*.pdf
+docs/research/raw/nckm_cpg_fulltext/_page_hits.json
+docs/research/raw/nckm_cpg_fulltext/_te_extract_tmp.txt
+docs/research/raw/nckm_cpg_fulltext/_ty_extract_tmp.txt
+docs/research/raw/nckm_cpg_fulltext/_ri_extract_tmp.txt
 
 # Logs (MCP/서비스 잠금 방지)
 logs/
@@ -212,11 +224,17 @@ secrets/
 # F: workspace_archive migration staging (robocopy target; large)
 storage/MKM_ARCHIVE_FROM_F/
 storage/external_kg/
+# Local sim clones / HF caches (Cursor git.statusLimit; regenerable)
+storage/_aux_parity_sim_ws/
+storage/hf_cache/
+storage/_repro_debug_clone/
+storage/cli_delegate_scratch/
 
 # Local LoRA / Unsloth training venvs & compile cache (large; regenerable)
 .venv/
 .venv_lora/
 .venv_lora_local128/
+.venv-*/
 .venv-nemotron-wsl/
 .venv-btrack-docling/
 .venv-btrack-sherpa-onnx/
@@ -627,3 +645,8 @@ reports/mkm_orchestrator_noop_smoke_latest.json
 data/logos/manuscripts/cache/
 data/logos/manuscripts/tr_greek_by_verse_v1.full_nt.jsonl
 data/logos/manuscripts/dss_parsed_enriched.jsonl
+
+# GSSC LCD v0.1 — private keys + run logs (contract files stay tracked)
+experiment_v0_1/private/
+experiment_v0_1/runs/raw/
+experiment_v0_1/runs/scored/

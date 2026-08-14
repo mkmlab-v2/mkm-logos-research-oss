@@ -1,0 +1,20 @@
+---
+description: Complete-claim pre-block — 완성/COMPLETE/전면완성 before claim requires gate exit0 (alwaysApply thin)
+alwaysApply: true
+---
+
+# Complete-claim gate v1 (thin · alwaysApply)
+
+**Checker:** `py scripts/check_mkm_complete_claim_gate_v1.py --claim-text "…"`  
+**Artifact:** `docs/final/artifacts/mkm_complete_claim_gate_v1_latest.json`  
+**Adversarial:** `run_mkm_claim_adversarial_reread_v1.py` auto-runs this gate when claim matches 완성/COMPLETE/완료됐/product_all_ok/전면완성 (no extra flag).
+
+## ALWAYS
+
+- Before 완성 / COMPLETE / 전면완성 / product_all_ok / 완료됐: `check_mkm_complete_claim_gate_v1.py` exit **0** (agent runs CLI). Multi-step product claims: add `--receipt-json` (D1/D2). Adversarial auto-on for same tokens.
+
+## NEVER
+
+- Claim 「완성됐다」 / full COMPLETE without exit 0.
+- Treat Done-card bare 「완료」 as this gate (`--claim-kind done_card` escape).
+- Bypass with chat when disk completeness is PARTIAL / below bar.

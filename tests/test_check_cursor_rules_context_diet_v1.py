@@ -29,3 +29,12 @@ def test_context_diet_strict_passes() -> None:
     assert inject["claude_md_lines"] <= doc["budget"]["max_claude_md_lines"]
     assert inject["cursorrules_lines"] <= doc["budget"]["max_cursorrules_lines"]
     assert inject["cursorrules_template_in_sync"] is True
+    force = doc.get("force_rules_git_track") or {}
+    assert set(force.get("must") or []) == {
+        "mkm-complete-claim-gate-v1.mdc",
+        "mkm-automation-gate.mdc",
+    }
+    assert set(force.get("tracked") or []) == set(force.get("must") or [])
+    assert not force.get("ignored")
+    assert not force.get("untracked")
+    assert not force.get("missing")

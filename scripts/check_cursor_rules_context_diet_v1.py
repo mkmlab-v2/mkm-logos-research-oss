@@ -4,12 +4,13 @@ import argparse
 import hashlib
 import json
 import re
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
 SCHEMA = "cursor_rules_context_diet_v1"
-DEFAULT_MAX_ALWAYS_APPLY = 10
-DEFAULT_MAX_ALWAYS_APPLY_LINES = 320
+DEFAULT_MAX_ALWAYS_APPLY = 11  # diet bump 2026-08-08 (elementary completion thin)
+DEFAULT_MAX_ALWAYS_APPLY_LINES = 340  # headroom for thin completion companion
 DEFAULT_MAX_AGENTS_MD_LINES = 95
 DEFAULT_MAX_CLAUDE_MD_LINES = 110
 DEFAULT_MAX_CURSORRULES_LINES = 150
@@ -24,9 +25,19 @@ CORE_ALWAYS_APPLY = frozenset(
         "mkm-automation-gate.mdc",
         "mkm-browser-automation-v1.mdc",
         "mkm-solo-background-ops-auto.mdc",
-        "mkm-commander-chat-tone-v1.mdc",
+        "mkm-done-card-completion-v1.mdc",  # diet swap 2026-07-25 (was commander-chat-tone)
+        "mkm-complete-claim-gate-v1.mdc",  # diet add 2026-08-06 (완성/COMPLETE pre-block thin)
+        "mkm-elementary-completion-report-v1.mdc",  # diet add 2026-08-08 (global elementary 3-block)
         "raw-repair-dual-reporting-v1.mdc",
         "tracka-raw-gate-guard-v1.mdc",
+    }
+)
+
+# Force gates that must not stay behind `.cursor/**` gitignore (clone/CI parity).
+MUST_GIT_TRACK_FORCE_RULES = frozenset(
+    {
+        "mkm-complete-claim-gate-v1.mdc",
+        "mkm-automation-gate.mdc",
     }
 )
 
@@ -48,6 +59,7 @@ LANE_REQUESTABLE = frozenset(
         "mkm-paper-digest-trigger-v1.mdc",
         "mkm-paper-disk-verdict-four-slot-v1.mdc",
         "mkm-paste-epistemic-triage-v1.mdc",
+        "mkm-claim-method-visibility-honesty-v1.mdc",  # detail requestable; hard bans in done-card/automation-gate
         "notebooklm-mcp-session-bridge.mdc",
         "parallel-passive-loop-v1.mdc",
         "pr-review-canvas-auto.mdc",
@@ -164,6 +176,52 @@ def audit_rules(rules_dir: Path) -> dict:
         "always_apply_names": sorted(e["name"] for e in always),
         "core_always_apply_expected": sorted(CORE_ALWAYS_APPLY),
         "lane_requestable_expected": sorted(LANE_REQUESTABLE),
+        "must_git_track_force_rules": sorted(MUST_GIT_TRACK_FORCE_RULES),
+        "violations": violations,
+    }
+
+
+def audit_force_rules_git_track(root: Path, rules_dir: Path) -> dict:
+    """Fail if complete-claim / automation-gate are gitignored or untracked."""
+    tracked: list[str] = []
+    ignored: list[str] = []
+    missing: list[str] = []
+    untracked: list[str] = []
+    violations: list[str] = []
+    for name in sorted(MUST_GIT_TRACK_FORCE_RULES):
+        path = rules_dir / name
+        rel = path.as_posix().replace(root.as_posix() + "/", "")
+        rel_win = str(path.relative_to(root)).replace("\\", "/")
+        if not path.is_file():
+            missing.append(name)
+            violations.append(f"force_rule_missing:{name}")
+            continue
+        ign = subprocess.run(
+            ["git", "check-ignore", "-q", rel_win],
+            cwd=str(root),
+            capture_output=True,
+            text=True,
+        )
+        if ign.returncode == 0:
+            ignored.append(name)
+            violations.append(f"force_rule_gitignored:{name}")
+            continue
+        ls = subprocess.run(
+            ["git", "ls-files", "--error-unmatch", rel_win],
+            cwd=str(root),
+            capture_output=True,
+            text=True,
+        )
+        if ls.returncode != 0:
+            untracked.append(name)
+            violations.append(f"force_rule_untracked:{name}")
+            continue
+        tracked.append(name)
+    return {
+        "tracked": tracked,
+        "ignored": ignored,
+        "missing": missing,
+        "untracked": untracked,
         "violations": violations,
     }
 
@@ -233,6 +291,7 @@ def main() -> int:
         return 2
 
     audit = audit_rules(rules_dir)
+    git_track = audit_force_rules_git_track(root, rules_dir)
     inject = audit_inject_docs(
         root,
         args.max_agents_md_lines,
@@ -250,7 +309,9 @@ def main() -> int:
             f"always_apply_lines={audit['always_apply_lines']}>{args.max_always_apply_lines}"
         )
 
-    all_violations = audit["violations"] + budget_violations + inject["violations"]
+    all_violations = (
+        audit["violations"] + budget_violations + inject["violations"] + git_track["violations"]
+    )
     ok = len(all_violations) == 0
     status = "PASS" if ok else "WARN"
 
@@ -265,6 +326,13 @@ def main() -> int:
         "always_apply_names": audit["always_apply_names"],
         "core_always_apply_expected": audit["core_always_apply_expected"],
         "lane_requestable_expected": audit["lane_requestable_expected"],
+        "force_rules_git_track": {
+            "must": sorted(MUST_GIT_TRACK_FORCE_RULES),
+            "tracked": git_track["tracked"],
+            "ignored": git_track["ignored"],
+            "untracked": git_track["untracked"],
+            "missing": git_track["missing"],
+        },
         "inject_docs": {
             "agents_md_lines": inject["agents_md_lines"],
             "claude_md_lines": inject["claude_md_lines"],
