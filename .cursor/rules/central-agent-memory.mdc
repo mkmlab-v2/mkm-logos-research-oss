@@ -17,15 +17,13 @@ priority: 4
 3. **레짐 주·보:** 1차 `regime_map` 실물 **주** · 2차 성경·명리 **보** — 2차는 해설·리포트, **실전 트리거 금지**.
 4. **Multi-Lens / 멀티레인:** 로고스·명리·사상 **격벽** — 단일 완성 선언·한 레인 실패를 타 레인으로 메우기 금지.
 5. **압축 서술:** Track A vs Track B·ultra-literal **혼합 금지**; 벤치 KPI와 트레이딩 근거 **합선 금지**(FAIL-COMP-004 계열).
-6. **렌즈 용어 계약:** 렌즈 명칭은 `사상/명리/성경(Logos)`로 고정. `Macro/Regime`는 운영 레이어로만 사용하며 렌즈명으로 혼용 금지.
-7. **렌즈 계약 (Charter):** 3렌즈(사상/명리/성경)=해석·교육·관측 사이드바 `[NON_GATING]` · 병렬 advisory · **시장·가격 예측 호라이즌 매핑 폐기**(`three_lens_horizon_empirical_eval_v2` 0/5). Final Action=`regime_map`+ops gates만 — `LENS_UTILIZATION_CHARTER_V1.md`.
-8. **MKM 4AI 명명 계약:** MKM AI는 `4AI core`(태양/소양/태음/소음) + `Absolute Balance Coordinator Mode`로 고정한다. 조율 모드는 **제5 AI/체질이 아닌 상태(state)** 다.
-9. **장-뇌 은유·게이트 분류:** B-track `outcome_class`·발효 은유는 **Track C/내부 설명용**; `PUBLIC_FACING` v1.7·`.cursor/rules/gut-brain-metaphor-agent-v1.mdc` 준수. CONSTITUTION 본문·실매매 자동 승격 금지.
-10. **세계관·철학 헌법 v1:** `MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` · CONSTITUTION §1.0.5 — **서사≠구현**.
-11. **Logos hybrid · 메타인지 OS:** 외부 딥리서치=**탐험선** · MKM=**항구**(ingest·검증·artifact·재현). **Layer A** `topology_sidecar` `[HYPO]` ingest — **Layer C** miswire·`send_gate HOLD`·Track A·실매매·patient-facing **직결 금지**. 성경·상징·예언망=**에이전트 융합추론 좌표**(기승전결·Bridge·reading pack) — **실행 페달 아님**. 「왜」단답·뉴스→앵커 자동 결선 **금지** — gap·학파 병렬. SSOT: `docs/final/schemas/logos_topology_sidecar_hypo_v1.schema.json` · `scripts/run_logos_topology_sidecar_ingest_chain_v1.py`.
-12. **MISSION_LOG:** 일상·핸드오프 → `MISSION_LOG.md` 작전 보드만 — `mission-log-combat-ssot.mdc`.
-13. **도메인·킬러:** 공통 엔진(query→router→insight→viz→feedback) **돌려쓰기** · **logos.jema-ai.com**=성경 연구 통찰 · **mkmlife/oracle-sphere**=초개인화 킬러 · **personadiary**=일상 동반(preview, API/DB 분리) · **jema-ai.com**=허브만 — `MKM_DOMAIN_PORTFOLIO_POINTER_V1.md` §1.1c · `TRACK_C` §3.0d.
-13. **도메인·인프라·위임:** CF/DNS·브라우저 3단계·S/M/L·GTM → CENTRAL 해당 절·lane `.mdc` (재개 시 Read).
+6. **렌즈 계약:** 명칭 `사상/명리/성경(Logos)` 고정 · Macro/Regime≠렌즈 · 3렌즈=`[NON_GATING]` advisory · 시장·가격 호라이즌 매핑 폐기(`three_lens_horizon_empirical_eval_v2` 0/5) · Final=`regime_map`+ops — `LENS_UTILIZATION_CHARTER_V1.md`.
+7. **MKM 4AI 명명 계약:** MKM AI는 `4AI core`(태양/소양/태음/소음) + `Absolute Balance Coordinator Mode`로 고정한다. 조율 모드는 **제5 AI/체질이 아닌 상태(state)** 다.
+8. **장-뇌 은유·게이트 분류:** B-track `outcome_class`·발효 은유는 **Track C/내부 설명용**; `PUBLIC_FACING` v1.7·`.cursor/rules/gut-brain-metaphor-agent-v1.mdc` 준수. CONSTITUTION 본문·실매매 자동 승격 금지.
+9. **세계관·철학 헌법 v1:** `MKM_WORLDVIEW_AND_PHILOSOPHY_CONSTITUTION_V1.md` · CONSTITUTION §1.0.5 — **서사≠구현**.
+10. **Logos hybrid · 메타인지 OS:** 외부 딥리서치=**탐험선** · MKM=**항구**(ingest·검증·artifact·재현). **Layer A** `topology_sidecar` `[HYPO]` ingest — **Layer C** miswire·`send_gate HOLD`·Track A·실매매·patient-facing **직결 금지**. 성경·상징·예언망=**에이전트 융합추론 좌표**(기승전결·Bridge·reading pack) — **실행 페달 아님**. 「왜」단답·뉴스→앵커 자동 결선 **금지** — gap·학파 병렬. SSOT: `docs/final/schemas/logos_topology_sidecar_hypo_v1.schema.json` · `scripts/run_logos_topology_sidecar_ingest_chain_v1.py`.
+11. **MISSION_LOG:** 일상·핸드오프 → `MISSION_LOG.md` 작전 보드만 — `mission-log-combat-ssot.mdc`.
+12. **도메인·킬러·인프라:** 공통 엔진 돌려쓰기 · logos/mkmlife/personadiary/jema-ai 역할(`MKM_DOMAIN_PORTFOLIO` §1.1c · `TRACK_C` §3.0d) · CF/DNS·브라우저 3단계·S/M/L·GTM → CENTRAL·lane `.mdc` (재개 시 Read).
 
 ## ALWAYS
 

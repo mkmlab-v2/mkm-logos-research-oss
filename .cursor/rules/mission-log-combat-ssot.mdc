@@ -28,9 +28,7 @@ priority: 3
 
 ## NEVER
 
-- `CURRENT_OPS_SNAPSHOT`·`daily_thread_work_*`를 **새로 갱신·생성**하지 않는다(지휘관이 **파일명을 명시**해 예외 요청한 경우만).
-- 사용자가 「핸드오프/스냅샷」만 말해도 **`MISSION_LOG` 작전 보드**만 갱신한다 — `CURRENT_OPS_SNAPSHOT.md`를 열지 않는다.
-- `MISSION_LOG` 완료 Phase를 **자동으로** `CENTRAL`에 복사하지 않는다.
-- MS 서류 본문에 Oracle·성경 쇼룸 문구 **합침** (Oracle에 MS 압축 수치 **합침**).
+- `CURRENT_OPS_SNAPSHOT`·`daily_thread_work_*` 신규 갱신 금지(파일명 명시 예외만); 「핸드오프/스냅샷」만 와도 `MISSION_LOG` 작전 보드만 — 스냅샷 파일 열지 않음.
+- `MISSION_LOG` 완료 Phase를 **자동으로** `CENTRAL`에 복사하지 않는다. MS↔Oracle 서류 문구 **합침** 금지.
 
 **상세:** `docs/final/CENTRAL_AGENT_MEMORY_V1.md` 「MISSION_LOG 운영 SSOT」절.
