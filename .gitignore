@@ -40,6 +40,25 @@ vendor/korean-medicine-texts/
 # Force-claim gates (alwaysApply; clone/CI must see the same files)
 !.cursor/rules/mkm-complete-claim-gate-v1.mdc
 !.cursor/rules/mkm-automation-gate.mdc
+# P1 KEEP16 canonicalization (APPLY KEEP16 GIT ADD · 2026-08-15)
+!.cursor/rules/anti-overfitting-guard-v1.mdc
+!.cursor/rules/mkm-where-used-enum-v1.mdc
+!.cursor/rules/mkm-claim-method-visibility-honesty-v1.mdc
+!.cursor/rules/mkm-live-ux-dod-no-harness-theater-v1.mdc
+!.cursor/rules/compression-narrative-fact-lock-v1.mdc
+!.cursor/rules/dual-plane-kpi-non-merge-v1.mdc
+!.cursor/rules/mkm-done-card-completion-v1.mdc
+!.cursor/rules/mkm-external-facing-fact-lock-v1.mdc
+!.cursor/rules/mkm-paste-epistemic-triage-v1.mdc
+!.cursor/rules/mkm-product-quality-truth-gate-v1.mdc
+!.cursor/rules/patient-clinical-ssot-gate-v1.mdc
+!.cursor/rules/raw-repair-dual-reporting-v1.mdc
+!.cursor/rules/tracka-raw-gate-guard-v1.mdc
+!.cursor/rules/autonomous-web-search-v1.mdc
+!.cursor/rules/local-lock-security-guard-v1.mdc
+!.cursor/rules/mkm-elementary-completion-report-v1.mdc
+!.cursor/rules/mkm-browser-automation-v1.mdc
+!.cursor/rules/mkm-solo-background-ops-auto.mdc
 !.cursor/skills/
 !.cursor/skills/mkm-gut-brain-trackc-comms/
 !.cursor/skills/mkm-gut-brain-trackc-comms/SKILL.md

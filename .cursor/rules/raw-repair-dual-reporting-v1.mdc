@@ -1,0 +1,25 @@
+---
+description: Enforce dual raw/repair metric reporting
+alwaysApply: true
+---
+
+# Raw/Repair Dual Reporting v1
+
+## Purpose
+Prevent metric confusion by enforcing split reporting between model raw output and repair-layer output.
+
+## Always
+- Report both `raw` and `repair_v2` metrics together when discussing quality.
+- Include explicit delta: `repair_v2_minus_raw`.
+- Label repaired scores as `operational (post-processor included)`.
+- Keep wording factual: avoid implying repaired score is base-model quality.
+
+## Never
+- Never collapse `raw` and `repair_v2` into a single "model score".
+- Never claim Track A readiness from repair-only uplift.
+- Never omit one side when citing a headline number.
+
+## Required Output Block
+- `raw`: parse_ok_rate, alignment_pass_rate, rows
+- `repair_v2`: parse_ok_rate, alignment_pass_rate, repair_applied_count, rows
+- `delta`: alignment_pass_rate_delta_repair_v2_minus_raw

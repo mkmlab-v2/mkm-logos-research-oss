@@ -1,0 +1,22 @@
+---
+description: Block Track A claims when raw gate fails
+alwaysApply: true
+---
+
+# Track A Raw Gate Guard v1
+
+## Purpose
+Ensure Track A / production promotion claims are based on raw metrics, not repair-only uplift.
+
+## Always
+- Treat `alignment_pass_rate(raw)` as primary promotion gate.
+- Treat `repair_v2` as operations resilience evidence, not model-core proof.
+- If `raw` is below threshold, report status as `research_only` and keep Track A blocked.
+
+## Never
+- Never state or imply Track A promotion solely from `repair_v2` uplift.
+- Never describe repaired KPI as "core model solved".
+
+## Messaging Contract
+- Allowed: "raw remains below gate; repair_v2 improves operational consistency."
+- Disallowed: "model reached gate" when only repaired metric reached gate.

@@ -1,0 +1,18 @@
+---
+description: solo background ops — 재개 시 state.json·Invoke-MkmSoloBackgroundOps만
+alwaysApply: true
+---
+
+# MKM solo background ops (solo_ops 전용)
+
+**재개 트리거·resume pack·MISSION_LOG Read 순서:** `central-agent-memory.mdc` (본 규칙은 solo_ops만).
+
+## ALWAYS
+
+- 재개 턴: `reports/mkm_solo_background_ops_state.json` — 오늘(로컬) `last_ok: true` 아니면 `powershell -File scripts\Invoke-MkmSoloBackgroundOps_v1.ps1` (exit 확인). 내부에 **scheduler band gate** (`Invoke-MkmSchedulerSoloCoreStackAudit_v1.ps1 -EnforceSoloBand`) 포함.
+- 브리핑 1줄: `solo_ops: ok|fail · date` — Persona·Automations **기본 인사로 강요 금지**.
+- 스케줄러 SSOT: `docs/final/artifacts/mkm_scheduler_solo_core_stack_v1.json` — 신규 `Register-*Task`는 tier 등록 전 Ready 금지.
+
+## NEVER
+
+- Doc Sync·【아테나 점검】을 재개 **전제**로 두지 않음.

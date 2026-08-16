@@ -1,0 +1,28 @@
+---
+description: Chat-first Korean elementary 3-block only. DoD/ACK owned by done-card.
+alwaysApply: true
+---
+
+# Elementary completion report v1 (3-block thin)
+
+**Parent DoD / ACK / incomplete-card closure:** `@mkm-done-card-completion-v1` (and related gates).
+**This file:** commander chat **3-block UX only**. Detail skill: `@mkm-market-scope-elementary-report-v1`.
+
+## ALWAYS
+
+After meaningful work / subagent completion / multi-step done — chat-first Korean (not path theater · not a new paste file):
+1. 한줄 판정
+2. 된것·안된것 (`harness DONE?` / `product DONE 아님` gloss OK)
+3. 다음 1타 — **하나** (Ask Gate 저위험 = 기본값 선택; 분기 고르게 하지 않음)
+
+Final ≤8 lines. Modes CODE/VERIFY/REPORT light mention OK.
+
+## NEVER
+
+- Lead with English status/jargon wall or Done-card English-status spam as primary chat answer
+- End with forced binary forks as next-1
+- **default-write** `reports/human_paste/*elementary*.txt` — only if commander says `저장`/`붙여넣기`/`초등`/`elementary`/`평가 문서로`/OCR
+- Claim 「이미 완전 차단」 / invent auto_block_every_turn=true without proof
+- Re-state full same-URL+ACK / M1–M7 / deploy ACK law (lives in done-card)
+
+pre-report forbid + English incomplete-token ban = owned by done-card / automation-gate / existing checkers — do not duplicate long surfaces here.

@@ -1,0 +1,35 @@
+---
+title: MKM 웹·브라우저 자동화 — 내장 우선 (일관 라우팅)
+alwaysApply: true
+priority: 4
+---
+
+# Browser automation routing (MKM v1)
+
+**Purpose:** IDE Browser(A) · openchrome(B) · NotebookLM Chrome(C) = **별 프로필**. NL 인증: `notebooklm-mcp-session-bridge.mdc`.
+
+## 3-tier
+
+| Tier | When | Tooling |
+| --- | --- | --- |
+| **1 API** | CF/AWS·데이터·배포 | `scripts/*.py` · REST · exit code — **no browser** |
+| **2 Smoke** | localhost·jemaai·봇 없는 페이지 | **`browser_*` only** |
+| **3 Human** | `dash.cloudflare.com`·Turnstile·은행·결제 | 지휘관 Chrome → 토큰 → apply — **에이전트 로그인 금지** |
+
+## ALWAYS
+
+- 기본: `browser_tabs` → `navigate` → `lock` → `snapshot` → actions → `unlock`. 구조 변경 전 **snapshot**.
+- **초록 ≠ 주입:** Browser ON이어도 채팅에 `browser_*` 없으면 1회 시도 후 `check_cursor_ide_browser_readiness_v1.ps1`·수동 전환 — 조작 주장 금지.
+- 로그인·CAPTCHA·결제·파괴 확인 → **1회 실패 후 중단**·사용자 인계.
+- pass/fail SSOT: `CONSTITUTION_*`·스크립트·아티팩트 — 브라우저는 스모크·회귀만. Public UX DONE: live FAIL→green on same-URL; no `scrollIntoView` composer cheat — `@mkm-live-ux-dod-no-harness-theater-v1`.
+
+## NEVER
+
+- **openchrome** without **외장 크롬** / **openchrome** or A 실패 보고+승인.
+- `browser_*` for NotebookLM UI (C = `notebooklm` MCP only).
+- A/B 로그인이 C 인증을 의미한다고 서술.
+- CF 대시보드·Turnstile을 A/B로 우회 시도.
+
+## Route
+
+jemaai·로컬→**A** · CF 토큰→**Tier 3**(`Invoke-ApplyJemaaiShowroomCfEdgeTokenFromSecret_v1.ps1`) · NL→**C** · git/pytest→no browser.

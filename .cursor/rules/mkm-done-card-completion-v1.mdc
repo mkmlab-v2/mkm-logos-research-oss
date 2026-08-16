@@ -1,0 +1,40 @@
+---
+description: Multi-step Done/CLOSED/상용 — disk cards optional; chat Korean only; M1–M7; global DoD (no English incomplete status in chat · 2026-08-11)
+alwaysApply: true
+---
+
+# Done-card completion v1
+
+**SSOT:** `docs/final/artifacts/mkm_done_card_completion_contract_v1_latest.json` · scorecard `mkm_metacog_scorecard_v1_latest.*`  
+**Locked DoD:** 같은 URL에서 지휘관 ACK가 없으면 product DONE이라고 말하지 않는다. Report labels: **harness DONE** / **product DONE** / Korean incomplete gloss only.  
+**Leak fix:** Disk default `pending` (`default_status_chat_forbidden`). **Never** print card `status` / English incomplete tokens / “Done cards:” walls in commander chat. IDE tab Open ≠ MKM card. pre-report: `check_mkm_chat_pre_report_forbid_v1.py`.
+
+## ALWAYS
+
+- Meaningful multi-step work: freeze **3–7 Done cards on disk only if needed** (`user_visible_outcome` / `pass_evidence` / `non_scope` / `status`). Chat often needs **elementary 3-block only** — cards are not a chat obligation.
+- Disk default status **`pending`** when URL/ACK missing. Chat gloss: 「아직 안 끝남」 / 「아직 제품완료 아님」 / 「다음 할 일」 — **never** spell English incomplete status tokens.
+- If mentioning progress: **one Korean line per outcome** (optional); no 「전체 상용 완료」 until all relevant disk cards `DONE`.
+- Gates/walls (e.g. softmatch) = **separate disk cards** — never roll into product DONE (**M4**).
+- 「권장/추천으로 멈춰」 = next-1 only — **cannot CLOSE** incomplete commander cards (**M5**).
+- **product DONE** invalid without all of: same **URL**, **real change** visible, **verify time**, **commander ACK**. Scripts-only = **harness DONE ≠ product DONE** (**M6**). Public Logos/showroom UX live-DoD: `@mkm-live-ux-dod-no-harness-theater-v1`. Plane non-inference: `py scripts/check_mkm_product_quality_truth_gate_v1.py --claim-text "…"`.
+- Before commander-facing Done/completion report: `py scripts/check_mkm_chat_pre_report_forbid_v1.py --claim-text "…"` — exit≠0 → rewrite Korean then send.
+- Before 완료/상용/`CLOSED`: automation-gate **4-check** adversarial re-read (**M3**); Fact-Lock evidence (**M1**). Gate: `py scripts/run_mkm_claim_adversarial_reread_v1.py --claim-text "..."` → `mkm_claim_adversarial_reread_v1_latest.json`.
+- Before 완료/검증/핫리로드/「보인다」: `py scripts/check_mkm_claim_method_visibility_honesty_v1.py --claim-text "..."` (or adversarial C6). Detail: `@mkm-claim-method-visibility-honesty-v1`.
+- Keep commander’s outcome sentence **unchanged** (**M2**). Product-DONE / 완성 claims: receipt with `commander_outcome_verbatim` + D1/D2 sensor `py scripts/check_mkm_intent_dual_suite_d1d2_v1.py --receipt-json …` (harness_evidence + product URL/ACK **or** product=pending on disk).
+- Do **not** claim behavior scores ≥8 without a new mission re-score (**M7**).
+- Logos soft-open **friend-ready / DONE / PASS**: `py scripts/check_logos_soft_open_friend_pre_report_battery_v1.py` exit **0** + `logos_soft_open_friend_pre_report_battery_v1_latest.*` before telling commander (**M4/M6**). Single-class probe ≠ friend floor.
+
+## NEVER
+
+- Emit English incomplete status / `product DONE = …` incomplete / Done-card English status walls / bare `status:` enums in commander chat (disk machine codes OK; **do not print them**).
+- Headline all-commercial-done while any relevant card is incomplete/PARTIAL/HOLD.
+- Merge gate/wall cards into product DONE (Logos softmatch wall ≠ Ask product DONE).
+- Close incomplete commander cards by “recommended stop” alone.
+- Call scripts-only smoke “user-visible DONE” / **product DONE**.
+- Claim Logos soft-open friend PASS without pre-report battery exit 0.
+- Name unexecuted methods (`핫리로드`/hot-reload/HMR) without evidence pair.
+- Claim 「보인다」/「됐다/전부 OK/배포 성공/제품 완료」 before commander ACK or stranger same-URL proof; **rev ≠ success**.
+- Treat harness exit0/rev or `DONE_HARNESS_AND_LIVE` as product visible DONE.
+- Rebut commander 「안 보임」 with rev alone — commander counter-evidence wins.
+- **Destiny 전 지휘관 ACK:** Destiny / live Logos Ask / no1kmedi UI deploy without this-chat commander explicit ACK (`배포해` · `Destiny OK` · `라이브 OK`; deploy-context `진행해` only — general 위임 ≠ deploy ACK).
+- Conflate live rev with product DONE, or 「보인다」with deploy ACK (visibility ≠ deploy ACK).
