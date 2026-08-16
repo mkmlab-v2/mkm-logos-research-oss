@@ -1,0 +1,39 @@
+---
+description: >-
+  External-facing / B2B outbound copy — Fact-Lock + claim-entry gate before
+  grants, IR, landing, acodeai_b2b_inbound_*, compression onepagers, or 47.5
+  savings claims. @mkm-external-facing-fact-lock-v1
+globs:
+  - reports/**/*application*.md
+  - reports/**/*attachment*pack*.md
+  - docs/final/artifacts/**/*deck*.md
+  - docs/final/artifacts/**/*executive*.md
+  - docs/final/artifacts/acodeai_b2b_inbound_*
+  - docs/final/artifacts/**/*onepager*
+alwaysApply: false
+---
+
+# External-facing Fact-Lock v1
+
+**Claim-entry SSOT:** `docs/final/artifacts/chat_claim_entry_gate_v1_latest.json`  
+**Claim-entry runner:** `py scripts/check_chat_claim_entry_gate_v1.py` ([paths…])
+
+## ALWAYS (before editing/shipping outbound B2B or claiming SEND readiness)
+
+1. **Claim-entry (mandatory sibling)** — before write/edit of `acodeai_b2b_inbound_*`, PUBLIC outbound compression onepagers, or any copy with `47.5` / global savings claims: run `py scripts/check_chat_claim_entry_gate_v1.py` (pass target paths when not using defaults) → **exit 0**. Do not draft SEND-ready text first then mop.
+2. Run `py scripts/check_external_facing_fact_lock_v1.py --target <draft>` → **exit 0**.
+3. Contract header: `--scope "<closed scope>" --write-contract reports/<name>_contract_v1.json` + `--evidence "artifact|command"`.
+4. Report **raw + repair_v2 + delta** when citing bench/quality — never headline repair-only.
+5. Read `docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md` for the draft's channel.
+
+## NEVER (chat or copy)
+
+- Market unique / global only / game-changer / full OS complete / zero hallucination / 60-second proof.
+- Collapse partial exit 0 into customer SLA, market acceptance, or Track A promotion.
+- Imply grant rejection = whole stack failed; name the program + artifact path only.
+- Claim **SEND OPEN** / market **GO** from claim-entry or external-facing exit 0 alone (`send_gate` stays HOLD until human/program gates).
+- `every_turn_footer` (claim-gate footer on ordinary replies) — **FORBIDDEN**.
+
+## Done
+
+- Claim-entry exit 0 (when B2B/inbound/47.5 in scope) + external-facing scan exit 0 + contract JSON path + reproducible evidence — not narrative excitement. Exit 0 ≠ SEND OPEN.

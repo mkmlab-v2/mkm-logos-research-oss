@@ -1,0 +1,35 @@
+---
+description: Plane non-inference check (internal hygiene) — harness≠content≠UX≠commercial; NOT product/IP/novelty
+alwaysApply: false
+---
+
+# Product-quality truth gate v1 (internal_discipline_only)
+
+**Banner:** assurance-case hygiene · **KILL** as product/IP/market wedge · keyword checker reduces incidence, does not prevent bypass.  
+**SSOT:** `docs/final/artifacts/mkm_product_quality_truth_gate_v1_latest.json`  
+**Checker:** `py scripts/check_mkm_product_quality_truth_gate_v1.py --claim-text "…"`  
+**Adversarial FP/FN:** `py scripts/check_mkm_product_quality_truth_gate_v1.py --adversarial-set`  
+**Audit:** `docs/final/artifacts/mkm_systemwide_anti_gaslight_product_truth_audit_v1_latest.*`
+
+## Planes (higher NOT inferred from lower · machine ids only)
+
+| Rank | Plane | May claim |
+| --- | --- | --- |
+| P0 | Harness | exit0 / smoke / PASS_HARNESS |
+| P1 | Control | wrong-pack / citation_hold / ledger |
+| P2 | Content quality | depth_proxy / QUALITY_COMPARE / meets_bar |
+| P3 | User-visible product | same-URL or commander ACK |
+| P4 | Commercial | customer/payment/retention |
+
+## ALWAYS
+
+- Before DONE / 상용 / product_all_ok / LLM-better / 무제한: run the checker (exit 0).
+- Report the plane name with the claim; do not headline lower-plane wins as product/commercial.
+- Logos lane still uses `check_logos_ask_harness_neq_product_all_ok_v1.py` as specialty; this gate is **all lanes**.
+
+## NEVER
+
+- Infer content depth from control wins.
+- Infer user-visible DONE from scripts-only / friend battery.
+- Infer commercial GO from dogfood / Cache-Delta HOLD / Track A bench alone.
+- Claim MCP+compression = unlimited intelligence.

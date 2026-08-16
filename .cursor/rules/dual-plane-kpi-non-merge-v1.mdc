@@ -1,0 +1,38 @@
+---
+description: Dual-plane neuro-symbolic KPI non-merge — Universal Root vs compression vs parallel lanes (FAIL-COMP-004)
+alwaysApply: false
+---
+
+# Dual-Plane KPI Non-Merge v1 (2026-06-21)
+
+**SSOT:** `docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` §3.0b · `MKM_UNIVERSAL_ROOT_INVESTOR_FACT_LOCK_CORRECTION_APPENDIX_EN_V1.md` · `.cursor/rules/raw-repair-dual-reporting-v1.mdc` · `.cursor/rules/tracka-raw-gate-guard-v1.mdc`
+
+## Purpose
+
+Prevent headline KPI collapse across **Universal Root dual-plane**, **Track A compression**, and **parallel product lanes**.
+
+## ALWAYS
+
+- Report **lexicon_plane** and **topology_plane** metrics **separately** when citing Universal Root.
+- State `collapsed_combined_score: null` as **intentional non-merge policy** — not failure, not "impermeability proven."
+- Label Universal Root fixture metrics as **raw · 500-pair bench · Track B · research_only**.
+- Label compression metrics as **Track A · operational (post-processor where applicable)** — separate slide/deck.
+- Use **Neuro → Symbolic → Human** when describing Y1 hero; **send_gate: HOLD** unless artifact says otherwise.
+
+## NEVER
+
+- Merge Universal Root `99.53%` with compression `47.5%` into one product score or investor headline.
+- Read `english_only_distortion_rate 0.47%` as global hallucination rate or "GPT killer" proof.
+- Promote repair_v2-only uplift to Track A / Y1 hero readiness.
+- Describe hosted ingestion SaaS or user-count auto-training as Y1 growth model.
+- Auto-promote B-track fixture pass to Track A · live trading · SEND.
+
+## Required dual-report block (Universal Root)
+
+- `lexicon`: prime_hit_rate, english_only_distortion_rate, rows
+- `topology`: verse_reachable_rate, wall_exception_count
+- `integrity`: collapsed_combined_score (expect null)
+
+## When to load
+
+Track C · investor deck · community launch · GTM copy · business plan edits · Universal Root / neuro-symbolic discussions.

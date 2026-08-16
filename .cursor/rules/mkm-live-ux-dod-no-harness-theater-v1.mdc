@@ -1,0 +1,31 @@
+---
+description: >-
+  Live UX DoD — no harness theater. Logos Ask / no1kmedi showroom / user-visible web UX:
+  FAIL criteria before DONE; no scrollIntoView cheat; answer-path jargon blocks CLOSE;
+  exit0≠friend-ready. Load for public UI / Playwright / UX DONE claims.
+globs:
+  - projects/no1kmedi/**
+  - projects/no1kmedi/**/*.{ts,tsx,css,js}
+  - scripts/**/*logos*ask*
+  - scripts/**/*playwright*
+alwaysApply: false
+---
+
+# Live UX DoD · no harness theater v1
+
+**Scope:** Public-facing Logos Ask / no1kmedi showroom UI at minimum; any monorepo **user-visible web UX** DONE/FIXED claim.  
+**Out of scope:** Logos default shell flip · Track A / live trade · secrets.
+
+## ALWAYS
+
+1. **DoD = live fail criteria** — Before claiming UX/UI fix done, write explicit FAIL items. Report DONE only when those items are green on **production or same-URL live** (localhost OK only if not deployed). Never claim prod fixed without a prod (or same-URL) probe.
+2. **No scroll cheat** — Playwright/smoke must **not** use `scrollIntoView` to fake composer visibility. Require: settings OPEN + input **in viewport** + **clickable** without scroll theater.
+3. **Answer path included** — Chrome-only patches must be labeled **chrome-only**. Do **not** CLOSE a UX FAIL if the visible answer body dumps jargon (`###`, `SEND HOLD`, `track_a_`, `NON_GATING`).
+4. **Harness ≠ product** — `exit 0` / `ui_rev` bump / friend battery alone ≠ friend-ready / product DONE / commander ACK. Cross: `mkm-done-card-completion-v1` (M6) · `logos-ask-mcp-v1` Done-Harness vs Done-Product.
+
+## NEVER
+
+- Headline scripts-only smoke or DOM-pass as user-visible / prod UX DONE.
+- Fake viewport with scrollIntoView then claim composer usable.
+- Close UX FAIL cards after chrome-only CSS while answer body still leaks internal tokens.
+- Claim Logos shell / Ask product DONE from this rule alone.

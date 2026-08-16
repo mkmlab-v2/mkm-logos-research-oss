@@ -1,0 +1,53 @@
+---
+description: >-
+  Paste epistemic triage — conditional air-lock for long/external NL pastes,
+  completion-without-disk claims, FAIL-COMP (gematria/Logos→trade). NOT every-turn
+  footer. Use when user pastes NotebookLM/외부 서사, 「개발 완료」, BUY/SELL counts,
+  or @mkm-paste-epistemic-triage-v1.
+alwaysApply: false
+---
+
+# Paste epistemic triage v1 (trigger-only)
+
+**Role:** 인식론 검문소 — Pleaser가 paste를 “분석 과제”로 받기 전에 **출처·클레임·레인**을 강등/DROP.  
+**Not:** 매 답변 3줄 표 · BUY/SELL 단어 전면 금지 · Fact-Lock 대체.
+
+**SSOT:** `docs/final/artifacts/mkm_paste_epistemic_triage_contract_v1.json`  
+**Runner:** `py scripts/run_mkm_paste_epistemic_triage_v1.py --text "..."` / `--file` / `--stdin`
+
+## When (트리거 — 이 중 하나면)
+
+- 긴 외부 paste (≥~1200자) · NotebookLM/`cited:` 스타일 · “완벽 탑재/개발 완료/Studio 동기화”
+- 완료·연동 주장에 **디스크 경로·exit·아티팩트 증인 없음**
+- 게마트리아/성경/`Sj-BCI` ↔ BUY·SELL·실매매·모의투자 API **합선 서사**
+
+## ALWAYS (트리거 시에만)
+
+1. **본문 분석 전** 가능하면 훅/스크립트 산출을 Read:
+   - `reports/mkm_paste_epistemic_triage_agent_brief_v1_latest.md`
+   - `docs/final/artifacts/mkm_paste_epistemic_triage_v1_latest.json`
+   또는 동등 실행: `py scripts/run_mkm_paste_epistemic_triage_v1.py --text "..."`
+2. 3필드 1회만 선언(푸터 반복 금지):
+   - `Source_Class` · `Claim_Verification` · `Lane_Conflict`
+3. `FAIL_COMP_DETECTED` / `DROP_FAIL_COMP_SEGMENTS` → 해당 문단 **분석 제외**; 디스크 슬라이스만.
+4. `EXTERNAL_NL` + 완료 주장 → 구현 완료 단정 금지.
+5. 트리거 **없을** 때 검문표 **출력 금지**.
+6. 완료·수치 클레임이 남으면 (선택) `@mkm-evidence-block-trigger-v1` — triage 3필드와 **이중 긴 표 금지**; Evidence만으로 대체 가능.
+
+## Hook note
+
+`beforeSubmitPrompt`는 Cursor가 **프롬프트 rewrite를 지원하지 않음** — 에어록 = 디스크 brief + (선택) `MKM_PASTE_TRIAGE_BLOCK` hard deny.
+
+## NEVER
+
+- 매 답변 상단 검문표 의무화
+- HOLD 방법론 문서의 BUY/SELL **단순 언급**만으로 DROP
+- NL 서사로 CONSTITUTION·Track A·live·SEND 갱신
+- 사상/명리 레인 작업에 게마트리아 매매 서사 합선
+
+## Reproduce
+
+```powershell
+py scripts/run_mkm_paste_epistemic_triage_v1.py --text "Sj-BCI BUY 194 SELL 78 모의투자 API"
+py -m pytest tests/test_mkm_paste_epistemic_triage_v1.py -q
+```

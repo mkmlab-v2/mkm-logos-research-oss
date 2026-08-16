@@ -1,0 +1,39 @@
+---
+title: Patient clinical SSOT gate (환자 식별·답변 게이트)
+alwaysApply: false
+description: 환자 임상·카톡·복용·처방 Q&A 시 resolve 스크립트 exit 0 전 답변 금지. 이보미·김아름 등 합선 방지.
+---
+
+# Patient clinical SSOT gate v1
+
+**SSOT:** `docs/final/PATIENT_TRACK_B_MEMORY_V1.md` §5 · `docs/final/artifacts/patient_disambiguation_guard_v1_latest.json`  
+**게이트:** `py scripts/resolve_patient_clinical_ssot_v1.py`
+
+## ALWAYS (환자 임상·카톡·복용·처방 Q&A)
+
+1. **식별 먼저:** `--display` 또는 `--slug` 또는 `--ref-token`으로 resolver 실행 → **exit 0** 확인.
+2. **exit 0이면:** `pointer` → `paths` → `patient_track_b_memory` / `medication_qa` / `clinic_kakao`만 Read.
+3. **답변 첫 줄:** resolver `reply_header_ko` 또는 `[환자] 이름 · ref_token · slug` + SSOT 경로 1개.
+4. **`track_b_memory.saved_complete` true** → `open_questions`·출생시각 등 **재질문 금지** (명리 optional만).
+5. **증상·처방 키워드만** 있고 이름 없음 → `--risk-keywords` 실행; **exit 2면 중단**·이름 요청.
+6. 갱신 후: `build_patient_encounter_registry_v1.py` · 필요 시 `athena_checkpoint.py` 1줄.
+
+## NEVER
+
+- 레지스트리·resolver **exit 0 없이** 임상·복용·카톡 답변.
+- 키워드 유사도로 **다른 slug** 파일 인용 (예: 산후+단삼만으로 `lee_bomi`↔`kim_areum` 합선).
+- `saved_long_term_memory_*` 환자에게 **저장 미완**처럼 추가 입력 요구.
+- disambiguation_guard의 `not_same_as` 무시.
+
+## exit code
+
+| code | 의미 | 에이전트 |
+|------|------|----------|
+| 0 | 단일 환자 확정 | SSOT Read 후 답변 |
+| 1 | 미등록 | 저장·이름 확인 요청; 추측 답변 금지 |
+| 2 | 모호 | 후보 나열; **답변 금지** |
+| 3 | 인자 없음 | display/slug/ref-token 요청 |
+
+## 트리거
+
+환자 이름·카톡·복용·처방·「PATIENT」「장기기억」·광명백제 산후 문의

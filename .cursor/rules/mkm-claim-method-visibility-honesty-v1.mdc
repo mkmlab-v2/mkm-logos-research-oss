@@ -1,0 +1,29 @@
+---
+description: >-
+  Claim method/visibility honesty (Logos Ask E3 pattern) — load when UX/verify/완료/
+  핫리로드/hot-reload/HMR/「보인다」/DONE_HARNESS_AND_LIVE / design-success claims.
+  Method theater ≠ product visible DONE.
+alwaysApply: false
+---
+
+# Claim method · visibility honesty v1
+
+**Autopsy:** `docs/final/artifacts/mkm_agent_hallucination_autopsy_logos_ask_e3_v1_latest.json`  
+**Counsel:** `docs/final/artifacts/mkm_azure_top_counsel_agent_hallucination_guard_v1_latest.json`  
+**Gate:** `py scripts/check_mkm_claim_method_visibility_honesty_v1.py --claim-text "…"`  
+Also: `py scripts/run_mkm_claim_adversarial_reread_v1.py` (C6) · optional `check_mkm_product_quality_truth_gate_v1.py`  
+**Walls:** `research_only` · `send_gate: HOLD` · `product_all_ok: false` (defaults unchanged)
+
+## NEVER
+
+- Name a method not executed (`핫리로드` / hot-reload / `HMR 루프`) without before/after HMR evidence pair — `METHOD_NAME_REQUIRES_EXECUTION` · `HOTRELOAD_CLAIM_REQUIRES_HMR_PAIR`
+- Say 「보인다」 / user-visible / 디자인 성공 before commander ACK or stranger-visible 3s proof on **same URL** — `VISIBLE_CHANGE_REQUIRES_ACK_OR_STRANGER`
+- Treat harness `exit0` / `rev_match` / screenshot-of-page as product visible DONE — `HARNESS_NEQ_PRODUCT_DONE`
+- Merge labels as product success theater: `DONE_HARNESS_AND_LIVE` — split **DONE_HARNESS** vs **DONE_PRODUCT** only — `DONE_STATE_SPLIT_REQUIRED`
+- Rebut commander 「안 보임」 with `rev` alone — commander counter-evidence wins
+
+## ALWAYS
+
+- Before 완료 / 검증했다 / 핫리로드 주장: run adversarial re-read + this method-visibility gate; fix then claim
+- Report planes separately; do not dump long paste — point autopsy path only
+- If method was not run: say so (harness-only / no HMR / not user-visible)

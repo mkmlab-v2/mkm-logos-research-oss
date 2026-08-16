@@ -1,0 +1,56 @@
+---
+title: LocalLock security guard v1
+description: LocalLock·DPAPI·secret inject/run 작업 시 @ 로드. Credential shuttle — agents must not exfiltrate session secrets or argv passwords
+alwaysApply: false
+priority: 5
+---
+
+# LocalLock security guard v1
+
+**SSOT:** `scripts/Invoke-LocalLock_v1.ps1` · `docs/final/schemas/dev_identities_v1.schema.json` · DPAPI `scripts/Invoke-EncryptedSecretStore.ps1`
+
+## Safety invariant (authoritative)
+
+### Context
+
+- **Identity plane:** `%APPDATA%\MKM\dev_identities_v1.json` (email, login_url, env_var_name) — local only, not committed.
+- **Secret plane:** `%APPDATA%\MKM\secret_store_v1.json` (DPAPI) — never read into chat, commits, or artifacts.
+
+### ALWAYS
+
+- Activate secrets only via `powershell -File scripts\Invoke-LocalLock_v1.ps1 inject <key>` (or commander `register` / `copy`).
+- Prefer `who` / `identity list` for account_class and email topology questions.
+- Register secrets with `register <key>` (SecureString) — **never** `set key value` on argv.
+- After `inject`, assume `$env:*` may hold secrets — **do not** echo, log, or paste env values.
+
+### NEVER
+
+- `echo $env:…`, `printenv`, `Get-ChildItem Env:`, or `type`/`Get-Content` on secret store paths to "verify" injection.
+- Put passwords, PATs, or connection strings in chat, `.env` commits, `MISSION_LOG`, or GTM JSON.
+- Run `local-lock copy` without explicit commander request.
+- Imply Cloud Cursor agents can use LocalLock DPAPI — **local desktop session only**.
+
+## Capability surface (non-invariant · cli_help_verified 2026-08-15)
+
+> Status labels below are **not** safety law. Do not read them as "P1 done = secure".
+> Verification this prep: `Invoke-LocalLock_v1.ps1 help` exit 0; `identity list` exit 0;
+> AST parse ask/browser helpers ok. Live inject/run/copy/open-autofill **not** claimed.
+
+### P1 surface (child-env run)
+- Prefer `run <key> :: <cmd>` for high-risk secrets — child process env only.
+- `inject` leaves values in current shell until cleared; prefer `run` when possible.
+
+### P1.5 surface (browser open / email autofill)
+- `open <key> -AutofillEmail` — identity plane only via `scripts/local_lock_browser_open_v1.py`; password never autofilled.
+- Profiles under `%APPDATA%\MKM\browser_profiles\<key>` (Tier 3).
+- Tier 2 (`browser_tier: 2`) or helper failure → clipboard email + default browser fallback.
+- Optional per-site selectors in `dev_identities_v1.json` → `autofill.email_selector` / `password_selector` (focus).
+- **NEVER** pass DPAPI secrets or `copy` output into browser helper argv/temp meta.
+
+### P2 surface (ask)
+- `ask <query...>` → `scripts/local_lock_ask_v1.py` (identity metadata only; optional Ollama).
+- **NEVER** ask Ollama for password plaintext; secret_store never loaded into ask.
+
+### P2.5 surface (menu / alias)
+- `menu` interactive UI; `add <key>` shorthand; optional `Register-LocalLockShellAlias_v1.ps1`.
+- Do not dot-source `Invoke-LocalLock_v1.ps1` in `$PROFILE`.

@@ -1,0 +1,29 @@
+---
+description: "Anti-overfitting / anti-sycophancy — label in-sample metrics; block OOS-as-production claims."
+alwaysApply: false
+---
+
+# Anti-Overfitting & Anti-Sycophancy Guard v1
+
+## Purpose
+Prevent the agent from inflating metrics by testing on training data, and from packaging in-sample results as production-ready evidence.
+
+## ALWAYS
+
+- When adding snippets/templates/examples to a catalog/training set, and then measuring performance on the same data: **label the result as `in_sample` in the headline** and state it cannot be used as generalization evidence.
+- When reporting any match rate, accuracy, or coverage metric: state whether the test set overlaps with the catalog/training set. If overlap > 0%, prepend `[IN-SAMPLE]` to the metric name.
+- When the user says "밀어봐", "쭉 진행해", or gives a batch-approve instruction that would make test data = training data: **warn once** before executing: "This will make the test set identical to the training set. The resulting metric will be in-sample and cannot prove generalization."
+- After the warning, if the user confirms, proceed — but tag all resulting artifacts with `in_sample: true`.
+- Dual-report: always show `in_sample_rate` and `oos_rate` (out-of-sample) side by side when both are available.
+
+## NEVER
+
+- Use words like "시장 충격", "혁신", "돌파", "상용 완성" for in-sample-only metrics.
+- Produce a "market shock receipt" or equivalent promotional artifact without OOS evidence.
+- Frame 100% match rate as meaningful when the test set was manually added to the catalog in the same session.
+- Skip the overlap check just because the user gave a "rush" instruction.
+
+## Enforcement
+
+- Scripts that measure wire_match or coverage SHOULD check for test-catalog overlap and include `oos_contamination_check` in their output.
+- `bench_ok: true` requires `oos_contamination_detected: false` — otherwise downgrade to `bench_ok_in_sample_only: true`.

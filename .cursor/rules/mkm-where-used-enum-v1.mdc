@@ -1,0 +1,32 @@
+---
+description: Where-used / 완전 열거 — resolve+check before answer (requestable; NOT alwaysApply)
+alwaysApply: false
+---
+
+# Where-used complete enum gate v1
+
+**SSOT:** `docs/final/artifacts/mkm_where_used_registry_v1.json`  
+**Skill:** `.cursor/skills/mkm-where-used-enum/SKILL.md`
+
+## ALWAYS (when topic is 사용처 / where used / Complete_Enum / 언제 쓰이나)
+
+1. `py scripts/resolve_mkm_where_used_v1.py --topic <id>`
+2. `py scripts/check_mkm_where_used_v1.py --topic <id> --strict` → exit 0
+3. Synthesize only from `reports/mkm_where_used_<id>_latest.json` `paths_hit`
+4. `py scripts/check_mkm_where_used_synthesis_v1.py --topic <id> --text-file <draft> --strict` → exit 0
+
+## NEVER
+
+- Natural-language MECE from chat memory alone
+- Long protocol paste into CENTRAL / MISSION_LOG / alwaysApply
+- Cite miss-axis / miss-path as covered
+- Track A / SEND from where-used reports
+- Claim synthesis_ok = factual truth (citation hygiene only)
+
+## Bypass log (when miss already happened)
+
+```text
+py scripts/append_mkm_where_used_bypass_incident_v1.py --kind answered_without_resolve --topic <id> --summary "<one line>"
+```
+
+Do not treat Pass1 `exit 1` as a bypass incident.
