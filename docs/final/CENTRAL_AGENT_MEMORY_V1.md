@@ -24,7 +24,7 @@
 ## 메타
 
 - **schema:** `central_agent_memory_v1`
-- **last_updated_utc:** 2026-07-28T17:39:00Z
+- **last_updated_utc:** 2026-08-31T10:46:35Z
 - **owner:** (선택)
 - **nl_sync:** live SSOT = resume pack `commander_briefing.nl_ltm_sync` (**2026-06-21:** lens pack push **54/54** OK · OPS `CENTRAL_AGENT_MEMORY_V1` refreshed incl. 41k/31k 격벽 절). Repro: `scripts/Push-NotebooklmLensPacks_v1.ps1 -Refresh` · Vault: `sync_notebooklm_sources_to_mkm_data_vault.ps1` · manifest: `docs/NotebookLM_sources_manifest.md` · MCP triage: `@notebooklm-mcp-session-bridge`. **본 meta 줄에 과거 타임라인 누적 금지** — archive는 manifest·checkpoint slice.
 - **external_briefing_ref:** `athena_memory_bank.md` (Gemini prior-year memo, briefing only)
@@ -159,26 +159,26 @@
 
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
-- **2026-07-28T17:39:00Z** — 자율루프 daily plumbing READY: MKM_AutonomousPatrol_Daily Ready@07:30 + commander contract/elementary/AGENTS triggers; ≠AthenaBundle daily
-- **2026-07-28T17:35:02Z** — NEW-APOCRYPHA-006 citation-audit shadow stamped · apo∩canon_G=13 thin · cognate both=1 · PASSIVE · SEND HOLD
-- **2026-07-28T17:25:45Z** — AutonomousPatrol sticky cleared: Env flake=Phase1 all_ok=False under DailyOps; OpsPatrolHealth SkipPhase1+SkipNews; sticky ignores 267009/exit2; CommandPackage Start-Process exit; alert=false LTR=2 WARN Athena drift only
-- **2026-07-28T17:22:50Z** — continuity=infra-gpu-verify-ladder-2026-07-26 · AGENTS thin: ops inbox + Notion API(MCP아님) 포인터; Polar HITL next; session end
-- **2026-07-28T17:21:24Z** — AGENTS: ops inbox + Notion API(MCP아님) 포인터 2행 반영
-- **2026-07-28T17:13:15Z** — ops: Cursor hub event inbox v1 (enqueue/drain) smoke DONE · Notion/Polar ask-gate wired
-- **2026-07-28T17:13:13Z** — continuity=acodeai-routing-csi2-myeongri-freeze · a-codeai routing MVP+Audit; CSI-2 myeongri disk-prefer; myeongri FREEZE stamp; 5x BLOCKED pitch≠deck; customer-wait
-- **2026-07-28T17:03:03Z** — Chronos Detached DONE · dir_match~50.9% · completion~96.7% · ≠alpha/live
-- **2026-07-28T16:53:39Z** — Infra: Chronos KOSPI baseline Detached STARTED (Mode=both) · Polar대기 idle#5
-- **2026-07-28T16:47:27Z** — 위임M: Nemotron DryRunLocal DONE (Windows CSV·exit0 rows=8) · broken WSL venv bypass 고정
-- **2026-07-28T16:44:24Z** — patrol sticky wall: Athena drift cleared (WaitingQueue+ProphecyPanel Enabled); Env ops_patrol_health flaky under scheduled DailyOpsPatrol → LastTaskResult=1 alert=true; session work restored ~328
-- **2026-07-28T15:54:57Z** — a-codeai: Notion 권장팩 고정 — 재판정표+교정FAQ (Gemini 동의문 비부착·SEND HOLD)
-- **2026-07-28T15:50:28Z** — a-codeai: 환각제어 6층 내부 FAQ 교정 paste+artifact (≠SLA·SEND HOLD·FC6/Sharpe 오인용 수정)
-- **2026-07-28T15:43:21Z** — patrol manual_queue resolved: git tree + scheduled triage
-- **2026-07-28T15:06:02Z** — 2026-07-29 자율루프: solo_ops OK + AutonomousPatrol overall OK (sticky WARN 예약 LastTaskResult=1, 수동큐 2)
-- **2026-07-28T14:59:11Z** — a-codeai CE 위임: internal alignment 1p+Claude5 market trend 부록+phase2 diet review; fact-lock exit0; SEND HOLD
-- **2026-07-28T14:58:43Z** — CENTRAL Obsidian dormant OK optional personal memo governance
-- **2026-07-28T14:53:00Z** — CENTRAL TOOL_STACK_GOVERNANCE: Notion optional collab HITL only never SSOT
-- **2026-07-28T14:46:22Z** — continuity=gwangmyeong-880-option2-2026-07-28 · 광명880 세션종료: 옵션② M2외피P1+EV통로P2 LOCK, RFQ 4문항·Q-A/B/C 분리견적 반영, M/M2 파사드 컨셉, 비용확정=건축사 답변 후
-- **2026-07-28T14:44:23Z** — MKM Cursor agent triad v1 rule on disk; MCP lens priority advisory
+- **2026-08-31T10:46:35Z** — LOGOS G2 baseline 9 answers materialized: Azure gpt-4o-mini x9 hash-pinned; USER_RECRUITMENT_N=0; EXECUTION_ACK separate
+- **2026-08-31T10:11:23Z** — continuity=clinic-kakao-inbox · Clinic Kakao unified inbox PARK — 주 1-2건 직접 답변; harness 보존, 딜러/실연동/Playwright HOLD
+- **2026-08-31T10:05:51Z** — 2026-08 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
+- **2026-08-31T09:50:50Z** — A_CODEAI_30_TASK_CONTROLLED_BENCHMARK_DESIGN_FREEZE_ACK: 30-task prereg frozen TASK_RUN_N=0; execution ACK separate
+- **2026-08-31T09:22:30Z** — LOGOS_ASK_20_USER_G2_VALIDATION_DESIGN_FREEZE_ACK: 20-user L1-L3 prereg frozen; execution/recruitment separate ACK
+- **2026-08-31T08:34:01Z** — 김지선 산후 복약·회복 안내 최종 확정: 뒷물100%외용·모유수유+영아관찰·소음·RED FLAG 차트메모
+- **2026-08-31T07:58:01Z** — continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001
+- **2026-08-31T07:57:48Z** — Logos Ask product ACK: same-URL dynamic UX commander ack; harness 9/9; Tier2 smoke hydration+Ps23+citations OK; softmatch_wall separate
+- **2026-08-31T05:00:18Z** — Clinic Automation v0.1: Unified Patient Inbox harness (enqueue/classify/SLA dashboard) exit0; send_gate HOLD
+- **2026-08-31T04:21:27Z** — DPT-R first blind AI dry-run EXECUTION_COMPLETE N=72 parse=59/72; sealed; adjudication HOLD
+- **2026-08-31T03:48:55Z** — DPT-R parent reconciled RESTORE + execution contract frozen PASS; AI_RATING_N=0; await execution RE-ACK
+- **2026-08-31T03:30:16Z** — DPT-R AI dry-run EXECUTION BLOCKED: analysis_plan parent drift + no execution contract; AI_RATING_N=0
+- **2026-08-31T02:42:10Z** — DPT-R vignette pack FREEZE_PASS N=36; hygiene 0 leak; AI rating 0; HOLD execution ACK
+- **2026-08-31T02:22:55Z** — DPT-R AI-rater dry-run prereg PASS_WITH_BLOCKERS; rubric frozen; vignette pack blocker; AI rating N=0; E1 HOLD
+- **2026-08-31T02:07:37Z** — DPT-R IRR method contract locked: no universal kappa floor; AI dry-run eligible≠authorized; AI≠expert; E1 HOLD
+- **2026-08-31T01:56:22Z** — DPT-R measurement spec reaudit PASS_WITH_BLOCKERS; kappa floor still SOURCE_SELECTION_REQUIRED; E1_ELIGIBLE=FALSE
+- **2026-08-31T01:41:07Z** — DPT-R empirical measurement Spec v0.2 PASS_WITH_BLOCKERS; Theory≠Kernel; non-mimetic/dignity theory-only; next SPEC_REAUDIT
+- **2026-08-31T01:31:13Z** — DPT-R empirical design red-team PASS_WITH_MAJOR_NARROWING; kernel shrinks; non-mimetic abandon empirical; next spec revision
+- **2026-08-31T01:17:52Z** — DPT-R empirical measurement design PASS_WITH_MAJOR_GAPS; E0/E1 only; next EMPIRICAL_DESIGN_RED_TEAM; no data collection
+- **2026-08-31T01:05:10Z** — IND-T9-04 resolved: missing safety/third_party blocks fail-closed; OPEN_DEFECT_N=0; empirical design HOLD
 <!-- ATHENA_CHECKPOINT_V1_END -->
 ---
 

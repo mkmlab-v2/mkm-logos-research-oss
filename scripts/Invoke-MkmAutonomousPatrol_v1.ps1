@@ -378,6 +378,32 @@ if ($runWeekly) {
     Add-ManualItem -Id "athena_fact_lock_weekly" -LabelKo "weekly AthenaBundle pytest bundle" -Reason "weekly_sunday_suggested" -Command "Invoke-MkmPersonaHealth_v1.ps1 -Persona AthenaBundle"
 }
 
+# --- host capacity WARN-only (no auto-delete; local free) ---
+$capPy = Join-Path $WorkspaceRoot "scripts\check_mkm_host_capacity_warn_v1.py"
+if ((Test-Path -LiteralPath $capPy) -and -not $DryRun) {
+    Invoke-TrackedStep -Name "host_capacity_warn" -Required $false -NonFatal $true {
+        py $capPy
+    } | Out-Null
+    $capJson = Join-Path $WorkspaceRoot "docs\final\artifacts\mkm_host_capacity_warn_v1_latest.json"
+    if (Test-Path -LiteralPath $capJson) {
+        try {
+            $cap = Get-Content -LiteralPath $capJson -Raw -Encoding UTF8 | ConvertFrom-Json
+            $steps["host_capacity_warn"].level = [string]$cap.level
+            if ([string]$cap.level -eq "HOLD") {
+                Add-ManualItem -Id "host_capacity_hold" `
+                    -LabelKo ("C: capacity HOLD — " + (($cap.holds) -join '; ')) `
+                    -Reason "c_free_below_hold" `
+                    -Command "Read docs/final/artifacts/mkm_host_capacity_warn_v1_latest.json"
+            } elseif ([string]$cap.level -eq "WARN") {
+                Add-ManualItem -Id "host_capacity_warn" `
+                    -LabelKo ("capacity WARN (no auto-delete) — " + (($cap.warns) -join '; ')) `
+                    -Reason "capacity_warn_policy_candidate" `
+                    -Command "Read docs/final/artifacts/mkm_host_capacity_warn_v1_latest.json"
+            }
+        } catch { }
+    }
+}
+
 # --- resume pack merge ---
 $mergePy = Join-Path $WorkspaceRoot "scripts\merge_mkm_ops_patrol_into_resume_pack_v1.py"
 if ((Test-Path -LiteralPath $mergePy) -and -not $DryRun) {

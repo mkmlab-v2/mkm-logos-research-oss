@@ -298,12 +298,15 @@ def check_file(
     out_dir: Path,
     write_out: bool,
     batch_size: int = DEFAULT_ARXIV_BATCH_SIZE,
+    timeout: float = 20.0,
 ) -> dict[str, Any]:
     text = source_path.read_text(encoding="utf-8", errors="replace")
     arxiv_ids = extract_arxiv_ids(text)
     verify_results: dict[str, dict[str, Any]] = {}
     if mode == "online" and arxiv_ids:
-        verify_results = fetch_arxiv_metadata_resilient(arxiv_ids, batch_size=batch_size)
+        verify_results = fetch_arxiv_metadata_resilient(
+            arxiv_ids, batch_size=batch_size, timeout=timeout
+        )
 
     doc = build_lock_doc(
         source_path=source_path,
@@ -360,6 +363,12 @@ def main() -> int:
         default=DEFAULT_ARXIV_BATCH_SIZE,
         help=f"Online arXiv API batch size (default {DEFAULT_ARXIV_BATCH_SIZE})",
     )
+    parser.add_argument(
+        "--arxiv-timeout",
+        type=float,
+        default=20.0,
+        help="Online arXiv API per-request timeout seconds (default 20)",
+    )
     parser.add_argument("--no-write", action="store_true", help="Skip writing artifact JSON")
     parser.add_argument("--stdout-only", action="store_true", help="Print summary JSON only")
     args = parser.parse_args()
@@ -388,6 +397,7 @@ def main() -> int:
             out_dir=args.out_dir.resolve(),
             write_out=not args.no_write,
             batch_size=args.arxiv_batch_size,
+            timeout=args.arxiv_timeout,
         )
         results.append(
             {

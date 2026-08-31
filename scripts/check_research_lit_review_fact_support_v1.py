@@ -16,6 +16,10 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from scripts.research_lit_review_relation_qualifier_gate_v1 import evaluate_relation_qualifier_gate
 DEFAULT_OUT_DIR = ROOT / "docs" / "final" / "artifacts"
 ATOM_NS = "{http://www.w3.org/2005/Atom}"
 DEFAULT_MIN_PASS_RATE = 0.85
@@ -63,21 +67,63 @@ def abstract_overlap(catalog_title: str, abstract: str, *, min_ratio: float = TI
     return (hits / len(tokens)) >= min_ratio
 
 
-def catalog_label_supported(catalog_title: str, api_title: str, abstract: str) -> tuple[bool, str]:
+def catalog_label_supported_detailed(
+    catalog_title: str, api_title: str, abstract: str
+) -> dict[str, Any]:
     if title_supported(catalog_title, api_title):
-        return True, "title_match"
+        return {
+            "supported": True,
+            "judge_reason": "title_match",
+            "lexical_candidate_pass": None,
+            "gate": None,
+        }
     title_norm = normalize_text(api_title)
     label_tokens = [t for t in re.split(r"[\s\-]+", normalize_text(catalog_title)) if len(t) >= 2]
     if label_tokens:
         hits = sum(1 for token in label_tokens if token in title_norm)
         if hits >= max(1, (len(label_tokens) + 1) // 2):
-            return True, "label_token_in_title"
+            return {
+                "supported": True,
+                "judge_reason": "label_token_in_title",
+                "lexical_candidate_pass": None,
+                "gate": None,
+            }
     compact = normalize_text(catalog_title).replace(" ", "")
     if len(compact) >= 3 and compact in title_norm.replace(" ", ""):
-        return True, "compact_label_in_title"
-    if abstract_overlap(catalog_title, abstract, min_ratio=0.15):
-        return True, "abstract_token_overlap"
-    return False, "title_and_abstract_mismatch"
+        return {
+            "supported": True,
+            "judge_reason": "compact_label_in_title",
+            "lexical_candidate_pass": None,
+            "gate": None,
+        }
+    lexical_pass = abstract_overlap(catalog_title, abstract, min_ratio=0.15)
+    if not lexical_pass:
+        return {
+            "supported": False,
+            "judge_reason": "title_and_abstract_mismatch",
+            "lexical_candidate_pass": False,
+            "gate": None,
+        }
+    gate = evaluate_relation_qualifier_gate(catalog_title, abstract)
+    gate["lexical_candidate_pass"] = True
+    if gate["final_gate_state"] == "COMPATIBLE":
+        return {
+            "supported": True,
+            "judge_reason": "abstract_token_overlap",
+            "lexical_candidate_pass": True,
+            "gate": gate,
+        }
+    return {
+        "supported": False,
+        "judge_reason": gate["final_reason_code"],
+        "lexical_candidate_pass": True,
+        "gate": gate,
+    }
+
+
+def catalog_label_supported(catalog_title: str, api_title: str, abstract: str) -> tuple[bool, str]:
+    detail = catalog_label_supported_detailed(catalog_title, api_title, abstract)
+    return bool(detail["supported"]), str(detail["judge_reason"])
 
 
 def load_jsonl(path: Path) -> list[dict[str, Any]]:
@@ -303,14 +349,19 @@ def judge_claim(
         }
     api_title = str(rec.get("title") or "")
     abstract = str(rec.get("abstract") or "")
-    supported, reason = catalog_label_supported(catalog_title, api_title, abstract)
-    return {
+    detail = catalog_label_supported_detailed(catalog_title, api_title, abstract)
+    supported = bool(detail["supported"])
+    reason = str(detail["judge_reason"])
+    out = {
         **claim,
         "support_status": "supported" if supported else "not_supported",
         "judge_mode": "online",
         "judge_reason": reason,
         "api_title": api_title,
     }
+    if detail.get("gate"):
+        out["relation_qualifier_gate"] = detail["gate"]
+    return out
 
 
 def build_fact_doc(
@@ -372,6 +423,7 @@ def check_fact_support(
     out_dir: Path,
     write_out: bool,
     batch_size: int = DEFAULT_ARXIV_BATCH_SIZE,
+    timeout: float = 20.0,
 ) -> dict[str, Any]:
     claims: list[dict[str, Any]] = []
     if jsonl and jsonl.is_file():
@@ -384,7 +436,7 @@ def check_fact_support(
     records: dict[str, dict[str, Any]] = {}
     if mode == "online" and claims:
         ids = sorted({str(c["arxiv_id"]) for c in claims})
-        records = fetch_arxiv_records_resilient(ids, batch_size=batch_size)
+        records = fetch_arxiv_records_resilient(ids, batch_size=batch_size, timeout=timeout)
 
     judged = [judge_claim(c, mode=mode, records=records) for c in claims]
     stem = (lit_md or jsonl).stem  # type: ignore[union-attr]
@@ -428,6 +480,12 @@ def main() -> int:
         default=DEFAULT_ARXIV_BATCH_SIZE,
         help=f"Online arXiv API batch size (default {DEFAULT_ARXIV_BATCH_SIZE})",
     )
+    parser.add_argument(
+        "--arxiv-timeout",
+        type=float,
+        default=20.0,
+        help="Online arXiv API per-request timeout seconds (default 20)",
+    )
     parser.add_argument("--no-write", action="store_true")
     args = parser.parse_args()
 
@@ -446,6 +504,7 @@ def main() -> int:
             out_dir=args.out_dir.resolve(),
             write_out=not args.no_write,
             batch_size=args.arxiv_batch_size,
+            timeout=args.arxiv_timeout,
         )
     except FileNotFoundError as exc:
         print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False), file=sys.stderr)

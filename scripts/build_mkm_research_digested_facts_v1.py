@@ -20,6 +20,15 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from scripts.mkm_dr2_digest_wiring_v1 import (  # noqa: E402
+    SCHEMA_VERSION,
+    build_binding_candidate_wiring,
+    build_hold_no_target_wiring,
+    has_legacy_wiring_keys,
+    normalize_fact_record,
+    utc_now,
+)
+
 DEFAULT_OUT_DIR = ROOT / "docs" / "final" / "artifacts"
 SCHEMA_PATH = ROOT / "docs/final/schemas/mkm_research_digested_fact_v1.schema.json"
 
@@ -130,14 +139,16 @@ def _parse_explicit_blocks(text: str) -> list[dict[str, Any]]:
         if kv.get("verification_reason"):
             fact["verification"]["reason"] = kv["verification_reason"]
 
-        wiring_keys = ("baseline_plane", "artifact_path", "artifact_field", "assertion")
-        if all(kv.get(k) for k in wiring_keys):
-            fact["mkm_wiring"] = {
-                "baseline_plane": kv["baseline_plane"],
-                "artifact_path": kv["artifact_path"],
-                "artifact_field": kv["artifact_field"],
-                "assertion": kv["assertion"],
-            }
+        if has_legacy_wiring_keys(kv):
+            fact["mkm_wiring"] = build_binding_candidate_wiring(
+                fact_id=fact_id,
+                baseline_plane=kv["baseline_plane"],
+                artifact_path=kv["artifact_path"],
+                artifact_field=kv["artifact_field"],
+                assertion=kv["assertion"],
+                binding_reason="explicit wiring keys in ## Digested facts block",
+                verification_status=verification_status,
+            )
 
         facts.append(fact)
     return facts
@@ -261,23 +272,43 @@ def build_mkm_research_digested_facts(
     if any(f.get("provenance", {}).get("extraction_method") == "table_heuristic" for f in facts):
         flags.append("table_heuristic_not_llm_verified")
 
+    origin = _posix_path(source_path)
+    generated_at = utc_now()
+    normalized_facts: list[dict[str, Any]] = []
+    for fact in facts:
+        nf = normalize_fact_record(
+            fact,
+            artifact_origin=origin,
+            created_at=generated_at,
+            citation_status="not_run_at_mastication",
+        )
+        if not nf.get("mkm_wiring"):
+            nf["mkm_wiring"] = build_hold_no_target_wiring(
+                fact_id=str(nf["fact_id"]),
+                binding_reason="mastication default; wiring resolved in map step",
+                source_artifact_ids=[origin],
+            )
+        normalized_facts.append(nf)
+
     return {
         "schema": "mkm_research_digested_fact_v1",
-        "version": "1.0.0",
+        "version": SCHEMA_VERSION,
         "research_only": True,
         "send_gate": "HOLD",
+        "authoritative_ssot_auto_apply": "LOCKED",
         "topic_slug": slug,
-        "source_tier0_path": _posix_path(source_path),
+        "source_tier0_path": origin,
         "source_sha256": file_sha256(source_path),
-        "facts": facts,
+        "facts": normalized_facts,
         "provenance": {
-            "generated_at_utc": _utc_now(),
+            "generated_at_utc": generated_at,
             "extraction_methods": methods,
             "uncertainty_flags": flags,
             "extraction_notes": (
-                f"Mastication from {_posix_path(source_path)}; "
-                "pytest gate required for Right+ wiring assertions."
+                f"Mastication from {origin}; "
+                "DR2 explicit mkm_wiring required; pytest gate for Right+ assertions."
             ),
+            "dr2_normalized_at_utc": generated_at,
         },
     }
 

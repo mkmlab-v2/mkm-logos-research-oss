@@ -196,7 +196,9 @@ docs/final/artifacts/**
 !docs/final/artifacts/fixtures/mkm_meta_news_pipeline_stub_v1.example.json
 !docs/final/artifacts/schemas/live_sync_heartbeat_v1.schema.json
 # Local bio sasang strict JSON from `build_bio_sasang_nstates_strict_comparison_rehydrate_v1.py` (default --out under reports/)
-reports/bio_sasang_nstates_*.json
+# Clinic Patient Inbox runtime PHI (CLI=WRITE / HTML=READ) — reports/clinic/** gitignored via reports/**
+#   patient_inbox_v1.jsonl · dashboard JSON/HTML · dedupe_index · duplicate_events
+
 reports/mkm_orchestrator_poll.lock
 reports/mkm_orchestrator_telegram_offset.txt
 

@@ -28,6 +28,32 @@ PowerShell 예: `Copy-Item -Path MISSION_LOG.template.md -Destination MISSION_LO
 
 **역할:** 세션마다 리셋되는 채팅 UI 대신, **동일 지휘관 PC의 디스크**에서 크로스 채팅 **임무·종료 조건·작업일정(표)**를 맞춘다. 구현 경로·게이트 순서의 SSOT는 `docs/final/P0_COMMERCIALIZATION_TRACKER.md`, 구현 팩트는 `docs/final/CONSTITUTION_INFERENCE_IMPLEMENTATION_FACTS.md`이다.
 
+## Commander Central Status Board (4-lane · 디스크 SSOT)
+
+**목적:** BE / CX / LOGOS / ORACLE **병렬 Cursor**의 **쓰기 충돌 방지**. 채팅 4개 ≠ 문제 · **동일 working tree multiwriter** = 문제.
+
+| SSOT | 경로 |
+|------|------|
+| JSON (머신) | `docs/final/artifacts/commander_central_status_board_v1_latest.json` |
+| MD (한눈) | `docs/final/artifacts/commander_central_status_board_v1_latest.md` |
+| 규칙 | `.cursor/rules/mkm-commander-central-status-board-v1.mdc` |
+
+**필드 (lane당):** CURRENT · BLOCKER · NEXT ONE SHOT · WRITE OWNER · DO-NOT-TOUCH
+
+**역할:** Meta/Ops 채팅 = 보드 **쓰기** · lane 채팅 = **읽기** + 자기 lane `--lane` 갱신만(merge는 Meta 권장).
+
+```powershell
+# 보드 갱신 · 검증 (저장소 루트)
+py scripts/build_commander_central_status_board_v1.py
+py scripts/build_commander_central_status_board_v1.py --check
+py scripts/build_commander_central_status_board_v1.py --lane BE --next-one-shot "K8T RCA"
+
+# 공용 경로 수정 전
+py scripts/check_commander_central_status_board_v1.py --lane BE --claim-write scripts/example.py
+```
+
+**금지:** lane 개별 PASS를 fusion/product/SEND 완료로 말하기 · auto-next · 두 lane 동시 공용 파일 쓰기(lease/worktree 없이).
+
 ## Ops lane — 관리 전용 채팅 (개발 채팅과 분리, 선택)
 
 **목적:** 채팅 하나를 **Cursor·Windows·스케줄·보안 위생** 전용으로 두고, 피처·버그·리뷰는 **다른 채팅**에서만 진행하면 컨텍스트가 분리된다.

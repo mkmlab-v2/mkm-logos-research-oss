@@ -64,6 +64,7 @@
 | Fact-Lock 번들 | `scripts/run_fact_lock_bundle.ps1` |
 | Trust Composition Design | `docs/final/MKM_TRUST_COMPOSITION_DESIGN_PIPELINE_V1.md` · `Run-ClinicLoiLandingDesignChain_v1.ps1` |
 | Cursor 세션 baseline | `docs/final/CURSOR_SESSION_VALIDATION_BASELINE_V1.md` |
+| **Local Hooks·Subagents (no Cloud $)** | `docs/final/artifacts/mkm_cursor_local_hooks_subagent_ops_v1_latest.json` · Cloud Automations=HOLD · `@mkm-cursor-local-hooks-subagent-ops-v1` |
 | **UMR G2 (U2 포인터)** | `@.cursor/rules/mkm_universal_os_g2.mdc` · G2 `g2a_*` 아티팩트 |
 | Pillar A LTM · suspect_first | `reports/mkm_bench_2026_003_pillar_a_signoff_v1_latest.json` · `mkm_meta_coordinator_turn_contract_v1_latest.md` |
 | **딥리서치 (논문·학술)** | Tier 0 `docs/research/raw/` · Tier 1 `mkm-deep-research/SKILL.md` · Tier 2 exit 0 · **DR bench 헬스/Fact-Lock:** `-IncludeDeepResearchBenchSmoke` / `-DeepResearchBenchSmokeOnly` (`run_workspace_automation_health.ps1`) · CONSTITUTION DR bench mini 표 |
@@ -71,6 +72,7 @@
 | 인프라·GPU·PC 경로 | `docs/final/LOCAL_MACHINE_POINTER_V1.md` (비추적) |
 | **Cursor hub · ops inbox** | `py scripts/run_mkm_ops_event_inbox_v1.py` (`enqueue`/`drain`/`status`) · JSONL `reports/mkm_ops_event_inbox_v1.jsonl` · SSOT `mkm_ops_event_inbox_v1_latest.*` · 초등 `reports/human_paste/mkm_ops_event_inbox_elementary_v1.txt` · ask/forbidden 자동 금지 |
 | **Notion 발행 (API · MCP 아님)** | `NOTION_TOKEN`+`NOTION_PARENT_PAGE_ID` · bot `MKM Baekje A1` · `py scripts/publish_mkm_hallucination_control_notion_pack_v1.py` 또는 inbox `publish_notion_pack` → drain · **Notion MCP 추가 금지(lean)** · Publish to web OFF |
+| **Commander V2 (SHADOW)** | `docs/final/commander_v2/COMMANDER_V2_GOVERNANCE_V1.md` · ops `MKM_AUTONOMOUS_PROJECT_ORCHESTRATION_V2_OPS_NOTE.md` · state `mkm_autonomous_project_orchestration_v2_state_latest.json` · `@.cursor/rules/mkm-commander-v2.mdc` · agents `.cursor/agents/*` · **LIVE=false until per-lane `COMMANDER_V2_MISSION_ACK`** · V1 board mutation=0 |
 
 ## Git · 원격 (한 줄)
 

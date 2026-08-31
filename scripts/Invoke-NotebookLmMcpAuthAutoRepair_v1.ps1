@@ -28,9 +28,60 @@ $recovery = Join-Path $PSScriptRoot "invoke_notebooklm_mcp_auth_recovery_v1.ps1"
 $syncPy = Join-Path $PSScriptRoot "sync_notebooklm_nlm_credentials_to_mcp_v1.py"
 $probePy = Join-Path $PSScriptRoot "probe_notebooklm_mcp_health_v1.py"
 $outJson = Join-Path $repoRoot "reports\notebooklm_mcp_auth_auto_repair_v1_latest.json"
+$probeJson = Join-Path $repoRoot "reports\notebooklm_mcp_health_probe_v1_latest.json"
 $utc = (Get-Date).ToUniversalTime().ToString("o")
 
 Write-Host "=== NotebookLM MCP auth auto-repair ===" -ForegroundColor Cyan
+
+function Invoke-PyQuiet {
+    param([string[]]$PyArgs)
+    $proc = Start-Process -FilePath "py" `
+        -ArgumentList $PyArgs `
+        -WorkingDirectory $repoRoot `
+        -Wait -PassThru -NoNewWindow
+    if ($null -eq $proc.ExitCode) { return 0 }
+    return [int]$proc.ExitCode
+}
+
+function Invoke-NlSyncAndProbe {
+    Write-Host "[sync] nlm cookies -> MCP state.json" -ForegroundColor Yellow
+    $syncExit = Invoke-PyQuiet @($syncPy)
+    if ($syncExit -ne 0) { throw "sync exit $syncExit" }
+
+    $probeArgs = @($probePy, "--no-sync-nlm-first")
+    if ($AllowInteractiveSetupAuth) { $probeArgs += "--setup-if-needed" }
+
+    Write-Host "[probe] MCP get_health via stdio" -ForegroundColor Yellow
+    return (Invoke-PyQuiet $probeArgs)
+}
+
+function Read-NlProbeAuthenticated {
+    if (-not (Test-Path -LiteralPath $probeJson)) { return $false }
+    $probe = Get-Content -LiteralPath $probeJson -Raw -Encoding utf8 | ConvertFrom-Json
+    return ([bool]$probe.authenticated -and [bool]$probe.ok)
+}
+
+function Write-NlRepairArtifact {
+    param(
+        [int]$NlmCheckExit,
+        [int]$ProbeExit,
+        [bool]$Authenticated,
+        [bool]$Ok
+    )
+    $payload = [ordered]@{
+        schema           = "notebooklm_mcp_auth_auto_repair_v1"
+        generated_at_utc = $utc
+        nlm_check_exit   = $NlmCheckExit
+        probe_exit       = $ProbeExit
+        authenticated    = $Authenticated
+        account_expected = "admin@no1kmedi.com"
+        cursor_note      = "If Cursor MCP shows Not connected: Developer Reload Window + new chat; get_health in chat."
+        ssot             = "docs/NotebookLM_sources_manifest.md"
+        ok               = $Ok
+    }
+    ($payload | ConvertTo-Json -Depth 6) | Set-Content -LiteralPath $outJson -Encoding utf8
+    return $payload
+}
 
 if (Test-Path -LiteralPath $recovery) {
     $recArgs = @()
@@ -40,52 +91,35 @@ if (Test-Path -LiteralPath $recovery) {
     if ($LASTEXITCODE -ne 0 -and $null -ne $LASTEXITCODE) { throw "recovery helper exit $LASTEXITCODE" }
 }
 
+# Fast path: cookie sync + stdio probe before nlm CLI (avoids Chrome CDP login hang in solo_ops).
+$probeExit = Invoke-NlSyncAndProbe
+$authenticated = Read-NlProbeAuthenticated
+if ($authenticated) {
+    $payload = Write-NlRepairArtifact -NlmCheckExit 0 -ProbeExit $probeExit -Authenticated $true -Ok $true
+    Write-Host "OK: NotebookLM MCP authenticated=$authenticated (fast path, skipped nlm login) -> $outJson" -ForegroundColor Green
+    exit 0
+}
+
 Write-Host "[nlm] login check" -ForegroundColor Yellow
+$prevEap = $ErrorActionPreference
+$ErrorActionPreference = "Continue"
 & nlm login --check 2>&1 | Write-Host
-$nlmCheck = $LASTEXITCODE
-if ($null -eq $nlmCheck) { $nlmCheck = 0 }
+$nlmCheck = if ($null -eq $LASTEXITCODE) { 0 } else { [int]$LASTEXITCODE }
 
 $nlmLoginExit = 0
 if ($nlmCheck -ne 0) {
     Write-Host "[nlm] login refresh (Chrome CDP)" -ForegroundColor Yellow
     & nlm login 2>&1 | Write-Host
-    $nlmLoginExit = if ($null -eq $LASTEXITCODE) { 0 } else { $LASTEXITCODE }
+    $nlmLoginExit = if ($null -eq $LASTEXITCODE) { 0 } else { [int]$LASTEXITCODE }
     if ($nlmLoginExit -ne 0) {
         Write-Warning "nlm login exit $nlmLoginExit (tier_3 human: run nlm login in terminal); continuing to cookie sync/probe"
     }
 }
+$ErrorActionPreference = $prevEap
 
-Write-Host "[sync] nlm cookies -> MCP state.json" -ForegroundColor Yellow
-& py $syncPy
-if ($LASTEXITCODE -ne 0) { throw "sync exit $LASTEXITCODE" }
-
-$probeArgs = @($probePy, "--no-sync-nlm-first")
-if ($AllowInteractiveSetupAuth) { $probeArgs += "--setup-if-needed" }
-
-Write-Host "[probe] MCP get_health via stdio" -ForegroundColor Yellow
-& py @probeArgs
-$probeExit = if ($null -eq $LASTEXITCODE) { 0 } else { $LASTEXITCODE }
-
-$probeJson = Join-Path $repoRoot "reports\notebooklm_mcp_health_probe_v1_latest.json"
-$authenticated = $false
-if (Test-Path -LiteralPath $probeJson) {
-    $probe = Get-Content -LiteralPath $probeJson -Raw -Encoding utf8 | ConvertFrom-Json
-    $authenticated = [bool]$probe.authenticated
-}
-
-$payload = [ordered]@{
-    schema           = "notebooklm_mcp_auth_auto_repair_v1"
-    generated_at_utc = $utc
-    nlm_check_exit   = $nlmCheck
-    probe_exit       = $probeExit
-    authenticated    = $authenticated
-    account_expected = "admin@no1kmedi.com"
-    cursor_note      = "If Cursor MCP shows Not connected: Developer Reload Window + new chat; get_health in chat."
-    ssot             = "docs/NotebookLM_sources_manifest.md"
-    ok               = ($probeExit -eq 0 -and $authenticated)
-}
-
-($payload | ConvertTo-Json -Depth 6) | Set-Content -LiteralPath $outJson -Encoding utf8
+$probeExit = Invoke-NlSyncAndProbe
+$authenticated = Read-NlProbeAuthenticated
+$payload = Write-NlRepairArtifact -NlmCheckExit $nlmCheck -ProbeExit $probeExit -Authenticated $authenticated -Ok $authenticated
 
 if (-not $payload.ok) {
     Write-Warning "NL auto-repair incomplete authenticated=$authenticated probe_exit=$probeExit"

@@ -1,6 +1,6 @@
 {
   "schema": "mkm_chat_resume_pack_v1",
-  "generated_at_utc": "2026-07-15T10:35:48.542588Z",
+  "generated_at_utc": "2026-08-31T10:19:49.742741Z",
   "research_only": true,
   "boundary_ack": "[HYPO] resume pack — ops index pins are B-track; no Track A·live merge",
   "ops_memory_options": {
@@ -28,29 +28,29 @@
     "nl_ltm_sync": {
       "notebook_name": "01 · 지휘·운영",
       "notebook_id": "9bc26140-70c4-47d0-b9ea-bd3a394916a9",
-      "push_ok": 47,
-      "push_fail": 0,
-      "generated_at_utc": "2026-07-05T12:29:44Z",
+      "push_ok": 0,
+      "push_fail": 47,
+      "generated_at_utc": "2026-08-01T14:23:02Z",
       "repro_push": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-NotebookLmLtmGraphOpsSetup_v1.ps1 -PushNlm",
       "nl_mcp_note": "Read 참모 — 통과 판정은 Cursor exit 0만"
     },
     "cursor_host_hygiene": {
       "schema": "cursor_host_hygiene_v1",
-      "generated_at_utc": "2026-07-15T02:59:21Z",
+      "generated_at_utc": "2026-08-30T23:45:07Z",
       "cursor_running": true,
       "global_storage_dir": "C:\\Users\\PRO\\AppData\\Roaming\\Cursor\\User\\globalStorage",
       "files_gb": {
-        "state_vscdb": 17.388,
+        "state_vscdb": 15.809,
         "state_vscdb_backup": null,
         "corrupt_bak_total": 0,
         "corrupt_bak_count": 0
       },
       "memory": {
-        "ram_used_pct": 61,
-        "committed_pct": 52.7
+        "ram_used_pct": 67.8,
+        "committed_pct": 45.4
       },
       "thresholds": {
-        "warn_vscdb_gb": 20,
+        "warn_vscdb_gb": 25,
         "warn_backup_gb": 10,
         "warn_committed_pct": 85,
         "warn_ram_used_pct": 85
@@ -64,19 +64,76 @@
     "chat_tone": {
       "ssot": "docs/final/artifacts/commander_chat_tone_prefs_v1_latest.json",
       "routine_disclaimer_suppress": true,
-      "agent_contract_ko": "채팅은 간결하게. 내부 격벽은 코드·아티팩트·고위험 실행 시에만 말한다. 지휘관은 실매매 안 함."
+      "agent_contract_ko": "첫 화면=채팅 초등 보고(≤8줄). 판정 먼저. 영문 미완료 상태코드·A/B 강제 선택 금지. 미완료=아직 제품 완료 아님/눈확인 전/다음 할 일. 저위험은 기본값 진행. *elementary*.txt 기본 생성 금지. 상세=artifact JSON. paste는 명시 시에만. 서브에이전트 user-visible도 초등 완결. 지휘관 env 의식 금지."
     }
   },
   "commander_resume_triggers_ssot": "docs/final/artifacts/mkm_commander_resume_triggers_v1.json",
   "commander_chat_tone_ssot": "docs/final/artifacts/commander_chat_tone_prefs_v1_latest.json",
   "send_gate_vocabulary_ssot": "docs/final/artifacts/mkm_send_gate_vocabulary_v1_latest.json",
+  "pin_cue": {
+    "schema": "mkm_chat_resume_pin_cue_v1",
+    "version": 1,
+    "first_reply_three_lines": [
+      "ACTIVE_LANE=<oracle|ms|infra|web_ops|design>",
+      "ONE_SHOT_GOAL=<one measurable goal>",
+      "DONE_WHEN=<before→after or exit0+artifact>"
+    ],
+    "oneshot_contract_cmd": "py scripts/run_mkm_resume_oneshot_contract_v1.py --lane <lane> --goal \"...\" --done-when \"...\"",
+    "oneshot_contract_ssot": "docs/final/artifacts/mkm_resume_oneshot_contract_v1_latest.md",
+    "authority": "docs/final/artifacts/cursor_agent_underperform_higher_model_advice_v1_latest.md",
+    "note_ko": "재개 직후 첫 응답은 위 3줄만. 충돌 핀이면 named_conflict 1건 지목 후 단일 레인 목표 유지. reload_required면 도구 금지."
+  },
   "commander_chat_tone": {
     "schema": "commander_chat_tone_prefs_v1",
-    "version": "1.1.0",
-    "updated_at_utc": "2026-07-07T04:48:00Z",
+    "version": "1.6.0",
+    "updated_at_utc": "2026-08-11T06:20:00Z",
     "research_only": true,
     "send_gate": "HOLD",
+    "commons_sense_resume": {
+      "enabled": true,
+      "ssot": "docs/final/artifacts/mkm_dev_session_resume_profile_v1.json",
+      "note_ko": "지휘관에 PowerShell/env 의식 시키지 말 것. 구현 채팅 soft 자동. 공식 재개만 hard."
+    },
     "commander_context_ko": "실매매 미운영 · Track A trading LOCKED/NO_GO · 가설은 참고용",
+    "elementary_default": {
+      "enabled": true,
+      "ssot": "docs/final/artifacts/mkm_commander_elementary_default_v1_latest.json",
+      "first_screen_ko": "짧은 한국어 초등 불릿 — 영문 미완료 표기/전문용어 벽으로 먼저 막지 말 것",
+      "first_screen_is_whole_report": true,
+      "final_reply_max_lines": 8,
+      "final_reply_max_chars_ko": 500,
+      "forbid_open_gated_primary_report": true,
+      "forbid_forced_binary_choice_ending": true,
+      "forbid_open_status_theater_lead": true,
+      "forbid_bare_open_token_in_commander_chat": true,
+      "chat_forbid_tokens": [
+        "OPEN",
+        "product DONE = OPEN",
+        "Status: OPEN"
+      ],
+      "chat_incomplete_gloss_ko_required": [
+        "아직 제품 완료 아님",
+        "눈확인 전",
+        "다음 할 일"
+      ],
+      "ask_gate_default_proceed": true,
+      "put_detail_in_artifact_or_paste_only": true,
+      "subagent_user_visible_summary_must_be_complete_elementary": true,
+      "lead_with_verdict": true,
+      "no_tables_first": true,
+      "jargon_walls": "after_or_one_short_line",
+      "prefer_human_paste_elementary": false,
+      "default_write_elementary_paste": false,
+      "human_paste_glob": "reports/human_paste/*elementary*.txt",
+      "when_ocr_or_review": "채팅 초등 먼저. elementary 파일은 지휘관 명시 요청 시에만.",
+      "note_ko": "쉬운 기본=채팅 초등 말투(≤8줄). 영문 미완료 상태코드·A/B 강제 선택 금지. 저위험은 기본값 선택·진행. *elementary*.txt 기본 생성 금지. 표·로그·장문은 artifact JSON. paste는 저장/붙여넣기/OCR 명시 시만.",
+      "chat_forbid_open_token_checker": "scripts/check_mkm_chat_forbid_open_token_v1.py"
+    },
+    "no_forced_open_choice": {
+      "enabled": true,
+      "ssot": "docs/final/artifacts/mkm_no_forced_open_choice_default_v1_latest.json",
+      "note_ko": "턴 끝을 「A 또는 B」로 닫지 말 것. Ask Gate 저위험=한 길 선택 후 진행 공지만. 채팅에 영문 미완료 상태코드 금지."
+    },
     "routine_disclaimer_suppress": {
       "enabled": true,
       "suppress_patterns_ko": [
@@ -101,18 +158,28 @@
       "mode": "on_first_intro_only",
       "note_ko": "가설·B-track 산출은 첫 소개 시 [HYPO] 1회면 충분. 매 턴 격벽 문구 반복 금지."
     },
-    "agent_contract_ko": "채팅은 간결하게. 내부 격벽은 코드·아티팩트·고위험 실행 시에만 말한다. 지휘관은 실매매 안 함.",
+    "agent_contract_ko": "첫 화면=채팅 초등 보고(≤8줄). 판정 먼저. 영문 미완료 상태코드·A/B 강제 선택 금지. 미완료=아직 제품 완료 아님/눈확인 전/다음 할 일. 저위험은 기본값 진행. *elementary*.txt 기본 생성 금지. 상세=artifact JSON. paste는 명시 시에만. 서브에이전트 user-visible도 초등 완결. 지휘관 env 의식 금지.",
+    "four_rail_elementary": {
+      "enabled": true,
+      "primary_consumer": "cursor_agent",
+      "gemini_paste_optional": true,
+      "ssot": "docs/final/artifacts/mkm_four_rail_salvage_upgrade_v1_latest.md",
+      "paste_card": "docs/final/artifacts/mkm_four_rail_elementary_paste_card_v1_latest.md",
+      "cursor_rule": ".cursor/rules/mkm-four-rail-elementary-v1.mdc",
+      "note_ko": "사상·0.25·게마트리아·SLKM·Landauer 토픽 시 Cursor가 서랍 라벨+초등 말투 우선. Gemini는 이용용 복붙일 뿐."
+    },
     "corpus_hitl_dev_wall": {
       "enabled": true,
       "ssot": "docs/final/artifacts/trilens_canon_btrack_dev_wall_v1_latest.json",
       "note_ko": "B-track corpus HITL(geukchigo·jeokcheonsu·jangseogak·meaning graph gap)은 지휘관이 공유폴더+NotebookLM으로 선승인. 일반 개발 세션에서 재질문·작업 차단 금지.",
       "suppress_reask_in_dev": true
-    }
+    },
+    "no_open_contract_paste": "reports/human_paste/mkm_commander_no_open_elementary_report_contract_2026-08-09.txt"
   },
   "commander_resume_mode": {
     "mode_id": "standard",
     "label_ko": "일반 재개",
-    "agent_contract_ko": "SSOT 재개 · MISSION_LOG 통째 금지 · Fact-Lock · send_gate HOLD · routine live-trading disclaimer suppress ON",
+    "agent_contract_ko": "SSOT 재개 · MISSION_LOG 통째 금지 · Fact-Lock · resume force gate PASSED(default ON) · send_gate HOLD · routine live-trading disclaimer suppress ON",
     "session_upgrade": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\Invoke-MkmCursorSessionUpgrade_v1.ps1",
     "pipeline_steps": null,
     "artifact_pointers": null
@@ -137,8 +204,8 @@
         "verify_p0_constitution_gate_paths.ps1"
       ],
       "line_range": [
-        144,
-        157
+        114,
+        127
       ],
       "path_count": 33,
       "top_paths": [
@@ -163,7 +230,7 @@
       ],
       "line_range": [
         13,
-        37
+        40
       ],
       "path_count": 64,
       "top_paths": [
@@ -176,26 +243,32 @@
         "docs/final/artifacts/logos_oracle_cursor_inject_tier1_readiness_v1_latest.json",
         "scripts/run_mkm_logos_math_ltm_a2a_chain_v1.py",
         "scripts/run_mkm_gematria_4d_ablation_chain_v1.py",
-        "scripts/run_myeongni_twin_overlay_mathematization_guard_v17_v1.py"
+        "docs/final/artifacts/logos_oracle_tier3_narrative_commander_signoff_v1_latest.json"
       ]
     },
     {
-      "segment_id": "logos_oracle_tier3_anchor_3600_ceiling",
-      "essence": "Tier-3 anchor 3600 research ceiling — HG frozen, observability+closure SSOT; resonance_cap 128 unchanged; Track A forbidden",
+      "segment_id": "compression_factlock_table",
+      "essence": "Track A/B compression SSOT paths (SLA, interpretation fact-lock, bundles)",
       "must_keep_tags": [
-        "logos_bible_advancement_closure_v1_latest.json",
-        "stage_batch_preview_exhausted"
+        "COMPRESSION_SLA_POLICY_V1.md",
+        "COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK"
       ],
       "line_range": [
-        38,
-        38
+        135,
+        177
       ],
-      "path_count": 4,
+      "path_count": 64,
       "top_paths": [
-        "docs/final/artifacts/logos_oracle_tier3_narrative_commander_signoff_v1_latest.json",
-        "docs/final/artifacts/logos_bible_advancement_closure_v1_latest.json",
-        "docs/final/artifacts/logos_oracle_narrative_closure_observability_v1_latest.json",
-        "scripts/Invoke-MkmOracleModuleObservabilityWeeklyRoutine_v1.ps1"
+        "docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md",
+        "docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md",
+        "docs/final/COMPRESSION_SLA_POLICY_V1.md",
+        "docs/final/openapi_token_compression_v2_draft.yaml",
+        "scripts/compression_token_api_v2_stub.py",
+        "tests/test_compression_token_api_v2_stub.py",
+        "tests/test_v2_graph_wire_selective_bridge_v1.py",
+        "scripts/comp_atom05_*_sweep_v1.py",
+        "scripts/build_mkm_inter_agent_encoding_status_v1.py",
+        "docs/final/artifacts/mkm_inter_agent_encoding_status_latest.json"
       ]
     }
   ],
@@ -209,37 +282,37 @@
     "boundary_ack": "[HYPO] A2A machine block only — pointer+fingerprint refs for agent context. Human MD resume pack unchanged. Not Track A·live merge.",
     "artifacts_present": 5,
     "artifacts_missing": 1,
-    "reduction_percent_if_pointers_only": 96.18,
+    "reduction_percent_if_pointers_only": 95.68,
     "aggregate_pointer_vs_full": {
-      "tokens_saved_sum": 21421,
-      "reduction_percent": 96.18
+      "tokens_saved_sum": 18709,
+      "reduction_percent": 95.68
     },
     "pointer_rows": [
       {
         "artifact_id": "trackc_ops_dashboard",
         "artifact_path": "docs/final/artifacts/mkm_trackc_ops_dashboard_latest.json",
-        "sha256": "77caff27cac2b7e0f528e048c316fcd7f1f1e6b1edca6fb87705e76a79443893",
+        "sha256": "f4018fd4c4c71411614015f59651091029a9ed272feba146a672c3939ff6d7c3",
         "chain_step": "Invoke-TrackCMacroDailyFusion_v1.ps1 (terminal dashboard)",
         "handoff_mode": "pointer_plus_fingerprint",
-        "essence_line": "schema=mkm_trackc_ops_dashboard_v1 generated_at_utc=2026-07-11T23:30:02.969637Z system.status=APPROVED_FINAL_V2 system.promotion_decision=GO_FINAL_V2 trackc.packet_status=READY",
+        "essence_line": "schema=mkm_trackc_ops_dashboard_v1 generated_at_utc=2026-08-29T23:30:02.482025Z system.status=APPROVED_FINAL_V2 system.promotion_decision=GO_FINAL_V2 trackc.packet_status=READY",
         "schema": "mkm_trackc_ops_dashboard_v1"
       },
       {
         "artifact_id": "logos_insight_bundle",
         "artifact_path": "docs/final/artifacts/logos_insight_bundle_v1_latest.json",
-        "sha256": "31170c485dfdc483de2420b3d1b2fbcf671858eedda912cb0febc39e4dbee00b",
+        "sha256": "f937ae906b135209ecbdd36379e47d987cba2d9d8b41b43f57b7e6b061465022",
         "chain_step": "build_logos_insight_bundle_v1.py",
         "handoff_mode": "pointer_plus_fingerprint",
-        "essence_line": "schema=logos_insight_bundle_v1 generated_at_utc=2026-07-11T23:00:32Z",
+        "essence_line": "schema=logos_insight_bundle_v1 generated_at_utc=2026-08-29T23:00:34Z",
         "schema": "logos_insight_bundle_v1"
       },
       {
         "artifact_id": "showroom_macro_horizon_2030_slice",
         "artifact_path": "docs/final/artifacts/showroom_macro_horizon_2030_slice_v1_latest.json",
-        "sha256": "5542d025ee613d3ea1ba4496b6bff11a56078bdf9a4b7133770664858da54ee0",
+        "sha256": "8e38aa5903662adeba34259c2658e26d0966d937897d77242d36b97997d44147",
         "chain_step": "build_showroom_macro_horizon_2030_slice_v1.py",
         "handoff_mode": "pointer_plus_fingerprint",
-        "essence_line": "schema=showroom_macro_horizon_2030_slice generated_at_utc=2026-07-11T00:32:06Z final_action=WATCH"
+        "essence_line": "schema=showroom_macro_horizon_2030_slice generated_at_utc=2026-08-29T00:32:09Z final_action=WATCH"
       },
       {
         "artifact_id": "logos_macro_horizon_2030",
@@ -286,13 +359,13 @@
       ],
       "file_path": "MISSION_LOG.md",
       "line_range": [
-        62,
-        188
+        22,
+        157
       ],
       "max_age_days": 7,
-      "age_days": 0.005,
+      "age_days": 0.001,
       "stale_advisory": false,
-      "as_of_utc": "2026-07-15T10:28:25.898768Z",
+      "as_of_utc": "2026-08-31T10:17:50.417813Z",
       "age_source": "index_last_updated"
     },
     {
@@ -304,18 +377,95 @@
       ],
       "file_path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
       "line_range": [
-        183,
-        204
+        160,
+        181
       ],
-      "slice_preview": "<!-- ATHENA_CHECKPOINT_V1_START -->\n<!-- CENTRAL checkpoint block -->\n- **2026-07-15T10:29:44Z** — Infra L4: Docker still missing; installer staged+UAC Ask Gate; tokens_per_gpu_sec null; Ollama skipped\n- **2026-07-15T10:19:15Z** — Infra L4 vLLM tokens_per_gpu_sec blocked: docker_missing; Ollama baseline 132.52 tok/s kept; ask gate=Install Docker Desktop\n- **2026-07-15T10:05:43Z** — 2026-07 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]\n- **2026-07-15T09:56:10Z** — Infra GPU Top-1: Ollama gemma4:e2b live tok/s deep=132.52 skim=42.95; L4 tokens_per_gpu_sec null; SEND HOLD FAIL-COMP-004 vs TrackA 50%\n- **2026-07-15T09:35:19Z** — 2026-07 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]\n- **2026-07-15T08:15:37Z** — Logos 감시관 PASS_WITH_FINDINGS(P2 hdr)~a-codeai Paddle domain prep pack live7×200; Design cold; MS Tier3 submit remain\n- **2026-07-15T07:44:02Z** — continuity=acodeai-homepage-close-2026-07-15 · a-codeai homepage+policy live DONE; next Paddle domain re-submit Tier3; SEND HOLD\n- **2026-07-15T07:43:48Z** — continuity=acodeai-homepage-close-2026-07-15 · a-codeai homepage+policy LIVE DONE: deploy exit0, live 200 /,terms,privacy,refund(+ko), live_ok=true; next Paddle a\n… [HYPO slice truncated]\n",
+      "slice_preview": "<!-- ATHENA_CHECKPOINT_V1_START -->\n<!-- CENTRAL checkpoint block -->\n- **2026-08-31T10:11:23Z** — continuity=clinic-kakao-inbox · Clinic Kakao unified inbox PARK — 주 1-2건 직접 답변; harness 보존, 딜러/실연동/Playwright HOLD\n- **2026-08-31T10:05:51Z** — 2026-08 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]\n- **2026-08-31T09:50:50Z** — A_CODEAI_30_TASK_CONTROLLED_BENCHMARK_DESIGN_FREEZE_ACK: 30-task prereg frozen TASK_RUN_N=0; execution ACK separate\n- **2026-08-31T09:22:30Z** — LOGOS_ASK_20_USER_G2_VALIDATION_DESIGN_FREEZE_ACK: 20-user L1-L3 prereg frozen; execution/recruitment separate ACK\n- **2026-08-31T08:34:01Z** — 김지선 산후 복약·회복 안내 최종 확정: 뒷물100%외용·모유수유+영아관찰·소음·RED FLAG 차트메모\n- **2026-08-31T07:58:01Z** — continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001\n- **2026-08-31T07:57:48Z** — Logos Ask product ACK: same-URL dynamic UX commander ack; harness 9/9; Tier2 smoke hydration+Ps23+citations OK; softmatch_wall separate\n- **2026-08-31T05:00:18Z** — Clinic Automati\n… [HYPO slice truncated]\n",
       "slice_truncated": true,
       "slice_max_chars": 1200,
       "slice_mode": "commander_default",
       "max_age_days": 3,
-      "age_days": 0.004,
+      "age_days": 0.006,
       "stale_advisory": false,
-      "as_of_utc": "2026-07-15T10:29:44Z",
-      "age_source": "newest_checkpoint"
+      "as_of_utc": "2026-08-31T10:11:23Z",
+      "age_source": "newest_checkpoint",
+      "checkpoint_contradictions": [
+        {
+          "newer_stamp_utc": "2026-08-31T07:58:01Z",
+          "older_stamp_utc": "2026-08-31T04:21:27Z",
+          "newer_message": "continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001",
+          "older_message": "DPT-R first blind AI dry-run EXECUTION_COMPLETE N=72 parse=59/72; sealed; adjudication HOLD",
+          "contradicts_prior_checkpoint": true,
+          "collision_reason": "polarity_conflict+topic_overlap",
+          "shared_tokens": [
+            "adjudication",
+            "dpt-r"
+          ],
+          "continuity_id": "dpt-r-ai-rater-repair-v1-20260831"
+        },
+        {
+          "newer_stamp_utc": "2026-08-31T07:58:01Z",
+          "older_stamp_utc": "2026-08-31T03:30:16Z",
+          "newer_message": "continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001",
+          "older_message": "DPT-R AI dry-run EXECUTION BLOCKED: analysis_plan parent drift + no execution contract; AI_RATING_N=0",
+          "contradicts_prior_checkpoint": true,
+          "collision_reason": "polarity_conflict",
+          "shared_tokens": [
+            "dpt-r"
+          ],
+          "continuity_id": "dpt-r-ai-rater-repair-v1-20260831"
+        },
+        {
+          "newer_stamp_utc": "2026-08-31T07:58:01Z",
+          "older_stamp_utc": "2026-08-31T02:42:10Z",
+          "newer_message": "continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001",
+          "older_message": "DPT-R vignette pack FREEZE_PASS N=36; hygiene 0 leak; AI rating 0; HOLD execution ACK",
+          "contradicts_prior_checkpoint": true,
+          "collision_reason": "polarity_conflict",
+          "shared_tokens": [
+            "dpt-r"
+          ],
+          "continuity_id": "dpt-r-ai-rater-repair-v1-20260831"
+        },
+        {
+          "newer_stamp_utc": "2026-08-31T04:21:27Z",
+          "older_stamp_utc": "2026-08-31T03:48:55Z",
+          "newer_message": "DPT-R first blind AI dry-run EXECUTION_COMPLETE N=72 parse=59/72; sealed; adjudication HOLD",
+          "older_message": "DPT-R parent reconciled RESTORE + execution contract frozen PASS; AI_RATING_N=0; await execution RE-ACK",
+          "contradicts_prior_checkpoint": true,
+          "collision_reason": "polarity_conflict",
+          "shared_tokens": [
+            "dpt-r"
+          ]
+        },
+        {
+          "newer_stamp_utc": "2026-08-31T03:48:55Z",
+          "older_stamp_utc": "2026-08-31T03:30:16Z",
+          "newer_message": "DPT-R parent reconciled RESTORE + execution contract frozen PASS; AI_RATING_N=0; await execution RE-ACK",
+          "older_message": "DPT-R AI dry-run EXECUTION BLOCKED: analysis_plan parent drift + no execution contract; AI_RATING_N=0",
+          "contradicts_prior_checkpoint": true,
+          "collision_reason": "polarity_conflict+topic_overlap",
+          "shared_tokens": [
+            "ai_rating_n",
+            "contract",
+            "dpt-r",
+            "execution",
+            "parent"
+          ]
+        },
+        {
+          "newer_stamp_utc": "2026-08-31T03:48:55Z",
+          "older_stamp_utc": "2026-08-31T02:42:10Z",
+          "newer_message": "DPT-R parent reconciled RESTORE + execution contract frozen PASS; AI_RATING_N=0; await execution RE-ACK",
+          "older_message": "DPT-R vignette pack FREEZE_PASS N=36; hygiene 0 leak; AI rating 0; HOLD execution ACK",
+          "contradicts_prior_checkpoint": true,
+          "collision_reason": "polarity_conflict+topic_overlap",
+          "shared_tokens": [
+            "dpt-r",
+            "execution"
+          ]
+        }
+      ]
     },
     {
       "node_id": "prism_ops_mission_log_next_one",
@@ -327,17 +477,17 @@
       ],
       "file_path": "MISSION_LOG.md",
       "line_range": [
-        12,
-        61
+        6,
+        21
       ],
-      "slice_preview": "**다음 1타 (레인 · 재개용 핀):**\n\n| 레인 | 다음 1타 |\n|------|----------|\n| **MS·KOSPI Field band [HYPO]** | **급등 학습체크 DONE** — `mkm_kospi_surge_learning_check_v1_latest` · learnable=`false`(관측만) · vendor 7/15≈7394(+8.6% vs 7/13 6807·잠정) · H2 YE/Aug **resolve 금지** · **다음** 종가 후 `run_kospi_daily_observation_loop_v1.py --year-month 2026-07 --as-of-kst 2026-07-15 --phase evening` · continuity `kospi-surge-learn-check-2026-07-15` · **research_only · SEND HOLD · AI주문금지** |\n| **Oracle·Logos** | **Option A display diversion DONE** — live chrome `JEMA Scripture Research` · LOGOS hero wordmark 해제 · host logos.* technical only · Destiny exit0 · friend 7/7 · Cosmic ABSENT · triage `display_diversion=APPLIED` · **다음** Claude re-eval OK / counsel optional · continuity `logos-critique-faithlife-hypo-2026-07-15` · **research_only · SEND HOLD · counsel_when_commander** |\n| **MS·B2B 압축** | **Paddle domain re-submit PREP DONE** — live 7 URL 200 re-verify · paste sheet `acodeai_paddle_domain_resubmit_prep_v1_latest` · checklist check exit0 · **다음** 지휘관 Tier3 `vendors.paddle.com` a-codeai-only submit (agent login 금지) · continuity `acodeai-paddle-domain-prep-2026-07-15` · **SEND HOLD · ≠pro\n… [HYPO slice truncated]\n",
-      "slice_truncated": true,
+      "slice_preview": "**다음 1타 (레인 · 재개용 핀):**\n\n| 레인 | 다음 1타 |\n|------|----------|\n| **MS · a-codeai [HYPO]** | Day4 REAL_UI VO drop OR Studio review · 회신대기(재발송 금지) · ≠Video1 product DONE · SEND HOLD · Track A 금지 |\n| **Oracle · Logos Ask UX [HYPO]** | 병렬 P0-1 · same-URL 브라우저 눈확인 → product adjudication · harness 9/9 ≠ product DONE · SEND HOLD |\n| **Oracle · Bible EP1 / SBLGNT [HYPO]** | EP1 SEMANTIC_FAIL_SEALED STOP · SBLGNT WAIT lock/lens ACK · ≠lens PASS · SEND HOLD |\n| **연구 · BESD v0.2 [HYPO]** | DPT-R P0 CLOSED · WAIT disposition(same36 regression 추천·미승인) · 병렬 P0-3 PC-001↔consolidation diff · SEND HOLD |\n| **연구 · Agency market [HYPO]** | PHASE1 toy 천장 HOLD 종료 · 1000일 달력 늘려 블록 만들기 금지 · historical 실행 미허가 · BESD/DPT-R과 검증 독립 · SEND HOLD |\n| **Governance N80+ [HYPO]** | 병렬 P0-2 · primary blind human 172/172 → freeze · 현재 0/172 · SEND HOLD |\n| **Sasang Gen2 ethics [HYPO]** | PARK · WAIT ethics+access deposit · NO unpark · Track A 금지 · SEND HOLD |\n| **Infra** | 패시브 · solo band 유지 · Track A·live 금지 |\n| **Design/Showroom** | 아카이브·패시브 · SEND_GATE HOLD · Track A 금지 |\n\n**Design/Showroom (아카이브 · 패시브):** SEND_GATE: HOLD · Track A·live 금지 · 상세는 Design 레인 보드/아카이브만.\n",
+      "slice_truncated": false,
       "slice_max_chars": 1200,
       "slice_mode": "commander_default",
       "max_age_days": 5,
-      "age_days": 0.005,
+      "age_days": 0.001,
       "stale_advisory": false,
-      "as_of_utc": "2026-07-15T10:28:25.898768Z",
+      "as_of_utc": "2026-08-31T10:17:50.417813Z",
       "age_source": "index_last_updated"
     },
     {
@@ -355,9 +505,9 @@
       "slice_max_chars": 1200,
       "slice_mode": "commander_default",
       "max_age_days": 14,
-      "age_days": 2.682,
-      "stale_advisory": false,
-      "as_of_utc": "2026-07-12T18:14:19Z",
+      "age_days": 40.337,
+      "stale_advisory": true,
+      "as_of_utc": "2026-07-22T02:14:07Z",
       "age_source": "json_generated_at"
     },
     {
@@ -376,9 +526,9 @@
       "slice_max_chars": 1200,
       "slice_mode": "commander_default",
       "max_age_days": 7,
-      "age_days": 4.98,
-      "stale_advisory": false,
-      "as_of_utc": "2026-07-10T11:05:00Z",
+      "age_days": 31.819,
+      "stale_advisory": true,
+      "as_of_utc": "2026-07-30T14:39:45Z",
       "age_source": "json_generated_at"
     },
     {
@@ -397,21 +547,41 @@
       "slice_max_chars": 1200,
       "slice_mode": "commander_default",
       "max_age_days": 7,
-      "age_days": 4.865,
-      "stale_advisory": false,
-      "as_of_utc": "2026-07-10T13:50:00Z",
+      "age_days": 31.819,
+      "stale_advisory": true,
+      "as_of_utc": "2026-07-30T14:39:45Z",
       "age_source": "json_generated_at"
     }
   ],
+  "slkm_pin": {
+    "label": "S-L-K-M",
+    "role": "harness_soft_hint_only",
+    "research_only": true,
+    "send_gate": "HOLD",
+    "final_action_forbidden": true,
+    "source_rel": "docs/final/artifacts/logos_gematria_matrix_snapshot_v1_latest.json",
+    "available": true,
+    "fallback": null,
+    "kernel_recipe_id": "gematria_bridge_v1",
+    "aggregation": "mean_vector_4d_over_snapshot_entries",
+    "entry_count_used": 24,
+    "vector_4d_mean": {
+      "S": 0.2476,
+      "L": 0.246,
+      "K": 0.2467,
+      "M": 0.2598
+    },
+    "line": "S-L-K-M: S=0.2476 L=0.246 K=0.2467 M=0.2598 · source=gematria_bridge_v1:docs/final/artifacts/logos_gematria_matrix_snapshot_v1_latest.json agg=mean_n=24 · [HYPO] · NON_GATING · ≠Final Action"
+  },
   "pin_freshness": {
     "schema": "mkm_resume_pin_freshness_v1",
     "artifact": "docs/final/artifacts/mkm_resume_pin_freshness_v1_latest.json",
     "advisory_summary": {
-      "stale_pin_count": 0,
-      "contradiction_count": 0,
+      "stale_pin_count": 3,
+      "contradiction_count": 6,
       "l0_l2_claim_gap_count": 0
     },
-    "checkpoint_contradiction_count": 0,
+    "checkpoint_contradiction_count": 6,
     "l0_l2_claim_gap_count": 0,
     "l0_l2_claim_gaps": [],
     "reproduce": "py scripts/check_mkm_resume_pin_freshness_v1.py"
@@ -431,12 +601,12 @@
     "registry_path": "reports/mkm_agent_mistake_registry_v1.jsonl",
     "lane": "infra",
     "lines": [
-      "- Field(regime_map+ops gates)만 Final Action; 사상=단기 톤 보조 [HYPO][NON_GATING]; Track A·임상·실매매·단정 트리거 금지.",
-      "- Freeze 3-7 Done cards at multi-step start; commander outcome sentence unchanged; redefine only via new card + approval (mkm_done_card_completion_contract_v1 + mkm-done-card-completion-v1.mdc M2).",
-      "- 권장/추천 stop = next-1 suggestion only; cannot CLOSE OPEN commander cards (Done-card M5 + contract recommended_stop_cannot_silently_close_open_commander_cards).",
-      "- User-visible DONE requires same-URL browser/snapshot OR commander ACK; scripts-only = harness DONE not product DONE (Done-card M6)."
+      "- Field(regime_map+ops gates)만 Final Action; 3렌즈=병렬 advisory [HYPO][NON_GATING] (예측 호라이즌 매핑 폐기 · Charter); Track A·임상·실매매·단정 트리거 금지.",
+      "- Grant mkm_lambda_gpu_lease_v1 before Launch; 30m orphan_kill_watchdog terminates Running without valid lease; mission end Terminate+lease --clear",
+      "- Run check_mkm_control_hard_gate_v1.py before answer when commander says hardgate or after relapse; simple Q = never Task/explore; stamp session forbid pin on hajima; Korean gloss only. Counter: mkm_control_hard_gate_violation_counter_v1_latest.json. @mkm-control-hard-gate-v1",
+      "- Pin credit_login_email=no1kmedi; check_mkm_lambda_credit_account_gate_v1 exit0 before spin; forbid gmail launch; Terminate+Usage end required; @mkm-mistake-guardrail-lambda-wrong-account-billing-v1"
     ],
-    "yaml": "schema: \"mkm_mistake_guardrail_yaml_v1\"\nresearch_only: true\nsend_gate: \"HOLD\"\nlane: \"infra\"\nregistry: \"reports/mkm_agent_mistake_registry_v1.jsonl\"\nwall:\n  - \"Field(regime_map+ops gates)만 Final Action; 사상=단기 톤 보조 [HYPO][NON_GATING]; Track A·임상·실매매·단정 트리거 금지.\"\n  - \"Freeze 3-7 Done cards at multi-step start; commander outcome sentence unchanged; redefine only via new card + approval (mkm_done_card_completion_contract_v1 + mkm-done-card-completion-v1.mdc M2).\"\n  - \"권장/추천 stop = next-1 suggestion only; cannot CLOSE OPEN commander cards (Done-card M5 + contract recommended_stop_cannot_silently_close_open_commander_cards).\"\n  - \"User-visible DONE requires same-URL browser/snapshot OR commander ACK; scripts-only = harness DONE not product DONE (Done-card M6).\"\nrules:\n  - id: \"human_57516280f51d\"\n    severity: \"P0\"\n    source: \"human\"\n    root_cause: \"done_redefinition\"\n    preventive: \"Freeze 3-7 Done cards at multi-step start; commander outcome sentence unchanged; redefine only via new card + approval (mkm_done_card_completion_contract_v1 + mkm-done-card-completion-v1.mdc M2).\"\n  - id: \"human_de8a35136443\"\n    severity: \"P0\"\n    source: \"human\"\n    root_cause: \"권장_as_close\"\n    preventive: \"권장/추천 stop = next-1 suggestion only; cannot CLOSE OPEN commander cards (Done-card M5 + contract recommended_stop_cannot_silently_close_open_commander_cards).\"\n  - id: \"human_671387504111\"\n    severity: \"P0\"\n    source: \"human\"\n    root_cause: \"scripts_as_ux_done\"\n    preventive: \"User-visible DONE requires same-URL browser/snapshot OR commander ACK; scripts-only = harness DONE not product DONE (Done-card M6).\"\n",
+    "yaml": "schema: \"mkm_mistake_guardrail_yaml_v1\"\nresearch_only: true\nsend_gate: \"HOLD\"\nlane: \"infra\"\nregistry: \"reports/mkm_agent_mistake_registry_v1.jsonl\"\nwall:\n  - \"Field(regime_map+ops gates)만 Final Action; 3렌즈=병렬 advisory [HYPO][NON_GATING] (예측 호라이즌 매핑 폐기 · Charter); Track A·임상·실매매·단정 트리거 금지.\"\n  - \"Grant mkm_lambda_gpu_lease_v1 before Launch; 30m orphan_kill_watchdog terminates Running without valid lease; mission end Terminate+lease --clear\"\n  - \"Run check_mkm_control_hard_gate_v1.py before answer when commander says hardgate or after relapse; simple Q = never Task/explore; stamp session forbid pin on hajima; Korean gloss only. Counter: mkm_control_hard_gate_violation_counter_v1_latest.json. @mkm-control-hard-gate-v1\"\n  - \"Pin credit_login_email=no1kmedi; check_mkm_lambda_credit_account_gate_v1 exit0 before spin; forbid gmail launch; Terminate+Usage end required; @mkm-mistake-guardrail-lambda-wrong-account-billing-v1\"\nrules:\n  - id: \"human_c3048408d374\"\n    severity: \"P0\"\n    source: \"human\"\n    root_cause: \"post_mission_terminate_missing_and_no_orphan_watchdog\"\n    preventive: \"Grant mkm_lambda_gpu_lease_v1 before Launch; 30m orphan_kill_watchdog terminates Running without valid lease; mission end Terminate+lease --clear\"\n  - id: \"human_ee111f9c477b\"\n    severity: \"P0\"\n    source: \"human\"\n    root_cause: \"unnecessary_subagent_on_simple_clarification / open_label_theater / soft_rule_ignored\"\n    preventive: \"Run check_mkm_control_hard_gate_v1.py before answer when commander says hardgate or after relapse; simple Q = never Task/explore; stamp session forbid pin on hajima; Korean gloss only. Counter: mkm_control_hard_gate_violation_counter_v1_latest.json. @mkm-control-hard-gate-v1\"\n  - id: \"human_36cd8ed34f13\"\n    severity: \"P0\"\n    source: \"human\"\n    root_cause: \"wrong_account_identity_non_merge_plus_terminate_theater\"\n    preventive: \"Pin credit_login_email=no1kmedi; check_mkm_lambda_credit_account_gate_v1 exit0 before spin; forbid gmail launch; Terminate+Usage end required; @mkm-mistake-guardrail-lambda-wrong-account-billing-v1\"\n",
     "yaml_doc": {
       "schema": "mkm_mistake_guardrail_yaml_v1",
       "research_only": true,
@@ -444,35 +614,63 @@
       "lane": "infra",
       "registry": "reports/mkm_agent_mistake_registry_v1.jsonl",
       "wall": [
-        "Field(regime_map+ops gates)만 Final Action; 사상=단기 톤 보조 [HYPO][NON_GATING]; Track A·임상·실매매·단정 트리거 금지.",
-        "Freeze 3-7 Done cards at multi-step start; commander outcome sentence unchanged; redefine only via new card + approval (mkm_done_card_completion_contract_v1 + mkm-done-card-completion-v1.mdc M2).",
-        "권장/추천 stop = next-1 suggestion only; cannot CLOSE OPEN commander cards (Done-card M5 + contract recommended_stop_cannot_silently_close_open_commander_cards).",
-        "User-visible DONE requires same-URL browser/snapshot OR commander ACK; scripts-only = harness DONE not product DONE (Done-card M6)."
+        "Field(regime_map+ops gates)만 Final Action; 3렌즈=병렬 advisory [HYPO][NON_GATING] (예측 호라이즌 매핑 폐기 · Charter); Track A·임상·실매매·단정 트리거 금지.",
+        "Grant mkm_lambda_gpu_lease_v1 before Launch; 30m orphan_kill_watchdog terminates Running without valid lease; mission end Terminate+lease --clear",
+        "Run check_mkm_control_hard_gate_v1.py before answer when commander says hardgate or after relapse; simple Q = never Task/explore; stamp session forbid pin on hajima; Korean gloss only. Counter: mkm_control_hard_gate_violation_counter_v1_latest.json. @mkm-control-hard-gate-v1",
+        "Pin credit_login_email=no1kmedi; check_mkm_lambda_credit_account_gate_v1 exit0 before spin; forbid gmail launch; Terminate+Usage end required; @mkm-mistake-guardrail-lambda-wrong-account-billing-v1"
       ],
       "rules": [
         {
-          "id": "human_57516280f51d",
+          "id": "human_c3048408d374",
           "severity": "P0",
           "source": "human",
-          "preventive": "Freeze 3-7 Done cards at multi-step start; commander outcome sentence unchanged; redefine only via new card + approval (mkm_done_card_completion_contract_v1 + mkm-done-card-completion-v1.mdc M2).",
-          "root_cause": "done_redefinition"
+          "preventive": "Grant mkm_lambda_gpu_lease_v1 before Launch; 30m orphan_kill_watchdog terminates Running without valid lease; mission end Terminate+lease --clear",
+          "root_cause": "post_mission_terminate_missing_and_no_orphan_watchdog"
         },
         {
-          "id": "human_de8a35136443",
+          "id": "human_ee111f9c477b",
           "severity": "P0",
           "source": "human",
-          "preventive": "권장/추천 stop = next-1 suggestion only; cannot CLOSE OPEN commander cards (Done-card M5 + contract recommended_stop_cannot_silently_close_open_commander_cards).",
-          "root_cause": "권장_as_close"
+          "preventive": "Run check_mkm_control_hard_gate_v1.py before answer when commander says hardgate or after relapse; simple Q = never Task/explore; stamp session forbid pin on hajima; Korean gloss only. Counter: mkm_control_hard_gate_violation_counter_v1_latest.json. @mkm-control-hard-gate-v1",
+          "root_cause": "unnecessary_subagent_on_simple_clarification / open_label_theater / soft_rule_ignored"
         },
         {
-          "id": "human_671387504111",
+          "id": "human_36cd8ed34f13",
           "severity": "P0",
           "source": "human",
-          "preventive": "User-visible DONE requires same-URL browser/snapshot OR commander ACK; scripts-only = harness DONE not product DONE (Done-card M6).",
-          "root_cause": "scripts_as_ux_done"
+          "preventive": "Pin credit_login_email=no1kmedi; check_mkm_lambda_credit_account_gate_v1 exit0 before spin; forbid gmail launch; Terminate+Usage end required; @mkm-mistake-guardrail-lambda-wrong-account-billing-v1",
+          "root_cause": "wrong_account_identity_non_merge_plus_terminate_theater"
         }
       ]
     },
     "record_count": 3
+  },
+  "last_ops_patrol": {
+    "schema": "mkm_last_ops_patrol_v1",
+    "paste_line": "[DailyOpsPatrol] 2026-08-31 WARN (Remote:pass, P0:pass, Git:pass, Resume:pass, Athena:drift:3, Env:pass, Amsaeng:pass, NL-MCP:pass, Secrets:pass; opt_fail:1) | Shadow Only | No Track A/live",
+    "package": "DailyOpsPatrol",
+    "generated_at_local": "2026-08-31T19:27:13.4686462+09:00",
+    "process_exit_code": 1,
+    "optional_fail_count": 1,
+    "required_failed": false,
+    "source_paste_json": "reports/mkm_command_package_paste_latest.json",
+    "stop_sequence_hints": {
+      "schema": "mkm_stop_sequence_hints_v1",
+      "ssot_scope": "docs/final/artifacts/amsaeng_eosa_governance_scope_v1.json",
+      "amsaeng_worst_exit": 0,
+      "amsaeng_phase_exits": {
+        "mcp_notebooklm_hygiene": 0,
+        "repo_secret_hygiene": 0,
+        "no1kmedi_internal_api_contract": 0,
+        "marketing_ip_governance": 0
+      },
+      "mcp_prereq_exit": 0,
+      "notebooklm_stale_count_before": 0,
+      "notebooklm_stale_count_after": 0,
+      "cursor_terminal_stopped_count": 0,
+      "cursor_terminal_skipped_count": 2,
+      "evolution_radar_pending_count": 0,
+      "alert_lines": []
+    }
   }
 }

@@ -41,7 +41,7 @@ if (Test-Path -LiteralPath $mcpCoordScript) {
     $coordProc = Start-Process -FilePath "powershell.exe" `
         -ArgumentList @(
             "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", $mcpCoordScript,
-            "-WorkspaceRoot", $WorkspaceRoot, "-SkipBudgetGate"
+            "-WorkspaceRoot", $WorkspaceRoot, "-SkipBudgetGate", "-SkipPluginDiet", "-SkipBrowserAutoFix"
         ) `
         -Wait -PassThru -NoNewWindow `
         -RedirectStandardOutput $coordOutLog `

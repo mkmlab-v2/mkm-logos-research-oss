@@ -13,7 +13,12 @@ def compute_digested_digest_metrics(digested_doc: dict[str, Any]) -> dict[str, A
     fact_count = len(facts)
     wired_count = sum(1 for e in (digested_doc.get("wiring_manifest") or []) if e.get("wired"))
     if wired_count == 0:
-        wired_count = sum(1 for f in facts if (f.get("mkm_wiring") or {}).get("wired"))
+        wired_count = sum(
+            1
+            for f in facts
+            if str((f.get("mkm_wiring") or {}).get("wiring_status") or "")
+            in {"BOUND", "BINDING_CANDIDATE"}
+        )
 
     status_counts = {"Right": 0, "Wrong": 0, "Unknown": 0}
     for fact in facts:

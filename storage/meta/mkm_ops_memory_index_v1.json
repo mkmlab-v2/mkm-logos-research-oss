@@ -5,15 +5,15 @@
   "research_only": true,
   "hypothesis_tier": "B",
   "boundary_ack": "[HYPO] ops memory index — Track A·live trading auto-merge forbidden",
-  "last_updated_utc": "2026-07-15T10:28:25.898768Z",
+  "last_updated_utc": "2026-08-31T10:17:50.417813Z",
   "nodes": {
     "prism_ops_mission_log_board": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "## 🚀 전술 작전 보드",
       "anchor_end": "<!-- MISSION_LOG_BOARD_END -->",
       "line_range": [
-        62,
-        188
+        22,
+        157
       ],
       "essence": "작전 보드 SSOT — active lanes only · Track A 금지 · SEND_GATE HOLD",
       "must_keep_tags": [
@@ -22,16 +22,16 @@
         "SEND_GATE: HOLD"
       ],
       "priority": 10,
-      "char_count": 7854,
-      "content_sha256_prefix": "20355186f4fa72e7"
+      "char_count": 10388,
+      "content_sha256_prefix": "eda2416e1f695a57"
     },
     "prism_ops_central_checkpoint": {
       "file_path": "docs/final/CENTRAL_AGENT_MEMORY_V1.md",
       "anchor_start": "<!-- ATHENA_CHECKPOINT_V1_START -->",
       "anchor_end": "<!-- ATHENA_CHECKPOINT_V1_END -->",
       "line_range": [
-        183,
-        204
+        160,
+        181
       ],
       "essence": "CENTRAL 최신 운영 체크포인트 블록 — athena_checkpoint·격벽 스냅샷",
       "must_keep_tags": [
@@ -39,16 +39,16 @@
         "CENTRAL"
       ],
       "priority": 9,
-      "char_count": 3439,
-      "content_sha256_prefix": "0c3a32c4efe23c30"
+      "char_count": 2941,
+      "content_sha256_prefix": "134944b93d8698f1"
     },
     "prism_ops_mission_log_next_one": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "**다음 1타 (레인 · 재개용 핀):**",
       "anchor_end": "## 🚀 전술 작전 보드",
       "line_range": [
-        12,
-        61
+        6,
+        21
       ],
       "essence": "레인별 다음 1타 SSOT — 재개 핀 · HOLD · Track A·실매매 금지",
       "must_keep_tags": [
@@ -57,16 +57,16 @@
         "금지"
       ],
       "priority": 8,
-      "char_count": 6659,
-      "content_sha256_prefix": "72e40a4241361e47"
+      "char_count": 1149,
+      "content_sha256_prefix": "accf9c1dde6a4c47"
     },
     "prism_ops_lane_oracle": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "### 🔮 Oracle",
       "anchor_end": "### 🖥️ Infra",
       "line_range": [
-        116,
-        169
+        77,
+        138
       ],
       "essence": "Oracle 레인 — Logos·align-panel · narrative_lane_open · Track A·live 금지",
       "must_keep_tags": [
@@ -75,16 +75,16 @@
         "B-track"
       ],
       "priority": 7,
-      "char_count": 3605,
-      "content_sha256_prefix": "6342bfe183afb24a"
+      "char_count": 5766,
+      "content_sha256_prefix": "85ac9b8a7142a28c"
     },
     "prism_ops_lane_infra": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "### 🖥️ Infra",
       "anchor_end": "<!-- MISSION_LOG_BOARD_END -->",
       "line_range": [
-        170,
-        188
+        139,
+        157
       ],
       "essence": "Infra 레인 — solo stack·scheduler band · Track A·live 금지",
       "must_keep_tags": [
@@ -101,8 +101,8 @@
       "anchor_start": "### 💼 MS",
       "anchor_end": "### 🧭 Cursor IDE",
       "line_range": [
-        67,
-        97
+        27,
+        58
       ],
       "essence": "MS 레인 — 지원사업 CLOSED·B2B HOLD · 에이전트 제출 금지",
       "must_keep_tags": [
@@ -111,16 +111,16 @@
         "금지"
       ],
       "priority": 7,
-      "char_count": 1661,
-      "content_sha256_prefix": "5da7d9f39f5817b2"
+      "char_count": 1996,
+      "content_sha256_prefix": "5438c2a794af8d91"
     },
     "prism_ops_lane_design": {
       "file_path": "MISSION_LOG.md",
       "anchor_start": "**Design/Showroom (아카이브",
       "anchor_end": "## 🚀 전술 작전 보드",
       "line_range": [
-        60,
-        61
+        20,
+        21
       ],
       "essence": "Design/Showroom 레인 — 아카이브·패시브 · SEND_GATE HOLD",
       "must_keep_tags": [
@@ -129,8 +129,8 @@
         "SEND_GATE: HOLD"
       ],
       "priority": 7,
-      "char_count": 165,
-      "content_sha256_prefix": "c43d332eb6684029"
+      "char_count": 94,
+      "content_sha256_prefix": "73683d663288e839"
     },
     "prism_ops_nvidia_gc_pack": {
       "slice_kind": "json_pointer",
@@ -492,8 +492,8 @@
         "module",
         "tier2"
       ],
-      "char_count": 289,
-      "content_sha256_prefix": "d7bf8f909bcbc561",
+      "char_count": 291,
+      "content_sha256_prefix": "aaee6ce48a179930",
       "overlay_role": "logos_math"
     },
     "prism_ops_logos_narrative_closure_observability": {

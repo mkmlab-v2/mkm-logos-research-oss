@@ -21,6 +21,7 @@ PMID_LOCK = ROOT / "scripts" / "check_research_lit_review_pmid_lock_v1.py"
 FACT_SUPPORT = ROOT / "scripts" / "check_research_lit_review_fact_support_v1.py"
 ROUTER_INDEX = ROOT / "scripts" / "build_mkm_deep_research_router_index_v1.py"
 ROUTER_SHALLOW = ROOT / "scripts" / "build_mkm_research_router_to_shallow_v1.py"
+DIGESTION_CHAIN = ROOT / "scripts" / "run_mkm_digestion_engine_chain_v1.py"
 DEFAULT_MIN_TOTAL_IDS = 1
 DEFAULT_MIN_TOTAL_CLAIMS = 1
 DEFAULT_MIN_TOTAL_DOIS = 1
@@ -87,6 +88,24 @@ def main() -> int:
         help="Skip PubMed PMID lock (default: run when PMIDs are present in source)",
     )
     parser.add_argument("--skip-handoff", action="store_true")
+    parser.add_argument(
+        "--include-digestion",
+        action="store_true",
+        help="After citation/support PASS, dispatch digestion engine (default false for backward compat)",
+    )
+    parser.add_argument("--digestion-offline", action="store_true", help="Pass --offline to digestion chain")
+    parser.add_argument(
+        "--arxiv-batch-size",
+        type=int,
+        default=8,
+        help="Forward to citation/support locks: online arXiv batch size",
+    )
+    parser.add_argument(
+        "--arxiv-timeout",
+        type=float,
+        default=20.0,
+        help="Forward to citation/support locks: online arXiv timeout seconds",
+    )
     parser.add_argument("--out-json", type=Path, default=DEFAULT_OUT)
     args = parser.parse_args()
 
@@ -107,6 +126,10 @@ def main() -> int:
         str(args.min_pass_rate),
         "--min-total-ids",
         str(args.min_total_ids),
+        "--arxiv-batch-size",
+        str(args.arxiv_batch_size),
+        "--arxiv-timeout",
+        str(args.arxiv_timeout),
     ]
     if args.offline:
         lock_cmd.append("--offline")
@@ -205,6 +228,10 @@ def main() -> int:
         str(args.min_pass_rate),
         "--min-total-claims",
         str(args.min_total_claims),
+        "--arxiv-batch-size",
+        str(args.arxiv_batch_size),
+        "--arxiv-timeout",
+        str(args.arxiv_timeout),
     ]
     if args.offline:
         fact_cmd.append("--offline")
@@ -254,6 +281,52 @@ def main() -> int:
             return shallow_proc.returncode
         shallow_doc = json.loads(shallow_proc.stdout.strip())
 
+    digestion_doc: dict[str, Any] | None = None
+    if args.include_digestion:
+        if str(ROOT) not in sys.path:
+            sys.path.insert(0, str(ROOT))
+        from scripts.mkm_dr2_digest_wiring_v1 import digest_eligible_from_merged
+
+        md_text = md_path.read_text(encoding="utf-8", errors="replace")
+        eligible, reason = digest_eligible_from_merged(md_text)
+        if not eligible:
+            _log(f"merged gate: digestion SKIPPED ({reason})")
+            digestion_doc = {
+                "ok": True,
+                "skipped": True,
+                "reason": reason,
+                "digest_eligible": False,
+                "authoritative_ssot_auto_apply": "LOCKED",
+            }
+            steps["digestion"] = {"exit_code": 0, "skipped": True, "stdout": json.dumps(digestion_doc, ensure_ascii=False)}
+        else:
+            _log("merged gate: digestion dispatch (post support PASS)")
+            dig_cmd = [
+                sys.executable,
+                str(DIGESTION_CHAIN),
+                "--input",
+                str(md_path),
+            ]
+            if args.offline or args.digestion_offline:
+                dig_cmd.append("--offline")
+            dig_proc = _run(dig_cmd)
+            steps["digestion"] = {
+                "exit_code": dig_proc.returncode,
+                "stdout": dig_proc.stdout.strip(),
+                "stderr": dig_proc.stderr.strip() if dig_proc.returncode != 0 else "",
+            }
+            if dig_proc.returncode != 0:
+                print(json.dumps({"ok": False, "step": "digestion", "steps": steps}, ensure_ascii=False))
+                return dig_proc.returncode
+            try:
+                digestion_doc = json.loads(dig_proc.stdout.strip())
+            except json.JSONDecodeError:
+                digestion_doc = {"ok": True, "raw_stdout": dig_proc.stdout.strip()}
+            digestion_doc = dict(digestion_doc or {})
+            digestion_doc["digest_eligible"] = True
+            digestion_doc["authoritative_ssot_auto_apply"] = "LOCKED"
+            digestion_doc["note"] = "gate PASS ≠ SSOT truth promotion"
+
     doc = {
         "schema": "mkm_merged_lit_review_gate_chain_v1",
         "generated_at_utc": _utc_now(),
@@ -272,6 +345,9 @@ def main() -> int:
         "fact_support": fact_doc,
         "router_index": router_doc,
         "router_to_shallow": shallow_doc,
+        "digestion": digestion_doc,
+        "include_digestion": bool(args.include_digestion),
+        "authoritative_ssot_auto_apply": "LOCKED",
         "research_only": True,
         "send_gate": "HOLD",
         "reproduce": f'py scripts/run_mkm_merged_lit_review_gate_chain_v1.py --input "{_posix_path(md_path)}"',

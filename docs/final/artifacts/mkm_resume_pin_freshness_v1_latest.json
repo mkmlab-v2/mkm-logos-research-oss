@@ -1,6 +1,6 @@
 {
   "schema": "mkm_resume_pin_freshness_v1",
-  "generated_at_utc": "2026-07-15T12:10:36Z",
+  "generated_at_utc": "2026-08-31T10:19:48Z",
   "research_only": true,
   "send_gate": "HOLD",
   "policy_pointer": "docs/final/artifacts/mkm_resume_pin_freshness_policy_v1_latest.json",
@@ -8,58 +8,134 @@
   "pins": [
     {
       "node_id": "prism_ops_mission_log_board",
-      "age_days": 0.071,
+      "age_days": 0.001,
       "max_age_days": 7,
       "stale_advisory": false,
-      "as_of_utc": "2026-07-15T10:28:25.898768Z",
+      "as_of_utc": "2026-08-31T10:17:50.417813Z",
       "age_source": "index_last_updated"
     },
     {
       "node_id": "prism_ops_central_checkpoint",
-      "age_days": 0.07,
+      "age_days": 0.006,
       "max_age_days": 3,
       "stale_advisory": false,
-      "as_of_utc": "2026-07-15T10:29:44Z",
+      "as_of_utc": "2026-08-31T10:11:23Z",
       "age_source": "newest_checkpoint"
     },
     {
       "node_id": "prism_ops_mission_log_next_one",
-      "age_days": 0.071,
+      "age_days": 0.001,
       "max_age_days": 5,
       "stale_advisory": false,
-      "as_of_utc": "2026-07-15T10:28:25.898768Z",
+      "as_of_utc": "2026-08-31T10:17:50.417813Z",
       "age_source": "index_last_updated"
     },
     {
       "node_id": "prism_ops_portfolio_execution_focus",
-      "age_days": 2.747,
+      "age_days": 40.337,
       "max_age_days": 14,
-      "stale_advisory": false,
-      "as_of_utc": "2026-07-12T18:14:19Z",
+      "stale_advisory": true,
+      "as_of_utc": "2026-07-22T02:14:07Z",
       "age_source": "json_generated_at"
     },
     {
       "node_id": "prism_ops_where_used_gate",
-      "age_days": 5.046,
+      "age_days": 31.819,
       "max_age_days": 7,
-      "stale_advisory": false,
-      "as_of_utc": "2026-07-10T11:05:00Z",
+      "stale_advisory": true,
+      "as_of_utc": "2026-07-30T14:39:45Z",
       "age_source": "json_generated_at"
     },
     {
       "node_id": "prism_ops_absolute_balance_conflict_state",
-      "age_days": 4.931,
+      "age_days": 31.819,
       "max_age_days": 7,
-      "stale_advisory": false,
-      "as_of_utc": "2026-07-10T13:50:00Z",
+      "stale_advisory": true,
+      "as_of_utc": "2026-07-30T14:39:45Z",
       "age_source": "json_generated_at"
     }
   ],
-  "checkpoint_contradictions": [],
+  "checkpoint_contradictions": [
+    {
+      "newer_stamp_utc": "2026-08-31T07:58:01Z",
+      "older_stamp_utc": "2026-08-31T04:21:27Z",
+      "newer_message": "continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001",
+      "older_message": "DPT-R first blind AI dry-run EXECUTION_COMPLETE N=72 parse=59/72; sealed; adjudication HOLD",
+      "contradicts_prior_checkpoint": true,
+      "collision_reason": "polarity_conflict+topic_overlap",
+      "shared_tokens": [
+        "adjudication",
+        "dpt-r"
+      ],
+      "continuity_id": "dpt-r-ai-rater-repair-v1-20260831"
+    },
+    {
+      "newer_stamp_utc": "2026-08-31T07:58:01Z",
+      "older_stamp_utc": "2026-08-31T03:30:16Z",
+      "newer_message": "continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001",
+      "older_message": "DPT-R AI dry-run EXECUTION BLOCKED: analysis_plan parent drift + no execution contract; AI_RATING_N=0",
+      "contradicts_prior_checkpoint": true,
+      "collision_reason": "polarity_conflict",
+      "shared_tokens": [
+        "dpt-r"
+      ],
+      "continuity_id": "dpt-r-ai-rater-repair-v1-20260831"
+    },
+    {
+      "newer_stamp_utc": "2026-08-31T07:58:01Z",
+      "older_stamp_utc": "2026-08-31T02:42:10Z",
+      "newer_message": "continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001",
+      "older_message": "DPT-R vignette pack FREEZE_PASS N=36; hygiene 0 leak; AI rating 0; HOLD execution ACK",
+      "contradicts_prior_checkpoint": true,
+      "collision_reason": "polarity_conflict",
+      "shared_tokens": [
+        "dpt-r"
+      ],
+      "continuity_id": "dpt-r-ai-rater-repair-v1-20260831"
+    },
+    {
+      "newer_stamp_utc": "2026-08-31T04:21:27Z",
+      "older_stamp_utc": "2026-08-31T03:48:55Z",
+      "newer_message": "DPT-R first blind AI dry-run EXECUTION_COMPLETE N=72 parse=59/72; sealed; adjudication HOLD",
+      "older_message": "DPT-R parent reconciled RESTORE + execution contract frozen PASS; AI_RATING_N=0; await execution RE-ACK",
+      "contradicts_prior_checkpoint": true,
+      "collision_reason": "polarity_conflict",
+      "shared_tokens": [
+        "dpt-r"
+      ]
+    },
+    {
+      "newer_stamp_utc": "2026-08-31T03:48:55Z",
+      "older_stamp_utc": "2026-08-31T03:30:16Z",
+      "newer_message": "DPT-R parent reconciled RESTORE + execution contract frozen PASS; AI_RATING_N=0; await execution RE-ACK",
+      "older_message": "DPT-R AI dry-run EXECUTION BLOCKED: analysis_plan parent drift + no execution contract; AI_RATING_N=0",
+      "contradicts_prior_checkpoint": true,
+      "collision_reason": "polarity_conflict+topic_overlap",
+      "shared_tokens": [
+        "ai_rating_n",
+        "contract",
+        "dpt-r",
+        "execution",
+        "parent"
+      ]
+    },
+    {
+      "newer_stamp_utc": "2026-08-31T03:48:55Z",
+      "older_stamp_utc": "2026-08-31T02:42:10Z",
+      "newer_message": "DPT-R parent reconciled RESTORE + execution contract frozen PASS; AI_RATING_N=0; await execution RE-ACK",
+      "older_message": "DPT-R vignette pack FREEZE_PASS N=36; hygiene 0 leak; AI rating 0; HOLD execution ACK",
+      "contradicts_prior_checkpoint": true,
+      "collision_reason": "polarity_conflict+topic_overlap",
+      "shared_tokens": [
+        "dpt-r",
+        "execution"
+      ]
+    }
+  ],
   "l0_l2_claim_gaps": [],
   "advisory_summary": {
-    "stale_pin_count": 0,
-    "contradiction_count": 0,
+    "stale_pin_count": 3,
+    "contradiction_count": 6,
     "l0_l2_claim_gap_count": 0
   },
   "reproduce": [

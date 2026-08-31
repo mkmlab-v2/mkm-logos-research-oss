@@ -60,5 +60,6 @@
   "npm.autoDetect": "off",
   "typescript.tsc.autoDetect": "off",
   "typescript.tsserver.experimental.enableProjectDiagnostics": false,
-  "jema12.autoStartServers": false
+  "jema12.autoStartServers": false,
+  "git.ignoreLimitWarning": true
 }

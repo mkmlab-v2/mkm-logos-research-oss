@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import sys
 import urllib.error
@@ -40,6 +41,37 @@ REPO_SCAN_SPECS: tuple[tuple[Path, tuple[str, ...]], ...] = (
     (ROOT / "docs" / "research", ("*.md",)),
     (ROOT / "docs" / "final", ("*.md",)),
 )
+# CX4T: skip historical pin env trees and broken venv walks (immutable moonshot artifacts).
+_REPO_SKIP_DIR_NAMES = frozenset(
+    {".venv", "__pycache__", "node_modules", ".git", "site-packages", ".tox", ".mypy_cache"}
+)
+_REPO_SKIP_PREFIXES = (
+    "docs/research/moonshot_pccc_gate0/gate0_5/pins/envs/",
+)
+
+
+def _should_skip_repo_path(path: Path) -> bool:
+    rel = path.relative_to(ROOT).as_posix()
+    if any(rel.startswith(prefix) for prefix in _REPO_SKIP_PREFIXES):
+        return True
+    return any(part in _REPO_SKIP_DIR_NAMES for part in path.parts)
+
+
+def _iter_repo_scan_files(root: Path, pattern: str):
+    """Safe rglob for repo lane — skip pin envs; tolerate broken symlink trees."""
+    for dirpath, dirnames, filenames in os.walk(root, topdown=True, onerror=lambda _: None):
+        cur = Path(dirpath)
+        if _should_skip_repo_path(cur):
+            dirnames.clear()
+            continue
+        dirnames[:] = [d for d in dirnames if not _should_skip_repo_path(cur / d)]
+        if pattern.startswith("*."):
+            suffix = pattern[1:]
+            names = [n for n in filenames if n.endswith(suffix)]
+        else:
+            names = filenames
+        for name in names:
+            yield cur / name
 
 
 def _utc_now() -> str:
@@ -177,9 +209,15 @@ def lane_repo(query: str, *, max_results: int) -> list[dict[str, Any]]:
         if not root.is_dir():
             continue
         for pattern in patterns:
-            for path in sorted(root.rglob(pattern)):
+            try:
+                paths = sorted(_iter_repo_scan_files(root, pattern))
+            except (FileNotFoundError, OSError):
+                continue
+            for path in paths:
                 if len(root_hits) >= per_root or len(hits) + len(root_hits) >= max_results:
                     break
+                if _should_skip_repo_path(path):
+                    continue
                 try:
                     text = path.read_text(encoding="utf-8", errors="replace")
                 except OSError:

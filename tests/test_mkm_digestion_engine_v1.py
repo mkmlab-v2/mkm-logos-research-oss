@@ -73,7 +73,9 @@ def test_wiring_manifest_marks_explicit_wired(tmp_path: Path) -> None:
     wired = map_digested_facts_to_mkm_plane(doc)
     by_id = {e["fact_id"]: e for e in wired["wiring_manifest"]}
     assert by_id["demo_b3_dual_plane_floor"]["wired"] is True
+    assert by_id["demo_b3_dual_plane_floor"]["wiring_status"] == "BINDING_CANDIDATE"
     assert by_id["demo_external_latency"]["wired"] is False
+    assert by_id["demo_external_latency"]["wiring_status"] == "HOLD_NO_TARGET"
 
 
 def test_gate_passes_right_wiring_against_baseline() -> None:

@@ -1,6 +1,6 @@
 # MKM Chat Resume Pack
 
-- generated_at_utc: `2026-07-15T10:35:48.542588Z`
+- generated_at_utc: `2026-08-31T10:19:49.742741Z`
 - research_only: `True`
 - include_slice: `False`
 - repair_v2_slice: `False`
@@ -8,6 +8,7 @@
 - promotion_decision: `GO_FINAL_V2` (agent: `INTERNAL_V2_READY`)
 - trackc_packet_status: `READY` (artifact READY ≠ SEND; see SEND_GATE below)
 - acceptance_status: `None`
+- S-L-K-M: S=0.2476 L=0.246 K=0.2467 M=0.2598 · source=gematria_bridge_v1:docs/final/artifacts/logos_gematria_matrix_snapshot_v1_latest.json agg=mean_n=24 · [HYPO] · NON_GATING · ≠Final Action
 
 ## Commander Resume (`장기기억 맥락이어`)
 
@@ -17,10 +18,20 @@
 - mission_log: next_one_table_pin_only — never paste full MISSION_LOG.md
 - fact_lock: CONSTITUTION + scripts + exit 0 only — NL answer is not pass/fail
 - SEND_GATE: `HOLD`
+- oneshot_contract (Day1·Azure HQ underperform advice): first reply **3 lines only** — `ACTIVE_LANE=` · `ONE_SHOT_GOAL=` · `DONE_WHEN=` (disk: `py scripts/run_mkm_resume_oneshot_contract_v1.py` · `docs/final/artifacts/mkm_resume_oneshot_contract_v1_latest.md`)
 - send_gate_vocab: `docs/final/artifacts/mkm_send_gate_vocabulary_v1_latest.json` (narrative_lane_open ≠ SEND · promotion GO ≠ live)
 - chat_tone: routine live-trading disclaimer **suppress ON** · `docs/final/artifacts/commander_chat_tone_prefs_v1_latest.json`
-- chat_tone_contract: 채팅은 간결하게. 내부 격벽은 코드·아티팩트·고위험 실행 시에만 말한다. 지휘관은 실매매 안 함.
-- NL 지휘부 sync: push **47/47** @ `2026-07-05T12:29:44Z` · repro: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-NotebookLmLtmGraphOpsSetup_v1.ps1 -PushNlm`
+- chat_tone_contract: 첫 화면=채팅 초등 보고(≤8줄). 판정 먼저. 영문 미완료 상태코드·A/B 강제 선택 금지. 미완료=아직 제품 완료 아님/눈확인 전/다음 할 일. 저위험은 기본값 진행. *elementary*.txt 기본 생성 금지. 상세=artifact JSON. paste는 명시 시에만. 서브에이전트 user-visible도 초등 완결. 지휘관 env 의식 금지.
+- NL 지휘부 sync: push **0/47** @ `2026-08-01T14:23:02Z` · repro: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts\Invoke-NotebookLmLtmGraphOpsSetup_v1.ps1 -PushNlm`
+
+## Pin Cue · 재개 시 먼저
+
+1. `ACTIVE_LANE=<oracle|ms|infra|web_ops|design>`
+2. `ONE_SHOT_GOAL=<one measurable goal>`
+3. `DONE_WHEN=<before→after or exit0+artifact>`
+
+- disk: `py scripts/run_mkm_resume_oneshot_contract_v1.py --lane … --goal "…" --done-when "…"`
+- artifact: `docs/final/artifacts/mkm_resume_oneshot_contract_v1_latest.md`
 
 ## [MISTAKE GUARDRAIL] · JEMA OS kernel ([HYPO])
 
@@ -33,36 +44,44 @@ send_gate: "HOLD"
 lane: "infra"
 registry: "reports/mkm_agent_mistake_registry_v1.jsonl"
 wall:
-  - "Field(regime_map+ops gates)만 Final Action; 사상=단기 톤 보조 [HYPO][NON_GATING]; Track A·임상·실매매·단정 트리거 금지."
-  - "Freeze 3-7 Done cards at multi-step start; commander outcome sentence unchanged; redefine only via new card + approval (mkm_done_card_completion_contract_v1 + mkm-done-card-completion-v1.mdc M2)."
-  - "권장/추천 stop = next-1 suggestion only; cannot CLOSE OPEN commander cards (Done-card M5 + contract recommended_stop_cannot_silently_close_open_commander_cards)."
-  - "User-visible DONE requires same-URL browser/snapshot OR commander ACK; scripts-only = harness DONE not product DONE (Done-card M6)."
+  - "Field(regime_map+ops gates)만 Final Action; 3렌즈=병렬 advisory [HYPO][NON_GATING] (예측 호라이즌 매핑 폐기 · Charter); Track A·임상·실매매·단정 트리거 금지."
+  - "Grant mkm_lambda_gpu_lease_v1 before Launch; 30m orphan_kill_watchdog terminates Running without valid lease; mission end Terminate+lease --clear"
+  - "Run check_mkm_control_hard_gate_v1.py before answer when commander says hardgate or after relapse; simple Q = never Task/explore; stamp session forbid pin on hajima; Korean gloss only. Counter: mkm_control_hard_gate_violation_counter_v1_latest.json. @mkm-control-hard-gate-v1"
+  - "Pin credit_login_email=no1kmedi; check_mkm_lambda_credit_account_gate_v1 exit0 before spin; forbid gmail launch; Terminate+Usage end required; @mkm-mistake-guardrail-lambda-wrong-account-billing-v1"
 rules:
-  - id: "human_57516280f51d"
+  - id: "human_c3048408d374"
     severity: "P0"
     source: "human"
-    root_cause: "done_redefinition"
-    preventive: "Freeze 3-7 Done cards at multi-step start; commander outcome sentence unchanged; redefine only via new card + approval (mkm_done_card_completion_contract_v1 + mkm-done-card-completion-v1.mdc M2)."
-  - id: "human_de8a35136443"
+    root_cause: "post_mission_terminate_missing_and_no_orphan_watchdog"
+    preventive: "Grant mkm_lambda_gpu_lease_v1 before Launch; 30m orphan_kill_watchdog terminates Running without valid lease; mission end Terminate+lease --clear"
+  - id: "human_ee111f9c477b"
     severity: "P0"
     source: "human"
-    root_cause: "권장_as_close"
-    preventive: "권장/추천 stop = next-1 suggestion only; cannot CLOSE OPEN commander cards (Done-card M5 + contract recommended_stop_cannot_silently_close_open_commander_cards)."
-  - id: "human_671387504111"
+    root_cause: "unnecessary_subagent_on_simple_clarification / open_label_theater / soft_rule_ignored"
+    preventive: "Run check_mkm_control_hard_gate_v1.py before answer when commander says hardgate or after relapse; simple Q = never Task/explore; stamp session forbid pin on hajima; Korean gloss only. Counter: mkm_control_hard_gate_violation_counter_v1_latest.json. @mkm-control-hard-gate-v1"
+  - id: "human_36cd8ed34f13"
     severity: "P0"
     source: "human"
-    root_cause: "scripts_as_ux_done"
-    preventive: "User-visible DONE requires same-URL browser/snapshot OR commander ACK; scripts-only = harness DONE not product DONE (Done-card M6)."
+    root_cause: "wrong_account_identity_non_merge_plus_terminate_theater"
+    preventive: "Pin credit_login_email=no1kmedi; check_mkm_lambda_credit_account_gate_v1 exit0 before spin; forbid gmail launch; Terminate+Usage end required; @mkm-mistake-guardrail-lambda-wrong-account-billing-v1"
 ```
 
-- Field(regime_map+ops gates)만 Final Action; 사상=단기 톤 보조 [HYPO][NON_GATING]; Track A·임상·실매매·단정 트리거 금지.
-- Freeze 3-7 Done cards at multi-step start; commander outcome sentence unchanged; redefine only via new card + approval (mkm_done_card_completion_contract_v1 + mkm-done-card-completion-v1.mdc M2).
-- 권장/추천 stop = next-1 suggestion only; cannot CLOSE OPEN commander cards (Done-card M5 + contract recommended_stop_cannot_silently_close_open_commander_cards).
-- User-visible DONE requires same-URL browser/snapshot OR commander ACK; scripts-only = harness DONE not product DONE (Done-card M6).
+- Field(regime_map+ops gates)만 Final Action; 3렌즈=병렬 advisory [HYPO][NON_GATING] (예측 호라이즌 매핑 폐기 · Charter); Track A·임상·실매매·단정 트리거 금지.
+- Grant mkm_lambda_gpu_lease_v1 before Launch; 30m orphan_kill_watchdog terminates Running without valid lease; mission end Terminate+lease --clear
+- Run check_mkm_control_hard_gate_v1.py before answer when commander says hardgate or after relapse; simple Q = never Task/explore; stamp session forbid pin on hajima; Korean gloss only. Counter: mkm_control_hard_gate_violation_counter_v1_latest.json. @mkm-control-hard-gate-v1
+- Pin credit_login_email=no1kmedi; check_mkm_lambda_credit_account_gate_v1 exit0 before spin; forbid gmail launch; Terminate+Usage end required; @mkm-mistake-guardrail-lambda-wrong-account-billing-v1
 
 ## Pin Freshness Advisory ([HYPO] · P0.3)
 
-- stale_pins: `0` · checkpoint_contradictions: `0` · l0_l2_claim_gaps: `0` · artifact: `docs/final/artifacts/mkm_resume_pin_freshness_v1_latest.json`
+- stale_pins: `3` · checkpoint_contradictions: `6` · l0_l2_claim_gaps: `0` · artifact: `docs/final/artifacts/mkm_resume_pin_freshness_v1_latest.json`
+
+- **contradicts_prior_checkpoint** (polarity_conflict+topic_overlap): `2026-08-31T07:58:01Z` vs `2026-08-31T04:21:27Z`
+- **contradicts_prior_checkpoint** (polarity_conflict): `2026-08-31T07:58:01Z` vs `2026-08-31T03:30:16Z`
+- **contradicts_prior_checkpoint** (polarity_conflict): `2026-08-31T07:58:01Z` vs `2026-08-31T02:42:10Z`
+
+## Last Ops Patrol (paste helper)
+
+- `[DailyOpsPatrol] 2026-08-31 WARN (Remote:pass, P0:pass, Git:pass, Resume:pass, Athena:drift:3, Env:pass, Amsaeng:pass, NL-MCP:pass, Secrets:pass; opt_fail:1) | Shadow Only | No Track A/live`
 
 ## Ops Memory Pins ([HYPO])
 
@@ -72,31 +91,38 @@ rules:
 ```
 <!-- ATHENA_CHECKPOINT_V1_START -->
 <!-- CENTRAL checkpoint block -->
-- **2026-07-15T10:29:44Z** — Infra L4: Docker still missing; installer staged+UAC Ask Gate; tokens_per_gpu_sec null; Ollama skipped
-- **2026-07-15T10:19:15Z** — Infra L4 vLLM tokens_per_gpu_sec blocked: docker_missing; Ollama baseline 132.52 tok/s kept; ask gate=Install Docker Desktop
-- **2026-07-15T10:05:43Z** — 2026-07 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
-- **2026-07-15T09:56:10Z** — Infra GPU Top-1: Ollama gemma4:e2b live tok/s deep=132.52 skim=42.95; L4 tokens_per_gpu_sec null; SEND HOLD FAIL-COMP-004 vs TrackA 50%
-- **2026-07-15T09:35:19Z** — 2026-07 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
-- **2026-07-15T08:15:37Z** — Logos 감시관 PASS_WITH_FINDINGS(P2 hdr)~a-codeai Paddle domain prep pack live7×200; Design cold; MS Tier3 submit remain
-- **2026-07-15T07:44:02Z** — continuity=acodeai-homepage-close-2026-07-15 · a-codeai homepage+policy live DONE; next Paddle domain re-submit Tier3; SEND HOLD
-- **2026-07-15T07:43:48Z** — continuity=acodeai-homepage-close-2026-07-15 · a-codeai homepage+policy LIVE DONE: deploy exit0, live 200 /,terms,privacy,refund(+ko), live_ok=true; next Paddle a
+- **2026-08-31T10:11:23Z** — continuity=clinic-kakao-inbox · Clinic Kakao unified inbox PARK — 주 1-2건 직접 답변; harness 보존, 딜러/실연동/Playwright HOLD
+- **2026-08-31T10:05:51Z** — 2026-08 肄붿뒪??4AI 醫낇빀蹂닿퀬??evening score ?꾨즺 [HYPO]
+- **2026-08-31T09:50:50Z** — A_CODEAI_30_TASK_CONTROLLED_BENCHMARK_DESIGN_FREEZE_ACK: 30-task prereg frozen TASK_RUN_N=0; execution ACK separate
+- **2026-08-31T09:22:30Z** — LOGOS_ASK_20_USER_G2_VALIDATION_DESIGN_FREEZE_ACK: 20-user L1-L3 prereg frozen; execution/recruitment separate ACK
+- **2026-08-31T08:34:01Z** — 김지선 산후 복약·회복 안내 최종 확정: 뒷물100%외용·모유수유+영아관찰·소음·RED FLAG 차트메모
+- **2026-08-31T07:58:01Z** — continuity=dpt-r-ai-rater-repair-v1-20260831 · DPT-R P0 closed: adjudication MEASUREMENT_INSTABILITY_DOMINANT, output-contract repair v2 IMPLEMENTED PASS (16/16 format, AI_RATING_N_NEW=0); WAIT disposition same36 regression 미승인; 병렬 Logos same-URL→Gov172→BESD PC-001
+- **2026-08-31T07:57:48Z** — Logos Ask product ACK: same-URL dynamic UX commander ack; harness 9/9; Tier2 smoke hydration+Ps23+citations OK; softmatch_wall separate
+- **2026-08-31T05:00:18Z** — Clinic Automati
 … [HYPO slice truncated]
 
 ```
 - **prism_ops_mission_log_next_one** — 레인별 다음 1타 SSOT — 재개 핀 · HOLD · Track A·실매매 금지 · must_keep: `Track A`, `HOLD`, `금지`
-  - slice_preview (truncated):
+  - slice_preview (full):
 ```
 **다음 1타 (레인 · 재개용 핀):**
 
 | 레인 | 다음 1타 |
 |------|----------|
-| **MS·KOSPI Field band [HYPO]** | **급등 학습체크 DONE** — `mkm_kospi_surge_learning_check_v1_latest` · learnable=`false`(관측만) · vendor 7/15≈7394(+8.6% vs 7/13 6807·잠정) · H2 YE/Aug **resolve 금지** · **다음** 종가 후 `run_kospi_daily_observation_loop_v1.py --year-month 2026-07 --as-of-kst 2026-07-15 --phase evening` · continuity `kospi-surge-learn-check-2026-07-15` · **research_only · SEND HOLD · AI주문금지** |
-| **Oracle·Logos** | **Option A display diversion DONE** — live chrome `JEMA Scripture Research` · LOGOS hero wordmark 해제 · host logos.* technical only · Destiny exit0 · friend 7/7 · Cosmic ABSENT · triage `display_diversion=APPLIED` · **다음** Claude re-eval OK / counsel optional · continuity `logos-critique-faithlife-hypo-2026-07-15` · **research_only · SEND HOLD · counsel_when_commander** |
-| **MS·B2B 압축** | **Paddle domain re-submit PREP DONE** — live 7 URL 200 re-verify · paste sheet `acodeai_paddle_domain_resubmit_prep_v1_latest` · checklist check exit0 · **다음** 지휘관 Tier3 `vendors.paddle.com` a-codeai-only submit (agent login 금지) · continuity `acodeai-paddle-domain-prep-2026-07-15` · **SEND HOLD · ≠pro
-… [HYPO slice truncated]
+| **MS · a-codeai [HYPO]** | Day4 REAL_UI VO drop OR Studio review · 회신대기(재발송 금지) · ≠Video1 product DONE · SEND HOLD · Track A 금지 |
+| **Oracle · Logos Ask UX [HYPO]** | 병렬 P0-1 · same-URL 브라우저 눈확인 → product adjudication · harness 9/9 ≠ product DONE · SEND HOLD |
+| **Oracle · Bible EP1 / SBLGNT [HYPO]** | EP1 SEMANTIC_FAIL_SEALED STOP · SBLGNT WAIT lock/lens ACK · ≠lens PASS · SEND HOLD |
+| **연구 · BESD v0.2 [HYPO]** | DPT-R P0 CLOSED · WAIT disposition(same36 regression 추천·미승인) · 병렬 P0-3 PC-001↔consolidation diff · SEND HOLD |
+| **연구 · Agency market [HYPO]** | PHASE1 toy 천장 HOLD 종료 · 1000일 달력 늘려 블록 만들기 금지 · historical 실행 미허가 · BESD/DPT-R과 검증 독립 · SEND HOLD |
+| **Governance N80+ [HYPO]** | 병렬 P0-2 · primary blind human 172/172 → freeze · 현재 0/172 · SEND HOLD |
+| **Sasang Gen2 ethics [HYPO]** | PARK · WAIT ethics+access deposit · NO unpark · Track A 금지 · SEND HOLD |
+| **Infra** | 패시브 · solo band 유지 · Track A·live 금지 |
+| **Design/Showroom** | 아카이브·패시브 · SEND_GATE HOLD · Track A 금지 |
+
+**Design/Showroom (아카이브 · 패시브):** SEND_GATE: HOLD · Track A·live 금지 · 상세는 Design 레인 보드/아카이브만.
 
 ```
-- **prism_ops_portfolio_execution_focus** — 2026 실행 집중 — One cash cow(a-codeai)+One passion(logos) · 시장검증 ADVISORY · TRACK_C §0.6 · 체크포인트 스크롤 내성 · must_keep: `one_cash_cow_acodeai`, `ADVISORY_not_fact_lock`, `TRACK_C_IP_BUSINESS_PLAN`
+- **prism_ops_portfolio_execution_focus** — 2026 실행 집중 — One cash cow(a-codeai)+One passion(logos) · 시장검증 ADVISORY · TRACK_C §0.6 · 체크포인트 스크롤 내성 · must_keep: `one_cash_cow_acodeai`, `ADVISORY_not_fact_lock`, `TRACK_C_IP_BUSINESS_PLAN` · **stale_advisory** age=40.337d>max=14d
   - slice_preview (full):
 ```
 /commercialization_phases/execution_focus_2026_07: "one_cash_cow_acodeai + one_passion_logos; hold mkmlife/personadiary/gyeokmul after phase1 min"
@@ -108,7 +134,7 @@ rules:
 /doc_pointers/portfolio_master_index: "docs/final/MKM_PORTFOLIO_MASTER_INDEX_V1.md"
 /doc_pointers/business_plan_ssot: "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md"
 ```
-- **prism_ops_where_used_gate** — 사용처 → Pass1 resolve+check · Pass2 cited⊆hit synthesis_ok · CENTRAL 장문 금지 · must_keep: `coverage_ok`, `resolve_mkm_where_used_v1.py`, `HOLD`, `synthesis_ok`
+- **prism_ops_where_used_gate** — 사용처 → Pass1 resolve+check · Pass2 cited⊆hit synthesis_ok · CENTRAL 장문 금지 · must_keep: `coverage_ok`, `resolve_mkm_where_used_v1.py`, `HOLD`, `synthesis_ok` · **stale_advisory** age=31.819d>max=7d
   - slice_preview (full):
 ```
 /ops_pin_id: "prism_ops_where_used_gate"
@@ -119,7 +145,7 @@ rules:
 /send_gate: "HOLD"
 /skill: ".cursor/skills/mkm-where-used-enum/SKILL.md"
 ```
-- **prism_ops_absolute_balance_conflict_state** — Absolute Balance=조율 상태 · Field→Lens(3)→Conflict→Final · 제5 AI 아님 · Final=Field+ops · must_keep: `not_fifth_ai`, `state_not_vector`, `HOLD`, `field_gates_final`
+- **prism_ops_absolute_balance_conflict_state** — Absolute Balance=조율 상태 · Field→Lens(3)→Conflict→Final · 제5 AI 아님 · Final=Field+ops · must_keep: `not_fifth_ai`, `state_not_vector`, `HOLD`, `field_gates_final` · **stale_advisory** age=31.819d>max=7d
   - slice_preview (full):
 ```
 /ops_pin_id: "prism_ops_absolute_balance_conflict_state"
@@ -137,8 +163,8 @@ rules:
   - paths: `scripts/verify_p0_constitution_gate_paths.ps1`, `scripts/run_aramaic_mvp_chain_v1.ps1`, `scripts/run_two_track_submission_pack_v1.ps1`, `.github/workflows/dual-regime-integrity.yml`, `scripts/extract_aramaic_core_corpus_v1.py`, `tests/test_extract_aramaic_core_corpus_v1.py`, `scripts/spec_bio_sample_paper_snp_join_gate_v1.py`, `.github/workflows/bio-paper-snp-sidecar-smoke.yml`, `tests/test_bio_paper_snp_join_chain_smoke_v1.py`, `tests/test_run_bio_paper_snp_sidecar_export_and_apply_v1_cli.py`
 - **logos_ops_memory_cursor_inject** — Oracle Logos Cursor inject Tier-1 module SSOT — overlay + readiness gate; ≠ CONSTITUTION full rewrite; B-track HOLD; Logos [NON_GATING] · must_keep: `run_logos_oracle_cursor_inject_tier1_readiness_chain_v1.py`, `logos_theory_implementation_wiring_v1.json`
   - paths: `scripts/build_mkm_ops_memory_logos_math_overlay_v1.py`, `scripts/run_mkm_ops_memory_logos_math_overlay_chain_v1.py`, `storage/meta/mkm_ops_memory_index_v1.json`, `docs/final/artifacts/mkm_chat_resume_pack_latest.md`, `docs/final/artifacts/logos_theory_implementation_wiring_v1.json`, `scripts/run_logos_oracle_cursor_inject_tier1_readiness_chain_v1.py`, `docs/final/artifacts/logos_oracle_cursor_inject_tier1_readiness_v1_latest.json`, `scripts/run_mkm_logos_math_ltm_a2a_chain_v1.py`, `scripts/run_
-- **logos_oracle_tier3_anchor_3600_ceiling** — Tier-3 anchor 3600 research ceiling — HG frozen, observability+closure SSOT; resonance_cap 128 unchanged; Track A forbidden · must_keep: `logos_bible_advancement_closure_v1_latest.json`, `stage_batch_preview_exhausted`
-  - paths: `docs/final/artifacts/logos_oracle_tier3_narrative_commander_signoff_v1_latest.json`, `docs/final/artifacts/logos_bible_advancement_closure_v1_latest.json`, `docs/final/artifacts/logos_oracle_narrative_closure_observability_v1_latest.json`, `scripts/Invoke-MkmOracleModuleObservabilityWeeklyRoutine_v1.ps1`
+- **compression_factlock_table** — Track A/B compression SSOT paths (SLA, interpretation fact-lock, bundles) · must_keep: `COMPRESSION_SLA_POLICY_V1.md`, `COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK`
+  - paths: `docs/final/COMPRESSION_INTERPRETATION_PIPELINE_FACT_LOCK_2026-03-31.md`, `docs/final/COMPRESSION_12M_LEARNINGS_AND_TRACKB_PLAYBOOK_2026-04-08.md`, `docs/final/COMPRESSION_SLA_POLICY_V1.md`, `docs/final/openapi_token_compression_v2_draft.yaml`, `scripts/compression_token_api_v2_stub.py`, `tests/test_compression_token_api_v2_stub.py`, `tests/test_v2_graph_wire_selective_bridge_v1.py`, `scripts/comp_atom05_*_sweep_v1.py`, `scripts/build_mkm_inter_agent_encoding_status_v1.py`, `docs/final/artifacts
 
 ## Quick Refs
 - `docs/final/CENTRAL_AGENT_MEMORY_V1.md`

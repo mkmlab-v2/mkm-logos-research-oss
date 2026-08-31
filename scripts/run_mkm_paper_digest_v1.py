@@ -33,6 +33,7 @@ from scripts.extract_lens_coordinate_facts_v1 import (  # noqa: E402
     extract_coordinate_facts,
 )
 from scripts.mkm_paper_ocr_extract_v1 import extract_pdf_text  # noqa: E402
+from scripts.mkm_dr2_digest_wiring_v1 import count_silent_unwired  # noqa: E402
 
 LENS_NON_GATING = {"logos": "[NON_GATING]", "myeongri": "[HYPO]", "ijeoma": "[HYPO]"}
 
@@ -321,9 +322,18 @@ def digest_one(
     result["digested_facts"] = (
         digested_path.relative_to(ROOT).as_posix() if digested_path.is_file() else None
     )
-    result["ok"] = code == 0
+    if digested_path.is_file():
+        dig_doc = json.loads(digested_path.read_text(encoding="utf-8"))
+        silent = count_silent_unwired(dig_doc.get("facts") or [])
+        result["silent_unwired_count"] = silent
+        if silent > 0:
+            result["ok"] = False
+            result["error"] = "silent_unbound_digest_facts_forbidden"
     if code != 0:
-        result["error"] = "digestion_chain_failed"
+        result["ok"] = False
+        result["error"] = result.get("error") or "digestion_chain_failed"
+    elif result.get("ok") is not False:
+        result["ok"] = True
     return result
 
 

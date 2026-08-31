@@ -228,6 +228,7 @@ def _write_chain_report(
         "production_mode": production_mode,
         "research_only": True,
         "send_gate": "HOLD",
+        "authoritative_ssot_auto_apply": "LOCKED",
         "reproduce": f"py scripts/run_mkm_digestion_engine_chain_v1.py --input {_posix_path(md_path)}",
     }
     out_path = out_json.resolve()

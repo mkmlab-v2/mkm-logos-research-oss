@@ -121,3 +121,13 @@ def test_write_md_stub_contains_arxiv_table(tmp_path: Path) -> None:
     text = out.read_text(encoding="utf-8")
     assert "2506.11763" in text
     assert "check_research_lit_review_citation_lock_v1.py" in text
+
+
+def test_lane_repo_skips_historical_pin_env_without_file_not_found() -> None:
+    if str(ROOT) not in sys.path:
+        sys.path.insert(0, str(ROOT))
+    from scripts.mkm_deep_explore_v1 import lane_repo
+
+    hits = lane_repo("provenance evidence binding auditable AI LIT_REVIEW", max_results=8)
+    assert isinstance(hits, list)
+    assert not any("moonshot_pccc_gate0/gate0_5/pins/envs" in h.get("repo_path", "") for h in hits)
