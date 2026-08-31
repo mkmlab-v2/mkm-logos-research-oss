@@ -101,6 +101,17 @@ docs/research/raw/nckm_cpg_fulltext/_te_extract_tmp.txt
 docs/research/raw/nckm_cpg_fulltext/_ty_extract_tmp.txt
 docs/research/raw/nckm_cpg_fulltext/_ri_extract_tmp.txt
 
+# Governance N80+ — blinding-sensitive HOLD (git add -f after PRIMARY_BLIND_FREEZE ACK; see GOVERNANCE_UNBLIND_STAGING_CHECKLIST_v1.md)
+docs/research/mkm_governance_ablation_n80plus/blind_human_rater/rater_key_hidden_v1.json
+docs/research/mkm_governance_ablation_n80plus/blind_human_rater/rater_worksheet_v1.json
+docs/research/mkm_governance_ablation_n80plus/blind_human_rater/secondary_ai_review/
+docs/research/mkm_governance_ablation_n80plus/blind_human_rater/01_PRIMARY_BLIND_FREEZE_RECEIPT.json
+docs/research/mkm_governance_ablation_n80plus/blind_human_rater/02_HUMAN_RATER_RESULT_RECEIPT.json
+docs/research/mkm_governance_ablation_n80plus/response_archive/
+docs/research/mkm_governance_ablation_n80plus/PAIRED_AB_LEDGER.jsonl
+docs/research/mkm_governance_ablation_n80plus/01_RESULT_SEAL_RECEIPT.json
+docs/research/mkm_governance_ablation_n80plus/00_EXECUTE_FREEZE_RECEIPT.json
+
 # Logs (MCP/서비스 잠금 방지)
 logs/
 

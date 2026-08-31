@@ -1,0 +1,212 @@
+{
+  "schema": "besd_dpt_r_v2_bounded_loader_results_v1",
+  "mission": "COMMANDER_BESD_DPT_R_V2_BOUNDED_LOADER_V1",
+  "generated_at_utc": "2026-08-31T01:01:33.590629+00:00",
+  "status": "HYPO",
+  "tags": [
+    "HYPO",
+    "research_only",
+    "NON_GATING"
+  ],
+  "send_gate": "HOLD",
+  "LOADER_INTEGRATION": "HOLD",
+  "PROMOTION": "NOT_AUTHORIZED",
+  "bounded_loader": {
+    "path": "scripts/run_besd_dpt_r_v2_bounded_loader_v1.py",
+    "dual_label_record_present": true,
+    "fail_closed_tokens_present": true,
+    "LOADER_COMPATIBLE": true,
+    "v1_loader_unmutated": true
+  },
+  "immutable_inputs": {
+    "bridge_sha256": "b752c15975824981611b87c038ceecb99e877b9f4f2532388726eb69faabffb1",
+    "bridge_path": "C:/workspace/docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_V1_V2_LABEL_BRIDGE_V1.json"
+  },
+  "summary": {
+    "FIXTURE_N": 3,
+    "PASS_N": 3,
+    "FAIL_CLOSED_TOKEN_N": 6
+  },
+  "DECIDE_ONE": "BESD_DPT_R_V2_BOUNDED_LOADER_PASS",
+  "dual_label_records": [
+    {
+      "fixture_id": "DPT_SYN_001_CHEEK",
+      "bridge_hash": "b752c15975824981611b87c038ceecb99e877b9f4f2532388726eb69faabffb1",
+      "v1_expected_action_class": "legitimacy_challenge_without_mirror_violence",
+      "v1_actual_action_class": "legitimacy_challenge_without_mirror_violence",
+      "v2_selected_action": "EXPOSE_COERCION",
+      "bridge_relation": "BOUNDED_EQUIVALENT",
+      "also_in_image": [
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "REPORT"
+      ],
+      "semantic_ceiling": "EXPOSE_COERCION realizes the legitimacy-challenge component only. It does not exhaust the v1 class, does not make public exposure mandatory for every cheek-like case, and does not encode non-mimetic control by itself. EXIT/REPORT/PROTECT must remain in A_feasible. Wink reconstruction stays PLAUSIBLE/CONTESTED.",
+      "semantic_invariants_pass": true,
+      "fail_closed_tokens": [
+        "BRIDGE_HASH_MISMATCH",
+        "INVARIANT_FAILURE",
+        "MISSING_BRIDGE_ENTRY",
+        "NO_EQUIVALENT_RELATION",
+        "UNKNOWN_V2_ACTION",
+        "UNRESOLVED_RELATION"
+      ],
+      "bridge_failures": [],
+      "pass_fixture": true
+    },
+    {
+      "fixture_id": "DPT_SYN_002_GARMENT",
+      "bridge_hash": "b752c15975824981611b87c038ceecb99e877b9f4f2532388726eb69faabffb1",
+      "v1_expected_action_class": "asymmetric_generosity_with_accountability",
+      "v1_actual_action_class": "asymmetric_generosity_with_accountability",
+      "v2_selected_action": "NEGOTIATE",
+      "bridge_relation": "BOUNDED_EQUIVALENT",
+      "also_in_image": [
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE"
+      ],
+      "semantic_ceiling": "NEGOTIATE bounded-maps accountable, non-mimetic economic response. It does NOT encode surplus-gift / extra-cloak as a required action, does NOT convert forgiveness into debt/legal erasure, and does NOT make extra generosity a universal obligation. Surplus-generosity remainder is unmapped in v2 vocabulary.",
+      "semantic_invariants_pass": true,
+      "fail_closed_tokens": [
+        "BRIDGE_HASH_MISMATCH",
+        "INVARIANT_FAILURE",
+        "MISSING_BRIDGE_ENTRY",
+        "NO_EQUIVALENT_RELATION",
+        "UNKNOWN_V2_ACTION",
+        "UNRESOLVED_RELATION"
+      ],
+      "bridge_failures": [],
+      "pass_fixture": true
+    },
+    {
+      "fixture_id": "DPT_SYN_003_MILE",
+      "bridge_hash": "b752c15975824981611b87c038ceecb99e877b9f4f2532388726eb69faabffb1",
+      "v1_expected_action_class": "optional_second_mile_as_chosen_asymmetry",
+      "v1_actual_action_class": "optional_second_mile_as_chosen_asymmetry",
+      "v2_selected_action": "NONCOOPERATE",
+      "bridge_relation": "ONE_TO_MANY",
+      "also_in_image": [
+        "COOPERATE",
+        "NEGOTIATE",
+        "NONCOOPERATE"
+      ],
+      "semantic_ceiling": "v1 names a chosen surplus-service example. v2 has no CHOSEN_SURPLUS_COMPLIANCE atom. NONCOOPERATE bounded-maps conscript-role refusal / agency reclamation, not the extra mile itself. COOPERATE remains in the image so chosen extra service stays available. Neither NONCOOPERATE nor COOPERATE is the universal default. Over-compliance is not the operator default.",
+      "semantic_invariants_pass": true,
+      "fail_closed_tokens": [
+        "BRIDGE_HASH_MISMATCH",
+        "INVARIANT_FAILURE",
+        "MISSING_BRIDGE_ENTRY",
+        "NO_EQUIVALENT_RELATION",
+        "UNKNOWN_V2_ACTION",
+        "UNRESOLVED_RELATION"
+      ],
+      "bridge_failures": [],
+      "pass_fixture": true
+    }
+  ],
+  "v1_fixture_results": [
+    {
+      "fixture_id": "DPT_SYN_001_CHEEK",
+      "operator_id": "LOGOS.CR.DPT_TRANSFORM",
+      "operator_version": "T_DPT_v1_hypo",
+      "steps_executed": [
+        "1_Detect_R_imposed",
+        "2_Assert_Dignity_Invariance",
+        "3_Reject_R_imposed",
+        "4_Reclaim_Agency",
+        "5_Enforce_Mimetic_Break",
+        "6_Expose_Coercion_Conditional",
+        "7_Preserve_Future_Option_Value"
+      ],
+      "R_imposed_detected": true,
+      "R_imposed_rejected": true,
+      "D_invariant": true,
+      "agency_reclaimed": true,
+      "action_is_chosen_not_forced": true,
+      "mimetic_break": true,
+      "selected_action_class": "legitimacy_challenge_without_mirror_violence",
+      "opponent_mirror_avoided": true,
+      "coercion_exposure_applied": true,
+      "cost_return_without_retaliation": true,
+      "forgiveness_distinct_from_trust": true,
+      "future_option_preserved": true,
+      "historical_contestation_preserved": true,
+      "besd_firewall_intact": true,
+      "metric_failures": [],
+      "pass_fixture": true
+    },
+    {
+      "fixture_id": "DPT_SYN_002_GARMENT",
+      "operator_id": "LOGOS.CR.DPT_TRANSFORM",
+      "operator_version": "T_DPT_v1_hypo",
+      "steps_executed": [
+        "1_Detect_R_imposed",
+        "2_Assert_Dignity_Invariance",
+        "3_Reject_R_imposed",
+        "4_Reclaim_Agency",
+        "5_Enforce_Mimetic_Break",
+        "6_Expose_Coercion_Conditional",
+        "7_Preserve_Future_Option_Value"
+      ],
+      "R_imposed_detected": true,
+      "R_imposed_rejected": true,
+      "D_invariant": true,
+      "agency_reclaimed": true,
+      "action_is_chosen_not_forced": true,
+      "mimetic_break": true,
+      "selected_action_class": "asymmetric_generosity_with_accountability",
+      "opponent_mirror_avoided": true,
+      "coercion_exposure_applied": true,
+      "cost_return_without_retaliation": true,
+      "forgiveness_distinct_from_trust": true,
+      "future_option_preserved": true,
+      "historical_contestation_preserved": true,
+      "besd_firewall_intact": true,
+      "metric_failures": [],
+      "pass_fixture": true
+    },
+    {
+      "fixture_id": "DPT_SYN_003_MILE",
+      "operator_id": "LOGOS.CR.DPT_TRANSFORM",
+      "operator_version": "T_DPT_v1_hypo",
+      "steps_executed": [
+        "1_Detect_R_imposed",
+        "2_Assert_Dignity_Invariance",
+        "3_Reject_R_imposed",
+        "4_Reclaim_Agency",
+        "5_Enforce_Mimetic_Break",
+        "6_Expose_Coercion_Conditional",
+        "7_Preserve_Future_Option_Value"
+      ],
+      "R_imposed_detected": true,
+      "R_imposed_rejected": true,
+      "D_invariant": true,
+      "agency_reclaimed": true,
+      "action_is_chosen_not_forced": true,
+      "mimetic_break": true,
+      "selected_action_class": "optional_second_mile_as_chosen_asymmetry",
+      "opponent_mirror_avoided": true,
+      "coercion_exposure_applied": true,
+      "cost_return_without_retaliation": true,
+      "forgiveness_distinct_from_trust": true,
+      "future_option_preserved": true,
+      "historical_contestation_preserved": true,
+      "besd_firewall_intact": true,
+      "metric_failures": [],
+      "pass_fixture": true
+    }
+  ],
+  "claim_ceiling": {
+    "establishes": "bounded dual-label bridge consumption on frozen v1+v2 fixtures",
+    "does_not_establish": [
+      "DPT-R promotion",
+      "empirical validity",
+      "Track A readiness"
+    ]
+  },
+  "reproduce_command": "py scripts/run_besd_dpt_r_v2_bounded_loader_v1.py"
+}

@@ -18,3 +18,12 @@ rag_server/.test_rag_idx/
 projects/bitcoin-trading/.venv/
 **/coverage/
 **/*.egg-info/
+**/__pycache__/
+**/*.pyc
+docs/research/mkm_governance_ablation_n80plus/blind_human_rater/rater_key_hidden_v1.json
+docs/research/mkm_governance_ablation_n80plus/blind_human_rater/rater_worksheet_v1.json
+docs/research/mkm_governance_ablation_n80plus/blind_human_rater/secondary_ai_review/
+docs/research/mkm_governance_ablation_n80plus/response_archive/
+docs/final/artifacts/*_latest.json
+docs/final/artifacts/*_latest.md
+reports/
