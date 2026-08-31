@@ -1,0 +1,128 @@
+{
+  "schema": "besd_dpt_r_kernel_verdict_v0.1",
+  "mission": "COMMANDER_BESD_DPT_R_RED_TEAM_V1",
+  "generated_at_utc": "2026-08-30T06:45:00+00:00",
+  "as_of_kst": "2026-08-30",
+  "status": "HYPO",
+  "tags": ["HYPO", "research_only", "NON_GATING", "B_TRACK"],
+  "send_gate": "HOLD",
+  "track_a_promotion": "NOT_AUTHORIZED",
+  "theological_validation": "NOT_ESTABLISHED",
+  "empirical_validation": "NOT_ESTABLISHED",
+  "novelty": "NOT_ESTABLISHED",
+  "DECIDE_ONE": "BESD_DPT_R_RED_TEAM_PASS_BOUNDED_SURVIVAL",
+  "kernel_verdict": "DPT_R_MINIMAL_DISTINCTIVE_KERNEL",
+  "kernel_scope": {
+    "distinct_from_generic_nonviolence": true,
+    "distinct_from_unsafe_passivity": true,
+    "distinct_from_wink_third_way_substantive_ethics": false,
+    "formal_besd_packaging_residue": true
+  },
+  "remaining_elements": [
+    {
+      "id": "K1",
+      "name": "Imposed_Role_Detection_Role_Refusal",
+      "required": true,
+      "ablation_collapse": true
+    },
+    {
+      "id": "K2",
+      "name": "Dignity_Invariance_Hard_Constraint",
+      "required": true,
+      "ablation_collapse": true,
+      "not": ["health_score", "performance_score", "unsafe_passivity"]
+    },
+    {
+      "id": "K3",
+      "name": "Non_Mimetic_Action",
+      "required": true,
+      "ablation_collapse": true,
+      "clarification": "forbids mirror-retaliation as required script; does not ban independently justified PROTECT"
+    }
+  ],
+  "excluded_from_kernel": [
+    {
+      "name": "Agency_Sovereignty",
+      "reason": "WEAK_INDEPENDENCE_autonomism_leak_without_Truth_ops; redundant with Role_Refusal on fixtures"
+    },
+    {
+      "name": "Agency_Capture",
+      "reason": "NOT_INDEPENDENTLY_VALIDATED; overlaps reactance + Wink humiliation scripts + role theory"
+    },
+    {
+      "name": "Coercion_Exposure",
+      "reason": "OUTER_RING_conditional_enhancement"
+    },
+    {
+      "name": "Cost_Return_without_Retaliation",
+      "reason": "OUTER_RING"
+    },
+    {
+      "name": "Preserve_Option_Value",
+      "reason": "OUTER_RING_L4"
+    }
+  ],
+  "commander_candidate_kernel_test": {
+    "proposed": [
+      "Imposed_Role_Detection",
+      "Dignity_Constraint",
+      "Agency_Sovereignty",
+      "Non_Mimetic_Action"
+    ],
+    "rubber_stamp": false,
+    "agency_sovereignty_removal_leaves_functionally_same": true,
+    "accepted_subset": [
+      "Imposed_Role_Detection",
+      "Dignity_Constraint",
+      "Non_Mimetic_Action"
+    ]
+  },
+  "agency_capture_construct": {
+    "verdict": "NOT_INDEPENDENTLY_VALIDATED",
+    "novelty_ceiling": "LOWERED",
+    "retain_as": "descriptive_IR_label_inside_Role_Refusal"
+  },
+  "prior_art": {
+    "wink_third_way": "HIGH_SUBSTANTIVE_OVERLAP",
+    "generous_tft": "PARTIAL_OVERLAP",
+    "strategic_nv_sharp": "PARTIAL_OVERLAP",
+    "reactance_sdt_act": "SUBSUMES_AUTONOMY_SLICE_ONLY",
+    "classification": "FORMALIZATION_PLUS_BESD_FIREWALL_PACKAGING_NOT_NOVEL_ETHICS"
+  },
+  "safety_counterexamples": {
+    "S1_escape": "COMPATIBLE",
+    "S2_physical_defense": "COMPATIBLE_concept_STUB_GAP",
+    "S3_legal_institutional": "COMPATIBLE",
+    "S4_public_resistance_unsafe": "COMPATIBLE_exposure_conditional",
+    "S5_third_party_protect": "COMPATIBLE_priority_rule_GAP"
+  },
+  "firewalls_preserved": [
+    "G_ne_max_M",
+    "R_not_to_G",
+    "dignity_ne_health_performance",
+    "forgiveness_ne_trust_restoration",
+    "DPT_R_ne_universal_optimal",
+    "biblical_op_ne_sasang_myeongni_bio_transfer",
+    "wink_reconstruction_CONTESTED_PLAUSIBLE"
+  ],
+  "claim_ceiling": {
+    "establishes": "bounded conceptual survival of thin DPT-R formal kernel after adversarial narrowing",
+    "does_not_establish": [
+      "novelty",
+      "theological_truth",
+      "empirical_efficacy",
+      "clinical_usefulness",
+      "financial_usefulness",
+      "universal_optimality",
+      "Track_A",
+      "SEND",
+      "product_DONE"
+    ]
+  },
+  "artifacts": {
+    "red_team_report": "docs/research/besd/dpt_r_red_team/BESD_DPT_R_RED_TEAM_v0.1.md",
+    "ablation_matrix": "docs/research/besd/dpt_r_red_team/BESD_DPT_R_ABLATION_MATRIX_v0.1.csv",
+    "safety_register": "docs/research/besd/dpt_r_red_team/BESD_DPT_R_SAFETY_COUNTEREXAMPLE_REGISTER_v0.1.md",
+    "receipt": "docs/research/besd/dpt_r_red_team/BESD_DPT_R_RED_TEAM_RECEIPT_v0.1.json"
+  }
+}

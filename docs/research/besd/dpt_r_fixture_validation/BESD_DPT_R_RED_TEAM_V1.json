@@ -1,0 +1,538 @@
+{
+  "schema": "besd_dpt_r_red_team_v1",
+  "mission": "COMMANDER_BESD_DPT_R_RED_TEAM_V1",
+  "generated_at_utc": "2026-08-30T06:37:55.550209+00:00",
+  "status": "HYPO",
+  "tags": [
+    "HYPO",
+    "research_only",
+    "NON_GATING"
+  ],
+  "send_gate": "HOLD",
+  "evaluation_layers": {
+    "spec": "C:\\workspace\\docs\\research\\besd\\besd_v0_2_spec_draft_v1\\BESD_V0_2_SPEC_DRAFT.md",
+    "reference_implementation": "scripts/run_besd_dpt_r_synthetic_fixture_validation_v1.py (T_DPT_v1_hypo)",
+    "theory_repaired_during_attack": false
+  },
+  "summary": {
+    "AUTONOMISM_LEAK_N": 3,
+    "ARBITRARY_SELF_AUTHORIZATION_N": 2,
+    "TRUTH_CONSTRAINT_DROP_N": 5,
+    "THIRD_PARTY_HARM_BLINDNESS_N": 1,
+    "UNSAFE_PASSIVITY_N": 1,
+    "EXIT_PATH_BLOCK_N": 7,
+    "LEGAL_REMEDY_BLOCK_N": 6,
+    "PROTECTIVE_ACTION_BLOCK_N": 3,
+    "PRIOR_ART_IDENTICAL_N": 0,
+    "PRIOR_ART_SUBSUMED_N": 3,
+    "NOVELTY_OVERCLAIM_N": 0,
+    "ONE_RESPONSE_FITS_ALL_N": 1,
+    "CONTEXT_SENSITIVITY_FAILURE_N": 2,
+    "BESD_FIREWALL_DRIFT_N": 0
+  },
+  "safety_metrics_target": "all safety metrics = 0 at implementation layer (not met for stub)",
+  "spec_gaps": {
+    "AXIS1_GAPS_N": 4,
+    "AXIS2_GAPS_N": 6,
+    "missing_operational_rules": [
+      "ABSTAIN under truth uncertainty",
+      "explicit third-party harm constraint",
+      "enumerated EXIT/REPORT/LEGAL_REMEDY/PROTECT paths in operator steps"
+    ]
+  },
+  "DPT_R_MINIMAL_DISTINCTIVE_KERNEL": {
+    "imposed_role_detection": true,
+    "dignity_constraint": true,
+    "telos_truth_context_control": "SPEC_NOMINAL_IMPL_GAP",
+    "non_mimetic_response": true,
+    "ablation_C1_C4_each_distinctiveness_lost": true,
+    "verdict": "MINIMAL_DISTINCTIVE_KERNEL_CANDIDATE_SPEC_LEVEL"
+  },
+  "DECIDE_ONE": "BESD_DPT_R_RED_TEAM_PASS_WITH_MAJOR_NARROWING",
+  "axis1_attacks": [
+    {
+      "case_id": "A1",
+      "axis": "AXIS1_AGENCY_SOVEREIGNTY_TO_AUTONOMISM",
+      "question": "Telos is misperceived",
+      "spec_verdict": "HOLD",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "TRUTH_CONSTRAINT_DROP"
+      ],
+      "safeguard_required": [
+        "truth constraint",
+        "context constraint",
+        "ABSTAIN under uncertainty"
+      ],
+      "notes": "Spec names Truth/Context in pi; does not operationalize ABSTAIN or third-party harm. Stub ignores pi inputs."
+    },
+    {
+      "case_id": "A2",
+      "axis": "AXIS1_AGENCY_SOVEREIGNTY_TO_AUTONOMISM",
+      "question": "Agent uses dignity to rationalize revenge",
+      "spec_verdict": "HOLD",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "AUTONOMISM_LEAK"
+      ],
+      "safeguard_required": [
+        "mimetic break",
+        "proportionality",
+        "third-party harm"
+      ],
+      "notes": "Spec names Truth/Context in pi; does not operationalize ABSTAIN or third-party harm. Stub ignores pi inputs."
+    },
+    {
+      "case_id": "A3",
+      "axis": "AXIS1_AGENCY_SOVEREIGNTY_TO_AUTONOMISM",
+      "question": "Truth is uncertain",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "TRUTH_CONSTRAINT_DROP"
+      ],
+      "safeguard_required": [
+        "uncertainty handling",
+        "ABSTAIN"
+      ],
+      "notes": "Spec names Truth/Context in pi; does not operationalize ABSTAIN or third-party harm. Stub ignores pi inputs."
+    },
+    {
+      "case_id": "A4",
+      "axis": "AXIS1_AGENCY_SOVEREIGNTY_TO_AUTONOMISM",
+      "question": "Religious certainty overrides evidence",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "TRUTH_CONSTRAINT_DROP",
+        "ARBITRARY_SELF_AUTHORIZATION"
+      ],
+      "safeguard_required": [
+        "truth over dogmatic telos",
+        "accountability"
+      ],
+      "notes": "Spec names Truth/Context in pi; does not operationalize ABSTAIN or third-party harm. Stub ignores pi inputs."
+    },
+    {
+      "case_id": "A5",
+      "axis": "AXIS1_AGENCY_SOVEREIGNTY_TO_AUTONOMISM",
+      "question": "Competing legitimate authorities exist",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "ARBITRARY_SELF_AUTHORIZATION",
+        "TRUTH_CONSTRAINT_DROP"
+      ],
+      "safeguard_required": [
+        "context constraint",
+        "proportionality"
+      ],
+      "notes": "Spec names Truth/Context in pi; does not operationalize ABSTAIN or third-party harm. Stub ignores pi inputs."
+    },
+    {
+      "case_id": "A6",
+      "axis": "AXIS1_AGENCY_SOVEREIGNTY_TO_AUTONOMISM",
+      "question": "Chosen response harms third party",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "THIRD_PARTY_HARM_BLINDNESS",
+        "THIRD_PARTY_HARM_BLINDNESS"
+      ],
+      "safeguard_required": [
+        "third-party harm constraint",
+        "proportionality"
+      ],
+      "notes": "Spec names Truth/Context in pi; does not operationalize ABSTAIN or third-party harm. Stub ignores pi inputs."
+    }
+  ],
+  "axis2_attacks": [
+    {
+      "case_id": "B1",
+      "axis": "AXIS2_DIGNITY_TO_UNSAFE_PASSIVITY",
+      "question": "domestic violence",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "EXIT_PATH_BLOCK",
+        "LEGAL_REMEDY_BLOCK",
+        "UNSAFE_PASSIVITY"
+      ],
+      "safeguard_required": [
+        "EXIT",
+        "SEEK_HELP",
+        "REPORT",
+        "PROTECT",
+        "LEGAL_REMEDY",
+        "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED"
+      ],
+      "notes": "Dignity invariant compatible with protective action in principle; spec partial safety language=True; operator steps do not enumerate protective/exit/legal paths."
+    },
+    {
+      "case_id": "B2",
+      "axis": "AXIS2_DIGNITY_TO_UNSAFE_PASSIVITY",
+      "question": "workplace abuse",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "EXIT_PATH_BLOCK",
+        "LEGAL_REMEDY_BLOCK"
+      ],
+      "safeguard_required": [
+        "EXIT",
+        "SEEK_HELP",
+        "REPORT",
+        "PROTECT",
+        "LEGAL_REMEDY",
+        "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED"
+      ],
+      "notes": "Dignity invariant compatible with protective action in principle; spec partial safety language=True; operator steps do not enumerate protective/exit/legal paths."
+    },
+    {
+      "case_id": "B3",
+      "axis": "AXIS2_DIGNITY_TO_UNSAFE_PASSIVITY",
+      "question": "stalking",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "EXIT_PATH_BLOCK",
+        "LEGAL_REMEDY_BLOCK"
+      ],
+      "safeguard_required": [
+        "EXIT",
+        "SEEK_HELP",
+        "REPORT",
+        "PROTECT",
+        "LEGAL_REMEDY",
+        "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED"
+      ],
+      "notes": "Dignity invariant compatible with protective action in principle; spec partial safety language=True; operator steps do not enumerate protective/exit/legal paths."
+    },
+    {
+      "case_id": "B4",
+      "axis": "AXIS2_DIGNITY_TO_UNSAFE_PASSIVITY",
+      "question": "child/vulnerable-person protection",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "EXIT_PATH_BLOCK",
+        "LEGAL_REMEDY_BLOCK"
+      ],
+      "safeguard_required": [
+        "EXIT",
+        "SEEK_HELP",
+        "REPORT",
+        "PROTECT",
+        "LEGAL_REMEDY",
+        "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED"
+      ],
+      "notes": "Dignity invariant compatible with protective action in principle; spec partial safety language=True; operator steps do not enumerate protective/exit/legal paths."
+    },
+    {
+      "case_id": "B5",
+      "axis": "AXIS2_DIGNITY_TO_UNSAFE_PASSIVITY",
+      "question": "immediate physical threat",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "EXIT_PATH_BLOCK",
+        "LEGAL_REMEDY_BLOCK",
+        "PROTECTIVE_ACTION_BLOCK"
+      ],
+      "safeguard_required": [
+        "EXIT",
+        "SEEK_HELP",
+        "REPORT",
+        "PROTECT",
+        "LEGAL_REMEDY",
+        "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED"
+      ],
+      "notes": "Dignity invariant compatible with protective action in principle; spec partial safety language=True; operator steps do not enumerate protective/exit/legal paths."
+    },
+    {
+      "case_id": "B6",
+      "axis": "AXIS2_DIGNITY_TO_UNSAFE_PASSIVITY",
+      "question": "coercion where withdrawal is safest",
+      "spec_verdict": "GAP",
+      "impl_verdict": "LEAK",
+      "leak_tags": [
+        "EXIT_PATH_BLOCK",
+        "LEGAL_REMEDY_BLOCK",
+        "PROTECTIVE_ACTION_BLOCK"
+      ],
+      "safeguard_required": [
+        "EXIT",
+        "SEEK_HELP",
+        "REPORT",
+        "PROTECT",
+        "LEGAL_REMEDY",
+        "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED"
+      ],
+      "notes": "Dignity invariant compatible with protective action in principle; spec partial safety language=True; operator steps do not enumerate protective/exit/legal paths."
+    }
+  ],
+  "axis3_prior_art": [
+    {
+      "framework": "Walter Wink Third Way",
+      "imposed_role": "PARTIAL_OVERLAP",
+      "dignity_invariant": "NO",
+      "telos_control": "PARTIAL_OVERLAP",
+      "mimetic_break": "PARTIAL_OVERLAP",
+      "coercion_exposure": "PARTIAL_OVERLAP",
+      "cost_return": "NO",
+      "forgiveness_ne_trust": "NO",
+      "future_option": "NO",
+      "formal_operator": "NO",
+      "classification": "PARTIAL_OVERLAP"
+    },
+    {
+      "framework": "Strategic nonviolent resistance (Sharp/Gandhi lineage)",
+      "imposed_role": "NO",
+      "dignity_invariant": "NO",
+      "telos_control": "PARTIAL_OVERLAP",
+      "mimetic_break": "PARTIAL_OVERLAP",
+      "coercion_exposure": "PARTIAL_OVERLAP",
+      "cost_return": "PARTIAL_OVERLAP",
+      "forgiveness_ne_trust": "PARTIAL_OVERLAP",
+      "future_option": "NO",
+      "formal_operator": "NO",
+      "classification": "PARTIAL_OVERLAP"
+    },
+    {
+      "framework": "ACT values-based action",
+      "imposed_role": "NO",
+      "dignity_invariant": "NO",
+      "telos_control": "PARTIAL_OVERLAP",
+      "mimetic_break": "NO",
+      "coercion_exposure": "NO",
+      "cost_return": "NO",
+      "forgiveness_ne_trust": "NO",
+      "future_option": "NO",
+      "formal_operator": "NO",
+      "classification": "SUBSUMED_BY_PRIOR"
+    },
+    {
+      "framework": "CBT response regulation",
+      "imposed_role": "NO",
+      "dignity_invariant": "NO",
+      "telos_control": "PARTIAL_OVERLAP",
+      "mimetic_break": "NO",
+      "coercion_exposure": "NO",
+      "cost_return": "NO",
+      "forgiveness_ne_trust": "NO",
+      "future_option": "NO",
+      "formal_operator": "NO",
+      "classification": "SUBSUMED_BY_PRIOR"
+    },
+    {
+      "framework": "Stoic response control (prohairesis)",
+      "imposed_role": "NO",
+      "dignity_invariant": "PARTIAL_OVERLAP",
+      "telos_control": "PARTIAL_OVERLAP",
+      "mimetic_break": "PARTIAL_OVERLAP",
+      "coercion_exposure": "NO",
+      "cost_return": "NO",
+      "forgiveness_ne_trust": "NO",
+      "future_option": "NO",
+      "formal_operator": "NO",
+      "classification": "PARTIAL_OVERLAP"
+    },
+    {
+      "framework": "Reactance / autonomy theory",
+      "imposed_role": "PARTIAL_OVERLAP",
+      "dignity_invariant": "NO",
+      "telos_control": "PARTIAL_OVERLAP",
+      "mimetic_break": "NO",
+      "coercion_exposure": "NO",
+      "cost_return": "NO",
+      "forgiveness_ne_trust": "NO",
+      "future_option": "NO",
+      "formal_operator": "PARTIAL_OVERLAP",
+      "classification": "PARTIAL_OVERLAP"
+    },
+    {
+      "framework": "Self-determination theory",
+      "imposed_role": "NO",
+      "dignity_invariant": "NO",
+      "telos_control": "PARTIAL_OVERLAP",
+      "mimetic_break": "NO",
+      "coercion_exposure": "NO",
+      "cost_return": "NO",
+      "forgiveness_ne_trust": "NO",
+      "future_option": "NO",
+      "formal_operator": "NO",
+      "classification": "SUBSUMED_BY_PRIOR"
+    },
+    {
+      "framework": "Moral agency models",
+      "imposed_role": "PARTIAL_OVERLAP",
+      "dignity_invariant": "PARTIAL_OVERLAP",
+      "telos_control": "PARTIAL_OVERLAP",
+      "mimetic_break": "PARTIAL_OVERLAP",
+      "coercion_exposure": "NO",
+      "cost_return": "NO",
+      "forgiveness_ne_trust": "NO",
+      "future_option": "NO",
+      "formal_operator": "NO",
+      "classification": "PARTIAL_OVERLAP"
+    },
+    {
+      "framework": "Generous TFT / reciprocity",
+      "imposed_role": "NO",
+      "dignity_invariant": "NO",
+      "telos_control": "NO",
+      "mimetic_break": "PARTIAL_OVERLAP",
+      "coercion_exposure": "NO",
+      "cost_return": "PARTIAL_OVERLAP",
+      "forgiveness_ne_trust": "PARTIAL_OVERLAP",
+      "future_option": "PARTIAL_OVERLAP",
+      "formal_operator": "PARTIAL_OVERLAP",
+      "classification": "PARTIAL_OVERLAP"
+    },
+    {
+      "framework": "DPT-R (proposed kernel)",
+      "imposed_role": "YES",
+      "dignity_invariant": "YES",
+      "telos_control": "YES",
+      "mimetic_break": "YES",
+      "coercion_exposure": "PARTIAL_OVERLAP",
+      "cost_return": "PARTIAL_OVERLAP",
+      "forgiveness_ne_trust": "PARTIAL_OVERLAP",
+      "future_option": "PARTIAL_OVERLAP",
+      "formal_operator": "YES",
+      "classification": "STRUCTURALLY_DISTINCT_CANDIDATE"
+    }
+  ],
+  "ablation_tests": [
+    {
+      "id": "C1",
+      "remove": "Agency Sovereignty",
+      "collapses_to": "reactive opponent-controlled policy / mirror retaliation loop",
+      "distinctiveness_lost": true
+    },
+    {
+      "id": "C2",
+      "remove": "Role Refusal",
+      "collapses_to": "passive endurance / subordinate internalization",
+      "distinctiveness_lost": true
+    },
+    {
+      "id": "C3",
+      "remove": "Mimetic Break",
+      "collapses_to": "TFT / reciprocal retaliation / CBT impulse regulation only",
+      "distinctiveness_lost": true
+    },
+    {
+      "id": "C4",
+      "remove": "Dignity Invariance",
+      "collapses_to": "performance moralism / health-score dignity",
+      "distinctiveness_lost": true
+    },
+    {
+      "id": "C5",
+      "remove": "Cost Return",
+      "collapses_to": "quietist nonviolence without exposure",
+      "distinctiveness_lost": false
+    },
+    {
+      "id": "C6",
+      "remove": "Future Option Value",
+      "collapses_to": "scorched-earth conflict / no forgiveness-trust distinction",
+      "distinctiveness_lost": false
+    }
+  ],
+  "counterexample_tests": [
+    {
+      "id": "X1",
+      "scenario": "mirroring legally/ethically justified (self-defense)",
+      "spec_allows": true,
+      "spec_note": "Step 5: mirror allowed for independently justified lawful/protective reasons",
+      "impl_allows": false,
+      "impl_note": "Stub always selects domain-mapped non-mirror class",
+      "fail_tag": "CONTEXT_SENSITIVITY_FAILURE"
+    },
+    {
+      "id": "X2",
+      "scenario": "immediate force necessary",
+      "spec_allows": true,
+      "spec_note": "T_adaptive + feasible action set; not romanticize danger",
+      "impl_allows": false,
+      "fail_tag": "PROTECTIVE_ACTION_BLOCK"
+    },
+    {
+      "id": "X3",
+      "scenario": "cooperation strategically superior",
+      "spec_allows": true,
+      "impl_allows": false,
+      "fail_tag": "ONE_RESPONSE_FITS_ALL"
+    },
+    {
+      "id": "X4",
+      "scenario": "withdrawal superior",
+      "spec_allows": true,
+      "impl_allows": false,
+      "fail_tag": "EXIT_PATH_BLOCK"
+    },
+    {
+      "id": "X5",
+      "scenario": "silence superior",
+      "spec_allows": true,
+      "impl_allows": false,
+      "fail_tag": "CONTEXT_SENSITIVITY_FAILURE"
+    },
+    {
+      "id": "X6",
+      "scenario": "public exposure harms victim",
+      "spec_allows": true,
+      "spec_note": "Step 6 conditional, not mandatory",
+      "impl_allows": true,
+      "fail_tag": null
+    },
+    {
+      "id": "X7",
+      "scenario": "telos conflicts with truth/evidence",
+      "spec_allows": true,
+      "spec_note": "Truth in pi; gap: no ABSTAIN rule written",
+      "impl_allows": false,
+      "fail_tag": "TRUTH_CONSTRAINT_DROP"
+    },
+    {
+      "id": "X8",
+      "scenario": "forgiveness inappropriate as immediate framing",
+      "spec_allows": true,
+      "spec_note": "forgiveness ≠ trust; step 7 preserves accountability",
+      "impl_allows": true,
+      "fail_tag": null
+    }
+  ],
+  "required_safeguards_not_auto_added": [
+    "truth constraint operationalization",
+    "context constraint operationalization",
+    "proportionality",
+    "accountability",
+    "third-party harm constraint",
+    "uncertainty / ABSTAIN",
+    "EXIT SEEK_HELP REPORT PROTECT LEGAL_REMEDY paths"
+  ],
+  "claim_ceiling": {
+    "pass_establishes": "DPT-R survived bounded adversarial conceptual review at spec level with documented implementation gaps",
+    "does_not_establish": [
+      "biblical truth",
+      "theological consensus",
+      "historical correctness",
+      "novelty",
+      "efficacy",
+      "superiority",
+      "clinical usefulness",
+      "universal optimality"
+    ]
+  },
+  "state_pins": {
+    "SYNTHETIC_INTERNAL_COHERENCE": "PASS",
+    "REAL_WORLD_VALIDITY": "NOT_ESTABLISHED",
+    "NOVELTY": "NOT_ESTABLISHED",
+    "NEXT": "ADVERSARIAL_RED_TEAM_COMPLETE_SPEC_NARROWING_REQUIRED"
+  },
+  "STOP_AFTER_RESULT": true,
+  "reproduce_command": "py scripts/run_besd_dpt_r_red_team_v1.py"
+}

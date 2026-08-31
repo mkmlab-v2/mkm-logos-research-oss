@@ -1,0 +1,147 @@
+{
+  "schema": "besd_dpt_r_v1_v2_label_bridge_audit_v1",
+  "mission": "COMMANDER_BESD_DPT_R_V1_V2_LABEL_BRIDGE_CONTRACT_AUDIT_V1",
+  "generated_at_utc": "2026-08-30T07:38:21.558992+00:00",
+  "status": "HYPO",
+  "send_gate": "HOLD",
+  "loader_integration": "HOLD",
+  "ELIGIBLE_FOR_LOADER_INTEGRATION_REVIEW": true,
+  "PROMOTION": "NOT_AUTHORIZED",
+  "summary": {
+    "V1_LABEL_N": 3,
+    "V2_LABEL_N": 16,
+    "EXACT_EQUIVALENT_N": 0,
+    "BOUNDED_EQUIVALENT_N": 2,
+    "ONE_TO_MANY_N": 1,
+    "MANY_TO_ONE_N": 0,
+    "NO_EQUIVALENT_N": 0,
+    "UNRESOLVED_N": 0,
+    "ROUND_TRIP_SEMANTIC_DRIFT_N": 0,
+    "ORIGINAL_FIXTURE_MUTATION_N": 0,
+    "V2_OPERATOR_MUTATION_N": 0,
+    "BESD_FIREWALL_DRIFT_N": 0,
+    "CEM_C2_MUTATION_N": 0,
+    "ACTION_DISTINCTION_PRESERVED": true
+  },
+  "DECIDE_ONE": "DPT_R_LABEL_BRIDGE_CONTRACT_PASS",
+  "fixture_hashes_at_audit": {
+    "DPT_SYN_001_CHEEK": "bc50f02bc926ac9000503818805a9ca4afa1f28c44bd94c23e79a5134fe0295b",
+    "DPT_SYN_002_GARMENT": "a3e0a6856122a033a5e83df9104033d0dcc83ae42ab0fcf18f5b2c0f9ee78245",
+    "DPT_SYN_003_MILE": "7c7ddd80c077e1153f0e368c034732ebdfd92829fed729451f8be22cf467f03e"
+  },
+  "v2_operator_sha256": "79059c12e0c2aac41aea99be74ba2c17a4b4669bee3e5232f07dbb0fc5c7de49",
+  "v1_validator_sha256": "e9c099c5c6707ab0e39d24e5dc937c49b8cd07d0a256578efb618173cb77e81e",
+  "v2_operator_sha256_after": "79059c12e0c2aac41aea99be74ba2c17a4b4669bee3e5232f07dbb0fc5c7de49",
+  "round_trip": [
+    {
+      "fixture_id": "DPT_SYN_001_CHEEK",
+      "V1_LABEL": "legitimacy_challenge_without_mirror_violence",
+      "BRIDGE_RELATION": "BOUNDED_EQUIVALENT",
+      "V2_LABEL": "EXPOSE_COERCION",
+      "interpretation": "EXPOSE_COERCION realizes the legitimacy-challenge component only. It does not exhaust the v1 class, does not make public exposure mandatory for every cheek-like case, and does not encode non-mimetic control by itself. EXIT/REPORT/PROTECT must remain in A_feasible. Wink reconstruction stays PLAUSIBLE/CONTESTED.",
+      "required_invariants": [
+        "D_invariant",
+        "R_imposed_detected",
+        "R_imposed_rejected",
+        "action_is_chosen_not_forced",
+        "historical_contestation_preserved",
+        "mimetic_break"
+      ],
+      "fixture_invariants": [
+        "D_invariant",
+        "R_imposed_detected",
+        "R_imposed_rejected",
+        "action_is_chosen_not_forced",
+        "agency_reclaimed",
+        "forgiveness_distinct_from_trust",
+        "future_option_preserved",
+        "historical_contestation_preserved",
+        "mimetic_break"
+      ],
+      "missing_from_fixture_declaration": [],
+      "semantic_drift": false
+    },
+    {
+      "fixture_id": "DPT_SYN_002_GARMENT",
+      "V1_LABEL": "asymmetric_generosity_with_accountability",
+      "BRIDGE_RELATION": "BOUNDED_EQUIVALENT",
+      "V2_LABEL": "NEGOTIATE",
+      "interpretation": "NEGOTIATE bounded-maps accountable, non-mimetic economic response. It does NOT encode surplus-gift / extra-cloak as a required action, does NOT convert forgiveness into debt/legal erasure, and does NOT make extra generosity a universal obligation. Surplus-generosity remainder is unmapped in v2 vocabulary.",
+      "required_invariants": [
+        "D_invariant",
+        "R_imposed_detected",
+        "R_imposed_rejected",
+        "economic_coercion_identifiable",
+        "forgiveness_distinct_from_trust",
+        "future_option_preserved",
+        "mimetic_break"
+      ],
+      "fixture_invariants": [
+        "D_invariant",
+        "R_imposed_detected",
+        "R_imposed_rejected",
+        "action_is_chosen_not_forced",
+        "agency_reclaimed",
+        "economic_coercion_identifiable",
+        "forgiveness_distinct_from_trust",
+        "future_option_preserved",
+        "historical_contestation_preserved",
+        "mimetic_break"
+      ],
+      "missing_from_fixture_declaration": [],
+      "semantic_drift": false
+    },
+    {
+      "fixture_id": "DPT_SYN_003_MILE",
+      "V1_LABEL": "optional_second_mile_as_chosen_asymmetry",
+      "BRIDGE_RELATION": "ONE_TO_MANY",
+      "V2_LABEL": "NONCOOPERATE",
+      "interpretation": "v1 names a chosen surplus-service example. v2 has no CHOSEN_SURPLUS_COMPLIANCE atom. NONCOOPERATE bounded-maps conscript-role refusal / agency reclamation, not the extra mile itself. COOPERATE remains in the image so chosen extra service stays available. Neither NONCOOPERATE nor COOPERATE is the universal default. Over-compliance is not the operator default.",
+      "required_invariants": [
+        "D_invariant",
+        "R_imposed_detected",
+        "R_imposed_rejected",
+        "forced_distinct_from_chosen",
+        "future_option_preserved",
+        "historical_contestation_preserved",
+        "mimetic_break",
+        "strategic_asymmetric_response_allowed"
+      ],
+      "fixture_invariants": [
+        "D_invariant",
+        "R_imposed_detected",
+        "R_imposed_rejected",
+        "agency_reclaimed",
+        "forced_distinct_from_chosen",
+        "future_option_preserved",
+        "historical_contestation_preserved",
+        "mimetic_break",
+        "strategic_asymmetric_response_allowed"
+      ],
+      "missing_from_fixture_declaration": [],
+      "semantic_drift": false
+    }
+  ],
+  "hard_pass_gate": {
+    "UNRESOLVED_N": 0,
+    "NO_EQUIVALENT_N": 0,
+    "ROUND_TRIP_SEMANTIC_DRIFT_N": 0,
+    "ORIGINAL_FIXTURE_MUTATION_N": 0,
+    "V2_OPERATOR_MUTATION_N": 0,
+    "BESD_FIREWALL_DRIFT_N": 0,
+    "CEM_C2_MUTATION_N": 0,
+    "ACTION_DISTINCTION_PRESERVED": true
+  },
+  "claim_ceiling": {
+    "pass_means": "ELIGIBLE_FOR_LOADER_INTEGRATION_REVIEW = TRUE",
+    "does_not_authorize": [
+      "loader integration",
+      "promotion",
+      "novelty",
+      "efficacy",
+      "silent label rename"
+    ]
+  },
+  "STOP_AFTER_RESULT": true,
+  "reproduce_command": "py scripts/run_besd_dpt_r_v1_v2_label_bridge_audit_v1.py"
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "besd_dpt_r_red_team_receipt_v0.1",
+  "mission": "COMMANDER_BESD_DPT_R_RED_TEAM_V1",
+  "generated_at_utc": "2026-08-30T06:45:00+00:00",
+  "as_of_kst": "2026-08-30",
+  "STOP_AFTER_RESULT": true,
+  "DECIDE_ONE": "BESD_DPT_R_RED_TEAM_PASS_BOUNDED_SURVIVAL",
+  "kernel_verdict": "DPT_R_MINIMAL_DISTINCTIVE_KERNEL",
+  "send_gate": "HOLD",
+  "track_a_promotion": "NOT_AUTHORIZED",
+  "theological_validation": "NOT_ESTABLISHED",
+  "empirical_validation": "NOT_ESTABLISHED",
+  "novelty": "NOT_ESTABLISHED",
+  "base_codebook_mutation": false,
+  "cem_c2_mutation": false,
+  "cem_c2_manuscript": "reports/track_c/cem_v0.1/cem_c2_12_movement_paper_v0.1/CEM_C2_MANUSCRIPT_DRAFT_v0.5.md",
+  "cem_c2_sha256_expected": "859cebd02d9df8c021d4b64d2db25456d6e4ec19e1ccd42b9fdcd90e46f56edf",
+  "cem_c2_sha256_verified_pre": true,
+  "cem_c2_sha256_verified_post": true,
+  "cem_c2_sha256_post": "859cebd02d9df8c021d4b64d2db25456d6e4ec19e1ccd42b9fdcd90e46f56edf",
+  "theory_revision_applied": false,
+  "v0_2_repromote": false,
+  "attacks_executed": [
+    "AGENCY_SOVEREIGNTY_TO_AUTONOMISM",
+    "DIGNITY_INVARIANCE_TO_UNSAFE_PASSIVITY",
+    "PRIOR_ART_REBRANDING_ATTACK",
+    "AGENCY_CAPTURE_CONSTRUCT",
+    "SAFETY_COUNTEREXAMPLES_S1_S5",
+    "ABLATION_A1_A6"
+  ],
+  "attack_outcomes": {
+    "agency_sovereignty_to_autonomism": "PARTIAL_SUCCESS_NARROWING_EXCLUDED_FROM_KERNEL",
+    "dignity_to_unsafe_passivity": "COLLAPSE_ATTACK_FAILS_DIGNITY_RETAINS_KERNEL",
+    "prior_art_rebranding": "SUBSTANTIVE_WINK_OVERLAP_FORMAL_RESIDUE_ONLY",
+    "agency_capture": "NOT_INDEPENDENTLY_VALIDATED",
+    "safety": "COMPATIBLE_NO_FAIL_UNSAFE",
+    "ablation_kernel_survivors": [
+      "Role_Refusal",
+      "Dignity_Invariance",
+      "Mimetic_Break"
+    ]
+  },
+  "artifacts_written": [
+    "docs/research/besd/dpt_r_red_team/BESD_DPT_R_RED_TEAM_v0.1.md",
+    "docs/research/besd/dpt_r_red_team/BESD_DPT_R_ABLATION_MATRIX_v0.1.csv",
+    "docs/research/besd/dpt_r_red_team/BESD_DPT_R_SAFETY_COUNTEREXAMPLE_REGISTER_v0.1.md",
+    "docs/research/besd/dpt_r_red_team/BESD_DPT_R_KERNEL_VERDICT_v0.1.json",
+    "docs/research/besd/dpt_r_red_team/BESD_DPT_R_RED_TEAM_RECEIPT_v0.1.json"
+  ],
+  "lane_state_update": "reports/track_c/cem_v0.1/besd_v0.1/BESD_LANE_STATE_v0.1.json",
+  "consolidation_receipt_pointer_update": "docs/research/besd/besd_v0_2_consolidation/BESD_V0_2_CONSOLIDATION_RECEIPT_v0.1.json",
+  "claim_ceiling": {
+    "establishes": "bounded conceptual survival after red-team narrowing",
+    "does_not_establish": [
+      "novelty",
+      "theological_truth",
+      "empirical_efficacy",
+      "clinical_usefulness",
+      "financial_usefulness",
+      "universal_optimality"
+    ]
+  },
+  "next_action": "HOLD_or_document_EXIT_PROTECT_LEGAL_third_party_priority_in_stub_only_no_promotion",
+  "reproduce_note": "Manual adversarial pack write; prior fixture_validation/BESD_DPT_R_RED_TEAM_V1.json not rubber-stamped"
+}

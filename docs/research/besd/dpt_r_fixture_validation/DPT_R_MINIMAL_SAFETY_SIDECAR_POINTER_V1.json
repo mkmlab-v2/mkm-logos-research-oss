@@ -1,0 +1,6 @@
+{
+  "schema": "dpt_r_minimal_safety_sidecar_pointer_v1",
+  "ssot": "docs/research/besd/dpt_r_red_team/DPT_R_MINIMAL_SAFETY_SIDECAR_V1.json",
+  "kernel_ssot": "docs/research/besd/dpt_r_red_team/",
+  "note": "Pointer only. Do not treat fixture_validation/BESD_DPT_R_RED_TEAM_V1.json as kernel SSOT."
+}

@@ -1,0 +1,164 @@
+{
+  "schema": "besd_dpt_r_v2_matthew5_fixture_regression_v1",
+  "mission": "COMMANDER_BESD_DPT_R_V2_MATTHEW5_FIXTURE_REGRESSION_V1",
+  "generated_at_utc": "2026-08-30T07:31:56.152410+00:00",
+  "status": "HYPO",
+  "tags": [
+    "HYPO",
+    "research_only",
+    "NON_GATING"
+  ],
+  "send_gate": "HOLD",
+  "promotion": "NOT_AUTHORIZED",
+  "operator_version": "T_DPT_v2_hypo",
+  "fixtures_mutated": false,
+  "summary": {
+    "FIXTURE_N": 3,
+    "CHEEK_PASS": true,
+    "GARMENT_PASS": true,
+    "MILE_PASS": true,
+    "COMMON_OPERATOR_PASS": true,
+    "KERNEL_PRESERVED": true,
+    "ONE_RESPONSE_FITS_ALL_N": 0,
+    "NARROWING_FORCED_PROTECTIVE_DEFAULT_N": 0,
+    "HISTORICAL_DEPENDENCY_FAILURE_N": 0,
+    "BESD_FIREWALL_DRIFT_N": 0,
+    "V1_FIXTURE_MUTATION_N": 0,
+    "CEM_C2_MUTATION_N": 0,
+    "R_OP_NOTATION_DRIFT_N": 0
+  },
+  "kernel": {
+    "imposed_role_detection": true,
+    "dignity_constraint": true,
+    "telos_truth_context_control": true,
+    "non_mimetic_response": true
+  },
+  "selected_by_domain": {
+    "status_humiliation": "EXPOSE_COERCION",
+    "debt_economic_coercion": "NEGOTIATE",
+    "forced_service": "NONCOOPERATE"
+  },
+  "semantic_bridge": {
+    "note": "v2 action labels ≠ v1 selected_action_class strings; regression tests kernel + feasible-set narrowing, not label identity.",
+    "cheek": "legitimacy_challenge → EXPOSE_COERCION",
+    "garment": "asymmetric_generosity_with_accountability → NEGOTIATE",
+    "mile": "optional_second_mile_not_universal → NONCOOPERATE"
+  },
+  "DECIDE_ONE": "BESD_DPT_R_V2_MATTHEW5_REGRESSION_PASS",
+  "claim_ceiling": {
+    "establishes": "T_DPT_v2_hypo remains a common operator across three Matthew 5 synthetic fixtures after safety narrowing",
+    "does_not_establish": [
+      "novelty",
+      "biblical consensus",
+      "efficacy",
+      "Track A readiness",
+      "v1 action-class label identity"
+    ]
+  },
+  "fixture_results": [
+    {
+      "fixture_id": "DPT_SYN_001_CHEEK",
+      "path": "C:/workspace/docs/research/besd/dpt_r_fixture_validation/fixtures/DPT_SYN_001_CHEEK_v1.json",
+      "sha256": "bc50f02bc926ac9000503818805a9ca4afa1f28c44bd94c23e79a5134fe0295b",
+      "domain": "status_humiliation",
+      "R_imposed": "SUBORDINATE",
+      "operator_version": "T_DPT_v2_hypo",
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "selected": "EXPOSE_COERCION",
+      "preferred_param": "EXPOSE_COERCION",
+      "v1_expected_action_class": "legitimacy_challenge_without_mirror_violence",
+      "feasible_includes_exit": true,
+      "semantic": {
+        "R_imposed_detected": true,
+        "R_imposed_rejected": true,
+        "D_invariant": true,
+        "mimetic_break": true,
+        "historical_contestation_preserved": true,
+        "exit_available_not_forced": true,
+        "action_in_feasible": true,
+        "forgiveness_distinct_from_trust": true
+      },
+      "leaks": [],
+      "pass_fixture": true
+    },
+    {
+      "fixture_id": "DPT_SYN_002_GARMENT",
+      "path": "C:/workspace/docs/research/besd/dpt_r_fixture_validation/fixtures/DPT_SYN_002_GARMENT_v1.json",
+      "sha256": "a3e0a6856122a033a5e83df9104033d0dcc83ae42ab0fcf18f5b2c0f9ee78245",
+      "domain": "debt_economic_coercion",
+      "R_imposed": "DEBTOR_WITHOUT_AGENCY",
+      "operator_version": "T_DPT_v2_hypo",
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "selected": "NEGOTIATE",
+      "preferred_param": "NEGOTIATE",
+      "v1_expected_action_class": "asymmetric_generosity_with_accountability",
+      "feasible_includes_exit": true,
+      "semantic": {
+        "R_imposed_detected": true,
+        "R_imposed_rejected": true,
+        "D_invariant": true,
+        "mimetic_break": true,
+        "historical_contestation_preserved": true,
+        "exit_available_not_forced": true,
+        "action_in_feasible": true,
+        "forgiveness_distinct_from_trust": true
+      },
+      "leaks": [],
+      "pass_fixture": true
+    },
+    {
+      "fixture_id": "DPT_SYN_003_MILE",
+      "path": "C:/workspace/docs/research/besd/dpt_r_fixture_validation/fixtures/DPT_SYN_003_MILE_v1.json",
+      "sha256": "7c7ddd80c077e1153f0e368c034732ebdfd92829fed729451f8be22cf467f03e",
+      "domain": "forced_service",
+      "R_imposed": "CONSCRIPT",
+      "operator_version": "T_DPT_v2_hypo",
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "selected": "NONCOOPERATE",
+      "preferred_param": "NONCOOPERATE",
+      "v1_expected_action_class": "optional_second_mile_as_chosen_asymmetry",
+      "feasible_includes_exit": true,
+      "semantic": {
+        "R_imposed_detected": true,
+        "R_imposed_rejected": true,
+        "D_invariant": true,
+        "mimetic_break": true,
+        "historical_contestation_preserved": true,
+        "exit_available_not_forced": true,
+        "action_in_feasible": true,
+        "forgiveness_distinct_from_trust": true
+      },
+      "leaks": [],
+      "pass_fixture": true
+    }
+  ],
+  "STOP_AFTER_RESULT": true,
+  "reproduce_command": "py scripts/run_besd_dpt_r_v2_matthew5_fixture_regression_v1.py"
+}

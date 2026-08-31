@@ -1,0 +1,179 @@
+{
+  "schema": "mkm_logos_cr_dpt_transform_synthetic_fixtures_v0_1",
+  "fixture_count": 3,
+  "status": "HYPO",
+  "send_gate": "HOLD",
+  "fixtures": [
+    {
+      "schema": "besd_dpt_r_synthetic_fixture_v1",
+      "fixture_id": "DPT_SYN_001_CHEEK",
+      "matthew_anchor": "Matthew 5:39",
+      "john_anchor_compat": "John 18:22-23",
+      "domain": "status_humiliation",
+      "R_imposed": "SUBORDINATE",
+      "status": "HYPO",
+      "tags": [
+        "HYPO",
+        "research_only",
+        "NON_GATING",
+        "synthetic"
+      ],
+      "send_gate": "HOLD",
+      "historical_annotations": {
+        "wink_backhand_equal_status": "PLAUSIBLE_CONTESTED",
+        "literal_second_cheek_all_assaults": "NOT_REQUIRED"
+      },
+      "initial_state": {
+        "D": 1.0,
+        "A": 0.35,
+        "P": 0.8,
+        "V": 0.6,
+        "L": 0.5,
+        "O": 0.4,
+        "F": 0.5
+      },
+      "context": {
+        "coercion_type": "physical_strike_status_humiliation",
+        "opponent_action_t": "strike_right_cheek",
+        "telos": "preserve_dignity_and_truth_without_retaliatory_script",
+        "truth_claim": "unjust_strike_without_legitimate_cause",
+        "safety_constraint": "exit_if_escalating_physical_danger",
+        "legitimacy_challenge_allowed": true
+      },
+      "opponent_mirror_action": "strike_back",
+      "forbidden_operator_outcomes": [
+        "dignity_decreases_with_harm",
+        "mirror_retaliation_required",
+        "literal_second_cheek_mandatory_all_contexts",
+        "silent_passive_acceptance_only",
+        "wink_reconstruction_as_fact",
+        "unsafe_passivity_required"
+      ],
+      "expected_after_t_dpt": {
+        "R_imposed_detected": true,
+        "R_imposed_rejected": true,
+        "D_invariant": true,
+        "agency_reclaimed": true,
+        "action_is_chosen_not_forced": true,
+        "mimetic_break": true,
+        "selected_action_class": "legitimacy_challenge_without_mirror_violence",
+        "forgiveness_distinct_from_trust": true,
+        "future_option_preserved": true,
+        "historical_contestation_preserved": true
+      }
+    },
+    {
+      "schema": "besd_dpt_r_synthetic_fixture_v1",
+      "fixture_id": "DPT_SYN_002_GARMENT",
+      "matthew_anchor": "Matthew 5:40",
+      "domain": "debt_economic_coercion",
+      "R_imposed": "DEBTOR_WITHOUT_AGENCY",
+      "status": "HYPO",
+      "tags": [
+        "HYPO",
+        "research_only",
+        "NON_GATING",
+        "synthetic"
+      ],
+      "send_gate": "HOLD",
+      "historical_annotations": {
+        "public_shame_nakedness_scenario": "INTERPRETIVE_RECONSTRUCTION",
+        "all_debt_enforcement_illegitimate": "NOT_REQUIRED"
+      },
+      "initial_state": {
+        "D": 1.0,
+        "A": 0.4,
+        "P": 0.75,
+        "V": 0.3,
+        "L": 0.6,
+        "O": 0.5,
+        "F": 0.45
+      },
+      "context": {
+        "coercion_type": "legalistic_garment_seizure",
+        "opponent_action_t": "demand_outer_garment_as_collateral",
+        "telos": "expose_economic_coercion_without_mimetic_debt_trap",
+        "truth_claim": "coercive_extraction_of_basic_covering",
+        "accountability_preserved": true,
+        "forgiveness_not_debt_erasure": true
+      },
+      "opponent_mirror_action": "withhold_all_assets_in_kind_revenge",
+      "forbidden_operator_outcomes": [
+        "dignity_decreases_with_harm",
+        "forgiveness_equals_debt_erasure",
+        "public_humiliation_mandatory",
+        "literal_nakedness_universal_prescription",
+        "all_debt_enforcement_declared_illegitimate"
+      ],
+      "expected_after_t_dpt": {
+        "R_imposed_detected": true,
+        "R_imposed_rejected": true,
+        "D_invariant": true,
+        "agency_reclaimed": true,
+        "action_is_chosen_not_forced": true,
+        "mimetic_break": true,
+        "selected_action_class": "asymmetric_generosity_with_accountability",
+        "economic_coercion_identifiable": true,
+        "forgiveness_distinct_from_trust": true,
+        "future_option_preserved": true,
+        "historical_contestation_preserved": true
+      }
+    },
+    {
+      "schema": "besd_dpt_r_synthetic_fixture_v1",
+      "fixture_id": "DPT_SYN_003_MILE",
+      "matthew_anchor": "Matthew 5:41",
+      "domain": "forced_service",
+      "R_imposed": "CONSCRIPT",
+      "status": "HYPO",
+      "tags": [
+        "HYPO",
+        "research_only",
+        "NON_GATING",
+        "synthetic"
+      ],
+      "send_gate": "HOLD",
+      "historical_annotations": {
+        "roman_requisition_context": "SUPPORTED",
+        "second_mile_soldier_punishment_consequence": "CONTESTED"
+      },
+      "initial_state": {
+        "D": 1.0,
+        "A": 0.3,
+        "P": 0.85,
+        "V": 0.25,
+        "L": 0.55,
+        "O": 0.35,
+        "F": 0.5
+      },
+      "context": {
+        "coercion_type": "angareuo_forced_carry",
+        "opponent_action_t": "compel_first_mile",
+        "telos": "transform_forced_compliance_into_chosen_asymmetric_response",
+        "truth_claim": "first_mile_is_coerced_not_chosen",
+        "safety_constraint": "no_unlimited_coerced_service",
+        "over_compliance_not_universal_optimum": true
+      },
+      "opponent_mirror_action": "sabotage_or_violent_resistance",
+      "forbidden_operator_outcomes": [
+        "dignity_decreases_with_harm",
+        "mirror_retaliation_required",
+        "second_mile_universal_game_theory_optimum",
+        "unlimited_coerced_service_required",
+        "forced_action_labeled_chosen_without_transformation"
+      ],
+      "expected_after_t_dpt": {
+        "R_imposed_detected": true,
+        "R_imposed_rejected": true,
+        "D_invariant": true,
+        "agency_reclaimed": true,
+        "forced_distinct_from_chosen": true,
+        "mimetic_break": true,
+        "selected_action_class": "optional_second_mile_as_chosen_asymmetry",
+        "strategic_asymmetric_response_allowed": true,
+        "future_option_preserved": true,
+        "historical_contestation_preserved": true
+      }
+    }
+  ]
+}

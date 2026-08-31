@@ -1,0 +1,104 @@
+{
+  "schema": "besd_dpt_r_stub_operator_safety_path_enumeration_v1",
+  "status": "HYPO",
+  "tags": [
+    "HYPO",
+    "research_only",
+    "NON_GATING",
+    "B_TRACK"
+  ],
+  "send_gate": "HOLD",
+  "theory_expansion": false,
+  "operator_steps_mutated": false,
+  "base_codebook_mutation": false,
+  "note": "Additive enumeration only. Does not rewrite T_DPT_v1_hypo steps; does not claim runtime selection wired; does not establish novelty/efficacy.",
+  "required_paths_mission": [
+    "EXIT",
+    "REPORT",
+    "LEGAL_REMEDY",
+    "PROTECT",
+    "ABSTAIN"
+  ],
+  "enumerated_paths": [
+    "ABSTAIN",
+    "DEFER",
+    "SEEK_INFORMATION",
+    "SEEK_COUNSEL",
+    "WITHDRAW",
+    "EXIT",
+    "SEEK_HELP",
+    "REPORT",
+    "PROTECT",
+    "PROTECT_SELF",
+    "PROTECT_THIRD_PARTY",
+    "LEGAL_REMEDY",
+    "INSTITUTIONAL_INTERVENTION",
+    "DEFEND_WHEN_JUSTIFIED",
+    "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED",
+    "SILENCE"
+  ],
+  "safety_sidecar_permitted_actions": [
+    "EXIT",
+    "WITHDRAW",
+    "SEEK_HELP",
+    "REPORT",
+    "PROTECT_SELF",
+    "PROTECT_THIRD_PARTY",
+    "LEGAL_REMEDY",
+    "INSTITUTIONAL_INTERVENTION",
+    "JUSTIFIED_DEFENSIVE_FORCE"
+  ],
+  "crosswalk_red_team_gap": {
+    "missing_operational_rules_closed": [
+      "enumerated EXIT/REPORT/LEGAL_REMEDY/PROTECT paths in operator steps",
+      "ABSTAIN under truth uncertainty (path named; runtime still stub)"
+    ],
+    "still_open_impl_runtime": [
+      "stub T_DPT_v1_hypo still ignores pi / A_feasible selection",
+      "TRUTH_CONSTRAINT_DROP etc. remain until stub runtime uses enumeration"
+    ]
+  },
+  "aliases": {
+    "PROTECT": [
+      "PROTECT_SELF",
+      "PROTECT_THIRD_PARTY"
+    ],
+    "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED": [
+      "DEFEND_WHEN_JUSTIFIED"
+    ]
+  },
+  "hard_rules_inherited_from_sidecar": [
+    "DIGNITY_INVARIANCE != REMAIN_IN_DANGER",
+    "NON_MIMETIC_ACTION != NON_DEFENSE",
+    "ROLE_REFUSAL != REFUSAL_OF_LAWFUL_HELP",
+    "FORGIVENESS != TRUST_RESTORATION",
+    "FORGIVENESS != WAIVER_OF_ACCOUNTABILITY",
+    "PUBLIC_EXPOSURE != ALWAYS_REQUIRED",
+    "THIRD_PARTY_SAFETY may override symbolic resistance",
+    "NO_FIXED_RESPONSE: DPT-R does not prescribe a universal behavioral response"
+  ],
+  "stub_operator_ref": {
+    "code": "LOGOS.CR.DPT_TRANSFORM",
+    "version": "T_DPT_v1_hypo",
+    "steps_unchanged": [
+      "Detect(R_imposed)",
+      "Assert(Dignity_Invariance)",
+      "Reject(R_imposed)",
+      "Reclaim_Agency",
+      "Enforce_Mimetic_Break",
+      "Expose_Coercion",
+      "Preserve_Future_Option_Value"
+    ]
+  },
+  "claim_ceiling": {
+    "establishes": "stub documents enumerated safety action paths (research_only)",
+    "does_not_establish": [
+      "novelty",
+      "theological validity",
+      "empirical efficacy",
+      "health/wellness efficacy",
+      "Track A promotion",
+      "runtime leak metrics all zero"
+    ]
+  }
+}

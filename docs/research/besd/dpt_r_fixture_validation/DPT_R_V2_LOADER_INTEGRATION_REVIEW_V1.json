@@ -1,0 +1,136 @@
+{
+  "schema": "dpt_r_v2_loader_integration_review_v1",
+  "mission": "COMMANDER_BESD_DPT_R_V2_LOADER_INTEGRATION_REVIEW_V1",
+  "generated_at_utc": "2026-08-30T07:49:43.780838+00:00",
+  "status": "HYPO",
+  "send_gate": "HOLD",
+  "LOADER_INTEGRATION": "HOLD",
+  "PROMOTION": "NOT_AUTHORIZED",
+  "review_only": true,
+  "LOADER_CURRENTLY_MUTATED": false,
+  "immutable_inputs": {
+    "v1_loader": {
+      "path": "C:/workspace/scripts/run_besd_dpt_r_synthetic_fixture_validation_v1.py",
+      "sha256": "e9c099c5c6707ab0e39d24e5dc937c49b8cd07d0a256578efb618173cb77e81e"
+    },
+    "v2_operator": {
+      "path": "C:/workspace/scripts/run_besd_dpt_r_v2_revalidation_v1.py",
+      "sha256": "79059c12e0c2aac41aea99be74ba2c17a4b4669bee3e5232f07dbb0fc5c7de49"
+    },
+    "bridge": {
+      "path": "C:/workspace/docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_V1_V2_LABEL_BRIDGE_V1.json",
+      "sha256": "b752c15975824981611b87c038ceecb99e877b9f4f2532388726eb69faabffb1"
+    },
+    "bridge_audit": {
+      "path": "C:/workspace/docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_V1_V2_LABEL_BRIDGE_AUDIT_V1.json",
+      "sha256": "655af6e12eda3d19ac30c914c8c845de1c14e1f111af3f93d700b93fd2e52fce"
+    },
+    "fixtures": {
+      "DPT_SYN_001_CHEEK_v1.json": "bc50f02bc926ac9000503818805a9ca4afa1f28c44bd94c23e79a5134fe0295b",
+      "DPT_SYN_002_GARMENT_v1.json": "a3e0a6856122a033a5e83df9104033d0dcc83ae42ab0fcf18f5b2c0f9ee78245",
+      "DPT_SYN_003_MILE_v1.json": "7c7ddd80c077e1153f0e368c034732ebdfd92829fed729451f8be22cf467f03e"
+    }
+  },
+  "current_v1_loader_facts": {
+    "exact_selected_action_class_match": true,
+    "DOMAIN_RESPONSE_MAP_present": true,
+    "dual_label_record_present": false,
+    "fail_closed_tokens_present": false,
+    "drop_in_v2_compatible": false,
+    "LOADER_COMPATIBLE": false
+  },
+  "Q1": {
+    "question": "Can loader preserve exact original v1 expected semantics while receiving v2 action labels?",
+    "current_loader": false,
+    "future_bounded_design": true,
+    "reason": "Current loader fails if selected != v1 selected_action_class. A future result record can keep v1 expected unchanged and store v2 actual separately."
+  },
+  "Q2": {
+    "question": "Can BOUNDED_EQUIVALENT be consumed without silent EXACT_EQUIVALENT?",
+    "current_loader": false,
+    "future_bounded_design": true,
+    "condition": "bridge_relation must be persisted; candidate_v2_label must not overwrite exact_v1_label",
+    "cheek_ceiling_ref": "EXPOSE_COERCION realizes the legitimacy-challenge component only. It does not exhaust the v1 class, does not make public exposure mandatory for every cheek-like case, and does not encode non-mimetic control by itself. EXIT/REPORT/PROTECT must remain in A_feasible. Wink reconstruction stays PLAUSIBLE/CONTESTED.",
+    "garment_ceiling_ref": "NEGOTIATE bounded-maps accountable, non-mimetic economic response. It does NOT encode surplus-gift / extra-cloak as a required action, does NOT convert forgiveness into debt/legal erasure, and does NOT make extra generosity a universal obligation. Surplus-generosity remainder is unmapped in v2 vocabulary."
+  },
+  "Q3": {
+    "question": "Can MILE ONE_TO_MANY remain explicit without false canonical equivalence?",
+    "current_loader": false,
+    "future_bounded_design": true,
+    "condition": "Loader must not require v2_selected_action == candidate_v2_label as identity. Accept any member of also_in_image plus invariant check. Must not record NONCOOPERATE as equivalent to second mile.",
+    "also_in_image": [
+      "NONCOOPERATE",
+      "COOPERATE",
+      "NEGOTIATE"
+    ],
+    "non_implications": [
+      "second-mile action is not mandatory",
+      "over-compliance is not the default",
+      "NONCOOPERATE is not identical to doing a second mile"
+    ]
+  },
+  "Q4": {
+    "question": "Can v1 expected and v2 actual both be retained?",
+    "current_loader": false,
+    "future_bounded_design": true,
+    "preferred_record": {
+      "v1_expected_action_class": "...",
+      "v2_selected_action": "...",
+      "bridge_relation": "...",
+      "semantic_invariants_pass": true
+    }
+  },
+  "Q5": {
+    "question": "Can bridge failure fail closed (no silent coerce)?",
+    "current_loader": false,
+    "future_bounded_design": true,
+    "fail_closed_conditions": [
+      "MISSING_BRIDGE_ENTRY",
+      "UNRESOLVED_RELATION",
+      "NO_EQUIVALENT_RELATION",
+      "INVARIANT_FAILURE",
+      "UNKNOWN_V2_ACTION",
+      "BRIDGE_HASH_MISMATCH"
+    ]
+  },
+  "mile_special_case": {
+    "if_loader_requires_1to1": "DO_NOT_CONNECT",
+    "if_loader_accepts_image_set_plus_invariants": "BOUNDED_INTEGRATION_ELIGIBLE",
+    "NONCOOPERATE_equals_second_mile": false
+  },
+  "BRIDGE_CONSUMPTION_DESIGN_VALID": true,
+  "DUAL_LABEL_PRESERVATION_POSSIBLE": true,
+  "BOUNDED_EQUIVALENCE_PRESERVED": true,
+  "ONE_TO_MANY_PRESERVED": true,
+  "FAIL_CLOSED_DESIGN_POSSIBLE": true,
+  "V1_FIXTURE_MUTATION_REQUIRED": false,
+  "V2_OPERATOR_MUTATION_REQUIRED": false,
+  "BRIDGE_MUTATION_REQUIRED": false,
+  "SEMANTIC_ALIASING_RISK_N": 1,
+  "SILENT_COERCION_RISK_N": 1,
+  "UNKNOWN_LABEL_FAILURE_PATH_PRESENT": false,
+  "conditions": [
+    "Do not replace v1_expected_action_class with v2_selected_action",
+    "Do not alias v1_label := v2_label or inverse",
+    "Persist bridge_relation; never upgrade BOUNDED_EQUIVALENT to EXACT_EQUIVALENT",
+    "MILE: accept also_in_image; never record NONCOOPERATE as equivalent to second mile",
+    "CHEEK/GARMENT: retain semantic_ceiling by mechanical bridge reference",
+    "Fail closed on MISSING_BRIDGE_ENTRY, UNRESOLVED, NO_EQUIVALENT, INVARIANT_FAILURE, UNKNOWN_V2_ACTION, BRIDGE_HASH_MISMATCH",
+    "Current v1 loader is not drop-in compatible; a new bounded consumer would be required",
+    "Integration remains HOLD until a separate ACK mission"
+  ],
+  "DECIDE_ONE": "DPT_R_V2_LOADER_INTEGRATION_REVIEW_PASS_WITH_CONDITIONS",
+  "ELIGIBLE_FOR_BOUNDED_LOADER_INTEGRATION": true,
+  "claim_ceiling": {
+    "pass_means": "ELIGIBLE_FOR_BOUNDED_LOADER_INTEGRATION = TRUE",
+    "does_not_mean": [
+      "integration performed",
+      "DPT-R promoted",
+      "novelty established",
+      "biblical validity established",
+      "empirical validity established"
+    ]
+  },
+  "STOP_AFTER_RESULT": true,
+  "reproduce_command": "py scripts/run_besd_dpt_r_v2_loader_integration_review_v1.py"
+}

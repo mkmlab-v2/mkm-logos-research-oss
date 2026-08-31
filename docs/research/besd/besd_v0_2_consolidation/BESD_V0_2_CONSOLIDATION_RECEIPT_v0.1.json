@@ -1,0 +1,85 @@
+{
+  "schema": "besd_v0_2_consolidation_receipt_v0.1",
+  "mission": "COMMANDER_BESD_THEORY_CONSOLIDATION_V0_2",
+  "generated_at_utc": "2026-08-30T06:39:53.172080+00:00",
+  "DECIDE_ONE": "BESD_THEORY_CONSOLIDATION_V0_2_PASS",
+  "send_gate": "HOLD",
+  "theological_validation": "NOT_ESTABLISHED",
+  "empirical_validation": "NOT_ESTABLISHED",
+  "track_a_promotion": "NOT_AUTHORIZED",
+  "summary": {
+    "PROMOTED_N": 2,
+    "UNRESOLVED_N": 0,
+    "CEM_C2_MUTATION_N": 0,
+    "FIREWALL_PASS": true,
+    "PC001_DECIDE": "BESD_V0_2_PC001_BOUNDED_CONSOLIDATION_PASS",
+    "DIFF_DECIDE": "BESD_V0_2_CONSOLIDATION_DIFF_PASS",
+    "DPT_DECIDE": "BESD_DPT_R_SYNTHETIC_FIXTURE_PASS",
+    "DPT_STUB_MATERIALIZED": true,
+    "BASE_CODEBOOK_MUTATION": false
+  },
+  "promotions": [
+    {
+      "src": "BESD_PATCHED_COORDINATE_MAP_v0.2_candidate.csv",
+      "dst": "BESD_COORDINATE_MAP_v0.2.csv",
+      "status": "PROMOTED",
+      "promoted": true,
+      "sha256": "9d362576dc41c19a10df1c07300384ec44d30da470f1dc026d0d2862fff16455",
+      "bytes": 8638
+    },
+    {
+      "src": "BESD_PATCHED_STATE_TRANSITION_MODEL_v0.2_candidate.md",
+      "dst": "BESD_STATE_TRANSITION_MODEL_v0.2.md",
+      "status": "PROMOTED",
+      "promoted": true,
+      "sha256": "35776c90744051e5c28b1493c8283377f8fb1bd568264e171c50709c752fc358",
+      "bytes": 7890
+    }
+  ],
+  "firewall_verification": {
+    "R_op_present": true,
+    "R_to_G_firewall": true,
+    "G_ne_max_M": true,
+    "layer_r_to_g": true,
+    "legacy_M_R_G": false,
+    "FIREWALL_PASS": true
+  },
+  "dpt_stub": {
+    "sidecar": "MKM_LOGOS_DYNAMICS_CODEBOOK_V0_1_DPT_STUB.json",
+    "bundle": "MKM_LOGOS_CR_DPT_TRANSFORM_SYNTHETIC_FIXTURES_V0_1.json",
+    "receipt": "MKM_LOGOS_CR_DPT_STUB_RECEIPT_V0_1.json",
+    "fixture_n": 3,
+    "materialized": true
+  },
+  "notation_contract": {
+    "divine_operator": "R_op",
+    "restoration_practice": "R",
+    "hard_firewall": "R ↛ G"
+  },
+  "claim_ceiling": {
+    "establishes": "bounded v0.2 formal promotion + DPT-R synthetic fixture coherence",
+    "does_not_establish": [
+      "theological validity",
+      "empirical validity",
+      "DPT-R efficacy",
+      "manuscript readiness",
+      "Track A promotion"
+    ]
+  },
+  "next_mission": "HOLD stub runtime A_feasible wire OR BWH downstream (enumeration documented; leak metrics not yet zeroed on v1 stub runtime)",
+  "downstream_red_team": {
+    "mission": "COMMANDER_BESD_DPT_R_RED_TEAM_V1",
+    "DECIDE_ONE": "BESD_DPT_R_RED_TEAM_PASS_BOUNDED_SURVIVAL",
+    "kernel_verdict": "DPT_R_MINIMAL_DISTINCTIVE_KERNEL",
+    "pack": "docs/research/besd/dpt_r_red_team/",
+    "receipt": "docs/research/besd/dpt_r_red_team/BESD_DPT_R_RED_TEAM_RECEIPT_v0.1.json",
+    "note": "pointer only; consolidation promotions unchanged"
+  },
+  "reproduce_command": "py scripts/run_besd_v0_2_theory_consolidation_v1.py",
+  "stub_safety_path_enumeration": {
+    "DECIDE_ONE": "BESD_DPT_R_STUB_SAFETY_PATH_ENUMERATION_PASS",
+    "receipt": "docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_STUB_SAFETY_PATH_ENUMERATION_RECEIPT_V1.json",
+    "enumeration": "docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_STUB_SAFETY_PATH_ENUMERATION_V1.json",
+    "runtime_wired": false
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "besd_dpt_r_synthetic_fixture_v1",
+  "fixture_id": "DPT_SYN_003_MILE",
+  "matthew_anchor": "Matthew 5:41",
+  "domain": "forced_service",
+  "R_imposed": "CONSCRIPT",
+  "status": "HYPO",
+  "tags": ["HYPO", "research_only", "NON_GATING", "synthetic"],
+  "send_gate": "HOLD",
+  "historical_annotations": {
+    "roman_requisition_context": "SUPPORTED",
+    "second_mile_soldier_punishment_consequence": "CONTESTED"
+  },
+  "initial_state": {
+    "D": 1.0,
+    "A": 0.3,
+    "P": 0.85,
+    "V": 0.25,
+    "L": 0.55,
+    "O": 0.35,
+    "F": 0.5
+  },
+  "context": {
+    "coercion_type": "angareuo_forced_carry",
+    "opponent_action_t": "compel_first_mile",
+    "telos": "transform_forced_compliance_into_chosen_asymmetric_response",
+    "truth_claim": "first_mile_is_coerced_not_chosen",
+    "safety_constraint": "no_unlimited_coerced_service",
+    "over_compliance_not_universal_optimum": true
+  },
+  "opponent_mirror_action": "sabotage_or_violent_resistance",
+  "forbidden_operator_outcomes": [
+    "dignity_decreases_with_harm",
+    "mirror_retaliation_required",
+    "second_mile_universal_game_theory_optimum",
+    "unlimited_coerced_service_required",
+    "forced_action_labeled_chosen_without_transformation"
+  ],
+  "expected_after_t_dpt": {
+    "R_imposed_detected": true,
+    "R_imposed_rejected": true,
+    "D_invariant": true,
+    "agency_reclaimed": true,
+    "forced_distinct_from_chosen": true,
+    "mimetic_break": true,
+    "selected_action_class": "optional_second_mile_as_chosen_asymmetry",
+    "strategic_asymmetric_response_allowed": true,
+    "future_option_preserved": true,
+    "historical_contestation_preserved": true
+  }
+}

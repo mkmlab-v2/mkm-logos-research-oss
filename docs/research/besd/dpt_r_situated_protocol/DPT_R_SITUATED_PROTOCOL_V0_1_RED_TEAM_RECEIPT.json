@@ -1,0 +1,48 @@
+{
+  "schema": "dpt_r_situated_protocol_v0_1_red_team_receipt_v1",
+  "mission": "COMMANDER_DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM_ACK",
+  "generated_at_utc": "PLACEHOLDER",
+  "status": "HYPO",
+  "tags": ["HYPO", "DESIGN_ONLY", "B_TRACK_RESEARCH_ONLY", "NON_GATING"],
+  "send_gate": "HOLD",
+  "DESIGN_ONLY": true,
+  "theory_repaired_during_attack": false,
+  "LOADER_MUTATION_N": 0,
+  "OPERATOR_MUTATION_N": 0,
+  "CODEBOOK_MUTATION_N": 0,
+  "CEM_C2_MUTATION_N": 0,
+  "BESD_CORE_MUTATION_N": 0,
+  "IMPLEMENTATION_SCRIPT_N": 0,
+  "design_input_sha256": "PLACEHOLDER",
+  "red_team_json": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM.json",
+  "red_team_md": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM.md",
+  "summary": {
+    "FALSE_POSITIVE_COERCION_N": 3,
+    "FALSE_NEGATIVE_COERCION_N": 4,
+    "SAFETY_PRIORITY_FAILURE_N": 2,
+    "TRUTH_UNCERTAINTY_FAILURE_N": 0,
+    "NON_MIMETIC_VACUITY_N": 2,
+    "DIGNITY_ENTITLEMENT_LEAK_N": 3,
+    "GENERIC_POLICY_COLLAPSE_N": 1,
+    "SCOPE_CREEP_N": 0,
+    "PROTOCOL_NONVACUITY": "TRUE_WITH_NARROWING"
+  },
+  "DECIDE_ONE": "DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM_PASS_WITH_NARROWING",
+  "claim_ceiling": {
+    "pass_means": "Design survived bounded adversarial review without implementation; PROTOCOL_NONVACUITY TRUE_WITH_NARROWING.",
+    "does_not_mean": [
+      "executable protocol",
+      "real-world safety",
+      "legal adequacy",
+      "biblical correctness",
+      "novelty",
+      "empirical efficacy",
+      "clinical usefulness",
+      "coaching usefulness",
+      "product readiness"
+    ]
+  },
+  "STOP_AFTER_RESULT": true,
+  "next_mission": "WAIT_FOR_COMMANDER_DPT_R_SITUATED_PROTOCOL_V0_1_SPEC_REVISION_ACK",
+  "reproduce_command": "none (DESIGN_ONLY red-team; no implementation script)"
+}

@@ -1,0 +1,1103 @@
+{
+  "schema": "besd_dpt_r_v2_revalidation_v1",
+  "mission": "COMMANDER_BESD_DPT_R_SPEC_NARROWING_AND_V2_REVALIDATION_V1",
+  "generated_at_utc": "2026-08-30T07:22:59.989186+00:00",
+  "status": "HYPO",
+  "tags": [
+    "HYPO",
+    "research_only",
+    "NON_GATING"
+  ],
+  "send_gate": "HOLD",
+  "promotion": "NOT_AUTHORIZED",
+  "operator": {
+    "code": "LOGOS.CR.DPT_TRANSFORM",
+    "version": "T_DPT_v2_hypo",
+    "control_law": "a_(t+1) ∈ A_feasible(Truth, Context, Safety, ThirdPartyHarm, Uncertainty)",
+    "legacy_pi": "π(Telos, Dignity, Truth, Context) remains meta-control inside A_feasible",
+    "steps_are": "engineering representation only; not scriptural eight-step",
+    "steps": [
+      "1_Detect_imposed_role",
+      "2_Assert_dignity_invariant",
+      "3_Evaluate_truth_context_uncertainty",
+      "4_Evaluate_safety_third_party_feasible_set",
+      "5_Refuse_role_internalization",
+      "6_Reclaim_agency_context_sensitive",
+      "7_Enforce_non_mimetic_control",
+      "8_Preserve_accountability_future_option"
+    ],
+    "action_set": [
+      "ABSTAIN",
+      "COOPERATE",
+      "DEFEND_WHEN_JUSTIFIED",
+      "DEFER",
+      "EXIT",
+      "EXPOSE_COERCION",
+      "LEGAL_REMEDY",
+      "NEGOTIATE",
+      "NONCOOPERATE",
+      "PROTECT",
+      "REPORT",
+      "SEEK_COUNSEL",
+      "SEEK_HELP",
+      "SEEK_INFORMATION",
+      "SILENCE",
+      "WITHDRAW"
+    ]
+  },
+  "phase1_spec_narrowing": {
+    "N1_UNCERTAINTY_ABSTAIN": true,
+    "N2_THIRD_PARTY_HARM": true,
+    "N3_PROTECTIVE_PATHS": true,
+    "N4_CONTEXT_SENSITIVITY": true,
+    "N5_ACCOUNTABILITY": true,
+    "T_DPT_v2_hypo_section": true,
+    "A_feasible_formula": true,
+    "eight_steps_engineering_only": true
+  },
+  "summary": {
+    "CASES_N": 28,
+    "CASES_PASS_N": 28,
+    "COMMON_OPERATOR_PASS": true,
+    "AUTONOMISM_LEAK_N": 0,
+    "ARBITRARY_SELF_AUTHORIZATION_N": 0,
+    "TRUTH_CONSTRAINT_DROP_N": 0,
+    "THIRD_PARTY_HARM_BLINDNESS_N": 0,
+    "UNSAFE_PASSIVITY_N": 0,
+    "EXIT_PATH_BLOCK_N": 0,
+    "LEGAL_REMEDY_BLOCK_N": 0,
+    "PROTECTIVE_ACTION_BLOCK_N": 0,
+    "ONE_RESPONSE_FITS_ALL_N": 0,
+    "CONTEXT_SENSITIVITY_FAILURE_N": 0,
+    "BESD_FIREWALL_DRIFT_N": 0,
+    "CEM_C2_MUTATION_N": 0,
+    "R_OP_NOTATION_DRIFT_N": 0,
+    "PRIOR_ART_IDENTICAL_N": 0,
+    "PRIOR_ART_KERNEL_SUBSUMED_N": 0,
+    "NOVELTY": "NOT_ESTABLISHED"
+  },
+  "DECIDE_ONE": "BESD_DPT_R_V2_REVALIDATION_PASS",
+  "DPT_R_MINIMAL_DISTINCTIVE_KERNEL_V2": {
+    "imposed_role_detection": true,
+    "dignity_constraint": true,
+    "telos_truth_context_control": true,
+    "non_mimetic_response": true,
+    "verdict": "DPT_R_MINIMAL_DISTINCTIVE_KERNEL_V2"
+  },
+  "ablation_c1_c4": [
+    {
+      "id": "C1",
+      "remove": "Agency Sovereignty / telos-truth-context control",
+      "distinctiveness_lost": true,
+      "collapses_to": "opponent-controlled / preference policy"
+    },
+    {
+      "id": "C2",
+      "remove": "Role Refusal / imposed-role detection",
+      "distinctiveness_lost": true,
+      "collapses_to": "generic values-based action without role capture"
+    },
+    {
+      "id": "C3",
+      "remove": "Mimetic Break / non-mimetic control",
+      "distinctiveness_lost": true,
+      "collapses_to": "TFT / reciprocal retaliation / CBT-only"
+    },
+    {
+      "id": "C4",
+      "remove": "Dignity Invariance",
+      "distinctiveness_lost": true,
+      "collapses_to": "performance moralism / health-score dignity"
+    }
+  ],
+  "prior_art_label_audit": {
+    "legacy_SUBSUMED_BY_PRIOR_meaning": "MUST NOT be read as full DPT-R subsumed. ACT/CBT/SDT overlap telos-control component only → COMPONENT_OVERLAP.",
+    "allowed_classifications": [
+      "IDENTICAL",
+      "KERNEL_SUBSUMED_BY_PRIOR",
+      "COMPONENT_OVERLAP",
+      "STRUCTURALLY_DISTINCT_CANDIDATE",
+      "UNRESOLVED"
+    ],
+    "rows": [
+      {
+        "framework": "Walter Wink Third Way",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "creative resistance + some mimetic-break analog; no dignity invariant / formal operator / forgiveness≠trust as kernel",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "Strategic nonviolent resistance",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "exposure/cost-return analogs; no imposed-role formalization + dignity invariant kernel",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "ACT values-based action",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "telos/values control only; lacks imposed-role, dignity invariant, mimetic break, formal T_DPT",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "CBT response regulation",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "response regulation only; not kernel",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "Stoic prohairesis",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "inner control analog; no imposed-role + dignity invariant kernel",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "Reactance / autonomy theory",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "anti-control analog; not full kernel",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "Self-determination theory",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "agency/autonomy component only",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "Moral agency models",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "agency/responsibility overlap; not DPT-R kernel",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "Generous TFT / reciprocity",
+        "classification": "COMPONENT_OVERLAP",
+        "note": "forgiving reciprocity analog; no imposed-role/dignity kernel",
+        "novelty": "NOT_ESTABLISHED"
+      },
+      {
+        "framework": "DPT-R proposed kernel",
+        "classification": "STRUCTURALLY_DISTINCT_CANDIDATE",
+        "note": "imposed_role + dignity + telos/truth/context + non-mimetic (candidate only)",
+        "novelty": "NOT_ESTABLISHED"
+      }
+    ]
+  },
+  "case_results": [
+    {
+      "case_id": "A1",
+      "selected": "ABSTAIN",
+      "feasible": [
+        "ABSTAIN",
+        "DEFER",
+        "SEEK_COUNSEL",
+        "SEEK_INFORMATION"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "A2",
+      "selected": "ABSTAIN",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "A3",
+      "selected": "ABSTAIN",
+      "feasible": [
+        "ABSTAIN",
+        "DEFER",
+        "SEEK_COUNSEL",
+        "SEEK_INFORMATION"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "A4",
+      "selected": "SEEK_INFORMATION",
+      "feasible": [
+        "ABSTAIN",
+        "DEFER",
+        "SEEK_COUNSEL",
+        "SEEK_INFORMATION"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "A5",
+      "selected": "ABSTAIN",
+      "feasible": [
+        "ABSTAIN",
+        "DEFER",
+        "SEEK_COUNSEL",
+        "SEEK_INFORMATION"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "A6",
+      "selected": "PROTECT",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "B1",
+      "selected": "EXIT",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "B2",
+      "selected": "REPORT",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "B3",
+      "selected": "REPORT",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "B4",
+      "selected": "PROTECT",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "B5",
+      "selected": "DEFEND_WHEN_JUSTIFIED",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "B6",
+      "selected": "WITHDRAW",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "X1",
+      "selected": "DEFEND_WHEN_JUSTIFIED",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": "surface resemblance allowed; independently justified (N3)"
+    },
+    {
+      "case_id": "X2",
+      "selected": "DEFEND_WHEN_JUSTIFIED",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "X3",
+      "selected": "COOPERATE",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "X4",
+      "selected": "WITHDRAW",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "X5",
+      "selected": "SILENCE",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "X6",
+      "selected": "WITHDRAW",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "X7",
+      "selected": "SEEK_INFORMATION",
+      "feasible": [
+        "ABSTAIN",
+        "DEFER",
+        "SEEK_COUNSEL",
+        "SEEK_INFORMATION"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "X8",
+      "selected": "REPORT",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "V2-01",
+      "selected": "ABSTAIN",
+      "feasible": [
+        "ABSTAIN",
+        "DEFER",
+        "SEEK_COUNSEL",
+        "SEEK_INFORMATION"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "V2-02",
+      "selected": "PROTECT",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "V2-03",
+      "selected": "EXIT",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "V2-04",
+      "selected": "DEFEND_WHEN_JUSTIFIED",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "V2-05",
+      "selected": "COOPERATE",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "V2-06",
+      "selected": "WITHDRAW",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "EXPOSE_COERCION",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "V2-07",
+      "selected": "WITHDRAW",
+      "feasible": [
+        "ABSTAIN",
+        "COOPERATE",
+        "DEFEND_WHEN_JUSTIFIED",
+        "DEFER",
+        "EXIT",
+        "LEGAL_REMEDY",
+        "NEGOTIATE",
+        "NONCOOPERATE",
+        "PROTECT",
+        "REPORT",
+        "SEEK_COUNSEL",
+        "SEEK_HELP",
+        "SEEK_INFORMATION",
+        "SILENCE",
+        "WITHDRAW"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    },
+    {
+      "case_id": "V2-08",
+      "selected": "SEEK_INFORMATION",
+      "feasible": [
+        "ABSTAIN",
+        "DEFER",
+        "SEEK_COUNSEL",
+        "SEEK_INFORMATION"
+      ],
+      "steps": [
+        "1_Detect_imposed_role",
+        "2_Assert_dignity_invariant",
+        "3_Evaluate_truth_context_uncertainty",
+        "4_Evaluate_safety_third_party_feasible_set",
+        "5_Refuse_role_internalization",
+        "6_Reclaim_agency_context_sensitive",
+        "7_Enforce_non_mimetic_control",
+        "8_Preserve_accountability_future_option"
+      ],
+      "pass_case": true,
+      "leak_tags": [],
+      "notes": ""
+    }
+  ],
+  "claim_ceiling": {
+    "pass_establishes": "The narrowed DPT-R specification and reference stub survived bounded synthetic/adversarial safety-context testing.",
+    "does_not_establish": [
+      "novelty",
+      "biblical truth",
+      "theological consensus",
+      "historical correctness",
+      "empirical efficacy",
+      "clinical usefulness",
+      "financial usefulness",
+      "legal adequacy",
+      "universal optimality",
+      "Track A readiness"
+    ]
+  },
+  "state_pins": {
+    "DPT_R_CORE": "SURVIVED_CONCEPTUALLY",
+    "DPT_R_OPERATIONAL_SAFETY": "PASS",
+    "NOVELTY": "NOT_ESTABLISHED",
+    "PROMOTION": "NOT_AUTHORIZED"
+  },
+  "STOP_AFTER_RESULT": true,
+  "reproduce_command": "py scripts/run_besd_dpt_r_v2_revalidation_v1.py"
+}

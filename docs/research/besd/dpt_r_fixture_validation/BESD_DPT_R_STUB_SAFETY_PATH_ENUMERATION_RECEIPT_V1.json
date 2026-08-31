@@ -1,0 +1,81 @@
+{
+  "schema": "besd_dpt_r_stub_safety_path_enumeration_receipt_v1",
+  "mission": "COMMANDER_BESD_DPT_R_STUB_SAFETY_PATH_ENUMERATION_V1",
+  "keep_triple_product_axis": 3,
+  "generated_at_utc": "2026-08-30T07:59:35.631716+00:00",
+  "status": "HYPO",
+  "tags": [
+    "HYPO",
+    "research_only",
+    "NON_GATING",
+    "B_TRACK"
+  ],
+  "send_gate": "HOLD",
+  "track_a_promotion": "NOT_AUTHORIZED",
+  "theological_validation": "NOT_ESTABLISHED",
+  "empirical_validation": "NOT_ESTABLISHED",
+  "novelty": "NOT_ESTABLISHED",
+  "health_efficacy": "NOT_ESTABLISHED",
+  "bible_diet_wellness_book": "HOLD",
+  "DECIDE_ONE": "BESD_DPT_R_STUB_SAFETY_PATH_ENUMERATION_PASS",
+  "STOP_AFTER_RESULT": true,
+  "inputs": {
+    "stub": "docs/research/besd/dpt_r_fixture_validation/stub/MKM_LOGOS_DYNAMICS_CODEBOOK_V0_1_DPT_STUB.json",
+    "stub_sha256_pre": "98af601072169649628be333adf17dfbd826d83fb4e6d70e582e712643e2b23c",
+    "stub_sha256_post": "12a9434e327e87295a7ef1311ae5b7cc0b46ca871e4a943084d92760612ea3d0",
+    "safety_sidecar": "docs/research/besd/dpt_r_red_team/DPT_R_MINIMAL_SAFETY_SIDECAR_V1.json",
+    "red_team_pack": "docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_RED_TEAM_V1.json",
+    "red_team_DECIDE_ONE": "BESD_DPT_R_RED_TEAM_PASS_WITH_MAJOR_NARROWING",
+    "consolidation_DECIDE_ONE": "BESD_THEORY_CONSOLIDATION_V0_2_PASS",
+    "consolidation_next_mission_was": "HOLD stub safety-path enumeration OR BWH downstream (DPT-R red-team complete)"
+  },
+  "red_team_gaps_addressed": {
+    "missing_operational_rules_cited": [
+      "ABSTAIN under truth uncertainty",
+      "explicit third-party harm constraint",
+      "enumerated EXIT/REPORT/LEGAL_REMEDY/PROTECT paths in operator steps"
+    ],
+    "enumeration_closed": [
+      "EXIT",
+      "REPORT",
+      "LEGAL_REMEDY",
+      "PROTECT",
+      "ABSTAIN"
+    ],
+    "runtime_selection_still_open": true
+  },
+  "firewall_verification": {
+    "R_restoration_to_G": "FORBIDDEN",
+    "theology_to_biology": "FORBIDDEN",
+    "R_to_G_firewall": true,
+    "FIREWALL_PASS": true
+  },
+  "metrics": {
+    "REQUIRED_PATHS_N": 5,
+    "REQUIRED_PRESENT_N": 5,
+    "ENUMERATED_PATHS_N": 16,
+    "MISSING_REQUIRED": [],
+    "RUNTIME_WIRED": false,
+    "OPERATOR_STEPS_MUTATED": false,
+    "FIREWALL_PASS": true
+  },
+  "validation_fails": [],
+  "artifacts_written": [
+    "docs/research/besd/dpt_r_fixture_validation/stub/MKM_LOGOS_DYNAMICS_CODEBOOK_V0_1_DPT_STUB.json",
+    "docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_STUB_SAFETY_PATH_ENUMERATION_V1.json",
+    "docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_STUB_SAFETY_PATH_ENUMERATION_RECEIPT_V1.json"
+  ],
+  "claim_ceiling": {
+    "establishes": "stub documents enumerated safety action paths (research_only)",
+    "does_not_establish": [
+      "novelty",
+      "theological validity",
+      "empirical efficacy",
+      "health/wellness efficacy",
+      "Track A promotion",
+      "runtime leak metrics all zero"
+    ]
+  },
+  "next_mission": "HOLD stub runtime A_feasible wire OR BWH downstream (enumeration documented; leak metrics not yet zeroed on v1 stub runtime)",
+  "reproduce_command": "py scripts/run_besd_dpt_r_stub_safety_path_enumeration_v1.py"
+}

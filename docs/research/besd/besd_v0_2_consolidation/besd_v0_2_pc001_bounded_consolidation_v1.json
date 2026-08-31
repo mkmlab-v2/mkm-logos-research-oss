@@ -1,0 +1,38 @@
+{
+  "schema": "besd_v0_2_pc001_bounded_consolidation_v1",
+  "mission": "COMMANDER_BESD_V0_2_PC001_BOUNDED_SYMBOL_CONSOLIDATION_V1",
+  "generated_at_utc": "2026-08-30T06:39:52.674819+00:00",
+  "summary": {
+    "PC001_APPLIED": true,
+    "PC001_ALREADY_CONSOLIDATED": true,
+    "DIVINE_R_TO_R_OP_RENAME_N": 0,
+    "RESTORATION_R_UNINTENDED_CHANGE_N": 0,
+    "R_TO_G_SEMANTIC_LEAK_N": 0,
+    "FIREWALL_DRIFT_N": 0,
+    "CEM_C2_MUTATION_N": 0,
+    "DPT_R_MUTATION_N": 0,
+    "UNRESOLVED_N": 0
+  },
+  "DECIDE_ONE": "BESD_V0_2_PC001_BOUNDED_CONSOLIDATION_PASS",
+  "claim_ceiling": {
+    "resolves": "notation only (divine R -> R_op)",
+    "does_not_establish": [
+      "BESD v0.2 promotion",
+      "theological validity",
+      "DPT-R validity",
+      "empirical validity",
+      "manuscript readiness"
+    ]
+  },
+  "STOP_AFTER_RESULT": true,
+  "files_changed": [],
+  "semantic_leaks": [],
+  "firewall_drift": [],
+  "notation_contract": {
+    "divine_operator": "R_op",
+    "restoration_practice": "R",
+    "hard_firewall": "R ↛ G (restoration does not produce G)",
+    "eschatological_transition": "M --R_op--> G (conceptual/theological only)"
+  },
+  "reproduce_command": "py scripts/run_besd_v0_2_pc001_bounded_consolidation_v1.py"
+}

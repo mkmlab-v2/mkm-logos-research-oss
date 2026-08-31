@@ -1,0 +1,429 @@
+{
+  "schema": "dpt_r_situated_protocol_v0_1_red_team_v1",
+  "mission": "COMMANDER_DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM_ACK",
+  "generated_at_utc": "PLACEHOLDER",
+  "status": "HYPO",
+  "tags": ["HYPO", "DESIGN_ONLY", "B_TRACK_RESEARCH_ONLY", "NON_GATING"],
+  "send_gate": "HOLD",
+  "design_input": {
+    "path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_DESIGN.md",
+    "sha256": "PLACEHOLDER",
+    "design_only": true
+  },
+  "theory_repaired_during_attack": false,
+  "implementation_script_n": 0,
+  "LOADER_MUTATION_N": 0,
+  "OPERATOR_MUTATION_N": 0,
+  "CODEBOOK_MUTATION_N": 0,
+  "CEM_C2_MUTATION_N": 0,
+  "BESD_CORE_MUTATION_N": 0,
+  "IMPLEMENTATION_SCRIPT_N": 0,
+  "summary": {
+    "FALSE_POSITIVE_COERCION_N": 3,
+    "FALSE_NEGATIVE_COERCION_N": 4,
+    "SAFETY_PRIORITY_FAILURE_N": 2,
+    "TRUTH_UNCERTAINTY_FAILURE_N": 0,
+    "NON_MIMETIC_VACUITY_N": 2,
+    "DIGNITY_ENTITLEMENT_LEAK_N": 3,
+    "GENERIC_POLICY_COLLAPSE_N": 1,
+    "SCOPE_CREEP_N": 0,
+    "PROTOCOL_NONVACUITY": "TRUE_WITH_NARROWING"
+  },
+  "generic_safe_decision_policy_baseline": {
+    "description": "Assess situation → prioritize safety → identify lawful options → choose proportionate action → escalate if repeated or high risk → document when useful.",
+    "dpt_r_mandatory_additions": [
+      "D02 imposed-role hypothesis (not FACT without support)",
+      "D06 role-refusal (reject closed script internalization)",
+      "D07 dignity-invariance (worth ≠ harm received; REPORT/SEEK_HELP ≠ dignity failure)",
+      "D08 non-mimetic control (organizing telos ≠ mirror/revenge script)"
+    ],
+    "collapse_risk": "Checks can be marked not_run or pass trivially if D02 fires on every friction event or D08 defers to post-hoc justification."
+  },
+  "axis_attacks": [
+    {
+      "axis_id": "AXIS1",
+      "name": "FALSE_POSITIVE_IMPOSED_ROLE",
+      "verdict": "PARTIAL_LEAK_RISK",
+      "attacks": [
+        {
+          "case_id": "A1-01",
+          "probe": "Lawful manager gives critical performance feedback with deadline; no humiliation script.",
+          "design_read": "D02 requires social/agentive assignment + closed choice-set. Support may be absent → D10/D04 only.",
+          "failure_mode": "Misreader treats deadline + hierarchy as SUBORDINATE role assignment.",
+          "gap_class": "AMBIGUOUS_RULE",
+          "counts_toward": "FALSE_POSITIVE_COERCION"
+        },
+        {
+          "case_id": "A1-02",
+          "probe": "Creditor requests agreed payment schedule; debtor feels shame.",
+          "design_read": "D02: not merely hard constraint. Debt accountability ≠ R_imposed if no agency-capture script.",
+          "failure_mode": "DEBTOR_WITHOUT_AGENCY candidate over-triggered without humiliation/closed binary.",
+          "gap_class": "AMBIGUOUS_RULE",
+          "counts_toward": "FALSE_POSITIVE_COERCION"
+        },
+        {
+          "case_id": "A1-03",
+          "probe": "Peer disagreement in study group; no authority, no closed binary.",
+          "design_read": "D02 support missing → no creative-resistance steps.",
+          "failure_mode": "observed_coercive_frame field invites over-labeling ordinary disagreement as capture.",
+          "gap_class": "AMBIGUOUS_RULE",
+          "counts_toward": "FALSE_POSITIVE_COERCION"
+        },
+        {
+          "case_id": "A1-04",
+          "probe": "Parent sets bedtime boundary for child (lawful care).",
+          "design_read": "Spec §5.1.3: constraint ≠ R_imposed. Design inherits via locked concepts.",
+          "failure_mode": "None at design ceiling if D02 read with constraint firewall.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        }
+      ]
+    },
+    {
+      "axis_id": "AXIS2",
+      "name": "FALSE_NEGATIVE_COERCION",
+      "verdict": "GAP",
+      "attacks": [
+        {
+          "case_id": "A2-01",
+          "probe": "Economic threat: 'Comply or lose housing' without insults.",
+          "design_read": "D04 table lacks economic-coercion row; D02 may miss without explicit humiliation script.",
+          "failure_mode": "Coercion classified as hard constraint only → under-detection.",
+          "gap_class": "SPEC_GAP",
+          "counts_toward": "FALSE_NEGATIVE_COERCION"
+        },
+        {
+          "case_id": "A2-02",
+          "probe": "Reputational threat: quiet smear campaign, no overt aggression.",
+          "design_read": "No reputational-threat pattern in D02/D04.",
+          "failure_mode": "Overt-aggression bias in illustrative probes (S2).",
+          "gap_class": "SPEC_GAP",
+          "counts_toward": "FALSE_NEGATIVE_COERCION"
+        },
+        {
+          "case_id": "A2-03",
+          "probe": "Dependency coercion (visa sponsor, caregiver control).",
+          "design_read": "Authority asymmetry not enumerated; repeated pattern in D04 helps only after physical contact row.",
+          "failure_mode": "Subtle capture without physical contact under-detected.",
+          "gap_class": "SPEC_GAP",
+          "counts_toward": "FALSE_NEGATIVE_COERCION"
+        },
+        {
+          "case_id": "A2-04",
+          "probe": "Repeated harassment with escalating insults (S2 class).",
+          "design_read": "D04 repeated coercion + S2 probe.",
+          "failure_mode": "None at design level.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        },
+        {
+          "case_id": "A2-05",
+          "probe": "Workplace 'endure or quit' frame (S1 class).",
+          "design_read": "S1 + D02 closed binary.",
+          "failure_mode": "None at design level.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        }
+      ]
+    },
+    {
+      "axis_id": "AXIS3",
+      "name": "SAFETY_PRIORITY",
+      "verdict": "PARTIAL_LEAK_RISK",
+      "attacks": [
+        {
+          "case_id": "A3-01",
+          "probe": "Domestic violence immediate threat.",
+          "design_read": "D04 row 1: EXIT/SEEK_HELP/PROTECT/DEFEND outrank symbolic resistance.",
+          "failure_mode": "None if D04 read before D06-D08.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        },
+        {
+          "case_id": "A3-02",
+          "probe": "Stalking with unknown location safety.",
+          "design_read": "D11: safety cannot be assessed → STOP/ABSTAIN; D04 when assessable favors EXIT/REPORT.",
+          "failure_mode": "None at design ceiling.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        },
+        {
+          "case_id": "A3-03",
+          "probe": "Workplace retaliation risk after REPORT.",
+          "design_read": "D04 lacks retaliation-risk row; EXPOSE_COERCION admissible without unsafe-exposure guard.",
+          "failure_mode": "Symbolic exposure or boundary-only path may delay formal REPORT when retaliation risk is primary.",
+          "gap_class": "SAFETY_GAP",
+          "counts_toward": "SAFETY_PRIORITY_FAILURE"
+        },
+        {
+          "case_id": "A3-04",
+          "probe": "Unsafe public exposure demanded as 'courage'.",
+          "design_read": "EXPOSE_COERCION in action set; D04 does not forbid exposure when visibility unsafe.",
+          "failure_mode": "Dignity/non-mimetic narrative could privilege visible resistance over EXIT.",
+          "gap_class": "SAFETY_GAP",
+          "counts_toward": "SAFETY_PRIORITY_FAILURE"
+        },
+        {
+          "case_id": "A3-05",
+          "probe": "Vulnerable third party in same room.",
+          "design_read": "D04: PROTECT/REPORT outrank agent non-mimetic performance.",
+          "failure_mode": "None at design level.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        }
+      ]
+    },
+    {
+      "axis_id": "AXIS4",
+      "name": "TRUTH_UNCERTAINTY",
+      "verdict": "SURVIVES",
+      "attacks": [
+        {
+          "case_id": "A4-01",
+          "probe": "Conflicting accounts; action depends on who started it.",
+          "design_read": "D03 + D11: ABSTAIN/DEFER; no historical reconstruction as FACT.",
+          "failure_mode": "None.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        },
+        {
+          "case_id": "A4-02",
+          "probe": "Religious certainty vs unresolved evidence.",
+          "design_read": "D03: telos must not override evidence.",
+          "failure_mode": "None at design level.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        },
+        {
+          "case_id": "A4-03",
+          "probe": "Legal context unknown where legally material.",
+          "design_read": "D11 fail-closed; not a legal-advice engine.",
+          "failure_mode": "None.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        },
+        {
+          "case_id": "A4-04",
+          "probe": "Harassment claim with incomplete evidence (probe variation).",
+          "design_read": "Safety may still require EXIT without treating allegation as FACT; D03 limits punitive unique action.",
+          "failure_mode": "None — design separates safety-first from fact adjudication.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        }
+      ]
+    },
+    {
+      "axis_id": "AXIS5",
+      "name": "NON_MIMETIC_VACUITY",
+      "verdict": "VACUITY_RISK",
+      "attacks": [
+        {
+          "case_id": "A5-01",
+          "probe": "Same physical pushback: motive A protective vs motive B revenge.",
+          "design_read": "D08: organizing telos revenge/humiliation-return = fail.",
+          "failure_mode": "Post-hoc 'independently justified' without D09 record discipline.",
+          "gap_class": "VACUITY_RISK",
+          "counts_toward": "NON_MIMETIC_VACUITY"
+        },
+        {
+          "case_id": "A5-02",
+          "probe": "DEFEND_WHEN_JUSTIFIED surface-mirrors opponent strike.",
+          "design_read": "Exception allowed if independently justified.",
+          "failure_mode": "Without operational justification checklist, NON_MIMETIC unfalsifiable at design-only layer.",
+          "gap_class": "IMPLEMENTATION_DEPENDENT",
+          "counts_toward": "NON_MIMETIC_VACUITY"
+        },
+        {
+          "case_id": "A5-03",
+          "probe": "WITHDRAW labeled non-mimetic vs COOPERATE labeled mimetic without script analysis.",
+          "design_read": "D08 default ≠ Mirror(opponent_action); withdrawal is not mirror by definition.",
+          "failure_mode": "None if D06/D08 read together.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        }
+      ]
+    },
+    {
+      "axis_id": "AXIS6",
+      "name": "DIGNITY_MISUSE",
+      "verdict": "PARTIAL_LEAK_RISK",
+      "attacks": [
+        {
+          "case_id": "A6-01",
+          "probe": "Revenge framed as dignity restoration.",
+          "design_read": "D08 fail: revenge as organizing telos.",
+          "failure_mode": "D07 alone does not name revenge; relies on D08 coupling.",
+          "gap_class": "AMBIGUOUS_RULE",
+          "counts_toward": "DIGNITY_ENTITLEMENT_LEAK"
+        },
+        {
+          "case_id": "A6-02",
+          "probe": "Refusal of lawful accountability ('I won't apologize; that lowers dignity').",
+          "design_read": "D07 pass/fail focuses on harm-received worth collapse, not accountability refusal.",
+          "failure_mode": "Dignity language can block lawful authority/accountability.",
+          "gap_class": "SPEC_GAP",
+          "counts_toward": "DIGNITY_ENTITLEMENT_LEAK"
+        },
+        {
+          "case_id": "A6-03",
+          "probe": "Grandiose escalation to 'prove' worth after insult.",
+          "design_read": "D08 'prove strength' fail.",
+          "failure_mode": "Partial — needs explicit ego-defense row.",
+          "gap_class": "AMBIGUOUS_RULE",
+          "counts_toward": "DIGNITY_ENTITLEMENT_LEAK"
+        },
+        {
+          "case_id": "A6-04",
+          "probe": "REPORT/SEEK_HELP treated as shameful.",
+          "design_read": "D07 explicit fail if REPORT/SEEK_HELP treated as dignity failure.",
+          "failure_mode": "None.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        }
+      ]
+    },
+    {
+      "axis_id": "AXIS7",
+      "name": "ACTION_SET_OVERBREADTH",
+      "verdict": "NONVACUOUS_WITH_NARROWING",
+      "attacks": [
+        {
+          "case_id": "A7-01",
+          "probe": "Compare to GENERIC_SAFE_DECISION_POLICY on S2 harassment.",
+          "design_read": "Generic also yields EXIT/REPORT. DPT-R adds D02/D06/D07/D08 mandatory record fields.",
+          "failure_mode": "Marginal delta if checks marked not_run.",
+          "gap_class": "VACUITY_RISK",
+          "counts_toward": "GENERIC_POLICY_COLLAPSE"
+        },
+        {
+          "case_id": "A7-02",
+          "probe": "Low-risk pressure S3 where COOPERATE is best.",
+          "design_read": "D05: COOPERATE admissible; S3 excludes unnecessary emergency REPORT.",
+          "failure_mode": "None — not collapsed to one stereotype.",
+          "gap_class": "NO_ISSUE",
+          "counts_toward": null
+        },
+        {
+          "case_id": "A7-03",
+          "probe": "Can protocol skip imposed-role assessment when safety dominates?",
+          "design_read": "D02: missing support → D04 without full role model allowed.",
+          "failure_mode": "Risk of skipping DPT-R identity entirely on safety path — acceptable if recorded.",
+          "gap_class": "IMPLEMENTATION_DEPENDENT",
+          "counts_toward": null
+        }
+      ],
+      "PROTOCOL_NONVACUITY": "TRUE_WITH_NARROWING",
+      "nonvacuity_rationale": "Structural mandatory gates D02/D06/D07/D08 + D09 record distinguish from generic safe policy; distinctiveness weakens if D02 over-fires or checks are not_run."
+    },
+    {
+      "axis_id": "AXIS8",
+      "name": "PROBE_STRESS_TEST",
+      "verdict": "SURVIVES_AS_PROBE",
+      "note": "Probes are not validation data.",
+      "variations": [
+        {
+          "case_id": "A8-01",
+          "base": "S1 workplace coercion",
+          "variation": "Same workplace instruction but lawful/legitimate (performance plan).",
+          "expected": "D02 support absent or weak → no role-refusal theater; DOCUMENT/COOPERATE admissible.",
+          "result": "PASS_IF_AMBIGUITY_RESOLVED",
+          "gap_class": "AMBIGUOUS_RULE"
+        },
+        {
+          "case_id": "A8-02",
+          "base": "S2 persistent harassment",
+          "variation": "Harassment claim with incomplete evidence.",
+          "expected": "D03/D11 constrain fact-dependent punitive action; D04 still allows safety EXIT.",
+          "result": "PASS",
+          "gap_class": "NO_ISSUE"
+        },
+        {
+          "case_id": "A8-03",
+          "base": "S3 low-risk pressure",
+          "variation": "Cooperation is actually best (group project deadline).",
+          "expected": "COOPERATE admissible; no S2 safety stack.",
+          "result": "PASS",
+          "gap_class": "NO_ISSUE"
+        },
+        {
+          "case_id": "A8-04",
+          "base": "S3",
+          "variation": "Third-party child pressured to participate.",
+          "expected": "D04 elevates PROTECT/REPORT.",
+          "result": "PASS",
+          "gap_class": "NO_ISSUE"
+        },
+        {
+          "case_id": "A8-05",
+          "base": "S1",
+          "variation": "Legal context unknown (reporting whistleblower protection).",
+          "expected": "D11 fail-closed SEEK_COUNSEL; no invented legal strategy.",
+          "result": "PASS",
+          "gap_class": "NO_ISSUE"
+        }
+      ]
+    }
+  ],
+  "gap_register": [
+    {
+      "gap_id": "G-01",
+      "class": "AMBIGUOUS_RULE",
+      "summary": "D02 lacks explicit negative examples for lawful instruction, accountability, ordinary disagreement."
+    },
+    {
+      "gap_id": "G-02",
+      "class": "SPEC_GAP",
+      "summary": "Subtle coercion modes (economic, reputational, dependency) not enumerated in D02/D04."
+    },
+    {
+      "gap_id": "G-03",
+      "class": "SAFETY_GAP",
+      "summary": "Workplace retaliation risk and unsafe public exposure not guarded against EXPOSE/boundary-only delay."
+    },
+    {
+      "gap_id": "G-04",
+      "class": "VACUITY_RISK",
+      "summary": "D08 independent-justification criterion qualitative; post-hoc labeling risk without D09 enforcement."
+    },
+    {
+      "gap_id": "G-05",
+      "class": "SPEC_GAP",
+      "summary": "D07 does not block dignity-as-entitlement against lawful accountability."
+    },
+    {
+      "gap_id": "G-06",
+      "class": "VACUITY_RISK",
+      "summary": "PROTOCOL_NONVACUITY marginal if D09 checks routinely not_run on safety-fast-path."
+    },
+    {
+      "gap_id": "G-07",
+      "class": "IMPLEMENTATION_DEPENDENT",
+      "summary": "NON_MIMETIC falsifiability requires runtime justification record — not testable at design-only layer."
+    }
+  ],
+  "required_narrowing_not_applied": [
+    "Add explicit lawful-instruction / accountability / ordinary-friction negatives to imposed-role detection (future spec revision only).",
+    "Add subtle-coercion pattern hooks (economic, reputational, dependency) without inventing numeric thresholds.",
+    "Add retaliation-risk and unsafe-exposure guards before EXPOSE_COERCION prominence.",
+    "Bind dignity check to accountability compatibility and D08 revenge/ego telos.",
+    "Require D09 nonvacuity fields on any non-ABSTAIN output (future bounded spec)."
+  ],
+  "DECIDE_ONE": "DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM_PASS_WITH_NARROWING",
+  "claim_ceiling": {
+    "pass_means": "Design survived bounded adversarial review without implementation; PROTOCOL_NONVACUITY TRUE_WITH_NARROWING.",
+    "does_not_mean": [
+      "executable protocol",
+      "real-world safety",
+      "legal adequacy",
+      "biblical correctness",
+      "novelty",
+      "empirical efficacy",
+      "clinical usefulness",
+      "coaching usefulness",
+      "product readiness",
+      "compile consistency verified"
+    ]
+  },
+  "STOP_AFTER_RESULT": true,
+  "next_mission": "WAIT_FOR_COMMANDER_DPT_R_SITUATED_PROTOCOL_V0_1_SPEC_REVISION_ACK"
+}

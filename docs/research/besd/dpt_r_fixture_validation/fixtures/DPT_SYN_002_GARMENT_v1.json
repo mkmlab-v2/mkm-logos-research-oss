@@ -1,0 +1,52 @@
+{
+  "schema": "besd_dpt_r_synthetic_fixture_v1",
+  "fixture_id": "DPT_SYN_002_GARMENT",
+  "matthew_anchor": "Matthew 5:40",
+  "domain": "debt_economic_coercion",
+  "R_imposed": "DEBTOR_WITHOUT_AGENCY",
+  "status": "HYPO",
+  "tags": ["HYPO", "research_only", "NON_GATING", "synthetic"],
+  "send_gate": "HOLD",
+  "historical_annotations": {
+    "public_shame_nakedness_scenario": "INTERPRETIVE_RECONSTRUCTION",
+    "all_debt_enforcement_illegitimate": "NOT_REQUIRED"
+  },
+  "initial_state": {
+    "D": 1.0,
+    "A": 0.4,
+    "P": 0.75,
+    "V": 0.3,
+    "L": 0.6,
+    "O": 0.5,
+    "F": 0.45
+  },
+  "context": {
+    "coercion_type": "legalistic_garment_seizure",
+    "opponent_action_t": "demand_outer_garment_as_collateral",
+    "telos": "expose_economic_coercion_without_mimetic_debt_trap",
+    "truth_claim": "coercive_extraction_of_basic_covering",
+    "accountability_preserved": true,
+    "forgiveness_not_debt_erasure": true
+  },
+  "opponent_mirror_action": "withhold_all_assets_in_kind_revenge",
+  "forbidden_operator_outcomes": [
+    "dignity_decreases_with_harm",
+    "forgiveness_equals_debt_erasure",
+    "public_humiliation_mandatory",
+    "literal_nakedness_universal_prescription",
+    "all_debt_enforcement_declared_illegitimate"
+  ],
+  "expected_after_t_dpt": {
+    "R_imposed_detected": true,
+    "R_imposed_rejected": true,
+    "D_invariant": true,
+    "agency_reclaimed": true,
+    "action_is_chosen_not_forced": true,
+    "mimetic_break": true,
+    "selected_action_class": "asymmetric_generosity_with_accountability",
+    "economic_coercion_identifiable": true,
+    "forgiveness_distinct_from_trust": true,
+    "future_option_preserved": true,
+    "historical_contestation_preserved": true
+  }
+}

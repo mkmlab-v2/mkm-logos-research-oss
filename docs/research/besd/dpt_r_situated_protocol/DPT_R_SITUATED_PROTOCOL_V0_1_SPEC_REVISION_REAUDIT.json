@@ -1,0 +1,227 @@
+{
+  "schema": "dpt_r_situated_protocol_v0_1_spec_revision_reaudit_v1",
+  "mission": "COMMANDER_DPT_R_SITUATED_PROTOCOL_V0_1_SPEC_REVISION_REAUDIT_ACK",
+  "generated_at_utc": "PLACEHOLDER",
+  "status": "HYPO",
+  "tags": ["HYPO", "DESIGN_ONLY", "B_TRACK_RESEARCH_ONLY", "NON_GATING"],
+  "send_gate": "HOLD",
+  "inputs_immutable": true,
+  "immutable_inputs": {
+    "design_v0_1": {
+      "path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_DESIGN.md",
+      "sha256": "9b04dda52b45b8a7c1d39ead5d7b8167dfcc4dbf375b81971ad692ba1fa7c791",
+      "mutated": false
+    },
+    "red_team": {
+      "path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM.json",
+      "mutated": false
+    },
+    "revised_spec": {
+      "path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_REVISED.md",
+      "sha256": "52faade8e639a039509bb0a70bb4ba4e687285a4d8ccd82e0d96d6e134def60c",
+      "audit_target": true
+    },
+    "spec_revision_diff": {
+      "path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_SPEC_REVISION_DIFF.json",
+      "sha256": "94373773a713880568b5d6617b24c246b0c762989dd207ccedfa5647b4775fa9"
+    },
+    "spec_revision_receipt": {
+      "path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_SPEC_REVISION_RECEIPT.json"
+    }
+  },
+  "theory_repaired_during_reaudit": false,
+  "implementation_authorized": false,
+  "summary": {
+    "FALSE_POSITIVE_GAP_CLOSED": true,
+    "LATENT_COERCION_GAP_CLOSED": true,
+    "SAFETY_PRECEDENCE_GAP_CLOSED": true,
+    "NON_MIMETIC_VACUITY_GAP_CLOSED": true,
+    "DIGNITY_ENTITLEMENT_GAP_CLOSED": true,
+    "NON_DPT_OUTPUT_GAP_CLOSED": true,
+    "PROBE_STATUS_GAP_CLOSED": true,
+    "PROTOCOL_NONVACUITY_REAUDIT": "TRUE",
+    "UNRELATED_THEORY_ADDITION_N": 0,
+    "UNAUTHORIZED_SCOPE_EXPANSION_N": 0,
+    "IMPLEMENTATION_SCRIPT_N": 0,
+    "LOADER_MUTATION_N": 0,
+    "OPERATOR_MUTATION_N": 0,
+    "CODEBOOK_MUTATION_N": 0,
+    "BESD_CORE_MUTATION_N": 0,
+    "CEM_C2_MUTATION_N": 0
+  },
+  "reaudit_targets": [
+    {
+      "target_id": "RT1",
+      "name": "FALSE_POSITIVE_COERCION",
+      "red_team_gap": "G-01",
+      "revision_ids": ["R1", "R7"],
+      "verdict": "CLOSED",
+      "evidence": [
+        "REVISED D02-A: PRESSURE, DISAGREEMENT, ACCOUNTABILITY, LAWFUL_AUTHORITY != coercion",
+        "REVISED D02-C: detect only if D02-B + not explained by D02-A alone",
+        "REVISED D10-B: NO_COERCIVE_ROLE_ESTABLISHED terminal output",
+        "S1 lawful performance-plan variant explicitly routes to NO_COERCIVE_ROLE_ESTABLISHED"
+      ],
+      "fail_condition_met": false
+    },
+    {
+      "target_id": "RT2",
+      "name": "LATENT_COERCION",
+      "red_team_gap": "G-02",
+      "revision_ids": ["R2"],
+      "verdict": "CLOSED",
+      "evidence": [
+        "REVISED D01: latent_coercion_signals field",
+        "REVISED D02-B: economic, reputational, institutional, relational, pattern, retaliation, asymmetry, vulnerable-person dependency",
+        "REVISED D01/D02: asymmetry alone != coercion; exploited asymmetry required",
+        "Requires contextual evidence; no auto-conclude"
+      ],
+      "fail_condition_met": false
+    },
+    {
+      "target_id": "RT3",
+      "name": "SAFETY_PRECEDENCE",
+      "red_team_gap": "G-03",
+      "revision_ids": ["R3"],
+      "verdict": "CLOSED",
+      "evidence": [
+        "REVISED D04-A: SAFETY_GATE precedes EXPOSE_COERCION / symbolic resistance",
+        "First-output list includes EXIT, WITHDRAW, SEEK_HELP, REPORT, PROTECT, LEGAL_REMEDY, EMERGENCY_RESPONSE, DEFEND_WHEN_JUSTIFIED",
+        "EXPOSE_COERCION never mandatory",
+        "Retaliation row: unsafe public exposure not default",
+        "Boundary phrase must not delay protection when safety gate fires"
+      ],
+      "fail_condition_met": false
+    },
+    {
+      "target_id": "RT4",
+      "name": "NON_MIMETIC_CRITERION",
+      "red_team_gap": "G-04",
+      "revision_ids": ["R4"],
+      "verdict": "CLOSED_AT_SPEC_LAYER",
+      "evidence": [
+        "REVISED D08-A explicitly rejects outward-difference-only test",
+        "REVISED D08-B counterfactual independent justification probe",
+        "Same outward action may be non-mimetic; different action may be opponent-controlled",
+        "D09-A field 5 requires counterfactual answer on non-abstain DPT-R records"
+      ],
+      "residual": "G-07 runtime falsifiability remains implementation-dependent",
+      "fail_condition_met": false
+    },
+    {
+      "target_id": "RT5",
+      "name": "DPT_SPECIFIC_NONVACUITY",
+      "red_team_gap": "G-06",
+      "revision_ids": ["R5", "R7"],
+      "verdict": "CLOSED",
+      "evidence": [
+        "REVISED D09-A lists all six mandatory fields",
+        "REVISED D09-B: DPT_SPECIFIC_CONTRIBUTION = NOT_DEMONSTRATED",
+        "REVISED D10-B: do not force DPT-R label",
+        "Safety-fast-path must still document D09 fields 3-6"
+      ],
+      "fail_condition_met": false
+    },
+    {
+      "target_id": "RT6",
+      "name": "DIGNITY_FIREWALL",
+      "red_team_gap": "G-05",
+      "revision_ids": ["R6"],
+      "verdict": "CLOSED",
+      "evidence": [
+        "REVISED D07-B lists accountability, criticism, lawful authority, preferred outcome, moral superiority, revenge exclusions",
+        "Dignity for agent, opponent, third parties",
+        "REVISED D06: role refusal != lawful accountability refusal"
+      ],
+      "fail_condition_met": false
+    },
+    {
+      "target_id": "RT7",
+      "name": "NON_DPT_OUTPUTS",
+      "red_team_gap": "G-01",
+      "revision_ids": ["R7"],
+      "verdict": "CLOSED",
+      "evidence": [
+        "REVISED D10-B: all four outputs first-class terminal conclusions",
+        "Labeled not protocol failure",
+        "Core rule Conflict != DPT-R at document top"
+      ],
+      "outputs_verified": [
+        "NO_COERCIVE_ROLE_ESTABLISHED",
+        "NO_DPT_R_INTERVENTION_INDICATED",
+        "ABSTAIN_INSUFFICIENT_INFORMATION",
+        "GENERIC_SAFETY_RESPONSE_ONLY"
+      ],
+      "fail_condition_met": false
+    },
+    {
+      "target_id": "RT8",
+      "name": "PROBE_HYGIENE",
+      "red_team_gap": null,
+      "revision_ids": ["R8"],
+      "verdict": "CLOSED",
+      "evidence": [
+        "REVISED compile section header EXAMPLE_PROBE_ONLY",
+        "Explicit not validation data / gold / empirical / exhaustive",
+        "S1-S3 each tagged EXAMPLE_PROBE_ONLY"
+      ],
+      "fail_condition_met": false
+    }
+  ],
+  "nonvacuity_recheck": {
+    "generic_safe_policy": "Assess situation → prioritize safety → lawful options → proportionate action → escalate → document.",
+    "dpt_r_revised_additions": [
+      "D02 imposed-role assessment with D02-A negatives and D02-B mechanisms",
+      "D07 dignity invariant + D07-B entitlement firewall",
+      "D08-B independent non-mimetic justification (not surface difference)",
+      "D09 mandatory record + NOT_DEMONSTRATED escape",
+      "D10 non-DPT terminal outputs without forcing constructs"
+    ],
+    "collapse_avoided": "Revision explicitly permits NON_DPT outputs and NOT_DEMONSTRATED; does not route all conflict into DPT-R.",
+    "PROTOCOL_NONVACUITY_REAUDIT": "TRUE"
+  },
+  "diff_discipline": {
+    "red_team_gaps_targeted": ["G-01", "G-02", "G-03", "G-04", "G-05", "G-06", "G-07"],
+    "revision_to_gap_mapping_complete": true,
+    "UNRELATED_THEORY_ADDITION_N": 0,
+    "UNAUTHORIZED_SCOPE_EXPANSION_N": 0,
+    "notes": [
+      "EMERGENCY_RESPONSE is design alias within R3-authorized safety precedence; not new BESD operator",
+      "Conflict != DPT-R is operational narrowing (R7), not kernel theory expansion"
+    ]
+  },
+  "gap_closure_matrix": {
+    "G-01": { "closed": true, "via": ["R1", "R7"] },
+    "G-02": { "closed": true, "via": ["R2"] },
+    "G-03": { "closed": true, "via": ["R3"] },
+    "G-04": { "closed": true, "via": ["R4", "R5"] },
+    "G-05": { "closed": true, "via": ["R6"] },
+    "G-06": { "closed": true, "via": ["R5", "R7"] },
+    "G-07": { "closed": "SPEC_LAYER_ONLY", "via": ["R4", "R5"], "residual": "runtime enforcement not testable without implementation" }
+  },
+  "residual_gaps": [
+    "G-07 implementation-dependent non-mimetic falsifiability",
+    "compile consistency not verified",
+    "example probes not validation data",
+    "no executable protocol"
+  ],
+  "DECIDE_ONE": "DPT_R_SITUATED_PROTOCOL_V0_1_SPEC_REVISION_REAUDIT_PASS_WITH_GAPS",
+  "claim_ceiling": {
+    "pass_means": "Revised design closes bounded red-team gaps at spec layer without unauthorized theory or implementation expansion; non-DPT outputs preserved; nonvacuity TRUE.",
+    "does_not_mean": [
+      "executable protocol",
+      "compile/runtime validity",
+      "real-world safety",
+      "empirical efficacy",
+      "legal adequacy",
+      "clinical usefulness",
+      "coaching usefulness",
+      "novelty",
+      "theological consensus",
+      "product readiness",
+      "auto-implement authorization"
+    ]
+  },
+  "STOP_AFTER_RESULT": true,
+  "next_mission": "HOLD_FOR_IMPLEMENTATION_DECISION"
+}

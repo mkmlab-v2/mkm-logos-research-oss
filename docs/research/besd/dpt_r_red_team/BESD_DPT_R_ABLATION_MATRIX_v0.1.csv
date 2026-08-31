@@ -1,0 +1,7 @@
+ablation_id,principle_removed,collapse_to,structural_function_collapses,distinctiveness_lost,independence_from_remainder,kernel_membership,notes
+A1,Agency_Sovereignty,Wink-like Role Refusal + Dignity + Non-Mimetic still runnable on cheek/garment/mile fixtures,false,false,WEAK,EXCLUDED_FROM_KERNEL,Meta-label largely redundant with Role Refusal; autonomism leak if Truth/Context in pi not operationalized
+A2,Role_Refusal,Passive endurance / soft nonviolence / subordinate internalization of R_imposed,true,true,STRONG,KERNEL,Primary IR object lost; fails 'beyond respond nonviolently well' test
+A3,Dignity_Invariance,Strategic nonviolence / performance moralism / Sharp-style utility NV without dignity floor,true,true,STRONG,KERNEL,Hard N-constraint; without it DPT-R becomes tactic not dignity-preserving transform
+A4,Mimetic_Break,Dignity-framed revenge / generous-TFT retaliation / autonomist mirror,true,true,STRONG,KERNEL,Without non-mimetic structural forbid Role Refusal can authorize mirror violence
+A5,Coercion_Exposure,Third-way action without public unveiling of coercion; quiet resistance still possible,false,false,MODERATE,OUTER_RING,Already conditional in stub; enhancement not kernel
+A6,Preserve_Option_Value,Single-shot conflict ethics; forgiveness/trust distinction weakened but immediate T_DPT still defined,false,false,MODERATE,OUTER_RING,L4 hygiene; ablation does not collapse Detect+Dignity+Non-Mimetic core

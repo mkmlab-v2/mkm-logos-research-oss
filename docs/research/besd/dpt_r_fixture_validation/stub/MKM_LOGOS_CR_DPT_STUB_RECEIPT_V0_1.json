@@ -1,0 +1,17 @@
+{
+  "schema": "mkm_logos_cr_dpt_stub_receipt_v0_1",
+  "mission": "BESD_V0_2_DPT_STUB_MATERIALIZATION",
+  "generated_at_utc": "2026-08-30T06:39:53.171081+00:00",
+  "status": "DPT_R_B_TRACK_STUB_MATERIALIZED",
+  "base_codebook_mutation": false,
+  "send_gate": "HOLD",
+  "artifacts": {
+    "sidecar": "C:/workspace/docs/research/besd/dpt_r_fixture_validation/stub/MKM_LOGOS_DYNAMICS_CODEBOOK_V0_1_DPT_STUB.json",
+    "fixtures_bundle": "C:/workspace/docs/research/besd/dpt_r_fixture_validation/stub/MKM_LOGOS_CR_DPT_TRANSFORM_SYNTHETIC_FIXTURES_V0_1.json",
+    "individual_fixtures": [
+      "C:/workspace/docs/research/besd/dpt_r_fixture_validation/fixtures/DPT_SYN_001_CHEEK_v1.json",
+      "C:/workspace/docs/research/besd/dpt_r_fixture_validation/fixtures/DPT_SYN_002_GARMENT_v1.json",
+      "C:/workspace/docs/research/besd/dpt_r_fixture_validation/fixtures/DPT_SYN_003_MILE_v1.json"
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "mkm_logos_dynamics_codebook_v0_1_dpt_stub",
+  "sidecar_type": "additive_b_track_extension",
+  "base_codebook_ref": "docs/research/moonshot_pccc_dynamics_ad/ad1_logos/MKM_LOGOS_DYNAMICS_CODEBOOK_V0.json",
+  "base_codebook_mutation": false,
+  "safety_sidecar": "docs/research/besd/dpt_r_red_team/DPT_R_MINIMAL_SAFETY_SIDECAR_V1.json",
+  "status": "DPT_R_B_TRACK_STUB_MATERIALIZED",
+  "tags": [
+    "HYPO",
+    "research_only",
+    "NON_GATING",
+    "B_TRACK"
+  ],
+  "send_gate": "HOLD",
+  "generated_at_utc": "2026-08-30T06:39:53.170081+00:00",
+  "operator": {
+    "code": "LOGOS.CR.DPT_TRANSFORM",
+    "version": "T_DPT_v1_hypo",
+    "meta_control_law": "a_(t+1) = pi(Telos, Dignity, Truth, Context)",
+    "steps": [
+      "Detect(R_imposed)",
+      "Assert(Dignity_Invariance)",
+      "Reject(R_imposed)",
+      "Reclaim_Agency",
+      "Enforce_Mimetic_Break",
+      "Expose_Coercion",
+      "Preserve_Future_Option_Value"
+    ]
+  },
+  "besd_firewall_refs": {
+    "R_op_notation": "divine operator distinct from restoration R",
+    "R_restoration_to_G": "FORBIDDEN",
+    "dignity_invariant": "D(t) >= 1.0",
+    "theology_to_biology": "FORBIDDEN"
+  },
+  "claim_ceiling": {
+    "does_not_establish": [
+      "DPT-R truth",
+      "DPT-R efficacy",
+      "theological consensus",
+      "Track A promotion"
+    ]
+  },
+  "operator_safety_path_enumeration": {
+    "required_paths": [
+      "EXIT",
+      "REPORT",
+      "LEGAL_REMEDY",
+      "PROTECT",
+      "ABSTAIN"
+    ],
+    "enumerated_paths": [
+      "ABSTAIN",
+      "DEFER",
+      "SEEK_INFORMATION",
+      "SEEK_COUNSEL",
+      "WITHDRAW",
+      "EXIT",
+      "SEEK_HELP",
+      "REPORT",
+      "PROTECT",
+      "PROTECT_SELF",
+      "PROTECT_THIRD_PARTY",
+      "LEGAL_REMEDY",
+      "INSTITUTIONAL_INTERVENTION",
+      "DEFEND_WHEN_JUSTIFIED",
+      "PHYSICAL_SELF_PROTECTION_WHEN_JUSTIFIED",
+      "SILENCE"
+    ],
+    "source_artifact": "docs/research/besd/dpt_r_fixture_validation/BESD_DPT_R_STUB_SAFETY_PATH_ENUMERATION_V1.json",
+    "safety_sidecar": "docs/research/besd/dpt_r_red_team/DPT_R_MINIMAL_SAFETY_SIDECAR_V1.json",
+    "operator_steps_mutated": false,
+    "runtime_wired": false,
+    "note": "Enumeration cite-only; selection remains out-of-band until stub runtime upgrade."
+  },
+  "safety_path_enumeration_status": "ENUMERATED_DOCUMENTED_RUNTIME_NOT_WIRED"
+}

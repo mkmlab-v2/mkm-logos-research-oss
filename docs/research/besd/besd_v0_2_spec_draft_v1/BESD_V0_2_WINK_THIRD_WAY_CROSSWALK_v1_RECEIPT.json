@@ -1,0 +1,19 @@
+{
+  "schema": "besd_v0_2_wink_third_way_crosswalk_receipt_v1",
+  "artifact": "BESD_V0_2_WINK_THIRD_WAY_CROSSWALK_v1.md",
+  "artifact_path": "docs/research/besd/besd_v0_2_spec_draft_v1/BESD_V0_2_WINK_THIRD_WAY_CROSSWALK_v1.md",
+  "parent_spec": "docs/research/besd/besd_v0_2_spec_draft_v1/BESD_V0_2_SPEC_DRAFT.md",
+  "parent_section": "7.1 sidecar (adjacent §7–§8)",
+  "created_utc": "2026-08-30T06:10:00+00:00",
+  "status": "BESD_V0_2_WINK_CROSSWALK_MATERIALIZED",
+  "track": "B",
+  "tags": ["HYPO", "research_only", "NON_GATING", "logos", "besd", "CONTESTED"],
+  "evidence_ceiling": "STRUCTURAL_THEOLOGICAL_ANALOG_ONLY",
+  "send_gate": "HOLD",
+  "dpt_r_status": "HYPO",
+  "empirical_validation": "NOT_ESTABLISHED",
+  "clinical_promotion": "NOT_AUTHORIZED",
+  "promotion_status": "NOT_AUTHORIZED",
+  "mutates_parent_spec": false,
+  "sidecar": true
+}

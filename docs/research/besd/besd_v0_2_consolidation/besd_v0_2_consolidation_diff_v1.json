@@ -1,0 +1,206 @@
+{
+  "schema": "besd_v0_2_consolidation_diff_v1",
+  "mission": "COMMANDER_BESD_V0_2_DIFF_ONLY_CONSOLIDATION_AUDIT_V1",
+  "generated_at_utc": "2026-08-30T06:39:52.927230+00:00",
+  "v0_1_corpus_root": "c:/workspace/reports/track_c/cem_v0.1/besd_v0.1",
+  "v0_2_spec_path": "c:/workspace/docs/research/besd/besd_v0_2_spec_draft_v1/BESD_V0_2_SPEC_DRAFT.md",
+  "v0_2_spec_present": true,
+  "summary": {
+    "V01_SCANNED": true,
+    "FILES_SCANNED_N": 26,
+    "EXACT_CONFLICT_N": 0,
+    "SEMANTIC_CONFLICT_N": 0,
+    "UNRESOLVED_N": 0,
+    "R_TO_G_LEAK_N": 1,
+    "THEOLOGY_TO_PHYSIOLOGY_LEAK_N": 0,
+    "DIGNITY_COLLAPSE_N": 0,
+    "DAOIST_EQUIVALENCE_LEAK_N": 0,
+    "CAUSAL_OVERREACH_N": 0,
+    "DPT_R_PREMATURE_PROMOTION_N": 0,
+    "CEM_C2_MUTATION_N": 0,
+    "BASE_V01_MUTATION_N": 0,
+    "V02_SPEC_MUTATION_N": 0
+  },
+  "DECIDE_ONE": "BESD_V0_2_CONSOLIDATION_DIFF_PASS",
+  "claim_ceiling": {
+    "establishes": "semantic diff between legacy BESD v0.1 and v0.2 theory firewall only",
+    "does_not_establish": [
+      "v0.2 promotion",
+      "theological validity",
+      "DPT-R validity",
+      "empirical validity",
+      "manuscript readiness"
+    ]
+  },
+  "STOP_AFTER_RESULT": true,
+  "files_scanned": [
+    {
+      "path": "BESD_BIBLICAL_AUDIT_RECEIPT_v0.1.json",
+      "corpus": "v0.1_primary",
+      "bytes": 5071
+    },
+    {
+      "path": "BESD_BIBLICAL_SOURCE_AND_THEOLOGICAL_AUDIT_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 5992
+    },
+    {
+      "path": "BESD_BIBLICAL_SOURCE_COORDINATE_MATRIX_v0.1.csv",
+      "corpus": "v0.1_primary",
+      "bytes": 10100
+    },
+    {
+      "path": "BESD_CHRISTIAN_DAOIST_TRANSFORMATION_OPERATOR_MAP_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 4479
+    },
+    {
+      "path": "BESD_COORDINATE_AND_TRANSITION_MAP_RECEIPT_v0.1.json",
+      "corpus": "v0.1_primary",
+      "bytes": 2669
+    },
+    {
+      "path": "BESD_COORDINATE_MAP_v0.1.csv",
+      "corpus": "v0.1_primary",
+      "bytes": 6960
+    },
+    {
+      "path": "BESD_COORDINATE_MAP_v0.2.csv",
+      "corpus": "v0.1_primary",
+      "bytes": 8638
+    },
+    {
+      "path": "BESD_COORDINATE_THEOLOGICAL_VERDICT_v0.1.csv",
+      "corpus": "v0.1_primary",
+      "bytes": 4225
+    },
+    {
+      "path": "BESD_CORE_CONSTRUCT_THEOLOGICAL_VERDICT_v0.1.json",
+      "corpus": "v0.1_primary",
+      "bytes": 4669
+    },
+    {
+      "path": "BESD_DOWNSTREAM_CEM_BWH_POINTERS_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 3087
+    },
+    {
+      "path": "BESD_FORBIDDEN_MAPPING_LEDGER_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 3622
+    },
+    {
+      "path": "BESD_HARD_FIREWALL_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 2320
+    },
+    {
+      "path": "BESD_INSIGHT_LEDGER_v0.1.csv",
+      "corpus": "v0.1_primary",
+      "bytes": 3688
+    },
+    {
+      "path": "BESD_LANE_STATE_v0.1.json",
+      "corpus": "v0.1_primary",
+      "bytes": 5908
+    },
+    {
+      "path": "BESD_PATCH_TA_001_010_DECISION_MATRIX_v0.1.csv",
+      "corpus": "v0.1_primary",
+      "bytes": 2429
+    },
+    {
+      "path": "BESD_PATCHED_COORDINATE_MAP_v0.2_candidate.csv",
+      "corpus": "v0.2_candidate_in_v01_tree",
+      "bytes": 8638
+    },
+    {
+      "path": "BESD_PATCHED_STATE_TRANSITION_MODEL_v0.2_candidate.md",
+      "corpus": "v0.2_candidate_in_v01_tree",
+      "bytes": 7938
+    },
+    {
+      "path": "BESD_PROOF_TEXTING_AND_EISEGESIS_SCAN_v0.1.json",
+      "corpus": "v0.1_primary",
+      "bytes": 3519
+    },
+    {
+      "path": "BESD_STATE_TRANSITION_MODEL_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 6089
+    },
+    {
+      "path": "BESD_STATE_TRANSITION_MODEL_v0.2.md",
+      "corpus": "v0.1_primary",
+      "bytes": 7890
+    },
+    {
+      "path": "BESD_THEOLOGICAL_PATCH_ADJUDICATION_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 14660
+    },
+    {
+      "path": "BESD_THEOLOGICAL_PATCH_DIFF_AUDIT_v0.1.json",
+      "corpus": "v0.1_primary",
+      "bytes": 5349
+    },
+    {
+      "path": "BESD_THEOLOGICAL_PATCH_REAUDIT_v0.1.json",
+      "corpus": "v0.1_primary",
+      "bytes": 4146
+    },
+    {
+      "path": "BESD_THEOLOGICAL_PATCH_RECEIPT_v0.1.json",
+      "corpus": "v0.1_primary",
+      "bytes": 6052
+    },
+    {
+      "path": "BESD_THEOLOGICAL_PATCHSET_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 5253
+    },
+    {
+      "path": "BESD_THEOLOGICAL_RISK_REGISTER_v0.1.md",
+      "corpus": "v0.1_primary",
+      "bytes": 3038
+    }
+  ],
+  "conflicts": [
+    {
+      "source_file": "BESD_STATE_TRANSITION_MODEL_v0.1.md",
+      "corpus": "v0.1_primary",
+      "location": "lines 74-78",
+      "legacy_text": "M --R_op--> G where R_op = divine resurrection/transformation",
+      "conflict_family": "F02_R_TO_G_LEAK",
+      "v0_2_firewall_violated": "Notation: R (divine operator) vs v0.2 R (Restoration)",
+      "classification": "RESOLVED",
+      "minimal_disposition": "NARROW",
+      "note": "PC-001 applied: divine operator renamed R_op; restoration R unchanged.",
+      "resolution_in_v02_candidate": "BESD_PATCHED_STATE_TRANSITION_MODEL_v0.2_candidate.md"
+    }
+  ],
+  "patch_candidates": [
+    {
+      "id": "PC-001",
+      "target": "BESD_STATE_TRANSITION_MODEL_v0.1.md",
+      "issue": "Divine resurrection operator labeled R collides with v0.2 Restoration R",
+      "disposition": "NARROW",
+      "action": "Consolidation pass: rename to R_op everywhere (out of scope for this audit)"
+    },
+    {
+      "id": "PC-002",
+      "target": "BESD_PATCHED_STATE_TRANSITION_MODEL_v0.2_candidate.md",
+      "issue": "Proleptic embodiment HIGH overreach risk without paired firewall",
+      "disposition": "KEEP_WITH_QUALIFIER",
+      "action": "v0.2_candidate already mandates Layer R ↛ G pairing in same paragraph"
+    }
+  ],
+  "negative_findings": {
+    "F01_resurrection_health_conflation_in_primary_v01": 0,
+    "F03_theology_physiology_positive_claims": 0,
+    "F04_dignity_collapse": 0,
+    "F06_besd_efficacy_attribution": 0,
+    "F07_dpt_r_premature": 0,
+    "note": "v0.1 primary corpus already encodes Layer 2↛3 / R↛G / G≠max(M) firewalls; no FORBIDDEN_SENTENCES ledger exact matches in affirmative form."
+  }
+}

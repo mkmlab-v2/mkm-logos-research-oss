@@ -1,0 +1,92 @@
+{
+  "schema": "dpt_r_situated_protocol_v0_1_spec_revision_diff_v1",
+  "mission": "COMMANDER_DPT_R_SITUATED_PROTOCOL_V0_1_SPEC_REVISION_ACK",
+  "generated_at_utc": "PLACEHOLDER",
+  "prior_artifact": {
+    "path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_DESIGN.md",
+    "sha256": "9b04dda52b45b8a7c1d39ead5d7b8167dfcc4dbf375b81971ad692ba1fa7c791"
+  },
+  "revised_artifact": {
+    "path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_REVISED.md",
+    "sha256": "PLACEHOLDER"
+  },
+  "red_team_input": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM.json",
+  "theory_repaired_beyond_red_team_scope": false,
+  "UNRELATED_THEORY_ADDITION_N": 0,
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "target": "D02",
+      "red_team_gaps": ["G-01"],
+      "disposition": ["CLARIFY", "ADD_FAIL_CLOSED", "ADD_NEGATIVE_OUTPUT"],
+      "summary": "PRESSURE/DISAGREEMENT/ACCOUNTABILITY/LAWFUL_AUTHORITY != COERCION; coercive mechanism evidence list; uncertain -> ABSTAIN/SEEK_INFORMATION/SEEK_COUNSEL"
+    },
+    {
+      "revision_id": "R2",
+      "target": "D01,D02",
+      "red_team_gaps": ["G-02"],
+      "disposition": ["NARROW", "CLARIFY"],
+      "summary": "latent_coercion_signals field; explicit inspect economic/reputational/institutional/relational/pattern/retaliation/asymmetry; asymmetry alone != coercion"
+    },
+    {
+      "revision_id": "R3",
+      "target": "D01,D04",
+      "red_team_gaps": ["G-03"],
+      "disposition": ["ADD_PRECEDENCE_RULE", "NARROW"],
+      "summary": "SAFETY_GATE precedes EXPOSE_COERCION; retaliation_risk field; EXPOSE never mandatory; EMERGENCY_RESPONSE alias; unsafe exposure not default"
+    },
+    {
+      "revision_id": "R4",
+      "target": "D08",
+      "red_team_gaps": ["G-04", "G-07"],
+      "disposition": ["NARROW", "CLARIFY"],
+      "summary": "independent justification counterfactual test; surface-difference rejected as sole criterion; not empirically validated disclaimer"
+    },
+    {
+      "revision_id": "R5",
+      "target": "D09",
+      "red_team_gaps": ["G-06"],
+      "disposition": ["NARROW", "ADD_FAIL_CLOSED"],
+      "summary": "six mandatory record fields; DPT_SPECIFIC_CONTRIBUTION=NOT_DEMONSTRATED; safety-fast-path must still document gates 3-6"
+    },
+    {
+      "revision_id": "R6",
+      "target": "D06,D07",
+      "red_team_gaps": ["G-05"],
+      "disposition": ["ADD_FAIL_CLOSED", "CLARIFY"],
+      "summary": "dignity != entitlement firewall; role refusal != lawful accountability refusal; dignity for agent/opponent/third parties"
+    },
+    {
+      "revision_id": "R7",
+      "target": "D10",
+      "red_team_gaps": ["G-01", "G-06"],
+      "disposition": ["ADD_NEGATIVE_OUTPUT", "CLARIFY"],
+      "summary": "NO_COERCIVE_ROLE_ESTABLISHED; NO_DPT_R_INTERVENTION_INDICATED; ABSTAIN_INSUFFICIENT_INFORMATION; GENERIC_SAFETY_RESPONSE_ONLY; Conflict != DPT-R"
+    },
+    {
+      "revision_id": "R8",
+      "target": "compile_probes",
+      "red_team_gaps": [],
+      "disposition": ["CLARIFY"],
+      "summary": "S1-S3 labeled EXAMPLE_PROBE_ONLY; not validation data; do not tune spec to probes"
+    }
+  ],
+  "section_diff_summary": {
+    "D01": "ADD retaliation_risk, latent_coercion_signals; CLARIFY asymmetry alone != coercion",
+    "D02": "SPLIT D02-A negatives, D02-B mechanisms, D02-C decision; MAJOR revision",
+    "D03": "unchanged substance",
+    "D04": "ADD D04-A SAFETY_GATE precedence; ADD retaliation row; MAJOR revision",
+    "D05": "unchanged substance",
+    "D06": "ADD lawful accountability boundary (R6)",
+    "D07": "ADD D07-B entitlement firewall (R6)",
+    "D08": "REPLACE vacuity-prone mirror-only test with D08-B counterfactual (R4)",
+    "D09": "REPLACE v0_1 record with mandatory six fields + DPT_SPECIFIC_CONTRIBUTION (R5)",
+    "D10": "ADD D10-B non-DPT terminal outputs (R7)",
+    "D11": "ADD retaliation uncertainty fail-closed",
+    "D12": "UPDATE claim ceiling for spec revision mission"
+  },
+  "RED_TEAM_GAPS_TARGETED_N": 7,
+  "gaps_not_fully_closed_at_spec_layer": [
+    "G-07 implementation-dependent non-mimetic falsifiability remains until runtime reaudit"
+  ]
+}

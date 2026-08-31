@@ -1,0 +1,53 @@
+{
+  "schema": "besd_dpt_r_synthetic_fixture_v1",
+  "fixture_id": "DPT_SYN_001_CHEEK",
+  "matthew_anchor": "Matthew 5:39",
+  "john_anchor_compat": "John 18:22-23",
+  "domain": "status_humiliation",
+  "R_imposed": "SUBORDINATE",
+  "status": "HYPO",
+  "tags": ["HYPO", "research_only", "NON_GATING", "synthetic"],
+  "send_gate": "HOLD",
+  "historical_annotations": {
+    "wink_backhand_equal_status": "PLAUSIBLE_CONTESTED",
+    "literal_second_cheek_all_assaults": "NOT_REQUIRED"
+  },
+  "initial_state": {
+    "D": 1.0,
+    "A": 0.35,
+    "P": 0.8,
+    "V": 0.6,
+    "L": 0.5,
+    "O": 0.4,
+    "F": 0.5
+  },
+  "context": {
+    "coercion_type": "physical_strike_status_humiliation",
+    "opponent_action_t": "strike_right_cheek",
+    "telos": "preserve_dignity_and_truth_without_retaliatory_script",
+    "truth_claim": "unjust_strike_without_legitimate_cause",
+    "safety_constraint": "exit_if_escalating_physical_danger",
+    "legitimacy_challenge_allowed": true
+  },
+  "opponent_mirror_action": "strike_back",
+  "forbidden_operator_outcomes": [
+    "dignity_decreases_with_harm",
+    "mirror_retaliation_required",
+    "literal_second_cheek_mandatory_all_contexts",
+    "silent_passive_acceptance_only",
+    "wink_reconstruction_as_fact",
+    "unsafe_passivity_required"
+  ],
+  "expected_after_t_dpt": {
+    "R_imposed_detected": true,
+    "R_imposed_rejected": true,
+    "D_invariant": true,
+    "agency_reclaimed": true,
+    "action_is_chosen_not_forced": true,
+    "mimetic_break": true,
+    "selected_action_class": "legitimacy_challenge_without_mirror_violence",
+    "forgiveness_distinct_from_trust": true,
+    "future_option_preserved": true,
+    "historical_contestation_preserved": true
+  }
+}

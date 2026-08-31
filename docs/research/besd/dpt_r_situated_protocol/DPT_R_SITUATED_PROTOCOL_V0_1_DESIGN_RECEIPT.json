@@ -1,0 +1,84 @@
+{
+  "schema": "dpt_r_situated_protocol_v0_1_design_receipt",
+  "mission": "COMMANDER_DPT_R_SITUATED_PROTOCOL_V0_1_DESIGN_ACK",
+  "generated_at_utc": "PLACEHOLDER",
+  "status": "HYPO",
+  "tags": ["HYPO", "B_TRACK_RESEARCH_ONLY", "NON_GATING"],
+  "send_gate": "HOLD",
+  "DESIGN_ONLY": true,
+  "LOADER_MUTATION_N": 0,
+  "OPERATOR_MUTATION_N": 0,
+  "CODEBOOK_MUTATION_N": 0,
+  "CEM_C2_MUTATION_N": 0,
+  "BESD_CORE_MUTATION_N": 0,
+  "PROTOCOL_EXECUTION": "NOT_AUTHORIZED",
+  "EMPIRICAL_VALIDITY": "NOT_ESTABLISHED",
+  "LEGAL_ADEQUACY": "NOT_ESTABLISHED",
+  "CLINICAL_USE": "NOT_AUTHORIZED",
+  "FINANCIAL_USE": "NOT_AUTHORIZED",
+  "track_a_promotion": "NOT_AUTHORIZED",
+  "novelty": "NOT_ESTABLISHED",
+  "biblical_validity": "NOT_ESTABLISHED",
+  "compile_consistency": "NOT_VERIFIED",
+  "behavior_change": "NOT_VERIFIED",
+  "cbt_dbt_act_superiority": "NOT_ESTABLISHED",
+  "ai_coach_competitiveness": "NOT_ESTABLISHED",
+  "implementation_script": false,
+  "design_path": "docs/research/besd/dpt_r_situated_protocol/DPT_R_SITUATED_PROTOCOL_V0_1_DESIGN.md",
+  "design_sha256": "PLACEHOLDER",
+  "sections_present": [
+    "D01_INPUT_STATE_SCHEMA",
+    "D02_IMPOSED_ROLE_DETECTION_RULE",
+    "D03_TRUTH_UNCERTAINTY_GATE",
+    "D04_SAFETY_THIRD_PARTY_GATE",
+    "D05_FEASIBLE_ACTION_SET",
+    "D06_ROLE_REFUSAL_CHECK",
+    "D07_DIGNITY_INVARIANCE_CHECK",
+    "D08_NON_MIMETIC_CONTROL_CHECK",
+    "D09_ACTION_SELECTION_RECORD",
+    "D10_ABSTAIN_DEFER_PATH",
+    "D11_FAIL_CLOSED_CONDITIONS",
+    "D12_CLAIM_CEILING"
+  ],
+  "compile_skeleton": "Situation → Risk → Capture Frame → Telos → Available Agency → Protocol",
+  "compile_probes_illustrative": [
+    "S1_workplace_coercion",
+    "S2_ongoing_harassment_safety_first",
+    "S3_low_risk_social_pressure"
+  ],
+  "numeric_threshold_invented": false,
+  "matthew5_action_x_design": false,
+  "walls": {
+    "youth_violence_roleplay_outranked_by_protection": true,
+    "fomo_separated_from_agency_market": true,
+    "couple_clinical_claim_forbidden": true
+  },
+  "locked_concept_sources": [
+    "docs/research/besd/besd_v0_2_spec_draft_v1/BESD_V0_2_SPEC_DRAFT.md"
+  ],
+  "DECIDE_ONE": "DPT_R_SITUATED_PROTOCOL_V0_1_DESIGN_PASS_WITH_GAPS",
+  "claim_ceiling": {
+    "establishes": "bounded protocol design structurally consistent with current DPT-R v2 constraints",
+    "does_not_establish": [
+      "biblical truth",
+      "novelty",
+      "theological consensus",
+      "empirical efficacy",
+      "legal sufficiency",
+      "clinical safety/effectiveness",
+      "financial usefulness",
+      "deployment readiness",
+      "compile consistency",
+      "behavior change under pressure"
+    ]
+  },
+  "gaps": [
+    "S1-S3 illustrative only",
+    "qualitative fail-closed; no numeric threshold",
+    "situated protocol red-team not run",
+    "no runtime wire"
+  ],
+  "STOP_AFTER_RESULT": true,
+  "next_mission": "WAIT_FOR_COMMANDER_DPT_R_SITUATED_PROTOCOL_V0_1_RED_TEAM_ACK",
+  "reproduce_command": "none (DESIGN_ONLY; no implementation script)"
+}
