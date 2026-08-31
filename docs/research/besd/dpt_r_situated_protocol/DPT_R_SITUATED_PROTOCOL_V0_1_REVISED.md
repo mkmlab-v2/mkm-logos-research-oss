@@ -61,6 +61,8 @@ Record `I_t` as **qualitative state**. No numeric score.
 | `available_lawful_actions` | actions agent can take without inventing legal strategy | legally material **and** lawful options unknown |
 | `telos_candidate` | safety, dignity, scene end, accountability, option-value | telos overrides known evidence |
 
+**Absent-block rule (D01-A, fail-closed):** A missing `safety_state` or `third_party_risk` input block is **not** equivalent to “no risk.” Absent or empty-without-assessment markers → treat as **not assessed** → D11 / `ABSTAIN_INSUFFICIENT_INFORMATION` (or explicit blocked state). Explicit negative assessment (e.g. `immediate_risk: false` after assessment) is permitted.
+
 `R_imposed` **must not** be inferred from pain, illness, aging, or environmental constraint alone (spec §5.1.3).
 
 **Presence of asymmetry alone ≠ coercion** (R2).
