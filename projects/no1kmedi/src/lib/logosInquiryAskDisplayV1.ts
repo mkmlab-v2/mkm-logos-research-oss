@@ -344,7 +344,17 @@ export function meetsPublicRing0Cleanliness(text: string): boolean {
 }
 
 const PIPELINE_QUERY_SUFFIX_RE =
-  /\s*—\s*학파별 해석 차이·citation lock·lemma 네트워크 관점에서 연구 요약해 달라\s*/g;
+  /\s*—\s*학파별 해석 차이·(?:citation\s*lock|본문\s*앵커)·lemma 네트워크 관점에서 연구 요약해 달라\s*/gi;
+
+export function healAskDisplayOrphanPunctV1(text: string): string {
+  return (text || "")
+    .replace(/\s*[—–-]\s*[.!?。！？]/g, ".")
+    .replace(/·\s*[.!?。！？]/g, ".")
+    .replace(/([가-힣A-Za-z0-9」』"'”’)\]])\s+([.!?。！？])/g, "$1$2")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
 
 /** Remove intake enrich echo and duplicated query prefix from public S4 (display only). */
 export function stripPipelineQueryEcho(text: string, displayQuery?: string): string {
@@ -352,11 +362,16 @@ export function stripPipelineQueryEcho(text: string, displayQuery?: string): str
   t = t.replace(/^질문:\s*/i, "");
   t = t.replace(PIPELINE_QUERY_SUFFIX_RE, " ").trim();
   if (displayQuery) {
-    const dq = displayQuery.trim();
-    if (t.startsWith(dq)) {
-      t = t.slice(dq.length).replace(/^[—–-]\s*/, "").trim();
+    const dq = displayQuery.trim().replace(/^["'「『]+|["'」』]+$/g, "");
+    if (dq) {
+      const esc = dq.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const quotedSubjectLead = new RegExp(`^[「『"'“‘]\\s*${esc}\\s*[」』"'”’]`);
+      if (!quotedSubjectLead.test(t) && t.startsWith(dq)) {
+        t = t.slice(dq.length).replace(/^[—–-]\s*/, "").trim();
+      }
     }
   }
+  t = t.replace(/^」\s*(?:에\s*대한|은\(는\)|은|는)?\s*/u, "").trim();
   return t.replace(/\s{2,}/g, " ").trim();
 }
 
