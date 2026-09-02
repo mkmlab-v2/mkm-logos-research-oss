@@ -19,6 +19,8 @@ import {
   detectSchoolComparisonIntent,
 } from "./logosInquiryTopicDetectV1";
 import { polishInquiryS4EssayBodyMbeta } from "./logosInquiryAskDisplayV1";
+import { mapLogosAskControlGradeG0G3V1 } from "./logosAskControlGradeG0G3V1";
+import { mapSchoolTierLabelKo } from "./logosAskUserFacingAnswerV1";
 
 export type LogosInquiryReportV1 = {
   schema: "logos_inquiry_report_v1";
@@ -384,6 +386,20 @@ export function applyInquiryS4QualityGate(input: {
   const query = input.query ?? "";
   const verseRefs = prioritizeVerseRefsForQuery(query, input.verseRefs ?? []);
   const sanitized = sanitizeInquiryS4ForPublic(input.body);
+  // Friend-floor topical bootstrap already ships structured essay sections — do not recompose to stub.
+  if (
+    sanitized.body.trim().length >= 200 &&
+    /###\s+/m.test(sanitized.body) &&
+    !sanitized.leak_detected
+  ) {
+    return {
+      body: stripPublicResearchTagsForS4(sanitized.body),
+      leak_detected: sanitized.leak_detected,
+      fallback_applied: sanitized.fallback_applied,
+      missing_sections: [],
+      recomposed: false,
+    };
+  }
   const composed = buildFiveSectionS4({
     body: sanitized.body,
     bullets: (input.bullets ?? []).filter((b) => !isPublicS4StubPhrase(b)),
@@ -518,11 +534,11 @@ function buildSchoolGroupsWithMeta(
       lexicon_base: group.lexicon_base,
       school_count: group.school_count ?? group.schools?.length ?? 0,
       schools: (group.schools ?? []).map((school) => ({
-        school_tier: school.school_tier,
+        school_tier: mapSchoolTierLabelKo(school.school_tier),
         interpretation_ko: stripHypo(school.interpretation_ko ?? ""),
         verse_refs: school.verse_refs ?? [],
         citation_lock_anchors: school.citation_lock_anchors ?? [],
-        traditions: school.traditions ?? [],
+        traditions: (school.traditions ?? []).map((trad) => mapSchoolTierLabelKo(String(trad))),
       })),
     }));
     if (countSchoolRowsInGroups(mapped) > 0) {
@@ -638,6 +654,24 @@ export function buildLogosInquiryReport(
     format_gate: s4Built.format_gate,
   };
   const s1s4 = { S1: s1, S2: s2, S3: s3, S4: s4 };
+  const payloadExt = payload as StudioQueryPayload & {
+    citation_strength?: "strong" | "soft" | null;
+    honest_control?: { citation_strength?: "strong" | "soft"; banner_ko?: string | null } | null;
+    ask_confidence?: {
+      route_band?: "curated" | "soft" | "general" | null;
+      reasons?: string[] | null;
+    } | null;
+  };
+  const controlGrade = mapLogosAskControlGradeG0G3V1({
+    preset_id: payload.preset_id,
+    query_mode: payload.query_mode,
+    honest_control_banner_ko:
+      payloadExt.honest_control?.banner_ko ?? payload.insight_card?.governance ?? null,
+    route_band: payloadExt.ask_confidence?.route_band ?? null,
+    confidence_reasons: payloadExt.ask_confidence?.reasons ?? null,
+    citation_strength:
+      payloadExt.honest_control?.citation_strength ?? payloadExt.citation_strength ?? null,
+  });
   const signedAt = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
   const s5 = {
     section_id: "S5_jema_integrity_signoff" as const,
@@ -669,6 +703,18 @@ export function buildLogosInquiryReport(
         "logos inquiry Standard — Track B [HYPO] · research_only · NON_GATING. 의료·진단·투자·실거래 지시가 아닙니다.",
       forbidden_claims: ["무환각 0%", "GPT 대체", "KRV/31k 원문 전체 공개", "투자·실매매 트리거"],
       quality_basis_ko: "eval·Brier·citation lock·freeze pin — 마케팅 환각률 주장 금지.",
+      control_grade: {
+        id: controlGrade.id,
+        intensity: controlGrade.intensity,
+        label_ko: controlGrade.label_ko,
+        signal_basis: controlGrade.signal_basis,
+        score_kind: controlGrade.score_kind,
+        not_hallucination_pct: controlGrade.not_hallucination_pct,
+        route_band: controlGrade.route_band,
+        route_band_label_ko: controlGrade.route_band_label_ko,
+        trust_face_ko: controlGrade.trust_face_ko,
+        send_gate_line_ko: controlGrade.send_gate_line_ko,
+      },
     },
     evidence_confidence: payload.evidence_confidence ?? null,
     azure_distill_meta: payload.azure_distill_meta ?? null,

@@ -38,6 +38,9 @@ import {
 } from "@/lib/logosResearchStudioV1";
 import { loadGolden200AnchorRegistry, resolveGoldenHubPresetId } from "@/lib/logosGolden200AnchorRegistryV1";
 import { resolveVerseAnchorPresetId } from "@/lib/logosInquiryVerseThematicV1";
+import { applyFreeformSoftMatchGate, FREEFORM_SOFTMATCH_HINT_KO } from "@/lib/logosFreeformSoftMatchGateV1";
+import { shouldReserveSoftmatch422 } from "@/lib/logosFreeformTopicalInquiryV1";
+import { resolveInquiryStudioPayload } from "@/lib/logosInquiryRoutePayloadV1";
 
 export const runtime = "nodejs";
 
@@ -102,7 +105,7 @@ export async function POST(request: NextRequest) {
       const intake = textMvpMode
         ? evaluateLogosTextMvpIntake(rawQuery, domainLane, intentChip)
         : evaluateLogosInquiryIntake(rawQuery, domainLane, intentChip);
-      if (intake.intake_gate !== "PASS") {
+      if (intake.intake_gate !== "PASS" && !(inquiryMode && shouldReserveSoftmatch422(rawQuery))) {
         return NextResponse.json(
           {
             ok: false,
@@ -165,6 +168,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    resolved = applyFreeformSoftMatchGate(pipelineQuery, resolved, presetsDoc.presets);
+
     const embedDemoOk =
       embedDemo && resolved.preset_id != null && isEmbedDemoPreset(resolved.preset_id);
     const quotaOff = isLogosStudioQuotaDisabled();
@@ -208,7 +213,7 @@ export async function POST(request: NextRequest) {
               snapshot: buildPendingStreamSnapshot(displayQuery),
             });
 
-            const payload = await buildStudioQueryWithGraphrag(presetId, pipelineQuery, {
+            const payload = await resolveInquiryStudioPayload(presetId, pipelineQuery, {
               ecsExpandPoc,
               azureDistillMode,
             });
@@ -285,18 +290,26 @@ export async function POST(request: NextRequest) {
       return response;
     }
 
-    const payload = await buildStudioQueryWithGraphrag(resolved.preset_id, pipelineQuery, {
-      ecsExpandPoc,
-      azureDistillMode,
-    });
+    const payload = inquiryMode
+      ? await resolveInquiryStudioPayload(resolved.preset_id, pipelineQuery, {
+          ecsExpandPoc,
+          azureDistillMode,
+        })
+      : await buildStudioQueryWithGraphrag(resolved.preset_id, pipelineQuery, {
+          ecsExpandPoc,
+          azureDistillMode,
+        });
 
     if (!payload) {
+      const reserve422 = inquiryMode && shouldReserveSoftmatch422(rawQuery);
       const topicHint =
-        inquiryMode && !resolved.preset_id
-          ? "질문 주제에 맞는 성경 권·장을 포함해 구체화해 주세요. (예: 요한계시록 13장 666, 요한일서 적그리스도)"
-          : structuredMode
-            ? "질문을 구체화해 주세요."
-            : "Rephrase the question or pick a preset seed.";
+        reserve422
+          ? FREEFORM_SOFTMATCH_HINT_KO
+          : inquiryMode && !resolved.preset_id
+            ? "질문 주제에 맞는 성경 권·장을 포함해 구체화해 주세요. (예: 요한계시록 13장 666, 요한일서 적그리스도)"
+            : structuredMode
+              ? "질문을 구체화해 주세요."
+              : "Rephrase the question or pick a preset seed.";
       return NextResponse.json(
         {
           ok: false,
