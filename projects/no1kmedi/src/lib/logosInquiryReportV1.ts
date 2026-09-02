@@ -101,6 +101,11 @@ export type LogosInquiryReportV1 = {
       signal_basis?: string[];
       score_kind?: string;
       not_hallucination_pct?: boolean;
+      /** Already emitted from LogosAskControlGradeV1 — compile contract only. */
+      route_band?: "curated" | "soft" | "general";
+      route_band_label_ko?: string;
+      trust_face_ko?: string;
+      send_gate_line_ko?: string;
     };
     honest_control_banner_ko?: string;
     citation_strength?: "strong" | "soft" | null;
