@@ -1,0 +1,30 @@
+{
+  "schema": "logos_ask_openbible_divination_anchors_v1",
+  "generated_at_utc": "2026-08-09T13:42:13Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "source": "logos_ask_openbible_topic_lookup_v1",
+  "external_label_ko": "MKM 원장 대조 · OpenBible 교차참조 보조",
+  "query_fixture_ko": "성경에서 사주 관상 타로 점술 등은 어떻게 취급하는가?",
+  "verse_refs": [
+    "Deut.18.10",
+    "Deut.18.11",
+    "Lev.19.31",
+    "1Chr.10.13",
+    "1Sam.28.3",
+    "1Sam.28.7",
+    "1Sam.28.8",
+    "Acts.16.16",
+    "Gal.5.20"
+  ],
+  "on_domain_expected": [
+    "Acts.16.16",
+    "Deut.18.10",
+    "Deut.18.11",
+    "Deut.18.12",
+    "Isa.47.13",
+    "Lev.19.26",
+    "Lev.19.31"
+  ],
+  "attribution": "OpenBible.info (CC BY) + local KRV MIXED"
+}

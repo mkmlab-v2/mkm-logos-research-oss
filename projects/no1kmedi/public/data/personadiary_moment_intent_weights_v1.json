@@ -1,0 +1,136 @@
+{
+  "schema": "personadiary_moment_intent_weights_v1",
+  "version": 1,
+  "preview_only": true,
+  "research_only": true,
+  "prophecy_vote": "none",
+  "send_gate_default": "HOLD",
+  "non_gating_sections": ["logos_anchor"],
+  "intent_priority": ["meal", "weather_fit", "world_me", "mood"],
+  "intents": ["meal", "weather_fit", "mood", "world_me", "reflect"],
+  "intent_keywords": {
+    "meal": [
+      "점심",
+      "저녁",
+      "아침",
+      "뭐 먹",
+      "뭘 먹",
+      "식사",
+      "메뉴",
+      "맛집",
+      "국밥",
+      "배고",
+      "먹을까",
+      "먹지",
+      "라면",
+      "밥"
+    ],
+    "weather_fit": [
+      "날씨",
+      "옷",
+      "입을",
+      "입어",
+      "컬러",
+      "색",
+      "따뜻",
+      "춥",
+      "더워",
+      "우산",
+      "비",
+      "외출",
+      "코디"
+    ],
+    "mood": [
+      "기분",
+      "마음",
+      "불안",
+      "우울",
+      "스트레스",
+      "피곤",
+      "슬프",
+      "걱정",
+      "지침",
+      "무기력",
+      "짜증",
+      "외로"
+    ],
+    "world_me": [
+      "뉴스",
+      "세상",
+      "코스피",
+      "비트코인",
+      "btc",
+      "시장",
+      "헤드라인",
+      "정치",
+      "거시",
+      "경제",
+      "속보"
+    ]
+  },
+  "intent_weights": {
+    "meal": {
+      "lifestyle": 0.45,
+      "myeongni": 0.35,
+      "mkm_4ai": 0.15,
+      "logos_anchor": 0.05
+    },
+    "weather_fit": {
+      "lifestyle": 0.5,
+      "mkm_4ai": 0.3,
+      "myeongni": 0.15,
+      "logos_anchor": 0.05
+    },
+    "mood": {
+      "mkm_4ai": 0.35,
+      "myeongni": 0.25,
+      "logos_anchor": 0.25,
+      "user_condition": 0.15
+    },
+    "world_me": {
+      "world_pulse": 0.45,
+      "hypothesis_stream": 0.25,
+      "myeongni": 0.2,
+      "logos_anchor": 0.1
+    },
+    "reflect": {
+      "myeongni": 0.25,
+      "mkm_4ai": 0.2,
+      "lifestyle": 0.2,
+      "world_pulse": 0.2,
+      "logos_anchor": 0.15
+    }
+  },
+  "section_titles_ko": {
+    "myeongni": "오늘의 흐름",
+    "mkm_4ai": "마음 리듬",
+    "lifestyle": "라이프·날씨",
+    "logos_anchor": "앵커 한 줄",
+    "world_pulse": "찰나의 나라",
+    "hypothesis_stream": "초론 스트림",
+    "user_condition": "컨디션 틸트"
+  },
+  "package_required_sections": {
+    "meal": ["lifestyle"],
+    "weather_fit": ["lifestyle"],
+    "mood": ["mkm_4ai"],
+    "world_me": ["world_pulse"],
+    "reflect": ["myeongni"]
+  },
+  "degrade_rules": {
+    "min_cards": 1,
+    "fallback_intent": "reflect"
+  },
+  "overclaim_guards_ko": [
+    "O-01: moment는 실시간 GraphRAG가 아니라 일일 패키지 섹션 조립",
+    "O-02: 렌즈·뉴스·성경 앵커를 예언·인과 단정으로 합치지 않음",
+    "O-03: 네이티브 앱은 moment API·웹 ops 위임 — 온디바이스 RAG 없음"
+  ],
+  "boundary_ack": "batch package only · prophecy_vote none · quant vote/blend forbidden · mkmlife merge forbidden",
+  "generated_at_utc": "2026-06-22T18:00:00Z",
+  "ssot_pointers": {
+    "ts": "projects/no1kmedi/src/lib/personadiaryMomentIntentWeightsV1.ts",
+    "py_assemble": "scripts/assemble_personadiary_moment_response_v1.py",
+    "py_classify": "scripts/classify_personadiary_moment_intent_v1.py"
+  }
+}

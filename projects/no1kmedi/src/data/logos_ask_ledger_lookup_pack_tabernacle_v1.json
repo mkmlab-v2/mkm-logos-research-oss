@@ -1,0 +1,84 @@
+{
+  "schema": "logos_ask_ledger_lookup_pack_tabernacle_v1",
+  "generated_at_utc": "2026-08-09T12:13:51Z",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "product_all_ok": false,
+  "ai_used": false,
+  "method": "rule_station_table + krv_jsonl_fetch",
+  "ledger_ssot": "data/logos/krv_verses_v1.jsonl",
+  "edition_status": "MIXED_LEGACY_FILE",
+  "external_label_ko": "MKM 원장 대조",
+  "external_label_forbidden": [
+    "개역한글과 일치",
+    "개역개정과 일치",
+    "KRV 공인"
+  ],
+  "panel_copy_ko": "대조된 구절만 표시합니다",
+  "items": [
+    {
+      "label_ko": "성소 세움",
+      "ref": "Exod.25.8",
+      "text_ko": "내가 그들 중에 거할 성소를 그들이 나를 위하여 짓되",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    },
+    {
+      "label_ko": "떡상",
+      "ref": "Exod.25.23",
+      "text_ko": "너는 조각목으로 상을 만들되 길이는 두 규빗, 너비는 한 규빗, 높이는 한 규빗 반이 되게 하고",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    },
+    {
+      "label_ko": "등대",
+      "ref": "Exod.25.31",
+      "text_ko": "너는 순금으로 등잔대를 쳐 만들되 그 밑판과 줄기와 잔과 꽃받침과 꽃을 한 덩이로 연결하고",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    },
+    {
+      "label_ko": "번제단",
+      "ref": "Exod.27.1",
+      "text_ko": "너는 조각목으로 길이가 다섯 규빗, 너비가 다섯 규빗의 제단을 만들되 네모 반듯하게 하며 높이는 삼 규빗으로 하고",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    },
+    {
+      "label_ko": "분향단",
+      "ref": "Exod.30.1",
+      "text_ko": "너는 분향할 제단을 만들지니 곧 조각목으로 만들되",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    },
+    {
+      "label_ko": "물두멍",
+      "ref": "Exod.30.18",
+      "text_ko": "너는 물두멍을 놋으로 만들고 그 받침도 놋으로 만들어 씻게 하되 그것을 회막과 제단 사이에 두고 그 속에 물을 담으라",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    },
+    {
+      "label_ko": "임재·영광",
+      "ref": "Exod.40.34",
+      "text_ko": "구름이 회막에 덮이고 여호와의 영광이 성막에 충만하매",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    },
+    {
+      "label_ko": "히9 서론",
+      "ref": "Heb.9.1",
+      "text_ko": "첫 언약에도 섬기는 예법과 세상에 속한 성소가 있더라",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    },
+    {
+      "label_ko": "하늘 성소",
+      "ref": "Heb.9.11",
+      "text_ko": "그리스도께서는 장래 좋은 일의 대제사장으로 오사 손으로 짓지 아니한 것 곧 이 창조에 속하지 아니한 더 크고 온전한 장막으로 말미암아",
+      "domain": true,
+      "source": "data/logos/krv_verses_v1.jsonl"
+    }
+  ],
+  "domain_anchor_count": 9
+}

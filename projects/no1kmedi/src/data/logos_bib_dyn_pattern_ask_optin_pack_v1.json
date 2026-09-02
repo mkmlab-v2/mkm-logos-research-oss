@@ -1,0 +1,205 @@
+{
+  "schema": "logos_bib_dyn_pattern_ask_optin_pack_v1",
+  "schema_version": "v1",
+  "as_of_utc": "2026-07-29T11:51:22Z",
+  "order_id": "NEW-BIB-DYN-008",
+  "research_only": true,
+  "non_gating": true,
+  "send_gate": "HOLD",
+  "prediction_claims": "forbidden",
+  "claim_allowed": false,
+  "track_a_bridge": false,
+  "ask_default_merged": false,
+  "opt_in_only": true,
+  "product_all_ok": false,
+  "harness_label": "research_optin_harness",
+  "harness_mode": "sentence_transformers",
+  "banner_ko": "[HYPO] · research_only · prediction_claims=forbidden · SEND HOLD · geo/empire 질문은 기본 답으로 패턴 패널 사용",
+  "reproduce_command": "USE_TF=0 TRANSFORMERS_NO_TF=1 py scripts/run_mkm_logos_scenario_query_v1.py --live --index docs/final/artifacts/mkm_logos_pattern_index_v1_live_latest.json --out docs/final/artifacts/mkm_logos_scenario_query_v1_live_latest.json --question \"What phase vocabulary describes Babylon imperial hubris and fall?\"",
+  "artifact_pointer": "docs/final/artifacts/mkm_logos_scenario_query_v1_live_latest.json",
+  "source_pattern_index": "docs/final/artifacts/mkm_logos_pattern_index_v1_live_latest.json",
+  "packets": [
+    {
+      "packet_id": "valid_babylon",
+      "match_needles": [
+        "babylon",
+        "hubris",
+        "fall",
+        "phase vocabulary",
+        "imperial",
+        "미국",
+        "중국",
+        "미중",
+        "china",
+        "america",
+        "패권",
+        "제국",
+        "hegemony",
+        "empire",
+        "전쟁",
+        "지정학",
+        "바벨론"
+      ],
+      "question": "What phase vocabulary describes Babylon imperial hubris and fall?",
+      "gate_status": "PASSED",
+      "gate_reason_codes": [],
+      "harness_mode": "sentence_transformers",
+      "min_cosine_threshold": 0.55,
+      "scores_are_illustrative_not_semantic": false,
+      "top_matches": [
+        {
+          "pattern_id": "pat_babylon_hubris_fall",
+          "label": "Babylon imperial hubris → fall",
+          "cosine_similarity": 0.76426896,
+          "phase_template": "ascent → hubris → judgment → fall",
+          "representative_verses": [
+            "DAN.4.28-37",
+            "JER.50-51",
+            "REV.18.1-24"
+          ]
+        },
+        {
+          "pattern_id": "pat_rome_four_kingdoms",
+          "label": "Four-kingdoms / Rome-Babylon harlot tail",
+          "cosine_similarity": 0.58920004,
+          "phase_template": "kingdom_ascent → imperial_hubris → harlot_city → collapse",
+          "representative_verses": [
+            "DAN.2.31-45",
+            "REV.17.1-18",
+            "REV.18.1-24"
+          ]
+        },
+        {
+          "pattern_id": "pat_babel_scatter",
+          "label": "Babel hubris → language scatter",
+          "cosine_similarity": 0.52934741,
+          "phase_template": "ascent → hubris → judgment → scatter",
+          "representative_verses": [
+            "GEN.11.1-9"
+          ]
+        }
+      ],
+      "phase_narrative": {
+        "summary": "[HYPO] Question maps to pattern vocabulary: Babylon imperial hubris → fall · Four-kingdoms / Rome-Babylon harlot tail · Babel hubris → language scatter. Assembled phase chain is literature-axis discovery only — dual-timeline wall applies; canon/literature clock ≠ calendar geopolitics; prediction_claims=forbidden.",
+        "assembled_phases": [
+          "ascent → hubris → judgment → fall",
+          "kingdom_ascent → imperial_hubris → harlot_city → collapse",
+          "ascent → hubris → judgment → scatter"
+        ],
+        "forbidden_misread": "babylon_fall_motif_equals_modern_nation_collapse_forecast · rome_babylon_motif_predicts_US_collapse_or_Rome_reincarnation_ID · babel_scatter_motif_predicts_specific_nation_fracture_date"
+      },
+      "source_artifact_schema": "mkm_logos_scenario_query_v1"
+    },
+    {
+      "packet_id": "valid_covenant",
+      "match_needles": [
+        "covenant",
+        "breach",
+        "exile",
+        "displacement"
+      ],
+      "question": "How does covenant breach lead to exile displacement in biblical narrative?",
+      "gate_status": "PASSED",
+      "gate_reason_codes": [],
+      "harness_mode": "sentence_transformers",
+      "min_cosine_threshold": 0.55,
+      "scores_are_illustrative_not_semantic": false,
+      "top_matches": [
+        {
+          "pattern_id": "pat_covenant_breach_exile",
+          "label": "Covenant breach → exile displacement",
+          "cosine_similarity": 0.73279659,
+          "phase_template": "fidelity → breach → exile displacement",
+          "representative_verses": [
+            "DEUT.28.36-49",
+            "JER.7.25-34",
+            "2KI.25.1-21"
+          ]
+        },
+        {
+          "pattern_id": "pat_remnant_preservation",
+          "label": "Remnant preservation in exile",
+          "cosine_similarity": 0.52954928,
+          "phase_template": "exile → remnant_thread → survival_language",
+          "representative_verses": [
+            "EZK.11.14-21",
+            "ISA.11.11-16",
+            "2KI.17.6-23"
+          ]
+        },
+        {
+          "pattern_id": "pat_israel_remnant_siege",
+          "label": "Israel remnant under siege",
+          "cosine_similarity": 0.46754438,
+          "phase_template": "siege_pressure → remnant_preservation → deliverance_language",
+          "representative_verses": [
+            "2KI.18-19",
+            "ISA.37.1-38"
+          ]
+        }
+      ],
+      "phase_narrative": {
+        "summary": "[HYPO] Question maps to pattern vocabulary: Covenant breach → exile displacement · Remnant preservation in exile · Israel remnant under siege. Assembled phase chain is literature-axis discovery only — dual-timeline wall applies; canon/literature clock ≠ calendar geopolitics; prediction_claims=forbidden.",
+        "assembled_phases": [
+          "fidelity → breach → exile displacement",
+          "exile → remnant_thread → survival_language",
+          "siege_pressure → remnant_preservation → deliverance_language"
+        ],
+        "forbidden_misread": "covenant_breach_motif_predicts_constitutional_collapse_date · remnant_motif_identifies_specific_modern_ethnic_elect_group · remnant_siege_motif_identifies_modern_nation_as_elect_remnant"
+      },
+      "source_artifact_schema": "mkm_logos_scenario_query_v1"
+    },
+    {
+      "packet_id": "rejected_btc",
+      "match_needles": [
+        "bitcoin",
+        "buy",
+        "crashes",
+        "2026"
+      ],
+      "question": "Should I buy Bitcoin before it crashes in 2026?",
+      "gate_status": "REJECTED_INTENT",
+      "gate_reason_codes": [
+        "TRADING_SIGNAL_INTENT"
+      ],
+      "harness_mode": "sentence_transformers",
+      "min_cosine_threshold": 0.55,
+      "scores_are_illustrative_not_semantic": false,
+      "top_matches": [],
+      "phase_narrative": {
+        "summary": "[HYPO] Query blocked at Input Firewall before embedding expansion. Input firewall rejected query before embedding — TRADING_SIGNAL_INTENT; prediction/trading/personal-fate intents forbidden on BIB-DYN research lane.",
+        "assembled_phases": [
+          "gate_rejected_intent_no_embedding"
+        ],
+        "forbidden_misread": "Blocked_query_must_not_be_reinterpreted_as_biblical_pattern_prediction"
+      },
+      "source_artifact_schema": "mkm_logos_scenario_query_v1"
+    },
+    {
+      "packet_id": "nonsense",
+      "match_needles": [
+        "xyzzy",
+        "qwerty",
+        "nonsense",
+        "blorp"
+      ],
+      "question": "xyzzy qwerty nonsense blorp",
+      "gate_status": "REJECTED_LOW_SIMILARITY",
+      "gate_reason_codes": [
+        "BELOW_MIN_COSINE_THRESHOLD"
+      ],
+      "harness_mode": "sentence_transformers",
+      "min_cosine_threshold": 0.55,
+      "scores_are_illustrative_not_semantic": false,
+      "top_matches": [],
+      "phase_narrative": {
+        "summary": "[HYPO] Top-1 cosine below threshold — no clear pattern mapping forced. top_sim=0.298613 < tau=0.5500; apophenia guard active.",
+        "assembled_phases": [
+          "gate_rejected_low_similarity_no_pattern_mapping"
+        ],
+        "forbidden_misread": "Low_similarity_match_must_not_be_promoted_to_prediction_or_Track_A"
+      },
+      "source_artifact_schema": "mkm_logos_scenario_query_v1"
+    }
+  ]
+}

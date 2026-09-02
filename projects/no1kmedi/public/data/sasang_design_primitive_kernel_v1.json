@@ -1,0 +1,176 @@
+{
+  "schema": "sasang_design_primitive_kernel_v1",
+  "kernel_version": "1.0.0",
+  "mapping_version": "2026-06-18.design_kernel_hypo_a",
+  "hypothesis_class": "HYPO",
+  "preview_only": true,
+  "research_only": true,
+  "rail": "B_TRACK",
+  "charter_ref": "docs/final/MKM_DESIGN_PHILOSOPHY_CONSTITUTION_V1.md",
+  "disclaimer_ko": "[HYPO][preview_only] 본 커널은 UI Decide 파라미터 초안이며 임상·체질·운세 단정이 아닙니다. 소비자 면은 copy contract·PUBLIC_FACING를 통과한 출력만 노출합니다.",
+  "axis_order_ko": [
+    "금화교역(리듬·교환) → 보명지주(여백·생존) → 병증약리(강도·밀도) → 상성(배치·비례) → 4체질(색온·VA)"
+  ],
+  "axis_overlay_rule_ko": "나중 축이 앞 축의 무결성을 덮어쓰지 않음 — interpretive bundle axis_order_rationale_ko와 동형",
+  "primitives": {
+    "pathology": {
+      "id_ko": "병증약리",
+      "param": "intensity_budget",
+      "desc_ko": "에너지 밀도·motion 상한·동시 정보 블록 수",
+      "thresholds_ref": "docs/final/artifacts/mkm_theory_mathematization_canon_v1_latest.md §5",
+      "states": {
+        "calm": {
+          "stress_lt": 0.35,
+          "intensity_budget": 0.85,
+          "motion_cap": 1.0,
+          "max_simultaneous_blocks": 4
+        },
+        "watch": {
+          "stress_lt": 0.55,
+          "intensity_budget": 0.65,
+          "motion_cap": 0.75,
+          "max_simultaneous_blocks": 3
+        },
+        "stress": {
+          "stress_lt": 0.75,
+          "intensity_budget": 0.45,
+          "motion_cap": 0.45,
+          "max_simultaneous_blocks": 2
+        },
+        "crisis": {
+          "stress_gte": 0.75,
+          "intensity_budget": 0.25,
+          "motion_cap": 0.2,
+          "max_simultaneous_blocks": 1
+        }
+      }
+    },
+    "circulation": {
+      "id_ko": "금화교역",
+      "param": "motion_exchange",
+      "desc_ko": "전환 속도·pulse 주기·CTA 희소도 — 시장 지표와 동일시 금지",
+      "default_range": {
+        "pulse_period_ms": [2400, 4800],
+        "transition_ms": [180, 320],
+        "accent_budget_pct_max": 10
+      }
+    },
+    "survival": {
+      "id_ko": "보명지주",
+      "param": "spacing_survival",
+      "desc_ko": "여백·line-height·동시 정보 블록 밀도",
+      "default_range": {
+        "min_padding_px": 16,
+        "max_blocks_per_view": 4,
+        "line_height_ratio": [1.45, 1.65]
+      }
+    },
+    "harmony": {
+      "id_ko": "상성",
+      "param": "layout_harmony",
+      "desc_ko": "카드 배치·비례·대비 cap — layout 밀도만; 체질 처방 아님",
+      "v1_stub": true,
+      "constitution_keys": ["taeyang", "soyang", "taeeum", "soeumin"],
+      "pair_rules": {
+        "same": {
+          "layout_density": 0.5,
+          "contrast_cap": 0.35,
+          "note_ko": "동일 시드 — 균형 밀도"
+        },
+        "generating": {
+          "layout_density": 0.42,
+          "contrast_cap": 0.4,
+          "note_ko": "상생 — 여유·낮은 동시 블록"
+        },
+        "controlling": {
+          "layout_density": 0.55,
+          "contrast_cap": 0.28,
+          "note_ko": "상극 — 대비 절제·동시 CTA cap"
+        }
+      },
+      "generating_pairs": [
+        ["taeyang", "soyang"],
+        ["soyang", "taeeum"],
+        ["taeeum", "soeumin"],
+        ["soeumin", "taeyang"]
+      ],
+      "controlling_pairs": [
+        ["taeyang", "taeeum"],
+        ["soyang", "soeumin"]
+      ],
+      "clinical_constitution_ban_ui_v1_1": true,
+      "note_ko": "체질×색·카드 금기 레이아웃은 v1.1 + human_gate"
+    },
+    "valence": {
+      "id_ko": "4체질",
+      "param": "valence_arousal",
+      "desc_ko": "색온·gradient bias — VA 앵커 SSOT 참조만",
+      "anchors_ssot": "docs/final/schemas/sasang_emotion_mapping_v1.example.json",
+      "constitution_keys": ["taeyang", "soyang", "taeeum", "soeumin"],
+      "hue_warmth_bias_range": [-0.35, 0.35]
+    }
+  },
+  "extensions": {
+    "myeongni": {
+      "tier": "secondary",
+      "rule": "dominant_accent_only",
+      "desc_ko": "주간 dominant 오행 1개만 accent 시프트; % 노출 금지",
+      "ohaeng_accent_pool": {
+        "wood": "#4ade80",
+        "fire": "#f87171",
+        "earth": "#fbbf24",
+        "metal": "#94a3b8",
+        "water": "#60a5fa"
+      }
+    },
+    "logos": {
+      "tier": "tertiary",
+      "rule": "rhythm_and_frame_only",
+      "non_gating": true,
+      "desc_ko": "타이포 리듬·면책 프레임 위치만; 예언·종교 색책 UI 금지"
+    }
+  },
+  "product_depth": {
+    "personadiary.com": {
+      "primitives": ["pathology", "survival", "harmony", "valence"],
+      "extensions": [],
+      "marketing_depth": "jtbd_only"
+    },
+    "mkmlife.com": {
+      "primitives": ["pathology", "survival", "harmony", "valence"],
+      "extensions": ["myeongni"],
+      "marketing_depth": "wellness_sidebar"
+    },
+    "jema-ai.com": {
+      "primitives": ["pathology", "survival"],
+      "extensions": [],
+      "marketing_depth": "trust_hub"
+    },
+    "jemaai.cloud": {
+      "primitives": ["pathology", "circulation"],
+      "extensions": [],
+      "marketing_depth": "observation_board"
+    },
+    "a-codeai.com": {
+      "primitives": ["survival"],
+      "extensions": ["logos"],
+      "marketing_depth": "b2b_clarity"
+    },
+    "internal_ops": {
+      "primitives": ["pathology", "circulation", "survival", "harmony", "valence"],
+      "extensions": ["myeongni", "logos"],
+      "marketing_depth": "none"
+    }
+  },
+  "gate_contract": {
+    "check_script": "scripts/check_sasang_design_primitive_kernel_v1.py",
+    "pytest": "tests/test_sasang_design_primitive_kernel_v1.py",
+    "copy_contract_ref": "docs/final/artifacts/personadiary_non_prediction_copy_contract_v1_latest.json",
+    "forbidden_synthesis_ref": "docs/final/artifacts/sasang_interpretive_insight_bundle_v1_latest.json",
+    "public_facing_ref": "docs/final/PUBLIC_FACING_SECURITY_AND_IP_COPY_CHECKLIST_V1.md"
+  },
+  "provenance": {
+    "source": "mkm_design_philosophy_constitution_v1",
+    "experiment_id": "sasang_design_primitive_kernel_v1_latest"
+  }
+}

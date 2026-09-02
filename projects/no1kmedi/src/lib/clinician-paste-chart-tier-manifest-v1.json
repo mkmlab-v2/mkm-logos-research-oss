@@ -1,0 +1,31 @@
+{
+  "schema": "clinician_paste_chart_tier_manifest_v1",
+  "status": "research_only",
+  "send_gate": "HOLD",
+  "description_ko": "Paste Chart hybrid cost tiers — regex/heuristic first, local LLM on low confidence, Azure escalate on parse failure.",
+  "tasks": {
+    "paste_extract_regex": {
+      "tier": 0,
+      "provider": "deterministic",
+      "description_ko": "로컬 regex/heuristic chip extract"
+    },
+    "paste_extract_llm_low_confidence": {
+      "tier": 1,
+      "priority": "local_first",
+      "feature": "clinician_paste_extract_v1",
+      "escalate_when": "confidence_low"
+    },
+    "paste_extract_llm_escalate": {
+      "tier": 2,
+      "priority": "azure_first",
+      "feature": "clinician_paste_extract_v1",
+      "escalate_when": "tier1_parse_failed"
+    },
+    "paste_chart_cds": {
+      "tier": 3,
+      "priority": "azure_first",
+      "feature": "clinician_paste_chart_v1",
+      "description_ko": "SOAP·bundle synthesis (server chain)"
+    }
+  }
+}

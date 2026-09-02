@@ -1,0 +1,65 @@
+{
+  "schema": "personadiary_hyper_local_poi_catalog_v1",
+  "version": "1.0.0",
+  "hypothesis_tier": "B",
+  "preview_only": true,
+  "disclaimer_ko": "[가설·큐레이션] 동네 맛집·코스는 예시입니다. 의료·다이어트·투자 조언 아님.",
+  "generated_at_utc": "2026-06-17T14:00:00Z",
+  "entries": [
+    {
+      "poi_id": "gwangmyeong_samgyetang_alley",
+      "city_key": "Seoul",
+      "area_ko": "광명·철산",
+      "menu_ko": "삼계탕",
+      "venue_ko": "철산 골목 삼계탕",
+      "one_liner_ko": "광명역 근처 골목 — 맑은 국물 삼계탕 한 그릇 어때요?",
+      "weather_tags": ["hot", "warm", "무더", "양호"],
+      "meal_tags": ["점심", "삼계", "국물", "닭"],
+      "evidence_tier": "delight"
+    },
+    {
+      "poi_id": "gwangmyeong_kalguksu_station",
+      "city_key": "Seoul",
+      "area_ko": "광명역",
+      "menu_ko": "칼국수",
+      "venue_ko": "광명역 수제칼국수",
+      "one_liner_ko": "광명사거리 지나가다 시원한 칼국수 한 그릇 — 가볍게요.",
+      "weather_tags": ["hot", "warm", "무더"],
+      "meal_tags": ["점심", "면", "국물"],
+      "evidence_tier": "delight"
+    },
+    {
+      "poi_id": "seoul_samgyetang_chain",
+      "city_key": "Seoul",
+      "area_ko": "서울",
+      "menu_ko": "삼계탕",
+      "venue_ko": "토속삼계탕 (체인 예시)",
+      "one_liner_ko": "더울 땐 시원한 삼계탕 — 가까운 체인도 괜찮아요.",
+      "weather_tags": ["hot", "warm", "무더", "29", "30"],
+      "meal_tags": ["점심", "삼계", "닭곰탕"],
+      "evidence_tier": "delight"
+    },
+    {
+      "poi_id": "seoul_gukbap_rainy",
+      "city_key": "Seoul",
+      "area_ko": "서울",
+      "menu_ko": "국밥",
+      "venue_ko": "동네 국밥집",
+      "one_liner_ko": "비 오는 날엔 따뜻한 국밥 — 우산 챙기고 천천히.",
+      "weather_tags": ["비", "rain", "흐림", "차가"],
+      "meal_tags": ["점심", "국밥", "국물"],
+      "evidence_tier": "delight"
+    },
+    {
+      "poi_id": "seoul_myeongdong_dumpling",
+      "city_key": "Seoul",
+      "area_ko": "명동",
+      "menu_ko": "만두·국물",
+      "venue_ko": "명동교자 (예시)",
+      "one_liner_ko": "명동 쪽이면 교자 한 접시 + 국물로 가볍게.",
+      "weather_tags": ["cool", "선선", "양호", "20", "21", "22"],
+      "meal_tags": ["점심", "만두", "국물"],
+      "evidence_tier": "delight"
+    }
+  ]
+}

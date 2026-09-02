@@ -1,0 +1,67 @@
+{
+  "schema": "moment_bundle_pair_registry_v1",
+  "registry_version": "1.0.0",
+  "hypothesis_class": "HYPO",
+  "preview_only": true,
+  "research_only": true,
+  "rail": "B_TRACK",
+  "charter_ref": "docs/final/MKM_DESIGN_PHILOSOPHY_CONSTITUTION_V1.md",
+  "disclaimer_ko": "[HYPO][preview_only] visual·BGM 페어는 Decide 레지스트리 초안이며 결제·Track A·실매매 트리거가 아닙니다.",
+  "fallback_policy": {
+    "on_gate_fail": "silent",
+    "on_gate_warn": "tone_orb",
+    "on_missing_pair": "mb_v1_default_observe"
+  },
+  "pairs": [
+    {
+      "moment_bundle_id": "mb_v1_calm_meal",
+      "match": { "pathology_state": "calm", "intent": "meal" },
+      "bgm": {
+        "clip_id": "bgm_calm_warm_bed_v1",
+        "public_href": "/audio/moment-bundles/bgm_calm_warm_bed_v1.stub.json",
+        "gate_decision": "PASS",
+        "audio_gate_report_ref": "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      }
+    },
+    {
+      "moment_bundle_id": "mb_v1_watch_mood",
+      "match": { "pathology_state": "watch", "intent": "mood" },
+      "bgm": {
+        "clip_id": "bgm_watch_soft_pulse_v1",
+        "public_href": "/audio/moment-bundles/bgm_watch_soft_pulse_v1.stub.json",
+        "gate_decision": "PASS",
+        "audio_gate_report_ref": "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      }
+    },
+    {
+      "moment_bundle_id": "mb_v1_stress_world_me",
+      "match": { "pathology_state": "stress", "intent": "world_me" },
+      "bgm": {
+        "clip_id": "bgm_stress_low_bed_v1",
+        "public_href": "/audio/moment-bundles/bgm_stress_low_bed_v1.stub.json",
+        "gate_decision": "PASS",
+        "audio_gate_report_ref": "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      }
+    },
+    {
+      "moment_bundle_id": "mb_v1_crisis_reflect",
+      "match": { "pathology_state": "crisis", "intent": "reflect" },
+      "bgm": {
+        "clip_id": "bgm_crisis_gate_warn_v1",
+        "public_href": null,
+        "gate_decision": "WARN",
+        "audio_gate_report_ref": "docs/final/schemas/audio_bgm_gate_report_v1.example.json"
+      }
+    },
+    {
+      "moment_bundle_id": "mb_v1_default_observe",
+      "match": { "pathology_state": "*", "intent": "*" },
+      "bgm": {
+        "clip_id": null,
+        "public_href": null,
+        "gate_decision": "NONE",
+        "audio_gate_report_ref": null
+      }
+    }
+  ]
+}

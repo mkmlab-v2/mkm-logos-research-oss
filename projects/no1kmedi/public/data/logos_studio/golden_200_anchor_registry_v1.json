@@ -1,0 +1,3797 @@
+{
+  "schema": "logos_golden_200_anchor_registry_v1",
+  "version": "1.0.0",
+  "max_slots": 200,
+  "scope_ko": "트래픽·실패로그 기반 short-head tollgate 최대 200슬롯. 31k 구절 색인·~1000 테마 전체와 동일 개념이 아님 — Hub-Spoke reading pack 앵커만.",
+  "priority_bands": {
+    "P0": "Ask 실패·고트래픽·topic_mismatch 재발 — citation lock Hub 우선",
+    "P1": "Showroom Hub pack 준비·embedding 라우트 검증",
+    "P2": "후보 백로그·수동 승격 대기"
+  },
+  "entries": [
+    {
+      "hub_id": "antichrist_666",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "666",
+        "적그리스도",
+        "안티크라이스트",
+        "계시록 13",
+        "짐승의 숫자",
+        "마귀의 숫자"
+      ],
+      "expected_books": [
+        "Rev",
+        "1John",
+        "2Thess"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Ps",
+        "Jer"
+      ],
+      "primary_verse_refs": [
+        "Rev.13.18",
+        "1John.2.18",
+        "1John.4.3",
+        "2Thess.2.3"
+      ],
+      "preset_override_ids": [
+        "topic_rev_12_anchor",
+        "topic_rev_1_anchor",
+        "book_1john_anchor"
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason",
+        "job_existential_suffering"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Rev",
+          "expected_chapters": [
+            13
+          ],
+          "blocked_chapters": [
+            21
+          ]
+        }
+      ],
+      "reading_pack_artifact": "showroom_logos_antichrist_666_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "gen2_eve_creation",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "하와",
+        "갈비",
+        "갈비뼈",
+        "측",
+        "돕는 배필",
+        "eve",
+        "rib"
+      ],
+      "blocked_query_markers_ko": [
+        "네피림",
+        "nephilim",
+        "하나님의 아들",
+        "genesis 6",
+        "gen 6"
+      ],
+      "expected_books": [
+        "Gen"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Gen",
+          "expected_chapters": [
+            2
+          ],
+          "blocked_chapters": [
+            6
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Gen.2.21",
+        "Gen.2.22",
+        "Gen.2.23",
+        "Gen.2.24"
+      ],
+      "preset_override_ids": [
+        "topic_gen_2_anchor"
+      ],
+      "reading_pack_artifact": "showroom_logos_gen2_eve_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "john19_blood_water",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "피와 물",
+        "피와물",
+        "물과 피",
+        "물과피",
+        "blood and water",
+        "옆구리",
+        "창에 찔",
+        "흘린 물"
+      ],
+      "blocked_query_markers_ko": [
+        "죄수",
+        "강도",
+        "도적",
+        "옆에 못박",
+        "같이 못박",
+        "회개한 강도",
+        "penitent thief",
+        "two thieves"
+      ],
+      "requires_gospel_context": true,
+      "expected_books": [
+        "John",
+        "1John"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Ps",
+        "Jer"
+      ],
+      "primary_verse_refs": [
+        "John.19.34",
+        "John.19.35",
+        "1John.5.6"
+      ],
+      "preset_override_ids": [
+        "topic_john_19_anchor",
+        "topic_1john_5_anchor",
+        "topic_john_1_anchor"
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason"
+      ],
+      "reading_pack_artifact": "showroom_logos_john19_blood_water_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "mary_intercession",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "마리아",
+        "성모",
+        "성모님",
+        "marian",
+        "mary",
+        "mariology",
+        "중보",
+        "중보기도",
+        "기도하는 이유",
+        "천주교",
+        "가톨릭",
+        "정교회"
+      ],
+      "expected_books": [
+        "Luke",
+        "John",
+        "Rev",
+        "1Tim"
+      ],
+      "blocked_stub_books": [
+        "Neh",
+        "2Chr",
+        "Ezra",
+        "Job",
+        "Ps"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Luke",
+          "expected_chapters": [
+            1,
+            2
+          ],
+          "blocked_chapters": [
+            15,
+            22
+          ]
+        },
+        {
+          "book": "John",
+          "expected_chapters": [
+            2,
+            19
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Luke.1.28",
+        "Luke.1.46",
+        "John.2.1",
+        "John.19.26",
+        "Rev.12.1",
+        "1Tim.2.5"
+      ],
+      "preset_override_ids": [
+        "book_luke_anchor",
+        "topic_john_2_anchor",
+        "topic_rev_12_anchor"
+      ],
+      "blocked_preset_ids": [
+        "topic_ps_103_anchor",
+        "topic_luke_15_anchor",
+        "job_job_suffering_reason",
+        "job_existential_suffering"
+      ],
+      "reading_pack_artifact": "showroom_logos_mary_intercession_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "passion_crown",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "가시면류관",
+        "면류관",
+        "가시 관",
+        "crown of thorns"
+      ],
+      "requires_gospel_context": true,
+      "expected_books": [
+        "Matt",
+        "Mark",
+        "John"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Ps",
+        "Jer"
+      ],
+      "primary_verse_refs": [
+        "Matt.27.29",
+        "Mark.15.17",
+        "John.19.2",
+        "John.19.5"
+      ],
+      "preset_override_ids": [
+        "era_gospel_logos_incarnate",
+        "topic_john_1_anchor"
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason"
+      ],
+      "reading_pack_artifact": "showroom_logos_passion_crown_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "passion_two_criminals",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "죄수",
+        "강도",
+        "도적",
+        "옆에 못박",
+        "같이 못박",
+        "회개한 강도",
+        "penitent thief",
+        "two thieves",
+        "two criminals"
+      ],
+      "requires_gospel_context": true,
+      "expected_books": [
+        "Luke",
+        "Matt",
+        "Mark",
+        "John"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Ps",
+        "Jer"
+      ],
+      "blocked_query_markers_ko": [
+        "피와 물",
+        "옆구리",
+        "blood and water"
+      ],
+      "primary_verse_refs": [
+        "Luke.23.32",
+        "Luke.23.39",
+        "Luke.23.40",
+        "Luke.23.42",
+        "Luke.23.43",
+        "Matt.27.38",
+        "Mark.15.27",
+        "John.19.18",
+        "Isa.53.12"
+      ],
+      "preset_override_ids": [
+        "era_gospel_logos_incarnate",
+        "topic_john_1_anchor"
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "prayer_basics",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "기도",
+        "주기도",
+        "어떻게 기도",
+        "쉬지 말고 기도",
+        "prayer",
+        "lord's prayer",
+        "pray without ceasing"
+      ],
+      "blocked_query_markers_ko": [
+        "점술",
+        "사주",
+        "운세",
+        "중보기도만"
+      ],
+      "expected_books": [
+        "Matt",
+        "1Thess",
+        "Phil",
+        "Luke",
+        "John"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Matt.6.9",
+        "Matt.6.10",
+        "Matt.6.11",
+        "1Thess.5.17",
+        "Phil.4.6",
+        "Luke.18.1"
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason",
+        "job_existential_suffering"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0,
+      "traffic_rank": 1
+    },
+    {
+      "hub_id": "wealth_mammon",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "재물",
+        "탐심",
+        "돈을 사랑",
+        "돈 사랑",
+        "마몬",
+        "맘몬",
+        "mammon",
+        "wealth",
+        "십일조",
+        "헌금",
+        "부에 대해",
+        "돈에 대해",
+        "십일조는 신약",
+        "신약에도 의무",
+        "도박은 죄",
+        "성경은 도박",
+        "gambling sin",
+        "bible gambling"
+      ],
+      "blocked_query_markers_ko": [
+        "비트코인 매수",
+        "주식 추천",
+        "코인 단타",
+        "로또 당첨",
+        "당첨 번호"
+      ],
+      "expected_books": [
+        "1Tim",
+        "Matt",
+        "Luke",
+        "Prov",
+        "Heb"
+      ],
+      "blocked_stub_books": [
+        "Rev",
+        "Dan",
+        "Job"
+      ],
+      "primary_verse_refs": [
+        "1Tim.6.10",
+        "Matt.6.24",
+        "Luke.12.15",
+        "Prov.11.28",
+        "Heb.13.5"
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason",
+        "topic_rev_12_anchor"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0,
+      "traffic_rank": 2
+    },
+    {
+      "priority_band": "P0",
+      "hub_spoke_contract": {
+        "forced_fit_forbidden": true,
+        "send_gate": "HOLD",
+        "research_only": true,
+        "non_gating": true,
+        "min_distinct_books": 1,
+        "max_verse_refs": 24
+      },
+      "query_markers_ko": [
+        "요한복음 3:16",
+        "요한복음 3장 16",
+        "john 3:16",
+        "john.3.16",
+        "하나님이 세상을 이처럼",
+        "독생자를 주셨",
+        "독생자를 주셨으니",
+        "영생을 얻게 하려"
+      ],
+      "book_chapter_rules": [
+        {
+          "expected_chapters": [
+            3
+          ],
+          "book": "John"
+        }
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason",
+        "job_existential_suffering"
+      ],
+      "preset_override_ids": [
+        "topic_john_316_anchor"
+      ],
+      "primary_verse_refs": [
+        "John.3.16",
+        "John.3.17",
+        "Rom.5.8"
+      ],
+      "expected_books": [
+        "John",
+        "Rom"
+      ],
+      "hub_id": "john316_salvation",
+      "traffic_rank": 3,
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "failure_log_hits": 0,
+      "blocked_query_markers_ko": [
+        "요한계시록",
+        "계시록",
+        "요한복음 19",
+        "피와 물",
+        "옆구리"
+      ]
+    },
+    {
+      "blocked_stub_books": [
+        "Rev",
+        "Dan",
+        "Job"
+      ],
+      "primary_verse_refs": [
+        "Heb.11.1",
+        "John.3.16",
+        "Rom.1.17",
+        "Rom.10.9",
+        "Eph.2.8",
+        "Jas.2.17",
+        "Mark.9.24"
+      ],
+      "traffic_rank": 4,
+      "hub_spoke_contract": {
+        "forced_fit_forbidden": true,
+        "send_gate": "HOLD",
+        "research_only": true,
+        "non_gating": true,
+        "min_distinct_books": 1,
+        "max_verse_refs": 24
+      },
+      "blocked_query_markers_ko": [
+        "히브리서 11만",
+        "야고보서 2만",
+        "점술",
+        "사주"
+      ],
+      "failure_log_hits": 0,
+      "query_markers_ko": [
+        "신앙이란",
+        "믿음이란",
+        "신앙은 무엇",
+        "믿음은 무엇",
+        "what is faith",
+        "sola fide",
+        "칭의란",
+        "신앙이 뭐",
+        "믿음이 뭐",
+        "신앙이 뭐야",
+        "믿음이 뭐야"
+      ],
+      "priority_band": "P0",
+      "blocked_preset_ids": [
+        "job_job_suffering_reason",
+        "topic_rev_12_anchor"
+      ],
+      "hub_id": "faith_belief",
+      "expected_books": [
+        "Heb",
+        "John",
+        "Rom",
+        "Eph",
+        "Jas",
+        "Hab",
+        "Mark"
+      ]
+    },
+    {
+      "blocked_stub_books": [
+        "Rev",
+        "Dan",
+        "Job"
+      ],
+      "primary_verse_refs": [
+        "Eccl.3.1",
+        "Eccl.3.13",
+        "Prov.16.9",
+        "Col.3.23",
+        "1Cor.10.31"
+      ],
+      "traffic_rank": 5,
+      "hub_spoke_contract": {
+        "forced_fit_forbidden": true,
+        "send_gate": "HOLD",
+        "research_only": true,
+        "non_gating": true,
+        "min_distinct_books": 1,
+        "max_verse_refs": 24
+      },
+      "blocked_query_markers_ko": [
+        "비트코인 매수",
+        "주식 추천",
+        "코인 단타",
+        "진단",
+        "처방"
+      ],
+      "failure_log_hits": 0,
+      "query_markers_ko": [
+        "취미",
+        "여가",
+        "hobby",
+        "취미를 바꿀",
+        "루틴을 바꿀",
+        "시간 쓰"
+      ],
+      "priority_band": "P0",
+      "blocked_preset_ids": [
+        "job_job_suffering_reason",
+        "topic_rev_12_anchor"
+      ],
+      "hub_id": "life_wisdom_hobby",
+      "expected_books": [
+        "Eccl",
+        "Prov",
+        "Col",
+        "1Cor"
+      ]
+    },
+    {
+      "blocked_stub_books": [
+        "Rev",
+        "Dan",
+        "Job"
+      ],
+      "primary_verse_refs": [
+        "Prov.20.1",
+        "Eph.5.18",
+        "Prov.23.31",
+        "Rom.14.21",
+        "1Cor.6.12"
+      ],
+      "hub_spoke_contract": {
+        "forced_fit_forbidden": true,
+        "send_gate": "HOLD",
+        "research_only": true,
+        "non_gating": true,
+        "min_distinct_books": 1,
+        "max_verse_refs": 24
+      },
+      "blocked_query_markers_ko": [
+        "중독 병원",
+        "재활 처방",
+        "의료 진단"
+      ],
+      "failure_log_hits": 0,
+      "query_markers_ko": [
+        "절주",
+        "금주",
+        "음주 절제",
+        "술 끊",
+        "술을 마시",
+        "temperance",
+        "abstain from alcohol",
+        "취하지 말",
+        "절제와 유혹",
+        "절제에 대해",
+        "유혹에 대해 성경",
+        "자기 절제",
+        "술 마시는",
+        "음주",
+        "drinking alcohol"
+      ],
+      "priority_band": "P1",
+      "blocked_preset_ids": [
+        "job_job_suffering_reason"
+      ],
+      "hub_id": "temperance_abstinence",
+      "expected_books": [
+        "Prov",
+        "Eph",
+        "Rom",
+        "1Cor"
+      ]
+    },
+    {
+      "hub_id": "1pet_suffering_imitation",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "베드로전서",
+        "고난 중",
+        "그리스도를 본받",
+        "1pet"
+      ],
+      "expected_books": [
+        "1Pet"
+      ],
+      "primary_verse_refs": [
+        "1Pet.2.21",
+        "1Pet.3.18",
+        "1Pet.4.1"
+      ],
+      "reading_pack_artifact": "showroom_logos_1pet_suffering_imitation_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "1thess4_parousia",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "데살로니가전서 4",
+        "주의 강림",
+        "1thess 4"
+      ],
+      "expected_books": [
+        "1Thess",
+        "1Cor"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "1Thess",
+          "expected_chapters": [
+            4
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "1Thess.4.16",
+        "1Thess.4.17",
+        "1Cor.15.52"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "2tim3_scripture",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "디모데후서 3",
+        "모든 성경",
+        "2tim 3",
+        "scripture inspired"
+      ],
+      "expected_books": [
+        "2Tim",
+        "Ps"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "2Tim",
+          "expected_chapters": [
+            3
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "2Tim.3.16",
+        "2Tim.3.17",
+        "Ps.119.105"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "acts2_pentecost",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "사도행전 2",
+        "acts 2",
+        "성령 강림",
+        "오순절",
+        "pentecost"
+      ],
+      "expected_books": [
+        "Acts",
+        "Joel"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Acts",
+          "expected_chapters": [
+            2
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Acts.2.4",
+        "Acts.2.17",
+        "Joel.2.28"
+      ],
+      "reading_pack_artifact": "showroom_logos_acts2_pentecost_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "amos7_plumbline",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "아모스 7",
+        "다림줄",
+        "plumb line",
+        "amos 7"
+      ],
+      "expected_books": [
+        "Amos"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Amos",
+          "expected_chapters": [
+            7
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Amos.7.7",
+        "Amos.7.8",
+        "Amos.5.24"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "colossians1_fullness",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "골로새서 1",
+        "모든 충만",
+        "colossians 1"
+      ],
+      "expected_books": [
+        "Col"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Col",
+          "expected_chapters": [
+            1,
+            2
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Col.1.15",
+        "Col.1.19",
+        "Col.2.9"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "corinthians13_love",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "고린도전서 13",
+        "1cor 13",
+        "사랑의 특성",
+        "love chapter"
+      ],
+      "expected_books": [
+        "1Cor"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "1Cor",
+          "expected_chapters": [
+            13
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "1Cor.13.4",
+        "1Cor.13.8",
+        "1Cor.13.13"
+      ],
+      "reading_pack_artifact": "showroom_logos_corinthians13_love_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "covenant_judgment_restore_jer",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "언약의 잔류",
+        "심판의 경고",
+        "회복의 약속",
+        "언약이 흔들",
+        "new covenant"
+      ],
+      "expected_books": [
+        "Jer",
+        "Isa",
+        "Hos",
+        "Rom"
+      ],
+      "primary_verse_refs": [
+        "Jer.31.31",
+        "Jer.31.33",
+        "Isa.40.1",
+        "Hos.11.8",
+        "Rom.11.2"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "daniel2_statue_dream",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "다니엘 2",
+        "daniel 2",
+        "왕의 꿈",
+        "아람어 궁정",
+        "금과 은"
+      ],
+      "expected_books": [
+        "Dan"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Dan",
+          "expected_chapters": [
+            2
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Dan.2.31",
+        "Dan.2.44",
+        "Dan.2.45"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "daniel7_beasts_son_man",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "다니엘 7",
+        "daniel 7",
+        "네 짐승",
+        "인자의 아들"
+      ],
+      "expected_books": [
+        "Dan"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Dan",
+          "expected_chapters": [
+            7
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Dan.7.3",
+        "Dan.7.13",
+        "Dan.7.27"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "deut6_shema",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "신명기 6",
+        "쉐마",
+        "shema",
+        "deut 6"
+      ],
+      "expected_books": [
+        "Deut",
+        "Mark"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Deut",
+          "expected_chapters": [
+            6
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Deut.6.4",
+        "Deut.6.5",
+        "Mark.12.29"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "eccl1_vanity",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "전도서",
+        "헛되고 헛되",
+        "eccl 1",
+        "vanity"
+      ],
+      "expected_books": [
+        "Eccl"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Eccl",
+          "expected_chapters": [
+            1,
+            3,
+            12
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Eccl.1.2",
+        "Eccl.12.13",
+        "Eccl.3.1"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "elijah_carmel",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "갈멜",
+        "엘리야",
+        "바알 선지자",
+        "mount carmel",
+        "열왕기 18"
+      ],
+      "expected_books": [
+        "1Kgs"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "1Kgs",
+          "expected_chapters": [
+            18
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "1Kgs.18.21",
+        "1Kgs.18.38",
+        "1Kgs.18.39"
+      ],
+      "reading_pack_artifact": "showroom_logos_elijah_carmel_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "ephesians6_armor",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "에베소서 6",
+        "ephesians 6",
+        "eph 6",
+        "전신갑주",
+        "armor of god"
+      ],
+      "expected_books": [
+        "Eph"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Eph",
+          "expected_chapters": [
+            6
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Eph.6.11",
+        "Eph.6.12",
+        "Eph.6.13"
+      ],
+      "reading_pack_artifact": "showroom_logos_ephesians6_armor_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "exodus_passover_lamb",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "유월절",
+        "passover",
+        "출애굽",
+        "어린양"
+      ],
+      "expected_books": [
+        "Exod",
+        "1Cor"
+      ],
+      "primary_verse_refs": [
+        "Exod.12.13",
+        "1Cor.5.7"
+      ],
+      "reading_pack_artifact": "showroom_logos_exodus_passover_lamb_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "ezekiel37_dry_bones",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "에스겔 37",
+        "마른 뼈",
+        "dry bones",
+        "ezek 37"
+      ],
+      "expected_books": [
+        "Ezek"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Ezek",
+          "expected_chapters": [
+            37
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Ezek.37.1",
+        "Ezek.37.5",
+        "Ezek.37.14"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "galatians5_fruit",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "갈라디아서 5",
+        "gal 5",
+        "성령의 열매",
+        "fruit of the spirit"
+      ],
+      "expected_books": [
+        "Gal"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Gal",
+          "expected_chapters": [
+            5
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Gal.5.22",
+        "Gal.5.23",
+        "Gal.5.25"
+      ],
+      "reading_pack_artifact": "showroom_logos_galatians5_fruit_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "gen15_abraham_covenant",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "아브라ham",
+        "아브라ham 언약",
+        "창세기 15",
+        "gen 15",
+        "별의 상징",
+        "abraham covenant"
+      ],
+      "expected_books": [
+        "Gen",
+        "Rom"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Gen",
+          "expected_chapters": [
+            15
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Gen.15.5",
+        "Gen.15.18",
+        "Rom.4.3"
+      ],
+      "reading_pack_artifact": "showroom_logos_gen15_abraham_covenant_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "gen1_image_of_god",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "하나님의 형상",
+        "형상",
+        "창세기 1",
+        "gen 1",
+        "image of god"
+      ],
+      "expected_books": [
+        "Gen"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Gen",
+          "expected_chapters": [
+            1
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Gen.1.26",
+        "Gen.1.27"
+      ],
+      "reading_pack_artifact": "showroom_logos_gen1_image_of_god_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "good_samaritan_parable",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "선한 사마리아인",
+        "사마리아인",
+        "good samaritan"
+      ],
+      "expected_books": [
+        "Luke"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Luke",
+          "expected_chapters": [
+            10
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Luke.10.33",
+        "Luke.10.36",
+        "Luke.10.37"
+      ],
+      "reading_pack_artifact": "showroom_logos_good_samaritan_parable_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "habakkuk2_faith",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "하박국 2",
+        "의인은 믿음으로",
+        "habakkuk 2"
+      ],
+      "expected_books": [
+        "Hab",
+        "Rom",
+        "Gal"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Hab",
+          "expected_chapters": [
+            2
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Hab.2.4",
+        "Rom.1.17",
+        "Gal.3.11"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "haggai2_temple_glory",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "학개",
+        "성전 재건",
+        "haggai 2"
+      ],
+      "expected_books": [
+        "Hag",
+        "Ezra",
+        "Zech"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Hag",
+          "expected_chapters": [
+            2
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Hag.2.9",
+        "Ezra.3.10",
+        "Zech.4.9"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "hebrews11_faith",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "히브리서 11",
+        "hebrews 11",
+        "heb 11",
+        "믿음의 정의"
+      ],
+      "expected_books": [
+        "Heb"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Heb",
+          "expected_chapters": [
+            11
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Heb.11.1",
+        "Heb.11.6",
+        "Heb.11.17"
+      ],
+      "reading_pack_artifact": "showroom_logos_hebrews11_faith_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "hosea_love_marriage",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "호세아",
+        "배우자 은유",
+        "하나님의 사랑과 배신",
+        "hosea"
+      ],
+      "expected_books": [
+        "Hos"
+      ],
+      "primary_verse_refs": [
+        "Hos.2.19",
+        "Hos.11.1",
+        "Hos.14.4"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "isa_immanuel_7",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "임마누엘",
+        "immanuel",
+        "이사야 7",
+        "isa 7"
+      ],
+      "expected_books": [
+        "Isa",
+        "Matt"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Isa",
+          "expected_chapters": [
+            7
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Isa.7.14",
+        "Matt.1.23"
+      ],
+      "reading_pack_artifact": "showroom_logos_isa_immanuel_7_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "isaiah53_suffering_servant",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "이사야 53",
+        "isa 53",
+        "고난받는 종",
+        "suffering servant"
+      ],
+      "expected_books": [
+        "Isa",
+        "1Pet"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Isa",
+          "expected_chapters": [
+            53
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Isa.53.5",
+        "Isa.53.7",
+        "1Pet.2.24"
+      ],
+      "reading_pack_artifact": "showroom_logos_isaiah53_suffering_servant_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "james2_faith_works",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "야고보서",
+        "믿음과 행위",
+        "james 2",
+        "faith and works"
+      ],
+      "expected_books": [
+        "James"
+      ],
+      "primary_verse_refs": [
+        "James.2.17",
+        "James.2.22",
+        "James.2.26"
+      ],
+      "reading_pack_artifact": "showroom_logos_james2_faith_works_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "job_suffering",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "욥기",
+        "욥의 고난",
+        "고난의 이유",
+        "의인의 고난",
+        "의인",
+        "job suffering"
+      ],
+      "expected_books": [
+        "Job"
+      ],
+      "primary_verse_refs": [
+        "Job.1.21",
+        "Job.2.10",
+        "Job.42.5"
+      ],
+      "preset_override_ids": [
+        "job_job_suffering_reason",
+        "job_existential_suffering"
+      ],
+      "reading_pack_artifact": "showroom_logos_job_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "jonah_three_days",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "요나",
+        "3일 밤낮",
+        "3일밤낮",
+        "jonah"
+      ],
+      "expected_books": [
+        "Jonah",
+        "Matt"
+      ],
+      "primary_verse_refs": [
+        "Jonah.1.17",
+        "Matt.12.40"
+      ],
+      "reading_pack_artifact": "showroom_logos_jonah_three_days_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "joshua6_jericho",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "여호수아 6",
+        "여리고",
+        "joshua 6",
+        "jericho"
+      ],
+      "expected_books": [
+        "Josh",
+        "Heb"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Josh",
+          "expected_chapters": [
+            6
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Josh.6.20",
+        "Josh.6.25",
+        "Heb.11.30"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "jude1_contend",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "유다서",
+        "거룩한 믿음",
+        "힘써 싸우",
+        "jude"
+      ],
+      "expected_books": [
+        "Jude"
+      ],
+      "primary_verse_refs": [
+        "Jude.1.3",
+        "Jude.1.20",
+        "Jude.1.24"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "lamentations3_mercies",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "예레미야애가 3",
+        "아침마다 새로운",
+        "lamentations 3"
+      ],
+      "expected_books": [
+        "Lam"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Lam",
+          "expected_chapters": [
+            3
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Lam.3.22",
+        "Lam.3.23",
+        "Lam.3.24"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "lords_supper",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "성찬",
+        "성찬이란",
+        "성찬의 의미",
+        "주의 만찬",
+        "최후 만찬",
+        "만찬",
+        "떡과 잔",
+        "성만찬",
+        "주의 성찬",
+        "lords supper",
+        "last supper",
+        "holy communion",
+        "communion",
+        "eucharist"
+      ],
+      "expected_books": [
+        "Matt",
+        "1Cor",
+        "Luke"
+      ],
+      "primary_verse_refs": [
+        "Matt.26.26",
+        "Matt.26.28",
+        "1Cor.11.24",
+        "1Cor.11.25",
+        "1Cor.11.26",
+        "Luke.22.19"
+      ],
+      "reading_pack_artifact": "showroom_logos_lords_supper_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "love_forgiveness_covenant",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "사랑과 용서",
+        "용서가 언약",
+        "love and forgiveness"
+      ],
+      "expected_books": [
+        "1John",
+        "Eph",
+        "Col"
+      ],
+      "primary_verse_refs": [
+        "1John.4.8",
+        "Eph.4.32",
+        "Col.3.13"
+      ],
+      "reading_pack_artifact": "showroom_logos_love_forgiveness_covenant_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "malachi3_messenger",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "말라기 3",
+        "말라기 4",
+        "내가 보낼 사자",
+        "malachi 3"
+      ],
+      "expected_books": [
+        "Mal",
+        "Matt"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Mal",
+          "expected_chapters": [
+            3,
+            4
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Mal.3.1",
+        "Mal.4.5",
+        "Matt.11.10"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "micah6_justice",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "미가 6",
+        "mic 6",
+        "공의를 행하며",
+        "act justly"
+      ],
+      "expected_books": [
+        "Mic",
+        "Deut",
+        "Amos"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Mic",
+          "expected_chapters": [
+            6
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Mic.6.8",
+        "Deut.10.12",
+        "Amos.5.24"
+      ],
+      "reading_pack_artifact": "showroom_logos_micah6_justice_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "nehemiah_wall_rebuild",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "느헤미야",
+        "성벽 재건",
+        "nehemiah"
+      ],
+      "expected_books": [
+        "Neh",
+        "Ezra"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Neh",
+          "expected_chapters": [
+            2,
+            6
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Neh.2.17",
+        "Neh.6.15",
+        "Ezra.9.9"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "philippians2_kenosis",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "빌립보서 2",
+        "phil 2",
+        "kenosis",
+        "자기 비움"
+      ],
+      "expected_books": [
+        "Phil"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Phil",
+          "expected_chapters": [
+            2
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Phil.2.6",
+        "Phil.2.7",
+        "Phil.2.8"
+      ],
+      "reading_pack_artifact": "showroom_logos_philippians2_kenosis_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "prodigal_son_parable",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "탕자",
+        "prodigal son",
+        "탕자 비유"
+      ],
+      "expected_books": [
+        "Luke"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Luke",
+          "expected_chapters": [
+            15
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Luke.15.20",
+        "Luke.15.24",
+        "Luke.15.32"
+      ],
+      "reading_pack_artifact": "showroom_logos_prodigal_son_parable_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "proverbs8_wisdom",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "잠언 8",
+        "proverbs 8",
+        "prov 8",
+        "지혜의 personification"
+      ],
+      "expected_books": [
+        "Prov",
+        "John"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Prov",
+          "expected_chapters": [
+            8
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Prov.8.22",
+        "Prov.8.30",
+        "John.1.1"
+      ],
+      "reading_pack_artifact": "showroom_logos_proverbs8_wisdom_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "psalm23_shepherd",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "시편 23",
+        "시편23",
+        "psalm 23",
+        "psalm23",
+        "선한 목자",
+        "목자",
+        "shepherd",
+        "green pasture"
+      ],
+      "expected_books": [
+        "Ps"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Jer",
+        "Dan"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Ps",
+          "expected_chapters": [
+            23
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Ps.23.1",
+        "Ps.23.4",
+        "Ps.23.6"
+      ],
+      "preset_override_ids": [
+        "topic_ps_23_anchor",
+        "book_ps_anchor"
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason",
+        "job_existential_suffering"
+      ],
+      "reading_pack_artifact": "showroom_logos_psalm23_shepherd_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "rev21_new_creation",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "새 하늘",
+        "새 땅",
+        "요한계시록 21",
+        "계시록 21",
+        "rev 21"
+      ],
+      "expected_books": [
+        "Rev"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Rev",
+          "expected_chapters": [
+            21
+          ]
+        }
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Ps",
+        "Jer"
+      ],
+      "primary_verse_refs": [
+        "Rev.21.1",
+        "Rev.21.2",
+        "Rev.21.4",
+        "Rev.21.5"
+      ],
+      "preset_override_ids": [
+        "topic_rev_20_anchor",
+        "topic_rev_1_anchor"
+      ],
+      "blocked_preset_ids": [
+        "job_job_suffering_reason",
+        "job_existential_suffering"
+      ],
+      "reading_pack_artifact": "showroom_logos_rev21_new_creation_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "rev22_alpha_omega",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "계시록 22",
+        "알파와 오메가",
+        "생명수",
+        "rev 22"
+      ],
+      "expected_books": [
+        "Rev"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Rev",
+          "expected_chapters": [
+            22
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Rev.22.1",
+        "Rev.22.13",
+        "Rev.21.6"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "rev5_slain_lamb",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "어린 양",
+        "승리하신 어린양",
+        "slain lamb",
+        "계시록 5",
+        "rev 5"
+      ],
+      "expected_books": [
+        "Rev",
+        "John"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Rev",
+          "expected_chapters": [
+            5
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Rev.5.6",
+        "Rev.5.12",
+        "John.1.29"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "revelation12_woman_dragon",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "계시록 12",
+        "rev 12",
+        "여인과 용",
+        "용과 싸우"
+      ],
+      "expected_books": [
+        "Rev"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Rev",
+          "expected_chapters": [
+            12
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Rev.12.1",
+        "Rev.12.9",
+        "Rev.12.17"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "romans8_suffering_glory",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "로마서 8",
+        "romans 8",
+        "rom 8"
+      ],
+      "expected_books": [
+        "Rom"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Rom",
+          "expected_chapters": [
+            8
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Rom.8.18",
+        "Rom.8.28"
+      ],
+      "reading_pack_artifact": "showroom_logos_romans8_suffering_glory_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "ruth_loyalty_covenant",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "룻기",
+        "룻의 충성",
+        "보아스",
+        "ruth"
+      ],
+      "expected_books": [
+        "Ruth"
+      ],
+      "primary_verse_refs": [
+        "Ruth.1.16",
+        "Ruth.3.9",
+        "Ruth.4.10"
+      ],
+      "reading_pack_artifact": "showroom_logos_ruth_loyalty_covenant_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "samuel_david_anointing",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "사무엘상",
+        "다윗의 기름",
+        "다윗 기름",
+        "david anointing"
+      ],
+      "expected_books": [
+        "1Sam",
+        "Ps",
+        "Acts"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "1Sam",
+          "expected_chapters": [
+            16
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "1Sam.16.13",
+        "Ps.89.20",
+        "Acts.13.22"
+      ],
+      "reading_pack_artifact": "showroom_logos_samuel_david_anointing_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "sermon_mount_beatitudes",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "산상수훈",
+        "팔복",
+        "가난한 자",
+        "beatitudes"
+      ],
+      "expected_books": [
+        "Matt",
+        "Luke"
+      ],
+      "primary_verse_refs": [
+        "Matt.5.3",
+        "Luke.6.20"
+      ],
+      "reading_pack_artifact": "showroom_logos_sermon_mount_beatitudes_reading_pack_slice_v1_latest.json",
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "song8_love",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "아가서",
+        "사랑의 강함",
+        "song of songs",
+        "song 8"
+      ],
+      "expected_books": [
+        "Song"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Song",
+          "expected_chapters": [
+            2,
+            8
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Song.8.6",
+        "Song.8.7",
+        "Song.2.4"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "suffering_comfort_pattern",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "고난과 위로",
+        "고난과위로",
+        "suffering and comfort",
+        "위로가 함께"
+      ],
+      "expected_books": [
+        "Isa",
+        "2Cor",
+        "Ps"
+      ],
+      "primary_verse_refs": [
+        "Isa.40.1",
+        "2Cor.1.3",
+        "Ps.23.4"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "titus2_grace",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "디도서 2",
+        "은혜가 교훈",
+        "titus 2"
+      ],
+      "expected_books": [
+        "Titus"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Titus",
+          "expected_chapters": [
+            2,
+            3
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Titus.2.11",
+        "Titus.2.12",
+        "Titus.3.5"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "zechariah3_joshua_branch",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "스가랴 3",
+        "스가랴 6",
+        "제사장 여호수아",
+        "zechariah 3"
+      ],
+      "expected_books": [
+        "Zech",
+        "Jer"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Zech",
+          "expected_chapters": [
+            3,
+            6
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Zech.3.8",
+        "Zech.6.12",
+        "Jer.23.5"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "zephaniah1_day_lord",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "스바냐 1",
+        "여호와의 날",
+        "zephaniah 1"
+      ],
+      "expected_books": [
+        "Zeph",
+        "Joel"
+      ],
+      "book_chapter_rules": [
+        {
+          "book": "Zeph",
+          "expected_chapters": [
+            1,
+            3
+          ]
+        }
+      ],
+      "primary_verse_refs": [
+        "Zeph.1.14",
+        "Zeph.3.9",
+        "Joel.2.1"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "death_funeral_hope",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "장례",
+        "죽음",
+        "사후",
+        "내세",
+        "돌아가",
+        "장례식",
+        "죽은 뒤",
+        "죽으면",
+        "영생 소망",
+        "부활 소망",
+        "after death",
+        "afterlife",
+        "what happens after death",
+        "천국",
+        "위로 구절",
+        "장례 위로",
+        "자살",
+        "자살에 관한",
+        "자살하면",
+        "suicide",
+        "christian view of suicide",
+        "애완동물도 천국",
+        "pets go to heaven"
+      ],
+      "expected_books": [
+        "John",
+        "1Cor",
+        "1Thess",
+        "Ps",
+        "Rev",
+        "Phil"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "John.11.25",
+        "1Cor.15.55",
+        "1Thess.4.13",
+        "Ps.23.4",
+        "Rev.21.4",
+        "Phil.1.21"
+      ],
+      "blocked_query_markers_ko": [
+        "자살 처방",
+        "날짜 예언",
+        "애완동물 천국"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 2,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "salvation_assurance",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "구원보장",
+        "한번 받은 구원",
+        "영원한 구원",
+        "eternal security",
+        "once saved",
+        "always saved",
+        "lose salvation",
+        "구원 상실",
+        "세례와 구원",
+        "세례를 받아야만",
+        "세례를 받아야만 구원",
+        "구원받지 못하"
+      ],
+      "expected_books": [
+        "John",
+        "Rom",
+        "Heb",
+        "2Tim",
+        "1John"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "John.10.28",
+        "Rom.8.38",
+        "Heb.6.4",
+        "2Tim.2.19",
+        "1John.5.13",
+        "John.3.16"
+      ],
+      "blocked_query_markers_ko": [
+        "universalism",
+        "보편 구원 단정"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 2,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "divination_refusal",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "사주",
+        "타로",
+        "점술",
+        "점을 보",
+        "복술",
+        "무당",
+        "점쟁이",
+        "fortune tell",
+        "horoscope",
+        "divination",
+        "운세",
+        "제사를 지내",
+        "차례를 지내",
+        "조상 제사",
+        "ancestral rite"
+      ],
+      "expected_books": [
+        "Deut",
+        "Lev",
+        "Isa",
+        "Acts",
+        "Gal"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev"
+      ],
+      "primary_verse_refs": [
+        "Deut.18.10",
+        "Lev.19.26",
+        "Isa.47.13",
+        "Acts.16.16",
+        "Gal.5.19"
+      ],
+      "blocked_query_markers_ko": [
+        "비트코인",
+        "주식 추천"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 2,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "family_marriage",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "결혼",
+        "부부",
+        "배우자",
+        "아내",
+        "남편",
+        "혼인",
+        "가정과 결혼",
+        "한 몸",
+        "이혼",
+        "재혼",
+        "이종교제",
+        "marriage",
+        "spouse",
+        "wife",
+        "husband",
+        "wedding",
+        "matrimony",
+        "divorce",
+        "remarriage"
+      ],
+      "expected_books": [
+        "Gen",
+        "Eph",
+        "Matt",
+        "1Cor"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Gen.2.24",
+        "Eph.5.25",
+        "Eph.5.31",
+        "Matt.19.5",
+        "Eph.5.21",
+        "1Cor.7.3"
+      ],
+      "blocked_query_markers_ko": [
+        "연애 궁합",
+        "결혼 시기 점",
+        "사주 결혼",
+        "타로 결혼",
+        "결혼 운",
+        "가인의 아내",
+        "가인 아내",
+        "cain's wife",
+        "who was cain"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 2,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "forgiveness_grace",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "용서하기 어려운",
+        "서로 용서",
+        "은혜로 회복",
+        "용서 구절",
+        "용서와 은혜",
+        "용서는 무엇",
+        "용서란",
+        "원수를 사랑",
+        "어떻게 용서",
+        "화해와 용서",
+        "forgiveness",
+        "forgive others",
+        "love enemies"
+      ],
+      "expected_books": [
+        "Matt",
+        "Eph",
+        "Col",
+        "Ps"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Matt.6.14",
+        "Eph.4.32",
+        "Col.3.13",
+        "Matt.18.21",
+        "Ps.130.4",
+        "Luke.17.3"
+      ],
+      "blocked_query_markers_ko": [
+        "학대 방조",
+        "폭력 정당",
+        "법적 처벌 취소 단정"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 4,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "holy_spirit_basics",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "성령은 누구",
+        "성령이 누구",
+        "성령이란",
+        "성령의 열매",
+        "성령 충만",
+        "보혜사",
+        "holy spirit",
+        "fruit of the spirit",
+        "성령을 못 받",
+        "방언의 은사",
+        "방언을 말",
+        "speaking in tongues",
+        "성령 세례"
+      ],
+      "expected_books": [
+        "John",
+        "Rom",
+        "Gal",
+        "Acts",
+        "1Cor"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "John.14.26",
+        "Rom.8.9",
+        "Gal.5.22",
+        "Acts.1.8",
+        "1Cor.12.4",
+        "1Cor.12.30"
+      ],
+      "blocked_query_markers_ko": [
+        "방언 필수 단정",
+        "은사 시험"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 5,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "revelation_interpretive_caution",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "계시록 해석",
+        "요한계시록은 어떻게",
+        "계시록 읽는",
+        "계시록 주의",
+        "날짜 해석",
+        "종말 날짜",
+        "계시록 어떻게 읽",
+        "revelation interpret",
+        "how to read revelation"
+      ],
+      "expected_books": [
+        "Rev",
+        "1John",
+        "2Pet"
+      ],
+      "blocked_stub_books": [
+        "Job"
+      ],
+      "primary_verse_refs": [
+        "Rev.1.3",
+        "Rev.22.18",
+        "Rev.22.19",
+        "2Pet.1.20",
+        "1John.4.1",
+        "Matt.24.36"
+      ],
+      "blocked_query_markers_ko": [
+        "666",
+        "적그리스도",
+        "안티크라이스트",
+        "짐승의 숫자"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 6,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "great_commission",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "복음을 전하",
+        "지상명령",
+        "제자를 삼아",
+        "땅 끝까지",
+        "전도 위임",
+        "great commission",
+        "make disciples",
+        "복음 전하는",
+        "복음 전하라",
+        "전도 명령",
+        "지상 명령",
+        "복음 위임",
+        "친구에게 믿음",
+        "믿음 말하기",
+        "share the gospel"
+      ],
+      "expected_books": [
+        "Matt",
+        "Acts",
+        "Rom",
+        "1Pet"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Matt.28.19",
+        "Matt.28.20",
+        "Acts.1.8",
+        "Rom.10.14",
+        "1Pet.3.15",
+        "Mark.16.15"
+      ],
+      "blocked_query_markers_ko": [
+        "문화전쟁",
+        "정치 캠페인"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 7,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "jesus_came_purpose",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "예수님이 왜 오신",
+        "왜 오신 건지",
+        "예수가 오신 이유",
+        "예수님 오신 목적",
+        "why did jesus come",
+        "why jesus came",
+        "잃어버린 자를 찾아",
+        "예수님 오신 이유",
+        "예수님이 오신 까닭",
+        "예수 오신 목적",
+        "왜 오셨나요 예수",
+        "예수님은 하나님",
+        "삼위일체",
+        "trinity",
+        "jesus is god"
+      ],
+      "expected_books": [
+        "Luke",
+        "John",
+        "1Tim",
+        "Rom"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Luke.19.10",
+        "John.3.16",
+        "1Tim.1.15",
+        "Rom.5.8",
+        "John.10.10",
+        "Mark.10.45",
+        "John.1.1"
+      ],
+      "blocked_query_markers_ko": [
+        "종말 날짜",
+        "재림 날짜"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 8,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "creation_evolution_dialogue",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "진화론도 인정",
+        "진화론",
+        "유신진화",
+        "하나님을 믿지만 진화",
+        "믿지만 진화",
+        "진화와 창조",
+        "창조와 진화",
+        "theistic evolution",
+        "evolution and faith",
+        "faith and evolution",
+        "공룡",
+        "성경은 공룡",
+        "dinosaurs",
+        "가인의 아내",
+        "가인 아내",
+        "cain's wife",
+        "who was cain"
+      ],
+      "expected_books": [
+        "Gen",
+        "Heb",
+        "Col",
+        "Ps",
+        "Rom"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Gen.1.1",
+        "Gen.1.27",
+        "Heb.11.3",
+        "Col.1.16",
+        "Ps.19.1",
+        "Rom.1.20"
+      ],
+      "blocked_query_markers_ko": [
+        "투자 추천",
+        "비트코인 매수",
+        "의료 진단"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 9,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "creation_seven_days",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "7일 만에 창조",
+        "칠일 만에 창조",
+        "세상을 7일",
+        "왜 세상을 7일",
+        "7일 창조",
+        "칠일 창조",
+        "엿새 동안",
+        "창세기 1장 날",
+        "six days creation",
+        "seven days creation",
+        "why seven days"
+      ],
+      "expected_books": [
+        "Gen",
+        "Exod",
+        "Heb",
+        "Ps"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Gen.1.1",
+        "Gen.1.5",
+        "Gen.2.2",
+        "Exod.20.11",
+        "Heb.4.4",
+        "Ps.33.6"
+      ],
+      "blocked_query_markers_ko": [
+        "종말 날짜",
+        "재림 날짜"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 10,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "honesty_integrity",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "정직에 대한 말씀",
+        "정직에 대한",
+        "정직이란",
+        "정직한 삶",
+        "정직과 거짓",
+        "정직 구절",
+        "integrity",
+        "honesty in the bible",
+        "biblical honesty"
+      ],
+      "expected_books": [
+        "Prov",
+        "Eph",
+        "Col",
+        "Ps",
+        "Zech"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Prov.12.22",
+        "Prov.11.3",
+        "Eph.4.25",
+        "Col.3.9",
+        "Ps.15.2",
+        "Zech.8.16"
+      ],
+      "blocked_query_markers_ko": [
+        "거짓 서류 작성법",
+        "위증 방법"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 11,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "adolescence_parenting",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "사춘기 중2",
+        "중2 딸",
+        "화장만 좋아",
+        "사춘기",
+        "중2",
+        "자녀 양육",
+        "사춘기 자녀",
+        "teen parenting",
+        "adolescent daughter",
+        "teenager parenting"
+      ],
+      "expected_books": [
+        "Prov",
+        "Deut",
+        "Eph",
+        "Col",
+        "Ps"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Prov.22.6",
+        "Deut.6.6",
+        "Deut.6.7",
+        "Eph.6.4",
+        "Col.3.21",
+        "Prov.1.8"
+      ],
+      "blocked_query_markers_ko": [
+        "의료 진단",
+        "정신과 처방",
+        "체벌 방법"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 12,
+      "failure_log_hits": 0
+    },
+    {
+      "hub_id": "watchfulness_parousia",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "다시 오실 날을 기다리며 깨어",
+        "깨어 있으라는 뜻",
+        "깨어 있으",
+        "다시 오실 날",
+        "재림을 기다리",
+        "종말 소망",
+        "watchfulness",
+        "parousia watch",
+        "stay awake"
+      ],
+      "expected_books": [
+        "Matt",
+        "1Thess",
+        "Mark",
+        "Luke",
+        "Rev"
+      ],
+      "blocked_stub_books": [
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Matt.24.42",
+        "Matt.25.13",
+        "1Thess.5.6",
+        "Mark.13.33",
+        "Luke.21.36",
+        "Rev.16.15"
+      ],
+      "blocked_query_markers_ko": [
+        "재림 날짜",
+        "휴거 날짜",
+        "종말 연도"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "notes_ko": "깨어있음·재림 소망 softpack · 날짜 단정 금지 · Top45 soft_hold fill 2026-08-11"
+    },
+    {
+      "hub_id": "dating_partner_character",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "연애 상대를 어떻게 고르면",
+        "연애 상대",
+        "이성 친구 고르",
+        "데이트 상대",
+        "연인 선택",
+        "dating partner",
+        "choose a partner",
+        "whom should I date"
+      ],
+      "expected_books": [
+        "Prov",
+        "2Cor",
+        "1Cor",
+        "Song",
+        "Ruth"
+      ],
+      "blocked_stub_books": [
+        "Dan",
+        "Rev"
+      ],
+      "primary_verse_refs": [
+        "Prov.31.30",
+        "2Cor.6.14",
+        "1Cor.13.4",
+        "Prov.4.23",
+        "Prov.12.4",
+        "Ruth.3.11"
+      ],
+      "blocked_query_markers_ko": [
+        "연애 궁합",
+        "결혼 시기 점",
+        "사주",
+        "타로",
+        "연애운"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "notes_ko": "연애 상대 선택=성품·믿음 기준 연구 · 궁합/사주 금지 · Top45 gap fill 2026-08-11"
+    },
+    {
+      "hub_id": "illness_comfort_healing",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "몸이 아플 때 붙잡을 수 있는 위로",
+        "몸이 아플 때",
+        "병중 위로",
+        "아플 때 위로",
+        "붙잡을 수 있는 위로 말씀",
+        "illness comfort",
+        "sickness comfort",
+        "healing verse when sick"
+      ],
+      "expected_books": [
+        "Ps",
+        "Jas",
+        "Mark",
+        "Isa",
+        "2Cor"
+      ],
+      "blocked_stub_books": [
+        "Dan",
+        "Rev"
+      ],
+      "primary_verse_refs": [
+        "Ps.103.3",
+        "Jas.5.14",
+        "Jas.5.15",
+        "Mark.5.34",
+        "Isa.41.10",
+        "2Cor.1.3"
+      ],
+      "blocked_query_markers_ko": [
+        "치료 보장",
+        "기적 치유 확정",
+        "병원 가지 마"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "notes_ko": "병중 위로·치유 softpack · 의료 대체 금지 · Top45 soft remine fill 2026-08-11"
+    },
+    {
+      "hub_id": "workplace_anxiety_fear",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "직장 스트레스 때문에 너무 불안한데",
+        "직장 스트레스",
+        "직장에서 불안",
+        "업무 스트레스 불안",
+        "workplace anxiety",
+        "work stress anxiety",
+        "job stress worry"
+      ],
+      "expected_books": [
+        "Phil",
+        "Matt",
+        "Ps",
+        "Isa",
+        "1Pet"
+      ],
+      "blocked_stub_books": [
+        "Dan",
+        "Rev"
+      ],
+      "primary_verse_refs": [
+        "Phil.4.6",
+        "Phil.4.7",
+        "Matt.6.34",
+        "Ps.56.3",
+        "Isa.41.10",
+        "1Pet.5.7"
+      ],
+      "blocked_query_markers_ko": [
+        "이직 시기 점",
+        "직장운",
+        "사주",
+        "타로"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "notes_ko": "직장 불안·염려 softpack · 심리/의료 대체 금지 · Top45 gap remine fill 2026-08-11"
+    },
+    {
+      "hub_id": "temptation_spiritual_warfare",
+      "priority_band": "P1",
+      "query_markers_ko": [
+        "시험과 유혹 앞에서 어떻게 맞서나요",
+        "시험과 유혹",
+        "유혹 앞에서",
+        "시험에 맞서",
+        "유혹을 이길",
+        "temptation resist",
+        "spiritual warfare temptation"
+      ],
+      "expected_books": [
+        "Matt",
+        "1Cor",
+        "Eph",
+        "Jas"
+      ],
+      "blocked_stub_books": [
+        "Dan",
+        "Rev"
+      ],
+      "primary_verse_refs": [
+        "Matt.4.1",
+        "1Cor.10.13",
+        "Eph.6.11",
+        "Jas.4.7",
+        "Matt.26.41",
+        "Heb.2.18"
+      ],
+      "blocked_query_markers_ko": [
+        "사주",
+        "타로",
+        "점"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "notes_ko": "시험·유혹 softpack · Top45 soft remine fill round3 2026-08-11"
+    },
+    {
+      "hub_id": "scripture_reliability",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "성경에는 모순",
+        "성경에 모순",
+        "모순이 있지",
+        "성경 모순",
+        "성경 신뢰",
+        "성경은 믿을",
+        "성경 오류",
+        "정경은 누가",
+        "성경 66권",
+        "영감된 성경",
+        "bible contradictions",
+        "is the bible reliable",
+        "canon of scripture",
+        "성경 번역"
+      ],
+      "expected_books": [
+        "2Tim",
+        "Ps",
+        "Heb",
+        "John",
+        "2Pet"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "2Tim.3.16",
+        "2Tim.3.17",
+        "Ps.119.105",
+        "Heb.4.12",
+        "John.17.17",
+        "2Pet.1.21"
+      ],
+      "blocked_query_markers_ko": [
+        "투자 추천",
+        "비트코인"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 8,
+      "failure_log_hits": 0,
+      "notes_ko": "Wave6 FAQ densify C08 · restored 2026-08-12c"
+    },
+    {
+      "hub_id": "baptism_practice",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "세례의 중요성",
+        "침례의 중요성",
+        "세례의 의미",
+        "침례의 의미",
+        "세례란 무엇",
+        "침례란 무엇",
+        "세례는 왜",
+        "왜 세례",
+        "importance of baptism",
+        "what is baptism",
+        "christian baptism"
+      ],
+      "expected_books": [
+        "Matt",
+        "Acts",
+        "Rom",
+        "1Pet",
+        "Col"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "Matt.28.19",
+        "Acts.2.38",
+        "Rom.6.3",
+        "Rom.6.4",
+        "1Pet.3.21",
+        "Col.2.12"
+      ],
+      "blocked_query_markers_ko": [
+        "세례를 받아야만",
+        "세례 구원 필수"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 6,
+      "failure_log_hits": 0,
+      "notes_ko": "Wave6 FAQ densify C06 baptism · restored 2026-08-12c"
+    },
+    {
+      "hub_id": "sexuality_purity_ethics",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "문신은 죄",
+        "타투는 죄",
+        "성경은 문신",
+        "혼전 관계",
+        "혼전 성관계",
+        "성경은 혼전",
+        "성경은 동성애",
+        "tattoos bible",
+        "tattoo sin",
+        "sex before marriage",
+        "homosexuality bible"
+      ],
+      "expected_books": [
+        "1Cor",
+        "1Thess",
+        "Matt",
+        "Heb",
+        "Rom"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Rev",
+        "Dan"
+      ],
+      "primary_verse_refs": [
+        "1Cor.6.18",
+        "1Thess.4.3",
+        "Matt.5.28",
+        "Heb.13.4",
+        "1Cor.6.19",
+        "Rom.12.1"
+      ],
+      "blocked_query_markers_ko": [
+        "전환 치료",
+        "법률 조언"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 2,
+      "failure_log_hits": 0,
+      "notes_ko": "Wave6 FAQ densify C02 · restored 2026-08-12c"
+    },
+    {
+      "hub_id": "women_pastors_church_office",
+      "priority_band": "P0",
+      "query_markers_ko": [
+        "여성 목사",
+        "여성도 목사",
+        "여자 목사",
+        "여성 설교",
+        "여성도 설교",
+        "여자도 설교",
+        "여성 사역",
+        "women pastors",
+        "woman pastor",
+        "women preaching",
+        "female pastors",
+        "women in ministry",
+        "여자 장로",
+        "여성 장로"
+      ],
+      "expected_books": [
+        "1Tim",
+        "1Cor",
+        "Gal",
+        "Rom",
+        "Acts",
+        "Judg"
+      ],
+      "blocked_stub_books": [
+        "Job",
+        "Dan",
+        "Rev"
+      ],
+      "primary_verse_refs": [
+        "1Tim.2.12",
+        "1Cor.14.34",
+        "Gal.3.28",
+        "Rom.16.1",
+        "Acts.18.26",
+        "Judg.4.4"
+      ],
+      "blocked_query_markers_ko": [
+        "성찬",
+        "방언의 은사",
+        "세례의 중요"
+      ],
+      "hub_spoke_contract": {
+        "max_verse_refs": 24,
+        "min_distinct_books": 1,
+        "forced_fit_forbidden": true,
+        "research_only": true,
+        "non_gating": true,
+        "send_gate": "HOLD"
+      },
+      "traffic_rank": 1,
+      "failure_log_hits": 0,
+      "notes_ko": "Wave8 FAQ densify C06 women pastors · 20260812d"
+    }
+  ],
+  "generated_at_utc": "2026-08-12T07:00:00Z",
+  "traffic_merge": {
+    "failure_log_path": "reports/logos_ask_inquiry_quality_eval_v1.jsonl",
+    "failure_log_present": true,
+    "merged_hub_hits": {},
+    "top45_soft_gap_fill_2026_08_11": {
+      "hubs": [
+        "watchfulness_parousia",
+        "dating_partner_character"
+      ],
+      "note_ko": "soft_hold watchfulness + gap dating_partner"
+    },
+    "top45_soft_gap_fill_round2_2026_08_11": {
+      "hubs": [
+        "illness_comfort_healing",
+        "workplace_anxiety_fear"
+      ],
+      "note_ko": "soft remine illness_comfort + gap workplace_anxiety"
+    },
+    "top45_soft_gap_fill_round3_2026_08_11": {
+      "hubs": [
+        "temptation_spiritual_warfare"
+      ]
+    },
+    "wave8_faq_densify_2026_08_12": {
+      "hubs": [
+        "women_pastors_church_office",
+        "death_funeral_hope",
+        "wealth_mammon",
+        "creation_evolution_dialogue",
+        "family_marriage"
+      ],
+      "note_ko": "C06 women pastors NEW + suicide/gambling ethics/Cain wife routing densify"
+    }
+  }
+}

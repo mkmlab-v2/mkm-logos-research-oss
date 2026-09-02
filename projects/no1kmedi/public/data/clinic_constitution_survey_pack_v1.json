@@ -1,0 +1,175 @@
+{
+  "schema": "clinic_constitution_survey_pack_public_v1",
+  "version": "1.1.0",
+  "pack_id": "mkm_constitution_survey_core_v1",
+  "lane": "consumer_survey_only",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "scale_default": {
+    "min": 0,
+    "max": 4,
+    "labels_ko": [
+      "전혀 아님",
+      "가끔",
+      "보통",
+      "자주",
+      "매우 그럼"
+    ]
+  },
+  "core_item_ids": [
+    "ch02",
+    "dg02",
+    "ac02",
+    "ch01",
+    "dg01"
+  ],
+  "disclaimer_ko": "[HYPO] 참고용 체질 가설입니다. 한의사 확정 진단·처방이 아니며, 증상 악화 시 의료기관 상담을 우선하세요.",
+  "items": [
+    {
+      "item_id": "ch01",
+      "prompt_ko": "평소 몸이 더운 편이고 땀이 많은 편이다.",
+      "axis": "cold_heat_lean",
+      "core_required": true
+    },
+    {
+      "item_id": "ch02",
+      "prompt_ko": "손발이 차고 추위를 잘 탄다.",
+      "axis": "cold_heat_lean",
+      "core_required": true
+    },
+    {
+      "item_id": "ch03",
+      "prompt_ko": "얼굴이나 상체로 열이 올라오는 느낌이 잦다.",
+      "axis": "cold_heat_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "dg01",
+      "prompt_ko": "소화가 잘 되고 식욕이 안정적인 편이다.",
+      "axis": "digestion_lean",
+      "core_required": true
+    },
+    {
+      "item_id": "dg02",
+      "prompt_ko": "밥을 먹으면 더부룩하거나 소화가 더딘 편이다.",
+      "axis": "digestion_lean",
+      "core_required": true
+    },
+    {
+      "item_id": "dg03",
+      "prompt_ko": "배가 쉽게 차거나 복부가 팽만한 느낌이 있다.",
+      "axis": "digestion_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "ac01",
+      "prompt_ko": "기력이 넘치고 활동적인 편이다.",
+      "axis": "activity_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "ac02",
+      "prompt_ko": "쉽게 피로하고 기운이 빨리 떨어진다.",
+      "axis": "activity_lean",
+      "core_required": true
+    },
+    {
+      "item_id": "ac03",
+      "prompt_ko": "말수가 많고 성격이 급한 편이다.",
+      "axis": "activity_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "ms01",
+      "prompt_ko": "입이 마르거나 갈증을 자주 느낀다.",
+      "axis": "moisture_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "ms02",
+      "prompt_ko": "몸이 무겁거나 부종·축축한 느낌이 있다.",
+      "axis": "moisture_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "ms03",
+      "prompt_ko": "땀을 많이 흘리고 피부가 축축한 편이다.",
+      "axis": "moisture_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "tb01",
+      "prompt_ko": "체형이 상대적으로 크고 하체·복부가 발달한 편이라고 느낀다.",
+      "axis": "digestion_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "tb02",
+      "prompt_ko": "체형이 마르고 가슴·상체가 상대적으로 발달한 편이다.",
+      "axis": "activity_lean",
+      "core_required": false
+    },
+    {
+      "item_id": "zb01",
+      "prompt_ko": "가슴·상체와 목덜미가 발달하고 호흡·기세가 힘 있는 편이다.",
+      "axis": "zangbu_daeso",
+      "core_required": false
+    },
+    {
+      "item_id": "zb02",
+      "prompt_ko": "허리 아래·복부와 하체가 튼실하고 골격이 굵은 편이다.",
+      "axis": "zangbu_daeso",
+      "core_required": false
+    },
+    {
+      "item_id": "zb03",
+      "prompt_ko": "명치·중초(소화기)의 힘이 좋고 식사량·소화력이 왕성하다.",
+      "axis": "zangbu_daeso",
+      "core_required": false
+    },
+    {
+      "item_id": "zb04",
+      "prompt_ko": "골반·하체는 상대적으로 실하나 상체·소화기 힘은 약한 편이다.",
+      "axis": "zangbu_daeso",
+      "core_required": false
+    },
+    {
+      "item_id": "sj01",
+      "prompt_ko": "화가 급히 치밀고 감정을 밖으로 강하게 발산하는 편이다.",
+      "axis": "seongjeong",
+      "core_required": false
+    },
+    {
+      "item_id": "sj02",
+      "prompt_ko": "쉽게 서글퍼지고 슬픈·비장한 감정이 오래 남는 편이다.",
+      "axis": "seongjeong",
+      "core_required": false
+    },
+    {
+      "item_id": "sj03",
+      "prompt_ko": "속으로 조용히 만족하며 신중하고 세심하게 파고드는 편이다.",
+      "axis": "seongjeong",
+      "core_required": false
+    },
+    {
+      "item_id": "sj04",
+      "prompt_ko": "너그럽고 포용적이며 느긋하게 즐기고 잘 웃는 편이다.",
+      "axis": "seongjeong",
+      "core_required": false
+    }
+  ],
+  "policy_ref": "docs/final/artifacts/clinic_constitution_dual_lane_policy_v1.json",
+  "score_api_path": "/api/v1/constitution/survey/score",
+  "onboarding": {
+    "profile_schema_id": "mkm_consumer_profile_v1",
+    "administration_mode": "once_at_onboarding",
+    "common_intake_blocks": [
+      "basic",
+      "anthropometrics",
+      "health_basics",
+      "constitution"
+    ],
+    "form_html": "onboarding/mkm_onboarding_form_v1.html",
+    "note_ko": "회원가입 시 개인정보·신체계측·건강기초·체질설문을 이 공통 규격으로 1회 수집."
+  }
+}
