@@ -29,7 +29,7 @@ CSS = r"""
 .surface-grid{max-width:var(--max);margin:auto;padding:0 24px 72px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.surface-card{min-height:230px;padding:28px;border:1px solid var(--line2);border-radius:18px;background:var(--paper2);text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;transition:.16s}.surface-card:hover{transform:translateY(-2px);border-color:#aaa69d;background:#fff}.surface-card .type{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.06em}.surface-card h2{margin:34px 0 8px;font:700 28px "Noto Serif KR",serif;letter-spacing:-.035em}.surface-card p{margin:0;color:var(--soft);font-size:14px;line-height:1.7;max-width:35ch}.arrow{margin-top:22px;color:var(--accent);font-size:13px;font-weight:700}.coming{max-width:var(--max);margin:-44px auto 72px;padding:0 24px;color:var(--muted);font-size:12px}
 .brief-head{max-width:var(--max);margin:auto;padding:72px 24px 28px}.brief-head h1{margin:13px 0 0;max-width:820px;font:700 clamp(32px,5vw,50px)/1.25 "Noto Serif KR",serif;letter-spacing:-.045em}.lead{max-width:660px;margin:16px 0 0;color:var(--soft);font-size:15px;line-height:1.75}.page{max-width:var(--max);margin:auto;padding:0 24px 72px}
 .issue-list{border-top:1px solid var(--line2)}.issue-row{padding:26px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:92px minmax(0,1fr) auto;gap:22px}.issue-id{font-size:12px;color:var(--muted);padding-top:5px}.issue-main h2{margin:0;font:600 22px/1.45 "Noto Serif KR",serif;letter-spacing:-.025em}.issue-main h2 a{text-decoration:none}.issue-main p{margin:9px 0 0;color:var(--soft);font-size:14px;line-height:1.7}.link-action{text-decoration:none;color:var(--accent);font-size:13px;font-weight:700;white-space:nowrap;padding-top:4px}
-.article{max-width:var(--read);margin:auto;padding:6px 24px 72px}.section{padding:34px 0;border-top:1px solid var(--line)}.section:first-child{border-color:var(--line2)}.section .num{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.06em}.section h2{margin:8px 0 10px;font:700 27px "Noto Serif KR",serif;letter-spacing:-.035em}.purpose{margin:0 0 20px;color:var(--muted);font-size:13px;line-height:1.65}.prose{color:var(--soft);font-size:16px;line-height:1.9}.prose p{margin:0 0 18px}.prose ul{margin:0 0 18px;padding-left:1.25em}.prose li{margin:6px 0}.view-note{margin:18px 0 0;padding:15px 16px;border-left:3px solid var(--accent);background:var(--accent2);color:var(--soft);font-size:14px;line-height:1.75}
+.article{max-width:var(--read);margin:auto;padding:6px 24px 72px}.section{padding:34px 0;border-top:1px solid var(--line)}.section:first-child{border-color:var(--line2)}.section .num{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.06em}.section h2{margin:8px 0 10px;font:700 27px "Noto Serif KR",serif;letter-spacing:-.035em}.purpose{margin:0 0 20px;color:var(--muted);font-size:13px;line-height:1.65}.prose{color:var(--soft);font-size:16px;line-height:1.9}.prose p{margin:0 0 18px}.prose ul{margin:0 0 18px;padding-left:1.25em}.prose li{margin:6px 0}.prose h3{margin:22px 0 10px;font:600 19px/1.5 "Noto Serif KR",serif;color:var(--ink)}.view-note{margin:18px 0 0;padding:15px 16px;border-left:3px solid var(--accent);background:var(--accent2);color:var(--soft);font-size:14px;line-height:1.75}
 .decision-list{border-top:1px solid var(--line)}.decision-item{padding:17px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.7;color:var(--soft)}.decision-item strong{display:block;color:var(--ink);margin-bottom:3px}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}.btn{min-height:46px;padding:0 17px;border-radius:12px;border:1px solid var(--line2);background:transparent;color:var(--ink);text-decoration:none;font:600 13px "IBM Plex Sans KR",sans-serif;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.btn-primary{background:var(--ink);border-color:var(--ink);color:#fff}.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff}
 .trust{max-width:var(--read);margin:0 auto 34px;padding:0 24px;color:var(--muted);font-size:12px;line-height:1.7}.ask-card{max-width:var(--read);padding:24px;border:1px solid var(--line2);border-radius:18px;background:var(--paper2)}.ask-card p{margin:0;color:var(--soft);font-size:14px;line-height:1.75}.ask-prompt{margin-top:18px;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:15px;line-height:1.8;white-space:pre-wrap}
 .ask-box{max-width:var(--read)}.ask-box label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}.ask-box textarea{width:100%;min-height:118px;padding:15px 16px;border:1px solid var(--line2);border-radius:14px;background:var(--paper2);color:var(--ink);resize:vertical;font:400 15px/1.7 "IBM Plex Sans KR",sans-serif}.preview-note{margin:12px 0 0;color:var(--muted);font-size:12px;line-height:1.65}.slots{max-width:var(--read);margin-top:30px;border-top:1px solid var(--line2)}.slot{padding:24px 0;border-bottom:1px solid var(--line)}.slot h3{margin:0 0 8px;font:600 20px "Noto Serif KR",serif}.slot p{margin:0;color:var(--soft);font-size:14px;line-height:1.8}
@@ -47,9 +47,78 @@ def public_text(value: object) -> str:
     return str(value if value is not None else "").replace("怖い", "걱정되는")
 
 
-def paragraphs(text: str) -> str:
-    chunks = [p.strip() for p in public_text(text).replace("\r\n", "\n").split("\n\n") if p.strip()]
-    return "".join(f"<p>{esc(p)}</p>" for p in chunks)
+def inline_markdown(text: str) -> str:
+    """Render only **bold**; escape every other inline token."""
+    parts = public_text(text).split("**")
+    rendered: list[str] = []
+    for i, part in enumerate(parts):
+        value = esc(part)
+        rendered.append(f"<strong>{value}</strong>" if i % 2 else value)
+    return "".join(rendered)
+
+
+def rich_text(text: str) -> str:
+    """Render the small Markdown subset used by the sealed EP01 body.
+
+    This intentionally supports only headings, simple lists, paragraphs and
+    bold spans so authoring syntax cannot leak literally into the public page.
+    """
+    lines = public_text(text).replace("\r\n", "\n").split("\n")
+    out: list[str] = []
+    para: list[str] = []
+    i = 0
+
+    def flush_para() -> None:
+        nonlocal para
+        if para:
+            out.append("<p>" + " ".join(inline_markdown(x.strip()) for x in para) + "</p>")
+            para = []
+
+    while i < len(lines):
+        stripped = lines[i].strip()
+        if not stripped:
+            flush_para()
+            i += 1
+            continue
+
+        if stripped.startswith("#### ") or stripped.startswith("### "):
+            flush_para()
+            label = stripped.lstrip("#").strip()
+            out.append(f"<h3>{inline_markdown(label)}</h3>")
+            i += 1
+            continue
+
+        if stripped.startswith(("- ", "* ", "+ ")):
+            flush_para()
+            items: list[str] = []
+            while i < len(lines):
+                candidate = lines[i].strip()
+                if not candidate.startswith(("- ", "* ", "+ ")):
+                    break
+                items.append(f"<li>{inline_markdown(candidate[2:].strip())}</li>")
+                i += 1
+            out.append("<ul>" + "".join(items) + "</ul>")
+            continue
+
+        ordered_prefix = stripped.split(". ", 1)
+        if len(ordered_prefix) == 2 and ordered_prefix[0].isdigit():
+            flush_para()
+            items = []
+            while i < len(lines):
+                candidate = lines[i].strip()
+                prefix = candidate.split(". ", 1)
+                if len(prefix) != 2 or not prefix[0].isdigit():
+                    break
+                items.append(f"<li>{inline_markdown(prefix[1].strip())}</li>")
+                i += 1
+            out.append("<ul>" + "".join(items) + "</ul>")
+            continue
+
+        para.append(stripped)
+        i += 1
+
+    flush_para()
+    return "".join(out)
 
 
 def shell(title: str, description: str, path: str, body: str, current: str = "", og: bool = False) -> str:
@@ -135,7 +204,7 @@ def build() -> list[str]:
 
     observation_items = "".join(f"<li>{esc(x)}</li>" for x in observations)
     fact = f'<div class="prose"><p>{esc(hook)}</p></div>'
-    why = f'<div class="prose"><p>뉴스에서 수치나 건강 이야기를 들었을 때 바로 결론부터 내리지 않고, 먼저 무엇을 관찰해야 하는지 정리합니다.</p><ul>{observation_items}</ul>{paragraphs(education)}</div>'
+    why = f'<div class="prose"><p>뉴스에서 수치나 건강 이야기를 들었을 때 바로 결론부터 내리지 않고, 먼저 무엇을 관찰해야 하는지 정리합니다.</p><ul>{observation_items}</ul>{rich_text(education)}</div>'
     perspective = '<div class="prose"><p>같은 사실도 질문의 목적과 맥락에 따라 다르게 읽힐 수 있습니다. 여기서는 한 관점을 정답으로 고정하지 않습니다.</p><div class="view-note">해석은 사실과 구분해서 읽으세요. 개인의 증상·검사값·복약 판단에는 별도의 전문 평가가 필요할 수 있습니다.</div></div>'
     next_step = f'<div class="decision-list"><div class="decision-item"><strong>개념을 더 묻고 싶다면</strong>일반 질문은 Ask에서 이어갈 수 있습니다.</div><div class="decision-item"><strong>내 증상·검사값·복약과 연결된다면</strong>{esc(clinic_label)} 또는 적절한 의료전문가와 상담하세요. {esc(clinic_phone)}</div><div class="decision-item"><strong>응급 증상이 있다면</strong>온라인 답변보다 119 또는 응급의료기관을 우선하세요.</div></div><div class="actions"><a class="btn btn-accent" href="/ask/">이 뉴스 더 묻기</a><a class="btn" href="{esc(clinic_url)}" rel="noopener">상담 경로 보기</a></div>'
 
