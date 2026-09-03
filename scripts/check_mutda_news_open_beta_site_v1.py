@@ -49,6 +49,11 @@ FORBIDDEN_PUBLIC = [
     re.compile(r"怖い"),
 ]
 
+RAW_EP01_MARKDOWN = [
+    re.compile(r"(?m)^\s*#{3,4}\s+"),
+    re.compile(r"\*\*[^*\n]+\*\*"),
+]
+
 
 def must_contain(errors: list[str], rel: str, needles: list[str]) -> None:
     path = PUBLIC / rel
@@ -79,6 +84,13 @@ def main() -> int:
     must_contain(errors, "bible/index.html", ["성경 묻다", "본문", "문맥", "해석", "다른 관점", "근거", "더 묻기"])
     must_contain(errors, "ask/index.html", ["이 질문을 조금 더 이어가 볼까요?", "jema-ai.com/ask"])
     must_contain(errors, "about/index.html", ["주식회사 목소리네트워크", "MKM LAB", "Beta 원칙"])
+
+    ep01 = PUBLIC / "news/ep01/index.html"
+    if ep01.is_file():
+        ep01_text = ep01.read_text(encoding="utf-8")
+        for pattern in RAW_EP01_MARKDOWN:
+            if pattern.search(ep01_text):
+                errors.append(f"EP01 leaked raw markdown token: {pattern.pattern}")
 
     scan_ext = {".html", ".txt", ".xml", ".css"}
     for path in PUBLIC.rglob("*"):
@@ -112,6 +124,7 @@ def main() -> int:
     print("OK check_mutda_news_open_beta_site_v1")
     print("  visual_baseline=MUTDA_DESIGN_SSOT_V1")
     print(f"  required_files={len(REQUIRED)}")
+    print("  ep01_markdown_leak_guard=ON")
     print("  evidence_ceiling=STRUCTURAL_PRESENTATION_CHECK_ONLY")
     return 0
 
