@@ -1,0 +1,100 @@
+:root {
+  --ink:#0b1c22; --ink-soft:#24363d; --paper:#f3f6f7; --line:rgba(11,28,34,.12);
+  --teal:#0f6b66; --teal-deep:#0a4f4b; --sand:#c9a66b; --danger:#8a3a2a;
+  --ok:#1f6b4a; --muted:#5b6d74; --max:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:"IBM Plex Sans KR",sans-serif;color:var(--ink);
+  background:
+    radial-gradient(1100px 650px at 10% -8%,rgba(15,107,102,.16),transparent 55%),
+    radial-gradient(800px 480px at 92% 6%,rgba(201,166,107,.12),transparent 50%),
+    linear-gradient(180deg,#eef3f4 0%,var(--paper) 45%,#e9eff1 100%);
+  min-height:100vh;
+}
+.beta{background:var(--teal-deep);color:#e8f4f3;font-size:12px;padding:8px 16px;text-align:center}
+.beta strong{color:var(--sand);letter-spacing:.04em}
+header.top{
+  max-width:var(--max);margin:0 auto;padding:16px 20px 0;
+  display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;
+}
+.brand{font-family:"Noto Serif KR",serif;font-size:26px;font-weight:700;color:var(--ink);text-decoration:none}
+.nav{display:flex;flex-wrap:wrap;gap:8px}
+.nav a{
+  border:1px solid var(--line);background:rgba(255,255,255,.55);border-radius:999px;
+  padding:8px 12px;font:500 13px "IBM Plex Sans KR",sans-serif;color:var(--ink-soft);text-decoration:none;
+}
+.nav a[aria-current="page"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hero{max-width:var(--max);margin:0 auto;padding:36px 20px 12px;display:grid;gap:22px}
+@media(min-width:960px){.hero{grid-template-columns:1.05fr .95fr;align-items:center}}
+.hero h1{font-family:"Noto Serif KR",serif;font-size:clamp(32px,5vw,50px);line-height:1.18;margin:0;letter-spacing:-.03em}
+.tagline{margin:14px 0 0;font-weight:600;font-size:17px;max-width:36ch;color:var(--teal-deep)}
+.sub{margin:8px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.55;max-width:42ch}
+.badge{
+  display:inline-block;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.08em;
+  padding:4px 9px;border-radius:6px;border:1px solid rgba(15,107,102,.35);
+  color:var(--teal-deep);background:rgba(15,107,102,.08);
+}
+.cta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.btn{
+  border:0;border-radius:12px;padding:0 16px;min-height:46px;display:inline-flex;align-items:center;
+  cursor:pointer;font:600 13px "IBM Plex Sans KR",sans-serif;text-decoration:none;
+}
+.btn-primary{background:var(--teal);color:#fff}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
+.flow{background:rgba(255,255,255,.62);border:1px solid var(--line);border-radius:18px;padding:14px}
+.flow .lbl{font-size:11px;letter-spacing:.06em;color:var(--muted);font-weight:600;margin-bottom:8px}
+.step{display:grid;grid-template-columns:78px 1fr;gap:8px;padding:8px 0;border-top:1px dashed var(--line);font-size:14px;color:var(--ink-soft)}
+.step b{font-family:"Noto Serif KR",serif;color:var(--teal-deep);font-size:13px}
+.today,.page{max-width:var(--max);margin:0 auto;padding:8px 20px 48px}
+.today h2,.page h1,.page h2{font-family:"Noto Serif KR",serif}
+.today h2{font-size:22px;margin:8px 0 6px}
+.lead{margin:0 0 14px;color:var(--muted);font-size:13px}
+.issue-row{border-top:1px solid var(--line);padding:14px 0;display:grid;gap:8px}
+.issue-row h3{margin:0;font-family:"Noto Serif KR",serif;font-size:18px}
+.meta{font-size:12px;color:var(--muted)}
+.row-cta{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.brief-head{max-width:var(--max);margin:0 auto;padding:28px 20px 6px}
+.eyebrow{color:var(--teal);font-size:12px;font-weight:600;letter-spacing:.06em}
+.brief-head h1{font-family:"Noto Serif KR",serif;font-size:clamp(24px,3.8vw,34px);margin:8px 0;max-width:28ch}
+.layer{max-width:var(--max);margin:0 auto;padding:20px;border-top:1px solid var(--line)}
+.layer h2{font-family:"Noto Serif KR",serif;font-size:20px;margin:0 0 6px}
+.purpose{margin:0 0 12px;color:var(--muted);font-size:13px}
+.prose{font-size:15px;line-height:1.65;color:var(--ink-soft);max-width:62ch}
+.prose p{margin:0 0 12px}
+.prose ul{margin:0 0 12px;padding-left:1.2em}
+.lens-note{
+  display:inline-block;margin-bottom:10px;font-size:12px;font-weight:600;color:#7a4d12;
+  background:rgba(201,166,107,.2);padding:5px 9px;border-radius:8px;
+}
+.lens-grid{display:grid;gap:8px 16px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:12px}
+.decision-box{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:14px;padding:14px}
+.decision-box p{margin:0 0 10px;font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.decision-box .warn{color:var(--danger);font-weight:600;font-size:13px}
+.opt{padding:10px 0;border-top:1px dashed var(--line);font-size:13px;color:var(--ink-soft)}
+.disclaimer{
+  max-width:var(--max);margin:0 auto;padding:12px 20px 8px;font-size:12px;line-height:1.55;color:var(--muted);
+  border-top:1px solid var(--line);
+}
+.provenance{max-width:var(--max);margin:0 auto;padding:0 20px 8px;font-size:11px;color:var(--muted)}
+footer.page{max-width:var(--max);margin:0 auto;padding:12px 20px 36px;color:var(--muted);font-size:12px;line-height:1.5}
+footer.page a{color:var(--teal-deep)}
+.ask-seed{
+  background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:14px;padding:16px;
+  font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:62ch;white-space:pre-wrap;
+}
+.slots{display:grid;gap:12px;margin-top:16px;max-width:62ch}
+.slot{
+  background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:14px;padding:14px;
+}
+.slot h3{margin:0 0 6px;font-family:"Noto Serif KR",serif;font-size:16px;color:var(--teal-deep)}
+.slot p{margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)}
+.ask-box{max-width:62ch;margin-top:12px}
+.ask-box label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.ask-box textarea{
+  width:100%;min-height:96px;border:1px solid var(--line);border-radius:12px;padding:12px;
+  font:400 14px "IBM Plex Sans KR",sans-serif;color:var(--ink);background:#fff;resize:vertical;
+}
+.ask-box .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.stub-note{font-size:12px;color:var(--muted);margin-top:10px;max-width:62ch;line-height:1.5}

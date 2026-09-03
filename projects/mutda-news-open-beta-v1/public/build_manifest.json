@@ -1,0 +1,30 @@
+{
+  "schema": "mutda.news.open_beta.site_build.v1",
+  "PRODUCT_DONE": false,
+  "FRIEND_READY": false,
+  "status": "OPEN_BETA_STATIC_BUILT",
+  "surfaces": {
+    "/news": "뉴스 묻다 OPEN_BETA",
+    "/bible": "성경 묻다 — Beta (local stub adapter)"
+  },
+  "logos_jema_ai_com_keep": true,
+  "sources": {
+    "ep01": "docs/final/artifacts/mkm_mutda_series_ep01_v1_latest.json",
+    "format": "docs/final/artifacts/mkm_mutda_series_format_v1_latest.json",
+    "mutda_logos_role_pin": "docs/final/artifacts/mkm_mutda_logos_surface_role_pin_v1_latest.json"
+  },
+  "files": [
+    "projects/mutda-news-open-beta-v1/public/assets/site.css",
+    "projects/mutda-news-open-beta-v1/public/index.html",
+    "projects/mutda-news-open-beta-v1/public/news/index.html",
+    "projects/mutda-news-open-beta-v1/public/news/ep01/index.html",
+    "projects/mutda-news-open-beta-v1/public/bible/index.html",
+    "projects/mutda-news-open-beta-v1/public/assets/bible_ask_stub_v1.js",
+    "projects/mutda-news-open-beta-v1/public/ask/index.html",
+    "projects/mutda-news-open-beta-v1/public/about/index.html",
+    "projects/mutda-news-open-beta-v1/public/robots.txt",
+    "projects/mutda-news-open-beta-v1/public/sitemap.xml"
+  ],
+  "tagline_ko": "사실을 나누고 판단을 돕는 AI",
+  "episode_id": "MUTDA_EP01"
+}

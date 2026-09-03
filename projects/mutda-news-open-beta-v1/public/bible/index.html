@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>성경 묻다 — Beta · 묻다.ai</title>
+<meta name="description" content="성경 묻다 — Beta · 5칸 답변 셸" />
+<meta name="robots" content="index,follow" />
+
+<link rel="canonical" href="https://mutda.ai/bible/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/assets/site.css" />
+</head>
+<body>
+<div class="beta"><strong>OPEN_BETA</strong> · 묻다 뉴스 · 교육·참고 전용 · 제품 완료 선언 없음</div>
+<header class="top">
+  <a class="brand" href="/">묻다.ai</a>
+  <nav class="nav" aria-label="주요">
+    <a href="/">홈</a>
+    <a href="/news/">뉴스</a>
+    <a href="/bible/" aria-current="page">성경 묻다</a>
+    <a href="/ask/">Ask</a>
+    <a href="/about/">About</a>
+  </nav>
+</header>
+
+<div class="brief-head">
+  <div class="eyebrow">OPEN_BETA · BIBLE</div>
+  <h1>성경 묻다 — Beta</h1>
+  <p class="lead">소비자 Beta 표면입니다. 완성 제품·연구 워크스페이스 대체가 아닙니다.</p>
+  <span class="badge">Beta</span>
+</div>
+<section class="page">
+  <div class="ask-box">
+    <label for="bible-q">질문</label>
+    <textarea id="bible-q" name="q" maxlength="800" placeholder="예: 시편 23편이 말하는 신뢰는 무엇인가요?"></textarea>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" id="bible-ask-btn">묻기</button>
+      <button type="button" class="btn btn-ghost" id="bible-more-btn" hidden>더 묻기</button>
+      <a class="btn btn-ghost" href="https://logos.jema-ai.com" rel="noopener">Logos 연구면</a>
+    </div>
+    <p class="stub-note">로컬 데모 응답만 표시합니다. 라이브 Logos API·Destiny 배포는 연결하지 않습니다. logos.jema-ai.com은 유지됩니다.</p>
+  </div>
+  <div class="slots" id="bible-slots" hidden aria-live="polite">
+    <article class="slot" data-slot="passage"><h3>본문</h3><p id="slot-passage">—</p></article>
+    <article class="slot" data-slot="context"><h3>문맥</h3><p id="slot-context">—</p></article>
+    <article class="slot" data-slot="reading"><h3>해석</h3><p id="slot-reading">—</p></article>
+    <article class="slot" data-slot="alt"><h3>다른 관점</h3><p id="slot-alt">—</p></article>
+    <article class="slot" data-slot="evidence"><h3>근거</h3><p id="slot-evidence">—</p></article>
+  </div>
+</section>
+<script src="/assets/bible_ask_stub_v1.js" defer></script>
+
+<footer class="page">
+  <div>주식회사 목소리네트워크</div>
+  <div>MKM LAB · secondary / research assist</div>
+  <div style="margin-top:6px">OPEN_BETA · PRODUCT_DONE=false · Ask는 <a href="https://jema-ai.com/ask" rel="noopener">jema-ai.com/ask</a>에서 이어갑니다</div>
+</footer>
+</body>
+</html>

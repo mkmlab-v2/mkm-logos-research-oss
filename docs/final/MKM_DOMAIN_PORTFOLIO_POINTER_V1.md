@@ -15,6 +15,7 @@
 | **jema12.com** | **레거시 브랜드 도메인** — 정책: 전 경로 **301 → `https://jema-ai.com`** (path·query 유지). CF Registrar 이전 완료; **zone이 API 토큰에 보이면** `scripts/Invoke-CloudflareJema12RedirectSetup_v1.ps1`. | `SSH_CURSOR_JEMA12_DEPLOY_RUNBOOK.md`(nginx·studio/broadcast **레거시**), `jema12_cloudflare_zone_v1.json` | **no1kmedi/mkmlife 배포와 분리**. 공개 브랜드·B2B 허브는 **jema-ai.com**만. |
 | **jemaai.cloud** | 공개 쇼룸·Public Event Gateway·**실매매와 격리**된 관측 UI. **MKM 패밀리 허브 푸터**(`showroom-hub-footer`) on 정적 보드. | `JEMAAI_CLOUD_PUBLIC_SHOWROOM_SPEC.md` · `artifacts/mkm_domain_design_tokens_v1.json` · `run_jemaai_cloud_completion_chain.ps1` = 로컬 점검 · 라이브 푸터: `Run-JemaaiShowroomHubFooterLiveSmoke_v1.ps1` | 게이트웨이·nginx: `jemaai-cloud-mvp`. VPS sync: `sync_showroom_to_vps.ps1`. **api.jemaai.cloud** — `jema12.cloud` 혼용 금지. |
 | **a-codeai.com** | L2·압축 API·B2B 대외면: **정적 랜딩과 API 포트 분리** (nginx). | `P0_COMMERCIALIZATION_TRACKER.md`(a-codeai nginx 체크리스트), `scripts/deploy/nginx/a-codeai.com.static-plus-compression-api.conf.example` | **apex가 스텁 JSON만 받아 404 나는 설정** 금지 — `/` vs `/v1/` 분리 우선. |
+| **mutda.ai** | **MUTDA = 공개 질문/결정 브랜드(consumer)** · apex=공통 입구 · `/news`=뉴스 묻다(첫 open-beta) · `/bible`=성경 묻다 **Beta만**(≠완성 성경 AI). `a-codeai.com`·`jema-ai.com`·`mkmlife.com`·`logos.jema-ai.com` 본선 **대체·리다이렉트·301 금지**. PRODUCT_DONE=false. | `mkm_mutda_logos_surface_role_pin_v1_latest.json` · `mudda_mutda_news_open_beta_deployment_ack_v0_1_latest.json` · `projects/mutda-news-open-beta-v1` · 본 포인터 §1.1d | Worker **mutda-news-open-beta** · 만료 **2028-09-03** · 광고 OFF |
 | **mkmlab.space** | **퇴역 예정** — **301 → `research.no1kmedi.com`** (등록 만료 ~2026-06-20). 콘텐츠 SSOT는 `mkmlab-redesign/` → `/var/www/mkmlab`. | `MKM_DOMAIN_CLINICAL_LANE_V1.md` · `apply_mkmlab_space_retire_301_v1.sh` | 갱신 중단 전 **research** vhost·DNS ensure · `Invoke-No1kmediDomainParallelMigrate_v1.ps1` |
 | **research.no1kmedi.com** | **분자한의학 연구소·생산 제품** (구 mkmlab.space). | 동 상위 · `reports/mkmlab_space_readiness_latest.json` | VPS static · CF zone **no1kmedi.com** |
 | **jema-ai.com** | **공개 브랜드·Next `metadataBase`**. B2B **`/enterprise`** · 한의사 보조 **`/clinician`**(채팅+CDSS·환자 번들). 소스 `projects/no1kmedi`. | `JEMA_AI_DOMAIN_POINTER_V1.md` · CF DNS ensure 산출: `reports/cloudflare_dns_ensure_jema-ai_com.json`(요약 체인: `reports/cloudflare_dns_ensure_chain_latest.json`) | **실측(2026-05-16):** upstream `127.0.0.1:3010` · PM2 `no1kmedi-com` **`cwd=/opt/mkm-destiny-ai-41e38ec6/projects/no1kmedi`**. 배포: `Deploy-No1kmediDestinyTarball_v1.ps1` (`-RunApiSmoke` 권장). VPS `.env.local`: `MKM_WORKSPACE_ROOT`·`MKM_PYTHON`·`KM_CLINICIAN_PRO_EMAIL_ALLOWLIST`. |
@@ -101,6 +102,21 @@ Query → Subgraph router / GraphRAG → Insight (four-slot 등) → Visualizati
 6. **OSS export** = **`mkm-logos-research-oss`** harness only (`exports/mkm-logos-research-oss-v1/`) — **logos.jema-ai.com 제품 URL·Scriptorium UI·KRV full ≠ public repo scope**.
 
 **교차 SSOT:** `docs/final/artifacts/mkm_three_exit_branding_matrix_v1_latest.json` · `TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md` **§3.0d** · `K_STARTUP_DOMAIN_SERVICE_MAPPING_V1_DRAFT.md` §1.1.
+
+#### 1.1d MUTDA consumer vs Logos research (Phase0 role pin · 2026-09-03)
+
+**목적:** 소비자 브랜드(MUTDA)와 성경 연구 엔진(Logos)을 **합선·이관·폐기하지 않고** 역할만 핀한다. 브랜드 단순화 이득은 **HYPOTHESIS**(유저 데이터 없음).
+
+| 표면 | 역할 | 고정 |
+|------|------|------|
+| **mutda.ai** | 공개 질문/결정 **consumer** 공통 입구 | `/news`=뉴스 묻다(첫 open-beta) · `/bible`=성경 묻다 **Beta** (≠완성 성경 AI) |
+| **logos.jema-ai.com** | Bible **research/evidence** 엔진·워크스페이스 | **KEEP** — kill/301/풀 이관 **금지** |
+| **jema-ai.com** | B2B 본선 | 대체 금지 |
+| **a-codeai.com** | 압축/API | 대체 금지 |
+
+**Bible lane ceiling:** residual4/UV11=`ACCEPTED_DEV_ONLY` · fresh / FRIEND_READY / PRODUCT_DONE / SEND / SBLGNT lock = **NOT_ESTABLISHED**.
+
+**머신 SSOT:** `docs/final/artifacts/mkm_mutda_logos_surface_role_pin_v1_latest.json` (`forbid.logos_kill_301` · `bible_beta_copy_rule`).
 
 ---
 

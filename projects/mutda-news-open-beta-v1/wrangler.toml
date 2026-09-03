@@ -1,0 +1,17 @@
+name = "mutda-news-open-beta"
+main = "worker.mjs"
+compatibility_date = "2024-09-23"
+account_id = "646e42cf881ab43043c32430e99d9af4"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+
+[[routes]]
+pattern = "mutda.ai"
+zone_name = "mutda.ai"
+
+[[routes]]
+pattern = "mutda.ai/*"
+zone_name = "mutda.ai"
+
