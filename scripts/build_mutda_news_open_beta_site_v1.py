@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Build MUTDA News OPEN_BETA static site from sealed EP01 + format artifacts.
 
+Visual baseline v1:
+- consumer/editorial language on public surfaces
+- internal governance labels stay out of ordinary UI
+- no semantic-engine, Logos API, deploy, or authorization changes
+
 Reads:
   docs/final/artifacts/mkm_mutda_series_ep01_v1_latest.json
   docs/final/artifacts/mkm_mutda_series_format_v1_latest.json
@@ -21,110 +26,290 @@ EP01_PATH = ROOT / "docs" / "final" / "artifacts" / "mkm_mutda_series_ep01_v1_la
 FORMAT_PATH = ROOT / "docs" / "final" / "artifacts" / "mkm_mutda_series_format_v1_latest.json"
 OUT_DIR = ROOT / "projects" / "mutda-news-open-beta-v1" / "public"
 SITE_ORIGIN = "https://mutda.ai"
-PROVENANCE_EP01 = "docs/final/artifacts/mkm_mutda_series_ep01_v1_latest.json"
-PROVENANCE_FORMAT = "docs/final/artifacts/mkm_mutda_series_format_v1_latest.json"
 
-SHARED_CSS = """
-:root {
-  --ink:#0b1c22; --ink-soft:#24363d; --paper:#f3f6f7; --line:rgba(11,28,34,.12);
-  --teal:#0f6b66; --teal-deep:#0a4f4b; --sand:#c9a66b; --danger:#8a3a2a;
-  --ok:#1f6b4a; --muted:#5b6d74; --max:1120px;
+SHARED_CSS = r"""
+:root{
+  --paper:#f6f3ed;
+  --paper-2:#fbfaf7;
+  --ink:#171918;
+  --ink-soft:#3f4744;
+  --muted:#747c78;
+  --line:#d9d6cf;
+  --line-strong:#c7c2b8;
+  --accent:#0d5d55;
+  --accent-soft:#e4efec;
+  --warn:#7a5530;
+  --max:1040px;
+  --read:720px;
+  --radius:18px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;font-family:"IBM Plex Sans KR",sans-serif;color:var(--ink);
-  background:
-    radial-gradient(1100px 650px at 10% -8%,rgba(15,107,102,.16),transparent 55%),
-    radial-gradient(800px 480px at 92% 6%,rgba(201,166,107,.12),transparent 50%),
-    linear-gradient(180deg,#eef3f4 0%,var(--paper) 45%,#e9eff1 100%);
+  margin:0;
   min-height:100vh;
+  color:var(--ink);
+  background:var(--paper);
+  font-family:"IBM Plex Sans KR",system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
-.beta{background:var(--teal-deep);color:#e8f4f3;font-size:12px;padding:8px 16px;text-align:center}
-.beta strong{color:var(--sand);letter-spacing:.04em}
-header.top{
-  max-width:var(--max);margin:0 auto;padding:16px 20px 0;
-  display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;
+a{color:inherit}
+.top{
+  max-width:var(--max);
+  margin:0 auto;
+  min-height:76px;
+  padding:0 24px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  border-bottom:1px solid var(--line);
 }
-.brand{font-family:"Noto Serif KR",serif;font-size:26px;font-weight:700;color:var(--ink);text-decoration:none}
-.nav{display:flex;flex-wrap:wrap;gap:8px}
+.brand{
+  text-decoration:none;
+  font-family:"Noto Serif KR",serif;
+  font-size:25px;
+  font-weight:700;
+  letter-spacing:-.04em;
+}
+.nav{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
 .nav a{
-  border:1px solid var(--line);background:rgba(255,255,255,.55);border-radius:999px;
-  padding:8px 12px;font:500 13px "IBM Plex Sans KR",sans-serif;color:var(--ink-soft);text-decoration:none;
+  text-decoration:none;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:600;
+  padding:8px 0;
+  border-bottom:1px solid transparent;
 }
-.nav a[aria-current="page"]{background:var(--ink);color:#fff;border-color:var(--ink)}
-.hero{max-width:var(--max);margin:0 auto;padding:36px 20px 12px;display:grid;gap:22px}
-@media(min-width:960px){.hero{grid-template-columns:1.05fr .95fr;align-items:center}}
-.hero h1{font-family:"Noto Serif KR",serif;font-size:clamp(32px,5vw,50px);line-height:1.18;margin:0;letter-spacing:-.03em}
-.tagline{margin:14px 0 0;font-weight:600;font-size:17px;max-width:36ch;color:var(--teal-deep)}
-.sub{margin:8px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.55;max-width:42ch}
-.badge{
-  display:inline-block;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:.08em;
-  padding:4px 9px;border-radius:6px;border:1px solid rgba(15,107,102,.35);
-  color:var(--teal-deep);background:rgba(15,107,102,.08);
+.nav a:hover,.nav a[aria-current="page"]{color:var(--ink);border-color:var(--ink)}
+.beta-note{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:13px 24px 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.55;
 }
-.cta-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.beta-note strong{color:var(--accent)}
+.hero{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:88px 24px 52px;
+}
+.hero-kicker,.eyebrow{
+  color:var(--accent);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.hero h1{
+  margin:16px 0 0;
+  max-width:760px;
+  font-family:"Noto Serif KR",serif;
+  font-size:clamp(38px,7vw,72px);
+  line-height:1.12;
+  letter-spacing:-.055em;
+  font-weight:700;
+}
+.hero .sub{
+  margin:22px 0 0;
+  max-width:600px;
+  color:var(--ink-soft);
+  font-size:17px;
+  line-height:1.8;
+}
+.surface-grid{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:0 24px 72px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px;
+}
+.surface-card{
+  min-height:230px;
+  padding:28px;
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  background:var(--paper-2);
+  text-decoration:none;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  transition:transform .16s ease,border-color .16s ease,background .16s ease;
+}
+.surface-card:hover{transform:translateY(-2px);border-color:#aaa69d;background:#fff}
+.surface-card .type{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.06em}
+.surface-card h2{
+  margin:34px 0 8px;
+  font-family:"Noto Serif KR",serif;
+  font-size:28px;
+  letter-spacing:-.035em;
+}
+.surface-card p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.7;max-width:34ch}
+.surface-card .arrow{margin-top:22px;color:var(--accent);font-weight:700;font-size:13px}
+.coming{
+  max-width:var(--max);
+  margin:-44px auto 72px;
+  padding:0 24px;
+  color:var(--muted);
+  font-size:12px;
+}
+.brief-head{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:72px 24px 28px;
+}
+.brief-head h1{
+  margin:13px 0 0;
+  max-width:820px;
+  font-family:"Noto Serif KR",serif;
+  font-size:clamp(32px,5vw,50px);
+  line-height:1.25;
+  letter-spacing:-.045em;
+}
+.lead{
+  max-width:650px;
+  margin:16px 0 0;
+  color:var(--ink-soft);
+  font-size:15px;
+  line-height:1.75;
+}
+.page{max-width:var(--max);margin:0 auto;padding:0 24px 72px}
+.reading{max-width:var(--read)}
+.issue-list{border-top:1px solid var(--line-strong)}
+.issue-row{
+  padding:26px 0;
+  border-bottom:1px solid var(--line);
+  display:grid;
+  grid-template-columns:100px minmax(0,1fr) auto;
+  gap:22px;
+  align-items:start;
+}
+.issue-id{font-size:12px;color:var(--muted);padding-top:5px}
+.issue-main h2,.issue-main h3{
+  margin:0;
+  font-family:"Noto Serif KR",serif;
+  font-size:22px;
+  line-height:1.45;
+  letter-spacing:-.025em;
+}
+.issue-main h2 a,.issue-main h3 a{text-decoration:none}
+.issue-main p{margin:9px 0 0;color:var(--ink-soft);font-size:14px;line-height:1.7}
+.link-action{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--accent);font-size:13px;font-weight:700;white-space:nowrap;padding-top:4px}
+.article-shell{max-width:var(--read);margin:0 auto;padding:6px 24px 72px}
+.article-section{padding:34px 0;border-top:1px solid var(--line)}
+.article-section:first-child{border-top:1px solid var(--line-strong)}
+.article-label{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.06em}
+.article-section h2{
+  margin:8px 0 10px;
+  font-family:"Noto Serif KR",serif;
+  font-size:27px;
+  letter-spacing:-.035em;
+}
+.purpose{margin:0 0 20px;color:var(--muted);font-size:13px;line-height:1.65}
+.prose{color:var(--ink-soft);font-size:16px;line-height:1.9}
+.prose p{margin:0 0 18px}
+.prose ul{margin:0 0 18px;padding-left:1.25em}
+.prose li{margin:6px 0}
+.view-note{
+  margin:18px 0 0;
+  padding:15px 16px;
+  border-left:3px solid var(--accent);
+  background:var(--accent-soft);
+  color:var(--ink-soft);
+  font-size:14px;
+  line-height:1.75;
+}
+.decision-list{display:grid;gap:0;border-top:1px solid var(--line)}
+.decision-item{padding:17px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.7;color:var(--ink-soft)}
+.decision-item strong{display:block;color:var(--ink);margin-bottom:3px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
 .btn{
-  border:0;border-radius:12px;padding:0 16px;min-height:46px;display:inline-flex;align-items:center;
-  cursor:pointer;font:600 13px "IBM Plex Sans KR",sans-serif;text-decoration:none;
+  min-height:46px;
+  padding:0 17px;
+  border-radius:12px;
+  border:1px solid var(--line-strong);
+  background:transparent;
+  color:var(--ink);
+  text-decoration:none;
+  font:600 13px "IBM Plex Sans KR",sans-serif;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
 }
-.btn-primary{background:var(--teal);color:#fff}
-.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ink-soft)}
-.flow{background:rgba(255,255,255,.62);border:1px solid var(--line);border-radius:18px;padding:14px}
-.flow .lbl{font-size:11px;letter-spacing:.06em;color:var(--muted);font-weight:600;margin-bottom:8px}
-.step{display:grid;grid-template-columns:78px 1fr;gap:8px;padding:8px 0;border-top:1px dashed var(--line);font-size:14px;color:var(--ink-soft)}
-.step b{font-family:"Noto Serif KR",serif;color:var(--teal-deep);font-size:13px}
-.today,.page{max-width:var(--max);margin:0 auto;padding:8px 20px 48px}
-.today h2,.page h1,.page h2{font-family:"Noto Serif KR",serif}
-.today h2{font-size:22px;margin:8px 0 6px}
-.lead{margin:0 0 14px;color:var(--muted);font-size:13px}
-.issue-row{border-top:1px solid var(--line);padding:14px 0;display:grid;gap:8px}
-.issue-row h3{margin:0;font-family:"Noto Serif KR",serif;font-size:18px}
-.meta{font-size:12px;color:var(--muted)}
-.row-cta{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.brief-head{max-width:var(--max);margin:0 auto;padding:28px 20px 6px}
-.eyebrow{color:var(--teal);font-size:12px;font-weight:600;letter-spacing:.06em}
-.brief-head h1{font-family:"Noto Serif KR",serif;font-size:clamp(24px,3.8vw,34px);margin:8px 0;max-width:28ch}
-.layer{max-width:var(--max);margin:0 auto;padding:20px;border-top:1px solid var(--line)}
-.layer h2{font-family:"Noto Serif KR",serif;font-size:20px;margin:0 0 6px}
-.purpose{margin:0 0 12px;color:var(--muted);font-size:13px}
-.prose{font-size:15px;line-height:1.65;color:var(--ink-soft);max-width:62ch}
-.prose p{margin:0 0 12px}
-.prose ul{margin:0 0 12px;padding-left:1.2em}
-.lens-note{
-  display:inline-block;margin-bottom:10px;font-size:12px;font-weight:600;color:#7a4d12;
-  background:rgba(201,166,107,.2);padding:5px 9px;border-radius:8px;
+.btn-primary{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn:hover{filter:brightness(.98)}
+.trust{
+  max-width:var(--read);
+  margin:0 auto 34px;
+  padding:0 24px;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.7;
 }
-.lens-grid{display:grid;gap:8px 16px;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));margin-bottom:12px}
-.decision-box{background:rgba(255,255,255,.55);border:1px solid var(--line);border-radius:14px;padding:14px}
-.decision-box p{margin:0 0 10px;font-size:14px;line-height:1.55;color:var(--ink-soft)}
-.decision-box .warn{color:var(--danger);font-weight:600;font-size:13px}
-.opt{padding:10px 0;border-top:1px dashed var(--line);font-size:13px;color:var(--ink-soft)}
-.disclaimer{
-  max-width:var(--max);margin:0 auto;padding:12px 20px 8px;font-size:12px;line-height:1.55;color:var(--muted);
+.ask-card{
+  max-width:var(--read);
+  padding:24px;
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  background:var(--paper-2);
+}
+.ask-card p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.75}
+.ask-prompt{
+  margin-top:18px;
+  padding:18px 0;
   border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.8;
+  white-space:pre-wrap;
 }
-.provenance{max-width:var(--max);margin:0 auto;padding:0 20px 8px;font-size:11px;color:var(--muted)}
-footer.page{max-width:var(--max);margin:0 auto;padding:12px 20px 36px;color:var(--muted);font-size:12px;line-height:1.5}
-footer.page a{color:var(--teal-deep)}
-.ask-seed{
-  background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:14px;padding:16px;
-  font-size:14px;line-height:1.6;color:var(--ink-soft);max-width:62ch;white-space:pre-wrap;
-}
-.slots{display:grid;gap:12px;margin-top:16px;max-width:62ch}
-.slot{
-  background:rgba(255,255,255,.72);border:1px solid var(--line);border-radius:14px;padding:14px;
-}
-.slot h3{margin:0 0 6px;font-family:"Noto Serif KR",serif;font-size:16px;color:var(--teal-deep)}
-.slot p{margin:0;font-size:14px;line-height:1.55;color:var(--ink-soft)}
-.ask-box{max-width:62ch;margin-top:12px}
-.ask-box label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.ask-box{max-width:var(--read)}
+.ask-box label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:8px}
 .ask-box textarea{
-  width:100%;min-height:96px;border:1px solid var(--line);border-radius:12px;padding:12px;
-  font:400 14px "IBM Plex Sans KR",sans-serif;color:var(--ink);background:#fff;resize:vertical;
+  width:100%;min-height:118px;padding:15px 16px;border:1px solid var(--line-strong);border-radius:14px;
+  background:var(--paper-2);color:var(--ink);resize:vertical;
+  font:400 15px/1.7 "IBM Plex Sans KR",sans-serif;
 }
-.ask-box .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.stub-note{font-size:12px;color:var(--muted);margin-top:10px;max-width:62ch;line-height:1.5}
+.preview-note{margin:12px 0 0;color:var(--muted);font-size:12px;line-height:1.65}
+.slots{max-width:var(--read);margin-top:30px;border-top:1px solid var(--line-strong)}
+.slot{padding:24px 0;border-bottom:1px solid var(--line)}
+.slot h3{margin:0 0 8px;font-family:"Noto Serif KR",serif;font-size:20px}
+.slot p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.8}
+.about-grid{max-width:var(--read);display:grid;gap:28px}
+.about-block{padding-top:22px;border-top:1px solid var(--line)}
+.about-block h2{margin:0 0 8px;font-family:"Noto Serif KR",serif;font-size:20px}
+.about-block p{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.8}
+.footer{
+  max-width:var(--max);margin:0 auto;padding:30px 24px 48px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:12px;line-height:1.6;
+}
+.footer a{text-decoration:none}
+@media(max-width:760px){
+  .top{min-height:auto;padding-top:20px;padding-bottom:18px;align-items:flex-start;flex-direction:column;gap:13px}
+  .nav{gap:16px}
+  .hero{padding-top:62px;padding-bottom:38px}
+  .hero h1{font-size:44px}
+  .surface-grid{grid-template-columns:1fr;padding-bottom:64px}
+  .surface-card{min-height:190px;padding:24px}
+  .coming{margin-top:-38px}
+  .brief-head{padding-top:54px}
+  .issue-row{grid-template-columns:1fr;gap:9px}
+  .issue-id{padding-top:0}
+  .link-action{padding-top:0}
+}
+@media(max-width:420px){
+  .top,.beta-note,.hero,.surface-grid,.coming,.brief-head,.page,.article-shell,.trust,.footer{padding-left:18px;padding-right:18px}
+  .hero{padding-top:48px}
+  .hero h1{font-size:39px}
+  .surface-card h2{font-size:25px}
+  .brief-head h1{font-size:34px}
+}
 """
 
 
@@ -132,8 +317,13 @@ def _esc(s: object) -> str:
     return html.escape(str(s if s is not None else ""), quote=True)
 
 
-def _md_lite_to_html_v2(text: str) -> str:
-    raw = (text or "").replace("\r\n", "\n").strip()
+def _public_text(s: object) -> str:
+    """Minimal presentation cleanup; does not alter evidence semantics."""
+    return str(s if s is not None else "").replace("怖い", "걱정되는")
+
+
+def _md_lite_to_html(text: str) -> str:
+    raw = _public_text(text).replace("\r\n", "\n").strip()
     if not raw:
         return ""
 
@@ -141,16 +331,16 @@ def _md_lite_to_html_v2(text: str) -> str:
         out: list[str] = []
         pos = 0
         for m in re.finditer(r"\*\*(.+?)\*\*", s):
-            out.append(_esc(s[pos : m.start()]))
+            out.append(_esc(s[pos:m.start()]))
             out.append(f"<strong>{_esc(m.group(1))}</strong>")
             pos = m.end()
         out.append(_esc(s[pos:]))
         return "".join(out)
 
     parts: list[str] = []
+    para: list[str] = []
     lines = raw.split("\n")
     i = 0
-    para: list[str] = []
 
     def flush() -> None:
         nonlocal para
@@ -161,39 +351,33 @@ def _md_lite_to_html_v2(text: str) -> str:
     while i < len(lines):
         line = lines[i].rstrip()
         if not line.strip():
-            flush()
-            i += 1
-            continue
+            flush(); i += 1; continue
         if line.startswith("#### "):
             flush()
-            parts.append(
-                "<h3 style=\"font-family:'Noto Serif KR',serif;font-size:16px;margin:16px 0 8px\">"
-                + boldify(line[5:].strip())
-                + "</h3>"
-            )
-            i += 1
-            continue
+            parts.append("<h3>" + boldify(line[5:].strip()) + "</h3>")
+            i += 1; continue
         if re.match(r"^\d+\.\s+", line):
-            flush()
-            items: list[str] = []
+            flush(); items: list[str] = []
             while i < len(lines) and re.match(r"^\d+\.\s+", lines[i].rstrip()):
                 item = re.sub(r"^\d+\.\s+", "", lines[i].rstrip())
                 items.append(f"<li>{boldify(item)}</li>")
                 i += 1
             parts.append("<ul>" + "".join(items) + "</ul>")
             continue
-        para.append(boldify(line.strip()))
-        i += 1
+        para.append(boldify(line.strip())); i += 1
     flush()
     return "\n".join(parts)
 
 
-def _shell(title: str, description: str, path: str, body: str, *, og: bool = False, nav_current: str = "") -> str:
+def _shell(title: str, description: str, path: str, body: str, *, nav_current: str = "", og: bool = False) -> str:
+    def nav_attr(key: str) -> str:
+        return ' aria-current="page"' if nav_current == key else ""
+
     og_block = ""
     if og:
         og_block = f"""
 <meta property="og:type" content="website" />
-<meta property="og:url" content="{SITE_ORIGIN}/" />
+<meta property="og:url" content="{SITE_ORIGIN}{path}" />
 <meta property="og:title" content="{_esc(title)}" />
 <meta property="og:description" content="{_esc(description)}" />
 <meta property="og:locale" content="ko_KR" />
@@ -201,8 +385,6 @@ def _shell(title: str, description: str, path: str, body: str, *, og: bool = Fal
 <meta name="twitter:title" content="{_esc(title)}" />
 <meta name="twitter:description" content="{_esc(description)}" />
 """
-    def nav_attr(key: str) -> str:
-        return ' aria-current="page"' if nav_current == key else ""
 
     return f"""<!DOCTYPE html>
 <html lang="ko">
@@ -216,26 +398,23 @@ def _shell(title: str, description: str, path: str, body: str, *, og: bool = Fal
 <link rel="canonical" href="{SITE_ORIGIN}{path}" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=Noto+Serif+KR:wght@500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="/assets/site.css" />
 </head>
 <body>
-<div class="beta"><strong>OPEN_BETA</strong> · 묻다 뉴스 · 교육·참고 전용 · 제품 완료 선언 없음</div>
 <header class="top">
-  <a class="brand" href="/">묻다.ai</a>
+  <a class="brand" href="/">묻다</a>
   <nav class="nav" aria-label="주요">
-    <a href="/"{nav_attr("home")}>홈</a>
-    <a href="/news/"{nav_attr("news")}>뉴스</a>
-    <a href="/bible/"{nav_attr("bible")}>성경 묻다</a>
-    <a href="/ask/"{nav_attr("ask")}>Ask</a>
-    <a href="/about/"{nav_attr("about")}>About</a>
+    <a href="/news/"{nav_attr("news")}>뉴스 묻다</a>
+    <a href="/bible/"{nav_attr("bible")}>성경 묻다 · Beta</a>
+    <a href="/about/"{nav_attr("about")}>소개</a>
   </nav>
 </header>
+<div class="beta-note"><strong>Beta</strong> · 사실과 해석을 구분하고, 근거와 한계를 함께 표시합니다.</div>
 {body}
-<footer class="page">
+<footer class="footer">
   <div>주식회사 목소리네트워크</div>
-  <div>MKM LAB · secondary / research assist</div>
-  <div style="margin-top:6px">OPEN_BETA · PRODUCT_DONE=false · Ask는 <a href="https://jema-ai.com/ask" rel="noopener">jema-ai.com/ask</a>에서 이어갑니다</div>
+  <div><a href="/about/">묻다 소개</a> · <a href="/news/">뉴스</a> · <a href="/bible/">성경 Beta</a></div>
 </footer>
 </body>
 </html>
@@ -246,55 +425,19 @@ def build() -> list[str]:
     ep01 = json.loads(EP01_PATH.read_text(encoding="utf-8"))
     fmt = json.loads(FORMAT_PATH.read_text(encoding="utf-8"))
 
-    title_ko = str(ep01.get("title_ko") or "")
-    news_hook = str(ep01.get("news_hook_ko") or "")
-    education = str(ep01.get("education_body_ko") or "")
-    observe_3 = ep01.get("observe_3") or []
-    ask_prompt = str(ep01.get("ask_prompt_ko") or "")
+    title_ko = _public_text(ep01.get("title_ko"))
+    news_hook = _public_text(ep01.get("news_hook_ko"))
+    education = _public_text(ep01.get("education_body_ko"))
+    observe_3 = [_public_text(x) for x in (ep01.get("observe_3") or [])]
+    ask_prompt = _public_text(ep01.get("ask_prompt_ko"))
     ask_cta = ep01.get("ask_cta") or {}
     clinic_cta = ep01.get("clinic_cta") or {}
-    disclaimer = str(ep01.get("disclaimer_ko") or fmt.get("disclaimer_ko") or "")
+    disclaimer = _public_text(ep01.get("disclaimer_ko") or fmt.get("disclaimer_ko") or "")
     ask_url = str(ask_cta.get("url") or (fmt.get("host_surface") or {}).get("ask_url") or "https://jema-ai.com/ask")
-    ask_label = str(ask_cta.get("label_ko") or "한의학 묻다 열기")
-    clinic_label = str(clinic_cta.get("label_ko") or "광명백제한의원")
+    ask_label = _public_text(ask_cta.get("label_ko") or "이 질문 이어가기")
+    clinic_label = _public_text(clinic_cta.get("label_ko") or "전문가와 상담하기")
     clinic_url = str(clinic_cta.get("url") or "https://baekje.jema-ai.com/")
     clinic_phone = str(clinic_cta.get("phone") or "02-2688-7700")
-    series_title = str(fmt.get("series_title_ko") or "한의학 묻다 시리즈")
-    tagline = "사실을 나누고 판단을 돕는 AI"
-
-    # FACT → CAUSE → LENS → DECISION field map (no diagnosis / prescription)
-    fact_html = (
-        f'<div class="prose"><p>{_esc(news_hook)}</p>'
-        f'<p class="meta">news_role={_esc(ep01.get("news_role") or "curated_theme_hook_only")} · 큐레이션 테마 훅만 (포털 피드 아님)</p></div>'
-    )
-    observe_lis = "".join(f"<li>{_esc(x)}</li>" for x in observe_3)
-    cause_html = (
-        '<div class="prose">'
-        "<p>뉴스·수치를 들었을 때 바로 약 이름이나 체질 단정으로 가지 않도록, "
-        "먼저 관찰 축을 정리합니다. (원인 단정·진단 아님)</p>"
-        f"<ul>{observe_lis}</ul>"
-        f"{_md_lite_to_html_v2(education)}"
-        "</div>"
-    )
-    lens_html = """
-<div class="lens-note">Interpretive · empirical evidence 아님 · [NON_GATING]</div>
-<p class="purpose">렌즈는 해석·교육용입니다. Final Action·진단·처방으로 쓰이지 않습니다.</p>
-<div class="lens-grid">
-  <div><strong>사상</strong><br/><span class="meta">[NON_GATING] advisory</span></div>
-  <div><strong>명리</strong><br/><span class="meta">[NON_GATING] advisory</span></div>
-  <div><strong>성경(Logos)</strong><br/><span class="meta">[NON_GATING] advisory</span></div>
-</div>
-<p class="meta">Macro/Regime는 렌즈명이 아닙니다. 본 편은 일반 건강 교육 범위입니다.</p>
-"""
-    decision_html = f"""
-<div class="decision-box">
-  <p class="warn">금지: 진단·처방·효과 보장·개인 수치 해석을 이 사이트에서 확정하지 않습니다.</p>
-  <p>목적에 따라 다음 경로만 안내합니다. 「올바른 의료 의견」 선포는 하지 않습니다.</p>
-  <div class="opt"><strong>A · 일반 개념 정리</strong> — {_esc(ask_label)} (<a href="{_esc(ask_url)}" rel="noopener">{_esc(ask_url)}</a>). Ask는 mutda.ai에 호스팅되지 않습니다.</div>
-  <div class="opt"><strong>B · 개인 상태·복약·체질</strong> — {_esc(clinic_label)} 대면·전화({_esc(clinic_phone)})·상담 · <a href="{_esc(clinic_url)}" rel="noopener">{_esc(clinic_url)}</a></div>
-  <div class="opt"><strong>C · 응급</strong> — 119·응급실</div>
-</div>
-"""
 
     written: list[str] = []
 
@@ -306,252 +449,195 @@ def build() -> list[str]:
 
     write("assets/site.css", SHARED_CSS.strip() + "\n")
 
-    # Home
-    home_body = f"""
+    home_body = """
 <section class="hero">
-  <div>
-    <h1>묻다.ai</h1>
-    <p class="tagline">{_esc(tagline)}</p>
-    <span class="badge">OPEN_BETA</span>
-    <p class="sub">{_esc(series_title)} · 사실을 구조로 나누고, 판단은 독자에게 남깁니다.</p>
-    <div class="cta-row">
-      <a class="btn btn-primary" href="/news/">오늘 뉴스 보기</a>
-      <a class="btn btn-ghost" href="/bible/">성경 묻다 — Beta</a>
-      <a class="btn btn-ghost" href="/news/ep01/">EP01 열기</a>
-    </div>
-  </div>
-  <aside class="flow">
-    <div class="lbl">코어 루프 · EP01</div>
-    <div class="step"><b>FACT</b><span>뉴스 테마 훅 (큐레이션)</span></div>
-    <div class="step"><b>CAUSE</b><span>관찰 세 가지 · 교육 본문</span></div>
-    <div class="step"><b>LENS</b><span>[NON_GATING] · 해석≠증거</span></div>
-    <div class="step"><b>DECISION</b><span>Ask / 진찰 / 응급 경로</span></div>
-  </aside>
+  <div class="hero-kicker">MUTDA · OPEN BETA</div>
+  <h1>무엇을 묻고 싶으세요?</h1>
+  <p class="sub">묻다는 답을 서두르기보다, 사실과 맥락을 먼저 정리합니다. 질문의 종류에 맞는 공간에서 시작하세요.</p>
 </section>
-<section class="today">
-  <h2>오늘 묻다</h2>
-  <p class="lead">OPEN_BETA · 발행 이슈 1–3건 (현재 EP01)</p>
-  <article class="issue-row">
-    <h3><a href="/news/ep01/" style="color:inherit;text-decoration:none">{_esc(title_ko)}</a></h3>
-    <div class="meta">EP01 · FACT→CAUSE→LENS→DECISION · 교육·참고</div>
-    <div class="row-cta">
-      <a class="btn btn-ghost" href="/news/ep01/">읽기</a>
-      <a class="btn btn-primary" href="{_esc(ask_url)}" rel="noopener">{_esc(ask_label)}</a>
-    </div>
-  </article>
-  <article class="issue-row">
-    <h3><a href="/bible/" style="color:inherit;text-decoration:none">성경 묻다 — Beta</a></h3>
-    <div class="meta">consumer Beta · 5칸 답변 셸 · logos.jema-ai.com 연구면 KEEP</div>
-    <div class="row-cta">
-      <a class="btn btn-primary" href="/bible/">성경 묻다 열기</a>
-      <a class="btn btn-ghost" href="https://logos.jema-ai.com" rel="noopener">Logos 연구 워크스페이스</a>
-    </div>
-  </article>
+<section class="surface-grid" aria-label="묻다 서비스">
+  <a class="surface-card" href="/news/">
+    <div class="type">NEWS</div>
+    <div><h2>뉴스 묻다</h2><p>지금 벌어진 일을 사실부터 정리하고, 왜 그런지와 다른 관점을 차례로 봅니다.</p></div>
+    <div class="arrow">뉴스에서 시작하기 →</div>
+  </a>
+  <a class="surface-card" href="/bible/">
+    <div class="type">BIBLE · BETA</div>
+    <div><h2>성경 묻다</h2><p>본문과 문맥에서 질문을 시작하고, 해석과 다른 관점, 근거를 나누어 봅니다.</p></div>
+    <div class="arrow">성경에서 시작하기 →</div>
+  </a>
 </section>
+<div class="coming">시장 묻다 · 연구 묻다는 준비 중입니다.</div>
 """
-    write(
-        "index.html",
-        _shell(
-            "묻다.ai — OPEN_BETA",
-            tagline,
-            "/",
-            home_body,
-            og=True,
-            nav_current="home",
-        ),
-    )
+    write("index.html", _shell("묻다 — 질문에서 시작합니다", "뉴스와 성경을 사실·문맥·근거로 나누어 묻습니다.", "/", home_body, og=True))
 
-    # News list
     news_list_body = f"""
 <div class="brief-head">
-  <div class="eyebrow">OPEN_BETA · NEWS</div>
-  <h1>뉴스 목록</h1>
-  <p class="lead">큐레이션 테마 훅만 제공합니다. 전체 뉴스 포털이 아닙니다.</p>
+  <div class="eyebrow">NEWS MUTDA</div>
+  <h1>뉴스를 읽기 전에,<br/>먼저 무엇이 사실인지 묻습니다.</h1>
+  <p class="lead">많은 이슈를 늘어놓기보다 지금 확인할 질문을 하나씩 다룹니다.</p>
 </div>
 <section class="page">
-  <article class="issue-row">
-    <h3><a href="/news/ep01/" style="color:inherit;text-decoration:none">{_esc(title_ko)}</a></h3>
-    <div class="meta">EP01 · {_esc(ep01.get("episode_id") or "MUTDA_EP01")}</div>
-    <p class="sub" style="margin:0">{_esc(news_hook[:160])}{"…" if len(news_hook) > 160 else ""}</p>
-    <div class="row-cta"><a class="btn btn-primary" href="/news/ep01/">FACT→CAUSE→LENS→DECISION</a></div>
-  </article>
+  <div class="issue-list">
+    <article class="issue-row">
+      <div class="issue-id">EP01</div>
+      <div class="issue-main">
+        <h2><a href="/news/ep01/">{_esc(title_ko)}</a></h2>
+        <p>{_esc(news_hook[:180])}{"…" if len(news_hook) > 180 else ""}</p>
+      </div>
+      <a class="link-action" href="/news/ep01/">읽기 →</a>
+    </article>
+  </div>
 </section>
 """
-    write(
-        "news/index.html",
-        _shell("뉴스 — 묻다.ai OPEN_BETA", "묻다 뉴스 목록", "/news/", news_list_body, nav_current="news"),
-    )
+    write("news/index.html", _shell("뉴스 묻다 — 묻다", "뉴스를 사실, 맥락, 다른 관점, 다음 확인점으로 나눕니다.", "/news/", news_list_body, nav_current="news"))
 
-    # EP01 detail
+    observe_lis = "".join(f"<li>{_esc(x)}</li>" for x in observe_3)
+    fact_html = f'<div class="prose"><p>{_esc(news_hook)}</p></div>'
+    cause_html = (
+        '<div class="prose">'
+        '<p>뉴스에서 수치나 건강 이야기를 들었을 때 바로 결론부터 내리지 않고, 먼저 무엇을 관찰해야 하는지 정리합니다.</p>'
+        f'<ul>{observe_lis}</ul>{_md_lite_to_html(education)}'</n        '</div>'
+    )
+    # fix accidental source-literal marker above before rendering
+    cause_html = cause_html.replace("</n        ", "")
+
+    perspective_html = """
+<div class="prose">
+  <p>같은 사실도 질문의 목적과 맥락에 따라 다르게 읽힐 수 있습니다. 여기서는 한 관점을 정답으로 고정하지 않습니다.</p>
+  <div class="view-note">해석은 사실과 구분해서 읽으세요. 개인의 증상·검사값·복약 판단에는 별도의 전문 평가가 필요할 수 있습니다.</div>
+</div>
+"""
+
+    next_html = f"""
+<div class="decision-list">
+  <div class="decision-item"><strong>개념을 더 묻고 싶다면</strong>일반 질문은 Ask에서 이어갈 수 있습니다.</div>
+  <div class="decision-item"><strong>내 증상·검사값·복약과 연결된다면</strong>{_esc(clinic_label)} 또는 적절한 의료전문가와 상담하세요. {_esc(clinic_phone)}</div>
+  <div class="decision-item"><strong>응급 증상이 있다면</strong>온라인 답변보다 119 또는 응급의료기관을 우선하세요.</div>
+</div>
+<div class="actions">
+  <a class="btn btn-accent" href="/ask/">이 뉴스 더 묻기</a>
+  <a class="btn" href="{_esc(clinic_url)}" rel="noopener">상담 경로 보기</a>
+</div>
+"""
+
     ep_body = f"""
 <div class="brief-head">
-  <div class="eyebrow">OPEN_BETA · EP01 · MUDDA</div>
+  <div class="eyebrow">NEWS · EP01</div>
   <h1>{_esc(title_ko)}</h1>
-  <p class="meta">교육·참고 · 진단·처방 아님</p>
+  <p class="lead">사실과 해석을 섞지 않고, 다음에 무엇을 확인할지까지 차례로 봅니다.</p>
 </div>
-<div class="layer" id="l-fact">
-  <h2>① FACT</h2>
-  <p class="purpose">뉴스에서 들은 테마를 훅으로만 둡니다.</p>
-  {fact_html}
-</div>
-<div class="layer" id="l-cause">
-  <h2>② CAUSE</h2>
-  <p class="purpose">관찰 축·교육 본문 (원인 단정 아님)</p>
-  {cause_html}
-</div>
-<div class="layer" id="l-lens">
-  <h2>③ LENS</h2>
-  {lens_html}
-</div>
-<div class="layer" id="l-decision">
-  <h2>④ DECISION</h2>
-  <p class="purpose">목적 조건부 경로만 · 정답 선포 금지</p>
-  {decision_html}
-</div>
-<div class="disclaimer"><strong>고지</strong> — {_esc(disclaimer)}</div>
-<p class="provenance">provenance={_esc(PROVENANCE_EP01)} · format={_esc(PROVENANCE_FORMAT)}</p>
+<main class="article-shell">
+  <section class="article-section">
+    <div class="article-label">01</div><h2>사실</h2><p class="purpose">무슨 이야기가 나왔나</p>{fact_html}
+  </section>
+  <section class="article-section">
+    <div class="article-label">02</div><h2>왜</h2><p class="purpose">어떤 맥락에서 봐야 하나</p>{cause_html}
+  </section>
+  <section class="article-section">
+    <div class="article-label">03</div><h2>다른 관점</h2><p class="purpose">다르게 읽을 수 있는 지점</p>{perspective_html}
+  </section>
+  <section class="article-section">
+    <div class="article-label">04</div><h2>그래서 무엇을 볼까</h2><p class="purpose">지금 결론보다 다음 확인점</p>{next_html}
+  </section>
+</main>
+<div class="trust"><strong>안내</strong> · {_esc(disclaimer)}</div>
 """
-    write(
-        "news/ep01/index.html",
-        _shell(f"{title_ko} — 묻다.ai", news_hook[:120], "/news/ep01/", ep_body, nav_current="news"),
-    )
+    write("news/ep01/index.html", _shell(f"{title_ko} — 뉴스 묻다", news_hook[:120], "/news/ep01/", ep_body, nav_current="news", og=True))
 
-    # Bible ask Beta — consumer adapter shell (local stub; logos research KEEP)
     bible_body = """
 <div class="brief-head">
-  <div class="eyebrow">OPEN_BETA · BIBLE</div>
-  <h1>성경 묻다 — Beta</h1>
-  <p class="lead">소비자 Beta 표면입니다. 완성 제품·연구 워크스페이스 대체가 아닙니다.</p>
-  <span class="badge">Beta</span>
+  <div class="eyebrow">BIBLE MUTDA · BETA</div>
+  <h1>성경 묻다</h1>
+  <p class="lead">본문을 먼저 붙잡고, 문맥과 해석을 나눈 뒤 다른 관점과 근거를 확인하는 Beta입니다.</p>
 </div>
 <section class="page">
   <div class="ask-box">
-    <label for="bible-q">질문</label>
+    <label for="bible-q">성경에 대해 무엇이 궁금한가요?</label>
     <textarea id="bible-q" name="q" maxlength="800" placeholder="예: 시편 23편이 말하는 신뢰는 무엇인가요?"></textarea>
     <div class="actions">
-      <button type="button" class="btn btn-primary" id="bible-ask-btn">묻기</button>
-      <button type="button" class="btn btn-ghost" id="bible-more-btn" hidden>더 묻기</button>
-      <a class="btn btn-ghost" href="https://logos.jema-ai.com" rel="noopener">Logos 연구면</a>
+      <button type="button" class="btn btn-primary" id="bible-ask-btn">미리보기</button>
+      <button type="button" class="btn" id="bible-more-btn" hidden>더 묻기</button>
     </div>
-    <p class="stub-note">로컬 데모 응답만 표시합니다. 라이브 Logos API·Destiny 배포는 연결하지 않습니다. logos.jema-ai.com은 유지됩니다.</p>
+    <p class="preview-note">현재는 답변 구조를 확인하는 Beta 미리보기입니다. Logos 연구엔진의 라이브 답변 연결은 아직 공개하지 않습니다.</p>
   </div>
   <div class="slots" id="bible-slots" hidden aria-live="polite">
-    <article class="slot" data-slot="passage"><h3>본문</h3><p id="slot-passage">—</p></article>
-    <article class="slot" data-slot="context"><h3>문맥</h3><p id="slot-context">—</p></article>
-    <article class="slot" data-slot="reading"><h3>해석</h3><p id="slot-reading">—</p></article>
-    <article class="slot" data-slot="alt"><h3>다른 관점</h3><p id="slot-alt">—</p></article>
-    <article class="slot" data-slot="evidence"><h3>근거</h3><p id="slot-evidence">—</p></article>
+    <article class="slot"><h3>본문</h3><p id="slot-passage">—</p></article>
+    <article class="slot"><h3>문맥</h3><p id="slot-context">—</p></article>
+    <article class="slot"><h3>해석</h3><p id="slot-reading">—</p></article>
+    <article class="slot"><h3>다른 관점</h3><p id="slot-alt">—</p></article>
+    <article class="slot"><h3>근거</h3><p id="slot-evidence">—</p></article>
   </div>
 </section>
 <script src="/assets/bible_ask_stub_v1.js" defer></script>
 """
-    write(
-        "bible/index.html",
-        _shell(
-            "성경 묻다 — Beta · 묻다.ai",
-            "성경 묻다 — Beta · 5칸 답변 셸",
-            "/bible/",
-            bible_body,
-            nav_current="bible",
-        ),
-    )
+    write("bible/index.html", _shell("성경 묻다 — Beta", "본문 · 문맥 · 해석 · 다른 관점 · 근거", "/bible/", bible_body, nav_current="bible"))
 
     bible_stub_js = r"""
-(function () {
-  var STUB = {
-    mode: "local_stub",
-    live_api: false,
-    logos_keep: "https://logos.jema-ai.com",
-    slots: {
-      passage: "데모 본문 앵커만 표시합니다. 실제 구절 잠금은 Logos 연구면에서 이어가세요.",
-      context: "문맥 슬롯은 로컬 셸용입니다. 역사·문학 문맥 엔진은 여기 라이브 연결되지 않습니다.",
-      reading: "해석은 [NON_GATING] 참고용입니다. 단일 교리·완성 선언을 하지 않습니다.",
-      alt: "다른 관점 슬롯은 학파·독법을 병기하는 자리입니다. 승자를 고르지 않습니다.",
-      evidence: "근거 슬롯은 citation 자리입니다. 현재는 로컬 데모 문구만 채웁니다."
-    }
+(function(){
+  var copy={
+    passage:"현재는 화면 구조 미리보기입니다. 실제 본문 잠금과 구절 인용은 라이브 연결 전까지 제공하지 않습니다.",
+    context:"문학적·역사적 문맥을 확인하는 자리입니다.",
+    reading:"해석은 본문과 구분해 제시하고, 한 독법을 자동으로 정답 처리하지 않습니다.",
+    alt:"주요한 다른 독법이 있을 때 함께 보여주는 자리입니다.",
+    evidence:"근거 구절과 출처를 표시하는 자리입니다. 현재 미리보기에서는 실제 citation을 생성하지 않습니다."
   };
-  function fill(q) {
-    var qTrim = (q || "").trim();
-    document.getElementById("slot-passage").textContent =
-      qTrim ? ("질문 반영(데모): " + qTrim.slice(0, 120) + " · " + STUB.slots.passage) : STUB.slots.passage;
-    document.getElementById("slot-context").textContent = STUB.slots.context;
-    document.getElementById("slot-reading").textContent = STUB.slots.reading;
-    document.getElementById("slot-alt").textContent = STUB.slots.alt;
-    document.getElementById("slot-evidence").textContent = STUB.slots.evidence;
-    document.getElementById("bible-slots").hidden = false;
-    document.getElementById("bible-more-btn").hidden = false;
+  function fill(q){
+    var t=(q||"").trim();
+    document.getElementById("slot-passage").textContent=(t?("질문: "+t.slice(0,120)+" · "):"")+copy.passage;
+    document.getElementById("slot-context").textContent=copy.context;
+    document.getElementById("slot-reading").textContent=copy.reading;
+    document.getElementById("slot-alt").textContent=copy.alt;
+    document.getElementById("slot-evidence").textContent=copy.evidence;
+    document.getElementById("bible-slots").hidden=false;
+    document.getElementById("bible-more-btn").hidden=false;
   }
-  function onAsk() {
-    var ta = document.getElementById("bible-q");
-    fill(ta ? ta.value : "");
-  }
-  function onMore() {
-    var ta = document.getElementById("bible-q");
-    if (ta) {
-      ta.value = (ta.value || "").trim() + (ta.value && ta.value.trim() ? " · " : "") + "이어서: 근거 구절을 더 좁혀 주세요";
-      ta.focus();
-    }
-  }
-  document.addEventListener("DOMContentLoaded", function () {
-    var ask = document.getElementById("bible-ask-btn");
-    var more = document.getElementById("bible-more-btn");
-    if (ask) ask.addEventListener("click", onAsk);
-    if (more) more.addEventListener("click", onMore);
+  document.addEventListener("DOMContentLoaded",function(){
+    var ask=document.getElementById("bible-ask-btn"),more=document.getElementById("bible-more-btn"),ta=document.getElementById("bible-q");
+    if(ask)ask.addEventListener("click",function(){fill(ta?ta.value:"")});
+    if(more)more.addEventListener("click",function(){if(ta){ta.focus();ta.setSelectionRange(ta.value.length,ta.value.length)}});
   });
 })();
 """.lstrip()
     write("assets/bible_ask_stub_v1.js", bible_stub_js)
 
-    # Ask seed page — does NOT claim Ask lives on mutda
     ask_body = f"""
 <div class="brief-head">
-  <div class="eyebrow">OPEN_BETA · ASK SEED</div>
-  <h1>Ask 시드 프롬프트</h1>
-  <p class="lead">Ask 제품은 mutda.ai에 없습니다. 아래 시드를 복사해 jema-ai.com/ask에서 이어가세요.</p>
-  <span class="badge">OPEN_BETA</span>
+  <div class="eyebrow">ASK</div>
+  <h1>이 질문을 조금 더 이어가 볼까요?</h1>
+  <p class="lead">묻다 뉴스에서 시작한 질문을 Ask에서 더 좁혀볼 수 있습니다.</p>
 </div>
 <section class="page">
-  <div class="ask-seed">{_esc(ask_prompt)}</div>
-  <div class="cta-row" style="margin-top:16px">
-    <a class="btn btn-primary" href="{_esc(ask_url)}" rel="noopener">{_esc(ask_label)}</a>
-    <a class="btn btn-ghost" href="/news/ep01/">EP01로 돌아가기</a>
+  <div class="ask-card">
+    <p>EP01에서 이어지는 질문</p>
+    <div class="ask-prompt">{_esc(ask_prompt)}</div>
+    <div class="actions">
+      <a class="btn btn-accent" href="{_esc(ask_url)}" rel="noopener">{_esc(ask_label)}</a>
+      <a class="btn" href="/news/ep01/">뉴스로 돌아가기</a>
+    </div>
   </div>
-  <p class="meta" style="margin-top:14px">ask_prompt_ko · EP01 artifact seed</p>
 </section>
 """
-    write(
-        "ask/index.html",
-        _shell("Ask 시드 — 묻다.ai OPEN_BETA", "Ask는 jema-ai.com/ask에서", "/ask/", ask_body, nav_current="ask"),
-    )
+    write("ask/index.html", _shell("더 묻기 — 묻다", "뉴스에서 시작한 질문을 이어갑니다.", "/ask/", ask_body))
 
-    # About
     about_body = """
 <div class="brief-head">
-  <div class="eyebrow">OPEN_BETA · ABOUT</div>
-  <h1>주식회사 목소리네트워크</h1>
-  <p class="lead">묻다.ai OPEN_BETA 뉴스 표면을 운영합니다.</p>
+  <div class="eyebrow">ABOUT MUTDA</div>
+  <h1>묻다는 질문의 속도를 조금 늦춥니다.</h1>
+  <p class="lead">먼저 사실을 나누고, 맥락과 해석을 구분한 뒤, 무엇을 더 확인해야 하는지 보여주려는 작은 Beta입니다.</p>
 </div>
 <section class="page">
-  <div class="prose">
-    <p><strong>운영</strong> — 주식회사 목소리네트워크</p>
-    <p><strong>MKM LAB</strong> — secondary / footer · research assist (본 사이트 Final Action·제품 완료 선언 없음)</p>
-    <p>Ask·클리닉 제품 표면은 각각 jema-ai.com / baekje.jema-ai.com 등 별도 호스트입니다.</p>
+  <div class="about-grid">
+    <div class="about-block"><h2>운영</h2><p>주식회사 목소리네트워크가 운영합니다.</p></div>
+    <div class="about-block"><h2>MKM LAB</h2><p>묻다의 연구·개발을 지원합니다. 연구용 작업공간과 소비자용 화면은 역할을 나누어 운영합니다.</p></div>
+    <div class="about-block"><h2>Beta 원칙</h2><p>과장된 완성 선언보다 근거와 한계를 함께 표시합니다. 뉴스와 AI 답변은 중요한 판단을 대신하지 않습니다.</p></div>
   </div>
 </section>
 """
-    write(
-        "about/index.html",
-        _shell("About — 묻다.ai", "주식회사 목소리네트워크", "/about/", about_body, nav_current="about"),
-    )
+    write("about/index.html", _shell("소개 — 묻다", "묻다와 운영 원칙을 소개합니다.", "/about/", about_body, nav_current="about"))
 
-    robots = f"""User-agent: *
-Allow: /
-
-Sitemap: {SITE_ORIGIN}/sitemap.xml
-"""
-    write("robots.txt", robots)
-
-    sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
+    write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE_ORIGIN}/sitemap.xml\n")
+    write("sitemap.xml", f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>{SITE_ORIGIN}/</loc></url>
   <url><loc>{SITE_ORIGIN}/news/</loc></url>
@@ -560,26 +646,17 @@ Sitemap: {SITE_ORIGIN}/sitemap.xml
   <url><loc>{SITE_ORIGIN}/ask/</loc></url>
   <url><loc>{SITE_ORIGIN}/about/</loc></url>
 </urlset>
-"""
-    write("sitemap.xml", sitemap)
+""")
 
     manifest = {
         "schema": "mutda.news.open_beta.site_build.v1",
+        "visual_baseline": "MUTDA_DESIGN_SSOT_V1",
+        "status": "OPEN_BETA_STATIC_BUILT",
         "PRODUCT_DONE": False,
         "FRIEND_READY": False,
-        "status": "OPEN_BETA_STATIC_BUILT",
-        "surfaces": {
-            "/news": "뉴스 묻다 OPEN_BETA",
-            "/bible": "성경 묻다 — Beta (local stub adapter)",
-        },
-        "logos_jema_ai_com_keep": True,
-        "sources": {
-            "ep01": PROVENANCE_EP01,
-            "format": PROVENANCE_FORMAT,
-            "mutda_logos_role_pin": "docs/final/artifacts/mkm_mutda_logos_surface_role_pin_v1_latest.json",
-        },
+        "logos_research_workspace_keep": True,
+        "source_ids": ["MUTDA_EP01_SEALED", "MUTDA_SERIES_FORMAT_SEALED"],
         "files": written,
-        "tagline_ko": tagline,
         "episode_id": ep01.get("episode_id"),
     }
     write("build_manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
