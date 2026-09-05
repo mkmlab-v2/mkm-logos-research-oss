@@ -1,0 +1,26 @@
+{
+  "schema": "mkm_cursor_safe_autorun_relaxation_v1_design_receipt",
+  "commander_ack": "COMMANDER_CURSOR_SAFE_AUTORUN_RELAXATION_V1_ACK",
+  "written_at_utc": "2026-09-05T07:15:28Z",
+  "result": "PASS_LOCAL_AUTORUN_RELAXED_GATES_KEPT",
+  "pass_ceiling": {
+    "PASS_means": "fewer_local_dev_approvals_while_external_deploy_trade_remain_manual",
+    "PASS_does_not_mean": [
+      "full_autonomous_execution",
+      "unrestricted_shell"
+    ]
+  },
+  "changed_files": [
+    ".cursor/permissions.json",
+    "docs/final/artifacts/mkm_cursor_safe_autorun_relaxation_v1_inventory.json",
+    "docs/final/artifacts/mkm_cursor_safe_autorun_relaxation_v1_design_receipt.json"
+  ],
+  "before_after_summary_ko": {
+    "before": "allow 4줄·거의 read-only; block 2줄",
+    "after": "allow에 로컬 py/scripts/pytest/lint/build·workspace write·좁은 -File scripts\\\\Invoke-Mkm* 등 명시; block에 push/Gmail/SEND/TRADE/secrets·무제한 셸 금지 강화; MCP allowlist 동일(저위험 3종만)"
+  },
+  "permissions_sha256": "8a17abdea331e29163dec064dbea5aa273715c4c7e4acdd3678659b8605a9880",
+  "github_push": "HOLD",
+  "STOP": true,
+  "AUTO_NEXT": false
+}

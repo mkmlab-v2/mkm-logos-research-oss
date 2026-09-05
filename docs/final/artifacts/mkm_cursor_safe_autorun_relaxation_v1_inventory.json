@@ -1,0 +1,53 @@
+{
+  "schema": "mkm_cursor_safe_autorun_relaxation_v1_inventory",
+  "commander_ack": "COMMANDER_CURSOR_SAFE_AUTORUN_RELAXATION_V1_ACK",
+  "generated_at_utc": "2026-09-05T07:15:28Z",
+  "scope": "CURSOR_PERMISSION_HYGIENE_ONLY",
+  "settings_inventory": {
+    "cursor.agent.autoAccept": true,
+    "cursor.composer.autoAccept": true,
+    "note": "autoAccept is edit-accept, distinct from terminal/MCP autorun"
+  },
+  "mcp_servers_in_mcp_json": [
+    "filesystem",
+    "athena-core",
+    "sequential-thinking",
+    "athena-manseryeok",
+    "compression-server",
+    "devops-mcp",
+    "notebooklm"
+  ],
+  "mcp_allowlist_before": [
+    "filesystem:*",
+    "sequential-thinking:*",
+    "athena-manseryeok:*",
+    "project-0-workspace-filesystem:*",
+    "project-0-workspace-sequential-thinking:*",
+    "project-0-workspace-athena-manseryeok:*"
+  ],
+  "mcp_allowlist_after": [
+    "filesystem:*",
+    "sequential-thinking:*",
+    "athena-manseryeok:*",
+    "project-0-workspace-filesystem:*",
+    "project-0-workspace-sequential-thinking:*",
+    "project-0-workspace-athena-manseryeok:*"
+  ],
+  "mcp_still_manual": [
+    "athena-core",
+    "compression-server",
+    "devops-mcp",
+    "notebooklm"
+  ],
+  "allow_instructions_count": {
+    "before": 4,
+    "after": 7
+  },
+  "block_instructions_count": {
+    "before": 2,
+    "after": 5
+  },
+  "broad_wildcard_check": "PASS_NO_UNCONSTRAINED_SHELL_STAR_ON_ALLOW",
+  "ask_gate_weakened": false,
+  "permissions_sha256": "8a17abdea331e29163dec064dbea5aa273715c4c7e4acdd3678659b8605a9880"
+}

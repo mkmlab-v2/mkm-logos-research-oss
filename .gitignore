@@ -162,9 +162,16 @@ docs/final/artifacts/**
 !docs/final/artifacts/oracle_v3_label_readiness_result_v1_latest.json
 !docs/final/artifacts/oracle_v3_label_readiness_runner_close_receipt_v1.json
 !docs/final/artifacts/oracle_v3_label_readiness_runner_check_v1_latest.json
+!docs/final/artifacts/commander_oracle_field_v2_data_collection_hygiene_recovery_ack_v1.json
+!docs/final/artifacts/oracle_field_v2_data_collection_hygiene_root_cause_v1.json
+!docs/final/artifacts/oracle_field_v2_data_collection_hygiene_close_receipt_v1.json
 # Entity/Case Binding Guard contract v0 (COMMANDER_ENTITY_CASE_BINDING_CONTRACT_V0_ACK)
 !docs/final/artifacts/mkm_entity_case_binding_contract_v0.json
 !docs/final/artifacts/mkm_entity_case_binding_contract_v0_design_receipt_v1.json
+# Cursor safe autorun relaxation v1 (COMMANDER_CURSOR_SAFE_AUTORUN_RELAXATION_V1_ACK)
+!docs/final/artifacts/mkm_cursor_safe_autorun_relaxation_v1_inventory.json
+!docs/final/artifacts/mkm_cursor_safe_autorun_relaxation_v1_design_receipt.json
+
 # Important mission verification bundle paste format v0
 !docs/final/artifacts/mkm_important_mission_verification_bundle_format_v0.json
 !docs/final/artifacts/mkm_important_mission_verification_bundle_format_v0_design_receipt_v1.json
