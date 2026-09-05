@@ -1,0 +1,45 @@
+{
+  "schema": "constitution_survey_v1_2_tracking_receipt",
+  "version": "1.0.0",
+  "generated_at_utc": "2026-09-05T01:27:14Z",
+  "status": "TRACKED_SSOT_DRAFT",
+  "seal": "structure_and_wording_only",
+  "flags": {
+    "V1_2_CONTENT_INTERNAL_MATCH": "PASS",
+    "ITEM_COUNT": 22,
+    "CHANGED_ITEMS": [
+      "tb01",
+      "tb02",
+      "zb02"
+    ],
+    "DIAGNOSTIC_VALIDITY": "NOT_ESTABLISHED",
+    "SCORING_EFFECT": "NOT_ADJUDICATED",
+    "OLD_EXACT_DIFF": "ESTABLISHED_LOCAL_SESSION",
+    "OLD_EXACT_DIFF_GITHUB": "NOT_ESTABLISHED",
+    "TRACKED_SSOT": "DRAFT_WRITTEN",
+    "PUBLIC_CLINICAL_CLAIM": "REFERENCE_ONLY",
+    "DOUBLE_WEIGHTING_INTENT": "NOT_ESTABLISHED",
+    "AXIS_METADATA_ALIGNMENT": "NOT_ESTABLISHED"
+  },
+  "paths": {
+    "tracked_bank": "docs/final/clinic/clinic_constitution_survey_item_bank_v1_2.json",
+    "tracked_form": "docs/final/clinic/constitution_survey_respondent_form_v1_2.md",
+    "tracked_diff": "docs/final/clinic/constitution_survey_v1_1_to_v1_2_diff.md",
+    "runtime_artifact_mirror": "docs/final/artifacts/clinic_constitution_survey_item_bank_v1.json"
+  },
+  "hashes": {
+    "bank_sha256": "5e6cdfc133549174975d15f2e2f8dc67e8aa0d76aac425e7bd8a858992337d25",
+    "form_sha256": "631e79bb897c6e80a044f0aa471f7ba40b50003c172b5ceca48f4f753c4edf12"
+  },
+  "phi_hygiene": {
+    "patient_display_names_in_tracked_bank": false,
+    "regression_label": "임상 회귀 사례 A(비식별)"
+  },
+  "not_claims": [
+    "validated survey",
+    "SCAT/QSCC equivalence",
+    "clinical diagnostic accuracy",
+    "physician_gold calibration complete"
+  ],
+  "reproduce_command": "py scripts/export_constitution_survey_tracked_ssot_draft_v1_2.py"
+}

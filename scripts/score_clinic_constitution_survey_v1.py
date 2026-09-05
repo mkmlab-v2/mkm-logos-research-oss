@@ -21,7 +21,10 @@ from scripts.import_clinic_mvp_from_patient_registry_v1 import (  # noqa: E402
 )
 from scripts.lookup_gtm_mai_archetype_v1 import build_mai_public_card  # noqa: E402
 
-BANK_REL = Path("docs/final/artifacts/clinic_constitution_survey_item_bank_v1.json")
+# Prefer git-trackable TRACKED_SSOT_DRAFT; fall back to gitignored artifacts mirror.
+BANK_REL_TRACKED = Path("docs/final/clinic/clinic_constitution_survey_item_bank_v1_2.json")
+BANK_REL_ARTIFACT = Path("docs/final/artifacts/clinic_constitution_survey_item_bank_v1.json")
+BANK_REL = BANK_REL_TRACKED  # load_survey_bank resolves with fallback
 PROXY_KEYS = ("cold_heat_lean", "digestion_lean", "activity_lean", "moisture_lean")
 FOUR = ("taeeum", "soyang", "taeyang", "soeum")
 
@@ -38,7 +41,12 @@ def _workspace_root() -> Path:
 
 
 def load_survey_bank(root: Path | None = None) -> dict[str, Any]:
-    path = (root or _workspace_root()) / BANK_REL
+    base = root or _workspace_root()
+    tracked = base / BANK_REL_TRACKED
+    artifact = base / BANK_REL_ARTIFACT
+    path = tracked if tracked.is_file() else artifact
+    if not path.is_file():
+        raise FileNotFoundError(f"survey bank missing: tried {tracked} and {artifact}")
     return json.loads(path.read_text(encoding="utf-8"))
 
 

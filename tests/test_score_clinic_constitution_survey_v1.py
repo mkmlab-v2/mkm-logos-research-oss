@@ -20,14 +20,9 @@ def test_bank_loads_items() -> None:
     assert len(bank["items"]) >= 10
 
 
-def test_all_heat_responses_skews_soyang_or_uncertain() -> None:
+def test_all_max_responses_proxies_in_unit_interval() -> None:
+    """Smoke only: every item=4 → proxies in [0,1] and constitution enum. Not a heat-skew test."""
     bank = load_survey_bank(ROOT)
-    responses = {
-        str(item["item_id"]): 4
-        for item in bank["items"]
-        if item.get("direction") == "heat"
-    }
-    # answer all items at max for stable test
     responses = {str(item["item_id"]): 4 for item in bank["items"]}
     out = score_survey_responses(bank, responses)
     proxies = out["observation_proxies"]
@@ -60,3 +55,29 @@ def test_mai_card_from_proxies() -> None:
     card = build_mai_public_card(out["observation_proxies"])
     assert card["schema"] == "gtm_mai_public_card_v1"
     assert card["mai_code"].startswith("MAI-")
+
+
+def test_soeum_lower_solid_upper_weak_not_taeeum_body_collision() -> None:
+    """v1.2 regression: 상체약·하체상대실 + 한증·소화약 → soeum > taeeum (tb01/zb02 교차오염 금지)."""
+    bank = load_survey_bank(ROOT)
+    assert bank.get("version") == "1.2.0"
+    # 중립 2점 후, 소음 전형만 올림 / 태음 전체체격·복부돌출은 낮춤
+    responses = {str(item["item_id"]): 2 for item in bank["items"]}
+    responses.update(
+        {
+            "ch02": 4,  # 수족냉
+            "dg02": 4,  # 소화더딤
+            "ac02": 4,  # 피로
+            "tb01": 1,  # 전체 체격 큼·배 나옴 — 소음형 거부
+            "tb02": 4,  # 마름 + 하체 상대실
+            "zb01": 1,  # 상체·목덜미
+            "zb02": 1,  # 배 나옴·전체 굵음 — 소음형 거부
+            "zb03": 1,  # 중초 왕성
+            "zb04": 4,  # 하체 실·상체·소화 약
+            "sj03": 4,  # 소음 성정
+        }
+    )
+    out = score_survey_responses(bank, responses)
+    hints = out["survey_meta"]["hint_scores"]
+    assert hints["soeum"] > hints["taeeum"]
+    assert out["ai_hypothesis"]["constitution"] == "soeum"

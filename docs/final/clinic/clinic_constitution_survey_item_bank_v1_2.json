@@ -1,0 +1,366 @@
+{
+  "schema": "clinic_constitution_survey_item_bank_v1",
+  "version": "1.2.0",
+  "pack_id": "mkm_constitution_survey_core_v1",
+  "lane": "consumer_survey_only",
+  "hypothesis_tier": "B",
+  "research_only": true,
+  "scale_default": {
+    "min": 0,
+    "max": 4,
+    "labels_ko": [
+      "전혀 아님",
+      "가끔",
+      "보통",
+      "자주",
+      "매우 그럼"
+    ]
+  },
+  "v1_1_change_note_ko": "정의축 문항 추가 — 사상 분류의 定義축인 臟腑 대소(zangbu_daeso)와 性情(哀怒喜樂, seongjeong)을 신설해 소양↔태양·태음↔소음 쌍혼동을 해소. 근거: analyze_constitution_survey_math_v1 아키타입 복원율 진단. [HYPO]·consumer_survey_only, 상용 정확도 단정 금지.",
+  "v1_2_change_note_ko": "체형 문항 교차오염 수정 — tb01/zb02가 '하체 실'만으로 태음에 가산되어 소음(상체약·하체상대실)과 충돌. 태음=전체 체격·복부 돌출·골격 굵음으로 재기술. tb02는 소음에 '상체 발달'을 잘못 묶던 문구를 상체약·하체상대실로 교정. 임상 회귀 사례 A(비식별) 회귀 테스트 추가. 상용 정확도 단정 금지.",
+  "adjunct_module_ref": "docs/final/artifacts/sebv_sasang_survey_adjunct_module_v0_latest.json",
+  "adjunct_module_note_ko": "SEBV Path A 부속 관측 모듈 — 본 item-bank 가중치·constitution_hints에 합산하지 않음 (scores_into_constitution=false).",
+  "literature_anchors": [
+    {
+      "anchor_id": "qscc_family",
+      "name_ko": "사상체질분류 설문지(QSCC) 계열",
+      "status": "design_reference_verify_doi_before_cite",
+      "note": "항목 축(한열·소화·활력 등) 설계 참고만. MKM 문항은 원문 복제가 아님. 대외 정확도% 주장 금지."
+    },
+    {
+      "anchor_id": "scm_symptom_axes",
+      "name_ko": "동의수세보원 체질별 병증·생리 서술 축",
+      "status": "corpus_hypo_only",
+      "note": "data/corpus/ijeoma · SASANG_CROSS_REF — 임상 단정·이제마 인용 위조 금지"
+    },
+    {
+      "anchor_id": "zangbu_daeso_axis",
+      "name_ko": "동의수세보원 장부 대소(폐비간신 크기 비대칭) 정의축",
+      "status": "corpus_hypo_only",
+      "note": "太陽人 肺大肝小·少陽人 脾大腎小·太陰人 肝大肺小·少陰人 腎大脾小. 체형/발달 자가관찰 프록시 — 진단 단정 아님."
+    },
+    {
+      "anchor_id": "seongjeong_axis",
+      "name_ko": "사상 성정(哀怒喜樂 성/정) 기질 정의축",
+      "status": "corpus_hypo_only",
+      "note": "太陽 哀·少陽 怒·太陰 喜(廣張)·少陰 樂(深確). 기질 자가보고 프록시 — 심리 진단 아님."
+    }
+  ],
+  "fusion": {
+    "method": "weighted_proxy_and_hint_v1",
+    "description": "[HYPO] 문항→observation_proxies 가중합 + constitution_hint 소프트 투표. AUC·교차검증 전까지 상용 단정 금지.",
+    "calibration_target_lane": "physician_gold",
+    "calibration_metric_planned": "offline_alignment_vs_physician_four_label"
+  },
+  "items": [
+    {
+      "item_id": "ch01",
+      "prompt_ko": "평소 몸이 더운 편이고 땀이 많은 편이다.",
+      "axis": "cold_heat_lean",
+      "weight": 1.0,
+      "direction": "heat",
+      "literature_anchor_ids": [
+        "qscc_family",
+        "scm_symptom_axes"
+      ],
+      "constitution_hints": {
+        "soyang": 0.15,
+        "taeyang": 0.1
+      }
+    },
+    {
+      "item_id": "ch02",
+      "prompt_ko": "손발이 차고 추위를 잘 탄다.",
+      "axis": "cold_heat_lean",
+      "weight": 1.0,
+      "direction": "cold",
+      "literature_anchor_ids": [
+        "qscc_family"
+      ],
+      "constitution_hints": {
+        "soeum": 0.2,
+        "taeeum": 0.05
+      }
+    },
+    {
+      "item_id": "ch03",
+      "prompt_ko": "얼굴이나 상체로 열이 올라오는 느낌이 잦다.",
+      "axis": "cold_heat_lean",
+      "weight": 0.8,
+      "direction": "heat",
+      "literature_anchor_ids": [
+        "scm_symptom_axes"
+      ],
+      "constitution_hints": {
+        "soyang": 0.1,
+        "taeyang": 0.15
+      }
+    },
+    {
+      "item_id": "dg01",
+      "prompt_ko": "소화가 잘 되고 식욕이 안정적인 편이다.",
+      "axis": "digestion_lean",
+      "weight": 1.0,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "qscc_family"
+      ],
+      "constitution_hints": {
+        "soeum": 0.1,
+        "soyang": 0.1
+      }
+    },
+    {
+      "item_id": "dg02",
+      "prompt_ko": "밥을 먹으면 더부룩하거나 소화가 더딘 편이다.",
+      "axis": "digestion_lean",
+      "weight": 1.0,
+      "direction": "low",
+      "literature_anchor_ids": [
+        "qscc_family",
+        "scm_symptom_axes"
+      ],
+      "constitution_hints": {
+        "taeeum": 0.15,
+        "soeum": 0.1
+      }
+    },
+    {
+      "item_id": "dg03",
+      "prompt_ko": "배가 쉽게 차거나 복부가 팽만한 느낌이 있다.",
+      "axis": "digestion_lean",
+      "weight": 0.7,
+      "direction": "low",
+      "literature_anchor_ids": [
+        "scm_symptom_axes"
+      ],
+      "constitution_hints": {
+        "taeeum": 0.2
+      }
+    },
+    {
+      "item_id": "ac01",
+      "prompt_ko": "기력이 넘치고 활동적인 편이다.",
+      "axis": "activity_lean",
+      "weight": 1.0,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "qscc_family"
+      ],
+      "constitution_hints": {
+        "taeyang": 0.15,
+        "soyang": 0.1
+      }
+    },
+    {
+      "item_id": "ac02",
+      "prompt_ko": "쉽게 피로하고 기운이 빨리 떨어진다.",
+      "axis": "activity_lean",
+      "weight": 1.0,
+      "direction": "low",
+      "literature_anchor_ids": [
+        "qscc_family"
+      ],
+      "constitution_hints": {
+        "soeum": 0.15,
+        "taeeum": 0.1
+      }
+    },
+    {
+      "item_id": "ac03",
+      "prompt_ko": "말수가 많고 성격이 급한 편이다.",
+      "axis": "activity_lean",
+      "weight": 0.6,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "scm_symptom_axes"
+      ],
+      "constitution_hints": {
+        "taeyang": 0.2
+      }
+    },
+    {
+      "item_id": "ms01",
+      "prompt_ko": "입이 마르거나 갈증을 자주 느낀다.",
+      "axis": "moisture_lean",
+      "weight": 0.9,
+      "direction": "dry",
+      "literature_anchor_ids": [
+        "scm_symptom_axes"
+      ],
+      "constitution_hints": {
+        "taeyang": 0.1,
+        "soyang": 0.05
+      }
+    },
+    {
+      "item_id": "ms02",
+      "prompt_ko": "몸이 무겁거나 부종·축축한 느낌이 있다.",
+      "axis": "moisture_lean",
+      "weight": 0.9,
+      "direction": "moist",
+      "literature_anchor_ids": [
+        "qscc_family"
+      ],
+      "constitution_hints": {
+        "taeeum": 0.15
+      }
+    },
+    {
+      "item_id": "ms03",
+      "prompt_ko": "땀을 많이 흘리고 피부가 축축한 편이다.",
+      "axis": "moisture_lean",
+      "weight": 0.8,
+      "direction": "moist",
+      "literature_anchor_ids": [
+        "qscc_family"
+      ],
+      "constitution_hints": {
+        "soyang": 0.15
+      }
+    },
+    {
+      "item_id": "tb01",
+      "prompt_ko": "전체 체격이 크고 배가 나온 편이며, 골격이 전반적으로 굵은 편이다.",
+      "axis": "digestion_lean",
+      "weight": 0.5,
+      "direction": "low",
+      "literature_anchor_ids": [
+        "scm_symptom_axes"
+      ],
+      "constitution_hints": {
+        "taeeum": 0.25
+      },
+      "discrimination_note_ko": "v1.2: '하체·복부 발달'만 물으면 소음(하체 상대실)과 충돌 → 전체 체격·복부 돌출로 한정"
+    },
+    {
+      "item_id": "tb02",
+      "prompt_ko": "체형이 마른 편이고, 상체·가슴보다 하체·골반 쪽이 상대적으로 실하다.",
+      "axis": "activity_lean",
+      "weight": 0.5,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "scm_symptom_axes"
+      ],
+      "constitution_hints": {
+        "soeum": 0.2
+      },
+      "discrimination_note_ko": "v1.2: 구문 '마른+상체 발달'은 소음과 반대 → 상체약·하체상대실로 교정"
+    },
+    {
+      "item_id": "zb01",
+      "prompt_ko": "가슴·상체와 목덜미가 발달하고 호흡·기세가 힘 있는 편이다.",
+      "axis": "zangbu_daeso",
+      "weight": 1.1,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "zangbu_daeso_axis"
+      ],
+      "constitution_hints": {
+        "taeyang": 0.3
+      }
+    },
+    {
+      "item_id": "zb02",
+      "prompt_ko": "배가 나오고 허리·하체가 두툼하며, 전체적으로 골격이 굵고 체격이 큰 편이다.",
+      "axis": "zangbu_daeso",
+      "weight": 1.1,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "zangbu_daeso_axis"
+      ],
+      "constitution_hints": {
+        "taeeum": 0.3
+      },
+      "discrimination_note_ko": "v1.2: '하체만 튼실'은 소음 zb04와 공진 → 복부 돌출+전체 체격 굵음으로 태음 한정"
+    },
+    {
+      "item_id": "zb03",
+      "prompt_ko": "명치·중초(소화기)의 힘이 좋고 식사량·소화력이 왕성하다.",
+      "axis": "zangbu_daeso",
+      "weight": 1.1,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "zangbu_daeso_axis"
+      ],
+      "constitution_hints": {
+        "soyang": 0.3
+      }
+    },
+    {
+      "item_id": "zb04",
+      "prompt_ko": "골반·하체는 상대적으로 실하나 상체·소화기 힘은 약한 편이다.",
+      "axis": "zangbu_daeso",
+      "weight": 1.1,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "zangbu_daeso_axis"
+      ],
+      "constitution_hints": {
+        "soeum": 0.3
+      }
+    },
+    {
+      "item_id": "sj01",
+      "prompt_ko": "화가 급히 치밀고 감정을 밖으로 강하게 발산하는 편이다.",
+      "axis": "seongjeong",
+      "weight": 1.0,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "seongjeong_axis"
+      ],
+      "constitution_hints": {
+        "soyang": 0.3
+      }
+    },
+    {
+      "item_id": "sj02",
+      "prompt_ko": "쉽게 서글퍼지고 슬픈·비장한 감정이 오래 남는 편이다.",
+      "axis": "seongjeong",
+      "weight": 1.0,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "seongjeong_axis"
+      ],
+      "constitution_hints": {
+        "taeyang": 0.3
+      }
+    },
+    {
+      "item_id": "sj03",
+      "prompt_ko": "속으로 조용히 만족하며 신중하고 세심하게 파고드는 편이다.",
+      "axis": "seongjeong",
+      "weight": 1.0,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "seongjeong_axis"
+      ],
+      "constitution_hints": {
+        "soeum": 0.3
+      }
+    },
+    {
+      "item_id": "sj04",
+      "prompt_ko": "너그럽고 포용적이며 느긋하게 즐기고 잘 웃는 편이다.",
+      "axis": "seongjeong",
+      "weight": 1.0,
+      "direction": "high",
+      "literature_anchor_ids": [
+        "seongjeong_axis"
+      ],
+      "constitution_hints": {
+        "taeeum": 0.3
+      }
+    }
+  ],
+  "tracking": {
+    "status": "TRACKED_SSOT_DRAFT",
+    "seal": "structure_and_wording_only",
+    "diagnostic_validity": "NOT_ESTABLISHED",
+    "scoring_effect": "NOT_ADJUDICATED",
+    "public_clinical_claim": "REFERENCE_ONLY",
+    "double_weighting_intent": "NOT_ESTABLISHED",
+    "axis_metadata_alignment": "NOT_ESTABLISHED",
+    "axis_metadata_note_ko": "tb01.axis=digestion_lean/direction=low, tb02.axis=activity_lean/direction=high — 문항 표면의미와 직접 대응 미확정(legacy proxy 가능). observation_proxies는 PROXY_KEYS 축에만 가중합."
+  }
+}
