@@ -1,0 +1,35 @@
+{
+  "schema": "mkm_citation_slot_policy_v1_design_receipt",
+  "commander_ack": "COMMANDER_MKM_CITATION_SLOT_POLICY_DESIGN_ACK",
+  "mission": "MKM_CITATION_SLOT_POLICY_DESIGN_V1",
+  "written_at_utc": "2026-09-05T07:57:45Z",
+  "result": "PASS_POLICY_DESIGN",
+  "DECIDE_ONE": "MKM_CITATION_SLOT_POLICY_DESIGN_FROZEN_WITH_LIMITATIONS",
+  "claim_ceiling": "POLICY_DESIGN_ONLY",
+  "policy_path": "docs/final/artifacts/mkm_citation_slot_policy_v1.json",
+  "schema_path": "docs/final/schemas/mkm_citation_slot_policy_v1.schema.json",
+  "policy_sha256": "92c426215daae0a114c297535b0eaa7f4d601a31eafbd8a914f1edb2e74869f7",
+  "schema_sha256": "b7d9162d6aa0192c99a7d911c571ac2b25d2829ec21889c37050682eec5ab8a8",
+  "example_counts": {
+    "ok_claims": 6,
+    "conflict": 1,
+    "missing_source": 1,
+    "invalid_citation": 2,
+    "preserved_unknown": 2
+  },
+  "hard_rules_count": 12,
+  "tier2": false,
+  "pytest": false,
+  "runtime_patch": false,
+  "early_stop": "OUT_OF_SCOPE_THIS_MISSION",
+  "github_push": "HOLD",
+  "send_gate": "HOLD",
+  "STOP": true,
+  "AUTO_NEXT": false,
+  "changed_files": [
+    "docs/final/schemas/mkm_citation_slot_policy_v1.schema.json",
+    "docs/final/artifacts/mkm_citation_slot_policy_v1.json",
+    "docs/final/artifacts/mkm_citation_slot_policy_v1_design_receipt.json",
+    ".gitignore"
+  ]
+}

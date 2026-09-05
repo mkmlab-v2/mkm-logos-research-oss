@@ -1,0 +1,246 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "mkm_citation_slot_policy_v1.schema.json",
+  "title": "MKM Citation Slot Policy v1 (design)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "claim_id",
+    "claim_text",
+    "claim_type",
+    "source_slots",
+    "support_relation",
+    "verification_state",
+    "evidence_ceiling",
+    "epistemic_state"
+  ],
+  "properties": {
+    "schema": {
+      "const": "mkm_citation_slot_claim_record_v1"
+    },
+    "claim_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": [
+        "FACT_CLAIM",
+        "SUPPORTED_CLAIM",
+        "INFERENCE",
+        "HYPOTHESIS",
+        "QUOTE",
+        "PARAPHRASE",
+        "METRIC",
+        "IDENTITY",
+        "POLICY",
+        "UNKNOWN",
+        "NOT_ESTABLISHED"
+      ]
+    },
+    "source_slots": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source_slot"
+      }
+    },
+    "support_relation": {
+      "type": "string",
+      "enum": [
+        "DIRECT_SUPPORT",
+        "PARTIAL_SUPPORT",
+        "PARAPHRASE_OF",
+        "QUOTES",
+        "CONTRADICTS",
+        "UNRELATED",
+        "UNKNOWN",
+        "NOT_ESTABLISHED"
+      ]
+    },
+    "source_authority_max": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+        "SEAL_OR_RECEIPT",
+        "CURRENT_STATE",
+        "WORKER_REPORT",
+        "CHAT_OR_MEMORY",
+        "INFERENCE",
+        "UNKNOWN",
+        "NOT_ESTABLISHED",
+        null
+      ]
+    },
+    "verification_state": {
+      "type": "string",
+      "enum": [
+        "CITATION_VERIFIED",
+        "CITATION_SUPPORTED",
+        "CITATION_MISMATCH",
+        "SOURCE_MISSING",
+        "SOURCE_CONFLICT",
+        "NOT_ESTABLISHED",
+        "UNKNOWN"
+      ]
+    },
+    "evidence_ceiling": {
+      "type": "string",
+      "enum": [
+        "CHAT_ONLY",
+        "INTERNAL_NOTE",
+        "STRUCTURAL_PASS",
+        "SUPPORTED_CLAIM",
+        "PRODUCT_DONE",
+        "SEND",
+        "DEPLOY",
+        "LIVE",
+        "TRADE",
+        "UNKNOWN",
+        "NOT_ESTABLISHED"
+      ]
+    },
+    "epistemic_state": {
+      "type": "string",
+      "enum": [
+        "FACT",
+        "SUPPORTED",
+        "INFERENCE",
+        "HYPOTHESIS",
+        "UNKNOWN",
+        "NOT_ESTABLISHED",
+        "NOT_ADJUDICATED",
+        "FAIL"
+      ]
+    },
+    "lane": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "$defs": {
+    "source_slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "slot_id",
+        "authority_tier",
+        "locator",
+        "quote_mode",
+        "slot_state"
+      ],
+      "properties": {
+        "slot_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority_tier": {
+          "type": "string",
+          "enum": [
+            "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+            "SEAL_OR_RECEIPT",
+            "CURRENT_STATE",
+            "WORKER_REPORT",
+            "CHAT_OR_MEMORY",
+            "INFERENCE",
+            "UNKNOWN",
+            "NOT_ESTABLISHED"
+          ]
+        },
+        "locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "value"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "artifact_path",
+                "commit_sha",
+                "url",
+                "doi",
+                "arxiv",
+                "page",
+                "verse_ref",
+                "registry_id",
+                "other",
+                "UNKNOWN",
+                "NOT_ESTABLISHED"
+              ]
+            },
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "hash": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "span": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "quote_mode": {
+          "type": "string",
+          "enum": [
+            "DIRECT_QUOTE",
+            "PARAPHRASE",
+            "POINTER_ONLY",
+            "UNKNOWN",
+            "NOT_ESTABLISHED"
+          ]
+        },
+        "slot_state": {
+          "type": "string",
+          "enum": [
+            "CITATION_VERIFIED",
+            "CITATION_SUPPORTED",
+            "CITATION_MISMATCH",
+            "SOURCE_MISSING",
+            "SOURCE_CONFLICT",
+            "NOT_ESTABLISHED",
+            "UNKNOWN"
+          ]
+        },
+        "supports_claim": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

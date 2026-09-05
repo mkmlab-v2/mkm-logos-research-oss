@@ -1,0 +1,479 @@
+{
+  "schema": "mkm_citation_slot_policy_v1",
+  "version": "1.0.0",
+  "status": "DESIGN_FROZEN",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "github_push": "HOLD",
+  "commander_ack": "COMMANDER_MKM_CITATION_SLOT_POLICY_DESIGN_ACK",
+  "mission": "MKM_CITATION_SLOT_POLICY_DESIGN_V1",
+  "class": "DESIGN_ONLY",
+  "generated_at_utc": "2026-09-05T07:57:45Z",
+  "purpose_ko": "MKM 출력의 claim→citation slot 매핑·검증 상태·권위 계층·면책 보존을 기계적으로 고정한다. 런타임/모델/프롬프트 변경 없음.",
+  "claim_ceiling": "POLICY_DESIGN_ONLY",
+  "success_ceiling": {
+    "PASS_means": "citation_slot_policy_structurally_frozen_in_repo",
+    "PASS_does_not_mean": [
+      "runtime_enforcement",
+      "hallucination_rate_reduced",
+      "tier2_implemented",
+      "product_done",
+      "paper_kpi_reproduced",
+      "send_or_deploy"
+    ]
+  },
+  "non_scope": [
+    "Tier2_implementation",
+    "pytest",
+    "runtime_patch",
+    "model_prompt_tuning",
+    "benchmark_rerun",
+    "paper_number_replication",
+    "product_done",
+    "SEND",
+    "early_stop_policy"
+  ],
+  "early_stop": "OUT_OF_SCOPE_THIS_MISSION",
+  "governance_pointers": {
+    "lab_governance_pin": "docs/final/MKM_LAB_GOVERNANCE_SSOT_PIN_V1.md",
+    "evidence_ledger": "docs/final/MKM_EVIDENCE_LEDGER_V0.md",
+    "evidence_ledger_schema": "docs/final/schemas/mkm_evidence_ledger_record_v0.schema.json",
+    "entity_case_binding": "docs/final/artifacts/mkm_entity_case_binding_contract_v0.json",
+    "lit_review_trigger": "docs/research/LATEST_AI_TECH_MKM_ADOPTION_LIT_REVIEW_2026-09-05.md",
+    "claim_record_schema": "docs/final/schemas/mkm_citation_slot_policy_v1.schema.json"
+  },
+  "pipeline": [
+    "CLAIM",
+    "CLAIM_TYPE",
+    "SOURCE_SLOT[]",
+    "SUPPORT_RELATION",
+    "SOURCE_AUTHORITY",
+    "VERIFICATION_STATE",
+    "EVIDENCE_CEILING"
+  ],
+  "required_verification_states": [
+    "CITATION_VERIFIED",
+    "CITATION_SUPPORTED",
+    "CITATION_MISMATCH",
+    "SOURCE_MISSING",
+    "SOURCE_CONFLICT",
+    "NOT_ESTABLISHED",
+    "UNKNOWN"
+  ],
+  "authority_tiers_high_to_low": [
+    "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+    "SEAL_OR_RECEIPT",
+    "CURRENT_STATE",
+    "WORKER_REPORT",
+    "CHAT_OR_MEMORY",
+    "INFERENCE"
+  ],
+  "hard_rules": [
+    {
+      "id": "HR-PRESENCE_NE_VALIDITY",
+      "rule": "citation presence != claim validity"
+    },
+    {
+      "id": "HR-FOUND_NE_SUPPORTS",
+      "rule": "source found != source supports claim"
+    },
+    {
+      "id": "HR-WORKER_CITE_NE_VERIFIED",
+      "rule": "worker-generated citation != verified citation"
+    },
+    {
+      "id": "HR-SEARCH_HIT_NE_AUTHORITY",
+      "rule": "search hit != authoritative evidence"
+    },
+    {
+      "id": "HR-INFERENCE_NO_EVIDENCE_SLOT",
+      "rule": "model inference cannot occupy an evidence slot as authoritative_path substitute"
+    },
+    {
+      "id": "HR-NO_SILENT_DOWNGRADE_OVERRIDE",
+      "rule": "lower-tier source cannot silently override higher-tier source"
+    },
+    {
+      "id": "HR-MISSING_STAYS_MISSING",
+      "rule": "missing citation must remain SOURCE_MISSING / UNKNOWN — no filler"
+    },
+    {
+      "id": "HR-NO_FABRICATED_BIB",
+      "rule": "no fabricated bibliography / DOI / URL / page number"
+    },
+    {
+      "id": "HR-QUOTE_BOUNDARY",
+      "rule": "DIRECT_QUOTE requires exact span; PARAPHRASE must not be labeled QUOTE"
+    },
+    {
+      "id": "HR-CEILING_NO_UPGRADE",
+      "rule": "verification_state alone cannot raise evidence_ceiling to SEND/DEPLOY/PRODUCT_DONE"
+    },
+    {
+      "id": "HR-LEDGER_BRIDGE",
+      "rule": "optional claim_id/evidence_id may link Evidence Ledger; this policy does not auto-append"
+    },
+    {
+      "id": "HR-ENTITY_BRIDGE",
+      "rule": "identity claims should also satisfy Entity/Case Binding when entity is in scope"
+    }
+  ],
+  "ui_safe_presentation_contract": {
+    "chat_ko_gloss": {
+      "CITATION_VERIFIED": "출처 확인됨",
+      "CITATION_SUPPORTED": "출처가 주장을 받침",
+      "CITATION_MISMATCH": "출처와 주장 불일치",
+      "SOURCE_MISSING": "출처 없음",
+      "SOURCE_CONFLICT": "출처 충돌",
+      "NOT_ESTABLISHED": "아직 확정 아님",
+      "UNKNOWN": "모름"
+    },
+    "forbid_in_commander_chat": [
+      "English incomplete status walls",
+      "fabricated DOI/URL as decoration",
+      "citation count as quality score"
+    ],
+    "show_locator_when": "verification_state in CITATION_VERIFIED|CITATION_SUPPORTED and authority_tier is artifact/seal/current_source",
+    "hide_raw_worker_urls_as_authority": true
+  },
+  "examples": {
+    "ok_claims": [
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-OK-001",
+        "claim_text": "Evidence Ledger v0 is IMPLEMENTED_STRUCTURAL with send_gate HOLD.",
+        "claim_type": "POLICY",
+        "source_slots": [
+          {
+            "slot_id": "S1",
+            "authority_tier": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+            "locator": {
+              "kind": "artifact_path",
+              "value": "docs/final/MKM_EVIDENCE_LEDGER_V0.md",
+              "hash": null,
+              "span": "Status: IMPLEMENTED_STRUCTURAL"
+            },
+            "quote_mode": "PARAPHRASE",
+            "slot_state": "CITATION_VERIFIED",
+            "supports_claim": true,
+            "notes": null
+          }
+        ],
+        "support_relation": "DIRECT_SUPPORT",
+        "source_authority_max": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+        "verification_state": "CITATION_VERIFIED",
+        "evidence_ceiling": "STRUCTURAL_PASS",
+        "epistemic_state": "SUPPORTED",
+        "lane": "governance",
+        "notes": "design example"
+      },
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-OK-002",
+        "claim_text": "mutda.ai/news is the first open-beta consumer surface for MUTDA.",
+        "claim_type": "SUPPORTED_CLAIM",
+        "source_slots": [
+          {
+            "slot_id": "S1",
+            "authority_tier": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+            "locator": {
+              "kind": "artifact_path",
+              "value": "docs/final/MKM_DOMAIN_PORTFOLIO_POINTER_V1.md",
+              "hash": null,
+              "span": "/news=뉴스 묻다(첫 open-beta)"
+            },
+            "quote_mode": "PARAPHRASE",
+            "slot_state": "CITATION_SUPPORTED",
+            "supports_claim": true,
+            "notes": null
+          }
+        ],
+        "support_relation": "DIRECT_SUPPORT",
+        "source_authority_max": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+        "verification_state": "CITATION_SUPPORTED",
+        "evidence_ceiling": "INTERNAL_NOTE",
+        "epistemic_state": "SUPPORTED",
+        "lane": "ms",
+        "notes": null
+      },
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-OK-003",
+        "claim_text": "GraphRAG-Router reports reducing large-LLM overuse by nearly 30% on its benchmarks.",
+        "claim_type": "METRIC",
+        "source_slots": [
+          {
+            "slot_id": "S1",
+            "authority_tier": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+            "locator": {
+              "kind": "arxiv",
+              "value": "2604.16401",
+              "hash": null,
+              "span": "reducing the overuse of large LLMs by nearly 30%"
+            },
+            "quote_mode": "DIRECT_QUOTE",
+            "slot_state": "CITATION_SUPPORTED",
+            "supports_claim": true,
+            "notes": "author-reported; MKM unreproduced"
+          }
+        ],
+        "support_relation": "QUOTES",
+        "source_authority_max": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+        "verification_state": "CITATION_SUPPORTED",
+        "evidence_ceiling": "CHAT_ONLY",
+        "epistemic_state": "HYPOTHESIS",
+        "lane": "governance",
+        "notes": "NOT MKM KPI"
+      },
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-OK-004",
+        "claim_text": "Y1 GTM focus is One cash cow (a-codeai) + One passion (logos).",
+        "claim_type": "POLICY",
+        "source_slots": [
+          {
+            "slot_id": "S1",
+            "authority_tier": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+            "locator": {
+              "kind": "artifact_path",
+              "value": "docs/final/TRACK_C_IP_BUSINESS_PLAN_2026-04-17.md",
+              "hash": null,
+              "span": "One cash cow + One passion"
+            },
+            "quote_mode": "PARAPHRASE",
+            "slot_state": "CITATION_VERIFIED",
+            "supports_claim": true,
+            "notes": null
+          }
+        ],
+        "support_relation": "DIRECT_SUPPORT",
+        "source_authority_max": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+        "verification_state": "CITATION_VERIFIED",
+        "evidence_ceiling": "STRUCTURAL_PASS",
+        "epistemic_state": "SUPPORTED",
+        "lane": "ms",
+        "notes": null
+      },
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-OK-005",
+        "claim_text": "Entity/Case Binding contract v0 is CONTRACT_PINNED on disk.",
+        "claim_type": "POLICY",
+        "source_slots": [
+          {
+            "slot_id": "S1",
+            "authority_tier": "SEAL_OR_RECEIPT",
+            "locator": {
+              "kind": "artifact_path",
+              "value": "docs/final/artifacts/mkm_entity_case_binding_contract_v0.json",
+              "hash": null,
+              "span": "status: CONTRACT_PINNED"
+            },
+            "quote_mode": "POINTER_ONLY",
+            "slot_state": "CITATION_VERIFIED",
+            "supports_claim": true,
+            "notes": null
+          }
+        ],
+        "support_relation": "DIRECT_SUPPORT",
+        "source_authority_max": "SEAL_OR_RECEIPT",
+        "verification_state": "CITATION_VERIFIED",
+        "evidence_ceiling": "STRUCTURAL_PASS",
+        "epistemic_state": "SUPPORTED",
+        "lane": "governance",
+        "notes": null
+      },
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-OK-006",
+        "claim_text": "AutonomousPatrol overall was WARN with sticky alert false on 2026-09-05.",
+        "claim_type": "METRIC",
+        "source_slots": [
+          {
+            "slot_id": "S1",
+            "authority_tier": "CURRENT_STATE",
+            "locator": {
+              "kind": "artifact_path",
+              "value": "reports/mkm_autonomous_patrol_latest.json",
+              "hash": null,
+              "span": "overall: WARN"
+            },
+            "quote_mode": "POINTER_ONLY",
+            "slot_state": "CITATION_SUPPORTED",
+            "supports_claim": true,
+            "notes": "state may drift after next patrol"
+          }
+        ],
+        "support_relation": "DIRECT_SUPPORT",
+        "source_authority_max": "CURRENT_STATE",
+        "verification_state": "CITATION_SUPPORTED",
+        "evidence_ceiling": "INTERNAL_NOTE",
+        "epistemic_state": "SUPPORTED",
+        "lane": "infra",
+        "notes": "freshness advisory"
+      }
+    ],
+    "conflict_examples": [
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-CONFLICT-001",
+        "claim_text": "Logos research surface should redirect permanently to mutda.ai/bible.",
+        "claim_type": "POLICY",
+        "source_slots": [
+          {
+            "slot_id": "S_high",
+            "authority_tier": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+            "locator": {
+              "kind": "artifact_path",
+              "value": "docs/final/artifacts/mkm_mutda_logos_surface_role_pin_v1_latest.json",
+              "hash": null,
+              "span": "forbid.logos_kill_301"
+            },
+            "quote_mode": "POINTER_ONLY",
+            "slot_state": "CITATION_VERIFIED",
+            "supports_claim": false,
+            "notes": "forbids logos kill/301"
+          },
+          {
+            "slot_id": "S_low",
+            "authority_tier": "CHAT_OR_MEMORY",
+            "locator": {
+              "kind": "other",
+              "value": "chat_suggestion_redirect",
+              "hash": null,
+              "span": null
+            },
+            "quote_mode": "PARAPHRASE",
+            "slot_state": "SOURCE_CONFLICT",
+            "supports_claim": true,
+            "notes": "lower tier cannot override"
+          }
+        ],
+        "support_relation": "CONTRADICTS",
+        "source_authority_max": "CURRENT_SOURCE_OR_AUTHORITATIVE_ARTIFACT",
+        "verification_state": "SOURCE_CONFLICT",
+        "evidence_ceiling": "CHAT_ONLY",
+        "epistemic_state": "FAIL",
+        "lane": "oracle",
+        "notes": "fail-closed on conflict"
+      }
+    ],
+    "missing_source_examples": [
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-MISS-001",
+        "claim_text": "Our citation policy already reduced hallucination by 40%.",
+        "claim_type": "METRIC",
+        "source_slots": [],
+        "support_relation": "UNKNOWN",
+        "source_authority_max": null,
+        "verification_state": "SOURCE_MISSING",
+        "evidence_ceiling": "CHAT_ONLY",
+        "epistemic_state": "NOT_ESTABLISHED",
+        "lane": "governance",
+        "notes": "must stay missing"
+      }
+    ],
+    "invalid_citation_examples": [
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-BAD-001",
+        "claim_text": "See DOI 10.9999/fake-mkm-2026 for proof of product DONE.",
+        "claim_type": "FACT_CLAIM",
+        "source_slots": [
+          {
+            "slot_id": "S_fake",
+            "authority_tier": "INFERENCE",
+            "locator": {
+              "kind": "doi",
+              "value": "10.9999/fake-mkm-2026",
+              "hash": null,
+              "span": null
+            },
+            "quote_mode": "POINTER_ONLY",
+            "slot_state": "CITATION_MISMATCH",
+            "supports_claim": false,
+            "notes": "fabricated DOI"
+          }
+        ],
+        "support_relation": "UNRELATED",
+        "source_authority_max": "INFERENCE",
+        "verification_state": "CITATION_MISMATCH",
+        "evidence_ceiling": "CHAT_ONLY",
+        "epistemic_state": "FAIL",
+        "lane": "governance",
+        "notes": "HR-NO_FABRICATED_BIB"
+      },
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-BAD-002",
+        "claim_text": "Worker said GraphRAG-Router is deployed in production at mutda.ai.",
+        "claim_type": "FACT_CLAIM",
+        "source_slots": [
+          {
+            "slot_id": "S_worker",
+            "authority_tier": "WORKER_REPORT",
+            "locator": {
+              "kind": "url",
+              "value": "https://arxiv.org/abs/2604.16401",
+              "hash": null,
+              "span": null
+            },
+            "quote_mode": "POINTER_ONLY",
+            "slot_state": "CITATION_MISMATCH",
+            "supports_claim": false,
+            "notes": "paper URL does not support deploy claim"
+          }
+        ],
+        "support_relation": "UNRELATED",
+        "source_authority_max": "WORKER_REPORT",
+        "verification_state": "CITATION_MISMATCH",
+        "evidence_ceiling": "CHAT_ONLY",
+        "epistemic_state": "FAIL",
+        "lane": "ms",
+        "notes": "found != supports"
+      }
+    ],
+    "preserved_unknown_cases": [
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-UNK-001",
+        "claim_text": "Whether citation slots will reduce MKM hallucination rate is unknown.",
+        "claim_type": "UNKNOWN",
+        "source_slots": [],
+        "support_relation": "UNKNOWN",
+        "source_authority_max": null,
+        "verification_state": "UNKNOWN",
+        "evidence_ceiling": "CHAT_ONLY",
+        "epistemic_state": "UNKNOWN",
+        "lane": "governance",
+        "notes": "do not invent baseline"
+      },
+      {
+        "schema": "mkm_citation_slot_claim_record_v1",
+        "claim_id": "EX-NE-001",
+        "claim_text": "Early-stop for easy MUTDA questions improves cost/quality for MKM.",
+        "claim_type": "HYPOTHESIS",
+        "source_slots": [],
+        "support_relation": "NOT_ESTABLISHED",
+        "source_authority_max": null,
+        "verification_state": "NOT_ESTABLISHED",
+        "evidence_ceiling": "CHAT_ONLY",
+        "epistemic_state": "NOT_ESTABLISHED",
+        "lane": "ms",
+        "notes": "OUT_OF_SCOPE_THIS_MISSION"
+      }
+    ]
+  },
+  "limitations": [
+    "DESIGN_ONLY — no checker/runtime/enforcement",
+    "Does not measure hallucination reduction",
+    "Does not replace Evidence Ledger append path",
+    "UI gloss is advisory; product surfaces unchanged",
+    "Paper metrics remain author-reported until MKM re-eval",
+    "Athena drift / dirty tree not cleaned by this mission"
+  ],
+  "DECIDE_ONE": "MKM_CITATION_SLOT_POLICY_DESIGN_FROZEN_WITH_LIMITATIONS",
+  "STOP": true,
+  "AUTO_NEXT": false
+}
