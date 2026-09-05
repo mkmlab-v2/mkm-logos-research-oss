@@ -1,0 +1,308 @@
+{
+  "schema": "mkm_entity_case_binding_contract_v0",
+  "version": "0.1.0",
+  "status": "CONTRACT_PINNED",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "github_push": "HOLD",
+  "main_direct_write": "PROHIBITED",
+  "commander_ack": "COMMANDER_ENTITY_CASE_BINDING_CONTRACT_V0_ACK",
+  "generated_at_utc": "2026-09-05T04:20:00Z",
+  "scope": "CONTRACT_ONLY",
+  "write_target": "INTERNAL_REPO",
+  "purpose_ko": "전역 Entity/Case Binding Guard의 기계적 필드·fail-closed 규칙을 저장소에 고정한다. 사람·환자·프로젝트·브랜치·모델 혼선을 줄이기 위한 계약이며, 런타임 강제·체커 구현은 본 버전 범위 밖이다.",
+  "success_ceiling": {
+    "PASS_means": "global_entity_case_binding_mechanical_contract_fixed_in_repo",
+    "PASS_does_not_mean": [
+      "resolver_implemented",
+      "runtime_enforcement",
+      "checker_or_validator_implemented",
+      "hallucination_eliminated",
+      "all_lanes_migrated",
+      "product_done",
+      "send_or_deploy_authorized",
+      "yura_tech_established"
+    ]
+  },
+  "non_scope": [
+    "resolver_runtime",
+    "checker_validator_scripts",
+    "alwaysApply_rule_wiring",
+    "lane_migration",
+    "github_push",
+    "main_merge",
+    "semantic_adjudication"
+  ],
+  "governance_pointers": {
+    "lab_governance_pin": "docs/final/MKM_LAB_GOVERNANCE_SSOT_PIN_V1.md",
+    "evidence_ledger_spec": "docs/final/MKM_EVIDENCE_LEDGER_V0.md",
+    "evidence_ledger_schema": "docs/final/schemas/mkm_evidence_ledger_record_v0.schema.json",
+    "ssot_policy": "INTERNAL_FIRST",
+    "github_policy": "EXPLICIT_PUSH_ONLY"
+  },
+  "record_required_fields": [
+    "lane",
+    "case_id",
+    "entity_type",
+    "source_binding",
+    "authoritative_source",
+    "freshness_state",
+    "epistemic_state",
+    "claim_ceiling",
+    "conflict_state",
+    "resolver_required",
+    "human_gate_required"
+  ],
+  "record_optional_fields": [
+    "claim_id",
+    "evidence_id",
+    "entity_id",
+    "display_label",
+    "adapter_id",
+    "notes"
+  ],
+  "field_contract": {
+    "lane": {
+      "type": "string",
+      "description": "단일 작업 레인. 교차 레인 합선 금지.",
+      "examples": [
+        "oracle",
+        "logos",
+        "ms",
+        "infra",
+        "design",
+        "clinic_ops",
+        "patient_clinical",
+        "governance",
+        "mutda_news"
+      ]
+    },
+    "case_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "케이스 단위 불변 ID. 동일 case_id를 다른 entity/lane에 자동 재할당·병합 금지."
+    },
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "person",
+        "patient",
+        "project",
+        "branch",
+        "model",
+        "organization",
+        "artifact",
+        "mission",
+        "other",
+        "UNKNOWN",
+        "NOT_ESTABLISHED"
+      ]
+    },
+    "source_binding": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "description": "엔티티 claim을 권위 출처에 묶는 바인딩. null/빈 값은 UNKNOWN 허용이나 promotion 금지.",
+      "required_when_present": [
+        "binding_kind",
+        "binding_value"
+      ],
+      "properties": {
+        "binding_kind": {
+          "type": "string",
+          "enum": [
+            "registry_slug",
+            "ref_token",
+            "artifact_path",
+            "commit_sha",
+            "url",
+            "schema_id",
+            "other",
+            "UNKNOWN",
+            "NOT_ESTABLISHED"
+          ]
+        },
+        "binding_value": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "binding_hash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "authoritative_source": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "권위 경로/식별자. 모르면 null + epistemic_state UNKNOWN|NOT_ESTABLISHED."
+    },
+    "freshness_state": {
+      "type": "string",
+      "enum": [
+        "FRESH",
+        "DEV_REPAIR",
+        "NON_FRESH",
+        "UNKNOWN",
+        "NOT_ESTABLISHED"
+      ]
+    },
+    "epistemic_state": {
+      "type": "string",
+      "enum": [
+        "FACT",
+        "SUPPORTED",
+        "INFERENCE",
+        "HYPOTHESIS",
+        "UNKNOWN",
+        "NOT_ESTABLISHED",
+        "NOT_ADJUDICATED",
+        "FAIL"
+      ]
+    },
+    "claim_ceiling": {
+      "type": "string",
+      "enum": [
+        "CHAT_ONLY",
+        "INTERNAL_NOTE",
+        "STRUCTURAL_PASS",
+        "SUPPORTED_CLAIM",
+        "PRODUCT_DONE",
+        "SEND",
+        "DEPLOY",
+        "LIVE",
+        "TRADE",
+        "UNKNOWN",
+        "NOT_ESTABLISHED"
+      ],
+      "description": "이 binding으로 허용되는 최대 claim 상한. ceiling 초과 주장은 fail-closed."
+    },
+    "conflict_state": {
+      "type": "string",
+      "enum": [
+        "NONE",
+        "LANE_MISMATCH",
+        "CASE_ID_COLLISION",
+        "ENTITY_AMBIGUOUS",
+        "SOURCE_UNBOUND",
+        "ADAPTER_HOLD",
+        "UNKNOWN",
+        "NOT_ESTABLISHED"
+      ]
+    },
+    "resolver_required": {
+      "type": "boolean",
+      "description": "true면 답변/승격 전 해당 레인 resolver(또는 adapter) 호출이 계약상 필수. v0는 구현 강제 아님."
+    },
+    "human_gate_required": {
+      "type": "boolean",
+      "description": "true면 사람 승인 전 promotion/SEND/DEPLOY 금지."
+    },
+    "claim_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Evidence Ledger claim_id 참조(연결 가능 필드)."
+    },
+    "evidence_id": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Evidence Ledger evidence_id 참조(연결 가능 필드)."
+    }
+  },
+  "hard_rules": [
+    {
+      "id": "HR-UNKNOWN_ALLOWED",
+      "rule": "UNKNOWN and NOT_ESTABLISHED are first-class values; do not invent fillers."
+    },
+    {
+      "id": "HR-NO_SOURCE_BINDING_NO_PROMOTION",
+      "rule": "Entity claims without source_binding (null/empty/UNKNOWN binding without authoritative_source) must not be promoted beyond CHAT_ONLY/INTERNAL_NOTE."
+    },
+    {
+      "id": "HR-LANE_MISMATCH_FAIL_CLOSED",
+      "rule": "If claimed lane differs from binding/record lane, set conflict_state=LANE_MISMATCH and fail-closed (no cross-lane fill)."
+    },
+    {
+      "id": "HR-CASE_ID_NO_AUTO_MERGE",
+      "rule": "case_id collisions must not auto-merge; set conflict_state=CASE_ID_COLLISION and require human_gate."
+    },
+    {
+      "id": "HR-CEILING_NO_UPGRADE_WITHOUT_BINDING",
+      "rule": "claim_ceiling must not be upgraded without stronger source_binding + authoritative_source."
+    },
+    {
+      "id": "HR-WORKER_REPORT_NOT_BINDING",
+      "rule": "Worker/chat memory alone is not source_binding."
+    },
+    {
+      "id": "HR-PATIENT_ADAPTER_ONLY",
+      "rule": "patient_clinical lane must use adapter to existing resolver; this contract must not replace or fork patient SSOT."
+    }
+  ],
+  "adapters": {
+    "patient_clinical": {
+      "adapter_id": "patient_clinical_ssot_adapter_v0",
+      "mode": "ADAPTER_WRAP_EXISTING",
+      "existing_resolver": "scripts/resolve_patient_clinical_ssot_v1.py",
+      "existing_registry": "docs/final/artifacts/patient_encounter_registry_v1_latest.json",
+      "existing_disambiguation": "docs/final/artifacts/patient_disambiguation_guard_v1_latest.json",
+      "mapping": {
+        "lane": "patient_clinical",
+        "case_id": "prefer encounter.ref_token else slug",
+        "entity_type": "patient",
+        "source_binding.binding_kind": "ref_token|registry_slug",
+        "authoritative_source": "encounter pointer / *_intake_ssot_pointer_v1.json",
+        "resolver_required": true,
+        "human_gate_required": "true when ambiguous or clinical Final Action risk"
+      },
+      "non_interference": "Global contract records for patient lane MUST defer identity resolution to the existing resolver exit codes (0=one, 1=not found, 2=ambiguous). Do not invent parallel patient IDs."
+    }
+  },
+  "evidence_ledger_bridge": {
+    "compatible": true,
+    "notes": "Optional claim_id / evidence_id fields allow append to mkm_evidence_ledger_v0 without requiring ledger write in this mission.",
+    "ledger_cli": "scripts/mkm_evidence_ledger_v0.py",
+    "does_not_auto_append": true
+  },
+  "example_record_structural_only": {
+    "lane": "governance",
+    "case_id": "CASE-ENTITY-BINDING-CONTRACT-V0",
+    "entity_type": "artifact",
+    "entity_id": "mkm_entity_case_binding_contract_v0",
+    "source_binding": {
+      "binding_kind": "artifact_path",
+      "binding_value": "docs/final/artifacts/mkm_entity_case_binding_contract_v0.json",
+      "binding_hash": null
+    },
+    "authoritative_source": "docs/final/artifacts/mkm_entity_case_binding_contract_v0.json",
+    "freshness_state": "FRESH",
+    "epistemic_state": "SUPPORTED",
+    "claim_ceiling": "STRUCTURAL_PASS",
+    "conflict_state": "NONE",
+    "resolver_required": false,
+    "human_gate_required": false,
+    "claim_id": null,
+    "evidence_id": null,
+    "notes": "contract pin example only; not a runtime seal"
+  },
+  "implementation_status": {
+    "contract": "PINNED",
+    "resolver": "NOT_IMPLEMENTED",
+    "checker": "NOT_IMPLEMENTED",
+    "runtime_enforcement": "NOT_IMPLEMENTED",
+    "yura_tech": "NOT_ESTABLISHED"
+  },
+  "STOP": true,
+  "auto_start_next": false
+}

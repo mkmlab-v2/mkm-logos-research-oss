@@ -151,6 +151,20 @@ docs/final/artifacts/**
 !docs/final/artifacts/commander_field_forecast_v2_insufficient_data_seal_sync_ack_v1.json
 !docs/final/artifacts/mkm_field_forecast_v2_current_status_pin_v1.json
 !docs/final/artifacts/mkm_field_forecast_v2_insufficient_data_seal_sync_receipt_v1.json
+# Field V2 fresh data readiness gate (commander 2026-09-05)
+!docs/final/artifacts/commander_field_forecast_v2_fresh_data_readiness_gate_dev_ack_v1.json
+!docs/final/artifacts/mkm_field_forecast_v2_fresh_data_readiness_v1_latest.json
+!docs/final/artifacts/mkm_field_forecast_v2_fresh_data_readiness_check_v1_latest.json
+!docs/final/artifacts/mkm_field_forecast_v2_fresh_data_readiness_observation_receipt_v1.json
+!docs/final/artifacts/mkm_field_forecast_v2_fresh_data_readiness_gate_close_receipt_v1.json
+!docs/final/artifacts/commander_oracle_v3_evidence_boundary_and_label_readiness_design_ack_v1.json
+!docs/final/artifacts/commander_oracle_v3_label_readiness_runner_ack_v1.json
+!docs/final/artifacts/oracle_v3_label_readiness_result_v1_latest.json
+!docs/final/artifacts/oracle_v3_label_readiness_runner_close_receipt_v1.json
+!docs/final/artifacts/oracle_v3_label_readiness_runner_check_v1_latest.json
+# Entity/Case Binding Guard contract v0 (COMMANDER_ENTITY_CASE_BINDING_CONTRACT_V0_ACK)
+!docs/final/artifacts/mkm_entity_case_binding_contract_v0.json
+!docs/final/artifacts/mkm_entity_case_binding_contract_v0_design_receipt_v1.json
 # Ops snapshot body + NotebookLM research index archives (split from docs/final/*.md; Vault sync targets)
 !docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md
 !docs/final/artifacts/mkm_agent_loops_v1_latest.md

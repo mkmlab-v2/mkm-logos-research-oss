@@ -1,0 +1,54 @@
+{
+  "schema": "mkm_entity_case_binding_contract_v0_design_receipt_v1",
+  "version": "1.0.0",
+  "written_at_utc": "2026-09-05T04:21:44Z",
+  "commander_ack": "COMMANDER_ENTITY_CASE_BINDING_CONTRACT_V0_ACK",
+  "mission": "ENTITY_CASE_BINDING_CONTRACT_V0",
+  "scope": "CONTRACT_ONLY",
+  "write_target": "INTERNAL_REPO",
+  "builder": "cursor_agent",
+  "validator": "commander_remote_recheck_pending",
+  "result": "PASS_STRUCTURAL_CONTRACT",
+  "pass_ceiling": {
+    "PASS_means": "global_entity_case_binding_mechanical_contract_fixed_in_repo",
+    "PASS_does_not_mean": [
+      "resolver_implemented",
+      "runtime_enforcement",
+      "checker_or_validator_implemented",
+      "hallucination_eliminated",
+      "all_lanes_migrated"
+    ]
+  },
+  "changed_files": [
+    ".gitignore",
+    "docs/final/artifacts/mkm_entity_case_binding_contract_v0.json",
+    "docs/final/artifacts/mkm_entity_case_binding_contract_v0_design_receipt_v1.json"
+  ],
+  "contract_path": "docs/final/artifacts/mkm_entity_case_binding_contract_v0.json",
+  "contract_schema": "mkm_entity_case_binding_contract_v0",
+  "contract_sha256": "5027fa25b0526a5ed99868b1af28d55f72c681c788c4a3bd3e3ed6b91be47b78",
+  "hard_rules_count": 7,
+  "adapters_declared": [
+    "patient_clinical"
+  ],
+  "patient_adapter_mode": "ADAPTER_WRAP_EXISTING",
+  "existing_patient_resolver": "scripts/resolve_patient_clinical_ssot_v1.py",
+  "evidence_ledger_bridge": true,
+  "github_push": "HOLD",
+  "main_direct_write": "PROHIBITED",
+  "send_gate": "HOLD",
+  "research_only": true,
+  "status_line": "HALLUCINATION_CONTROL=STRONG_STRUCTURAL; EVIDENCE_LEDGER=EXISTS_THIN; GLOBAL_ENTITY_CASE_GUARD=CONTRACT_PINNED_NOT_IMPLEMENTED; YURA_TECH=NOT_ESTABLISHED; SSOT=INTERNAL_FIRST; GITHUB=EXPLICIT_PUSH_ONLY",
+  "STOP": true,
+  "auto_start_next": false,
+  "next_queued_not_auto": [
+    "optional_checker_v0_after_separate_ACK",
+    "optional_lane_adapters_after_separate_ACK"
+  ],
+  "NOT_ESTABLISHED": [
+    "runtime_enforcement",
+    "universal_entity_resolver",
+    "yura_tech",
+    "semantic_reliability_from_this_contract"
+  ]
+}
