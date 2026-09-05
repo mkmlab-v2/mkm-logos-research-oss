@@ -1,0 +1,89 @@
+{
+  "schema": "mkm_important_mission_verification_bundle_format_v0",
+  "version": "0.1.0",
+  "status": "FORMAT_PINNED",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "github_push": "HOLD",
+  "commander_source": "CHATGPT_COMMANDER_ACCEPT_VIA_USER_PASTE",
+  "commander_ack": "COMMANDER_IMPORTANT_MISSION_VERIFICATION_BUNDLE_FORMAT_V0_ACK",
+  "generated_at_utc": "2026-09-05T04:27:30Z",
+  "scope": "FORMAT_CONTRACT_ONLY",
+  "purpose_ko": "중요 미션 종료 시 Cursor가 채팅에 붙여넣는 검증 꾸러미 포맷을 고정한다. 작업자 보고(CURSOR_REPORTED)와 원격 직접확인(VERIFIED)을 분리한다. 전용 builder 스크립트는 본 버전 비범위.",
+  "operating_rule_one_liner": "IMPORTANT_MISSION_END => PASTE_VERIFICATION_BUNDLE; DEFAULT=CURSOR_REPORTED; VERIFIED_ONLY_AFTER_DIRECT_SOURCE_CHECK; AUTO_NEXT=false.",
+  "success_ceiling": {
+    "PASS_means": "important_mission_end_paste_format_structurally_pinned",
+    "PASS_does_not_mean": [
+      "builder_script_implemented",
+      "chatgpt_verified_internal_gitea",
+      "runtime_enforcement",
+      "product_done",
+      "auto_next_enabled"
+    ]
+  },
+  "non_scope": [
+    "builder_script",
+    "alwaysApply_rule",
+    "github_mirror_automation",
+    "semantic_adjudication"
+  ],
+  "ssot_policy": "INTERNAL_FIRST",
+  "github_policy": "EXPLICIT_PUSH_ONLY_MIRROR_FOR_REMOTE_VERIFY",
+  "epistemic_labels": {
+    "CURSOR_REPORTED": "Cursor/worker stated state; ChatGPT has not directly inspected internal source",
+    "VERIFIED": "ChatGPT (or commander remote validator) inspected GitHub mirror, uploaded artifact, or otherwise directly readable source"
+  },
+  "required_fields": [
+    "MISSION",
+    "LANE",
+    "EPISTEMIC",
+    "branch",
+    "result_sha",
+    "changed_files",
+    "checker",
+    "pytest",
+    "build",
+    "receipt",
+    "receipt.result",
+    "github_push",
+    "pass_ceiling",
+    "NEXT",
+    "AUTO_NEXT"
+  ],
+  "optional_fields": [
+    "base_sha",
+    "artifact_hash",
+    "known_issues"
+  ],
+  "paste_template": "MISSION=<mission_id>\nLANE=<lane>\nEPISTEMIC=CURSOR_REPORTED | VERIFIED\n\nbranch=<branch>\nbase_sha=<optional>\nresult_sha=<sha>\n\nchanged_files=<files>\n\nchecker=<command/result | none>\npytest=<result | none>\nbuild=<result | none>\n\nreceipt=<path>\nreceipt.result=<state>\n\nartifact_hash=<optional sha256>\n\ngithub_push=HOLD | PUSHED_WITH_ACK\npass_ceiling=<ceiling>\n\nknown_issues=<optional>\nNEXT=STOP | <next_candidate_ack>\nAUTO_NEXT=false",
+  "judgment_rules": [
+    {
+      "id": "JR-DEFAULT_REPORTED",
+      "rule": "Default epistemic label after Cursor paste is CURSOR_REPORTED."
+    },
+    {
+      "id": "JR-VERIFIED_REQUIRES_DIRECT",
+      "rule": "VERIFIED only after direct source check (GitHub mirror / uploaded artifact / readable source)."
+    },
+    {
+      "id": "JR-STRUCTURAL_CEILING",
+      "rule": "PASS_STRUCTURAL_CONTRACT means contract structure only; not runtime, effectiveness, or product DONE."
+    },
+    {
+      "id": "JR-NO_AUTO_NEXT",
+      "rule": "AUTO_NEXT=false at important mission end unless separate commander ACK."
+    },
+    {
+      "id": "JR-NO_BUILDER_YET",
+      "rule": "Dedicated verification-bundle builder script deferred until format stabilizes."
+    }
+  ],
+  "entity_case_binding_v0_status_pin": {
+    "mission": "ENTITY_CASE_BINDING_CONTRACT_V0",
+    "stored_as": "CURSOR_REPORTED_PASS_STRUCTURAL_CONTRACT",
+    "result_sha": "0edc9afba490d1d8d212bc1c72168129822947c4",
+    "verified": false
+  },
+  "STOP": true,
+  "auto_start_next": false
+}

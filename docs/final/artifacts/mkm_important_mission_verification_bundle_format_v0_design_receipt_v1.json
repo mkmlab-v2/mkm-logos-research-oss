@@ -1,0 +1,18 @@
+{
+  "schema": "mkm_important_mission_verification_bundle_format_v0_design_receipt_v1",
+  "written_at_utc": "2026-09-05T04:27:30Z",
+  "commander_ack": "COMMANDER_IMPORTANT_MISSION_VERIFICATION_BUNDLE_FORMAT_V0_ACK",
+  "result": "PASS_STRUCTURAL_FORMAT",
+  "contract_path": "docs\\final\\artifacts\\mkm_important_mission_verification_bundle_format_v0.json",
+  "contract_sha256": "3e1d843579fdded2f0fbb8162e63ab756a2544e160069b90695a3bb00226f19a",
+  "builder_script": "NOT_IMPLEMENTED_DEFERRED",
+  "github_push": "HOLD",
+  "send_gate": "HOLD",
+  "STOP": true,
+  "auto_start_next": false,
+  "changed_files": [
+    ".gitignore",
+    "docs/final/artifacts/mkm_important_mission_verification_bundle_format_v0.json",
+    "docs/final/artifacts/mkm_important_mission_verification_bundle_format_v0_design_receipt_v1.json"
+  ]
+}

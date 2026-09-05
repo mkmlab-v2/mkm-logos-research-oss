@@ -165,6 +165,9 @@ docs/final/artifacts/**
 # Entity/Case Binding Guard contract v0 (COMMANDER_ENTITY_CASE_BINDING_CONTRACT_V0_ACK)
 !docs/final/artifacts/mkm_entity_case_binding_contract_v0.json
 !docs/final/artifacts/mkm_entity_case_binding_contract_v0_design_receipt_v1.json
+# Important mission verification bundle paste format v0
+!docs/final/artifacts/mkm_important_mission_verification_bundle_format_v0.json
+!docs/final/artifacts/mkm_important_mission_verification_bundle_format_v0_design_receipt_v1.json
 # Ops snapshot body + NotebookLM research index archives (split from docs/final/*.md; Vault sync targets)
 !docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md
 !docs/final/artifacts/mkm_agent_loops_v1_latest.md
