@@ -4,6 +4,7 @@ vendor/korean-medicine-texts/
 .cursor/**
 !.cursor/current_work_status.md
 !.cursor/mcp.json
+!.cursor/permissions.json
 # Parent dir must be un-ignored or later !.cursor/rules/*.mdc cannot re-include (git)
 !.cursor/rules/
 # Org NotebookLM account policy (alwaysApply rule; share across clones)

@@ -1,0 +1,28 @@
+{
+  "mcpAllowlist": [
+    "filesystem:*",
+    "sequential-thinking:*",
+    "athena-manseryeok:*",
+    "project-0-workspace-filesystem:*",
+    "project-0-workspace-sequential-thinking:*",
+    "project-0-workspace-athena-manseryeok:*"
+  ],
+  "autoRun": {
+    "allow_instructions": [
+      "Workspace-local filesystem read/write under C:/workspace (or the opened MKM workspace root) only — not outside the repo.",
+      "Local Python via py or python invoking repo-relative paths only: scripts/*.py, tests/*, and py -m pytest / lint / typecheck for this repo. Prefer: py scripts/check_*, py scripts/run_* (local artifacts only), py scripts/build_* (local artifacts only). Do not allow unconstrained interpreter invocations without a repo path.",
+      "Repo-local PowerShell script files only via: powershell -NoProfile -ExecutionPolicy Bypass -File scripts\\\\Invoke-Mkm*.ps1 / scripts\\\\Verify-*.ps1 / scripts\\\\Register-*Readiness*.ps1 / health-patrol scripts under scripts\\\\. Never allow unconstrained shell interpreters.",
+      "Local validation families: pytest, ruff/eslint/tsc/lint, and in-repo package build/test when cwd is the workspace (npm/pnpm/vitest scoped to project dirs). No deploy scripts.",
+      "Git read/inspect only by default: status, diff, log, rev-parse, show, ls-files. Do not auto-run git push, force-push, or remote rewrite.",
+      "Deterministic manseryeok lookups via athena-manseryeok MCP (already allowlisted).",
+      "Already allowlisted low-risk local MCP only: filesystem, sequential-thinking, athena-manseryeok (and project-0-workspace-* aliases). Multitask subagents inherit the same narrow allowances."
+    ],
+    "block_instructions": [
+      "KEEP MANUAL: devops-mcp (SSH/VPS/remote shell), notebooklm (external auth profile), compression-server (Track A KPI adjacent), athena-core memory mutations / gateway side effects.",
+      "KEEP MANUAL: production deploy, VPS restart/sync, Cloudflare dashboard login or edge token apply, browser login / authenticated external actions.",
+      "KEEP MANUAL: GitHub push / Push-GitHub-Explicit / external mirror; Gmail and external messaging; SEND; TRADE / live trading / real-money; secrets/credentials/permission changes; database destructive migration.",
+      "KEEP MANUAL: network-changing ops, paid side effects, irreversible schema/architecture changes, destructive delete/rollback.",
+      "FORBIDDEN autorun: unconstrained shell interpreters (PowerShell/CMD/Python/bash without repo-scoped -File or scripts/ path). No broad shell wildcards that ignore repo path scoping."
+    ]
+  }
+}
