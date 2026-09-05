@@ -1,0 +1,237 @@
+{
+  "schema": "mkm_field_forecast_v2_independent_nonoverlap_eval_v1",
+  "generated_at_utc": "2026-09-05T01:46:03Z",
+  "ok": true,
+  "DECIDE_ONE": "FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_STRUCTURAL_OK",
+  "pass_ceiling": "INDEPENDENT_NONOVERLAP_QUALIFICATION_ONLY",
+  "EVIDENCE_CEILING": "INDEPENDENT_NONOVERLAP_QUALIFICATION_ONLY",
+  "CORE_RULE": "evaluate frozen system; do not improve frozen system",
+  "label": "independent_nonoverlap_reserved_future",
+  "window_meta": {
+    "selection_rule": "reserved_future_unseen_only_no_historical_backfill",
+    "reserved_future_date_start": "2026-09-03",
+    "reserved_future_date_end": null,
+    "reserved_future_available_bars": 1,
+    "n_unused_asof_days": 1,
+    "locked_before_metrics": true,
+    "historical_unused_backfill_forbidden": true,
+    "smoke_reuse_forbidden": true,
+    "window_label": "independent_nonoverlap_reserved_future",
+    "date_start": "2026-09-03",
+    "date_end": "2026-09-03",
+    "n_bars": 1,
+    "segments_all": [
+      {
+        "start": "2026-09-03",
+        "end": "2026-09-03",
+        "n": 1
+      }
+    ],
+    "note_ko": "예약 unseen(2026-09-03~)만. Phase2 OOS·DEV requal·smoke asof 교집합 0. 과거 미사용 편입 금지."
+  },
+  "instruments": [
+    "KOSPI",
+    "066570",
+    "005930",
+    "000660",
+    "064350"
+  ],
+  "horizons": [
+    "1d",
+    "5d",
+    "21d"
+  ],
+  "panel_status": [
+    {
+      "id": "KOSPI",
+      "display": "KOSPI Index",
+      "model_family": "KOSPI_INDEX",
+      "csv": "research/market_data/kospi_daily_external_yf.csv",
+      "available": true,
+      "status": "INCLUDED",
+      "n_rows": 0,
+      "n_days_window": 1
+    },
+    {
+      "id": "066570",
+      "display": "LG Electronics",
+      "model_family": "SINGLE_NAME",
+      "csv": "research/market_data/kospi_equity_lg_electronics_066570_yf.csv",
+      "available": true,
+      "status": "INCLUDED",
+      "n_rows": 0,
+      "n_days_window": 1
+    },
+    {
+      "id": "005930",
+      "display": "Samsung Electronics",
+      "model_family": "SINGLE_NAME",
+      "csv": "research/market_data/kospi_equity_samsung_005930_yf.csv",
+      "available": true,
+      "status": "INCLUDED",
+      "n_rows": 0,
+      "n_days_window": 1
+    },
+    {
+      "id": "000660",
+      "display": "SK Hynix",
+      "model_family": "SINGLE_NAME",
+      "csv": "research/market_data/kospi_equity_hynix_000660_yf.csv",
+      "available": true,
+      "status": "INCLUDED",
+      "n_rows": 0,
+      "n_days_window": 1
+    },
+    {
+      "id": "064350",
+      "display": "Hyundai Rotem",
+      "model_family": "SINGLE_NAME",
+      "csv": "research/market_data/kospi_equity_hyundai_rotem_064350_yf.csv",
+      "available": true,
+      "status": "INCLUDED",
+      "n_rows": 0,
+      "n_days_window": 1
+    }
+  ],
+  "n_pred_rows": 0,
+  "n_label_rows": 0,
+  "leakage_hard_fail_count": 0,
+  "SIGNAL_CANDIDATE_count": 0,
+  "any_SIGNAL_CANDIDATE": false,
+  "SIGNAL_CANDIDATE_claimed": false,
+  "MARKET_ALPHA_ESTABLISHED": false,
+  "qualification_label_counts": {
+    "INSUFFICIENT_DATA": 15
+  },
+  "model_families_separate": true,
+  "includes_3_lens": false,
+  "tuning_after_results": false,
+  "freeze_guard_held": true,
+  "walk_forward_meta": {
+    "by_instrument": {
+      "KOSPI": {
+        "n_days": 0,
+        "n_folds": 0,
+        "wf_mode": "frozen_wf_infeasible_zero_folds",
+        "walk_forward_frozen": {
+          "min_train_bars": 80,
+          "test_block_bars": 15,
+          "step_bars": 15,
+          "embargo_bars": 5,
+          "mode": "expanding_train_purged_embargo_independent_requal"
+        }
+      },
+      "066570": {
+        "n_days": 0,
+        "n_folds": 0,
+        "wf_mode": "frozen_wf_infeasible_zero_folds",
+        "walk_forward_frozen": {
+          "min_train_bars": 80,
+          "test_block_bars": 15,
+          "step_bars": 15,
+          "embargo_bars": 5,
+          "mode": "expanding_train_purged_embargo_independent_requal"
+        }
+      },
+      "005930": {
+        "n_days": 0,
+        "n_folds": 0,
+        "wf_mode": "frozen_wf_infeasible_zero_folds",
+        "walk_forward_frozen": {
+          "min_train_bars": 80,
+          "test_block_bars": 15,
+          "step_bars": 15,
+          "embargo_bars": 5,
+          "mode": "expanding_train_purged_embargo_independent_requal"
+        }
+      },
+      "000660": {
+        "n_days": 0,
+        "n_folds": 0,
+        "wf_mode": "frozen_wf_infeasible_zero_folds",
+        "walk_forward_frozen": {
+          "min_train_bars": 80,
+          "test_block_bars": 15,
+          "step_bars": 15,
+          "embargo_bars": 5,
+          "mode": "expanding_train_purged_embargo_independent_requal"
+        }
+      },
+      "064350": {
+        "n_days": 0,
+        "n_folds": 0,
+        "wf_mode": "frozen_wf_infeasible_zero_folds",
+        "walk_forward_frozen": {
+          "min_train_bars": 80,
+          "test_block_bars": 15,
+          "step_bars": 15,
+          "embargo_bars": 5,
+          "mode": "expanding_train_purged_embargo_independent_requal"
+        }
+      }
+    }
+  },
+  "zero_frozen_wf_folds": true,
+  "macro_bias_guard": {
+    "low_macro_score_entropy": true,
+    "diagnostic_only_not_signal_alpha": true,
+    "flags": [
+      "low_macro_score_entropy"
+    ]
+  },
+  "research_only": true,
+  "send_gate": "HOLD",
+  "live": false,
+  "auto_trade": false,
+  "deploy": false,
+  "track_a_ready": false,
+  "product_done": false,
+  "AUTO_NEXT": false,
+  "on_pass": "STOP",
+  "on_signal_candidate": "STOP",
+  "on_no_signal": "STOP",
+  "git_commit_sha": "534f1a5dabcec10fe889fa1af0a156925eced369",
+  "SUCCESS_DOES_NOT_MEAN": [
+    "MARKET_ALPHA_ESTABLISHED",
+    "profitable_strategy",
+    "future_generalization",
+    "calibration_complete",
+    "3_lens_validity",
+    "PRODUCT_DONE",
+    "SEND",
+    "DEPLOY",
+    "LIVE"
+  ],
+  "note_ko": "동결 Field V2 독립 비겹침 평가만. 개선/재튜닝 금지. SIGNAL_CANDIDATE=0이면 결과 보존·STOP.",
+  "observed_result": "INSUFFICIENT_DATA",
+  "ALLOWED_RESULT": [
+    "PASS",
+    "ZERO_CANDIDATE",
+    "INSUFFICIENT_DATA",
+    "FAIL"
+  ],
+  "insufficient_reason": "reserved_future_unseen_shorter_than_frozen_walk_forward",
+  "pipeline_sealed": true,
+  "PASS_NE_PROFIT": true,
+  "PASS_NE_GENERALIZATION": true,
+  "PASS_NE_3_LENS_SUPERIORITY": true,
+  "PASS_NE_TRADE": true,
+  "ORACLE_SESSION_UPGRADE": "FAIL",
+  "session_upgrade_not_reinterpreted_as_pass": true,
+  "artifact_paths": {
+    "prereg": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_prereg_manifest_latest.json",
+    "freeze_verify": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_frozen_input_hash_verify_latest.json",
+    "nonoverlap_proof": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_nonoverlap_proof_latest.json",
+    "prediction_raw": "reports/mkm_field_forecast_v2_independent_nonoverlap_eval_prediction_raw_latest.jsonl",
+    "labels": "reports/mkm_field_forecast_v2_independent_nonoverlap_eval_labels_latest.jsonl",
+    "qualification": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_qualification_latest.json",
+    "baseline": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_baseline_comparison_latest.json",
+    "null_ci": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_null_ci_latest.json",
+    "no_call": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_no_call_latest.json",
+    "leakage": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_leakage_audit_latest.json",
+    "stats": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_stats_latest.json",
+    "hashes": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_hashes_latest.json",
+    "summary": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_v1_latest.json",
+    "receipt": "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_observed_result_receipt_v1.json"
+  }
+}

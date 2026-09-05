@@ -1,0 +1,258 @@
+{
+  "schema": "mkm_field_forecast_v2_independent_nonoverlap_eval_check_v1",
+  "ok": true,
+  "observed_result": "INSUFFICIENT_DATA",
+  "DECIDE_ONE": "FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_STRUCTURAL_OK",
+  "fail_n": 0,
+  "pass_ceiling": "INDEPENDENT_NONOVERLAP_QUALIFICATION_ONLY",
+  "EVIDENCE_CEILING": "INDEPENDENT_NONOVERLAP_QUALIFICATION_ONLY",
+  "ORACLE_SESSION_UPGRADE": "FAIL",
+  "AUTO_NEXT": false,
+  "CORE_RULE": "evaluate frozen system; do not improve frozen system",
+  "checks": [
+    {
+      "ok": true,
+      "code": "FILE_ACK",
+      "detail": "commander_field_forecast_v2_independent_nonoverlap_eval_ack_v1.json"
+    },
+    {
+      "ok": true,
+      "code": "FILE_SUMMARY",
+      "detail": "mkm_field_forecast_v2_independent_nonoverlap_eval_v1_latest.json"
+    },
+    {
+      "ok": true,
+      "code": "FILE_RECEIPT",
+      "detail": "mkm_field_forecast_v2_independent_nonoverlap_eval_observed_result_receipt_v1.json"
+    },
+    {
+      "ok": true,
+      "code": "FILE_PHASE2",
+      "detail": "mkm_field_stock_forecast_v2_phase2_walkforward_latest.json"
+    },
+    {
+      "ok": true,
+      "code": "FILE_PHASE3",
+      "detail": "mkm_field_stock_forecast_v2_phase3_qualification_latest.json"
+    },
+    {
+      "ok": true,
+      "code": "ACK_ISSUED_TOKEN",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SESSION_UPGRADE_REMAINS_FAIL",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_research_only",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_live",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_auto_trade",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_AUTO_NEXT",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_on_pass",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_SEND_HOLD",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_WALL_NO_OVERWRITE_PHASE2_FROZEN",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_WALL_NO_OVERWRITE_PHASE3_FROZEN",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_WALL_NO_3_LENS_IN_DEV_LANE",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_WALL_NO_RETUNE",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_WALL_NO_HISTORICAL_UNUSED_BACKFILL",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_WALL_NO_SMOKE_DATA_REUSE",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "ACK_WALL_SESSION_UPGRADE_FAIL_MUST_REMAIN_FAIL",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "OBSERVED_RESULT_SEALED",
+      "detail": "INSUFFICIENT_DATA"
+    },
+    {
+      "ok": true,
+      "code": "PASS_CEILING",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "DECIDE_OK",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "RESERVED_ONLY_RULE",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "RESERVED_START_2026_09_03",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "WINDOW_LABEL",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "NO_PRE_RESERVED_EVAL_START",
+      "detail": "2026-09-03"
+    },
+    {
+      "ok": true,
+      "code": "NONOVERLAP_PROOF_OK",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_research_only",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_live",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_includes_3_lens",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_tuning_after_results",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_SIGNAL_CANDIDATE_claimed",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_MARKET_ALPHA_ESTABLISHED",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_AUTO_NEXT",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_on_pass",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_pipeline_sealed",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_PASS_NE_PROFIT",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_PASS_NE_TRADE",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "SUMMARY_SEND_HOLD",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "INSUFFICIENT_CONSISTENT",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "QUAL_ENUM",
+      "detail": "n_cells=15"
+    },
+    {
+      "ok": true,
+      "code": "PRED_FILE",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "PRED_ASOF_RESERVED_ONLY",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "HASHES_OBSERVED",
+      "detail": ""
+    },
+    {
+      "ok": true,
+      "code": "PREREG_NO_3_LENS",
+      "detail": ""
+    }
+  ],
+  "paths": {
+    "ack": "C:/workspace/docs/final/artifacts/commander_field_forecast_v2_independent_nonoverlap_eval_ack_v1.json",
+    "summary": "C:/workspace/docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_v1_latest.json",
+    "receipt": "C:/workspace/docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_observed_result_receipt_v1.json"
+  },
+  "check_command": "py scripts/check_mkm_field_forecast_v2_independent_nonoverlap_eval_v1.py",
+  "lane": "oracle",
+  "research_only": true,
+  "send_gate": "HOLD",
+  "live": false,
+  "SIGNAL_CANDIDATE_claimed": false,
+  "MARKET_ALPHA_ESTABLISHED": false,
+  "on_pass": "STOP",
+  "next_requires_separate_ack": "COMMANDER_FIELD_FORECAST_V2_MORE_UNSEEN_OR_HISTORICAL_REDESIGN_ACK"
+}

@@ -1,0 +1,111 @@
+{
+  "schema": "commander_field_forecast_v2_independent_nonoverlap_eval_ack_v1",
+  "token": "COMMANDER_FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_ACK",
+  "token_aliases": [
+    "COMMANDER_FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_ACK",
+    "COMMANDER_FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_RESUME_EXECUTION",
+    "FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_ACK"
+  ],
+  "issued": true,
+  "issued_at_utc": "2026-09-05T01:38:00Z",
+  "resume_issued_at_utc": "2026-09-05T01:38:00Z",
+  "commander_verbatim": "COMMANDER_FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_RESUME_EXECUTION",
+  "commander_command_verbatim": "COMMANDER_FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_RESUME_EXECUTION",
+  "chat_note_ko": "기존 독립평가 ACK 미완(core-only) 구간을 완성한다. 세션 업그레이드 exit 1은 FAIL로 유지. 예약 unseen 2026-09-03~만. 재튜닝·3렌즈·SEND/TRADE 금지. 창이 짧으면 INSUFFICIENT_DATA 봉인 후 STOP.",
+  "CORE_RULE": "evaluate frozen system; do not improve frozen system",
+  "ACTIVE_LANE": "oracle",
+  "FIELD_V2": "REFROZEN",
+  "EXISTING_ACK": "COMMANDER_FIELD_FORECAST_V2_INDEPENDENT_NONOVERLAP_EVAL_ACK",
+  "objective": {
+    "summary_ko": "동결 Field V2를 예약 unseen(2026-09-03~) 비겹침 창에서만 평가하고 runner/checker/receipt를 봉인. 과거 미사용 구간 편입 금지. 창이 짧으면 INSUFFICIENT_DATA.",
+    "lane": "oracle",
+    "label": "independent_nonoverlap_reserved_future",
+    "scope": [
+      "complete_runner_checker_for_existing_ack",
+      "reserved_future_unseen_2026-09-03_only",
+      "record_observed_result_without_retune",
+      "seal_artifacts_receipt_checker",
+      "STOP_after_seal"
+    ]
+  },
+  "walls": {
+    "NO_OVERWRITE_PHASE2_FROZEN": true,
+    "NO_OVERWRITE_PHASE3_FROZEN": true,
+    "NO_3_LENS_IN_DEV_LANE": true,
+    "NO_RETUNE": true,
+    "NO_THRESHOLD_CALIBRATION_CHANGE": true,
+    "NO_FEATURE_EDIT": true,
+    "NO_SMOKE_DATA_REUSE": true,
+    "NO_HISTORICAL_UNUSED_BACKFILL": true,
+    "NO_POST_RESULT_REPAIR_REEVAL": true,
+    "NO_SECOND_FRESH": true,
+    "NO_CLAIM_MARKET_ALPHA": true,
+    "SIGNAL_CANDIDATE_NE_MARKET_ALPHA": true,
+    "NO_CLAIM_PRODUCT_DONE": true,
+    "SESSION_UPGRADE_FAIL_MUST_REMAIN_FAIL": true,
+    "NO_AUTO_RERUN_SESSION_UPGRADE_AS_PASS": true
+  },
+  "reserved_future_unseen": {
+    "date_start_inclusive": "2026-09-03",
+    "date_end_inclusive": null,
+    "historical_backfill_forbidden": true
+  },
+  "ALLOWED_RESULT": ["PASS", "ZERO_CANDIDATE", "INSUFFICIENT_DATA", "FAIL"],
+  "IF_WINDOW_TOO_SHORT": "INSUFFICIENT_DATA_SEAL_AND_STOP",
+  "pass_ceiling": "INDEPENDENT_NONOVERLAP_QUALIFICATION_ONLY",
+  "EVIDENCE_CEILING": "INDEPENDENT_NONOVERLAP_QUALIFICATION_ONLY",
+  "PASS_NE_PROFIT": true,
+  "PASS_NE_GENERALIZATION": true,
+  "PASS_NE_3_LENS_SUPERIORITY": true,
+  "PASS_NE_TRADE": true,
+  "research_only": true,
+  "send_gate": "HOLD",
+  "SEND": "HOLD",
+  "live": false,
+  "auto_trade": false,
+  "deploy": false,
+  "track_a_ready": false,
+  "product_done": false,
+  "AUTO_NEXT": false,
+  "on_pass": "STOP",
+  "on_signal_candidate": "STOP",
+  "on_no_signal": "STOP",
+  "on_insufficient_data": "STOP",
+  "ORACLE_SESSION_UPGRADE": "FAIL",
+  "browser_host_check_only": true,
+  "scope_authorized": [
+    "seal_this_ack",
+    "complete_independent_nonoverlap_runner_checker",
+    "evaluate_reserved_future_unseen_only",
+    "write_independent_nonoverlap_eval_artifacts",
+    "thin_checker_and_pytest",
+    "gitignore_exception_for_receipt_trackability"
+  ],
+  "scope_forbidden": [
+    "retune_weights_thresholds_features",
+    "three_lens_combine",
+    "reuse_smoke_eval_asofs",
+    "expand_unseen_with_historical_unused",
+    "post_result_patch_and_reeval",
+    "second_fresh",
+    "SEND",
+    "TRADE",
+    "reinterpret_session_upgrade_exit1_as_pass"
+  ],
+  "artifacts_expected": [
+    "docs/final/artifacts/commander_field_forecast_v2_independent_nonoverlap_eval_ack_v1.json",
+    "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_v1_latest.json",
+    "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_check_v1_latest.json",
+    "docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_observed_result_receipt_v1.json",
+    "scripts/run_mkm_field_forecast_v2_independent_nonoverlap_eval_v1.py",
+    "scripts/check_mkm_field_forecast_v2_independent_nonoverlap_eval_v1.py",
+    "tests/test_mkm_field_forecast_v2_independent_nonoverlap_eval_v1.py"
+  ],
+  "prior_refs": {
+    "refreeze_ack": "docs/final/artifacts/commander_field_forecast_v2_dev_phase2_equivalent_refreeze_ack_v1.json",
+    "refreeze_manifest": "docs/final/artifacts/mkm_field_forecast_v2_dev_phase2_equivalent_refreeze_manifest_latest.json",
+    "core": "scripts/mkm_field_forecast_v2_independent_nonoverlap_eval_core_v1.py"
+  },
+  "next_requires_separate_ack": "COMMANDER_FIELD_FORECAST_V2_MORE_UNSEEN_OR_HISTORICAL_REDESIGN_ACK",
+  "note_ko": "ON_PASS STOP. 후속 데이터 대기 또는 역사구간 재설계는 별도 ACK."
+}

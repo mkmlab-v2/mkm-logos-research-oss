@@ -143,6 +143,11 @@ docs/final/artifacts/**
 !docs/final/artifacts/schemas/**
 !docs/final/artifacts/schemas/*.json
 !docs/final/artifacts/schemas/*.schema.json
+# Field V2 independent non-overlap eval receipt (commander 2026-09-05 seal)
+!docs/final/artifacts/commander_field_forecast_v2_independent_nonoverlap_eval_ack_v1.json
+!docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_v1_latest.json
+!docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_check_v1_latest.json
+!docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_observed_result_receipt_v1.json
 # Ops snapshot body + NotebookLM research index archives (split from docs/final/*.md; Vault sync targets)
 !docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md
 !docs/final/artifacts/mkm_agent_loops_v1_latest.md
@@ -267,6 +272,8 @@ storage/cli_delegate_scratch/
 .venv_lora/
 .venv_lora_local128/
 .venv-*/
+.venv_ragas*/
+.venv_*/
 .venv-nemotron-wsl/
 .venv-btrack-docling/
 .venv-btrack-sherpa-onnx/
