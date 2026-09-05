@@ -1,0 +1,43 @@
+{
+  "schema": "commander_field_forecast_v2_insufficient_data_seal_sync_ack_v1",
+  "token": "COMMANDER_FIELD_FORECAST_V2_INSUFFICIENT_DATA_SEAL_SYNC_ACK",
+  "token_aliases": [
+    "COMMANDER_FIELD_FORECAST_V2_INSUFFICIENT_DATA_SEAL_SYNC_ACK"
+  ],
+  "issued": true,
+  "issued_at_utc": "2026-09-05T01:51:00Z",
+  "commander_verbatim": "COMMANDER_FIELD_FORECAST_V2_INSUFFICIENT_DATA_SEAL_SYNC_ACK",
+  "commander_command_verbatim": "COMMANDER_FIELD_FORECAST_V2_INSUFFICIENT_DATA_SEAL_SYNC_ACK",
+  "chat_note_ko": "봉인 결과 원격 보존 + 낡은 resume NEXT=REFREEZE 제거. evaluator 재실행·데이터 추가·재튜닝 금지.",
+  "ACTIVE_LANE": "oracle",
+  "FIELD_V2": "REFROZEN",
+  "INDEPENDENT_NONOVERLAP_EVAL": "INSUFFICIENT_DATA",
+  "LOCAL_SEAL_COMMIT": "a8d4e9b7c",
+  "preserve_seal_unmodified": true,
+  "walls": {
+    "NO_EVALUATOR_RERUN": true,
+    "NO_DATA_ADD": true,
+    "NO_HISTORICAL_UNUSED_BACKFILL": true,
+    "NO_RETUNE": true,
+    "NO_3_LENS": true,
+    "NO_SECOND_FRESH": true,
+    "NO_PROMOTE_TO_PASS_EFFECTIVENESS": true,
+    "NO_SEND": true,
+    "NO_TRADE": true,
+    "SESSION_UPGRADE_FAIL_MUST_REMAIN_FAIL": true
+  },
+  "pass_ceiling": "INSUFFICIENT_DATA_SEAL_AND_RESUME_PIN_REMOTE_PRESERVED_ONLY",
+  "PASS_NE_FORECAST_EFFECTIVENESS": true,
+  "PASS_NE_SIGNAL_EXISTENCE": true,
+  "PASS_NE_PROFIT": true,
+  "PASS_NE_GENERALIZATION": true,
+  "PASS_NE_TRADE": true,
+  "research_only": true,
+  "send_gate": "HOLD",
+  "SEND": "HOLD",
+  "live": false,
+  "auto_trade": false,
+  "AUTO_NEXT": false,
+  "on_pass": "STOP",
+  "NEXT": "WAIT_FOR_SUFFICIENT_FRESH_DATA_OR_SEPARATE_HISTORY_REDESIGN_ACK"
+}

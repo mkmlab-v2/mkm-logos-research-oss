@@ -148,6 +148,9 @@ docs/final/artifacts/**
 !docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_v1_latest.json
 !docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_check_v1_latest.json
 !docs/final/artifacts/mkm_field_forecast_v2_independent_nonoverlap_eval_observed_result_receipt_v1.json
+!docs/final/artifacts/commander_field_forecast_v2_insufficient_data_seal_sync_ack_v1.json
+!docs/final/artifacts/mkm_field_forecast_v2_current_status_pin_v1.json
+!docs/final/artifacts/mkm_field_forecast_v2_insufficient_data_seal_sync_receipt_v1.json
 # Ops snapshot body + NotebookLM research index archives (split from docs/final/*.md; Vault sync targets)
 !docs/final/artifacts/ops_snapshot_body_archive_2026-05-15.md
 !docs/final/artifacts/mkm_agent_loops_v1_latest.md

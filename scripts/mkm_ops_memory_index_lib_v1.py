@@ -101,6 +101,7 @@ LANE_OPS_PACKS: dict[str, tuple[str, ...]] = {
     "oracle": (
         "prism_ops_mission_log_board",
         "prism_ops_central_checkpoint",
+        "prism_ops_mission_log_next_one",
         "prism_ops_lane_oracle",
         "prism_ops_portfolio_execution_focus",
         "prism_ops_logos_metacog_coord",
