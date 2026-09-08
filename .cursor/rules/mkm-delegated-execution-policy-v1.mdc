@@ -1,0 +1,33 @@
+---
+description: MKM 선승인 위임 — GREEN 자동 / YELLOW 준비후 Gate / RED 명시승인 · FAIL봉인 STOP
+alwaysApply: false
+---
+
+# MKM Delegated Execution Policy v1
+
+**Canonical (human):** `docs/final/MKM_DELEGATED_EXECUTION_POLICY_V1.md`  
+**Machine:** `docs/final/artifacts/mkm_delegated_execution_policy_v1_latest.json`  
+**Parent pin:** `docs/final/MKM_LAB_GOVERNANCE_SSOT_PIN_V1.md` (no competing constitution)  
+**Parents:** `.cursorrules` Ask Gate · `@mkm-high-delegation-preflight-v1` · `@mkm-commander-delegation-router-v1` · `@mkm-task-contract-stop-v1`
+
+## ALWAYS
+
+- Operational default: `AUTO_NEXT=WITHIN_PREAUTHORIZED_GREEN_ENVELOPE` · `AUTO_NEXT_BEYOND_GATE=false` (pointer: policy MD/JSON).
+- Treat internal non-destructive lab work as **PREAUTHORIZED (GREEN)** unless STOP_ON / RED applies.
+- Inside one preauthorized chain (forensic → recon → bounded Builder → synthetic/dev test → independent **code** validator → receipt/seal): **AUTO_NEXT** — do **not** stop merely because one GREEN subtask finished.
+- On first semantic/fresh Validator **FAIL/PARTIAL**: seal → **STOP** → Commander. No silent patch→retest→PASS.
+- YELLOW: prepare fully, then ask before fire (fresh/H2H/heldout/large/costly/claim elevation / new generation).
+- RED: LIVE / SEND / DEPLOY / TRADE / payment / medical-public / destructive / sealed overwrite.
+
+## NEVER
+
+- Set `AUTO_NEXT_BEYOND_GATE=true`.
+- Default-write unconditional `AUTO_NEXT=false` on every GREEN mission step (historical receipts OK; active ops templates must not).
+- Auto-continue past COMMANDER_REQUIRED or Ask Gate.
+- Treat Builder claim or harness exit 0 as product/LIVE unlock.
+- Collapse GREEN progress into SEND / Track A / public claim.
+- Invent missing local governance from GitHub (LOCAL/DISK wins).
+
+## Report (commander chat)
+
+- Korean: 된 것 / 안 된 것 / 문제 / 당신 결정 — no English incomplete-status walls.

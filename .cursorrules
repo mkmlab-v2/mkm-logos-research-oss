@@ -27,6 +27,16 @@
 - For low-risk ambiguity, choose one reasonable default and proceed.
 - Do not end completed work with forced choice prompts.
 
+## MKM Delegated Execution
+
+- Load: `docs/final/MKM_DELEGATED_EXECUTION_POLICY_V1.md` (+ machine `docs/final/artifacts/mkm_delegated_execution_policy_v1_latest.json`). Parent epistemic pin: `MKM_LAB_GOVERNANCE_SSOT_PIN_V1.md`.
+- Default: `AUTO_NEXT=WITHIN_PREAUTHORIZED_GREEN_ENVELOPE` · `AUTO_NEXT_BEYOND_GATE=false` (GREEN subtask done ≠ Commander stop).
+- GREEN: internal reversible non-destructive research/dev may auto-chain inside authorized scope (forensic→recon→bounded impl→dev/synthetic→code IV→receipt/seal).
+- YELLOW: stop before execution that changes evidentiary meaning; request Commander.
+- RED: LIVE/SEND/DEPLOY/TRADE/payment/medical-public/production/destructive/sealed-history — explicit Commander only.
+- First semantic/fresh FAIL → seal + STOP; no result-dependent rerun as fresh evidence.
+- Preserve Fact-Lock · evidence ceiling · UNKNOWN; `C:\workspace` = protected dirty evidence root.
+
 ## Completion Contract
 
 - "Done" means:
