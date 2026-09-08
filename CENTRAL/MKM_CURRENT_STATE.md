@@ -24,9 +24,11 @@ INTERNAL_TRACKING_CHECKPOINT=refs/remotes/internal/main@9766f813b4ca72b5a6eb70a5
 GITHUB_ORIGIN_MAIN_CHECKPOINT=refs/remotes/origin/main@08c45eaf026da1e265b7be72d7afd825deb564f6
 HQ_MAIN_CHECKPOINT=refs/remotes/hq/main@6a9e20fea72e6e3e3dedd679a40bd19f67e7c83a
 GITHUB_HANDOFF_BRANCH=handoff/mkm-current-state-20260908-v2
+GITHUB_HANDOFF_COMMIT=0ec6d31e7d424d6fb4f347f4564c9155fa48f23a
+GITHUB_REPO=mkmlab-v2/mkm-destiny-ai-41e38ec6
 LOCAL_VALIDATION_RECEIPT=docs/final/artifacts/mkm_chatgpt_handoff_local_validation_v1_latest.json
 GREEN_ENVELOPE_ACTIVATION=docs/final/artifacts/mkm_green_envelope_autonomous_continuation_activation_v1_latest.json
-MIRROR_STATUS=POINTER_REFRESH_PENDING_PUSH
+MIRROR_STATUS=PUSHED_POINTER_MIRROR
 ```
 
 ## GitHub mirror policy
@@ -141,7 +143,6 @@ TRADE=HOLD
 
 ## UNKNOWN
 
-- GitHub handoff branch tip SHA after push (채워질 예정)
 - live Gitea HEAD after fetch (이번 미션 fetch 안 함)
 - Stage2 D2B builder receipt (아직 없음 — NEXT)
 
