@@ -2,8 +2,10 @@
   "G0": ["post-it filters", "anchor and JSON-pointer locators", "A2A fingerprint packets"],
   "G1": ["reuse query tokenizer", "locator-only output warning"],
   "G2_implemented": ["explicit-file exact and sparse search", "Python symbol extraction", "literal path relation expansion", "full hash validation", "unchanged-record reuse", "synthetic comparator"],
-  "G3_report_only": ["universal source-claim-receipt ontology", "production persistent incremental index", "A2A wire integration"],
+  "G3_implemented_bounded": ["explicit source-claim-receipt locator ontology with typed entities/edges and mandatory evidence pointers"],
+  "G3_remaining": ["production persistent incremental index", "A2A wire integration", "general claim/receipt extraction from existing heterogeneous artifacts"],
   "G4_report_only": ["semantic equivalence without embeddings", "Qdrant advantage", "general agent memory advantage"],
   "qdrant_comparison": "NOT_ESTABLISHED",
+  "ontology_effectiveness": "NOT_ESTABLISHED",
   "auto_next": false
 }
