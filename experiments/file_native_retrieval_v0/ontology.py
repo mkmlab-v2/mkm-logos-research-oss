@@ -29,12 +29,18 @@ class EdgeKind(str, Enum):
 @dataclass(frozen=True)
 class LocatorEntity:
     entity_id: str
-    kind: EntityKind
+    kind: EntityKind | str
     locator: str
     source_hash: str | None = None
     declared_state: str | None = None
 
     def __post_init__(self) -> None:
+        try:
+            kind = EntityKind(self.kind)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"invalid EntityKind: {self.kind!r}") from exc
+        object.__setattr__(self, "kind", kind)
+
         if not self.entity_id.strip():
             raise ValueError("entity_id must be non-empty")
         if not self.locator.strip():
@@ -51,10 +57,16 @@ class LocatorEntity:
 class OntologyEdge:
     source_id: str
     target_id: str
-    kind: EdgeKind
+    kind: EdgeKind | str
     evidence_ref: str
 
     def __post_init__(self) -> None:
+        try:
+            kind = EdgeKind(self.kind)
+        except (TypeError, ValueError) as exc:
+            raise ValueError(f"invalid EdgeKind: {self.kind!r}") from exc
+        object.__setattr__(self, "kind", kind)
+
         if not self.source_id.strip() or not self.target_id.strip():
             raise ValueError("edge endpoints must be non-empty")
         if not self.evidence_ref.strip():
