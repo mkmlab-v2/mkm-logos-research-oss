@@ -5,6 +5,11 @@ L1: existing query_match_tokens feeds in-memory inverted postings, ranked by
 token overlap. Score is an ordering heuristic, not calibrated confidence.
 L2: one-hop literal references between explicitly selected paths. General claim,
 receipt and runtime dependency edge extraction remains MISSING.
+L2.5: explicit source/claim/receipt locator ontology. Every indexed file is a
+SOURCE locator by default. CLAIM/RECEIPT/ARTIFACT entities and SUPPORTS/VERIFIES
+edges are accepted only through explicit declarations with evidence pointers.
+No entity kind, authority, truth, support, or runtime reachability is inferred
+from file contents, filenames, or declared epistemic state.
 L3: optional existing SQLite semantic mechanism is recovered but not connected.
 No Qdrant backend, embedding call, or daemon is required by this prototype.
 
@@ -21,6 +26,11 @@ It still reads and hashes all selected files. Persistent watcher/large-scale
 incremental performance is NOT_ESTABLISHED. Output ordering is deterministic.
 search verifies source hashes at query time and labels stale/missing candidates
 source_verified=false; callers must not treat those candidates as evidence.
+
+Ontology usage is deliberately separate from retrieval ranking. Use
+ontology.graph_from_retrieval_records(records, declarations=..., edges=...) to
+materialize explicit locator entities. A declared claim state such as FACT is
+metadata only and does not authorize promotion or imply evidentiary support.
 
 Usage from repository root with a JSON array of approved relative paths:
 
