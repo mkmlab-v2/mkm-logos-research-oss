@@ -1,0 +1,9 @@
+{
+  "G0": ["post-it filters", "anchor and JSON-pointer locators", "A2A fingerprint packets"],
+  "G1": ["reuse query tokenizer", "locator-only output warning"],
+  "G2_implemented": ["explicit-file exact and sparse search", "Python symbol extraction", "literal path relation expansion", "full hash validation", "unchanged-record reuse", "synthetic comparator"],
+  "G3_report_only": ["universal source-claim-receipt ontology", "production persistent incremental index", "A2A wire integration"],
+  "G4_report_only": ["semantic equivalence without embeddings", "Qdrant advantage", "general agent memory advantage"],
+  "qdrant_comparison": "NOT_ESTABLISHED",
+  "auto_next": false
+}

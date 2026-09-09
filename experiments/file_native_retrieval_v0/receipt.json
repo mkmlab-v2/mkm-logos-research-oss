@@ -1,0 +1,29 @@
+{
+  "project": "MKM_FILE_NATIVE_RETRIEVAL",
+  "result": "BOUNDED_PROTOTYPE_READY",
+  "as_of": "2026-09-09T14:54:28.935923+00:00",
+  "local_ssot_commit": "6d9ac50bb9202f29a0606f1aecb1ae8f29483d7c",
+  "recovered_components": 10,
+  "tests": "6 passed; focused pytest exit 0",
+  "tests_command": "py -B -m pytest experiments/file_native_retrieval_v0/test_retrieval.py -q -p no:cacheprovider",
+  "evidence_ceiling": "BOUNDED_IMPLEMENTATION_SYNTHETIC_DEV_ONLY",
+  "independence": "BUILDER_SELF_TEST_NOT_INDEPENDENT_REVIEW",
+  "exhaustive_workspace_coverage": false,
+  "qdrant": "NOT_ESTABLISHED",
+  "predictive_effectiveness": "NOT_ESTABLISHED",
+  "superiority": "NOT_ESTABLISHED",
+  "external_api_calls": 0,
+  "auto_next": false,
+  "next": "STOP",
+  "files_sha256": {
+    "capture_evidence.py": "a1b73009ef625ff82286dbead1c3f2fce24493e0d9793aad6760b8002bd17c37",
+    "dev_comparator.py": "17210e8cd0641dd54589902aaa94a8b5ff7e0f35d0050b36e75f2fed4ea5118d",
+    "DEV_COMPARATOR_RESULT.json": "4c55207a11d716408dbb4e299b724246bd0dfea58415ef824d5e265021887448",
+    "EXISTING_TECH_COMPONENT_MAP.json": "c70a77a011471e90948ebc53e08b4bce4cf09105448415cf87c16b6981b2d86a",
+    "FILE_NATIVE_RETRIEVAL_ARCHITECTURE_V0.md": "0bd54c5a6fc1e7bf4bb27c7ba926d968318031883114919d399864d6176496b8",
+    "FORENSIC_RECOVERY_REPORT.md": "74c37edfc0ba04b60c008b45d7a674646c3fc49f89b928f089b8e43d0d265aee",
+    "GAP_ANALYSIS.json": "bea21ffab6b6fdf8f16f6e490d2e47bdd4ecee3889e015511c9ffeda906be4fb",
+    "retrieval.py": "a4c1aee8245e5353479efacec483d9f7b868c701b39dc81821f386277e5dbc97",
+    "test_retrieval.py": "63c33d54200a7ac1327b5d6dae410892b3da73d03e79067a7b92f99dec68b6de"
+  }
+}

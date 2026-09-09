@@ -1,0 +1,91 @@
+{
+  "ceiling": "SYNTHETIC_DEV_ONLY",
+  "queries": [
+    {
+      "query": "alpha",
+      "gold": [
+        "a.py"
+      ],
+      "baseline": [
+        "a.py"
+      ],
+      "prototype": [
+        "a.py"
+      ],
+      "baseline_ms": 0.0056999999742402,
+      "prototype_ms": 0.5868000000646134
+    },
+    {
+      "query": "beta",
+      "gold": [
+        "b.py"
+      ],
+      "baseline": [
+        "b.py"
+      ],
+      "prototype": [
+        "b.py"
+      ],
+      "baseline_ms": 0.004300000000512227,
+      "prototype_ms": 0.48859999992600933
+    },
+    {
+      "query": "복원",
+      "gold": [
+        "notes.md"
+      ],
+      "baseline": [
+        "notes.md"
+      ],
+      "prototype": [
+        "notes.md"
+      ],
+      "baseline_ms": 0.00389999991057266,
+      "prototype_ms": 0.4543000000012398
+    },
+    {
+      "query": "a.py",
+      "gold": [
+        "a.py"
+      ],
+      "baseline": [
+        "a.py"
+      ],
+      "prototype": [
+        "a.py"
+      ],
+      "baseline_ms": 0.0036999999792897142,
+      "prototype_ms": 0.4569999999830543
+    },
+    {
+      "query": "no_such_term",
+      "gold": [],
+      "baseline": [],
+      "prototype": [],
+      "baseline_ms": 0.004099999955542444,
+      "prototype_ms": 0.021500000002561137
+    }
+  ],
+  "metrics": {
+    "baseline": {
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "negative_query_empty": true
+    },
+    "prototype": {
+      "recall_at_1": 1.0,
+      "recall_at_5": 1.0,
+      "recall_at_10": 1.0,
+      "negative_query_empty": true
+    }
+  },
+  "build_ms": 4.8114999999597785,
+  "unchanged_update_ms": 1.816899999994348,
+  "deterministic_records": true,
+  "index_serialized_bytes": 816,
+  "external_api_calls": 0,
+  "qdrant": "NOT_ESTABLISHED",
+  "context_tokens": "NOT_MEASURED",
+  "authoritative_hit_rate": "NOT_ESTABLISHED"
+}

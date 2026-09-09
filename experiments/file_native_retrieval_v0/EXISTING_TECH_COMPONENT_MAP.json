@@ -1,0 +1,776 @@
+[
+  {
+    "path": "scripts/build_workspace_postit_index_v1.py",
+    "sha256": "7f8dc9eba95ea57710e51c7a0690da06862349d32b7561729a77b6569bab04b1",
+    "symbols": [
+      {
+        "name": "should_skip",
+        "line": 24
+      },
+      {
+        "name": "infer_type",
+        "line": 29
+      },
+      {
+        "name": "infer_track_rel",
+        "line": 40
+      },
+      {
+        "name": "infer_track",
+        "line": 164
+      },
+      {
+        "name": "infer_lane",
+        "line": 169
+      },
+      {
+        "name": "infer_status",
+        "line": 180
+      },
+      {
+        "name": "infer_evidence_level",
+        "line": 191
+      },
+      {
+        "name": "infer_tags",
+        "line": 200
+      },
+      {
+        "name": "make_item",
+        "line": 224
+      },
+      {
+        "name": "collect_files",
+        "line": 239
+      },
+      {
+        "name": "write_outputs",
+        "line": 257
+      },
+      {
+        "name": "main",
+        "line": 284
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": "tests/test_build_workspace_postit_index_v1.py",
+    "test_exists": true,
+    "artifact_path": "docs/final/artifacts/workspace_postit_index_latest.json",
+    "artifact_exists": true,
+    "dependencies": [
+      "__future__",
+      "argparse",
+      "datetime",
+      "json",
+      "pathlib",
+      "typing"
+    ],
+    "limitations": "Path-inferred status is not evidence",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/run_workspace_postit_search_v1.py",
+    "sha256": "b390f2e6bf56b77bd77943630d4add26acf4959a4f8a1353a9613b83e008f845",
+    "symbols": [
+      {
+        "name": "load_json",
+        "line": 19
+      },
+      {
+        "name": "match_value",
+        "line": 23
+      },
+      {
+        "name": "match_tags",
+        "line": 29
+      },
+      {
+        "name": "match_path_keywords",
+        "line": 34
+      },
+      {
+        "name": "apply_filter",
+        "line": 39
+      },
+      {
+        "name": "summarize",
+        "line": 59
+      },
+      {
+        "name": "write_outputs",
+        "line": 75
+      },
+      {
+        "name": "main",
+        "line": 99
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": null,
+    "test_exists": false,
+    "artifact_path": "docs/final/artifacts/workspace_postit_search_results_latest.json",
+    "artifact_exists": true,
+    "dependencies": [
+      "__future__",
+      "argparse",
+      "datetime",
+      "json",
+      "pathlib",
+      "typing"
+    ],
+    "limitations": "Preset filters only",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/mkm_ops_memory_index_lib_v1.py",
+    "sha256": "3bcb17514bbc8a17a889cf0ab0c6ef27859fe79cc1ad5ad9d0aca635ec3b5ba9",
+    "symbols": [
+      {
+        "name": "NodeSpec",
+        "line": 24
+      },
+      {
+        "name": "JsonSliceSpec",
+        "line": 203
+      },
+      {
+        "name": "utc_now_iso",
+        "line": 822
+      },
+      {
+        "name": "resolve_path",
+        "line": 826
+      },
+      {
+        "name": "read_lines",
+        "line": 830
+      },
+      {
+        "name": "extract_anchor_block",
+        "line": 835
+      },
+      {
+        "name": "missing_must_keep_tags",
+        "line": 866
+      },
+      {
+        "name": "verify_must_keep_tags",
+        "line": 874
+      },
+      {
+        "name": "build_node_entry",
+        "line": 880
+      },
+      {
+        "name": "build_index_document",
+        "line": 910
+      },
+      {
+        "name": "load_index",
+        "line": 929
+      },
+      {
+        "name": "_decode_json_pointer_token",
+        "line": 935
+      },
+      {
+        "name": "resolve_json_pointer",
+        "line": 939
+      },
+      {
+        "name": "json_slice_text",
+        "line": 956
+      },
+      {
+        "name": "build_json_slice_node_entry",
+        "line": 964
+      },
+      {
+        "name": "extract_json_slice_from_node",
+        "line": 985
+      },
+      {
+        "name": "filter_json_pointers_for_query",
+        "line": 1054
+      },
+      {
+        "name": "extract_node_slice_for_query",
+        "line": 1079
+      },
+      {
+        "name": "extract_node_from_index",
+        "line": 1099
+      },
+      {
+        "name": "verify_index_sources",
+        "line": 1119
+      },
+      {
+        "name": "top_nodes_by_priority",
+        "line": 1136
+      },
+      {
+        "name": "nodes_for_resume",
+        "line": 1149
+      },
+      {
+        "name": "truncate_anchor_slice",
+        "line": 1216
+      },
+      {
+        "name": "prism_axis_field_tag",
+        "line": 1237
+      },
+      {
+        "name": "query_match_tokens",
+        "line": 1245
+      },
+      {
+        "name": "score_text_query_relevance",
+        "line": 1257
+      },
+      {
+        "name": "jaccard_similarity",
+        "line": 1265
+      },
+      {
+        "name": "slice_improves_query_jaccard",
+        "line": 1276
+      },
+      {
+        "name": "apply_repair_v2_noise_guard",
+        "line": 1291
+      },
+      {
+        "name": "assemble_ops_memory_repair_v2_text",
+        "line": 1325
+      },
+      {
+        "name": "_window_around_best_token_hit",
+        "line": 1364
+      },
+      {
+        "name": "extract_query_relevant_excerpt",
+        "line": 1385
+      },
+      {
+        "name": "extract_node_repair_slice",
+        "line": 1441
+      },
+      {
+        "name": "assemble_ops_memory_pins_text",
+        "line": 1497
+      },
+      {
+        "name": "dedupe_routed_by_file_path",
+        "line": 1554
+      },
+      {
+        "name": "build_web_ops_overlay_nodes",
+        "line": 1568
+      },
+      {
+        "name": "build_portfolio_overlay_nodes",
+        "line": 1579
+      },
+      {
+        "name": "build_where_used_overlay_nodes",
+        "line": 1592
+      },
+      {
+        "name": "build_logos_metacog_overlay_nodes",
+        "line": 1605
+      },
+      {
+        "name": "build_sasang_metacog_overlay_nodes",
+        "line": 1618
+      },
+      {
+        "name": "build_myeongri_metacog_overlay_nodes",
+        "line": 1631
+      },
+      {
+        "name": "build_absolute_balance_overlay_nodes",
+        "line": 1644
+      },
+      {
+        "name": "build_compression_sidecar_overlay_nodes",
+        "line": 1657
+      },
+      {
+        "name": "build_domain_adapter_overlay_nodes",
+        "line": 1670
+      },
+      {
+        "name": "build_fills_overlay_nodes",
+        "line": 1683
+      },
+      {
+        "name": "build_theory_overlay_nodes",
+        "line": 1694
+      },
+      {
+        "name": "build_logos_math_overlay_nodes",
+        "line": 1705
+      },
+      {
+        "name": "build_jema_os_gpu_overlay_nodes",
+        "line": 1718
+      },
+      {
+        "name": "build_ltm_a2a_overlay_nodes",
+        "line": 1731
+      },
+      {
+        "name": "_register_overlay_builders",
+        "line": 1749
+      },
+      {
+        "name": "reapply_persisted_overlays",
+        "line": 1774
+      },
+      {
+        "name": "merge_overlay_nodes",
+        "line": 1796
+      },
+      {
+        "name": "ensure_lane_pack_index",
+        "line": 1815
+      },
+      {
+        "name": "compute_node_sha_prefix",
+        "line": 1969
+      },
+      {
+        "name": "verify_index_sha_drift",
+        "line": 1974
+      },
+      {
+        "name": "_field_tag_match_score",
+        "line": 2164
+      },
+      {
+        "name": "_query_matches_synonyms",
+        "line": 2193
+      },
+      {
+        "name": "_query_mentions_regime_action",
+        "line": 2197
+      },
+      {
+        "name": "route_nodes_by_field_tags",
+        "line": 2204
+      },
+      {
+        "name": "resolve_lane_from_topic",
+        "line": 2245
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": "tests/test_mkm_ops_memory_index_v1.py",
+    "test_exists": true,
+    "artifact_path": "storage/meta/mkm_ops_memory_index_v1.json",
+    "artifact_exists": true,
+    "dependencies": [
+      "__future__",
+      "dataclasses",
+      "datetime",
+      "hashlib",
+      "json",
+      "pathlib",
+      "re",
+      "typing"
+    ],
+    "limitations": "Curated nodes and hash prefixes",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/build_context_note_memory_index_v1.py",
+    "sha256": "e6e0771d4aae4ece39aca92d700c98fbe22c7152f4f9c11112b4e453b8358cad",
+    "symbols": [
+      {
+        "name": "Chunk",
+        "line": 43
+      },
+      {
+        "name": "_utc_now",
+        "line": 50
+      },
+      {
+        "name": "_read_text",
+        "line": 54
+      },
+      {
+        "name": "_display_path",
+        "line": 58
+      },
+      {
+        "name": "_split_chunks",
+        "line": 65
+      },
+      {
+        "name": "_iter_files",
+        "line": 91
+      },
+      {
+        "name": "_cos",
+        "line": 115
+      },
+      {
+        "name": "_pack_vec",
+        "line": 124
+      },
+      {
+        "name": "_sha",
+        "line": 128
+      },
+      {
+        "name": "main",
+        "line": 132
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": "tests/test_context_note_memory_index_v1.py",
+    "test_exists": true,
+    "artifact_path": "docs/final/artifacts/context_note_memory_v1.sqlite",
+    "artifact_exists": true,
+    "dependencies": [
+      "__future__",
+      "argparse",
+      "dataclasses",
+      "datetime",
+      "fnmatch",
+      "glob",
+      "hashlib",
+      "json",
+      "math",
+      "pathlib",
+      "re",
+      "scripts.logos_ann_lite_embedding_v1",
+      "scripts.logos_vector_hash_stub_v1",
+      "sqlite3",
+      "struct",
+      "sys",
+      "typing"
+    ],
+    "limitations": "Full database rebuild; no incremental proof",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/query_context_note_memory_index_v1.py",
+    "sha256": "e086f6c714c585ad4a5113806c7345e55f4a526cc64d12649f0010a566a0d8f5",
+    "symbols": [
+      {
+        "name": "_cos",
+        "line": 36
+      },
+      {
+        "name": "_unpack",
+        "line": 45
+      },
+      {
+        "name": "_now",
+        "line": 49
+      },
+      {
+        "name": "_fts_safe_query",
+        "line": 53
+      },
+      {
+        "name": "_query_tokens",
+        "line": 61
+      },
+      {
+        "name": "_path_token_boost",
+        "line": 88
+      },
+      {
+        "name": "_path_prior_candidates",
+        "line": 101
+      },
+      {
+        "name": "_intent_override_substrings",
+        "line": 125
+      },
+      {
+        "name": "_intent_override_candidates",
+        "line": 153
+      },
+      {
+        "name": "main",
+        "line": 171
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": "tests/test_context_note_memory_index_v1.py",
+    "test_exists": true,
+    "artifact_path": null,
+    "artifact_exists": false,
+    "dependencies": [
+      "__future__",
+      "argparse",
+      "datetime",
+      "json",
+      "math",
+      "pathlib",
+      "re",
+      "scripts.logos_ann_lite_embedding_v1",
+      "scripts.logos_vector_hash_stub_v1",
+      "sqlite3",
+      "struct",
+      "sys",
+      "typing"
+    ],
+    "limitations": "Path priors; hash stub is not semantic",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/build_mkm_core_coordinate_map_v1.py",
+    "sha256": "a711b4246d79e53d981c0e043d557a3b4d7e438ab66851b30a314b82c85947be",
+    "symbols": [
+      {
+        "name": "_utc",
+        "line": 133
+      },
+      {
+        "name": "build",
+        "line": 137
+      },
+      {
+        "name": "_write_md",
+        "line": 172
+      },
+      {
+        "name": "_write_mdc",
+        "line": 209
+      },
+      {
+        "name": "main",
+        "line": 246
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": "tests/test_mkm_core_coordinate_map_v1.py",
+    "test_exists": true,
+    "artifact_path": "docs/final/artifacts/mkm_core_coordinate_map_check_v1_latest.json",
+    "artifact_exists": true,
+    "dependencies": [
+      "__future__",
+      "argparse",
+      "datetime",
+      "json",
+      "pathlib",
+      "typing"
+    ],
+    "limitations": "Curated coordinates",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/build_a2a_tp03_chain_ref_pilot_v1.py",
+    "sha256": "847476896ae40d3d1e885fd61ef4ad5c7a48c59e048ddb8bb12094b46c9d4b3d",
+    "symbols": [
+      {
+        "name": "_utc_now",
+        "line": 69
+      },
+      {
+        "name": "_sha256_file",
+        "line": 73
+      },
+      {
+        "name": "_essence_line",
+        "line": 81
+      },
+      {
+        "name": "_pointer_row",
+        "line": 98
+      },
+      {
+        "name": "_analyze_artifact",
+        "line": 127
+      },
+      {
+        "name": "build_pilot_document",
+        "line": 191
+      },
+      {
+        "name": "main",
+        "line": 255
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": "tests/test_build_a2a_tp03_chain_ref_pilot_v1.py",
+    "test_exists": true,
+    "artifact_path": "docs/final/artifacts/a2a_tp03_chain_ref_pilot_v1_latest.json",
+    "artifact_exists": true,
+    "dependencies": [
+      "__future__",
+      "argparse",
+      "datetime",
+      "fastapi.testclient",
+      "hashlib",
+      "json",
+      "mkm_a2a_compress_pilot_lib_v1",
+      "pathlib",
+      "scripts.compression_token_api_v2_stub",
+      "sys",
+      "typing"
+    ],
+    "limitations": "Client/compression runtime not executed",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/mkm_a2a_compress_pilot_lib_v1.py",
+    "sha256": "611b87ea0b128ffc287494d5d568fce97690aa0b8113495d6fbb4caf0d5ec2ae",
+    "symbols": [
+      {
+        "name": "count_tokens",
+        "line": 14
+      },
+      {
+        "name": "load_compress_skip_rules",
+        "line": 30
+      },
+      {
+        "name": "redact_trust_packet",
+        "line": 44
+      },
+      {
+        "name": "compress_plaintext_v2",
+        "line": 56
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": null,
+    "test_exists": false,
+    "artifact_path": null,
+    "artifact_exists": false,
+    "dependencies": [
+      "__future__",
+      "json",
+      "pathlib",
+      "tiktoken",
+      "typing"
+    ],
+    "limitations": "Requires supplied compression client",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/validate_postit_pointer_v1.py",
+    "sha256": "717f099b5f8e43b364b997d401a513056818c46061e8ca7f645c540b6b7cfcdc",
+    "symbols": [
+      {
+        "name": "_load_json",
+        "line": 45
+      },
+      {
+        "name": "_extract_postit_v2_marker",
+        "line": 49
+      },
+      {
+        "name": "load_denominators",
+        "line": 56
+      },
+      {
+        "name": "_validate_v2_marker_shape",
+        "line": 93
+      },
+      {
+        "name": "_validate_pointer_object",
+        "line": 117
+      },
+      {
+        "name": "_validate_with_jsonschema",
+        "line": 183
+      },
+      {
+        "name": "validate_pointer_document",
+        "line": 196
+      },
+      {
+        "name": "validate_v2_file",
+        "line": 223
+      },
+      {
+        "name": "main",
+        "line": 242
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": "tests/test_validate_postit_pointer_v1.py",
+    "test_exists": true,
+    "artifact_path": "docs/final/schemas/postit_pointer_v1.schema.json",
+    "artifact_exists": false,
+    "dependencies": [
+      "__future__",
+      "argparse",
+      "datetime",
+      "json",
+      "jsonschema",
+      "pathlib",
+      "re",
+      "sys",
+      "typing"
+    ],
+    "limitations": "Domain-specific pointer contract",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  },
+  {
+    "path": "scripts/query_mkm_structural_retrieval_v0.py",
+    "sha256": "491acdb05c511fb46dc6dcccf10e1b55ddd81df82d7fb3dcfd7fcea9dd01a97a",
+    "symbols": [
+      {
+        "name": "utc_now",
+        "line": 20
+      },
+      {
+        "name": "write_json",
+        "line": 24
+      },
+      {
+        "name": "source_baseline",
+        "line": 32
+      },
+      {
+        "name": "graph_structural",
+        "line": 77
+      },
+      {
+        "name": "hybrid",
+        "line": 168
+      },
+      {
+        "name": "main",
+        "line": 196
+      }
+    ],
+    "implementation_exists": true,
+    "test_path": null,
+    "test_exists": false,
+    "artifact_path": null,
+    "artifact_exists": false,
+    "dependencies": [
+      "__future__",
+      "argparse",
+      "datetime",
+      "hashlib",
+      "json",
+      "pathlib",
+      "re",
+      "time",
+      "typing"
+    ],
+    "limitations": "Expected answers enter retrieval; not blind comparator",
+    "evidence_level": "FACT_STATIC_SOURCE",
+    "current_runtime_status": "NOT_ESTABLISHED"
+  }
+]
