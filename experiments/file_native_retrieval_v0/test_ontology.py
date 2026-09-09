@@ -120,3 +120,63 @@ def test_declared_state_is_metadata_not_authorization() -> None:
     packet = graph.packet()
     assert packet["entities"][0]["declared_state"] == "FACT"
     assert packet["edges"] == []
+
+
+def test_valid_raw_entity_kind_string_coercion() -> None:
+    entity = LocatorEntity("claim:c", "CLAIM", "claims.json#/c")
+    assert entity.kind is EntityKind.CLAIM
+
+
+def test_invalid_entity_kind_rejection() -> None:
+    with pytest.raises(ValueError, match="invalid EntityKind"):
+        LocatorEntity("claim:c", "claim", "claims.json#/c")
+
+
+def test_valid_raw_edge_kind_string_coercion() -> None:
+    edge = OntologyEdge("receipt:r", "claim:c", "VERIFIES", "explicit:test")
+    assert edge.kind is EdgeKind.VERIFIES
+
+
+def test_invalid_edge_kind_rejection() -> None:
+    with pytest.raises(ValueError, match="invalid EdgeKind"):
+        OntologyEdge("receipt:r", "claim:c", "verifies", "explicit:test")
+
+
+def test_raw_verifies_cannot_bypass_receipt_to_claim() -> None:
+    graph = OntologyGraph(
+        [
+            LocatorEntity("source:s", EntityKind.SOURCE, "s.py", source_hash="b" * 64),
+            LocatorEntity("claim:c", EntityKind.CLAIM, "claims.json#/c"),
+        ]
+    )
+    with pytest.raises(ValueError, match="VERIFIES requires RECEIPT -> CLAIM"):
+        graph.add_edge(OntologyEdge("source:s", "claim:c", "VERIFIES", "explicit:test"))
+
+
+def test_raw_supports_cannot_bypass_source_or_artifact_to_claim() -> None:
+    graph = OntologyGraph(
+        [
+            LocatorEntity("receipt:r", EntityKind.RECEIPT, "r.json"),
+            LocatorEntity("claim:c", EntityKind.CLAIM, "c.json"),
+        ]
+    )
+    with pytest.raises(ValueError, match="SUPPORTS requires SOURCE/ARTIFACT -> CLAIM"):
+        graph.add_edge(OntologyEdge("receipt:r", "claim:c", "SUPPORTS", "explicit:test"))
+
+
+def test_raw_source_still_requires_hash_after_coercion() -> None:
+    with pytest.raises(ValueError, match="SOURCE entities require source_hash"):
+        LocatorEntity("source:s", "SOURCE", "s.py")
+
+
+def test_packet_emits_canonical_strings_after_raw_kind_coercion() -> None:
+    graph = OntologyGraph(
+        [
+            LocatorEntity("receipt:r", "RECEIPT", "r.json"),
+            LocatorEntity("claim:c", "CLAIM", "c.json"),
+        ],
+        [OntologyEdge("receipt:r", "claim:c", "VERIFIES", "r.json#/c")],
+    )
+    packet = graph.packet()
+    assert [row["kind"] for row in packet["entities"]] == ["CLAIM", "RECEIPT"]
+    assert packet["edges"][0]["kind"] == "VERIFIES"
