@@ -284,6 +284,8 @@ async def test_approved_dev_test_executes_fixed_profile(tmp_path: Path, editor_f
     assert result["output"]["stdout"]["blocked"] is False
     assert "passed" in result["output"]["stdout"]["text"]
     assert result["send_gate"] == "HOLD"
+    assert not (workspace / ".pytest_cache").exists()
+    assert not any(p.name == "__pycache__" for p in workspace.rglob("__pycache__"))
 
 
 @pytest.mark.anyio
