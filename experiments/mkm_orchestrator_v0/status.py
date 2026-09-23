@@ -91,10 +91,33 @@ class StatusBoard:
         outcome_counts = Counter(
             e["payload"]["outcome"] for e in evidence
         )
+        created_payload = created["payload"] if created else {}
+        missing_fields = []
+        if created and "objective" not in created_payload:
+            missing_fields.append("objective")
+        if created and "authority" not in created_payload:
+            missing_fields.append("authority")
+
+        objective = (
+            created_payload.get("objective")
+            if created_payload.get("objective") is not None
+            else "[UNKNOWN]"
+        )
+        authority = created_payload.get("authority")
+        if authority is None:
+            authority = {
+                "state": "UNKNOWN",
+                "reason": (
+                    "MISSING_TASK_CREATED_AUTHORITY"
+                    if created
+                    else "TASK_CREATED_EVENT_NOT_ESTABLISHED"
+                ),
+            }
+
         return {
             "task_id": task_id,
-            "objective": created["payload"]["objective"] if created else None,
-            "authority": created["payload"]["authority"] if created else None,
+            "objective": objective,
+            "authority": authority,
             "workspace": workspace["payload"] if workspace else None,
             "last_worker_result": worker["payload"] if worker else None,
             "evidence": {
@@ -103,6 +126,13 @@ class StatusBoard:
                 "freshness": dict(sorted(freshness_counts.items())),
             },
             "policy_violation_count": len(violations),
+            "data_quality": {
+                "state": "UNKNOWN" if missing_fields else "FACT",
+                "missing_fields": missing_fields,
+                "source_event_schema": (
+                    "INCOMPLETE_OR_LEGACY" if missing_fields else "EXPECTED_SHAPE"
+                ),
+            },
             "current_state": current_state,
             "gate_decision": decision,
             "evidence_ceiling": ceiling,
