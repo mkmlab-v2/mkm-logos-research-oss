@@ -157,7 +157,7 @@ async def test_dev_status_is_read_only_and_bound_to_editor(tmp_path: Path, edito
         )
     body = result.structured_content
     assert body["adapter_id"] == "editor.vscode.v0"
-    assert body["binding_state"] == "BOUND_FOR_CURRENT_REQUEST"
+    assert body["binding_state"] == "REQUEST_SCOPED_PAIR_ASSOCIATION_NOT_ESTABLISHED"
     assert body["git"]["entry_count"] >= 1
     assert any(x["path"] == "app.py" for x in body["git"]["entries"])
     assert body["send_gate"] == "HOLD"
