@@ -1,0 +1,43 @@
+{
+  "schema": "mkm_secure_agent_runtime_v0_4_build_report",
+  "schema_version": 1,
+  "date": "2026-09-23",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "layers": {
+    "core_v0": "IMPLEMENTED_CANDIDATE",
+    "mcp_v0_1": "IMPLEMENTED_CANDIDATE",
+    "privacy_v0_2": "IMPLEMENTED_CANDIDATE",
+    "dpapi_secret_v0_3": "IMPLEMENTED_CANDIDATE",
+    "rollback_v0_4": "IMPLEMENTED_CANDIDATE"
+  },
+  "validation": {
+    "windows_targeted_suite": "44 passed in 6.04s",
+    "mcp_protocol_observed": "2026-07-28",
+    "mcp_tool_count": 12,
+    "approval_wire_smoke": "PASS_BOUNDED",
+    "privacy_wire_smoke": "PASS_BOUNDED",
+    "secret_wire_smoke": "PASS_BOUNDED_AFTER_INVALID_HARNESS_ATTEMPT_CORRECTED",
+    "rollback_wire_smoke": {
+      "result": "PASS_BOUNDED",
+      "before": "before-wire",
+      "after_write": "after-wire",
+      "rollback_action": "RESTORE_BYTES",
+      "final": "before-wire"
+    }
+  },
+  "rollback_boundary": {
+    "snapshot_encryption": "WINDOWS_DPAPI_CURRENT_USER",
+    "automatic_capture": "BEFORE_APPROVED_TEXT_WRITE_WHEN_AVAILABLE",
+    "restore_surface": "LOCAL_CLI_ONLY",
+    "mcp_restore_tool": false,
+    "max_write_bytes": 1048576,
+    "directory_delete_on_restore": false
+  },
+  "evidence_ceiling": "BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_4_CANDIDATE",
+  "independent_security_review": "NOT_ESTABLISHED",
+  "production_readiness": "NOT_ESTABLISHED",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD"
+}
