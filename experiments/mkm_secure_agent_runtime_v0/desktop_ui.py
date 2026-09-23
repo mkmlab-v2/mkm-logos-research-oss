@@ -83,13 +83,18 @@ class DesktopActionLayer:
 
     def _worker(self, payload: dict[str, Any], *, timeout: float | None = None) -> dict[str, Any]:
         try:
+            env = dict(os.environ)
+            env["PYTHONUTF8"] = "1"
             cp = subprocess.run(
                 [sys.executable, str(self.worker_path)],
                 input=json.dumps(payload, ensure_ascii=False),
                 text=True,
+                encoding="utf-8",
+                errors="strict",
                 capture_output=True,
                 timeout=timeout or self.worker_timeout,
                 shell=False,
+                env=env,
             )
         except subprocess.TimeoutExpired as exc:
             raise DesktopUIError("UI worker timeout") from exc
