@@ -25,6 +25,7 @@ from mcp.server import MCPServer
 from approval import ApprovalBroker, ApprovalError
 from privacy import scan_text
 from runtime import Privacy, RuntimeConfig, RuntimeErrorV0, SecureAgentRuntime
+from secrets_dpapi import DPAPISecretStore, SecretStoreError
 
 
 def _digest(value: Any) -> str:
@@ -69,7 +70,11 @@ def build_runtime_from_env() -> tuple[SecureAgentRuntime, ApprovalBroker]:
     return runtime, broker
 
 
-def create_server(runtime: SecureAgentRuntime, broker: ApprovalBroker) -> MCPServer:
+def create_server(
+    runtime: SecureAgentRuntime,
+    broker: ApprovalBroker,
+    secret_store: DPAPISecretStore | None = None,
+) -> MCPServer:
     mcp = MCPServer(
         "MKM Secure Agent Runtime",
         instructions=(
@@ -88,7 +93,9 @@ def create_server(runtime: SecureAgentRuntime, broker: ApprovalBroker) -> MCPSer
             "write_policy": "OUT_OF_BAND_LOCAL_APPROVAL_REQUIRED",
             "command_policy": "OUT_OF_BAND_LOCAL_APPROVAL_REQUIRED",
             "delete_policy": "DENY",
-            "secret_material_access": "NOT_IMPLEMENTED",
+            "secret_material_access": (
+                "LOCAL_DPAPI_METADATA_ONLY" if secret_store is not None else "UNAVAILABLE"
+            ),
             "semantic_state": "NOT_ADJUDICATED",
             "send_gate": "HOLD",
         }
@@ -98,6 +105,34 @@ def create_server(runtime: SecureAgentRuntime, broker: ApprovalBroker) -> MCPSer
         """List one approved local directory."""
         rows, receipt = runtime.list_directory(path)
         return {"entries": rows, "receipt_id": receipt.receipt_id}
+
+    @mcp.tool()
+    def secret_handle_info(handle: str) -> dict[str, Any]:
+        """Return metadata for a known secret handle. Never returns secret material."""
+        if secret_store is None:
+            return {
+                "available": False,
+                "reason": "WINDOWS_DPAPI_STORE_UNAVAILABLE",
+                "secret_material_exposed": False,
+            }
+        try:
+            meta = secret_store.metadata(handle)
+        except SecretStoreError as exc:
+            return {
+                "available": False,
+                "reason": str(exc),
+                "secret_material_exposed": False,
+            }
+        return {
+            "available": True,
+            "handle": meta.handle,
+            "service": meta.service,
+            "label": meta.label,
+            "created_at": meta.created_at,
+            "updated_at": meta.updated_at,
+            "provider": meta.provider,
+            "secret_material_exposed": False,
+        }
 
     @mcp.tool()
     def read_text_file(
@@ -381,7 +416,13 @@ def create_server(runtime: SecureAgentRuntime, broker: ApprovalBroker) -> MCPSer
 
 def main() -> None:
     runtime, broker = build_runtime_from_env()
-    mcp = create_server(runtime, broker)
+    secret_store = None
+    if os.name == "nt":
+        try:
+            secret_store = DPAPISecretStore(broker.state_dir)
+        except SecretStoreError:
+            secret_store = None
+    mcp = create_server(runtime, broker, secret_store=secret_store)
     mcp.run()
 
 
