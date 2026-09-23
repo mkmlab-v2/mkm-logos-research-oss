@@ -282,3 +282,66 @@ def test_balanced_50_tasks_are_only_ready_for_human_adjudication(tmp_path: Path)
     assert summary["pmf"] == "NOT_ESTABLISHED"
     assert summary["automatic_superiority_claim"] is False
     assert summary["cohorts"]["EVIDENCE_GATE"]["sums"]["false_pass_caught"] == 2
+
+
+def test_replay_measurements_never_unlock_effectiveness_readiness(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    for i in range(60):
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id=f"R-{i}",
+                cohort="EVIDENCE_GATE",
+                measurement_mode="REPLAY",
+                review_minutes=1,
+            )
+        )
+    summary = recorder.summarize()
+
+    assert summary["measurement_count"] == 60
+    assert summary["prospective_measurement_count"] == 0
+    assert summary["replay_measurement_count"] == 60
+    assert summary["readiness_basis"] == "PROSPECTIVE_ONLY"
+    assert summary["readiness"] == "INSUFFICIENT_DOGFOOD_SAMPLE_LT_50"
+    assert summary["effectiveness"] == "NOT_ESTABLISHED"
+    assert summary["automatic_superiority_claim"] is False
+
+
+def test_replay_and_prospective_are_reported_separately(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="P-1",
+            cohort="EVIDENCE_GATE",
+            measurement_mode="PROSPECTIVE",
+            false_pass_caught=1,
+        )
+    )
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="R-1",
+            cohort="EVIDENCE_GATE",
+            measurement_mode="REPLAY",
+            false_pass_caught=1,
+        )
+    )
+    summary = recorder.summarize()
+
+    assert summary["measurement_count"] == 2
+    assert summary["prospective_measurement_count"] == 1
+    assert summary["replay_measurement_count"] == 1
+    assert summary["cohorts"]["EVIDENCE_GATE"]["count"] == 1
+    assert summary["cohorts"]["EVIDENCE_GATE"]["sums"]["false_pass_caught"] == 1
+    assert summary["replay"]["count"] == 1
+    assert summary["replay"]["sums"]["false_pass_caught"] == 1
+
+
+def test_measurement_rejects_unknown_mode(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    with pytest.raises(MeasurementError, match="measurement_mode"):
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id="T",
+                cohort="EVIDENCE_GATE",
+                measurement_mode="RETRO_GUESS",
+            )
+        )
