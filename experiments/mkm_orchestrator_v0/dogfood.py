@@ -47,9 +47,12 @@ class DogfoodRunner:
         task: TaskContract,
         *,
         cohort: str = "EVIDENCE_GATE",
+        measurement_mode: str = "PROSPECTIVE",
     ) -> dict[str, Any]:
         if cohort not in {"BASELINE", "EVIDENCE_GATE"}:
             raise DogfoodRunnerError("invalid cohort")
+        if measurement_mode not in {"PROSPECTIVE", "REPLAY"}:
+            raise DogfoodRunnerError("invalid measurement_mode")
         if any(
             e["event_type"] == "DOGFOOD_RUN_STARTED"
             for e in self.ledger.events(task_id=task.task_id)
@@ -62,6 +65,7 @@ class DogfoodRunner:
             "DOGFOOD_RUN_STARTED",
             {
                 "cohort": cohort,
+                "measurement_mode": measurement_mode,
                 "task_id": task.task_id,
                 "workspace": asdict(binding),
                 "automatic_next_task": "NO",
@@ -75,6 +79,7 @@ class DogfoodRunner:
         return {
             "task_id": task.task_id,
             "cohort": cohort,
+            "measurement_mode": measurement_mode,
             "workspace": asdict(binding),
             "shared_status": published,
             "next_action": "WORKER_EXECUTION_EXTERNAL",
@@ -101,6 +106,9 @@ class DogfoodRunner:
             raise DogfoodRunnerError("dogfood task already finalized")
         if measurement.cohort != started["payload"]["cohort"]:
             raise DogfoodRunnerError("measurement cohort mismatch")
+        started_mode = started["payload"].get("measurement_mode", "PROSPECTIVE")
+        if measurement.measurement_mode != started_mode:
+            raise DogfoodRunnerError("measurement mode mismatch")
 
         # Never trust a previously cached gate at task close. New evidence may
         # have arrived after that evaluation. Recompute from the append-only
@@ -132,6 +140,7 @@ class DogfoodRunner:
             "DOGFOOD_TASK_FINALIZED",
             {
                 "cohort": measurement.cohort,
+                "measurement_mode": measurement.measurement_mode,
                 "task_state": task_state,
                 "gate_decision": decision,
                 "gate_reason": reason,
@@ -150,6 +159,7 @@ class DogfoodRunner:
         summary = self.measurements.summarize()
         return {
             "task_id": task_id,
+            "measurement_mode": measurement.measurement_mode,
             "task_state": task_state,
             "gate_decision": decision,
             "gate_reason": reason,
