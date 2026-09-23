@@ -1,4 +1,4 @@
-# MKM Secure Agent Runtime V0.6 — local setup
+# MKM Secure Agent Runtime V0.7 — local setup
 
 This is a bounded development setup, not a production deployment.
 
@@ -6,7 +6,7 @@ This is a bounded development setup, not a production deployment.
 
 - Windows
 - Python 3.10+
-- isolated environment with V0.6 requirements
+- isolated environment
 - explicit filesystem roots
 - state directory outside those roots
 
@@ -15,8 +15,6 @@ Install:
 ```powershell
 python -m pip install -r experiments\mkm_secure_agent_runtime_v0\requirements-mcp-v0.1.txt
 ```
-
-Current dependency range includes MCP v2, pystray, Pillow, pywinauto 0.6.x, and psutil.
 
 ## Environment
 
@@ -39,43 +37,57 @@ python experiments\mkm_secure_agent_runtime_v0\mcp_server.py
 experiments\mkm_secure_agent_runtime_v0\start_tray.cmd
 ```
 
-## Desktop Action Layer policy
+## V0.7 App Adapter rule
+
+V0.7 adapters are a mandatory narrowing layer for UI mutation in the normal server path.
 
 Observation:
-- top-level windows can be listed
+- `ui_list_windows` and `ui_inspect_window` remain available
 - window titles are hidden by default
-- controls receive short-lived opaque `ui_ref` identifiers
-- content-bearing Edit/Text/Document labels are hidden
+- content-bearing control strings are hidden
 
 Mutation:
-- low-risk click -> request approval -> local Approve once -> execute exact action
-- clean text on Edit -> request approval -> local Approve once -> execute exact text
-- password controls -> DENY
-- PERSONAL/PHI/SECRET input -> DENY
-- high-risk labels (Delete/Send/Pay/Transfer/Purchase/Deploy etc.) -> DENY
+- legacy `request_ui_click` / `request_ui_set_text` are denied when adapters are active
+- use `app_identify_window` first
+- use `app_inspect_window` to obtain bounded controls
+- use `request_app_click` or `request_app_set_text`
+- local tray/CLI approval is still required
+- execute exact approved action through `execute_app_*`
 
-There is intentionally:
-- no raw coordinate click tool
-- no raw keyboard/hotkey tool
-- no model-visible human_approved boolean
-- no UI secret injection tool
+Adapter permission does not override the Desktop Action Layer:
+- high-risk control label -> DENY
+- password field -> DENY
+- sensitive text -> DENY
+- stale/ambiguous UI ref -> DENY/error
+- wrong window/control binding -> DENY
 
-## UIA isolation
+## Builtin policy
 
-pywinauto UIA runs in `desktop_worker.py`, a separate Python subprocess.
+Browsers:
+- OBSERVE_ONLY
 
-This is deliberate: an observed in-process COM fatal exception showed that UI Automation can terminate its host process. The isolated worker limits that failure domain to the worker. A worker crash/timeout becomes a runtime error rather than direct MCP-process termination.
+Windows Explorer:
+- OBSERVE_ONLY
 
-The worker JSON pipe is explicitly UTF-8 because Windows default CP949 decoding failed when Korean UI text was present.
+Notepad / VS Code / Cursor:
+- bounded click/edit candidate
+- still subject to all Desktop Action Layer DENY rules
+
+Unmatched app:
+- OBSERVE_ONLY
+
+Ambiguous adapter match:
+- fail closed
 
 ## Current limits
 
-- no bank/credential-manager automation
-- no EMR write authorization
-- no SEND/payment/transfer/destructive UI automation
-- no browser secret injection
-- no remote relay
-- no general mouse/keyboard automation
+- no browser mutation
+- no password/secret injection
+- no raw hotkeys
+- no coordinate automation
+- no SEND/payment/transfer/destructive actions
+- no EMR production write
 - no PHI production authorization
+- no remote control
 
-Evidence ceiling: `BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_6_CANDIDATE`.
+Evidence ceiling: `BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_7_CANDIDATE`.
