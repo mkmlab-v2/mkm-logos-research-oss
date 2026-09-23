@@ -85,6 +85,7 @@ class ApprovalWindow:
         ttk.Button(buttons, text="Hide", command=self.window.withdraw).pack(side="right")
         self.tree.bind("<<TreeviewSelect>>", self._show_detail)
         self._rows: dict[str, ApprovalView] = {}
+        self.window.withdraw()
 
     def show(self) -> None:
         self.refresh()
