@@ -66,7 +66,17 @@
       "classification": "FRESH_CI_VALIDATION",
       "validated_code_revision": "9ca46e7f65ce4b02bab630186531080089d0d735",
       "validation_scope": "experiments/mkm_orchestrator_v0 Python code + four dedicated Evidence Gate test files + workflow",
-      "current_branch_head_equivalence": "TO_BE_CHECKED_BY_POST_VALIDATION_COMPARE"
+      "current_branch_head_equivalence": {
+        "compared_head": "f23e27b04323e4f3881bd1c333a20050d4cf2ac4",
+        "result": "CODE_EQUIVALENT_TO_VALIDATED_REVISION",
+        "post_validation_files": [
+          "docs/final/artifacts/mkm_evidence_gate_v0_1_build_report.json",
+          "experiments/mkm_orchestrator_v0/README.md"
+        ],
+        "python_code_changed": false,
+        "tests_changed": false,
+        "workflow_changed": false
+      }
     },
     "earlier_dedicated_ci": {
       "result": "PASS",
