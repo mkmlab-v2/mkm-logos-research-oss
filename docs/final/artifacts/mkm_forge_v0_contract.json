@@ -1,0 +1,59 @@
+{
+  "schema": "mkm_forge_v0_contract",
+  "schema_version": 1,
+  "status": "DESIGN_CANDIDATE",
+  "authority": "WORKING_GUIDANCE_ONLY",
+  "authoritative_ssot": "C:\\workspace + internal Gitea",
+  "github_role": "NON_SSOT_COLLABORATION_CI_SURFACE",
+  "send_gate": "HOLD",
+  "auto_next": false,
+  "task_states": [
+    "CREATED",
+    "READY",
+    "RUNNING",
+    "VALIDATION_PENDING",
+    "REVIEW_PENDING",
+    "HOLD",
+    "HUMAN_GATE",
+    "CLOSED",
+    "FAILED"
+  ],
+  "entity_kinds": [
+    "SOURCE",
+    "CLAIM",
+    "RECEIPT",
+    "ARTIFACT"
+  ],
+  "privacy_states": [
+    "PUBLIC",
+    "INTERNAL",
+    "PERSONAL",
+    "PHI",
+    "SECRET"
+  ],
+  "action_results": [
+    "MECHANICAL_PASS",
+    "MECHANICAL_FAIL",
+    "INCOMPLETE",
+    "HUMAN_GATE_REQUIRED"
+  ],
+  "forbidden_automatic_promotions": [
+    "GITHUB_ACTIONS_GREEN_TO_SEMANTIC_PASS",
+    "PR_APPROVED_TO_MERGE_AUTHORIZED",
+    "PR_MERGED_TO_DEPLOY_AUTHORIZED",
+    "RECEIPT_EXISTS_TO_CLAIM_VERIFIED",
+    "RETRIEVAL_HIT_TO_EVIDENCE"
+  ],
+  "thin_coordinate_fields": [
+    "kind",
+    "domain",
+    "topic",
+    "state",
+    "privacy",
+    "source_id",
+    "hash",
+    "relations"
+  ],
+  "evidence_ceiling": "BOUNDED_ARCHITECTURE_DESIGN_ONLY",
+  "next_candidate": "MKM_FORGE_V0_A_TASK_WORKTREE_MANAGER"
+}
