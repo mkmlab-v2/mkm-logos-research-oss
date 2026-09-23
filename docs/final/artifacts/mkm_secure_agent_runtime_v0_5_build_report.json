@@ -1,0 +1,60 @@
+{
+  "schema": "mkm_secure_agent_runtime_v0_5_build_report",
+  "schema_version": 1,
+  "date": "2026-09-23",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "layers": {
+    "core_v0": "IMPLEMENTED_CANDIDATE",
+    "mcp_v0_1": "IMPLEMENTED_CANDIDATE",
+    "privacy_v0_2": "IMPLEMENTED_CANDIDATE",
+    "dpapi_secret_v0_3": "IMPLEMENTED_CANDIDATE",
+    "rollback_v0_4": "IMPLEMENTED_CANDIDATE",
+    "tray_ui_v0_5": "IMPLEMENTED_CANDIDATE"
+  },
+  "validation": {
+    "windows_targeted_suite": "52 passed in 6.90s",
+    "mcp_protocol_observed": "2026-07-28",
+    "approval_wire_smoke": "PASS_BOUNDED",
+    "privacy_wire_smoke": "PASS_BOUNDED",
+    "dpapi_secret_wire_smoke": "PASS_BOUNDED",
+    "rollback_wire_smoke": "PASS_BOUNDED",
+    "ollama_autoconnect_smoke": {
+      "first_attempt": "FAIL_TIMEOUT_8S_WITH_LEFTOVER_PROCESS_DISCOVERED",
+      "first_attempt_interpretation": "FRESH_FAILURE_USED_TO_HARDEN_CLEANUP_AND_WAIT",
+      "patch": "wait default 20s; stop MKM-started process on any startup failure",
+      "post_patch_result": "PASS_BOUNDED",
+      "observed_startup_seconds": 5.69,
+      "endpoint": "http://127.0.0.1:11434",
+      "executable": "C:\\Users\\PRO\\AppData\\Local\\Programs\\Ollama\\ollama.exe",
+      "observed_model_count": 11,
+      "process_stopped_after_smoke": true
+    },
+    "tray_gui_smoke": {
+      "result": "PASS_BOUNDED",
+      "synthetic_approval_only": true,
+      "approval_window_state": "normal",
+      "pending_count": 1,
+      "tree_items": 1,
+      "button_approve_status": "APPROVED",
+      "pending_after_approve": 0
+    }
+  },
+  "security_boundaries": [
+    "tray UI is a local human surface, not an MCP approval tool",
+    "approval popup does not display raw write content",
+    "Ollama autostart forces loopback host",
+    "failed autostart cleans only processes started by MKM",
+    "tray shutdown stops only processes started by MKM",
+    "real secrets and PHI were not used in validation"
+  ],
+  "evidence_ceiling": "BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_5_CANDIDATE",
+  "independent_security_review": "NOT_ESTABLISHED",
+  "production_readiness": "NOT_ESTABLISHED",
+  "installer_readiness": "NOT_ESTABLISHED",
+  "real_patient_data_authorization": "NO",
+  "real_secret_migration_authorization": "NO",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD"
+}
