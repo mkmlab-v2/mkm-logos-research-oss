@@ -1,0 +1,76 @@
+{
+  "schema": "mkm_secure_agent_runtime_v0_6_build_report",
+  "schema_version": 1,
+  "date": "2026-09-23",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "implementation": {
+    "desktop_action_layer": "IMPLEMENTED_CANDIDATE",
+    "ui_worker_isolation": "IMPLEMENTED_CANDIDATE",
+    "opaque_ui_refs": "IMPLEMENTED_CANDIDATE",
+    "human_gated_click": "IMPLEMENTED_CANDIDATE",
+    "human_gated_clean_edit_text": "IMPLEMENTED_CANDIDATE",
+    "high_risk_ui_deny": "IMPLEMENTED_CANDIDATE"
+  },
+  "dependencies_observed": {
+    "pywinauto": "0.6.9",
+    "psutil": "7.2.2"
+  },
+  "validation": {
+    "full_windows_targeted_suite": "60 passed in 28.34s",
+    "desktop_targeted_suite": "8 passed in 24.94s",
+    "mcp_protocol_observed": "2026-07-28",
+    "mcp_tool_count_observed": 18,
+    "desktop_wire_smoke": {
+      "result": "PASS_BOUNDED",
+      "safe_click_request": "HUMAN_GATE",
+      "safe_click_executed": true,
+      "safe_click_effect_observed": true,
+      "danger_control": "Delete All",
+      "danger_status": "DENIED",
+      "danger_reason": "HIGH_RISK_CONTROL_LABEL",
+      "danger_executed": false,
+      "send_gate": "HOLD",
+      "window_title_disclosed": false,
+      "edit_content_disclosed": false
+    }
+  },
+  "fresh_failures": [
+    {
+      "failure": "IN_PROCESS_UIA_COM_FATAL_0x8001010d",
+      "disposition": "SEALED_AS_FRESH_FAILURE",
+      "change": "MOVE_ALL_PYWINAUTO_UIA_TO_ISOLATED_WORKER_PROCESS"
+    },
+    {
+      "failure": "WINDOWS_CP949_PARENT_DECODE_FAILED_ON_UTF8_KOREAN_UI_JSON",
+      "disposition": "SEALED_AS_FRESH_FAILURE",
+      "change": "FORCE_PYTHONUTF8_AND_UTF8_SUBPROCESS_TRANSPORT"
+    },
+    {
+      "failure": "INITIAL_SYNTHETIC_CLICK_REPORTED_EXECUTED_WITHOUT_SENTINEL_EFFECT",
+      "disposition": "SEALED_AS_FRESH_FAILURE",
+      "change": "PREFER_UIA_INVOKE_PATTERN_AND_SIMPLIFY_FIXTURE_PATH",
+      "rerun": "TARGETED_8_OF_8_PASS"
+    }
+  ],
+  "policy_boundaries": {
+    "password_control": "DENY",
+    "sensitive_text_input": "DENY",
+    "high_risk_ui_label": "DENY",
+    "low_risk_click": "HUMAN_GATE",
+    "clean_edit_text": "HUMAN_GATE",
+    "arbitrary_coordinate_click": "NOT_IMPLEMENTED",
+    "arbitrary_keyboard_input": "NOT_IMPLEMENTED",
+    "send_payment_transfer_destructive_actions": "DENY"
+  },
+  "evidence_ceiling": "BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_6_CANDIDATE",
+  "ui_automation_generality": "NOT_ESTABLISHED",
+  "cross_application_reliability": "NOT_ESTABLISHED",
+  "independent_security_review": "NOT_ESTABLISHED",
+  "production_readiness": "NOT_ESTABLISHED",
+  "real_patient_data_authorization": "NO",
+  "real_secret_injection_authorization": "NO",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD"
+}
