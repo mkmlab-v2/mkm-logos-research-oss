@@ -227,7 +227,7 @@ class DeveloperWorkspaceAdapter:
             }
         profile = TestProfile(
             profile_id="pytest.quiet.v0",
-            argv=("python", "-m", "pytest", "-q"),
+            argv=("python", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider"),
             reason="PYTEST_MARKER_OBSERVED",
         )
         return {
