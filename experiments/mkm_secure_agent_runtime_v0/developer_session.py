@@ -462,6 +462,7 @@ class DeveloperSessionManager:
             "workspace_path": record["workspace_path"],
             "workspace_file_sha256": record["workspace_file_sha256"],
             "window_marker_sha256": record["window_marker_sha256"],
+            "launch_argv_sha256": record["launch_argv_sha256"],
             "cursor_version": record["cursor_version"],
             "repo": record["repo"],
             "bound_window_pid": record["bound_window_pid"],
