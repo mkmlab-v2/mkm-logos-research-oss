@@ -24,6 +24,7 @@ from mkm_orchestrator_v0.models import (  # noqa: E402
 )
 from mkm_orchestrator_v0.orchestrator import MKMOrchestrator, OrchestratorError  # noqa: E402
 from mkm_orchestrator_v0.workspace import WorktreeManager  # noqa: E402
+from mkm_orchestrator_v0.status import StatusBoard  # noqa: E402
 
 
 def _git(repo: Path, *args: str, check: bool = True):
@@ -311,3 +312,58 @@ def test_task_workspace_mismatch_is_rejected(tmp_path: Path):
 
     with pytest.raises(OrchestratorError, match="workspace/task mismatch"):
         orch.dispatch(task_b, binding, FakeWorker("builder-1", ("app.py",)))
+
+
+def test_status_board_is_derived_and_keeps_authorization_closed(tmp_path: Path):
+    repo, head = _repo(tmp_path)
+    task = _task(repo, head)
+    ledger, orch = _orchestrator(tmp_path)
+    orch.create_task(task)
+    binding = orch.bind_workspace(task)
+    result = orch.dispatch(task, binding, FakeWorker("builder-1", ("app.py",), "c" * 64))
+    orch.record_builder_evidence(
+        result,
+        suite_id="builder-suite",
+        suite_digest="5" * 64,
+        outcome=EvidenceOutcome.PASS,
+        detail={"tests": "builder pass"},
+    )
+    orch.record_validator_evidence(
+        task_id=task.task_id,
+        validator_id="validator-1",
+        suite_id="independent-suite",
+        suite_digest="6" * 64,
+        subject_digest=result.subject_digest,
+        outcome=EvidenceOutcome.PASS,
+        detail={"tests": "independent pass"},
+    )
+    orch.evaluate(task.task_id)
+
+    before = ledger.verify_chain()
+    board = StatusBoard(ledger).build()
+    after = ledger.verify_chain()
+
+    assert board["derived_view"] is True
+    assert board["authoritative_source"] == "APPEND_ONLY_EVENT_LEDGER"
+    assert board["ledger"]["integrity"]["valid"] is True
+    assert board["tasks"][0]["current_state"] == "CANDIDATE"
+    assert board["tasks"][0]["gate_decision"] == "HUMAN_GATE"
+    assert board["tasks"][0]["merge_authorization"] == "NO"
+    assert board["tasks"][0]["deployment_authorization"] == "NO"
+    assert board["global_boundaries"]["auto_merge"] == "NO"
+    assert board["global_boundaries"]["worker_claim_is_evidence"] is False
+    assert before == after
+
+
+def test_status_export_does_not_mutate_ledger(tmp_path: Path):
+    ledger = EventLedger(tmp_path / "ledger.sqlite3")
+    ledger.append("TASK_CREATED", {"objective": "fixture"}, task_id="T")
+    before = ledger.verify_chain()
+    target = tmp_path / "CURRENT_STATUS.json"
+    StatusBoard(ledger).export(target)
+    after = ledger.verify_chain()
+
+    payload = __import__("json").loads(target.read_text(encoding="utf-8"))
+    assert payload["derived_view"] is True
+    assert payload["task_count"] == 1
+    assert before == after
