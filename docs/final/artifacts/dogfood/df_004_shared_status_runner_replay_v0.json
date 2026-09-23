@@ -1,0 +1,19 @@
+{
+  "schema": "mkm_actual_change_replay_manifest_v0",
+  "task_id": "DF-004",
+  "objective": "Replay the actual sealed shared CURRENT_STATUS and bounded Dogfood Runner implementation including late-fresh-fail gate recomputation.",
+  "repository_id": "github-working-mirror:mkm-logos-research-oss",
+  "cohort": "EVIDENCE_GATE",
+  "base_revision": "9577a92bdad850cf0c61de2fa0145ad2fbfb3ea0",
+  "result_revision": "8024f1ce2857f414d8d172ac023c990dfd396761",
+  "allowed_paths": [
+    "experiments/mkm_orchestrator_v0/shared_status.py",
+    "experiments/mkm_orchestrator_v0/dogfood.py",
+    "tests/test_mkm_dogfood_shared_status_v0.py"
+  ],
+  "suite_paths": [
+    "tests/test_mkm_dogfood_shared_status_v0.py"
+  ],
+  "measurement_mode": "REPLAY",
+  "prospective_effectiveness_sample": false
+}
