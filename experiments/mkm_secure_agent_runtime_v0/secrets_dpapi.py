@@ -133,6 +133,16 @@ def _unprotect(ciphertext: bytes) -> bytes:
             kernel32.LocalFree(ctypes.cast(description_ptr, ctypes.c_void_p))
 
 
+def dpapi_protect_bytes(data: bytes, *, description: str) -> bytes:
+    """Protect arbitrary bounded local bytes with current-user Windows DPAPI."""
+    return _protect(data, description=description)
+
+
+def dpapi_unprotect_bytes(ciphertext: bytes) -> bytes:
+    """Unprotect bytes for trusted local code only."""
+    return _unprotect(ciphertext)
+
+
 def _normalize_handle(handle: str) -> str:
     handle = handle.strip()
     if not handle.startswith("secret://"):
