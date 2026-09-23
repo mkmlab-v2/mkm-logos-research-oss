@@ -102,23 +102,10 @@ class DogfoodRunner:
         if measurement.cohort != started["payload"]["cohort"]:
             raise DogfoodRunnerError("measurement cohort mismatch")
 
-        gate_event = next(
-            (e for e in reversed(events) if e["event_type"] == "GATE_EVALUATED"),
-            None,
-        )
-        if gate_event is None:
-            gate = self.orchestrator.evaluate(task_id)
-        else:
-            payload = gate_event["payload"]
-            gate = {
-                "task_state": payload["task_state"],
-                "decision": payload["decision"],
-                "reason": payload["reason"],
-                "evidence_ceiling": payload["evidence_ceiling"],
-                "merge_authorization": payload["merge_authorization"],
-                "deployment_authorization": payload["deployment_authorization"],
-                "send_gate": payload["send_gate"],
-            }
+        # Never trust a previously cached gate at task close. New evidence may
+        # have arrived after that evaluation. Recompute from the append-only
+        # ledger so a later fresh FAIL cannot be hidden by an older CANDIDATE.
+        gate = self.orchestrator.evaluate(task_id)
 
         self.measurements.record(measurement)
         receipt = self.receipts.issue(task_id)
