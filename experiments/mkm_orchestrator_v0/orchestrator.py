@@ -56,6 +56,8 @@ class MKMOrchestrator:
     def bind_workspace(self, task: TaskContract, *, create: bool = True):
         if not self.ledger.events(task_id=task.task_id):
             raise OrchestratorError("task must be created before workspace binding")
+        if create and not task.authority.mutation_authorized:
+            raise OrchestratorError("authority does not authorize workspace mutation")
         binding = self.worktrees.plan(task)
         if create:
             self.worktrees.create(binding)
@@ -86,6 +88,20 @@ class MKMOrchestrator:
         result = worker.run(task, binding)
         if result.task_id != task.task_id:
             raise OrchestratorError("worker returned wrong task_id")
+        violations = self._changed_path_violations(task, result.changed_files)
+        if violations:
+            self.ledger.append(
+                "POLICY_VIOLATION",
+                {
+                    "kind": "CHANGED_PATH_OUTSIDE_TASK_CONTRACT",
+                    "worker_id": result.worker_id,
+                    "violations": violations,
+                },
+                task_id=task.task_id,
+            )
+            raise OrchestratorError(
+                "worker reported changes outside allowed_paths: " + ",".join(violations)
+            )
         self.ledger.append(
             "WORKER_RESULT",
             {
@@ -143,5 +159,48 @@ class MKMOrchestrator:
             detail=detail,
         )
 
+    @staticmethod
+    def _changed_path_violations(
+        task: TaskContract,
+        changed_files: tuple[str, ...],
+    ) -> list[str]:
+        if not changed_files:
+            return []
+        if not task.allowed_paths:
+            return list(changed_files)
+
+        normalized_allowed = [
+            p.replace("\\", "/").strip("/")
+            for p in task.allowed_paths
+            if p.strip("/")
+        ]
+        violations = []
+        for raw in changed_files:
+            path = raw.replace("\\", "/").strip("/")
+            if path.startswith("../") or path == "..":
+                violations.append(raw)
+                continue
+            allowed = any(
+                path == prefix or path.startswith(prefix + "/")
+                for prefix in normalized_allowed
+            )
+            if not allowed:
+                violations.append(raw)
+        return violations
+
     def evaluate(self, task_id: str):
+        if any(
+            e["event_type"] == "POLICY_VIOLATION"
+            for e in self.ledger.events(task_id=task_id)
+        ):
+            from .models import GateDecision, GateEvaluation, TaskState
+            result = GateEvaluation(
+                task_id=task_id,
+                task_state=TaskState.HOLD,
+                decision=GateDecision.HOLD,
+                reason="POLICY_VIOLATION_REQUIRES_ADJUDICATION",
+                evidence_ceiling="FAIL",
+            )
+            self.evidence._record_gate(result)
+            return result
         return self.evidence.evaluate_gate(task_id)
