@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 from statistics import mean
 from typing import Any
 
@@ -40,6 +40,41 @@ CORE_MEASUREMENT_FIELDS = (
     "evidence_reconstruction_seconds",
 )
 
+PROVENANCE_UNKNOWN = "UNKNOWN"
+PROVENANCE_OBSERVED = "OBSERVED"
+PROVENANCE_NOT_ESTABLISHED = "NOT_ESTABLISHED"
+
+
+@dataclass(frozen=True)
+class MetricProvenanceV0:
+    state: str
+    value: int | float | None
+    capture_source: str = PROVENANCE_NOT_ESTABLISHED
+    capture_method: str = PROVENANCE_NOT_ESTABLISHED
+    captured_at: str | None = None
+    evidence_ref: str | None = None
+
+    def validate(self, *, metric_name: str, metric_value: int | float | None) -> None:
+        if self.state not in {PROVENANCE_UNKNOWN, PROVENANCE_OBSERVED}:
+            raise MeasurementError(f"{metric_name} provenance state invalid")
+        if self.state == PROVENANCE_UNKNOWN:
+            if metric_value is not None or self.value is not None:
+                raise MeasurementError(f"{metric_name} UNKNOWN provenance conflicts with observed value")
+            return
+        if metric_value is None:
+            raise MeasurementError(f"{metric_name} OBSERVED provenance requires observed metric value")
+        if self.value != metric_value:
+            raise MeasurementError(f"{metric_name} provenance value mismatch")
+        required = {
+            "capture_source": self.capture_source,
+            "capture_method": self.capture_method,
+            "captured_at": self.captured_at,
+            "evidence_ref": self.evidence_ref,
+        }
+        for field_name, raw in required.items():
+            if not isinstance(raw, str) or not raw.strip() or raw == PROVENANCE_NOT_ESTABLISHED:
+                raise MeasurementError(f"{metric_name} OBSERVED provenance requires {field_name}")
+
 
 @dataclass(frozen=True)
 class DogfoodMeasurementV0:
@@ -60,6 +95,40 @@ class DogfoodMeasurementV0:
     unknown_human_resolutions: int | None = None
     human_gate_rejections: int | None = None
     evidence_reconstruction_seconds: float | None = None
+    metric_provenance: dict[str, MetricProvenanceV0 | dict[str, Any]] = field(default_factory=dict)
+
+    def _coerce_provenance(self, metric_name: str, raw: MetricProvenanceV0 | dict[str, Any]) -> MetricProvenanceV0:
+        if isinstance(raw, MetricProvenanceV0):
+            return raw
+        if isinstance(raw, dict):
+            try:
+                return MetricProvenanceV0(**raw)
+            except TypeError as exc:
+                raise MeasurementError(f"{metric_name} provenance fields invalid") from exc
+        raise MeasurementError(f"{metric_name} provenance must be a mapping or MetricProvenanceV0")
+
+    def normalized_metric_provenance(self) -> dict[str, dict[str, Any]]:
+        normalized: dict[str, dict[str, Any]] = {}
+        for name in METRIC_FIELDS:
+            value = getattr(self, name)
+            raw = self.metric_provenance.get(name)
+            if raw is None:
+                normalized[name] = {
+                    "state": PROVENANCE_UNKNOWN if value is None else PROVENANCE_OBSERVED,
+                    "value": value,
+                    "capture_source": PROVENANCE_NOT_ESTABLISHED,
+                    "capture_method": PROVENANCE_NOT_ESTABLISHED,
+                    "captured_at": None,
+                    "evidence_ref": None,
+                }
+            else:
+                normalized[name] = asdict(self._coerce_provenance(name, raw))
+        return normalized
+
+    def to_payload(self) -> dict[str, Any]:
+        payload = asdict(self)
+        payload["metric_provenance"] = self.normalized_metric_provenance()
+        return payload
 
     def validate(self) -> None:
         if not self.task_id.strip():
@@ -90,6 +159,14 @@ class DogfoodMeasurementV0:
                 raise MeasurementError(
                     f"{name} must be non-negative numeric or None"
                 )
+        unknown_provenance = sorted(set(self.metric_provenance) - set(METRIC_FIELDS))
+        if unknown_provenance:
+            raise MeasurementError(
+                "unknown metric provenance keys: " + ",".join(unknown_provenance)
+            )
+        for name, raw in self.metric_provenance.items():
+            provenance = self._coerce_provenance(name, raw)
+            provenance.validate(metric_name=name, metric_value=getattr(self, name))
 
 
 class MeasurementRecorder:
@@ -102,7 +179,7 @@ class MeasurementRecorder:
         measurement.validate()
         payload = {
             "schema": self.SCHEMA,
-            **asdict(measurement),
+            **measurement.to_payload(),
         }
         return self.ledger.append(
             "TASK_MEASUREMENT_RECORDED",
@@ -141,8 +218,13 @@ class MeasurementRecorder:
         replay_total = len(replay_rows)
         both_25 = all(len(items) >= 25 for items in cohorts.values())
         prospective_coverage = self._coverage(prospective_rows)
+        prospective_provenance = self.provenance_coverage(prospective_rows)
         core_complete = all(
             prospective_coverage["unknown_count"][name] == 0
+            for name in CORE_MEASUREMENT_FIELDS
+        )
+        core_provenance_complete = all(
+            prospective_provenance["complete_count"][name] == prospective_total
             for name in CORE_MEASUREMENT_FIELDS
         )
 
@@ -152,6 +234,8 @@ class MeasurementRecorder:
             readiness = "COHORT_BALANCE_NOT_ESTABLISHED"
         elif not core_complete:
             readiness = "MEASUREMENT_COMPLETENESS_NOT_ESTABLISHED"
+        elif not core_provenance_complete:
+            readiness = "MEASUREMENT_PROVENANCE_NOT_ESTABLISHED"
         else:
             readiness = "READY_FOR_HUMAN_EFFECTIVENESS_ADJUDICATION"
 
@@ -163,6 +247,7 @@ class MeasurementRecorder:
             "readiness_basis": "PROSPECTIVE_ONLY",
             "core_measurement_fields": list(CORE_MEASUREMENT_FIELDS),
             "prospective_measurement_coverage": prospective_coverage,
+            "prospective_provenance_coverage": prospective_provenance,
             "cohorts": summaries,
             "replay": self._cohort_summary(replay_rows),
             "readiness": readiness,
@@ -184,8 +269,56 @@ class MeasurementRecorder:
             },
         }
 
+    def provenance_coverage(self, rows: list[dict[str, Any]]) -> dict[str, Any]:
+        def record(row: dict[str, Any], name: str) -> dict[str, Any] | None:
+            provenance = row.get("metric_provenance", {})
+            if not isinstance(provenance, dict):
+                return None
+            raw = provenance.get(name)
+            return raw if isinstance(raw, dict) else None
+
+        def complete(row: dict[str, Any], name: str) -> bool:
+            raw = record(row, name)
+            if raw is None:
+                return False
+            value = row.get(name)
+            expected_state = PROVENANCE_UNKNOWN if value is None else PROVENANCE_OBSERVED
+            if raw.get("state") != expected_state or raw.get("value") != value:
+                return False
+            if expected_state == PROVENANCE_UNKNOWN:
+                return True
+            for field_name in ("capture_source", "capture_method", "captured_at", "evidence_ref"):
+                field_value = raw.get(field_name)
+                if not isinstance(field_value, str) or not field_value.strip() or field_value == PROVENANCE_NOT_ESTABLISHED:
+                    return False
+            return True
+
+        return {
+            "observed_state_count": {
+                name: sum(1 for row in rows if (record(row, name) or {}).get("state") == PROVENANCE_OBSERVED)
+                for name in METRIC_FIELDS
+            },
+            "unknown_state_count": {
+                name: sum(1 for row in rows if (record(row, name) or {}).get("state") == PROVENANCE_UNKNOWN)
+                for name in METRIC_FIELDS
+            },
+            "missing_count": {
+                name: sum(1 for row in rows if record(row, name) is None)
+                for name in METRIC_FIELDS
+            },
+            "complete_count": {
+                name: sum(1 for row in rows if complete(row, name))
+                for name in METRIC_FIELDS
+            },
+            "incomplete_count": {
+                name: sum(1 for row in rows if not complete(row, name))
+                for name in METRIC_FIELDS
+            },
+        }
+
     def _cohort_summary(self, rows: list[dict[str, Any]]) -> dict[str, Any]:
         coverage = self._coverage(rows)
+        provenance_coverage = self.provenance_coverage(rows)
         sums = {}
         for name in INTEGER_METRIC_FIELDS:
             values = [
@@ -209,4 +342,5 @@ class MeasurementRecorder:
             "sums": sums,
             "means": means,
             "measurement_coverage": coverage,
+            "provenance_coverage": provenance_coverage,
         }

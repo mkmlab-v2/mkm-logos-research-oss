@@ -10,7 +10,10 @@ ROOT = Path(__file__).parents[1]
 sys.path.insert(0, str(ROOT / "experiments"))
 
 from mkm_orchestrator_v0.ledger import EventLedger  # noqa: E402
-from mkm_orchestrator_v0.measurement import DogfoodMeasurementV0  # noqa: E402
+from mkm_orchestrator_v0.measurement import (  # noqa: E402
+    DogfoodMeasurementV0,
+    MetricProvenanceV0,
+)
 from mkm_orchestrator_v0.registry import DogfoodRegistry, DogfoodRegistryError  # noqa: E402
 
 
@@ -55,6 +58,22 @@ def _measurement(
             "worker_cost_usd": 0,
             "evidence_reconstruction_seconds": 0,
         })
+        kwargs["metric_provenance"] = {
+            name: MetricProvenanceV0(
+                state="OBSERVED",
+                value=value,
+                capture_source="fixture",
+                capture_method="fixture-observation",
+                captured_at="2026-09-23T00:00:00Z",
+                evidence_ref=f"fixture:{name}",
+            )
+            for name, value in {
+                "review_minutes": 1,
+                "task_to_validated_candidate_seconds": 0,
+                "worker_cost_usd": 0,
+                "evidence_reconstruction_seconds": 0,
+            }.items()
+        }
     return DogfoodMeasurementV0(**kwargs)
 
 
@@ -211,3 +230,25 @@ def test_registry_balanced_50_unknown_core_metrics_blocks_readiness(tmp_path: Pa
     assert summary["readiness"] == "MEASUREMENT_COMPLETENESS_NOT_ESTABLISHED"
     assert summary["prospective_measurement_coverage"]["unknown_count"]["worker_cost_usd"] == 50
     assert summary["effectiveness"] == "NOT_ESTABLISHED"
+
+def test_registry_balanced_50_observed_values_without_provenance_blocks_readiness(tmp_path: Path):
+    registry = DogfoodRegistry(EventLedger(tmp_path / "registry.sqlite3"))
+    for i in range(25):
+        for cohort, prefix in (("BASELINE", "B"), ("EVIDENCE_GATE", "E")):
+            task_id = f"{prefix}-NP-{i}"
+            measurement = DogfoodMeasurementV0(
+                task_id=task_id,
+                cohort=cohort,
+                review_minutes=1,
+                task_to_validated_candidate_seconds=0,
+                worker_cost_usd=0,
+                evidence_reconstruction_seconds=0,
+            )
+            registry.import_finalized(
+                _finalized(task_id, f"rcp_{prefix.lower()}_np_{i}"),
+                measurement,
+            )
+    summary = registry.summary()
+    assert summary["prospective_task_count"] == 50
+    assert summary["readiness"] == "MEASUREMENT_PROVENANCE_NOT_ESTABLISHED"
+    assert summary["prospective_provenance_coverage"]["incomplete_count"]["worker_cost_usd"] == 50

@@ -8,7 +8,12 @@ import re
 from typing import Any
 
 from .ledger import EventLedger
-from .measurement import CORE_MEASUREMENT_FIELDS, METRIC_FIELDS, DogfoodMeasurementV0
+from .measurement import (
+    CORE_MEASUREMENT_FIELDS,
+    METRIC_FIELDS,
+    DogfoodMeasurementV0,
+    MeasurementRecorder,
+)
 
 
 class DogfoodRegistryError(RuntimeError):
@@ -84,7 +89,7 @@ class DogfoodRegistry:
         if any(row["receipt_id"] == receipt_id for row in existing):
             raise DogfoodRegistryError("receipt_id already imported")
 
-        measurement_payload = asdict(measurement)
+        measurement_payload = measurement.to_payload()
         payload = {
             "schema": self.SCHEMA,
             "task_id": task_id,
@@ -145,8 +150,15 @@ class DogfoodRegistry:
                 for name in METRIC_FIELDS
             },
         }
+        provenance_coverage = MeasurementRecorder(self.ledger).provenance_coverage(
+            [row.get("measurement", {}) for row in prospective]
+        )
         core_complete = all(
             coverage["unknown_count"][name] == 0
+            for name in CORE_MEASUREMENT_FIELDS
+        )
+        core_provenance_complete = all(
+            provenance_coverage["complete_count"][name] == len(prospective)
             for name in CORE_MEASUREMENT_FIELDS
         )
         if len(prospective) < 50:
@@ -155,6 +167,8 @@ class DogfoodRegistry:
             readiness = "COHORT_BALANCE_NOT_ESTABLISHED"
         elif not core_complete:
             readiness = "MEASUREMENT_COMPLETENESS_NOT_ESTABLISHED"
+        elif not core_provenance_complete:
+            readiness = "MEASUREMENT_PROVENANCE_NOT_ESTABLISHED"
         else:
             readiness = "READY_FOR_HUMAN_EFFECTIVENESS_ADJUDICATION"
 
@@ -174,6 +188,7 @@ class DogfoodRegistry:
             "readiness_basis": "PROSPECTIVE_ONLY",
             "core_measurement_fields": list(CORE_MEASUREMENT_FIELDS),
             "prospective_measurement_coverage": coverage,
+            "prospective_provenance_coverage": provenance_coverage,
             "readiness": readiness,
             "effectiveness": "NOT_ESTABLISHED",
             "willingness_to_pay": "NOT_ESTABLISHED",

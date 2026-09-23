@@ -14,6 +14,7 @@ from mkm_orchestrator_v0.measurement import (  # noqa: E402
     DogfoodMeasurementV0,
     MeasurementError,
     MeasurementRecorder,
+    MetricProvenanceV0,
 )
 from mkm_orchestrator_v0.models import (  # noqa: E402
     AuthorityContract,
@@ -130,6 +131,20 @@ def _validator_kwargs(result):
         "stdout_sha256": "c" * 64,
         "stderr_sha256": "d" * 64,
         "duration_ms": 100,
+    }
+
+
+def _observed_provenance(**values):
+    return {
+        name: MetricProvenanceV0(
+            state="OBSERVED",
+            value=value,
+            capture_source="fixture",
+            capture_method="fixture-observation",
+            captured_at="2026-09-23T00:00:00Z",
+            evidence_ref=f"fixture:{name}",
+        )
+        for name, value in values.items()
     }
 
 
@@ -258,6 +273,12 @@ def test_balanced_50_tasks_are_only_ready_for_human_adjudication(tmp_path: Path)
                 task_to_validated_candidate_seconds=0,
                 worker_cost_usd=2,
                 evidence_reconstruction_seconds=0,
+                metric_provenance=_observed_provenance(
+                    review_minutes=20,
+                    task_to_validated_candidate_seconds=0,
+                    worker_cost_usd=2,
+                    evidence_reconstruction_seconds=0,
+                ),
                 builder_pass_validator_fail=1 if i < 4 else 0,
             )
         )
@@ -271,6 +292,12 @@ def test_balanced_50_tasks_are_only_ready_for_human_adjudication(tmp_path: Path)
                 task_to_validated_candidate_seconds=0,
                 worker_cost_usd=2.5,
                 evidence_reconstruction_seconds=0,
+                metric_provenance=_observed_provenance(
+                    review_minutes=10,
+                    task_to_validated_candidate_seconds=0,
+                    worker_cost_usd=2.5,
+                    evidence_reconstruction_seconds=0,
+                ),
                 builder_pass_validator_fail=1 if i < 2 else 0,
                 false_pass_caught=1 if i < 2 else 0,
             )
@@ -441,3 +468,60 @@ def test_none_or_non_negative_numeric_validation(tmp_path: Path):
                 worker_cost_usd=-0.01,
             )
         )
+
+def test_metric_provenance_materializes_state_without_inventing_source(tmp_path: Path):
+    ledger = EventLedger(tmp_path / "ledger.sqlite3")
+    recorder = MeasurementRecorder(ledger)
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="PROV-1",
+            cohort="EVIDENCE_GATE",
+            review_minutes=0,
+            worker_cost_usd=None,
+        )
+    )
+    payload = ledger.events(task_id="PROV-1")[-1]["payload"]
+    observed = payload["metric_provenance"]["review_minutes"]
+    unknown = payload["metric_provenance"]["worker_cost_usd"]
+
+    assert observed["state"] == "OBSERVED"
+    assert observed["value"] == 0
+    assert observed["capture_source"] == "NOT_ESTABLISHED"
+    assert unknown["state"] == "UNKNOWN"
+    assert unknown["value"] is None
+
+
+def test_explicit_observed_provenance_requires_capture_fields(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    with pytest.raises(MeasurementError, match="capture_source"):
+        recorder.record(            DogfoodMeasurementV0(
+                task_id="PROV-2",
+                cohort="EVIDENCE_GATE",
+                review_minutes=3,
+                metric_provenance={
+                    "review_minutes": MetricProvenanceV0(
+                        state="OBSERVED",
+                        value=3,
+                    )
+                },
+            )
+        )
+
+
+def test_balanced_50_observed_values_without_capture_provenance_is_not_ready(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    for i in range(25):
+        for cohort, prefix in (("BASELINE", "B"), ("EVIDENCE_GATE", "E")):
+            recorder.record(
+                DogfoodMeasurementV0(
+                    task_id=f"{prefix}-P-{i}",
+                    cohort=cohort,
+                    review_minutes=1,
+                    task_to_validated_candidate_seconds=0,
+                    worker_cost_usd=0,
+                    evidence_reconstruction_seconds=0,
+                )
+            )
+    summary = recorder.summarize()
+    assert summary["readiness"] == "MEASUREMENT_PROVENANCE_NOT_ESTABLISHED"
+    assert summary["prospective_provenance_coverage"]["incomplete_count"]["review_minutes"] == 50
