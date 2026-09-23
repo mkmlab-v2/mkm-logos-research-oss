@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 import sys
+import time
 from typing import Any
 
 import psutil
@@ -171,7 +172,13 @@ def _handle(req: dict[str, Any]) -> dict[str, Any]:
     if op == "click":
         w, current = _resolve_control(req["selector"])
         w.verify_actionable()
-        w.click_input()
+        if hasattr(w, "invoke"):
+            w.invoke()
+        elif hasattr(w, "click"):
+            w.click()
+        else:
+            w.click_input()
+        time.sleep(0.15)
         return {"executed": True, "selector": current}
 
     if op == "set_text":
