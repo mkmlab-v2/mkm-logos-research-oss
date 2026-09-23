@@ -103,7 +103,7 @@ class DeveloperWorkspaceAdapter:
             "workspace_path": str(workspace),
             "adapter_id": adapter_id,
             "process_name": identity["process_name"],
-            "binding_state": "BOUND_FOR_CURRENT_REQUEST",
+            "binding_state": "REQUEST_SCOPED_PAIR_ASSOCIATION_NOT_ESTABLISHED",
         }
 
     def _git(self, workspace: Path, argv: list[str], *, timeout: float = 10.0) -> subprocess.CompletedProcess[str]:
