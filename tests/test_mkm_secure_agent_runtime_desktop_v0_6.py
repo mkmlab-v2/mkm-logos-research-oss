@@ -212,7 +212,9 @@ async def test_mcp_high_risk_click_request_is_blocked(tmp_path: Path, uia_fixtur
         result = await client.call_tool(
             "request_ui_click", {"control_ref": danger["ui_ref"]}
         )
-    assert result.is_error is True
+    assert result.structured_content["status"] == "DENIED"
+    assert result.structured_content["reason"] == "HIGH_RISK_CONTROL_LABEL"
+    assert result.structured_content["executed"] is False
 
 
 @pytest.mark.anyio
