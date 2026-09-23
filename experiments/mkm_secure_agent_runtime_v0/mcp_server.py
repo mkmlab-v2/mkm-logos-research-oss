@@ -447,7 +447,12 @@ def create_server(
         resolved = layer.resolve_control(control_ref)
         policy = layer.action_policy(control_ref, action="click")
         if policy["decision"] != "HUMAN_GATE":
-            raise RuntimeErrorV0(f"UI click blocked: {policy['reason']}")
+            return {
+                "status": "DENIED",
+                "reason": policy["reason"],
+                "executed": False,
+                "send_gate": "HOLD",
+            }
         args = {
             "control_ref": control_ref,
             "fingerprint": resolved.selector["fingerprint"],
@@ -506,7 +511,12 @@ def create_server(
         resolved = layer.resolve_control(control_ref)
         policy = layer.action_policy(control_ref, action="set_text", text=text)
         if policy["decision"] != "HUMAN_GATE":
-            raise RuntimeErrorV0(f"UI set_text blocked: {policy['reason']}")
+            return {
+                "status": "DENIED",
+                "reason": policy["reason"],
+                "executed": False,
+                "send_gate": "HOLD",
+            }
         args = {
             "control_ref": control_ref,
             "fingerprint": resolved.selector["fingerprint"],
