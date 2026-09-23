@@ -38,6 +38,7 @@ from app_adapters import (
 )
 from developer_adapter import DeveloperWorkspaceAdapter, DeveloperAdapterError
 from developer_session import DeveloperSessionManager, DeveloperSessionError
+from cursor_agent_bridge import CursorAgentBridge, CursorAgentBridgeError
 
 
 def _digest(value: Any) -> str:
@@ -91,6 +92,7 @@ def create_server(
     app_layer: AppAdapterLayer | None = None,
     developer_layer: DeveloperWorkspaceAdapter | None = None,
     session_manager: DeveloperSessionManager | None = None,
+    cursor_agent_bridge: CursorAgentBridge | None = None,
 ) -> MCPServer:
     mcp = MCPServer(
         "MKM Secure Agent Runtime",
@@ -127,6 +129,11 @@ def create_server(
             ),
             "developer_worker_session": (
                 "DEDICATED_CURSOR_BINDING_V0_9" if session_manager is not None else "UNAVAILABLE"
+            ),
+            "cursor_agent_worker": (
+                "FAIL_CLOSED_SESSION_BRIDGE_REQUIRED"
+                if cursor_agent_bridge is not None and session_manager is not None
+                else "UNAVAILABLE"
             ),
             "semantic_state": "NOT_ADJUDICATED",
             "send_gate": "HOLD",
@@ -1270,6 +1277,210 @@ def create_server(
         result["semantic_state"] = "NOT_ADJUDICATED"
         return result
 
+    def _require_cursor_agent_bridge() -> CursorAgentBridge:
+        if cursor_agent_bridge is None:
+            raise RuntimeErrorV0("Cursor Agent bridge unavailable")
+        return cursor_agent_bridge
+
+    def _agent_context(session_id: str) -> dict[str, Any]:
+        return _require_session_manager().agent_context(session_id)
+
+    def _safe_thread_title(title: str) -> dict[str, Any]:
+        scan = scan_text(title)
+        digest = hashlib.sha256(title.encode("utf-8", errors="replace")).hexdigest()
+        if scan.release_decision != "ALLOW":
+            return {
+                "text": "[SENSITIVE_THREAD_TITLE]",
+                "sha256": digest,
+                "privacy_state": scan.state,
+            }
+        return {
+            "text": title[:160],
+            "sha256": digest,
+            "truncated": len(title) > 160,
+        }
+
+    @mcp.tool()
+    def cursor_agent_status(session_id: str) -> dict[str, Any]:
+        """Check whether an exact dedicated session has one live Cursor desktop bridge."""
+        ctx = _agent_context(session_id)
+        try:
+            instance = _require_cursor_agent_bridge().session_instance(
+                ctx["user_data_dir"]
+            )
+        except CursorAgentBridgeError as exc:
+            return {
+                "session_id": session_id,
+                "bridge_state": "NOT_ESTABLISHED",
+                "reason": str(exc),
+                "bound_window_pid": ctx["bound_window_pid"],
+                "send_gate": "HOLD",
+            }
+        return {
+            "session_id": session_id,
+            "bridge_state": "ESTABLISHED",
+            "bridge_pid": instance.pid,
+            "app_name": instance.app_name,
+            "app_version": instance.app_version,
+            "bound_window_pid": ctx["bound_window_pid"],
+            "user_data_dir_match": True,
+            "send_gate": "HOLD",
+        }
+
+    @mcp.tool()
+    def cursor_agent_threads(session_id: str) -> dict[str, Any]:
+        """List only live agent threads belonging to the exact dedicated session bridge."""
+        ctx = _agent_context(session_id)
+        rows = _require_cursor_agent_bridge().list_threads(
+            ctx["user_data_dir"]
+        )
+        return {
+            "session_id": session_id,
+            "threads": [
+                {
+                    "id": row["id"],
+                    "title": _safe_thread_title(row["title"]),
+                    "source": row["source"],
+                    "status": row["status"],
+                    "lastUpdatedAt": row["lastUpdatedAt"],
+                    "windowId": row["windowId"],
+                }
+                for row in rows
+            ],
+            "thread_count": len(rows),
+            "send_gate": "HOLD",
+        }
+
+    @mcp.tool()
+    def request_cursor_agent_prompt(
+        session_id: str,
+        thread_id: str,
+        prompt: str,
+        ttl_seconds: int = 600,
+    ) -> dict[str, Any]:
+        """Request local approval for an exact Cursor Agent prompt; does not send."""
+        ctx = _agent_context(session_id)
+        bridge = _require_cursor_agent_bridge()
+        policy = bridge.validate_prompt(prompt)
+        if policy["decision"] != "HUMAN_GATE":
+            return {
+                "status": "DENIED",
+                "reason": policy["reason"],
+                "session_id": session_id,
+                "executed": False,
+                "send_gate": "HOLD",
+            }
+        threads = bridge.list_threads(ctx["user_data_dir"])
+        hits = [row for row in threads if row["id"] == thread_id]
+        if len(hits) != 1:
+            return {
+                "status": "DENIED",
+                "reason": "THREAD_NOT_EXACTLY_BOUND_TO_SESSION",
+                "session_id": session_id,
+                "executed": False,
+                "send_gate": "HOLD",
+            }
+        prompt_sha256 = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+        args = {
+            "session_id": session_id,
+            "bound_window_pid": ctx["bound_window_pid"],
+            "workspace_path": ctx["workspace_path"],
+            "thread_id": thread_id,
+            "prompt_sha256": prompt_sha256,
+            "prompt_length": len(prompt),
+            "force": False,
+        }
+        target = (
+            f"cursor-agent://{session_id}/{thread_id} | "
+            f"{ctx['workspace_path']}"
+        )
+        req = broker.request(
+            action="cursor_agent_prompt",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            "approval_id": req["approval_id"],
+            "status": "HUMAN_GATE",
+            "session_id": session_id,
+            "thread_id": thread_id,
+            "prompt_sha256": prompt_sha256,
+            "prompt_length": len(prompt),
+            "target": target,
+            "expires_at": req["expires_at"],
+            "executed": False,
+            "send_gate": "HOLD",
+        }
+
+    @mcp.tool()
+    def execute_cursor_agent_prompt(
+        session_id: str,
+        thread_id: str,
+        prompt: str,
+        approval_id: str,
+    ) -> dict[str, Any]:
+        """Submit the exact approved prompt to the exact session-bound Cursor thread."""
+        ctx = _agent_context(session_id)
+        bridge = _require_cursor_agent_bridge()
+        policy = bridge.validate_prompt(prompt)
+        if policy["decision"] != "HUMAN_GATE":
+            return {
+                "status": "DENIED",
+                "reason": policy["reason"],
+                "session_id": session_id,
+                "executed": False,
+                "send_gate": "HOLD",
+            }
+        threads = bridge.list_threads(ctx["user_data_dir"])
+        hits = [row for row in threads if row["id"] == thread_id]
+        if len(hits) != 1:
+            return {
+                "status": "DENIED",
+                "reason": "THREAD_NOT_EXACTLY_BOUND_TO_SESSION",
+                "session_id": session_id,
+                "executed": False,
+                "send_gate": "HOLD",
+            }
+        prompt_sha256 = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
+        args = {
+            "session_id": session_id,
+            "bound_window_pid": ctx["bound_window_pid"],
+            "workspace_path": ctx["workspace_path"],
+            "thread_id": thread_id,
+            "prompt_sha256": prompt_sha256,
+            "prompt_length": len(prompt),
+            "force": False,
+        }
+        target = (
+            f"cursor-agent://{session_id}/{thread_id} | "
+            f"{ctx['workspace_path']}"
+        )
+        broker.consume(
+            approval_id,
+            action="cursor_agent_prompt",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        result = bridge.send(
+            ctx["user_data_dir"],
+            thread_id,
+            prompt,
+            force=False,
+        )
+        return {
+            "executed": True,
+            "session_id": session_id,
+            "thread_id": result["threadId"],
+            "windowId": result["windowId"],
+            "status": result["status"],
+            "thread_title": _safe_thread_title(result["threadTitle"]),
+            "prompt_sha256": prompt_sha256,
+            "prompt_length": len(prompt),
+            "semantic_state": "NOT_ADJUDICATED",
+            "send_gate": "HOLD",
+        }
+
     @mcp.tool()
     def ollama_health() -> dict[str, Any]:
         """Check the configured loopback-only Ollama endpoint."""
@@ -1306,6 +1517,7 @@ def main() -> None:
     app_layer = None
     developer_layer = None
     session_manager = None
+    cursor_agent_bridge = None
     if os.name == "nt":
         try:
             secret_store = DPAPISecretStore(broker.state_dir)
@@ -1335,11 +1547,13 @@ def main() -> None:
                 broker.state_dir,
                 desktop_layer,
             )
+            cursor_agent_bridge = CursorAgentBridge()
         except (UIRefError, DesktopUIError, AppAdapterError):
             desktop_layer = None
             app_layer = None
             developer_layer = None
             session_manager = None
+            cursor_agent_bridge = None
     mcp = create_server(
         runtime,
         broker,
@@ -1349,6 +1563,7 @@ def main() -> None:
         app_layer=app_layer,
         developer_layer=developer_layer,
         session_manager=session_manager,
+        cursor_agent_bridge=cursor_agent_bridge,
     )
     mcp.run()
 
