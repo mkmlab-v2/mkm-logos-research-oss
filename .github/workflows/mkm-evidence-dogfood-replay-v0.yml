@@ -1,0 +1,36 @@
+name: MKM Evidence Dogfood Replay V0
+
+on:
+  pull_request:
+    paths:
+      - "scripts/mkm_evidence_dogfood_replay_v0.py"
+      - "docs/final/artifacts/dogfood/**"
+      - "experiments/mkm_orchestrator_v0/**"
+      - "tests/test_mkm_*evidence*"
+      - "tests/test_mkm_*dogfood*"
+      - "tests/test_mkm_*validator*"
+      - "tests/test_mkm_shared_status_cli_v0.py"
+      - ".github/workflows/mkm-evidence-dogfood-replay-v0.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  df-001:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Install pytest
+        run: python -m pip install pytest
+
+      - name: Replay DF-001 through Dogfood Runner
+        run: python scripts/mkm_evidence_dogfood_replay_v0.py --manifest docs/final/artifacts/dogfood/df_001_measurement_provenance_replay_v0.json --out /tmp/df001.json
