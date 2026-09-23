@@ -1,4 +1,4 @@
-# MKM Secure Agent Runtime V0.3
+# MKM Secure Agent Runtime V0.4
 
 Bounded local-first runtime candidate for MKM's Desktop Commander-class tool layer.
 
@@ -55,6 +55,13 @@ Bounded local-first runtime candidate for MKM's Desktop Commander-class tool lay
 - `ollama_health`
 - `ollama_generate`
 
+### V0.4 rollback
+- approved text writes capture a Windows DPAPI-encrypted pre-write snapshot
+- existing files restore original bytes
+- newly created files can be removed by rollback
+- rollback is local CLI only; no MCP restore tool
+- write_text is bounded to 1 MiB in V0.4
+
 ## Explicitly not implemented
 
 - browser/GUI automation
@@ -68,15 +75,16 @@ Bounded local-first runtime candidate for MKM's Desktop Commander-class tool lay
 
 ## Current validation
 
-- full targeted suite on Windows: 39 PASS
+- full targeted suite on Windows: 44 PASS
 - MCP stdio wire negotiation: protocol 2026-07-28 observed
 - approval round trip: PASS in synthetic fixture
 - privacy body blocking on wire: PASS
 - DPAPI secret metadata-only wire smoke: PASS
+- write -> encrypted snapshot -> local rollback wire smoke: PASS
 - Ollama executable installed on tested PC, but running local Ollama instance was not established at probe time
 
 ## Evidence ceiling
 
-`BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_3_CANDIDATE`
+`BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_4_CANDIDATE`
 
 This is a development candidate, not a deployment or production-security authorization.
