@@ -65,7 +65,7 @@ $danger.Width = 130
 $form.Controls.Add($danger)
 
 [void]$form.ShowDialog()
-'''.replace("SENTINEL_PATH", str(sentinel).replace("\\", "\\\\")),
+'''.replace("SENTINEL_PATH", sentinel.as_posix()),
         encoding="utf-8",
     )
     proc = subprocess.Popen([
