@@ -1,6 +1,6 @@
-# MKM Secure Agent Runtime V0.9
+# MKM Secure Agent Runtime V1.0
 
-Bounded local-first runtime candidate for MKM's Desktop Commander-class tool layer.
+Bounded local-first development candidate for MKM's Desktop Commander-class runtime.
 
 ## Layer history
 
@@ -14,168 +14,167 @@ Bounded local-first runtime candidate for MKM's Desktop Commander-class tool lay
 - V0.7: process/class based App Adapter Layer
 - V0.8: semantic Developer Adapter for VS Code/Cursor
 - V0.9: dedicated Cursor Worker Session binding
+- V1.0: fail-closed Cursor Agent desktop-bridge worker layer
 
-## V0.9 Dedicated Cursor Worker Session
+## V1.0 Cursor Agent Worker
 
-V0.9 does not infer that an arbitrary existing Cursor window has a supplied workspace open.
+V1.0 does **not** blindly type prompts into arbitrary Cursor windows.
 
-Instead it creates a dedicated worker session with:
+It uses Cursor's own desktop bridge CLI only when all of these are true:
 
-- explicit approved workspace
-- generated `.code-workspace` under MKM state, not inside the project
-- exact folder mapping to that approved workspace
-- unique `window.title` marker
-- unique Cursor `--user-data-dir`
-- `--new-window`
-- `--disable-extensions`
-- `--suppress-popups-on-startup`
-- fixed Cursor CLI path discovered locally
-- no arbitrary Cursor CLI argument input from the model
+1. the V0.9 developer session is freshly `BOUND_ESTABLISHED`
+2. exactly one live desktop-bridge discovery record exists for that exact session `userDataDir`
+3. the target thread appears in that exact bridge instance
+4. the prompt passes local privacy and forbidden-action policy
+5. an out-of-band local HUMAN_GATE approval matches the exact:
+   - session id
+   - bound window pid
+   - workspace path
+   - thread id
+   - prompt SHA-256
+   - prompt length
+   - force=false
 
-A session becomes `BOUND_ESTABLISHED` only when all of these hold:
+If any bridge condition is missing, prompt submission fails closed.
 
-1. generated workspace file hash still matches
-2. workspace file still maps the exact approved workspace
-3. a visible `cursor.exe` window contains the unique local marker
-4. that window PID belongs to the Cursor process set carrying the exact session user-data-dir
+## Cursor desktop bridge facts observed from the installed Cursor 3.17.19 code
 
-Raw window title content is never returned through MCP.
+The installed CLI contains a hidden desktop bridge command surface with:
 
-## V0.9 session tools
+- `cursor desktop ls`
+- `cursor desktop send <thread> [text...]`
+- `--json`
+- `--stdin`
+- `--force`
 
-- `request_dev_session_start`
-- `execute_dev_session_start`
-- `dev_session_status`
-- `dev_session_workspace_status`
-- `dev_session_git_diff`
-- `dev_session_detect_tests`
-- `request_dev_session_test`
-- `execute_dev_session_test`
-- `request_dev_session_close`
-- `execute_dev_session_close`
+The implementation internally supports:
+- discovery records with `protocolVersion`, `pid`, `socketPath`, `token`, `appName`, `appVersion`, `userDataDir`
+- `listThreads`
+- `sendMessage`
+- thread metadata including id, title, source, status, lastUpdatedAt and windowId
 
-Session start, test execution, and close are HUMAN_GATE actions.
+V1.0 intentionally disables force-send.
 
-## Session-scoped developer actions
+## V1.0 MCP tools
 
-Once a session is freshly verified as `BOUND_ESTABLISHED`, semantic developer actions use the verified session's own:
+- `cursor_agent_status`
+- `cursor_agent_threads`
+- `request_cursor_agent_prompt`
+- `execute_cursor_agent_prompt`
 
-- `window_ref`
-- `workspace_path`
-- `bound_window_pid`
+Prompt plaintext is not stored in approval metadata; approval binds to prompt hash + length.
 
-The old V0.8 request-scoped pair remains available for bounded research but still reports:
+Thread titles are passed through the local privacy scanner before release.
 
-`REQUEST_SCOPED_PAIR_ASSOCIATION_NOT_ESTABLISHED`
+## Prompt policy
 
-The V0.9 session path is the first path in this branch that established a dedicated Cursor window/workspace association in an actual Windows smoke.
+DENY:
+- SECRET / PERSONAL / PHI-like prompt text
+- force-send
+- `git push`
+- deploy / publish
+- external send/email directives
+- transfer / banking directives
+- destructive directives such as delete-all / rm -rf
+- extension install/uninstall directives
 
-## Fixed test profile
+Allowed candidate prompts still require HUMAN_GATE.
 
-The fixed pytest profile was hardened after a fresh side-effect observation.
-
-Current profile:
-
-```text
-python -B -m pytest -q -p no:cacheprovider
-```
-
-This disables Python bytecode cache creation and pytest's cache provider.
-
-Still unavailable:
-
-- arbitrary terminal strings
-- arbitrary shell command strings
-- git commit/push/pull/fetch/checkout/reset
-- package installation
-- deploy/SEND
-- secret injection
-
-## Actual V0.9 Windows smoke
-
-A synthetic Git workspace was used; no production repo, real secret, or patient data was involved.
-
-Observed:
-
-- Cursor CLI version: **3.17.19**
-- MCP protocol: **2026-07-28**
-- MCP tool count: **39**
-- request before approval executed: **false**
-- dedicated session start: **BOUND_ESTABLISHED**
-- bound visible Cursor window PID observed
-- session-specific Cursor process set observed
-- session re-verification: **BOUND_ESTABLISHED**
-- session-scoped Git status: 0 changes before test
-- pytest profile detected
-- approved session pytest return code: 0
-- close status: `CLOSED_PROCESS_ONLY`
-- only processes carrying the session user-data-dir were targeted for termination
-- existing Cursor process count before/after close was unchanged
-- session user-data/evidence directory was retained rather than deleted
-
-### Fresh side effect retained
-
-The first successful real V0.9 session test used the older fixed profile:
-
-`python -m pytest -q`
-
-It created untracked `__pycache__` artifacts in the synthetic workspace.
-
-That is retained as a fresh failure / side-effect observation.
-
-The profile was then changed to:
-
-`python -B -m pytest -q -p no:cacheprovider`
-
-A post-fix confirmation run on a new synthetic workspace observed:
-
-- `BOUND_ESTABLISHED`
-- pytest return code 0
-- Cursor process count before/after: 32 -> 32
-- worktree clean after test: true
-
-This post-fix rerun confirms the patch behavior but is not promoted to independent fresh validation.
-
-## Current validation
-
-- full V0-V0.9 targeted Windows suite: **87 PASS**
-- V0.8 + V0.9 targeted suite after cache-clean hardening: **17 PASS**
-- V0.9 session-specific synthetic tests: **7 PASS**
-- no V0.9 session Cursor process remained after final cleanup check
-
-## Retained earlier failures
-
-- in-process UIA COM fatal 0x8001010d -> UIA isolated in worker subprocess
-- Windows CP949 decoding failure on UTF-8 Korean UI JSON -> explicit UTF-8 worker transport
-- initial synthetic click without observable effect -> UIA InvokePattern preference
-- Notepad launcher PID smoke NOT_FOUND -> retained; later Notepad observation was read-only only
-
-## Evidence ceiling
-
-`BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_9_CANDIDATE`
+## Live test PC state
 
 ### FACT
 
-- a dedicated Cursor worker window can be launched against an approved synthetic workspace
-- its window/workspace association can be locally established through the V0.9 session binding mechanism
-- session-scoped Git status/test actions can run under HUMAN_GATE
-- the dedicated session can be closed without reducing the pre-existing Cursor process count in the observed smoke
+- Cursor installed version observed: 3.17.19
+- V0.9 dedicated synthetic Cursor worker session can reach `BOUND_ESTABLISHED`
+- installed Cursor source contains desktop-bridge client/server protocol code
+- default discovery directory checked:
+  `%USERPROFILE%\.cursor\desktop-bridge`
+- live discovery directory was **not present**
+- a V0.9 dedicated session using `--disable-extensions` also produced no discovery
+- a separate probe using:
+  - unique user-data-dir
+  - empty extensions-dir
+  - built-in extensions enabled
+  also produced no discovery
+- `cursor agent` invoked non-interactively exited 0 with no usable output
+- a shared-login `--profile` / `--new-window` probe did not yield a unique binding marker
+- no live Cursor Agent prompt was submitted by V1.0
+
+### Current live state
+
+`CURSOR_DESKTOP_BRIDGE_NOT_ESTABLISHED`
+
+Therefore actual autonomous Cursor Agent prompting is **NOT_ESTABLISHED** on this PC.
+
+## V1.0 synthetic validation
+
+V1.0 targeted bridge tests: **9 PASS**
+
+Validated:
+- exact session bridge status
+- sensitive thread-title redaction
+- request does not send before approval
+- approved exact prompt sends once
+- changed prompt cannot reuse approval
+- session-external thread is denied
+- PERSONAL prompt is denied
+- git-push directive is denied
+- absent discovery fails closed
+
+## Full regression state
+
+A full V0-V1.0 regression was run after V1.0 integration.
+
+Observed:
+
+- **95 PASS**
+- **1 FAIL**
+
+Fresh failure:
+
+`test_mcp_set_text_round_trip_and_exact_approval`
+
+Expected:
+`fixture-value`
+
+Observed:
+`..fixture-value`
+
+This occurred in the existing V0.6 synthetic UI Edit path.
+
+Current interpretation:
+
+- fresh regression failure = FACT
+- root cause = NOT_ADJUDICATED
+- V1.0 bridge causality = NOT_ESTABLISHED
+- full branch regression = FAIL
+
+No automatic patch or second fresh rerun was used to erase this result.
+
+## Evidence ceiling
+
+`BOUNDED_CURSOR_AGENT_WORKER_V1_0_BRIDGE_GATED_CANDIDATE_WITH_REGRESSION_FAIL`
+
+### SUPPORTED
+
+- fail-closed exact-session bridge architecture
+- exact prompt approval binding
+- synthetic agent-bridge control logic
 
 ### NOT_ESTABLISHED
 
-- autonomous Cursor AI/Agent prompt submission
-- Cursor-generated code editing as a worker
+- live Cursor Agent prompt submission
+- live Cursor-generated code editing
+- bridge enablement mechanism on this installation
+- V0.6 Edit regression root cause
 - cross-project reliability
-- production repo safety
+- production safety
 - independent security review
-- production readiness
 
 ### HOLD / NOT AUTHORIZED
 
-- arbitrary terminal commands
-- git push/deploy/SEND
-- browser mutation
-- password/secret UI injection
-- EMR production write
-- PHI production use
-- remote relay/device pairing
+- live Agent SEND while bridge is absent
+- git push / deploy / SEND
+- secret injection
+- EMR/PHI production use
+- merge / deployment
