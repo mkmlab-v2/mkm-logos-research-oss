@@ -170,5 +170,3 @@ def test_balanced_50_is_only_ready_for_human_adjudication(tmp_path: Path):
     assert summary["willingness_to_pay"] == "NOT_ESTABLISHED"
     assert summary["pmf"] == "NOT_ESTABLISHED"
     assert summary["automatic_superiority_claim"] is False
-
-[executed on device: DESKTOP-2511 (8ece3256-18bd-4d81-8680-5d6884af295c)]
