@@ -1,96 +1,81 @@
-# MKM Secure Agent Runtime V0.9 — local setup
+# MKM Secure Agent Runtime V1.0 — local setup
 
 Development candidate only.
 
-## Environment
+## V1.0 Cursor Agent bridge
 
-```powershell
-$env:MKM_AGENT_ROOTS = "C:\workspace\SAFE"
-$env:MKM_AGENT_STATE = "$env:USERPROFILE\.mkm-agent-runtime"
-$env:MKM_OLLAMA_BASE_URL = "http://127.0.0.1:11434"
-$env:MKM_OLLAMA_AUTOSTART = "1"
-```
+V1.0 requires a V0.9 dedicated developer session plus Cursor's live desktop bridge.
 
-Install:
+The runtime does not create, copy, or migrate Cursor credentials.
 
-```powershell
-python -m pip install -r experiments\mkm_secure_agent_runtime_v0\requirements-mcp-v0.1.txt
-```
-
-Run MCP:
-
-```powershell
-python experiments\mkm_secure_agent_runtime_v0\mcp_server.py
-```
-
-Run tray:
-
-```powershell
-experiments\mkm_secure_agent_runtime_v0\start_tray.cmd
-```
-
-## V0.9 dedicated Cursor worker workflow
-
-1. Request:
-   `request_dev_session_start(workspace_path)`
-2. Approve locally in tray/CLI.
-3. Execute:
-   `execute_dev_session_start(session_id, approval_id)`
-4. Require:
-   `binding_state = BOUND_ESTABLISHED`
-5. Use session-scoped semantic actions:
-   - `dev_session_workspace_status`
-   - `dev_session_git_diff`
-   - `dev_session_detect_tests`
-6. To run tests:
-   - `request_dev_session_test`
-   - approve locally
-   - `execute_dev_session_test`
-7. To close:
-   - `request_dev_session_close`
-   - approve locally
-   - `execute_dev_session_close`
-
-## Dedicated session construction
-
-The runtime generates a state-local `.code-workspace` file pointing at the exact approved workspace and assigns a unique window title marker.
-
-Cursor is launched in a new window with a unique user-data-dir and extensions disabled.
-
-The model does not supply arbitrary CLI flags.
-
-## Binding semantics
-
-`BOUND_ESTABLISHED` requires both semantic and process evidence:
-
-- workspace file exact mapping and hash
-- unique title marker present in a visible Cursor window
-- visible window PID belongs to the process set carrying the exact session user-data-dir
-
-If the PID changes, title fingerprint changes, marker disappears, or the workspace file changes, V0.9 does not silently rebind. It moves toward stale/fail-closed state.
-
-## Fixed test command
+Expected bridge discovery root:
 
 ```text
-python -B -m pytest -q -p no:cacheprovider
+%USERPROFILE%\.cursor\desktop-bridge
 ```
 
-This is fixed by code. No arbitrary test command string is accepted.
+A valid discovery record must match the exact V0.9 session `userDataDir`.
 
-## Close semantics
+## Agent workflow
 
-Session close terminates only Cursor processes whose command lines carry the exact dedicated session user-data-dir.
+1. establish a V0.9 dedicated Cursor session
+2. call `cursor_agent_status(session_id)`
+3. require:
+   `bridge_state = ESTABLISHED`
+4. call `cursor_agent_threads(session_id)`
+5. choose an exact thread id from that session only
+6. call `request_cursor_agent_prompt(...)`
+7. approve locally in tray/CLI
+8. call `execute_cursor_agent_prompt(...)`
 
-The session state and user-data directory are retained for evidence in V0.9; they are not automatically deleted.
+If bridge state is NOT_ESTABLISHED, stop.
 
-## Still prohibited
+## Current test-PC state
 
-- arbitrary terminal command
-- arbitrary Cursor CLI flags
-- git commit/push/deploy
-- secret injection
-- SEND/payment/transfer/destructive actions
-- PHI production use
-- remote control
+Observed:
 
-Evidence ceiling: `BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_9_CANDIDATE`.
+```text
+CURSOR_DESKTOP_BRIDGE_NOT_ESTABLISHED
+```
+
+No live Agent prompt was sent.
+
+## V1.0 send policy
+
+Agent prompt submission is treated as an external mutation/SEND-class action.
+
+It requires:
+- local privacy ALLOW
+- exact session thread
+- exact prompt SHA-256 and length
+- local HUMAN_GATE
+- force=false
+
+## Explicit denials
+
+- force send
+- secret / PHI / personal prompt
+- git push
+- deploy / publish
+- mail send
+- transfer / bank operation
+- destructive directives
+- extension install/uninstall
+
+## Regression warning
+
+Latest full branch regression:
+
+```text
+95 passed
+1 failed
+```
+
+Failure is in the existing V0.6 synthetic Edit set-text effect:
+expected `fixture-value`, observed `..fixture-value`.
+
+Do not treat V1.0 branch as fully green until that failure is separately adjudicated.
+
+Evidence ceiling:
+
+`BOUNDED_CURSOR_AGENT_WORKER_V1_0_BRIDGE_GATED_CANDIDATE_WITH_REGRESSION_FAIL`
