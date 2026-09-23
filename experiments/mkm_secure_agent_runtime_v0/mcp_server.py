@@ -29,6 +29,13 @@ from secrets_dpapi import DPAPISecretStore, SecretStoreError
 from snapshot import SnapshotStore, SnapshotError
 from desktop_ui import DesktopActionLayer, DesktopUIError
 from ui_refs import UIRefStore, UIRefError
+from app_adapters import (
+    AppAdapterLayer,
+    AppAdapterRegistry,
+    AppAdapterError,
+    CLICK_LOW_RISK,
+    SET_TEXT_CLEAN,
+)
 
 
 def _digest(value: Any) -> str:
@@ -79,6 +86,7 @@ def create_server(
     secret_store: DPAPISecretStore | None = None,
     snapshot_store: SnapshotStore | None = None,
     desktop_layer: DesktopActionLayer | None = None,
+    app_layer: AppAdapterLayer | None = None,
 ) -> MCPServer:
     mcp = MCPServer(
         "MKM Secure Agent Runtime",
@@ -106,6 +114,9 @@ def create_server(
             ),
             "desktop_actions": (
                 "WINDOWS_UIA_HUMAN_GATE" if desktop_layer is not None else "UNAVAILABLE"
+            ),
+            "app_adapters": (
+                "REQUIRED_FOR_UI_MUTATION" if app_layer is not None else "UNAVAILABLE"
             ),
             "semantic_state": "NOT_ADJUDICATED",
             "send_gate": "HOLD",
@@ -442,7 +453,14 @@ def create_server(
 
     @mcp.tool()
     def request_ui_click(control_ref: str, ttl_seconds: int = 600) -> dict[str, Any]:
-        """Request one-time human approval for a low-risk UIA click; does not click."""
+        """Legacy V0.6 UI click request. Disabled when V0.7 adapters are active."""
+        if app_layer is not None:
+            return {
+                "status": "DENIED",
+                "reason": "APP_ADAPTER_REQUIRED",
+                "executed": False,
+                "send_gate": "HOLD",
+            }
         layer = _require_desktop()
         resolved = layer.resolve_control(control_ref)
         policy = layer.action_policy(control_ref, action="click")
@@ -475,7 +493,14 @@ def create_server(
 
     @mcp.tool()
     def execute_ui_click(control_ref: str, approval_id: str) -> dict[str, Any]:
-        """Execute an exact previously approved low-risk UIA click."""
+        """Legacy V0.6 UI click execute. Disabled when V0.7 adapters are active."""
+        if app_layer is not None:
+            return {
+                "status": "DENIED",
+                "reason": "APP_ADAPTER_REQUIRED",
+                "executed": False,
+                "send_gate": "HOLD",
+            }
         layer = _require_desktop()
         resolved = layer.resolve_control(control_ref)
         policy = layer.action_policy(control_ref, action="click")
@@ -506,7 +531,14 @@ def create_server(
         text: str,
         ttl_seconds: int = 600,
     ) -> dict[str, Any]:
-        """Request approval to set non-sensitive text on a non-password Edit control."""
+        """Legacy V0.6 text request. Disabled when V0.7 adapters are active."""
+        if app_layer is not None:
+            return {
+                "status": "DENIED",
+                "reason": "APP_ADAPTER_REQUIRED",
+                "executed": False,
+                "send_gate": "HOLD",
+            }
         layer = _require_desktop()
         resolved = layer.resolve_control(control_ref)
         policy = layer.action_policy(control_ref, action="set_text", text=text)
@@ -547,7 +579,14 @@ def create_server(
         text: str,
         approval_id: str,
     ) -> dict[str, Any]:
-        """Set exact non-sensitive text after local approval."""
+        """Legacy V0.6 text execute. Disabled when V0.7 adapters are active."""
+        if app_layer is not None:
+            return {
+                "status": "DENIED",
+                "reason": "APP_ADAPTER_REQUIRED",
+                "executed": False,
+                "send_gate": "HOLD",
+            }
         layer = _require_desktop()
         resolved = layer.resolve_control(control_ref)
         policy = layer.action_policy(control_ref, action="set_text", text=text)
@@ -569,6 +608,219 @@ def create_server(
         )
         result = layer.set_text(control_ref, text)
         result.update({
+            "semantic_state": "NOT_ADJUDICATED",
+            "send_gate": "HOLD",
+        })
+        return result
+
+    def _require_app_layer() -> AppAdapterLayer:
+        if app_layer is None:
+            raise RuntimeErrorV0("App Adapter Layer unavailable")
+        return app_layer
+
+    def _app_target(window_ref: str, control_ref: str, adapter_id: str, resolved) -> str:
+        summary = resolved.safe_summary
+        name_obj = summary.get("name") or {}
+        label = name_obj.get("text") if isinstance(name_obj, dict) else ""
+        ctype = summary.get("control_type") or resolved.selector.get("control_type") or "Control"
+        return (
+            f"app://{adapter_id}/{window_ref}/{control_ref} | "
+            f"{ctype} | {label or '[label-hidden]'}"
+        )
+
+    @mcp.tool()
+    def app_identify_window(window_ref: str) -> dict[str, Any]:
+        """Identify a window using non-content process/class metadata only."""
+        layer = _require_app_layer()
+        result = layer.identify_window(window_ref)
+        result["send_gate"] = "HOLD"
+        return result
+
+    @mcp.tool()
+    def app_inspect_window(window_ref: str, max_controls: int = 100) -> dict[str, Any]:
+        """Inspect a window through its matched adapter and bounded UI refs."""
+        layer = _require_app_layer()
+        result = layer.inspect_window(window_ref, max_controls=max_controls)
+        result["send_gate"] = "HOLD"
+        return result
+
+    @mcp.tool()
+    def request_app_click(
+        window_ref: str,
+        control_ref: str,
+        ttl_seconds: int = 600,
+    ) -> dict[str, Any]:
+        """Request a click only when both adapter and Desktop policy allow it."""
+        layer = _require_app_layer()
+        policy = layer.app_policy(
+            window_ref, control_ref, action="click"
+        )
+        if policy["decision"] != "HUMAN_GATE":
+            return {
+                "status": "DENIED",
+                "reason": policy["reason"],
+                "adapter_id": policy.get("adapter_id"),
+                "executed": False,
+                "send_gate": "HOLD",
+            }
+        resolved = _require_desktop().resolve_control(control_ref)
+        adapter_id = policy["adapter_id"]
+        args = {
+            "window_ref": window_ref,
+            "control_ref": control_ref,
+            "adapter_id": adapter_id,
+            "fingerprint": resolved.selector["fingerprint"],
+            "action": "click",
+        }
+        target = _app_target(window_ref, control_ref, adapter_id, resolved)
+        request = broker.request(
+            action="app_click",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            "approval_id": request["approval_id"],
+            "status": "HUMAN_GATE",
+            "adapter_id": adapter_id,
+            "target": target,
+            "expires_at": request["expires_at"],
+            "executed": False,
+        }
+
+    @mcp.tool()
+    def execute_app_click(
+        window_ref: str,
+        control_ref: str,
+        approval_id: str,
+    ) -> dict[str, Any]:
+        """Execute an exact adapter-authorized click after local approval."""
+        layer = _require_app_layer()
+        policy = layer.app_policy(
+            window_ref, control_ref, action="click"
+        )
+        if policy["decision"] != "HUMAN_GATE":
+            return {
+                "status": "DENIED",
+                "reason": policy["reason"],
+                "adapter_id": policy.get("adapter_id"),
+                "executed": False,
+                "send_gate": "HOLD",
+            }
+        resolved = _require_desktop().resolve_control(control_ref)
+        adapter_id = policy["adapter_id"]
+        args = {
+            "window_ref": window_ref,
+            "control_ref": control_ref,
+            "adapter_id": adapter_id,
+            "fingerprint": resolved.selector["fingerprint"],
+            "action": "click",
+        }
+        target = _app_target(window_ref, control_ref, adapter_id, resolved)
+        broker.consume(
+            approval_id,
+            action="app_click",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        result = _require_desktop().click(control_ref)
+        result.update({
+            "adapter_id": adapter_id,
+            "semantic_state": "NOT_ADJUDICATED",
+            "send_gate": "HOLD",
+        })
+        return result
+
+    @mcp.tool()
+    def request_app_set_text(
+        window_ref: str,
+        control_ref: str,
+        text: str,
+        ttl_seconds: int = 600,
+    ) -> dict[str, Any]:
+        """Request clean Edit text only when adapter and Desktop policy both allow it."""
+        layer = _require_app_layer()
+        policy = layer.app_policy(
+            window_ref, control_ref, action="set_text", text=text
+        )
+        if policy["decision"] != "HUMAN_GATE":
+            return {
+                "status": "DENIED",
+                "reason": policy["reason"],
+                "adapter_id": policy.get("adapter_id"),
+                "executed": False,
+                "send_gate": "HOLD",
+            }
+        resolved = _require_desktop().resolve_control(control_ref)
+        adapter_id = policy["adapter_id"]
+        args = {
+            "window_ref": window_ref,
+            "control_ref": control_ref,
+            "adapter_id": adapter_id,
+            "fingerprint": resolved.selector["fingerprint"],
+            "action": "set_text",
+            "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "text_length": len(text),
+        }
+        target = _app_target(window_ref, control_ref, adapter_id, resolved)
+        request = broker.request(
+            action="app_set_text",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            "approval_id": request["approval_id"],
+            "status": "HUMAN_GATE",
+            "adapter_id": adapter_id,
+            "target": target,
+            "text_sha256": args["text_sha256"],
+            "text_length": len(text),
+            "expires_at": request["expires_at"],
+            "executed": False,
+        }
+
+    @mcp.tool()
+    def execute_app_set_text(
+        window_ref: str,
+        control_ref: str,
+        text: str,
+        approval_id: str,
+    ) -> dict[str, Any]:
+        """Execute exact clean text through an adapter after local approval."""
+        layer = _require_app_layer()
+        policy = layer.app_policy(
+            window_ref, control_ref, action="set_text", text=text
+        )
+        if policy["decision"] != "HUMAN_GATE":
+            return {
+                "status": "DENIED",
+                "reason": policy["reason"],
+                "adapter_id": policy.get("adapter_id"),
+                "executed": False,
+                "send_gate": "HOLD",
+            }
+        resolved = _require_desktop().resolve_control(control_ref)
+        adapter_id = policy["adapter_id"]
+        args = {
+            "window_ref": window_ref,
+            "control_ref": control_ref,
+            "adapter_id": adapter_id,
+            "fingerprint": resolved.selector["fingerprint"],
+            "action": "set_text",
+            "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "text_length": len(text),
+        }
+        target = _app_target(window_ref, control_ref, adapter_id, resolved)
+        broker.consume(
+            approval_id,
+            action="app_set_text",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        result = _require_desktop().set_text(control_ref, text)
+        result.update({
+            "adapter_id": adapter_id,
             "semantic_state": "NOT_ADJUDICATED",
             "send_gate": "HOLD",
         })
@@ -607,6 +859,7 @@ def main() -> None:
     secret_store = None
     snapshot_store = None
     desktop_layer = None
+    app_layer = None
     if os.name == "nt":
         try:
             secret_store = DPAPISecretStore(broker.state_dir)
@@ -622,14 +875,21 @@ def main() -> None:
         try:
             ui_refs = UIRefStore(broker.state_dir)
             desktop_layer = DesktopActionLayer(ui_refs)
-        except (UIRefError, DesktopUIError):
+            app_layer = AppAdapterLayer(
+                desktop_layer,
+                ui_refs,
+                registry=AppAdapterRegistry(),
+            )
+        except (UIRefError, DesktopUIError, AppAdapterError):
             desktop_layer = None
+            app_layer = None
     mcp = create_server(
         runtime,
         broker,
         secret_store=secret_store,
         snapshot_store=snapshot_store,
         desktop_layer=desktop_layer,
+        app_layer=app_layer,
     )
     mcp.run()
 
