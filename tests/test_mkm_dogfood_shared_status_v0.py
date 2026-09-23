@@ -289,3 +289,64 @@ def test_shared_status_seal_matches_published_bytes(tmp_path: Path):
     assert hashlib.sha256(raw).hexdigest() == published["sha256"]
     assert seal["sha256"] == published["sha256"]
     assert seal["covered_head_hash"] == ledger.verify_chain()["head_hash"]
+
+
+def test_finalize_recomputes_gate_so_late_fresh_fail_overrides_old_candidate(tmp_path: Path):
+    repo, head = _repo(tmp_path)
+    ledger, runner = _runner(tmp_path)
+    task = _task(repo, head)
+    started = runner.start(task)
+    binding = WorkspaceBinding(**started["workspace"])
+
+    result = runner.orchestrator.dispatch(task, binding, ExactWorker())
+    runner.orchestrator.record_builder_evidence(
+        result,
+        suite_id="builder-suite",
+        suite_digest="a" * 64,
+        outcome=EvidenceOutcome.PASS,
+        detail={"claim": "builder pass"},
+    )
+    observed = observe_workspace(binding.worktree_path)
+    validator = IndependentValidatorContract(ledger)
+    validator.record_test_result(
+        task_id=task.task_id,
+        validator_id="validator-pass",
+        suite_id="validator-suite-pass",
+        suite_digest="b" * 64,
+        subject_digest=observed["subject_digest"],
+        returncode=0,
+        stdout_sha256="c" * 64,
+        stderr_sha256="d" * 64,
+        duration_ms=25,
+    )
+    old_gate = runner.orchestrator.evaluate(task.task_id)
+    assert old_gate.task_state.value == "CANDIDATE"
+
+    validator.record_test_result(
+        task_id=task.task_id,
+        validator_id="validator-fail",
+        suite_id="validator-suite-late-fail",
+        suite_digest="e" * 64,
+        subject_digest=observed["subject_digest"],
+        returncode=1,
+        stdout_sha256="f" * 64,
+        stderr_sha256="0" * 64,
+        duration_ms=30,
+    )
+
+    finalized = runner.finalize(
+        task.task_id,
+        DogfoodMeasurementV0(
+            task_id=task.task_id,
+            cohort="EVIDENCE_GATE",
+            fresh_fail_caught=1,
+            builder_pass_validator_fail=1,
+        ),
+    )
+
+    assert finalized["task_state"] == "FAIL"
+    assert finalized["gate_reason"] == "SEALED_INDEPENDENT_FRESH_FAIL"
+    assert finalized["next_action"] == "HUMAN_ADJUDICATION_REQUIRED"
+    assert finalized["merge_authorization"] == "NO"
+    assert finalized["deployment_authorization"] == "NO"
+    assert finalized["send_gate"] == "HOLD"
