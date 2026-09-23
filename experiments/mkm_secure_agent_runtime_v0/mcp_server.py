@@ -37,6 +37,7 @@ from app_adapters import (
     SET_TEXT_CLEAN,
 )
 from developer_adapter import DeveloperWorkspaceAdapter, DeveloperAdapterError
+from developer_session import DeveloperSessionManager, DeveloperSessionError
 
 
 def _digest(value: Any) -> str:
@@ -89,6 +90,7 @@ def create_server(
     desktop_layer: DesktopActionLayer | None = None,
     app_layer: AppAdapterLayer | None = None,
     developer_layer: DeveloperWorkspaceAdapter | None = None,
+    session_manager: DeveloperSessionManager | None = None,
 ) -> MCPServer:
     mcp = MCPServer(
         "MKM Secure Agent Runtime",
@@ -122,6 +124,9 @@ def create_server(
             ),
             "developer_adapter": (
                 "SEMANTIC_VSCODE_CURSOR_BOUNDED" if developer_layer is not None else "UNAVAILABLE"
+            ),
+            "developer_worker_session": (
+                "DEDICATED_CURSOR_BINDING_V0_9" if session_manager is not None else "UNAVAILABLE"
             ),
             "semantic_state": "NOT_ADJUDICATED",
             "send_gate": "HOLD",
@@ -972,6 +977,299 @@ def create_server(
             "send_gate": "HOLD",
         }
 
+    def _require_session_manager() -> DeveloperSessionManager:
+        if session_manager is None:
+            raise RuntimeErrorV0("Developer Worker Session unavailable")
+        return session_manager
+
+    def _verified_session(session_id: str) -> dict[str, Any]:
+        status = _require_session_manager().verify(session_id)
+        if status.get("binding_state") != "BOUND_ESTABLISHED":
+            raise RuntimeErrorV0(
+                f"developer session not bound: {status.get('binding_state')}"
+            )
+        if not status.get("window_ref"):
+            raise RuntimeErrorV0("developer session has no verified window_ref")
+        return status
+
+    @mcp.tool()
+    def request_dev_session_start(
+        workspace_path: str,
+        wait_seconds: float = 20.0,
+        ttl_seconds: int = 600,
+    ) -> dict[str, Any]:
+        """Prepare a dedicated Cursor worker session and request local approval to launch it."""
+        if wait_seconds < 5 or wait_seconds > 60:
+            raise ValueError("wait_seconds must be 5..60")
+        prepared = _require_session_manager().prepare(workspace_path)
+        args = {
+            "session_id": prepared["session_id"],
+            "workspace_path": prepared["workspace_path"],
+            "workspace_file_sha256": prepared["workspace_file_sha256"],
+            "window_marker_sha256": prepared["window_marker_sha256"],
+            "launch_argv_sha256": prepared["launch_argv_sha256"],
+            "wait_seconds": wait_seconds,
+        }
+        target = (
+            f"devsession://start/{prepared['session_id']} | "
+            f"{prepared['workspace_path']}"
+        )
+        req = broker.request(
+            action="dev_session_start",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            **prepared,
+            "approval_id": req["approval_id"],
+            "approval_status": "HUMAN_GATE",
+            "wait_seconds": wait_seconds,
+            "executed": False,
+        }
+
+    @mcp.tool()
+    def execute_dev_session_start(
+        session_id: str,
+        approval_id: str,
+        wait_seconds: float = 20.0,
+    ) -> dict[str, Any]:
+        """Launch and bind the exact prepared dedicated Cursor session after approval."""
+        if wait_seconds < 5 or wait_seconds > 60:
+            raise ValueError("wait_seconds must be 5..60")
+        manager = _require_session_manager()
+        prepared = manager._public(manager._load(session_id))
+        args = {
+            "session_id": prepared["session_id"],
+            "workspace_path": prepared["workspace_path"],
+            "workspace_file_sha256": prepared["workspace_file_sha256"],
+            "window_marker_sha256": prepared["window_marker_sha256"],
+            "launch_argv_sha256": prepared["launch_argv_sha256"],
+            "wait_seconds": wait_seconds,
+        }
+        target = (
+            f"devsession://start/{prepared['session_id']} | "
+            f"{prepared['workspace_path']}"
+        )
+        broker.consume(
+            approval_id,
+            action="dev_session_start",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        result = manager.start(session_id, wait_seconds=wait_seconds)
+        result["executed"] = True
+        result["semantic_state"] = "NOT_ADJUDICATED"
+        return result
+
+    @mcp.tool()
+    def dev_session_status(session_id: str) -> dict[str, Any]:
+        """Verify the dedicated Cursor process/window/workspace binding."""
+        return _require_session_manager().verify(session_id)
+
+    @mcp.tool()
+    def dev_session_workspace_status(session_id: str) -> dict[str, Any]:
+        """Read Git status only after a dedicated Cursor session is freshly verified."""
+        bound = _verified_session(session_id)
+        result = _require_developer().status(
+            bound["window_ref"],
+            bound["workspace_path"],
+        )
+        result["session_id"] = session_id
+        result["binding_state"] = "BOUND_ESTABLISHED"
+        result["bound_window_pid"] = bound["bound_window_pid"]
+        return result
+
+    @mcp.tool()
+    def dev_session_git_diff(
+        session_id: str,
+        staged: bool = False,
+        max_chars: int = 120000,
+    ) -> dict[str, Any]:
+        """Read bounded Git diff through a freshly verified dedicated Cursor session."""
+        bound = _verified_session(session_id)
+        result = _require_developer().diff(
+            bound["window_ref"],
+            bound["workspace_path"],
+            staged=staged,
+            max_chars=max_chars,
+        )
+        result["session_id"] = session_id
+        result["binding_state"] = "BOUND_ESTABLISHED"
+        result["bound_window_pid"] = bound["bound_window_pid"]
+        return result
+
+    @mcp.tool()
+    def dev_session_detect_tests(session_id: str) -> dict[str, Any]:
+        """Detect the fixed pytest profile through a freshly verified dedicated session."""
+        bound = _verified_session(session_id)
+        result = _require_developer().detect_test_profile(
+            bound["window_ref"],
+            bound["workspace_path"],
+        )
+        result["session_id"] = session_id
+        result["binding_state"] = "BOUND_ESTABLISHED"
+        result["bound_window_pid"] = bound["bound_window_pid"]
+        return result
+
+    @mcp.tool()
+    def request_dev_session_test(
+        session_id: str,
+        profile_id: str = "pytest.quiet.v0",
+        timeout_seconds: float = 120.0,
+        ttl_seconds: int = 600,
+    ) -> dict[str, Any]:
+        """Request the fixed pytest profile for a verified dedicated Cursor worker."""
+        if timeout_seconds <= 0 or timeout_seconds > 300:
+            raise ValueError("timeout_seconds must be >0 and <=300")
+        bound = _verified_session(session_id)
+        detected, argv = _require_developer().exact_test_argv(
+            bound["window_ref"],
+            bound["workspace_path"],
+            profile_id,
+        )
+        args = {
+            "session_id": session_id,
+            "bound_window_pid": bound["bound_window_pid"],
+            "workspace_path": bound["workspace_path"],
+            "adapter_id": detected["adapter_id"],
+            "profile_id": profile_id,
+            "argv": argv,
+            "timeout_seconds": timeout_seconds,
+        }
+        target = (
+            f"devsession://test/{session_id}/{profile_id} | "
+            f"{bound['workspace_path']}"
+        )
+        req = broker.request(
+            action="dev_session_test",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            "approval_id": req["approval_id"],
+            "status": "HUMAN_GATE",
+            "session_id": session_id,
+            "bound_window_pid": bound["bound_window_pid"],
+            "profile_id": profile_id,
+            "argv": argv,
+            "target": target,
+            "executed": False,
+            "send_gate": "HOLD",
+        }
+
+    @mcp.tool()
+    def execute_dev_session_test(
+        session_id: str,
+        approval_id: str,
+        profile_id: str = "pytest.quiet.v0",
+        timeout_seconds: float = 120.0,
+    ) -> dict[str, Any]:
+        """Execute the exact approved fixed pytest profile for a verified session."""
+        if timeout_seconds <= 0 or timeout_seconds > 300:
+            raise ValueError("timeout_seconds must be >0 and <=300")
+        bound = _verified_session(session_id)
+        detected, argv = _require_developer().exact_test_argv(
+            bound["window_ref"],
+            bound["workspace_path"],
+            profile_id,
+        )
+        args = {
+            "session_id": session_id,
+            "bound_window_pid": bound["bound_window_pid"],
+            "workspace_path": bound["workspace_path"],
+            "adapter_id": detected["adapter_id"],
+            "profile_id": profile_id,
+            "argv": argv,
+            "timeout_seconds": timeout_seconds,
+        }
+        target = (
+            f"devsession://test/{session_id}/{profile_id} | "
+            f"{bound['workspace_path']}"
+        )
+        broker.consume(
+            approval_id,
+            action="dev_session_test",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        cp, receipt = runtime.run_command(
+            argv,
+            cwd=bound["workspace_path"],
+            human_approved=True,
+            timeout=timeout_seconds,
+        )
+        sanitized = _require_developer().sanitize_test_output(cp.stdout, cp.stderr)
+        return {
+            "executed": True,
+            "session_id": session_id,
+            "bound_window_pid": bound["bound_window_pid"],
+            "profile_id": profile_id,
+            "returncode": cp.returncode,
+            "output": sanitized,
+            "receipt_id": receipt.receipt_id,
+            "semantic_state": "NOT_ADJUDICATED",
+            "send_gate": "HOLD",
+        }
+
+    @mcp.tool()
+    def request_dev_session_close(
+        session_id: str,
+        ttl_seconds: int = 600,
+    ) -> dict[str, Any]:
+        """Request local approval to terminate only the dedicated Cursor session processes."""
+        manager = _require_session_manager()
+        record = manager._public(manager._load(session_id))
+        args = {
+            "session_id": session_id,
+            "bound_window_pid": record["bound_window_pid"],
+            "workspace_path": record["workspace_path"],
+            "status": record["status"],
+        }
+        target = f"devsession://close/{session_id} | {record['workspace_path']}"
+        req = broker.request(
+            action="dev_session_close",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            "approval_id": req["approval_id"],
+            "status": "HUMAN_GATE",
+            "session_id": session_id,
+            "bound_window_pid": record["bound_window_pid"],
+            "target": target,
+            "executed": False,
+            "send_gate": "HOLD",
+        }
+
+    @mcp.tool()
+    def execute_dev_session_close(
+        session_id: str,
+        approval_id: str,
+    ) -> dict[str, Any]:
+        """Close only the exact dedicated Cursor session processes after local approval."""
+        manager = _require_session_manager()
+        record = manager._public(manager._load(session_id))
+        args = {
+            "session_id": session_id,
+            "bound_window_pid": record["bound_window_pid"],
+            "workspace_path": record["workspace_path"],
+            "status": record["status"],
+        }
+        target = f"devsession://close/{session_id} | {record['workspace_path']}"
+        broker.consume(
+            approval_id,
+            action="dev_session_close",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        result = manager.close(session_id)
+        result["executed"] = True
+        result["semantic_state"] = "NOT_ADJUDICATED"
+        return result
+
     @mcp.tool()
     def ollama_health() -> dict[str, Any]:
         """Check the configured loopback-only Ollama endpoint."""
@@ -1007,6 +1305,7 @@ def main() -> None:
     desktop_layer = None
     app_layer = None
     developer_layer = None
+    session_manager = None
     if os.name == "nt":
         try:
             secret_store = DPAPISecretStore(broker.state_dir)
@@ -1031,10 +1330,16 @@ def main() -> None:
                 runtime.config,
                 app_layer,
             )
+            session_manager = DeveloperSessionManager(
+                runtime.config,
+                broker.state_dir,
+                desktop_layer,
+            )
         except (UIRefError, DesktopUIError, AppAdapterError):
             desktop_layer = None
             app_layer = None
             developer_layer = None
+            session_manager = None
     mcp = create_server(
         runtime,
         broker,
@@ -1043,6 +1348,7 @@ def main() -> None:
         desktop_layer=desktop_layer,
         app_layer=app_layer,
         developer_layer=developer_layer,
+        session_manager=session_manager,
     )
     mcp.run()
 
