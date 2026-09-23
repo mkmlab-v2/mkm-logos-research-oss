@@ -23,6 +23,7 @@ from typing import Any
 from mcp.server import MCPServer
 
 from approval import ApprovalBroker, ApprovalError
+from privacy import scan_text
 from runtime import Privacy, RuntimeConfig, RuntimeErrorV0, SecureAgentRuntime
 
 
@@ -104,21 +105,82 @@ def create_server(runtime: SecureAgentRuntime, broker: ApprovalBroker) -> MCPSer
         max_chars: int = 200000,
         privacy: str = "INTERNAL",
     ) -> dict[str, Any]:
-        """Read a UTF-8 text file under an approved root. SECRET is denied."""
+        """Read a UTF-8 text file only after local deterministic privacy scan."""
         if max_chars < 1 or max_chars > 500000:
             raise ValueError("max_chars must be 1..500000")
-        p = _privacy(privacy)
-        if p == Privacy.SECRET:
+        declared = _privacy(privacy)
+        if declared == Privacy.SECRET:
             raise RuntimeErrorV0("SECRET file content is not exposed to the model")
         data, receipt = runtime.read_file(
-            path, max_bytes=max_chars * 4, privacy=p
+            path, max_bytes=max_chars * 4, privacy=Privacy.INTERNAL
         )
         text = data.decode("utf-8-sig")
         if len(text) > max_chars:
             text = text[:max_chars]
+            truncated = True
+        else:
+            truncated = False
+
+        scan = scan_text(text)
+        effective_state = scan.state
+        if declared.value in {"PERSONAL", "PHI"}:
+            effective_state = declared.value
+
+        if scan.state == "SECRET":
+            return {
+                "text": None,
+                "blocked": True,
+                "privacy_state": "SECRET",
+                "release_decision": "DENY",
+                "signal_counts": scan.signal_counts,
+                "limitations": scan.limitations,
+                "sha256": receipt.result_meta["sha256"],
+                "receipt_id": receipt.receipt_id,
+            }
+        if effective_state in {"PERSONAL", "PHI"}:
+            return {
+                "text": None,
+                "blocked": True,
+                "privacy_state": effective_state,
+                "release_decision": "HOLD",
+                "signal_counts": scan.signal_counts,
+                "medical_context": scan.medical_context,
+                "manual_review_required": True,
+                "limitations": scan.limitations,
+                "sha256": receipt.result_meta["sha256"],
+                "receipt_id": receipt.receipt_id,
+            }
+
         return {
             "text": text,
-            "truncated": len(text) >= max_chars,
+            "blocked": False,
+            "privacy_state": scan.state,
+            "release_decision": scan.release_decision,
+            "truncated": truncated,
+            "sha256": receipt.result_meta["sha256"],
+            "receipt_id": receipt.receipt_id,
+        }
+
+    @mcp.tool()
+    def privacy_scan_file(
+        path: str,
+        max_bytes: int = 1048576,
+    ) -> dict[str, Any]:
+        """Scan a local UTF-8 text file and return metadata only, never the body."""
+        if max_bytes < 1 or max_bytes > 4 * 1024 * 1024:
+            raise ValueError("max_bytes must be 1..4194304")
+        data, receipt = runtime.read_file(
+            path, max_bytes=max_bytes, privacy=Privacy.INTERNAL
+        )
+        text = data.decode("utf-8-sig")
+        scan = scan_text(text)
+        return {
+            "privacy_state": scan.state,
+            "release_decision": scan.release_decision,
+            "signal_counts": scan.signal_counts,
+            "medical_context": scan.medical_context,
+            "manual_review_required": scan.manual_review_required,
+            "limitations": scan.limitations,
             "sha256": receipt.result_meta["sha256"],
             "receipt_id": receipt.receipt_id,
         }
