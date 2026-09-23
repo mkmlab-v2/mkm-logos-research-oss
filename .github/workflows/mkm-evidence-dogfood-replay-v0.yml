@@ -16,8 +16,17 @@ permissions:
   contents: read
 
 jobs:
-  df-001:
+  replay:
     runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        manifest:
+          - docs/final/artifacts/dogfood/df_001_measurement_provenance_replay_v0.json
+          - docs/final/artifacts/dogfood/df_002_receipt_authority_replay_v0.json
+          - docs/final/artifacts/dogfood/df_003_validator_measurement_replay_v0.json
+          - docs/final/artifacts/dogfood/df_004_shared_status_runner_replay_v0.json
+          - docs/final/artifacts/dogfood/df_005_shared_status_cli_replay_v0.json
     steps:
       - name: Checkout full history
         uses: actions/checkout@v5
@@ -32,5 +41,5 @@ jobs:
       - name: Install pytest
         run: python -m pip install pytest
 
-      - name: Replay DF-001 through Dogfood Runner
-        run: python scripts/mkm_evidence_dogfood_replay_v0.py --manifest docs/final/artifacts/dogfood/df_001_measurement_provenance_replay_v0.json --out /tmp/df001.json
+      - name: Replay actual change through Dogfood Runner
+        run: python scripts/mkm_evidence_dogfood_replay_v0.py --manifest "${{ matrix.manifest }}" --out /tmp/dogfood.json
