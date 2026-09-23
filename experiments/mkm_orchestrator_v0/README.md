@@ -343,7 +343,7 @@ This gives separate Commander / Validator / Infrastructure chats or local proces
 
 ## V0.1 validation
 
-### Dedicated Evidence Gate CI — final current head
+### Dedicated Evidence Gate CI — validated code revision
 
 GitHub Actions workflow:
 
@@ -355,7 +355,7 @@ Environment:
 - Python 3.11
 - package compile step: PASS
 
-Final current-head test command covered:
+Validated code revision: `9ca46e7f65ce4b02bab630186531080089d0d735`\n\nThe test command covered:
 
 - `test_mkm_evidence_gate_v0.py`
 - `test_mkm_validator_measurement_v0.py`
