@@ -316,8 +316,10 @@ class DesktopActionLayer:
             raise DesktopUIError(f"UI control resolution is ambiguous/stale: matches={len(matches)}")
 
         wrapper, current = matches[0]
-        if _fingerprint(current) != selector.get("fingerprint"):
+        current_fingerprint = _fingerprint(current)
+        if current_fingerprint != selector.get("fingerprint"):
             raise DesktopUIError("UI control fingerprint changed")
+        current["fingerprint"] = current_fingerprint
         safe_summary = payload["summary"]
         return ResolvedControl(wrapper=wrapper, selector=current, safe_summary=safe_summary)
 
