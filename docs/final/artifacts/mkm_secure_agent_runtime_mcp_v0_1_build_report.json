@@ -1,0 +1,63 @@
+{
+  "schema": "mkm_secure_agent_runtime_mcp_v0_1_build_report",
+  "schema_version": 1,
+  "date": "2026-09-23",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "implementation": [
+    "experiments/mkm_secure_agent_runtime_v0/approval.py",
+    "experiments/mkm_secure_agent_runtime_v0/mcp_server.py",
+    "experiments/mkm_secure_agent_runtime_v0/approval_cli.py",
+    "experiments/mkm_secure_agent_runtime_v0/requirements-mcp-v0.1.txt",
+    "tests/test_mkm_secure_agent_runtime_mcp_v0_1.py"
+  ],
+  "sdk_basis": {
+    "package": "mcp",
+    "required_version": "2.x",
+    "protocol_observed": "2026-07-28",
+    "transport": "stdio"
+  },
+  "unit_validation": {
+    "environment": "DESKTOP-2511 isolated fresh clone + isolated venv",
+    "result": "24 passed in 3.10s",
+    "includes_prior_runtime_tests": 15,
+    "includes_mcp_approval_tests": 9
+  },
+  "wire_smoke": {
+    "result": "PASS_BOUNDED",
+    "protocol_version": "2026-07-28",
+    "tool_count": 10,
+    "observed_tools": [
+      "execute_command",
+      "execute_write_text",
+      "list_directory",
+      "ollama_generate",
+      "ollama_health",
+      "read_text_file",
+      "request_command",
+      "request_write_text",
+      "runtime_status",
+      "thin_coordinate"
+    ],
+    "read_call": "PASS",
+    "write_before_approval_exists": false,
+    "request_write_status": "HUMAN_GATE",
+    "local_cli_approval": "PASS_SYNTHETIC_TEST",
+    "approved_write": "PASS",
+    "send_gate_after_write": "HOLD"
+  },
+  "security_boundaries": [
+    "no human_approved boolean exposed in MCP schemas",
+    "approval state directory must be outside model-accessible roots",
+    "approval persists only action target and argument digest, not raw content",
+    "approval is one-time and exact-action-bound",
+    "blocked git subcommands remain blocked after approval",
+    "SECRET content denied to model tools",
+    "PHI Ollama use HOLD by default"
+  ],
+  "evidence_ceiling": "BOUNDED_LOCAL_MCP_RUNTIME_CANDIDATE",
+  "independent_security_review": "NOT_ESTABLISHED",
+  "production_readiness": "NOT_ESTABLISHED",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD"
+}
