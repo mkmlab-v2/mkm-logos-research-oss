@@ -58,8 +58,10 @@ def _protect(data: bytes, *, description: str) -> bytes:
     _require_windows()
     in_blob, _keepalive = _input_blob(data)
     out_blob = DATA_BLOB()
-    crypt32 = ctypes.windll.crypt32
-    kernel32 = ctypes.windll.kernel32
+    crypt32 = ctypes.WinDLL("Crypt32.dll", use_last_error=True)
+    kernel32 = ctypes.WinDLL("Kernel32.dll", use_last_error=True)
+    kernel32.LocalFree.argtypes = [ctypes.c_void_p]
+    kernel32.LocalFree.restype = ctypes.c_void_p
 
     crypt32.CryptProtectData.argtypes = [
         ctypes.POINTER(DATA_BLOB),
@@ -87,7 +89,7 @@ def _protect(data: bytes, *, description: str) -> bytes:
         return ctypes.string_at(out_blob.pbData, out_blob.cbData)
     finally:
         if out_blob.pbData:
-            kernel32.LocalFree(out_blob.pbData)
+            kernel32.LocalFree(ctypes.cast(out_blob.pbData, ctypes.c_void_p))
 
 
 def _unprotect(ciphertext: bytes) -> bytes:
@@ -95,8 +97,10 @@ def _unprotect(ciphertext: bytes) -> bytes:
     in_blob, _keepalive = _input_blob(ciphertext)
     out_blob = DATA_BLOB()
     description_ptr = wintypes.LPWSTR()
-    crypt32 = ctypes.windll.crypt32
-    kernel32 = ctypes.windll.kernel32
+    crypt32 = ctypes.WinDLL("Crypt32.dll", use_last_error=True)
+    kernel32 = ctypes.WinDLL("Kernel32.dll", use_last_error=True)
+    kernel32.LocalFree.argtypes = [ctypes.c_void_p]
+    kernel32.LocalFree.restype = ctypes.c_void_p
 
     crypt32.CryptUnprotectData.argtypes = [
         ctypes.POINTER(DATA_BLOB),
@@ -126,7 +130,7 @@ def _unprotect(ciphertext: bytes) -> bytes:
         if out_blob.pbData:
             kernel32.LocalFree(out_blob.pbData)
         if description_ptr:
-            kernel32.LocalFree(description_ptr)
+            kernel32.LocalFree(ctypes.cast(description_ptr, ctypes.c_void_p))
 
 
 def _normalize_handle(handle: str) -> str:
