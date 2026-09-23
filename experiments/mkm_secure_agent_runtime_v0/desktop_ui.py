@@ -46,6 +46,12 @@ def _hash_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8", errors="replace")).hexdigest()
 
 
+_ACTION_LABEL_TYPES = {
+    "Button", "MenuItem", "TabItem", "Hyperlink", "CheckBox",
+    "RadioButton", "ListItem", "TreeItem",
+}
+
+
 def _safe_text(value: str | None, *, max_chars: int = 120) -> dict[str, Any]:
     raw = (value or "").strip()
     if not raw:
@@ -178,7 +184,13 @@ class DesktopActionLayer:
                 process_name = _process_name(pid)
                 if process_name in _BLOCKED_PROCESSES:
                     continue
-                title = _safe_text(_summary_name(wrapper))
+                raw_title = _summary_name(wrapper)
+                title = {
+                    "text": "[WINDOW_TITLE_HIDDEN]",
+                    "sensitive": True,
+                    "sha256": _hash_text(raw_title),
+                    "reason": "DEFAULT_TITLE_NON_DISCLOSURE",
+                }
                 selector = _selector_for(wrapper, top_handle=handle)
                 selector["fingerprint"] = _fingerprint(selector)
                 summary = {
@@ -225,10 +237,28 @@ class DesktopActionLayer:
         for wrapper in descendants[:max_controls]:
             try:
                 selector = _selector_for(wrapper, top_handle=int(window_payload["selector"]["top_handle"]))
+                ctype = selector["control_type"]
                 if selector["is_password"]:
-                    name = {"text": "[PASSWORD_CONTROL]", "sensitive": True, "sha256": _hash_text(selector["name"])}
-                else:
+                    name = {
+                        "text": "[PASSWORD_CONTROL]",
+                        "sensitive": True,
+                        "sha256": _hash_text(selector["name"]),
+                    }
+                elif ctype in {"Edit", "Text", "Document"}:
+                    name = {
+                        "text": f"[{ctype.upper()}_CONTENT_HIDDEN]",
+                        "sensitive": True,
+                        "sha256": _hash_text(selector["name"]),
+                        "reason": "CONTENT_BEARING_CONTROL_NON_DISCLOSURE",
+                    }
+                elif ctype in _ACTION_LABEL_TYPES:
                     name = _safe_text(selector["name"])
+                else:
+                    name = {
+                        "text": f"[{ctype or 'CONTROL'}]",
+                        "sensitive": False,
+                        "sha256": _hash_text(selector["name"]),
+                    }
                 selector["fingerprint"] = _fingerprint(selector)
                 summary = {
                     "name": name,
