@@ -1,0 +1,19 @@
+{
+  "schema": "mkm_app_adapter_manifest_v0_7",
+  "policy": {
+    "unmatched": "OBSERVE_ONLY",
+    "browser": "OBSERVE_ONLY",
+    "password_controls": "DENY",
+    "sensitive_text": "DENY",
+    "high_risk_labels": "DENY",
+    "mutation": "HUMAN_GATE_WHEN_BOTH_ADAPTER_AND_DESKTOP_POLICY_ALLOW"
+  },
+  "builtins": [
+    {"adapter_id":"windows.notepad.v0","process_names":["notepad.exe"],"capabilities":["OBSERVE","CLICK_LOW_RISK","SET_TEXT_CLEAN"]},
+    {"adapter_id":"editor.vscode.v0","process_names":["code.exe"],"capabilities":["OBSERVE","CLICK_LOW_RISK","SET_TEXT_CLEAN"]},
+    {"adapter_id":"editor.cursor.v0","process_names":["cursor.exe"],"capabilities":["OBSERVE","CLICK_LOW_RISK","SET_TEXT_CLEAN"]},
+    {"adapter_id":"browser.chromium.observe.v0","process_names":["chrome.exe","msedge.exe","brave.exe"],"capabilities":["OBSERVE"]},
+    {"adapter_id":"browser.firefox.observe.v0","process_names":["firefox.exe"],"capabilities":["OBSERVE"]},
+    {"adapter_id":"windows.explorer.observe.v0","process_names":["explorer.exe"],"capabilities":["OBSERVE"]}
+  ]
+}
