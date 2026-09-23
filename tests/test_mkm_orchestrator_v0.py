@@ -366,4 +366,9 @@ def test_status_export_does_not_mutate_ledger(tmp_path: Path):
     payload = __import__("json").loads(target.read_text(encoding="utf-8"))
     assert payload["derived_view"] is True
     assert payload["task_count"] == 1
+    task = payload["tasks"][0]
+    assert task["authority"]["state"] == "UNKNOWN"
+    assert task["authority"]["reason"] == "MISSING_TASK_CREATED_AUTHORITY"
+    assert task["data_quality"]["state"] == "UNKNOWN"
+    assert task["data_quality"]["missing_fields"] == ["authority"]
     assert before == after
