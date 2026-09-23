@@ -36,6 +36,7 @@ from app_adapters import (
     CLICK_LOW_RISK,
     SET_TEXT_CLEAN,
 )
+from developer_adapter import DeveloperWorkspaceAdapter, DeveloperAdapterError
 
 
 def _digest(value: Any) -> str:
@@ -87,6 +88,7 @@ def create_server(
     snapshot_store: SnapshotStore | None = None,
     desktop_layer: DesktopActionLayer | None = None,
     app_layer: AppAdapterLayer | None = None,
+    developer_layer: DeveloperWorkspaceAdapter | None = None,
 ) -> MCPServer:
     mcp = MCPServer(
         "MKM Secure Agent Runtime",
@@ -117,6 +119,9 @@ def create_server(
             ),
             "app_adapters": (
                 "REQUIRED_FOR_UI_MUTATION" if app_layer is not None else "UNAVAILABLE"
+            ),
+            "developer_adapter": (
+                "SEMANTIC_VSCODE_CURSOR_BOUNDED" if developer_layer is not None else "UNAVAILABLE"
             ),
             "semantic_state": "NOT_ADJUDICATED",
             "send_gate": "HOLD",
@@ -826,6 +831,147 @@ def create_server(
         })
         return result
 
+    def _require_developer() -> DeveloperWorkspaceAdapter:
+        if developer_layer is None:
+            raise RuntimeErrorV0("Developer Adapter unavailable")
+        return developer_layer
+
+    @mcp.tool()
+    def dev_workspace_status(
+        window_ref: str,
+        workspace_path: str,
+    ) -> dict[str, Any]:
+        """Read bounded Git status for an approved VS Code/Cursor workspace."""
+        return _require_developer().status(window_ref, workspace_path)
+
+    @mcp.tool()
+    def dev_git_diff(
+        window_ref: str,
+        workspace_path: str,
+        staged: bool = False,
+        max_chars: int = 120000,
+    ) -> dict[str, Any]:
+        """Read a bounded Git diff with local privacy release checks."""
+        return _require_developer().diff(
+            window_ref,
+            workspace_path,
+            staged=staged,
+            max_chars=max_chars,
+        )
+
+    @mcp.tool()
+    def dev_detect_tests(
+        window_ref: str,
+        workspace_path: str,
+    ) -> dict[str, Any]:
+        """Detect the fixed bounded pytest profile from local workspace markers."""
+        return _require_developer().detect_test_profile(
+            window_ref,
+            workspace_path,
+        )
+
+    @mcp.tool()
+    def request_dev_test(
+        window_ref: str,
+        workspace_path: str,
+        profile_id: str = "pytest.quiet.v0",
+        timeout_seconds: float = 120.0,
+        ttl_seconds: int = 600,
+    ) -> dict[str, Any]:
+        """Request one-time approval for the exact fixed developer test profile."""
+        if timeout_seconds <= 0 or timeout_seconds > 300:
+            raise ValueError("timeout_seconds must be >0 and <=300")
+        layer = _require_developer()
+        detected, argv = layer.exact_test_argv(
+            window_ref,
+            workspace_path,
+            profile_id,
+        )
+        workspace = detected["workspace_path"]
+        args = {
+            "window_ref": window_ref,
+            "workspace_path": workspace,
+            "adapter_id": detected["adapter_id"],
+            "profile_id": profile_id,
+            "argv": argv,
+            "timeout_seconds": timeout_seconds,
+        }
+        target = (
+            f"dev://{detected['adapter_id']}/{profile_id} | "
+            f"{workspace}"
+        )
+        request = broker.request(
+            action="dev_test",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            "approval_id": request["approval_id"],
+            "status": "HUMAN_GATE",
+            "adapter_id": detected["adapter_id"],
+            "profile_id": profile_id,
+            "argv": argv,
+            "target": target,
+            "expires_at": request["expires_at"],
+            "executed": False,
+            "send_gate": "HOLD",
+        }
+
+    @mcp.tool()
+    def execute_dev_test(
+        window_ref: str,
+        workspace_path: str,
+        approval_id: str,
+        profile_id: str = "pytest.quiet.v0",
+        timeout_seconds: float = 120.0,
+    ) -> dict[str, Any]:
+        """Execute the exact fixed test profile after local approval."""
+        if timeout_seconds <= 0 or timeout_seconds > 300:
+            raise ValueError("timeout_seconds must be >0 and <=300")
+        layer = _require_developer()
+        detected, argv = layer.exact_test_argv(
+            window_ref,
+            workspace_path,
+            profile_id,
+        )
+        workspace = detected["workspace_path"]
+        args = {
+            "window_ref": window_ref,
+            "workspace_path": workspace,
+            "adapter_id": detected["adapter_id"],
+            "profile_id": profile_id,
+            "argv": argv,
+            "timeout_seconds": timeout_seconds,
+        }
+        target = (
+            f"dev://{detected['adapter_id']}/{profile_id} | "
+            f"{workspace}"
+        )
+        broker.consume(
+            approval_id,
+            action="dev_test",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        cp, receipt = runtime.run_command(
+            argv,
+            cwd=workspace,
+            human_approved=True,
+            timeout=timeout_seconds,
+        )
+        sanitized = layer.sanitize_test_output(cp.stdout, cp.stderr)
+        return {
+            "executed": True,
+            "adapter_id": detected["adapter_id"],
+            "profile_id": profile_id,
+            "returncode": cp.returncode,
+            "output": sanitized,
+            "receipt_id": receipt.receipt_id,
+            "semantic_state": "NOT_ADJUDICATED",
+            "send_gate": "HOLD",
+        }
+
     @mcp.tool()
     def ollama_health() -> dict[str, Any]:
         """Check the configured loopback-only Ollama endpoint."""
@@ -860,6 +1006,7 @@ def main() -> None:
     snapshot_store = None
     desktop_layer = None
     app_layer = None
+    developer_layer = None
     if os.name == "nt":
         try:
             secret_store = DPAPISecretStore(broker.state_dir)
@@ -880,9 +1027,14 @@ def main() -> None:
                 ui_refs,
                 registry=AppAdapterRegistry(),
             )
+            developer_layer = DeveloperWorkspaceAdapter(
+                runtime.config,
+                app_layer,
+            )
         except (UIRefError, DesktopUIError, AppAdapterError):
             desktop_layer = None
             app_layer = None
+            developer_layer = None
     mcp = create_server(
         runtime,
         broker,
@@ -890,6 +1042,7 @@ def main() -> None:
         snapshot_store=snapshot_store,
         desktop_layer=desktop_layer,
         app_layer=app_layer,
+        developer_layer=developer_layer,
     )
     mcp.run()
 
