@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import sqlite3
 from pathlib import Path
@@ -41,13 +41,21 @@ def _measurement(
     *,
     mode: str = "PROSPECTIVE",
     cohort: str = "EVIDENCE_GATE",
+    complete: bool = True,
 ):
-    return DogfoodMeasurementV0(
-        task_id=task_id,
-        cohort=cohort,
-        measurement_mode=mode,
-        review_minutes=1,
-    )
+    kwargs = {
+        "task_id": task_id,
+        "cohort": cohort,
+        "measurement_mode": mode,
+        "review_minutes": 1,
+    }
+    if complete:
+        kwargs.update({
+            "task_to_validated_candidate_seconds": 0,
+            "worker_cost_usd": 0,
+            "evidence_reconstruction_seconds": 0,
+        })
+    return DogfoodMeasurementV0(**kwargs)
 
 
 def test_registry_imports_prospective_task_once(tmp_path: Path):
@@ -170,3 +178,36 @@ def test_balanced_50_is_only_ready_for_human_adjudication(tmp_path: Path):
     assert summary["willingness_to_pay"] == "NOT_ESTABLISHED"
     assert summary["pmf"] == "NOT_ESTABLISHED"
     assert summary["automatic_superiority_claim"] is False
+
+
+def test_registry_preserves_unknown_core_measurements(tmp_path: Path):
+    registry = DogfoodRegistry(EventLedger(tmp_path / "registry.sqlite3"))
+    registry.import_finalized(
+        _finalized("U-1", "rcp_unknown"),
+        _measurement("U-1", complete=False),
+    )
+    summary = registry.summary()
+
+    coverage = summary["prospective_measurement_coverage"]
+    assert coverage["observed_count"]["review_minutes"] == 1
+    assert coverage["unknown_count"]["worker_cost_usd"] == 1
+    assert coverage["unknown_count"]["task_to_validated_candidate_seconds"] == 1
+
+
+def test_registry_balanced_50_unknown_core_metrics_blocks_readiness(tmp_path: Path):
+    registry = DogfoodRegistry(EventLedger(tmp_path / "registry.sqlite3"))
+    for i in range(25):
+        registry.import_finalized(
+            _finalized(f"BU-{i}", f"rcp_bu_{i}"),
+            _measurement(f"BU-{i}", cohort="BASELINE", complete=False),
+        )
+        registry.import_finalized(
+            _finalized(f"EU-{i}", f"rcp_eu_{i}"),
+            _measurement(f"EU-{i}", cohort="EVIDENCE_GATE", complete=False),
+        )
+
+    summary = registry.summary()
+    assert summary["prospective_task_count"] == 50
+    assert summary["readiness"] == "MEASUREMENT_COMPLETENESS_NOT_ESTABLISHED"
+    assert summary["prospective_measurement_coverage"]["unknown_count"]["worker_cost_usd"] == 50
+    assert summary["effectiveness"] == "NOT_ESTABLISHED"
