@@ -7,7 +7,7 @@
     "detect_test_profile": "READ_ONLY",
     "pytest.quiet.v0": "HUMAN_GATE"
   },
-  "pytest_profile": ["python", "-m", "pytest", "-q"],
+  "pytest_profile": ["python", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider"],
   "explicit_denies": [
     "arbitrary_terminal_input",
     "arbitrary_command_string",
