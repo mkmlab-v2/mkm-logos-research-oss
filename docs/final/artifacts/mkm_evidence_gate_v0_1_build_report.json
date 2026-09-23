@@ -63,7 +63,10 @@
       "result": "PASS",
       "tests": "34 passed in 3.43s",
       "conclusion": "success",
-      "classification": "FRESH_CI_VALIDATION"
+      "classification": "FRESH_CI_VALIDATION",
+      "validated_code_revision": "9ca46e7f65ce4b02bab630186531080089d0d735",
+      "validation_scope": "experiments/mkm_orchestrator_v0 Python code + four dedicated Evidence Gate test files + workflow",
+      "current_branch_head_equivalence": "TO_BE_CHECKED_BY_POST_VALIDATION_COMPARE"
     },
     "earlier_dedicated_ci": {
       "result": "PASS",
