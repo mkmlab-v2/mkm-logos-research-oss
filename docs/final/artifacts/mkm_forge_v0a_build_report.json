@@ -1,0 +1,50 @@
+{
+  "schema": "mkm_forge_v0a_build_report",
+  "schema_version": 1,
+  "project": "MKM_FORGE",
+  "mission": "MKM_FORGE_V0_A_TASK_WORKTREE_MANAGER",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "as_of": "2026-09-23",
+  "branch": "chatgpt/mkm-forge-v0a-task-worktree-manager",
+  "base_branch": "chatgpt/mkm-forge-v0-design",
+  "implementation_paths": [
+    "experiments/mkm_forge_v0a/task_worktree.py",
+    "tests/test_mkm_forge_v0a_task_worktree.py"
+  ],
+  "direct_local_fixture_validation": {
+    "command": "pytest -q",
+    "result": "8 passed in 0.60s",
+    "test_count": 8,
+    "passed": 8,
+    "failed": 0,
+    "environment": "assistant isolated temporary local git fixtures",
+    "independence": "DIRECT_IMPLEMENTER_VALIDATION_NOT_INDEPENDENT_REVIEW",
+    "freshness_note": "single bounded fixture validation before GitHub publication; no patch-after-fail rerun occurred"
+  },
+  "validated_behaviors": [
+    "distinct task worktrees and branches",
+    "existing branch collision rejection",
+    "task-id path escape shape rejection",
+    "unauthorized changed-path detection",
+    "exact base commit recording",
+    "changed-file SHA256 thin-coordinate reconstruction",
+    "no promotion from clean path policy to semantic PASS",
+    "close-candidate emits HUMAN_GATE and performs no destructive cleanup"
+  ],
+  "github_source_observation": {
+    "implementation_blob_sha": "bdc041d06563af0c2e73d36df7f0e5ef98f7fb0b",
+    "tests_blob_sha": "a62afb4eec3bb4f8e000178d797b5a46858ce110",
+    "implementation_commit": "41066c4f99c88c9ebc65862f7f4d45a8a797bc2e",
+    "tests_commit": "276a115f9575f756ed86a86624d5d7dfc46288a3"
+  },
+  "evidence_ceiling": "BOUNDED_IMPLEMENTATION_FIXTURE_ONLY",
+  "semantic_effectiveness": "NOT_ADJUDICATED",
+  "productivity_improvement": "NOT_ESTABLISHED",
+  "agent_isolation_effectiveness": "NOT_ESTABLISHED",
+  "a2a_compatibility": "NOT_ESTABLISHED",
+  "deployment_authorization": "NO",
+  "merge_authorization": "NO",
+  "send_gate": "HOLD",
+  "auto_next": false,
+  "next": "STOP_FOR_REVIEW"
+}
