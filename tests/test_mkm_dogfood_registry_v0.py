@@ -11,7 +11,9 @@ sys.path.insert(0, str(ROOT / "experiments"))
 
 from mkm_orchestrator_v0.ledger import EventLedger  # noqa: E402
 from mkm_orchestrator_v0.measurement import (  # noqa: E402
+    COMMON_METRIC_CONTRACT,
     DogfoodMeasurementV0,
+    MeasurementCaptureContextV0,
     MetricProvenanceV0,
 )
 from mkm_orchestrator_v0.registry import DogfoodRegistry, DogfoodRegistryError  # noqa: E402
@@ -39,6 +41,36 @@ def _finalized(
     }
 
 
+def _capture_context(task_id: str, mode: str = "PROSPECTIVE"):
+    return MeasurementCaptureContextV0(
+        task_id=task_id,
+        base_revision="b" * 40,
+        worktree_path=f"/fixture/{task_id}",
+        observer_id="fixture-observer",
+        measurement_method="fixture-observation",
+        measured_at="2026-09-23T00:00:00Z",
+        capture_basis=(
+            "IN_TASK_OBSERVATION"
+            if mode == "PROSPECTIVE"
+            else "POST_HOC_RECONSTRUCTION"
+        ),
+    )
+
+
+def _provenance(values):
+    return {
+        name: MetricProvenanceV0(
+            state="OBSERVED",
+            value=value,
+            capture_source="fixture",
+            capture_method="fixture-observation",
+            captured_at="2026-09-23T00:00:00Z",
+            evidence_ref=f"fixture:{name}",
+        )
+        for name, value in values.items()
+    }
+
+
 def _measurement(
     task_id: str,
     *,
@@ -46,34 +78,18 @@ def _measurement(
     cohort: str = "EVIDENCE_GATE",
     complete: bool = True,
 ):
+    values = {"review_minutes": 1}
+    if complete:
+        values = {name: 0 for name in COMMON_METRIC_CONTRACT}
+        values["review_minutes"] = 1
     kwargs = {
         "task_id": task_id,
         "cohort": cohort,
         "measurement_mode": mode,
-        "review_minutes": 1,
+        **values,
+        "metric_provenance": _provenance(values),
+        "capture_context": _capture_context(task_id, mode),
     }
-    if complete:
-        kwargs.update({
-            "task_to_validated_candidate_seconds": 0,
-            "worker_cost_usd": 0,
-            "evidence_reconstruction_seconds": 0,
-        })
-        kwargs["metric_provenance"] = {
-            name: MetricProvenanceV0(
-                state="OBSERVED",
-                value=value,
-                capture_source="fixture",
-                capture_method="fixture-observation",
-                captured_at="2026-09-23T00:00:00Z",
-                evidence_ref=f"fixture:{name}",
-            )
-            for name, value in {
-                "review_minutes": 1,
-                "task_to_validated_candidate_seconds": 0,
-                "worker_cost_usd": 0,
-                "evidence_reconstruction_seconds": 0,
-            }.items()
-        }
     return DogfoodMeasurementV0(**kwargs)
 
 
@@ -234,21 +250,63 @@ def test_registry_balanced_50_unknown_core_metrics_blocks_readiness(tmp_path: Pa
 def test_registry_balanced_50_observed_values_without_provenance_blocks_readiness(tmp_path: Path):
     registry = DogfoodRegistry(EventLedger(tmp_path / "registry.sqlite3"))
     for i in range(25):
-        for cohort, prefix in (("BASELINE", "B"), ("EVIDENCE_GATE", "E")):
-            task_id = f"{prefix}-NP-{i}"
-            measurement = DogfoodMeasurementV0(
-                task_id=task_id,
-                cohort=cohort,
-                review_minutes=1,
-                task_to_validated_candidate_seconds=0,
-                worker_cost_usd=0,
-                evidence_reconstruction_seconds=0,
-            )
-            registry.import_finalized(
-                _finalized(task_id, f"rcp_{prefix.lower()}_np_{i}"),
-                measurement,
-            )
+        baseline_id = f"B-NP-{i}"
+        registry.import_finalized(
+            _finalized(baseline_id, f"rcp_b_np_{i}"),
+            _measurement(baseline_id, cohort="BASELINE", complete=True),
+        )
+        evidence_id = f"E-NP-{i}"
+        measurement = DogfoodMeasurementV0(
+            task_id=evidence_id,
+            cohort="EVIDENCE_GATE",
+            review_minutes=1,
+            task_to_validated_candidate_seconds=0,
+            worker_cost_usd=0,
+            evidence_reconstruction_seconds=0,
+            capture_context=_capture_context(evidence_id),
+        )
+        registry.import_finalized(
+            _finalized(evidence_id, f"rcp_e_np_{i}"),
+            measurement,
+        )
     summary = registry.summary()
     assert summary["prospective_task_count"] == 50
     assert summary["readiness"] == "MEASUREMENT_PROVENANCE_NOT_ESTABLISHED"
-    assert summary["prospective_provenance_coverage"]["incomplete_count"]["worker_cost_usd"] == 50
+    assert summary["prospective_provenance_coverage"]["incomplete_count"]["worker_cost_usd"] == 25
+
+def test_registry_baseline_replay_never_counts_as_prospective(tmp_path: Path):
+    registry = DogfoodRegistry(EventLedger(tmp_path / "registry.sqlite3"))
+    registry.import_finalized(
+        _finalized("B-REPLAY", "rcp_b_replay", measurement_mode="REPLAY"),
+        _measurement(
+            "B-REPLAY",
+            mode="REPLAY",
+            cohort="BASELINE",
+            complete=False,
+        ),
+    )
+    summary = registry.summary()
+    assert summary["prospective_cohorts"]["BASELINE"] == 0
+    assert summary["cohort_capture_protocol"]["BASELINE"]["replay_count"] == 1
+    assert summary["comparison_readiness"] == "BASELINE_SAMPLE_NOT_ESTABLISHED"
+    assert summary["effectiveness"] == "NOT_ESTABLISHED"
+
+
+def test_registry_reports_cohort_specific_coverage(tmp_path: Path):
+    registry = DogfoodRegistry(EventLedger(tmp_path / "registry.sqlite3"))
+    registry.import_finalized(
+        _finalized("B-COV", "rcp_b_cov"),
+        _measurement("B-COV", cohort="BASELINE", complete=False),
+    )
+    registry.import_finalized(
+        _finalized("E-COV", "rcp_e_cov"),
+        _measurement("E-COV", cohort="EVIDENCE_GATE", complete=True),
+    )
+    summary = registry.summary()
+    baseline = summary["prospective_cohort_coverage"]["BASELINE"]
+    evidence = summary["prospective_cohort_coverage"]["EVIDENCE_GATE"]
+    assert baseline["measurement_coverage"]["observed_count"]["review_minutes"] == 1
+    assert baseline["measurement_coverage"]["unknown_count"]["worker_cost_usd"] == 1
+    assert evidence["measurement_coverage"]["observed_count"]["worker_cost_usd"] == 1
+    assert summary["comparability"] == "NOT_ESTABLISHED"
+    assert summary["automatic_superiority_claim"] is False

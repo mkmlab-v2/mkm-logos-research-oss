@@ -9,6 +9,7 @@ from typing import Any
 
 from .ledger import EventLedger
 from .measurement import (
+    COMMON_METRIC_CONTRACT,
     CORE_MEASUREMENT_FIELDS,
     METRIC_FIELDS,
     DogfoodMeasurementV0,
@@ -132,6 +133,20 @@ class DogfoodRegistry:
                 1 for row in prospective if row["cohort"] == "EVIDENCE_GATE"
             ),
         }
+        recorder = MeasurementRecorder(self.ledger)
+        measurement_rows = [row.get("measurement", {}) for row in prospective]
+        cohort_measurements = {
+            "BASELINE": [
+                row.get("measurement", {})
+                for row in rows
+                if row["cohort"] == "BASELINE"
+            ],
+            "EVIDENCE_GATE": [
+                row.get("measurement", {})
+                for row in rows
+                if row["cohort"] == "EVIDENCE_GATE"
+            ],
+        }
         coverage = {
             "observed_count": {
                 name: sum(
@@ -150,9 +165,25 @@ class DogfoodRegistry:
                 for name in METRIC_FIELDS
             },
         }
-        provenance_coverage = MeasurementRecorder(self.ledger).provenance_coverage(
-            [row.get("measurement", {}) for row in prospective]
-        )
+        provenance_coverage = recorder.provenance_coverage(measurement_rows)
+        cohort_capture = {
+            name: recorder.capture_protocol_summary(items)
+            for name, items in cohort_measurements.items()
+        }
+        cohort_coverage = {
+            name: {
+                "measurement_coverage": recorder._coverage([
+                    row for row in items
+                    if row.get("measurement_mode", "PROSPECTIVE") == "PROSPECTIVE"
+                ]),
+                "provenance_coverage": recorder.provenance_coverage([
+                    row for row in items
+                    if row.get("measurement_mode", "PROSPECTIVE") == "PROSPECTIVE"
+                ]),
+            }
+            for name, items in cohort_measurements.items()
+        }
+        comparison_readiness = recorder._comparison_readiness(cohort_capture)
         core_complete = all(
             coverage["unknown_count"][name] == 0
             for name in CORE_MEASUREMENT_FIELDS
@@ -169,6 +200,11 @@ class DogfoodRegistry:
             readiness = "MEASUREMENT_COMPLETENESS_NOT_ESTABLISHED"
         elif not core_provenance_complete:
             readiness = "MEASUREMENT_PROVENANCE_NOT_ESTABLISHED"
+        elif min(
+            cohort_capture["BASELINE"]["comparable_prospective_count"],
+            cohort_capture["EVIDENCE_GATE"]["comparable_prospective_count"],
+        ) < 25:
+            readiness = "COMPARABLE_MEASUREMENT_NOT_ESTABLISHED"
         else:
             readiness = "READY_FOR_HUMAN_EFFECTIVENESS_ADJUDICATION"
 
@@ -189,6 +225,11 @@ class DogfoodRegistry:
             "core_measurement_fields": list(CORE_MEASUREMENT_FIELDS),
             "prospective_measurement_coverage": coverage,
             "prospective_provenance_coverage": provenance_coverage,
+            "prospective_cohort_coverage": cohort_coverage,
+            "cohort_capture_protocol": cohort_capture,
+            "comparison_readiness": comparison_readiness,
+            "comparability": "NOT_ESTABLISHED",
+            "common_metric_contract": list(COMMON_METRIC_CONTRACT),
             "readiness": readiness,
             "effectiveness": "NOT_ESTABLISHED",
             "willingness_to_pay": "NOT_ESTABLISHED",

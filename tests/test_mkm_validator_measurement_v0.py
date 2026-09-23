@@ -11,7 +11,9 @@ sys.path.insert(0, str(ROOT / "experiments"))
 
 from mkm_orchestrator_v0.ledger import EventLedger  # noqa: E402
 from mkm_orchestrator_v0.measurement import (  # noqa: E402
+    COMMON_METRIC_CONTRACT,
     DogfoodMeasurementV0,
+    MeasurementCaptureContextV0,
     MeasurementError,
     MeasurementRecorder,
     MetricProvenanceV0,
@@ -148,6 +150,28 @@ def _observed_provenance(**values):
     }
 
 
+def _capture_context(task_id: str, *, capture_basis: str = "IN_TASK_OBSERVATION"):
+    return MeasurementCaptureContextV0(
+        task_id=task_id,
+        base_revision="a" * 40,
+        worktree_path=f"/fixture/{task_id}",
+        observer_id="fixture-observer",
+        measurement_method="fixture-observation",
+        measured_at="2026-09-23T00:00:00Z",
+        capture_basis=capture_basis,
+    )
+
+
+def _complete_capture(task_id: str, **overrides):
+    values = {name: 0 for name in COMMON_METRIC_CONTRACT}
+    values.update(overrides)
+    return {
+        **values,
+        "metric_provenance": _observed_provenance(**values),
+        "capture_context": _capture_context(task_id),
+    }
+
+
 def test_validator_identity_must_differ_from_builder(tmp_path: Path):
     ledger, _orch, _task, _binding, result = _setup(tmp_path)
     validator = IndependentValidatorContract(ledger)
@@ -264,42 +288,33 @@ def test_dogfood_under_50_stays_not_established(tmp_path: Path):
 def test_balanced_50_tasks_are_only_ready_for_human_adjudication(tmp_path: Path):
     recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
     for i in range(25):
+        task_id = f"B-{i}"
         recorder.record(
             DogfoodMeasurementV0(
-                task_id=f"B-{i}",
+                task_id=task_id,
                 cohort="BASELINE",
-                wrong_repo_worktree_incidents=1 if i < 3 else 0,
-                review_minutes=20,
-                task_to_validated_candidate_seconds=0,
-                worker_cost_usd=2,
-                evidence_reconstruction_seconds=0,
-                metric_provenance=_observed_provenance(
+                **_complete_capture(
+                    task_id,
+                    wrong_repo_worktree_incidents=1 if i < 3 else 0,
                     review_minutes=20,
-                    task_to_validated_candidate_seconds=0,
                     worker_cost_usd=2,
-                    evidence_reconstruction_seconds=0,
+                    builder_pass_validator_fail=1 if i < 4 else 0,
                 ),
-                builder_pass_validator_fail=1 if i < 4 else 0,
             )
         )
     for i in range(25):
+        task_id = f"E-{i}"
         recorder.record(
             DogfoodMeasurementV0(
-                task_id=f"E-{i}",
+                task_id=task_id,
                 cohort="EVIDENCE_GATE",
-                wrong_repo_worktree_incidents=0,
-                review_minutes=10,
-                task_to_validated_candidate_seconds=0,
-                worker_cost_usd=2.5,
-                evidence_reconstruction_seconds=0,
-                metric_provenance=_observed_provenance(
+                **_complete_capture(
+                    task_id,
                     review_minutes=10,
-                    task_to_validated_candidate_seconds=0,
                     worker_cost_usd=2.5,
-                    evidence_reconstruction_seconds=0,
+                    builder_pass_validator_fail=1 if i < 2 else 0,
+                    false_pass_caught=1 if i < 2 else 0,
                 ),
-                builder_pass_validator_fail=1 if i < 2 else 0,
-                false_pass_caught=1 if i < 2 else 0,
             )
         )
     summary = recorder.summarize()
@@ -425,11 +440,14 @@ def test_explicit_zero_is_observed_fact_not_unknown(tmp_path: Path):
 def test_balanced_50_with_unknown_core_metrics_is_not_ready(tmp_path: Path):
     recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
     for i in range(25):
+        task_id = f"BU-{i}"
         recorder.record(
             DogfoodMeasurementV0(
-                task_id=f"BU-{i}",
+                task_id=task_id,
                 cohort="BASELINE",
                 review_minutes=10,
+                metric_provenance=_observed_provenance(review_minutes=10),
+                capture_context=_capture_context(task_id),
             )
         )
         recorder.record(
@@ -511,17 +529,115 @@ def test_explicit_observed_provenance_requires_capture_fields(tmp_path: Path):
 def test_balanced_50_observed_values_without_capture_provenance_is_not_ready(tmp_path: Path):
     recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
     for i in range(25):
-        for cohort, prefix in (("BASELINE", "B"), ("EVIDENCE_GATE", "E")):
-            recorder.record(
-                DogfoodMeasurementV0(
-                    task_id=f"{prefix}-P-{i}",
-                    cohort=cohort,
-                    review_minutes=1,
-                    task_to_validated_candidate_seconds=0,
-                    worker_cost_usd=0,
-                    evidence_reconstruction_seconds=0,
-                )
+        task_id = f"B-P-{i}"
+        baseline_values = {
+            "review_minutes": 1,
+            "task_to_validated_candidate_seconds": 0,
+            "worker_cost_usd": 0,
+            "evidence_reconstruction_seconds": 0,
+        }
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id=task_id,
+                cohort="BASELINE",
+                **baseline_values,
+                metric_provenance=_observed_provenance(**baseline_values),
+                capture_context=_capture_context(task_id),
             )
+        )
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id=f"E-P-{i}",
+                cohort="EVIDENCE_GATE",
+                review_minutes=1,
+                task_to_validated_candidate_seconds=0,
+                worker_cost_usd=0,
+                evidence_reconstruction_seconds=0,
+            )
+        )
     summary = recorder.summarize()
     assert summary["readiness"] == "MEASUREMENT_PROVENANCE_NOT_ESTABLISHED"
-    assert summary["prospective_provenance_coverage"]["incomplete_count"]["review_minutes"] == 50
+    assert summary["prospective_provenance_coverage"]["incomplete_count"]["review_minutes"] == 25
+
+def test_baseline_requires_capture_context(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    with pytest.raises(MeasurementError, match="BASELINE capture_context required"):
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id="BASE-NO-CONTEXT",
+                cohort="BASELINE",
+            )
+        )
+
+
+def test_baseline_observed_zero_requires_explicit_provenance(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    with pytest.raises(MeasurementError, match="requires explicit provenance"):
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id="BASE-ZERO-BAD",
+                cohort="BASELINE",
+                false_pass_caught=0,
+                capture_context=_capture_context("BASE-ZERO-BAD"),
+            )
+        )
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="BASE-ZERO-GOOD",
+            cohort="BASELINE",
+            false_pass_caught=0,
+            metric_provenance=_observed_provenance(false_pass_caught=0),
+            capture_context=_capture_context("BASE-ZERO-GOOD"),
+        )
+    )
+    summary = recorder.summarize()
+    baseline = summary["cohorts"]["BASELINE"]
+    assert baseline["sums"]["false_pass_caught"] == 0
+    assert baseline["measurement_coverage"]["observed_count"]["false_pass_caught"] == 1
+
+
+def test_posthoc_reconstruction_cannot_be_prospective(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    with pytest.raises(MeasurementError, match="prospective measurement requires"):
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id="BASE-RETRO-BAD",
+                cohort="BASELINE",
+                measurement_mode="PROSPECTIVE",
+                capture_context=_capture_context(
+                    "BASE-RETRO-BAD",
+                    capture_basis="POST_HOC_RECONSTRUCTION",
+                ),
+            )
+        )
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="BASE-RETRO-OK",
+            cohort="BASELINE",
+            measurement_mode="REPLAY",
+            capture_context=_capture_context(
+                "BASE-RETRO-OK",
+                capture_basis="POST_HOC_RECONSTRUCTION",
+            ),
+        )
+    )
+    summary = recorder.summarize()
+    assert summary["cohort_capture_protocol"]["BASELINE"]["prospective_count"] == 0
+    assert summary["cohort_capture_protocol"]["BASELINE"]["replay_count"] == 1
+
+
+def test_zero_baseline_keeps_comparison_not_established(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="EG-COMP-1",
+            cohort="EVIDENCE_GATE",
+            **_complete_capture("EG-COMP-1"),
+        )
+    )
+    summary = recorder.summarize()
+    assert summary["cohort_capture_protocol"]["BASELINE"]["prospective_count"] == 0
+    assert summary["comparison_readiness"] == "BASELINE_SAMPLE_NOT_ESTABLISHED"
+    assert summary["comparability"] == "NOT_ESTABLISHED"
+    assert summary["effectiveness"] == "NOT_ESTABLISHED"
+    assert summary["automatic_superiority_claim"] is False
