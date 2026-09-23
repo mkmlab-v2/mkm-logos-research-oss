@@ -217,7 +217,7 @@ async def test_detect_pytest_profile_is_fixed(tmp_path: Path, editor_fixture):
     profile = result.structured_content["profile"]
     assert result.structured_content["status"] == "CANDIDATE"
     assert profile["profile_id"] == "pytest.quiet.v0"
-    assert profile["argv"] == ["python", "-m", "pytest", "-q"]
+    assert profile["argv"] == ["python", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider"]
 
 
 @pytest.mark.anyio
@@ -247,7 +247,7 @@ async def test_request_dev_test_does_not_execute_before_approval(tmp_path: Path,
     body = req.structured_content
     assert body["status"] == "HUMAN_GATE"
     assert body["executed"] is False
-    assert body["argv"] == ["python", "-m", "pytest", "-q"]
+    assert body["argv"] == ["python", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider"]
     assert not marker.exists()
 
 
