@@ -1,4 +1,4 @@
-# MKM Secure Agent Runtime V0.5
+# MKM Secure Agent Runtime V0.6
 
 Bounded local-first runtime candidate for MKM's Desktop Commander-class tool layer.
 
@@ -19,7 +19,6 @@ Bounded local-first runtime candidate for MKM's Desktop Commander-class tool lay
 - tool discovery / structured schemas
 - out-of-band local approval broker
 - approval state outside model-accessible roots
-- approval records store action metadata + digest, not raw content
 - one-time exact-action approval consumption
 - local approval CLI
 
@@ -29,7 +28,7 @@ Bounded local-first runtime candidate for MKM's Desktop Commander-class tool lay
 - SECRET -> DENY
 - direct identifier + medical context -> PHI / HOLD
 - PERSONAL -> HOLD
-- metadata-only local file privacy scan tool
+- metadata-only privacy scan tool
 - person-name detection remains NOT_ESTABLISHED
 
 ### V0.3 secret broker
@@ -37,29 +36,43 @@ Bounded local-first runtime candidate for MKM's Desktop Commander-class tool lay
 - local-only secret management CLI
 - MCP exposes secret-handle metadata only
 - no MCP tool returns decrypted secret material
-- best-effort bytearray wipe after trusted local verification
 
 ### V0.4 rollback
 - approved text writes capture Windows DPAPI-encrypted pre-write snapshots
 - existing files restore original bytes
 - newly created files can be removed by rollback
-- rollback is local CLI only; no MCP restore tool
+- rollback is local CLI only
 - write_text bounded to 1 MiB
 
-### V0.5 Windows tray / local approval UI
-- pystray-based Windows notification-area shell
-- approval window hidden by default
-- new REQUESTED approval opens a local approval popup
-- Approve once / Deny buttons call the local ApprovalBroker directly
+### V0.5 Windows tray / approval UI
+- pystray notification-area shell
+- new REQUESTED approval opens a local popup
+- Approve once / Deny buttons operate on local ApprovalBroker
 - popup displays target + argument digest, not raw write contents
-- headless TrayController separates approval logic from GUI
-- OllamaManager probes only loopback 127.0.0.1:11434
-- optional Ollama autostart forces OLLAMA_HOST=127.0.0.1:11434
-- failed autostart cleans up processes started by MKM
-- tray quit stops Ollama only when MKM started that process
+- Ollama auto-connect is loopback-only and cleans up failed MKM-started processes
+
+### V0.6 Desktop Action Layer
+- Windows UI Automation via pywinauto UIA backend
+- all UIA work isolated in a separate worker subprocess
+- UIA crash cannot directly kill the MCP runtime
+- worker transport forced to UTF-8
+- opaque, expiring local UI refs
+- visible top-level window observation
+- window titles hidden by default
+- Edit/Text/Document contents hidden by default
+- control labels exposed only for bounded action-oriented controls
+- click mutation requires HUMAN_GATE
+- non-sensitive Edit text mutation requires HUMAN_GATE
+- password controls DENY
+- PERSONAL/PHI/SECRET text input DENY
+- high-risk action labels such as Delete/Send/Pay/Transfer/Deploy/Purchase DENY
+- no arbitrary screen coordinates
+- no raw keyboard shortcut injection
+- denied UI requests return structured DENIED, not tool exceptions
 
 ## Exposed MCP tools
 
+Core / local AI:
 - `runtime_status`
 - `list_directory`
 - `secret_handle_info`
@@ -73,38 +86,63 @@ Bounded local-first runtime candidate for MKM's Desktop Commander-class tool lay
 - `ollama_health`
 - `ollama_generate`
 
-## Explicitly not implemented
+Desktop V0.6:
+- `ui_list_windows`
+- `ui_inspect_window`
+- `request_ui_click`
+- `execute_ui_click`
+- `request_ui_set_text`
+- `execute_ui_set_text`
 
-- browser/GUI automation of third-party apps
+## Explicitly not implemented / authorized
+
+- arbitrary mouse coordinates
+- arbitrary keyboard sequences / hotkeys
+- password-field input
 - secret injection into browser/subprocess
+- destructive / SEND / payment / transfer UI controls
 - remote relay/device pairing
-- general delete/move tools
 - git push/deploy/SEND
 - PHI production workflow
 - reliable person-name recognition
 - independent security review
-- production installer/autostart registration
+- production installer/startup registration
 
 ## Current validation
 
-- full targeted Windows suite: 52 PASS
+- full targeted Windows suite: 60 PASS
 - MCP stdio protocol observed: 2026-07-28
-- approval request -> local approval -> exact one-time execution: PASS
-- privacy body blocking on MCP wire: PASS
-- DPAPI secret metadata-only wire smoke: PASS
-- write -> encrypted snapshot -> local rollback: PASS
-- actual Ollama auto-connect: PASS after V0.5 timeout/cleanup hardening
-  - executable: installed
-  - became healthy in 5.69s
-  - 11 local models observed
-  - process started by MKM was stopped after smoke
-- Windows GUI smoke: PASS
-  - new synthetic approval caused approval window to become visible
-  - pending row displayed
-  - Approve once button moved REQUESTED -> APPROVED
+- MCP tool count observed after V0.6: 18
+- approval/privacy/secret/rollback/Ollama/tray tests: PASS within bounded fixtures
+- synthetic WinForms UIA targeted suite: 8 PASS
+- final Desktop MCP wire smoke:
+  - safe click request -> HUMAN_GATE
+  - local approval -> click effect observed
+  - high-risk Delete control -> structured DENIED
+  - SEND remained HOLD
+  - window title hidden
+  - Edit content hidden
+- pywinauto version observed: 0.6.9
+- psutil version observed: 7.2.2
+
+### Fresh failures retained
+
+1. In-process pywinauto UIA enumeration produced Windows fatal COM exception `0x8001010d`.
+   - Design changed to isolated UI worker subprocess.
+   - This failure is not relabeled as PASS.
+
+2. First worker implementation used Windows default CP949 parent decoding while worker emitted UTF-8.
+   Korean UI text caused the parent reader thread to fail.
+   - Worker transport is now explicitly UTF-8.
+   - This failure is retained as evidence.
+
+3. Initial synthetic click reported execution but fixture sentinel did not appear.
+   - Click implementation changed to prefer UIA InvokePattern / logical click.
+   - Synthetic fixture path was simplified.
+   - Fresh targeted rerun passed 8/8.
 
 ## Evidence ceiling
 
-`BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_5_CANDIDATE`
+`BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_6_CANDIDATE`
 
-This is a development candidate, not a deployment or production-security authorization.
+This is a development candidate, not production-security or unrestricted desktop-control authorization.
