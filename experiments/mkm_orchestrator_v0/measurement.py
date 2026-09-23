@@ -15,6 +15,7 @@ class MeasurementError(RuntimeError):
 class DogfoodMeasurementV0:
     task_id: str
     cohort: str
+    measurement_mode: str = "PROSPECTIVE"
     wrong_repo_worktree_incidents: int = 0
     duplicate_worker_work: int = 0
     scope_violation_caught: int = 0
@@ -35,6 +36,10 @@ class DogfoodMeasurementV0:
             raise MeasurementError("task_id required")
         if self.cohort not in {"BASELINE", "EVIDENCE_GATE"}:
             raise MeasurementError("cohort must be BASELINE or EVIDENCE_GATE")
+        if self.measurement_mode not in {"PROSPECTIVE", "REPLAY"}:
+            raise MeasurementError(
+                "measurement_mode must be PROSPECTIVE or REPLAY"
+            )
         integer_fields = (
             "wrong_repo_worktree_incidents",
             "duplicate_worker_work",
@@ -94,17 +99,29 @@ class MeasurementRecorder:
             if r["event_type"] == "TASK_MEASUREMENT_RECORDED"
             and r["payload"].get("schema") == self.SCHEMA
         ]
+        prospective_rows = [
+            r for r in rows if r.get("measurement_mode", "PROSPECTIVE") == "PROSPECTIVE"
+        ]
+        replay_rows = [
+            r for r in rows if r.get("measurement_mode") == "REPLAY"
+        ]
         cohorts = {
-            "BASELINE": [r for r in rows if r.get("cohort") == "BASELINE"],
-            "EVIDENCE_GATE": [r for r in rows if r.get("cohort") == "EVIDENCE_GATE"],
+            "BASELINE": [
+                r for r in prospective_rows if r.get("cohort") == "BASELINE"
+            ],
+            "EVIDENCE_GATE": [
+                r for r in prospective_rows if r.get("cohort") == "EVIDENCE_GATE"
+            ],
         }
         summaries = {
             name: self._cohort_summary(items)
             for name, items in cohorts.items()
         }
         total = len(rows)
+        prospective_total = len(prospective_rows)
+        replay_total = len(replay_rows)
         both_25 = all(len(items) >= 25 for items in cohorts.values())
-        if total < 50:
+        if prospective_total < 50:
             readiness = "INSUFFICIENT_DOGFOOD_SAMPLE_LT_50"
         elif not both_25:
             readiness = "COHORT_BALANCE_NOT_ESTABLISHED"
@@ -114,7 +131,11 @@ class MeasurementRecorder:
         return {
             "schema": "mkm_dogfood_summary_v0",
             "measurement_count": total,
+            "prospective_measurement_count": prospective_total,
+            "replay_measurement_count": replay_total,
+            "readiness_basis": "PROSPECTIVE_ONLY",
             "cohorts": summaries,
+            "replay": self._cohort_summary(replay_rows),
             "readiness": readiness,
             "effectiveness": "NOT_ESTABLISHED",
             "willingness_to_pay": "NOT_ESTABLISHED",
