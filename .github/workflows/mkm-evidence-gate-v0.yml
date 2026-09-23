@@ -33,5 +33,4 @@ jobs:
         run: python -m compileall -q experiments/mkm_orchestrator_v0
 
       - name: Evidence Gate fresh suites
-        run: |
-          python -m pytest             tests/test_mkm_evidence_gate_v0.py             tests/test_mkm_validator_measurement_v0.py             tests/test_mkm_dogfood_shared_status_v0.py             -q
+        run: python -m pytest tests/test_mkm_evidence_gate_v0.py tests/test_mkm_validator_measurement_v0.py tests/test_mkm_dogfood_shared_status_v0.py tests/test_mkm_shared_status_cli_v0.py -q
