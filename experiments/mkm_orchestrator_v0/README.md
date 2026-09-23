@@ -1,53 +1,49 @@
-# MKM Orchestrator V0
+# MKM Orchestrator / Evidence Gate V0
 
-Bounded internal control-plane candidate for coordinating heterogeneous AI coding workers.
+Bounded internal control-plane and AI Change-Control candidate for heterogeneous coding workers.
 
-This directory is intentionally **not another coding agent**. It sits above Cursor/Codex/Claude/Ollama-style workers and manages:
+This is intentionally **not another coding agent**. Cursor/Codex/Claude/Ollama-style workers may build, but MKM decides what evidence exists, how fresh it is, which source is authoritative, and whether a change may advance.
 
-- authority contracts
-- one task -> one isolated Git worktree binding
-- worker contracts
-- append-only evidence
-- freshness classification
-- independent validation gates
-- derived current-status views
+## Core rules
 
-## Core rules implemented
+- Worker claim != evidence
+- Builder != independent validator
+- implementation PASS != effectiveness
+- patched rerun != independent fresh validation
+- candidate != authorization
+- HOLD != PASS
+- missing stays UNKNOWN
+- fresh independent FAIL remains sealed
+- no claim above the evidence ceiling
 
-### Worker claim is not evidence
+## Implemented V0 components
 
-A worker can return `status=PASS`, but the ledger records that result as:
+### Task / workspace binding
 
-`WORKER_CLAIM_ONLY`
-
-It does not make the task a merge candidate.
-
-### One task -> one deterministic worktree
-
-A task contract binds:
-
-- repository id/path
+- explicit `AuthorityContract`
+- explicit `TaskContract`
+- deterministic `1 task -> 1 Git worktree`
 - exact base revision
-- deterministic task branch
-- deterministic isolated worktree path
+- mutation authority gate
+- changed-path contract
+- task/workspace mismatch denial
 
-V0 can create worktrees but intentionally has no destructive remove operation.
+V0 intentionally has no destructive worktree cleanup operation.
 
-Workspace creation is denied when:
+### Append-only event ledger
 
-`mutation_authorized=false`
+`EventLedger` uses SQLite with:
 
-### Changed-path contract
+- event-level SHA-256
+- hash chaining
+- SQL UPDATE denial trigger
+- SQL DELETE denial trigger
 
-If a worker reports modified paths outside the task's `allowed_paths`, the orchestrator records:
-
-`POLICY_VIOLATION`
-
-and the gate remains HOLD pending adjudication.
+Current state is replayed from events.
 
 ### Evidence freshness
 
-Evidence is classified as:
+Classes:
 
 - `BUILDER_SELF_REPORT`
 - `INDEPENDENT_FRESH`
@@ -55,111 +51,213 @@ Evidence is classified as:
 - `REPEAT_OBSERVATION`
 - `NOT_ESTABLISHED`
 
-A fresh independent FAIL is sealed.
+A fresh validator FAIL remains a gate FAIL even if the same suite later passes after a patch. That later result is `PATCH_CONFIRMATION`.
 
-If the subject is patched and the same failed suite is rerun, a PASS is:
+### Independent Validator Contract
 
-`PATCH_CONFIRMATION`
+The validator adapter is separate from execution. It accepts a bounded validator artifact only after checking:
 
-not independent fresh evidence, and it cannot erase the sealed FAIL.
+- validator identity differs from last builder identity
+- suite digest shape
+- current workspace subject digest
+- base revision ancestry
+- changed files remain within task contract
+- return code
+- stdout/stderr digests
+- duration metadata
 
-### Candidate is not authorization
+The contract derives PASS/FAIL from the return code rather than trusting a worker PASS string.
 
-Builder PASS + independent fresh validator PASS may produce:
+### Evidence Receipt V0
 
-`CANDIDATE / HUMAN_GATE`
+`EvidenceReceiptBuilder` produces a normalized re-checkable receipt containing:
 
-but:
+- task id/objective
+- authority
+- exact base revision
+- workspace binding
+- actual observed HEAD
+- actual changed files
+- diff SHA-256
+- current subject digest
+- worker claim
+- worker backend
+- worker-claim vs observed-state consistency
+- evidence records and freshness classes
+- evidence ceiling
+- merge/deploy/SEND authorization
+- covered ledger sequence/head hash
+- receipt SHA-256
 
-- MERGE_AUTHORIZATION=NO
-- DEPLOYMENT_AUTHORIZATION=NO
-- SEND=HOLD
+Worker claims and actual workspace observations are separate fields.
 
-remain unchanged.
+### Authority Resolver V0
 
-## Append-only ledger
+Source classes:
 
-`EventLedger` uses SQLite with:
+- `AUTHORITATIVE`
+- `WORKING_MIRROR`
+- `TASK_WORKTREE`
+- `VALIDATION_CLONE`
+- `ARCHIVE`
+- `BACKUP`
+- `CONFLICT`
+- `UNKNOWN`
 
-- hash-chained events
-- event-level SHA-256
-- SQL triggers blocking UPDATE
-- SQL triggers blocking DELETE
+Important fail-closed behavior:
 
-Current state is reconstructed from the event log.
+- exact declared repository path may be AUTHORITATIVE or WORKING_MIRROR
+- exact bound linked worktree may be TASK_WORKTREE
+- linked but unbound worktree -> UNKNOWN
+- same remote separate clone without explicit role marker -> UNKNOWN
+- conflicting role marker -> CONFLICT
+- validation clone requires explicit matching role marker and declared base presence
+- GitHub/mirror recency never promotes authority automatically
 
-## Derived Status Board
+### Derived Status Board
 
-`StatusBoard` generates a current view for Commander/Validator/Infrastructure chats.
+`StatusBoard` is a derived view only:
 
-The status JSON is explicitly:
+- `authoritative_source=APPEND_ONLY_EVENT_LEDGER`
+- `derived_view=true`
 
-`derived_view=true`
+It cannot change ledger facts.
 
-and identifies:
+#### Retained fresh failure
 
-`authoritative_source=APPEND_ONLY_EVENT_LEDGER`
-
-The generated file is not itself authoritative.
-
-## Validation state
-
-### Initial Orchestrator core
-
-Observed on Windows synthetic Git repos:
-
-`11 passed in 13.12s`
-
-This covered:
-
-- append-only ledger
-- hash-chain integrity
-- actual Git worktree creation
-- duplicate task rejection
-- mutation authority gate
-- worker claim != evidence
-- changed-path policy
-- builder PASS insufficient
-- independent fresh PASS -> candidate/HUMAN_GATE only
-- fresh FAIL sealing
-- patch-confirmation classification
-- workspace/task mismatch rejection
-
-### Status Board extension — fresh failure retained
-
-After adding the derived Status Board, targeted validation observed:
+The first Status Board validation observed:
 
 `12 passed, 1 failed in 15.19s`
 
 Failure:
 
-`test_status_export_does_not_mutate_ledger`
-
-Observed exception:
-
 `KeyError: 'authority'`
 
-The test inserted a minimal `TASK_CREATED` payload directly through the generic ledger API. `StatusBoard` assumed every TASK_CREATED payload contained the full task-contract shape.
+The generic ledger accepted a minimal TASK_CREATED payload and the Status Board assumed the full task-contract shape.
 
-Current adjudication:
+Adjudication:
 
-- failure observed: FACT
-- whether generic ledger should permit incomplete TASK_CREATED schema: NOT_ADJUDICATED
-- whether StatusBoard should tolerate legacy/incomplete events: NOT_ADJUDICATED
-- no automatic patch performed
-- no rerun performed after the failure
+- EventLedger remains generic append-only storage
+- Orchestrator semantic APIs own semantic event schema correctness
+- StatusBoard must tolerate incomplete/legacy events
+- missing fields remain `UNKNOWN`
+
+The bounded patch changed missing authority to:
+
+`UNKNOWN / MISSING_TASK_CREATED_AUTHORITY`
+
+The same suite then observed:
+
+`13 passed in 15.47s`
+
+This is recorded as **PATCH_CONFIRMATION**, not independent fresh validation. The original fresh FAIL remains retained.
+
+## New fresh validation
+
+### Evidence Receipt + Authority Resolver
+
+Fresh dedicated suite:
+
+`11 passed in 30.51s`
+
+Validated:
+
+- exact authority classification
+- working mirror preservation
+- exact task worktree classification
+- unbound linked worktree -> UNKNOWN
+- same-remote separate clone -> UNKNOWN
+- explicit validation-clone marker
+- conflicting marker -> CONFLICT
+- receipt re-observes actual workspace
+- receipt detects worker-claim drift
+- candidate still has merge/deploy NO and SEND HOLD
+- receipt issuance covers the previous ledger head and appends metadata only
+
+### Independent Validator + Dogfood Measurement
+
+Fresh dedicated suite:
+
+`9 passed in 19.37s`
+
+Validated:
+
+- builder/validator identity collision rejection
+- subject drift rejection
+- scope violation rejection
+- validator PASS -> INDEPENDENT_FRESH
+- nonzero validator return code -> fresh FAIL
+- repeat validation -> REPEAT_OBSERVATION
+- negative measurement rejection
+- <50 tasks -> effectiveness NOT_ESTABLISHED
+- balanced 50 tasks -> READY_FOR_HUMAN_EFFECTIVENESS_ADJUDICATION only
+
+Even at 50 measured tasks, the system does **not** automatically claim effectiveness, willingness-to-pay, PMF, or superiority.
+
+## Dogfood Measurement V0
+
+Per-task fields include:
+
+- wrong repo/worktree incidents
+- duplicate worker work
+- scope violations caught
+- false PASS caught
+- fresh FAIL caught
+- review minutes
+- human interventions
+- rollback count
+- task -> validated candidate time
+- worker cost
+- builder PASS -> validator FAIL
+- UNKNOWN -> human resolution
+- human-gate rejection
+- evidence reconstruction time
+
+Cohorts:
+
+- `BASELINE`
+- `EVIDENCE_GATE`
+
+Readiness requires at least 50 measurements and at least 25 per cohort before human effectiveness adjudication.
+
+## Integration smoke
+
+A synthetic Git repo was run end-to-end:
+
+task -> deterministic worktree -> synthetic builder change -> actual pytest -> validator artifact -> gate -> Evidence Receipt -> Status Board -> Authority Resolver.
+
+Observed after harness correction:
+
+- pytest return code: 0
+- validator outcome: PASS
+- validator freshness: INDEPENDENT_FRESH
+- gate state: CANDIDATE
+- gate decision: HUMAN_GATE
+- merge authorization: NO
+- deployment authorization: NO
+- SEND: HOLD
+- worker claim consistency: MATCH
+- declared source: AUTHORITATIVE
+- bound worktree: TASK_WORKTREE
+- ledger hash chain: valid
+- changed file: app.py
+
+The first integration invocation failed before product logic because PowerShell->Python input retained U+FEFF. This is retained as `HARNESS_FAIL`; rerun after BOM stripping is harness-correction confirmation, not independent fresh evidence.
 
 ## Evidence ceiling
 
-`BOUNDED_MKM_ORCHESTRATOR_V0_CANDIDATE_WITH_STATUS_BOARD_FRESH_FAIL`
+`BOUNDED_MKM_EVIDENCE_GATE_V0_CANDIDATE_STATUS_BOARD_PATCH_CONFIRMED_NOT_INDEPENDENT_FRESH`
 
 ## Current boundaries
 
-- no merge
-- no deploy
+- MERGE_AUTHORIZATION=NO
+- DEPLOYMENT_AUTHORIZATION=NO
+- SEND=HOLD
 - no push
+- no deploy
 - no destructive worktree cleanup
-- no autonomous next-task creation
-- no production worker adapter yet
-- no claim of cross-model superiority
-- no claim of production readiness
+- no autonomous next-task production progression
+- no general cross-model superiority claim
+- no external willingness-to-pay claim
+- PMF NOT_ESTABLISHED
+- production readiness NOT_ESTABLISHED
