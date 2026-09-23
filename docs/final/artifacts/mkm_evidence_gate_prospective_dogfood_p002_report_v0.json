@@ -1,0 +1,92 @@
+{
+  "schema": "mkm_evidence_gate_prospective_dogfood_p002_report_v0",
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "repository_context": "GITHUB_WORKING_MIRROR_NON_SSOT",
+  "task": {
+    "task_id": "P-002-MEASUREMENT-UNKNOWN",
+    "mode": "PROSPECTIVE",
+    "cohort": "EVIDENCE_GATE",
+    "base_revision": "b971ec7cd800f6476c4a9c9f557de61cacf236e9",
+    "objective": "Distinguish unmeasured dogfood metrics from observed numeric zero, preserve explicit zero as fact, expose per-metric observed/unknown counts, and prevent incomplete measurements from silently supporting effectiveness.",
+    "allowed_paths": [
+      "experiments/mkm_orchestrator_v0/measurement.py",
+      "experiments/mkm_orchestrator_v0/registry.py",
+      "tests/test_mkm_validator_measurement_v0.py",
+      "tests/test_mkm_dogfood_registry_v0.py"
+    ]
+  },
+  "implemented": {
+    "unmeasured_numeric_default": "None/UNKNOWN",
+    "explicit_zero": "OBSERVED_VALUE",
+    "per_metric_coverage": [
+      "observed_count",
+      "unknown_count"
+    ],
+    "core_measurements": [
+      "review_minutes",
+      "task_to_validated_candidate_seconds",
+      "worker_cost_usd",
+      "evidence_reconstruction_seconds"
+    ],
+    "incomplete_50_task_state": "MEASUREMENT_COMPLETENESS_NOT_ESTABLISHED",
+    "replay_excluded_from_readiness": true
+  },
+  "validation": {
+    "builder_targeted": {
+      "result": "PASS",
+      "tests": "28 passed in 22.78s",
+      "classification": "BUILDER_TARGETED_CONFIRMATION"
+    },
+    "windows_fresh_validator": {
+      "result": "PASS",
+      "tests": "55 passed in 73.67s",
+      "validator_outcome": "PASS",
+      "freshness": "INDEPENDENT_FRESH",
+      "evidence_id": "evd_5c101aa1f7044a2ab20cfcbe1722c5c1",
+      "task_state": "CANDIDATE",
+      "gate_decision": "HUMAN_GATE",
+      "gate_reason": "INDEPENDENT_FRESH_PASS_WITH_BUILDER_PASS",
+      "evidence_ceiling": "BOUNDED_MERGE_CANDIDATE",
+      "receipt_id": "rcp_8156725148cb296749b2913f",
+      "receipt_sha256": "8156725148cb296749b2913fc3fffd3c9f2566ffe2c79615bb07347ffa4d7776",
+      "task_ledger_valid": true,
+      "registry_ledger_valid": true
+    },
+    "mirror_confirmation": {
+      "validated_code_revision": "15694d4026b06a6df3873b500a604d7636561013",
+      "exact_text_match_for_all_four_task_files": true,
+      "workflow": "MKM Evidence Gate V0",
+      "run_id": 35905366906,
+      "job_id": 107331593623,
+      "compile": "PASS",
+      "tests": "43 passed in 2.16s",
+      "conclusion": "success",
+      "classification": "MIRROR_CONFIRMATION_NOT_NEW_INDEPENDENT_FRESH"
+    }
+  },
+  "measurement": {
+    "prospective_registry_count": 2,
+    "replay_registry_count": 0,
+    "current_task_observed": {
+      "task_to_validated_candidate_seconds": true,
+      "review_minutes": false,
+      "worker_cost_usd": false,
+      "evidence_reconstruction_seconds": false
+    },
+    "current_task_unknown_preserved": [
+      "review_minutes",
+      "worker_cost_usd",
+      "evidence_reconstruction_seconds"
+    ],
+    "effectiveness": "NOT_ESTABLISHED",
+    "willingness_to_pay": "NOT_ESTABLISHED",
+    "pmf": "NOT_ESTABLISHED"
+  },
+  "authorization": {
+    "merge": "NO",
+    "deployment": "NO",
+    "send": "HOLD"
+  },
+  "evidence_ceiling": "P002_PROSPECTIVE_DOGFOOD_FRESH_PASS_2_OF_50_MEASUREMENT_UNKNOWN_SEMANTICS_CANDIDATE"
+}

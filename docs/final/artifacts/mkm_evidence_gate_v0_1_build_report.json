@@ -1,0 +1,124 @@
+{
+  "schema": "mkm_evidence_gate_v0_1_build_report",
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "repository_context": "GITHUB_WORKING_MIRROR_NON_SSOT",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE_WITH_CI_FRESH_PASS",
+  "implemented": {
+    "dogfood_runner": "IMPLEMENTED_CANDIDATE",
+    "shared_current_status": "IMPLEMENTED_CANDIDATE",
+    "shared_status_sha256_seal": "IMPLEMENTED_CANDIDATE",
+    "shared_status_staleness_detection": "IMPLEMENTED_CANDIDATE",
+    "dogfood_cli": "IMPLEMENTED_CANDIDATE",
+    "finalize_recomputes_latest_gate": true,
+    "automatic_next_task": false,
+    "automatic_merge": false,
+    "automatic_deploy": false,
+    "automatic_send": false
+  },
+  "shared_status_contract": {
+    "files": [
+      "CURRENT_STATUS.json",
+      "CURRENT_STATUS.sha256.json"
+    ],
+    "authoritative_source": "APPEND_ONLY_EVENT_LEDGER",
+    "derived_view": true,
+    "states": [
+      "CURRENT",
+      "STALE",
+      "INVALID",
+      "NOT_ESTABLISHED"
+    ],
+    "stale_semantics": "VALID_SNAPSHOT_BUT_LEDGER_ADVANCED",
+    "tamper_semantics": "SHA256_MISMATCH_OR_INVALID_SOURCE"
+  },
+  "dogfood_lifecycle": {
+    "start": [
+      "create validated TaskContract",
+      "create deterministic isolated worktree",
+      "append DOGFOOD_RUN_STARTED",
+      "publish shared status"
+    ],
+    "finalize": [
+      "recompute gate from latest ledger evidence",
+      "record explicit DogfoodMeasurementV0",
+      "issue Evidence Receipt covering prior ledger head",
+      "append DOGFOOD_TASK_FINALIZED",
+      "publish sealed shared status"
+    ],
+    "next_actions": [
+      "HOLD",
+      "HUMAN_GATE",
+      "HUMAN_ADJUDICATION_REQUIRED"
+    ]
+  },
+  "validation": {
+    "final_dedicated_ci": {
+      "workflow": "MKM Evidence Gate V0",
+      "run_id": 35899609389,
+      "job_id": 107312109895,
+      "environment": "Ubuntu 24.04 / Python 3.11",
+      "compile_step": "PASS",
+      "result": "PASS",
+      "tests": "34 passed in 3.43s",
+      "conclusion": "success",
+      "classification": "FRESH_CI_VALIDATION",
+      "validated_code_revision": "9ca46e7f65ce4b02bab630186531080089d0d735",
+      "validation_scope": "experiments/mkm_orchestrator_v0 Python code + four dedicated Evidence Gate test files + workflow",
+      "current_branch_head_equivalence": {
+        "compared_head": "f23e27b04323e4f3881bd1c333a20050d4cf2ac4",
+        "result": "CODE_EQUIVALENT_TO_VALIDATED_REVISION",
+        "post_validation_files": [
+          "docs/final/artifacts/mkm_evidence_gate_v0_1_build_report.json",
+          "experiments/mkm_orchestrator_v0/README.md"
+        ],
+        "python_code_changed": false,
+        "tests_changed": false,
+        "workflow_changed": false
+      }
+    },
+    "earlier_dedicated_ci": {
+      "result": "PASS",
+      "tests": "30 passed",
+      "limitation": "CLI test file was not actually present in pytest command",
+      "disposition": "RETAINED_NOT_USED_AS_CLI_VALIDATION"
+    },
+    "windows_v0_1": {
+      "result": "NOT_ESTABLISHED",
+      "reason": "authorized DESKTOP-2511 offline during V0.1 fresh validation attempt"
+    },
+    "legacy_orchestrator_smoke": {
+      "result": "FAIL",
+      "stage": "Bundle path verify",
+      "orchestrator_tests_executed": false,
+      "missing": [
+        "docs/final/artifacts/todo_queue_example_v1.json",
+        "docs/final/artifacts/todo_queue_smoke_first_v1.json",
+        "docs/final/artifacts/todo_queue_smoke_first_python_v1.json",
+        "docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json"
+      ],
+      "disposition": "RETAINED_UNRELATED_BUNDLE_BLOCKER_NOT_FABRICATED"
+    }
+  },
+  "fact_lock": {
+    "late_fresh_fail_overrides_cached_candidate": "ENFORCED_BY_FINALIZE_RECOMPUTE",
+    "worker_claim_is_evidence": false,
+    "patch_confirmation_is_independent_fresh": false,
+    "candidate_is_authorization": false,
+    "unknown_is_valid": true
+  },
+  "dogfood_effectiveness": {
+    "measured_tasks": 0,
+    "threshold_total": 50,
+    "minimum_per_cohort": 25,
+    "effectiveness": "NOT_ESTABLISHED",
+    "willingness_to_pay": "NOT_ESTABLISHED",
+    "pmf": "NOT_ESTABLISHED"
+  },
+  "evidence_ceiling": "BOUNDED_MKM_EVIDENCE_GATE_V0_1_CI_FRESH_PASS_WINDOWS_DOGFOOD_NOT_ESTABLISHED",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD",
+  "production_readiness": "NOT_ESTABLISHED"
+}

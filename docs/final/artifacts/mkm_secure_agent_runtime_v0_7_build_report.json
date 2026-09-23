@@ -1,0 +1,69 @@
+{
+  "schema": "mkm_secure_agent_runtime_v0_7_build_report",
+  "schema_version": 1,
+  "date": "2026-09-23",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "implementation": {
+    "declarative_app_adapter_registry": "IMPLEMENTED_CANDIDATE",
+    "app_identification_by_process_class": "IMPLEMENTED_CANDIDATE",
+    "adapter_scoped_ui_mutation": "IMPLEMENTED_CANDIDATE",
+    "generic_ui_mutation_bypass_block": "IMPLEMENTED_CANDIDATE",
+    "browser_default": "OBSERVE_ONLY",
+    "unmatched_default": "OBSERVE_ONLY",
+    "ambiguous_match": "FAIL_CLOSED"
+  },
+  "builtin_adapters": [
+    "windows.notepad.v0",
+    "editor.vscode.v0",
+    "editor.cursor.v0",
+    "browser.chromium.observe.v0",
+    "browser.firefox.observe.v0",
+    "windows.explorer.observe.v0"
+  ],
+  "validation": {
+    "full_windows_targeted_suite": "70 passed in 48.00s",
+    "app_adapter_targeted_suite": "10 passed in 19.51s",
+    "synthetic_app_adapter": {
+      "generic_ui_mutation": "DENIED_APP_ADAPTER_REQUIRED",
+      "safe_click": "HUMAN_GATE_THEN_EFFECT_OBSERVED",
+      "high_risk_delete": "DENIED_HIGH_RISK_CONTROL_LABEL",
+      "clean_edit_text": "HUMAN_GATE_THEN_EFFECT_OBSERVED",
+      "personal_text": "DENIED_TEXT_PRIVACY_PERSONAL"
+    },
+    "registry": {
+      "chromium_browser": "OBSERVE_ONLY",
+      "unmatched": "OBSERVE_ONLY",
+      "ambiguous": "FAIL_CLOSED"
+    },
+    "real_windows_read_only": {
+      "first_notepad_launch_smoke": "NOT_FOUND_USING_START_PROCESS_PID",
+      "first_smoke_interpretation": "LAUNCHER_PID_DID_NOT_MAP_TO_VISIBLE_WINDOW",
+      "followup_visible_notepad_process_id": 24292,
+      "followup_process_name": "notepad.exe",
+      "followup_adapter_id": "windows.notepad.v0",
+      "followup_title_disclosed": false,
+      "followup_mutation_performed": false,
+      "exact_relationship_to_launcher_instance": "NOT_ESTABLISHED"
+    }
+  },
+  "security_boundaries": [
+    "adapter matching never uses window title content",
+    "adapters narrow but never widen base Desktop policy",
+    "legacy generic UI mutation denied when adapters active",
+    "approval digest binds adapter id, window ref, control ref, fingerprint and action",
+    "browser adapters are observe-only",
+    "unmatched applications are observe-only",
+    "real Notepad follow-up was read-only"
+  ],
+  "evidence_ceiling": "BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_7_CANDIDATE",
+  "cross_application_reliability": "NOT_ESTABLISHED",
+  "builtin_adapter_effectiveness_beyond_observation": "NOT_ESTABLISHED",
+  "browser_mutation": "NOT_AUTHORIZED",
+  "emr_write": "NOT_AUTHORIZED",
+  "independent_security_review": "NOT_ESTABLISHED",
+  "production_readiness": "NOT_ESTABLISHED",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD"
+}

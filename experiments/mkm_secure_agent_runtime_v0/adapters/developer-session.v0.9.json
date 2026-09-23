@@ -1,0 +1,23 @@
+{
+  "schema": "mkm_developer_worker_session_v0_9",
+  "editor": "cursor",
+  "launch": {
+    "mode": "dedicated_new_window",
+    "unique_user_data_dir": true,
+    "generated_code_workspace": true,
+    "extensions_disabled": true,
+    "window_title_marker": true,
+    "arbitrary_cli_args": false
+  },
+  "binding_requirements": [
+    "workspace_file_hash_matches",
+    "workspace_file_maps_exact_approved_workspace",
+    "visible_cursor_window_contains_unique_local_marker",
+    "visible_window_pid_is_in_cursor_process_set_with_exact_session_user_data_dir"
+  ],
+  "close_policy": {
+    "terminate_only_matching_session_processes": true,
+    "retain_session_evidence": true,
+    "delete_user_data": false
+  }
+}

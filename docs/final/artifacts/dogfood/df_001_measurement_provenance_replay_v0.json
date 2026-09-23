@@ -1,0 +1,23 @@
+{
+  "schema": "mkm_actual_change_replay_manifest_v0",
+  "task_id": "DF-001",
+  "objective": "Separate prospective and replay dogfood measurements so replay evidence cannot inflate the 50-task effectiveness readiness threshold.",
+  "repository_id": "github-working-mirror:mkm-logos-research-oss",
+  "cohort": "EVIDENCE_GATE",
+  "base_revision": "4e61bac292295fc01b1b3bb97ecad70f0fc22ac5",
+  "result_revision": "f3192ecd64a368a00b5db6704a97db2791461d60",
+  "allowed_paths": [
+    "experiments/mkm_orchestrator_v0/measurement.py",
+    "experiments/mkm_orchestrator_v0/dogfood.py",
+    "tests/test_mkm_validator_measurement_v0.py",
+    "tests/test_mkm_dogfood_shared_status_v0.py"
+  ],
+  "suite_paths": [
+    "tests/test_mkm_evidence_gate_v0.py",
+    "tests/test_mkm_validator_measurement_v0.py",
+    "tests/test_mkm_dogfood_shared_status_v0.py",
+    "tests/test_mkm_shared_status_cli_v0.py"
+  ],
+  "measurement_mode": "REPLAY",
+  "prospective_effectiveness_sample": false
+}

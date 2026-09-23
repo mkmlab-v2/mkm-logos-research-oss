@@ -1,0 +1,25 @@
+{
+  "schema": "mkm_developer_adapter_v0_8",
+  "supported_app_adapters": ["editor.vscode.v0", "editor.cursor.v0"],
+  "semantic_actions": {
+    "workspace_status": "READ_ONLY",
+    "git_diff": "READ_ONLY",
+    "detect_test_profile": "READ_ONLY",
+    "pytest.quiet.v0": "HUMAN_GATE"
+  },
+  "pytest_profile": ["python", "-B", "-m", "pytest", "-q", "-p", "no:cacheprovider"],
+  "explicit_denies": [
+    "arbitrary_terminal_input",
+    "arbitrary_command_string",
+    "git_commit",
+    "git_push",
+    "git_pull",
+    "git_fetch",
+    "git_checkout",
+    "git_reset",
+    "deploy",
+    "package_install",
+    "secret_injection",
+    "send"
+  ]
+}

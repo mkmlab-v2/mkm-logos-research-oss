@@ -1,0 +1,82 @@
+{
+  "schema": "mkm_secure_agent_runtime_v1_0_build_report",
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE_WITH_FRESH_REGRESSION_FAIL",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "implementation": {
+    "cursor_agent_bridge": "IMPLEMENTED_CANDIDATE",
+    "session_exact_user_data_binding": true,
+    "session_exact_thread_binding": true,
+    "prompt_privacy_gate": true,
+    "prompt_hash_approval_binding": true,
+    "force_send": false,
+    "live_send_without_bridge": "DENY"
+  },
+  "installed_cursor_observation": {
+    "version": "3.17.19",
+    "desktop_cli_syntax": [
+      "cursor desktop ls",
+      "cursor desktop send <thread> [text...]",
+      "--json",
+      "--stdin",
+      "--force"
+    ],
+    "bridge_protocol_version_observed_in_source": 1,
+    "discovery_fields": [
+      "pid",
+      "socketPath",
+      "token",
+      "appName",
+      "appVersion",
+      "userDataDir",
+      "createdAt"
+    ],
+    "thread_fields": [
+      "id",
+      "title",
+      "source",
+      "status",
+      "lastUpdatedAt",
+      "windowId"
+    ]
+  },
+  "live_state": {
+    "default_bridge_dir": "C:\\Users\\PRO\\.cursor\\desktop-bridge",
+    "default_bridge_dir_observed": "NOT_PRESENT",
+    "v0_9_disable_extensions_probe": "NO_BRIDGE_DISCOVERY",
+    "unique_user_data_empty_extensions_probe": "NO_BRIDGE_DISCOVERY",
+    "cursor_agent_noninteractive_probe": "EXIT_0_NO_USABLE_OUTPUT",
+    "shared_profile_marker_probe": "BINDING_MARKER_NOT_ESTABLISHED",
+    "live_agent_prompt_sent": false,
+    "live_cursor_agent_worker": "NOT_ESTABLISHED"
+  },
+  "validation": {
+    "v1_0_targeted": "9 passed in 5.56s",
+    "full_regression": {
+      "result": "FAIL",
+      "passed": 95,
+      "failed": 1,
+      "duration": "83.65s",
+      "fresh_failure": {
+        "test": "test_mcp_set_text_round_trip_and_exact_approval",
+        "layer": "V0.6_DESKTOP_UI",
+        "expected": "fixture-value",
+        "observed": "..fixture-value",
+        "root_cause": "NOT_ADJUDICATED",
+        "v1_0_causality": "NOT_ESTABLISHED",
+        "auto_patch_performed": false,
+        "second_fresh_rerun_performed": false
+      }
+    }
+  },
+  "evidence_ceiling": "BOUNDED_CURSOR_AGENT_WORKER_V1_0_BRIDGE_GATED_CANDIDATE_WITH_REGRESSION_FAIL",
+  "autonomous_cursor_agent_prompting": "NOT_ESTABLISHED",
+  "cursor_generated_code_editing": "NOT_ESTABLISHED",
+  "desktop_bridge_enablement": "NOT_ESTABLISHED",
+  "independent_security_review": "NOT_ESTABLISHED",
+  "production_readiness": "NOT_ESTABLISHED",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD"
+}

@@ -1,0 +1,90 @@
+{
+  "schema": "mkm_secure_agent_runtime_v0_9_build_report",
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "implementation": {
+    "dedicated_cursor_session": "IMPLEMENTED_CANDIDATE",
+    "unique_user_data_dir": true,
+    "generated_code_workspace": true,
+    "unique_window_marker": true,
+    "exact_workspace_hash_binding": true,
+    "session_process_binding": true,
+    "session_scoped_git_status": true,
+    "session_scoped_git_diff": true,
+    "session_scoped_fixed_pytest": true,
+    "session_scoped_close": true
+  },
+  "cursor_cli_observed": {
+    "version": "3.17.19",
+    "supported_flags_observed": [
+      "--new-window",
+      "--user-data-dir",
+      "--disable-extensions",
+      "--suppress-popups-on-startup"
+    ]
+  },
+  "validation": {
+    "full_targeted_windows_suite": "87 passed in 75.52s",
+    "v0_8_plus_v0_9_targeted_after_hardening": "17 passed in 25.60s",
+    "v0_9_targeted": "7 passed in 3.70s",
+    "first_real_session_smoke": {
+      "result": "BOUND_ESTABLISHED",
+      "protocol": "2026-07-28",
+      "tool_count": 39,
+      "cursor_version": "3.17.19",
+      "request_executed_before_approval": false,
+      "session_test_returncode": 0,
+      "close_status": "CLOSED_PROCESS_ONLY",
+      "cursor_count_before": 32,
+      "cursor_count_after": 32,
+      "worktree_after_test": "DIRTY_UNTRACKED_PYCACHE",
+      "disposition": "FRESH_SIDE_EFFECT_RETAINED"
+    },
+    "fixed_profile": {
+      "argv": [
+        "python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider"
+      ],
+      "reason": "avoid pycache and pytest cache artifacts in bounded test execution"
+    },
+    "post_fix_confirmation": {
+      "classification": "PATCH_CONFIRMATION_NOT_INDEPENDENT_FRESH_VALIDATION",
+      "binding_state": "BOUND_ESTABLISHED",
+      "cursor_version": "3.17.19",
+      "test_returncode": 0,
+      "cursor_count_before": 32,
+      "cursor_count_after": 32,
+      "worktree_clean": true,
+      "close_status": "CLOSED_PROCESS_ONLY"
+    },
+    "final_session_process_check": "NO_MATCHING_V0_9_SESSION_CURSOR_PROCESS_OBSERVED"
+  },
+  "binding_claim": {
+    "dedicated_session_window_workspace_association": "ESTABLISHED_IN_SYNTHETIC_WINDOWS_SMOKE",
+    "arbitrary_existing_cursor_window_workspace_association": "NOT_ESTABLISHED",
+    "mechanism": [
+      "exact generated workspace file hash",
+      "exact approved workspace mapping",
+      "unique window title marker",
+      "visible cursor window PID",
+      "exact unique user-data-dir process membership"
+    ]
+  },
+  "evidence_ceiling": "BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_9_CANDIDATE",
+  "autonomous_cursor_ai_prompting": "NOT_ESTABLISHED",
+  "cursor_code_generation_worker": "NOT_ESTABLISHED",
+  "cross_project_reliability": "NOT_ESTABLISHED",
+  "production_repo_safety": "NOT_ESTABLISHED",
+  "independent_security_review": "NOT_ESTABLISHED",
+  "production_readiness": "NOT_ESTABLISHED",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD"
+}

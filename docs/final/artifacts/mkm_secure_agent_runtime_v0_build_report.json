@@ -1,0 +1,55 @@
+{
+  "schema": "mkm_secure_agent_runtime_v0_build_report",
+  "schema_version": 1,
+  "date": "2026-09-23",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "base": "chatgpt/mkm-forge-v0a-task-worktree-manager",
+  "implementation": [
+    "experiments/mkm_secure_agent_runtime_v0/runtime.py",
+    "experiments/mkm_secure_agent_runtime_v0/README.md",
+    "tests/test_mkm_secure_agent_runtime_v0.py"
+  ],
+  "implemented": [
+    "approved-root path policy",
+    "real list/read/write file primitives",
+    "HUMAN_GATE for writes and commands",
+    "argv-only subprocess execution with shell=false",
+    "blocked risky git subcommands",
+    "loopback-only Ollama gateway",
+    "PHI HOLD by default and SECRET deny to model",
+    "opaque secret handles with no secret material storage/resolution",
+    "SHA256 Thin Coordinates",
+    "JSONL action receipts without raw file/prompt contents"
+  ],
+  "validation": {
+    "environment": "DESKTOP-2511 fresh shallow clone",
+    "command": "python -m pytest tests/test_mkm_secure_agent_runtime_v0.py -q",
+    "result": "15 passed in 1.38s",
+    "independence": "SEPARATE_USER_PC_ENVIRONMENT_SAME_ASSISTANT_NOT_INDEPENDENT_REVIEWER"
+  },
+  "ollama_probe": {
+    "executable": "C:\\Users\\PRO\\AppData\\Local\\Programs\\Ollama\\ollama.exe",
+    "client_version": "0.30.8",
+    "local_http_127_0_0_1_11434": "UNAVAILABLE_AT_PROBE_TIME",
+    "interpretation": "OLLAMA_INSTALLED_BUT_NO_RUNNING_LOCAL_INSTANCE_CONFIRMED"
+  },
+  "not_implemented": [
+    "OS credential vault integration",
+    "real secret retrieval",
+    "MCP transport/server",
+    "browser/GUI automation",
+    "remote relay/device pairing",
+    "delete/move/destructive tools",
+    "git push/deploy/SEND",
+    "PHI production workflow"
+  ],
+  "semantic_effectiveness": "NOT_ADJUDICATED",
+  "security_effectiveness": "NOT_ESTABLISHED",
+  "product_done": false,
+  "evidence_ceiling": "BOUNDED_LOCAL_RUNTIME_CANDIDATE",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD",
+  "forge_authority_lane": "UNCHANGED_HOLD"
+}
