@@ -5,6 +5,8 @@ import json
 from pathlib import Path
 
 from .ledger import EventLedger
+from .measurement import MeasurementRecorder
+from .shared_status import SharedStatusPublisher
 from .status import StatusBoard
 
 
@@ -22,6 +24,17 @@ def main(argv: list[str] | None = None) -> int:
     events = sub.add_parser("task-events")
     events.add_argument("--ledger", required=True)
     events.add_argument("--task", required=True)
+
+    shared_publish = sub.add_parser("shared-publish")
+    shared_publish.add_argument("--ledger", required=True)
+    shared_publish.add_argument("--directory", required=True)
+
+    shared_verify = sub.add_parser("shared-verify")
+    shared_verify.add_argument("--ledger", required=True)
+    shared_verify.add_argument("--directory", required=True)
+
+    dogfood_summary = sub.add_parser("dogfood-summary")
+    dogfood_summary.add_argument("--ledger", required=True)
 
     args = parser.parse_args(argv)
     ledger = EventLedger(Path(args.ledger))
@@ -45,6 +58,21 @@ def main(argv: list[str] | None = None) -> int:
             ensure_ascii=False,
             indent=2,
         ))
+        return 0
+
+    if args.command == "shared-publish":
+        payload = SharedStatusPublisher(ledger).publish(args.directory)
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return 0
+
+    if args.command == "shared-verify":
+        payload = SharedStatusPublisher(ledger).verify(args.directory)
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
+        return 0 if payload.get("state") in {"CURRENT", "STALE"} else 2
+
+    if args.command == "dogfood-summary":
+        payload = MeasurementRecorder(ledger).summarize()
+        print(json.dumps(payload, ensure_ascii=False, indent=2))
         return 0
 
     return 2
