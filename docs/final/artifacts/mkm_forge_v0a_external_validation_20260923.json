@@ -1,0 +1,38 @@
+{
+  "schema": "mkm_forge_v0a_external_validation_receipt",
+  "schema_version": 1,
+  "date": "2026-09-23",
+  "mission": "MKM_FORGE_V0_A_TASK_WORKTREE_MANAGER",
+  "validation_environment": {
+    "device": "DESKTOP-2511",
+    "source": "fresh shallow clone of GitHub implementation branch",
+    "branch": "chatgpt/mkm-forge-v0a-task-worktree-manager",
+    "command": "python -m pytest tests/test_mkm_forge_v0a_task_worktree.py -q",
+    "result": "8 passed in 18.90s",
+    "independence": "SEPARATE_USER_PC_ENVIRONMENT_SAME_ASSISTANT_NOT_INDEPENDENT_REVIEWER"
+  },
+  "authoritative_state_observation": {
+    "current_state_file": "C:\\workspace\\.mkm\\CURRENT_STATE.yaml",
+    "authority_file": "C:\\workspace\\.mkm\\AUTHORITY.yaml",
+    "declared_canonical_repository": "E:\\Git\\repos\\mkm-destiny-ai-41e38ec6.git",
+    "declared_canonical_branch": "claude/ledger-v0-1-db-immutability",
+    "workspace_branch_present": true,
+    "workspace_branch_head": "199c0cf5509e7ca39ecdd8eceb884d24f191bf78",
+    "canonical_branch_ref_present": false,
+    "canonical_commit_object_present": false,
+    "canonical_repo_head_ref": "fix/open-bench-c3c5-gates",
+    "canonical_repo_head_sha": "a55f8559522370745ada6a8e294814a5dad32719"
+  },
+  "conflict_state": "AUTHORITATIVE_DECLARATION_NOT_MATERIALIZED_IN_CANONICAL_REPO",
+  "forge_fixture_validation": "PASS",
+  "canonical_dogfood": "HOLD",
+  "repair_authorization": "HUMAN_GATE_REQUIRED",
+  "prohibited_auto_actions": [
+    "do not create canonical branch ref automatically",
+    "do not fetch/push workspace branch into canonical repo automatically",
+    "do not treat C:\\workspace branch as canonical despite matching declared branch name",
+    "do not merge/deploy/send"
+  ],
+  "evidence_ceiling": "EXTERNAL_ENVIRONMENT_FIXTURE_VALIDATION_PLUS_READ_ONLY_CANONICAL_FORENSIC",
+  "auto_next": false
+}
