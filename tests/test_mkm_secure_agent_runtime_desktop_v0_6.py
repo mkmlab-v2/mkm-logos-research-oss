@@ -241,8 +241,7 @@ async def test_mcp_set_text_round_trip_and_exact_approval(tmp_path: Path, uia_fi
         assert ex.structured_content["executed"] is True
         assert ex.structured_content["text_length"] == len("fixture-value")
 
-    resolved = layer.resolve_control(edit["ui_ref"])
-    assert resolved.wrapper.get_value() == "fixture-value"
+    assert layer.get_value_for_test(edit["ui_ref"]) == "fixture-value"
 
 
 def test_ui_refs_are_ephemeral_local_records(tmp_path: Path):
