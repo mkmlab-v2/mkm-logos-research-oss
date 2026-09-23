@@ -1,0 +1,22 @@
+{
+  "schema": "mkm_cursor_agent_worker_v1_0",
+  "transport": "CURSOR_DESKTOP_BRIDGE_CLI",
+  "required": {
+    "exact_session_user_data_dir_match": true,
+    "single_live_bridge_instance": true,
+    "exact_thread_id": true,
+    "local_human_gate": true,
+    "prompt_privacy_allow": true
+  },
+  "denies": [
+    "force_send",
+    "secret_or_phi_prompt",
+    "git_push",
+    "deploy",
+    "publish",
+    "external_send",
+    "transfer",
+    "destructive_directive"
+  ],
+  "current_live_state": "BRIDGE_NOT_ESTABLISHED_ON_TEST_PC"
+}
