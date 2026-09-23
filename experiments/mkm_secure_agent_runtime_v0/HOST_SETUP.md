@@ -1,11 +1,11 @@
-# MKM Secure Agent Runtime V0.8 — local setup
+# MKM Secure Agent Runtime V0.9 — local setup
 
 Development candidate only.
 
 ## Environment
 
 ```powershell
-$env:MKM_AGENT_ROOTS = "C:\workspace\SAFE;F:\MKM_SAFE"
+$env:MKM_AGENT_ROOTS = "C:\workspace\SAFE"
 $env:MKM_AGENT_STATE = "$env:USERPROFILE\.mkm-agent-runtime"
 $env:MKM_OLLAMA_BASE_URL = "http://127.0.0.1:11434"
 $env:MKM_OLLAMA_AUTOSTART = "1"
@@ -29,46 +29,68 @@ Run tray:
 experiments\mkm_secure_agent_runtime_v0\start_tray.cmd
 ```
 
-## V0.8 developer workflow
+## V0.9 dedicated Cursor worker workflow
 
-1. Observe a visible VS Code/Cursor window through `ui_list_windows`.
-2. Confirm it identifies as `editor.vscode.v0` or `editor.cursor.v0`.
-3. Supply an explicit approved `workspace_path`.
-4. Use:
-   - `dev_workspace_status`
-   - `dev_git_diff`
-   - `dev_detect_tests`
-5. To run tests:
-   - `request_dev_test`
-   - approve locally in tray/CLI
-   - `execute_dev_test`
+1. Request:
+   `request_dev_session_start(workspace_path)`
+2. Approve locally in tray/CLI.
+3. Execute:
+   `execute_dev_session_start(session_id, approval_id)`
+4. Require:
+   `binding_state = BOUND_ESTABLISHED`
+5. Use session-scoped semantic actions:
+   - `dev_session_workspace_status`
+   - `dev_session_git_diff`
+   - `dev_session_detect_tests`
+6. To run tests:
+   - `request_dev_session_test`
+   - approve locally
+   - `execute_dev_session_test`
+7. To close:
+   - `request_dev_session_close`
+   - approve locally
+   - `execute_dev_session_close`
 
-Only the fixed profile is supported:
+## Dedicated session construction
+
+The runtime generates a state-local `.code-workspace` file pointing at the exact approved workspace and assigns a unique window title marker.
+
+Cursor is launched in a new window with a unique user-data-dir and extensions disabled.
+
+The model does not supply arbitrary CLI flags.
+
+## Binding semantics
+
+`BOUND_ESTABLISHED` requires both semantic and process evidence:
+
+- workspace file exact mapping and hash
+- unique title marker present in a visible Cursor window
+- visible window PID belongs to the process set carrying the exact session user-data-dir
+
+If the PID changes, title fingerprint changes, marker disappears, or the workspace file changes, V0.9 does not silently rebind. It moves toward stale/fail-closed state.
+
+## Fixed test command
 
 ```text
-pytest.quiet.v0
-python -m pytest -q
+python -B -m pytest -q -p no:cacheprovider
 ```
 
-The model cannot provide an arbitrary test command string.
+This is fixed by code. No arbitrary test command string is accepted.
 
-## Important association limit
+## Close semantics
 
-The current V0.8 pairing does not prove that a given Cursor/VS Code window has the supplied workspace open.
+Session close terminates only Cursor processes whose command lines carry the exact dedicated session user-data-dir.
 
-Returned binding state:
+The session state and user-data directory are retained for evidence in V0.9; they are not automatically deleted.
 
-`REQUEST_SCOPED_PAIR_ASSOCIATION_NOT_ESTABLISHED`
+## Still prohibited
 
-The workspace remains protected independently by `MKM_AGENT_ROOTS`.
-
-## Developer hard denials
-
-- arbitrary terminal input
-- git mutation/push/deploy
-- package install
+- arbitrary terminal command
+- arbitrary Cursor CLI flags
+- git commit/push/deploy
 - secret injection
-- SEND
-- workspace outside approved roots
+- SEND/payment/transfer/destructive actions
+- PHI production use
+- remote control
 
-Evidence ceiling: `BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_8_CANDIDATE`.
+Evidence ceiling: `BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_9_CANDIDATE`.
