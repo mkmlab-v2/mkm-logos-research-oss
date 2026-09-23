@@ -350,3 +350,44 @@ def test_finalize_recomputes_gate_so_late_fresh_fail_overrides_old_candidate(tmp
     assert finalized["merge_authorization"] == "NO"
     assert finalized["deployment_authorization"] == "NO"
     assert finalized["send_gate"] == "HOLD"
+
+
+def test_runner_binds_measurement_mode_and_rejects_mode_drift(tmp_path: Path):
+    repo, head = _repo(tmp_path)
+    _ledger, runner = _runner(tmp_path)
+    task = _task(repo, head)
+    started = runner.start(task, measurement_mode="REPLAY")
+    assert started["measurement_mode"] == "REPLAY"
+
+    with pytest.raises(DogfoodRunnerError, match="measurement mode mismatch"):
+        runner.finalize(
+            task.task_id,
+            DogfoodMeasurementV0(
+                task_id=task.task_id,
+                cohort="EVIDENCE_GATE",
+                measurement_mode="PROSPECTIVE",
+            ),
+        )
+
+
+def test_replay_finalize_is_visible_but_not_counted_as_prospective(tmp_path: Path):
+    repo, head = _repo(tmp_path)
+    _ledger, runner = _runner(tmp_path)
+    task = _task(repo, head)
+    runner.start(task, measurement_mode="REPLAY")
+
+    finalized = runner.finalize(
+        task.task_id,
+        DogfoodMeasurementV0(
+            task_id=task.task_id,
+            cohort="EVIDENCE_GATE",
+            measurement_mode="REPLAY",
+            review_minutes=1,
+        ),
+    )
+
+    assert finalized["measurement_mode"] == "REPLAY"
+    assert finalized["dogfood_summary"]["measurement_count"] == 1
+    assert finalized["dogfood_summary"]["prospective_measurement_count"] == 0
+    assert finalized["dogfood_summary"]["replay_measurement_count"] == 1
+    assert finalized["dogfood_summary"]["readiness"] == "INSUFFICIENT_DOGFOOD_SAMPLE_LT_50"
