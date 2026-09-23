@@ -261,3 +261,165 @@ The first integration invocation failed before product logic because PowerShell-
 - no external willingness-to-pay claim
 - PMF NOT_ESTABLISHED
 - production readiness NOT_ESTABLISHED
+
+
+## V0.1 Dogfood Runner + Shared CURRENT_STATUS
+
+### Dogfood Runner
+
+`DogfoodRunner` now provides a bounded internal lifecycle:
+
+```text
+task contract
+  -> deterministic worktree
+  -> external worker/evidence activity
+  -> latest-evidence gate recomputation
+  -> dogfood measurement
+  -> Evidence Receipt
+  -> DOGFOOD_TASK_FINALIZED
+  -> sealed shared CURRENT_STATUS publication
+```
+
+The worker execution itself remains outside this Evidence lane.
+
+Important closure rule:
+
+`finalize()` **always recomputes the gate from the latest append-only evidence**.
+
+It does not trust a previously cached CANDIDATE. Therefore a fresh FAIL arriving after an earlier candidate evaluation cannot be hidden by that older gate.
+
+Possible runner next actions are bounded to:
+
+- `HOLD`
+- `HUMAN_GATE`
+- `HUMAN_ADJUDICATION_REQUIRED`
+
+The runner does not create an automatic next task.
+
+Global boundaries remain:
+
+- automatic next task = NO
+- merge = NO
+- deploy = NO
+- SEND = HOLD
+
+### Shared CURRENT_STATUS contract
+
+`SharedStatusPublisher` publishes two atomic files:
+
+- `CURRENT_STATUS.json`
+- `CURRENT_STATUS.sha256.json`
+
+The JSON is explicitly a derived view. The append-only ledger remains authoritative.
+
+Verification states:
+
+- `CURRENT` — status SHA and current ledger head both match
+- `STALE` — status SHA is valid but the ledger has advanced
+- `INVALID` — tampering/unreadable status/ledger-chain problem
+- `NOT_ESTABLISHED` — status or seal missing
+
+A stale snapshot is not silently treated as current and is not treated as a tamper event.
+
+The shared view includes:
+
+- Status Board
+- dogfood measurement summary
+- latest receipt metadata per task
+- finalized-task state
+- global authorization boundaries
+
+### CLI read surface
+
+The V0 CLI now exposes:
+
+```text
+shared-publish
+shared-verify
+dogfood-summary
+```
+
+This gives separate Commander / Validator / Infrastructure chats or local processes a common read surface without treating chat memory as SSOT.
+
+## V0.1 validation
+
+### Dedicated Evidence Gate CI — final current head
+
+GitHub Actions workflow:
+
+`MKM Evidence Gate V0`
+
+Environment:
+
+- Ubuntu 24.04
+- Python 3.11
+- package compile step: PASS
+
+Final current-head test command covered:
+
+- `test_mkm_evidence_gate_v0.py`
+- `test_mkm_validator_measurement_v0.py`
+- `test_mkm_dogfood_shared_status_v0.py`
+- `test_mkm_shared_status_cli_v0.py`
+
+Observed:
+
+`34 passed in 3.43s`
+
+Workflow job conclusion:
+
+`success`
+
+This is fresh CI evidence for the Evidence Gate / Dogfood / shared-status surface on Ubuntu.
+
+### Earlier dedicated CI run
+
+An earlier run observed:
+
+`30 passed`
+
+but workflow inspection showed the CLI test file had not actually been included in the pytest command. That result is retained but is **not** used as CLI validation evidence.
+
+### Windows validation state for V0.1 additions
+
+The authorized Windows PC was offline when V0.1 fresh validation was attempted.
+
+Therefore:
+
+`DOGFOOD_SHARED_STATUS_WINDOWS_FRESH_VALIDATION = NOT_ESTABLISHED`
+
+Earlier Evidence Gate components retain their prior Windows evidence, but it is not expanded to claim Windows validation of the new Dogfood Runner/SharedStatus surface.
+
+### Legacy MKM Orchestrator Smoke
+
+The existing `MKM Orchestrator Smoke` workflow remains FAIL before its test step.
+
+Observed bundle-path verifier missing:
+
+- `docs/final/artifacts/todo_queue_example_v1.json`
+- `docs/final/artifacts/todo_queue_smoke_first_v1.json`
+- `docs/final/artifacts/todo_queue_smoke_first_python_v1.json`
+- `docs/final/artifacts/mkm_orchestrator_connection_spec_v1.json`
+
+Its `Orchestrator tests` step is skipped.
+
+These artifacts belong to an older/broader bundle contract and were **not fabricated or patched** by this Evidence lane merely to make CI green.
+
+So current CI evidence is deliberately separated:
+
+- dedicated Evidence Gate CI = PASS
+- legacy Orchestrator bundle verifier = FAIL / blocker retained
+
+## V0.1 evidence ceiling
+
+`BOUNDED_MKM_EVIDENCE_GATE_V0_1_CI_FRESH_PASS_WINDOWS_DOGFOOD_NOT_ESTABLISHED`
+
+This does not establish:
+
+- Windows reliability of V0.1 Dogfood/SharedStatus
+- 50-task effectiveness
+- general superiority
+- external willingness-to-pay
+- PMF
+- production readiness
+- merge/deploy authorization
