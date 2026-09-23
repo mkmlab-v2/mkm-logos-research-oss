@@ -165,5 +165,3 @@ class DogfoodRegistry:
             if event["event_type"] == self.EVENT_TYPE
             and event["payload"].get("schema") == self.SCHEMA
         ]
-
-[executed on device: DESKTOP-2511 (8ece3256-18bd-4d81-8680-5d6884af295c)]
