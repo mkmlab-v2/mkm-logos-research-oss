@@ -437,6 +437,25 @@ class DeveloperSessionManager:
                 pass
         return len(procs)
 
+    def agent_context(self, session_id: str) -> dict[str, Any]:
+        """Return local-only bridge binding inputs after a fresh session verify.
+
+        user_data_dir is intentionally not exposed by _public().
+        """
+        verified = self.verify(session_id)
+        if verified.get("binding_state") != "BOUND_ESTABLISHED":
+            raise DeveloperSessionError(
+                f"session not agent-bindable: {verified.get('binding_state')}"
+            )
+        record = self._load(session_id)
+        return {
+            "session_id": session_id,
+            "workspace_path": record["workspace_path"],
+            "user_data_dir": record["user_data_dir"],
+            "bound_window_pid": record["bound_window_pid"],
+            "window_ref": verified.get("window_ref"),
+        }
+
     def close(self, session_id: str) -> dict[str, Any]:
         record = self._load(session_id)
         count = self._terminate_session_processes(record)
