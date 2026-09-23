@@ -1,0 +1,97 @@
+{
+  "schema": "mkm_evidence_gate_actual_change_dogfood_replay_5task_report_v0",
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "repository_context": "GITHUB_WORKING_MIRROR_NON_SSOT",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "head_revision": "88af96a84c5c28a6862f6766e9f48ff63a01b181",
+  "status": "FIVE_ACTUAL_CHANGE_REPLAYS_SEMANTIC_SUCCESS",
+  "workflow": {
+    "name": "MKM Evidence Dogfood Replay V0",
+    "run_id": 35901581766,
+    "conclusion": "success",
+    "environment": "Ubuntu 24.04 / Python 3.11",
+    "fetch_depth": 0
+  },
+  "current_head_evidence_gate_ci": {
+    "workflow": "MKM Evidence Gate V0",
+    "run_id": 35901581328,
+    "job_id": 107318851351,
+    "conclusion": "success",
+    "tests": "39 passed in 4.14s"
+  },
+  "tasks": [
+    {
+      "task_id": "DF-001",
+      "objective": "Separate PROSPECTIVE and REPLAY measurements so replay cannot inflate 50-task readiness.",
+      "base_revision": "4e61bac292295fc01b1b3bb97ecad70f0fc22ac5",
+      "result_revision": "f3192ecd64a368a00b5db6704a97db2791461d60",
+      "job_id": 107318853025,
+      "receipt_id": "rcp_56c5f9aed1cc9724fec6358e",
+      "semantic_success": true
+    },
+    {
+      "task_id": "DF-002",
+      "objective": "Replay Evidence Receipt V0 + Authority Resolver V0 implementation.",
+      "base_revision": "65834574a149534fed66b32cf65cffa2119b0c19",
+      "result_revision": "64ad6003c908cb0e45ab21672abff8f8349b97fc",
+      "job_id": 107318853045,
+      "receipt_id": "rcp_0e8207687f2bec13299135b2",
+      "semantic_success": true
+    },
+    {
+      "task_id": "DF-003",
+      "objective": "Replay Independent Validator Contract + 50-task measurement implementation.",
+      "base_revision": "64ad6003c908cb0e45ab21672abff8f8349b97fc",
+      "result_revision": "279d471bc93952160c7dd28e2bad223e9fbda1bc",
+      "job_id": 107318853228,
+      "receipt_id": "rcp_b866994f9ce9f037e007be48",
+      "semantic_success": true
+    },
+    {
+      "task_id": "DF-004",
+      "objective": "Replay sealed shared CURRENT_STATUS + Dogfood Runner including late fresh-fail recomputation.",
+      "base_revision": "9577a92bdad850cf0c61de2fa0145ad2fbfb3ea0",
+      "result_revision": "8024f1ce2857f414d8d172ac023c990dfd396761",
+      "job_id": 107318852737,
+      "receipt_id": "rcp_18cbc8759834d7fdd588d260",
+      "semantic_success": true
+    },
+    {
+      "task_id": "DF-005",
+      "objective": "Replay shared status / dogfood summary CLI implementation.",
+      "base_revision": "9b5c054937758d3cd4fdfede234c5f7b8eab1c99",
+      "result_revision": "09a8a182f1ab0f00d743942c06e00e820f6aa76d",
+      "job_id": 107318853076,
+      "receipt_id": "rcp_ea7a90f64e3a4080789efa7e",
+      "semantic_success": true
+    }
+  ],
+  "common_semantic_result": {
+    "validator_outcome": "PASS",
+    "validator_freshness": "INDEPENDENT_FRESH",
+    "task_state": "CANDIDATE",
+    "gate_decision": "HUMAN_GATE",
+    "ledger_integrity": true,
+    "merge_authorization": "NO",
+    "deployment_authorization": "NO",
+    "send_gate": "HOLD"
+  },
+  "measurement_boundary": {
+    "replay_tasks": 5,
+    "prospective_effectiveness_tasks": 0,
+    "replay_counts_toward_50_task_effectiveness": false,
+    "effectiveness": "NOT_ESTABLISHED",
+    "willingness_to_pay": "NOT_ESTABLISHED",
+    "pmf": "NOT_ESTABLISHED"
+  },
+  "unrelated_current_workflow_failures": {
+    "mkm_orchestrator_smoke": "FAIL_RETAINED_OTHER_BUNDLE_CONTRACT",
+    "backend_fact_engine_quantization_guard": "FAIL_UNADJUDICATED_OTHER_LANE",
+    "no1kmedi_web_build": "FAIL_UNADJUDICATED_OTHER_LANE"
+  },
+  "evidence_ceiling": "FIVE_ACTUAL_CHANGE_REPLAY_DOGFOOD_PASS_PROSPECTIVE_EFFECTIVENESS_NOT_ESTABLISHED",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD"
+}
