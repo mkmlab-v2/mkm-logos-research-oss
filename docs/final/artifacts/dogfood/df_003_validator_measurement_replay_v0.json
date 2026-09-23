@@ -1,0 +1,19 @@
+{
+  "schema": "mkm_actual_change_replay_manifest_v0",
+  "task_id": "DF-003",
+  "objective": "Replay the actual Independent Validator Contract and 50-task measurement implementation with its dedicated tests.",
+  "repository_id": "github-working-mirror:mkm-logos-research-oss",
+  "cohort": "EVIDENCE_GATE",
+  "base_revision": "64ad6003c908cb0e45ab21672abff8f8349b97fc",
+  "result_revision": "279d471bc93952160c7dd28e2bad223e9fbda1bc",
+  "allowed_paths": [
+    "experiments/mkm_orchestrator_v0/validator.py",
+    "experiments/mkm_orchestrator_v0/measurement.py",
+    "tests/test_mkm_validator_measurement_v0.py"
+  ],
+  "suite_paths": [
+    "tests/test_mkm_validator_measurement_v0.py"
+  ],
+  "measurement_mode": "REPLAY",
+  "prospective_effectiveness_sample": false
+}
