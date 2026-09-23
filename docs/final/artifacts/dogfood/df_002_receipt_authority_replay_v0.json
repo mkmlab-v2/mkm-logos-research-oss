@@ -1,0 +1,19 @@
+{
+  "schema": "mkm_actual_change_replay_manifest_v0",
+  "task_id": "DF-002",
+  "objective": "Replay the actual Evidence Receipt V0 and Authority Resolver V0 implementation with its dedicated tests.",
+  "repository_id": "github-working-mirror:mkm-logos-research-oss",
+  "cohort": "EVIDENCE_GATE",
+  "base_revision": "65834574a149534fed66b32cf65cffa2119b0c19",
+  "result_revision": "64ad6003c908cb0e45ab21672abff8f8349b97fc",
+  "allowed_paths": [
+    "experiments/mkm_orchestrator_v0/receipt.py",
+    "experiments/mkm_orchestrator_v0/authority.py",
+    "tests/test_mkm_evidence_gate_v0.py"
+  ],
+  "suite_paths": [
+    "tests/test_mkm_evidence_gate_v0.py"
+  ],
+  "measurement_mode": "REPLAY",
+  "prospective_effectiveness_sample": false
+}
