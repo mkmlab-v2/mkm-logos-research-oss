@@ -98,7 +98,7 @@ class OllamaManager:
                 detail=f"UNAVAILABLE:{type(exc).__name__}",
             )
 
-    def ensure_running(self, *, wait_seconds: float = 8.0) -> OllamaStatus:
+    def ensure_running(self, *, wait_seconds: float = 20.0) -> OllamaStatus:
         if self.is_healthy(timeout=1.0):
             return self.status()
 
@@ -127,7 +127,13 @@ class OllamaManager:
             creationflags=creationflags,
         )
         self._started_by_runtime = True
-        return self._wait_for_health(wait_seconds)
+        try:
+            return self._wait_for_health(wait_seconds)
+        except Exception:
+            # Fail closed: never leave a process we started behind after
+            # auto-connect failure.
+            self.stop_if_started()
+            raise
 
     def _wait_for_health(self, wait_seconds: float) -> OllamaStatus:
         deadline = time.monotonic() + max(0.0, wait_seconds)
