@@ -255,7 +255,9 @@ def test_balanced_50_tasks_are_only_ready_for_human_adjudication(tmp_path: Path)
                 cohort="BASELINE",
                 wrong_repo_worktree_incidents=1 if i < 3 else 0,
                 review_minutes=20,
+                task_to_validated_candidate_seconds=0,
                 worker_cost_usd=2,
+                evidence_reconstruction_seconds=0,
                 builder_pass_validator_fail=1 if i < 4 else 0,
             )
         )
@@ -266,7 +268,9 @@ def test_balanced_50_tasks_are_only_ready_for_human_adjudication(tmp_path: Path)
                 cohort="EVIDENCE_GATE",
                 wrong_repo_worktree_incidents=0,
                 review_minutes=10,
+                task_to_validated_candidate_seconds=0,
                 worker_cost_usd=2.5,
+                evidence_reconstruction_seconds=0,
                 builder_pass_validator_fail=1 if i < 2 else 0,
                 false_pass_caught=1 if i < 2 else 0,
             )
@@ -343,5 +347,97 @@ def test_measurement_rejects_unknown_mode(tmp_path: Path):
                 task_id="T",
                 cohort="EVIDENCE_GATE",
                 measurement_mode="RETRO_GUESS",
+            )
+        )
+
+
+def test_unmeasured_metrics_stay_unknown_not_zero(tmp_path: Path):
+    ledger = EventLedger(tmp_path / "ledger.sqlite3")
+    recorder = MeasurementRecorder(ledger)
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="U-1",
+            cohort="EVIDENCE_GATE",
+        )
+    )
+    event = ledger.events(task_id="U-1")[-1]
+    summary = recorder.summarize()
+    cohort = summary["cohorts"]["EVIDENCE_GATE"]
+
+    assert event["payload"]["review_minutes"] is None
+    assert event["payload"]["worker_cost_usd"] is None
+    assert event["payload"]["false_pass_caught"] is None
+    assert cohort["means"]["review_minutes"] is None
+    assert cohort["sums"]["false_pass_caught"] is None
+    assert cohort["measurement_coverage"]["observed_count"]["review_minutes"] == 0
+    assert cohort["measurement_coverage"]["unknown_count"]["review_minutes"] == 1
+
+
+def test_explicit_zero_is_observed_fact_not_unknown(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="Z-1",
+            cohort="EVIDENCE_GATE",
+            false_pass_caught=0,
+            review_minutes=0,
+            task_to_validated_candidate_seconds=0,
+            worker_cost_usd=0,
+            evidence_reconstruction_seconds=0,
+        )
+    )
+    summary = recorder.summarize()
+    cohort = summary["cohorts"]["EVIDENCE_GATE"]
+
+    assert cohort["sums"]["false_pass_caught"] == 0
+    assert cohort["means"]["review_minutes"] == 0.0
+    assert cohort["measurement_coverage"]["observed_count"]["review_minutes"] == 1
+    assert cohort["measurement_coverage"]["unknown_count"]["review_minutes"] == 0
+
+
+def test_balanced_50_with_unknown_core_metrics_is_not_ready(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    for i in range(25):
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id=f"BU-{i}",
+                cohort="BASELINE",
+                review_minutes=10,
+            )
+        )
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id=f"EU-{i}",
+                cohort="EVIDENCE_GATE",
+                review_minutes=5,
+            )
+        )
+    summary = recorder.summarize()
+
+    assert summary["prospective_measurement_count"] == 50
+    assert summary["readiness"] == "MEASUREMENT_COMPLETENESS_NOT_ESTABLISHED"
+    coverage = summary["prospective_measurement_coverage"]
+    assert coverage["observed_count"]["review_minutes"] == 50
+    assert coverage["unknown_count"]["worker_cost_usd"] == 50
+    assert coverage["unknown_count"]["task_to_validated_candidate_seconds"] == 50
+    assert summary["effectiveness"] == "NOT_ESTABLISHED"
+
+
+def test_none_or_non_negative_numeric_validation(tmp_path: Path):
+    recorder = MeasurementRecorder(EventLedger(tmp_path / "ledger.sqlite3"))
+    recorder.record(
+        DogfoodMeasurementV0(
+            task_id="N-1",
+            cohort="EVIDENCE_GATE",
+            review_minutes=None,
+            false_pass_caught=None,
+        )
+    )
+    with pytest.raises(MeasurementError, match="worker_cost_usd"):
+        recorder.record(
+            DogfoodMeasurementV0(
+                task_id="N-2",
+                cohort="EVIDENCE_GATE",
+                worker_cost_usd=-0.01,
             )
         )
