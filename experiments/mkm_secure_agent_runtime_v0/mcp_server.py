@@ -26,6 +26,7 @@ from approval import ApprovalBroker, ApprovalError
 from privacy import scan_text
 from runtime import Privacy, RuntimeConfig, RuntimeErrorV0, SecureAgentRuntime
 from secrets_dpapi import DPAPISecretStore, SecretStoreError
+from snapshot import SnapshotStore, SnapshotError
 
 
 def _digest(value: Any) -> str:
@@ -74,6 +75,7 @@ def create_server(
     runtime: SecureAgentRuntime,
     broker: ApprovalBroker,
     secret_store: DPAPISecretStore | None = None,
+    snapshot_store: SnapshotStore | None = None,
 ) -> MCPServer:
     mcp = MCPServer(
         "MKM Secure Agent Runtime",
@@ -95,6 +97,9 @@ def create_server(
             "delete_policy": "DENY",
             "secret_material_access": (
                 "LOCAL_DPAPI_METADATA_ONLY" if secret_store is not None else "UNAVAILABLE"
+            ),
+            "rollback": (
+                "LOCAL_DPAPI_SNAPSHOT_AVAILABLE" if snapshot_store is not None else "UNAVAILABLE"
             ),
             "semantic_state": "NOT_ADJUDICATED",
             "send_gate": "HOLD",
@@ -261,6 +266,9 @@ def create_server(
         p = _privacy(privacy)
         if p == Privacy.SECRET:
             raise RuntimeErrorV0("SECRET content may not be submitted through this tool")
+        encoded = content.encode("utf-8")
+        if len(encoded) > 1024 * 1024:
+            raise RuntimeErrorV0("write_text is limited to 1 MiB in V0.4")
         args = {
             "path": str(target),
             "content_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
@@ -292,9 +300,12 @@ def create_server(
         p = _privacy(privacy)
         if p == Privacy.SECRET:
             raise RuntimeErrorV0("SECRET content may not be submitted through this tool")
+        encoded = content.encode("utf-8")
+        if len(encoded) > 1024 * 1024:
+            raise RuntimeErrorV0("write_text is limited to 1 MiB in V0.4")
         args = {
             "path": str(target),
-            "content_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest(),
+            "content_sha256": hashlib.sha256(encoded).hexdigest(),
             "privacy": p.value,
         }
         broker.consume(
@@ -303,9 +314,13 @@ def create_server(
             target=str(target),
             args_sha256=_digest(args),
         )
+        snapshot_id = None
+        if snapshot_store is not None:
+            snapshot = snapshot_store.capture(target)
+            snapshot_id = snapshot.snapshot_id
         receipt = runtime.write_file(
             target,
-            content.encode("utf-8"),
+            encoded,
             human_approved=True,
             privacy=p,
         )
@@ -313,6 +328,8 @@ def create_server(
             "executed": True,
             "receipt_id": receipt.receipt_id,
             "after_sha256": receipt.result_meta["after_sha256"],
+            "snapshot_id": snapshot_id,
+            "rollback": "LOCAL_CLI_ONLY" if snapshot_id else "UNAVAILABLE",
             "semantic_state": receipt.semantic_state,
             "send_gate": receipt.send_gate,
         }
@@ -417,12 +434,25 @@ def create_server(
 def main() -> None:
     runtime, broker = build_runtime_from_env()
     secret_store = None
+    snapshot_store = None
     if os.name == "nt":
         try:
             secret_store = DPAPISecretStore(broker.state_dir)
         except SecretStoreError:
             secret_store = None
-    mcp = create_server(runtime, broker, secret_store=secret_store)
+        try:
+            snapshot_store = SnapshotStore(
+                broker.state_dir,
+                protected_roots=runtime.config.normalized_roots(),
+            )
+        except SnapshotError:
+            snapshot_store = None
+    mcp = create_server(
+        runtime,
+        broker,
+        secret_store=secret_store,
+        snapshot_store=snapshot_store,
+    )
     mcp.run()
 
 
