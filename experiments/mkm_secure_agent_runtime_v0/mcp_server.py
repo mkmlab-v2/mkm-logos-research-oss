@@ -27,6 +27,8 @@ from privacy import scan_text
 from runtime import Privacy, RuntimeConfig, RuntimeErrorV0, SecureAgentRuntime
 from secrets_dpapi import DPAPISecretStore, SecretStoreError
 from snapshot import SnapshotStore, SnapshotError
+from desktop_ui import DesktopActionLayer, DesktopUIError
+from ui_refs import UIRefStore, UIRefError
 
 
 def _digest(value: Any) -> str:
@@ -76,6 +78,7 @@ def create_server(
     broker: ApprovalBroker,
     secret_store: DPAPISecretStore | None = None,
     snapshot_store: SnapshotStore | None = None,
+    desktop_layer: DesktopActionLayer | None = None,
 ) -> MCPServer:
     mcp = MCPServer(
         "MKM Secure Agent Runtime",
@@ -100,6 +103,9 @@ def create_server(
             ),
             "rollback": (
                 "LOCAL_DPAPI_SNAPSHOT_AVAILABLE" if snapshot_store is not None else "UNAVAILABLE"
+            ),
+            "desktop_actions": (
+                "WINDOWS_UIA_HUMAN_GATE" if desktop_layer is not None else "UNAVAILABLE"
             ),
             "semantic_state": "NOT_ADJUDICATED",
             "send_gate": "HOLD",
@@ -403,6 +409,161 @@ def create_server(
             "send_gate": receipt.send_gate,
         }
 
+    def _require_desktop() -> DesktopActionLayer:
+        if desktop_layer is None:
+            raise RuntimeErrorV0("Windows Desktop Action Layer unavailable")
+        return desktop_layer
+
+    def _ui_target(control_ref: str, resolved) -> str:
+        summary = resolved.safe_summary
+        name_obj = summary.get("name") or {}
+        label = name_obj.get("text") if isinstance(name_obj, dict) else ""
+        ctype = summary.get("control_type") or resolved.selector.get("control_type") or "Control"
+        return f"uia://{control_ref} | {ctype} | {label or '[label-hidden]'}"
+
+    @mcp.tool()
+    def ui_list_windows(max_windows: int = 50) -> dict[str, Any]:
+        """Observe visible Windows top-level windows. Titles are hidden by default."""
+        layer = _require_desktop()
+        return {
+            "windows": layer.list_windows(max_windows=max_windows),
+            "observation_only": True,
+            "send_gate": "HOLD",
+        }
+
+    @mcp.tool()
+    def ui_inspect_window(window_ref: str, max_controls: int = 100) -> dict[str, Any]:
+        """Observe bounded UIA controls and receive ephemeral opaque control refs."""
+        layer = _require_desktop()
+        result = layer.inspect_window(window_ref, max_controls=max_controls)
+        result["observation_only"] = True
+        result["send_gate"] = "HOLD"
+        return result
+
+    @mcp.tool()
+    def request_ui_click(control_ref: str, ttl_seconds: int = 600) -> dict[str, Any]:
+        """Request one-time human approval for a low-risk UIA click; does not click."""
+        layer = _require_desktop()
+        resolved = layer.resolve_control(control_ref)
+        policy = layer.action_policy(control_ref, action="click")
+        if policy["decision"] != "HUMAN_GATE":
+            raise RuntimeErrorV0(f"UI click blocked: {policy['reason']}")
+        args = {
+            "control_ref": control_ref,
+            "fingerprint": resolved.selector["fingerprint"],
+            "action": "click",
+        }
+        target = _ui_target(control_ref, resolved)
+        request = broker.request(
+            action="ui_click",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            "approval_id": request["approval_id"],
+            "status": "HUMAN_GATE",
+            "target": target,
+            "expires_at": request["expires_at"],
+            "executed": False,
+        }
+
+    @mcp.tool()
+    def execute_ui_click(control_ref: str, approval_id: str) -> dict[str, Any]:
+        """Execute an exact previously approved low-risk UIA click."""
+        layer = _require_desktop()
+        resolved = layer.resolve_control(control_ref)
+        policy = layer.action_policy(control_ref, action="click")
+        if policy["decision"] != "HUMAN_GATE":
+            raise RuntimeErrorV0(f"UI click blocked: {policy['reason']}")
+        args = {
+            "control_ref": control_ref,
+            "fingerprint": resolved.selector["fingerprint"],
+            "action": "click",
+        }
+        target = _ui_target(control_ref, resolved)
+        broker.consume(
+            approval_id,
+            action="ui_click",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        result = layer.click(control_ref)
+        result.update({
+            "semantic_state": "NOT_ADJUDICATED",
+            "send_gate": "HOLD",
+        })
+        return result
+
+    @mcp.tool()
+    def request_ui_set_text(
+        control_ref: str,
+        text: str,
+        ttl_seconds: int = 600,
+    ) -> dict[str, Any]:
+        """Request approval to set non-sensitive text on a non-password Edit control."""
+        layer = _require_desktop()
+        resolved = layer.resolve_control(control_ref)
+        policy = layer.action_policy(control_ref, action="set_text", text=text)
+        if policy["decision"] != "HUMAN_GATE":
+            raise RuntimeErrorV0(f"UI set_text blocked: {policy['reason']}")
+        args = {
+            "control_ref": control_ref,
+            "fingerprint": resolved.selector["fingerprint"],
+            "action": "set_text",
+            "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "text_length": len(text),
+        }
+        target = _ui_target(control_ref, resolved)
+        request = broker.request(
+            action="ui_set_text",
+            target=target,
+            args_sha256=_digest(args),
+            ttl_seconds=ttl_seconds,
+        )
+        return {
+            "approval_id": request["approval_id"],
+            "status": "HUMAN_GATE",
+            "target": target,
+            "text_sha256": args["text_sha256"],
+            "text_length": len(text),
+            "expires_at": request["expires_at"],
+            "executed": False,
+        }
+
+    @mcp.tool()
+    def execute_ui_set_text(
+        control_ref: str,
+        text: str,
+        approval_id: str,
+    ) -> dict[str, Any]:
+        """Set exact non-sensitive text after local approval."""
+        layer = _require_desktop()
+        resolved = layer.resolve_control(control_ref)
+        policy = layer.action_policy(control_ref, action="set_text", text=text)
+        if policy["decision"] != "HUMAN_GATE":
+            raise RuntimeErrorV0(f"UI set_text blocked: {policy['reason']}")
+        args = {
+            "control_ref": control_ref,
+            "fingerprint": resolved.selector["fingerprint"],
+            "action": "set_text",
+            "text_sha256": hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            "text_length": len(text),
+        }
+        target = _ui_target(control_ref, resolved)
+        broker.consume(
+            approval_id,
+            action="ui_set_text",
+            target=target,
+            args_sha256=_digest(args),
+        )
+        result = layer.set_text(control_ref, text)
+        result.update({
+            "semantic_state": "NOT_ADJUDICATED",
+            "send_gate": "HOLD",
+        })
+        return result
+
     @mcp.tool()
     def ollama_health() -> dict[str, Any]:
         """Check the configured loopback-only Ollama endpoint."""
@@ -435,6 +596,7 @@ def main() -> None:
     runtime, broker = build_runtime_from_env()
     secret_store = None
     snapshot_store = None
+    desktop_layer = None
     if os.name == "nt":
         try:
             secret_store = DPAPISecretStore(broker.state_dir)
@@ -447,11 +609,17 @@ def main() -> None:
             )
         except SnapshotError:
             snapshot_store = None
+        try:
+            ui_refs = UIRefStore(broker.state_dir)
+            desktop_layer = DesktopActionLayer(ui_refs)
+        except (UIRefError, DesktopUIError):
+            desktop_layer = None
     mcp = create_server(
         runtime,
         broker,
         secret_store=secret_store,
         snapshot_store=snapshot_store,
+        desktop_layer=desktop_layer,
     )
     mcp.run()
 
