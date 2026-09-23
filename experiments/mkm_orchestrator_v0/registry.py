@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from collections import Counter
 from dataclasses import asdict
@@ -8,7 +8,7 @@ import re
 from typing import Any
 
 from .ledger import EventLedger
-from .measurement import DogfoodMeasurementV0
+from .measurement import CORE_MEASUREMENT_FIELDS, METRIC_FIELDS, DogfoodMeasurementV0
 
 
 class DogfoodRegistryError(RuntimeError):
@@ -127,10 +127,34 @@ class DogfoodRegistry:
                 1 for row in prospective if row["cohort"] == "EVIDENCE_GATE"
             ),
         }
+        coverage = {
+            "observed_count": {
+                name: sum(
+                    1
+                    for row in prospective
+                    if row.get("measurement", {}).get(name) is not None
+                )
+                for name in METRIC_FIELDS
+            },
+            "unknown_count": {
+                name: sum(
+                    1
+                    for row in prospective
+                    if row.get("measurement", {}).get(name) is None
+                )
+                for name in METRIC_FIELDS
+            },
+        }
+        core_complete = all(
+            coverage["unknown_count"][name] == 0
+            for name in CORE_MEASUREMENT_FIELDS
+        )
         if len(prospective) < 50:
             readiness = "INSUFFICIENT_DOGFOOD_SAMPLE_LT_50"
         elif min(cohorts.values()) < 25:
             readiness = "COHORT_BALANCE_NOT_ESTABLISHED"
+        elif not core_complete:
+            readiness = "MEASUREMENT_COMPLETENESS_NOT_ESTABLISHED"
         else:
             readiness = "READY_FOR_HUMAN_EFFECTIVENESS_ADJUDICATION"
 
@@ -148,6 +172,8 @@ class DogfoodRegistry:
                 row["gate_decision"] for row in rows
             ).items())),
             "readiness_basis": "PROSPECTIVE_ONLY",
+            "core_measurement_fields": list(CORE_MEASUREMENT_FIELDS),
+            "prospective_measurement_coverage": coverage,
             "readiness": readiness,
             "effectiveness": "NOT_ESTABLISHED",
             "willingness_to_pay": "NOT_ESTABLISHED",
