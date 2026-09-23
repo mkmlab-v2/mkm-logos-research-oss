@@ -152,5 +152,36 @@ def test_ensure_running_forces_loopback_env(monkeypatch, tmp_path: Path):
     assert captured["env"]["OLLAMA_HOST"] == "127.0.0.1:11434"
 
 
+def test_failed_ollama_start_cleans_process(monkeypatch, tmp_path: Path):
+    fake_exe = tmp_path / "ollama.exe"
+    fake_exe.write_bytes(b"x")
+    manager = OllamaManager("http://127.0.0.1:11434")
+
+    monkeypatch.setattr("ollama_manager.find_ollama_executable", lambda: fake_exe)
+    monkeypatch.setattr(manager, "is_healthy", lambda timeout=1.0: False)
+
+    class FakeProc:
+        pid = 777
+        returncode = None
+        terminated = False
+        def poll(self): return self.returncode
+        def terminate(self):
+            self.terminated = True
+            self.returncode = 0
+        def wait(self, timeout=None): return self.returncode
+        def kill(self):
+            self.returncode = -9
+
+    proc = FakeProc()
+    monkeypatch.setattr(subprocess, "Popen", lambda *a, **k: proc)
+    monkeypatch.setattr("ollama_manager.time.sleep", lambda _x: None)
+    ticks = iter([0.0, 1.0, 2.0, 3.0])
+    monkeypatch.setattr("ollama_manager.time.monotonic", lambda: next(ticks))
+
+    with pytest.raises(OllamaManagerError):
+        manager.ensure_running(wait_seconds=0.5)
+    assert proc.terminated is True
+
+
 def test_tray_module_imports_when_dependencies_installed():
     import tray_app  # noqa: F401
