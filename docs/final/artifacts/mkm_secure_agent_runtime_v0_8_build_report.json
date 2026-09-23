@@ -1,0 +1,68 @@
+{
+  "schema": "mkm_secure_agent_runtime_v0_8_build_report",
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "implementation": {
+    "semantic_developer_adapter": "IMPLEMENTED_CANDIDATE",
+    "supported_app_adapters": [
+      "editor.vscode.v0",
+      "editor.cursor.v0"
+    ],
+    "git_status": "READ_ONLY",
+    "git_diff": "READ_ONLY_WITH_LOCAL_PRIVACY_RELEASE_GATE",
+    "test_detection": "DETERMINISTIC_PYTEST_MARKERS",
+    "test_execution": "FIXED_PROFILE_HUMAN_GATE",
+    "arbitrary_terminal": "NOT_IMPLEMENTED"
+  },
+  "fixed_test_profile": {
+    "profile_id": "pytest.quiet.v0",
+    "argv": [
+      "python",
+      "-m",
+      "pytest",
+      "-q"
+    ]
+  },
+  "validation": {
+    "full_windows_targeted_suite": "80 passed in 76.53s",
+    "developer_targeted_suite_initial": "10 passed in 22.99s",
+    "developer_targeted_suite_after_binding_label_correction": "10 passed in 24.18s",
+    "mcp_protocol_observed": "2026-07-28",
+    "mcp_tool_count_observed": 29,
+    "synthetic": {
+      "status_read_only": "PASS",
+      "clean_diff_release": "PASS",
+      "secret_like_diff_block": "PASS",
+      "test_request_no_preapproval_execution": "PASS",
+      "approved_fixed_pytest_execution": "PASS",
+      "timeout_mismatch_rejected": "PASS",
+      "unknown_profile_rejected": "PASS",
+      "outside_root_rejected": "PASS",
+      "no_marker": "NOT_ESTABLISHED"
+    },
+    "real_cursor_read_only": {
+      "process": "cursor.exe",
+      "adapter_id": "editor.cursor.v0",
+      "validation_workspace": "C:\\workspace\\_tmp_mkm_secure_agent_runtime_mcp_v01",
+      "git_entry_count": 0,
+      "title_disclosed": false,
+      "binding_state": "REQUEST_SCOPED_PAIR_ASSOCIATION_NOT_ESTABLISHED",
+      "window_workspace_association": "NOT_ESTABLISHED",
+      "mutation_performed": false,
+      "send_gate": "HOLD"
+    }
+  },
+  "evidence_ceiling": "BOUNDED_LOCAL_SECURE_AGENT_RUNTIME_V0_8_CANDIDATE",
+  "cross_application_reliability": "NOT_ESTABLISHED",
+  "cursor_window_workspace_association": "NOT_ESTABLISHED",
+  "vscode_window_workspace_association": "NOT_ESTABLISHED",
+  "arbitrary_terminal_execution": "NOT_IMPLEMENTED",
+  "git_mutation": "DENY_NOT_IMPLEMENTED",
+  "deploy_send": "HOLD",
+  "independent_security_review": "NOT_ESTABLISHED",
+  "production_readiness": "NOT_ESTABLISHED",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO"
+}
