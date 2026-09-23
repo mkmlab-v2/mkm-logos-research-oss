@@ -1,0 +1,104 @@
+{
+  "schema": "mkm_evidence_gate_v0_build_report",
+  "schema_version": 1,
+  "date": "2026-09-24",
+  "repository_context": "GITHUB_WORKING_MIRROR_NON_SSOT",
+  "branch": "chatgpt/mkm-secure-agent-runtime-v0",
+  "status": "BOUNDED_IMPLEMENTATION_CANDIDATE",
+  "implemented": {
+    "authority_contract": "IMPLEMENTED_CANDIDATE",
+    "task_contract": "IMPLEMENTED_CANDIDATE",
+    "deterministic_task_worktree": "IMPLEMENTED_CANDIDATE",
+    "append_only_hash_chained_ledger": "IMPLEMENTED_CANDIDATE",
+    "evidence_freshness_engine": "IMPLEMENTED_CANDIDATE",
+    "independent_validator_contract": "IMPLEMENTED_CANDIDATE",
+    "evidence_receipt_v0": "IMPLEMENTED_CANDIDATE",
+    "authority_resolver_v0": "IMPLEMENTED_CANDIDATE",
+    "derived_status_board": "IMPLEMENTED_CANDIDATE_PATCH_CONFIRMED",
+    "dogfood_measurement_v0": "IMPLEMENTED_CANDIDATE"
+  },
+  "status_board_fresh_failure": {
+    "result": "FAIL_RETAINED",
+    "observed": "12 passed, 1 failed in 15.19s",
+    "test": "test_status_export_does_not_mutate_ledger",
+    "exception": "KeyError: 'authority'",
+    "root_condition": "StatusBoard assumed full TASK_CREATED payload while generic EventLedger admitted minimal payload",
+    "adjudication": {
+      "event_ledger": "GENERIC_APPEND_ONLY_STORAGE",
+      "semantic_schema_owner": "ORCHESTRATOR_API",
+      "status_board_missing_policy": "UNKNOWN",
+      "missing_authority_reason": "MISSING_TASK_CREATED_AUTHORITY"
+    },
+    "patch_confirmation": {
+      "result": "13 passed in 15.47s",
+      "classification": "PATCH_CONFIRMATION_NOT_INDEPENDENT_FRESH_VALIDATION"
+    }
+  },
+  "fresh_validation": {
+    "evidence_receipt_authority_resolver": {
+      "result": "PASS",
+      "tests": "11 passed in 30.51s",
+      "classification": "FRESH_DEDICATED_SUITE"
+    },
+    "validator_measurement": {
+      "result": "PASS",
+      "tests": "9 passed in 19.37s",
+      "classification": "FRESH_DEDICATED_SUITE"
+    }
+  },
+  "integration_smoke": {
+    "first_invocation": {
+      "result": "HARNESS_FAIL",
+      "cause": "PowerShell to Python stdin retained U+FEFF before product logic",
+      "product_semantics_reached": false
+    },
+    "corrected_invocation": {
+      "classification": "HARNESS_CORRECTION_CONFIRMATION_NOT_INDEPENDENT_FRESH",
+      "pytest_returncode": 0,
+      "validator_outcome": "PASS",
+      "validator_freshness": "INDEPENDENT_FRESH",
+      "gate_task_state": "CANDIDATE",
+      "gate_decision": "HUMAN_GATE",
+      "merge_authorization": "NO",
+      "deployment_authorization": "NO",
+      "send_gate": "HOLD",
+      "receipt_id": "rcp_41144f91aaf60040a70211ef",
+      "receipt_sha256": "41144f91aaf60040a70211ef89a4861196b8831424ece16726d1a97a223b70a3",
+      "worker_claim_consistency": "MATCH",
+      "authority_source": "AUTHORITATIVE",
+      "authority_worktree": "TASK_WORKTREE",
+      "ledger_integrity": true,
+      "worktree_changed_files": [
+        "app.py"
+      ]
+    }
+  },
+  "dogfood_measurement": {
+    "cohorts": [
+      "BASELINE",
+      "EVIDENCE_GATE"
+    ],
+    "minimum_total_before_human_effectiveness_adjudication": 50,
+    "minimum_per_cohort": 25,
+    "effectiveness_before_threshold": "NOT_ESTABLISHED",
+    "effectiveness_at_threshold": "NOT_ESTABLISHED_PENDING_HUMAN_ADJUDICATION",
+    "willingness_to_pay": "NOT_ESTABLISHED",
+    "pmf": "NOT_ESTABLISHED",
+    "automatic_superiority_claim": false
+  },
+  "fact_lock_rules": {
+    "worker_claim_is_evidence": false,
+    "builder_equals_validator": false,
+    "patch_confirmation_is_independent_fresh": false,
+    "candidate_is_authorization": false,
+    "unknown_is_valid": true,
+    "fresh_independent_fail_is_sealed": true
+  },
+  "evidence_ceiling": "BOUNDED_MKM_EVIDENCE_GATE_V0_CANDIDATE_STATUS_BOARD_PATCH_CONFIRMED_NOT_INDEPENDENT_FRESH",
+  "merge_authorization": "NO",
+  "deployment_authorization": "NO",
+  "send_gate": "HOLD",
+  "production_readiness": "NOT_ESTABLISHED",
+  "external_willingness_to_pay": "NOT_ESTABLISHED",
+  "pmf": "NOT_ESTABLISHED"
+}
